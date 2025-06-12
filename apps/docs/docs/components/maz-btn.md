@@ -81,27 +81,27 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
   </template>
 </ComponentDemo>
 
-## Outline
+## Outlined
 
-Transform the button into an outline button with the attribute `outline`
+Transform the button into an outlined button with the attribute `outlined`
 
 <ComponentDemo>
 <div class="flex items-start gap-05 flex-wrap">
-  <MazBtn v-for="color of colors" :color="color" outline>{{ color }}</MazBtn>
+  <MazBtn v-for="color of colors" :color="color" outlined>{{ color }}</MazBtn>
 </div>
 
 <template #code>
 
 ```html
-<MazBtn outline>primary</MazBtn>
-<MazBtn color="secondary" outline>secondary</MazBtn>
-<MazBtn color="info" outline>info</MazBtn>
-<MazBtn color="success" outline>success</MazBtn>
-<MazBtn color="warning" outline>warning</MazBtn>
-<MazBtn color="destructive" outline>destructive</MazBtn>
-<MazBtn color="contrast" outline>contrast</MazBtn>
-<MazBtn color="accent" outline>accent</MazBtn>
-<MazBtn color="gray" outline>gray</MazBtn>
+<MazBtn outlined>primary</MazBtn>
+<MazBtn color="secondary" outlined>secondary</MazBtn>
+<MazBtn color="info" outlined>info</MazBtn>
+<MazBtn color="success" outlined>success</MazBtn>
+<MazBtn color="warning" outlined>warning</MazBtn>
+<MazBtn color="destructive" outlined>destructive</MazBtn>
+<MazBtn color="contrast" outlined>contrast</MazBtn>
+<MazBtn color="accent" outlined>accent</MazBtn>
+<MazBtn color="gray" outlined>gray</MazBtn>
 ```
 
   </template>
@@ -317,16 +317,23 @@ By default, the justify is `center`
     </MazBtn>
     <MazBtn fab :icon="MazCommandLine" size="lg" />
     <MazBtn :left-icon="MazSpinner" size="sm" color="warning">
-      MazSpinner
+      icon component
     </MazBtn>
   </div>
 
 <template #code>
 
 ```html
-<MazBtn left-icon="check" size="sm"> left-icon </MazBtn>
-<MazBtn right-icon="home"> right-icon </MazBtn>
-<MazBtn icon="command-line" fab size="lg" />
+<MazBtn :left-icon="MazCheck" size="sm">
+  left-icon
+</MazBtn>
+<MazBtn :right-icon="MazHome">
+  right-icon
+</MazBtn>
+<MazBtn fab :icon="MazCommandLine" size="lg" />
+<MazBtn :icon="MazSpinner" size="sm" color="warning">
+  icon component
+</MazBtn>
 ```
 
   </template>

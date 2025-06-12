@@ -127,6 +127,13 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
             >
               Pristine
             </MazBtn>
+            <MazBtn
+              size="sm"
+              :color="currentPreset.name === 'obsidian' ? 'primary' : 'secondary'"
+              @click="changePreset('obsidian')"
+            >
+              Obsidian
+            </MazBtn>
           </div>
         </div>
       </div>
@@ -138,7 +145,7 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 ```vue
 <script setup>
 import { useTheme } from '@maz-ui/themes'
-import { mazUi, ocean, pristine } from '@maz-ui/themes/presets'
+import { mazUi, ocean, pristine, obsidian } from '@maz-ui/themes/presets'
 
 const {
   isDark,
@@ -148,7 +155,7 @@ const {
   updateTheme
 } = useTheme()
 
-const presets = { mazUi, pristine, ocean }
+const presets = { mazUi, pristine, ocean, obsidian }
 const originalPreset = ref(null)
 
 function changePreset(presetName) {
@@ -199,6 +206,14 @@ A vibrant ocean-inspired theme with deep blues, aquatic greens, and coral accent
 
 ```typescript
 import { ocean } from '@maz-ui/themes/presets'
+```
+
+### Obsidian
+
+A dark and elegant theme with a focus on readability and minimalism.
+
+```typescript
+import { obsidian } from '@maz-ui/themes/presets'
 ```
 
 ## Rendering Strategies
@@ -272,31 +287,42 @@ app.use(MazThemePlugin, {
 <template #code>
 
 ```typescript
-import { definePreset, mazUi } from '@maz-ui/themes'
+import { definePreset, pristine, type ThemePresetOverrides } from '@maz-ui/themes'
+import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
 
-const customTheme = definePreset({
-  base: mazUi,
-  overrides: {
-    name: 'custom-purple',
-    appearance: {
-      radius: '1rem'
+const overrides: ThemePresetOverrides = {
+  name: 'custom-purple',
+  foundation: {
+    radius: '1rem'
+    'font-family': 'Inter, sans-serif'
+  },
+  colors: {
+    light: {
+      primary: '280 100% 60%',
+      secondary: '300 50% 90%',
+      accent: '260 100% 70%'
     },
-    colors: {
-      light: {
-        primary: '280 100% 60%',
-        secondary: '300 50% 90%',
-        accent: '260 100% 70%'
-      },
-      dark: {
-        primary: '280 100% 70%',
-        secondary: '300 30% 20%',
-        accent: '260 100% 80%'
-      }
+    dark: {
+      primary: '280 100% 70%',
+      secondary: '300 30% 20%',
+      accent: '260 100% 80%'
     }
   }
+}
+
+const customTheme = definePreset({
+  base: pristine,
+  overrides:
 })
 
 // Usage
+
+// with plugin
+app.use(MazThemePlugin, {
+  preset: customTheme,
+})
+
+// or with composable
 const { updateTheme } = useTheme()
 updateTheme(customTheme)
 ```
@@ -313,7 +339,7 @@ const brandTheme = definePreset({
   base: mazUi,
   overrides: {
     name: 'brand',
-    appearance: {
+    foundation: {
       'radius': '0.75rem',
       'border-width': '2px',
       'font-family': 'Inter, sans-serif'

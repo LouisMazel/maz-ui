@@ -11,9 +11,9 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
 
 <ComponentDemo>
   <div class="maz-flex maz-gap-4 maz-flex-wrap">
-    <MazPopover>
-      <template #trigger="{ toggle }">
-        <MazBtn @click="toggle">
+    <MazPopover trigger="click">
+      <template #trigger>
+        <MazBtn>
           Click me
         </MazBtn>
       </template>
@@ -32,6 +32,16 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
         <p class="maz-text-sm">This popover appears on hover!</p>
       </div>
     </MazPopover>
+    <MazPopover trigger="manual">
+      <template #trigger="{ toggle }">
+        <MazBtn color="accent" @click="toggle">
+          Manual trigger
+        </MazBtn>
+      </template>
+      <div class="maz-p-4">
+        <p class="maz-text-sm">This popover appears manually!</p>
+      </div>
+    </MazPopover>
   </div>
 
 <template #code>
@@ -39,8 +49,8 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
 ```vue
 <template>
   <MazPopover>
-    <template #trigger="{ toggle }">
-      <MazBtn @click="toggle">
+    <template #trigger>
+      <MazBtn>
         Click me
       </MazBtn>
     </template>
@@ -122,7 +132,7 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
 
 ```vue
 <template>
-  <MazPopover position="top">
+  <MazPopover trigger="hover" position="top">
     <template #trigger>
       <MazBtn>Top</MazBtn>
     </template>
@@ -133,7 +143,7 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
     </div>
   </MazPopover>
 
-  <MazPopover position="bottom">
+  <MazPopover trigger="hover" position="bottom">
     <template #trigger>
       <MazBtn>Bottom</MazBtn>
     </template>
@@ -144,7 +154,7 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
     </div>
   </MazPopover>
 
-  <MazPopover position="left">
+  <MazPopover trigger="hover" position="left">
     <template #trigger>
       <MazBtn>Left</MazBtn>
     </template>
@@ -155,7 +165,7 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
     </div>
   </MazPopover>
 
-  <MazPopover position="right">
+  <MazPopover trigger="hover" position="right">
     <template #trigger>
       <MazBtn>Right</MazBtn>
     </template>
@@ -171,13 +181,174 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
   </template>
 </ComponentDemo>
 
+## Colors
+
+<ComponentDemo>
+  <div class="maz-flex maz-gap-4 maz-flex-wrap">
+    <MazPopover color="default" trigger="hover">
+      <template #trigger>
+        <MazBtn color="contrast">Default</MazBtn>
+      </template>
+      <div class="maz-p-4">
+        <p class="maz-text-sm">This popover has a default color!</p>
+      </div>
+    </MazPopover>
+    <MazPopover color="primary" trigger="hover">
+      <template #trigger>
+        <MazBtn color="primary">Primary</MazBtn>
+      </template>
+      <div class="maz-p-4">
+        <p class="maz-text-sm">This popover has a primary color!</p>
+      </div>
+    </MazPopover>
+    <MazPopover color="secondary" trigger="hover">
+      <template #trigger>
+        <MazBtn color="secondary">Secondary</MazBtn>
+      </template>
+      <div class="maz-p-4">
+        <p class="maz-text-sm">This popover has a secondary color!</p>
+      </div>
+    </MazPopover>
+    <MazPopover color="accent" trigger="hover">
+      <template #trigger>
+        <MazBtn color="accent">Accent</MazBtn>
+      </template>
+      <div class="maz-p-4">
+        <p class="maz-text-sm">This popover has a accent color!</p>
+      </div>
+    </MazPopover>
+    <MazPopover color="contrast" trigger="hover">
+      <template #trigger>
+        <MazBtn color="contrast">Contrast</MazBtn>
+      </template>
+      <div class="maz-p-4">
+        <p class="maz-text-sm">This popover has a contrast color!</p>
+      </div>
+    </MazPopover>
+    <MazPopover color="success" trigger="hover">
+      <template #trigger>
+        <MazBtn color="success">Success</MazBtn>
+      </template>
+      <div class="maz-p-4">
+        <p class="maz-text-sm">This popover has a success color!</p>
+      </div>
+    </MazPopover>
+    <MazPopover color="info" trigger="hover">
+      <template #trigger>
+        <MazBtn color="info">Info</MazBtn>
+      </template>
+      <div class="maz-p-4">
+        <p class="maz-text-sm">This popover has a info color!</p>
+      </div>
+    </MazPopover>
+    <MazPopover color="destructive" trigger="hover">
+      <template #trigger>
+        <MazBtn color="destructive">Destructive</MazBtn>
+      </template>
+      <div class="maz-p-4">
+        <p class="maz-text-sm">This popover has a destructive color!</p>
+      </div>
+    </MazPopover>
+    <MazPopover color="warning" trigger="hover">
+      <template #trigger>
+        <MazBtn color="warning">Warning</MazBtn>
+      </template>
+      <div class="maz-p-4">
+        <p class="maz-text-sm">This popover has a warning color!</p>
+      </div>
+    </MazPopover>
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <MazPopover color="default" trigger="hover">
+    <template #trigger>
+      <MazBtn color="default">Default</MazBtn>
+    </template>
+    <div class="maz-p-4">
+      <p class="maz-text-sm">This popover has a default color!</p>
+    </div>
+  </MazPopover>
+  <MazPopover color="primary" trigger="hover">
+    <template #trigger>
+      <MazBtn color="primary">Primary</MazBtn>
+    </template>
+    <div class="maz-p-4">
+      <p class="maz-text-sm">This popover has a primary color!</p>
+    </div>
+  </MazPopover>
+  <MazPopover color="secondary" trigger="hover">
+    <template #trigger>
+      <MazBtn color="secondary">Secondary</MazBtn>
+    </template>
+    <div class="maz-p-4">
+      <p class="maz-text-sm">This popover has a secondary color!</p>
+    </div>
+  </MazPopover>
+  <MazPopover color="accent" trigger="hover">
+    <template #trigger>
+      <MazBtn color="accent">Accent</MazBtn>
+    </template>
+    <div class="maz-p-4">
+      <p class="maz-text-sm">This popover has a accent color!</p>
+    </div>
+  </MazPopover>
+  <MazPopover color="contrast" trigger="hover">
+    <template #trigger>
+      <MazBtn color="contrast">Contrast</MazBtn>
+    </template>
+    <div class="maz-p-4">
+      <p class="maz-text-sm">This popover has a contrast color!</p>
+    </div>
+  </MazPopover>
+  <MazPopover color="success" trigger="hover">
+    <template #trigger>
+      <MazBtn color="success">Success</MazBtn>
+    </template>
+    <div class="maz-p-4">
+      <p class="maz-text-sm">This popover has a success color!</p>
+    </div>
+  </MazPopover>
+  <MazPopover color="info" trigger="hover">
+    <template #trigger>
+      <MazBtn color="info">Info</MazBtn>
+    </template>
+    <div class="maz-p-4">
+      <p class="maz-text-sm">This popover has a info color!</p>
+    </div>
+  </MazPopover>
+  <MazPopover color="destructive" trigger="hover">
+    <template #trigger>
+      <MazBtn color="destructive">Destructive</MazBtn>
+    </template>
+    <div class="maz-p-4">
+      <p class="maz-text-sm">This popover has a destructive color!</p>
+    </div>
+  </MazPopover>
+  <MazPopover color="warning" trigger="hover">
+    <template #trigger>
+      <MazBtn color="warning">Warning</MazBtn>
+    </template>
+    <div class="maz-p-4">
+      <p class="maz-text-sm">This popover has a warning color!</p>
+    </div>
+  </MazPopover>
+</template>
+```
+
+</template>
+
+</ComponentDemo>
+
 ## Advanced positions
 
 <ComponentDemo>
   <div class="maz-grid maz-grid-cols-2 maz-gap-4 md:maz-grid-cols-3">
     <MazPopover position="top-start">
-      <template #trigger="{ toggle }">
-        <MazBtn @click="toggle" block size="sm">
+      <template #trigger>
+        <MazBtn block size="sm">
           Top Start
         </MazBtn>
       </template>
@@ -186,8 +357,8 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
       </div>
     </MazPopover>
     <MazPopover position="top-end">
-      <template #trigger="{ toggle }">
-        <MazBtn @click="toggle" block size="sm">
+      <template #trigger>
+        <MazBtn block size="sm">
           Top End
         </MazBtn>
       </template>
@@ -196,8 +367,8 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
       </div>
     </MazPopover>
     <MazPopover position="bottom-start">
-      <template #trigger="{ toggle }">
-        <MazBtn @click="toggle" block size="sm">
+      <template #trigger>
+        <MazBtn block size="sm">
           Bottom Start
         </MazBtn>
       </template>
@@ -206,8 +377,8 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
       </div>
     </MazPopover>
     <MazPopover position="bottom-end">
-      <template #trigger="{ toggle }">
-        <MazBtn @click="toggle" block size="sm">
+      <template #trigger>
+        <MazBtn block size="sm">
           Bottom End
         </MazBtn>
       </template>
@@ -216,8 +387,8 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
       </div>
     </MazPopover>
     <MazPopover position="auto">
-      <template #trigger="{ toggle }">
-        <MazBtn @click="toggle" block size="sm" color="accent">
+      <template #trigger>
+        <MazBtn block size="sm" color="accent">
           Auto Position
         </MazBtn>
       </template>
@@ -232,8 +403,8 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
 ```vue
 <template>
   <MazPopover position="top-start">
-    <template #trigger="{ toggle }">
-      <MazBtn @click="toggle">
+    <template #trigger>
+      <MazBtn>
         Top Start
       </MazBtn>
     </template>
@@ -245,8 +416,8 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
   </MazPopover>
 
   <MazPopover position="auto">
-    <template #trigger="{ toggle }">
-      <MazBtn color="accent" @click="toggle">
+    <template #trigger>
+      <MazBtn color="accent">
         Auto Position
       </MazBtn>
     </template>
@@ -349,8 +520,8 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
 <ComponentDemo>
   <div class="maz-flex maz-gap-4 maz-flex-wrap maz-items-center">
     <MazPopover v-model="isOpen" trigger="manual">
-      <template #trigger>
-        <MazBtn>
+      <template #trigger="{ toggle }">
+        <MazBtn @click="toggle">
           Controlled Trigger
         </MazBtn>
       </template>
@@ -411,8 +582,8 @@ const isOpen = ref(false)
 <ComponentDemo>
   <div class="maz-flex maz-gap-4">
     <MazPopover position="bottom-start">
-      <template #trigger="{ toggle }">
-        <MazBtn @click="toggle">
+      <template #trigger>
+        <MazBtn>
           <MazIcon name="cog-6-tooth" class="maz-mr-2" />
           Settings
           <MazIcon name="chevron-down" class="maz-ml-2" />
@@ -431,8 +602,8 @@ const isOpen = ref(false)
       </div>
     </MazPopover>
     <MazPopover position="bottom-end">
-      <template #trigger="{ toggle }">
-        <MazBtn @click="toggle" color="transparent" size="sm">
+      <template #trigger>
+        <MazBtn color="transparent" size="sm">
           <MazIcon name="ellipsis-vertical" />
         </MazBtn>
       </template>
@@ -468,8 +639,8 @@ function handleMenuClick(action) {
 
 <template>
   <MazPopover position="bottom-start">
-    <template #trigger="{ toggle }">
-      <MazBtn @click="toggle">
+    <template #trigger>
+      <MazBtn>
         <MazIcon name="cog-6-tooth" class="maz-mr-2" />
         Settings
         <MazIcon name="chevron-down" class="maz-ml-2" />
@@ -498,8 +669,8 @@ function handleMenuClick(action) {
 <ComponentDemo>
   <div class="maz-max-w-md">
     <MazPopover position="bottom-start" :close-on-click-outside="false">
-      <template #trigger="{ toggle }">
-        <MazBtn @click="toggle" block>
+      <template #trigger>
+        <MazBtn block>
           <MazIcon name="plus" class="maz-mr-2" />
           Add Item
         </MazBtn>
@@ -510,13 +681,11 @@ function handleMenuClick(action) {
           <MazInput
             v-model="formData.name"
             label="Name"
-            placeholder="Enter item name"
             required
           />
           <MazTextarea
             v-model="formData.description"
             label="Description"
-            placeholder="Enter description"
             rows="3"
           />
           <div class="maz-flex maz-gap-2">
@@ -556,8 +725,8 @@ function resetForm() {
 
 <template>
   <MazPopover position="bottom-start" :close-on-click-outside="false">
-    <template #trigger="{ toggle }">
-      <MazBtn block @click="toggle">
+    <template #trigger>
+      <MazBtn block>
         <MazIcon name="plus" class="maz-mr-2" />
         Add Item
       </MazBtn>
@@ -603,8 +772,8 @@ function resetForm() {
     <div>
       <h4 class="maz-font-semibold maz-mb-3">Persistent (no auto-close)</h4>
       <MazPopover persistent>
-        <template #trigger="{ toggle }">
-          <MazBtn @click="toggle" color="warning">
+        <template #trigger>
+          <MazBtn color="warning">
             Persistent Popover
           </MazBtn>
         </template>
@@ -621,8 +790,8 @@ function resetForm() {
     <div>
       <h4 class="maz-font-semibold maz-mb-3">Custom offset</h4>
       <MazPopover :offset="20" position="top">
-        <template #trigger="{ toggle }">
-          <MazBtn @click="toggle" color="accent">
+        <template #trigger>
+          <MazBtn color="accent">
             Large Offset
           </MazBtn>
         </template>
@@ -637,8 +806,8 @@ function resetForm() {
         panel-class="!maz-bg-gradient-to-r !maz-from-purple-500 !maz-to-pink-500 !maz-text-white !maz-border-none"
         position="bottom"
       >
-        <template #trigger="{ toggle }">
-          <MazBtn @click="toggle" color="contrast">
+        <template #trigger>
+          <MazBtn color="contrast">
             Styled Popover
           </MazBtn>
         </template>
@@ -650,8 +819,8 @@ function resetForm() {
     <div>
       <h4 class="maz-font-semibold maz-mb-3">Disabled state</h4>
       <MazPopover disabled>
-        <template #trigger="{ toggle }">
-          <MazBtn @click="toggle" disabled>
+        <template #trigger>
+          <MazBtn disabled>
             Disabled Popover
           </MazBtn>
         </template>
@@ -668,8 +837,8 @@ function resetForm() {
 <template>
   <!-- Persistent popover -->
   <MazPopover persistent>
-    <template #trigger="{ toggle }">
-      <MazBtn color="warning" @click="toggle">
+    <template #trigger>
+      <MazBtn color="warning">
         Persistent Popover
       </MazBtn>
     </template>
@@ -685,8 +854,8 @@ function resetForm() {
 
   <!-- Custom offset -->
   <MazPopover :offset="20" position="top">
-    <template #trigger="{ toggle }">
-      <MazBtn color="accent" @click="toggle">
+    <template #trigger>
+      <MazBtn color="accent">
         Large Offset
       </MazBtn>
     </template>
@@ -702,8 +871,8 @@ function resetForm() {
     panel-class="!maz-bg-gradient-to-r !maz-from-purple-500 !maz-to-pink-500 !maz-text-white !maz-border-none"
     position="bottom"
   >
-    <template #trigger="{ toggle }">
-      <MazBtn color="contrast" @click="toggle">
+    <template #trigger>
+      <MazBtn color="contrast">
         Styled Popover
       </MazBtn>
     </template>
@@ -716,8 +885,8 @@ function resetForm() {
 
   <!-- Disabled -->
   <MazPopover disabled>
-    <template #trigger="{ toggle }">
-      <MazBtn disabled @click="toggle">
+    <template #trigger>
+      <MazBtn disabled>
         Disabled Popover
       </MazBtn>
     </template>
@@ -742,8 +911,8 @@ function resetForm() {
       @close="onClose"
       @toggle="onToggle"
     >
-      <template #trigger="{ toggle }">
-        <MazBtn @click="toggle">
+      <template #trigger>
+        <MazBtn>
           Event Example
         </MazBtn>
       </template>
@@ -802,8 +971,8 @@ function onToggle(isOpen) {
     @close="onClose"
     @toggle="onToggle"
   >
-    <template #trigger="{ toggle }">
-      <MazBtn @click="toggle">
+    <template #trigger>
+      <MazBtn>
         Event Example
       </MazBtn>
     </template>

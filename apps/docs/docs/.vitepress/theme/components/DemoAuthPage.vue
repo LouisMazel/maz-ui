@@ -154,7 +154,7 @@ const onSubmit = handleSubmit(() => {
               </MazBtn>
             </div>
 
-            <MazBtn color="contrast" outline block @click="resendCode">
+            <MazBtn color="contrast" outlined block @click="resendCode">
               Resend code
             </MazBtn>
           </div>

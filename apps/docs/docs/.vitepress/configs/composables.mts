@@ -2,7 +2,7 @@ import type { DefaultTheme } from 'vitepress'
 
 export const composables = {
   text: 'Composables',
-  collapsed: false,
+  collapsed: true,
   items: [
     { text: 'useAos', link: '/composables/use-aos' },
     { text: 'useBreakpoints', link: '/composables/use-breakpoints' },
