@@ -6,7 +6,7 @@ import { MazCheckCircle, MazTrash, MazXCircle } from '@maz-ui/icons'
 import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useDropZone } from './../composables/useDropzone'
-import { sleep } from './../helpers/sleep'
+import { sleep } from './../utils/sleep'
 import MazBtn from './MazBtn.vue'
 import MazIcon from './MazIcon.vue'
 
@@ -786,14 +786,14 @@ defineExpose({
 
 <style lang="postcss" scoped>
 .m-dropzone {
-  @apply maz-flex maz-w-full maz-flex-col maz-gap-2 maz-overflow-hidden maz-rounded maz-border maz-border-dashed maz-border-divider maz-p-6 maz-transition-colors maz-duration-200 maz-ease-in-out maz-flex-center hover:maz-bg-surface-600 dark:hover:maz-bg-surface-700 maz-cursor-pointer;
+  @apply maz-flex maz-w-full maz-flex-col maz-gap-2 maz-overflow-hidden maz-rounded maz-border maz-border-dashed maz-border-divider maz-p-6 maz-transition-colors maz-duration-200 maz-ease-in-out maz-flex-center hover:maz-bg-surface-400 maz-cursor-pointer;
 
   &--disabled {
     @apply maz-cursor-not-allowed maz-opacity-50;
   }
 
   &--is-over-drop-zone:not(&--is-over-error) {
-    @apply maz-bg-surface-700;
+    @apply maz-bg-surface-500;
 
     border-color: var(--active-color);
 

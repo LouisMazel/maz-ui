@@ -39,6 +39,10 @@
       "types": "./dist/types/resolvers.d.ts",
       "import": "./dist/resolvers.mjs"
     },
+    "./icon-list": {
+      "types": "./dist/types/icon-list.d.ts",
+      "import": "./dist/icon-list.mjs"
+    },
     "./svg": "./svg/*.svg",
     "./": "./"
   },

@@ -1,17 +1,17 @@
-name: Builds
+name: Typecheck
 
 on:
   pull_request:
     paths:
       - 'packages/**'
       - 'pnpm-lock.yaml'
-      - '.github/workflows/builds.yml'
+      - '.github/workflows/typecheck.yml'
   push:
     branches:
       - master
 
 jobs:
-  builds:
+  typecheck:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,22 +27,16 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
 
-      - name: Install dependencies
+      - name: Install modules
         run: pnpm install --frozen-lockfile --ignore-scripts
-
-      - name: Generate components docs
-        run: pnpm --filter cli cli generate-components-docs
 
       - name: Build packages
         run: |
-          pnpm -F @maz-ui/eslint-config build &&
           pnpm -F @maz-ui/cli build &&
           pnpm -F @maz-ui/icons build &&
           pnpm -F @maz-ui/themes build &&
-          pnpm -F maz-ui build
+          pnpm -F maz-ui build &&
+          pnpm -F @maz-ui/nuxt prepare
 
-      - name: Build nuxt module
-        run: pnpm -F @maz-ui/nuxt build
-
-      - name: Build docs
-        run: pnpm -F docs build
+      - name: Run typecheck
+        run: pnpm --parallel -r typecheck

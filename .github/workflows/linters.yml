@@ -6,6 +6,9 @@ on:
       - 'packages/**'
       - 'pnpm-lock.yaml'
       - '.github/workflows/linters.yml'
+  push:
+    branches:
+      - master
 
 jobs:
   linters:

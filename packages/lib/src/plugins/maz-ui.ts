@@ -1,11 +1,11 @@
 import type { ColorMode, DarkMode, ThemeConfig, ThemePreset, ThemeState } from '@maz-ui/themes/src/types/index.ts'
 import type { App } from 'vue'
-import { mazUi } from '@maz-ui/themes/src/presets/mazUi.ts'
+import { mazUi } from '@maz-ui/themes/src/presets/mazUi.js'
 import {
   generateCriticalCSS,
   generateFullCSS,
   injectCSS,
-} from '@maz-ui/themes/src/utils/css-generator.ts'
+} from '@maz-ui/themes/src/utils/css-generator.js'
 
 export interface MazUiPluginOptions extends ThemeConfig {
   /**
@@ -135,9 +135,9 @@ export const MazUiPlugin = {
     const finalPreset = config.overrides
       ? {
           ...config.preset,
-          appearance: {
-            ...config.preset.appearance,
-            ...config.overrides.appearance,
+          foundation: {
+            ...config.preset.foundation,
+            ...config.overrides.foundation,
           },
           colors: {
             light: { ...config.preset.colors.light, ...config.overrides.colors?.light },

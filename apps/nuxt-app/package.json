@@ -10,7 +10,7 @@
     "lint:js": "cross-env NODE_ENV=production eslint --fix .",
     "lint:style": "stylelint --fix \"**/*.{vue,css,scss,postcss,pcss}\"",
     "pre-commit": "lint-staged",
-    "typecheck": "nuxi typecheck"
+    "type-check": "nuxi typecheck"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix",

@@ -1,13 +1,16 @@
 name: Unit Tests
 
 on:
-  push:
+  pull_request:
     branches-ignore:
       - dependabot/**
     paths:
       - '.github/workflows/lib-test-unit.yml'
       - 'packages/lib/**'
       - 'pnpm-lock.yaml'
+  push:
+    branches:
+      - master
 
 jobs:
   coverage:

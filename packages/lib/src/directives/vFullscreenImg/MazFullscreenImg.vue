@@ -4,7 +4,7 @@ import { MazChevronLeft, MazXMark } from '@maz-ui/icons'
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import MazSpinner from '../../components/MazSpinner.vue'
 
-import { checkAvailability } from '../../helpers/checkAvailability'
+import { checkAvailability } from '../../utils/checkAvailability'
 
 const props = withDefaults(defineProps<MazFullscreenImgProps>(), {
   zoom: true,

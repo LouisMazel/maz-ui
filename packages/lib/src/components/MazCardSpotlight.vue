@@ -10,10 +10,10 @@ export interface MazCardSpotlightProps {
    */
   color?: MazColor
   /**
-   * Remove the elevation of the component
-   * @default false
+   * Add elevation to the component
+   * @default true
    */
-  noElevation?: boolean
+  elevation?: boolean
   /**
    * Add padding to the content
    * @default true
@@ -37,7 +37,7 @@ export interface MazCardSpotlightProps {
 }
 
 const {
-  noElevation = false,
+  elevation = false,
   color = 'primary',
   padding = true,
   contentClass = undefined,
@@ -85,7 +85,7 @@ onUnmounted(() => {
 <template>
   <div
     class="m-card-spotlight m-reset-css"
-    :class="{ 'maz-shadow-elevation maz-drop-shadow-md': !noElevation }"
+    :class="{ 'maz-shadow-elevation maz-drop-shadow-md': elevation }"
     :style="{ 'backgroundColor': alphaColor20, '--inner-opacity': innerOpacity }"
   >
     <div class="inner">

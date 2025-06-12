@@ -44,7 +44,6 @@ type Width = 'w20'
 
 type Size = Ratio | Height | Width
 
-export function countryFlagUrlFromFlagCdn(countryIsoCode: CountryCode, size: Size = '20x15'): string {
-  /* width and height should respect an aspect ratio of 4:3 */
+export function getCountryFlagUrl(countryIsoCode: CountryCode, size: Size = '20x15'): string {
   return `https://flagcdn.com/${size}/${countryIsoCode.toLowerCase()}.png`
 }

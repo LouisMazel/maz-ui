@@ -10,7 +10,7 @@ import {
   ref,
   watch,
 } from 'vue'
-import { throttle } from '../helpers/throttle'
+import { throttle } from '../utils/throttle'
 
 export interface MazReadingProgressBarProps {
   /**
