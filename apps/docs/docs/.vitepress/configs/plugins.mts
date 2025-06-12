@@ -2,7 +2,7 @@ import type { DefaultTheme } from 'vitepress'
 
 export const plugins = {
   text: 'Plugins',
-  collapsed: false,
+  collapsed: true,
   items: [
     { text: 'aos (animation on scroll)', link: '/plugins/aos' },
     { text: 'dialog', link: '/plugins/dialog' },

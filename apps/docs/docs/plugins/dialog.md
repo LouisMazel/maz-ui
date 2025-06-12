@@ -132,7 +132,7 @@ function openDialogActions() {
       {
         text: 'Cancel 😱',
         color: 'contraste',
-        outline: true,
+        outlined: true,
         onClick: () => {
           toast.info('Custom button clicked', {
             position: 'bottom',
@@ -405,7 +405,7 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
         {
           text: 'Cancel 😱',
           color: 'contraste',
-          outline: true,
+          outlined: true,
           onClick: () => {
             toast.info('Custom button clicked', {
               position: 'bottom',

@@ -9,6 +9,8 @@ description: Convert country code in unicode flag
 
 ::: warning
   This feature does not work with Windows but you can use this polyfill: [https://www.npmjs.com/package/country-flag-emoji-polyfill](https://www.npmjs.com/package/country-flag-emoji-polyfill)
+
+  Use can also use [get-country-flag-url](./get-country-flag-url.md) instead.
 :::
 
 ## Basic usage
