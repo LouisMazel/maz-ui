@@ -3,12 +3,11 @@ import type { IconComponent } from '@maz-ui/icons'
 import type { HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazLinkProps } from './MazLink.vue'
-import type { MazColor, MazPosition, MazSize } from './types'
+import type { MazColor, MazSize } from './types'
 import { MazChevronDown } from '@maz-ui/icons'
-import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { vClickOutside } from '../directives/vClickOutside'
-import { debounce } from '../helpers/debounce'
+import MazPopover, { type MazPopoverProps } from './MazPopover.vue'
 
 defineOptions({
   inheritAttrs: false,
@@ -19,16 +18,16 @@ const {
   style: styleProp,
   id,
   items = [],
-  trigger = 'both',
+  trigger = 'click',
   color = 'transparent',
-  position = 'bottom left',
+  position = 'auto',
   screenReaderDescription = 'Open menu dropdown',
   dropdownIconAnimation = true,
   size = 'md',
   closeOnClick = true,
   chevron = true,
-  open,
-  disabled,
+  disabled = false,
+  preferPosition = 'bottom-start',
 } = defineProps<MazDropdownProps>()
 
 const emits = defineEmits<{
@@ -41,7 +40,7 @@ const emits = defineEmits<{
    * Emitted when the dropdown open state changes
    * @property {boolean} value - The new open state (true when opened, false when closed)
    */
-  'update:open': [value: boolean]
+  'update:model-value': [value: boolean]
 }>()
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
@@ -73,7 +72,14 @@ export type MenuItem
   = | (LinkItem & { action?: never })
     | (ActionItem & { href?: never, to?: never, target?: never })
 
-export interface MazDropdownProps {
+export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue'> {
+  /**
+   * Controls whether the dropdown menu is open
+   * @model
+   * @type {boolean}
+   * @default false
+   */
+  modelValue?: boolean
   /**
    * Inline styles to apply to the component root element
    * @type {HTMLAttributes['style']}
@@ -97,26 +103,17 @@ export interface MazDropdownProps {
    */
   items?: MenuItem[]
   /**
-   * Controls whether the dropdown menu is open
-   * @type {boolean}
-   * @default false
-   */
-  open?: boolean
-  /**
    * Unique identifier for the dropdown component
    * @type {string}
    */
   id?: string
   /**
    * Determines how the dropdown should be triggered
-   * @type {'click' | 'hover' | 'both'}
-   * @values click, hover, both
-   * @default 'both'
-   * @example 'click' - Opens only on click
-   * @example 'hover' - Opens only on hover
-   * @example 'both' - Opens on both click and hover
+   * @type {MazPopoverProps['trigger']}
+   * @values click, hover, manual
+   * @default 'click'
    */
-  trigger?: 'click' | 'hover' | 'both'
+  trigger?: MazPopoverProps['trigger']
   /**
    * Color theme for the dropdown button
    * @type {MazColor}
@@ -125,13 +122,18 @@ export interface MazDropdownProps {
    */
   color?: MazColor
   /**
-   * Position where the dropdown menu should appear relative to the trigger button
-   * @type {MazPosition}
-   * @values top, bottom, left, right, top-left, top-right, bottom-left, bottom-right
-   * @default 'bottom left'
-   * @example 'top right' - Menu appears above and to the right
+   * Position of the menu relative to trigger
+   * @values auto, top, bottom, left, right, top-start, top-end, bottom-start, bottom-end, left-start, left-end, right-start, right-end
+   * @default 'auto'
    */
-  position?: MazPosition
+  position?: MazPopoverProps['position']
+
+  /**
+   * Preferred position of the menu relative to trigger when auto position is used
+   * @values auto, top, bottom, left, right, top-start, top-end, bottom-start, bottom-end, left-start, left-end, right-start, right-end
+   * @default 'bottom-start'
+   */
+  preferPosition?: MazPopoverProps['preferPosition']
   /**
    * Controls whether the dropdown menu closes when a menu item is clicked
    * @type {boolean}
@@ -197,8 +199,10 @@ export interface MazDropdownProps {
   size?: MazSize
 }
 
-const dropdownOpen = ref(open)
-const keyboardSelectedIndex = ref<number>()
+const modelValue = defineModel<boolean>({
+  required: false,
+  default: false,
+})
 
 const iconClassSize = computed(() => {
   if (size === 'xl')
@@ -216,57 +220,15 @@ const iconClassSize = computed(() => {
   return 'maz-text-lg'
 })
 
-const setDropdownDebounced = debounce((value: boolean) => {
-  setDropdown(value)
-}, 200)
-
-function onClickOutside() {
-  if (dropdownOpen.value) {
-    setDropdown(false)
-  }
-}
-
-function toggleDropdown() {
-  setDropdown(!dropdownOpen.value)
-}
-
-function onElementClick() {
-  if (['click'].includes(trigger))
-    toggleDropdown()
-}
-function onElementFocus() {
-  if (['hover', 'both'].includes(trigger))
-    setDropdown(true)
-}
-function onElementMouseenter() {
-  if (['hover', 'both'].includes(trigger)) {
-    if (dropdownOpen.value === false) {
-      setDropdown(true)
-    }
-    else {
-      setDropdownDebounced(true)
-    }
-  }
-}
-function onElementMouseleave() {
-  if (['hover', 'both'].includes(trigger)) {
-    setDropdownDebounced(false)
-  }
-}
-function onElementBlur() {
-  setDropdownDebounced(false)
-}
-
 function setDropdown(value: boolean) {
   if (disabled)
     return
 
-  dropdownOpen.value = value
-  emits('update:open', value)
+  modelValue.value = value
 }
 
 function isActionItem(item: MenuItem): item is ActionItem {
-  return 'action' in item
+  return 'onClick' in item
 }
 
 function isLinkItem(item: MenuItem): item is LinkItem {
@@ -289,29 +251,16 @@ function closeDropdown() {
 }
 
 function keydownHandler(event: KeyboardEvent) {
-  if (event.key === 'Escape') {
-    event.preventDefault()
-    setDropdown(false)
-  }
-  else if (['ArrowDown', 'ArrowUp'].includes(event.key)) {
+  if (['ArrowDown', 'ArrowUp'].includes(event.key)) {
     arrowHandler(event)
   }
-  else if (event.key === 'Enter' && typeof keyboardSelectedIndex.value === 'number') {
+  else if (event.key === 'Enter') {
     event.preventDefault()
-    const item = document.querySelectorAll(`#${instanceId.value} .menuitem`)[
-      keyboardSelectedIndex.value
-    ] as HTMLElement
+    const item = document.activeElement as HTMLElement | undefined
 
-    item.click()
+    item?.click()
 
     closeDropdown()
-  }
-}
-
-function keyboardOpenDropdown(event: KeyboardEvent) {
-  if (['ArrowDown', 'ArrowUp', 'Enter'].includes(event.key) && dropdownOpen.value === false) {
-    event.preventDefault()
-    setDropdown(true)
   }
 }
 
@@ -319,33 +268,28 @@ function arrowHandler(event: KeyboardEvent) {
   event.preventDefault()
   const code = event.key
 
-  if (!dropdownOpen.value)
-    setDropdown(true)
-
   const itemLength = items?.length
-
   if (!itemLength)
     return
 
-  if (typeof keyboardSelectedIndex.value === 'number') {
-    if (keyboardSelectedIndex.value === itemLength - 1 && code === 'ArrowDown') {
-      keyboardSelectedIndex.value = 0
-    }
-    else if (keyboardSelectedIndex.value === 0 && code === 'ArrowUp') {
-      keyboardSelectedIndex.value = itemLength - 1
-    }
-    else {
-      keyboardSelectedIndex.value
-          = code === 'ArrowDown' ? keyboardSelectedIndex.value + 1 : keyboardSelectedIndex.value - 1
-    }
+  const currentElement = document.activeElement as HTMLElement
+  const itemsElements = document.querySelectorAll<HTMLElement>(`#${instanceId.value} .menuitem`)
+  const currentIndex = Array.from(itemsElements).indexOf(currentElement)
+
+  if (currentIndex === -1) {
+    (itemsElements[0] as HTMLElement)?.focus()
+    return
   }
-  else {
-    keyboardSelectedIndex.value = code === 'ArrowDown' ? 0 : itemLength - 1
-  }
+
+  const nextIndex = code === 'ArrowDown'
+    ? (currentIndex + 1) % itemLength
+    : (currentIndex - 1 + itemLength) % itemLength
+
+  itemsElements[nextIndex]?.focus({ preventScroll: true })
 }
 
 watch(
-  () => dropdownOpen.value,
+  () => modelValue.value,
   (value) => {
     if (value) {
       document.addEventListener('keydown', keydownHandler)
@@ -353,118 +297,120 @@ watch(
     else {
       document.removeEventListener('keydown', keydownHandler)
     }
-
-    keyboardSelectedIndex.value = undefined
   },
-)
-watch(
-  () => open,
-  value => setDropdown(value),
 )
 </script>
 
 <template>
-  <div
-    :id="instanceId"
-    v-click-outside="onClickOutside"
+  <MazPopover
+    :trigger="trigger"
+    :model-value="modelValue"
     class="m-dropdown m-reset-css"
     :style="styleProp"
+    :prefer-position="preferPosition"
+    :position
+    :disabled
+    :keep-open-on-hover="trigger === 'hover'"
     :class="[classProp, { '--block': block }]"
+    @update:model-value="setDropdown"
   >
-    <div
-      role="button"
-      tabindex="0"
-      class="m-dropdown__wrapper"
-      :aria-expanded="dropdownOpen"
-      aria-haspopup="menu"
-      @click.stop="onElementClick"
-      @focus="onElementFocus"
-      @blur="onElementBlur"
-      @keydown="keyboardOpenDropdown"
-      @mouseenter="onElementMouseenter"
-      @mouseleave="onElementMouseleave"
-    >
-      <span v-if="screenReaderDescription || $slots['screen-reader-description']" :id="`${instanceId}-labelspan`" class="maz-sr-only">
-        <!--
-          @slot description for screen readers (hidden from visual display)
-          Provides accessibility information about the dropdown functionality
-          @default 'Open menu dropdown'
-        -->
-        <slot name="screen-reader-description">
-          {{ screenReaderDescription }}
-        </slot>
-      </span>
-      <!--
-        @slot trigger element for the dropdown
-        @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
-        @default MazBtn component with default styling
-      -->
-      <slot name="element" :is-open="dropdownOpen">
-        <MazBtn
-          :aria-labelledby="`${instanceId}-labelspan`"
-          :color
-          :disabled
-          v-bind="$attrs"
-          tabindex="-1"
-          :block
-          :size
-        >
-          <!-- @slot Text content of the trigger element -->
-          <slot />
-
-          <template v-if="chevron" #right-icon>
-            <!--
-              @slot Dropdown indicator icon
-              @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
-              @default MazChevronDown icon with rotation animation
-            -->
-            <slot name="dropdown-icon" :is-open="dropdownOpen">
-              <MazIcon v-if="typeof dropdownIcon === 'string'" :name="dropdownIcon" :class="[{ '--open': dropdownOpen && dropdownIconAnimation }, iconClassSize]" />
-              <Component
-                :is="dropdownIcon" v-else-if="dropdownIcon" :class="[{ '--open': dropdownOpen && dropdownIconAnimation }, iconClassSize]"
-                class="m-dropdown__icon"
-              />
-              <MazChevronDown
-                v-else
-                :class="[{ '--open': dropdownOpen && dropdownIconAnimation }, iconClassSize]"
-                class="m-dropdown__icon"
-              />
-            </slot>
-          </template>
-        </MazBtn>
-      </slot>
-    </div>
-
-    <Transition name="maz-scale-fade">
+    <template #trigger="{ toggle, close, isOpen, open }">
       <div
-        v-show="dropdownOpen"
+        role="button"
+        tabindex="0"
+        class="m-dropdown__wrapper"
+        :aria-expanded="modelValue"
+        aria-haspopup="menu"
+        @click.stop="toggle"
+        @keypress.enter.stop.prevent="toggle"
+        @keypress.space.stop.prevent="toggle"
+      >
+        <span v-if="screenReaderDescription || $slots['screen-reader-description']" :id="`${instanceId}-labelspan`" class="maz-sr-only">
+          <!--
+            @slot description for screen readers (hidden from visual display)
+            Provides accessibility information about the dropdown functionality
+            @default 'Open menu dropdown'
+          -->
+          <slot name="screen-reader-description">
+            {{ screenReaderDescription }}
+          </slot>
+        </span>
+        <!--
+          @slot trigger element for the dropdown
+          @default MazBtn component with default styling
+          @binding {() => void} close - Function to close the dropdown
+          @binding {() => void} open - Function to open the dropdown
+          @binding {() => void} toggle - Function to toggle the dropdown
+          @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
+        -->
+        <slot name="element" :is-open="isOpen" :toggle="toggle" :close="close" :open="open">
+          <MazBtn
+            :aria-labelledby="`${instanceId}-labelspan`"
+            :color
+            :disabled
+            v-bind="$attrs"
+            tabindex="-1"
+            :block
+            :size
+          >
+            <!-- @slot Text content of the trigger element -->
+            <slot />
+
+            <template v-if="chevron || $slots['dropdown-icon']" #right-icon>
+              <!--
+                @slot Dropdown indicator icon
+                @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
+                @default MazChevronDown icon with rotation animation
+              -->
+              <slot name="dropdown-icon" :is-open="isOpen" :toggle="toggle" :close="close" :open="open">
+                <MazIcon v-if="typeof dropdownIcon === 'string'" :name="dropdownIcon" :class="[{ '--open': modelValue && dropdownIconAnimation }, iconClassSize]" />
+                <Component
+                  :is="dropdownIcon" v-else-if="dropdownIcon" :class="[{ '--open': modelValue && dropdownIconAnimation }, iconClassSize]"
+                  class="m-dropdown__icon"
+                />
+                <MazChevronDown
+                  v-else
+                  :class="[{ '--open': modelValue && dropdownIconAnimation }, iconClassSize]"
+                  class="m-dropdown__icon"
+                />
+              </slot>
+            </template>
+          </MazBtn>
+        </slot>
+      </div>
+    </template>
+
+    <template #default="{ open, close, isOpen, toggle }">
+      <div
+        :id="instanceId"
         role="menu"
         aria-label="Menu"
-        class="menu"
+        class="m-dropdown__menu"
         tabindex="-1"
-        :class="[{
-          '--top': position.includes('top'),
-          '--left': position.includes('left'),
-          '--right': position.includes('right'),
-          '--bottom': position.includes('bottom'),
-        }, menuPanelClass]"
+        :class="menuPanelClass"
         :style="menuPanelStyle"
-        @focus="setDropdownDebounced(true)"
-        @blur="setDropdownDebounced(false)"
-        @mouseenter="['hover', 'both'].includes(trigger) ? setDropdownDebounced(true) : undefined"
-        @mouseleave="['hover', 'both'].includes(trigger) ? setDropdownDebounced(false) : undefined"
       >
         <!--
           @slot Dropdown menu panel content
           @binding {MenuItem[]} items - Array of menu items passed via the items prop
+          @binding {() => void} close - Function to close the dropdown
+          @binding {() => void} open - Function to open the dropdown
+          @binding {() => void} toggle - Function to toggle the dropdown
+          @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
+          @binding {() => void} toggle - Function to toggle the dropdown
         -->
-        <slot name="dropdown" :items="items">
+        <slot name="dropdown" :items="items" :open="open" :close="close" :is-open="isOpen" :toggle="toggle">
           <template v-for="(item, index) in items" :key="index">
             <!--
               @slot Menu item component
               @binding {MenuItem} item - Individual menu item object with properties like label, href, onClick, etc.
+              @binding {() => void} close - Function to close the dropdown
+              @binding {() => void} open - Function to open the dropdown
+              @binding {() => void} toggle - Function to toggle the dropdown
+              @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
+              @binding {() => void} toggle - Function to toggle the dropdown
             -->
-            <slot name="menuitem" :item="item">
+            <slot name="menuitem" :item="item" :open="open" :close="close" :is-open="isOpen" :toggle="toggle">
               <template v-if="isLinkItem(item)">
                 <MazLink
                   :target="item.href ? item.target ?? '_self' : undefined"
@@ -474,44 +420,42 @@ watch(
                   v-bind="item"
                   :underline-only-hover="item.underlineOnlyHover ?? false"
                   class="menuitem"
-                  tabindex="-1"
-                  :class="[
-                    {
-                      '--is-keyboard-selected': keyboardSelectedIndex === index,
-                    },
-                    item.class,
-                  ]"
+                  :class="[item.class]"
                   @click.stop="closeDropdown"
                 >
                   <!--
                     @slot Label content for menu item
                     @binding {MenuItem} item - Individual menu item object containing label and other properties
+                    @binding {() => void} close - Function to close the dropdown
+                    @binding {() => void} open - Function to open the dropdown
+                    @binding {() => void} toggle - Function to toggle the dropdown
+                    @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
+                    @binding {() => void} toggle - Function to toggle the dropdown
                   -->
-                  <slot name="menuitem-label" :item="item">
+                  <slot name="menuitem-label" :item="item" :open="open" :close="close" :is-open="isOpen" :toggle="toggle">
                     {{ item.label }}
                   </slot>
                 </MazLink>
               </template>
               <template v-else-if="isActionItem(item)">
                 <button
-                  tabindex="-1"
                   type="button"
-                  v-bind="item"
+                  v-bind="{ ...item, onClick: undefined }"
                   class="menuitem menuitem__button"
-                  :class="[
-                    {
-                      '--is-keyboard-selected': keyboardSelectedIndex === index,
-                    },
-                    item.class,
-                    `--${item.color ?? 'contrast'}`,
-                  ]"
+                  :class="[item.class, `--${item.color ?? 'contrast'}`]"
                   @click.stop="runAction(item, $event)"
+                  @keypress.enter.stop.prevent="runAction(item, $event)"
                 >
                   <!--
                     @slot Label content for menu item
                     @binding {MenuItem} item - Individual menu item object containing label and other properties
+                    @binding {() => void} close - Function to close the dropdown
+                    @binding {() => void} open - Function to open the dropdown
+                    @binding {() => void} toggle - Function to toggle the dropdown
+                    @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
+                    @binding {() => void} toggle - Function to toggle the dropdown
                   -->
-                  <slot name="menuitem-label" :item="item">
+                  <slot name="menuitem-label" :item="item" :open="open" :close="close" :is-open="isOpen" :toggle="toggle">
                     {{ item.label }}
                   </slot>
                 </button>
@@ -520,8 +464,8 @@ watch(
           </template>
         </slot>
       </div>
-    </Transition>
-  </div>
+    </template>
+  </MazPopover>
 </template>
 
 <style lang="postcss">
@@ -532,12 +476,8 @@ watch(
     @apply maz-w-full;
   }
 
-  & [aria-expanded='true'].m-btn {
-    @apply maz-bg-surface-400;
-  }
-
   &__wrapper {
-    @apply maz-h-full maz-w-full maz-outline-none;
+    @apply maz-h-full maz-w-full maz-outline-none focus:maz-bg-surface-400 maz-rounded;
   }
 
   &__icon {
@@ -547,81 +487,50 @@ watch(
       @apply maz-rotate-180;
     }
   }
+}
 
-  .menu {
-    @apply maz-absolute maz-z-default-backdrop maz-flex maz-min-h-max maz-min-w-max maz-flex-col maz-gap-0.5 maz-overflow-auto maz-rounded maz-bg-surface maz-p-2 maz-drop-shadow-md maz-shadow-elevation dark:maz-border dark:maz-border-divider;
+.m-dropdown__menu {
+  @apply maz-flex maz-min-h-max maz-min-w-max maz-flex-col maz-gap-0.5 maz-overflow-auto maz-p-2;
 
-    &.--top:not(.--right, .--left) {
-      @apply maz-bottom-full maz-mb-1 maz-origin-bottom;
+  .menuitem {
+    @apply maz-outline-none maz-cursor-pointer maz-whitespace-nowrap maz-rounded maz-px-4 maz-py-2 maz-text-start
+     maz-transition-colors maz-duration-300 maz-ease-in-out focus:maz-bg-surface-400 hover:maz-bg-surface-400;
+
+    &.--is-keyboard-selected {
+      @apply maz-bg-surface-400;
     }
 
-    &.--bottom:not(.--right, .--left) {
-      @apply maz-top-full maz-mt-1 maz-origin-top;
-    }
-
-    &.--left:not(.--top, .--bottom) {
-      @apply maz-right-full maz-mr-1 maz-origin-top-right;
-    }
-
-    &.--right:not(.--top, .--bottom) {
-      @apply maz-left-full maz-ml-1 maz-origin-top-left;
-    }
-
-    &.--top.--right {
-      @apply maz-bottom-full maz-right-0 maz-mb-1 maz-origin-bottom-right;
-    }
-
-    &.--top.--left {
-      @apply maz-bottom-full maz-left-0 maz-mb-1 maz-origin-bottom-left;
-    }
-
-    &.--bottom.--left {
-      @apply maz-left-0 maz-top-full maz-mt-1 maz-origin-top-left;
-    }
-
-    &.--bottom.--right {
-      @apply maz-right-0 maz-top-full maz-mt-1 maz-origin-top-right;
-    }
-
-    .menuitem {
-      @apply maz-cursor-pointer maz-whitespace-nowrap maz-rounded maz-px-4 maz-py-2 maz-text-start maz-outline-none maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-surface-400 hover:maz-bg-surface-400;
-
-      &.--is-keyboard-selected {
-        @apply maz-bg-surface-400;
+    &.menuitem__button {
+      &:disabled {
+        @apply maz-cursor-not-allowed maz-opacity-50;
       }
 
-      &.menuitem__button {
-        &:disabled {
-          @apply maz-cursor-not-allowed maz-opacity-50;
-        }
+      &.--primary {
+        @apply maz-text-primary hover:maz-text-primary-600;
+      }
 
-        &.--primary {
-          @apply maz-text-primary hover:maz-text-primary-600;
-        }
+      &.--secondary {
+        @apply maz-text-secondary hover:maz-text-secondary-600;
+      }
 
-        &.--secondary {
-          @apply maz-text-secondary hover:maz-text-secondary-600;
-        }
+      &.--info {
+        @apply maz-text-info hover:maz-text-info-600;
+      }
 
-        &.--info {
-          @apply maz-text-info hover:maz-text-info-600;
-        }
+      &.--warning {
+        @apply maz-text-warning-600 hover:maz-text-warning-600;
+      }
 
-        &.--warning {
-          @apply maz-text-warning-600 hover:maz-text-warning-600;
-        }
+      &.--destructive {
+        @apply maz-text-destructive-600 hover:maz-text-destructive-600;
+      }
 
-        &.--destructive {
-          @apply maz-text-destructive-600 hover:maz-text-destructive-600;
-        }
+      &.--success {
+        @apply maz-text-success-600 hover:maz-text-success-600;
+      }
 
-        &.--success {
-          @apply maz-text-success-600 hover:maz-text-success-600;
-        }
-
-        &.--contrast {
-          @apply maz-text-contrast hover:maz-text-contrast-600;
-        }
+      &.--contrast {
+        @apply maz-text-contrast hover:maz-text-contrast-600;
       }
     }
   }
