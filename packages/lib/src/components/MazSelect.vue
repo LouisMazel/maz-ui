@@ -5,7 +5,7 @@
 >
 import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
 import type { MazInputValue } from './MazInput.vue'
-import type { MazColor, MazPosition, MazSize } from './types'
+import type { MazColor, MazSize } from './types'
 import { MazChevronDown, MazMagnifyingGlass, MazNoSymbol } from '@maz-ui/icons'
 import {
   computed,
@@ -17,11 +17,11 @@ import {
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useStringMatching } from '../composables/useStringMatching'
-import { vClosable } from '../directives/vClosable'
-import { debounceCallback } from '../helpers/debounceCallback'
+import { debounceCallback } from '../utils/debounceCallback'
 
-import { normalizeString } from '../helpers/normalizeString'
+import { normalizeString } from '../utils/normalizeString'
 import MazInput from './MazInput.vue'
+import MazPopover, { type MazPopoverProps } from './MazPopover.vue'
 
 export type MazSelectNormalizedOption = Record<string, MazInputValue>
 export interface MazSelectOptionWithOptGroup {
@@ -63,9 +63,9 @@ export interface MazSelectProps<T extends MazInputValue, U extends MazSelectOpti
   optionInputValueKey?: string
   /**
    * The position of the list
-   * @default 'bottom left'
+   * @default 'bottom-start'
    */
-  listPosition?: MazPosition
+  listPosition?: MazPopoverProps['position']
   /** The height of the option list item */
   itemHeight?: number
   /** The max height of the option list */
@@ -103,8 +103,6 @@ export interface MazSelectProps<T extends MazInputValue, U extends MazSelectOpti
    * @default 0.75
    */
   searchThreshold?: number
-  /** if true, the option list is opened by default */
-  open?: boolean
   /** Enable the multiple selection */
   multiple?: boolean
   /** Make the input required in the form */
@@ -135,7 +133,7 @@ const props = withDefaults(defineProps<MazSelectProps<T, U>>(), {
   optionValueKey: 'value',
   optionLabelKey: 'label',
   optionInputValueKey: 'label',
-  listPosition: 'bottom left',
+  listPosition: 'bottom-start',
   itemHeight: undefined,
   maxListHeight: 240,
   maxListWidth: undefined,
@@ -155,13 +153,12 @@ const emits = defineEmits<{
    * @event 'close'
    * @property {Event} value - the event
    */
-  'close': [value?: Event]
+  'close': []
   /**
    * On list is opened
    * @event 'open'
-   * @property {boolean} value - if the list is opened or not
    */
-  'open': [value: boolean]
+  'open': []
   /**
    * On input blur
    * @event 'blur'
@@ -173,7 +170,7 @@ const emits = defineEmits<{
    * @event 'focus'
    * @property {Event} value - the event
    */
-  'focus': [value: Event]
+  'focus': [value?: Event]
   /**
    * On input change value
    * @event 'change'
@@ -202,24 +199,14 @@ const emits = defineEmits<{
 
 const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
 
-defineExpose<{
-  openList: typeof openList
-  closeList: typeof closeList
-}>({
-  /** Method to open the option list */
-  openList,
-  /** Method to close the option list */
-  closeList,
-})
-
-const listOpened = ref(false)
 const tmpModelValueIndex = ref<number>()
+const popoverComponent = ref<ComponentPublicInstance<typeof MazPopover>>()
 
 const selectedTextColor = computed(() => `hsl(var(--maz-${props.color}-800))`)
 const selectedBgColor = computed(() => `hsl(var(--maz-${props.color}-100))`)
 const keyboardSelectedBgColor = computed(() => `hsl(var(--maz-${props.color}-200))`)
 
-const hasListOpened = computed(() => listOpened.value || props.open)
+const isOpen = defineModel<boolean>('open', { required: false, default: false })
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazSelect',
@@ -297,10 +284,10 @@ onBeforeMount(() => {
   updateTmpModelValueIndex()
 })
 
-const mazSelectElement = ref<HTMLDivElement>()
 const mazInputComponent = ref<ComponentPublicInstance<typeof MazInput>>()
 const searchInputComponent = ref<ComponentPublicInstance<typeof MazInput>>()
 const optionListElement = ref<HTMLDivElement>()
+const optionListScrollWrapper = ref<HTMLDivElement>()
 
 function isNullOrUndefined(value: unknown) {
   return value === undefined || value === null
@@ -315,7 +302,7 @@ function isSelectedOption(option: MazSelectNormalizedOption) {
   return hasOption && !isNullOrUndefined(option[props.optionValueKey])
 }
 
-const mazInputValue = computed(() => {
+const inputValue = computed(() => {
   if (props.multiple && props.modelValue && Array.isArray(props.modelValue)) {
     return props.modelValue
       .map(
@@ -336,39 +323,37 @@ const mazInputValue = computed(() => {
     : selectedOption?.[props.optionInputValueKey]
 })
 
-const listTransition = computed(() =>
-  props.listPosition.includes('bottom') ? 'maz-slide' : 'maz-slideinvert',
-)
-
-const searchQuery = ref<string>('')
-const query = ref<string>('')
+const searchQuery = ref<string>()
+const query = ref<string>()
 
 function searchInValue(value?: MazInputValue, query?: string) {
   return query && value && normalizeString(value).includes(normalizeString(query))
 }
 
-function getFilteredOptionWithQuery(query: string) {
-  return query
-    ? optionsNormalized.value?.filter((option) => {
-        const searchValue = option[props.optionLabelKey]
-        const searchValue3 = option[props.optionValueKey]
-        const searchValue2 = option[props.optionInputValueKey]
+function getFilteredOptionWithQuery(query?: string) {
+  if (!query) {
+    return optionsNormalized.value
+  }
 
-        const threshold = props.searchThreshold
+  return optionsNormalized.value?.filter((option) => {
+    const searchValue = option[props.optionLabelKey]
+    const searchValue3 = option[props.optionValueKey]
+    const searchValue2 = option[props.optionInputValueKey]
 
-        return (
-          searchInValue(searchValue, query)
-          || searchInValue(searchValue2, query)
-          || searchInValue(searchValue3, query)
-          || (typeof searchValue === 'string'
-            && useStringMatching(searchValue, query, threshold).isMatching.value)
-          || (typeof searchValue2 === 'string'
-            && useStringMatching(searchValue2, query, threshold).isMatching.value)
-          || (typeof searchValue3 === 'string'
-            && useStringMatching(searchValue3, query, threshold).isMatching.value)
-        )
-      })
-    : optionsNormalized.value
+    const threshold = props.searchThreshold
+
+    return (
+      searchInValue(searchValue, query)
+      || searchInValue(searchValue2, query)
+      || searchInValue(searchValue3, query)
+      || (typeof searchValue === 'string'
+        && useStringMatching(searchValue, query, threshold).isMatching.value)
+      || (typeof searchValue2 === 'string'
+        && useStringMatching(searchValue2, query, threshold).isMatching.value)
+      || (typeof searchValue3 === 'string'
+        && useStringMatching(searchValue3, query, threshold).isMatching.value)
+    )
+  })
 }
 
 const optionList = computed(() => {
@@ -377,43 +362,14 @@ const optionList = computed(() => {
     : getFilteredOptionWithQuery(searchQuery.value)
 })
 
-async function closeList(event?: Event) {
-  if (!hasListOpened.value)
-    return
-  if (
-    event
-    && (('relatedTarget' in event
-      && mazSelectElement.value?.contains(event.relatedTarget as Node))
-    || event.type === 'keydown')
-  ) {
-    return event.preventDefault()
-  }
-
-  const eventTargetId
-      = event
-        && 'relatedTarget' in event
-        && event.relatedTarget instanceof HTMLElement
-        && event.relatedTarget.getAttribute('id')
-
-  if (props.excludedSelectors?.includes(`#${eventTargetId}`)) {
-    return event?.preventDefault()
-  }
-
-  await nextTick()
-  listOpened.value = false
+function onCloseList() {
   tmpModelValueIndex.value = 0
-  emits('close', event)
+  emits('close')
 }
 
-async function openList(event: Event) {
-  if (props.disabled || hasListOpened.value)
-    return
-
-  event?.preventDefault()
-  listOpened.value = true
+async function onOpenList() {
   await scrollToOptionIndex()
-  emits('focus', event)
-  emits('open', listOpened.value)
+  emits('open')
 }
 
 function focusMainInput() {
@@ -423,22 +379,13 @@ function emitInputMainInput() {
   ;(mazInputComponent.value?.$el as HTMLElement).querySelector('input')?.dispatchEvent(new Event('input'))
 }
 
-function toggleList(event: Event) {
-  if (listOpened.value) {
-    closeList(event)
-  }
-  else {
-    focusMainInput()
-  }
-}
-
 function focusSearchInputAndSetQuery(q: string) {
   searchQuery.value = q
   ;(searchInputComponent.value?.$el as HTMLElement).querySelector('input')?.focus()
 }
 
 function searchOptionWithQuery(keyPressed: string) {
-  if (keyPressed === 'Backspace' && query.value.length > 0) {
+  if (keyPressed === 'Backspace' && query.value && query.value.length > 0) {
     query.value = query.value.slice(0, -1)
   }
   else {
@@ -467,7 +414,7 @@ function mainInputKeyboardHandler(event: KeyboardEvent) {
 
   if (/^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed)) {
     event.preventDefault()
-    openList(event)
+    popoverComponent.value?.open()
 
     if (props.search) {
       focusSearchInputAndSetQuery(keyPressed)
@@ -486,7 +433,6 @@ function keyboardHandler(event: KeyboardEvent, shouldSelectWithSpace = true) {
 
   const isArrow = ['ArrowUp', 'ArrowDown'].includes(code)
   const shouldSelect = (shouldSelectWithSpace ? ['Enter', 'Space'] : ['Enter']).includes(code)
-  const shouldCloseList = code === 'Escape' && hasListOpened.value
 
   if (isArrow) {
     arrowHandler(event, tmpModelValueIndex.value)
@@ -494,17 +440,15 @@ function keyboardHandler(event: KeyboardEvent, shouldSelectWithSpace = true) {
   else if (shouldSelect) {
     enterHandler(event, tmpModelValueIndex.value)
   }
-  else if (shouldCloseList) {
-    closeList(event)
-  }
 }
 
 function arrowHandler(event: KeyboardEvent, currentIndex?: number) {
   event.preventDefault()
   const code = event.code
 
-  if (!hasListOpened.value)
-    openList(event)
+  if (!isOpen.value) {
+    popoverComponent.value?.open()
+  }
 
   const optionsLength = optionList.value?.length
 
@@ -531,7 +475,7 @@ function arrowHandler(event: KeyboardEvent, currentIndex?: number) {
 }
 
 function enterHandler(event: KeyboardEvent, currentIndex?: number) {
-  if (!hasListOpened.value) {
+  if (!isOpen.value) {
     return
   }
 
@@ -542,7 +486,7 @@ function enterHandler(event: KeyboardEvent, currentIndex?: number) {
     : optionList.value?.[0]
 
   if (!isNullOrUndefined(newValue)) {
-    updateValue(newValue as Record<string, MazInputValue>)
+    updateValue(newValue)
   }
 }
 
@@ -556,14 +500,18 @@ async function scrollToOptionIndex(index?: number) {
   const selectedIndex = index ?? tmpModelValueIndex.value
 
   if (typeof selectedIndex === 'number' && selectedIndex >= 0) {
-    const item = optionListElement.value
-      ?.querySelectorAll('.m-select-list-item')
+    const item = optionListElement.value?.querySelector<HTMLButtonElement>(`.m-select-list-item:nth-child(${selectedIndex + 1})`)
 
-    item?.[selectedIndex]?.scrollIntoView({
-      behavior: 'auto',
-      block: 'nearest',
-      inline: 'start',
-    })
+    if (item && optionListScrollWrapper.value) {
+      const wrapperRect = optionListScrollWrapper.value.getBoundingClientRect()
+      const itemRect = item.getBoundingClientRect()
+      const scrollTop = item.offsetTop - wrapperRect.height / 2 + itemRect.height / 2
+
+      optionListScrollWrapper.value.scrollTo({
+        top: scrollTop,
+        behavior: 'auto',
+      })
+    }
   }
 }
 
@@ -586,7 +534,9 @@ function updateTmpModelValueIndex(inputOption?: MazSelectNormalizedOption) {
 
 function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = true) {
   if (mustCloseList && !props.multiple) {
-    nextTick(() => closeList())
+    nextTick(() => {
+      popoverComponent.value?.close()
+    })
   }
 
   searchQuery.value = ''
@@ -620,145 +570,145 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
 </script>
 
 <template>
-  <div
-    ref="mazSelectElement"
-    v-closable="{
-      exclude: excludedSelectors,
-      handler: closeList,
-    }"
+  <MazPopover
+    ref="popoverComponent"
+    v-model="isOpen"
     class="m-select m-reset-css"
     :class="[
-      { '--is-open': hasListOpened, '--disabled': disabled, '--block': block },
+      { '--is-open': isOpen, '--disabled': disabled, '--block': block },
       props.class,
       `--${size}`,
     ]"
     :style="[style, { '--keyboard-selected-bg-color': keyboardSelectedBgColor, '--selected-bg-color': selectedBgColor, '--selected-text-color': selectedTextColor }]"
+    trigger="click"
+    :offset="0"
+    :disabled
+    :prefer-position="listPosition"
+    fallback-position="top-start"
+    :trap-focus="false"
+    @close="onCloseList"
+    @open="onOpenList"
   >
-    <MazInput
-      :id="instanceId"
-      ref="mazInputComponent"
-      class="m-select-input"
-      v-bind="$attrs"
-      :required="required"
-      :border-active="listOpened"
-      :color="color"
-      :model-value="mazInputValue"
-      :size="size"
-      block
-      :autocomplete
-      :disabled="disabled"
-      @focus.prevent.stop="openList"
-      @blur.prevent.stop="closeList"
-      @click.prevent.stop="openList"
-      @change="emits('change', $event)"
-      @input="emits('input', $event)"
-      @keydown="mainInputKeyboardHandler"
-    >
-      <template #right-icon>
-        <button
-          tabindex="-1"
-          type="button"
-          class="m-select-input__toggle-button maz-custom"
-          :aria-label="`${hasListOpened ? 'collapse' : 'expand'} list of options`"
-          @click.stop="toggleList"
-        >
-          <MazChevronDown class="m-select-chevron maz-text-xl" />
-        </button>
-      </template>
-    </MazInput>
-    <Transition :name="listTransition">
-      <div
-        v-if="hasListOpened"
-        ref="optionListElement"
-        class="m-select-list"
-        :class="{
-          '--top': listPosition.includes('top'),
-          '--left': listPosition.includes('left'),
-          '--right': listPosition.includes('right'),
-          '--bottom': listPosition.includes('bottom'),
-        }"
-        :style="{
-          maxHeight: `${maxListHeight}px`,
-          maxWidth: `${maxListWidth}px`,
-          minHeight: `${minListHeight}px`,
-          minWidth: `${minListWidth}px`,
-        }"
+    <template #trigger>
+      <MazInput
+        :id="instanceId"
+        ref="mazInputComponent"
+        class="m-select-input"
+        v-bind="$attrs"
+        :required="required"
+        :border-active="isOpen"
+        :color="color"
+        :model-value="inputValue"
+        :size="size"
+        block
+        :autocomplete
+        :disabled="disabled"
+        @change="emits('change', $event)"
+        @input="emits('input', $event)"
+        @focus="emits('focus', $event)"
+        @blur="emits('blur', $event)"
+        @keydown="mainInputKeyboardHandler"
       >
-        <MazInput
-          v-if="search"
-          ref="searchInputComponent"
-          v-model="searchQuery"
-          size="sm"
-          :color="color"
-          :placeholder="searchPlaceholder"
-          name="search"
-          inputmode="search"
-          block
-          autocomplete="off"
-          tabindex="-1"
-          class="m-select-list__search-input maz-flex-none"
-          :left-icon="MazMagnifyingGlass"
-          @keydown="keyboardHandler($event, false)"
-          @update:model-value="tmpModelValueIndex = 0"
-        />
-        <!--
+        <template #right-icon>
+          <button
+            tabindex="-1"
+            type="button"
+            class="m-select-input__toggle-button maz-custom"
+            :aria-label="`${isOpen ? 'collapse' : 'expand'} list of options`"
+          >
+            <MazChevronDown class="m-select-chevron maz-text-xl" />
+          </button>
+        </template>
+      </MazInput>
+    </template>
+
+    <div
+      ref="optionListElement"
+      class="m-select-list"
+      :style="{
+        'maxHeight': `${maxListHeight}px`,
+        'maxWidth': `${maxListWidth}px`,
+        'minHeight': `${minListHeight}px`,
+        'minWidth': `${minListWidth}px`,
+        '--keyboard-selected-bg-color': keyboardSelectedBgColor,
+        '--selected-bg-color': selectedBgColor,
+        '--selected-text-color': selectedTextColor,
+      }"
+    >
+      <MazInput
+        v-if="search"
+        ref="searchInputComponent"
+        v-model="searchQuery"
+        size="sm"
+        :color="color"
+        :placeholder="searchPlaceholder"
+        name="search"
+        inputmode="search"
+        block
+        autocomplete="off"
+        tabindex="-1"
+        class="m-select-list__search-input maz-flex-none"
+        :left-icon="MazMagnifyingGlass"
+        @keydown="keyboardHandler($event, false)"
+        @update:model-value="tmpModelValueIndex = 0"
+      />
+      <!--
           @slot No results slot - Displayed when no results corresponding with search query
         -->
-        <slot v-if="!optionList || optionList.length <= 0" name="no-results">
-          <span class="m-select-list__no-results">
-            <MazNoSymbol class="maz-size-6 maz-text-foreground" />
-          </span>
-        </slot>
-        <div v-else class="m-select-list__scroll-wrapper" tabindex="-1">
-          <template v-for="(option, i) in optionList" :key="i">
-            <!--
+      <slot v-if="!optionList || optionList.length <= 0" name="no-results">
+        <span class="m-select-list__no-results">
+          <MazNoSymbol class="maz-size-6 maz-text-foreground" />
+        </span>
+      </slot>
+      <div v-else ref="optionListScrollWrapper" class="m-select-list__scroll-wrapper" tabindex="-1">
+        <template v-for="(option, i) in optionList" :key="i">
+          <!--
               @slot Custom optgroup label
                 @binding {String} label - the label of the optgroup
             -->
-            <slot v-if="option.label && option.isOptGroup" name="optgroup" :label="option.label">
-              <span class="m-select-list-optgroup">
-                {{ option.label }}
-              </span>
-            </slot>
+          <slot v-if="option.label && option.isOptGroup" name="optgroup" :label="option.label">
+            <span class="m-select-list-optgroup">
+              {{ option.label }}
+            </span>
+          </slot>
 
-            <button
-              v-else
+          <button
+            v-else
+            tabindex="-1"
+            type="button"
+            class="m-select-list-item maz-custom maz-flex-none"
+            :class="[
+              {
+                '--is-keyboard-selected': tmpModelValueIndex === i,
+                '--is-selected': isSelectedOption(option),
+                '--is-none-value': isNullOrUndefined(option[optionValueKey]),
+              },
+            ]"
+            :style="itemHeight ? { height: `${itemHeight}px` } : undefined"
+            @click.prevent.stop="updateValue(option, true)"
+          >
+            <MazCheckbox
+              v-if="multiple"
               tabindex="-1"
-              type="button"
-              class="m-select-list-item maz-custom maz-flex-none"
-              :class="[
-                {
-                  '--is-keyboard-selected': tmpModelValueIndex === i,
-                  '--is-selected': isSelectedOption(option),
-                  '--is-none-value': isNullOrUndefined(option[optionValueKey]),
-                },
-              ]"
-              :style="itemHeight ? { height: `${itemHeight}px` } : undefined"
-              @click.prevent.stop="updateValue(option)"
-            >
-              <MazCheckbox
-                v-if="multiple"
-                tabindex="-1"
-                :model-value="isSelectedOption(option)"
-                size="sm"
-                :color="color"
-              />
-              <!--
+              :model-value="isSelectedOption(option)"
+              size="sm"
+              :color="color"
+            />
+            <!--
                 @slot Custom option
                   @binding {Object} option - the option object
                   @binding {Boolean} is-selected - if the option is selected
               -->
-              <slot :option="option" :is-selected="isSelectedOption(option)">
-                <span>
-                  {{ option[optionLabelKey] }}
-                </span>
-              </slot>
-            </button>
-          </template>
-        </div>
+            <slot :option="option" :is-selected="isSelectedOption(option)">
+              <span>
+                {{ option[optionLabelKey] }}
+              </span>
+            </slot>
+          </button>
+        </template>
       </div>
-    </Transition>
-  </div>
+    </div>
+  </MazPopover>
 </template>
 
 <style lang="postcss" scoped>
@@ -825,101 +775,85 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
     }
   }
 
-  .m-select-list {
-    @apply maz-absolute maz-z-default-backdrop maz-flex maz-flex-col maz-gap-1 maz-overflow-hidden maz-rounded maz-bg-surface maz-p-2 maz-drop-shadow-md maz-shadow-elevation;
-
-    &-optgroup {
-      @apply maz-flex-none maz-p-0.5 maz-text-start maz-text-[0.875em] maz-text-muted;
-    }
-
-    min-width: 3.5rem;
-
-    &.--top {
-      @apply maz-bottom-full;
-    }
-
-    &.--left {
-      @apply maz-left-0;
-    }
-
-    &.--right {
-      @apply maz-right-0;
-    }
-
-    &.--bottom {
-      @apply maz-top-full;
-    }
-
-    &__scroll-wrapper {
-      @apply maz-flex maz-flex-1 maz-flex-col maz-gap-1 maz-overflow-auto;
-
-      /* Custom scrollbar for webkit browsers (Chrome, Safari, Edge) */
-      &::-webkit-scrollbar {
-        width: 0.1875rem;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: transparent;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background-color: hsl(var(--maz-background-200));
-        border-radius: 1000px;
-
-        &:hover {
-          background-color: hsl(var(--maz-background-200));
-        }
-      }
-
-      /* Modern CSS for all browsers (fallback) */
-      scrollbar-width: thin;
-      scrollbar-color: hsl(var(--maz-background-200)) transparent;
-    }
-
-    &__no-results {
-      @apply maz-flex maz-p-4 maz-flex-center;
-    }
-
-    &-item {
-      @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-rounded maz-bg-transparent maz-px-3 maz-py-[0.5em] maz-text-start maz-text-[1em] maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-surface-400 hover:maz-bg-surface-400;
-
-      span {
-        @apply maz-truncate;
-      }
-
-      &.--is-keyboard-selected {
-        @apply maz-bg-surface-400 dark:maz-bg-surface-300;
-
-        &.--is-selected {
-          background-color: var(--keyboard-selected-bg-color);
-
-          &:hover {
-            background-color: var(--keyboard-selected-bg-color);
-          }
-        }
-      }
-
-      &.--is-none-value {
-        @apply maz-text-muted;
-      }
-
-      &.--is-selected {
-        color: var(--selected-text-color);
-        background-color: var(--selected-bg-color);
-
-        &:hover {
-          background-color: var(--selected-bg-color);
-        }
-
-        &.--transparent {
-          @apply maz-bg-surface;
-        }
-      }
-    }
-  }
-
   & button.maz-custom {
     @apply maz-cursor-pointer maz-appearance-none maz-border-none;
+  }
+}
+
+.m-select-list {
+  @apply maz-z-default-backdrop maz-flex maz-flex-col maz-gap-1 maz-overflow-hidden maz-rounded maz-bg-surface maz-p-2 maz-drop-shadow-md maz-shadow-elevation;
+
+  &-optgroup {
+    @apply maz-flex-none maz-p-0.5 maz-text-start maz-text-[0.875em] maz-text-muted;
+  }
+
+  min-width: 3.5rem;
+
+  &__scroll-wrapper {
+    @apply maz-flex maz-flex-1 maz-flex-col maz-gap-1 maz-overflow-auto;
+
+    /* Custom scrollbar for webkit browsers (Chrome, Safari, Edge) */
+    &::-webkit-scrollbar {
+      width: 0.1875rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: hsl(var(--maz-background-200));
+      border-radius: 1000px;
+
+      &:hover {
+        background-color: hsl(var(--maz-background-200));
+      }
+    }
+
+    /* Modern CSS for all browsers (fallback) */
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--maz-background-200)) transparent;
+  }
+
+  &__no-results {
+    @apply maz-flex maz-p-4 maz-flex-center;
+  }
+
+  &-item {
+    @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-rounded maz-bg-transparent maz-px-3 maz-py-2 maz-text-start maz-text-base maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-surface-400 hover:maz-bg-surface-400;
+
+    span {
+      @apply maz-truncate;
+    }
+
+    &.--is-keyboard-selected {
+      @apply maz-bg-surface-400 dark:maz-bg-surface-300;
+
+      &.--is-selected {
+        background-color: var(--keyboard-selected-bg-color);
+
+        &:hover {
+          background-color: var(--keyboard-selected-bg-color);
+        }
+      }
+    }
+
+    &.--is-none-value {
+      @apply maz-text-muted;
+    }
+
+    &.--is-selected {
+      color: var(--selected-text-color);
+      background-color: var(--selected-bg-color);
+
+      &:hover {
+        background-color: var(--selected-bg-color);
+      }
+
+      &.--transparent {
+        @apply maz-bg-surface;
+      }
+    }
   }
 }
 </style>
