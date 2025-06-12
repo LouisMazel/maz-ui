@@ -8,7 +8,7 @@ export interface MazBadgeProps {
   color?: MazBadgeColor
   size?: string
   nowrap?: boolean
-  outline?: boolean
+  outlined?: boolean
   pastel?: boolean
   /**
    * Size radius of the component's border
@@ -21,7 +21,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
   color: 'primary',
   size: '0.8em',
   nowrap: false,
-  outline: false,
+  outlined: false,
   pastel: false,
   roundedSize: 'md',
 })
@@ -32,7 +32,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
     class="m-badge m-reset-css"
     :class="[
       `--${color}`,
-      { '--outline': outline, '--pastel': pastel, '--nowrap': nowrap },
+      { '--outlined': outlined, '--pastel': pastel, '--nowrap': nowrap },
       `--rounded-${roundedSize}`,
     ]"
     :style="{ fontSize: size }"
@@ -77,8 +77,8 @@ withDefaults(defineProps<MazBadgeProps>(), {
   &.--primary {
     @apply maz-border-primary maz-bg-primary maz-text-primary-foreground;
 
-    &.--outline {
-      @apply maz-border-primary maz-bg-primary/5 maz-text-primary;
+    &.--outlined {
+      @apply maz-border-primary maz-bg-transparent maz-text-primary;
     }
 
     &.--pastel {
@@ -89,8 +89,8 @@ withDefaults(defineProps<MazBadgeProps>(), {
   &.--info {
     @apply maz-border-info maz-bg-info maz-text-info-foreground;
 
-    &.--outline {
-      @apply maz-border-info maz-bg-info/5 maz-text-info;
+    &.--outlined {
+      @apply maz-border-info maz-bg-transparent maz-text-info;
     }
 
     &.--pastel {
@@ -101,8 +101,8 @@ withDefaults(defineProps<MazBadgeProps>(), {
   &.--secondary {
     @apply maz-border-secondary maz-bg-secondary maz-text-secondary-foreground;
 
-    &.--outline {
-      @apply maz-border-secondary maz-bg-secondary/5 maz-text-secondary;
+    &.--outlined {
+      @apply maz-border-secondary maz-bg-transparent maz-text-secondary;
     }
 
     &.--pastel {
@@ -113,8 +113,8 @@ withDefaults(defineProps<MazBadgeProps>(), {
   &.--destructive {
     @apply maz-border-destructive maz-bg-destructive maz-text-destructive-foreground;
 
-    &.--outline {
-      @apply maz-border-destructive maz-bg-destructive/5 maz-text-destructive;
+    &.--outlined {
+      @apply maz-border-destructive maz-bg-transparent maz-text-destructive;
     }
 
     &.--pastel {
@@ -125,8 +125,8 @@ withDefaults(defineProps<MazBadgeProps>(), {
   &.--warning {
     @apply maz-border-warning maz-bg-warning maz-text-warning-foreground;
 
-    &.--outline {
-      @apply maz-border-warning maz-bg-warning/5 maz-text-warning;
+    &.--outlined {
+      @apply maz-border-warning maz-bg-transparent maz-text-warning;
     }
 
     &.--pastel {
@@ -137,8 +137,8 @@ withDefaults(defineProps<MazBadgeProps>(), {
   &.--success {
     @apply maz-border-success maz-bg-success maz-text-success-foreground;
 
-    &.--outline {
-      @apply maz-border-success maz-bg-success/5 maz-text-success;
+    &.--outlined {
+      @apply maz-border-success maz-bg-transparent maz-text-success;
     }
 
     &.--pastel {
@@ -149,8 +149,8 @@ withDefaults(defineProps<MazBadgeProps>(), {
   &.--contrast {
     @apply maz-border-contrast maz-bg-contrast maz-text-contrast-foreground;
 
-    &.--outline {
-      @apply maz-border-contrast maz-bg-contrast/5 maz-text-contrast;
+    &.--outlined {
+      @apply maz-border-contrast maz-bg-transparent maz-text-contrast;
     }
 
     &.--pastel {
@@ -161,8 +161,8 @@ withDefaults(defineProps<MazBadgeProps>(), {
   &.--accent {
     @apply maz-border-accent maz-bg-accent maz-text-accent-foreground;
 
-    &.--outline {
-      @apply maz-border-accent maz-bg-accent/5 maz-text-accent;
+    &.--outlined {
+      @apply maz-border-accent maz-bg-transparent maz-text-accent;
     }
 
     &.--pastel {
