@@ -26,10 +26,11 @@ export interface ThemeColors {
   'shadow': HSL
 }
 
-export interface ThemeAppearance {
+export interface ThemeFoundation {
+  'base-font-size'?: SizeUnit
   'radius': SizeUnit
   'border-width': SizeUnit
-  'font-family': string
+  'font-family'?: string
 }
 
 export interface ThemePresetOverrides {
@@ -38,11 +39,21 @@ export interface ThemePresetOverrides {
    * @default undefined
    */
   name?: string
+
+  /**
+   * Theme colors
+   * @default undefined
+   */
   colors?: {
     light?: Partial<ThemeColors>
     dark?: Partial<ThemeColors>
   }
-  appearance?: Partial<ThemeAppearance>
+
+  /**
+   * Theme foundation
+   * @default undefined
+   */
+  foundation?: Partial<ThemeFoundation>
 }
 
 export interface ThemePreset {
@@ -54,7 +65,7 @@ export interface ThemePreset {
     light: ThemeColors
     dark: ThemeColors
   }
-  appearance: ThemeAppearance
+  foundation: ThemeFoundation
 }
 
 export interface ThemeConfig {
