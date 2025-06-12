@@ -24,7 +24,7 @@ const emits = defineEmits<
 const DEFAULT_BUTTONS_PROPS: Partial<MazBtnProps> = {
   size: 'md',
   color: 'contrast',
-  outline: true,
+  outlined: true,
   fab: true,
 }
 
@@ -189,7 +189,7 @@ function setPageNumber(page: number) {
             v-bind="{
               ...buttonsPropsMerged,
               color: page.isActive ? activeColor : buttonsPropsMerged.color,
-              outline: page.isActive ? false : buttonsPropsMerged.outline,
+              outlined: page.isActive ? false : buttonsPropsMerged.outlined,
             }"
             :size="size"
             :aria-label="`Page ${page.number}`"

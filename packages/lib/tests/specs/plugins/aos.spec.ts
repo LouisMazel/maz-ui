@@ -1,15 +1,15 @@
 import type { AosOptions } from '@plugins/aos'
 import type { App } from 'vue'
 import type { Router } from 'vue-router'
-import { isClient } from '@helpers/isClient'
-import { sleep } from '@helpers/sleep'
-import { AosHandler, getInstance, plugin } from '@plugins/aos'
+import { AosHandler, AosPlugin, getAosInstance } from '@plugins/aos'
+import { isClient } from '@utils/isClient'
+import { sleep } from '@utils/sleep'
 
 // Mock dependencies
-vi.mock('@helpers/sleep', () => ({
+vi.mock('@utils/sleep', () => ({
   sleep: vi.fn(),
 }))
-vi.mock('@helpers/isClient', () => ({
+vi.mock('@utils/isClient', () => ({
   isClient: vi.fn(() => true),
 }))
 
@@ -173,7 +173,7 @@ describe('given plugin install function', () => {
   describe('when installing with options and router', () => {
     it('then it should provide aos instance and setup router hook', () => {
       vi.mocked(isClient).mockReturnValue(true)
-      plugin.install(app, { router })
+      AosPlugin.install(app, { router })
 
       expect(app.provide).toHaveBeenCalledWith('aos', expect.any(AosHandler))
       expect(router.afterEach).toHaveBeenCalled()
@@ -186,7 +186,7 @@ describe('given plugin install function', () => {
       const instance = new AosHandler()
       const runAnimationsSpy = vi.spyOn(instance, 'runAnimations')
 
-      plugin.install(app, {})
+      AosPlugin.install(app, {})
 
       expect(runAnimationsSpy).not.toHaveBeenCalled()
     })
@@ -197,7 +197,7 @@ describe('given getInstance function', () => {
   it('then it should return the aos instance', () => {
     const instance = new AosHandler()
 
-    const result = getInstance()
+    const result = getAosInstance()
 
     expect(result).toStrictEqual(instance)
   })

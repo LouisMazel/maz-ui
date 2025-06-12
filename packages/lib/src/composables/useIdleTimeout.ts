@@ -1,8 +1,8 @@
-import type { IdleTimeoutCallback, IdleTimeoutOptions } from '../helpers/idleTimeout'
+import type { IdleTimeoutCallback, IdleTimeoutOptions } from '../utils/idleTimeout'
 import {
   IdleTimeout,
 
-} from '../helpers/idleTimeout'
+} from '../utils/idleTimeout'
 
 export function useIdleTimeout({
   callback,

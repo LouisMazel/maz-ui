@@ -469,7 +469,7 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
       position="right"
     >
       <template #trigger>
-        <MazIcon name="information-circle" class="maz-cursor-help maz-text-info" />
+        <MazInformationCircle class="maz-cursor-help maz-text-info maz-text-xl" />
       </template>
       <div class="maz-p-2 maz-max-w-48">
         <p class="maz-text-xs">This tooltip has a 500ms delay before showing</p>
@@ -1016,6 +1016,7 @@ MazPopover follows WAI-ARIA guidelines:
 <script setup>
 import { ref, reactive } from 'vue'
 import MazPopover from 'maz-ui/src/components/MazPopover.vue'
+import { MazInformationCircle } from '@maz-ui/icons/src/index.js'
 
 const isOpen = ref(false)
 const events = ref([])

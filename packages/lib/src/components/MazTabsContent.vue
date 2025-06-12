@@ -2,7 +2,7 @@
 import type { MazTabsProvide } from './MazTabs.vue'
 import { ref, watch } from 'vue'
 import { useInjectStrict } from '../composables/useInjectStrict'
-import { debounce } from '../helpers/debounce'
+import { debounce } from '../utils/debounce'
 
 const hideOverflow = ref(false)
 

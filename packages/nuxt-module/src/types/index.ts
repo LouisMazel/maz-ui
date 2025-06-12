@@ -2,7 +2,7 @@ import type { VLazyImgOptions, VTooltipOptions, VFullscreenImgOptions } from 'ma
 import type { AosOptions, DialogOptions, MazUiPluginOptions, ToasterOptions } from 'maz-ui/plugins'
 import type { ThemePreset } from '@maz-ui/themes'
 
-export type ThemePresetName = 'mazUi' | 'ocean' | 'pristine'
+export type ThemePresetName = 'mazUi' | 'ocean' | 'pristine' | 'obsidian'
 
 export interface MazUiNuxtThemeOptions extends Omit<MazUiPluginOptions, 'preset'> {
   /**

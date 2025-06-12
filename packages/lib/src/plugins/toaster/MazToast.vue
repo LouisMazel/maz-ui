@@ -401,11 +401,11 @@ onMounted(() => {
   }
 
   &__message {
-    @apply maz-m-0 maz-text-start maz-font-medium maz-flex-1 maz-py-3 maz-text-sm;
+    @apply maz-m-0 maz-text-start maz-font-medium maz-flex-1 maz-py-3;
   }
 
   &__button {
-    @apply maz-relative maz-flex maz-w-full maz-items-center maz-gap-1 maz-self-center maz-rounded maz-pl-2 maz-pr-2 maz-shadow-md maz-transition maz-duration-300 maz-ease-in-out maz-overflow-hidden maz-border maz-backdrop-blur-lg;
+    @apply maz-relative maz-flex maz-w-full maz-items-center maz-gap-2 maz-self-center maz-rounded maz-pl-2 maz-pr-2 maz-shadow-md maz-transition maz-duration-300 maz-ease-in-out maz-overflow-hidden maz-border maz-backdrop-blur-lg;
   }
 
   &__close {

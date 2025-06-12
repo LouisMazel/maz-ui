@@ -1,5 +1,4 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "esnext",
     "jsx": "preserve",
@@ -16,6 +15,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
+  "references": [
+    { "path": "../../packages/lib" }
+  ],
   "include": [
     "docs/.vitepress/**/*",
     "types"

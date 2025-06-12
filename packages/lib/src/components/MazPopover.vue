@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { HTMLAttributes, StyleValue } from 'vue'
+import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
 import {
   computed,
@@ -8,6 +8,7 @@ import {
   onUnmounted,
   ref,
   useAttrs,
+  useTemplateRef,
   watch,
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
@@ -31,15 +32,20 @@ const {
   disabled = false,
   offset = 8,
   delay = 0,
+  hoverDelay = 200,
   transition = 'maz-popover',
   teleportTo = 'body',
   closeOnClickOutside = true,
   closeOnEscapeKey = true,
   persistent = false,
   panelStyle,
-  color = 'contrast',
+  color = 'default',
   overlayClass,
   panelClass,
+  preferPosition,
+  fallbackPosition,
+  trapFocus = true,
+  keepOpenOnHover = false,
 } = defineProps<MazPopoverProps>()
 const emits = defineEmits<{
   /**
@@ -61,6 +67,7 @@ const emits = defineEmits<{
    */
   'toggle': [value: boolean]
 }>()
+
 export type PopoverPosition = 'auto' | 'top' | 'bottom' | 'left' | 'right' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end'
 export type PopoverTrigger = 'click' | 'hover' | 'manual'
 export type PopoverRole = 'dialog' | 'tooltip'
@@ -80,6 +87,23 @@ export interface MazPopoverProps {
    * @description Position of the popover relative to trigger
    */
   position?: PopoverPosition
+
+  /**
+   * Preferred position of the popover relative to trigger when auto position is used
+   * @values auto, top, bottom, left, right, top-start, top-end, bottom-start, bottom-end, left-start, left-end, right-start, right-end
+   * @default 'bottom-start'
+   * @description Preferred position of the popover relative to trigger
+   */
+  preferPosition?: PopoverPosition
+
+  /**
+   * Fallback position of the popover relative to trigger when prefer position is not visible
+   * @values auto, top, bottom, left, right, top-start, top-end, bottom-start, bottom-end, left-start, left-end, right-start, right-end
+   * @default auto
+   * @description Fallback position of the popover relative to trigger
+   */
+  fallbackPosition?: PopoverPosition
+
   /**
    * How the popover is triggered
    * @values click, hover, manual
@@ -111,6 +135,11 @@ export interface MazPopoverProps {
    */
   delay?: number
   /**
+   * Delay before closing on hover in milliseconds
+   * @default 150
+   */
+  hoverDelay?: number
+  /**
    * CSS transition name for animations
    * @default maz-popover
    */
@@ -134,7 +163,7 @@ export interface MazPopoverProps {
    * Inline styles for the popover panel
    * @default undefined
    */
-  panelStyle?: StyleValue
+  panelStyle?: HTMLAttributes['style']
   /**
    * Close popover when clicking outside
    * @default true
@@ -171,6 +200,16 @@ export interface MazPopoverProps {
    * @default contrast
    */
   color?: MazColor | 'default'
+  /**
+   * Trap focus inside the popover
+   * @default true
+   */
+  trapFocus?: boolean
+  /**
+   * Keep popover open when hovering over the panel
+   * @default false
+   */
+  keepOpenOnHover?: boolean
 }
 
 const triggerId = useInstanceUniqId({
@@ -180,10 +219,10 @@ const triggerId = useInstanceUniqId({
 
 const attrs = useAttrs()
 
-const triggerElement = ref<HTMLElement>()
-const panelElement = ref<HTMLElement>()
+const triggerElement = useTemplateRef<HTMLElement>('trigger')
+const panelElement = useTemplateRef<HTMLElement>('panel')
 const isOpen = ref(modelValue)
-const computedPosition = ref<PopoverPosition>(position)
+const computedPosition = ref<Omit<PopoverPosition, 'auto'>>(position)
 
 let openTimeout: NodeJS.Timeout | null = null
 let closeTimeout: NodeJS.Timeout | null = null
@@ -191,11 +230,9 @@ let initialFocusElement: HTMLElement | null = null
 
 const panelId = computed(() => `${triggerId.value}-panel`)
 
-const panelStyles = ref<StyleValue>()
+const panelStyles = ref<HTMLAttributes['style']>()
 
-const rootStyles = computed(() => {
-  return attrs.style as StyleValue
-})
+const rootStyles = computed(() => attrs.style as HTMLAttributes['style'])
 
 const triggerEvents = computed(() => {
   if (disabled || trigger === 'manual')
@@ -204,7 +241,10 @@ const triggerEvents = computed(() => {
   const events: Record<string, () => void> = {}
 
   if (trigger === 'hover') {
-    events.onMouseenter = open
+    events.onMouseenter = () => {
+      clearCloseTimeout()
+      open()
+    }
     events.onMouseleave = close
   }
 
@@ -220,8 +260,16 @@ const panelEvents = computed(() => {
     return {}
 
   return {
-    onMouseenter: () => clearCloseTimeout(),
-    onMouseleave: close,
+    onMouseenter: () => {
+      if (keepOpenOnHover) {
+        clearCloseTimeout()
+      }
+    },
+    onMouseleave: () => {
+      if (keepOpenOnHover) {
+        close()
+      }
+    },
   }
 })
 
@@ -259,6 +307,11 @@ function close() {
       setOpen(false)
     }, delay)
   }
+  else if (trigger === 'hover' && keepOpenOnHover) {
+    closeTimeout = setTimeout(() => {
+      setOpen(false)
+    }, hoverDelay)
+  }
   else {
     setOpen(false)
   }
@@ -290,7 +343,9 @@ function setOpen(value: boolean) {
   }
   else {
     emits('close')
-    restoreFocus()
+    if (trapFocus) {
+      restoreFocus()
+    }
   }
 }
 
@@ -321,10 +376,13 @@ function updatePosition() {
   const triggerRect = trigger.getBoundingClientRect()
   const panelRect = panel.getBoundingClientRect()
 
-  let newPosition = position
+  let newPosition: Omit<PopoverPosition, 'auto'> | undefined
 
   if (position === 'auto') {
     newPosition = getBestPosition(triggerRect, viewport)
+  }
+  else {
+    newPosition = position
   }
 
   const coordinates = calculatePosition(newPosition, triggerRect, panelRect, scrollTop, scrollLeft)
@@ -337,13 +395,50 @@ function updatePosition() {
     ...(panelStyle as Record<string, string> || {}),
   }
 
-  computedPosition.value = position
+  computedPosition.value = newPosition
+}
+
+function getIsVisible(coords: { left: number, top: number }, panelRect: DOMRect, viewport: { width: number, height: number }, scrollTop: number, scrollLeft: number) {
+  return coords.left >= scrollLeft
+    && coords.left + panelRect.width <= scrollLeft + viewport.width
+    && coords.top >= scrollTop
+    && coords.top + panelRect.height <= scrollTop + viewport.height
+}
+
+function isPositionVisible(position: PopoverPosition, triggerRect: DOMRect, panelRect: DOMRect, viewport: { width: number, height: number }, scrollTop: number, scrollLeft: number) {
+  const coords = calculatePosition(position, triggerRect, panelRect, scrollTop, scrollLeft)
+  return getIsVisible(coords, panelRect, viewport, scrollTop, scrollLeft)
+}
+
+function getValidPositions(positions: PopoverPosition[], triggerRect: DOMRect, panelRect: DOMRect, viewport: { width: number, height: number }, scrollTop: number, scrollLeft: number) {
+  const spaces = {
+    bottom: viewport.height + scrollTop - triggerRect.bottom,
+    top: triggerRect.top - scrollTop,
+    right: viewport.width + scrollLeft - triggerRect.right,
+    left: triggerRect.left - scrollLeft,
+  }
+  return positions.reduce<{ position: PopoverPosition, score: number }[]>((acc, pos) => {
+    if (isPositionVisible(pos, triggerRect, panelRect, viewport, scrollTop, scrollLeft)) {
+      let positionBonus = 0
+      if (pos === 'bottom')
+        positionBonus = 1000
+      else if (pos === 'top')
+        positionBonus = 800
+      else if (pos === 'right')
+        positionBonus = 600
+      else if (pos === 'left')
+        positionBonus = 400
+      const score = spaces[pos as keyof typeof spaces] + positionBonus
+      acc.push({ position: pos, score })
+    }
+    return acc
+  }, [])
 }
 
 function getBestPosition(
   triggerRect: DOMRect,
   viewport: { width: number, height: number },
-): PopoverPosition {
+): Omit<PopoverPosition, 'auto'> {
   if (!panelElement.value)
     return 'bottom'
 
@@ -351,46 +446,16 @@ function getBestPosition(
   const scrollTop = window.scrollY || document.documentElement.scrollTop
   const scrollLeft = window.scrollX || document.documentElement.scrollLeft
 
-  const positions: PopoverPosition[] = ['bottom', 'top', 'right', 'left']
-  const validPositions: { position: PopoverPosition, score: number }[] = []
-
-  for (const pos of positions) {
-    const coords = calculatePosition(pos, triggerRect, panelRect, scrollTop, scrollLeft)
-
-    const isVisible
-      = coords.left >= scrollLeft
-        && coords.left + panelRect.width <= scrollLeft + viewport.width
-        && coords.top >= scrollTop
-        && coords.top + panelRect.height <= scrollTop + viewport.height
-
-    if (isVisible) {
-      const spaces = {
-        bottom: viewport.height + scrollTop - triggerRect.bottom,
-        top: triggerRect.top - scrollTop,
-        right: viewport.width + scrollLeft - triggerRect.right,
-        left: triggerRect.left - scrollLeft,
-      }
-
-      let positionBonus = 0
-
-      if (pos === 'bottom') {
-        positionBonus = 1000
-      }
-      else if (pos === 'top') {
-        positionBonus = 800
-      }
-      else if (pos === 'right') {
-        positionBonus = 600
-      }
-      else if (pos === 'left') {
-        positionBonus = 400
-      }
-
-      const score = spaces[pos as keyof typeof spaces] + positionBonus
-
-      validPositions.push({ position: pos, score })
-    }
+  if (preferPosition && isPositionVisible(preferPosition, triggerRect, panelRect, viewport, scrollTop, scrollLeft)) {
+    return preferPosition
   }
+
+  if (fallbackPosition && isPositionVisible(fallbackPosition, triggerRect, panelRect, viewport, scrollTop, scrollLeft)) {
+    return fallbackPosition
+  }
+
+  const positions: PopoverPosition[] = ['bottom', 'top', 'right', 'left']
+  const validPositions = getValidPositions(positions, triggerRect, panelRect, viewport, scrollTop, scrollLeft)
 
   if (validPositions.length === 0) {
     const spaces = {
@@ -399,23 +464,20 @@ function getBestPosition(
       left: triggerRect.left,
       right: viewport.width - triggerRect.right,
     }
-
     const sortedPositions = positions.sort((a, b) => {
       const spaceA = spaces[a as keyof typeof spaces]
       const spaceB = spaces[b as keyof typeof spaces]
       return spaceB - spaceA
     })
-
     return sortedPositions[0]
   }
 
-  validPositions.sort((a, b) => b.score - a.score)
-  return validPositions[0].position
+  return validPositions.sort((a, b) => b.score - a.score)[0].position
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity, complexity
 function calculatePosition(
-  position: PopoverPosition,
+  position: Omit<PopoverPosition, 'auto'>,
   triggerRect: DOMRect,
   panelRect: DOMRect,
   scrollTop: number,
@@ -424,13 +486,11 @@ function calculatePosition(
   let top = 0
   let left = 0
 
-  const newOffset = offset
-
   switch (position) {
     case 'top':
     case 'top-start':
     case 'top-end':
-      top = triggerRect.top + scrollTop - panelRect.height - newOffset
+      top = triggerRect.top + scrollTop - panelRect.height - offset
       if (position === 'top-start') {
         left = triggerRect.left + scrollLeft
       }
@@ -445,7 +505,7 @@ function calculatePosition(
     case 'bottom':
     case 'bottom-start':
     case 'bottom-end':
-      top = triggerRect.bottom + scrollTop + newOffset
+      top = triggerRect.bottom + scrollTop + offset
       if (position === 'bottom-start') {
         left = triggerRect.left + scrollLeft
       }
@@ -460,7 +520,7 @@ function calculatePosition(
     case 'left':
     case 'left-start':
     case 'left-end':
-      left = triggerRect.left + scrollLeft - panelRect.width - newOffset
+      left = triggerRect.left + scrollLeft - panelRect.width - offset
       if (position === 'left-start') {
         top = triggerRect.top + scrollTop
       }
@@ -475,7 +535,7 @@ function calculatePosition(
     case 'right':
     case 'right-start':
     case 'right-end':
-      left = triggerRect.right + scrollLeft + newOffset
+      left = triggerRect.right + scrollLeft + offset
       if (position === 'right-start') {
         top = triggerRect.top + scrollTop
       }
@@ -492,18 +552,18 @@ function calculatePosition(
 }
 
 function setupFocusTrap() {
-  if (role === 'tooltip' || trigger === 'hover')
+  if (role === 'tooltip' || trigger === 'hover' || !trapFocus)
     return
 
   initialFocusElement = document.activeElement as HTMLElement
 
   nextTick(() => {
-    const focusableElements = panelElement.value?.querySelectorAll(
+    const focusableElements = panelElement.value?.querySelectorAll<HTMLElement>(
       'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select, [tabindex]:not([tabindex="-1"])',
     )
 
     if (focusableElements && focusableElements.length > 0) {
-      (focusableElements[0] as HTMLElement).focus({ preventScroll: true })
+      focusableElements[0].focus({ preventScroll: true })
     }
     else {
       panelElement.value?.focus({ preventScroll: true })
@@ -512,7 +572,7 @@ function setupFocusTrap() {
 }
 
 function restoreFocus() {
-  if (role === 'tooltip' || trigger === 'hover')
+  if (role === 'tooltip' || trigger === 'hover' || !trapFocus)
     return
 
   nextTick(() => {
@@ -530,11 +590,11 @@ function onKeydown(event: KeyboardEvent) {
   }
 
   if (role === 'dialog' && event.key === 'Tab') {
-    trapFocus(event)
+    handleTrapFocus(event)
   }
 }
 
-function trapFocus(event: KeyboardEvent) {
+function handleTrapFocus(event: KeyboardEvent) {
   if (!panelElement.value)
     return
 
@@ -655,7 +715,7 @@ defineExpose({
   >
     <div
       :id="triggerId"
-      ref="triggerElement"
+      ref="trigger"
       class="m-popover-trigger"
       :aria-expanded="role === 'dialog' ? isOpen : undefined"
       :aria-haspopup="role === 'dialog' ? 'dialog' : undefined"
@@ -681,7 +741,7 @@ defineExpose({
         <div
           v-if="isOpen"
           :id="panelId"
-          ref="panelElement"
+          ref="panel"
           v-click-outside="onClickOutside"
           :role
           :aria-labelledby="role === 'dialog' ? ariaLabelledby || triggerId : undefined"
@@ -721,7 +781,7 @@ defineExpose({
 }
 
 .m-popover-panel {
-  @apply maz-absolute maz-outline-none maz-z-default-backdrop maz-max-w-xs maz-rounded maz-shadow-lg maz-border;
+  @apply maz-absolute maz-outline-none maz-z-20 maz-max-w-xs maz-rounded maz-shadow-lg maz-border;
 
   /* Default color */
   &.--default {

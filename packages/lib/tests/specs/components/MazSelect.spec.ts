@@ -32,7 +32,7 @@ describe('components/MazSelect.vue', () => {
   })
 
   it('should have an uniq id', () => {
-    expect(wrapper.vm.instanceId).toBe('MazSelect-v-0')
+    expect(wrapper.vm.instanceId).toBe('MazSelect-v-1')
   })
 
   it('should find the options on search', () => {

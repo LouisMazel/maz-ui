@@ -1,12 +1,12 @@
 /* eslint-disable ts/ban-ts-comment */
 
-import type { UserVisibilyCallback, UserVisibilyOptions } from '@helpers/userVisibility'
+import type { UserVisibilyCallback, UserVisibilyOptions } from '@utils/userVisibility'
 
-import { sleep } from '@helpers/sleep'
+import { sleep } from '@utils/sleep'
 import {
   UserVisibility,
 
-} from '@helpers/userVisibility'
+} from '@utils/userVisibility'
 import { documentEmitVisibilityState } from './../../helpers/document-event'
 
 const DEFAULT_TIMEOUT = 300
@@ -29,7 +29,7 @@ afterAll(() => {
   instance = undefined
 })
 
-describe('@helpers/user-visibility.ts', () => {
+describe('@utils/user-visibility.ts', () => {
   describe('given app want trigger user idle', () => {
     describe('when instance is launch', () => {
       it('then instance is IdleTimeout', async () => {

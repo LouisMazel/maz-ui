@@ -216,7 +216,7 @@ const iconClassSize = computed(() => {
   }
 
   &-loader-container {
-    @apply maz-absolute maz-inset-0 maz-flex maz-flex-center maz-bg-surface-400;
+    @apply maz-absolute maz-inset-0 maz-flex maz-flex-center maz-bg-overlay/30 maz-backdrop-blur-sm;
   }
 
   &-loader {
@@ -373,8 +373,8 @@ const iconClassSize = computed(() => {
   &.--transparent {
     @apply maz-bg-transparent;
 
-    &:not(:disabled):hover {
-      @apply maz-bg-[#000]/[0.08] dark:maz-bg-[#FFF]/[0.08];
+    &:not(:disabled) {
+      @apply hover:maz-bg-surface-600/50 dark:hover:maz-bg-surface-400/50;
     }
   }
 

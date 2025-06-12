@@ -1,10 +1,8 @@
 /* eslint-disable regexp/no-unused-capturing-group */
 
 import type { ComponentResolver } from 'unplugin-vue-components/types'
-import * as MazIcons from '@maz-ui/icons'
+import { iconsList } from '@maz-ui/icons/icon-list'
 import { pascalCase } from '../formatters/pascalCase'
-
-const icons = Object.keys(MazIcons)
 
 /**
  * Resolver for Maz-UI (components)
@@ -20,7 +18,7 @@ export function MazComponentsResolver(options?: { devMode?: boolean }): Componen
       const base = devMode ? 'maz-ui/src/components' : 'maz-ui/components'
       const extension = devMode ? '.vue' : ''
 
-      if (/^(Maz[A-Z])/.test(name) && !icons.includes(name)) {
+      if (/^(Maz[A-Z])/.test(name) && !iconsList.includes(name as any)) {
         return { from: `${base}/${name}${extension}` }
       }
       else if (/^(maz-[a-z])/.test(name)) {
