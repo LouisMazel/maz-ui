@@ -3,11 +3,10 @@ import type { CountryCode } from 'libphonenumber-js'
 import type { MazInputProps } from '../MazInput.vue'
 import type { MazInputPhoneNumberInjectedData } from '../MazInputPhoneNumber.vue'
 import type { MazInputPhoneNumberTranslations } from './types'
-import { computed, onMounted, ref } from 'vue'
+import { type ComponentPublicInstance, computed, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useInjectStrict } from '../../composables/useInjectStrict'
 import MazInput from '../MazInput.vue'
 import { useLibphonenumber } from './useLibphonenumber'
-import { useMazInputPhoneNumber } from './useMazInputPhoneNumber'
 
 type PhoneInputProps = Omit<MazInputProps, 'modelValue'> & {
   id: string
@@ -20,23 +19,33 @@ type PhoneInputProps = Omit<MazInputProps, 'modelValue'> & {
 const { placeholder, label, example, locales, autoFormat, name, inputmode, autocomplete } = defineProps<PhoneInputProps>()
 
 const { getPhoneNumberExample, getAsYouTypeFormat, loadExamples } = useLibphonenumber()
-const { sanitizePhoneNumber } = useMazInputPhoneNumber()
 const { results, selectedCountry } = useInjectStrict<MazInputPhoneNumberInjectedData>('data')
 
 const modelValue = defineModel<string | undefined | null>()
 
+function extractRawDigits(input?: string | undefined | null): string {
+  if (!input)
+    return ''
+  return input.replace(/\D/g, '')
+}
+
+const rawValue = ref<string | undefined | null>(extractRawDigits(modelValue.value))
+const inputFocused = ref(false)
+
 const asYouTypeFormatted = computed(() => {
-  const phoneNumberToFormat = results.value.isValid ? results.value.formatNational : modelValue.value
-  return getAsYouTypeFormat(selectedCountry.value, phoneNumberToFormat) || phoneNumberToFormat
+  const phoneNumberToFormat = rawValue.value
+  return getAsYouTypeFormat(selectedCountry.value, rawValue.value) || phoneNumberToFormat
 })
 
-const inputFocused = ref(false)
-const displayedPhoneNumber = computed({
-  get: () => !inputFocused.value && autoFormat ? asYouTypeFormatted.value : modelValue.value,
-  set: (value) => {
-    modelValue.value = sanitizePhoneNumber(value)
-  },
+const displayedPhoneNumber = computed(() => {
+  return autoFormat ? asYouTypeFormatted.value : rawValue.value
 })
+
+function handleInput(value: string | undefined | null) {
+  const rawDigits = extractRawDigits(value)
+  rawValue.value = rawDigits
+  modelValue.value = rawDigits
+}
 
 function getCountryPhoneNumberExample(selectedCountry?: CountryCode | undefined | null) {
   const example = getPhoneNumberExample(selectedCountry)
@@ -69,13 +78,29 @@ onMounted(() => {
   if (example)
     loadExamples()
 })
+
+watch(() => modelValue.value, (newValue) => {
+  const newRawValue = extractRawDigits(newValue)
+  if (newRawValue !== rawValue.value) {
+    rawValue.value = newRawValue
+  }
+})
+
+const inputRef = useTemplateRef<ComponentPublicInstance>('input')
+
+defineExpose({
+  focus: () => {
+    inputRef.value?.$el.querySelector('input')?.focus()
+  },
+})
 </script>
 
 <template>
   <MazInput
     :id
-    v-model="displayedPhoneNumber"
     v-bind="{ ...$attrs, ...inputProps }"
+    ref="input"
+    :model-value="displayedPhoneNumber"
     :disabled
     :color
     :error
@@ -92,6 +117,7 @@ onMounted(() => {
         '--focused': inputFocused,
       },
     ]"
+    @update:model-value="handleInput"
     @focus="inputFocused = true"
     @blur="inputFocused = false"
   />
