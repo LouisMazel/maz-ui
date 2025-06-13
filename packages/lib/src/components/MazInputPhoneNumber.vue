@@ -4,7 +4,7 @@
  */
 <script lang="ts" setup>
 import type { CountryCode } from 'libphonenumber-js'
-import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
+import type { HTMLAttributes } from 'vue'
 import type { MazInputPhoneNumberTranslations, Results } from './MazInputPhoneNumber/types'
 import type { PopoverPosition } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
@@ -350,7 +350,7 @@ const results = ref<Results>({
   countryCode: props.countryCode,
   phoneNumber: props.modelValue,
 })
-const PhoneInputRef = ref<ComponentPublicInstance>()
+const PhoneInputRef = ref<InstanceType<typeof PhoneInput>>()
 
 /** Logic */
 
@@ -394,13 +394,9 @@ function updateTheResults({
   })
 }
 
-function getPhoneNumberInput() {
-  return PhoneInputRef.value?.$el.querySelector('input') as HTMLInputElement | undefined
-}
-
 async function selectPhoneNumberInput() {
   await nextTick()
-  getPhoneNumberInput()?.select()
+  PhoneInputRef.value?.focus()
 }
 
 function setSelectedCountry(countryCode?: string | undefined | null) {
