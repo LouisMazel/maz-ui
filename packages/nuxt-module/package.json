@@ -39,7 +39,7 @@
     "@nuxt/test-utils": "^3.15.1",
     "defu": "^6.1.4",
     "nuxt": "^3.14.1592",
-    "typescript": "5.6.2",
+    "typescript": "5.8.3",
     "vitest": "^2.1.8"
   },
   "unbuild": {
