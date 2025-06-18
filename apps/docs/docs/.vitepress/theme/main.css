@@ -24,6 +24,14 @@
   --vp-button-brand-active-bg: hsl(var(--maz-primary-600));
 
   --vp-code-font-size: calc(var(--maz-base-font-size) - 2px);
+
+  --vp-code-block-bg: hsl(var(--maz-contrast-500) / 0.9);
+  --vp-code-tab-text-color: hsl(var(--maz-muted));
+  --vp-code-tab-hover-text-color: hsl(var(--maz-contrast-foreground));
+  --vp-code-tab-active-text-color: hsl(var(--maz-primary));
+  --vp-code-tab-divider: hsl(var(--maz-contrast-200));
+  --vp-code-block-color: hsl(var(--maz-contrast-foreground));
+  /* --vp-code-tab-bg: hsl(var(--maz-contrast-600)); */
 }
 
 html {
@@ -41,7 +49,15 @@ html.dark {
   --vp-c-bg-elv: hsl(235deg 16% 12%);
   --vp-c-bg-elv-mute: hsl(var(--maz-background));
   --vp-c-gutter: hsl(var(--maz-border));
-  --vp-c-bg-soft: hsl(var(--maz-background));
+  --vp-c-bg-soft: hsl(var(--maz-background-400) / 0.5);
+  --vp-code-block-bg: hsl(var(--maz-background-600));
+  --vp-code-tab-divider: hsl(var(--maz-background-300));
+  --vp-code-tab-hover-text-color: hsl(var(--maz-background-foreground));
+  --vp-code-block-color: hsl(var(--maz-background-foreground));
+}
+
+.vp-doc blockquote > p:not(:where(.vp-raw, .vp-raw *)) {
+  @apply !maz-text-base;
 }
 
 .text {

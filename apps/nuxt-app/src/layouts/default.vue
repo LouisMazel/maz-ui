@@ -22,7 +22,8 @@
           <MazDropdown
             id="dropdown"
             color="transparent"
-            position="bottom right"
+            prefer-position="bottom"
+            trigger="hover"
           >
             <span class="maz-capitalize">
               {{ colorMode }}

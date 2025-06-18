@@ -1,5 +1,5 @@
 import type { ResolverFunction } from 'unplugin-auto-import/types'
-import { capitalize } from './../formatters/capitalize'
+import { capitalize } from '@maz-ui/utils/src/formatters/capitalize.js'
 
 type Modules = keyof typeof import('maz-ui/src/index.ts')
 type Composables = keyof typeof import('maz-ui/src/composables/index.ts')
@@ -30,12 +30,13 @@ const modulesMap: Record<Modules, true> = {
   capitalize: true,
   checkAvailability: true,
   countryCodeToUnicodeFlag: true,
-  currency: true,
-  date: true,
+  formatCurrency: true,
+  formatDate: true,
   debounce: true,
   isClient: true,
+  isServer: true,
   normalizeString: true,
-  number: true,
+  formatNumber: true,
   sleep: true,
   throttle: true,
   truthyFilter: true,
@@ -66,7 +67,7 @@ export function MazModulesResolver(options?: { devMode?: boolean, prefix?: strin
     const base = devMode ? 'maz-ui/src' : 'maz-ui'
     const extension = devMode ? '/index.ts' : ''
 
-    if (modulesMap[name] === true) {
+    if (modulesMap[name as keyof typeof modulesMap] === true) {
       return {
         from: `${base}${extension}`,
         name,
@@ -74,7 +75,7 @@ export function MazModulesResolver(options?: { devMode?: boolean, prefix?: strin
       }
     }
 
-    if (composablesMap[name] === true) {
+    if (composablesMap[name as keyof typeof composablesMap] === true) {
       return {
         from: `${base}/composables${extension}`,
         name,

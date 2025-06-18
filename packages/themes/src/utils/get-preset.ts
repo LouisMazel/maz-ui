@@ -1,0 +1,34 @@
+import type { MazUiThemeOptions } from '../plugin'
+import type { ThemePreset, ThemePresetOverrides } from '../types'
+
+export function isPresetObject(preset: MazUiThemeOptions['preset'] | ThemePresetOverrides): preset is ThemePreset {
+  return typeof preset === 'object' && !!preset.name
+}
+
+export async function getPreset(preset?: MazUiThemeOptions['preset']) {
+  if (isPresetObject(preset)) {
+    return preset
+  }
+
+  if (preset === 'mazUi' || !preset || preset === 'maz-ui') {
+    const { mazUi } = await import('../presets/mazUi')
+    return mazUi
+  }
+
+  if (preset === 'ocean') {
+    const { ocean } = await import('../presets/ocean')
+    return ocean
+  }
+
+  if (preset === 'pristine') {
+    const { pristine } = await import('../presets/pristine')
+    return pristine
+  }
+
+  if (preset === 'obsidian') {
+    const { obsidian } = await import('../presets/obsidian')
+    return obsidian
+  }
+
+  throw new TypeError(`[@maz-ui/nuxt] Preset ${preset} not found`)
+}

@@ -5,9 +5,9 @@ export default defineNuxtPlugin(() => {
   const waitServer = {
     loaders: { value: [] },
     anyLoading: { value: false },
-    isLoading: () => console.log('[SSR] Is Loading'),
-    stop: () => console.log('[SSR] Stop'),
-    start: () => console.log('[SSR] Start'),
+    isLoading: () => false,
+    stop: () => {},
+    start: () => {},
   } as unknown as WaitHandler
 
   return {

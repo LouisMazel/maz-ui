@@ -32,10 +32,7 @@ jobs:
 
       - name: Build packages
         run: |
-          pnpm -F @maz-ui/cli build &&
-          pnpm -F @maz-ui/icons build &&
-          pnpm -F @maz-ui/themes build &&
-          pnpm -F maz-ui build &&
+          pnpm build:packages
           pnpm -F @maz-ui/nuxt prepare
 
       - name: Run typecheck

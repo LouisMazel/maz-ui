@@ -6,9 +6,8 @@ import { capitalize } from 'maz-ui'
 import type { MazUiNuxtOptions } from './types'
 
 type MazUiComposables = keyof typeof import('maz-ui/composables')
-type ThemeComposables = keyof typeof import('@maz-ui/themes/composables/useTheme')
 
-type Composables = MazUiComposables | ThemeComposables
+type Composables = MazUiComposables | 'useTheme' | 'useTranslations'
 
 declare module '@nuxt/schema' {
   interface NuxtConfig {
@@ -62,7 +61,7 @@ const COMPONENT_NAMES: Omit<Record<ComponentNames, true>, 'useMazDialogPromise'>
   MazLink: true,
   MazLoadingBar: true,
   MazPagination: true,
-  MazPicker: true,
+  MazDatePicker: true,
   MazPullToRefresh: true,
   MazRadio: true,
   MazRadioButtons: true,
@@ -99,6 +98,9 @@ const defaults: Required<MazUiNuxtOptions> = {
     strategy: 'hybrid',
     darkModeStrategy: 'class',
   },
+  translations: {
+    locale: 'en',
+  },
   components: {
     autoImport: true,
   },
@@ -110,6 +112,8 @@ const defaults: Required<MazUiNuxtOptions> = {
     useWait: true,
     useIdleTimeout: true,
     useReadingTime: true,
+    useTranslations: true,
+    useFormField: true,
     useWindowSize: true,
     useBreakpoints: true,
     useUserVisibility: true,
@@ -122,7 +126,7 @@ const defaults: Required<MazUiNuxtOptions> = {
     useInstanceUniqId: true,
     useMountComponent: true,
     useSwipe: true,
-  } satisfies Record<Exclude<Composables, 'useFormField' | '_initThemeState'>, boolean>,
+  } satisfies Record<Composables, true>,
   directives: {
     vZoomImg: true,
     vLazyImg: true,
@@ -175,6 +179,10 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addPlugin(resolve(_dirname, './runtime/plugins/theme'))
     }
 
+    if (moduleOptions.translations !== false) {
+      addPlugin(resolve(_dirname, './runtime/plugins/translations'))
+    }
+
     // Components
     if (moduleOptions.components.autoImport) {
       for (const name of Object.keys(COMPONENT_NAMES)) {
@@ -202,11 +210,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
           : true
 
       if (injectAosCSS) {
-        const aosCssPath
-          = process.env.MAZ_UI_DEV === 'true'
-            ? 'maz-ui/src/plugins/aos/scss/index.scss'
-            : 'maz-ui/aos-styles'
-        nuxt.options.css = [aosCssPath, ...nuxt.options.css]
+        nuxt.options.css = ['maz-ui/aos-styles', ...nuxt.options.css]
       }
     }
 
@@ -342,7 +346,15 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     if (moduleOptions.composables.useTheme) {
       addMazImport({
         name: 'useTheme',
-        path: '@maz-ui/themes/src/composables/useTheme.js',
+        path: '@maz-ui/themes/composables/useTheme',
+        prefix: moduleOptions.general?.autoImportPrefix,
+      })
+    }
+
+    if (moduleOptions.composables.useTranslations) {
+      addMazImport({
+        name: 'useTranslations',
+        path: '@maz-ui/translations',
         prefix: moduleOptions.general?.autoImportPrefix,
       })
     }

@@ -94,13 +94,13 @@ const tableHeaders = [
         class="maz-w-64"
       />
 
-      <MazPicker
+      <MazDatePicker
         v-model="dateRange"
         range
         label="Date Range"
         class="maz-w-64"
         locale="en-US"
-        picker-position="bottom right"
+        picker-position="bottom-end"
         :input-date-style="{
           dateStyle: 'medium',
         }"

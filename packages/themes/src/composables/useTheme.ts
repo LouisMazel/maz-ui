@@ -1,10 +1,11 @@
-import type { ColorMode, ThemePreset, ThemePresetOverrides, ThemeState } from '../types'
+import type { ColorMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
 import { computed, getCurrentInstance, ref, watchEffect } from 'vue'
 import { inject } from 'vue'
 import { generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'
+import { getPreset } from '../utils/get-preset'
 import { mergePresets } from '../utils/preset-merger'
 
-const state = ref<ThemeState | null>(null)
+const state = ref<ThemeState>()
 
 function updateDocumentClass() {
   if (typeof document === 'undefined' || !state.value)
@@ -15,6 +16,13 @@ function updateDocumentClass() {
   }
   else {
     document.documentElement.classList.remove('dark')
+  }
+}
+
+function updateGlobalProperties() {
+  const app = getCurrentInstance()?.appContext.app
+  if (app && state.value) {
+    app.config.globalProperties.$mazThemeState = state.value
   }
 }
 
@@ -97,6 +105,7 @@ export function _initThemeState(initialState: ThemeState) {
   watchEffect(() => {
     if (state.value) {
       updateDocumentClass()
+      updateGlobalProperties()
     }
   })
 }
@@ -111,13 +120,15 @@ const colorMode = computed<ColorMode>({
 const isDark = computed(() => state.value!.isDark)
 const strategy = computed(() => state.value!.strategy)
 
-function updateTheme(preset: ThemePreset | ThemePresetOverrides) {
+async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePresetName) {
   if (!state.value)
     return
 
-  const newPreset = 'name' in preset
-    ? preset as ThemePreset
-    : mergePresets(state.value.currentPreset, preset)
+  const _preset = typeof preset === 'string' ? await getPreset(preset) : preset
+
+  const newPreset = 'name' in _preset && _preset.name !== state.value.currentPreset.name
+    ? _preset as ThemePreset
+    : mergePresets(state.value.currentPreset, _preset)
 
   state.value.currentPreset = newPreset
 
@@ -185,7 +196,7 @@ export function useTheme() {
   }
 
   if (!state.value) {
-    throw new Error('You must install the MazUiPlugin before using useTheme composable')
+    throw new Error('You must install the MazUi or MazUiTheme plugin before using useTheme composable')
   }
 
   return {

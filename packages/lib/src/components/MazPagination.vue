@@ -2,6 +2,7 @@
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazColor, MazSize } from './types'
 import { MazChevronDoubleLeft, MazChevronLeft, MazEllipsisHorizontal } from '@maz-ui/icons'
+import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
 import { computed } from 'vue'
 import MazBtn from './MazBtn.vue'
 
@@ -77,6 +78,8 @@ export interface MazPaginationProps {
   loading?: boolean
 }
 
+const { t } = useTranslations()
+
 const buttonsPropsMerged = computed<MazBtnProps>(() => ({
   ...DEFAULT_BUTTONS_PROPS,
   ...props.buttonProps,
@@ -148,7 +151,7 @@ function setPageNumber(page: number) {
 </script>
 
 <template>
-  <nav class="m-pagination m-reset-css" role="navigation" aria-label="page navigation">
+  <nav class="m-pagination m-reset-css" role="navigation" :aria-label="t('pagination.navAriaLabel')">
     <ul>
       <li>
         <MazBtn
@@ -165,7 +168,9 @@ function setPageNumber(page: number) {
               @slot Accessible text for screen reader of the previous page button
                 @binding {number} page - first page number
             -->
-            <slot name="first-page-sr" :page="1">First Page, page 1</slot>
+            <slot name="first-page-sr" :page="1">
+              {{ t('pagination.screenReader.firstPage', { page: 1 }) }}
+            </slot>
           </span>
           <MazChevronDoubleLeft />
         </MazBtn>
@@ -187,7 +192,7 @@ function setPageNumber(page: number) {
                 @binding {number} page - previous page number
             -->
             <slot name="previous-page-sr" :page="previousPage">
-              Previous Page, page {{ previousPage }}
+              {{ t('pagination.screenReader.previousPage', { page: previousPage }) }}
             </slot>
           </span>
           <MazChevronLeft />
@@ -220,7 +225,9 @@ function setPageNumber(page: number) {
                 @slot Accessible text for screen reader of the current page button
                   @binding {number} page - current page number
               -->
-              <slot name="page-sr" :page="page.number">Page {{ page.number }}</slot>
+              <slot name="page-sr" :page="page.number">
+                {{ t('pagination.screenReader.page', { page: page.number }) }}
+              </slot>
             </span>
             {{ page.number }}
           </MazBtn>
@@ -248,7 +255,9 @@ function setPageNumber(page: number) {
               @slot Accessible text for screen reader of the next page button
                 @binding {number} page - next page number
             -->
-            <slot name="next-page-sr" :page="nextPage">Next Page, page {{ nextPage }}</slot>
+            <slot name="next-page-sr" :page="nextPage">
+              {{ t('pagination.screenReader.nextPage', { page: nextPage }) }}
+            </slot>
           </span>
           <MazChevronLeft class="-maz-rotate-180" />
         </MazBtn>
@@ -269,7 +278,9 @@ function setPageNumber(page: number) {
               @slot Accessible text for screen reader of the last page button
                 @binding {number} page - last page number
             -->
-            <slot name="last-page-sr" :page="totalPages">Last Page, page {{ totalPages }}</slot>
+            <slot name="last-page-sr" :page="totalPages">
+              {{ t('pagination.screenReader.lastPage', { page: totalPages }) }}
+            </slot>
           </span>
           <MazChevronDoubleLeft class="-maz-rotate-180" />
         </MazBtn>

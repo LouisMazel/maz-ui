@@ -1,6 +1,6 @@
 ---
-title: currency
-description: The module currency is a function that formats numbers to currency
+title: formatCurrency
+description: The module formatCurrency is a function that formats numbers to currency with the native api [Intl.NumberFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) from browsers and Node.js
 ---
 
 # {{ $frontmatter.title }}
@@ -24,13 +24,13 @@ Enter only numbers
 
 ```vue
 <script lang="ts" setup>
-import { currency } from 'maz-ui'
+import { formatCurrency } from 'maz-ui'
 import { computed, ref } from 'vue'
 
 const numberValue = ref(69)
 
 const priceFormatted = computed(() =>
-  currency(numberValue.value, 'fr-FR', { currency: 'EUR' }),
+  formatCurrency(numberValue.value, 'fr-FR', { currency: 'EUR' }),
 )
 </script>
 
@@ -46,13 +46,13 @@ const priceFormatted = computed(() =>
 ```
 
 <script lang="ts" setup>
-  import { currency } from 'maz-ui'
+  import { formatCurrency } from 'maz-ui'
   import { ref, computed } from 'vue'
 
   const numberValue = ref(69)
 
   const priceFormatted = computed(() =>
-    currency(numberValue.value, 'fr-FR', { currency: 'EUR' }),
+    formatCurrency(numberValue.value, 'fr-FR', { currency: 'EUR' }),
   )
 </script>
 

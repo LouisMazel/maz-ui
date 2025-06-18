@@ -107,7 +107,7 @@ You can use MazTable and his child component to build a simple table and enjoy t
   </template>
 </ComponentDemo>
 
-## Advanced
+## Advanced data table
 
 You can also provide all your data, the table is auto-generated and you can use the features [listed on top](#key-features)
 
@@ -164,7 +164,7 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
   </template>
 
   <template #actions>
-    <MazBtn fab size="xs" color="destructive" icon="trash" />
+    <MazBtn v-tooltip="{ text: 'Delete', color: 'destructive' }" fab size="xs" color="destructive" icon="trash" />
   </template>
 </MazTable>
 
@@ -510,6 +510,7 @@ Available sizes: `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`
 <script lang="ts" setup>
   import { ref } from 'vue'
   import {competitions} from './competitions.ts'
+  import { vTooltip } from 'maz-ui/src/directives/vTooltip.ts'
 
   const selectedIds = ref<string[]>(['0262672d-7c7a-4d30-866e-edb88b5a5336'])
   const searchQuery = ref<string>()
@@ -536,7 +537,7 @@ type Row =  Record<string, any> & {
 The `headers` property has type: `type Headers = string | HeadersEnriched[]`
 
 ```ts
-type HeadersEnriched = {
+export interface MazTableHeadersEnriched {
   label: string
   key?: string
   sortable?: boolean
@@ -554,8 +555,6 @@ type HeadersEnriched = {
 ```
 
 ## Props & Events emitted
-
-## MazTable
 
 <!--@include: ./../.vitepress/generated-docs/maz-table.doc.md-->
 

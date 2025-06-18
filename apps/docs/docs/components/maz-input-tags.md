@@ -9,8 +9,6 @@ description: MazInputTags is a standalone component like free inputs to help use
 
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
-<!--@include: ./../.vitepress/mixins/maz-input-props.md-->
-
 ## Basic usage
 
 <MazInputTags
@@ -19,7 +17,7 @@ description: MazInputTags is a standalone component like free inputs to help use
   color="info"
 />
 
-**Value returned**
+**Returned value**
 
 <code>
   tags: {{ tags }}
@@ -112,4 +110,5 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 </template>
 ```
 
+<!--@include: ./../.vitepress/mixins/maz-input-props.md-->
 <!--@include: ./../.vitepress/generated-docs/maz-input-tags.doc.md-->

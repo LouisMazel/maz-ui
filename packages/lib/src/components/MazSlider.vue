@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
 import type { MazColor } from './types'
+import { debounce } from '@maz-ui/utils/src/utils/debounce.js'
+
 import {
   computed,
 
@@ -10,8 +12,6 @@ import {
   ref,
   watch,
 } from 'vue'
-
-import { debounce } from '../utils/debounce'
 import { getOpacityCoeff, getPos, isBetween } from './MazSlider/utils'
 
 export interface MazSliderProps {

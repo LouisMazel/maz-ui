@@ -2,6 +2,7 @@
 import type { ComponentPublicInstance, StyleValue } from 'vue'
 import type { MazBadgeColor, MazBadgeRoundedSize } from './MazBadge.vue'
 import type { MazTabsProvide } from './MazTabs.vue'
+import { sleep } from '@maz-ui/utils/src/utils/sleep.js'
 import {
   computed,
   defineAsyncComponent,
@@ -10,9 +11,8 @@ import {
   ref,
   watch,
 } from 'vue'
-import { useInjectStrict } from '../composables/useInjectStrict'
 
-import { sleep } from '../utils/sleep'
+import { useInjectStrict } from '../composables/useInjectStrict'
 
 const {
   items,

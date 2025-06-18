@@ -37,5 +37,8 @@ export default defineNuxtConfig({
     theme: {
       // injectFullCSSOnServer: true,
     },
+    translations: {
+      locale: 'fr',
+    },
   },
 })

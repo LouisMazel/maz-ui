@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { FilterCurrencyOptions } from '../formatters/currency'
+import type { FilterCurrencyOptions } from '@maz-ui/utils/src/formatters/formatCurrency.js'
 import { MazBanknotes } from '@maz-ui/icons'
+import { formatCurrency } from '@maz-ui/utils/src/formatters/formatCurrency.js'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { currency as currencyFilter } from '../formatters/currency'
 import MazInput from './MazInput.vue'
 
 const props = withDefaults(defineProps<MazInputPriceProps>(), {
@@ -61,7 +61,7 @@ const valueNumber = computed<number | undefined>(() => {
 })
 
 const priceFormatted = computed(() =>
-  typeof valueNumber.value === 'number' ? currencyFilter(valueNumber.value, props.locale, { ...props.currencyOptions, currency: props.currency }) : undefined,
+  typeof valueNumber.value === 'number' ? formatCurrency(valueNumber.value, props.locale, { ...props.currencyOptions, currency: props.currency }) : undefined,
 )
 
 function getAdjustedPrice(value?: string | number) {

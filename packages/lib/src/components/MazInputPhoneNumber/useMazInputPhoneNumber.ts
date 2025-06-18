@@ -1,5 +1,6 @@
 import type { CountryCode } from 'libphonenumber-js'
-import type { Country, IpWhoResponse } from './types'
+import type { Country } from './types'
+import { fetchLocaleIp } from '@maz-ui/utils/src/utils/fetchLocaleIp.js'
 import { getCountries, getCountryCallingCode } from 'libphonenumber-js'
 
 function getBrowserLocale() {
@@ -41,8 +42,8 @@ function getCountryName(
   code: CountryCode | string,
   customCountriesNameListByIsoCode?: Record<CountryCode, string>,
 ): string | undefined {
-  if (customCountriesNameListByIsoCode?.[code]) {
-    return customCountriesNameListByIsoCode[code]
+  if (customCountriesNameListByIsoCode?.[code as CountryCode]) {
+    return customCountriesNameListByIsoCode[code as CountryCode]
   }
 
   if (displayNamesLocale !== locale || !displayNamesInstance) {
@@ -85,10 +86,9 @@ function getCountriesList(
 
 async function fetchCountryCode(): Promise<{ data: CountryCode, error: undefined } | { data: undefined, error: Error }> {
   try {
-    const reponse = await fetch('https://ipwho.is')
-    const { country_code } = (await reponse.json()) as IpWhoResponse
+    const countryCode = await fetchLocaleIp()
 
-    if (!country_code) {
+    if (!countryCode) {
       return {
         data: undefined,
         error: new Error(`[MazInputPhoneNumber](fetchCountryCode) No country code found`),
@@ -96,7 +96,7 @@ async function fetchCountryCode(): Promise<{ data: CountryCode, error: undefined
     }
 
     return {
-      data: country_code as CountryCode,
+      data: countryCode as CountryCode,
       error: undefined,
     }
   }

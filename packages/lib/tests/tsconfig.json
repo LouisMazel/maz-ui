@@ -2,18 +2,15 @@
   "extends": ["./../tsconfig.json"],
   "compilerOptions": {
     "paths": {
-      "#": ["*"],
-      "@/*": ["src/*"],
+      "#": ["./../src/*"],
+      "@/*": ["./../src/*"],
       "@tests/*": ["./tests/*"],
-      "@components/*": ["src/components/*"],
-      "@composables/*": ["src/composables/*"],
-      "@directives/*": ["src/directives/*"],
-      "@formatters/*": ["src/formatters/*"],
-      "@utils/*": ["src/utils/*"],
-      "@icons/*": ["src/icons/*"],
-      "@plugins/*": ["src/plugins/*"],
-      "@resolvers/*": ["src/resolvers/*"],
-      "@ts-helpers/*": ["src/ts-helpers/*"]
+      "@components/*": ["./../src/components/*"],
+      "@composables/*": ["./../src/composables/*"],
+      "@directives/*": ["./../src/directives/*"],
+      "@icons/*": ["./../src/icons/*"],
+      "@plugins/*": ["./../src/plugins/*"],
+      "@resolvers/*": ["./../src/resolvers/*"]
     },
     "types": ["@types/node", "vite-svg-loader", "vitest/globals", "vue"]
   },
