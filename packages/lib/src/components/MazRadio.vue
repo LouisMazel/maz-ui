@@ -211,7 +211,7 @@ function onFocus(event: FocusEvent) {
   }
 
   &:not(.--selected) > span {
-    @apply maz-bg-surface dark:maz-bg-surface-400;
+    @apply maz-bg-surface dark:maz-bg-surface-400/60;
   }
 
   &.--selected > span {

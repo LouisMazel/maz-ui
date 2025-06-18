@@ -5,7 +5,7 @@ export const ocean: ThemePreset = {
   foundation: {
     'base-font-size': '16px',
     'radius': '1rem',
-    'border-width': '0.0625rem',
+    'border-width': '0.125rem',
     'font-family': `'Poppins', 'Inter', system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
   },
   colors: {

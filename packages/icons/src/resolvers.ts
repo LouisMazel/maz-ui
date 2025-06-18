@@ -1,4 +1,5 @@
 import type { ComponentResolver } from 'unplugin-vue-components/types'
+import type { IconName } from './icon-list.js'
 import { iconsList } from './icon-list.js'
 
 /**
@@ -13,7 +14,7 @@ export function MazIconsResolver(options?: { devMode?: boolean }): ComponentReso
     resolve: (name: string) => {
       const { devMode = false } = options || {}
       const base = devMode ? '@maz-ui/icons/src/index.ts' : '@maz-ui/icons'
-      if (iconsList.includes(name as any)) {
+      if (iconsList.includes(name as IconName)) {
         return {
           name,
           from: base,

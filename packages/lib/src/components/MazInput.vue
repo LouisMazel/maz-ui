@@ -706,7 +706,7 @@ const stateColor = computed(() => {
 
   &:not(.--is-disabled) {
     & .m-input-wrapper {
-      @apply dark:maz-bg-surface-400;
+      @apply dark:maz-bg-surface-400/60;
     }
   }
 

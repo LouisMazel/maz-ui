@@ -105,4 +105,4 @@ export { default as MazTabsContentItem } from './MazTabsContentItem.vue'
 export { default as MazTextarea } from './MazTextarea.vue'
 export type { MazTextareaProps } from './MazTextarea.vue'
 
-export type { MazColor, MazPosition, MazSize } from './types'
+export type { MazColor, MazSize } from './types'

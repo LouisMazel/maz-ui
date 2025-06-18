@@ -1,163 +1,253 @@
 import type { DirectiveBinding, ObjectDirective, Plugin } from 'vue'
+import type { MazPopoverProps, PopoverPosition, PopoverTrigger } from '../components/MazPopover.vue'
+import { h } from 'vue'
+import MazPopover from '../components/MazPopover.vue'
+import { useMountComponent } from '../composables/useMountComponent'
 
-import type { MazColor } from '../components/types'
-import './vTooltip/style.css'
-
-type VTooltipColor = Exclude<MazColor, 'transparent'> | 'default'
-
-interface VTooltipOptions {
+interface VTooltipOptions extends Partial<Omit<MazPopoverProps, 'modelValue'>> {
+  /**
+   * Text to display in the tooltip
+   */
+  text?: string
+  /**
+   * HTML content (alternative to text)
+   */
+  html?: string
+  /**
+   * Color variant of the tooltip
+   * @default default
+   */
+  color?: MazPopoverProps['color']
   /**
    * Position of the tooltip
-   * @default 'top'
+   * @default top
    */
-  position?: 'top' | 'bottom' | 'left' | 'right'
+  position?: PopoverPosition
   /**
-   * Color of the tooltip
-   * @default 'default'
+   * Trigger of the tooltip
+   * @default hover
    */
-  color?: VTooltipColor
+  trigger?: PopoverTrigger
+  /**
+   * Close on click outside
+   * @default false
+   */
+  closeOnClickOutside?: boolean
+  /**
+   * Close on escape
+   * @default false
+   */
+  closeOnEscape?: boolean
+
+  /**
+   * Open the tooltip
+   * @default false
+   */
+  open?: boolean
 }
 
 type VTooltipBindingValue
   = | string
-    | ({
-    /**
-     * Text to display in the tooltip
-     * @default ''
-     */
-      text: string
-      /**
-       * Open the tooltip
-       * @default false
-       */
-      open?: boolean
-      /**
-       * Offset of the tooltip
-       * @default '1rem'
-       */
-      offset?: string
-    } & VTooltipOptions)
+    | VTooltipOptions
 
-const defaultOptions: VTooltipOptions = {
-  position: 'top',
-}
+export type TooltipBinding = DirectiveBinding<VTooltipBindingValue, NonNullable<MazPopoverProps['position']>>
 
-export type TooltipBinding = DirectiveBinding<VTooltipBindingValue>
+// Store pour garder les instances par élément
+const tooltipInstances = new WeakMap<HTMLElement, {
+  destroy: () => void
+  popoverWrapper: HTMLElement
+  cleanup: (shouldRestore?: boolean) => void
+}>()
 
 class TooltipHandler {
-  options: VTooltipOptions
+  private defaultProps: Partial<VTooltipOptions>
 
-  constructor(options: VTooltipOptions = {}) {
-    this.options = {
-      ...defaultOptions,
+  constructor(options: Partial<VTooltipOptions> = {}) {
+    this.defaultProps = {
+      open: false,
+      position: 'top',
+      trigger: 'hover',
+      role: 'tooltip',
+      closeOnClickOutside: false,
+      closeOnEscape: false,
+      color: 'default',
       ...options,
     }
   }
 
-  getPosition({ modifiers, value }: TooltipBinding): VTooltipOptions['position'] {
-    if (modifiers.top) {
+  private getPopoverProps(binding: TooltipBinding) {
+    const baseOptions = { ...this.defaultProps }
+
+    if (typeof binding.value === 'string') {
+      return {
+        ...baseOptions,
+        text: binding.value,
+        position: this.getPositionFromModifiers(binding) || baseOptions.position as PopoverPosition,
+      } satisfies VTooltipOptions
+    }
+
+    return {
+      ...baseOptions,
+      ...binding.value,
+      position: this.getPositionFromModifiers(binding) || binding.value.position || baseOptions.position as PopoverPosition,
+    } satisfies VTooltipOptions
+  }
+
+  private getPositionFromModifiers(binding: TooltipBinding): PopoverPosition | undefined {
+    if (binding.modifiers.top)
       return 'top'
-    }
-    else if (modifiers.bottom) {
+    if (binding.modifiers.bottom)
       return 'bottom'
-    }
-    else if (modifiers.left) {
+    if (binding.modifiers.left)
       return 'left'
-    }
-    else if (modifiers.right) {
+    if (binding.modifiers.right)
       return 'right'
+    if (binding.modifiers['top-start'])
+      return 'top-start'
+    if (binding.modifiers['top-end'])
+      return 'top-end'
+    if (binding.modifiers['bottom-start'])
+      return 'bottom-start'
+    if (binding.modifiers['bottom-end'])
+      return 'bottom-end'
+    if (binding.modifiers['left-start'])
+      return 'left-start'
+    if (binding.modifiers['left-end'])
+      return 'left-end'
+    if (binding.modifiers['right-start'])
+      return 'right-start'
+    if (binding.modifiers['right-end'])
+      return 'right-end'
+    if (binding.modifiers.auto)
+      return 'auto'
+
+    return undefined
+  }
+
+  mount(el: HTMLElement, binding: TooltipBinding) {
+    this.unmount(el)
+
+    const props = this.getPopoverProps(binding)
+
+    if (!props.text && !props.html) {
+      console.warn('[maz-ui](vTooltip) No text or html content provided')
+      return
     }
 
-    return typeof value === 'string' ? 'top' : value.position ?? this.options.position
-  }
+    const popoverWrapper = document.createElement('div')
+    popoverWrapper.classList.add('m-tooltip-wrapper')
 
-  getText({ value }: TooltipBinding): string {
-    return typeof value === 'string' ? value : value.text
-  }
-
-  getOpen({ value }: TooltipBinding): boolean {
-    return typeof value === 'string' ? false : value.open ?? false
-  }
-
-  getColor({ value }: TooltipBinding): VTooltipColor {
-    return typeof value === 'string' ? 'default' : value.color ?? 'default'
-  }
-
-  getOffset({ value }: TooltipBinding) {
-    return typeof value === 'string' ? '1rem' : value.offset ?? '1rem'
-  }
-
-  create(el: HTMLElement, binding: TooltipBinding) {
-    el.setAttribute('data-tooltip', this.getText(binding))
-    const offset = this.getOffset(binding)
-    if (offset) {
-      el.style.setProperty('--tooltip-offset', offset)
+    if (el.parentNode) {
+      el.parentNode.replaceChild(popoverWrapper, el)
     }
-    el.classList.add('m-tooltip')
 
-    const position = this.getPosition(binding)
-    el.classList.add(`m-tooltip--${position}`)
-    el.classList.add(`m-tooltip--${this.getColor(binding)}`)
+    const popoverProps = {
+      ...props,
+      panelClass: ['m-tooltip-panel', 'maz-text-sm', 'maz-whitespace-pre-wrap', 'maz-break-words', 'maz-p-2', 'maz-max-w-xs', props.panelClass].filter(Boolean).join(' '),
+      modelValue: props.open,
+    } satisfies MazPopoverProps
 
-    if (this.getOpen(binding)) {
-      el.classList.add('m-tooltip--open')
+    const { destroy } = useMountComponent<typeof MazPopover, MazPopoverProps>(MazPopover, {
+      props: popoverProps,
+      children: {
+        trigger: () => h('div', {
+          ref: (triggerDiv) => {
+            if (triggerDiv && triggerDiv instanceof HTMLElement && !triggerDiv.contains(el)) {
+              triggerDiv.replaceWith(el)
+            }
+          },
+        }),
+        default: () => {
+          if (props.html) {
+            return h('div', { innerHTML: props.html })
+          }
+          return props.text || ''
+        },
+      },
+      element: popoverWrapper,
+    })
+
+    function cleanup(shouldRestore = true) {
+      destroy()
+
+      if (shouldRestore && popoverWrapper.parentNode) {
+        try {
+          popoverWrapper.parentNode.insertBefore(el, popoverWrapper)
+          popoverWrapper.parentNode.removeChild(popoverWrapper)
+        }
+        catch (error) {
+          console.warn('[maz-ui](vTooltip) Failed to restore original element:', error)
+        }
+      }
     }
+
+    tooltipInstances.set(el, {
+      destroy,
+      popoverWrapper,
+      cleanup,
+    })
   }
 
   update(el: HTMLElement, binding: TooltipBinding) {
-    this.remove(el, binding)
-    this.create(el, binding)
+    const instance = tooltipInstances.get(el)
+
+    if (instance) {
+      instance.cleanup(true)
+      tooltipInstances.delete(el)
+    }
+
+    this.mount(el, binding)
   }
 
-  remove(el: HTMLElement, binding: TooltipBinding) {
-    el.removeAttribute('data-tooltip')
-    el.classList.remove('m-tooltip')
-    el.classList.remove('m-tooltip--top')
-    el.classList.remove('m-tooltip--bottom')
-    el.classList.remove('m-tooltip--left')
-    el.classList.remove('m-tooltip--right')
-    el.classList.remove('m-tooltip--open')
-    el.classList.remove(`m-tooltip--${this.getColor(binding)}`)
+  unmount(el: HTMLElement) {
+    const instance = tooltipInstances.get(el)
+
+    if (instance) {
+      instance.cleanup(false)
+      tooltipInstances.delete(el)
+    }
   }
 }
 
-let instance: TooltipHandler
+let globalHandler: TooltipHandler
 
 const directive = {
-  beforeMount(el: HTMLElement, binding) {
-    const options = typeof binding.value === 'object' ? binding.value : {}
-    instance = new TooltipHandler(options)
-    return instance.create(el, binding)
+  mounted(el: HTMLElement, binding: TooltipBinding) {
+    if (!globalHandler) {
+      globalHandler = new TooltipHandler()
+    }
+    return globalHandler.mount(el, binding)
   },
-  updated(el: HTMLElement, binding) {
-    return instance.update(el, binding)
+
+  updated(el: HTMLElement, binding: TooltipBinding) {
+    if (!globalHandler) {
+      globalHandler = new TooltipHandler()
+    }
+    return globalHandler.update(el, binding)
   },
-  unmounted(el: HTMLElement, binding) {
-    return instance.remove(el, binding)
+
+  unmounted(el: HTMLElement) {
+    if (globalHandler) {
+      globalHandler.unmount(el)
+    }
   },
-} satisfies ObjectDirective<HTMLElement, VTooltipBindingValue>
+} satisfies ObjectDirective<HTMLElement, VTooltipBindingValue, NonNullable<MazPopoverProps['position']>>
 
 const plugin = {
-  install: (app, options = defaultOptions) => {
-    const finalOptions = {
-      ...defaultOptions,
-      ...options,
-    } satisfies VTooltipOptions
-
-    const appInstance = new TooltipHandler(finalOptions)
+  install: (app, options: Partial<VTooltipOptions> = {}) => {
+    const handler = new TooltipHandler(options)
 
     app.directive('tooltip', {
-      beforeMount: appInstance.create.bind(appInstance),
-      updated: appInstance.update.bind(appInstance),
-      unmounted: appInstance.remove.bind(appInstance),
+      beforeMount: handler.mount.bind(handler),
+      updated: handler.update.bind(handler),
+      unmounted: handler.unmount.bind(handler),
     })
   },
-} satisfies Plugin<VTooltipOptions>
+} satisfies Plugin<Partial<VTooltipOptions>>
 
 export {
   directive as vTooltip,
   type VTooltipBindingValue,
-  type VTooltipColor,
   plugin as vTooltipInstall,
   type VTooltipOptions,
 }

@@ -4,7 +4,6 @@ import { computed, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
 import MazCardSpotlight from './MazCardSpotlight.vue'
-
 import MazExpandAnimation from './MazExpandAnimation.vue'
 
 export interface MazAccordionProps {

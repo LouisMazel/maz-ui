@@ -81,7 +81,33 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
   }
 
   if (opts.vueAccessibility) {
-    additionalConfigs.push(vueA11y.configs['flat/recommended'])
+    const vueA11yConfigs = vueA11y.configs['flat/recommended']
+    const configsArray = Array.isArray(vueA11yConfigs) ? vueA11yConfigs : [vueA11yConfigs]
+
+    /**
+     * Should fix the issue with the globals.
+     * @see https://github.com/vue-a11y/eslint-plugin-vuejs-accessibility/issues/1269
+     */
+    const fixedConfigs = configsArray.map((config: any) => {
+      if (config && config.languageOptions && config.languageOptions.globals) {
+        const fixedGlobals = { ...config.languageOptions.globals }
+        if ('AudioWorkletGlobalScope ' in fixedGlobals) {
+          fixedGlobals.AudioWorkletGlobalScope = fixedGlobals['AudioWorkletGlobalScope ']
+          delete fixedGlobals['AudioWorkletGlobalScope ']
+        }
+
+        return {
+          ...config,
+          languageOptions: {
+            ...config.languageOptions,
+            globals: fixedGlobals,
+          },
+        }
+      }
+      return config
+    })
+
+    additionalConfigs.push(...fixedConfigs)
   }
 
   if (opts.tailwindcss) {
