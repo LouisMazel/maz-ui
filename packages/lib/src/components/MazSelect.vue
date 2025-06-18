@@ -10,15 +10,16 @@ import { MazChevronDown, MazMagnifyingGlass, MazNoSymbol } from '@maz-ui/icons'
 import {
   computed,
   defineAsyncComponent,
-
   nextTick,
-  onBeforeMount,
   ref,
+  useTemplateRef,
+  watch,
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useStringMatching } from '../composables/useStringMatching'
 import { debounceCallback } from '../utils/debounceCallback'
 
+import { isClient } from '../utils/isClient'
 import { normalizeString } from '../utils/normalizeString'
 import MazInput from './MazInput.vue'
 import MazPopover, { type MazPopoverProps } from './MazPopover.vue'
@@ -199,12 +200,10 @@ const emits = defineEmits<{
 
 const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
 
-const tmpModelValueIndex = ref<number>()
-const popoverComponent = ref<ComponentPublicInstance<typeof MazPopover>>()
+const popoverComponent = useTemplateRef('popoverComponent')
 
-const selectedTextColor = computed(() => `hsl(var(--maz-${props.color}-800))`)
-const selectedBgColor = computed(() => `hsl(var(--maz-${props.color}-100))`)
-const keyboardSelectedBgColor = computed(() => `hsl(var(--maz-${props.color}-200))`)
+const selectedTextColor = computed(() => `hsl(var(--maz-${props.color}))`)
+const selectedBgColor = computed(() => `hsl(var(--maz-${props.color}-500) / 0.2)`)
 
 const isOpen = defineModel<boolean>('open', { required: false, default: false })
 
@@ -280,12 +279,8 @@ const selectedOptions = computed(
   () => optionsNormalized.value?.filter(isOptionInSelection) ?? [],
 )
 
-onBeforeMount(() => {
-  updateTmpModelValueIndex()
-})
-
-const mazInputComponent = ref<ComponentPublicInstance<typeof MazInput>>()
-const searchInputComponent = ref<ComponentPublicInstance<typeof MazInput>>()
+const mazInputComponent = useTemplateRef<ComponentPublicInstance<typeof MazInput>>('mazInputComponent')
+const searchInputComponent = useTemplateRef<ComponentPublicInstance<typeof MazInput>>('searchInputComponent')
 const optionListElement = ref<HTMLDivElement>()
 const optionListScrollWrapper = ref<HTMLDivElement>()
 
@@ -324,7 +319,7 @@ const inputValue = computed(() => {
 })
 
 const searchQuery = ref<string>()
-const query = ref<string>()
+const query = ref<string>('')
 
 function searchInValue(value?: MazInputValue, query?: string) {
   return query && value && normalizeString(value).includes(normalizeString(query))
@@ -356,32 +351,35 @@ function getFilteredOptionWithQuery(query?: string) {
   })
 }
 
-const optionList = computed(() => {
-  return props.searchFunction && props.search && searchQuery.value
-    ? getNormalizedOptions(props.searchFunction(searchQuery.value, props.options ?? []) ?? [])
-    : getFilteredOptionWithQuery(searchQuery.value)
-})
+const optionList = computed(() => props.searchFunction && props.search && searchQuery.value
+  ? getNormalizedOptions(props.searchFunction(searchQuery.value, props.options ?? []) ?? [])
+  : getFilteredOptionWithQuery(searchQuery.value),
+)
 
 function onCloseList() {
-  tmpModelValueIndex.value = 0
   emits('close')
 }
 
 async function onOpenList() {
-  await scrollToOptionIndex()
+  const selectedIndex = optionList.value?.findIndex(
+    option => isSelectedOption(option),
+  )
+
+  await scrollToOptionIndex(selectedIndex)
+
   emits('open')
 }
 
 function focusMainInput() {
-  ;(mazInputComponent.value?.$el as HTMLElement).querySelector('input')?.focus()
+  mazInputComponent.value?.$el?.querySelector('input')?.focus()
 }
 function emitInputMainInput() {
-  ;(mazInputComponent.value?.$el as HTMLElement).querySelector('input')?.dispatchEvent(new Event('input'))
+  mazInputComponent.value?.$el?.querySelector('input')?.dispatchEvent(new Event('input'))
 }
 
 function focusSearchInputAndSetQuery(q: string) {
   searchQuery.value = q
-  ;(searchInputComponent.value?.$el as HTMLElement).querySelector('input')?.focus()
+  searchInputComponent.value?.$el?.querySelector('input')?.focus()
 }
 
 function searchOptionWithQuery(keyPressed: string) {
@@ -394,15 +392,19 @@ function searchOptionWithQuery(keyPressed: string) {
 
   const filteredOptions = getFilteredOptionWithQuery(query.value)
 
-  if (filteredOptions?.length) {
-    tmpModelValueIndex.value = optionList.value?.findIndex(
-      option => option[props.optionValueKey] === filteredOptions[0][props.optionValueKey],
-    )
-
-    if (typeof tmpModelValueIndex.value === 'number' && tmpModelValueIndex.value >= 0) {
-      scrollToOptionIndex(tmpModelValueIndex.value)
-    }
+  if (!filteredOptions?.length) {
+    return
   }
+
+  const optionIndex = optionList.value?.findIndex(
+    option => option[props.optionValueKey] === filteredOptions[0][props.optionValueKey],
+  )
+
+  if (typeof optionIndex !== 'number' || optionIndex === -1) {
+    return
+  }
+
+  scrollToOptionIndex(optionIndex)
 
   debounceCallback(() => {
     query.value = ''
@@ -412,124 +414,37 @@ function searchOptionWithQuery(keyPressed: string) {
 function mainInputKeyboardHandler(event: KeyboardEvent) {
   const keyPressed = event.key
 
-  if (/^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed)) {
+  if ((keyPressed === 'ArrowDown' || keyPressed === 'ArrowUp' || /^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed)) && !isOpen.value) {
     event.preventDefault()
     popoverComponent.value?.open()
-
-    if (props.search) {
-      focusSearchInputAndSetQuery(keyPressed)
-    }
-    else {
-      searchOptionWithQuery(keyPressed)
-    }
-  }
-  else {
-    keyboardHandler(event)
-  }
-}
-
-function keyboardHandler(event: KeyboardEvent, shouldSelectWithSpace = true) {
-  const code = event.code
-
-  const isArrow = ['ArrowUp', 'ArrowDown'].includes(code)
-  const shouldSelect = (shouldSelectWithSpace ? ['Enter', 'Space'] : ['Enter']).includes(code)
-
-  if (isArrow) {
-    arrowHandler(event, tmpModelValueIndex.value)
-  }
-  else if (shouldSelect) {
-    enterHandler(event, tmpModelValueIndex.value)
-  }
-}
-
-function arrowHandler(event: KeyboardEvent, currentIndex?: number) {
-  event.preventDefault()
-  const code = event.code
-
-  if (!isOpen.value) {
-    popoverComponent.value?.open()
   }
 
-  const optionsLength = optionList.value?.length
-
-  if (!optionsLength) {
-    return
-  }
-
-  if (typeof currentIndex === 'number') {
-    if (currentIndex === optionsLength - 1 && code === 'ArrowDown') {
-      tmpModelValueIndex.value = 0
-    }
-    else if (currentIndex === 0 && code === 'ArrowUp') {
-      tmpModelValueIndex.value = optionsLength - 1
-    }
-    else {
-      tmpModelValueIndex.value = code === 'ArrowDown' ? currentIndex + 1 : currentIndex - 1
-    }
-  }
-  else {
-    tmpModelValueIndex.value = code === 'ArrowDown' ? 0 : optionsLength - 1
-  }
-
-  scrollToOptionIndex(tmpModelValueIndex.value)
-}
-
-function enterHandler(event: KeyboardEvent, currentIndex?: number) {
-  if (!isOpen.value) {
-    return
-  }
-
-  event.preventDefault()
-
-  const newValue = currentIndex
-    ? optionList.value?.[currentIndex] ?? optionList.value?.[0]
-    : optionList.value?.[0]
-
-  if (!isNullOrUndefined(newValue)) {
-    updateValue(newValue)
+  if (/^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed) && props.search) {
+    focusSearchInputAndSetQuery(keyPressed)
   }
 }
 
 async function scrollToOptionIndex(index?: number) {
   await nextTick()
 
-  if (typeof index !== 'number') {
-    updateTmpModelValueIndex()
+  if (typeof index !== 'number' || index < 0) {
+    return
   }
 
-  const selectedIndex = index ?? tmpModelValueIndex.value
+  const item = optionListElement.value?.querySelector<HTMLButtonElement>(`.m-select-list-item:nth-child(${index + 1})`)
 
-  if (typeof selectedIndex === 'number' && selectedIndex >= 0) {
-    const item = optionListElement.value?.querySelector<HTMLButtonElement>(`.m-select-list-item:nth-child(${selectedIndex + 1})`)
+  if (item && optionListScrollWrapper.value) {
+    const wrapperRect = optionListScrollWrapper.value.getBoundingClientRect()
+    const itemRect = item.getBoundingClientRect()
+    const scrollTop = item.offsetTop - wrapperRect.height / 2 + itemRect.height / 2
 
-    if (item && optionListScrollWrapper.value) {
-      const wrapperRect = optionListScrollWrapper.value.getBoundingClientRect()
-      const itemRect = item.getBoundingClientRect()
-      const scrollTop = item.offsetTop - wrapperRect.height / 2 + itemRect.height / 2
+    optionListScrollWrapper.value.scrollTo({
+      top: scrollTop,
+      behavior: 'auto',
+    })
 
-      optionListScrollWrapper.value.scrollTo({
-        top: scrollTop,
-        behavior: 'auto',
-      })
-    }
+    item.focus({ preventScroll: true })
   }
-}
-
-function updateTmpModelValueIndex(inputOption?: MazSelectNormalizedOption) {
-  const index = optionList.value?.findIndex((option) => {
-    if (props.multiple && Array.isArray(props.modelValue)) {
-      if (inputOption) {
-        return inputOption[props.optionValueKey] === option[props.optionValueKey]
-      }
-      const values = [...props.modelValue].reverse()
-      return values[0] === option[props.optionValueKey]
-    }
-    else {
-      return selectedOptions.value?.[0]?.[props.optionValueKey] === option[props.optionValueKey]
-    }
-  })
-
-  tmpModelValueIndex.value = index && index >= 0 ? index : 0
 }
 
 function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = true) {
@@ -564,9 +479,65 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
   emits('update:model-value', (props.multiple ? selectedValues : selectedValues[0]) as T | T[])
   emits('selected-option', inputOption as U)
   emitInputMainInput()
-  updateTmpModelValueIndex(inputOption)
   focusMainInput()
 }
+
+function keydownHandler(event: KeyboardEvent) {
+  const keyPressed = event.key
+
+  if (keyPressed === 'ArrowDown' || keyPressed === 'ArrowUp') {
+    event.preventDefault()
+    const itemLength = optionList.value?.length
+    if (!itemLength)
+      return
+
+    const currentElement = document.activeElement as HTMLElement
+    const itemsElements = document.querySelectorAll<HTMLElement>(`#${instanceId.value}-option-list .m-select-list-item`)
+    const currentIndex = Array.from(itemsElements).indexOf(currentElement)
+
+    if (currentIndex === -1) {
+      (itemsElements[0] as HTMLElement)?.focus({ preventScroll: true })
+      return
+    }
+
+    const nextIndex = keyPressed === 'ArrowDown'
+      ? (currentIndex + 1) % itemLength
+      : (currentIndex - 1 + itemLength) % itemLength
+
+    itemsElements[nextIndex]?.focus()
+  }
+  else if (!props.search && /^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed)) {
+    searchOptionWithQuery(keyPressed)
+  }
+}
+
+function updateListPosition() {
+  nextTick(() => {
+    popoverComponent.value?.updatePosition()
+  })
+}
+
+watch(
+  isOpen,
+  (value) => {
+    if (!isClient())
+      return
+
+    if (value) {
+      document.addEventListener('keydown', keydownHandler)
+    }
+    else {
+      document.removeEventListener('keydown', keydownHandler)
+    }
+  },
+  { immediate: true },
+)
+
+defineExpose({
+  open: () => {
+    popoverComponent.value?.open()
+  },
+})
 </script>
 
 <template>
@@ -575,17 +546,17 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
     v-model="isOpen"
     class="m-select m-reset-css"
     :class="[
-      { '--is-open': isOpen, '--disabled': disabled, '--block': block },
+      { '--is-open': isOpen, '--disabled': disabled },
       props.class,
       `--${size}`,
     ]"
-    :style="[style, { '--keyboard-selected-bg-color': keyboardSelectedBgColor, '--selected-bg-color': selectedBgColor, '--selected-text-color': selectedTextColor }]"
+    :style
     trigger="click"
+    :block
     :offset="0"
-    :disabled
     :prefer-position="listPosition"
+    :position-delay="100"
     fallback-position="top-start"
-    :trap-focus="false"
     @close="onCloseList"
     @open="onOpenList"
   >
@@ -600,9 +571,10 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
         :color="color"
         :model-value="inputValue"
         :size="size"
-        block
+        :block
         :autocomplete
-        :disabled="disabled"
+        :disabled
+        readonly
         @change="emits('change', $event)"
         @input="emits('input', $event)"
         @focus="emits('focus', $event)"
@@ -616,98 +588,99 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
             class="m-select-input__toggle-button maz-custom"
             :aria-label="`${isOpen ? 'collapse' : 'expand'} list of options`"
           >
-            <MazChevronDown class="m-select-chevron maz-text-xl" />
+            <MazChevronDown class="m-select-chevron" />
           </button>
         </template>
       </MazInput>
     </template>
 
-    <div
-      ref="optionListElement"
-      class="m-select-list"
-      :style="{
-        'maxHeight': `${maxListHeight}px`,
-        'maxWidth': `${maxListWidth}px`,
-        'minHeight': `${minListHeight}px`,
-        'minWidth': `${minListWidth}px`,
-        '--keyboard-selected-bg-color': keyboardSelectedBgColor,
-        '--selected-bg-color': selectedBgColor,
-        '--selected-text-color': selectedTextColor,
-      }"
-    >
-      <MazInput
-        v-if="search"
-        ref="searchInputComponent"
-        v-model="searchQuery"
-        size="sm"
-        :color="color"
-        :placeholder="searchPlaceholder"
-        name="search"
-        inputmode="search"
-        block
-        autocomplete="off"
-        tabindex="-1"
-        class="m-select-list__search-input maz-flex-none"
-        :left-icon="MazMagnifyingGlass"
-        @keydown="keyboardHandler($event, false)"
-        @update:model-value="tmpModelValueIndex = 0"
-      />
-      <!--
-          @slot No results slot - Displayed when no results corresponding with search query
-        -->
-      <slot v-if="!optionList || optionList.length <= 0" name="no-results">
-        <span class="m-select-list__no-results">
-          <MazNoSymbol class="maz-size-6 maz-text-foreground" />
-        </span>
-      </slot>
-      <div v-else ref="optionListScrollWrapper" class="m-select-list__scroll-wrapper" tabindex="-1">
-        <template v-for="(option, i) in optionList" :key="i">
-          <!--
-              @slot Custom optgroup label
-                @binding {String} label - the label of the optgroup
-            -->
-          <slot v-if="option.label && option.isOptGroup" name="optgroup" :label="option.label">
-            <span class="m-select-list-optgroup">
-              {{ option.label }}
-            </span>
-          </slot>
-
-          <button
-            v-else
-            tabindex="-1"
-            type="button"
-            class="m-select-list-item maz-custom maz-flex-none"
-            :class="[
-              {
-                '--is-keyboard-selected': tmpModelValueIndex === i,
-                '--is-selected': isSelectedOption(option),
-                '--is-none-value': isNullOrUndefined(option[optionValueKey]),
-              },
-            ]"
-            :style="itemHeight ? { height: `${itemHeight}px` } : undefined"
-            @click.prevent.stop="updateValue(option, true)"
-          >
-            <MazCheckbox
-              v-if="multiple"
-              tabindex="-1"
-              :model-value="isSelectedOption(option)"
-              size="sm"
-              :color="color"
-            />
+    <template #default>
+      <div
+        :id="`${instanceId}-option-list`"
+        ref="optionListElement"
+        class="m-select-list"
+        :class="`--${size}`"
+        :style="[{
+          'maxHeight': `${maxListHeight}px`,
+          'maxWidth': `${maxListWidth}px`,
+          'minHeight': `${minListHeight}px`,
+          'minWidth': `${minListWidth}px`,
+          '--selected-bg-color': selectedBgColor,
+          '--selected-text-color': selectedTextColor,
+        }]"
+      >
+        <MazInput
+          v-if="search"
+          ref="searchInputComponent"
+          v-model="searchQuery"
+          size="sm"
+          :disabled
+          :color
+          :placeholder="searchPlaceholder"
+          name="search"
+          inputmode="search"
+          autocomplete="off"
+          block
+          tabindex="-1"
+          class="m-select-list__search-input maz-flex-none"
+          :left-icon="MazMagnifyingGlass"
+          @update:model-value="updateListPosition"
+        />
+        <!--
+            @slot No results slot - Displayed when no results corresponding with search query
+          -->
+        <slot v-if="!optionList || optionList.length <= 0" name="no-results">
+          <span class="m-select-list__no-results">
+            <MazNoSymbol class="maz-size-6 maz-text-foreground" />
+          </span>
+        </slot>
+        <div v-else ref="optionListScrollWrapper" class="m-select-list__scroll-wrapper" tabindex="-1">
+          <template v-for="(option, i) in optionList" :key="i">
             <!--
-                @slot Custom option
-                  @binding {Object} option - the option object
-                  @binding {Boolean} is-selected - if the option is selected
+                @slot Custom optgroup label
+                  @binding {String} label - the label of the optgroup
               -->
-            <slot :option="option" :is-selected="isSelectedOption(option)">
-              <span>
-                {{ option[optionLabelKey] }}
+            <slot v-if="option.label && option.isOptGroup" name="optgroup" :label="option.label">
+              <span class="m-select-list-optgroup">
+                {{ option.label }}
               </span>
             </slot>
-          </button>
-        </template>
+
+            <button
+              v-else
+              type="button"
+              :tabindex="multiple ? -1 : 0"
+              class="m-select-list-item maz-custom maz-flex-none"
+              :class="[
+                {
+                  '--is-selected': isSelectedOption(option),
+                  '--is-none-value': isNullOrUndefined(option[optionValueKey]),
+                },
+              ]"
+              :style="itemHeight ? { height: `${itemHeight}px` } : undefined"
+              @click.prevent.stop="updateValue(option, true)"
+            >
+              <MazCheckbox
+                v-if="multiple"
+                :model-value="isSelectedOption(option)"
+                size="sm"
+                :color
+              />
+              <!--
+                  @slot Custom option
+                    @binding {Object} option - the option object
+                    @binding {Boolean} is-selected - if the option is selected
+                -->
+              <slot :option="option" :is-selected="isSelectedOption(option)">
+                <span>
+                  {{ option[optionLabelKey] }}
+                </span>
+              </slot>
+            </button>
+          </template>
+        </div>
       </div>
-    </div>
+    </template>
   </MazPopover>
 </template>
 
@@ -737,10 +710,6 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
 
   &.--xl {
     @apply maz-text-xl;
-  }
-
-  &.--block {
-    @apply maz-w-full;
   }
 
   &:not(.--disabled):deep(.m-input-input) {
@@ -787,6 +756,30 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
     @apply maz-flex-none maz-p-0.5 maz-text-start maz-text-[0.875em] maz-text-muted;
   }
 
+  &.--mini {
+    @apply maz-text-xs;
+  }
+
+  &.--xs {
+    @apply maz-text-xs;
+  }
+
+  &.--sm {
+    @apply maz-text-sm;
+  }
+
+  &.--md {
+    @apply maz-text-base;
+  }
+
+  &.--lg {
+    @apply maz-text-lg;
+  }
+
+  &.--xl {
+    @apply maz-text-xl;
+  }
+
   min-width: 3.5rem;
 
   &__scroll-wrapper {
@@ -802,17 +795,18 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: hsl(var(--maz-background-200));
+      @apply maz-bg-surface-400;
+
       border-radius: 1000px;
 
       &:hover {
-        background-color: hsl(var(--maz-background-200));
+        @apply maz-bg-surface-500;
       }
     }
 
     /* Modern CSS for all browsers (fallback) */
     scrollbar-width: thin;
-    scrollbar-color: hsl(var(--maz-background-200)) transparent;
+    scrollbar-color: hsl(var(--maz-background-400)) transparent;
   }
 
   &__no-results {
@@ -820,22 +814,10 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
   }
 
   &-item {
-    @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-rounded maz-bg-transparent maz-px-3 maz-py-2 maz-text-start maz-text-base maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-surface-400 hover:maz-bg-surface-400;
+    @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-rounded maz-bg-transparent maz-px-3 maz-py-2 maz-text-start maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-surface-400 hover:maz-bg-surface-400 maz-outline-none;
 
     span {
       @apply maz-truncate;
-    }
-
-    &.--is-keyboard-selected {
-      @apply maz-bg-surface-400 dark:maz-bg-surface-300;
-
-      &.--is-selected {
-        background-color: var(--keyboard-selected-bg-color);
-
-        &:hover {
-          background-color: var(--keyboard-selected-bg-color);
-        }
-      }
     }
 
     &.--is-none-value {
@@ -846,8 +828,8 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
       color: var(--selected-text-color);
       background-color: var(--selected-bg-color);
 
-      &:hover {
-        background-color: var(--selected-bg-color);
+      &:focus {
+        @apply maz-bg-surface-400;
       }
 
       &.--transparent {

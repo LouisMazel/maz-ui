@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { mazUi, obsidian, ocean, pristine, useTheme } from '@maz-ui/themes/src/index'
+import { mazUi, obsidian, ocean, pristine, useTheme } from '@maz-ui/themes/src/index.ts'
 
 const { updateTheme, setColorMode } = useTheme()
-
-updateTheme(ocean)
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen">
+  <div class="flex min-h-screen flex-col">
     <nav class="maz-flex maz-items-center maz-gap-4 maz-p-4">
       <MazLink to="/"> Home </MazLink>
       <MazLink to="/about"> About </MazLink>

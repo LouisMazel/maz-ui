@@ -22,20 +22,26 @@
   --vp-button-brand-active-border: hsl(var(--maz-primary-700));
   --vp-button-brand-active-text: hsl(var(--maz-primary-contrast));
   --vp-button-brand-active-bg: hsl(var(--maz-primary-600));
+
+  --vp-code-font-size: calc(var(--maz-base-font-size) - 2px);
 }
 
 html {
-  font-size: 16px;
+  font-size: var(--maz-base-font-size);
   font-family: var(--maz-font-family);
 
   @apply maz-text-foreground;
+
+  body {
+    font-size: var(--maz-base-font-size);
+  }
 }
 
 html.dark {
   --vp-c-bg-elv: hsl(235deg 16% 12%);
   --vp-c-bg-elv-mute: hsl(var(--maz-background));
   --vp-c-gutter: hsl(var(--maz-border));
-  --vp-c-bg-soft: hsl(var(--maz-background-400) / 60%);
+  --vp-c-bg-soft: hsl(var(--maz-background));
 }
 
 .text {

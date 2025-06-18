@@ -24,7 +24,6 @@ const props = defineProps({
   },
   locale: { type: String, required: true },
   color: { type: String as PropType<MazColor>, required: true },
-  isOpen: { type: Boolean, required: true },
   hasDate: { type: Boolean, required: true },
   minuteInterval: { type: Number, required: true },
   disabledHours: { type: Array as PropType<number[]>, default: undefined },

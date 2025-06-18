@@ -9,3 +9,5 @@ export const colors = [
   'contrast',
   'transparent',
 ] as const
+
+export const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl'] as const

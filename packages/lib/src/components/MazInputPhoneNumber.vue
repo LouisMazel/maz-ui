@@ -6,7 +6,7 @@
 import type { CountryCode } from 'libphonenumber-js'
 import type { HTMLAttributes } from 'vue'
 import type { MazInputPhoneNumberTranslations, Results } from './MazInputPhoneNumber/types'
-import type { PopoverPosition } from './MazPopover.vue'
+import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
 import {
   computed,
@@ -163,11 +163,11 @@ export interface MazInputPhoneNumberProps {
   translations?: Partial<MazInputPhoneNumberTranslations>
   /**
    * Position where the list of countries will be opened
-   * @type {MazPosition}
+   * @type {MazPopoverProps['position']}
    * @values top left, top right, bottom left, bottom right
    * @default "bottom left"
    */
-  listPosition?: PopoverPosition
+  listPosition?: MazPopoverProps['position']
   /**
    * Component color applied
    * @type {MazColor}
@@ -530,7 +530,7 @@ provide<MazInputPhoneNumberInjectedData>('data', {
 
 <template>
   <div
-    class="m-phone-number-input m-reset-css"
+    class="m-input-phone-number m-reset-css"
     :class="[props.class, { '--block': block }, orientation ? `--${orientation}` : undefined]"
     :style
   >
@@ -612,7 +612,7 @@ provide<MazInputPhoneNumberInjectedData>('data', {
 </template>
 
 <style lang="postcss" scoped>
-.m-phone-number-input {
+.m-input-phone-number {
   @apply maz-relative maz-inline-flex maz-items-center maz-align-top;
 
   &.--block {

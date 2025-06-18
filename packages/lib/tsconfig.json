@@ -2,9 +2,9 @@
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
     "composite": true,
+    "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo",
     "target": "ESNext",
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
-    "baseUrl": ".",
     "module": "ESNext",
     "types": ["@types/node", "vite-svg-loader"],
     "allowImportingTsExtensions": false,

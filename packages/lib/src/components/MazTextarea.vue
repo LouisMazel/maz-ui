@@ -279,7 +279,7 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
   transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
   &:not(.--background-transparent, .--is-disabled) {
-    @apply maz-bg-surface dark:maz-bg-surface-400;
+    @apply maz-bg-surface dark:maz-bg-surface-400/60;
   }
 
   &.--border:not(.--is-disabled) {

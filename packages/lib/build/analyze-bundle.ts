@@ -78,7 +78,7 @@ function analyzeChunks() {
   }
 
   const chunkFiles = fs.readdirSync(CHUNKS_DIR)
-    .filter(file => file.endsWith('.mjs') && !file.endsWith('.map'))
+    .filter(file => file.endsWith('.js') && !file.endsWith('.map'))
 
   chunkFiles.forEach((file) => {
     const filePath = path.join(CHUNKS_DIR, file)
@@ -169,7 +169,7 @@ function analyzeCategoriesAndEntries(analysis: any) {
 
     if (fs.existsSync(categoryDir)) {
       const files = fs.readdirSync(categoryDir)
-        .filter(file => file.endsWith('.mjs') && !file.includes('index'))
+        .filter(file => file.endsWith('.js') && !file.includes('index'))
 
       files.forEach((file) => {
         const filePath = path.join(categoryDir, file)
@@ -284,19 +284,19 @@ function analyzeBundle() {
     },
   }
 
-  const mainEntry = path.join(DIST_DIR, 'index.mjs')
+  const mainEntry = path.join(DIST_DIR, 'index.js')
   analysis.summary.mainEntry = getFileSize(mainEntry)
   logger.log(`📦 Entry principal: ${formatSize(analysis.summary.mainEntry)}`)
 
   const categoryIndexes = [
-    { name: 'components', file: 'components/index.mjs' },
-    { name: 'utils', file: 'utils/index.mjs' },
-    { name: 'composables', file: 'composables/index.mjs' },
-    { name: 'plugins', file: 'plugins/index.mjs' },
-    { name: 'directives', file: 'directives/index.mjs' },
-    { name: 'formatters', file: 'formatters/index.mjs' },
-    { name: 'resolvers', file: 'resolvers/index.mjs' },
-    { name: 'icons', file: 'icons/index.mjs' },
+    { name: 'components', file: 'components/index.js' },
+    { name: 'utils', file: 'utils/index.js' },
+    { name: 'composables', file: 'composables/index.js' },
+    { name: 'plugins', file: 'plugins/index.js' },
+    { name: 'directives', file: 'directives/index.js' },
+    { name: 'formatters', file: 'formatters/index.js' },
+    { name: 'resolvers', file: 'resolvers/index.js' },
+    { name: 'icons', file: 'icons/index.js' },
   ]
 
   categoryIndexes.forEach(({ name, file }) => {

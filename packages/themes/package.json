@@ -21,44 +21,44 @@
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.js"
     },
     "./presets": {
       "types": "./dist/types/presets/index.d.ts",
-      "import": "./dist/presets/index.mjs"
+      "import": "./dist/presets/index.js"
     },
     "./presets/*": {
       "types": "./dist/types/presets/*.d.ts",
-      "import": "./dist/presets/*.mjs"
+      "import": "./dist/presets/*.js"
     },
     "./composables": {
       "types": "./dist/types/composables/index.d.ts",
-      "import": "./dist/composables/index.mjs"
+      "import": "./dist/composables/index.js"
     },
     "./composables/*": {
       "types": "./dist/types/composables/*.d.ts",
-      "import": "./dist/composables/*.mjs"
+      "import": "./dist/composables/*.js"
     },
     "./utils": {
       "types": "./dist/types/utils/index.d.ts",
-      "import": "./dist/utils/index.mjs"
+      "import": "./dist/utils/index.js"
     },
     "./utils/*": {
       "types": "./dist/types/utils/*.d.ts",
-      "import": "./dist/utils/*.mjs"
+      "import": "./dist/utils/*.js"
     },
     "./build": {
       "types": "./dist/types/build/index.d.ts",
-      "import": "./dist/build/index.mjs"
+      "import": "./dist/build/index.js"
     },
     "./build/*": {
       "types": "./dist/types/build/*.d.ts",
-      "import": "./dist/build/*.mjs"
+      "import": "./dist/build/*.js"
     },
     "./*": "./*"
   },
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/types/index.d.ts",
   "files": [
     "dist"
@@ -83,7 +83,6 @@
     }
   },
   "devDependencies": {
-    "@types/node": "^22.15.30",
     "glob": "catalog:",
     "typescript": "^5.8.3",
     "vue": "^3.5.16",

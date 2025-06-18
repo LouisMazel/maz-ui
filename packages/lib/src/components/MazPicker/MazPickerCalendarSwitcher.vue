@@ -26,13 +26,13 @@ const calendarDate2 = computed(() => dayjs(props.calendarDate))
 const monthLabel = computed(() => {
   return props.double
     ? `${capitalize(
-      date(calendarDate2.value.format(), props.locale, { month: 'long' }),
+      date(calendarDate2.value.format(), props.locale, { month: 'short' }),
     )} - ${capitalize(
       date(calendarDate2.value.add(1, 'month').format(), props.locale, {
-        month: 'long',
+        month: 'short',
       }),
     )}`
-    : capitalize(date(calendarDate2.value.format(), props.locale, { month: 'long' }))
+    : capitalize(date(calendarDate2.value.format(), props.locale, { month: 'short' }))
 })
 
 const yearLabel = computed(() =>

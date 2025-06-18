@@ -194,66 +194,34 @@ watch(
 
   &.--primary {
     @apply maz-bg-primary maz-text-primary-foreground;
-
-    & .m-picker-header__year-text {
-      @apply maz-text-primary-100;
-    }
   }
 
   &.--secondary {
-    @apply maz-bg-secondary maz-text-secondary;
-
-    & .m-picker-header__year-text {
-      @apply maz-text-secondary-100;
-    }
+    @apply maz-bg-secondary maz-text-secondary-foreground;
   }
 
   &.--info {
     @apply maz-bg-info maz-text-info-foreground;
-
-    & .m-picker-header__year-text {
-      @apply maz-text-info-100;
-    }
   }
 
   &.--success {
     @apply maz-bg-success maz-text-success-foreground;
-
-    & .m-picker-header__year-text {
-      @apply maz-text-success-100;
-    }
   }
 
   &.--warning {
     @apply maz-bg-warning maz-text-warning-foreground;
-
-    & .m-picker-header__year-text {
-      @apply maz-text-warning-100;
-    }
   }
 
   &.--destructive {
     @apply maz-bg-destructive maz-text-destructive-foreground;
-
-    & .m-picker-header__year-text {
-      @apply maz-text-destructive-100;
-    }
   }
 
   &.--accent {
     @apply maz-bg-accent maz-text-accent-foreground;
-
-    & .m-picker-header__year-text {
-      @apply maz-text-accent-100;
-    }
   }
 
   &.--contrast {
     @apply maz-bg-contrast-500 dark:maz-bg-contrast-400 maz-text-foreground dark:maz-text-foreground;
-
-    & .m-picker-header__year-text {
-      @apply maz-text-foreground;
-    }
   }
 
   &.--transparent {

@@ -2,7 +2,6 @@ import { resolve } from 'node:path'
 import Vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-// import { viteStaticCopy } from 'vite-plugin-static-copy'
 import SvgLoader from 'vite-svg-loader'
 
 import rootPkg from '../../package.json'
@@ -29,49 +28,53 @@ export default defineConfig({
       entryRoot: resolver('src'),
       outDir: resolver('dist/types'),
     }),
-    // viteStaticCopy({ targets: staticAssetsToCopy }),
     ViteGenerateIconsComponentsEntry(),
   ],
+  esbuild: {
+    drop: ['debugger'],
+    pure: ['console.log', 'console.debug'],
+    legalComments: 'none',
+    target: 'es2022',
+    minifyIdentifiers: true,
+    minifySyntax: true,
+    minifyWhitespace: true,
+    treeShaking: true,
+  },
   build: {
-    emptyOutDir: false,
+    emptyOutDir: true,
     sourcemap: false,
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
-      mangle: true,
-      module: true,
-      toplevel: true,
-      format: {
-        comments: false,
-      },
-    },
+    cssMinify: 'lightningcss',
+    minify: 'esbuild',
+    target: 'es2022',
     lib: {
       entry: {
         'index': resolver('./src/index.ts'),
         'resolvers': resolver('./src/resolvers.ts'),
         'icon-list': resolver('./src/icon-list.ts'),
       },
-      fileName: (format, name) => format === 'es' ? `${name}.mjs` : `${name}.cjs`,
+      formats: ['es'],
+      fileName: (_, name) => `${name}.js`,
       name: '@maz-ui/icons',
     },
     rollupOptions: {
       external,
-      output: [
-        {
-          format: 'es',
-          chunkFileNames: 'chunks/[name].[hash].mjs',
-          assetFileNames: 'assets/[name].[hash][extname]',
-          exports: 'named',
-          entryFileNames: '[name].mjs',
-          preserveModules: true,
-          interop: 'auto',
-          generatedCode: 'es2015',
-          minifyInternalExports: true,
-        },
-      ],
+      treeshake: {
+        moduleSideEffects: false,
+        preset: 'smallest',
+        propertyReadSideEffects: false,
+        unknownGlobalSideEffects: false,
+      },
+      output: {
+        format: 'es',
+        compact: true,
+        chunkFileNames: 'chunks/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash][extname]',
+        exports: 'named',
+        minifyInternalExports: true,
+        preserveModules: false,
+        interop: 'auto',
+        generatedCode: 'es2015',
+      },
     },
   },
 })

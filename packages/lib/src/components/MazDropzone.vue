@@ -803,7 +803,7 @@ defineExpose({
   }
 
   &--is-over-error {
-    @apply maz-border-destructive;
+    @apply maz-border-destructive maz-bg-destructive-50;
 
     .maz-dropzone__upload-icon {
       @apply maz-text-destructive;

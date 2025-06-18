@@ -36,6 +36,12 @@ export interface MazCheckboxProps<T = boolean | (string | number)[]> {
   warning?: boolean
   /** The hint text to display below the input. */
   hint?: string
+  /**
+   * The tabindex of the checkbox
+   * @default 0
+   * @type {HTMLAttributes['tabindex']}
+   */
+  tabindex?: HTMLAttributes['tabindex']
 }
 
 defineOptions({
@@ -55,6 +61,7 @@ const props = withDefaults(
     name: 'm-checkbox',
     size: 'md',
     disabled: false,
+    tabindex: 0,
   },
 )
 
@@ -221,11 +228,12 @@ function onFocus(event: FocusEvent) {
 </script>
 
 <template>
+  <!-- eslint-disable vuejs-accessibility/interactive-supports-focus -->
   <label
     :for="instanceId"
     class="m-checkbox m-reset-css"
     :class="[{ '--disabled': disabled, '--error': error, '--warning': warning, '--success': success }, props.class]"
-    tabindex="0"
+    :tabindex="tabindex"
     :style="[style, { '--checkbox-selected-color': checkboxSelectedColor, '--checkbox-box-shadow-color': checkboxBoxShadow }]"
     role="checkbox"
     :aria-checked="isChecked"
@@ -284,7 +292,7 @@ function onFocus(event: FocusEvent) {
     @apply maz-hidden;
 
     &:not(:checked) ~ span {
-      @apply maz-bg-surface dark:maz-bg-surface-400;
+      @apply maz-bg-surface dark:maz-bg-surface-400/60;
     }
 
     &:checked ~ span {

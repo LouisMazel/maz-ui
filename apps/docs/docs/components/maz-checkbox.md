@@ -105,12 +105,12 @@ const colors: Color[] = [
 
 ```vue
 <script lang="ts" setup>
-import { MazCheckbox, type Size } from 'maz-ui/components'
+import { MazCheckbox, type MazSize } from 'maz-ui/components'
 import { ref } from 'vue'
 
 const chosenSizes = ref([])
 
-const sizes: Size[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
+const sizes: MazSize[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 </script>
 
 <template>

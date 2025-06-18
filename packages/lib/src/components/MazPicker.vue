@@ -3,7 +3,8 @@ import type { HTMLAttributes } from 'vue'
 import type { MazInputProps } from './MazInput.vue'
 import type { MazPickerShortcut, MazPickerValue } from './MazPicker/types'
 import type { DateTimeFormatOptions } from './MazPicker/utils'
-import type { MazColor, MazPosition } from './types'
+import type { MazPopoverProps } from './MazPopover.vue'
+import type { MazColor } from './types'
 import { MazCalendar, MazClock } from '@maz-ui/icons'
 import MazChevronDownIcon from '@maz-ui/icons/svg/chevron-down.svg'
 import dayjs from 'dayjs'
@@ -14,16 +15,15 @@ import isBetween from 'dayjs/plugin/isBetween'
 import {
   computed,
   defineAsyncComponent,
-  nextTick,
   onBeforeMount,
   onMounted,
-  onUnmounted,
   ref,
+  useTemplateRef,
   watch,
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { vClickOutside } from '../directives/vClickOutside'
 import { date } from '../formatters/date'
+import MazPickerContainer from './MazPicker/MazPickerContainer.vue'
 import {
   checkValueWithMinMaxDates,
   fetchLocale,
@@ -36,8 +36,6 @@ import {
   isValueDisabledDate,
   isValueDisabledWeekly,
 } from './MazPicker/utils'
-
-export type { MazPickerPartialRangeValue, MazPickerRangeValue, MazPickerShortcut, MazPickerValue } from './MazPicker/types'
 
 defineOptions({
   inheritAttrs: false,
@@ -62,7 +60,7 @@ const props = withDefaults(defineProps<MazPickerProps & MazPickerInputProps>(), 
   double: false,
   inline: false,
   color: 'primary',
-  pickerPosition: undefined,
+  pickerPosition: 'bottom-start',
   time: false,
   onlyTime: false,
   minuteInterval: 5,
@@ -150,7 +148,11 @@ const emits = defineEmits<{
   'close': [void]
 }>()
 
-const MazPickerContainer = defineAsyncComponent(() => import('./MazPicker/MazPickerContainer.vue'))
+const MazPopover = defineAsyncComponent(() => import('./MazPopover.vue'))
+
+export type { MazPickerPartialRangeValue, MazPickerRangeValue, MazPickerShortcut, MazPickerValue } from './MazPicker/types'
+
+// const MazPickerContainer = defineAsyncComponent(() => import('./MazPicker/MazPickerContainer.vue'))
 
 type MazPickerInputProps = Omit<MazInputProps, 'modelValue' | 'debounce' | 'type'>
 
@@ -196,6 +198,7 @@ export interface MazPickerProps {
    * Controls whether the picker window is open
    * @type {boolean}
    * @default false
+   * @model
    */
   open?: boolean
 
@@ -297,10 +300,10 @@ export interface MazPickerProps {
 
   /**
    * The position where the picker popover should appear
-   * @type {MazPosition}
+   * @type {MazPopoverProps['position']}
    * @values top, bottom, left, right, top-left, top-right, bottom-left, bottom-right
    */
-  pickerPosition?: MazPosition
+  pickerPosition?: MazPopoverProps['position']
 
   /**
    * Controls whether the picker includes a time selector
@@ -412,7 +415,7 @@ const currentLocale = computed<string>(() => props.locale ?? internalLocale.valu
 
 const containerUniqueId = computed(() => `mazPickerContainer-${instanceId.value}`)
 
-const MazPicker = ref<HTMLDivElement>()
+const popoverComponent = useTemplateRef('popover')
 
 const currentValue = computed<MazPickerValue>({
   get: () => {
@@ -539,31 +542,12 @@ const inputValue = computed(() => {
   return props.inputDateTransformer && formattedDate ? props.inputDateTransformer({ formattedDate, value: props.modelValue, locale: currentLocale.value }) : formattedDate
 })
 
-const isFocused = ref(false)
-const programaticallyOpened = ref(false)
-const pickerContainerPosition = ref<{
-  vertical: 'top' | 'bottom'
-  horizontal: 'left' | 'right'
-}>({
-  vertical: 'bottom',
-  horizontal: 'left',
-})
-
-const isOpen = computed(() => {
-  return (
-    ((isFocused.value || props.open || programaticallyOpened.value) && !props.disabled)
-    || props.inline
-  )
-})
+const hasPickerOpen = defineModel<boolean>('open', { default: false })
 
 const isMounted = ref(false)
 
 onMounted(async () => {
   isMounted.value = true
-  if (props.customElementSelector) {
-    addEventToTriggerCustomElement(props.customElementSelector)
-  }
-
   if (!props.locale) {
     const browserLocale = getBrowserLocale()
     if (props.useBrowserLocale && browserLocale) {
@@ -578,94 +562,9 @@ onMounted(async () => {
   }
 })
 
-onUnmounted(() => {
-  if (props.customElementSelector) {
-    removeEventToTriggerCustomElement(props.customElementSelector)
-  }
-})
-
-async function getPickerContainerPosition(): Promise<{
-  vertical: 'top' | 'bottom'
-  horizontal: 'left' | 'right'
-}> {
-  if (props.pickerPosition) {
-    const horizontal = props.pickerPosition.includes('right') ? 'right' : 'left'
-    const vertical = props.pickerPosition.includes('top') ? 'top' : 'bottom'
-
-    return {
-      horizontal,
-      vertical,
-    }
-  }
-  else {
-    return {
-      horizontal: 'left',
-      vertical: await calcVerticalPosition(MazPicker.value),
-    }
-  }
-}
-
-async function calcVerticalPosition(parent?: HTMLDivElement): Promise<'top' | 'bottom'> {
-  if (typeof window === 'undefined') {
-    return 'bottom'
-  }
-
-  const OFFSET = 30
-
-  await nextTick()
-
-  const pickerContainer = document.querySelector(`#${containerUniqueId.value}`)
-
-  const parentRect = parent?.getBoundingClientRect()
-  const windowHeight = window.innerHeight
-
-  const pickerHeight = (pickerContainer?.clientHeight ?? 0) - OFFSET
-
-  const spaceOnBottom = (parentRect && windowHeight - parentRect.bottom) ?? 0
-  const spaceOnTop = (parentRect && parentRect.top) ?? 0
-
-  const hasSpaceOnBottom = spaceOnBottom && spaceOnBottom >= pickerHeight
-
-  const hasSpaceOnTop = spaceOnTop && spaceOnTop >= pickerHeight
-
-  if (!hasSpaceOnBottom && (hasSpaceOnTop || spaceOnTop >= spaceOnBottom)) {
-    return 'top'
-  }
-
-  return 'bottom'
-}
-
 function closeCalendar() {
-  isFocused.value = false
-  programaticallyOpened.value = false
+  popoverComponent.value?.close()
   emits('close')
-}
-
-function closeCalendarOnClickOutside() {
-  if (!props.customElementSelector) {
-    closeCalendar()
-  }
-}
-
-function toggleProgramatically() {
-  programaticallyOpened.value = !programaticallyOpened.value
-}
-
-function addEventToTriggerCustomElement(selector: string) {
-  const target = document.querySelector(selector)
-  if (target) {
-    target.addEventListener('click', toggleProgramatically)
-  }
-  else {
-    throw new Error(
-      `[maz-ui](MazPicker) impossible to find custom element with selector "${selector}"`,
-    )
-  }
-}
-
-function removeEventToTriggerCustomElement(selector: string) {
-  const target = document.querySelector(selector)
-  target?.removeEventListener('click', toggleProgramatically)
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -773,29 +672,6 @@ watch(
   { immediate: true },
 )
 
-function keyboardHandler(event: KeyboardEvent) {
-  if (event.code === 'Escape' && isOpen.value) {
-    event.preventDefault()
-    closeCalendar()
-  }
-}
-
-watch(
-  () => isOpen.value,
-  async (value) => {
-    if (value) {
-      pickerContainerPosition.value = await getPickerContainerPosition()
-
-      if (!props.inline && isMounted.value)
-        document.addEventListener('keydown', keyboardHandler)
-    }
-    else if (!props.inline && isMounted.value) {
-      document.removeEventListener('keydown', keyboardHandler)
-    }
-  },
-  { immediate: true },
-)
-
 // Disable weekly watcher
 watch(
   () => [currentValue.value, props.disabledWeekly, props.disabledDates],
@@ -833,113 +709,115 @@ watch(
 </script>
 
 <template>
-  <div
-    ref="MazPicker"
-    v-click-outside="closeCalendarOnClickOutside"
+  <MazPopover
+    v-if="!inline"
+    ref="popover"
     class="m-picker m-reset-css"
-    role="none"
-    :style="style"
+    :style
+    :offset="0"
     :class="[
       `m-picker--${color}`,
-      `m-picker--${pickerContainerPosition.vertical}`,
-      `m-picker--${pickerContainerPosition.horizontal}`,
       {
-        '--is-open': isOpen,
+        '--is-open': hasPickerOpen,
         '--is-disabled': disabled,
-        '--block': block,
       },
       props.class,
     ]"
+    trigger="click"
+    :disabled
+    :block
+    :prefer-position="pickerPosition"
+    :position-delay="100"
+    fallback-position="top-start"
   >
-    <MazInput
-      v-show="!customElementSelector && !inline"
-      :model-value="inputValue"
-      readonly
-      v-bind="$attrs"
-      block
-      autocomplete="off"
-      class="m-picker__input"
-      :label="label"
-      :disabled="disabled"
-      :placeholder="placeholder"
-      :color="color"
-      @click="isFocused = !isFocused"
-    >
-      <template #left-icon>
-        <MazCalendar v-if="hasDate" class="maz-text-xl" @click="isFocused = !isFocused" />
-        <MazClock v-else-if="hasTime" class="maz-text-xl" @click="isFocused = !isFocused" />
-      </template>
-      <template #right-icon>
-        <button
-          type="button"
-          tabindex="-1"
-          class="m-picker__button"
-          @click="isFocused = !isFocused"
+    <template #trigger="{ isOpen, close, open: openPicker, toggle: togglePicker }">
+      <slot name="trigger" :is-open="isOpen" :close="close" :open="openPicker" :toggle="togglePicker">
+        <MazInput
+          v-show="!customElementSelector && !inline"
+          :model-value="inputValue"
+          readonly
+          v-bind="$attrs"
+          block
+          autocomplete="off"
+          class="m-picker__input"
+          :label="label"
+          :disabled="disabled"
+          :placeholder="placeholder"
+          :color="color"
         >
-          <MazChevronDownIcon class="m-picker__button__chevron maz-text-lg" />
-        </button>
-      </template>
-    </MazInput>
+          <template #left-icon>
+            <MazCalendar v-if="hasDate" class="maz-text-xl" />
+            <MazClock v-else-if="hasTime" class="maz-text-xl" />
+          </template>
+          <template #right-icon>
+            <MazChevronDownIcon class="m-picker__button__chevron maz-text-lg" />
+          </template>
+        </MazInput>
+      </slot>
+    </template>
 
-    <Transition
-      :name="pickerContainerPosition.vertical === 'top' ? 'maz-slideinvert' : 'maz-slide'"
-    >
-      <MazPickerContainer
-        v-if="isOpen"
-        :id="containerUniqueId"
-        v-model="currentValue"
-        v-model:calendar-date="calendarDate"
-        :is-open="isOpen"
-        :color="color"
-        :locale="currentLocale"
-        :has-date="hasDate"
-        :double="hasDouble"
-        :has-time="hasTime"
-        :formatter-options="formatterOptions"
-        :hide-header="hideHeader"
-        :min-date="minDate"
-        :format="format"
-        :is-hour12="isHour12"
-        :max-date="maxDate"
-        :disabled-weekly="disabledWeekly"
-        :inline="inline"
-        :first-day-of-week="firstDayOfWeek"
-        :shortcuts
-        :shortcut="shortcut"
-        :disabled="disabled"
-        :disabled-hours="disabledHours"
-        :disabled-dates="disabledDates"
-        :minute-interval="minuteInterval"
-        :range="isRangeMode"
-        @close="closeCalendar"
-      />
-    </Transition>
-  </div>
+    <MazPickerContainer
+      :id="containerUniqueId"
+      v-model="currentValue"
+      v-model:calendar-date="calendarDate"
+      :color
+      :locale="currentLocale"
+      :has-date
+      :double="hasDouble"
+      :has-time
+      :formatter-options
+      :hide-header
+      :min-date
+      :format
+      :is-hour12="isHour12"
+      :max-date
+      :disabled-weekly
+      :inline
+      :first-day-of-week
+      :shortcuts
+      :shortcut
+      :disabled
+      :disabled-hours
+      :disabled-dates
+      :minute-interval
+      :range="isRangeMode"
+      @close="closeCalendar"
+    />
+  </MazPopover>
+
+  <MazPickerContainer
+    v-else
+    :id="containerUniqueId"
+    v-model="currentValue"
+    v-model:calendar-date="calendarDate"
+    :color
+    :locale="currentLocale"
+    :has-date
+    :double="hasDouble"
+    :has-time
+    :formatter-options
+    :hide-header
+    :min-date
+    :format
+    :is-hour12="isHour12"
+    :max-date
+    :disabled-weekly
+    :inline
+    :first-day-of-week
+    :shortcuts
+    :shortcut
+    :disabled
+    :disabled-hours
+    :disabled-dates
+    :minute-interval
+    :range="isRangeMode"
+    @close="closeCalendar"
+  />
 </template>
 
 <style lang="postcss" scoped>
-  .m-picker {
+.m-picker {
   @apply maz-relative maz-inline-block;
-
-  &.--block {
-    @apply maz-w-full;
-  }
-
-  &--left .m-picker-container {
-    @apply maz-left-0;
-  }
-
-  &--bottom .m-picker-container {
-    @apply maz-top-full;
-  }
-
-  &--top .m-picker-container {
-    @apply maz-bottom-full;
-  }
-
-  &--right .m-picker-container {
-    @apply maz-right-0;
-  }
 
   & .m-picker__button {
     @apply maz-flex maz-h-full maz-cursor-not-allowed maz-bg-transparent maz-pr-1 maz-flex-center;

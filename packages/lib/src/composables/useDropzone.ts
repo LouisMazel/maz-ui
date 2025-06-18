@@ -97,6 +97,7 @@ export function useDropZone(
         if (event.dataTransfer) {
           event.dataTransfer.dropEffect = 'none'
         }
+        isOverError.value = true
         return
       }
 

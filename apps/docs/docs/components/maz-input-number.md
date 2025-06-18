@@ -75,3 +75,8 @@ You can remove the buttons with the props `hide-buttons`
 </ComponentDemo>
 
 <!--@include: ./../.vitepress/generated-docs/maz-input-number.doc.md-->
+
+<script lang="ts" setup>
+  import { ref } from 'vue'
+  const numberValue = ref()
+</script>

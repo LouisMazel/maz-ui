@@ -8,9 +8,9 @@ import MazBtn from './MazBtn.vue'
 const props = withDefaults(defineProps<MazPaginationProps>(), {
   modelValue: 1,
   buttonProps: undefined,
-  pageRange: 2,
+  pageRange: 1,
   resultsSize: undefined,
-  activeColor: 'primary',
+  activeColor: 'contrast',
   size: 'md',
 })
 const emits = defineEmits<
@@ -29,35 +29,50 @@ const DEFAULT_BUTTONS_PROPS: Partial<MazBtnProps> = {
 }
 
 export interface MazPaginationProps {
-  /** @model The current page number. */
+  /**
+   * The current page number.
+   * @model
+   * @type {number}
+   * @default 1
+   */
   modelValue?: number
   /**
    * Props apply to the MazBtn components.
+   * @type {Partial<MazBtnProps>}
+   * @default undefined
    */
   buttonProps?: Partial<MazBtnProps>
   /**
    * Number of results in this page. Useful for accessibility to set aria-setsize attribute. Partial of MazBtn props.
+   * @type {number}
+   * @default undefined
    */
   resultsSize?: number
   /**
    * Color of the active button.
-   * @values 'contrast', 'primary', 'secondary', 'info', 'success', 'warning', 'error', 'accent'
+   * @values 'contrast', 'primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent'
+   * @default 'contrast'
    */
   activeColor?: MazColor
   /**
-   * Color of the active button.
+   * Size of the buttons.
+   * @values 'mini', 'xs', 'sm', 'md', 'lg', 'xl'
+   * @default 'md'
    */
   size?: MazSize
   /**
    * Total number of pages.
+   * @default 10
    */
   totalPages: number
   /**
    * Number of buttons to display before and after the current page.
+   * @default 1
    */
   pageRange?: number
   /**
    * Enable loading state of current button
+   * @default false
    */
   loading?: boolean
 }
@@ -264,13 +279,17 @@ function setPageNumber(page: number) {
 </template>
 
 <style lang="postcss" scoped>
-  .m-pagination {
+.m-pagination {
   ul {
     @apply !maz-m-0 maz-inline-flex !maz-list-none maz-items-center maz-gap-2 -maz-space-x-px !maz-p-0 maz-align-top maz-text-base;
 
     li {
       @apply maz-m-0;
     }
+  }
+
+  .m-btn {
+    @apply maz-border-divider dark:maz-border-divider;
   }
 }
 </style>

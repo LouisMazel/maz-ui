@@ -17,8 +17,7 @@ description: MazSelect is a standalone component that replaces the standard html
   <MazSelect
     label="Select color"
     v-model="selectedValue"
-    :color="selectedValue"
-    :options="['primary', 'secondary', 'info', 'success', 'destructive', 'warning']"
+    :options="['primary', 'secondary', 'info', 'success', 'destructive', 'warning', 'white', 'black', 'red', 'green', 'blue', 'yellow', 'purple', 'orange', 'pink', 'brown', 'gray']"
   />
 
   <br />
@@ -195,6 +194,71 @@ const optGroup = [
   </template>
 </ComponentDemo>
 
+## Disabled
+
+<ComponentDemo>
+  <MazSelect
+    label="Select color"
+    v-model="selectedValue"
+    :options="colors"
+    disabled
+  />
+
+  <template #code>
+
+```html
+<MazSelect
+  label="Select color"
+  v-model="selectedValue"
+  :options="colors"
+  disabled
+/>
+```
+
+  </template>
+</ComponentDemo>
+
+## Size
+
+<ComponentDemo>
+  <div class="maz-flex maz-flex-col maz-gap-2">
+    <MazSelect
+      v-for="size in sizes"
+      :key="size"
+      label="Select color"
+      v-model="selectedValue"
+      :options="colors"
+      :size="size"
+    />
+  </div>
+
+  <template #code>
+
+```vue
+<template>
+  <MazSelect
+    v-for="size in sizes"
+    :key="size"
+    label="Select color"
+    v-model="selectedValue"
+    :options="colors"
+    :size="size"
+  />
+</template>
+
+<script lang="ts" setup>
+  import { ref } from 'vue'
+  import { MazSelect, type MazSize } from 'maz-ui/components'
+
+  const selectedValue = ref()
+
+  const sizes: MazSize[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
+</script>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Custom template options
 
 Customize the options list with your own template
@@ -321,6 +385,8 @@ const customOptions = [
   const selectedValueCustom = ref('destructive')
   const selectedUser = ref()
   const selectedValues = ref()
+
+  const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
   const colors = [
     { label: 'primary', value: 'primary' },
