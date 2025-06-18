@@ -23,6 +23,7 @@
     "maz-ui": "./bin/maz.mjs"
   },
   "files": [
+    "LICENSE",
     "bin",
     "dist"
   ],

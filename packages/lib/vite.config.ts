@@ -26,6 +26,7 @@ function getEntries(pattern: string) {
 }
 
 const external = [
+  ...Object.keys(pkg.dependencies),
   ...Object.keys(pkg.peerDependencies),
   ...Object.keys(pkg.devDependencies),
   ...Object.keys(rootPkg.devDependencies),
@@ -40,7 +41,6 @@ const moduleEntries = Object.fromEntries(
     'src/composables/*.ts',
     'src/directives/*.ts',
     'src/resolvers/*.ts',
-    'src/formatters/*.ts',
     'src/utils/*.ts',
     'src/plugins/*.ts',
     'src/tailwindcss/**/*.ts',
@@ -87,8 +87,6 @@ export default defineConfig({
         'plugins/index': resolver('src/plugins/index.ts'),
         'directives/index': resolver('src/directives/index.ts'),
         'resolvers/index': resolver('src/resolvers/index.ts'),
-        'utils/index': resolver('src/utils/index.ts'),
-        'formatters/index': resolver('src/formatters/index.ts'),
         'tailwindcss/index': resolver('src/tailwindcss/index.ts'),
         'index': resolver('src/index.ts'),
       },

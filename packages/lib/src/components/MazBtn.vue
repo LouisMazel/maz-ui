@@ -165,7 +165,7 @@ const iconClassSize = computed(() => {
         '--no-padding': !padding,
       },
     ]"
-    :style="[`--justify: ${justify}`]"
+    :style="[`--justify: ${justify}`, `--color: var(--maz-${color})`]"
     :type="btnType"
   >
     <!--
@@ -200,7 +200,7 @@ const iconClassSize = computed(() => {
     </slot>
 
     <div v-if="loading" class="m-btn-loader-container">
-      <MazSpinner size="2em" :color="color" />
+      <MazSpinner size="2em" />
     </div>
   </Component>
 </template>
@@ -216,7 +216,9 @@ const iconClassSize = computed(() => {
   }
 
   &-loader-container {
-    @apply maz-absolute maz-inset-0 maz-flex maz-flex-center maz-bg-overlay/30 maz-backdrop-blur-sm;
+    @apply maz-absolute maz-inset-0 maz-flex maz-flex-center maz-backdrop-blur-sm;
+
+    background-color: hsl(var(--color) / 30%);
   }
 
   &-loader {
@@ -528,7 +530,7 @@ const iconClassSize = computed(() => {
 
   /* DISABLED */
 
-  &.--disabled {
+  &.--disabled:not(.--loading) {
     @apply maz-cursor-not-allowed maz-bg-surface-400 maz-text-muted maz-border-surface-400;
   }
 

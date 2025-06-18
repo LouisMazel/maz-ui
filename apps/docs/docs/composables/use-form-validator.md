@@ -106,7 +106,7 @@ You can use the `v-bind` directive to bind the validation events to the componen
 
 If you use this method with a custom component, the component must emit the `blur` event to trigger the field validation. Otherwise, use the first method.
 
-````vue{7,16}
+```vue{7,16}
 <template>
   <MazInput
     v-model="value"
@@ -118,6 +118,7 @@ If you use this method with a custom component, the component must emit the `blu
   <!-- or -->
   <input v-model="value" v-bind="validationEvents" />
 </template>
+```
 
 ##### 3. Use the `onBlur` handler directly from `useFormField`
 
@@ -139,7 +140,7 @@ import { useFormField } from 'maz-ui/composables'
 
 const { value, errorMessage, isValid, hasError, onBlur } = useFormField('name')
 </script>
-````
+```
 
 :::
 
@@ -784,7 +785,7 @@ interface FormFieldOptions<T> {
   import { useFormField } from 'maz-ui/src/composables/useFormField'
   import { useToast } from 'maz-ui/src/composables/useToast'
   import { sleep } from 'maz-ui'
-  import { string, object, nonEmpty, pipe, number, minValue, maxValue, boolean, literal, minLength } from 'valibot'
+  import { string, nonEmpty, pipe, number, minValue, maxValue, boolean, literal, minLength } from 'valibot'
 
   const toast = useToast()
 

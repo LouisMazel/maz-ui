@@ -258,20 +258,20 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/guide/icons" class="!maz-border-divider">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
-    <a href="/guide/cli" class="maz-flex">
+    <a href="/guide/translations" class="maz-flex">
       <MazCardSpotlight class="maz-w-full" color="accent" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
         <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between maz-w-full">
           <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
-            ⚙️
+            🌍
           </span>
           <MazBadge color="accent" class="maz-text-base">Package</MazBadge>
         </div>
-        <h3 class="maz-text-base maz-font-semibold">@maz-ui/cli</h3>
+        <h3 class="maz-text-base maz-font-semibold">@maz-ui/translations</h3>
         <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
-          Powerful CLI tool for theme generation, color palette creation, and CSS variables management. Streamline your workflow.
+          Simple internationalization system for Maz-UI components. Translate your interface into any language with ease.
         </p>
         <div class="maz-flex-1"></div>
-        <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/guide/cli" class="!maz-border-divider">Discover</MazBtn>
+        <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/guide/translations" class="!maz-border-divider">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
     <a href="/guide/themes" class="maz-flex">

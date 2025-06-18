@@ -1,5 +1,5 @@
+import { isClient } from '@maz-ui/utils/src/utils/isClient.js'
 import { onMounted, onUnmounted, ref } from 'vue'
-import { isClient } from '../utils/isClient'
 
 export interface UseWindowSizeOptions {
   /**

@@ -8,6 +8,7 @@ export const guide = {
     { text: 'Auto-imports - Resolvers', link: '/guide/resolvers' },
     { text: 'Nuxt', link: '/guide/nuxt' },
     { text: 'Theming', link: '/guide/theme' },
+    { text: 'Translations (i18n)', link: '/guide/translations' },
     { text: 'Icons', link: '/guide/icons', collapsed: true, items: [
       { text: 'Icon Set - 300+ icons', link: '/guide/icon-set' },
     ] },

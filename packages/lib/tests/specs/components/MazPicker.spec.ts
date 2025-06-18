@@ -1,13 +1,13 @@
+import MazDatePicker from '@components/MazDatePicker.vue'
 import MazInput from '@components/MazInput.vue'
-import MazPicker from '@components/MazPicker.vue'
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-describe('given MazPicker component', () => {
-  let wrapper: ReturnType<typeof mount<typeof MazPicker>>
+describe('given MazDatePicker component', () => {
+  let wrapper: ReturnType<typeof mount<typeof MazDatePicker>>
 
   beforeEach(async () => {
-    wrapper = mount(MazPicker)
+    wrapper = mount(MazDatePicker)
     await vi.dynamicImportSettled()
   })
 

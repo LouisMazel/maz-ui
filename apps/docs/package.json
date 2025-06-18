@@ -18,7 +18,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@maz-ui/themes": "workspace:*",
+    "@maz-ui/eslint-config": "workspace:*",
+    "@maz-ui/utils": "workspace:*",
     "chart.js": "catalog:",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.13",

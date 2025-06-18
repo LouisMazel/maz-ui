@@ -94,12 +94,12 @@ function filterAttrs(attrs: Record<string, unknown>) {
       result[key] = attrs[key]
     }
     return result
-  }, {})
+  }, {} as Record<string, unknown>)
 }
 
 function getSvgAttrs(svgEl: SVGElement) {
   // copy attrs
-  const svgAttrs = {}
+  const svgAttrs: Record<string, string> = {}
   const attrs = svgEl.attributes
   if (!attrs) {
     return svgAttrs
@@ -199,3 +199,10 @@ watchEffect(() => getSource(fullSrc.value))
     v-html="getSvgContent(svgElSource)"
   />
 </template>
+
+<style lang="postcss" scoped>
+.m-icon {
+  width: 1em !important;
+  height: 1em !important;
+}
+</style>

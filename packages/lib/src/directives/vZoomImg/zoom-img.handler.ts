@@ -35,9 +35,9 @@ export class ZoomImgHandler {
     disabled: false,
   }
 
-  private mouseEnterListener: () => void
-  private mouseLeaveListener: () => void
-  private renderPreviewListener: () => void
+  private mouseEnterListener: (() => void) | undefined = undefined
+  private mouseLeaveListener: (() => void) | undefined = undefined
+  private renderPreviewListener: (() => void) | undefined = undefined
 
   constructor(binding: VZoomImgBinding) {
     if (!binding.value) {
@@ -118,9 +118,18 @@ export class ZoomImgHandler {
      * Remove all
      */
     this.imgEventHandler(false)
-    el.removeEventListener('mouseenter', this.mouseEnterListener)
-    el.removeEventListener('mouseleave', this.mouseLeaveListener)
-    el.removeEventListener('click', this.renderPreviewListener)
+
+    if (this.mouseEnterListener)
+      el.removeEventListener('mouseenter', this.mouseEnterListener)
+    if (this.mouseLeaveListener)
+      el.removeEventListener('mouseleave', this.mouseLeaveListener)
+    if (this.renderPreviewListener)
+      el.removeEventListener('click', this.renderPreviewListener)
+
+    this.mouseEnterListener = undefined
+    this.mouseLeaveListener = undefined
+    this.renderPreviewListener = undefined
+
     el.classList.remove('maz-zoom-img-instance')
     el.removeAttribute('data-zoom-src')
     el.removeAttribute('data-zoom-alt')

@@ -1,8 +1,8 @@
 import type { MaybeRef, MaybeRefOrGetter, Ref } from 'vue'
 
-import { onBeforeUnmount, ref, shallowRef, toValue, unref, watch } from 'vue'
+import { isClient } from '@maz-ui/utils/src/utils/isClient.js'
 
-import { isClient } from '../utils/isClient'
+import { onBeforeUnmount, ref, shallowRef, toValue, unref, watch } from 'vue'
 
 export interface UseDropZoneReturn {
   files: Ref<File[] | null>
@@ -97,8 +97,8 @@ export function useDropZone(
         if (event.dataTransfer) {
           event.dataTransfer.dropEffect = 'none'
         }
-        isOverError.value = true
-        return
+        // isOverError.value = true
+        // return
       }
 
       event.preventDefault()

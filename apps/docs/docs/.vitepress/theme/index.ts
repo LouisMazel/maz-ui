@@ -9,7 +9,7 @@ import { vFullscreenImgInstall } from 'maz-ui/src/directives/vFullscreenImg.js'
 // @ts-ignore
 import { AosPlugin, DialogPlugin, ToasterPlugin, WaitPlugin } from 'maz-ui/src/plugins/index.js'
 // @ts-ignore
-import { MazUiPlugin } from 'maz-ui/src/plugins/maz-ui.js'
+import { MazUi } from 'maz-ui/src/plugins/maz-ui.js'
 
 import { inBrowser } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
@@ -27,10 +27,17 @@ import './main.css'
 export default {
   extends: DefaultTheme,
   Layout,
-  enhanceApp(ctx) {
-    const { app, router: { route } } = ctx
-
-    app.use(MazUiPlugin, { darkModeStrategy: 'class', strategy: 'runtime' })
+  enhanceApp({ app, router: { route } }) {
+    app.use(MazUi, {
+      theme: {
+        darkModeStrategy: 'class',
+        strategy: 'hybrid',
+        preset: 'maz-ui',
+      },
+      translations: {
+        locale: 'fr',
+      },
+    })
 
     app.provide('mazIconPath', '/icons')
 

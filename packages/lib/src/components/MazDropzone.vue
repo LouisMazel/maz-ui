@@ -2,11 +2,12 @@
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazSpinnerProps } from './MazSpinner.vue'
 import type { MazColor } from './types'
-import { MazCheckCircle, MazTrash, MazXCircle } from '@maz-ui/icons'
+import { MazArrowUpOnSquare, MazCheckCircle, MazTrash, MazXCircle } from '@maz-ui/icons'
+import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
+import { sleep } from '@maz-ui/utils/src/utils/sleep.js'
 import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useDropZone } from './../composables/useDropzone'
-import { sleep } from './../utils/sleep'
 import MazBtn from './MazBtn.vue'
 import MazIcon from './MazIcon.vue'
 
@@ -143,11 +144,20 @@ export type MazDropzoneProps = {
   /**
    * Translations
    * @description Custom translations for the component
-   * @default { dragAndDrop: 'Drag and drop your files', fileInfos: '${dataTypes} ${multiple ? 'files' : 'file'} - ${maxFileSize ? `${maxFileSize} MB max` : ''} - ${multiple && maxFiles ? `${maxFiles} max files` : ''}', selectFile: 'Select file', divider: '-' }
+   * @default {
+   *   dragAndDrop: 'Drag and drop your files',
+   *   fileMaxCount: 'Maximum {count} files',
+   *   fileMaxSize: 'Maximum {size} MB',
+   *   fileTypes: 'Allowed file types: {types}',
+   *   selectFile: 'Select file',
+   *   divider: 'or'
+   * }
    */
   translations?: {
     dragAndDrop?: string
-    fileInfos?: string
+    fileMaxCount?: string
+    fileMaxSize?: string
+    fileTypes?: string
     selectFile?: string
     divider?: string
   }
@@ -194,6 +204,12 @@ export type MazDropzoneProps = {
   transformBody?: (formData: FormData) => RequestInit['body']
 }
 
+/**
+ * The files data
+ * @type {MazDropzoneFileData[]}
+ * @model
+ * @default []
+ */
 const filesData = defineModel<MazDropzoneFileData[]>({
   default: () => [],
 })
@@ -454,7 +470,7 @@ async function handleFiles(files: File[] | FileList | null) {
 
     const fileData = await getFileData(file)
 
-    filesData.value.push(fileData)
+    filesData.value = [...filesData.value, fileData]
     emits('add', fileData.file)
   }
 
@@ -583,18 +599,15 @@ const dataTypesString = computed(() => {
 
 const allFileIsAccepted = computed<boolean>(() => dataTypes?.length === 1 && dataTypes[0] === '*/*')
 
-const t = computed(() => {
-  const fileText = hasMultiple.value ? 'files' : 'file'
-  const dataTypesText = dataTypesString.value ? `${dataTypesString.value} ${fileText}` : ''
+const { t } = useTranslations()
+const messages = computed(() => {
   return {
-    dragAndDrop: translations?.dragAndDrop || 'Drag and drop your files',
-    fileInfos: translations?.fileInfos || [
-      dataTypesText,
-      maxFileSize ? `${maxFileSize} MB max` : '',
-      hasMultiple.value && maxFiles ? `${maxFiles} max files` : '',
-    ].filter(Boolean).join(' - '),
-    selectFile: translations?.selectFile || 'Select file',
-    divider: translations?.divider || '-',
+    dragAndDrop: translations?.dragAndDrop || t('dropzone.dragAndDrop'),
+    fileMaxCount: translations?.fileMaxCount || maxFiles ? t('dropzone.fileMaxCount', { count: maxFiles }) : undefined,
+    fileMaxSize: translations?.fileMaxSize || maxFileSize ? t('dropzone.fileMaxSize', { size: maxFileSize }) : undefined,
+    fileTypes: translations?.fileTypes || dataTypesString.value ? t('dropzone.fileTypes', { types: dataTypesString.value }) : undefined,
+    selectFile: translations?.selectFile || t('dropzone.selectFile'),
+    divider: translations?.divider || t('dropzone.divider'),
   } satisfies MazDropzoneProps['translations']
 })
 
@@ -689,7 +702,7 @@ defineExpose({
     class="m-dropzone m-reset-css"
     :class="{
       'm-dropzone--disabled': disabled,
-      'm-dropzone--is-over-drop-zone': isOverDropZone,
+      'm-dropzone--is-over-drop-zone': isOverDropZone && !isOverError,
       'm-dropzone--is-over-error': isOverError,
     }"
     :style="{
@@ -729,6 +742,7 @@ defineExpose({
               <MazBtn
                 v-if="!file.uploading && !file.success"
                 size="xs"
+                rounded-size="full"
                 :icon="MazTrash"
                 :disabled
                 :color
@@ -744,28 +758,36 @@ defineExpose({
     <template v-if="filesData.length === 0 && selectAreaCanBeDisplayed">
       <!--
         @slot no-files-area - Slot to customize the no files area
-        @binding {Function} handle-file-input-click - The function to handle the file input click
+        @binding {Function} select-file - The function to select the file
       -->
-      <slot name="no-files-area" :handle-file-input-click="handleFileInputClick">
+      <slot name="no-files-area" :select-file="handleFileInputClick">
         <div class="m-dropzone__content">
           <!--
             @slot upload-icon - Slot to customize the upload icon
           -->
           <slot name="upload-icon">
-            <MazIcon name="arrow-up-on-square" class="m-dropzone__upload-icon" />
+            <MazArrowUpOnSquare class="m-dropzone__upload-icon" />
           </slot>
 
           <span class="m-dropzone__upload-text">
-            {{ t.dragAndDrop }}
+            {{ messages.dragAndDrop }}
           </span>
         </div>
-        <span>{{ t.divider }}</span>
+        <span class="m-dropzone__divider">{{ messages.divider }}</span>
         <MazBtn :disabled :color v-bind="selectFileBtnProps" @click="handleFileInputClick">
-          {{ t.selectFile }}
+          {{ messages.selectFile }}
         </MazBtn>
 
-        <p v-if="!allFileIsAccepted" class="m-dropzone__info-text">
-          {{ t.fileInfos }}
+        <p v-if="!allFileIsAccepted && (messages.fileMaxCount || messages.fileMaxSize || messages.fileTypes)" class="m-dropzone__info-text">
+          <template v-if="messages.fileMaxCount">
+            {{ messages.fileMaxCount }} <span v-if="messages.fileMaxSize || messages.fileTypes"> - </span>
+          </template>
+          <template v-if="messages.fileMaxSize">
+            {{ messages.fileMaxSize }} <span v-if="messages.fileTypes"> - </span>
+          </template>
+          <template v-if="messages.fileTypes">
+            {{ messages.fileTypes }}
+          </template>
         </p>
       </slot>
     </template>
@@ -786,14 +808,14 @@ defineExpose({
 
 <style lang="postcss" scoped>
 .m-dropzone {
-  @apply maz-flex maz-w-full maz-flex-col maz-gap-2 maz-overflow-hidden maz-rounded maz-border maz-border-dashed maz-border-divider maz-p-6 maz-transition-colors maz-duration-200 maz-ease-in-out maz-flex-center hover:maz-bg-surface-400 maz-cursor-pointer;
+  @apply maz-flex maz-w-full maz-flex-col maz-gap-2 maz-overflow-hidden maz-rounded maz-border maz-border-dashed maz-border-divider maz-p-6 maz-transition-colors maz-duration-200 maz-ease-in-out maz-flex-center maz-bg-surface-400/50 hover:maz-bg-surface-400 maz-cursor-pointer;
 
   &--disabled {
     @apply maz-cursor-not-allowed maz-opacity-50;
   }
 
-  &--is-over-drop-zone:not(&--is-over-error) {
-    @apply maz-bg-surface-500;
+  &--is-over-drop-zone {
+    @apply maz-bg-primary-400/20 hover:maz-bg-surface-400;
 
     border-color: var(--active-color);
 
@@ -803,11 +825,15 @@ defineExpose({
   }
 
   &--is-over-error {
-    @apply maz-border-destructive maz-bg-destructive-50;
+    @apply maz-border-destructive maz-bg-destructive-50 hover:maz-bg-destructive-50;
 
     .maz-dropzone__upload-icon {
       @apply maz-text-destructive;
     }
+  }
+
+  &__divider {
+    @apply maz-text-muted maz-text-sm;
   }
 
   &__content {
@@ -831,7 +857,7 @@ defineExpose({
   }
 
   &__overlay {
-    @apply maz-absolute maz-inset-0 maz-bg-gray-800/50;
+    @apply maz-absolute maz-inset-0 maz-backdrop-blur-sm maz-bg-overlay/50 maz-rounded;
   }
 
   &__icon-container {
@@ -851,11 +877,11 @@ defineExpose({
   }
 
   &__file-icon {
-    @apply maz-text-3xl maz-text-foreground dark:maz-text-foreground;
+    @apply maz-text-3xl maz-text-gray-100;
   }
 
   &__description {
-    @apply maz-z-2 maz-flex maz-w-full maz-flex-col maz-gap-1 maz-truncate maz-p-2 maz-text-foreground dark:maz-text-foreground;
+    @apply maz-z-2 maz-flex maz-w-full maz-flex-col maz-gap-1 maz-truncate maz-p-2  maz-text-gray-100;
   }
 
   &__file-info {

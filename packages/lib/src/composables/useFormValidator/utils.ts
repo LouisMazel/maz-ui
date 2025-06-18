@@ -12,12 +12,12 @@ import type {
   ValidationIssues,
 } from './types'
 
-import { getCurrentInstance, inject, nextTick } from 'vue'
+import { debounceId } from '@maz-ui/utils/src/utils/debounceId.js'
+import { isEqual } from '@maz-ui/utils/src/utils/isEqual.js'
+import { throttleId } from '@maz-ui/utils/src/utils/throttleId.js'
 
+import { getCurrentInstance, inject, nextTick } from 'vue'
 import { useFreezeValue } from './../../composables/useFreezeValue'
-import { debounceId } from './../../utils/debounceId'
-import { isEqual } from './../../utils/isEqual'
-import { throttleId } from './../../utils/throttleId'
 import { CONFIG } from './config'
 
 export function fieldHasValidation<Model extends BaseFormPayload, ModelKey extends ExtractModelKey<FormSchema<Model>>>(field: ModelKey, schema: FormSchema<Model>) {
@@ -68,21 +68,21 @@ export function getValidateFunction<
     return
   }
 
-  const fieldName = String(name)
+  const fieldName = String(name) as ModelKey
 
   if (debouncedFields?.[fieldName] && throttledFields?.[fieldName]) {
-    throw new Error(`The field "${fieldName}" cannot be both debounced and throttled`)
+    throw new Error(`The field "${String(fieldName)}" cannot be both debounced and throttled`)
   }
   else if (debouncedFields?.[fieldName]) {
     return debounceId(
-      fieldName,
+      String(fieldName),
       setFieldValidationState<Model>,
       typeof debouncedFields[fieldName] === 'number' ? debouncedFields[fieldName] : CONFIG.debounceTime,
     )
   }
   else if (throttledFields?.[fieldName]) {
     return throttleId(
-      fieldName,
+      String(fieldName),
       setFieldValidationState<Model>,
       typeof throttledFields[fieldName] === 'number' ? throttledFields[fieldName] : CONFIG.throttleTime,
     )

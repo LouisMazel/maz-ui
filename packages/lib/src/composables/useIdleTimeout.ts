@@ -1,8 +1,8 @@
-import type { IdleTimeoutCallback, IdleTimeoutOptions } from '../utils/idleTimeout'
+import type { IdleTimeoutCallback, IdleTimeoutOptions } from '@maz-ui/utils/src/utils/idleTimeout.js'
 import {
   IdleTimeout,
 
-} from '../utils/idleTimeout'
+} from '@maz-ui/utils/src/utils/idleTimeout.js'
 
 export function useIdleTimeout({
   callback,

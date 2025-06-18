@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { MazColor } from './types'
-import { computed, defineAsyncComponent, onUnmounted, ref, watch } from 'vue'
-import { isClient } from '../utils/isClient'
+import { isClient } from '@maz-ui/utils/src/utils/isClient.js'
+import { isStandaloneMode } from '@maz-ui/utils/src/utils/isStandaloneMode.js'
 
-import { isStandaloneMode } from '../utils/isStandaloneMode'
+import { computed, defineAsyncComponent, onUnmounted, ref, watch } from 'vue'
 
 const props = withDefaults(defineProps<MazPullToRefreshProps>(), {
   distance: 100,

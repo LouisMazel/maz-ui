@@ -1,6 +1,6 @@
 ---
-title: date
-description: The module date is a function that formats date
+title: formatDate
+description: The module formatDate is a function that formats dates with the native api [Intl.DateTimeFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) from browsers and Node.js
 ---
 
 # {{ $frontmatter.title }}
@@ -20,13 +20,13 @@ description: The module date is a function that formats date
 
 ```vue
 <script lang="ts" setup>
-import { date } from 'maz-ui'
+import { formatDate } from 'maz-ui'
 import { computed, ref } from 'vue'
 
 const dateValue = ref('2022-02-01')
 
 const dateFormatted = computed(() =>
-  dateValue.value ? date(dateValue.value, 'en-US') : undefined,
+  dateValue.value ? formatDate(dateValue.value, 'en-US') : undefined,
 )
 </script>
 
@@ -56,12 +56,12 @@ const DEFAULT_OPTIONS: Intl.DateTimeFormatOptions = {
 ```
 
 <script lang="ts" setup>
-  import { date } from 'maz-ui'
+  import { formatDate } from 'maz-ui'
   import { ref, computed } from 'vue'
 
   const dateValue = ref('2022-02-01')
 
   const dateFormatted = computed(() =>
-    dateValue.value ? date(dateValue.value, 'en-US') : undefined,
+    dateValue.value ? formatDate(dateValue.value, 'en-US') : undefined,
   )
 </script>

@@ -73,7 +73,7 @@ Then, import and use only the components, composables, and more you need:
 </template>
 
 <script setup lang="ts">
-  import { MazBtn } from 'maz-ui/components'
+  import MazBtn from 'maz-ui/components/MazBtn'
 </script>
 ```
 
@@ -92,7 +92,7 @@ The Nuxt module automatically:
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['maz-ui/nuxt'],
+  modules: ['@maz-ui/nuxt'],
 })
 ```
 

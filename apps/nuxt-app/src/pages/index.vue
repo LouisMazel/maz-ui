@@ -3,33 +3,65 @@
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
-      <MazAnimatedText
-        text="Hello world"
-        last-word="true"
-      />
+      <MazDropdown>
+        <template #trigger>
+          <MazBtn color="contrast">
+            Hello
+          </MazBtn>
+        </template>
 
-      <MazChecklist
-        v-model="languages"
-        title="Select your languages"
-        :search="{
-          placeholder: 'Search a language',
-          debounce: 300,
-          autoFocus: false,
-        }"
-        :items="languagesOptions"
-      >
-        <template #item="{ item }">
-          <div class="maz-flex maz-w-full maz-items-center maz-justify-between">
-            <span>{{ item.label }}</span>
-            <MazBadge
-              color="contrast"
-              outlined
-            >
-              {{ item.value }}
-            </MazBadge>
+        <div class="maz-p-4">
+          Hello
+        </div>
+      </MazDropdown>
+
+      <MazPopover position="top">
+        <template #trigger>
+          <MazBtn color="destructive">
+            Hello
+          </MazBtn>
+        </template>
+
+        <template #default>
+          <div class="maz-p-4">
+            Hello
           </div>
         </template>
-      </MazChecklist>
+      </MazPopover>
+
+      <MazBtn
+        v-tooltip="{
+          html: '<strong>COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC</strong>',
+          color: 'destructive',
+        }"
+        color="destructive"
+      >
+        Tooltip Text HTML
+      </MazBtn>
+    <!-- <MazBtn
+      v-tooltip="{
+        html: `<strong>COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC</strong>`,
+      }"
+      color="destructive"
+    >
+      Tooltip Text HTML
+    </MazBtn>
+    <p
+      v-tooltip.top="{
+        text: 'COUCOUCOUCOUC',
+      }"
+      color="destructive"
+    >
+      Tooltip Top
+    </p>
+    <p
+      v-tooltip.bottom="{
+        text: 'COUCOUCOUCOUC',
+      }"
+      color="destructive"
+    >
+      Tooltip Bottom
+    </p> -->
 
       <!-- End Developping Area -->
     </div>
@@ -46,30 +78,8 @@
 <script lang="ts" setup>
 import { sleep } from 'maz-ui/src/index.js'
 
-const { getLanguageDisplayName } = useLanguageDisplayNames('en')
 const toast = useToast()
 const wait = useWait()
-const languages = ref<string[]>([])
-
-function getLanguageDisplayNames() {
-  return [
-    { label: getLanguageDisplayName({ code: 'aa' }).value || 'aa', value: 'aa' },
-    { label: getLanguageDisplayName({ code: 'fr' }).value || 'fr', value: 'fr' },
-    { label: getLanguageDisplayName({ code: 'en' }).value || 'en', value: 'en' },
-    { label: getLanguageDisplayName({ code: 'es' }).value || 'es', value: 'es' },
-    { label: getLanguageDisplayName({ code: 'de' }).value || 'de', value: 'de' },
-    { label: getLanguageDisplayName({ code: 'it' }).value || 'it', value: 'it' },
-  ]
-}
-const languagesOptions = ref<{ label: string, value: string }[]>(getLanguageDisplayNames())
-
-onMounted(() => {
-  languagesOptions.value = getLanguageDisplayNames()
-
-  setTimeout(() => {
-    languagesOptions.value = getLanguageDisplayNames()
-  }, 3000)
-})
 
 onMounted(async () => {
   wait.start('APP_LOADING')

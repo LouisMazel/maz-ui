@@ -78,7 +78,7 @@ function close() {
   toggleModal(false)
 }
 
-async function toggleModal(value) {
+async function toggleModal(value: boolean) {
   if (!value) {
     emits('before-close')
     await beforeClose?.()
