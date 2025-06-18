@@ -1,7 +1,7 @@
 import type { IconComponent } from '@maz-ui/icons'
-import type { MazColor } from 'src/components'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazBtnProps } from '../../components/MazBtn.vue'
+import type { MazColor } from '../../components/types'
 
 export type ToasterPosition
   = | 'top'

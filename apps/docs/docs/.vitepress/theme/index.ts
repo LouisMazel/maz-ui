@@ -1,9 +1,14 @@
+/* eslint-disable ts/ban-ts-comment */
 import type { AosOptions, ToasterOptions } from 'maz-ui/plugins'
 import type { Theme } from 'vitepress'
 
+// @ts-ignore
 import * as components from 'maz-ui/src/components/index.js'
+// @ts-ignore
 import { vFullscreenImgInstall } from 'maz-ui/src/directives/vFullscreenImg.js'
+// @ts-ignore
 import { AosPlugin, DialogPlugin, ToasterPlugin, WaitPlugin } from 'maz-ui/src/plugins/index.js'
+// @ts-ignore
 import { MazUiPlugin } from 'maz-ui/src/plugins/maz-ui.js'
 
 import { inBrowser } from 'vitepress'
