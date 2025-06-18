@@ -9,7 +9,7 @@ description: Modern and performant theme system for Maz-UI with TypeScript, HSL 
 
 <NpmBadge package="@maz-ui/themes"></NpmBadge>
 
-## ✨ Why @maz-ui/themes?
+## ✨ Features
 
 - 🎨 **Modern HSL CSS Variables** - Maximum flexibility with colors
 - 🌓 **Smart Dark Mode** - Automatic support with `prefers-color-scheme`
@@ -19,28 +19,23 @@ description: Modern and performant theme system for Maz-UI with TypeScript, HSL 
 - 🎯 **Zero FOUC** - Critical CSS injected inline to avoid flashes
 - 🔧 **Flexible Presets** - Ready-to-use and customizable configurations
 
-## Installation
-
-```bash
-npm install @maz-ui/themes
-```
-
 ## Quick Usage
 
-### 1. Plugin Configuration
+### 1. Plugin Configuration with `MazUi` plugin
 
 ```typescript
 // main.ts
-import { MazThemePlugin } from '@maz-ui/themes'
-import { mazUi } from '@maz-ui/themes/presets'
+import { MazUi } from 'maz-ui/plugins/maz-ui'
 import { createApp } from 'vue'
 
 const app = createApp(App)
 
-app.use(MazThemePlugin, {
-  preset: mazUi,
-  strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
-  darkModeStrategy: 'class' // 'class' | 'media' | 'auto'
+app.use(MazUi, {
+  theme: {
+    preset: 'maz-ui', // 'maz-ui' | 'pristine' | 'ocean' | 'obsidian'
+    strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
+    darkModeStrategy: 'class' // 'class' | 'media' | 'auto'
+  }
 })
 ```
 
@@ -83,6 +78,92 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
           <label class="maz-text-sm maz-font-medium">Mode:</label>
           <MazBtn
             size="sm"
+            :color="!isDark ? 'primary' : 'contrast'"
+            @click="setColorMode('light')"
+          >
+            ☀️ Light
+          </MazBtn>
+          <MazBtn
+            size="sm"
+            :color="isDark ? 'primary' : 'contrast'"
+            @click="setColorMode('dark')"
+          >
+            🌙 Dark
+          </MazBtn>
+          <MazBtn
+            size="sm"
+            :color="colorMode === 'auto' ? 'primary' : 'contrast'"
+            @click="setColorMode('auto')"
+          >
+            🔄 Auto
+          </MazBtn>
+        </div>
+        <div class="maz-space-y-2">
+          <label class="maz-text-sm maz-font-medium">Preset:</label>
+          <div class="maz-flex maz-gap-2">
+            <MazBtn
+              size="sm"
+              :color="currentPreset.name === 'maz-ui' ? 'primary' : 'contrast'"
+              @click="changePreset('mazUi')"
+            >
+              Maz-UI
+            </MazBtn>
+            <MazBtn
+              size="sm"
+              :color="currentPreset.name === 'ocean' ? 'primary' : 'contrast'"
+              @click="changePreset('ocean')"
+            >
+              Ocean
+            </MazBtn>
+            <MazBtn
+              size="sm"
+              :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'"
+              @click="changePreset('pristine')"
+            >
+              Pristine
+            </MazBtn>
+            <MazBtn
+              size="sm"
+              :color="currentPreset.name === 'obsidian' ? 'primary' : 'contrast'"
+              @click="changePreset('obsidian')"
+            >
+              Obsidian
+            </MazBtn>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<template #code>
+
+```vue
+<script setup>
+import { useTheme } from '@maz-ui/themes'
+
+const { currentPreset, updateTheme } = useTheme()
+
+function changePreset(presetName) {
+  updateTheme(presetName)
+}
+</script>
+
+<template>
+  <div class="demo-theme-controls">
+    <div class="maz-space-y-4">
+      <h3 class="maz-text-xl maz-font-semibold">Demo Interface</h3>
+      <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4">
+        <MazBtn color="primary">Primary Button</MazBtn>
+        <MazBtn color="secondary">Secondary Button</MazBtn>
+        <MazBtn color="success">Success Button</MazBtn>
+        <MazBtn color="warning">Warning Button</MazBtn>
+      </div>
+      <MazInput />
+      <div class="theme-controls maz-space-y-4">
+        <div class="maz-flex maz-items-center maz-gap-4">
+          <label class="maz-text-sm maz-font-medium">Mode:</label>
+          <MazBtn
+            size="sm"
             :color="!isDark ? 'primary' : 'secondary'"
             @click="setColorMode('light')"
           >
@@ -108,7 +189,7 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
           <div class="maz-flex maz-gap-2">
             <MazBtn
               size="sm"
-              :color="currentPreset.name === 'default' ? 'primary' : 'secondary'"
+              :color="currentPreset.name === 'maz-ui' ? 'primary' : 'secondary'"
               @click="changePreset('mazUi')"
             >
               Maz-UI
@@ -138,43 +219,6 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
         </div>
       </div>
     </div>
-  </div>
-
-<template #code>
-
-```vue
-<script setup>
-import { useTheme } from '@maz-ui/themes'
-import { mazUi, ocean, pristine, obsidian } from '@maz-ui/themes/presets'
-
-const {
-  isDark,
-  colorMode,
-  currentPreset,
-  setColorMode,
-  updateTheme
-} = useTheme()
-
-const presets = { mazUi, pristine, ocean, obsidian }
-const originalPreset = ref(null)
-
-function changePreset(presetName) {
-  updateTheme(presets[presetName])
-}
-</script>
-
-<template>
-  <div class="maz-bg-background maz-text-foreground">
-    <MazBtn
-      :color="isDark ? 'primary' : 'secondary'"
-      @click="setColorMode(isDark ? 'light' : 'dark')"
-    >
-      {{ isDark ? '☀️' : '🌙' }} Toggle
-    </MazBtn>
-
-    <MazBtn @click="changePreset('ocean')">
-      Ocean Theme
-    </MazBtn>
   </div>
 </template>
 ```
@@ -229,9 +273,11 @@ The hybrid strategy combines the best of both worlds:
 The full CSS is injected via `requestIdleCallback` with a 100ms timeout, allowing the browser to prioritize critical tasks while ensuring fast loading of complete styling.
 
 ```typescript
-app.use(MazThemePlugin, {
-  preset: mazUi,
-  strategy: 'hybrid'
+app.use(MazUi, {
+  theme: {
+    preset: 'maz-ui',
+    strategy: 'hybrid'
+  }
 })
 ```
 
@@ -246,9 +292,11 @@ Perfect for applications with frequent theme changes.
 - **Heavier bundle** - CSS generation utilities included client-side
 
 ```typescript
-app.use(MazThemePlugin, {
-  preset: mazUi,
-  strategy: 'runtime'
+app.use(MazUi, {
+  theme: {
+    preset: 'maz-ui',
+    strategy: 'runtime'
+  }
 })
 ```
 
@@ -258,9 +306,11 @@ CSS generated at build-time and included in the bundle.
 Optimal for static sites without theme changes.
 
 ```typescript
-app.use(MazThemePlugin, {
-  preset: mazUi,
-  strategy: 'buildtime'
+app.use(MazUi, {
+  theme: {
+    preset: 'maz-ui',
+    strategy: 'buildtime'
+  }
 })
 ```
 
@@ -287,8 +337,9 @@ app.use(MazThemePlugin, {
 <template #code>
 
 ```typescript
-import { definePreset, pristine, type ThemePresetOverrides } from '@maz-ui/themes'
-import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
+import { definePreset, MazUiTheme, type ThemePresetOverrides, ocean
+
+ } from '@maz-ui/themes'
 
 const overrides: ThemePresetOverrides = {
   name: 'custom-purple',
@@ -310,15 +361,24 @@ const overrides: ThemePresetOverrides = {
   }
 }
 
-const customTheme = definePreset({
-  base: pristine,
-  overrides:
+const customTheme = await definePreset({
+  base: 'ocean',
+  overrides,
 })
+/**
+ * or with preset object
+ * The function is synchronous when using a preset object
+ */
+const customTheme = definePreset({
+  base: ocean,
+  overrides,
+})
+
 
 // Usage
 
 // with plugin
-app.use(MazThemePlugin, {
+app.use(MazUiTheme, {
   preset: customTheme,
 })
 
@@ -333,10 +393,10 @@ updateTheme(customTheme)
 ### Advanced Theme with Overrides
 
 ```typescript
-import { definePreset, mazUi } from '@maz-ui/themes'
+import { definePreset } from '@maz-ui/themes'
 
-const brandTheme = definePreset({
-  base: mazUi,
+const brandTheme = await definePreset({
+  base: 'maz-ui',
   overrides: {
     name: 'brand',
     foundation: {
@@ -500,6 +560,7 @@ app.use(MazThemePlugin, {
 ### Utility functions
 
 #### `buildThemeCSS(options)`
+
 Generates complete CSS for a theme.
 
 ```typescript
@@ -512,6 +573,7 @@ const css = buildThemeCSS({
 ```
 
 #### `generateThemeBundle(presets, options)`
+
 Generates a bundle containing multiple themes.
 
 ```typescript
@@ -523,6 +585,7 @@ const bundle = generateThemeBundle([theme1, theme2], {
 ```
 
 #### `buildSeparateThemeFiles(preset, options)`
+
 Generates separate files for different use cases.
 
 ```typescript
@@ -531,6 +594,7 @@ const files = buildSeparateThemeFiles(preset)
 ```
 
 #### `createThemeStylesheet(css, options)`
+
 Creates a `<style>` tag with the provided CSS.
 
 ```typescript
@@ -653,8 +717,8 @@ app.use(MazThemePlugin, { preset: myTheme })
 The new system offers much more flexibility and performance!
 
 <script setup>
-import { useTheme } from '@maz-ui/themes'
-import { mazUi, pristine, ocean } from '@maz-ui/themes/presets'
+import { useTheme } from '@maz-ui/themes/src/composables/useTheme.js'
+import { definePreset } from '@maz-ui/themes/src/define-preset.js'
 import { ref } from 'vue'
 
 const {
@@ -665,19 +729,15 @@ const {
   updateTheme
 } = useTheme()
 
-const presets = { mazUi, pristine, ocean }
 const originalPreset = ref(null)
 
 function changePreset(presetName) {
-  updateTheme(presets[presetName])
+  updateTheme(presetName)
 }
 
-function applyCustomTheme() {
-  if (!originalPreset.value) {
-    originalPreset.value = currentPreset.value
-  }
-
-  updateTheme({
+const customPreset = await definePreset({
+  base: 'ocean',
+  overrides: {
     name: 'custom-purple',
     colors: {
       light: {
@@ -691,7 +751,15 @@ function applyCustomTheme() {
         'accent': '260 100% 80%'
       }
     }
-  })
+  }
+})
+
+function applyCustomTheme() {
+  if (!originalPreset.value) {
+    originalPreset.value = currentPreset.value
+  }
+
+  updateTheme(customPreset)
 }
 
 function resetTheme() {

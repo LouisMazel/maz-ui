@@ -1,29 +1,37 @@
-<script lang="ts" setup generic="T extends string, O extends MazChecklistItemOption">
-import type { NormalizeStringOptions } from '../utils/normalizeString'
+<script lang="ts" setup generic="T extends string | number, O extends MazChecklistItemOption">
+import type { MazTranslationsNestedSchema } from '@maz-ui/translations/src/types.js'
+import type { DeepPartial } from '@maz-ui/utils/src/ts-helpers/DeepPartial.js'
+import type { NormalizeStringOptions } from '@maz-ui/utils/src/utils/normalizeString.js'
 import type { MazInputProps } from './MazInput.vue'
 import type { MazColor } from './types'
 import { MazMagnifyingGlass, MazNoSymbol } from '@maz-ui/icons'
+import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
+import { normalizeString } from '@maz-ui/utils/src/utils/normalizeString.js'
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
-import { normalizeString } from '../utils/normalizeString'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useStringMatching } from '../composables/useStringMatching'
 import MazCardSpotlight from './MazCardSpotlight.vue'
 import MazCheckbox from './MazCheckbox.vue'
 
 export type MazChecklistItemOption = {
   label: string
-  value: string
+  value: string | number
 } & Record<string, any>
 
 export interface MazChecklistProps<T, O> {
   /**
    * The model value of the checklist (selected items)
+   * @type {(T extends unknown)[]}
    */
   modelValue?: T[]
   /**
    * The query to filter the items (model)
+   * @type {string}
    */
   query?: string
   /**
    * The list of items to display
+   * @type {(O extends MazChecklistItemOption)[]}
    */
   items?: O[]
   /**
@@ -42,8 +50,11 @@ export interface MazChecklistProps<T, O> {
   search?: boolean | MazInputProps<string>
   /**
    * The options to normalize the search query (used by the default search function)
+   * By default, the threshold is 0.75
    */
-  searchOptions?: NormalizeStringOptions
+  searchOptions?: NormalizeStringOptions & {
+    threshold?: number
+  }
   /**
    * Replace the default search function to provide a custom search function
    * @default undefined
@@ -54,9 +65,26 @@ export interface MazChecklistProps<T, O> {
    * @default primary
    */
   color?: MazColor
+  /**
+   * Translations of the checklist component
+   * @type {DeepPartial<MazTranslationsNestedSchema['checklist']>}
+   * @default Translations from @maz-ui/translations
+   */
+  translations?: DeepPartial<MazTranslationsNestedSchema['checklist']>
 }
 
-const { modelValue, query, elevation = false, items, title, search, searchOptions, searchFunction, color = 'primary' } = defineProps<MazChecklistProps<T, O>>()
+const {
+  modelValue,
+  query,
+  elevation = false,
+  items,
+  title,
+  search,
+  searchOptions,
+  searchFunction,
+  color = 'primary',
+  translations,
+} = defineProps<MazChecklistProps<T, O>>()
 
 const emits = defineEmits<{
   /**
@@ -71,6 +99,10 @@ const emits = defineEmits<{
   'update:model-value': [value?: T[]]
 }>()
 
+const id = useInstanceUniqId({
+  componentName: 'MazChecklist',
+})
+
 const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
 
 const internalQuery = ref<string | undefined>(query)
@@ -82,6 +114,15 @@ watch(
   },
 )
 
+const { t } = useTranslations()
+
+const messages = computed<MazTranslationsNestedSchema['checklist']>(() => ({
+  noResultsFound: translations?.noResultsFound ?? t('checklist.noResultsFound'),
+  searchInput: {
+    placeholder: translations?.searchInput?.placeholder ?? t('checklist.searchInput.placeholder'),
+  },
+}))
+
 const filteredItems = computed(() => {
   if (!internalQuery.value || !search) {
     return items
@@ -90,10 +131,32 @@ const filteredItems = computed(() => {
   const normalizedQuery = normalizeString(internalQuery.value, searchOptions)
   return searchFunction
     ? searchFunction(normalizedQuery, items ?? [])
-    : items?.filter(({ label, value }) =>
-        normalizeString(label, searchOptions).includes(normalizedQuery) || normalizeString(value, searchOptions).includes(normalizedQuery),
-      )
+    : getFilteredOptionWithQuery(normalizedQuery)
 })
+
+function searchInValue(value?: string, query?: string) {
+  return query && value && normalizeString(value).includes(normalizeString(query))
+}
+
+function getFilteredOptionWithQuery(query: string) {
+  return items?.filter(({ label, value }) => {
+    const threshold = searchOptions?.threshold
+
+    const normalizedQuery = normalizeString(query, searchOptions)
+
+    const searchLabel = normalizeString(label, searchOptions)
+    const searchValue = normalizeString(value, searchOptions)
+
+    return (
+      searchInValue(searchLabel, normalizedQuery)
+      || searchInValue(searchValue, normalizedQuery)
+      || (typeof searchLabel === 'string'
+        && useStringMatching(searchLabel, normalizedQuery, threshold).isMatching.value)
+      || (typeof searchValue === 'string'
+        && useStringMatching(searchValue, normalizedQuery, threshold).isMatching.value)
+    )
+  })
+}
 
 function updateQuery(value?: string) {
   internalQuery.value = value
@@ -104,22 +167,24 @@ function updateQuery(value?: string) {
 <template>
   <div class="m-checklist m-reset-css">
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
-    <label v-if="search" for="query" class="search-label">
+    <label :for="search ? `${id}-query` : undefined" class="search-label">
       <span v-if="$slots.title || title" class="title">
         <!-- @slot use this slot to customize the title -->
         <slot name="title">
           {{ title }}
         </slot>
       </span>
+
       <MazInput
-        id="query"
+        v-if="search"
+        :id="`${id}-query`"
         :model-value="internalQuery"
         v-bind="typeof search === 'object' ? search : {}"
-        :color
+        :color="typeof search === 'object' && search.color ? search.color : color"
         :left-icon="typeof search === 'object' ? search.leftIcon ?? MazMagnifyingGlass : undefined"
         :debounce="typeof search === 'object' ? search.debounce ?? 300 : undefined"
-        :label="typeof search === 'object' ? search.label : undefined"
         :name="typeof search === 'object' ? search.name ?? 'search' : undefined"
+        :placeholder="typeof search === 'object' && search.placeholder ? search.placeholder : messages.searchInput.placeholder"
         @update:model-value="(event) => updateQuery(event as string)"
       />
     </label>
@@ -138,20 +203,20 @@ function updateQuery(value?: string) {
 
             <span class="no-results-text">
               <!-- @slot use this slot to customize the no results message -->
-              <slot name="no-results-text"> No results found </slot>
+              <slot name="no-results-text"> {{ messages.noResultsFound }} </slot>
             </span>
           </div>
         </slot>
       </div>
       <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
       <label
-        v-for="item of filteredItems"
+        v-for="(item) of filteredItems"
         :key="item.value"
-        :for="item.value"
+        :for="`${id}-checklist-item-${item.value}`"
         class="m-checklist-item m-reset-css"
       >
         <MazCheckbox
-          :id="item.value"
+          :id="`${id}-checklist-item-${item.value}`"
           :model-value="modelValue"
           :value="item.value"
           :color

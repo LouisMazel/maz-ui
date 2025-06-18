@@ -1,4 +1,8 @@
 <script lang="ts">
+import type { MazTranslationsNestedSchema } from '@maz-ui/translations/src/types.js'
+import type { DeepPartial } from '@maz-ui/utils/src/ts-helpers/DeepPartial.js'
+import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
+
 export interface MazTableHeadersEnriched {
   label: string
   key?: string
@@ -28,122 +32,211 @@ export type MazTableRow<T extends MazTableRow<T>> = Record<string, any> & {
 
 export type MazTableHeader = string | MazTableHeadersEnriched
 
-export interface MazTableTranslations {
-  searchByAllLabel?: string
-  searchByPlaceholder?: string
-  searchPlaceholder?: string
-  paginationAllLabel?: string
-  noResults?: string
-  actionHeader?: string
-  paginationRowsPerPage?: string
-  paginationOf?: string
-}
-
 export interface MazTableProps<T extends MazTableRow<T>> {
-  /** class of the table element */
+  /**
+   * CSS class of the table element
+   * @type {HTMLAttributes['class']}
+   */
   tableClass?: HTMLAttributes['class']
-  /** style of the table element */
+  /**
+   * CSS style of the table element
+   * @type {HTMLAttributes['style']}
+   */
   tableStyle?: HTMLAttributes['style']
   /**
-   * v-model of the table - list of selected rows
+   * List of selected rows
+   * @type {(string | boolean | number)[]}
    * @model
    */
   modelValue?: (string | boolean | number)[]
   /**
-   * size of the table
-   * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
-   * @default `'md'`
+   * Size of the table
+   * @type {MazSize}
+   * @values xl, lg, md, sm, xs, mini
+   * @default md
    */
   size?: MazSize
   /**
    * Size of the search inputs
-   * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
+   * @type {MazSize}
+   * @values xl, lg, md, sm, xs, mini
    */
   inputSize?: MazSize
-  /** title of the table */
+  /**
+   * Title of the table
+   * @type {string}
+   */
   title?: string
-  /** headers of the table */
+  /**
+   * Headers of the table
+   * @type {MazTableHeader[]}
+   */
   headers?: MazTableHeader[]
-  /** allow sort feature to all columns */
+  /**
+   * Enable sort feature on all columns
+   * @type {boolean}
+   * @default false
+   */
   sortable?: boolean
-  /** align all headers */
+  /**
+   * Align all headers
+   * @type {string}
+   * @default left
+   */
   headersAlign?: ThHTMLAttributes['align']
-  /** rows of the table - type: `Record<string, string | boolean | number>[]` ; */
+  /**
+   * Rows of the table
+   * @type {T[]}
+   */
   rows?: T[]
-  /** add hover effect on rows */
+  /**
+   * Add hover effect on rows
+   * @type {boolean}
+   * @default false
+   */
   hoverable?: boolean
-  /** enable search feature into the table header */
+  /**
+   * Enable search feature in table header
+   * @type {boolean}
+   * @default false
+   */
   search?: boolean
-  /** disabled search in rows - useful to filtering data yourself or make search request to server */
+  /**
+   * Disable search in rows - useful to filter data yourself or make search request to server
+   * @type {boolean}
+   * @default false
+   */
   hideSearchInRow?: boolean
-  /** Disabled search by column (remove select input "search by") */
+  /**
+   * Disable search by column (remove select input "search by")
+   * @type {boolean}
+   * @default false
+   */
   hideSearchBy?: boolean
   /**
-   * search query in input
+   * Search query in input
+   * @type {string}
    * @model
    */
   searchQuery?: string
-  /** add background color to odd rows */
+  /**
+   * Add background color to odd rows
+   * @type {boolean}
+   * @default false
+   */
   backgroundOdd?: boolean
-  /** add background color to even rows */
+  /**
+   * Add background color to even rows
+   * @type {boolean}
+   * @default false
+   */
   backgroundEven?: boolean
-  /** add shodow to the table */
+  /**
+   * Add shadow to the table
+   * @type {boolean}
+   * @default false
+   */
   elevation?: boolean
-  /** no divider between rows */
+  /**
+   * No divider between rows
+   * @type {boolean}
+   * @default false
+   */
   divider?: boolean
-  /** caption of the table */
+  /**
+   * Caption of the table
+   * @type {string}
+   */
   caption?: string
   /**
-   * caption side
-   * @values `'top' | 'bottom'`
+   * Caption side
+   * @type {string}
+   * @values top, bottom
+   * @default bottom
    */
   captionSide?: 'top' | 'bottom'
-  /** add pagination into the table footer */
+  /**
+   * Add pagination in table footer
+   * @type {boolean}
+   * @default false
+   */
   pagination?: boolean
   /**
-   * current page of pagination
+   * Current page of pagination
+   * @type {number}
    * @model
+   * @default 1
    */
   page?: number
   /**
-   * number of items per page
+   * Number of items per page
+   * @type {number}
    * @model
+   * @default 20
    */
   pageSize?: number
-  /** pages count */
+  /**
+   * Total number of pages
+   * @type {number}
+   */
   totalPages?: number
-  /** no paginate rows - useful to make paginate request with your server */
+  /**
+   * Don't paginate rows - useful to make pagination request with your server
+   * @type {boolean}
+   * @default true
+   */
   paginateRows?: boolean
-  /** total number of items */
+  /**
+   * Total number of items
+   * @type {number}
+   */
   totalItems?: number
-  /** loading state */
+  /**
+   * Loading state
+   * @type {boolean}
+   * @default false
+   */
   loading?: boolean
-  /** Enable selection of rows */
+  /**
+   * Enable selection of rows
+   * @type {boolean}
+   * @default false
+   */
   selectable?: boolean
-  /** Enable selection of rows - key of the selected row */
+  /**
+   * Enable selection of rows - key of the selected row
+   * @type {string}
+   */
   selectedKey?: string
   /**
-   * table layout
-   * @values `'auto' | 'fixed'`
+   * Table layout
+   * @type {string}
+   * @values auto, fixed
    */
   tableLayout?: 'auto' | 'fixed'
-  /** color of the loading bar */
+  /**
+   * Color of the component
+   * @type {MazColor}
+   * @default primary
+   */
   color?: MazColor
   /**
-   * translations
-   * @default `{ searchByAllLabel: 'All', searchByPlaceholder: 'Search by', searchPlaceholder: 'Search', paginationAllLabel: 'All', noResults: 'No results' }`
-   * @type {Translations}
+   * Translations of the table
+   * @type {DeepPartial<MazTranslationsNestedSchema['table']>}
+   * @default Translations from @maz-ui/translations
    */
-  translations?: MazTableTranslations
+  translations?: DeepPartial<MazTranslationsNestedSchema['table']>
   /**
    * Size radius of the component's border
-   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
-   * @default 'lg'
+   * @type {string}
+   * @values none, sm, md, lg, xl, full
+   * @default lg
    */
   roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /**
    * Enable scrollable on table
-   * @default `false`
+   * @type {boolean}
+   * @default false
    */
   scrollable?: boolean
 }
@@ -186,25 +279,26 @@ const props = withDefaults(defineProps<MazTableProps<T>>(), {
   scrollable: false,
   paginateRows: true,
 })
+
 const emits = defineEmits<{
   /**
-   * emitted when a row is selected
-   * @property {(Row | string | number | boolean)[]} value list of selected rows (if selectedKey is defined, it will be the value of the selectedKey of the row)
+   * Emitted when a row is selected
+   * @arg {(Row | string | number | boolean)[]} value - List of selected rows (if selectedKey is defined, it will be the value of the selectedKey of the row)
    */
   (event: 'update:model-value', value: (MazTableRow<T> | string | number | boolean)[] | undefined): void
   /**
-   * emitted when enter a value in the search input
-   * @property {string} searchQuery search query
+   * Emitted when entering a value in the search input
+   * @arg {string} searchQuery - Search query
    */
   (event: 'update:search-query', searchQuery: string | undefined): void
   /**
-   * emitted when the current page of the pagination change
-   * @property {number} page current page
+   * Emitted when the current page of pagination changes
+   * @arg {number} page - Current page
    */
   (event: 'update:page', page: number): void
   /**
-   * emitted when the page size of the pagination change
-   * @property {number} pageSize current page size
+   * Emitted when the page size of pagination changes
+   * @arg {number} pageSize - Current page size
    */
   (event: 'update:page-size', pageSize: number): void
 }>()
@@ -218,21 +312,25 @@ const MazTableCell = defineAsyncComponent(() => import('./MazTableCell.vue'))
 const MazTableRowComponent = defineAsyncComponent(() => import('./MazTableRow.vue'))
 const MazTableTitle = defineAsyncComponent(() => import('./MazTableTitle.vue'))
 
-const defaultTranslations: Required<MazTableTranslations> = {
-  noResults: 'No results',
-  actionHeader: 'Actions',
-  searchByAllLabel: 'All',
-  searchByPlaceholder: 'Search by',
-  searchPlaceholder: 'Search',
-  paginationAllLabel: 'All',
-  paginationRowsPerPage: 'Rows per page',
-  paginationOf: 'of',
-}
-
-const t = computed<Required<MazTableTranslations>>(() => ({
-  ...defaultTranslations,
-  ...props.translations,
-}))
+const { t } = useTranslations()
+/* eslint-disable complexity */
+const messages = computed(() => ({
+  noResults: props.translations?.noResults ?? t('table.noResults'),
+  actionColumnTitle: props.translations?.actionColumnTitle ?? t('table.actionColumnTitle'),
+  searchByInput: {
+    all: props.translations?.searchByInput?.all ?? t('table.searchByInput.all'),
+    placeholder: props.translations?.searchByInput?.placeholder ?? t('table.searchByInput.placeholder'),
+  },
+  searchInput: {
+    placeholder: props.translations?.searchInput?.placeholder ?? t('table.searchInput.placeholder'),
+  },
+  pagination: {
+    all: props.translations?.pagination?.all ?? t('table.pagination.all'),
+    rowsPerPage: props.translations?.pagination?.rowsPerPage ?? t('table.pagination.rowsPerPage'),
+    of: props.translations?.pagination?.of ?? t('table.pagination.of'),
+  },
+} satisfies MazTranslationsNestedSchema['table']))
+/* eslint-enable complexity */
 
 const hasDivider = computed<boolean>(
   () => props.divider && !props.backgroundEven && !props.backgroundOdd,
@@ -267,7 +365,7 @@ const currentPageModel = computed({
 })
 
 const pageSizeOptions = computed<MazSelectOption[]>(() => [
-  { label: t.value.paginationAllLabel, value: Number.POSITIVE_INFINITY },
+  { label: messages.value.pagination.all, value: Number.POSITIVE_INFINITY },
   { label: 5, value: 5 },
   { label: 10, value: 10 },
   { label: 20, value: 20 },
@@ -352,7 +450,7 @@ const headersNormalized = ref<MazTableHeadersNormalized[]>(getNormalizedHeaders(
 
 const searchByKey = ref<string>()
 const searchByOptions = computed<MazSelectOption[]>(() => [
-  { label: t.value.searchByAllLabel, value: null },
+  { label: messages.value.searchByInput.all, value: null },
   ...headersNormalized.value.map((header) => {
     return {
       label: header.label,
@@ -507,6 +605,9 @@ onBeforeMount(() => {
   <div class="m-table m-reset-css" :class="{ '--has-header': hasHeader }">
     <div v-if="hasHeader" class="m-table-header">
       <div v-if="title || $slots.title" class="m-table-spacer">
+        <!--
+          @slot Replace the title of the table
+        -->
         <slot name="title">
           <span class="m-table-header-title">
             {{ title }}
@@ -521,7 +622,7 @@ onBeforeMount(() => {
           :rounded-size
           :color
           :style="{ width: '8rem' }"
-          :placeholder="t.searchByPlaceholder"
+          :placeholder="messages.searchByInput.placeholder"
           :size="inputSize ?? size"
           :options="searchByOptions"
         />
@@ -531,7 +632,7 @@ onBeforeMount(() => {
           :rounded-size
           :color
           :debounce="300"
-          :placeholder="t.searchPlaceholder"
+          :placeholder="messages.searchInput.placeholder"
           :left-icon="MazMagnifyingGlass"
         />
       </div>
@@ -547,7 +648,7 @@ onBeforeMount(() => {
       >
         <caption v-if="caption || $slots.caption">
           <!--
-            @slot caption - add caption on top or bottom of the table
+            @slot Add caption on top or bottom of the table
           -->
           <slot name="caption">
             {{ caption }}
@@ -556,7 +657,7 @@ onBeforeMount(() => {
 
         <thead v-if="headersNormalized">
           <!--
-            @slot thead - content in thead element
+            @slot Content in thead element
           -->
           <slot name="thead">
             <MazTableRowComponent hoverable>
@@ -587,15 +688,15 @@ onBeforeMount(() => {
               >
                 <span :class="{ 'maz-sr-only': header.srOnly }">
                   <!--
-                  @slot header - replace column header
-                    @binding {Object} header - header data
-                    @binding {String} label - header label
+                  @slot Replace column header
+                    @binding {Object} header - Header data
+                    @binding {String} label - Header label
                 -->
                   <slot name="header" :header="header" :label="header.label">
                     <!--
-                      @slot header-label-{key} - replace column header label
-                        @binding {Object} header - header data
-                        @binding {String} label - header label
+                      @slot Replace column header label
+                        @binding {Object} header - Header data
+                        @binding {String} label - Header label
                     -->
                     <slot :name="`header-label-${header.key}`" :header="header" :label="header.label">
                       {{ header.label }}
@@ -616,10 +717,10 @@ onBeforeMount(() => {
               </MazTableTitle>
               <MazTableTitle v-if="$slots.actions" align="left" :class="`--${size}`">
                 <!--
-                  @slot actions-header - replace text of actions header
+                  @slot Replace text of actions header
                 -->
                 <slot name="actions-header">
-                  {{ t.actionHeader }}
+                  {{ messages.actionColumnTitle }}
                 </slot>
               </MazTableTitle>
             </MazTableRowComponent>
@@ -639,9 +740,9 @@ onBeforeMount(() => {
               >
                 <MazTableCell v-if="isSelectable" class="m-table-select-column">
                   <!--
-                    @slot select - replace checkbox component
-                      @binding {Object} row - row data
-                      @binding {Boolean} selected - if selected or not
+                    @slot Replace checkbox component
+                      @binding {Object} row - Row data
+                      @binding {Boolean} selected - If selected or not
                   -->
                   <slot name="select" :row="row" :selected="row.selected">
                     <MazCheckbox
@@ -658,15 +759,15 @@ onBeforeMount(() => {
                   :class="classes"
                 >
                   <!--
-                    @slot cell - replace all row cells
-                      @binding {Object} row - row data
-                      @binding {Boolean} value - cell value
+                    @slot Replace all row cells
+                      @binding {Object} row - Row data
+                      @binding {any} value - Cell value
                   -->
                   <slot v-if="key" name="cell" :row="row" :value="row[key]">
                     <!--
-                      @slot cell-{key} - replace row cells of column
-                        @binding {Object} row - row data
-                        @binding {Boolean} value - cell value
+                      @slot Replace row cells of column
+                        @binding {Object} row - Row data
+                        @binding {any} value - Cell value
                     -->
                     <slot :name="`cell-${key}`" :row="row" :value="row[key]">
                       {{ row[key] }}
@@ -675,8 +776,8 @@ onBeforeMount(() => {
                 </MazTableCell>
                 <MazTableCell v-if="$slots.actions">
                   <!--
-                    @slot actions - will add actions column
-                      @binding {Object} row - row data
+                    @slot Add actions column
+                      @binding {Object} row - Row data
                   -->
                   <slot name="actions" :row="row" />
                 </MazTableCell>
@@ -690,7 +791,7 @@ onBeforeMount(() => {
                   "
                 >
                   <!--
-                    @slot no-results - replace no results
+                    @slot Replace the no results element
                   -->
                   <slot name="no-results">
                     <p class="maz-text-center maz-text-muted">
@@ -698,7 +799,7 @@ onBeforeMount(() => {
                         @slot no-results-text - replace no results test only
                       -->
                       <slot name="no-results-text">
-                        {{ t.noResults }}
+                        {{ messages.noResults }}
                       </slot>
                     </p>
                   </slot>
@@ -715,7 +816,7 @@ onBeforeMount(() => {
 
       <div v-if="pagination" class="m-table-footer-pagination">
         <div class="m-table-footer-pagination-items-per-page">
-          <span class="maz-hidden maz-text-sm tab-s:maz-block"> {{ t.paginationRowsPerPage }} </span>
+          <span class="maz-hidden maz-text-sm tab-s:maz-block"> {{ messages.pagination.rowsPerPage }} </span>
           <MazSelect
             v-model="pageSizeModel"
             :options="pageSizeOptions"
@@ -728,7 +829,7 @@ onBeforeMount(() => {
         </div>
 
         <span v-if="totalPagesInternal" class="maz-whitespace-nowrap maz-text-sm">
-          {{ rowsFromTo.from }} - {{ rowsFromTo.to }} {{ t.paginationOf }} {{ totalItemsInternal }}
+          {{ rowsFromTo.from }} - {{ rowsFromTo.to }} {{ messages.pagination.of }} {{ totalItemsInternal }}
         </span>
 
         <div class="m-table-footer-pagination-buttons">

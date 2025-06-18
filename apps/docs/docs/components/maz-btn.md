@@ -18,7 +18,7 @@ description: MazBtn is a standalone component that replaces the standard html bu
 
 ```vue
 <script setup lang="ts">
-import { MazBtn } from 'maz-ui/components'
+import MazBtn from 'maz-ui/components/MazBtn'
 </script>
 
 <template>
@@ -412,7 +412,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 ```vue
 <script lang="ts" setup>
 import { MazCheck, MazCommandLine, MazHome } from '@maz-ui/icons'
-import { MazBtn } from 'maz-ui/components'
+import MazBtn from 'maz-ui/components/MazBtn'
 </script>
 
 <template>

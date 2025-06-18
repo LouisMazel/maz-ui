@@ -3,6 +3,7 @@ import type { IconComponent } from '@maz-ui/icons'
 import type { HTMLAttributes, InputHTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
 import { MazEye, MazEyeSlash } from '@maz-ui/icons'
+import { debounce as debounceFn } from '@maz-ui/utils/src/utils/debounce.js'
 import {
   computed,
   defineAsyncComponent,
@@ -11,7 +12,6 @@ import {
   useSlots,
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { debounce as debounceFn } from '../utils/debounce'
 
 export type MazInputValue = string | number | null | undefined | boolean
 
@@ -718,11 +718,7 @@ const stateColor = computed(() => {
 
   &.--has-label {
     .m-input-label {
-      @apply maz-pr-3;
-
-      [dir='rtl'] & {
-        @apply maz-pr-0 maz-pl-3;
-      }
+      @apply maz-pe-3;
     }
 
     .m-input-input {

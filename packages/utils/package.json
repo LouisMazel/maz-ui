@@ -1,0 +1,83 @@
+{
+  "name": "@maz-ui/utils",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Utils of maz-ui for JavaScript/TypeScript users",
+  "author": "Louis Mazel <me@loicmazuel.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouisMazel/maz-ui.git"
+  },
+  "bugs": "https://github.com/LouisMazel/maz-ui/issues",
+  "keywords": [
+    "utils",
+    "javascript",
+    "typescript",
+    "maz-ui"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js",
+      "module": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./utils": {
+      "types": "./dist/types/utils/index.d.ts",
+      "import": "./dist/utils/index.js",
+      "module": "./dist/utils/index.js",
+      "default": "./dist/utils/index.js"
+    },
+    "./formatters": {
+      "types": "./dist/types/formatters/index.d.ts",
+      "import": "./dist/formatters/index.js",
+      "module": "./dist/formatters/index.js",
+      "default": "./dist/formatters/index.js"
+    },
+    "./utils/*": {
+      "types": "./dist/types/utils/*.d.ts",
+      "import": "./dist/utils/*.js",
+      "module": "./dist/utils/*.js",
+      "default": "./dist/utils/*.js"
+    },
+    "./formatters/*": {
+      "types": "./dist/types/formatters/*.d.ts",
+      "import": "./dist/formatters/*.js",
+      "module": "./dist/formatters/*.js",
+      "default": "./dist/formatters/*.js"
+    },
+    "./*": "./*"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "typecheck": "tsc --noEmit --skipLibCheck",
+    "lint": "eslint . --fix",
+    "lint:check": "eslint .",
+    "pre-commit": "lint-staged"
+  },
+  "devDependencies": {
+    "eslint": "^9.29.0",
+    "eslint-plugin-format": "^1.0.1",
+    "libphonenumber-js": "catalog:",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vue": "catalog:"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ]
+  }
+}

@@ -1,16 +1,15 @@
 import { defineNuxtPlugin, useCookie, useHead, useRequestHeaders } from 'nuxt/app'
-import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
+import { MazUiTheme } from '@maz-ui/themes/plugin'
 import {
   generateFullCSS,
   mergePresets,
+  type MazUiThemeOptions,
   type ColorMode,
   type CriticalCSSOptions,
-  type ThemePreset,
   type ThemeState,
 } from '@maz-ui/themes'
-import type { MazUiPluginOptions } from 'maz-ui/plugins/maz-ui'
+import { getPreset } from '@maz-ui/themes/utils'
 import { generateCriticalCSS } from '@maz-ui/themes/utils/css-generator'
-import type { ThemePresetName } from '~/src/types'
 
 function getServerInitialColorMode(): ColorMode {
   // 1. Priorité: cookie de préférence utilisateur
@@ -50,39 +49,6 @@ function getServerIsDark(colorMode: ColorMode): boolean {
   return false
 }
 
-async function getPreset(preset: ThemePresetName | ThemePreset | undefined) {
-  if (typeof preset === 'object') {
-    return preset
-  }
-
-  if (!preset) {
-    const { mazUi } = await import('@maz-ui/themes/presets/mazUi')
-    return mazUi
-  }
-
-  if (preset === 'mazUi') {
-    const { mazUi } = await import('@maz-ui/themes/presets/mazUi')
-    return mazUi
-  }
-
-  if (preset === 'ocean') {
-    const { ocean } = await import('@maz-ui/themes/presets/ocean')
-    return ocean
-  }
-
-  if (preset === 'pristine') {
-    const { pristine } = await import('@maz-ui/themes/presets/pristine')
-    return pristine
-  }
-
-  if (preset === 'obsidian') {
-    const { obsidian } = await import('@maz-ui/themes/presets/obsidian')
-    return obsidian
-  }
-
-  throw new TypeError(`[@maz-ui/nuxt] Preset ${preset} not found`)
-}
-
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const themeConfig = $config.public.mazUi?.theme
 
@@ -104,7 +70,7 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     injectFullCSS: true,
     ...themeConfig,
     preset,
-  } satisfies MazUiPluginOptions
+  } satisfies MazUiThemeOptions
 
   if (import.meta.server) {
     const initialColorMode = getServerInitialColorMode()
@@ -154,7 +120,7 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     }
   }
 
-  MazUiPlugin.install(vueApp, {
+  MazUiTheme.install(vueApp, {
     ...config,
     injectFullCSS: !config.injectFullCSSOnServer,
     injectCriticalCSS: false,

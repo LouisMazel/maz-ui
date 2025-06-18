@@ -95,7 +95,7 @@ Or use Maz-ui Nuxt Module:
 
 ```ts
 export default defineNuxtConfig({
-  modules: ['maz-ui/nuxt'],
+  modules: ['@maz-ui/nuxt'],
   mazUi: {
     installVFullscreenImg: true
   }

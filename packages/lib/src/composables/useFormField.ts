@@ -7,8 +7,10 @@ import type {
   ValidationIssues,
 } from '../composables/useFormValidator/types'
 
-import { computed, onMounted, onUnmounted } from 'vue'
+import { checkAvailability } from '@maz-ui/utils/src/utils/checkAvailability.js'
 
+import { isEqual } from '@maz-ui/utils/src/utils/isEqual.js'
+import { computed, onMounted, onUnmounted } from 'vue'
 import {
   addEventToInteractiveElements,
   fieldHasValidation,
@@ -23,8 +25,6 @@ import {
   updateFieldState,
 } from '../composables/useFormValidator/utils'
 import { useFreezeValue } from '../composables/useFreezeValue'
-import { checkAvailability } from '../utils/checkAvailability'
-import { isEqual } from '../utils/isEqual'
 
 interface UseFormFieldReturn<FieldType> {
   /**

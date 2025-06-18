@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
+import { isClient } from '@maz-ui/utils/src/utils/isClient.js'
+import { throttle } from '@maz-ui/utils/src/utils/throttle.js'
 import {
   computed,
   nextTick,
@@ -13,8 +15,6 @@ import {
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { vClickOutside } from '../directives/vClickOutside'
-import { isClient } from '../utils/isClient'
-import { throttle } from '../utils/throttle'
 
 /**
  * A versatile Vue 3 component for displaying content in overlays that bypass overflow constraints of parent elements.
@@ -48,7 +48,8 @@ const {
   trapFocus = true,
   keepOpenOnHover = false,
   block = false,
-  positionDelay = 0,
+  positionDelay = 50,
+  announceChanges = false,
 } = defineProps<MazPopoverProps>()
 
 const emits = defineEmits<{
@@ -74,7 +75,7 @@ const emits = defineEmits<{
 
 export type PopoverPosition = 'auto' | 'top' | 'bottom' | 'left' | 'right' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end'
 export type PopoverTrigger = 'click' | 'hover' | 'manual'
-export type PopoverRole = 'dialog' | 'tooltip'
+export type PopoverRole = 'dialog' | 'tooltip' | 'menu'
 
 export interface MazPopoverProps {
   /**
@@ -122,6 +123,16 @@ export interface MazPopoverProps {
    * @description ARIA role for accessibility
    */
   role?: PopoverRole
+  /**
+   * ARIA label for the popover
+   * @default undefined
+   */
+  ariaLabel?: string
+  /**
+   * Announce content changes to screen readers
+   * @default false
+   */
+  announceChanges?: boolean
   /**
    * Disables the popover
    * @default false
@@ -448,9 +459,9 @@ function setOpen(value: boolean) {
 
   if (value) {
     emits('open')
+    setupFocusTrap()
 
     nextTick(() => {
-      setupFocusTrap()
       setTimeout(() => {
         updatePosition()
         setupObservers()
@@ -550,7 +561,7 @@ function getBestPosition(
       right: viewport.width - triggerRect.right,
     }
 
-    const sortedPositions = positions.sort((a, b) => spaces[b] - spaces[a])
+    const sortedPositions = positions.sort((a, b) => spaces[b as keyof typeof spaces] - spaces[a as keyof typeof spaces])
 
     return sortedPositions[0]
   }
@@ -635,7 +646,7 @@ function calculatePosition(
 }
 
 function setupFocusTrap() {
-  if (role === 'tooltip' || trigger === 'hover' || !trapFocus)
+  if (role === 'tooltip' || role === 'menu' || trigger === 'hover' || !trapFocus)
     return
 
   initialFocusElement = document.activeElement as HTMLElement
@@ -655,7 +666,7 @@ function setupFocusTrap() {
 }
 
 function restoreFocus() {
-  if (role === 'tooltip' || trigger === 'hover' || !trapFocus)
+  if (role === 'tooltip' || role === 'menu' || trigger === 'hover' || !trapFocus)
     return
 
   nextTick(() => {
@@ -672,7 +683,7 @@ function onKeydown(event: KeyboardEvent) {
     close()
   }
 
-  if (role === 'dialog' && event.key === 'Tab') {
+  if ((role === 'dialog' || role === 'menu') && event.key === 'Tab') {
     handleTrapFocus(event)
   }
 }
@@ -728,11 +739,16 @@ function onScroll() {
   }
 }
 
-watch(isOpen, (value) => {
-  if (!isClient())
+watch(isOpen, (value, oldValue) => {
+  if (!isClient() || value === oldValue)
     return
 
-  value ? open() : close()
+  if (value) {
+    open()
+  }
+  else if (oldValue && !value) {
+    close()
+  }
 }, { immediate: true })
 
 watch(() => position, () => {
@@ -808,7 +824,7 @@ defineExpose({
       :id="triggerId"
       ref="trigger"
       class="m-popover-trigger"
-      :aria-expanded="role === 'dialog' ? isOpen : undefined"
+      :aria-expanded="role === 'dialog' || role === 'menu' ? isOpen : undefined"
       :aria-haspopup="role === 'dialog' ? 'dialog' : undefined"
       :aria-describedby="role === 'tooltip' && isOpen ? panelId : ariaDescribedby"
       :aria-labelledby="ariaLabelledby"
@@ -819,7 +835,7 @@ defineExpose({
         @binding {function} open Function to open the popover
         @binding {function} close Function to close the popover
         @binding {function} toggle Function to toggle the popover
-        @binding {boolean} isOpen Current open state of the popover
+        @binding {boolean} is-open Current open state of the popover
       -->
       <slot name="trigger" :open="open" :close="close" :toggle="toggle" :is-open="isOpen" />
     </div>
@@ -835,11 +851,13 @@ defineExpose({
           ref="panel"
           v-click-outside="onClickOutside"
           :role
+          :aria-label="ariaLabel"
           :aria-labelledby="role === 'dialog' ? ariaLabelledby || triggerId : undefined"
           :aria-describedby="role === 'dialog' ? ariaDescribedby : undefined"
           :aria-modal="role === 'dialog' ? 'true' : undefined"
           :tabindex="role === 'dialog' ? '-1' : undefined"
           class="m-popover-panel"
+          :aria-live="announceChanges ? 'polite' : undefined"
           :class="panelClasses"
           :style="[panelStyles, panelStyle]"
           v-bind="panelEvents"
@@ -849,7 +867,7 @@ defineExpose({
             @binding {function} open Function to open the popover
             @binding {function} close Function to close the popover
             @binding {function} toggle Function to toggle the popover
-            @binding {boolean} isOpen Current open state of the popover
+            @binding {boolean} is-open Current open state of the popover
           -->
           <slot :open="open" :close="close" :toggle="toggle" :is-open="isOpen" />
         </div>

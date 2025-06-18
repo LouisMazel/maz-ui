@@ -9,6 +9,8 @@ description: MazDropzone is a powerful and flexible file upload component with d
 
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
+<!--@include: ./../.vitepress/mixins/translated-component.md-->
+
 ## Key Features
 
 - 🎯 Drag & drop support

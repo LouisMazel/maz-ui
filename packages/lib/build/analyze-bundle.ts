@@ -258,7 +258,6 @@ function analyzeBundle() {
       composables: { files: 0, totalSize: 0 },
       plugins: { files: 0, totalSize: 0 },
       directives: { files: 0, totalSize: 0 },
-      formatters: { files: 0, totalSize: 0 },
       css: { files: 0, totalSize: 0 },
     },
     chunks: {
@@ -294,7 +293,6 @@ function analyzeBundle() {
     { name: 'composables', file: 'composables/index.js' },
     { name: 'plugins', file: 'plugins/index.js' },
     { name: 'directives', file: 'directives/index.js' },
-    { name: 'formatters', file: 'formatters/index.js' },
     { name: 'resolvers', file: 'resolvers/index.js' },
     { name: 'icons', file: 'icons/index.js' },
   ]
@@ -342,14 +340,13 @@ function analyzeBundle() {
   return analysis
 }
 
-function getCategoryIcon(category: 'components' | 'utils' | 'composables' | 'plugins' | 'directives' | 'formatters' | 'css'): string {
+function getCategoryIcon(category: 'components' | 'utils' | 'composables' | 'plugins' | 'directives' | 'css'): string {
   const icons = {
     components: '🧩',
     utils: '🔧',
     composables: '🎣',
     plugins: '🔌',
     directives: '📐',
-    formatters: '🔍',
     css: '🎨',
   }
   return icons[category] || '📦'

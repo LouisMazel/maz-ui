@@ -52,12 +52,6 @@
       "module": "./dist/composables/index.js",
       "default": "./dist/composables/index.js"
     },
-    "./utils": {
-      "types": "./dist/types/utils/index.d.ts",
-      "import": "./dist/utils/index.js",
-      "module": "./dist/utils/index.js",
-      "default": "./dist/utils/index.js"
-    },
     "./plugins": {
       "types": "./dist/types/plugins/index.d.ts",
       "import": "./dist/plugins/index.js",
@@ -69,12 +63,6 @@
       "import": "./dist/directives/index.js",
       "module": "./dist/directives/index.js",
       "default": "./dist/directives/index.js"
-    },
-    "./formatters": {
-      "types": "./dist/types/formatters/index.d.ts",
-      "import": "./dist/formatters/index.js",
-      "module": "./dist/formatters/index.js",
-      "default": "./dist/formatters/index.js"
     },
     "./resolvers": {
       "types": "./dist/types/resolvers/index.d.ts",
@@ -94,12 +82,6 @@
       "module": "./dist/composables/*.js",
       "default": "./dist/composables/*.js"
     },
-    "./utils/*": {
-      "types": "./dist/types/utils/*.d.ts",
-      "import": "./dist/utils/*.js",
-      "module": "./dist/utils/*.js",
-      "default": "./dist/utils/*.js"
-    },
     "./plugins/*": {
       "types": "./dist/types/plugins/*.d.ts",
       "import": "./dist/plugins/*.js",
@@ -111,12 +93,6 @@
       "import": "./dist/directives/*.js",
       "module": "./dist/directives/*.js",
       "default": "./dist/directives/*.js"
-    },
-    "./formatters/*": {
-      "types": "./dist/types/formatters/*.d.ts",
-      "import": "./dist/formatters/*.js",
-      "module": "./dist/formatters/*.js",
-      "default": "./dist/formatters/*.js"
     },
     "./resolvers/*": {
       "types": "./dist/types/resolvers/*.d.ts",
@@ -185,22 +161,13 @@
     "typecheck": "vue-tsc --noEmit --skipLibCheck"
   },
   "peerDependencies": {
-    "chart.js": "^4.0.0",
-    "dayjs": "^1.1.0",
     "nuxt": "^3.4.0",
     "unplugin-auto-import": ">=19.0.0 <20.0.0",
     "unplugin-vue-components": ">=28.0.0 <29.0.0",
-    "valibot": ">=0.30.0 <2.0.0",
     "vue": "^3.5.0",
     "vue-router": "^4.0.0"
   },
   "peerDependenciesMeta": {
-    "chart.js": {
-      "optional": true
-    },
-    "dayjs": {
-      "optional": true
-    },
     "nuxt": {
       "optional": true
     },
@@ -210,9 +177,6 @@
     "unplugin-vue-components": {
       "optional": true
     },
-    "valibot": {
-      "optional": true
-    },
     "vue-router": {
       "optional": true
     }
@@ -220,7 +184,13 @@
   "dependencies": {
     "@maz-ui/cli": "workspace:*",
     "@maz-ui/themes": "workspace:*",
-    "libphonenumber-js": "catalog:"
+    "@maz-ui/translations": "workspace:*",
+    "@maz-ui/utils": "workspace:*",
+    "chart.js": "catalog:",
+    "dayjs": "catalog:",
+    "libphonenumber-js": "catalog:",
+    "valibot": "catalog:",
+    "vue-chartjs": "catalog:"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
@@ -232,8 +202,6 @@
     "@vue/tsconfig": "^0.7.0",
     "autoprefixer": "^10.4.21",
     "chalk": "5.4.1",
-    "chart.js": "catalog:",
-    "dayjs": "^1.11.13",
     "glob": "catalog:",
     "jsdom": "^26.1.0",
     "lightningcss": "^1.30.1",
@@ -255,7 +223,6 @@
     "typescript": "catalog:",
     "unplugin-auto-import": "^19.3.0",
     "unplugin-vue-components": "^28.7.0",
-    "valibot": "^1.1.0",
     "vite": "^6.3.5",
     "vite-plugin-dts": "catalog:",
     "vite-plugin-lib-inject-css": "^2.2.2",
@@ -263,7 +230,6 @@
     "vitest": "catalog:",
     "vitest-canvas-mock": "^0.3.3",
     "vue": "catalog:",
-    "vue-chartjs": "^5.3.2",
     "vue-router": "^4.5.1",
     "vue-tsc": "catalog:"
   },

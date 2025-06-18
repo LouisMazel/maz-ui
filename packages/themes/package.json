@@ -55,12 +55,17 @@
       "types": "./dist/types/build/*.d.ts",
       "import": "./dist/build/*.js"
     },
+    "./plugin": {
+      "types": "./dist/types/plugin.d.ts",
+      "import": "./dist/plugin/index.js"
+    },
     "./*": "./*"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/types/index.d.ts",
   "files": [
+    "LICENSE",
     "dist"
   ],
   "engines": {

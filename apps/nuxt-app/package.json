@@ -38,6 +38,8 @@
     "vue-router": "catalog:"
   },
   "dependencies": {
+    "@maz-ui/translations": "workspace:*",
+    "@maz-ui/themes": "workspace:*",
     "maz-ui": "workspace:*"
   }
 }
