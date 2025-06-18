@@ -5,9 +5,10 @@ import type { RouteLocationRaw } from 'vue-router'
 import type { MazLinkProps } from './MazLink.vue'
 import type { MazColor, MazSize } from './types'
 import { MazChevronDown } from '@maz-ui/icons'
+import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
+import { isClient } from '@maz-ui/utils/src/utils/isClient.js'
 import { computed, defineAsyncComponent, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { isClient } from '../utils/isClient'
 import MazPopover, { type MazPopoverProps } from './MazPopover.vue'
 
 defineOptions({
@@ -22,7 +23,7 @@ const {
   trigger = 'click',
   color = 'transparent',
   position = 'auto',
-  screenReaderDescription = 'Open menu dropdown',
+  screenReaderDescription,
   dropdownIconAnimation = true,
   size = 'md',
   closeOnClick = true,
@@ -52,6 +53,8 @@ const instanceId = useInstanceUniqId({
   componentName: 'MazDropdown',
   providedId: id,
 })
+
+const { t } = useTranslations()
 
 type ItemBase = Record<string, unknown> & {
   label: string
@@ -155,8 +158,9 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue'> {
   chevron?: boolean
   /**
    * Accessible description for screen readers describing the dropdown functionality
+   * If not provided, the default translation of MazTranslations plugin will be used
    * @type {string}
-   * @default 'Open menu dropdown'
+   * @default MazTranslationsSchema['dropdown']['screenReaderDescription']
    */
   screenReaderDescription?: string
   /**
@@ -307,11 +311,12 @@ watch(
 
 <template>
   <MazPopover
-    :trigger="trigger"
-    :model-value="modelValue"
+    :trigger
+    :model-value
     class="m-dropdown m-reset-css"
+    role="menu"
     :style="styleProp"
-    :prefer-position="preferPosition"
+    :prefer-position
     :position
     :disabled
     :keep-open-on-hover="trigger === 'hover'"
@@ -331,14 +336,14 @@ watch(
         @keypress.enter.stop.prevent="toggle"
         @keypress.space.stop.prevent="toggle"
       >
-        <span v-if="screenReaderDescription || $slots['screen-reader-description']" :id="`${instanceId}-labelspan`" class="maz-sr-only">
+        <span :id="`${instanceId}-labelspan`" class="maz-sr-only">
           <!--
             @slot description for screen readers (hidden from visual display)
             Provides accessibility information about the dropdown functionality
             @default 'Open menu dropdown'
           -->
           <slot name="screen-reader-description">
-            {{ screenReaderDescription }}
+            {{ screenReaderDescription || t('dropdown.screenReaderDescription') }}
           </slot>
         </span>
         <!--
@@ -349,7 +354,7 @@ watch(
           @binding {() => void} toggle - Function to toggle the dropdown
           @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
         -->
-        <slot name="element" :is-open="isOpen" :toggle="toggle" :close="close" :open="open">
+        <slot name="trigger" :is-open="isOpen" :toggle="toggle" :close="close" :open="open">
           <MazBtn
             :aria-labelledby="`${instanceId}-labelspan`"
             :color

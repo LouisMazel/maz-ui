@@ -65,6 +65,7 @@ export default defineConfig({
         'presets/index': 'src/presets/index.ts',
         'utils/index': 'src/utils/index.ts',
         'composables/index': 'src/composables/useTheme.ts',
+        'plugin/index': 'src/plugin.ts',
       },
       formats: ['es'],
       fileName: (_, name) => `${name}.js`,

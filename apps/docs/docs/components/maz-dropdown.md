@@ -9,6 +9,8 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
+<!--@include: ./../.vitepress/mixins/translated-component.md-->
+
 ## Basic usage
 
 <MazDropdown
@@ -298,7 +300,7 @@ You can provide a template to replace menuitem labels to add more elements in ea
 
 :::
 
-### Custom control element
+### Custom control triggered element
 
 You can provide an HTML element or a component to replace the default button
 
@@ -327,7 +329,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
       },
     ]"
   >
-    <template #element>
+    <template #trigger>
       <MazAvatar
         clickable
         hide-clickable-icon

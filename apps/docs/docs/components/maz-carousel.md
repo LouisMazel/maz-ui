@@ -19,6 +19,8 @@ head:
 
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
+<!--@include: ./../.vitepress/mixins/translated-component.md-->
+
 ## Basic usage
 
 <MazCarousel>

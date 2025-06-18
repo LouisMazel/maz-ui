@@ -68,13 +68,15 @@ export interface ThemePreset {
   foundation: ThemeFoundation
 }
 
+export type ThemePresetName = 'mazUi' | 'ocean' | 'pristine' | 'obsidian' | 'maz-ui'
+
 export interface ThemeConfig {
   /**
    * Theme preset to use
    * @description Can be a predefined preset name or a custom preset object
    * @default mazUi preset
    */
-  preset?: ThemePreset
+  preset?: ThemePreset | ThemePresetName
 
   /**
    * Custom preset overrides

@@ -9,8 +9,6 @@ description: MazInputPrice is a standalone component that replaces the standard 
 
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
-<!--@include: ./../.vitepress/mixins/maz-input-props.md-->
-
 ## Basic usage
 
 <MazInputPrice
@@ -56,4 +54,5 @@ const formattedPrice = ref()
 </template>
 ```
 
+<!--@include: ./../.vitepress/mixins/maz-input-props.md-->
 <!--@include: ./../.vitepress/generated-docs/maz-input-price.doc.md-->

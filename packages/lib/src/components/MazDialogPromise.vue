@@ -4,7 +4,6 @@ export type * from './MazDialogPromise/useMazDialogPromise'
 </script>
 
 <script lang="ts" setup>
-import type { ComponentPublicInstance } from 'vue'
 import type { MazDialogProps } from './MazDialog.vue'
 import type {
   MazDialogCustomButton,
@@ -12,9 +11,9 @@ import type {
   MazDialogPromiseButton,
   MazDialogState,
 } from './MazDialogPromise/useMazDialogPromise'
+import { type ComponentPublicInstance, defineAsyncComponent } from 'vue'
 import { computed, ref } from 'vue'
 
-import MazBtn from './MazBtn.vue'
 import MazDialog from './MazDialog.vue'
 
 import { defaultData, useMazDialogPromise } from './MazDialogPromise/useMazDialogPromise'
@@ -40,6 +39,8 @@ defineEmits<{
   /** emitted when modal is close */
   close: [value: void]
 }>()
+
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 const { dialogState, rejectDialog, resolveDialog, data: composableData } = useMazDialogPromise()
 

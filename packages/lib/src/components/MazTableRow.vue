@@ -34,11 +34,11 @@ const { backgroundEven, backgroundOdd, hoverable: injectedHoverable } = useInjec
   }
 
   &.--background-even {
-    @apply even:maz-bg-surface-300 dark:even:maz-bg-surface-400;
+    @apply even:maz-bg-surface-400/70 dark:even:maz-bg-surface-400/50;
   }
 
   &.--hoverable {
-    @apply hover:maz-cursor-pointer hover:maz-bg-surface-400;
+    @apply hover:maz-bg-surface-600/70 dark:hover:maz-bg-surface-400/70;
   }
 }
 </style>

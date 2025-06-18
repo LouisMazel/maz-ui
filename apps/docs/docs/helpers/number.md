@@ -1,6 +1,6 @@
 ---
-title: number
-description: The module number is a function that formats numbers
+title: formatNumber
+description: The module formatNumber is a function that formats numbers with the native api [Intl.NumberFormat](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) from browsers and Node.js
 ---
 
 # {{ $frontmatter.title }}
@@ -13,20 +13,20 @@ description: The module number is a function that formats numbers
 
 <div
   style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-background-300));"
-  class="flex flex-center rounded gap-05"
+  class="maz-flex maz-flex-center maz-rounded maz-gap-0.5"
 >
   formatted value: <strong>{{ numberFormatted }}</strong>
 </div>
 
 ```vue
 <script lang="ts" setup>
-import { number } from 'maz-ui'
+import { formatNumber } from 'maz-ui'
 import { computed, ref } from 'vue'
 
 const numberValue = ref(69)
 
 const numberFormatted = computed(() =>
-  number(numberValue.value, 'en-US'),
+  formatNumber(numberValue.value, 'en-US'),
 )
 </script>
 
@@ -54,12 +54,12 @@ const DEFAULT_OPTIONS: Intl.NumberFormatOptions = {
 ```
 
 <script lang="ts" setup>
-  import { number } from 'maz-ui'
+  import { formatNumber } from 'maz-ui'
   import { ref, computed } from 'vue'
 
   const numberValue = ref(69)
 
   const numberFormatted = computed(() =>
-    number(numberValue.value, 'en-US'),
+    formatNumber(numberValue.value, 'en-US'),
   )
 </script>

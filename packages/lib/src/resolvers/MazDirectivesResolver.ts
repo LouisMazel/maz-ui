@@ -1,5 +1,5 @@
 import type { ComponentResolver } from 'unplugin-vue-components/types'
-import { capitalize } from './../formatters/capitalize'
+import { capitalize } from '@maz-ui/utils/src/formatters/capitalize.js'
 
 /**
  * Resolver for Maz-UI (directives)

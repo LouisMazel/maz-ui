@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import { MazChevronLeft, MazXMark } from '@maz-ui/icons'
+import { checkAvailability } from '@maz-ui/utils/src/utils/checkAvailability.js'
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
-import MazSpinner from '../../components/MazSpinner.vue'
 
-import { checkAvailability } from '../../utils/checkAvailability'
+import MazSpinner from '../../components/MazSpinner.vue'
 
 const props = withDefaults(defineProps<MazFullscreenImgProps>(), {
   zoom: true,

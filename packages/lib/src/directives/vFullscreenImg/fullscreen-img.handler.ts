@@ -28,7 +28,7 @@ export type VFullscreenImgBinding = DirectiveBinding<VFullscreenImgBindingValue>
 const STATE_OPEN_CLASS = 'm-fullscreen-is-open'
 
 export class FullscreenImgHandler {
-  private options: VFullscreenImgBindingOptions
+  private options: VFullscreenImgBindingOptions | undefined = undefined
   private defaultOptions: VFullscreenImgOptions = {
     scaleOnHover: false,
     blurOnHover: false,
@@ -41,9 +41,9 @@ export class FullscreenImgHandler {
     },
   }
 
-  private mouseEnterListener: () => void
-  private mouseLeaveListener: () => void
-  private renderPreviewListener: () => void
+  private mouseEnterListener: (() => void) | undefined = undefined
+  private mouseLeaveListener: (() => void) | undefined = undefined
+  private renderPreviewListener: (() => void) | undefined = undefined
 
   private buildOptions(
     el: HTMLElement,
@@ -121,9 +121,12 @@ export class FullscreenImgHandler {
   }
 
   public remove(el: HTMLElement): void {
-    el.removeEventListener('mouseenter', this.mouseEnterListener)
-    el.removeEventListener('mouseleave', this.mouseLeaveListener)
-    el.removeEventListener('click', this.renderPreviewListener)
+    if (this.mouseEnterListener)
+      el.removeEventListener('mouseenter', this.mouseEnterListener)
+    if (this.mouseLeaveListener)
+      el.removeEventListener('mouseleave', this.mouseLeaveListener)
+    if (this.renderPreviewListener)
+      el.removeEventListener('click', this.renderPreviewListener)
 
     el.classList.remove('m-fullscreen-img-instance')
 
@@ -136,6 +139,8 @@ export class FullscreenImgHandler {
     return useMountComponent<typeof MazFullscreenImg, MazFullscreenImgProps>(MazFullscreenImg, {
       props: {
         ...this.options,
+        src: this.options?.src || this.getImgSrc(el),
+        alt: this.options?.alt || this.getImgAlt(el),
         openInstanceClass: STATE_OPEN_CLASS,
         clickedElement: el,
         clickedElementBounds: el.getBoundingClientRect(),
@@ -145,18 +150,18 @@ export class FullscreenImgHandler {
   }
 
   private mouseLeave(el: HTMLElement): void {
-    if (this.options.scaleOnHover)
+    if (this.options?.scaleOnHover)
       el.style.transform = ''
-    if (this.options.blurOnHover)
+    if (this.options?.blurOnHover)
       el.style.filter = ''
     el.style.zIndex = ''
   }
 
   private mouseEnter(el: HTMLElement): void {
     el.style.zIndex = '1'
-    if (this.options.scaleOnHover)
+    if (this.options?.scaleOnHover)
       el.style.transform = 'scale(1.04)'
-    if (this.options.blurOnHover)
+    if (this.options?.blurOnHover)
       el.style.filter = 'blur(3px)'
   }
 }

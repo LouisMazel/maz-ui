@@ -9,6 +9,8 @@ description: MazPagination is a standalone component
 
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
+<!--@include: ./../.vitepress/mixins/translated-component.md-->
+
 ## Basic usage
 
 <MazPagination v-bind="props" v-model="currentPage" size="md" />

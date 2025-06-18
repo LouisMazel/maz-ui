@@ -9,7 +9,7 @@ description: MazSelect is a standalone component that replaces the standard html
 
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
-<!--@include: ./../.vitepress/mixins/maz-input-props.md-->
+<!--@include: ./../.vitepress/mixins/translated-component.md-->
 
 ## Basic usage
 
@@ -435,4 +435,5 @@ const customOptions = [
 type ModelValueSimple = string | number | null | undefined | boolean
 ```
 
+<!--@include: ./../.vitepress/mixins/maz-input-props.md-->
 <!--@include: ./../.vitepress/generated-docs/maz-select.doc.md-->

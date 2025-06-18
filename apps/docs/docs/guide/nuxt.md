@@ -26,19 +26,27 @@ Compatible with Nuxt v3 and later
   <NpmBadge package="maz-ui" />
 </div>
 
-```bash
-npm install @maz-ui/nuxt
-# or
-yarn add @maz-ui/nuxt
-# or
+::: code-group
+
+```bash [pnpm]
 pnpm add @maz-ui/nuxt
 ```
+
+```bash [npm]
+npm install @maz-ui/nuxt
+```
+
+```bash [yarn]
+yarn add @maz-ui/nuxt
+```
+
+:::
 
 Add the module to your `nuxt.config.ts`:
 
 ```ts
 export default defineNuxtConfig({
-  modules: ['maz-ui/nuxt']
+  modules: ['@maz-ui/nuxt']
 })
 ```
 
@@ -148,6 +156,15 @@ export default defineNuxtConfig({
           dark: { primary: '220 100% 70%' }
         }
       }
+    },
+
+    // 🌐 Translations
+    translations: {
+      locales: 'fr',
+      fallbackLocale: 'en',
+      messages: {
+        // override default messages
+      },
     },
 
     // 🧩 Components
@@ -377,7 +394,7 @@ export default defineNuxtConfig({
 
 ### Theme System Issues
 
-If you encounter the error `"useTheme must be used within a MazThemeProvider or after MazUiPlugin installation"`, ensure that:
+If you encounter the error `"useTheme must be used within MazUi plugin or MazUiTheme plugin installation"`, ensure that:
 
 1. **Enable useTheme composable** in your configuration:
 

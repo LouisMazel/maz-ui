@@ -2,7 +2,7 @@
 
 import type { ComponentResolver } from 'unplugin-vue-components/types'
 import { type IconName, iconsList } from '@maz-ui/icons/icon-list'
-import { pascalCase } from '../formatters/pascalCase'
+import { pascalCase } from '@maz-ui/utils/src/formatters/pascalCase.js'
 
 /**
  * Resolver for Maz-UI (components)
