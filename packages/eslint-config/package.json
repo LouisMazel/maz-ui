@@ -67,7 +67,7 @@
   },
   "devDependencies": {
     "@types/eslint-plugin-tailwindcss": "^3.17.0",
-    "eslint": "^9.28.0",
+    "eslint": "^9.29.0",
     "eslint-plugin-format": "^1.0.1",
     "typescript": "^5.8.3",
     "unbuild": "^3.5.0"
