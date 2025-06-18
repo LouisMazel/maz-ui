@@ -1,4 +1,4 @@
-import { defineConfig } from '@maz-ui/eslint-config/src/index.ts'
+import { defineConfig } from '@maz-ui/eslint-config/src/index.js'
 
 export default defineConfig(
   {

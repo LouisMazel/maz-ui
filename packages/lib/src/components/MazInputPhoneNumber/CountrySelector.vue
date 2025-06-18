@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { CountryCode } from 'libphonenumber-js'
 
-import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
+import type { HTMLAttributes } from 'vue'
 
 import type { PopoverPosition } from '../MazPopover.vue'
 import type { MazInputPhoneNumberInjectedData } from './../MazInputPhoneNumber.vue'
@@ -9,7 +9,7 @@ import type { MazInputPhoneNumberInjectedData } from './../MazInputPhoneNumber.v
 import type { MazColor, MazSize } from './../types'
 import type { MazInputPhoneNumberTranslations } from './types'
 
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { computed, defineAsyncComponent, useTemplateRef } from 'vue'
 import { useInjectStrict } from '../../composables/useInjectStrict'
 import { getCountryFlagUrl } from '../../utils/getCountryFlagUrl'
 import { truthyFilter } from '../../utils/truthyFilter'
@@ -59,7 +59,7 @@ const MazLazyImg = defineAsyncComponent(() => import('../MazLazyImg.vue'))
 
 const { phoneNumber } = useInjectStrict<MazInputPhoneNumberInjectedData>('data')
 
-const CountrySelectorRef = ref<ComponentPublicInstance<typeof MazSelect> & { openList: () => void }>()
+const selectRef = useTemplateRef('select')
 
 const { getCountriesList } = useMazInputPhoneNumber()
 
@@ -103,8 +103,8 @@ const countryOptions = computed(() =>
     .filter(truthyFilter) ?? [],
 )
 
-function focusCountrySelector() {
-  CountrySelectorRef.value?.openList()
+function openCountryList() {
+  selectRef.value?.open()
 }
 </script>
 
@@ -119,7 +119,7 @@ function focusCountrySelector() {
       :class="{
         '--should-have-bottom-flag': locales.countrySelector.placeholder.length > 0,
       }"
-      @click="focusCountrySelector"
+      @click="openCountryList"
     >
       <!--
         @slot Country selector flag
@@ -131,16 +131,17 @@ function focusCountrySelector() {
           :alt="modelValue"
           width="20"
           height="20"
-          img-class="maz-w-5 maz-h-4 maz-rounded-sm"
+          class="maz-size-4 maz-rounded"
+          img-class="maz-size-4 maz-rounded"
         />
       </slot>
     </button>
 
     <MazSelect
       :id="`country-selector-${id}`"
-      ref="CountrySelectorRef"
+      ref="select"
       :model-value="modelValue"
-      v-bind="{ ...$attrs }"
+      v-bind="$attrs"
       class="m-country-selector__select"
       option-value-key="iso2"
       option-label-key="name"
@@ -161,9 +162,7 @@ function focusCountrySelector() {
       :options="countryOptions"
       :hint="!!phoneNumber && !modelValue ? locales.countrySelector.error : undefined"
       :label="locales.countrySelector.placeholder"
-      :style="{
-        width,
-      }"
+      :style="{ width }"
       :exclude-selectors="[`#country-selector-flag-button-${id}`, ...excludedSelectors]"
       @update:model-value="$emit('update:model-value', $event as CountryCode)"
     >
@@ -195,7 +194,8 @@ function focusCountrySelector() {
                 :alt="`${option.name} flag`"
                 width="20"
                 height="20"
-                img-class="maz-rounded-full maz-w-5 maz-h-5"
+                class="maz-size-5 maz-rounded"
+                img-class="maz-rounded maz-h-5 maz-w-5"
               />
             </slot>
           </span>
@@ -216,7 +216,7 @@ function focusCountrySelector() {
 </template>
 
 <style lang="postcss" scoped>
-  .m-country-selector {
+.m-country-selector {
   @apply maz-relative;
 
   &__country-flag {
@@ -259,7 +259,7 @@ function focusCountrySelector() {
 }
 
 /* RESPONSIVE */
-.m-phone-number-input {
+.m-input-phone-number {
   &.--responsive .m-country-selector {
     @apply maz-min-w-full mob-m:maz-min-w-[inherit];
 

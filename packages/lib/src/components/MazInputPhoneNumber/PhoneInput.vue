@@ -106,6 +106,7 @@ defineExpose({
     :error
     :size
     :success
+    block
     :name
     :inputmode
     :autocomplete
@@ -134,9 +135,11 @@ defineExpose({
 }
 
 /** RESPONSIVE */
-.m-phone-number-input {
+.m-input-phone-number {
+  @apply maz-hidden;
+
   &.--responsive .m-phone-input {
-    @apply -maz-mt-0.5 maz-flex-none mob-m:-maz-ml-0.5 mob-m:maz-mt-0 mob-m:maz-flex-auto;
+    @apply -maz-mt-[var(--maz-border-width)] maz-flex-none mob-m:-maz-ml-[var(--maz-border-width)] mob-m:maz-mt-0 mob-m:maz-flex-auto;
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {
@@ -146,7 +149,7 @@ defineExpose({
   }
 
   &.--row .m-phone-input {
-    @apply -maz-ml-0.5;
+    @apply -maz-ml-[var(--maz-border-width)];
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {
@@ -156,7 +159,7 @@ defineExpose({
   }
 
   &.--col .m-phone-input {
-    @apply -maz-mt-0.5 maz-ml-0 maz-flex-none;
+    @apply -maz-mt-[var(--maz-border-width)] maz-ml-0 maz-flex-none;
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {

@@ -173,7 +173,7 @@ function onFocus(event: FocusEvent) {
       transition: all 200ms ease-in-out;
 
       @apply maz-relative maz-left-0 maz-top-0.5 maz-block maz-h-6 maz-w-[3rem] maz-rounded-full;
-      @apply maz-bg-surface-400 dark:maz-bg-surface-300;
+      @apply maz-bg-surface-400;
     }
 
     &::after {

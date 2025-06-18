@@ -316,7 +316,7 @@ const borderColorState = computed(() => {
   }
 
   .input-wrapper {
-    @apply maz-relative maz-h-[4em] maz-w-[4em] maz-overflow-hidden maz-rounded maz-border maz-border-solid maz-border-divider dark:maz-border-divider-400 maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-surface-400;
+    @apply maz-relative maz-h-[4em] maz-w-[4em] maz-overflow-hidden maz-rounded maz-border maz-border-solid maz-border-divider dark:maz-border-divider-400 maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-surface-400/60;
 
     &:focus-within {
       border-color: var(--input-border-color);

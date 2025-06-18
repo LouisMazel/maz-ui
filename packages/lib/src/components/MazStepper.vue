@@ -291,7 +291,7 @@ function isLastStep(step: number): boolean {
     }
 
     &:not(:disabled) {
-      @apply hover:maz-bg-surface-300 hover:dark:maz-bg-surface-400;
+      @apply hover:maz-bg-surface-300 hover:dark:maz-bg-surface-400/60;
     }
 
     &:disabled {

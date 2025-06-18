@@ -33,7 +33,7 @@ const showCode = ref(props.expanded)
 
     <template v-if="$slots.code" #footer>
       <button class="vp-raw maz-bg-color maz-flex maz-w-full maz-items-center maz-justify-between maz-p-3 maz-transition-all maz-duration-300 hover:maz-bg-surface-400" @click="showCode = !showCode">
-        <span class="maz-flex maz-items-center maz-gap-2 maz-text-sm maz-text-primary">
+        <span class="maz-flex maz-items-center maz-gap-2 maz-text-primary">
           <MazCodeBracket />
           View code
         </span>
@@ -42,7 +42,7 @@ const showCode = ref(props.expanded)
       </button>
 
       <MazExpandAnimation v-model="showCode">
-        <div class="code-wrapper maz-flex maz-flex-col maz-gap-4 maz-text-sm">
+        <div class="code-wrapper maz-flex maz-flex-col maz-gap-4">
           <slot name="code" />
         </div>
       </MazExpandAnimation>

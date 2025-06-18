@@ -33,20 +33,20 @@
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.js"
     },
     "./resolvers": {
       "types": "./dist/types/resolvers.d.ts",
-      "import": "./dist/resolvers.mjs"
+      "import": "./dist/resolvers.js"
     },
     "./icon-list": {
       "types": "./dist/types/icon-list.d.ts",
-      "import": "./dist/icon-list.mjs"
+      "import": "./dist/icon-list.js"
     },
     "./svg": "./svg/*.svg",
     "./": "./"
   },
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/types/index.d.ts",
   "files": [
     "LICENSE",
