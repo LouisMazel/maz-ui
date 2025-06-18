@@ -21,7 +21,6 @@ const {
   shortcuts,
   shortcut,
   hasTime,
-  isOpen,
   format,
   isHour12,
   formatterOptions,
@@ -46,7 +45,6 @@ const {
   shortcuts: MazPickerShortcut[] | false
   shortcut: string | undefined
   hasTime: boolean
-  isOpen: boolean
   format: string
   isHour12: boolean
   formatterOptions: DateTimeFormatOptions
@@ -145,7 +143,6 @@ const currentCalendarDate = computed({
         v-if="hasTime"
         v-model:calendar-date="currentCalendarDate"
         :model-value="currentDate"
-        :is-open="isOpen"
         :color="color"
         :locale="locale"
         :min-date="minDate"
@@ -165,20 +162,16 @@ const currentCalendarDate = computed({
 </template>
 
 <style lang="postcss" scoped>
-  .m-picker-container {
+.m-picker-container {
   @apply maz-overflow-hidden maz-rounded maz-bg-surface dark:maz-border dark:maz-border-divider;
 
-  &:not(.--is-inline) {
-    @apply maz-absolute maz-z-default-backdrop maz-drop-shadow-md maz-shadow-elevation;
-  }
-
   &.--is-inline {
-    @apply maz-border maz-border-divider;
+    @apply maz-border maz-border-divider dark:maz-border-divider;
   }
 
-  &.--has-date {
+  /* &.--has-date {
     min-width: 16.875rem;
-  }
+  } */
 
   &.--has-double {
     min-width: 28.125rem;

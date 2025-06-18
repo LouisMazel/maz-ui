@@ -41,7 +41,22 @@ export default defineConfig({
       include: ['src/**/*.ts'],
     }),
   ],
+  esbuild: {
+    drop: ['debugger'],
+    pure: ['console.log', 'console.debug'],
+    legalComments: 'none',
+    target: 'es2022',
+    minifyIdentifiers: true,
+    minifySyntax: true,
+    minifyWhitespace: true,
+    treeShaking: true,
+  },
   build: {
+    emptyOutDir: true,
+    sourcemap: false,
+    cssMinify: 'lightningcss',
+    minify: 'esbuild',
+    target: 'es2022',
     lib: {
       entry: {
         ...entries,
@@ -51,32 +66,28 @@ export default defineConfig({
         'utils/index': 'src/utils/index.ts',
         'composables/index': 'src/composables/useTheme.ts',
       },
-    },
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
+      formats: ['es'],
+      fileName: (_, name) => `${name}.js`,
     },
     rollupOptions: {
       external,
       treeshake: {
         moduleSideEffects: false,
-        preset: 'recommended',
+        preset: 'smallest',
+        propertyReadSideEffects: false,
+        unknownGlobalSideEffects: false,
       },
-      output: [
-        {
-          format: 'es',
-          chunkFileNames: 'chunks/[name].[hash].mjs',
-          assetFileNames: 'assets/[name].[hash][extname]',
-          exports: 'named',
-          entryFileNames: '[name].mjs',
-          preserveModules: true,
-          interop: 'auto',
-          generatedCode: 'es2015',
-        },
-      ],
+      output: {
+        format: 'es',
+        compact: true,
+        chunkFileNames: 'chunks/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash][extname]',
+        exports: 'named',
+        minifyInternalExports: true,
+        preserveModules: false,
+        interop: 'auto',
+        generatedCode: 'es2015',
+      },
     },
   },
 })

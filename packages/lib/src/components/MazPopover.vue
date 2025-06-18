@@ -13,6 +13,8 @@ import {
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { vClickOutside } from '../directives/vClickOutside'
+import { isClient } from '../utils/isClient'
+import { throttle } from '../utils/throttle'
 
 /**
  * A versatile Vue 3 component for displaying content in overlays that bypass overflow constraints of parent elements.
@@ -25,7 +27,6 @@ defineOptions({
 
 const {
   id,
-  modelValue = false,
   position = 'auto',
   trigger = 'click',
   role = 'dialog',
@@ -36,7 +37,7 @@ const {
   transition = 'maz-popover',
   teleportTo = 'body',
   closeOnClickOutside = true,
-  closeOnEscapeKey = true,
+  closeOnEscape = true,
   persistent = false,
   panelStyle,
   color = 'default',
@@ -46,13 +47,16 @@ const {
   fallbackPosition,
   trapFocus = true,
   keepOpenOnHover = false,
+  block = false,
+  positionDelay = 0,
 } = defineProps<MazPopoverProps>()
+
 const emits = defineEmits<{
   /**
    * Emitted when popover state changes
    * @property {boolean} value - The new open state
    */
-  'update:modelValue': [value: boolean]
+  'update:model-value': [value: boolean]
   /**
    * Emitted when popover opens
    */
@@ -173,7 +177,7 @@ export interface MazPopoverProps {
    * Close popover when pressing Escape key
    * @default true
    */
-  closeOnEscapeKey?: boolean
+  closeOnEscape?: boolean
   /**
    * Prevent auto-close (ignores click outside and escape key)
    * @default false
@@ -197,7 +201,7 @@ export interface MazPopoverProps {
   /**
    * Color variant of the popover
    * @values primary, secondary, accent, info, success, warning, destructive, contrast, default
-   * @default contrast
+   * @default default
    */
   color?: MazColor | 'default'
   /**
@@ -210,6 +214,17 @@ export interface MazPopoverProps {
    * @default false
    */
   keepOpenOnHover?: boolean
+  /**
+   * The popover will be full width of the trigger
+   * @default false
+   */
+  block?: boolean
+  /**
+   * Delay before setting the position in milliseconds
+   * @description Useful when the popover content is not immediately visible or rendered
+   * @default 50
+   */
+  positionDelay?: number
 }
 
 const triggerId = useInstanceUniqId({
@@ -221,12 +236,14 @@ const attrs = useAttrs()
 
 const triggerElement = useTemplateRef<HTMLElement>('trigger')
 const panelElement = useTemplateRef<HTMLElement>('panel')
-const isOpen = ref(modelValue)
+
+const isOpen = defineModel<boolean>('modelValue', { required: false, default: false })
 const computedPosition = ref<Omit<PopoverPosition, 'auto'>>(position)
 
 let openTimeout: NodeJS.Timeout | null = null
 let closeTimeout: NodeJS.Timeout | null = null
 let initialFocusElement: HTMLElement | null = null
+let ignoreNextClickOutside = false
 
 const panelId = computed(() => `${triggerId.value}-panel`)
 
@@ -280,11 +297,113 @@ const panelClasses = computed(() => [
   `--${color}`,
 ])
 
+let resizeObserver: ResizeObserver | null = null
+let mutationObserver: MutationObserver | null = null
+let isUpdatingPosition = false
+
+function updatePosition() {
+  if (!triggerElement.value || !panelElement.value || isUpdatingPosition)
+    return
+
+  isUpdatingPosition = true
+
+  const viewport = { width: window.innerWidth, height: window.innerHeight }
+  const scrollTop = window.scrollY || document.documentElement.scrollTop
+  const scrollLeft = window.scrollX || document.documentElement.scrollLeft
+
+  let newPosition: Omit<PopoverPosition, 'auto'> | undefined
+
+  const triggerRect = triggerElement.value.getBoundingClientRect()
+
+  if (position === 'auto') {
+    newPosition = getBestPosition(triggerRect, viewport)
+  }
+  else {
+    newPosition = position
+  }
+
+  const panelRect = panelElement.value.getBoundingClientRect()
+  const coordinates = calculatePosition(newPosition, triggerRect, panelRect, scrollTop, scrollLeft)
+
+  panelStyles.value = {
+    position: 'absolute',
+    top: `${coordinates.top}px`,
+    left: `${coordinates.left}px`,
+  }
+
+  computedPosition.value = newPosition
+
+  isUpdatingPosition = false
+}
+
+const trottledUpdatePosition = throttle(() => {
+  if (isOpen.value && !isUpdatingPosition) {
+    nextTick(updatePosition)
+  }
+}, 16)
+
+function setupObservers() {
+  if (!panelElement.value) {
+    return
+  }
+
+  if (window.ResizeObserver) {
+    resizeObserver = new ResizeObserver(() => {
+      if (!isUpdatingPosition) {
+        trottledUpdatePosition()
+      }
+    })
+    resizeObserver.observe(panelElement.value)
+  }
+
+  mutationObserver = new MutationObserver((mutations) => {
+    if (isUpdatingPosition)
+      return
+
+    const relevantMutations = mutations.filter((mutation) => {
+      if (mutation.target === panelElement.value && mutation.type === 'attributes' && mutation.attributeName === 'style') {
+        return false
+      }
+
+      return (
+        mutation.type === 'childList'
+        || (mutation.type === 'attributes'
+          && mutation.attributeName === 'class'
+          && mutation.target !== panelElement.value)
+      )
+    })
+
+    if (relevantMutations.length > 0) {
+      trottledUpdatePosition()
+    }
+  })
+
+  mutationObserver.observe(panelElement.value, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['class'],
+  })
+}
+
+function cleanupObservers() {
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+    resizeObserver = null
+  }
+
+  if (mutationObserver) {
+    mutationObserver.disconnect()
+    mutationObserver = null
+  }
+}
+
 function open() {
-  if (disabled || isOpen.value)
+  if (disabled)
     return
 
   clearCloseTimeout()
+  ignoreNextClickOutside = true
 
   if (delay > 0) {
     openTimeout = setTimeout(() => {
@@ -297,9 +416,6 @@ function open() {
 }
 
 function close() {
-  if (!isOpen.value)
-    return
-
   clearOpenTimeout()
 
   if (delay > 0 && trigger === 'hover') {
@@ -327,22 +443,26 @@ function toggle() {
 }
 
 function setOpen(value: boolean) {
-  if (value === isOpen.value)
-    return
-
   isOpen.value = value
-  emits('update:modelValue', value)
   emits('toggle', value)
 
   if (value) {
     emits('open')
+
     nextTick(() => {
-      updatePosition()
       setupFocusTrap()
+      setTimeout(() => {
+        updatePosition()
+        setupObservers()
+      }, positionDelay)
     })
   }
   else {
     emits('close')
+    panelStyles.value = undefined
+    ignoreNextClickOutside = false
+    cleanupObservers()
+
     if (trapFocus) {
       restoreFocus()
     }
@@ -361,41 +481,6 @@ function clearCloseTimeout() {
     clearTimeout(closeTimeout)
     closeTimeout = null
   }
-}
-
-function updatePosition() {
-  if (!triggerElement.value || !panelElement.value)
-    return
-
-  const trigger = triggerElement.value
-  const panel = panelElement.value
-  const viewport = { width: window.innerWidth, height: window.innerHeight }
-  const scrollTop = window.scrollY || document.documentElement.scrollTop
-  const scrollLeft = window.scrollX || document.documentElement.scrollLeft
-
-  const triggerRect = trigger.getBoundingClientRect()
-  const panelRect = panel.getBoundingClientRect()
-
-  let newPosition: Omit<PopoverPosition, 'auto'> | undefined
-
-  if (position === 'auto') {
-    newPosition = getBestPosition(triggerRect, viewport)
-  }
-  else {
-    newPosition = position
-  }
-
-  const coordinates = calculatePosition(newPosition, triggerRect, panelRect, scrollTop, scrollLeft)
-
-  panelStyles.value = {
-    position: 'absolute',
-    top: `${coordinates.top}px`,
-    left: `${coordinates.left}px`,
-    zIndex: 9999,
-    ...(panelStyle as Record<string, string> || {}),
-  }
-
-  computedPosition.value = newPosition
 }
 
 function getIsVisible(coords: { left: number, top: number }, panelRect: DOMRect, viewport: { width: number, height: number }, scrollTop: number, scrollLeft: number) {
@@ -450,7 +535,7 @@ function getBestPosition(
     return preferPosition
   }
 
-  if (fallbackPosition && isPositionVisible(fallbackPosition, triggerRect, panelRect, viewport, scrollTop, scrollLeft)) {
+  else if (preferPosition && fallbackPosition) {
     return fallbackPosition
   }
 
@@ -464,11 +549,9 @@ function getBestPosition(
       left: triggerRect.left,
       right: viewport.width - triggerRect.right,
     }
-    const sortedPositions = positions.sort((a, b) => {
-      const spaceA = spaces[a as keyof typeof spaces]
-      const spaceB = spaces[b as keyof typeof spaces]
-      return spaceB - spaceA
-    })
+
+    const sortedPositions = positions.sort((a, b) => spaces[b] - spaces[a])
+
     return sortedPositions[0]
   }
 
@@ -584,7 +667,7 @@ function onKeydown(event: KeyboardEvent) {
   if (!isOpen.value)
     return
 
-  if (event.key === 'Escape' && closeOnEscapeKey && !persistent) {
+  if (event.key === 'Escape' && closeOnEscape && !persistent) {
     event.preventDefault()
     close()
   }
@@ -626,6 +709,11 @@ function onClickOutside(event: Event) {
   if (trigger === 'manual')
     return
 
+  if (ignoreNextClickOutside) {
+    ignoreNextClickOutside = false
+    return
+  }
+
   if (closeOnClickOutside && !persistent) {
     if (triggerElement.value && triggerElement.value.contains(event.target as Node)) {
       return
@@ -640,11 +728,12 @@ function onScroll() {
   }
 }
 
-watch(() => modelValue, (value) => {
-  if (value !== isOpen.value) {
-    setOpen(value)
-  }
-})
+watch(isOpen, (value) => {
+  if (!isClient())
+    return
+
+  value ? open() : close()
+}, { immediate: true })
 
 watch(() => position, () => {
   if (isOpen.value) {
@@ -664,6 +753,7 @@ onUnmounted(() => {
   window.removeEventListener('resize', onScroll)
   clearOpenTimeout()
   clearCloseTimeout()
+  cleanupObservers()
 })
 
 defineExpose({
@@ -709,6 +799,7 @@ defineExpose({
       {
         '--open': isOpen,
         '--disabled': disabled,
+        '--block': block,
       },
     ]"
     :style="rootStyles"
@@ -750,7 +841,7 @@ defineExpose({
           :tabindex="role === 'dialog' ? '-1' : undefined"
           class="m-popover-panel"
           :class="panelClasses"
-          :style="panelStyles"
+          :style="[panelStyles, panelStyle]"
           v-bind="panelEvents"
         >
           <!--
@@ -770,9 +861,13 @@ defineExpose({
 <style lang="postcss" scoped>
 .m-popover {
   @apply maz-inline-block;
+}
 
-  &.--disabled {
-    @apply maz-pointer-events-none maz-opacity-50;
+.m-popover.--block {
+  @apply maz-w-full;
+
+  .m-popover-trigger {
+    @apply maz-w-full;
   }
 }
 
@@ -781,11 +876,11 @@ defineExpose({
 }
 
 .m-popover-panel {
-  @apply maz-absolute maz-outline-none maz-z-20 maz-max-w-xs maz-rounded maz-shadow-lg maz-border;
+  @apply maz-absolute maz-outline-none maz-z-20 maz-rounded maz-drop-shadow-md maz-shadow-elevation;
 
   /* Default color */
   &.--default {
-    @apply maz-border-divider maz-bg-surface maz-text-foreground;
+    @apply dark:maz-border dark:maz-border-divider maz-bg-surface;
   }
 
   /* Color variants */
@@ -829,13 +924,8 @@ defineExpose({
   transform-origin: var(--popover-origin, center);
 }
 
+.maz-popover-leave-to,
 .maz-popover-enter-from {
-  @apply maz-opacity-0;
-
-  transform: scale(0.95) translateY(-4px);
-}
-
-.maz-popover-leave-to {
   @apply maz-opacity-0;
 
   transform: scale(0.95) translateY(-4px);

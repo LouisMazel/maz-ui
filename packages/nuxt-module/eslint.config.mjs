@@ -1,5 +1,4 @@
 import { createConfigForNuxt } from '@nuxt/eslint-config/flat'
-// import eslintConfig from './../lib/eslint.config.js'
 
 export default createConfigForNuxt({
   features: {

@@ -22,7 +22,6 @@
     "@maz-ui/icons": "workspace:*",
     "@maz-ui/themes": "workspace:*",
     "@tsconfig/node22": "^22.0.1",
-    "@types/node": "^22.15.30",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vue/tsconfig": "^0.7.0",
     "eslint-plugin-oxlint": "^0.18.0",

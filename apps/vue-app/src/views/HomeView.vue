@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { vTooltip } from 'maz-ui/src/directives/vTooltip.js'
+import { vLazyImg } from 'maz-ui/src/directives/vLazyImg/lazy-img.directive.ts'
+import { vTooltip } from 'maz-ui/src/directives/vTooltipPopover.ts'
 
 const { message, success, error, info, warning } = useToast()
 
@@ -29,29 +30,72 @@ function showToast() {
     timeout: 10000,
   })
 }
+
+const isShow = ref(true)
+const textButton = ref('Tooltip Text')
+
+function toggleTextButton() {
+  textButton.value = textButton.value === 'Tooltip Text' ? 'Tooltip Text 2' : 'Tooltip Text'
+}
 </script>
 
 <template>
   <div id="home" class="maz-flex maz-h-screen maz-flex-col maz-items-center maz-justify-center">
-    <MazPopover position="top-start">
+    <!-- <MazPopover position="top">
       <template #trigger>
-        <MazBtn color="destructive"> Hello </MazBtn>
+        <MazBtn color="destructive">
+          Hello
+        </MazBtn>
       </template>
 
       <template #default>
-        <div class="maz-p-4">Hello</div>
+        <div class="maz-p-4">
+          Hello
+        </div>
       </template>
     </MazPopover>
 
-    <MazBtn @click="showToast"> Show toast </MazBtn>
+    <MazBtn @click="showToast">
+      Show toast
+    </MazBtn> -->
 
-    <p
+    <MazBtn @click="isShow = !isShow"> Toggle tooltip </MazBtn>
+
+    <MazBtn @click="toggleTextButton"> Toggle text button </MazBtn>
+
+    <MazBtn
+      v-if="isShow"
       v-tooltip="{
+        html: '<strong>COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC</strong>',
+        color: 'destructive',
+      }"
+      color="destructive"
+    >
+      {{ textButton }}
+    </MazBtn>
+    <!-- <MazBtn
+      v-tooltip="{
+        html: `<strong>COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC COUCOUCOUCOUC</strong>`,
+      }"
+      color="destructive"
+    >
+      Tooltip Text HTML
+    </MazBtn>
+    <p
+      v-tooltip.top="{
         text: 'COUCOUCOUCOUC',
       }"
       color="destructive"
     >
-      Tooltip
+      Tooltip Top
     </p>
+    <p
+      v-tooltip.bottom="{
+        text: 'COUCOUCOUCOUC',
+      }"
+      color="destructive"
+    >
+      Tooltip Bottom
+    </p> -->
   </div>
 </template>

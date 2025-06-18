@@ -496,7 +496,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   import { ref, computed } from 'vue'
   import { MazStar, MazPlay, MazGithub, MazSun, MazMoon } from '@maz-ui/icons/src/index.js'
   import { useTheme } from '@maz-ui/themes/src/composables/useTheme.js'
-  import { mazUi, pristine, ocean, obsidian } from '@maz-ui/themes/src/presets/index.js'
+  // import { mazUi, pristine, ocean, obsidian } from '@maz-ui/themes/src/presets/index.js'
 
   const {
     isDark,
@@ -507,11 +507,27 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     toggleDarkMode
   } = useTheme()
 
-  const presets = { 'maz-ui': mazUi, pristine, ocean, obsidian }
   const originalPreset = ref(null)
 
-  function changePreset(presetName) {
-    updateTheme(presets[presetName])
+  async function getPreset(presetName) {
+    switch (presetName) {
+      case 'maz-ui':
+        return import('@maz-ui/themes/src/presets/mazUi.ts').then(m => m.mazUi)
+      case 'pristine':
+        return import('@maz-ui/themes/src/presets/pristine.ts').then(m => m.pristine)
+      case 'ocean':
+        return import('@maz-ui/themes/src/presets/ocean.ts').then(m => m.ocean)
+      case 'obsidian':
+        return import('@maz-ui/themes/src/presets/obsidian.ts').then(m => m.obsidian)
+      default:
+        return import('@maz-ui/themes/src/presets/mazUi.ts').then(m => m.mazUi)
+    }
+  }
+
+  async function changePreset(presetName) {
+    const preset = await getPreset(presetName)
+    updateTheme(preset)
+    originalPreset.value = preset
   }
 
   async function getStarCount() {

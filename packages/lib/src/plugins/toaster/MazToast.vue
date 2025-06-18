@@ -467,7 +467,7 @@ onMounted(() => {
   }
 
   & .m-toast__progress-bar {
-    @apply maz-absolute maz-inset-x-0 maz-bottom-[0px] maz-h-[1px];
+    @apply maz-absolute maz-inset-x-0 maz-bottom-0 maz-h-[var(--maz-border-width)];
 
     & .m-toast__progress-bar-inner {
       @apply maz-h-full maz-transition-all maz-duration-200 maz-ease-linear;

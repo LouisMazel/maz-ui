@@ -26,7 +26,7 @@ const currentPage = ref(1)
 const props: MazPaginationProps = {
   resultsSize: 100,
   totalPages: 10,
-  activeColor: 'primary',
+  activeColor: 'contrast',
 }
 </script>
 
@@ -72,7 +72,7 @@ const props: MazPaginationProps = {
   const props: Props = {
     resultsSize: 100,
     totalPages: 10,
-    activeColor: 'primary',
+    activeColor: 'contrast',
   }
 </script>
 

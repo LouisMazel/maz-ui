@@ -7,6 +7,7 @@ import type { MazColor, MazSize } from './types'
 import { MazChevronDown } from '@maz-ui/icons'
 import { computed, defineAsyncComponent, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { isClient } from '../utils/isClient'
 import MazPopover, { type MazPopoverProps } from './MazPopover.vue'
 
 defineOptions({
@@ -273,7 +274,7 @@ function arrowHandler(event: KeyboardEvent) {
     return
 
   const currentElement = document.activeElement as HTMLElement
-  const itemsElements = document.querySelectorAll<HTMLElement>(`#${instanceId.value} .menuitem`)
+  const itemsElements = document.querySelectorAll<HTMLElement>(`#${instanceId.value}-menu .menuitem`)
   const currentIndex = Array.from(itemsElements).indexOf(currentElement)
 
   if (currentIndex === -1) {
@@ -285,12 +286,15 @@ function arrowHandler(event: KeyboardEvent) {
     ? (currentIndex + 1) % itemLength
     : (currentIndex - 1 + itemLength) % itemLength
 
-  itemsElements[nextIndex]?.focus({ preventScroll: true })
+  itemsElements[nextIndex]?.focus()
 }
 
 watch(
-  () => modelValue.value,
+  modelValue,
   (value) => {
+    if (!isClient())
+      return
+
     if (value) {
       document.addEventListener('keydown', keydownHandler)
     }
@@ -311,11 +315,13 @@ watch(
     :position
     :disabled
     :keep-open-on-hover="trigger === 'hover'"
-    :class="[classProp, { '--block': block }]"
+    :class="[classProp]"
+    :block
     @update:model-value="setDropdown"
   >
     <template #trigger="{ toggle, close, isOpen, open }">
       <div
+        :id="instanceId"
         role="button"
         tabindex="0"
         class="m-dropdown__wrapper"
@@ -382,7 +388,7 @@ watch(
 
     <template #default="{ open, close, isOpen, toggle }">
       <div
-        :id="instanceId"
+        :id="`${instanceId}-menu`"
         role="menu"
         aria-label="Menu"
         class="m-dropdown__menu"
@@ -471,10 +477,6 @@ watch(
 <style lang="postcss">
   .m-dropdown {
   @apply maz-relative maz-inline-flex maz-flex-col maz-items-start maz-align-top;
-
-  &.--block {
-    @apply maz-w-full;
-  }
 
   &__wrapper {
     @apply maz-h-full maz-w-full maz-outline-none focus:maz-bg-surface-400 maz-rounded;

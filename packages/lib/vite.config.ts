@@ -1,4 +1,3 @@
-import { rmSync } from 'node:fs'
 import { extname, relative, resolve } from 'node:path'
 import Vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
@@ -6,21 +5,14 @@ import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
 
-// import { viteStaticCopy } from 'vite-plugin-static-copy'
 import SvgLoader from 'vite-svg-loader'
 import rootPkg from '../../package.json'
 
 import {
-  // ViteBuildIcons,
-  // ViteBuildMazCli,
-  // ViteBuildNuxtModule,
-  // ViteBuildThemes,
   ViteCompileStyles,
 } from './build'
 
 import pkg from './package.json'
-
-rmSync(resolver('dist'), { recursive: true, force: true })
 
 function resolver(path: string) {
   return resolve(__dirname, path)
@@ -67,50 +59,26 @@ export default defineConfig({
       tsconfigPath: resolver('./tsconfig.json'),
       entryRoot: resolver('src'),
       outDir: resolver('dist/types'),
-      // include: [
-      //   'src/components/*.vue',
-      //   'src/composables/*.ts',
-      //   'src/directives/*.ts',
-      //   'src/resolvers/*.ts',
-      //   'src/formatters/*.ts',
-      //   'src/utils/*.ts',
-      //   'src/plugins/*.ts',
-      //   'src/components/types.ts',
-      //   'src/components/index.ts',
-      //   'src/composables/index.ts',
-      //   'src/plugins/index.ts',
-      //   'src/directives/index.ts',
-      //   'src/resolvers/index.ts',
-      //   'src/utils/index.ts',
-      //   'src/formatters/index.ts',
-      //   'src/index.ts',
-      //   'src/types/*.d.ts',
-      // ],
     }),
-    // ViteBuildIcons(),
-    // ViteBuildMazCli(),
-    // ViteBuildThemes(),
     ViteCompileStyles(),
-    // ViteBuildNuxtModule(),
   ],
+  esbuild: {
+    drop: ['debugger'],
+    pure: ['console.log', 'console.debug'],
+    legalComments: 'none',
+    target: 'es2022',
+    minifyIdentifiers: true,
+    minifySyntax: true,
+    minifyWhitespace: true,
+    treeShaking: true,
+  },
   build: {
     cssCodeSplit: true,
-    emptyOutDir: false,
+    emptyOutDir: true,
     sourcemap: false,
-    cssMinify: true,
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: ['log'],
-        drop_debugger: true,
-      },
-      mangle: true,
-      module: true,
-      toplevel: true,
-      format: {
-        comments: false,
-      },
-    },
+    cssMinify: 'lightningcss',
+    minify: 'esbuild',
+    target: 'es2022',
     lib: {
       entry: {
         ...moduleEntries,
@@ -124,29 +92,29 @@ export default defineConfig({
         'tailwindcss/index': resolver('src/tailwindcss/index.ts'),
         'index': resolver('src/index.ts'),
       },
-      fileName: (format, name) => format === 'es' ? `${name}.mjs` : `${name}.cjs`,
+      formats: ['es'],
+      fileName: (_, name) => `${name}.js`,
       cssFileName: '[name].[hash].css',
     },
     rollupOptions: {
       external,
       treeshake: {
-        moduleSideEffects: (id, _external) => {
-          return id.includes('.css') || id.includes('.vue?vue&type=style')
-        },
-        preset: 'recommended',
+        moduleSideEffects: false,
+        preset: 'smallest',
+        propertyReadSideEffects: false,
+        unknownGlobalSideEffects: false,
       },
-      output: [
-        {
-          format: 'es',
-          chunkFileNames: 'chunks/[name].[hash].mjs',
-          assetFileNames: 'assets/[name].[hash][extname]',
-          exports: 'named',
-          entryFileNames: '[name].mjs',
-          preserveModules: false,
-          interop: 'auto',
-          generatedCode: 'es2015',
-        },
-      ],
+      output: {
+        format: 'es',
+        compact: true,
+        chunkFileNames: 'chunks/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash][extname]',
+        exports: 'named',
+        minifyInternalExports: true,
+        preserveModules: false,
+        interop: 'auto',
+        generatedCode: 'es2015',
+      },
     },
   },
 })

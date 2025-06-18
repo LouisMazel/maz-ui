@@ -19,7 +19,7 @@ export function useMountComponent<T extends Component | string, P = Record<strin
     }
   }
 
-  const props = { ...options?.props }
+  const props = { ...options?.props, destroy }
 
   const vNode = createVNode(
     component,
@@ -27,12 +27,10 @@ export function useMountComponent<T extends Component | string, P = Record<strin
     options?.children,
   )
 
-  // Appliquer le contexte de l'app si fourni
   if (options?.app) {
     vNode.appContext = options.app._context
   }
 
-  // Rendre le composant sauf si noRender est true
   if (!options?.noRender) {
     render(vNode, el)
   }

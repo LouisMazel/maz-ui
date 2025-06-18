@@ -7,6 +7,32 @@ description: vTooltip is a Vue 3 directive to display a text when the user hover
 
 {{ $frontmatter.description }}
 
+::: warning
+
+**Limitations**
+
+The `v-tooltip` directive is **not compatible with `v-if`**. This is because the directive transforms the original element into a [`MazPopover`](../components/maz-popover.md) component, which interferes with Vue's conditional rendering system.
+
+**❌ This won't work:**
+
+```vue
+<MazBtn v-if="isVisible" v-tooltip="'Hello'">
+  Button
+</MazBtn>
+```
+
+**✅ Use `v-show` instead:**
+
+```vue
+<MazBtn v-show="isVisible" v-tooltip="'Hello'">
+  Button
+</MazBtn>
+```
+
+This limitation occurs because the directive needs to replace the DOM element with a popover wrapper to provide tooltip functionality. When `v-if` becomes `false`, Vue loses track of the original element, preventing it from re-rendering when the condition becomes `true` again.
+
+:::
+
 ## Basic usage
 
 <ComponentDemo>
@@ -93,7 +119,7 @@ import { vTooltip } from 'maz-ui/directives'
 
 <template #code>
 
-```vue
+```html
 <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'primary' }">
   Primary
 </MazBtn>
@@ -130,40 +156,110 @@ import { vTooltip } from 'maz-ui/directives'
   </template>
 </ComponentDemo>
 
-## Offset
+## HTML content
+
+You can also use HTML content in the tooltip by passing a string to the `html` option.
 
 <ComponentDemo>
   <div
     class="maz-flex maz-gap-3 maz-flex-wrap"
   >
-    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '0rem' }">
-      0rem
-    </MazBtn>
-    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '0.5rem' }">
-      0.5rem
-    </MazBtn>
-    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '1.5rem' }">
-      1.5rem
-    </MazBtn>
-    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '2rem' }">
-      2rem
+    <MazBtn v-tooltip="{ html: '<strong>Tooltip</strong> text <br> with <br> line breaks' }">
+      HTML
     </MazBtn>
   </div>
-  <br />
+
+<template #code>
+
+```html
+<MazBtn v-tooltip="{ html: '<strong>Tooltip</strong> text <br> with <br> line breaks' }">
+  HTML
+</MazBtn>
+```
+
+  </template>
+</ComponentDemo>
+
+## Customization
+
+You can customize the tooltip by passing a `panelClass` or `panelStyle` option.
+
+<ComponentDemo>
   <div
     class="maz-flex maz-gap-3 maz-flex-wrap"
   >
-    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '0px' }">
-      0px
+    <MazBtn v-tooltip="{ text: 'Tooltip text', panelClass: 'maz-text-red-500' }">
+      panelClass
     </MazBtn>
-    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '10px' }">
-      10px
+    <MazBtn v-tooltip="{ text: 'Tooltip text', panelStyle: 'background-color: red; color: white;' }">
+      panelStyle
     </MazBtn>
-    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '20px' }">
-      20px
+  </div>
+
+<template #code>
+
+```html
+<MazBtn v-tooltip="{ text: 'Tooltip text', panelClass: 'text-red-500' }">
+  panelClass
+</MazBtn>
+<MazBtn v-tooltip="{ text: 'Tooltip text', panelStyle: 'background-color: red; color: white;' }">
+  panelStyle
+</MazBtn>
+```
+
+  </template>
+</ComponentDemo>
+
+## Trigger
+
+You can change the trigger mode of the tooltip by passing a `trigger` option.
+
+<ComponentDemo>
+  <div
+    class="maz-flex maz-gap-3 maz-flex-wrap"
+  >
+    <MazBtn v-tooltip="{ text: 'Tooltip text', trigger: 'click' }">
+      Click
     </MazBtn>
-    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: '30px' }">
-      30px
+    <MazBtn v-tooltip="{ text: 'Tooltip text', trigger: 'hover' }">
+      Hover
+    </MazBtn>
+  </div>
+
+<template #code>
+
+```html
+<MazBtn v-tooltip="{ text: 'Tooltip text', trigger: 'click' }">
+  Click
+</MazBtn>
+
+<MazBtn v-tooltip="{ text: 'Tooltip text', trigger: 'hover' }">
+  Hover
+</MazBtn>
+```
+
+  </template>
+</ComponentDemo>
+
+## Offset
+
+The `offset` (in px) option allows you to adjust the position of the tooltip relative to the original element.
+
+<ComponentDemo>
+  <div
+    class="maz-flex maz-gap-3 maz-flex-wrap"
+  >
+    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: 0 }">
+      0
+    </MazBtn>
+    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: 10 }">
+      10
+    </MazBtn>
+    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: 20 }">
+      20
+    </MazBtn>
+    <MazBtn v-tooltip="{ text: 'Tooltip text', offset: 40 }">
+      40
     </MazBtn>
   </div>
 
@@ -188,9 +284,10 @@ import { vTooltip } from 'maz-ui/directives'
 
 ```vue
 <script lang="ts" setup>
-import { vTooltip } from 'maz-ui/directives'
-import { ref } from 'vue'
-const open = ref(true)
+  import { vTooltip } from 'maz-ui/directives'
+  import { ref } from 'vue'
+
+  const open = ref(true)
 </script>
 
 <template>
@@ -234,17 +331,51 @@ Please refer to the [Nuxt module documentation](./../guide/nuxt.md) for more inf
 ## Types
 
 ```ts
-interface VTooltipOptions {
-  position?: 'top' | 'bottom' | 'left' | 'right'
-  color?: 'primary' | 'secondary' | 'info' | 'accent' | 'success' | 'warning' | 'destructive' | 'contrast' | 'default'
+interface VTooltipOptions extends Partial<Omit<MazPopoverProps, 'modelValue'>> {
+  /**
+   * Text to display in the tooltip
+   */
+  text?: string
+  /**
+   * HTML content (alternative to text)
+   */
+  html?: string
+  /**
+   * Color variant of the tooltip
+   * @default default
+   */
+  color?: MazPopoverProps['color']
+  /**
+   * Position of the tooltip
+   * @default top
+   */
+  position?: PopoverPosition
+  /**
+   * Trigger of the tooltip
+   * @default hover
+   */
+  trigger?: PopoverTrigger
+  /**
+   * Close on click outside
+   * @default false
+   */
+  closeOnClickOutside?: boolean
+  /**
+   * Close on escape
+   * @default false
+   */
+  closeOnEscape?: boolean
+
+  /**
+   * Open the tooltip
+   * @default false
+   */
+  open?: boolean
 }
 
 type VTooltipBindingValue
   = | string
-    | ({
-      text: string
-      open?: boolean
-    } & vTooltipOptions)
+    | VTooltipOptions
 ```
 
 <script lang="ts" setup>
