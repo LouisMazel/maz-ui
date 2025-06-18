@@ -85,7 +85,7 @@
   "devDependencies": {
     "glob": "catalog:",
     "typescript": "^5.8.3",
-    "vue": "^3.5.16",
+    "vue": "catalog:",
     "vue-tsc": "^2.2.10"
   },
   "lint-staged": {
