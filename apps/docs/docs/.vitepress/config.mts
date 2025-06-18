@@ -1,5 +1,5 @@
 import type { Plugin } from 'postcss'
-import type { HeadConfig } from 'vitepress'
+import type { HeadConfig, UserConfig } from 'vitepress'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import autoprefixer from 'autoprefixer'
@@ -40,7 +40,7 @@ export default defineConfig({
 
   markdown: {
     theme: {
-      light: 'github-light',
+      light: 'github-dark',
       dark: 'tokyo-night',
     },
   },
@@ -103,6 +103,10 @@ export default defineConfig({
         configureServer(server) {
           server.middlewares.use('/components/maz-phone-number-input', (req, res) => {
             res.writeHead(301, { Location: '/components/maz-input-phone-number' })
+            res.end()
+          })
+          server.middlewares.use('/components/maz-picker', (req, res) => {
+            res.writeHead(301, { Location: '/components/maz-date-picker' })
             res.end()
           })
         },
@@ -170,4 +174,4 @@ export default defineConfig({
 
     return [...head, ...pageHead]
   },
-})
+} as UserConfig)

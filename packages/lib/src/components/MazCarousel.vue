@@ -1,22 +1,35 @@
 <script lang="ts" setup>
+import type { MazTranslationsNestedSchema } from '@maz-ui/translations/src/types.js'
+import type { DeepPartial } from '@maz-ui/utils/src/ts-helpers/DeepPartial.js'
 import { MazChevronLeft, MazChevronRight } from '@maz-ui/icons'
-import { defineAsyncComponent, ref, useSlots } from 'vue'
+import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
+import { computed, defineAsyncComponent, ref, useSlots } from 'vue'
 
-const props = withDefaults(defineProps<MazCarouselProps>(), {
-  ariaLabelPreviousButton: 'Scroll to previous items',
-  ariaLabelNextButton: 'Scroll to next items',
-})
+const {
+  hideScrollButtons = false,
+  hideScrollbar = false,
+  translations,
+} = defineProps<MazCarouselProps>()
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 export interface MazCarouselProps {
-  /** Do not display the scroll buttons */
-  noScrollBtn?: boolean
-  /** Aria label for the previous button */
-  ariaLabelPreviousButton?: string
-  /** Aria label for the next button */
-  ariaLabelNextButton?: string
-  /** Hide the scrollbar when not active */
+  /**
+   * Hide display the scroll buttons
+   * @default false
+   */
+  hideScrollButtons?: boolean
+  /**
+   * Translations of the carousel
+   * @type {DeepPartial<MazTranslationsNestedSchema['carousel']>}
+   * @default Translations from @maz-ui/translations
+   */
+  translations?: DeepPartial<MazTranslationsNestedSchema['carousel']>
+  /**
+   * Hide the scrollbar when not active
+   * @type {boolean}
+   * @default false
+   */
   hideScrollbar?: boolean
 }
 
@@ -26,8 +39,16 @@ const isScrolled = ref(false)
 const isScrolledMax = ref(false)
 const MazCarouselItems = ref<HTMLDivElement>()
 
+const { t } = useTranslations()
+const messages = computed<MazTranslationsNestedSchema['carousel']>(() => ({
+  ariaLabel: {
+    previousButton: translations?.ariaLabel?.previousButton ?? t('carousel.ariaLabel.previousButton'),
+    nextButton: translations?.ariaLabel?.nextButton ?? t('carousel.ariaLabel.nextButton'),
+  },
+}))
+
 function hasHeader() {
-  return !props.noScrollBtn || slots.title
+  return !hideScrollButtons || slots.title
 }
 
 function hasTitle() {
@@ -68,13 +89,13 @@ function setScrollState(event: Event) {
       <div v-if="hasTitle()">
         <slot name="title" />
       </div>
-      <div v-if="!noScrollBtn" class="m-carousel__header__actions">
+      <div v-if="!hideScrollButtons" class="m-carousel__header__actions">
         <MazBtn
           color="transparent"
           class="m-carousel__btn"
           :class="{ '--muted': !isScrolled }"
           fab
-          :aria-label="ariaLabelPreviousButton"
+          :aria-label="messages.ariaLabel.previousButton"
           @click="previous"
         >
           <slot name="previous-icon">
@@ -86,7 +107,7 @@ function setScrollState(event: Event) {
           class="m-carousel__btn"
           :class="{ '--muted': isScrolledMax }"
           fab
-          :aria-label="ariaLabelNextButton"
+          :aria-label="messages.ariaLabel.nextButton"
           @click="next"
         >
           <slot name="next-icon">

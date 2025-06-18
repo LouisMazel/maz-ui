@@ -59,7 +59,7 @@ npm install @maz-ui/nuxt
 ```typescript [Vue Setup]
 // main.ts
 // Optional: Use the theme plugin for advanced theming
-import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
+import { MazUi } from 'maz-ui/plugins/maz-ui'
 import { createApp } from 'vue'
 
 import App from './App.vue'
@@ -70,11 +70,25 @@ import './style.css'
 
 const app = createApp(App)
 
-// Install theme plugin with default configuration
-app.use(MazUiPlugin, {
-  // Theme configuration (optional)
-  strategy: 'hybrid', // 'runtime' | 'build' | 'hybrid'
-  darkModeStrategy: 'class' // 'class' | 'media' | 'auto'
+// Install theme plugin
+app.use(MazUi, {
+  /**
+   * Theme configuration (optional if you are using the default theme)
+   * More information in dedicated documentation
+   * @see https://maz-ui.com/guide/theme
+   */
+  theme: {
+    preset: 'ocean', // 'ocean' | 'pristine' | 'obsidian' | 'maz-ui'
+  },
+  /**
+   * Translations configuration (optional if you are using english)
+   * More information in dedicated documentation
+   * @see https://maz-ui.com/guide/translations
+   */
+  translations: {
+    locale: 'fr',
+    fallbackLocale: 'en',
+  },
 })
 
 app.mount('#app')
@@ -84,6 +98,25 @@ app.mount('#app')
 // nuxt.config.ts
 export default defineNuxtConfig({
   modules: ['@maz-ui/nuxt'],
+  mazUi: {
+    /**
+     * Theme configuration (optional if you are using the default theme)
+     * More information in dedicated documentation
+     * @see https://maz-ui.com/guide/theme
+     */
+    theme: {
+      preset: 'ocean', // 'ocean' | 'pristine' | 'obsidian' | 'maz-ui'
+    },
+    /**
+     * Translations configuration (optional if you are using english)
+     * More information in dedicated documentation
+     * @see https://maz-ui.com/guide/translations
+     */
+    translations: {
+      locale: 'fr',
+      fallbackLocale: 'en',
+    },
+  },
 })
 ```
 
@@ -101,8 +134,7 @@ Let's start with a simple button to see Maz-UI in action:
 
 ```vue [Vue 3]
 <script setup lang="ts">
-import { MazBtn } from 'maz-ui/components'
-import 'maz-ui/styles'
+import MazBtn from 'maz-ui/components/MazBtn'
 
 function handleClick() {
   console.log('Button clicked!')
@@ -144,16 +176,8 @@ function handleClick() {
 ### 🚀 **Performance First**
 
 - Tree-shaking reduces bundle size by up to 80%
-- Modular CSS architecture
 - Runtime optimizations
 - Minimal dependencies
-
-### ♿ **Accessibility Built-in**
-
-- WCAG 2.1 AA compliance
-- Keyboard navigation support
-- Screen reader optimized
-- Focus management
 
 ### 🎨 **Design Excellence**
 
@@ -162,18 +186,47 @@ function handleClick() {
 - Customizable themes
 - Consistent design tokens
 
+### 🌐 **Internationalization**
+
+- Internationalization support
+- Locale management
+- Tree-shakable imports
+- TypeScript support
+
 ### 🛠️ **Developer Experience**
 
 - TypeScript-first approach
 - Comprehensive documentation
 - Auto-completion support
-- Extensive examples
+
+<!-- ### ♿ **Accessibility Built-in**
+
+- WCAG 2.1 AA compliance
+- Keyboard navigation support
+- Screen reader optimized
+- Focus management -->
 
 </div>
 
-## Smart Loading
+## Smart Loading with resolvers <Badge text="Vue only" />
 
-### Auto-Import with unplugin-vue-components & unplugin-auto-import <Badge text="Vue only" />
+### Installation
+
+::: code-group
+
+```bash [pnpm]
+pnpm add unplugin-vue-components unplugin-auto-import
+```
+
+```bash [npm]
+npm install unplugin-vue-components unplugin-auto-import
+```
+
+```bash [yarn]
+yarn add unplugin-vue-components unplugin-auto-import
+```
+
+:::
 
 For the ultimate developer experience, use auto-imports for components, composables, and directives:
 
@@ -258,16 +311,15 @@ function handleClickOutside() {
 
 ### Avoiding Naming Conflicts
 
-When using multiple UI libraries, use prefixes to prevent conflicts:
+To avoid naming conflicts, you can use the `prefix` option:
 
 ```typescript
 export default defineConfig({
   plugins: [
     Components({
       resolvers: [
-        MazComponentsResolver({ prefix: 'Maz' }), // MazMazBtn, MazMazInput
+        MazComponentsResolver(),
         MazDirectivesResolver({ prefix: 'Maz' }), // v-maz-tooltip
-        ElementPlusResolver({ prefix: 'El' }), // ElButton, ElInput
       ],
     }),
     AutoImport({
@@ -304,7 +356,28 @@ npm install @maz-ui/themes
 - ⚡ Multiple rendering strategies
 - 🛡️ Full TypeScript support
 
-[→ View Theme Documentation](/guide/theme)
+[→ View Theme Documentation](./theme.md)
+
+---
+
+### @maz-ui/translations
+
+**Internationalization (i18n)**
+
+Internationalization library for Maz-UI.
+
+```bash
+npm install @maz-ui/translations
+```
+
+**Features:**
+
+- 🌐 Internationalization of Maz-UI components
+- 🔄 Locale management
+- 📦 Tree-shakable imports
+- 🛠️ TypeScript support
+
+[→ View Translations Documentation](./translations.md)
 
 ---
 
@@ -326,7 +399,7 @@ npm install @maz-ui/icons
 - Multiple sizes and variants
 - Full TypeScript definitions
 
-[→ Browse Icon Library](/icons/)
+[→ Browse Icon Library](./icons.md)
 
 ---
 
@@ -370,40 +443,6 @@ npm install -g @maz-ui/cli
 
 ## Advanced Usage Patterns -->
 
-### Modular CSS Architecture
-
-Maz-UI components automatically import their own styles when used, ensuring optimal bundle sizes:
-
-```typescript
-// Each component brings its own CSS
-import { MazBtn } from 'maz-ui/components'
-// MazBtn's CSS is automatically included
-
-// No need to manually import component styles
-// The bundler will tree-shake unused component CSS
-```
-
-::: info Automatic Style Management
-Components handle their own CSS imports internally, so you don't need to worry about manual style imports. This ensures you only get the CSS for components you actually use.
-:::
-
-### Global Component Registration
-
-Register frequently used components globally:
-
-```typescript
-import { MazBtn, MazCard, MazInput } from 'maz-ui/components'
-// main.ts
-import { createApp } from 'vue'
-
-const app = createApp(App)
-
-// Register commonly used components
-app.component('MazBtn', MazBtn)
-app.component('MazInput', MazInput)
-app.component('MazCard', MazCard)
-```
-
 ### Theme Customization
 
 For comprehensive theming capabilities including CSS custom properties, dark mode, and preset management, explore our advanced theme system:
@@ -425,30 +464,55 @@ The theme system provides:
 Maz-UI v4 is built with tree-shaking in mind. Import only what you need for optimal bundle sizes:
 
 ```typescript
+/**
+ * Utilities
+ */
+
 // ❌ Avoid importing everything
 import * as MazUI from 'maz-ui'
+// ✅ Import specific utilities
+import { formatCurrency, debounce } from 'maz-ui'
 
-import { currency, debounce } from 'maz-ui'
+/**
+ * Components
+ */
+
 // ✅ Import specific components (good)
 import { MazBtn, MazCard, MazInput } from 'maz-ui/components'
 // ✅✅ Direct component import (most optimized)
 import MazBtn from 'maz-ui/components/MazBtn'
 import MazCard from 'maz-ui/components/MazCard'
-
 import MazInput from 'maz-ui/components/MazInput'
+
+/**
+ * Composables
+ */
+
+// ✅ Import composable from index file
 import { useBreakpoints, useToast } from 'maz-ui/composables'
-import useBreakpoints from 'maz-ui/composables/useBreakpoints'
 
 // ✅✅ Direct composable import (most optimized)
-import useToast from 'maz-ui/composables/useToast'
-import currency from 'maz-ui/modules/currency'
+import { useToast } from 'maz-ui/composables/useToast'
+import { useBreakpoints } from 'maz-ui/composables/useBreakpoints'
 
-// ✅✅ Direct utility import (most optimized)
-import debounce from 'maz-ui/modules/debounce'
-import { MazUiPlugin } from 'maz-ui/plugins'
+/**
+ * Directives
+ */
 
+// ✅ Import directive from index file
+import { vClickOutside } from 'maz-ui/directives'
+
+// ✅✅ Direct directive import (most optimized)
+import { vClickOutside } from 'maz-ui/directives/vClickOutside'
+
+/**
+ * Plugins
+ */
+
+// ✅ Import plugin from index file
+import { MazUi } from 'maz-ui/plugins'
 // ✅✅ Direct plugin import (most optimized)
-import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
+import { MazUi } from 'maz-ui/plugins/maz-ui'
 
 // ✅✅✅ Even better: auto-import does this automatically
 // Components, composables, and utilities are imported only when used
@@ -457,26 +521,6 @@ import { MazUiPlugin } from 'maz-ui/plugins/maz-ui'
 ::: tip Maximum Optimization
 **Direct imports** (e.g., `import MazBtn from 'maz-ui/components/MazBtn'`) are the most optimized approach as they bypass index files completely. This ensures the smallest possible bundle size and fastest build times.
 :::
-
-### Import Strategies Comparison
-
-```typescript
-import { debounce } from 'maz-ui'
-// Strategy 1: Modular imports (best for production)
-import { MazBtn } from 'maz-ui/components'
-// Strategy 3: Global registration (for commonly used components)
-import { MazBtn, MazInput } from 'maz-ui/components'
-// Bundle impact: ~10-20KB per component/composable
-
-// Strategy 2: Auto-import with resolvers (recommended)
-// No imports needed, automatic tree-shaking
-// Bundle impact: Same as modular, but zero boilerplate
-
-import { useToast } from 'maz-ui/composables'
-app.component('MazBtn', MazBtn)
-app.component('MazInput', MazInput)
-// Bundle impact: Only registered components included
-```
 
 ## Next Steps
 
@@ -489,6 +533,10 @@ Browse the [component library](./../components/maz-btn.md) with live examples an
 ### **Customize Themes**
 
 Learn about [theming and customization](./theme.md) to match your brand.
+
+### **Internationalization**
+
+Learn about [internationalization](./translations.md) to support multiple languages.
 
 ### **Get Help**
 

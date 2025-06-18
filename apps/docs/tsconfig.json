@@ -1,19 +1,15 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "esnext",
     "jsx": "preserve",
     "lib": [
       "ESNext",
       "DOM"
     ],
     "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
     "types": ["node"],
     "strict": true,
-    "noUnusedLocals": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true
+    "noUnusedLocals": true
   },
   "references": [
     { "path": "../../packages/lib" }

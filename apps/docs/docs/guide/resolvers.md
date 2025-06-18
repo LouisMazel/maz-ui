@@ -207,7 +207,7 @@ const debouncedSearch = debounce((query) => {
   console.log('Searching:', query)
 }, 300)
 
-const formattedPrice = currency(29.99, { currency: 'EUR' })
+const formattedPrice = formatCurrency(29.99, { currency: 'EUR' })
 const readableDate = date(new Date(), { format: 'short' })
 
 // Timer composable
@@ -240,7 +240,7 @@ function showSuccess() {
 
 | Category             | Utilities/Formatters                               |
 | -------------------- | --------------------------------------------------- |
-| **Formatters**       | [`currency`](./../helpers/currency.md), [`date`](./../helpers/date.md), [`sleep`](./../helpers/sleep.md) |
+| **Formatters**       | [`formatCurrency`](./../helpers/currency.md), [`formatDate`](./../helpers/date.md), [`sleep`](./../helpers/sleep.md) |
 | **Utilities**        | [`debounce`](./../helpers/debounce.md), [`throttle`](./../helpers/throttle.md), [`isEqual`](./../helpers/is-equal.md) |
 
 ## Advanced Configuration
@@ -627,7 +627,7 @@ MazComponentsResolver({
 
 ```vue
 <script setup lang="ts">
-import { currency, debounce } from 'maz-ui'
+import { formatCurrency, debounce } from 'maz-ui'
 import { MazBtn, MazCard, MazInput } from 'maz-ui/components'
 import { useTheme, useToast } from 'maz-ui/composables'
 import { vTooltip } from 'maz-ui/directives'

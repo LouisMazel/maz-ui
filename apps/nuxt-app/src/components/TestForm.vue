@@ -145,7 +145,7 @@
       :error="!!agreeErrorMessage"
       :success="isValidAgree"
     />
-    <MazPicker
+    <MazDatePicker
       id="date"
       ref="dateRef"
       v-model="date"

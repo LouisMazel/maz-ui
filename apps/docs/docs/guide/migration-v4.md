@@ -581,7 +581,7 @@ import { idleTimeout } from 'maz-ui/helpers'
 
 ```typescript
 // ❌ Avoid on server side - Contains CSS
-import { MazBtn } from 'maz-ui/components'
+import MazBtn from 'maz-ui/components/MazBtn'
 
 // ✅ Safe for Node.js - Pure helpers
 import { debounce, sleep } from 'maz-ui/helpers'

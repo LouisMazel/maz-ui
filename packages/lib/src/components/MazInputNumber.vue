@@ -2,9 +2,9 @@
 import type { HTMLAttributes } from 'vue'
 import type { MazSize } from './types'
 import { MazMinus, MazPlus } from '@maz-ui/icons'
+import { debounce } from '@maz-ui/utils/src/utils/debounce.js'
 import { computed, defineAsyncComponent } from 'vue'
-import { debounce } from '../utils/debounce'
-import MazInput from './MazInput.vue'
+import MazInput, { type MazInputProps } from './MazInput.vue'
 
 defineOptions({
   inheritAttrs: false,
@@ -19,7 +19,6 @@ const props = withDefaults(defineProps<MazInputNumberProps>(), {
   min: Number.NEGATIVE_INFINITY,
   step: 1,
   size: 'md',
-  buttons: true,
   textCenter: true,
   inputmode: 'numeric',
 })
@@ -53,38 +52,101 @@ const emits = defineEmits<{
 }>()
 
 export interface MazInputNumberProps {
-  /** The inline style object for the component. */
+  /**
+   * The inline style object for the component.
+   * @type {HTMLAttributes['style']}
+   */
   style?: HTMLAttributes['style']
-  /** The CSS class name for the component. */
+  /**
+   * The CSS class name for the component.
+   * @type {HTMLAttributes['class']}
+   */
   class?: HTMLAttributes['class']
-  /** The value of the component (v-model). */
+  /**
+   * The value of the component (v-model).
+   * @model
+   * @type {number}
+   */
   modelValue?: number
-  /** Whether the input number is disabled or not. */
+  /**
+   * Whether the input number is disabled or not.
+   * @type {boolean}
+   */
   disabled?: boolean
-  /** The maximum value allowed for the input number. */
+  /**
+   * The maximum value allowed for the input number.
+   * @type {number}
+   * @default Number.POSITIVE_INFINITY
+   */
   max?: number
-  /** The minimum value allowed for the input number. */
+  /**
+   * The minimum value allowed for the input number.
+   * @type {number}
+   * @default Number.NEGATIVE_INFINITY
+   */
   min?: number
-  /** The step value for incrementing or decrementing the input number. */
+  /**
+   * The step value for incrementing or decrementing the input number.
+   * @type {number}
+   * @default 1
+   */
   step?: number
-  /** The size of the input number component. */
+  /**
+   * The size of the input number component.
+   * @type {MazSize}
+   * @default 'md'
+   */
   size?: MazSize
-  /** Whether to hide the increment and decrement buttons or not. */
+  /**
+   * Whether to hide the increment and decrement buttons or not.
+   * @type {boolean}
+   * @default false
+   */
   hideButtons?: boolean
-  /** Whether to center the text inside the input or not. */
+  /**
+   * Whether to center the text inside the input or not.
+   * @type {boolean}
+   * @default true
+   */
   textCenter?: boolean
-  /** The inputmode attribute for the input. */
+  /**
+   * The inputmode attribute for the input.
+   * @type {HTMLAttributes['inputmode']}
+   */
   inputmode?: HTMLAttributes['inputmode']
-  /** The input will be displayed in full width */
+  /**
+   * The input will be displayed in full width
+   * @type {boolean}
+   */
   block?: boolean
-  /** Will display the input in error state. */
+  /**
+   * Will display the input in error state.
+   * @type {boolean}
+   * @default false
+   */
   error?: boolean
-  /** The hint text to display below the input. */
+  /**
+   * The hint text to display below the input.
+   * @type {string}
+   */
   hint?: string
-  /** Will display the input in success state. */
+  /**
+   * Will display the input in success state.
+   * @type {boolean}
+   * @default false
+   */
   success?: boolean
-  /** Will display the input in warning state. */
+  /**
+   * Will display the input in warning state.
+   * @type {boolean}
+   * @default false
+   */
   warning?: boolean
+  /**
+   * The props for the input component.
+   * @type {MazInputProps}
+   */
+  inputProps?: MazInputProps
 }
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
@@ -171,6 +233,7 @@ function decrement() {
       type="number"
       class="m-input-number__input"
       :class="{ '--no-buttons': hideButtons, '--text-center': textCenter }"
+      v-bind="{ ...$attrs, ...inputProps }"
       :disabled
       :min
       :max
@@ -179,7 +242,6 @@ function decrement() {
       :success
       :warning
       :hint
-      v-bind="$attrs"
       :inputmode
       :size
       block

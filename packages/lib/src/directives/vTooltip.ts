@@ -20,7 +20,8 @@ interface VTooltipOptions extends Partial<Omit<MazPopoverProps, 'modelValue'>> {
   color?: MazPopoverProps['color']
   /**
    * Position of the tooltip
-   * @default top
+   * The preferred position is set to 'top' if no position is provided
+   * @default undefined
    */
   position?: PopoverPosition
   /**
@@ -65,7 +66,8 @@ class TooltipHandler {
   constructor(options: Partial<VTooltipOptions> = {}) {
     this.defaultProps = {
       open: false,
-      position: 'top',
+      positionDelay: 0,
+      preferPosition: 'top',
       trigger: 'hover',
       role: 'tooltip',
       closeOnClickOutside: false,

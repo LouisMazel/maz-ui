@@ -13,12 +13,17 @@ All icons follow a consistent naming pattern:
 
 <ComponentDemo>
   <div class="maz-flex maz-flex-col maz-gap-4">
-    <div class="maz-flex maz-gap-2">
+    <div class="maz-flex maz-gap-2 maz-items-start">
       <MazInput v-model="search" label="Search icon" @update:model-value="search = $event.trim()" :left-icon="MazIcons.MazMagnifyingGlass" class="flex-1" />
-      <p class="maz-text-muted">{{ filteredIcons.length }} icons found</p>
+      <div class="maz-flex maz-flex-col maz-gap-1 maz-items-end">
+        <p class="maz-text-muted">{{ filteredIcons.length }} icons found</p>
+        <p class="maz-text-muted">
+          Click to copy icon to clipboard
+        </p>
+      </div>
     </div>
     <div class="maz-grid maz-grid-cols-3 maz-gap-2">
-      <button v-tooltip="icon.label" v-for="icon in filteredIcons" :key="icon.label" class="maz-flex maz-flex-col maz-items-center maz-gap-2 maz-text-center maz-border maz-border-solid maz-border-divider maz-rounded maz-p-4 maz-truncate" @click="copyIcon(icon.label)">
+      <button v-for="icon in filteredIcons" :key="icon.label" class="maz-flex maz-flex-col maz-items-center maz-gap-2 maz-text-center maz-border maz-border-solid maz-border-divider maz-rounded maz-p-4 maz-truncate hover:maz-bg-surface-400" @click="copyIcon(icon.label)">
         <Component :is="icon.value" class="maz-text-2xl" />
         <span class="maz-text-xs maz-text-muted maz-truncate">{{ icon.label }}</span>
       </button>

@@ -1,22 +1,85 @@
 import type { DirectiveBinding, ObjectDirective, Plugin } from 'vue'
 import { nextTick } from 'vue'
 
-const UNIQUE_ID = '__maz-click-outside__' as const
+const eventHandlers = new WeakMap<HTMLElement, (event: Event) => void>()
 
 function getEventType() {
   return document.ontouchstart === null ? 'touchstart' : 'click'
 }
 
-type vClickOutsideBindingValue = (...args: any[]) => any
+interface VClickOutsideOptions {
+  /**
+   * The callback function to be called when the element is clicked outside.
+   */
+  callback: (...args: any[]) => any
+  /**
+   * The selectors to ignore.
+   */
+  ignore?: string[]
+  /**
+   * Whether to capture the event.
+   */
+  capture?: boolean
+  /**
+   * Whether to only trigger the callback once.
+   */
+  once?: boolean
+}
 
+/**
+ * The value of the v-click-outside directive.
+ */
+type vClickOutsideBindingValue
+  = | ((...args: any[]) => any)
+    | VClickOutsideOptions
+
+/**
+ * The binding of the v-click-outside directive.
+ */
 type vClickOutsideDirectiveBinding = DirectiveBinding<vClickOutsideBindingValue>
+
+function isOptionsObject(value: vClickOutsideBindingValue): value is VClickOutsideOptions {
+  return typeof value === 'object' && value !== null && 'callback' in value
+}
+
+function getOptionsFromBinding(binding: vClickOutsideDirectiveBinding): VClickOutsideOptions {
+  const value = binding.value
+
+  if (isOptionsObject(value)) {
+    return {
+      ignore: [],
+      capture: false,
+      once: false,
+      ...value,
+    }
+  }
+
+  return {
+    callback: value,
+    ignore: [],
+    capture: false,
+    once: false,
+  }
+}
+
+function shouldIgnoreElement(target: Element, ignoreSelectors: string[]): boolean {
+  return ignoreSelectors.some((selector) => {
+    try {
+      return target.closest(selector) !== null
+    }
+    catch {
+      return false
+    }
+  })
+}
 
 async function onMounted(el: HTMLElement, binding: vClickOutsideDirectiveBinding) {
   try {
     onUnmounted(el)
 
     const vm = binding.instance
-    const callback = binding.value
+    const options = getOptionsFromBinding(binding)
+    const { callback, ignore = [], capture = false, once = false } = options
 
     const isCallbackFunction = typeof callback === 'function'
 
@@ -26,19 +89,31 @@ async function onMounted(el: HTMLElement, binding: vClickOutsideDirectiveBinding
 
     await nextTick()
 
-    el[UNIQUE_ID] = (event: Event) => {
-      if (
-        (!el || (event.target && !el.contains(event.target as Node)))
-        && callback
-        && isCallbackFunction
-      ) {
+    const eventHandler = (event: Event) => {
+      const target = event.target as Element
+
+      if (!target || !el) {
+        return
+      }
+
+      const isOutside = !el.contains(target)
+      const shouldIgnore = ignore.length > 0 && shouldIgnoreElement(target, ignore)
+
+      if (isOutside && !shouldIgnore && callback && isCallbackFunction) {
         return callback.call(vm, event)
       }
     }
 
-    const eventType = getEventType()
+    eventHandlers.set(el, eventHandler)
 
-    document.addEventListener(eventType, el[UNIQUE_ID], { passive: true })
+    const eventType = getEventType()
+    const eventOptions = {
+      passive: true,
+      capture,
+      once,
+    }
+
+    document.addEventListener(eventType, eventHandler, eventOptions)
   }
   catch (error) {
     console.error('[maz-ui](vClickOutside)', error)
@@ -47,9 +122,13 @@ async function onMounted(el: HTMLElement, binding: vClickOutsideDirectiveBinding
 
 function onUnmounted(el: HTMLElement) {
   try {
-    const eventType = getEventType()
-    document.removeEventListener(eventType, el[UNIQUE_ID], false)
-    delete el[UNIQUE_ID]
+    const eventHandler = eventHandlers.get(el)
+
+    if (eventHandler) {
+      const eventType = getEventType()
+      document.removeEventListener(eventType, eventHandler, false)
+      eventHandlers.delete(el)
+    }
   }
   catch (error) {
     console.error('[maz-ui](vClickOutside)', error)
@@ -80,4 +159,9 @@ const plugin = {
   },
 } satisfies Plugin
 
-export { directive as vClickOutside, type vClickOutsideBindingValue, plugin as vClickOutsideInstall }
+export {
+  directive as vClickOutside,
+  type vClickOutsideBindingValue,
+  plugin as vClickOutsideInstall,
+  type VClickOutsideOptions,
+}

@@ -99,6 +99,7 @@ function extractTagInfo(tags) {
     example: '',
     additionalInfo: [],
     isModel: false,
+    type: undefined,
   }
 
   // 1. Extraire @description
@@ -127,6 +128,11 @@ function extractTagInfo(tags) {
   // 5. Extraire @model (pour v-model two-way binding)
   if (tags.model && tags.model.length > 0) {
     result.isModel = true
+  }
+
+  // 5. Extraire @type
+  if (tags.type && tags.type.length > 0) {
+    result.type = tags.type[0].type?.name
   }
 
   // 6. Autres tags supportés
@@ -247,7 +253,7 @@ export function props(props) {
     }
 
     // Formater le type en gérant les cas complexes
-    const typeDisplay = formatTypeDisplay(type)
+    const typeDisplay = tagInfo.type ?? formatTypeDisplay(type)
 
     // Échapper et nettoyer tous les contenus pour le tableau markdown
     const cleanDescription = escapeMarkdownTableContent(completeDescription)

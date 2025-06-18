@@ -3,10 +3,15 @@
   setup
   generic="T extends MazInputValue, U extends MazSelectOption"
 >
+import type { MazTranslationsNestedSchema } from '@maz-ui/translations/src/types.js'
 import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
 import type { MazInputValue } from './MazInput.vue'
 import type { MazColor, MazSize } from './types'
 import { MazChevronDown, MazMagnifyingGlass, MazNoSymbol } from '@maz-ui/icons'
+import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
+import { debounceCallback } from '@maz-ui/utils/src/utils/debounceCallback.js'
+import { isClient } from '@maz-ui/utils/src/utils/isClient.js'
+import { normalizeString } from '@maz-ui/utils/src/utils/normalizeString.js'
 import {
   computed,
   defineAsyncComponent,
@@ -17,10 +22,6 @@ import {
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useStringMatching } from '../composables/useStringMatching'
-import { debounceCallback } from '../utils/debounceCallback'
-
-import { isClient } from '../utils/isClient'
-import { normalizeString } from '../utils/normalizeString'
 import MazInput from './MazInput.vue'
 import MazPopover, { type MazPopoverProps } from './MazPopover.vue'
 
@@ -90,11 +91,6 @@ export interface MazSelectProps<T extends MazInputValue, U extends MazSelectOpti
   /** Display search input in option list */
   search?: boolean
   /**
-   * The placeholder of the search input
-   * @default 'Search in options'
-   */
-  searchPlaceholder?: string
-  /**
    * Replace the default search function to provide a custom search function
    * @default undefined
    */
@@ -112,13 +108,18 @@ export interface MazSelectProps<T extends MazInputValue, U extends MazSelectOpti
   disabled?: boolean
   /** The input will be displayed in full width */
   block?: boolean
-  /** The exclude selectors for the v-closable directive - will exclude the elements from the directive */
-  excludedSelectors?: string[]
   /**
    * The autocomplete attribute of the input
    * @default 'off'
    */
   autocomplete?: string
+  /**
+   * The translations of the component
+   * @default {
+   *   searchPlaceholder: 'Search in options',
+   * }
+   */
+  translations?: Partial<MazTranslationsNestedSchema['select']>
 }
 
 defineOptions({
@@ -142,8 +143,6 @@ const props = withDefaults(defineProps<MazSelectProps<T, U>>(), {
   minListHeight: undefined,
   size: 'md',
   color: 'primary',
-  excludedSelectors: undefined,
-  searchPlaceholder: 'Search in options',
   searchThreshold: 0.75,
   autocomplete: 'off',
 })
@@ -203,7 +202,12 @@ const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
 const popoverComponent = useTemplateRef('popoverComponent')
 
 const selectedTextColor = computed(() => `hsl(var(--maz-${props.color}))`)
-const selectedBgColor = computed(() => `hsl(var(--maz-${props.color}-500) / 0.2)`)
+const selectedBgColor = computed(() => `hsl(var(--maz-${props.color}-500) / 0.1)`)
+
+const { t } = useTranslations()
+const messages = computed<MazTranslationsNestedSchema['select']>(() => ({
+  searchPlaceholder: props.translations?.searchPlaceholder || t('select.searchPlaceholder'),
+}))
 
 const isOpen = defineModel<boolean>('open', { required: false, default: false })
 
@@ -443,7 +447,9 @@ async function scrollToOptionIndex(index?: number) {
       behavior: 'auto',
     })
 
-    item.focus({ preventScroll: true })
+    nextTick(() => {
+      item.focus({ preventScroll: true })
+    })
   }
 }
 
@@ -555,7 +561,6 @@ defineExpose({
     :block
     :offset="0"
     :prefer-position="listPosition"
-    :position-delay="100"
     fallback-position="top-start"
     @close="onCloseList"
     @open="onOpenList"
@@ -616,12 +621,11 @@ defineExpose({
           size="sm"
           :disabled
           :color
-          :placeholder="searchPlaceholder"
+          :placeholder="messages.searchPlaceholder"
           name="search"
           inputmode="search"
           autocomplete="off"
           block
-          tabindex="-1"
           class="m-select-list__search-input maz-flex-none"
           :left-icon="MazMagnifyingGlass"
           @update:model-value="updateListPosition"
@@ -814,7 +818,7 @@ defineExpose({
   }
 
   &-item {
-    @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-rounded maz-bg-transparent maz-px-3 maz-py-2 maz-text-start maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-surface-400 hover:maz-bg-surface-400 maz-outline-none;
+    @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-rounded maz-bg-transparent maz-px-3 maz-py-2 maz-text-start maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-surface-400 hover:maz-bg-surface-400 maz-outline-none maz-border maz-border-solid maz-border-transparent;
 
     span {
       @apply maz-truncate;
@@ -829,7 +833,7 @@ defineExpose({
       background-color: var(--selected-bg-color);
 
       &:focus {
-        @apply maz-bg-surface-400;
+        @apply maz-border-[var(--selected-text-color)];
       }
 
       &.--transparent {

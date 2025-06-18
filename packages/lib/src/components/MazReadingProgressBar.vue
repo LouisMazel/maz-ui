@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
+import { throttle } from '@maz-ui/utils/src/utils/throttle.js'
 import {
   computed,
 
@@ -10,7 +11,6 @@ import {
   ref,
   watch,
 } from 'vue'
-import { throttle } from '../utils/throttle'
 
 export interface MazReadingProgressBarProps {
   /**

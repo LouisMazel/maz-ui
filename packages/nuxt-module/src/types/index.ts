@@ -1,16 +1,9 @@
 import type { VLazyImgOptions, VTooltipOptions, VFullscreenImgOptions } from 'maz-ui/directives'
-import type { AosOptions, DialogOptions, MazUiPluginOptions, ToasterOptions } from 'maz-ui/plugins'
-import type { ThemePreset } from '@maz-ui/themes'
+import type { AosOptions, DialogOptions, ToasterOptions } from 'maz-ui/plugins'
+import type { MazUiThemeOptions } from '@maz-ui/themes'
+import type { MazTranslationsOptions } from '@maz-ui/translations'
 
-export type ThemePresetName = 'mazUi' | 'ocean' | 'pristine' | 'obsidian'
-
-export interface MazUiNuxtThemeOptions extends Omit<MazUiPluginOptions, 'preset'> {
-  /**
-   * Theme preset to use
-   * @description Can be a predefined preset name or a custom preset object
-   * @default mazUi preset
-   */
-  preset?: ThemePreset | ThemePresetName
+export interface MazUiNuxtThemeOptions extends MazUiThemeOptions {
   /**
    * Inject full CSS on server-side
    * @description Inject full CSS on server-side to prevent FOUC on client-side
@@ -49,6 +42,26 @@ export interface MazUiNuxtOptions {
   }
 
   /**
+   * Theme system configuration
+   * @description If false, the theme system will be completely disabled
+   * @default {
+   *   preset: 'mazUi',
+   *   strategy: 'hybrid',
+   *   darkModeStrategy: 'class',
+   * }
+   */
+  theme?: false | MazUiNuxtThemeOptions
+
+  /**
+   * Translations configuration
+   * @description If false, the translations system will be completely disabled
+   * @default {
+   *   locale: 'en',
+   * }
+   */
+  translations?: false | MazTranslationsOptions
+
+  /**
    * CSS and styles configuration
    */
   css?: {
@@ -59,17 +72,6 @@ export interface MazUiNuxtOptions {
      */
     injectMainCss?: boolean
   }
-
-  /**
-   * Theme system configuration
-   * @description If false, the theme system will be completely disabled
-   * @default {
-   *   preset: 'mazUi',
-   *   strategy: 'hybrid',
-   *   darkModeStrategy: 'class',
-   * }
-   */
-  theme?: false | MazUiNuxtThemeOptions
 
   /**
    * Components configuration
@@ -88,8 +90,15 @@ export interface MazUiNuxtOptions {
    */
   composables?: {
     /**
+     * Enable auto-import of useTranslations composable
+     * @description Provides translations functionality from `@maz-ui/translations` package
+     * @default true
+     */
+    useTranslations?: boolean
+
+    /**
      * Enable auto-import of useTheme composable
-     * @description Provides theme management functionality (toggle dark mode, change themes, etc.)
+     * @description Provides theme management functionality (toggle dark mode, change themes, etc.) from `@maz-ui/themes` package
      * @default false
      */
     useTheme?: boolean
@@ -183,6 +192,13 @@ export interface MazUiNuxtOptions {
      * @default true
      */
     useTimer?: boolean
+
+    /**
+     * Enable auto-import of useFormField composable
+     * @description Form field management (should be used with useFormValidator)
+     * @default true
+     */
+    useFormField?: boolean
 
     /**
      * Enable auto-import of useFormValidator and useFormField composables

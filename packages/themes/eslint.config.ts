@@ -4,4 +4,5 @@ export default defineConfig({
   formatters: true,
   vue: true,
   sonarjs: true,
+  typescript: true,
 })

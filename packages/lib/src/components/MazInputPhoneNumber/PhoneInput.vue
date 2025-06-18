@@ -2,7 +2,7 @@
 import type { CountryCode } from 'libphonenumber-js'
 import type { MazInputProps } from '../MazInput.vue'
 import type { MazInputPhoneNumberInjectedData } from '../MazInputPhoneNumber.vue'
-import type { MazInputPhoneNumberTranslations } from './types'
+import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
 import { type ComponentPublicInstance, computed, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useInjectStrict } from '../../composables/useInjectStrict'
 import MazInput from '../MazInput.vue'
@@ -10,7 +10,12 @@ import { useLibphonenumber } from './useLibphonenumber'
 
 type PhoneInputProps = Omit<MazInputProps, 'modelValue'> & {
   id: string
-  locales: MazInputPhoneNumberTranslations
+  locales: {
+    phoneInput: {
+      placeholder: string
+      example: string | undefined
+    }
+  }
   example: boolean
   hasRadius: boolean
   autoFormat: boolean
@@ -47,9 +52,16 @@ function handleInput(value: string | undefined | null) {
   modelValue.value = rawDigits
 }
 
+const { t } = useTranslations()
 function getCountryPhoneNumberExample(selectedCountry?: CountryCode | undefined | null) {
   const example = getPhoneNumberExample(selectedCountry)
-  return example ? `${locales.phoneInput.example} ${example}` : undefined
+  if (!example) {
+    return undefined
+  }
+
+  return locales.phoneInput.example
+    ? locales.phoneInput.example.replace('{example}', example)
+    : t('inputPhoneNumber.phoneInput.example', { example })
 }
 
 const inputLabelOrPlaceholder = computed(() => {
@@ -149,7 +161,7 @@ defineExpose({
   }
 
   &.--row .m-phone-input {
-    @apply -maz-ml-[var(--maz-border-width)];
+    @apply -maz-ml-[var(--maz-border-width)] maz-flex-auto;
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {

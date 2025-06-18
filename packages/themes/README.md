@@ -1,16 +1,16 @@
 # @maz-ui/themes
 
-Système de thèmes performant et typé pour Maz-UI, inspiré de Shadcn et PrimeVue.
+High-performance and typed theme system for Maz-UI, inspired by Shadcn and PrimeVue.
 
-## Fonctionnalités
+## Features
 
-- 🎨 **Variables CSS HSL** - Utilise des variables CSS HSL pour une flexibilité maximale
-- 🌓 **Mode sombre automatique** - Support natif du mode sombre avec `prefers-color-scheme`
-- 🚀 **Génération automatique** - Génère automatiquement les variantes de couleurs (50-950)
-- ⚡ **Stratégies flexibles** - Runtime, build-time ou hybride
-- 🛡️ **TypeScript strict** - Types complets pour une DX optimale
-- 🎯 **Zéro FOUC** - CSS critique injecté inline
-- 🔧 **Presets configurables** - Presets prêts à l'emploi et personnalisables
+- 🎨 **HSL CSS Variables** - Uses HSL CSS variables for maximum flexibility
+- 🌓 **Automatic dark mode** - Native dark mode support with `prefers-color-scheme`
+- 🚀 **Automatic generation** - Automatically generates color variants (50-950)
+- ⚡ **Flexible strategies** - Runtime, build-time or hybrid
+- 🛡️ **Strict TypeScript** - Complete types for optimal DX
+- 🎯 **Zero FOUC** - Critical CSS injected inline
+- 🔧 **Configurable presets** - Ready-to-use and customizable presets
 
 ## Installation
 
@@ -18,26 +18,25 @@ Système de thèmes performant et typé pour Maz-UI, inspiré de Shadcn et Prime
 npm install @maz-ui/themes
 ```
 
-## Utilisation de base
+## Basic usage
 
-### 1. Installation du plugin
+### 1. Plugin installation
 
 ```typescript
-import { mazUi } from '@maz-ui/themes'
-import { MazThemePlugin } from 'maz-ui'
+import { MazUiTheme } from '@maz-ui/themes'
 // main.ts
 import { createApp } from 'vue'
 
 const app = createApp(App)
 
-app.use(MazThemePlugin, {
-  preset: mazUi,
+app.use(MazUiTheme, {
+  preset: 'maz-ui',
   strategy: 'hybrid',
   darkModeStrategy: 'class'
 })
 ```
 
-### 2. Utilisation dans les composants
+### 2. Usage in components
 
 ```vue
 <script setup>
@@ -58,7 +57,7 @@ const { toggleDarkMode, isDark } = useMazTheme()
 </template>
 ```
 
-## Presets disponibles
+## Available presets
 
 ### Default (Shadcn-like)
 
@@ -84,28 +83,31 @@ import { ocean } from '@maz-ui/themes'
 import { obsidian } from '@maz-ui/themes'
 ```
 
-## Création de presets personnalisés
+## Creating custom presets
 
 ```typescript
 import { definePreset, mazUi } from '@maz-ui/themes'
 
-const myPreset = definePreset(mazUi, {
-  name: 'my-theme',
-  radius: '0.75rem',
-  colors: {
-    light: {
-      primary: '220 100% 50%',
-      secondary: '210 40% 96%'
-    },
-    dark: {
-      primary: '220 100% 70%',
-      secondary: '210 40% 15%'
+const myPreset = definePreset({
+  base: mazUi,
+  overrides: {
+    name: 'my-theme',
+    radius: '0.75rem',
+    colors: {
+      light: {
+        primary: '220 100% 50%',
+        secondary: '210 40% 96%'
+      },
+      dark: {
+        primary: '220 100% 70%',
+        secondary: '210 40% 15%'
+      }
     }
   }
 })
 ```
 
-## API du composable
+## Composable API
 
 ```typescript
 const {
@@ -113,48 +115,48 @@ const {
   colorMode, // Ref<'light' | 'dark' | 'auto'>
   isDark, // Ref<boolean>
   strategy, // Ref<'runtime' | 'build' | 'hybrid'>
-  updateTheme, // (preset: ThemePreset | ThemePresetOverrides) => void
+  updateTheme, // (preset: ThemePreset | ThemePresetName | ThemePresetOverrides) => void
   setColorMode, // (mode: 'light' | 'dark' | 'auto') => void
   toggleDarkMode // () => void
 } = useMazTheme()
 ```
 
-## Stratégies
+## Strategies
 
 ### Runtime
 
-CSS généré et injecté dynamiquement côté client.
+CSS generated and injected dynamically on the client side.
 
 ### Build
 
-CSS généré au build-time et inclus dans le bundle.
+CSS generated at build-time and included in the bundle.
 
-### Hybrid (recommandé)
+### Hybrid (recommended)
 
-CSS critique injecté inline, CSS complet chargé de manière asynchrone.
+Critical CSS injected inline, complete CSS loaded asynchronously.
 
-## Variables CSS générées
+## Generated CSS variables
 
-Le système génère automatiquement :
+The system automatically generates:
 
-- Variables de couleurs de base : `--primary`, `--secondary`, etc.
-- Échelles de couleurs : `--primary-50` à `--primary-950`
-- Variables de design : `--radius`, `--font-family`
-- Support mode sombre via `.dark` ou `@media (prefers-color-scheme: dark)`
+- Base color variables: `--primary`, `--secondary`, etc.
+- Color scales: `--primary-50` to `--primary-950`
+- Design variables: `--radius`, `--font-family`
+- Dark mode support via `.dark` or `@media (prefers-color-scheme: dark)`
 
 ## Build-time
 
 ```typescript
 import { buildThemeCSS, generateThemeBundle } from '@maz-ui/themes'
 
-// CSS pour un preset
+// CSS for a preset
 const css = buildThemeCSS({
   preset: myPreset,
   darkModeStrategy: 'class',
   critical: true
 })
 
-// Bundle pour plusieurs presets
+// Bundle for multiple presets
 const bundle = generateThemeBundle([mazUi, darkPreset], {
   darkModeStrategy: 'class'
 })

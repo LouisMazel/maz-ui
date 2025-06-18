@@ -28,6 +28,7 @@
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
+    "LICENSE",
     "README.md",
     "dist"
   ],
