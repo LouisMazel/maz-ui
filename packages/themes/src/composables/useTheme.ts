@@ -2,6 +2,7 @@ import type { ColorMode, ThemePreset, ThemePresetName, ThemePresetOverrides, The
 import { computed, getCurrentInstance, ref, watchEffect } from 'vue'
 import { inject } from 'vue'
 import { generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'
+import { getColorMode, getSystemPrefersDark } from '../utils/get-color-mode'
 import { getPreset } from '../utils/get-preset'
 import { mergePresets } from '../utils/preset-merger'
 
@@ -26,26 +27,7 @@ function updateGlobalProperties() {
   }
 }
 
-function getInitialColorMode(mazTheme: ThemeState, savedMode: ColorMode | null, systemPrefersDark: boolean): ColorMode {
-  if (savedMode && ['light', 'dark', 'auto'].includes(savedMode)) {
-    return savedMode
-  }
-
-  if (mazTheme.darkModeStrategy === 'auto') {
-    return 'auto'
-  }
-
-  return systemPrefersDark ? 'dark' : 'light'
-}
-
 function initializeThemeFromData(themeData: ThemeState) {
-  const systemPrefersDark = typeof window !== 'undefined'
-    && window.matchMedia('(prefers-color-scheme: dark)').matches
-
-  const savedMode = typeof localStorage !== 'undefined'
-    ? localStorage.getItem('maz-color-mode') as ColorMode | null
-    : null
-
   if (themeData.currentPreset && themeData.colorMode !== undefined) {
     _initThemeState({
       currentPreset: themeData.currentPreset,
@@ -57,15 +39,15 @@ function initializeThemeFromData(themeData: ThemeState) {
     return
   }
 
-  const initialColorMode = getInitialColorMode(themeData, savedMode, systemPrefersDark)
-  const initialIsDark = initialColorMode === 'auto'
-    ? systemPrefersDark
-    : initialColorMode === 'dark'
+  const colorMode = getColorMode(themeData.colorMode)
+  const isDark = colorMode === 'auto'
+    ? getSystemPrefersDark() === 'dark'
+    : colorMode === 'dark'
 
   _initThemeState({
     currentPreset: themeData.currentPreset,
-    colorMode: initialColorMode,
-    isDark: initialIsDark,
+    colorMode,
+    isDark,
     strategy: themeData.strategy,
     darkModeStrategy: themeData.darkModeStrategy,
   })
@@ -135,7 +117,7 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
   if (state.value.strategy === 'runtime' || state.value.strategy === 'hybrid') {
     const cssOptions = {
       mode: 'both' as const,
-      darkSelector: state.value.colorMode === 'auto' ? 'media' as const : 'class' as const,
+      darkSelector: state.value.darkModeStrategy,
       prefix: 'maz',
     }
 

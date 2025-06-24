@@ -20,7 +20,7 @@ const composablesMap: Record<Composables, true> = {
   useUserVisibility: true,
   useWait: true,
   useWindowSize: true,
-  useLanguageDisplayNames: true,
+  useDisplayNames: true,
   useFreezeValue: true,
   useDialog: true,
   useMountComponent: true,

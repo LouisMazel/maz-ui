@@ -18,7 +18,7 @@ export interface Results {
 }
 
 export interface Country {
-  iso2: CountryCode
-  dialCode: CountryCallingCode
   name: string
+  code: CountryCode
+  dialCode: CountryCallingCode
 }

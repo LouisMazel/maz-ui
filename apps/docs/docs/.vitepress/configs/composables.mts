@@ -9,7 +9,7 @@ export const composables = {
     { text: 'useDialog', link: '/composables/use-dialog' },
     { text: 'useFormValidator', link: '/composables/use-form-validator' },
     { text: 'useIdleTimeout', link: '/composables/use-idle-timeout' },
-    { text: 'useLanguageDisplayNames', link: '/composables/use-language-display-names' },
+    { text: 'useDisplayNames', link: '/composables/use-display-names' },
     { text: 'useReadingTime', link: '/composables/use-reading-time' },
     { text: 'useStringMatching', link: '/composables/use-string-matching' },
     { text: 'useSwipe', link: '/composables/use-swipe' },

@@ -5,6 +5,9 @@ export default {
    * - countrySelect: The translation for the country select.
    * - phoneInput: The translation for the phone input.
    */
+  selectCountry: {
+    searchPlaceholder: 'Search country',
+  },
   inputPhoneNumber: {
     /**
      * This is the translation for the country select component.

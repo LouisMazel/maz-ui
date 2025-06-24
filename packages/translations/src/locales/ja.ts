@@ -1,6 +1,9 @@
 import type { MazTranslationsNestedSchema } from '../types'
 
 export default {
+  selectCountry: {
+    searchPlaceholder: '国を検索',
+  },
   inputPhoneNumber: {
     countrySelect: {
       placeholder: '国番号',
