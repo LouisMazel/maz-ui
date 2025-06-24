@@ -9,7 +9,7 @@ class IntersectionObserverMock {
     this.options = options
   }
 
-  observe(target) {
+  observe(target: Element) {
     this.callback([{ target, isIntersecting: true } as IntersectionObserverEntry], this as unknown as IntersectionObserver)
   }
 
@@ -38,10 +38,7 @@ describe('given LazyImg handler', () => {
     }
 
     vi.spyOn(window, 'IntersectionObserver').mockImplementation(callback => ({
-      observe: vi.fn(target => callback([{ target, isIntersecting: true } as IntersectionObserverEntry, {
-        unobserve: vi.fn(),
-        disconnect: vi.fn(),
-      }], {
+      observe: vi.fn(target => callback([{ target, isIntersecting: true } as IntersectionObserverEntry], {
         observe: vi.fn(target => callback([{ target, isIntersecting: true } as IntersectionObserverEntry], this as unknown as IntersectionObserver)),
         unobserve: vi.fn(),
         disconnect: vi.fn(),
