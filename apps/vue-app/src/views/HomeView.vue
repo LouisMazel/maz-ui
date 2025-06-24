@@ -31,7 +31,7 @@ function showToast() {
   })
 }
 
-const { locale, setLocale, t } = useTranslations()
+const { locale, setLocale } = useTranslations()
 
 function changeLocale() {
   if (locale.value === 'de') {
@@ -41,6 +41,8 @@ function changeLocale() {
     setLocale('de')
   }
 }
+
+const selectedCountry = ref()
 </script>
 
 <template>
@@ -52,6 +54,11 @@ function changeLocale() {
       Changer locale ({{ locale }})
     </MazBtn>
 
-    {{ t('carousel.ariaLabel.previousButton') }}
+    <MazSelectCountry
+      v-model="selectedCountry"
+      :preferred-codes="['FR', 'DE', 'IT', 'ES', 'GB', 'NL', 'BE', 'AT', 'CH', 'PT']"
+      label="Select a country"
+      :display-names-options="{ type: 'region' }"
+    />
   </div>
 </template>

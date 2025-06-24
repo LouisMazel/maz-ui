@@ -22,7 +22,7 @@ app.use(MazUi, {
     preset: 'ocean',
   },
   translations: {
-    locale: 'fr',
+    locale: 'en',
     fallbackLocale: 'it',
     preloadFallback: true,
   } satisfies MazTranslationsOptions,

@@ -3,7 +3,7 @@ import { isServer } from './isServer'
 export function getBrowserLocale(): string | undefined {
   try {
     if (isServer()) {
-      return undefined
+      return
     }
 
     return window.navigator.language

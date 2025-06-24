@@ -54,7 +54,7 @@ function getCountryName(
   return displayNamesInstance.of(code)
 }
 
-function getCountriesList(
+function getCountryList(
   locale?: string,
   customCountriesNameListByIsoCode?: Record<CountryCode, string>,
 ): Country[] | undefined {
@@ -63,14 +63,14 @@ function getCountriesList(
 
   locale = locale ?? getBrowserLocale()?.browserLocale ?? 'en-US'
 
-  for (const iso2 of isoList) {
-    const name = getCountryName(locale, iso2, customCountriesNameListByIsoCode)
+  for (const code of isoList) {
+    const name = getCountryName(locale, code, customCountriesNameListByIsoCode)
 
     if (name) {
       try {
-        const dialCode = getCountryCallingCode(iso2)
+        const dialCode = getCountryCallingCode(code)
         countriesList.push({
-          iso2,
+          code,
           dialCode,
           name,
         })
@@ -108,20 +108,10 @@ async function fetchCountryCode(): Promise<{ data: CountryCode, error: undefined
   }
 }
 
-function sanitizePhoneNumber(input?: string | undefined | null) {
-  if (!input) {
-    return ''
-  }
-  const regex = new RegExp(/[^\d ()+-]/g) // Keep only digits, (), - and + characters
-
-  return input.replaceAll(regex, '').trim()
-}
-
 export function useMazInputPhoneNumber() {
   return {
-    sanitizePhoneNumber,
     fetchCountryCode,
     getBrowserLocale,
-    getCountriesList,
+    getCountryList,
   }
 }

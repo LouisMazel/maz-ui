@@ -464,12 +464,12 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         </span>
         <MazBadge color="success" class="maz-text-base">Composable</MazBadge>
       </div>
-      <h3 class="maz-text-base maz-font-semibold">useLanguageDisplayNames</h3>
+      <h3 class="maz-text-base maz-font-semibold">useDisplayNames</h3>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
-        A Vue 3 composable that provides functions to work with language display names based on ISO codes, leveraging the Intl.DisplayNames API.
+        A Vue 3 composable that provides functions to work with localized display names based on ISO codes, leveraging the Intl.DisplayNames API.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/composables/use-language-display-names" class="!maz-border-divider">Discover</MazBtn>
+      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/composables/use-display-names" class="!maz-border-divider">Discover</MazBtn>
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
