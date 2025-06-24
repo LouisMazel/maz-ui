@@ -1,11 +1,12 @@
-import type { ColorMode, DarkMode, ThemeConfig, ThemePreset, ThemeState } from './types'
+import type { DarkModeStrategy, ThemeConfig, ThemePreset, ThemeState } from './types'
 import { type App, reactive } from 'vue'
-import { getPreset, isPresetObject } from './utils'
+import { getPreset } from './utils'
 import {
   generateCriticalCSS,
   generateFullCSS,
   injectCSS,
 } from './utils/css-generator'
+import { getColorMode, getSystemPrefersDark } from './utils/get-color-mode'
 
 export interface MazUiThemeOptions extends ThemeConfig {
   /**
@@ -32,44 +33,16 @@ export interface MazUiThemeOptions extends ThemeConfig {
   injectFullCSS?: boolean
 }
 
-function applyDarkMode(darkModeStrategy: DarkMode, initialColorMode: ColorMode) {
-  if (typeof document === 'undefined')
+function applyDarkMode(darkModeStrategy: DarkModeStrategy, isDark: boolean) {
+  if (typeof document === 'undefined' || darkModeStrategy !== 'class')
     return
 
-  const isDarkMode = initialColorMode === 'dark'
-    || (initialColorMode === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-
-  if (darkModeStrategy !== 'class') {
-    return
-  }
-
-  if (isDarkMode) {
+  if (isDark) {
     document.documentElement.classList.add('dark')
   }
   else {
     document.documentElement.classList.remove('dark')
   }
-}
-
-function getInitialColorMode(darkModeStrategy: DarkMode): ColorMode {
-  // 1. Priorité: préférence sauvegardée de l'utilisateur
-  if (typeof localStorage !== 'undefined') {
-    const savedMode = localStorage.getItem('maz-color-mode') as ColorMode | null
-    if (savedMode && ['light', 'dark', 'auto'].includes(savedMode)) {
-      return savedMode
-    }
-  }
-
-  // 2. Fallback: configuration du plugin
-  if (darkModeStrategy === 'auto') {
-    return 'auto'
-  }
-
-  // 3. Fallback final: préférences système
-  const systemPrefersDark = typeof window !== 'undefined'
-    && window.matchMedia('(prefers-color-scheme: dark)').matches
-
-  return systemPrefersDark ? 'dark' : 'light'
 }
 
 function injectThemeCSS(finalPreset: ThemePreset, config: MazUiThemeOptions) {
@@ -78,7 +51,7 @@ function injectThemeCSS(finalPreset: ThemePreset, config: MazUiThemeOptions) {
 
   const cssOptions = {
     mode: 'both' as const,
-    darkSelector: config.darkModeStrategy === 'media' ? 'media' as const : 'class' as const,
+    darkSelector: config.darkModeStrategy,
     prefix: config.prefix,
   }
 
@@ -126,31 +99,32 @@ export const MazUiTheme = {
       preset: 'maz-ui',
       strategy: 'runtime' as const,
       darkModeStrategy: 'class' as const,
+      colorMode: 'auto' as const,
       prefix: 'maz' as const,
       injectCriticalCSS: true,
       injectFullCSS: true,
       ...options,
     } satisfies MazUiThemeOptions
 
-    const initialColorMode = getInitialColorMode(config.darkModeStrategy)
-    const systemPrefersDark = typeof window !== 'undefined'
-      && window.matchMedia('(prefers-color-scheme: dark)').matches
-    const initialIsDark = initialColorMode === 'auto'
-      ? systemPrefersDark
-      : initialColorMode === 'dark'
+    const colorMode = getColorMode(config.colorMode)
+    const isDark = colorMode === 'auto'
+      ? getSystemPrefersDark() === 'dark'
+      : colorMode === 'dark'
+
+    applyDarkMode(config.darkModeStrategy, isDark)
 
     const themeState = reactive<ThemeState>({
       // @ts-expect-error - empty currentPreset to avoid error
       currentPreset: {},
-      colorMode: initialColorMode,
-      isDark: initialIsDark,
+      colorMode,
+      isDark,
       strategy: config.strategy,
       darkModeStrategy: config.darkModeStrategy,
     })
 
     injectThemeState(app, themeState)
 
-    const preset = isPresetObject(config.preset) ? config.preset : await getPreset(config.preset)
+    const preset = await getPreset(config.preset)
 
     const finalPreset = config.overrides
       ? {
@@ -167,8 +141,6 @@ export const MazUiTheme = {
       : preset
 
     themeState.currentPreset = finalPreset
-
-    applyDarkMode(config.darkModeStrategy, initialColorMode)
 
     if (config.strategy === 'buildtime') {
       return

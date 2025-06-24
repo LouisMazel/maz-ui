@@ -1,6 +1,6 @@
 ---
-title: useLanguageDisplayNames
-description: useLanguageDisplayNames is a Vue 3 composable that provides functions to work with language display names based on ISO codes. It leverages the Intl.DisplayNames API to fetch and format language names. This composable is useful for applications that need to display language names in a user-friendly format based on different locales.
+title: useDisplayNames
+description: useDisplayNames is a Vue 3 composable that provides functions to work with display names based on ISO codes. It leverages the Intl.DisplayNames API to fetch and format display names. This composable is useful for applications that need to display display names in a user-friendly format based on different locales.
 ---
 
 # {{ $frontmatter.title }}
@@ -9,7 +9,7 @@ description: useLanguageDisplayNames is a Vue 3 composable that provides functio
 
 ## Introduction
 
-`useLanguageDisplayNames` allows you to fetch and format language names based on ISO codes using the `Intl.DisplayNames` API. This composable is particularly useful for applications that need to display language names in a user-friendly format based on different locales.
+`useDisplayNames` allows you to fetch and format display names based on ISO codes using the `Intl.DisplayNames` API. This composable is particularly useful for applications that need to display display names in a user-friendly format based on different locales.
 
 ::: warning
 
@@ -19,14 +19,14 @@ Depending on your environment (client or node server) and the browser you are us
 
 ## Key Features
 
-- Fetches language display names based on ISO codes
+- Fetches display names based on ISO codes
 - Supports multiple locales
-- Provides functions to get display names for all possible languages
+- Provides functions to get display names for all possible display names
 - Handles errors gracefully and provides fallback values
 
 ## Basic Usage
 
-To see `useLanguageDisplayNames` in action, you can try out the following demo. This demo showcases how to use the composable to fetch and display language names dynamically based on user input.
+To see `useDisplayNames` in action, you can try out the following demo. This demo showcases how to use the composable to fetch and display display names dynamically based on user input.
 
 <ComponentDemo>
   <div class="maz-flex maz-flex-col maz-gap-4 maz-items-start">
@@ -61,18 +61,18 @@ To see `useLanguageDisplayNames` in action, you can try out the following demo. 
 
 ```vue
 <script lang="ts" setup>
-import { useLanguageDisplayNames } from 'maz-ui/composables/useLanguageDisplayNames'
+import { useDisplayNames } from 'maz-ui/composables/useDisplayNames'
 import { computed, ref } from 'vue'
 
 const selectedLocale = ref('en-US')
 const code = ref('')
 
-const { getLanguageDisplayName, getAllLanguageDisplayNames } = useLanguageDisplayNames(selectedLocale)
+const { getDisplayName, getAllDisplayNames } = useDisplayNames(selectedLocale)
 
-const languageDisplayName = getLanguageDisplayName({ code })
+const languageDisplayName = getDisplayName({ type: 'language', code })
 
-const localeOptions = computed(() => getAllLanguageDisplayNames('en-US').value.map(({ language, code }) => ({
-  label: `${language} (${code})`,
+const localeOptions = computed(() => getAllDisplayNames({ type: 'language' }).value.map(({ name, code }) => ({
+  label: `${name} (${code})`,
   value: code
 })))
 </script>
@@ -110,59 +110,66 @@ const localeOptions = computed(() => getAllLanguageDisplayNames('en-US').value.m
 
 </ComponentDemo>
 
-In this example, the `useLanguageDisplayNames` composable is used to fetch and display the language name based on the selected locale and ISO code.
+In this example, the `useDisplayNames` composable is used to fetch and display the language name based on the selected locale and ISO code.
 
 The returned value is reactive and will update automatically when the locale or ISO code changes if arguments are reactive (use ref or computed).
 
 ## Functions
 
-`useLanguageDisplayNames` can take a locale and ISO code as arguments to avoid pass this value each time you call the function. It is useful when you need to fetch language display names based on the same locale.
+`useDisplayNames` can take a locale and ISO code as arguments to avoid pass this value each time you call the function. It is useful when you need to fetch language display names based on the same locale.
 
 It provides the following functions:
 
-### `getLanguageDisplayName`
+### `getDisplayName`
 
 Fetches the display name of a language based on the provided locale and ISO code.
 
 ```ts
-function getLanguageDisplayName(options: {
+function getDisplayName(options: {
+  type: MaybeRefOrGetter<Intl.DisplayNamesOptions['type']>,
   locale?: MaybeRefOrGetter<string>
   code?: MaybeRefOrGetter<string>
 }): ComputedRef<string | undefined>
 ```
 
-### `getAllLanguageDisplayNames`
+### `getAllDisplayNames`
 
 Fetches the display names for all predefined ISO codes for a given locale.
 
 ```ts
-function getAllLanguageDisplayNames(
-  locale?: MaybeRefOrGetter<string>
-): ComputedRef<{ language: string, code: string }[]>
+function getAllDisplayNames(options: {
+  type: MaybeRefOrGetter<Intl.DisplayNamesOptions['type']>,
+  locale?: MaybeRefOrGetter<string>,
+  codes?: MaybeRefOrGetter<string[]>,
+  exclude?: MaybeRefOrGetter<string[]>,
+  preferred?: MaybeRefOrGetter<string[]>,
+  onlyIso?: MaybeRefOrGetter<boolean>,
+  onlyBcp?: MaybeRefOrGetter<boolean>,
+}): ComputedRef<{ name: string, code: string }[]>
 ```
 
 ## Notes
 
-- The `useLanguageDisplayNames` composable is designed to be used with Vue 3.
+- The `useDisplayNames` composable is designed to be used with Vue 3.
 - The composable functions return `ComputedRef` values, which are reactive and will update automatically when their dependencies change.
 - Handle errors gracefully by providing fallback values when the display name cannot be fetched.
-- The `Intl.DisplayNames` API is used internally to fetch and format the language names based on the provided locale and ISO code.
-- The composable supports multiple locales, allowing you to fetch language names in different languages.
-- Use the `getAllLanguageDisplayNames` function to fetch the display names for all predefined ISO codes for a given locale.
+- The `Intl.DisplayNames` API is used internally to fetch and format the display names based on the provided locale and ISO code.
+- The composable supports multiple locales, allowing you to fetch display names in different languages.
+- Use the `getAllDisplayNames` function to fetch the display names for all predefined ISO codes for a given locale.
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
-import { useLanguageDisplayNames } from 'maz-ui/composables/useLanguageDisplayNames'
+import { useDisplayNames } from 'maz-ui/composables/useDisplayNames'
 
 const selectedLocale = ref('fr-FR')
 const code = ref('')
 
-const { getLanguageDisplayName, getAllLanguageDisplayNames } = useLanguageDisplayNames(selectedLocale)
+const { getDisplayName, getAllDisplayNames } = useDisplayNames(selectedLocale)
 
-const languageDisplayName = getLanguageDisplayName({ code })
+const languageDisplayName = getDisplayName({ type: 'language', code })
 
-const localeOptions = computed(() => getAllLanguageDisplayNames('en-US').value.map(({ language, code }) => ({
-  label: `${language} (${code})`,
+const localeOptions = computed(() => getAllDisplayNames({ type: 'language' }).value.map(({ name, code }) => ({
+  label: `${name} (${code})`,
   value: code
 })))
 </script>

@@ -1,4 +1,4 @@
-import type { ThemeColors, ThemeFoundation, ThemePreset } from '../types'
+import type { DarkModeStrategy, ThemeColors, ThemeFoundation, ThemePreset } from '../types'
 import { generateColorScale } from './color-utils'
 
 // =============================================================================
@@ -6,7 +6,6 @@ import { generateColorScale } from './color-utils'
 // =============================================================================
 
 type ThemeMode = 'light' | 'dark' | 'both'
-type DarkSelector = 'class' | 'media'
 
 export interface CriticalCSSOptions {
   /** Critical color variables to include */
@@ -16,7 +15,7 @@ export interface CriticalCSSOptions {
   /** Theme mode to generate */
   mode?: ThemeMode
   /** Dark mode selector: 'class' (.dark) | 'media' (@media) */
-  darkSelector?: DarkSelector
+  darkSelectorStrategy?: DarkModeStrategy
   /** CSS variables prefix */
   prefix?: string
 }
@@ -27,7 +26,7 @@ export interface FullCSSOptions {
   /** Theme mode to generate */
   mode?: ThemeMode
   /** Dark mode selector: 'class' (.dark) | 'media' (@media) */
-  darkSelector?: DarkSelector
+  darkSelectorStrategy?: DarkModeStrategy
   /** CSS variables prefix */
   prefix?: string
   /** Include color scales (50-900) */
@@ -63,7 +62,7 @@ export function generateCriticalCSS(
     criticalColors = DEFAULT_CRITICAL_COLORS,
     criticalFoundation = DEFAULT_CRITICAL_FOUNDATION,
     mode = 'both',
-    darkSelector = 'class',
+    darkSelectorStrategy = 'class',
     prefix = 'maz',
   } = options
 
@@ -86,10 +85,10 @@ export function generateCriticalCSS(
   // Dark theme
   if (mode === 'dark' || mode === 'both') {
     css += generateVariablesBlock({
-      selector: darkSelector === 'media' ? ':root' : '.dark',
-      mediaQuery: darkSelector === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
+      selector: darkSelectorStrategy === 'media' ? ':root' : '.dark',
+      mediaQuery: darkSelectorStrategy === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
       colors: darkCritical,
-      foundation: mode === 'dark' ? foundationCritical : undefined, // Appearance only if dark mode only
+      foundation: foundationCritical,
       prefix,
     })
   }
@@ -113,7 +112,7 @@ export function generateFullCSS(
   const {
     excludeCritical = DEFAULT_CRITICAL_COLORS,
     mode = 'both',
-    darkSelector = 'class',
+    darkSelectorStrategy = 'class',
     prefix = 'maz',
     includeColorScales = true,
   } = options
@@ -138,8 +137,8 @@ export function generateFullCSS(
   // Dark theme - Remaining variables + scales
   if (mode === 'dark' || mode === 'both') {
     css += generateVariablesBlock({
-      selector: darkSelector === 'media' ? ':root' : '.dark',
-      mediaQuery: darkSelector === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
+      selector: darkSelectorStrategy === 'media' ? ':root' : '.dark',
+      mediaQuery: darkSelectorStrategy === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
       colors: darkColors,
       foundation: mode === 'dark' ? foundation : undefined, // Appearance only if dark mode only
       prefix,

@@ -5,10 +5,10 @@ export const guide = {
   collapsed: true,
   items: [
     { text: 'Getting Started', link: '/guide/getting-started' },
-    { text: 'Auto-imports - Resolvers', link: '/guide/resolvers' },
     { text: 'Nuxt', link: '/guide/nuxt' },
     { text: 'Theming', link: '/guide/theme' },
     { text: 'Translations (i18n)', link: '/guide/translations' },
+    { text: 'Resolvers (auto-imports)', link: '/guide/resolvers' },
     { text: 'Icons', link: '/guide/icons', collapsed: true, items: [
       { text: 'Icon Set - 300+ icons', link: '/guide/icon-set' },
     ] },

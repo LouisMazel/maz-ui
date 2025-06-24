@@ -12,32 +12,25 @@ import { getPreset } from '@maz-ui/themes/utils'
 import { generateCriticalCSS } from '@maz-ui/themes/utils/css-generator'
 
 function getServerInitialColorMode(): ColorMode {
-  // 1. Priorité: cookie de préférence utilisateur
-  const colorModeCookie = useCookie<ColorMode>('maz-color-mode', {
-    // default: () => 'auto',
-  })
+  const colorModeCookie = useCookie<ColorMode>('maz-color-mode')
 
   if (colorModeCookie.value && ['light', 'dark', 'auto'].includes(colorModeCookie.value)) {
     return colorModeCookie.value
   }
 
-  // 2. Headers du navigateur (si disponibles)
   if (import.meta.server) {
     const headers = useRequestHeaders()
 
-    // Client Hints pour le color scheme
     if (headers['sec-ch-prefers-color-scheme'] === 'dark') {
       return 'dark'
     }
 
-    // User-Agent hints (moins fiable)
     const userAgent = headers['user-agent']?.toLowerCase()
     if (userAgent?.includes('dark')) {
       return 'dark'
     }
   }
 
-  // 3. Fallback: configuration du module
   return 'auto'
 }
 
@@ -73,7 +66,7 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   } satisfies MazUiThemeOptions
 
   if (import.meta.server) {
-    const initialColorMode = getServerInitialColorMode()
+    const initialColorMode = config.colorMode === 'auto' ? getServerInitialColorMode() : config.colorMode ?? 'auto'
     const serverIsDark = getServerIsDark(initialColorMode)
     const initialIsDark
       = initialColorMode === 'dark' || (initialColorMode === 'auto' && serverIsDark)
@@ -88,7 +81,7 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
 
     const cssOptions: CriticalCSSOptions = {
       mode: 'both',
-      darkSelector: config.darkModeStrategy === 'media' ? 'media' : 'class',
+      darkSelectorStrategy: config.darkModeStrategy === 'media' ? 'media' : 'class',
       prefix: config.prefix,
     } satisfies CriticalCSSOptions
 
