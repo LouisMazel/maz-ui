@@ -1,9 +1,13 @@
 import type { DirectiveBinding, ObjectDirective, Plugin } from 'vue'
+import { isServer } from '@maz-ui/utils/src/index.js'
 import { nextTick } from 'vue'
 
 const eventHandlers = new WeakMap<HTMLElement, (event: Event) => void>()
 
 function getEventType() {
+  if (isServer())
+    return 'click'
+
   return document.ontouchstart === null ? 'touchstart' : 'click'
 }
 
@@ -24,6 +28,10 @@ interface VClickOutsideOptions {
    * Whether to only trigger the callback once.
    */
   once?: boolean
+  /**
+   * Whether to stop event propagation.
+   */
+  stopPropagation?: boolean
 }
 
 /**
@@ -50,6 +58,7 @@ function getOptionsFromBinding(binding: vClickOutsideDirectiveBinding): VClickOu
       ignore: [],
       capture: false,
       once: false,
+      stopPropagation: false,
       ...value,
     }
   }
@@ -59,13 +68,39 @@ function getOptionsFromBinding(binding: vClickOutsideDirectiveBinding): VClickOu
     ignore: [],
     capture: false,
     once: false,
+    stopPropagation: false,
   }
 }
 
 function shouldIgnoreElement(target: Element, ignoreSelectors: string[]): boolean {
+  if (isServer())
+    return false
+
   return ignoreSelectors.some((selector) => {
     try {
-      return target.closest(selector) !== null
+      // Check if target matches the selector directly
+      if (target.matches && target.matches(selector)) {
+        return true
+      }
+
+      // Check if target is contained within an element matching the selector
+      if (target.closest && target.closest(selector) !== null) {
+        return true
+      }
+
+      // Enhanced exclusion logic from vClosable: check by ID
+      const excludedElement = document.querySelector(selector)
+      if (excludedElement) {
+        const elementId = excludedElement.getAttribute('id')
+        if (elementId && target instanceof HTMLElement && target.getAttribute('id') === elementId) {
+          return true
+        }
+        if (excludedElement.contains(target as HTMLElement)) {
+          return true
+        }
+      }
+
+      return false
     }
     catch {
       return false
@@ -74,12 +109,15 @@ function shouldIgnoreElement(target: Element, ignoreSelectors: string[]): boolea
 }
 
 async function onMounted(el: HTMLElement, binding: vClickOutsideDirectiveBinding) {
+  if (isServer())
+    return
+
   try {
     onUnmounted(el)
 
     const vm = binding.instance
     const options = getOptionsFromBinding(binding)
-    const { callback, ignore = [], capture = false, once = false } = options
+    const { callback, ignore = [], capture = false, once = false, stopPropagation = false } = options
 
     const isCallbackFunction = typeof callback === 'function'
 
@@ -90,6 +128,10 @@ async function onMounted(el: HTMLElement, binding: vClickOutsideDirectiveBinding
     await nextTick()
 
     const eventHandler = (event: Event) => {
+      if (stopPropagation) {
+        event.stopPropagation()
+      }
+
       const target = event.target as Element
 
       if (!target || !el) {
@@ -121,6 +163,9 @@ async function onMounted(el: HTMLElement, binding: vClickOutsideDirectiveBinding
 }
 
 function onUnmounted(el: HTMLElement) {
+  if (isServer())
+    return
+
   try {
     const eventHandler = eventHandlers.get(el)
 
