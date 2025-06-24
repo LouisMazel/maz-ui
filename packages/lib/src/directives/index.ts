@@ -1,5 +1,4 @@
 export * from './vClickOutside'
-export * from './vClosable'
 export * from './vFullscreenImg'
 export * from './vLazyImg'
 export * from './vTooltip'

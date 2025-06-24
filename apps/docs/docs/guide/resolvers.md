@@ -184,11 +184,10 @@ function handleClickOutside() {
 **Available Directives:**
 
 - **[`v-tooltip`](./../directives/tooltip.md)** - Flexible tooltip positioning and content
-- **[`v-click-outside`](./../directives/click-outside.md)** - Detect clicks outside an element
+- **[`v-click-outside`](./../directives/click-outside.md)** - Detect clicks outside an element and execute a callback function
 - **[`v-lazy-img`](./../directives/lazy-img.md)** - Lazy load images with intersection observer
 - **[`v-zoom-img`](./../directives/zoom-img.md)** - Click to zoom images with smooth animations
 - **[`v-fullscreen-img`](./../directives/fullscreen-img.md)** - Fullscreen image viewer with navigation
-- **[`v-closable`](./../directives/closable.md)** - Closeable element
 
 ### MazModulesResolver
 

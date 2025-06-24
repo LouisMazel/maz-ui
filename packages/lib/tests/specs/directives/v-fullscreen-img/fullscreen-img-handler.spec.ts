@@ -1,7 +1,6 @@
-import type { vFullscreenImgBinding } from '@directives/vFullscreenImg/fullscreen-img.handler'
 import {
   FullscreenImgHandler,
-
+  type VFullscreenImgBinding,
 } from '@directives/vFullscreenImg/fullscreen-img.handler'
 
 describe('fullscreenImgHandler', () => {
@@ -60,7 +59,7 @@ describe('fullscreenImgHandler', () => {
     const buildOptionsSpy = vi.spyOn(handler, 'buildOptions')
 
     handler.create(el, binding)
-    handler.update(el, { value: { scaleOnHover: true } } as vFullscreenImgBinding)
+    handler.update(el, { value: { scaleOnHover: true } } as VFullscreenImgBinding)
 
     expect(buildOptionsSpy).toHaveBeenCalledTimes(2)
     expect(buildOptionsSpy).toHaveBeenCalledWith(el, binding)

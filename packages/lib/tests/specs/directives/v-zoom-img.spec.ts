@@ -1,6 +1,6 @@
 import type { VZoomImgBinding } from '@directives/vZoomImg/zoom-img.handler'
 import { ZoomImgHandler } from '@directives/vZoomImg/zoom-img.handler'
-import { sleep } from '@utils/sleep'
+import { sleep } from '@maz-ui/utils/src/index.js'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 describe('given VueZoomImg class', () => {
