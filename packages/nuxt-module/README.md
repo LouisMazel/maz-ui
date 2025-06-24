@@ -47,7 +47,7 @@ yarn add @maz-ui/nuxt
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['@maz-ui/nuxt']
+  modules: ['@maz-ui/nuxt'],
 })
 ```
 
@@ -59,9 +59,7 @@ export default defineNuxtConfig({
 <template>
   <div>
     <!-- All components are auto-imported! -->
-    <MazBtn color="primary" @click="showMessage">
-      Click me!
-    </MazBtn>
+    <MazBtn color="primary" @click="showMessage"> Click me! </MazBtn>
 
     <!-- Composables work everywhere -->
     <MazCard class="mt-4">
@@ -70,20 +68,18 @@ export default defineNuxtConfig({
     </MazCard>
 
     <!-- Directives are ready to use -->
-    <div v-tooltip="'Hello World!'">
-      Hover me for tooltip
-    </div>
+    <div v-tooltip="'Hello World!'">Hover me for tooltip</div>
   </div>
 </template>
 
 <script setup>
-// All composables are auto-imported too!
-const toast = useToast()
-const { isDark, toggleDarkMode } = useTheme()
+  // All composables are auto-imported too!
+  const toast = useToast()
+  const { isDark, toggleDarkMode } = useTheme()
 
-function showMessage() {
-  toast.success('Welcome to Maz-UI! 🎉')
-}
+  function showMessage() {
+    toast.success('Welcome to Maz-UI! 🎉')
+  }
 </script>
 ```
 
@@ -92,7 +88,8 @@ function showMessage() {
 ### 🧩 50+ Beautiful Components
 
 - **Buttons**: `MazBtn`,
-- **Forms**: `MazInput`, `MazSelect`, `MazCheckbox`, `MazRadio`, `MazTextarea`
+- **Forms**: `MazInput`, `MazSelect`, `MazCheckbox`, `MazRadio`, `MazTextarea`, `MazInputPhoneNumber`
+- **Overlay**: `MazDropdown`, `MazPopover`
 - **Navigation**: `MazTabs`, `MazStepper`, `MazPagination`
 - **Data Display**: `MazTable`, `MazCard`, `MazBadge`, `MazAvatar`
 - **Media**: `MazCarousel`, `MazGallery`, `MazLazyImg`
@@ -125,24 +122,20 @@ Maz-UI comes with a powerful theming system that makes your app look professiona
 
 ```vue
 <script setup>
-// Switch between built-in themes
-const { updateTheme, toggleDarkMode } = useTheme()
+  // Switch between built-in themes
+  const { updateTheme, toggleDarkMode } = useTheme()
 
-async function changeToOceanTheme() {
-  const { ocean } = await import('@maz-ui/themes')
-  updateTheme(ocean)
-}
+  async function changeToOceanTheme() {
+    const { ocean } = await import('@maz-ui/themes')
+    updateTheme(ocean)
+  }
 </script>
 
 <template>
   <div>
-    <MazBtn @click="toggleDarkMode">
-      🌙 Toggle Dark Mode
-    </MazBtn>
+    <MazBtn @click="toggleDarkMode"> 🌙 Toggle Dark Mode </MazBtn>
 
-    <MazBtn @click="changeToOceanTheme">
-      🌊 Ocean Theme
-    </MazBtn>
+    <MazBtn @click="changeToOceanTheme"> 🌊 Ocean Theme </MazBtn>
   </div>
 </template>
 ```
@@ -156,7 +149,7 @@ async function changeToOceanTheme() {
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['@maz-ui/nuxt']
+  modules: ['@maz-ui/nuxt'],
   // That's all you need! 🎉
 })
 ```
@@ -170,27 +163,27 @@ export default defineNuxtConfig({
   mazUi: {
     // 🎛️ General Settings
     general: {
-      autoImportPrefix: 'Maz',        // useMazToast instead of useToast
-      defaultMazIconPath: '/icons',   // Path to your SVG icons
-      devtools: true,                 // Enable DevTools integration
+      autoImportPrefix: 'Maz', // useMazToast instead of useToast
+      defaultMazIconPath: '/icons', // Path to your SVG icons
+      devtools: true, // Enable DevTools integration
     },
 
     // 🎨 Theme System
     theme: {
-      preset: 'ocean',              // Choose: 'mazUi', 'ocean', 'pristine', 'obsidian'
-      strategy: 'hybrid',           // 'runtime' | 'buildtime' | 'hybrid'
-      darkModeStrategy: 'class',    // 'class' | 'media' | 'auto'
+      preset: 'ocean', // Choose: 'mazUi', 'ocean', 'pristine', 'obsidian'
+      strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
+      darkModeStrategy: 'class', // 'class' | 'media' | 'auto'
     },
 
     // 🌐 Translations
     translations: {
-      locale: 'fr',                 // Default language
+      locale: 'fr', // Default language
       fallbackLocale: 'en',
     },
 
     // 🧩 Components (all enabled by default)
     components: {
-      autoImport: true,             // Auto-import all components globally
+      autoImport: true, // Auto-import all components globally
     },
 
     // 🎪 Composables (customize what you need)
@@ -199,8 +192,8 @@ export default defineNuxtConfig({
       useToast: true,
       useDialog: true,
       useAos: {
-        injectCss: true,            // Include AOS animations CSS
-        router: true,               // Re-trigger on route change
+        injectCss: true, // Include AOS animations CSS
+        router: true, // Re-trigger on route change
       },
       // ... all others enabled by default
     },
@@ -213,7 +206,7 @@ export default defineNuxtConfig({
       vFullscreenImg: true,
       vZoomImg: true,
     },
-  }
+  },
 })
 ```
 
@@ -246,8 +239,8 @@ export default defineNuxtConfig({
   mazUi: {
     theme: {
       preset: myCustomTheme,
-    }
-  }
+    },
+  },
 })
 ```
 
@@ -263,15 +256,15 @@ This module is built specifically for Nuxt with perfect SSR and SSG support:
 
 ## 🎯 Why This Module vs Manual Setup?
 
-| Feature | Manual Setup | @maz-ui/nuxt Module |
-|---------|-------------|-------------------|
-| **Setup Time** | 30+ minutes | 2 minutes |
-| **Auto Imports** | Manual imports needed | ✅ Everything auto-imported |
-| **SSR Support** | Complex configuration | ✅ Works out of the box |
-| **Theme System** | Manual CSS management | ✅ Automatic theme switching |
-| **Bundle Size** | Full library imported | ✅ Tree-shaking optimized |
-| **DevTools** | No integration | ✅ Nuxt DevTools support |
-| **TypeScript** | Manual type setup | ✅ Perfect TypeScript support |
+| Feature          | Manual Setup          | @maz-ui/nuxt Module           |
+| ---------------- | --------------------- | ----------------------------- |
+| **Setup Time**   | 30+ minutes           | 2 minutes                     |
+| **Auto Imports** | Manual imports needed | ✅ Everything auto-imported   |
+| **SSR Support**  | Complex configuration | ✅ Works out of the box       |
+| **Theme System** | Manual CSS management | ✅ Automatic theme switching  |
+| **Bundle Size**  | Full library imported | ✅ Tree-shaking optimized     |
+| **DevTools**     | No integration        | ✅ Nuxt DevTools support      |
+| **TypeScript**   | Manual type setup     | ✅ Perfect TypeScript support |
 
 ## 📚 Learn More
 
