@@ -1,11 +1,14 @@
 import type { MazTranslationsNestedSchema } from '../types'
 
 export default {
+  selectCountry: {
+    searchPlaceholder: 'Rechercher un pays',
+  },
   inputPhoneNumber: {
     countrySelect: {
       placeholder: 'Code pays',
       error: 'Choisir le pays',
-      searchPlaceholder: 'Rechercher le pays',
+      searchPlaceholder: 'Rechercher un pays',
     },
     phoneInput: {
       placeholder: 'Numéro de téléphone',

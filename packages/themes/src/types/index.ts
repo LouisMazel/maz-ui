@@ -70,6 +70,12 @@ export interface ThemePreset {
 
 export type ThemePresetName = 'mazUi' | 'ocean' | 'pristine' | 'obsidian' | 'maz-ui'
 
+export type ColorMode = 'light' | 'dark' | 'auto'
+
+export type DarkModeStrategy = 'class' | 'media'
+
+export type Strategy = 'runtime' | 'buildtime' | 'hybrid'
+
 export interface ThemeConfig {
   /**
    * Theme preset to use
@@ -99,11 +105,20 @@ export interface ThemeConfig {
    * Dark mode handling
    * @description
    * - `class`: Dark mode activated with `.dark` class
-   * - `media`: Dark mode based on `prefers-color-scheme`
-   * - `auto`: Automatic detection of system preferences
+   * - `media`: Dark mode based on `prefers-color-scheme` (automatic detection of system preferences)
    * @default 'class'
    */
-  darkModeStrategy?: DarkMode
+  darkModeStrategy?: DarkModeStrategy
+
+  /**
+   * Color mode
+   * @description
+   * - `light`: Light mode
+   * - `dark`: Dark mode
+   * - `auto`: Automatic detection of system preferences
+   * @default 'auto'
+   */
+  colorMode?: ColorMode
 }
 
 export interface ColorScale {
@@ -119,16 +134,10 @@ export interface ColorScale {
   900: string
 }
 
-export type ColorMode = 'light' | 'dark' | 'auto'
-
-export type DarkMode = 'class' | 'media' | 'auto'
-
-export type Strategy = 'runtime' | 'buildtime' | 'hybrid'
-
 export interface ThemeState {
   currentPreset: ThemePreset
   colorMode: ColorMode
   isDark: boolean
   strategy: Strategy
-  darkModeStrategy: DarkMode
+  darkModeStrategy: DarkModeStrategy
 }

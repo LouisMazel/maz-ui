@@ -109,6 +109,10 @@ export default defineConfig({
             res.writeHead(301, { Location: '/components/maz-date-picker' })
             res.end()
           })
+          server.middlewares.use('/composables/use-language-display-names', (req, res) => {
+            res.writeHead(301, { Location: '/composables/use-display-names' })
+            res.end()
+          })
         },
       },
     ],

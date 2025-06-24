@@ -307,7 +307,7 @@ const composables = {
   useFormValidator: true, // Form validation
   useStringMatching: true, // String utilities
   useReadingTime: true, // Reading time calculation
-  useLanguageDisplayNames: true, // Language names
+  useDisplayNames: true, // Display localized names
   useSwipe: true, // Swipe gestures
 
   // 🔧 Advanced

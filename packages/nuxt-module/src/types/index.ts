@@ -208,11 +208,11 @@ export interface MazUiNuxtOptions {
     useFormValidator?: boolean
 
     /**
-     * Enable auto-import of useLanguageDisplayNames composable
+     * Enable auto-import of useDisplayNames composable
      * @description Get localized language display names
      * @default true
      */
-    useLanguageDisplayNames?: boolean
+    useDisplayNames?: boolean
 
     /**
      * Enable auto-import of useSwiper composable
