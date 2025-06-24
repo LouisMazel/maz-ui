@@ -67,6 +67,7 @@ const COMPONENT_NAMES: Omit<Record<ComponentNames, true>, 'useMazDialogPromise'>
   MazRadioButtons: true,
   MazReadingProgressBar: true,
   MazSelect: true,
+  MazSelectCountry: true,
   MazSlider: true,
   MazSpinner: true,
   MazStepper: true,
@@ -120,7 +121,7 @@ const defaults: Required<MazUiNuxtOptions> = {
     useStringMatching: true,
     useTimer: true,
     useFormValidator: true,
-    useLanguageDisplayNames: true,
+    useDisplayNames: true,
     useFreezeValue: true,
     useInjectStrict: true,
     useInstanceUniqId: true,
@@ -335,10 +336,10 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       })
     }
 
-    if (moduleOptions.composables.useLanguageDisplayNames) {
+    if (moduleOptions.composables.useDisplayNames) {
       addMazImport({
-        name: 'useLanguageDisplayNames',
-        path: 'maz-ui/composables/useLanguageDisplayNames',
+        name: 'useDisplayNames',
+        path: 'maz-ui/composables/useDisplayNames',
         prefix: moduleOptions.general?.autoImportPrefix,
       })
     }

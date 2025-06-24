@@ -81,13 +81,13 @@ lastUpdated: false
 
   <script lang="ts" setup>
     import { ref } from 'vue'
-    import { MazChecklist } from 'maz-ui/components'
-    import { useLanguageDisplayNames } from 'maz-ui/composables'
+    import MazChecklist from 'maz-ui/components/MazChecklist'
+    import { useDisplayNames } from 'maz-ui/composables/useDisplayNames'
 
     const query = ref<string>()
     const languages = ref<string[]>()
-    const languagesOptions = useLanguageDisplayNames('en-US').getAllLanguageDisplayNames().value.map(({ code, language }) => ({
-      label: language,
+    const languagesOptions = useDisplayNames('en-US').getAllDisplayNames({ type: 'language' }).value.map(({ code, name }) => ({
+      label: name,
       value: code,
     }))
   </script>
@@ -301,14 +301,13 @@ You can replace the default search function by providing a custom search functio
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { useLanguageDisplayNames } from 'maz-ui/src/composables/useLanguageDisplayNames'
+  import { useDisplayNames } from 'maz-ui/src/composables/useDisplayNames'
 
   // First demo variables
   const query = ref()
   const languages = ref<string[]>()
-  const languagesOptions = ref([])
-  languagesOptions.value = useLanguageDisplayNames('en-US').getAllLanguageDisplayNames().value.map(({ code, language }) => ({
-    label: language,
+  const languagesOptions = useDisplayNames('en-US').getAllDisplayNames({ type: 'language' }).value.map(({ code, name }) => ({
+    label: name,
     value: code,
   }))
 

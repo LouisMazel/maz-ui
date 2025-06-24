@@ -21,6 +21,7 @@ export const components = {
         { text: 'Radio', link: '/components/maz-radio' },
         { text: 'RadioButtons', link: '/components/maz-radio-buttons' },
         { text: 'Select (multiple)', link: '/components/maz-select' },
+        { text: 'SelectCountry', link: '/components/maz-select-country' },
         { text: 'Slider', link: '/components/maz-slider' },
         { text: 'Switch', link: '/components/maz-switch' },
         { text: 'Textarea', link: '/components/maz-textarea' },

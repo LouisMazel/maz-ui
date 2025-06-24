@@ -11,10 +11,8 @@ import { useLibphonenumber } from './useLibphonenumber'
 type PhoneInputProps = Omit<MazInputProps, 'modelValue'> & {
   id: string
   locales: {
-    phoneInput: {
-      placeholder: string
-      example: string | undefined
-    }
+    placeholder: string
+    example: string | undefined
   }
   example: boolean
   hasRadius: boolean
@@ -59,8 +57,8 @@ function getCountryPhoneNumberExample(selectedCountry?: CountryCode | undefined 
     return undefined
   }
 
-  return locales.phoneInput.example
-    ? locales.phoneInput.example.replace('{example}', example)
+  return locales.example
+    ? locales.example.replace('{example}', example)
     : t('inputPhoneNumber.phoneInput.example', { example })
 }
 
@@ -69,7 +67,7 @@ const inputLabelOrPlaceholder = computed(() => {
     return label || placeholder
   }
 
-  const defaultPlaceholder = locales.phoneInput.placeholder
+  const defaultPlaceholder = locales.placeholder
 
   if (!example || !inputFocused.value) {
     return defaultPlaceholder

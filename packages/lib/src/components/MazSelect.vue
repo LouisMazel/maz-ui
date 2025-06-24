@@ -1,7 +1,7 @@
 <script
   lang="ts"
   setup
-  generic="T extends MazInputValue, U extends MazSelectOption"
+  generic="Value extends MazInputValue, Option extends MazSelectOption, Multiple extends boolean"
 >
 import type { MazTranslationsNestedSchema } from '@maz-ui/translations/src/types.js'
 import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
@@ -25,7 +25,9 @@ import { useStringMatching } from '../composables/useStringMatching'
 import MazInput from './MazInput.vue'
 import MazPopover, { type MazPopoverProps } from './MazPopover.vue'
 
-export type MazSelectNormalizedOption = Record<string, MazInputValue>
+export interface MazSelectNormalizedOption {
+  [key: string]: MazInputValue
+}
 export interface MazSelectOptionWithOptGroup {
   label: string
   options: (MazSelectNormalizedOption | string | number | boolean)[]
@@ -37,17 +39,37 @@ export type MazSelectOption
     | boolean
     | MazSelectOptionWithOptGroup
 
-export interface MazSelectProps<T extends MazInputValue, U extends MazSelectOption> {
-  /** Style attribut of the component root element */
+export interface MazSelectProps<Value extends MazInputValue, Option extends MazSelectOption, Multiple extends boolean> {
+  /**
+   * Style attribut of the component root element
+   * @type {HTMLAttributes['style']}
+   */
   style?: HTMLAttributes['style']
-  /** Class attribut of the component root element */
+  /**
+   * Class attribut of the component root element
+   * @type {HTMLAttributes['class']}
+   */
   class?: HTMLAttributes['class']
   /** The id of the select */
   id?: string
-  /** The value of the select */
-  modelValue?: T | T[]
-  /** The options of the select */
-  options: U[]
+  /**
+   * The label of the select
+   */
+  label?: string
+  /**
+   * The placeholder of the select
+   */
+  placeholder?: string
+  /**
+   * The value of the select
+   * @type {Value | Value[]}
+   */
+  modelValue?: Multiple extends true ? Value[] : Value
+  /**
+   * The options of the select
+   * @type {Option[]}
+   */
+  options: Option[]
   /**
    * The key of the option value
    * @default 'value'
@@ -94,14 +116,14 @@ export interface MazSelectProps<T extends MazInputValue, U extends MazSelectOpti
    * Replace the default search function to provide a custom search function
    * @default undefined
    */
-  searchFunction?: (query: string, options: U[]) => U[] | undefined
+  searchFunction?: (query: string, options: Option[]) => Option[] | undefined
   /**
    * The threshold for the search input where 1 is a perfect match and 0 is a match with any character
    * @default 0.75
    */
   searchThreshold?: number
   /** Enable the multiple selection */
-  multiple?: boolean
+  multiple?: Multiple
   /** Make the input required in the form */
   required?: boolean
   /** Disable the component */
@@ -115,18 +137,26 @@ export interface MazSelectProps<T extends MazInputValue, U extends MazSelectOpti
   autocomplete?: string
   /**
    * The translations of the component
+   * @type {Partial<MazTranslationsNestedSchema['select']>}
    * @default {
    *   searchPlaceholder: 'Search in options',
    * }
    */
   translations?: Partial<MazTranslationsNestedSchema['select']>
+
+  /**
+   * The function to format the input value
+   * @type {(value: Multiple extends true ? Value[] : Value) => string}
+   * @default undefined
+   */
+  formatInputValue?: (value: Multiple extends true ? Value[] : Value) => string
 }
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MazSelectProps<T, U>>(), {
+const props = withDefaults(defineProps<MazSelectProps<Value, Option, Multiple>>(), {
   id: undefined,
   class: undefined,
   multiple: undefined,
@@ -147,7 +177,9 @@ const props = withDefaults(defineProps<MazSelectProps<T, U>>(), {
   autocomplete: 'off',
 })
 
-const emits = defineEmits<{
+const emits = defineEmits<MazSelectEmits>()
+
+interface MazSelectEmits {
   /**
    * On list is closed
    * @event 'close'
@@ -188,14 +220,14 @@ const emits = defineEmits<{
    * @event 'update:model-value'
    * @property {MazInputValue | MazInputValue[]} value - the new value
    */
-  'update:model-value': [value: T | T[]]
+  'update:model-value': [value: Multiple extends true ? Value[] : Value]
   /**
    * On selected value, returns the option object
    * @event 'selected-option'
    * @property {MazSelectOption} value - the option object
    */
-  'selected-option': [value: U]
-}>()
+  'selected-option': [value: Option]
+}
 
 const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
 
@@ -205,9 +237,9 @@ const selectedTextColor = computed(() => `hsl(var(--maz-${props.color}))`)
 const selectedBgColor = computed(() => `hsl(var(--maz-${props.color}-500) / 0.1)`)
 
 const { t } = useTranslations()
-const messages = computed<MazTranslationsNestedSchema['select']>(() => ({
+const messages = computed(() => ({
   searchPlaceholder: props.translations?.searchPlaceholder || t('select.searchPlaceholder'),
-}))
+} satisfies MazTranslationsNestedSchema['select']))
 
 const isOpen = defineModel<boolean>('open', { required: false, default: false })
 
@@ -216,23 +248,23 @@ const instanceId = useInstanceUniqId({
   providedId: props.id,
 })
 
-function getOptionPayload(option: string | number | boolean): MazSelectNormalizedOption {
+function getOptionPayload(option: string | number | boolean) {
   return {
     [props.optionValueKey]: option,
     [props.optionLabelKey]: option,
     [props.optionInputValueKey]: option,
-  }
+  } satisfies MazSelectNormalizedOption
 }
-function getNormalizedOptionPayload(option: MazSelectNormalizedOption): MazSelectNormalizedOption {
+function getNormalizedOptionPayload(option: MazSelectNormalizedOption) {
   return {
     ...option,
     [props.optionValueKey]: option[props.optionValueKey],
     [props.optionLabelKey]: option[props.optionLabelKey],
     [props.optionInputValueKey]: option[props.optionInputValueKey],
-  }
+  } satisfies MazSelectNormalizedOption
 }
 
-function getNormalizedOptions(options: U[] | undefined) {
+function getNormalizedOptions(options: Option[] | undefined) {
   const normalizedOptions: MazSelectNormalizedOption[] = []
 
   if (!options?.length) {
@@ -262,10 +294,10 @@ function getNormalizedOptions(options: U[] | undefined) {
     }
   }
 
-  return normalizedOptions
+  return normalizedOptions satisfies MazSelectNormalizedOption[]
 }
 
-const optionsNormalized = computed<MazSelectNormalizedOption[]>(() => getNormalizedOptions(props.options ?? []))
+const optionsNormalized = computed(() => getNormalizedOptions(props.options ?? [] satisfies MazSelectNormalizedOption[]))
 
 function isOptionInSelection(option: MazSelectNormalizedOption): boolean {
   if (isNullOrUndefined(option[props.optionValueKey])) {
@@ -273,7 +305,7 @@ function isOptionInSelection(option: MazSelectNormalizedOption): boolean {
   }
 
   if (props.multiple) {
-    return Array.isArray(props.modelValue) && props.modelValue.includes(option[props.optionValueKey] as T)
+    return Array.isArray(props.modelValue) && props.modelValue.includes(option[props.optionValueKey] as Value)
   }
 
   return props.modelValue === option[props.optionValueKey]
@@ -303,23 +335,34 @@ function isSelectedOption(option: MazSelectNormalizedOption) {
 
 const inputValue = computed(() => {
   if (props.multiple && props.modelValue && Array.isArray(props.modelValue)) {
-    return props.modelValue
+    const values = props.modelValue
       .map(
         value =>
           optionsNormalized.value?.find(option => option[props.optionValueKey] === value)?.[
             props.optionInputValueKey
           ],
       )
-      .join(', ')
+
+    if (props.formatInputValue) {
+      return props.formatInputValue(values as Multiple extends true ? Value[] : Value)
+    }
+
+    return values.join(', ')
   }
 
   const selectedOption = optionsNormalized.value?.find(
     option => option[props.optionValueKey] === props.modelValue,
   )
 
-  return isNullOrUndefined(props.modelValue)
+  const value = isNullOrUndefined(props.modelValue)
     ? undefined
     : selectedOption?.[props.optionInputValueKey]
+
+  if (props.formatInputValue) {
+    return props.formatInputValue(value as Multiple extends true ? Value[] : Value)
+  }
+
+  return value
 })
 
 const searchQuery = ref<string>()
@@ -355,10 +398,13 @@ function getFilteredOptionWithQuery(query?: string) {
   })
 }
 
-const optionList = computed(() => props.searchFunction && props.search && searchQuery.value
-  ? getNormalizedOptions(props.searchFunction(searchQuery.value, props.options ?? []) ?? [])
-  : getFilteredOptionWithQuery(searchQuery.value),
-)
+const optionList = computed(() => {
+  if (props.searchFunction && props.search && searchQuery.value) {
+    return getNormalizedOptions(props.searchFunction(searchQuery.value, props.options ?? []) ?? [])
+  }
+
+  return getFilteredOptionWithQuery(searchQuery.value)
+})
 
 function onCloseList() {
   emits('close')
@@ -482,8 +528,8 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
 
   const selectedValues = newValue.map(option => option[props.optionValueKey])
 
-  emits('update:model-value', (props.multiple ? selectedValues : selectedValues[0]) as T | T[])
-  emits('selected-option', inputOption as U)
+  emits('update:model-value', (props.multiple ? selectedValues : selectedValues[0]) as Multiple extends true ? Value[] : Value)
+  emits('selected-option', inputOption as Option)
   emitInputMainInput()
   focusMainInput()
 }
@@ -575,8 +621,10 @@ defineExpose({
         :border-active="isOpen"
         :color="color"
         :model-value="inputValue"
-        :size="size"
+        :size
         :block
+        :placeholder
+        :label
         :autocomplete
         :disabled
         readonly
@@ -586,15 +634,20 @@ defineExpose({
         @blur="emits('blur', $event)"
         @keydown="mainInputKeyboardHandler"
       >
+        <template #left-icon>
+          <slot name="left-icon" />
+        </template>
         <template #right-icon>
-          <button
-            tabindex="-1"
-            type="button"
-            class="m-select-input__toggle-button maz-custom"
-            :aria-label="`${isOpen ? 'collapse' : 'expand'} list of options`"
-          >
-            <MazChevronDown class="m-select-chevron" />
-          </button>
+          <slot name="right-icon">
+            <button
+              tabindex="-1"
+              type="button"
+              class="m-select-input__toggle-button maz-custom"
+              :aria-label="`${isOpen ? 'collapse' : 'expand'} list of options`"
+            >
+              <MazChevronDown class="m-select-chevron" />
+            </button>
+          </slot>
         </template>
       </MazInput>
     </template>
@@ -675,7 +728,7 @@ defineExpose({
                     @binding {Object} option - the option object
                     @binding {Boolean} is-selected - if the option is selected
                 -->
-              <slot :option="option" :is-selected="isSelectedOption(option)">
+              <slot :option="(option as Option)" :is-selected="isSelectedOption(option)">
                 <span>
                   {{ option[optionLabelKey] }}
                 </span>
@@ -739,7 +792,7 @@ defineExpose({
   }
 
   &-chevron {
-    @apply maz-text-[1.2em] maz-text-foreground maz-transition-all maz-duration-300 maz-ease-out;
+    @apply maz-text-[1.2em] maz-text-muted maz-transition-all maz-duration-300 maz-ease-out;
   }
 
   &.--is-open {
