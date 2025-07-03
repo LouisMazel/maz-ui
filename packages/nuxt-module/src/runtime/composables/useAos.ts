@@ -2,7 +2,7 @@ import type { AosHandler } from 'maz-ui/plugins/aos'
 import { useNuxtApp } from 'nuxt/app'
 
 export function useAos(): AosHandler {
-  const { $aos } = useNuxtApp()
+  const { $mazAos } = useNuxtApp()
 
-  return $aos
+  return $mazAos
 }

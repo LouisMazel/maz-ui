@@ -12,13 +12,13 @@ export default defineNuxtPlugin(() => {
 
   return {
     provide: {
-      wait: import.meta.server ? waitServer : new WaitHandler(),
+      mazWait: import.meta.server ? waitServer : new WaitHandler(),
     },
   }
 })
 
 declare module '#app' {
   interface NuxtApp {
-    $wait: WaitHandler
+    $mazWait: WaitHandler
   }
 }

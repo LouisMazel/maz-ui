@@ -96,8 +96,11 @@ const defaults: Required<MazUiNuxtOptions> = {
     injectMainCss: true,
   },
   theme: {
+    preset: 'maz-ui',
     strategy: 'hybrid',
     darkModeStrategy: 'class',
+    prefix: 'maz',
+    colorMode: 'auto',
   },
   translations: {
     locale: 'en',
@@ -344,7 +347,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       })
     }
 
-    if (moduleOptions.composables.useTheme) {
+    if (moduleOptions.composables.useTheme && moduleOptions.theme !== false) {
       addMazImport({
         name: 'useTheme',
         path: '@maz-ui/themes/composables/useTheme',

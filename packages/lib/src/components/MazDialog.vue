@@ -23,20 +23,16 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<DialogProps & MazBackdropProps>(), {
-  /** Title of the modal in header */
-  title: undefined,
-  /** Remove the close button in header */
-  hideCloseButton: false,
-  /** Modal's max-width */
-  maxWidth: '100%',
-  /** Modal's min-width */
-  minWidth: '32rem',
-  /**  Modal's content becomes scrollable - warning: a overflow is applied */
-  scrollable: false,
-  /** Persistent dialog (not closable by clicking outside and remove close button) */
-  persistent: false,
-})
+const {
+  modelValue,
+  title = undefined,
+  hideCloseButton = false,
+  maxWidth = '100%',
+  minWidth = '32rem',
+  scrollable = false,
+  persistent = false,
+  ...backdropProps
+} = defineProps<DialogProps & MazBackdropProps>()
 
 defineEmits<{
   /** emitted when modal is open */
@@ -76,26 +72,6 @@ defineExpose({
   close: () => backdrop.value?.close?.(),
 })
 
-const backdropProps = computed(() => {
-  const dialogPropKeys: (keyof MazDialogProps)[] = [
-    'modelValue',
-    'title',
-    'hideCloseButton',
-    'maxWidth',
-    'minWidth',
-    'scrollable',
-  ]
-
-  return Object.fromEntries(
-    Object.entries(props).filter(([key]) => !dialogPropKeys.includes(key as keyof MazDialogProps)),
-  ) as MazBackdropProps
-})
-
-const backdropAttrs = computed(() => ({
-  ...attrs,
-  class: undefined,
-  style: undefined,
-}))
 const wrapperAttrs = computed<{
   class?: HTMLAttributes['class']
 }>(() => ({
@@ -108,8 +84,8 @@ const dialogContent = ref<HTMLElement>()
 const slots = useSlots()
 const hasFooter = computed(() => !!slots.footer)
 
-if (props.scrollable) {
-  watch(() => props.modelValue, async (newVal) => {
+if (scrollable) {
+  watch(() => modelValue, async (newVal) => {
     await nextTick()
     if (newVal && dialogContent.value) {
       setTimeout(() => {
@@ -122,7 +98,7 @@ if (props.scrollable) {
 
 <template>
   <MazBackdrop
-    v-bind="{ ...backdropAttrs, ...backdropProps }"
+    v-bind="backdropProps"
     ref="backdrop"
     v-slot="{ close, onBackdropClicked }"
     :model-value="modelValue"
@@ -130,6 +106,7 @@ if (props.scrollable) {
     aria-labelledby="dialogTitle"
     aria-describedby="dialogDesc"
     content-padding
+    :persistent
     justify="center"
     variant="dialog"
     @close="$emit('close', $event)"

@@ -242,9 +242,13 @@ export function findInteractiveElements(el: HTMLElement) {
     return [el]
   }
 
-  return el.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
-    'input, select, textarea',
-  ) as unknown as (HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement)[]
+  if (el instanceof HTMLElement) {
+    return el.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+      'input, select, textarea',
+    ) as unknown as (HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement)[]
+  }
+
+  return []
 }
 
 export function addEventToInteractiveElements({

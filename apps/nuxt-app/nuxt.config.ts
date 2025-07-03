@@ -12,9 +12,6 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'Dev App - Maz-UI',
-      htmlAttrs: {
-        class: 'dark',
-      },
     },
   },
   css: ['~/css/main.css'],
@@ -35,7 +32,7 @@ export default defineNuxtConfig({
 
   mazUi: {
     theme: {
-      // injectFullCSSOnServer: true,
+      preset: 'maz-ui',
     },
     translations: {
       locale: 'fr',

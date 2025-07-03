@@ -3,6 +3,8 @@ html,
 body,
 #__nuxt {
   @apply maz-min-h-screen;
+
+  font-size: var(--maz-base-font-size);
 }
 /* stylelint-enable selector-id-pattern */
 

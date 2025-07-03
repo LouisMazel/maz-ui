@@ -9,28 +9,18 @@ head:
 
 # Getting Started
 
-<div class="hero-section vp-raw maz-flex maz-flex-col mob-l:maz-flex-center maz-gap-4 dark maz-text-secondary-foreground">
-  <p class="mob-l:maz-text-center maz-text-lg maz-mb-3 mob-l:maz-max-w-3xl dark">
-    Discover Maz-UI v4: The modern, modular Vue component library designed for performance, accessibility, and developer experience. From simple buttons to complex data tables, build stunning interfaces in minutes.
-  </p>
-
-  <div class="maz-flex maz-gap-2 maz-justify-center maz-flex-wrap">
-    <MazBtn  href="/components/maz-btn" color="contrast" class="dark maz-w-full mob-l:maz-w-auto" outlined>
-      Browse Components
-    </MazBtn>
-    <MazBtn href="#quick-installation" color="contrast" class="dark maz-w-full mob-l:maz-w-auto">
-      Get Started
-    </MazBtn>
-  </div>
-</div>
-
 ::: tip ✨ What's New in v4
 
-- **Tree-shaking by default** - Import only what you need
-- **Modular CSS** - Each component brings its own styles
-- **Enhanced accessibility** - WCAG 2.1 AA compliant
+- **Tree-shaking improvements** - Import only what you need
 - **TypeScript-first** - Full type safety out of the box
-  :::
+- **Theming system** - Customizable themes and dark mode support (4 presets available)
+- **Internationalization** - Locale management and tree-shakable imports
+- **Icon library** - Comprehensive collection of SVG icons designed for performance and flexibility
+- **Nuxt module** - Effortless Maz-UI integration with auto-imports
+- **Performance optimizations** - Tree-shaking benefits and maximum optimization
+- **Enhanced accessibility** - WCAG 2.1 AA compliant
+- **New components** - MazPopover & MazSelectCountry
+:::
 
 ## Quick Installation {#quick-installation}
 
@@ -78,7 +68,7 @@ app.use(MazUi, {
    * @see https://maz-ui.com/guide/theme
    */
   theme: {
-    preset: 'ocean', // 'ocean' | 'pristine' | 'obsidian' | 'maz-ui'
+    preset: 'maz-ui', // 'ocean' | 'pristine' | 'obsidian' | 'maz-ui'
   },
   /**
    * Translations configuration (optional if you are using english)
@@ -105,7 +95,7 @@ export default defineNuxtConfig({
      * @see https://maz-ui.com/guide/theme
      */
     theme: {
-      preset: 'ocean', // 'ocean' | 'pristine' | 'obsidian' | 'maz-ui'
+      preset: 'maz-ui', // 'ocean' | 'pristine' | 'obsidian' | 'maz-ui'
     },
     /**
      * Translations configuration (optional if you are using english)
@@ -168,45 +158,6 @@ function handleClick() {
 ```
 
 :::
-
-## Why Choose Maz-UI?
-
-<div class="features-grid">
-
-### 🚀 **Performance First**
-
-- Tree-shaking reduces bundle size by up to 80%
-- Runtime optimizations
-- Minimal dependencies
-
-### 🎨 **Design Excellence**
-
-- Modern, clean aesthetics
-- Dark/Light mode support
-- Customizable themes
-- Consistent design tokens
-
-### 🌐 **Internationalization**
-
-- Internationalization support
-- Locale management
-- Tree-shakable imports
-- TypeScript support
-
-### 🛠️ **Developer Experience**
-
-- TypeScript-first approach
-- Comprehensive documentation
-- Auto-completion support
-
-<!-- ### ♿ **Accessibility Built-in**
-
-- WCAG 2.1 AA compliance
-- Keyboard navigation support
-- Screen reader optimized
-- Focus management -->
-
-</div>
 
 ## Smart Loading with resolvers <Badge text="Vue only" />
 
