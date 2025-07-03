@@ -45,9 +45,11 @@ export interface MazUiNuxtOptions {
    * Theme system configuration
    * @description If false, the theme system will be completely disabled
    * @default {
-   *   preset: 'mazUi',
+   *   preset: 'maz-ui',
    *   strategy: 'hybrid',
    *   darkModeStrategy: 'class',
+   *   prefix: 'maz',
+   *   colorMode: 'auto',
    * }
    */
   theme?: false | MazUiNuxtThemeOptions

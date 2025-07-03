@@ -73,7 +73,7 @@ export default {
       () => route.path,
       (path, oldPath) => {
         if (inBrowser && path !== oldPath) {
-          app.config.globalProperties.$aos.runAnimations()
+          app.config.globalProperties.$mazAos.runAnimations()
         }
       },
     )

@@ -1,6 +1,8 @@
-import type { ColorMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
+import type { ColorMode, Strategy, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
+import { isServer } from '@maz-ui/utils/utils/isServer'
 import { computed, getCurrentInstance, ref, watchEffect } from 'vue'
 import { inject } from 'vue'
+import { setCookie } from '../utils/cookie-storage'
 import { generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'
 import { getColorMode, getSystemPrefersDark } from '../utils/get-color-mode'
 import { getPreset } from '../utils/get-preset'
@@ -9,7 +11,7 @@ import { mergePresets } from '../utils/preset-merger'
 const state = ref<ThemeState>()
 
 function updateDocumentClass() {
-  if (typeof document === 'undefined' || !state.value)
+  if (typeof document === 'undefined' || !state.value || state.value.darkModeStrategy === 'media')
     return
 
   if (state.value.isDark) {
@@ -29,13 +31,14 @@ function updateGlobalProperties() {
 
 function initializeThemeFromData(themeData: ThemeState) {
   if (themeData.currentPreset && themeData.colorMode !== undefined) {
-    _initThemeState({
+    initThemeState({
       currentPreset: themeData.currentPreset,
       colorMode: themeData.colorMode,
       isDark: themeData.isDark,
       strategy: themeData.strategy,
       darkModeStrategy: themeData.darkModeStrategy,
     })
+
     return
   }
 
@@ -44,7 +47,7 @@ function initializeThemeFromData(themeData: ThemeState) {
     ? getSystemPrefersDark() === 'dark'
     : colorMode === 'dark'
 
-  _initThemeState({
+  initThemeState({
     currentPreset: themeData.currentPreset,
     colorMode,
     isDark,
@@ -53,23 +56,8 @@ function initializeThemeFromData(themeData: ThemeState) {
   })
 }
 
-export function _initThemeState(initialState: ThemeState) {
+export function initThemeState(initialState: ThemeState) {
   state.value = initialState
-
-  if (typeof localStorage !== 'undefined' && typeof window !== 'undefined') {
-    const savedMode = localStorage.getItem('maz-color-mode') as ColorMode | null
-
-    if (savedMode) {
-      state.value.colorMode = savedMode
-
-      if (savedMode === 'auto') {
-        state.value.isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      }
-      else {
-        state.value.isDark = savedMode === 'dark'
-      }
-    }
-  }
 
   if (typeof window !== 'undefined' && state.value.colorMode === 'auto') {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -92,15 +80,15 @@ export function _initThemeState(initialState: ThemeState) {
   })
 }
 
-const currentPreset = computed(() => state.value!.currentPreset)
+const currentPreset = computed(() => state.value?.currentPreset as ThemePreset)
 
 const colorMode = computed<ColorMode>({
-  get: () => state.value!.colorMode,
-  set: (mode: ColorMode) => setColorMode(mode),
+  get: () => state.value?.colorMode as ColorMode,
+  set: mode => setColorMode(mode),
 })
 
-const isDark = computed(() => state.value!.isDark)
-const strategy = computed(() => state.value!.strategy)
+const isDark = computed(() => state.value?.isDark ?? false)
+const strategy = computed(() => state.value?.strategy as Strategy)
 
 async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePresetName) {
   if (!state.value)
@@ -144,9 +132,7 @@ function setColorMode(mode: ColorMode) {
 
   updateDocumentClass()
 
-  if (typeof localStorage !== 'undefined') {
-    localStorage.setItem('maz-color-mode', mode)
-  }
+  setCookie('maz-color-mode', mode)
 }
 
 function toggleDarkMode() {
@@ -173,8 +159,15 @@ export function useTheme() {
     }
   }
 
-  if (!state.value && mazThemeState) {
-    initializeThemeFromData(mazThemeState)
+  if (mazThemeState) {
+    if (!state.value) {
+      initializeThemeFromData(mazThemeState)
+    }
+    else if (isServer()) {
+      state.value.colorMode = mazThemeState.colorMode
+      state.value.isDark = mazThemeState.isDark
+      state.value.currentPreset = mazThemeState.currentPreset
+    }
   }
 
   if (!state.value) {

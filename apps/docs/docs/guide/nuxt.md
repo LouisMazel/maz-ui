@@ -438,11 +438,3 @@ const { toggleDarkMode } = useTheme() // Will throw in SSR
 </script>
 ```
 
-Ces corrections résolvent le problème de lifecycle en :
-
-1. **Corrigeant le bug d'injection** dans le composable useTheme
-2. **Améliorant l'exposition du theme state** dans le plugin Nuxt
-3. **Gérant correctement le SSR** dans le wrapper Nuxt du composable
-4. **Activant useTheme par défaut** dans le module
-
-Le système devrait maintenant fonctionner correctement avec Nuxt !

@@ -340,6 +340,7 @@ function updatePosition() {
     position: 'absolute',
     top: `${coordinates.top}px`,
     left: `${coordinates.left}px`,
+    visibility: 'visible',
   }
 
   computedPosition.value = newPosition
@@ -894,7 +895,7 @@ defineExpose({
 }
 
 .m-popover-panel {
-  @apply maz-absolute maz-outline-none maz-z-20 maz-rounded maz-drop-shadow-md maz-shadow-elevation;
+  @apply maz-absolute maz-invisible maz-outline-none maz-z-20 maz-rounded maz-drop-shadow-md maz-shadow-elevation;
 
   /* Default color */
   &.--default {

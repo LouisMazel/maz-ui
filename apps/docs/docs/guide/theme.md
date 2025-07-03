@@ -72,7 +72,7 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
         <MazBtn color="success">Success Button</MazBtn>
         <MazBtn color="warning">Warning Button</MazBtn>
       </div>
-      <MazInput />
+      <MazInput placeholder="Input placeholder" color="primary" />
       <div class="theme-controls maz-space-y-4">
         <div class="maz-flex maz-items-center maz-gap-4">
           <label class="maz-text-sm maz-font-medium">Mode:</label>

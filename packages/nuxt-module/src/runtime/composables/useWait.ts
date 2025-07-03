@@ -2,7 +2,7 @@ import type { WaitHandler } from 'maz-ui/plugins/wait'
 import { useNuxtApp } from 'nuxt/app'
 
 export function useWait(): WaitHandler {
-  const { $wait } = useNuxtApp()
+  const { $mazWait } = useNuxtApp()
 
-  return $wait
+  return $mazWait
 }

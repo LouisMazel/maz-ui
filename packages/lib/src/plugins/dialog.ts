@@ -5,10 +5,10 @@ import { DialogHandler } from './dialog/DialogHandler'
 export const DialogPlugin = {
   install(app: App, options?: DialogOptions) {
     const dialogHandler = new DialogHandler(app, options)
-    app.provide('dialog', dialogHandler)
+    app.provide('mazDialog', dialogHandler)
 
     // Créez un wrapper sans référence circulaire
-    app.config.globalProperties.$dialog = {
+    app.config.globalProperties.$mazDialog = {
       open: dialogHandler.open.bind(dialogHandler),
       globalOptions: dialogHandler.globalOptions,
     }
@@ -34,7 +34,7 @@ declare module '@vue/runtime-core' {
      *   message: 'This is a dialog',
      * })
      */
-    $dialog: Omit<DialogHandler, 'app'>
+    $mazDialog: Omit<DialogHandler, 'app'>
   }
 }
 

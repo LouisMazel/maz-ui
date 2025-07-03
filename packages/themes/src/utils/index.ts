@@ -1,4 +1,5 @@
 export * from './color-utils'
+export * from './cookie-storage'
 export * from './css-generator'
 export * from './get-preset'
 export * from './preset-merger'

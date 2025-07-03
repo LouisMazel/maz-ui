@@ -22,7 +22,7 @@ type PhoneInputProps = Omit<MazInputProps, 'modelValue'> & {
 const { placeholder, label, example, locales, autoFormat, name, inputmode, autocomplete } = defineProps<PhoneInputProps>()
 
 const { getPhoneNumberExample, getAsYouTypeFormat, loadExamples } = useLibphonenumber()
-const { results, selectedCountry } = useInjectStrict<MazInputPhoneNumberInjectedData>('data')
+const { results, selectedCountry } = useInjectStrict<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData')
 
 const modelValue = defineModel<string | undefined | null>()
 

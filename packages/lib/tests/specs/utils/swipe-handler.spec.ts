@@ -1,4 +1,4 @@
-import type { SwipeOptions } from '@utils/swipeHandler'
+import type { SwipeOptions } from '@utils/swipe-handler'
 import { Swipe } from '@utils/swipeHandler'
 
 describe('given Swipe class', () => {

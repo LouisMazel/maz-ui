@@ -77,7 +77,13 @@
     "typecheck": "vue-tsc --noEmit",
     "lint": "eslint . --fix",
     "lint:check": "eslint .",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "test": "vitest",
+    "test:unit": "vitest",
+    "test:unit:watch": "vitest watch",
+    "test:unit:coverage": "vitest run --coverage",
+    "test:unit:coverage:watch": "vitest watch --coverage",
+    "test:unit:coverage:master": "vitest run --coverage --changed master"
   },
   "peerDependencies": {
     "vue": "^3.5.0"

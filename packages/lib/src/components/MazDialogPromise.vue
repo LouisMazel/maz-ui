@@ -1,15 +1,15 @@
 <script lang="ts">
 export { useMazDialogPromise } from './MazDialogPromise/useMazDialogPromise'
-export type * from './MazDialogPromise/useMazDialogPromise'
+export type { MazDialogPromiseButton, MazDialogPromiseData } from './MazDialogPromise/useMazDialogPromise'
 </script>
 
 <script lang="ts" setup>
 import type { MazDialogProps } from './MazDialog.vue'
 import type {
-  MazDialogCustomButton,
-  MazDialogData,
   MazDialogPromiseButton,
-  MazDialogState,
+  MazDialogPromiseData,
+  PromiseButton,
+  State,
 } from './MazDialogPromise/useMazDialogPromise'
 import { type ComponentPublicInstance, defineAsyncComponent } from 'vue'
 import { computed, ref } from 'vue'
@@ -19,19 +19,29 @@ import MazDialog from './MazDialog.vue'
 import { defaultData, useMazDialogPromise } from './MazDialogPromise/useMazDialogPromise'
 
 export interface MazDialogPromiseInternalProps {
-  /** Dialog Data - @type DialogData */
-  data?: MazDialogData
-  /** Message to display */
-  message?: string
-  /** Uniq identifier */
+  /**
+   * Uniq identifier of the dialog
+   * @description This is used to identify the dialog in the state
+   */
   identifier: string
-  /** Custom buttons - @type DialogCustomButton[] */
-  buttons?: MazDialogCustomButton[]
+  /**
+   * Dialog title displayed in the header
+   */
+  title?: string
+  /**
+   * Dialog message displayed in the body
+   */
+  message?: string
+  /**
+   * Buttons to display in the footer
+   * @default [{ text: 'Confirm', color: 'success', type: 'resolve' }, { text: 'Cancel', color: 'destructive', type: 'reject' }]
+   */
+  buttons?: MazDialogPromiseButton[]
 }
 
-export type MazDialogPromiseProps = MazDialogPromiseInternalProps & MazDialogProps & MazDialogData
+export type MazDialogPromiseProps = MazDialogPromiseInternalProps & MazDialogPromiseData & MazDialogProps
 
-const { identifier, message, data, buttons, cancelText, confirmText } = defineProps<MazDialogPromiseProps>()
+const { identifier, message, buttons, title, ...dialogProps } = defineProps<MazDialogPromiseProps>()
 
 defineEmits<{
   /** emitted when modal is open */
@@ -44,53 +54,15 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 const { dialogState, rejectDialog, resolveDialog, data: composableData } = useMazDialogPromise()
 
-const customButtons = computed(() => buttons ?? data?.buttons ?? composableData.value.buttons)
-
-const currentData = computed<MazDialogData>(() => ({
+const currentData = computed<MazDialogPromiseData>(() => ({
   ...defaultData,
   ...composableData.value,
-  ...data,
 }))
 
-const cancelButtonData = computed(() => {
-  const hasButton
-      = composableData.value?.cancelButton ?? data?.cancelButton ?? defaultData.cancelButton
-
-  if (!hasButton)
-    return
-
-  const mergedData = {
-    ...defaultData.cancelButton,
-    ...composableData.value?.cancelButton,
-    ...data?.cancelButton,
-  }
-
-  return {
-    ...mergedData,
-    text: cancelText || currentData.value.cancelText || mergedData.text,
-  }
-})
-const confirmButtonData = computed(() => {
-  const hasButton
-      = composableData.value?.confirmButton ?? data?.confirmButton ?? defaultData.confirmButton
-
-  if (!hasButton)
-    return
-
-  const mergedData = {
-    ...defaultData.confirmButton,
-    ...composableData.value?.confirmButton,
-    ...data?.confirmButton,
-  }
-
-  return {
-    ...mergedData,
-    text: confirmText || currentData.value.confirmText || mergedData.text,
-  }
-})
+const currentButtons = computed(() => buttons ?? currentData.value.buttons)
 
 const currentModal = computed(
-  () => dialogState.value.find(({ id }) => id === identifier) as MazDialogState,
+  () => dialogState.value.find(({ id }) => id === identifier) as State,
 )
 
 const dialog = ref<ComponentPublicInstance<typeof MazDialog>>()
@@ -99,11 +71,11 @@ defineExpose({
   close: () => dialog.value?.close?.(),
 })
 
-function isPromiseButton(button: MazDialogCustomButton): button is MazDialogPromiseButton {
+function isPromiseButton(button: MazDialogPromiseButton): button is PromiseButton {
   return 'type' in button && (button.type === 'resolve' || button.type === 'reject')
 }
 
-function customButtonAction(currentModal: MazDialogState, button: MazDialogCustomButton) {
+function buttonClick(currentModal: State, button: MazDialogPromiseButton) {
   if (isPromiseButton(button)) {
     return button.type === 'resolve'
       ? resolveDialog(currentModal, button.response)
@@ -117,7 +89,7 @@ function customButtonAction(currentModal: MazDialogState, button: MazDialogCusto
 <template>
   <MazDialog
     ref="dialog"
-    v-bind="{ ...$attrs, ...$props }"
+    v-bind="{ ...$attrs, ...dialogProps }"
     :model-value="currentModal?.isActive ?? modelValue ?? false"
     @close="$emit('close', $event)"
     @open="$emit('open', $event)"
@@ -156,44 +128,18 @@ function customButtonAction(currentModal: MazDialogState, button: MazDialogCusto
         name="footer-button"
       >
         <div class="maz-flex maz-items-center maz-gap-2">
-          <template v-if="customButtons">
+          <template v-if="currentButtons">
             <MazBtn
-              v-for="(button, i) in customButtons"
+              v-for="(button, i) in currentButtons"
               :key="i"
               v-bind="{
                 ...button,
+                onClick: undefined,
                 type: 'button',
               }"
-              @click="customButtonAction(currentModal, button)"
+              @click="buttonClick(currentModal, button)"
             >
               {{ button.text }}
-            </MazBtn>
-          </template>
-          <template v-else>
-            <MazBtn
-              v-if="cancelButtonData"
-              v-bind="cancelButtonData"
-              @click="rejectDialog(currentModal)"
-            >
-              <!--
-                @slot cancel-text slot - Place your cancel text
-              -->
-              <slot name="cancel-text">
-                {{ cancelButtonData.text }}
-              </slot>
-            </MazBtn>
-
-            <MazBtn
-              v-if="confirmButtonData"
-              v-bind="confirmButtonData"
-              @click="resolveDialog(currentModal)"
-            >
-              <!--
-                @slot confirm-text slot - Place your confirm text
-              -->
-              <slot name="confirm-text">
-                {{ confirmButtonData.text }}
-              </slot>
             </MazBtn>
           </template>
         </div>
