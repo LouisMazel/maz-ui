@@ -168,8 +168,8 @@ export const AosPlugin = {
   install: (app: App, options?: AosOptions) => {
     instance = new AosHandler(options)
 
-    app.provide('aos', instance)
-    app.config.globalProperties.$aos = instance
+    app.provide('mazAos', instance)
+    app.config.globalProperties.$mazAos = instance
 
     if (!isClient()) {
       return
@@ -201,7 +201,7 @@ declare module '@vue/runtime-core' {
      * const aos = useAos()
      * aos.runAnimations()
      */
-    $aos: AosHandler
+    $mazAos: AosHandler
   }
 }
 

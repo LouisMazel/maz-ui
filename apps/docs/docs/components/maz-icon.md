@@ -1,17 +1,15 @@
 ---
 title: MazIcon
-description: MazBtn is a standalone component to load your svg icons
+description: MazIcon is a standalone component to load your svg files
 ---
 
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
 
-Basically, this component will render your SVG from your project.
-
-The component will fetch the SVG from the `public` folder and parse it to render it.
-
-Place your SVG files in a public folder (default `/icons`, use `path` prop to change it)
+- Basically, this component will render your SVG from your project.
+- The component will fetch the SVG from the `public` folder and parse it to render it.
+- Place your SVG files in a public folder (default `/icons`, use `path` prop to change it)
 
 ## Get Icons Pack
 
@@ -36,7 +34,8 @@ const iconNames = [
   'archive-box-arrow-down',
   'archive-box-x-mark',
   'archive-box',
-  ...'window',
+  ...
+  'window',
   'wrench-screwdriver',
   'wrench',
   'x-circle',

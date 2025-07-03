@@ -2,5 +2,5 @@ import type { DialogHandler } from '../plugins/dialog/DialogHandler'
 import { useInjectStrict } from '../composables/useInjectStrict'
 
 export function useDialog() {
-  return useInjectStrict<DialogHandler>('dialog')
+  return useInjectStrict<DialogHandler>('mazDialog')
 }

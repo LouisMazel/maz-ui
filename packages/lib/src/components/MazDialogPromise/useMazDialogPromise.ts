@@ -1,34 +1,28 @@
 import type { Ref } from 'vue'
 import type { MazBtnProps } from '../MazBtn.vue'
-import type { MazSize } from '../types'
 import { ref } from 'vue'
 
-export interface MazDialogState {
+export interface State {
   id: string
   isActive: boolean
   resolve: (value: unknown) => void
   reject?: (reason?: unknown) => void
 }
 
-export interface MazDialogButton extends MazBtnProps {
-  text?: string
-  size?: MazSize
-}
-
-export interface MazDialogActionButton {
+export interface ActionButton extends Omit<MazBtnProps, 'type'> {
   text: string
   onClick: () => unknown
 }
 
-export interface MazDialogPromiseButton {
+export interface PromiseButton extends Omit<MazBtnProps, 'type'> {
   text: string
   type: 'resolve' | 'reject'
   response?: unknown
 }
 
-export type MazDialogCustomButton = Omit<MazDialogButton, 'type'> & (MazDialogPromiseButton | MazDialogActionButton)
+export type MazDialogPromiseButton = PromiseButton | ActionButton
 
-export interface MazDialogData {
+export interface MazDialogPromiseData {
   /**
    * Dialog title
    */
@@ -38,47 +32,26 @@ export interface MazDialogData {
    */
   message?: string
   /**
-   * Dialog cancel text
-   * @default 'Cancel'
-   */
-  cancelText?: string
-  /**
-   * Dialog cancel button
-   * @default { text: 'Cancel', color: 'destructive', outlined: true }`
-   */
-  cancelButton?: false | MazDialogButton
-  /**
-   * Dialog confirm text
-   * @default 'Confirm'
-   */
-  confirmText?: string
-  /**
-   * Dialog confirm button
-   * @default { text: 'Confirm', color: 'success' }
-   */
-  confirmButton?: false | MazDialogButton
-  /**
    * This is a list of custom buttons that will replace the default confirm and cancel buttons
    */
-  buttons?: MazDialogCustomButton[]
+  buttons?: MazDialogPromiseButton[]
 }
 
 export const defaultData = {
-  cancelText: 'Cancel',
-  confirmText: 'Confirm',
-  cancelButton: {
-    text: 'Cancel',
-    color: 'destructive',
-  },
-  confirmButton: {
+  buttons: [{
     text: 'Confirm',
     color: 'success',
-  },
-} satisfies MazDialogData
+    type: 'resolve',
+  }, {
+    text: 'Cancel',
+    color: 'destructive',
+    type: 'reject',
+  }],
+} satisfies MazDialogPromiseData
 
-const data = ref(defaultData) as Ref<MazDialogData>
+const data = ref(defaultData) as Ref<MazDialogPromiseData>
 
-const dialogState = ref<MazDialogState[]>([]) as Ref<MazDialogState[]>
+const dialogState = ref<State[]>([]) as Ref<State[]>
 
 function showDialogAndWaitChoice(identifier: string, callback?: () => unknown) {
   return new Promise((resolve, reject) => {
@@ -105,7 +78,7 @@ function removeDialogFromState(identifier: string) {
   return dialogState.value
 }
 
-function responseDialog(type: 'resolve' | 'reject', currentDialog: MazDialogState, response: unknown) {
+function responseDialog(type: 'resolve' | 'reject', currentDialog: State, response: unknown) {
   if (!currentDialog) {
     return
   }
@@ -124,11 +97,11 @@ export function useMazDialogPromise() {
     dialogState,
     showDialogAndWaitChoice,
     removeDialogFromState,
-    rejectDialog: async (currentDialog: MazDialogState, response: unknown = new Error('cancel'), onClick?: () => unknown) => {
+    rejectDialog: async (currentDialog: State, response: unknown = new Error('cancel'), onClick?: () => unknown) => {
       await onClick?.()
       return responseDialog('reject', currentDialog, response)
     },
-    resolveDialog: async (currentDialog: MazDialogState, response: unknown = 'accept', onClick?: () => unknown) => {
+    resolveDialog: async (currentDialog: State, response: unknown = 'accept', onClick?: () => unknown) => {
       await onClick?.()
       return responseDialog('resolve', currentDialog, response)
     },

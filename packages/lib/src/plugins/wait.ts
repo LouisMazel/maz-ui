@@ -1,7 +1,31 @@
 import type { Plugin } from 'vue'
-import type { LoaderId } from './wait/utils'
 import { computed, ref } from 'vue'
-import { contains, DEFAULT_LOADER, hasItems, pop, push } from './wait/utils'
+
+type LoaderId = string | symbol | number
+
+const DEFAULT_LOADER: LoaderId = 'maz-wait-default-loader'
+
+function uniq(array: LoaderId[]) {
+  return array.filter((el, index, arr) => index === arr.indexOf(el))
+}
+
+function contains(array: Array<LoaderId>) {
+  return (predicate: LoaderId = DEFAULT_LOADER) => {
+    return array.includes(predicate)
+  }
+}
+
+const hasItems = (array: LoaderId[]) => array.length > 0
+
+function push(array: LoaderId[]) {
+  return (item: LoaderId = DEFAULT_LOADER) =>
+    uniq([...array, item])
+}
+
+function pop(array: LoaderId[]) {
+  return (item: LoaderId = DEFAULT_LOADER) =>
+    array.filter(_item => _item !== item)
+}
 
 export class WaitHandler {
   private _loaders = ref<LoaderId[]>([])
@@ -34,8 +58,8 @@ export const waitInstance = new WaitHandler()
 
 export const WaitPlugin: Plugin = {
   install: (app) => {
-    app.provide('wait', waitInstance)
-    app.config.globalProperties.$wait = waitInstance
+    app.provide('mazWait', waitInstance)
+    app.config.globalProperties.$mazWait = waitInstance
   },
 }
 
@@ -56,6 +80,6 @@ declare module '@vue/runtime-core' {
      * wait.start()
      * ```
      */
-    $wait: WaitHandler
+    $mazWait: WaitHandler
   }
 }

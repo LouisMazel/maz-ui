@@ -974,7 +974,7 @@ app.use(MazUi, {
   translations: {
     locale: 'en', // Start with English
     messages: {
-      // English (default - you don't need to provide this)
+      // English (default - you don't need to provide this unless you want to override the default translations)
       en: {
         inputPhoneNumber: {
           countrySelect: {

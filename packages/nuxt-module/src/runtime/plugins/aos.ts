@@ -13,13 +13,13 @@ export default defineNuxtPlugin(({ $config, vueApp }) => {
 
   return {
     provide: {
-      aos: new AosHandler(options),
+      mazAos: new AosHandler(options),
     },
   }
 })
 
 declare module '#app' {
   interface NuxtApp {
-    $aos: AosHandler
+    $mazAos: AosHandler
   }
 }

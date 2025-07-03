@@ -26,7 +26,7 @@ function getEntries(pattern: string) {
 
 const entries = Object.fromEntries(
   glob.sync('src/**/*.ts', {
-    ignore: ['**/*/index.ts', '**/*/types.ts'],
+    ignore: ['**/*/index.ts', '**/*/types.ts', '**/*/__tests__/**/*', '**/*/*.spec.ts', '**/*/*.test.ts'],
   })
     .map(getEntries),
 )
@@ -38,6 +38,7 @@ export default defineConfig({
       tsconfigPath: resolver('./tsconfig.json'),
       entryRoot: resolver('src'),
       outDir: resolver('dist/types'),
+      exclude: ['src/**/__tests__/**/*', 'src/**/*.spec.ts', 'src/**/*.test.ts'],
       include: ['src/**/*.ts'],
     }),
   ],

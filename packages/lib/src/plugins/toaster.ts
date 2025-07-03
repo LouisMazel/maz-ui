@@ -5,8 +5,8 @@ import { ToasterHandler } from './toaster/ToasterHandler'
 export const ToasterPlugin = {
   install(app: App, options?: ToasterOptions) {
     const toasterHandler = new ToasterHandler(app, options)
-    app.provide('toast', toasterHandler)
-    app.config.globalProperties.$toast = toasterHandler
+    app.provide('mazToast', toasterHandler)
+    app.config.globalProperties.$mazToast = toasterHandler
   },
 }
 
@@ -26,7 +26,7 @@ declare module '@vue/runtime-core' {
      * const toast = useToast()
      * toast.success('Hello, world!')
      */
-    $toast: ToasterHandler
+    $mazToast: ToasterHandler
   }
 }
 

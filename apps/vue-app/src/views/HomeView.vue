@@ -46,13 +46,27 @@ const selectedCountry = ref()
 </script>
 
 <template>
-  <div id="home" class="maz-flex maz-h-screen maz-flex-col maz-items-center maz-justify-center">
+  <div id="home" class="maz-flex maz-flex-col maz-items-center maz-justify-center">
     <MazBtn @click="showToast">
       Show toast
     </MazBtn>
     <MazBtn v-tooltip="{ text: 'Hello, world!' }" @click="changeLocale">
       Changer locale ({{ locale }})
     </MazBtn>
+
+    <MazPopover position="top">
+      <template #trigger>
+        <MazBtn color="secondary">
+          Hello
+        </MazBtn>
+      </template>
+
+      <template #default>
+        <div class="maz-p-4">
+          Hello
+        </div>
+      </template>
+    </MazPopover>
 
     <MazSelectCountry
       v-model="selectedCountry"
