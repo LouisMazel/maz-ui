@@ -9,23 +9,23 @@ export default defineNuxtPlugin(({ vueApp, $config }) => {
   const instance = new ToasterHandler(vueApp, options)
 
   const toasterServer = {
-    show: (message: string) => console.log('[SSR] Toast:', message),
-    success: (message: string) => console.log('[SSR] Success:', message),
-    error: (message: string) => console.log('[SSR] Error:', message),
-    warning: (message: string) => console.log('[SSR] Warning:', message),
-    info: (message: string) => console.log('[SSR] Info:', message),
-    message: (message: string) => console.log('[SSR] Message:', message),
+    show: (_message: string) => {},
+    success: (_message: string) => {},
+    error: (_message: string) => {},
+    warning: (_message: string) => {},
+    info: (_message: string) => {},
+    message: (_message: string) => {},
   } as unknown as ToasterHandler
 
   return {
     provide: {
-      toast: import.meta.server ? toasterServer : instance,
+      mazToast: import.meta.server ? toasterServer : instance,
     },
   }
 })
 
 declare module '#app' {
   interface NuxtApp {
-    $toast: ToasterHandler
+    $mazToast: ToasterHandler
   }
 }

@@ -33,7 +33,19 @@ const emits = defineEmits<{
 
 const MODAL_OPENED_CLASS = '--backdrop-present'
 
+function getScrollbarWidth() {
+  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+  return scrollbarWidth
+}
+
 function addClassToDocument() {
+  const scrollbarWidth = getScrollbarWidth()
+
+  if (scrollbarWidth > 0) {
+    document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
+    document.documentElement.classList.add('--has-scrollbar')
+  }
+
   document.documentElement.classList.add(MODAL_OPENED_CLASS)
 }
 
@@ -42,6 +54,8 @@ function removeClassFromDocument() {
 
   if (!backdropPresents) {
     document.documentElement.classList.remove(MODAL_OPENED_CLASS)
+    document.documentElement.classList.remove('--has-scrollbar')
+    document.documentElement.style.removeProperty('--scrollbar-width')
   }
 }
 
@@ -214,6 +228,10 @@ defineExpose({
 html.--backdrop-present {
   overflow-y: hidden;
   height: 100vh !important;
+}
+
+html.--backdrop-present.--has-scrollbar {
+  padding-right: var(--scrollbar-width);
 }
 </style>
 

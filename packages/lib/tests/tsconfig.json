@@ -10,7 +10,8 @@
       "@directives/*": ["./../src/directives/*"],
       "@icons/*": ["./../src/icons/*"],
       "@plugins/*": ["./../src/plugins/*"],
-      "@resolvers/*": ["./../src/resolvers/*"]
+      "@resolvers/*": ["./../src/resolvers/*"],
+      "@utils/*": ["./../src/utils/*"]
     },
     "types": ["@types/node", "vite-svg-loader", "vitest/globals", "vue"]
   },

@@ -35,7 +35,7 @@ export type { MazDatePickerPartialRangeValue, MazDatePickerProps, MazDatePickerR
 export { default as MazDialog } from './MazDialog.vue'
 export type { MazDialogProps } from './MazDialog.vue'
 export { default as MazDialogPromise, useMazDialogPromise } from './MazDialogPromise.vue'
-export type { MazDialogActionButton, MazDialogButton, MazDialogCustomButton, MazDialogData, MazDialogPromiseButton, MazDialogPromiseProps, MazDialogState } from './MazDialogPromise.vue'
+export type { MazDialogPromiseButton, MazDialogPromiseData, MazDialogPromiseProps } from './MazDialogPromise.vue'
 export { default as MazDrawer } from './MazDrawer.vue'
 export type { MazDrawerProps } from './MazDrawer.vue'
 export { default as MazDropdown } from './MazDropdown.vue'

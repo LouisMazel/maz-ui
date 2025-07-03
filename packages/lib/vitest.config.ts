@@ -59,6 +59,7 @@ export default defineConfig({
       '@icons': fileURLToPath(new URL('src/icons', import.meta.url)),
       '@plugins': fileURLToPath(new URL('src/plugins', import.meta.url)),
       '@resolvers': fileURLToPath(new URL('src/resolvers', import.meta.url)),
+      '@utils': fileURLToPath(new URL('src/utils', import.meta.url)),
       '@tests': fileURLToPath(new URL('tests', import.meta.url)),
     },
   },

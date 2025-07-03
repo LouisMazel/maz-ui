@@ -22,7 +22,7 @@
           <MazDropdown
             id="dropdown"
             color="transparent"
-            prefer-position="bottom"
+            prefer-position="bottom-end"
             trigger="hover"
           >
             <span class="maz-capitalize">
@@ -52,6 +52,27 @@
                 >
                   Light
                 </MazBtn>
+                <MazBtn
+                  color="transparent"
+                  class="maz-text-nowrap"
+                  @click="updateTheme('maz-ui')"
+                >
+                  Maz-UI
+                </MazBtn>
+                <MazBtn
+                  color="transparent"
+                  class="maz-text-nowrap"
+                  @click="updateTheme('ocean')"
+                >
+                  Ocean
+                </MazBtn>
+                <MazBtn
+                  color="transparent"
+                  class="maz-text-nowrap"
+                  @click="updateTheme('obsidian')"
+                >
+                  Obsidian
+                </MazBtn>
               </div>
             </template>
           </MazDropdown>
@@ -59,6 +80,10 @@
       </header>
 
       <div class="content">
+        {{ isDark }}
+        {{ colorMode }}
+        {{ currentPreset }}
+        {{ strategy }}
         <slot />
       </div>
     </main>
@@ -72,7 +97,7 @@ function action() {
   return sleep(20000)
 }
 
-const { colorMode } = useTheme()
+const { colorMode, updateTheme, isDark, currentPreset, strategy } = useTheme()
 </script>
 
 <style lang="postcss">

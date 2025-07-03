@@ -20,13 +20,13 @@ export default defineNuxtPlugin(({ vueApp, $config }) => {
 
   return {
     provide: {
-      dialog: import.meta.server ? dialogServer : instance,
+      mazDialog: import.meta.server ? dialogServer : instance,
     },
   }
 })
 
 declare module '#app' {
   interface NuxtApp {
-    $dialog: DialogHandler
+    $mazDialog: DialogHandler
   }
 }

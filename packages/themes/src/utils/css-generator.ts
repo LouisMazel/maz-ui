@@ -22,7 +22,7 @@ export interface CriticalCSSOptions {
 
 export interface FullCSSOptions {
   /** Critical variables to exclude (to avoid duplication) */
-  excludeCritical?: (keyof ThemeColors)[]
+  excludeCritical?: (keyof ThemeColors | keyof ThemeFoundation)[]
   /** Theme mode to generate */
   mode?: ThemeMode
   /** Dark mode selector: 'class' (.dark) | 'media' (@media) */
@@ -38,13 +38,30 @@ const DEFAULT_CRITICAL_COLORS: (keyof ThemeColors)[] = [
   'background',
   'foreground',
   'primary',
+  'primary-foreground',
   'secondary',
+  'secondary-foreground',
+  'accent',
+  'accent-foreground',
+  'destructive',
+  'destructive-foreground',
+  'success',
+  'success-foreground',
+  'warning',
+  'warning-foreground',
+  'info',
+  'info-foreground',
+  'contrast',
+  'contrast-foreground',
+  'muted',
+  'shadow',
   'border',
 ]
 
 const DEFAULT_CRITICAL_FOUNDATION: (keyof ThemeFoundation)[] = [
   'radius',
   'font-family',
+  'base-font-size',
   'border-width',
 ]
 
@@ -192,7 +209,7 @@ function extractCriticalFoundation(
  */
 function excludeVariables(
   colors: ThemeColors,
-  excludeKeys: (keyof ThemeColors)[],
+  excludeKeys: (keyof ThemeColors | keyof ThemeFoundation)[],
 ): Partial<ThemeColors> {
   return Object.fromEntries(
     Object.entries(colors).filter(([key]) => !excludeKeys.includes(key as keyof ThemeColors)),

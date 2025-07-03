@@ -107,11 +107,10 @@ export const MazUiTheme = {
     } satisfies MazUiThemeOptions
 
     const colorMode = getColorMode(config.colorMode)
+
     const isDark = colorMode === 'auto'
       ? getSystemPrefersDark() === 'dark'
       : colorMode === 'dark'
-
-    applyDarkMode(config.darkModeStrategy, isDark)
 
     const themeState = reactive<ThemeState>({
       // @ts-expect-error - empty currentPreset to avoid error
@@ -121,6 +120,8 @@ export const MazUiTheme = {
       strategy: config.strategy,
       darkModeStrategy: config.darkModeStrategy,
     })
+
+    applyDarkMode(config.darkModeStrategy, themeState.isDark)
 
     injectThemeState(app, themeState)
 

@@ -38,7 +38,6 @@ function getServerIsDark(colorMode: ColorMode): boolean {
   if (colorMode === 'dark') return true
   if (colorMode === 'light') return false
 
-  // Pour 'auto', on assume light côté serveur par défaut
   return false
 }
 
@@ -59,26 +58,25 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     strategy: 'hybrid',
     darkModeStrategy: 'class',
     prefix: 'maz',
-    injectCriticalCSS: false,
-    injectFullCSS: true,
+    colorMode: 'auto',
+    injectFullCSSOnServer: true,
     ...themeConfig,
     preset,
   } satisfies MazUiThemeOptions
 
+  const initialColorMode = config.colorMode === 'auto' ? getServerInitialColorMode() : config.colorMode ?? 'auto'
+  const serverIsDark = getServerIsDark(initialColorMode)
+  const initialIsDark = initialColorMode === 'dark' || (initialColorMode === 'auto' && serverIsDark)
+
+  const themeState = {
+    currentPreset: config.preset,
+    colorMode: initialColorMode,
+    isDark: initialIsDark,
+    strategy: config.strategy,
+    darkModeStrategy: config.darkModeStrategy,
+  } satisfies ThemeState
+
   if (import.meta.server) {
-    const initialColorMode = config.colorMode === 'auto' ? getServerInitialColorMode() : config.colorMode ?? 'auto'
-    const serverIsDark = getServerIsDark(initialColorMode)
-    const initialIsDark
-      = initialColorMode === 'dark' || (initialColorMode === 'auto' && serverIsDark)
-
-    const themeState = {
-      currentPreset: config.preset,
-      colorMode: initialColorMode,
-      isDark: initialIsDark,
-      strategy: config.strategy,
-      darkModeStrategy: config.darkModeStrategy,
-    } satisfies ThemeState
-
     const cssOptions: CriticalCSSOptions = {
       mode: 'both',
       darkSelectorStrategy: config.darkModeStrategy === 'media' ? 'media' : 'class',
@@ -115,6 +113,12 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
 
   MazUiTheme.install(vueApp, {
     ...config,
+
+    preset: themeState.currentPreset,
+    colorMode: themeState.colorMode,
+    strategy: themeState.strategy,
+    darkModeStrategy: themeState.darkModeStrategy,
+
     injectFullCSS: !config.injectFullCSSOnServer,
     injectCriticalCSS: false,
   })

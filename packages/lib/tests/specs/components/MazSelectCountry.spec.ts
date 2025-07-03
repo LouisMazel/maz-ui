@@ -1,20 +1,20 @@
-import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { describe, expect, it, vi } from 'vitest'
 import MazSelectCountry from '@/components/MazSelectCountry.vue'
 
 vi.mock('@maz-ui/translations/src/useTranslations.js', () => ({
   useTranslations: () => ({
     t: (key: string) => key,
-    locale: { value: 'en-US' }
-  })
+    locale: { value: 'en-US' },
+  }),
 }))
 
 vi.mock('@maz-ui/utils/src/utils/getBrowserLocale.js', () => ({
-  getBrowserLocale: () => 'en-US'
+  getBrowserLocale: () => 'en-US',
 }))
 
 vi.mock('@maz-ui/utils/src/utils/getCountryFlagUrl.js', () => ({
-  getCountryFlagUrl: (code: string) => `https://flagcdn.com/h20/${code.toLowerCase()}.png`
+  getCountryFlagUrl: (code: string) => `https://flagcdn.com/h20/${code.toLowerCase()}.png`,
 }))
 
 vi.mock('../composables/useDisplayNames', () => ({
@@ -23,13 +23,13 @@ vi.mock('../composables/useDisplayNames', () => ({
       value: [
         { code: 'FR', name: 'France' },
         { code: 'US', name: 'United States' },
-        { code: 'DE', name: 'Germany' }
-      ]
-    })
-  })
+        { code: 'DE', name: 'Germany' },
+      ],
+    }),
+  }),
 }))
 
-describe('MazSelectCountry', () => {
+describe('mazSelectCountry', () => {
   it('renders component with default props', () => {
     const wrapper = mount(MazSelectCountry)
     expect(wrapper.find('.m-select-country').exists()).toBe(true)
@@ -40,8 +40,8 @@ describe('MazSelectCountry', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
         class: 'custom-class',
-        style: 'width: 300px;'
-      }
+        style: 'width: 300px;',
+      },
     })
     expect(wrapper.classes()).toContain('custom-class')
     expect(wrapper.attributes('style')).toBe('width: 300px;')
@@ -56,8 +56,8 @@ describe('MazSelectCountry', () => {
   it('renders with custom color', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        color: 'secondary'
-      }
+        color: 'secondary',
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('color')).toBe('secondary')
@@ -72,8 +72,8 @@ describe('MazSelectCountry', () => {
   it('renders with custom size', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        size: 'lg'
-      }
+        size: 'lg',
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('size')).toBe('lg')
@@ -88,8 +88,8 @@ describe('MazSelectCountry', () => {
   it('renders with search disabled', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        search: false
-      }
+        search: false,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('search')).toBe(false)
@@ -98,8 +98,8 @@ describe('MazSelectCountry', () => {
   it('renders with label', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        label: 'Select Country'
-      }
+        label: 'Select Country',
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('label')).toBe('Select Country')
@@ -108,8 +108,8 @@ describe('MazSelectCountry', () => {
   it('renders with placeholder', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        placeholder: 'Choose a country'
-      }
+        placeholder: 'Choose a country',
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('placeholder')).toBe('Choose a country')
@@ -118,8 +118,8 @@ describe('MazSelectCountry', () => {
   it('renders with hint', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        hint: 'Select your country'
-      }
+        hint: 'Select your country',
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.attributes('hint')).toBe('Select your country')
@@ -128,8 +128,8 @@ describe('MazSelectCountry', () => {
   it('renders with error state', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        error: true
-      }
+        error: true,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('error')).toBe(true)
@@ -138,8 +138,8 @@ describe('MazSelectCountry', () => {
   it('renders with warning state', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        warning: true
-      }
+        warning: true,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('warning')).toBe(true)
@@ -148,8 +148,8 @@ describe('MazSelectCountry', () => {
   it('renders with success state', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        success: true
-      }
+        success: true,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('success')).toBe(true)
@@ -158,8 +158,8 @@ describe('MazSelectCountry', () => {
   it('renders with disabled state', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        disabled: true
-      }
+        disabled: true,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('disabled')).toBe(true)
@@ -168,8 +168,8 @@ describe('MazSelectCountry', () => {
   it('renders with required state', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        required: true
-      }
+        required: true,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('required')).toBe(true)
@@ -178,8 +178,8 @@ describe('MazSelectCountry', () => {
   it('renders with block layout', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        block: true
-      }
+        block: true,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('block')).toBe(true)
@@ -188,8 +188,8 @@ describe('MazSelectCountry', () => {
   it('renders with custom list position', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        listPosition: 'top-start'
-      }
+        listPosition: 'top-start',
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('listPosition')).toBe('top-start')
@@ -198,8 +198,8 @@ describe('MazSelectCountry', () => {
   it('renders with custom max list width', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        maxListWidth: 400
-      }
+        maxListWidth: 400,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('maxListWidth')).toBe(400)
@@ -208,8 +208,8 @@ describe('MazSelectCountry', () => {
   it('renders with custom min list width', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        minListWidth: 150
-      }
+        minListWidth: 150,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('minListWidth')).toBe(150)
@@ -218,8 +218,8 @@ describe('MazSelectCountry', () => {
   it('renders with custom max list height', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        maxListHeight: 300
-      }
+        maxListHeight: 300,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('maxListHeight')).toBe(300)
@@ -228,8 +228,8 @@ describe('MazSelectCountry', () => {
   it('renders with custom min list height', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        minListHeight: 100
-      }
+        minListHeight: 100,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('minListHeight')).toBe(100)
@@ -238,8 +238,8 @@ describe('MazSelectCountry', () => {
   it('renders with custom item height', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        itemHeight: 50
-      }
+        itemHeight: 50,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('itemHeight')).toBe(50)
@@ -248,8 +248,8 @@ describe('MazSelectCountry', () => {
   it('renders with custom search threshold', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        searchThreshold: 2
-      }
+        searchThreshold: 2,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('searchThreshold')).toBe(2)
@@ -258,8 +258,8 @@ describe('MazSelectCountry', () => {
   it('renders with custom autocomplete', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        autocomplete: 'country'
-      }
+        autocomplete: 'country',
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('autocomplete')).toBe('country')
@@ -268,8 +268,8 @@ describe('MazSelectCountry', () => {
   it('renders with model value', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        modelValue: 'FR'
-      }
+        modelValue: 'FR',
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('modelValue')).toBe('FR')
@@ -278,12 +278,12 @@ describe('MazSelectCountry', () => {
   it('renders with custom options', () => {
     const options = [
       { code: 'FR', name: 'France' },
-      { code: 'US', name: 'United States' }
+      { code: 'US', name: 'United States' },
     ]
     const wrapper = mount(MazSelectCountry, {
       props: {
-        options
-      }
+        options,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('options')).toEqual(options)
@@ -298,8 +298,8 @@ describe('MazSelectCountry', () => {
   it('renders with show code in list enabled', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        showCodeInList: true
-      }
+        showCodeInList: true,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('showCodeInList')).toBe(true)
@@ -308,8 +308,8 @@ describe('MazSelectCountry', () => {
   it('renders with display code', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        displayCode: true
-      }
+        displayCode: true,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('displayCode')).toBe(true)
@@ -318,8 +318,8 @@ describe('MazSelectCountry', () => {
   it('renders with flags hidden', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        hideFlags: true
-      }
+        hideFlags: true,
+      },
     })
     expect(wrapper.classes()).toContain('--no-flags')
   })
@@ -328,8 +328,8 @@ describe('MazSelectCountry', () => {
     const formatInputValue = vi.fn()
     const wrapper = mount(MazSelectCountry, {
       props: {
-        formatInputValue
-      }
+        formatInputValue,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('formatInputValue')).toBe(formatInputValue)
@@ -339,8 +339,8 @@ describe('MazSelectCountry', () => {
     const searchFunction = vi.fn()
     const wrapper = mount(MazSelectCountry, {
       props: {
-        searchFunction
-      }
+        searchFunction,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('searchFunction')).toBe(searchFunction)
@@ -348,12 +348,12 @@ describe('MazSelectCountry', () => {
 
   it('renders with custom translations', () => {
     const translations = {
-      searchPlaceholder: 'Search countries'
+      searchPlaceholder: 'Search countries',
     }
     const wrapper = mount(MazSelectCountry, {
       props: {
-        translations
-      }
+        translations,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('searchPlaceholder')).toBe('Search countries')
@@ -364,12 +364,12 @@ describe('MazSelectCountry', () => {
       type: 'region' as const,
       languageDisplay: 'standard' as const,
       fallback: 'code' as const,
-      style: 'short' as const
+      style: 'short' as const,
     }
     const wrapper = mount(MazSelectCountry, {
       props: {
-        displayNamesOptions
-      }
+        displayNamesOptions,
+      },
     })
     expect(wrapper.props('displayNamesOptions')).toEqual(displayNamesOptions)
   })
@@ -377,8 +377,8 @@ describe('MazSelectCountry', () => {
   it('renders with custom codes type', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        codesType: 'iso' as const
-      }
+        codesType: 'iso' as const,
+      },
     })
     expect(wrapper.props('codesType')).toBe('iso')
   })
@@ -386,8 +386,8 @@ describe('MazSelectCountry', () => {
   it('renders with custom locale', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        locale: 'fr-FR'
-      }
+        locale: 'fr-FR',
+      },
     })
     expect(wrapper.props('locale')).toBe('fr-FR')
   })
@@ -396,8 +396,8 @@ describe('MazSelectCountry', () => {
     const preferredCodes = ['FR', 'US']
     const wrapper = mount(MazSelectCountry, {
       props: {
-        preferredCodes
-      }
+        preferredCodes,
+      },
     })
     expect(wrapper.props('preferredCodes')).toEqual(preferredCodes)
   })
@@ -406,8 +406,8 @@ describe('MazSelectCountry', () => {
     const ignoredCodes = ['XX', 'YY']
     const wrapper = mount(MazSelectCountry, {
       props: {
-        ignoredCodes
-      }
+        ignoredCodes,
+      },
     })
     expect(wrapper.props('ignoredCodes')).toEqual(ignoredCodes)
   })
@@ -416,8 +416,8 @@ describe('MazSelectCountry', () => {
     const onlyCodes = ['FR', 'US', 'DE']
     const wrapper = mount(MazSelectCountry, {
       props: {
-        onlyCodes
-      }
+        onlyCodes,
+      },
     })
     expect(wrapper.props('onlyCodes')).toEqual(onlyCodes)
   })
@@ -435,8 +435,8 @@ describe('MazSelectCountry', () => {
   it('renders flag when model value is set and flags are not hidden', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        modelValue: 'FR'
-      }
+        modelValue: 'FR',
+      },
     })
     const mazLazyImg = wrapper.findComponent({ name: 'MazLazyImg' })
     expect(mazLazyImg.exists()).toBe(true)
@@ -447,8 +447,8 @@ describe('MazSelectCountry', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
         modelValue: 'FR',
-        hideFlags: true
-      }
+        hideFlags: true,
+      },
     })
     const mazLazyImg = wrapper.findComponent({ name: 'MazLazyImg' })
     expect(mazLazyImg.exists()).toBe(false)
@@ -457,8 +457,8 @@ describe('MazSelectCountry', () => {
   it('renders with custom option value key', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        optionValueKey: 'id'
-      }
+        optionValueKey: 'id',
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('optionValueKey')).toBe('id')
@@ -467,8 +467,8 @@ describe('MazSelectCountry', () => {
   it('renders with custom option label key', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        optionLabelKey: 'title'
-      }
+        optionLabelKey: 'title',
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('optionLabelKey')).toBe('title')
@@ -477,8 +477,8 @@ describe('MazSelectCountry', () => {
   it('renders with custom option input value key', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        optionInputValueKey: 'value'
-      }
+        optionInputValueKey: 'value',
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('optionInputValueKey')).toBe('value')
@@ -487,8 +487,8 @@ describe('MazSelectCountry', () => {
   it('renders with code as option input value key when display code is enabled', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        displayCode: true
-      }
+        displayCode: true,
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('optionInputValueKey')).toBe('code')
@@ -521,7 +521,7 @@ describe('MazSelectCountry', () => {
       type: 'region',
       languageDisplay: 'standard',
       fallback: 'code',
-      style: 'long'
+      style: 'long',
     }
     expect(wrapper.props('displayNamesOptions')).toEqual(expectedOptions)
   })
@@ -529,8 +529,8 @@ describe('MazSelectCountry', () => {
   it('renders country item with flag and name', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        modelValue: 'FR'
-      }
+        modelValue: 'FR',
+      },
     })
 
     const itemSlot = wrapper.vm.$slots.default
@@ -541,8 +541,8 @@ describe('MazSelectCountry', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
         modelValue: 'FR',
-        hideFlags: true
-      }
+        hideFlags: true,
+      },
     })
 
     const itemSlot = wrapper.vm.$slots.default
@@ -552,8 +552,8 @@ describe('MazSelectCountry', () => {
   it('renders country item with code when showCodeInList is true', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        showCodeInList: true
-      }
+        showCodeInList: true,
+      },
     })
 
     const itemSlot = wrapper.vm.$slots.default
@@ -563,11 +563,11 @@ describe('MazSelectCountry', () => {
   it('provides selector-flag slot', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        modelValue: 'FR'
+        modelValue: 'FR',
       },
       slots: {
-        'selector-flag': '<div class="custom-flag">Custom Flag</div>'
-      }
+        'selector-flag': '<div class="custom-flag">Custom Flag</div>',
+      },
     })
 
     expect(wrapper.find('.custom-flag').exists()).toBe(true)
@@ -577,8 +577,8 @@ describe('MazSelectCountry', () => {
   it('provides no-results slot', () => {
     const wrapper = mount(MazSelectCountry, {
       slots: {
-        'no-results': '<div class="no-results">No countries found</div>'
-      }
+        'no-results': '<div class="no-results">No countries found</div>',
+      },
     })
 
     expect(wrapper.find('.no-results').exists()).toBe(true)
@@ -588,8 +588,8 @@ describe('MazSelectCountry', () => {
   it('provides country-list-flag slot', () => {
     const wrapper = mount(MazSelectCountry, {
       slots: {
-        'country-list-flag': '<div class="custom-list-flag">Custom List Flag</div>'
-      }
+        'country-list-flag': '<div class="custom-list-flag">Custom List Flag</div>',
+      },
     })
 
     expect(wrapper.find('.custom-list-flag').exists()).toBe(true)
@@ -599,11 +599,11 @@ describe('MazSelectCountry', () => {
   it('provides country-list-code slot', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        showCodeInList: true
+        showCodeInList: true,
       },
       slots: {
-        'country-list-code': '<span class="custom-code">CODE</span>'
-      }
+        'country-list-code': '<span class="custom-code">CODE</span>',
+      },
     })
 
     expect(wrapper.find('.custom-code').exists()).toBe(true)
@@ -613,8 +613,8 @@ describe('MazSelectCountry', () => {
   it('provides country-list-name slot', () => {
     const wrapper = mount(MazSelectCountry, {
       slots: {
-        'country-list-name': '<span class="custom-name">Custom Name</span>'
-      }
+        'country-list-name': '<span class="custom-name">Custom Name</span>',
+      },
     })
 
     expect(wrapper.find('.custom-name').exists()).toBe(true)
@@ -630,8 +630,8 @@ describe('MazSelectCountry', () => {
   it('uses provided id when given', () => {
     const wrapper = mount(MazSelectCountry, {
       props: {
-        id: 'custom-id'
-      }
+        id: 'custom-id',
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('id')).toBe('custom-id')
@@ -640,8 +640,8 @@ describe('MazSelectCountry', () => {
   it('inherits attributes correctly', () => {
     const wrapper = mount(MazSelectCountry, {
       attrs: {
-        'data-test': 'country-select'
-      }
+        'data-test': 'country-select',
+      },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.attributes('data-test')).toBe('country-select')
