@@ -6,4 +6,4 @@
 # fi
 
 pnpm pre-commit
-pnpm -r --workspace-concurrency=1 pre-commit
+lerna run pre-commit --concurrency=1

@@ -2,8 +2,7 @@
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
   "version": "4.0.0-alpha.5",
   "npmClient": "pnpm",
-  "useWorkspaces": true,
-  "packages": ["packages/*"],
+  "packages": ["packages/*", "!packages/cli"],
   "command": {
     "version": {
       "allowBranch": ["master", "develop"],

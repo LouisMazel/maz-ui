@@ -3,7 +3,7 @@ import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
-const INPUT_COMPONENT_DIR = resolve(_dirname, './../src/components')
+const INPUT_COMPONENT_DIR = resolve(_dirname, '../../lib/src/components')
 
 export async function getComponentList(inputComponentDir: string = INPUT_COMPONENT_DIR) {
   try {

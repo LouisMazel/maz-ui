@@ -4,7 +4,6 @@ import { fileURLToPath } from 'node:url'
 import { cancel, confirm, isCancel, multiselect, spinner, text } from '@clack/prompts'
 import chalk from 'chalk'
 import { Command } from 'commander'
-import { buildEntry } from '../../../../lib/build/entry-builder'
 import { pascalCaseToKebabCase } from './../../utils/pascal-case-to-kebab-case'
 import { createDocumentFile } from './create-documentation-file'
 import { createLibraryComponentFile } from './create-library-component-file'
@@ -115,11 +114,7 @@ async function runCreateFiles({
       filenameKebab,
     })
 
-    await buildEntry({
-      output: resolve(_dirname, './../../../../lib/src/components/index.ts'),
-      componentName: 'fullName',
-      scriptName: 'component-entry-generated',
-    })
+    console.warn('You should add the component to the entry file manually')
   }
 
   const shouldCreateDocumentationFile = shouldCreateAllFiles || fileTypes.includes('docs')
