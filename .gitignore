@@ -4,4 +4,7 @@ coverage
 .vscode/*.log
 .env
 *.tsbuildinfo
-**/*.tsbuildinfo
+**/*.tsbuildinfo.nx
+.nx
+lerna-debug.log*
+.cursorrules
