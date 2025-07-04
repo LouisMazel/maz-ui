@@ -32,7 +32,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install modules
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Test units
-        run: pnpm --filter maz-ui test:unit --silent
+        run: pnpm test:unit:all

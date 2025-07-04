@@ -5,5 +5,4 @@
 #   exit 1
 # fi
 
-pnpm pre-commit
-lerna run pre-commit --concurrency=1
+pnpm pre-commit:all
