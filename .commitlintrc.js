@@ -18,6 +18,7 @@ module.exports = {
         '@maz-ui/eslint-config',
         '@maz-ui/themes',
         '@maz-ui/translations',
+        '@maz-ui/utils',
       ],
     ],
     'subject-case': [2, 'never', ['upper-case', 'pascal-case', 'start-case']],

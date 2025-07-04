@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
+  "version": "4.0.0-alpha.5",
+  "npmClient": "pnpm",
+  "useWorkspaces": true,
+  "packages": ["packages/*"],
+  "command": {
+    "version": {
+      "allowBranch": ["master", "develop"],
+      "conventionalCommits": true,
+      "conventionalPrerelease": true,
+      "changelogPreset": "conventionalcommits",
+      "createRelease": "github",
+      "message": "chore(release): version packages %v",
+      "tagVersionPrefix": "v",
+      "push": true,
+      "exact": true
+    },
+    "publish": {
+      "conventionalCommits": true,
+      "message": "chore(release): publish packages %v",
+      "registry": "https://registry.npmjs.org/",
+      "yes": true
+    }
+  }
+}
