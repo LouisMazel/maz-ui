@@ -2,10 +2,17 @@
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
   "version": "4.0.0-alpha.5",
   "npmClient": "pnpm",
-  "packages": ["packages/*", "!packages/cli"],
+  "packages": [
+    "packages/*",
+    "!packages/cli"
+  ],
   "command": {
     "version": {
-      "allowBranch": ["master", "develop"],
+      "allowBranch": [
+        "master",
+        "develop",
+        "chore/lerna"
+      ],
       "conventionalCommits": true,
       "conventionalPrerelease": true,
       "changelogPreset": "conventionalcommits",
