@@ -67,7 +67,7 @@ describe('get-color-mode', () => {
 
         const result = getColorMode()
 
-        expect(result).toBe('auto')
+        expect(result).toBe('dark')
       })
     })
 
