@@ -2,6 +2,7 @@
   "name": "cli",
   "type": "module",
   "version": "4.0.0-alpha.5",
+  "private": true,
   "exports": {
     ".": "./dist/cli.mjs",
     "./cli": "./bin/cli.mjs",
