@@ -70,6 +70,7 @@
   "devDependencies": {
     "eslint": "^9.29.0",
     "eslint-plugin-format": "^1.0.1",
+    "glob": "catalog:",
     "libphonenumber-js": "catalog:",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",

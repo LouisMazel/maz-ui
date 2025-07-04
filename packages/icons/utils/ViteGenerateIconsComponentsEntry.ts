@@ -2,8 +2,7 @@ import type { Plugin } from 'vite'
 import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-// @ts-ignore
-import { getComponentList } from '../../lib/build/getComponentList'
+import { getComponentList } from './getComponentList'
 import { logger } from './logger'
 
 function toPascalCase(str: string) {
