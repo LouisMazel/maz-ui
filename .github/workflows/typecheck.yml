@@ -36,4 +36,4 @@ jobs:
           pnpm -F @maz-ui/nuxt prepare
 
       - name: Run typecheck
-        run: pnpm typecheck
+        run: pnpm typecheck:all

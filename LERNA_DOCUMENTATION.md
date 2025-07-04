@@ -162,7 +162,7 @@ pnpm lint
 pnpm test:unit
 
 # Typecheck with cache
-pnpm typecheck
+pnpm typecheck:all
 ```
 
 ### Advanced Nx Commands
