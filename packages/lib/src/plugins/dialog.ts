@@ -7,7 +7,6 @@ export const DialogPlugin = {
     const dialogHandler = new DialogHandler(app, options)
     app.provide('mazDialog', dialogHandler)
 
-    // Créez un wrapper sans référence circulaire
     app.config.globalProperties.$mazDialog = {
       open: dialogHandler.open.bind(dialogHandler),
       globalOptions: dialogHandler.globalOptions,
