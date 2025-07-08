@@ -1,6 +1,6 @@
 ---
 title: useToast
-description: Vue composable for handling toaster plugin in your components
+description: Vue composable for handling toast plugin in your components
 ---
 
 # {{ $frontmatter.title }}
@@ -8,11 +8,11 @@ description: Vue composable for handling toaster plugin in your components
 {{ $frontmatter.description }}
 
 ::: warning
-You must install [toaster plugin](./../plugins/toaster.md#install) before use it
+You must install [toast plugin](./../plugins/toast.md#install) before use it
 :::
 
 ::: tip
-More info about [toaster plugin](./../plugins/toaster.md) in its documentation
+More info about [toast plugin](./../plugins/toast.md) in its documentation
 :::
 
 ## Usage

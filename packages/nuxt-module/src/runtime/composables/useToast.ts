@@ -1,7 +1,7 @@
-import type { ToasterHandler } from 'maz-ui/plugins/toaster'
+import type { ToastHandler } from 'maz-ui/plugins/toast'
 import { useNuxtApp } from 'nuxt/app'
 
-export function useToast(): ToasterHandler {
+export function useToast(): ToastHandler {
   const { $mazToast } = useNuxtApp()
 
   return $mazToast
