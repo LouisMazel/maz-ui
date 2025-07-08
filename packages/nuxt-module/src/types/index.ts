@@ -52,7 +52,7 @@ export interface MazUiNuxtOptions {
    *   colorMode: 'auto',
    * }
    */
-  theme?: false | MazUiNuxtThemeOptions
+  theme?: MazUiNuxtThemeOptions
 
   /**
    * Translations configuration
@@ -61,7 +61,7 @@ export interface MazUiNuxtOptions {
    *   locale: 'en',
    * }
    */
-  translations?: false | MazTranslationsOptions
+  translations?: MazTranslationsOptions
 
   /**
    * CSS and styles configuration
