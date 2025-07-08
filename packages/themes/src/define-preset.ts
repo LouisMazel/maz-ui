@@ -44,7 +44,7 @@ export function definePreset(options: {
 }): ThemePreset
 
 export function definePreset(options: {
-  base?: ThemePresetName
+  base: ThemePresetName
   overrides: ThemePresetOverrides
 }): Promise<ThemePreset>
 
@@ -52,7 +52,7 @@ export function definePreset({
   base = 'maz-ui' as const,
   overrides = {},
 }: {
-  base?: MazUiThemeOptions['preset']
+  base: MazUiThemeOptions['preset']
   overrides: ThemePresetOverrides
 }): ThemePreset | Promise<ThemePreset> {
   if (typeof base === 'string') {
