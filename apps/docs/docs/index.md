@@ -206,7 +206,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/guide/dark-mode" class="!maz-border-divider">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
-    <a href="/plugins/toaster" class="maz-flex">
+    <a href="/plugins/toast" class="maz-flex">
       <MazCardSpotlight class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
         <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           🛠
@@ -216,7 +216,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           Maz-ui provides many modules, plugins, directives, formatters and composables
         </p>
         <div class="maz-flex-1"></div>
-        <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/plugins/toaster" class="!maz-border-divider">Discover</MazBtn>
+        <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/plugins/toast" class="!maz-border-divider">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
   </div>
@@ -346,12 +346,12 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         </span>
         <MazBadge color="info" class="maz-text-base">Plugin</MazBadge>
       </div>
-      <h3 class="maz-text-base maz-font-semibold">Toaster</h3>
+      <h3 class="maz-text-base maz-font-semibold">Toast</h3>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
         A simple and customizable toast notification module to display messages to users.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/plugins/toaster" class="!maz-border-divider">Discover</MazBtn>
+      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/plugins/toast" class="!maz-border-divider">Discover</MazBtn>
     </MazCardSpotlight>
   </div>
 </section>

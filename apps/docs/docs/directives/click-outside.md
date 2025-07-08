@@ -234,7 +234,7 @@ type vClickOutsideBindingValue =
 
 ## Global install
 
-`main.ts`
+### Vue.JS
 
 ```typescript
 import { vClickOutsideInstall } from 'maz-ui/directives'
@@ -245,6 +245,25 @@ const app = createApp(App)
 app.use(vClickOutsideInstall)
 
 app.mount('#app')
+```
+
+### Nuxt.JS
+
+```typescript
+export default defineNuxtPlugin({ vueApp }) => {
+  vueApp.use(vClickOutsideInstall)
+})
+```
+
+Or use Maz-ui Nuxt Module:
+
+```ts
+export default defineNuxtConfig({
+  modules: ['@maz-ui/nuxt'],
+  mazUi: {
+    vClickOutside: true
+  }
+})
 ```
 
 <script lang="ts" setup>

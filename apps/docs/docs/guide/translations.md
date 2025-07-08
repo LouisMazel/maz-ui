@@ -37,15 +37,15 @@ Maz-UI includes default translations for **8 languages** ready to use out of the
 
 All these languages include translations for:
 
-- 📱 **Phone Number Input** (`MazInputPhoneNumber`)
-- 📁 **File Dropzone** (`MazDropzone`)
-- 📅 **Date Picker** (`MazDatePicker`)
-- 📋 **Checklist** (`MazChecklist`)
-- 🎠 **Carousel** (`MazCarousel`)
-- 📤 **Dropdown** (`MazDropdown`)
-- 🔍 **Select** (`MazSelect`)
-- 🗂️ **Table** (`MazTable`)
-- 📄 **Pagination** (`MazPagination`)
+- 📱 **Phone Number Input** ([`MazInputPhoneNumber`](/components/maz-input-phone-number))
+- 📁 **File Dropzone** ([`MazDropzone`](/components/maz-dropzone))
+- 📅 **Date Picker** ([`MazDatePicker`](/components/maz-date-picker))
+- 📋 **Checklist** ([`MazChecklist`](/components/maz-checklist))
+- 🎠 **Carousel** ([`MazCarousel`](/components/maz-carousel))
+- 📤 **Dropdown** ([`MazDropdown`](/components/maz-dropdown))
+- 🔍 **Select** ([`MazSelect`](/components/maz-select))
+- 🗂️ **Table** ([`MazTable`](/components/maz-table))
+- 📄 **Pagination** ([`MazPagination`](/components/maz-pagination))
 
 ### Simple Usage
 

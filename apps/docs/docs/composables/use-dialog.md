@@ -28,14 +28,26 @@ More info about [dialog plugin](./../plugins/dialog.md) in its documentation
 
 ```vue
 <script lang="ts" setup>
-import { useDialog } from 'maz-ui/composables'
+import { useDialog, useToast } from 'maz-ui/composables'
 
 const dialog = useDialog()
+
+const toast = useToast()
 
 function openDialog() {
   dialog.open({
     title: 'Dialog title',
     message: 'Dialog message',
+    onAccept: (response) => {
+      toast.success(`Dialog accepted`, {
+        position: 'bottom',
+      })
+    },
+    onReject: (response) => {
+      toast.error(`Dialog rejected`, {
+        position: 'bottom',
+      })
+    },
   })
 }
 </script>
@@ -52,14 +64,25 @@ function openDialog() {
 </ComponentDemo>
 
 <script lang="ts" setup>
-  import { useDialog } from 'maz-ui/src/composables/useDialog'
+  import { useDialog, useToast } from 'maz-ui/src/composables/index'
 
   const dialog = useDialog()
+  const toast = useToast()
 
   function openDialog() {
     dialog.open({
       title: 'Dialog title',
       message: 'Dialog message',
+      onAccept: (response) => {
+        toast.success(`Dialog accepted`, {
+          position: 'bottom',
+        })
+      },
+      onReject: (response) => {
+        toast.error(`Dialog rejected`, {
+          position: 'bottom',
+        })
+      },
     })
   }
 </script>

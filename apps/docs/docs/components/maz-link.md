@@ -1,6 +1,6 @@
 ---
 title: MazLink
-description: MazLink is a standalone component
+description: MazLink is a standalone component to create links and buttons.
 ---
 
 # {{ $frontmatter.title }}
@@ -11,14 +11,14 @@ description: MazLink is a standalone component
 
 ## Basic usage
 
-<ComponentDemo>
+<ComponentDemo expanded>
   <MazLink href="https://maz-ui.com" target="_blank"> View product detail </MazLink>
 
 <template #code>
 
 ```vue
 <script lang="ts" setup>
-import { MazLink } from 'maz-ui/components'
+import MazLink from 'maz-ui/components/MazLink'
 </script>
 
 <template>
@@ -97,13 +97,17 @@ import { MazCheck, MazHome } from '@maz-ui/icons'
   <MazLink left-icon="home" :right-icon="MazHome">
     View product detail
   </MazLink>
+
+  <MazLink left-icon="home" :right-icon="MazHome">
+    View product detail
+  </MazLink>
 </template>
 ```
 
   </template>
 </ComponentDemo>
 
-## External icon
+## External icon (true by default)
 
 When you use the `autoExternal` prop, the component will have an external icon if the link has the target `_blank`.
 
@@ -119,7 +123,34 @@ When you use the `autoExternal` prop, the component will have an external icon i
   </template>
 </ComponentDemo>
 
+## As button
+
+If no `to` or `href` is provided, the component will be a `button` by default. You can force the component to be a `button`, `a`, `router-link` or `nuxt-link` with the `as` prop.
+
+<ComponentDemo>
+  <div class="maz-flex maz-flex-col maz-gap-2 maz-justify-center">
+    <MazLink as="button"> View product detail </MazLink>
+    <MazLink as="button" disabled> View product detail </MazLink>
+  </div>
+
+<template #code>
+
+  ```vue
+  <script lang="ts" setup>
+    import MazLink from 'maz-ui/components/MazLink'
+  </script>
+
+  <template>
+    <MazLink as="button"> View product detail </MazLink>
+    <MazLink as="button" disabled> View product detail </MazLink>
+  </template>
+  ```
+
+  </template>
+</ComponentDemo>
+
 <script setup lang="ts">
   import { MazCheck, MazHome } from '@maz-ui/icons'
 </script>
+
 <!--@include: ./../.vitepress/generated-docs/maz-link.doc.md-->
