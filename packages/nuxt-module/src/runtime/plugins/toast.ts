@@ -1,31 +1,31 @@
-import { ToasterHandler } from 'maz-ui/plugins/toaster'
+import { ToastHandler } from 'maz-ui/plugins/toast'
 import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(({ vueApp, $config }) => {
-  const toasterOptions = $config.public.mazUi?.composables?.useToast
+  const toastOptions = $config.public.mazUi?.composables?.useToast
 
-  const options = typeof toasterOptions === 'object' ? toasterOptions : undefined
+  const options = typeof toastOptions === 'object' ? toastOptions : undefined
 
-  const instance = new ToasterHandler(vueApp, options)
+  const instance = new ToastHandler(vueApp, options)
 
-  const toasterServer = {
+  const toastServer = {
     show: (_message: string) => {},
     success: (_message: string) => {},
     error: (_message: string) => {},
     warning: (_message: string) => {},
     info: (_message: string) => {},
     message: (_message: string) => {},
-  } as unknown as ToasterHandler
+  } as unknown as ToastHandler
 
   return {
     provide: {
-      mazToast: import.meta.server ? toasterServer : instance,
+      mazToast: import.meta.server ? toastServer : instance,
     },
   }
 })
 
 declare module '#app' {
   interface NuxtApp {
-    $mazToast: ToasterHandler
+    $mazToast: ToastHandler
   }
 }
