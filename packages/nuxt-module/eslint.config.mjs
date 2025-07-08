@@ -1,14 +1,11 @@
-import { createConfigForNuxt } from '@nuxt/eslint-config/flat'
+import { defineConfig } from '@maz-ui/eslint-config'
 
-export default createConfigForNuxt({
-  features: {
-    standalone: true,
-    typescript: {
-      strict: true,
-    },
-    stylistic: true,
-    tooling: true,
+export default defineConfig({
+  formatters: true,
+  typescript: true,
+  sonarjs: true,
+  vue: true,
+  rules: {
+    'no-console': [process.env.NODE_ENV === 'production' ? 'error' : 'warn'],
   },
-}).overrideRules({
-  'vue/multi-word-component-names': 'off',
 })

@@ -1,10 +1,11 @@
 {
   "name": "@maz-ui/nuxt",
-  "version": "4.0.0-alpha.5",
-  "license": "MIT",
   "type": "module",
+  "version": "4.0.0-alpha.5",
   "description": "Nuxt module for Maz-UI",
   "author": "Louis Mazel <me@loicmazuel.com>",
+  "license": "MIT",
+  "homepage": "https://maz-ui.com/guide/nuxt",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui.git"
@@ -26,9 +27,6 @@
     "nuxt-module",
     "maz-ui"
   ],
-  "homepage": "https://maz-ui.com/guide/nuxt",
-  "main": "./dist/module.mjs",
-  "types": "./dist/types.d.mts",
   "exports": {
     ".": {
       "types": "./dist/types.d.mts",
@@ -36,10 +34,12 @@
     },
     "./*": "./*"
   },
+  "main": "./dist/module.mjs",
+  "types": "./dist/types.d.mts",
   "files": [
     "LICENSE",
-    "dist",
-    "README.md"
+    "README.md",
+    "dist"
   ],
   "scripts": {
     "prepack": "nuxt-module-build build",
@@ -52,16 +52,12 @@
     "typecheck": "vue-tsc --noEmit --skipLibCheck --project tsconfig.check.json",
     "release": "npm run lint && npm run prepack && changelogen --release && npm publish && git push --follow-tags"
   },
-  "lint-staged": {
-    "*": "prettier -w -u",
-    "*.{js,ts}": "cross-env NODE_ENV=production eslint --fix"
-  },
   "dependencies": {
-    "@nuxt/kit": "catalog:",
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
-    "maz-ui": "workspace:*",
-    "defu": "^6.1.4"
+    "@nuxt/kit": "catalog:",
+    "defu": "^6.1.4",
+    "maz-ui": "workspace:*"
   },
   "devDependencies": {
     "@nuxt/devtools": "^2.4.1",
@@ -72,5 +68,9 @@
     "nuxt": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
+  },
+  "lint-staged": {
+    "*": "prettier -w -u",
+    "*.{js,ts}": "cross-env NODE_ENV=production eslint --fix"
   }
 }
