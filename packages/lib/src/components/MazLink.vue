@@ -3,30 +3,39 @@ import type { IconComponent } from '@maz-ui/icons'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazColor } from './types'
 import { MazArrowTopRightOnSquare } from '@maz-ui/icons'
-import { defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
+import { useInstanceUniqId } from '../composables'
 
-withDefaults(defineProps<MazLinkProps>(), {
-  id: undefined,
-  title: undefined,
-  color: 'primary',
-  href: undefined,
-  to: undefined,
-  target: '_self',
-  download: undefined,
-  rel: undefined,
-  autoExternal: true,
-  ariaLabel: undefined,
-  underline: false,
-  underlineOnlyHover: true,
-  leftIcon: undefined,
-  rightIcon: undefined,
-})
+const {
+  as,
+  id,
+  href,
+  to,
+  color = 'primary',
+  target = '_self',
+  autoExternal = true,
+  underline = false,
+  underlineHover = true,
+} = defineProps<MazLinkProps>()
+
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 
 export interface MazLinkProps {
-  /** The id of the link */
+  /**
+   * The component to use for the link - if not provided, it will be `router-link` if `to` is provided, will be `a` if `href` is provided, otherwise it will be `button`, you can force the component to be used with `as` prop
+   * @default depends on the provided props
+   * @values 'a', 'router-link', 'nuxt-link', 'button'
+   */
+  as?: string | 'a' | 'router-link' | 'nuxt-link' | 'button'
+  /**
+   * The id of the link
+   * @default undefined
+   */
   id?: string
-  /** The title of the link */
+  /**
+   * The title of the link
+   * @default undefined
+   */
   title?: string
   /**
    * The href of the link
@@ -46,16 +55,31 @@ export interface MazLinkProps {
    * @values '_blank', '_self', '_parent', '_top'
    */
   target?: '_blank' | '_self' | '_parent' | '_top' | string
-  /** The download of the link */
+  /**
+   * The download of the link
+   * @default undefined
+   */
   download?: string
-  /** The rel of the link */
+  /**
+   * The rel of the link
+   * @default undefined
+   */
   rel?: string
-  /** The aria-label of the link */
+  /**
+   * The aria-label of the link
+   * @default undefined
+   */
   ariaLabel?: string
-  /** Add an underline to the link */
+  /**
+   * Add an underline to the link
+   * @default false
+   */
   underline?: boolean
-  /** Add an underline only on hover */
-  underlineOnlyHover?: boolean
+  /**
+   * Add an underline only on hover
+   * @default true
+   */
+  underlineHover?: boolean
   /**
    * Add an external icon to the link if target is '_blank'
    * @default true
@@ -63,36 +87,61 @@ export interface MazLinkProps {
   autoExternal?: boolean
   /**
    * The name of the icon or component to display on the left of the text
-   * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
+   * `@type` `{string | FunctionalComponent | ComponentPublicInstance | Component}`
    */
   leftIcon?: string | IconComponent
   /**
    * The name of the icon or component to display on the right of the text
-   * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
+   * `@type` `{string | FunctionalComponent | ComponentPublicInstance | Component}`
    */
   rightIcon?: string | IconComponent
+  /**
+   * The disabled state of the link if the component is a button
+   * @default false
+   */
+  disabled?: boolean
 }
+
+const instanceId = useInstanceUniqId({
+  componentName: 'MazLink',
+  providedId: id,
+})
+
+const component = computed<HTMLElement['nodeName'] | 'nuxt-link' | 'router-link' | 'button'>(() => {
+  if (as)
+    return as
+  if (to)
+    return 'router-link'
+  if (href)
+    return 'a'
+
+  return 'button'
+})
+
+const isButton = computed(() => component.value === 'button')
 </script>
 
 <template>
   <Component
-    :is="to ? 'router-link' : 'a'"
-    :id
+    :is="component"
+    :id="instanceId"
     class="m-link m-reset-css"
     :class="[
       {
         '--underline': underline,
-        '--underline-only-hover': !underline && underlineOnlyHover,
+        '--underline-hover': !underline && underlineHover,
       },
       `--${color}`,
     ]"
     :to
     :href
     :title
-    :target
-    :rel
-    :download
-    :aria-label
+    :target="!isButton && target"
+    :rel="!isButton && rel"
+    :download="!isButton && download"
+    :aria-label="!isButton && ariaLabel"
+    :type="isButton && 'button'"
+    :disabled="isButton && disabled"
     v-bind="$attrs"
   >
     <!--
@@ -131,40 +180,44 @@ export interface MazLinkProps {
     @apply maz-underline;
   }
 
-  &.--underline-only-hover {
+  &.--underline-hover:not(:disabled) {
     @apply hover:maz-underline;
   }
 
-  &.--primary {
-    @apply maz-text-primary hover:maz-text-primary-600;
+  &.--primary:not(:disabled) {
+    @apply maz-text-primary hover:maz-text-primary-700;
   }
 
-  &.--secondary {
-    @apply maz-text-secondary hover:maz-text-secondary-600;
+  &.--secondary:not(:disabled) {
+    @apply maz-text-secondary hover:maz-text-secondary-700;
   }
 
-  &.--info {
-    @apply maz-text-info hover:maz-text-info-600;
+  &.--info:not(:disabled) {
+    @apply maz-text-info hover:maz-text-info-700;
   }
 
-  &.--warning {
-    @apply maz-text-warning-600 hover:maz-text-warning-800;
+  &.--warning:not(:disabled) {
+    @apply maz-text-warning hover:maz-text-warning-700;
   }
 
-  &.--destructive {
-    @apply maz-text-destructive-600 hover:maz-text-destructive-800;
+  &.--destructive:not(:disabled) {
+    @apply maz-text-destructive hover:maz-text-destructive-700;
   }
 
-  &.--success {
-    @apply maz-text-success-600 hover:maz-text-success-800;
+  &.--success:not(:disabled) {
+    @apply maz-text-success hover:maz-text-success-700;
   }
 
-  &.--accent {
-    @apply maz-text-accent-600 hover:maz-text-accent-800;
+  &.--accent:not(:disabled) {
+    @apply maz-text-accent hover:maz-text-accent-700;
   }
 
-  &.--contrast {
-    @apply maz-text-contrast-600 hover:maz-text-contrast-800;
+  &.--contrast:not(:disabled) {
+    @apply maz-text-contrast hover:maz-text-contrast-700;
+  }
+
+  &:disabled {
+    @apply maz-cursor-not-allowed maz-opacity-50 maz-text-muted;
   }
 }
 </style>
