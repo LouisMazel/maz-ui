@@ -4,8 +4,10 @@ import MazDialogPromise from '../../components/MazDialogPromise.vue'
 import { useMazDialogPromise } from '../../components/MazDialogPromise/useMazDialogPromise'
 import { useMountComponent } from '../../composables/useMountComponent'
 
-export type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
-  promiseCallback?: () => unknown
+export type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue' | 'variant' | 'justify'>> & {
+  onClose?: () => unknown
+  onAccept?: (response: unknown) => unknown
+  onReject?: (response: unknown) => unknown
 }
 type RequiredDialogOptions = DialogOptions & { identifier: string }
 
@@ -34,20 +36,36 @@ export class DialogHandler {
     const { showDialogAndWaitChoice } = useMazDialogPromise()
 
     function close(): void {
+      if (!vNode.component?.exposed?.isActive?.value) {
+        return
+      }
+
       vNode.component?.exposed?.close()
-      props.promiseCallback?.()
+      props.onClose?.()
 
       setTimeout(() => {
         destroy()
       }, 700)
     }
 
-    const promise = showDialogAndWaitChoice(props.identifier, () => {
-      close()
-    })
+    async function runDialog() {
+      try {
+        const response = await showDialogAndWaitChoice(props.identifier, close)
+        if (props.onAccept) {
+          props.onAccept(response)
+        }
+      }
+      catch (error) {
+        const response = error
+        if (props.onReject) {
+          props.onReject(response)
+        }
+      }
+    }
+
+    runDialog()
 
     return {
-      promise,
       destroy,
       close,
     }

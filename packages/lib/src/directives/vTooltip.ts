@@ -72,7 +72,7 @@ class TooltipHandler {
       role: 'tooltip',
       closeOnClickOutside: false,
       closeOnEscape: false,
-      color: 'default',
+      color: 'contrast',
       ...options,
     }
   }

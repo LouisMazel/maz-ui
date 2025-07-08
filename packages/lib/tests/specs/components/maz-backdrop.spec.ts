@@ -1,5 +1,5 @@
 import MazBackdrop from '@components/MazBackdrop.vue'
-import { sleep } from '@utils/sleep'
+import { sleep } from '@maz-ui/utils'
 import { mount } from '@vue/test-utils'
 
 describe('mazBackdrop', () => {
@@ -51,7 +51,7 @@ describe('mazBackdrop', () => {
     const wrapper = mount(MazBackdrop, {
       props: {
         modelValue: true,
-        noCloseOnEscKey: false,
+        closeOnEscape: true,
       },
     })
     // @ts-expect-error - test case
@@ -63,7 +63,7 @@ describe('mazBackdrop', () => {
     const wrapper = mount(MazBackdrop, {
       props: {
         modelValue: true,
-        noCloseOnEscKey: false,
+        closeOnEscape: true,
         persistent: true,
       },
     })

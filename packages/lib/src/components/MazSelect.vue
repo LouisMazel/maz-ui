@@ -586,8 +586,19 @@ watch(
 )
 
 defineExpose({
+  /**
+   * Open the select
+   * @description This is used to open the list options
+   */
   open: () => {
     popoverComponent.value?.open()
+  },
+  /**
+   * Close the select
+   * @description This is used to close the list options
+   */
+  close: () => {
+    popoverComponent.value?.close()
   },
 })
 </script>

@@ -5,7 +5,7 @@ import { ref } from 'vue'
 export interface State {
   id: string
   isActive: boolean
-  resolve: (value: unknown) => void
+  accept: (value: unknown) => void
   reject?: (reason?: unknown) => void
 }
 
@@ -16,7 +16,7 @@ export interface ActionButton extends Omit<MazBtnProps, 'type'> {
 
 export interface PromiseButton extends Omit<MazBtnProps, 'type'> {
   text: string
-  type: 'resolve' | 'reject'
+  type: 'accept' | 'reject'
   response?: unknown
 }
 
@@ -41,11 +41,13 @@ export const defaultData = {
   buttons: [{
     text: 'Confirm',
     color: 'success',
-    type: 'resolve',
+    type: 'accept',
+    response: 'accept',
   }, {
     text: 'Cancel',
     color: 'destructive',
     type: 'reject',
+    response: 'reject',
   }],
 } satisfies MazDialogPromiseData
 
@@ -60,7 +62,7 @@ function showDialogAndWaitChoice(identifier: string, callback?: () => unknown) {
       {
         id: identifier,
         isActive: true,
-        resolve: async (response: unknown) => {
+        accept: async (response: unknown) => {
           resolve(response)
           await callback?.()
         },
@@ -78,7 +80,7 @@ function removeDialogFromState(identifier: string) {
   return dialogState.value
 }
 
-function responseDialog(type: 'resolve' | 'reject', currentDialog: State, response: unknown) {
+function responseDialog(type: 'accept' | 'reject', currentDialog: State, response: unknown) {
   if (!currentDialog) {
     return
   }
@@ -89,6 +91,8 @@ function responseDialog(type: 'resolve' | 'reject', currentDialog: State, respon
   setTimeout(() => {
     removeDialogFromState(currentDialog.id)
   }, 500)
+
+  return response
 }
 
 export function useMazDialogPromise() {
@@ -96,14 +100,13 @@ export function useMazDialogPromise() {
     data,
     dialogState,
     showDialogAndWaitChoice,
-    removeDialogFromState,
-    rejectDialog: async (currentDialog: State, response: unknown = new Error('cancel'), onClick?: () => unknown) => {
+    reject: async (currentDialog: State, response: unknown = 'reject', onClick?: () => unknown) => {
       await onClick?.()
       return responseDialog('reject', currentDialog, response)
     },
-    resolveDialog: async (currentDialog: State, response: unknown = 'accept', onClick?: () => unknown) => {
+    accept: async (currentDialog: State, response: unknown = 'accept', onClick?: () => unknown) => {
       await onClick?.()
-      return responseDialog('resolve', currentDialog, response)
+      return responseDialog('accept', currentDialog, response)
     },
   }
 }

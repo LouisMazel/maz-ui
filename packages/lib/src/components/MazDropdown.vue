@@ -317,6 +317,7 @@ watch(
     role="menu"
     :style="styleProp"
     :prefer-position
+    color="background"
     :position
     :disabled
     :keep-open-on-hover="trigger === 'hover'"
