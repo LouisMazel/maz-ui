@@ -67,6 +67,7 @@ const buttons: DialogCustomButton[] = [
     text: 'Cancel',
     type: 'reject',
     color: 'destructive',
+    outlined: true,
     response: new Error('cancel'),
     size: 'sm',
   },
@@ -108,6 +109,7 @@ async function askToUser() {
     :data="dataPromiseOne"
     identifier="one"
   />
+
   <MazDialogPromise identifier="two" :buttons="buttons">
     <template #title>
       Do you really want to delete this user?
@@ -136,7 +138,7 @@ async function askToUser() {
 ## Types
 
 ```ts
-interface DialogData {
+interface MazDialogPromiseData {
   /**
    * Dialog title
    */
@@ -146,30 +148,14 @@ interface DialogData {
    */
   message?: string
   /**
-   * Dialog cancel text
-   * @default 'Cancel'
-   */
-  cancelText?: string
-  /**
-   * Dialog cancel button
-   */
-  cancelButton?: false | DialogButton
-  /**
-   * Dialog confirm text
-   * @default 'Confirm'
-   */
-  confirmText?: string
-  /**
-   * Dialog confirm button
-   */
-  confirmButton?: false | DialogButton
-  /**
    * Dialog custom buttons
+   * @default [{ text: 'Confirm', color: 'success', type: 'accept' }, { text: 'Cancel', color: 'destructive', type: 'reject' }]
+   * @type {MazDialogPromiseButton[]}
    */
-  buttons?: DialogCustomButton[]
+  buttons?: MazDialogPromiseButton[]
 }
 
-interface DialogButton {
+interface MazDialogPromiseButton {
   text?: string
   block?: boolean
   color?: Color
@@ -178,23 +164,19 @@ interface DialogButton {
   outlined?: boolean
   rounded?: boolean
   size?: Size
-}
-
-type DialogCustomButton = DialogButton & {
   text: string
-  type: 'resolve' | 'reject'
+  type: 'accept' | 'reject'
   response?: unknown
 }
 
-type Color
-  = | 'primary'
+type Color = 'primary'
     | 'secondary'
     | 'info'
     | 'success'
     | 'warning'
     | 'destructive'
-    | 'white'
-    | 'black'
+    | 'accent'
+    | 'contrast'
     | 'transparent'
 
 type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
@@ -206,7 +188,7 @@ type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   import { ref } from 'vue'
   import { useToast } from 'maz-ui/src/composables/useToast'
   import MazDialogPromise, {
-    useMazDialogPromise, type DialogCustomButton, type DialogData
+    useMazDialogPromise, type MazDialogPromiseButton, type MazDialogPromiseData
   } from 'maz-ui/src/components/MazDialogPromise.vue'
 
   const { showDialogAndWaitChoice, data } = useMazDialogPromise()
@@ -236,17 +218,18 @@ type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
     message: 'Are you sure you want to delete this user?',
   }
 
-  const buttons: DialogCustomButton[] = [
+  const buttons: MazDialogPromiseButton[] = [
     {
       text: 'Cancel',
       type: 'reject',
       color: 'destructive',
+      outlined: true,
       response: new Error('cancel'),
       size: 'sm',
     },
     {
       text: 'Delete!',
-      type: 'resolve',
+      type: 'accept',
       color: 'success',
       response: 'delete',
       size: 'lg',

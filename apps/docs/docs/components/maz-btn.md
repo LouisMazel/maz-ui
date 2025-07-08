@@ -75,7 +75,8 @@ Use the attribute `color` with a value in this [list](./../guide/colors.md), the
 <MazBtn color="destructive">destructive</MazBtn>
 <MazBtn color="contrast">contrast</MazBtn>
 <MazBtn color="accent">accent</MazBtn>
-<MazBtn color="gray">gray</MazBtn>
+<MazBtn color="background">background</MazBtn>
+<MazBtn color="transparent">transparent</MazBtn>
 ```
 
   </template>
@@ -101,7 +102,8 @@ Transform the button into an outlined button with the attribute `outlined`
 <MazBtn color="destructive" outlined>destructive</MazBtn>
 <MazBtn color="contrast" outlined>contrast</MazBtn>
 <MazBtn color="accent" outlined>accent</MazBtn>
-<MazBtn color="gray" outlined>gray</MazBtn>
+<MazBtn color="background" outlined>background</MazBtn>
+<MazBtn color="transparent" outlined>transparent</MazBtn>
 ```
 
   </template>
@@ -141,6 +143,7 @@ const colors = [
   'contrast',
   'accent',
   'transparent',
+  'background',
 ]
 </script>
 
@@ -184,6 +187,7 @@ Better in light mode
 <MazBtn color="destructive" pastel>destructive</MazBtn>
 <MazBtn color="contrast" pastel>contrast</MazBtn>
 <MazBtn color="accent" pastel>accent</MazBtn>
+<MazBtn color="background" pastel>background</MazBtn>
 <MazBtn color="transparent" pastel>transparent</MazBtn>
 ```
 
@@ -405,14 +409,41 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 
 :::
 
+### Use [@maz-ui/icons](./../guide/icons.md)
+
+::: details View code
+
+```vue
+<script lang="ts" setup>
+import MazBtn from 'maz-ui/components/MazBtn'
+
+import { MazCheck, MazHome, MazCommandLine } from '@maz-ui/icons'
+</script>
+
+<template>
+  <MazBtn :left-icon="MazCheck" size="sm">
+    left-icon
+  </MazBtn>
+  <MazBtn :right-icon="MazHome">
+    right-icon
+  </MazBtn>
+  <MazBtn fab :icon="MazCommandLine" size="lg" />
+</template>
+```
+
+:::
+
 ### Use [vite-svg-loader](https://github.com/jpkleemans/vite-svg-loader)
 
 ::: details View code
 
 ```vue
 <script lang="ts" setup>
-import { MazCheck, MazCommandLine, MazHome } from '@maz-ui/icons'
 import MazBtn from 'maz-ui/components/MazBtn'
+
+import MazCheck from '@maz-ui/icons/svg/check.svg?component'
+import MazHome from '@maz-ui/icons/svg/home.svg?component'
+import MazCommandLine from '@maz-ui/icons/svg/command-line.svg?component'
 </script>
 
 <template>
@@ -484,6 +515,7 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
     'warning',
     'destructive',
     'contrast',
+    'background',
     'transparent',
   ]
 

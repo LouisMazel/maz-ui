@@ -5,6 +5,7 @@ export const guide = {
   collapsed: true,
   items: [
     { text: 'Getting Started', link: '/guide/getting-started' },
+    { text: 'Vue', link: '/guide/vue' },
     { text: 'Nuxt', link: '/guide/nuxt' },
     { text: 'Theming', link: '/guide/theme' },
     { text: 'Translations (i18n)', link: '/guide/translations' },
