@@ -13,16 +13,27 @@ It is a simple and easy-to-use plugin that allows you to display messages to you
 This plugin has a composable for easier use, after installing it you can use [useDialog](./../composables/use-dialog.md)
 :::
 
+## Installation
+
+```ts
+import { DialogPlugin, DialogOptions } from 'maz-ui/plugins/dialog'
+import { createApp } from 'vue'
+
+const app = createApp(App)
+
+app.use(DialogPlugin)
+
+app.mount('#app')
+```
+
 ## Basic usage
 
 You can display a simple dialog with a title and a message. The dialog will have a confirm and a cancel button. The confirm button will resolve the promise and the cancel button will reject it.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-wrap maz-gap-2">
-    <MazBtn color="contrast" @click="openDialogTexts">
-      Show dialog
-    </MazBtn>
-  </div>
+  <MazBtn color="contrast" @click="openDialog">
+    Show dialog
+  </MazBtn>
 
 <template #code>
 
@@ -34,33 +45,20 @@ const dialog = useDialog()
 const toast = useToast()
 
 async function openDialog() {
-  const { promise } = dialog.open({
+  dialog.open({
     title: 'Dialog title',
     message: 'Dialog message',
-    buttons: [
-      {
-        text: 'Confirm Action',
-        color: 'success',
-      },
-      {
-        text: 'Cancel Action',
-        color: 'destructive',
-      },
-    ],
+    onAccept: (response) => {
+      toast.success(`Dialog accepted`, {
+        position: 'bottom',
+      })
+    },
+    onReject: (response) => {
+      toast.error(`Dialog rejected`, {
+        position: 'bottom',
+      })
+    },
   })
-
-  try {
-    await promise
-
-    toast.success('Dialog confirmed', {
-      position: 'bottom',
-    })
-  }
-  catch (error) {
-    toast.error('Dialog cancelled', {
-      position: 'bottom',
-    })
-  }
 }
 </script>
 
@@ -104,7 +102,7 @@ function openDialogActions() {
         color: 'contrast',
         outlined: true,
         onClick: () => {
-          toast.info('Custom button clicked', {
+          toast.info('Cancel button clicked', {
             position: 'bottom',
           })
         },
@@ -113,7 +111,7 @@ function openDialogActions() {
         text: 'Confirm 🚀',
         color: 'contrast',
         onClick: () => {
-          toast.success('Custom button 2 clicked', {
+          toast.success('Confirm button clicked', {
             position: 'bottom',
           })
         },
@@ -133,14 +131,14 @@ function openDialogActions() {
   </template>
 </ComponentDemo>
 
-## Custom promised buttons
+## Custom response
 
-The buttons property allows you to display custom buttons in the dialog and replace the default confirm and cancel buttons. Each button can have a custom action to execute when clicked. The type property allows you to define the type of the button. The response property allows you to define the response of the promise when the button is clicked.
+The buttons property allows you to display custom buttons in the dialog and replace the default confirm and cancel buttons. Each button can have a custom response to return when clicked. The type property allows you to define the type of the button. The response property allows you to define the response of the promise when the button is clicked.
 
 <ComponentDemo>
   <div class="maz-flex maz-flex-wrap maz-gap-2">
-    <MazBtn color="contrast" @click="openDialogPromised">
-      Show dialog with custom promised buttons
+    <MazBtn color="contrast" @click="openDialogResponse">
+      Show dialog with custom response
     </MazBtn>
   </div>
 
@@ -153,7 +151,7 @@ import { useDialog, useToast } from 'maz-ui/composables'
 const dialog = useDialog()
 const toast = useToast()
 
-async function openDialogPromised() {
+async function openDialogResponse() {
   const { promise } = dialog.open({
     title: 'Dialog title',
     message: 'Dialog message',
@@ -168,23 +166,20 @@ async function openDialogPromised() {
         text: 'Accept',
         type: 'resolve',
         response: 'Accepted Response',
-        color: 'success',
+        color: 'secondary',
       }
     ],
+    onAccept: (response) => {
+      toast.success(`Dialog accepted with: ${response}`, {
+        position: 'bottom',
+      })
+    },
+    onReject: (response) => {
+      toast.error(`Dialog rejected with: ${response}`, {
+        position: 'bottom',
+      })
+    },
   })
-
-  try {
-    const reponse = await promise
-
-    toast.success(`Dialog resolved with: ${reponse}`, {
-      position: 'bottom',
-    })
-  }
-  catch (error) {
-    toast.error(`Dialog rejected with: ${error}`, {
-      position: 'bottom',
-    })
-  }
 }
 </script>
 
@@ -241,40 +236,14 @@ function openAndCloseDialog() {
   </template>
 </ComponentDemo>
 
-## Install
-
-`main.ts` or `main.js`
-
-```ts
-import { DialogOptions, installDialog } from 'maz-ui/plugins'
-import { createApp } from 'vue'
-
-const app = createApp(App)
-
-const dialogOptions: DialogOptions = {
-  identifier: 'my-dialog',
-  promiseCallback: () => {
-    console.log('Dialog closed')
-  },
-}
-
-app.use(installDialog, dialogOptions)
-
-app.mount('#app')
-```
-
 ## Options
 
 ### Usage
 
 ```ts
-import { type DialogHandler, useInjectStrict } from 'maz-ui/composables'
+import { useDialog } from 'maz-ui/composables/useDialog'
 
-const dialog = useInjectStrict<DialogHandler>('mazDialog')
-/*
- * or use `useDialog` composable to get the dialog handler
- * const dialog = useDialog()
- */
+const dialog = useDialog()
 
 const options: DialogOptions = {
   title: 'Dialog title',
@@ -295,13 +264,25 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
    * @default 'main-dialog'
    */
   identifier?: string
-  /** Is callback function to execute when the dialog is resolved */
-  promiseCallback?: () => unknown
   /**
    * Custom buttons to display in the dialog and replace the default confirm and cancel buttons
-   * @type {MazDialogPromiseButton[]}
+   * @default [{ text: 'Confirm', color: 'success', type: 'accept' }, { text: 'Cancel', color: 'destructive', type: 'reject' }]
    */
   buttons?: MazDialogPromiseButton[]
+  /**
+   * Function to execute when the dialog is accepted (when the user click on the confirm button)
+   * Only available if the button type is 'accept'
+   */
+  onAccept?: () => unknown
+  /**
+   * Function to execute when the dialog is rejected (when the user click on the cancel button)
+   * Only available if the button type is 'reject'
+   */
+  onReject?: () => unknown
+  /**
+   * Function to execute when the dialog is closed
+   */
+  onClose?: () => unknown
 }
 ```
 
@@ -312,53 +293,20 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
   const toast = useToast()
 
   async function openDialog() {
-    const { promise } = dialog.open({
+    dialog.open({
       title: 'Dialog title',
       message: 'Dialog message',
+      onAccept: (response) => {
+        toast.success(`Dialog accepted`, {
+          position: 'bottom',
+        })
+      },
+      onReject: (response) => {
+        toast.error(`Dialog rejected`, {
+          position: 'bottom',
+        })
+      },
     })
-
-    try {
-      await promise
-
-      toast.success('Dialog confirmed', {
-        position: 'bottom',
-      })
-    } catch (error) {
-      toast.error('Dialog cancelled', {
-        position: 'bottom',
-      })
-    }
-  }
-
-  async function openDialogTexts() {
-    const { promise } = dialog.open({
-      title: 'Dialog title',
-      message: 'Dialog message',
-      buttons: [
-        {
-          text: 'Confirm Action',
-          color: 'success',
-          type: 'resolve',
-        },
-        {
-          text: 'Cancel Action',
-          color: 'destructive',
-          type: 'reject',
-        },
-      ],
-    })
-
-    try {
-      await promise
-
-      toast.success('Dialog confirmed', {
-        position: 'bottom',
-      })
-    } catch (error) {
-      toast.error('Dialog cancelled', {
-        position: 'bottom',
-      })
-    }
   }
 
   async function openDialogActions() {
@@ -371,8 +319,7 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
           color: 'destructive',
           outlined: true,
           onClick: () => {
-            console.log('Custom button clicked')
-            toast.info('Custom button clicked', {
+            toast.error('Cancel button clicked', {
               position: 'bottom',
             })
           },
@@ -381,16 +328,21 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
           text: 'Confirm 🚀',
           color: 'primary',
           onClick: () => {
-            toast.success('Custom button 2 clicked', {
+            toast.success('Confirm button clicked', {
               position: 'bottom',
             })
           },
         }
       ],
+      onClose: () => {
+        toast.info('Dialog closed', {
+          position: 'bottom',
+        })
+      },
     })
   }
 
-  async function openDialogPromised() {
+  async function openDialogResponse() {
     const { promise } = dialog.open({
       title: 'Dialog title',
       message: 'Dialog message',
@@ -408,19 +360,17 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
           color: 'secondary',
         }
       ],
+      onAccept: (response) => {
+        toast.success(`Dialog accepted with: ${response}`, {
+          position: 'bottom',
+        })
+      },
+      onReject: (response) => {
+        toast.error(`Dialog rejected with: ${response}`, {
+          position: 'bottom',
+        })
+      },
     })
-
-    try {
-      const reponse = await promise
-
-      toast.success(`Dialog resolved with: ${reponse}`, {
-        position: 'bottom',
-      })
-    } catch (error) {
-      toast.error(`Dialog rejected with: ${error}`, {
-        position: 'bottom',
-      })
-    }
   }
 
   async function openAndCloseDialog() {

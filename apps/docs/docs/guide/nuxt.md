@@ -1,15 +1,11 @@
 ---
-title: '@maz-ui/nuxt'
+title: Install maz-ui with Nuxt
 description: The ultimate Nuxt module for Maz-UI - zero-config setup with auto-imports, theming, and powerful features out of the box
 ---
 
 # {{ $frontmatter.title }}
 
 Transform your Nuxt application with the most comprehensive Vue.js UI library integration. **Maz-UI Nuxt Module** provides zero-configuration setup, intelligent auto-imports, and powerful theming capabilities.
-
-::: info
-Compatible with Nuxt v3 and later
-:::
 
 ## ✨ Why Choose Maz-UI for Nuxt?
 
@@ -20,24 +16,30 @@ Compatible with Nuxt v3 and later
 - **🛠️ Developer Experience** - TypeScript support, DevTools integration, and IntelliSense
 - **🎯 Production Ready** - SSR/SSG support with client-side hydration
 
+## Prerequisites
+
+- **Node.js** v18+
+- **Nuxt** 3.0+
+
 ## 🚀 Installation
 
 <div class="maz-flex maz-gap-0.5">
   <NpmBadge package="maz-ui" />
+  <NpmBadge package="@maz-ui/nuxt" />
 </div>
 
 ::: code-group
 
 ```bash [pnpm]
-pnpm add @maz-ui/nuxt
+pnpm add @maz-ui/nuxt maz-ui
 ```
 
 ```bash [npm]
-npm install @maz-ui/nuxt
+npm install @maz-ui/nuxt maz-ui
 ```
 
 ```bash [yarn]
-yarn add @maz-ui/nuxt
+yarn add @maz-ui/nuxt maz-ui
 ```
 
 :::
@@ -340,8 +342,17 @@ const directives = {
 ### Custom Theme Creation
 
 ```ts
-// themes/custom.ts
-export const customTheme = {
+import { definePreset } from '@maz-ui/themes'
+
+export const customTheme = definePreset({
+  base: 'maz-ui',
+  name: 'custom',
+  foundation: {
+    'base-font-size': '14px',
+    'font-family': `Manrope, sans-serif, system-ui, -apple-system`,
+    'radius': '0.7rem',
+    'border-width': '0.0625rem',
+  },
   colors: {
     light: {
       primary: '350 100% 50%', // Custom pink
@@ -368,16 +379,7 @@ export const customTheme = {
       ring: '350 100% 70%',
     }
   },
-  radius: '0.5rem',
-  fontFamily: {
-    sans: ['Inter', 'system-ui', 'sans-serif'],
-  }
-}
-```
-
-```ts
-// nuxt.config.ts
-import { customTheme } from './themes/custom'
+})
 
 export default defineNuxtConfig({
   modules: ['@maz-ui/nuxt'],

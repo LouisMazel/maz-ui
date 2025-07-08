@@ -17,7 +17,7 @@ description: MazBadge is a standalone component to show short text in colored co
 
 ```vue
 <script lang="ts" setup>
-import { MazBadge } from 'maz-ui/components'
+  import MazBadge from 'maz-ui/components/MazBadge'
 </script>
 
 <template>
@@ -29,7 +29,7 @@ import { MazBadge } from 'maz-ui/components'
 
 ## Options
 
-> See all options props [here](#props-events-emitted)
+> See all options props [here](#props)
 
 ### Colors
 
@@ -43,19 +43,19 @@ import { MazBadge } from 'maz-ui/components'
 
 ```vue
 <script lang="ts" setup>
-import { MazBadge } from 'maz-ui/components'
+  import MazBadge from 'maz-ui/components/MazBadge'
 
-const colors = [
-  'primary',
-  'secondary',
-  'info',
-  'success',
-  'warning',
-  'destructive',
-  'contrast',
-  'accent',
-  'gray',
-]
+  const colors = [
+    'primary',
+    'secondary',
+    'info',
+    'success',
+    'warning',
+    'destructive',
+    'contrast',
+    'accent',
+    'background',
+  ]
 </script>
 
 <template>
@@ -77,7 +77,7 @@ const colors = [
 
 ```vue
 <script lang="ts" setup>
-import { MazBadge } from 'maz-ui/components'
+import MazBadge from 'maz-ui/components/MazBadge'
 
 const colors = [
   'primary',
@@ -86,9 +86,9 @@ const colors = [
   'success',
   'warning',
   'destructive',
-  'white',
-  'black',
-  'gray',
+  'contrast',
+  'accent',
+  'background',
 ]
 </script>
 
@@ -111,19 +111,19 @@ const colors = [
 
 ```vue
 <script lang="ts" setup>
-import { MazBadge } from 'maz-ui/components'
+  import MazBadge from 'maz-ui/components/MazBadge'
 
-const colors = [
-  'primary',
-  'secondary',
-  'info',
-  'success',
-  'warning',
-  'destructive',
-  'white',
-  'black',
-  'gray',
-]
+  const colors = [
+    'primary',
+    'secondary',
+    'info',
+    'success',
+    'warning',
+    'destructive',
+    'contrast',
+    'accent',
+    'background',
+  ]
 </script>
 
 <template>
@@ -213,7 +213,7 @@ const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
     'destructive',
     'contrast',
     'accent',
-    'gray',
+    'background',
   ]
 
   const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
