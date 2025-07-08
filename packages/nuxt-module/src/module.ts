@@ -183,13 +183,8 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     // Plugins
 
-    if (moduleOptions.theme !== false) {
-      addPlugin(resolve(_dirname, './runtime/plugins/theme'))
-    }
-
-    if (moduleOptions.translations !== false) {
-      addPlugin(resolve(_dirname, './runtime/plugins/translations'))
-    }
+    addPlugin(resolve(_dirname, './runtime/plugins/theme'))
+    addPlugin(resolve(_dirname, './runtime/plugins/translations'))
 
     // Components
 
@@ -395,7 +390,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       })
     }
 
-    if (moduleOptions.composables.useTheme && moduleOptions.theme !== false) {
+    if (moduleOptions.composables.useTheme) {
       addComposableImport({
         name: 'useTheme',
         path: '@maz-ui/themes/composables/useTheme',
