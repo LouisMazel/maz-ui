@@ -83,6 +83,12 @@ export interface MazGalleryProps {
    * @default 'transparent'
    */
   separatorColor?: string
+  /**
+   * Choose background color of the gallery - Should be a CSS color or CSS variable - Ex: `#000` or `hsl(var(--maz-background-300))`
+   * @type string
+   * @default 'hsl(var(--maz-background-300))'
+   */
+  backgroundColor?: string
 }
 
 const {
@@ -98,11 +104,11 @@ const {
   blur = true,
   scale = true,
   separatorColor = 'transparent',
+  backgroundColor = 'hsl(var(--maz-background-300))',
 } = defineProps<MazGalleryProps>()
 
 onBeforeMount(() => {
   if (displayedCount > 5)
-
     console.warn('[MazUI](m-gallery) The maximum of "displayed-count" is 5')
 })
 
@@ -156,8 +162,8 @@ function shouldHaveRemainingLayer(index: number): boolean {
   <div
     v-if="images.length > 0 || hasEmptyLayer"
     class="m-gallery m-reset-css"
-    :style="[sizeStyle, { '--gallery-separator-color': separatorColor }]"
-    :class="{ 'maz-rounded': radius }"
+    :style="[sizeStyle, { '--gallery-separator-color': separatorColor, '--gallery-background-color': backgroundColor }]"
+    :class="{ '--radius': radius }"
   >
     <section class="m-gallery__wrapper maz-flex maz-flex-1">
       <figure
@@ -220,9 +226,12 @@ function shouldHaveRemainingLayer(index: number): boolean {
     @apply maz-hidden;
   }
 
+  &.--radius {
+    @apply maz-rounded;
+  }
+
   &__item {
-    @apply maz-absolute maz-top-0 maz-m-0 maz-h-1/2 maz-w-full
-        maz-overflow-hidden maz-border-l-2 maz-p-0;
+    @apply maz-absolute maz-top-0 maz-m-0 maz-h-1/2 maz-w-full maz-overflow-hidden maz-border-l-2 maz-p-0;
 
     border-color: var(--gallery-separator-color);
 
@@ -307,7 +316,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
       background-position: center center;
       background-size: cover;
       background-repeat: no-repeat;
-      background-color: hsl(0deg 0% 0% / 50%);
+      background-color: var(--gallery-background-color);
     }
   }
 

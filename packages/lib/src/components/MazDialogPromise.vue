@@ -11,7 +11,7 @@ import type {
   PromiseButton,
   State,
 } from './MazDialogPromise/useMazDialogPromise'
-import { type ComponentPublicInstance, defineAsyncComponent } from 'vue'
+import { type ComponentPublicInstance, type ComputedRef, defineAsyncComponent } from 'vue'
 import { computed, ref } from 'vue'
 
 import MazDialog from './MazDialog.vue'
@@ -34,25 +34,31 @@ export interface MazDialogPromiseInternalProps {
   message?: string
   /**
    * Buttons to display in the footer
-   * @default [{ text: 'Confirm', color: 'success', type: 'resolve' }, { text: 'Cancel', color: 'destructive', type: 'reject' }]
+   * @default [{ text: 'Confirm', color: 'success', type: 'accept' }, { text: 'Cancel', color: 'destructive', type: 'reject' }]
    */
   buttons?: MazDialogPromiseButton[]
 }
 
 export type MazDialogPromiseProps = MazDialogPromiseInternalProps & MazDialogPromiseData & MazDialogProps
 
-const { identifier, message, buttons, title, ...dialogProps } = defineProps<MazDialogPromiseProps>()
+const { identifier, message, buttons, title, modelValue, closeOnEscape = true, ...dialogProps } = defineProps<MazDialogPromiseProps>()
 
 defineEmits<{
-  /** emitted when modal is open */
+  /**
+   * Emitted when modal is open
+   * @property {void} value - void
+   */
   open: [value: void]
-  /** emitted when modal is close */
+  /**
+   * Emitted when modal is close
+   * @property {void} value - void
+   */
   close: [value: void]
 }>()
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
-const { dialogState, rejectDialog, resolveDialog, data: composableData } = useMazDialogPromise()
+const { dialogState, reject, accept, data: composableData } = useMazDialogPromise()
 
 const currentData = computed<MazDialogPromiseData>(() => ({
   ...defaultData,
@@ -67,22 +73,34 @@ const currentModal = computed(
 
 const dialog = ref<ComponentPublicInstance<typeof MazDialog>>()
 
-defineExpose({
-  close: () => dialog.value?.close?.(),
-})
+defineExpose<{
+  close: () => void
+  isActive: ComputedRef<boolean>
+}>({
+      /**
+       * Close the dialog
+       * @description This is used to close the dialog
+       */
+      close: () => dialog.value?.close?.(),
+      /**
+       * Check if the dialog is active
+       * @description This is used to check if the dialog is active
+       */
+      isActive: computed(() => currentModal.value?.isActive ?? modelValue ?? false),
+    })
 
 function isPromiseButton(button: MazDialogPromiseButton): button is PromiseButton {
-  return 'type' in button && (button.type === 'resolve' || button.type === 'reject')
+  return 'type' in button && (button.type === 'accept' || button.type === 'reject')
 }
 
 function buttonClick(currentModal: State, button: MazDialogPromiseButton) {
   if (isPromiseButton(button)) {
-    return button.type === 'resolve'
-      ? resolveDialog(currentModal, button.response)
-      : rejectDialog(currentModal, button.response)
+    return button.type === 'accept'
+      ? accept(currentModal, button.response)
+      : reject(currentModal, button.response)
   }
 
-  return resolveDialog(currentModal, undefined, button.onClick)
+  return accept(currentModal, undefined, button.onClick)
 }
 </script>
 
@@ -90,10 +108,11 @@ function buttonClick(currentModal: State, button: MazDialogPromiseButton) {
   <MazDialog
     ref="dialog"
     v-bind="{ ...$attrs, ...dialogProps }"
+    :close-on-escape="closeOnEscape"
     :model-value="currentModal?.isActive ?? modelValue ?? false"
     @close="$emit('close', $event)"
     @open="$emit('open', $event)"
-    @update:model-value="rejectDialog(currentModal)"
+    @update:model-value="reject(currentModal)"
   >
     <template #title>
       <!--
@@ -106,12 +125,12 @@ function buttonClick(currentModal: State, button: MazDialogPromiseButton) {
     <template #default>
       <!--
         @slot Default slot - Place your content
-          @binding {Function} resolve resolve function
+          @binding {Function} accept accept function
           @binding {Function} reject reject function
       -->
       <slot
-        :resolve="(reason?: unknown) => resolveDialog(currentModal, reason)"
-        :reject="(reason?: unknown) => rejectDialog(currentModal, reason)"
+        :accept="(reason?: unknown) => accept(currentModal, reason)"
+        :reject="(reason?: unknown) => reject(currentModal, reason)"
       >
         {{ message || currentData?.message }}
       </slot>
@@ -119,12 +138,12 @@ function buttonClick(currentModal: State, button: MazDialogPromiseButton) {
     <template #footer>
       <!--
         @slot Footer slot
-          @binding {Function} resolve resolve function
+          @binding {Function} accept accept function
           @binding {Function} reject reject function
       -->
       <slot
-        :resolve="(reason?: unknown) => resolveDialog(currentModal, reason)"
-        :reject="(reason?: unknown) => rejectDialog(currentModal, reason)"
+        :accept="(reason?: unknown) => accept(currentModal, reason)"
+        :reject="(reason?: unknown) => reject(currentModal, reason)"
         name="footer-button"
       >
         <div class="maz-flex maz-items-center maz-gap-2">

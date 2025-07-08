@@ -6,12 +6,18 @@ import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
 import { computed } from 'vue'
 import MazBtn from './MazBtn.vue'
 
-const props = withDefaults(defineProps<MazPaginationProps>(), {
+const {
+  modelValue,
+  buttonProps,
+  pageRange,
+  resultsSize,
+  activeColor,
+  totalPages,
+  loading,
+} = withDefaults(defineProps<MazPaginationProps>(), {
   modelValue: 1,
-  buttonProps: undefined,
   pageRange: 1,
-  resultsSize: undefined,
-  activeColor: 'contrast',
+  activeColor: 'background',
   size: 'md',
 })
 const emits = defineEmits<
@@ -24,7 +30,7 @@ const emits = defineEmits<
 
 const DEFAULT_BUTTONS_PROPS: Partial<MazBtnProps> = {
   size: 'md',
-  color: 'contrast',
+  color: 'background',
   outlined: true,
   fab: true,
 }
@@ -33,7 +39,6 @@ export interface MazPaginationProps {
   /**
    * The current page number.
    * @model
-   * @type {number}
    * @default 1
    */
   modelValue?: number
@@ -45,16 +50,15 @@ export interface MazPaginationProps {
   buttonProps?: Partial<MazBtnProps>
   /**
    * Number of results in this page. Useful for accessibility to set aria-setsize attribute. Partial of MazBtn props.
-   * @type {number}
    * @default undefined
    */
   resultsSize?: number
   /**
    * Color of the active button.
-   * @values 'contrast', 'primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent'
+   * @values 'contrast', 'primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent', 'background'
    * @default 'contrast'
    */
-  activeColor?: MazColor
+  activeColor?: MazColor | 'background'
   /**
    * Size of the buttons.
    * @values 'mini', 'xs', 'sm', 'md', 'lg', 'xl'
@@ -82,56 +86,56 @@ const { t } = useTranslations()
 
 const buttonsPropsMerged = computed<MazBtnProps>(() => ({
   ...DEFAULT_BUTTONS_PROPS,
-  ...props.buttonProps,
+  ...buttonProps,
 }))
 
-const previousPage = computed(() => (props.modelValue > 1 ? props.modelValue - 1 : 1))
+const previousPage = computed(() => (modelValue > 1 ? modelValue - 1 : 1))
 const nextPage = computed(() =>
-  props.modelValue < props.totalPages ? props.modelValue + 1 : props.totalPages,
+  modelValue < totalPages ? modelValue + 1 : totalPages,
 )
 
 const allPages = computed(() =>
-  Array.from({ length: props.totalPages }, (_, index) => {
+  Array.from({ length: totalPages }, (_, index) => {
     const itemNumber = index + 1
     return {
       number: itemNumber,
-      isActive: itemNumber === props.modelValue,
-      loading: itemNumber === props.modelValue && props.loading,
+      isActive: itemNumber === modelValue,
+      loading: itemNumber === modelValue && loading,
     }
   }),
 )
 
 const firstOne = computed(() =>
-  props.modelValue - props.pageRange > 1 ? allPages.value.slice(0, 1) : [],
+  modelValue - pageRange > 1 ? allPages.value.slice(0, 1) : [],
 )
 
 const lastOne = computed(() =>
-  props.modelValue < props.totalPages - props.pageRange ? allPages.value.slice(-1) : [],
+  modelValue < totalPages - pageRange ? allPages.value.slice(-1) : [],
 )
 
 const rangeStartAt = computed(() => {
-  const baseStart = props.modelValue - props.pageRange - 1
+  const baseStart = modelValue - pageRange - 1
   if (baseStart < 0)
     return 0
-  if (baseStart > props.totalPages - props.pageRange)
-    return props.totalPages - props.pageRange
+  if (baseStart > totalPages - pageRange)
+    return totalPages - pageRange
   return baseStart
 })
 const rangeEndAt = computed(() => {
-  const baseEnd = props.modelValue + props.pageRange
-  if (baseEnd > props.totalPages)
-    return props.totalPages
-  if (baseEnd < props.pageRange)
-    return props.pageRange
+  const baseEnd = modelValue + pageRange
+  if (baseEnd > totalPages)
+    return totalPages
+  if (baseEnd < pageRange)
+    return pageRange
   return baseEnd
 })
 const range = computed(() => allPages.value.slice(rangeStartAt.value, rangeEndAt.value))
 
 const firstDivider = computed(() =>
-  props.modelValue - props.pageRange > 2 ? [{ divider: true }] : [],
+  modelValue - pageRange > 2 ? [{ divider: true }] : [],
 )
 const lastDivider = computed(() =>
-  props.modelValue < props.totalPages - props.pageRange - 1 ? [{ divider: true }] : [],
+  modelValue < totalPages - pageRange - 1 ? [{ divider: true }] : [],
 )
 
 const pages = computed(() => [
@@ -143,7 +147,7 @@ const pages = computed(() => [
 ])
 
 function setPageNumber(page: number) {
-  if (page === props.modelValue)
+  if (page === modelValue)
     return
 
   emits('update:model-value', page)
@@ -297,10 +301,6 @@ function setPageNumber(page: number) {
     li {
       @apply maz-m-0;
     }
-  }
-
-  .m-btn {
-    @apply maz-border-divider dark:maz-border-divider;
   }
 }
 </style>

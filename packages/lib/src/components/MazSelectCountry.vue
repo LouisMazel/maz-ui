@@ -246,7 +246,7 @@ const flagUrl = computed(() => {
 </script>
 
 <template>
-  <div class="m-select-country" :class="[className, { '--no-flags': hideFlags }]" :style="style">
+  <div class="m-select-country m-reset-css" :class="[className, { '--no-flags': hideFlags }]" :style="style">
     <MazSelect
       :id="instanceId"
       :model-value="modelValue"

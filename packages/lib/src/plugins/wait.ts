@@ -56,12 +56,12 @@ export class WaitHandler {
 
 export const waitInstance = new WaitHandler()
 
-export const WaitPlugin: Plugin = {
+export const WaitPlugin = {
   install: (app) => {
     app.provide('mazWait', waitInstance)
     app.config.globalProperties.$mazWait = waitInstance
   },
-}
+} satisfies Plugin
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {

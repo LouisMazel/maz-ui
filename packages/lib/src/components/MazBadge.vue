@@ -1,18 +1,40 @@
 <script lang="ts" setup>
 import type { MazColor } from './types'
 
-export type MazBadgeColor = MazColor | 'gray'
+export type MazBadgeColor = MazColor | 'background'
 export type MazBadgeRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 
 export interface MazBadgeProps {
+  /**
+   * Color of the badge
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'background'`
+   * @default primary
+   */
   color?: MazBadgeColor
+  /**
+   * Size of the badge
+   * @default 0.8em
+   */
   size?: string
+  /**
+   * Will not wrap the text
+   * @default false
+   */
   nowrap?: boolean
+  /**
+   * Will add a border to the badge
+   * @default false
+   */
   outlined?: boolean
+  /**
+   * Will add a pastel style to the badge
+   * @default false
+   */
   pastel?: boolean
   /**
    * Size radius of the component's border
    * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+   * @default md
    */
   roundedSize?: MazBadgeRoundedSize
 }
@@ -37,12 +59,13 @@ withDefaults(defineProps<MazBadgeProps>(), {
     ]"
     :style="{ fontSize: size }"
   >
+    <!-- @slot Badge content -->
     <slot />
   </span>
 </template>
 
 <style lang="postcss" scoped>
-  .m-badge {
+.m-badge {
   @apply maz-inline-flex maz-items-center maz-justify-center maz-border maz-align-top maz-font-semibold;
 
   padding: 0.25em 0.5em;
@@ -154,7 +177,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
 
     &.--pastel {
-      @apply maz-bg-contrast-100 maz-border-contrast-100 maz-text-contrast;
+      @apply maz-bg-contrast-100 maz-border-contrast-100 maz-text-contrast-foreground;
     }
   }
 
@@ -167,6 +190,18 @@ withDefaults(defineProps<MazBadgeProps>(), {
 
     &.--pastel {
       @apply maz-border-accent-100 maz-bg-accent-100 maz-text-accent;
+    }
+  }
+
+  &.--background {
+    @apply maz-border-surface-600 maz-bg-surface maz-text-surface-foreground;
+
+    &.--outlined {
+      @apply maz-border-surface-600 maz-bg-transparent maz-text-surface-foreground;
+    }
+
+    &.--pastel {
+      @apply maz-border-surface-100 maz-bg-surface-100 maz-text-surface-foreground;
     }
   }
 }
