@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { ComponentPublicInstance, StyleValue } from 'vue'
-import type { MazBadgeColor, MazBadgeRoundedSize } from './MazBadge.vue'
+import type { MazBadgeProps } from './MazBadge.vue'
 import type { MazTabsProvide } from './MazTabs.vue'
 import { sleep } from '@maz-ui/utils/src/utils/sleep.js'
 import {
@@ -64,15 +64,24 @@ export interface MazTabsBarProps {
 
 export type MazTabsBarItem
   = | {
+    /**
+     * Label of the tab
+     */
     label: string
+    /**
+     * Will disable the tab
+     * @default false
+     */
     disabled?: boolean
-    badge?: {
+    /**
+     * Badge to display in the tab
+     * Inherit all props of MazBadge component
+     */
+    badge?: MazBadgeProps & {
+      /**
+       * Content of the badge
+       */
       content: string | number | boolean
-      color?: MazBadgeColor
-      pastel?: boolean
-      outlined?: boolean
-      size?: string
-      roundedSize?: MazBadgeRoundedSize
     }
   }
   | string
@@ -245,10 +254,7 @@ onMounted(() => {
 
           <MazBadge
             v-if="item.badge"
-            :color="item.badge.color"
-            :pastel="item.badge.pastel"
-            :outlined="item.badge.outlined"
-            :rounded-size="item.badge.roundedSize"
+            v-bind="item.badge"
             :size="item.badge.size ?? '0.7rem'"
             class="m-tabs-bar__item__badge"
           >

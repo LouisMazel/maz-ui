@@ -34,6 +34,7 @@ defineEmits<{
 const DEFAULT_GALLERY_OPTIONS: MazGalleryProps = {
   displayedCount: 3,
   remaining: false,
+  zoom: !href && !to,
   width: 200,
   height: 150,
 }

@@ -25,12 +25,10 @@ defineOptions({
 
 const {
   modelValue,
-  title = undefined,
-  hideCloseButton = false,
   maxWidth = '100%',
   minWidth = '32rem',
-  scrollable = false,
-  persistent = false,
+  scrollable,
+  closeOnEscape = true,
   ...backdropProps
 } = defineProps<DialogProps & MazBackdropProps>()
 
@@ -69,6 +67,10 @@ const attrs = useAttrs()
 const backdrop = ref<ComponentPublicInstance<typeof MazBackdrop>>()
 
 defineExpose({
+  /**
+   * Close the dialog
+   * @description This is used to close the dialog
+   */
   close: () => backdrop.value?.close?.(),
 })
 
@@ -105,6 +107,7 @@ if (scrollable) {
     transition-name="modal-anim"
     aria-labelledby="dialogTitle"
     aria-describedby="dialogDesc"
+    :close-on-escape="closeOnEscape"
     content-padding
     :persistent
     justify="center"

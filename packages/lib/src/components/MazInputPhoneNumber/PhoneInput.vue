@@ -99,6 +99,10 @@ watch(() => modelValue.value, (newValue) => {
 const inputRef = useTemplateRef<ComponentPublicInstance>('input')
 
 defineExpose({
+  /**
+   * Focus the input
+   * @description This is used to focus the input
+   */
   focus: () => {
     inputRef.value?.$el.querySelector('input')?.focus()
   },
