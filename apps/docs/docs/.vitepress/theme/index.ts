@@ -1,13 +1,8 @@
 /* eslint-disable ts/ban-ts-comment */
-import type { AosOptions, ToasterOptions } from 'maz-ui/plugins'
 import type { Theme } from 'vitepress'
 
 // @ts-ignore
 import * as components from 'maz-ui/src/components/index.js'
-// @ts-ignore
-import { vFullscreenImgInstall } from 'maz-ui/src/directives/vFullscreenImg.js'
-// @ts-ignore
-import { AosPlugin, DialogPlugin, ToasterPlugin, WaitPlugin } from 'maz-ui/src/plugins/index.js'
 // @ts-ignore
 import { MazUi } from 'maz-ui/src/plugins/maz-ui.js'
 
@@ -37,6 +32,23 @@ export default {
       translations: {
         locale: 'fr',
       },
+      plugins: {
+        dialog: true,
+        toast: {
+          persistent: false,
+          position: 'bottom-right',
+          timeout: 10_000,
+        },
+        wait: true,
+        aos: {
+          delay: 500,
+          animation: {
+            duration: 400,
+            once: false,
+            delay: 0,
+          },
+        },
+      },
     })
 
     app.provide('mazIconPath', '/icons')
@@ -47,27 +59,6 @@ export default {
     Object.entries(components).forEach(([componentName, component]) => {
       app.component(componentName, component as Component)
     })
-
-    const toasterOptions: ToasterOptions = {
-      persistent: false,
-      position: 'bottom-right',
-      timeout: 10_000,
-    }
-    app.use(ToasterPlugin, toasterOptions)
-
-    const aosOptions: AosOptions = {
-      delay: 500,
-      animation: {
-        duration: 400,
-        once: false,
-        delay: 0,
-      },
-    }
-    app.use(AosPlugin, aosOptions)
-
-    app.use(WaitPlugin)
-    app.use(DialogPlugin)
-    app.use(vFullscreenImgInstall)
 
     watch(
       () => route.path,

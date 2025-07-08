@@ -624,14 +624,14 @@ When you not specify a fallback position, the popover will fallback on the best 
     <MazPopover
       role="tooltip"
       trigger="hover"
-      :delay="500"
+      :delay="1000"
       position="right"
     >
       <template #trigger>
         <MazInformationCircle class="maz-cursor-help maz-text-info maz-text-xl" />
       </template>
       <div class="maz-p-2 maz-max-w-48">
-        <p class="maz-text-xs">This tooltip has a 500ms delay before showing</p>
+        <p class="maz-text-xs">This tooltip has a 1000ms delay before showing</p>
       </div>
     </MazPopover>
   </div>
@@ -766,9 +766,7 @@ const isOpen = ref(false)
     </MazPopover>
     <MazPopover position="bottom-end">
       <template #trigger>
-        <MazBtn color="transparent" size="sm">
-          <MazIcon name="ellipsis-vertical" />
-        </MazBtn>
+        <MazBtn color="transparent" fab :icon="MazEllipsisVertical" />
       </template>
       <div class="maz-py-1 maz-min-w-32">
         <button class="maz-w-full maz-px-3 maz-py-2 maz-text-left maz-text-sm hover:maz-bg-surface-400">
@@ -1253,7 +1251,7 @@ MazPopover follows WAI-ARIA guidelines:
 <script setup>
 import { ref, reactive } from 'vue'
 import MazPopover from 'maz-ui/src/components/MazPopover.vue'
-import { MazInformationCircle } from '@maz-ui/icons/src/index.js'
+import { MazInformationCircle, MazEllipsisVertical } from '@maz-ui/icons/src/index.js'
 
 const isOpen = ref(false)
 const events = ref([])

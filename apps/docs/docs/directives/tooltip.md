@@ -115,6 +115,9 @@ import { vTooltip } from 'maz-ui/directives'
     <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'contrast' }" color="contrast">
       Contrast
     </MazBtn>
+    <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'default' }" color="background">
+      Background
+    </MazBtn>
   </div>
 
 <template #code>
@@ -150,6 +153,10 @@ import { vTooltip } from 'maz-ui/directives'
 
 <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'contrast' }" color="contrast">
   Contrast
+</MazBtn>
+
+<MazBtn v-tooltip="{ text: 'Tooltip text', color: 'default' }" color="background">
+  Background
 </MazBtn>
 ```
 

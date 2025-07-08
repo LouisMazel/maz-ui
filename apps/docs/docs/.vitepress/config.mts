@@ -113,6 +113,10 @@ export default defineConfig({
             res.writeHead(301, { Location: '/composables/use-display-names' })
             res.end()
           })
+          server.middlewares.use('/plugins/toaster', (req, res) => {
+            res.writeHead(301, { Location: '/plugins/toast' })
+            res.end()
+          })
         },
       },
     ],

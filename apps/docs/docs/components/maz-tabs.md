@@ -189,21 +189,27 @@ You can choose the name of this query parameter with the props `query-param` `@d
 ```ts
 type MazTabsBarItem
   = | {
+    /**
+     * Label of the tab
+     */
     label: string
+    /**
+     * Will disable the tab
+     * @default false
+     */
     disabled?: boolean
-    badge?: {
-      content: string | number
-      color?: BadgeColor
-      pastel?: boolean
-      outlined?: boolean
-      size?: string
-      /** @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'` */
-      roundedSize?: BadgeRoundedSize
+    /**
+     * Badge to display in the tab
+     * Inherit all props of MazBadge component
+     */
+    badge?: MazBadgeProps & {
+      /**
+       * Content of the badge
+       */
+      content: string | number | boolean
     }
   }
   | string
-
-type MazTabsBarItems = MazTabsBarItem[]
 ```
 
 ## Props & Events emitted

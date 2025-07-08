@@ -39,9 +39,9 @@ import MazInput from 'maz-ui/components/MazInput'
 import { installToaster, ToasterHandler } from 'maz-ui'
 
 // ✅ AFTER - Required import
-import { installToaster, ToasterHandler } from 'maz-ui/plugins'
+import { ToastPlugin, ToastHandler } from 'maz-ui/plugins'
 // or better
-import { installToaster, ToasterHandler } from 'maz-ui/plugins/toaster'
+import { ToastPlugin, ToastHandler } from 'maz-ui/plugins/toast'
 ```
 
 #### Directives (BREAKING CHANGE)

@@ -1,6 +1,6 @@
 ---
 title: wait
-description: Plugins to manage your loading states
+description: A comprehensive loading state management plugin for Vue.js that provides easy-to-use utilities for handling async operations, loading indicators, and user feedback during data processing or any other async operation
 ---
 
 # {{ $frontmatter.title }}
@@ -11,11 +11,24 @@ description: Plugins to manage your loading states
 This plugin has a composable for easier use, after installing it you can use [useWait](./../composables/use-wait.md)
 :::
 
+## Installation
+
+```ts
+import { WaitPlugin } from 'maz-ui/plugins/wait'
+import { createApp } from 'vue'
+
+const app = createApp(App)
+
+app.use(WaitPlugin)
+app.mount('#app')
+```
+
 ## Basic usage
 
 <MazBtn @click="submitData" :loading="wait.isLoading('DATA_SUBMITTING')">
-Submit Data
+  Submit Data
 </MazBtn>
+
 <br />
 
 <div v-if="submitted" style="padding: 20px; background-color: hsl(var(--maz-background-300)); border-radius: 10px; margin-top: 1rem;">
@@ -79,18 +92,3 @@ async function submitData() {
     wait.stop('DATA_SUBMITTING')
   }
 </script>
-
-## Install
-
-`main.ts` or `main.js`
-
-```ts
-import { installWait } from 'maz-ui/plugins'
-import { createApp } from 'vue'
-
-const app = createApp(App)
-
-app.use(installWait)
-
-app.mount('#app')
-```

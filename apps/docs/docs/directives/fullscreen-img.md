@@ -24,7 +24,7 @@ description: Displays images fullscreen on click
 </template>
 
 <script setup lang="ts">
-  import { vFullscreenImg } from 'maz-ui/directives'
+  import { vFullscreenImg } from 'maz-ui/directives/vFullscreenImg'
 </script>
 ```
 
@@ -72,7 +72,7 @@ description: Displays images fullscreen on click
 
 ```ts
 import { createApp } from 'vue'
-import { vFullscreenImgInstall } from 'maz-ui/directives'
+import { vFullscreenImgInstall } from 'maz-ui/directives/vFullscreenImg'
 
 const app = createApp(App)
 
@@ -91,13 +91,11 @@ export default defineNuxtPlugin({ vueApp }) => {
 
 Or use Maz-ui Nuxt Module:
 
-`nuxt.config.(ts, js)`
-
 ```ts
 export default defineNuxtConfig({
   modules: ['@maz-ui/nuxt'],
   mazUi: {
-    installVFullscreenImg: true
+    vFullscreenImg: true
   }
 })
 ```
@@ -112,3 +110,7 @@ interface vFullscreenImgBindingOptions extends vFullscreenImgOptions {
 
 export type vFullscreenImgBindingValue = string | vFullscreenImgBindingOptions | undefined
 ```
+
+<script setup lang="ts">
+  import { vFullscreenImg } from 'maz-ui/directives/vFullscreenImg'
+</script>
