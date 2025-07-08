@@ -1,15 +1,15 @@
-import { defineNuxtPlugin, useCookie, useHead, useRequestHeaders } from 'nuxt/app'
-import { MazUiTheme } from '@maz-ui/themes/plugin'
 import {
-  generateFullCSS,
-  mergePresets,
-  type MazUiThemeOptions,
   type ColorMode,
   type CriticalCSSOptions,
+  generateFullCSS,
+  type MazUiThemeOptions,
+  mergePresets,
   type ThemeState,
 } from '@maz-ui/themes'
+import { MazUiTheme } from '@maz-ui/themes/plugin'
 import { getPreset } from '@maz-ui/themes/utils'
 import { generateCriticalCSS } from '@maz-ui/themes/utils/css-generator'
+import { defineNuxtPlugin, useCookie, useHead, useRequestHeaders } from 'nuxt/app'
 
 function getServerInitialColorMode(): ColorMode {
   const colorModeCookie = useCookie<ColorMode>('maz-color-mode')
@@ -35,10 +35,7 @@ function getServerInitialColorMode(): ColorMode {
 }
 
 function getServerIsDark(colorMode: ColorMode): boolean {
-  if (colorMode === 'dark') return true
-  if (colorMode === 'light') return false
-
-  return false
+  return colorMode === 'dark'
 }
 
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
@@ -64,7 +61,8 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     preset,
   } satisfies MazUiThemeOptions
 
-  const initialColorMode = config.colorMode === 'auto' ? getServerInitialColorMode() : config.colorMode ?? 'auto'
+  const initialColorMode
+    = config.colorMode === 'auto' ? getServerInitialColorMode() : (config.colorMode ?? 'auto')
   const serverIsDark = getServerIsDark(initialColorMode)
   const initialIsDark = initialColorMode === 'dark' || (initialColorMode === 'auto' && serverIsDark)
 
