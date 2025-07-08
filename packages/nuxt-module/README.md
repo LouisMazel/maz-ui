@@ -56,6 +56,16 @@ export default defineNuxtConfig({
 ### Step 3: Start using components
 
 ```vue
+<script setup>
+  // All composables are auto-imported too!
+  const toast = useToast()
+  const { isDark, toggleDarkMode } = useTheme()
+
+  function showMessage() {
+    toast.success('Welcome to Maz-UI! 🎉')
+  }
+</script>
+
 <template>
   <div>
     <!-- All components are auto-imported! -->
@@ -71,16 +81,6 @@ export default defineNuxtConfig({
     <div v-tooltip="'Hello World!'">Hover me for tooltip</div>
   </div>
 </template>
-
-<script setup>
-  // All composables are auto-imported too!
-  const toast = useToast()
-  const { isDark, toggleDarkMode } = useTheme()
-
-  function showMessage() {
-    toast.success('Welcome to Maz-UI! 🎉')
-  }
-</script>
 ```
 
 ## 🎨 What You Get Out of the Box
