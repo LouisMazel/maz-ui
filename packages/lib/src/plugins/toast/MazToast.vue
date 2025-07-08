@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { ToasterButton, ToasterOptions } from './types'
+import type { ToastButton, ToastOptions } from './types'
 import { MazArrowTopRightOnSquare, MazCheckCircle, MazExclamationCircle, MazExclamationTriangle, MazInformationCircle, MazLinkIcon, MazXMark } from '@maz-ui/icons'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useTimer } from '../../composables/useTimer'
@@ -28,10 +28,10 @@ const emits = defineEmits<{
 
 const MazBtn = defineAsyncComponent(() => import('../../components/MazBtn.vue'))
 
-const Toaster = ref<HTMLDivElement>()
+const Toast = ref<HTMLDivElement>()
 
-const internalButtons = computed<ToasterButton[]>(() => {
-  const buttonArray: ToasterButton[] = []
+const internalButtons = computed<ToastButton[]>(() => {
+  const buttonArray: ToastButton[] = []
 
   if (button) {
     buttonArray.push(button)
@@ -44,7 +44,7 @@ const internalButtons = computed<ToasterButton[]>(() => {
   return buttonArray
 })
 
-export interface MazToastProps extends ToasterOptions {
+export interface MazToastProps extends ToastOptions {
   /**
    * The message of the toast
    */
@@ -52,7 +52,7 @@ export interface MazToastProps extends ToasterOptions {
   /**
    * The type of the toast
    */
-  type?: ToasterOptions['type']
+  type?: ToastOptions['type']
   /**
    * The function to destroy the toast
    */
@@ -98,7 +98,6 @@ const transitionName = computed(() => {
   return positionY.value === 'top' ? 'm-slide-top' : 'm-slide-bottom'
 })
 
-// const actionLoading = ref(false)
 const isActive = ref(false)
 const queueTimer = ref<ReturnType<typeof setTimeout>>()
 
@@ -147,8 +146,8 @@ function showNotice() {
 
   const container = document.querySelector(selectorContainerClass)
 
-  if (Toaster.value && container) {
-    container.prepend(Toaster.value)
+  if (Toast.value && container) {
+    container.prepend(Toast.value)
   }
 
   isActive.value = true
@@ -200,11 +199,12 @@ function click(event: Event, shouldClose: boolean = true) {
   closeToast()
 }
 const isActionLoading = ref(false)
-async function onButtonClick(button: ToasterButton, event: Event) {
+async function onButtonClick(button: ToastButton, event: Event) {
   if (button.onClick) {
     isActionLoading.value = true
-    timer.reset()
+    timer.pause()
     await button.onClick()
+    timer.resume()
     isActionLoading.value = false
   }
 
@@ -212,7 +212,7 @@ async function onButtonClick(button: ToasterButton, event: Event) {
 }
 
 function toggleTimer(shouldPause: boolean) {
-  if (!pauseOnHover || persistent) {
+  if (!pauseOnHover || persistent || isActionLoading.value) {
     return
   }
 
@@ -242,7 +242,7 @@ function onAnimationEnter() {
 
 function onAnimationLeave() {
   emits('close')
-  Toaster.value?.remove()
+  Toast.value?.remove()
   destroy?.()
 
   const container = document.querySelector(selectorContainerClass)
@@ -251,7 +251,7 @@ function onAnimationLeave() {
   }
 }
 
-function getButtonRightIcon(button: ToasterButton) {
+function getButtonRightIcon(button: ToastButton) {
   if (!button.to && !button.href) {
     return undefined
   }
@@ -262,7 +262,13 @@ function getButtonRightIcon(button: ToasterButton) {
   return MazLinkIcon
 }
 
-defineExpose({ closeToast })
+defineExpose({
+  /**
+   * Close the toast
+   * @description This is used to close the toast
+   */
+  closeToast,
+})
 
 onMounted(() => {
   createParents()
@@ -278,7 +284,7 @@ onMounted(() => {
     @after-enter="onAnimationEnter"
   >
     <div
-      v-show="isActive" ref="Toaster" class="m-toast m-reset-css" :class="[
+      v-show="isActive" ref="Toast" class="m-toast m-reset-css" :class="[
         `--${type}`,
         `--${positionY}`,
         `--${positionX}`,
@@ -310,7 +316,7 @@ onMounted(() => {
 
         <div
           v-if="typeof timeout === 'number' && timeout > 0 && !persistent"
-          class="m-toast__progress-bar maz-bg-okokokok"
+          class="m-toast__progress-bar"
         >
           <div
             :style="{

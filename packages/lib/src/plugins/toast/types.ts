@@ -3,7 +3,7 @@ import type { RouteLocationRaw } from 'vue-router'
 import type { MazBtnProps } from '../../components/MazBtn.vue'
 import type { MazColor } from '../../components/types'
 
-export type ToasterPosition
+export type ToastPosition
   = | 'top'
     | 'top-right'
     | 'top-left'
@@ -11,7 +11,7 @@ export type ToasterPosition
     | 'bottom-right'
     | 'bottom-left'
 
-export interface ToasterButton extends MazBtnProps {
+export interface ToastButton extends MazBtnProps {
   /**
    * If the toast is closed when the button is clicked
    * @default false
@@ -53,7 +53,7 @@ export interface ToasterButton extends MazBtnProps {
   color?: MazBtnProps['color']
 }
 
-export interface ToasterOptions {
+export interface ToastOptions {
   /**
    * If the message is HTML
    * @default false
@@ -61,12 +61,12 @@ export interface ToasterOptions {
   html?: boolean
   /**
    * The type of the toast
-   * @default 'contrast'
+   * @default 'info'
    */
   type?: MazColor
   /**
    * The maximum number of toasts to display
-   * @default 5
+   * @default false
    */
   maxToasts?: number | boolean
   /**
@@ -78,7 +78,7 @@ export interface ToasterOptions {
    * The position of the toast on the screen
    * @default 'bottom-right'
    */
-  position?: ToasterPosition
+  position?: ToastPosition
   /**
    * If the toast is paused on hover, it will be paused when the mouse is over the toast
    * @default true
@@ -104,10 +104,10 @@ export interface ToasterOptions {
    * The action will be displayed as a button in the toast
    * @default undefined
    */
-  button?: ToasterButton
+  button?: ToastButton
   /**
    * The actions will be displayed as a buttons in the toast
    * @default undefined
    */
-  buttons?: ToasterButton[]
+  buttons?: ToastButton[]
 }
