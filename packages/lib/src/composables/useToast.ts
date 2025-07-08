@@ -1,8 +1,8 @@
-import type { ToasterHandler } from '../plugins/toaster/ToasterHandler'
+import type { ToastHandler } from '../plugins/toast/ToastHandler'
 import { useInjectStrict } from '../composables/useInjectStrict'
 
 export function useToast() {
-  const toast = useInjectStrict<ToasterHandler>('mazToast')
+  const toast = useInjectStrict<ToastHandler>('mazToast')
 
   return {
     message: toast.message.bind(toast),

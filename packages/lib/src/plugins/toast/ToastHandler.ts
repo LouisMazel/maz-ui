@@ -1,22 +1,22 @@
 import type { App } from 'vue'
 import type { MazToastProps } from './MazToast.vue'
-import type { ToasterButton, ToasterOptions } from './types'
-import { useMountComponent } from './../../composables/useMountComponent'
+import type { ToastButton, ToastOptions } from './types'
+import { useMountComponent } from '../../composables/useMountComponent'
 import MazToast from './MazToast.vue'
 
-const DEFAULT_OPTIONS: ToasterOptions = {
+const DEFAULT_OPTIONS: ToastOptions = {
   position: 'bottom-right',
   timeout: 10_000,
   persistent: false,
 }
 
-export class ToasterHandler {
+export class ToastHandler {
   constructor(
     private readonly app: App,
-    private readonly globalOptions?: ToasterOptions,
+    private readonly globalOptions?: ToastOptions,
   ) {}
 
-  private show(message: string, options: ToasterOptions) {
+  private show(message: string, options: ToastOptions) {
     const props: MazToastProps = {
       ...DEFAULT_OPTIONS,
       ...this.globalOptions,
@@ -35,8 +35,8 @@ export class ToasterHandler {
     }
   }
 
-  private getLocalOptions(options?: ToasterOptions): ToasterOptions {
-    const DEFAULT_BUTTON_OPTIONS: Partial<ToasterButton> = {
+  private getLocalOptions(options?: ToastOptions): ToastOptions {
+    const DEFAULT_BUTTON_OPTIONS: Partial<ToastButton> = {
       size: 'xs',
       color: options?.type ?? 'contrast',
       closeToast: false,
@@ -62,23 +62,23 @@ export class ToasterHandler {
     }
   }
 
-  message(message: string, options?: ToasterOptions) {
+  message(message: string, options?: ToastOptions) {
     return this.show(message, this.getLocalOptions(options))
   }
 
-  success(message: string, options?: Omit<ToasterOptions, 'type'>) {
+  success(message: string, options?: Omit<ToastOptions, 'type'>) {
     return this.show(message, this.getLocalOptions({ ...options, type: 'success' }))
   }
 
-  error(message: string, options?: Omit<ToasterOptions, 'type'>) {
+  error(message: string, options?: Omit<ToastOptions, 'type'>) {
     return this.show(message, this.getLocalOptions({ ...options, type: 'destructive' }))
   }
 
-  info(message: string, options?: Omit<ToasterOptions, 'type'>) {
+  info(message: string, options?: Omit<ToastOptions, 'type'>) {
     return this.show(message, this.getLocalOptions({ ...options, type: 'info' }))
   }
 
-  warning(message: string, options?: Omit<ToasterOptions, 'type'>) {
+  warning(message: string, options?: Omit<ToastOptions, 'type'>) {
     return this.show(message, this.getLocalOptions({ ...options, type: 'warning' }))
   }
 }
