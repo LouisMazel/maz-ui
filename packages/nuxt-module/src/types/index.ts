@@ -1,7 +1,7 @@
-import type { VLazyImgOptions, VTooltipOptions, VFullscreenImgOptions } from 'maz-ui/directives'
-import type { AosOptions, DialogOptions, ToasterOptions } from 'maz-ui/plugins'
 import type { MazUiThemeOptions } from '@maz-ui/themes'
 import type { MazTranslationsOptions } from '@maz-ui/translations'
+import type { VFullscreenImgOptions, VLazyImgOptions, VTooltipOptions } from 'maz-ui/directives'
+import type { AosOptions, DialogOptions, ToastOptions } from 'maz-ui/plugins'
 
 export interface MazUiNuxtThemeOptions extends MazUiThemeOptions {
   /**
@@ -18,9 +18,9 @@ export interface MazUiNuxtOptions {
    */
   general?: {
     /**
-     * Prefix for auto-imported composables
-     * @description This prefix will be added after the `use` keyword
-     * @example `autoImportPrefix: 'Maz'` will generate `useMazToast` instead of `useToast`
+     * Prefix for auto-imported composables and directives
+     * @description This prefix will be added after the `use` keyword and `v` keyword
+     * @example `autoImportPrefix: 'Maz'` will generate `useMazToast` instead of `useToast` and `vMazZoomImg` instead of `vZoomImg`
      * @default ''
      */
     autoImportPrefix?: string
@@ -126,11 +126,11 @@ export interface MazUiNuxtOptions {
       })
 
     /**
-     * Enable auto-import of useToast composable and install Toaster plugin
+     * Enable auto-import of useToast composable and install Toast plugin
      * @description Toast notifications functionality
      * @default true
      */
-    useToast?: boolean | ToasterOptions
+    useToast?: boolean | ToastOptions
 
     /**
      * Enable auto-import of useDialog composable and install Dialog plugin
@@ -217,13 +217,6 @@ export interface MazUiNuxtOptions {
     useDisplayNames?: boolean
 
     /**
-     * Enable auto-import of useSwiper composable
-     * @description Swiper/carousel functionality utilities
-     * @default true
-     */
-    useSwiper?: boolean
-
-    /**
      * Enable auto-import of useFreezeValue composable
      * @description Freeze values to prevent mutation
      * @default true
@@ -266,35 +259,35 @@ export interface MazUiNuxtOptions {
     /**
      * Install v-zoom-img directive globally
      * @description Enables image zoom functionality on click
-     * @default true
+     * @default false
      */
     vZoomImg?: boolean
 
     /**
      * Install v-lazy-img directive globally
      * @description Lazy loading for images with intersection observer
-     * @default true
+     * @default false
      */
     vLazyImg?: boolean | VLazyImgOptions
 
     /**
      * Install v-click-outside directive globally
      * @description Detect clicks outside of an element
-     * @default true
+     * @default false
      */
     vClickOutside?: boolean
 
     /**
      * Install v-fullscreen-img directive globally
      * @description Fullscreen image viewer functionality
-     * @default true
+     * @default false
      */
     vFullscreenImg?: boolean | VFullscreenImgOptions
 
     /**
      * Install v-tooltip directive globally
      * @description Tooltip functionality for any element
-     * @default true
+     * @default false
      */
     vTooltip?: boolean | VTooltipOptions
   }
