@@ -1,15 +1,15 @@
-name: Release Beta (Lerna)
+name: Release Latest
 
 on:
   push:
     branches:
-      - develop
+      - master
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  release-beta:
-    name: Release Beta
+  release-latest:
+    name: Release Latest
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -46,20 +46,17 @@ jobs:
           git config --global user.name "LouisMazel"
           git config --global user.email "me@louismazel.com"
 
-      - name: Version Packages (Beta)
-        run: |
-          pnpm lerna:version:beta
+      - name: Graduate Pre-release to Stable
+        run: pnpm lerna:version:graduate
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish to NPM (Beta)
-        run: |
-          pnpm lerna:publish:beta
+      - name: Publish to NPM (Latest)
+        run: pnpm lerna:publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Push Tags and Changes
-        run: |
-          git push --follow-tags origin develop
+        run: git push --follow-tags origin master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
