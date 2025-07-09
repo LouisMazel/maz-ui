@@ -1,3 +1,13 @@
+<script setup lang="ts">
+import { sleep } from 'maz-ui'
+
+function action() {
+  return sleep(20000)
+}
+
+const { colorMode, updateTheme } = useTheme()
+</script>
+
 <template>
   <MazPullToRefresh :action="action">
     <main>
@@ -80,47 +90,26 @@
       </header>
 
       <div class="content">
-        {{ isDark }}
-        {{ colorMode }}
-        {{ currentPreset }}
-        {{ strategy }}
         <slot />
       </div>
     </main>
   </MazPullToRefresh>
 </template>
 
-<script setup lang="ts">
-import { sleep } from 'maz-ui'
-
-function action() {
-  return sleep(20000)
-}
-
-const { colorMode, updateTheme, isDark, currentPreset, strategy } = useTheme()
-</script>
-
-<style lang="postcss">
-  html,
-  body {
-    @apply maz-h-screen maz-overflow-y-auto maz-bg-surface maz-text-foreground;
-  }
-</style>
-
 <style lang="postcss" scoped>
   main {
-    @apply maz-flex maz-min-h-screen maz-flex-col maz-padded-container;
+  @apply maz-flex maz-min-h-screen maz-flex-col maz-padded-container;
 
-    header {
-      @apply maz-flex maz-w-full maz-flex-wrap maz-items-center maz-justify-between maz-border-b maz-border-divider maz-px-2 maz-py-4;
+  header {
+    @apply maz-flex maz-w-full maz-flex-wrap maz-items-center maz-justify-between maz-border-b maz-border-divider maz-px-2 maz-py-4;
 
-      nav {
-        @apply maz-flex maz-gap-1;
-      }
-    }
-
-    .content {
-      @apply maz-flex maz-flex-1 maz-flex-col maz-py-4;
+    nav {
+      @apply maz-flex maz-gap-1;
     }
   }
+
+  .content {
+    @apply maz-flex maz-flex-1 maz-flex-col maz-py-4;
+  }
+}
 </style>

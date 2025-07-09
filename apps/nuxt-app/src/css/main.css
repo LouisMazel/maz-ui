@@ -1,11 +1,10 @@
 /* stylelint-disable selector-id-pattern */
-html,
-body,
-#__nuxt {
-  @apply maz-min-h-screen;
-
+html {
   font-size: var(--maz-base-font-size);
+  font-family: var(--maz-font-family);
+  background-color: hsl(var(--maz-background));
+  color: hsl(var(--maz-foreground));
+
+  @apply maz-min-h-screen maz-h-screen maz-overflow-y-auto;
 }
 /* stylelint-enable selector-id-pattern */
-
-
