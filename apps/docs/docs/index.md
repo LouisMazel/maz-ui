@@ -60,7 +60,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       >
         Get Started
       </MazBtn>
-      <MazBtn v-if="typeof starCount === 'number'" href="https://github.com/LouisMazel/maz-ui" target="blank" outlined :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" size="lg" class="maz-w-full mob-l:maz-w-auto maz-font-semibold !maz-border-divider">
+      <MazBtn v-if="typeof starCount === 'number'" href="https://github.com/LouisMazel/maz-ui" target="blank" outlined color="background" size="lg" class="maz-w-full mob-l:maz-w-auto">
         <template #left-icon>
           <MazGithub class="maz-text-3xl" />
         </template>
@@ -77,7 +77,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       <div class="maz-flex maz-justify-between maz-items-start tab-l:maz-items-center maz-gap-4 maz-mb-4 maz-flex-col-reverse tab-l:maz-flex-row">
         <MazTabsBar :items="['Dashboard', 'Product Page', 'Auth Page']" />
         <div class="maz-flex maz-gap-2 maz-items-center maz-flex-row-reverse tab-l:maz-flex-row">
-          <MazBtn class="!maz-border-divider" fab :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" :icon="isDark ? MazMoon : MazSun" outlined @click="toggleDarkMode" />
+          <MazBtn fab color="background" :icon="isDark ? MazMoon : MazSun" outlined @click="toggleDarkMode" />
           <MazRadioButtons
             :model-value="currentPreset.name"
             size="lg"
@@ -190,7 +190,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           Created with TailwindCSS | Optimized CSS file sizes | Complies with all CSS best practices | Use your theme easily.
         </p>
         <div class="maz-flex-1"></div>
-        <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/guide/theme" class="!maz-border-divider">Discover</MazBtn>
+        <MazBtn color="background" outlined size="sm" block href="/guide/theme">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
     <a href="/guide/dark-mode" class="maz-flex">
@@ -203,7 +203,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           All components support the Dark and Light themes.
         </p>
         <div class="maz-flex-1"></div>
-        <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/guide/dark-mode" class="!maz-border-divider">Discover</MazBtn>
+        <MazBtn color="background" outlined size="sm" block href="/guide/dark-mode">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
     <a href="/plugins/toast" class="maz-flex">
@@ -216,7 +216,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           Maz-ui provides many modules, plugins, directives, formatters and composables
         </p>
         <div class="maz-flex-1"></div>
-        <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/plugins/toast" class="!maz-border-divider">Discover</MazBtn>
+        <MazBtn color="background" outlined size="sm" block href="/plugins/toast">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
   </div>
@@ -239,7 +239,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           Official Nuxt module with auto-imports, optimized builds, and seamless SSR support. Zero configuration required.
         </p>
         <div class="maz-flex-1"></div>
-        <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/guide/nuxt" class="!maz-border-divider">Discover</MazBtn>
+        <MazBtn color="background" outlined size="sm" block href="/guide/nuxt">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
     <a href="/guide/icons" class="maz-flex">
@@ -255,7 +255,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           328+ beautiful SVG icons ready for Vue. Multiple usage patterns: components, direct SVG files, or auto-import.
         </p>
         <div class="maz-flex-1"></div>
-        <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/guide/icons" class="!maz-border-divider">Discover</MazBtn>
+        <MazBtn color="background" outlined size="sm" block href="/guide/icons">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
     <a href="/guide/translations" class="maz-flex">
@@ -271,7 +271,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           Simple internationalization system for Maz-UI components. Translate your interface into any language with ease.
         </p>
         <div class="maz-flex-1"></div>
-        <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/guide/translations" class="!maz-border-divider">Discover</MazBtn>
+        <MazBtn color="background" outlined size="sm" block href="/guide/translations">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
     <a href="/guide/themes" class="maz-flex">
@@ -287,7 +287,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           Pre-built theme collections and design tokens for rapid UI development. Ready-to-use color schemes and styles.
         </p>
         <div class="maz-flex-1"></div>
-        <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/guide/themes" class="!maz-border-divider">Discover</MazBtn>
+        <MazBtn color="background" outlined size="sm" block href="/guide/themes">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
   </div>
@@ -309,7 +309,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         A powerful phone number input component with international number formatting and validation.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/components/maz-phone-number-input" class="!maz-border-divider">Discover</MazBtn>
+      <MazBtn color="background" outlined size="sm" block href="/components/maz-phone-number-input">Discover</MazBtn>
     </MazCardSpotlight>
     <MazCardSpotlight color="info" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
@@ -323,7 +323,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         A powerful popover component with various customization options and smooth animations.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/components/maz-popover" class="!maz-border-divider">Discover</MazBtn>
+      <MazBtn color="background" outlined size="sm" block href="/components/maz-popover">Discover</MazBtn>
     </MazCardSpotlight>
     <MazCardSpotlight color="info" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
@@ -337,7 +337,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         A versatile input component with various customization options and validation support.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/components/maz-input" class="!maz-border-divider">Discover</MazBtn>
+      <MazBtn color="background" outlined size="sm" block href="/components/maz-input">Discover</MazBtn>
     </MazCardSpotlight>
     <MazCardSpotlight color="info" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
@@ -351,7 +351,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         A simple and customizable toast notification module to display messages to users.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/plugins/toast" class="!maz-border-divider">Discover</MazBtn>
+      <MazBtn color="background" outlined size="sm" block href="/plugins/toast">Discover</MazBtn>
     </MazCardSpotlight>
   </div>
 </section>
@@ -371,7 +371,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         A text animation component that brings your content to life with smooth sliding blur effects and gradient highlights. Perfect for creating engaging headings and text transitions.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/components/maz-animated-text" class="!maz-border-divider">Discover</MazBtn>
+      <MazBtn color="background" outlined size="sm" block href="/components/maz-animated-text">Discover</MazBtn>
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
@@ -385,7 +385,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         A versatile animation component that adds smooth entrance animations to any element. Features multiple animation directions and customizable timing for creating engaging UI interactions.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/components/maz-animated-element" class="!maz-border-divider">Discover</MazBtn>
+      <MazBtn color="background" outlined size="sm" block href="/components/maz-animated-element">Discover</MazBtn>
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
@@ -399,7 +399,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         A beautiful card component with a spotlight effect that follows your cursor movement. Perfect for highlighting important content or creating engaging UI elements.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/components/maz-card-spotlight" class="!maz-border-divider">Discover</MazBtn>
+      <MazBtn color="background" outlined size="sm" block href="/components/maz-card-spotlight">Discover</MazBtn>
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
@@ -413,7 +413,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         A Vue 3 composable designed to simplify form validation using Valibot as the validation library. Offers a flexible and typed approach to handle form validation.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/composables/use-form-validator" class="!maz-border-divider">Discover</MazBtn>
+      <MazBtn color="background" outlined size="sm" block href="/composables/use-form-validator">Discover</MazBtn>
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
@@ -427,7 +427,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         A versatile checklist component with integrated search functionality, perfect for managing multiple selections with an intuitive user interface.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/components/maz-checklist" class="!maz-border-divider">Discover</MazBtn>
+      <MazBtn color="background" outlined size="sm" block href="/components/maz-checklist">Discover</MazBtn>
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
@@ -441,7 +441,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         A zero-template dialog solution - no component needed in your templates. Just use the composable function to display promised dialogs with full TypeScript support and customization options.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/plugins/dialog" class="!maz-border-divider">Discover</MazBtn>
+      <MazBtn color="background" outlined size="sm" block href="/plugins/dialog">Discover</MazBtn>
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
@@ -455,7 +455,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         A powerful directive to display images in fullscreen with zoom capabilities, hover effects and smooth animations. Perfect for galleries and image previews.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/directives/fullscreen-img" class="!maz-border-divider">Discover</MazBtn>
+      <MazBtn color="background" outlined size="sm" block href="/directives/fullscreen-img">Discover</MazBtn>
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
@@ -469,7 +469,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         A Vue 3 composable that provides functions to work with localized display names based on ISO codes, leveraging the Intl.DisplayNames API.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/composables/use-display-names" class="!maz-border-divider">Discover</MazBtn>
+      <MazBtn color="background" outlined size="sm" block href="/composables/use-display-names">Discover</MazBtn>
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
@@ -483,7 +483,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         A powerful table component with sorting, search, pagination and selection features. Perfect for displaying and managing tabular data in an interactive manner.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'" outlined size="sm" block href="/components/maz-table" class="!maz-border-divider">Discover</MazBtn>
+      <MazBtn color="background" outlined size="sm" block href="/components/maz-table">Discover</MazBtn>
     </MazCardSpotlight>
   </div>
 </section>
@@ -496,7 +496,6 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   import { ref, computed } from 'vue'
   import { MazStar, MazPlay, MazGithub, MazSun, MazMoon } from '@maz-ui/icons/src/index.js'
   import { useTheme } from '@maz-ui/themes/src/composables/useTheme.js'
-  // import { mazUi, pristine, ocean, obsidian } from '@maz-ui/themes/src/presets/index.js'
 
   const {
     isDark,

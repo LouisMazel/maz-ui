@@ -34,6 +34,7 @@ yarn add maz-ui
 
 ```typescript
 import { MazUi } from 'maz-ui/plugins/maz-ui'
+import { mazUi } from '@maz-ui/themes/presets'
 import { createApp } from 'vue'
 
 // Import Maz-UI styles before your own CSS
@@ -52,7 +53,7 @@ app.use(MazUi, {
    * @see https://maz-ui.com/guide/theme
    */
   theme: {
-    preset: 'maz-ui', // 'ocean' | 'pristine' | 'obsidian' | 'maz-ui'
+    preset: mazUi, // 'ocean' | 'pristine' | 'obsidian'
   },
   /**
    * Translations configuration (optional if you are using english)
@@ -87,6 +88,14 @@ function handleClick() {
   </MazBtn>
 </template>
 ```
+
+## Theming
+
+More information in the [theme documentation](/guide/theme).
+
+## Translations
+
+More information in the [translations documentation](/guide/translations).
 
 ## Smart Loading with resolvers
 
