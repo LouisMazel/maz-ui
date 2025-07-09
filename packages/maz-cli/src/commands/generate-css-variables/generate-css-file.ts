@@ -54,6 +54,7 @@ function getFontFamily(config: MazUiConfig) {
     : undefined
 }
 
+// eslint-disable-next-line complexity
 function getNormalCSSVariables(config: MazUiConfig) {
   const normalVariables = [
     {

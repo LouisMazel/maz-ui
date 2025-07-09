@@ -4,6 +4,7 @@
 
 /** @type {import('vue-docgen-cli').Templates['component']} */
 
+// eslint-disable-next-line complexity
 export function component(renderedUsage, document_, _config, _fileName, requiresMd, _subs) {
   const { description, tags, functional } = document_
   const { deprecated, author, since, version, see, link } = tags || {}
@@ -90,7 +91,7 @@ function toKebabCase(input) {
     .toLowerCase()
 }
 
-// Fonction pour extraire et formater les informations des tags
+// eslint-disable-next-line complexity
 function extractTagInfo(tags) {
   const result = {
     description: '',

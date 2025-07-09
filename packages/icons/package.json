@@ -30,6 +30,9 @@
     "svg"
   ],
   "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
@@ -57,8 +60,8 @@
   "scripts": {
     "build": "vite build",
     "typecheck": "tsc --noEmit --skipLibCheck",
-    "lint": "eslint . --fix",
-    "lint:check": "eslint .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "pre-commit": "lint-staged"
   },
   "peerDependencies": {
