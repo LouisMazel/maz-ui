@@ -1,11 +1,12 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "ESNext",
     "lib": [
       "ESNext"
     ],
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "types": ["node"],
     "strict": true,
@@ -25,7 +26,6 @@
     "src/**/*",
     "*.config.mts",
     "config/**/*",
-    "eslint.config.js",
     "docgen.config.js",
     "*.js"
   ],

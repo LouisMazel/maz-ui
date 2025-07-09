@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { green, red, yellow } from 'colorette'
 
 export const logger = {

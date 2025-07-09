@@ -20,10 +20,6 @@ export default defineConfig({
   templates: {
     component,
     props,
-    // events,
-    // methods,
-    // slots,
-
   },
   docsRepo: 'LouisMazel/maz-ui',
   docsBranch: 'master',

@@ -1,7 +1,8 @@
 packages:
-  - 'apps/*'
-  - 'packages/*'
-  - '.'
+  - apps/*
+  - packages/*
+  - tools/*
+  - .
 
 catalog:
   '@babel/core': ^7.27.4
@@ -66,3 +67,6 @@ catalog:
   vue-loader: ^17.4.2
   vue-router: ^4.5.1
   vue-tsc: ^2.2.10
+
+onlyBuiltDependencies:
+  - nx

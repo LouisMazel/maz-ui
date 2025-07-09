@@ -16,6 +16,9 @@
     "typescript",
     "maz-ui"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
@@ -63,8 +66,8 @@
     "build": "vite build",
     "dev": "vite build --watch",
     "typecheck": "tsc --noEmit --skipLibCheck",
-    "lint": "eslint . --fix",
-    "lint:check": "eslint .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "pre-commit": "lint-staged"
   },
   "devDependencies": {

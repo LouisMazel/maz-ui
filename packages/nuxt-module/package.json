@@ -27,6 +27,9 @@
     "nuxt-module",
     "maz-ui"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/types.d.mts",
