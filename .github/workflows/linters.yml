@@ -9,9 +9,11 @@ on:
   push:
     branches:
       - master
+      - develop
 
 jobs:
   linters:
+    name: linters
     runs-on: ubuntu-latest
 
     steps:

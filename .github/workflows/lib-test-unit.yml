@@ -11,9 +11,11 @@ on:
   push:
     branches:
       - master
+      - develop
 
 jobs:
   coverage:
+    name: coverage
     runs-on: ubuntu-latest
 
     steps:
