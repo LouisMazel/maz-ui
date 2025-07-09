@@ -72,8 +72,8 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
 
   if (import.meta.server) {
     const cssOptions: CriticalCSSOptions = {
-      mode: 'both',
-      darkSelectorStrategy: config.darkModeStrategy === 'media' ? 'media' : 'class',
+      mode: config.colorMode === 'auto' ? 'both' : config.colorMode,
+      darkSelectorStrategy: config.darkModeStrategy ?? 'class',
       prefix: config.prefix,
     } satisfies CriticalCSSOptions
 

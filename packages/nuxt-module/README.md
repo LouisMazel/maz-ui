@@ -57,19 +57,21 @@ export default defineNuxtConfig({
 
 ```vue
 <script setup>
-  // All composables are auto-imported too!
-  const toast = useToast()
-  const { isDark, toggleDarkMode } = useTheme()
+// All composables are auto-imported too!
+const toast = useToast()
+const { isDark, toggleDarkMode } = useTheme()
 
-  function showMessage() {
-    toast.success('Welcome to Maz-UI! 🎉')
-  }
+function showMessage() {
+  toast.success('Welcome to Maz-UI! 🎉')
+}
 </script>
 
 <template>
   <div>
     <!-- All components are auto-imported! -->
-    <MazBtn color="primary" @click="showMessage"> Click me! </MazBtn>
+    <MazBtn color="primary" @click="showMessage">
+      Click me!
+    </MazBtn>
 
     <!-- Composables work everywhere -->
     <MazCard class="mt-4">
@@ -78,7 +80,9 @@ export default defineNuxtConfig({
     </MazCard>
 
     <!-- Directives are ready to use -->
-    <div v-tooltip="'Hello World!'">Hover me for tooltip</div>
+    <div v-tooltip="'Hello World!'">
+      Hover me for tooltip
+    </div>
   </div>
 </template>
 ```
@@ -122,20 +126,24 @@ Maz-UI comes with a powerful theming system that makes your app look professiona
 
 ```vue
 <script setup>
-  // Switch between built-in themes
-  const { updateTheme, toggleDarkMode } = useTheme()
+// Switch between built-in themes
+const { updateTheme, toggleDarkMode } = useTheme()
 
-  async function changeToOceanTheme() {
-    const { ocean } = await import('@maz-ui/themes')
-    updateTheme(ocean)
-  }
+async function changeToOceanTheme() {
+  const { ocean } = await import('@maz-ui/themes')
+  updateTheme(ocean)
+}
 </script>
 
 <template>
   <div>
-    <MazBtn @click="toggleDarkMode"> 🌙 Toggle Dark Mode </MazBtn>
+    <MazBtn @click="toggleDarkMode">
+      🌙 Toggle Dark Mode
+    </MazBtn>
 
-    <MazBtn @click="changeToOceanTheme"> 🌊 Ocean Theme </MazBtn>
+    <MazBtn @click="changeToOceanTheme">
+      🌊 Ocean Theme
+    </MazBtn>
   </div>
 </template>
 ```
