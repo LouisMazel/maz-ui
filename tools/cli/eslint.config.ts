@@ -2,9 +2,11 @@ import { defineConfig } from '@maz-ui/eslint-config/src/index.js'
 
 export default defineConfig({
   formatters: true,
-  vue: true,
+  typescript: true,
   sonarjs: true,
+  vue: true,
+}, {
   rules: {
-    'ts/ban-ts-comment': 'off',
+    'no-console': 'off',
   },
 })

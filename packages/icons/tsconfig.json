@@ -1,29 +1,27 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "composite": true,
     "rootDir": ".",
     "module": "esnext",
     "moduleResolution": "bundler",
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    },
     "types": [
-      "node",
       "vite",
       "vite-svg-loader"
     ],
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "declaration": true,
     "declarationDir": "dist/types",
     "emitDeclarationOnly": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "sourceMap": true,
+    "skipLibCheck": true
   },
   "include": [
-    "**/*.ts",
-    "**/*.d.ts",
-    "./package.json"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",

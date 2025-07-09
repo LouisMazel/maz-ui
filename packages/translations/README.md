@@ -151,13 +151,11 @@ const customTranslations = {
 Returns an object with:
 
 - **`t(key, variables?)`** - Translation function
-
   - `key`: Translation key (dot notation supported)
   - `variables`: Optional object with variable substitutions
   - Returns: Translated string or key if not found
 
 - **`locale`** - Current locale (reactive ref)
-
   - Type: `Ref<string>`
   - Reactive property that updates when locale changes
 

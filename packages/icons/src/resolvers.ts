@@ -20,6 +20,8 @@ export function MazIconsResolver(options?: { devMode?: boolean }): ComponentReso
           from: base,
         }
       }
+
+      return null
     },
   }
 }

@@ -20,6 +20,9 @@
     "nuxt"
   ],
   "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -41,8 +44,8 @@
     "build": "unbuild",
     "dev": "unbuild --stub",
     "typecheck": "tsc --noEmit --skipLibCheck",
-    "lint": "eslint . --fix",
-    "lint:check": "eslint .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "pre-commit": "lint-staged"
   },
   "peerDependencies": {
