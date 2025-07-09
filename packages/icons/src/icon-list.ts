@@ -327,7 +327,7 @@ export const iconsList = [
   'MazWrenchScrewdriver',
   'MazWrench',
   'MazXCircle',
-  'MazXMark',
+  'MazXMark'
 ] as const
 
 export type IconName = typeof iconsList[number]
