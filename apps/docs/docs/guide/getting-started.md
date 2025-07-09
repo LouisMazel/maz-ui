@@ -13,15 +13,15 @@ head:
 
 ::: tip ✨ What's New in v4
 
-- **Tree-shaking improvements** - Import only what you need
-- **TypeScript-first** - Full type safety out of the box
-- **Theming system** - Customizable themes and dark mode support (4 presets available)
-- **Internationalization** - Locale management and tree-shakable imports
-- **Icon library** - Comprehensive collection of SVG icons designed for performance and flexibility
-- **Nuxt module** - Effortless Maz-UI integration with auto-imports
-- **Performance optimizations** - Tree-shaking benefits and maximum optimization
-- **Enhanced accessibility** - WCAG 2.1 AA compliant
-- **New components** - MazPopover & MazSelectCountry
+- 🌱 **Tree-shaking improvements** - Import only what you need
+- 🛠️ **TypeScript-first** - Full type safety out of the box
+- 🎨 **Theming system** - Customizable themes and dark mode support (4 presets available)
+- 🌐 **Internationalization** - Locale management and tree-shakable imports
+- 🎨 **Icon library** - Comprehensive collection of SVG icons designed for performance and flexibility
+- 🧰 **Nuxt module** - Effortless Maz-UI integration with auto-imports
+- 🚀 **Performance optimizations** - Tree-shaking benefits and maximum optimization
+- 🛠️ **Enhanced accessibility** - WCAG 2.1 AA compliant
+- 🆕 **New components** - MazPopover & MazSelectCountry
 
 :::
 
@@ -222,6 +222,9 @@ import { vClickOutside } from 'maz-ui/directives'
 // ✅✅ Direct directive import (most optimized)
 import { vClickOutside } from 'maz-ui/directives/vClickOutside'
 
+// ✅✅✅ Even better: auto-import does this automatically
+// Components, composables, and utilities are imported only when used
+
 /**
  * Plugins
  */
@@ -230,9 +233,6 @@ import { vClickOutside } from 'maz-ui/directives/vClickOutside'
 import { MazUi } from 'maz-ui/plugins'
 // ✅✅ Direct plugin import (most optimized)
 import { MazUi } from 'maz-ui/plugins/maz-ui'
-
-// ✅✅✅ Even better: auto-import does this automatically
-// Components, composables, and utilities are imported only when used
 ```
 
 ::: tip Maximum Optimization
