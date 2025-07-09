@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 4.0.0-beta.2 (2025-07-09)
+
+**Note:** Version bump only for package @maz-ui/nuxt
+
+
+
+
+
 ## 4.0.0-beta.1 (2025-07-09)
 
 * chore: implement changesets to manage versions and releases ([65fcca2](https://github.com/LouisMazel/maz-ui/commit/65fcca2))
