@@ -1,35 +1,6 @@
-<template>
-  <div class="home maz-h-screen">
-    <div>
-      <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
-
-      <MazPopover>
-        <template #trigger>
-          <MazBtn color="secondary">
-            Hello
-          </MazBtn>
-        </template>
-
-        <template #default>
-          <div class="maz-p-4">
-            Hello
-          </div>
-        </template>
-      </MazPopover>
-      <!-- End Developping Area -->
-    </div>
-
-    <MazFullscreenLoader
-      v-if="wait.isLoading('APP_LOADING')"
-      color="secondary"
-    >
-      Loading...
-    </MazFullscreenLoader>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { sleep } from 'maz-ui/src/index.js'
+import { sleep } from 'maz-ui'
+import { vTooltip } from 'maz-ui/directives/vTooltip'
 
 const toast = useToast()
 const wait = useWait()
@@ -58,3 +29,37 @@ onMounted(async () => {
   wait.stop('APP_LOADING')
 })
 </script>
+
+<template>
+  <div class="home maz-h-screen">
+    <div>
+      <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
+
+      <MazBtn v-tooltip="'Coucou'">
+        Coucou
+      </MazBtn>
+
+      <MazPopover>
+        <template #trigger>
+          <MazBtn color="secondary">
+            Hello
+          </MazBtn>
+        </template>
+
+        <template #default>
+          <div class="maz-p-4">
+            Hello
+          </div>
+        </template>
+      </MazPopover>
+      <!-- End Developping Area -->
+    </div>
+
+    <MazFullscreenLoader
+      v-if="wait.isLoading('APP_LOADING')"
+      color="secondary"
+    >
+      Loading...
+    </MazFullscreenLoader>
+  </div>
+</template>

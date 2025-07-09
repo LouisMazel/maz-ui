@@ -1,11 +1,91 @@
+<script setup lang="ts">
+import type { DeepPartial } from '@maz-ui/utils'
+import type { InferSchemaFormValidator } from 'maz-ui/composables'
+import { array, boolean, literal, maxValue, minLength, minValue, nonEmpty, number as numberAction, object, pipe, string } from 'valibot'
+
+const schema = ref({
+  name: pipe(string('Name is required'), nonEmpty('Name is required')),
+  age: pipe(numberAction('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
+  agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
+  country: pipe(string('Country is required'), nonEmpty('Country is required')),
+  code: pipe(string('Code is required'), nonEmpty('Code is required'), minLength(4, 'Code must be 4 characters')),
+  number: pipe(numberAction('Number is required'), minValue(1, 'Number min 1')),
+  price: pipe(numberAction('Price is required'), minValue(2, 'Price min 2')),
+  tags: pipe(array(string(), 'Tags is required'), nonEmpty('Tags is required')),
+  phone: pipe(string('Phone is required'), nonEmpty('Phone is required')),
+  radio: pipe(string('Radio is required'), nonEmpty('Radio is required')),
+  radioButtons: pipe(string('RadioButtons is required'), nonEmpty('RadioButtons is required')),
+  switch: pipe(boolean('Switch is required'), literal(true, 'Switch is required')),
+  textarea: pipe(string('Textarea is required'), nonEmpty('Textarea is required')),
+  date: object({
+    start: pipe(string('Start date is required'), nonEmpty('Start date is required')),
+    end: pipe(string('End date is required'), nonEmpty('End date is required')),
+  }),
+})
+
+type Schema = InferSchemaFormValidator<typeof schema>
+
+const defaultValues = ref<DeepPartial<Schema>>({
+  name: 'Mazel',
+  date: {
+    start: undefined,
+    end: undefined,
+  },
+})
+
+setTimeout(() => {
+  defaultValues.value.age = 33
+}, 1000)
+
+const { isSubmitting, handleSubmit, model, fieldsStates } = useFormValidator<Schema>({
+  schema,
+  defaultValues,
+  options: { mode: 'progressive', scrollToError: '.has-error-form' },
+})
+
+const nameRef = ref<HTMLElement>()
+const ageRef = ref<HTMLElement>()
+const agreeRef = ref<HTMLElement>()
+const countryRef = ref<HTMLElement>()
+const codeRef = ref<HTMLElement>()
+const numberRef = ref<HTMLElement>()
+const priceRef = ref<HTMLElement>()
+const tagsRef = ref<HTMLElement>()
+const phoneRef = ref<HTMLElement>()
+const radioRef = ref<HTMLElement>()
+const radioButtonsRef = ref<HTMLElement>()
+const switchRef = ref<HTMLElement>()
+const textareaRef = ref<HTMLElement>()
+const dateRef = ref<HTMLElement>()
+
+const { value: name, errorMessage: nameErrorMessage } = useFormField('name', { ref: nameRef })
+const { value: age, errorMessage: ageErrorMessage, isValid: isValidAge } = useFormField('age', { ref: ageRef })
+const { value: agree, errorMessage: agreeErrorMessage, isValid: isValidAgree } = useFormField('agree', { ref: agreeRef })
+const { value: country, errorMessage: countryErrorMessage, isValid: isValidCountry } = useFormField('country', { ref: countryRef })
+const { value: code, errorMessage: codeError, isValid: isValidCode } = useFormField('code', { ref: codeRef })
+const { value: number, errorMessage: numberError, isValid: isValidNumber } = useFormField('number', { ref: numberRef })
+const { value: price, errorMessage: priceError, isValid: isValidPrice } = useFormField('price', { ref: priceRef })
+const { value: tags, errorMessage: tagsError, isValid: isValidTags } = useFormField('tags', { ref: tagsRef })
+const { value: phone, errorMessage: phoneError, isValid: isValidPhone } = useFormField('phone', { ref: phoneRef })
+const { value: radio, errorMessage: radioError, isValid: isValidRadio } = useFormField('radio', { ref: radioRef })
+const { errorMessage: radioButtonsError, isValid: isValidButtons } = useFormField('radioButtons', { ref: radioButtonsRef })
+const { value: switchValue, errorMessage: switchError, isValid: isValidSwitch } = useFormField('switch', { ref: switchRef })
+const { value: textarea, errorMessage: textareaError, isValid: isValidTextarea } = useFormField('textarea', { ref: textareaRef })
+const { value: date, errorMessage: dateError, isValid: isValidDate } = useFormField('date', { ref: dateRef })
+
+const onSubmit = handleSubmit((formData) => {
+  // eslint-disable-next-line no-console
+  console.log(formData)
+})
+</script>
+
 <template>
   <form
     class="maz-flex maz-flex-col maz-gap-4"
     @submit="onSubmit"
   >
-    model: <pre>{{ model }}</pre>
-    <br>
-    defaultValues: <pre>{{ defaultValues }}</pre>
+    model: <pre class="maz-text-xs">{{ model }}</pre>
+
     <MazInput
       id="name"
       ref="nameRef"
@@ -71,9 +151,8 @@
       ref="tagsRef"
       v-model="tags"
       :error="!!tagsError"
-      top-label="Enter tags"
-      size="sm"
-      :assistive-text="tagsError"
+      label="Enter tags"
+      :hint="tagsError"
       :success="isValidTags"
     />
     <MazInputPhoneNumber
@@ -89,7 +168,7 @@
       id="radio"
       ref="radioRef"
       v-model="radio"
-      :value="'radio1'"
+      value="radio1"
       name="radio"
       :error="!!radioError"
       :hint="radioError"
@@ -101,7 +180,7 @@
       id="radio2"
       ref="radioRef"
       v-model="radio"
-      :value="'radio2'"
+      value="radio2"
       name="radio"
       :warning="!!radioError"
       :hint="radioError"
@@ -163,72 +242,3 @@
     </MazBtn>
   </form>
 </template>
-
-<script setup lang="ts">
-import type { InferSchemaFormValidator } from 'maz-ui/src/composables/index.js'
-import { pipe, string, number as numberAction, nonEmpty, minValue, literal, boolean, maxValue, minLength, array, object } from 'valibot'
-
-const schema = ref({
-  name: pipe(string('Name is required'), nonEmpty('Name is required')),
-  age: pipe(numberAction('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
-  agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
-  country: pipe(string('Country is required'), nonEmpty('Country is required')),
-  code: pipe(string('Code is required'), nonEmpty('Code is required'), minLength(4, 'Code must be 4 characters')),
-  number: pipe(numberAction('Number is required'), minValue(1, 'Number min 1')),
-  price: pipe(numberAction('Price is required'), minValue(2, 'Price min 2')),
-  tags: pipe(array(string(), 'Tags is required'), nonEmpty('Tags is required')),
-  phone: pipe(string('Phone is required'), nonEmpty('Phone is required')),
-  radio: pipe(string('Radio is required'), nonEmpty('Radio is required')),
-  radioButtons: pipe(string('RadioButtons is required'), nonEmpty('RadioButtons is required')),
-  switch: pipe(boolean('Switch is required'), literal(true, 'Switch is required')),
-  textarea: pipe(string('Textarea is required'), nonEmpty('Textarea is required')),
-  date: object({
-    start: pipe(string('Start date is required'), nonEmpty('Start date is required')),
-    end: pipe(string('End date is required'), nonEmpty('End date is required')),
-  }),
-})
-
-type Schema = InferSchemaFormValidator<typeof schema>
-
-const defaultValues = ref<Partial<Schema>>({
-  name: 'Mazel',
-  date: {
-    start: undefined,
-    end: undefined,
-  },
-})
-
-setTimeout(() => {
-  defaultValues.value.age = 33
-}, 1000)
-
-// setTimeout(() => {
-//   schema.value.name = pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters'))
-// }, 2000)
-
-const { isSubmitting, handleSubmit, model, fieldsStates } = useFormValidator<Schema>({
-  schema,
-  defaultValues,
-  options: { mode: 'progressive', scrollToError: '.has-error-form' },
-})
-
-const { value: name, errorMessage: nameErrorMessage } = useFormField('name', { ref: 'nameRef' })
-const { value: age, errorMessage: ageErrorMessage, isValid: isValidAge } = useFormField('age', { ref: 'ageRef' })
-const { value: agree, errorMessage: agreeErrorMessage, isValid: isValidAgree } = useFormField('agree', { ref: 'agreeRef' })
-const { value: country, errorMessage: countryErrorMessage, isValid: isValidCountry } = useFormField('country', { ref: 'countryRef' })
-const { value: code, errorMessage: codeError, isValid: isValidCode } = useFormField('code', { ref: 'codeRef' })
-const { value: number, errorMessage: numberError, isValid: isValidNumber } = useFormField('number', { ref: 'numberRef' })
-const { value: price, errorMessage: priceError, isValid: isValidPrice } = useFormField('price', { ref: 'priceRef' })
-const { value: tags, errorMessage: tagsError, isValid: isValidTags } = useFormField('tags', { ref: 'tagsRef' })
-const { value: phone, errorMessage: phoneError, isValid: isValidPhone } = useFormField('phone', { ref: 'phoneRef' })
-const { value: radio, errorMessage: radioError, isValid: isValidRadio } = useFormField('radio', { ref: 'radioRef' })
-const { errorMessage: radioButtonsError, isValid: isValidButtons } = useFormField('radioButtons', { ref: 'radioButtonsRef' })
-const { value: switchValue, errorMessage: switchError, isValid: isValidSwitch } = useFormField('switch', { ref: 'switchRef' })
-const { value: textarea, errorMessage: textareaError, isValid: isValidTextarea } = useFormField('textarea', { ref: 'textareaRef' })
-const { value: date, errorMessage: dateError, isValid: isValidDate } = useFormField('date', { ref: 'dateRef' })
-
-const onSubmit = handleSubmit(async (formData) => {
-  // Form submission logic
-  console.log(formData)
-})
-</script>
