@@ -206,6 +206,8 @@ const buttonSize = computed(() => {
       :success
       :warning
       :disabled
+      :top-label="undefined"
+      :assistive-text="undefined"
       :color
       :block
       :size
