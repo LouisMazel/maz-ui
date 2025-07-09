@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance, ComputedRef, WritableComputedRef } from 'vue'
+import type { ComputedRef, WritableComputedRef } from 'vue'
 import type {
   BaseFormPayload,
   ExtractModelKey,
@@ -16,7 +16,6 @@ import {
   fieldHasValidation,
   findInteractiveElements,
   getContext,
-  getInstance,
   getValidationEvents,
   handleFieldBlur,
   hasModeIncludes,
@@ -138,7 +137,7 @@ export function useFormField<
 
   const validationEvents = computed(() =>
     getValidationEvents({
-      ref: opts.ref,
+      hasRef: !!opts.ref?.value,
       onBlur,
       fieldState: fieldState.value,
     }),
@@ -157,9 +156,7 @@ export function useFormField<
     }
 
     onMounted(() => {
-      const instance = getInstance<Model>(`useFormField of ${name as string}`)
-
-      checkAvailability(() => instance.refs[opts.ref as string] as HTMLElement | ComponentPublicInstance | undefined, (element) => {
+      checkAvailability(() => opts.ref?.value, (element) => {
         const interactiveElement = element instanceof HTMLElement ? element : element?.$el as HTMLElement | undefined
         if (interactiveElement) {
           handleInteractiveElements(interactiveElement)

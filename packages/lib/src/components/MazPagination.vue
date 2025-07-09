@@ -7,19 +7,16 @@ import { computed } from 'vue'
 import MazBtn from './MazBtn.vue'
 
 const {
-  modelValue,
+  modelValue = 1,
   buttonProps,
-  pageRange,
+  pageRange = 1,
   resultsSize,
-  activeColor,
+  activeColor = 'background',
   totalPages,
   loading,
-} = withDefaults(defineProps<MazPaginationProps>(), {
-  modelValue: 1,
-  pageRange: 1,
-  activeColor: 'background',
-  size: 'md',
-})
+  size = 'md',
+} = defineProps<MazPaginationProps>()
+
 const emits = defineEmits<
   /**
    * Emitted when the current page number is changed.

@@ -588,7 +588,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
       :options="countriesList"
       :disabled
       :search-threshold
-      :format-input-value="displayCountryName ? undefined : (value) => `+${value}`"
+      :format-input-value="displayCountryName || !selectedCountry ? undefined : (value) => `+${value}`"
       :show-code-in-list
       :label="messages.countrySelect.placeholder"
       @update:model-value="onCountryChanged({ countryCode: $event, selectPhoneNumber: true })"

@@ -138,6 +138,7 @@ class TooltipHandler {
 
     const popoverWrapper = document.createElement('div')
     popoverWrapper.classList.add('m-tooltip-wrapper')
+    popoverWrapper.style.display = 'inline-flex'
 
     if (el.parentNode) {
       el.parentNode.replaceChild(popoverWrapper, el)
