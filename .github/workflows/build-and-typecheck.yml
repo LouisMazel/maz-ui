@@ -1,4 +1,4 @@
-name: Typecheck
+name: Build and Typecheck
 
 on:
   pull_request:
@@ -6,12 +6,10 @@ on:
       - 'packages/**'
       - 'pnpm-lock.yaml'
       - '.github/workflows/typecheck.yml'
-  push:
-    branches:
-      - master
 
 jobs:
-  typecheck:
+  build-and-typecheck:
+    name: build-and-typecheck
     runs-on: ubuntu-latest
 
     steps:
@@ -27,7 +25,7 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
 
-      - name: Install modules
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Build packages
@@ -35,5 +33,8 @@ jobs:
           pnpm build:packages
           pnpm -F @maz-ui/nuxt prepare
 
-      - name: Run typecheck
-        run: pnpm typecheck:all
+      - name: Generate components docs
+        run: pnpm --filter cli cli generate-components-docs
+
+      - name: Build docs
+        run: pnpm -F docs build
