@@ -95,6 +95,6 @@
     "vue-tsc": "^2.2.10"
   },
   "lint-staged": {
-    "*.{js,ts,vue,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix"
+    "*.{js,ts,vue,mjs,mts,cjs,md}": "cross-env NODE_ENV=production eslint --fix"
   }
 }

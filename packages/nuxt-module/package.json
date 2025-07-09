@@ -71,6 +71,6 @@
   },
   "lint-staged": {
     "*": "prettier -w -u",
-    "*.{js,ts}": "cross-env NODE_ENV=production eslint --fix"
+    "*.{js,ts,mjs,mts,cjs,md}": "cross-env NODE_ENV=production eslint --fix"
   }
 }
