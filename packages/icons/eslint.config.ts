@@ -7,4 +7,5 @@ export default defineConfig({
   rules: {
     'ts/ban-ts-comment': 'off',
   },
+  ignores: ['src/icon-list.ts', 'src/index.ts'],
 })
