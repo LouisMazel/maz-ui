@@ -525,15 +525,15 @@ export function getContext<Model extends BaseFormPayload>(
 }
 
 export function getValidationEvents<Model extends BaseFormPayload>({
-  ref,
+  hasRef,
   fieldState,
   onBlur,
 }: {
-  ref?: string
+  hasRef?: boolean
   fieldState: FieldState<Model>
   onBlur: () => void
 }) {
-  if (ref || hasModeIncludes(['aggressive', 'lazy'], fieldState.mode)) {
+  if (hasRef || hasModeIncludes(['aggressive', 'lazy'], fieldState.mode)) {
     return
   }
 

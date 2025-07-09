@@ -1,4 +1,6 @@
+import type { DeepPartial } from '@maz-ui/utils/src/ts-helpers/DeepPartial.js'
 import type { Ref, WatchStopHandle } from 'vue'
+
 import type {
   BaseFormPayload,
   ExtractModelKey,
@@ -9,7 +11,6 @@ import type {
   StrictOptions,
   UseFormValidatorParams,
 } from '../composables/useFormValidator/types'
-
 import { computed, nextTick, provide, ref, watch } from 'vue'
 import { CONFIG } from '../composables/useFormValidator/config'
 import {
@@ -38,7 +39,7 @@ export function useFormValidator<
     ...options,
   } satisfies StrictOptions<Model>
 
-  const internalDefaultValues = ref(defaultValues) as Ref<Partial<Model>>
+  const internalDefaultValues = ref(defaultValues) as Ref<DeepPartial<Model>>
   const payload = ref({ ...internalDefaultValues.value, ...model?.value }) as Ref<Model>
   const internalSchema = ref(schema) as Ref<FormSchema<Model>>
   const fieldsStates = ref(

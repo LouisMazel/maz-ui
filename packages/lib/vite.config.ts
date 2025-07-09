@@ -67,7 +67,7 @@ export default defineConfig({
     pure: ['console.log', 'console.debug'],
     legalComments: 'none',
     target: 'es2022',
-    minifyIdentifiers: true,
+    minifyIdentifiers: false, // to fix the issue "SyntaxError: Identifier 'h' has already been declared"
     minifySyntax: true,
     minifyWhitespace: true,
     treeShaking: true,

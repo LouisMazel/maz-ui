@@ -104,7 +104,7 @@ const {
   blur = true,
   scale = true,
   separatorColor = 'transparent',
-  backgroundColor = 'hsl(var(--maz-background-300))',
+  backgroundColor = undefined,
 } = defineProps<MazGalleryProps>()
 
 onBeforeMount(() => {
@@ -162,8 +162,11 @@ function shouldHaveRemainingLayer(index: number): boolean {
   <div
     v-if="images.length > 0 || hasEmptyLayer"
     class="m-gallery m-reset-css"
-    :style="[sizeStyle, { '--gallery-separator-color': separatorColor, '--gallery-background-color': backgroundColor }]"
-    :class="{ '--radius': radius }"
+    :style="[sizeStyle, {
+      '--gallery-separator-color': separatorColor,
+      '--gallery-background-color': backgroundColor,
+    }]"
+    :class="{ '--radius': radius, '--has-background-color': !!backgroundColor }"
   >
     <section class="m-gallery__wrapper maz-flex maz-flex-1">
       <figure
@@ -220,7 +223,11 @@ function shouldHaveRemainingLayer(index: number): boolean {
 
 <style lang="postcss" scoped>
 .m-gallery {
-  @apply maz-relative maz-overflow-hidden maz-flex;
+  @apply maz-relative maz-overflow-hidden maz-flex maz-bg-surface-300 dark:maz-bg-surface-700/50;
+
+  &.--has-background-color {
+    @apply maz-bg-[var(--gallery-background-color)];
+  }
 
   &__hidden {
     @apply maz-hidden;
@@ -316,7 +323,6 @@ function shouldHaveRemainingLayer(index: number): boolean {
       background-position: center center;
       background-size: cover;
       background-repeat: no-repeat;
-      background-color: var(--gallery-background-color);
     }
   }
 

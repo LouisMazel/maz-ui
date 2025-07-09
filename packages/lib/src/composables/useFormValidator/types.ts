@@ -1,6 +1,8 @@
+import type { DeepPartial } from '@maz-ui/utils/src/ts-helpers/DeepPartial.js'
 import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferIssue, InferOutput, objectAsync } from 'valibot'
 import type {
   ComponentInternalInstance,
+  ComponentPublicInstance,
   InjectionKey,
   MaybeRef,
   Ref,
@@ -116,7 +118,7 @@ export interface FormFieldOptions<FieldType> {
    * Reference to the component or HTML element to associate and trigger validation events
    * Necessary for 'eager', 'progressive' and 'blur' validation modes
    */
-  ref?: string
+  ref?: Ref<HTMLElement | ComponentPublicInstance | undefined>
   /**
    * Identifier for the form
    * Useful when you have multiple forms on the same component
@@ -128,8 +130,8 @@ export interface FormFieldOptions<FieldType> {
 export type UseFormValidator<Model extends BaseFormPayload = BaseFormPayload> = typeof useFormValidator<Model>
 export interface UseFormValidatorParams<Model extends BaseFormPayload> {
   schema: MaybeRef<FormSchema<Model>>
-  defaultValues?: MaybeRef<Partial<Model> | undefined | null>
-  model?: Ref<Partial<Model> | undefined | null>
+  defaultValues?: MaybeRef<DeepPartial<Model> | undefined | null>
+  model?: Ref<DeepPartial<Model> | undefined | null>
   options?: FormValidatorOptions<Model>
 }
 export type UseFormField<
