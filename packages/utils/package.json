@@ -77,7 +77,7 @@
     "vue": "catalog:"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
+    "*.{js,jsx,ts,tsx,mjs,mts,cjs,md}": [
       "eslint --fix"
     ]
   }

@@ -234,7 +234,7 @@
     "vue-tsc": "catalog:"
   },
   "lint-staged": {
-    "*.{js,ts,vue,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix",
+    "*.{js,ts,vue,mjs,mts,cjs,md}": "cross-env NODE_ENV=production eslint --fix",
     "*.{vue,css,scss,postcss,pcss}": "stylelint --fix --allow-empty-input"
   }
 }
