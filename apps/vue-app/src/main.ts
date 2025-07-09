@@ -2,7 +2,7 @@ import type { MazTranslationsOptions } from '@maz-ui/translations/src/types.js'
 
 import { DialogPlugin } from 'maz-ui/src/plugins/dialog.ts'
 import { MazUi } from 'maz-ui/src/plugins/maz-ui.ts'
-import { ToasterPlugin } from 'maz-ui/src/plugins/toaster.ts'
+import { ToastPlugin } from 'maz-ui/src/plugins/toast.ts'
 import { WaitPlugin } from 'maz-ui/src/plugins/wait.js'
 
 import { createApp } from 'vue'
@@ -29,7 +29,7 @@ app.use(MazUi, {
 })
 
 app.use(router)
-app.use(ToasterPlugin)
+app.use(ToastPlugin)
 app.use(WaitPlugin)
 app.use(DialogPlugin)
 
