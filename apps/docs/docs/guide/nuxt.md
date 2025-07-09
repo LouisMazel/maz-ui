@@ -91,6 +91,8 @@ function showToast() {
 
 ### Dynamic Theming
 
+For more information about the theming system, please refer to the [theme documentation](./theme.md).
+
 ```vue
 <script setup>
 const { toggleDarkMode, isDark, updateTheme } = useTheme()

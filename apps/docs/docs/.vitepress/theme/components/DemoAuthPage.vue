@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-/* eslint-disable vue/no-unused-refs */
 import { useFormField, useFormValidator, useToast } from 'maz-ui/composables'
 import MazDialog from 'maz-ui/src/components/MazDialog.vue'
 import { email, nonEmpty, pipe, string } from 'valibot'
-import { ref } from 'vue'
+import { type ComponentPublicInstance, ref } from 'vue'
 
 const toast = useToast()
 
@@ -23,8 +22,11 @@ const { model, errorMessages, handleSubmit } = useFormValidator({
   options: { mode: 'progressive' },
 })
 
-useFormField('email', { ref: 'emailRef' })
-useFormField('password', { ref: 'passwordRef' })
+const emailRef = ref<ComponentPublicInstance>()
+const passwordRef = ref<ComponentPublicInstance>()
+
+useFormField('email', { ref: emailRef })
+useFormField('password', { ref: passwordRef })
 
 // Methods
 function forgotPassword() {
@@ -62,14 +64,14 @@ const onSubmit = handleSubmit(() => {
 
 <template>
   <div class="vp-raw maz-flex">
-    <div class="maz-hidden maz-flex-1 maz-flex-col maz-justify-center maz-gap-2 maz-bg-contrast maz-p-6 tab-m:maz-flex">
-      <MazIcon src="/img/logo.svg" size="3rem" style="height: 1em !important; width: auto;" />
+    <div class="maz-hidden maz-flex-1 maz-flex-col maz-gap-2 maz-bg-contrast maz-p-6 maz-flex-center tab-m:maz-flex">
+      <MazIcon src="/img/logo.svg" size="6rem" style="width: auto;" />
 
       <p class="maz-text-center maz-text-sm maz-text-contrast-foreground">
         Standalone components and tools library for Vue & Nuxt
       </p>
     </div>
-    <div class="maz-flex maz-flex-1 maz-items-center maz-py-6 maz-pr-6">
+    <div class="maz-flex maz-flex-1 maz-items-center maz-py-6 maz-pr-0">
       <MazStepper v-model="step" auto-validate-steps>
         <template #title-1>
           Sign In

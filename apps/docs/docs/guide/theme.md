@@ -39,7 +39,18 @@ app.use(MazUi, {
 })
 ```
 
-### 2. Using in your components
+### 2. Setup your CSS to support theme foundation and dark mode
+
+```css
+html {
+  font-size: var(--maz-base-font-size);
+  font-family: var(--maz-font-family);
+  background-color: hsl(var(--maz-background));
+  color: hsl(var(--maz-foreground));
+}
+```
+
+### 3. Using in your components
 
 ```vue
 <script setup>
