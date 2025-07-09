@@ -37,15 +37,16 @@ Maz-UI includes default translations for **8 languages** ready to use out of the
 
 All these languages include translations for:
 
-- 📱 **Phone Number Input** ([`MazInputPhoneNumber`](/components/maz-input-phone-number))
-- 📁 **File Dropzone** ([`MazDropzone`](/components/maz-dropzone))
-- 📅 **Date Picker** ([`MazDatePicker`](/components/maz-date-picker))
+- 📱 **InputPhoneNumber** ([`MazInputPhoneNumber`](/components/maz-input-phone-number))
+- 📁 **Dropzone** ([`MazDropzone`](/components/maz-dropzone))
+- 📅 **DatePicker** ([`MazDatePicker`](/components/maz-date-picker))
 - 📋 **Checklist** ([`MazChecklist`](/components/maz-checklist))
-- 🎠 **Carousel** ([`MazCarousel`](/components/maz-carousel))
 - 📤 **Dropdown** ([`MazDropdown`](/components/maz-dropdown))
 - 🔍 **Select** ([`MazSelect`](/components/maz-select))
 - 🗂️ **Table** ([`MazTable`](/components/maz-table))
 - 📄 **Pagination** ([`MazPagination`](/components/maz-pagination))
+- 🎠 **Carousel** ([`MazCarousel`](/components/maz-carousel))
+- 🌍 **SelectCountry** ([`MazSelectCountry`](/components/maz-select-country))
 
 ### Simple Usage
 
@@ -66,10 +67,6 @@ app.use(MazUi, {
 3. 🔄 **Your app switches languages** - Users can change the language and everything updates automatically!
 
 ## Basic Setup
-
-### Option 1: Using the main Maz-UI plugin (Recommended)
-
-If you're already using Maz-UI, this is the easiest way:
 
 ```typescript
 import { createApp } from 'vue'
@@ -109,33 +106,6 @@ app.use(MazUi, {
           }
         }
       }
-    }
-  }
-})
-```
-
-### Option 2: Using only the translations plugin
-
-If you only want translations without the full Maz-UI plugin:
-
-```typescript
-import { createApp } from 'vue'
-import { MazTranslations } from '@maz-ui/translations'
-import App from './App.vue'
-
-const app = createApp(App)
-
-app.use(MazTranslations, {
-  locale: 'fr', // Start with French
-  fallbackLocale: 'en', // Fallback language
-  preloadFallback: true, // Preload fallback language
-  messages: {
-    // Your custom translations
-    fr: {
-      // Your French translations here...
-    },
-    es: {
-      // Your Spanish translations here...
     }
   }
 })
@@ -195,7 +165,7 @@ app.use(MazUi, {
 ## Enhanced Lazy Loading
 
 ::: tip BUILT-IN FEATURE
-Lazy loading is now integrated by default! All supported languages (fr, es, de, it, pt, ja, zh-CN) are automatically loaded lazily. You don't need to configure anything to benefit from this.
+All supported languages (fr, es, de, it, pt, ja, zh-CN) are automatically loaded lazily. You don't need to configure anything to benefit from this.
 :::
 
 The Maz-UI translation system natively supports **lazy loading**, a powerful feature to optimize your application's performance.
@@ -308,6 +278,8 @@ app.use(MazUi, {
 ```
 
 ### Create your translation files
+
+Check the [all translations keys](#all-translations-keys) section to see all available keys.
 
 Create separate files for each language:
 
@@ -1133,9 +1105,157 @@ button.active {
 </style>
 ```
 
+## All translations keys
+
+```typescript
+export default {
+  /**
+   * This is the translation for the input phone number component.
+   * The keys are:
+   * - countrySelect: The translation for the country select.
+   * - phoneInput: The translation for the phone input.
+   */
+  selectCountry: {
+    searchPlaceholder: 'Search country',
+  },
+  inputPhoneNumber: {
+    /**
+     * This is the translation for the country select component.
+     * The keys are:
+     * - placeholder: The translation for the placeholder text.
+     * - error: The translation for the error text.
+     * - searchPlaceholder: The translation for the search placeholder text.
+     */
+    countrySelect: {
+      placeholder: 'Country code',
+      error: 'Choose country',
+      searchPlaceholder: 'Search the country',
+    },
+    /**
+     * This is the translation for the phone input component.
+     * The keys are:
+     * - placeholder: The translation for the placeholder text.
+     * - example: The translation for the example text.
+     */
+    phoneInput: {
+      placeholder: 'Phone number',
+      example: 'Example: {example}',
+    },
+  },
+  /**
+   * This is the translation for the dropzone component.
+   * The keys are:
+   * - dragAndDrop: The translation for the drag and drop text.
+   * - selectFile: The translation for the select file button.
+   * - divider: The translation for the divider text.
+   * - fileMaxCount: The translation for the maximum number of files.
+   * - fileMaxSize: The translation for the maximum size of the files.
+   * - fileTypes: The translation for the allowed file types.
+   */
+  dropzone: {
+    dragAndDrop: 'Drop your files',
+    selectFile: 'Select file',
+    divider: 'or',
+    fileMaxCount: 'Maximum {count} files',
+    fileMaxSize: 'Maximum {size} MB',
+    fileTypes: 'Allowed file types: {types}',
+  },
+  /**
+   * This is the translation for the date picker component.
+   * The keys are:
+   * - shortcuts: The translation for the shortcuts.
+   */
+  datePicker: {
+    shortcuts: {
+      lastSevenDays: 'Last 7 days',
+      lastThirtyDays: 'Last 30 days',
+      thisWeek: 'This week',
+      lastWeek: 'Last week',
+      thisMonth: 'This month',
+      thisYear: 'This year',
+      lastYear: 'Last year',
+    },
+  },
+  /**
+   * This is the translation for the dropdown component.
+   * The keys are:
+   * - screenReaderDescription: The translation for the screen reader description.
+   */
+  dropdown: {
+    screenReaderDescription: 'Open menu dropdown',
+  },
+  /**
+   * This is the translation for the select component.
+   * The keys are:
+   * - searchPlaceholder: The translation for the search placeholder text.
+   */
+  select: {
+    searchPlaceholder: 'Search',
+  },
+  /**
+   * This is the translation for the table component.
+   * The keys are:
+   * - noResults: The translation for the no results text.
+   * - actionColumnTitle: The translation for the action column title.
+   * - searchByInput: The translation for the search by input.
+   * - searchInput: The translation for the search input.
+   * - pagination: The translation for the pagination component.
+   */
+  table: {
+    noResults: 'No results',
+    actionColumnTitle: 'Actions',
+    searchByInput: {
+      all: 'All',
+      placeholder: 'Search by',
+    },
+    searchInput: {
+      placeholder: 'Search',
+    },
+    pagination: {
+      all: 'All',
+      rowsPerPage: 'Rows per page',
+      of: 'of',
+    },
+  },
+  /**
+   * This is the translation for the pagination component.
+   * The keys are:
+   * - navAriaLabel: The aria-label for the navigation (nav) element.
+   * - screenReader.firstPage: The translation for the first page button (screen reader).
+   * - screenReader.previousPage: The translation for the previous page button (screen reader).
+   * - screenReader.page: The translation for the current page button (screen reader).
+   * - screenReader.nextPage: The translation for the next page button (screen reader).
+   * - screenReader.lastPage: The translation for the last page button (screen reader).
+   */
+  pagination: {
+    navAriaLabel: 'page navigation',
+    screenReader: {
+      firstPage: 'First Page, page {page}',
+      previousPage: 'Previous Page, page {page}',
+      page: 'Page {page}',
+      nextPage: 'Next Page, page {page}',
+      lastPage: 'Last Page, page {page}',
+    },
+  },
+  carousel: {
+    ariaLabel: {
+      previousButton: 'Scroll to previous items',
+      nextButton: 'Scroll to next items',
+    },
+  },
+  checklist: {
+    noResultsFound: 'No results found',
+    searchInput: {
+      placeholder: 'Search',
+    },
+  },
+}
+
+```
+
 ## Important Notes
 
-1. **All languages are included by default (fr, es, de, it, pt, ja, zh-CN)** - You don't need to provide English translations unless you want to modify them.
+1. **All languages are included by default (fr, es, de, it, pt, ja, zh-CN)** - You don't need to provide these languages unless you want to modify them.
 
 2. **Translate only what you need** - You're not required to translate every key. Add only those for the components you use.
 
