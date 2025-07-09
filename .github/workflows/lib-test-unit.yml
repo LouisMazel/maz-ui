@@ -14,6 +14,7 @@ on:
 
 jobs:
   coverage:
+    name: coverage
     runs-on: ubuntu-latest
 
     steps:
@@ -45,6 +46,5 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          # coverageCommand: pnpm --filter maz-ui test:unit:coverage --silent
           coverageLocations: |
             ${{github.workspace}}/packages/lib/coverage/clover.xml:clover
