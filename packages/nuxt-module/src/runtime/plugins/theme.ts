@@ -41,10 +41,6 @@ function getServerIsDark(colorMode: ColorMode): boolean {
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const themeConfig = $config.public.mazUi?.theme
 
-  if (themeConfig === false) {
-    return
-  }
-
   let preset = await getPreset(themeConfig?.preset)
 
   if (themeConfig?.overrides) {
