@@ -12,9 +12,10 @@
     "pre-commit": "lint-staged",
     "type-check": "nuxi typecheck"
   },
-  "lint-staged": {
-    "*.{js,ts,vue,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix",
-    "*.{vue,css,scss,postcss,pcss}": "stylelint --fix"
+  "dependencies": {
+    "@maz-ui/themes": "workspace:*",
+    "@maz-ui/translations": "workspace:*",
+    "maz-ui": "workspace:*"
   },
   "devDependencies": {
     "@maz-ui/nuxt": "workspace:*",
@@ -37,9 +38,8 @@
     "vue": "catalog:",
     "vue-router": "catalog:"
   },
-  "dependencies": {
-    "@maz-ui/translations": "workspace:*",
-    "@maz-ui/themes": "workspace:*",
-    "maz-ui": "workspace:*"
+  "lint-staged": {
+    "*.{js,ts,vue,mjs,mts,cjs}": "cross-env NODE_ENV=production eslint --fix",
+    "*.{vue,css,scss,postcss,pcss}": "stylelint --fix"
   }
 }
