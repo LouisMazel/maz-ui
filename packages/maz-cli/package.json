@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/cli",
   "type": "module",
-  "version": "4.0.0-beta.0",
+  "version": "4.0.0-beta.1",
   "description": "CLI of Maz-ui",
   "license": "MIT",
   "homepage": "https://maz-ui.com/guide/cli",
