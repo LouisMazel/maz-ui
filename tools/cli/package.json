@@ -18,7 +18,8 @@
     "dist"
   ],
   "scripts": {
-    "lint": "cross-env NODE_ENV=production eslint --fix .",
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "lint:fix": "cross-env NODE_ENV=production eslint --fix .",
     "cli": "node --import=./register.js src/cli.ts",
     "build": "unbuild",
     "build:stub": "unbuild --stub",

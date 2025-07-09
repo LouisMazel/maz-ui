@@ -39,7 +39,7 @@
     "dev:watch": "lerna run dev --parallel --stream"
   },
   "lint-staged": {
-    "!(node_modules/**/*|packages/**/*|apps/**/*|.prettierignore|.gitignore|.editorconfig).*": [
+    "!(node_modules/**/*|packages/**/*|apps/**/*|tools/**/*|.prettierignore|.gitignore|.editorconfig).*": [
       "prettier --write"
     ]
   },
