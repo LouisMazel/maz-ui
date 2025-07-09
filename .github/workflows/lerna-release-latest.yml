@@ -47,13 +47,16 @@ jobs:
           git config --global user.email "me@louismazel.com"
 
       - name: Graduate Pre-release to Stable
-        run: |
-          pnpm lerna:version:graduate
+        run: pnpm lerna:version:graduate
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to NPM (Latest)
-        run: |
-          pnpm lerna:publish
+        run: pnpm lerna:publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Push Tags and Changes
+        run: git push --follow-tags origin master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -25,7 +25,7 @@
     "lerna:version": "lerna version --conventional-commits --no-push",
     "lerna:version:alpha": "lerna version --conventional-commits --conventional-prerelease --preid alpha --no-push",
     "lerna:version:beta": "lerna version --conventional-commits --conventional-prerelease --preid beta --no-push",
-    "lerna:version:graduate": "lerna version --conventional-commits --conventional-graduate",
+    "lerna:version:graduate": "lerna version --conventional-commits --conventional-graduate --no-push",
     "lerna:publish": "pnpm build:packages && lerna publish from-git",
     "lerna:publish:alpha": "pnpm build:packages && lerna publish from-git --dist-tag alpha",
     "lerna:publish:beta": "pnpm build:packages && lerna publish from-git --dist-tag beta",
