@@ -78,6 +78,14 @@ export type Strategy = 'runtime' | 'buildtime' | 'hybrid'
 
 export interface ThemeConfig {
   /**
+   * CSS variables prefix
+   * @description Prefix for CSS variables
+   * @default 'maz'
+   * @private
+   */
+  prefix?: string
+
+  /**
    * Theme preset to use
    * @description Can be a predefined preset name or a custom preset object
    * @default mazUi preset
@@ -94,7 +102,7 @@ export interface ThemeConfig {
   /**
    * CSS generation strategy
    * @description
-   * - `runtime`: CSS generated and injected dynamically on client-side
+   * - `runtime`: CSS generated (critical and full) injected immediately
    * - `buildtime`: CSS generated at build time and included in bundle
    * - `hybrid`: Critical CSS injected inline, full CSS loaded asynchronously (recommended)
    * @default 'hybrid'
