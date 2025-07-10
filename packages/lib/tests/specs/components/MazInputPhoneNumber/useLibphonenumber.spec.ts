@@ -61,7 +61,7 @@ describe('unit Tests for useLibphonenumber.ts', () => {
       // Mock de la classe AsYouType
       // @ts-expect-error - test case
       AsYouType.mockImplementation(() => ({
-        input: phoneNumber => `Formatted: ${phoneNumber}`,
+        input: (phoneNumber: string) => `Formatted: ${phoneNumber}`,
       }))
 
       const result = getAsYouTypeFormat('US', '123-456-7890')

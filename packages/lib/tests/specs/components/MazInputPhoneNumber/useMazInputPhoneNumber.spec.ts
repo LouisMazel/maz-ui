@@ -1,8 +1,6 @@
 import { useMazInputPhoneNumber } from '@components/MazInputPhoneNumber/useMazInputPhoneNumber'
-import { getCountries, getCountryCallingCode } from 'libphonenumber-js'
 
-const { sanitizePhoneNumber, getCountriesList, fetchCountryCode, getBrowserLocale }
-  = useMazInputPhoneNumber()
+const { fetchCountryCode, getBrowserLocale } = useMazInputPhoneNumber()
 
 vi.mock('libphonenumber-js', () => ({
   parsePhoneNumberFromString: vi.fn(),
@@ -14,44 +12,6 @@ vi.mock('libphonenumber-js', () => ({
 }))
 
 describe('unit Tests for useMazInputPhoneNumber.ts', () => {
-  describe('sanitizePhoneNumber', () => {
-    it('should remove non-numeric characters from the input', () => {
-      const result = sanitizePhoneNumber('(1234) 567 890 frfr')
-      expect(result).toBe('(1234) 567 890')
-    })
-
-    it('should handle empty input', () => {
-      const result = sanitizePhoneNumber('')
-      expect(result).toBe('')
-    })
-  })
-
-  describe('getCountriesList', () => {
-    it('should return a list of countries with iso2, dialCode, and name', () => {
-      // Mock de la fonction getCountries
-      // @ts-expect-error - test case
-      getCountries.mockReturnValue(['US', 'CA'])
-
-      const result = getCountriesList('fr-FR')
-
-      expect(result).toEqual([
-        { iso2: 'US', dialCode: undefined, name: 'États-Unis' },
-        { iso2: 'CA', dialCode: undefined, name: 'Canada' },
-      ])
-    })
-
-    it('should handle errors gracefully', () => {
-      // Mock de la fonction getCountryCallingCode pour générer une erreur
-      // @ts-expect-error - test case
-      getCountryCallingCode.mockImplementation(() => {
-        throw new Error('Error getting dial code')
-      })
-
-      const result = getCountriesList('en-US')
-      expect(result).toEqual([])
-    })
-  })
-
   describe('browserLocale', () => {
     it('should return the browser locale', () => {
       // Mock de window.navigator.language
@@ -96,8 +56,6 @@ describe('unit Tests for useMazInputPhoneNumber.ts', () => {
         expect.objectContaining({
           fetchCountryCode: expect.any(Function),
           getBrowserLocale: expect.any(Function),
-          getCountriesList: expect.any(Function),
-          sanitizePhoneNumber: expect.any(Function),
         }),
       )
     })
