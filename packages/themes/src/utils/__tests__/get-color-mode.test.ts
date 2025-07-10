@@ -1,5 +1,4 @@
 import type { ColorMode } from '../../types'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { getColorMode, getSystemPrefersDark } from '../get-color-mode'
 
 // Mock document.cookie

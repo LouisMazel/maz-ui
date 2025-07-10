@@ -5,7 +5,6 @@ import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/con
 export default defineConfig({
   plugins: [],
   test: {
-    // globalSetup: './vitest-global.setup.ts',
     environment: 'jsdom',
     environmentOptions: {
       jsdom: {
@@ -20,7 +19,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       all: true,
-      reporter: ['clover', 'html'],
+      reporter: ['clover', 'html', 'lcov'],
       include: ['src/**/*'],
       exclude: [
         ...coverageConfigDefaults.exclude,

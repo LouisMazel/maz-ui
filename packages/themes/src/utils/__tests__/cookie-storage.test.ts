@@ -1,4 +1,3 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { getCookie, setCookie } from '../cookie-storage'
 
 function mockDocumentCookie(initialValue: string = '') {
