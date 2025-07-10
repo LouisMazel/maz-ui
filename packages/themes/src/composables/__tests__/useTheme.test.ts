@@ -1,5 +1,4 @@
 import type { ThemePresetOverrides, ThemeState } from '../../types'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { getCurrentInstance, inject } from 'vue'
 import { mazUi } from '../../presets'
 import { mergePresets } from '../../utils'
