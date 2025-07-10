@@ -88,6 +88,52 @@ export interface MazUiNuxtOptions {
   }
 
   /**
+   * Plugins configuration
+   */
+  plugins?: {
+    /**
+     * Enable auto-import of useAos composable and install AOS plugin
+     * @description Animation On Scroll functionality with advanced configuration options
+     * @default false
+     */
+    aos?:
+      | boolean
+      | (Omit<AosOptions, 'router'> & {
+        /**
+         * Auto inject AOS CSS file
+         * @default true
+         */
+        injectCss?: boolean
+        /**
+         * Re-run animations on page change (for SPA navigation)
+         * @default false
+         */
+        router?: boolean
+      })
+
+    /**
+     * Enable auto-import of useDialog composable and install Dialog plugin
+     * @description Modal dialogs functionality
+     * @default false
+     */
+    dialog?: boolean | DialogOptions
+
+    /**
+     * Enable auto-import of useToast composable and install Toast plugin
+     * @description Toast notifications functionality
+     * @default false
+     */
+    toast?: boolean | ToastOptions
+
+    /**
+     * Enable auto-import of useWait composable and install Wait plugin
+     * @description Loading state management functionality
+     * @default false
+     */
+    wait?: boolean
+  }
+
+  /**
    * Composables configuration
    */
   composables?: {
@@ -104,47 +150,6 @@ export interface MazUiNuxtOptions {
      * @default false
      */
     useTheme?: boolean
-
-    /**
-     * Enable auto-import of useAos composable and install AOS plugin
-     * @description Animation On Scroll functionality with advanced configuration options
-     * @default true
-     */
-    useAos?:
-      | boolean
-      | (Omit<AosOptions, 'router'> & {
-        /**
-         * Auto inject AOS CSS file
-         * @default true
-         */
-        injectCss?: boolean
-        /**
-         * Re-run animations on page change (for SPA navigation)
-         * @default false
-         */
-        router?: boolean
-      })
-
-    /**
-     * Enable auto-import of useToast composable and install Toast plugin
-     * @description Toast notifications functionality
-     * @default true
-     */
-    useToast?: boolean | ToastOptions
-
-    /**
-     * Enable auto-import of useDialog composable and install Dialog plugin
-     * @description Modal dialogs functionality
-     * @default true
-     */
-    useDialog?: boolean | DialogOptions
-
-    /**
-     * Enable auto-import of useWait composable and install Wait plugin
-     * @description Loading state management functionality
-     * @default true
-     */
-    useWait?: boolean
 
     /**
      * Enable auto-import of useIdleTimeout composable
