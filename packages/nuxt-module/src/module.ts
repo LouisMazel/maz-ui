@@ -5,9 +5,12 @@ import { addComponent, addImports, addPlugin, createResolver, defineNuxtModule }
 import { defu } from 'defu'
 import { capitalize } from 'maz-ui'
 
-type MazUiComposables = keyof typeof import('maz-ui/composables')
+type MazUiComposables = keyof typeof import('maz-ui/src/composables/index.js')
 
-type Composables = MazUiComposables | 'useTheme' | 'useTranslations'
+type Composables = Omit<
+  Record<MazUiComposables | 'useTheme' | 'useTranslations', true>,
+  'useAos' | 'useDialog' | 'useToast' | 'useWait'
+>
 
 declare module '@nuxt/schema' {
   interface NuxtConfig {
@@ -23,7 +26,7 @@ declare module '@nuxt/schema' {
   }
 }
 
-type ComponentNames = keyof typeof import('maz-ui/components')
+type ComponentNames = keyof typeof import('maz-ui/src/components/index.js')
 
 const COMPONENT_NAMES: Omit<Record<ComponentNames, true>, 'useMazDialogPromise'> = {
   MazAccordion: true,
@@ -108,12 +111,14 @@ const defaults: Required<MazUiNuxtOptions> = {
   components: {
     autoImport: true,
   },
+  plugins: {
+    aos: false,
+    dialog: false,
+    toast: false,
+    wait: false,
+  },
   composables: {
     useTheme: true,
-    useAos: true,
-    useToast: true,
-    useDialog: true,
-    useWait: true,
     useIdleTimeout: true,
     useReadingTime: true,
     useTranslations: true,
@@ -130,7 +135,7 @@ const defaults: Required<MazUiNuxtOptions> = {
     useInstanceUniqId: true,
     useMountComponent: true,
     useSwipe: true,
-  } satisfies Record<Composables, true>,
+  } satisfies Composables,
   directives: {
     vZoomImg: false,
     vLazyImg: false,
@@ -144,15 +149,17 @@ function addComposableImport({
   name,
   from,
   prefix = '',
+  typed = true,
 }: {
   name: string
   from: string
   prefix?: string
+  typed?: boolean
 }) {
   addImports({
     from,
     name,
-    // typeFrom: `maz-ui/dist/types/composables/${name}.d.ts`,
+    typeFrom: typed ? `maz-ui/dist/types/composables/${name}.d.ts` : undefined,
     as: `use${capitalize(prefix)}${name.replace('use', '')}`,
   })
 }
@@ -198,26 +205,57 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       }
     }
 
-    // AOS
+    // Plugins
 
-    if (moduleOptions.composables.useAos) {
+    if (moduleOptions.plugins.aos) {
       addPlugin(resolve(_dirname, './runtime/plugins/aos'))
 
       addComposableImport({
         name: 'useAos',
+        typed: false,
         from: resolve(_dirname, './runtime/composables/useAos'),
         prefix: moduleOptions.general?.autoImportPrefix,
       })
 
       const injectAosCSS
-        = typeof moduleOptions.composables.useAos === 'object'
-          && typeof moduleOptions.composables.useAos.injectCss === 'boolean'
-          ? moduleOptions.composables.useAos.injectCss
+        = typeof moduleOptions.plugins.aos === 'object'
+          && typeof moduleOptions.plugins.aos.injectCss === 'boolean'
+          ? moduleOptions.plugins.aos.injectCss
           : true
 
       if (injectAosCSS) {
         nuxt.options.css = ['maz-ui/aos-styles', ...nuxt.options.css]
       }
+    }
+
+    if (moduleOptions.plugins.toast) {
+      addPlugin(resolve(_dirname, './runtime/plugins/toast'))
+      addComposableImport({
+        name: 'useToast',
+        typed: false,
+        from: resolve(_dirname, './runtime/composables/useToast'),
+        prefix: moduleOptions.general?.autoImportPrefix,
+      })
+    }
+
+    if (moduleOptions.plugins.dialog) {
+      addPlugin(resolve(_dirname, './runtime/plugins/dialog'))
+      addComposableImport({
+        name: 'useDialog',
+        typed: false,
+        from: resolve(_dirname, './runtime/composables/useDialog'),
+        prefix: moduleOptions.general?.autoImportPrefix,
+      })
+    }
+
+    if (moduleOptions.plugins.wait) {
+      addPlugin(resolve(_dirname, './runtime/plugins/wait'))
+      addComposableImport({
+        name: 'useWait',
+        typed: false,
+        from: resolve(_dirname, './runtime/composables/useWait'),
+        prefix: moduleOptions.general?.autoImportPrefix,
+      })
     }
 
     // Directives
@@ -243,33 +281,6 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     }
 
     // Composables
-
-    if (moduleOptions.composables.useToast) {
-      addPlugin(resolve(_dirname, './runtime/plugins/toast'))
-      addComposableImport({
-        name: 'useToast',
-        from: resolve(_dirname, './runtime/composables/useToast'),
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
-
-    if (moduleOptions.composables.useDialog) {
-      addPlugin(resolve(_dirname, './runtime/plugins/dialog'))
-      addComposableImport({
-        name: 'useDialog',
-        from: resolve(_dirname, './runtime/composables/useDialog'),
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
-
-    if (moduleOptions.composables.useWait) {
-      addPlugin(resolve(_dirname, './runtime/plugins/wait'))
-      addComposableImport({
-        name: 'useWait',
-        from: resolve(_dirname, './runtime/composables/useWait'),
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
 
     if (moduleOptions.composables.useIdleTimeout) {
       addComposableImport({
@@ -394,6 +405,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     if (moduleOptions.composables.useTheme) {
       addComposableImport({
         name: 'useTheme',
+        typed: false,
         from: '@maz-ui/themes/composables/useTheme',
         prefix: moduleOptions.general?.autoImportPrefix,
       })
@@ -402,6 +414,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     if (moduleOptions.composables.useTranslations) {
       addComposableImport({
         name: 'useTranslations',
+        typed: false,
         from: '@maz-ui/translations',
         prefix: moduleOptions.general?.autoImportPrefix,
       })
