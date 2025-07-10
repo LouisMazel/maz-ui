@@ -1,7 +1,13 @@
 import type { CountryCode } from 'libphonenumber-js'
-import type { Country } from './types'
+// import type { Country } from './types'
 import { fetchLocaleIp } from '@maz-ui/utils/src/utils/fetchLocaleIp.js'
 import { getCountries, getCountryCallingCode } from 'libphonenumber-js'
+
+export interface CountryOption {
+  code: CountryCode
+  dialCode: string
+  name: string
+}
 
 function getBrowserLocale() {
   if (typeof window === 'undefined') {
@@ -57,8 +63,8 @@ function getCountryName(
 function getCountryList(
   locale?: string,
   customCountriesNameListByIsoCode?: Record<CountryCode, string>,
-): Country[] | undefined {
-  const countriesList: Country[] = []
+): CountryOption[] | undefined {
+  const countriesList: CountryOption[] = []
   const isoList = getCountries()
 
   locale = locale ?? getBrowserLocale()?.browserLocale ?? 'en-US'

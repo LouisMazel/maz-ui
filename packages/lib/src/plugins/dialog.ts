@@ -1,9 +1,9 @@
-import type { App, Plugin } from 'vue'
+import type { Plugin } from 'vue'
 import type { DialogOptions } from './dialog/DialogHandler'
 import { DialogHandler } from './dialog/DialogHandler'
 
-export const DialogPlugin = {
-  install(app: App, options?: DialogOptions) {
+export const DialogPlugin: Plugin<[DialogOptions?]> = {
+  install(app, options) {
     const dialogHandler = new DialogHandler(app, options)
     app.provide('mazDialog', dialogHandler)
 
@@ -12,7 +12,7 @@ export const DialogPlugin = {
       globalOptions: dialogHandler.globalOptions,
     }
   },
-} satisfies Plugin<DialogOptions | undefined>
+}
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
