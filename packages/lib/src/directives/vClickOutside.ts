@@ -37,16 +37,16 @@ interface VClickOutsideOptions {
 /**
  * The value of the v-click-outside directive.
  */
-type vClickOutsideBindingValue
+type VClickOutsideBindingValue
   = | ((...args: any[]) => any)
     | VClickOutsideOptions
 
 /**
  * The binding of the v-click-outside directive.
  */
-type vClickOutsideDirectiveBinding = DirectiveBinding<vClickOutsideBindingValue>
+type vClickOutsideDirectiveBinding = DirectiveBinding<VClickOutsideBindingValue>
 
-function isOptionsObject(value: vClickOutsideBindingValue): value is VClickOutsideOptions {
+function isOptionsObject(value: VClickOutsideBindingValue): value is VClickOutsideOptions {
   return typeof value === 'object' && value !== null && 'callback' in value
 }
 
@@ -192,21 +192,29 @@ function onUpdated(el: HTMLElement, binding: vClickOutsideDirectiveBinding) {
   }
 }
 
-const directive = {
+export type VClickOutsideDirective = ObjectDirective<HTMLElement, VClickOutsideBindingValue>
+
+const directive: VClickOutsideDirective = {
   mounted: onMounted,
   updated: onUpdated,
   unmounted: onUnmounted,
-} satisfies ObjectDirective<HTMLElement, vClickOutsideBindingValue>
+}
 
-const plugin = {
+const plugin: Plugin = {
   install: (app) => {
     app.directive('click-outside', directive)
   },
-} satisfies Plugin
+}
 
 export {
   directive as vClickOutside,
-  type vClickOutsideBindingValue,
+  type VClickOutsideBindingValue,
   plugin as vClickOutsideInstall,
   type VClickOutsideOptions,
+}
+
+declare module 'vue' {
+  interface GlobalDirectives {
+    vClickOutside: VClickOutsideDirective
+  }
 }

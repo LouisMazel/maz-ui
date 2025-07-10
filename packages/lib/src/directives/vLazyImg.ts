@@ -1,8 +1,9 @@
 import type { Plugin } from 'vue'
-import type { VLazyImgBindingValue, VLazyImgOptions } from './vLazyImg/types'
+import type { VLazyImgDirective } from './vLazyImg/lazy-img.directive'
+import type { VLazyImgOptions } from './vLazyImg/types'
 import { DEFAULT_OPTIONS, LazyImg } from './vLazyImg/lazy-img.handler'
 
-const plugin = {
+const plugin: Plugin<[VLazyImgOptions?]> = {
   install(app, opts = {}) {
     const options = {
       ...DEFAULT_OPTIONS,
@@ -21,8 +22,14 @@ const plugin = {
       unmounted: instance.remove.bind(instance),
     })
   },
-} satisfies Plugin<VLazyImgOptions>
+}
 
-export { vLazyImg } from './vLazyImg/lazy-img.directive'
+export { vLazyImg, type VLazyImgDirective } from './vLazyImg/lazy-img.directive'
 export { plugin as vLazyImgInstall }
-export type { VLazyImgBindingValue, VLazyImgOptions }
+export type { VLazyImgBindingValue, VLazyImgOptions } from './vLazyImg/types'
+
+declare module 'vue' {
+  interface GlobalDirectives {
+    vLazyImg: VLazyImgDirective
+  }
+}

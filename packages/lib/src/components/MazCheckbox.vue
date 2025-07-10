@@ -312,6 +312,10 @@ function onFocus(event: FocusEvent) {
   &.--disabled {
     @apply maz-cursor-not-allowed maz-text-muted;
 
+    svg {
+      @apply !maz-text-muted;
+    }
+
     input:checked ~ span {
       @apply maz-border-divider;
 

@@ -1,16 +1,44 @@
-import type { App } from 'vue'
+import type { Plugin } from 'vue'
 import type { Router } from 'vue-router'
 import { isClient } from '@maz-ui/utils/src/utils/isClient.js'
 import { sleep } from '@maz-ui/utils/src/utils/sleep.js'
 
 export interface AosOptions {
   animation?: {
+    /**
+     * The delay of the animation
+     * @default 0
+     */
     delay?: number
+    /**
+     * The duration of the animation
+     * @default 300
+     */
     duration?: number
+    /**
+     * If true, the animation will be triggered only once
+     * @default true
+     */
     once?: boolean
   }
+  /**
+   * The delay before the animation starts
+   * @default 100
+   */
   delay?: number
+  /**
+   * The observer options
+   * @default {
+   *   root: undefined,
+   *   rootMargin: '0px',
+   *   threshold: 0.2,
+   * }
+   */
   observer?: IntersectionObserverInit
+  /**
+   * The router instance to trigger the animation on route change
+   * @default undefined
+   */
   router?: Router
 }
 
@@ -164,8 +192,8 @@ export class AosHandler {
 
 let instance: AosHandler
 
-export const AosPlugin = {
-  install: (app: App, options?: AosOptions) => {
+export const AosPlugin: Plugin<[AosOptions?]> = {
+  install: (app, options) => {
     instance = new AosHandler(options)
 
     app.provide('mazAos', instance)
