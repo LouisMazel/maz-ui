@@ -37,5 +37,14 @@ export default defineNuxtConfig({
     translations: {
       locale: 'fr',
     },
+    plugins: {
+      aos: true,
+      dialog: true,
+      toast: true,
+      wait: true,
+    },
+    directives: {
+      vTooltip: true,
+    },
   },
 })

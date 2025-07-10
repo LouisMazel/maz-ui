@@ -1,5 +1,4 @@
-import type { MazTranslationsOptions } from '@maz-ui/translations/src/types.js'
-
+import { AosPlugin } from 'maz-ui/src/plugins/aos.ts'
 import { DialogPlugin } from 'maz-ui/src/plugins/dialog.ts'
 import { MazUi } from 'maz-ui/src/plugins/maz-ui.ts'
 import { ToastPlugin } from 'maz-ui/src/plugins/toast.ts'
@@ -25,12 +24,35 @@ app.use(MazUi, {
     locale: 'en',
     fallbackLocale: 'it',
     preloadFallback: true,
-  } satisfies MazTranslationsOptions,
+    messages: {
+      it: {
+        pagination: {
+          navAriaLabel: 'Paginazione',
+          screenReader: {
+            firstPage: 'Prima pagina',
+            previousPage: 'Pagina precedente',
+            page: 'Pagina {page}',
+            nextPage: 'Pagina successiva',
+            lastPage: 'Ultima pagina',
+          },
+        },
+      },
+    },
+  },
 })
 
 app.use(router)
 app.use(ToastPlugin)
 app.use(WaitPlugin)
 app.use(DialogPlugin)
+app.use(AosPlugin, {
+  animation: {
+    duration: 1000,
+    once: false,
+    delay: 0,
+  },
+  delay: 100,
+  router,
+})
 
 app.mount('#app')
