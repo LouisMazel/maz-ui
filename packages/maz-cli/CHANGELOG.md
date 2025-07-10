@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 4.0.0-beta.3 (2025-07-10)
+
+* chore: remove catalog feature from pnpm workspace ([0176319](https://github.com/LouisMazel/maz-ui/commit/0176319))
+
+
+
+
+
 ## 4.0.0-beta.1 (2025-07-09)
 
 * chore: upgrade dependencies in major versions ([2d10379](https://github.com/LouisMazel/maz-ui/commit/2d10379))
