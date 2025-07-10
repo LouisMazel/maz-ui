@@ -1,5 +1,4 @@
 import type { ThemePreset, ThemePresetOverrides } from '../../types'
-import { describe, expect, it } from 'vitest'
 import { getPreset, isPresetObject } from '../get-preset'
 
 describe('get-preset', () => {

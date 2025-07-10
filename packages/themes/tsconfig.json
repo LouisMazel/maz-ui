@@ -8,7 +8,10 @@
     "noUnusedParameters": true,
     "declaration": true,
     "declarationMap": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": [
+      "vitest/globals"
+    ]
   },
   "include": [
     "src/**/*"

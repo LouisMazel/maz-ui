@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest'
 import { mazUi } from '../../presets/mazUi'
 import { generateCriticalCSS, generateFullCSS } from '../css-generator'
 
