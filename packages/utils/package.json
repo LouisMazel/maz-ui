@@ -73,11 +73,11 @@
   "devDependencies": {
     "eslint": "^9.29.0",
     "eslint-plugin-format": "^1.0.1",
-    "glob": "catalog:",
-    "libphonenumber-js": "catalog:",
+    "glob": "^11.0.3",
+    "libphonenumber-js": "^1.12.9",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
-    "vue": "catalog:"
+    "vue": "^3.5.17"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md}": [
