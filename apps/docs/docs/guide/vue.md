@@ -97,6 +97,23 @@ More information in the [theme documentation](/guide/theme).
 
 More information in the [translations documentation](/guide/translations).
 
+## Plugins
+
+More information about installation and usage in:
+- [aos](./../plugins/aos.md) (animations on scroll)
+- [dialog](./../plugins/dialog.md) (display modales without any implementation in template)
+- [toast](./../plugins/toast.md) (display notifications)
+- [wait](./../plugins/wait.md) (display loading states)
+
+## Directives
+
+More information about installation and usage in:
+- [tooltip](./../directives/tooltip.md) (display tooltips)
+- [click-outside](./../directives/click-outside.md) (detect outside clicks)
+- [lazy-img](./../directives/lazy-img.md) (lazy load images)
+- [zoom-img](./../directives/zoom-img.md) (zoom images on click)
+- [fullscreen-img](./../directives/fullscreen-img.md) (display images fullscreen on click with an animate effect)
+
 ## Smart Loading with resolvers
 
 ### Installation

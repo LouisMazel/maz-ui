@@ -132,12 +132,12 @@ const inputValue = ref()
 > Will replace the label, useful to display short message
 
 <ComponentDemo>
-  <MazInput model-value="any value" label="label hint" hint="An error occured" error autocomplete="off" />
+  <MazInput v-model="defaultInputValue" label="label hint" hint="An error occured" error autocomplete="off" />
 
 <template #code>
 
 ```html
-<MazInput model-value="any value" label="label hint" hint="An error occured" error />
+<MazInput v-model="defaultInputValue" label="label hint" hint="An error occured" error />
 ```
 
   </template>
@@ -248,27 +248,6 @@ const inputValue = ref('value')
 
 ```html
 <MazInput v-model="inputValue" label="label auto-focus" auto-focus />
-```
-
-  </template>
-</ComponentDemo>
-
-## No radius
-
-> Will remove the border radius
-
-<ComponentDemo>
-  <MazInput
-    v-model="inputValue"
-    label="label no-radius"
-    no-radius
-    autocomplete="off"
-  />
-
-<template #code>
-
-```html
-<MazInput v-model="inputValue" label="label no-radius" no-radius />
 ```
 
   </template>
@@ -455,6 +434,7 @@ Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 
   import { ref, computed } from 'vue'
   const inputValue = ref()
   const passwordValue = ref()
+  const defaultInputValue = ref('any value')
 
   const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 

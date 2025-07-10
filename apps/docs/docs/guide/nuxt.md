@@ -52,7 +52,7 @@ export default defineNuxtConfig({
 })
 ```
 
-That's it! 🎉 All components, composables, and directives are now auto-imported and ready to use.
+That's it! 🎉 All components and composables are now auto-imported and ready to use.
 
 ## 🎯 Quick Start
 
@@ -63,54 +63,23 @@ No imports needed - everything is auto-imported:
 ```vue
 <script setup>
 // Composables are auto-imported
-const toast = useToast()
+const { start, stop, pause, resume, remainingTime } = useTimer({
+  timeout: 4000,
+  callback: () => console.log('Timeout end')
+})
 const { toggleDarkMode, isDark } = useTheme()
-
-function showToast() {
-  toast.success('Welcome to Maz-UI! 🎉')
-}
 </script>
 
 <template>
   <div class="maz-bg-background p-8 maz-text-foreground">
     <!-- Components are auto-imported -->
-    <MazBtn color="primary" @click="showToast">
-      Click me!
+    <MazBtn color="primary" @click="start">
+      Start timer ({{ remainingTime }}ms)
     </MazBtn>
 
     <!-- Directives work globally -->
-    <div v-tooltip="'Hello world!'" class="mt-4">
-      Hover for tooltip
-    </div>
-
-    <!-- Icons with custom path -->
-    <MazIcon name="heart" class="text-red-500" />
-  </div>
-</template>
-```
-
-### Dynamic Theming
-
-For more information about the theming system, please refer to the [theme documentation](./theme.md).
-
-```vue
-<script setup>
-const { toggleDarkMode, isDark, updateTheme } = useTheme()
-
-async function changeTheme() {
-  const { ocean } = await import('@maz-ui/themes')
-  updateTheme(ocean)
-}
-</script>
-
-<template>
-  <div>
     <MazBtn @click="toggleDarkMode">
-      {{ isDark ? '☀️' : '🌙' }} Toggle Theme
-    </MazBtn>
-
-    <MazBtn @click="changeTheme">
-      🎨 Switch to Ocean Theme
+      Toggle dark mode ({{ isDark ? '🌙' : '☀️' }})
     </MazBtn>
   </div>
 </template>
@@ -167,7 +136,7 @@ export default defineNuxtConfig({
       locales: 'fr',
       fallbackLocale: 'en',
       messages: {
-        // override default messages
+        // override default messages or add new languages
       },
     },
 
@@ -176,22 +145,29 @@ export default defineNuxtConfig({
       autoImport: true, // All components globally available
     },
 
-    // 🎪 Composables
-    composables: {
-      useTheme: true,
-      useToast: true,
-      useDialog: true,
-      useAos: {
-        injectCss: true,
-        router: true, // Re-trigger animations on route change
-      },
-      // ... all other composables enabled by default
+    // 🔌 Plugins (not enabled by default)
+    plugins: {
+      aos: true,
+      dialog: true,
+      toast: true,
+      wait: true,
     },
 
-    // 🎯 Directives
+    // 🎪 Composables (enabled by default)
+    composables: {
+      useFormValidator: true,
+      useFreezeValue: true,
+      useIdleTimeout: false,
+      useInstanceUniqId: false,
+      useMountComponent: false,
+      useReadingTime: false,
+      useStringMatching: false,
+    },
+
+    // 🎯 Directives (not enabled by default)
     directives: {
       vTooltip: true,
-      vLazyImg: { threshold: 0.1 },
+      vLazyImg: true,
       vClickOutside: true,
       vFullscreenImg: true,
       vZoomImg: true,
@@ -289,16 +265,8 @@ const composables = {
   // 🎨 Theming
   useTheme: true, // Theme management and dark mode
 
-  // 🎭 UI Plugins
-  useToast: true, // Toast notifications
-  useDialog: true, // Modal dialogs
-  useWait: true, // Loading states
-
-  // 🎬 Animations
-  useAos: {
-    injectCss: true,
-    router: true, // Re-trigger on route change
-  },
+  // 🌐 Translations
+  useTranslations: true, // Translation management
 
   // 📱 Responsive & Detection
   useWindowSize: true, // Reactive window dimensions
@@ -319,6 +287,21 @@ const composables = {
   useInjectStrict: true, // Strict dependency injection
   useInstanceUniqId: true, // Unique IDs generation
   useMountComponent: true, // Dynamic component mounting
+}
+```
+
+### 🔌 Plugins
+
+```ts
+const plugins = {
+  // 🎬 Animations
+  aos: true,
+  // 🎭 Display modales without any implementation in template
+  dialog: true,
+  // 🎭 UI Notifications
+  toast: true,
+  // 🔄 Loading States
+  wait: true,
 }
 ```
 
@@ -424,21 +407,3 @@ const config = {
   }
 }
 ```
-
-3. **Use useTheme only in client-side code** or with proper SSR handling:
-
-```vue
-<script setup>
-// ✅ Good - with client check
-const { toggleDarkMode } = process.client ? useTheme() : { toggleDarkMode: () => {} }
-
-// ✅ Good - in onMounted
-onMounted(() => {
-  const { toggleDarkMode } = useTheme()
-})
-
-// ❌ Bad - direct usage in SSR
-const { toggleDarkMode } = useTheme() // Will throw in SSR
-</script>
-```
-

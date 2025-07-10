@@ -18,7 +18,7 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
 <ComponentDemo expanded>
   <div class="maz-flex maz-flex-col maz-gap-4">
     <!-- Product Selection Demo -->
-    <MazCard class="maz-p-6">
+    <MazCard>
       <template #title>
         <div class="maz-flex maz-items-center maz-gap-3">
           <MazAvatar src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100" size="lg" />
@@ -125,7 +125,7 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
           <MazBadge color="success" size="xs">Premium Member</MazBadge>
         </div>
       </div>
-      <div class="maz-space-y-4">
+      <div class="maz-flex maz-gap-4 maz-items-start">
         <MazInput
           v-model="userForm.name"
           label="Full Name"
@@ -143,6 +143,8 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
           :options="countries"
           placeholder="Select your country"
         />
+      </div>
+      <div class="maz-flex maz-gap-4">
         <div class="maz-flex maz-items-center maz-justify-between maz-p-4 maz-border maz-border-border maz-rounded-lg">
           <div>
             <p class="maz-font-medium">Email Notifications</p>
@@ -176,7 +178,7 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
 <template>
   <div class="maz-flex maz-flex-col maz-gap-4">
     <!-- Product Card -->
-    <MazCard class="maz-p-6">
+    <MazCard>
       <template #title>
         <div class="maz-flex maz-items-center maz-gap-3">
           <MazAvatar src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100" size="lg" />
@@ -266,6 +268,61 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
           Add to Cart (${{ (129.99 * quantity).toFixed(2) }})
         </MazBtn>
         <MazBtn color="secondary" @click="isProductOpen = false">
+          Cancel
+        </MazBtn>
+      </div>
+    </div>
+  </MazBottomSheet>
+
+  <MazBottomSheet v-model="isUserOpen" title="Profile Settings">
+    <div class="maz-space-y-6 maz-p-6">
+      <div class="maz-flex maz-items-center maz-gap-4 maz-p-4 maz-bg-secondary/10 maz-rounded-lg">
+        <MazAvatar src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100" size="xl" />
+        <div>
+          <h4 class="maz-font-semibold">John Doe</h4>
+          <p class="maz-text-muted maz-text-sm">john.doe@example.com</p>
+          <MazBadge color="success" size="xs">Premium Member</MazBadge>
+        </div>
+      </div>
+      <div class="maz-space-y-4">
+        <MazInput
+          v-model="userForm.name"
+          label="Full Name"
+          placeholder="Enter your name"
+        />
+        <MazInput
+          v-model="userForm.email"
+          label="Email"
+          type="email"
+          placeholder="Enter your email"
+        />
+        <MazSelect
+          v-model="userForm.country"
+          label="Country"
+          :options="countries"
+          placeholder="Select your country"
+        />
+        <div class="maz-flex maz-items-center maz-justify-between maz-p-4 maz-border maz-border-border maz-rounded-lg">
+          <div>
+            <p class="maz-font-medium">Email Notifications</p>
+            <p class="maz-text-sm maz-text-muted">Receive updates about your orders</p>
+          </div>
+          <MazSwitch v-model="userForm.notifications" />
+        </div>
+        <div class="maz-flex maz-items-center maz-justify-between maz-p-4 maz-border maz-border-border maz-rounded-lg">
+          <div>
+            <p class="maz-font-medium">Dark Mode</p>
+            <p class="maz-text-sm maz-text-muted">Switch to dark theme</p>
+          </div>
+          <MazSwitch v-model="userForm.darkMode" />
+        </div>
+      </div>
+      <div class="maz-flex maz-gap-3 maz-pt-4">
+        <MazBtn color="primary" class="maz-flex-1" @click="saveSettings">
+          <MazIcon name="check" class="maz-mr-2" />
+          Save Changes
+        </MazBtn>
+        <MazBtn color="secondary" @click="isUserOpen = false">
           Cancel
         </MazBtn>
       </div>

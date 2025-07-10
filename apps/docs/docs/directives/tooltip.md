@@ -312,9 +312,7 @@ The `offset` (in px) option allows you to adjust the position of the tooltip rel
 
 ## Global install
 
-### Vue 3
-
-`main.ts`
+### Vue
 
 ```typescript
 import { vTooltipInstall } from 'maz-ui/directives'

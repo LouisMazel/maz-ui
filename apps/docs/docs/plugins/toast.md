@@ -13,7 +13,9 @@ This plugin has a composable for easier use, after installing it you can use [us
 
 ## Installation
 
-```ts
+::: code-group
+
+```ts [Vue]
 import { ToastPlugin } from 'maz-ui/plugins/toast'
 import { createApp } from 'vue'
 
@@ -28,6 +30,19 @@ const toastOptions: ToastOptions = {
 app.use(ToastPlugin, toastOptions)
 app.mount('#app')
 ```
+
+```ts [Nuxt]
+export default defineNuxtConfig({
+  modules: ['@maz-ui/nuxt'],
+  mazUi: {
+    composables: {
+      useToast: true,
+    },
+  },
+})
+```
+
+:::
 
 ## Basic usage
 
