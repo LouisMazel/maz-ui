@@ -5,6 +5,7 @@ pnpm-lock.yaml
 .gitignore
 packages/**
 apps/**
+tools/**
 *.sh
 .npmrc
 .vscode/**
