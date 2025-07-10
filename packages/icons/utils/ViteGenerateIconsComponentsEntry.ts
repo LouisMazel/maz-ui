@@ -75,7 +75,9 @@ async function generateIconsComponentsEntry(files: string[]) {
   }).join('\n')
 
   try {
-    const content = `import type { Component, ComponentPublicInstance, FunctionalComponent } from 'vue';
+    const content = `/// <reference types="vite-svg-loader" />
+
+import type { Component, ComponentPublicInstance, FunctionalComponent } from 'vue';
 import { defineAsyncComponent } from 'vue';
 
 export type IconComponent = FunctionalComponent | ComponentPublicInstance | Component
