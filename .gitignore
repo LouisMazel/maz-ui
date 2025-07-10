@@ -7,4 +7,5 @@ coverage
 **/*.tsbuildinfo.nx
 .nx
 lerna-debug.log*
-.cursorrules
+.cursor/rules
+CLAUDE.md
