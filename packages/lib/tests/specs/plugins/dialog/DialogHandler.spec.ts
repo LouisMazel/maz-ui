@@ -3,14 +3,23 @@ import { describe, expect, it, vi } from 'vitest'
 import { createApp } from 'vue'
 
 let resolveFn: (value: unknown) => void
-const promiseCallback = vi.fn()
+const callback = vi.fn()
 vi.mock('@components/MazDialogPromise/useMazDialogPromise', () => ({
   useMazDialogPromise: () => ({
     showDialogAndWaitChoice: () => new Promise((resolve) => {
       resolveFn = resolve
-      promiseCallback()
+      callback()
     }),
   }),
+}))
+
+vi.mock('@components/MazDialogPromise.vue', () => ({
+  default: {
+    expose: {
+      close: vi.fn(),
+    },
+    render: vi.fn(),
+  },
 }))
 
 vi.mock('@utils/mountComponent', () => ({
@@ -37,9 +46,8 @@ describe('dialogHandler', () => {
   it('should open a dialog with default options', () => {
     vi.useFakeTimers()
 
-    const { promise, destroy, close } = dialog.open({})
+    const { destroy, close } = dialog.open({})
 
-    expect(promise).toBeInstanceOf(Promise)
     expect(typeof destroy).toBe('function')
     expect(typeof close).toBe('function')
 
@@ -61,18 +69,11 @@ describe('dialogHandler', () => {
     })
   })
 
-  it('should merge options correctly', () => {
-    const customOptions = { identifier: 'custom-dialog' }
-    const { promise } = dialog.open(customOptions)
-
-    expect(promise).toBeInstanceOf(Promise)
-  })
-
-  it('should call promiseCallback if provided', () => {
-    dialog.open({ promiseCallback })
+  it('should call onAccept if provided', () => {
+    dialog.open({ onAccept: callback })
 
     resolveFn('resolved')
 
-    expect(promiseCallback).toHaveBeenCalled()
+    expect(callback).toHaveBeenCalled()
   })
 })

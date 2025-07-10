@@ -94,7 +94,7 @@ export interface MazSelectCountryProps<Option extends { name: string, code: Disp
    */
   warning?: boolean
   /**
-   * Country selector display name
+   *
    */
   displayCode?: boolean
   /**
@@ -276,7 +276,6 @@ const flagUrl = computed(() => {
       :required
       :search-function
       :format-input-value
-      :display-code
       :search-placeholder="messages.searchPlaceholder"
       :search-threshold
       :options="countriesOptions"
