@@ -38,6 +38,7 @@ export default defineConfig({
       entryRoot: resolver('src'),
       outDir: resolver('dist/types'),
       include: ['src/**/*.ts'],
+      exclude: ['src/**/__tests__/**/*', 'src/**/*.spec.ts', 'src/**/*.test.ts'],
     }),
   ],
   esbuild: {
@@ -60,7 +61,7 @@ export default defineConfig({
       entry: {
         ...entries,
         'index': 'src/index.ts',
-        'utils/index': 'src/utils/index.ts',
+        'helpers/index': 'src/helpers/index.ts',
         'formatters/index': 'src/formatters/index.ts',
       },
       formats: ['es'],

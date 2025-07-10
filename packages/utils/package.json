@@ -26,11 +26,11 @@
       "module": "./dist/index.js",
       "default": "./dist/index.js"
     },
-    "./utils": {
-      "types": "./dist/types/utils/index.d.ts",
-      "import": "./dist/utils/index.js",
-      "module": "./dist/utils/index.js",
-      "default": "./dist/utils/index.js"
+    "./helpers": {
+      "types": "./dist/types/helpers/index.d.ts",
+      "import": "./dist/helpers/index.js",
+      "module": "./dist/helpers/index.js",
+      "default": "./dist/helpers/index.js"
     },
     "./formatters": {
       "types": "./dist/types/formatters/index.d.ts",
@@ -38,11 +38,11 @@
       "module": "./dist/formatters/index.js",
       "default": "./dist/formatters/index.js"
     },
-    "./utils/*": {
-      "types": "./dist/types/utils/*.d.ts",
-      "import": "./dist/utils/*.js",
-      "module": "./dist/utils/*.js",
-      "default": "./dist/utils/*.js"
+    "./helpers/*": {
+      "types": "./dist/types/helpers/*.d.ts",
+      "import": "./dist/helpers/*.js",
+      "module": "./dist/helpers/*.js",
+      "default": "./dist/helpers/*.js"
     },
     "./formatters/*": {
       "types": "./dist/types/formatters/*.d.ts",
@@ -68,7 +68,10 @@
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "test:unit": "vitest",
+    "test:unit:watch": "vitest watch",
+    "test:unit:coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "eslint": "^9.29.0",
