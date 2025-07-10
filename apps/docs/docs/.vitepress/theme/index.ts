@@ -3,8 +3,12 @@ import type { Theme } from 'vitepress'
 
 // @ts-ignore
 import * as components from 'maz-ui/src/components/index.js'
-// @ts-ignore
+
+import { AosPlugin } from 'maz-ui/src/plugins/aos.js'
+import { DialogPlugin } from 'maz-ui/src/plugins/dialog.js'
 import { MazUi } from 'maz-ui/src/plugins/maz-ui.js'
+import { ToastPlugin } from 'maz-ui/src/plugins/toast.js'
+import { WaitPlugin } from 'maz-ui/src/plugins/wait.js'
 
 import { inBrowser } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
@@ -25,29 +29,28 @@ export default {
   enhanceApp({ app, router: { route } }) {
     app.use(MazUi, {
       theme: {
+        preset: 'maz-ui',
         darkModeStrategy: 'class',
         strategy: 'hybrid',
-        preset: 'maz-ui',
       },
       translations: {
         locale: 'fr',
       },
-      plugins: {
-        dialog: true,
-        toast: {
-          persistent: false,
-          position: 'bottom-right',
-          timeout: 10_000,
-        },
-        wait: true,
-        aos: {
-          delay: 500,
-          animation: {
-            duration: 400,
-            once: false,
-            delay: 0,
-          },
-        },
+    })
+
+    app.use(DialogPlugin)
+    app.use(ToastPlugin, {
+      persistent: false,
+      position: 'bottom-right',
+      timeout: 10_000,
+    })
+    app.use(WaitPlugin)
+    app.use(AosPlugin, {
+      delay: 500,
+      animation: {
+        duration: 400,
+        once: false,
+        delay: 0,
       },
     })
 

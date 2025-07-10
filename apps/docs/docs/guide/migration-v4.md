@@ -17,7 +17,58 @@ This guide will help you migrate from Maz-UI v3.x to v4.0.0. This major version 
 
 ## ⚠️ Major Breaking Changes
 
-### 1. 🧩 Import Structure (BREAKING CHANGE)
+### MazUi plugin
+
+Now you should use the `MazUi` plugin to initialize the theme and translations.
+
+::: code-group
+
+```typescript [Vue]
+import { MazUi } from 'maz-ui'
+import { createApp } from 'vue'
+
+const app = createApp(App)
+app.use(MazUi)
+app.mount('#app')
+```
+
+```typescript [Nuxt]
+// Install @maz-ui/nuxt (npm install @maz-ui/nuxt)
+
+export default defineNuxtConfig({
+  modules: ['@maz-ui/nuxt'], // maz-ui/nuxt -> @maz-ui/nuxt
+})
+```
+
+:::
+
+### Theming
+
+With the V3 you had to override CSS variables to change the theme.
+
+With the V4 you have to use the `definePreset` function to create a custom theme.
+
+```typescript
+import { definePreset } from 'maz-ui'
+import { mazUi } from '@maz-ui/themes/presets/mazUi'
+
+const customTheme = definePreset({
+  base: mazUi,
+  overrides: {
+    colors: {
+      primary: '220 100% 50%'
+    }
+  }
+})
+
+app.use(MazUi, {
+  theme: {
+    preset: customTheme,
+  },
+})
+```
+
+### 🧩 Import Structure (BREAKING CHANGE)
 
 #### Vue Components
 
@@ -77,7 +128,7 @@ import { capitalize, currency } from 'maz-ui'
 import { capitalize, currency } from '@maz-ui/utils'
 ```
 
-### 2. 🔧 Helpers Migrated to Composables (BREAKING CHANGE)
+### 🔧 Helpers Migrated to Composables (BREAKING CHANGE)
 
 Several helpers are now Vue composables and need to be used in a Vue context:
 
@@ -165,7 +216,7 @@ import { useFreezeValue } from 'maz-ui/composables'
 const frozen = useFreezeValue(reactiveValue)
 ```
 
-### 3. MazBtn - Major API Changes (BREAKING CHANGE)
+### 🔧 MazBtn - Major API Changes (BREAKING CHANGE)
 
 #### Removal of `variant` prop
 
@@ -186,7 +237,7 @@ const frozen = useFreezeValue(reactiveValue)
 </MazLink>
 ```
 
-### 4. 📞 MazPhoneNumberInput → MazInputPhoneNumber (BREAKING CHANGE)
+### 📞 MazPhoneNumberInput → MazInputPhoneNumber (BREAKING CHANGE)
 
 The component has been renamed and the API has changed:
 
@@ -216,7 +267,7 @@ import MazInputPhoneNumber from 'maz-ui/components/MazInputPhoneNumber'
 import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
 ```
 
-### 5. 🗑️ Removed Component: MazTransitionExpand
+### 🗑️ Removed Component: MazTransitionExpand
 
 ```html
 <!-- ❌ BEFORE -->
@@ -241,7 +292,7 @@ import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
 - New `timing-function` prop
 - CSS Grid-based animation
 
-### 6. 📦 MazDropzone - Complete Rewrite (BREAKING CHANGE)
+### 📦 MazDropzone - Complete Rewrite (BREAKING CHANGE)
 
 #### Removal of `dropzone` dependency
 
@@ -269,7 +320,7 @@ npm uninstall dropzone
 />
 ```
 
-### 7. 🔄 Generalized Props Changes
+### 🔄 Generalized Props Changes
 
 #### MazCard - New props
 
@@ -297,7 +348,7 @@ npm uninstall dropzone
 </MazLink>
 ```
 
-### 8. 📚 PeerDependencies Update (BREAKING CHANGE)
+### 📚 PeerDependencies Update (BREAKING CHANGE)
 
 ```json
 {
@@ -312,45 +363,6 @@ npm uninstall dropzone
     // "dropzone": "^5.9.3" - removed
   }
 }
-```
-
-## 🛠️ Step-by-Step Migration Guide
-
-### Step 1: Update Dependencies
-
-```bash
-# Update maz-ui
-npm install maz-ui@^4.0.0
-
-# Remove dropzone if installed
-npm uninstall dropzone
-
-# Update peer dependencies if needed
-npm install vue@^3.5.0
-npm install unplugin-auto-import@^19.0.0
-npm install unplugin-vue-components@^28.0.0
-```
-
-### Step 5: Verification and Testing
-
-#### 1. Type check
-
-```bash
-npx vue-tsc --noEmit
-```
-
-#### 2. Build and Bundle
-
-```bash
-# Test build
-npm run build
-```
-
-#### 3. Tests
-
-```bash
-# Run tests (if available)
-npm run test
 ```
 
 ## 📊 Migration Benefits
@@ -368,16 +380,6 @@ With the new import structure, you can now import only the components you need, 
 
 ## 🆘 Troubleshooting
 
-### Error: "Cannot resolve module 'maz-ui/components'"
-
-```bash
-# Check installed version
-npm list maz-ui
-
-# Reinstall if needed
-npm install maz-ui@latest
-```
-
 ### Error: "idleTimeout is not a function"
 
 ```typescript
@@ -385,7 +387,7 @@ npm install maz-ui@latest
 import { useIdleTimeout } from 'maz-ui/composables'
 
 // ❌ Old helper
-import { idleTimeout } from 'maz-ui/helpers'
+import { idleTimeout } from 'maz-ui'
 ```
 
 ### Error: "MazTransitionExpand is not exported"

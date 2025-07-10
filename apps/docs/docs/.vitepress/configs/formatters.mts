@@ -5,8 +5,8 @@ export const formatters = {
   collapsed: true,
   items: [
     { text: 'capitalize', link: '/helpers/capitalize' },
-    { text: 'currency', link: '/helpers/currency' },
-    { text: 'date', link: '/helpers/date' },
-    { text: 'number', link: '/helpers/number' },
+    { text: 'formatCurrency', link: '/helpers/currency' },
+    { text: 'formatDate', link: '/helpers/date' },
+    { text: 'formatNumber', link: '/helpers/number' },
   ],
 } satisfies DefaultTheme.SidebarItem

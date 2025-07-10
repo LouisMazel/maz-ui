@@ -13,7 +13,9 @@ This plugin has a composable for easier use, after installing it you can use [us
 
 ## Installation
 
-```ts
+::: code-group
+
+```ts [Vue]
 import { WaitPlugin } from 'maz-ui/plugins/wait'
 import { createApp } from 'vue'
 
@@ -22,6 +24,19 @@ const app = createApp(App)
 app.use(WaitPlugin)
 app.mount('#app')
 ```
+
+```ts [Nuxt]
+export default defineNuxtConfig({
+  modules: ['@maz-ui/nuxt'],
+  mazUi: {
+    composables: {
+      useWait: true,
+    },
+  },
+})
+```
+
+:::
 
 ## Basic usage
 

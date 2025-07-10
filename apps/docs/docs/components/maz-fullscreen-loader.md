@@ -12,17 +12,16 @@ description: MazFullscreenLoader is a standalone component
 ## Basic usage
 
 <MazFullscreenLoader v-if="showLoader" @click="showLoader = false">
-
-  <p>
+  <p class="maz-text-lg maz-text-surface">
     Loading...
   </p>
-  <p>
+  <p class="maz-text-lg maz-text-surface">
     (click to hide loader)
   </p>
 </MazFullscreenLoader>
 
 <MazBtn @click="showLoader = true">
-Show loader
+  Show loader
 </MazBtn>
 
 ```vue

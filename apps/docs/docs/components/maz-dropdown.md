@@ -41,6 +41,38 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 </script>
 ```
 
+## Open dropdown with adaptive trigger
+
+The `adaptive` trigger mode automatically adapts to the user's device:
+- **Desktop**: Uses hover behavior (mouseenter/mouseleave)
+- **Mobile/Touch devices**: Uses click behavior
+
+This provides the best user experience across all devices without requiring manual configuration.
+
+<MazDropdown
+  :items="[
+    { label: 'Action', onClick: () => toast.success('CLICKED') },
+    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
+    { label: 'Router Link', to: { name: 'index' } },
+  ]"
+  trigger="adaptive"
+>
+  Adaptive trigger
+</MazDropdown>
+
+```html{7}
+<MazDropdown
+  :items="[
+    { label: 'Action', onClick: () => toast.success('CLICKED') },
+    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
+    { label: 'Router Link', to: { name: 'index' } },
+  ]"
+  trigger="adaptive"
+>
+  Adaptive trigger
+</MazDropdown>
+```
+
 ## Open dropdown only on click
 
 <MazDropdown
@@ -582,10 +614,10 @@ isOpen: {{ isOpen }}
 
 ## Types
 
-### MenuItem
+### MazDropdownMenuItem
 
 ```ts
-type MenuItem = {
+type MazDropdownMenuItem = {
   label: string
   onClick?: () => unknown
   target?: string
