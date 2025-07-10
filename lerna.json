@@ -5,9 +5,10 @@
   "packages": ["packages/*", "apps/*", "tools/*", "."],
   "command": {
     "version": {
-      "allowBranch": ["master", "develop", "release/*"],
+      "allowBranch": ["master", "develop", "release/*", "fix/*"],
       "conventionalCommits": true,
       "conventionalPrerelease": true,
+      "changelogPreset": "gitmoji-config",
       "createRelease": "github",
       "message": "chore(release): version packages %v",
       "tagVersionPrefix": "v",
