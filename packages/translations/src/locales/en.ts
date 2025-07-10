@@ -127,12 +127,24 @@ export default {
       lastPage: 'Last Page, page {page}',
     },
   },
+  /**
+   * This is the translation for the carousel component.
+   * The keys are:
+   * - ariaLabel.previousButton: The aria-label for the previous button.
+   * - ariaLabel.nextButton: The aria-label for the next button.
+   */
   carousel: {
     ariaLabel: {
       previousButton: 'Scroll to previous items',
       nextButton: 'Scroll to next items',
     },
   },
+  /**
+   * This is the translation for the checklist component.
+   * The keys are:
+   * - noResultsFound: The translation for the no results found text.
+   * - searchInput.placeholder: The translation for the search input placeholder.
+   */
   checklist: {
     noResultsFound: 'No results found',
     searchInput: {
