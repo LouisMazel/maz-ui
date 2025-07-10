@@ -20,7 +20,7 @@ const {
   style: styleProp,
   id,
   items = [],
-  trigger = 'click',
+  trigger = 'hover',
   color = 'transparent',
   position = 'auto',
   screenReaderDescription,
@@ -56,25 +56,25 @@ const instanceId = useInstanceUniqId({
 
 const { t } = useTranslations()
 
-type ItemBase = Record<string, unknown> & {
+type MazDropdownItemBase = Record<string, unknown> & {
   label: string
   class?: unknown
   color?: MazColor
 }
 
-type LinkItem = ItemBase & MazLinkProps & {
+type MazDropdownLinkItem = MazDropdownItemBase & MazLinkProps & {
   target?: string
   href?: string
   to?: RouteLocationRaw
 }
 
-type ActionItem = ItemBase & {
+type MazDropdownActionItem = MazDropdownItemBase & {
   onClick?: () => unknown
 }
 
-export type MenuItem
-  = | (LinkItem & { action?: never })
-    | (ActionItem & { href?: never, to?: never, target?: never })
+export type MazDropdownMenuItem
+  = | (MazDropdownLinkItem & { action?: never })
+    | (MazDropdownActionItem & { href?: never, to?: never, target?: never })
 
 export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue'> {
   /**
@@ -97,7 +97,7 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue'> {
   /**
    * Menu items to display in the dropdown
    * Each item can be either a link (with href/to properties) or an action (with onClick function)
-   * @type {MenuItem[]}
+   * @type {MazDropdownMenuItem[]}
    * @default []
    * @example
    * [
@@ -105,7 +105,7 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue'> {
    *   { label: 'Settings', onClick: () => console.log('Settings clicked') }
    * ]
    */
-  items?: MenuItem[]
+  items?: MazDropdownMenuItem[]
   /**
    * Unique identifier for the dropdown component
    * @type {string}
@@ -115,7 +115,7 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue'> {
    * Determines how the dropdown should be triggered
    * @type {MazPopoverProps['trigger']}
    * @values click, hover, manual
-   * @default 'click'
+   * @default 'hover'
    */
   trigger?: MazPopoverProps['trigger']
   /**
@@ -232,15 +232,15 @@ function setDropdown(value: boolean) {
   modelValue.value = value
 }
 
-function isActionItem(item: MenuItem): item is ActionItem {
+function isActionItem(item: MazDropdownMenuItem): item is MazDropdownActionItem {
   return 'onClick' in item
 }
 
-function isLinkItem(item: MenuItem): item is LinkItem {
+function isLinkItem(item: MazDropdownMenuItem): item is MazDropdownLinkItem {
   return 'href' in item || 'to' in item
 }
 
-async function runAction(item: ActionItem, event: Event) {
+async function runAction(item: MazDropdownActionItem, event: Event) {
   emits('menuitem-clicked', event)
 
   await item.onClick?.()
@@ -328,14 +328,10 @@ watch(
     <template #trigger="{ toggle, close, isOpen, open }">
       <div
         :id="instanceId"
-        role="button"
-        tabindex="0"
+        tabindex="-1"
         class="m-dropdown__wrapper"
         :aria-expanded="modelValue"
         aria-haspopup="menu"
-        @click.stop="toggle"
-        @keypress.enter.stop.prevent="toggle"
-        @keypress.space.stop.prevent="toggle"
       >
         <span :id="`${instanceId}-labelspan`" class="maz-sr-only">
           <!--
@@ -361,7 +357,6 @@ watch(
             :color
             :disabled
             v-bind="$attrs"
-            tabindex="-1"
             :block
             :size
           >
@@ -404,7 +399,7 @@ watch(
       >
         <!--
           @slot Dropdown menu panel content
-          @binding {MenuItem[]} items - Array of menu items passed via the items prop
+          @binding {MazDropdownMenuItem[]} items - Array of menu items passed via the items prop
           @binding {() => void} close - Function to close the dropdown
           @binding {() => void} open - Function to open the dropdown
           @binding {() => void} toggle - Function to toggle the dropdown

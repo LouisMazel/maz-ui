@@ -30,15 +30,15 @@ const props = withDefaults(defineProps<MazLazyImgProps>(), {
   observerOnce: true,
 })
 
-defineEmits<{
+const emits = defineEmits<{
   /** Emitted when the image is intersecting */
-  (name: 'intersecting', el: HTMLElement): void
+  (name: 'intersecting', el: Element): void
   /** Emitted when the image is loading */
-  (name: 'loading', el: HTMLElement): void
+  (name: 'loading', el: Element): void
   /** Emitted when the image is loaded */
-  (name: 'loaded', el: HTMLElement): void
+  (name: 'loaded', el: Element): void
   /** Emitted when the image is in error */
-  (name: 'error', el: HTMLElement): void
+  (name: 'error', el: Element): void
 }>()
 
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
@@ -85,10 +85,10 @@ const sources = computed(() => {
       observerOptions,
       fallbackSrc,
       observerOnce,
-      onIntersecting: (el: HTMLElement) => $emit('intersecting', el),
-      onLoading: (el: HTMLElement) => $emit('loading', el),
-      onLoaded: (el: HTMLElement) => $emit('loaded', el),
-      onError: (el: HTMLElement) => $emit('error', el),
+      onIntersecting: (el) => emits('intersecting', el),
+      onLoading: (el) => emits('loading', el),
+      onLoaded: (el) => emits('loaded', el),
+      onError: (el) => emits('error', el),
     }"
     class="m-lazy-img-component m-reset-css"
     :class="[{ '--use-loader': !hideLoader, '--height-full': imageHeightFull, '--block': block }, props.class]"

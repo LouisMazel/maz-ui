@@ -4,6 +4,8 @@ import { ZoomImgHandler } from './zoom-img.handler'
 
 let instance: ZoomImgHandler
 
+export type VZoomImgDirective = ObjectDirective<HTMLElement, VZoomImgBindingValue>
+
 export const vZoomImg = {
   created(el: HTMLElement, binding): void {
     instance = new ZoomImgHandler(binding)
@@ -15,4 +17,4 @@ export const vZoomImg = {
   unmounted(el: HTMLElement): void {
     instance.remove(el)
   },
-} satisfies ObjectDirective<HTMLElement, VZoomImgBindingValue>
+} satisfies VZoomImgDirective

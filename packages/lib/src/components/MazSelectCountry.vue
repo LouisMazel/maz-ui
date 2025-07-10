@@ -2,7 +2,7 @@
 import type { MazTranslationsNestedSchema } from '@maz-ui/translations/src/types.js'
 import type { HTMLAttributes } from 'vue'
 
-import type { PopoverPosition } from './MazPopover.vue'
+import type { MazPopoverPosition } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
 import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
 import { getBrowserLocale } from '@maz-ui/utils/src/utils/getBrowserLocale.js'
@@ -59,7 +59,7 @@ export interface MazSelectCountryProps<Option extends { name: string, code: Disp
    * @type {PopoverPosition}
    * @default bottom-start
    */
-  listPosition?: PopoverPosition
+  listPosition?: MazPopoverPosition
   /**
    * Hide flags
    */

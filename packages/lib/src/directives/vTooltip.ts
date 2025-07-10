@@ -1,5 +1,5 @@
 import type { DirectiveBinding, ObjectDirective, Plugin } from 'vue'
-import type { MazPopoverProps, PopoverPosition, PopoverTrigger } from '../components/MazPopover.vue'
+import type { MazPopoverPosition, MazPopoverProps, MazPopoverTrigger } from '../components/MazPopover.vue'
 import { h } from 'vue'
 import MazPopover from '../components/MazPopover.vue'
 import { useMountComponent } from '../composables/useMountComponent'
@@ -23,12 +23,12 @@ interface VTooltipOptions extends Partial<Omit<MazPopoverProps, 'modelValue'>> {
    * The preferred position is set to 'top' if no position is provided
    * @default undefined
    */
-  position?: PopoverPosition
+  position?: MazPopoverPosition
   /**
    * Trigger of the tooltip
    * @default hover
    */
-  trigger?: PopoverTrigger
+  trigger?: MazPopoverTrigger
   /**
    * Close on click outside
    * @default false
@@ -84,18 +84,18 @@ class TooltipHandler {
       return {
         ...baseOptions,
         text: binding.value,
-        position: this.getPositionFromModifiers(binding) || baseOptions.position as PopoverPosition,
+        position: this.getPositionFromModifiers(binding) || baseOptions.position as MazPopoverPosition,
       } satisfies VTooltipOptions
     }
 
     return {
       ...baseOptions,
       ...binding.value,
-      position: this.getPositionFromModifiers(binding) || binding.value.position || baseOptions.position as PopoverPosition,
+      position: this.getPositionFromModifiers(binding) || binding.value.position || baseOptions.position as MazPopoverPosition,
     } satisfies VTooltipOptions
   }
 
-  private getPositionFromModifiers(binding: TooltipBinding): PopoverPosition | undefined {
+  private getPositionFromModifiers(binding: TooltipBinding): MazPopoverPosition | undefined {
     if (binding.modifiers.top)
       return 'top'
     if (binding.modifiers.bottom)
@@ -214,7 +214,9 @@ class TooltipHandler {
 
 let globalHandler: TooltipHandler
 
-const directive = {
+export type VTooltipDirective = ObjectDirective<HTMLElement, VTooltipBindingValue, NonNullable<MazPopoverProps['position']>>
+
+const directive: VTooltipDirective = {
   mounted(el: HTMLElement, binding: TooltipBinding) {
     if (!globalHandler) {
       globalHandler = new TooltipHandler()
@@ -234,10 +236,10 @@ const directive = {
       globalHandler.unmount(el)
     }
   },
-} satisfies ObjectDirective<HTMLElement, VTooltipBindingValue, NonNullable<MazPopoverProps['position']>>
+}
 
-const plugin = {
-  install: (app, options: Partial<VTooltipOptions> = {}) => {
+const plugin: Plugin<[Partial<VTooltipOptions>?]> = {
+  install: (app, options) => {
     const handler = new TooltipHandler(options)
 
     app.directive('tooltip', {
@@ -246,11 +248,17 @@ const plugin = {
       unmounted: handler.unmount.bind(handler),
     })
   },
-} satisfies Plugin<Partial<VTooltipOptions>>
+}
 
 export {
   directive as vTooltip,
   type VTooltipBindingValue,
   plugin as vTooltipInstall,
   type VTooltipOptions,
+}
+
+declare module 'vue' {
+  interface GlobalDirectives {
+    vTooltip: VTooltipDirective
+  }
 }

@@ -4,7 +4,9 @@ import { FullscreenImgHandler } from './fullscreen-img.handler'
 
 let instance: FullscreenImgHandler
 
-const directive = {
+export type VFullscreenImgDirective = ObjectDirective<HTMLElement, VFullscreenImgBindingValue>
+
+const directive: VFullscreenImgDirective = {
   mounted(el: HTMLElement, binding) {
     instance = new FullscreenImgHandler()
     return instance.create(el, binding)
@@ -15,6 +17,6 @@ const directive = {
   unmounted(el: HTMLElement) {
     return instance.remove(el)
   },
-} satisfies ObjectDirective<HTMLElement, VFullscreenImgBindingValue>
+}
 
 export { directive as vFullscreenImg }

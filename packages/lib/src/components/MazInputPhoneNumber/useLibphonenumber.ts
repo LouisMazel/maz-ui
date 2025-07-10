@@ -1,8 +1,7 @@
 import type { CountryCode, Examples } from 'libphonenumber-js'
-import type { Results } from './types'
+import type { MazInputPhoneNumberData } from '../MazInputPhoneNumber.vue'
 import {
   AsYouType,
-
   getCountries,
   getCountryCallingCode,
   getExampleNumber,
@@ -40,7 +39,7 @@ function getPhoneNumberResults({
   phoneNumber?: string | undefined | null
   countryCode?: CountryCode | undefined | null
   checkCountryCode?: boolean
-}): Results {
+}): MazInputPhoneNumberData {
   try {
     if (!phoneNumber) {
       return {

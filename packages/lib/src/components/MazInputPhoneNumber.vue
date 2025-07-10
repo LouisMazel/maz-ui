@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import type { MazTranslationsNestedSchema } from '@maz-ui/translations/src/types.js'
 import type { DeepPartial } from '@maz-ui/utils/src/ts-helpers/DeepPartial.js'
-import type { CountryCode } from 'libphonenumber-js'
+import type { CountryCallingCode, CountryCode, NationalNumber, NumberType } from 'libphonenumber-js'
 import type { HTMLAttributes } from 'vue'
-import type { Results } from './MazInputPhoneNumber/types'
 
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
@@ -88,8 +87,25 @@ const emits = defineEmits<{
    * @example
    * <MazInputPhoneNumber @data="handleDataChange" />
    */
-  'data': [results: Results]
+  'data': [results: MazInputPhoneNumberData]
 }>()
+
+export interface MazInputPhoneNumberData {
+  isValid: boolean
+  isPossible?: boolean
+  countryCode?: CountryCode | undefined | null
+  parsedCountryCode?: CountryCode | undefined | null
+  countryCallingCode?: CountryCallingCode
+  nationalNumber?: NationalNumber
+  type?: NumberType
+  formatInternational?: string
+  formatNational?: string
+  uri?: string
+  e164?: string
+  rfc3966?: string
+  possibleCountries?: CountryCode[]
+  phoneNumber?: string | undefined | null
+}
 
 const MazSelectCountry = defineAsyncComponent(() => import('./MazSelectCountry.vue'))
 const PhoneInput = defineAsyncComponent(() => import('./MazInputPhoneNumber/PhoneInput.vue'))
@@ -337,7 +353,7 @@ const isPhoneNumberInternalUpdate = ref(false)
 const isCountryInternalUpdate = ref(false)
 const hasAutoFormat = computed(() => props.autoFormat)
 
-const results = ref<Results>({
+const results = ref<MazInputPhoneNumberData>({
   isValid: false,
   countryCode: props.countryCode,
   phoneNumber: props.modelValue,
