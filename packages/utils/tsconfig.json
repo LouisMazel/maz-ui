@@ -10,7 +10,10 @@
     "declarationMap": true,
     "outDir": "./dist",
     "sourceMap": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": [
+      "vitest/globals"
+    ]
   },
   "include": [
     "src/**/*"
