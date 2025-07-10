@@ -2,7 +2,7 @@ import {
   UserVisibility,
   type UserVisibilyCallback,
   type UserVisibilyOptions,
-} from '@maz-ui/utils/src/utils/userVisibility.js'
+} from '@maz-ui/utils/src/helpers/userVisibility.js'
 
 export function useUserVisibility({
   callback,

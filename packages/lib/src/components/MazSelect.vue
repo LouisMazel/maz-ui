@@ -9,9 +9,9 @@ import type { MazInputValue } from './MazInput.vue'
 import type { MazColor, MazSize } from './types'
 import { MazChevronDown, MazMagnifyingGlass, MazNoSymbol } from '@maz-ui/icons'
 import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
-import { debounceCallback } from '@maz-ui/utils/src/utils/debounceCallback.js'
-import { isClient } from '@maz-ui/utils/src/utils/isClient.js'
-import { normalizeString } from '@maz-ui/utils/src/utils/normalizeString.js'
+import { debounceCallback } from '@maz-ui/utils/src/helpers/debounceCallback.js'
+import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
+import { normalizeString } from '@maz-ui/utils/src/helpers/normalizeString.js'
 import {
   computed,
   defineAsyncComponent,

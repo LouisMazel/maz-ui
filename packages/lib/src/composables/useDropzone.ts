@@ -1,6 +1,6 @@
 import type { MaybeRef, MaybeRefOrGetter, Ref } from 'vue'
 
-import { isClient } from '@maz-ui/utils/src/utils/isClient.js'
+import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
 
 import { onBeforeUnmount, ref, shallowRef, toValue, unref, watch } from 'vue'
 
