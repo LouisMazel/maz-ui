@@ -1,45 +1,111 @@
 ---
-name: Bug report
-about: Create a report to help us improve
-title: '[Issue][<COMPONENT>]'
-labels: BUG FIX
+name: 🐛 Bug Report
+about: Create a report to help us improve Maz-UI
+title: '[Bug] '
+labels: bug
 assignees: LouisMazel
 ---
 
-## Describe the bug
+## 🐛 Bug Description
 
-A clear and concise description of what the bug is.
+<!-- A clear and concise description of what the bug is -->
 
-## To Reproduce
+## 📦 Affected Package(s)
 
-Steps to reproduce the behavior:
+<!-- Check all packages that are affected by this bug -->
 
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+- [ ] `@maz-ui/lib` (main component library)
+- [ ] `@maz-ui/nuxt` (Nuxt module)
+- [ ] `@maz-ui/icons` (icon library)
+- [ ] `@maz-ui/themes` (theme system)
+- [ ] `@maz-ui/translations` (i18n)
+- [ ] `@maz-ui/utils` (utilities)
+- [ ] `@maz-ui/cli` (CLI tools)
+- [ ] `@maz-ui/eslint-config` (ESLint config)
+- [ ] `docs` (documentation)
+- [ ] Other:
 
-## Expected behavior
+## 🔧 Component/Feature
 
-A clear and concise description of what you expected to happen.
+<!-- If applicable, specify the component or feature name -->
 
-## Screenshots
+## 🔄 Steps to Reproduce
 
-If applicable, add screenshots to help explain your problem.
+<!-- Steps to reproduce the behavior -->
 
-## Desktop (please complete the following information)
+1.
+2.
+3.
+4.
 
-- OS: [e.g. iOS]
-- Browser [e.g. chrome, safari]
-- Version [e.g. 22]
+## ✅ Expected Behavior
 
-## Smartphone (please complete the following information)
+<!-- A clear and concise description of what you expected to happen -->
 
-- Device: [e.g. iPhone15]
-- OS: [e.g. iOS8.1]
-- Browser [e.g. stock browser, safari]
-- Version [e.g. 22]
+## ❌ Actual Behavior
 
-## Additional context
+<!-- A clear and concise description of what actually happens -->
 
-Add any other context about the problem here.
+## 🖼️ Screenshots/Code
+
+<!-- If applicable, add screenshots or code snippets to help explain your problem -->
+
+```vue
+<!-- Add your Vue code here -->
+```
+
+```typescript
+// Add your TypeScript code here
+```
+
+## 🌍 Environment
+
+**Framework:**
+
+- [ ] Vue 3
+- [ ] Vue 2
+- [ ] Nuxt 3
+- [ ] Nuxt 2
+- [ ] Other:
+
+**Package Version:**
+
+- Maz-UI:
+- Vue:
+- Nuxt:
+- Node:
+- npm/yarn/pnpm:
+
+**Browser:**
+
+- [ ] Chrome
+- [ ] Firefox
+- [ ] Safari
+- [ ] Edge
+- [ ] Mobile browsers
+- [ ] Other:
+
+**Operating System:**
+
+- [ ] macOS
+- [ ] Windows
+- [ ] Linux
+- [ ] Mobile (iOS/Android)
+- [ ] Other:
+
+## 📋 Additional Context
+
+<!-- Add any other context about the problem here -->
+
+## 🔍 Possible Solution
+
+<!-- If you have ideas on how to fix this, please share them -->
+
+## 📝 Checklist
+
+<!-- Please check the following before submitting -->
+
+- [ ] I have searched for existing issues
+- [ ] I have tested this on the latest version
+- [ ] I have provided all necessary information
+- [ ] I have included code examples/screenshots where applicable
