@@ -262,23 +262,40 @@ const panelStyles = ref<HTMLAttributes['style']>()
 
 const rootStyles = computed(() => attrs.style as HTMLAttributes['style'])
 
+interface TriggerEventHandlers {
+  onClick?: () => void
+  onMouseenter?: () => void
+  onMouseleave?: () => void
+}
+
+const isTouchDevice = computed(() => {
+  if (!isClient())
+    return false
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0
+})
+
+const effectiveTrigger = computed(() => {
+  if (trigger === 'adaptive') {
+    return isTouchDevice.value ? 'click' : 'hover'
+  }
+  return trigger
+})
+
 const triggerEvents = computed(() => {
-  if (disabled || trigger === 'manual')
+  if (disabled || effectiveTrigger.value === 'manual')
     return {}
 
-  const events: Record<string, () => void> = {}
+  const events: TriggerEventHandlers = {}
 
-  if (trigger === 'hover') {
+  if (effectiveTrigger.value === 'hover') {
     events.onMouseenter = () => {
       clearCloseTimeout()
       open()
     }
     events.onMouseleave = close
-    events.onFocus = open
-    events.onBlur = close
   }
 
-  if (trigger === 'click') {
+  if (effectiveTrigger.value === 'click') {
     events.onClick = toggle
   }
 
@@ -286,7 +303,7 @@ const triggerEvents = computed(() => {
 })
 
 const panelEvents = computed(() => {
-  if (trigger !== 'hover')
+  if (effectiveTrigger.value !== 'hover')
     return {}
 
   return {
@@ -432,12 +449,12 @@ function open() {
 function close() {
   clearOpenTimeout()
 
-  if (delay > 0 && trigger === 'hover') {
+  if (delay > 0 && effectiveTrigger.value === 'hover') {
     closeTimeout = setTimeout(() => {
       setOpen(false)
     }, delay)
   }
-  else if (trigger === 'hover' && keepOpenOnHover) {
+  else if (effectiveTrigger.value === 'hover' && keepOpenOnHover) {
     closeTimeout = setTimeout(() => {
       setOpen(false)
     }, hoverDelay)
@@ -649,7 +666,7 @@ function calculatePosition(
 }
 
 function setupFocusTrap() {
-  if (role === 'tooltip' || role === 'menu' || trigger === 'hover' || !trapFocus)
+  if (role === 'tooltip' || role === 'menu' || effectiveTrigger.value === 'hover' || !trapFocus)
     return
 
   initialFocusElement = document.activeElement as HTMLElement
@@ -669,7 +686,7 @@ function setupFocusTrap() {
 }
 
 function restoreFocus() {
-  if (role === 'tooltip' || role === 'menu' || trigger === 'hover' || !trapFocus)
+  if (role === 'tooltip' || role === 'menu' || effectiveTrigger.value === 'hover' || !trapFocus)
     return
 
   nextTick(() => {
@@ -720,7 +737,7 @@ function handleTrapFocus(event: KeyboardEvent) {
 }
 
 function onClickOutside(event: Event) {
-  if (trigger === 'manual')
+  if (effectiveTrigger.value === 'manual')
     return
 
   if (ignoreNextClickOutside) {
