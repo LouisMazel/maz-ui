@@ -1,3 +1,5 @@
+/// <reference types="vite-svg-loader" />
+
 import type { Component, ComponentPublicInstance, FunctionalComponent } from 'vue';
 import { defineAsyncComponent } from 'vue';
 
