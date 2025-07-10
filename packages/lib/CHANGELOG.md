@@ -1,5 +1,21 @@
 # Change Log
 
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [4.0.0-beta.4](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2025-07-10)
+
+
+### Features
+
+* **maz-ui:** MazDropdown, Mazpopover - new trigger mode 'adaptive' for desktop and mobile ([2ed51aa](https://github.com/LouisMazel/maz-ui/commit/2ed51aaa9b2853a0eab0b5ca77b5e0f786e1a74b))
+
+
+
+
+
+# Change Log
+
 
 
 ## 4.0.0-beta.3 (2025-07-10)

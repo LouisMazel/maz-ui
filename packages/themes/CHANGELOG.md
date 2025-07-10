@@ -1,5 +1,21 @@
 # Change Log
 
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [4.0.0-beta.4](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2025-07-10)
+
+
+### Bug Fixes
+
+* **@maz-ui/themes:** force dark or light mode with colorMode config ([6b333d2](https://github.com/LouisMazel/maz-ui/commit/6b333d206b0340828e621e52047cb92362641e44))
+
+
+
+
+
+# Change Log
+
 
 
 ## 4.0.0-beta.3 (2025-07-10)
