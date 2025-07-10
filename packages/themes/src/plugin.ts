@@ -8,14 +8,7 @@ import {
 } from './utils/css-generator'
 import { getColorMode, getSystemPrefersDark } from './utils/get-color-mode'
 
-export interface MazUiThemeOptions extends ThemeConfig {
-  /**
-   * CSS variables prefix
-   * @description Prefix for CSS variables
-   * @default 'maz'
-   * @private
-   */
-  prefix?: string
+export interface MazUiThemeOptions extends Omit<ThemeConfig, 'prefix'> {
   /**
    * Inject critical CSS
    * @description Inject critical CSS to prevent FOUC
@@ -50,9 +43,8 @@ function injectThemeCSS(finalPreset: ThemePreset, config: MazUiThemeOptions) {
     return
 
   const cssOptions = {
-    mode: 'both' as const,
+    mode: config.colorMode === 'auto' ? 'both' as const : config.colorMode,
     darkSelector: config.darkModeStrategy,
-    prefix: config.prefix,
   }
 
   if (config.injectCriticalCSS) {
@@ -100,7 +92,6 @@ export const MazUiTheme = {
       strategy: 'runtime' as const,
       darkModeStrategy: 'class' as const,
       colorMode: 'auto' as const,
-      prefix: 'maz' as const,
       injectCriticalCSS: true,
       injectFullCSS: true,
       ...options,

@@ -104,7 +104,7 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
 
   if (state.value.strategy === 'runtime' || state.value.strategy === 'hybrid') {
     const cssOptions = {
-      mode: 'both' as const,
+      mode: state.value.colorMode === 'auto' ? 'both' as const : state.value.colorMode,
       darkSelector: state.value.darkModeStrategy,
       prefix: 'maz',
     }
