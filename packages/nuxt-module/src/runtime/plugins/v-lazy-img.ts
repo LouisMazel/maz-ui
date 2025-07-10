@@ -1,4 +1,4 @@
-import { vLazyImgInstall } from 'maz-ui/directives/vLazyImg'
+import { type VLazyImgDirective, vLazyImgInstall } from 'maz-ui/directives/vLazyImg'
 import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(({ vueApp, $config }) => {
@@ -8,3 +8,9 @@ export default defineNuxtPlugin(({ vueApp, $config }) => {
 
   vueApp.use(vLazyImgInstall, options)
 })
+
+declare module 'vue' {
+  interface GlobalDirectives {
+    vLazyImg: VLazyImgDirective
+  }
+}
