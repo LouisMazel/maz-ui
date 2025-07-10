@@ -75,7 +75,7 @@ const instanceId = useInstanceUniqId({
 })
 
 const bgColorClassVar = computed(() => {
-  return `hsl(var(--maz-${props.color}) / 60%)`
+  return `hsl(var(--maz-${props.color}))`
 })
 
 function emit() {

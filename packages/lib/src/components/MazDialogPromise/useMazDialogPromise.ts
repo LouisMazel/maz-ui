@@ -2,25 +2,25 @@ import type { Ref } from 'vue'
 import type { MazBtnProps } from '../MazBtn.vue'
 import { ref } from 'vue'
 
-export interface State {
+export interface MazDialogPromiseState {
   id: string
   isActive: boolean
   accept: (value: unknown) => void
   reject?: (reason?: unknown) => void
 }
 
-export interface ActionButton extends Omit<MazBtnProps, 'type'> {
+export interface MazDialogPromiseButtonAction extends Omit<MazBtnProps, 'type'> {
   text: string
   onClick: () => unknown
 }
 
-export interface PromiseButton extends Omit<MazBtnProps, 'type'> {
+export interface MazDialogButtonPromise extends Omit<MazBtnProps, 'type'> {
   text: string
   type: 'accept' | 'reject'
   response?: unknown
 }
 
-export type MazDialogPromiseButton = PromiseButton | ActionButton
+export type MazDialogPromiseButton = MazDialogButtonPromise | MazDialogPromiseButtonAction
 
 export interface MazDialogPromiseData {
   /**
@@ -53,7 +53,7 @@ export const defaultData = {
 
 const data = ref(defaultData) as Ref<MazDialogPromiseData>
 
-const dialogState = ref<State[]>([]) as Ref<State[]>
+const dialogState = ref<MazDialogPromiseState[]>([]) as Ref<MazDialogPromiseState[]>
 
 function showDialogAndWaitChoice(identifier: string, callback?: () => unknown) {
   return new Promise((resolve, reject) => {
@@ -80,7 +80,7 @@ function removeDialogFromState(identifier: string) {
   return dialogState.value
 }
 
-function responseDialog(type: 'accept' | 'reject', currentDialog: State, response: unknown) {
+function responseDialog(type: 'accept' | 'reject', currentDialog: MazDialogPromiseState, response: unknown) {
   if (!currentDialog) {
     return
   }
@@ -100,11 +100,11 @@ export function useMazDialogPromise() {
     data,
     dialogState,
     showDialogAndWaitChoice,
-    reject: async (currentDialog: State, response: unknown = 'reject', onClick?: () => unknown) => {
+    reject: async (currentDialog: MazDialogPromiseState, response: unknown = 'reject', onClick?: () => unknown) => {
       await onClick?.()
       return responseDialog('reject', currentDialog, response)
     },
-    accept: async (currentDialog: State, response: unknown = 'accept', onClick?: () => unknown) => {
+    accept: async (currentDialog: MazDialogPromiseState, response: unknown = 'accept', onClick?: () => unknown) => {
       await onClick?.()
       return responseDialog('accept', currentDialog, response)
     },

@@ -6,10 +6,10 @@ export type { MazDialogPromiseButton, MazDialogPromiseData } from './MazDialogPr
 <script lang="ts" setup>
 import type { MazDialogProps } from './MazDialog.vue'
 import type {
+  MazDialogButtonPromise,
   MazDialogPromiseButton,
   MazDialogPromiseData,
-  PromiseButton,
-  State,
+  MazDialogPromiseState,
 } from './MazDialogPromise/useMazDialogPromise'
 import { type ComponentPublicInstance, type ComputedRef, defineAsyncComponent } from 'vue'
 import { computed, ref } from 'vue'
@@ -68,7 +68,7 @@ const currentData = computed<MazDialogPromiseData>(() => ({
 const currentButtons = computed(() => buttons ?? currentData.value.buttons)
 
 const currentModal = computed(
-  () => dialogState.value.find(({ id }) => id === identifier) as State,
+  () => dialogState.value.find(({ id }) => id === identifier) as MazDialogPromiseState,
 )
 
 const dialog = ref<ComponentPublicInstance<typeof MazDialog>>()
@@ -89,11 +89,11 @@ defineExpose<{
       isActive: computed(() => currentModal.value?.isActive ?? modelValue ?? false),
     })
 
-function isPromiseButton(button: MazDialogPromiseButton): button is PromiseButton {
+function isPromiseButton(button: MazDialogPromiseButton): button is MazDialogButtonPromise {
   return 'type' in button && (button.type === 'accept' || button.type === 'reject')
 }
 
-function buttonClick(currentModal: State, button: MazDialogPromiseButton) {
+function buttonClick(currentModal: MazDialogPromiseState, button: MazDialogPromiseButton) {
   if (isPromiseButton(button)) {
     return button.type === 'accept'
       ? accept(currentModal, button.response)

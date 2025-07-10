@@ -2,7 +2,7 @@ import type { ToastHandler } from '../plugins/toast/ToastHandler'
 import { useInjectStrict } from '../composables/useInjectStrict'
 
 export function useToast() {
-  const toast = useInjectStrict<ToastHandler>('mazToast')
+  const toast = useInjectStrict<ToastHandler>('mazToast', undefined, '[maz-ui](useToast) ToastPlugin is not installed')
 
   return {
     message: toast.message.bind(toast),

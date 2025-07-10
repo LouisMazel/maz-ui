@@ -73,9 +73,9 @@ const emits = defineEmits<{
   'toggle': [value: boolean]
 }>()
 
-export type PopoverPosition = 'auto' | 'top' | 'bottom' | 'left' | 'right' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end'
-export type PopoverTrigger = 'click' | 'hover' | 'manual'
-export type PopoverRole = 'dialog' | 'tooltip' | 'menu'
+export type MazPopoverPosition = 'auto' | 'top' | 'bottom' | 'left' | 'right' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end'
+export type MazPopoverTrigger = 'click' | 'hover' | 'manual' | 'adaptive'
+export type MazPopoverRole = 'dialog' | 'tooltip' | 'menu'
 
 export interface MazPopoverProps {
   /**
@@ -91,7 +91,7 @@ export interface MazPopoverProps {
    * @default auto
    * @description Position of the popover relative to trigger
    */
-  position?: PopoverPosition
+  position?: MazPopoverPosition
 
   /**
    * Preferred position of the popover relative to trigger when auto position is used
@@ -99,7 +99,7 @@ export interface MazPopoverProps {
    * @default 'bottom-start'
    * @description Preferred position of the popover relative to trigger
    */
-  preferPosition?: PopoverPosition
+  preferPosition?: MazPopoverPosition
 
   /**
    * Fallback position of the popover relative to trigger when prefer position is not visible
@@ -107,22 +107,22 @@ export interface MazPopoverProps {
    * @default auto
    * @description Fallback position of the popover relative to trigger
    */
-  fallbackPosition?: PopoverPosition
+  fallbackPosition?: MazPopoverPosition
 
   /**
    * How the popover is triggered
-   * @values click, hover, manual
+   * @values click, hover, manual, adaptive
    * @default click
-   * @description How the popover is triggered
+   * @description How the popover is triggered. 'adaptive' uses hover on desktop and click on mobile
    */
-  trigger?: PopoverTrigger
+  trigger?: MazPopoverTrigger
   /**
    * ARIA role for accessibility
    * @values dialog, tooltip
    * @default dialog
    * @description ARIA role for accessibility
    */
-  role?: PopoverRole
+  role?: MazPopoverRole
   /**
    * ARIA label for the popover
    * @default undefined
@@ -249,7 +249,7 @@ const triggerElement = useTemplateRef<HTMLElement>('trigger')
 const panelElement = useTemplateRef<HTMLElement>('panel')
 
 const isOpen = defineModel<boolean>('modelValue', { required: false, default: false })
-const computedPosition = ref<Omit<PopoverPosition, 'auto'>>(position)
+const computedPosition = ref<Omit<MazPopoverPosition, 'auto'>>(position)
 
 let openTimeout: NodeJS.Timeout | null = null
 let closeTimeout: NodeJS.Timeout | null = null
@@ -274,6 +274,8 @@ const triggerEvents = computed(() => {
       open()
     }
     events.onMouseleave = close
+    events.onFocus = open
+    events.onBlur = close
   }
 
   if (trigger === 'click') {
@@ -322,7 +324,7 @@ function updatePosition() {
   const scrollTop = window.scrollY || document.documentElement.scrollTop
   const scrollLeft = window.scrollX || document.documentElement.scrollLeft
 
-  let newPosition: Omit<PopoverPosition, 'auto'> | undefined
+  let newPosition: Omit<MazPopoverPosition, 'auto'> | undefined
 
   const triggerRect = triggerElement.value.getBoundingClientRect()
 
@@ -502,19 +504,19 @@ function getIsVisible(coords: { left: number, top: number }, panelRect: DOMRect,
     && coords.top + panelRect.height <= scrollTop + viewport.height
 }
 
-function isPositionVisible(position: PopoverPosition, triggerRect: DOMRect, panelRect: DOMRect, viewport: { width: number, height: number }, scrollTop: number, scrollLeft: number) {
+function isPositionVisible(position: MazPopoverPosition, triggerRect: DOMRect, panelRect: DOMRect, viewport: { width: number, height: number }, scrollTop: number, scrollLeft: number) {
   const coords = calculatePosition(position, triggerRect, panelRect, scrollTop, scrollLeft)
   return getIsVisible(coords, panelRect, viewport, scrollTop, scrollLeft)
 }
 
-function getValidPositions(positions: PopoverPosition[], triggerRect: DOMRect, panelRect: DOMRect, viewport: { width: number, height: number }, scrollTop: number, scrollLeft: number) {
+function getValidPositions(positions: MazPopoverPosition[], triggerRect: DOMRect, panelRect: DOMRect, viewport: { width: number, height: number }, scrollTop: number, scrollLeft: number) {
   const spaces = {
     bottom: viewport.height + scrollTop - triggerRect.bottom,
     top: triggerRect.top - scrollTop,
     right: viewport.width + scrollLeft - triggerRect.right,
     left: triggerRect.left - scrollLeft,
   }
-  return positions.reduce<{ position: PopoverPosition, score: number }[]>((acc, pos) => {
+  return positions.reduce<{ position: MazPopoverPosition, score: number }[]>((acc, pos) => {
     if (isPositionVisible(pos, triggerRect, panelRect, viewport, scrollTop, scrollLeft)) {
       let positionBonus = 0
       if (pos === 'bottom')
@@ -535,7 +537,7 @@ function getValidPositions(positions: PopoverPosition[], triggerRect: DOMRect, p
 function getBestPosition(
   triggerRect: DOMRect,
   viewport: { width: number, height: number },
-): Omit<PopoverPosition, 'auto'> {
+): Omit<MazPopoverPosition, 'auto'> {
   if (!panelElement.value)
     return 'bottom'
 
@@ -551,7 +553,7 @@ function getBestPosition(
     return fallbackPosition
   }
 
-  const positions: PopoverPosition[] = ['bottom', 'top', 'right', 'left']
+  const positions: MazPopoverPosition[] = ['bottom', 'top', 'right', 'left']
   const validPositions = getValidPositions(positions, triggerRect, panelRect, viewport, scrollTop, scrollLeft)
 
   if (validPositions.length === 0) {
@@ -572,7 +574,7 @@ function getBestPosition(
 
 // eslint-disable-next-line sonarjs/cognitive-complexity, complexity
 function calculatePosition(
-  position: Omit<PopoverPosition, 'auto'>,
+  position: Omit<MazPopoverPosition, 'auto'>,
   triggerRect: DOMRect,
   panelRect: DOMRect,
   scrollTop: number,
@@ -824,6 +826,7 @@ defineExpose({
     <div
       :id="triggerId"
       ref="trigger"
+      role="button"
       class="m-popover-trigger"
       :aria-expanded="role === 'dialog' || role === 'menu' ? isOpen : undefined"
       :aria-haspopup="role === 'dialog' ? 'dialog' : undefined"

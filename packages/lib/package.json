@@ -183,6 +183,7 @@
   },
   "dependencies": {
     "@maz-ui/cli": "workspace:*",
+    "@maz-ui/icons": "workspace:*",
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
     "@maz-ui/utils": "workspace:*",
@@ -194,7 +195,6 @@
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
-    "@maz-ui/icons": "workspace:*",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vitest/coverage-v8": "^3.2.4",
     "@vue/compiler-sfc": "^3.5.16",
