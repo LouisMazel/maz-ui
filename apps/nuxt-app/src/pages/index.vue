@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { sleep } from 'maz-ui'
-import { vTooltip } from 'maz-ui/directives/vTooltip'
 
 const toast = useToast()
 const wait = useWait()
@@ -35,7 +34,7 @@ onMounted(async () => {
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
-      <MazBtn v-tooltip="'Coucou'">
+      <MazBtn v-tooltip="{ text: 'Coucou' }">
         Coucou
       </MazBtn>
 
