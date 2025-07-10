@@ -20,7 +20,7 @@ const {
   style: styleProp,
   id,
   items = [],
-  trigger = 'hover',
+  trigger = 'adaptive',
   color = 'transparent',
   position = 'auto',
   screenReaderDescription,
@@ -114,8 +114,8 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue'> {
   /**
    * Determines how the dropdown should be triggered
    * @type {MazPopoverProps['trigger']}
-   * @values click, hover, manual
-   * @default 'hover'
+   * @values click, hover, manual, adaptive
+   * @default 'adaptive'
    */
   trigger?: MazPopoverProps['trigger']
   /**
@@ -320,7 +320,7 @@ watch(
     color="background"
     :position
     :disabled
-    :keep-open-on-hover="trigger === 'hover'"
+    :keep-open-on-hover="trigger === 'hover' || trigger === 'adaptive'"
     :class="[classProp]"
     :block
     @update:model-value="setDropdown"
