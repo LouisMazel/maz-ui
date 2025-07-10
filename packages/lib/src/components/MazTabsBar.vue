@@ -2,7 +2,7 @@
 import type { ComponentPublicInstance, StyleValue } from 'vue'
 import type { MazBadgeProps } from './MazBadge.vue'
 import type { MazTabsProvide } from './MazTabs.vue'
-import { sleep } from '@maz-ui/utils/src/utils/sleep.js'
+import { sleep } from '@maz-ui/utils/src/helpers/sleep.js'
 import {
   computed,
   defineAsyncComponent,
