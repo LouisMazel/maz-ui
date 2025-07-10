@@ -433,23 +433,6 @@ export const useIconStore = defineStore('icons', () => {
 })
 ```
 
-## ⚡ Performance Tips
-
-1. **Use Tree Shaking**: Import only the icons you need
-2. **Lazy Loading**: Use `defineAsyncComponent` for better performance
-3. **SVG Optimization**: Leverage vite-svg-loader for build-time optimization
-4. **Caching**: Implement icon caching for dynamic loading scenarios
-5. **Preloading**: Preload critical icons in your app shell
-
-```typescript
-// Preload critical icons
-const criticalIcons = ['home', 'user', 'menu', 'search']
-
-criticalIcons.forEach(async (iconName) => {
-  await import(`@maz-ui/icons/svg/${iconName}.svg?component`)
-})
-```
-
 ## 🐛 Troubleshooting
 
 ### Common Issues

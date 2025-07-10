@@ -92,7 +92,7 @@ const zoomImgBinding: vZoomImgBindingValue = {
 
 ## Global install
 
-`main.ts`
+### Vue
 
 ```typescript
 import { vZoomImgInstall, type vZoomImgOptions } from 'maz-ui/directives'
@@ -104,6 +104,10 @@ app.use(vZoomImgInstall)
 
 app.mount('#app')
 ```
+
+### Nuxt
+
+Please refer to the [Nuxt module documentation](./../guide/nuxt.md) for more information.
 
 ## Types
 

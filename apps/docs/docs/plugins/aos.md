@@ -11,8 +11,57 @@ description: Plugin to animate elements on your page as you scroll.
 This plugin has a composable for easier use, after installing it, you can use [useAos](./../composables/use-aos.md)
 :::
 
-::: info
-This plugin uses the browser native [Intersection Observer API](https://developer.mozilla.org/fr/docs/Web/API/Intersection_Observer_API)
+## Installation
+
+All options are listed in the [Global Options](#global-options) section.
+
+::: code-group
+
+```ts [Vue]
+import { createApp } from 'vue'
+import router from './router'
+import { AosPlugin, AosOptions } from 'maz-ui/plugins/aos'
+
+// ⚠️ import necessary CSS file ⚠️
+import 'maz-ui/aos-styles'
+
+const app = createApp(App)
+
+app.use(router)
+
+const aosOptions: AosOptions = {
+  animation: {
+    duration: 1000,
+    once: false,
+    delay: 0,
+  },
+  delay: 100,
+  router,
+}
+
+app.use(AosPlugin, aosOptions)
+
+app.mount('#app')
+```
+
+```ts [Nuxt]
+export default defineNuxtConfig({
+  modules: ['@maz-ui/nuxt'],
+  mazUi: {
+    composables: {
+      useAos: {
+        animation: {
+          duration: 1000,
+          once: false,
+          delay: 0,
+        },
+        delay: 100,
+      },
+    },
+  },
+})
+```
+
 :::
 
 ## Basic usage
@@ -179,38 +228,7 @@ You can choose one of these timing function to animate elements nicely:
 - ease-out-quart
 - ease-in-out-quart
 
-## Install
-
-### Vue
-
-`main.ts` or `main.js`
-
-```ts
-import { AosOptions, installAos } from 'maz-ui/plugins'
-import { createApp, useRouter } from 'vue'
-
-// ⚠️ import necessary CSS file ⚠️
-import 'maz-ui/aos-styles' // or import 'maz-ui/css/aos.css'
-
-const app = createApp(App)
-
-const router = useRouter()
-
-const options: AosOptions = {
-  router,
-  animation: {
-    duration: 1000,
-    once: false,
-    delay: 0,
-  },
-}
-
-app.use(installAos, options)
-
-app.mount('#app')
-```
-
-### Nuxt
+## Nuxt
 
 ::: tip
 For **NuxtJS v3** and higher, use the dedicated Nuxt module to take advantage of auto-imports of components, plugins, composables and css files: [Nuxt Module Documentation](./nuxt.md)
@@ -222,7 +240,6 @@ Should be executed on client side
 
 ```ts
 export default defineNuxtConfig({
-  plugins: [{ src: '@/plugins/maz-aos.client.ts', mode: 'client' }], // optional (nuxt will automatically install plugins in `plugins` folder)
   css: ['maz-ui/aos-styles'],
 })
 ```
@@ -246,9 +263,10 @@ export default ({ vueApp, $router: router }) => {
 }
 ```
 
-### Without router
+## Run animations programatically
 
-You can run animations programatically with the composable
+You can run animations programatically with the useAos composable.
+This is useful if you want to run animations after the page is loaded or if no router is provided.
 
 ```vue
 <script lang="ts" setup>

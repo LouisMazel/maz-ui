@@ -15,16 +15,35 @@ This plugin has a composable for easier use, after installing it you can use [us
 
 ## Installation
 
-```ts
-import { DialogPlugin, DialogOptions } from 'maz-ui/plugins/dialog'
+::: code-group
+
+```ts [Vue]
 import { createApp } from 'vue'
+import { DialogPlugin, DialogOptions } from 'maz-ui/plugins/dialog'
 
 const app = createApp(App)
 
-app.use(DialogPlugin)
+const dialogOptions: DialogOptions = {
+  // ...
+}
+
+app.use(DialogPlugin, dialogOptions)
 
 app.mount('#app')
 ```
+
+```ts [Nuxt]
+export default defineNuxtConfig({
+  modules: ['@maz-ui/nuxt'],
+  mazUi: {
+    composables: {
+      useDialog: true,
+    },
+  },
+})
+```
+
+:::
 
 ## Basic usage
 

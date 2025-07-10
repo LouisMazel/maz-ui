@@ -6,7 +6,7 @@ export const components = {
   items: [
     {
       text: 'Forms',
-      collapsed: true,
+      collapsed: false,
       items: [
         { text: 'Btn', link: '/components/maz-btn' },
         { text: 'Checkbox', link: '/components/maz-checkbox' },
@@ -28,8 +28,17 @@ export const components = {
       ],
     },
     {
+      text: 'Layout',
+      collapsed: false,
+      items: [
+        { text: 'Accordion', link: '/components/maz-accordion' },
+        { text: 'Card', link: '/components/maz-card' },
+        { text: 'CardSpotlight', link: '/components/maz-card-spotlight' },
+      ],
+    },
+    {
       text: 'Navigation',
-      collapsed: true,
+      collapsed: false,
       items: [
         { text: 'Tabs', link: '/components/maz-tabs' },
         { text: 'Stepper', link: '/components/maz-stepper' },
@@ -41,7 +50,7 @@ export const components = {
     },
     {
       text: 'Overlays',
-      collapsed: true,
+      collapsed: false,
       items: [
         { text: 'Dialog', link: '/components/maz-dialog' },
         { text: 'DialogPromise', link: '/components/maz-dialog-promise' },
@@ -54,7 +63,7 @@ export const components = {
     },
     {
       text: 'Data',
-      collapsed: true,
+      collapsed: false,
       items: [
         { text: 'Chart', link: '/components/maz-chart' },
         { text: 'Table (data-table)', link: '/components/maz-table' },
@@ -63,7 +72,7 @@ export const components = {
     },
     {
       text: 'Feedback',
-      collapsed: true,
+      collapsed: false,
       items: [
         { text: 'Spinner', link: '/components/maz-spinner' },
         { text: 'LoadingBar', link: '/components/maz-loading-bar' },
@@ -74,7 +83,7 @@ export const components = {
     },
     {
       text: 'Média',
-      collapsed: true,
+      collapsed: false,
       items: [
         { text: 'Avatar', link: '/components/maz-avatar' },
         { text: 'Gallery', link: '/components/maz-gallery' },
@@ -85,21 +94,12 @@ export const components = {
     },
     {
       text: 'Animations',
-      collapsed: true,
+      collapsed: false,
       items: [
         { text: 'AnimatedCounter', link: '/components/maz-animated-counter' },
         { text: 'AnimatedElement', link: '/components/maz-animated-element' },
         { text: 'AnimatedText', link: '/components/maz-animated-text' },
         { text: 'ExpandAnimation', link: '/components/maz-expand-animation' },
-      ],
-    },
-    {
-      text: 'Layout',
-      collapsed: true,
-      items: [
-        { text: 'Accordion', link: '/components/maz-accordion' },
-        { text: 'Card', link: '/components/maz-card' },
-        { text: 'CardSpotlight', link: '/components/maz-card-spotlight' },
       ],
     },
   ],

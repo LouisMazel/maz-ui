@@ -82,6 +82,99 @@ description: MazPopover is a versatile Vue 3 component for displaying content in
   </template>
 </ComponentDemo>
 
+## Adaptive trigger
+
+The `adaptive` trigger mode automatically adapts to the user's device:
+- **Desktop**: Uses hover behavior (mouseenter/mouseleave)
+- **Mobile/Touch devices**: Uses click behavior
+
+This provides the best user experience across all devices without requiring manual configuration.
+
+<ComponentDemo>
+  <div class="maz-flex maz-gap-4 maz-flex-wrap">
+    <MazPopover trigger="adaptive">
+      <template #trigger>
+        <MazBtn color="primary">
+          Adaptive Trigger
+        </MazBtn>
+      </template>
+      <div class="maz-p-4">
+        <h3 class="maz-text-lg maz-font-semibold maz-mb-2">Smart Behavior</h3>
+        <p class="maz-text-sm maz-mb-2">
+          On desktop: Hover to open, move away to close
+        </p>
+        <p class="maz-text-sm">
+          On mobile: Tap to open, tap outside to close
+        </p>
+      </div>
+    </MazPopover>
+    <MazPopover trigger="adaptive" keep-open-on-hover>
+      <template #trigger>
+        <MazBtn color="secondary">
+          Adaptive + Keep Open
+        </MazBtn>
+      </template>
+      <div class="maz-p-4">
+        <p class="maz-text-sm maz-mb-2">
+          This combines adaptive behavior with keep-open-on-hover for menus.
+        </p>
+        <button class="maz-block maz-w-full maz-px-3 maz-py-2 maz-text-left maz-text-sm hover:maz-bg-surface-400 maz-rounded">
+          Menu Item 1
+        </button>
+        <button class="maz-block maz-w-full maz-px-3 maz-py-2 maz-text-left maz-text-sm hover:maz-bg-surface-400 maz-rounded">
+          Menu Item 2
+        </button>
+      </div>
+    </MazPopover>
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <!-- Basic adaptive trigger -->
+  <MazPopover trigger="adaptive">
+    <template #trigger>
+      <MazBtn color="primary">
+        Adaptive Trigger
+      </MazBtn>
+    </template>
+    <div class="maz-p-4">
+      <h3 class="maz-text-lg maz-font-semibold maz-mb-2">Smart Behavior</h3>
+      <p class="maz-text-sm maz-mb-2">
+        On desktop: Hover to open, move away to close
+      </p>
+      <p class="maz-text-sm">
+        On mobile: Tap to open, tap outside to close
+      </p>
+    </div>
+  </MazPopover>
+
+  <!-- Adaptive with keep-open-on-hover for menus -->
+  <MazPopover trigger="adaptive" keep-open-on-hover>
+    <template #trigger>
+      <MazBtn color="secondary">
+        Adaptive Menu
+      </MazBtn>
+    </template>
+    <div class="maz-p-4">
+      <p class="maz-text-sm maz-mb-2">
+        Perfect for dropdown menus that work on all devices
+      </p>
+      <button class="maz-block maz-w-full maz-px-3 maz-py-2 maz-text-left maz-text-sm hover:maz-bg-surface-400 maz-rounded">
+        Menu Item 1
+      </button>
+      <button class="maz-block maz-w-full maz-px-3 maz-py-2 maz-text-left maz-text-sm hover:maz-bg-surface-400 maz-rounded">
+        Menu Item 2
+      </button>
+    </div>
+  </MazPopover>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Positions
 
 ::: tip
@@ -435,9 +528,9 @@ When you not specify a fallback position, the popover will fallback on the best 
 
 <ComponentDemo>
   <div class="maz-flex maz-gap-4 maz-flex-wrap">
-    <MazPopover color="default" trigger="hover">
+    <MazPopover color="background" trigger="hover">
       <template #trigger>
-        <MazBtn color="contrast">Default</MazBtn>
+        <MazBtn color="contrast">Background</MazBtn>
       </template>
       <div class="maz-p-4">
         <p class="maz-text-sm">This popover has a default color!</p>
@@ -513,9 +606,9 @@ When you not specify a fallback position, the popover will fallback on the best 
 
 ```vue
 <template>
-  <MazPopover color="default" trigger="hover">
+  <MazPopover color="background" trigger="hover">
     <template #trigger>
-      <MazBtn color="default">Default</MazBtn>
+      <MazBtn color="contrast">Background</MazBtn>
     </template>
     <div class="maz-p-4">
       <p class="maz-text-sm">This popover has a default color!</p>

@@ -66,7 +66,7 @@ description: Displays images fullscreen on click
 
 ## Global install
 
-### Vue.JS
+### Vue
 
 `main.ts`
 
@@ -81,24 +81,9 @@ app.use(vFullscreenImgInstall)
 app.mount('#app')
 ```
 
-### Nuxt.JS
+### Nuxt
 
-```ts
-export default defineNuxtPlugin({ vueApp }) => {
-  vueApp.use(vFullscreenImgInstall)
-})
-```
-
-Or use Maz-ui Nuxt Module:
-
-```ts
-export default defineNuxtConfig({
-  modules: ['@maz-ui/nuxt'],
-  mazUi: {
-    vFullscreenImg: true
-  }
-})
-```
+Please refer to the [Nuxt module documentation](./../guide/nuxt.md) for more information.
 
 ## Types
 
