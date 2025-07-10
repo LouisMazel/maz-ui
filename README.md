@@ -18,8 +18,8 @@
 </p>
 
 <p align="center">
-  <a href="https://codeclimate.com/github/LouisMazel/maz-ui/maintainability"><img src="https://api.codeclimate.com/v1/badges/6b27047dcf150ccddfac/maintainability" alt="maintainability"></a>
-  <a href="https://codeclimate.com/github/LouisMazel/maz-ui/test_coverage"><img src="https://api.codeclimate.com/v1/badges/6b27047dcf150ccddfac/test_coverage" alt="test coverage"></a>
+  <a href="https://qlty.sh/gh/LouisMazel/projects/maz-ui"><img src="https://qlty.sh/gh/LouisMazel/projects/maz-ui/maintainability.svg" alt="Maintainability" /></a>
+  <a href="https://qlty.sh/gh/LouisMazel/projects/maz-ui"><img src="https://qlty.sh/gh/LouisMazel/projects/maz-ui/coverage.svg" alt="Code Coverage" /></a>
   <img src="https://github.com/LouisMazel/maz-ui/actions/workflows/lib-test-unit.yml/badge.svg" alt="github actions test unit">
 </p>
 
