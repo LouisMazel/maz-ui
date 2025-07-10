@@ -465,6 +465,8 @@ const stateColor = computed(() => {
           :aria-label="label || placeholder"
           :type="inputType"
           :inputmode
+          :name
+          :autocomplete
           :disabled
           :readonly
           :required

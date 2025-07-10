@@ -13,7 +13,7 @@ export default defineConfig({
     port: 1111,
   },
   test: {
-    globalSetup: './vitest-global.setup.ts',
+    setupFiles: ['./tests/vitest-global.setup.ts'],
     environment: 'jsdom',
     environmentOptions: {
       jsdom: {
@@ -28,7 +28,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       all: true,
-      reporter: ['clover', 'html'],
+      reporter: ['clover', 'html', 'lcov'],
       include: ['src/**/*'],
       exclude: [
         ...coverageConfigDefaults.exclude,

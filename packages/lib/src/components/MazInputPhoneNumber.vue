@@ -319,7 +319,7 @@ export interface MazInputPhoneNumberProps {
    * @type {Record<string, unknown>}
    * @default { autocomplete: 'tel', name: 'phone', inputmode: 'tel' }
    */
-  phoneInputAttributes?: Record<string, unknown>
+  phoneInputAttributes?: Record<string, unknown> & { name: string, inputmode: HTMLAttributes['inputmode'], autocomplete: string }
 }
 
 /** Composables */
@@ -578,6 +578,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
 
 <template>
   <div
+    :id="instanceId"
     class="m-input-phone-number m-reset-css"
     :class="[props.class, { '--block': block }, orientation ? `--${orientation}` : undefined]"
     :style
@@ -655,6 +656,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
       :example
       block
       :disabled
+      :name="phoneInputAttributes.name"
       :has-radius="!hideCountrySelect"
       :success="success || (validationSuccess ? results.isValid : false)"
       :error="error || (validationError ? !!phoneNumber && !results.isValid : false)"
