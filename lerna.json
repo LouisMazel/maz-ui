@@ -8,7 +8,6 @@
       "allowBranch": ["master", "develop", "release/*"],
       "conventionalCommits": true,
       "conventionalPrerelease": true,
-      "changelogPreset": "conventionalcommits",
       "createRelease": "github",
       "message": "chore(release): version packages %v",
       "tagVersionPrefix": "v",
@@ -23,5 +22,13 @@
       "registry": "https://registry.npmjs.org/",
       "yes": true
     }
-  }
+  },
+  "ignoreChanges": [
+    "./apps/*",
+    "./tools/*",
+    "./docs/*",
+    "**/__tests__/*",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
 }
