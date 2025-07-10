@@ -200,7 +200,12 @@ const iconClassSize = computed(() => {
     </slot>
 
     <div v-if="loading" class="m-btn-loader-container">
-      <MazSpinner size="2em" />
+      <!--
+        @slot loader - The loader to display in the button
+      -->
+      <slot name="loader">
+        <MazSpinner size="2em" />
+      </slot>
     </div>
   </Component>
 </template>
