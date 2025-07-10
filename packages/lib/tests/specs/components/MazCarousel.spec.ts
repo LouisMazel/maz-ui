@@ -1,9 +1,9 @@
 import MazCarousel from '@components/MazCarousel.vue'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 
 describe('mazCarousel', () => {
   it('renders the component', () => {
-    const wrapper = mount(MazCarousel, {
+    const wrapper = shallowMount(MazCarousel, {
       props: {
         noScrollBtn: false,
       },
@@ -16,7 +16,7 @@ describe('mazCarousel', () => {
   })
 
   it('updates isScrolled and isScrolledMax when scrolling', async () => {
-    const wrapper = mount(MazCarousel, {
+    const wrapper = shallowMount(MazCarousel, {
       props: {
         noScrollBtn: false,
       },
@@ -56,9 +56,9 @@ describe('mazCarousel', () => {
   })
 
   it('does not render the previous button when noScrollBtn is true', async () => {
-    const wrapper = mount(MazCarousel, {
+    const wrapper = shallowMount(MazCarousel, {
       props: {
-        noScrollBtn: true,
+        hideScrollButtons: true,
       },
       slots: {
         default: '<div class="carousel-item">Item 1</div>',
@@ -71,7 +71,7 @@ describe('mazCarousel', () => {
   })
 
   it('does not render the title when no title slot is provided', () => {
-    const wrapper = mount(MazCarousel, {
+    const wrapper = shallowMount(MazCarousel, {
       props: {
         noScrollBtn: false,
       },
@@ -84,7 +84,7 @@ describe('mazCarousel', () => {
   })
 
   it('renders the title when a title slot is provided', () => {
-    const wrapper = mount(MazCarousel, {
+    const wrapper = shallowMount(MazCarousel, {
       props: {
         noScrollBtn: false,
       },

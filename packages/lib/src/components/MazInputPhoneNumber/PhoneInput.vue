@@ -121,9 +121,9 @@ defineExpose({
     :size
     :success
     block
-    :name
-    :inputmode
-    :autocomplete
+    :name="name"
+    :inputmode="inputmode"
+    :autocomplete="autocomplete"
     class="m-phone-input"
     :class="[
       {
