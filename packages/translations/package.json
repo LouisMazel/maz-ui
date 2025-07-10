@@ -55,7 +55,7 @@
     "@maz-ui/utils": "workspace:*",
     "typescript": "^5.8.3",
     "unbuild": "^3.5.0",
-    "vue": "catalog:"
+    "vue": "^3.5.17"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md}": [
