@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import type { MazSize } from './types'
 import { MazMinus, MazPlus } from '@maz-ui/icons'
-import { debounce } from '@maz-ui/utils/src/utils/debounce.js'
+import { debounce } from '@maz-ui/utils/src/helpers/debounce.js'
 import { computed, defineAsyncComponent } from 'vue'
 import MazInput, { type MazInputProps } from './MazInput.vue'
 

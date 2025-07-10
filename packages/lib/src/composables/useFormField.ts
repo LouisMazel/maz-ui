@@ -7,9 +7,9 @@ import type {
   ValidationIssues,
 } from '../composables/useFormValidator/types'
 
-import { checkAvailability } from '@maz-ui/utils/src/utils/checkAvailability.js'
+import { checkAvailability } from '@maz-ui/utils/src/helpers/checkAvailability.js'
 
-import { isEqual } from '@maz-ui/utils/src/utils/isEqual.js'
+import { isEqual } from '@maz-ui/utils/src/helpers/isEqual.js'
 import { computed, onMounted, onUnmounted } from 'vue'
 import {
   addEventToInteractiveElements,

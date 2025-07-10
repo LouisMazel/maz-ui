@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
 import type { MazColor } from './types'
-import { debounce } from '@maz-ui/utils/src/utils/debounce.js'
+import { debounce } from '@maz-ui/utils/src/helpers/debounce.js'
 
 import {
   computed,
