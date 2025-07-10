@@ -1,1 +1,1 @@
-export * from '@maz-ui/utils/src/index.js'
+export * from '@maz-ui/utils'
