@@ -32,12 +32,10 @@ export default defineConfig({
       include: ['src/**/*'],
       exclude: [
         ...coverageConfigDefaults.exclude,
-        'src/components/constantes.ts',
-        'tailwindcss/**/*',
+        'src/tailwindcss/**/*',
         'src/types/**/*',
         'src/index.ts',
         'src/**/*/index.ts',
-        'src/plugins/aos.ts',
         'src/composables/useUserVisibility.ts',
         'src/composables/useAos.ts',
         'src/composables/useToast.ts',
