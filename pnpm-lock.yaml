@@ -35,6 +35,9 @@ importers:
       conventional-changelog-conventionalcommits:
         specifier: ^9.0.0
         version: 9.0.0
+      conventional-changelog-gitmoji-config:
+        specifier: ^1.5.2
+        version: 1.5.2(encoding@0.1.13)
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -309,6 +312,9 @@ importers:
       '@maz-ui/cli':
         specifier: workspace:*
         version: link:../maz-cli
+      '@maz-ui/icons':
+        specifier: workspace:*
+        version: link:../icons
       '@maz-ui/themes':
         specifier: workspace:*
         version: link:../themes
@@ -337,9 +343,6 @@ importers:
       '@maz-ui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@maz-ui/icons':
-        specifier: workspace:*
-        version: link:../icons
       '@vitejs/plugin-vue':
         specifier: ^5.2.4
         version: 5.2.4(vite@6.3.5(@types/node@24.0.12)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.89.2)(terser@5.42.0)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.3))
@@ -758,6 +761,10 @@ packages:
 
   '@antfu/utils@0.7.10':
     resolution: {integrity: sha512-+562v9k4aI80m1+VuMHehNJWLOFjBnXn3tdOitzD0il5b7smkSBal4+a3oKiQTbrwMmN/TBUMDvbdoWDehgOww==}
+
+  '@ardatan/sync-fetch@0.0.1':
+    resolution: {integrity: sha512-xhlTqH0m31mnsG0tIP4ETgfSB6gXDaYYsUWTrlUV93fFQPI9dd8hE0Ot6MHLCtqgB32hwJAC3YZMWlXZw7AleA==}
+    engines: {node: '>=14'}
 
   '@asamuzakjp/css-color@3.2.0':
     resolution: {integrity: sha512-K1A6z8tS3XsmCMM86xoWdn7Fkdn9m6RSVtocUrJYIwZnFVkng/PvkEoWtOWmP+Scc6saYWHWZYbndEEXxl24jw==}
@@ -1824,6 +1831,15 @@ packages:
 
   '@fastify/busboy@3.1.1':
     resolution: {integrity: sha512-5DGmA8FTdB2XbDeEwc/5ZXBl6UbBAyBOOLlPuBnZ/N1SwdH9Ii+cOX3tBROlDgcTXxjOYnLMVoKk9+FXAw0CJw==}
+
+  '@gitmoji/commit-types@1.1.5':
+    resolution: {integrity: sha512-8D3FZMRY+gtYpTcHG1SOGmm9CFqxNh6rI9xDoCydxHxnWgqInbdF3nk9gibW5gXA58Hf2cVcJaLEcGOKLRAtmw==}
+
+  '@gitmoji/gitmoji-regex@1.0.0':
+    resolution: {integrity: sha512-+BFXxcWCxn0UIYuG1v5n9SfaCCS8tw95j1x3QsTJRdGGiihRyVLTHiu1wrHlzH3z4nYXKjCKiZFTdWwMjRI+gQ==}
+
+  '@gitmoji/parser-opts@1.4.0':
+    resolution: {integrity: sha512-zzmx/vtpdB/ijjUm7u9OzHNCXWKpSbzVEgVzOzhilMgoTBlUDyInZFUtiCTV+Wf4oCP9nxGa/kQGQFfN+XLH1g==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -4310,6 +4326,9 @@ packages:
     resolution: {integrity: sha512-D8Q6WctPkQpvr2HNCCmwU5GkX22BVHM0r4EW8vN0230TSyS/d6VQJDAxGb84lbg0dFjpO22MwmsikKL++Oo/oQ==}
     engines: {node: '>=18'}
 
+  conventional-changelog-gitmoji-config@1.5.2:
+    resolution: {integrity: sha512-m9OkbMTiLZzEg+pYoAWV1Xq66o4/Y8ElqdibJlsAz+EEmUTp7AZ011F/w99SVvf6MwT17m/FEa+fqUZoTsejpQ==}
+
   conventional-changelog-jquery@6.0.0:
     resolution: {integrity: sha512-2kxmVakyehgyrho2ZHBi90v4AHswkGzHuTaoH40bmeNqUt20yEkDOSpw8HlPBfvEQBwGtbE+5HpRwzj6ac2UfA==}
     engines: {node: '>=18'}
@@ -5685,6 +5704,9 @@ packages:
 
   gitconfiglocal@1.0.0:
     resolution: {integrity: sha512-spLUXeTAVHxDtKsJc8FkFVgFtMdEN9qPGpL23VfSHx4fP4+Ds097IXLvymbnDH8FnmxX5Nr9bPw3A+AQ6mWEaQ==}
+
+  gitmojis@3.15.0:
+    resolution: {integrity: sha512-28sothO0+6UuXx0fnJXi4kqy2/dKeFN3xL2Ss5k5K5ECBJMi5T2kZLY92xys3/+YD+AgKHgeiw7YQpYKnkCLMg==}
 
   glob-parent@5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
@@ -7723,6 +7745,10 @@ packages:
 
   pako@0.2.9:
     resolution: {integrity: sha512-NUcwaKxUxWrZLpDG+z/xZaCgQITkA/Dv4V/T6bw7VON6l1Xz/VnrBqrYjZQ12TamKHzITTfOEIYUj48y2KXImA==}
+
+  pangu@4.0.7:
+    resolution: {integrity: sha512-weZKJIwwy5gjt4STGVUH9bix3BGk7wZ2ahtIypwe3e/mllsrIZIvtfLx1dPX56GcpZFOCFKmeqI1qVuB9enRzA==}
+    hasBin: true
 
   parent-module@1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
@@ -10456,6 +10482,12 @@ snapshots:
 
   '@antfu/utils@0.7.10': {}
 
+  '@ardatan/sync-fetch@0.0.1(encoding@0.1.13)':
+    dependencies:
+      node-fetch: 2.7.0(encoding@0.1.13)
+    transitivePeerDependencies:
+      - encoding
+
   '@asamuzakjp/css-color@3.2.0':
     dependencies:
       '@csstools/css-calc': 2.1.4(@csstools/css-parser-algorithms@3.0.5(@csstools/css-tokenizer@3.0.4))(@csstools/css-tokenizer@3.0.4)
@@ -11667,6 +11699,17 @@ snapshots:
       levn: 0.4.1
 
   '@fastify/busboy@3.1.1': {}
+
+  '@gitmoji/commit-types@1.1.5': {}
+
+  '@gitmoji/gitmoji-regex@1.0.0':
+    dependencies:
+      emoji-regex: 10.4.0
+      gitmojis: 3.15.0
+
+  '@gitmoji/parser-opts@1.4.0':
+    dependencies:
+      '@gitmoji/gitmoji-regex': 1.0.0
 
   '@humanfs/core@0.19.1': {}
 
@@ -14673,6 +14716,17 @@ snapshots:
 
   conventional-changelog-express@5.0.0: {}
 
+  conventional-changelog-gitmoji-config@1.5.2(encoding@0.1.13):
+    dependencies:
+      '@ardatan/sync-fetch': 0.0.1(encoding@0.1.13)
+      '@gitmoji/commit-types': 1.1.5
+      '@gitmoji/parser-opts': 1.4.0
+      cosmiconfig: 7.1.0
+      lodash: 4.17.21
+      pangu: 4.0.7
+    transitivePeerDependencies:
+      - encoding
+
   conventional-changelog-jquery@6.0.0: {}
 
   conventional-changelog-jshint@5.0.0:
@@ -16222,6 +16276,8 @@ snapshots:
   gitconfiglocal@1.0.0:
     dependencies:
       ini: 1.3.8
+
+  gitmojis@3.15.0: {}
 
   glob-parent@5.1.2:
     dependencies:
@@ -18909,6 +18965,8 @@ snapshots:
       - supports-color
 
   pako@0.2.9: {}
+
+  pangu@4.0.7: {}
 
   parent-module@1.0.1:
     dependencies:

@@ -53,6 +53,7 @@
     "commitizen": "^4.3.1",
     "conventional-changelog-cli": "^5.0.0",
     "conventional-changelog-conventionalcommits": "^9.0.0",
+    "conventional-changelog-gitmoji-config": "^1.5.2",
     "cross-env": "^7.0.3",
     "dotenv-cli": "^8.0.0",
     "husky": "^9.1.7",
