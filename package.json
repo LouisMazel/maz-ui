@@ -84,5 +84,8 @@
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
     }
+  },
+  "pnpm": {
+    "catalog": false
   }
 }
