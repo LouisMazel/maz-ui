@@ -312,9 +312,6 @@ importers:
       '@maz-ui/cli':
         specifier: workspace:*
         version: link:../maz-cli
-      '@maz-ui/icons':
-        specifier: workspace:*
-        version: link:../icons
       '@maz-ui/themes':
         specifier: workspace:*
         version: link:../themes

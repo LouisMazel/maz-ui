@@ -183,7 +183,6 @@
   },
   "dependencies": {
     "@maz-ui/cli": "workspace:*",
-    "@maz-ui/icons": "workspace:*",
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
     "@maz-ui/utils": "workspace:*",
