@@ -9,11 +9,11 @@ vi.mock('@maz-ui/translations/src/useTranslations.js', () => ({
   }),
 }))
 
-vi.mock('@maz-ui/utils/src/utils/getBrowserLocale.js', () => ({
+vi.mock('@maz-ui/utils/src/helpers/getBrowserLocale.js', () => ({
   getBrowserLocale: () => 'en-US',
 }))
 
-vi.mock('@maz-ui/utils/src/utils/getCountryFlagUrl.js', () => ({
+vi.mock('@maz-ui/utils/src/helpers/getCountryFlagUrl.js', () => ({
   getCountryFlagUrl: (code: string) => `https://flagcdn.com/h20/${code.toLowerCase()}.png`,
 }))
 

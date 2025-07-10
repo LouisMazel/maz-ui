@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
 import { MazTrash } from '@maz-ui/icons'
-import { truthyFilter } from '@maz-ui/utils/src/utils/truthyFilter.js'
+import { truthyFilter } from '@maz-ui/utils/src/helpers/truthyFilter.js'
 import { computed, ref } from 'vue'
 import MazBtn from './MazBtn.vue'
 import MazInput from './MazInput.vue'

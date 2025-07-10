@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
-import { isClient } from '@maz-ui/utils/src/utils/isClient.js'
-import { throttle } from '@maz-ui/utils/src/utils/throttle.js'
+import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
+import { throttle } from '@maz-ui/utils/src/helpers/throttle.js'
 import {
   computed,
   nextTick,
