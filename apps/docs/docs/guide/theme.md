@@ -26,15 +26,17 @@ description: Modern and performant theme system for Maz-UI with TypeScript, HSL 
 ```typescript
 // main.ts
 import { MazUi } from 'maz-ui/plugins/maz-ui'
+import { mazUi } from '@maz-ui/themes/presets/mazUi'
 import { createApp } from 'vue'
 
 const app = createApp(App)
 
 app.use(MazUi, {
   theme: {
-    preset: 'maz-ui', // 'maz-ui' | 'pristine' | 'ocean' | 'obsidian'
+    preset: mazUi, // pristine | ocean | obsidian
     strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
-    darkModeStrategy: 'class' // 'class' | 'media' | 'auto'
+    darkModeStrategy: 'class', // 'class' | 'media'
+    colorMode: 'auto' // 'auto' | 'light' | 'dark'
   }
 })
 ```
@@ -294,13 +296,10 @@ app.use(MazUi, {
 
 ### ⚡ Runtime
 
-CSS generated and injected dynamically on client-side.
-Perfect for applications with frequent theme changes.
+CSS generated (critical and full) injected immediately.
 
 **⚠️ Potential risks:**
 - **Main thread blocking** - Immediate injection can impact performance
-- **Possible FOUC** - Flash of unstyled content during CSS generation
-- **Heavier bundle** - CSS generation utilities included client-side
 
 ```typescript
 app.use(MazUi, {

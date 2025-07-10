@@ -91,7 +91,7 @@ const lazyBinding: vLazyImgBindingValue = {
 
 ## Global install
 
-`main.ts`
+### Vue
 
 ```typescript
 import errorPhoto from 'path/to/error-photo.png'
@@ -126,6 +126,10 @@ app.use(vLazyImgInstall, vLazyImgOptions)
 
 app.mount('#app')
 ```
+
+### Nuxt
+
+Please refer to the [Nuxt module documentation](./../guide/nuxt.md) for more information.
 
 ## Types
 

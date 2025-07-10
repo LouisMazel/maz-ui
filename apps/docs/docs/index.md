@@ -17,7 +17,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     Maz-UI v4 is here!
   </h2>
   <p class="mob-l:maz-text-center maz-text-lg maz-mb-3 mob-l:maz-max-w-3xl dark">
-    Discover the latest major release with improved performance, better tree-shaking, and enhanced TypeScript support, advanced theming, icons set and more.
+    Discover the latest major release with improved performance, better tree-shaking, and enhanced TypeScript support, advanced theming, translations, icons set and more.
   </p>
 
   <div class="maz-flex maz-gap-2 maz-justify-center maz-flex-wrap">

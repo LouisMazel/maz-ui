@@ -820,7 +820,7 @@ Make sure to enable the right detection method:
 **Results object emitted by `@data` event:**
 
 ```ts
-export interface Results {
+interface MazInputPhoneNumberData {
   isValid: boolean
   isPossible?: boolean
   countryCode?: CountryCode
