@@ -97,9 +97,6 @@
     "vue": "^3.5.17",
     "vue-tsc": "^2.2.10"
   },
-  "pnpm": {
-    "catalog": false
-  },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md}": "cross-env NODE_ENV=production eslint --fix"
   }
