@@ -12,9 +12,9 @@ import type {
   ValidationIssues,
 } from './types'
 
-import { debounceId } from '@maz-ui/utils/src/utils/debounceId.js'
-import { isEqual } from '@maz-ui/utils/src/utils/isEqual.js'
-import { throttleId } from '@maz-ui/utils/src/utils/throttleId.js'
+import { debounceId } from '@maz-ui/utils/src/helpers/debounceId.js'
+import { isEqual } from '@maz-ui/utils/src/helpers/isEqual.js'
+import { throttleId } from '@maz-ui/utils/src/helpers/throttleId.js'
 
 import { getCurrentInstance, inject, nextTick } from 'vue'
 import { useFreezeValue } from './../../composables/useFreezeValue'

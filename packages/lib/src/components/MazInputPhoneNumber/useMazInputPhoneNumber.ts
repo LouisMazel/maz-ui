@@ -1,6 +1,5 @@
 import type { CountryCode } from 'libphonenumber-js'
-// import type { Country } from './types'
-import { fetchLocaleIp } from '@maz-ui/utils/src/utils/fetchLocaleIp.js'
+import { fetchLocaleIp } from '@maz-ui/utils/src/helpers/fetchLocaleIp.js'
 import { getCountries, getCountryCallingCode } from 'libphonenumber-js'
 
 export interface CountryOption {

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { MazColor } from './types'
-import { isClient } from '@maz-ui/utils/src/utils/isClient.js'
-import { isStandaloneMode } from '@maz-ui/utils/src/utils/isStandaloneMode.js'
+import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
+import { isStandaloneMode } from '@maz-ui/utils/src/helpers/isStandaloneMode.js'
 
 import { computed, defineAsyncComponent, onUnmounted, ref, watch } from 'vue'
 

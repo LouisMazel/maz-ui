@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { normalizeString } from '@maz-ui/utils/src/utils/normalizeString.js'
+import { normalizeString } from '@maz-ui/utils/src/helpers/normalizeString.js'
 import { computed, toValue } from 'vue'
 
 function levenshteinDistance(string1: string, string2: string): number {
