@@ -1,90 +1,57 @@
-import type { ComputedRef, WritableComputedRef } from 'vue'
 import type {
   BaseFormPayload,
   ExtractModelKey,
   FormFieldOptions,
   FormSchema,
+  InferSchemaFormValidator,
   ValidationIssues,
-} from '../composables/useFormValidator/types'
-
-import { checkAvailability } from '@maz-ui/utils/src/utils/checkAvailability.js'
+} from './useFormValidator/types'
 
 import { isEqual } from '@maz-ui/utils/src/utils/isEqual.js'
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, type ComputedRef, onMounted, onUnmounted, type WritableComputedRef } from 'vue'
 import {
   addEventToInteractiveElements,
-  fieldHasValidation,
   findInteractiveElements,
-  getContext,
   getValidationEvents,
+  removeEventFromInteractiveElements,
+} from './useFormValidator/dom-events'
+import {
+  fieldHasValidation,
+  getContext,
   handleFieldBlur,
   hasModeIncludes,
-  removeEventFromInteractiveElements,
-  setFieldValidationState,
   updateFieldState,
-} from '../composables/useFormValidator/utils'
-import { useFreezeValue } from '../composables/useFreezeValue'
+} from './useFormValidator/state-management'
+import { setFieldValidationState } from './useFormValidator/validation'
+import { useFreezeValue } from './useFreezeValue'
 
 interface UseFormFieldReturn<FieldType> {
-  /**
-   * Indicates if the field has an error
-   */
   hasError: ComputedRef<boolean>
-  /**
-   * Errors of the field
-   */
   errors: ComputedRef<ValidationIssues>
-  /**
-   * Error message of the field
-   * It's the first error of the field
-   */
   errorMessage: ComputedRef<string | undefined>
-  /**
-   * Indicates if the field is valid
-   */
   isValid: ComputedRef<boolean>
-  /**
-   * Indicates if the field has been modified
-   */
   isDirty: ComputedRef<boolean>
-  /**
-   * Indicates if the field has been blurred
-   */
   isBlurred: ComputedRef<boolean>
-  /**
-   * Indicates if the field has been validated
-   */
   isValidated: ComputedRef<boolean>
-  /**
-   * Indicates if the field is validating
-   */
   isValidating: ComputedRef<boolean>
-  /**
-   * Validation mode of the field
-   */
   mode: ComputedRef<FormFieldOptions<FieldType>['mode']>
-  /**
-   * Value of the field
-   */
   value: WritableComputedRef<FieldType>
-  /**
-   * Validation events of the field
-   */
   validationEvents: ComputedRef<ReturnType<typeof getValidationEvents>>
-  /**
-   * Function to handle the blur event of the field
-   */
-  onBlur: () => void
 }
 
 export function useFormField<
-  FieldType extends Model[ExtractModelKey<FormSchema<Model>>],
-  Model extends BaseFormPayload = BaseFormPayload,
->(name: ExtractModelKey<FormSchema<Model>>, options?: FormFieldOptions<FieldType>): UseFormFieldReturn<FieldType> {
+  TSchema extends FormSchema<BaseFormPayload>,
+  TName extends ExtractModelKey<FormSchema<InferSchemaFormValidator<TSchema>>> = ExtractModelKey<FormSchema<InferSchemaFormValidator<TSchema>>>,
+>(
+  name: TName,
+  options?: FormFieldOptions<InferSchemaFormValidator<TSchema>[TName]>,
+): UseFormFieldReturn<InferSchemaFormValidator<TSchema>[TName]> {
+  type Model = InferSchemaFormValidator<TSchema>
+
   const opts = {
     formIdentifier: 'main-form-validator',
     ...options,
-  } satisfies FormFieldOptions<FieldType>
+  }
 
   const {
     fieldsStates,
@@ -93,23 +60,26 @@ export function useFormField<
     internalSchema,
     errorMessages,
     isSubmitted,
-  } = getContext<Model>(opts.formIdentifier, 'useFormField')
+  } = getContext<Model>(opts.formIdentifier, 'useFormField') as any
+
+  type FieldType = Model[TName]
+  const finalOpts = opts satisfies FormFieldOptions<FieldType>
 
   const fieldMode = fieldHasValidation(name, internalSchema.value) ? options?.mode ?? formOptions.mode : undefined
-  opts.mode = fieldMode
+  finalOpts.mode = fieldMode
 
   const fieldState = computed(() => fieldsStates.value[name])
 
-  fieldsStates.value[name] = updateFieldState<Model>({
+  fieldsStates.value[name] = updateFieldState({
     name,
     fieldState: fieldState.value,
     payload: payload.value,
     schema: internalSchema.value,
-    options: { ...formOptions, ...opts },
+    options: { ...formOptions, ...finalOpts },
   })
 
-  if (opts.defaultValue !== undefined && !isEqual(payload.value[name], opts.defaultValue)) {
-    const initialValue = opts.defaultValue
+  if (finalOpts.defaultValue !== undefined && !isEqual(payload.value[name], finalOpts.defaultValue)) {
+    const initialValue = finalOpts.defaultValue
     payload.value[name] = initialValue
     fieldsStates.value[name].initialValue = useFreezeValue(initialValue)
   }
@@ -137,16 +107,24 @@ export function useFormField<
 
   const validationEvents = computed(() =>
     getValidationEvents({
-      hasRef: !!opts.ref?.value,
+      hasRef: !!finalOpts.ref?.value,
       onBlur,
       fieldState: fieldState.value,
     }),
   )
 
-  if (opts.ref && hasModeIncludes(['eager', 'blur', 'progressive'], fieldMode)) {
+  if (finalOpts.ref && fieldMode && hasModeIncludes(['eager', 'blur', 'progressive'], fieldMode)) {
     let interactiveElements: HTMLElement[] = []
 
     const handleInteractiveElements = (element: HTMLElement) => {
+      // Clean up previous listeners
+      if (interactiveElements.length > 0) {
+        removeEventFromInteractiveElements({
+          interactiveElements,
+          onBlur,
+        })
+      }
+
       interactiveElements = findInteractiveElements(element)
       addEventToInteractiveElements({
         interactiveElements,
@@ -156,14 +134,15 @@ export function useFormField<
     }
 
     onMounted(() => {
-      checkAvailability(() => opts.ref?.value, (element) => {
-        const interactiveElement = element instanceof HTMLElement ? element : element?.$el as HTMLElement | undefined
-        if (interactiveElement) {
-          handleInteractiveElements(interactiveElement)
-        }
-      }, {
-        errorMessage: `[maz-ui](useFormField) No element found for ref ${opts.ref} for field ${name as string}`,
-      })
+      const element = finalOpts.ref?.value
+      const elementToBind = element instanceof HTMLElement ? element : element?.$el as unknown
+
+      if (elementToBind instanceof HTMLElement) {
+        handleInteractiveElements(elementToBind)
+      }
+      else {
+        console.warn(`[maz-ui](useFormField) No element found for ref in field '${String(name)}'. Make sure the ref is properly bound to an HTMLElement or Vue component (form identifier: ${formOptions.identifier})`)
+      }
     })
 
     onUnmounted(() => {
@@ -186,9 +165,8 @@ export function useFormField<
     mode: computed(() => fieldState.value.mode),
     value: computed({
       get: () => payload.value[name] as FieldType,
-      set: value => (payload.value[name] = value),
+      set: (value: FieldType) => (payload.value[name] = value),
     }),
     validationEvents,
-    onBlur,
   }
 }

@@ -233,7 +233,7 @@ function getAllDisplayNames<T extends CodesType>(options: GetAllDisplayNamesOpti
 
 export function useDisplayNames(mainLocale?: MaybeRefOrGetter<string | DisplayNameCode>) {
   return {
-    getDisplayName: (code: Parameters<typeof getDisplayName>[0], options: GetDisplayNameOptions) => {
+    getDisplayName: (code: Parameters<typeof getDisplayName>[0], options?: GetDisplayNameOptions) => {
       const resolvedOptions = toValue(options)
 
       return getDisplayName(code, {
@@ -242,7 +242,7 @@ export function useDisplayNames(mainLocale?: MaybeRefOrGetter<string | DisplayNa
       })
     },
 
-    getAllDisplayNames: <T extends CodesType>(options: GetAllDisplayNamesOptions<T>) => {
+    getAllDisplayNames: <T extends CodesType>(options?: GetAllDisplayNamesOptions<T>) => {
       const resolvedOptions = toValue(options)
 
       return getAllDisplayNames<T>({
