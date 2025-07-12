@@ -4,12 +4,12 @@ import plugin from 'tailwindcss/plugin'
 import { getColors } from './utils/colors'
 import { getNumericScreensFromTailwind, screens } from './variables/breakpoints'
 import { designTokens } from './variables/design-tokens'
-import { utilities } from './variables/utilities'
+import { utilities as defaultUtilities } from './variables/utilities'
 import { zIndex } from './variables/z-indexes'
 
 export { getNumericScreensFromTailwind }
 
-export function defineMazTailwindConfig(config?: Partial<Config> & { content: Config['content'] }) {
+export function defineMazTailwindConfig(config?: Partial<Config> & { content: Config['content'] }, utilities?: Record<string, any>) {
   return {
     darkMode: ['class', '[class~="dark"]'],
     content: [],
@@ -23,7 +23,10 @@ export function defineMazTailwindConfig(config?: Partial<Config> & { content: Co
     },
     plugins: [
       plugin(({ addUtilities }) => {
-        addUtilities(utilities)
+        addUtilities({
+          ...defaultUtilities,
+          ...utilities,
+        })
       }),
     ],
     ...config,
