@@ -359,7 +359,7 @@ interface VTooltipOptions extends Partial<Omit<MazPopoverProps, 'modelValue'>> {
    * Trigger of the tooltip
    * @default hover
    */
-  trigger?: PopoverTrigger
+  trigger?: MazPopoverTrigger
   /**
    * Close on click outside
    * @default false
