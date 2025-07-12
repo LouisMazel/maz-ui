@@ -39,29 +39,27 @@ npm install valibot
 
 :::
 
-::: details How to get a typed model from schema?
+::: details How to get TypeScript type safety?
 
-To get a typed model from the Valibot schema, you can use the `InferFormValidatorSchema` helper.
+Use `typeof schema` for automatic type inference from your Valibot schema:
 
-```ts{14}
-import { ref } from 'vue'
+```ts{11,16}
 import { pipe, string, nonEmpty, number, minValue, maxValue, minLength } from 'valibot'
-import { InferFormValidatorSchema } from 'maz-ui/composables'
+import { useFormValidator, useFormField } from 'maz-ui/composables'
 
-const schema = ref({
+const schema = {
   name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
   age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
   country: pipe(string('Country is required'), nonEmpty('Country is required')),
-})
+}
 
-/**
- * { name: string, age: number, country: string }
- */
-type Model = InferFormValidatorSchema<typeof schema>
-
-const { model } = useFormValidator<Model>({
+// Automatic type inference from schema
+const { model } = useFormValidator<typeof schema>({
   schema,
 })
+
+// For useFormField, specify both schema and field name for precise typing
+const { value: name } = useFormField<typeof schema, 'name'>('name', { formIdentifier: 'form' })
 ```
 
 :::
@@ -70,13 +68,13 @@ const { model } = useFormValidator<Model>({
 
 To use the `eager`, `blur`, or `progressive` validation modes, you must use the `useFormField` composable to add the necessary validation events.
 
-3 ways to bind validation events:
+2 ways to bind validation events:
 
-##### 1. Use the `ref` attribute on the component to get the reference
+#### 1. Use the `ref` attribute on the component to get the reference
 
 You can use the `ref` attribute on the component and pass the reference to the `useFormField` composable.
 
-This method will search HTML elements (input, select, and textarea) into the component and add the necessary validation events.
+This method will automatically detect interactive elements (input, select, textarea, button, elements with ARIA roles, etc.) within the component and add the necessary validation events.
 
 ```vue{3,10,17}
 <template>
@@ -93,14 +91,15 @@ This method will search HTML elements (input, select, and textarea) into the com
 
 <script setup lang="ts">
 import { useFormField } from 'maz-ui/composables'
+import { useTemplateRef } from 'vue'
 
-const { value, errorMessage, isValid, hasError } = useFormField('name', {
-  ref: 'inputRef',
+const { value, errorMessage, isValid, hasError } = useFormField<typeof schema, 'name'>('name', {
+  ref: useTemplateRef('inputRef'),
 })
 </script>
 ```
 
-##### 2. Use the `v-bind` directive to bind the validation events
+#### 2. Use the `v-bind` directive to bind the validation events
 
 You can use the `v-bind` directive to bind the validation events to the component or HTML element.
 
@@ -118,27 +117,11 @@ If you use this method with a custom component, the component must emit the `blu
   <!-- or -->
   <input v-model="value" v-bind="validationEvents" />
 </template>
-```
-
-##### 3. Use the `onBlur` handler directly from `useFormField`
-
-This method works if the component emits the `blur` event. Otherwise, use the first method.
-
-```vue{7}
-<template>
-  <MazInput
-    v-model="value"
-    :hint="errorMessage"
-    :error="hasError"
-    :success="isValid"
-    @blur="onBlur"
-  />
-</template>
 
 <script setup lang="ts">
 import { useFormField } from 'maz-ui/composables'
 
-const { value, errorMessage, isValid, hasError, onBlur } = useFormField('name')
+const { value, errorMessage, isValid, hasError, validationEvents } = useFormField<typeof schema, 'name'>('name')
 </script>
 ```
 
@@ -206,22 +189,19 @@ Submit the form to show the validation errors
 ```vue
 <script lang="ts" setup>
 import { sleep } from 'maz-ui'
-import { type InferFormValidatorSchema, useFormValidator, useToast } from 'maz-ui/composables'
+import { useFormValidator, useToast } from 'maz-ui/composables'
 import { boolean, literal, maxValue, minLength, minValue, nonEmpty, number, pipe, string } from 'valibot'
-import { ref } from 'vue'
 
 const toast = useToast()
 
-const schema = ref({
+const schema = {
   name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
   age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
   country: pipe(string('Country is required'), nonEmpty('Country is required')),
   agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
-})
+}
 
-  type Model = InferFormValidatorSchema<typeof schema>
-
-const { model, isSubmitting, handleSubmit, errorMessages, fieldsStates } = useFormValidator<Model>({
+const { model, isSubmitting, handleSubmit, errorMessages, fieldsStates } = useFormValidator<typeof schema>({
   schema,
   defaultValues: { name: 'John Doe', age: 10 },
   options: { mode: 'lazy', scrollToError: '.has-error' },
@@ -337,8 +317,9 @@ With eager mode, each form field is validated on blur (if not empty) and then on
 ```vue
 <script setup lang="ts">
 import { sleep } from 'maz-ui'
-import { InferFormValidatorSchema, useFormField, useFormValidator, useToast } from 'maz-ui/composables'
+import { useFormField, useFormValidator, useToast } from 'maz-ui/composables'
 import { boolean, literal, maxValue, minLength, minValue, nonEmpty, number, pipe, string } from 'valibot'
+import { useTemplateRef } from 'vue'
 
 const schema = {
   name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
@@ -347,17 +328,15 @@ const schema = {
   agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
 }
 
-  type Model = InferFormValidatorSchema<typeof schema>
-
-const { isSubmitting, handleSubmit } = useFormValidator<Model>({
+const { isSubmitting, handleSubmit } = useFormValidator<typeof schema>({
   schema,
   options: { mode: 'eager', scrollToError: '.has-error-form2', identifier: 'form-eager' },
 })
 
-const { value: name, hasError: hasErrorName, errorMessage: nameErrorMessage } = useFormField('name', { ref: 'nameRef', formIdentifier: 'form-eager' })
-const { value: age, hasError: hasErrorAge, errorMessage: ageErrorMessage } = useFormField('age', { ref: 'ageRef', formIdentifier: 'form-eager' })
-const { value: agree, hasError: hasErrorAgree, errorMessage: agreeErrorMessage } = useFormField('agree', { ref: 'agreeRef', formIdentifier: 'form-eager' })
-const { value: country, hasError: hasErrorCountry, errorMessage: countryErrorMessage, validationEvents } = useFormField('country', { mode: 'lazy', formIdentifier: 'form-eager' })
+const { value: name, hasError: hasErrorName, errorMessage: nameErrorMessage } = useFormField<typeof schema, 'name'>('name', { ref: useTemplateRef('nameRef'), formIdentifier: 'form-eager' })
+const { value: age, hasError: hasErrorAge, errorMessage: ageErrorMessage } = useFormField<typeof schema, 'age'>('age', { ref: useTemplateRef('ageRef'), formIdentifier: 'form-eager' })
+const { value: agree, hasError: hasErrorAgree, errorMessage: agreeErrorMessage } = useFormField<typeof schema, 'agree'>('agree', { ref: useTemplateRef('agreeRef'), formIdentifier: 'form-eager' })
+const { value: country, hasError: hasErrorCountry, errorMessage: countryErrorMessage, validationEvents } = useFormField<typeof schema, 'country'>('country', { mode: 'lazy', formIdentifier: 'form-eager' })
 
 const onSubmit = handleSubmit(async (formData) => {
   // Form submission logic
@@ -447,7 +426,7 @@ With progressive mode, the field becomes valid after the first successful valida
       :hint="countryMessageProgressive"
       :error="!!countryMessageProgressive"
       :success="countryValidProgressive"
-      :class="{ 'has-error-progressive': !!countryErrorMessage }"
+      :class="{ 'has-error-progressive': !!countryErrorProgressive }"
     />
     <MazCheckbox
       v-model="agreeProgressive"
@@ -468,8 +447,9 @@ With progressive mode, the field becomes valid after the first successful valida
 ```vue
 <script setup lang="ts">
 import { sleep } from 'maz-ui'
-import { InferFormValidatorSchema, useFormField, useFormValidator, useToast } from 'maz-ui/composables'
+import { useFormField, useFormValidator, useToast } from 'maz-ui/composables'
 import { boolean, literal, maxValue, minLength, minValue, nonEmpty, number, pipe, string } from 'valibot'
+import { useTemplateRef } from 'vue'
 
 const schema = {
   name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
@@ -478,17 +458,15 @@ const schema = {
   agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
 }
 
-  type Model = InferFormValidatorSchema<typeof schema>
-
-const { isSubmitting, handleSubmit } = useFormValidator<Model>({
+const { isSubmitting, handleSubmit } = useFormValidator<typeof schema>({
   schema,
   options: { mode: 'progressive', scrollToError: '.has-error-progressive', identifier: 'form-progressive' },
 })
 
-const { value: name, hasError: nameHasError, errorMessage: nameErrorMessage } = useFormField('name', { ref: 'nameRef', formIdentifier: 'form-progressive' })
-const { value: age, hasError: ageHasError, errorMessage: ageErrorMessage } = useFormField('age', { ref: 'ageRef', formIdentifier: 'form-progressive' })
-const { value: country, hasError: countryHasError, errorMessage: countryErrorMessage, validationEvents } = useFormField('country', { mode: 'lazy', formIdentifier: 'form-progressive' })
-const { value: agree, hasError: agreeHasError, errorMessage: agreeErrorMessage } = useFormField('agree', { ref: 'agreeRef', formIdentifier: 'form-progressive' })
+const { value: name, hasError: nameHasError, errorMessage: nameErrorMessage } = useFormField<typeof schema, 'name'>('name', { ref: useTemplateRef('nameRef'), formIdentifier: 'form-progressive' })
+const { value: age, hasError: ageHasError, errorMessage: ageErrorMessage } = useFormField<typeof schema, 'age'>('age', { ref: useTemplateRef('ageRef'), formIdentifier: 'form-progressive' })
+const { value: country, hasError: countryHasError, errorMessage: countryErrorMessage, validationEvents } = useFormField<typeof schema, 'country'>('country', { mode: 'lazy', formIdentifier: 'form-progressive' })
+const { value: agree, hasError: agreeHasError, errorMessage: agreeErrorMessage } = useFormField<typeof schema, 'agree'>('agree', { ref: useTemplateRef('agreeRef'), formIdentifier: 'form-progressive' })
 
 const onSubmit = handleSubmit(async (formData) => {
   // Form submission logic
@@ -640,15 +618,15 @@ You can set the throttle or debounce time in milliseconds or use `true` for the 
 
 It accepts a validation schema, default values, and configuration options to handle form validation. You can also provide a model reference to bind the form data.
 
-### Parameters ([FormValidatorOptions](#formvalidatoroptions))
+### Parameters
 
-`useFormValidator` accepts an object with the following properties:
+`useFormValidator<TSchema>` accepts an object with the following properties:
 
-- `schema`: `MaybeRef<FormSchema<Model>>` - The validation schema for the form.
+- `schema`: `TSchema` - The Valibot validation schema for the form.
 - `model`: `Ref<Model>` (optional) - A reference to the form's data model.
-- `defaultValues`: `Partial<Model>` (optional) - Default values for the form fields.
+- `defaultValues`: `DeepPartial<Model>` (optional) - Default values for the form fields.
 - `options`: `FormValidatorOptions` (optional) - Configuration options for the form validation behavior.
-  - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur'` (optional) - Form validation mode. (default: 'lazy') - To use the `eager` or `blur` validation modes, you must use the `useFormField` composable to add the necessary validation events. - [see validation modes](#introduction)
+  - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'` (optional) - Form validation mode. (default: 'lazy') - To use the `eager`, `blur`, or `progressive` validation modes, you must use the `useFormField` composable to add the necessary validation events. - [see validation modes](#introduction)
   - `throttledFields`: `Partial<Record<ModelKey, number | true>>` (optional) - Fields to validate with throttling. It's an object where the key is the field name and the value is the throttle time in milliseconds or `true` for the default throttle time (1000ms).
   - `debouncedFields`: `Partial<Record<ModelKey, number | true>>` (optional) - Fields to validate with debouncing. It's an object where the key is the field name and the value is the debounce time in milliseconds or `true` for the default debounce time (300ms).
   - `scrollToError`: `string | false` (optional) - Disable or provide a CSS selector for scrolling to errors (default '.has-field-error')
@@ -666,7 +644,7 @@ It accepts a validation schema, default values, and configuration options to han
 - `errorsMessages`: `ComputedRef<Record<string, string>>` - The first validation error message for each field.
 - `model`: `Ref<Model>` - The form's data model.
 - `fieldsStates`: `FieldsStates` - The validation state of each field.
-- `validateForm`: `(showErrors?: boolean) => Promise<boolean>` - Function to validate the entire form.
+- `validateForm`: `(setErrors?: boolean) => Promise<boolean>` - Function to validate the entire form.
 - `scrollToError`: `(selector?: string, options?: { offset?: number }) => void` - Function to scroll to the first field with an error.
 - `handleSubmit`: `successCallback: (model: Model) => Promise<unknown> | unknown, scrollToError?: false | string` - Form submission handler, the callback is called if the form is valid and passes the complete payload as an argument. The second argument is optional and can be used to disable or provide a CSS selector for scrolling to errors (default '.has-field-error').
 
@@ -683,14 +661,16 @@ Can be very useful when you are using fields in child components of form.
 
 To use the modes `eager`, `progressive` or `blur`, you must use this `useFormField` composable to add the [necessary validation events](#introduction).
 
-### Parameters ([FormFieldOptions](#formfieldoptions))
+### Parameters
 
-- `name`: `ModelKey` - The name of the field in the validation schema.
+`useFormField<TSchema, TName>` takes the following parameters:
+
+- `name`: `TName` - The name of the field in the validation schema (must be a key from the schema).
 - `options`: `FormFieldOptions<T>` (optional) - Field-specific options.
   - `defaultValue`: `T` (optional) - The default value of the field.
   - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'` (optional) - The validation mode for the field - [see validation modes](#introduction)
-  - `ref`: `string` (optional) - Reference to the component to associate and trigger validation events on HTML Form elements (input, select and textarea) - not necessary for `lazy`, `aggressive` validation modes
-  - `formIdentifier`: `string | symbol` (optional) - Identifier for the form (useful when you have multiple forms on the same component)
+  - `ref`: `Ref<HTMLElement | ComponentInstance>` (optional) - Vue ref to the component/element for automatic event binding - use `useTemplateRef()` for type safety
+  - `formIdentifier`: `string | symbol` (optional) - Identifier for the form (must match the one used in `useFormValidator`)
 
 ### Return
 
@@ -705,8 +685,124 @@ To use the modes `eager`, `progressive` or `blur`, you must use this `useFormFie
 - `isValidated`: `ComputedRef<boolean>` - Indicates if the field has been validated.
 - `isValidating`: `ComputedRef<boolean>` - Indicates if the field is currently being validated.
 - `mode`: `ComputedRef<StrictOptions['mode']>` - The validation mode for the field.
-- `value`: `ComputedRef<T>` - The value of the field.
+- `value`: `WritableComputedRef<T>` - The reactive value of the field with proper TypeScript typing.
 - `validationEvents`: `ComputedRef<{ onBlur?: () => void; }>` - Validation events to bind to the field. They are used to trigger field validation, to be used like this `v-bind="validationEvents"` (components must emit `blur` event to trigger field validation) - Not necessary for `lazy`, `aggressive` validation modes or if you use the component reference when initializing the composable.
+
+## Recent Improvements (v4.0.0)
+
+### 🚀 Enhanced Type Safety
+
+- **Automatic schema inference**: Use `typeof schema` for precise TypeScript types
+- **Field-level type safety**: `useFormField<typeof schema, 'fieldName'>` provides exact field types
+- **Improved reactivity**: Optimized watchers with better performance and memory management
+
+### 🎯 Better Interactive Element Detection
+
+The `ref` option in `useFormField` now automatically detects and binds events to:
+- Standard form elements: `input`, `select`, `textarea`, `button`
+- Focusable elements: links with `href`, elements with `tabindex`
+- ARIA interactive elements: `role="button"`, `role="textbox"`, etc.
+- Custom interactive elements: `data-interactive`, `data-clickable`, `.interactive`
+
+### 🔧 Improved Memory Management
+
+- Automatic cleanup of event listeners to prevent memory leaks
+- WeakMap-based tracking for better garbage collection
+- Race condition protection in async validation
+
+### 📝 Better Development Experience
+
+- More informative warning messages
+- Improved error handling and validation states
+- Enhanced debugging capabilities
+
+## Performance & Best Practices
+
+### 🚀 Performance Tips
+
+- **Use `throttledFields` or `debouncedFields`** for expensive validations or network requests
+- **Prefer `eager` or `progressive` modes** for better UX instead of `aggressive`
+- **Use `lazy` mode** for simple forms with minimal validation
+- **Leverage TypeScript**: Always use `typeof schema` for automatic type inference
+
+### 💡 Common Patterns
+
+#### Multiple Forms on Same Page
+
+```ts
+const form1 = useFormValidator<typeof schema1>({
+  schema: schema1,
+  options: { identifier: 'form-1' }
+})
+
+const form2 = useFormValidator<typeof schema2>({
+  schema: schema2,
+  options: { identifier: 'form-2' }
+})
+
+// Use matching identifiers in useFormField
+const { value } = useFormField<typeof schema1, 'name'>('name', {
+  formIdentifier: 'form-1'
+})
+```
+
+#### Custom Interactive Elements
+
+```vue
+<template>
+  <!-- Add data-interactive for custom components -->
+  <div data-interactive class="custom-input" tabindex="0">
+    Custom Input
+  </div>
+</template>
+```
+
+### ⚠️ Common Pitfalls
+
+- **Mismatched form identifiers**: Ensure `useFormField` uses the same `formIdentifier` as `useFormValidator`
+- **Missing refs for interactive modes**: `eager`, `blur`, and `progressive` modes require either `ref` or `validationEvents`
+- **Incorrect TypeScript generics**: Always specify both schema and field name: `useFormField<typeof schema, 'fieldName'>`
+
+## Troubleshooting
+
+### Type Errors
+
+**Problem**: `WritableComputedRef<string | number | boolean | undefined>`
+
+```ts
+// ❌ Wrong - loses type precision
+const { value } = useFormField('name')
+
+// ✅ Correct - precise typing
+const { value } = useFormField<typeof schema, 'name'>('name')
+```
+
+### Validation Not Triggering
+
+**Problem**: Field validation doesn't work with `eager`/`blur`/`progressive` modes
+
+```ts
+// ❌ Missing ref or validation events
+const { value } = useFormField<typeof schema, 'name'>('name')
+
+// ✅ Use ref for automatic detection
+const { value } = useFormField<typeof schema, 'name'>('name', {
+  ref: useTemplateRef('inputRef')
+})
+
+// ✅ Or use validation events manually
+const { value, validationEvents } = useFormField<typeof schema, 'name'>('name')
+// Then: v-bind="validationEvents" on your component
+```
+
+### Element Not Found Warning
+
+**Problem**: `No element found for ref in field 'name'`
+
+**Solutions**:
+1. Ensure the ref is properly bound to an HTML element or Vue component
+2. Make sure the component has a `$el` property if it's a Vue component
+3. Use `data-interactive` attribute for custom interactive elements
 
 ## Types
 
@@ -766,10 +862,12 @@ interface FormFieldOptions<T> {
    */
   mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'
   /**
-   * Reference to the component or HTML element to associate and trigger validation events
+   * Vue ref to the component or HTML element for automatic event binding
+   * Use useTemplateRef() for type safety
+   * Automatically detects interactive elements (input, select, textarea, button, ARIA elements, etc.)
    * Necessary for 'eager', 'progressive' and 'blur' validation modes
    */
-  ref?: string
+  ref?: Ref<HTMLElement | ComponentInstance>
   /**
    * Identifier for the form
    * Useful when you have multiple forms on the same component
@@ -780,7 +878,7 @@ interface FormFieldOptions<T> {
 ```
 
 <script lang="ts" setup>
-  import { ref } from 'vue'
+  import { ref, useTemplateRef } from 'vue'
   import { useFormValidator } from 'maz-ui/src/composables/useFormValidator'
   import { useFormField } from 'maz-ui/src/composables/useFormField'
   import { useToast } from 'maz-ui/src/composables/useToast'
@@ -796,7 +894,7 @@ interface FormFieldOptions<T> {
     agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
   })
 
-  const { model, isValid, isSubmitting, isDirty, isSubmitted, handleSubmit, errorMessages, fieldsStates } = useFormValidator<Model>({
+  const { model, isValid, isSubmitting, isDirty, isSubmitted, handleSubmit, errorMessages, fieldsStates } = useFormValidator<typeof schema>({
     schema,
     defaultValues: { name: 'John Doe', age: 10 },
     options: { mode: 'lazy', scrollToError: '.has-error' },
@@ -809,20 +907,22 @@ interface FormFieldOptions<T> {
     toast.success('Form submitted', { position: 'top' })
   })
 
-  const { isValid: isValidEager, isSubmitting: isSubmittingEager, handleSubmit: handleSubmitEager } = useFormValidator<Model>({
-    schema: {
-      name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
-      age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
-      country: pipe(string('Country is required'), nonEmpty('Country is required')),
-      agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
-    },
+  const eagerSchema = {
+    name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
+    age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
+    country: pipe(string('Country is required'), nonEmpty('Country is required')),
+    agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
+  }
+
+  const { isValid: isValidEager, isSubmitting: isSubmittingEager, handleSubmit: handleSubmitEager } = useFormValidator<typeof eagerSchema>({
+    schema: eagerSchema,
     options: { mode: 'eager', scrollToError: '.has-error-form2', identifier: 'form-eager' },
   })
 
-  const { value: name, hasError: hasErrorName, errorMessage: nameErrorMessage } = useFormField('name', { ref: 'nameRef', formIdentifier: 'form-eager' })
-  const { value: age, hasError: hasErrorAge, errorMessage: ageErrorMessage } = useFormField('age', { ref: 'ageRef', formIdentifier: 'form-eager'  })
-  const { value: country, hasError: hasErrorCountry, errorMessage: countryErrorMessage, validationEvents } = useFormField('country', { mode: 'lazy', formIdentifier: 'form-eager'  })
-  const { value: agree, hasError: hasErrorAgree, errorMessage: agreeErrorMessage } = useFormField('agree', { ref: 'agreeRef', formIdentifier: 'form-eager'  })
+  const { value: name, hasError: hasErrorName, errorMessage: nameErrorMessage } = useFormField<typeof eagerSchema, 'name'>('name', { ref: useTemplateRef('nameRef'), formIdentifier: 'form-eager' })
+  const { value: age, hasError: hasErrorAge, errorMessage: ageErrorMessage } = useFormField<typeof eagerSchema, 'age'>('age', { ref: useTemplateRef('ageRef'), formIdentifier: 'form-eager'  })
+  const { value: country, hasError: hasErrorCountry, errorMessage: countryErrorMessage, validationEvents } = useFormField<typeof eagerSchema, 'country'>('country', { mode: 'lazy', formIdentifier: 'form-eager'  })
+  const { value: agree, hasError: hasErrorAgree, errorMessage: agreeErrorMessage } = useFormField<typeof eagerSchema, 'agree'>('agree', { ref: useTemplateRef('agreeRef'), formIdentifier: 'form-eager'  })
 
   const onSubmitEager = handleSubmitEager(async (formData) => {
     // Form submission logic
@@ -841,10 +941,17 @@ interface FormFieldOptions<T> {
     options: { mode: 'progressive', scrollToError: '.has-error-progressive', identifier: 'form-progressive' },
   })
 
-  const { value: nameProgressive, isValid: nameValidProgressive, hasError: nameErrorProgressive, errorMessage: nameMessageProgressive } = useFormField('name', { ref: 'nameProgressiveRef', formIdentifier: 'form-progressive' })
-  const { value: ageProgressive, isValid: ageValidProgressive, hasError: ageErrorProgressive, errorMessage: ageMessageProgressive } = useFormField('age', { ref: 'ageProgressiveRef', formIdentifier: 'form-progressive'  })
-  const { value: countryProgressive, isValid: countryValidProgressive, hasError: countryErrorProgressive, errorMessage: countryMessageProgressive, validationEventsProgressive } = useFormField('country', { ref: 'countryProgressiveRef', formIdentifier: 'form-progressive' })
-  const { value: agreeProgressive, isValid: agreeValidProgressive, hasError: agreeErrorProgressive, errorMessage: agreeMessageProgressive } = useFormField('agree', { ref: 'agreeProgressiveRef', formIdentifier: 'form-progressive'  })
+  const progressiveSchema = {
+    name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
+    age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
+    country: pipe(string('Country is required'), nonEmpty('Country is required')),
+    agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
+  }
+
+  const { value: nameProgressive, isValid: nameValidProgressive, hasError: nameErrorProgressive, errorMessage: nameMessageProgressive } = useFormField<typeof progressiveSchema, 'name'>('name', { ref: useTemplateRef('nameProgressiveRef'), formIdentifier: 'form-progressive' })
+  const { value: ageProgressive, isValid: ageValidProgressive, hasError: ageErrorProgressive, errorMessage: ageMessageProgressive } = useFormField<typeof progressiveSchema, 'age'>('age', { ref: useTemplateRef('ageProgressiveRef'), formIdentifier: 'form-progressive'  })
+  const { value: countryProgressive, isValid: countryValidProgressive, hasError: countryErrorProgressive, errorMessage: countryMessageProgressive, validationEventsProgressive } = useFormField<typeof progressiveSchema, 'country'>('country', { ref: useTemplateRef('countryProgressiveRef'), formIdentifier: 'form-progressive' })
+  const { value: agreeProgressive, isValid: agreeValidProgressive, hasError: agreeErrorProgressive, errorMessage: agreeMessageProgressive } = useFormField<typeof progressiveSchema, 'agree'>('agree', { ref: useTemplateRef('agreeProgressiveRef'), formIdentifier: 'form-progressive'  })
 
   const onSubmitProgressive = handleSubmitProgressive(async (formData) => {
     // Form submission logic
