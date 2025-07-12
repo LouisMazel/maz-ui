@@ -54,7 +54,7 @@ describe('mazBackdrop', () => {
         closeOnEscape: true,
       },
     })
-    // @ts-expect-error - test case
+
     await wrapper.vm.onKeyPress({ key: 'Escape' })
     expect(wrapper.vm.present).toBe(false)
   })
@@ -68,7 +68,6 @@ describe('mazBackdrop', () => {
       },
     })
 
-    // @ts-expect-error - test case
     await wrapper.vm.onKeyPress({ key: 'Escape' })
     expect(wrapper.vm.present).toBe(true)
   })
