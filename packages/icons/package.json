@@ -46,7 +46,7 @@
       "types": "./dist/types/icon-list.d.ts",
       "import": "./dist/icon-list.js"
     },
-    "./svg/*": "./svg/*",
+    "./svg": "./svg/*.svg",
     "./": "./"
   },
   "module": "./dist/index.js",
