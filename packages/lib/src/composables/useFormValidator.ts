@@ -1,5 +1,5 @@
 import type { DeepPartial } from '@maz-ui/utils/src/ts-helpers/DeepPartial.js'
-import type { Ref, WatchStopHandle } from 'vue'
+import type { MaybeRefOrGetter, Ref, WatchStopHandle } from 'vue'
 
 import type {
   BaseFormPayload,
@@ -8,26 +8,57 @@ import type {
   FormContext,
   FormSchema,
   FormValidatorOptions,
+  InferOutputSchemaFormValidator,
+  InferSchemaFormValidator,
   StrictOptions,
-  UseFormValidatorParams,
-} from '../composables/useFormValidator/types'
-import { computed, nextTick, provide, ref, watch } from 'vue'
-import { CONFIG } from '../composables/useFormValidator/config'
+} from './useFormValidator/types'
+import { computed, nextTick, provide, ref, toValue, watch } from 'vue'
+import { CONFIG } from './useFormValidator/config'
+import { scrollToError } from './useFormValidator/dom-events'
 import {
-  getErrorMessages,
-  getFieldsErrors,
   getFieldsStates,
   getInstance,
   handleFieldInput,
   hasModeIncludes,
-  scrollToError,
   updateFieldsStates,
+} from './useFormValidator/state-management'
+import {
+  getErrorMessages,
+  getFieldsErrors,
   validateForm,
-} from '../composables/useFormValidator/utils'
+} from './useFormValidator/validation'
 
-export function useFormValidator<
-  Model extends BaseFormPayload,
->({ schema, defaultValues, model, options }: UseFormValidatorParams<Model>) {
+function createValidationProcessor<Model extends BaseFormPayload>(
+  fieldsToValidate: string[],
+  fieldsStates: Ref<FieldsStates<Model>>,
+  payload: Ref<Model>,
+  internalSchema: Ref<FormSchema<Model>>,
+  isSubmitted: Ref<boolean>,
+) {
+  return () => {
+    fieldsToValidate.forEach((name) => {
+      const fieldState = fieldsStates.value[name]
+      handleFieldInput<Model>({
+        name: name as ExtractModelKey<FormSchema<Model>>,
+        fieldState,
+        payload: payload.value,
+        schema: internalSchema.value,
+        isSubmitted: isSubmitted.value,
+        forceValidation: true,
+      })
+    })
+  }
+}
+
+export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<BaseFormPayload>>>(
+  { schema, defaultValues, model, options }: {
+    schema: TSchema
+    defaultValues?: MaybeRefOrGetter<DeepPartial<InferSchemaFormValidator<TSchema>> | undefined | null>
+    model?: Ref<DeepPartial<InferSchemaFormValidator<TSchema>> | undefined | null>
+    options?: FormValidatorOptions<InferSchemaFormValidator<TSchema>>
+  },
+) {
+  type Model = InferSchemaFormValidator<TSchema>
   const instance = getInstance<Model>('useFormValidator')
 
   const opts = {
@@ -39,9 +70,9 @@ export function useFormValidator<
     ...options,
   } satisfies StrictOptions<Model>
 
-  const internalDefaultValues = ref(defaultValues) as Ref<DeepPartial<Model>>
+  const internalDefaultValues = ref(toValue(defaultValues)) as Ref<DeepPartial<Model>>
   const payload = ref({ ...internalDefaultValues.value, ...model?.value }) as Ref<Model>
-  const internalSchema = ref(schema) as Ref<FormSchema<Model>>
+  const internalSchema = ref(toValue(schema)) as Ref<FormSchema<Model>>
   const fieldsStates = ref(
     getFieldsStates<Model>({
       schema: internalSchema.value,
@@ -92,51 +123,63 @@ export function useFormValidator<
 
   internalValidateForm()
 
-  function internalValidateForm(showErrors = opts.mode === 'aggressive') {
+  function internalValidateForm(setErrors = opts.mode === 'aggressive') {
     return validateForm<Model>({
       fieldsStates: fieldsStates.value,
       payload: payload.value,
       schema: internalSchema.value,
-      showErrors,
+      setErrors,
     })
   }
 
-  const watchedPayloadStopFunctions: WatchStopHandle[] = []
+  // Optimized single watcher instead of one per field
+  let payloadWatchStop: WatchStopHandle | null = null
 
-  async function addFieldValidationWatch(name: ExtractModelKey<FormSchema<Model>>) {
-    await nextTick()
+  function setupOptimizedWatch() {
+    // Clear existing watcher
+    if (payloadWatchStop) {
+      payloadWatchStop()
+    }
 
-    const watchStopFunc = watch(
-      () => payload.value[name],
-      () => {
-        const fieldState = fieldsStates.value[name]
+    // Create a computed that returns a copy of payload values for proper reactivity
+    const payloadSnapshot = computed(() => {
+      const snapshot: Record<string, unknown> = {}
+      for (const key of Object.keys(internalSchema.value)) {
+        snapshot[key] = payload.value[key]
+      }
+      return snapshot
+    })
 
-        handleFieldInput<Model>({
-          name,
-          fieldState,
-          payload: payload.value,
-          schema: internalSchema.value,
-          isSubmitted: isSubmitted.value,
-          forceValidation: hasModeIncludes(['aggressive', 'lazy', 'progressive'], fieldState.mode),
+    // Single watcher for all payload changes using computed snapshot
+    payloadWatchStop = watch(
+      payloadSnapshot,
+      (newSnapshot, oldSnapshot) => {
+        // Batch validation updates for performance
+        const fieldsToValidate = Object.keys(internalSchema.value).filter((name) => {
+          const fieldState = fieldsStates.value[name]
+          return fieldState
+            && newSnapshot[name] !== oldSnapshot?.[name]
+            && hasModeIncludes(['aggressive', 'lazy', 'progressive'], fieldState.mode)
         })
+
+        // Process validations with requestIdleCallback for better performance
+        if (fieldsToValidate.length > 0) {
+          const processValidations = createValidationProcessor(fieldsToValidate, fieldsStates, payload, internalSchema, isSubmitted)
+
+          // Use requestIdleCallback if available, otherwise nextTick
+          if (typeof requestIdleCallback !== 'undefined') {
+            requestIdleCallback(processValidations, { timeout: 100 })
+          }
+          else {
+            nextTick(processValidations)
+          }
+        }
       },
-      { deep: typeof internalSchema.value[name] === 'object' },
+      { deep: true },
     )
-
-    watchedPayloadStopFunctions.push(watchStopFunc)
   }
 
-  function addFieldsValidationWatch() {
-    for (const watchStopFunc of watchedPayloadStopFunctions) {
-      watchStopFunc()
-    }
-
-    for (const name of Object.keys(internalSchema.value)) {
-      addFieldValidationWatch(name as ExtractModelKey<FormSchema<Model>>)
-    }
-  }
-
-  function handleSubmit<Func extends (model: Model) => Promise<Awaited<ReturnType<Func>>> | ReturnType<Func>>(
+  function handleSubmit<Func extends (model: InferOutputSchemaFormValidator<TSchema>) => Promise<Awaited<ReturnType<Func>>> | ReturnType<Func>>(
     successCallback: Func,
     enableScrollOrSelector?: FormValidatorOptions['scrollToError'],
   ) {
@@ -188,7 +231,7 @@ export function useFormValidator<
 
   provide(opts.identifier, context)
 
-  addFieldsValidationWatch()
+  setupOptimizedWatch()
 
   return {
     identifier: opts.identifier,
