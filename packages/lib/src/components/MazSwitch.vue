@@ -155,7 +155,7 @@ function onFocus(event: FocusEvent) {
   .m-switch {
   @apply maz-relative maz-inline-flex maz-cursor-pointer maz-items-center maz-gap-2 maz-align-top;
 
-  &.--is-disabled {
+  &:has(input:disabled) {
     @apply maz-cursor-not-allowed;
   }
 

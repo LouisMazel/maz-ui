@@ -39,7 +39,7 @@ export type { MazDialogPromiseButton, MazDialogPromiseData, MazDialogPromiseProp
 export { default as MazDrawer } from './MazDrawer.vue'
 export type { MazDrawerProps } from './MazDrawer.vue'
 export { default as MazDropdown } from './MazDropdown.vue'
-export type { MazDropdownProps } from './MazDropdown.vue'
+export type { MazDropdownMenuItem, MazDropdownProps } from './MazDropdown.vue'
 export { default as MazDropzone } from './MazDropzone.vue'
 export type { MazDropzoneErrorCode, MazDropzoneFileData, MazDropzoneProps } from './MazDropzone.vue'
 export { default as MazExpandAnimation } from './MazExpandAnimation.vue'
