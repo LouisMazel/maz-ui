@@ -312,11 +312,11 @@ const inputType = computed(() => (hasPasswordVisible.value ? 'text' : props.type
 const borderStyle = computed(() => {
   if (!props.border)
     return undefined
-  if (props.error)
+  if (props.error && !isFocused.value)
     return 'maz-border-destructive'
-  if (props.success)
+  if (props.success && !isFocused.value)
     return 'maz-border-success'
-  if (props.warning)
+  if (props.warning && !isFocused.value)
     return 'maz-border-warning'
 
   if (isFocused.value || props.borderActive) {
@@ -406,11 +406,11 @@ function emitInputEvent(event: Event) {
 
 const stateColor = computed(() => {
   if (props.error)
-    return 'maz-text-destructive-600'
+    return '!maz-text-destructive-600'
   if (props.success)
-    return 'maz-text-success-600'
+    return '!maz-text-success-600'
   if (props.warning)
-    return 'maz-text-warning-600'
+    return '!maz-text-warning-600'
   return undefined
 })
 </script>
@@ -422,7 +422,6 @@ const stateColor = computed(() => {
         '--is-focused': isFocused || borderActive,
         '--should-up': shouldUp,
         '--has-label': hasLabel,
-        '--is-disabled': disabled,
         '--is-readonly': readonly,
         '--has-z-2': error || warning || success,
         '--has-state': error || warning || success,
@@ -441,7 +440,7 @@ const stateColor = computed(() => {
         inputClasses,
         borderStyle,
         `--rounded-${roundedSize}`,
-        { '--block': block },
+        { '--block': block, '--border': border },
       ]"
     >
       <div v-if="hasLeftPart()" class="m-input-wrapper-left">
@@ -538,7 +537,11 @@ const stateColor = computed(() => {
   }
 
   &-wrapper {
-    @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden maz-border maz-border-solid maz-bg-surface maz-transition-colors maz-duration-300;
+    @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden maz-bg-surface maz-transition-colors maz-duration-300;
+
+    &.--border {
+      @apply maz-border maz-border-solid;
+    }
 
     &.--block {
       @apply maz-w-full;
@@ -694,7 +697,7 @@ const stateColor = computed(() => {
     }
   }
 
-  &.--is-disabled {
+  &:has(input:disabled) {
     & .m-input-wrapper {
       @apply maz-bg-surface-300 maz-text-muted;
     }
@@ -704,7 +707,7 @@ const stateColor = computed(() => {
     }
   }
 
-  &:not(.--is-disabled) {
+  &:not(:has(input:disabled)) {
     & .m-input-wrapper {
       @apply dark:maz-bg-surface-400/60;
     }

@@ -462,6 +462,11 @@ function searchOptionWithQuery(keyPressed: string) {
 }
 
 function mainInputKeyboardHandler(event: KeyboardEvent) {
+  // Ignore keyboard shortcuts with modifier keys
+  if (event.ctrlKey || event.metaKey || event.altKey) {
+    return
+  }
+
   const keyPressed = event.key
 
   if ((keyPressed === 'ArrowDown' || keyPressed === 'ArrowUp' || /^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed)) && !isOpen.value) {
@@ -645,9 +650,10 @@ defineExpose({
         @blur="emits('blur', $event)"
         @keydown="mainInputKeyboardHandler"
       >
-        <template #left-icon>
+        <template v-if="$slots.leftIcon" #left-icon>
           <slot name="left-icon" />
         </template>
+
         <template #right-icon>
           <slot name="right-icon">
             <button
@@ -702,6 +708,7 @@ defineExpose({
             <MazNoSymbol class="maz-size-6 maz-text-foreground" />
           </span>
         </slot>
+
         <div v-else ref="optionListScrollWrapper" class="m-select-list__scroll-wrapper" tabindex="-1">
           <template v-for="(option, i) in optionList" :key="i">
             <!--

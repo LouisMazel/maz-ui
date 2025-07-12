@@ -161,7 +161,6 @@ const iconClassSize = computed(() => {
         '--block': block,
         '--fab': fab,
         '--loading': loading,
-        '--disabled': isDisabled,
         '--no-padding': !padding,
       },
     ]"
@@ -618,7 +617,7 @@ const iconClassSize = computed(() => {
 
   /* DISABLED */
 
-  &.--disabled:not(.--loading) {
+  &:disabled:not(.--loading) {
     @apply maz-cursor-not-allowed maz-bg-surface-400 maz-text-muted maz-border-surface-400;
   }
 
