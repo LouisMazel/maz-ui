@@ -1,26 +1,21 @@
-import type { DeepPartial } from '@maz-ui/utils/src/ts-helpers/DeepPartial.js'
-import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferIssue, InferOutput, objectAsync } from 'valibot'
+import type { DeepPartial } from '@maz-ui/utils/src/index.js'
+import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferInput, InferIssue, InferOutput, objectAsync } from 'valibot'
 import type {
   ComponentInternalInstance,
   ComponentPublicInstance,
   InjectionKey,
-  MaybeRef,
   Ref,
+  TemplateRef,
 } from 'vue'
-import type { useFormField } from './../useFormField'
-import type { useFormValidator } from './../useFormValidator'
-import type { getValidateFunction } from './utils'
+import type { getValidateFunction } from './validation'
 
-export type ValidationSync = BaseSchema<unknown, unknown, BaseIssue<unknown>>
-export type ValidationAsync = ValidationSync | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
-// eslint-disable-next-line sonarjs/redundant-type-aliases
-export type Validation = ValidationAsync
+export type Validation = BaseSchema<unknown, unknown, BaseIssue<unknown>> | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
 
 export type ValidationIssues = InferIssue<Validation>[]
 
 export type ExtractModelKey<T> = Extract<keyof T, string>
 
-export type FormSchema<Model> = {
+export type FormSchema<Model = BaseFormPayload> = {
   [K in Extract<keyof Model, string> as Model[K] extends Required<Model>[K] ? K : never]: Validation
 } & {
   [K in Extract<keyof Model, string> as Model[K] extends Required<Model>[K] ? never : K]?: Validation
@@ -118,7 +113,7 @@ export interface FormFieldOptions<FieldType> {
    * Reference to the component or HTML element to associate and trigger validation events
    * Necessary for 'eager', 'progressive' and 'blur' validation modes
    */
-  ref?: Ref<HTMLElement | ComponentPublicInstance | undefined>
+  ref?: Ref<HTMLElement | ComponentPublicInstance | undefined | null> | TemplateRef<HTMLElement | ComponentPublicInstance | undefined | null>
   /**
    * Identifier for the form
    * Useful when you have multiple forms on the same component
@@ -127,22 +122,22 @@ export interface FormFieldOptions<FieldType> {
   formIdentifier?: string | symbol
 }
 
-export type UseFormValidator<Model extends BaseFormPayload = BaseFormPayload> = typeof useFormValidator<Model>
-export interface UseFormValidatorParams<Model extends BaseFormPayload> {
-  schema: MaybeRef<FormSchema<Model>>
-  defaultValues?: MaybeRef<DeepPartial<Model> | undefined | null>
-  model?: Ref<DeepPartial<Model> | undefined | null>
-  options?: FormValidatorOptions<Model>
-}
-export type UseFormField<
-  FieldType extends Model[ExtractModelKey<FormSchema<Model>>],
-  Model extends BaseFormPayload = BaseFormPayload,
-> = typeof useFormField<FieldType, Model>
-
 export type InferSchemaFormValidator<T> = T extends Ref<infer U>
-  ? U extends Record<string, Validation>
+  ? U extends FormSchema<BaseFormPayload>
+    ? DeepPartial<InferInput<ReturnType<typeof objectAsync<U>>>>
+    : never
+  : T extends (...args: any[]) => FormSchema<BaseFormPayload>
+    ? DeepPartial<InferInput<ReturnType<typeof objectAsync<ReturnType<T>>>>>
+    : T extends FormSchema<BaseFormPayload>
+      ? DeepPartial<InferInput<ReturnType<typeof objectAsync<T>>>>
+      : never
+
+export type InferOutputSchemaFormValidator<T> = T extends Ref<infer U>
+  ? U extends FormSchema<BaseFormPayload>
     ? InferOutput<ReturnType<typeof objectAsync<U>>>
     : never
-  : T extends Record<string, Validation>
-    ? InferOutput<ReturnType<typeof objectAsync<T>>>
-    : never
+  : T extends (...args: any[]) => FormSchema<BaseFormPayload>
+    ? InferOutput<ReturnType<typeof objectAsync<ReturnType<T>>>>
+    : T extends FormSchema<BaseFormPayload>
+      ? InferOutput<ReturnType<typeof objectAsync<T>>>
+      : never
