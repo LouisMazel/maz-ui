@@ -297,8 +297,8 @@ onMounted(() => {
         class="m-toast__button"
         @mouseover="toggleTimer(true)"
         @mouseleave="toggleTimer(false)"
-        @touchstart="toggleTimer(true)"
-        @touchend="toggleTimer(false)"
+        @touchstart.passive="toggleTimer(true)"
+        @touchend.passive="toggleTimer(false)"
         @click.stop="click($event)"
       >
         <Component :is="iconComponent" v-if="iconComponent" class="maz-text-2xl" />
