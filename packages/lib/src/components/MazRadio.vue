@@ -77,6 +77,9 @@ const instanceId = useInstanceUniqId({
   providedId: props.id,
 })
 
+const inputRef = ref<HTMLInputElement>()
+const isFocused = ref(false)
+
 const isSelected = computed(() => props.modelValue === props.value)
 
 const radioSize = computed(() => {
@@ -104,17 +107,19 @@ const radioSize = computed(() => {
 
 const radioSelectedColor = computed(() => `hsl(var(--maz-${props.color}))`)
 const radioBoxShadow = computed(() => {
-  if (props.error) {
+  if (props.error && !isFocused.value) {
     return `hsl(var(--maz-destructive))`
   }
-  else if (props.warning) {
+  else if (props.warning && !isFocused.value) {
     return `hsl(var(--maz-warning))`
   }
-  else if (props.success) {
+  else if (props.success && !isFocused.value) {
     return `hsl(var(--maz-success))`
   }
 
-  return undefined
+  return ['transparent', 'contrast'].includes(props.color)
+    ? `hsl(var(--maz-muted))`
+    : `hsl(var(--maz-${props.color}) / 60%)`
 })
 
 function keyboardHandler(event: KeyboardEvent) {
@@ -129,13 +134,13 @@ function emitValue() {
   emits('change', props.value)
 }
 
-const inputRef = ref<HTMLInputElement>()
-
 function onBlur(event: FocusEvent) {
+  isFocused.value = false
   inputRef.value?.dispatchEvent(new Event('blur'))
   emits('blur', event)
 }
 function onFocus(event: FocusEvent) {
+  isFocused.value = true
   inputRef.value?.dispatchEvent(new Event('focus'))
   emits('focus', event)
 }
@@ -145,7 +150,7 @@ function onFocus(event: FocusEvent) {
   <label
     :for="instanceId"
     class="m-radio m-reset-css"
-    :class="[{ '--disabled': disabled, '--selected': isSelected, '--error': error, '--warning': warning, '--success': success }, props.class]"
+    :class="[{ '--selected': isSelected, '--error': error, '--warning': warning, '--success': success }, props.class]"
     tabindex="0"
     role="radio"
     :style="[style, { '--radio-size': radioSize, '--radio-selected-color': radioSelectedColor, '--radio-box-shadow': radioBoxShadow }]"
@@ -230,7 +235,7 @@ function onFocus(event: FocusEvent) {
     @apply maz-hidden;
   }
 
-  &.--disabled {
+  &:has(input:disabled) {
     @apply maz-cursor-not-allowed maz-text-muted;
 
     > span {
@@ -264,7 +269,7 @@ function onFocus(event: FocusEvent) {
     }
   }
 
-  &:not(.--disabled),
+  &:not(:has(input:disabled)),
   &:not(.--selected) {
     @apply maz-cursor-pointer;
 

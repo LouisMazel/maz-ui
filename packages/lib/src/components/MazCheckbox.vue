@@ -36,12 +36,6 @@ export interface MazCheckboxProps<T = boolean | (string | number)[]> {
   warning?: boolean
   /** The hint text to display below the input. */
   hint?: string
-  /**
-   * The tabindex of the checkbox
-   * @default 0
-   * @type {HTMLAttributes['tabindex']}
-   */
-  tabindex?: HTMLAttributes['tabindex']
 }
 
 defineOptions({
@@ -92,6 +86,9 @@ const instanceId = useInstanceUniqId({
   componentName: 'MazCheckbox',
   providedId: props.id,
 })
+
+const inputRef = ref<HTMLInputElement>()
+const isFocused = ref(false)
 
 const isChecked = computed(() => {
   if (typeof props.value !== 'boolean' && Array.isArray(props.modelValue)) {
@@ -167,13 +164,13 @@ const checkboxSelectedColor = computed(() => {
   return `hsl(var(--maz-${props.color}))`
 })
 const checkboxBoxShadow = computed(() => {
-  if (props.error) {
+  if (props.error && !isFocused.value) {
     return `hsl(var(--maz-destructive))`
   }
-  else if (props.warning) {
+  else if (props.warning && !isFocused.value) {
     return `hsl(var(--maz-warning))`
   }
-  else if (props.success) {
+  else if (props.success && !isFocused.value) {
     return `hsl(var(--maz-success))`
   }
 
@@ -215,28 +212,27 @@ function emitValue(value: boolean | string | number) {
   emits('change', newValue as T)
 }
 
-const inputRef = ref<HTMLInputElement>()
-
 function onBlur(event: FocusEvent) {
+  isFocused.value = false
   inputRef.value?.dispatchEvent(new Event('blur'))
   emits('blur', event)
 }
 function onFocus(event: FocusEvent) {
+  isFocused.value = true
   inputRef.value?.dispatchEvent(new Event('focus'))
   emits('focus', event)
 }
 </script>
 
 <template>
-  <!-- eslint-disable vuejs-accessibility/interactive-supports-focus -->
   <label
     :for="instanceId"
     class="m-checkbox m-reset-css"
-    :class="[{ '--disabled': disabled, '--error': error, '--warning': warning, '--success': success }, props.class]"
-    :tabindex="tabindex"
+    :class="[{ '--error': error, '--warning': warning, '--success': success }, props.class]"
     :style="[style, { '--checkbox-selected-color': checkboxSelectedColor, '--checkbox-box-shadow-color': checkboxBoxShadow }]"
     role="checkbox"
     :aria-checked="isChecked"
+    tabindex="0"
     @keydown="keyboardHandler"
     @blur="onBlur"
     @focus="onFocus"
@@ -273,7 +269,7 @@ function onFocus(event: FocusEvent) {
 </template>
 
 <style lang="postcss" scoped>
-  .m-checkbox {
+.m-checkbox {
   @apply maz-relative maz-inline-flex maz-items-center maz-gap-2 maz-align-top maz-outline-none;
 
   .check-icon {
@@ -309,7 +305,7 @@ function onFocus(event: FocusEvent) {
     }
   }
 
-  &.--disabled {
+  &:has(input:disabled) {
     @apply maz-cursor-not-allowed maz-text-muted;
 
     svg {
@@ -325,11 +321,14 @@ function onFocus(event: FocusEvent) {
     }
   }
 
-  &:not(.--disabled) {
+  &:not(:has(input:disabled)) {
     @apply maz-cursor-pointer;
 
     &:hover > span,
-    &:focus > span {
+    &:focus > span,
+    &.--error > span,
+    &.--warning > span,
+    &.--success > span {
       @apply maz-transition-all maz-duration-300 maz-ease-in-out;
 
       box-shadow: 0 0 0 0.125rem var(--checkbox-box-shadow-color);
@@ -356,12 +355,12 @@ function onFocus(event: FocusEvent) {
     }
   }
 
-  &.--error,
+  /* &.--error,
   &.--warning,
   &.--success {
     > span {
       @apply maz-transition-all maz-duration-300 maz-ease-in-out;
     }
-  }
+  } */
 }
 </style>
