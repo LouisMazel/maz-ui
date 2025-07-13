@@ -624,6 +624,7 @@ defineExpose({
     :offset="0"
     :prefer-position="listPosition"
     fallback-position="top-start"
+    position-reference=".m-input-wrapper"
     @close="onCloseList"
     @open="onOpenList"
   >
