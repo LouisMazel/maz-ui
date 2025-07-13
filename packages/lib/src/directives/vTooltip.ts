@@ -1,6 +1,6 @@
 import type { DirectiveBinding, ObjectDirective, Plugin } from 'vue'
 import type { MazPopoverPosition, MazPopoverProps, MazPopoverTrigger } from '../components/MazPopover.vue'
-import { h } from 'vue'
+import { h, nextTick, ref, watch } from 'vue'
 import MazPopover from '../components/MazPopover.vue'
 import { useMountComponent } from '../composables/useMountComponent'
 
@@ -15,13 +15,13 @@ interface VTooltipOptions extends Partial<Omit<MazPopoverProps, 'modelValue'>> {
   html?: string
   /**
    * Color variant of the tooltip
-   * @default default
+   * @default contrast
    */
   color?: MazPopoverProps['color']
   /**
    * Position of the tooltip
    * The preferred position is set to 'top' if no position is provided
-   * @default undefined
+   * @default top
    */
   position?: MazPopoverPosition
   /**
@@ -39,7 +39,6 @@ interface VTooltipOptions extends Partial<Omit<MazPopoverProps, 'modelValue'>> {
    * @default false
    */
   closeOnEscape?: boolean
-
   /**
    * Open the tooltip
    * @default false
@@ -47,17 +46,15 @@ interface VTooltipOptions extends Partial<Omit<MazPopoverProps, 'modelValue'>> {
   open?: boolean
 }
 
-type VTooltipBindingValue
-  = | string
-    | VTooltipOptions
+type VTooltipBindingValue = string | VTooltipOptions
 
 export type TooltipBinding = DirectiveBinding<VTooltipBindingValue, NonNullable<MazPopoverProps['position']>>
 
-// Store pour garder les instances par élément
+// Store instances by element
 const tooltipInstances = new WeakMap<HTMLElement, {
   destroy: () => void
-  popoverWrapper: HTMLElement
-  cleanup: (shouldRestore?: boolean) => void
+  updateProps: (props: VTooltipOptions) => void
+  isOpen: ReturnType<typeof ref<boolean>>
 }>()
 
 class TooltipHandler {
@@ -66,8 +63,7 @@ class TooltipHandler {
   constructor(options: Partial<VTooltipOptions> = {}) {
     this.defaultProps = {
       open: false,
-      positionDelay: 0,
-      preferPosition: 'top',
+      position: 'top',
       trigger: 'hover',
       role: 'tooltip',
       closeOnClickOutside: false,
@@ -77,7 +73,7 @@ class TooltipHandler {
     }
   }
 
-  private getPopoverProps(binding: TooltipBinding) {
+  private getTooltipProps(binding: TooltipBinding): VTooltipOptions {
     const baseOptions = { ...this.defaultProps }
 
     if (typeof binding.value === 'string') {
@@ -85,43 +81,39 @@ class TooltipHandler {
         ...baseOptions,
         text: binding.value,
         position: this.getPositionFromModifiers(binding) || baseOptions.position as MazPopoverPosition,
-      } satisfies VTooltipOptions
+      }
     }
 
     return {
       ...baseOptions,
       ...binding.value,
       position: this.getPositionFromModifiers(binding) || binding.value.position || baseOptions.position as MazPopoverPosition,
-    } satisfies VTooltipOptions
+    }
   }
 
   private getPositionFromModifiers(binding: TooltipBinding): MazPopoverPosition | undefined {
-    if (binding.modifiers.top)
-      return 'top'
-    if (binding.modifiers.bottom)
-      return 'bottom'
-    if (binding.modifiers.left)
-      return 'left'
-    if (binding.modifiers.right)
-      return 'right'
-    if (binding.modifiers['top-start'])
-      return 'top-start'
-    if (binding.modifiers['top-end'])
-      return 'top-end'
-    if (binding.modifiers['bottom-start'])
-      return 'bottom-start'
-    if (binding.modifiers['bottom-end'])
-      return 'bottom-end'
-    if (binding.modifiers['left-start'])
-      return 'left-start'
-    if (binding.modifiers['left-end'])
-      return 'left-end'
-    if (binding.modifiers['right-start'])
-      return 'right-start'
-    if (binding.modifiers['right-end'])
-      return 'right-end'
-    if (binding.modifiers.auto)
-      return 'auto'
+    const modifiers = Object.keys(binding.modifiers)
+    const validPositions: MazPopoverPosition[] = [
+      'top',
+      'bottom',
+      'left',
+      'right',
+      'top-start',
+      'top-end',
+      'bottom-start',
+      'bottom-end',
+      'left-start',
+      'left-end',
+      'right-start',
+      'right-end',
+      'auto',
+    ]
+
+    for (const modifier of modifiers) {
+      if (validPositions.includes(modifier as MazPopoverPosition)) {
+        return modifier as MazPopoverPosition
+      }
+    }
 
     return undefined
   }
@@ -129,65 +121,163 @@ class TooltipHandler {
   mount(el: HTMLElement, binding: TooltipBinding) {
     this.unmount(el)
 
-    const props = this.getPopoverProps(binding)
+    const tooltipProps = this.getTooltipProps(binding)
 
-    if (!props.text && !props.html) {
+    if (!tooltipProps.text && !tooltipProps.html) {
       console.warn('[maz-ui](vTooltip) No text or html content provided')
       return
     }
 
-    const popoverWrapper = document.createElement('div')
-    popoverWrapper.classList.add('m-tooltip-wrapper')
-    popoverWrapper.style.display = 'inline-flex'
+    // Create reactive state for the tooltip
+    const isOpen = ref(!!tooltipProps.open)
 
-    if (el.parentNode) {
-      el.parentNode.replaceChild(popoverWrapper, el)
+    // Create container for the tooltip portal
+    const tooltipContainer = document.createElement('div')
+    document.body.appendChild(tooltipContainer)
+
+    let vNodeInstance: ReturnType<typeof useMountComponent> | null = null
+
+    const createTooltip = () => {
+      const popoverProps: MazPopoverProps = {
+        ...tooltipProps,
+        panelClass: [
+          'm-tooltip-panel',
+          'maz-text-sm',
+          'maz-whitespace-pre-wrap',
+          'maz-break-words',
+          'maz-p-2',
+          'maz-max-w-xs',
+          tooltipProps.panelClass,
+        ].filter(Boolean).join(' '),
+        modelValue: isOpen.value,
+        positionReference: el, // Use original element as reference
+      }
+
+      // Destroy previous instance
+      if (vNodeInstance) {
+        vNodeInstance.destroy()
+      }
+
+      // Create new instance
+      vNodeInstance = useMountComponent<typeof MazPopover, MazPopoverProps>(MazPopover, {
+        props: {
+          ...popoverProps,
+          'modelValue': isOpen.value,
+          'onUpdate:modelValue': (value: boolean) => {
+            isOpen.value = value
+          },
+        } as any,
+        children: {
+          // Use a dummy trigger since we control positioning via positionReference
+          // trigger: () => h('div', { style: 'display: none;' }),
+          default: () => {
+            if (tooltipProps.html) {
+              return h('div', { innerHTML: tooltipProps.html })
+            }
+            return tooltipProps.text || ''
+          },
+        },
+        element: tooltipContainer,
+      })
     }
 
-    const popoverProps = {
-      ...props,
-      panelClass: ['m-tooltip-panel', 'maz-text-sm', 'maz-whitespace-pre-wrap', 'maz-break-words', 'maz-p-2', 'maz-max-w-xs', props.panelClass].filter(Boolean).join(' '),
-      modelValue: props.open,
-    } satisfies MazPopoverProps
+    // Detect touch device for adaptive mode
+    function isTouchDevice() {
+      return 'ontouchstart' in window || navigator.maxTouchPoints > 0
+    }
 
-    const { destroy } = useMountComponent<typeof MazPopover, MazPopoverProps>(MazPopover, {
-      props: popoverProps,
-      children: {
-        trigger: () => h('div', {
-          ref: (triggerDiv) => {
-            if (triggerDiv && triggerDiv instanceof HTMLElement && !triggerDiv.contains(el)) {
-              triggerDiv.replaceWith(el)
-            }
-          },
-        }),
-        default: () => {
-          if (props.html) {
-            return h('div', { innerHTML: props.html })
-          }
-          return props.text || ''
-        },
-      },
-      element: popoverWrapper,
+    // Get effective trigger based on adaptive mode
+    function getEffectiveTrigger() {
+      if (tooltipProps.trigger === 'adaptive') {
+        return isTouchDevice() ? 'click' : 'hover'
+      }
+      return tooltipProps.trigger || 'hover'
+    }
+
+    // Store event handlers for cleanup
+    let mouseEnterHandler: (() => void) | null = null
+    let mouseLeaveHandler: (() => void) | null = null
+    let clickHandler: (() => void) | null = null
+
+    // Setup event listeners on original element
+    function setupTriggers() {
+      // Clean up existing listeners
+      cleanupTriggers()
+
+      const effectiveTrigger = getEffectiveTrigger()
+
+      if (effectiveTrigger === 'hover') {
+        mouseEnterHandler = () => {
+          isOpen.value = true
+        }
+        mouseLeaveHandler = () => {
+          isOpen.value = false
+        }
+        el.addEventListener('mouseenter', mouseEnterHandler)
+        el.addEventListener('mouseleave', mouseLeaveHandler)
+      }
+      else if (effectiveTrigger === 'click') {
+        clickHandler = () => {
+          isOpen.value = !isOpen.value
+        }
+        el.addEventListener('click', clickHandler)
+      }
+    }
+
+    // Clean up event listeners
+    function cleanupTriggers() {
+      if (mouseEnterHandler) {
+        el.removeEventListener('mouseenter', mouseEnterHandler)
+        mouseEnterHandler = null
+      }
+      if (mouseLeaveHandler) {
+        el.removeEventListener('mouseleave', mouseLeaveHandler)
+        mouseLeaveHandler = null
+      }
+      if (clickHandler) {
+        el.removeEventListener('click', clickHandler)
+        clickHandler = null
+      }
+    }
+
+    // Initialize
+    nextTick(() => {
+      createTooltip()
+      setupTriggers()
     })
 
-    function cleanup(shouldRestore = true) {
-      destroy()
+    watch(isOpen, () => {
+      createTooltip()
+    })
 
-      if (shouldRestore && popoverWrapper.parentNode) {
-        try {
-          popoverWrapper.parentNode.insertBefore(el, popoverWrapper)
-          popoverWrapper.parentNode.removeChild(popoverWrapper)
-        }
-        catch (error) {
-          console.warn('[maz-ui](vTooltip) Failed to restore original element:', error)
-        }
+    function destroy() {
+      cleanupTriggers()
+      if (vNodeInstance) {
+        vNodeInstance.destroy()
+        vNodeInstance = null
       }
+      if (tooltipContainer.parentNode) {
+        tooltipContainer.parentNode.removeChild(tooltipContainer)
+      }
+    }
+
+    function updateProps(newProps: VTooltipOptions) {
+      const oldTrigger = tooltipProps.trigger
+      Object.assign(tooltipProps, newProps)
+      isOpen.value = !!newProps.open
+
+      // If trigger changed, reconfigure event listeners
+      if (oldTrigger !== newProps.trigger) {
+        setupTriggers()
+      }
+
+      createTooltip()
     }
 
     tooltipInstances.set(el, {
       destroy,
-      popoverWrapper,
-      cleanup,
+      updateProps,
+      isOpen,
     })
   }
 
@@ -195,18 +285,19 @@ class TooltipHandler {
     const instance = tooltipInstances.get(el)
 
     if (instance) {
-      instance.cleanup(true)
-      tooltipInstances.delete(el)
+      const newProps = this.getTooltipProps(binding)
+      instance.updateProps(newProps)
     }
-
-    this.mount(el, binding)
+    else {
+      this.mount(el, binding)
+    }
   }
 
   unmount(el: HTMLElement) {
     const instance = tooltipInstances.get(el)
 
     if (instance) {
-      instance.cleanup(false)
+      instance.destroy()
       tooltipInstances.delete(el)
     }
   }
