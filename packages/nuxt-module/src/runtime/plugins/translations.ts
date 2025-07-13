@@ -1,10 +1,10 @@
 import { MazTranslations, type MazTranslationsInstance } from '@maz-ui/translations'
 import { defineNuxtPlugin } from 'nuxt/app'
 
-export default defineNuxtPlugin(async ({ vueApp, $config }) => {
+export default defineNuxtPlugin(({ vueApp, $config }) => {
   const translationsOptions = $config.public.mazUi?.translations
 
-  await MazTranslations.install(vueApp, translationsOptions)
+  vueApp.use(MazTranslations, translationsOptions)
 })
 
 declare module '#app' {
