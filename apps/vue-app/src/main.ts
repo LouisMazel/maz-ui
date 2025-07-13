@@ -1,3 +1,5 @@
+import { pristine } from '@maz-ui/themes/src/presets/pristine.js'
+
 import { AosPlugin } from 'maz-ui/src/plugins/aos.ts'
 import { DialogPlugin } from 'maz-ui/src/plugins/dialog.ts'
 import { MazUi } from 'maz-ui/src/plugins/maz-ui.ts'
@@ -14,34 +16,30 @@ import './assets/main.css'
 
 const app = createApp(App)
 
+app.use(router)
+
 app.use(MazUi, {
   theme: {
-    strategy: 'hybrid',
+    strategy: 'runtime',
     darkModeStrategy: 'class',
-    preset: 'ocean',
+    preset: pristine,
   },
   translations: {
-    locale: 'en',
-    fallbackLocale: 'it',
+    locale: 'de',
     preloadFallback: true,
+    fallbackLocale: 'it',
     messages: {
-      it: {
+      de: () => import('./locales/de').then(r => r.default),
+      it: () => import('./locales/it.json'),
+      en: {
         pagination: {
-          navAriaLabel: 'Paginazione',
-          screenReader: {
-            firstPage: 'Prima pagina',
-            previousPage: 'Pagina precedente',
-            page: 'Pagina {page}',
-            nextPage: 'Pagina successiva',
-            lastPage: 'Ultima pagina',
-          },
+          navAriaLabel: 'Test',
         },
       },
     },
   },
 })
 
-app.use(router)
 app.use(ToastPlugin)
 app.use(WaitPlugin)
 app.use(DialogPlugin)
