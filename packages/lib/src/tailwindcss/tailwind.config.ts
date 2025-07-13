@@ -9,7 +9,7 @@ import { zIndex } from './variables/z-indexes'
 
 export { getNumericScreensFromTailwind }
 
-export function defineMazTailwindConfig(config?: Partial<Config> & { content: Config['content'] }, utilities?: Record<string, any>) {
+export function defineMazTailwindConfig(config?: Partial<Config> & { content: Config['content'] }, { utilities }: { utilities?: Record<string, any> } = {}) {
   return {
     darkMode: ['class', '[class~="dark"]'],
     content: [],
