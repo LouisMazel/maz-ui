@@ -662,7 +662,6 @@ watch(
     :disabled
     :block
     :prefer-position="pickerPosition"
-    :position-delay="100"
     fallback-position="top-start"
   >
     <template #trigger="{ isOpen, close, open: openPicker, toggle: togglePicker }">
