@@ -6,6 +6,9 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "components.d.ts", "auto-imports.d.ts"],
-  "exclude": ["src/**/__tests__/*", "node_modules", "../../packages/lib"]
+  "include": ["env.d.ts", "src/**/*", "./components.d.ts", "./auto-imports.d.ts"],
+  "exclude": ["src/**/__tests__/*", "node_modules", "../../packages/lib"],
+  "vueCompilerOptions": {
+    "checkUnknownComponents": true
+  }
 }
