@@ -171,7 +171,17 @@ export function useTheme() {
   }
 
   if (!state.value) {
-    throw new Error('You must install the MazUi or MazUiTheme plugin before using useTheme composable')
+    console.error('[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin before using useTheme composable')
+
+    return {
+      currentPreset: ref({}),
+      colorMode: ref('light'),
+      isDark: computed(() => false),
+      strategy: computed(() => 'hybrid'),
+      updateTheme: () => Promise.resolve(),
+      setColorMode: () => {},
+      toggleDarkMode: () => {},
+    }
   }
 
   return {
