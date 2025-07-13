@@ -28,6 +28,21 @@ const DEFAULT_DISPLAY_NAMES_OPTIONS: Required<DisplayNamesOptions> = {
 
 const displayNamesCache = new Map<string, Intl.DisplayNames>()
 
+// Optional: Clear cache periodically to prevent memory leaks in long-running apps
+let cacheCleanupTimer: NodeJS.Timeout | null = null
+
+function scheduleCacheCleanup() {
+  if (cacheCleanupTimer)
+    clearTimeout(cacheCleanupTimer)
+
+  cacheCleanupTimer = setTimeout(() => {
+    if (displayNamesCache.size > 50) { // Arbitrary limit
+      displayNamesCache.clear()
+    }
+    cacheCleanupTimer = null
+  }, 5 * 60 * 1000) // 5 minutes
+}
+
 function isSameLanguageThanCode(language: string, code: string) {
   return !language || language?.toLocaleLowerCase() === code.toLocaleLowerCase()
 }
@@ -53,6 +68,7 @@ function getDisplayNamesInstance(
         type: options.type ?? DEFAULT_DISPLAY_NAMES_OPTIONS.type,
       })
       displayNamesCache.set(cacheKey, instance)
+      scheduleCacheCleanup()
     }
     catch (error) {
       console.warn(`[maz-ui] (useDisplayNames) Failed to create DisplayNames instance for locale ${locale}:`, error)
