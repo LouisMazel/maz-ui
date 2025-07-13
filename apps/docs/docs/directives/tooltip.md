@@ -7,31 +7,6 @@ description: vTooltip is a Vue 3 directive to display a text when the user hover
 
 {{ $frontmatter.description }}
 
-::: warning
-
-**Limitations**
-
-The `v-tooltip` directive is **not compatible with `v-if`**. This is because the directive transforms the original element into a [`MazPopover`](../components/maz-popover.md) component, which interferes with Vue's conditional rendering system.
-
-**❌ This won't work:**
-
-```vue
-<MazBtn v-if="isVisible" v-tooltip="'Hello'">
-  Button
-</MazBtn>
-```
-
-**✅ Use `v-show` instead:**
-
-```vue
-<MazBtn v-show="isVisible" v-tooltip="'Hello'">
-  Button
-</MazBtn>
-```
-
-This limitation occurs because the directive needs to replace the DOM element with a popover wrapper to provide tooltip functionality. When `v-if` becomes `false`, Vue loses track of the original element, preventing it from re-rendering when the condition becomes `true` again.
-
-:::
 
 ## Basic usage
 
@@ -163,6 +138,92 @@ import { vTooltip } from 'maz-ui/directives'
   </template>
 </ComponentDemo>
 
+## Position
+
+You can change the position of the tooltip by passing a `position` option or using the directive modifier (e.g. `v-tooltip.top`).
+
+<ComponentDemo>
+  <div
+    class="maz-flex maz-gap-3 maz-flex-wrap"
+  >
+    <MazBtn v-tooltip.bottom="{ text: 'Tooltip text' }">
+      Bottom
+    </MazBtn>
+    <MazBtn v-tooltip.left="{ text: 'Tooltip text' }">
+      Left
+    </MazBtn>
+    <MazBtn v-tooltip.right="{ text: 'Tooltip text' }">
+      Right
+    </MazBtn>
+    <MazBtn v-tooltip.top="{ text: 'Tooltip text' }">
+      Top
+    </MazBtn>
+    <MazBtn v-tooltip.top-start="{ text: 'Tooltip text' }">
+      Top start
+    </MazBtn>
+    <MazBtn v-tooltip.top-end="{ text: 'Tooltip text' }">
+      Top end
+    </MazBtn>
+    <MazBtn v-tooltip.bottom-start="{ text: 'Tooltip text' }">
+      Bottom start
+    </MazBtn>
+    <MazBtn v-tooltip.bottom-end="{ text: 'Tooltip text' }">
+      Bottom end
+    </MazBtn>
+    <MazBtn v-tooltip.left-start="{ text: 'Tooltip text' }">
+      Left start
+    </MazBtn>
+    <MazBtn v-tooltip.left-end="{ text: 'Tooltip text' }">
+      Left end
+    </MazBtn>
+    <MazBtn v-tooltip.right-start="{ text: 'Tooltip text' }">
+      Right start
+    </MazBtn>
+    <MazBtn v-tooltip.right-end="{ text: 'Tooltip text' }">
+      Right end
+    </MazBtn>
+  </div>
+
+<template #code>
+
+```html
+<MazBtn v-tooltip.bottom="{ text: 'Tooltip text' }">
+  Bottom
+</MazBtn>
+
+<MazBtn v-tooltip.left="{ text: 'Tooltip text' }">
+  Left
+</MazBtn>
+
+<MazBtn v-tooltip.right="{ text: 'Tooltip text' }">
+  Right
+</MazBtn>
+
+<MazBtn v-tooltip.top="{ text: 'Tooltip text' }">
+  Top
+</MazBtn>
+
+<MazBtn v-tooltip.top-start="{ text: 'Tooltip text' }">
+  Top start
+</MazBtn>
+
+<MazBtn v-tooltip.top-end="{ text: 'Tooltip text' }">
+  Top end
+</MazBtn>
+
+<MazBtn v-tooltip.bottom-start="{ text: 'Tooltip text' }">
+  Bottom start
+</MazBtn>
+
+<MazBtn v-tooltip.bottom-end="{ text: 'Tooltip text' }">
+  Bottom end
+</MazBtn>
+```
+
+  </template>
+</ComponentDemo>
+
+
 ## HTML content
 
 You can also use HTML content in the tooltip by passing a string to the `html` option.
@@ -195,7 +256,7 @@ You can customize the tooltip by passing a `panelClass` or `panelStyle` option.
   <div
     class="maz-flex maz-gap-3 maz-flex-wrap"
   >
-    <MazBtn v-tooltip="{ text: 'Tooltip text', panelClass: 'maz-text-red-500' }">
+    <MazBtn v-tooltip="{ text: 'Tooltip text', panelClass: 'maz-text-destructive' }">
       panelClass
     </MazBtn>
     <MazBtn v-tooltip="{ text: 'Tooltip text', panelStyle: 'background-color: red; color: white;' }">
@@ -221,6 +282,10 @@ You can customize the tooltip by passing a `panelClass` or `panelStyle` option.
 
 You can change the trigger mode of the tooltip by passing a `trigger` option.
 
+The default trigger is `hover`.
+
+The `adaptive` trigger will use the `click` trigger on touch devices (mobile and tablet) and the `hover` trigger on non-touch devices (desktop).
+
 <ComponentDemo>
   <div
     class="maz-flex maz-gap-3 maz-flex-wrap"
@@ -230,6 +295,9 @@ You can change the trigger mode of the tooltip by passing a `trigger` option.
     </MazBtn>
     <MazBtn v-tooltip="{ text: 'Tooltip text', trigger: 'hover' }">
       Hover
+    </MazBtn>
+    <MazBtn v-tooltip="{ text: 'Tooltip text', trigger: 'adaptive' }">
+      Adaptive
     </MazBtn>
   </div>
 
