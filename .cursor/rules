@@ -1,0 +1,47 @@
+# Contexte du projet
+
+Tu travailles sur un monorepo Vue.js/TypeScript avec les packages suivants :
+- maz-ui - packages/lib : Bibliotèque de composants, plugins, directives et resolvers pour Vue.js et Nuxt.js.
+- docs - apps/docs : Fait avec Vitepress publiée sur <https://maz-ui.com/>.
+- @maz-ui/themes - @maz-ui/themes : Thèmes pour Maz-UI.
+- @maz-ui/translations - packages/translations : Translations pour Maz-UI.
+- @maz-ui/nuxt - packages/module-nuxt : Module Nuxt pour Maz-UI.
+- @maz-ui/icons - packages/icons : Icons pour Vue.js et Nuxt.js.
+- @maz-ui/utils - packages/utils : Utilitaires node pour Node.js et JavaScript
+- @maz-ui/cli - packages/maz-cli : Outils de ligne de commande pour Maz-UI.
+
+# Standards de code
+
+- Utilise TypeScript strict
+- Préfère la composition API de Vue 3
+- Respecte les conventions de nommage PascalCase pour les composants
+
+# Bonnes pratiques spécifiques
+
+- Toujours typer les props et émissions
+- Utiliser des interfaces pour les objets complexes
+- Documenter les composants avec JSDoc
+
+# Interdictions
+
+- Pas de console.log en production
+- Pas de any en TypeScript
+
+# Linting
+
+- Respecte toujours la configuration ESLint et Prettier du projet.
+- Si tu génères du code, assure-toi qu'il passe les règles de linting.
+
+# Langue
+
+- Tu dois toujours écrire le code et les textes en anglais.
+- Pas de commentaires dans le code mise à part les JSDoc.
+
+# Tests
+
+- Pour les tests, utiliser Vitest, tout en anglais sans commentaire et utiliser la méthode gerkin (Given/When/Then).
+- Pas de conditionnel dans les textes des describes (pas de should, should not, etc.).
+
+# Documentation
+
+- Toujours utiliser la documentation officielle de Vue.js et Tailwind CSS.

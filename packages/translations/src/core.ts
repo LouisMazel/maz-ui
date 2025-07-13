@@ -2,22 +2,28 @@ import type { MazTranslationsInstance, MazTranslationsOptions, MazTranslationsSc
 import { ref } from 'vue'
 
 let globalInstance: MazTranslationsInstance | null = null
-const defaultLocaleLoaders: Record<string, () => Promise<{ default: MazTranslationsSchema }>> = {
-  'en': () => import('./locales/en'),
-  'fr': () => import('./locales/fr'),
-  'es': () => import('./locales/es'),
-  'de': () => import('./locales/de'),
-  'it': () => import('./locales/it'),
-  'pt': () => import('./locales/pt'),
-  'zh-CN': () => import('./locales/zh-CN'),
-  'ja': () => import('./locales/ja'),
-}
 
-function get(obj: any, path: string): any {
+// Load all default locales synchronously at build time
+const defaultLocalesFiles = import.meta.glob('./locales/*.ts', { eager: true }) as Record<string, { default: MazTranslationsSchema }>
+
+// Extract default messages by locale
+const defaultMessages: Record<string, MazTranslationsSchema> = {}
+for (const [path, module] of Object.entries(defaultLocalesFiles)) {
+  const locale = path.replace('./locales/', '').replace('.ts', '')
+  defaultMessages[locale] = module.default
+}
+// Set of loaded locales
+const loadedLocales = ref<Set<string>>(new Set())
+// Store of messages by locale
+const messagesRef = ref<Record<string, Partial<MazTranslationsSchema>>>({})
+// Store of messages provided by the user
+const userMessages = ref<Record<string, (() => Promise<Partial<MazTranslationsSchema>>) | Partial<MazTranslationsSchema>>>({})
+
+function getMessage(obj: any, path: string): any {
   return path.split('.').reduce((current, key) => current?.[key], obj)
 }
 
-function set(obj: any, path: string, value: any): void {
+function setMessage(obj: any, path: string, value: any): void {
   const keys = path.split('.')
   const lastKey = keys.pop()!
   const target = keys.reduce((current, key) => {
@@ -29,21 +35,21 @@ function set(obj: any, path: string, value: any): void {
   target[lastKey] = value
 }
 
-function isFlattened(obj: any): boolean {
+function isFlattenedObject(obj: any): boolean {
   if (!obj || typeof obj !== 'object')
     return false
   return Object.keys(obj).some(key => key.includes('.'))
 }
 
 function flattenToNested(flatObj: any): any {
-  if (!isFlattened(flatObj)) {
+  if (!isFlattenedObject(flatObj)) {
     return flatObj
   }
 
   const nested: any = {}
   for (const [key, value] of Object.entries(flatObj)) {
     if (key.includes('.')) {
-      set(nested, key, value)
+      setMessage(nested, key, value)
     }
     else {
       nested[key] = value
@@ -52,14 +58,14 @@ function flattenToNested(flatObj: any): any {
   return nested
 }
 
-function merge(target: any, source: any): any {
+function mergeMessages<T extends Partial<MazTranslationsSchema>>(target: T, source: T): T {
   const normalizedSource = flattenToNested(source)
   const normalizedTarget = flattenToNested(target)
 
   const result = { ...normalizedTarget }
   for (const key in normalizedSource) {
     if (normalizedSource[key] && typeof normalizedSource[key] === 'object') {
-      result[key] = merge(result[key] || {}, normalizedSource[key])
+      result[key] = mergeMessages(result[key] || {}, normalizedSource[key])
     }
     else {
       result[key] = normalizedSource[key]
@@ -68,7 +74,7 @@ function merge(target: any, source: any): any {
   return result
 }
 
-function interpolate(message: string, variables?: Record<string, any>): string {
+function interpolate(message: string, variables?: Record<string, unknown>): string {
   if (!variables)
     return message
 
@@ -77,7 +83,56 @@ function interpolate(message: string, variables?: Record<string, any>): string {
   })
 }
 
-export async function createMazTranslations(options: MazTranslationsOptions = {}) {
+function loadLocale(targetLocale: string, sync = false): Promise<void> | void {
+  if (loadedLocales.value.has(targetLocale)) {
+    return sync ? undefined : Promise.resolve()
+  }
+
+  try {
+    // Always get default messages synchronously (they're already loaded)
+    const localeDefaultMessages = defaultMessages[targetLocale] || {}
+    let localeUserMessages: Partial<MazTranslationsSchema> = {}
+
+    // Get user messages
+    const userLoader = userMessages.value[targetLocale]
+    if (userLoader) {
+      if (typeof userLoader === 'function') {
+        if (sync) {
+          // In sync mode, we can't wait for async user messages
+          console.warn(`User messages for locale "${targetLocale}" are async but sync loading requested`)
+        }
+        else {
+          // Async mode - load user messages
+          return userLoader().then((loadedUserMessages) => {
+            messagesRef.value[targetLocale] = mergeMessages(localeDefaultMessages, loadedUserMessages)
+            loadedLocales.value.add(targetLocale)
+          }).catch((error) => {
+            console.error(`Failed to load user translations for locale "${targetLocale}":`, error)
+            messagesRef.value[targetLocale] = localeDefaultMessages
+            loadedLocales.value.add(targetLocale)
+          })
+        }
+      }
+      else {
+        // User messages are already loaded
+        localeUserMessages = userLoader
+      }
+    }
+
+    // Merge and store messages
+    messagesRef.value[targetLocale] = mergeMessages(localeDefaultMessages, localeUserMessages)
+    loadedLocales.value.add(targetLocale)
+  }
+  catch (error) {
+    console.error(`Failed to load translations for locale "${targetLocale}":`, error)
+    messagesRef.value[targetLocale] = {}
+    loadedLocales.value.add(targetLocale)
+  }
+
+  return sync ? undefined : Promise.resolve()
+}
+
+export function createMazTranslations(options: MazTranslationsOptions = {}) {
   const {
     locale: initialLocale = 'en',
     fallbackLocale = 'en',
@@ -86,91 +141,46 @@ export async function createMazTranslations(options: MazTranslationsOptions = {}
   } = options
 
   const locale = ref(initialLocale)
-  const messagesRef = ref<Record<string, Partial<MazTranslationsSchema>>>({})
-  const loadedLocales = ref<Set<string>>(new Set())
-  const loadingPromises = ref<Map<string, Promise<void>>>(new Map())
 
-  const userMessageLoaders = ref<Record<string, (() => Promise<Partial<MazTranslationsSchema>>) | Partial<MazTranslationsSchema>>>({})
-
+  // Store user messages
   for (const [loc, msgs] of Object.entries(messages)) {
-    userMessageLoaders.value[loc] = typeof msgs === 'function' ? msgs : () => Promise.resolve(msgs)
+    userMessages.value[loc] = msgs
   }
 
-  function loadLocaleMessages(targetLocale: string) {
-    if (loadedLocales.value.has(targetLocale)) {
-      return
-    }
+  // Load initial locale synchronously
+  loadLocale(initialLocale, true)
 
-    if (loadingPromises.value.has(targetLocale)) {
-      return loadingPromises.value.get(targetLocale)!
-    }
-
-    const loadingPromise = (async () => {
-      try {
-        let defaultMessages: Partial<MazTranslationsSchema> = {}
-        let userMessages: Partial<MazTranslationsSchema> = {}
-
-        if (defaultLocaleLoaders[targetLocale]) {
-          const defaultModule = await defaultLocaleLoaders[targetLocale]()
-          defaultMessages = defaultModule.default
-        }
-
-        const userLoader = userMessageLoaders.value[targetLocale]
-        if (userLoader) {
-          if (typeof userLoader === 'function') {
-            userMessages = await userLoader()
-          }
-          else {
-            userMessages = userLoader
-          }
-        }
-
-        messagesRef.value[targetLocale] = merge(defaultMessages, userMessages)
-        loadedLocales.value.add(targetLocale)
-      }
-      catch (error) {
-        console.error(`Failed to load translations for locale "${targetLocale}":`, error)
-        messagesRef.value[targetLocale] = {}
-        loadedLocales.value.add(targetLocale)
-      }
-      finally {
-        loadingPromises.value.delete(targetLocale)
-      }
-    })()
-
-    loadingPromises.value.set(targetLocale, loadingPromise)
-    return loadingPromise
+  // Load fallback locale synchronously if preloadFallback is true
+  if (preloadFallback && fallbackLocale && fallbackLocale !== initialLocale) {
+    loadLocale(fallbackLocale, true)
   }
 
-  const localePromises: (Promise<void> | undefined)[] = []
+  const t = (key: TranslationKey, variables?: Record<string, unknown>) => {
+    let message = getMessage(messagesRef.value[locale.value], key)
 
-  localePromises.push(loadLocaleMessages(initialLocale))
-
-  if (preloadFallback && fallbackLocale !== initialLocale) {
-    localePromises.push(loadLocaleMessages(fallbackLocale))
-  }
-
-  await Promise.all(localePromises)
-
-  const t = (key: TranslationKey, variables?: Record<string, any>) => {
-    let message = get(messagesRef.value[locale.value], key)
-
-    if (!message && locale.value !== fallbackLocale) {
+    if (!message && fallbackLocale && locale.value !== fallbackLocale) {
       if (!loadedLocales.value.has(fallbackLocale)) {
-        loadLocaleMessages(fallbackLocale)?.catch(console.error)
-        console.warn(`Fallback locale "${fallbackLocale}" not loaded yet for key "${key}", loading...`)
+        if (preloadFallback) {
+          console.warn(`Fallback locale "${fallbackLocale}" should be preloaded but is missing for key "${key}"`)
+        }
+        else {
+          // Load fallback locale asynchronously only when needed
+          loadLocale(fallbackLocale)?.catch?.(console.error)
+          console.warn(`Fallback locale "${fallbackLocale}" not loaded yet for key "${key}", loading...`)
+        }
         return key
       }
-      message = get(messagesRef.value[fallbackLocale], key)
+      message = getMessage(messagesRef.value[fallbackLocale], key)
     }
 
     if (!message && fallbackLocale !== 'en' && locale.value !== 'en') {
       if (!loadedLocales.value.has('en')) {
-        loadLocaleMessages('en')?.catch(console.error)
+        // Load English as last resort fallback asynchronously
+        loadLocale('en')?.catch?.(console.error)
         console.warn(`English fallback not loaded yet for key "${key}", loading...`)
         return key
       }
-      message = get(messagesRef.value.en, key)
+      message = getMessage(messagesRef.value.en, key)
     }
 
     if (!message) {
@@ -183,17 +193,19 @@ export async function createMazTranslations(options: MazTranslationsOptions = {}
 
   const setLocale = async (newLocale: string) => {
     if (!loadedLocales.value.has(newLocale)) {
-      await loadLocaleMessages(newLocale)
+      await loadLocale(newLocale)
     }
     locale.value = newLocale
   }
 
-  return { locale, t, setLocale } satisfies MazTranslationsInstance
+  const instance = { locale, t, setLocale } satisfies MazTranslationsInstance
+
+  return instance
 }
 
-export async function useMazTranslations(): Promise<MazTranslationsInstance> {
+export function useMazTranslations(): MazTranslationsInstance {
   if (!globalInstance) {
-    globalInstance = await createMazTranslations()
+    globalInstance = createMazTranslations()
   }
   return globalInstance
 }
