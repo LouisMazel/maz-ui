@@ -102,7 +102,6 @@ const defaults: Required<MazUiNuxtOptions> = {
     preset: 'maz-ui',
     strategy: 'hybrid',
     darkModeStrategy: 'class',
-    prefix: 'maz',
     colorMode: 'auto',
   },
   translations: {
