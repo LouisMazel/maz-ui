@@ -43,4 +43,19 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        format: 'es',
+        compact: true,
+        chunkFileNames: 'chunks/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash][extname]',
+        exports: 'named',
+        minifyInternalExports: true,
+        preserveModules: false,
+        interop: 'auto',
+        generatedCode: 'es2015',
+      },
+    },
+  },
 })
