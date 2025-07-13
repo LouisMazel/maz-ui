@@ -3,8 +3,8 @@ import type { MazTranslationsInstance, MazTranslationsOptions } from './types'
 import { createMazTranslations, setGlobalMazTranslations } from './core'
 
 export const MazTranslations = {
-  async install(app: App, options: MazTranslationsOptions = {}) {
-    const i18n = await createMazTranslations(options)
+  install(app: App, options: MazTranslationsOptions = {}) {
+    const i18n = createMazTranslations(options)
     setGlobalMazTranslations(i18n)
 
     // Injection globale
@@ -13,7 +13,7 @@ export const MazTranslations = {
 
     return i18n
   },
-} satisfies Plugin<MazTranslationsOptions>
+} satisfies Plugin<[MazTranslationsOptions?]>
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
