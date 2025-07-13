@@ -5,7 +5,7 @@ export function useTranslations(): MazTranslationsInstance {
   const injected = inject<MazTranslationsInstance>('mazTranslations')
 
   if (!injected) {
-    throw new Error('MazTranslations plugin or MazUi plugin not installed. Please install the plugin first.')
+    throw new Error('[@maz-ui/translations] You must install the MazUi or MazTranslations plugin before using useTranslations composable')
   }
 
   return injected
