@@ -1,3 +1,3 @@
 export function isServer() {
-  return typeof document === 'undefined' || typeof window === 'undefined'
+  return typeof document === 'undefined' || typeof globalThis.window === 'undefined'
 }

@@ -15,7 +15,7 @@ export function getColorMode(colorMode?: ColorMode): ColorMode {
 }
 
 export function getSystemPrefersDark() {
-  const isDark = typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const isDark = typeof globalThis.window !== 'undefined' && typeof globalThis.matchMedia === 'function' && globalThis.matchMedia('(prefers-color-scheme: dark)').matches
 
   return isDark ? 'dark' : 'light'
 }
