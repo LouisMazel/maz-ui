@@ -52,7 +52,6 @@ jobs:
           VERSION=$(jq -r '.version' lerna.json)
           git add .
           git commit -m "chore: bump version to $VERSION"
-          git push origin develop
 
       - name: Create and push git tag
         run: |
@@ -65,3 +64,10 @@ jobs:
           pnpm lerna:publish:beta
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to GitHub Release
+        run: |
+          pnpm publish:github:release
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
