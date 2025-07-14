@@ -238,8 +238,8 @@ function getPositionsOfClikedElement(offset = props.offset ?? 0) {
   const width = currentClickedElement.value.clientWidth || 1
   const height = currentClickedElement.value.clientHeight || 1
 
-  const windowWidth = globalThis.innerWidth
-  const windowHeight = globalThis.innerHeight
+  const windowWidth = window.innerWidth
+  const windowHeight = window.innerHeight
 
   const scale = Math.min(
     (windowWidth - 2 * offset) / width,
@@ -368,14 +368,14 @@ function onResizeWindow() {
 onMounted(() => {
   showLoader.value = true
   document.addEventListener('keydown', keydownLister)
-  globalThis.addEventListener('resize', onResizeWindow)
+  window.addEventListener('resize', onResizeWindow)
   addClassToDocument()
   hasMultipleInstances.value = getAllInstances().length > 1
 })
 
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', keydownLister)
-  globalThis.removeEventListener('resize', onResizeWindow)
+  window.removeEventListener('resize', onResizeWindow)
   removeClassFromDocument()
 })
 </script>

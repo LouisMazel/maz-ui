@@ -337,9 +337,9 @@ function updatePosition() {
 
   isUpdatingPosition = true
 
-  const viewport = { width: globalThis.innerWidth, height: globalThis.innerHeight }
-  const scrollTop = globalThis.scrollY || document.documentElement.scrollTop
-  const scrollLeft = globalThis.scrollX || document.documentElement.scrollLeft
+  const viewport = { width: window.innerWidth, height: window.innerHeight }
+  const scrollTop = window.scrollY || document.documentElement.scrollTop
+  const scrollLeft = window.scrollX || document.documentElement.scrollLeft
 
   let newPosition: Omit<MazPopoverPosition, 'auto'> | undefined
 
