@@ -1,10 +1,11 @@
 import { createRequire } from 'node:module'
-import chalk from 'chalk'
+import { logger } from '@maz-ui/utils/src/utils/logger.ts'
 
+import chalk from 'chalk'
+import { blueBright, bold } from 'colorette'
 import { Command } from 'commander'
 import { createFilesCommand } from './commands/create-files'
 import { generateComponentsDocumentationCommand } from './commands/generate-components-docs'
-import { logger } from './utils/logger'
 import { clearAndPrintBanner } from './utils/print-banner'
 
 const name = 'cli'
@@ -34,11 +35,9 @@ program.option('-s, --silent', 'Disable CLI banner log', false)
 
 program.on('--help', () => {
   logger.eot()
-  console.log(
-    `  Run ${chalk.bold.hex('#1e90ff')(
-      `${name} <command> --help`,
-    )} for detailed usage of given command.`,
-  )
+  const info = bold(blueBright(`${name} <command> --help`))
+  logger.log(`  Run ${info} for detailed usage of given command`)
+
   logger.eot()
 })
 

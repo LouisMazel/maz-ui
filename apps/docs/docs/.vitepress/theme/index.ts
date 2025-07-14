@@ -1,7 +1,5 @@
-/* eslint-disable ts/ban-ts-comment */
 import type { Theme } from 'vitepress'
 
-// @ts-ignore
 import * as components from 'maz-ui/src/components/index.js'
 
 import { AosPlugin } from 'maz-ui/src/plugins/aos.js'
@@ -9,11 +7,10 @@ import { DialogPlugin } from 'maz-ui/src/plugins/dialog.js'
 import { MazUi } from 'maz-ui/src/plugins/maz-ui.js'
 import { ToastPlugin } from 'maz-ui/src/plugins/toast.js'
 import { WaitPlugin } from 'maz-ui/src/plugins/wait.js'
-
 import { inBrowser } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
-
 import { type Component, watch } from 'vue'
+
 import ComponentDemo from './components/ComponentDemo.vue'
 
 import Layout from './components/Layout.vue'

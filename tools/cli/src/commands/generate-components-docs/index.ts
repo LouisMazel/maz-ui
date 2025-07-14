@@ -1,7 +1,7 @@
 import { exit } from 'node:process'
+import { execPromise } from '@maz-ui/utils/src/utils/execPromise.ts'
+import { logger } from '@maz-ui/utils/src/utils/logger.ts'
 import { Command } from 'commander'
-import { execPromise } from '../../utils/execPromise'
-import { logger } from '../../utils/logger'
 
 export function generateComponentsDocumentationCommand(): Command {
   const createFiles = new Command('generate-components-docs')
