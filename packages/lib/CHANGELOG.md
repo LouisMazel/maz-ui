@@ -1,5 +1,27 @@
 # Change Log
 
+## v4.0.0-beta.5...v4.0.0-beta.6
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.5...v4.0.0-beta.6)
+
+### 🚀 Features
+
+- **maz-ui:** UseFormValidator, useFormField - Type improvements and performance optimizations ([f0ef47ebe](https://github.com/LouisMazel/maz-ui/commit/f0ef47ebe))
+- **maz-ui:** MazBtn, MazCheckbox, MazInput, MazRadio, MazSwitch - improve UX when focused and disable style apply within fieldset disable ([be6a80cc0](https://github.com/LouisMazel/maz-ui/commit/be6a80cc0))
+- **maz-ui:** UseDisplayNames - improve cache to avoid memory leaks ([488f05d42](https://github.com/LouisMazel/maz-ui/commit/488f05d42))
+- **maz-ui:** MazPopover - improve popover position placement and animations ([69853d82e](https://github.com/LouisMazel/maz-ui/commit/69853d82e))
+- **maz-ui:** Add vite/client types into tsconfig ([5e729c42b](https://github.com/LouisMazel/maz-ui/commit/5e729c42b))
+
+### 🔥 Performance
+
+- **maz-ui:** Toast uses passive event to improve perf ([c8420c152](https://github.com/LouisMazel/maz-ui/commit/c8420c152))
+- **maz-ui:** VTooltip - use element reference and do not recreate tooltip on update ([602cbe2a8](https://github.com/LouisMazel/maz-ui/commit/602cbe2a8))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
