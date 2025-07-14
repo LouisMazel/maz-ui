@@ -523,7 +523,7 @@ const rowsFiltered = computed<T[]>(() => {
 
 const slots = useSlots()
 
-const hasHeader = computed<boolean>(() => props.search || !!props.title || !!slots.title)
+const hasHeader = computed<boolean>((): boolean => props.search || !!props.title || !!slots.title)
 const hasFooter = computed<boolean>(() => props.pagination)
 
 function getNormalizedHeaders(): MazTableHeadersNormalized[] {

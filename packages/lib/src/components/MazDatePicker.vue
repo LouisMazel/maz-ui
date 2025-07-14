@@ -5,8 +5,7 @@ import type { DateTimeFormatOptions } from './MazDatePicker/utils'
 import type { MazInputProps } from './MazInput.vue'
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor } from './types'
-import { MazCalendar, MazClock } from '@maz-ui/icons'
-import MazChevronDownIcon from '@maz-ui/icons/svg/chevron-down.svg'
+import { MazCalendar, MazChevronDown, MazClock } from '@maz-ui/icons'
 import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
 import { formatDate } from '@maz-ui/utils/src/formatters/formatDate.js'
 
@@ -693,7 +692,7 @@ watch(
             <MazClock v-else-if="hasTime" class="maz-text-xl" />
           </template>
           <template #right-icon>
-            <MazChevronDownIcon class="m-date-picker__button__chevron maz-text-lg" />
+            <MazChevronDown class="m-date-picker__button__chevron maz-text-lg" />
           </template>
         </MazInput>
       </slot>

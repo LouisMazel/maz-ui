@@ -9,8 +9,7 @@
       "cache": true
     },
     "typecheck": {
-      "cache": true,
-      "dependsOn": ["^build"]
+      "cache": true
     },
     "test:unit": {
       "cache": true,

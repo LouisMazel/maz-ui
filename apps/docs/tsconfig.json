@@ -4,22 +4,18 @@
     "jsx": "preserve",
     "lib": [
       "ESNext",
-      "DOM"
+      "DOM",
+      "DOM.Iterable"
     ],
-    "module": "esnext",
-    "types": ["node"],
-    "strict": true,
-    "noUnusedLocals": true
+    "types": ["node", "vite-svg-loader", "vite/client"]
   },
-  "references": [
-    { "path": "../../packages/lib" }
-  ],
   "include": [
     "docs/.vitepress/**/*",
     "types"
   ],
   "exclude": [
     "**/node_modules/**",
-    "**/dist/**"
+    "**/dist/**",
+    "../../packages/lib/**/*"
   ]
 }

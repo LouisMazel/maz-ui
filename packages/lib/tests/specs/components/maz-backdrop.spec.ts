@@ -1,5 +1,5 @@
 import MazBackdrop from '@components/MazBackdrop.vue'
-import { sleep } from '@maz-ui/utils'
+import { sleep } from '@maz-ui/utils/src/utils/sleep.js'
 import { mount } from '@vue/test-utils'
 
 describe('mazBackdrop', () => {

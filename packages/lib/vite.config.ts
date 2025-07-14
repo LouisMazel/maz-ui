@@ -33,6 +33,8 @@ const external = [
   'dayjs/plugin/customParseFormat',
   'dayjs/plugin/weekday',
   'dayjs/plugin/isBetween',
+  'node:child_process',
+  'colorette',
 ]
 
 const moduleEntries = Object.fromEntries(

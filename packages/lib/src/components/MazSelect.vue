@@ -651,7 +651,7 @@ defineExpose({
         @blur="emits('blur', $event)"
         @keydown="mainInputKeyboardHandler"
       >
-        <template v-if="$slots.leftIcon" #left-icon>
+        <template v-if="$slots['left-icon']" #left-icon>
           <slot name="left-icon" />
         </template>
 

@@ -1,7 +1,6 @@
 import type { Plugin } from 'vite'
 
-import { execPromise } from './utils/execPromise'
-import { logger } from './utils/logger'
+import { execPromise, logger } from '@maz-ui/utils/src/utils/index.js'
 
 export function ViteBuildMazCli(): Plugin {
   return {
