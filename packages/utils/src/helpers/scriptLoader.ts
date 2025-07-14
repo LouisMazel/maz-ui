@@ -47,8 +47,8 @@ export class ScriptLoader {
     }
   }
 
-  public load() {
-    const windowInstance = globalThis as IWindow
+  public load(): Promise<Event | undefined> {
+    const windowInstance = globalThis as unknown as IWindow
 
     const scriptTags = document.head.querySelectorAll(`[data-identifier="${this.identifier}"]`)
 
@@ -66,8 +66,8 @@ export class ScriptLoader {
     return this.injectScript()
   }
 
-  private injectScript() {
-    const windowInstance = globalThis as IWindow
+  private injectScript(): Promise<Event | undefined> {
+    const windowInstance = globalThis as unknown as IWindow
 
     return new Promise((resolve, reject) => {
       try {

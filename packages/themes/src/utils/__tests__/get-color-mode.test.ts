@@ -15,9 +15,16 @@ describe('get-color-mode', () => {
       vi.stubGlobal('document', {
         cookie: '',
       })
-      vi.stubGlobal('window', {
-        matchMedia: vi.fn(),
-      })
+      vi.stubGlobal('matchMedia', vi.fn(() => ({
+        matches: false,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        media: '(prefers-color-scheme: dark)',
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })))
     })
 
     afterEach(() => {
@@ -124,9 +131,7 @@ describe('get-color-mode', () => {
 
   describe('given getSystemPrefersDark function', () => {
     beforeEach(() => {
-      vi.stubGlobal('window', {
-        matchMedia: vi.fn(),
-      })
+      vi.stubGlobal('matchMedia', vi.fn())
     })
 
     afterEach(() => {
