@@ -74,6 +74,8 @@ async function getComponentName(initialValue?: string): Promise<string> {
     validate(value) {
       if (value.length === 0)
         return 'Value is required!'
+
+      return undefined
     },
   })
 

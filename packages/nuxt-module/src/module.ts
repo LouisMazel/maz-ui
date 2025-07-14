@@ -5,7 +5,7 @@ import { addComponent, addImports, addPlugin, createResolver, defineNuxtModule }
 import { defu } from 'defu'
 import { capitalize } from 'maz-ui'
 
-type MazUiComposables = keyof typeof import('maz-ui/src/composables/index.js')
+type MazUiComposables = keyof typeof import('maz-ui/composables')
 
 type Composables = Omit<
   Record<MazUiComposables | 'useTheme' | 'useTranslations', true>,
@@ -26,7 +26,7 @@ declare module '@nuxt/schema' {
   }
 }
 
-type ComponentNames = keyof typeof import('maz-ui/src/components/index.js')
+type ComponentNames = keyof typeof import('maz-ui/components')
 
 const COMPONENT_NAMES: Omit<Record<ComponentNames, true>, 'useMazDialogPromise'> = {
   MazAccordion: true,

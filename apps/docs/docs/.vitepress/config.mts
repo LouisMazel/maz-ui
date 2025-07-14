@@ -96,6 +96,11 @@ export default defineConfig({
   },
 
   vite: {
+    build: {
+      rollupOptions: {
+        external: ['node:child_process', 'colorette'],
+      },
+    },
     plugins: [
       svgLoader(),
       {

@@ -28,6 +28,9 @@ const composablesMap: Record<Composables, true> = {
 
 const modulesMap: Record<Modules, true> = {
   capitalize: true,
+  execPromise: true,
+  getErrorMessage: true,
+  logger: true,
   checkAvailability: true,
   countryCodeToUnicodeFlag: true,
   formatCurrency: true,
