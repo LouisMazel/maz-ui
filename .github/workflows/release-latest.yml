@@ -23,20 +23,10 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.RELEASE_TOKEN }}
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
+      - name: Setup Node.js, pnpm and Nx cache
+        uses: ./.github/actions/setup
         with:
-          version: latest
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
           registry-url: 'https://registry.npmjs.org'
-
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
 
       - name: Build Packages
         run: pnpm build:packages
