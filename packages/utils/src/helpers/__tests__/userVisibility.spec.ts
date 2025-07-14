@@ -75,11 +75,13 @@ describe('user-visibility.ts', () => {
 
     describe('when instance has immediate option to "true"', () => {
       it('then instance have called callback', () => {
-        // eslint-disable-next-line sonarjs/no-unused-vars
+        /* eslint-disable sonarjs/no-unused-vars */
+        // @ts-expect-error
         const _newInstance = new UserVisibility(callback, {
           ...options,
           immediate: true,
         })
+        /* eslint-enable sonarjs/no-unused-vars */
         expect(callback).toHaveBeenCalledWith({ isVisible: true })
       })
     })
@@ -88,11 +90,13 @@ describe('user-visibility.ts', () => {
       it('then instance have called callback and is destroy', async () => {
         documentEmitVisibilityState('hidden')
 
-        // eslint-disable-next-line sonarjs/no-unused-vars
+        /* eslint-disable sonarjs/no-unused-vars */
+        // @ts-expect-error
         const _newInstance = new UserVisibility(callback, {
           ...options,
           once: true,
         })
+        /* eslint-enable sonarjs/no-unused-vars */
         await sleep(DEFAULT_TIMEOUT)
         expect(callback).toHaveBeenCalledWith({ isVisible: false })
       })
