@@ -64,11 +64,11 @@ describe('given scrollToError function', () => {
   describe('when called with a selector for a non-existing element', () => {
     it('then it not scrolls', () => {
       globalThis.document.querySelector = vi.fn().mockReturnValue(null)
-      globalThis.window.scrollTo = vi.fn()
+      window.scrollTo = vi.fn()
 
       scrollToError('.non-existent')
 
-      expect(globalThis.window.scrollTo).not.toHaveBeenCalled()
+      expect(window.scrollTo).not.toHaveBeenCalled()
     })
   })
 })
