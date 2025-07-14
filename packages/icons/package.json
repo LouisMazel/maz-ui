@@ -81,6 +81,7 @@
     }
   },
   "devDependencies": {
+    "@maz-ui/utils": "workspace:*",
     "@vitejs/plugin-vue": "^5.2.4",
     "unbuild": "^3.5.0",
     "unplugin-vue-components": "^28.7.0",

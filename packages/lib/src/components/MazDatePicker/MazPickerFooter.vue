@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { MazColor } from '../types'
 
-import MazCheckIcon from '@maz-ui/icons/svg/check.svg'
+import { MazCheck } from '@maz-ui/icons'
 import MazBtn from '../MazBtn.vue'
 
 defineProps<{
@@ -14,7 +14,7 @@ defineEmits(['close'])
 <template>
   <div class="maz-picker-footer">
     <MazBtn size="xs" :color type="button" @click.stop="$emit('close')">
-      <MazCheckIcon class="icon maz-text-lg" />
+      <MazCheck class="icon maz-text-lg" />
     </MazBtn>
   </div>
 </template>

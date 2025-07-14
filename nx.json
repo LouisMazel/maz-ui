@@ -3,8 +3,15 @@
   "targetDefaults": {
     "build": {
       "cache": true,
-      "dependsOn": ["^build", "^typecheck"],
-      "outputs": ["{projectRoot}/dist", "{projectRoot}/lib", "{projectRoot}/types"]
+      "dependsOn": [
+        "^build",
+        "^typecheck"
+      ],
+      "outputs": [
+        "{projectRoot}/dist",
+        "{projectRoot}/lib",
+        "{projectRoot}/types"
+      ]
     },
     "lint": {
       "cache": true,
@@ -12,12 +19,16 @@
     },
     "typecheck": {
       "cache": true,
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "outputs": []
     },
     "test:unit": {
       "cache": true,
-      "outputs": ["{projectRoot}/coverage"]
+      "outputs": [
+        "{projectRoot}/coverage"
+      ]
     }
   },
   "parallel": 4,

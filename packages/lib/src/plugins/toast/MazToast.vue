@@ -305,14 +305,14 @@ onMounted(() => {
 
         <div class="m-toast__message" v-text="html ? undefined : message" v-html="html ? message : undefined" />
 
-        <template v-for="(_button, index) in internalButtons" :key="index">
-          <MazBtn
-            v-bind="_button"
-            :loading="isActionLoading || _button.loading"
-            :right-icon="getButtonRightIcon(_button)"
-            @click.stop="onButtonClick(_button, $event)"
-          />
-        </template>
+        <MazBtn
+          v-for="(toastButton, index) in internalButtons"
+          :key="index"
+          v-bind="toastButton"
+          :loading="isActionLoading || toastButton.loading"
+          :right-icon="getButtonRightIcon(toastButton)"
+          @click.stop="onButtonClick(toastButton, $event)"
+        />
 
         <div
           v-if="typeof timeout === 'number' && timeout > 0 && !persistent"

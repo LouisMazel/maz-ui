@@ -27,7 +27,7 @@ const instanceId = useInstanceUniqId({
 const slots = useSlots()
 
 const stepCount = computed<number>(
-  () => Object.keys(slots).filter(slot => slot.startsWith('title-')).length,
+  (): number => Object.keys(slots).filter(slot => slot.startsWith('title-')).length,
 )
 
 const localModelValue = ref(props.modelValue)

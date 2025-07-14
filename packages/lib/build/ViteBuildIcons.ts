@@ -2,8 +2,7 @@ import type { Plugin } from 'vite'
 
 import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { execPromise } from './utils/execPromise'
-import { logger } from './utils/logger'
+import { execPromise, logger } from '@maz-ui/utils/src/utils/index.js'
 
 async function buildIcons() {
   try {
