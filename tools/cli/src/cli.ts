@@ -1,7 +1,6 @@
 import { createRequire } from 'node:module'
 import { logger } from '@maz-ui/utils/src/utils/logger.ts'
 
-import chalk from 'chalk'
 import { blueBright, bold } from 'colorette'
 import { Command } from 'commander'
 import { createFilesCommand } from './commands/create-files'
@@ -24,7 +23,7 @@ program.version(`${name} ${version}`).usage('<command> [options]')
 
 program.arguments('[command]').action((cmd) => {
   if (cmd) {
-    logger.error(`⛔️ Unknown command ${chalk.bold.hex('#1e90ff')(cmd)}.`)
+    logger.error(`⛔️ Unknown command ${cmd}.`)
     logger.eot()
   }
 
