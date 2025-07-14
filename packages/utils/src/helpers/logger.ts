@@ -9,7 +9,7 @@ export const logger = {
   eot: () => log(),
   brand: (message: string) => log(blueBright(message)),
   log: (...message: unknown[]) => log(...message),
-  success: (message: string) => log(green(message)),
+  success: (...message: string[]) => log(...message.map(m => green(m))),
   error: (message: string, error?: unknown) => {
     const errorMessage = error ? getErrorMessage(error) : ''
     log(red(message), errorMessage ? red(errorMessage) : '')

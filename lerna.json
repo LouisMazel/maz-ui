@@ -8,13 +8,14 @@
       "allowBranch": ["master", "develop", "release/*", "fix/*"],
       "conventionalCommits": true,
       "conventionalPrerelease": true,
-      "createRelease": "github",
+      "createRelease": false,
       "message": "chore(release): version packages %v",
       "tagVersionPrefix": "v",
-      "push": true,
+      "push": false,
       "exact": true,
       "yes": true,
-      "changelog": true
+      "gitTagVersion": true,
+      "changelog": false
     },
     "publish": {
       "conventionalCommits": true,
