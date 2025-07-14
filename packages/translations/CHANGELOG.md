@@ -1,5 +1,12 @@
 # Change Log
 
+## v4.0.0-beta.5...v4.0.0-beta.6
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.5...v4.0.0-beta.6)
+
+**Note:** Version bump only to follow ecosystem versioning
+
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
