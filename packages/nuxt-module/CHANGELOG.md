@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.0.0-beta.5...v4.0.0-beta.6
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.5...v4.0.0-beta.6)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Do not load translation plugin asynchronously ([65d2fdef0](https://github.com/LouisMazel/maz-ui/commit/65d2fdef0))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,17 +19,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @maz-ui/nuxt
 
-
-
-
-
 # [4.0.0-beta.4](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2025-07-10)
 
 **Note:** Version bump only for package @maz-ui/nuxt
-
-
-
-
 
 # Change Log
 
