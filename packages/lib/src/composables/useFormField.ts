@@ -148,6 +148,7 @@ export function useFormField<
 
     const handleInteractiveElements = (element: HTMLElement) => {
       interactiveElements = findInteractiveElements(element)
+
       addEventToInteractiveElements({
         interactiveElements,
         onBlur,

@@ -1,14 +1,14 @@
 import type { VueWrapper } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
-import MazSelect from '@components/MazSelect.vue'
+import MazSelect, { type MazSelectProps } from '@components/MazSelect.vue'
 import { mount } from '@vue/test-utils'
 
 describe('components/MazSelect.vue', () => {
   expect(MazSelect).toBeTruthy()
 
-  let wrapper: VueWrapper<ComponentPublicInstance & { [key: string]: any }>
+  let wrapper: VueWrapper<ComponentPublicInstance<typeof MazSelect> & { [key: string]: any }>
 
-  const options = [
+  const options: MazSelectProps['options'] = [
     { label: 'Test 1', value: 1 },
     { label: 'Test 2', value: 2 },
     { label: 'Test 3', value: 3 },
@@ -23,8 +23,18 @@ describe('components/MazSelect.vue', () => {
         modelValue: 1,
         options,
         search: true,
+        listPosition: 'bottom-start',
+      },
+      global: {
+        stubs: {
+          teleport: true, // Ceci désactive tous les teleports
+        },
       },
     })
+  })
+
+  afterEach(() => {
+    wrapper.unmount()
   })
 
   it('should have the model value', () => {
@@ -32,7 +42,8 @@ describe('components/MazSelect.vue', () => {
   })
 
   it('should have an uniq id', () => {
-    expect(wrapper.vm.instanceId).toBe('MazSelect-v-1')
+    const input = wrapper.findComponent({ name: 'MazInput' })
+    expect(input.props('id')).toBe('MazSelect-v-1')
   })
 
   it('should find the options on search', () => {
@@ -53,7 +64,7 @@ describe('components/MazSelect.vue', () => {
       options: [{ label: 'Label', value: '1' }],
     })
 
-    expect(wrapper.vm.mazInputValue).toBe('Label')
+    expect(wrapper.vm.inputValue).toBe('Label')
   })
 
   it('should update modelValue and close list', async () => {
@@ -64,38 +75,35 @@ describe('components/MazSelect.vue', () => {
   })
 
   it('should open the list', async () => {
-    const scrollIntoView = vi.fn()
-    window.HTMLElement.prototype.scrollIntoView = scrollIntoView
     const input = wrapper.find('input')
-    await input.trigger('focus')
-    expect(scrollIntoView).toHaveBeenCalled()
+    await input.trigger('click')
+    expect(wrapper.vm.isOpen).toBe(true)
   })
 
-  it('opens and closes the options list when the input is focused or blurred', () => {
+  it('opens and closes the options list when the input is focused or blurred', async () => {
     // The options list should be closed by default
-    expect(wrapper.vm.hasListOpened).toBe(false)
+    expect(wrapper.vm.isOpen).toBe(false)
 
-    // Focusing the input should open the options list
-    wrapper.find('input').trigger('focus')
-    expect(wrapper.vm.hasListOpened).toBe(true)
+    await wrapper.find('input').trigger('click')
+    expect(wrapper.vm.isOpen).toBe(true)
 
-    // Blurring the input should close the options list
-    // wrapper.find('input').trigger('blur')
-    // await wrapper.vm.$nextTick()
-    // expect(wrapper.vm.hasListOpened).toBe(false)
+    await wrapper.find('input').trigger('click')
+    expect(wrapper.vm.isOpen).toBe(false)
   })
 
   it('updates the input value and emits a change event when an option is selected', async () => {
-    await wrapper.find('input').trigger('focus')
+    await wrapper.find('input').trigger('click')
 
-    expect(wrapper.vm.hasListOpened).toBe(true)
+    expect(wrapper.vm.isOpen).toBe(true)
 
     await wrapper.vm.$nextTick()
 
     // Selecting the second option should update the input value and emit a change event with the option value
-    wrapper.findAll('.m-select-list-item').at(0)?.trigger('click')
-    await wrapper.vm.$nextTick()
-    expect(wrapper.vm.mazInputValue).toBe('Test 1')
+    const options = wrapper.findAll('.m-select-list-item')
+
+    await options.at(0)?.trigger('click')
+
+    expect(wrapper.vm.inputValue).toBe('Test 1')
     expect(wrapper.emitted('update:model-value')?.[0][0]).toBe(1)
   })
 
@@ -138,11 +146,9 @@ describe('components/MazSelect.vue', () => {
       multiple: true,
     })
 
-    window.HTMLElement.prototype.scrollIntoView = () => {}
+    await wrapper.find('input').trigger('click')
 
-    await wrapper.find('input').trigger('focus')
-
-    expect(wrapper.vm.hasListOpened).toBe(true)
+    expect(wrapper.vm.isOpen).toBe(true)
 
     await wrapper.vm.$nextTick()
 
@@ -169,10 +175,11 @@ describe('components/MazSelect.vue', () => {
       ],
     })
 
-    await wrapper.find('input').trigger('focus')
+    await wrapper.find('input').trigger('click')
+    await wrapper.vm.$nextTick()
 
-    const searchInput = wrapper.find('.m-select-list__search-input input')
-    await searchInput.setValue('ba')
+    const searchInput = wrapper.find('.m-select-list__search-input')
+    await searchInput.findComponent({ name: 'MazInput' }).setValue('ba')
 
     expect(wrapper.vm.optionList).toHaveLength(1)
     expect(wrapper.vm.optionList[0].label).toBe('Banana')
@@ -188,10 +195,11 @@ describe('components/MazSelect.vue', () => {
       ],
     })
 
-    await wrapper.find('input').trigger('focus')
+    await wrapper.find('input').trigger('click')
+    await wrapper.vm.$nextTick()
 
-    const searchInput = wrapper.find('.m-select-list__search-input input')
-    await searchInput.setValue('ba')
+    const searchInput = wrapper.find('.m-select-list__search-input')
+    await searchInput.findComponent({ name: 'MazInput' }).setValue('ba')
 
     expect(wrapper.vm.optionList).toHaveLength(1)
     expect(wrapper.vm.optionList[0].label).toBe('Banana')
@@ -209,10 +217,11 @@ describe('components/MazSelect.vue', () => {
       ],
     })
 
-    await wrapper.find('input').trigger('focus')
+    await wrapper.find('input').trigger('click')
+    await wrapper.vm.$nextTick()
 
-    const searchInput = wrapper.find('.m-select-list__search-input input')
-    await searchInput.setValue('test')
+    const searchInput = wrapper.find('.m-select-list__search-input')
+    await searchInput.findComponent({ name: 'MazInput' }).setValue('test')
 
     expect(wrapper.vm.optionList).toHaveLength(0)
   })

@@ -74,11 +74,11 @@ const alphaColor = computed(() => `hsl(var(--maz-${color}) / 60%)`)
 const alphaColor20 = computed(() => `hsl(var(--maz-${color}) / 20%)`)
 
 onMounted(() => {
-  window.addEventListener('mousemove', animateBlob)
+  globalThis.addEventListener('mousemove', animateBlob)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('mousemove', animateBlob)
+  globalThis.removeEventListener('mousemove', animateBlob)
 })
 </script>
 

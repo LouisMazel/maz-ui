@@ -243,9 +243,9 @@ export function findInteractiveElements(el: HTMLElement) {
   }
 
   if (el instanceof HTMLElement) {
-    return el.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+    return Array.from(el.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
       'input, select, textarea',
-    ) as unknown as (HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement)[]
+    ))
   }
 
   return []

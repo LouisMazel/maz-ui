@@ -244,7 +244,7 @@ const emits = defineEmits<{
    * This event is debounced if the debounce prop is enabled
    * @property {T} value - The new input value (string, number, boolean, null, or undefined)
    * @example
-   * <MazInput @update:model-value="handleValueChange" />
+   * <MazInput @update:modelValue="handleValueChange" />
    */
   'update:model-value': [value?: T]
   /**

@@ -39,7 +39,7 @@ export type MazSelectOption
     | boolean
     | MazSelectOptionWithOptGroup
 
-export interface MazSelectProps<Value extends MazInputValue, Option extends MazSelectOption, Multiple extends boolean> {
+export interface MazSelectProps<Value extends MazInputValue = MazInputValue, Option extends MazSelectOption = MazSelectOption, Multiple extends boolean = false> {
   /**
    * Style attribut of the component root element
    * @type {HTMLAttributes['style']}
@@ -488,7 +488,7 @@ async function scrollToOptionIndex(index?: number) {
     const itemRect = item.getBoundingClientRect()
     const scrollTop = item.offsetTop - wrapperRect.height / 2 + itemRect.height / 2
 
-    optionListScrollWrapper.value.scrollTo({
+    optionListScrollWrapper.value.scrollTo?.({
       top: scrollTop,
       behavior: 'auto',
     })
