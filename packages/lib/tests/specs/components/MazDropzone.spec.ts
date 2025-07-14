@@ -1,18 +1,67 @@
 import MazDropzone from '@components/MazDropzone.vue'
 import { mount, shallowMount } from '@vue/test-utils'
 
-globalThis.URL.createObjectURL = vi.fn(() => 'mocked-url')
-globalThis.URL.revokeObjectURL = vi.fn()
-globalThis.fetch = vi.fn(() =>
+// Mock URL for file handling
+vi.stubGlobal('URL', class {
+  static readonly createObjectURL = vi.fn().mockImplementation(() => 'mocked-url')
+  static readonly revokeObjectURL = vi.fn()
+})
+
+// Mock fetch with proper error handling
+vi.stubGlobal('fetch', vi.fn(() =>
   Promise.resolve({
     ok: true,
     status: 200,
     json: () => Promise.resolve({ success: true }),
     text: () => Promise.resolve('success'),
+    blob: () => Promise.resolve(new Blob()),
+    arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)),
   } as Response),
-)
+))
 
-describe('mazDropzone', () => {
+// Mock FormData to prevent network issues
+vi.stubGlobal('FormData', class {
+  data = new Map()
+  append(key: string, value: any) {
+    this.data.set(key, value)
+  }
+
+  get(key: string) {
+    return this.data.get(key)
+  }
+
+  entries() {
+    return this.data.entries()
+  }
+
+  [Symbol.iterator]() {
+    return this.data.entries()
+  }
+})
+
+// Prevent any actual network requests from happening in tests
+const originalXMLHttpRequest = globalThis.XMLHttpRequest
+beforeAll(() => {
+  globalThis.XMLHttpRequest = vi.fn().mockImplementation(() => ({
+    open: vi.fn(),
+    send: vi.fn(),
+    setRequestHeader: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    abort: vi.fn(),
+    readyState: 4,
+    status: 200,
+    statusText: 'OK',
+    responseText: '',
+    response: '',
+  })) as any
+})
+
+afterAll(() => {
+  globalThis.XMLHttpRequest = originalXMLHttpRequest
+})
+
+describe('MazDropzone', () => {
   it('renders the component', () => {
     const wrapper = shallowMount(MazDropzone)
     expect(wrapper.exists()).toBe(true)

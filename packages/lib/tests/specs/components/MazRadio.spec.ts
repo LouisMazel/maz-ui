@@ -32,8 +32,8 @@ describe('mazRadio', () => {
       },
     })
 
-    const radioInput = wrapper.find('input[type="radio"]')
-    const radioLabel = wrapper.find('label')
+    const radioInput = wrapper.find<HTMLInputElement>('input[type="radio"]')
+    const radioLabel = wrapper.find<HTMLLabelElement>('label')
 
     expect(radioInput.element.checked).toBe(false)
 

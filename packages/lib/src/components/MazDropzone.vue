@@ -7,7 +7,7 @@ import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
 import { sleep } from '@maz-ui/utils/src/helpers/sleep.js'
 import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { useDropZone } from './../composables/useDropzone'
+import { useDropzone } from './../composables/useDropzone'
 import MazBtn from './MazBtn.vue'
 import MazIcon from './MazIcon.vue'
 
@@ -511,7 +511,7 @@ function onOver(files: File[] | null, event: DragEvent) {
   emits('over', { files, event })
 }
 
-const { isOverDropZone, isOverError } = useDropZone(dropZoneRef, { dataTypes, onDrop, preventDefaultForUnhandled, multiple: hasMultiple.value, onError, onEnter, onLeave, onOver })
+const { isOverDropZone, isOverError } = useDropzone(dropZoneRef, { dataTypes, onDrop, preventDefaultForUnhandled, multiple: hasMultiple.value, onError, onEnter, onLeave, onOver })
 
 const fileInput = ref<HTMLInputElement>()
 
