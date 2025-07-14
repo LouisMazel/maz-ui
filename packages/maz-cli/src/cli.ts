@@ -1,10 +1,11 @@
 import { createRequire } from 'node:module'
+import { logger } from '@maz-ui/utils/src/utils/logger.ts'
 import { bgRed, blueBright, bold, white } from 'colorette'
+
 import { Command } from 'commander'
 
 import { commands } from './commands'
-
-import { clearAndPrintBanner, logger } from './utils'
+import { clearAndPrintBanner } from './utils'
 
 const nodeRequire = createRequire(import.meta.url)
 
@@ -34,8 +35,9 @@ program.arguments('[command]').action((cmd) => {
 })
 
 program.on('--help', () => {
+  logger.eot()
   const info = bold(blueBright(`${name} <command> --help`))
-  logger.message(`  Run ${info} for detailed usage of given command`)
+  logger.log(`  Run ${info} for detailed usage of given command`)
 })
 
 for (const command of commands) {

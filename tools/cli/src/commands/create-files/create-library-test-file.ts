@@ -2,7 +2,7 @@ import { writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { logger } from '../../utils/logger'
+import { logger } from '@maz-ui/utils/src/utils/logger.ts'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 

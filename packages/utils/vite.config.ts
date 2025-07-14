@@ -10,6 +10,13 @@ import pkg from './package.json'
 const external = [
   ...Object.keys(pkg.devDependencies),
   ...Object.keys(rootPkg.devDependencies),
+  'node:child_process',
+  'node:fs',
+  'node:path',
+  'node:util',
+  'node:crypto',
+  'node:os',
+  'node:process',
 ]
 
 function resolver(path: string) {
@@ -41,22 +48,32 @@ export default defineConfig({
       exclude: ['src/**/__tests__/**/*', 'src/**/*.spec.ts', 'src/**/*.test.ts'],
     }),
   ],
+
+  resolve: {
+    conditions: ['node'],
+  },
+
+  define: {
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
+  },
+
   esbuild: {
     drop: ['debugger'],
     pure: ['console.log', 'console.debug'],
     legalComments: 'none',
-    target: 'es2022',
+    target: 'node22',
     minifyIdentifiers: true,
     minifySyntax: true,
     minifyWhitespace: true,
     treeShaking: true,
+    platform: 'node',
   },
   build: {
     emptyOutDir: true,
     sourcemap: false,
     cssMinify: 'lightningcss',
     minify: 'esbuild',
-    target: 'es2022',
+    target: 'node22',
     lib: {
       entry: {
         ...entries,

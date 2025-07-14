@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useFormField, useFormValidator, useToast } from 'maz-ui/composables'
 import MazDialog from 'maz-ui/src/components/MazDialog.vue'
-import { email, nonEmpty, pipe, string } from 'valibot'
+import { boolean, email, nonEmpty, pipe, string } from 'valibot'
 import { type ComponentPublicInstance, ref } from 'vue'
 
 const toast = useToast()
@@ -18,6 +18,7 @@ const { model, errorMessages, handleSubmit } = useFormValidator({
   schema: {
     email: pipe(string('Email is required'), nonEmpty('Email is required'), email('Email is invalid')),
     password: pipe(string('Password is required'), nonEmpty('Password is required')),
+    rememberMe: boolean(),
   },
   options: { mode: 'progressive' },
 })
