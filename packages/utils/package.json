@@ -69,7 +69,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "pre-commit": "lint-staged",
-    "test:unit": "vitest",
+    "test:unit": "vitest run",
     "test:unit:watch": "vitest watch",
     "test:unit:coverage": "vitest run --coverage"
   },

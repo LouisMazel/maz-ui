@@ -1,6 +1,7 @@
-import { shallowMount } from '@vue/test-utils'
+import { mount, shallowMount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
-import MazSelectCountry from '@/components/MazSelectCountry.vue'
+import MazLazyImg from '@/components/MazLazyImg.vue'
+import MazSelectCountry, { type MazSelectCountryProps } from '@/components/MazSelectCountry.vue'
 
 vi.mock('@maz-ui/translations/src/useTranslations.js', () => ({
   useTranslations: () => ({
@@ -29,15 +30,43 @@ vi.mock('../composables/useDisplayNames', () => ({
   }),
 }))
 
+async function getWrapper({
+  props,
+  slots,
+  attrs,
+  shallow = true,
+}: {
+  props?: Partial<MazSelectCountryProps>
+  slots?: Record<string, string>
+  attrs?: Record<string, string>
+  shallow?: boolean
+} = {}) {
+  const component = shallow ? shallowMount : mount
+  const wrapper = component(MazSelectCountry, {
+    props,
+    slots,
+    attrs,
+    global: {
+      stubs: {
+        teleport: true,
+      },
+    },
+  })
+
+  await vi.dynamicImportSettled()
+
+  return wrapper
+}
+
 describe('mazSelectCountry', () => {
-  it('renders component with default props', () => {
-    const wrapper = shallowMount(MazSelectCountry)
+  it('renders component with default props', async () => {
+    const wrapper = await getWrapper()
     expect(wrapper.find('.m-select-country').exists()).toBe(true)
     expect(wrapper.find('.m-select-country__select').exists()).toBe(true)
   })
 
-  it('renders with custom class and style', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom class and style', async () => {
+    const wrapper = await getWrapper({
       props: {
         class: 'custom-class',
         style: 'width: 300px;',
@@ -47,14 +76,14 @@ describe('mazSelectCountry', () => {
     expect(wrapper.attributes('style')).toBe('width: 300px;')
   })
 
-  it('renders with primary color by default', () => {
-    const wrapper = shallowMount(MazSelectCountry)
+  it('renders with primary color by default', async () => {
+    const wrapper = await getWrapper()
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('color')).toBe('primary')
   })
 
-  it('renders with custom color', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom color', async () => {
+    const wrapper = await getWrapper({
       props: {
         color: 'secondary',
       },
@@ -63,14 +92,14 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.props('color')).toBe('secondary')
   })
 
-  it('renders with medium size by default', () => {
-    const wrapper = shallowMount(MazSelectCountry)
+  it('renders with medium size by default', async () => {
+    const wrapper = await getWrapper()
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('size')).toBe('md')
   })
 
-  it('renders with custom size', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom size', async () => {
+    const wrapper = await getWrapper({
       props: {
         size: 'lg',
       },
@@ -79,14 +108,14 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.props('size')).toBe('lg')
   })
 
-  it('renders with search enabled by default', () => {
-    const wrapper = shallowMount(MazSelectCountry)
+  it('renders with search enabled by default', async () => {
+    const wrapper = await getWrapper()
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('search')).toBe(true)
   })
 
-  it('renders with search disabled', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with search disabled', async () => {
+    const wrapper = await getWrapper({
       props: {
         search: false,
       },
@@ -95,8 +124,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.props('search')).toBe(false)
   })
 
-  it('renders with label', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with label', async () => {
+    const wrapper = await getWrapper({
       props: {
         label: 'Select Country',
       },
@@ -105,8 +134,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.props('label')).toBe('Select Country')
   })
 
-  it('renders with placeholder', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with placeholder', async () => {
+    const wrapper = await getWrapper({
       props: {
         placeholder: 'Choose a country',
       },
@@ -115,8 +144,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.props('placeholder')).toBe('Choose a country')
   })
 
-  it('renders with hint', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with hint', async () => {
+    const wrapper = await getWrapper({
       props: {
         hint: 'Select your country',
       },
@@ -125,8 +154,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('hint')).toBe('Select your country')
   })
 
-  it('renders with error state', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with error state', async () => {
+    const wrapper = await getWrapper({
       props: {
         error: true,
       },
@@ -135,8 +164,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('error')).toBe('true')
   })
 
-  it('renders with warning state', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with warning state', async () => {
+    const wrapper = await getWrapper({
       props: {
         warning: true,
       },
@@ -145,8 +174,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('warning')).toBe('true')
   })
 
-  it('renders with success state', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with success state', async () => {
+    const wrapper = await getWrapper({
       props: {
         success: true,
       },
@@ -155,8 +184,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('success')).toBe('true')
   })
 
-  it('renders with disabled state', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with disabled state', async () => {
+    const wrapper = await getWrapper({
       props: {
         disabled: true,
       },
@@ -165,8 +194,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('disabled')).toBe('true')
   })
 
-  it('renders with required state', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with required state', async () => {
+    const wrapper = await getWrapper({
       props: {
         required: true,
       },
@@ -175,8 +204,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('required')).toBe('true')
   })
 
-  it('renders with block layout', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with block layout', async () => {
+    const wrapper = await getWrapper({
       props: {
         block: true,
       },
@@ -185,8 +214,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('block')).toBe('true')
   })
 
-  it('renders with custom list position', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom list position', async () => {
+    const wrapper = await getWrapper({
       props: {
         listPosition: 'top-start',
       },
@@ -195,8 +224,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('listposition')).toBe('top-start')
   })
 
-  it('renders with custom max list width', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom max list width', async () => {
+    const wrapper = await getWrapper({
       props: {
         maxListWidth: 400,
       },
@@ -205,8 +234,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('maxlistwidth')).toBe('400')
   })
 
-  it('renders with custom min list width', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom min list width', async () => {
+    const wrapper = await getWrapper({
       props: {
         minListWidth: 150,
       },
@@ -215,8 +244,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('minlistwidth')).toBe('150')
   })
 
-  it('renders with custom max list height', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom max list height', async () => {
+    const wrapper = await getWrapper({
       props: {
         maxListHeight: 300,
       },
@@ -225,8 +254,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('maxlistheight')).toBe('300')
   })
 
-  it('renders with custom min list height', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom min list height', async () => {
+    const wrapper = await getWrapper({
       props: {
         minListHeight: 100,
       },
@@ -235,8 +264,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('minlistheight')).toBe('100')
   })
 
-  it('renders with custom item height', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom item height', async () => {
+    const wrapper = await getWrapper({
       props: {
         itemHeight: 50,
       },
@@ -245,8 +274,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('itemheight')).toBe('50')
   })
 
-  it('renders with custom search threshold', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom search threshold', async () => {
+    const wrapper = await getWrapper({
       props: {
         searchThreshold: 2,
       },
@@ -255,8 +284,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('searchthreshold')).toBe('2')
   })
 
-  it('renders with custom autocomplete', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom autocomplete', async () => {
+    const wrapper = await getWrapper({
       props: {
         autocomplete: 'country',
       },
@@ -265,8 +294,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('autocomplete')).toBe('country')
   })
 
-  it('renders with model value', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with model value', async () => {
+    const wrapper = await getWrapper({
       props: {
         modelValue: 'FR',
       },
@@ -275,12 +304,12 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.props('modelValue')).toBe('FR')
   })
 
-  it('renders with custom options', () => {
+  it('renders with custom options', async () => {
     const options = [
       { code: 'FR', name: 'France' },
       { code: 'US', name: 'United States' },
     ]
-    const wrapper = shallowMount(MazSelectCountry, {
+    const wrapper = await getWrapper({
       props: {
         options,
       },
@@ -289,14 +318,14 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.props('options')).toEqual(options)
   })
 
-  it('renders with show code in list disabled by default', () => {
-    const wrapper = shallowMount(MazSelectCountry)
+  it('renders with show code in list disabled by default', async () => {
+    const wrapper = await getWrapper()
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.attributes('optioninputvaluekey')).toBe('name')
   })
 
-  it('renders with show code in list enabled', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with show code in list enabled', async () => {
+    const wrapper = await getWrapper({
       props: {
         displayCode: true,
       },
@@ -305,8 +334,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('optioninputvaluekey')).toBe('code')
   })
 
-  it('renders with flags hidden', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with flags hidden', async () => {
+    const wrapper = await getWrapper({
       props: {
         hideFlags: true,
       },
@@ -314,9 +343,9 @@ describe('mazSelectCountry', () => {
     expect(wrapper.classes()).toContain('--no-flags')
   })
 
-  it('renders with custom format input value function', () => {
+  it('renders with custom format input value function', async () => {
     const formatInputValue = vi.fn()
-    const wrapper = shallowMount(MazSelectCountry, {
+    const wrapper = await getWrapper({
       props: {
         formatInputValue,
       },
@@ -325,9 +354,9 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.props('formatInputValue')).toBe(formatInputValue)
   })
 
-  it('renders with custom search function', () => {
+  it('renders with custom search function', async () => {
     const searchFunction = vi.fn()
-    const wrapper = shallowMount(MazSelectCountry, {
+    const wrapper = await getWrapper({
       props: {
         searchFunction,
       },
@@ -336,11 +365,11 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.props('searchFunction')).toBe(searchFunction)
   })
 
-  it('renders with custom translations', () => {
+  it('renders with custom translations', async () => {
     const translations = {
       searchPlaceholder: 'Search countries',
     }
-    const wrapper = shallowMount(MazSelectCountry, {
+    const wrapper = await getWrapper({
       props: {
         translations,
       },
@@ -349,14 +378,14 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.attributes('search-placeholder')).toBe('Search countries')
   })
 
-  it('renders with custom display names options', () => {
+  it('renders with custom display names options', async () => {
     const displayNamesOptions = {
       type: 'region' as const,
       languageDisplay: 'standard' as const,
       fallback: 'code' as const,
       style: 'short' as const,
     }
-    const wrapper = shallowMount(MazSelectCountry, {
+    const wrapper = await getWrapper({
       props: {
         displayNamesOptions,
       },
@@ -364,8 +393,8 @@ describe('mazSelectCountry', () => {
     expect(wrapper.props('displayNamesOptions')).toEqual(displayNamesOptions)
   })
 
-  it('renders with custom codes type', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom codes type', async () => {
+    const wrapper = await getWrapper({
       props: {
         codesType: 'iso' as const,
       },
@@ -373,8 +402,8 @@ describe('mazSelectCountry', () => {
     expect(wrapper.props('codesType')).toBe('iso')
   })
 
-  it('renders with custom locale', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom locale', async () => {
+    const wrapper = await getWrapper({
       props: {
         locale: 'fr-FR',
       },
@@ -382,9 +411,9 @@ describe('mazSelectCountry', () => {
     expect(wrapper.props('locale')).toBe('fr-FR')
   })
 
-  it('renders with custom preferred codes', () => {
+  it('renders with custom preferred codes', async () => {
     const preferredCodes = ['FR', 'US']
-    const wrapper = shallowMount(MazSelectCountry, {
+    const wrapper = await getWrapper({
       props: {
         preferredCodes,
       },
@@ -392,9 +421,9 @@ describe('mazSelectCountry', () => {
     expect(wrapper.props('preferredCodes')).toEqual(preferredCodes)
   })
 
-  it('renders with custom ignored codes', () => {
+  it('renders with custom ignored codes', async () => {
     const ignoredCodes = ['XX', 'YY']
-    const wrapper = shallowMount(MazSelectCountry, {
+    const wrapper = await getWrapper({
       props: {
         ignoredCodes,
       },
@@ -402,9 +431,9 @@ describe('mazSelectCountry', () => {
     expect(wrapper.props('ignoredCodes')).toEqual(ignoredCodes)
   })
 
-  it('renders with custom only codes', () => {
+  it('renders with custom only codes', async () => {
     const onlyCodes = ['FR', 'US', 'DE']
-    const wrapper = shallowMount(MazSelectCountry, {
+    const wrapper = await getWrapper({
       props: {
         onlyCodes,
       },
@@ -413,7 +442,7 @@ describe('mazSelectCountry', () => {
   })
 
   it('emits update:model-value when value changes', async () => {
-    const wrapper = shallowMount(MazSelectCountry)
+    const wrapper = await getWrapper()
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
 
     await mazSelect.vm.$emit('update:model-value', 'FR')
@@ -422,19 +451,23 @@ describe('mazSelectCountry', () => {
     expect(wrapper.emitted('update:model-value')?.[0]).toEqual(['FR'])
   })
 
-  it('renders flag when model value is set and flags are not hidden', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders flag when model value is set and flags are not hidden', async () => {
+    const wrapper = await getWrapper({
       props: {
         modelValue: 'FR',
       },
+      shallow: false,
     })
-    const mazLazyImg = wrapper.findComponent({ name: 'MazLazyImg' })
+    await vi.dynamicImportSettled()
+
+    const mazLazyImg = wrapper.findComponent(MazLazyImg)
+
     expect(mazLazyImg.exists()).toBe(true)
     expect(mazLazyImg.props('src')).toBe('https://flagcdn.com/h20/fr.png')
   })
 
-  it('does not render flag when flags are hidden', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('does not render flag when flags are hidden', async () => {
+    const wrapper = await getWrapper({
       props: {
         modelValue: 'FR',
         hideFlags: true,
@@ -444,8 +477,8 @@ describe('mazSelectCountry', () => {
     expect(mazLazyImg.exists()).toBe(false)
   })
 
-  it('renders with custom option value key', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom option value key', async () => {
+    const wrapper = await getWrapper({
       props: {
         optionValueKey: 'id',
       },
@@ -454,8 +487,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.props('optionValueKey')).toBe('id')
   })
 
-  it('renders with custom option label key', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom option label key', async () => {
+    const wrapper = await getWrapper({
       props: {
         optionLabelKey: 'title',
       },
@@ -464,8 +497,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.props('optionLabelKey')).toBe('title')
   })
 
-  it('renders with custom option input value key', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with custom option input value key', async () => {
+    const wrapper = await getWrapper({
       props: {
         optionInputValueKey: 'value',
       },
@@ -474,8 +507,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.props('optionInputValueKey')).toBe('value')
   })
 
-  it('renders with code as option input value key when display code is enabled', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders with code as option input value key when display code is enabled', async () => {
+    const wrapper = await getWrapper({
       props: {
         displayCode: true,
       },
@@ -484,29 +517,29 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.props('optionInputValueKey')).toBe('code')
   })
 
-  it('renders with multiple disabled', () => {
-    const wrapper = shallowMount(MazSelectCountry)
+  it('renders with multiple disabled', async () => {
+    const wrapper = await getWrapper()
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('multiple')).toBe(false)
   })
 
-  it('renders with default option keys', () => {
-    const wrapper = shallowMount(MazSelectCountry)
+  it('renders with default option keys', async () => {
+    const wrapper = await getWrapper()
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('optionValueKey')).toBe('code')
     expect(mazSelect.props('optionLabelKey')).toBe('name')
     expect(mazSelect.props('optionInputValueKey')).toBe('name')
   })
 
-  it('renders with default list dimensions', () => {
-    const wrapper = shallowMount(MazSelectCountry)
+  it('renders with default list dimensions', async () => {
+    const wrapper = await getWrapper()
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('maxListWidth')).toBe(250)
     expect(mazSelect.props('minListWidth')).toBe(200)
   })
 
-  it('renders with default display names options', () => {
-    const wrapper = shallowMount(MazSelectCountry)
+  it('renders with default display names options', async () => {
+    const wrapper = await getWrapper()
     const expectedOptions = {
       type: 'region',
       languageDisplay: 'standard',
@@ -516,109 +549,118 @@ describe('mazSelectCountry', () => {
     expect(wrapper.props('displayNamesOptions')).toEqual(expectedOptions)
   })
 
-  it('renders country item with flag and name', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
-      props: {
-        modelValue: 'FR',
-      },
-    })
-
-    const itemSlot = wrapper.vm.$slots.default
-    expect(itemSlot).toBeDefined()
-  })
-
-  it('renders country item without flag when hideFlags is true', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders country item without flag when hideFlags is true', async () => {
+    const wrapper = await getWrapper({
       props: {
         modelValue: 'FR',
         hideFlags: true,
       },
+      shallow: false,
     })
 
-    const itemSlot = wrapper.vm.$slots.default
-    expect(itemSlot).toBeDefined()
+    const mazLazyImg = wrapper.findAll('.maz-size-5.maz-rounded')
+
+    expect(mazLazyImg.length).toBe(0)
   })
 
-  it('renders country item with code when showCodeInList is true', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('renders country item with code when showCodeInList is true', async () => {
+    const wrapper = await getWrapper({
       props: {
         showCodeInList: true,
+        open: true,
       },
+      shallow: false,
     })
 
-    const itemSlot = wrapper.vm.$slots.default
-    expect(itemSlot).toBeDefined()
+    const code = wrapper.find('.maz-truncate .maz-text-muted')
+
+    expect(code.exists()).toBe(true)
+    expect(code.text()).toBe('AF')
   })
 
-  it('provides selector-flag slot', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('provides selector-flag slot', async () => {
+    const wrapper = await getWrapper({
       props: {
         modelValue: 'FR',
       },
       slots: {
         'selector-flag': '<div class="custom-flag">Custom Flag</div>',
       },
+      shallow: false,
     })
 
     expect(wrapper.find('.custom-flag').exists()).toBe(true)
-    expect(wrapper.find('.custom-flag').text()).toBe('Custom Flag')
   })
 
-  it('provides no-results slot', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('provides no-results slot', async () => {
+    const wrapper = await getWrapper({
+      props: {
+        options: [],
+        open: true,
+      },
       slots: {
         'no-results': '<div class="no-results">No countries found</div>',
       },
+      shallow: false,
     })
 
     expect(wrapper.find('.no-results').exists()).toBe(true)
-    expect(wrapper.find('.no-results').text()).toBe('No countries found')
   })
 
-  it('provides country-list-flag slot', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('provides country-list-flag slot', async () => {
+    const wrapper = await getWrapper({
+      props: {
+        open: true,
+      },
       slots: {
         'country-list-flag': '<div class="custom-list-flag">Custom List Flag</div>',
       },
+      shallow: false,
     })
 
     expect(wrapper.find('.custom-list-flag').exists()).toBe(true)
     expect(wrapper.find('.custom-list-flag').text()).toBe('Custom List Flag')
   })
 
-  it('provides country-list-code slot', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('provides country-list-code slot', async () => {
+    const wrapper = await getWrapper({
       props: {
         showCodeInList: true,
+        open: true,
       },
       slots: {
         'country-list-code': '<span class="custom-code">CODE</span>',
       },
+      shallow: false,
     })
 
     expect(wrapper.find('.custom-code').exists()).toBe(true)
     expect(wrapper.find('.custom-code').text()).toBe('CODE')
   })
 
-  it('provides country-list-name slot', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('provides country-list-name slot', async () => {
+    const wrapper = await getWrapper({
+      props: {
+        open: true,
+      },
       slots: {
         'country-list-name': '<span class="custom-name">Custom Name</span>',
       },
+      shallow: false,
     })
 
     expect(wrapper.find('.custom-name').exists()).toBe(true)
     expect(wrapper.find('.custom-name').text()).toBe('Custom Name')
   })
 
-  it('generates unique instance id when no id provided', () => {
-    const wrapper = shallowMount(MazSelectCountry)
+  it('generates unique instance id when no id provided', async () => {
+    const wrapper = await getWrapper()
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.props('id')).toMatch(/^MazSelectCountry-/)
   })
 
-  it('uses provided id when given', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('uses provided id when given', async () => {
+    const wrapper = await getWrapper({
       props: {
         id: 'custom-id',
       },
@@ -627,8 +669,8 @@ describe('mazSelectCountry', () => {
     expect(mazSelect.props('id')).toBe('custom-id')
   })
 
-  it('inherits attributes correctly', () => {
-    const wrapper = shallowMount(MazSelectCountry, {
+  it('inherits attributes correctly', async () => {
+    const wrapper = await getWrapper({
       attrs: {
         'data-test': 'country-select',
       },

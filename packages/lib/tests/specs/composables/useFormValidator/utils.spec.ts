@@ -185,13 +185,24 @@ describe('given getFieldsErrors function', () => {
 describe('given findInteractiveElements function', () => {
   describe('when called with an element', () => {
     it('then it find all interactive elements within the given element', () => {
-      const mockElement = {
-        querySelectorAll: vi.fn().mockReturnValue(['input1', 'select1', 'textarea1']),
-      } as unknown as HTMLElement
+      const mockElements = ['input1', 'select1', 'textarea1']
+      const mockNodeList = {
+        0: mockElements[0],
+        1: mockElements[1],
+        2: mockElements[2],
+        length: 3,
+        [Symbol.iterator]() {
+          return mockElements[Symbol.iterator]()
+        },
+      } as unknown as NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+
+      // Create a proper HTMLElement mock
+      const mockElement = Object.create(HTMLElement.prototype)
+      mockElement.querySelectorAll = vi.fn().mockReturnValue(mockNodeList)
 
       const result = findInteractiveElements(mockElement)
 
-      expect(result).toEqual(['input1', 'select1', 'textarea1'])
+      expect(result).toEqual(Array.from(mockNodeList))
       expect(mockElement.querySelectorAll).toHaveBeenCalledWith('input, select, textarea')
     })
   })
@@ -515,7 +526,7 @@ describe('given getValidationEvents function', () => {
 
   it('returns undefined when ref is provided', () => {
     const result = getValidationEvents({
-      ref: 'test',
+      hasRef: true,
       fieldState: { mode: 'eager' } as FieldState<{ name: string }>,
       onBlur,
     })

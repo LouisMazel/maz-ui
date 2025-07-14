@@ -242,7 +242,7 @@ function logRecommendations(analysis: Analysis) {
   const iconChunks = analysis.chunks.types.icons
   if (iconChunks.files > 20) {
     logger.log('⚠️  Beaucoup de chunks d\'icônes séparés')
-    logger.log(`   → ${iconChunks.files} chunks d\'icônes, considérez un bundle d\'icônes`)
+    logger.log(`   → ${iconChunks.files} chunks d'icônes, considérez un bundle d'icônes`)
   }
 }
 

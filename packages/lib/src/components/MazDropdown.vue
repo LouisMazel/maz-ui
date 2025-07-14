@@ -232,10 +232,6 @@ function setDropdown(value: boolean) {
   modelValue.value = value
 }
 
-function isActionItem(item: MazDropdownMenuItem): item is MazDropdownActionItem {
-  return 'onClick' in item
-}
-
 function isLinkItem(item: MazDropdownMenuItem): item is MazDropdownLinkItem {
   return 'href' in item || 'to' in item
 }
@@ -444,7 +440,7 @@ watch(
                   </slot>
                 </MazLink>
               </template>
-              <template v-else-if="isActionItem(item)">
+              <template v-else>
                 <button
                   type="button"
                   v-bind="{ ...item, onClick: undefined }"

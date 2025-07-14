@@ -240,7 +240,7 @@ export class LazyImg {
       for await (const observer of this.observers) observer.unobserve(el)
     }
 
-    if (window.IntersectionObserver) {
+    if (globalThis.IntersectionObserver) {
       this.createObserver(el, binding)
     }
     else {

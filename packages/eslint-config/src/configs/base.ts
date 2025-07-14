@@ -27,5 +27,7 @@ export function baseRules(isProduction: boolean): Partial<Rules> {
     'complexity': ['error', { max: 20 }],
     'max-depth': ['error', { max: 4 }],
     'max-nested-callbacks': ['error', { max: 3 }],
+
+    'unicorn/prefer-global-this': 'error',
   }
 }

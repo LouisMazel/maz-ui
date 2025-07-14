@@ -21,10 +21,10 @@ describe('mazSwitch', () => {
     })
 
     const checkboxInput = wrapper.find('input[type="checkbox"]')
-    await checkboxInput.setChecked(true)
+    await checkboxInput.setValue(true)
 
     expect(wrapper.emitted('update:model-value')).toBeTruthy()
-    expect(wrapper.emitted('update:model-value')[0]).toEqual([true])
+    expect(wrapper.emitted('update:model-value')?.[0]).toEqual([true])
   })
 
   it('applies the "disabled" class when the "disabled" prop is set to true', () => {

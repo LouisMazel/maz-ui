@@ -37,7 +37,7 @@ describe('given LazyImg handler', () => {
       value: 'https://example.com/image.jpg',
     }
 
-    vi.spyOn(window, 'IntersectionObserver').mockImplementation(callback => ({
+    vi.spyOn(globalThis, 'IntersectionObserver').mockImplementation(callback => ({
       observe: vi.fn(target => callback([{ target, isIntersecting: true } as IntersectionObserverEntry], {
         observe: vi.fn(target => callback([{ target, isIntersecting: true } as IntersectionObserverEntry], this as unknown as IntersectionObserver)),
         unobserve: vi.fn(),
@@ -87,7 +87,7 @@ describe('given LazyImg handler', () => {
     it('then it should create an IntersectionObserver', async () => {
       await lazyImg.add(mockElement, mockBinding)
 
-      expect(window.IntersectionObserver).toHaveBeenCalled()
+      expect(globalThis.IntersectionObserver).toHaveBeenCalled()
     })
   })
 
@@ -111,7 +111,7 @@ describe('given LazyImg handler', () => {
 
       await lazyImg.update(mockElement, mockBinding)
 
-      expect(window.IntersectionObserver).toHaveBeenCalledTimes(1)
+      expect(globalThis.IntersectionObserver).toHaveBeenCalledTimes(1)
     })
   })
 
