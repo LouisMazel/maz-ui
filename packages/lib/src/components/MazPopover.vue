@@ -248,7 +248,7 @@ const attrs = useAttrs()
 const triggerElement = useTemplateRef<HTMLElement>('trigger')
 const panelElement = useTemplateRef<HTMLElement>('panel')
 
-const isOpen = defineModel<boolean>('modelValue', { required: false, default: false })
+const isOpen = defineModel<boolean>({ required: false, default: false })
 const computedPosition = ref<Omit<MazPopoverPosition, 'auto'>>(position)
 
 let openTimeout: NodeJS.Timeout | null = null
@@ -271,7 +271,7 @@ interface TriggerEventHandlers {
 const isTouchDevice = computed(() => {
   if (!isClient())
     return false
-  return 'ontouchstart' in window || navigator.maxTouchPoints > 0
+  return 'ontouchstart' in globalThis || navigator.maxTouchPoints > 0
 })
 
 const effectiveTrigger = computed(() => {
@@ -337,9 +337,9 @@ function updatePosition() {
 
   isUpdatingPosition = true
 
-  const viewport = { width: window.innerWidth, height: window.innerHeight }
-  const scrollTop = window.scrollY || document.documentElement.scrollTop
-  const scrollLeft = window.scrollX || document.documentElement.scrollLeft
+  const viewport = { width: globalThis.innerWidth, height: globalThis.innerHeight }
+  const scrollTop = globalThis.scrollY || document.documentElement.scrollTop
+  const scrollLeft = globalThis.scrollX || document.documentElement.scrollLeft
 
   let newPosition: Omit<MazPopoverPosition, 'auto'> | undefined
 
@@ -378,7 +378,7 @@ function setupObservers() {
     return
   }
 
-  if (window.ResizeObserver) {
+  if (globalThis.ResizeObserver) {
     resizeObserver = new ResizeObserver(() => {
       if (!isUpdatingPosition) {
         trottledUpdatePosition()

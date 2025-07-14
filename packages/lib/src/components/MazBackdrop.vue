@@ -32,7 +32,7 @@ const emits = defineEmits<{
 const MODAL_OPENED_CLASS = '--backdrop-present'
 
 function getScrollbarWidth() {
-  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+  const scrollbarWidth = globalThis.innerWidth - document.documentElement.clientWidth
   return scrollbarWidth
 }
 
@@ -149,7 +149,7 @@ function findFirstFocusableElement(selector: string) {
   const focusableElementsArray = modal && Array.from(modal.querySelectorAll<HTMLLinkElement | HTMLButtonElement | HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>(focusableElements))
 
   const visibleFocusableElements = focusableElementsArray?.filter((el) => {
-    const style = window.getComputedStyle(el)
+    const style = globalThis.getComputedStyle(el)
     return style.display !== 'none' && style.visibility !== 'hidden' && !el.disabled
   })
 

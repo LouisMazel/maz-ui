@@ -40,7 +40,7 @@ describe('mazInputTags', () => {
       await wrapper.vm.$nextTick()
 
       const tagButton = wrapper.findComponent(MazBtn)
-      expect(tagButton.props('size')).toBe(expectedButtonSizes[size])
+      expect(tagButton.props('size')).toBe(expectedButtonSizes[size as keyof typeof expectedButtonSizes])
     }
   })
 

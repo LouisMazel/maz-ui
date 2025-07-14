@@ -12,7 +12,8 @@ import { type CodesType, type DisplayNameCode, type DisplayNamesOptions, useDisp
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import MazSelect, { type MazSelectProps } from './MazSelect.vue'
 
-export interface MazSelectCountryProps<Option extends { name: string, code: DisplayNameCode | string }> extends Omit<MazSelectProps<Option['code'], Option, false>, 'options' | 'multiple'> {
+export interface MazSelectCountryOption { name: string, code: DisplayNameCode | string }
+export interface MazSelectCountryProps<Option extends MazSelectCountryOption = MazSelectCountryOption> extends Omit<MazSelectProps<Option['code'], Option, false>, 'options' | 'multiple'> {
   /**
    * Style attribut of the component root element
    * @type {HTMLAttributes['style']}
@@ -132,6 +133,13 @@ export interface MazSelectCountryProps<Option extends { name: string, code: Disp
    * @values 'iso' | 'bcp' | 'country' | 'all'
    */
   codesType?: CodesType
+
+  /**
+   * Open the select
+   * @type {boolean}
+   * @default false
+   */
+  open?: boolean
 }
 
 const {
@@ -221,7 +229,7 @@ const displayNames = getAllDisplayNames({
 })
 
 const countriesOptions = computed<Option[]>(() => {
-  if (options?.length) {
+  if (options) {
     return options
   }
 
@@ -280,6 +288,7 @@ const flagUrl = computed(() => {
       :search-threshold
       :options="countriesOptions"
       :hint="hint"
+      :open
       @update:model-value="$emit('update:model-value', $event)"
     >
       <template #left-icon>

@@ -82,7 +82,7 @@
     "lint:fix": "eslint . --fix",
     "pre-commit": "lint-staged",
     "test": "vitest",
-    "test:unit": "vitest",
+    "test:unit": "vitest run",
     "test:unit:watch": "vitest watch",
     "test:unit:coverage": "vitest run --coverage",
     "test:unit:coverage:watch": "vitest watch --coverage",

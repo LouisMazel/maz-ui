@@ -79,7 +79,7 @@ export function useDropZone(
     function isSafari() {
       return (
         /^(?:(?!chrome|android).)*safari/i.test(navigator.userAgent)
-        && !('chrome' in window)
+        && !('chrome' in globalThis)
       )
     }
 
@@ -139,22 +139,24 @@ export function useDropZone(
       }
     }
 
+    const dragHandler = (event: DragEvent) => handleDragEvent(event, 'enter')
+
     function removeEventListeners() {
       const targetElement = toValue(target)
       if (targetElement) {
-        targetElement.removeEventListener('dragenter', event => handleDragEvent(event, 'enter'))
-        targetElement.removeEventListener('dragover', event => handleDragEvent(event, 'over'))
-        targetElement.removeEventListener('dragleave', event => handleDragEvent(event, 'leave'))
-        targetElement.removeEventListener('drop', event => handleDragEvent(event, 'drop'))
+        targetElement.removeEventListener('dragenter', dragHandler)
+        targetElement.removeEventListener('dragover', dragHandler)
+        targetElement.removeEventListener('dragleave', dragHandler)
+        targetElement.removeEventListener('drop', dragHandler)
       }
     }
 
     watch(() => toValue(target), (element) => {
       if (element) {
-        element.addEventListener('dragenter', event => handleDragEvent(event, 'enter'))
-        element.addEventListener('dragover', event => handleDragEvent(event, 'over'))
-        element.addEventListener('dragleave', event => handleDragEvent(event, 'leave'))
-        element.addEventListener('drop', event => handleDragEvent(event, 'drop'))
+        element.addEventListener('dragenter', dragHandler)
+        element.addEventListener('dragover', dragHandler)
+        element.addEventListener('dragleave', dragHandler)
+        element.addEventListener('drop', dragHandler)
       }
     }, { immediate: true })
 

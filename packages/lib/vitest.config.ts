@@ -8,7 +8,7 @@ import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/con
 import { ViteBuildIcons, ViteBuildThemes } from './build'
 
 export default defineConfig({
-  plugins: [Vue(), SvgLoader(), ViteBuildIcons({ testing: true }), ViteBuildThemes({ testing: true })],
+  plugins: [Vue({ template: { compilerOptions: { comments: false } } }), SvgLoader(), ViteBuildIcons({ testing: true }), ViteBuildThemes({ testing: true })],
   server: {
     port: 1111,
   },

@@ -9,11 +9,11 @@ export interface CountryOption {
 }
 
 function getBrowserLocale() {
-  if (typeof window === 'undefined') {
+  if (typeof globalThis.window === 'undefined') {
     return
   }
 
-  const browserLocale = window.navigator.language
+  const browserLocale = globalThis.navigator.language
 
   if (!browserLocale) {
     return

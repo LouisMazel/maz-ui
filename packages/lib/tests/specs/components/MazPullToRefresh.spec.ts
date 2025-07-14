@@ -81,7 +81,7 @@ describe('mazPullToRefresh', () => {
     })
 
     // Set window.scrollY to simulate scroll
-    Object.defineProperty(window, 'scrollY', { value: 10, writable: true })
+    Object.defineProperty(globalThis, 'scrollY', { value: 10, writable: true })
 
     // Simulate touchend
     wrapper.trigger('touchend')
