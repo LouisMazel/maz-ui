@@ -4,8 +4,8 @@ on:
   pull_request:
     paths:
       - 'packages/**'
-      - 'pnpm-lock.yaml'
-      - '.github/workflows/linters.yml'
+      - pnpm-lock.yaml
+      - .github/workflows/linters.yml
 
 jobs:
   linters:

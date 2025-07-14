@@ -52,8 +52,14 @@ assignees: LouisMazel
 
 ```vue
 <!-- Your Vue code here -->
+<script setup lang="ts">
+// Your TypeScript code here
+</script>
+
 <template>
-  <!-- Your example here -->
+  <div>
+    <!-- Your example here -->
+  </div>
 </template>
 ```
 

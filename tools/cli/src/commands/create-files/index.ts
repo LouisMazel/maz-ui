@@ -2,7 +2,7 @@ import { resolve } from 'node:path'
 import { exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { cancel, confirm, isCancel, multiselect, spinner, text } from '@clack/prompts'
-import chalk from 'chalk'
+import { logger } from '@maz-ui/utils/src/utils/logger.ts'
 import { Command } from 'commander'
 import { pascalCaseToKebabCase } from './../../utils/pascal-case-to-kebab-case'
 import { createDocumentFile } from './create-documentation-file'
@@ -116,7 +116,7 @@ async function runCreateFiles({
       filenameKebab,
     })
 
-    console.warn('You should add the component to the entry file manually')
+    logger.warn('You should add the component to the entry file manually')
   }
 
   const shouldCreateDocumentationFile = shouldCreateAllFiles || fileTypes.includes('docs')
@@ -136,14 +136,10 @@ async function runCreateFiles({
       './../../../docs/docs/.vitepress/configs/components.mts',
     )
 
-    console.log('')
-    console.log(
-      chalk.bold.hex('#ffa500')(
-        `⚠ Now you should add your component reference in the right part in ${chalk.bold.hex(
-          '#1e90ff',
-        )(componentConfigurationFilePath)}`,
-      ),
+    logger.eot()
+    logger.success(
+      `⚠ Now you should add your component reference in the right part in ${componentConfigurationFilePath}`,
     )
-    console.log('')
+    logger.eot()
   }
 }
