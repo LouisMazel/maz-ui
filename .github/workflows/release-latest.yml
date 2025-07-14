@@ -43,7 +43,7 @@ jobs:
 
       - name: Setup Git User
         run: |
-          git config --global user.name "Mazel"
+          git config --global user.name "LouisMazel"
           git config --global user.email "12446546+LouisMazel@users.noreply.github.com"
 
       - name: Graduate Pre-release to Stable
@@ -66,7 +66,10 @@ jobs:
           git push origin master
 
       - name: Push git tag
-        run: git push origin master --follow-tags
+        run: |
+          VERSION=$(jq -r '.version' lerna.json)
+          git tag -a "v$VERSION" -m "chore(release): version packages $VERSION"
+          git push origin master --follow-tags
 
       - name: Publish to NPM (Latest)
         run: pnpm lerna:publish
