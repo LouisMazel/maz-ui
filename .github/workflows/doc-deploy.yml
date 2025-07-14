@@ -15,18 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Setup Node.js, pnpm and Nx cache
+        uses: ./.github/actions/setup
 
       - name: Generate components docs
         run: pnpm --filter cli cli generate-components-docs
