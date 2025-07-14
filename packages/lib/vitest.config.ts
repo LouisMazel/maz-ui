@@ -21,9 +21,6 @@ export default defineConfig({
         html: 'jsdom',
         // Disable network requests to prevent AggregateError
         url: 'http://localhost',
-        pretendToBeVisual: true,
-        includeNodeLocations: false,
-        storageQuota: 10000000,
       },
     },
     env: {

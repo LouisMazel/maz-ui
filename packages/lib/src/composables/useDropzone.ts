@@ -4,13 +4,13 @@ import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
 
 import { onBeforeUnmount, ref, shallowRef, toValue, unref, watch } from 'vue'
 
-export interface UseDropZoneReturn {
+export interface UseDropzoneReturn {
   files: Ref<File[] | null>
   isOverDropZone: Ref<boolean>
   isOverError: Ref<boolean>
 }
 
-export interface UseDropZoneOptions {
+export interface UseDropzoneOptions {
   /**
    * Allowed data types, if not set, all data types are allowed.
    * Also can be a function to check the data types.
@@ -31,10 +31,10 @@ export interface UseDropZoneOptions {
   preventDefaultForUnhandled?: boolean
 }
 
-export function useDropZone(
+export function useDropzone(
   target: MaybeRefOrGetter<HTMLElement | null | undefined>,
-  options: UseDropZoneOptions | UseDropZoneOptions['onDrop'] = {},
-): UseDropZoneReturn {
+  options: UseDropzoneOptions | UseDropzoneOptions['onDrop'] = {},
+): UseDropzoneReturn {
   const isOverDropZone = ref(false)
   const isOverError = ref(false)
   const files = shallowRef<File[] | null>(null)

@@ -1,20 +1,4 @@
 export function setup() {
-  // Suppress all console errors that match network-related patterns
-  const originalConsoleError = console.error
-  console.error = (...args: any[]) => {
-    const message = args.join(' ')
-    if (
-      message.includes('AggregateError')
-      || message.includes('XMLHttpRequest')
-      || message.includes('fetch')
-      || message.includes('Network request failed')
-      || message.includes('xhr-utils.js')
-      || message.includes('XMLHttpRequest-impl.js')
-    ) {
-      return // Suppress these errors
-    }
-    originalConsoleError.apply(console, args)
-  }
   process.env.TZ = 'Europe/Paris'
 
   // Mock Canvas API for Chart.js tests
@@ -128,7 +112,7 @@ export function setup() {
     onprogress: null,
   }))
 
-  globalThis.XMLHttpRequest = MockXMLHttpRequest as any
+  vi.stubGlobal('XMLHttpRequest', MockXMLHttpRequest as any)
 
   // Mock Image constructor to prevent image loading
   const MockImage = vi.fn().mockImplementation(() => ({
@@ -141,7 +125,7 @@ export function setup() {
     naturalWidth: 100,
     naturalHeight: 100,
   }))
-  globalThis.Image = MockImage as any
+  vi.stubGlobal('Image', MockImage as any)
 
   // Mock WebSocket to prevent websocket connections
   vi.stubGlobal('WebSocket', vi.fn().mockImplementation(() => ({

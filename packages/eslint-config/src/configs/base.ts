@@ -28,6 +28,10 @@ export function baseRules(isProduction: boolean): Partial<Rules> {
     'max-depth': ['error', { max: 4 }],
     'max-nested-callbacks': ['error', { max: 3 }],
 
+    // Unicorn
     'unicorn/prefer-global-this': 'error',
+
+    // Test
+    'test/prefer-lowercase-title': 'off',
   }
 }
