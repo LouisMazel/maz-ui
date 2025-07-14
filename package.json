@@ -33,9 +33,9 @@
     "lerna:changelog": "lerna version --conventional-commits --no-git-tag-version --no-push --yes",
     "generate:changelogs": "node scripts/generate-changelogs.js",
     "nx:affected:pre-commit": "lerna run pre-commit --since HEAD~1 --loglevel=success",
-    "nx:affected:build": "lerna run build --since HEAD~1",
-    "nx:affected:test": "lerna run test:unit --since HEAD~1",
-    "nx:affected:lint": "lerna run lint --since HEAD~1",
+    "nx:affected:build": "lerna run build --since HEAD~1 --loglevel=success",
+    "nx:affected:test": "lerna run test:unit --since HEAD~1 --loglevel=success",
+    "nx:affected:lint": "lerna run lint --since HEAD~1 --loglevel=success",
     "nx:cache:clear": "lerna exec -- rm -rf .nx/cache",
     "dev:watch": "lerna run dev --parallel --stream"
   },
