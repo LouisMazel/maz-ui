@@ -182,13 +182,13 @@ describe('useTheme', () => {
           removeListener: vi.fn(),
           dispatchEvent: vi.fn(),
         }
-        vi.mocked(window.matchMedia).mockReturnValue(mockMediaQuery as MediaQueryList)
+        vi.mocked(globalThis.matchMedia).mockReturnValue(mockMediaQuery as MediaQueryList)
 
         const autoThemeState = { ...mockThemeState, colorMode: 'auto' as const }
 
         initThemeState(autoThemeState)
 
-        expect(window.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)')
+        expect(globalThis.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)')
         expect(mockMediaQuery.addEventListener).toHaveBeenCalledWith('change', expect.any(Function))
       })
     })
@@ -241,13 +241,13 @@ describe('useTheme', () => {
     describe('when setColorMode is called with auto mode', () => {
       it('then it detects system preference', () => {
         vi.mocked(inject).mockReturnValue(mockThemeState)
-        vi.mocked(window.matchMedia).mockReturnValue({ matches: true } as MediaQueryList)
+        vi.mocked(globalThis.matchMedia).mockReturnValue({ matches: true } as MediaQueryList)
 
         const { setColorMode } = useTheme()
 
         setColorMode('auto')
 
-        expect(window.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)')
+        expect(globalThis.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)')
       })
     })
 
@@ -369,7 +369,7 @@ describe('useTheme', () => {
           dispatchEvent: vi.fn(),
         }
 
-        vi.mocked(window.matchMedia).mockReturnValue(mockMediaQuery as MediaQueryList)
+        vi.mocked(globalThis.matchMedia).mockReturnValue(mockMediaQuery as MediaQueryList)
 
         const autoThemeState = { ...mockThemeState, colorMode: 'auto' as const }
         initThemeState(autoThemeState)

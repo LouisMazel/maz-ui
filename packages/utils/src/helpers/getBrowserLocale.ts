@@ -6,7 +6,7 @@ export function getBrowserLocale(): string | undefined {
       return
     }
 
-    return window.navigator.language
+    return globalThis.navigator.language
   }
   catch (error) {
     throw new Error(`[MazInputPhoneNumber] (browserLocale) ${error}`)

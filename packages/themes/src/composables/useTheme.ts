@@ -59,8 +59,8 @@ function initializeThemeFromData(themeData: ThemeState) {
 export function initThemeState(initialState: ThemeState) {
   state.value = initialState
 
-  if (typeof window !== 'undefined' && state.value.colorMode === 'auto') {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+  if (typeof globalThis.window !== 'undefined' && state.value.colorMode === 'auto') {
+    const mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)')
 
     const updateFromMedia = () => {
       if (state.value && state.value.colorMode === 'auto') {
@@ -124,7 +124,7 @@ function setColorMode(mode: ColorMode) {
   state.value.colorMode = mode
 
   if (mode === 'auto') {
-    state.value.isDark = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
+    state.value.isDark = typeof globalThis.window !== 'undefined' && globalThis.matchMedia('(prefers-color-scheme: dark)').matches
   }
   else {
     state.value.isDark = mode === 'dark'
