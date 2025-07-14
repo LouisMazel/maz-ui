@@ -47,7 +47,7 @@ describe('get-color-mode', () => {
     describe('when no colorMode provided and valid mode exists in cookies', () => {
       it('then it returns saved cookie mode', () => {
         mockDocumentCookie('maz-color-mode=dark; path=/')
-        vi.mocked(window.matchMedia).mockReturnValue({
+        vi.mocked(globalThis.matchMedia).mockReturnValue({
           matches: false,
         } as MediaQueryList)
 
@@ -60,7 +60,7 @@ describe('get-color-mode', () => {
     describe('when cookies has auto mode', () => {
       it('then it returns saved cookie auto mode when valid', () => {
         mockDocumentCookie('maz-color-mode=auto; path=/')
-        vi.mocked(window.matchMedia).mockReturnValue({
+        vi.mocked(globalThis.matchMedia).mockReturnValue({
           matches: true,
         } as MediaQueryList)
 
@@ -73,7 +73,7 @@ describe('get-color-mode', () => {
     describe('when cookies has invalid value', () => {
       it('then it falls back to system preference', () => {
         mockDocumentCookie('ads-color-mode=invalid; path=/')
-        vi.mocked(window.matchMedia).mockReturnValue({
+        vi.mocked(globalThis.matchMedia).mockReturnValue({
           matches: true,
         } as MediaQueryList)
 
@@ -86,7 +86,7 @@ describe('get-color-mode', () => {
     describe('when cookies returns empty', () => {
       it('then it falls back to system preference', () => {
         mockDocumentCookie('')
-        vi.mocked(window.matchMedia).mockReturnValue({
+        vi.mocked(globalThis.matchMedia).mockReturnValue({
           matches: false,
         } as MediaQueryList)
 
@@ -99,7 +99,7 @@ describe('get-color-mode', () => {
     describe('when document is undefined', () => {
       it('then it falls back to system preference', () => {
         vi.stubGlobal('document', undefined)
-        vi.mocked(window.matchMedia).mockReturnValue({
+        vi.mocked(globalThis.matchMedia).mockReturnValue({
           matches: true,
         } as MediaQueryList)
 
@@ -111,7 +111,7 @@ describe('get-color-mode', () => {
 
     describe('when invalid colorMode provided', () => {
       it('then it returns light', () => {
-        vi.mocked(window.matchMedia).mockReturnValue({
+        vi.mocked(globalThis.matchMedia).mockReturnValue({
           matches: false,
         } as MediaQueryList)
 
@@ -135,26 +135,26 @@ describe('get-color-mode', () => {
 
     describe('when system prefers dark color scheme', () => {
       it('then it returns dark', () => {
-        vi.mocked(window.matchMedia).mockReturnValue({
+        vi.mocked(globalThis.matchMedia).mockReturnValue({
           matches: true,
         } as MediaQueryList)
 
         const result = getSystemPrefersDark()
 
-        expect(window.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)')
+        expect(globalThis.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)')
         expect(result).toBe('dark')
       })
     })
 
     describe('when system prefers light color scheme', () => {
       it('then it returns light', () => {
-        vi.mocked(window.matchMedia).mockReturnValue({
+        vi.mocked(globalThis.matchMedia).mockReturnValue({
           matches: false,
         } as MediaQueryList)
 
         const result = getSystemPrefersDark()
 
-        expect(window.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)')
+        expect(globalThis.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)')
         expect(result).toBe('light')
       })
     })
