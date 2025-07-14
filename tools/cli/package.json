@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@clack/prompts": "^0.11.0",
+    "@maz-ui/utils": "workspace:*",
     "@types/clear": "^0.1.4",
     "@types/figlet": "^1.7.0",
     "chalk": "5.4.1",

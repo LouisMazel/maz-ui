@@ -2,8 +2,7 @@
 import type { Dayjs } from 'dayjs'
 import type { PropType } from 'vue'
 import type { MazColor } from '../types'
-import ChevronLeft from '@maz-ui/icons/svg/chevron-left.svg'
-import XMark from '@maz-ui/icons/svg/x-mark.svg'
+import { MazChevronLeft, MazXMark } from '@maz-ui/icons'
 import { formatDate } from '@maz-ui/utils/src/formatters/formatDate.js'
 import dayjs from 'dayjs'
 
@@ -59,14 +58,14 @@ function nextYears() {
     <div class="maz-picker-year-switcher__header">
       <div class="maz-flex maz-space-x-2">
         <MazBtn size="xs" color="transparent" type="button" @click.stop="previousYears">
-          <ChevronLeft class="maz-text-lg" />
+          <MazChevronLeft class="maz-text-lg" />
         </MazBtn>
         <MazBtn size="xs" color="transparent" type="button" @click.stop="nextYears">
-          <ChevronLeft class="maz-rotate-180 maz-text-lg" />
+          <MazChevronLeft class="maz-rotate-180 maz-text-lg" />
         </MazBtn>
       </div>
       <MazBtn size="xs" color="transparent" type="button" @click.stop="$emit('close', $event)">
-        <XMark class="maz-text-lg" />
+        <MazXMark class="maz-text-lg" />
       </MazBtn>
     </div>
     <div class="maz-picker-year-switcher__main">

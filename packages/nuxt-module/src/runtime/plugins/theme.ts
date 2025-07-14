@@ -50,7 +50,6 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const config = {
     strategy: 'hybrid',
     darkModeStrategy: 'class',
-    prefix: 'maz',
     colorMode: 'auto',
     injectFullCSSOnServer: true,
     ...themeConfig,
@@ -74,7 +73,7 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     const cssOptions: CriticalCSSOptions = {
       mode: config.colorMode === 'auto' ? 'both' : config.colorMode,
       darkSelectorStrategy: config.darkModeStrategy ?? 'class',
-      prefix: config.prefix,
+      prefix: 'maz',
     } satisfies CriticalCSSOptions
 
     const criticalCSS = generateCriticalCSS(themeState.currentPreset, cssOptions)

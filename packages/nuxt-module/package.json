@@ -52,7 +52,7 @@
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
     "format": "prettier --ignore-path .gitignore . --write",
-    "typecheck": "vue-tsc --noEmit --skipLibCheck --project tsconfig.check.json",
+    "typecheck": "vue-tsc --noEmit --skipLibCheck",
     "release": "npm run lint && npm run prepack && changelogen --release && npm publish && git push --follow-tags"
   },
   "dependencies": {
