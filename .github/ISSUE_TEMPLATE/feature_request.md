@@ -61,7 +61,9 @@ assignees: LouisMazel
 ```vue
 <!-- Example of how you'd like to use this feature -->
 <template>
-  <!-- Your example here -->
+  <div>
+    <!-- Your example here -->
+  </div>
 </template>
 ```
 

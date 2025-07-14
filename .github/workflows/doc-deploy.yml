@@ -7,7 +7,7 @@ on:
     paths:
       - 'packages/docs/**'
       - 'packages/lib/**'
-      - '.github/workflows/doc-deploy.yml'
+      - .github/workflows/doc-deploy.yml
 
 jobs:
   doc-build-and-deploy:

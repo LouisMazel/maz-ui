@@ -4,8 +4,8 @@ on:
   pull_request:
     paths:
       - 'packages/**'
-      - 'pnpm-lock.yaml'
-      - '.github/workflows/typecheck.yml'
+      - pnpm-lock.yaml
+      - .github/workflows/typecheck.yml
 
 jobs:
   build-and-typecheck:
