@@ -2,18 +2,18 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "strict": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "declaration": false,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
     "allowImportingTsExtensions": false,
+    "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
-    "sourceMap": false
+    "declaration": false,
+    "noEmit": true,
+    "sourceMap": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true
   }
 }

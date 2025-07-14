@@ -4,8 +4,8 @@ on:
   pull_request:
     paths:
       - 'packages/**'
-      - 'pnpm-lock.yaml'
-      - '.github/workflows/linters.yml'
+      - pnpm-lock.yaml
+      - .github/workflows/linters.yml
 
 jobs:
   linters:
@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'pnpm'
+          cache: pnpm
 
       - name: Install modules
         run: pnpm install --frozen-lockfile --ignore-scripts

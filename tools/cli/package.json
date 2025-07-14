@@ -32,7 +32,6 @@
     "@maz-ui/utils": "workspace:*",
     "@types/clear": "^0.1.4",
     "@types/figlet": "^1.7.0",
-    "chalk": "5.4.1",
     "clear": "^0.1.0",
     "commander": "^14.0.0",
     "figlet": "^1.8.1",
