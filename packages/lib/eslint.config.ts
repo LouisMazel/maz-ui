@@ -6,7 +6,6 @@ export default defineConfig(
     vue: true,
     vueAccessibility: true,
     tailwindcss: true,
-    sonarjs: true,
   },
   {
     rules: {

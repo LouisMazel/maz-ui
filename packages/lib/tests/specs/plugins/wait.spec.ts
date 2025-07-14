@@ -1,4 +1,4 @@
-import { installWait, WaitHandler } from '@plugins/index'
+import { WaitHandler, WaitPlugin } from '@plugins/index'
 import { createApp } from 'vue'
 
 describe('waitHandler', () => {
@@ -7,7 +7,7 @@ describe('waitHandler', () => {
 
   beforeEach(() => {
     app = createApp({})
-    app.use(installWait)
+    app.use(WaitPlugin)
     waitHandler = new WaitHandler()
   })
 

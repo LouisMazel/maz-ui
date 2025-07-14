@@ -33,7 +33,7 @@ export interface UseWindowSizeOptions {
 
 export function useWindowSize(options: UseWindowSizeOptions = {}) {
   const {
-    internalWindow = isClient() ? window : undefined,
+    internalWindow = isClient() ? globalThis : undefined,
     initialWidth = Number.POSITIVE_INFINITY,
     initialHeight = Number.POSITIVE_INFINITY,
     includeScrollbar = true,

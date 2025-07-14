@@ -49,14 +49,14 @@ const elementRef = ref<HTMLElement | null>(null)
 
 function getRequestAnimationFrame() {
   /* Polyfill for server-side rendering */
-  if (!isClient() || !window.requestAnimationFrame) {
+  if (!isClient() || !globalThis.requestAnimationFrame) {
     return (callback: FrameRequestCallback): number => {
       setTimeout(callback, 1000 / 60)
       return 0
     }
   }
 
-  return window.requestAnimationFrame.bind(window)
+  return globalThis.requestAnimationFrame.bind(globalThis)
 }
 
 function animate(start: number, end: number, duration: number, delay: number) {

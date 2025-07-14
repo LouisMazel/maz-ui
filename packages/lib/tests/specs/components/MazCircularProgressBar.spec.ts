@@ -9,7 +9,7 @@ mockIntersectionObserver.mockReturnValue({
   disconnect: () => null,
 })
 
-window.IntersectionObserver = mockIntersectionObserver
+globalThis.IntersectionObserver = mockIntersectionObserver
 
 describe('mazCircularProgressBar', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazCircularProgressBar>>

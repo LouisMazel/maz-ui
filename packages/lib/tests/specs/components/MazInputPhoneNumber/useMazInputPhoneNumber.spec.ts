@@ -15,7 +15,7 @@ describe('unit Tests for useMazInputPhoneNumber.ts', () => {
   describe('browserLocale', () => {
     it('should return the browser locale', () => {
       // Mock de window.navigator.language
-      Object.defineProperty(window.navigator, 'language', {
+      Object.defineProperty(globalThis.navigator, 'language', {
         value: 'en-US',
       })
 

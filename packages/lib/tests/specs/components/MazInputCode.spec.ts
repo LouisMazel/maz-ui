@@ -1,9 +1,10 @@
 import type { VueWrapper } from '@vue/test-utils'
+import type { ComponentPublicInstance } from 'vue'
 import MazInputCode from '@components/MazInputCode.vue'
 import { shallowMount } from '@vue/test-utils'
 
 describe('mazInputCode', () => {
-  let wrapper: VueWrapper<InstanceType<typeof MazInputCode>>
+  let wrapper: VueWrapper<ComponentPublicInstance<typeof MazInputCode> & { [key: string]: any }>
 
   beforeEach(() => {
     wrapper = shallowMount(MazInputCode)

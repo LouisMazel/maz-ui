@@ -25,7 +25,7 @@ describe('mazCardSpotlight', () => {
   })
 
   it('removes event listener on component unmount', async () => {
-    const removeEventListener = vi.spyOn(window, 'removeEventListener')
+    const removeEventListener = vi.spyOn(globalThis, 'removeEventListener')
     const wrapper = mount(MazCardSpotlight)
 
     await wrapper.vm.$nextTick()

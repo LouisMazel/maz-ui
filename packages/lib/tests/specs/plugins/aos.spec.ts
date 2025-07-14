@@ -1,15 +1,16 @@
 import type { AosOptions } from '@plugins/aos'
 import type { App } from 'vue'
 import type { Router } from 'vue-router'
+import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
+import { sleep } from '@maz-ui/utils/src/helpers/sleep.js'
 import { AosHandler, AosPlugin, getAosInstance } from '@plugins/aos'
-import { isClient } from '@utils/isClient'
-import { sleep } from '@utils/sleep'
+import { vi } from 'vitest'
 
 // Mock dependencies
-vi.mock('@utils/sleep', () => ({
+vi.mock('@maz-ui/utils/src/helpers/sleep.js', () => ({
   sleep: vi.fn(),
 }))
-vi.mock('@utils/isClient', () => ({
+vi.mock('@maz-ui/utils/src/helpers/isClient.js', () => ({
   isClient: vi.fn(() => true),
 }))
 
@@ -22,7 +23,7 @@ class IntersectionObserverMock {
     this.options = options
   }
 
-  observe(target) {
+  observe(target: Element) {
     this.callback([{ target, isIntersecting: true } as IntersectionObserverEntry], this as unknown as IntersectionObserver)
   }
 
@@ -110,17 +111,31 @@ describe('given AosHandler handleIntersect method', () => {
     })
   })
 
-  describe('when an entry is not intersecting', () => {
+  describe('when an entry is not intersecting and once is false', () => {
     it('then it should remove the animation class from the target', () => {
+      const customOptions = {
+        delay: 100,
+        animation: {
+          once: false,
+          duration: 300,
+          delay: 0,
+        },
+      }
+      const customAosHandler = new AosHandler(customOptions)
+
       const target = entries[0].target
       target.setAttribute('data-maz-aos', 'fade')
       target.classList.add('maz-aos-animate')
+
+      // Create a new entry that is not intersecting
+      const nonIntersectingEntry = {
+        ...entries[0],
+        isIntersecting: false,
+        intersectionRatio: 0,
+      } as IntersectionObserverEntry
+
       // @ts-expect-error - ignore
-      entries[0].isIntersecting = false
-      // @ts-expect-error - ignore
-      entries[0].intersectionRatio = 0
-      // @ts-expect-error - ignore
-      aosHandler.handleIntersect(entries, observer)
+      customAosHandler.handleIntersect([nonIntersectingEntry], observer)
       expect(target.classList.contains('maz-aos-animate')).toBe(false)
     })
   })
@@ -164,18 +179,21 @@ describe('given plugin install function', () => {
   beforeEach(() => {
     app = {
       provide: vi.fn(),
+      config: {
+        globalProperties: {},
+      },
     } as unknown as App
     router = {
-      afterEach: vi.fn(fun => fun()),
+      afterEach: vi.fn((fun: () => void) => fun()),
     } as unknown as Router
   })
 
   describe('when installing with options and router', () => {
     it('then it should provide aos instance and setup router hook', () => {
       vi.mocked(isClient).mockReturnValue(true)
-      AosPlugin.install(app, { router })
+      AosPlugin.install?.(app, { router })
 
-      expect(app.provide).toHaveBeenCalledWith('aos', expect.any(AosHandler))
+      expect(app.provide).toHaveBeenCalledWith('mazAos', expect.any(AosHandler))
       expect(router.afterEach).toHaveBeenCalled()
     })
   })
@@ -186,7 +204,7 @@ describe('given plugin install function', () => {
       const instance = new AosHandler()
       const runAnimationsSpy = vi.spyOn(instance, 'runAnimations')
 
-      AosPlugin.install(app, {})
+      AosPlugin.install?.(app, {})
 
       expect(runAnimationsSpy).not.toHaveBeenCalled()
     })

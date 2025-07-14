@@ -22,6 +22,7 @@ const defaultOptions: MazESLintOptions = {
   typescript: true,
   sonarjs: true,
   tailwindcss: false,
+  unicorn: true,
   ignores: ['dist/**', 'node_modules/**'],
   rules: {},
 }
