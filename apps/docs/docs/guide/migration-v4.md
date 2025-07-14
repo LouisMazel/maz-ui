@@ -118,7 +118,7 @@ import { useTimer } from 'maz-ui/composables/useTimer'
 import { useToast } from 'maz-ui/composables/useToast'
 ```
 
-#### Utils
+#### Utils (no changes)
 
 ```typescript
 // No changes

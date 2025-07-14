@@ -2,7 +2,7 @@
 import type { Dayjs } from 'dayjs'
 import type { PropType } from 'vue'
 import type { MazColor } from '../types'
-import MazXIcon from '@maz-ui/icons/svg/x-mark.svg'
+import { MazXMark } from '@maz-ui/icons'
 import { capitalize } from '@maz-ui/utils/src/formatters/capitalize.js'
 import { formatDate } from '@maz-ui/utils/src/formatters/formatDate.js'
 import dayjs from 'dayjs'
@@ -64,7 +64,7 @@ function selectMonth(date: Dayjs) {
   <div class="maz-picker-month-switcher">
     <div class="maz-picker-month-switcher__header">
       <MazBtn size="xs" color="transparent" type="button" @click.stop="$emit('close', $event)">
-        <MazXIcon class="maz-text-lg" />
+        <MazXMark class="maz-text-lg" />
       </MazBtn>
     </div>
     <div class="maz-picker-month-switcher__main" :class="{ '--has-double': double }">

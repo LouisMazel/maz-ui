@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DeepPartial } from '@maz-ui/utils'
+import type { DeepPartial } from '@maz-ui/utils/src/ts-helpers/DeepPartial.js'
 import type { InferSchemaFormValidator } from 'maz-ui/composables'
 import { array, boolean, literal, maxValue, minLength, minValue, nonEmpty, number as numberAction, object, pipe, string } from 'valibot'
 

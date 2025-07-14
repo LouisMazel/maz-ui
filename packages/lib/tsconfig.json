@@ -1,26 +1,16 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "composite": true,
     "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo",
-    "target": "ESNext",
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
-    "module": "ESNext",
-    "types": ["@types/node", "vite-svg-loader", "vite/client"],
-    "allowImportingTsExtensions": false,
-    "noEmit": true,
+    "types": ["node", "vite-svg-loader", "vite/client", "vue"],
     "esModuleInterop": true,
     "isolatedModules": true,
-    "verbatimModuleSyntax": true,
     "skipLibCheck": true
   },
   "vueCompilerOptions": {
     "checkUnknownComponents": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules"],
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  }
+  "exclude": ["node_modules"]
 }

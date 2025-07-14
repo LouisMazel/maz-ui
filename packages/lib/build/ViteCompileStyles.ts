@@ -5,11 +5,10 @@ import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { execPromise, logger } from '@maz-ui/utils'
 import autoprefixer from 'autoprefixer'
 import postcss from 'postcss'
 import { compileAsync } from 'sass'
-import { execPromise } from './utils/execPromise'
-import { logger } from './utils/logger'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 

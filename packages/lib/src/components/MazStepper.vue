@@ -69,7 +69,7 @@ const roundStepTextColor = computed(() => `hsl(var(--maz-${color}-foreground))`)
 const slots = useSlots()
 
 const stepCount = computed<number>(
-  () => Object.keys(slots).filter(slot => slot.startsWith('content-')).length,
+  (): number => Object.keys(slots).filter(slot => slot.startsWith('content-')).length,
 )
 
 const localModelValue = ref(1)
