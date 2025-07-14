@@ -5,9 +5,9 @@ on:
     branches-ignore:
       - dependabot/**
     paths:
-      - '.github/workflows/lib-test-unit.yml'
+      - .github/workflows/lib-test-unit.yml
       - 'packages/lib/**'
-      - 'pnpm-lock.yaml'
+      - pnpm-lock.yaml
   push:
     branches:
       - master
@@ -20,8 +20,8 @@ jobs:
     steps:
       - uses: szenius/set-timezone@v1.1
         with:
-          timezoneLinux: 'Europe/Paris'
-          timezoneMacos: 'Europe/Paris'
+          timezoneLinux: Europe/Paris
+          timezoneMacos: Europe/Paris
 
       - uses: actions/checkout@v3
 
@@ -33,7 +33,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'pnpm'
+          cache: pnpm
 
       - name: Install modules
         run: pnpm install --frozen-lockfile --ignore-scripts

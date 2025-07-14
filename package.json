@@ -1,19 +1,38 @@
 {
   "name": "root",
-  "private": true,
   "version": "4.0.0-beta.5",
+  "private": true,
   "description": "A standalone components library for Vue.Js & Nuxt.Js (v3.x)",
+  "author": "LouisMazel <me@loicmazuel.com>",
+  "license": "ISC",
+  "homepage": "https://maz-ui.com/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouisMazel/maz-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LouisMazel/maz-ui/issues"
+  },
+  "keywords": [
+    "vue",
+    "components",
+    "vue-component",
+    "framework",
+    "library",
+    "ui"
+  ],
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "clean": "git clean -fXd -e \\!.env -e \\!.env.* -e \\!.cursorrules -e \\!.vscode -e \\!.vscode/**/* -e \\!*.crt -e \\!*.key",
+    "clean": "find . -name 'node_modules' -type d -prune -exec rm -rf {} + && find . -name 'dist' -type d -prune -exec rm -rf {} + && find . -name 'coverage' -type d -prune -exec rm -rf {} + && find . -name '.DS_Store' -type f -delete && find . -name '*.log' -type f -delete && find . -name '*.tsbuildinfo' -type f -delete",
     "prepare": "npx husky",
     "pre-commit": "lint-staged",
     "pre-commit:all": "lerna run pre-commit --concurrency=1",
     "commit": "cz",
-    "format": "prettier . --write",
     "build:all": "lerna run build --include-dependencies",
     "build:apps": "lerna run build --scope='{docs,nuxt-app,vue-app}' --include-dependencies",
     "build:packages": "lerna run build --scope='{@maz-ui/*,maz-ui}' --include-dependencies",
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "lint:fix": "cross-env NODE_ENV=production eslint . --fix",
     "lint:all": "lerna run lint",
     "lint:fix:all": "lerna run lint:fix",
     "typecheck:all": "lerna run typecheck",
@@ -31,17 +50,13 @@
     "lerna:status": "lerna changed",
     "lerna:diff": "lerna diff",
     "lerna:changelog": "lerna version --conventional-commits --no-git-tag-version --no-push --yes",
-    "generate:changelogs": "node scripts/generate-changelogs.js",
+    "lerna:clean": "lerna clean",
+    "generate:changelogs": "tsx scripts/generate-changelogs.ts",
     "nx:affected:build": "lerna run build --since HEAD~1",
     "nx:affected:test": "lerna run test:unit --since HEAD~1",
     "nx:affected:lint": "lerna run lint --since HEAD~1",
     "nx:cache:clear": "lerna exec -- rm -rf .nx/cache",
     "dev:watch": "lerna run dev --parallel --stream"
-  },
-  "lint-staged": {
-    "!(node_modules/**/*|packages/**/*|apps/**/*|tools/**/*|.prettierignore|.gitignore|.editorconfig).*": [
-      "prettier --write"
-    ]
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
@@ -50,6 +65,7 @@
     "@nx/js": "^21.2.2",
     "@types/node": "^24.0.12",
     "@types/parse-path": "^7.1.0",
+    "changelogen": "^0.6.2",
     "commitizen": "^4.3.1",
     "conventional-changelog-cli": "^5.0.0",
     "conventional-changelog-conventionalcommits": "^9.0.0",
@@ -60,33 +76,20 @@
     "lerna": "^8.2.3",
     "lint-staged": "^16.1.2",
     "nx": "^21.2.2",
-    "prettier": "^3.6.2",
-    "ts-node": "11.0.0-beta.1"
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/LouisMazel/maz-ui.git"
+  "pnpm": {
+    "catalog": false
   },
-  "keywords": [
-    "vue",
-    "components",
-    "vue-component",
-    "framework",
-    "library",
-    "ui"
-  ],
-  "author": "LouisMazel <me@loicmazuel.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/LouisMazel/maz-ui/issues"
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs,mts}": [
+      "eslint --fix"
+    ]
   },
-  "homepage": "https://maz-ui.com/",
   "config": {
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
     }
-  },
-  "pnpm": {
-    "catalog": false
   }
 }

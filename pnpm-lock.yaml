@@ -59,9 +59,6 @@ importers:
       nx:
         specifier: ^21.2.2
         version: 21.2.2
-      prettier:
-        specifier: ^3.6.2
-        version: 3.6.2
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@24.0.12)(typescript@5.8.3)
@@ -321,6 +318,9 @@ importers:
       '@maz-ui/cli':
         specifier: workspace:*
         version: link:../maz-cli
+      '@maz-ui/icons':
+        specifier: workspace:*
+        version: link:../icons
       '@maz-ui/themes':
         specifier: workspace:*
         version: link:../themes
@@ -367,9 +367,6 @@ importers:
       autoprefixer:
         specifier: ^10.4.21
         version: 10.4.21(postcss@8.5.6)
-      chalk:
-        specifier: 5.4.1
-        version: 5.4.1
       glob:
         specifier: ^11.0.3
         version: 11.0.3
@@ -469,9 +466,6 @@ importers:
       clear:
         specifier: ^0.1.0
         version: 0.1.0
-      colorette:
-        specifier: ^2.0.20
-        version: 2.0.20
       commander:
         specifier: ^14.0.0
         version: 14.0.0
@@ -618,9 +612,6 @@ importers:
       '@types/figlet':
         specifier: ^1.7.0
         version: 1.7.0
-      chalk:
-        specifier: 5.4.1
-        version: 5.4.1
       clear:
         specifier: ^0.1.0
         version: 0.1.0

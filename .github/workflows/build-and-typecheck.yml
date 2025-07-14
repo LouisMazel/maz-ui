@@ -4,8 +4,8 @@ on:
   pull_request:
     paths:
       - 'packages/**'
-      - 'pnpm-lock.yaml'
-      - '.github/workflows/typecheck.yml'
+      - pnpm-lock.yaml
+      - .github/workflows/typecheck.yml
 
 jobs:
   build-and-typecheck:
@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'pnpm'
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts

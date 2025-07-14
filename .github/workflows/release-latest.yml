@@ -32,7 +32,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: pnpm
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install Dependencies
@@ -43,13 +43,30 @@ jobs:
 
       - name: Setup Git User
         run: |
-          git config --global user.name "LouisMazel"
-          git config --global user.email "me@louismazel.com"
+          git config --global user.name "Mazel"
+          git config --global user.email "12446546+LouisMazel@users.noreply.github.com"
 
       - name: Graduate Pre-release to Stable
         run: pnpm lerna:version:graduate
         env:
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Generate Changelogs
+        run: |
+          pnpm generate:changelogs
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Release commit
+        run: |
+          VERSION=$(jq -r '.version' lerna.json)
+          git add .
+          git commit -m "chore: bump version to $VERSION"
+          git push origin master
+
+      - name: Push git tag
+        run: git push origin master --follow-tags
 
       - name: Publish to NPM (Latest)
         run: pnpm lerna:publish
