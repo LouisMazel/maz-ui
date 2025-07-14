@@ -1,4 +1,20 @@
 export function setup() {
+  // Suppress all console errors that match network-related patterns
+  const originalConsoleError = console.error
+  console.error = (...args: any[]) => {
+    const message = args.join(' ')
+    if (
+      message.includes('AggregateError')
+      || message.includes('XMLHttpRequest')
+      || message.includes('fetch')
+      || message.includes('Network request failed')
+      || message.includes('xhr-utils.js')
+      || message.includes('XMLHttpRequest-impl.js')
+    ) {
+      return // Suppress these errors
+    }
+    originalConsoleError.apply(console, args)
+  }
   process.env.TZ = 'Europe/Paris'
 
   // Mock Canvas API for Chart.js tests
@@ -64,11 +80,84 @@ export function setup() {
   })
 
   // Mock ResizeObserver for Chart.js
-  globalThis.ResizeObserver = vi.fn().mockImplementation(() => ({
+  vi.stubGlobal('ResizeObserver', vi.fn().mockImplementation(() => ({
     observe: vi.fn(),
     unobserve: vi.fn(),
     disconnect: vi.fn(),
+  })))
+
+  // Mock fetch to prevent network requests in tests
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+    ok: true,
+    json: vi.fn().mockResolvedValue({}),
+    text: vi.fn().mockResolvedValue(''),
+    blob: vi.fn().mockResolvedValue(new Blob()),
+    arrayBuffer: vi.fn().mockResolvedValue(new ArrayBuffer(0)),
   }))
+
+  // Mock XMLHttpRequest to prevent network requests
+  const MockXMLHttpRequest = vi.fn().mockImplementation(() => ({
+    open: vi.fn(),
+    send: vi.fn(() => {
+      // Do nothing to prevent network calls
+    }),
+    setRequestHeader: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    abort: vi.fn(),
+    readyState: 4,
+    status: 200,
+    statusText: 'OK',
+    responseText: '',
+    response: '',
+    responseType: '',
+    responseURL: '',
+    timeout: 0,
+    upload: {
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    },
+    withCredentials: false,
+    onreadystatechange: null,
+    onload: null,
+    onerror: null,
+    ontimeout: null,
+    onabort: null,
+    onloadstart: null,
+    onloadend: null,
+    onprogress: null,
+  }))
+
+  globalThis.XMLHttpRequest = MockXMLHttpRequest as any
+
+  // Mock Image constructor to prevent image loading
+  const MockImage = vi.fn().mockImplementation(() => ({
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    src: '',
+    onload: null,
+    onerror: null,
+    complete: true,
+    naturalWidth: 100,
+    naturalHeight: 100,
+  }))
+  globalThis.Image = MockImage as any
+
+  // Mock WebSocket to prevent websocket connections
+  vi.stubGlobal('WebSocket', vi.fn().mockImplementation(() => ({
+    send: vi.fn(),
+    close: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    readyState: 1, // OPEN
+  })))
+
+  // Mock navigator.sendBeacon
+  Object.defineProperty(globalThis.navigator, 'sendBeacon', {
+    value: vi.fn().mockReturnValue(true),
+    writable: true,
+    configurable: true,
+  })
 }
 
 vi.mock('@maz-ui/translations/src/useTranslations.js', () => ({

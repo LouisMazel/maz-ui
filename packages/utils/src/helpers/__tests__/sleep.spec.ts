@@ -19,11 +19,16 @@ describe('given sleep function', () => {
 
   describe('when called with zero duration', () => {
     it('then it should resolve immediately', async () => {
-      const start = Date.now()
-      await sleep(0)
-      const end = Date.now()
+      vi.useFakeTimers()
+      const promise = sleep(0)
 
-      expect(end - start).toBeLessThan(5) // Allow for small timing discrepancies
+      expect(vi.getTimerCount()).toBe(1)
+
+      vi.advanceTimersByTime(0)
+      await promise
+
+      expect(vi.getTimerCount()).toBe(0)
+      vi.useRealTimers()
     })
   })
 })
