@@ -1,6 +1,9 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "types": [
+      "vitest/globals"
+    ],
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
@@ -10,10 +13,7 @@
     "declarationMap": true,
     "outDir": "./dist",
     "sourceMap": true,
-    "skipLibCheck": true,
-    "types": [
-      "vitest/globals"
-    ]
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*"

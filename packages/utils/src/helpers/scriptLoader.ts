@@ -19,7 +19,7 @@ export class ScriptLoader {
   private identifier: string
 
   constructor({ src, identifier, once = true, async = true, defer = true }: ScriptLoaderOptions) {
-    if (typeof window === 'undefined') {
+    if (typeof globalThis.window === 'undefined') {
       throw new TypeError('[ScriptLoader]: Is supported only on browser side')
     }
 
@@ -48,7 +48,7 @@ export class ScriptLoader {
   }
 
   public load() {
-    const windowInstance = window as IWindow
+    const windowInstance = globalThis as IWindow
 
     const scriptTags = document.head.querySelectorAll(`[data-identifier="${this.identifier}"]`)
 
@@ -67,7 +67,7 @@ export class ScriptLoader {
   }
 
   private injectScript() {
-    const windowInstance = window as IWindow
+    const windowInstance = globalThis as IWindow
 
     return new Promise((resolve, reject) => {
       try {

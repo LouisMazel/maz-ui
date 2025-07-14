@@ -31,14 +31,18 @@ describe('given Swipe class', () => {
     it('then it should throw an error if string selector is not found', () => {
       vi.spyOn(document, 'querySelector').mockReturnValue(null)
       const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
-      // eslint-disable-next-line sonarjs/no-unused-vars
+      /* eslint-disable sonarjs/no-unused-vars, ts/ban-ts-comment */
+      // @ts-expect-error
       const _swipe = new Swipe({ element: '#test' })
+      /* eslint-enable sonarjs/no-unused-vars, ts/ban-ts-comment */
       expect(spy).toHaveBeenCalledWith('[maz-ui][SwipeHandler](setElement) String selector for element is not found')
     })
 
     it('then it should start immediately if immediate option is true', () => {
-      // eslint-disable-next-line sonarjs/no-unused-vars
+      /* eslint-disable sonarjs/no-unused-vars, ts/ban-ts-comment */
+      // @ts-expect-error
       const _swipe = new Swipe({ ...defaultOptions, immediate: true })
+      /* eslint-enable sonarjs/no-unused-vars, ts/ban-ts-comment */
       expect(mockElement.addEventListener).toHaveBeenCalledWith('touchstart', expect.any(Function), { passive: true })
     })
   })
