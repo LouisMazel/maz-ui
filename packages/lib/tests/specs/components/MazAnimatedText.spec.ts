@@ -8,7 +8,7 @@ mockIntersectionObserver.mockReturnValue({
   disconnect: () => null,
 })
 
-window.IntersectionObserver = mockIntersectionObserver
+globalThis.IntersectionObserver = mockIntersectionObserver
 
 describe('component: MazAnimatedText', () => {
   it('renders the component', () => {

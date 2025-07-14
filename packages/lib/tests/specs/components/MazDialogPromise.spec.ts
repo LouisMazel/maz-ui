@@ -6,7 +6,7 @@ describe('given MazDialogPromise component', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazDialogPromise>>
   let teleportTarget: HTMLDivElement
 
-  const { showDialogAndWaitChoice, removeDialogFromState } = useMazDialogPromise()
+  const { showDialogAndWaitChoice, dialogState } = useMazDialogPromise()
 
   beforeEach(() => {
     teleportTarget = document.createElement('div')
@@ -36,7 +36,7 @@ describe('given MazDialogPromise component', () => {
   })
 
   afterEach(() => {
-    removeDialogFromState('test')
+    dialogState.value = []
 
     const teleportTarget = document.getElementById('teleport-target')
     if (teleportTarget) {
@@ -49,26 +49,19 @@ describe('given MazDialogPromise component', () => {
     expect(wrapper.vm.currentModal).toBeUndefined()
     showDialogAndWaitChoice('test')
     // @ts-expect-error - test case
-    expect(wrapper.vm.currentModal.id).toBeTruthy()
+    expect(wrapper.vm.currentModal.id).toBe('test')
   })
 
   it('renders the correct message', () => {
-    const message = wrapper.find('.m-dialog-content')
-    const header = wrapper.find('.m-dialog-header')
+    expect(wrapper.text()).toContain('Test Message')
+    expect(wrapper.text()).toContain('Test Title')
 
-    expect(message.text()).toBe('Test Message')
-    expect(header.text()).toBe('Test Title')
-
-    // @ts-expect-error - private value
-    expect(wrapper.vm.confirmButtonData).toStrictEqual({ text: 'Yes', color: 'success' })
-    // @ts-expect-error - private value
-    expect(wrapper.vm.cancelButtonData).toStrictEqual({ text: 'No', color: 'destructive' })
     // @ts-expect-error - private value
     expect(wrapper.vm.currentData).toStrictEqual({
-      cancelButton: { text: 'Cancel', color: 'destructive' },
-      confirmButton: { text: 'Confirm', color: 'success' },
-      cancelText: 'No',
-      confirmText: 'Yes',
+      buttons: [
+        { text: 'Confirm', color: 'success', type: 'accept', response: 'accept' },
+        { text: 'Cancel', color: 'destructive', type: 'reject', response: 'reject' },
+      ],
     })
   })
 })

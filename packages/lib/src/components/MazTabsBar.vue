@@ -145,7 +145,7 @@ async function setIndicatorAndScroll() {
     activeTab.offsetLeft - scrollOffset < tabsBar.scrollLeft
     || activeTab.offsetLeft + activeTab.offsetWidth > tabsBar.scrollLeft + tabsBar.clientWidth
   ) {
-    const tabBarPaddingLeft = window.getComputedStyle(tabsBar, 'padding-left').paddingLeft
+    const tabBarPaddingLeft = globalThis.getComputedStyle(tabsBar, 'padding-left').paddingLeft
     const tabsBarPaddingOffset = Number(tabBarPaddingLeft.slice(0, -2))
 
     tabsBar.scrollTo({
@@ -202,14 +202,14 @@ watch(
 )
 
 function getQueryParamTab() {
-  const urlActuelle = new URL(window.location.href)
+  const urlActuelle = new URL(globalThis.location.href)
   return Number(urlActuelle.searchParams.get(queryParam))
 }
 
 function addOrUpdateQueryParamTab(tab: number) {
-  const urlActuelle = new URL(window.location.href)
+  const urlActuelle = new URL(globalThis.location.href)
   urlActuelle.searchParams.set(queryParam, String(tab))
-  window.history.replaceState({}, document.title, urlActuelle.toString())
+  globalThis.history.replaceState({}, document.title, urlActuelle.toString())
 }
 
 onMounted(() => {

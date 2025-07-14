@@ -3,10 +3,12 @@ import type { IconComponent } from '@maz-ui/icons'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazColor } from './types'
 import { MazArrowTopRightOnSquare } from '@maz-ui/icons'
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, type HTMLAttributes } from 'vue'
 import { useInstanceUniqId } from '../composables'
 
 const {
+  class: classProp,
+  style: styleProp,
   as,
   id,
   href,
@@ -21,6 +23,16 @@ const {
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 
 export interface MazLinkProps {
+  /**
+   * The class attribute of the link
+   * @default undefined
+   */
+  class?: HTMLAttributes['class']
+  /**
+   * The style attribute of the link
+   * @default undefined
+   */
+  style?: HTMLAttributes['style']
   /**
    * The component to use for the link - if not provided, it will be `router-link` if `to` is provided, will be `a` if `href` is provided, otherwise it will be `button`, you can force the component to be used with `as` prop
    * @default depends on the provided props
@@ -132,6 +144,7 @@ const isButton = computed(() => component.value === 'button')
         '--underline-hover': !underline && underlineHover,
       },
       `--${color}`,
+      classProp,
     ]"
     :to
     :href
@@ -142,6 +155,7 @@ const isButton = computed(() => component.value === 'button')
     :aria-label="!isButton && ariaLabel"
     :type="isButton && 'button'"
     :disabled="isButton && disabled"
+    :style="styleProp"
     v-bind="$attrs"
   >
     <!--

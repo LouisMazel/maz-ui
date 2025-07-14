@@ -6,7 +6,13 @@ import { mount } from '@vue/test-utils'
 
 describe('given MazTable component', () => {
   it('should render the component', async () => {
-    const props: MazTableProps = {
+    const props: MazTableProps<{
+      id: number
+      firstname: string
+      lastname: string
+      age: number
+      city: string
+    }> = {
       sortable: true,
       pagination: true,
       search: true,
@@ -132,7 +138,13 @@ describe('given MazTable component', () => {
   })
 
   it('should sort rows by column', async () => {
-    const props: MazTableProps = {
+    const props: MazTableProps<{
+      id: number
+      firstname: string
+      lastname: string
+      age: number
+      city: string
+    }> = {
       sortable: true,
       headers: [
         { label: 'Id', key: 'id' },
@@ -232,7 +244,13 @@ describe('given MazTable component', () => {
   })
 
   it('should filter rows by search query', async () => {
-    const props: MazTableProps = {
+    const props: MazTableProps<{
+      id: number
+      firstname: string
+      lastname: string
+      age: number
+      city: string
+    }> = {
       search: true,
       headers: [
         { label: 'Id', key: 'id' },
@@ -266,7 +284,13 @@ describe('given MazTable component', () => {
   })
 
   it('should paginate rows', async () => {
-    const props: MazTableProps = {
+    const props: MazTableProps<{
+      id: number
+      firstname: string
+      lastname: string
+      age: number
+      city: string
+    }> = {
       pagination: true,
       pageSize: 2,
       headers: [

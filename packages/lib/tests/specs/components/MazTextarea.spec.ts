@@ -1,8 +1,8 @@
 import type { VueWrapper } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import MazTextarea from '@components/MazTextarea.vue'
+import { TextareaAutogrow } from '@maz-ui/utils/src/helpers/TextareaAutogrow.js'
 import { elementEmitEvent } from '@tests/helpers/document-event'
-import { TextareaAutogrow } from '@utils/TextareaAutogrow'
 import { shallowMount } from '@vue/test-utils'
 
 describe('components/MazTextarea/textarea-autogrow.ts', () => {
@@ -28,7 +28,7 @@ describe('components/MazTextarea/textarea-autogrow.ts', () => {
 
   it('should add css style on resize event', () => {
     elementEmitEvent(textareaElement, 'focus')
-    elementEmitEvent(window, 'resize')
+    elementEmitEvent(globalThis, 'resize')
 
     expect(textareaElement.style.height).toBe('0px')
     expect(textareaElement.style.overflow).toBe('hidden')

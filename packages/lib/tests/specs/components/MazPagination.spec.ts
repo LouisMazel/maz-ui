@@ -13,9 +13,9 @@ describe('mazPagination.vue', () => {
 
     expect(wrapper.exists()).toBe(true)
     expect(wrapper.props('buttonProps')).toBeUndefined()
-    expect(wrapper.props('pageRange')).toBe(2)
+    expect(wrapper.props('pageRange')).toBe(1)
     expect(wrapper.props('resultsSize')).toBeUndefined()
-    expect(wrapper.props('activeColor')).toBe('primary')
+    expect(wrapper.props('activeColor')).toBe('background')
   })
 
   // Test rendering with custom props

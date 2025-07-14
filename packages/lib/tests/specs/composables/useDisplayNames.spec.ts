@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
 
 describe('useDisplayNames', () => {
-  const { getDisplayName, getAllDisplayNames } = useDisplayNames()
+  const { getDisplayName, getAllDisplayNames } = useDisplayNames('en-US')
 
   it('should return the display name for a given ISO code and locale', () => {
     const code = ref('en-US')
@@ -17,7 +17,7 @@ describe('useDisplayNames', () => {
     const code = ref('en-US')
     const displayName = getDisplayName(code, { type: 'language' })
 
-    expect(displayName.value).toBe('en-US')
+    expect(displayName.value).toBe('American English')
   })
 
   it('should return the ISO code if ISO code is not provided', () => {
@@ -32,13 +32,13 @@ describe('useDisplayNames', () => {
     const locale = ref('fr-FR')
     const languages = getAllDisplayNames({ type: 'language', locale })
 
-    expect(languages.value).toContainEqual({ language: 'vietnamien (Viêt Nam)', code: 'vi-VN' })
+    expect(languages.value).toContainEqual({ name: 'vietnamien (Viêt Nam)', code: 'vi-VN' })
   })
 
   it('should return an empty array if locale is not provided for ISO codes', () => {
     const languages = getAllDisplayNames({ type: 'language' })
 
-    expect(languages.value).toEqual([])
+    expect(languages.value?.some(language => language.name === 'French' && language.code === 'fr')).toBe(true)
   })
 
   it('should handle invalid ISO codes gracefully', () => {

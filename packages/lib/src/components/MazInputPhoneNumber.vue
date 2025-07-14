@@ -439,7 +439,7 @@ function onPhoneNumberChanged({
   }
 
   if (results.value.isValid && hasAutoFormat.value) {
-    phoneNumber.value = results.value.formatNational?.trim().replaceAll(new RegExp(/\D/g), '')
+    phoneNumber.value = results.value.formatNational?.trim().replace(new RegExp(/\D/g), '')
   }
   else {
     phoneNumber.value = newPhoneNumber
