@@ -48,14 +48,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
 
-      - name: Release commit
+      - name: Commit version and changelog
         run: |
           VERSION=$(jq -r '.version' lerna.json)
           git add .
           git commit -m "chore: bump version to $VERSION"
-          git push origin master
 
-      - name: Push git tag
+      - name: Create and push git tag
         run: |
           VERSION=$(jq -r '.version' lerna.json)
           git tag -a "v$VERSION" -m "chore(release): version packages $VERSION"
@@ -65,3 +64,10 @@ jobs:
         run: pnpm lerna:publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to GitHub Release
+        run: |
+          pnpm publish:github:release
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
