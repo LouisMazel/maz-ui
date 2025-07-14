@@ -77,8 +77,6 @@ export async function generateChangelog({ pkg, config, to }: { pkg: PackageInfo,
       newChangelog = `${newChangelog}\n\n` + `**Note:** Version bump only to follow ecosystem versioning`
     }
 
-    logger.log(`📋 Changelog for ${pkg.name}:`, newChangelog)
-
     logger.success(`✅ Changelog generated for ${pkg.name}!`)
 
     return newChangelog
