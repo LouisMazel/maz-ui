@@ -12,8 +12,7 @@ import { type CodesType, type DisplayNameCode, type DisplayNamesOptions, useDisp
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import MazSelect, { type MazSelectProps } from './MazSelect.vue'
 
-export interface MazSelectCountryOption { name: string, code: DisplayNameCode | string }
-export interface MazSelectCountryProps<Option extends MazSelectCountryOption = MazSelectCountryOption> extends Omit<MazSelectProps<Option['code'], Option, false>, 'options' | 'multiple'> {
+export interface MazSelectCountryProps<Option extends { name: string, code: DisplayNameCode | string } = { name: string, code: string }> extends Omit<MazSelectProps<Option['code'], Option, false>, 'options' | 'multiple'> {
   /**
    * Style attribut of the component root element
    * @type {HTMLAttributes['style']}
