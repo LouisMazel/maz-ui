@@ -27,10 +27,10 @@ describe('given isStandaloneMode function', () => {
 
     describe('and navigator.standalone is true', () => {
       it('then it should return true', () => {
-        globalThis.navigator = { standalone: true } as any
-        globalThis.window = {
-          matchMedia: () => ({ matches: false }),
-        } as any
+        vi.stubGlobal('navigator', {
+          standalone: true,
+        })
+        vi.stubGlobal('matchMedia', () => ({ matches: false }))
 
         expect(isStandaloneMode()).toBe(true)
       })
@@ -38,10 +38,10 @@ describe('given isStandaloneMode function', () => {
 
     describe('and window.matchMedia matches standalone mode', () => {
       it('then it should return true', () => {
-        globalThis.navigator = {} as any
-        globalThis.window = {
-          matchMedia: () => ({ matches: true }),
-        } as any
+        vi.stubGlobal('navigator', {
+          standalone: false,
+        })
+        vi.stubGlobal('matchMedia', () => ({ matches: true }))
 
         expect(isStandaloneMode()).toBe(true)
       })
@@ -49,10 +49,8 @@ describe('given isStandaloneMode function', () => {
 
     describe('and neither navigator.standalone is true nor window.matchMedia matches', () => {
       it('then it should return false', () => {
-        globalThis.navigator = {} as any
-        globalThis.window = {
-          matchMedia: () => ({ matches: false }),
-        } as any
+        vi.stubGlobal('navigator', {})
+        vi.stubGlobal('matchMedia', () => ({ matches: false }))
 
         expect(isStandaloneMode()).toBe(false)
       })
