@@ -30,3 +30,6 @@ coverage
 
 auto-imports.d.ts
 components.d.ts
+
+# Visualizer
+stats.html

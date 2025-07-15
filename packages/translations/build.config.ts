@@ -7,5 +7,8 @@ export default defineBuildConfig({
   failOnWarn: true,
   rollup: {
     emitCJS: false,
+    output: {
+      preserveModules: true,
+    },
   },
 })

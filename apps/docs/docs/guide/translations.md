@@ -1101,7 +1101,6 @@ export default {
    */
   pagination: {
     navAriaLabel: 'page navigation',
-    navAriaLabel2: 'page navigation2',
     screenReader: {
       firstPage: 'First Page, page {page}',
       previousPage: 'Previous Page, page {page}',
