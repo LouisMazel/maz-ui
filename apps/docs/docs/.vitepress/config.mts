@@ -1,5 +1,5 @@
 import type { Plugin } from 'postcss'
-import type { HeadConfig, UserConfig } from 'vitepress'
+import type { DefaultTheme, HeadConfig, UserConfig } from 'vitepress'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import autoprefixer from 'autoprefixer'
@@ -25,7 +25,7 @@ function getAssetBaseUrl(path: string): string {
   return `${base}${path}`
 }
 
-export default defineConfig({
+export default defineConfig<DefaultTheme.Config>({
   lang: 'en-US',
   title: 'Maz-UI',
   titleTemplate: ':title | Maz-UI',
@@ -77,6 +77,7 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/LouisMazel/maz-ui' },
       { icon: 'twitter', link: 'https://twitter.com/maz__ui' },
+      { icon: 'npm', link: 'https://www.npmjs.com/package/maz-ui' },
     ],
     footer: {
       // message: 'Released under the MIT License.',
@@ -93,7 +94,7 @@ export default defineConfig({
       apiKey: 'a98bd8a34144a39eb5c59898582e093f',
       indexName: 'maz-ui-3',
     },
-  },
+  } satisfies DefaultTheme.Config,
 
   vite: {
     build: {
@@ -163,12 +164,16 @@ export default defineConfig({
     const outputDistFolder = '/og-images'
     const imagePublicPath = `${outputDistFolder}/${ogImageFilename}.png`
 
-    const image = await getOgImage({
-      outputFolder: join(_dirname, `./dist`, outputDistFolder),
-      filename: ogImageFilename,
-      title: currentTitle,
-      description: currentDescription,
-    })
+    let image: string | undefined
+
+    if (process.env.TEST_ENV !== 'true') {
+      image = await getOgImage({
+        outputFolder: join(_dirname, `./dist`, outputDistFolder),
+        filename: ogImageFilename,
+        title: currentTitle,
+        description: currentDescription,
+      })
+    }
 
     const ogImage = image ? getAssetBaseUrl(imagePublicPath) : getAssetBaseUrl('/img/maz-ui-preview.jpg')
 
