@@ -50,7 +50,7 @@ export class DialogHandler {
 
     async function runDialog() {
       try {
-        const response = await showDialogAndWaitChoice(props.identifier, close)
+        const response = await showDialogAndWaitChoice(props.identifier)
         if (props.onAccept) {
           props.onAccept(response)
         }

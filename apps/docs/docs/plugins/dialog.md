@@ -7,7 +7,7 @@ description: Displays messages to your users in flexible and promised dialogs
 
 {{ $frontmatter.description }}
 
-It is a simple and easy-to-use plugin that allows you to display messages to your users in flexible and promised dialogs. The plugin will mount the `MazDialogPromise` component to the root of your application and provide you with a handler to open the dialog, close it and return a promise.
+It is a simple and easy-to-use plugin that allows you to display messages to your users in flexible and promised dialogs. The plugin will mount the `MazDialogConfirm` component to the root of your application and provide you with a handler to open the dialog, close it and return a promise.
 
 ::: tip
 This plugin has a composable for easier use, after installing it you can use [useDialog](./../composables/use-dialog.md)
@@ -67,6 +67,8 @@ async function openDialog() {
   dialog.open({
     title: 'Dialog title',
     message: 'Dialog message',
+    acceptText: 'Accept',
+    rejectText: 'Reject',
     onAccept: (response) => {
       toast.success(`Dialog accepted`, {
         position: 'bottom',
@@ -203,8 +205,8 @@ async function openDialogResponse() {
 </script>
 
 <template>
-  <MazBtn color="contrast" @click="openDialogPromised">
-    Show dialog with custom promised buttons
+  <MazBtn color="contrast" @click="openDialogResponse">
+    Show dialog with custom response
   </MazBtn>
 </template>
 ```
@@ -277,7 +279,7 @@ dialog.open(options)
 ```ts
 import type { MazBtnProps } from 'maz-ui/components/MazBtn'
 
-type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
+type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue'>> & {
   /**
    * Dialog identifier - identifier to manage multiple dialogs
    * @default 'main-dialog'
@@ -287,7 +289,7 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
    * Custom buttons to display in the dialog and replace the default confirm and cancel buttons
    * @default [{ text: 'Confirm', color: 'success', type: 'accept' }, { text: 'Cancel', color: 'destructive', type: 'reject' }]
    */
-  buttons?: MazDialogPromiseButton[]
+  buttons?: MazDialogConfirmButton[]
   /**
    * Function to execute when the dialog is accepted (when the user click on the confirm button)
    * Only available if the button type is 'accept'
@@ -315,6 +317,8 @@ type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue'>> & {
     dialog.open({
       title: 'Dialog title',
       message: 'Dialog message',
+      acceptText: 'Accept',
+      rejectText: 'Reject',
       onAccept: (response) => {
         toast.success(`Dialog accepted`, {
           position: 'bottom',

@@ -1,6 +1,6 @@
 ---
-title: MazDialogPromise
-description: MazDialogPromise is a standalone component that dialogs with the user to show important information and propose confirmation. You should wait for this response with await.
+title: MazDialogConfirm
+description: MazDialogConfirm is a standalone component that dialogs with the user to show important information and propose confirmation. You should wait for this response with await.
 
 ---
 
@@ -22,16 +22,16 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 
 <MazBtn @click="askToUser">Ask user</MazBtn>
 
-<MazDialogPromise identifier="one" />
+<MazDialogConfirm identifier="one" accept-text="Ok" reject-text="Reject" />
 
-<MazDialogPromise identifier="two" :buttons="buttons">
+<MazDialogConfirm identifier="two" :buttons="buttons">
   <template #title>
     Do you really want to delete this user?
   </template>
   <template #default>
     Are you really sure you want to delete this user?
   </template>
-</MazDialogPromise>
+</MazDialogConfirm>
 
 <MazDialog v-model="confirmDialog">
   <template #title>
@@ -49,13 +49,14 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 
 ```vue
 <script setup>
-import { MazDialog, MazDialogPromise, useMazDialogPromise } from 'maz-ui/components'
+import MazDialogConfirm, { useMazDialogConfirm } from 'maz-ui/components/MazDialogConfirm'
+import MazDialog from 'maz-ui/components/MazDialog'
 
 import { ref } from 'vue'
 
 const confirmDialog = ref(false)
 
-const { showDialogAndWaitChoice, data } = useMazDialogPromise()
+const { showDialogAndWaitChoice, data } = useMazDialogConfirm()
 
 data.value = {
   title: 'Delete user',
@@ -68,7 +69,7 @@ const buttons: DialogCustomButton[] = [
     type: 'reject',
     color: 'destructive',
     outlined: true,
-    response: new Error('cancel'),
+    response: 'cancel',
     size: 'sm',
   },
   {
@@ -82,18 +83,18 @@ const buttons: DialogCustomButton[] = [
 
 async function askToUser() {
   try {
-    const responseOne = await showDialogAndWaitChoice('one')
-    toast.success(responseOne, {
+    const acceptResponse = await showDialogAndWaitChoice('one')
+    toast.success(acceptResponse, {
       position: 'top-right'
     })
-    const responseTwo = await showDialogAndWaitChoice('two')
-    toast.success(responseTwo, {
+    const rejectResponse = await showDialogAndWaitChoice('two')
+    toast.success(rejectResponse, {
       position: 'top-right'
     })
     confirmDialog.value = true
   }
-  catch (error) {
-    toast.error(error.message ?? error, {
+  catch (rejectResponse) {
+    toast.error(rejectResponse, {
       position: 'top-right'
     })
   }
@@ -105,19 +106,19 @@ async function askToUser() {
     Ask user
   </MazBtn>
 
-  <MazDialogPromise
+  <MazDialogConfirm
     :data="dataPromiseOne"
     identifier="one"
   />
 
-  <MazDialogPromise identifier="two" :buttons="buttons">
+  <MazDialogConfirm identifier="two" :buttons="buttons">
     <template #title>
       Do you really want to delete this user?
     </template>
     <template #default>
       Are you really sure you want to delete this user?
     </template>
-  </MazDialogPromise>
+  </MazDialogConfirm>
 
   <MazDialog v-model="confirmDialog">
     <template #title>
@@ -138,7 +139,7 @@ async function askToUser() {
 ## Types
 
 ```ts
-interface MazDialogPromiseData {
+interface MazDialogConfirmData {
   /**
    * Dialog title
    */
@@ -150,12 +151,13 @@ interface MazDialogPromiseData {
   /**
    * Dialog custom buttons
    * @default [{ text: 'Confirm', color: 'success', type: 'accept' }, { text: 'Cancel', color: 'destructive', type: 'reject' }]
-   * @type {MazDialogPromiseButton[]}
+   * @type {MazDialogConfirmButton[]}
    */
-  buttons?: MazDialogPromiseButton[]
+  buttons?: MazDialogConfirmButton[]
 }
 
-interface MazDialogPromiseButton {
+// All props of MazBtn
+interface MazDialogConfirmButton {
   text?: string
   block?: boolean
   color?: Color
@@ -182,32 +184,32 @@ type Color = 'primary'
 type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 ```
 
-<!--@include: ./../.vitepress/generated-docs/maz-dialog-promise.doc.md-->
+<!--@include: ./../.vitepress/generated-docs/maz-dialog-confirm.doc.md-->
 
 <script setup lang="ts">
   import { ref } from 'vue'
   import { useToast } from 'maz-ui/src/composables/useToast'
-  import MazDialogPromise, {
-    useMazDialogPromise, type MazDialogPromiseButton, type MazDialogPromiseData
-  } from 'maz-ui/src/components/MazDialogPromise.vue'
+  import MazDialogConfirm, {
+    useMazDialogConfirm, type MazDialogConfirmButton, type MazDialogConfirmData
+  } from 'maz-ui/src/components/MazDialogConfirm.vue'
 
-  const { showDialogAndWaitChoice, data } = useMazDialogPromise()
+  const { showDialogAndWaitChoice, data } = useMazDialogConfirm()
   const confirmDialog = ref(false)
   const toast = useToast()
 
   async function askToUser () {
     try {
-      const responseOne = await showDialogAndWaitChoice('one')
-      toast.success(responseOne, {
+      const acceptResponse = await showDialogAndWaitChoice('one')
+      toast.success(acceptResponse, {
         position: 'top-right'
       })
-      const responseTwo = await showDialogAndWaitChoice('two')
-      toast.success(responseTwo, {
+      const rejectResponse = await showDialogAndWaitChoice('two')
+      toast.success(rejectResponse, {
         position: 'top-right'
       })
       confirmDialog.value = true
-    } catch (error) {
-      toast.error(error.message, {
+    } catch (rejectResponse) {
+      toast.error(rejectResponse, {
         position: 'top-right'
       })
     }
@@ -218,13 +220,13 @@ type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
     message: 'Are you sure you want to delete this user?',
   }
 
-  const buttons: MazDialogPromiseButton[] = [
+  const buttons: MazDialogConfirmButton[] = [
     {
       text: 'Cancel',
       type: 'reject',
       color: 'destructive',
       outlined: true,
-      response: new Error('cancel'),
+      response: 'cancel',
       size: 'sm',
     },
     {
