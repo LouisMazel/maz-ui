@@ -1,19 +1,19 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { MazDialogPromise, useMazDialogPromise } from '@components/index.ts'
+import { MazDialogConfirm, useMazDialogConfirm } from '@components/index'
 import { mount } from '@vue/test-utils'
 
-describe('given MazDialogPromise component', () => {
-  let wrapper: VueWrapper<InstanceType<typeof MazDialogPromise>>
+describe('given MazDialogConfirm component', () => {
+  let wrapper: VueWrapper<InstanceType<typeof MazDialogConfirm>>
   let teleportTarget: HTMLDivElement
 
-  const { showDialogAndWaitChoice, dialogState } = useMazDialogPromise()
+  const { showDialogAndWaitChoice, dialogState } = useMazDialogConfirm()
 
   beforeEach(() => {
     teleportTarget = document.createElement('div')
     teleportTarget.id = 'teleport-target'
     document.body.appendChild(teleportTarget)
 
-    wrapper = mount(MazDialogPromise, {
+    wrapper = mount(MazDialogConfirm, {
       props: {
         title: 'Test Title',
         message: 'Test Message',

@@ -53,7 +53,7 @@ export const components = {
       collapsed: false,
       items: [
         { text: 'Dialog', link: '/components/maz-dialog' },
-        { text: 'DialogPromise', link: '/components/maz-dialog-promise' },
+        { text: 'DialogConfirm', link: '/components/maz-dialog-confirm' },
         { text: 'Drawer', link: '/components/maz-drawer' },
         { text: 'BottomSheet', link: '/components/maz-bottom-sheet' },
         { text: 'Popover', link: '/components/maz-popover' },

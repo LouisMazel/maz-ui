@@ -106,20 +106,24 @@ export default defineConfig({
       {
         name: 'redirect-plugin',
         configureServer(server) {
-          server.middlewares.use('/components/maz-phone-number-input', (req, res) => {
+          server.middlewares.use('/components/maz-phone-number-input', (_req, res) => {
             res.writeHead(301, { Location: '/components/maz-input-phone-number' })
             res.end()
           })
-          server.middlewares.use('/components/maz-picker', (req, res) => {
+          server.middlewares.use('/components/maz-picker', (_req, res) => {
             res.writeHead(301, { Location: '/components/maz-date-picker' })
             res.end()
           })
-          server.middlewares.use('/composables/use-language-display-names', (req, res) => {
+          server.middlewares.use('/composables/use-language-display-names', (_req, res) => {
             res.writeHead(301, { Location: '/composables/use-display-names' })
             res.end()
           })
-          server.middlewares.use('/plugins/toaster', (req, res) => {
+          server.middlewares.use('/plugins/toaster', (_req, res) => {
             res.writeHead(301, { Location: '/plugins/toast' })
+            res.end()
+          })
+          server.middlewares.use('/components/maz-dialog-promise', (_req, res) => {
+            res.writeHead(301, { Location: '/components/maz-dialog-confirm' })
             res.end()
           })
         },
