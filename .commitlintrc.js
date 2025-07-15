@@ -19,6 +19,7 @@ module.exports = {
         '@maz-ui/themes',
         '@maz-ui/translations',
         '@maz-ui/utils',
+        '@maz-ui/node',
       ],
     ],
     'subject-case': [2, 'never', ['upper-case', 'pascal-case', 'start-case']],
