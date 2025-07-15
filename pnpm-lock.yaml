@@ -291,6 +291,9 @@ importers:
 
   packages/icons:
     devDependencies:
+      '@maz-ui/node':
+        specifier: workspace:*
+        version: link:../node
       '@maz-ui/utils':
         specifier: workspace:*
         version: link:../utils
@@ -463,6 +466,9 @@ importers:
       '@clack/prompts':
         specifier: ^0.11.0
         version: 0.11.0
+      '@maz-ui/node':
+        specifier: workspace:*
+        version: link:../node
       clear:
         specifier: ^0.1.0
         version: 0.1.0
@@ -616,6 +622,9 @@ importers:
       '@clack/prompts':
         specifier: ^0.11.0
         version: 0.11.0
+      '@maz-ui/node':
+        specifier: workspace:*
+        version: link:../../packages/node
       '@maz-ui/utils':
         specifier: workspace:*
         version: link:../../packages/utils

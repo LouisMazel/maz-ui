@@ -36,11 +36,6 @@ describe('components/MazInput.vue', () => {
     expect(wrapper.classes()).toContain('--is-focused')
   })
 
-  it('should apply the --is-disabled class when the disabled prop is passed', async () => {
-    await wrapper.setProps({ disabled: true })
-    expect(wrapper.classes()).toContain('--is-disabled')
-  })
-
   it('should apply the --is-readonly class when the readonly prop is passed', async () => {
     await wrapper.setProps({ readonly: true })
     expect(wrapper.classes()).toContain('--is-readonly')

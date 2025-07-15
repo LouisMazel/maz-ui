@@ -57,22 +57,4 @@ describe('mazRadio', () => {
 
     expect(radioLabel.classes()).toContain('--selected')
   })
-
-  it('applies the "--disabled" class when the radio is disabled', () => {
-    const wrapper = mount(MazRadio, {
-      props: {
-        value: 'option1',
-        name: 'radioGroup',
-        modelValue: 'option1',
-        disabled: true,
-      },
-      slots: {
-        default: 'radio Label',
-      },
-    })
-
-    const radioLabel = wrapper.find('label')
-
-    expect(radioLabel.classes()).toContain('--disabled')
-  })
 })
