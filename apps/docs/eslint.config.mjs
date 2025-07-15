@@ -9,13 +9,9 @@ export default defineConfig(
     tailwindcss: true,
     sonarjs: false,
     vueAccessibility: false,
+    markdown: true,
   },
   {
     ignores: ['docs/**/*.md'],
-    // rules: {
-    //   'no-console': 'off',
-    //   'vue/no-unused-refs': 'off',
-    //   'style/max-statements-per-line': 'off',
-    // },
   },
 )

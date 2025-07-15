@@ -3,6 +3,7 @@ import { sleep } from 'maz-ui'
 
 const toast = useToast()
 const wait = useWait()
+useWindowSize()
 
 toast.message('Votre mot de passe a été mis à jour', {
   position: 'bottom-left',

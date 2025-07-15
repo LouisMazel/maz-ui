@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import type { MazDatePicker, MazSwitch, MazTextarea } from '#components'
-import type { DeepPartial } from '@maz-ui/utils/src/ts-helpers/DeepPartial.js'
 import type { GenericInstanceType } from 'maz-ui'
-import type { MazDatePickerPartialRangeValue, MazDatePickerValue, MazInput, MazRadioButtons } from 'maz-ui/components'
-import type { InferSchemaFormValidator } from 'maz-ui/src/composables/index.js'
-import { useFormField, useFormValidator } from 'maz-ui/src/composables/index.js'
+import type { MazDatePickerPartialRangeValue, MazInput, MazRadioButtons } from 'maz-ui/components'
+// import { useFormField, useFormValidator } from 'maz-ui/src/composables/index.js'
 import { array, boolean, literal, maxValue, minLength, minValue, nonEmpty, number as numberAction, object, pipe, string } from 'valibot'
 
 const schema = ref({
@@ -27,19 +25,14 @@ const schema = ref({
   }),
 })
 
-const defaultValues = ref({
-  name: 'Mazel',
-  date: {
-    start: undefined,
-    end: undefined,
-  },
-})
-
 const { isSubmitting, handleSubmit, model, fieldsStates } = useFormValidator({
   schema,
   defaultValues: {
     age: 33,
-    date: undefined,
+    date: {
+      start: '2025-01-01',
+      end: '2025-01-01',
+    },
   },
   options: {
     mode: 'progressive',

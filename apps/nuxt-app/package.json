@@ -18,7 +18,7 @@
     "maz-ui": "workspace:*"
   },
   "devDependencies": {
-    "@maz-ui/nuxt": "4.0.0-beta.7",
+    "@maz-ui/nuxt": "workspace:*",
     "@nuxt/devtools": "^2.4.1",
     "@nuxtjs/tailwindcss": "^6.14.0",
     "autoprefixer": "^10.4.21",
