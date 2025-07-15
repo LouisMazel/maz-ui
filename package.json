@@ -23,9 +23,8 @@
   ],
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "clean": "find . -name 'node_modules' -type d -prune -exec rm -rf {} + && find . -name 'dist' -type d -prune -exec rm -rf {} + && find . -name 'coverage' -type d -prune -exec rm -rf {} + && find . -name '.DS_Store' -type f -delete && find . -name '*.log' -type f -delete && find . -name '*.tsbuildinfo' -type f -delete",
+    "clean": "make clean",
     "prepare": "npx husky",
-    "postinstall": "pnpm build:utils",
     "pre-commit": "lint-staged",
     "pre-commit:all": "lerna run pre-commit --concurrency=1",
     "commit": "cz",
@@ -33,8 +32,8 @@
     "build:apps": "lerna run build --scope='{docs,nuxt-app,vue-app}' --include-dependencies",
     "build:utils": "lerna run build --scope='{@maz-ui/node,@maz-ui/utils}' --include-dependencies",
     "build:packages": "lerna run build --scope='{@maz-ui/*,maz-ui}' --include-dependencies",
-    "lint": "cross-env NODE_ENV=production eslint .",
-    "lint:fix": "cross-env NODE_ENV=production eslint . --fix",
+    "lint": "cross-env NODE_ENV=production eslint",
+    "lint:fix": "cross-env NODE_ENV=production eslint --fix",
     "lint:all": "lerna run lint",
     "lint:fix:all": "lerna run lint:fix",
     "typecheck:all": "lerna run typecheck",
@@ -54,7 +53,7 @@
     "lerna:changelog": "lerna version --conventional-commits --no-git-tag-version --no-push --yes",
     "generate:changelogs": "tsx scripts/changelog/generate-changelogs.ts",
     "publish:github:release": "tsx scripts/changelog/publish-github-release.ts",
-    "nx:affected:pre-commit": "lerna run pre-commit --since HEAD~1 --loglevel=success",
+    "nx:affected:pre-commit": "lerna run pre-commit --since HEAD~1 --loglevel=success --concurrency=1",
     "nx:affected:build": "lerna run build --since HEAD~1 --loglevel=success",
     "nx:affected:test": "lerna run test:unit --since HEAD~1 --loglevel=success",
     "nx:affected:lint": "lerna run lint --since HEAD~1 --loglevel=success",
@@ -84,7 +83,13 @@
     "tsx": "^4.20.3"
   },
   "pnpm": {
-    "catalog": false
+    "catalog": false,
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "nx",
+      "unrs-resolver"
+    ]
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs,mts}": [

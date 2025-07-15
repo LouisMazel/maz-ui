@@ -47,13 +47,13 @@ function createFormComponent(options?: typeof defaultOptions) {
         },
       })
 
-      const nameField = useFormField<typeof schema, 'name'>('name', { formIdentifier: identifier })
-      const ageField = useFormField<typeof schema, 'age'>('age', {
+      const nameField = useFormField<string>('name', { formIdentifier: identifier })
+      const ageField = useFormField<number>('age', {
         defaultValue: 10,
         formIdentifier: identifier,
         mode: 'lazy',
       })
-      const passwordField = useFormField<typeof schema, 'password'>('password', { formIdentifier: identifier })
+      const passwordField = useFormField<string>('password', { formIdentifier: identifier })
 
       return { form, nameField, ageField, passwordField }
     },
