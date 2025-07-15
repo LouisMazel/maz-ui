@@ -1,14 +1,16 @@
 {
   "extends": "../../tsconfig.json",
+  "_version": "22.0.0",
   "compilerOptions": {
-    "strict": true,
+    "target": "esnext",
+    "lib": ["es2024", "ESNext.Array", "ESNext.Collection", "ESNext.Iterator"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "types": ["node"],
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
     "skipLibCheck": true
   },
   "include": [

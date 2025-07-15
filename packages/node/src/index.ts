@@ -1,2 +1,2 @@
-export * from './execPromise'
-export * from './logger'
+export * from './execPromise.js'
+export * from './logger.js'
