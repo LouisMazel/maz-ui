@@ -1,10 +1,10 @@
 import type { App } from 'vue'
-import type { MazDialogPromiseProps } from '../../components/MazDialogPromise.vue'
-import MazDialogPromise from '../../components/MazDialogPromise.vue'
-import { useMazDialogPromise } from '../../components/MazDialogPromise/useMazDialogPromise'
+import type { MazDialogConfirmProps } from '../../components/MazDialogConfirm.vue'
+import MazDialogConfirm from '../../components/MazDialogConfirm.vue'
+import { useMazDialogConfirm } from '../../components/MazDialogConfirm/useMazDialogConfirm'
 import { useMountComponent } from '../../composables/useMountComponent'
 
-export type DialogOptions = Partial<Omit<MazDialogPromiseProps, 'modelValue' | 'variant' | 'justify'>> & {
+export type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue' | 'variant' | 'justify'>> & {
   onClose?: () => unknown
   onAccept?: (response: unknown) => unknown
   onReject?: (response: unknown) => unknown
@@ -28,12 +28,12 @@ export class DialogHandler {
       ...options,
     }
 
-    const { destroy, vNode } = useMountComponent<typeof MazDialogPromise, MazDialogPromiseProps>(MazDialogPromise, {
+    const { destroy, vNode } = useMountComponent<typeof MazDialogConfirm, MazDialogConfirmProps>(MazDialogConfirm, {
       props,
       app: this.app,
     })
 
-    const { showDialogAndWaitChoice } = useMazDialogPromise()
+    const { showDialogAndWaitChoice } = useMazDialogConfirm()
 
     function close(): void {
       if (!vNode.component?.exposed?.isActive?.value) {

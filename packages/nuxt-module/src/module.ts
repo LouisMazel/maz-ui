@@ -1,7 +1,13 @@
 import type { MazUiNuxtOptions } from './types'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { addComponent, addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import {
+  addComponent,
+  addImports,
+  addPlugin,
+  createResolver,
+  defineNuxtModule,
+} from '@nuxt/kit'
 import { defu } from 'defu'
 import { capitalize } from 'maz-ui'
 
@@ -28,7 +34,10 @@ declare module '@nuxt/schema' {
 
 type ComponentNames = keyof typeof import('maz-ui/components')
 
-const COMPONENT_NAMES: Omit<Record<ComponentNames, true>, 'useMazDialogPromise'> = {
+const COMPONENT_NAMES: Omit<
+  Record<ComponentNames, true>,
+  'useMazDialogConfirm'
+> = {
   MazAccordion: true,
   MazAnimatedCounter: true,
   MazAnimatedElement: true,
@@ -46,7 +55,7 @@ const COMPONENT_NAMES: Omit<Record<ComponentNames, true>, 'useMazDialogPromise'>
   MazChecklist: true,
   MazCircularProgressBar: true,
   MazDialog: true,
-  MazDialogPromise: true,
+  MazDialogConfirm: true,
   MazDrawer: true,
   MazDropdown: true,
   MazDropzone: true,
@@ -176,9 +185,17 @@ export default defineNuxtModule<MazUiNuxtOptions>({
   setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
 
-    nuxt.options.build.transpile = ['maz-ui', '@maz-ui/themes', ...nuxt.options.build.transpile]
+    nuxt.options.build.transpile = [
+      'maz-ui',
+      '@maz-ui/themes',
+      ...nuxt.options.build.transpile,
+    ]
 
-    const moduleOptions = defu(nuxt.options.runtimeConfig.public.mazUi, options, defaults)
+    const moduleOptions = defu(
+      nuxt.options.runtimeConfig.public.mazUi,
+      options,
+      defaults,
+    )
 
     nuxt.options.runtimeConfig.public.mazUi = moduleOptions
 

@@ -11,7 +11,7 @@ import type {
   StrictOptions,
 } from './types'
 
-import { isEqual } from '@maz-ui/utils/src/utils/isEqual.js'
+import { isEqual } from '@maz-ui/utils/src/helpers/isEqual.js'
 import { getCurrentInstance, inject } from 'vue'
 import { useFreezeValue } from '../useFreezeValue'
 import { CONFIG } from './config'
