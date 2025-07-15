@@ -12,6 +12,9 @@ jobs:
     name: build-and-typecheck
     runs-on: ubuntu-latest
 
+    env:
+      TEST_ENV: 'true'
+
     steps:
       - uses: actions/checkout@v3
 
