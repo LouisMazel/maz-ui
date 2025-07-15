@@ -17,6 +17,7 @@ const external = [
   'node:crypto',
   'node:os',
   'node:process',
+  'tty',
 ]
 
 function resolver(path: string) {

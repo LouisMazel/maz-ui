@@ -2,8 +2,8 @@
 
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { logger } from '@maz-ui/utils/src/helpers/logger.js'
 import { execPromise } from '@maz-ui/utils/src/index.js'
-import { logger } from '@maz-ui/utils/src/utils/logger.js'
 import { name } from '../../package.json'
 import { generateChangelog, getChangelogConfig, packagesDir, rootDir } from './utils'
 
