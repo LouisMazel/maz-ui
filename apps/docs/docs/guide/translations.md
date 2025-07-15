@@ -48,14 +48,26 @@ All these languages include translations for:
 - 🎠 **Carousel** ([`MazCarousel`](/components/maz-carousel))
 - 🌍 **SelectCountry** ([`MazSelectCountry`](/components/maz-select-country))
 
-### Simple Usage
+### Basic Usage
 
-Just use the language code to automatically activate all translations:
+::: warning
+
+**By default Maz-UI will not load any translations to avoid unused code in your bundle.**
+
+So, to avoid loading hydration issues, use the `messages` option to provide the translations for the language you want to use. Otherwise, the translations will be loaded asynchronously.
+
+:::
 
 ```typescript
+import { fr } from '@maz-ui/translations'
+
 app.use(MazUi, {
   translations: {
-    locale: 'fr' // French automatically loaded!
+    locale: 'fr',
+    fallbackLocale: 'en',
+    messages: {
+      fr,
+    }
   }
 })
 ```
@@ -90,9 +102,16 @@ app.use(MazUi, {
       // French and English translations are already included!
       // You can add your custom translations
       fr: {
-        // Override or add French translations
-        customComponent: {
-          title: 'My custom title'
+        // Override translations
+        inputPhoneNumber: {
+          countrySelect: {
+            placeholder: 'Code pays',
+            error: 'Choisir le pays',
+            searchPlaceholder: 'Rechercher le pays'
+          },
+          phoneInput: {
+            example: 'Exemple: {example}'
+          }
         }
       },
 
@@ -207,16 +226,16 @@ app.use(MazUi, {
       // You can override with your own files
 
       // French: loaded only when needed
-      fr: () => import('./locales/fr.ts').then(m => m.default),
+      fr: () => import('./locales/fr.ts'),
 
       // Spanish: loaded only when needed
       es: () => import('./locales/es.json'),
 
       // German: loaded with default export
-      de: () => import('./locales/de.ts').then(m => m.default),
+      de: () => import('./locales/de.ts'),
 
       // Dutch: custom translations
-      nl: () => import('./locales/nl.ts').then(m => m.default)
+      nl: () => import('./locales/nl.ts')
     }
   }
 })
@@ -268,10 +287,10 @@ app.use(MazUi, {
       },
 
       // English: loaded lazily (function)
-      en: () => import('./locales/en.ts').then(m => m.default),
+      en: () => import('./locales/en.ts'),
 
       // Spanish: loaded lazily (function)
-      es: () => import('./locales/es.ts').then(m => m.default)
+      es: () => import('./locales/es.ts')
     }
   }
 })
@@ -535,109 +554,14 @@ function switchToEnglish() {
 </template>
 ```
 
-### Benefits of lazy loading
-
-- 🚀 **Faster startup** - Less data to load initially
-- 📦 **Smaller bundle** - Translations are in separate chunks
-- 🌐 **Scalable** - Add as many languages as you want without performance impact
-- 💾 **Bandwidth savings** - Users only download what they use
-
-### Lazy loading configuration
-
-#### Method 1: Dynamic imports (Recommended)
-
-```typescript
-import { createApp } from 'vue'
-import { MazUi } from 'maz-ui/plugins/maz-ui'
-import App from './App.vue'
-
-const app = createApp(App)
-
-app.use(MazUi, {
-  translations: {
-    locale: 'en', // Starting language
-    fallbackLocale: 'en',
-    preloadFallback: false, // Optimization: no preloading
-    messages: {
-      // Default translations are automatically loaded lazily
-      // You can override with your own files
-
-      // French: loaded only when needed
-      fr: () => import('./locales/fr.ts').then(m => m.default),
-
-      // Spanish: loaded only when needed
-      es: () => import('./locales/es.json'),
-
-      // German: loaded with default export
-      de: () => import('./locales/de.ts').then(m => m.default),
-
-      // Dutch: custom translations
-      nl: () => import('./locales/nl.ts').then(m => m.default)
-    }
-  }
-})
-```
-
-#### Method 2: Loading from API
-
-```typescript
-app.use(MazUi, {
-  translations: {
-    locale: 'en',
-    messages: {
-      // Load from your API
-      fr: async () => {
-        const response = await fetch('/api/translations/fr')
-        return response.json()
-      },
-
-      // Combine multiple sources
-      es: async () => {
-        const [defaultTranslations, customTranslations] = await Promise.all([
-          // Default Maz-UI translations
-          import('@maz-ui/translations/locales/es').then(m => m.default),
-          // Your custom translations
-          fetch('/api/translations/es/custom').then(r => r.json())
-        ])
-        return { ...defaultTranslations, ...customTranslations }
-      }
-    }
-  }
-})
-```
-
-#### Method 3: Mix immediate and lazy loading
-
-```typescript
-app.use(MazUi, {
-  translations: {
-    locale: 'fr',
-    messages: {
-      // French: loaded immediately (direct object)
-      fr: {
-        inputPhoneNumber: {
-          countrySelect: {
-            placeholder: 'Country code',
-            error: 'Choose country'
-          }
-        }
-      },
-
-      // English: loaded lazily (function)
-      en: () => import('./locales/en.ts').then(m => m.default),
-
-      // Spanish: loaded lazily (function)
-      es: () => import('./locales/es.ts').then(m => m.default)
-    }
-  }
-})
-```
-
 ## Lazy Loading (Performance Optimization)
 
-::: tip NEW FEATURE
-Lazy loading is now integrated by default! All supported languages (fr, es, de, it, pt, ja, zh-CN) are automatically loaded lazily. You don't need to configure anything to benefit from this.
-:::
+### Benefits of lazy loading
+
+- **Faster startup** - Less data to load initially
+- **Smaller bundle** - Translations are in separate chunks
+- **Scalable** - Add as many languages as you want without performance impact
+- **Bandwidth savings** - Users only download what they use
 
 For better performance, you can load translation files only when they're needed. This is perfect for large applications with many languages:
 
@@ -900,13 +824,6 @@ const messages = {
 }
 ```
 
-### Benefits of lazy loading
-
-- **Faster initial load** - Only English translations are loaded at startup
-- **Reduced bundle size** - Translation files are split into separate chunks
-- **Better user experience** - Users only download what they need
-- **Scalable** - Easy to add new languages without impacting performance
-
 ## Variables in translations
 
 Some translations have variables (words in curly braces like `{example}` or `{page}`). These get replaced automatically:
@@ -1038,71 +955,26 @@ app.mount('#app')
 Here's a nice language switcher you can use in your app:
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { useTranslations } from '@maz-ui/translations'
+import type { MazDropdownProps } from 'maz-ui/components'
 
 const { locale, setLocale } = useTranslations()
 
-const languages = [
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'fr', name: 'Français', flag: '🇫🇷' },
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-  { code: 'it', name: 'Italiano', flag: '🇮🇹' }
+const languages: MazDropdownProps['items'] = [
+  { label: '🇺🇸 English', onClick: () => setLocale('en'),  },
+  { label: '🇫🇷 Français', onClick: () => setLocale('fr'),  },
+  { label: '🇪🇸 Español', onClick: () => setLocale('es'),  },
+  { label: '🇩🇪 Deutsch', onClick: () => setLocale('de'),  },
+  { label: '🇮🇹 Italiano', onClick: () => setLocale('it'),  }
 ]
 </script>
 
 <template>
-  <div class="language-switcher">
-    <h3>Choose your language:</h3>
-    <div class="language-buttons">
-      <button
-        v-for="lang in languages"
-        :key="lang.code"
-        :class="{ active: locale === lang.code }"
-        @click="setLocale(lang.code)"
-      >
-        {{ lang.flag }} {{ lang.name }}
-      </button>
-    </div>
-    <p>Current language: <strong>{{ locale }}</strong></p>
-  </div>
+  <MazDropdown class="language-switcher" :items="languages" trigger="click">
+    {{ locale }}
+  </MazDropdown>
 </template>
-
-<style scoped>
-.language-switcher {
-  padding: 1rem;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  margin: 1rem 0;
-}
-
-.language-buttons {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin: 1rem 0;
-}
-
-button {
-  padding: 0.5rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background: white;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-button:hover {
-  background: #f0f0f0;
-}
-
-button.active {
-  background: #007bff;
-  color: white;
-  border-color: #007bff;
-}
-</style>
 ```
 
 ## All translations keys
@@ -1229,6 +1101,7 @@ export default {
    */
   pagination: {
     navAriaLabel: 'page navigation',
+    navAriaLabel2: 'page navigation2',
     screenReader: {
       firstPage: 'First Page, page {page}',
       previousPage: 'Previous Page, page {page}',
@@ -1237,12 +1110,24 @@ export default {
       lastPage: 'Last Page, page {page}',
     },
   },
+  /**
+   * This is the translation for the carousel component.
+   * The keys are:
+   * - ariaLabel.previousButton: The aria-label for the previous button.
+   * - ariaLabel.nextButton: The aria-label for the next button.
+   */
   carousel: {
     ariaLabel: {
       previousButton: 'Scroll to previous items',
       nextButton: 'Scroll to next items',
     },
   },
+  /**
+   * This is the translation for the checklist component.
+   * The keys are:
+   * - noResultsFound: The translation for the no results found text.
+   * - searchInput.placeholder: The translation for the search input placeholder.
+   */
   checklist: {
     noResultsFound: 'No results found',
     searchInput: {
@@ -1250,7 +1135,6 @@ export default {
     },
   },
 }
-
 ```
 
 ## Important Notes
@@ -1263,7 +1147,7 @@ export default {
 
 4. **Variables are replaced automatically** - Don't worry about `{example}`, `{page}`, etc. - Maz-UI handles them for you.
 
-5. **Fallback to English** - If a translation is missing in your language, it will fall back to English.
+5. **Fallback to English** - If a translation is missing in your language and in your fallback language, it will fall back to English.
 
 6. **Lazy loading is asynchronous** - When using lazy loading, `setLocale()` returns a Promise. Use `await setLocale('fr')` in your code.
 

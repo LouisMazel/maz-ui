@@ -1,7 +1,8 @@
 import type { Theme } from 'vitepress'
 
-import * as components from 'maz-ui/src/components/index.js'
+import { default as en } from '@maz-ui/translations/src/locales/en.js'
 
+import * as components from 'maz-ui/src/components/index.js'
 import { AosPlugin } from 'maz-ui/src/plugins/aos.js'
 import { DialogPlugin } from 'maz-ui/src/plugins/dialog.js'
 import { MazUi } from 'maz-ui/src/plugins/maz-ui.js'
@@ -9,15 +10,16 @@ import { ToastPlugin } from 'maz-ui/src/plugins/toast.js'
 import { WaitPlugin } from 'maz-ui/src/plugins/wait.js'
 import { inBrowser } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
+
 import { type Component, watch } from 'vue'
 
 import ComponentDemo from './components/ComponentDemo.vue'
-
 import Layout from './components/Layout.vue'
 import NpmBadge from './components/NpmBadge.vue'
-import 'maz-ui/src/plugins/aos/scss/index.scss'
 
+import 'maz-ui/src/plugins/aos/scss/index.scss'
 import 'maz-ui/styles'
+
 import './main.css'
 
 export default {
@@ -32,6 +34,11 @@ export default {
       },
       translations: {
         locale: 'en',
+        fallbackLocale: 'fr',
+        preloadFallback: false,
+        messages: {
+          en,
+        },
       },
     })
 
