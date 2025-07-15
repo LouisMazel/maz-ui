@@ -22,9 +22,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build packages
-        run: |
-          pnpm build:packages
-          pnpm -F @maz-ui/nuxt prepare
+        run: pnpm build:packages
 
       - name: Generate components docs
         run: pnpm --filter cli cli generate-components-docs

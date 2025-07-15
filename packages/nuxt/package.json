@@ -46,8 +46,8 @@
   ],
   "scripts": {
     "prepack": "nuxt-module-build build",
-    "build": "pnpm prepare && nuxt-module-build build",
-    "prepare": "nuxt-module-build build --stub && nuxt-module-build prepare",
+    "build": "pnpm dev && nuxt-module-build build",
+    "dev": "nuxt-module-build build --stub && nuxt-module-build prepare",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
     "typecheck": "vue-tsc --noEmit --skipLibCheck"

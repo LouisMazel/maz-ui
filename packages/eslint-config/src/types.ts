@@ -30,7 +30,7 @@ export interface MazESLintOptions extends OptionsConfig {
 
   /**
    * Files to ignore
-   * @default ['**\/*.md', 'dist/**', 'node_modules/**']
+   * @default ['dist/**', 'node_modules/**']
    */
   ignores?: string[]
 

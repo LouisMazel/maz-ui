@@ -1,3 +1,10 @@
 {
-  "extends": "./.nuxt/tsconfig.json"
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "../../../../packages/lib/dist/composables/index": [
+        "../../packages/lib/dist/types/composables/index.d.ts"
+      ]
+    }
+  }
 }
