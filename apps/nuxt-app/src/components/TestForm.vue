@@ -37,7 +37,7 @@ setTimeout(() => {
   defaultValues.value.age = 33
 }, 1000)
 
-const { isSubmitting, handleSubmit, model, fieldsStates } = useFormValidator<Schema>({
+const { isSubmitting, handleSubmit, model, fieldsStates } = useFormValidator<typeof schema>({
   schema,
   defaultValues,
   options: { mode: 'progressive', scrollToError: '.has-error-form' },

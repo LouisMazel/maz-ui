@@ -2,93 +2,36 @@
 import { sleep } from 'maz-ui'
 
 function action() {
-  return sleep(20000)
+  return sleep(2000)
 }
-
-const { colorMode, updateTheme } = useTheme()
 </script>
 
 <template>
-  <MazPullToRefresh :action="action">
+  <MazPullToRefresh :on-click="action">
+    <header>
+      <NuxtLink :to="{ name: 'index' }">
+        MazUi
+      </NuxtLink>
+
+      <nav>
+        <MazBtn
+          :to="{ name: 'index' }"
+          color="transparent"
+        >
+          Home
+        </MazBtn>
+        <MazBtn
+          :to="{ name: 'test-page' }"
+          color="transparent"
+        >
+          Test page
+        </MazBtn>
+        <LangSwitcher />
+        <ThemeSwitcher />
+      </nav>
+    </header>
+
     <main>
-      <header>
-        <NuxtLink :to="{ name: 'index' }">
-          MazUi
-        </NuxtLink>
-
-        <nav>
-          <MazBtn
-            :to="{ name: 'index' }"
-            color="transparent"
-          >
-            Home
-          </MazBtn>
-          <MazBtn
-            :to="{ name: 'test-page' }"
-            color="transparent"
-          >
-            Test page
-          </MazBtn>
-          <MazDropdown
-            id="dropdown"
-            color="transparent"
-            prefer-position="bottom-end"
-            trigger="hover"
-          >
-            <span class="maz-capitalize">
-              {{ colorMode }}
-            </span>
-
-            <template #dropdown>
-              <div class="maz-grid maz-grid-cols-2">
-                <MazBtn
-                  color="transparent"
-                  class="maz-text-nowrap"
-                  @click="colorMode = 'auto'"
-                >
-                  Auto
-                </MazBtn>
-                <MazBtn
-                  color="transparent"
-                  class="maz-text-nowrap"
-                  @click="colorMode = 'dark'"
-                >
-                  Dark
-                </MazBtn>
-                <MazBtn
-                  color="transparent"
-                  class="maz-text-nowrap"
-                  @click="colorMode = 'light'"
-                >
-                  Light
-                </MazBtn>
-                <MazBtn
-                  color="transparent"
-                  class="maz-text-nowrap"
-                  @click="updateTheme('maz-ui')"
-                >
-                  Maz-UI
-                </MazBtn>
-                <MazBtn
-                  color="transparent"
-                  class="maz-text-nowrap"
-                  @click="updateTheme('ocean')"
-                >
-                  Ocean
-                </MazBtn>
-                <MazBtn
-                  color="transparent"
-                  class="maz-text-nowrap"
-                  @click="updateTheme('obsidian')"
-                >
-                  Obsidian
-                </MazBtn>
-              </div>
-            </template>
-          </MazDropdown>
-        </nav>
-      </header>
-
       <div class="content">
         <slot />
       </div>
@@ -97,16 +40,16 @@ const { colorMode, updateTheme } = useTheme()
 </template>
 
 <style lang="postcss" scoped>
-  main {
-  @apply maz-flex maz-min-h-screen maz-flex-col maz-padded-container;
+header {
+  @apply maz-flex maz-w-full maz-flex-wrap maz-items-center maz-justify-between maz-border-b maz-border-divider maz-px-2 maz-py-4 maz-padded-container;
 
-  header {
-    @apply maz-flex maz-w-full maz-flex-wrap maz-items-center maz-justify-between maz-border-b maz-border-divider maz-px-2 maz-py-4;
-
-    nav {
-      @apply maz-flex maz-gap-1;
-    }
+  nav {
+    @apply maz-flex maz-gap-1;
   }
+}
+
+main {
+  @apply maz-flex maz-min-h-screen maz-flex-col maz-padded-container;
 
   .content {
     @apply maz-flex maz-flex-1 maz-flex-col maz-py-4;
