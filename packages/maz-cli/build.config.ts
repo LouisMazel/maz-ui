@@ -11,5 +11,4 @@ export default defineBuildConfig({
     },
   },
   entries: ['src/cli'],
-  externals: [],
 })
