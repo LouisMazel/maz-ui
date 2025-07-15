@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import type { MazDatePicker, MazSwitch, MazTextarea } from '#components'
 import type { DeepPartial } from '@maz-ui/utils/src/ts-helpers/DeepPartial.js'
-import type { InferSchemaFormValidator } from 'maz-ui/composables'
+import type { GenericInstanceType } from 'maz-ui'
+import type { MazDatePickerPartialRangeValue, MazDatePickerValue, MazInput, MazRadioButtons } from 'maz-ui/components'
+import type { InferSchemaFormValidator } from 'maz-ui/src/composables/index.js'
+import { useFormField, useFormValidator } from 'maz-ui/src/composables/index.js'
 import { array, boolean, literal, maxValue, minLength, minValue, nonEmpty, number as numberAction, object, pipe, string } from 'valibot'
 
 const schema = ref({
@@ -23,9 +27,7 @@ const schema = ref({
   }),
 })
 
-type Schema = InferSchemaFormValidator<typeof schema>
-
-const defaultValues = ref<DeepPartial<Schema>>({
+const defaultValues = ref({
   name: 'Mazel',
   date: {
     start: undefined,
@@ -33,45 +35,55 @@ const defaultValues = ref<DeepPartial<Schema>>({
   },
 })
 
-setTimeout(() => {
-  defaultValues.value.age = 33
-}, 1000)
-
-const { isSubmitting, handleSubmit, model, fieldsStates } = useFormValidator<typeof schema>({
+const { isSubmitting, handleSubmit, model, fieldsStates } = useFormValidator({
   schema,
-  defaultValues,
-  options: { mode: 'progressive', scrollToError: '.has-error-form' },
+  defaultValues: {
+    age: 33,
+    date: undefined,
+  },
+  options: {
+    mode: 'progressive',
+    scrollToError: '.has-error-form',
+    debouncedFields: {
+      age: 3000,
+    },
+  },
 })
 
-const nameRef = ref<HTMLElement>()
-const ageRef = ref<HTMLElement>()
-const agreeRef = ref<HTMLElement>()
-const countryRef = ref<HTMLElement>()
-const codeRef = ref<HTMLElement>()
-const numberRef = ref<HTMLElement>()
-const priceRef = ref<HTMLElement>()
-const tagsRef = ref<HTMLElement>()
-const phoneRef = ref<HTMLElement>()
-const radioRef = ref<HTMLElement>()
-const radioButtonsRef = ref<HTMLElement>()
-const switchRef = ref<HTMLElement>()
-const textareaRef = ref<HTMLElement>()
-const dateRef = ref<HTMLElement>()
+type MazTextareaInstance = typeof MazTextarea<string>
 
-const { value: name, errorMessage: nameErrorMessage } = useFormField('name', { ref: nameRef })
-const { value: age, errorMessage: ageErrorMessage, isValid: isValidAge } = useFormField('age', { ref: ageRef })
-const { value: agree, errorMessage: agreeErrorMessage, isValid: isValidAgree } = useFormField('agree', { ref: agreeRef })
-const { value: country, errorMessage: countryErrorMessage, isValid: isValidCountry } = useFormField('country', { ref: countryRef })
-const { value: code, errorMessage: codeError, isValid: isValidCode } = useFormField('code', { ref: codeRef })
-const { value: number, errorMessage: numberError, isValid: isValidNumber } = useFormField('number', { ref: numberRef })
-const { value: price, errorMessage: priceError, isValid: isValidPrice } = useFormField('price', { ref: priceRef })
-const { value: tags, errorMessage: tagsError, isValid: isValidTags } = useFormField('tags', { ref: tagsRef })
-const { value: phone, errorMessage: phoneError, isValid: isValidPhone } = useFormField('phone', { ref: phoneRef })
-const { value: radio, errorMessage: radioError, isValid: isValidRadio } = useFormField('radio', { ref: radioRef })
-const { errorMessage: radioButtonsError, isValid: isValidButtons } = useFormField('radioButtons', { ref: radioButtonsRef })
-const { value: switchValue, errorMessage: switchError, isValid: isValidSwitch } = useFormField('switch', { ref: switchRef })
-const { value: textarea, errorMessage: textareaError, isValid: isValidTextarea } = useFormField('textarea', { ref: textareaRef })
-const { value: date, errorMessage: dateError, isValid: isValidDate } = useFormField('date', { ref: dateRef })
+const nameRef = useTemplateRef<any>('nameRef')
+const ageRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('ageRef')
+const agreeRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('agreeRef')
+const countryRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('countryRef')
+const codeRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('codeRef')
+const numberRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('numberRef')
+const priceRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('priceRef')
+const tagsRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('tagsRef')
+const phoneRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('phoneRef')
+const radioRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('radioRef')
+const radioButtonsRef = useTemplateRef<GenericInstanceType<typeof MazRadioButtons>>('radioButtonsRef')
+const switchRef = useTemplateRef<any>('switchRef')
+const textareaRef = useTemplateRef<GenericInstanceType<MazTextareaInstance>>('textareaRef')
+const dateRef = useTemplateRef<any>('dateRef')
+
+const { value: name, errorMessage: nameErrorMessage } = useFormField<string>('name', {
+  ref: nameRef,
+  defaultValue: 'Mazel',
+})
+const { value: age, errorMessage: ageErrorMessage, isValid: isValidAge } = useFormField<number>('age', { ref: ageRef })
+const { value: agree, errorMessage: agreeErrorMessage, isValid: isValidAgree } = useFormField<boolean>('agree', { ref: agreeRef })
+const { value: country, errorMessage: countryErrorMessage, isValid: isValidCountry } = useFormField<string>('country', { ref: countryRef })
+const { value: code, errorMessage: codeError, isValid: isValidCode } = useFormField<string>('code', { ref: codeRef })
+const { value: number, errorMessage: numberError, isValid: isValidNumber } = useFormField<number>('number', { ref: numberRef })
+const { value: price, errorMessage: priceError, isValid: isValidPrice } = useFormField<number>('price', { ref: priceRef })
+const { value: tags, errorMessage: tagsError, isValid: isValidTags } = useFormField<string[]>('tags', { ref: tagsRef })
+const { value: phone, errorMessage: phoneError, isValid: isValidPhone } = useFormField<string>('phone', { ref: phoneRef })
+const { value: radio, errorMessage: radioError, isValid: isValidRadio } = useFormField<string>('radio', { ref: radioRef })
+const { errorMessage: radioButtonsError, isValid: isValidButtons } = useFormField<string>('radioButtons', { ref: radioButtonsRef })
+const { value: switchValue, errorMessage: switchError, isValid: isValidSwitch } = useFormField<boolean>('switch', { ref: switchRef })
+const { value: textarea, errorMessage: textareaError, isValid: isValidTextarea } = useFormField<string>('textarea', { ref: textareaRef })
+const { value: date, errorMessage: dateError, isValid: isValidDate } = useFormField<MazDatePickerPartialRangeValue>('date', { ref: dateRef })
 
 const onSubmit = handleSubmit((formData) => {
   // eslint-disable-next-line no-console

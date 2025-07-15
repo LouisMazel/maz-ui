@@ -24,9 +24,11 @@ function getEntries(pattern: string) {
   ]
 }
 
+const testPaths = ['**/__tests__/**/*', '**/__fixtures__/**/*', '**/__mocks__/**/*', '**/*.spec.ts', 'src/**/*.test.ts']
+
 const entries = Object.fromEntries(
   glob.sync('src/**/*.ts', {
-    ignore: ['**/*/index.ts', '**/*/types.ts', '**/ts-helpers/**/*'],
+    ignore: ['**/ts-helpers/**/*', ...testPaths],
   })
     .map(getEntries),
 )
@@ -39,7 +41,7 @@ export default defineConfig({
       entryRoot: resolver('src'),
       outDir: resolver('dist/types'),
       include: ['src/**/*.ts'],
-      exclude: ['src/**/__tests__/**/*', 'src/**/*.spec.ts', 'src/**/*.test.ts'],
+      exclude: testPaths,
     }),
   ],
 
