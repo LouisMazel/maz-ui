@@ -165,7 +165,11 @@ describe('given getFieldsErrors function', () => {
 describe('given findInteractiveElements function', () => {
   describe('when called with an element', () => {
     it('then it find all interactive elements within the given element', () => {
-      const mockElements = ['input1', 'select1', 'textarea1']
+      const mockElements = [
+        document.createElement('input'),
+        document.createElement('select'),
+        document.createElement('textarea'),
+      ]
       const mockNodeList = {
         0: mockElements[0],
         1: mockElements[1],
@@ -177,13 +181,14 @@ describe('given findInteractiveElements function', () => {
       } as unknown as NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
 
       // Create a proper HTMLElement mock
-      const mockElement = Object.create(HTMLElement.prototype)
-      mockElement.querySelectorAll = vi.fn().mockReturnValue(mockNodeList)
+      const element = document.createElement('div')
+      element.querySelectorAll = vi.fn().mockReturnValue(mockNodeList)
+      element.getAttribute = vi.fn().mockReturnValue('text')
 
-      const result = findInteractiveElements(mockElement)
+      const result = findInteractiveElements(element)
 
       expect(result).toEqual(Array.from(mockNodeList))
-      expect(mockElement.querySelectorAll).toHaveBeenCalledWith('input, select, textarea')
+      expect(element.querySelectorAll).toHaveBeenCalledWith('input, select, textarea, button, a[href], [tabindex]:not([tabindex=\"-1\"]), [role=\"button\"], [role=\"textbox\"], [role=\"combobox\"], [role=\"listbox\"], [role=\"slider\"], [role=\"spinbutton\"], [role=\"switch\"], [role=\"checkbox\"], [role=\"radio\"], [role=\"menuitem\"], [role=\"option\"], [contenteditable=\"true\"], [data-interactive], .interactive, [data-clickable]')
     })
   })
 })

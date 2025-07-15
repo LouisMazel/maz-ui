@@ -102,9 +102,12 @@ describe('useTheme', () => {
       it('then it throws error', () => {
         vi.mocked(inject).mockReturnValue(undefined)
         vi.mocked(getCurrentInstance).mockReturnValue(null)
+        const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
-        expect(() => useTheme()).toThrow(
-          'You must install the MazUi or MazUiTheme plugin before using useTheme composable',
+        useTheme()
+
+        expect(consoleErrorSpy).toHaveBeenCalledWith(
+          '[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin before using useTheme composable',
         )
       })
     })

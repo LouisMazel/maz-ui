@@ -28,6 +28,9 @@ jobs:
       - name: Setup Node.js, pnpm and Nx cache
         uses: ./.github/actions/setup
 
+      - name: Build utils
+        run: pnpm build:utils
+
       - name: Run others tests
         run: pnpm test:unit:coverage:all
 

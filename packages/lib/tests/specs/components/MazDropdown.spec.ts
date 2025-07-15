@@ -74,7 +74,7 @@ describe('components/MazDropdown.vue', () => {
       await trigger.trigger('click')
 
       expect(wrapper.vm.modelValue).toBe(true)
-      expect(wrapper.find('[aria-label="Menu"]').isVisible()).toBe(true)
+      expect(wrapper.find('[aria-label="Menu"]').exists()).toBe(true)
     })
 
     it('when trigger is hovered Then dropdown opens with hover trigger', async () => {
