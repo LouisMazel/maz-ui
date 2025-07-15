@@ -1,5 +1,5 @@
 import { join } from 'node:path'
-import { logger } from '@maz-ui/utils/src/utils/logger.js'
+import { logger } from '@maz-ui/utils/src/helpers/logger.js'
 import { generateMarkDown, getGitDiff, type GitCommit, loadChangelogConfig, parseCommits, type ResolvedChangelogConfig } from 'changelogen'
 import { version } from '../../lerna.json'
 import changelogenConfig from './changelogen.config'

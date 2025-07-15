@@ -4,8 +4,8 @@ import { createApp } from 'vue'
 
 let resolveFn: (value: unknown) => void
 const callback = vi.fn()
-vi.mock('@components/MazDialogPromise/useMazDialogPromise', () => ({
-  useMazDialogPromise: () => ({
+vi.mock('@components/MazDialogConfirm/useMazDialogConfirm', () => ({
+  useMazDialogConfirm: () => ({
     showDialogAndWaitChoice: () => new Promise((resolve) => {
       resolveFn = resolve
       callback()
@@ -13,7 +13,7 @@ vi.mock('@components/MazDialogPromise/useMazDialogPromise', () => ({
   }),
 }))
 
-vi.mock('@components/MazDialogPromise.vue', () => ({
+vi.mock('@components/MazDialogConfirm.vue', () => ({
   default: {
     expose: {
       close: vi.fn(),
