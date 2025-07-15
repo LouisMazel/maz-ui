@@ -88,6 +88,7 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 const { dialogState, reject, accept, data } = useMazDialogConfirm()
 
+// eslint-disable-next-line complexity
 const currentData = computed<MazDialogConfirmData>(() => {
   const baseData = {
     ...defaultData,
@@ -112,11 +113,13 @@ const currentData = computed<MazDialogConfirmData>(() => {
     rejectText: rejectText ?? baseData.rejectText,
     acceptProps: {
       ...baseData.acceptProps,
-      text: acceptText ?? baseData.acceptText ?? baseData.acceptProps.text,
+      ...acceptProps,
+      text: acceptText ?? acceptProps?.text ?? baseData.acceptText ?? baseData.acceptProps.text,
     } satisfies MazDialogConfirmButtonPromised,
     rejectProps: {
       ...baseData.rejectProps,
-      text: rejectText ?? baseData.rejectText ?? baseData.rejectProps?.text,
+      ...rejectProps,
+      text: rejectText ?? rejectProps?.text ?? baseData.rejectText ?? baseData.rejectProps?.text,
     } satisfies MazDialogConfirmButtonPromised,
   } satisfies MazDialogConfirmData
 })
