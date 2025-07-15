@@ -1,6 +1,6 @@
 import type { Plugin } from 'vite'
 
-import { execPromise, logger } from '@maz-ui/utils/src/utils/index.js'
+import { execPromise, logger } from '@maz-ui/utils/src/helpers/index.js'
 
 export function ViteBuildNuxtModule(): Plugin {
   return {
