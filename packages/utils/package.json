@@ -74,7 +74,6 @@
     "test:unit:coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "colorette": "^2.0.20",
     "eslint": "^9.29.0",
     "eslint-plugin-format": "^1.0.1",
     "glob": "^11.0.3",
