@@ -92,7 +92,13 @@ export async function setFieldValidationState<
 
     fieldState.valid = isValid
 
-    if (setError || (setErrorIfInvalidAndNotEmpty && !isValid && !isEmptyValue(payload[name]))) {
+    const shouldSetError = setError || (setErrorIfInvalidAndNotEmpty && !isValid && !isEmptyValue(payload[name]))
+
+    // For eager, blur, and progressive modes: once blurred and invalid, always show error
+    const shouldPreserveError = fieldState.blurred && !isValid
+      && fieldState.mode && ['eager', 'blur', 'progressive'].includes(fieldState.mode)
+
+    if (shouldSetError || shouldPreserveError) {
       fieldState.error = !isValid
     }
 

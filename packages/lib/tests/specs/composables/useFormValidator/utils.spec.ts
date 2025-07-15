@@ -213,12 +213,24 @@ describe('given addEventToInteractiveElements function', () => {
 describe('given removeEventFromInteractiveElements function', () => {
   describe('when called with interactive elements and event handlers', () => {
     it('then it removes all event listeners from interactive elements', () => {
-      const mockElements = [{ removeEventListener: vi.fn() }, { removeEventListener: vi.fn() }] as unknown as HTMLElement[]
+      const mockElements = [
+        {
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+        },
+        {
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+        },
+      ] as unknown as HTMLElement[]
       const onBlur = vi.fn()
+
+      addEventToInteractiveElements({ interactiveElements: mockElements, onBlur, mode: 'eager' })
 
       removeEventFromInteractiveElements({ interactiveElements: mockElements, onBlur })
 
       mockElements.forEach((element) => {
+        expect(element.addEventListener).toHaveBeenCalledWith('blur', onBlur)
         expect(element.removeEventListener).toHaveBeenCalledWith('blur', onBlur)
       })
     })
