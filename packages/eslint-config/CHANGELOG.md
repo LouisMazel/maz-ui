@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.7...v4.0.0-beta.8
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.7...v4.0.0-beta.8)
+
+### 🩹 Fixes
+
+- Add --concurrency=1 to nx:affected:pre-commit to fix lint-staged backup issue ([da73cb0c1](https://github.com/LouisMazel/maz-ui/commit/da73cb0c1))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.6...v4.0.0-beta.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.6...v4.0.0-beta.7)
