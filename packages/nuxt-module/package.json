@@ -48,12 +48,9 @@
     "prepack": "nuxt-module-build build",
     "build": "pnpm prepare && nuxt-module-build build",
     "prepare": "nuxt-module-build build --stub && nuxt-module-build prepare",
-    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
-    "format": "prettier --ignore-path .gitignore . --write",
-    "typecheck": "vue-tsc --noEmit --skipLibCheck",
-    "release": "npm run lint && npm run prepack && changelogen --release && npm publish && git push --follow-tags"
+    "typecheck": "vue-tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
     "@maz-ui/themes": "workspace:*",
@@ -73,7 +70,6 @@
     "vitest": "^3.2.4"
   },
   "lint-staged": {
-    "*": "prettier -w -u",
     "*.{js,ts,mjs,mts,cjs,md}": "cross-env NODE_ENV=production eslint --fix"
   }
 }

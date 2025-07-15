@@ -3,7 +3,7 @@ import postcss from 'maz-ui/postcss.config.cjs'
 import svgLoader from 'vite-svg-loader'
 
 export default defineNuxtConfig({
-  modules: [mazUiModule, '@nuxtjs/tailwindcss'],
+  modules: ['@maz-ui/nuxt', '@nuxtjs/tailwindcss'],
 
   devtools: { enabled: true },
 
