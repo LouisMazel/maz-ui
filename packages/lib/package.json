@@ -153,6 +153,7 @@
     "lint:style:fix": "pnpm lint:style --fix",
     "build": "pnpm typecheck && pnpm build:only",
     "build:only": "vite build",
+    "build:watch": "vite build --watch",
     "build:dev": "vite build --watch",
     "build:analyze": "vite-node build/analyze-bundle.ts",
     "test:unit": "vitest run",

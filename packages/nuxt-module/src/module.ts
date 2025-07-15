@@ -28,7 +28,7 @@ declare module '@nuxt/schema' {
   }
 
   interface PublicRuntimeConfig {
-    mazUi: MazUiNuxtOptions
+    mazUi: Required<MazUiNuxtOptions>
   }
 }
 
@@ -115,6 +115,8 @@ const defaults: Required<MazUiNuxtOptions> = {
   },
   translations: {
     locale: 'en',
+    fallbackLocale: 'en',
+    preloadFallback: true,
   },
   components: {
     autoImport: true,

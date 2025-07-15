@@ -5,7 +5,8 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["node", "vite-svg-loader", "vite/client"]
+    "types": ["node", "vite-svg-loader", "vite/client"],
+    "allowJs": true
   },
   "include": ["env.d.ts", "src/**/*", "./components.d.ts", "./auto-imports.d.ts"],
   "exclude": ["src/**/__tests__/*", "node_modules", "../../packages/lib"],

@@ -27,6 +27,8 @@ onMounted(async () => {
   await sleep(500)
   wait.stop('APP_LOADING')
 })
+
+const selected = ref('1')
 </script>
 
 <template>
@@ -37,6 +39,12 @@ onMounted(async () => {
       <MazBtn v-tooltip="{ text: 'Coucou' }">
         Coucou
       </MazBtn>
+
+      <MazSelect
+        v-model="selected"
+        :options="['1', '2', '3']"
+        search
+      />
 
       <MazPopover>
         <template #trigger>
