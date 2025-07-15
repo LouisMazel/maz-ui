@@ -201,7 +201,7 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
         let response: Awaited<ReturnType<Func>> | ReturnType<Func> | undefined
 
         if (isValid.value) {
-          response = await successCallback(payload.value)
+          response = await successCallback(payload.value as InferOutputSchemaFormValidator<TSchema>)
         }
         else if (typeof scrollToErrorParam !== 'boolean') {
           scrollToError(scrollToErrorParam)

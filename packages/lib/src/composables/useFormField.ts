@@ -3,12 +3,11 @@ import type {
   ExtractModelKey,
   FormFieldOptions,
   FormSchema,
-  InferSchemaFormValidator,
   ValidationIssues,
 } from './useFormValidator/types'
 
 import { isEqual } from '@maz-ui/utils/src/helpers/isEqual.js'
-import { computed, type ComputedRef, onMounted, onUnmounted, type WritableComputedRef } from 'vue'
+import { computed, type ComputedRef, onMounted, onUnmounted, type Ref } from 'vue'
 import {
   addEventToInteractiveElements,
   findInteractiveElements,
@@ -35,18 +34,20 @@ interface UseFormFieldReturn<FieldType> {
   isValidated: ComputedRef<boolean>
   isValidating: ComputedRef<boolean>
   mode: ComputedRef<FormFieldOptions<FieldType>['mode']>
-  value: WritableComputedRef<FieldType>
+  value: Ref<FieldType>
   validationEvents: ComputedRef<ReturnType<typeof getValidationEvents>>
 }
 
 export function useFormField<
-  TSchema extends FormSchema<BaseFormPayload>,
-  TName extends ExtractModelKey<FormSchema<InferSchemaFormValidator<TSchema>>> = ExtractModelKey<FormSchema<InferSchemaFormValidator<TSchema>>>,
+  FieldType,
+  Model extends BaseFormPayload = BaseFormPayload,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 >(
-  name: TName,
-  options?: FormFieldOptions<InferSchemaFormValidator<TSchema>[TName]>,
-): UseFormFieldReturn<InferSchemaFormValidator<TSchema>[TName]> {
-  type Model = InferSchemaFormValidator<TSchema>
+  name: ModelKey,
+  options?: FormFieldOptions<FieldType>,
+): UseFormFieldReturn<FieldType> {
+  // type Model = InferSchemaFormValidator<TSchema>
+  // type FieldType = Model[TName]
 
   const opts = {
     formIdentifier: 'main-form-validator',
@@ -62,7 +63,6 @@ export function useFormField<
     isSubmitted,
   } = getContext<Model>(opts.formIdentifier, 'useFormField') as any
 
-  type FieldType = Model[TName]
   const finalOpts = opts satisfies FormFieldOptions<FieldType>
 
   const fieldMode = fieldHasValidation(name, internalSchema.value) ? options?.mode ?? formOptions.mode : undefined
@@ -165,8 +165,8 @@ export function useFormField<
     isValidating: computed(() => fieldState.value.validating),
     mode: computed(() => fieldState.value.mode),
     value: computed({
-      get: () => payload.value[name] as FieldType,
-      set: (value: FieldType) => (payload.value[name] = value),
+      get: () => payload.value[name],
+      set: value => (payload.value[name] = value),
     }),
     validationEvents,
   }

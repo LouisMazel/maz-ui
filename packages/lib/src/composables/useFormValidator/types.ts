@@ -1,4 +1,3 @@
-import type { DeepPartial } from '@maz-ui/utils/src/index.js'
 import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferInput, InferIssue, InferOutput, objectAsync } from 'valibot'
 import type {
   ComponentInternalInstance,
@@ -124,12 +123,12 @@ export interface FormFieldOptions<FieldType> {
 
 export type InferSchemaFormValidator<T> = T extends Ref<infer U>
   ? U extends FormSchema<BaseFormPayload>
-    ? DeepPartial<InferInput<ReturnType<typeof objectAsync<U>>>>
+    ? Partial<InferInput<ReturnType<typeof objectAsync<U>>>>
     : never
   : T extends (...args: any[]) => FormSchema<BaseFormPayload>
-    ? DeepPartial<InferInput<ReturnType<typeof objectAsync<ReturnType<T>>>>>
+    ? Partial<InferInput<ReturnType<typeof objectAsync<ReturnType<T>>>>>
     : T extends FormSchema<BaseFormPayload>
-      ? DeepPartial<InferInput<ReturnType<typeof objectAsync<T>>>>
+      ? Partial<InferInput<ReturnType<typeof objectAsync<T>>>>
       : never
 
 export type InferOutputSchemaFormValidator<T> = T extends Ref<infer U>
