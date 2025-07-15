@@ -13,32 +13,15 @@
 
 **Note:** Version bump only to follow ecosystem versioning
 
-
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
-
-# [4.0.0-beta.4](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2025-07-10)
-
+## [4.0.0-beta.4](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2025-07-10)
 
 ### Bug Fixes
 
 * **@maz-ui/themes:** force dark or light mode with colorMode config ([6b333d2](https://github.com/LouisMazel/maz-ui/commit/6b333d206b0340828e621e52047cb92362641e44))
 
-
-
-
-
-# Change Log
-
-
-
 ## 4.0.0-beta.3 (2025-07-10)
 
 * chore: remove catalog feature from pnpm workspace ([0176319](https://github.com/LouisMazel/maz-ui/commit/0176319))
-
-
-
-
 
 ## 4.0.0-beta.1 (2025-07-09)
 
@@ -63,10 +46,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * feat(maz-ui): MazSelectCountry - new form component to select country and languages ([97fedf7](https://github.com/LouisMazel/maz-ui/commit/97fedf7))
 * refactor(maz-ui): apply default border color to components ([9254573](https://github.com/LouisMazel/maz-ui/commit/9254573))
 * docs(docs): @maz-ui/nuxt - new documentation ([275746b](https://github.com/LouisMazel/maz-ui/commit/275746b))
-
-
-
-
 
 ## 4.0.0-beta.0 (2025-07-09)
 
