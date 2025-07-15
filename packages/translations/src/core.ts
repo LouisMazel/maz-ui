@@ -4,7 +4,7 @@ import { ref } from 'vue'
 let globalInstance: MazTranslationsInstance | null = null
 
 // Load all default locales synchronously at build time
-const defaultLocalesFiles = import.meta.glob('./locales/*.ts', { eager: true }) as Record<string, { default: MazTranslationsSchema }>
+const defaultLocalesFiles = import.meta.glob<Record<string, MazTranslationsSchema>>('./locales/*.ts', { eager: true })
 
 // Extract default messages by locale
 const defaultMessages: Record<string, MazTranslationsSchema> = {}
