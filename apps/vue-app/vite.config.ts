@@ -9,6 +9,7 @@ import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import VueSvgLoader from 'vite-svg-loader'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineConfig({
   plugins: [
@@ -37,6 +38,7 @@ export default defineConfig({
       resolvers: [MazModulesResolver({ devMode: true })],
       dts: true,
     }),
+    visualizer(),
   ],
   resolve: {
     alias: {

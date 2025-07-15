@@ -98,13 +98,13 @@ const onSubmit = handleSubmit(async (formData) => {
           top-label="Select your nationality"
           placeholder="e.g. France"
           search
-          list-position="left-end"
           :hint="countryMessage"
           :error="countryError"
           :success="countryValid"
           block
           :class="{ 'has-error-': countryError }"
         />
+
         <MazCheckbox
           ref="agreeRef"
           v-model="agree"

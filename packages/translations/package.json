@@ -42,6 +42,7 @@
   },
   "scripts": {
     "build": "unbuild",
+    "build:watch": "unbuild --watch",
     "dev": "unbuild --stub",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "eslint .",

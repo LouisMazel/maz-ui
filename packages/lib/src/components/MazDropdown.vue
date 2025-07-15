@@ -445,7 +445,7 @@ watch(
                   type="button"
                   v-bind="{ ...item, onClick: undefined }"
                   class="menuitem menuitem__button"
-                  :class="[item.class, `--${item.color ?? 'contrast'}`]"
+                  :class="[item.class, item.color ? `--${item.color}` : '']"
                   @click.stop="runAction(item, $event)"
                   @keypress.enter.stop.prevent="runAction(item, $event)"
                 >

@@ -1,5 +1,5 @@
-// Core
-export { createMazTranslations, setGlobalMazTranslations, useMazTranslations } from './core'
+// Locales
+export * from './locales'
 
 // Plugin
 export { MazTranslations } from './plugin'

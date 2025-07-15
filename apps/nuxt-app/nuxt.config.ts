@@ -1,7 +1,5 @@
 import mazUiModule from '@maz-ui/nuxt/src/module.js'
-// https://nuxt.com/docs/api/configuration/nuxt-config
 import postcss from 'maz-ui/postcss.config.cjs'
-
 import svgLoader from 'vite-svg-loader'
 
 export default defineNuxtConfig({
@@ -36,6 +34,8 @@ export default defineNuxtConfig({
     },
     translations: {
       locale: 'fr',
+      preloadFallback: true,
+      fallbackLocale: 'en',
     },
     plugins: {
       aos: true,
