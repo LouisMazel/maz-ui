@@ -1,11 +1,10 @@
 import type { App, Plugin } from 'vue'
 import type { MazTranslationsInstance, MazTranslationsOptions } from './types'
-import { createMazTranslations, setGlobalMazTranslations } from './core'
+import { createMazTranslations } from './core'
 
 export const MazTranslations = {
   install(app: App, options: MazTranslationsOptions = {}) {
     const i18n = createMazTranslations(options)
-    setGlobalMazTranslations(i18n)
 
     // Injection globale
     app.config.globalProperties.$mazTranslations = i18n

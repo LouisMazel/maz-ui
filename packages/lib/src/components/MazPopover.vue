@@ -1041,7 +1041,7 @@ defineExpose({
   toggle,
   /**
    * Check if the popover is open
-   * @type {Ref<boolean>}
+   * @type {ComputedRef<boolean>}
    * @description Reactive reference to the popover open state
    * @usage `const isPopoverOpen = mazPopoverInstance.value?.isOpen`
    */

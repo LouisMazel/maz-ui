@@ -5,6 +5,7 @@ import { DialogPlugin } from 'maz-ui/src/plugins/dialog.ts'
 import { MazUi } from 'maz-ui/src/plugins/maz-ui.ts'
 import { ToastPlugin } from 'maz-ui/src/plugins/toast.ts'
 import { WaitPlugin } from 'maz-ui/src/plugins/wait.js'
+import PrimeVue from 'primevue/config'
 
 import { createApp } from 'vue'
 
@@ -12,11 +13,13 @@ import App from './App.vue'
 import router from './router'
 import 'maz-ui/src/css/index.css'
 import 'maz-ui/src/tailwindcss/tailwind.css'
+
 import './assets/main.css'
 
 const app = createApp(App)
 
 app.use(router)
+import { fr } from '@maz-ui/translations'
 
 app.use(MazUi, {
   theme: {
@@ -25,21 +28,21 @@ app.use(MazUi, {
     preset: pristine,
   },
   translations: {
-    locale: 'de',
-    preloadFallback: true,
+    locale: 'fr',
     fallbackLocale: 'it',
+    preloadFallback: false,
     messages: {
-      de: () => import('./locales/de').then(r => r.default),
-      it: () => import('./locales/it.json'),
-      en: {
-        pagination: {
-          navAriaLabel: 'Test',
-        },
-      },
+      fr,
     },
   },
 })
 
+app.use(PrimeVue, {
+  locale: {
+    accept: 'Aceptar',
+    reject: 'Rechazar',
+  },
+})
 app.use(ToastPlugin)
 app.use(WaitPlugin)
 app.use(DialogPlugin)
