@@ -98,6 +98,29 @@ const COMPONENT_NAMES: Omit<
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
+const pluginComposables: Record<'useTheme' | 'useTranslations', true> = {
+  useTheme: true,
+  useTranslations: true,
+}
+
+const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDialog' | 'useToast' | 'useWait'> = {
+  useIdleTimeout: true,
+  useReadingTime: true,
+  useFormField: true,
+  useWindowSize: true,
+  useBreakpoints: true,
+  useUserVisibility: true,
+  useStringMatching: true,
+  useTimer: true,
+  useFormValidator: true,
+  useDisplayNames: true,
+  useFreezeValue: true,
+  useInjectStrict: true,
+  useInstanceUniqId: true,
+  useMountComponent: true,
+  useSwipe: true,
+}
+
 const defaults: Required<MazUiNuxtOptions> = {
   general: {
     autoImportPrefix: '',
@@ -128,23 +151,8 @@ const defaults: Required<MazUiNuxtOptions> = {
     wait: false,
   },
   composables: {
-    useTheme: true,
-    useIdleTimeout: true,
-    useReadingTime: true,
-    useTranslations: true,
-    useFormField: true,
-    useWindowSize: true,
-    useBreakpoints: true,
-    useUserVisibility: true,
-    useStringMatching: true,
-    useTimer: true,
-    useFormValidator: true,
-    useDisplayNames: true,
-    useFreezeValue: true,
-    useInjectStrict: true,
-    useInstanceUniqId: true,
-    useMountComponent: true,
-    useSwipe: true,
+    ...pluginComposables,
+    ...mazUiComposables,
   } satisfies Composables,
   directives: {
     vZoomImg: false,
@@ -159,17 +167,14 @@ function addComposableImport({
   name,
   from,
   prefix = '',
-  typed = true,
 }: {
   name: string
   from: string
   prefix?: string
-  typed?: boolean
 }) {
   addImports({
     from,
     name,
-    typeFrom: typed ? `maz-ui/dist/types/composables/${name}.d.ts` : undefined,
     as: `use${capitalize(prefix)}${name.replace('use', '')}`,
   })
 }
@@ -230,7 +235,6 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
       addComposableImport({
         name: 'useAos',
-        typed: false,
         from: resolve(_dirname, './runtime/composables/useAos'),
         prefix: moduleOptions.general?.autoImportPrefix,
       })
@@ -250,7 +254,6 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addPlugin(resolve(_dirname, './runtime/plugins/toast'))
       addComposableImport({
         name: 'useToast',
-        typed: false,
         from: resolve(_dirname, './runtime/composables/useToast'),
         prefix: moduleOptions.general?.autoImportPrefix,
       })
@@ -260,7 +263,6 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addPlugin(resolve(_dirname, './runtime/plugins/dialog'))
       addComposableImport({
         name: 'useDialog',
-        typed: false,
         from: resolve(_dirname, './runtime/composables/useDialog'),
         prefix: moduleOptions.general?.autoImportPrefix,
       })
@@ -270,7 +272,6 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       addPlugin(resolve(_dirname, './runtime/plugins/wait'))
       addComposableImport({
         name: 'useWait',
-        typed: false,
         from: resolve(_dirname, './runtime/composables/useWait'),
         prefix: moduleOptions.general?.autoImportPrefix,
       })
@@ -300,122 +301,12 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     // Composables
 
-    if (moduleOptions.composables.useIdleTimeout) {
-      addComposableImport({
-        name: 'useIdleTimeout',
-        from: 'maz-ui/composables/useIdleTimeout',
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
+    const allowedMazUiComposables = Object.keys(moduleOptions.composables).filter(composable => mazUiComposables[composable as keyof typeof mazUiComposables])
 
-    if (moduleOptions.composables.useReadingTime) {
+    for (const composable of allowedMazUiComposables) {
       addComposableImport({
-        name: 'useReadingTime',
-        from: 'maz-ui/composables/useReadingTime',
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
-
-    if (moduleOptions.composables.useWindowSize) {
-      addComposableImport({
-        name: 'useWindowSize',
-        from: 'maz-ui/composables/useWindowSize',
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
-
-    if (moduleOptions.composables.useBreakpoints) {
-      addImports({
-        from: 'maz-ui/composables/useBreakpoints',
-        name: 'useBreakpoints',
-        as: 'useBreakpoints',
-      })
-    }
-
-    if (moduleOptions.composables.useUserVisibility) {
-      addComposableImport({
-        name: 'useUserVisibility',
-        from: 'maz-ui/composables/useUserVisibility',
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
-
-    if (moduleOptions.composables.useStringMatching) {
-      addComposableImport({
-        name: 'useStringMatching',
-        from: 'maz-ui/composables/useStringMatching',
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
-
-    if (moduleOptions.composables.useTimer) {
-      addComposableImport({
-        name: 'useTimer',
-        from: 'maz-ui/composables/useTimer',
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
-
-    if (moduleOptions.composables.useFreezeValue) {
-      addComposableImport({
-        name: 'useFreezeValue',
-        from: 'maz-ui/composables/useFreezeValue',
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
-
-    if (moduleOptions.composables.useInjectStrict) {
-      addComposableImport({
-        name: 'useInjectStrict',
-        from: 'maz-ui/composables/useInjectStrict',
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
-
-    if (moduleOptions.composables.useInstanceUniqId) {
-      addComposableImport({
-        name: 'useInstanceUniqId',
-        from: 'maz-ui/composables/useInstanceUniqId',
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
-
-    if (moduleOptions.composables.useMountComponent) {
-      addComposableImport({
-        name: 'useMountComponent',
-        from: 'maz-ui/composables/useMountComponent',
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
-
-    if (moduleOptions.composables.useSwipe) {
-      addComposableImport({
-        name: 'useSwipe',
-        from: 'maz-ui/composables/useSwipe',
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
-
-    if (moduleOptions.composables.useFormValidator) {
-      addComposableImport({
-        name: 'useFormValidator',
-        from: 'maz-ui/composables/useFormValidator',
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
-
-    if (moduleOptions.composables.useFormField) {
-      addComposableImport({
-        name: 'useFormField',
-        from: 'maz-ui/composables/useFormField',
-        prefix: moduleOptions.general?.autoImportPrefix,
-      })
-    }
-
-    if (moduleOptions.composables.useDisplayNames) {
-      addComposableImport({
-        name: 'useDisplayNames',
-        from: 'maz-ui/composables/useDisplayNames',
+        name: composable,
+        from: `maz-ui/composables`,
         prefix: moduleOptions.general?.autoImportPrefix,
       })
     }
@@ -423,7 +314,6 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     if (moduleOptions.composables.useTheme) {
       addComposableImport({
         name: 'useTheme',
-        typed: false,
         from: '@maz-ui/themes/composables/useTheme',
         prefix: moduleOptions.general?.autoImportPrefix,
       })
@@ -432,7 +322,6 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     if (moduleOptions.composables.useTranslations) {
       addComposableImport({
         name: 'useTranslations',
-        typed: false,
         from: '@maz-ui/translations',
         prefix: moduleOptions.general?.autoImportPrefix,
       })

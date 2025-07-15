@@ -32,7 +32,7 @@ function writeChangelogToFile(pkg: PackageInfo, changelog: string) {
   }
   else {
     // No title found, create one and add changelog
-    const title = `# Changelog\n\nAll notable changes to this project will be documented in this file.\n`
+    const title = `# Changelog\n`
     updatedChangelog = `${title}\n${changelog}\n${existingChangelog}`
   }
 
