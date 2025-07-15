@@ -8,8 +8,5 @@ export default defineBuildConfig({
   rollup: {
     emitCJS: false,
   },
-  externals: [
-    'colorette',
-    '@maz-ui/utils/helpers',
-  ],
+  // externals: ['colorette'],
 })

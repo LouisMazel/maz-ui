@@ -47,11 +47,9 @@
     "lint:fix": "eslint . --fix",
     "pre-commit": "lint-staged"
   },
-  "dependencies": {
-    "@maz-ui/utils": "workspace:*",
-    "colorette": "^2.0.20"
-  },
   "devDependencies": {
+    "@maz-ui/utils": "workspace:*",
+    "colorette": "^2.0.20",
     "typescript": "^5.8.3",
     "unbuild": "^3.5.0"
   },
