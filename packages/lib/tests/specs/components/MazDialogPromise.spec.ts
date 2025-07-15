@@ -58,10 +58,21 @@ describe('given MazDialogConfirm component', () => {
 
     // @ts-expect-error - private value
     expect(wrapper.vm.currentData).toStrictEqual({
-      buttons: [
-        { text: 'Confirm', color: 'success', type: 'accept', response: 'accept' },
-        { text: 'Cancel', color: 'destructive', type: 'reject', response: 'reject' },
-      ],
+      buttons: undefined,
+      acceptProps: {
+        text: 'Confirm',
+        color: 'success',
+        type: 'accept',
+        response: 'accept',
+      },
+      rejectProps: {
+        text: 'Cancel',
+        color: 'destructive',
+        type: 'reject',
+        response: 'reject',
+      },
+      acceptText: 'Confirm',
+      rejectText: 'Cancel',
     })
   })
 })

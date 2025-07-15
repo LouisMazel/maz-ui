@@ -1,14 +1,9 @@
-import type { StrictOptions, UseFormField, UseFormValidator } from '@composables/index'
+import type { StrictOptions } from '@/composables/useFormValidator/types'
 import { useFormField, useFormValidator } from '@composables/index'
 import { flushPromises, mount } from '@vue/test-utils'
 
 import { minLength, minValue, number, pipe, string } from 'valibot'
 import { defineComponent, nextTick, ref } from 'vue'
-
-interface Model {
-  name: string
-  age: number
-}
 
 const defaultOptions: {
   mode?: StrictOptions['mode']
@@ -25,16 +20,18 @@ function createFormComponent(options?: typeof defaultOptions) {
       const schema = {
         name: pipe(string(), minLength(3, 'Name must be at least 3 characters')),
         age: pipe(number(), minValue(18, 'You must be at least 18 years old')),
+        password: pipe(string(), minLength(8, 'Password must be at least 8 characters')),
       }
 
       const initialModel = ref({
         name: '',
         age: 0,
+        password: '12345678',
       })
 
       const identifier = Symbol('test')
 
-      const form = useFormValidator<Model>({
+      const form = useFormValidator<typeof schema>({
         schema,
         model: initialModel,
         options: {
@@ -49,13 +46,13 @@ function createFormComponent(options?: typeof defaultOptions) {
         },
       })
 
-      const nameField = useFormField<string, Model>('name', { formIdentifier: identifier })
-      const ageField = useFormField<number, Model>('age', {
+      const nameField = useFormField<typeof schema, 'name'>('name', { formIdentifier: identifier })
+      const ageField = useFormField<typeof schema, 'age'>('age', {
         defaultValue: 10,
         formIdentifier: identifier,
         mode: 'lazy',
       })
-      const passwordField = useFormField<string, Model>('age', { formIdentifier: identifier })
+      const passwordField = useFormField<typeof schema, 'password'>('password', { formIdentifier: identifier })
 
       return { form, nameField, ageField, passwordField }
     },
@@ -69,7 +66,7 @@ function createFormComponent(options?: typeof defaultOptions) {
 
 describe('given useFormValidator', () => {
   let wrapper: ReturnType<typeof mount>
-  let form: ReturnType<UseFormValidator<Model>>
+  let form: ReturnType<typeof useFormValidator<any>>
 
   beforeEach(() => {
     vi.useFakeTimers()
@@ -93,6 +90,7 @@ describe('given useFormValidator', () => {
       expect(form.errors.value).toEqual({
         age: expect.any(Array),
         name: expect.any(Array),
+        password: expect.any(Array),
       })
     })
   })
@@ -133,8 +131,8 @@ describe('given useFormValidator', () => {
 
 describe('given useFormField with aggressive mode', () => {
   let wrapper: ReturnType<typeof mount>
-  let nameField: ReturnType<UseFormField<string>>
-  let ageField: ReturnType<UseFormField<number>>
+  let nameField: ReturnType<typeof useFormField<any>>
+  let ageField: ReturnType<typeof useFormField<any>>
 
   beforeEach(() => {
     vi.useFakeTimers()
@@ -195,9 +193,9 @@ describe('given useFormField with aggressive mode', () => {
 
 describe('given useFormField with eager mode', () => {
   let wrapper: ReturnType<typeof mount>
-  let nameField: ReturnType<UseFormField<string>>
-  let ageField: ReturnType<UseFormField<number>>
-  let passwordField: ReturnType<UseFormField<string>>
+  let nameField: ReturnType<typeof useFormField<any>>
+  let ageField: ReturnType<typeof useFormField<any>>
+  let passwordField: ReturnType<typeof useFormField<any>>
 
   beforeEach(() => {
     vi.useFakeTimers()
@@ -282,7 +280,7 @@ describe('given useFormField with eager mode', () => {
 
 describe('given useFormField with lazy mode', () => {
   let wrapper: ReturnType<typeof mount>
-  let nameField: ReturnType<UseFormField<string>>
+  let nameField: ReturnType<typeof useFormField<any>>
 
   beforeEach(() => {
     vi.useFakeTimers()
@@ -326,7 +324,7 @@ describe('given useFormField with lazy mode', () => {
 
 describe('given useFormField with blur mode', () => {
   let wrapper: ReturnType<typeof mount>
-  let nameField: ReturnType<UseFormField<string>>
+  let nameField: ReturnType<typeof useFormField<any>>
 
   beforeEach(() => {
     vi.useFakeTimers()
@@ -375,7 +373,7 @@ describe('given useFormField with blur mode', () => {
 
 describe('given useFormField with progressive mode', () => {
   let wrapper: ReturnType<typeof mount>
-  let nameField: ReturnType<UseFormField<string>>
+  let nameField: ReturnType<typeof useFormField<any>>
 
   beforeEach(() => {
     vi.useFakeTimers()
