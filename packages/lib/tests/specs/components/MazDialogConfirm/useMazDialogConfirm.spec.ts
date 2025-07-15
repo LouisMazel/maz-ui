@@ -1,8 +1,8 @@
-import { useMazDialogPromise } from '@components/MazDialogPromise.vue'
+import { useMazDialogConfirm } from '@/components/MazDialogConfirm.vue'
 
-describe('useMazDialogPromise', () => {
+describe('useMazDialogConfirm', () => {
   it('should add a dialog to the state when showDialogAndWaitChoice is called', () => {
-    const { dialogState, showDialogAndWaitChoice, accept } = useMazDialogPromise()
+    const { dialogState, showDialogAndWaitChoice, accept } = useMazDialogConfirm()
     const identifier = 'test-dialog'
 
     expect(dialogState.value).toHaveLength(0)
@@ -15,7 +15,7 @@ describe('useMazDialogPromise', () => {
 
   it('should remove a dialog from the state when accept is called', async () => {
     vi.useFakeTimers()
-    const { dialogState, accept } = useMazDialogPromise()
+    const { dialogState, accept } = useMazDialogConfirm()
     const identifier = 'test-dialog'
 
     // @ts-expect-error - test case
@@ -34,7 +34,7 @@ describe('useMazDialogPromise', () => {
   })
 
   it('should resolve the dialog when resolveDialog is called', async () => {
-    const { dialogState, accept } = useMazDialogPromise()
+    const { dialogState, accept } = useMazDialogConfirm()
     const identifier = 'test-dialog'
     let resolved = false
 
@@ -50,7 +50,7 @@ describe('useMazDialogPromise', () => {
   })
 
   it('should reject the dialog when rejectDialog is called', async () => {
-    const { dialogState, reject } = useMazDialogPromise()
+    const { dialogState, reject } = useMazDialogConfirm()
     const identifier = 'test-dialog'
     let rejected = false
 
