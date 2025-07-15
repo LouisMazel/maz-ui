@@ -59,7 +59,7 @@ const { model } = useFormValidator<typeof schema>({
 })
 
 // For useFormField, specify both schema and field name for precise typing
-const { value: name } = useFormField<typeof schema, 'name'>('name', { formIdentifier: 'form' })
+const { value: name } = useFormField<string>('name', { formIdentifier: 'form' })
 ```
 
 :::
@@ -93,7 +93,7 @@ This method will automatically detect interactive elements (input, select, texta
 import { useFormField } from 'maz-ui/composables'
 import { useTemplateRef } from 'vue'
 
-const { value, errorMessage, isValid, hasError } = useFormField<typeof schema, 'name'>('name', {
+const { value, errorMessage, isValid, hasError } = useFormField<string>('name', {
   ref: useTemplateRef('inputRef'),
 })
 </script>
@@ -121,7 +121,7 @@ If you use this method with a custom component, the component must emit the `blu
 <script setup lang="ts">
 import { useFormField } from 'maz-ui/composables'
 
-const { value, errorMessage, isValid, hasError, validationEvents } = useFormField<typeof schema, 'name'>('name')
+const { value, errorMessage, isValid, hasError, validationEvents } = useFormField<string>('name')
 </script>
 ```
 
@@ -333,19 +333,19 @@ const { isSubmitting, handleSubmit } = useFormValidator<typeof schema>({
   options: { mode: 'eager', scrollToError: '.has-error-form2', identifier: 'form-eager' },
 })
 
-const { value: name, hasError: hasErrorName, errorMessage: nameErrorMessage } = useFormField<typeof schema, 'name'>('name', {
+const { value: name, hasError: hasErrorName, errorMessage: nameErrorMessage } = useFormField<string>('name', {
   ref: useTemplateRef('nameRef'),
   formIdentifier: 'form-eager',
 })
-const { value: age, hasError: hasErrorAge, errorMessage: ageErrorMessage } = useFormField<typeof schema, 'age'>('age', {
+const { value: age, hasError: hasErrorAge, errorMessage: ageErrorMessage } = useFormField<number>('age', {
   ref: useTemplateRef('ageRef'),
   formIdentifier: 'form-eager',
 })
-const { value: agree, hasError: hasErrorAgree, errorMessage: agreeErrorMessage } = useFormField<typeof schema, 'agree'>('agree', {
+const { value: agree, hasError: hasErrorAgree, errorMessage: agreeErrorMessage } = useFormField<boolean>('agree', {
   ref: useTemplateRef('agreeRef'),
   formIdentifier: 'form-eager'
 })
-const { value: country, hasError: hasErrorCountry, errorMessage: countryErrorMessage, validationEvents } = useFormField<typeof schema, 'country'>('country', {
+const { value: country, hasError: hasErrorCountry, errorMessage: countryErrorMessage, validationEvents } = useFormField<string>('country', {
   mode: 'lazy',
   formIdentifier: 'form-eager'
 })
@@ -475,19 +475,19 @@ const { isSubmitting, handleSubmit } = useFormValidator<typeof schema>({
   options: { mode: 'progressive', scrollToError: '.has-error-progressive', identifier: 'form-progressive' },
 })
 
-const { value: name, hasError: nameHasError, errorMessage: nameErrorMessage } = useFormField<typeof schema, 'name'>('name', {
+const { value: name, hasError: nameHasError, errorMessage: nameErrorMessage } = useFormField<string>('name', {
   ref: useTemplateRef('nameRef'),
   formIdentifier: 'form-progressive',
 })
-const { value: age, hasError: ageHasError, errorMessage: ageErrorMessage } = useFormField<typeof schema, 'age'>('age', {
+const { value: age, hasError: ageHasError, errorMessage: ageErrorMessage } = useFormField<number>('age', {
   ref: useTemplateRef('ageRef'),
   formIdentifier: 'form-progressive',
 })
-const { value: country, hasError: countryHasError, errorMessage: countryErrorMessage, validationEvents } = useFormField<typeof schema, 'country'>('country', {
+const { value: country, hasError: countryHasError, errorMessage: countryErrorMessage, validationEvents } = useFormField<string>('country', {
   mode: 'lazy',
   formIdentifier: 'form-progressive',
 })
-const { value: agree, hasError: agreeHasError, errorMessage: agreeErrorMessage } = useFormField<typeof schema, 'agree'>('agree', {
+const { value: agree, hasError: agreeHasError, errorMessage: agreeErrorMessage } = useFormField<boolean>('agree', {
   ref: useTemplateRef('agreeRef'),
   formIdentifier: 'form-progressive',
 })
@@ -773,9 +773,9 @@ To use the modes `eager`, `progressive` or `blur`, you must use this `useFormFie
 
 ### Parameters
 
-`useFormField<TSchema, TName>` takes the following parameters:
+`useFormField<T>` takes the following parameters:
 
-- `name`: `TName` - The name of the field in the validation schema (must be a key from the schema).
+- `name`: `string` - The name of the field in the validation schema (must be a key from the schema).
 - `options`: `FormFieldOptions<T>` (optional) - Field-specific options.
   - `defaultValue`: `T` (optional) - The default value of the field.
   - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'` (optional) - The validation mode for the field - [see validation modes](#introduction)
@@ -803,7 +803,7 @@ To use the modes `eager`, `progressive` or `blur`, you must use this `useFormFie
 ### 🚀 Enhanced Type Safety
 
 - **Automatic schema inference**: Use `typeof schema` for precise TypeScript types
-- **Field-level type safety**: `useFormField<typeof schema, 'fieldName'>` provides exact field types
+- **Field-level type safety**: `useFormField<T>` provides exact field types
 - **Improved reactivity**: Optimized watchers with better performance and memory management
 
 ### 🎯 Better Interactive Element Detection
@@ -851,7 +851,7 @@ const form2 = useFormValidator<typeof schema2>({
 })
 
 // Use matching identifiers in useFormField
-const { value } = useFormField<typeof schema1, 'name'>('name', {
+const { value } = useFormField<string>('name', {
   formIdentifier: 'form-1'
 })
 ```
@@ -871,7 +871,7 @@ const { value } = useFormField<typeof schema1, 'name'>('name', {
 
 - **Mismatched form identifiers**: Ensure `useFormField` uses the same `formIdentifier` as `useFormValidator`
 - **Missing refs for interactive modes**: `eager`, `blur`, and `progressive` modes require either `ref` or `validationEvents`
-- **Incorrect TypeScript generics**: Always specify both schema and field name: `useFormField<typeof schema, 'fieldName'>`
+- **Incorrect TypeScript generics**: Always specify both schema and field name: `useFormField<T>`
 
 ## Troubleshooting
 
@@ -884,7 +884,7 @@ const { value } = useFormField<typeof schema1, 'name'>('name', {
 const { value } = useFormField('name')
 
 // ✅ Correct - precise typing
-const { value } = useFormField<typeof schema, 'name'>('name')
+const { value } = useFormField<string>('name')
 ```
 
 ### Validation Not Triggering
@@ -893,15 +893,15 @@ const { value } = useFormField<typeof schema, 'name'>('name')
 
 ```ts
 // ❌ Missing ref or validation events
-const { value } = useFormField<typeof schema, 'name'>('name')
+const { value } = useFormField<string>('name')
 
 // ✅ Use ref for automatic detection
-const { value } = useFormField<typeof schema, 'name'>('name', {
+const { value } = useFormField<string>('name', {
   ref: useTemplateRef('inputRef')
 })
 
 // ✅ Or use validation events manually
-const { value, validationEvents } = useFormField<typeof schema, 'name'>('name')
+const { value, validationEvents } = useFormField<string>('name')
 // Then: v-bind="validationEvents" on your component
 ```
 
@@ -1029,10 +1029,10 @@ interface FormFieldOptions<T> {
     options: { mode: 'eager', scrollToError: '.has-error-form2', identifier: 'form-eager' },
   })
 
-  const { value: name, hasError: hasErrorName, errorMessage: nameErrorMessage } = useFormField<typeof eagerSchema, 'name'>('name', { ref: useTemplateRef('nameRef'), formIdentifier: 'form-eager' })
-  const { value: age, hasError: hasErrorAge, errorMessage: ageErrorMessage } = useFormField<typeof eagerSchema, 'age'>('age', { ref: useTemplateRef('ageRef'), formIdentifier: 'form-eager'  })
-  const { value: country, hasError: hasErrorCountry, errorMessage: countryErrorMessage, validationEvents } = useFormField<typeof eagerSchema, 'country'>('country', { mode: 'lazy', formIdentifier: 'form-eager'  })
-  const { value: agree, hasError: hasErrorAgree, errorMessage: agreeErrorMessage } = useFormField<typeof eagerSchema, 'agree'>('agree', { ref: useTemplateRef('agreeRef'), formIdentifier: 'form-eager'  })
+  const { value: name, hasError: hasErrorName, errorMessage: nameErrorMessage } = useFormField<string>('name', { ref: useTemplateRef('nameRef'), formIdentifier: 'form-eager' })
+  const { value: age, hasError: hasErrorAge, errorMessage: ageErrorMessage } = useFormField<number>('age', { ref: useTemplateRef('ageRef'), formIdentifier: 'form-eager'  })
+  const { value: country, hasError: hasErrorCountry, errorMessage: countryErrorMessage, validationEvents } = useFormField<string>('country', { mode: 'lazy', formIdentifier: 'form-eager'  })
+  const { value: agree, hasError: hasErrorAgree, errorMessage: agreeErrorMessage } = useFormField<boolean>('agree', { ref: useTemplateRef('agreeRef'), formIdentifier: 'form-eager'  })
 
   const onSubmitEager = handleSubmitEager(async (formData) => {
     // Form submission logic
@@ -1058,10 +1058,10 @@ interface FormFieldOptions<T> {
     agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
   }
 
-  const { value: nameProgressive, isValid: nameValidProgressive, hasError: nameErrorProgressive, errorMessage: nameMessageProgressive } = useFormField<typeof progressiveSchema, 'name'>('name', { ref: useTemplateRef('nameProgressiveRef'), formIdentifier: 'form-progressive' })
-  const { value: ageProgressive, isValid: ageValidProgressive, hasError: ageErrorProgressive, errorMessage: ageMessageProgressive } = useFormField<typeof progressiveSchema, 'age'>('age', { ref: useTemplateRef('ageProgressiveRef'), formIdentifier: 'form-progressive'  })
-  const { value: countryProgressive, isValid: countryValidProgressive, hasError: countryErrorProgressive, errorMessage: countryMessageProgressive, validationEventsProgressive } = useFormField<typeof progressiveSchema, 'country'>('country', { ref: useTemplateRef('countryProgressiveRef'), formIdentifier: 'form-progressive' })
-  const { value: agreeProgressive, isValid: agreeValidProgressive, hasError: agreeErrorProgressive, errorMessage: agreeMessageProgressive } = useFormField<typeof progressiveSchema, 'agree'>('agree', { ref: useTemplateRef('agreeProgressiveRef'), formIdentifier: 'form-progressive'  })
+  const { value: nameProgressive, isValid: nameValidProgressive, hasError: nameErrorProgressive, errorMessage: nameMessageProgressive } = useFormField<string>('name', { ref: useTemplateRef('nameProgressiveRef'), formIdentifier: 'form-progressive' })
+  const { value: ageProgressive, isValid: ageValidProgressive, hasError: ageErrorProgressive, errorMessage: ageMessageProgressive } = useFormField<number>('age', { ref: useTemplateRef('ageProgressiveRef'), formIdentifier: 'form-progressive'  })
+  const { value: countryProgressive, isValid: countryValidProgressive, hasError: countryErrorProgressive, errorMessage: countryMessageProgressive, validationEventsProgressive } = useFormField<string>('country', { ref: useTemplateRef('countryProgressiveRef'), formIdentifier: 'form-progressive' })
+  const { value: agreeProgressive, isValid: agreeValidProgressive, hasError: agreeErrorProgressive, errorMessage: agreeMessageProgressive } = useFormField<boolean>('agree', { ref: useTemplateRef('agreeProgressiveRef'), formIdentifier: 'form-progressive'  })
 
   const onSubmitProgressive = handleSubmitProgressive(async (formData) => {
     // Form submission logic
@@ -1112,7 +1112,7 @@ interface FormFieldOptions<T> {
     hasError: hasErrorNameAsync,
     errorMessage: nameErrorMessageAsync,
     validationEvents: validationEventsAsync,
-  } = useFormField<typeof schema, 'name'>('name', {
+  } = useFormField<string>('name', {
     ref: useTemplateRef('nameAsyncRef'),
     formIdentifier: 'form-async',
   })
