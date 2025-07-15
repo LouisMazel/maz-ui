@@ -34,7 +34,10 @@ yarn add maz-ui
 
 ```typescript
 import { MazUi } from 'maz-ui/plugins/maz-ui'
+
 import { mazUi } from '@maz-ui/themes/presets'
+import { fr } from '@maz-ui/translations'
+
 import { createApp } from 'vue'
 
 // Import Maz-UI styles before your own CSS
@@ -63,6 +66,9 @@ app.use(MazUi, {
   translations: {
     locale: 'fr',
     fallbackLocale: 'en',
+    messages: {
+      fr,
+    },
   },
 })
 
