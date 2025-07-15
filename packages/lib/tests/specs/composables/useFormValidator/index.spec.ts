@@ -26,6 +26,7 @@ function createFormComponent(options?: typeof defaultOptions) {
       const initialModel = ref({
         name: '',
         age: 0,
+        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
         password: '12345678',
       })
 
