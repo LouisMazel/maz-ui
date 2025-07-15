@@ -333,10 +333,22 @@ const { isSubmitting, handleSubmit } = useFormValidator<typeof schema>({
   options: { mode: 'eager', scrollToError: '.has-error-form2', identifier: 'form-eager' },
 })
 
-const { value: name, hasError: hasErrorName, errorMessage: nameErrorMessage } = useFormField<typeof schema, 'name'>('name', { ref: useTemplateRef('nameRef'), formIdentifier: 'form-eager' })
-const { value: age, hasError: hasErrorAge, errorMessage: ageErrorMessage } = useFormField<typeof schema, 'age'>('age', { ref: useTemplateRef('ageRef'), formIdentifier: 'form-eager' })
-const { value: agree, hasError: hasErrorAgree, errorMessage: agreeErrorMessage } = useFormField<typeof schema, 'agree'>('agree', { ref: useTemplateRef('agreeRef'), formIdentifier: 'form-eager' })
-const { value: country, hasError: hasErrorCountry, errorMessage: countryErrorMessage, validationEvents } = useFormField<typeof schema, 'country'>('country', { mode: 'lazy', formIdentifier: 'form-eager' })
+const { value: name, hasError: hasErrorName, errorMessage: nameErrorMessage } = useFormField<typeof schema, 'name'>('name', {
+  ref: useTemplateRef('nameRef'),
+  formIdentifier: 'form-eager',
+})
+const { value: age, hasError: hasErrorAge, errorMessage: ageErrorMessage } = useFormField<typeof schema, 'age'>('age', {
+  ref: useTemplateRef('ageRef'),
+  formIdentifier: 'form-eager',
+})
+const { value: agree, hasError: hasErrorAgree, errorMessage: agreeErrorMessage } = useFormField<typeof schema, 'agree'>('agree', {
+  ref: useTemplateRef('agreeRef'),
+  formIdentifier: 'form-eager'
+})
+const { value: country, hasError: hasErrorCountry, errorMessage: countryErrorMessage, validationEvents } = useFormField<typeof schema, 'country'>('country', {
+  mode: 'lazy',
+  formIdentifier: 'form-eager'
+})
 
 const onSubmit = handleSubmit(async (formData) => {
   // Form submission logic
@@ -463,10 +475,22 @@ const { isSubmitting, handleSubmit } = useFormValidator<typeof schema>({
   options: { mode: 'progressive', scrollToError: '.has-error-progressive', identifier: 'form-progressive' },
 })
 
-const { value: name, hasError: nameHasError, errorMessage: nameErrorMessage } = useFormField<typeof schema, 'name'>('name', { ref: useTemplateRef('nameRef'), formIdentifier: 'form-progressive' })
-const { value: age, hasError: ageHasError, errorMessage: ageErrorMessage } = useFormField<typeof schema, 'age'>('age', { ref: useTemplateRef('ageRef'), formIdentifier: 'form-progressive' })
-const { value: country, hasError: countryHasError, errorMessage: countryErrorMessage, validationEvents } = useFormField<typeof schema, 'country'>('country', { mode: 'lazy', formIdentifier: 'form-progressive' })
-const { value: agree, hasError: agreeHasError, errorMessage: agreeErrorMessage } = useFormField<typeof schema, 'agree'>('agree', { ref: useTemplateRef('agreeRef'), formIdentifier: 'form-progressive' })
+const { value: name, hasError: nameHasError, errorMessage: nameErrorMessage } = useFormField<typeof schema, 'name'>('name', {
+  ref: useTemplateRef('nameRef'),
+  formIdentifier: 'form-progressive',
+})
+const { value: age, hasError: ageHasError, errorMessage: ageErrorMessage } = useFormField<typeof schema, 'age'>('age', {
+  ref: useTemplateRef('ageRef'),
+  formIdentifier: 'form-progressive',
+})
+const { value: country, hasError: countryHasError, errorMessage: countryErrorMessage, validationEvents } = useFormField<typeof schema, 'country'>('country', {
+  mode: 'lazy',
+  formIdentifier: 'form-progressive',
+})
+const { value: agree, hasError: agreeHasError, errorMessage: agreeErrorMessage } = useFormField<typeof schema, 'agree'>('agree', {
+  ref: useTemplateRef('agreeRef'),
+  formIdentifier: 'form-progressive',
+})
 
 const onSubmit = handleSubmit(async (formData) => {
   // Form submission logic
@@ -557,7 +581,7 @@ You can set the throttle or debounce time in milliseconds or use `true` for the 
 
 <template #code>
 
-```vue{36,37}
+```vue{37,38}
 <template>
   <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmit">
     <MazInput
@@ -610,6 +634,92 @@ You can set the throttle or debounce time in milliseconds or use `true` for the 
 ```
 
   </template>
+</ComponentDemo>
+
+## Validation with async function
+
+You can use async functions in the validation schema.
+
+<ComponentDemo>
+  <form class="maz-flex maz-gap-4" @submit="onSubmitAsync">
+    <MazInput
+      v-model="modelAsync.name"
+      label="Enter your name"
+      ref="nameAsyncRef"
+      v-bind="validationEventsAsync"
+      :hint="errorMessagesAsync.name"
+      :error="fieldsStatesAsync.name.error"
+      :success="fieldsStatesAsync.name.valid"
+      :loading="fieldsStatesAsync.name.validating"
+      :class="{ 'has-error-async': fieldsStatesAsync.name.error }"
+    />
+    <MazBtn type="submit" :loading="isSubmittingAsync">
+      Submit
+    </MazBtn>
+  </form>
+
+<template #code>
+
+```vue
+<template>
+  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmit">
+    <MazInput
+      v-model="model.name"
+      label="Enter your name"
+      ref="nameRef"
+      v-bind="validationEvents"
+      :hint="errorMessages.name"
+      :error="fieldsStates.name.error"
+      :success="fieldsStates.name.valid"
+      :loading="fieldsStates.name.validating"
+      :class="{ 'has-error-debounced': fieldsStates.name.error }"
+    />
+    <MazBtn type="submit" :loading="isSubmitting">
+      Submit
+    </MazBtn>
+  </form>
+</template>
+
+<script setup lang="ts">
+  import { sleep } from 'maz-ui'
+  import { useFormValidator, useToast, InferFormValidatorSchema } from 'maz-ui/composables'
+  import { string, nonEmpty, pipe, number, minValue, minLength, pipeAsync, checkAsync } from 'valibot'
+
+  const {
+    model,
+    fieldsStates,
+    isValid,
+    isSubmitting,
+    errorMessages,
+    handleSubmit,
+  } = useFormValidator({
+    schema: {
+      name: pipeAsync(
+        string('Name is required'),
+        nonEmpty('Name is required'),
+        minLength(3, 'Name must be at least 3 characters'),
+        checkAsync(
+          async (name) => {
+            console.log('name', name)
+            await sleep(2000)
+            return false
+          },
+          'Name is already taken',
+        )),
+    },
+    options: { mode: 'eager', scrollToError: '.has-error-async', identifier: 'form-async' },
+  })
+
+  const onSubmit = handleSubmit((formData) => {
+    // Form submission logic
+    console.log(formData)
+    toast.success('Form submitted', { position: 'top' })
+  })
+</script>
+```
+
+</template>
+
 </ComponentDemo>
 
 ## useFormValidator
@@ -883,7 +993,7 @@ interface FormFieldOptions<T> {
   import { useFormField } from 'maz-ui/src/composables/useFormField'
   import { useToast } from 'maz-ui/src/composables/useToast'
   import { sleep } from 'maz-ui'
-  import { string, nonEmpty, pipe, number, minValue, maxValue, boolean, literal, minLength } from 'valibot'
+  import { string, nonEmpty, pipe, number, minValue, maxValue, boolean, literal, minLength, pipeAsync, checkAsync } from 'valibot'
 
   const toast = useToast()
 
@@ -977,5 +1087,39 @@ interface FormFieldOptions<T> {
     console.log(formData)
     await sleep(2000)
     toast.success(`Form submitted with ${JSON.stringify(formData)}`, { position: 'top' })
+  })
+
+  const { model: modelAsync, fieldsStates: fieldsStatesAsync, isValid: isValidAsync, isSubmitting: isSubmittingAsync, errorMessages: errorMessagesAsync, handleSubmit: handleSubmitAsync } = useFormValidator({
+    schema: {
+      name: pipeAsync(
+        string('Name is required'),
+        nonEmpty('Name is required'),
+        minLength(3, 'Name must be at least 3 characters'),
+        checkAsync(
+          async (name) => {
+            console.log('name', name)
+            await sleep(2000)
+            return false
+          },
+          'Name is already taken',
+        )),
+    },
+    options: { mode: 'eager', scrollToError: '.has-error-async', identifier: 'form-async' },
+  })
+
+  const {
+    value: nameAsync,
+    hasError: hasErrorNameAsync,
+    errorMessage: nameErrorMessageAsync,
+    validationEvents: validationEventsAsync,
+  } = useFormField<typeof schema, 'name'>('name', {
+    ref: useTemplateRef('nameAsyncRef'),
+    formIdentifier: 'form-async',
+  })
+
+  const onSubmitAsync = handleSubmitAsync((formData) => {
+    // Form submission logic
+    console.log(formData)
+    toast.success('Form submitted', { position: 'top' })
   })
 </script>
