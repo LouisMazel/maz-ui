@@ -2,7 +2,7 @@ import type { Plugin } from 'vite'
 import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { logger } from '@maz-ui/utils'
+import { logger } from '@maz-ui/node'
 import { getComponentList } from './getComponentList.js'
 
 function toPascalCase(str: string) {

@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
-import { logger } from '@maz-ui/utils/src/helpers/logger.js'
-import { execPromise, getErrorMessage } from '@maz-ui/utils/src/index.js'
+import { execPromise, logger } from '@maz-ui/node/index.js'
+import { getErrorMessage } from '@maz-ui/utils/src/helpers/getErrorMessage.js'
 import {
   createGithubRelease,
 } from 'changelogen'

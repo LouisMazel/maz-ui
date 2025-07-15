@@ -183,7 +183,7 @@ class TooltipHandler {
 
     // Detect touch device for adaptive mode
     function isTouchDevice() {
-      return 'ontouchstart' in window || navigator.maxTouchPoints > 0
+      return 'ontouchstart' in globalThis || navigator.maxTouchPoints > 0
     }
 
     // Get effective trigger based on adaptive mode

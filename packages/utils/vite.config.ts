@@ -10,13 +10,6 @@ import pkg from './package.json'
 const external = [
   ...Object.keys(pkg.devDependencies),
   ...Object.keys(rootPkg.devDependencies),
-  'node:child_process',
-  'node:fs',
-  'node:path',
-  'node:util',
-  'node:crypto',
-  'node:os',
-  'node:process',
   'tty',
 ]
 
