@@ -9,3 +9,5 @@ coverage
 lerna-debug.log*
 .cursor/rules
 CLAUDE.md
+dist
+**/.DS_Store
