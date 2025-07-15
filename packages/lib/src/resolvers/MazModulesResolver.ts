@@ -83,7 +83,5 @@ export function MazModulesResolver(options?: { devMode?: boolean, prefix?: strin
         as: `use${capitalize(prefix)}${name.replace(/^use/, '')}`,
       }
     }
-
-    return undefined
   }
 }
