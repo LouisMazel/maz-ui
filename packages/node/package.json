@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/node",
   "type": "module",
-  "version": "1.0.0",
+  "version": "4.0.0-beta.7",
   "packageManager": "pnpm@10.13.1",
   "description": "Node utilities for Maz-UI library",
   "author": "Louis Mazel <me@loicmazuel.com>",

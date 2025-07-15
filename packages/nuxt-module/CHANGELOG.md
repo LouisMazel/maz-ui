@@ -1,5 +1,23 @@
 # Change Log
 
+## v4.0.0-beta.6...v4.0.0-beta.7
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.6...v4.0.0-beta.7)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Do not load translation plugin asynchronously ([65d2fdef0](https://github.com/LouisMazel/maz-ui/commit/65d2fdef0))
+- **@maz-ui/nuxt:** Do not load translation plugin asynchronously ([af2c96756](https://github.com/LouisMazel/maz-ui/commit/af2c96756))
+
+### 💅 Refactors
+
+- **@maz-ui/translations:** Improve locale messages lazy loading ([4a4e16d6c](https://github.com/LouisMazel/maz-ui/commit/4a4e16d6c))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.5...v4.0.0-beta.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.5...v4.0.0-beta.6)
