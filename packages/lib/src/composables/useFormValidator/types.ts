@@ -1,7 +1,6 @@
 import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferInput, InferIssue, InferOutput, objectAsync } from 'valibot'
 import type {
   ComponentInternalInstance,
-  ComponentPublicInstance,
   InjectionKey,
   Ref,
   TemplateRef,
@@ -112,7 +111,7 @@ export interface FormFieldOptions<FieldType> {
    * Reference to the component or HTML element to associate and trigger validation events
    * Necessary for 'eager', 'progressive' and 'blur' validation modes
    */
-  ref?: Ref<HTMLElement | ComponentPublicInstance | undefined | null> | TemplateRef<HTMLElement | ComponentPublicInstance | undefined | null>
+  ref?: Ref | TemplateRef
   /**
    * Identifier for the form
    * Useful when you have multiple forms on the same component
