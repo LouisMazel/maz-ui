@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - 'lerna.json'
+      - 'packages/*/package.json'
+      - 'CHANGELOG*.md'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
