@@ -31,7 +31,7 @@ export default {
         strategy: 'hybrid',
       },
       translations: {
-        locale: 'fr',
+        locale: 'en',
       },
     })
 

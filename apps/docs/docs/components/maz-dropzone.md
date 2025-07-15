@@ -295,6 +295,8 @@ Customize the upload area using slots:
 
 ## Custom Translations
 
+### Using `translations` prop
+
 Customize text messages using the `translations` prop:
 
 <ComponentDemo>
@@ -324,6 +326,36 @@ Customize text messages using the `translations` prop:
 
   </template>
 </ComponentDemo>
+
+### Using `MazUi` plugin
+
+You can also use the `MazUi` plugin to customize the translations:
+
+::: details View code
+
+```ts
+import { MazUi } from 'maz-ui/plugins/maz-ui'
+
+app.use(MazUi, {
+  translations: {
+    locale: 'en',
+    messages: {
+      en: {
+        dropzone: {
+          dragAndDrop: 'Drag files here',
+          selectFile: 'Select files',
+          divider: 'or',
+          fileMaxCount: 'Maximum {count} files',
+          fileMaxSize: 'Maximum {size} MB',
+          fileTypes: 'Allowed file types: {types}',
+        },
+      },
+    },
+  },
+})
+```
+
+:::
 
 ## Custom Upload Request
 
