@@ -1,5 +1,5 @@
 import { createRequire } from 'node:module'
-import { logger } from '@maz-ui/utils/src/helpers/logger.ts'
+import { logger } from '@maz-ui/node/index.ts'
 import { bgRed, blueBright, bold, white } from 'colorette'
 
 import { Command } from 'commander'

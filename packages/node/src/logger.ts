@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
+import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 import { blueBright, green, red, yellow } from 'colorette'
-import { getErrorMessage } from './getErrorMessage'
 
 const log = console.log
 

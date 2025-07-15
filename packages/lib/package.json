@@ -198,6 +198,7 @@
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
+    "@maz-ui/node": "workspace:*",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vitest/coverage-v8": "^3.2.4",
     "@vue/compiler-sfc": "^3.5.16",

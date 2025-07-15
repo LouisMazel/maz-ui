@@ -28,9 +28,7 @@ const composablesMap: Record<Composables, true> = {
 
 const modulesMap: Record<Modules, true> = {
   capitalize: true,
-  execPromise: true,
   getErrorMessage: true,
-  logger: true,
   checkAvailability: true,
   countryCodeToUnicodeFlag: true,
   formatCurrency: true,
@@ -56,9 +54,6 @@ const modulesMap: Record<Modules, true> = {
   Swipe: true,
   UserVisibility: true,
   TextareaAutogrow: true,
-  // execPromise: true,
-  // getErrorMessage: true,
-  // logger: true,
 }
 
 /**

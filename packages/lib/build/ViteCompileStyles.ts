@@ -5,7 +5,7 @@ import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { execPromise, logger } from '@maz-ui/utils'
+import { execPromise, logger } from '@maz-ui/node'
 import autoprefixer from 'autoprefixer'
 import postcss from 'postcss'
 import { compileAsync } from 'sass'

@@ -349,6 +349,9 @@ importers:
       '@maz-ui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@maz-ui/node':
+        specifier: workspace:*
+        version: link:../node
       '@vitejs/plugin-vue':
         specifier: ^5.2.4
         version: 5.2.4(vite@6.3.5(@types/node@24.0.12)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.89.2)(terser@5.42.0)(tsx@4.20.3)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.3))
@@ -495,6 +498,22 @@ importers:
         specifier: ^3.5.0
         version: 3.5.0(sass@1.89.2)(typescript@5.8.3)(vue-sfc-transformer@0.1.16(@vue/compiler-core@3.5.17)(esbuild@0.25.5)(vue@3.5.17(typescript@5.8.3)))(vue-tsc@2.2.10(typescript@5.8.3))(vue@3.5.17(typescript@5.8.3))
 
+  packages/node:
+    dependencies:
+      '@maz-ui/utils':
+        specifier: workspace:*
+        version: link:../utils
+      colorette:
+        specifier: ^2.0.20
+        version: 2.0.20
+    devDependencies:
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+      unbuild:
+        specifier: ^3.5.0
+        version: 3.5.0(sass@1.89.2)(typescript@5.8.3)(vue-sfc-transformer@0.1.16(@vue/compiler-core@3.5.17)(esbuild@0.25.5)(vue@3.5.17(typescript@5.8.3)))(vue-tsc@2.2.10(typescript@5.8.3))(vue@3.5.17(typescript@5.8.3))
+
   packages/nuxt-module:
     dependencies:
       '@maz-ui/themes':
@@ -570,9 +589,6 @@ importers:
 
   packages/utils:
     devDependencies:
-      colorette:
-        specifier: ^2.0.20
-        version: 2.0.20
       eslint:
         specifier: ^9.29.0
         version: 9.29.0(jiti@2.4.2)
