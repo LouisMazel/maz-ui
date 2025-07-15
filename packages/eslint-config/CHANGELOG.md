@@ -6,21 +6,9 @@
 
 **Note:** Version bump only to follow ecosystem versioning
 
-
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
-
-# [4.0.0-beta.4](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2025-07-10)
+## [4.0.0-beta.4](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2025-07-10)
 
 **Note:** Version bump only for package @maz-ui/eslint-config
-
-
-
-
-
-# Change Log
-
-
 
 ## 4.0.0-beta.1 (2025-07-09)
 
@@ -34,10 +22,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * feat(maz-ui): implement new theme manager provided by @maz-ui/themes ([bc23c6a](https://github.com/LouisMazel/maz-ui/commit/bc23c6a))
 * feat(maz-ui): MazInputPhoneNumber, MazSelect, MazDropdown and vTooltip display the content in a popo ([44406d0](https://github.com/LouisMazel/maz-ui/commit/44406d0))
 * refactor(maz-ui): apply default border color to components ([9254573](https://github.com/LouisMazel/maz-ui/commit/9254573))
-
-
-
-
 
 ## 4.0.0-beta.0 (2025-07-09)
 

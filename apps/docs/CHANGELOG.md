@@ -1,43 +1,20 @@
 # Change Log
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
-
-# [4.0.0-beta.5](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.4...v4.0.0-beta.5) (2025-07-10)
+## [4.0.0-beta.5](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.4...v4.0.0-beta.5) (2025-07-10)
 
 **Note:** Version bump only for package docs
 
-
-
-
-
-# [4.0.0-beta.4](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2025-07-10)
+## [4.0.0-beta.4](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2025-07-10)
 
 **Note:** Version bump only for package docs
-
-
-
-
-
-# Change Log
-
-
 
 ## 4.0.0-beta.3 (2025-07-10)
 
 * chore: remove catalog feature from pnpm workspace ([0176319](https://github.com/LouisMazel/maz-ui/commit/0176319))
 
-
-
-
-
 ## 4.0.0-beta.2 (2025-07-09)
 
 **Note:** Version bump only for package docs
-
-
-
-
 
 ## 4.0.0-beta.1 (2025-07-09)
 
@@ -63,10 +40,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * feat(maz-ui): MazInputPhoneNumber, MazSelect, MazDropdown and vTooltip display the content in a popo ([44406d0](https://github.com/LouisMazel/maz-ui/commit/44406d0))
 * feat(maz-ui): MazPopover - new component to display content as overlay ([22d61d0](https://github.com/LouisMazel/maz-ui/commit/22d61d0))
 * feat(maz-ui): MazSelectCountry - new form component to select country and languages ([97fedf7](https://github.com/LouisMazel/maz-ui/commit/97fedf7))
-
-
-
-
 
 ## 4.0.0-beta.0 (2025-07-09)
 
