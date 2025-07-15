@@ -205,6 +205,13 @@ export interface MazInputProps<T = MazInputValue> {
    * @example "email"
    */
   autocomplete?: string
+
+  /**
+   * Loading state for the input field. Used to show a loading spinner
+   * @note Spinner can be replace with the `loader` slot
+   * @default false
+   */
+  loading?: boolean
 }
 
 defineOptions({
@@ -236,6 +243,7 @@ const props = withDefaults(defineProps<MazInputProps<T>>(), {
   leftIcon: undefined,
   rightIcon: undefined,
   roundedSize: 'lg',
+  loading: false,
 })
 
 const emits = defineEmits<{
@@ -288,6 +296,7 @@ const emits = defineEmits<{
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
+const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
 const hasPasswordVisible = ref(false)
 const isFocused = ref(false)
@@ -380,6 +389,7 @@ function hasRightPart(): boolean {
     !!slots['right-icon']
     || isPasswordType.value
     || !!props.rightIcon
+    || props.loading
   )
 }
 
@@ -504,6 +514,17 @@ const stateColor = computed(() => {
           <MazEyeSlash v-if="hasPasswordVisible" class="maz-text-xl maz-text-muted" />
           <MazEye v-else class="maz-text-xl maz-text-muted" />
         </MazBtn>
+
+        <template v-if="loading">
+          <!--
+            @slot Loader slot.
+            @default `<MazSpinner :color="color" />`
+            Typically used to show a loading spinner or indicator.
+          -->
+          <slot name="loader">
+            <MazSpinner :color="color" />
+          </slot>
+        </template>
       </div>
     </div>
 
