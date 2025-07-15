@@ -1,5 +1,19 @@
 # Change Log
 
+## v4.0.0-beta.6...v4.0.0-beta.7
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.6...v4.0.0-beta.7)
+
+### 🚀 Features
+
+- **@maz-ui/utils:** Add new ts helpers to infer generic component type ([08991733a](https://github.com/LouisMazel/maz-ui/commit/08991733a))
+- **@maz-ui/utils:** Add new ts helpers to infer generic component type ([53a8b32a2](https://github.com/LouisMazel/maz-ui/commit/53a8b32a2))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.5...v4.0.0-beta.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.5...v4.0.0-beta.6)

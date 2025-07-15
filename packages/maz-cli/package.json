@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/cli",
   "type": "module",
-  "version": "4.0.0-beta.6",
+  "version": "4.0.0-beta.7",
   "description": "CLI of Maz-ui",
   "license": "MIT",
   "homepage": "https://maz-ui.com/guide/cli",
@@ -42,13 +42,13 @@
   },
   "dependencies": {
     "@clack/prompts": "^0.11.0",
+    "@maz-ui/node": "workspace:*",
     "clear": "^0.1.0",
     "commander": "^14.0.0",
     "cosmiconfig": "^9.0.0",
     "figlet": "^1.8.1",
     "tinycolor2": "^1.6.0",
-    "typescript": "~5.8.3",
-    "@maz-ui/node": "workspace:*"
+    "typescript": "~5.8.3"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",

@@ -1,5 +1,19 @@
 # Change Log
 
+## v4.0.0-beta.6...v4.0.0-beta.7
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.6...v4.0.0-beta.7)
+
+### 🩹 Fixes
+
+- **@maz-ui/icons:** Export svg files correctly ([757867b02](https://github.com/LouisMazel/maz-ui/commit/757867b02))
+- **@maz-ui/icons:** Export svg files correctly ([c84ad5c32](https://github.com/LouisMazel/maz-ui/commit/c84ad5c32))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.5...v4.0.0-beta.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.5...v4.0.0-beta.6)

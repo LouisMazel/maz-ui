@@ -1,5 +1,40 @@
 # Change Log
 
+## v4.0.0-beta.6...v4.0.0-beta.7
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.6...v4.0.0-beta.7)
+
+### 🚀 Features
+
+- **maz-ui:** UseFormValidator, useFormField - Type improvements and performance optimizations ([f0ef47ebe](https://github.com/LouisMazel/maz-ui/commit/f0ef47ebe))
+- **maz-ui:** MazBtn, MazCheckbox, MazInput, MazRadio, MazSwitch - improve UX when focused and disable style apply within fieldset disable ([be6a80cc0](https://github.com/LouisMazel/maz-ui/commit/be6a80cc0))
+- **maz-ui:** UseDisplayNames - improve cache to avoid memory leaks ([488f05d42](https://github.com/LouisMazel/maz-ui/commit/488f05d42))
+- **maz-ui:** MazPopover - improve popover position placement and animations ([69853d82e](https://github.com/LouisMazel/maz-ui/commit/69853d82e))
+- **maz-ui:** Add vite/client types into tsconfig ([5e729c42b](https://github.com/LouisMazel/maz-ui/commit/5e729c42b))
+- **maz-ui:** UseFormValidator, useFormField - Type improvements and performance optimizations ([26e1c7b10](https://github.com/LouisMazel/maz-ui/commit/26e1c7b10))
+- **maz-ui:** MazBtn, MazCheckbox, MazInput, MazRadio, MazSwitch - improve UX when focused and disable style apply within fieldset disable ([98d415cc7](https://github.com/LouisMazel/maz-ui/commit/98d415cc7))
+- **maz-ui:** UseDisplayNames - improve cache to avoid memory leaks ([68fdcbf60](https://github.com/LouisMazel/maz-ui/commit/68fdcbf60))
+- **maz-ui:** MazPopover - improve popover position placement and animations ([fb9d89cfc](https://github.com/LouisMazel/maz-ui/commit/fb9d89cfc))
+- **maz-ui:** Add vite/client types into tsconfig ([f93eb4045](https://github.com/LouisMazel/maz-ui/commit/f93eb4045))
+- **maz-ui:** Rename MazDialogPromise component to MazDialogConfirm and add more button options ([3e0f76de7](https://github.com/LouisMazel/maz-ui/commit/3e0f76de7))
+- **maz-ui:** MazInput - add loading state component with spinner support ([ec4e0cfef](https://github.com/LouisMazel/maz-ui/commit/ec4e0cfef))
+
+### 🔥 Performance
+
+- **maz-ui:** Toast uses passive event to improve perf ([c8420c152](https://github.com/LouisMazel/maz-ui/commit/c8420c152))
+- **maz-ui:** VTooltip - use element reference and do not recreate tooltip on update ([602cbe2a8](https://github.com/LouisMazel/maz-ui/commit/602cbe2a8))
+- **maz-ui:** Toast uses passive event to improve perf ([8bd22a1b6](https://github.com/LouisMazel/maz-ui/commit/8bd22a1b6))
+- **maz-ui:** VTooltip - use element reference and do not recreate tooltip on update ([7f96b720f](https://github.com/LouisMazel/maz-ui/commit/7f96b720f))
+
+### 💅 Refactors
+
+- **@maz-ui/translations:** Improve locale messages lazy loading ([4a4e16d6c](https://github.com/LouisMazel/maz-ui/commit/4a4e16d6c))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.5...v4.0.0-beta.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.5...v4.0.0-beta.6)
