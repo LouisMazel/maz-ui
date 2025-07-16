@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import type { MazDatePicker, MazSwitch, MazTextarea } from '#components'
 import type { GenericInstanceType } from 'maz-ui'
-import type { MazDatePickerPartialRangeValue, MazInput, MazRadioButtons } from 'maz-ui/components'
+import type { MazDatePickerPartialRangeValue, MazInput, MazRadioButtons, MazTextarea } from 'maz-ui/components'
 // import { useFormField, useFormValidator } from 'maz-ui/src/composables/index.js'
 import { array, boolean, literal, maxValue, minLength, minValue, nonEmpty, number as numberAction, object, pipe, string } from 'valibot'
 
@@ -34,6 +33,7 @@ const { isSubmitting, handleSubmit, model, fieldsStates } = useFormValidator({
       end: '2025-01-01',
     },
   },
+  model: ref({}),
   options: {
     mode: 'progressive',
     scrollToError: '.has-error-form',

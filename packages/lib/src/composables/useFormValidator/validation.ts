@@ -39,7 +39,7 @@ export async function getValidationSchema<Model extends BaseFormPayload>(formSch
 
 export async function getFieldValidationResult<
   Model extends BaseFormPayload,
-  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>>,
 >(name: ModelKey, schema: FormSchema<Model>, value: Model[ModelKey]) {
   const fieldSchema = await getValidationSchema(schema)
   const safeParseAsync = await getValibotValidationMethod('safeParseAsync')
@@ -53,7 +53,7 @@ export async function getFieldValidationResult<
 
 export async function setFieldValidationState<
   Model extends BaseFormPayload,
-  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
+  ModelKey extends ExtractModelKey<FormSchema<Model>>,
 >({
   name,
   fieldState,
@@ -63,7 +63,7 @@ export async function setFieldValidationState<
   setErrorIfInvalidAndNotEmpty = false,
 }: {
   name: ModelKey
-  fieldState: FieldState<Model>
+  fieldState: FieldState<Model, ModelKey, Model[ModelKey]>
   schema: FormSchema<Model>
   payload: Model
   setError?: boolean
@@ -110,31 +110,6 @@ export async function setFieldValidationState<
   }
 }
 
-export function validateField<
-  Model extends BaseFormPayload,
-  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
->({
-  name,
-  fieldState,
-  payload,
-  schema,
-}: {
-  name: ModelKey
-  fieldState: FieldState<Model>
-  payload: Model
-  schema: FormSchema<Model>
-}) {
-  const validationParams: Parameters<typeof setFieldValidationState<Model>>[number] = {
-    name,
-    fieldState,
-    payload,
-    schema,
-    setError: fieldState.mode === 'progressive' ? fieldState.valid || fieldState.blurred : true,
-  }
-
-  return fieldState.validateFunction?.(validationParams)
-}
-
 export function validateForm<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
@@ -144,20 +119,20 @@ export function validateForm<
   setErrors = true,
   schema,
 }: {
-  fieldsStates: FieldsStates<Model>
+  fieldsStates: FieldsStates<Model, ExtractModelKey<FormSchema<Model>>>
   setErrors?: boolean
   payload: Model
   schema: FormSchema<Model>
 }) {
   return Promise.all(
     Object.keys(fieldsStates).map(name =>
-      setFieldValidationState<Model>({
+      setFieldValidationState<Model, ModelKey>({
         name: name as ModelKey,
         setError: setErrors,
-        fieldState: fieldsStates[name],
+        fieldState: fieldsStates[name as ModelKey] as FieldState<Model, ModelKey, Model[ModelKey]>,
         payload,
         schema,
-        setErrorIfInvalidAndNotEmpty: fieldsStates[name].mode === 'lazy',
+        setErrorIfInvalidAndNotEmpty: fieldsStates[name as ModelKey].mode === 'lazy',
       }),
     ),
   )
@@ -166,7 +141,7 @@ export function validateForm<
 export function getErrorMessages<
   Model extends BaseFormPayload = BaseFormPayload,
   ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
->(errors: Record<ModelKey, ValidationIssues>, fieldsStates: FieldsStates<Model>) {
+>(errors: Record<ModelKey, ValidationIssues>, fieldsStates: FieldsStates<Model, ExtractModelKey<FormSchema<Model>>>) {
   const errorMessages = {} as Record<ModelKey, string | undefined>
 
   for (const [name, value] of Object.entries(errors)) {
@@ -180,11 +155,11 @@ export function getErrorMessages<
 export function getFieldsErrors<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
->(fieldsStates: FieldsStates<Model>) {
+>(fieldsStates: FieldsStates<Model, ExtractModelKey<FormSchema<Model>>>) {
   const fieldsErrors = {} as Record<ModelKey, ValidationIssues>
 
   for (const [name, fieldState] of Object.entries(fieldsStates)) {
-    fieldsErrors[name as ModelKey] = fieldState.errors
+    fieldsErrors[name as ModelKey] = (fieldState as FieldState<Model, ExtractModelKey<FormSchema<Model>>>).errors
   }
 
   return fieldsErrors
@@ -201,8 +176,8 @@ export function getValidateFunction<
 }: {
   name: ModelKey
   hasValidation: boolean
-  debouncedFields?: StrictOptions<Model>['debouncedFields']
-  throttledFields?: StrictOptions<Model>['throttledFields']
+  debouncedFields?: StrictOptions<Model, ModelKey>['debouncedFields']
+  throttledFields?: StrictOptions<Model, ModelKey>['throttledFields']
 }) {
   if (!hasValidation) {
     return
@@ -216,18 +191,18 @@ export function getValidateFunction<
   else if (debouncedFields?.[fieldName]) {
     return debounceId(
       String(fieldName),
-      setFieldValidationState<Model>,
+      setFieldValidationState<Model, ModelKey>,
       typeof debouncedFields[fieldName] === 'number' ? debouncedFields[fieldName] : CONFIG.debounceTime,
     )
   }
   else if (throttledFields?.[fieldName]) {
     return throttleId(
       String(fieldName),
-      setFieldValidationState<Model>,
+      setFieldValidationState<Model, ModelKey>,
       typeof throttledFields[fieldName] === 'number' ? throttledFields[fieldName] : CONFIG.throttleTime,
     )
   }
   else {
-    return setFieldValidationState<Model>
+    return setFieldValidationState<Model, ModelKey>
   }
 }

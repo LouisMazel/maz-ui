@@ -5,6 +5,7 @@ import type {
   BaseFormPayload,
   ExtractModelKey,
   FieldsStates,
+  FieldState,
   FormContext,
   FormSchema,
   FormValidatorOptions,
@@ -28,18 +29,22 @@ import {
   validateForm,
 } from './useFormValidator/validation'
 
-function createValidationProcessor<Model extends BaseFormPayload>(
+function createValidationProcessor<
+  Model extends BaseFormPayload,
+  ModelKey extends ExtractModelKey<FormSchema<Model>>,
+  F extends FieldState<Model, ModelKey, Model[ModelKey]>,
+>(
   fieldsToValidate: string[],
-  fieldsStates: Ref<FieldsStates<Model>>,
+  fieldsStates: Ref<FieldsStates<Model, ModelKey>>,
   payload: Ref<Model>,
   internalSchema: Ref<FormSchema<Model>>,
   isSubmitted: Ref<boolean>,
 ) {
   return () => {
     fieldsToValidate.forEach((name) => {
-      const fieldState = fieldsStates.value[name]
-      handleFieldInput<Model>({
-        name: name as ExtractModelKey<FormSchema<Model>>,
+      const fieldState = fieldsStates.value[name as ModelKey] as F
+      handleFieldInput<Model, ModelKey>({
+        name: name as ModelKey,
         fieldState,
         payload: payload.value,
         schema: internalSchema.value,
@@ -68,24 +73,38 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
     throttledFields: null,
     identifier: 'main-form-validator',
     ...options,
-  } satisfies StrictOptions<Model>
+  } satisfies StrictOptions<Model, ExtractModelKey<FormSchema<Model>>>
 
   const internalDefaultValues = ref(toValue(defaultValues)) as Ref<DeepPartial<Model>>
   const payload = ref({ ...internalDefaultValues.value, ...model?.value }) as Ref<Model>
   const internalSchema = ref(toValue(schema)) as Ref<FormSchema<Model>>
   const fieldsStates = ref(
-    getFieldsStates<Model>({
+    getFieldsStates<Model, ExtractModelKey<FormSchema<Model>>>({
       schema: internalSchema.value,
       payload: payload.value,
       options: opts,
     }),
-  ) as Ref<FieldsStates<Model>>
+  ) as Ref<FieldsStates<Model, ExtractModelKey<FormSchema<Model>>>>
 
   const isSubmitting = ref(false)
   const isSubmitted = ref(false)
 
-  const isValid = computed(() => Object.values(fieldsStates.value).every(({ valid }) => valid))
-  const isDirty = computed(() => Object.values(fieldsStates.value).some(({ dirty }) => dirty))
+  const isValid = computed((): boolean => {
+    for (const key in fieldsStates.value) {
+      if (!fieldsStates.value[key as ExtractModelKey<FormSchema<Model>>].valid) {
+        return false
+      }
+    }
+    return true
+  })
+  const isDirty = computed((): boolean => {
+    for (const key in fieldsStates.value) {
+      if (fieldsStates.value[key as ExtractModelKey<FormSchema<Model>>].dirty) {
+        return true
+      }
+    }
+    return false
+  })
   const errors = computed(() => getFieldsErrors(fieldsStates.value))
   const errorMessages = computed(() => getErrorMessages(errors.value, fieldsStates.value))
 
@@ -156,7 +175,7 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
       (newSnapshot, oldSnapshot) => {
         // Batch validation updates for performance
         const fieldsToValidate = Object.keys(internalSchema.value).filter((name) => {
-          const fieldState = fieldsStates.value[name]
+          const fieldState = fieldsStates.value[name as ExtractModelKey<FormSchema<Model>>]
           return fieldState
             && newSnapshot[name] !== oldSnapshot?.[name]
             && hasModeIncludes(['aggressive', 'lazy', 'progressive'], fieldState.mode)
@@ -164,7 +183,13 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
 
         // Process validations with requestIdleCallback for better performance
         if (fieldsToValidate.length > 0) {
-          const processValidations = createValidationProcessor(fieldsToValidate, fieldsStates, payload, internalSchema, isSubmitted)
+          const processValidations = createValidationProcessor(
+            fieldsToValidate,
+            fieldsStates,
+            payload,
+            internalSchema,
+            isSubmitted,
+          )
 
           // Use requestIdleCallback if available, otherwise nextTick
           if (typeof requestIdleCallback !== 'undefined') {
@@ -217,14 +242,14 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
     }
   }
 
-  const context = {
-    fieldsStates,
+  const context: FormContext<Model, ExtractModelKey<FormSchema<Model>>> = {
+    fieldsStates: fieldsStates as Ref<FieldsStates<Model, ExtractModelKey<FormSchema<Model>>>>,
     payload,
     options: opts,
     internalSchema,
     errorMessages,
     isSubmitted,
-  } satisfies FormContext<Model>
+  }
 
   instance.formContexts ??= new Map()
   instance.formContexts.set(opts.identifier, context)

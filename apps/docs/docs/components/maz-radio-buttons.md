@@ -331,11 +331,11 @@ This option will display a select icon on the left of the label
 
   <script lang="ts" setup>
     import { ref } from 'vue'
-    import { type MazButtonsRadioOption } from 'maz-ui/components'
+    import { type MazRadioButtonsOption } from 'maz-ui/components/MazRadioButtons'
 
     const selectedMode = ref('scores')
 
-    const modeOptions: ButtonsRadioOption[] = [
+    const modeOptions: MazRadioButtonsOption[] = [
       {
         label: 'Scores',
         value: 'scores',

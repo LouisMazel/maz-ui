@@ -20,6 +20,7 @@ import { getValidateFunction } from './validation'
 export function getFieldState<
   Model extends BaseFormPayload = BaseFormPayload,
   ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
+  FieldType = Model[ModelKey],
 >({
   name,
   schema,
@@ -29,13 +30,13 @@ export function getFieldState<
 }: {
   name: ModelKey
   schema?: FormSchema<Model>
-  initialValue?: Model[ModelKey]
-  fieldState: FieldState<Model>
-  options?: Pick<StrictOptions<Model>, 'debouncedFields' | 'throttledFields' | 'mode'>
-}): FieldState<Model> {
+  initialValue?: FieldType
+  fieldState: FieldState<Model, ModelKey, FieldType>
+  options?: Pick<StrictOptions<Model, ModelKey>, 'debouncedFields' | 'throttledFields' | 'mode'>
+}): FieldState<Model, ModelKey, FieldType> {
   const hasValidation = schema ? fieldHasValidation<Model, ModelKey>(name, schema) : false
 
-  const validateFunction = getValidateFunction({
+  const validateFunction = getValidateFunction<Model, ModelKey>({
     name,
     hasValidation,
     debouncedFields: options?.debouncedFields,
@@ -50,8 +51,8 @@ export function getFieldState<
     valid: !hasValidation,
     validating: false,
     validated: false,
-    initialValue: useFreezeValue(initialValue),
-    validateFunction,
+    initialValue: useFreezeValue(initialValue) as Readonly<FieldType>,
+    validateFunction: validateFunction as FieldState<Model, ModelKey, FieldType>['validateFunction'],
     mode: hasValidation ? options?.mode ?? fieldState?.mode ?? CONFIG.mode : undefined,
   }
 }
@@ -73,13 +74,13 @@ export function getFieldsStates<
 }: {
   schema: FormSchema<Model>
   payload: Partial<Model>
-  options: StrictOptions<Model>
-}): FieldsStates<Model> {
-  const fieldsStates = {} as FieldsStates<Model>
+  options: StrictOptions<Model, ModelKey>
+}): FieldsStates<Model, ModelKey> {
+  const fieldsStates = {} as FieldsStates<Model, ModelKey>
 
   for (const fieldName in schema) {
     const name = fieldName as ModelKey
-    fieldsStates[name] = getFieldState<Model>({
+    fieldsStates[name] = getFieldState<Model, ModelKey, Model[ModelKey]>({
       name,
       schema,
       options,
@@ -101,15 +102,15 @@ export function updateFieldsStates<
   options,
   updateMode = false,
 }: {
-  fieldsStates: FieldsStates<Model>
+  fieldsStates: FieldsStates<Model, ModelKey>
   payload: Model
   schema: FormSchema<Model>
-  options: StrictOptions<Model>
+  options: StrictOptions<Model, ModelKey>
   updateMode?: boolean
 }) {
   for (const fieldName in schema) {
     const name = fieldName as ModelKey
-    fieldsStates[name] = updateFieldState<Model>({
+    fieldsStates[name] = updateFieldState<Model, ModelKey, Model[ModelKey]>({
       name,
       fieldState: fieldsStates[name],
       payload,
@@ -123,6 +124,7 @@ export function updateFieldsStates<
 export function updateFieldState<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
+  FieldType = Model[ModelKey],
 >({
   name,
   fieldState,
@@ -132,13 +134,13 @@ export function updateFieldState<
   updateMode = true,
 }: {
   name: ModelKey
-  fieldState: FieldState<Model>
+  fieldState: FieldState<Model, ModelKey, FieldType>
   payload: Model
   schema: FormSchema<Model>
-  options: FormFieldOptions<Model[ModelKey]> & StrictOptions<Model>
+  options: FormFieldOptions<Model, ModelKey, FieldType> & StrictOptions<Model, ModelKey>
   updateMode?: boolean
-}): FieldState<Model> {
-  const { initialValue, mode, ...rest } = getFieldState<Model>({
+}) {
+  const { initialValue, mode, ...rest } = getFieldState<Model, ModelKey, FieldType>({
     name,
     schema,
     initialValue: options.defaultValue ?? payload[name],
@@ -156,13 +158,17 @@ export function updateFieldState<
   }
 }
 
-export function canExecuteValidation<Model extends BaseFormPayload>({
+export function canExecuteValidation<
+  Model extends BaseFormPayload,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
+  FieldType = Model[ModelKey],
+>({
   eventName,
   fieldState,
   isSubmitted,
 }: {
   eventName: 'blur' | 'input'
-  fieldState: FieldState<Model>
+  fieldState: FieldState<Model, ModelKey, FieldType>
   isSubmitted: boolean
 }): boolean {
   const { dirty, blurred, mode, valid } = fieldState
@@ -189,6 +195,7 @@ export function canExecuteValidation<Model extends BaseFormPayload>({
 export function handleFieldBlur<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
+  FieldType = Model[ModelKey],
 >({
   name,
   force = false,
@@ -199,7 +206,7 @@ export function handleFieldBlur<
 }: {
   name: ModelKey
   payload: Model
-  fieldState: FieldState<Model>
+  fieldState: FieldState<Model, ModelKey, FieldType>
   schema: FormSchema<Model>
   isSubmitted: boolean
   force?: boolean
@@ -211,7 +218,7 @@ export function handleFieldBlur<
   fieldState.dirty = isDirty
   fieldState.blurred = fieldState.blurred || (fieldState.mode === 'eager' ? isDirty : true)
 
-  const shouldValidate = force || canExecuteValidation<Model>({ eventName: 'blur', fieldState, isSubmitted })
+  const shouldValidate = force || canExecuteValidation<Model, ModelKey, FieldType>({ eventName: 'blur', fieldState, isSubmitted })
 
   if (!shouldValidate) {
     return
@@ -219,7 +226,7 @@ export function handleFieldBlur<
 
   return fieldState.validateFunction?.({
     name,
-    fieldState,
+    fieldState: fieldState as FieldState<Model, ModelKey, Model[ModelKey]>,
     schema,
     payload,
     setError: fieldState.mode === 'progressive' ? fieldState.validated || fieldState.blurred : true,
@@ -229,6 +236,7 @@ export function handleFieldBlur<
 export function handleFieldInput<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
+  FieldType = Model[ModelKey],
 >({
   name,
   payload,
@@ -239,7 +247,7 @@ export function handleFieldInput<
 }: {
   name: ModelKey
   payload: Model
-  fieldState: FieldState<Model>
+  fieldState: FieldState<Model, ModelKey, FieldType>
   schema: FormSchema<Model>
   isSubmitted: boolean
   forceValidation?: boolean
@@ -252,7 +260,7 @@ export function handleFieldInput<
 
   fieldState.dirty = isDirty
 
-  const shouldValidate = forceValidation || canExecuteValidation<Model>({ eventName: 'input', fieldState, isSubmitted })
+  const shouldValidate = forceValidation || canExecuteValidation<Model, ModelKey, FieldType>({ eventName: 'input', fieldState, isSubmitted })
 
   if (!shouldValidate) {
     return
@@ -260,14 +268,14 @@ export function handleFieldInput<
 
   return fieldState.validateFunction?.({
     name,
-    fieldState,
+    fieldState: fieldState as FieldState<Model, ModelKey, Model[ModelKey]>,
     schema,
     payload,
     setError: fieldState.mode === 'progressive' ? fieldState.validated || fieldState.blurred : true,
   })
 }
 
-export function hasModeIncludes(modes: StrictOptions['mode'][], value?: StrictOptions['mode']): value is StrictOptions['mode'] {
+export function hasModeIncludes<Model extends BaseFormPayload, ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>>(modes: StrictOptions<Model, ModelKey>['mode'][], value?: StrictOptions<Model, ModelKey>['mode']): value is StrictOptions<Model, ModelKey>['mode'] {
   if (!value) {
     return false
   }
@@ -275,8 +283,8 @@ export function hasModeIncludes(modes: StrictOptions['mode'][], value?: StrictOp
   return modes.includes(value)
 }
 
-export function getInstance<Model extends BaseFormPayload>(composableName: string) {
-  const instance = getCurrentInstance() as CustomInstance<Model>
+export function getInstance<Model extends BaseFormPayload, ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>>(composableName: string) {
+  const instance = getCurrentInstance() as CustomInstance<Model, ModelKey>
   if (!instance) {
     throw new Error(`${composableName} must be called within setup()`)
   }
@@ -284,12 +292,15 @@ export function getInstance<Model extends BaseFormPayload>(composableName: strin
   return instance
 }
 
-export function getContext<Model extends BaseFormPayload>(
-  identifier: string | symbol | InjectionKey<FormContext<Model>>,
+export function getContext<
+  Model extends BaseFormPayload,
+  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
+>(
+  identifier: string | symbol | InjectionKey<FormContext<Model, ModelKey>>,
   composableName: string,
 ) {
-  const instance = getInstance<Model>(composableName)
-  const context = instance.formContexts?.get(identifier) ?? inject<FormContext<Model>>(identifier)
+  const instance = getInstance<Model, ModelKey>(composableName)
+  const context = instance.formContexts?.get(identifier) ?? inject<FormContext<Model, ModelKey>>(identifier)
 
   if (!context) {
     throw new Error('useFormField must be used within a form (useFormValidator)')

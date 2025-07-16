@@ -1,4 +1,4 @@
-import type { BaseFormPayload, FieldState, StrictOptions } from './types'
+import type { BaseFormPayload, ExtractModelKey, FieldState, FormSchema, StrictOptions } from './types'
 import { CONFIG } from './config'
 import { hasModeIncludes } from './state-management'
 
@@ -109,7 +109,7 @@ export function addEventToInteractiveElements({
 }: {
   interactiveElements: HTMLElement[]
   onBlur: () => void
-  mode: StrictOptions['mode']
+  mode: StrictOptions<BaseFormPayload, ExtractModelKey<FormSchema<BaseFormPayload>>>['mode']
 }) {
   interactiveElements.forEach((element) => {
     if (hasModeIncludes(['eager', 'blur', 'progressive'], mode)) {
@@ -152,13 +152,17 @@ export function removeEventFromInteractiveElements({
   })
 }
 
-export function getValidationEvents<Model extends BaseFormPayload>({
+export function getValidationEvents<
+  Model extends BaseFormPayload,
+  ModelKey extends ExtractModelKey<FormSchema<Model>>,
+  F extends FieldState<Model, ModelKey, Model[ModelKey]>,
+>({
   hasRef,
   fieldState,
   onBlur,
 }: {
   hasRef?: boolean
-  fieldState: FieldState<Model>
+  fieldState: F
   onBlur: () => void
 }) {
   if (hasRef || hasModeIncludes(['aggressive', 'lazy'], fieldState.mode)) {
