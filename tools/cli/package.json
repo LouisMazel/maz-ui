@@ -40,6 +40,6 @@
     "vue-docgen-cli": "^4.79.0"
   },
   "lint-staged": {
-    "*.{js,ts,mjs,mts,cjs,md}": "cross-env NODE_ENV=production eslint --fix"
+    "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
   }
 }
