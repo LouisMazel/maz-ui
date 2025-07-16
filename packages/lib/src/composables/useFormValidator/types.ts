@@ -13,7 +13,7 @@ export type ValidationIssues = InferIssue<Validation>[]
 
 export type ExtractModelKey<T> = Extract<keyof T, string>
 
-export type FormSchema<Model = BaseFormPayload> = {
+export type FormSchema<Model extends BaseFormPayload> = {
   [K in Extract<keyof Model, string> as Model[K] extends Required<Model>[K] ? K : never]: Validation
 } & {
   [K in Extract<keyof Model, string> as Model[K] extends Required<Model>[K] ? never : K]?: Validation
@@ -92,7 +92,7 @@ export interface FieldState<
   initialValue?: Readonly<FieldType>
   validating: boolean
   validated: boolean
-  validateFunction: ReturnType<typeof getValidateFunction<Model>>
+  validateFunction: ReturnType<typeof getValidateFunction<Model, ModelKey>>
   mode?: StrictOptions<Model, ModelKey>['mode']
 }
 

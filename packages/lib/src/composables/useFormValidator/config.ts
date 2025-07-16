@@ -1,7 +1,7 @@
-import type { StrictOptions } from './types'
+import type { BaseFormPayload, ExtractModelKey, FormSchema, StrictOptions } from './types'
 
 export const CONFIG: {
-  mode: StrictOptions['mode']
+  mode: StrictOptions<BaseFormPayload, ExtractModelKey<FormSchema<BaseFormPayload>>>['mode']
   scrollToErrorSelector: string
   debounceTime: number
   throttleTime: number
