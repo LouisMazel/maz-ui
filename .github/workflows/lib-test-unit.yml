@@ -8,6 +8,13 @@ on:
       - '.github/workflows/lib-test-unit.yml'
       - 'packages/lib/**'
       - 'pnpm-lock.yaml'
+  # pull_request:
+  #   branches-ignore:
+  #     - dependabot/**
+  #   paths:
+  #     - '.github/workflows/lib-test-unit.yml'
+  #     - 'packages/lib/**'
+  #     - 'pnpm-lock.yaml'
 
 jobs:
   coverage:
@@ -25,6 +32,8 @@ jobs:
         with:
           version: latest
 
+      - uses: qltysh/qlty-action/install@main
+
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
@@ -35,9 +44,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run others tests
-        run: pnpm -F maz-ui test:unit:coverage
+        run: pnpm -F maz-ui test:unit:coverage --silent
 
-      - name: Test & Publish Code Coverage
+      - name: Qlty Coverage
         uses: qltysh/qlty-action/coverage@main
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
