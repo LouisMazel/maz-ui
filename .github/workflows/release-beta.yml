@@ -6,8 +6,12 @@ on:
       - develop
     paths-ignore:
       - lerna.json
+      - package.json
       - 'packages/*/package.json'
+      - 'apps/*/package.json'
+      - 'tools/*/package.json'
       - 'CHANGELOG*.md'
+      - '**/CHANGELOG*.md'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
