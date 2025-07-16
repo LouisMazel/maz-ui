@@ -6,7 +6,7 @@ on:
       - dependabot/**
     paths:
       - .github/workflows/lib-test-unit.yml
-      - 'packages/lib/**'
+      - 'packages/**'
       - pnpm-lock.yaml
   push:
     branches:
