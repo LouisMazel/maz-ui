@@ -1,8 +1,8 @@
 <script lang="ts" setup generic="T extends string | number | boolean">
 import type { HTMLAttributes } from 'vue'
-import type { MazColor } from './types'
 import { MazCheck } from '@maz-ui/icons'
 import { ref } from 'vue'
+import { getColor, type MazColor } from './types'
 
 export type MazRadioButtonsOption<T = string | number | boolean> = {
   /** The label of the option */
@@ -23,7 +23,7 @@ export interface MazRadioButtonsProps<T = string | number | boolean> {
   /** The name of the radio group */
   name?: string
   /** The color of the selected radio buttons */
-  color?: MazColor
+  color?: MazColor | 'background'
   /** Add elevation to the radio buttons */
   elevation?: boolean
   /**
@@ -138,8 +138,8 @@ function onFocus(index: number, event: FocusEvent) {
         :style="[
           isSelected(option.value)
             ? {
-              color: `hsl(var(--maz-${color}-foreground))`,
-              backgroundColor: `hsl(var(--maz-${color}))`,
+              color: `hsl(var(--maz-${getColor(color)}-foreground))`,
+              backgroundColor: `hsl(var(--maz-${getColor(color)}))`,
             }
             : {},
           option.style,
@@ -167,7 +167,7 @@ function onFocus(index: number, event: FocusEvent) {
             }"
             :style="[
               isSelected(option.value)
-                ? { backgroundColor: `hsl(var(--maz-${props.color}-600))` }
+                ? { backgroundColor: `hsl(var(--maz-${getColor(props.color)}-600))` }
                 : {},
             ]"
           >
