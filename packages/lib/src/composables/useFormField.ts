@@ -32,9 +32,6 @@ export function useFormField<
   name: ModelKey,
   options?: FormFieldOptions<Model, ModelKey, FieldType>,
 ) {
-  // type Model = InferSchemaFormValidator<TSchema>
-  // type FieldType = Model[TName]
-
   const opts = {
     formIdentifier: 'main-form-validator',
     ...options,
@@ -66,8 +63,8 @@ export function useFormField<
 
   if (finalOpts.defaultValue !== undefined && !isEqual(payload.value[name], finalOpts.defaultValue)) {
     const initialValue = finalOpts.defaultValue
-    payload.value[name] = initialValue as any
-    fieldsStates.value[name].initialValue = useFreezeValue(initialValue) as any
+    payload.value[name] = initialValue
+    fieldsStates.value[name].initialValue = useFreezeValue(initialValue)
   }
 
   if (fieldMode) {

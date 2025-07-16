@@ -41,7 +41,7 @@ npm install valibot
 
 ::: details How to get TypeScript type safety?
 
-Use `typeof schema` for automatic type inference from your Valibot schema:
+The model is typed automatically from the schema.
 
 ```ts{11,16}
 import { pipe, string, nonEmpty, number, minValue, maxValue, minLength } from 'valibot'
@@ -54,7 +54,7 @@ const schema = {
 }
 
 // Automatic type inference from schema
-const { model } = useFormValidator<typeof schema>({
+const { model } = useFormValidator({
   schema,
 })
 
@@ -94,7 +94,7 @@ import { useFormField } from 'maz-ui/composables'
 import { useTemplateRef } from 'vue'
 
 const { value, errorMessage, isValid, hasError } = useFormField<string>('name', {
-  ref: useTemplateRef('inputRef'),
+  ref: useTemplateRef<HTMLInputElement>('inputRef'),
 })
 </script>
 ```
@@ -885,6 +885,30 @@ const { value } = useFormField('name')
 
 // ✅ Correct - precise typing
 const { value } = useFormField<string>('name')
+```
+
+### Using `useTemplateRef` with `useFormField` cause TypeScript errors
+
+**Cause:** `useTemplateRef` can create TypeScript circular references when the destructured variable name resembles the template ref name.
+
+If you encounter TypeScript errors when using `useFormField` with `useTemplateRef`, use classic `ref()` instead:
+
+```typescript
+// ❌ May cause TypeScript errors
+const { value: email } = useFormField<string>('email', {
+  ref: useTemplateRef('emailRef'),
+})
+
+// ✅ Correct - precise typing
+const { value: email } = useFormField<string>('email', {
+  ref: useTemplateRef<string>('emailRef'),
+})
+
+// ✅ Use classic `ref()` instead
+const emailRef = ref<HTMLInputElement>()
+const { value: email } = useFormField<string>('email', {
+  ref: emailRef,
+})
 ```
 
 ### Validation Not Triggering
