@@ -92,7 +92,7 @@
     ]
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,mjs,cjs,mts}": [
+    "*.{js,jsx,ts,tsx,mjs,cjs,mts,md,yml,json}": [
       "eslint --fix"
     ]
   },
