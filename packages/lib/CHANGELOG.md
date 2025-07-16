@@ -1,5 +1,19 @@
 # Change Log
 
+## v4.0.0-beta.12...v4.0.0-beta.13
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.12...v4.0.0-beta.13)
+
+### 🩹 Fixes
+
+- **maz-ui:** UseFormField - improve types ([ad3d9db43](https://github.com/LouisMazel/maz-ui/commit/ad3d9db43))
+- **maz-ui:** UseFormField & useFormValidator - improve types ([c5e1e91ed](https://github.com/LouisMazel/maz-ui/commit/c5e1e91ed))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.11...v4.0.0-beta.12
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.11...v4.0.0-beta.12)

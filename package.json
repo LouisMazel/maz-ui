@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "4.0.0-beta.12",
+  "version": "4.0.0-beta.13",
   "private": true,
   "description": "A standalone components library for Vue.Js & Nuxt.Js (v3.x)",
   "author": "LouisMazel <me@loicmazuel.com>",
