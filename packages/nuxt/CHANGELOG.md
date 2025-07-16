@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.11...v4.0.0-beta.12
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.11...v4.0.0-beta.12)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Type inference of plugin composables ([3bd71df7f](https://github.com/LouisMazel/maz-ui/commit/3bd71df7f))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.10...v4.0.0-beta.11
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.10...v4.0.0-beta.11)
