@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { MazColor } from './types'
+import { getColor, type MazColor } from './types'
 
 export type MazBadgeColor = MazColor | 'background'
 export type MazBadgeRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
@@ -53,7 +53,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
   <span
     class="m-badge m-reset-css"
     :class="[
-      `--${color}`,
+      `--${getColor(color)}`,
       { '--outlined': outlined, '--pastel': pastel, '--nowrap': nowrap },
       `--rounded-${roundedSize}`,
     ]"
@@ -193,7 +193,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
   }
 
-  &.--background {
+  &.--surface {
     @apply maz-border-surface-600 maz-bg-surface maz-text-surface-foreground;
 
     &.--outlined {
