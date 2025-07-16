@@ -1,20 +1,16 @@
 name: Unit Tests
 
 on:
-  push:
+  pull_request:
     branches-ignore:
       - dependabot/**
     paths:
       - .github/workflows/lib-test-unit.yml
       - 'packages/lib/**'
-      - 'pnpm-lock.yaml'
-  # pull_request:
-  #   branches-ignore:
-  #     - dependabot/**
-  #   paths:
-  #     - '.github/workflows/lib-test-unit.yml'
-  #     - 'packages/lib/**'
-  #     - 'pnpm-lock.yaml'
+      - pnpm-lock.yaml
+  push:
+    branches:
+      - master
 
 jobs:
   coverage:
@@ -36,7 +32,7 @@ jobs:
         run: pnpm build:utils
 
       - name: Run others tests
-        run: pnpm test:unit:coverage:all --silent
+        run: pnpm test:unit:coverage:all
 
       - name: Qlty Coverage
         uses: qltysh/qlty-action/coverage@main
