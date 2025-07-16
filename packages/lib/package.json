@@ -237,7 +237,7 @@
     "vue-tsc": "^2.2.10"
   },
   "lint-staged": {
-    "*.{js,ts,vue,mjs,mts,cjs,md}": "cross-env NODE_ENV=production eslint --fix",
+    "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix",
     "*.{vue,css,scss,postcss,pcss}": "stylelint --fix --allow-empty-input"
   }
 }

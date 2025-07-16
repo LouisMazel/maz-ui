@@ -5,7 +5,7 @@ on:
     branches:
       - develop
     paths-ignore:
-      - 'lerna.json'
+      - lerna.json
       - 'packages/*/package.json'
       - 'CHANGELOG*.md'
 
@@ -50,6 +50,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Lint and format
+        run: pnpm lint:fix:all
 
       - name: Commit version and changelog
         run: |
