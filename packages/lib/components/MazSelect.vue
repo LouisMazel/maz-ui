@@ -122,6 +122,8 @@ export interface MazSelectProps<T extends ModelValueSimple, U extends MazSelectO
    * @default 'off'
    */
   autocomplete?: string
+  /** Return whole object rather than certian key */
+  returnObject?: boolean
 }
 
 defineOptions({
@@ -150,6 +152,7 @@ const props = withDefaults(defineProps<MazSelectProps<T, U>>(), {
   searchPlaceholder: 'Search in options',
   searchThreshold: 0.75,
   autocomplete: 'off',
+  returnObject: false,
 })
 
 const emits = defineEmits<{
@@ -305,11 +308,15 @@ const selectedOptions = computed(
     optionsNormalized.value?.filter((option) => {
       return props.multiple
         ? Array.isArray(props.modelValue)
-          ? props.modelValue.includes(option[props.optionValueKey] as T)
-          && !isNullOrUndefined(option[props.optionValueKey])
+          ? props.returnObject
+            ? props.modelValue.some(val => val?.[props.optionValueKey] === option[props.optionValueKey])
+            : props.modelValue.includes(option[props.optionValueKey] as T)
+              && !isNullOrUndefined(option[props.optionValueKey])
           : false
-        : props.modelValue === option[props.optionValueKey]
-          && !isNullOrUndefined(option[props.optionValueKey])
+        : props.returnObject
+          ? props.modelValue?.[props.optionValueKey] === option[props.optionValueKey]
+          : props.modelValue === option[props.optionValueKey]
+            && !isNullOrUndefined(option[props.optionValueKey])
     }) ?? [],
 )
 
@@ -342,18 +349,18 @@ function isSelectedOption(option: NormalizedOption) {
 const mazInputValue = computed(() => {
   if (props.multiple && props.modelValue && Array.isArray(props.modelValue)) {
     return props.modelValue
-      .map(
-        value =>
-          optionsNormalized.value?.find(option => option[props.optionValueKey] === value)?.[
-            props.optionInputValueKey
-          ],
-      )
+      .map((value) => {
+        const option = props.returnObject
+          ? optionsNormalized.value?.find(opt => opt[props.optionValueKey] === value?.[props.optionValueKey])
+          : optionsNormalized.value?.find(opt => opt[props.optionValueKey] === value)
+        return option?.[props.optionInputValueKey]
+      })
       .join(', ')
   }
 
-  const selectedOption = optionsNormalized.value?.find(
-    option => option[props.optionValueKey] === props.modelValue,
-  )
+  const selectedOption = props.returnObject
+    ? optionsNormalized.value?.find(option => option[props.optionValueKey] === props.modelValue?.[props.optionValueKey])
+    : optionsNormalized.value?.find(option => option[props.optionValueKey] === props.modelValue)
 
   return isNullOrUndefined(props.modelValue)
     ? undefined
@@ -598,7 +605,9 @@ function updateTmpModelValueIndex(inputOption?: NormalizedOption) {
         return inputOption[props.optionValueKey] === option[props.optionValueKey]
       }
       const values = [...props.modelValue].reverse()
-      return values[0] === option[props.optionValueKey]
+      return props.returnObject
+        ? values[0]?.[props.optionValueKey] === option[props.optionValueKey]
+        : values[0] === option[props.optionValueKey]
     }
     else {
       return selectedOptions.value?.[0]?.[props.optionValueKey] === option[props.optionValueKey]
@@ -633,7 +642,7 @@ function updateValue(inputOption: NormalizedOption, mustCloseList = true) {
     newValue = [inputOption]
   }
 
-  const selectedValues = newValue.map(option => option[props.optionValueKey])
+  const selectedValues = props.returnObject ? newValue : newValue.map(option => option[props.optionValueKey])
 
   emits('update:model-value', (props.multiple ? selectedValues : selectedValues[0]) as T | T[])
   emits('selected-option', inputOption as U)

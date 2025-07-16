@@ -326,11 +326,73 @@ If you want custom keys of these options, you can use:
   </template>
 </ComponentDemo>
 
+## Return Object
+
+By default, the v-model of the component binds to the value of the selected option. If you want the component to return the entire selected object instead of just the value, you can use the return-object prop.
+
+- **Default**: `false` (returns only the `value` of the selected option).
+- **When `true`**: Returns the entire selected object.
+
+### Example
+
+<br />
+
+<ComponentDemo expanded>
+  <MazSelect
+    label="Select color"
+    v-model="selectedValueObject"
+    :options="colors"
+    :color="selectedValueObject?.value"
+    returnObject
+  />
+
+  <br />
+  <br />
+
+  selectedValueObject: {{ selectedValueObject }}
+
+  <template #code>
+
+  ```vue
+  <template>
+    <MazSelect
+      v-model="selectedValueObject"
+      label="Select color"
+      :color="selectedValueObject?.value"
+      :options="colors"
+      returnObject
+    />
+
+    selectedValueObject: {{ selectedValueObject }}
+  </template>
+
+  <script setup lang="ts">
+    import { ref } from 'vue'
+    import MazSelect from 'maz-ui/components/MazSelect'
+
+    const selectedValueObject = ref()
+    const colors = [
+      { label: 'primary', value: 'primary' },
+      { label: 'secondary', value: 'secondary' },
+      { label: 'info', value: 'info' },
+      { label: 'success', value: 'success' },
+      { label: 'warning', value: 'warning' },
+      { label: 'danger', value: 'danger' },
+      { label: 'white', value: 'white' },
+      { label: 'black', value: 'black' },
+    ]
+  </script>
+  ```
+
+  </template>
+</ComponentDemo>
+
 <script setup lang="ts">
   import { ref } from 'vue'
 
   const optGroupValue = ref()
   const selectedValue = ref()
+  const selectedValueObject = ref()
   const selectedValueCustom = ref('danger')
   const selectedUser = ref()
   const selectedValues = ref()
