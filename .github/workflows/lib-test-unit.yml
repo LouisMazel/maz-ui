@@ -44,7 +44,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run others tests
-        run: pnpm -F maz-ui test:unit:coverage
+        run: pnpm -F maz-ui test:unit:coverage --silent
 
       - name: Qlty Coverage
         uses: qltysh/qlty-action/coverage@main
