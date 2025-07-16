@@ -26,27 +26,27 @@ const {
   errorMessage: nameMessage,
   validationEvents,
   isDirty: isDirtyName,
-} = useFormField<typeof schema, 'name'>('name', { formIdentifier: 'form' })
+} = useFormField<string>('name', { formIdentifier: 'form' })
 
 const {
   value: age,
   isValid: ageValid,
   hasError: ageError,
   errorMessage: ageMessage,
-} = useFormField<typeof schema, 'age'>('age', { ref: useTemplateRef<GenericInstanceType<typeof MazInput>>('ageRef'), formIdentifier: 'form' })
+} = useFormField<number>('age', { ref: useTemplateRef<GenericInstanceType<typeof MazInput>>('ageRef'), formIdentifier: 'form' })
 const {
   value: country,
   isValid: countryValid,
   hasError: countryError,
   errorMessage: countryMessage,
-} = useFormField<typeof schema, 'country'>('country', { ref: useTemplateRef<GenericInstanceType<typeof MazSelect>>('countryRef'), formIdentifier: 'form' })
+} = useFormField<string>('country', { ref: useTemplateRef<GenericInstanceType<typeof MazSelect>>('countryRef'), formIdentifier: 'form' })
 const {
   value: agree,
   isValid: agreeValid,
   hasError: agreeError,
   errorMessage: agreeMessage,
   isDirty: isDirtyAgree,
-} = useFormField<typeof schema, 'agree'>('agree', { ref: useTemplateRef<GenericInstanceType<typeof MazCheckbox>>('agreeRef'), formIdentifier: 'form' })
+} = useFormField<boolean>('agree', { ref: useTemplateRef<GenericInstanceType<typeof MazCheckbox>>('agreeRef'), formIdentifier: 'form' })
 
 const onSubmit = handleSubmit(async (formData) => {
   // eslint-disable-next-line no-console

@@ -3,11 +3,10 @@ import type {
   ExtractModelKey,
   FormFieldOptions,
   FormSchema,
-  ValidationIssues,
 } from './useFormValidator/types'
 
 import { isEqual } from '@maz-ui/utils/src/helpers/isEqual.js'
-import { computed, type ComputedRef, onMounted, onUnmounted, type Ref } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
 import {
   addEventToInteractiveElements,
   findInteractiveElements,
@@ -24,28 +23,14 @@ import {
 import { setFieldValidationState } from './useFormValidator/validation'
 import { useFreezeValue } from './useFreezeValue'
 
-interface UseFormFieldReturn<FieldType> {
-  hasError: ComputedRef<boolean>
-  errors: ComputedRef<ValidationIssues>
-  errorMessage: ComputedRef<string | undefined>
-  isValid: ComputedRef<boolean>
-  isDirty: ComputedRef<boolean>
-  isBlurred: ComputedRef<boolean>
-  isValidated: ComputedRef<boolean>
-  isValidating: ComputedRef<boolean>
-  mode: ComputedRef<FormFieldOptions<FieldType>['mode']>
-  value: Ref<FieldType>
-  validationEvents: ComputedRef<ReturnType<typeof getValidationEvents>>
-}
-
 export function useFormField<
   FieldType,
   Model extends BaseFormPayload = BaseFormPayload,
   ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
 >(
   name: ModelKey,
-  options?: FormFieldOptions<FieldType>,
-): UseFormFieldReturn<FieldType> {
+  options?: FormFieldOptions<Model, ModelKey, FieldType>,
+) {
   // type Model = InferSchemaFormValidator<TSchema>
   // type FieldType = Model[TName]
 
@@ -61,16 +46,16 @@ export function useFormField<
     internalSchema,
     errorMessages,
     isSubmitted,
-  } = getContext<Model>(opts.formIdentifier, 'useFormField') as any
+  } = getContext<Model, ModelKey>(opts.formIdentifier, 'useFormField')
 
-  const finalOpts = opts satisfies FormFieldOptions<FieldType>
+  const finalOpts = opts as FormFieldOptions<Model, ModelKey, Model[ModelKey]>
 
-  const fieldMode = fieldHasValidation(name, internalSchema.value) ? options?.mode ?? formOptions.mode : undefined
+  const fieldMode = fieldHasValidation<Model, ModelKey>(name, internalSchema.value) ? options?.mode ?? formOptions.mode : undefined
   finalOpts.mode = fieldMode
 
   const fieldState = computed(() => fieldsStates.value[name])
 
-  fieldsStates.value[name] = updateFieldState({
+  fieldsStates.value[name] = updateFieldState<Model, ModelKey, Model[ModelKey]>({
     name,
     fieldState: fieldState.value,
     payload: payload.value,
@@ -80,8 +65,8 @@ export function useFormField<
 
   if (finalOpts.defaultValue !== undefined && !isEqual(payload.value[name], finalOpts.defaultValue)) {
     const initialValue = finalOpts.defaultValue
-    payload.value[name] = initialValue
-    fieldsStates.value[name].initialValue = useFreezeValue(initialValue)
+    payload.value[name] = initialValue as any
+    fieldsStates.value[name].initialValue = useFreezeValue(initialValue) as any
   }
 
   if (fieldMode) {
@@ -96,7 +81,7 @@ export function useFormField<
   }
 
   function onBlur() {
-    handleFieldBlur<Model>({
+    handleFieldBlur<Model, ModelKey, FieldType>({
       name,
       fieldState: fieldState.value,
       payload: payload.value,
@@ -142,7 +127,7 @@ export function useFormField<
         handleInteractiveElements(elementToBind)
       }
       else {
-        console.warn(`[maz-ui](useFormField) No element found for ref in field '${String(name)}'. Make sure the ref is properly bound to an HTMLElement or Vue component (form identifier: ${formOptions.identifier})`)
+        console.warn(`[maz-ui](useFormField) No element found for ref in field '${String(name)}'. Make sure the ref is properly bound to an HTMLElement or Vue component (form identifier: ${String(formOptions.identifier)})`)
       }
     })
 
@@ -165,8 +150,8 @@ export function useFormField<
     isValidating: computed(() => fieldState.value.validating),
     mode: computed(() => fieldState.value.mode),
     value: computed({
-      get: () => payload.value[name],
-      set: value => (payload.value[name] = value),
+      get: (): FieldType => payload.value[name] as FieldType,
+      set: (value: FieldType) => (payload.value[name] = value as Model[ModelKey]),
     }),
     validationEvents,
   }

@@ -19,8 +19,11 @@ export type FormSchema<Model = BaseFormPayload> = {
   [K in Extract<keyof Model, string> as Model[K] extends Required<Model>[K] ? never : K]?: Validation
 }
 
-export type CustomInstance<Model extends BaseFormPayload> = ComponentInternalInstance & {
-  formContexts?: Map<string | symbol | InjectionKey<FormContext<Model>>, FormContext<Model>>
+export type CustomInstance<
+  Model extends BaseFormPayload,
+  ModelKey extends ExtractModelKey<FormSchema<Model>>,
+> = ComponentInternalInstance & {
+  formContexts?: Map<string | symbol | InjectionKey<FormContext<Model, ModelKey>>, FormContext<Model, ModelKey>>
 }
 
 export interface FormValidatorOptions<
@@ -62,21 +65,25 @@ export interface FormValidatorOptions<
    */
   identifier?: string | symbol
 }
-export type StrictOptions<Model extends BaseFormPayload = BaseFormPayload> = Required<FormValidatorOptions<Model>>
+export type StrictOptions<Model extends BaseFormPayload, ModelKey extends ExtractModelKey<FormSchema<Model>>> = Required<FormValidatorOptions<Model, ModelKey>>
 
 export interface FormContext<
-  Model extends BaseFormPayload = BaseFormPayload,
-  ModelKey extends ExtractModelKey<FormSchema<Model>> = ExtractModelKey<FormSchema<Model>>,
+  Model extends BaseFormPayload,
+  ModelKey extends ExtractModelKey<FormSchema<Model>>,
 > {
-  fieldsStates: Ref<FieldsStates<Model>>
-  options: StrictOptions
+  fieldsStates: Ref<FieldsStates<Model, ModelKey>>
+  options: StrictOptions<Model, ModelKey>
   internalSchema: Ref<FormSchema<Model>>
   payload: Ref<Model>
   errorMessages: Ref<Record<ModelKey, string | undefined>>
   isSubmitted: Ref<boolean>
 }
 
-export interface FieldState<Model extends BaseFormPayload, FieldType = Model[ExtractModelKey<FormSchema<Model>>]> {
+export interface FieldState<
+  Model extends BaseFormPayload,
+  ModelKey extends ExtractModelKey<FormSchema<Model>>,
+  FieldType = Model[ModelKey],
+> {
   blurred: boolean
   dirty: boolean
   error: boolean
@@ -86,17 +93,24 @@ export interface FieldState<Model extends BaseFormPayload, FieldType = Model[Ext
   validating: boolean
   validated: boolean
   validateFunction: ReturnType<typeof getValidateFunction<Model>>
-  mode?: StrictOptions['mode']
+  mode?: StrictOptions<Model, ModelKey>['mode']
 }
 
-export type FieldsStates<Model extends BaseFormPayload = BaseFormPayload> = Record<
-  ExtractModelKey<Model>,
-  FieldState<Model>
+export type FieldsStates<
+  Model extends BaseFormPayload,
+  ModelKey extends ExtractModelKey<FormSchema<Model>>,
+> = Record<
+  ModelKey,
+  FieldState<Model, ModelKey, Model[ModelKey]>
 >
 
 export type BaseFormPayload = Record<string, any>
 
-export interface FormFieldOptions<FieldType> {
+export interface FormFieldOptions<
+  Model extends BaseFormPayload,
+  ModelKey extends ExtractModelKey<FormSchema<Model>>,
+  FieldType,
+> {
   /**
    * Default value of the field
    * @default undefined
@@ -106,7 +120,7 @@ export interface FormFieldOptions<FieldType> {
    * Validation mode
    * To override the form validation mode
    */
-  mode?: StrictOptions['mode']
+  mode?: StrictOptions<Model, ModelKey>['mode']
   /**
    * Reference to the component or HTML element to associate and trigger validation events
    * Necessary for 'eager', 'progressive' and 'blur' validation modes
