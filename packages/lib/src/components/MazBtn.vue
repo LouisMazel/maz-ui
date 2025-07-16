@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { IconComponent } from '@maz-ui/icons'
-import type { MazColor, MazSize } from './types'
-
 import { computed, defineAsyncComponent, useAttrs } from 'vue'
+
+import { getColor, type MazColor, type MazSize } from './types'
 
 const {
   size = 'md',
@@ -122,7 +122,7 @@ const btnColorClass = computed(() => {
     return `--${color}-pastel`
   if (outlined)
     return `--${color}-outlined`
-  return `--${color}`
+  return `--${getColor(color)}`
 })
 const isDisabled = computed(
   () => (loading || disabled) && component.value === 'button',
@@ -164,7 +164,7 @@ const iconClassSize = computed(() => {
         '--no-padding': !padding,
       },
     ]"
-    :style="[`--justify: ${justify}`, `--color: var(--maz-${color})`]"
+    :style="[`--justify: ${justify}`, `--color: var(--maz-${getColor(color)})`]"
     :type="btnType"
   >
     <!--
@@ -404,7 +404,7 @@ const iconClassSize = computed(() => {
     }
   }
 
-  &.--background {
+  &.--surface {
     @apply maz-bg-surface maz-text-surface-foreground;
 
     &:not(:disabled):hover {

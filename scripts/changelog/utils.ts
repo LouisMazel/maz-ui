@@ -74,7 +74,7 @@ export async function generateChangelog({ pkg, config, to }: { pkg: PackageInfo,
     if (commits.length === 0) {
       logger.log(`📭 No relevant commits found for ${pkg.name}`)
 
-      newChangelog = `${newChangelog}\n\n` + `**Note:** Version bump only to follow ecosystem versioning`
+      newChangelog = `${newChangelog}\n\n` + `**Note:** No relevant commits found`
     }
 
     logger.success(`✅ Changelog generated for ${pkg.name}!`)

@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "4.0.0-beta.7",
+  "version": "4.0.0-beta.11",
   "private": true,
   "description": "A standalone components library for Vue.Js & Nuxt.Js (v3.x)",
   "author": "LouisMazel <me@loicmazuel.com>",
@@ -92,7 +92,7 @@
     ]
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,mjs,cjs,mts}": [
+    "*.{js,jsx,ts,tsx,mjs,cjs,mts,md,yml,json}": [
       "eslint --fix"
     ]
   },

@@ -65,6 +65,8 @@ describe('given MazDialogConfirm component', () => {
         type: 'accept',
         response: 'accept',
       },
+      hideAcceptButton: false,
+      hideRejectButton: false,
       rejectProps: {
         text: 'Cancel',
         color: 'destructive',

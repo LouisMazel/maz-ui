@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/utils",
   "type": "module",
-  "version": "4.0.0-beta.7",
+  "version": "4.0.0-beta.11",
   "description": "Utils of maz-ui for JavaScript/TypeScript users",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -83,7 +83,7 @@
     "vue": "^3.5.17"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,mjs,mts,cjs,md}": [
+    "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [
       "eslint --fix"
     ]
   }

@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { MazColor } from './types'
 import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
-
 import {
   computed,
   nextTick,
@@ -14,8 +12,10 @@ import {
   useTemplateRef,
   watch,
 } from 'vue'
+
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { vClickOutside } from '../directives/vClickOutside'
+import { getColor, type MazColor } from './types'
 
 /**
  * A versatile Vue 3 component for displaying content in overlays that bypass overflow constraints of parent elements.
@@ -348,7 +348,7 @@ const panelClasses = computed(() => [
   overlayClass,
   panelClass,
   `--position-${computedPosition.value}`,
-  `--${color}`,
+  `--${getColor(color)}`,
 ])
 
 // State variables for positioning
@@ -1150,7 +1150,7 @@ defineExpose({
   backface-visibility: hidden;
 
   /* Background color */
-  &.--background {
+  &.--surface {
     @apply dark:maz-border dark:maz-border-divider maz-bg-surface;
   }
 

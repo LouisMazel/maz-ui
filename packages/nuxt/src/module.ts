@@ -116,6 +116,7 @@ const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDial
   useDisplayNames: true,
   useFreezeValue: true,
   useInjectStrict: true,
+  useDropzone: true,
   useInstanceUniqId: true,
   useMountComponent: true,
   useSwipe: true,
@@ -175,7 +176,7 @@ function addMazUiComposableImport({
   addImports({
     from,
     name,
-    typeFrom: 'maz-ui/dist/types/composables/index.d.ts',
+    typeFrom: `maz-ui/dist/types/composables/${name}.d.ts`,
     as: `use${capitalize(prefix)}${name.replace('use', '')}`,
   })
 }
@@ -236,10 +237,10 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     if (moduleOptions.plugins.aos) {
       addPlugin(resolve(_dirname, './runtime/plugins/aos'))
 
-      addMazUiComposableImport({
+      addImports({
         name: 'useAos',
         from: resolve(_dirname, './runtime/composables/useAos'),
-        prefix: autoImportPrefix,
+        as: `use${capitalize(autoImportPrefix)}Aos`,
       })
 
       const injectAosCSS
@@ -255,28 +256,28 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     if (moduleOptions.plugins.toast) {
       addPlugin(resolve(_dirname, './runtime/plugins/toast'))
-      addMazUiComposableImport({
+      addImports({
         name: 'useToast',
         from: resolve(_dirname, './runtime/composables/useToast'),
-        prefix: autoImportPrefix,
+        as: `use${capitalize(autoImportPrefix)}Toast`,
       })
     }
 
     if (moduleOptions.plugins.dialog) {
       addPlugin(resolve(_dirname, './runtime/plugins/dialog'))
-      addMazUiComposableImport({
+      addImports({
         name: 'useDialog',
         from: resolve(_dirname, './runtime/composables/useDialog'),
-        prefix: autoImportPrefix,
+        as: `use${capitalize(autoImportPrefix)}Dialog`,
       })
     }
 
     if (moduleOptions.plugins.wait) {
       addPlugin(resolve(_dirname, './runtime/plugins/wait'))
-      addMazUiComposableImport({
+      addImports({
         name: 'useWait',
         from: resolve(_dirname, './runtime/composables/useWait'),
-        prefix: autoImportPrefix,
+        as: `use${capitalize(autoImportPrefix)}Wait`,
       })
     }
 

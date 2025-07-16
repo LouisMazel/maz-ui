@@ -1,7 +1,7 @@
 {
   "name": "maz-ui",
   "type": "module",
-  "version": "4.0.0-beta.7",
+  "version": "4.0.0-beta.11",
   "description": "A standalone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -237,7 +237,7 @@
     "vue-tsc": "^2.2.10"
   },
   "lint-staged": {
-    "*.{js,ts,vue,mjs,mts,cjs,md}": "cross-env NODE_ENV=production eslint --fix",
+    "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix",
     "*.{vue,css,scss,postcss,pcss}": "stylelint --fix --allow-empty-input"
   }
 }
