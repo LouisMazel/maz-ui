@@ -1,6 +1,7 @@
 import type {
   BaseFormPayload,
   ExtractModelKey,
+  FieldState,
   FormFieldOptions,
   FormSchema,
 } from './useFormValidator/types'
@@ -70,7 +71,7 @@ export function useFormField<
   }
 
   if (fieldMode) {
-    setFieldValidationState<Model>({
+    setFieldValidationState<Model, ModelKey>({
       name,
       fieldState: fieldState.value,
       payload: payload.value,
@@ -91,7 +92,7 @@ export function useFormField<
   }
 
   const validationEvents = computed(() =>
-    getValidationEvents({
+    getValidationEvents<Model, ModelKey, FieldState<Model, ModelKey, Model[ModelKey]>>({
       hasRef: !!finalOpts.ref?.value,
       onBlur,
       fieldState: fieldState.value,

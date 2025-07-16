@@ -2,7 +2,7 @@ import type { FieldsStates, FieldState, FormSchema, StrictOptions, Validation, V
 import { minLength, pipe, string } from 'valibot'
 import { addEventToInteractiveElements, findInteractiveElements, getValidationEvents, removeEventFromInteractiveElements, scrollToError } from '@/composables/useFormValidator/dom-events'
 import { canExecuteValidation, fieldHasValidation, getFieldsStates, getFieldState, handleFieldBlur, handleFieldInput, hasModeIncludes, updateFieldsStates, updateFieldState } from '@/composables/useFormValidator/state-management'
-import { getErrorMessages, getFieldsErrors, getFieldValidationResult, getValidateFunction, isEmptyValue, setFieldValidationState, validateField } from '@/composables/useFormValidator/validation'
+import { getErrorMessages, getFieldsErrors, getFieldValidationResult, getValidateFunction, isEmptyValue, setFieldValidationState } from '@/composables/useFormValidator/validation'
 
 describe('given fieldHasValidation function', () => {
   const schema = {
@@ -412,28 +412,6 @@ describe('given getFieldValidationResult function', () => {
     const result = await getFieldValidationResult('name', schema, 'Jo')
     expect(result.isValid).toBe(false)
     expect(result.result.success).toBe(false)
-  })
-})
-
-describe('given validateField function', () => {
-  const schema = {
-    name: { type: 'string', minLength: 3 },
-  } as unknown as FormSchema<{ name: string }>
-
-  const fieldState = {
-    validateFunction: vi.fn(),
-  } as unknown as FieldState<{ name: string }>
-
-  it('calls validateFunction with correct parameters', () => {
-    const payload = { name: 'John' }
-    validateField({ name: 'name', fieldState, payload, schema })
-    expect(fieldState.validateFunction).toHaveBeenCalledWith({
-      name: 'name',
-      fieldState,
-      payload,
-      schema,
-      setError: true,
-    })
   })
 })
 

@@ -36,7 +36,7 @@ export function getFieldState<
 }): FieldState<Model, ModelKey, FieldType> {
   const hasValidation = schema ? fieldHasValidation<Model, ModelKey>(name, schema) : false
 
-  const validateFunction = getValidateFunction({
+  const validateFunction = getValidateFunction<Model, ModelKey>({
     name,
     hasValidation,
     debouncedFields: options?.debouncedFields,
@@ -52,7 +52,7 @@ export function getFieldState<
     validating: false,
     validated: false,
     initialValue: useFreezeValue(initialValue) as Readonly<FieldType>,
-    validateFunction,
+    validateFunction: validateFunction as FieldState<Model, ModelKey, FieldType>['validateFunction'],
     mode: hasValidation ? options?.mode ?? fieldState?.mode ?? CONFIG.mode : undefined,
   }
 }
@@ -226,7 +226,7 @@ export function handleFieldBlur<
 
   return fieldState.validateFunction?.({
     name,
-    fieldState,
+    fieldState: fieldState as FieldState<Model, ModelKey, Model[ModelKey]>,
     schema,
     payload,
     setError: fieldState.mode === 'progressive' ? fieldState.validated || fieldState.blurred : true,
@@ -268,7 +268,7 @@ export function handleFieldInput<
 
   return fieldState.validateFunction?.({
     name,
-    fieldState,
+    fieldState: fieldState as FieldState<Model, ModelKey, Model[ModelKey]>,
     schema,
     payload,
     setError: fieldState.mode === 'progressive' ? fieldState.validated || fieldState.blurred : true,
