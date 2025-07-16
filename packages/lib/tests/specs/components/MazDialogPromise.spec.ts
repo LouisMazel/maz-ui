@@ -1,18 +1,19 @@
-import MazDialogPromise, { useMazDialogPromise } from '@components/MazDialogPromise.vue'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { MazDialogConfirm, useMazDialogConfirm } from '@components/index'
+import { mount } from '@vue/test-utils'
 
-describe('given MazDialogPromise component', () => {
-  let wrapper: VueWrapper<InstanceType<typeof MazDialogPromise>>
+describe('given MazDialogConfirm component', () => {
+  let wrapper: VueWrapper<InstanceType<typeof MazDialogConfirm>>
   let teleportTarget: HTMLDivElement
 
-  const { showDialogAndWaitChoice, removeDialogFromState } = useMazDialogPromise()
+  const { showDialogAndWaitChoice, dialogState } = useMazDialogConfirm()
 
   beforeEach(() => {
     teleportTarget = document.createElement('div')
     teleportTarget.id = 'teleport-target'
     document.body.appendChild(teleportTarget)
 
-    wrapper = mount(MazDialogPromise, {
+    wrapper = mount(MazDialogConfirm, {
       props: {
         title: 'Test Title',
         message: 'Test Message',
@@ -24,11 +25,18 @@ describe('given MazDialogPromise component', () => {
         identifier: 'test',
         teleportSelector: '#teleport-target',
       },
+      global: {
+        stubs: {
+          Teleport: {
+            template: '<div><slot /></div>',
+          },
+        },
+      },
     })
   })
 
   afterEach(() => {
-    removeDialogFromState('test')
+    dialogState.value = []
 
     const teleportTarget = document.getElementById('teleport-target')
     if (teleportTarget) {
@@ -41,26 +49,32 @@ describe('given MazDialogPromise component', () => {
     expect(wrapper.vm.currentModal).toBeUndefined()
     showDialogAndWaitChoice('test')
     // @ts-expect-error - test case
-    expect(wrapper.vm.currentModal.id).toBeTruthy()
+    expect(wrapper.vm.currentModal.id).toBe('test')
   })
 
   it('renders the correct message', () => {
-    const message = teleportTarget.querySelector<HTMLDivElement>('.m-dialog-content')
-    const header = teleportTarget.querySelector<HTMLDivElement>('.m-dialog-header')
+    expect(wrapper.text()).toContain('Test Message')
+    expect(wrapper.text()).toContain('Test Title')
 
-    expect(message?.textContent).toBe('Test Message')
-    expect(header?.textContent).toBe('Test Title')
-
-    // @ts-expect-error - private value
-    expect(wrapper.vm.confirmButtonData).toStrictEqual({ text: 'Yes', color: 'success' })
-    // @ts-expect-error - private value
-    expect(wrapper.vm.cancelButtonData).toStrictEqual({ text: 'No', color: 'danger' })
     // @ts-expect-error - private value
     expect(wrapper.vm.currentData).toStrictEqual({
-      cancelButton: { text: 'Cancel', color: 'danger' },
-      confirmButton: { text: 'Confirm', color: 'success' },
-      cancelText: 'No',
-      confirmText: 'Yes',
+      buttons: undefined,
+      acceptProps: {
+        text: 'Confirm',
+        color: 'success',
+        type: 'accept',
+        response: 'accept',
+      },
+      hideAcceptButton: false,
+      hideRejectButton: false,
+      rejectProps: {
+        text: 'Cancel',
+        color: 'destructive',
+        type: 'reject',
+        response: 'reject',
+      },
+      acceptText: 'Confirm',
+      rejectText: 'Cancel',
     })
   })
 })

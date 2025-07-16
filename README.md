@@ -18,8 +18,8 @@
 </p>
 
 <p align="center">
-  <a href="https://codeclimate.com/github/LouisMazel/maz-ui/maintainability"><img src="https://api.codeclimate.com/v1/badges/6b27047dcf150ccddfac/maintainability" alt="maintainability"></a>
-  <a href="https://codeclimate.com/github/LouisMazel/maz-ui/test_coverage"><img src="https://api.codeclimate.com/v1/badges/6b27047dcf150ccddfac/test_coverage" alt="test coverage"></a>
+  <a href="https://qlty.sh/gh/LouisMazel/projects/maz-ui"><img src="https://qlty.sh/gh/LouisMazel/projects/maz-ui/maintainability.svg" alt="Maintainability" /></a>
+  <a href="https://qlty.sh/gh/LouisMazel/projects/maz-ui"><img src="https://qlty.sh/gh/LouisMazel/projects/maz-ui/coverage.svg" alt="Code Coverage" /></a>
   <img src="https://github.com/LouisMazel/maz-ui/actions/workflows/lib-test-unit.yml/badge.svg" alt="github actions test unit">
 </p>
 
@@ -68,13 +68,13 @@ import 'maz-ui/styles'
 Then, import and use only the components, composables, and more you need:
 
 ```vue
+<script setup lang="ts">
+import MazBtn from 'maz-ui/components/MazBtn'
+</script>
+
 <template>
   <MazBtn>Click me!</MazBtn>
 </template>
-
-<script setup lang="ts">
-  import MazBtn from 'maz-ui/components/MazBtn'
-</script>
 ```
 
 Use provided resolvers to enjoy auto-imports and TypeScript support: [Resolvers documentation](https://maz-ui.com/guide/getting-started#recommendations)
@@ -92,7 +92,7 @@ The Nuxt module automatically:
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['maz-ui/nuxt'],
+  modules: ['@maz-ui/nuxt'],
 })
 ```
 
@@ -101,13 +101,15 @@ export default defineNuxtConfig({
 No need to import components, plugins, composables or directives, they are all auto-imported.
 
 ```vue
-<template>
-  <MazBtn @click="toast.success('Hello Maz UI!')"> Click me! </MazBtn>
-</template>
-
 <script setup lang="ts">
-  const toast = useToast()
+const toast = useToast()
 </script>
+
+<template>
+  <MazBtn @click="toast.success('Hello Maz UI!')">
+    Click me!
+  </MazBtn>
+</template>
 ```
 
 ## 🎨 Theming Made Easy
@@ -116,7 +118,7 @@ Customize Maz UI to match your brand with our dedicated CLI tool:
 
 ```bash
 # Install the CLI
-npm install -g @mazui/cli
+npm install -g @maz-ui/cli
 
 # Generate your theme
 maz generate-css-vars
@@ -137,6 +139,40 @@ To know how configure the CLI, check [theming options](https://maz-ui.com/guide/
 - 🎣 [Composables](https://maz-ui.com/composables/use-form-validator) - Reusable composition functions
 - 📏 [Directives](https://maz-ui.com/directives/fullscreen-img) - Useful Vue directives
 - 🛠️ [Helpers](https://maz-ui.com/helpers/currency) - Useful utilities for common tasks
+
+## Icons
+
+Maz UI provides a comprehensive set of beautiful icons (300+) ready-to-use for Vue applications, based on the amazing [Heroicons](https://heroicons.com/) set. All icons are optimized as Vue components with full TypeScript support.
+
+### Documentation
+
+Please refer to [](https://maz-ui.com/guide/icons)
+
+### Installation
+
+```bash
+npm install @maz-ui/icons
+```
+
+### Usage
+
+Import the icons you need from the package:
+
+```vue
+<script setup>
+import { MazArrowTopRightOnSquare, MazCheckCircle, MazXMark } from '@maz-ui/icons'
+</script>
+
+<template>
+  <div>
+    <CheckCircle class="text-green-500 h-6 w-6" />
+    <XMark class="text-red-500 h-5 w-5 cursor-pointer" @click="close" />
+    <ArrowTopRightOnSquare class="text-blue-500 h-4 w-4" />
+  </div>
+</template>
+```
+
+> **Note:** Icons are asynchronous Vue components optimized for tree-shaking. Only imported icons will be included in your final bundle.
 
 ## 🤝 Contributing
 

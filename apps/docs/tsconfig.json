@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": ["node", "vite-svg-loader", "vite/client"]
+  },
+  "include": [
+    "docs/.vitepress/**/*",
+    "types"
+  ],
+  "exclude": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "../../packages/lib/**/*"
+  ]
+}

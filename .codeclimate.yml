@@ -11,7 +11,7 @@ plugins:
         - typescript
   eslint:
     enabled: false
-    channel: 'eslint-9'
+    channel: eslint-9
   fixme:
     enabled: true
   stylelint:

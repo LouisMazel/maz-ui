@@ -1,46 +1,17 @@
 {
   "name": "root",
-  "version": "3.50.1",
+  "version": "4.0.0-beta.15",
+  "private": true,
   "description": "A standalone components library for Vue.Js & Nuxt.Js (v3.x)",
-  "scripts": {
-    "preinstall": "npx only-allow pnpm",
-    "clean": "git clean -fXd -e \\!.env -e \\!.env.* -e \\!.idea -e \\!.idea/**/* -e \\!.vscode -e \\!.vscode/**/* -e \\!*.crt -e \\!*.key",
-    "prepare": "npx husky",
-    "pre-commit": "lint-staged",
-    "commit": "cz",
-    "format": "prettier . --write",
-    "lint": "lerna run lint --parallel",
-    "release": "pnpm release:bump-version && pnpm release:changelogen",
-    "release:bump-version": "lerna version",
-    "release:changelogen": "ts-node -e \"import { updateChangelog } from './changelog-generate'; updateChangelog()\"",
-    "release:check-config": "ts-node -e \"import { checkConfig } from './changelog-generate'; checkConfig()\""
-  },
-  "lint-staged": {
-    "!(node_modules/**/*|packages/**/*|.prettierignore|.gitignore|.editorconfig).*": [
-      "prettier --write"
-    ]
-  },
-  "devDependencies": {
-    "@antfu/eslint-config": "^3.11.2",
-    "@commitlint/cli": "^19.6.0",
-    "@commitlint/config-conventional": "^19.6.0",
-    "@commitlint/cz-commitlint": "^19.5.0",
-    "@types/node": "^22.10.1",
-    "changelogen": "^0.5.7",
-    "commitizen": "^4.3.1",
-    "cross-env": "^7.0.3",
-    "eslint": "9.14.0",
-    "eslint-plugin-sonarjs": "^2.0.4",
-    "eslint-plugin-tailwindcss": "^3.17.5",
-    "husky": "^9.1.7",
-    "lerna": "^8.1.9",
-    "lint-staged": "^15.2.11",
-    "prettier": "^3.4.2",
-    "ts-node": "11.0.0-beta.1"
-  },
+  "author": "LouisMazel <me@loicmazuel.com>",
+  "license": "ISC",
+  "homepage": "https://maz-ui.com/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LouisMazel/maz-ui/issues"
   },
   "keywords": [
     "vue",
@@ -50,22 +21,80 @@
     "library",
     "ui"
   ],
-  "author": "LouisMazel <me@loicmazuel.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/LouisMazel/maz-ui/issues"
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "clean": "make clean",
+    "prepare": "npx husky",
+    "pre-commit": "lint-staged",
+    "pre-commit:all": "lerna run pre-commit --concurrency=1",
+    "commit": "cz",
+    "build:all": "lerna run build",
+    "build:apps": "lerna run build --scope='{docs,nuxt-app,vue-app}'",
+    "build:utils": "lerna run build --scope='{@maz-ui/node,@maz-ui/utils}'",
+    "build:packages": "lerna run build --scope='{@maz-ui/*,maz-ui}'",
+    "lint": "cross-env NODE_ENV=production eslint",
+    "lint:fix": "cross-env NODE_ENV=production eslint --fix",
+    "lint:all": "lerna run lint",
+    "lint:fix:all": "lerna run lint:fix",
+    "typecheck:all": "lerna run typecheck",
+    "test:unit:all": "lerna run test:unit",
+    "test:unit:coverage:all": "lerna run test:unit:coverage",
+    "healthcheck": "pnpm lint && pnpm typecheck:all && pnpm test:unit:all && pnpm build:packages && pnpm -F docs build",
+    "lerna:version": "lerna version --conventional-commits",
+    "lerna:version:alpha": "lerna version --conventional-commits --conventional-prerelease --preid alpha",
+    "lerna:version:beta": "lerna version --conventional-commits --conventional-prerelease --preid beta",
+    "lerna:version:beta:local": "dotenv lerna version --conventional-commits --conventional-prerelease --force-publish --preid beta",
+    "lerna:version:graduate": "lerna version --conventional-commits --conventional-graduate",
+    "lerna:publish": "lerna publish from-git",
+    "lerna:publish:alpha": "lerna publish from-git --dist-tag alpha",
+    "lerna:publish:beta": "lerna publish from-git --dist-tag beta",
+    "lerna:status": "lerna changed",
+    "lerna:diff": "lerna diff",
+    "lerna:changelog": "lerna version --conventional-commits --no-git-tag-version --no-push --yes",
+    "generate:changelogs": "tsx scripts/changelog/generate-changelogs.ts",
+    "publish:github:release": "tsx scripts/changelog/publish-github-release.ts",
+    "nx:affected:pre-commit": "lerna run pre-commit --since HEAD~1 --loglevel=success --concurrency=1",
+    "nx:affected:build": "lerna run build --since HEAD~1 --loglevel=success",
+    "nx:affected:test": "lerna run test:unit --since HEAD~1 --loglevel=success",
+    "nx:affected:lint": "lerna run lint --since HEAD~1 --loglevel=success",
+    "lerna:clean": "lerna clean",
+    "nx:cache:clear": "lerna exec -- rm -rf .nx/cache",
+    "dev:watch": "lerna run dev --parallel --stream"
   },
-  "homepage": "https://maz-ui.com/",
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@commitlint/cz-commitlint": "^19.8.1",
+    "@nx/js": "^21.2.2",
+    "@types/node": "^24.0.12",
+    "@types/parse-path": "^7.1.0",
+    "changelogen": "^0.6.2",
+    "commitizen": "^4.3.1",
+    "conventional-changelog-cli": "^5.0.0",
+    "conventional-changelog-conventionalcommits": "^9.0.0",
+    "conventional-changelog-gitmoji-config": "^1.5.2",
+    "cross-env": "^7.0.3",
+    "dotenv-cli": "^8.0.0",
+    "husky": "^9.1.7",
+    "lerna": "^8.2.3",
+    "lint-staged": "^16.1.2",
+    "nx": "^21.2.2",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3"
+  },
   "pnpm": {
-    "peerDependencyRules": {
-      "ignoreMissing": [
-        "@algolia/client-search",
-        "webpack",
-        "@vue/compiler-dom",
-        "vue",
-        "vitest"
-      ]
-    }
+    "catalog": false,
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "nx",
+      "unrs-resolver"
+    ]
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs,mts,md,yml,json}": [
+      "eslint --fix"
+    ]
   },
   "config": {
     "commitizen": {

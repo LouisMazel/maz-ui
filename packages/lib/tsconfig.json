@@ -1,21 +1,16 @@
 {
-  "extends": ["./node_modules/@vue/tsconfig/tsconfig.dom.json"],
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "ESNext",
+    "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo",
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
-    "rootDir": ".",
-    "module": "ESNext",
-    "types": ["@types/node", "vite-svg-loader"],
-    "strictPropertyInitialization": false,
-    "noImplicitAny": false,
-    "noImplicitThis": false,
-    "ignoreDeprecations": "5.0",
-    "verbatimModuleSyntax": false
+    "types": ["node", "vite-svg-loader", "vite/client"],
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
   },
-  "include": ["modules", "components", "tailwindcss/**/*", "icons", "utils", "resolvers"],
-  "exclude": ["node_modules", "components_tmp/**/*"],
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  }
+  "vueCompilerOptions": {
+    "checkUnknownComponents": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

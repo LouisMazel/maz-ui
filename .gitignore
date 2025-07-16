@@ -3,3 +3,11 @@ node_modules
 coverage
 .vscode/*.log
 .env
+*.tsbuildinfo
+**/*.tsbuildinfo.nx
+.nx
+lerna-debug.log*
+.cursor/rules
+CLAUDE.md
+dist
+**/.DS_Store

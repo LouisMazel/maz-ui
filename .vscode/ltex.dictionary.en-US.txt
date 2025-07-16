@@ -1,3 +1,4 @@
 cli
 @mazui
+@maz-ui
 maz-ui

@@ -1,5 +1,6 @@
+import type { VueWrapper } from '@vue/test-utils'
 import MazCircularProgressBar from '@components/MazCircularProgressBar.vue'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 
 const mockIntersectionObserver = vi.fn()
 mockIntersectionObserver.mockReturnValue({
@@ -8,17 +9,19 @@ mockIntersectionObserver.mockReturnValue({
   disconnect: () => null,
 })
 
-window.IntersectionObserver = mockIntersectionObserver
+globalThis.IntersectionObserver = mockIntersectionObserver
 
 describe('mazCircularProgressBar', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazCircularProgressBar>>
 
-  beforeEach(() => {
+  beforeEach(async () => {
     wrapper = mount(MazCircularProgressBar, {
       props: {
         percentage: 50,
       },
     })
+
+    await vi.dynamicImportSettled()
   })
 
   it('renders progress bar with default values', () => {
@@ -42,20 +45,20 @@ describe('mazCircularProgressBar', () => {
       autoColor: true,
     })
 
-    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-color-danger')
+    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-destructive')
 
     await wrapper.setProps({
       percentage: 50,
       autoColor: true,
     })
 
-    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-color-warning')
+    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-warning')
 
     await wrapper.setProps({
       percentage: 100,
       autoColor: true,
     })
 
-    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-color-success')
+    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-success')
   })
 })

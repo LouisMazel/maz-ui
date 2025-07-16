@@ -1,0 +1,144 @@
+<script lang="ts" setup>
+import type { HTMLAttributes, StyleValue } from 'vue'
+import type { MazColor } from './types'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+
+export interface MazCardSpotlightProps {
+  /**
+   * The color of the component.
+   * @default primary
+   */
+  color?: MazColor
+  /**
+   * Add elevation to the component
+   * @default true
+   */
+  elevation?: boolean
+  /**
+   * Add padding to the content
+   * @default true
+   */
+  padding?: boolean
+  /**
+   * The classes to apply to the content div
+   */
+  contentClass?: HTMLAttributes['class']
+  /**
+   * Style apply to the content div
+   */
+  contentStyle?: StyleValue
+  /**
+   * The opacity of the inner div - should be between 0 and 1
+   * When 0 the spotlight is completely visible
+   * When 1 the spotlight is only visible on borders
+   * @default 0.95
+   */
+  innerOpacity?: number
+}
+
+const {
+  elevation = false,
+  color = 'primary',
+  padding = true,
+  contentClass = undefined,
+  contentStyle = undefined,
+  innerOpacity = 0.95,
+} = defineProps<MazCardSpotlightProps>()
+
+const blobElement = ref<HTMLDivElement>()
+const fakeblobElement = ref<HTMLDivElement>()
+const blobVisible = ref<boolean>(false)
+
+function animateBlob({ clientX, clientY }: { clientX: number, clientY: number }) {
+  blobVisible.value = true
+  const rec = fakeblobElement.value?.getBoundingClientRect()
+
+  if (rec) {
+    blobElement.value?.animate?.(
+      [
+        {
+          transform: `translate(${clientX - rec.left - rec.width / 2}px,${
+            clientY - rec.top - rec.height / 2
+          }px)`,
+        },
+      ],
+      {
+        duration: 300,
+        fill: 'forwards',
+      },
+    )
+  }
+}
+
+const alphaColor = computed(() => `hsl(var(--maz-${color}) / 60%)`)
+const alphaColor20 = computed(() => `hsl(var(--maz-${color}) / 20%)`)
+
+onMounted(() => {
+  globalThis.addEventListener('mousemove', animateBlob)
+})
+
+onUnmounted(() => {
+  globalThis.removeEventListener('mousemove', animateBlob)
+})
+</script>
+
+<template>
+  <div
+    class="m-card-spotlight m-reset-css"
+    :class="{ 'maz-shadow-elevation maz-drop-shadow-md': elevation }"
+    :style="{ 'backgroundColor': alphaColor20, '--inner-opacity': innerOpacity }"
+  >
+    <div class="inner">
+      <div class="content" :class="[{ 'maz-p-4': padding }, contentClass]" :style="contentStyle">
+        <slot />
+      </div>
+    </div>
+    <div
+      v-show="blobVisible"
+      ref="blobElement"
+      class="blob"
+      :style="{ backgroundColor: alphaColor }"
+    />
+    <div v-show="blobVisible" ref="fakeblobElement" class="fakeblob" />
+  </div>
+</template>
+
+<style lang="postcss" scoped>
+  .m-card-spotlight {
+  @apply maz-relative maz-inline-flex maz-overflow-hidden maz-rounded maz-p-[var(--maz-border-width)];
+
+  .inner {
+    @apply maz-relative maz-h-auto maz-w-full maz-overflow-hidden;
+
+    border-radius: calc(var(--maz-radius) - var(--maz-border-width));
+
+    &::before {
+      content: '';
+
+      @apply maz-absolute maz-left-0 maz-top-0 maz-z-1 maz-h-full maz-w-full maz-bg-surface;
+
+      opacity: var(--inner-opacity);
+    }
+  }
+
+  .content {
+    @apply maz-relative maz-z-2 maz-h-full maz-w-full;
+  }
+
+  .blob {
+    @apply maz-absolute maz-left-0 maz-top-0 maz-z-[0] maz-h-64 maz-w-64 maz-rounded-full maz-blur-2xl;
+  }
+
+  .fakeblob {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+
+    @apply maz-h-52 maz-w-52 maz-rounded-full;
+  }
+}
+</style>

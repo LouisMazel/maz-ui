@@ -1,0 +1,102 @@
+<script lang="ts" setup>
+import type { MazColor } from './types'
+import { computed } from 'vue'
+
+export interface MazLoadingBarProps {
+  /** The color of the component. */
+  color?: MazColor
+  /** The height of the component. */
+  height?: string
+}
+
+const props = withDefaults(defineProps<MazLoadingBarProps>(), { color: 'primary', height: '0.125rem' })
+
+const colorCSSVariables = computed(() => ({
+  alpha: `hsl(var(--maz-${props.color}) / 20%)`,
+  main: `hsl(var(--maz-${props.color}))`,
+}))
+</script>
+
+<template>
+  <div
+    class="m-loading-bar m-reset-css"
+    :style="[{ '--loading-bar-height': height, '--loading-bar-color': colorCSSVariables.alpha, '--loading-bar-main-color': colorCSSVariables.main }]"
+  >
+    <div />
+  </div>
+</template>
+
+<style lang="postcss" scoped>
+  .m-loading-bar {
+  @apply maz-relative maz-block maz-w-full maz-overflow-hidden;
+
+  height: var(--loading-bar-height);
+  background-color: var(--loading-bar-color);
+  overflow: hidden;
+
+  div {
+    background-color: var(--loading-bar-main-color);
+
+    &::before {
+      content: '';
+
+      @apply maz-absolute;
+
+      background-color: inherit;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      will-change: left, right;
+      animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+    }
+
+    &::after {
+      content: '';
+
+      @apply maz-absolute;
+
+      background-color: inherit;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      will-change: left, right;
+      animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+      animation-delay: 1.15s;
+    }
+  }
+}
+
+@keyframes indeterminate {
+  0% {
+    left: -35%;
+    right: 100%;
+  }
+
+  60% {
+    left: 100%;
+    right: -90%;
+  }
+
+  100% {
+    left: 100%;
+    right: -90%;
+  }
+}
+
+@keyframes indeterminate-short {
+  0% {
+    left: -200%;
+    right: 100%;
+  }
+
+  60% {
+    left: 107%;
+    right: -8%;
+  }
+
+  100% {
+    left: 107%;
+    right: -8%;
+  }
+}
+</style>

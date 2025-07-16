@@ -1,4 +1,4 @@
-import type { Size } from '@components/MazBtn.vue'
+import type { MazSize } from '@components/types'
 import MazBtn from '@components/MazBtn.vue'
 import MazInputTags from '@components/MazInputTags.vue'
 import { mount } from '@vue/test-utils'
@@ -33,14 +33,14 @@ describe('mazInputTags', () => {
       const wrapper = mount(MazInputTags, {
         props: {
           modelValue: ['tag1'],
-          size: size as Size,
+          size: size as MazSize,
         },
       })
 
       await wrapper.vm.$nextTick()
 
       const tagButton = wrapper.findComponent(MazBtn)
-      expect(tagButton.props('size')).toBe(expectedButtonSizes[size])
+      expect(tagButton.props('size')).toBe(expectedButtonSizes[size as keyof typeof expectedButtonSizes])
     }
   })
 
@@ -120,7 +120,7 @@ describe('mazInputTags', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.classes()).toContain('maz-border-danger')
+    expect(wrapper.classes()).toContain('maz-border-destructive')
   })
 
   it('applies success style when success prop is true', async () => {

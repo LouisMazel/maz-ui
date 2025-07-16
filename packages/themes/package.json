@@ -1,0 +1,103 @@
+{
+  "name": "@maz-ui/themes",
+  "type": "module",
+  "version": "4.0.0-beta.11",
+  "description": "Theme system for Maz-UI with TypeScript support and CSS variables",
+  "author": "Louis Mazel <me@loicmazuel.com>",
+  "license": "MIT",
+  "homepage": "https://maz-ui.com/guide/themes",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouisMazel/maz-ui.git"
+  },
+  "bugs": "https://github.com/LouisMazel/maz-ui/issues",
+  "keywords": [
+    "vue",
+    "theme",
+    "css-variables",
+    "typescript",
+    "maz-ui"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./presets": {
+      "types": "./dist/types/presets/index.d.ts",
+      "import": "./dist/presets/index.js"
+    },
+    "./presets/*": {
+      "types": "./dist/types/presets/*.d.ts",
+      "import": "./dist/presets/*.js"
+    },
+    "./composables": {
+      "types": "./dist/types/composables/index.d.ts",
+      "import": "./dist/composables/index.js"
+    },
+    "./composables/*": {
+      "types": "./dist/types/composables/*.d.ts",
+      "import": "./dist/composables/*.js"
+    },
+    "./utils": {
+      "types": "./dist/types/utils/index.d.ts",
+      "import": "./dist/utils/index.js"
+    },
+    "./utils/*": {
+      "types": "./dist/types/utils/*.d.ts",
+      "import": "./dist/utils/*.js"
+    },
+    "./build": {
+      "types": "./dist/types/build/index.d.ts",
+      "import": "./dist/build/index.js"
+    },
+    "./build/*": {
+      "types": "./dist/types/build/*.d.ts",
+      "import": "./dist/build/*.js"
+    },
+    "./plugin": {
+      "types": "./dist/types/plugin.d.ts",
+      "import": "./dist/plugin/index.js"
+    },
+    "./*": "./*"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "LICENSE",
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "vite build",
+    "vite:dev": "vite build --watch",
+    "typecheck": "vue-tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "pre-commit": "lint-staged",
+    "test": "vitest",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest watch",
+    "test:unit:coverage": "vitest run --coverage",
+    "test:unit:coverage:watch": "vitest watch --coverage",
+    "test:unit:coverage:master": "vitest run --coverage --changed master"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "glob": "^11.0.3",
+    "typescript": "^5.8.3",
+    "vue": "^3.5.17",
+    "vue-tsc": "^2.2.10"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
+  }
+}

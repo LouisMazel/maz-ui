@@ -1,0 +1,84 @@
+name: Release Beta
+
+on:
+  push:
+    branches:
+      - develop
+    paths-ignore:
+      - lerna.json
+      - package.json
+      - 'packages/*/package.json'
+      - 'apps/*/package.json'
+      - 'tools/*/package.json'
+      - 'CHANGELOG*.md'
+      - '**/CHANGELOG*.md'
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release-beta:
+    name: Release Beta
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      packages: write
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Setup Node.js, pnpm and Nx cache
+        uses: ./.github/actions/setup
+        with:
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Build Packages
+        run: pnpm build:packages
+
+      - name: Setup Git User
+        run: |
+          git config --global user.name "LouisMazel"
+          git config --global user.email "12446546+LouisMazel@users.noreply.github.com"
+
+      - name: Version Packages (Beta)
+        run: |
+          pnpm lerna:version:beta
+
+      - name: Generate Changelogs
+        run: |
+          pnpm generate:changelogs
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Lint and format
+        run: pnpm lint:fix:all
+
+      - name: Commit version and changelog
+        run: |
+          VERSION=$(jq -r '.version' lerna.json)
+          git add .
+          git commit -m "chore: bump version to $VERSION"
+
+      - name: Create and push git tag
+        run: |
+          VERSION=$(jq -r '.version' lerna.json)
+          git tag -a "v$VERSION" -m "chore(release): version packages $VERSION"
+          git push origin develop --follow-tags
+
+      - name: Publish to NPM (Beta)
+        run: |
+          pnpm lerna:publish:beta
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to GitHub Release
+        run: |
+          pnpm publish:github:release
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}

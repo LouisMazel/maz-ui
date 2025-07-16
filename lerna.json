@@ -1,20 +1,45 @@
 {
-  "loglevel": "verbose",
-  "version": "3.50.1",
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
+  "version": "4.0.0-beta.15",
+  "npmClient": "pnpm",
+  "packages": [
+    "packages/*",
+    "apps/*",
+    "tools/*",
+    "."
+  ],
   "command": {
     "version": {
-      "allowBranch": ["master", "release/*", "refactor/next"],
-      "message": "chore(release): bump version %v",
+      "allowBranch": [
+        "master",
+        "develop",
+        "release/*",
+        "fix/*"
+      ],
       "conventionalCommits": true,
-      "forceGitTag": false,
-      "changelog": false,
-      "yes": false,
-      "push": false,
-      "gitTagVersion": false,
+      "conventionalPrerelease": true,
+      "createRelease": false,
+      "message": "chore(release): version packages %v",
       "tagVersionPrefix": "v",
-      "commitHooks": true
+      "push": false,
+      "exact": true,
+      "yes": true,
+      "gitTagVersion": false,
+      "changelog": false
+    },
+    "publish": {
+      "conventionalCommits": true,
+      "message": "chore(release): publish packages %v",
+      "registry": "https://registry.npmjs.org/",
+      "yes": true
     }
   },
-  "npmClient": "pnpm",
-  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
+  "ignoreChanges": [
+    "./apps/*",
+    "./tools/*",
+    "./docs/*",
+    "**/__tests__/*",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
 }

@@ -2,11 +2,17 @@
   "extends": ["./../tsconfig.json"],
   "compilerOptions": {
     "paths": {
-      "@modules/*": ["./../modules/*"],
-      "@components/*": ["./../components/*"],
-      "@tests/*": ["./../tests/*"]
+      "@/*": ["./../src/*"],
+      "@tests/*": ["./tests/*"],
+      "@components/*": ["./../src/components/*"],
+      "@composables/*": ["./../src/composables/*"],
+      "@directives/*": ["./../src/directives/*"],
+      "@icons/*": ["./../src/icons/*"],
+      "@plugins/*": ["./../src/plugins/*"],
+      "@resolvers/*": ["./../src/resolvers/*"],
+      "@utils/*": ["./../src/utils/*"]
     },
     "types": ["@types/node", "vite-svg-loader", "vitest/globals", "vue"]
   },
-  "include": ["./../types/*", "**/*", "./../components/**/*", "./../modules/**/*"]
+  "include": ["./../types/*", "**/*", "./../src/**/*"]
 }

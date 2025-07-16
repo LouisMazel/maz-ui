@@ -1,12 +1,19 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "CommonJS",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": false,
     "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "declaration": false,
+    "noEmit": true,
+    "sourceMap": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "Node",
-    "resolveJsonModule": true
-  },
-  "include": ["./*.ts"]
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true
+  }
 }

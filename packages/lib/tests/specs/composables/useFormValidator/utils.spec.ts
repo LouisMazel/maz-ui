@@ -1,28 +1,8 @@
-import type { FieldsStates, FieldState, FormSchema, StrictOptions, Validation, ValidationIssues } from '@modules/composables/useFormValidator/types'
-import {
-  addEventToInteractiveElements,
-  canExecuteValidation,
-  fieldHasValidation,
-  findInteractiveElements,
-  getErrorMessages,
-  getFieldsErrors,
-  getFieldsStates,
-  getFieldState,
-  getFieldValidationResult,
-  getValidateFunction,
-  getValidationEvents,
-  handleFieldBlur,
-  handleFieldInput,
-  hasModeIncludes,
-  isEmptyValue,
-  removeEventFromInteractiveElements,
-  scrollToError,
-  setFieldValidationState,
-  updateFieldsStates,
-  updateFieldState,
-  validateField,
-} from '@modules/composables/useFormValidator/utils'
+import type { FieldsStates, FieldState, FormSchema, StrictOptions, Validation, ValidationIssues } from '@composables/useFormValidator/types'
 import { minLength, pipe, string } from 'valibot'
+import { addEventToInteractiveElements, findInteractiveElements, getValidationEvents, removeEventFromInteractiveElements, scrollToError } from '@/composables/useFormValidator/dom-events'
+import { canExecuteValidation, fieldHasValidation, getFieldsStates, getFieldState, handleFieldBlur, handleFieldInput, hasModeIncludes, updateFieldsStates, updateFieldState } from '@/composables/useFormValidator/state-management'
+import { getErrorMessages, getFieldsErrors, getFieldValidationResult, getValidateFunction, isEmptyValue, setFieldValidationState } from '@/composables/useFormValidator/validation'
 
 describe('given fieldHasValidation function', () => {
   const schema = {
@@ -64,11 +44,11 @@ describe('given scrollToError function', () => {
   describe('when called with a selector for a non-existing element', () => {
     it('then it not scrolls', () => {
       globalThis.document.querySelector = vi.fn().mockReturnValue(null)
-      globalThis.window.scrollTo = vi.fn()
+      window.scrollTo = vi.fn()
 
       scrollToError('.non-existent')
 
-      expect(globalThis.window.scrollTo).not.toHaveBeenCalled()
+      expect(window.scrollTo).not.toHaveBeenCalled()
     })
   })
 })
@@ -185,14 +165,30 @@ describe('given getFieldsErrors function', () => {
 describe('given findInteractiveElements function', () => {
   describe('when called with an element', () => {
     it('then it find all interactive elements within the given element', () => {
-      const mockElement = {
-        querySelectorAll: vi.fn().mockReturnValue(['input1', 'select1', 'textarea1']),
-      } as unknown as HTMLElement
+      const mockElements = [
+        document.createElement('input'),
+        document.createElement('select'),
+        document.createElement('textarea'),
+      ]
+      const mockNodeList = {
+        0: mockElements[0],
+        1: mockElements[1],
+        2: mockElements[2],
+        length: 3,
+        [Symbol.iterator]() {
+          return mockElements[Symbol.iterator]()
+        },
+      } as unknown as NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
 
-      const result = findInteractiveElements(mockElement)
+      // Create a proper HTMLElement mock
+      const element = document.createElement('div')
+      element.querySelectorAll = vi.fn().mockReturnValue(mockNodeList)
+      element.getAttribute = vi.fn().mockReturnValue('text')
 
-      expect(result).toEqual(['input1', 'select1', 'textarea1'])
-      expect(mockElement.querySelectorAll).toHaveBeenCalledWith('input, select, textarea')
+      const result = findInteractiveElements(element)
+
+      expect(result).toEqual(Array.from(mockNodeList))
+      expect(element.querySelectorAll).toHaveBeenCalledWith('input, select, textarea, button, a[href], [tabindex]:not([tabindex=\"-1\"]), [role=\"button\"], [role=\"textbox\"], [role=\"combobox\"], [role=\"listbox\"], [role=\"slider\"], [role=\"spinbutton\"], [role=\"switch\"], [role=\"checkbox\"], [role=\"radio\"], [role=\"menuitem\"], [role=\"option\"], [contenteditable=\"true\"], [data-interactive], .interactive, [data-clickable]')
     })
   })
 })
@@ -217,12 +213,24 @@ describe('given addEventToInteractiveElements function', () => {
 describe('given removeEventFromInteractiveElements function', () => {
   describe('when called with interactive elements and event handlers', () => {
     it('then it removes all event listeners from interactive elements', () => {
-      const mockElements = [{ removeEventListener: vi.fn() }, { removeEventListener: vi.fn() }] as unknown as HTMLElement[]
+      const mockElements = [
+        {
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+        },
+        {
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+        },
+      ] as unknown as HTMLElement[]
       const onBlur = vi.fn()
+
+      addEventToInteractiveElements({ interactiveElements: mockElements, onBlur, mode: 'eager' })
 
       removeEventFromInteractiveElements({ interactiveElements: mockElements, onBlur })
 
       mockElements.forEach((element) => {
+        expect(element.addEventListener).toHaveBeenCalledWith('blur', onBlur)
         expect(element.removeEventListener).toHaveBeenCalledWith('blur', onBlur)
       })
     })
@@ -407,28 +415,6 @@ describe('given getFieldValidationResult function', () => {
   })
 })
 
-describe('given validateField function', () => {
-  const schema = {
-    name: { type: 'string', minLength: 3 },
-  } as unknown as FormSchema<{ name: string }>
-
-  const fieldState = {
-    validateFunction: vi.fn(),
-  } as unknown as FieldState<{ name: string }>
-
-  it('calls validateFunction with correct parameters', () => {
-    const payload = { name: 'John' }
-    validateField({ name: 'name', fieldState, payload, schema })
-    expect(fieldState.validateFunction).toHaveBeenCalledWith({
-      name: 'name',
-      fieldState,
-      payload,
-      schema,
-      setError: true,
-    })
-  })
-})
-
 describe('given canExecuteValidation function', () => {
   const fieldState = { dirty: false, blurred: false, mode: 'eager', valid: false } as FieldState<{ name: string }>
 
@@ -515,7 +501,7 @@ describe('given getValidationEvents function', () => {
 
   it('returns undefined when ref is provided', () => {
     const result = getValidationEvents({
-      ref: 'test',
+      hasRef: true,
       fieldState: { mode: 'eager' } as FieldState<{ name: string }>,
       onBlur,
     })

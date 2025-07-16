@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-import '@mazui/cli/cli'
+import '@maz-ui/cli/cli'

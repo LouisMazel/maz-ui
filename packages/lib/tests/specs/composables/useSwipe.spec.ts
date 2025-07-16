@@ -1,4 +1,5 @@
-import { useSwipe } from '@modules/composables/useSwipe'
+import { useSwipe } from '@composables/useSwipe'
+import { vi } from 'vitest'
 
 const swipeHandlerMock = {
   options: {},
@@ -6,7 +7,7 @@ const swipeHandlerMock = {
   stop: vi.fn(),
   onValuesChanged: vi.fn(),
 }
-vi.mock('@modules/helpers/swipe-handler', () => ({
+vi.mock('@maz-ui/utils/src/helpers/swipeHandler.js', () => ({
   Swipe: vi.fn().mockImplementation(() => swipeHandlerMock),
 }))
 

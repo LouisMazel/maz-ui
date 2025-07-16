@@ -1,0 +1,36 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nrwl/nx/master/packages/nx/schemas/nx-schema.json",
+  "targetDefaults": {
+    "build": {
+      "cache": true,
+      "dependsOn": [
+        "^build",
+        "^typecheck"
+      ],
+      "outputs": [
+        "{projectRoot}/dist",
+        "{projectRoot}/lib",
+        "{projectRoot}/types"
+      ]
+    },
+    "lint": {
+      "cache": true,
+      "outputs": []
+    },
+    "typecheck": {
+      "cache": true,
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": []
+    },
+    "test:unit": {
+      "cache": true,
+      "outputs": [
+        "{projectRoot}/coverage"
+      ]
+    }
+  },
+  "parallel": 4,
+  "cacheDirectory": ".nx/cache"
+}

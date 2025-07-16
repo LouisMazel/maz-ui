@@ -1,0 +1,62 @@
+import type { ThemePreset } from '../types'
+
+export const obsidian: ThemePreset = {
+  name: 'obsidian',
+  foundation: {
+    'base-font-size': '14px',
+    'radius': '0.6rem',
+    'border-width': '1px',
+    'font-family': `'Inter', system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
+  },
+  colors: {
+    light: {
+      // On reste très sobre même en light mode, légèrement warm
+      'background': '0 0% 98%',
+      'foreground': '220 13% 15%',
+      'primary': '220 100% 60%',
+      'primary-foreground': '0 0% 100%',
+      'contrast': '220 13% 15%',
+      'contrast-foreground': '0 0% 100%',
+      'secondary': '220 13% 90%',
+      'secondary-foreground': '220 13% 15%',
+      'muted': '220 8% 50%',
+      'accent': '280 100% 65%', // une touche violet Linear-esque
+      'accent-foreground': '0 0% 100%',
+      'destructive': '0 75% 55%',
+      'destructive-foreground': '0 0% 100%',
+      'success': '160 60% 40%',
+      'success-foreground': '0 0% 100%',
+      'warning': '40 100% 50%',
+      'warning-foreground': '0 0% 100%',
+      'info': '200 100% 55%',
+      'info-foreground': '0 0% 100%',
+      'border': '220 13% 90%',
+      'overlay': '220 13% 15%',
+      'shadow': '220 10% 20%',
+    },
+    dark: {
+      'background': '220 13% 10%',
+      'foreground': '0 0% 95%',
+      'primary': '220 100% 70%',
+      'primary-foreground': '0 0% 10%',
+      'contrast': '0 0% 100%',
+      'contrast-foreground': '220 13% 10%',
+      'secondary': '220 13% 18%',
+      'secondary-foreground': '0 0% 95%',
+      'muted': '220 8% 60%',
+      'accent': '280 100% 65%', // violet saturé (Linear)
+      'accent-foreground': '0 0% 100%',
+      'destructive': '0 70% 60%',
+      'destructive-foreground': '0 0% 100%',
+      'success': '160 60% 50%',
+      'success-foreground': '0 0% 100%',
+      'warning': '40 100% 55%',
+      'warning-foreground': '0 0% 100%',
+      'info': '200 100% 60%',
+      'info-foreground': '0 0% 100%',
+      'border': '220 13% 20%',
+      'overlay': '220 13% 10%',
+      'shadow': '220 10% 5%',
+    },
+  },
+}

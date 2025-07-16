@@ -1,50 +1,38 @@
 name: Unit Tests
 
 on:
-  push:
+  pull_request:
     branches-ignore:
       - dependabot/**
     paths:
-      - '.github/workflows/lib-test-unit.yml'
+      - .github/workflows/lib-test-unit.yml
       - 'packages/lib/**'
-      - 'pnpm-lock.yaml'
-  # pull_request:
-  #   branches-ignore:
-  #     - dependabot/**
-  #   paths:
-  #     - '.github/workflows/lib-test-unit.yml'
-  #     - 'packages/lib/**'
-  #     - 'pnpm-lock.yaml'
+      - pnpm-lock.yaml
+  push:
+    branches:
+      - master
 
 jobs:
   coverage:
+    name: coverage
     runs-on: ubuntu-latest
 
     steps:
       - uses: szenius/set-timezone@v1.1
         with:
-          timezoneLinux: 'Europe/Paris'
-          timezoneMacos: 'Europe/Paris'
+          timezoneLinux: Europe/Paris
+          timezoneMacos: Europe/Paris
 
       - uses: actions/checkout@v3
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: latest
+      - name: Setup Node.js, pnpm and Nx cache
+        uses: ./.github/actions/setup
 
-      - uses: qltysh/qlty-action/install@main
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '21'
-          cache: 'pnpm'
-
-      - name: Install modules
-        run: pnpm install --frozen-lockfile
+      - name: Build utils
+        run: pnpm build:utils
 
       - name: Run others tests
-        run: pnpm -F maz-ui test:unit:coverage --silent
+        run: pnpm test:unit:coverage:all
 
       - name: Qlty Coverage
         uses: qltysh/qlty-action/coverage@main

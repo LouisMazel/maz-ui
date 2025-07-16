@@ -1,0 +1,80 @@
+import { resolve } from 'node:path'
+import Vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
+import dts from 'vite-plugin-dts'
+import SvgLoader from 'vite-svg-loader'
+
+import rootPkg from '../../package.json'
+import pkg from './package.json'
+
+import { ViteGenerateIconsComponentsEntry } from './utils/ViteGenerateIconsComponentsEntry'
+
+function resolver(path: string) {
+  return resolve(__dirname, path)
+}
+
+const external = [
+  ...Object.keys(pkg.peerDependencies),
+  ...Object.keys(pkg.devDependencies),
+  ...Object.keys(rootPkg.devDependencies),
+]
+
+export default defineConfig({
+  plugins: [
+    Vue(),
+    SvgLoader(),
+    dts({
+      tsconfigPath: resolver('./tsconfig.json'),
+      entryRoot: resolver('src'),
+      outDir: resolver('dist/types'),
+    }),
+    ViteGenerateIconsComponentsEntry(),
+  ],
+  esbuild: {
+    drop: ['debugger'],
+    pure: ['console.log', 'console.debug'],
+    legalComments: 'none',
+    target: 'es2022',
+    minifyIdentifiers: true,
+    minifySyntax: true,
+    minifyWhitespace: true,
+    treeShaking: true,
+  },
+  build: {
+    emptyOutDir: true,
+    sourcemap: false,
+    cssMinify: 'lightningcss',
+    minify: 'esbuild',
+    target: 'es2022',
+    lib: {
+      entry: {
+        'index': resolver('./src/index.ts'),
+        'resolvers': resolver('./src/resolvers.ts'),
+        'icon-list': resolver('./src/icon-list.ts'),
+      },
+      formats: ['es'],
+      fileName: (_, name) => `${name}.js`,
+      name: '@maz-ui/icons',
+    },
+    rollupOptions: {
+      external,
+      treeshake: {
+        moduleSideEffects: false,
+        preset: 'smallest',
+        propertyReadSideEffects: false,
+        unknownGlobalSideEffects: false,
+      },
+      output: {
+        format: 'es',
+        compact: true,
+        chunkFileNames: 'chunks/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash][extname]',
+        exports: 'named',
+        minifyInternalExports: true,
+        preserveModules: false,
+        interop: 'auto',
+        generatedCode: 'es2015',
+      },
+    },
+  },
+})

@@ -1,0 +1,45 @@
+{
+  "name": "cli",
+  "type": "module",
+  "version": "4.0.0-beta.11",
+  "private": true,
+  "exports": {
+    ".": "./dist/cli.mjs",
+    "./cli": "./bin/cli.mjs",
+    "./types": "./dist/cli.d.ts"
+  },
+  "main": "./dist/cli.mjs",
+  "types": "./dist/cli.d.ts",
+  "bin": {
+    "cli": "./bin/cli.mjs"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "lint:fix": "cross-env NODE_ENV=production eslint --fix .",
+    "cli": "node --import=./register.js src/cli.ts",
+    "build": "unbuild",
+    "build:stub": "unbuild --stub",
+    "pre-commit": "lint-staged",
+    "vue-docgen": "vue-docgen",
+    "typecheck": "tsc --noEmit --skipLibCheck"
+  },
+  "devDependencies": {
+    "@clack/prompts": "^0.11.0",
+    "@maz-ui/node": "workspace:*",
+    "@maz-ui/utils": "workspace:*",
+    "@types/clear": "^0.1.4",
+    "@types/figlet": "^1.7.0",
+    "clear": "^0.1.0",
+    "commander": "^14.0.0",
+    "figlet": "^1.8.1",
+    "typescript": "~5.8.3",
+    "vue-docgen-cli": "^4.79.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
+  }
+}

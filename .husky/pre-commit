@@ -5,5 +5,4 @@
 #   exit 1
 # fi
 
-pnpm pre-commit
-pnpm -r --workspace-concurrency=1 pre-commit
+pnpm nx:affected:pre-commit

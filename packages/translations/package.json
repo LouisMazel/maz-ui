@@ -1,0 +1,66 @@
+{
+  "name": "@maz-ui/translations",
+  "type": "module",
+  "version": "4.0.0-beta.11",
+  "description": "Translations for Maz-UI library",
+  "author": "Louis Mazel <me@loicmazuel.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouisMazel/maz-ui.git"
+  },
+  "bugs": "https://github.com/LouisMazel/maz-ui/issues",
+  "keywords": [
+    "translations",
+    "i18n",
+    "internationalization",
+    "localization",
+    "maz-ui",
+    "vue",
+    "nuxt"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    },
+    "./*": "./*"
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "unbuild",
+    "build:watch": "unbuild --watch",
+    "dev": "unbuild --stub",
+    "typecheck": "tsc --noEmit --skipLibCheck",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "pre-commit": "lint-staged"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@maz-ui/utils": "workspace:*",
+    "typescript": "^5.8.3",
+    "unbuild": "^3.5.0",
+    "vue": "^3.5.17"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [
+      "eslint --fix"
+    ]
+  }
+}

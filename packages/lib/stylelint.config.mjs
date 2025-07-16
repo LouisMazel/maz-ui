@@ -1,6 +1,6 @@
 /** @type {import('stylelint').Config} */
 export default {
-  ignoreFiles: ['components_tmp/**/*', 'node_modules/**/*', '.DS_Store', 'dist/**/*', 'types/**/*', 'coverage/**/*'],
+  ignoreFiles: ['node_modules/**/*', '.DS_Store', 'dist/**/*', 'types/**/*', 'coverage/**/*'],
   plugins: ['stylelint-scss'],
   extends: [
     'stylelint-config-standard',
@@ -13,6 +13,7 @@ export default {
   // https://stylelint.io/user-guide/configuration
   rules: {
     'at-rule-no-unknown': [true, { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each', 'for', 'use'] }],
+    'at-rule-no-deprecated': [true, { ignoreAtRules: ['apply'] }],
     'scss/at-rule-no-unknown': [true, { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each', 'for', 'use'] }],
     'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['deep'] }],
     'selector-class-pattern': undefined,
@@ -25,6 +26,7 @@ export default {
     {
       files: [
         '**/*.vue',
+        '**/*.html',
       ],
       customSyntax: 'postcss-html',
     },

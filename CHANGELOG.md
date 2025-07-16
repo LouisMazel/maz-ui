@@ -1,5 +1,266 @@
 # Change Log
 
+## v4.0.0-beta.14...v4.0.0-beta.15
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.14...v4.0.0-beta.15)
+
+### 📖 Documentation
+
+- **docs:** Update migration guide v3 to v4 ([2af761a28](https://github.com/LouisMazel/maz-ui/commit/2af761a28))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
+## v4.0.0-beta.13...v4.0.0-beta.14
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.13...v4.0.0-beta.14)
+
+**Note:** No relevant commits found
+
+
+## v4.0.0-beta.12...v4.0.0-beta.13
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.12...v4.0.0-beta.13)
+
+### 🩹 Fixes
+
+- **maz-ui:** UseFormField - improve types ([ad3d9db43](https://github.com/LouisMazel/maz-ui/commit/ad3d9db43))
+- **maz-ui:** UseFormField & useFormValidator - improve types ([c5e1e91ed](https://github.com/LouisMazel/maz-ui/commit/c5e1e91ed))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
+## v4.0.0-beta.11...v4.0.0-beta.12
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.11...v4.0.0-beta.12)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Type inference of plugin composables ([3bd71df7f](https://github.com/LouisMazel/maz-ui/commit/3bd71df7f))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
+## v4.0.0-beta.10...v4.0.0-beta.11
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.10...v4.0.0-beta.11)
+
+**Note:** Version bump only to follow ecosystem versioning
+
+
+## v4.0.0-beta.9...v4.0.0-beta.10
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.9...v4.0.0-beta.10)
+
+### 🚀 Features
+
+- **maz-ui:** MazDialogConfirm - add option to hide default buttons ([6606917cb](https://github.com/LouisMazel/maz-ui/commit/6606917cb))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
+## v4.0.0-beta.8...v4.0.0-beta.9
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.8...v4.0.0-beta.9)
+
+**Note:** Version bump only to follow ecosystem versioning
+
+
+## v4.0.0-beta.7...v4.0.0-beta.8
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.7...v4.0.0-beta.8)
+
+### 🩹 Fixes
+
+- Add --concurrency=1 to nx:affected:pre-commit to fix lint-staged backup issue ([da73cb0c1](https://github.com/LouisMazel/maz-ui/commit/da73cb0c1))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
+## v4.0.0-beta.6...v4.0.0-beta.7
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.6...v4.0.0-beta.7)
+
+### 🚀 Features
+
+- **maz-ui:** UseFormValidator, useFormField - Type improvements and performance optimizations ([f0ef47ebe](https://github.com/LouisMazel/maz-ui/commit/f0ef47ebe))
+- **maz-ui:** MazBtn, MazCheckbox, MazInput, MazRadio, MazSwitch - improve UX when focused and disable style apply within fieldset disable ([be6a80cc0](https://github.com/LouisMazel/maz-ui/commit/be6a80cc0))
+- **maz-ui:** UseDisplayNames - improve cache to avoid memory leaks ([488f05d42](https://github.com/LouisMazel/maz-ui/commit/488f05d42))
+- **maz-ui:** MazPopover - improve popover position placement and animations ([69853d82e](https://github.com/LouisMazel/maz-ui/commit/69853d82e))
+- **vue-app:** Add test code ([d1ed20be5](https://github.com/LouisMazel/maz-ui/commit/d1ed20be5))
+- **maz-ui:** Add vite/client types into tsconfig ([5e729c42b](https://github.com/LouisMazel/maz-ui/commit/5e729c42b))
+- **@maz-ui/utils:** Add new ts helpers to infer generic component type ([08991733a](https://github.com/LouisMazel/maz-ui/commit/08991733a))
+- **maz-ui:** UseFormValidator, useFormField - Type improvements and performance optimizations ([26e1c7b10](https://github.com/LouisMazel/maz-ui/commit/26e1c7b10))
+- **maz-ui:** MazBtn, MazCheckbox, MazInput, MazRadio, MazSwitch - improve UX when focused and disable style apply within fieldset disable ([98d415cc7](https://github.com/LouisMazel/maz-ui/commit/98d415cc7))
+- **maz-ui:** UseDisplayNames - improve cache to avoid memory leaks ([68fdcbf60](https://github.com/LouisMazel/maz-ui/commit/68fdcbf60))
+- **maz-ui:** MazPopover - improve popover position placement and animations ([fb9d89cfc](https://github.com/LouisMazel/maz-ui/commit/fb9d89cfc))
+- **vue-app:** Add test code ([27344c3b3](https://github.com/LouisMazel/maz-ui/commit/27344c3b3))
+- **maz-ui:** Add vite/client types into tsconfig ([f93eb4045](https://github.com/LouisMazel/maz-ui/commit/f93eb4045))
+- **@maz-ui/utils:** Add new ts helpers to infer generic component type ([53a8b32a2](https://github.com/LouisMazel/maz-ui/commit/53a8b32a2))
+- **maz-ui:** Rename MazDialogPromise component to MazDialogConfirm and add more button options ([3e0f76de7](https://github.com/LouisMazel/maz-ui/commit/3e0f76de7))
+- **maz-ui:** MazInput - add loading state component with spinner support ([ec4e0cfef](https://github.com/LouisMazel/maz-ui/commit/ec4e0cfef))
+- **@maz-ui/translations:** Load intial locale and fallback locale synchronously ([ccff5df7d](https://github.com/LouisMazel/maz-ui/commit/ccff5df7d))
+
+### 🔥 Performance
+
+- **maz-ui:** Toast uses passive event to improve perf ([c8420c152](https://github.com/LouisMazel/maz-ui/commit/c8420c152))
+- **maz-ui:** VTooltip - use element reference and do not recreate tooltip on update ([602cbe2a8](https://github.com/LouisMazel/maz-ui/commit/602cbe2a8))
+- **maz-ui:** Toast uses passive event to improve perf ([8bd22a1b6](https://github.com/LouisMazel/maz-ui/commit/8bd22a1b6))
+- **maz-ui:** VTooltip - use element reference and do not recreate tooltip on update ([7f96b720f](https://github.com/LouisMazel/maz-ui/commit/7f96b720f))
+
+### 🩹 Fixes
+
+- **@maz-ui/icons:** Export svg files correctly ([757867b02](https://github.com/LouisMazel/maz-ui/commit/757867b02))
+- **@maz-ui/nuxt:** Do not load translation plugin asynchronously ([65d2fdef0](https://github.com/LouisMazel/maz-ui/commit/65d2fdef0))
+- **@maz-ui/icons:** Export svg files correctly ([c84ad5c32](https://github.com/LouisMazel/maz-ui/commit/c84ad5c32))
+- **@maz-ui/nuxt:** Do not load translation plugin asynchronously ([af2c96756](https://github.com/LouisMazel/maz-ui/commit/af2c96756))
+
+### 💅 Refactors
+
+- **@maz-ui/translations:** Improve locale messages lazy loading ([4a4e16d6c](https://github.com/LouisMazel/maz-ui/commit/4a4e16d6c))
+
+### 📖 Documentation
+
+- **docs:** Improve documentation of useFormValidator ([073cc49bb](https://github.com/LouisMazel/maz-ui/commit/073cc49bb))
+- **docs:** Tooltip - how to change tooltip position with modifier ([c4de40f24](https://github.com/LouisMazel/maz-ui/commit/c4de40f24))
+- **docs:** Improve documentation of useFormValidator ([091c5c389](https://github.com/LouisMazel/maz-ui/commit/091c5c389))
+- **docs:** Tooltip - how to change tooltip position with modifier ([79049b488](https://github.com/LouisMazel/maz-ui/commit/79049b488))
+- **docs:** Enhance use-form-validator documentation with async validation examples ([942d152ba](https://github.com/LouisMazel/maz-ui/commit/942d152ba))
+- **docs:** Add documentation about translations ([9789765cb](https://github.com/LouisMazel/maz-ui/commit/9789765cb))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
+## v4.0.0-beta.5...v4.0.0-beta.6
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.5...v4.0.0-beta.6)
+
+### 🚀 Features
+
+- **maz-ui:** UseFormValidator, useFormField - Type improvements and performance optimizations ([f0ef47ebe](https://github.com/LouisMazel/maz-ui/commit/f0ef47ebe))
+- **maz-ui:** MazBtn, MazCheckbox, MazInput, MazRadio, MazSwitch - improve UX when focused and disable style apply within fieldset disable ([be6a80cc0](https://github.com/LouisMazel/maz-ui/commit/be6a80cc0))
+- **maz-ui:** UseDisplayNames - improve cache to avoid memory leaks ([488f05d42](https://github.com/LouisMazel/maz-ui/commit/488f05d42))
+- **maz-ui:** MazPopover - improve popover position placement and animations ([69853d82e](https://github.com/LouisMazel/maz-ui/commit/69853d82e))
+- **vue-app:** Add test code ([d1ed20be5](https://github.com/LouisMazel/maz-ui/commit/d1ed20be5))
+- **maz-ui:** Add vite/client types into tsconfig ([5e729c42b](https://github.com/LouisMazel/maz-ui/commit/5e729c42b))
+- **@maz-ui/utils:** Add new ts helpers to infer generic component type ([08991733a](https://github.com/LouisMazel/maz-ui/commit/08991733a))
+
+### 🔥 Performance
+
+- **maz-ui:** Toast uses passive event to improve perf ([c8420c152](https://github.com/LouisMazel/maz-ui/commit/c8420c152))
+- **maz-ui:** VTooltip - use element reference and do not recreate tooltip on update ([602cbe2a8](https://github.com/LouisMazel/maz-ui/commit/602cbe2a8))
+
+### 🩹 Fixes
+
+- **@maz-ui/icons:** Export svg files correctly ([757867b02](https://github.com/LouisMazel/maz-ui/commit/757867b02))
+- **@maz-ui/nuxt:** Do not load translation plugin asynchronously ([65d2fdef0](https://github.com/LouisMazel/maz-ui/commit/65d2fdef0))
+
+### 📖 Documentation
+
+- **docs:** Improve documentation of useFormValidator ([073cc49bb](https://github.com/LouisMazel/maz-ui/commit/073cc49bb))
+- **docs:** Tooltip - how to change tooltip position with modifier ([c4de40f24](https://github.com/LouisMazel/maz-ui/commit/c4de40f24))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+## [4.0.0-beta.5](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.4...v4.0.0-beta.5) (2025-07-10)
+
+### Bug Fixes
+
+- **maz-ui:** utilities export path ([d31aee3](https://github.com/LouisMazel/maz-ui/commit/d31aee3ea6d466de41ba1fbbcdb2cd39dbc6fcc2))
+
+## [4.0.0-beta.4](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2025-07-10)
+
+### Bug Fixes
+
+- **@maz-ui/themes:** force dark or light mode with colorMode config ([6b333d2](https://github.com/LouisMazel/maz-ui/commit/6b333d206b0340828e621e52047cb92362641e44))
+
+### Features
+
+- **maz-ui:** MazDropdown, Mazpopover - new trigger mode 'adaptive' for desktop and mobile ([2ed51aa](https://github.com/LouisMazel/maz-ui/commit/2ed51aaa9b2853a0eab0b5ca77b5e0f786e1a74b))
+
+## 4.0.0-beta.3 (2025-07-10)
+
+**Note:** Version bump only
+
+## 4.0.0-beta.2 (2025-07-09)
+
+**Note:** Version bump only
+
+## 4.0.0-beta.1 (2025-07-09)
+
+**Note:** Version bump only
+
+## 4.0.0-beta.0 (2025-07-09)
+
+### ✨ Features
+
+#### 🧱 New packages
+
+- [`@maz-ui/icons`](https://github.com/LouisMazel/maz-ui/commit/9e3955d) – Export SVG and Vue component icons
+- [`@maz-ui/themes`](https://github.com/LouisMazel/maz-ui/commit/a6ce6e6) – Manage themes in Vue/Nuxt projects
+- [`@maz-ui/translations`](https://github.com/LouisMazel/maz-ui/commit/f8c2518) – Translation system for Maz-UI
+- [`@maz-ui/eslint-config`](https://github.com/LouisMazel/maz-ui/commit/d975107) – Shareable ESLint config
+- [`@maz-ui/nuxt`](https://github.com/LouisMazel/maz-ui/commit/d8e4dd4) – Nuxt 3 integration of Maz-UI
+
+#### 🧩 New components
+
+- [`MazPopover`](https://github.com/LouisMazel/maz-ui/commit/22d61d0) – Floating overlay system
+- [`MazSelectCountry`](https://github.com/LouisMazel/maz-ui/commit/97fedf7) – Country/language selector
+- [`MazDropzone`](https://github.com/LouisMazel/maz-ui/commit/cfabd9b) – Rewritten upload zone ⚠️ **BREAKING**
+
+#### 🎨 Enhancements
+
+- [`MazSlider`](https://github.com/LouisMazel/maz-ui/commit/9becb79) – Add `step` option
+- [`MazDropdown`](https://github.com/LouisMazel/maz-ui/commit/c3b324e) – Now uses popover
+- [`MazSelect`](https://github.com/LouisMazel/maz-ui/commit/4bf8d74) – Now uses popover
+- [`MazGallery`](https://github.com/LouisMazel/maz-ui/commit/b1a37ee) – Background color prop
+- [`MazInputPhoneNumber`](https://github.com/LouisMazel/maz-ui/commit/754d167) – Formatted value in input
+- [`MazUi plugin`](https://github.com/LouisMazel/maz-ui/commit/68c43f6) – Apply themes and translations
+- [`Toast plugin`](https://github.com/LouisMazel/maz-ui/commit/d7617bd) – Improved UX ⚠️ **BREAKING**
+- [`Theme manager`](https://github.com/LouisMazel/maz-ui/commit/bc23c6a) – Centralized theming
+- [`Obsidian theme`](https://github.com/LouisMazel/maz-ui/commit/ffa6421) – Added new preset
+- [`MazLink`](https://github.com/LouisMazel/maz-ui/commit/507ca66) – Can now be a `<button>`
+
+---
+
+### 💅 Refactors
+
+- [`MazBtn`, `MazBadge`](https://github.com/LouisMazel/maz-ui/commit/5de3baf) – `outline` → `outlined`
+- [`MazInput`](https://github.com/LouisMazel/maz-ui/commit/0c979ef) – Full UI/UX overhaul ⚠️ **BREAKING**
+- [`MazPicker`](https://github.com/LouisMazel/maz-ui/commit/26b8272) – UI/UX improvements
+- [`Toaster`](https://github.com/LouisMazel/maz-ui/commit/4838600) – Renamed to `toast`
+
+---
+
+### 📝 Documentation
+
+- [`Nuxt module`](https://github.com/LouisMazel/maz-ui/commit/275746b) – Initial docs
+- [`Resolvers`](https://github.com/LouisMazel/maz-ui/commit/f3ed702) – Usage examples
+- [`Migration guide`](https://github.com/LouisMazel/maz-ui/commit/4583d85) – v4 upgrade path
+- [`Getting Started`](https://github.com/LouisMazel/maz-ui/commit/1a9a3f8) – Full rewrite
+
+---
+
+### ⚠️ Breaking Changes Summary
+
+- [`MazDropzone`](https://github.com/LouisMazel/maz-ui/commit/cfabd9b) – Completely rewritten with no external deps
+- [`MazInput`](https://github.com/LouisMazel/maz-ui/commit/0c979ef) – Major UI/UX overhaul
+- [`Toast`](https://github.com/LouisMazel/maz-ui/commit/d7617bd) – Renamed and reworked
+
 ## v3.50.0...v3.50.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v3.50.0...v3.50.1)
@@ -195,7 +456,7 @@
 
 ### 🚀 Enhancements
 
-- **maz-ui:** Add new CSS variables - maz-bg-color-dark-dark, maz-bg-color-dark-darker, maz-bg-color-light-dark and maz-bg-color-dark-darker ([a6b653042](https://github.com/LouisMazel/maz-ui/commit/a6b653042))
+- **maz-ui:** Add new CSS variables - maz-bg-color-dark-dark, maz-bg-color-dark-darker, maz-bg-surface-400-dark and maz-bg-color-dark-darker ([a6b653042](https://github.com/LouisMazel/maz-ui/commit/a6b653042))
 - **docs:** Add new sections for populare and latest components and module ([5337d336d](https://github.com/LouisMazel/maz-ui/commit/5337d336d))
 - **maz-ui:** MazInput - add new options: topLabel (label above the input) and assistiveText (text below the input) ([9ac994c75](https://github.com/LouisMazel/maz-ui/commit/9ac994c75))
 - **maz-ui:** MazTextarea - add new prop options: padding (bool), transparent, border (bool), roundedSize. add slots: label and append (with appendJustify props) ([986dcf5d9](https://github.com/LouisMazel/maz-ui/commit/986dcf5d9))

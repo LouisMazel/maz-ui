@@ -1,0 +1,96 @@
+{
+  "name": "@maz-ui/icons",
+  "type": "module",
+  "version": "4.0.0-beta.11",
+  "description": "Icons set in SVG and Vue components",
+  "author": "Louis Mazel <me@loicmazuel.com>",
+  "license": "MIT",
+  "homepage": "https://maz-ui.com/guide/icons",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouisMazel/maz-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LouisMazel/maz-ui/issues"
+  },
+  "keywords": [
+    "vue",
+    "nuxt",
+    "components",
+    "vue-component",
+    "framework",
+    "library",
+    "ui",
+    "nuxt",
+    "nuxt3",
+    "module",
+    "nuxt-module",
+    "maz-ui",
+    "icons",
+    "svg"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./resolvers": {
+      "types": "./dist/types/resolvers.d.ts",
+      "import": "./dist/resolvers.js"
+    },
+    "./icon-list": {
+      "types": "./dist/types/icon-list.d.ts",
+      "import": "./dist/icon-list.js"
+    },
+    "./svg": "./svg/*.svg",
+    "./": "./"
+  },
+  "module": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist",
+    "svg"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit --skipLibCheck",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "pre-commit": "lint-staged"
+  },
+  "peerDependencies": {
+    "unplugin-vue-components": "^28.0.0",
+    "vite-svg-loader": "^5.0.0",
+    "vue": "^3.5.0"
+  },
+  "peerDependenciesMeta": {
+    "unplugin-vue-components": {
+      "optional": true
+    },
+    "vite-svg-loader": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@maz-ui/node": "workspace:*",
+    "@maz-ui/utils": "workspace:*",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "unbuild": "^3.5.0",
+    "unplugin-vue-components": "^28.7.0",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-svg-loader": "^5.1.0",
+    "vue": "^3.5.17"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
+  }
+}

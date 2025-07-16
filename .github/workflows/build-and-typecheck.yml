@@ -1,0 +1,32 @@
+name: Build and Typecheck
+
+on:
+  pull_request:
+    paths:
+      - 'packages/**'
+      - 'apps/docs/**'
+      - pnpm-lock.yaml
+      - .github/workflows/typecheck.yml
+
+jobs:
+  build-and-typecheck:
+    name: build-and-typecheck
+    runs-on: ubuntu-latest
+
+    env:
+      TEST_ENV: 'true'
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js, pnpm and Nx cache
+        uses: ./.github/actions/setup
+
+      - name: Build packages
+        run: pnpm build:packages
+
+      - name: Generate components docs
+        run: pnpm --filter cli cli generate-components-docs
+
+      - name: Build docs
+        run: pnpm -F docs build

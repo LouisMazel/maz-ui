@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": [
+      "ESNext"
+    ],
+    "types": ["node"],
+    "allowImportingTsExtensions": true
+  },
+  "include": [
+    "bin/**/*",
+    "src/**/*",
+    "*.config.mts",
+    "config/**/*",
+    "docgen.config.js",
+    "*.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
+}

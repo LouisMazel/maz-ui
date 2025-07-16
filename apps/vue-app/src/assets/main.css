@@ -1,0 +1,11 @@
+html,
+body,
+#app {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: var(--maz-base-font-size);
+  font-family: var(--maz-font-family);
+
+  @apply maz-text-foreground maz-bg-surface maz-h-dvh;
+}

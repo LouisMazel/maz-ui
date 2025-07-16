@@ -1,0 +1,75 @@
+{
+  "name": "@maz-ui/nuxt",
+  "type": "module",
+  "version": "4.0.0-beta.14",
+  "description": "Nuxt module for Maz-UI",
+  "author": "Louis Mazel <me@loicmazuel.com>",
+  "license": "MIT",
+  "homepage": "https://maz-ui.com/guide/nuxt",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouisMazel/maz-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LouisMazel/maz-ui/issues"
+  },
+  "keywords": [
+    "vue",
+    "nuxt",
+    "components",
+    "vue-component",
+    "framework",
+    "library",
+    "ui",
+    "nuxt",
+    "nuxt3",
+    "module",
+    "nuxt-module",
+    "maz-ui"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.mts",
+      "import": "./dist/module.mjs"
+    },
+    "./*": "./*"
+  },
+  "main": "./dist/module.mjs",
+  "types": "./dist/types.d.mts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build build",
+    "build": "pnpm dev && nuxt-module-build build",
+    "dev": "nuxt-module-build build --stub && nuxt-module-build prepare",
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "lint:fix": "pnpm lint --fix",
+    "typecheck": "vue-tsc --noEmit --skipLibCheck"
+  },
+  "dependencies": {
+    "@maz-ui/themes": "workspace:*",
+    "@maz-ui/translations": "workspace:*",
+    "@nuxt/kit": "^3.17.4",
+    "defu": "^6.1.4",
+    "maz-ui": "workspace:*"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "^2.4.1",
+    "@nuxt/eslint-config": "^1.4.1",
+    "@nuxt/module-builder": "^1.0.1",
+    "@nuxt/schema": "^3.17.4",
+    "@nuxt/test-utils": "^3.19.1",
+    "nuxt": "^3.17.4",
+    "typescript": "~5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "lint-staged": {
+    "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
+  }
+}
