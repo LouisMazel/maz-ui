@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.9...v4.0.0-beta.10
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.9...v4.0.0-beta.10)
+
+### 🚀 Features
+
+- **maz-ui:** MazDialogConfirm - add option to hide default buttons ([6606917cb](https://github.com/LouisMazel/maz-ui/commit/6606917cb))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.8...v4.0.0-beta.9
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.8...v4.0.0-beta.9)
