@@ -1,5 +1,41 @@
 # Change Log
 
+## v4.0.0-beta.15...v4.0.0-beta.16
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.15...v4.0.0-beta.16)
+
+### 🚀 Features
+
+- **@maz-ui/eslint-config:** New package - share custom and customizable eslint config ([d975107b8](https://github.com/LouisMazel/maz-ui/commit/d975107b8))
+- **maz-ui:** Implement new theme manager provided by @maz-ui/themes ([bc23c6a66](https://github.com/LouisMazel/maz-ui/commit/bc23c6a66))
+- **@maz-ui/themes:** New package - create and manage theme with maz-ui ([a6ce6e642](https://github.com/LouisMazel/maz-ui/commit/a6ce6e642))
+- **maz-ui:** MazInputPhoneNumber, MazSelect, MazDropdown and vTooltip display the content in a popover ([44406d094](https://github.com/LouisMazel/maz-ui/commit/44406d094))
+- **@maz-ui/translations:** New packages to manage maz-ui's translations easily ([f8c2518f0](https://github.com/LouisMazel/maz-ui/commit/f8c2518f0))
+- **@maz-ui/eslint-config:** New package - share custom and customizable eslint config ([ba60b6b9d](https://github.com/LouisMazel/maz-ui/commit/ba60b6b9d))
+- **maz-ui:** Implement new theme manager provided by @maz-ui/themes ([f6978f418](https://github.com/LouisMazel/maz-ui/commit/f6978f418))
+- **@maz-ui/themes:** New package - create and manage theme with maz-ui ([41516f9af](https://github.com/LouisMazel/maz-ui/commit/41516f9af))
+- **maz-ui:** MazInputPhoneNumber, MazSelect, MazDropdown and vTooltip display the content in a popover ([d92eed803](https://github.com/LouisMazel/maz-ui/commit/d92eed803))
+- **@maz-ui/translations:** New packages to manage maz-ui's translations easily ([05f936be9](https://github.com/LouisMazel/maz-ui/commit/05f936be9))
+
+### 🩹 Fixes
+
+- **@maz-ui/icons:** Export svg files correctly ([dd760f3d0](https://github.com/LouisMazel/maz-ui/commit/dd760f3d0))
+- Package config to be published on npm ([ceb1f68f2](https://github.com/LouisMazel/maz-ui/commit/ceb1f68f2))
+- Add --concurrency=1 to nx:affected:pre-commit to fix lint-staged backup issue ([da73cb0c1](https://github.com/LouisMazel/maz-ui/commit/da73cb0c1))
+- **@maz-ui/icons:** Export svg files correctly ([5ede33435](https://github.com/LouisMazel/maz-ui/commit/5ede33435))
+- Package config to be published on npm ([c4569ba86](https://github.com/LouisMazel/maz-ui/commit/c4569ba86))
+- Add --concurrency=1 to nx:affected:pre-commit to fix lint-staged backup issue ([c85f3d3d1](https://github.com/LouisMazel/maz-ui/commit/c85f3d3d1))
+
+### 💅 Refactors
+
+- **maz-ui:** Apply default border color to components ([9254573d0](https://github.com/LouisMazel/maz-ui/commit/9254573d0))
+- **maz-ui:** Apply default border color to components ([98566be9c](https://github.com/LouisMazel/maz-ui/commit/98566be9c))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.14...v4.0.0-beta.15
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.14...v4.0.0-beta.15)
