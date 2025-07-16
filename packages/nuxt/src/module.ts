@@ -116,6 +116,7 @@ const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDial
   useDisplayNames: true,
   useFreezeValue: true,
   useInjectStrict: true,
+  useDropzone: true,
   useInstanceUniqId: true,
   useMountComponent: true,
   useSwipe: true,
