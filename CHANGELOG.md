@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.14...v4.0.0-beta.15
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.14...v4.0.0-beta.15)
+
+### 📖 Documentation
+
+- **docs:** Update migration guide v3 to v4 ([2af761a28](https://github.com/LouisMazel/maz-ui/commit/2af761a28))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.13...v4.0.0-beta.14
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.13...v4.0.0-beta.14)
