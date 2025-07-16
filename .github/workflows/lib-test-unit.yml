@@ -34,11 +34,11 @@ jobs:
       - name: Install modules
         run: pnpm install --frozen-lockfile
 
+      - name: Run others tests
+        run: pnpm -F maz-ui test:unit:coverage
+
       - name: Test & Publish Code Coverage
-        uses: paambaati/codeclimate-action@v3.2.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        uses: qltysh/qlty-action/coverage@main
         with:
-          coverageCommand: pnpm --filter maz-ui test:unit:coverage --silent
-          coverageLocations: |
-            ${{github.workspace}}/packages/lib/coverage/clover.xml:clover
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: ${{github.workspace}}/packages/lib/coverage/lcov.info
