@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'packages/**'
+      - 'apps/docs/**'
       - pnpm-lock.yaml
       - .github/workflows/typecheck.yml
 
