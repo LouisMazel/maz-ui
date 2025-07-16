@@ -48,6 +48,12 @@ export interface MazDialogConfirmInternalProps {
   rejectProps?: Omit<MazBtnProps, 'type'> & MazDialogConfirmButton
 
   /**
+   * Whether to display the reject button
+   * @default true
+   */
+  hideRejectButton?: boolean
+
+  /**
    * Text for the accept button
    * @default undefined
    */
@@ -61,6 +67,12 @@ export interface MazDialogConfirmInternalProps {
   acceptProps?: Omit<MazBtnProps, 'type'> & MazDialogConfirmButton
 
   /**
+   * Whether to display the accept button
+   * @default true
+   */
+  hideAcceptButton?: boolean
+
+  /**
    * Buttons to display in the footer
    * @default undefined
    */
@@ -69,7 +81,7 @@ export interface MazDialogConfirmInternalProps {
 
 export type MazDialogConfirmProps = MazDialogConfirmInternalProps & MazDialogConfirmData & MazDialogProps
 
-const { identifier, message, buttons, title, modelValue, closeOnEscape = true, rejectText, acceptText, rejectProps, acceptProps, ...dialogProps } = defineProps<MazDialogConfirmProps>()
+const { identifier, message, buttons, title, modelValue, closeOnEscape = true, rejectText, acceptText, rejectProps, acceptProps, hideRejectButton, hideAcceptButton, ...dialogProps } = defineProps<MazDialogConfirmProps>()
 
 defineEmits<{
   /**
@@ -93,6 +105,8 @@ const currentData = computed<MazDialogConfirmData>(() => {
   const baseData = {
     ...defaultData,
     ...data.value,
+    hideAcceptButton: data.value.hideAcceptButton ?? defaultData.hideAcceptButton,
+    hideRejectButton: data.value.hideRejectButton ?? defaultData.hideRejectButton,
     acceptProps: {
       ...defaultData.acceptProps,
       ...data.value.acceptProps,
@@ -111,6 +125,8 @@ const currentData = computed<MazDialogConfirmData>(() => {
     ...baseData,
     acceptText: acceptText ?? baseData.acceptText,
     rejectText: rejectText ?? baseData.rejectText,
+    hideAcceptButton: hideAcceptButton ?? baseData.hideAcceptButton,
+    hideRejectButton: hideRejectButton ?? baseData.hideRejectButton,
     acceptProps: {
       ...baseData.acceptProps,
       ...acceptProps,
@@ -226,6 +242,7 @@ function buttonClick(currentModal: MazDialogConfirmState, button: MazDialogConfi
 
           <template v-else>
             <MazBtn
+              v-if="!currentData.hideAcceptButton"
               v-bind="{
                 ...currentData.acceptProps,
                 type: 'button',
@@ -239,6 +256,7 @@ function buttonClick(currentModal: MazDialogConfirmState, button: MazDialogConfi
               "
             />
             <MazBtn
+              v-if="!currentData.hideRejectButton"
               v-bind="{
                 ...currentData.rejectProps,
                 type: 'button',

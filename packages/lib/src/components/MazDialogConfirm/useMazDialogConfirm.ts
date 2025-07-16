@@ -28,17 +28,19 @@ export type MazDialogConfirmData = Omit<MazDialogConfirmInternalProps, 'identifi
 
 export const defaultData = {
   buttons: undefined,
-  rejectText: 'Cancel',
   acceptText: 'Confirm',
-  rejectProps: {
-    color: 'destructive',
-    type: 'reject',
-    response: 'reject',
-  } satisfies MazDialogConfirmButtonPromised,
+  hideAcceptButton: false,
   acceptProps: {
     color: 'success',
     type: 'accept',
     response: 'accept',
+  } satisfies MazDialogConfirmButtonPromised,
+  rejectText: 'Cancel',
+  hideRejectButton: false,
+  rejectProps: {
+    color: 'destructive',
+    type: 'reject',
+    response: 'reject',
   } satisfies MazDialogConfirmButtonPromised,
 } satisfies MazDialogConfirmData
 
