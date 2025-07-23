@@ -32,6 +32,8 @@ yarn add maz-ui
 
 ## Framework Integration
 
+You must the MazUi plugin to initialize the theme and translations.
+
 ```typescript
 import { MazUi } from 'maz-ui/plugins/maz-ui'
 
@@ -48,7 +50,7 @@ import App from './App.vue'
 
 const app = createApp(App)
 
-// Install theme plugin
+// Install MazUi plugin to initialize the theme and translations
 app.use(MazUi, {
   /**
    * Theme configuration (optional if you are using the default theme)

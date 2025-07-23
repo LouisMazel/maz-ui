@@ -112,8 +112,8 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     strategy: themeState.strategy,
     darkModeStrategy: themeState.darkModeStrategy,
 
-    injectFullCSS: !config.injectFullCSSOnServer,
-    injectCriticalCSS: false,
+    injectFullCSS: config.spa ? true : !config.injectFullCSSOnServer,
+    injectCriticalCSS: !!config.spa,
   })
 })
 
