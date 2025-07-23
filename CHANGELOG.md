@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.16...v4.0.0-beta.17
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.16...v4.0.0-beta.17)
+
+### 🚀 Features
+
+- **@maz-ui/nuxt:** Add spa mode option to inject all CSS on client side ([d2dc8c2c1](https://github.com/LouisMazel/maz-ui/commit/d2dc8c2c1))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.15...v4.0.0-beta.16
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.15...v4.0.0-beta.16)
