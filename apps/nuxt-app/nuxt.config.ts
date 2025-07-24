@@ -31,6 +31,8 @@ export default defineNuxtConfig({
   mazUi: {
     theme: {
       preset: 'maz-ui',
+      mode: 'dark',
+      colorMode: 'light',
     },
     translations: {
       locale: 'fr',

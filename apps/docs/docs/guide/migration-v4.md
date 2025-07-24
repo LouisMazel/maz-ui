@@ -677,7 +677,7 @@ toggleDarkMode()
 </template>
 ```
 
-**📖 Complete documentation:** [Theme Guide](/guide/theme)
+**📖 Complete documentation:** [Theme Guide](/guide/themes)
 
 ## 🌍 Translation System
 
@@ -872,7 +872,7 @@ app.use(MazUi)
 ## 🔗 Additional Resources
 
 - **📚 [Official v4 Documentation](https://maz-ui.com)** - Complete documentation
-- **🎨 [Theme Guide](/guide/theme)** - Advanced theme system
+- **🎨 [Theme Guide](/guide/themes)** - Advanced theme system
 - **🌍 [Translation Guide](/guide/translations)** - Internationalization
 - **🚀 [Vue Installation Guide](/guide/vue)** - Vue 3 setup
 - **⚡ [Nuxt Installation Guide](/guide/nuxt)** - Nuxt 3 setup

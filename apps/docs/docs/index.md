@@ -180,7 +180,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         This library is written in Typescript, so all types and declarations are directly available.
       </p>
     </MazCardSpotlight>
-    <a href="/guide/theme" class="maz-flex">
+    <a href="/guide/themes" class="maz-flex">
       <MazCardSpotlight class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
         <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           💄
@@ -190,7 +190,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           Created with TailwindCSS | Optimized CSS file sizes | Complies with all CSS best practices | Use your theme easily.
         </p>
         <div class="maz-flex-1"></div>
-        <MazBtn color="background" outlined size="sm" block href="/guide/theme">Discover</MazBtn>
+        <MazBtn color="background" outlined size="sm" block href="/guide/themes">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
     <a href="/guide/dark-mode" class="maz-flex">

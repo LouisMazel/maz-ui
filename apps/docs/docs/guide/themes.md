@@ -35,8 +35,9 @@ app.use(MazUi, {
   theme: {
     preset: mazUi, // pristine | ocean | obsidian
     strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
-    darkModeStrategy: 'class', // 'class' | 'media'
-    colorMode: 'auto' // 'auto' | 'light' | 'dark'
+    darkModeStrategy: 'class', // 'class' | 'media' (only if mode is `both`)
+    mode: 'both', // 'light' | 'dark' | 'both' (supported color modes)
+    colorMode: 'auto', // 'auto' | 'light' | 'dark' (initial color mode, only if mode is 'both')
   }
 })
 ```
@@ -72,6 +73,15 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
   </div>
 </template>
 ```
+
+## Configuration
+
+- `preset`: The theme preset to use
+- `overrides` (optional): Override specific parts of the theme
+- `strategy` (optional): The rendering strategy to use
+- `darkModeStrategy` (optional): The dark mode strategy to use, only if you use mode `both`
+- `mode` (optional): The supported color modes to use (light, dark, both)
+- `colorMode` (optional): The initial color mode to use (only if mode is 'both')
 
 ## Interactive Demo
 
@@ -347,9 +357,7 @@ app.use(MazUi, {
 <template #code>
 
 ```typescript
-import { definePreset, MazUiTheme, type ThemePresetOverrides, ocean
-
- } from '@maz-ui/themes'
+import { definePreset, MazUiTheme, type ThemePresetOverrides, ocean } from '@maz-ui/themes'
 
 const overrides: ThemePresetOverrides = {
   name: 'custom-purple',
@@ -383,7 +391,6 @@ const customTheme = definePreset({
   base: ocean,
   overrides,
 })
-
 
 // Usage
 

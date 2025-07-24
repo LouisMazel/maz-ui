@@ -13,5 +13,10 @@ export default createRouter({
       name: 'about',
       component: () => import('../views/AboutView.vue'),
     },
+    {
+      path: '/color',
+      name: 'color',
+      component: () => import('../views/ColorView.vue'),
+    },
   ],
 })
