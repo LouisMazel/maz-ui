@@ -12,6 +12,7 @@ const mockThemeState: ThemeState = {
   isDark: false,
   strategy: 'runtime',
   darkModeStrategy: 'class',
+  mode: 'both',
 }
 
 function mockDocumentCookie(cookies: string = '') {
@@ -53,6 +54,10 @@ vi.mock('../../utils/css-generator', () => ({
   generateCriticalCSS: vi.fn(() => 'critical-css'),
   generateFullCSS: vi.fn(() => 'full-css'),
   injectCSS: vi.fn(),
+  CSS_IDS: {
+    CRITICAL: 'maz-theme-critical',
+    FULL: 'maz-theme-full',
+  },
 }))
 
 vi.mock('../../utils/get-color-mode', () => ({

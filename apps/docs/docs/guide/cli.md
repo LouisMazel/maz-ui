@@ -9,7 +9,7 @@ description: CLI of maz-ui to generate CSS variables file to theming maz-ui
 
 ::: warning
 
-This module is only for v3.x users, if you are using v4.x, please use the [@maz-ui/themes](./theme.md) package instead.
+This module is only for v3.x users, if you are using v4.x, please use the [@maz-ui/themes](./themes.md) package instead.
 
 :::
 

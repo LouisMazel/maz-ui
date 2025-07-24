@@ -6,7 +6,7 @@ description: Dark mode is fully supported - How it's works ?
 # {{ $frontmatter.title }}
 
 ::: tip
-To let users manage dark mode, use this composable: [useTheme](./../guide/theme.md)
+To let users manage dark mode, use this composable: [useTheme](./../guide/themes.md)
 :::
 
 ## How it's works ?

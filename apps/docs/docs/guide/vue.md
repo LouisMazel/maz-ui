@@ -55,7 +55,7 @@ app.use(MazUi, {
   /**
    * Theme configuration (optional if you are using the default theme)
    * More information in dedicated documentation
-   * @see https://maz-ui.com/guide/theme
+   * @see https://maz-ui.com/guide/themes
    */
   theme: {
     preset: mazUi, // 'ocean' | 'pristine' | 'obsidian'
@@ -99,7 +99,7 @@ function handleClick() {
 
 ## Theming
 
-More information in the [theme documentation](/guide/theme).
+More information in the [theme documentation](/guide/themes).
 
 ## Translations
 

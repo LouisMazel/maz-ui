@@ -1,30 +1,10 @@
 <script setup lang="ts">
 import { mazUi, obsidian, ocean, pristine, useTheme } from '@maz-ui/themes/src/index.ts'
-import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
 import LangSwitcher from './components/LangSwitcher.vue'
 
 const { updateTheme, setColorMode } = useTheme()
 
 const { message, success, error, info, warning } = useToast()
-
-const translations = useTranslations()
-
-console.log(translations)
-
-function changeLocale() {
-  if (translations.locale.value === 'de') {
-    translations.setLocale('en')
-  }
-  else {
-    translations.setLocale('de')
-  }
-}
-
-console.log(translations.getMessages(), translations.getLoadedLocales())
-
-setTimeout(() => {
-  console.log(translations.getMessages(), translations.getLoadedLocales())
-}, 3000)
 
 function showToast() {
   message(`Hello, <strong>world</strong>!`, {
@@ -56,7 +36,6 @@ function showToast() {
 
 <template>
   <div class="maz-flex maz-h-full maz-flex-col">
-    <LangSwitcher />
     <nav class="maz-flex maz-h-16 maz-flex-none maz-items-center maz-gap-4 maz-border-b maz-p-4 maz-padded-container">
       <MazLink to="/">
         Home
@@ -86,14 +65,11 @@ function showToast() {
 
       <div class="maz-flex-1" />
 
+      <LangSwitcher />
       <MazBtn @click="showToast">
         Show Toast
       </MazBtn>
-      <MazBtn @click="changeLocale">
-        Change Locale
-      </MazBtn>
     </nav>
-    {{ translations.t('pagination.navAriaLabel') }}
 
     <main class="maz-flex-1 maz-overflow-auto maz-py-8 maz-padded-container">
       <RouterView />

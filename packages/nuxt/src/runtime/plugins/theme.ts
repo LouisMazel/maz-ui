@@ -11,7 +11,11 @@ import { getPreset } from '@maz-ui/themes/utils'
 import { generateCriticalCSS } from '@maz-ui/themes/utils/css-generator'
 import { defineNuxtPlugin, useCookie, useHead, useRequestHeaders } from 'nuxt/app'
 
-function getServerInitialColorMode(): ColorMode {
+function getServerInitialColorMode(colorMode: ColorMode): ColorMode {
+  if (colorMode !== 'auto') {
+    return colorMode
+  }
+
   const colorModeCookie = useCookie<ColorMode>('maz-color-mode')
 
   if (colorModeCookie.value && ['light', 'dark', 'auto'].includes(colorModeCookie.value)) {
@@ -34,45 +38,43 @@ function getServerInitialColorMode(): ColorMode {
   return 'auto'
 }
 
-function getServerIsDark(colorMode: ColorMode): boolean {
-  return colorMode === 'dark'
-}
-
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
-  const themeConfig = $config.public.mazUi?.theme
+  const options = $config.public.mazUi.theme
 
-  let preset = await getPreset(themeConfig?.preset)
+  let preset = await getPreset(options?.preset)
 
-  if (themeConfig?.overrides) {
-    preset = mergePresets(preset, themeConfig.overrides)
+  if (options?.overrides) {
+    preset = mergePresets(preset, options.overrides)
   }
 
   const config = {
     strategy: 'hybrid',
     darkModeStrategy: 'class',
-    colorMode: 'auto',
+    colorMode: options.mode && options.mode !== 'both' ? options.mode : options.colorMode ?? 'auto',
+    mode: 'both',
     injectFullCSSOnServer: true,
-    ...themeConfig,
+    ...options,
     preset,
   } satisfies MazUiThemeOptions
 
-  const initialColorMode
-    = config.colorMode === 'auto' ? getServerInitialColorMode() : (config.colorMode ?? 'auto')
-  const serverIsDark = getServerIsDark(initialColorMode)
-  const initialIsDark = initialColorMode === 'dark' || (initialColorMode === 'auto' && serverIsDark)
+  const colorMode = config.mode !== 'both' ? config.mode : getServerInitialColorMode(config.colorMode)
+
+  const isDark = colorMode === 'auto' && config.mode === 'both'
+    ? getServerInitialColorMode(config.colorMode) === 'dark'
+    : colorMode === 'dark' || config.mode === 'dark'
 
   const themeState = {
     currentPreset: config.preset,
-    colorMode: initialColorMode,
-    configuredColorMode: config.colorMode,
-    isDark: initialIsDark,
+    colorMode,
+    mode: config.mode,
+    isDark,
     strategy: config.strategy,
     darkModeStrategy: config.darkModeStrategy,
   } satisfies ThemeState
 
   if (import.meta.server) {
     const cssOptions: CriticalCSSOptions = {
-      mode: config.colorMode === 'auto' ? 'both' : config.colorMode,
+      mode: themeState.mode,
       darkSelectorStrategy: config.darkModeStrategy ?? 'class',
       prefix: 'maz',
     } satisfies CriticalCSSOptions
@@ -96,7 +98,7 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
       })
     }
 
-    if (initialIsDark && config.darkModeStrategy === 'class') {
+    if (isDark && config.darkModeStrategy === 'class') {
       useHead({
         htmlAttrs: {
           class: 'dark',
