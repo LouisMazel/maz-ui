@@ -30,15 +30,15 @@ const { backgroundEven, backgroundOdd, hoverable: injectedHoverable } = useInjec
 <style lang="postcss" scoped>
 .m-table-row {
   &.--background-odd {
-    @apply odd:maz-bg-surface-300 dark:odd:maz-bg-surface-400;
+    @apply odd:maz-bg-surface-400;
   }
 
   &.--background-even {
-    @apply even:maz-bg-surface-600 dark:even:maz-bg-surface-600;
+    @apply even:maz-bg-surface-400;
   }
 
   &.--hoverable {
-    @apply hover:maz-bg-surface-400;
+    @apply hover:maz-bg-surface-600 dark:hover:maz-bg-surface-300;
   }
 }
 </style>

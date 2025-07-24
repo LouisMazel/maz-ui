@@ -64,6 +64,7 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const themeState = {
     currentPreset: config.preset,
     colorMode: initialColorMode,
+    configuredColorMode: config.colorMode,
     isDark: initialIsDark,
     strategy: config.strategy,
     darkModeStrategy: config.darkModeStrategy,
