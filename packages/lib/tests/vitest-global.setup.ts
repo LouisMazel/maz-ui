@@ -1,3 +1,5 @@
+import { config } from '@vue/test-utils'
+
 export function setup() {
   process.env.TZ = 'Europe/Paris'
 
@@ -149,3 +151,7 @@ vi.mock('@maz-ui/translations/src/useTranslations.js', () => ({
     t: vi.fn().mockReturnValue('test'),
   }),
 }))
+config.global.stubs = {
+  teleport: true,
+  Teleport: true,
+}

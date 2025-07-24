@@ -35,7 +35,7 @@ describe('given MazTabsContentItem component', () => {
         },
       })
 
-      expect(wrapper.find('.m-tabs-content-item').isVisible()).toBe(true)
+      expect(wrapper.find('.m-tabs-content-item').exists()).toBe(true)
     })
   })
 
@@ -52,7 +52,7 @@ describe('given MazTabsContentItem component', () => {
         },
       })
 
-      expect(wrapper.find('.m-tabs-content-item').isVisible()).toBe(false)
+      expect(wrapper.find('.m-tabs-content-item').exists()).toBe(false)
     })
   })
 
@@ -67,15 +67,18 @@ describe('given MazTabsContentItem component', () => {
               currentTab,
             },
           },
+          stubs: {
+            Transition: true,
+          },
         },
       })
 
-      expect(wrapper.find('.m-tabs-content-item').isVisible()).toBe(false)
+      expect(wrapper.find('.m-tabs-content-item').exists()).toBe(false)
 
       currentTab.value = 2
       await wrapper.vm.$nextTick()
 
-      expect(wrapper.find('.m-tabs-content-item').isVisible()).toBe(true)
+      expect(wrapper.find('.m-tabs-content-item').exists()).toBe(true)
     })
   })
 
@@ -93,12 +96,12 @@ describe('given MazTabsContentItem component', () => {
         },
       })
 
-      expect(wrapper.find('.m-tabs-content-item').isVisible()).toBe(true)
+      expect(wrapper.find('.m-tabs-content-item').exists()).toBe(true)
 
       currentTab.value = 2
       await wrapper.vm.$nextTick()
 
-      expect(wrapper.find('.m-tabs-content-item').isVisible()).toBe(false)
+      expect(wrapper.find('.m-tabs-content-item').exists()).toBe(false)
     })
   })
 
@@ -112,6 +115,9 @@ describe('given MazTabsContentItem component', () => {
             'maz-tabs': {
               currentTab,
             },
+          },
+          stubs: {
+            Transition: true,
           },
         },
       })
@@ -136,6 +142,9 @@ describe('given MazTabsContentItem component', () => {
             'maz-tabs': {
               currentTab,
             },
+          },
+          stubs: {
+            Transition: true,
           },
         },
       })

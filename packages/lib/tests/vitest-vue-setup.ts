@@ -1,10 +1,10 @@
 import { config } from '@vue/test-utils'
 
-// Global configuration for Vue Test Utils
 config.global.stubs = {
   teleport: true,
   Teleport: true,
 }
+// Global configuration for Vue Test Utils
 
 // Global mocks for browser APIs
 config.global.mocks = {

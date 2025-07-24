@@ -1,3 +1,4 @@
+import type { MazDrawerProps } from '@components/MazDrawer.vue'
 import MazDrawer from '@components/MazDrawer.vue'
 import { mount } from '@vue/test-utils'
 
@@ -15,15 +16,12 @@ describe('given MazDrawer component', () => {
   })
 
   describe('when rendered with different variants', () => {
-    it('then it should apply the correct variant classes', () => {
-      const variants = ['right', 'top', 'left', 'bottom']
-
-      variants.forEach((variant) => {
-        const wrapper = mount(MazDrawer, {
-          props: { variant, modelValue: true },
-        })
-        expect(wrapper.find('.m-drawer-content-wrap').classes()).toContain(`--${variant}`)
+    it.each(['right', 'top', 'left', 'bottom'] as MazDrawerProps['variant'][])('then it should apply the correct variant %s classes', (variant) => {
+      const wrapper = mount(MazDrawer, {
+        props: { variant, modelValue: true },
       })
+
+      expect(wrapper.find('.m-drawer-content-wrap').classes()).toContain(`--${variant}`)
     })
   })
 

@@ -1,5 +1,5 @@
 import { useWait } from '@composables/useWait'
-import { createApp } from 'vue'
+import { withSetup } from '@tests/helpers/withSetup'
 
 describe('given useWait composable', () => {
   describe('when wait plugin is installed', () => {
@@ -10,10 +10,10 @@ describe('given useWait composable', () => {
         isWaiting: vi.fn().mockReturnValue(false),
       }
 
-      const app = createApp({})
-      app.provide('mazWait', mockWaitHandler)
+      const [result] = withSetup(() => useWait(), {
+        mazWait: mockWaitHandler,
+      })
 
-      const result = useWait()
       expect(result).toBe(mockWaitHandler)
     })
   })
@@ -21,7 +21,7 @@ describe('given useWait composable', () => {
   describe('when wait plugin is not installed', () => {
     it('then it should throw an error with specific message', () => {
       expect(() => {
-        useWait()
+        withSetup(() => useWait())
       }).toThrow('[maz-ui](useWait) WaitPlugin is not installed')
     })
   })

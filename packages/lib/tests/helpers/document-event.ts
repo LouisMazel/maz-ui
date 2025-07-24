@@ -12,6 +12,6 @@ export function documentEmitEvent(event: string) {
   return document.dispatchEvent(new Event(event))
 }
 
-export function elementEmitEvent(element: HTMLElement | Window, event: string) {
+export function elementEmitEvent(element: HTMLElement | Window | typeof globalThis, event: string) {
   return element.dispatchEvent(new Event(event))
 }

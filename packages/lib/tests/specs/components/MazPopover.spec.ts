@@ -1,5 +1,8 @@
+import type { MazPopoverProps } from '@components/MazPopover.vue'
+import type { MazColor } from '@/components/types'
 import MazPopover from '@components/MazPopover.vue'
 import { mount } from '@vue/test-utils'
+import { getColor } from '@/components/types'
 
 describe('given MazPopover component', () => {
   describe('when rendered with default props', () => {
@@ -34,7 +37,7 @@ describe('given MazPopover component', () => {
 
   describe('when rendered with different positions', () => {
     it('then it should apply the correct position classes', () => {
-      const positions = ['top', 'bottom', 'left', 'right', 'top-start', 'bottom-end']
+      const positions: MazPopoverProps['position'][] = ['top', 'bottom', 'left', 'right', 'top-start', 'bottom-end']
 
       positions.forEach((position) => {
         const wrapper = mount(MazPopover, {
@@ -54,23 +57,23 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with different colors', () => {
-    it('then it should apply the correct color classes', () => {
-      const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'background']
-
-      colors.forEach((color) => {
-        const wrapper = mount(MazPopover, {
-          props: {
-            modelValue: true,
-            color,
-          },
-          slots: {
-            trigger: '<button>Click me</button>',
-            default: '<div>Content</div>',
-          },
-        })
-
-        expect(wrapper.find('.m-popover-panel').classes()).toContain(`--${color}`)
+    it.each(
+      ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'background'] as MazColor[],
+    )('then it should apply the correct color classes', (color) => {
+      const wrapper = mount(MazPopover, {
+        props: {
+          modelValue: true,
+          color,
+        },
+        slots: {
+          trigger: '<button>Click me</button>',
+          default: '<div>Content</div>',
+        },
       })
+
+      const panel = wrapper.find('.m-popover-panel')
+
+      expect(panel.classes()).toContain(`--${getColor(color)}`)
     })
   })
 
@@ -116,23 +119,19 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with different roles', () => {
-    it('then it should apply the correct role attribute', () => {
-      const roles = ['dialog', 'tooltip', 'menu']
-
-      roles.forEach((role) => {
-        const wrapper = mount(MazPopover, {
-          props: {
-            modelValue: true,
-            role,
-          },
-          slots: {
-            trigger: '<button>Click me</button>',
-            default: '<div>Content</div>',
-          },
-        })
-
-        expect(wrapper.find('.m-popover-panel').attributes('role')).toBe(role)
+    it.each(['dialog', 'tooltip', 'menu'] as MazPopoverProps['role'][])('then it should apply the correct role attribute', (role) => {
+      const wrapper = mount(MazPopover, {
+        props: {
+          modelValue: true,
+          role,
+        },
+        slots: {
+          trigger: '<button>Click me</button>',
+          default: '<div>Content</div>',
+        },
       })
+
+      expect(wrapper.find('.m-popover-panel').attributes('role')).toBe(role)
     })
   })
 
@@ -255,6 +254,11 @@ describe('given MazPopover component', () => {
           trigger: '<button>Click me</button>',
           default: '<div>Content</div>',
         },
+        global: {
+          stubs: {
+            Transition: true,
+          },
+        },
       })
 
       const transition = wrapper.findComponent({ name: 'Transition' })
@@ -276,7 +280,8 @@ describe('given MazPopover component', () => {
       })
 
       const teleport = wrapper.findComponent({ name: 'Teleport' })
-      expect(teleport.props('to')).toBe('#custom-target')
+
+      expect(teleport.attributes('to')).toBe('#custom-target')
     })
   })
 

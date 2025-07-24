@@ -1,5 +1,6 @@
 import MazTableCell from '@components/MazTableCell.vue'
 import { mount } from '@vue/test-utils'
+import { mazTableKey } from '@/components/MazTable.vue'
 
 describe('given MazTableCell component', () => {
   describe('when rendered with default props', () => {
@@ -7,7 +8,7 @@ describe('given MazTableCell component', () => {
       const wrapper = mount(MazTableCell, {
         global: {
           provide: {
-            mazTableKey: { size: 'md' },
+            [mazTableKey]: { size: 'md' },
           },
         },
       })
@@ -23,7 +24,7 @@ describe('given MazTableCell component', () => {
       const wrapper = mount(MazTableCell, {
         global: {
           provide: {
-            mazTableKey: { size: 'xl' },
+            [mazTableKey]: { size: 'xl' },
           },
         },
       })
@@ -35,7 +36,7 @@ describe('given MazTableCell component', () => {
       const wrapper = mount(MazTableCell, {
         global: {
           provide: {
-            mazTableKey: { size: 'lg' },
+            [mazTableKey]: { size: 'lg' },
           },
         },
       })
@@ -47,7 +48,7 @@ describe('given MazTableCell component', () => {
       const wrapper = mount(MazTableCell, {
         global: {
           provide: {
-            mazTableKey: { size: 'md' },
+            [mazTableKey]: { size: 'md' },
           },
         },
       })
@@ -59,7 +60,7 @@ describe('given MazTableCell component', () => {
       const wrapper = mount(MazTableCell, {
         global: {
           provide: {
-            mazTableKey: { size: 'sm' },
+            [mazTableKey]: { size: 'sm' },
           },
         },
       })
@@ -71,7 +72,7 @@ describe('given MazTableCell component', () => {
       const wrapper = mount(MazTableCell, {
         global: {
           provide: {
-            mazTableKey: { size: 'xs' },
+            [mazTableKey]: { size: 'xs' },
           },
         },
       })
@@ -83,7 +84,7 @@ describe('given MazTableCell component', () => {
       const wrapper = mount(MazTableCell, {
         global: {
           provide: {
-            mazTableKey: { size: 'mini' },
+            [mazTableKey]: { size: 'mini' },
           },
         },
       })
@@ -100,7 +101,7 @@ describe('given MazTableCell component', () => {
         },
         global: {
           provide: {
-            mazTableKey: { size: 'md' },
+            [mazTableKey]: { size: 'md' },
           },
         },
       })
@@ -117,7 +118,7 @@ describe('given MazTableCell component', () => {
         },
         global: {
           provide: {
-            mazTableKey: { size: 'md' },
+            [mazTableKey]: { size: 'md' },
           },
         },
       })

@@ -9,7 +9,7 @@ import { component, props } from './config/templates.js'
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineConfig({
-  componentsRoot: resolve(_dirname, './../lib/src/components'),
+  componentsRoot: resolve(_dirname, './../../packages/lib/src/components'),
   components: './[A-Z]*.vue', // the glob to define what files should be documented as components (relative to componentRoot)
   outDir: resolve(_dirname, './../../apps/docs/docs/.vitepress/generated-docs'),
   getDestFile: (filename, config) => {

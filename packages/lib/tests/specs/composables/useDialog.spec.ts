@@ -1,5 +1,5 @@
 import { useDialog } from '@composables/useDialog'
-import { createApp } from 'vue'
+import { withSetup } from '@tests/helpers/withSetup'
 
 describe('given useDialog composable', () => {
   describe('when dialog plugin is installed', () => {
@@ -11,10 +11,10 @@ describe('given useDialog composable', () => {
         alert: vi.fn(),
       }
 
-      const app = createApp({})
-      app.provide('mazDialog', mockDialogHandler)
+      const [result] = withSetup(() => useDialog(), {
+        mazDialog: mockDialogHandler,
+      })
 
-      const result = useDialog()
       expect(result).toBe(mockDialogHandler)
     })
   })
@@ -22,7 +22,7 @@ describe('given useDialog composable', () => {
   describe('when dialog plugin is not installed', () => {
     it('then it should throw an error with specific message', () => {
       expect(() => {
-        useDialog()
+        withSetup(() => useDialog())
       }).toThrow('[maz-ui](useDialog) DialogPlugin is not installed')
     })
   })

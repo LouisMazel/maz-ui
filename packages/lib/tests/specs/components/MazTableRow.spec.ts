@@ -1,5 +1,6 @@
 import MazTableRow from '@components/MazTableRow.vue'
 import { mount } from '@vue/test-utils'
+import { mazTableKey } from '@/components/MazTable.vue'
 
 describe('given MazTableRow component', () => {
   describe('when rendered with default props', () => {
@@ -7,7 +8,7 @@ describe('given MazTableRow component', () => {
       const wrapper = mount(MazTableRow, {
         global: {
           provide: {
-            mazTableKey: {
+            [mazTableKey]: {
               backgroundEven: false,
               backgroundOdd: false,
               hoverable: true,
@@ -27,7 +28,7 @@ describe('given MazTableRow component', () => {
       const wrapper = mount(MazTableRow, {
         global: {
           provide: {
-            mazTableKey: {
+            [mazTableKey]: {
               backgroundEven: false,
               backgroundOdd: false,
               hoverable: true,
@@ -45,7 +46,7 @@ describe('given MazTableRow component', () => {
       const wrapper = mount(MazTableRow, {
         global: {
           provide: {
-            mazTableKey: {
+            [mazTableKey]: {
               backgroundEven: false,
               backgroundOdd: false,
               hoverable: false,
@@ -64,7 +65,7 @@ describe('given MazTableRow component', () => {
         props: { hoverable: false },
         global: {
           provide: {
-            mazTableKey: {
+            [mazTableKey]: {
               backgroundEven: false,
               backgroundOdd: false,
               hoverable: true,
@@ -82,7 +83,7 @@ describe('given MazTableRow component', () => {
       const wrapper = mount(MazTableRow, {
         global: {
           provide: {
-            mazTableKey: {
+            [mazTableKey]: {
               backgroundEven: false,
               backgroundOdd: true,
               hoverable: true,
@@ -100,7 +101,7 @@ describe('given MazTableRow component', () => {
       const wrapper = mount(MazTableRow, {
         global: {
           provide: {
-            mazTableKey: {
+            [mazTableKey]: {
               backgroundEven: true,
               backgroundOdd: false,
               hoverable: true,
@@ -118,7 +119,7 @@ describe('given MazTableRow component', () => {
       const wrapper = mount(MazTableRow, {
         global: {
           provide: {
-            mazTableKey: {
+            [mazTableKey]: {
               backgroundEven: true,
               backgroundOdd: true,
               hoverable: true,
@@ -137,7 +138,7 @@ describe('given MazTableRow component', () => {
       const wrapper = mount(MazTableRow, {
         global: {
           provide: {
-            mazTableKey: {
+            [mazTableKey]: {
               backgroundEven: true,
               backgroundOdd: true,
               hoverable: true,
@@ -160,7 +161,7 @@ describe('given MazTableRow component', () => {
         },
         global: {
           provide: {
-            mazTableKey: {
+            [mazTableKey]: {
               backgroundEven: false,
               backgroundOdd: false,
               hoverable: true,
@@ -181,7 +182,7 @@ describe('given MazTableRow component', () => {
         },
         global: {
           provide: {
-            mazTableKey: {
+            [mazTableKey]: {
               backgroundEven: false,
               backgroundOdd: false,
               hoverable: true,

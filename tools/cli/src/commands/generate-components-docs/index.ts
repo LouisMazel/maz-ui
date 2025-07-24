@@ -1,3 +1,4 @@
+import { readdirSync } from 'node:fs'
 import { exit } from 'node:process'
 import { execPromise, logger } from '@maz-ui/node/index.js'
 import { Command } from 'commander'
@@ -20,7 +21,8 @@ export function generateComponentsDocumentationCommand(): Command {
         else {
           await execPromise('vue-docgen')
           logger.eot()
-          logger.success('Components documentation generated')
+          const files = readdirSync('./../../apps/docs/docs/.vitepress/generated-docs')
+          logger.success(`${files.length} components documentation generated`)
           logger.eot()
         }
       }

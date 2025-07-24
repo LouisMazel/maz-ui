@@ -1,5 +1,7 @@
-import MazBadge, { type MazBadgeColor, type MazBadgeRoundedSize } from '@components/MazBadge.vue'
+import type { MazBadgeColor, MazBadgeRoundedSize } from '@components/MazBadge.vue'
+import MazBadge from '@components/MazBadge.vue'
 import { mount } from '@vue/test-utils'
+import { getColor } from '@/components/types'
 
 describe('given MazBadge component', () => {
   describe('when rendered with default props', () => {
@@ -18,15 +20,14 @@ describe('given MazBadge component', () => {
   })
 
   describe('when rendered with different colors', () => {
-    it('then it should apply the correct color classes', () => {
-      const colors: MazBadgeColor[] = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'background']
-
-      colors.forEach((color) => {
-        const wrapper = mount(MazBadge, {
-          props: { color },
-        })
-        expect(wrapper.classes()).toContain(`--${color}`)
+    it.each(
+      ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'background'] as MazBadgeColor[],
+    )('then it should apply the %s color classes', (color) => {
+      const wrapper = mount(MazBadge, {
+        props: { color },
       })
+
+      expect(wrapper.classes()).toContain(`--${getColor(color)}`)
     })
   })
 

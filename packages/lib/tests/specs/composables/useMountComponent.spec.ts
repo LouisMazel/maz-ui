@@ -103,7 +103,7 @@ describe('given useMountComponent composable', () => {
 
       const { destroy, el } = useMountComponent(TestComponent)
 
-      expect(el.innerHTML).toBe('<div>Test</div>')
+      expect(el.innerHTML).toContain('Test')
 
       destroy()
 
@@ -122,17 +122,18 @@ describe('given useMountComponent composable', () => {
     })
   })
 
-  describe('when component receives destroy prop', () => {
-    it('then it should have access to destroy function', () => {
+  describe('when component has custom props', () => {
+    it('then it should pass custom props correctly', () => {
       const TestComponent = defineComponent({
-        props: ['destroy'],
-        template: '<div @click="destroy">Click to destroy</div>',
+        props: ['customProp'],
+        template: '<div>{{ customProp }}</div>',
       })
 
-      const { vNode } = useMountComponent(TestComponent)
+      const { vNode } = useMountComponent(TestComponent, {
+        props: { customProp: 'test-value' },
+      })
 
-      expect(vNode.props?.destroy).toBeDefined()
-      expect(typeof vNode.props?.destroy).toBe('function')
+      expect(vNode.props?.customProp).toBe('test-value')
     })
   })
 

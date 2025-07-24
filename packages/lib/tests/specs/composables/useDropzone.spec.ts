@@ -1,14 +1,29 @@
 import { useDropzone } from '@composables/useDropzone'
-import { createApp, nextTick, ref } from 'vue'
+import { withSetup } from '@tests/helpers/withSetup'
+import { nextTick, ref } from 'vue'
 
 // Mock DragEvent and DataTransfer for testing
 class MockDataTransfer {
   files: FileList
-  items: DataTransferItemList
+  items: {
+    add: (file: File) => void
+    length: number
+    [index: number]: { getAsFile: () => File }
+  }
 
   constructor() {
-    this.files = [] as any
-    this.items = [] as any
+    const fileArray: File[] = []
+    this.files = fileArray as unknown as FileList
+    this.items = {
+      add: (file: File) => {
+        fileArray.push(file)
+
+        this.files = fileArray as unknown as FileList
+        this.items.length = fileArray.length
+        this.items[fileArray.length - 1] = { getAsFile: () => file }
+      },
+      length: 0,
+    }
   }
 }
 
@@ -38,19 +53,11 @@ describe('given useDropzone composable', () => {
 
   describe('when called with target element', () => {
     it('then it should return dropzone properties', () => {
-      const app = createApp({
-        setup() {
-          const { files, isOverDropZone, isOverError } = useDropzone(mockElement)
-          return { files, isOverDropZone, isOverError }
-        },
-        template: '<div></div>',
-      })
+      const [{ files, isOverDropZone, isOverError }, app] = withSetup(() => useDropzone(mockElement))
 
-      const vm = app.mount(document.createElement('div'))
-
-      expect(vm.files).toBeNull()
-      expect(vm.isOverDropZone).toBe(false)
-      expect(vm.isOverError).toBe(false)
+      expect(files.value).toBeNull()
+      expect(isOverDropZone.value).toBe(false)
+      expect(isOverError.value).toBe(false)
 
       app.unmount()
     })
@@ -58,15 +65,7 @@ describe('given useDropzone composable', () => {
 
   describe('when dragenter event is fired', () => {
     it('then it should set isOverDropZone to true', async () => {
-      const app = createApp({
-        setup() {
-          const { isOverDropZone } = useDropzone(mockElement)
-          return { isOverDropZone }
-        },
-        template: '<div></div>',
-      })
-
-      const vm = app.mount(document.createElement('div'))
+      const [{ isOverDropZone }, app] = withSetup(() => useDropzone(mockElement))
 
       const event = new DragEvent('dragenter', {
         dataTransfer: new DataTransfer(),
@@ -75,22 +74,14 @@ describe('given useDropzone composable', () => {
       mockElement.dispatchEvent(event)
       await nextTick()
 
-      expect(vm.isOverDropZone).toBe(true)
+      expect(isOverDropZone.value).toBe(true)
       app.unmount()
     })
   })
 
   describe('when dragleave event is fired', () => {
     it('then it should set isOverDropZone to false', async () => {
-      const app = createApp({
-        setup() {
-          const { isOverDropZone } = useDropzone(mockElement)
-          return { isOverDropZone }
-        },
-        template: '<div></div>',
-      })
-
-      const vm = app.mount(document.createElement('div'))
+      const [{ isOverDropZone }, app] = withSetup(() => useDropzone(mockElement))
 
       const enterEvent = new DragEvent('dragenter', {
         dataTransfer: new DataTransfer(),
@@ -101,11 +92,11 @@ describe('given useDropzone composable', () => {
 
       mockElement.dispatchEvent(enterEvent)
       await nextTick()
-      expect(vm.isOverDropZone).toBe(true)
+      expect(isOverDropZone.value).toBe(true)
 
       mockElement.dispatchEvent(leaveEvent)
       await nextTick()
-      expect(vm.isOverDropZone).toBe(false)
+      expect(isOverDropZone.value).toBe(false)
 
       app.unmount()
     })
@@ -115,15 +106,7 @@ describe('given useDropzone composable', () => {
     it('then it should set files and call onDrop callback', async () => {
       const onDrop = vi.fn()
 
-      const app = createApp({
-        setup() {
-          const { files, isOverDropZone } = useDropzone(mockElement, { onDrop })
-          return { files, isOverDropZone }
-        },
-        template: '<div></div>',
-      })
-
-      const vm = app.mount(document.createElement('div'))
+      const [{ files, isOverDropZone }, app] = withSetup(() => useDropzone(mockElement, { onDrop }))
 
       const file = new File(['test'], 'test.txt', { type: 'text/plain' })
       const dataTransfer = new DataTransfer()
@@ -134,8 +117,8 @@ describe('given useDropzone composable', () => {
       mockElement.dispatchEvent(event)
       await nextTick()
 
-      expect(vm.files).toEqual([file])
-      expect(vm.isOverDropZone).toBe(false)
+      expect(files.value).toEqual([file])
+      expect(isOverDropZone.value).toBe(false)
       expect(onDrop).toHaveBeenCalledWith([file], event)
 
       app.unmount()
@@ -143,32 +126,41 @@ describe('given useDropzone composable', () => {
   })
 
   describe('when multiple is false', () => {
-    it('then it should only accept one file', async () => {
+    it('then it should accept single file but reject multiple files', async () => {
       const onDrop = vi.fn()
+      const onError = vi.fn()
 
-      const app = createApp({
-        setup() {
-          const { files } = useDropzone(mockElement, { onDrop, multiple: false })
-          return { files }
-        },
-        template: '<div></div>',
-      })
+      const [{ files }, app] = withSetup(() => useDropzone(mockElement, { onDrop, onError, multiple: false }))
 
-      const vm = app.mount(document.createElement('div'))
-
+      // Test with single file - should work
       const file1 = new File(['test1'], 'test1.txt', { type: 'text/plain' })
-      const file2 = new File(['test2'], 'test2.txt', { type: 'text/plain' })
-      const dataTransfer = new DataTransfer()
-      dataTransfer.items.add(file1)
-      dataTransfer.items.add(file2)
+      const dataTransferSingle = new DataTransfer()
+      dataTransferSingle.items.add(file1)
 
-      const event = new DragEvent('drop', { dataTransfer })
-
-      mockElement.dispatchEvent(event)
+      const singleFileEvent = new DragEvent('drop', { dataTransfer: dataTransferSingle })
+      mockElement.dispatchEvent(singleFileEvent)
       await nextTick()
 
-      expect(vm.files).toEqual([file1])
-      expect(onDrop).toHaveBeenCalledWith([file1], event)
+      expect(files.value).toEqual([file1])
+      expect(onDrop).toHaveBeenCalledWith([file1], singleFileEvent)
+
+      // Reset for next test
+      files.value = null
+      onDrop.mockClear()
+
+      // Test with multiple files - should be rejected
+      const file2 = new File(['test2'], 'test2.txt', { type: 'text/plain' })
+      const dataTransferMultiple = new DataTransfer()
+      dataTransferMultiple.items.add(file1)
+      dataTransferMultiple.items.add(file2)
+
+      const multipleFilesEvent = new DragEvent('drop', { dataTransfer: dataTransferMultiple })
+      mockElement.dispatchEvent(multipleFilesEvent)
+      await nextTick()
+
+      expect(files.value).toBeNull() // Should remain null
+      expect(onDrop).not.toHaveBeenCalled() // onDrop not called
+      expect(onError).toHaveBeenCalled() // onError called instead
 
       app.unmount()
     })
@@ -178,15 +170,7 @@ describe('given useDropzone composable', () => {
     it('then it should update event listeners when target changes', async () => {
       const targetRef = ref<HTMLElement | null>(mockElement)
 
-      const app = createApp({
-        setup() {
-          const { isOverDropZone } = useDropzone(targetRef)
-          return { isOverDropZone, targetRef }
-        },
-        template: '<div></div>',
-      })
-
-      const vm = app.mount(document.createElement('div'))
+      const [{ isOverDropZone }, app] = withSetup(() => useDropzone(targetRef))
 
       const event = new DragEvent('dragenter', {
         dataTransfer: new DataTransfer(),
@@ -194,11 +178,11 @@ describe('given useDropzone composable', () => {
 
       mockElement.dispatchEvent(event)
       await nextTick()
-      expect(vm.isOverDropZone).toBe(true)
+      expect(isOverDropZone.value).toBe(true)
 
       const newElement = document.createElement('div')
       document.body.appendChild(newElement)
-      vm.targetRef = newElement
+      targetRef.value = newElement
       await nextTick()
 
       const leaveEvent = new DragEvent('dragleave', {
@@ -207,7 +191,7 @@ describe('given useDropzone composable', () => {
       mockElement.dispatchEvent(leaveEvent)
       await nextTick()
 
-      expect(vm.isOverDropZone).toBe(true)
+      expect(isOverDropZone.value).toBe(true)
 
       document.body.removeChild(newElement)
       app.unmount()
@@ -218,15 +202,7 @@ describe('given useDropzone composable', () => {
     it('then it should treat function as onDrop callback', async () => {
       const onDrop = vi.fn()
 
-      const app = createApp({
-        setup() {
-          const { files } = useDropzone(mockElement, onDrop)
-          return { files }
-        },
-        template: '<div></div>',
-      })
-
-      const vm = app.mount(document.createElement('div'))
+      const [{ files }, app] = withSetup(() => useDropzone(mockElement, onDrop))
 
       const file = new File(['test'], 'test.txt', { type: 'text/plain' })
       const dataTransfer = new DataTransfer()
@@ -237,7 +213,7 @@ describe('given useDropzone composable', () => {
       mockElement.dispatchEvent(event)
       await nextTick()
 
-      expect(vm.files).toEqual([file])
+      expect(files.value).toEqual([file])
       expect(onDrop).toHaveBeenCalledWith([file], event)
 
       app.unmount()

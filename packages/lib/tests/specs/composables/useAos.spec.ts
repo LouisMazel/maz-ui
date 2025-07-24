@@ -1,5 +1,5 @@
 import { useAos } from '@composables/useAos'
-import { createApp } from 'vue'
+import { withSetup } from '@tests/helpers/withSetup'
 
 describe('given useAos composable', () => {
   describe('when AOS plugin is installed', () => {
@@ -10,23 +10,18 @@ describe('given useAos composable', () => {
         refreshHard: vi.fn(),
       }
 
-      const app = createApp({
-        setup() {
-          app.provide('mazAos', mockAosHandler)
-          return { result: useAos() }
-        },
+      const [result] = withSetup(() => useAos(), {
+        mazAos: mockAosHandler,
       })
 
-      const vm = app.mount(document.createElement('div'))
-      expect(vm.result).toBe(mockAosHandler)
-      app.unmount()
+      expect(result).toBe(mockAosHandler)
     })
   })
 
   describe('when AOS plugin is not installed', () => {
     it('then it should throw an error with specific message', () => {
       expect(() => {
-        useAos()
+        withSetup(() => useAos())
       }).toThrow('[maz-ui](useAos) AosPlugin is not installed')
     })
   })
