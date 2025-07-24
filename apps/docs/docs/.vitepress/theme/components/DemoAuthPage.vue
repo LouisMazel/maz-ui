@@ -1,8 +1,9 @@
 <script lang="ts" setup>
+import type { ComponentPublicInstance } from 'vue'
 import { useFormField, useFormValidator, useToast } from 'maz-ui/composables'
 import MazDialog from 'maz-ui/src/components/MazDialog.vue'
 import { boolean, email, nonEmpty, pipe, string } from 'valibot'
-import { type ComponentPublicInstance, ref } from 'vue'
+import { ref } from 'vue'
 
 const toast = useToast()
 
