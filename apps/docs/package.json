@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vitepress dev docs",
     "build": "vitepress build docs",
+    "build:test": "cross-env TEST_ENV=true vitepress build docs",
     "build:watch": "vitepress build docs --watch",
     "preview": "vitepress preview docs",
     "serve": "vitepress serve docs",
@@ -38,7 +39,7 @@
     "react": "^19.1.0",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.8.3",
-    "vitepress": "^2.0.0-alpha.5",
+    "vitepress": "^2.0.0-alpha.8",
     "vue": "^3.5.18"
   },
   "lint-staged": {
