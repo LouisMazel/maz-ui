@@ -6,6 +6,7 @@
 import type { MazTranslationsNestedSchema } from '@maz-ui/translations/src/types.js'
 import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
 import type { MazInputValue } from './MazInput.vue'
+import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
 import { MazChevronDown, MazMagnifyingGlass, MazNoSymbol } from '@maz-ui/icons'
 import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
@@ -23,7 +24,7 @@ import {
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useStringMatching } from '../composables/useStringMatching'
 import MazInput from './MazInput.vue'
-import MazPopover, { type MazPopoverProps } from './MazPopover.vue'
+import MazPopover from './MazPopover.vue'
 
 export interface MazSelectNormalizedOption {
   [key: string]: MazInputValue

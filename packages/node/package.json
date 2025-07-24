@@ -51,7 +51,7 @@
     "@maz-ui/utils": "workspace:*",
     "colorette": "^2.0.20",
     "typescript": "^5.8.3",
-    "unbuild": "^3.5.0"
+    "unbuild": "^3.6.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [

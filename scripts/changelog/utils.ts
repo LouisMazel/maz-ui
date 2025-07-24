@@ -1,6 +1,7 @@
+import type { GitCommit, ResolvedChangelogConfig } from 'changelogen'
 import { join } from 'node:path'
 import { logger } from '@maz-ui/node/index.js'
-import { generateMarkDown, getGitDiff, type GitCommit, loadChangelogConfig, parseCommits, type ResolvedChangelogConfig } from 'changelogen'
+import { generateMarkDown, getGitDiff, loadChangelogConfig, parseCommits } from 'changelogen'
 import { version } from '../../lerna.json'
 import changelogenConfig from './changelogen.config'
 

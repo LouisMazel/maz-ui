@@ -89,11 +89,11 @@ export function buildSeparateThemeFiles(preset: ThemePreset, options: {
   prefix?: string
   darkSelector?: 'class' | 'media'
 } = {}): {
-    critical: string
-    full: string
-    lightOnly: string
-    darkOnly: string
-  } {
+  critical: string
+  full: string
+  lightOnly: string
+  darkOnly: string
+} {
   const { prefix = 'maz', darkSelector = 'class' } = options
 
   const baseOptions = { prefix, darkSelector }

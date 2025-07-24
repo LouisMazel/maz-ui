@@ -1,5 +1,6 @@
 import type { Plugin } from 'vue'
-import { vFullscreenImg, type VFullscreenImgDirective } from './vFullscreenImg/fullscreen-img.directive'
+import type { VFullscreenImgDirective } from './vFullscreenImg/fullscreen-img.directive'
+import { vFullscreenImg } from './vFullscreenImg/fullscreen-img.directive'
 
 const plugin: Plugin = {
   install(app) {

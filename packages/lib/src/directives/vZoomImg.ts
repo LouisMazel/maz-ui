@@ -1,5 +1,6 @@
 import type { Plugin } from 'vue'
-import { vZoomImg, type VZoomImgDirective } from './vZoomImg/zoom-img.directive'
+import type { VZoomImgDirective } from './vZoomImg/zoom-img.directive'
+import { vZoomImg } from './vZoomImg/zoom-img.directive'
 
 const plugin: Plugin = {
   install(app) {

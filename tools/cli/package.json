@@ -35,7 +35,7 @@
     "@types/figlet": "^1.7.0",
     "clear": "^0.1.0",
     "commander": "^14.0.0",
-    "figlet": "^1.8.1",
+    "figlet": "^1.8.2",
     "typescript": "~5.8.3",
     "vue-docgen-cli": "^4.79.0"
   },

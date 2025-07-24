@@ -1,8 +1,10 @@
+import type { MazDropdownProps } from '@components/MazDropdown.vue'
 import type { VueWrapper } from '@vue/test-utils'
-import MazDropdown, { type MazDropdownProps } from '@components/MazDropdown.vue'
+import type { ComponentPublicInstance } from 'vue'
+import MazDropdown from '@components/MazDropdown.vue'
 import { MazStar } from '@maz-ui/icons'
 import { mount } from '@vue/test-utils'
-import { type ComponentPublicInstance, markRaw } from 'vue'
+import { markRaw } from 'vue'
 
 let wrapper: VueWrapper<ComponentPublicInstance<typeof MazDropdown> & { [key: string]: any }>
 

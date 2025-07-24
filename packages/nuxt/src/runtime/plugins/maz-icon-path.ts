@@ -12,7 +12,7 @@ export default defineNuxtPlugin(({ $config, vueApp }) => {
   }
 })
 
-declare module '#app' {
+declare module 'nuxt/app' {
   interface NuxtApp {
     $mazIconPath: string
   }

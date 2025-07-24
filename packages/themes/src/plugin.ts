@@ -1,5 +1,6 @@
+import type { App } from 'vue'
 import type { DarkModeStrategy, ThemeConfig, ThemePreset, ThemeState } from './types'
-import { type App, reactive } from 'vue'
+import { reactive } from 'vue'
 import { getPreset } from './utils'
 import {
   CSS_IDS,

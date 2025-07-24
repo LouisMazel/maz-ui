@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import type { IconComponent } from '@maz-ui/icons'
-import { computed, defineAsyncComponent, useAttrs } from 'vue'
+import type { MazColor, MazSize } from './types'
 
-import { getColor, type MazColor, type MazSize } from './types'
+import { computed, defineAsyncComponent, useAttrs } from 'vue'
+import { getColor } from './types'
 
 const {
   size = 'md',

@@ -24,7 +24,7 @@ export default defineNuxtPlugin(({ vueApp, $config }) => {
   }
 })
 
-declare module '#app' {
+declare module 'nuxt/app' {
   interface NuxtApp {
     $mazToast: ToastHandler
   }
