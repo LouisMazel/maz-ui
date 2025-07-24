@@ -224,7 +224,7 @@ const buttonSize = computed(() => {
 <style lang="postcss" scoped>
 .m-input-tags {
   @apply maz-relative maz-inline-flex maz-flex-wrap maz-gap-1
-      maz-overflow-hidden maz-rounded maz-border maz-bg-surface maz-px-[0.5em] maz-py-[0.25em] maz-align-top maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-surface-400/60;
+      maz-overflow-hidden maz-rounded maz-border maz-bg-surface maz-px-[0.5em] maz-py-[0.25em] maz-align-top maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-surface-400;
 
   &.--xl {
     @apply maz-min-h-16;
