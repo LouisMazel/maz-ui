@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/translations",
   "type": "module",
-  "version": "4.0.0-beta.18",
+  "version": "4.0.0-beta.19",
   "description": "Translations for Maz-UI library",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",

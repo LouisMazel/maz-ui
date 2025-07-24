@@ -1,5 +1,40 @@
 # Change Log
 
+## v4.0.0-beta.18...v4.0.0-beta.19
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.18...v4.0.0-beta.19)
+
+### 🚀 Features
+
+- **@maz-ui/translations:** New packages to manage maz-ui's translations easily ([05f936be9](https://github.com/LouisMazel/maz-ui/commit/05f936be9))
+- **maz-ui:** MazSelectCountry - new form component to select country and languages ([c04555fa1](https://github.com/LouisMazel/maz-ui/commit/c04555fa1))
+- **@maz-ui/translations:** Load intial locale and fallback locale synchronously ([1c502b43c](https://github.com/LouisMazel/maz-ui/commit/1c502b43c))
+- **@maz-ui/translations:** New packages to manage maz-ui's translations easily ([edebcbf3d](https://github.com/LouisMazel/maz-ui/commit/edebcbf3d))
+- **maz-ui:** MazSelectCountry - new form component to select country and languages ([38111a052](https://github.com/LouisMazel/maz-ui/commit/38111a052))
+- **@maz-ui/translations:** Load intial locale and fallback locale synchronously ([12ec8291a](https://github.com/LouisMazel/maz-ui/commit/12ec8291a))
+
+### 🩹 Fixes
+
+- **@maz-ui/icons:** Export svg files correctly ([5ede33435](https://github.com/LouisMazel/maz-ui/commit/5ede33435))
+- Package config to be published on npm ([c4569ba86](https://github.com/LouisMazel/maz-ui/commit/c4569ba86))
+- **@maz-ui/icons:** Export svg files correctly ([eb654c44c](https://github.com/LouisMazel/maz-ui/commit/eb654c44c))
+- Package config to be published on npm ([64f4c6740](https://github.com/LouisMazel/maz-ui/commit/64f4c6740))
+
+### 💅 Refactors
+
+- **@maz-ui/translations:** Improve locale messages lazy loading ([daae8c871](https://github.com/LouisMazel/maz-ui/commit/daae8c871))
+- **@maz-ui/translations:** Improve locale messages lazy loading ([6c64cfec2](https://github.com/LouisMazel/maz-ui/commit/6c64cfec2))
+
+### 📖 Documentation
+
+- **@maz-ui/translations:** Add documentation into type definitions ([b1a2c08f7](https://github.com/LouisMazel/maz-ui/commit/b1a2c08f7))
+- **@maz-ui/translations:** Add documentation into type definitions ([7b9214c98](https://github.com/LouisMazel/maz-ui/commit/7b9214c98))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.17...v4.0.0-beta.18
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.17...v4.0.0-beta.18)

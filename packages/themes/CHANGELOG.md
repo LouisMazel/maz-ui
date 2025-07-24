@@ -1,5 +1,60 @@
 # Change Log
 
+## v4.0.0-beta.18...v4.0.0-beta.19
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.18...v4.0.0-beta.19)
+
+### 🚀 Features
+
+- **@maz-ui/themes:** New package - create and manage theme with maz-ui ([d81463fc0](https://github.com/LouisMazel/maz-ui/commit/d81463fc0))
+- **@maz-ui/nuxt:** Implemente @maz-ui/themes - set and manage themes with nuxt ([0dc3d8656](https://github.com/LouisMazel/maz-ui/commit/0dc3d8656))
+- **maz-ui:** Implement new theme manager provided by @maz-ui/themes ([f6978f418](https://github.com/LouisMazel/maz-ui/commit/f6978f418))
+- **@maz-ui/themes:** New package - create and manage theme with maz-ui ([41516f9af](https://github.com/LouisMazel/maz-ui/commit/41516f9af))
+- **@maz-ui/themes:** Adding new theme named obsidian ([3337ba6aa](https://github.com/LouisMazel/maz-ui/commit/3337ba6aa))
+- **maz-ui:** MazInputPhoneNumber, MazSelect, MazDropdown and vTooltip display the content in a popover ([d92eed803](https://github.com/LouisMazel/maz-ui/commit/d92eed803))
+- **@maz-ui/translations:** New packages to manage maz-ui's translations easily ([05f936be9](https://github.com/LouisMazel/maz-ui/commit/05f936be9))
+- **maz-ui:** MazSelectCountry - new form component to select country and languages ([c04555fa1](https://github.com/LouisMazel/maz-ui/commit/c04555fa1))
+- **@maz-ui/themes:** Use cookie to store color mode ([e9853bec1](https://github.com/LouisMazel/maz-ui/commit/e9853bec1))
+- **@maz-ui/themes:** Add new option to choose the color modes supported ([2bdde86e0](https://github.com/LouisMazel/maz-ui/commit/2bdde86e0))
+- **@maz-ui/themes:** New package - create and manage theme with maz-ui ([5c5a8f4f4](https://github.com/LouisMazel/maz-ui/commit/5c5a8f4f4))
+- **@maz-ui/nuxt:** Implemente @maz-ui/themes - set and manage themes with nuxt ([7915d1e73](https://github.com/LouisMazel/maz-ui/commit/7915d1e73))
+- **maz-ui:** Implement new theme manager provided by @maz-ui/themes ([58344db69](https://github.com/LouisMazel/maz-ui/commit/58344db69))
+- **@maz-ui/themes:** New package - create and manage theme with maz-ui ([a1cdaf475](https://github.com/LouisMazel/maz-ui/commit/a1cdaf475))
+- **@maz-ui/themes:** Adding new theme named obsidian ([f697d2bf8](https://github.com/LouisMazel/maz-ui/commit/f697d2bf8))
+- **maz-ui:** MazInputPhoneNumber, MazSelect, MazDropdown and vTooltip display the content in a popover ([9ec5e3a99](https://github.com/LouisMazel/maz-ui/commit/9ec5e3a99))
+- **@maz-ui/translations:** New packages to manage maz-ui's translations easily ([edebcbf3d](https://github.com/LouisMazel/maz-ui/commit/edebcbf3d))
+- **maz-ui:** MazSelectCountry - new form component to select country and languages ([38111a052](https://github.com/LouisMazel/maz-ui/commit/38111a052))
+- **@maz-ui/themes:** Use cookie to store color mode ([f20621394](https://github.com/LouisMazel/maz-ui/commit/f20621394))
+- **@maz-ui/themes:** Add new option to choose the color modes supported ([f516e9eeb](https://github.com/LouisMazel/maz-ui/commit/f516e9eeb))
+
+### 🩹 Fixes
+
+- **@maz-ui/themes:** Correct bad typing of definePreset method ([dbddb3627](https://github.com/LouisMazel/maz-ui/commit/dbddb3627))
+- **@maz-ui/icons:** Export svg files correctly ([5ede33435](https://github.com/LouisMazel/maz-ui/commit/5ede33435))
+- Package config to be published on npm ([c4569ba86](https://github.com/LouisMazel/maz-ui/commit/c4569ba86))
+- **@maz-ui/themes:** Force dark or light mode with colorMode config ([4fda941c4](https://github.com/LouisMazel/maz-ui/commit/4fda941c4))
+- **@maz-ui/themes:** Correct bad typing of definePreset method ([f13148edd](https://github.com/LouisMazel/maz-ui/commit/f13148edd))
+- **@maz-ui/icons:** Export svg files correctly ([eb654c44c](https://github.com/LouisMazel/maz-ui/commit/eb654c44c))
+- Package config to be published on npm ([64f4c6740](https://github.com/LouisMazel/maz-ui/commit/64f4c6740))
+- **@maz-ui/themes:** Force dark or light mode with colorMode config ([d7ce92f61](https://github.com/LouisMazel/maz-ui/commit/d7ce92f61))
+
+### 💅 Refactors
+
+- **maz-ui:** Apply default border color to components ([98566be9c](https://github.com/LouisMazel/maz-ui/commit/98566be9c))
+- **@maz-ui/themes:** Compatibility with vue and nuxt improvements ([53ccfd3c9](https://github.com/LouisMazel/maz-ui/commit/53ccfd3c9))
+- **maz-ui:** Apply default border color to components ([99d7956a9](https://github.com/LouisMazel/maz-ui/commit/99d7956a9))
+- **@maz-ui/themes:** Compatibility with vue and nuxt improvements ([7201434c3](https://github.com/LouisMazel/maz-ui/commit/7201434c3))
+
+### 📖 Documentation
+
+- **docs:** @maz-ui/nuxt - new documentation ([47ebb0a99](https://github.com/LouisMazel/maz-ui/commit/47ebb0a99))
+- **docs:** @maz-ui/nuxt - new documentation ([4294d5f9a](https://github.com/LouisMazel/maz-ui/commit/4294d5f9a))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.17...v4.0.0-beta.18
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.17...v4.0.0-beta.18)

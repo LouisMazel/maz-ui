@@ -1,5 +1,35 @@
 # Change Log
 
+## v4.0.0-beta.18...v4.0.0-beta.19
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.18...v4.0.0-beta.19)
+
+### 🚀 Features
+
+- **maz-ui:** MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) ([#1189](https://github.com/LouisMazel/maz-ui/pull/1189))
+- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
+- **@maz-ui/themes:** New package - create and manage theme with maz-ui ([d81463fc0](https://github.com/LouisMazel/maz-ui/commit/d81463fc0))
+- **maz-ui:** Implement new theme manager provided by @maz-ui/themes ([f6978f418](https://github.com/LouisMazel/maz-ui/commit/f6978f418))
+- **@maz-ui/translations:** New packages to manage maz-ui's translations easily ([05f936be9](https://github.com/LouisMazel/maz-ui/commit/05f936be9))
+- **maz-ui:** MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) ([#1189](https://github.com/LouisMazel/maz-ui/pull/1189))
+- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([84366e00b](https://github.com/LouisMazel/maz-ui/commit/84366e00b))
+- **@maz-ui/themes:** New package - create and manage theme with maz-ui ([5c5a8f4f4](https://github.com/LouisMazel/maz-ui/commit/5c5a8f4f4))
+- **maz-ui:** Implement new theme manager provided by @maz-ui/themes ([58344db69](https://github.com/LouisMazel/maz-ui/commit/58344db69))
+- **@maz-ui/translations:** New packages to manage maz-ui's translations easily ([edebcbf3d](https://github.com/LouisMazel/maz-ui/commit/edebcbf3d))
+
+### 🩹 Fixes
+
+- **@maz-ui/icons:** Export svg files correctly ([5ede33435](https://github.com/LouisMazel/maz-ui/commit/5ede33435))
+- Package config to be published on npm ([c4569ba86](https://github.com/LouisMazel/maz-ui/commit/c4569ba86))
+- **@maz-ui/icons:** Export svg files correctly ([eb654c44c](https://github.com/LouisMazel/maz-ui/commit/eb654c44c))
+- Package config to be published on npm ([64f4c6740](https://github.com/LouisMazel/maz-ui/commit/64f4c6740))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+- Mazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.17...v4.0.0-beta.18
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.17...v4.0.0-beta.18)
