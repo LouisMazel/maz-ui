@@ -234,7 +234,7 @@ function onFocus(index: number, event: FocusEvent) {
       @apply maz-flex maz-flex-center;
 
       span {
-        @apply maz-flex maz-h-6 maz-w-6 maz-flex-none maz-rounded-full maz-border maz-border-divider maz-bg-surface-300 maz-p-0.5 maz-text-white maz-transition-colors maz-duration-300 maz-flex-center dark:maz-bg-surface-400/60;
+        @apply maz-flex maz-h-6 maz-w-6 maz-flex-none maz-rounded-full maz-border maz-border-divider maz-bg-surface-300 maz-p-0.5 maz-text-white maz-transition-colors maz-duration-300 maz-flex-center dark:maz-bg-surface-400;
 
         transition: border-color 0s;
 

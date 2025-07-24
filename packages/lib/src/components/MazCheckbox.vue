@@ -288,7 +288,7 @@ function onFocus(event: FocusEvent) {
     @apply maz-hidden;
 
     &:not(:checked) ~ span {
-      @apply maz-bg-surface dark:maz-bg-surface-400/60;
+      @apply maz-bg-surface dark:maz-bg-surface-400;
     }
 
     &:checked ~ span {

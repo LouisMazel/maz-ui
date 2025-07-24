@@ -384,7 +384,7 @@ const iconClassSize = computed(() => {
     @apply maz-bg-transparent;
 
     &:not(:disabled) {
-      @apply hover:maz-bg-surface-600/50 dark:hover:maz-bg-surface-400/50;
+      @apply hover:maz-bg-surface-600/50 dark:hover:maz-bg-surface-400;
     }
   }
 
