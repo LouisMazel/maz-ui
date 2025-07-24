@@ -12,4 +12,10 @@ export default defineConfig(
       'sonarjs/no-nested-conditional': 'off',
     },
   },
+  {
+    files: ['src/components/**/*.vue'],
+    rules: {
+      'import/first': 'off',
+    },
+  },
 )

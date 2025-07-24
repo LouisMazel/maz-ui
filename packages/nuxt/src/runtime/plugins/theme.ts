@@ -1,11 +1,5 @@
-import {
-  type ColorMode,
-  type CriticalCSSOptions,
-  generateFullCSS,
-  type MazUiThemeOptions,
-  mergePresets,
-  type ThemeState,
-} from '@maz-ui/themes'
+import type { ColorMode, CriticalCSSOptions, MazUiThemeOptions, ThemeState } from '@maz-ui/themes'
+import { generateFullCSS, mergePresets } from '@maz-ui/themes'
 import { MazUiTheme } from '@maz-ui/themes/plugin'
 import { getPreset } from '@maz-ui/themes/utils'
 import { generateCriticalCSS } from '@maz-ui/themes/utils/css-generator'
@@ -120,7 +114,7 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   })
 })
 
-declare module '#app' {
+declare module 'nuxt/app' {
   interface NuxtApp {
     $mazThemeState: ThemeState
   }

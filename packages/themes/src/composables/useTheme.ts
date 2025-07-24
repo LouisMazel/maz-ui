@@ -1,7 +1,6 @@
 import type { ColorMode, Strategy, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
 import { isServer } from '@maz-ui/utils/src/helpers/isServer.js'
-import { computed, getCurrentInstance, ref, watchEffect } from 'vue'
-import { inject } from 'vue'
+import { computed, getCurrentInstance, inject, ref, watchEffect } from 'vue'
 import { setCookie } from '../utils/cookie-storage'
 import { CSS_IDS, generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'
 import { getColorMode, getSystemPrefersDark } from '../utils/get-color-mode'

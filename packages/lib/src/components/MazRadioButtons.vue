@@ -1,8 +1,9 @@
 <script lang="ts" setup generic="T extends string | number | boolean">
 import type { HTMLAttributes } from 'vue'
+import type { MazColor } from './types'
 import { MazCheck } from '@maz-ui/icons'
 import { ref } from 'vue'
-import { getColor, type MazColor } from './types'
+import { getColor } from './types'
 
 export type MazRadioButtonsOption<T = string | number | boolean> = {
   /** The label of the option */

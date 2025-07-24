@@ -1,7 +1,8 @@
 /* eslint-disable regexp/no-unused-capturing-group */
 
+import type { IconName } from '@maz-ui/icons/icon-list'
 import type { ComponentResolver } from 'unplugin-vue-components/types'
-import { type IconName, iconsList } from '@maz-ui/icons/icon-list'
+import { iconsList } from '@maz-ui/icons/icon-list'
 import { pascalCase } from '@maz-ui/utils/src/formatters/pascalCase.js'
 
 /**

@@ -1,7 +1,8 @@
+import type { MazSelectCountryProps } from '@/components/MazSelectCountry.vue'
 import { mount, shallowMount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import MazLazyImg from '@/components/MazLazyImg.vue'
-import MazSelectCountry, { type MazSelectCountryProps } from '@/components/MazSelectCountry.vue'
+import MazSelectCountry from '@/components/MazSelectCountry.vue'
 
 vi.mock('@maz-ui/translations/src/useTranslations.js', () => ({
   useTranslations: () => ({

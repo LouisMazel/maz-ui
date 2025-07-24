@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import type { Component, HTMLAttributes } from 'vue'
+import type { RouterLinkProps } from 'vue-router'
 import type { MazGalleryProps } from './MazGallery.vue'
 import { MazChevronDown } from '@maz-ui/icons'
 import { computed, defineAsyncComponent, useSlots } from 'vue'
-import { RouterLink, type RouterLinkProps } from 'vue-router'
+import { RouterLink } from 'vue-router'
 
 const {
   gallery = undefined,

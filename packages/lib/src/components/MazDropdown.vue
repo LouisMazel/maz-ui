@@ -3,13 +3,14 @@ import type { IconComponent } from '@maz-ui/icons'
 import type { HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazLinkProps } from './MazLink.vue'
+import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
 import { MazChevronDown } from '@maz-ui/icons'
 import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
 import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
 import { computed, defineAsyncComponent, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import MazPopover, { type MazPopoverProps } from './MazPopover.vue'
+import MazPopover from './MazPopover.vue'
 
 defineOptions({
   inheritAttrs: false,

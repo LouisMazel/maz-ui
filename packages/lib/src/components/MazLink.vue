@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { IconComponent } from '@maz-ui/icons'
+import type { HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazColor } from './types'
 import { MazArrowTopRightOnSquare } from '@maz-ui/icons'
-import { computed, defineAsyncComponent, type HTMLAttributes } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables'
 
 const {
