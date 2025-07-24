@@ -128,7 +128,9 @@ export default defineNuxtConfig({
           light: { primary: '220 100% 50%' },
           dark: { primary: '220 100% 70%' }
         }
-      }
+      },
+      mode: 'both', // 'light' | 'dark' | 'both'
+      spa: false, // Enable full CSS injection on client-side for app with SSR disabled on some pages
     },
 
     // 🌐 Translations
@@ -230,11 +232,20 @@ const theme = {
     // Override other theme properties...
   },
 
+  // Supported color modes to use
+  mode: 'both', // 'light' | 'dark' | 'both'
+
+  // Initial color mode to use (only if mode is 'both')
+  colorMode: 'auto', // 'light' | 'dark' | 'auto'
+
   // CSS generation strategy
   strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid' (recommended)
 
   // Dark mode handling
   darkModeStrategy: 'class', // 'class' | 'media' | 'auto'
+
+  // Spa mode
+  spa: false, // If you have some pages with SSR disabled, you can enable to avoid missing styles on client-side
 }
 ```
 

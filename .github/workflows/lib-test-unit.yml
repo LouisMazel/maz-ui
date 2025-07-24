@@ -34,7 +34,7 @@ jobs:
       - name: Run others tests
         run: pnpm test:unit:coverage:all
 
-      - name: Test & Publish Code Coverage
+      - name: Qlty Coverage
         uses: qltysh/qlty-action/coverage@main
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}

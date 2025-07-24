@@ -4,6 +4,7 @@ export type { MazDialogConfirmButton, MazDialogConfirmData } from './MazDialogCo
 </script>
 
 <script lang="ts" setup>
+import type { ComponentPublicInstance, ComputedRef } from 'vue'
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazDialogProps } from './MazDialog.vue'
 import type {
@@ -12,9 +13,7 @@ import type {
   MazDialogConfirmData,
   MazDialogConfirmState,
 } from './MazDialogConfirm/useMazDialogConfirm'
-import { type ComponentPublicInstance, type ComputedRef, defineAsyncComponent } from 'vue'
-
-import { computed, ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 
 import MazDialog from './MazDialog.vue'
 import { defaultData, useMazDialogConfirm } from './MazDialogConfirm/useMazDialogConfirm'

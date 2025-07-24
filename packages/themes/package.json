@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/themes",
   "type": "module",
-  "version": "4.0.0-beta.11",
+  "version": "4.0.0-beta.19",
   "description": "Theme system for Maz-UI with TypeScript support and CSS variables",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -94,8 +94,8 @@
   "devDependencies": {
     "glob": "^11.0.3",
     "typescript": "^5.8.3",
-    "vue": "^3.5.17",
-    "vue-tsc": "^2.2.10"
+    "vue": "^3.5.18",
+    "vue-tsc": "^3.0.4"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

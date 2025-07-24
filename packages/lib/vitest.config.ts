@@ -13,7 +13,7 @@ export default defineConfig({
     port: 1111,
   },
   test: {
-    setupFiles: ['./tests/vitest-global.setup.ts', './tests/vitest-vue-setup.ts'],
+    setupFiles: ['./tests/vitest-global.setup.ts'],
     environment: 'jsdom',
     environmentOptions: {
       jsdom: {
@@ -38,6 +38,11 @@ export default defineConfig({
         'src/types/**/*',
         'src/index.ts',
         'src/**/*/index.ts',
+        'src/composables/useUserVisibility.ts',
+        'src/composables/useAos.ts',
+        'src/composables/useToast.ts',
+        'src/composables/useDialog.ts',
+        'src/composables/useWait.ts',
         'src/**/types.ts',
       ],
       extension: ['.js', '.ts', '.vue'],

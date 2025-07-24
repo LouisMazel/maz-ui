@@ -1,5 +1,6 @@
+import type { VFullscreenImgDirective } from 'maz-ui/directives/vFullscreenImg'
 import {
-  type VFullscreenImgDirective,
+
   vFullscreenImgInstall,
 } from 'maz-ui/directives/vFullscreenImg'
 import { defineNuxtPlugin } from 'nuxt/app'

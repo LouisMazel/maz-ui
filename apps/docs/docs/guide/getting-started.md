@@ -94,7 +94,7 @@ npm install @maz-ui/themes
 - ⚡ Multiple rendering strategies
 - 🛡️ Full TypeScript support
 
-[→ View Theme Documentation](./theme.md)
+[→ View Theme Documentation](./themes.md)
 
 ---
 
@@ -164,7 +164,7 @@ npm install -g @maz-ui/cli
 
 For comprehensive theming capabilities including CSS custom properties, dark mode, and preset management, explore our advanced theme system:
 
-[→ **Complete Theme Documentation**](/guide/theme)
+[→ **Complete Theme Documentation**](/guide/themes)
 
 The theme system provides:
 
@@ -249,7 +249,7 @@ Browse the [component library](./../components/maz-btn.md) with live examples an
 
 ### **Customize Themes**
 
-Learn about [theming and customization](./theme.md) to match your brand.
+Learn about [theming and customization](./themes.md) to match your brand.
 
 ### **Internationalization**
 

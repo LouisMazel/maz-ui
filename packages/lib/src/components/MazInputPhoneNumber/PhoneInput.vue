@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import type { CountryCode } from 'libphonenumber-js'
+import type { ComponentPublicInstance } from 'vue'
 import type { MazInputProps } from '../MazInput.vue'
 import type { MazInputPhoneNumberInjectedData } from '../MazInputPhoneNumber.vue'
 import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
-import { type ComponentPublicInstance, computed, onMounted, ref, useTemplateRef, watch } from 'vue'
+import { computed, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useInjectStrict } from '../../composables/useInjectStrict'
 import MazInput from '../MazInput.vue'
 import { useLibphonenumber } from './useLibphonenumber'

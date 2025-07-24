@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/eslint-config",
   "type": "module",
-  "version": "4.0.0-beta.11",
+  "version": "4.0.0-beta.19",
   "description": "ESLint configuration for JavaScript/TypeScript projects",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -47,20 +47,34 @@
     "pre-commit": "lint-staged"
   },
   "peerDependencies": {
-    "eslint": "^9.0.0"
-  },
-  "dependencies": {
-    "@antfu/eslint-config": "^4.14.1",
     "eslint-plugin-format": "^1.0.1",
     "eslint-plugin-sonarjs": "^3.0.2",
     "eslint-plugin-tailwindcss": "^3.18.0",
     "eslint-plugin-vuejs-accessibility": "^2.4.0"
   },
+  "peerDependenciesMeta": {
+    "eslint-plugin-format": {
+      "optional": true
+    },
+    "eslint-plugin-sonarjs": {
+      "optional": true
+    },
+    "eslint-plugin-tailwindcss": {
+      "optional": true
+    },
+    "eslint-plugin-vuejs-accessibility": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@antfu/eslint-config": "^4.19.0"
+  },
   "devDependencies": {
     "@types/eslint-plugin-tailwindcss": "^3.17.0",
-    "eslint": "^9.29.0",
+    "eslint": "^9.31.0",
+    "eslint-plugin-format": "^1.0.1",
     "typescript": "^5.8.3",
-    "unbuild": "^3.5.0"
+    "unbuild": "^3.6.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [

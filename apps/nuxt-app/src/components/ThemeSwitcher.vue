@@ -57,6 +57,13 @@ const { colorMode, updateTheme } = useTheme()
         >
           Obsidian
         </MazBtn>
+        <MazBtn
+          color="transparent"
+          class="maz-text-nowrap"
+          @click="updateTheme('pristine')"
+        >
+          Pristine
+        </MazBtn>
       </div>
     </template>
   </MazDropdown>

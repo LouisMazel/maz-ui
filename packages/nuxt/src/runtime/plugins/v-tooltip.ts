@@ -1,4 +1,5 @@
-import { type VTooltipDirective, vTooltipInstall } from 'maz-ui/directives/vTooltip'
+import type { VTooltipDirective } from 'maz-ui/directives/vTooltip'
+import { vTooltipInstall } from 'maz-ui/directives/vTooltip'
 import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(({ vueApp, $config }) => {

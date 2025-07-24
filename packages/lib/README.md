@@ -130,7 +130,7 @@ The CLI will automatically:
 - Create dark mode variables
 - Output a ready-to-use CSS file
 
-To know how configure the CLI, check [theming options](https://maz-ui.com/guide/theme) in our documentation.
+To know how configure the CLI, check [theming options](https://maz-ui.com/guide/themes) in our documentation.
 
 ## 🧰 What's included?
 

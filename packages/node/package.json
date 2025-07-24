@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/node",
   "type": "module",
-  "version": "4.0.0-beta.11",
+  "version": "4.0.0-beta.19",
   "packageManager": "pnpm@10.13.1",
   "description": "Node utilities for Maz-UI library",
   "author": "Louis Mazel <me@loicmazuel.com>",
@@ -51,7 +51,7 @@
     "@maz-ui/utils": "workspace:*",
     "colorette": "^2.0.20",
     "typescript": "^5.8.3",
-    "unbuild": "^3.5.0"
+    "unbuild": "^3.6.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [

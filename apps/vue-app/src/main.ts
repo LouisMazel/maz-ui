@@ -1,4 +1,4 @@
-import { pristine } from '@maz-ui/themes/src/presets/pristine.js'
+import { mazUi } from '@maz-ui/themes/src/presets/index.ts'
 
 import { AosPlugin } from 'maz-ui/src/plugins/aos.ts'
 import { DialogPlugin } from 'maz-ui/src/plugins/dialog.ts'
@@ -23,9 +23,9 @@ import { fr } from '@maz-ui/translations'
 
 app.use(MazUi, {
   theme: {
-    strategy: 'runtime',
-    darkModeStrategy: 'class',
-    preset: pristine,
+    preset: mazUi,
+    mode: 'both',
+    colorMode: 'light',
   },
   translations: {
     locale: 'fr',

@@ -22,16 +22,16 @@ export function formatHSL(h: number, s: number, l: number): string {
 // Calculate luminosity offsets relative to base (500)
 // These values provide a natural and consistent progression
 const LUMINOSITY_OFFSETS = {
-  50: +45, // Base + 45% = very light
-  100: +40, // Base + 40% = light
-  200: +30, // Base + 30% = moderately light
-  300: +20, // Base + 20% = light-medium
-  400: +10, // Base + 10% = slightly lighter
+  50: +37.5, // Base + 50% = very light
+  100: +30, // Base + 35% = light
+  200: +22.5, // Base + 20% = moderately light
+  300: +15, // Base + 10% = slightly lighter
+  400: +7.5, // Base + 5% = slightly lighter
   500: 0, // Base (original color)
-  600: -10, // Base - 10% = slightly darker
-  700: -20, // Base - 20% = dark
-  800: -30, // Base - 30% = very dark
-  900: -40, // Base - 40% = extremely dark
+  600: -7.5, // Base - 5% = slightly darker
+  700: -15, // Base - 15% = dark
+  800: -22.5, // Base - 20% = very dark
+  900: -30, // Base - 25% = extremely dark
 }
 
 // Saturation adjustments to maintain visual consistency

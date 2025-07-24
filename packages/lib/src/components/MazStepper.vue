@@ -4,6 +4,7 @@ import type { Component } from 'vue'
 import type { MazColor } from './types'
 import { MazCheckCircle, MazExclamationCircle, MazExclamationTriangle } from '@maz-ui/icons'
 import {
+
   computed,
   ref,
   useSlots,
@@ -291,7 +292,7 @@ function isLastStep(step: number): boolean {
     }
 
     &:not(:disabled) {
-      @apply hover:maz-bg-surface-300 hover:dark:maz-bg-surface-400/60;
+      @apply hover:maz-bg-surface-300 hover:dark:maz-bg-surface-400;
     }
 
     &:disabled {

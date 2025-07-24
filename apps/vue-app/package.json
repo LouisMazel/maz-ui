@@ -1,7 +1,7 @@
 {
   "name": "vue-app",
   "type": "module",
-  "version": "4.0.0-beta.14",
+  "version": "4.0.0-beta.19",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -16,7 +16,7 @@
   "dependencies": {
     "@primeuix/themes": "^1.2.1",
     "primevue": "^4.3.6",
-    "vue": "^3.5.17",
+    "vue": "^3.5.18",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
@@ -25,16 +25,16 @@
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
     "@tsconfig/node22": "^22.0.1",
-    "@vitejs/plugin-vue": "^5.2.4",
+    "@vitejs/plugin-vue": "^6.0.0",
     "@vue/tsconfig": "^0.7.0",
-    "eslint-plugin-oxlint": "^1.1.0",
+    "eslint-plugin-oxlint": "^1.8.0",
     "maz-ui": "workspace:*",
     "npm-run-all2": "^8.0.4",
-    "oxlint": "^1.1.0",
-    "prettier": "3.5.3",
+    "oxlint": "^1.8.0",
+    "prettier": "3.6.2",
     "typescript": "~5.8.3",
-    "vite": "^6.3.5",
+    "vite": "^7.0.6",
     "vite-plugin-vue-devtools": "^7.7.7",
-    "vue-tsc": "^2.2.10"
+    "vue-tsc": "^3.0.4"
   }
 }

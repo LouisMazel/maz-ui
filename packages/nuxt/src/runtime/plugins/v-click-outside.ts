@@ -1,4 +1,5 @@
-import { type VClickOutsideDirective, vClickOutsideInstall } from 'maz-ui/directives/vClickOutside'
+import type { VClickOutsideDirective } from 'maz-ui/directives/vClickOutside'
+import { vClickOutsideInstall } from 'maz-ui/directives/vClickOutside'
 import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(({ vueApp }) => {

@@ -17,7 +17,7 @@ export default defineNuxtPlugin(() => {
   }
 })
 
-declare module '#app' {
+declare module 'nuxt/app' {
   interface NuxtApp {
     $mazWait: WaitHandler
   }

@@ -1,7 +1,9 @@
+import type { App } from 'vue'
 import type { DarkModeStrategy, ThemeConfig, ThemePreset, ThemeState } from './types'
-import { type App, reactive } from 'vue'
+import { reactive } from 'vue'
 import { getPreset } from './utils'
 import {
+  CSS_IDS,
   generateCriticalCSS,
   generateFullCSS,
   injectCSS,
@@ -43,13 +45,13 @@ function injectThemeCSS(finalPreset: ThemePreset, config: MazUiThemeOptions) {
     return
 
   const cssOptions = {
-    mode: config.colorMode === 'auto' ? 'both' as const : config.colorMode,
+    mode: config.mode,
     darkSelector: config.darkModeStrategy,
   }
 
   if (config.injectCriticalCSS) {
     const criticalCSS = generateCriticalCSS(finalPreset, cssOptions)
-    injectCSS(criticalCSS, 'maz-theme-critical')
+    injectCSS(criticalCSS, CSS_IDS.CRITICAL)
   }
 
   if (!config.injectFullCSS) {
@@ -59,11 +61,11 @@ function injectThemeCSS(finalPreset: ThemePreset, config: MazUiThemeOptions) {
   const fullCSS = generateFullCSS(finalPreset, cssOptions)
 
   if (config.strategy === 'runtime') {
-    injectCSS(fullCSS, 'maz-theme-full')
+    injectCSS(fullCSS, CSS_IDS.FULL)
   }
   else if (config.strategy === 'hybrid') {
     requestIdleCallback(() => {
-      injectCSS(fullCSS, 'maz-theme-full')
+      injectCSS(fullCSS, CSS_IDS.FULL)
     }, { timeout: 100 })
   }
 }
@@ -89,30 +91,32 @@ export const MazUiTheme = {
   async install(app: App, options: MazUiThemeOptions = {}) {
     const config = {
       preset: 'maz-ui',
-      strategy: 'runtime' as const,
-      darkModeStrategy: 'class' as const,
-      colorMode: 'auto' as const,
+      strategy: 'runtime',
+      darkModeStrategy: 'class',
+      colorMode: options.mode !== 'both' ? options.mode : options.colorMode,
       injectCriticalCSS: true,
       injectFullCSS: true,
+      mode: 'both',
       ...options,
     } satisfies MazUiThemeOptions
 
-    const colorMode = getColorMode(config.colorMode)
+    const colorMode = config.mode !== 'both' ? config.mode : getColorMode(config.colorMode)
 
-    const isDark = colorMode === 'auto'
+    const isDark = colorMode === 'auto' && config.mode === 'both'
       ? getSystemPrefersDark() === 'dark'
-      : colorMode === 'dark'
+      : colorMode === 'dark' || config.mode === 'dark'
 
     const themeState = reactive<ThemeState>({
       // @ts-expect-error - empty currentPreset to avoid error
       currentPreset: {},
+      mode: config.mode,
       colorMode,
       isDark,
       strategy: config.strategy,
       darkModeStrategy: config.darkModeStrategy,
     })
 
-    applyDarkMode(config.darkModeStrategy, themeState.isDark)
+    applyDarkMode(config.darkModeStrategy, isDark)
 
     injectThemeState(app, themeState)
 

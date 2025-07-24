@@ -1,7 +1,8 @@
 /* eslint-disable regexp/no-unused-capturing-group */
 
-import type { ComponentResolverObject } from 'unplugin-vue-components/types'
-import { type IconName, iconsList } from '@maz-ui/icons/icon-list'
+import type { IconName } from '@maz-ui/icons/icon-list'
+import type { ComponentResolver } from 'unplugin-vue-components/types'
+import { iconsList } from '@maz-ui/icons/icon-list'
 import { pascalCase } from '@maz-ui/utils/src/formatters/pascalCase.js'
 
 /**
@@ -10,7 +11,7 @@ import { pascalCase } from '@maz-ui/utils/src/formatters/pascalCase.js'
  * @author @louismazel
  * @link https://maz-ui.com
  */
-export function MazComponentsResolver(options?: { devMode?: boolean }) {
+export function MazComponentsResolver(options?: { devMode?: boolean }): ComponentResolver {
   return {
     type: 'component',
     resolve: (name: string) => {
@@ -25,5 +26,5 @@ export function MazComponentsResolver(options?: { devMode?: boolean }) {
         return { from: `${base}/${pascalCase(name)}` }
       }
     },
-  } satisfies ComponentResolverObject
+  }
 }

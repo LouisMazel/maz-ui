@@ -99,7 +99,8 @@ catch (error) {
 ### Custom Logger Integration
 
 ```typescript
-import { execPromise, logger, type Logger } from '@maz-ui/node'
+import type { Logger } from '@maz-ui/node'
+import { execPromise, logger } from '@maz-ui/node'
 
 // Create custom logger with additional functionality
 const customLogger: Logger = {

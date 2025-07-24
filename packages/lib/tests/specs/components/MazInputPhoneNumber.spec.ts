@@ -1,5 +1,6 @@
+import type { MazInputPhoneNumberProps } from '@components/MazInputPhoneNumber.vue'
 import type { Results } from '@components/MazInputPhoneNumber/types'
-import MazInputPhoneNumber, { type MazInputPhoneNumberProps } from '@components/MazInputPhoneNumber.vue'
+import MazInputPhoneNumber from '@components/MazInputPhoneNumber.vue'
 import PhoneInput from '@components/MazInputPhoneNumber/PhoneInput.vue'
 import MazSelectCountry from '@components/MazSelectCountry.vue'
 import { mount } from '@vue/test-utils'
