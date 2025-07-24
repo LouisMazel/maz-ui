@@ -23,7 +23,7 @@
     "chart.js": "^4.5.0",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.13",
-    "libphonenumber-js": "^1.12.9",
+    "libphonenumber-js": "^1.12.10",
     "maz-ui": "workspace:*",
     "vitepress-plugin-google-analytics": "^1.0.2"
   },
@@ -32,14 +32,14 @@
     "@types/postcss-import": "^14.0.3",
     "@types/postcss-url": "^10.0.4",
     "@types/react": "^19.1.8",
-    "@vercel/og": "^0.6.8",
+    "@vercel/og": "^0.8.5",
     "postcss-import": "^16.1.0",
     "postcss-url": "^10.1.3",
     "react": "^19.1.0",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.8.3",
     "vitepress": "^2.0.0-alpha.5",
-    "vue": "^3.5.17"
+    "vue": "^3.5.18"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
