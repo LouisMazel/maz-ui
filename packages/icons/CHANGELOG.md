@@ -1,5 +1,47 @@
 # Change Log
 
+## v4.0.0-beta.17...v4.0.0-beta.18
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.17...v4.0.0-beta.18)
+
+### 🚀 Features
+
+- **@maz-ui/icons:** Add new @maz-ui/icons package to export SVG icons and Vue JS components icons ([cb1a243dd](https://github.com/LouisMazel/maz-ui/commit/cb1a243dd))
+- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
+- **@maz-ui/themes:** New package - create and manage theme with maz-ui ([d81463fc0](https://github.com/LouisMazel/maz-ui/commit/d81463fc0))
+- **maz-ui:** Implement new theme manager provided by @maz-ui/themes ([f6978f418](https://github.com/LouisMazel/maz-ui/commit/f6978f418))
+- **maz-ui:** MazInputPhoneNumber, MazSelect, MazDropdown and vTooltip display the content in a popover ([d92eed803](https://github.com/LouisMazel/maz-ui/commit/d92eed803))
+- **@maz-ui/themes:** Use cookie to store color mode ([e9853bec1](https://github.com/LouisMazel/maz-ui/commit/e9853bec1))
+- **@maz-ui/icons:** Add new @maz-ui/icons package to export SVG icons and Vue JS components icons ([3d4701bdd](https://github.com/LouisMazel/maz-ui/commit/3d4701bdd))
+- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([84366e00b](https://github.com/LouisMazel/maz-ui/commit/84366e00b))
+- **@maz-ui/themes:** New package - create and manage theme with maz-ui ([5c5a8f4f4](https://github.com/LouisMazel/maz-ui/commit/5c5a8f4f4))
+- **maz-ui:** Implement new theme manager provided by @maz-ui/themes ([58344db69](https://github.com/LouisMazel/maz-ui/commit/58344db69))
+- **maz-ui:** MazInputPhoneNumber, MazSelect, MazDropdown and vTooltip display the content in a popover ([9ec5e3a99](https://github.com/LouisMazel/maz-ui/commit/9ec5e3a99))
+- **@maz-ui/themes:** Use cookie to store color mode ([f20621394](https://github.com/LouisMazel/maz-ui/commit/f20621394))
+
+### 🩹 Fixes
+
+- **@maz-ui/icons:** Export svg files correctly ([5ede33435](https://github.com/LouisMazel/maz-ui/commit/5ede33435))
+- Package config to be published on npm ([c4569ba86](https://github.com/LouisMazel/maz-ui/commit/c4569ba86))
+- **@maz-ui/icons:** Export svg files correctly ([b3464c31a](https://github.com/LouisMazel/maz-ui/commit/b3464c31a))
+- **@maz-ui/icons:** Export svg files correctly ([eb654c44c](https://github.com/LouisMazel/maz-ui/commit/eb654c44c))
+- Package config to be published on npm ([64f4c6740](https://github.com/LouisMazel/maz-ui/commit/64f4c6740))
+- **@maz-ui/icons:** Export svg files correctly ([03b8f87a8](https://github.com/LouisMazel/maz-ui/commit/03b8f87a8))
+
+### 💅 Refactors
+
+- **maz-ui:** MazInput - improve UI and UX (BREAKING_CHANGES) ([413c2688c](https://github.com/LouisMazel/maz-ui/commit/413c2688c))
+- **maz-ui:** Apply default border color to components ([98566be9c](https://github.com/LouisMazel/maz-ui/commit/98566be9c))
+- **@maz-ui/icons:** Improve typescript support with vite-svg-loader ([4165c44d1](https://github.com/LouisMazel/maz-ui/commit/4165c44d1))
+- **maz-ui:** MazInput - improve UI and UX (BREAKING_CHANGES) ([ed98285ad](https://github.com/LouisMazel/maz-ui/commit/ed98285ad))
+- **maz-ui:** Apply default border color to components ([99d7956a9](https://github.com/LouisMazel/maz-ui/commit/99d7956a9))
+- **@maz-ui/icons:** Improve typescript support with vite-svg-loader ([acd0f3ace](https://github.com/LouisMazel/maz-ui/commit/acd0f3ace))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.16...v4.0.0-beta.17
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.16...v4.0.0-beta.17)
