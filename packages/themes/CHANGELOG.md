@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.17...v4.0.0-beta.18
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.17...v4.0.0-beta.18)
+
+### 🚀 Features
+
+- **@maz-ui/themes:** Add new option to choose the color modes supported ([2bdde86e0](https://github.com/LouisMazel/maz-ui/commit/2bdde86e0))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.16...v4.0.0-beta.17
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.16...v4.0.0-beta.17)
