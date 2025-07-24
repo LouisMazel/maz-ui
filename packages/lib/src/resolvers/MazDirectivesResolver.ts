@@ -14,7 +14,7 @@ export function MazDirectivesResolver(options?: { devMode?: boolean, prefix?: st
       const { devMode = false, prefix = '' } = options || {}
       const base = devMode ? 'maz-ui/src/directives/index.ts' : 'maz-ui/directives'
 
-      return { from: base, as: `v${capitalize(prefix)}${name.replace(/^v/, '')}`, name: `v${name}` }
+      return { from: base, as: `v${capitalize(prefix)}${capitalize(name.replace(/^v/, ''))}`, name: `v${name}` }
     },
   }
 }

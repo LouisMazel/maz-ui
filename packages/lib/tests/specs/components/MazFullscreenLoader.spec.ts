@@ -26,6 +26,11 @@ describe('given MazFullscreenLoader.vue component', () => {
       slots: {
         default: 'Contenu personnalisé',
       },
+      global: {
+        stubs: {
+          Teleport: false,
+        },
+      },
     })
 
     await vi.dynamicImportSettled()

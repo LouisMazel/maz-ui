@@ -22,18 +22,14 @@ watch(
   { immediate: true },
 )
 
-const itemTabNumber = computed(() => {
-  return props.tab - 1
-})
+const itemTabNumber = computed(() => props.tab - 1)
 
-const isCurrentTab = computed(() => {
-  return currentTab.value - 1 === itemTabNumber.value
-})
+const isCurrentTab = computed(() => currentTab.value - 1 === itemTabNumber.value)
 </script>
 
 <template>
   <Transition :name="transitionName">
-    <div v-show="isCurrentTab" ref="MazTabsContentItem" class="m-tabs-content-item m-reset-css">
+    <div v-if="isCurrentTab" ref="MazTabsContentItem" class="m-tabs-content-item m-reset-css">
       <slot />
     </div>
   </Transition>

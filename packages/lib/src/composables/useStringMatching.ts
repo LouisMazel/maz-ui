@@ -34,6 +34,12 @@ function getMatchingScore(string1: string, string2: string): number {
   const distance = levenshteinDistance(string1, string2)
 
   const maxLength = Math.max(string1.length, string2.length)
+
+  // Handle case where both strings are empty
+  if (maxLength === 0) {
+    return 1 // Perfect match for two empty strings
+  }
+
   return 1 - distance / maxLength
 }
 

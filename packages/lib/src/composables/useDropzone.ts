@@ -139,24 +139,36 @@ export function useDropzone(
       }
     }
 
-    const dragHandler = (event: DragEvent) => handleDragEvent(event, 'enter')
+    const dragEnterHandler = (event: DragEvent) => handleDragEvent(event, 'enter')
+    const dragOverHandler = (event: DragEvent) => handleDragEvent(event, 'over')
+    const dragLeaveHandler = (event: DragEvent) => handleDragEvent(event, 'leave')
+    const dropHandler = (event: DragEvent) => handleDragEvent(event, 'drop')
 
     function removeEventListeners() {
       const targetElement = toValue(target)
       if (targetElement) {
-        targetElement.removeEventListener('dragenter', dragHandler)
-        targetElement.removeEventListener('dragover', dragHandler)
-        targetElement.removeEventListener('dragleave', dragHandler)
-        targetElement.removeEventListener('drop', dragHandler)
+        targetElement.removeEventListener('dragenter', dragEnterHandler)
+        targetElement.removeEventListener('dragover', dragOverHandler)
+        targetElement.removeEventListener('dragleave', dragLeaveHandler)
+        targetElement.removeEventListener('drop', dropHandler)
       }
     }
 
-    watch(() => toValue(target), (element) => {
+    watch(() => toValue(target), (element, oldElement) => {
+      // Remove listeners from old element
+      if (oldElement) {
+        oldElement.removeEventListener('dragenter', dragEnterHandler)
+        oldElement.removeEventListener('dragover', dragOverHandler)
+        oldElement.removeEventListener('dragleave', dragLeaveHandler)
+        oldElement.removeEventListener('drop', dropHandler)
+      }
+
+      // Add listeners to new element
       if (element) {
-        element.addEventListener('dragenter', dragHandler)
-        element.addEventListener('dragover', dragHandler)
-        element.addEventListener('dragleave', dragHandler)
-        element.addEventListener('drop', dragHandler)
+        element.addEventListener('dragenter', dragEnterHandler)
+        element.addEventListener('dragover', dragOverHandler)
+        element.addEventListener('dragleave', dragLeaveHandler)
+        element.addEventListener('drop', dropHandler)
       }
     }, { immediate: true })
 

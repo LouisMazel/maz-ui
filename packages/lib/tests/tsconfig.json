@@ -3,7 +3,7 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["./../src/*"],
-      "@tests/*": ["./tests/*"],
+      "@tests/*": ["./*"],
       "@components/*": ["./../src/components/*"],
       "@composables/*": ["./../src/composables/*"],
       "@directives/*": ["./../src/directives/*"],
