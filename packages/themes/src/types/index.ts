@@ -72,6 +72,8 @@ export type ThemePresetName = 'mazUi' | 'ocean' | 'pristine' | 'obsidian' | 'maz
 
 export type ColorMode = 'light' | 'dark' | 'auto'
 
+export type ThemeMode = 'light' | 'dark' | 'both'
+
 export type DarkModeStrategy = 'class' | 'media'
 
 export type Strategy = 'runtime' | 'buildtime' | 'hybrid'
@@ -119,7 +121,7 @@ export interface ThemeConfig {
   darkModeStrategy?: DarkModeStrategy
 
   /**
-   * Color mode
+   * Initial color mode to use
    * @description
    * - `light`: Light mode
    * - `dark`: Dark mode
@@ -127,6 +129,16 @@ export interface ThemeConfig {
    * @default 'auto'
    */
   colorMode?: ColorMode
+
+  /**
+   * Supported color modes to use
+   * @description
+   * - `light`: Will inject only light CSS variables
+   * - `dark`: Will inject only dark CSS variables
+   * - `both`: Will inject both light and dark CSS variables
+   * @default 'both'
+   */
+  mode?: ThemeMode
 }
 
 export interface ColorScale {
@@ -145,6 +157,7 @@ export interface ColorScale {
 export interface ThemeState {
   currentPreset: ThemePreset
   colorMode: ColorMode
+  mode: ThemeMode
   isDark: boolean
   strategy: Strategy
   darkModeStrategy: DarkModeStrategy

@@ -136,6 +136,7 @@ const defaults = {
     strategy: 'hybrid',
     darkModeStrategy: 'class',
     colorMode: 'auto',
+    mode: 'both',
     spa: false,
   },
   translations: {

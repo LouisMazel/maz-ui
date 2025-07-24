@@ -1,11 +1,9 @@
-import type { DarkModeStrategy, ThemeColors, ThemeFoundation, ThemePreset } from '../types'
+import type { DarkModeStrategy, ThemeColors, ThemeFoundation, ThemeMode, ThemePreset } from '../types'
 import { generateColorScale } from './color-utils'
 
 // =============================================================================
 // TYPES & CONSTANTS
 // =============================================================================
-
-type ThemeMode = 'light' | 'dark' | 'both'
 
 export interface CriticalCSSOptions {
   /** Critical color variables to include */
@@ -310,10 +308,15 @@ function generateAllColorScales(colors: ThemeColors, prefix: string): string[] {
 // INJECTION UTILITIES - For runtime use
 // =============================================================================
 
+export enum CSS_IDS {
+  FULL = 'maz-theme-full',
+  CRITICAL = 'maz-theme-critical',
+}
+
 /**
  * Injects CSS into the DOM
  */
-export function injectCSS(css: string, id: string = 'maz-theme-vars'): void {
+export function injectCSS(css: string, id: CSS_IDS): void {
   if (typeof document === 'undefined')
     return
 
@@ -331,7 +334,7 @@ export function injectCSS(css: string, id: string = 'maz-theme-vars'): void {
 /**
  * Supprime le CSS du DOM
  */
-export function removeCSS(id: string = 'maz-theme-vars'): void {
+export function removeCSS(id: CSS_IDS): void {
   if (typeof document === 'undefined')
     return
 
