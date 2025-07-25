@@ -1,8 +1,7 @@
-import type { ColorMode, CriticalCSSOptions, MazUiThemeOptions, ThemeState } from '@maz-ui/themes'
-import { generateFullCSS, mergePresets } from '@maz-ui/themes'
+import type { ColorMode, CriticalCSSOptions, ThemeMode, ThemePreset, ThemeState } from '@maz-ui/themes'
+import type { MazUiNuxtThemeOptions } from './../../types'
 import { MazUiTheme } from '@maz-ui/themes/plugin'
-import { getPreset } from '@maz-ui/themes/utils'
-import { generateCriticalCSS } from '@maz-ui/themes/utils/css-generator'
+import { CSS_IDS, generateCriticalCSS, generateFullCSS, getPreset, mergePresets } from '@maz-ui/themes/utils'
 import { defineNuxtPlugin, useCookie, useHead, useRequestHeaders } from 'nuxt/app'
 
 function getServerInitialColorMode(colorMode: ColorMode): ColorMode {
@@ -32,6 +31,41 @@ function getServerInitialColorMode(colorMode: ColorMode): ColorMode {
   return 'auto'
 }
 
+function injectThemeCSSOnServer({
+  mode,
+  preset,
+  config,
+}: {
+  mode: ThemeMode
+  preset: ThemePreset
+  config: MazUiNuxtThemeOptions
+}): void {
+  const cssOptions: CriticalCSSOptions = {
+    mode,
+    darkSelectorStrategy: config.darkModeStrategy ?? 'class',
+    prefix: 'maz',
+  } satisfies CriticalCSSOptions
+
+  const criticalCSS = generateCriticalCSS(preset, cssOptions)
+
+  useHead({
+    style: [
+      {
+        innerHTML: criticalCSS,
+        id: CSS_IDS.CRITICAL,
+      },
+    ],
+  })
+
+  if (config.injectFullCSSOnServer) {
+    const fullCSS = generateFullCSS(preset, cssOptions)
+
+    useHead({
+      style: [{ innerHTML: fullCSS, id: CSS_IDS.FULL }],
+    })
+  }
+}
+
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const options = $config.public.mazUi.theme
 
@@ -41,15 +75,19 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     preset = mergePresets(preset, options.overrides)
   }
 
+  const isClientSideRendering = import.meta.client && !document.getElementById(CSS_IDS.CRITICAL)
+
   const config = {
     strategy: 'hybrid',
     darkModeStrategy: 'class',
     colorMode: options.mode && options.mode !== 'both' ? options.mode : options.colorMode ?? 'auto',
     mode: 'both',
-    injectFullCSSOnServer: true,
+    injectFullCSSOnServer: false,
+    injectCriticalCSS: true,
+    injectFullCSS: true,
     ...options,
     preset,
-  } satisfies MazUiThemeOptions
+  } satisfies MazUiNuxtThemeOptions
 
   const colorMode = config.mode !== 'both' ? config.mode : getServerInitialColorMode(config.colorMode)
 
@@ -57,60 +95,29 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     ? getServerInitialColorMode(config.colorMode) === 'dark'
     : colorMode === 'dark' || config.mode === 'dark'
 
-  const themeState = {
-    currentPreset: config.preset,
-    colorMode,
-    mode: config.mode,
-    isDark,
-    strategy: config.strategy,
-    darkModeStrategy: config.darkModeStrategy,
-  } satisfies ThemeState
+  if (isDark && config.darkModeStrategy === 'class') {
+    useHead({
+      htmlAttrs: {
+        class: 'dark',
+      },
+    })
+  }
 
   if (import.meta.server) {
-    const cssOptions: CriticalCSSOptions = {
-      mode: themeState.mode,
-      darkSelectorStrategy: config.darkModeStrategy ?? 'class',
-      prefix: 'maz',
-    } satisfies CriticalCSSOptions
-
-    const criticalCSS = generateCriticalCSS(themeState.currentPreset, cssOptions)
-
-    useHead({
-      style: [
-        {
-          innerHTML: criticalCSS,
-          id: 'maz-theme-critical',
-        },
-      ],
+    injectThemeCSSOnServer({
+      mode: config.mode,
+      preset: config.preset,
+      config,
     })
-
-    if (config.injectFullCSSOnServer) {
-      const fullCSS = generateFullCSS(themeState.currentPreset, cssOptions)
-
-      useHead({
-        style: [{ innerHTML: fullCSS, id: 'maz-theme-full' }],
-      })
-    }
-
-    if (isDark && config.darkModeStrategy === 'class') {
-      useHead({
-        htmlAttrs: {
-          class: 'dark',
-        },
-      })
-    }
   }
 
   MazUiTheme.install(vueApp, {
     ...config,
-
-    preset: themeState.currentPreset,
-    colorMode: themeState.colorMode,
-    strategy: themeState.strategy,
-    darkModeStrategy: themeState.darkModeStrategy,
-
-    injectFullCSS: config.spa ? true : !config.injectFullCSSOnServer,
-    injectCriticalCSS: !!config.spa,
+    colorMode,
+    strategy: config.strategy,
+    darkModeStrategy: config.darkModeStrategy,
+    injectFullCSS: isClientSideRendering,
+    injectCriticalCSS: isClientSideRendering,
   })
 })
 
