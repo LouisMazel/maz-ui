@@ -5,16 +5,13 @@ import { defineNuxtPlugin } from 'nuxt/app'
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const translationsOptions = $config.public.mazUi.translations || {}
 
-  // Install the translations plugin
   const i18n = MazTranslations.install(vueApp, translationsOptions)
 
-  // Preload the configured locale on the server to avoid hydration issues
-  if (process.server) {
+  if (import.meta.server) {
     const locale = translationsOptions.locale || 'en'
     const fallbackLocale = translationsOptions.fallbackLocale || 'en'
 
     try {
-      // Preload the main locale
       await i18n.setLocale(locale)
 
       // Preload fallback locale if different and preloadFallback is enabled

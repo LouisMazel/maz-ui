@@ -10,13 +10,6 @@ export interface MazUiNuxtThemeOptions extends MazUiThemeOptions {
    * @default true
    */
   injectFullCSSOnServer?: boolean
-
-  /**
-   * Spa mode
-   * @description Enable full CSS injection on client-side for app with SSR disabled on some pages
-   * @default false
-   */
-  spa?: boolean
 }
 
 export interface MazUiNuxtOptions {

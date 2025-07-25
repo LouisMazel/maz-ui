@@ -74,7 +74,6 @@
     "test:unit:coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "eslint": "^9.31.0",
     "eslint-plugin-format": "^1.0.1",
     "glob": "^11.0.3",
     "libphonenumber-js": "^1.12.10",
