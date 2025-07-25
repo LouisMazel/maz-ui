@@ -6,6 +6,7 @@ export default defineConfig(
     typescript: true,
     sonarjs: true,
     markdown: true,
+    tailwindcss: false,
   },
   {
     ignores: ['./packages/**/*', './apps/**/*', './tools/**/*'],

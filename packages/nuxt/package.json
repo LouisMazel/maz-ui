@@ -50,7 +50,7 @@
     "dev": "nuxt-module-build build --stub && nuxt-module-build prepare",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
-    "typecheck": "vue-tsc --noEmit --skipLibCheck"
+    "typecheck": "nuxi typecheck"
   },
   "dependencies": {
     "@maz-ui/themes": "workspace:*",

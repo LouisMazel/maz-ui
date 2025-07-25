@@ -39,7 +39,7 @@
     "typecheck:all": "lerna run typecheck",
     "test:unit:all": "lerna run test:unit",
     "test:unit:coverage:all": "lerna run test:unit:coverage",
-    "healthcheck": "pnpm lint && pnpm typecheck:all && pnpm test:unit:all && pnpm build:packages && pnpm -F docs build",
+    "healthcheck": "pnpm lint:all && pnpm typecheck:all && pnpm test:unit:all && pnpm build:packages && pnpm -F docs build",
     "lerna:version": "lerna version --conventional-commits",
     "lerna:version:alpha": "lerna version --conventional-commits --conventional-prerelease --preid alpha",
     "lerna:version:beta": "lerna version --conventional-commits --conventional-prerelease --preid beta",

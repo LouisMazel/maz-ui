@@ -18,17 +18,14 @@ jobs:
       - name: Setup Node.js, pnpm and Nx cache
         uses: ./.github/actions/setup
 
-      - name: Generate components docs
-        run: pnpm --filter cli cli generate-components-docs
-
       - name: Build docs
         env:
           VITE_GITHUB_TOKEN: ${{ secrets.GH_TOKEN_STARS }}
-        run: pnpm --filter docs build
+        run: pnpm -F docs build
 
       - name: Deploy to Hostinger
         env:
           FTP_SERVER: ${{ secrets.HOSTINGER_FTP_SERVER }}
           FTP_USERNAME: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-        run: pnpm --filter docs ftp-deploy
+        run: pnpm -F docs ftp-deploy

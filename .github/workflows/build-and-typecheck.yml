@@ -25,8 +25,5 @@ jobs:
       - name: Build packages
         run: pnpm build:packages
 
-      - name: Generate components docs
-        run: pnpm --filter cli cli generate-components-docs
-
       - name: Build docs
         run: pnpm -F docs build
