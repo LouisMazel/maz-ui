@@ -5,7 +5,7 @@
       "cache": true,
       "dependsOn": [
         "^build",
-        "^typecheck"
+        "typecheck"
       ],
       "outputs": [
         "{projectRoot}/dist",

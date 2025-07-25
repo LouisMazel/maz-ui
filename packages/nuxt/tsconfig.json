@@ -1,9 +1,8 @@
 {
-  "extends": ["./.nuxt/tsconfig.json", "../../tsconfig.json"],
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "types": ["@nuxt/devtools", "vite-svg-loader"],
+    "types": ["@nuxt/devtools"],
     "skipLibCheck": true
   },
-  "include": ["./src/**/*"],
-  "exclude": ["../lib/**/*"]
+  "include": ["./src/**/*"]
 }

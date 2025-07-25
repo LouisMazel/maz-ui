@@ -8,9 +8,10 @@
   "license": "ISC",
   "scripts": {
     "dev": "vitepress dev docs",
-    "build": "vitepress build docs",
-    "build:test": "cross-env TEST_ENV=true vitepress build docs",
-    "build:watch": "vitepress build docs --watch",
+    "build": "pnpm generate:components-docs && vitepress build docs",
+    "generate:components-docs": "pnpm -F cli cli generate-components-docs",
+    "build:test": "cross-env TEST_ENV=true pnpm build",
+    "build:watch": "pnpm build:test --watch",
     "preview": "vitepress preview docs",
     "serve": "vitepress serve docs",
     "lint": "cross-env NODE_ENV=production eslint .",

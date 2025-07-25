@@ -1,8 +1,0 @@
-{
-  "extends": "./.nuxt/tsconfig.json",
-  "compilerOptions": {
-    "types": ["@nuxt/devtools"]
-  },
-  "references": [{ "path": "../lib" }],
-  "include": ["./src/**/*"]
-}
