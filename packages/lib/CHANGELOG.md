@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.20...v4.0.0-beta.21
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.20...v4.0.0-beta.21)
+
+### 🚀 Features
+
+- **@maz-ui/nuxt:** Detecte nuxt pages on spa mode ([5aade8a64](https://github.com/LouisMazel/maz-ui/commit/5aade8a64))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.19...v4.0.0-beta.20
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.19...v4.0.0-beta.20)
