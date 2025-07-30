@@ -711,7 +711,7 @@ defineExpose({
   >
     <!--
       @slot files-area - Slot to customize the files area
-      @binding {FileData[]} files-data - The files data
+      @binding {MazDropzoneFileData[]} files-data - The files data
     -->
     <slot name="files-area" :files-data="filesData">
       <TransitionGroup name="file-scale" tag="div" class="m-dropzone__files-container" @before-enter="selectAreaCanBeDisplayed = false" @after-leave="selectAreaCanBeDisplayed = filesData.length === 0">
@@ -719,7 +719,7 @@ defineExpose({
         <div v-for="(file) in filesData" :key="`${file.name}-${file.size}-${file}`" class="m-dropzone__file-item group" @click.prevent="">
           <!--
             @slot file-item - Slot to customize the file item
-            @binding {FileData} file - The drop file data
+            @binding {MazDropzoneFileData} file - The drop file data
           -->
           <slot name="file-item" :file="file">
             <div v-if="file.thumbnail && preview" :style="{ backgroundImage: `url(${file.thumbnail})`, backgroundSize: 'cover', backgroundPosition: 'center' }" class="m-dropzone__thumbnail" />
