@@ -1,5 +1,32 @@
 # Change Log
 
+## v4.0.0-beta.21...v4.0.0-beta.22
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.21...v4.0.0-beta.22)
+
+### 🚀 Features
+
+- **vue-app:** Add theme selector and udpate theme handling ([ebcbad550](https://github.com/LouisMazel/maz-ui/commit/ebcbad550))
+
+### 🩹 Fixes
+
+- **maz-ui:** Update MazDropdown component to disable closeOnClick and enhance trigger handling ([a6fa4d874](https://github.com/LouisMazel/maz-ui/commit/a6fa4d874))
+- **maz-ui:** Update file data binding types in MazDropzone component ([069ecaf75](https://github.com/LouisMazel/maz-ui/commit/069ecaf75))
+
+### 💅 Refactors
+
+- **@maz-ui/themes:** Update theme system and improve color mode handling ([034d009e9](https://github.com/LouisMazel/maz-ui/commit/034d009e9))
+- **@maz-ui/nuxt:** Improve CSS injection logic to support SPA application ([51eb6d533](https://github.com/LouisMazel/maz-ui/commit/51eb6d533))
+- **maz-ui:** Update MazPopover component to enhance type definitions and improve hover delay ([bc7a74b56](https://github.com/LouisMazel/maz-ui/commit/bc7a74b56))
+- **maz-ui:** Enhance type definitions in MazRadioButtons component for improved flexibility ([c6566be07](https://github.com/LouisMazel/maz-ui/commit/c6566be07))
+- **maz-ui:** Update MazToast component styles and button handling for improved UI consistency ([623fa238b](https://github.com/LouisMazel/maz-ui/commit/623fa238b))
+- **maz-ui:** Improve positioning logic and cleanup in MazPopover component for better performance and reliability ([25004046a](https://github.com/LouisMazel/maz-ui/commit/25004046a))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.20...v4.0.0-beta.21
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.20...v4.0.0-beta.21)

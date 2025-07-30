@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.21...v4.0.0-beta.22
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.21...v4.0.0-beta.22)
+
+### 💅 Refactors
+
+- **@maz-ui/themes:** Update theme system and improve color mode handling ([034d009e9](https://github.com/LouisMazel/maz-ui/commit/034d009e9))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.20...v4.0.0-beta.21
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.20...v4.0.0-beta.21)

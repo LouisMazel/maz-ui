@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.21...v4.0.0-beta.22
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.21...v4.0.0-beta.22)
+
+### 💅 Refactors
+
+- **@maz-ui/nuxt:** Improve CSS injection logic to support SPA application ([51eb6d533](https://github.com/LouisMazel/maz-ui/commit/51eb6d533))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.20...v4.0.0-beta.21
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.20...v4.0.0-beta.21)
