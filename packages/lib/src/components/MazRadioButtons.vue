@@ -1,4 +1,4 @@
-<script lang="ts" setup generic="T extends string | number | boolean">
+<script lang="ts" setup generic="T extends string | number | boolean, Option extends MazRadioButtonsOption<T>">
 import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
 import { MazCheck } from '@maz-ui/icons'
@@ -16,11 +16,11 @@ export type MazRadioButtonsOption<T = string | number | boolean> = {
   style?: HTMLAttributes['style']
 } & Record<string, unknown>
 
-export interface MazRadioButtonsProps<T = string | number | boolean> {
+export interface MazRadioButtonsProps<T = string | number | boolean, Option extends MazRadioButtonsOption<T> = MazRadioButtonsOption<T>> {
   /** @model The value of the selected option */
   modelValue?: T
   /** The options to display */
-  options: MazRadioButtonsOption<T>[]
+  options: Option[]
   /** The name of the radio group */
   name?: string
   /** The color of the selected radio buttons */
@@ -51,7 +51,7 @@ export interface MazRadioButtonsProps<T = string | number | boolean> {
   hint?: string
 }
 
-const props = withDefaults(defineProps<MazRadioButtonsProps<T>>(), {
+const props = withDefaults(defineProps<MazRadioButtonsProps<T, Option>>(), {
   modelValue: undefined,
   name: 'MazButtonsRadio',
   color: 'primary',
@@ -68,12 +68,12 @@ const emits = defineEmits<{
    * Emitted when the selected option change
    * @property value The value of the selected option
    */
-  'update:model-value': [value: T]
+  'update:model-value': [value: Option['value']]
   /**
    * Emitted when the selected option change
    * @property value The value of the selected option
    */
-  'change': [value: T]
+  'change': [value: Option['value']]
   /**
    * Emitted when the a radio button lost focus
    * @property {FocusEvent} value - The focus event
@@ -86,22 +86,23 @@ const emits = defineEmits<{
   'focus': [value: FocusEvent]
 }>()
 
-function selectOption(option: MazRadioButtonsOption<T>) {
+function selectOption(option: Option) {
   emits('update:model-value', option.value)
+  emits('change', option.value)
 }
 
-function isSelected(value: MazRadioButtonsOption<T>['value']) {
+function isSelected(value: Option['value']) {
   return props.modelValue === value
 }
 
-function keyboardHandler(event: KeyboardEvent, option: MazRadioButtonsOption<T>) {
+function keyboardHandler(event: KeyboardEvent, option: Option) {
   if (['Space'].includes(event.code)) {
     event.preventDefault()
     selectOption(option)
   }
 }
 
-function getOptionId(option: MazRadioButtonsOption<T>, i: number) {
+function getOptionId(option: Option, i: number) {
   return `option-${i}-${option.value.toString()}-${props.name}`
 }
 
