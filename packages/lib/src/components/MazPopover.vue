@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
+import type { CSSProperties, HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
 import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
 
@@ -35,7 +35,7 @@ const {
   disabled = false,
   offset = 8,
   delay = 0,
-  hoverDelay = 200,
+  hoverDelay = 150,
   transition = 'maz-popover',
   teleportTo = 'body',
   closeOnClickOutside = true,
@@ -272,7 +272,7 @@ function getPositionReference(): HTMLElement | null {
   return positionReference
 }
 
-const isOpen = defineModel<boolean>('modelValue', { required: false, default: false })
+const isOpen = defineModel<boolean>({ required: false, default: false })
 // Initialize computed position
 const computedPosition = ref<Omit<MazPopoverPosition, 'auto'>>(position === 'auto' ? 'bottom' : position)
 
@@ -291,6 +291,7 @@ interface TriggerEventHandlers {
   onClick?: () => void
   onMouseenter?: () => void
   onMouseleave?: () => void
+  onKeydown?: (event: KeyboardEvent) => void
 }
 
 const isTouchDevice = computed(() => {
@@ -715,7 +716,15 @@ function calculatePosition(
 ) {
   const viewport = { width: window.innerWidth, height: window.innerHeight }
 
-  const styles: Record<string, string> = {
+  const styles: {
+    position: CSSProperties['position']
+    visibility: CSSProperties['visibility']
+    transformOrigin: CSSProperties['transformOrigin']
+    bottom?: CSSProperties['bottom']
+    left?: CSSProperties['left']
+    right?: CSSProperties['right']
+    top?: CSSProperties['top']
+  } = {
     position: 'fixed',
     visibility: 'visible',
     transformOrigin: getTransformOrigin(position),
@@ -840,20 +849,14 @@ function isPositionVisible(position: MazPopoverPosition, triggerRect: DOMRect, p
   let left = 0
 
   if (styles.top)
-    top = Number.parseInt(styles.top)
+    top = Number.parseInt(String(styles.top))
   else if (styles.bottom)
-    top = viewport.height - Number.parseInt(styles.bottom) - panelRect.height
+    top = viewport.height - Number.parseInt(String(styles.bottom)) - panelRect.height
 
   if (styles.left)
-    left = Number.parseInt(styles.left)
+    left = Number.parseInt(String(styles.left))
   else if (styles.right)
-    left = viewport.width - Number.parseInt(styles.right) - panelRect.width
-
-  // Apply transform adjustments
-  if (styles.transform?.includes('translateX(-50%)'))
-    left -= panelRect.width / 2
-  if (styles.transform?.includes('translateY(-50%)'))
-    top -= panelRect.height / 2
+    left = viewport.width - Number.parseInt(String(styles.right)) - panelRect.width
 
   return left >= 0
     && left + panelRect.width <= viewport.width
@@ -1086,8 +1089,9 @@ defineExpose({
         @binding {function} close Function to close the popover
         @binding {function} toggle Function to toggle the popover
         @binding {boolean} is-open Current open state of the popover
+        @binding {'click' | 'hover' | 'manual'} trigger The trigger type
       -->
-      <slot name="trigger" :open="open" :close="close" :toggle="toggle" :is-open="isOpen" />
+      <slot name="trigger" :open="open" :close="close" :toggle="toggle" :is-open="isOpen" :trigger="effectiveTrigger" />
     </div>
 
     <Teleport :to="teleportTo" :disabled="!isOpen">
