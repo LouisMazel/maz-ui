@@ -1,19 +1,20 @@
-import type { ColorMode, Strategy, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
+import type { ColorMode, DarkModeStrategy, Strategy, ThemeMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
+import type { CriticalCSSOptions, FullCSSOptions } from '../utils/css-generator'
 import { isServer } from '@maz-ui/utils/src/helpers/isServer.js'
-import { computed, getCurrentInstance, inject, ref, watchEffect } from 'vue'
+import { computed, getCurrentInstance, inject, ref, watch, watchEffect } from 'vue'
 import { setCookie } from '../utils/cookie-storage'
 import { CSS_IDS, generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'
-import { getColorMode, getSystemPrefersDark } from '../utils/get-color-mode'
+import { getColorMode, isSystemPrefersDark } from '../utils/get-color-mode'
 import { getPreset } from '../utils/get-preset'
 import { mergePresets } from '../utils/preset-merger'
 
 const state = ref<ThemeState>()
 
-function updateDocumentClass() {
-  if (typeof document === 'undefined' || !state.value || state.value.darkModeStrategy === 'media')
+function updateDocumentClass(themeState: ThemeState) {
+  if (typeof document === 'undefined' || !themeState || themeState.darkModeStrategy === 'media' || themeState.mode === 'light')
     return
 
-  if (state.value.isDark) {
+  if (themeState.isDark) {
     document.documentElement.classList.add('dark')
   }
   else {
@@ -44,7 +45,7 @@ function initializeThemeFromData(themeData: ThemeState) {
 
   const colorMode = getColorMode(themeData.colorMode)
   const isDark = colorMode === 'auto'
-    ? getSystemPrefersDark() === 'dark'
+    ? isSystemPrefersDark()
     : colorMode === 'dark'
 
   initThemeState({
@@ -75,13 +76,11 @@ export function initThemeState(initialState: ThemeState) {
 
   watchEffect(() => {
     if (state.value) {
-      updateDocumentClass()
+      updateDocumentClass(state.value)
       updateGlobalProperties()
     }
   })
 }
-
-const currentPreset = computed(() => state.value?.currentPreset as ThemePreset)
 
 const colorMode = computed<ColorMode>({
   get: () => state.value?.colorMode as ColorMode,
@@ -90,6 +89,9 @@ const colorMode = computed<ColorMode>({
 
 const isDark = computed(() => state.value?.isDark ?? false)
 const strategy = computed(() => state.value?.strategy as Strategy)
+const mode = computed(() => state.value?.mode as ThemeMode)
+const darkModeStrategy = computed(() => state.value?.darkModeStrategy as DarkModeStrategy)
+const presetName = computed(() => state.value?.currentPreset.name as string)
 
 async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePresetName) {
   if (!state.value)
@@ -104,9 +106,9 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
   state.value.currentPreset = newPreset
 
   if (state.value.strategy === 'runtime' || state.value.strategy === 'hybrid') {
-    const cssOptions = {
+    const cssOptions: CriticalCSSOptions | FullCSSOptions = {
       mode: state.value.mode,
-      darkSelector: state.value.darkModeStrategy,
+      darkSelectorStrategy: state.value.darkModeStrategy,
       prefix: 'maz',
     }
 
@@ -131,7 +133,7 @@ function setColorMode(colorMode: ColorMode) {
     state.value.isDark = colorMode === 'dark'
   }
 
-  updateDocumentClass()
+  updateDocumentClass(state.value)
 
   setCookie('maz-color-mode', colorMode)
 }
@@ -165,21 +167,31 @@ export function useTheme() {
       initializeThemeFromData(mazThemeState)
     }
     else if (isServer()) {
-      state.value.colorMode = mazThemeState.colorMode
-      state.value.mode = mazThemeState.mode
-      state.value.isDark = mazThemeState.isDark
-      state.value.currentPreset = mazThemeState.currentPreset
+      state.value = {
+        ...state.value,
+        ...mazThemeState,
+      }
     }
   }
+
+  watch(() => mazThemeState?.currentPreset, (preset) => {
+    if (state.value && preset) {
+      state.value.currentPreset = preset
+    }
+  }, {
+    once: true,
+  })
 
   if (!state.value) {
     console.error('[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin before using useTheme composable')
 
     return {
-      currentPreset: ref({} as ThemePreset),
-      colorMode: ref('light' as ColorMode),
-      isDark: computed(() => false),
-      strategy: computed(() => 'hybrid' as Strategy),
+      presetName,
+      colorMode,
+      isDark,
+      strategy,
+      mode,
+      darkModeStrategy,
       updateTheme: (() => Promise.resolve()) as typeof updateTheme,
       setColorMode: (() => {}) as typeof setColorMode,
       toggleDarkMode: (() => {}) as typeof toggleDarkMode,
@@ -187,12 +199,14 @@ export function useTheme() {
   }
 
   return {
-    currentPreset,
+    presetName,
     colorMode,
     isDark,
     strategy,
     updateTheme,
     setColorMode,
     toggleDarkMode,
+    mode,
+    darkModeStrategy,
   }
 }

@@ -1,5 +1,5 @@
 import type { ColorMode } from '../../types'
-import { getColorMode, getSystemPrefersDark } from '../get-color-mode'
+import { getColorMode, isSystemPrefersDark } from '../get-color-mode'
 
 // Mock document.cookie
 function mockDocumentCookie(cookies: string = '') {
@@ -33,9 +33,7 @@ describe('get-color-mode', () => {
 
     describe('when provided colorMode is light', () => {
       it('then it returns provided colorMode', () => {
-        const colorMode: ColorMode = 'light'
-
-        const result = getColorMode(colorMode)
+        const result = getColorMode('light')
 
         expect(result).toBe('light')
       })
@@ -43,9 +41,7 @@ describe('get-color-mode', () => {
 
     describe('when provided colorMode is dark', () => {
       it('then it returns provided colorMode', () => {
-        const colorMode: ColorMode = 'dark'
-
-        const result = getColorMode(colorMode)
+        const result = getColorMode('dark')
 
         expect(result).toBe('dark')
       })
@@ -73,7 +69,7 @@ describe('get-color-mode', () => {
 
         const result = getColorMode()
 
-        expect(result).toBe('dark')
+        expect(result).toBe('auto')
       })
     })
 
@@ -86,7 +82,7 @@ describe('get-color-mode', () => {
 
         const result = getColorMode()
 
-        expect(result).toBe('dark')
+        expect(result).toBe('auto')
       })
     })
 
@@ -99,7 +95,7 @@ describe('get-color-mode', () => {
 
         const result = getColorMode()
 
-        expect(result).toBe('light')
+        expect(result).toBe('auto')
       })
     })
 
@@ -112,7 +108,7 @@ describe('get-color-mode', () => {
 
         const result = getColorMode()
 
-        expect(result).toBe('dark')
+        expect(result).toBe('auto')
       })
     })
 
@@ -124,12 +120,12 @@ describe('get-color-mode', () => {
 
         const result = getColorMode('invalid' as ColorMode)
 
-        expect(result).toBe('light')
+        expect(result).toBe('auto')
       })
     })
   })
 
-  describe('given getSystemPrefersDark function', () => {
+  describe('given isSystemPrefersDark function', () => {
     beforeEach(() => {
       vi.stubGlobal('matchMedia', vi.fn())
     })
@@ -144,10 +140,10 @@ describe('get-color-mode', () => {
           matches: true,
         } as MediaQueryList)
 
-        const result = getSystemPrefersDark()
+        const result = isSystemPrefersDark()
 
         expect(globalThis.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)')
-        expect(result).toBe('dark')
+        expect(result).toBe(true)
       })
     })
 
@@ -157,10 +153,10 @@ describe('get-color-mode', () => {
           matches: false,
         } as MediaQueryList)
 
-        const result = getSystemPrefersDark()
+        const result = isSystemPrefersDark()
 
         expect(globalThis.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)')
-        expect(result).toBe('light')
+        expect(result).toBe(false)
       })
     })
 
@@ -168,9 +164,9 @@ describe('get-color-mode', () => {
       it('then it returns light', () => {
         vi.stubGlobal('window', undefined)
 
-        const result = getSystemPrefersDark()
+        const result = isSystemPrefersDark()
 
-        expect(result).toBe('light')
+        expect(result).toBe(false)
       })
     })
   })

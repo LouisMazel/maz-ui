@@ -1,14 +1,16 @@
 import type { App } from 'vue'
 import type { DarkModeStrategy, ThemeConfig, ThemePreset, ThemeState } from './types'
+import type { CriticalCSSOptions } from './utils/css-generator'
 import { reactive } from 'vue'
 import { getPreset } from './utils'
 import {
+
   CSS_IDS,
   generateCriticalCSS,
   generateFullCSS,
   injectCSS,
 } from './utils/css-generator'
-import { getColorMode, getSystemPrefersDark } from './utils/get-color-mode'
+import { getColorMode, isSystemPrefersDark } from './utils/get-color-mode'
 
 export interface MazUiThemeOptions extends Omit<ThemeConfig, 'prefix'> {
   /**
@@ -40,13 +42,13 @@ function applyDarkMode(darkModeStrategy: DarkModeStrategy, isDark: boolean) {
   }
 }
 
-function injectThemeCSS(finalPreset: ThemePreset, config: MazUiThemeOptions) {
+function injectThemeCSS(finalPreset: ThemePreset, config: Required<MazUiThemeOptions>) {
   if (typeof document === 'undefined')
     return
 
-  const cssOptions = {
+  const cssOptions: CriticalCSSOptions = {
     mode: config.mode,
-    darkSelector: config.darkModeStrategy,
+    darkSelectorStrategy: config.darkModeStrategy,
   }
 
   if (config.injectCriticalCSS) {
@@ -92,18 +94,19 @@ export const MazUiTheme = {
     const config = {
       preset: 'maz-ui',
       strategy: 'runtime',
+      overrides: {},
       darkModeStrategy: 'class',
-      colorMode: options.mode !== 'both' ? options.mode : options.colorMode,
+      colorMode: (options.mode !== 'both' ? options.mode : options.colorMode) ?? 'auto',
       injectCriticalCSS: true,
       injectFullCSS: true,
       mode: 'both',
       ...options,
-    } satisfies MazUiThemeOptions
+    } satisfies Required<MazUiThemeOptions>
 
     const colorMode = config.mode !== 'both' ? config.mode : getColorMode(config.colorMode)
 
     const isDark = colorMode === 'auto' && config.mode === 'both'
-      ? getSystemPrefersDark() === 'dark'
+      ? isSystemPrefersDark()
       : colorMode === 'dark' || config.mode === 'dark'
 
     const themeState = reactive<ThemeState>({
@@ -122,7 +125,7 @@ export const MazUiTheme = {
 
     const preset = await getPreset(config.preset)
 
-    const finalPreset = config.overrides
+    const finalPreset = Object.keys(config.overrides).length > 0
       ? {
           ...preset,
           foundation: {
@@ -146,7 +149,7 @@ export const MazUiTheme = {
   },
 }
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
   interface ComponentCustomProperties {
     /**
      * Maz theme plugin options
