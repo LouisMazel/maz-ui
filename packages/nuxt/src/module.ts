@@ -227,6 +227,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         addComponent({
           name,
           filePath: `maz-ui/components/${name}`,
+
         })
       }
     }
