@@ -130,7 +130,6 @@ export default defineNuxtConfig({
         }
       },
       mode: 'both', // 'light' | 'dark' | 'both'
-      spa: false, // Enable full CSS injection on client-side for app with SSR disabled on some pages
     },
 
     // 🌐 Translations
@@ -243,9 +242,6 @@ const theme = {
 
   // Dark mode handling
   darkModeStrategy: 'class', // 'class' | 'media' | 'auto'
-
-  // Spa mode
-  spa: false, // If you have some pages with SSR disabled, you can enable to avoid missing styles on client-side
 }
 ```
 

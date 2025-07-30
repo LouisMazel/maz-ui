@@ -101,6 +101,9 @@ export default defineConfig<DefaultTheme.Config>({
       rollupOptions: {
         external: ['node:child_process', 'colorette'],
       },
+      target: 'esnext',
+      minify: 'esbuild',
+      chunkSizeWarningLimit: 1000,
     },
     plugins: [
       svgLoader(),
