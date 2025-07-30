@@ -9,7 +9,7 @@ export interface MazUiNuxtThemeOptions extends MazUiThemeOptions {
    * @description Inject full CSS on server-side to prevent FOUC on client-side
    * @default true
    */
-  injectFullCSSOnServer?: boolean
+  injectAllCSSOnServer?: boolean
 }
 
 export interface MazUiNuxtOptions {
