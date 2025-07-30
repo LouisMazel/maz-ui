@@ -126,28 +126,28 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
           <div class="maz-flex maz-gap-2">
             <MazBtn
               size="sm"
-              :color="currentPreset.name === 'maz-ui' ? 'primary' : 'contrast'"
+              :color="presetName === 'maz-ui' ? 'primary' : 'contrast'"
               @click="changePreset('mazUi')"
             >
               Maz-UI
             </MazBtn>
             <MazBtn
               size="sm"
-              :color="currentPreset.name === 'ocean' ? 'primary' : 'contrast'"
+              :color="presetName === 'ocean' ? 'primary' : 'contrast'"
               @click="changePreset('ocean')"
             >
               Ocean
             </MazBtn>
             <MazBtn
               size="sm"
-              :color="currentPreset.name === 'pristine' ? 'primary' : 'contrast'"
+              :color="presetName === 'pristine' ? 'primary' : 'contrast'"
               @click="changePreset('pristine')"
             >
               Pristine
             </MazBtn>
             <MazBtn
               size="sm"
-              :color="currentPreset.name === 'obsidian' ? 'primary' : 'contrast'"
+              :color="presetName === 'obsidian' ? 'primary' : 'contrast'"
               @click="changePreset('obsidian')"
             >
               Obsidian
@@ -164,7 +164,7 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 <script setup>
 import { useTheme } from '@maz-ui/themes'
 
-const { currentPreset, updateTheme } = useTheme()
+const { presetName, updateTheme } = useTheme()
 
 function changePreset(presetName) {
   updateTheme(presetName)
@@ -212,28 +212,28 @@ function changePreset(presetName) {
           <div class="maz-flex maz-gap-2">
             <MazBtn
               size="sm"
-              :color="currentPreset.name === 'maz-ui' ? 'primary' : 'secondary'"
+              :color="presetName === 'maz-ui' ? 'primary' : 'secondary'"
               @click="changePreset('mazUi')"
             >
               Maz-UI
             </MazBtn>
             <MazBtn
               size="sm"
-              :color="currentPreset.name === 'ocean' ? 'primary' : 'secondary'"
+              :color="presetName === 'ocean' ? 'primary' : 'secondary'"
               @click="changePreset('ocean')"
             >
               Ocean
             </MazBtn>
             <MazBtn
               size="sm"
-              :color="currentPreset.name === 'pristine' ? 'primary' : 'secondary'"
+              :color="presetName === 'pristine' ? 'primary' : 'secondary'"
               @click="changePreset('pristine')"
             >
               Pristine
             </MazBtn>
             <MazBtn
               size="sm"
-              :color="currentPreset.name === 'obsidian' ? 'primary' : 'secondary'"
+              :color="presetName === 'obsidian' ? 'primary' : 'secondary'"
               @click="changePreset('obsidian')"
             >
               Obsidian

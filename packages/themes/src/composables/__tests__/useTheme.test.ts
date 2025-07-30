@@ -123,7 +123,7 @@ describe('useTheme', () => {
 
         const result = useTheme()
 
-        expect(result).toHaveProperty('currentPreset')
+        expect(result).toHaveProperty('presetName')
         expect(result).toHaveProperty('colorMode')
         expect(result).toHaveProperty('isDark')
         expect(result).toHaveProperty('strategy')
@@ -153,7 +153,7 @@ describe('useTheme', () => {
 
         const result = useTheme()
 
-        expect(result).toHaveProperty('currentPreset')
+        expect(result).toHaveProperty('presetName')
       })
     })
   })
@@ -319,7 +319,7 @@ describe('useTheme', () => {
 
         const result = useTheme()
 
-        expect(result.currentPreset).toBeDefined()
+        expect(result.presetName).toBeDefined()
         expect(result.colorMode).toBeDefined()
         expect(result.isDark).toBeDefined()
         expect(result.strategy).toBeDefined()

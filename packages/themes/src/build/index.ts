@@ -24,7 +24,7 @@ export function buildThemeCSS(options: BuildThemeOptions): string {
 
   const cssOptions = {
     mode,
-    darkSelector,
+    darkSelectorStrategy: darkSelector,
     prefix,
   }
 
@@ -96,7 +96,7 @@ export function buildSeparateThemeFiles(preset: ThemePreset, options: {
 } {
   const { prefix = 'maz', darkSelector = 'class' } = options
 
-  const baseOptions = { prefix, darkSelector }
+  const baseOptions = { prefix, darkSelectorStrategy: darkSelector }
 
   return {
     critical: generateCriticalCSS(preset, { ...baseOptions, mode: 'both' }),

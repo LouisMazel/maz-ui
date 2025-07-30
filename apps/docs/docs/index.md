@@ -79,7 +79,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         <div class="maz-flex maz-gap-2 maz-items-center maz-flex-row-reverse tab-l:maz-flex-row">
           <MazBtn fab color="background" :icon="isDark ? MazMoon : MazSun" outlined @click="toggleDarkMode" />
           <MazRadioButtons
-            :model-value="currentPreset.name"
+            :model-value="presetName"
             size="lg"
             :options="[{
               label: 'Pristine',
@@ -500,33 +500,14 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   const {
     isDark,
     colorMode,
-    currentPreset,
+    presetName,
     setColorMode,
     updateTheme,
     toggleDarkMode
   } = useTheme()
 
-  const originalPreset = ref(null)
-
-  async function getPreset(presetName) {
-    switch (presetName) {
-      case 'maz-ui':
-        return import('@maz-ui/themes/src/presets/mazUi.ts').then(m => m.mazUi)
-      case 'pristine':
-        return import('@maz-ui/themes/src/presets/pristine.ts').then(m => m.pristine)
-      case 'ocean':
-        return import('@maz-ui/themes/src/presets/ocean.ts').then(m => m.ocean)
-      case 'obsidian':
-        return import('@maz-ui/themes/src/presets/obsidian.ts').then(m => m.obsidian)
-      default:
-        return import('@maz-ui/themes/src/presets/mazUi.ts').then(m => m.mazUi)
-    }
-  }
-
   async function changePreset(presetName) {
-    const preset = await getPreset(presetName)
-    updateTheme(preset)
-    originalPreset.value = preset
+    updateTheme(presetName)
   }
 
   async function getStarCount() {

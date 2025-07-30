@@ -10,6 +10,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           criticalColors: ['accent'],
           criticalFoundation: ['border-width'],
+          darkSelectorStrategy: 'class',
         })
 
         expect(css).toContain('@layer maz-ui-theme {\n')
@@ -24,6 +25,7 @@ describe('cSS Generator', () => {
         const css = generateCriticalCSS(mazUi, {
           prefix: 'maz',
           mode: 'dark',
+          darkSelectorStrategy: 'class',
           criticalColors: ['accent'],
           criticalFoundation: ['border-width'],
         })
@@ -40,6 +42,7 @@ describe('cSS Generator', () => {
         const css = generateCriticalCSS(mazUi, {
           prefix: 'maz',
           mode: 'both',
+          darkSelectorStrategy: 'class',
         })
 
         expect(css).toContain(':root {')
@@ -54,6 +57,7 @@ describe('cSS Generator', () => {
         const css = generateFullCSS(mazUi, {
           prefix: 'maz',
           mode: 'light',
+          darkSelectorStrategy: 'class',
         })
 
         expect(css).toContain('@layer maz-ui-theme {\n')
@@ -70,12 +74,14 @@ describe('cSS Generator', () => {
           criticalFoundation: ['border-width'],
           prefix: 'maz',
           mode: 'light',
+          darkSelectorStrategy: 'class',
         })
 
         const fullCSS = generateFullCSS(mazUi, {
           excludeCritical: ['accent', 'border-width'],
           prefix: 'maz',
           mode: 'light',
+          darkSelectorStrategy: 'class',
         })
 
         // Critical variables bes in critical CSS
@@ -95,6 +101,7 @@ describe('cSS Generator', () => {
         const css = generateFullCSS(mazUi, {
           prefix: 'maz',
           mode: 'light',
+          darkSelectorStrategy: 'class',
         })
 
         expect(css).toContain('--maz-primary-500:')
@@ -107,6 +114,7 @@ describe('cSS Generator', () => {
         const css = generateCriticalCSS(mazUi, {
           prefix: 'maz',
           mode: 'light',
+          darkSelectorStrategy: 'class',
         })
 
         expect(css).toMatch(/--maz-shadow:/)
