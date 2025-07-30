@@ -1,35 +1,36 @@
 <script setup lang="ts">
-import { mazUi, obsidian, ocean, pristine, useTheme } from '@maz-ui/themes/src/index.ts'
-import LangSwitcher from './components/LangSwitcher.vue'
-
-const { updateTheme, setColorMode } = useTheme()
+import { MazTrash } from '@maz-ui/icons'
 
 const { message, success, error, info, warning } = useToast()
 
 function showToast() {
   message(`Hello, <strong>world</strong>!`, {
     position: 'top-right',
-    timeout: 1000,
     html: true,
-    persistent: true,
     maxToasts: 2,
     queue: true,
   })
   info('Hello, world!', {
     position: 'bottom-right',
-    timeout: 10000,
   })
   warning('Hello, world!', {
     position: 'bottom-left',
-    timeout: 10000,
   })
   error('Hello, world!', {
     position: 'bottom',
-    timeout: 10000,
   })
   success('Hello, world!', {
     position: 'top-left',
-    timeout: 10000,
+  })
+  message('Hello, world!', {
+    position: 'top',
+    buttons: [
+      {
+        text: 'Click me',
+        color: 'warning',
+        rightIcon: MazTrash,
+      },
+    ],
   })
 }
 </script>
@@ -37,34 +38,15 @@ function showToast() {
 <template>
   <div class="maz-flex maz-h-full maz-flex-col">
     <nav class="maz-flex maz-h-16 maz-flex-none maz-items-center maz-gap-4 maz-border-b maz-p-4 maz-padded-container">
-      <MazLink to="/">
+      <MazLink to="/" color="contrast">
         Home
       </MazLink>
-      <MazLink to="/about">
+      <MazLink to="/about" color="contrast">
         About
       </MazLink>
 
-      <MazLink @click="setColorMode('dark')">
-        Dark
-      </MazLink>
-      <MazLink @click="setColorMode('light')">
-        Light
-      </MazLink>
-      <MazLink @click="updateTheme(ocean)">
-        Ocean
-      </MazLink>
-      <MazLink @click="updateTheme(pristine)">
-        Pristine
-      </MazLink>
-      <MazLink @click="updateTheme(mazUi)">
-        MazUi
-      </MazLink>
-      <MazLink @click="updateTheme(obsidian)">
-        Obsidian
-      </MazLink>
-
       <div class="maz-flex-1" />
-
+      <ThemeSwitcher />
       <LangSwitcher />
       <MazBtn @click="showToast">
         Show Toast
