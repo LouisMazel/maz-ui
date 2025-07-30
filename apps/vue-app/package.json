@@ -25,16 +25,16 @@
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
     "@tsconfig/node22": "^22.0.1",
-    "@vitejs/plugin-vue": "^6.0.0",
+    "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.7.0",
-    "eslint-plugin-oxlint": "^1.8.0",
+    "eslint-plugin-oxlint": "^1.9.0",
     "maz-ui": "workspace:*",
     "npm-run-all2": "^8.0.4",
-    "oxlint": "^1.8.0",
+    "oxlint": "^1.9.0",
     "prettier": "3.6.2",
     "typescript": "~5.8.3",
     "vite": "^7.0.6",
-    "vite-plugin-vue-devtools": "^7.7.7",
+    "vite-plugin-vue-devtools": "^8.0.0",
     "vue-tsc": "^3.0.4"
   }
 }
