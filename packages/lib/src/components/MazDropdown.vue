@@ -27,7 +27,7 @@ const {
   screenReaderDescription,
   dropdownIconAnimation = true,
   size = 'md',
-  closeOnClick = true,
+  closeOnClick = false,
   chevron = true,
   disabled = false,
   preferPosition = 'bottom-start',
@@ -322,7 +322,7 @@ watch(
     :block
     @update:model-value="setDropdown"
   >
-    <template #trigger="{ toggle, close, isOpen, open }">
+    <template #trigger="{ toggle, close, isOpen, open, trigger: triggerType }">
       <div
         :id="instanceId"
         tabindex="-1"
@@ -356,6 +356,9 @@ watch(
             v-bind="$attrs"
             :block
             :size
+            @keydown.enter.stop.prevent="toggle"
+            @keydown.space.stop.prevent="toggle"
+            @blur.stop.prevent="triggerType === 'hover' ? close() : undefined"
           >
             <!-- @slot Text content of the trigger element -->
             <slot />
