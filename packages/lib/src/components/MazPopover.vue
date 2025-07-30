@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { CSSProperties, HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
+import { debounce } from '@maz-ui/utils/src/helpers/debounce.js'
 import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
 
 import {
@@ -358,21 +359,38 @@ let resizeObserver: ResizeObserver | null = null
 let mutationObserver: MutationObserver | null = null
 let isPositioning = false
 let positioningFrame: number | null = null
+let positioningPromise: Promise<void> | null = null
+
+// Utility function to parse CSS pixel values safely
+function parseCSSValue(value: string | number | undefined): number {
+  if (typeof value === 'number')
+    return value
+  if (!value)
+    return 0
+  const stringValue = String(value)
+  const match = stringValue.match(/^(-?\d+(?:\.\d+)?)px$/)
+  return match ? Number.parseFloat(match[1]) : 0
+}
 
 // Unified function to calculate and optionally apply position
 function calculateAndApplyPosition(options: { applyStyles?: boolean, forAnimation?: boolean } = {}) {
-  if (!triggerElement.value || !panelElement.value || isPositioning) {
+  if (!triggerElement.value || !panelElement.value) {
     return null
   }
 
   const { applyStyles = true, forAnimation = false } = options
 
+  // Handle race conditions with positioning
   if (applyStyles) {
+    if (isPositioning) {
+      return positioningPromise
+    }
     isPositioning = true
 
     // Cancel any pending positioning frame
     if (positioningFrame) {
       cancelAnimationFrame(positioningFrame)
+      positioningFrame = null
     }
   }
 
@@ -436,19 +454,35 @@ function calculateAndApplyPosition(options: { applyStyles?: boolean, forAnimatio
     }
     catch (error) {
       console.warn('[MazPopover] Error calculating position:', error)
-      return null
+
+      const fallbackPosition: Omit<MazPopoverPosition, 'auto'> = 'bottom'
+      computedPosition.value = fallbackPosition
+      if (applyStyles) {
+        panelStyles.value = {
+          position: 'fixed',
+          visibility: 'visible',
+          transformOrigin: getTransformOrigin(fallbackPosition),
+        }
+      }
+      return fallbackPosition
     }
     finally {
       if (applyStyles) {
         isPositioning = false
         positioningFrame = null
+        positioningPromise = null
       }
     }
   }
 
   if (applyStyles) {
-    positioningFrame = requestAnimationFrame(doCalculation)
-    return null
+    positioningPromise = new Promise<void>((resolve) => {
+      positioningFrame = requestAnimationFrame(() => {
+        doCalculation()
+        resolve()
+      })
+    })
+    return positioningPromise
   }
   else {
     return doCalculation()
@@ -459,11 +493,11 @@ function updatePosition() {
   calculateAndApplyPosition({ applyStyles: true })
 }
 
-function schedulePositionUpdate() {
+const schedulePositionUpdate = debounce(() => {
   if (isOpen.value && !isPositioning) {
     updatePosition()
   }
-}
+}, 16)
 
 // Prepare position for smooth animation without visual jumps
 function preparePositionForAnimation() {
@@ -566,6 +600,21 @@ function cleanupObservers() {
     mutationObserver.disconnect()
     mutationObserver = null
   }
+}
+
+function cleanup() {
+  cleanupObservers()
+  clearOpenTimeout()
+  clearCloseTimeout()
+
+  // Reset positioning state
+  isPositioning = false
+  positioningPromise = null
+
+  // Remove global event listeners
+  document.removeEventListener('keydown', onKeydown)
+  window.removeEventListener('scroll', onScrollThrottled, true)
+  window.removeEventListener('resize', onScrollThrottled)
 }
 
 function open() {
@@ -849,14 +898,14 @@ function isPositionVisible(position: MazPopoverPosition, triggerRect: DOMRect, p
   let left = 0
 
   if (styles.top)
-    top = Number.parseInt(String(styles.top))
+    top = parseCSSValue(styles.top)
   else if (styles.bottom)
-    top = viewport.height - Number.parseInt(String(styles.bottom)) - panelRect.height
+    top = viewport.height - parseCSSValue(styles.bottom) - panelRect.height
 
   if (styles.left)
-    left = Number.parseInt(String(styles.left))
+    left = parseCSSValue(styles.left)
   else if (styles.right)
-    left = viewport.width - Number.parseInt(String(styles.right)) - panelRect.width
+    left = viewport.width - parseCSSValue(styles.right) - panelRect.width
 
   return left >= 0
     && left + panelRect.width <= viewport.width
@@ -1012,17 +1061,9 @@ onMounted(() => {
   window.addEventListener('resize', onScrollThrottled, { passive: true })
 })
 
-onBeforeUnmount(() => {
-  cleanupObservers()
-  clearOpenTimeout()
-  clearCloseTimeout()
-})
+onBeforeUnmount(cleanup)
 
-onUnmounted(() => {
-  document.removeEventListener('keydown', onKeydown)
-  window.removeEventListener('scroll', onScrollThrottled, true)
-  window.removeEventListener('resize', onScrollThrottled)
-})
+onUnmounted(cleanup)
 
 defineExpose({
   /**

@@ -43,7 +43,7 @@ describe('given MazFullscreenLoader.vue component', () => {
     expect(spinner.props('color')).toBe(color)
     expect(spinner.props('size')).toBe(size)
 
-    expect(teleportedContent?.innerHTML).toMatchInlineSnapshot(`"<svg data-v-668667c8="" data-v-01fc091d="" width="2em" height="2em" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 50 50" xml:space="preserve" class="m-spinner m-reset-css m-spinner--secondary" style="enable-background: new 0 0 50 50;"><path data-v-668667c8="" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z"></path></svg><span data-v-01fc091d="">Contenu personnalisé</span>"`)
+    expect(teleportedContent?.innerHTML).toMatchInlineSnapshot(`"<svg data-v-668667c8="" data-v-01fc091d="" width="2em" height="2em" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 50 50" xml:space="preserve" class="m-spinner m-reset-css m-spinner--secondary"><path data-v-668667c8="" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z"></path></svg><span data-v-01fc091d="">Contenu personnalisé</span>"`)
 
     const content = teleportTarget.querySelector('span')
     expect(content?.innerHTML).toBe('Contenu personnalisé')
