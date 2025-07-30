@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { CSSProperties, HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
-import { debounce } from '@maz-ui/utils/src/helpers/debounce.js'
 import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
 
 import {
@@ -489,15 +488,11 @@ function calculateAndApplyPosition(options: { applyStyles?: boolean, forAnimatio
   }
 }
 
-function updatePosition() {
-  calculateAndApplyPosition({ applyStyles: true })
-}
-
-const schedulePositionUpdate = debounce(() => {
+function schedulePositionUpdate() {
   if (isOpen.value && !isPositioning) {
-    updatePosition()
+    calculateAndApplyPosition()
   }
-}, 16)
+}
 
 // Prepare position for smooth animation without visual jumps
 function preparePositionForAnimation() {
@@ -680,7 +675,7 @@ function setOpen(value: boolean) {
         isOpen.value = value
         emits('toggle', value)
         // Now apply the actual positioning styles
-        updatePosition()
+        calculateAndApplyPosition()
         setupObservers()
         setupFocusTrap()
       }
@@ -1051,7 +1046,7 @@ watch(() => position, (newPosition) => {
   }
 
   if (isOpen.value) {
-    nextTick(updatePosition)
+    nextTick(calculateAndApplyPosition)
   }
 })
 
@@ -1096,7 +1091,7 @@ defineExpose({
    * @description Manually recalculate and update the popover position
    * @usage `mazPopoverInstance.value?.updatePosition()`
    */
-  updatePosition,
+  updatePosition: calculateAndApplyPosition,
 })
 </script>
 
@@ -1174,18 +1169,14 @@ defineExpose({
 <style lang="postcss" scoped>
 .m-popover {
   @apply maz-inline-block;
-}
-
-.m-popover.--block {
-  @apply maz-w-full;
 
   .m-popover-trigger {
+    @apply maz-inline-block maz-size-full;
+  }
+
+  &.--block {
     @apply maz-w-full;
   }
-}
-
-.m-popover-trigger {
-  @apply maz-inline-block;
 }
 
 .m-popover-panel {

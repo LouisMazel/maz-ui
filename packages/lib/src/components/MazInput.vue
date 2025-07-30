@@ -560,7 +560,7 @@ const stateColor = computed(() => {
   }
 
   &-wrapper {
-    @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden maz-bg-surface maz-transition-colors maz-duration-300;
+    @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden maz-bg-surface maz-transition-colors maz-duration-300 maz-size-full;
 
     &.--border {
       @apply maz-border maz-border-solid;

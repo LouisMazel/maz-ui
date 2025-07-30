@@ -761,6 +761,10 @@ watch(
 .m-date-picker {
   @apply maz-relative maz-inline-block;
 
+  &__input {
+    @apply maz-size-full;
+  }
+
   & .m-date-picker__button {
     @apply maz-flex maz-h-full maz-cursor-not-allowed maz-bg-transparent maz-pr-1 maz-flex-center;
 

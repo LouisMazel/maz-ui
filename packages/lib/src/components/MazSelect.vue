@@ -765,6 +765,26 @@ defineExpose({
 .m-select {
   @apply maz-relative maz-inline-flex maz-align-top;
 
+  &-input {
+    @apply maz-size-full;
+
+    &__toggle-button {
+      @apply maz-flex maz-h-full maz-bg-transparent maz-pl-0 maz-flex-center;
+    }
+
+    &:deep(input) {
+      @apply maz-caret-transparent;
+    }
+  }
+
+  &-input:deep(.m-input-input) {
+    @apply maz-pr-0;
+  }
+
+  &-input.--has-label:deep(.m-input-input) {
+    @apply maz-pr-0;
+  }
+
   &.--mini {
     @apply maz-text-xs;
   }
@@ -791,24 +811,6 @@ defineExpose({
 
   &:not(.--disabled):deep(.m-input-input) {
     @apply maz-cursor-pointer;
-  }
-
-  &-input:deep(.m-input-input) {
-    @apply maz-pr-0;
-  }
-
-  &-input.--has-label:deep(.m-input-input) {
-    @apply maz-pr-0;
-  }
-
-  &-input {
-    &__toggle-button {
-      @apply maz-flex maz-h-full maz-bg-transparent maz-pl-0 maz-flex-center;
-    }
-
-    &:deep(input) {
-      @apply maz-caret-transparent;
-    }
   }
 
   &-chevron {

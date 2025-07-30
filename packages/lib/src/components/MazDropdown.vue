@@ -480,7 +480,7 @@ watch(
   @apply maz-relative maz-inline-flex maz-flex-col maz-items-start maz-align-top;
 
   &__wrapper {
-    @apply maz-h-full maz-w-full maz-outline-none focus:maz-bg-surface-400 maz-rounded;
+    @apply maz-outline-none focus:maz-bg-surface-400 maz-rounded maz-size-full;
   }
 
   &__icon {
