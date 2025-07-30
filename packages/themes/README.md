@@ -1,6 +1,6 @@
 # @maz-ui/themes
 
-High-performance and typed theme system for Maz-UI, inspired by Shadcn and PrimeVue.
+High-performance and typed theme system for Maz-UI.
 
 ## Features
 

@@ -11,9 +11,9 @@ export interface CriticalCSSOptions {
   /** Critical foundation variables to include */
   criticalFoundation?: (keyof ThemeFoundation)[]
   /** Theme mode to generate */
-  mode?: ThemeMode
+  mode: ThemeMode
   /** Dark mode selector: 'class' (.dark) | 'media' (@media) */
-  darkSelectorStrategy?: DarkModeStrategy
+  darkSelectorStrategy: DarkModeStrategy
   /** CSS variables prefix */
   prefix?: string
 }
@@ -22,9 +22,9 @@ export interface FullCSSOptions {
   /** Critical variables to exclude (to avoid duplication) */
   excludeCritical?: (keyof ThemeColors | keyof ThemeFoundation)[]
   /** Theme mode to generate */
-  mode?: ThemeMode
+  mode: ThemeMode
   /** Dark mode selector: 'class' (.dark) | 'media' (@media) */
-  darkSelectorStrategy?: DarkModeStrategy
+  darkSelectorStrategy: DarkModeStrategy
   /** CSS variables prefix */
   prefix?: string
   /** Include color scales (50-900) */
@@ -71,24 +71,27 @@ const scaleColors = ['primary', 'secondary', 'accent', 'destructive', 'success',
  */
 export function generateCriticalCSS(
   preset: ThemePreset,
-  options: CriticalCSSOptions = {},
+  options: CriticalCSSOptions = {
+    mode: 'both',
+    darkSelectorStrategy: 'class',
+  },
 ): string {
   const {
     criticalColors = DEFAULT_CRITICAL_COLORS,
     criticalFoundation = DEFAULT_CRITICAL_FOUNDATION,
-    mode = 'both',
-    darkSelectorStrategy = 'class',
+    mode,
+    darkSelectorStrategy,
     prefix = 'maz',
   } = options
 
-  const lightCritical = extractCriticalVariables(preset.colors.light, criticalColors)
-  const darkCritical = extractCriticalVariables(preset.colors.dark, criticalColors)
   const foundationCritical = extractCriticalFoundation(preset.foundation, criticalFoundation)
 
   let css = '@layer maz-ui-theme {\n'
 
   // Light theme
   if (mode === 'light' || mode === 'both') {
+    const lightCritical = extractCriticalVariables(preset.colors.light, criticalColors)
+
     css += generateVariablesBlock({
       selector: ':root',
       colors: lightCritical,
@@ -99,6 +102,8 @@ export function generateCriticalCSS(
 
   // Dark theme
   if (mode === 'dark' || mode === 'both') {
+    const darkCritical = extractCriticalVariables(preset.colors.dark, criticalColors)
+
     css += generateVariablesBlock({
       selector: darkSelectorStrategy === 'media' ? ':root' : '.dark',
       mediaQuery: darkSelectorStrategy === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
@@ -122,23 +127,26 @@ export function generateCriticalCSS(
  */
 export function generateFullCSS(
   preset: ThemePreset,
-  options: FullCSSOptions = {},
+  options: FullCSSOptions = {
+    mode: 'both',
+    darkSelectorStrategy: 'class',
+  },
 ): string {
   const {
     excludeCritical = DEFAULT_CRITICAL_COLORS,
-    mode = 'both',
-    darkSelectorStrategy = 'class',
+    mode,
+    darkSelectorStrategy,
     prefix = 'maz',
     includeColorScales = true,
   } = options
 
-  const lightColors = excludeVariables(preset.colors.light, excludeCritical)
-  const darkColors = excludeVariables(preset.colors.dark, excludeCritical)
   const foundation = excludeFoundationVariables(preset.foundation, DEFAULT_CRITICAL_FOUNDATION)
 
   let css = '@layer maz-ui-theme {\n'
 
   if (mode === 'light' || mode === 'both') {
+    const lightColors = excludeVariables(preset.colors.light, excludeCritical)
+
     css += generateVariablesBlock({
       selector: ':root',
       colors: lightColors,
@@ -151,6 +159,8 @@ export function generateFullCSS(
 
   // Dark theme - Remaining variables + scales
   if (mode === 'dark' || mode === 'both') {
+    const darkColors = excludeVariables(preset.colors.dark, excludeCritical)
+
     css += generateVariablesBlock({
       selector: darkSelectorStrategy === 'media' ? ':root' : '.dark',
       mediaQuery: darkSelectorStrategy === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
