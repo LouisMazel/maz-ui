@@ -174,7 +174,7 @@ function getProgressBarColor() {
       return 'maz-bg-warning-700'
     }
     default: {
-      return 'maz-bg-contrast-700'
+      return 'maz-bg-contrast-foreground'
     }
   }
 }
@@ -253,12 +253,13 @@ function onAnimationLeave() {
 
 function getButtonRightIcon(button: ToastButton) {
   if (!button.to && !button.href) {
-    return undefined
+    return button.rightIcon
   }
 
   if (button.target === '_blank') {
     return MazArrowTopRightOnSquare
   }
+
   return MazLinkIcon
 }
 
@@ -308,7 +309,10 @@ onMounted(() => {
         <MazBtn
           v-for="(toastButton, index) in internalButtons"
           :key="index"
-          v-bind="toastButton"
+          v-bind="{
+            ...toastButton,
+            onClick: undefined,
+          }"
           :loading="isActionLoading || toastButton.loading"
           :right-icon="getButtonRightIcon(toastButton)"
           @click.stop="onButtonClick(toastButton, $event)"
@@ -411,11 +415,11 @@ onMounted(() => {
   }
 
   &__button {
-    @apply maz-relative maz-flex maz-w-full maz-items-center maz-gap-2 maz-self-center maz-rounded maz-pl-2 maz-pr-2 maz-shadow-md maz-transition maz-duration-300 maz-ease-in-out maz-overflow-hidden maz-border maz-backdrop-blur-lg;
+    @apply maz-relative maz-flex maz-w-full maz-items-center maz-gap-2 maz-self-center maz-rounded maz-pl-2 maz-pr-2 maz-shadow-md maz-transition maz-duration-300 maz-ease-in-out maz-overflow-hidden maz-border maz-backdrop-blur-xl;
   }
 
   &__close {
-    @apply maz-flex maz-rounded-full maz-p-0.5 maz-flex-center maz-absolute maz-border -maz-top-2 maz-backdrop-blur-lg;
+    @apply maz-flex maz-rounded-full maz-p-0.5 maz-flex-center maz-absolute maz-border -maz-top-2 maz-backdrop-blur-xl;
 
     &__close-icon {
       @apply maz-cursor-pointer;
@@ -473,7 +477,9 @@ onMounted(() => {
   }
 
   & .m-toast__progress-bar {
-    @apply maz-absolute maz-inset-x-0 maz-bottom-0 maz-h-[var(--maz-border-width)];
+    @apply maz-absolute maz-inset-x-0 maz-bottom-[var(--maz-border-width)];
+
+    height: max(var(--maz-border-width), 0.125rem);
 
     & .m-toast__progress-bar-inner {
       @apply maz-h-full maz-transition-all maz-duration-200 maz-ease-linear;
