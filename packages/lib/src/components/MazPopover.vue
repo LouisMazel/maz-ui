@@ -1,15 +1,16 @@
 <script lang="ts" setup>
-import type { CSSProperties, HTMLAttributes } from 'vue'
+import type { Placement } from '@floating-ui/vue'
+import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
-import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
 
+import { autoUpdate, flip, offset as floatingOffset, hide, shift, useFloating } from '@floating-ui/vue'
+import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
 import {
   computed,
   nextTick,
   onBeforeUnmount,
   onMounted,
   onUnmounted,
-  ref,
   useAttrs,
   useTemplateRef,
   watch,
@@ -18,10 +19,6 @@ import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { vClickOutside } from '../directives/vClickOutside'
 import { getColor } from './types'
 
-/**
- * A versatile Vue 3 component for displaying content in overlays that bypass overflow constraints of parent elements.
- * Supports multiple positioning strategies, accessibility features, and various trigger modes.
- */
 defineOptions({
   name: 'MazPopover',
   inheritAttrs: false,
@@ -254,6 +251,43 @@ const attrs = useAttrs()
 const triggerElement = useTemplateRef<HTMLElement>('trigger')
 const panelElement = useTemplateRef<HTMLElement>('panel')
 
+// Convert MazPopover position to Floating UI placement
+function getPlacement(position: MazPopoverPosition): Placement {
+  if (position === 'auto') {
+    return preferPosition ? getPlacement(preferPosition) : 'bottom-start'
+  }
+  return position
+}
+
+// Floating UI setup
+const middleware = computed(() => [
+  floatingOffset(offset),
+  flip({
+    fallbackPlacements: fallbackPosition ? [getPlacement(fallbackPosition)] : undefined,
+  }),
+  hide(),
+  shift({ padding: 5 }),
+])
+
+const { floatingStyles, placement, update } = useFloating(
+  computed(() => getPositionReference() || triggerElement.value),
+  panelElement,
+  {
+    placement: computed(() => getPlacement(position)),
+    middleware,
+    transform: false,
+    whileElementsMounted: autoUpdate,
+  },
+)
+
+// Computed position for CSS classes (convert back from Floating UI placement)
+const computedPosition = computed(() => {
+  if (!placement.value) {
+    return position === 'auto' ? 'bottom' : position
+  }
+  return placement.value
+})
+
 // Get the position reference element (can be different from trigger)
 function getPositionReference(): HTMLElement | null {
   if (!positionReference) {
@@ -273,9 +307,6 @@ function getPositionReference(): HTMLElement | null {
 }
 
 const isOpen = defineModel<boolean>({ required: false, default: false })
-// Initialize computed position
-const computedPosition = ref<Omit<MazPopoverPosition, 'auto'>>(position === 'auto' ? 'bottom' : position)
-
 let openTimeout: NodeJS.Timeout | null = null
 let closeTimeout: NodeJS.Timeout | null = null
 let initialFocusElement: HTMLElement | null = null
@@ -283,9 +314,21 @@ let ignoreNextClickOutside = false
 
 const panelId = computed(() => `${triggerId.value}-panel`)
 
-const panelStyles = ref<HTMLAttributes['style']>()
-
 const rootStyles = computed(() => attrs.style as HTMLAttributes['style'])
+
+// Combined panel styles (Floating UI + custom styles)
+const panelStyles = computed(() => {
+  const styles: any = {
+    ...floatingStyles.value,
+    pointerEvents: isOpen.value ? 'auto' : 'none',
+  }
+
+  if (panelStyle) {
+    Object.assign(styles, panelStyle)
+  }
+
+  return styles
+})
 
 interface TriggerEventHandlers {
   onClick?: () => void
@@ -353,263 +396,12 @@ const panelClasses = computed(() => [
   `--${getColor(color)}`,
 ])
 
-// State variables for positioning
-let resizeObserver: ResizeObserver | null = null
-let mutationObserver: MutationObserver | null = null
-let isPositioning = false
-let positioningFrame: number | null = null
-let positioningPromise: Promise<void> | null = null
-
-// Utility function to parse CSS pixel values safely
-function parseCSSValue(value: string | number | undefined): number {
-  if (typeof value === 'number')
-    return value
-  if (!value)
-    return 0
-  const stringValue = String(value)
-  const match = stringValue.match(/^(-?\d+(?:\.\d+)?)px$/)
-  return match ? Number.parseFloat(match[1]) : 0
-}
-
-// Unified function to calculate and optionally apply position
-function calculateAndApplyPosition(options: { applyStyles?: boolean, forAnimation?: boolean } = {}) {
-  if (!triggerElement.value || !panelElement.value) {
-    return null
-  }
-
-  const { applyStyles = true, forAnimation = false } = options
-
-  // Handle race conditions with positioning
-  if (applyStyles) {
-    if (isPositioning) {
-      return positioningPromise
-    }
-    isPositioning = true
-
-    // Cancel any pending positioning frame
-    if (positioningFrame) {
-      cancelAnimationFrame(positioningFrame)
-      positioningFrame = null
-    }
-  }
-
-  // eslint-disable-next-line sonarjs/cognitive-complexity
-  const doCalculation = () => {
-    if (!triggerElement.value || !panelElement.value) {
-      if (applyStyles)
-        isPositioning = false
-      return null
-    }
-
-    try {
-      const viewport = { width: window.innerWidth, height: window.innerHeight }
-      const positionRef = getPositionReference()
-      if (!positionRef) {
-        if (applyStyles)
-          isPositioning = false
-        return null
-      }
-
-      const triggerRect = positionRef.getBoundingClientRect()
-
-      // For animation preparation, temporarily make panel invisible but present
-      let wasHidden = false
-      if (forAnimation) {
-        wasHidden = panelElement.value.style.visibility === 'hidden'
-        panelElement.value.style.visibility = 'hidden'
-        panelElement.value.style.display = 'block'
-      }
-
-      let newPosition: Omit<MazPopoverPosition, 'auto'>
-      if (position === 'auto') {
-        newPosition = getBestPosition(triggerRect, viewport)
-      }
-      else {
-        newPosition = position
-      }
-
-      // Always update computed position for CSS classes
-      computedPosition.value = newPosition
-
-      if (applyStyles) {
-        const panelRect = panelElement.value.getBoundingClientRect()
-        const styles = calculatePosition(newPosition, triggerRect, panelRect)
-
-        // Apply position styles
-        panelStyles.value = styles
-      }
-
-      // Restore original state for animation preparation
-      if (forAnimation && !applyStyles) {
-        if (wasHidden) {
-          panelElement.value.style.visibility = 'hidden'
-        }
-        else {
-          panelElement.value.style.display = ''
-        }
-      }
-
-      return newPosition
-    }
-    catch (error) {
-      console.warn('[MazPopover] Error calculating position:', error)
-
-      const fallbackPosition: Omit<MazPopoverPosition, 'auto'> = 'bottom'
-      computedPosition.value = fallbackPosition
-      if (applyStyles) {
-        panelStyles.value = {
-          position: 'fixed',
-          visibility: 'visible',
-          transformOrigin: getTransformOrigin(fallbackPosition),
-        }
-      }
-      return fallbackPosition
-    }
-    finally {
-      if (applyStyles) {
-        isPositioning = false
-        positioningFrame = null
-        positioningPromise = null
-      }
-    }
-  }
-
-  if (applyStyles) {
-    positioningPromise = new Promise<void>((resolve) => {
-      positioningFrame = requestAnimationFrame(() => {
-        doCalculation()
-        resolve()
-      })
-    })
-    return positioningPromise
-  }
-  else {
-    return doCalculation()
-  }
-}
-
-function schedulePositionUpdate() {
-  if (isOpen.value && !isPositioning) {
-    calculateAndApplyPosition()
-  }
-}
-
-// Prepare position for smooth animation without visual jumps
-function preparePositionForAnimation() {
-  // For auto position, we need to update computedPosition before animation starts
-  if (position === 'auto' && triggerElement.value) {
-    const positionRef = getPositionReference()
-    if (positionRef) {
-      const triggerRect = positionRef.getBoundingClientRect()
-      const viewport = { width: window.innerWidth, height: window.innerHeight }
-      const newPosition = getBestPosition(triggerRect, viewport)
-      computedPosition.value = newPosition
-    }
-  }
-  return calculateAndApplyPosition({ applyStyles: false, forAnimation: true })
-}
-
-function setupObservers() {
-  if (!panelElement.value || !triggerElement.value) {
-    return
-  }
-
-  const positionRef = getPositionReference()
-  if (!positionRef) {
-    return
-  }
-
-  if (globalThis.ResizeObserver) {
-    resizeObserver = new ResizeObserver((entries) => {
-      // Only update if the panel, trigger, or position reference size changed significantly
-      for (const entry of entries) {
-        if (entry.target === panelElement.value
-          || entry.target === triggerElement.value
-          || entry.target === positionRef) {
-          schedulePositionUpdate()
-          break
-        }
-      }
-    })
-
-    resizeObserver.observe(panelElement.value)
-    resizeObserver.observe(triggerElement.value)
-
-    // Also observe the position reference if it's different from trigger
-    if (positionRef !== triggerElement.value) {
-      resizeObserver.observe(positionRef)
-    }
-
-    // Also observe the document element for viewport changes
-    resizeObserver.observe(document.documentElement)
-  }
-
-  // Observe content changes
-  mutationObserver = new MutationObserver((mutations) => {
-    if (isPositioning)
-      return
-
-    let shouldUpdate = false
-    for (const mutation of mutations) {
-      // Skip our own style changes
-      if (mutation.target === panelElement.value
-        && mutation.type === 'attributes'
-        && mutation.attributeName === 'style') {
-        continue
-      }
-
-      // Update on content changes
-      if (mutation.type === 'childList'
-        || (mutation.type === 'attributes'
-          && mutation.attributeName === 'class')) {
-        shouldUpdate = true
-        break
-      }
-    }
-
-    if (shouldUpdate) {
-      schedulePositionUpdate()
-    }
-  })
-
-  mutationObserver.observe(panelElement.value, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ['class'],
-  })
-}
-
-function cleanupObservers() {
-  if (positioningFrame) {
-    cancelAnimationFrame(positioningFrame)
-    positioningFrame = null
-  }
-
-  if (resizeObserver) {
-    resizeObserver.disconnect()
-    resizeObserver = null
-  }
-
-  if (mutationObserver) {
-    mutationObserver.disconnect()
-    mutationObserver = null
-  }
-}
-
 function cleanup() {
-  cleanupObservers()
   clearOpenTimeout()
   clearCloseTimeout()
 
-  // Reset positioning state
-  isPositioning = false
-  positioningPromise = null
-
   // Remove global event listeners
   document.removeEventListener('keydown', onKeydown)
-  window.removeEventListener('scroll', onScrollThrottled, true)
-  window.removeEventListener('resize', onScrollThrottled)
 }
 
 function open() {
@@ -663,37 +455,19 @@ function toggle() {
 function setOpen(value: boolean) {
   if (value) {
     emits('open')
+    isOpen.value = value
+    emits('toggle', value)
 
     nextTick(() => {
-      // Step 1: Prepare position calculation without applying styles (sets CSS classes)
-      if (triggerElement.value && panelElement.value) {
-        preparePositionForAnimation()
-      }
-
-      // Step 2: Open with proper positioning
-      const openWithPosition = () => {
-        isOpen.value = value
-        emits('toggle', value)
-        // Now apply the actual positioning styles
-        calculateAndApplyPosition()
-        setupObservers()
-        setupFocusTrap()
-      }
-
-      openWithPosition()
+      update()
+      setupFocusTrap()
     })
   }
   else {
     isOpen.value = value
     emits('toggle', value)
     emits('close')
-    panelStyles.value = {
-      position: 'fixed',
-      visibility: 'hidden',
-      pointerEvents: 'none',
-    }
     ignoreNextClickOutside = false
-    cleanupObservers()
 
     if (trapFocus) {
       restoreFocus()
@@ -715,222 +489,35 @@ function clearCloseTimeout() {
   }
 }
 
-function getBestPosition(
-  triggerRect: DOMRect,
-  viewport: { width: number, height: number },
-): Omit<MazPopoverPosition, 'auto'> {
-  if (!panelElement.value)
-    return 'bottom'
-
-  const panelRect = panelElement.value.getBoundingClientRect()
-
-  if (preferPosition && isPositionVisible(preferPosition, triggerRect, panelRect, viewport)) {
-    return preferPosition
-  }
-
-  else if (preferPosition && fallbackPosition) {
-    return fallbackPosition
-  }
-
-  const positions: MazPopoverPosition[] = ['bottom', 'top', 'right', 'left']
-  const validPositions = getValidPositions(positions, triggerRect, panelRect, viewport)
-
-  if (validPositions.length === 0) {
-    const spaces = {
-      top: triggerRect.top,
-      bottom: viewport.height - triggerRect.bottom,
-      left: triggerRect.left,
-      right: viewport.width - triggerRect.right,
-    }
-
-    const sortedPositions = positions.sort((a, b) => spaces[b as keyof typeof spaces] - spaces[a as keyof typeof spaces])
-
-    return sortedPositions[0]
-  }
-
-  return validPositions.sort((a, b) => b.score - a.score)[0].position
-}
-
-// Calculate position using appropriate CSS properties for better positioning
-// eslint-disable-next-line complexity, sonarjs/cognitive-complexity
-function calculatePosition(
-  position: Omit<MazPopoverPosition, 'auto'>,
-  triggerRect: DOMRect,
-  _panelRect: DOMRect,
-) {
-  const viewport = { width: window.innerWidth, height: window.innerHeight }
-
-  const styles: {
-    position: CSSProperties['position']
-    visibility: CSSProperties['visibility']
-    transformOrigin: CSSProperties['transformOrigin']
-    bottom?: CSSProperties['bottom']
-    left?: CSSProperties['left']
-    right?: CSSProperties['right']
-    top?: CSSProperties['top']
-  } = {
-    position: 'fixed',
-    visibility: 'visible',
-    transformOrigin: getTransformOrigin(position),
-  }
-
-  switch (position) {
-    case 'top':
-    case 'top-start':
-    case 'top-end':
-      // Use bottom instead of top for top positions
-      styles.bottom = `${viewport.height - triggerRect.top + offset}px`
-      if (position === 'top-start') {
-        styles.left = `${triggerRect.left}px`
-      }
-      else if (position === 'top-end') {
-        styles.right = `${viewport.width - triggerRect.right}px`
-      }
-      else {
-        styles.left = `${triggerRect.left + triggerRect.width / 2 - _panelRect.width / 2}px`
-      }
-      break
-
-    case 'bottom':
-    case 'bottom-start':
-    case 'bottom-end':
-      styles.top = `${triggerRect.bottom + offset}px`
-      if (position === 'bottom-start') {
-        styles.left = `${triggerRect.left}px`
-      }
-      else if (position === 'bottom-end') {
-        styles.right = `${viewport.width - triggerRect.right}px`
-      }
-      else {
-        styles.left = `${triggerRect.left + triggerRect.width / 2 - _panelRect.width / 2}px`
-      }
-      break
-
-    case 'left':
-    case 'left-start':
-    case 'left-end':
-      // Use right instead of left for left positions
-      styles.right = `${viewport.width - triggerRect.left + offset}px`
-      if (position === 'left-start') {
-        styles.top = `${triggerRect.top}px`
-      }
-      else if (position === 'left-end') {
-        styles.bottom = `${viewport.height - triggerRect.bottom}px`
-      }
-      else {
-        styles.top = `${triggerRect.top + triggerRect.height / 2 - _panelRect.height / 2}px`
-      }
-      break
-
-    case 'right':
-    case 'right-start':
-    case 'right-end':
-      styles.left = `${triggerRect.right + offset}px`
-      if (position === 'right-start') {
-        styles.top = `${triggerRect.top}px`
-      }
-      else if (position === 'right-end') {
-        styles.bottom = `${viewport.height - triggerRect.bottom}px`
-      }
-      else {
-        styles.top = `${triggerRect.top + triggerRect.height / 2 - _panelRect.height / 2}px`
-      }
-      break
-  }
-
-  return styles
-}
-
-// Get transform origin based on position for better animations
 function getTransformOrigin(position: Omit<MazPopoverPosition, 'auto'>): string {
   switch (position) {
     case 'top':
-      // Uses bottom + translateX(-50%) → origin should be center bottom
       return 'center bottom'
     case 'top-start':
-      // Uses bottom + left → origin should be left bottom
       return 'left bottom'
     case 'top-end':
-      // Uses bottom + right → origin should be right bottom
       return 'right bottom'
     case 'bottom':
-      // Uses top + translateX(-50%) → origin should be center top
       return 'center top'
     case 'bottom-start':
-      // Uses top + left → origin should be left top
       return 'left top'
     case 'bottom-end':
-      // Uses top + right → origin should be right top
       return 'right top'
     case 'left':
-      // Uses right + translateY(-50%) → origin should be right center
       return 'right center'
     case 'left-start':
-      // Uses right + top → origin should be right top
       return 'right top'
     case 'left-end':
-      // Uses right + bottom → origin should be right bottom
       return 'right bottom'
     case 'right':
-      // Uses left + translateY(-50%) → origin should be left center
       return 'left center'
     case 'right-start':
-      // Uses left + top → origin should be left top
       return 'left top'
     case 'right-end':
-      // Uses left + bottom → origin should be left bottom
       return 'left bottom'
     default:
       return 'center'
   }
-}
-
-function isPositionVisible(position: MazPopoverPosition, triggerRect: DOMRect, panelRect: DOMRect, viewport: { width: number, height: number }) {
-  const styles = calculatePosition(position, triggerRect, panelRect)
-
-  // Calculate actual coordinates from styles
-  let top = 0
-  let left = 0
-
-  if (styles.top)
-    top = parseCSSValue(styles.top)
-  else if (styles.bottom)
-    top = viewport.height - parseCSSValue(styles.bottom) - panelRect.height
-
-  if (styles.left)
-    left = parseCSSValue(styles.left)
-  else if (styles.right)
-    left = viewport.width - parseCSSValue(styles.right) - panelRect.width
-
-  return left >= 0
-    && left + panelRect.width <= viewport.width
-    && top >= 0
-    && top + panelRect.height <= viewport.height
-}
-
-function getValidPositions(positions: MazPopoverPosition[], triggerRect: DOMRect, panelRect: DOMRect, viewport: { width: number, height: number }) {
-  const spaces = {
-    bottom: viewport.height - triggerRect.bottom,
-    top: triggerRect.top,
-    right: viewport.width - triggerRect.right,
-    left: triggerRect.left,
-  }
-  return positions.reduce<{ position: MazPopoverPosition, score: number }[]>((acc, pos) => {
-    if (isPositionVisible(pos, triggerRect, panelRect, viewport)) {
-      let positionBonus = 0
-      if (pos === 'bottom')
-        positionBonus = 1000
-      else if (pos === 'top')
-        positionBonus = 800
-      else if (pos === 'right')
-        positionBonus = 600
-      else if (pos === 'left')
-        positionBonus = 400
-      const score = spaces[pos as keyof typeof spaces] + positionBonus
-      acc.push({ position: pos, score })
-    }
-    return acc
-  }, [])
 }
 
 function setupFocusTrap() {
@@ -1021,12 +608,6 @@ function onClickOutside(event: Event) {
   }
 }
 
-function onScrollThrottled() {
-  if (isOpen.value) {
-    schedulePositionUpdate()
-  }
-}
-
 watch(isOpen, (value, oldValue) => {
   if (!isClient() || value === oldValue)
     return
@@ -1039,21 +620,14 @@ watch(isOpen, (value, oldValue) => {
   }
 }, { immediate: true })
 
-watch(() => position, (newPosition) => {
-  // Update computed position immediately when position prop changes
-  if (newPosition !== 'auto') {
-    computedPosition.value = newPosition
-  }
-
+watch(() => position, () => {
   if (isOpen.value) {
-    nextTick(calculateAndApplyPosition)
+    nextTick(() => update())
   }
 })
 
 onMounted(() => {
   document.addEventListener('keydown', onKeydown)
-  window.addEventListener('scroll', onScrollThrottled, { passive: true, capture: true })
-  window.addEventListener('resize', onScrollThrottled, { passive: true })
 })
 
 onBeforeUnmount(cleanup)
@@ -1091,7 +665,7 @@ defineExpose({
    * @description Manually recalculate and update the popover position
    * @usage `mazPopoverInstance.value?.updatePosition()`
    */
-  updatePosition: calculateAndApplyPosition,
+  updatePosition: update,
 })
 </script>
 
@@ -1149,7 +723,10 @@ defineExpose({
           class="m-popover-panel"
           :aria-live="announceChanges ? 'polite' : undefined"
           :class="panelClasses"
-          :style="[panelStyles, panelStyle]"
+          :style="{
+            ...panelStyles,
+            transformOrigin: getTransformOrigin(computedPosition),
+          }"
           v-bind="panelEvents"
         >
           <!--
@@ -1180,7 +757,7 @@ defineExpose({
 }
 
 .m-popover-panel {
-  @apply maz-fixed maz-invisible maz-outline-none maz-z-default-backdrop maz-rounded maz-drop-shadow-md maz-shadow-elevation;
+  @apply maz-fixed maz-outline-none maz-z-default-backdrop maz-rounded maz-drop-shadow-md maz-shadow-elevation;
 
   will-change: transform, opacity;
   contain: layout style paint;
@@ -1226,11 +803,15 @@ defineExpose({
 }
 
 .maz-popover-enter-active {
-  @apply maz-transition-all maz-duration-200 maz-ease-out;
+  transition:
+    opacity 200ms ease-out,
+    transform 200ms ease-out;
 }
 
 .maz-popover-leave-active {
-  @apply maz-transition-all maz-duration-200 maz-ease-in;
+  transition:
+    opacity 200ms ease-in,
+    transform 200ms ease-in;
 }
 
 /* Bottom positions - expand from top */
