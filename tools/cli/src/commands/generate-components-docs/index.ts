@@ -21,7 +21,7 @@ export function generateComponentsDocumentationCommand(): Command {
         else {
           await execPromise('vue-docgen')
           logger.eot()
-          const files = readdirSync('./../../apps/docs/docs/.vitepress/generated-docs')
+          const files = readdirSync('./../../apps/docs/.vitepress/generated-docs')
           logger.success(`${files.length} components documentation generated`)
           logger.eot()
         }

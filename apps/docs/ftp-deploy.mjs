@@ -38,7 +38,7 @@ async function deployToHostinger() {
     'server': process.env.FTP_SERVER || env.FTP_SERVER,
     'username': process.env.FTP_USERNAME || env.FTP_USERNAME,
     'password': process.env.FTP_PASSWORD || env.FTP_PASSWORD,
-    'local-dir': join(resolve(_dirname, './docs/.vitepress/dist/'), '/'),
+    'local-dir': join(resolve(_dirname, './.vitepress/dist/'), '/'),
     // 'server-dir': '/public_html/',
     'exclude': [...excludeDefaults, '.env', '.git/**', 'node_modules/**'],
     'timeout': 1000000,

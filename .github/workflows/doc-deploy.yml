@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - 'packages/docs/**'
+      - 'apps/docs/**'
       - 'packages/lib/**'
       - .github/workflows/doc-deploy.yml
 

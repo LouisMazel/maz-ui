@@ -12,6 +12,6 @@ export default defineConfig(
     markdown: true,
   },
   {
-    ignores: ['docs/**/*.md'],
+    ignores: ['src/**/*.md'],
   },
 )
