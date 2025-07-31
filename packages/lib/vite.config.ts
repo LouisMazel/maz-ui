@@ -43,7 +43,6 @@ const moduleEntries = Object.fromEntries(
     'src/composables/*.ts',
     'src/directives/*.ts',
     'src/resolvers/*.ts',
-    'src/utils/*.ts',
     'src/plugins/*.ts',
     'src/tailwindcss/**/*.ts',
   ], {

@@ -5,7 +5,6 @@ import { createRequire } from 'node:module'
 import { components } from './components.mjs'
 import { composables } from './composables.mjs'
 import { directives } from './directives.mjs'
-import { formatters } from './formatters.mjs'
 import { guide } from './guide.mjs'
 import { plugins } from './plugins.mjs'
 import { utils } from './utils.mjs'
@@ -20,7 +19,7 @@ export const nav = [
   {
     text: 'Modules',
     activeMatch: '/plugins',
-    items: [plugins, composables, directives, formatters, utils],
+    items: [plugins, composables, directives, utils],
   },
   { text: 'Made w/ Maz-UI', link: '/made-with-maz-ui' },
   {
