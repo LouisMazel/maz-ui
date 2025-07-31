@@ -3,7 +3,7 @@ import type { Placement } from '@floating-ui/vue'
 import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
 
-import { autoUpdate, flip, offset as floatingOffset, hide, shift, useFloating } from '@floating-ui/vue'
+import { autoPlacement, autoUpdate, flip, offset as floatingOffset, hide, shift, useFloating } from '@floating-ui/vue'
 import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
 import {
   computed,
@@ -72,7 +72,9 @@ const emits = defineEmits<{
   'toggle': [value: boolean]
 }>()
 
-export type MazPopoverPosition = 'auto' | 'top' | 'bottom' | 'left' | 'right' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end'
+export type MazPopoverPosition = Placement | 'auto'
+export type MazPopoverPreferPosition = Placement
+export type MazPopoverFallbackPosition = Placement
 export type MazPopoverTrigger = 'click' | 'hover' | 'manual' | 'adaptive'
 export type MazPopoverRole = 'dialog' | 'tooltip' | 'menu'
 
@@ -98,7 +100,7 @@ export interface MazPopoverProps {
    * @default 'bottom-start'
    * @description Preferred position of the popover relative to trigger
    */
-  preferPosition?: MazPopoverPosition
+  preferPosition?: MazPopoverPreferPosition
 
   /**
    * Fallback position of the popover relative to trigger when prefer position is not visible
@@ -106,7 +108,7 @@ export interface MazPopoverProps {
    * @default auto
    * @description Fallback position of the popover relative to trigger
    */
-  fallbackPosition?: MazPopoverPosition
+  fallbackPosition?: MazPopoverFallbackPosition
 
   /**
    * How the popover is triggered
@@ -251,56 +253,64 @@ const attrs = useAttrs()
 const triggerElement = useTemplateRef<HTMLElement>('trigger')
 const panelElement = useTemplateRef<HTMLElement>('panel')
 
-// Convert MazPopover position to Floating UI placement
-function getPlacement(position: MazPopoverPosition): Placement {
-  if (position === 'auto') {
-    return preferPosition ? getPlacement(preferPosition) : 'bottom-start'
+const middleware = computed(() => {
+  const middleware = [
+    floatingOffset(offset),
+    hide(),
+    shift({ padding: 5 }),
+  ]
+
+  const shouldUseAutoPlacement = position === 'auto' && !preferPosition && !fallbackPosition
+
+  if (shouldUseAutoPlacement) {
+    middleware.push(autoPlacement({
+      allowedPlacements: ['top', 'bottom', 'left', 'right'],
+    }))
   }
+  else {
+    middleware.push(flip({
+      fallbackPlacements: fallbackPosition ? [fallbackPosition] : undefined,
+    }))
+  }
+  return middleware
+})
+
+const floatingPosition = computed(() => {
+  if (position === 'auto') {
+    return preferPosition
+  }
+
   return position
-}
+})
 
-// Floating UI setup
-const middleware = computed(() => [
-  floatingOffset(offset),
-  flip({
-    fallbackPlacements: fallbackPosition ? [getPlacement(fallbackPosition)] : undefined,
-  }),
-  hide(),
-  shift({ padding: 5 }),
-])
+const reference = computed(() => getPositionReference() || triggerElement.value)
 
-const { floatingStyles, placement, update } = useFloating(
-  computed(() => getPositionReference() || triggerElement.value),
+const { floatingStyles, placement, update, middlewareData } = useFloating(
+  reference,
   panelElement,
   {
-    placement: computed(() => getPlacement(position)),
+    placement: floatingPosition,
     middleware,
     transform: false,
     whileElementsMounted: autoUpdate,
   },
 )
 
-// Computed position for CSS classes (convert back from Floating UI placement)
-const computedPosition = computed(() => {
-  if (!placement.value) {
-    return position === 'auto' ? 'bottom' : position
-  }
-  return placement.value
-})
+const computedPosition = computed(() => placement.value ?? floatingPosition.value)
 
-// Get the position reference element (can be different from trigger)
 function getPositionReference(): HTMLElement | null {
   if (!positionReference) {
     return triggerElement.value
   }
 
   if (typeof positionReference === 'string') {
-    // If it's a selector, find it within the trigger element first, then globally
-    const withinTrigger = triggerElement.value?.querySelector(positionReference)
+    const withinTrigger = triggerElement.value?.querySelector<HTMLElement>(positionReference)
+
     if (withinTrigger) {
-      return withinTrigger as HTMLElement
+      return withinTrigger
     }
-    return document.querySelector(positionReference) as HTMLElement
+
+    return isClient() ? document.querySelector<HTMLElement>(positionReference) : null
   }
 
   return positionReference
@@ -316,7 +326,6 @@ const panelId = computed(() => `${triggerId.value}-panel`)
 
 const rootStyles = computed(() => attrs.style as HTMLAttributes['style'])
 
-// Combined panel styles (Floating UI + custom styles)
 const panelStyles = computed(() => {
   const styles: any = {
     ...floatingStyles.value,
@@ -400,8 +409,9 @@ function cleanup() {
   clearOpenTimeout()
   clearCloseTimeout()
 
-  // Remove global event listeners
-  document.removeEventListener('keydown', onKeydown)
+  if (isClient()) {
+    document.removeEventListener('keydown', onKeydown)
+  }
 }
 
 function open() {
@@ -521,7 +531,7 @@ function getTransformOrigin(position: Omit<MazPopoverPosition, 'auto'>): string 
 }
 
 function setupFocusTrap() {
-  if (role === 'tooltip' || role === 'menu' || effectiveTrigger.value === 'hover' || !trapFocus)
+  if (role === 'tooltip' || role === 'menu' || effectiveTrigger.value === 'hover' || !trapFocus || !isClient())
     return
 
   initialFocusElement = document.activeElement as HTMLElement
@@ -541,7 +551,7 @@ function setupFocusTrap() {
 }
 
 function restoreFocus() {
-  if (role === 'tooltip' || role === 'menu' || effectiveTrigger.value === 'hover' || !trapFocus)
+  if (role === 'tooltip' || role === 'menu' || effectiveTrigger.value === 'hover' || !trapFocus || !isClient())
     return
 
   nextTick(() => {
@@ -564,7 +574,7 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 function handleTrapFocus(event: KeyboardEvent) {
-  if (!panelElement.value)
+  if (!panelElement.value || !isClient())
     return
 
   const focusableElements = panelElement.value.querySelectorAll(
@@ -726,6 +736,9 @@ defineExpose({
           :style="{
             ...panelStyles,
             transformOrigin: getTransformOrigin(computedPosition),
+            visibility: middlewareData.hide?.referenceHidden
+              ? 'hidden'
+              : 'visible',
           }"
           v-bind="panelEvents"
         >
