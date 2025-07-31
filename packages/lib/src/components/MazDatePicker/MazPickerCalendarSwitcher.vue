@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { MazChevronLeft } from '@maz-ui/icons'
-import { capitalize } from '@maz-ui/utils/src/formatters/capitalize.js'
-import { formatDate } from '@maz-ui/utils/src/formatters/formatDate.js'
+import { capitalize } from '@maz-ui/utils/src/helpers/capitalize.js'
+import { formatDate } from '@maz-ui/utils/src/helpers/formatDate.js'
 
 import dayjs from 'dayjs'
 import { computed } from 'vue'

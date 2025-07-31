@@ -75,7 +75,6 @@ export default defineConfig({
         ...entries,
         'index': 'src/index.ts',
         'helpers/index': 'src/helpers/index.ts',
-        'formatters/index': 'src/formatters/index.ts',
       },
       formats: ['es'],
       fileName: (_, name) => `${name}.js`,

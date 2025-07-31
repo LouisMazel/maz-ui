@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { FilterCurrencyOptions } from '@maz-ui/utils/src/formatters/formatCurrency.js'
+import type { FilterCurrencyOptions } from '@maz-ui/utils/src/helpers/formatCurrency.js'
 import { MazBanknotes } from '@maz-ui/icons'
-import { formatCurrency } from '@maz-ui/utils/src/formatters/formatCurrency.js'
+import { formatCurrency } from '@maz-ui/utils/src/helpers/formatCurrency.js'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import MazInput from './MazInput.vue'
 
