@@ -662,6 +662,7 @@ watch(
     :block
     :prefer-position="pickerPosition"
     fallback-position="top-start"
+    position-reference=".m-input-wrapper"
   >
     <template #trigger="{ isOpen, close, open: openPicker, toggle: togglePicker }">
       <!--
