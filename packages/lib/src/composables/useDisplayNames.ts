@@ -29,9 +29,13 @@ const DEFAULT_DISPLAY_NAMES_OPTIONS: Required<DisplayNamesOptions> = {
 const displayNamesCache = new Map<string, Intl.DisplayNames>()
 
 // Optional: Clear cache periodically to prevent memory leaks in long-running apps
-let cacheCleanupTimer: NodeJS.Timeout | null = null
+let cacheCleanupTimer: ReturnType<typeof setTimeout> | null = null
 
 function scheduleCacheCleanup() {
+  // Skip cleanup during SSR/SSG to avoid timers
+  if (typeof globalThis.window === 'undefined')
+    return
+
   if (cacheCleanupTimer)
     clearTimeout(cacheCleanupTimer)
 
@@ -184,40 +188,47 @@ function getAllDisplayNames<T extends CodesType>(options: GetAllDisplayNamesOpti
 
     const codeArray = resolvedOnlyCodes ?? getDisplayNamesCodes<T>(resolvedCodesType)
 
-    const result = codeArray
-      .filter(code => !resolvedExcludedCodes?.includes(code as DisplayNameCode))
-      .map((code) => {
-        try {
-          const name = getName(code, resolvedLocale, {
-            type: resolvedType,
-            languageDisplay: resolvedLanguageDisplay,
-            fallback: resolvedFallback,
-            style: resolvedStyle,
-            localeMatcher: resolvedLocaleMatcher,
-          })
+    // Optimize processing for large datasets
+    const filteredCodes = codeArray.filter(code => !resolvedExcludedCodes?.includes(code as DisplayNameCode))
 
-          if (resolvedRemoveUnmatched && (!name || isSameLanguageThanCode(name, code))) {
-            return undefined
-          }
+    const mappedResults: Array<{ name: string, code: CodeResult<T> } | undefined> = []
 
-          return {
-            name: name ?? (code as CodeResult<T>),
-            code: code as CodeResult<T>,
-          }
+    // Process in chunks to avoid blocking
+    for (const code of filteredCodes) {
+      try {
+        const name = getName(code, resolvedLocale, {
+          type: resolvedType,
+          languageDisplay: resolvedLanguageDisplay,
+          fallback: resolvedFallback,
+          style: resolvedStyle,
+          localeMatcher: resolvedLocaleMatcher,
+        })
+
+        if (resolvedRemoveUnmatched && (!name || isSameLanguageThanCode(name, code))) {
+          continue
         }
-        catch {
-          return undefined
-        }
-      })
+
+        mappedResults.push({
+          name: name ?? (code as CodeResult<T>),
+          code: code as CodeResult<T>,
+        })
+      }
+      catch {
+        // Skip invalid codes
+      }
+    }
+
+    const result = mappedResults
+      .filter(truthyFilter)
       .sort((a, b) => {
-        if (a?.name && b?.name) {
+        if (a.name && b.name) {
           return a.name.localeCompare(b.name)
         }
         return 0
       })
       .sort((a, b) => {
-        const aIndex = resolvedPreferredCodes?.indexOf(a?.code as DisplayNameCode) ?? -1
-        const bIndex = resolvedPreferredCodes?.indexOf(b?.code as DisplayNameCode) ?? -1
+        const aIndex = resolvedPreferredCodes?.indexOf(a.code as DisplayNameCode) ?? -1
+        const bIndex = resolvedPreferredCodes?.indexOf(b.code as DisplayNameCode) ?? -1
 
         // If both are in preferred codes, sort by their index in the preferred array
         if (aIndex !== -1 && bIndex !== -1) {
@@ -237,7 +248,6 @@ function getAllDisplayNames<T extends CodesType>(options: GetAllDisplayNamesOpti
         // Neither is preferred, keep original order
         return 0
       })
-      .filter(truthyFilter)
 
     if (resolvedRemoveDuplicates) {
       return result.filter((item, index, self) => self.findIndex(t => t[resolvedRemoveDuplicates].toLowerCase() === item[resolvedRemoveDuplicates].toLowerCase()) === index)
@@ -266,10 +276,5 @@ export function useDisplayNames(mainLocale?: MaybeRefOrGetter<string | DisplayNa
         locale: resolvedOptions?.locale || mainLocale,
       })
     },
-
-    countryCodes,
-    iso6391Codes,
-    bcp47Codes,
-    normalizeCode,
   }
 }

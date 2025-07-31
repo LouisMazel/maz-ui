@@ -10,11 +10,12 @@
     "types": ["node", "vite-svg-loader", "vite/client"]
   },
   "include": [
-    "docs/.vitepress/**/*",
+    ".vitepress/**/*",
+    "src/**/*",
     "types"
   ],
   "exclude": [
-    "**/node_modules/**",
+    "node_modules/**",
     "**/dist/**",
     "../../packages/lib/**/*"
   ]

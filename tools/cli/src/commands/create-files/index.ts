@@ -133,7 +133,7 @@ async function runCreateFiles({
   if (shouldCreateDocumentationFile) {
     const componentConfigurationFilePath = resolve(
       _dirname,
-      './../../../docs/docs/.vitepress/configs/components.mts',
+      './../../../../../apps/docs/.vitepress/configs/components.mts',
     )
 
     logger.eot()
