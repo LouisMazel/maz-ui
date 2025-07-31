@@ -115,8 +115,8 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
     const criticalCSS = generateCriticalCSS(newPreset, cssOptions)
     const fullCSS = generateFullCSS(newPreset, cssOptions)
 
-    injectCSS(criticalCSS, CSS_IDS.CRITICAL)
-    injectCSS(fullCSS, CSS_IDS.FULL)
+    injectCSS(CSS_IDS.CRITICAL, criticalCSS)
+    injectCSS(CSS_IDS.FULL, fullCSS)
   }
 }
 
