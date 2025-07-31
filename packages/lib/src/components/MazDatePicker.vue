@@ -235,7 +235,8 @@ export interface MazDatePickerProps {
   /**
    * The position where the picker popover should appear
    * @type {MazPopoverProps['position']}
-   * @values top, bottom, left, right, top-left, top-right, bottom-left, bottom-right
+   * @values top, bottom, left, right, top-end, bottom-end, left-end, right-end, top-start, bottom-start, left-start, right-start
+   * @default 'auto'
    */
   pickerPosition?: MazPopoverProps['position']
 
@@ -660,7 +661,8 @@ watch(
     trigger="click"
     :disabled
     :block
-    :prefer-position="pickerPosition"
+    :position="pickerPosition"
+    prefer-position="bottom-start"
     fallback-position="top-start"
     position-reference=".m-input-wrapper"
   >
