@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.22...v4.0.0-beta.23
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.22...v4.0.0-beta.23)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDatePicker, MazDropdown, MazInput, MazSelect - should follow parent sizes ([8f2b58058](https://github.com/LouisMazel/maz-ui/commit/8f2b58058))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.21...v4.0.0-beta.22
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.21...v4.0.0-beta.22)
