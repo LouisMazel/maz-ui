@@ -13,7 +13,7 @@ export async function createDocumentFile({
   filename: string
   filenameKebab: string
 }): Promise<void> {
-  const DOCS_FILE_OUTPUT = resolve(_dirname, `../../../../docs/docs/components/${filenameKebab}.md`)
+  const DOCS_FILE_OUTPUT = resolve(_dirname, `../../../../docs/src/components/${filenameKebab}.md`)
 
   const documentationFileTemplate = `---
 title: ${filename}
@@ -46,7 +46,7 @@ description: ${filename} is a standalone component
   </template>
 </ComponentDemo>
 
-<!--@include: ./../.vitepress/generated-docs/${filenameKebab}.doc.md-->
+<!--@include: ./../../.vitepress/generated-docs/${filenameKebab}.doc.md-->
 `
   try {
     await writeFile(DOCS_FILE_OUTPUT, documentationFileTemplate)

@@ -23,7 +23,7 @@ The component name should always start with **Maz**
 
 The CLI ask the new component name, then choose **All files** with the space bar and all new base files will be created:
 
-- documentation file in `packages/docs/docs/components/maz-new-component.md` (you should add your component in `packages/cli/docs/docs/.vitepress/configs/components.mts`)
+- documentation file in `apps/docs/src/components/maz-new-component.md` (you should add your component in `apps/docs/.vitepress/configs/components.mts`)
 - test unit file in `packages/lib/tests/specs/components/maz-new-component.spec.ts`
 - and the component file in `packages/lib/src/components/MazNewComponent.vue`
 
