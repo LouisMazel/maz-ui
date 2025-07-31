@@ -687,6 +687,8 @@ When you not specify a fallback position, the popover will fallback on the best 
 
 ## Tooltip role
 
+A directive is available to more easily add a tooltip to an element, see [vTooltip](./../directives/tooltip.md) for more information.
+
 <ComponentDemo>
   <div class="maz-flex maz-gap-4 maz-flex-wrap maz-items-center">
     <MazPopover role="tooltip" trigger="hover" position="top">
@@ -740,25 +742,35 @@ When you not specify a fallback position, the popover will fallback on the best 
       </MazBtn>
     </template>
     <div class="maz-p-2">
-      <p class="maz-text-xs">
-        This is a tooltip with proper ARIA attributes
-      </p>
+      <p class="maz-text-xs">This is a tooltip with proper ARIA attributes</p>
     </div>
   </MazPopover>
-
   <MazPopover
     role="tooltip"
     trigger="hover"
-    :delay="500"
+    position="bottom"
+    panel-class="!maz-bg-gray-800 !maz-text-white !maz-border-gray-700"
+  >
+    <template #trigger>
+      <span class="maz-underline maz-cursor-help">
+        Hover this text
+      </span>
+    </template>
+    <div class="maz-p-2">
+      <p class="maz-text-xs">Custom styled tooltip</p>
+    </div>
+  </MazPopover>
+  <MazPopover
+    role="tooltip"
+    trigger="hover"
+    :delay="1000"
     position="right"
   >
     <template #trigger>
-      <MazIcon name="information-circle" class="maz-cursor-help maz-text-info" />
+      <MazInformationCircle class="maz-cursor-help maz-text-info maz-text-xl" />
     </template>
-    <div class="maz-max-w-48 maz-p-2">
-      <p class="maz-text-xs">
-        This tooltip has a 500ms delay before showing
-      </p>
+    <div class="maz-p-2 maz-max-w-48">
+      <p class="maz-text-xs">This tooltip has a 1000ms delay before showing</p>
     </div>
   </MazPopover>
 </template>
