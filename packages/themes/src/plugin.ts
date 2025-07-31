@@ -2,7 +2,7 @@ import type { App } from 'vue'
 import type { DarkModeStrategy, ThemeConfig, ThemePreset, ThemeState } from './types'
 import type { CriticalCSSOptions } from './utils/css-generator'
 import { reactive } from 'vue'
-import { getPreset } from './utils'
+import { getPreset, mergePresets } from './utils'
 import {
 
   CSS_IDS,
@@ -53,7 +53,7 @@ function injectThemeCSS(finalPreset: ThemePreset, config: Required<MazUiThemeOpt
 
   if (config.injectCriticalCSS) {
     const criticalCSS = generateCriticalCSS(finalPreset, cssOptions)
-    injectCSS(criticalCSS, CSS_IDS.CRITICAL)
+    injectCSS(CSS_IDS.CRITICAL, criticalCSS)
   }
 
   if (!config.injectFullCSS) {
@@ -63,11 +63,11 @@ function injectThemeCSS(finalPreset: ThemePreset, config: Required<MazUiThemeOpt
   const fullCSS = generateFullCSS(finalPreset, cssOptions)
 
   if (config.strategy === 'runtime') {
-    injectCSS(fullCSS, CSS_IDS.FULL)
+    injectCSS(CSS_IDS.FULL, fullCSS)
   }
   else if (config.strategy === 'hybrid') {
     requestIdleCallback(() => {
-      injectCSS(fullCSS, CSS_IDS.FULL)
+      injectCSS(CSS_IDS.FULL, fullCSS)
     }, { timeout: 100 })
   }
 }
@@ -126,17 +126,7 @@ export const MazUiTheme = {
     const preset = await getPreset(config.preset)
 
     const finalPreset = Object.keys(config.overrides).length > 0
-      ? {
-          ...preset,
-          foundation: {
-            ...preset.foundation,
-            ...config.overrides.foundation,
-          },
-          colors: {
-            light: { ...preset.colors.light, ...config.overrides.colors?.light },
-            dark: { ...preset.colors.dark, ...config.overrides.colors?.dark },
-          },
-        }
+      ? mergePresets(preset, config.overrides)
       : preset
 
     themeState.currentPreset = finalPreset

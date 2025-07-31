@@ -326,7 +326,7 @@ export enum CSS_IDS {
 /**
  * Injects CSS into the DOM
  */
-export function injectCSS(css: string, id: CSS_IDS): void {
+export function injectCSS(id: CSS_IDS, css: string): void {
   if (typeof document === 'undefined')
     return
 
