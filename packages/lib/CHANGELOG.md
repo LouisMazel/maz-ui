@@ -1,5 +1,24 @@
 # Change Log
 
+## v4.0.0-beta.23...v4.0.0-beta.24
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.23...v4.0.0-beta.24)
+
+### 🩹 Fixes
+
+- **maz-ui:** Enhanced positioning in MazPopover component ([4b00355af](https://github.com/LouisMazel/maz-ui/commit/4b00355af))
+- **maz-ui:** Add position reference to MazDatePicker for improved positioning of panel ([6d08f2efe](https://github.com/LouisMazel/maz-ui/commit/6d08f2efe))
+
+### 💅 Refactors
+
+- **maz-ui:** Update MazPopover component to support autoPlacement and improve positioning logic ([efd4450c7](https://github.com/LouisMazel/maz-ui/commit/efd4450c7))
+- **maz-ui:** Update position handling in MazDatePicker, MazSelect, and MazSelectCountry components to support new positioning values and improve default behavior ([3008e4a93](https://github.com/LouisMazel/maz-ui/commit/3008e4a93))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.22...v4.0.0-beta.23
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.22...v4.0.0-beta.23)
