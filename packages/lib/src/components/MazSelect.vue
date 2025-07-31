@@ -87,8 +87,9 @@ export interface MazSelectProps<Value extends MazInputValue = MazInputValue, Opt
    */
   optionInputValueKey?: string
   /**
-   * The position of the list
-   * @default 'bottom-start'
+   * The position of the list (auto by default - will switch between bottom-start and top-start)
+   * @type {MazPopoverProps['position']}
+   * @default 'auto'
    */
   listPosition?: MazPopoverProps['position']
   /** The height of the option list item */
@@ -166,7 +167,7 @@ const props = withDefaults(defineProps<MazSelectProps<Value, Option, Multiple>>(
   optionValueKey: 'value',
   optionLabelKey: 'label',
   optionInputValueKey: 'label',
-  listPosition: 'bottom-start',
+  listPosition: undefined,
   itemHeight: undefined,
   maxListHeight: 240,
   maxListWidth: undefined,
@@ -623,7 +624,8 @@ defineExpose({
     trigger="click"
     :block
     :offset="0"
-    :prefer-position="listPosition"
+    :position="listPosition"
+    prefer-position="bottom-start"
     fallback-position="top-start"
     position-reference=".m-input-wrapper"
     @close="onCloseList"
