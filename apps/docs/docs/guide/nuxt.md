@@ -31,15 +31,15 @@ Transform your Nuxt application with the most comprehensive Vue.js UI library in
 ::: code-group
 
 ```bash [pnpm]
-pnpm add @maz-ui/nuxt maz-ui
+pnpm add maz-ui @maz-ui/nuxt
 ```
 
 ```bash [npm]
-npm install @maz-ui/nuxt maz-ui
+npm install maz-ui @maz-ui/nuxt
 ```
 
 ```bash [yarn]
-yarn add @maz-ui/nuxt maz-ui
+yarn add maz-ui @maz-ui/nuxt
 ```
 
 :::
