@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { MazTrash } from '@maz-ui/icons'
+import { MazInputPhoneNumber } from 'maz-ui/components'
 
 const { message, success, error, info, warning } = useToast()
 
@@ -33,6 +34,8 @@ function showToast() {
     ],
   })
 }
+
+const phoneNumber = ref('')
 </script>
 
 <template>
@@ -44,6 +47,8 @@ function showToast() {
       <MazLink to="/about" color="contrast">
         About
       </MazLink>
+
+      <MazInputPhoneNumber v-model="phoneNumber" />
 
       <div class="maz-flex-1" />
       <ThemeSwitcher />
