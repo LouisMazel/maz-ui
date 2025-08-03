@@ -46,11 +46,7 @@ function injectThemeCSS({
     prefix: 'maz',
   } satisfies CriticalCSSOptions
 
-  const shouldInjectCriticalCSSOnServer = config.injectCriticalCSS && import.meta.server
-  const criticalCSSAlreadyInjected = import.meta.client && document.getElementById(CSS_IDS.CRITICAL)
-  const shouldInjectCriticalCSSOnClient = config.injectCriticalCSS && import.meta.client && !criticalCSSAlreadyInjected
-
-  if (shouldInjectCriticalCSSOnServer || shouldInjectCriticalCSSOnClient) {
+  if (config.injectCriticalCSS) {
     const criticalCSS = generateCriticalCSS(preset, cssOptions)
 
     useHead({
@@ -58,16 +54,25 @@ function injectThemeCSS({
     })
   }
 
-  const shouldInjectFullCSSOnServer = config.injectAllCSSOnServer && import.meta.server
-  const fullCSSAlreadyInjected = import.meta.client && document.getElementById(CSS_IDS.FULL)
-  const shouldInjectFullCSSOnClient = config.injectFullCSS && import.meta.client && !fullCSSAlreadyInjected
-
-  if (shouldInjectFullCSSOnServer || shouldInjectFullCSSOnClient) {
+  if (config.injectAllCSSOnServer) {
     const fullCSS = generateFullCSS(preset, cssOptions)
 
     useHead({
       style: [{ innerHTML: fullCSS, id: CSS_IDS.FULL }],
     })
+  }
+}
+
+function getInjectCSSStates(config: MazUiNuxtThemeOptions) {
+  const criticalCSSAlreadyInjected = import.meta.client && !!document.getElementById(CSS_IDS.CRITICAL)
+  const shouldInjectCriticalCSSOnClient = !!config.injectCriticalCSS && import.meta.client && !criticalCSSAlreadyInjected
+
+  const fullCSSAlreadyInjected = import.meta.client && !!document.getElementById(CSS_IDS.FULL)
+  const shouldInjectFullCSSOnClient = !!config.injectFullCSS && import.meta.client && !fullCSSAlreadyInjected
+
+  return {
+    shouldInjectCriticalCSSOnClient,
+    shouldInjectFullCSSOnClient,
   }
 }
 
@@ -107,11 +112,15 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     })
   }
 
-  injectThemeCSS({
-    mode: config.mode,
-    preset: config.preset,
-    config,
-  })
+  const { shouldInjectCriticalCSSOnClient, shouldInjectFullCSSOnClient } = getInjectCSSStates(config)
+
+  if (import.meta.server) {
+    injectThemeCSS({
+      mode: config.mode,
+      preset: config.preset,
+      config,
+    })
+  }
 
   MazUiTheme.install(vueApp, {
 
@@ -121,8 +130,8 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     darkModeStrategy: config.darkModeStrategy,
     mode: config.mode,
 
-    injectFullCSS: false,
-    injectCriticalCSS: false,
+    injectFullCSS: shouldInjectFullCSSOnClient,
+    injectCriticalCSS: shouldInjectCriticalCSSOnClient,
   })
 })
 

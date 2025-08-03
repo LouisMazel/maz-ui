@@ -52,6 +52,14 @@
     "lint:fix": "pnpm lint --fix",
     "typecheck": "nuxi typecheck"
   },
+  "peerDependencies": {
+    "nuxt": ">=3.4.0 <5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "nuxt": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
