@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "lint": "cross-env NODE_ENV=production eslint .",
-    "lint:fix": "cross-env NODE_ENV=production eslint --fix .",
+    "lint:fix": "pnpm lint --fix",
     "cli": "node --import=./register.js src/cli.ts",
     "build": "unbuild",
     "build:stub": "unbuild --stub",
@@ -36,7 +36,7 @@
     "clear": "^0.1.0",
     "commander": "^14.0.0",
     "figlet": "^1.8.2",
-    "typescript": "~5.8.3",
+    "typescript": "~5.9.2",
     "vue-docgen-cli": "^4.79.0"
   },
   "lint-staged": {

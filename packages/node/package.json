@@ -43,14 +43,14 @@
     "build": "unbuild",
     "dev": "unbuild --stub",
     "typecheck": "tsc --noEmit --skipLibCheck",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "lint:fix": "pnpm lint --fix",
     "pre-commit": "lint-staged"
   },
   "devDependencies": {
     "@maz-ui/utils": "workspace:*",
     "colorette": "^2.0.20",
-    "typescript": "^5.8.3",
+    "typescript": "^5.9.2",
     "unbuild": "^3.6.0"
   },
   "lint-staged": {

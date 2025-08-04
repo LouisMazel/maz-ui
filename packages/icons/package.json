@@ -60,8 +60,8 @@
   "scripts": {
     "build": "vite build",
     "typecheck": "tsc --noEmit --skipLibCheck",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "lint:fix": "pnpm lint --fix",
     "pre-commit": "lint-staged"
   },
   "peerDependencies": {
