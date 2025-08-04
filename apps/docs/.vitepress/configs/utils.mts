@@ -9,8 +9,8 @@ export const utils = {
     { text: 'checkAvailability', link: '/helpers/check-availability' },
     { text: 'countryCodeToUnicodeFlag', link: '/helpers/country-code-to-unicode-flag' },
     { text: 'debounce', link: '/helpers/debounce' },
-    { text: 'debounceCallback', link: '/helpers/debounceCallback' },
-    { text: 'debounceId', link: '/helpers/debounceId' },
+    { text: 'debounceCallback', link: '/helpers/debounce-callback' },
+    { text: 'debounceId', link: '/helpers/debounce-id' },
     { text: 'formatCurrency', link: '/helpers/currency' },
     { text: 'formatDate', link: '/helpers/date' },
     { text: 'formatNumber', link: '/helpers/number' },
@@ -23,6 +23,6 @@ export const utils = {
     { text: 'ScriptLoader', link: '/helpers/script-loader' },
     { text: 'sleep', link: '/helpers/sleep' },
     { text: 'throttle', link: '/helpers/throttle' },
-    { text: 'throttleId', link: '/helpers/throttleId' },
+    { text: 'throttleId', link: '/helpers/throttle-id' },
   ],
 } satisfies DefaultTheme.SidebarItem
