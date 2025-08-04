@@ -45,8 +45,8 @@
     "build:watch": "unbuild --watch",
     "dev": "unbuild --stub",
     "typecheck": "tsc --noEmit --skipLibCheck",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "lint:fix": "pnpm lint --fix",
     "pre-commit": "lint-staged"
   },
   "peerDependencies": {
@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@maz-ui/utils": "workspace:*",
-    "typescript": "^5.8.3",
+    "typescript": "^5.9.2",
     "unbuild": "^3.6.0",
     "vue": "^3.5.18"
   },

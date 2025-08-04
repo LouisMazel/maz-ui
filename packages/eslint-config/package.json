@@ -42,8 +42,8 @@
     "build": "unbuild",
     "dev": "unbuild --stub",
     "typecheck": "tsc --noEmit --skipLibCheck",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "lint:fix": "pnpm lint --fix",
     "pre-commit": "lint-staged"
   },
   "peerDependencies": {
@@ -67,13 +67,13 @@
     }
   },
   "dependencies": {
-    "@antfu/eslint-config": "^5.0.0"
+    "@antfu/eslint-config": "^5.1.0"
   },
   "devDependencies": {
     "@types/eslint-plugin-tailwindcss": "^3.17.0",
     "eslint": "^9.32.0",
     "eslint-plugin-format": "^1.0.1",
-    "typescript": "^5.8.3",
+    "typescript": "^5.9.2",
     "unbuild": "^3.6.0"
   },
   "lint-staged": {

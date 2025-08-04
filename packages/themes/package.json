@@ -78,8 +78,8 @@
     "build": "vite build",
     "vite:dev": "vite build --watch",
     "typecheck": "vue-tsc --noEmit",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "lint:fix": "pnpm lint --fix",
     "pre-commit": "lint-staged",
     "test": "vitest",
     "test:unit": "vitest run",
@@ -93,9 +93,9 @@
   },
   "devDependencies": {
     "glob": "^11.0.3",
-    "typescript": "^5.8.3",
+    "typescript": "^5.9.2",
     "vue": "^3.5.18",
-    "vue-tsc": "^3.0.4"
+    "vue-tsc": "^3.0.5"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
