@@ -1,3 +1,10 @@
+import { camelCase } from './camelCase.js'
+import { kebabCase } from './kebabCase.js'
+import { pascalCase } from './pascalCase.js'
+import { snakeCase } from './snakeCase.js'
+
+export type CaseFormat = 'kebab-case' | 'camelCase' | 'PascalCase' | 'snake_case' | 'lowercase' | 'UPPERCASE'
+
 export interface NormalizeStringOptions {
   /**
    * Remove accents from the string
@@ -37,6 +44,11 @@ export interface NormalizeStringOptions {
    */
   removeNumbers?: boolean
   /**
+   * Convert the output to a specific case format
+   * @default undefined (keeps original case, respects caseSensitive option)
+   */
+  case?: CaseFormat
+  /**
    * Normalize the string with custom normalization forms
    * @default ['NFC', 'NFKD']
    * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize
@@ -53,7 +65,30 @@ const defaultOptions: NormalizeStringOptions = {
   trim: true,
   normalizeSpaces: true,
   removeNumbers: false,
+  case: undefined,
   customNormalizationForms: ['NFC', 'NFKD'],
+}
+
+/**
+ * Apply case transformation to string
+ */
+function applyCaseTransform(str: string, caseFormat: CaseFormat): string {
+  switch (caseFormat) {
+    case 'kebab-case':
+      return kebabCase(str)
+    case 'camelCase':
+      return camelCase(str)
+    case 'PascalCase':
+      return pascalCase(str)
+    case 'snake_case':
+      return snakeCase(str)
+    case 'lowercase':
+      return str.toLowerCase()
+    case 'UPPERCASE':
+      return str.toUpperCase()
+    default:
+      return str
+  }
 }
 
 export function normalizeString(
@@ -91,7 +126,11 @@ export function normalizeString(
     result = result.replaceAll(/[\u0300-\u036F]/g, '')
   }
 
-  if (finalOptions.caseSensitive === false) {
+  // Apply case transformation BEFORE caseSensitive check
+  if (finalOptions.case) {
+    result = applyCaseTransform(result, finalOptions.case)
+  }
+  else if (finalOptions.caseSensitive === false) {
     result = result.toLowerCase()
   }
 
