@@ -10,6 +10,7 @@ module.exports = {
         'deps',
         'nuxt-app',
         'vue-app',
+        'mcp',
         'cli',
         'maz-ui',
         '@maz-ui/nuxt',
