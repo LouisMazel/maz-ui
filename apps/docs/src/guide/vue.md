@@ -1,31 +1,26 @@
 ---
 title: Install maz-ui with Vue
-description: How to install maz-ui with Vue 3
+description: How to install easily maz-ui with Vue 3
 ---
 
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
 
-## Prerequisites
-
-- **Node.js** v18+
-- **Nuxt** 3.0+
-
 ## Quick Installation {#quick-installation}
 
 ::: code-group
 
 ```bash [pnpm]
-pnpm add maz-ui
+pnpm add maz-ui @maz-ui/themes
 ```
 
 ```bash [npm]
-npm install maz-ui
+npm install maz-ui @maz-ui/themes
 ```
 
 ```bash [yarn]
-yarn add maz-ui
+yarn add maz-ui @maz-ui/themes
 ```
 
 :::

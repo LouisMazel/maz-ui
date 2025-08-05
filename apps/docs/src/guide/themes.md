@@ -88,38 +88,38 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 <ComponentDemo title="Real-time theme control">
   <div class="demo-theme-controls">
     <div class="maz-space-y-4">
-      <h3 class="maz-text-xl maz-font-semibold">Demo Interface</h3>
       <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4">
         <MazBtn color="primary">Primary Button</MazBtn>
         <MazBtn color="secondary">Secondary Button</MazBtn>
         <MazBtn color="success">Success Button</MazBtn>
         <MazBtn color="warning">Warning Button</MazBtn>
       </div>
-      <MazInput placeholder="Input placeholder" color="primary" />
       <div class="theme-controls maz-space-y-4">
-        <div class="maz-flex maz-items-center maz-gap-4">
-          <label class="maz-text-sm maz-font-medium">Mode:</label>
-          <MazBtn
-            size="sm"
-            :color="!isDark ? 'primary' : 'contrast'"
-            @click="setColorMode('light')"
-          >
-            ☀️ Light
-          </MazBtn>
-          <MazBtn
-            size="sm"
-            :color="isDark ? 'primary' : 'contrast'"
-            @click="setColorMode('dark')"
-          >
-            🌙 Dark
-          </MazBtn>
-          <MazBtn
-            size="sm"
-            :color="colorMode === 'auto' ? 'primary' : 'contrast'"
-            @click="setColorMode('auto')"
-          >
-            🔄 Auto
-          </MazBtn>
+        <div class="maz-flex maz-flex-col maz-gap-4">
+          <label class="maz-text-sm maz-font-medium">Color Mode: {{ colorMode }}</label>
+          <div class="maz-flex maz-gap-2">
+            <MazBtn
+              size="sm"
+              :color="colorMode === 'light' ? 'primary' : 'contrast'"
+              @click="setColorMode('light')"
+            >
+              ☀️ Light
+            </MazBtn>
+            <MazBtn
+              size="sm"
+              :color="colorMode === 'dark' ? 'primary' : 'contrast'"
+              @click="setColorMode('dark')"
+            >
+              🌙 Dark
+            </MazBtn>
+            <MazBtn
+              size="sm"
+              :color="colorMode === 'auto' ? 'primary' : 'contrast'"
+              @click="setColorMode('auto')"
+            >
+              🔄 Auto
+            </MazBtn>
+          </div>
         </div>
         <div class="maz-space-y-2">
           <label class="maz-text-sm maz-font-medium">Preset:</label>
@@ -127,28 +127,28 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
             <MazBtn
               size="sm"
               :color="presetName === 'maz-ui' ? 'primary' : 'contrast'"
-              @click="changePreset('mazUi')"
+              @click="updateTheme('maz-ui')"
             >
               Maz-UI
             </MazBtn>
             <MazBtn
               size="sm"
               :color="presetName === 'ocean' ? 'primary' : 'contrast'"
-              @click="changePreset('ocean')"
+              @click="updateTheme('ocean')"
             >
               Ocean
             </MazBtn>
             <MazBtn
               size="sm"
               :color="presetName === 'pristine' ? 'primary' : 'contrast'"
-              @click="changePreset('pristine')"
+              @click="updateTheme('pristine')"
             >
               Pristine
             </MazBtn>
             <MazBtn
               size="sm"
               :color="presetName === 'obsidian' ? 'primary' : 'contrast'"
-              @click="changePreset('obsidian')"
+              @click="updateTheme('obsidian')"
             >
               Obsidian
             </MazBtn>
@@ -164,37 +164,31 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 <script setup>
 import { useTheme } from '@maz-ui/themes'
 
-const { presetName, updateTheme } = useTheme()
-
-function changePreset(presetName) {
-  updateTheme(presetName)
-}
+const { presetName, updateTheme, colorMode, setColorMode } = useTheme()
 </script>
 
 <template>
   <div class="demo-theme-controls">
     <div class="maz-space-y-4">
-      <h3 class="maz-text-xl maz-font-semibold">Demo Interface</h3>
       <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4">
         <MazBtn color="primary">Primary Button</MazBtn>
         <MazBtn color="secondary">Secondary Button</MazBtn>
         <MazBtn color="success">Success Button</MazBtn>
         <MazBtn color="warning">Warning Button</MazBtn>
       </div>
-      <MazInput />
       <div class="theme-controls maz-space-y-4">
         <div class="maz-flex maz-items-center maz-gap-4">
           <label class="maz-text-sm maz-font-medium">Mode:</label>
           <MazBtn
             size="sm"
-            :color="!isDark ? 'primary' : 'secondary'"
+            :color="colorMode === 'light' ? 'primary' : 'secondary'"
             @click="setColorMode('light')"
           >
             ☀️ Light
           </MazBtn>
           <MazBtn
             size="sm"
-            :color="isDark ? 'primary' : 'secondary'"
+            :color="colorMode === 'dark' ? 'primary' : 'secondary'"
             @click="setColorMode('dark')"
           >
             🌙 Dark
@@ -213,28 +207,28 @@ function changePreset(presetName) {
             <MazBtn
               size="sm"
               :color="presetName === 'maz-ui' ? 'primary' : 'secondary'"
-              @click="changePreset('mazUi')"
+              @click="updateTheme('mazUi')"
             >
               Maz-UI
             </MazBtn>
             <MazBtn
               size="sm"
               :color="presetName === 'ocean' ? 'primary' : 'secondary'"
-              @click="changePreset('ocean')"
+              @click="updateTheme('ocean')"
             >
               Ocean
             </MazBtn>
             <MazBtn
               size="sm"
               :color="presetName === 'pristine' ? 'primary' : 'secondary'"
-              @click="changePreset('pristine')"
+              @click="updateTheme('pristine')"
             >
               Pristine
             </MazBtn>
             <MazBtn
               size="sm"
               :color="presetName === 'obsidian' ? 'primary' : 'secondary'"
-              @click="changePreset('obsidian')"
+              @click="updateTheme('obsidian')"
             >
               Obsidian
             </MazBtn>
@@ -349,8 +343,11 @@ app.use(MazUi, {
   </MazBtn>
 
   <div class="maz-mt-4 maz-p-4 maz-bg-primary/10 maz-rounded-[var(--maz-radius)]">
-    <p class="maz-text-primary maz-font-medium">
+    <p v-if="presetName === 'custom-purple'" class="maz-text-primary maz-font-medium">
       Custom theme applied with purple colors!
+    </p>
+    <p v-else class="maz-text-primary maz-font-medium">
+      Default theme
     </p>
   </div>
 
@@ -359,29 +356,27 @@ app.use(MazUi, {
 ```typescript
 import { definePreset, MazUiTheme, type ThemePresetOverrides, ocean } from '@maz-ui/themes'
 
-const overrides: ThemePresetOverrides = {
-  name: 'custom-purple',
-  foundation: {
-    radius: '1rem'
-    'font-family': 'Inter, sans-serif'
-  },
-  colors: {
-    light: {
-      primary: '280 100% 60%',
-      secondary: '300 50% 90%',
-      accent: '260 100% 70%'
-    },
-    dark: {
-      primary: '280 100% 70%',
-      secondary: '300 30% 20%',
-      accent: '260 100% 80%'
-    }
-  }
-}
-
 const customTheme = await definePreset({
   base: 'ocean',
-  overrides,
+  overrides: {
+    name: 'custom-purple',
+    foundation: {
+      radius: '1rem'
+      'font-family': 'Inter, sans-serif'
+    },
+    colors: {
+      light: {
+        primary: '280 100% 60%',
+        secondary: '300 50% 90%',
+        accent: '260 100% 70%'
+      },
+      dark: {
+        primary: '280 100% 70%',
+        secondary: '300 30% 20%',
+        accent: '260 100% 80%'
+      }
+    }
+  },
 })
 /**
  * or with preset object
@@ -444,10 +439,10 @@ const brandTheme = await definePreset({
 ```typescript
 const {
   // Reactive state
-  currentPreset, // Ref<ThemePreset>
-  colorMode, // Ref<'light' | 'dark' | 'auto'>
-  isDark, // Ref<boolean>
-  strategy, // Ref<'runtime' | 'buildtime' | 'hybrid'>
+  presetName, // ComputedRef<string>
+  colorMode, // ComputedRef<'light' | 'dark' | 'auto'>
+  isDark, // ComputedRef<boolean>
+  strategy, // ComputedRef<'runtime' | 'buildtime' | 'hybrid'>
 
   // Actions
   updateTheme, // (preset: ThemePreset | ThemePresetOverrides) => void
@@ -463,11 +458,10 @@ const {
 import { useTheme } from '@maz-ui/themes'
 import { computed } from 'vue'
 
-const { currentPreset, isDark, updateTheme, setColorMode } = useTheme()
+const { presetName, isDark, updateTheme, setColorMode } = useTheme()
 
 // Computed for interface
 const themeIcon = computed(() => isDark.value ? '☀️' : '🌙')
-const themeName = computed(() => currentPreset.value.name)
 
 // Function to apply a temporary custom theme
 function previewColor(color: string) {
@@ -743,17 +737,14 @@ const {
   colorMode,
   currentPreset,
   setColorMode,
-  updateTheme
+  updateTheme,
+  presetName
 } = useTheme()
 
-const originalPreset = ref(null)
-
-function changePreset(presetName) {
-  updateTheme(presetName)
-}
+const originalPresetName = ref(null)
 
 const customPreset = await definePreset({
-  base: 'ocean',
+  base: 'pristine',
   overrides: {
     name: 'custom-purple',
     colors: {
@@ -772,17 +763,17 @@ const customPreset = await definePreset({
 })
 
 function applyCustomTheme() {
-  if (!originalPreset.value) {
-    originalPreset.value = currentPreset.value
+  if (!originalPresetName.value) {
+    originalPresetName.value = presetName.value
   }
 
   updateTheme(customPreset)
 }
 
 function resetTheme() {
-  if (originalPreset.value) {
-    updateTheme(originalPreset.value)
-    originalPreset.value = null
+  if (originalPresetName.value) {
+    updateTheme(originalPresetName.value)
+    originalPresetName.value = null
   }
 }
 </script>

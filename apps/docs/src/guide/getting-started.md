@@ -141,38 +141,15 @@ npm install @maz-ui/icons
 
 ---
 
-<!-- ### @maz-ui/cli
-**Development Tools**
+### @maz-ui/mcp
 
-Command-line tools for scaffolding, theming, and project optimization.
-
-```bash
-npm install -g @maz-ui/cli
-```
+**Maz-UI MCP server to connect your IA agents to the documentation**
 
 **Features:**
-- 🏗️ Component scaffolding
-- 🎨 Theme generation
-- 📊 Bundle analysis
-- 🔄 Migration utilities
 
-[→ CLI Documentation](/guide/cli)
+- Connect your IA agents to the documentation
 
-## Advanced Usage Patterns -->
-
-### Theme Customization
-
-For comprehensive theming capabilities including CSS custom properties, dark mode, and preset management, explore our advanced theme system:
-
-[→ **Complete Theme Documentation**](/guide/themes)
-
-The theme system provides:
-
-- 🎨 HSL-based CSS custom properties
-- 🌓 Automatic dark mode support
-- 🎯 Pre-built themes (Maz-UI, Ocean, Pristine, Obsidian)
-- ⚡ Multiple rendering strategies
-- 🛠️ TypeScript-first configuration
+[→ View MCP Documentation](./mcp.md)
 
 ## Performance Optimizations
 
@@ -243,19 +220,19 @@ import { MazUi } from 'maz-ui/plugins/maz-ui'
 
 <div class="next-steps">
 
-### **Explore Components**
+### Explore Components
 
 Browse the [component library](./../components/maz-btn.md) with live examples and API documentation.
 
-### **Customize Themes**
+### Customize Themes
 
 Learn about [theming and customization](./themes.md) to match your brand.
 
-### **Internationalization**
+### Internationalization
 
 Learn about [internationalization](./translations.md) to support multiple languages.
 
-### **Get Help**
+### Get Help
 
 Browse [GitHub discussions](https://github.com/LouisMazel/maz-ui/discussions) or open an issue on [GitHub](https://github.com/LouisMazel/maz-ui/issues).
 

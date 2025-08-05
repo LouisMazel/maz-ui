@@ -61,6 +61,10 @@ html.dark {
   @apply !maz-text-base;
 }
 
+.vp-doc strong:not(:where(.vp-raw, .vp-raw *)) {
+  @apply maz-font-bold;
+}
+
 .text {
   font-weight: 600 !important;
 }
