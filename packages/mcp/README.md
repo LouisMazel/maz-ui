@@ -12,8 +12,6 @@ A Model Context Protocol (MCP) server that provides AI assistants with comprehen
     - [Visual Studio Code (Copilot)](#visual-studio-code-copilot)
     - [Cline](#cline)
   - [Available Tools](#available-tools)
-    - [Search Tools](#search-tools)
-    - [List Tools](#list-tools)
   - [Available Resources](#available-resources)
     - [Core Resources](#core-resources)
   - [Development](#development)
@@ -180,24 +178,6 @@ A Model Context Protocol (MCP) server that provides AI assistants with comprehen
 ## Available Tools
 
 The MCP server provides the following tools that AI assistants can use:
-
-### Search Tools
-
-- **`search_components`** - Search components by name or functionality
-
-  ```txt
-  Parameters: { query: string }
-  Example: "button", "input", "date picker"
-  ```
-
-- **`search_documentation`** - Search across all documentation types
-
-  ```txt
-  Parameters: { query: string }
-  Example: "theme", "validation", "accessibility"
-  ```
-
-### List Tools
 
 - **`get_getting_started`** - Get the getting started guide
 - **`list_all_components`** - Get a complete list of available components
