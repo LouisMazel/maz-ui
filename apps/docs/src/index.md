@@ -296,6 +296,22 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         <MazBtn color="background" outlined size="sm" block href="/guide/themes">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
+     <a href="/guide/mcp" class="maz-flex">
+      <MazCardSpotlight class="maz-w-full" color="accent" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+        <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between maz-w-full">
+          <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+            🚀
+          </span>
+          <MazBadge color="accent" class="maz-text-base">Package</MazBadge>
+        </div>
+        <h3 class="maz-text-base maz-font-semibold">@maz-ui/mcp</h3>
+        <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
+          Provides a Model Context Protocol (MCP) server that exposes Maz-UI documentation to AI agents. This server enables AI agents to generate code and assist developers in using Maz-UI.
+        </p>
+        <div class="maz-flex-1"></div>
+        <MazBtn color="background" outlined size="sm" block href="/guide/mcp">Discover</MazBtn>
+      </MazCardSpotlight>
+    </a>
   </div>
 </section>
 

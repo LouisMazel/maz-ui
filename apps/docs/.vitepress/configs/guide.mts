@@ -13,7 +13,8 @@ export const guide = {
     { text: 'Icons', link: '/guide/icons', collapsed: true, items: [
       { text: 'Icon Set - 300+ icons', link: '/guide/icon-set' },
     ] },
-    { text: 'CLI', link: '/guide/cli' },
     { text: 'Migration v3 to v4', link: '/guide/migration-v4' },
+    { text: 'Model Context Protocol (MCP)', link: '/guide/mcp' },
+    { text: 'CLI (v3)', link: '/guide/cli' },
   ],
 } satisfies DefaultTheme.SidebarItem

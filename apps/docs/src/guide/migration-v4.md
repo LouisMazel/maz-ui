@@ -7,6 +7,12 @@ description: Complete guide to migrate from Maz-UI v3.x to v4.0.0 - Modular arch
 
 Welcome to the most comprehensive migration guide for upgrading from Maz-UI v3.x to v4.0.0. This major version revolutionizes the library architecture with a modular approach, optimized performance, and enhanced developer experience.
 
+::: tip Connected to Maz-UI MCP
+
+Follow the [MCP](/guide/mcp) guide to connect your AI assistant to Maz-UI's documentation.
+
+:::
+
 ## 🎯 Why Migrate to v4.0.0?
 
 ### 🔥 Architectural Revolution
@@ -160,7 +166,7 @@ export default defineNuxtConfig({
   mazUi: {
     // 🆕 New configuration API
     theme: {
-      preset: 'mazUi',
+      preset: 'maz-ui',
       strategy: 'hybrid',
       darkModeStrategy: 'class',
     },

@@ -7,21 +7,16 @@ description: The ultimate Nuxt module for Maz-UI - zero-config setup with auto-i
 
 Transform your Nuxt application with the most comprehensive Vue.js UI library integration. **Maz-UI Nuxt Module** provides zero-configuration setup, intelligent auto-imports, and powerful theming capabilities.
 
-## ✨ Why Choose Maz-UI for Nuxt?
+## Why Choose Maz-UI for Nuxt?
 
-- **🚀 Zero Configuration** - Works out of the box with sensible defaults
-- **🎨 Advanced Theming** - Built-in dark mode, custom themes, and CSS variables
-- **📦 Auto-Import Everything** - Components, composables, and directives automatically available
-- **⚡ Performance Optimized** - Tree-shaking, lazy loading, and hybrid CSS strategies
-- **🛠️ Developer Experience** - TypeScript support, DevTools integration, and IntelliSense
-- **🎯 Production Ready** - SSR/SSG support with client-side hydration
+- **Zero Configuration** - Works out of the box with sensible defaults
+- **Advanced Theming** - Built-in dark mode, custom themes, and CSS variables
+- **Auto-Import Everything** - Components, composables, and directives automatically available
+- **Performance Optimized** - Tree-shaking, lazy loading, and hybrid CSS strategies
+- **Developer Experience** - TypeScript support, DevTools integration, and IntelliSense
+- **Production Ready** - SSR/SSG support with client-side hydration
 
-## Prerequisites
-
-- **Node.js** v18+
-- **Nuxt** 3.0+
-
-## 🚀 Installation
+## Installation
 
 <div class="maz-flex maz-gap-0.5">
   <NpmBadge package="maz-ui" />
@@ -54,7 +49,7 @@ export default defineNuxtConfig({
 
 That's it! 🎉 All components and composables are now auto-imported and ready to use.
 
-## 🎯 Quick Start
+## Quick Start
 
 ### Instant Usage
 
@@ -85,7 +80,7 @@ const { toggleDarkMode, isDark } = useTheme()
 </template>
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 ### Minimal Setup
 
@@ -106,21 +101,21 @@ Customize everything to your needs:
 export default defineNuxtConfig({
   modules: ['@maz-ui/nuxt'],
   mazUi: {
-    // 🎛️ General Settings
+    // General Settings
     general: {
       autoImportPrefix: 'Maz', // useMazToast instead of useToast
       defaultMazIconPath: '/icons', // Default path for <MazIcon />
       devtools: true, // Enable DevTools integration
     },
 
-    // 🎨 CSS & Styling
+    // CSS & Styling
     css: {
       injectMainCss: true, // Auto-inject Maz-UI styles
     },
 
-    // 🌈 Theming System
+    // Theming System
     theme: {
-      preset: 'mazUi', // or 'dark', 'ocean', or custom object
+      preset: 'maz-ui', // or 'dark', 'ocean', or custom object
       strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
       darkModeStrategy: 'class', // 'class' | 'media' | 'auto'
       overrides: {
@@ -132,7 +127,7 @@ export default defineNuxtConfig({
       mode: 'both', // 'light' | 'dark' | 'both'
     },
 
-    // 🌐 Translations
+    // Translations
     translations: {
       locales: 'fr',
       fallbackLocale: 'en',
@@ -177,9 +172,9 @@ export default defineNuxtConfig({
 })
 ```
 
-## 📚 Complete Configuration Reference
+## Complete Configuration Reference
 
-### 🎛️ General Configuration
+### General Configuration
 
 ```ts
 const general = {
@@ -194,7 +189,7 @@ const general = {
 }
 ```
 
-### 🎨 CSS Configuration
+### CSS Configuration
 
 ```ts
 const css = {
@@ -203,14 +198,14 @@ const css = {
 }
 ```
 
-### 🌈 Theme System
+### Theme System
 
 The most powerful theming system for Nuxt applications:
 
 ```ts
 const theme = {
   // Use predefined presets or create custom ones
-  preset: 'mazUi', // 'mazUi' | 'dark' | 'ocean' | CustomThemeObject
+  preset: 'maz-ui', // 'mazUi' | 'dark' | 'ocean' | CustomThemeObject
 
   // Override specific parts of the theme
   overrides: {
@@ -251,7 +246,7 @@ const theme = {
 - **`runtime`**: CSS generated and injected on client-side
 - **`buildtime`**: CSS generated at build time and included in bundle
 
-### 🧩 Components
+### Components
 
 ```ts
 const components = {
@@ -297,11 +292,11 @@ const composables = {
 }
 ```
 
-### 🔌 Plugins
+### Plugins
 
 ```ts
 const plugins = {
-  // 🎬 Animations
+  // Animations
   aos: true,
   // 🎭 Display modales without any implementation in template
   dialog: true,
@@ -312,7 +307,7 @@ const plugins = {
 }
 ```
 
-### 🎯 Directives
+### Directives
 
 Powerful Vue directives for enhanced functionality:
 
@@ -329,7 +324,7 @@ const directives = {
 }
 ```
 
-## 🎨 Advanced Theming
+## Advanced Theming
 
 ### Custom Theme Creation
 
@@ -384,7 +379,7 @@ export default defineNuxtConfig({
 })
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Theme System Issues
 
@@ -393,24 +388,24 @@ If you encounter the error `"useTheme must be used within MazUi plugin or MazUiT
 1. **Enable useTheme composable** in your configuration:
 
 ```ts
-const config = {
+export default defineNuxtConfig({
   mazUi: {
     composables: {
-      useTheme: true, // Must be explicitly enabled
+      useTheme: true,
     }
   }
-}
+})
 ```
 
 2. **Theme system is not disabled**:
 
 ```ts
-const config = {
+export default defineNuxtConfig({
   mazUi: {
     theme: {
-    // theme config, not false
-      preset: 'mazUi'
+      // theme config, not false
+      preset: 'maz-ui'
     }
   }
-}
+})
 ```
