@@ -7,32 +7,26 @@ import { fileURLToPath } from 'node:url'
 import { logger } from '@maz-ui/node'
 import { getErrorMessage } from '@maz-ui/utils'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+const _dirname = dirname(fileURLToPath(import.meta.url))
 
-// Chemins source et destination
-const APPS_MCP_ROOT = resolve(__dirname, '..')
-const APPS_DOCS_ROOT = resolve(__dirname, '../../../apps/docs')
-const LOCAL_DOCS_DIR = resolve(APPS_MCP_ROOT, 'docs')
+const MCP_ROOT = resolve(_dirname, '..')
+const DOCS_ROOT = resolve(MCP_ROOT, '../../apps/docs')
+const LOCAL_DOCS_DIR = resolve(MCP_ROOT, 'docs')
 
 const SOURCES = [
   {
-    source: resolve(APPS_DOCS_ROOT, 'src'),
+    source: resolve(DOCS_ROOT, 'src'),
     destination: resolve(LOCAL_DOCS_DIR, 'src'),
     name: 'Documentation source',
   },
   {
-    source: resolve(APPS_DOCS_ROOT, '.vitepress/generated-docs'),
+    source: resolve(DOCS_ROOT, '.vitepress/generated-docs'),
     destination: resolve(LOCAL_DOCS_DIR, 'generated-docs'),
     name: 'Generated documentation',
   },
 ]
 
-/**
- * Copie récursive d'un dossier
- */
 async function copyDirectory(source: string, destination: string) {
-  // Créer le dossier de destination s'il n'existe pas
   if (!existsSync(destination)) {
     await mkdir(destination, { recursive: true })
   }
@@ -46,11 +40,9 @@ async function copyDirectory(source: string, destination: string) {
     const stats = await stat(sourcePath)
 
     if (stats.isDirectory()) {
-      // Récursion pour les dossiers
       await copyDirectory(sourcePath, destinationPath)
     }
     else {
-      // Copier les fichiers
       await copyFile(sourcePath, destinationPath)
     }
   }
@@ -72,24 +64,22 @@ function cleanLocalDocs() {
 }
 
 function rimrafDocs() {
-  rmSync(LOCAL_DOCS_DIR, { recursive: true })
+  if (existsSync(LOCAL_DOCS_DIR)) {
+    rmSync(LOCAL_DOCS_DIR, { recursive: true })
+  }
 }
 
-/**
- * Script principal
- */
 async function main() {
   logger.log('🚀 Copie des fichiers de documentation...')
   logger.log(`📁 Destination: ${LOCAL_DOCS_DIR}`)
 
   try {
     rimrafDocs()
-    // Créer le dossier docs principal
+
     if (!existsSync(LOCAL_DOCS_DIR)) {
       await mkdir(LOCAL_DOCS_DIR, { recursive: true })
     }
 
-    // Copier chaque source
     for (const { source, destination, name } of SOURCES) {
       logger.log(`\n📂 Copie de ${name}...`)
       logger.log(`   Source: ${source}`)
@@ -115,5 +105,4 @@ async function main() {
   }
 }
 
-// Exécuter le script
 main()
