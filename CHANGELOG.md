@@ -1,5 +1,30 @@
 # Change Log
 
+## v4.0.0-beta.24...v4.0.0-beta.25
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.24...v4.0.0-beta.25)
+
+### 🚀 Features
+
+- **@maz-ui/utils:** Add case option to normalizeString and add kebabCase utility ([de70afd31](https://github.com/LouisMazel/maz-ui/commit/de70afd31))
+- **mcp:** Add mcp server for AI agents ([949eb6595](https://github.com/LouisMazel/maz-ui/commit/949eb6595))
+- **@maz-ui/mcp:** Transform http server to stdio server ([9aeeb4804](https://github.com/LouisMazel/maz-ui/commit/9aeeb4804))
+
+### 💅 Refactors
+
+- **@maz-ui/mcp:** Remove search tools ([17ce1c126](https://github.com/LouisMazel/maz-ui/commit/17ce1c126))
+- **@maz-ui/utils:** Improve pascalCase method and add test units ([41823d498](https://github.com/LouisMazel/maz-ui/commit/41823d498))
+
+### 📖 Documentation
+
+- **@maz-ui/mcp:** Update README.md ([7de4c1ec7](https://github.com/LouisMazel/maz-ui/commit/7de4c1ec7))
+- **docs:** Add documentation pages of kebabCase and snakeCase ([41409e361](https://github.com/LouisMazel/maz-ui/commit/41409e361))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.23...v4.0.0-beta.24
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.23...v4.0.0-beta.24)

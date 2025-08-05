@@ -1,5 +1,22 @@
 # Change Log
 
+## v4.0.0-beta.24...v4.0.0-beta.25
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.24...v4.0.0-beta.25)
+
+### 🚀 Features
+
+- **@maz-ui/utils:** Add case option to normalizeString and add kebabCase utility ([de70afd31](https://github.com/LouisMazel/maz-ui/commit/de70afd31))
+
+### 💅 Refactors
+
+- **@maz-ui/utils:** Improve pascalCase method and add test units ([41823d498](https://github.com/LouisMazel/maz-ui/commit/41823d498))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.23...v4.0.0-beta.24
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.23...v4.0.0-beta.24)
