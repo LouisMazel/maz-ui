@@ -133,22 +133,13 @@ The MCP server provides the following tools that AI assistants can use:
 
 ### List Tools
 
+- **`get_getting_started`** - Get the getting started guide
 - **`list_all_components`** - Get a complete list of available components
 - **`list_guides`** - List all installation and usage guides
 - **`list_composables`** - List all Vue composables
 - **`list_directives`** - List all Vue directives
 - **`list_plugins`** - List all Vue plugins
 - **`list_helpers`** - List all utility helpers
-
-### Quick Access Tools
-
-- **`get_getting_started`** - Get the getting started guide (high priority)
-- **`get_component_usage`** - Get usage examples for a specific component
-
-  ```txt
-  Parameters: { component: string }
-  Example: "MazBtn", "maz-input", "MazDatePicker"
-  ```
 
 ## 📚 Available Resources
 

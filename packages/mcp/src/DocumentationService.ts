@@ -1,5 +1,4 @@
-import { existsSync } from 'node:fs'
-import { readdir, readFile } from 'node:fs/promises'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 
 export interface DocumentationDiagnostics {
@@ -41,7 +40,7 @@ export interface DocumentationDiagnostics {
   }
 }
 
-export default class DocumentationService {
+export class DocumentationService {
   private readonly docsRoot: string
   private readonly componentsDir: string
   private readonly generatedDocsDir: string
@@ -52,10 +51,13 @@ export default class DocumentationService {
   private readonly helpersDir: string
 
   constructor() {
-    // Chemins relatifs depuis apps/mcp vers apps/docs
-    this.docsRoot = resolve(process.cwd(), '../../apps/docs/src')
+    const localDocsRoot = resolve(process.cwd(), 'docs/src')
+    const localGeneratedDocsDir = resolve(process.cwd(), 'docs/generated-docs')
+
+    this.docsRoot = localDocsRoot
+    this.generatedDocsDir = localGeneratedDocsDir
+
     this.componentsDir = join(this.docsRoot, 'components')
-    this.generatedDocsDir = resolve(process.cwd(), '../../apps/docs/.vitepress/generated-docs')
     this.guidesDir = join(this.docsRoot, 'guide')
     this.composablesDir = join(this.docsRoot, 'composables')
     this.directivesDir = join(this.docsRoot, 'directives')
@@ -64,7 +66,7 @@ export default class DocumentationService {
   }
 
   /**
-   * Convertit un nom de composant PascalCase vers kebab-case
+   * Convert un nom de composant PascalCase vers kebab-case
    * MazBtn -> maz-btn
    */
   private pascalToKebabCase(pascalName: string): string {
@@ -77,12 +79,12 @@ export default class DocumentationService {
   /**
    * Lit un fichier markdown et retourne son contenu ou une chaîne vide
    */
-  private async readMarkdownFile(filePath: string): Promise<string> {
+  private readMarkdownFile(filePath: string): string {
     try {
       if (!existsSync(filePath)) {
         return ''
       }
-      return await readFile(filePath, 'utf-8')
+      return readFileSync(filePath, 'utf-8')
     }
     catch {
       return ''
@@ -92,12 +94,12 @@ export default class DocumentationService {
   /**
    * Liste les fichiers markdown dans un répertoire
    */
-  private async listMarkdownFiles(dirPath: string): Promise<string[]> {
+  private listMarkdownFiles(dirPath: string): string[] {
     try {
       if (!existsSync(dirPath)) {
         return []
       }
-      const files = await readdir(dirPath)
+      const files = readdirSync(dirPath)
       return files
         .filter(file => file.endsWith('.md') && file !== 'index.md')
         .map(file => file.replace('.md', ''))
@@ -113,7 +115,7 @@ export default class DocumentationService {
   /**
    * Récupère la documentation complète d'un composant (manuelle + générée)
    */
-  async getComponentDocumentation(componentName: string): Promise<string> {
+  getComponentDocumentation(componentName: string): string {
     // Accepte MazBtn ou maz-btn, normalise en kebab-case
     const kebabName = componentName.startsWith('Maz')
       ? this.pascalToKebabCase(componentName)
@@ -122,10 +124,10 @@ export default class DocumentationService {
     const manualDocPath = join(this.componentsDir, `${kebabName}.md`)
     const generatedDocPath = join(this.generatedDocsDir, `${kebabName}.doc.md`)
 
-    const [manualDoc, generatedDoc] = await Promise.all([
+    const [manualDoc, generatedDoc] = [
       this.readMarkdownFile(manualDocPath),
       this.readMarkdownFile(generatedDocPath),
-    ])
+    ]
 
     if (!manualDoc && !generatedDoc) {
       return ''
@@ -147,13 +149,11 @@ export default class DocumentationService {
   /**
    * Liste tous les composants disponibles
    */
-  async getAllComponents(): Promise<string[]> {
-    const [manualFiles, generatedFiles] = await Promise.all([
+  getAllComponents(): string[] {
+    const [manualFiles, generatedFiles] = [
       this.listMarkdownFiles(this.componentsDir),
-      this.listMarkdownFiles(this.generatedDocsDir).then(files =>
-        files.map(file => file.replace('.doc', '')),
-      ),
-    ])
+      this.listMarkdownFiles(this.generatedDocsDir).map(file => file.replace('.doc', '')),
+    ]
 
     // Combine et déduplique
     const allComponents = new Set([...manualFiles, ...generatedFiles])
@@ -165,16 +165,16 @@ export default class DocumentationService {
   /**
    * Récupère la documentation d'un guide
    */
-  async getGuideDocumentation(guideName: string): Promise<string> {
+  getGuideDocumentation(guideName: string): string {
     const guidePath = join(this.guidesDir, `${guideName}.md`)
-    return await this.readMarkdownFile(guidePath)
+    return this.readMarkdownFile(guidePath)
   }
 
   /**
    * Liste tous les guides disponibles
    */
-  async getAllGuides(): Promise<string[]> {
-    return await this.listMarkdownFiles(this.guidesDir)
+  getAllGuides(): string[] {
+    return this.listMarkdownFiles(this.guidesDir)
   }
 
   // ========== COMPOSABLES ==========
@@ -182,16 +182,16 @@ export default class DocumentationService {
   /**
    * Récupère la documentation d'un composable
    */
-  async getComposableDocumentation(composableName: string): Promise<string> {
+  getComposableDocumentation(composableName: string): string {
     const composablePath = join(this.composablesDir, `${composableName}.md`)
-    return await this.readMarkdownFile(composablePath)
+    return this.readMarkdownFile(composablePath)
   }
 
   /**
    * Liste tous les composables disponibles
    */
-  async getAllComposables(): Promise<string[]> {
-    return await this.listMarkdownFiles(this.composablesDir)
+  getAllComposables(): string[] {
+    return this.listMarkdownFiles(this.composablesDir)
   }
 
   // ========== DIRECTIVES ==========
@@ -199,16 +199,16 @@ export default class DocumentationService {
   /**
    * Récupère la documentation d'une directive
    */
-  async getDirectiveDocumentation(directiveName: string): Promise<string> {
+  getDirectiveDocumentation(directiveName: string): string {
     const directivePath = join(this.directivesDir, `${directiveName}.md`)
-    return await this.readMarkdownFile(directivePath)
+    return this.readMarkdownFile(directivePath)
   }
 
   /**
    * Liste toutes les directives disponibles
    */
-  async getAllDirectives(): Promise<string[]> {
-    return await this.listMarkdownFiles(this.directivesDir)
+  getAllDirectives(): string[] {
+    return this.listMarkdownFiles(this.directivesDir)
   }
 
   // ========== PLUGINS ==========
@@ -216,16 +216,16 @@ export default class DocumentationService {
   /**
    * Récupère la documentation d'un plugin
    */
-  async getPluginDocumentation(pluginName: string): Promise<string> {
+  getPluginDocumentation(pluginName: string): string {
     const pluginPath = join(this.pluginsDir, `${pluginName}.md`)
-    return await this.readMarkdownFile(pluginPath)
+    return this.readMarkdownFile(pluginPath)
   }
 
   /**
    * Liste tous les plugins disponibles
    */
-  async getAllPlugins(): Promise<string[]> {
-    return await this.listMarkdownFiles(this.pluginsDir)
+  getAllPlugins(): string[] {
+    return this.listMarkdownFiles(this.pluginsDir)
   }
 
   // ========== HELPERS ==========
@@ -233,16 +233,16 @@ export default class DocumentationService {
   /**
    * Récupère la documentation d'un helper
    */
-  async getHelperDocumentation(helperName: string): Promise<string> {
+  getHelperDocumentation(helperName: string): string {
     const helperPath = join(this.helpersDir, `${helperName}.md`)
-    return await this.readMarkdownFile(helperPath)
+    return this.readMarkdownFile(helperPath)
   }
 
   /**
    * Liste tous les helpers disponibles
    */
-  async getAllHelpers(): Promise<string[]> {
-    return await this.listMarkdownFiles(this.helpersDir)
+  getAllHelpers(): string[] {
+    return this.listMarkdownFiles(this.helpersDir)
   }
 
   // ========== UTILITAIRES ==========
@@ -250,21 +250,21 @@ export default class DocumentationService {
   /**
    * Récupère la vue d'ensemble de la librairie
    */
-  async getOverview(): Promise<string> {
+  getOverview(): string {
     const overviewPath = join(this.docsRoot, 'index.md')
-    return await this.readMarkdownFile(overviewPath)
+    return this.readMarkdownFile(overviewPath)
   }
 
   /**
    * Recherche dans toute la documentation
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
-  async searchDocumentation(query: string): Promise<string[]> {
+  searchDocumentation(query: string): string[] {
     const searchTerm = query.toLowerCase()
     const results: string[] = []
 
     // Chercher dans les composants
-    const components = await this.getAllComponents()
+    const components = this.getAllComponents()
     for (const component of components) {
       if (component.toLowerCase().includes(searchTerm)) {
         results.push(`component:${component}`)
@@ -272,7 +272,7 @@ export default class DocumentationService {
     }
 
     // Chercher dans les guides
-    const guides = await this.getAllGuides()
+    const guides = this.getAllGuides()
     for (const guide of guides) {
       if (guide.toLowerCase().includes(searchTerm)) {
         results.push(`guide:${guide}`)
@@ -280,7 +280,7 @@ export default class DocumentationService {
     }
 
     // Chercher dans les composables
-    const composables = await this.getAllComposables()
+    const composables = this.getAllComposables()
     for (const composable of composables) {
       if (composable.toLowerCase().includes(searchTerm)) {
         results.push(`composable:${composable}`)
@@ -288,7 +288,7 @@ export default class DocumentationService {
     }
 
     // Chercher dans les directives
-    const directives = await this.getAllDirectives()
+    const directives = this.getAllDirectives()
     for (const directive of directives) {
       if (directive.toLowerCase().includes(searchTerm)) {
         results.push(`directive:${directive}`)
@@ -296,7 +296,7 @@ export default class DocumentationService {
     }
 
     // Chercher dans les plugins
-    const plugins = await this.getAllPlugins()
+    const plugins = this.getAllPlugins()
     for (const plugin of plugins) {
       if (plugin.toLowerCase().includes(searchTerm)) {
         results.push(`plugin:${plugin}`)
@@ -304,7 +304,7 @@ export default class DocumentationService {
     }
 
     // Chercher dans les helpers
-    const helpers = await this.getAllHelpers()
+    const helpers = this.getAllHelpers()
     for (const helper of helpers) {
       if (helper.toLowerCase().includes(searchTerm)) {
         results.push(`helper:${helper}`)
@@ -317,15 +317,15 @@ export default class DocumentationService {
   /**
    * Récupère les diagnostics détaillés pour debugging
    */
-  async getDiagnostics(): Promise<DocumentationDiagnostics> {
-    const [components, guides, composables, directives, plugins, helpers] = await Promise.all([
+  getDiagnostics(): DocumentationDiagnostics {
+    const [components, guides, composables, directives, plugins, helpers] = [
       this.getAllComponents(),
       this.getAllGuides(),
       this.getAllComposables(),
       this.getAllDirectives(),
       this.getAllPlugins(),
       this.getAllHelpers(),
-    ])
+    ]
 
     // Diagnostics pour les composants
     let withManualDoc = 0
