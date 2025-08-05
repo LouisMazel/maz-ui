@@ -2,8 +2,23 @@
   "name": "@maz-ui/mcp",
   "type": "module",
   "version": "4.0.0-beta.25",
-  "private": false,
+  "description": "Maz-UI ModelContextProtocol Client",
+  "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouisMazel/maz-ui.git"
+  },
+  "bugs": "https://github.com/LouisMazel/maz-ui/issues",
+  "keywords": [
+    "maz-ui",
+    "modelcontextprotocol",
+    "client"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/mcp.d.ts",

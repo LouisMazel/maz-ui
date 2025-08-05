@@ -1,6 +1,8 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
+import { version } from '../../package.json' assert { type: 'json' }
 import { DocumentationService } from '../DocumentationService'
+
 import { MazUiMcpServer } from '../mcp'
 
 vi.mock('@modelcontextprotocol/sdk/server/index.js')
@@ -73,7 +75,7 @@ describe('Given MazUiMcpServer instance', () => {
       expect(MockServer).toHaveBeenCalledWith(
         {
           name: 'maz-ui-mcp',
-          version: '0.0.1',
+          version,
         },
         {
           capabilities: {
