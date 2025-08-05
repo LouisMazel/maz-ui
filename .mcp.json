@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "maz-ui": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "@maz-ui/mcp"
+      ],
+      "env": {}
+    }
+  }
+}
