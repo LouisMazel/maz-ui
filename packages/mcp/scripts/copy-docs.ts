@@ -71,6 +71,10 @@ function cleanLocalDocs() {
   }
 }
 
+function rimrafDocs() {
+  rmSync(LOCAL_DOCS_DIR, { recursive: true })
+}
+
 /**
  * Script principal
  */
@@ -79,6 +83,7 @@ async function main() {
   logger.log(`📁 Destination: ${LOCAL_DOCS_DIR}`)
 
   try {
+    rimrafDocs()
     // Créer le dossier docs principal
     if (!existsSync(LOCAL_DOCS_DIR)) {
       await mkdir(LOCAL_DOCS_DIR, { recursive: true })

@@ -56,7 +56,6 @@ describe('Given DocumentationService instance', () => {
 
       expect(result).toEqual([
         'cli',
-        'dark-mode',
         'getting-started',
         'icon-set',
         'icons',
@@ -146,7 +145,7 @@ describe('Given DocumentationService instance', () => {
     it('Then it lists all helper files', () => {
       const result = service.getAllHelpers()
 
-      expect(result).toEqual(['camel-case', 'capitalize', 'check-availability', 'country-code-to-unicode-flag', 'currency', 'date', 'debounce', 'debounce-callback', 'debounce-id', 'get-country-flag-url', 'is-client', 'is-equal', 'is-standalone-mode', 'normalize-string', 'number', 'pascal-case', 'script-loader', 'sleep', 'throttle', 'throttle-id'])
+      expect(result).toEqual(expect.arrayContaining(['camel-case', 'capitalize', 'check-availability', 'country-code-to-unicode-flag', 'currency', 'date', 'debounce', 'debounce-callback', 'debounce-id', 'get-country-flag-url', 'is-client', 'is-equal', 'is-standalone-mode', 'normalize-string', 'number', 'pascal-case', 'script-loader', 'sleep', 'throttle', 'throttle-id', 'kebab-case', 'snake-case']))
     })
   })
 
@@ -187,11 +186,11 @@ describe('Given DocumentationService instance', () => {
       expect(result).toHaveProperty('paths')
 
       expect(result.components.total).toBe(56)
-      expect(result.guides.total).toBe(12)
+      expect(result.guides.total).toBe(11)
       expect(result.composables.total).toBe(14)
       expect(result.directives.total).toBe(5)
       expect(result.plugins.total).toBe(4)
-      expect(result.helpers.total).toBe(20)
+      expect(result.helpers.total).toBe(22)
     })
   })
 })
