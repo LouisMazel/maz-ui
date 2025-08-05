@@ -5,6 +5,7 @@
       "../../../../packages/lib/dist/composables/index": [
         "../../packages/lib/dist/types/composables/index.d.ts"
       ]
-    }
+    },
+    "allowImportingTsExtensions": true
   }
 }
