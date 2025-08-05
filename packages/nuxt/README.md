@@ -16,20 +16,20 @@ Transform your Nuxt application with **Maz-UI** - a comprehensive Vue.js compone
 [![npm version](https://badge.fury.io/js/%40maz-ui%2Fnuxt.svg)](https://badge.fury.io/js/%40maz-ui%2Fnuxt)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-## 🎯 What is Maz-UI?
+## What is Maz-UI?
 
 **Maz-UI** is a powerful Vue.js component library with **50+ beautiful components**, **20+ useful composables**, and **smart directives** that work perfectly with Nuxt. Think of it as your design system in a box!
 
-### 🌟 Why Choose Maz-UI for Your Nuxt App?
+### Why Choose Maz-UI for Your Nuxt App?
 
-- **🚀 Zero Configuration** - Works instantly with sensible defaults
-- **🎨 Beautiful by Default** - Professional design with dark mode included
-- **📦 Everything Auto-Imported** - No more import statements needed
-- **⚡ Super Fast** - Optimized for performance with tree-shaking
-- **🛠️ Developer Friendly** - TypeScript support and great DevTools
-- **🎯 Production Ready** - Perfect SSR/SSG support
+- **Zero Configuration** - Works instantly with sensible defaults
+- **Beautiful by Default** - Professional design with dark mode included
+- **Everything Auto-Imported** - No more import statements needed
+- **Super Fast** - Optimized for performance with tree-shaking
+- **Developer Friendly** - TypeScript support and great DevTools
+- **Production Ready** - Perfect SSR/SSG support
 
-## 🚀 Quick Start (2 minutes!)
+## Quick Start (2 minutes!)
 
 ### Step 1: Install the module
 
@@ -87,9 +87,9 @@ function showMessage() {
 </template>
 ```
 
-## 🎨 What You Get Out of the Box
+## What You Get Out of the Box
 
-### 🧩 50+ Beautiful Components
+### 50+ Beautiful Components
 
 - **Buttons**: `MazBtn`,
 - **Forms**: `MazInput`, `MazSelect`, `MazCheckbox`, `MazRadio`, `MazTextarea`, `MazInputPhoneNumber`
@@ -101,7 +101,7 @@ function showMessage() {
 - **Charts**: `MazChart` (with Chart.js integration)
 - **And 30+ more!**
 
-### 🎪 20+ Powerful Composables
+### 20+ Powerful Composables
 
 - **`useTheme()`** - Theme management and dark mode
 - **`useToast()`** - Beautiful toast notifications
@@ -112,7 +112,7 @@ function showMessage() {
 - **`useBreakpoints()`** - Responsive design helpers
 - **And many more!**
 
-### 🎯 Smart Directives
+### Smart Directives
 
 - **`v-tooltip`** - Beautiful tooltips anywhere
 - **`v-lazy-img`** - Lazy load images automatically
@@ -120,7 +120,7 @@ function showMessage() {
 - **`v-click-outside`** - Detect outside clicks
 - **`v-fullscreen-img`** - Fullscreen image viewer
 
-## 🌈 Theming Made Simple
+## Theming Made Simple
 
 Maz-UI comes with a powerful theming system that makes your app look professional instantly:
 
@@ -150,7 +150,7 @@ async function changeToOceanTheme() {
 
 **Built-in themes**: `mazUi`, `ocean`, `pristine`, `obsidian` + create your own!
 
-## ⚙️ Configuration Options
+## Configuration Options
 
 ### Minimal Setup (Recommended)
 
@@ -169,32 +169,32 @@ export default defineNuxtConfig({
 export default defineNuxtConfig({
   modules: ['@maz-ui/nuxt'],
   mazUi: {
-    // 🎛️ General Settings
+    // General Settings
     general: {
       autoImportPrefix: 'Maz', // useMazToast instead of useToast
       defaultMazIconPath: '/icons', // Path to your SVG icons
       devtools: true, // Enable DevTools integration
     },
 
-    // 🎨 Theme System
+    // Theme System
     theme: {
       preset: 'ocean', // Choose: 'mazUi', 'ocean', 'pristine', 'obsidian'
       strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
       darkModeStrategy: 'class', // 'class' | 'media' | 'auto'
     },
 
-    // 🌐 Translations
+    // Translations
     translations: {
       locale: 'fr', // Default language
       fallbackLocale: 'en',
     },
 
-    // 🧩 Components (all enabled by default)
+    // Components (all enabled by default)
     components: {
       autoImport: true, // Auto-import all components globally
     },
 
-    // 🎪 Composables (customize what you need)
+    // Composables (customize what you need)
     composables: {
       useTheme: true,
       useToast: true,
@@ -206,7 +206,7 @@ export default defineNuxtConfig({
       // ... all others enabled by default
     },
 
-    // 🎯 Directives
+    // Directives
     directives: {
       vTooltip: true,
       vLazyImg: { threshold: 0.1 }, // Custom intersection threshold
@@ -218,7 +218,7 @@ export default defineNuxtConfig({
 })
 ```
 
-## 🛠️ Advanced Features
+## Advanced Features
 
 ### Custom Theme Creation
 
@@ -252,7 +252,7 @@ export default defineNuxtConfig({
 })
 ```
 
-## 📱 SSR/SSG Support
+## SSR/SSG Support
 
 This module is built specifically for Nuxt with perfect SSR and SSG support:
 
@@ -262,7 +262,7 @@ This module is built specifically for Nuxt with perfect SSR and SSG support:
 - ✅ **Theme Persistence** - Dark mode preference remembered
 - ✅ **No FOUC** - Flash of unstyled content prevented
 
-## 🎯 Why This Module vs Manual Setup?
+## Why This Module vs Manual Setup?
 
 | Feature          | Manual Setup          | @maz-ui/nuxt Module           |
 | ---------------- | --------------------- | ----------------------------- |
@@ -274,17 +274,17 @@ This module is built specifically for Nuxt with perfect SSR and SSG support:
 | **DevTools**     | No integration        | ✅ Nuxt DevTools support      |
 | **TypeScript**   | Manual type setup     | ✅ Perfect TypeScript support |
 
-## 📚 Learn More
+## Learn More
 
-- 📖 **[Full Documentation](https://maz-ui.com/guide/nuxt)**
-- 🐛 **[Report Issues](https://github.com/LouisMazel/maz-ui/issues)**
-- 💬 **[Discussions](https://github.com/LouisMazel/maz-ui/discussions)**
+- **[Full Documentation](https://maz-ui.com/guide/nuxt)**
+- **[Report Issues](https://github.com/LouisMazel/maz-ui/issues)**
+- **[Discussions](https://github.com/LouisMazel/maz-ui/discussions)**
 
-## 🤝 Contributing
+## Contributing
 
 We love contributions! Check out our [Contributing Guide](https://github.com/LouisMazel/maz-ui/blob/main/CONTRIBUTING.md).
 
-## 📄 License
+## License
 
 MIT License © 2025 [LouisMazel](https://github.com/LouisMazel)
 
