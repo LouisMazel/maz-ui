@@ -55,6 +55,8 @@ const modulesMap: Record<Modules, true> = {
   Swipe: true,
   UserVisibility: true,
   TextareaAutogrow: true,
+  kebabCase: true,
+  snakeCase: true,
 }
 
 /**
