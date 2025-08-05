@@ -5,8 +5,7 @@
       "command": "npx",
       "args": [
         "@maz-ui/mcp"
-      ],
-      "env": {}
+      ]
     }
   }
 }
