@@ -89,28 +89,6 @@ describe('Given MazUiMcpServer instance', () => {
     })
   })
 
-  describe('When normalizing query for search', () => {
-    it('Then normalizes queries correctly for component matching', () => {
-      mockDocumentationService.getAllComponents.mockReturnValue(['maz-btn', 'maz-input'])
-
-      const mockRequest = {
-        params: {
-          name: 'search_components',
-          arguments: { query: 'btn' },
-        },
-      }
-
-      const result = callToolHandler(mockRequest)
-
-      expect(result).toEqual({
-        content: [{
-          type: 'text',
-          text: 'Found 1 components matching "btn":\n\n- maz-btn',
-        }],
-      })
-    })
-  })
-
   describe('When handling resource list requests', () => {
     it('Then returns comprehensive resource list', () => {
       mockDocumentationService.getAllComponents.mockReturnValue(['maz-btn'])
@@ -175,46 +153,11 @@ describe('Given MazUiMcpServer instance', () => {
     it('Then returns comprehensive tools list', () => {
       const result = toolsListHandler()
 
-      expect(result.tools).toHaveLength(9)
-      expect(result.tools[0].name).toBe('search_components')
-      expect(result.tools[1].name).toBe('search_documentation')
+      expect(result.tools).toHaveLength(7)
     })
   })
 
   describe('When handling tool call requests', () => {
-    it('Then executes search_components tool', () => {
-      mockDocumentationService.getAllComponents.mockReturnValue(['maz-btn', 'maz-input'])
-
-      const mockRequest = {
-        params: {
-          name: 'search_components',
-          arguments: { query: 'btn' },
-        },
-      }
-
-      const result = callToolHandler(mockRequest)
-
-      expect(result.content[0].text).toContain('Found 1 components matching "btn"')
-      expect(result.content[0].text).toContain('- maz-btn')
-    })
-
-    it('Then executes search_documentation tool', () => {
-      mockDocumentationService.searchDocumentation
-        .mockReturnValueOnce(['use-toast'])
-        .mockReturnValueOnce(['toast'])
-
-      const mockRequest = {
-        params: {
-          name: 'search_documentation',
-          arguments: { query: 'toast' },
-        },
-      }
-
-      const result = callToolHandler(mockRequest)
-
-      expect(result.content[0].text).toContain('Found 2 items matching "toast"')
-    })
-
     it('Then executes list_all_components tool', () => {
       mockDocumentationService.getAllComponents.mockReturnValue(['maz-btn', 'maz-input'])
 
@@ -271,17 +214,6 @@ describe('Given MazUiMcpServer instance', () => {
       }
 
       expect(() => callToolHandler(mockRequest)).toThrow('Unknown tool: unknown_tool')
-    })
-
-    it('Then throws error when required query parameter is missing', () => {
-      const mockRequest = {
-        params: {
-          name: 'search_components',
-          arguments: {},
-        },
-      }
-
-      expect(() => callToolHandler(mockRequest)).toThrow('Query parameter is required')
     })
   })
 

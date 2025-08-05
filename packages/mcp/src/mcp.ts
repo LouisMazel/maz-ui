@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { getErrorMessage, normalizeString } from '@maz-ui/utils'
+import { getErrorMessage } from '@maz-ui/utils'
 import { Server } from '@modelcontextprotocol/sdk/server/index.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import {
@@ -34,39 +34,6 @@ export class MazUiMcpServer {
     )
 
     this.setupHandlers()
-  }
-
-  private normalizeQueryForSearch(query: string): string {
-    return normalizeString(query, {
-      case: 'kebab-case',
-      removeAccents: true,
-      normalizeSpaces: true,
-      trim: true,
-    })
-  }
-
-  private matchesComponent(component: string, query: string): boolean {
-    const normalizedComponent = this.normalizeQueryForSearch(component)
-
-    const normalizedQuery = this.normalizeQueryForSearch(query)
-
-    if (normalizedComponent.includes(normalizedQuery)) {
-      return true
-    }
-
-    const withoutMazPrefix = normalizedQuery.replace(/^maz-/, '')
-    if (withoutMazPrefix !== normalizedQuery && normalizedComponent.includes(withoutMazPrefix)) {
-      return true
-    }
-
-    const componentWords = normalizedComponent.split('-')
-    const queryWords = normalizedQuery.split('-')
-
-    return queryWords.some(queryWord =>
-      componentWords.some(componentWord =>
-        componentWord.includes(queryWord),
-      ),
-    )
   }
 
   private setupHandlers() {
@@ -205,71 +172,8 @@ export class MazUiMcpServer {
       return {
         tools: [
           {
-            name: 'search_components',
-            description: `Search for Vue components by name or functionality. Supports fuzzy matching and handles different naming conventions.
-
-Examples:
-- "btn" or "maz-btn" or "MazBtn" → finds MazBtn, etc.
-- "input" → finds MazInput, MazInputPhoneNumber, MazInputNumber, etc.
-- "date picker" → finds MazDatePicker
-- "phone" → finds MazInputPhoneNumber
-- "chart" → finds MazChart
-- "table" → finds MazTable
-- "dialog" → finds MazDialog
-
-Tips:
-- Component names can be searched with or without "Maz" prefix
-- Works with kebab-case, camelCase, or regular words`,
-            inputSchema: {
-              type: 'object',
-              properties: {
-                query: {
-                  type: 'string',
-                  description: 'Component name or functionality to search for (e.g., "MazBtn", "input phone", "date picker")',
-                },
-              },
-              required: ['query'],
-            },
-          },
-          {
-            name: 'search_documentation',
-            description: `Search across all Maz-UI documentation including components, guides, composables, directives, plugins, and helpers.
-
-Examples:
-- "installation" → finds setup guides and getting started
-- "theme" → finds theming documentation and theme-related content
-- "form validation" → finds form-related components and validation guides
-- "animation" → finds AOS plugin and animation utilities
-- "toast" → finds toast plugin documentation
-- "lazy loading" → finds vLazyImg directive
-- "phone number" → finds MazInputPhoneNumber and related utilities
-- "dark mode" → finds theme switching documentation
-
-Tips:
-- Use specific keywords for better results
-- Search for concepts like "accessibility", "typescript", "nuxt"
-- Include functionality terms like "validation", "formatting", "animation"
-- Works with both English and technical terms`,
-            inputSchema: {
-              type: 'object',
-              properties: {
-                query: {
-                  type: 'string',
-                  description: 'Documentation search query (e.g., "installation", "theme setup", "form validation")',
-                },
-              },
-              required: ['query'],
-            },
-          },
-          {
             name: 'list_all_components',
-            description: `Get a complete list of all 50+ Vue components available in Maz-UI.
-
-Use this when:
-- User asks "what components are available?"
-- Need to browse all components
-- Looking for component overview
-- Want to see the full component catalog`,
+            description: 'Get complete list of all available Vue components',
             inputSchema: {
               type: 'object',
               properties: {},
@@ -277,13 +181,7 @@ Use this when:
           },
           {
             name: 'list_guides',
-            description: `List all available documentation guides including installation, configuration, theming, and usage guides.
-
-Use this when:
-- User needs help with setup or configuration
-- Looking for tutorials or how-to guides
-- Need migration information
-- Want to see all available documentation sections`,
+            description: 'List all documentation guides (installation, setup, etc.)',
             inputSchema: {
               type: 'object',
               properties: {},
@@ -291,13 +189,7 @@ Use this when:
           },
           {
             name: 'get_getting_started',
-            description: `Get the complete getting started guide with installation instructions, basic setup, and first steps.
-
-Use this when:
-- User asks "how to install Maz-UI"
-- "how to setup Maz-UI"
-- "getting started with Maz-UI"
-- Need basic installation and configuration steps`,
+            description: 'Get installation and setup guide for Maz-UI',
             inputSchema: {
               type: 'object',
               properties: {},
@@ -305,19 +197,7 @@ Use this when:
           },
           {
             name: 'list_composables',
-            description: `List all Vue 3 composables (composition functions) available in Maz-UI.
-
-Examples include:
-- useFormValidator (form validation)
-- useToast (toast notifications)
-- useDialog (dialog management)
-- useTheme (theme switching)
-- useAos (animations)
-
-Use this when user asks about:
-- "what composables are available?"
-- "Vue composition functions"
-- "reusable logic"`,
+            description: 'List all Vue 3 composables (useToast, useDialog, etc.)',
             inputSchema: {
               type: 'object',
               properties: {},
@@ -325,18 +205,7 @@ Use this when user asks about:
           },
           {
             name: 'list_directives',
-            description: `List all Vue directives available in Maz-UI.
-
-Examples include:
-- vClickOutside (detect clicks outside element)
-- vTooltip (add tooltips)
-- vLazyImg (lazy load images)
-- vZoomImg (image zoom functionality)
-
-Use this when user asks about:
-- "what directives are available?"
-- "Vue directives"
-- "v-directives"`,
+            description: 'List all Vue directives (v-tooltip, v-click-outside, etc.)',
             inputSchema: {
               type: 'object',
               properties: {},
@@ -344,18 +213,7 @@ Use this when user asks about:
           },
           {
             name: 'list_plugins',
-            description: `List all Vue plugins available in Maz-UI.
-
-Examples include:
-- Toast (notification system)
-- Dialog (modal dialogs)
-- AOS (animations on scroll)
-- Wait (loading overlays)
-
-Use this when user asks about:
-- "what plugins are available?"
-- "Vue plugins"
-- "global functionality"`,
+            description: 'List all Vue plugins (Toast, Dialog, AOS, Wait)',
             inputSchema: {
               type: 'object',
               properties: {},
@@ -363,20 +221,7 @@ Use this when user asks about:
           },
           {
             name: 'list_helpers',
-            description: `List all utility helper functions available in @maz-ui/utils package.
-
-Examples include:
-- String manipulation (normalizeString, kebabCase)
-- Date formatting utilities
-- Number formatting
-- Color utilities
-- Validation helpers
-
-Use this when user asks about:
-- "utility functions"
-- "helper functions"
-- "formatting utilities"
-- "@maz-ui/utils"`,
+            description: 'List all utility functions (string, date, number formatting)',
             inputSchema: {
               type: 'object',
               properties: {},
@@ -387,49 +232,9 @@ Use this when user asks about:
     })
 
     this.server.setRequestHandler(CallToolRequestSchema, (request) => {
-      const { name, arguments: args } = request.params
+      const { name } = request.params
 
       switch (name) {
-        case 'search_components': {
-          const query = args?.query as string
-          if (!query) {
-            throw new Error('Query parameter is required')
-          }
-
-          const components = this.documentationService.getAllComponents()
-          const results = components.filter(component => this.matchesComponent(component, query))
-
-          return {
-            content: [{
-              type: 'text',
-              text: `Found ${results.length} components matching "${query}":\n\n${results.map(c => `- ${c}`).join('\n')}`,
-            }],
-          }
-        }
-
-        case 'search_documentation': {
-          const query = args?.query as string
-          if (!query) {
-            throw new Error('Query parameter is required')
-          }
-
-          const normalizedQuery = this.normalizeQueryForSearch(query)
-          const [normalizedResults, originalResults] = [
-            this.documentationService.searchDocumentation(normalizedQuery),
-            this.documentationService.searchDocumentation(query),
-          ]
-
-          const allResults = [...normalizedResults, ...originalResults]
-          const uniqueResults = [...new Set(allResults)]
-
-          return {
-            content: [{
-              type: 'text',
-              text: `Found ${uniqueResults.length} items matching "${query}":\n\n${uniqueResults.map(r => `- ${r}`).join('\n')}`,
-            }],
-          }
-        }
-
         case 'list_all_components': {
           const components = this.documentationService.getAllComponents()
           return {
