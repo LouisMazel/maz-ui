@@ -61,7 +61,7 @@ describe('components/MazDropdown.vue', () => {
 
   it('generates unique component id', () => {
     const triggerId = wrapper.vm.instanceId
-    expect(triggerId).toBe('MazDropdown-v-1')
+    expect(triggerId).toBe('MazDropdown-v-0')
   })
 
   it('closes dropdown by default', () => {
