@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<MazInputPhoneNumberProps>(), {
   listPosition: 'bottom-start',
   color: 'primary',
   size: 'md',
-  autoFormat: true,
+  autoFormat: 'blur',
   orientation: 'responsive',
   searchThreshold: 0.75,
   countrySelectAttributes: () => ({
@@ -262,12 +262,11 @@ export interface MazInputPhoneNumberProps {
   customCountriesList?: Record<CountryCode, string>
   /**
    * Disabled auto-format when phone is valid
-   * @default true
+   * @default 'blur'
    */
-  autoFormat?: boolean
+  autoFormat?: 'blur' | 'typing' | 'disabled' | false
   /**
    * Locale of country list
-   * @type {string}
    * @example "fr-FR"
    */
   countryLocale?: string
@@ -338,6 +337,7 @@ const selectedCountry = ref<CountryCode | undefined>()
 
 /** State */
 const { t } = useTranslations()
+
 const messages = computed(() => ({
   countrySelect: {
     error: props.translations?.countrySelect?.error || t('inputPhoneNumber.countrySelect.error'),
@@ -351,7 +351,6 @@ const messages = computed(() => ({
 } satisfies DeepPartial<MazTranslationsNestedSchema['inputPhoneNumber']>))
 const isPhoneNumberInternalUpdate = ref(false)
 const isCountryInternalUpdate = ref(false)
-const hasAutoFormat = computed(() => props.autoFormat)
 
 const results = ref<MazInputPhoneNumberData>({
   isValid: false,
@@ -438,7 +437,7 @@ function onPhoneNumberChanged({
     })
   }
 
-  if (results.value.isValid && hasAutoFormat.value) {
+  if (results.value.isValid && (props.autoFormat === 'blur' || props.autoFormat === 'typing')) {
     phoneNumber.value = results.value.formatNational?.trim().replace(new RegExp(/\D/g), '')
   }
   else {
@@ -652,7 +651,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
       v-bind="{ ...$attrs, ...phoneInputAttributes }"
       :color
       :size
-      :auto-format="hasAutoFormat"
+      :auto-format
       :example
       block
       :disabled

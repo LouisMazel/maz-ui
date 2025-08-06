@@ -4,10 +4,11 @@ import type { ComponentPublicInstance } from 'vue'
 import type { MazInputProps } from '../MazInput.vue'
 import type { MazInputPhoneNumberInjectedData } from '../MazInputPhoneNumber.vue'
 import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
-import { computed, onMounted, ref, useTemplateRef, watch } from 'vue'
+import { computed, onMounted, ref, useTemplateRef } from 'vue'
 import { useInjectStrict } from '../../composables/useInjectStrict'
 import MazInput from '../MazInput.vue'
 import { useLibphonenumber } from './useLibphonenumber'
+import { useMazInputPhoneNumber } from './useMazInputPhoneNumber'
 
 type PhoneInputProps = Omit<MazInputProps, 'modelValue'> & {
   id: string
@@ -17,39 +18,31 @@ type PhoneInputProps = Omit<MazInputProps, 'modelValue'> & {
   }
   example: boolean
   hasRadius: boolean
-  autoFormat: boolean
+  autoFormat: 'blur' | 'typing' | 'disabled' | false
 }
 
 const { placeholder, label, example, locales, autoFormat, name, inputmode, autocomplete } = defineProps<PhoneInputProps>()
 
 const { getPhoneNumberExample, getAsYouTypeFormat, loadExamples } = useLibphonenumber()
+const { sanitizePhoneNumber } = useMazInputPhoneNumber()
 const { results, selectedCountry } = useInjectStrict<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData')
 
 const modelValue = defineModel<string | undefined | null>()
 
-function extractRawDigits(input?: string | undefined | null): string {
-  if (!input)
-    return ''
-  return input.replace(/\D/g, '')
-}
-
-const rawValue = ref<string | undefined | null>(extractRawDigits(modelValue.value))
 const inputFocused = ref(false)
 
 const asYouTypeFormatted = computed(() => {
-  const phoneNumberToFormat = rawValue.value
-  return getAsYouTypeFormat(selectedCountry.value, rawValue.value) || phoneNumberToFormat
+  const phoneNumberToFormat = results.value.isValid ? results.value.formatNational : modelValue.value
+
+  return getAsYouTypeFormat(selectedCountry.value, phoneNumberToFormat) || phoneNumberToFormat
 })
 
-const displayedPhoneNumber = computed(() => {
-  return autoFormat ? asYouTypeFormatted.value : rawValue.value
+const displayedPhoneNumber = computed({
+  get: () => (!inputFocused.value && autoFormat === 'blur') || autoFormat === 'typing' ? asYouTypeFormatted.value : modelValue.value,
+  set: (value) => {
+    modelValue.value = sanitizePhoneNumber(value)
+  },
 })
-
-function handleInput(value: string | undefined | null) {
-  const rawDigits = extractRawDigits(value)
-  rawValue.value = rawDigits
-  modelValue.value = rawDigits
-}
 
 const { t } = useTranslations()
 function getCountryPhoneNumberExample(selectedCountry?: CountryCode | undefined | null) {
@@ -90,13 +83,6 @@ onMounted(() => {
     loadExamples()
 })
 
-watch(() => modelValue.value, (newValue) => {
-  const newRawValue = extractRawDigits(newValue)
-  if (newRawValue !== rawValue.value) {
-    rawValue.value = newRawValue
-  }
-})
-
 const inputRef = useTemplateRef<ComponentPublicInstance>('input')
 
 defineExpose({
@@ -115,7 +101,7 @@ defineExpose({
     :id
     v-bind="{ ...$attrs, ...inputProps }"
     ref="input"
-    :model-value="displayedPhoneNumber"
+    v-model="displayedPhoneNumber"
     :disabled
     :color
     :error
@@ -133,7 +119,6 @@ defineExpose({
         '--focused': inputFocused,
       },
     ]"
-    @update:model-value="handleInput"
     @focus="inputFocused = true"
     @blur="inputFocused = false"
   />

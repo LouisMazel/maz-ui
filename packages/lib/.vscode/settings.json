@@ -81,5 +81,6 @@
     "postcss": "css"
   },
   "tailwindCSS.validate": true,
-  "tailwindCSS.experimental.configFile": "./tailwind.config.js"
+  "tailwindCSS.experimental.configFile": "./tailwind.config.js",
+  "vitest.disableWorkspaceWarning": true
 }

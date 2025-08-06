@@ -285,7 +285,7 @@ const flagUrl = computed(() => {
       :required
       :search-function
       :format-input-value
-      :search-placeholder="messages.searchPlaceholder"
+      :translations="messages"
       :search-threshold
       :options="countriesOptions"
       :hint="hint"
