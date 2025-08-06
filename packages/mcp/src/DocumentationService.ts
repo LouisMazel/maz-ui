@@ -51,8 +51,8 @@ export class DocumentationService {
   private readonly helpersDir: string
 
   constructor() {
-    const localDocsRoot = resolve(process.cwd(), 'docs/src')
-    const localGeneratedDocsDir = resolve(process.cwd(), 'docs/generated-docs')
+    const localDocsRoot = resolve(__dirname, '../docs/src')
+    const localGeneratedDocsDir = resolve(__dirname, '../docs/generated-docs')
 
     this.docsRoot = localDocsRoot
     this.generatedDocsDir = localGeneratedDocsDir

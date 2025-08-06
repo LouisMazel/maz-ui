@@ -36,6 +36,10 @@ export class MazUiMcpServer {
     this.setupHandlers()
   }
 
+  public getDocumentationService(): DocumentationService {
+    return this.documentationService
+  }
+
   private setupHandlers() {
     this.server.setRequestHandler(ListResourcesRequestSchema, () => {
       const [components, guides, composables, directives, plugins, helpers] = [

@@ -18,7 +18,6 @@
       ],
       "conventionalCommits": true,
       "conventionalPrerelease": true,
-      "createRelease": false,
       "message": "chore(release): version packages %v",
       "tagVersionPrefix": "v",
       "push": false,
