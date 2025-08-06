@@ -1,5 +1,8 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { dirname, join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const _dirname = dirname(fileURLToPath(import.meta.url))
 
 export interface DocumentationDiagnostics {
   components: {
@@ -51,8 +54,8 @@ export class DocumentationService {
   private readonly helpersDir: string
 
   constructor() {
-    const localDocsRoot = resolve(__dirname, '../docs/src')
-    const localGeneratedDocsDir = resolve(__dirname, '../docs/generated-docs')
+    const localDocsRoot = resolve(_dirname, '../docs/src')
+    const localGeneratedDocsDir = resolve(_dirname, '../docs/generated-docs')
 
     this.docsRoot = localDocsRoot
     this.generatedDocsDir = localGeneratedDocsDir
