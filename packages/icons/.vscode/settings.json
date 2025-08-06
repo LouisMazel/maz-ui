@@ -70,5 +70,6 @@
       "strings": "on"
     },
     "editor.wordBasedSuggestions": "allDocuments"
-  }
+  },
+  "vitest.disableWorkspaceWarning": true
 }
