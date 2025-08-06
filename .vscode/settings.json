@@ -72,5 +72,6 @@
     "scss",
     "pcss",
     "postcss"
-  ]
+  ],
+  "vitest.maxConfigFiles": 5
 }
