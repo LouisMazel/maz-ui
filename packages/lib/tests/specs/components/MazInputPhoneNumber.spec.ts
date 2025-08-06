@@ -32,9 +32,9 @@ describe('components/MazInputPhoneNumber.vue', () => {
       },
     })
 
-    expect(wrapper.html()).toContain('MazInputPhoneNumber-v-0')
-    expect(wrapper.html()).toContain('MazInputPhoneNumber-v-0-country')
-    expect(wrapper.html()).toContain('MazInputPhoneNumber-v-0-phone')
+    expect(wrapper.html()).toContain('MazInputPhoneNumber-temp')
+    expect(wrapper.html()).toContain('MazInputPhoneNumber-temp-country')
+    expect(wrapper.html()).toContain('MazInputPhoneNumber-temp-phone')
   })
 
   it('should have the provided id', async () => {
