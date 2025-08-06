@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.26...v4.0.0-beta.27
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.26...v4.0.0-beta.27)
+
+### 🩹 Fixes
+
+- **maz-ui:** UseInstanceUniqId - hydration issue with nuxt ([3ec0c846b](https://github.com/LouisMazel/maz-ui/commit/3ec0c846b))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.25...v4.0.0-beta.26
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.25...v4.0.0-beta.26)
