@@ -113,10 +113,20 @@ async function fetchCountryCode(): Promise<{ data: CountryCode, error: undefined
   }
 }
 
+function sanitizePhoneNumber(input?: string | undefined | null) {
+  if (!input) {
+    return ''
+  }
+  const regex = new RegExp(/[^\d ()+-]/g) // Keep only digits, (), - and + characters
+
+  return input.replaceAll(regex, '').trim()
+}
+
 export function useMazInputPhoneNumber() {
   return {
     fetchCountryCode,
     getBrowserLocale,
     getCountryList,
+    sanitizePhoneNumber,
   }
 }

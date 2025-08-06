@@ -1,5 +1,4 @@
 import type { MazInputPhoneNumberProps } from '@components/MazInputPhoneNumber.vue'
-import type { Results } from '@components/MazInputPhoneNumber/types'
 import MazInputPhoneNumber from '@components/MazInputPhoneNumber.vue'
 import PhoneInput from '@components/MazInputPhoneNumber/PhoneInput.vue'
 import MazSelectCountry from '@components/MazSelectCountry.vue'
@@ -77,7 +76,7 @@ describe('components/MazInputPhoneNumber.vue', () => {
 
     const htmlInput = wrapper.find('input[name="phone"]').element as HTMLInputElement
 
-    expect(htmlInput.value).toBe('326453')
+    expect(htmlInput.value).toBe('+32 64 53')
 
     expect(wrapper.vm.modelValue).toBe('+326453')
     expect(wrapper.emitted('country-code')?.[0][0]).toBe('BE')
@@ -101,12 +100,12 @@ describe('components/MazInputPhoneNumber.vue', () => {
     expect(updateEvent.e164).toBe('+33612345678')
   })
 
-  it('should format phone number as you type when autoFormat is true', async () => {
+  it('should format phone number as you type when autoFormat is typing', async () => {
     const wrapper = await getWrapper({
       props: {
         modelValue: '0612345678',
         countryCode: 'FR',
-        autoFormat: true,
+        autoFormat: 'typing',
       },
     })
 
@@ -117,12 +116,12 @@ describe('components/MazInputPhoneNumber.vue', () => {
     expect(input.element.value).toBe('06 12 34 56 78')
   })
 
-  it('should not format phone number when autoFormat is false', async () => {
+  it('should not format phone number when autoFormat is disabled', async () => {
     const wrapper = await getWrapper({
       props: {
         modelValue: '',
         countryCode: 'FR',
-        autoFormat: false,
+        autoFormat: 'disabled',
       },
     })
 
