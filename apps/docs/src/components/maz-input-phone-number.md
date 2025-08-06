@@ -286,17 +286,43 @@ Let the component automatically detect the user's country.
 </template>
 </ComponentDemo>
 
-## Validation & Formatting
+## Phone Number Formatting
 
-Control how phone numbers are validated and formatted.
+Control how phone numbers are automatically formatted as users type.
 
 <ComponentDemo>
   <div class="maz-space-y-6">
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Disable Auto-formatting</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">For countries with multiple valid lengths</p>
+      <h4 class="maz-font-semibold maz-mb-2">Format on Blur (Default)</h4>
+      <p class="maz-text-sm maz-text-muted maz-mb-2">Shows raw input while typing, formats when field loses focus</p>
       <MazInputPhoneNumber
-        :auto-format="false"
+        auto-format="blur"
+        country-code="US"
+        :translations="{
+          phoneInput: {
+            placeholder: 'Type freely, formats on blur'
+          }
+        }"
+      />
+    </div>
+    <div>
+      <h4 class="maz-font-semibold maz-mb-2">Format While Typing</h4>
+      <p class="maz-text-sm maz-text-muted maz-mb-2">Real-time formatting as you type</p>
+      <MazInputPhoneNumber
+        auto-format="typing"
+        country-code="FR"
+        :translations="{
+          phoneInput: {
+            placeholder: 'Formats as you type'
+          }
+        }"
+      />
+    </div>
+    <div>
+      <h4 class="maz-font-semibold maz-mb-2">Disable Formatting</h4>
+      <p class="maz-text-sm maz-text-muted maz-mb-2">For countries with multiple valid lengths or custom formatting</p>
+      <MazInputPhoneNumber
+        auto-format="disabled"
         country-code="AI"
         :translations="{
           phoneInput: {
@@ -305,6 +331,35 @@ Control how phone numbers are validated and formatted.
         }"
       />
     </div>
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <!-- Format on blur (default) - best UX for most cases -->
+  <MazInputPhoneNumber auto-format="blur" />
+
+  <!-- Format while typing - immediate visual feedback -->
+  <MazInputPhoneNumber auto-format="typing" />
+
+  <!-- Disable formatting - for special cases -->
+  <MazInputPhoneNumber auto-format="disabled" />
+
+  <!-- Legacy boolean support (false = disabled, true = typing) -->
+  <MazInputPhoneNumber :auto-format="false" />
+</template>
+```
+
+</template>
+</ComponentDemo>
+
+## Validation States
+
+Control the visual validation feedback and success/error indicators.
+
+<ComponentDemo>
+  <div class="maz-space-y-6">
     <div>
       <h4 class="maz-font-semibold maz-mb-2">Hide Validation UI</h4>
       <p class="maz-text-sm maz-text-muted maz-mb-2">No visual success/error indicators</p>
@@ -329,9 +384,6 @@ Control how phone numbers are validated and formatted.
 
 ```vue
 <template>
-  <!-- Disable auto-formatting -->
-  <MazInputPhoneNumber :auto-format="false" />
-
   <!-- Hide validation indicators -->
   <MazInputPhoneNumber
     :validation-success="false"
@@ -797,7 +849,7 @@ Common issues and solutions:
 For countries like Anguilla (AI) with multiple valid number lengths, disable auto-formatting:
 
 ```vue
-<MazInputPhoneNumber :auto-format="false" country-code="AI" />
+<MazInputPhoneNumber auto-format="disabled" country-code="AI" />
 ```
 
 ### 🌐 Country Detection Not Working
