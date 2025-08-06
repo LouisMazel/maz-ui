@@ -7,5 +7,12 @@ export function useInstanceUniqId({
   componentName: string
   providedId?: string
 }) {
-  return computed(() => providedId ?? `${componentName}-${useId().replace(/:/g, '')}`)
+  const generatedId = useId()
+
+  return computed(() => {
+    if (providedId)
+      return providedId
+
+    return `${componentName}-${generatedId.replace(/:/g, '')}`
+  })
 }

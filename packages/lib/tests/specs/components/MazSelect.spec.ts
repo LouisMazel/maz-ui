@@ -44,7 +44,7 @@ describe('components/MazSelect.vue', () => {
 
   it('should have an uniq id', () => {
     const input = wrapper.findComponent({ name: 'MazInput' })
-    expect(input.props('id')).toBe('MazSelect-v-1')
+    expect(input.props('id')).toBe('MazSelect-v-0')
   })
 
   it('should find the options on search', () => {
