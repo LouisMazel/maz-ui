@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.28...v4.0.0-beta.29
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.28...v4.0.0-beta.29)
+
+### 🩹 Fixes
+
+- **@maz-ui/mcp:** Fix dirname folder ([9f3692a6a](https://github.com/LouisMazel/maz-ui/commit/9f3692a6a))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.27...v4.0.0-beta.28
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.27...v4.0.0-beta.28)
