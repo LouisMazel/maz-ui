@@ -376,7 +376,7 @@ describe('mazSelectCountry', () => {
       },
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
-    expect(mazSelect.attributes('search-placeholder')).toBe('Search countries')
+    expect(mazSelect.props('translations')).toStrictEqual(translations)
   })
 
   it('renders with custom display names options', async () => {
