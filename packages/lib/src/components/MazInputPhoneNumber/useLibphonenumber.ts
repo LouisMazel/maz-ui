@@ -94,18 +94,20 @@ function getPhoneNumberExample(countryCode?: CountryCode | undefined | null) {
   }
 }
 
-function getAsYouTypeFormat(countryCode?: CountryCode | undefined | null, phoneNumber?: string | undefined | null): string | undefined {
+function getAsYouTypeFormat(countryCode?: CountryCode | undefined | null, phoneNumber?: string | undefined | null): string | undefined | null {
   try {
-    if (!phoneNumber || !countryCode) {
-      return
+    if (!phoneNumber || !countryCode || typeof countryCode !== 'string' || countryCode.length !== 2) {
+      return phoneNumber
     }
 
-    const asYouTypeInstance = new AsYouType(countryCode)
+    const formatter = new AsYouType(countryCode)
 
-    return asYouTypeInstance.input(phoneNumber)
+    return formatter.input(phoneNumber)
   }
   catch (error) {
-    throw new Error(`[MazInputPhoneNumber](getAsYouTypeFormat) ${error}`)
+    console.error(`[MazInputPhoneNumber](getAsYouTypeFormat) Error with countryCode: "${countryCode}", phoneNumber: "${phoneNumber}"`, error)
+
+    return phoneNumber
   }
 }
 
