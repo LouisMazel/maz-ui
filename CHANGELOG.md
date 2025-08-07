@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.29...v4.0.0-beta.30
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.29...v4.0.0-beta.30)
+
+### 📖 Documentation
+
+- **docs:** Improve documentation about theme strategies ([365d61139](https://github.com/LouisMazel/maz-ui/commit/365d61139))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.28...v4.0.0-beta.29
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.28...v4.0.0-beta.29)
