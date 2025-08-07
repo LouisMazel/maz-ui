@@ -34,7 +34,8 @@
     }
   },
   "ignoreChanges": [
-    "./apps/*",
+    "./apps/vue-app/*",
+    "./apps/nuxt-app/*",
     "./tools/*",
     "./docs/*",
     "**/__tests__/*",
