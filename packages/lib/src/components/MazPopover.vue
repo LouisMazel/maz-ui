@@ -538,7 +538,7 @@ function getTransformOrigin(position: Omit<MazPopoverPosition, 'auto'>): string 
 }
 
 function setupFocusTrap() {
-  if (role === 'tooltip' || role === 'menu' || effectiveTrigger.value === 'hover' || !trapFocus || !isClient())
+  if (role === 'tooltip' || effectiveTrigger.value === 'hover' || !trapFocus || !isClient())
     return
 
   initialFocusElement = document.activeElement as HTMLElement
@@ -558,7 +558,7 @@ function setupFocusTrap() {
 }
 
 function restoreFocus() {
-  if (role === 'tooltip' || role === 'menu' || effectiveTrigger.value === 'hover' || !trapFocus || !isClient())
+  if (role === 'tooltip' || effectiveTrigger.value === 'hover' || !trapFocus || !isClient())
     return
 
   nextTick(() => {
@@ -575,7 +575,7 @@ function onKeydown(event: KeyboardEvent) {
     close()
   }
 
-  if ((role === 'dialog' || role === 'menu') && event.key === 'Tab') {
+  if (event.key === 'Tab' && trapFocus) {
     handleTrapFocus(event)
   }
 }
