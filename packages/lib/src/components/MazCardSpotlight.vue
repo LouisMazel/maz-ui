@@ -105,12 +105,14 @@ onUnmounted(() => {
 
 <style lang="postcss" scoped>
   .m-card-spotlight {
-  @apply maz-relative maz-inline-flex maz-overflow-hidden maz-rounded maz-p-[var(--maz-border-width)];
+  @apply maz-relative maz-inline-flex maz-overflow-hidden maz-rounded;
+
+  padding: max(var(--maz-border-width), 1px);
 
   .inner {
     @apply maz-relative maz-h-auto maz-w-full maz-overflow-hidden;
 
-    border-radius: calc(var(--maz-radius) - var(--maz-border-width));
+    border-radius: calc(var(--maz-radius) - max(var(--maz-border-width), 1px));
 
     &::before {
       content: '';
