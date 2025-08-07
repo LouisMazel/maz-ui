@@ -322,16 +322,12 @@ function toggleCollapse() {
 
   &__title,
   &__title > * {
-    font-size: 1.2em;
-
-    @apply maz-text-foreground;
+    @apply maz-text-foreground maz-text-xl;
   }
 
   &__subtitle,
   &__subtitle > * {
-    font-size: 1.1em;
-
-    @apply maz-text-muted;
+    @apply maz-text-muted maz-text-lg;
   }
 
   &__gallery__wrapper {
