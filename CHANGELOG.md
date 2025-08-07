@@ -1,5 +1,21 @@
 # Change Log
 
+## v4.0.0-beta.33...v4.0.0-beta.34
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.33...v4.0.0-beta.34)
+
+### 💅 Refactors
+
+- **maz-ui:** MazCardSpotlight - set padding min to 1px ([11d5861cf](https://github.com/LouisMazel/maz-ui/commit/11d5861cf))
+- **maz-ui:** Toast - set progress bar position min to 1px from bottom ([b5acb1724](https://github.com/LouisMazel/maz-ui/commit/b5acb1724))
+- **maz-ui:** MazPopover - set trap focus for dropdown menu ([04630b4fe](https://github.com/LouisMazel/maz-ui/commit/04630b4fe))
+- **maz-ui:** UseDisplayNames - add type descriptions and improve reactivity ([b0556695c](https://github.com/LouisMazel/maz-ui/commit/b0556695c))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.32...v4.0.0-beta.33
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.32...v4.0.0-beta.33)
