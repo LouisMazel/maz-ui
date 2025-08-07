@@ -512,7 +512,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--background-outlined {
-    @apply maz-border-surface-600 dark:maz-border-surface-300 maz-text-surface-foreground;
+    @apply maz-border-surface-600 maz-bg-surface dark:maz-border-surface-300 maz-text-surface-foreground;
 
     &:not(:disabled):hover {
       @apply maz-bg-surface-600/30;
