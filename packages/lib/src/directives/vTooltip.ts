@@ -157,8 +157,6 @@ class TooltipHandler {
       vNodeInstance = useMountComponent<typeof MazPopover, MazPopoverProps>(MazPopover, {
         props: popoverProps,
         children: {
-          // Use a dummy trigger since we control positioning via positionReference
-          // trigger: () => h('div', { style: 'display: none;' }),
           default: () => {
             if (tooltipProps.html) {
               return h('div', { innerHTML: tooltipProps.html })

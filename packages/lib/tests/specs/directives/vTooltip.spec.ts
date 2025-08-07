@@ -55,21 +55,26 @@ describe('given vTooltip directive', () => {
       })
 
       expect(wrapper.exists()).toBe(true)
-      expect(wrapper.text()).toBe('Content')
+      expect(wrapper.text()).toContain('Content')
+      expect(wrapper.find('.m-tooltip-panel').exists()).toBe(true)
+      expect(wrapper.find('.m-tooltip-panel').text()).toContain('Tooltip text')
     })
   })
 
   describe('when using tooltip with color', () => {
     it('then it should render with color options', () => {
       wrapper = mount({
-        template: `<div v-tooltip="{ text: 'Tooltip text', color: 'primary' }">Content</div>`,
+        template: `<div v-tooltip="{ text: 'Tooltip text', color: 'destructive', open: true }">Content</div>`,
         directives: {
           tooltip: vTooltip,
         },
+
       })
 
       expect(wrapper.exists()).toBe(true)
-      expect(wrapper.text()).toBe('Content')
+      expect(wrapper.text()).toContain('Content')
+      expect(wrapper.find('.m-tooltip-panel').exists()).toBe(true)
+      expect(wrapper.find('.m-tooltip-panel').classes()).toContain('--destructive')
     })
   })
 
