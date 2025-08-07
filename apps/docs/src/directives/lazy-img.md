@@ -12,7 +12,7 @@ description: vLazyImg is a Vue 3 directive to lazy load images with many options
 <img
   style="background-color: hsl(var(--maz-background-300)); width: 80%;"
   class="flex flex-center rounded"
-  v-lazy-img="'https://loremflickr.com/1500/1000'"
+  v-lazy-img="'https://placedog.net/1500/1000'"
 />
 
 ```vue
@@ -22,7 +22,7 @@ import { vLazyImg } from 'maz-ui/directives'
 
 <template>
   <img
-    v-lazy-img="'https://loremflickr.com/1500/1000'"
+    v-lazy-img="'https://placedog.net/1500/1000'"
     style="background-color: hsl(var(--maz-background-300)); width: 80%;"
     class="flex flex-center rounded"
   >
@@ -36,13 +36,13 @@ import { vLazyImg } from 'maz-ui/directives'
 <div
   style="height: 200px; width: 100%; background-size: contain;"
   class="flex flex-center rounded"
-  v-lazy-img:bg-image="'https://loremflickr.com/1500/1000'"
+  v-lazy-img:bg-image="'https://placedog.net/1500/1000'"
 />
 
 ```vue
 <template>
   <div
-    v-lazy-img:bg-image="'https://loremflickr.com/1500/1000'"
+    v-lazy-img:bg-image="'https://placedog.net/1500/1000'"
     style="height: 200px; width: 100%; background-size: contain;"
     class="flex flex-center rounded"
   />
@@ -65,7 +65,7 @@ import { vLazyImg, vLazyImgBindingValue } from 'maz-ui/directives'
 import { ref } from 'vue'
 
 const lazyBinding: vLazyImgBindingValue = {
-  src: 'https://loremflickr.com/1500/1000',
+  src: 'https://placedog.net/1500/1000',
   baseClass: 'custom-class',
   loadingClass: 'custom-class-loading',
   loadedClass: 'custom-class-loaded',
@@ -167,7 +167,7 @@ export type vLazyImgBindingValue = string | vLazyImgBindingOptions
   import { ref } from 'vue'
 
   const lazyBinding: vLazyImgBindingValue = {
-    src: 'https://loremflickr.com/1500/1000',
+    src: 'https://placedog.net/1500/1000',
     baseClass: 'custom-class',
     loadingClass: 'custom-class-loading',
     loadedClass: 'custom-class-loaded',

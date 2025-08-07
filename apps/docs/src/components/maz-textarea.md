@@ -26,7 +26,7 @@ This component has the "autogrow" feature, so when the user writes, the textarea
 
 ```vue
 <script lang="ts" setup>
-import { MazTextarea } from 'maz-ui/components'
+import MazTextarea from 'maz-ui/components/MazTextarea'
 import { ref } from 'vue'
 
 const value = ref()

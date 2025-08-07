@@ -190,7 +190,7 @@ You can replace the default search function by providing a custom search functio
 
   <script lang="ts" setup>
     import { ref } from 'vue'
-    import { MazChecklist } from 'maz-ui/components'
+    import MazChecklist from 'maz-ui/components/MazChecklist'
 
     const employeeQuery = ref<string>()
     const selectedEmployees = ref<string[]>()

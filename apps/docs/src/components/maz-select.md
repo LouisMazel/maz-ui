@@ -29,7 +29,7 @@ selectedValue: {{ selectedValue }}
 
 ```vue
 <script setup lang="ts">
-import { MazSelect } from 'maz-ui/components'
+import MazSelect from 'maz-ui/components/MazSelect'
 import { ref } from 'vue'
 
 const selectedValue = ref()
@@ -132,7 +132,7 @@ You can provide your own search function to customize the search behavior
 
 ```vue
 <script lang="ts" setup>
-import { MazSelect } from 'maz-ui/components'
+import MazSelect from 'maz-ui/components/MazSelect'
 
 const selectedValue = ref()
 

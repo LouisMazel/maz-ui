@@ -15,7 +15,7 @@ description: MazLoadingBar is a standalone component
 
 ```vue
 <script lang="ts" setup>
-import { MazLoadingBar } from 'maz-ui/components'
+import MazLoadingBar from 'maz-ui/components/MazLoadingBar'
 </script>
 
 <template>

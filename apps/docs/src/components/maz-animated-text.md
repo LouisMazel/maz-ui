@@ -22,7 +22,7 @@ This component is SSR friendly. It will display the brut text on the server side
 
 ```vue
 <script lang="ts" setup>
-import { MazAnimatedText } from 'maz-ui/components'
+import MazAnimatedText from 'maz-ui/components/MazAnimatedText'
 </script>
 
 <template>

@@ -27,7 +27,7 @@ description: MazExpandAnimation is a standalone component that allows you to ani
 
 ```vue
 <script lang="ts" setup>
-import { MazExpandAnimation } from 'maz-ui/components'
+import MazExpandAnimation from 'maz-ui/components/MazExpandAnimation'
 import { ref } from 'vue'
 
 const visible = ref(false)
@@ -69,7 +69,7 @@ const visible = ref(false)
 
 ```vue
 <script lang="ts" setup>
-import { MazExpandAnimation } from 'maz-ui/components'
+import MazExpandAnimation from 'maz-ui/components/MazExpandAnimation'
 import { ref } from 'vue'
 
 const visible = ref(false)

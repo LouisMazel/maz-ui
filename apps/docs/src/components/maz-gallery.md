@@ -21,12 +21,12 @@ description: MazGallery is a standalone component used to display images in a co
 import { MazGallery, type MazGalleryImage } from 'maz-ui/components'
 
 const images: MazGalleryImage[] = [
-  'https://loremflickr.com/640/400',
-  { src: 'https://loremflickr.com/640/600', thumbnail: 'https://loremflickr.com/100/100', alt: 'image description' },
-  { src: 'https://loremflickr.com/640/700', alt: 'image description' },
-  'https://loremflickr.com/640/800',
-  'https://loremflickr.com/640/1000',
-  'https://loremflickr.com/800/800'
+  'https://placedog.net/640/400',
+  { src: 'https://placedog.net/640/600', thumbnail: 'https://placedog.net/100/100', alt: 'image description' },
+  { src: 'https://placedog.net/640/700', alt: 'image description' },
+  'https://placedog.net/640/800',
+  'https://placedog.net/640/1000',
+  'https://placedog.net/800/800'
 ]
 </script>
 
@@ -66,20 +66,20 @@ type MazGalleryImage
 
 <script lang="ts" setup>
   const images: MazGalleryImage[] = [
-    'https://loremflickr.com/640/400',
-    { src: 'https://loremflickr.com/640/600', thumbnail: 'https://loremflickr.com/100/100', alt: 'image description' },
-    { src: 'https://loremflickr.com/640/700', alt: 'image description' },
-    'https://loremflickr.com/640/800',
-    'https://loremflickr.com/640/1000',
-    'https://loremflickr.com/800/800'
+    'https://placedog.net/640/400',
+    { src: 'https://placedog.net/640/600', thumbnail: 'https://placedog.net/100/100', alt: 'image description' },
+    { src: 'https://placedog.net/640/700', alt: 'image description' },
+    'https://placedog.net/640/800',
+    'https://placedog.net/640/1000',
+    'https://placedog.net/800/800'
   ]
 
   const images2: MazGalleryImage[] = [
-    'https://loremflickr.com/500/400',
-    { src: 'https://loremflickr.com/500/600', thumbnail: 'https://loremflickr.com/100/100', alt: 'image description' },
-    { src: 'https://loremflickr.com/500/700', alt: 'image description' },
-    'https://loremflickr.com/500/800',
-    'https://loremflickr.com/500/1000',
-    'https://loremflickr.com/500/800'
+    'https://placedog.net/500/400',
+    { src: 'https://placedog.net/500/600', thumbnail: 'https://placedog.net/100/100', alt: 'image description' },
+    { src: 'https://placedog.net/500/700', alt: 'image description' },
+    'https://placedog.net/500/800',
+    'https://placedog.net/500/1000',
+    'https://placedog.net/500/800'
   ]
 </script>

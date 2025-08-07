@@ -25,7 +25,7 @@ Source: [Hericons](https://heroicons.com/)
 
 ```vue
 <script setup lang="ts">
-import { MazIcon } from 'maz-ui/components'
+import MazIcon from 'maz-ui/components/MazIcon'
 
 const iconNames = [
   'academic-cap',

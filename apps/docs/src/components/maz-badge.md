@@ -157,7 +157,7 @@ const colors = [
 
 ```vue
 <script lang="ts" setup>
-import { MazBadge } from 'maz-ui/components'
+import MazBadge from 'maz-ui/components/MazBadge'
 </script>
 
 <template>
@@ -191,7 +191,7 @@ import { MazBadge } from 'maz-ui/components'
 
 ```vue
 <script lang="ts" setup>
-import { MazBadge } from 'maz-ui/components'
+import MazBadge from 'maz-ui/components/MazBadge'
 
 const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
 </script>

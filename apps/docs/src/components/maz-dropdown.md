@@ -13,15 +13,18 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 
 ## Basic usage
 
-<MazDropdown
-  :items="[
-    { label: 'Action', onClick: () => toast.success('CLICKED') },
-    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', color: 'secondary' },
-    { label: 'Router Link', to: { name: 'index' }, color: 'destructive' },
-  ]"
->
-  Dropdown Menu
-</MazDropdown>
+<ComponentDemo>
+  <MazDropdown
+    :items="[
+      { label: 'Action', onClick: () => toast.success('CLICKED') },
+      { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', color: 'secondary' },
+      { label: 'Router Link', to: { name: 'index' }, color: 'destructive' },
+    ]"
+  >
+    Dropdown Menu
+  </MazDropdown>
+
+  <template #code>
 
 ```vue
 <template>
@@ -37,9 +40,12 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 </template>
 
 <script lang="ts" setup>
-  import { MazDropdown } from 'maz-ui/components'
+  import MazDropdown from 'maz-ui/components/MazDropdown'
 </script>
 ```
+
+  </template>
+</ComponentDemo>
 
 ## Open dropdown with adaptive trigger
 
@@ -286,9 +292,9 @@ You can provide a template to replace menuitem labels to add more elements in ea
 
 <MazDropdown
   :items="[
-    { label: 'Action', onClick: () => toast.success('CLICKED'), additionnalData: 'https://loremflickr.com/240/200' },
-    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', additionnalData: 'https://loremflickr.com/340/300' },
-    { label: 'Router Link', to: { name: 'index' }, additionnalData: 'https://loremflickr.com/440/400' },
+    { label: 'Action', onClick: () => toast.success('CLICKED'), additionnalData: 'https://placedog.net/240/200' },
+    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', additionnalData: 'https://placedog.net/340/300' },
+    { label: 'Router Link', to: { name: 'index' }, additionnalData: 'https://placedog.net/440/400' },
   ]"
 >
   <template #default>
@@ -310,9 +316,9 @@ You can provide a template to replace menuitem labels to add more elements in ea
 ```html
 <MazDropdown
   :items="[
-    { label: 'Action', onClick: () => toast.success('CLICKED'), additionnalData: 'https://loremflickr.com/240/200' },
-    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', additionnalData: 'https://loremflickr.com/340/300' },
-    { label: 'Router Link', to: { name: 'index' }, additionnalData: 'https://loremflickr.com/440/400' },
+    { label: 'Action', onClick: () => toast.success('CLICKED'), additionnalData: 'https://placedog.net/240/200' },
+    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', additionnalData: 'https://placedog.net/340/300' },
+    { label: 'Router Link', to: { name: 'index' }, additionnalData: 'https://placedog.net/440/400' },
   ]"
 >
   <template #default>
@@ -346,18 +352,18 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
       {
         label: 'Action',
         onClick: () => toast.success('CLICKED'),
-        additionnalData: 'https://loremflickr.com/240/200',
+        additionnalData: 'https://placedog.net/240/200',
       },
       {
         label: 'Link (href)',
         href: 'https://www.google.com',
         target: '_blank',
-        additionnalData: 'https://loremflickr.com/340/300',
+        additionnalData: 'https://placedog.net/340/300',
       },
       {
         label: 'Router Link',
         to: { name: 'index' },
-        additionnalData: 'https://loremflickr.com/440/400',
+        additionnalData: 'https://placedog.net/440/400',
       },
     ]"
   >
@@ -365,7 +371,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
       <MazAvatar
         clickable
         hide-clickable-icon
-        src="https://loremflickr.com/200/200"
+        src="https://placedog.net/200/200"
         tabindex="-1"
       />
     </template>
@@ -377,18 +383,18 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
       {
         label: 'Action',
         onClick: () => toast.success('CLICKED'),
-        additionnalData: 'https://loremflickr.com/240/200',
+        additionnalData: 'https://placedog.net/240/200',
       },
       {
         label: 'Link (href)',
         href: 'https://www.google.com',
         target: '_blank',
-        additionnalData: 'https://loremflickr.com/340/300',
+        additionnalData: 'https://placedog.net/340/300',
       },
       {
         label: 'Router Link',
         to: { name: 'index' },
-        additionnalData: 'https://loremflickr.com/440/400',
+        additionnalData: 'https://placedog.net/440/400',
       },
     ]"
   >
@@ -408,18 +414,18 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
     {
       label: 'Action',
       onClick: () => toast.success('CLICKED'),
-      additionnalData: 'https://loremflickr.com/240/200',
+      additionnalData: 'https://placedog.net/240/200',
     },
     {
       label: 'Link (href)',
       href: 'https://www.google.com',
       target: '_blank',
-      additionnalData: 'https://loremflickr.com/340/300',
+      additionnalData: 'https://placedog.net/340/300',
     },
     {
       label: 'Router Link',
       to: { name: 'index' },
-      additionnalData: 'https://loremflickr.com/440/400',
+      additionnalData: 'https://placedog.net/440/400',
     },
   ]"
 >
@@ -439,18 +445,18 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
     {
       label: 'Action',
       onClick: () => toast.success('CLICKED'),
-      additionnalData: 'https://loremflickr.com/240/200',
+      additionnalData: 'https://placedog.net/240/200',
     },
     {
       label: 'Link (href)',
       href: 'https://www.google.com',
       target: '_blank',
-      additionnalData: 'https://loremflickr.com/340/300',
+      additionnalData: 'https://placedog.net/340/300',
     },
     {
       label: 'Router Link',
       to: { name: 'index' },
-      additionnalData: 'https://loremflickr.com/440/400',
+      additionnalData: 'https://placedog.net/440/400',
     },
   ]"
 >

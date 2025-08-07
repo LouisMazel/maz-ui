@@ -20,7 +20,7 @@ description: MazAnimatedElement is a standalone component that animates its cont
 
 ```vue
 <script lang="ts" setup>
-import { MazAnimatedElement } from 'maz-ui/components'
+import MazAnimatedElement from 'maz-ui/components/MazAnimatedElement'
 </script>
 
 <template>

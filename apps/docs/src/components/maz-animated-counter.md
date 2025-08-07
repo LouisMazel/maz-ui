@@ -18,7 +18,7 @@ description: MazAnimatedCounter is a standalone component that allows you to ani
 
 ```vue
 <script lang="ts" setup>
-import { MazAnimatedCounter } from 'maz-ui/components'
+import MazAnimatedCounter from 'maz-ui/components/MazAnimatedCounter'
 
 const count = ref(Math.floor(Math.random() * 99999))
 

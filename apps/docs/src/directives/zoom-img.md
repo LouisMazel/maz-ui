@@ -15,13 +15,13 @@ description: vZoomImg is a Vue 3 directive to enlarge an image like a modal on c
 
 <MazCard overflow-hidden>
   <img
-    src="https://loremflickr.com/1500/1000"
-    v-zoom-img="{ src: 'https://loremflickr.com/1500/1000' }"
+    src="https://placedog.net/1500/1000"
+    v-zoom-img="{ src: 'https://placedog.net/1500/1000' }"
   />
 </MazCard>
 <br />
 <br />
-<MazBtn v-zoom-img="{ src: 'https://loremflickr.com/1000/500' }">
+<MazBtn v-zoom-img="{ src: 'https://placedog.net/1000/500' }">
   Show photo
 </MazBtn>
 
@@ -33,12 +33,12 @@ import { vZoomImg } from 'maz-ui/directives'
 <template>
   <MazCard overflow-hidden>
     <img
-      v-zoom-img="{ src: 'https://loremflickr.com/1500/1000' }"
-      src="https://loremflickr.com/1500/1000"
+      v-zoom-img="{ src: 'https://placedog.net/1500/1000' }"
+      src="https://placedog.net/1500/1000"
     >
   </MazCard>
 
-  <MazBtn v-zoom-img="{ src: 'https://loremflickr.com/1000/500' }">
+  <MazBtn v-zoom-img="{ src: 'https://placedog.net/1000/500' }">
     Show photo
   </MazBtn>
 </template>
@@ -50,7 +50,7 @@ import { vZoomImg } from 'maz-ui/directives'
 
 <MazCard overflow-hidden>
   <img
-    src="https://loremflickr.com/1200/800"
+    src="https://placedog.net/1200/800"
     v-zoom-img="zoomImgBinding"
   />
 </MazCard>
@@ -59,7 +59,7 @@ import { vZoomImg } from 'maz-ui/directives'
   import { vZoomImg } from 'maz-ui/src/directives/vZoomImg'
 
   const zoomImgBinding: vZoomImgBinding = {
-    src: 'https://loremflickr.com/1200/800',
+    src: 'https://placedog.net/1200/800',
     alt: 'alt image',
     blur: false,
     scale: false,
@@ -72,7 +72,7 @@ import { vZoomImg } from 'maz-ui/directives'
 import { vZoomImg, type vZoomImgBindingValue } from 'maz-ui/directives'
 
 const zoomImgBinding: vZoomImgBindingValue = {
-  src: 'https://loremflickr.com/1200/800',
+  src: 'https://placedog.net/1200/800',
   alt: 'alt image', // will be set on the zoomed image
   blur: false,
   scale: false,
@@ -84,7 +84,7 @@ const zoomImgBinding: vZoomImgBindingValue = {
   <MazCard overflow-hidden>
     <img
       v-zoom-img="zoomImgBinding"
-      src="https://loremflickr.com/1200/800"
+      src="https://placedog.net/1200/800"
     >
   </MazCard>
 </template>

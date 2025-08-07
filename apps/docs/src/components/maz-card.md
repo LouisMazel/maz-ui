@@ -31,7 +31,7 @@ description: MazCard is a standalone component to display some texts and images 
 </template>
 
 <script lang="ts" setup>
-  import { MazCard } from 'maz-ui/components'
+  import MazCard from 'maz-ui/components/MazCard'
 </script>
 ```
 
@@ -110,7 +110,7 @@ description: MazCard is a standalone component to display some texts and images 
 </template>
 
 <script lang="ts" setup>
-  import { MazCard } from 'maz-ui/components'
+  import MazCard from 'maz-ui/components/MazCard'
 </script>
 ```
 

@@ -19,7 +19,7 @@ This component uses [vLazyImg](./../directives/lazy-img.md) directive
 
 ```vue
 <script lang="ts" setup>
-import { MazAvatar } from 'maz-ui/components'
+import MazAvatar from 'maz-ui/components/MazAvatar'
 </script>
 
 <template>
@@ -71,7 +71,7 @@ button-color="destructive"
 
 ```vue
 <script lang="ts" setup>
-import { MazAvatar } from 'maz-ui/components'
+import MazAvatar from 'maz-ui/components/MazAvatar'
 function clicked() { console.log('clicked') }
 </script>
 

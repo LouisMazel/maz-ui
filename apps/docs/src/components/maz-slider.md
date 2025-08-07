@@ -15,7 +15,7 @@ description: MazSlider is a standalone component that replaces the standard html
 
 ```vue
 <script lang="ts" setup>
-import { MazSlider } from 'maz-ui/components'
+import MazSlider from 'maz-ui/components/MazSlider'
 import { ref } from 'vue'
 const sliderValue = ref(50)
 </script>
@@ -41,7 +41,7 @@ const sliderValue = ref(50)
 
 ```vue
 <script lang="ts" setup>
-import { MazSlider } from 'maz-ui/components'
+import MazSlider from 'maz-ui/components/MazSlider'
 import { ref } from 'vue'
 const multipleSilders = ref([25, 50, 75])
 const multipleSildersLabels = ['Small', 'Middle', 'Big']
@@ -84,7 +84,7 @@ const multipleSildersLabels = ['Small', 'Middle', 'Big']
 
 ```vue
 <script lang="ts" setup>
-import { MazSlider } from 'maz-ui/components'
+import MazSlider from 'maz-ui/components/MazSlider'
 import { ref } from 'vue'
 const multipleSilders = ref([25, 50, 75])
 const multipleSildersLabels = ['Small', 'Middle', 'Big']
@@ -133,7 +133,7 @@ const multipleSildersLabels = ['Small', 'Middle', 'Big']
 
 ```vue
 <script lang="ts" setup>
-import { MazSlider } from 'maz-ui/components'
+import MazSlider from 'maz-ui/components/MazSlider'
 import { ref } from 'vue'
 const logSilders = ref([50, 10000, 30000, 45000])
 const logSildersLabels: ['Micro', 'Small', 'Middle', 'Big']
@@ -164,7 +164,7 @@ const logSildersLabels: ['Micro', 'Small', 'Middle', 'Big']
 
 ```vue
 <script lang="ts" setup>
-import { MazSlider } from 'maz-ui/components'
+import MazSlider from 'maz-ui/components/MazSlider'
 import { ref } from 'vue'
 const multipleSilders = ref([25, 50, 75])
 </script>

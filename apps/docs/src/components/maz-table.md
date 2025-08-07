@@ -215,7 +215,7 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
   </template>
 
   <script lang="ts" setup>
-    import { MazTable } from 'maz-ui/components'
+    import MazTable from 'maz-ui/components/MazTable'
 
     const competitions = [
     {

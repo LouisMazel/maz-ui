@@ -17,7 +17,7 @@ description: This component creates a customizable input code field with feature
 
 ```vue
 <script lang="ts" setup>
-import { MazInputCode } from 'maz-ui/components'
+import MazInputCode from 'maz-ui/components/MazInputCode'
 
 const code = ref()
 </script>

@@ -19,7 +19,7 @@ Wrap your app inside this component
 
 ```vue
 <script lang="ts" setup>
-import { MazPullToRefresh } from 'maz-ui/components'
+import MazPullToRefresh from 'maz-ui/components/MazPullToRefresh'
 
 async function pullToRefreshAction() {
   // do promise or just `window.location.reload()`

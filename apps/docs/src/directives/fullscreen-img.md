@@ -12,14 +12,14 @@ description: Displays images fullscreen on click
 
 <img
   v-fullscreen-img
-  src="https://loremflickr.com/1000/500"
+  src="https://placedog.net/1000/500"
 />
 
 ```vue
 <template>
   <img
     v-fullscreen-img
-    src="https://loremflickr.com/1000/500"
+    src="https://placedog.net/1000/500"
   />
 </template>
 
@@ -35,7 +35,7 @@ description: Displays images fullscreen on click
     scaleOnHover: true,
     blurOnHover: true,
   }"
-  src="https://loremflickr.com/1000/600"
+  src="https://placedog.net/1000/600"
 />
 
 ```html
@@ -44,21 +44,21 @@ description: Displays images fullscreen on click
     scaleOnHover: true,
     blurOnHover: true,
   }"
-  src="https://loremflickr.com/1000/600"
+  src="https://placedog.net/1000/600"
 />
 ```
 
 ## On custom element
 
 <MazBtn
-  v-fullscreen-img="'https://loremflickr.com/1000/700'"
+  v-fullscreen-img="'https://placedog.net/1000/700'"
 >
   Click me to show image
 </MazBtn>
 
 ```html
 <MazBtn
-  v-fullscreen-img="'https://loremflickr.com/1000/700'"
+  v-fullscreen-img="'https://placedog.net/1000/700'"
 >
   Click me to show image
 </MazBtn>

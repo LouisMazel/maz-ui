@@ -23,63 +23,59 @@ head:
 
 ## Basic usage
 
-<MazCarousel>
-  <template #title>
-    <h4 class="maz-m-0">Carousel</h4>
-  </template>
-  <MazCard
-    v-for="(item, i) in Array(8)"
-    :key="i"
-    :gallery="{
-      images: [
-        'https://loremflickr.com/250/300'
-      ]
-    }"
-    style="min-width: 250px;"
-  >
-    <template #content-title>
-      <h4 class="maz-m-0">
-        Steven Seagal
-      </h4>
-    </template>
-    <template #content-body>
-      <p class="maz-text-muted" style="margin-bottom: 0;">
-        You're awesome! You're awesome!
-      </p>
-    </template>
-  </MazCard>
-</MazCarousel>
-
-```vue
-<script lang="ts" setup>
-import { MazCarousel } from 'maz-ui/components'
-</script>
-
-<template>
-  <MazCarousel>
-    <template #title>
-      <h4 class="maz-m-0">
-        Carousel
-      </h4>
-    </template>
+<ComponentDemo>
+  <MazCarousel title="Carousel title">
     <MazCard
       v-for="(item, i) in Array(8)"
       :key="i"
       :gallery="{
         images: [
-          'https://loremflickr.com/250/300',
+          'https://placedog.net/250/300'
+        ]
+      }"
+      style="min-width: 250px;"
+    >
+      <template #content-title>
+        <h4 class="maz-m-0">
+          Doggo
+        </h4>
+      </template>
+      <template #content-body>
+        <p class="maz-text-muted" style="margin-bottom: 0;">
+          It's a beautifull doggo, no ?
+        </p>
+      </template>
+    </MazCard>
+  </MazCarousel>
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import MazCarousel from 'maz-ui/components/MazCarousel'
+import MazCard from 'maz-ui/components/MazCard'
+</script>
+
+<template>
+  <MazCarousel title="Carousel title">
+    <MazCard
+      v-for="(item, i) in Array(8)"
+      :key="i"
+      :gallery="{
+        images: [
+          'https://placedog.net/250/300',
         ],
       }"
       style="min-width: 250px;"
     >
       <template #title>
         <h4 class="maz-m-0">
-          Steven Seagal
+          Doggo
         </h4>
       </template>
       <template #content-body>
         <p class="maz-text-muted" style="margin-bottom: 0;">
-          You're awesome! You're awesome!
+          It's a beautifull doggo, no ?
         </p>
       </template>
     </MazCard>
@@ -87,41 +83,149 @@ import { MazCarousel } from 'maz-ui/components'
 </template>
 ```
 
+  </template>
+</ComponentDemo>
+
 ## Options
 
 ### hide-scrollbar
 
 This options will display the component without scrollbar only when the component is not hovered, focused or active
 
-<MazCarousel hide-scrollbar>
+<ComponentDemo>
+  <MazCarousel hide-scrollbar>
     <template #title>
-      <h4 class="maz-m-0">Carousel</h4>
+      <h4 class="maz-text-2xl maz-font-bold">Carousel</h4>
     </template>
     <MazCard
       v-for="(item, i) in Array(8)"
       :key="i"
       :gallery="{
         images: [
-          'https://loremflickr.com/250/300'
+          'https://placedog.net/400/200'
         ]
       }"
       style="min-width: 250px;"
     >
       <template #content-title>
         <h4 class="maz-m-0">
-          Steven Seagal
+          Doggo
         </h4>
       </template>
       <template #content-body>
         <p class="maz-text-muted" style="margin-bottom: 0;">
-          You're awesome! You're awesome!
+          It's a beautifull doggo, no ?
         </p>
       </template>
     </MazCard>
   </MazCarousel>
 
-### no-scroll-btn
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import MazCarousel from 'maz-ui/components/MazCarousel'
+import MazCard from 'maz-ui/components/MazCard'
+</script>
+
+<template>
+  <MazCarousel hide-scrollbar>
+    <template #title>
+      <h4 class="maz-text-2xl maz-font-bold">Carousel</h4>
+    </template>
+    <MazCard
+      v-for="(item, i) in Array(8)"
+      :key="i"
+      :gallery="{
+        images: [
+          'https://placedog.net/400/200'
+        ]
+      }"
+      style="min-width: 250px;"
+    >
+      <template #content-title>
+        <h4 class="maz-m-0">
+          Doggo
+        </h4>
+      </template>
+      <template #content-body>
+        <p class="maz-text-muted" style="margin-bottom: 0;">
+          It's a beautifull doggo, no ?
+        </p>
+      </template>
+    </MazCard>
+  </MazCarousel>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+### hide-scroll-buttons
 
 This options will display the component without scroll buttons
+
+<ComponentDemo>
+  <MazCarousel hide-scroll-buttons title="Carousel without scroll buttons">
+    <MazCard
+      v-for="(item, i) in Array(8)"
+      :key="i"
+      :gallery="{
+        images: [
+          'https://placedog.net/300/200'
+        ]
+      }"
+      style="min-width: 250px;"
+    >
+      <template #content-title>
+        <h4 class="maz-m-0">
+          Doggo
+        </h4>
+      </template>
+      <template #content-body>
+        <p class="maz-text-muted" style="margin-bottom: 0;">
+          It's a beautifull doggo, no ?
+        </p>
+      </template>
+    </MazCard>
+  </MazCarousel>
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import MazCarousel from 'maz-ui/components/MazCarousel'
+import MazCard from 'maz-ui/components/MazCard'
+</script>
+
+<template>
+  <MazCarousel hide-scroll-buttons title="Carousel without scroll buttons">
+    <MazCard
+      v-for="(item, i) in Array(8)"
+      :key="i"
+      :gallery="{
+        images: [
+          'https://placedog.net/300/200'
+        ]
+      }"
+      style="min-width: 250px;"
+    >
+      <template #content-title>
+        <h4 class="maz-m-0">
+          Doggo
+        </h4>
+      </template>
+      <template #content-body>
+        <p class="maz-text-muted" style="margin-bottom: 0;">
+          It's a beautifull doggo, no ?
+        </p>
+      </template>
+    </MazCard>
+  </MazCarousel>
+</template>
+```
+
+  </template>
+</ComponentDemo>
 
 <!--@include: ./../../.vitepress/generated-docs/maz-carousel.doc.md-->

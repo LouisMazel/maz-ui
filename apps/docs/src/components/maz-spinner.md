@@ -13,7 +13,7 @@ description: MazSpinner is a standalone component that replaces the standard htm
 
 ```vue
 <script>
-import { MazSpinner } from 'maz-ui/components'
+import MazSpinner from 'maz-ui/components/MazSpinner'
 </script>
 
 <template>

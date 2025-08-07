@@ -31,7 +31,7 @@ description: MazInputNumber is a number input component with increment and decre
 
 ```vue
 <script lang="ts" setup>
-import { MazInputNumber } from 'maz-ui/components'
+import MazInputNumber from 'maz-ui/components/MazInputNumber'
 import { ref } from 'vue'
 const numberValue = ref(2)
 </script>

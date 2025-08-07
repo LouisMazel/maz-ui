@@ -40,7 +40,7 @@ description: MazAccordion is a standalone component that allows you to create an
 
 ```vue
 <script lang="ts" setup>
-import { MazAccordion } from 'maz-ui/components'
+import MazAccordion from 'maz-ui/components/MazAccordion'
 </script>
 
 <template>

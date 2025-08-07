@@ -18,7 +18,7 @@ description: MazCircularProgressBar is a standalone component
 
 ```vue
 <script lang="ts" setup>
-import { MazCircularProgressBar } from 'maz-ui/components'
+import MazCircularProgressBar from 'maz-ui/components/MazCircularProgressBar'
 </script>
 
 <template>
