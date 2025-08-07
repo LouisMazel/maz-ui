@@ -838,6 +838,7 @@ app.use(MazUi)
 - [ ] Replace `MazBtn variant="link"` with `MazLink`
 - [ ] Update `MazBtn outline` to `outlined`
 - [ ] Rename `MazPhoneNumberInput` to `MazInputPhoneNumber`
+- [ ] Rename `MazPicker` to `MazDatePicker`
 - [ ] Replace `MazTransitionExpand` with `MazExpandAnimation`
 - [ ] Update `MazDropdown`/`MazSelect` position props
 - [ ] Rename `MazDialogPromise` to `MazDialogConfirm`

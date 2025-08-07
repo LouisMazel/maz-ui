@@ -716,6 +716,7 @@ const shortcuts = [
     :min-date="minMaxDates.min"
     :max-date="minMaxDates.max"
     color="info"
+    @update:model-value="console.log($event)"
   />
   <p class="maz-text-sm maz-text-muted maz-mt-2">
     Min: {{ minMaxDates.min }} | Max: {{ minMaxDates.max }}
@@ -731,6 +732,45 @@ const shortcuts = [
     :min-date="minDate"
     :max-date="maxDate"
     color="info"
+  />
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import dayjs from 'dayjs'
+
+const date = ref()
+const minDate = dayjs().subtract(30, 'day').format('YYYY-MM-DD')
+const maxDate = dayjs().add(30, 'day').format('YYYY-MM-DD')
+</script>
+```
+
+</template>
+</ComponentDemo>
+
+#### Property `min-max-auto`
+
+Disable min-max auto check to not change the value when it is out of range
+
+<ComponentDemo>
+  <MazDatePicker
+    v-model="constrainedDateMinMaxAuto"
+    label="Not auto date range"
+    :min-date="minMaxDates.min"
+    :max-date="minMaxDates.max"
+    :min-max-auto="false"
+  />
+
+<template #code>
+
+```vue
+<template>
+  <MazDatePicker
+    v-model="date"
+    label="Not auto date range"
+    :min-date="minDate"
+    :max-date="maxDate"
+    :min-max-auto="false"
   />
 </template>
 
@@ -995,7 +1035,7 @@ import { ref } from 'vue'
 import dayjs from 'dayjs'
 
 // Basic examples
-const basicDate = ref()
+const basicDate = ref('2023-03-15')
 const formatExample1 = ref('2024-03-15')
 const formatExample2 = ref('03/15/2024')
 const formatExample3 = ref('15-03-2024')
@@ -1027,6 +1067,7 @@ const arabicDate = ref()
 
 // Validation
 const constrainedDate = ref()
+const constrainedDateMinMaxAuto = ref(dayjs().subtract(60, 'day').format('YYYY-MM-DD'))
 const minMaxDates = {
   min: dayjs().format('YYYY-MM-DD'),
   max: dayjs().add(20, 'day').format('YYYY-MM-DD')
