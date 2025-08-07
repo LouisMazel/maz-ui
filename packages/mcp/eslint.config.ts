@@ -10,4 +10,9 @@ export default defineConfig({
     'no-console': 'off',
     'sonarjs/no-nested-template-literals': 'off',
   },
+}, {
+  files: ['**/*.spec.ts', '**/*.test.ts'],
+  rules: {
+    'no-console': [process.env.NODE_ENV === 'production' ? 'error' : 'warn'],
+  },
 })
