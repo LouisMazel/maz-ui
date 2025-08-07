@@ -152,6 +152,13 @@ export interface MazSelectProps<Value extends MazInputValue = MazInputValue, Opt
    * @default undefined
    */
   formatInputValue?: (value: Multiple extends true ? Value[] : Value) => string
+
+  /**
+   * The transition name of the panel list options
+   * @type {MazPopoverProps['transition']}
+   * @default 'scale-fade'
+   */
+  transition?: MazPopoverProps['transition']
 }
 
 defineOptions({
@@ -175,6 +182,7 @@ const props = withDefaults(defineProps<MazSelectProps<Value, Option, Multiple>>(
   minListHeight: undefined,
   size: 'md',
   color: 'primary',
+  transition: 'scale-fade',
   searchThreshold: 0.75,
   autocomplete: 'off',
 })
@@ -623,6 +631,7 @@ defineExpose({
     :style
     trigger="click"
     :block
+    :transition
     :offset="0"
     :position="listPosition"
     prefer-position="bottom-start"
@@ -887,7 +896,7 @@ defineExpose({
 
     /* Modern CSS for all browsers (fallback) */
     scrollbar-width: thin;
-    scrollbar-color: hsl(var(--maz-background-400)) transparent;
+    scrollbar-color: hsl(var(--maz-background-600)) transparent;
   }
 
   &__no-results {
