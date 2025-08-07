@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.32...v4.0.0-beta.33
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.32...v4.0.0-beta.33)
+
+### 🩹 Fixes
+
+- **maz-ui:** VTooltip - destroy instances not open ([05f48c1db](https://github.com/LouisMazel/maz-ui/commit/05f48c1db))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.31...v4.0.0-beta.32
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.31...v4.0.0-beta.32)
