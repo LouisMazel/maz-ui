@@ -72,7 +72,6 @@ describe('Given MazUiMcpServer instance', () => {
 
   describe('When initializing server', () => {
     it('Then creates server with name and version', () => {
-      console.log('SERVER', server)
       expect(MockServer).toHaveBeenCalledWith(
         {
           name: 'maz-ui-mcp',
