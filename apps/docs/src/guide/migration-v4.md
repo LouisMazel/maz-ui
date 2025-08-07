@@ -66,6 +66,7 @@ v4.0.0 separates functionality into specialized packages for better modularity:
 | **@maz-ui/icons** | SVG icons (336+ icons) | 🆕 New |
 | **@maz-ui/cli** | CLI for theme generation | 🆕 New |
 | **@maz-ui/nuxt** | Nuxt 3 module | 🆕 New |
+| **@maz-ui/mcp** | MCP server for IA agent | 🆕 New |
 
 ## 📋 Migration Checklist
 

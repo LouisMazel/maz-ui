@@ -87,7 +87,7 @@ Understanding date formats is crucial for using MazDatePicker effectively. The c
 
 This controls how dates are stored and transmitted in your `v-model`. Default is `'YYYY-MM-DD'`.
 
-### 2. Display Format (`inputFormat` prop)
+### 2. Display Format (`input-date-format` prop)
 
 This controls how dates appear in the input field using `Intl.DateTimeFormatOptions`.
 
@@ -97,19 +97,19 @@ This controls how dates appear in the input field using `Intl.DateTimeFormatOpti
       v-model="formatExample1"
       label="ISO Format (YYYY-MM-DD)"
       format="YYYY-MM-DD"
-      :input-format="{ dateStyle: 'medium' }"
+      :input-date-format="{ dateStyle: 'medium' }"
     />
     <MazDatePicker
       v-model="formatExample2"
       label="US Format (MM/DD/YYYY)"
       format="MM/DD/YYYY"
-      :input-format="{ dateStyle: 'short' }"
+      :input-date-format="{ dateStyle: 'short' }"
     />
     <MazDatePicker
       v-model="formatExample3"
       label="European Format (DD-MM-YYYY)"
       format="DD-MM-YYYY"
-      :input-format="{ dateStyle: 'medium' }"
+      :input-date-format="{ dateStyle: 'medium' }"
     />
   </div>
 
@@ -122,7 +122,7 @@ This controls how dates appear in the input field using `Intl.DateTimeFormatOpti
     v-model="date1"
     label="ISO Format (YYYY-MM-DD)"
     format="YYYY-MM-DD"
-    :input-format="{ dateStyle: 'medium' }"
+    :input-date-format="{ dateStyle: 'medium' }"
   />
 
   <!-- US Format -->
@@ -130,7 +130,7 @@ This controls how dates appear in the input field using `Intl.DateTimeFormatOpti
     v-model="date2"
     label="US Format (MM/DD/YYYY)"
     format="MM/DD/YYYY"
-    :input-format="{ dateStyle: 'short' }"
+    :input-date-format="{ dateStyle: 'short' }"
   />
 
   <!-- European Format -->
@@ -138,7 +138,7 @@ This controls how dates appear in the input field using `Intl.DateTimeFormatOpti
     v-model="date3"
     label="European Format (DD-MM-YYYY)"
     format="DD-MM-YYYY"
-    :input-format="{ dateStyle: 'medium' }"
+    :input-date-format="{ dateStyle: 'medium' }"
   />
 </template>
 

@@ -30,7 +30,7 @@ head:
       :key="i"
       :gallery="{
         images: [
-          'https://placedog.net/250/300'
+          `https://placedog.net/250/300?random`
         ]
       }"
       style="min-width: 250px;"
@@ -63,7 +63,7 @@ import MazCard from 'maz-ui/components/MazCard'
       :key="i"
       :gallery="{
         images: [
-          'https://placedog.net/250/300',
+          'https://placedog.net/250/300?random',
         ],
       }"
       style="min-width: 250px;"
@@ -102,7 +102,7 @@ This options will display the component without scrollbar only when the componen
       :key="i"
       :gallery="{
         images: [
-          'https://placedog.net/400/200'
+          'https://placedog.net/400/200?random'
         ]
       }"
       style="min-width: 250px;"
@@ -138,7 +138,7 @@ import MazCard from 'maz-ui/components/MazCard'
       :key="i"
       :gallery="{
         images: [
-          'https://placedog.net/400/200'
+          'https://placedog.net/400/200?random'
         ]
       }"
       style="min-width: 250px;"
