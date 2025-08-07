@@ -84,10 +84,35 @@ function getDisplayNamesInstance(
 }
 
 interface DynamicDisplayNamesOptions {
+  /**
+   * The type of display names to use.
+   * @property 'region' | 'language'
+   * @default 'region'
+   */
   type?: MaybeRefOrGetter<DisplayNamesOptions['type']>
+  /**
+   * The language display to use.
+   * @property 'standard' | 'narrow' | 'short'
+   * @default 'standard'
+   */
   languageDisplay?: MaybeRefOrGetter<DisplayNamesOptions['languageDisplay']>
+  /**
+   * The fallback to use.
+   * @property 'code' | 'none'
+   * @default 'code'
+   */
   fallback?: MaybeRefOrGetter<DisplayNamesOptions['fallback']>
+  /**
+   * The style to use.
+   * @property 'long' | 'short' | 'narrow'
+   * @default 'long'
+   */
   style?: MaybeRefOrGetter<DisplayNamesOptions['style']>
+  /**
+   * The locale matcher to use.
+   * @property 'lookup' | 'best fit'
+   * @default 'lookup'
+   */
   localeMatcher?: MaybeRefOrGetter<DisplayNamesOptions['localeMatcher']>
 }
 
@@ -153,12 +178,46 @@ function getDisplayName(code: MaybeRefOrGetter<DisplayNameCode | string>, option
 }
 
 type GetAllDisplayNamesOptions<T extends CodesType> = MaybeRefOrGetter<{
+  /**
+   * The locale to use.
+   * @property string | DisplayNameCode
+   * @default undefined
+   */
   locale?: MaybeRefOrGetter<DisplayNameCode | string>
+  /**
+   * The codes to include.
+   * @property string[] | undefined
+   * @default undefined
+   */
   onlyCodes?: MaybeRefOrGetter<DisplayNameCode[] | string[] | undefined>
+  /**
+   * The codes to exclude.
+   * @property string[] | undefined
+   * @default undefined
+   */
   excludedCodes?: MaybeRefOrGetter<DisplayNameCode[] | string[] | undefined>
+  /**
+   * The codes to prefer.
+   * @property string[] | undefined
+   * @default undefined
+   */
   preferredCodes?: MaybeRefOrGetter<DisplayNameCode[] | string[] | undefined>
+  /**
+   * The type of codes to use.
+   * @property 'iso' | 'bcp' | 'country' | 'all'
+   * @default 'all'
+   */
   codesType?: MaybeRefOrGetter<T>
+  /**
+   * Remove duplicates from the result.
+   * @property 'name' | 'code' | false
+   * @default 'name'
+   */
   removeDuplicates?: MaybeRefOrGetter<'name' | 'code' | false>
+  /**
+   * Remove unmatched codes from the result.
+   * @default true
+   */
   removeUnmatched?: MaybeRefOrGetter<boolean>
 } & DynamicDisplayNamesOptions>
 
@@ -188,12 +247,10 @@ function getAllDisplayNames<T extends CodesType>(options: GetAllDisplayNamesOpti
 
     const codeArray = resolvedOnlyCodes ?? getDisplayNamesCodes<T>(resolvedCodesType)
 
-    // Optimize processing for large datasets
     const filteredCodes = codeArray.filter(code => !resolvedExcludedCodes?.includes(code as DisplayNameCode))
 
     const mappedResults: Array<{ name: string, code: CodeResult<T> } | undefined> = []
 
-    // Process in chunks to avoid blocking
     for (const code of filteredCodes) {
       try {
         const name = getName(code, resolvedLocale, {
@@ -260,20 +317,16 @@ function getAllDisplayNames<T extends CodesType>(options: GetAllDisplayNamesOpti
 export function useDisplayNames(mainLocale?: MaybeRefOrGetter<string | DisplayNameCode>) {
   return {
     getDisplayName: (code: Parameters<typeof getDisplayName>[0], options?: GetDisplayNameOptions) => {
-      const resolvedOptions = toValue(options)
-
       return getDisplayName(code, {
-        ...resolvedOptions,
-        locale: resolvedOptions?.locale || mainLocale,
+        ...toValue(options),
+        locale: toValue(options)?.locale || mainLocale,
       })
     },
 
     getAllDisplayNames: <T extends CodesType>(options?: GetAllDisplayNamesOptions<T>) => {
-      const resolvedOptions = toValue(options)
-
       return getAllDisplayNames<T>({
-        ...resolvedOptions,
-        locale: resolvedOptions?.locale || mainLocale,
+        ...toValue(options),
+        locale: toValue(options)?.locale || mainLocale,
       })
     },
   }
