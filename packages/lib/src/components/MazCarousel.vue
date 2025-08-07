@@ -9,6 +9,7 @@ const {
   hideScrollButtons = false,
   hideScrollbar = false,
   translations,
+  title,
 } = defineProps<MazCarouselProps>()
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
@@ -27,10 +28,14 @@ export interface MazCarouselProps {
   translations?: DeepPartial<MazTranslationsNestedSchema['carousel']>
   /**
    * Hide the scrollbar when not active
-   * @type {boolean}
    * @default false
    */
   hideScrollbar?: boolean
+
+  /**
+   * The title of the carousel
+   */
+  title?: string
 }
 
 const slots = useSlots()
@@ -48,11 +53,11 @@ const messages = computed<MazTranslationsNestedSchema['carousel']>(() => ({
 }))
 
 function hasHeader() {
-  return !hideScrollButtons || slots.title
+  return !hideScrollButtons || slots.title || title
 }
 
 function hasTitle() {
-  return !!slots.title
+  return !!slots.title || !!title
 }
 
 function next() {
@@ -87,7 +92,11 @@ function setScrollState(event: Event) {
   >
     <div v-if="hasHeader()" class="m-carousel__header" :class="{ '--has-title': hasTitle() }">
       <div v-if="hasTitle()">
-        <slot name="title" />
+        <slot name="title">
+          <h4 class="maz-text-xl maz-font-semibold">
+            {{ title }}
+          </h4>
+        </slot>
       </div>
       <div v-if="!hideScrollButtons" class="m-carousel__header__actions">
         <MazBtn
@@ -145,6 +154,28 @@ function setScrollState(event: Event) {
         maz-space-x-5 maz-overflow-y-hidden maz-py-4 maz-pl-3;
 
     scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+      width: 0.1875rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      @apply maz-bg-surface-400;
+
+      border-radius: 1000px;
+
+      &:hover {
+        @apply maz-bg-surface-500;
+      }
+    }
+
+    /* Modern CSS for all browsers (fallback) */
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--maz-background-600)) transparent;
 
     &__spacer {
       flex: 0 0 1px;
