@@ -1,5 +1,12 @@
 # Changelog
 
+## v4.0.0-beta.30...v4.0.0-beta.31
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.30...v4.0.0-beta.31)
+
+**Note:** No relevant commits found
+
+
 ## v4.0.0-beta.29...v4.0.0-beta.30
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.29...v4.0.0-beta.30)

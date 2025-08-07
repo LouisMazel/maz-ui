@@ -1,5 +1,36 @@
 # Change Log
 
+## v4.0.0-beta.30...v4.0.0-beta.31
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.30...v4.0.0-beta.31)
+
+### 🚀 Features
+
+- **maz-ui:** MazDatePicker - add a new option 'min-max-auto' to set or not set the current date to the minimum or maximum date when it is not in between ([8a2a8455a](https://github.com/LouisMazel/maz-ui/commit/8a2a8455a))
+
+### 🩹 Fixes
+
+- **maz-ui:** MazBtn - add background color for 'background' color instead of transparent ([d7e32cd74](https://github.com/LouisMazel/maz-ui/commit/d7e32cd74))
+
+### 💅 Refactors
+
+- **maz-ui:** VTooltip - remove useless container to avoid DOM injection ([5bf2a62ee](https://github.com/LouisMazel/maz-ui/commit/5bf2a62ee))
+- **maz-ui:** MazPopover - render trigger slot only if element is provided and add transition animation ([e42087f44](https://github.com/LouisMazel/maz-ui/commit/e42087f44))
+- **maz-ui:** MazCard - update style of title and subtitle ([5d5f9ecd0](https://github.com/LouisMazel/maz-ui/commit/5d5f9ecd0))
+- **maz-ui:** MazCarousel - add title prop and customize scroll bar ([9749b01d6](https://github.com/LouisMazel/maz-ui/commit/9749b01d6))
+- **maz-ui:** MazDropdown - use 'background' color by default ([64157821c](https://github.com/LouisMazel/maz-ui/commit/64157821c))
+- **maz-ui:** MazSelect - add prop 'transition' to choose the animation of the list option ([43d9855b1](https://github.com/LouisMazel/maz-ui/commit/43d9855b1))
+
+### 📖 Documentation
+
+- **docs:** Replace loremflickr by placedog ([1493985d5](https://github.com/LouisMazel/maz-ui/commit/1493985d5))
+- **docs:** Improve documentation ([6551d0f41](https://github.com/LouisMazel/maz-ui/commit/6551d0f41))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.29...v4.0.0-beta.30
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.29...v4.0.0-beta.30)
