@@ -41,7 +41,7 @@ defineOptions({
 const props = withDefaults(defineProps<MazDatePickerProps>(), {
   format: 'YYYY-MM-DD',
   open: false,
-  inputFormat: () => ({ dateStyle: 'medium', timeStyle: 'full' }),
+  inputDateFormat: () => ({ dateStyle: 'medium', timeStyle: 'full' }),
   hideHeader: false,
   disabled: false,
   firstDayOfWeek: 0,
@@ -58,9 +58,11 @@ const props = withDefaults(defineProps<MazDatePickerProps>(), {
   shortcuts: true,
   minDate: undefined,
   maxDate: undefined,
+  minMaxAuto: true,
   disabledWeekly: () => [],
   disabledDates: () => [],
   disabledHours: () => [],
+  transition: 'scale-fade',
   range: false,
 })
 
@@ -153,7 +155,7 @@ export interface MazDatePickerProps {
    * @type {Intl.DateTimeFormatOptions}
    * @default { dateStyle: 'medium', timeStyle: 'full' }
    */
-  inputFormat?: Intl.DateTimeFormatOptions
+  inputDateFormat?: Intl.DateTimeFormatOptions
 
   /**
    * Custom function to transform the formatted date display
@@ -168,28 +170,24 @@ export interface MazDatePickerProps {
 
   /**
    * The locale string for date formatting and localization
-   * @type {string}
    * @example 'en-US', 'fr-FR', 'de-DE'
    */
   locale?: string
 
   /**
    * Controls whether the calendar header is hidden
-   * @type {boolean}
    * @default false
    */
   hideHeader?: boolean
 
   /**
    * Controls whether the component is disabled
-   * @type {boolean}
    * @default false
    */
   disabled?: boolean
 
   /**
    * The first day of the week in the calendar
-   * @type {number}
    * @values 0, 1, 2, 3, 4, 5, 6
    * @default 0
    * @example 0 (Sunday), 1 (Monday), 6 (Saturday)
@@ -198,28 +196,24 @@ export interface MazDatePickerProps {
 
   /**
    * Controls whether the picker closes automatically after date selection
-   * @type {boolean}
    * @default false
    */
   autoClose?: boolean
 
   /**
    * CSS selector for a custom element that triggers the picker
-   * @type {string}
    * @example '#my-button', '.trigger-class'
    */
   customElementSelector?: string
 
   /**
    * Controls whether the picker displays two months side by side
-   * @type {boolean}
    * @default false
    */
   double?: boolean
 
   /**
    * Controls whether the picker is displayed inline without input field
-   * @type {boolean}
    * @default false
    */
   inline?: boolean
@@ -242,21 +236,18 @@ export interface MazDatePickerProps {
 
   /**
    * Controls whether the picker includes a time selector
-   * @type {boolean}
    * @default false
    */
   time?: boolean
 
   /**
    * Controls whether the picker shows only time selection (no date)
-   * @type {boolean}
    * @default false
    */
   onlyTime?: boolean
 
   /**
    * The interval in minutes for the time picker minute selection
-   * @type {number}
    * @default 5
    * @values 1, 5, 10, 15, 30
    */
@@ -264,14 +255,12 @@ export interface MazDatePickerProps {
 
   /**
    * Controls whether to automatically detect and use the browser's locale
-   * @type {boolean}
    * @default true
    */
   useBrowserLocale?: boolean
 
   /**
    * Controls whether to fetch locale data dynamically
-   * @type {boolean}
    * @default true
    */
   fetchLocal?: boolean
@@ -285,27 +274,30 @@ export interface MazDatePickerProps {
 
   /**
    * The identifier of the currently selected shortcut
-   * @type {string}
+   * @type {MazDatePickerShortcut['identifier']}
    */
   shortcut?: MazDatePickerShortcut['identifier']
 
   /**
    * The minimum selectable date in ISO format
-   * @type {string}
    * @example '2023-01-01'
    */
   minDate?: string
 
   /**
    * The maximum selectable date in ISO format
-   * @type {string}
    * @example '2024-12-31'
    */
   maxDate?: string
 
   /**
+   * When minDate or maxDate are provided, if the current date is not between minDate and maxDate, the current date will be set to the minDate or maxDate
+   * @default true
+   */
+  minMaxAuto?: boolean
+
+  /**
    * Array of weekday numbers to disable (0 = Sunday, 6 = Saturday)
-   * @type {number[]}
    * @default []
    * @example [0, 6] to disable weekends
    */
@@ -313,7 +305,6 @@ export interface MazDatePickerProps {
 
   /**
    * Array of specific dates to disable in ISO format
-   * @type {string[]}
    * @default []
    * @example ['2023-12-25', '2024-01-01']
    */
@@ -321,7 +312,6 @@ export interface MazDatePickerProps {
 
   /**
    * Array of hour numbers to disable in the time picker (0-23)
-   * @type {number[]}
    * @default []
    * @example [0, 1, 2, 22, 23] to disable night hours
    */
@@ -329,17 +319,22 @@ export interface MazDatePickerProps {
 
   /**
    * Controls whether the input displays in full width
-   * @type {boolean}
    * @default false
    */
   block?: boolean
 
   /**
    * Controls whether the picker operates in range selection mode
-   * @type {boolean}
    * @default false
    */
   range?: boolean
+
+  /**
+   * The transition name of the popover
+   * @type {MazPopoverProps['transition']}
+   * @default 'scale-fade'
+   */
+  transition?: MazPopoverProps['transition']
 }
 
 const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
@@ -458,9 +453,9 @@ const isHour12 = computed(
 )
 
 const formatterOptions = computed<DateTimeFormatOptions>(() => ({
-  ...props.inputFormat,
-  timeStyle: props.inputFormat.timeStyle ?? hasTime.value ? 'short' : undefined,
-  hour12: hasTime.value ? props.inputFormat.hour12 ?? isHour12.value : undefined,
+  ...props.inputDateFormat,
+  timeStyle: props.inputDateFormat.timeStyle ?? hasTime.value ? 'short' : undefined,
+  hour12: hasTime.value ? props.inputDateFormat.hour12 ?? isHour12.value : undefined,
 } satisfies DateTimeFormatOptions))
 
 const inputValue = computed(() => {
@@ -514,6 +509,7 @@ function checkMinMaxValues(value: MazDatePickerValue) {
       minDate: props.minDate,
       maxDate: props.maxDate,
       format: props.format,
+      minMaxAuto: props.minMaxAuto,
     })
 
     if (newValue) {
@@ -534,6 +530,7 @@ function checkMinMaxValues(value: MazDatePickerValue) {
         minDate: props.minDate,
         maxDate: props.maxDate,
         format: props.format,
+        minMaxAuto: props.minMaxAuto,
       })
 
       if (newValue)
@@ -549,6 +546,7 @@ function checkMinMaxValues(value: MazDatePickerValue) {
         minDate: props.minDate,
         maxDate: props.maxDate,
         format: props.format,
+        minMaxAuto: props.minMaxAuto,
       })
 
       if (newValue)
@@ -659,6 +657,7 @@ watch(
       props.class,
     ]"
     trigger="click"
+    :transition
     :disabled
     :block
     :position="pickerPosition"

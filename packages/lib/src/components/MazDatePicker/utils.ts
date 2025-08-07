@@ -120,12 +120,21 @@ export function checkValueWithMinMaxDates({
   minDate,
   maxDate,
   format,
+  minMaxAuto,
 }: {
-  value?: string
-  minDate?: string
-  maxDate?: string
+  value: string | undefined
+  minDate: string | undefined
+  maxDate: string | undefined
   format: string
+  minMaxAuto: boolean
 }): CheckValueResponse {
+  if (!minMaxAuto) {
+    return {
+      newValue: value,
+      newCurrentDate: value,
+    }
+  }
+
   if (minDate && dayjs(value).isBefore(minDate)) {
     return {
       newValue: minDate,

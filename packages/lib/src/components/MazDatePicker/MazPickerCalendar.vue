@@ -23,11 +23,11 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits(['update:model-value', 'update:calendar-date'])
-const MazDatePickerCalendarMonth = defineAsyncComponent(() => import('./MazPickerCalendarMonth/MazPickerCalendarMonth.vue'))
-const MazDatePickerCalendarSwitcher = defineAsyncComponent(() => import('./MazPickerCalendarSwitcher.vue'))
-const MazDatePickerMonthSwitcher = defineAsyncComponent(() => import('./MazPickerMonthSwitcher.vue'))
-const MazDatePickerShortcuts = defineAsyncComponent(() => import('./MazPickerShortcuts.vue'))
-const MazDatePickerYearSwitcher = defineAsyncComponent(() => import('./MazPickerYearSwitcher.vue'))
+const MazPickerCalendarMonth = defineAsyncComponent(() => import('./MazPickerCalendarMonth/MazPickerCalendarMonth.vue'))
+const MazPickerCalendarSwitcher = defineAsyncComponent(() => import('./MazPickerCalendarSwitcher.vue'))
+const MazPickerMonthSwitcher = defineAsyncComponent(() => import('./MazPickerMonthSwitcher.vue'))
+const MazPickerShortcuts = defineAsyncComponent(() => import('./MazPickerShortcuts.vue'))
+const MazPickerYearSwitcher = defineAsyncComponent(() => import('./MazPickerYearSwitcher.vue'))
 
 const hoverredDay = ref<Dayjs>()
 
@@ -53,7 +53,7 @@ const calendarDate = computed({
 
 <template>
   <div class="maz-picker-calendar flex">
-    <MazDatePickerShortcuts
+    <MazPickerShortcuts
       v-if="hasShortcuts"
       v-model="currentValue"
       :color="color"
@@ -64,7 +64,7 @@ const calendarDate = computed({
     />
 
     <div class="maz-picker-calendar__main" :class="{ '--has-double': double }">
-      <MazDatePickerCalendarSwitcher
+      <MazPickerCalendarSwitcher
         v-model:calendar-date="calendarDate"
         :locale="locale"
         :double="double"
@@ -72,7 +72,7 @@ const calendarDate = computed({
         @open-year-switcher="yearSwitcherOpen = true"
       />
       <Transition name="maz-picker-slide">
-        <MazDatePickerMonthSwitcher
+        <MazPickerMonthSwitcher
           v-if="monthSwitcherOpen"
           v-model:calendar-date="calendarDate"
           :color="color"
@@ -82,7 +82,7 @@ const calendarDate = computed({
         />
       </Transition>
       <Transition name="maz-picker-slide">
-        <MazDatePickerYearSwitcher
+        <MazPickerYearSwitcher
           v-if="yearSwitcherOpen"
           v-model:calendar-date="calendarDate"
           :color="color"
@@ -91,7 +91,7 @@ const calendarDate = computed({
         />
       </Transition>
       <div class="maz-picker-calendar__months" :class="{ '--is-range': range }">
-        <MazDatePickerCalendarMonth
+        <MazPickerCalendarMonth
           v-for="month in months"
           :key="month"
           v-model="currentValue"

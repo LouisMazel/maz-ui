@@ -6,8 +6,8 @@ import type { MazDatePickerValue } from '../types'
 import dayjs from 'dayjs'
 import { computed } from 'vue'
 
-import MazDatePickerCalendarDays from './MazPickerCalendarDays.vue'
-import MazDatePickerCalendarGrid from './MazPickerCalendarGrid.vue'
+import MazPickerCalendarDays from './MazPickerCalendarDays.vue'
+import MazPickerCalendarGrid from './MazPickerCalendarGrid.vue'
 
 const props = defineProps({
   modelValue: {
@@ -53,13 +53,13 @@ const calendarDateWithOffset = computed({
 
 <template>
   <div class="maz-picker-calendar-month" :class="{ '--has-padding': !range }">
-    <MazDatePickerCalendarDays
+    <MazPickerCalendarDays
       :locale="locale"
       :first-day-of-week="firstDayOfWeek"
       class="maz-picker-calendar-month__days"
     />
 
-    <MazDatePickerCalendarGrid
+    <MazPickerCalendarGrid
       v-model="modelValue"
       v-model:hoverred-day="hoverredDay"
       :locale="locale"

@@ -71,9 +71,7 @@ function emitDateValue(value: string) {
 
 const currentDate = computed({
   get: () => modelValue,
-  set: (value) => {
-    emits('update:model-value', value)
-  },
+  set: value => emits('update:model-value', value),
 })
 
 const currentCalendarDate = computed({

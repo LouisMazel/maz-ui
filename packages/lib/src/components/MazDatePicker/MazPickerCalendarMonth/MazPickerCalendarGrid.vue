@@ -377,6 +377,10 @@ watch(
 
       &:disabled {
         @apply maz-cursor-not-allowed maz-border-transparent;
+
+        &.--is-selected {
+          @apply !maz-bg-surface-400 !maz-text-muted;
+        }
       }
     }
   }
