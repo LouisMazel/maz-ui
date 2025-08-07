@@ -66,6 +66,10 @@ const emits = defineEmits<{
    */
   'close': []
   /**
+   * Emitted after the close animation
+   */
+  'after-close-animation': []
+  /**
    * Emitted when popover toggles
    * @property {boolean} value - The new open state
    */
@@ -720,7 +724,7 @@ defineExpose({
   </div>
 
   <Teleport :to="teleportTo">
-    <Transition :name="transitionName" appear>
+    <Transition :name="transitionName" appear @after-leave="emits('after-close-animation')">
       <div
         v-if="isOpen"
         :id="panelId"

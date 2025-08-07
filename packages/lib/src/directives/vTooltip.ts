@@ -119,7 +119,7 @@ class TooltipHandler {
   }
 
   mount(el: HTMLElement, binding: TooltipBinding) {
-    this.unmount(el)
+    // this.unmount(el)
 
     const tooltipProps = this.getTooltipProps(binding)
 
@@ -134,7 +134,7 @@ class TooltipHandler {
     let vNodeInstance: ReturnType<typeof useMountComponent> | null = null
 
     const createTooltip = () => {
-      const popoverProps: MazPopoverProps = {
+      const popoverProps: MazPopoverProps & { onAfterCloseAnimation?: () => void } = {
         ...tooltipProps,
         panelClass: [
           'm-tooltip-panel',
@@ -146,25 +146,16 @@ class TooltipHandler {
           tooltipProps.panelClass,
         ].filter(Boolean).join(' '),
         modelValue: isOpen.value,
-        positionReference: el, // Use original element as reference
-      }
-
-      const instanceIsOpen = vNodeInstance?.vNode.component?.exposed?.isOpen.value
-
-      // Destroy previous instance
-      if (vNodeInstance && instanceIsOpen) {
-        vNodeInstance.vNode.component?.exposed?.close()
+        positionReference: el,
+        onAfterCloseAnimation: () => {
+          vNodeInstance?.destroy()
+          vNodeInstance = null
+        },
       }
 
       // Create new instance
       vNodeInstance = useMountComponent<typeof MazPopover, MazPopoverProps>(MazPopover, {
-        props: {
-          ...popoverProps,
-          'modelValue': isOpen.value,
-          'onUpdate:modelValue': (value: boolean) => {
-            isOpen.value = value
-          },
-        } as any,
+        props: popoverProps,
         children: {
           // Use a dummy trigger since we control positioning via positionReference
           // trigger: () => h('div', { style: 'display: none;' }),
@@ -175,6 +166,7 @@ class TooltipHandler {
             return tooltipProps.text || ''
           },
         },
+        element: el,
       })
     }
 
@@ -237,15 +229,19 @@ class TooltipHandler {
       }
     }
 
-    // Initialize
     nextTick(() => {
-      createTooltip()
       setupTriggers()
     })
 
-    watch(isOpen, () => {
-      createTooltip()
-    })
+    watch(isOpen, (value) => {
+      if (value) {
+        createTooltip()
+      }
+      else if (vNodeInstance) {
+        const instance = vNodeInstance
+        instance?.vNode.component?.exposed?.close()
+      }
+    }, { immediate: true })
 
     function destroy() {
       cleanupTriggers()

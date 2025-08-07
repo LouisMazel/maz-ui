@@ -369,7 +369,7 @@ The `offset` (in px) option allows you to adjust the position of the tooltip rel
 
 <ComponentDemo>
   <div class="maz-flex maz-gap-3 maz-flex-wrap">
-    <MazBtn v-tooltip.top="{ text: 'Tooltip text', open: open, trigger: 'manual' }">
+    <MazBtn v-tooltip.top="{ text: 'Tooltip text', open: open }">
       Primary
     </MazBtn>
     <MazBtn @click="open = !open" color="secondary">
@@ -388,7 +388,7 @@ The `offset` (in px) option allows you to adjust the position of the tooltip rel
 </script>
 
 <template>
-  <MazBtn v-tooltip.top="{ text: 'Tooltip text', open, trigger: 'manual' }">
+  <MazBtn v-tooltip.top="{ text: 'Tooltip text', open: open }">
     Primary
   </MazBtn>
   <MazBtn color="secondary" @click="open = !open">
