@@ -9,15 +9,15 @@ description: Modern and performant theme system for Maz-UI with TypeScript, HSL 
 
 <NpmBadge package="@maz-ui/themes"></NpmBadge>
 
-## ✨ Features
+## Features
 
-- 🎨 **Modern HSL CSS Variables** - Maximum flexibility with colors
-- 🌓 **Smart Dark Mode** - Automatic support with `prefers-color-scheme`
-- 🚀 **Automatic Generation** - Color scales (50-950) created automatically
-- ⚡ **Performance Strategies** - Runtime, build-time or hybrid according to your needs
-- 🛡️ **Strict TypeScript** - Complete types for perfect DX
-- 🎯 **Zero FOUC** - Critical CSS injected inline to avoid flashes
-- 🔧 **Flexible Presets** - Ready-to-use and customizable configurations
+- **Modern HSL CSS Variables** - Maximum flexibility with colors
+- **Smart Dark Mode** - Automatic support with `prefers-color-scheme`
+- **Automatic Generation** - Color scales (50-950) created automatically
+- **Performance Strategies** - Runtime, build-time or hybrid according to your needs
+- **Strict TypeScript** - Complete types for perfect DX
+- **Zero FOUC** - Critical CSS injected inline to avoid flashes
+- **Flexible Presets** - Ready-to-use and customizable configurations
 
 ## Quick Usage
 
@@ -290,9 +290,11 @@ The hybrid strategy combines the best of both worlds:
 The full CSS is injected via `requestIdleCallback` with a 100ms timeout, allowing the browser to prioritize critical tasks while ensuring fast loading of complete styling.
 
 ```typescript
+import { mazUi } from '@maz-ui/themes/presets'
+
 app.use(MazUi, {
   theme: {
-    preset: 'maz-ui',
+    preset: mazUi,
     strategy: 'hybrid'
   }
 })
@@ -306,9 +308,11 @@ CSS generated (critical and full) injected immediately.
 - **Main thread blocking** - Immediate injection can impact performance
 
 ```typescript
+import { mazUi } from '@maz-ui/themes/presets'
+
 app.use(MazUi, {
   theme: {
-    preset: 'maz-ui',
+    preset: mazUi,
     strategy: 'runtime'
   }
 })
@@ -320,9 +324,11 @@ CSS generated at build-time and included in the bundle.
 Optimal for static sites without theme changes.
 
 ```typescript
+import { mazUi } from '@maz-ui/themes/presets'
+
 app.use(MazUi, {
   theme: {
-    preset: 'maz-ui',
+    preset: mazUi,
     strategy: 'buildtime'
   }
 })

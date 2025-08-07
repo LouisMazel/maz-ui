@@ -15,13 +15,13 @@ head:
 
 - 🌱 **Tree-shaking improvements** - Import only what you need
 - 🛠️ **TypeScript-first** - Full type safety out of the box
-- 🎨 **Theming system** - Customizable themes and dark mode support (4 presets available)
-- 🌐 **Internationalization** - Locale management and tree-shakable imports
-- 🎨 **Icon library** - Comprehensive collection of SVG icons designed for performance and flexibility
-- 🧰 **Nuxt module** - Effortless Maz-UI integration with auto-imports
 - 🚀 **Performance optimizations** - Tree-shaking benefits and maximum optimization
-- 🛠️ **Enhanced accessibility** - WCAG 2.1 AA compliant
 - 🆕 **New components** - MazPopover & MazSelectCountry
+- 🎨 **Theming system** - Customizable themes and dark mode support (4 presets available) - [@maz-ui/themes](./themes.md)
+- 🌐 **Internationalization** - Locale management and tree-shakable imports - [@maz-ui/translations](./translations.md)
+- 🎨 **Icon library** - Comprehensive collection of SVG icons designed for performance and flexibility (300+ icons) - [@maz-ui/icons](./icons.md)
+- 🧰 **Nuxt module** - Effortless Maz-UI integration with auto-imports - [@maz-ui/nuxt](./nuxt.md)
+- 🤖 **MCP** - Connect your IA agents to the documentation - [@maz-ui/mcp](./mcp.md)
 
 :::
 

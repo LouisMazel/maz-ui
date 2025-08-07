@@ -1,11 +1,11 @@
 ---
 title: Install maz-ui with Nuxt
-description: The ultimate Nuxt module for Maz-UI - zero-config setup with auto-imports, theming, and powerful features out of the box
+description: The ultimate Nuxt module for Maz-UI - zero-config setup with auto-imports, theming, internationalization and powerful features out of the box
 ---
 
 # {{ $frontmatter.title }}
 
-Transform your Nuxt application with the most comprehensive Vue.js UI library integration. **Maz-UI Nuxt Module** provides zero-configuration setup, intelligent auto-imports, and powerful theming capabilities.
+Transform your Nuxt application with the most comprehensive Vue.js UI library integration. **Maz-UI Nuxt Module** provides zero-configuration setup, intelligent auto-imports, powerful theming capabilities and internationalization.
 
 ## Why Choose Maz-UI for Nuxt?
 
@@ -136,12 +136,12 @@ export default defineNuxtConfig({
       },
     },
 
-    // 🧩 Components
+    // Components
     components: {
       autoImport: true, // All components globally available
     },
 
-    // 🔌 Plugins (not enabled by default)
+    // Plugins (not enabled by default)
     plugins: {
       aos: true,
       dialog: true,
@@ -149,7 +149,7 @@ export default defineNuxtConfig({
       wait: true,
     },
 
-    // 🎪 Composables (enabled by default)
+    // Composables (enabled by default)
     composables: {
       useFormValidator: true,
       useFreezeValue: true,
@@ -160,7 +160,7 @@ export default defineNuxtConfig({
       useStringMatching: false,
     },
 
-    // 🎯 Directives (not enabled by default)
+    // Directives (not enabled by default)
     directives: {
       vTooltip: true,
       vLazyImg: true,
@@ -240,11 +240,68 @@ const theme = {
 }
 ```
 
-**Theme Strategies Explained:**
+## Theme Strategies Explained
 
-- **`hybrid`** (recommended): Critical CSS inlined, full CSS loaded asynchronously
-- **`runtime`**: CSS generated and injected on client-side
-- **`buildtime`**: CSS generated at build time and included in bundle
+### Hybrid (Recommended)
+
+The hybrid strategy combines optimal performance with zero FOUC (Flash of Unstyled Content):
+
+- **Critical CSS injected immediately** - Essential theme variables are inlined on server side to prevent visual flash (on client side if SSR is not enabled)
+- **Full CSS loaded asynchronously** - Complete theme CSS is injected on client side using `requestIdleCallback` with 100ms timeout, avoiding main thread blocking
+- **SSR-optimized** - When SSR is enabled, critical CSS is inlined during server rendering for instant theming
+
+```ts
+export default defineNuxtConfig({
+  mazUi: {
+    theme: {
+      strategy: 'hybrid' // Recommended for most use cases
+    }
+  }
+})
+```
+
+### Runtime
+
+Immediate CSS injection strategy:
+
+- **Critical CSS on server side** - Essential theme variables are injected during SSR
+- **Full CSS on client side** - Complete theme CSS is injected immediately on client-side hydration
+- **⚠️ Performance impact** - Immediate injection can block the main thread during hydration
+
+```ts
+export default defineNuxtConfig({
+  mazUi: {
+    theme: {
+      strategy: 'runtime' // Use when you need immediate full styling
+    }
+  }
+})
+```
+
+### Buildtime
+
+Build-time CSS generation strategy:
+
+- **No runtime injection** - CSS is generated at build time and must be included manually
+- **Consumer responsibility** - You must handle CSS inclusion in your build process and HTML
+- **Optimal performance** - No client-side CSS generation overhead
+- **Static themes only** - Best for applications without dynamic theme switching
+
+```ts
+export default defineNuxtConfig({
+  mazUi: {
+    theme: {
+      strategy: 'buildtime' // For static sites with predefined themes
+    }
+  }
+})
+```
+
+::: info SSR Behavior
+The behavior of `hybrid` and `runtime` strategies depends on your Nuxt SSR configuration:
+- **With SSR**: Critical CSS is injected during server rendering, full CSS handled on client
+- **SPA mode**: All CSS injection happens on client-side as described in the [themes documentation](/guide/themes#rendering-strategies)
+:::
 
 ### Components
 
