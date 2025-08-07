@@ -33,7 +33,7 @@ const {
   offset = 8,
   delay = 0,
   hoverDelay = 150,
-  transition = 'maz-popover',
+  transition = 'scale-pop',
   teleportTo = 'body',
   closeOnClickOutside = true,
   closeOnEscape = true,
@@ -157,9 +157,9 @@ export interface MazPopoverProps {
   hoverDelay?: number
   /**
    * CSS transition name for animations
-   * @default maz-popover
+   * @default popover
    */
-  transition?: string
+  transition?: 'scale-pop' | 'scale-fade' | string
   /**
    * Teleport target selector
    * @default body
@@ -283,6 +283,13 @@ const floatingPosition = computed(() => {
   return position
 })
 
+const transitionName = computed(() => {
+  if (['scale-pop', 'scale-fade'].includes(transition)) {
+    return `maz-${transition}`
+  }
+
+  return transition
+})
 const reference = computed(() => getPositionReference() || triggerElement.value)
 
 const { floatingStyles, placement, update, middlewareData } = useFloating(
@@ -330,10 +337,6 @@ const panelStyles = computed(() => {
   const styles: any = {
     ...floatingStyles.value,
     pointerEvents: isOpen.value ? 'auto' : 'none',
-  }
-
-  if (panelStyle) {
-    Object.assign(styles, panelStyle)
   }
 
   return styles
@@ -681,6 +684,7 @@ defineExpose({
 
 <template>
   <div
+    v-if="$slots.trigger"
     class="m-popover m-reset-css"
     :class="[
       attrs.class,
@@ -713,47 +717,47 @@ defineExpose({
       -->
       <slot name="trigger" :open="open" :close="close" :toggle="toggle" :is-open="isOpen" :trigger="effectiveTrigger" />
     </div>
+  </div>
 
-    <Teleport :to="teleportTo" :disabled="!isOpen">
-      <Transition
-        :name="transition"
-        appear
-      >
-        <div
-          v-if="isOpen"
-          :id="panelId"
-          ref="panel"
-          v-click-outside="onClickOutside"
-          :role
-          :aria-label="ariaLabel"
-          :aria-labelledby="role === 'dialog' ? ariaLabelledby || triggerId : undefined"
-          :aria-describedby="role === 'dialog' ? ariaDescribedby : undefined"
-          :aria-modal="role === 'dialog' ? 'true' : undefined"
-          :tabindex="role === 'dialog' ? '-1' : undefined"
-          class="m-popover-panel"
-          :aria-live="announceChanges ? 'polite' : undefined"
-          :class="panelClasses"
-          :style="{
-            ...panelStyles,
+  <Teleport :to="teleportTo">
+    <Transition :name="transitionName" appear>
+      <div
+        v-if="isOpen"
+        :id="panelId"
+        ref="panel"
+        v-click-outside="onClickOutside"
+        :role
+        :aria-label="ariaLabel"
+        :aria-labelledby="role === 'dialog' ? ariaLabelledby || triggerId : undefined"
+        :aria-describedby="role === 'dialog' ? ariaDescribedby : undefined"
+        :aria-modal="role === 'dialog' ? 'true' : undefined"
+        :tabindex="role === 'dialog' ? '-1' : undefined"
+        class="m-popover-panel"
+        :aria-live="announceChanges ? 'polite' : undefined"
+        :class="panelClasses"
+        :style="[
+          panelStyle,
+          panelStyles,
+          {
             transformOrigin: getTransformOrigin(computedPosition),
             visibility: middlewareData.hide?.referenceHidden
               ? 'hidden'
               : 'visible',
-          }"
-          v-bind="panelEvents"
-        >
-          <!--
-            @slot Popover content
-            @binding {function} open Function to open the popover
-            @binding {function} close Function to close the popover
-            @binding {function} toggle Function to toggle the popover
-            @binding {boolean} is-open Current open state of the popover
-          -->
-          <slot :open="open" :close="close" :toggle="toggle" :is-open="isOpen" />
-        </div>
-      </Transition>
-    </Teleport>
-  </div>
+          },
+        ]"
+        v-bind="panelEvents"
+      >
+        <!--
+          @slot Popover content
+          @binding {function} open Function to open the popover
+          @binding {function} close Function to close the popover
+          @binding {function} toggle Function to toggle the popover
+          @binding {boolean} is-open Current open state of the popover
+        -->
+        <slot :open="open" :close="close" :toggle="toggle" :is-open="isOpen" />
+      </div>
+    </Transition>
+  </Teleport>
 </template>
 
 <style lang="postcss" scoped>
@@ -813,35 +817,49 @@ defineExpose({
   &.--contrast {
     @apply maz-border-contrast-600 maz-bg-contrast maz-text-contrast-foreground;
   }
+
+  &.--background {
+    @apply maz-bg-surface maz-text-surface-foreground;
+  }
 }
 
-.maz-popover-enter-active {
+.maz-scale-fade-enter-active,
+.maz-scale-pop-enter-active {
   transition:
-    opacity 200ms ease-out,
-    transform 200ms ease-out;
+    opacity 150ms ease-out,
+    transform 150ms ease-out;
 }
 
-.maz-popover-leave-active {
+.maz-scale-fade-leave-active,
+.maz-scale-pop-leave-active {
   transition:
-    opacity 200ms ease-in,
-    transform 200ms ease-in;
+    opacity 150ms ease-in,
+    transform 150ms ease-in;
+}
+
+.maz-scale-pop-leave-active {
+  transition:
+    opacity 150ms ease-in,
+    transform 150ms ease-in;
 }
 
 /* Bottom positions - expand from top */
 .m-popover-panel.--position-bottom,
 .m-popover-panel.--position-bottom-start,
 .m-popover-panel.--position-bottom-end {
-  &.maz-popover-enter-from {
+  &.maz-scale-fade-enter-from,
+  &.maz-scale-fade-leave-to {
     @apply maz-opacity-0;
 
-    transform: scaleY(0.8) translateY(-4px);
+    transform: scaleY(0.5);
     transform-origin: top center;
   }
 
-  &.maz-popover-leave-to {
+  &.maz-scale-pop-enter-from,
+  &.maz-scale-pop-leave-to {
     @apply maz-opacity-0;
 
-    transform: scaleY(0.9) translateY(-4px);
+    transform: scale(0.2) translateY(-4px);
     transform-origin: top center;
   }
 }
@@ -850,17 +868,19 @@ defineExpose({
 .m-popover-panel.--position-top,
 .m-popover-panel.--position-top-start,
 .m-popover-panel.--position-top-end {
-  &.maz-popover-enter-from {
+  &.maz-scale-fade-enter-from,
+  &.maz-scale-fade-leave-to {
     @apply maz-opacity-0;
 
-    transform: scaleY(0.8) translateY(4px);
+    transform: scaleY(0.5);
     transform-origin: bottom center;
   }
 
-  &.maz-popover-leave-to {
+  &.maz-scale-pop-enter-from,
+  &.maz-scale-pop-leave-to {
     @apply maz-opacity-0;
 
-    transform: scaleY(0.9) translateY(4px);
+    transform: scale(0.2) translateY(4px);
     transform-origin: bottom center;
   }
 }
@@ -869,17 +889,19 @@ defineExpose({
 .m-popover-panel.--position-right,
 .m-popover-panel.--position-right-start,
 .m-popover-panel.--position-right-end {
-  &.maz-popover-enter-from {
+  &.maz-scale-fade-enter-from,
+  &.maz-scale-fade-leave-to {
     @apply maz-opacity-0;
 
-    transform: scaleX(0.8) translateX(-4px);
+    transform: scaleX(0.5);
     transform-origin: left center;
   }
 
-  &.maz-popover-leave-to {
+  &.maz-scale-pop-enter-from,
+  &.maz-scale-pop-leave-to {
     @apply maz-opacity-0;
 
-    transform: scaleX(0.9) translateX(-4px);
+    transform: scale(0.2) translateX(-4px);
     transform-origin: left center;
   }
 }
@@ -888,34 +910,38 @@ defineExpose({
 .m-popover-panel.--position-left,
 .m-popover-panel.--position-left-start,
 .m-popover-panel.--position-left-end {
-  &.maz-popover-enter-from {
+  &.maz-scale-fade-enter-from,
+  &.maz-scale-fade-leave-to {
     @apply maz-opacity-0;
 
-    transform: scaleX(0.8) translateX(4px);
+    transform: scaleX(0.5);
     transform-origin: right center;
   }
 
-  &.maz-popover-leave-to {
+  &.maz-scale-pop-enter-from,
+  &.maz-scale-pop-leave-to {
     @apply maz-opacity-0;
 
-    transform: scaleX(0.9) translateX(4px);
+    transform: scale(0.2) translateX(4px);
     transform-origin: right center;
   }
 }
 
 /* Default fallback - only applies when no specific position class is present */
 .m-popover-panel:not([class*='--position-']) {
-  &.maz-popover-enter-from {
+  &.maz-scale-pop-enter-from,
+  &.maz-scale-pop-leave-to {
     @apply maz-opacity-0;
 
-    transform: scale(0.95) translateY(-4px);
+    transform: scale(0.2);
     transform-origin: center;
   }
 
-  &.maz-popover-leave-to {
+  &.maz-scale-fade-enter-from,
+  &.maz-scale-fade-leave-to {
     @apply maz-opacity-0;
 
-    transform: scale(0.98);
+    transform: scale(0.5) translateY(-4px);
     transform-origin: center;
   }
 }
