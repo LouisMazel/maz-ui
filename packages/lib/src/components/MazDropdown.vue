@@ -22,7 +22,7 @@ const {
   id,
   items = [],
   trigger = 'adaptive',
-  color = 'transparent',
+  color = 'background',
   position = 'auto',
   screenReaderDescription,
   dropdownIconAnimation = true,
