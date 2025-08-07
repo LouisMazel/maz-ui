@@ -4,6 +4,8 @@ on:
   pull_request:
     branches-ignore:
       - dependabot/**
+      - develop
+      - master
     paths:
       - .github/workflows/lib-test-unit.yml
       - 'packages/lib/**'

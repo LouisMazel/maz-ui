@@ -39,6 +39,12 @@ jobs:
       - name: Build Packages
         run: pnpm build:packages
 
+      - name: Linters
+        run: pnpm lint:all
+
+      - name: Test units
+        run: pnpm test:unit:all
+
       - name: Setup Git User
         run: |
           git config --global user.name "LouisMazel"
