@@ -332,6 +332,23 @@ describe('given MazPopover component', () => {
 
       expect(wrapper.find('.m-popover-panel').attributes('style')).toContain('background-color: red')
     })
+
+    it('then it should apply custom panel style when passed as string', () => {
+      const wrapper = mount(MazPopover, {
+        props: {
+          modelValue: true,
+          panelStyle: 'background-color: blue; color: white;',
+        },
+        slots: {
+          trigger: '<button>Click me</button>',
+          default: '<div>Content</div>',
+        },
+      })
+
+      const panelStyle = wrapper.find('.m-popover-panel').attributes('style')
+      expect(panelStyle).toContain('background-color: blue')
+      expect(panelStyle).toContain('color: white')
+    })
   })
 
   describe('when closed', () => {
