@@ -80,18 +80,18 @@ class TooltipHandler {
       return {
         ...baseOptions,
         text: binding.value,
-        position: this.getPositionFromModifiers(binding) || baseOptions.position as MazPopoverPosition,
+        position: this.getPositionFromModifiers(binding) || baseOptions.position || 'top',
       }
     }
 
     return {
       ...baseOptions,
       ...binding.value,
-      position: this.getPositionFromModifiers(binding) || binding.value.position || baseOptions.position as MazPopoverPosition,
+      position: this.getPositionFromModifiers(binding) || binding.value.position || baseOptions.position || 'top',
     }
   }
 
-  private getPositionFromModifiers(binding: TooltipBinding): MazPopoverPosition | undefined {
+  private getPositionFromModifiers(binding: TooltipBinding) {
     const modifiers = Object.keys(binding.modifiers)
     const validPositions: MazPopoverPosition[] = [
       'top',
@@ -131,10 +131,6 @@ class TooltipHandler {
     // Create reactive state for the tooltip
     const isOpen = ref(!!tooltipProps.open)
 
-    // Create container for the tooltip portal
-    const tooltipContainer = document.createElement('div')
-    document.body.appendChild(tooltipContainer)
-
     let vNodeInstance: ReturnType<typeof useMountComponent> | null = null
 
     const createTooltip = () => {
@@ -153,9 +149,11 @@ class TooltipHandler {
         positionReference: el, // Use original element as reference
       }
 
+      const instanceIsOpen = vNodeInstance?.vNode.component?.exposed?.isOpen.value
+
       // Destroy previous instance
-      if (vNodeInstance) {
-        vNodeInstance.destroy()
+      if (vNodeInstance && instanceIsOpen) {
+        vNodeInstance.vNode.component?.exposed?.close()
       }
 
       // Create new instance
@@ -177,7 +175,6 @@ class TooltipHandler {
             return tooltipProps.text || ''
           },
         },
-        element: tooltipContainer,
       })
     }
 
@@ -255,9 +252,6 @@ class TooltipHandler {
       if (vNodeInstance) {
         vNodeInstance.destroy()
         vNodeInstance = null
-      }
-      if (tooltipContainer.parentNode) {
-        tooltipContainer.parentNode.removeChild(tooltipContainer)
       }
     }
 
