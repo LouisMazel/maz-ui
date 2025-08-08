@@ -1,6 +1,6 @@
 import type { Plugin } from 'vite'
-import { readdir, readFile, writeFile } from 'node:fs/promises'
-import { join, resolve } from 'node:path'
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { logger } from '@maz-ui/node'
 import { getComponentList } from './getComponentList.js'
@@ -15,15 +15,17 @@ function toPascalCase(str: string) {
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
 const svgDir = resolve(_dirname, '../svg')
+const flags1x1Dir = resolve(_dirname, '../flags/1x1')
+const flags3x2Dir = resolve(_dirname, '../flags/3x2')
 const outputIndex = resolve(_dirname, '../src/index.ts')
 
-async function replaceValuesInSvg(files: string[]) {
+function replaceValuesInSvg(files: { file: string, name: string, path: string, dir: string }[]) {
   try {
-    const svgFiles = files.filter(file => file.endsWith('.svg'))
+    const svgFiles = files.filter(({ file }) => file.endsWith('.svg'))
 
     for (const file of svgFiles) {
-      const filePath = join(svgDir, file)
-      let content = await readFile(filePath, 'utf-8')
+      const filePath = resolve(file.dir, file.file)
+      let content = readFileSync(filePath, 'utf-8')
 
       if (!/\swidth\s*=/.test(content)) {
         content = content.replace(/<svg\b/, '<svg width="1em"')
@@ -49,7 +51,7 @@ async function replaceValuesInSvg(files: string[]) {
         return `${attribute}="currentColor"`
       })
 
-      await writeFile(filePath, content)
+      writeFileSync(filePath, content)
     }
 
     logger.success(`[ViteGenerateIconsComponentsEntry](replaceValuesInSvg) ✅ all svg files cleaned`)
@@ -61,20 +63,20 @@ async function replaceValuesInSvg(files: string[]) {
   }
 }
 
-async function getReservedNames() {
-  const componentNameList = (await getComponentList()).map(({ name }) => name)
+function getReservedNames() {
+  const componentNameList = getComponentList().map(({ name }) => name)
   return [...componentNameList, 'Map', 'Object', 'String', 'Number', 'Boolean', 'Array', 'Date', 'RegExp', 'Error', 'Function', 'Promise', 'Set', 'WeakMap', 'WeakSet', 'Symbol', 'Proxy', 'Reflect', 'Math', 'JSON', 'Intl', 'Console', 'Window', 'Document', 'Element', 'HTMLElement', 'Node', 'Event', 'EventTarget', 'Location', 'History', 'Navigator', 'Screen', 'Storage', 'URL', 'URLSearchParams', 'FormData', 'File', 'Blob', 'FileReader', 'XMLHttpRequest', 'WebSocket', 'Worker', 'SharedWorker', 'ServiceWorker', 'Cache', 'Request', 'Response', 'Headers', 'Body', 'ReadableStream', 'WritableStream', 'TransformStream', 'ByteLengthQueuingStrategy', 'CountQueuingStrategy', 'TextEncoder', 'TextDecoder', 'Image', 'ImageData', 'Canvas', 'CanvasRenderingContext2D', 'WebGLRenderingContext', 'WebGL2RenderingContext', 'Audio', 'AudioContext', 'AudioBuffer', 'AudioBufferSourceNode', 'GainNode', 'OscillatorNode', 'AnalyserNode', 'BiquadFilterNode', 'ChannelMergerNode', 'ChannelSplitterNode', 'ConvolverNode', 'DelayNode', 'DynamicsCompressorNode', 'IIRFilterNode', 'MediaElementAudioSourceNode', 'MediaStreamAudioDestinationNode', 'MediaStreamAudioSourceNode', 'PannerNode', 'StereoPannerNode', 'WaveShaperNode', 'MediaStream', 'MediaStreamTrack', 'MediaRecorder', 'MediaDevices', 'MediaQueryList', 'MutationObserver', 'IntersectionObserver', 'ResizeObserver', 'Performance', 'PerformanceEntry', 'PerformanceMark', 'PerformanceMeasure', 'PerformanceNavigation', 'PerformanceResourceTiming', 'PerformanceTiming', 'PerformanceObserver', 'PerformanceObserverEntryList', 'PerformancePaintTiming', 'PerformanceServerTiming', 'PerformanceNavigationTiming', 'PerformanceLongTaskTiming', 'PerformanceEventTiming', 'PerformanceLayoutShift', 'PerformanceFirstInput', 'PerformanceLargestContentfulPaint', 'PerformanceElementTiming', 'PerformanceResourceTiming', 'PerformanceServerTiming', 'PerformanceNavigationTiming', 'PerformancePaintTiming', 'PerformanceLongTaskTiming', 'PerformanceEventTiming', 'PerformanceLayoutShift', 'PerformanceFirstInput', 'PerformanceLargestContentfulPaint', 'PerformanceElementTiming']
 }
 
-async function generateIconsComponentsEntry(files: string[]) {
-  const reservedNames = await getReservedNames()
-  const imports = files.map((file) => {
-    const name = toPascalCase(file.replace('.svg', ''))
-    const finalName = reservedNames.includes(name) || reservedNames.includes(`Maz${name}`) || reservedNames.includes(`Maz${name}Icon`) ? `${name}Icon` : name
-    return `export const Maz${finalName} = defineAsyncComponent(() => import('./../svg/${file}?component'));`
-  }).join('\n')
-
+function generateIconsComponentsEntry(files: { file: string, name: string, path: string }[]) {
   try {
+    const reservedNames = getReservedNames()
+    const imports = files.map(({ file, name, path }) => {
+      const iconName = toPascalCase(name)
+      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
+      return `export const Maz${finalName} = defineAsyncComponent(() => import('${path}/${file}?component'));`
+    }).join('\n')
+
     const content = `/// <reference types="vite-svg-loader" />
 
 import type { Component, ComponentPublicInstance, FunctionalComponent } from 'vue';
@@ -85,7 +87,7 @@ export type IconComponent = FunctionalComponent | ComponentPublicInstance | Comp
 ${imports}
 `
 
-    await writeFile(outputIndex, content)
+    writeFileSync(outputIndex, content)
 
     logger.success('[ViteGenerateIconsComponentsEntry](generateIconsComponentsEntry) ✅ icons components entry generated')
   }
@@ -96,19 +98,19 @@ ${imports}
   }
 }
 
-async function generateIconsList(files: string[]) {
-  const outputPath = resolve(_dirname, '../src/icon-list.ts')
-  const reservedNames = await getReservedNames()
-  const iconNames = files
-    .filter(file => file.endsWith('.svg'))
-    .map((file) => {
-      const name = toPascalCase(file.replace('.svg', ''))
-      const finalName = reservedNames.includes(name) || reservedNames.includes(`Maz${name}`) || reservedNames.includes(`Maz${name}Icon`) ? `${name}Icon` : name
-      return `'Maz${finalName}'`
-    })
-    .join(',\n  ')
-
+function generateIconsList(files: { file: string, name: string }[]) {
   try {
+    const outputPath = resolve(_dirname, '../src/icon-list.ts')
+    const reservedNames = getReservedNames()
+    const iconNames = files
+      .filter(({ file }) => file.endsWith('.svg'))
+      .map(({ name }) => {
+        const iconName = toPascalCase(name)
+        const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
+        return `'Maz${finalName}'`
+      })
+      .join(',\n  ')
+
     const content = `// Ce fichier est généré automatiquement, ne pas modifier manuellement
 export const iconsList = [
   ${iconNames}
@@ -117,7 +119,7 @@ export const iconsList = [
 export type IconName = typeof iconsList[number]
 `
 
-    await writeFile(outputPath, content)
+    writeFileSync(outputPath, content)
     logger.success('[ViteGenerateIconsComponentsEntry](generateIconsList) ✅ icons list generated')
   }
   catch (error) {
@@ -129,14 +131,35 @@ export type IconName = typeof iconsList[number]
 export function ViteGenerateIconsComponentsEntry(): Plugin {
   return {
     name: 'vite-generate-icons-components-entry',
-    async configResolved() {
-      logger.log('[ViteGenerateIconsComponentsEntry] ✅ starting to generate icons components entry')
-      const files = (await readdir(svgDir)).filter(file => file.endsWith('.svg') && !file.endsWith('.DS_Store'))
-
+    configResolved() {
       try {
-        await replaceValuesInSvg(files)
-        await generateIconsComponentsEntry(files)
-        await generateIconsList(files)
+        logger.log('[ViteGenerateIconsComponentsEntry] ✅ starting to generate icons components entry')
+        const [svgFiles, flags1x1Files, flags3x2Files] = [
+          readdirSync(svgDir).filter(file => file.endsWith('.svg') && !file.endsWith('.DS_Store')).map(file => ({
+            file,
+            name: file.replace('.svg', ''),
+            path: '../svg',
+            dir: 'svg',
+          })),
+          readdirSync(flags1x1Dir).filter(file => file.endsWith('.svg') && !file.endsWith('.DS_Store')).map(file => ({
+            file,
+            name: `flag-square-${file.replace('.svg', '').split('').join('-')}`,
+            path: '../flags/1x1',
+            dir: 'flags/1x1',
+          })),
+          readdirSync(flags3x2Dir).filter(file => file.endsWith('.svg') && !file.endsWith('.DS_Store')).map(file => ({
+            file,
+            name: `flag-${file.replace('.svg', '').split('').join('-')}`,
+            path: '../flags/3x2',
+            dir: 'flags/3x2',
+          })),
+        ]
+
+        const files = [...svgFiles, ...flags1x1Files, ...flags3x2Files].filter(({ file }) => file.endsWith('.svg') && !file.endsWith('.DS_Store'))
+
+        replaceValuesInSvg(svgFiles)
+        generateIconsComponentsEntry(files)
+        generateIconsList(files)
 
         logger.success('[ViteGenerateIconsComponentsEntry] ✅ icons components entry generated')
       }

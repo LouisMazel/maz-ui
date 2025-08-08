@@ -8,12 +8,11 @@ import { iconsList } from './icon-list.js'
  * @author @louismazel
  * @link https://maz-ui.com
  */
-export function MazIconsResolver(options?: { devMode?: boolean }): ComponentResolver {
+export function MazIconsResolver(): ComponentResolver {
   return {
     type: 'component',
     resolve: (name: string) => {
-      const { devMode = false } = options || {}
-      const base = devMode ? '@maz-ui/icons/src/index.ts' : '@maz-ui/icons'
+      const base = '@maz-ui/icons'
       if (iconsList.includes(name as IconName)) {
         return {
           name,
