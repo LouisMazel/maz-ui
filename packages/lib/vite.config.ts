@@ -59,7 +59,7 @@ export default defineConfig({
     dts({
       tsconfigPath: resolver('./tsconfig.json'),
       entryRoot: resolver('src'),
-      outDir: resolver('dist/types'),
+      outDir: [resolver('dist/types'), resolver('dist')],
     }),
     ViteCompileStyles(),
   ],

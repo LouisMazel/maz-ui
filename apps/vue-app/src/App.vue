@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { MazTrash } from '@maz-ui/icons'
+import { useToast } from 'maz-ui/composables'
 
 const { message, success, error, info, warning } = useToast()
 

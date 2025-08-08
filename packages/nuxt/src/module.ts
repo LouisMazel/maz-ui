@@ -177,7 +177,7 @@ function addMazUiComposableImport({
   addImports({
     from,
     name,
-    typeFrom: `maz-ui/dist/types/composables/${name}.d.ts`,
+    typeFrom: `maz-ui/composables`,
     as: `use${capitalize(prefix)}${name.replace('use', '')}`,
   })
 }
@@ -195,11 +195,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
   setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
 
-    nuxt.options.build.transpile = [
-      'maz-ui',
-      '@maz-ui/themes',
-      ...nuxt.options.build.transpile,
-    ]
+    nuxt.options.build.transpile.push('maz-ui', '@maz-ui/themes', '@maz-ui/translations')
 
     const moduleOptions = defu(
       nuxt.options.runtimeConfig.public.mazUi,

@@ -13,12 +13,9 @@
     "type-check": "nuxi typecheck"
   },
   "dependencies": {
-    "@maz-ui/themes": "workspace:*",
-    "@maz-ui/translations": "workspace:*",
-    "maz-ui": "workspace:*"
+    "@maz-ui/nuxt": "workspace:*"
   },
   "devDependencies": {
-    "@maz-ui/nuxt": "workspace:*",
     "@nuxt/devtools": "^2.6.2",
     "@nuxtjs/tailwindcss": "^6.14.0",
     "autoprefixer": "^10.4.21",
@@ -28,7 +25,7 @@
     "postcss-import": "^16.1.0",
     "postcss-nested": "^7.0.2",
     "postcss-url": "^10.1.3",
-    "stylelint": "^16.23.0",
+    "stylelint": "^16.23.1",
     "stylelint-config-recommended-vue": "^1.6.1",
     "stylelint-config-standard": "^39.0.0",
     "stylelint-config-tailwindcss": "^1.0.0",
