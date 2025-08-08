@@ -36,7 +36,7 @@ describe('given MazGallery component', () => {
         },
       })
 
-      const noPhotographyIcon = wrapper.find('.empty-layer')
+      const noPhotographyIcon = wrapper.find('.m-gallery__empty-layer')
 
       expect(noPhotographyIcon.exists()).toBe(true)
 

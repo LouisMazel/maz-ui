@@ -41,7 +41,7 @@ export default defineConfig({
       resolvers: [MazModulesResolver({ devMode: true })],
       dts: true,
     }),
-    visualizer() as PluginOption,
+    visualizer(),
   ],
   resolve: {
     alias: {

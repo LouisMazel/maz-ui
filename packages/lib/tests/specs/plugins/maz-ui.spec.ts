@@ -28,9 +28,16 @@ describe('given MazUi plugin', () => {
 
   describe('when installing with no options', () => {
     it('then it should install theme and translations plugins with undefined options', () => {
-      MazUi.install?.(mockApp)
+      MazUi.install?.(mockApp, {
+        theme: {
+          preset: {} as any,
+        },
+        translations: undefined,
+      })
 
-      expect(mockApp.use).toHaveBeenCalledWith(MazUiTheme, undefined)
+      expect(mockApp.use).toHaveBeenCalledWith(MazUiTheme, {
+        preset: {} as any,
+      })
       expect(mockApp.use).toHaveBeenCalledWith(MazUiTranslations, undefined)
       expect(mockApp.use).toHaveBeenCalledTimes(2)
     })
@@ -38,9 +45,16 @@ describe('given MazUi plugin', () => {
 
   describe('when installing with empty options', () => {
     it('then it should install theme and translations plugins with undefined options', () => {
-      MazUi.install?.(mockApp, {})
+      MazUi.install?.(mockApp, {
+        theme: {
+          preset: {} as any,
+        },
+        translations: undefined,
+      })
 
-      expect(mockApp.use).toHaveBeenCalledWith(MazUiTheme, undefined)
+      expect(mockApp.use).toHaveBeenCalledWith(MazUiTheme, {
+        preset: {} as any,
+      })
       expect(mockApp.use).toHaveBeenCalledWith(MazUiTranslations, undefined)
       expect(mockApp.use).toHaveBeenCalledTimes(2)
     })
@@ -49,6 +63,7 @@ describe('given MazUi plugin', () => {
   describe('when installing with theme options', () => {
     it('then it should install theme plugin with provided options', () => {
       const themeOptions = {
+        preset: {} as any,
         strategy: 'hybrid' as const,
         darkMode: 'class' as const,
       }
@@ -71,9 +86,13 @@ describe('given MazUi plugin', () => {
         },
       }
 
-      MazUi.install?.(mockApp, { translations: translationsOptions })
+      MazUi.install?.(mockApp, { theme: {
+        preset: {} as any,
+      }, translations: translationsOptions })
 
-      expect(mockApp.use).toHaveBeenCalledWith(MazUiTheme, undefined)
+      expect(mockApp.use).toHaveBeenCalledWith(MazUiTheme, {
+        preset: {} as any,
+      })
       expect(mockApp.use).toHaveBeenCalledWith(MazUiTranslations, translationsOptions)
       expect(mockApp.use).toHaveBeenCalledTimes(2)
     })
@@ -82,6 +101,7 @@ describe('given MazUi plugin', () => {
   describe('when installing with both theme and translations options', () => {
     it('then it should install both plugins with their respective options', () => {
       const themeOptions = {
+        preset: {} as any,
         strategy: 'hybrid' as const,
         darkMode: 'class' as const,
       }
