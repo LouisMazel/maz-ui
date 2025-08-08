@@ -60,12 +60,11 @@ export function useStringMatching(
   const _string2 = computed(() =>
     normalizeString(toValue(string2)),
   )
-  const _threshold = computed(() => toValue(threshold))
 
   const score = computed(() => getMatchingScore(_string1.value, _string2.value))
 
   const isMatching = computed(() =>
-    getMatchingResults(_string1.value, _string2.value, _threshold.value),
+    getMatchingResults(_string1.value, _string2.value, toValue(threshold)),
   )
 
   return {
