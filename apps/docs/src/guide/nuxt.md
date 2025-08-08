@@ -26,23 +26,24 @@ Check out the documentation of [@maz-ui/mcp](./mcp.md)
 
 ## Installation
 
-<div class="maz-flex maz-gap-0.5">
-  <NpmBadge package="maz-ui" />
-  <NpmBadge package="@maz-ui/nuxt" />
-</div>
+<NpmBadge package="@maz-ui/nuxt" />
 
 ::: code-group
 
 ```bash [pnpm]
-pnpm add maz-ui @maz-ui/nuxt
+pnpm add @maz-ui/nuxt
 ```
 
 ```bash [npm]
-npm install maz-ui @maz-ui/nuxt
+npm install @maz-ui/nuxt
 ```
 
 ```bash [yarn]
-yarn add maz-ui @maz-ui/nuxt
+yarn add @maz-ui/nuxt
+```
+
+```bash [nuxt]
+pnpx nuxt@latest module add @maz-ui/nuxt
 ```
 
 :::
@@ -123,7 +124,7 @@ export default defineNuxtConfig({
 
     // Theming System
     theme: {
-      preset: 'maz-ui', // or 'dark', 'ocean', or custom object
+      preset: 'maz-ui', // 'maz-ui' | 'dark' | 'ocean' | custom object
       strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
       darkModeStrategy: 'class', // 'class' | 'media' | 'auto'
       overrides: {
