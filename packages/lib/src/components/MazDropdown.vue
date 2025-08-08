@@ -22,7 +22,7 @@ const {
   id,
   items = [],
   trigger = 'adaptive',
-  color = 'background',
+  color = 'transparent',
   position = 'auto',
   screenReaderDescription,
   dropdownIconAnimation = true,
@@ -30,6 +30,7 @@ const {
   closeOnClick = false,
   chevron = true,
   disabled = false,
+  transition = 'scale-pop',
   preferPosition = 'bottom-start',
 } = defineProps<MazDropdownProps>()
 
@@ -203,6 +204,14 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue'> {
    * @default 'md'
    */
   size?: MazSize
+
+  /**
+   * Transition to use when the dropdown is opened or closed
+   * @type {MazPopoverProps['transition']}
+   * @values 'scale-pop' | 'scale-fade' | string
+   * @default 'scale-pop'
+   */
+  transition?: MazPopoverProps['transition']
 }
 
 const modelValue = defineModel<boolean>({
@@ -316,6 +325,7 @@ watch(
     :prefer-position
     color="background"
     :position
+    :transition
     :disabled
     :keep-open-on-hover="trigger === 'hover' || trigger === 'adaptive'"
     :class="[classProp]"
