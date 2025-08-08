@@ -65,10 +65,6 @@ const isOpen = ref(false)
 
 For long content, you can enable scrolling in content part (Header and footer slot remain visible at top and bottom)
 
-::: warning
-With this option, an overflow is applied: So, some problems with absolute content may appear - such as `<MazSelect />` opened list can not be visible outside the dialog content part, you should scroll again to show the full content - **Check example below**
-:::
-
 <ComponentDemo>
   <MazBtn @click="scollableOpened = true">Open Scrollable Dialog</MazBtn>
 
@@ -77,74 +73,9 @@ With this option, an overflow is applied: So, some problems with absolute conten
       Scrollable Dialog Title
     </template>
     <template #default>
-      <p style="padding-bottom: 2rem;">
-        Scroll
+      <p v-for="i in 40" :key="i" style="padding-bottom: 2rem;">
+        Scroll down
       </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Scroll
-      </p>
-      <p style="padding-bottom: 2rem;">
-        Click on the select to open the list
-      </p>
-      <MazSelect
-        :model-value="1"
-        :options="[
-          { value: 1, label: 1 },
-          { value: 2, label: 2 },
-          { value: 3, label: 3 },
-          { value: 4, label: 4 },
-          { value: 5, label: 5 },
-          { value: 6, label: 6 },
-        ]"
-      />
     </template>
     <template #footer>
       <MazBtn @click="scollableOpened = false">
@@ -160,24 +91,7 @@ With this option, an overflow is applied: So, some problems with absolute conten
   <template #title> Scrollable Dialog Title </template>
 
   <template #default>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
-    <p style="padding-bottom: 2rem">Scroll</p>
+    <p v-for="i in 40" :key="i" style="padding-bottom: 2rem">Scroll down</p>
     <MazSelect
       :model-value="1"
       :options="[
@@ -190,6 +104,7 @@ With this option, an overflow is applied: So, some problems with absolute conten
     ]"
     />
   </template>
+
   <template #footer>
     <MazBtn @click="scollableOpened = false"> Confirm </MazBtn>
   </template>

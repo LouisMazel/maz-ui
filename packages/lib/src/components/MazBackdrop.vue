@@ -87,6 +87,10 @@ export interface MazBackdropProps {
 const present = ref(modelValue)
 
 function close() {
+  if (persistent) {
+    return
+  }
+
   toggleModal(false)
 }
 
@@ -110,13 +114,11 @@ function onBackdropAnimationLeave() {
 }
 
 function onBackdropClicked() {
-  if (!persistent) {
-    close()
-  }
+  close()
 }
 
 function onKeyPress(event: KeyboardEvent) {
-  if (closeOnEscape && event.key === 'Escape' && !persistent) {
+  if (closeOnEscape && event.key === 'Escape') {
     close()
   }
 }
@@ -207,7 +209,7 @@ defineExpose({
               :class="[backdropContentClass, `--justify-${justify}`, `--align-${align}`, { '--padding': contentPadding }]"
               role="button"
               tabindex="-1"
-              @click.self="onBackdropClicked"
+              @pointerdown.self="onBackdropClicked"
             >
               <!-- @slot Place your content here
                 @binding {Function} close close function
