@@ -54,7 +54,7 @@ All these languages include translations for:
 
 **By default Maz-UI will not load any translations to avoid unused code in your bundle.**
 
-So, to avoid loading hydration issues, use the `messages` option to provide the translations for the language you want to use. Otherwise, the translations will be loaded asynchronously.
+So, to avoid loading hydration issues or any flashes, use the `messages` option to provide the translations for the language you want to use. Otherwise, the translations will be loaded asynchronously.
 
 :::
 
@@ -88,12 +88,6 @@ import App from './App.vue'
 const app = createApp(App)
 
 app.use(MazUi, {
-  // Your theme configuration...
-  theme: {
-    // ... your theme options
-  },
-
-  // Add your translations here!
   translations: {
     locale: 'fr', // Start with French
     fallbackLocale: 'en', // Fallback language
@@ -115,7 +109,7 @@ app.use(MazUi, {
         }
       },
 
-      // Add other languages
+      // Add an other language
       nl: {
         inputPhoneNumber: {
           countrySelect: {

@@ -916,7 +916,7 @@ const disabledHours = [0, 1, 2, 11, 22, 23]
 
 ## Internationalization
 
-MazDatePicker supports full internationalization. **By default, it uses the locale from the MazTranslations plugin**, but you can override it:
+MazDatePicker supports full internationalization. **By default, it uses the locale from the [MazUiTranslations](../guide/translations.md) plugin**, but you can override it:
 
 <ComponentDemo>
   <div class="maz-grid maz-grid-cols-1 mob-l:maz-grid-cols-2 maz-gap-4">

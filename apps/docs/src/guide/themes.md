@@ -23,6 +23,8 @@ description: Modern and performant theme system for Maz-UI with TypeScript, HSL 
 
 ### 1. Plugin Configuration with `MazUi` plugin
 
+To avoid FOUC (Flash of Unstyled Content), **you should provide the theme preset**.
+
 ```typescript
 // main.ts
 import { MazUi } from 'maz-ui/plugins/maz-ui'

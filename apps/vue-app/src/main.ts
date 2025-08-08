@@ -1,9 +1,8 @@
-import { mazUi, MazUiTheme, pristine } from 'maz-ui/themes'
+import { mazUi, MazUiTheme } from 'maz-ui/themes'
 
-import { fr, MazTranslations } from 'maz-ui/translations'
+import { fr, MazUiTranslations } from 'maz-ui/translations'
 import { AosPlugin } from 'maz-ui/plugins/aos'
 import { DialogPlugin } from 'maz-ui/plugins/dialog'
-import { MazUi } from 'maz-ui/plugins/maz-ui'
 import { ToastPlugin } from 'maz-ui/plugins/toast'
 
 import { WaitPlugin } from 'maz-ui/plugins/wait'
@@ -20,31 +19,7 @@ const app = createApp(App)
 
 app.use(router)
 
-// app.use(MazUi, {
-//   theme: {
-//     preset: mazUi,
-//     overrides: {
-//       colors: {
-//         light: {
-//           primary: '272 99% 54%'
-//         }
-//       }
-//     },
-//     mode: 'both',
-//     darkModeStrategy: 'class',
-//     colorMode: 'auto',
-//   },
-//   translations: {
-//     locale: 'fr',
-//     fallbackLocale: 'en',
-//     preloadFallback: false,
-//     messages: {
-//       fr,
-//     },
-//   },
-// })
-
-app.use(MazTranslations, {
+app.use(MazUiTranslations, {
   locale: 'fr',
   fallbackLocale: 'en',
   preloadFallback: false,

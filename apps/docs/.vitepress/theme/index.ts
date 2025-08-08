@@ -10,7 +10,7 @@ import { DialogPlugin } from 'maz-ui/src/plugins/dialog.js'
 import { ToastPlugin } from 'maz-ui/src/plugins/toast.js'
 import { WaitPlugin } from 'maz-ui/src/plugins/wait.js'
 import { MazUiTheme } from 'maz-ui/src/themes.js'
-import { MazTranslations } from 'maz-ui/src/translations.js'
+import { MazUiTranslations } from 'maz-ui/src/translations.js'
 
 import { inBrowser } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
@@ -38,7 +38,7 @@ export default {
       darkModeStrategy: 'class',
       strategy: 'hybrid',
     })
-    app.use(MazTranslations, {
+    app.use(MazUiTranslations, {
       locale: 'en',
       fallbackLocale: 'fr',
       preloadFallback: false,
