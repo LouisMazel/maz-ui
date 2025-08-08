@@ -150,16 +150,16 @@ const logSildersLabels: ['Micro', 'Small', 'Middle', 'Big']
 </template>
 ```
 
-## no-divider & no-zoom-animation
+## hide dividers & cursor animation
 
 > Each sections between cursors has the same color
-
+>
 > Component don't have animation on cursor
 
 <MazSlider
   v-model="multipleSilders"
-  no-divider
-  no-cursor-anim
+  :divider="false"
+  :cursor-anim="false"
 />
 
 ```vue
@@ -172,8 +172,8 @@ const multipleSilders = ref([25, 50, 75])
 <template>
   <MazSlider
     v-model="multipleSilders"
-    no-divider
-    no-cursor-anim
+    :divider="false"
+    :cursor-anim="false"
   />
 </template>
 ```
