@@ -185,7 +185,7 @@ describe('Given DocumentationService instance', () => {
       expect(result).toHaveProperty('helpers')
       expect(result).toHaveProperty('paths')
 
-      expect(result.components.total).toBe(56)
+      expect(result.components.total).toBe(57)
       expect(result.guides.total).toBe(11)
       expect(result.composables.total).toBe(14)
       expect(result.directives.total).toBe(5)
