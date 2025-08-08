@@ -159,7 +159,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   <h2 class="maz-text-2xl maz-font-bold maz-mb-8">Why choose Maz-UI ?</h2>
   <div class="maz-grid mob-l:maz-grid-cols-2 tab-m:maz-grid-cols-3 maz-gap-4 maz-flex-wrap vp-raw">
     <MazCardSpotlight content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
-      <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+      <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
         ⚡️
       </span>
       <h2 class="maz-text-base maz-font-semibold">Standalone</h2>
@@ -169,7 +169,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       </p>
     </MazCardSpotlight>
     <MazCardSpotlight content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
-      <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+      <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
         👨‍❤️‍👨
       </span>
       <h2 class="maz-text-base maz-font-semibold">SSR Friendly</h2>
@@ -178,7 +178,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       </p>
     </MazCardSpotlight>
     <MazCardSpotlight content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
-      <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+      <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
         🔐
       </span>
       <h2 class="maz-text-base maz-font-semibold">Typescript</h2>
@@ -188,7 +188,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </MazCardSpotlight>
     <a href="/guide/themes" class="maz-flex">
       <MazCardSpotlight class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           💄
         </span>
         <h2 class="maz-text-base maz-font-semibold">Theming</h2>
@@ -201,7 +201,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </a>
     <a href="/guide/dark-mode" class="maz-flex">
       <MazCardSpotlight class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           🌗
         </span>
         <h2 class="maz-text-base maz-font-semibold">Dark and Light Theme</h2>
@@ -214,7 +214,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </a>
     <a href="/plugins/toast" class="maz-flex">
       <MazCardSpotlight class="maz-w-full" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           🛠
         </span>
         <h2 class="maz-text-base maz-font-semibold">Tools</h2>
@@ -235,7 +235,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     <a href="/guide/nuxt" class="maz-flex">
       <MazCardSpotlight class="maz-w-full" color="accent" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
         <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between maz-w-full">
-          <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+          <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
             🚀
           </span>
           <MazBadge color="accent" class="maz-text-base">Package</MazBadge>
@@ -251,7 +251,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     <a href="/guide/icons" class="maz-flex">
       <MazCardSpotlight class="maz-w-full" color="accent" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
         <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between maz-w-full">
-          <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+          <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
             🎨
           </span>
           <MazBadge color="accent" class="maz-text-base">Package</MazBadge>
@@ -267,7 +267,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     <a href="/guide/translations" class="maz-flex">
       <MazCardSpotlight class="maz-w-full" color="accent" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
         <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between maz-w-full">
-          <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+          <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
             🌍
           </span>
           <MazBadge color="accent" class="maz-text-base">Package</MazBadge>
@@ -283,7 +283,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     <a href="/guide/themes" class="maz-flex">
       <MazCardSpotlight class="maz-w-full" color="accent" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
         <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between maz-w-full">
-          <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+          <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
             🎭
           </span>
           <MazBadge color="accent" class="maz-text-base">Package</MazBadge>
@@ -299,7 +299,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
      <a href="/guide/mcp" class="maz-flex">
       <MazCardSpotlight class="maz-w-full" color="accent" content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
         <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between maz-w-full">
-          <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+          <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
             🚀
           </span>
           <MazBadge color="accent" class="maz-text-base">Package</MazBadge>
@@ -321,7 +321,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   <div class="maz-grid maz-grid-cols-1 tab-m:maz-grid-cols-2 tab-l:maz-grid-cols-3 maz-gap-4">
     <MazCardSpotlight color="info" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           📞
         </span>
         <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
@@ -335,7 +335,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </MazCardSpotlight>
     <MazCardSpotlight color="info" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           🪟
         </span>
         <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
@@ -349,7 +349,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </MazCardSpotlight>
     <MazCardSpotlight color="info" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           ✏️
         </span>
         <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
@@ -363,7 +363,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </MazCardSpotlight>
     <MazCardSpotlight color="info" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           🔔
         </span>
         <MazBadge color="info" class="maz-text-base">Plugin</MazBadge>
@@ -383,7 +383,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   <div class="maz-grid maz-grid-cols-1 tab-m:maz-grid-cols-2 tab-l:maz-grid-cols-3 maz-gap-4">
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           ✨
         </span>
         <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
@@ -397,7 +397,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           🎭
         </span>
         <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
@@ -411,7 +411,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           🔦
         </span>
         <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
@@ -425,7 +425,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           📝
         </span>
         <MazBadge color="success" class="maz-text-base">Composable</MazBadge>
@@ -439,7 +439,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           📋
         </span>
         <MazBadge color="primary" class="maz-text-base">Component</MazBadge>
@@ -453,7 +453,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           💬
         </span>
         <MazBadge color="info" class="maz-text-base">Plugin</MazBadge>
@@ -467,7 +467,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           🖼️
         </span>
         <MazBadge color="warning" class="maz-text-base">Directive</MazBadge>
@@ -481,7 +481,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           🌍
         </span>
         <MazBadge color="success" class="maz-text-base">Composable</MazBadge>
@@ -495,7 +495,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     </MazCardSpotlight>
     <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
-        <span class="maz-py-1 maz-px-2 maz-bg-surface-400 maz-rounded-md maz-text-2xl">
+        <span class="maz-py-1 maz-px-2 maz-bg-surface-600 dark:maz-bg-surface-400 maz-rounded-md maz-text-2xl">
           📊
         </span>
         <MazBadge color="primary" class="maz-text-base">Component</MazBadge>

@@ -114,7 +114,7 @@ You can also provide all your data, the table is auto-generated and you can use 
 ---
 
 <ComponentDemo>
-<div class="maz-bg-surface-400 maz-rounded maz-p-2">
+<div class="maz-bg-surface-600/50 dark:maz-bg-surface-400 maz-rounded maz-p-2">
 
 v-model="{{selectedIds ?? 'undefined'}}"
 

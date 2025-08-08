@@ -17,12 +17,12 @@ All icons follow a consistent naming pattern:
       <MazInput v-model="search" label="Search icon" @update:model-value="search = $event.trim()" :left-icon="MazIcons.MazMagnifyingGlass" class="flex-1" :assistive-text="`${filteredIcons.length} icons found`" />
     </div>
     <div class="maz-grid maz-grid-cols-3 maz-gap-2">
-      <div v-for="icon in filteredIcons" :key="icon.label" class="maz-flex maz-flex-col maz-items-center maz-gap-3 maz-text-center maz-border maz-border-solid maz-border-divider maz-rounded maz-p-4 maz-truncate hover:maz-bg-surface-400">
+      <div v-for="icon in filteredIcons" :key="icon.label" class="maz-flex maz-flex-col maz-items-center maz-gap-3 maz-text-center maz-border maz-border-solid maz-border-divider maz-rounded maz-p-4 maz-truncate hover:maz-bg-surface-600/50 dark:hover:maz-bg-surface-400">
         <Component :is="icon.value" class="maz-text-3xl" />
         <span class="maz-text-xs maz-text-muted maz-truncate">{{ icon.label }}</span>
         <div class="maz-flex maz-flex-row maz-gap-2 maz-w-full">
-          <MazBtn v-tooltip="'Copy Icon Name'" class="maz-flex-1" size="xs" color="background" outlined @click="copyIcon(icon.label)" :icon="MazClipboardDocument" />
-          <MazBtn v-tooltip="'Copy Icon Import'" class="maz-flex-1" size="xs" color="background" outlined @click="copyIconImport(icon.label)" :icon="MazClipboardDocumentList" />
+          <MazBtn v-tooltip="'Copy Name'" class="maz-flex-1" size="xs" color="background" outlined @click="copyIcon(icon.label)" :icon="MazClipboardDocument" />
+          <MazBtn v-tooltip="'Copy Import'" class="maz-flex-1" size="xs" color="background" outlined @click="copyIconImport(icon.label)" :icon="MazClipboardDocumentList" />
         </div>
       </div>
     </div>
@@ -46,20 +46,18 @@ const icons = Object.entries(MazIcons).map(([name, component]) => ({
 const search = ref()
 
 const filteredIcons = computed(() => {
-  console.log(search.value)
-  if (!search.value) return icons
+  const _search = search.value?.toLowerCase().replace(/\s/g, '')
+  if (!_search) return icons
 
-  return icons.filter(icon => icon.label.toLowerCase().includes(search.value.toLowerCase())).slice(0, 10)
+  return icons.filter(icon => icon.label.toLowerCase().includes(_search) || _search.includes(icon.label.toLowerCase()))
 })
 
 const copyIcon = (icon) => {
-  console.log('icon.value', icon)
   navigator.clipboard.writeText(icon)
   success('Icon copied to clipboard')
 }
 
 const copyIconImport = (icon) => {
-  console.log('icon.value', icon)
   navigator.clipboard.writeText(`import { ${icon} } from '@maz-ui/icons'`)
   success('Icon import copied to clipboard')
 }

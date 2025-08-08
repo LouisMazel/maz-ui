@@ -7,9 +7,10 @@ import { en } from '@maz-ui/translations'
 import * as components from 'maz-ui/src/components/index.js'
 import { AosPlugin } from 'maz-ui/src/plugins/aos.js'
 import { DialogPlugin } from 'maz-ui/src/plugins/dialog.js'
-import { MazUi } from 'maz-ui/src/plugins/maz-ui.js'
 import { ToastPlugin } from 'maz-ui/src/plugins/toast.js'
 import { WaitPlugin } from 'maz-ui/src/plugins/wait.js'
+import { MazUiTheme } from 'maz-ui/src/themes.js'
+import { MazTranslations } from 'maz-ui/src/translations.js'
 
 import { inBrowser } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
@@ -32,19 +33,17 @@ export default {
     })
   },
   enhanceApp({ app, router: { route } }) {
-    app.use(MazUi, {
-      theme: {
-        preset: mazUi,
-        darkModeStrategy: 'class',
-        strategy: 'hybrid',
-      },
-      translations: {
-        locale: 'en',
-        fallbackLocale: 'fr',
-        preloadFallback: false,
-        messages: {
-          en,
-        },
+    app.use(MazUiTheme, {
+      preset: mazUi,
+      darkModeStrategy: 'class',
+      strategy: 'hybrid',
+    })
+    app.use(MazTranslations, {
+      locale: 'en',
+      fallbackLocale: 'fr',
+      preloadFallback: false,
+      messages: {
+        en,
       },
     })
 

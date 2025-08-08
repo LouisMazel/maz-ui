@@ -138,7 +138,7 @@ Submit the form to show the validation errors
 <ComponentDemo>
   <b>Form State</b>
 
-  <div class="maz-text-xs maz-p-2 maz-bg-surface-400 maz-rounded maz-mt-2">
+  <div class="maz-text-xs maz-p-2 maz-bg-surface-600/50 dark:maz-bg-surface-400 maz-rounded maz-mt-2">
     <pre>{{ { isValid, isSubmitting, isDirty, isSubmitted, errorMessages } }}</pre>
   </div>
 

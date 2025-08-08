@@ -399,7 +399,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
     ]"
   >
     <template #element="{ isOpen }">
-      <button class="maz-border maz-border-solid maz-border-divider-400 maz-p-2 hover:maz-bg-surface-400" tabindex="-1">
+      <button class="maz-border maz-border-solid maz-border-divider-400 maz-p-2 hover:maz-bg-surface-600 dark:maz-bg-surface-400" tabindex="-1">
         HTMLButtonElement: isOpen {{ isOpen }}
       </button>
     </template>
