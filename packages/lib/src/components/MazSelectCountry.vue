@@ -1,5 +1,5 @@
 <script lang="ts" setup generic="Option extends { name: string, code: DisplayNameCode | string }">
-import type { MazTranslationsNestedSchema } from '@maz-ui/translations'
+import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { HTMLAttributes } from 'vue'
 
 import type { CodesType, DisplayNameCode, DisplayNamesOptions } from '../composables/useDisplayNames'
@@ -105,10 +105,10 @@ export interface MazSelectCountryProps<Option extends { name: string, code: Disp
   searchThreshold?: number
   /**
    * Translations
-   * @type {Partial<MazTranslationsNestedSchema['selectCountry']>}
-   * @default MazTranslationsNestedSchema['selectCountry']
+   * @type {Partial<MazUiTranslationsNestedSchema['selectCountry']>}
+   * @default MazUiTranslationsNestedSchema['selectCountry']
    */
-  translations?: Partial<MazTranslationsNestedSchema['selectCountry']>
+  translations?: Partial<MazUiTranslationsNestedSchema['selectCountry']>
   /**
    * Hint message displayed
    */
@@ -237,7 +237,7 @@ const countriesOptions = computed<Option[]>(() => {
   return (displayNames?.value ?? []) as Option[]
 })
 
-const messages = computed<MazTranslationsNestedSchema['selectCountry']>(() => ({
+const messages = computed<MazUiTranslationsNestedSchema['selectCountry']>(() => ({
   searchPlaceholder: translations?.searchPlaceholder ?? t('selectCountry.searchPlaceholder'),
 }))
 

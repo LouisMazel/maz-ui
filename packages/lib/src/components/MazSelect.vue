@@ -3,7 +3,7 @@
   setup
   generic="Value extends MazInputValue, Option extends MazSelectOption, Multiple extends boolean"
 >
-import type { MazTranslationsNestedSchema } from '@maz-ui/translations'
+import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
 import type { MazInputValue } from './MazInput.vue'
 import type { MazPopoverProps } from './MazPopover.vue'
@@ -139,12 +139,12 @@ export interface MazSelectProps<Value extends MazInputValue = MazInputValue, Opt
   autocomplete?: string
   /**
    * The translations of the component
-   * @type {Partial<MazTranslationsNestedSchema['select']>}
+   * @type {Partial<MazUiTranslationsNestedSchema['select']>}
    * @default {
    *   searchPlaceholder: 'Search in options',
    * }
    */
-  translations?: Partial<MazTranslationsNestedSchema['select']>
+  translations?: Partial<MazUiTranslationsNestedSchema['select']>
 
   /**
    * The function to format the input value
@@ -249,7 +249,7 @@ const selectedBgColor = computed(() => `hsl(var(--maz-${props.color}-500) / 0.1)
 const { t } = useTranslations()
 const messages = computed(() => ({
   searchPlaceholder: props.translations?.searchPlaceholder || t('select.searchPlaceholder'),
-} satisfies MazTranslationsNestedSchema['select']))
+} satisfies MazUiTranslationsNestedSchema['select']))
 
 const isOpen = defineModel<boolean>('open', { required: false, default: false })
 

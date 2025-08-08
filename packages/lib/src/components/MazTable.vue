@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { MazTranslationsNestedSchema } from '@maz-ui/translations'
+import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import { useTranslations } from '@maz-ui/translations'
 
@@ -222,10 +222,10 @@ export interface MazTableProps<T extends MazTableRow<T>> {
   color?: MazColor
   /**
    * Translations of the table
-   * @type {DeepPartial<MazTranslationsNestedSchema['table']>}
+   * @type {DeepPartial<MazUiTranslationsNestedSchema['table']>}
    * @default Translations from @maz-ui/translations
    */
-  translations?: DeepPartial<MazTranslationsNestedSchema['table']>
+  translations?: DeepPartial<MazUiTranslationsNestedSchema['table']>
   /**
    * Size radius of the component's border
    * @type {string}
@@ -330,7 +330,7 @@ const messages = computed(() => ({
     rowsPerPage: props.translations?.pagination?.rowsPerPage ?? t('table.pagination.rowsPerPage'),
     of: props.translations?.pagination?.of ?? t('table.pagination.of'),
   },
-} satisfies MazTranslationsNestedSchema['table']))
+} satisfies MazUiTranslationsNestedSchema['table']))
 /* eslint-enable complexity */
 
 const hasDivider = computed<boolean>(

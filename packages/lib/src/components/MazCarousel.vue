@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import type { MazTranslationsNestedSchema } from '@maz-ui/translations'
-// import type { MazTranslationsNestedSchema } from '@maz-ui/translations'
+import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import { MazChevronLeft, MazChevronRight } from '@maz-ui/icons'
 import { useTranslations } from '@maz-ui/translations'
@@ -23,10 +22,10 @@ export interface MazCarouselProps {
   hideScrollButtons?: boolean
   /**
    * Translations of the carousel
-   * @type {DeepPartial<MazTranslationsNestedSchema['carousel']>}
+   * @type {DeepPartial<MazUiTranslationsNestedSchema['carousel']>}
    * @default Translations from @maz-ui/translations
    */
-  translations?: DeepPartial<MazTranslationsNestedSchema['carousel']>
+  translations?: DeepPartial<MazUiTranslationsNestedSchema['carousel']>
   /**
    * Hide the scrollbar when not active
    * @default false
@@ -46,7 +45,7 @@ const isScrolledMax = ref(false)
 const MazCarouselItems = ref<HTMLDivElement>()
 
 const { t } = useTranslations()
-const messages = computed<MazTranslationsNestedSchema['carousel']>(() => ({
+const messages = computed<MazUiTranslationsNestedSchema['carousel']>(() => ({
   ariaLabel: {
     previousButton: translations?.ariaLabel?.previousButton ?? t('carousel.ariaLabel.previousButton'),
     nextButton: translations?.ariaLabel?.nextButton ?? t('carousel.ariaLabel.nextButton'),

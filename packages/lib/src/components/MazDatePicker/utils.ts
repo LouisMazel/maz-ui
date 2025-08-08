@@ -1,4 +1,4 @@
-import type { MazTranslationsNestedSchema } from '@maz-ui/translations'
+import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { ConfigType, OpUnitType } from 'dayjs'
 import type { MazDatePickerPartialRangeValue, MazDatePickerValue } from './types'
 
@@ -217,7 +217,7 @@ export function isValidDate(value: unknown): value is ConfigType {
   return !!value && (typeof value === 'string' || typeof value === 'number' || value instanceof Date) && dayjs(value).isValid()
 }
 
-export function getDefaultsShortcuts(t: MazTranslationsNestedSchema['datePicker']['shortcuts']) {
+export function getDefaultsShortcuts(t: MazUiTranslationsNestedSchema['datePicker']['shortcuts']) {
   return [
     {
       label: t.lastSevenDays,

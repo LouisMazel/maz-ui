@@ -159,9 +159,9 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue'> {
   chevron?: boolean
   /**
    * Accessible description for screen readers describing the dropdown functionality
-   * If not provided, the default translation of MazTranslations plugin will be used
+   * If not provided, the default translation of MazUiTranslations plugin will be used
    * @type {string}
-   * @default MazTranslationsSchema['dropdown']['screenReaderDescription']
+   * @default MazUiTranslationsSchema['dropdown']['screenReaderDescription']
    */
   screenReaderDescription?: string
   /**

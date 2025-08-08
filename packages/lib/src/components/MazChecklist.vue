@@ -1,5 +1,5 @@
 <script lang="ts" setup generic="T extends string | number, O extends MazChecklistItemOption">
-import type { MazTranslationsNestedSchema } from '@maz-ui/translations'
+import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { NormalizeStringOptions } from '@maz-ui/utils/helpers/normalizeString'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import type { MazInputProps } from './MazInput.vue'
@@ -67,10 +67,10 @@ export interface MazChecklistProps<T, O> {
   color?: MazColor
   /**
    * Translations of the checklist component
-   * @type {DeepPartial<MazTranslationsNestedSchema['checklist']>}
+   * @type {DeepPartial<MazUiTranslationsNestedSchema['checklist']>}
    * @default Translations from @maz-ui/translations
    */
-  translations?: DeepPartial<MazTranslationsNestedSchema['checklist']>
+  translations?: DeepPartial<MazUiTranslationsNestedSchema['checklist']>
 }
 
 const {
@@ -116,7 +116,7 @@ watch(
 
 const { t } = useTranslations()
 
-const messages = computed<MazTranslationsNestedSchema['checklist']>(() => ({
+const messages = computed<MazUiTranslationsNestedSchema['checklist']>(() => ({
   noResultsFound: translations?.noResultsFound ?? t('checklist.noResultsFound'),
   searchInput: {
     placeholder: translations?.searchInput?.placeholder ?? t('checklist.searchInput.placeholder'),

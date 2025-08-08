@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { MazTranslationsNestedSchema } from '@maz-ui/translations'
+import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import type { CountryCallingCode, CountryCode, NationalNumber, NumberType } from 'libphonenumber-js'
 import type { HTMLAttributes } from 'vue'
@@ -173,8 +173,8 @@ export interface MazInputPhoneNumberProps {
   onlyCountries?: CountryCode[]
   /**
    * Locale strings of the component
-   * The default values are the translations of the MazTranslations plugin
-   * @type {Partial<MazTranslationsNestedSchema['inputPhoneNumber']>}
+   * The default values are the translations of the MazUiTranslations plugin
+   * @type {Partial<MazUiTranslationsNestedSchema['inputPhoneNumber']>}
    * @default {
    *   countrySelect: {
    *     error: 'Choose country',
@@ -187,7 +187,7 @@ export interface MazInputPhoneNumberProps {
    *   },
    * }
    */
-  translations?: Partial<MazTranslationsNestedSchema['inputPhoneNumber']>
+  translations?: Partial<MazUiTranslationsNestedSchema['inputPhoneNumber']>
   /**
    * Position where the list of countries will be opened
    * @type {MazPopoverProps['position']}
@@ -348,7 +348,7 @@ const messages = computed(() => ({
     placeholder: props.translations?.phoneInput?.placeholder || t('inputPhoneNumber.phoneInput.placeholder'),
     example: props.translations?.phoneInput?.example,
   },
-} satisfies DeepPartial<MazTranslationsNestedSchema['inputPhoneNumber']>))
+} satisfies DeepPartial<MazUiTranslationsNestedSchema['inputPhoneNumber']>))
 const isPhoneNumberInternalUpdate = ref(false)
 const isCountryInternalUpdate = ref(false)
 
