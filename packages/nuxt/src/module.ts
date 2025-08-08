@@ -177,7 +177,6 @@ function addMazUiComposableImport({
   addImports({
     from,
     name,
-    typeFrom: `maz-ui/composables`,
     as: `use${capitalize(prefix)}${name.replace('use', '')}`,
   })
 }
@@ -308,7 +307,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     for (const composable of allowedMazUiComposables) {
       addMazUiComposableImport({
         name: composable,
-        from: `maz-ui/composables`,
+        from: `maz-ui/composables/${composable}`,
         prefix: autoImportPrefix,
       })
     }
