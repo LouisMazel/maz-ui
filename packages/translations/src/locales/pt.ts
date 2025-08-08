@@ -1,4 +1,4 @@
-import type { MazTranslationsNestedSchema } from '../types'
+import type { MazUiTranslationsNestedSchema } from '../types'
 
 export default {
   selectCountry: {
@@ -78,4 +78,4 @@ export default {
       placeholder: 'Pesquisar',
     },
   },
-} satisfies MazTranslationsNestedSchema
+} satisfies MazUiTranslationsNestedSchema

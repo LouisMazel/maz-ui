@@ -2,11 +2,11 @@ import type { DeepKeyOf, DeepPartial, FlattenObjectKeys } from '@maz-ui/utils/ts
 import type { Ref } from 'vue'
 import type defaultMessages from './locales/en'
 
-export type TranslationKey = NonNullable<DeepKeyOf<MazTranslationsFlattenSchema>>
+export type TranslationKey = NonNullable<DeepKeyOf<MazUiTranslationsFlattenSchema>>
 
-export type MazTranslationsMessages = Record<string, MazTranslationsSchema | (() => Promise<MazTranslationsSchema>) | (() => Promise<{ default: MazTranslationsSchema }>)>
+export type MazUiTranslationsMessages = Record<string, MazUiTranslationsSchema | (() => Promise<MazUiTranslationsSchema>) | (() => Promise<{ default: MazUiTranslationsSchema }>)>
 
-export interface MazTranslationsOptions {
+export interface MazUiTranslationsOptions {
   /**
    * The locale to use
    * @default 'en'
@@ -25,10 +25,10 @@ export interface MazTranslationsOptions {
   /**
    * Modify existing or add new languages
    */
-  messages?: MazTranslationsMessages
+  messages?: MazUiTranslationsMessages
 }
 
-export interface MazTranslationsInstance {
+export interface MazUiTranslationsInstance {
   /**
    * The current locale
    */
@@ -52,7 +52,7 @@ export interface MazTranslationsInstance {
   /**
    * The function to add messages to a locale
    */
-  setLocaleMessage: (locale: string, messages: Partial<MazTranslationsSchema>) => void
+  setLocaleMessage: (locale: string, messages: Partial<MazUiTranslationsSchema>) => void
   /**
    * The function to check if a locale is loaded
    */
@@ -64,9 +64,9 @@ export interface MazTranslationsInstance {
   /**
    * The function to get the messages
    */
-  getMessages: () => Record<string, Partial<MazTranslationsSchema>>
+  getMessages: () => Record<string, Partial<MazUiTranslationsSchema>>
 }
 
-export type MazTranslationsFlattenSchema = Record<FlattenObjectKeys<typeof defaultMessages>, string>
-export type MazTranslationsNestedSchema = typeof defaultMessages
-export type MazTranslationsSchema = DeepPartial<MazTranslationsFlattenSchema | MazTranslationsNestedSchema>
+export type MazUiTranslationsFlattenSchema = Record<FlattenObjectKeys<typeof defaultMessages>, string>
+export type MazUiTranslationsNestedSchema = typeof defaultMessages
+export type MazUiTranslationsSchema = DeepPartial<MazUiTranslationsFlattenSchema | MazUiTranslationsNestedSchema>

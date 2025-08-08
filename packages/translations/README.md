@@ -23,21 +23,29 @@ npm install @maz-ui/translations
 ### Basic Configuration
 
 ```typescript
-import { MazTranslationsPlugin } from '@maz-ui/translations'
+import { MazUiTranslations } from '@maz-ui/translations'
 import { createApp } from 'vue'
 
 const app = createApp(App)
 
-app.use(MazTranslationsPlugin, {
+app.use(MazUiTranslations, {
   locale: 'fr',
   translations: {
     fr: {
-      select: { noOptions: 'Aucune option disponible' },
-      input: { required: 'Ce champ est requis' }
+      checklist: {
+        noResultsFound: 'Aucun résultat trouvé',
+        searchInput: {
+          placeholder: 'Rechercher',
+        },
+      },
     },
     es: {
-      select: { noOptions: 'No hay opciones disponibles' },
-      input: { required: 'Este campo es obligatorio' }
+      checklist: {
+        noResultsFound: 'No se encontraron resultados',
+        searchInput: {
+          placeholder: 'Buscar',
+        },
+      },
     }
   }
 })
@@ -52,10 +60,10 @@ import { useTranslations } from '@maz-ui/translations'
 const { t, locale, setLocale } = useTranslations()
 
 // Basic usage
-const message = t('select.noOptions')
+const message = t('checklist.noResultsFound')
 
 // With variables
-const welcomeMessage = t('input.welcome', { name: 'John' })
+const welcomeMessage = t('checklist.searchInput.placeholder', { name: 'John' })
 
 // Change language
 function switchLanguage(lang) {
@@ -65,8 +73,8 @@ function switchLanguage(lang) {
 
 <template>
   <div>
-    <p>{{ t('select.noOptions') }}</p>
-    <p>{{ t('input.welcome', { name: 'User' }) }}</p>
+    <p>{{ t('checklist.noResultsFound') }}</p>
+    <p>{{ t('checklist.searchInput.placeholder', { name: 'User' }) }}</p>
 
     <div class="language-switcher">
       <button @click="setLocale('en')">
@@ -109,9 +117,9 @@ t('itemCount', { count: 5 }) // "You have 5 items"
 #### Manual Instance Creation
 
 ```typescript
-import { createMazTranslations } from '@maz-ui/translations'
+import { createMazUiTranslations } from '@maz-ui/translations'
 
-const i18n = createMazTranslations({
+const i18n = createMazUiTranslations({
   locale: 'en',
   translations: {
     en: { /* your translations */ },
@@ -120,7 +128,7 @@ const i18n = createMazTranslations({
 })
 
 // Use directly
-const message = i18n.t('select.noOptions')
+const message = i18n.t('checklist.noResultsFound')
 ```
 
 #### Custom Translation Keys
@@ -166,22 +174,22 @@ Returns an object with:
 ### Plugin Options
 
 ```typescript
-interface MazTranslationsOptions {
+interface MazUiTranslationsOptions {
   locale?: string // Default locale (default: 'en')
-  translations?: Record<string, Partial<MazTranslations>> // Custom translations
+  translations?: Record<string, Partial<MazUiTranslations>> // Custom translations
 }
 ```
 
 ### Type Definitions
 
 ```typescript
-interface MazTranslationsInstance {
+interface MazUiTranslationsInstance {
   locale: Ref<string>
   t: (key: string, variables?: Record<string, any>) => string
   setLocale: (locale: string) => void
 }
 
-interface MazTranslations {
+interface MazUiTranslations {
   select: { noOptions: string }
   input: { required: string }
   datePicker: { placeholder: string }
@@ -212,50 +220,30 @@ const defaultTranslations = {
 ### Adding New Languages
 
 ```typescript
-app.use(MazTranslationsPlugin, {
+app.use(MazUiTranslationsPlugin, {
   locale: 'fr',
   translations: {
     fr: {
-      select: { noOptions: 'Aucune option disponible' },
-      input: { required: 'Ce champ est requis' },
-      datePicker: { placeholder: 'Sélectionner une date...' }
+      checklist: {
+        noResultsFound: 'Aucun résultat trouvé',
+        searchInput: {
+          placeholder: 'Rechercher',
+        },
+      },
+      // etc...
     },
     de: {
-      select: { noOptions: 'Keine Optionen verfügbar' },
-      input: { required: 'Dieses Feld ist erforderlich' },
-      datePicker: { placeholder: 'Datum auswählen...' }
+      checklist: {
+        noResultsFound: 'Keine Optionen verfügbar',
+        searchInput: {
+          placeholder: 'Suchen',
+        },
+      },
+      // etc...
     }
   }
 })
 ```
-
-### Handle Pluralization
-
-```typescript
-// Simple approach
-const simpleTranslations = {
-  en: {
-    itemCount: '{count} item(s)'
-  }
-}
-
-// Better approach
-const betterTranslations = {
-  en: {
-    itemCountSingular: '{count} item',
-    itemCountPlural: '{count} items'
-  }
-}
-```
-
-## Contributing
-
-Contributions are welcome! Please ensure:
-
-- New translations follow the existing key structure
-- TypeScript types are properly updated
-- Tests are added for new features
-- Documentation is updated accordingly
 
 ## License
 

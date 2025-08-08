@@ -1,8 +1,8 @@
-import type { MazTranslationsInstance, MazTranslationsMessages, MazTranslationsOptions, MazTranslationsSchema, TranslationKey } from './types'
+import type { MazUiTranslationsInstance, MazUiTranslationsMessages, MazUiTranslationsOptions, MazUiTranslationsSchema, TranslationKey } from './types'
 import { reactive, ref } from 'vue'
 import en from './locales/en'
 
-const defaultLocalesLoaders: Record<string, () => Promise<{ default: MazTranslationsSchema }>> = {
+const defaultLocalesLoaders: Record<string, () => Promise<{ default: MazUiTranslationsSchema }>> = {
   './locales/en.ts': () => import('./locales/en').then(m => ({ default: m.default })),
   './locales/de.ts': () => import('./locales/de').then(m => ({ default: m.default })),
   './locales/es.ts': () => import('./locales/es').then(m => ({ default: m.default })),
@@ -13,14 +13,14 @@ const defaultLocalesLoaders: Record<string, () => Promise<{ default: MazTranslat
   './locales/zh-CN.ts': () => import('./locales/zh-CN').then(m => ({ default: m.default })),
 }
 
-const defaultMessagesCache = new Map<string, MazTranslationsSchema>()
+const defaultMessagesCache = new Map<string, MazUiTranslationsSchema>()
 
 const locale = ref<string>('en')
 
 const globalState = reactive<{
   loadedLocales: Set<string>
-  messages: Record<string, Partial<MazTranslationsSchema>>
-  userMessages: MazTranslationsMessages
+  messages: Record<string, Partial<MazUiTranslationsSchema>>
+  userMessages: MazUiTranslationsMessages
   loadingPromises: Map<string, Promise<void>>
 }>({
   loadedLocales: new Set<string>(),
@@ -68,7 +68,7 @@ function flattenToNested(flatObj: any): any {
   return nested
 }
 
-function mergeMessages<T extends Partial<MazTranslationsSchema>>(target: T, source: T): T {
+function mergeMessages<T extends Partial<MazUiTranslationsSchema>>(target: T, source: T): T {
   const normalizedSource = flattenToNested(source)
   const normalizedTarget = flattenToNested(target)
 
@@ -93,7 +93,7 @@ function interpolate(message: string, variables?: Record<string, unknown>): stri
   })
 }
 
-async function loadDefaultMessages(locale: string): Promise<MazTranslationsSchema> {
+async function loadDefaultMessages(locale: string): Promise<MazUiTranslationsSchema> {
   if (defaultMessagesCache.has(locale)) {
     return defaultMessagesCache.get(locale)!
   }
@@ -129,7 +129,7 @@ function loadLocale(targetLocale: string): Promise<void> {
   const loadingPromise = (async () => {
     try {
       const localeDefaultMessages = await loadDefaultMessages(targetLocale)
-      let localeUserMessages: Partial<MazTranslationsSchema> = {}
+      let localeUserMessages: Partial<MazUiTranslationsSchema> = {}
 
       const userLoader = globalState.userMessages[targetLocale]
       if (userLoader) {
@@ -197,7 +197,7 @@ function getLoadedLocales() {
   return Object.keys(globalState.messages)
 }
 
-function setLocaleMessage(targetLocale: string, messages: Partial<MazTranslationsSchema>) {
+function setLocaleMessage(targetLocale: string, messages: Partial<MazUiTranslationsSchema>) {
   if (!globalState.messages[targetLocale]) {
     globalState.messages[targetLocale] = {}
   }
@@ -233,7 +233,7 @@ async function setLocale(newLocale: string) {
   locale.value = newLocale
 }
 
-export function createMazTranslations(options: MazTranslationsOptions = {}) {
+export function createMazUiTranslations(options: MazUiTranslationsOptions = {}) {
   const {
     locale: initialLocale = 'en',
     fallbackLocale = 'en',
@@ -268,7 +268,7 @@ export function createMazTranslations(options: MazTranslationsOptions = {}) {
     setLocaleMessage,
     getMessages,
     getLoadedLocales,
-  } satisfies MazTranslationsInstance
+  } satisfies MazUiTranslationsInstance
 
   return instance
 }
