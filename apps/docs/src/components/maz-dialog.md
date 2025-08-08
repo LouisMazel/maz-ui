@@ -92,17 +92,6 @@ For long content, you can enable scrolling in content part (Header and footer sl
 
   <template #default>
     <p v-for="i in 40" :key="i" style="padding-bottom: 2rem">Scroll down</p>
-    <MazSelect
-      :model-value="1"
-      :options="[
-      { value: 1, label: 1 },
-      { value: 2, label: 2 },
-      { value: 3, label: 3 },
-      { value: 4, label: 4 },
-      { value: 5, label: 5 },
-      { value: 6, label: 6 },
-    ]"
-    />
   </template>
 
   <template #footer>
