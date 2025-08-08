@@ -265,7 +265,7 @@ function toggleCollapse() {
     @apply maz-flex maz-items-center maz-px-4 maz-py-3 maz-transition-colors maz-duration-200;
 
     &.--is-collapsible {
-      @apply hover:maz-bg-surface-400;
+      @apply hover:maz-bg-surface-600;
     }
   }
 

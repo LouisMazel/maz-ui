@@ -808,14 +808,14 @@ defineExpose({
 
 <style lang="postcss" scoped>
 .m-dropzone {
-  @apply maz-flex maz-w-full maz-flex-col maz-gap-2 maz-overflow-hidden maz-rounded maz-border maz-border-dashed maz-border-divider maz-p-6 maz-transition-colors maz-duration-200 maz-ease-in-out maz-flex-center maz-bg-surface-400 hover:maz-bg-surface-400 maz-cursor-pointer;
+  @apply maz-flex maz-w-full maz-flex-col maz-gap-2 maz-overflow-hidden maz-rounded maz-border maz-border-dashed maz-border-divider maz-p-6 maz-transition-colors maz-duration-200 maz-ease-in-out maz-flex-center maz-bg-surface hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400 maz-cursor-pointer;
 
   &--disabled {
     @apply maz-cursor-not-allowed maz-opacity-50;
   }
 
   &--is-over-drop-zone {
-    @apply maz-bg-primary-400/20 hover:maz-bg-surface-400;
+    @apply maz-bg-primary-400/20 hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400;
 
     border-color: var(--active-color);
 
@@ -847,7 +847,7 @@ defineExpose({
   }
 
   &__file-item {
-    @apply maz-relative maz-flex maz-size-40 maz-cursor-auto maz-flex-col maz-items-center maz-overflow-hidden maz-rounded maz-bg-surface-400;
+    @apply maz-relative maz-flex maz-size-40 maz-cursor-auto maz-flex-col maz-items-center maz-overflow-hidden maz-rounded maz-bg-surface-600 dark:maz-bg-surface-400;
 
     transition: all 300ms ease-in-out;
   }

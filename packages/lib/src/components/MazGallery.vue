@@ -205,7 +205,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
       </figure>
       <div
         v-if="hasEmptyLayer && images.length === 0"
-        class="empty-layer maz-flex maz-w-full maz-bg-surface-400 maz-text-foreground maz-flex-center"
+        class="m-gallery__empty-layer"
         :class="{ 'maz-rounded-xl': radius }"
         :style="[sizeStyle]"
       >
@@ -223,7 +223,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
 
 <style lang="postcss" scoped>
 .m-gallery {
-  @apply maz-relative maz-overflow-hidden maz-flex maz-bg-surface-300 dark:maz-bg-surface-700/50;
+  @apply maz-relative maz-overflow-hidden maz-flex;
 
   &.--has-background-color {
     @apply maz-bg-[var(--gallery-background-color)];
@@ -335,6 +335,10 @@ function shouldHaveRemainingLayer(index: number): boolean {
     span {
       @apply maz-text-white maz-text-3xl;
     }
+  }
+
+  &__empty-layer {
+    @apply maz-flex maz-w-full maz-bg-surface-600 maz-text-foreground maz-flex-center dark:maz-bg-surface-400;
   }
 }
 </style>

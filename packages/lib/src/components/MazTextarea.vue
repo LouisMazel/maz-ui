@@ -333,7 +333,7 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
   }
 
   &.--is-disabled {
-    @apply maz-cursor-not-allowed maz-border-divider dark:maz-border-divider-400 maz-bg-surface-300 maz-text-muted;
+    @apply maz-cursor-not-allowed maz-border-divider dark:maz-border-divider-400 maz-bg-surface-600 dark:maz-bg-surface-400 maz-text-muted;
 
     & * {
       @apply maz-cursor-not-allowed maz-text-muted;

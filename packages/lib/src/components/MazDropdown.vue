@@ -480,7 +480,7 @@ watch(
   @apply maz-relative maz-inline-flex maz-flex-col maz-items-start maz-align-top;
 
   &__wrapper {
-    @apply maz-outline-none focus:maz-bg-surface-400 maz-rounded maz-size-full;
+    @apply maz-outline-none focus:maz-bg-surface-600 dark:focus:maz-bg-surface-400 maz-rounded maz-size-full;
   }
 
   &__icon {
@@ -497,11 +497,7 @@ watch(
 
   .menuitem {
     @apply maz-outline-none maz-cursor-pointer maz-whitespace-nowrap maz-rounded maz-px-4 maz-py-2 maz-text-start
-     maz-transition-colors maz-duration-300 maz-ease-in-out focus:maz-bg-surface-400 hover:maz-bg-surface-400;
-
-    &.--is-keyboard-selected {
-      @apply maz-bg-surface-400;
-    }
+     maz-transition-colors maz-duration-300 maz-ease-in-out focus:maz-bg-surface-600 dark:focus:maz-bg-surface-400 hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400;
 
     &.menuitem__button {
       &:disabled {

@@ -301,7 +301,7 @@ function onFocus(event: FocusEvent) {
     }
 
     &:disabled ~ span {
-      @apply maz-bg-surface-400 dark:maz-bg-surface-300;
+      @apply maz-bg-surface-600 dark:maz-bg-surface-300;
     }
   }
 

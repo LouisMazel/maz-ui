@@ -386,8 +386,8 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     z-index: 1;
     user-select: none;
 
-    @apply maz-flex maz-items-center maz-justify-center maz-rounded-full maz-border
-        maz-border-divider maz-bg-surface-400 maz-shadow-md;
+    @apply maz-flex maz-items-center maz-justify-center maz-rounded-full maz-border maz-border-solid
+        maz-border-divider maz-bg-surface maz-shadow-md;
 
     padding: 0.25em 0.5em;
 

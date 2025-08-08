@@ -409,7 +409,7 @@ const iconClassSize = computed(() => {
     @apply maz-bg-surface maz-text-surface-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-surface-600;
+      @apply maz-bg-surface-600 dark:maz-bg-surface-400;
     }
   }
 
@@ -512,7 +512,19 @@ const iconClassSize = computed(() => {
   }
 
   &.--background-outlined {
-    @apply maz-border-surface-600 maz-bg-surface dark:maz-border-surface-300 maz-text-surface-foreground;
+    @apply maz-border-surface-600 maz-bg-surface dark:maz-border-divider maz-text-surface-foreground;
+
+    &:not(:disabled):hover {
+      @apply maz-bg-surface-600/30;
+    }
+
+    .m-btn-loader-container {
+      @apply maz-text-surface-foreground;
+    }
+  }
+
+  &.--transparent-outlined {
+    @apply maz-border-surface-600 maz-bg-transparent dark:maz-border-divider maz-text-surface-foreground;
 
     &:not(:disabled):hover {
       @apply maz-bg-surface-600/30;
@@ -624,7 +636,7 @@ const iconClassSize = computed(() => {
   /* DISABLED */
 
   &:disabled:not(.--loading) {
-    @apply maz-cursor-not-allowed maz-bg-surface-400 maz-text-muted maz-border-surface-400;
+    @apply maz-cursor-not-allowed maz-bg-surface-600 dark:maz-bg-surface-400 maz-text-muted maz-border-surface-600 dark:maz-border-surface-400;
   }
 
   &.--loading {

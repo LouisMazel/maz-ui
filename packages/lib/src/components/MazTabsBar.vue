@@ -303,7 +303,7 @@ onMounted(() => {
   }
 
   &__indicator {
-    @apply maz-absolute maz-left-0 maz-rounded maz-bg-surface-400 maz-text-center;
+    @apply maz-absolute maz-left-0 maz-rounded maz-bg-surface-600 dark:maz-bg-surface-400 maz-text-center;
 
     &.--animated {
       @apply maz-transition-all maz-duration-300 maz-ease-in-out;

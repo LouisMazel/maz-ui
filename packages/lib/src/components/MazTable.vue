@@ -138,7 +138,7 @@ export interface MazTableProps<T extends MazTableRow<T>> {
    */
   elevation?: boolean
   /**
-   * No divider between rows
+   * add divider between rows
    * @type {boolean}
    * @default false
    */
@@ -274,6 +274,7 @@ const props = withDefaults(defineProps<MazTableProps<T>>(), {
   page: 1,
   pageSize: 20,
   captionSide: 'bottom',
+  divider: false,
   color: 'primary',
   roundedSize: 'lg',
   scrollable: false,
@@ -660,7 +661,7 @@ onBeforeMount(() => {
             @slot Content in thead element
           -->
           <slot name="thead">
-            <MazTableRowComponent hoverable>
+            <MazTableRowComponent is-head>
               <MazTableTitle
                 v-if="isSelectable"
                 align="left"
@@ -1094,7 +1095,7 @@ onBeforeMount(() => {
         }
 
         &.--sortable {
-          @apply maz-cursor-pointer hover:maz-bg-surface-400;
+          @apply maz-cursor-pointer hover:maz-bg-surface-600/50 dark:hover:maz-bg-surface-400;
         }
 
         &.--xl {
@@ -1149,7 +1150,7 @@ onBeforeMount(() => {
 
     tbody {
       &.--divider {
-        @apply maz-divide-y maz-divide-divider-400;
+        @apply maz-divide-y maz-divide-divider;
       }
     }
   }

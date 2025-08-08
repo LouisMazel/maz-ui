@@ -272,7 +272,7 @@ function updateQuery(value?: string) {
   }
 
   .m-checklist-item {
-    @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-4 maz-rounded maz-px-3 maz-py-2 maz-text-left hover:maz-bg-surface-400;
+    @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-4 maz-rounded maz-px-3 maz-py-2 maz-text-left hover:maz-bg-surface-600;
   }
 
   .item-label {

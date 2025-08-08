@@ -327,7 +327,7 @@ const borderColorState = computed(() => {
     }
 
     &:has(input:disabled) {
-      @apply maz-bg-surface-300 maz-text-muted;
+      @apply maz-bg-surface-600 dark:maz-bg-surface-300 maz-text-muted;
 
       input {
         @apply maz-cursor-not-allowed maz-text-muted;

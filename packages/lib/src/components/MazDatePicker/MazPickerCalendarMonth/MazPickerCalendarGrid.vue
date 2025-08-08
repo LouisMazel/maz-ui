@@ -356,11 +356,11 @@ watch(
       }
 
       &.--is-between-hoverred {
-        @apply maz-bg-surface-400 !maz-rounded-none;
+        @apply maz-bg-surface-600 dark:maz-bg-surface-400 !maz-rounded-none;
       }
 
       &.--is-between {
-        @apply maz-bg-surface-400 !maz-rounded-none maz-text-foreground;
+        @apply maz-bg-surface-600 dark:maz-bg-surface-400 !maz-rounded-none maz-text-foreground;
 
         &:hover {
           color: v-bind('hoverTextColor');
@@ -379,7 +379,7 @@ watch(
         @apply maz-cursor-not-allowed maz-border-transparent;
 
         &.--is-selected {
-          @apply !maz-bg-surface-400 !maz-text-muted;
+          @apply !maz-bg-surface-600 dark:maz-bg-surface-400 !maz-text-muted;
         }
       }
     }

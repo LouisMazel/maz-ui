@@ -165,13 +165,9 @@ function setScrollState(event: Event) {
     }
 
     &::-webkit-scrollbar-thumb {
-      @apply maz-bg-surface-400;
+      @apply maz-bg-surface-600 dark:maz-bg-surface-400;
 
       border-radius: 1000px;
-
-      &:hover {
-        @apply maz-bg-surface-500;
-      }
     }
 
     /* Modern CSS for all browsers (fallback) */

@@ -668,14 +668,6 @@ const stateColor = computed(() => {
 
     transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
-    &:-webkit-autofill,
-    &:-webkit-autofill:hover,
-    &:-webkit-autofill:focus {
-      -webkit-text-fill-color: hsl(var(--maz-foreground));
-      box-shadow: 0 0 0 1000px var(--maz-input-color) inset;
-      transition: background-color 5000s ease-in-out 0s;
-    }
-
     &::placeholder {
       @apply maz-text-muted;
     }
@@ -722,7 +714,7 @@ const stateColor = computed(() => {
 
   &:has(input:disabled) {
     & .m-input-wrapper {
-      @apply maz-bg-surface-300 maz-text-muted;
+      @apply maz-bg-surface-600 dark:maz-bg-surface-300 maz-text-muted;
     }
 
     & .m-input-input {
@@ -749,19 +741,6 @@ const stateColor = computed(() => {
 
     .m-input-input {
       @apply maz-px-3;
-    }
-  }
-}
-
-html.dark,
-.m-input.dark {
-  & .m-input-input {
-    &:-webkit-autofill,
-    &:-webkit-autofill:hover,
-    &:-webkit-autofill:focus {
-      -webkit-text-fill-color: hsl(var(--maz-foreground));
-      box-shadow: 0 0 0 1000px hsl(var(--maz-background-400)) inset;
-      transition: background-color 5000s ease-in-out 0s;
     }
   }
 }

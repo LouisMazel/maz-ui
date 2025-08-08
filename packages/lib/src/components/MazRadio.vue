@@ -239,7 +239,7 @@ function onFocus(event: FocusEvent) {
     @apply maz-cursor-not-allowed maz-text-muted;
 
     > span {
-      @apply maz-bg-surface-400 dark:maz-bg-surface-300;
+      @apply maz-bg-surface-600 dark:maz-bg-surface-400;
     }
 
     &.--selected {

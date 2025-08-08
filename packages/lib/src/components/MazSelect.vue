@@ -885,13 +885,9 @@ defineExpose({
     }
 
     &::-webkit-scrollbar-thumb {
-      @apply maz-bg-surface-400;
+      @apply maz-bg-surface-600 dark:maz-bg-surface-400;
 
       border-radius: 1000px;
-
-      &:hover {
-        @apply maz-bg-surface-500;
-      }
     }
 
     /* Modern CSS for all browsers (fallback) */
@@ -904,7 +900,7 @@ defineExpose({
   }
 
   &-item {
-    @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-rounded maz-bg-transparent maz-px-3 maz-py-2 maz-text-start maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-surface-400 hover:maz-bg-surface-400 maz-outline-none maz-border maz-border-solid maz-border-transparent;
+    @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-rounded maz-bg-transparent maz-px-3 maz-py-2 maz-text-start maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-surface-600 dark:focus-within:maz-bg-surface-400 hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400 maz-outline-none maz-border maz-border-solid maz-border-transparent;
 
     span {
       @apply maz-truncate;
