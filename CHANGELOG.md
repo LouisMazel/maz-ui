@@ -1,5 +1,26 @@
 # Change Log
 
+## v4.0.0-beta.36...v4.0.0-beta.37
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.36...v4.0.0-beta.37)
+
+### 🚀 Features
+
+- **maz-ui:** MazDropdown - Add transition option to choose customize the animation ([7c0ebe468](https://github.com/LouisMazel/maz-ui/commit/7c0ebe468))
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Type inference of composables ([822452095](https://github.com/LouisMazel/maz-ui/commit/822452095))
+
+### 📖 Documentation
+
+- **docs:** Add nuxt command to install module ([89fc8e905](https://github.com/LouisMazel/maz-ui/commit/89fc8e905))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.35...v4.0.0-beta.36
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.35...v4.0.0-beta.36)
