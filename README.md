@@ -50,6 +50,10 @@
 - ⚡️ **Lightweight** - Tree-shakeable, no bloat
 - 🔍 **SSR** - Server-side rendering ready
 
+## Documentation
+
+Check the [Documentation](https://maz-ui.com) for more information.
+
 ## 🚀 Quick Start
 
 ```bash
@@ -59,8 +63,24 @@ npm install maz-ui
 ### Vue 3
 
 ```ts
+import { mazUi } from '@maz-ui/themes/presets'
+import { fr } from '@maz-ui/translations'
+import { MazUi } from 'maz-ui/plugins/maz-ui'
 // main.ts
 import 'maz-ui/styles'
+
+const app = createApp(App)
+
+app.use(MazUi, {
+  theme: {
+    preset: mazUi,
+  },
+  translations: {
+    messages: {
+      fr,
+    },
+  },
+})
 ```
 
 #### 💡 Usage
@@ -112,67 +132,24 @@ const toast = useToast()
 </template>
 ```
 
-## 🎨 Theming Made Easy
-
-Customize Maz UI to match your brand with our dedicated CLI tool:
-
-```bash
-# Install the CLI
-npm install -g @maz-ui/cli
-
-# Generate your theme
-maz generate-css-vars
-```
-
-The CLI will automatically:
-
-- Generate all color variations
-- Create dark mode variables
-- Output a ready-to-use CSS file
-
-To know how configure the CLI, check [theming options](https://maz-ui.com/guide/themes) in our documentation.
-
 ## 🧰 What's included?
 
-- 🧩 [Components](https://maz-ui.com/components/maz-btn) - Beautiful, accessible UI components
-- 🔌 [Plugins](https://maz-ui.com/plugins/dialog) - Powerful plugins for common use cases
-- 🎣 [Composables](https://maz-ui.com/composables/use-form-validator) - Reusable composition functions
-- 📏 [Directives](https://maz-ui.com/directives/fullscreen-img) - Useful Vue directives
-- 🛠️ [Helpers](https://maz-ui.com/helpers/currency) - Useful utilities for common tasks
+### Modules
 
-## Icons
+- [Components](https://maz-ui.com/components/maz-btn) - Beautiful, accessible UI components
+- [Plugins](https://maz-ui.com/plugins/dialog) - Powerful plugins for common use cases
+- [Composables](https://maz-ui.com/composables/use-form-validator) - Reusable composition functions
+- [Directives](https://maz-ui.com/directives/fullscreen-img) - Useful Vue directives
+- [Helpers](https://maz-ui.com/helpers/currency) - Useful utilities for common tasks
 
-Maz UI provides a comprehensive set of beautiful icons (300+) ready-to-use for Vue applications, based on the amazing [Heroicons](https://heroicons.com/) set. All icons are optimized as Vue components with full TypeScript support.
+### Packages
 
-### Documentation
-
-Please refer to [](https://maz-ui.com/guide/icons)
-
-### Installation
-
-```bash
-npm install @maz-ui/icons
-```
-
-### Usage
-
-Import the icons you need from the package:
-
-```vue
-<script setup>
-import { MazArrowTopRightOnSquare, MazCheckCircle, MazXMark } from '@maz-ui/icons'
-</script>
-
-<template>
-  <div>
-    <CheckCircle class="text-green-500 h-6 w-6" />
-    <XMark class="text-red-500 h-5 w-5 cursor-pointer" @click="close" />
-    <ArrowTopRightOnSquare class="text-blue-500 h-4 w-4" />
-  </div>
-</template>
-```
-
-> **Note:** Icons are asynchronous Vue components optimized for tree-shaking. Only imported icons will be included in your final bundle.
+- [Themes](https://maz-ui.com/guide/themes) - Easy to customize with CSS variables
+- [Translations](https://maz-ui.com/guide/translations) - Internationalization
+- [Icons](https://maz-ui.com/guide/icons) - Beautiful icons ready-to-use for Vue applications
+- [Utils](https://maz-ui.com/helpers/capitalize) - Useful utilities for common tasks
+- [Node](https://www.npmjs.com/package/@maz-ui/node) - Useful utilities for node
+- [MCP](https://maz-ui.com/guide/mcp) - AI assistant for documentation
 
 ## 🤝 Contributing
 
