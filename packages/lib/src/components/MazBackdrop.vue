@@ -16,16 +16,21 @@ const {
   contentPadding = false,
   justify = 'none',
   align = 'none',
+  ariaLabelledby,
+  ariaDescribedby,
 } = defineProps<MazBackdropProps>()
 
 const emits = defineEmits<{
-  /** emitted when modal is open */
+  /** Emitted when modal is open */
   'open': [value: void]
-  /** emitted when modal is close */
+  /** Emitted when modal is close */
   'close': [value: void]
-  /** emitted when modal is open or close */
+  /**
+   * Emitted when modal is open or close
+   * @property {boolean} value - The value of the model
+   */
   'update:model-value': [value: boolean]
-  /** emitted before modal is close */
+  /** Emitted before modal is close */
   'before-close': [value: void]
 }>()
 
@@ -82,6 +87,10 @@ export interface MazBackdropProps {
   align?: 'center' | 'end' | 'start' | 'none'
   /** Variant */
   variant?: 'bottom-sheet' | 'dialog' | 'drawer'
+  /** ID for aria-labelledby */
+  ariaLabelledby?: string
+  /** ID for aria-describedby */
+  ariaDescribedby?: string
 }
 
 const present = ref(modelValue)
@@ -94,13 +103,15 @@ function close() {
   toggleModal(false)
 }
 
-async function toggleModal(value: boolean) {
-  if (!value) {
+async function toggleModal(value?: boolean) {
+  const newValue = value ?? !present.value
+
+  if (!newValue) {
     emits('before-close')
     await beforeClose?.()
   }
 
-  present.value = value
+  present.value = newValue
 }
 
 function onBackdropAnimationEnter() {
@@ -113,10 +124,6 @@ function onBackdropAnimationLeave() {
   removeClassAndEventToDocument()
 }
 
-function onBackdropClicked() {
-  close()
-}
-
 function onKeyPress(event: KeyboardEvent) {
   if (closeOnEscape && event.key === 'Escape') {
     close()
@@ -126,10 +133,17 @@ function onKeyPress(event: KeyboardEvent) {
 function addClassAndEventToDocument() {
   addClassToDocument()
   document.addEventListener('keyup', onKeyPress, false)
+  document.addEventListener('keydown', trapFocus, false)
 }
 
 function removeClassAndEventToDocument() {
-  document.removeEventListener('keyup', onKeyPress)
+  try {
+    document.removeEventListener('keyup', onKeyPress)
+    document.removeEventListener('keydown', trapFocus)
+  }
+  catch (error) {
+    console.warn('Error removing event listeners:', error)
+  }
   removeClassFromDocument()
 }
 
@@ -144,18 +158,49 @@ onMounted(() => {
 
 let initialFocusableElement: HTMLElement | null = null
 
-function findFirstFocusableElement(selector: string) {
+function getAllFocusableElements(selector: string) {
   const modal = document.querySelector(selector)
-  const focusableElements = 'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select'
+  const focusableElements = 'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], input[type="email"], input[type="password"], input[type="url"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], input[type="time"], select, [tabindex]:not([tabindex="-1"]), [contenteditable="true"]'
 
-  const focusableElementsArray = modal && Array.from(modal.querySelectorAll<HTMLLinkElement | HTMLButtonElement | HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>(focusableElements))
+  const focusableElementsArray = modal && Array.from(modal.querySelectorAll<HTMLElement>(focusableElements))
 
   const visibleFocusableElements = focusableElementsArray?.filter((el) => {
     const style = globalThis.getComputedStyle(el)
-    return style.display !== 'none' && style.visibility !== 'hidden' && !el.disabled
+    const isDisabled = 'disabled' in el ? (el as HTMLInputElement | HTMLButtonElement | HTMLSelectElement | HTMLTextAreaElement).disabled : false
+    return style.display !== 'none' && style.visibility !== 'hidden' && !isDisabled && el.tabIndex !== -1
   })
 
-  return visibleFocusableElements && visibleFocusableElements.length > 0 ? visibleFocusableElements[0] : null
+  return visibleFocusableElements || []
+}
+
+function findFirstFocusableElement(selector: string) {
+  const focusableElements = getAllFocusableElements(selector)
+  return focusableElements.length > 0 ? focusableElements[0] : null
+}
+
+function trapFocus(event: KeyboardEvent) {
+  if (event.key !== 'Tab')
+    return
+
+  const focusableElements = getAllFocusableElements('.m-backdrop-content')
+  if (focusableElements.length === 0)
+    return
+
+  const firstFocusable = focusableElements[0]
+  const lastFocusable = focusableElements[focusableElements.length - 1]
+
+  if (event.shiftKey) {
+    if (document.activeElement === firstFocusable) {
+      event.preventDefault()
+      lastFocusable.focus()
+    }
+  }
+  else {
+    if (document.activeElement === lastFocusable) {
+      event.preventDefault()
+      firstFocusable.focus()
+    }
+  }
 }
 
 watch(
@@ -182,25 +227,51 @@ watch(
 )
 
 defineExpose({
-  onBackdropAnimationEnter,
+  /**
+   * Animation leave event
+   * @description This is used to handle animation leave events
+   */
   onBackdropAnimationLeave,
-  onBackdropClicked,
+  /**
+   * Close the backdrop
+   * @description This is used to close the backdrop
+   */
   close,
+  /**
+   * The present state of the backdrop
+   * @description This is used to check if the backdrop is present (open)
+   */
   present,
+  /**
+   * Toggle the backdrop
+   * @description This is used to toggle the backdrop
+   * @param {boolean} value - The value to toggle the backdrop (optional)
+   */
   toggleModal,
+  /**
+   * Key press event
+   * @description This is used to handle key press events
+   */
   onKeyPress,
 })
 </script>
 
 <template>
-  <Teleport :to="teleportSelector">
+  <Teleport :to="teleportSelector" :disabled="!present">
     <Transition
       appear
       :name="transitionName"
       @after-enter="onBackdropAnimationEnter"
       @after-leave="onBackdropAnimationLeave"
     >
-      <div v-if="present" class="m-backdrop --present m-reset-css" v-bind="$attrs" :class="[backdropClass, variant && `--variant-${variant}`, { '--persistent': persistent }]">
+      <div
+        v-if="present"
+        class="m-backdrop --present m-reset-css"
+        v-bind="$attrs"
+        :class="[backdropClass, variant && `--variant-${variant}`, { '--persistent': persistent }]"
+        :aria-labelledby="ariaLabelledby"
+        :aria-describedby="ariaDescribedby"
+      >
         <div role="dialog" class="m-backdrop-container" aria-modal="true">
           <div class="m-backdrop-wrapper">
             <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events -->
@@ -209,13 +280,12 @@ defineExpose({
               :class="[backdropContentClass, `--justify-${justify}`, `--align-${align}`, { '--padding': contentPadding }]"
               role="button"
               tabindex="-1"
-              @pointerdown.self="onBackdropClicked"
+              @pointerdown.self="close"
             >
               <!-- @slot Place your content here
                 @binding {Function} close close function
-                @binding {Function} on-backdrop-clicked onBackdropClicked function (respects persistent prop)
               -->
-              <slot :close="close" :on-backdrop-clicked="onBackdropClicked" />
+              <slot :close="close" />
             </div>
           </div>
         </div>
@@ -238,6 +308,8 @@ html.--backdrop-present.--has-scrollbar {
 <style lang="postcss" scoped>
 .m-backdrop {
   @apply maz-fixed maz-inset-0 maz-z-default-backdrop maz-bg-overlay/5 maz-backdrop-blur;
+
+  transition-behavior: allow-discrete;
 
   &.--persistent {
     & .m-backdrop-content {
@@ -315,9 +387,11 @@ html.--backdrop-present.--has-scrollbar {
   &.bottom-sheet-anim-enter-active,
   &.bottom-sheet-anim-leave-active {
     transition: opacity 250ms ease-in-out;
+    transition-behavior: allow-discrete;
 
     & .m-backdrop-content > * {
       transition: transform 250ms ease-in-out;
+      transition-behavior: allow-discrete;
     }
   }
 
@@ -333,9 +407,11 @@ html.--backdrop-present.--has-scrollbar {
   &.modal-anim-enter-active,
   &.modal-anim-leave-active {
     transition: opacity 250ms ease-in-out;
+    transition-behavior: allow-discrete;
 
     & .m-backdrop-content > * {
       transition: transform 250ms ease-in-out;
+      transition-behavior: allow-discrete;
     }
   }
 
@@ -351,9 +427,11 @@ html.--backdrop-present.--has-scrollbar {
   &.drawer-anim-top-enter-active,
   &.drawer-anim-top-leave-active {
     transition: opacity 250ms ease-in-out;
+    transition-behavior: allow-discrete;
 
     & .m-backdrop-content > * {
       transition: transform 250ms ease-in-out;
+      transition-behavior: allow-discrete;
     }
   }
 
@@ -369,9 +447,11 @@ html.--backdrop-present.--has-scrollbar {
   &.drawer-anim-bottom-enter-active,
   &.drawer-anim-bottom-leave-active {
     transition: opacity 250ms ease-in-out;
+    transition-behavior: allow-discrete;
 
     & .m-backdrop-content > * {
       transition: transform 250ms ease-in-out;
+      transition-behavior: allow-discrete;
     }
   }
 
@@ -387,9 +467,11 @@ html.--backdrop-present.--has-scrollbar {
   &.drawer-anim-left-enter-active,
   &.drawer-anim-left-leave-active {
     transition: opacity 250ms ease-in-out;
+    transition-behavior: allow-discrete;
 
     & .m-backdrop-content > * {
       transition: transform 250ms ease-in-out;
+      transition-behavior: allow-discrete;
     }
   }
 
@@ -405,9 +487,11 @@ html.--backdrop-present.--has-scrollbar {
   &.drawer-anim-right-enter-active,
   &.drawer-anim-right-leave-active {
     transition: opacity 250ms ease-in-out;
+    transition-behavior: allow-discrete;
 
     & .m-backdrop-content > * {
       transition: transform 250ms ease-in-out;
+      transition-behavior: allow-discrete;
     }
   }
 
@@ -423,6 +507,7 @@ html.--backdrop-present.--has-scrollbar {
   &.backdrop-anim-enter-active,
   &.backdrop-anim-leave-active {
     transition: opacity 250ms ease-in-out;
+    transition-behavior: allow-discrete;
   }
 
   &.backdrop-anim-enter-from,
