@@ -7,8 +7,8 @@ on:
       - develop
       - master
     paths:
-      - .github/workflows/lib-test-unit.yml
-      - 'packages/lib/**'
+      - .github/workflows/test-unit.yml
+      - 'packages/**'
       - pnpm-lock.yaml
   push:
     branches:
@@ -32,7 +32,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build utils
-        run: pnpm build:utils
+        run: pnpm build:packages
 
       - name: Run others tests
         run: pnpm test:unit:coverage:all

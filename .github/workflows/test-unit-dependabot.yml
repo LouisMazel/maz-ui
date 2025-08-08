@@ -1,11 +1,11 @@
-name: Lib Tests Unit (Dependabot)
+name: Tests Unit (Dependabot)
 
 on:
   pull_request:
     branches:
       - dependabot/**
     paths:
-      - .github/workflows/lib-test-unit-dependabot.yml
+      - .github/workflows/test-unit-dependabot.yml
       - 'packages/**'
       - pnpm-lock.yaml
 
@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Build utils
-        run: pnpm build:utils
+        run: pnpm build:packages
 
       - name: Setup Node.js, pnpm and Nx cache
         uses: ./.github/actions/setup
