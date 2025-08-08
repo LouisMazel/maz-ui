@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.34...v4.0.0-beta.35
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.34...v4.0.0-beta.35)
+
+### 💅 Refactors
+
+- **@maz-ui/themes:** Adjust color generation with min max color luminosity ([d26a0f17b](https://github.com/LouisMazel/maz-ui/commit/d26a0f17b))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.33...v4.0.0-beta.34
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.33...v4.0.0-beta.34)

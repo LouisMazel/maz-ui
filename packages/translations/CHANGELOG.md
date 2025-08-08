@@ -1,5 +1,19 @@
 # Change Log
 
+## v4.0.0-beta.34...v4.0.0-beta.35
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.34...v4.0.0-beta.35)
+
+### 💅 Refactors
+
+- **@maz-ui/translations:** Load english language by default ([95a9593ac](https://github.com/LouisMazel/maz-ui/commit/95a9593ac))
+- **@maz-ui/translations:** Rename MazTranslations to MazUiTranslations ([cfa322703](https://github.com/LouisMazel/maz-ui/commit/cfa322703))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.33...v4.0.0-beta.34
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.33...v4.0.0-beta.34)

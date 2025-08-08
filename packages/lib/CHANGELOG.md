@@ -1,5 +1,24 @@
 # Change Log
 
+## v4.0.0-beta.34...v4.0.0-beta.35
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.34...v4.0.0-beta.35)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazBackdrop - listen pointerdown instead click on backdrop to close the dialog - fix #1211 ([#1211](https://github.com/LouisMazel/maz-ui/issues/1211))
+
+### 💅 Refactors
+
+- **maz-ui:** MazBackdrop - accessibility and UX improvements ([34fe331f2](https://github.com/LouisMazel/maz-ui/commit/34fe331f2))
+- **maz-ui:** MazDialog - remove onBackdropClicked from slot properties ([72746bc25](https://github.com/LouisMazel/maz-ui/commit/72746bc25))
+- **maz-ui:** Adjust colors after theme changes ([b6138450e](https://github.com/LouisMazel/maz-ui/commit/b6138450e))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.33...v4.0.0-beta.34
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.33...v4.0.0-beta.34)

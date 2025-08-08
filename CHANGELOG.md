@@ -1,5 +1,32 @@
 # Change Log
 
+## v4.0.0-beta.34...v4.0.0-beta.35
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.34...v4.0.0-beta.35)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazBackdrop - listen pointerdown instead click on backdrop to close the dialog - fix #1211 ([#1211](https://github.com/LouisMazel/maz-ui/issues/1211))
+
+### 💅 Refactors
+
+- **maz-ui:** MazBackdrop - accessibility and UX improvements ([34fe331f2](https://github.com/LouisMazel/maz-ui/commit/34fe331f2))
+- **maz-ui:** MazDialog - remove onBackdropClicked from slot properties ([72746bc25](https://github.com/LouisMazel/maz-ui/commit/72746bc25))
+- **maz-ui:** Adjust colors after theme changes ([b6138450e](https://github.com/LouisMazel/maz-ui/commit/b6138450e))
+- **@maz-ui/themes:** Adjust color generation with min max color luminosity ([d26a0f17b](https://github.com/LouisMazel/maz-ui/commit/d26a0f17b))
+- **@maz-ui/translations:** Load english language by default ([95a9593ac](https://github.com/LouisMazel/maz-ui/commit/95a9593ac))
+- **@maz-ui/translations:** Rename MazTranslations to MazUiTranslations ([cfa322703](https://github.com/LouisMazel/maz-ui/commit/cfa322703))
+
+### 📖 Documentation
+
+- **docs:** MazBackdrop - add demo and documentation ([1bcdc9d2b](https://github.com/LouisMazel/maz-ui/commit/1bcdc9d2b))
+- **@maz-ui/utils:** Add README.md ([7eecb6ffd](https://github.com/LouisMazel/maz-ui/commit/7eecb6ffd))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.33...v4.0.0-beta.34
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.33...v4.0.0-beta.34)
