@@ -30,6 +30,7 @@ function generateColorScale(color: string, _colorMode: string, _currentPresetNam
     '700',
     '800',
     '900',
+    '950',
   ]
 
   const rootStyles = getComputedStyle(document.documentElement)
@@ -50,23 +51,26 @@ const colorScale = computed(() => {
 
 <template>
   <div class="maz-flex maz-w-full maz-flex-col maz-gap-2">
-    <p>
+    <p class="maz-text-lg maz-font-semibold maz-cap-f">
       {{ color }}
     </p>
 
     <div class="maz-flex maz-w-full maz-gap-2">
       <div
         v-for="({ key, bgColor, textColor, cssVarValue }) in colorScale"
-        :key="key" class="maz-min-h-20 maz-flex-1 maz-p-4" :style="{
-          backgroundColor: bgColor,
-          color: textColor,
-        }"
+        :key="key" class="maz-min-h-20 maz-flex-1 maz-flex maz-flex-col maz-gap-2"
       >
-        {{ key }}
+        <div>
+          <p>
+            {{ key }}
+          </p>
 
-        <p class="maz-text-sm maz-text-muted-foreground">
-          {{ cssVarValue }}
-        </p>
+          <p class="maz-text-sm maz-text-muted-foreground">
+            {{ cssVarValue }}
+          </p>
+        </div>
+
+        <div :style="{ backgroundColor: bgColor, color: textColor }" class="maz-h-20 maz-w-full maz-rounded" />
       </div>
     </div>
   </div>

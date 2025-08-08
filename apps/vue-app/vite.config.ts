@@ -1,8 +1,11 @@
-import { fileURLToPath, URL } from 'node:url'
+import type { PluginOption } from 'vite'
 
+import { fileURLToPath, URL } from 'node:url'
 import { MazIconsResolver } from '@maz-ui/icons/resolvers'
 import vue from '@vitejs/plugin-vue'
-import { MazComponentsResolver, MazDirectivesResolver, MazModulesResolver } from 'maz-ui/resolvers'
+import { MazComponentsResolver } from 'maz-ui/resolvers/MazComponentsResolver'
+import { MazDirectivesResolver } from 'maz-ui/resolvers/MazDirectivesResolver'
+import { MazModulesResolver } from 'maz-ui/resolvers/MazModulesResolver'
 import { visualizer } from 'rollup-plugin-visualizer'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
@@ -38,7 +41,7 @@ export default defineConfig({
       resolvers: [MazModulesResolver({ devMode: true })],
       dts: true,
     }),
-    visualizer(),
+    visualizer() as PluginOption,
   ],
   resolve: {
     alias: {

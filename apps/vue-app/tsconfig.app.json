@@ -9,7 +9,7 @@
     "allowJs": true
   },
   "include": ["env.d.ts", "src/**/*", "./components.d.ts", "./auto-imports.d.ts"],
-  "exclude": ["src/**/__tests__/*", "node_modules", "../../packages/lib"],
+  "exclude": ["src/**/__tests__/*", "node_modules"],
   "vueCompilerOptions": {
     "checkUnknownComponents": true
   }

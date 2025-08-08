@@ -1,17 +1,17 @@
-import { pristine } from '@maz-ui/themes/presets'
+import { mazUi, MazUiTheme, pristine } from 'maz-ui/themes'
 
-import { fr } from '@maz-ui/translations'
-import { AosPlugin } from 'maz-ui/src/plugins/aos.ts'
-import { DialogPlugin } from 'maz-ui/src/plugins/dialog.ts'
-import { MazUi } from 'maz-ui/src/plugins/maz-ui.ts'
-import { ToastPlugin } from 'maz-ui/src/plugins/toast.ts'
+import { fr, MazTranslations } from 'maz-ui/translations'
+import { AosPlugin } from 'maz-ui/plugins/aos'
+import { DialogPlugin } from 'maz-ui/plugins/dialog'
+import { MazUi } from 'maz-ui/plugins/maz-ui'
+import { ToastPlugin } from 'maz-ui/plugins/toast'
 
-import { WaitPlugin } from 'maz-ui/src/plugins/wait.js'
+import { WaitPlugin } from 'maz-ui/plugins/wait'
 
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import 'maz-ui/src/css/index.css'
+import 'maz-ui/styles'
 
 import 'maz-ui/src/tailwindcss/tailwind.css'
 import './assets/main.css'
@@ -20,20 +20,48 @@ const app = createApp(App)
 
 app.use(router)
 
-app.use(MazUi, {
-  theme: {
-    preset: pristine,
-    mode: 'both',
-    darkModeStrategy: 'class',
-    colorMode: 'auto',
+// app.use(MazUi, {
+//   theme: {
+//     preset: mazUi,
+//     overrides: {
+//       colors: {
+//         light: {
+//           primary: '272 99% 54%'
+//         }
+//       }
+//     },
+//     mode: 'both',
+//     darkModeStrategy: 'class',
+//     colorMode: 'auto',
+//   },
+//   translations: {
+//     locale: 'fr',
+//     fallbackLocale: 'en',
+//     preloadFallback: false,
+//     messages: {
+//       fr,
+//     },
+//   },
+// })
+
+app.use(MazTranslations, {
+  locale: 'fr',
+  fallbackLocale: 'en',
+  preloadFallback: false,
+  messages: {
+    fr,
   },
-  translations: {
-    locale: 'fr',
-    fallbackLocale: 'it',
-    preloadFallback: false,
-    messages: {
-      fr,
-    },
+})
+
+app.use(MazUiTheme, {
+  preset: mazUi,
+  overrides: {
+    colors: {
+      light: {
+        primary: '272 99% 54%',
+        destructive: '357 96% 58%',
+      }
+    }
   },
 })
 

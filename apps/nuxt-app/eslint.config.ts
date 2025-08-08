@@ -1,3 +1,8 @@
-import eslintConfig from '@maz-ui/nuxt/eslint.config.js'
+import { defineConfig } from '@maz-ui/eslint-config'
 
-export default eslintConfig
+export default defineConfig({
+  formatters: true,
+  typescript: true,
+  sonarjs: true,
+  vue: true,
+})

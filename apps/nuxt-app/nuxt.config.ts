@@ -1,4 +1,4 @@
-import mazUiModule from '@maz-ui/nuxt/src/module.js'
+import mazUiModule from '@maz-ui/nuxt'
 import postcss from 'maz-ui/postcss.config.cjs'
 import svgLoader from 'vite-svg-loader'
 
