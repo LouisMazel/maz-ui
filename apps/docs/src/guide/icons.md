@@ -78,20 +78,25 @@ import { MazCheck, MazHeart, MazUser } from '@maz-ui/icons'
 
 ### Method 2: Auto-import with Resolver
 
-Never worry about imports again with automatic component resolution:
+Never worry about imports again with automatic component resolution.
 
 #### Setup unplugin-vue-components
 
+::: warning Troubleshooting
+
+If your are already using [`MazComponentsResolver`](./resolvers.md#mazcomponentsresolver), you should place `MazIconsResolver` before `MazComponentsResolver` in the `resolvers` array.
+
+:::
+
+`vite.config.ts`
+
 ```ts
 import { MazIconsResolver } from '@maz-ui/icons/resolvers'
-import vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
-// vite.config.ts
 import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
-    vue(),
     Components({
       resolvers: [
         MazIconsResolver() // Auto-import Maz UI icons
@@ -138,15 +143,13 @@ Transform SVG files into Vue components at build time:
 
 #### Vite Configuration
 
+`vite.config.ts`
+
 ```ts
-import vue from '@vitejs/plugin-vue'
-// vite.config.ts
-import { defineConfig } from 'vite'
 import svgLoader from 'vite-svg-loader'
 
 export default defineConfig({
   plugins: [
-    vue(),
     svgLoader({
       defaultImport: 'component' // Import as Vue component by default
     })

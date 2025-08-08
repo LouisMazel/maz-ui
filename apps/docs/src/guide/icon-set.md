@@ -18,7 +18,7 @@ All icons follow a consistent naming pattern:
     </div>
     <div class="maz-grid maz-grid-cols-3 maz-gap-2">
       <div v-for="icon in filteredIcons" :key="icon.label" class="maz-flex maz-flex-col maz-items-center maz-gap-3 maz-text-center maz-border maz-border-solid maz-border-divider maz-rounded maz-p-4 maz-truncate hover:maz-bg-surface-600/50 dark:hover:maz-bg-surface-400">
-        <Component :is="icon.value" class="maz-text-3xl" />
+        <Component :is="icon.value" class="maz-size-8" />
         <span class="maz-text-xs maz-text-muted maz-truncate">{{ icon.label }}</span>
         <div class="maz-flex maz-flex-row maz-gap-2 maz-w-full">
           <MazBtn v-tooltip="'Copy Name'" class="maz-flex-1" size="xs" color="background" outlined @click="copyIcon(icon.label)" :icon="MazClipboardDocument" />
@@ -38,7 +38,7 @@ import { MazClipboardDocument, MazClipboardDocumentList } from '@maz-ui/icons'
 const MazIcons = await import('@maz-ui/icons')
 const { success} = useToast()
 
-const icons = Object.entries(MazIcons).map(([name, component]) => ({
+const icons = Object.entries(MazIcons).sort(([nameA, _], [nameB, __]) => nameA.localeCompare(nameB)).map(([name, component]) => ({
   label: name,
   value: component,
 }))
