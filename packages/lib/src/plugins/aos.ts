@@ -1,7 +1,7 @@
 import type { Plugin } from 'vue'
 import type { Router } from 'vue-router'
-import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
-import { sleep } from '@maz-ui/utils/src/helpers/sleep.js'
+import { isClient } from '@maz-ui/utils/helpers/isClient'
+import { sleep } from '@maz-ui/utils/helpers/sleep'
 
 export interface AosOptions {
   animation?: {

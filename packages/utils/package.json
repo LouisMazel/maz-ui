@@ -38,7 +38,8 @@
       "module": "./dist/helpers/*.js",
       "default": "./dist/helpers/*.js"
     },
-    "./*": "./*"
+    "./ts-helpers": "./dist/types/ts-helpers/index.d.ts",
+    "./ts-helpers/*": "./dist/types/ts-helpers/*.d.ts"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

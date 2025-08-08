@@ -61,8 +61,7 @@
     "./plugin": {
       "types": "./dist/types/plugin.d.ts",
       "import": "./dist/plugin/index.js"
-    },
-    "./*": "./*"
+    }
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",

@@ -1,4 +1,4 @@
-import type { DeepKeyOf, DeepPartial, FlattenObjectKeys } from '@maz-ui/utils/src/ts-helpers/index.js'
+import type { DeepKeyOf, DeepPartial, FlattenObjectKeys } from '@maz-ui/utils/ts-helpers'
 import type { Ref } from 'vue'
 import type defaultMessages from './locales/en'
 

@@ -1,4 +1,4 @@
-import { pristine } from '@maz-ui/themes/src/presets/index.ts'
+import { pristine } from '@maz-ui/themes/presets'
 
 import { fr } from '@maz-ui/translations'
 import { AosPlugin } from 'maz-ui/src/plugins/aos.ts'

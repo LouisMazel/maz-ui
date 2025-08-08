@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import { MazChevronLeft, MazXMark } from '@maz-ui/icons'
-import { checkAvailability } from '@maz-ui/utils/src/helpers/checkAvailability.js'
+import { checkAvailability } from '@maz-ui/utils/helpers/checkAvailability'
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 
 import MazSpinner from '../../components/MazSpinner.vue'

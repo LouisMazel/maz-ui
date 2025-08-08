@@ -1,16 +1,16 @@
 import type { AosOptions } from '@plugins/aos'
 import type { App } from 'vue'
 import type { Router } from 'vue-router'
-import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
-import { sleep } from '@maz-ui/utils/src/helpers/sleep.js'
+import { isClient } from '@maz-ui/utils/helpers/isClient'
+import { sleep } from '@maz-ui/utils/helpers/sleep'
 import { AosHandler, AosPlugin, getAosInstance } from '@plugins/aos'
 import { vi } from 'vitest'
 
 // Mock dependencies
-vi.mock('@maz-ui/utils/src/helpers/sleep.js', () => ({
+vi.mock('@maz-ui/utils/helpers/sleep', () => ({
   sleep: vi.fn(),
 }))
-vi.mock('@maz-ui/utils/src/helpers/isClient.js', () => ({
+vi.mock('@maz-ui/utils/helpers/isClient', () => ({
   isClient: vi.fn(() => true),
 }))
 

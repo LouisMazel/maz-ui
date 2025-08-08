@@ -734,8 +734,8 @@ app.use(MazThemePlugin, { preset: myTheme })
 The new system offers much more flexibility and performance!
 
 <script setup>
-import { useTheme } from '@maz-ui/themes/src/composables/useTheme.js'
-import { definePreset } from '@maz-ui/themes/src/define-preset.js'
+import { useTheme } from '@maz-ui/themes/composables/useTheme'
+import { definePreset } from '@maz-ui/themes'
 import { ref } from 'vue'
 
 const {

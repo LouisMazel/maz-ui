@@ -1,6 +1,6 @@
 import type { ColorMode, DarkModeStrategy, Strategy, ThemeMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
 import type { CriticalCSSOptions, FullCSSOptions } from '../utils/css-generator'
-import { isServer } from '@maz-ui/utils/src/helpers/isServer.js'
+import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, getCurrentInstance, inject, ref, watch, watchEffect } from 'vue'
 import { setCookie } from '../utils/cookie-storage'
 import { CSS_IDS, generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'

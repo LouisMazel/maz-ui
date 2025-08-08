@@ -4,18 +4,18 @@ import { describe, expect, it, vi } from 'vitest'
 import MazLazyImg from '@/components/MazLazyImg.vue'
 import MazSelectCountry from '@/components/MazSelectCountry.vue'
 
-vi.mock('@maz-ui/translations/src/useTranslations.js', () => ({
+vi.mock('@maz-ui/translations', () => ({
   useTranslations: () => ({
     t: (key: string) => key,
     locale: { value: 'en-US' },
   }),
 }))
 
-vi.mock('@maz-ui/utils/src/helpers/getBrowserLocale.js', () => ({
+vi.mock('@maz-ui/utils/helpers/getBrowserLocale', () => ({
   getBrowserLocale: () => 'en-US',
 }))
 
-vi.mock('@maz-ui/utils/src/helpers/getCountryFlagUrl.js', () => ({
+vi.mock('@maz-ui/utils/helpers/getCountryFlagUrl', () => ({
   getCountryFlagUrl: (code: string) => `https://flagcdn.com/h20/${code.toLowerCase()}.png`,
 }))
 

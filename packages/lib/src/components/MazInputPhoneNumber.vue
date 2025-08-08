@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import type { MazTranslationsNestedSchema } from '@maz-ui/translations/src/types.js'
-import type { DeepPartial } from '@maz-ui/utils/src/ts-helpers/DeepPartial.js'
+import type { MazTranslationsNestedSchema } from '@maz-ui/translations'
+import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import type { CountryCallingCode, CountryCode, NationalNumber, NumberType } from 'libphonenumber-js'
 import type { HTMLAttributes } from 'vue'
 
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
-import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
+import { useTranslations } from '@maz-ui/translations'
 import {
   computed,
   defineAsyncComponent,

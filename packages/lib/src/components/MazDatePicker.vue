@@ -6,8 +6,8 @@ import type { MazInputProps } from './MazInput.vue'
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor } from './types'
 import { MazCalendar, MazChevronDown, MazClock } from '@maz-ui/icons'
-import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
-import { formatDate } from '@maz-ui/utils/src/helpers/formatDate.js'
+import { useTranslations } from '@maz-ui/translations'
+import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 
 import dayjs from 'dayjs'
 

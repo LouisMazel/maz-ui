@@ -1,6 +1,6 @@
 export * from './build'
 export * from './composables/useTheme'
-export { definePreset } from './define-preset'
+export * from './define-preset'
 export * from './plugin'
 export * from './presets'
 export * from './types'

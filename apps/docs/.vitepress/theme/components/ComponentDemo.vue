@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { MazChevronUp, MazCodeBracket } from '@maz-ui/icons/src/index.js'
+import { MazChevronUp, MazCodeBracket } from '@maz-ui/icons'
 import { ref } from 'vue'
 
 const props = withDefaults(defineProps<{

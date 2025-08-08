@@ -1,4 +1,4 @@
-import type { DeepPartial } from '@maz-ui/utils/src/ts-helpers/DeepPartial.js'
+import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import type { MaybeRefOrGetter, Ref, WatchStopHandle } from 'vue'
 
 import type {

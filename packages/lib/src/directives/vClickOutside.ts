@@ -1,5 +1,5 @@
 import type { DirectiveBinding, ObjectDirective, Plugin } from 'vue'
-import { isServer } from '@maz-ui/utils/src/index.js'
+import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { nextTick } from 'vue'
 
 const eventHandlers = new WeakMap<HTMLElement, (event: Event) => void>()

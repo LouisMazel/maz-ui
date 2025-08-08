@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { useTheme } from '@maz-ui/themes/src/index.js'
+import { useTheme } from '@maz-ui/themes'
 
 const { color = 'background' } = defineProps<{
   color?: string
 }>()
 
-const { colorMode, currentPreset } = useTheme()
+const { colorMode, presetName } = useTheme()
 
 // --maz-background-50: 0 5% 95%;
 //     --maz-background-100: 0 5% 95%;
@@ -44,7 +44,7 @@ function generateColorScale(color: string, _colorMode: string, _currentPresetNam
 }
 
 const colorScale = computed(() => {
-  return generateColorScale(color, colorMode.value, currentPreset.value.name)
+  return generateColorScale(color, colorMode.value, presetName.value)
 })
 </script>
 

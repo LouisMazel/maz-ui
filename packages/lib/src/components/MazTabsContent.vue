@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { MazTabsProvide } from './MazTabs.vue'
-import { debounce } from '@maz-ui/utils/src/helpers/debounce.js'
+import { debounce } from '@maz-ui/utils/helpers/debounce'
 import { ref, watch } from 'vue'
 import { useInjectStrict } from '../composables/useInjectStrict'
 

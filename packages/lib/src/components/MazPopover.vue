@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
 
 import { autoPlacement, autoUpdate, flip, offset as floatingOffset, hide, shift, useFloating } from '@floating-ui/vue'
-import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
+import { isClient } from '@maz-ui/utils/helpers/isClient'
 import {
   computed,
   nextTick,

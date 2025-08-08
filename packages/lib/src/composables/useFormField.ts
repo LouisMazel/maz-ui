@@ -6,7 +6,7 @@ import type {
   FormSchema,
 } from './useFormValidator/types'
 
-import { isEqual } from '@maz-ui/utils/src/helpers/isEqual.js'
+import { isEqual } from '@maz-ui/utils/helpers/isEqual'
 import { computed, onMounted, onUnmounted } from 'vue'
 import {
   addEventToInteractiveElements,

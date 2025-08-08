@@ -11,4 +11,5 @@ export default defineBuildConfig({
       preserveModules: true,
     },
   },
+  externals: ['vue'],
 })

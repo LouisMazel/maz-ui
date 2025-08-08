@@ -1,5 +1,5 @@
 import type { ResolverFunction } from 'unplugin-auto-import/types'
-import { capitalize } from '@maz-ui/utils/src/helpers/capitalize.js'
+import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 
 type Modules = keyof typeof import('maz-ui/src/index.ts')
 type Composables = keyof typeof import('maz-ui/src/composables/index.ts')

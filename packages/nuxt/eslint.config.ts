@@ -1,4 +1,4 @@
-import { defineConfig } from '@maz-ui/eslint-config/src/index.js'
+import { defineConfig } from '@maz-ui/eslint-config'
 
 export default defineConfig({
   formatters: true,

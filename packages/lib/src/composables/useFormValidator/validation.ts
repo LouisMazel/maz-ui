@@ -8,8 +8,8 @@ import type {
   ValidationIssues,
 } from './types'
 
-import { debounceId } from '@maz-ui/utils/src/helpers/debounceId.js'
-import { throttleId } from '@maz-ui/utils/src/helpers/throttleId.js'
+import { debounceId } from '@maz-ui/utils/helpers/debounceId'
+import { throttleId } from '@maz-ui/utils/helpers/throttleId'
 import { nextTick } from 'vue'
 import { CONFIG } from './config'
 

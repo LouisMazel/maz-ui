@@ -516,8 +516,8 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   import DemoProductPage from './demo/DemoProductPage.vue'
 
   import { ref, computed } from 'vue'
-  import { MazStar, MazPlay, MazGithub, MazSun, MazMoon } from '@maz-ui/icons/src/index.js'
-  import { useTheme } from '@maz-ui/themes/src/composables/useTheme.js'
+  import { MazStar, MazPlay, MazGithub, MazSun, MazMoon } from '@maz-ui/icons'
+  import { useTheme } from '@maz-ui/themes/composables/useTheme'
 
   const {
     isDark,

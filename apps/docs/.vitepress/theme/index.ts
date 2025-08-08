@@ -2,8 +2,8 @@ import type { Theme } from 'vitepress'
 
 import type { Component } from 'vue'
 
-import { mazUi } from '@maz-ui/themes/src/presets/mazUi.js'
-import en from '@maz-ui/translations/src/locales/en.js'
+import { mazUi } from '@maz-ui/themes/presets/mazUi'
+import { en } from '@maz-ui/translations'
 import * as components from 'maz-ui/src/components/index.js'
 import { AosPlugin } from 'maz-ui/src/plugins/aos.js'
 import { DialogPlugin } from 'maz-ui/src/plugins/dialog.js'

@@ -2,8 +2,8 @@
 import type { MazColor } from '../types'
 import type { MazDatePickerValue } from './types'
 import type { DateTimeFormatOptions } from './utils'
-import { capitalize } from '@maz-ui/utils/src/helpers/capitalize.js'
-import { formatDate } from '@maz-ui/utils/src/helpers/formatDate.js'
+import { capitalize } from '@maz-ui/utils/helpers/capitalize'
+import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 import dayjs from 'dayjs'
 import { computed, ref, watch } from 'vue'
 

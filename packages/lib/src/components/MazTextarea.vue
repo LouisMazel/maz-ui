@@ -63,7 +63,7 @@ export interface MazTextareaProps<T extends string | undefined | null> {
 
 <script lang="ts" setup generic="T extends string | undefined | null">
 import type { HTMLAttributes } from 'vue'
-import { TextareaAutogrow } from '@maz-ui/utils/src/helpers/TextareaAutogrow.js'
+import { TextareaAutogrow } from '@maz-ui/utils/helpers/TextareaAutogrow'
 import { computed, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 

@@ -1,6 +1,6 @@
-import type { SwipeOptions } from '@maz-ui/utils/src/helpers/swipeHandler.js'
+import type { SwipeOptions } from '@maz-ui/utils/helpers/swipeHandler'
 import type { MaybeRef } from 'vue'
-import { Swipe } from '@maz-ui/utils/src/helpers/swipeHandler.js'
+import { Swipe } from '@maz-ui/utils/helpers/swipeHandler'
 import { computed, ref, toValue } from 'vue'
 
 export function useSwipe(options: Omit<SwipeOptions, 'onValuesChanged' | 'element'> & { element: MaybeRef<HTMLElement> | string | null | undefined }) {

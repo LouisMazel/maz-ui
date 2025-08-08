@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { checkAvailability } from '@maz-ui/utils/src/helpers/checkAvailability.js'
+import { checkAvailability } from '@maz-ui/utils/helpers/checkAvailability'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 export interface MazAnimatedTextProps {

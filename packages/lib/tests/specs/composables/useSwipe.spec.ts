@@ -7,7 +7,7 @@ const swipeHandlerMock = {
   stop: vi.fn(),
   onValuesChanged: vi.fn(),
 }
-vi.mock('@maz-ui/utils/src/helpers/swipeHandler.js', () => ({
+vi.mock('@maz-ui/utils/helpers/swipeHandler', () => ({
   Swipe: vi.fn().mockImplementation(() => swipeHandlerMock),
 }))
 

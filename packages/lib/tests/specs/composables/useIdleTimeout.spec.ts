@@ -1,5 +1,5 @@
 import { useIdleTimeout } from '@composables/useIdleTimeout'
-import { IdleTimeout } from '@maz-ui/utils/src/helpers/idleTimeout.js'
+import { IdleTimeout } from '@maz-ui/utils/helpers/idleTimeout'
 
 it('useIdleTimeout should create an instance of IdleTimeout', () => {
   const callback = vi.fn()

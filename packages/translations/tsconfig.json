@@ -6,13 +6,8 @@
     ],
     "strict": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "skipLibCheck": true
+    "noUnusedParameters": true
   },
   "include": [
     "src/**/*"

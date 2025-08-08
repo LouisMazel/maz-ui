@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useTheme } from '@maz-ui/themes/src/index.js'
+import { useTheme } from '@maz-ui/themes/composables/useTheme'
 import MazRadioButtons from 'maz-ui/components/MazRadioButtons'
 
 const { colorMode, updateTheme, presetName } = useTheme()

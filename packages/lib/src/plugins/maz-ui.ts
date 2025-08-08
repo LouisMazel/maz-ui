@@ -1,8 +1,8 @@
-import type { MazUiThemeOptions } from '@maz-ui/themes/src/plugin.js'
-import type { MazTranslationsOptions } from '@maz-ui/translations/src/index.js'
+import type { MazUiThemeOptions } from '@maz-ui/themes/plugin'
+import type { MazTranslationsOptions } from '@maz-ui/translations'
 import type { Plugin } from 'vue'
-import { MazUiTheme } from '@maz-ui/themes/src/plugin.js'
-import { MazTranslations } from '@maz-ui/translations/src/index.js'
+import { MazUiTheme } from '@maz-ui/themes/plugin'
+import { MazTranslations } from '@maz-ui/translations'
 
 export interface MazUiOptions {
   /**

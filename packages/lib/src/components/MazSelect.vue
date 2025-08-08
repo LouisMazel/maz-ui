@@ -3,16 +3,16 @@
   setup
   generic="Value extends MazInputValue, Option extends MazSelectOption, Multiple extends boolean"
 >
-import type { MazTranslationsNestedSchema } from '@maz-ui/translations/src/types.js'
+import type { MazTranslationsNestedSchema } from '@maz-ui/translations'
 import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
 import type { MazInputValue } from './MazInput.vue'
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
 import { MazChevronDown, MazMagnifyingGlass, MazNoSymbol } from '@maz-ui/icons'
-import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
-import { debounceCallback } from '@maz-ui/utils/src/helpers/debounceCallback.js'
-import { isClient } from '@maz-ui/utils/src/helpers/isClient.js'
-import { normalizeString } from '@maz-ui/utils/src/helpers/normalizeString.js'
+import { useTranslations } from '@maz-ui/translations'
+import { debounceCallback } from '@maz-ui/utils/helpers/debounceCallback'
+import { isClient } from '@maz-ui/utils/helpers/isClient'
+import { normalizeString } from '@maz-ui/utils/helpers/normalizeString'
 import {
   computed,
   defineAsyncComponent,

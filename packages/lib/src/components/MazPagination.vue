@@ -2,7 +2,7 @@
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazColor, MazSize } from './types'
 import { MazChevronDoubleLeft, MazChevronLeft, MazEllipsisHorizontal } from '@maz-ui/icons'
-import { useTranslations } from '@maz-ui/translations/src/useTranslations.js'
+import { useTranslations } from '@maz-ui/translations'
 import { computed } from 'vue'
 import MazBtn from './MazBtn.vue'
 

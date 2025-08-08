@@ -146,7 +146,7 @@ export function setup() {
   })
 }
 
-vi.mock('@maz-ui/translations/src/useTranslations.js', () => ({
+vi.mock('@maz-ui/translations', () => ({
   useTranslations: vi.fn().mockReturnValue({
     t: vi.fn().mockReturnValue('test'),
   }),
