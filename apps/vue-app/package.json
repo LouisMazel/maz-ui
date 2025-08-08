@@ -10,8 +10,7 @@
     "type-check": "vue-tsc --build",
     "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
     "lint:eslint": "eslint . --fix",
-    "vue-app:lint": "run-s lint:*",
-    "format": "prettier --write src/"
+    "vue-app:lint": "run-s lint:*"
   },
   "dependencies": {
     "vue": "^3.5.18",
@@ -29,7 +28,6 @@
     "maz-ui": "workspace:*",
     "npm-run-all2": "^8.0.4",
     "oxlint": "^1.11.0",
-    "prettier": "3.6.2",
     "rollup-plugin-visualizer": "^6.0.3",
     "typescript": "~5.9.2",
     "vite": "^7.1.1",

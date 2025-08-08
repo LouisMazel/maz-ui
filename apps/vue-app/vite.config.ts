@@ -31,9 +31,9 @@ export default defineConfig({
     Components({
       dts: true,
       resolvers: [
+        MazIconsResolver(),
         MazComponentsResolver({ devMode: true }),
         MazDirectivesResolver({ devMode: true }),
-        MazIconsResolver({ devMode: true }),
       ],
     }),
     AutoImport({
