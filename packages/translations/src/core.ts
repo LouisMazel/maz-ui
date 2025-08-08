@@ -1,6 +1,5 @@
 import type { MazUiTranslationsInstance, MazUiTranslationsMessages, MazUiTranslationsOptions, MazUiTranslationsSchema, TranslationKey } from './types'
 import { reactive, ref } from 'vue'
-import en from './locales/en'
 
 const defaultLocalesLoaders: Record<string, () => Promise<{ default: MazUiTranslationsSchema }>> = {
   './locales/en.ts': () => import('./locales/en').then(m => ({ default: m.default })),
@@ -17,15 +16,10 @@ const defaultMessagesCache = new Map<string, MazUiTranslationsSchema>()
 
 const locale = ref<string>('en')
 
-const globalState = reactive<{
-  loadedLocales: Set<string>
-  messages: Record<string, Partial<MazUiTranslationsSchema>>
-  userMessages: MazUiTranslationsMessages
-  loadingPromises: Map<string, Promise<void>>
-}>({
+const globalState = reactive({
   loadedLocales: new Set<string>(),
-  messages: { en },
-  userMessages: {},
+  messages: {} as Record<string, Partial<MazUiTranslationsSchema>>,
+  userMessages: {} as MazUiTranslationsMessages,
   loadingPromises: new Map<string, Promise<void>>(),
 })
 
@@ -215,7 +209,13 @@ function t(key: TranslationKey, variables?: Record<string, unknown>, fallbackLoc
     message = getMessage(globalState.messages[fallbackLocale], key)
   }
 
-  message = getMessage(globalState.messages.en, key)
+  if (!message && fallbackLocale !== 'en' && locale.value !== 'en') {
+    if (!globalState.loadedLocales.has('en')) {
+      loadLocale('en').catch(error => console.error(`[@maz-ui/translations] Failed to load en locale: "en"`, error))
+      return key
+    }
+    message = getMessage(globalState.messages.en, key)
+  }
 
   if (!message) {
     console.warn(`[@maz-ui/translations] Translation not found for key: "${key}"`)
@@ -233,12 +233,14 @@ async function setLocale(newLocale: string) {
   locale.value = newLocale
 }
 
-export function createMazUiTranslations(options: MazUiTranslationsOptions = {}) {
+export function createMazTranslations(options: MazUiTranslationsOptions = {}) {
   const {
     locale: initialLocale = 'en',
     fallbackLocale = 'en',
     preloadFallback = true,
-    messages = {},
+    messages = {
+      en: {},
+    },
   } = options
 
   locale.value = initialLocale

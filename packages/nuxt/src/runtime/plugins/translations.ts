@@ -1,11 +1,11 @@
-import type { MazTranslationsInstance } from '@maz-ui/translations'
-import { MazTranslations } from '@maz-ui/translations'
+import type { MazUiTranslationsInstance } from '@maz-ui/translations'
+import { MazUiTranslations } from '@maz-ui/translations'
 import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const translationsOptions = $config.public.mazUi.translations || {}
 
-  const i18n = MazTranslations.install(vueApp, translationsOptions)
+  const i18n = MazUiTranslations.install(vueApp, translationsOptions)
 
   if (import.meta.server) {
     const locale = translationsOptions.locale || 'en'
@@ -32,6 +32,6 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
 
 declare module 'nuxt/app' {
   interface NuxtApp {
-    $mazTranslations: MazTranslationsInstance
+    $mazTranslations: MazUiTranslationsInstance
   }
 }

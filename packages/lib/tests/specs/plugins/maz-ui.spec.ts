@@ -1,6 +1,6 @@
 import type { App } from 'vue'
 import { MazUiTheme } from '@maz-ui/themes/plugin'
-import { MazTranslations } from '@maz-ui/translations'
+import { MazUiTranslations } from '@maz-ui/translations'
 import { MazUi } from '@plugins/maz-ui'
 import { vi } from 'vitest'
 
@@ -11,7 +11,7 @@ vi.mock('@maz-ui/themes/plugin', () => ({
 }))
 
 vi.mock('@maz-ui/translations', () => ({
-  MazTranslations: {
+  MazUiTranslations: {
     install: vi.fn(),
   },
 }))
@@ -31,7 +31,7 @@ describe('given MazUi plugin', () => {
       MazUi.install?.(mockApp)
 
       expect(mockApp.use).toHaveBeenCalledWith(MazUiTheme, undefined)
-      expect(mockApp.use).toHaveBeenCalledWith(MazTranslations, undefined)
+      expect(mockApp.use).toHaveBeenCalledWith(MazUiTranslations, undefined)
       expect(mockApp.use).toHaveBeenCalledTimes(2)
     })
   })
@@ -41,7 +41,7 @@ describe('given MazUi plugin', () => {
       MazUi.install?.(mockApp, {})
 
       expect(mockApp.use).toHaveBeenCalledWith(MazUiTheme, undefined)
-      expect(mockApp.use).toHaveBeenCalledWith(MazTranslations, undefined)
+      expect(mockApp.use).toHaveBeenCalledWith(MazUiTranslations, undefined)
       expect(mockApp.use).toHaveBeenCalledTimes(2)
     })
   })
@@ -56,7 +56,7 @@ describe('given MazUi plugin', () => {
       MazUi.install?.(mockApp, { theme: themeOptions })
 
       expect(mockApp.use).toHaveBeenCalledWith(MazUiTheme, themeOptions)
-      expect(mockApp.use).toHaveBeenCalledWith(MazTranslations, undefined)
+      expect(mockApp.use).toHaveBeenCalledWith(MazUiTranslations, undefined)
       expect(mockApp.use).toHaveBeenCalledTimes(2)
     })
   })
@@ -74,7 +74,7 @@ describe('given MazUi plugin', () => {
       MazUi.install?.(mockApp, { translations: translationsOptions })
 
       expect(mockApp.use).toHaveBeenCalledWith(MazUiTheme, undefined)
-      expect(mockApp.use).toHaveBeenCalledWith(MazTranslations, translationsOptions)
+      expect(mockApp.use).toHaveBeenCalledWith(MazUiTranslations, translationsOptions)
       expect(mockApp.use).toHaveBeenCalledTimes(2)
     })
   })
@@ -100,7 +100,7 @@ describe('given MazUi plugin', () => {
       })
 
       expect(mockApp.use).toHaveBeenCalledWith(MazUiTheme, themeOptions)
-      expect(mockApp.use).toHaveBeenCalledWith(MazTranslations, translationsOptions)
+      expect(mockApp.use).toHaveBeenCalledWith(MazUiTranslations, translationsOptions)
       expect(mockApp.use).toHaveBeenCalledTimes(2)
     })
   })

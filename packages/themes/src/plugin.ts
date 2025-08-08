@@ -90,9 +90,8 @@ function injectThemeState(app: App, themeState: ThemeState) {
  * ```
  */
 export const MazUiTheme = {
-  async install(app: App, options: MazUiThemeOptions = {}) {
+  async install(app: App, options: Omit<MazUiThemeOptions, 'preset'> & { preset: ThemePreset }) {
     const config = {
-      preset: 'maz-ui',
       strategy: 'runtime',
       overrides: {},
       darkModeStrategy: 'class',

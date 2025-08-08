@@ -1,5 +1,5 @@
 import type { MazUiThemeOptions } from '@maz-ui/themes'
-import type { MazTranslationsOptions } from '@maz-ui/translations'
+import type { MazUiTranslationsOptions } from '@maz-ui/translations'
 import type { VFullscreenImgOptions, VLazyImgOptions, VTooltipOptions } from 'maz-ui/directives'
 import type { AosOptions, DialogOptions, ToastOptions } from 'maz-ui/plugins'
 
@@ -61,7 +61,7 @@ export interface MazUiNuxtOptions {
    *   locale: 'en',
    * }
    */
-  translations?: MazTranslationsOptions
+  translations?: MazUiTranslationsOptions
 
   /**
    * CSS and styles configuration

@@ -1,8 +1,8 @@
 import type { MazUiThemeOptions } from '@maz-ui/themes/plugin'
-import type { MazTranslationsOptions } from '@maz-ui/translations'
+import type { MazUiTranslationsOptions } from '@maz-ui/translations'
 import type { Plugin } from 'vue'
 import { MazUiTheme } from '@maz-ui/themes/plugin'
-import { MazTranslations } from '@maz-ui/translations'
+import { MazUiTranslations } from '@maz-ui/translations'
 
 export interface MazUiOptions {
   /**
@@ -14,7 +14,7 @@ export interface MazUiOptions {
    * The translations configurations
    * Can not be disabled
    */
-  translations?: MazTranslationsOptions
+  translations?: MazUiTranslationsOptions
 }
 
 /**
@@ -49,6 +49,6 @@ export const MazUi: Plugin<[MazUiOptions?]> = {
     const { theme, translations } = options
 
     app.use(MazUiTheme, theme)
-    app.use(MazTranslations, translations)
+    app.use(MazUiTranslations, translations)
   },
 }
