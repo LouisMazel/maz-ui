@@ -1,6 +1,5 @@
 import type { ColorMode, DarkModeStrategy, Strategy, ThemeMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
 import type { CriticalCSSOptions, FullCSSOptions } from '../utils/css-generator'
-import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, getCurrentInstance, inject, ref, watch, watchEffect } from 'vue'
 import { setCookie } from '../utils/cookie-storage'
 import { CSS_IDS, generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'
@@ -166,7 +165,7 @@ export function useTheme() {
     if (!state.value) {
       initializeThemeFromData(mazThemeState)
     }
-    else if (isServer()) {
+    else if (typeof document === 'undefined' || typeof globalThis.window === 'undefined') {
       state.value = {
         ...state.value,
         ...mazThemeState,
@@ -183,19 +182,7 @@ export function useTheme() {
   })
 
   if (!state.value) {
-    console.error('[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin before using useTheme composable')
-
-    return {
-      presetName,
-      colorMode,
-      isDark,
-      strategy,
-      mode,
-      darkModeStrategy,
-      updateTheme: (() => Promise.resolve()) as typeof updateTheme,
-      setColorMode: (() => {}) as typeof setColorMode,
-      toggleDarkMode: (() => {}) as typeof toggleDarkMode,
-    }
+    throw new Error('[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin before using useTheme composable')
   }
 
   return {

@@ -1,10 +1,6 @@
 import type { DarkModeStrategy, ThemeColors, ThemeFoundation, ThemeMode, ThemePreset } from '../types'
 import { generateColorScale } from './color-utils'
 
-// =============================================================================
-// TYPES & CONSTANTS
-// =============================================================================
-
 export interface CriticalCSSOptions {
   /** Critical color variables to include */
   criticalColors?: (keyof ThemeColors)[]
@@ -31,7 +27,6 @@ export interface FullCSSOptions {
   includeColorScales?: boolean
 }
 
-// Default critical variables
 const DEFAULT_CRITICAL_COLORS: (keyof ThemeColors)[] = [
   'background',
   'foreground',
@@ -54,21 +49,17 @@ const DEFAULT_CRITICAL_COLORS: (keyof ThemeColors)[] = [
   'muted',
   'shadow',
   'border',
-]
+] as const
 
 const DEFAULT_CRITICAL_FOUNDATION: (keyof ThemeFoundation)[] = [
   'radius',
   'font-family',
   'base-font-size',
   'border-width',
-]
+] as const
 
 const scaleColors = ['primary', 'secondary', 'accent', 'destructive', 'success', 'warning', 'info', 'contrast', 'background', 'foreground', 'border', 'muted', 'overlay', 'shadow'] as const
 
-/**
- * Generates critical CSS to prevent FOUC
- * Contains only essential variables
- */
 export function generateCriticalCSS(
   preset: ThemePreset,
   options: CriticalCSSOptions = {
@@ -117,14 +108,6 @@ export function generateCriticalCSS(
   return css
 }
 
-// =============================================================================
-// FULL CSS - All variables except critical ones
-// =============================================================================
-
-/**
- * Generates full CSS without critical variables
- * Avoids duplication with critical CSS
- */
 export function generateFullCSS(
   preset: ThemePreset,
   options: FullCSSOptions = {
@@ -177,13 +160,6 @@ export function generateFullCSS(
   return css
 }
 
-// =============================================================================
-// UTILITIES - Helper functions
-// =============================================================================
-
-/**
- * Extracts critical color variables
- */
 function extractCriticalVariables(
   colors: ThemeColors,
   criticalKeys: (keyof ThemeColors)[],
@@ -195,9 +171,6 @@ function extractCriticalVariables(
   )
 }
 
-/**
- * Extracts critical foundation variables
- */
 function extractCriticalFoundation(
   foundation: ThemeFoundation | undefined,
   criticalKeys: (keyof ThemeFoundation)[],
@@ -212,9 +185,6 @@ function extractCriticalFoundation(
   )
 }
 
-/**
- * Excludes critical variables from colors
- */
 function excludeVariables(
   colors: ThemeColors,
   excludeKeys: (keyof ThemeColors | keyof ThemeFoundation)[],
@@ -224,9 +194,6 @@ function excludeVariables(
   )
 }
 
-/**
- * Excludes critical foundation variables
- */
 function excludeFoundationVariables(
   foundation: ThemeFoundation | undefined,
   excludeKeys: (keyof ThemeFoundation)[],
@@ -239,9 +206,6 @@ function excludeFoundationVariables(
   )
 }
 
-/**
- * Generates a CSS variables block
- */
 function generateVariablesBlock({
   selector,
   mediaQuery,
@@ -285,7 +249,6 @@ function generateVariablesBlock({
     variables.push(...colorScales)
   }
 
-  // CSS block construction
   const content = variables.join('\n')
 
   if (mediaQuery) {
@@ -295,9 +258,6 @@ function generateVariablesBlock({
   return `\n  ${selector} {\n${content}\n  }\n`
 }
 
-/**
- * Generates all color scales (50-900)
- */
 function generateAllColorScales(colors: ThemeColors, prefix: string): string[] {
   const colorScales: string[] = []
 
@@ -314,18 +274,11 @@ function generateAllColorScales(colors: ThemeColors, prefix: string): string[] {
   return colorScales
 }
 
-// =============================================================================
-// INJECTION UTILITIES - For runtime use
-// =============================================================================
-
 export enum CSS_IDS {
   FULL = 'maz-theme-full',
   CRITICAL = 'maz-theme-critical',
 }
 
-/**
- * Injects CSS into the DOM
- */
 export function injectCSS(id: CSS_IDS, css: string): void {
   if (typeof document === 'undefined')
     return
@@ -341,9 +294,6 @@ export function injectCSS(id: CSS_IDS, css: string): void {
   styleElement.textContent = css
 }
 
-/**
- * Supprime le CSS du DOM
- */
 export function removeCSS(id: CSS_IDS): void {
   if (typeof document === 'undefined')
     return

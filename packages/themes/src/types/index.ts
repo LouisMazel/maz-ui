@@ -152,6 +152,7 @@ export interface ColorScale {
   700: string
   800: string
   900: string
+  950: string
 }
 
 export interface ThemeState {
