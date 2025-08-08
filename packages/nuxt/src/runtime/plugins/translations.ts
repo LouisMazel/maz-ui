@@ -5,7 +5,7 @@ import { defineNuxtPlugin } from 'nuxt/app'
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const translationsOptions = $config.public.mazUi.translations || {}
 
-  const i18n = MazUiTranslations.install(vueApp, translationsOptions)
+  const i18n = MazUiTranslations.install?.(vueApp, translationsOptions)
 
   if (import.meta.server) {
     const locale = translationsOptions.locale || 'en'

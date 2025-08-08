@@ -2,28 +2,36 @@
 
 A comprehensive collection of **328 beautiful SVG icons** ready for use in your Vue.js applications. Built with performance and flexibility in mind, these icons are optimized for modern web development.
 
-## ✨ Features
+## Features
 
-- 🎯 **300+ icons** - Comprehensive set covering all common use cases
-- 📦 **Multiple usage patterns** - Direct SVG files, Vue components, or auto-import
-- 🔧 **TypeScript support** - Full type definitions included
-- ⚡️ **Tree-shakeable** - Import only the icons you need
-- 🎨 **Customizable** - Easy to style with CSS
-- 📱 **Optimized SVGs** - Clean, minimal markup for best performance
-- 🔌 **Auto-import resolver** - Seamless integration with unplugin-vue-components
-- 🛠️ **Build tool integration** - Works perfectly with Vite and vite-svg-loader
+- **300+ icons** - Comprehensive set covering all common use cases
+- **Multiple usage patterns** - Direct SVG files, Vue components, or auto-import
+- **TypeScript support** - Full type definitions included
+- **Tree-shakeable** - Import only the icons you need
+- **Customizable** - Easy to style with CSS
+- **Optimized SVGs** - Clean, minimal markup for best performance
+- **Auto-import resolver** - Seamless integration with unplugin-vue-components
+- **Build tool integration** - Works perfectly with Vite and vite-svg-loader
 
-## 🚀 Installation
+## Installation
 
 ### Basic Installation
 
-```bash
+::: code-group
+
+```bash [npm]
 npm install @maz-ui/icons
-# or
+```
+
+```bash [yarn]
 yarn add @maz-ui/icons
-# or
+```
+
+```bash [pnpm]
 pnpm add @maz-ui/icons
 ```
+
+:::
 
 ### With Auto-import Support (Recommended)
 
@@ -41,7 +49,7 @@ To use SVG files as Vue components:
 npm install @maz-ui/icons vite-svg-loader
 ```
 
-## 📖 Usage Methods
+## Usage Methods
 
 ### Method 1: Vue Components (Recommended)
 
@@ -68,89 +76,7 @@ import { MazCheck, MazHeart, MazUser } from '@maz-ui/icons'
 - ✅ Vue 3 optimized with `defineAsyncComponent`
 - ✅ Easy to style with CSS classes
 
-### Method 2: Direct SVG Files
-
-Access SVG files directly for maximum flexibility:
-
-```vue
-<script setup lang="ts">
-import { onMounted, ref } from 'vue'
-
-const checkSvg = ref('')
-
-onMounted(async () => {
-  const response = await fetch('/node_modules/@maz-ui/icons/svg/check.svg')
-  checkSvg.value = await response.text()
-})
-</script>
-
-<template>
-  <div>
-    <!-- Using img tag -->
-    <img src="@maz-ui/icons/svg/check.svg" alt="Check" class="w-6 h-6">
-
-    <!-- Inline SVG with fetch -->
-    <div class="text-blue-500" v-html="checkSvg" />
-  </div>
-</template>
-```
-
-**Benefits:**
-
-- ✅ Direct file access
-- ✅ Smallest possible bundle size
-- ✅ Can be used in any context (not just Vue)
-- ✅ Easy to embed in CSS or other assets
-
-### Method 3: With vite-svg-loader
-
-Transform SVG files into Vue components at build time:
-
-#### Vite Configuration
-
-```ts
-import vue from '@vitejs/plugin-vue'
-// vite.config.ts
-import { defineConfig } from 'vite'
-import svgLoader from 'vite-svg-loader'
-
-export default defineConfig({
-  plugins: [
-    vue(),
-    svgLoader({
-      defaultImport: 'component' // Import as Vue component by default
-    })
-  ]
-})
-```
-
-#### Usage in Components
-
-```vue
-<script setup lang="ts">
-// Import SVGs as Vue components
-import CheckIcon from '@maz-ui/icons/svg/check.svg?component'
-import HeartIcon from '@maz-ui/icons/svg/heart.svg?component'
-import UserIcon from '@maz-ui/icons/svg/user.svg?component'
-</script>
-
-<template>
-  <div class="flex items-center gap-2">
-    <CheckIcon class="w-5 h-5 text-green-600" />
-    <UserIcon class="w-6 h-6 text-blue-500" />
-    <HeartIcon class="w-4 h-4 text-red-500 animate-pulse" />
-  </div>
-</template>
-```
-
-**Benefits:**
-
-- ✅ Build-time optimization
-- ✅ Full Vue component features (props, slots, etc.)
-- ✅ Better performance than runtime imports
-- ✅ Automatic TypeScript declarations
-
-### Method 4: Auto-import with Resolver
+### Method 2: Auto-import with Resolver
 
 Never worry about imports again with automatic component resolution:
 
@@ -206,7 +132,89 @@ export default defineConfig({
 - ✅ Tree-shaking still works
 - ✅ IntelliSense for all available icons
 
-## 🎨 Styling Icons
+### Method 3: With vite-svg-loader
+
+Transform SVG files into Vue components at build time:
+
+#### Vite Configuration
+
+```ts
+import vue from '@vitejs/plugin-vue'
+// vite.config.ts
+import { defineConfig } from 'vite'
+import svgLoader from 'vite-svg-loader'
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    svgLoader({
+      defaultImport: 'component' // Import as Vue component by default
+    })
+  ]
+})
+```
+
+#### Usage in Components
+
+```vue
+<script setup lang="ts">
+// Import SVGs as Vue components
+import CheckIcon from '@maz-ui/icons/svg/check.svg?component'
+import HeartIcon from '@maz-ui/icons/svg/heart.svg?component'
+import UserIcon from '@maz-ui/icons/svg/user.svg?component'
+</script>
+
+<template>
+  <div class="flex items-center gap-2">
+    <CheckIcon class="w-5 h-5 text-green-600" />
+    <UserIcon class="w-6 h-6 text-blue-500" />
+    <HeartIcon class="w-4 h-4 text-red-500 animate-pulse" />
+  </div>
+</template>
+```
+
+**Benefits:**
+
+- ✅ Build-time optimization
+- ✅ Full Vue component features (props, slots, etc.)
+- ✅ Better performance than runtime imports
+- ✅ Automatic TypeScript declarations
+
+### Method 4: Direct SVG Files
+
+Access SVG files directly for maximum flexibility:
+
+```vue
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+
+const checkSvg = ref('')
+
+onMounted(async () => {
+  const response = await fetch('/node_modules/@maz-ui/icons/svg/check.svg')
+  checkSvg.value = await response.text()
+})
+</script>
+
+<template>
+  <div>
+    <!-- Using img tag -->
+    <img src="@maz-ui/icons/svg/check.svg" alt="Check" class="w-6 h-6">
+
+    <!-- Inline SVG with fetch -->
+    <div class="text-blue-500" v-html="checkSvg" />
+  </div>
+</template>
+```
+
+**Benefits:**
+
+- ✅ Direct file access
+- ✅ Smallest possible bundle size
+- ✅ Can be used in any context (not just Vue)
+- ✅ Easy to embed in CSS or other assets
+
+## Styling Icons
 
 Icons inherit the current text color and can be styled like any other element:
 
@@ -257,7 +265,7 @@ All icons support CSS custom properties for advanced styling:
 }
 ```
 
-## 📋 Available Icons
+## Available Icons
 
 The library includes **300+ carefully** covering all common use cases:
 
@@ -280,7 +288,7 @@ import {
 
 You can search icons on [Heroicons](https://heroicons.com/) and copy the name of the icon to use it in your project.
 
-## 🔧 Advanced Configuration
+## Advanced Configuration
 
 ### Custom Icon Loading
 
@@ -395,7 +403,7 @@ export function iconOptimizer(): Plugin {
 }
 ```
 
-## 🏗️ Integration Examples
+## Integration Examples
 
 ### With Tailwind CSS
 
@@ -433,7 +441,7 @@ export const useIconStore = defineStore('icons', () => {
 })
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -461,7 +469,7 @@ export const useIconStore = defineStore('icons', () => {
 - Check that `MazIconsResolver` is included in resolvers array
 - Ensure icon names match the exact component names
 
-## 📦 Bundle Size
+## Bundle Size
 
 | Usage Method    | Bundle Impact | Best For                      |
 | --------------- | ------------- | ----------------------------- |
@@ -470,7 +478,7 @@ export const useIconStore = defineStore('icons', () => {
 | Auto-import     | Tree-shaken   | Development experience        |
 | vite-svg-loader | Optimized     | Build-time optimization       |
 
-## 🔗 Related Packages
+## Related Packages
 
 - [Heroicons](https://heroicons.com/) - Tailwind CSS icons
 - [`unplugin-vue-components`](https://github.com/antfu/unplugin-vue-components) - Auto-import components

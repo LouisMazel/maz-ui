@@ -1,13 +1,23 @@
 ---
 title: Install maz-ui with Vue
-description: How to install easily maz-ui with Vue 3
+description: Maz-UI is a Vue.js UI library that provides a set of pre-built components, plugins, directives and utilities to help you build modern, responsive, and accessible web applications.
 ---
 
 # {{ $frontmatter.title }}
 
 {{ $frontmatter.description }}
 
-## Quick Installation {#quick-installation}
+::: tip Model Context Protocol (MCP)
+
+A MCP server is available to connect your IA agents to the documentation and implement Maz-UI easily.
+
+Check out the documentation of [@maz-ui/mcp](./mcp.md)
+
+:::
+
+## Quick Start {#quick-start}
+
+### Installation {#installation}
 
 ::: code-group
 
@@ -25,27 +35,42 @@ yarn add maz-ui @maz-ui/themes
 
 :::
 
-## Framework Integration
+### Install plugin
+
+```ts
+import { MazUi } from 'maz-ui/plugins/maz-ui'
+
+import { mazUi } from '@maz-ui/themes'
+import { en } from '@maz-ui/translations'
+
+import 'maz-ui/styles'
+
+app.use(MazUi, {
+  theme: {
+    preset: mazUi,
+  },
+  translations: {
+    messages: { en },
+  },
+})
+```
+
+## Advanced Integration
 
 You must the MazUi plugin to initialize the theme and translations.
 
+- [Theme documentation](./themes.md)
+- [Translations documentation](./translations.md)
+
 ```typescript
 import { MazUi } from 'maz-ui/plugins/maz-ui'
-
 import { mazUi } from '@maz-ui/themes/presets'
 import { fr } from '@maz-ui/translations'
-
-import { createApp } from 'vue'
 
 // Import Maz-UI styles before your own CSS
 import 'maz-ui/styles'
 import './style.css'
 
-import App from './App.vue'
-
-const app = createApp(App)
-
-// Install MazUi plugin to initialize the theme and translations
 app.use(MazUi, {
   /**
    * Theme configuration (optional if you are using the default theme)
@@ -54,6 +79,17 @@ app.use(MazUi, {
    */
   theme: {
     preset: mazUi, // 'ocean' | 'pristine' | 'obsidian'
+    overrides: {
+      foundation: {
+        'radius': '0.7rem',
+        'border-width': '0.0625rem',
+      },
+      colors: {
+        light: {
+          primary: '220 100% 50%',
+        }
+      }
+    }
   },
   /**
    * Translations configuration (optional if you are using english)

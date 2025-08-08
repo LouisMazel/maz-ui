@@ -1,4 +1,3 @@
-import type { MazUiThemeOptions } from './plugin'
 import type { ThemePreset, ThemePresetName, ThemePresetOverrides } from './types'
 import { getPreset } from './utils'
 import { mergePresets } from './utils/preset-merger'
@@ -52,7 +51,7 @@ export function definePreset({
   base = 'maz-ui' as const,
   overrides = {},
 }: {
-  base: MazUiThemeOptions['preset']
+  base: ThemePreset | ThemePresetName
   overrides: ThemePresetOverrides
 }): ThemePreset | Promise<ThemePreset> {
   if (typeof base === 'string') {

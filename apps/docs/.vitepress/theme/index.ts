@@ -2,15 +2,14 @@ import type { Theme } from 'vitepress'
 
 import type { Component } from 'vue'
 
+import { MazUiTheme } from '@maz-ui/themes/plugin'
 import { mazUi } from '@maz-ui/themes/presets/mazUi'
-import { en } from '@maz-ui/translations'
+import { en, MazUiTranslations } from '@maz-ui/translations'
 import * as components from 'maz-ui/src/components/index.js'
 import { AosPlugin } from 'maz-ui/src/plugins/aos.js'
 import { DialogPlugin } from 'maz-ui/src/plugins/dialog.js'
 import { ToastPlugin } from 'maz-ui/src/plugins/toast.js'
 import { WaitPlugin } from 'maz-ui/src/plugins/wait.js'
-import { MazUiTheme } from 'maz-ui/src/themes.js'
-import { MazUiTranslations } from 'maz-ui/src/translations.js'
 
 import { inBrowser } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'

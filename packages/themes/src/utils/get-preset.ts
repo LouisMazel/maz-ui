@@ -1,11 +1,10 @@
-import type { MazUiThemeOptions } from '../plugin'
-import type { ThemePreset, ThemePresetOverrides } from '../types'
+import type { ThemePreset, ThemePresetName, ThemePresetOverrides } from '../types'
 
-export function isPresetObject(preset: MazUiThemeOptions['preset'] | ThemePresetOverrides): preset is ThemePreset {
+export function isPresetObject(preset?: ThemePresetName | ThemePreset | ThemePresetOverrides): preset is ThemePreset {
   return typeof preset === 'object' && preset !== null && !!preset.name
 }
 
-export async function getPreset(preset?: MazUiThemeOptions['preset']) {
+export async function getPreset(preset?: ThemePresetName | ThemePreset) {
   if (isPresetObject(preset)) {
     return preset
   }

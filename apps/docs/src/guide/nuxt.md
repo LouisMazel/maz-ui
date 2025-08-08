@@ -5,7 +5,15 @@ description: The ultimate Nuxt module for Maz-UI - zero-config setup with auto-i
 
 # {{ $frontmatter.title }}
 
-Transform your Nuxt application with the most comprehensive Vue.js UI library integration. **Maz-UI Nuxt Module** provides zero-configuration setup, intelligent auto-imports, powerful theming capabilities and internationalization.
+**Maz-UI Nuxt Module** provides zero-configuration setup, intelligent auto-imports, powerful theming capabilities and internationalization.
+
+::: tip Model Context Protocol (MCP)
+
+A MCP server is available to connect your IA agents to the documentation and implement Maz-UI easily.
+
+Check out the documentation of [@maz-ui/mcp](./mcp.md)
+
+:::
 
 ## Why Choose Maz-UI for Nuxt?
 

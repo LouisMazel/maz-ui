@@ -9,7 +9,7 @@ export interface MazUiOptions {
    * The theme configurations
    * Can not be disabled
    */
-  theme?: MazUiThemeOptions
+  theme: MazUiThemeOptions
   /**
    * The translations configurations
    * Can not be disabled
@@ -44,8 +44,8 @@ export interface MazUiOptions {
  * })
  * ```
  */
-export const MazUi: Plugin<[MazUiOptions?]> = {
-  install(app, options = {}) {
+export const MazUi: Plugin<[MazUiOptions]> = {
+  install(app, options) {
     const { theme, translations } = options
 
     app.use(MazUiTheme, theme)

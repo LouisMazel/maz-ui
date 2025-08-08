@@ -92,7 +92,7 @@ export interface ThemeConfig {
    * @description Can be a predefined preset name or a custom preset object
    * @default mazUi preset
    */
-  preset?: ThemePreset | ThemePresetName
+  preset: ThemePreset
 
   /**
    * Custom preset overrides

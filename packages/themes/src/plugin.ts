@@ -1,4 +1,4 @@
-import type { App } from 'vue'
+import type { App, Plugin } from 'vue'
 import type { DarkModeStrategy, ThemeConfig, ThemePreset, ThemeState } from './types'
 import type { CriticalCSSOptions } from './utils/css-generator'
 import { reactive } from 'vue'
@@ -89,13 +89,13 @@ function injectThemeState(app: App, themeState: ThemeState) {
  * })
  * ```
  */
-export const MazUiTheme = {
-  async install(app: App, options: Omit<MazUiThemeOptions, 'preset'> & { preset: ThemePreset }) {
+export const MazUiTheme: Plugin<[MazUiThemeOptions]> = {
+  async install(app: App, options) {
     const config = {
       strategy: 'runtime',
       overrides: {},
       darkModeStrategy: 'class',
-      colorMode: (options.mode !== 'both' ? options.mode : options.colorMode) ?? 'auto',
+      colorMode: (options?.mode !== 'both' ? options?.mode : options?.colorMode) ?? 'auto',
       injectCriticalCSS: true,
       injectFullCSS: true,
       mode: 'both',

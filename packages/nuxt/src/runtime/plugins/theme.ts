@@ -122,7 +122,7 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     })
   }
 
-  MazUiTheme.install(vueApp, {
+  MazUiTheme.install?.(vueApp, {
 
     colorMode,
     preset: config.preset,

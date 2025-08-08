@@ -1,6 +1,6 @@
-import { mazUi, MazUiTheme } from 'maz-ui/themes'
+import { mazUi, MazUiTheme } from '@maz-ui/themes'
 
-import { fr, MazUiTranslations } from 'maz-ui/translations'
+import { fr, MazUiTranslations } from '@maz-ui/translations'
 import { AosPlugin } from 'maz-ui/plugins/aos'
 import { DialogPlugin } from 'maz-ui/plugins/dialog'
 import { ToastPlugin } from 'maz-ui/plugins/toast'
@@ -35,8 +35,8 @@ app.use(MazUiTheme, {
       light: {
         primary: '272 99% 54%',
         destructive: '357 96% 58%',
-      }
-    }
+      },
+    },
   },
 })
 

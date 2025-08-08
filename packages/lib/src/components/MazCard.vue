@@ -192,7 +192,7 @@ function toggleCollapse() {
       <div v-if="galleryOptions.images" class="m-card__gallery__wrapper">
         <MazGallery
           v-bind="galleryOptions"
-          class="m-card__gallery maz-flex-1"
+          class="m-card__gallery"
         />
       </div>
       <div class="maz-min-w-0 maz-flex-1">
@@ -328,6 +328,10 @@ function toggleCollapse() {
   &__subtitle,
   &__subtitle > * {
     @apply maz-text-muted maz-text-lg;
+  }
+
+  &__gallery {
+    @apply maz-flex-1 maz-bg-surface-600 dark:maz-bg-surface-600/40;
   }
 
   &__gallery__wrapper {

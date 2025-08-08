@@ -233,7 +233,7 @@ async function setLocale(newLocale: string) {
   locale.value = newLocale
 }
 
-export function createMazTranslations(options: MazUiTranslationsOptions = {}) {
+export function createMazUiTranslations(options: MazUiTranslationsOptions = {}) {
   const {
     locale: initialLocale = 'en',
     fallbackLocale = 'en',

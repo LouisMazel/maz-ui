@@ -151,17 +151,17 @@ defineExpose<{
   close: () => void
   isActive: ComputedRef<boolean>
 }>({
-      /**
-       * Close the dialog
-       * @description This is used to close the dialog
-       */
-      close: () => dialog.value?.close?.(),
-      /**
-       * Check if the dialog is active
-       * @description This is used to check if the dialog is active
-       */
-      isActive: computed(() => currentModal.value?.isActive ?? modelValue ?? false),
-    })
+  /**
+   * Close the dialog
+   * @description This is used to close the dialog
+   */
+  close: () => dialog.value?.close?.(),
+  /**
+   * Check if the dialog is active
+   * @description This is used to check if the dialog is active
+   */
+  isActive: computed(() => currentModal.value?.isActive ?? modelValue ?? false),
+})
 
 function isPromiseButton(button: MazDialogConfirmButton | undefined): button is MazDialogConfirmButtonPromised {
   if (!button)

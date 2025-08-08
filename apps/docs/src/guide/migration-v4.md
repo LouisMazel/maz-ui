@@ -9,41 +9,41 @@ Welcome to the most comprehensive migration guide for upgrading from Maz-UI v3.x
 
 ::: tip Connected to Maz-UI MCP
 
-Follow the [MCP](/guide/mcp) guide to connect your AI assistant to Maz-UI's documentation.
+Follow the [MCP](/guide/mcp) guide to connect your AI assistant to Maz-UI's documentation for a smooth migration process.
 
 :::
 
-## 🎯 Why Migrate to v4.0.0?
+## Why Migrate to v4.0.0?
 
-### 🔥 Architectural Revolution
+### Architectural Revolution
 
 v4.0.0 isn't just an update, it's a **complete rebuild** that transforms Maz-UI into a modern, performant component library:
 
-#### ⚡ Optimized Tree-Shaking
+#### Optimized Tree-Shaking
 
 - **Dramatic bundle reduction**: 60-90% size reduction
 - **Granular imports**: Every component, directive, and utility is individually importable
 - **Modern bundlers**: Perfect compatibility with Vite, Webpack 5, Rollup
 
-#### 🏗️ Modular Architecture
+#### Modular Architecture
 
 - **Restructured monorepo**: Separation into specialized packages
 - **New export structure**: Modular exports for better DX
 - **Maximum flexibility**: Choose exactly what you need
 
-#### 🎨 Advanced Theme System
+#### Advanced Theme System
 
 - **Predefined presets**: `mazUi`, `obsidian`, `ocean`, `pristine`
 - **Dynamic CSS Variables**: Automatic CSS variable generation
 - **Intelligent dark mode**: Configurable strategies for dark mode
 
-#### 🌍 Complete Internationalization
+#### Complete Internationalization
 
 - **9 supported languages**: EN, FR, DE, ES, IT, PT, JA, ZH-CN
 - **Translation system**: Vue plugin and dedicated composables
 - **Automatic fallback**: Smart handling of missing translations
 
-#### 🧩 New Components
+#### New Components
 
 - **MazLink**: Modern link component replacing `MazBtn variant="link"`
 - **MazExpandAnimation**: CSS Grid expansion animation (replaces `MazTransitionExpand`)
@@ -51,26 +51,26 @@ v4.0.0 isn't just an update, it's a **complete rebuild** that transforms Maz-UI 
 - **MazPopover**: Versatile overlay component with smart positioning
 - **MazSelectCountry**: Country/language selector with i18n support
 
-## 🔧 New Packages
+## New Packages
 
 v4.0.0 separates functionality into specialized packages for better modularity:
 
-### 📦 Main Packages
+### Main Packages
 
 | Package | Description | Status |
 |---------|-------------|--------|
-| **maz-ui** | Vue components, composables, plugins | ✅ Refactored |
-| **@maz-ui/themes** | Theme system and presets | 🆕 New |
-| **@maz-ui/translations** | i18n translations | 🆕 New |
-| **@maz-ui/utils** | JavaScript/TypeScript utilities | 🆕 New |
+| **maz-ui** | Vue components, composables, plugins | Refactored |
+| **@maz-ui/themes** | Theme system and presets | New |
+| **@maz-ui/translations** | i18n translations | New |
+| **@maz-ui/utils** | JavaScript/TypeScript utilities | New |
 | **@maz-ui/icons** | SVG icons (336+ icons) | 🆕 New |
 | **@maz-ui/cli** | CLI for theme generation | 🆕 New |
 | **@maz-ui/nuxt** | Nuxt 3 module | 🆕 New |
 | **@maz-ui/mcp** | MCP server for IA agent | 🆕 New |
 
-## 📋 Migration Checklist
+## Migration Checklist
 
-### ✅ Step 1: Update Dependencies
+### Step 1: Update Dependencies
 
 ```bash
 # Uninstall old version
@@ -91,9 +91,9 @@ npm uninstall dropzone
 - **unplugin-vue-components**: `>=28.0.0` (was `>=0.27.0`)
 - **unplugin-auto-import**: `>=19.0.0` (was `>=0.18.0`)
 
-### ✅ Step 2: Vue Plugin Configuration
+### Step 2: Vue Plugin Configuration
 
-**🆕 NEW**: v4.0.0 introduces a mandatory Vue plugin for configuration.
+**NEW**: v4.0.0 introduces a mandatory Vue plugin for configuration.
 
 #### Before (v3.x)
 
@@ -142,9 +142,9 @@ app.use(MazUi, {
 app.mount('#app')
 ```
 
-### ✅ Step 3: Nuxt Configuration
+### Step 3: Nuxt Configuration
 
-**🆕 NEW**: Dedicated Nuxt module with simplified API.
+**NEW**: Dedicated Nuxt module with simplified API.
 
 #### Before (v3.x)
 
@@ -190,13 +190,13 @@ export default defineNuxtConfig({
 })
 ```
 
-### ✅ Step 4: Import Migration
+### Step 4: Import Migration
 
-**🔄 MAJOR CHANGE**: New modular import structure.
+**MAJOR CHANGE**: New modular import structure.
 
 #### Components
 
-**ℹ️ NOTE**: Component imports haven't changed - they work the same way as in v3.x.
+**NOTE**: Component imports haven't changed - they work the same way as in v3.x.
 
 ```typescript
 // ✅ SAME AS v3.x - Still works
@@ -257,9 +257,9 @@ import { formatCurrency, formatDate } from 'maz-ui'
 import { formatCurrency, formatDate } from '@maz-ui/utils'
 ```
 
-## 🧩 Component Changes
+## Component Changes
 
-### 🔴 MazBtn - Major Changes
+### MazBtn - Major Changes
 
 #### Removed `variant="link"`
 
@@ -283,7 +283,7 @@ import { formatCurrency, formatDate } from '@maz-ui/utils'
 #### Prop Changes
 
 ```html
-<!-- 🔄 CHANGED PROPS -->
+<!-- CHANGED PROPS -->
 <MazBtn
   outlined            <!-- ✅ NEW: was 'outline' -->
   justify="space-between"  <!-- 🆕 NEW: Content alignment -->
@@ -294,7 +294,7 @@ import { formatCurrency, formatDate } from '@maz-ui/utils'
 </MazBtn>
 ```
 
-### 🆕 MazLink - New Component
+### MazLink - New Component
 
 Replaces `MazBtn variant="link"` with a richer API:
 
@@ -313,12 +313,27 @@ Replaces `MazBtn variant="link"` with a richer API:
 </MazLink>
 ```
 
-### 🆕 MazPopover - New Component
+### MazPicker --> MazDatePicker
+
+MazPicker has been renamed to MazDatePicker.
+
+Props have been changed:
+- `no-header` --> `hide-header`
+- `input-date-style` --> `input-date-format`
+
+New Props:
+- `min-max-auto`: Control behavior when the date is in the range of min and max.
+
+```html
+<MazDatePicker />
+```
+
+### MazPopover - New Component
 
 Versatile overlay component with smart positioning:
 
 ```html
-<!-- ✅ NEW COMPONENT -->
+<!-- NEW COMPONENT -->
 <MazPopover
   trigger="click"                 <!-- 🆕 NEW: Trigger mode -->
   position="bottom-start"         <!-- 🆕 NEW: Smart positioning -->
@@ -337,7 +352,7 @@ Versatile overlay component with smart positioning:
 </MazPopover>
 ```
 
-### 🆕 MazSelectCountry - New Component
+### MazSelectCountry - New Component
 
 Country/language selector with i18n support:
 
@@ -352,7 +367,7 @@ Country/language selector with i18n support:
 />
 ```
 
-### 🔄 MazInputPhoneNumber - Renamed
+### MazInputPhoneNumber - Renamed
 
 ```html
 <!-- ❌ BEFORE (v3.x) -->
@@ -372,7 +387,7 @@ Country/language selector with i18n support:
 />
 ```
 
-### 🔄 MazExpandAnimation - Replaces MazTransitionExpand
+### MazExpandAnimation - Replaces MazTransitionExpand
 
 ```html
 <!-- ❌ BEFORE (v3.x) -->
@@ -390,7 +405,7 @@ Country/language selector with i18n support:
 </MazExpandAnimation>
 ```
 
-### 🔄 MazDropzone - Complete Rewrite
+### MazDropzone - Complete Rewrite
 
 **External dependency removed:**
 
@@ -418,7 +433,7 @@ npm uninstall dropzone
 />
 ```
 
-### 🔄 MazDropdown & MazSelect - Position API
+### MazDropdown & MazSelect - Position API
 
 ```html
 <!-- ❌ BEFORE (v3.x) -->
@@ -438,7 +453,7 @@ type MazPopoverPosition = 'auto' | 'top' | 'bottom' | 'left' | 'right' |
   'left-start' | 'left-end' | 'right-start' | 'right-end'
 ```
 
-### 🔄 MazDialogConfirm - Renamed
+### MazDialogConfirm - Renamed
 
 ```typescript
 // ❌ BEFORE (v3.x)
@@ -450,7 +465,7 @@ import { MazDialogConfirm } from 'maz-ui'
 
 ## 🔧 Composable Changes
 
-### 🔄 useDialog - API Changes
+### useDialog - API Changes
 
 **No longer Promise-based to avoid JS console errors:**
 
@@ -494,7 +509,7 @@ dialog.confirm({
 })
 ```
 
-### 🔄 useDisplayNames - Renamed
+### useDisplayNames - Renamed
 
 ```typescript
 // ❌ BEFORE (v3.x)
@@ -510,7 +525,7 @@ const { getDisplayName } = useDisplayNames()
 
 **📖 Complete documentation:** [useDisplayNames Guide](/composables/use-display-names)
 
-### 🔧 Helpers to Composables
+### Helpers to Composables
 
 **🔄 MAJOR CHANGE**: Several helpers are now Vue composables and must be used within Vue context.
 
@@ -537,9 +552,9 @@ const { isIdle } = useIdleTimeout({
 })
 ```
 
-## 🎨 Color System Changes
+## Color System Changes
 
-### 🔄 Color Removals and Replacements
+### Color Removals and Replacements
 
 ```typescript
 // ❌ REMOVED COLORS
@@ -570,9 +585,9 @@ type MazColor = 'primary' | 'secondary' | 'accent' | 'info' | 'success' |
 <MazBtn color="destructive">Destructive Button</MazBtn>
 ```
 
-## 🚫 Removed Features
+## Removed Features
 
-### ❌ Removed Directive
+### Removed Directive
 
 ```html
 <!-- ❌ REMOVED - v-closable directive -->
@@ -582,7 +597,7 @@ type MazColor = 'primary' | 'secondary' | 'accent' | 'info' | 'success' |
 <div v-click-outside="handler">Content</div>
 ```
 
-### ❌ Removed Utility Names
+### Removed Utility Names
 
 ```typescript
 // ❌ BEFORE (v3.x)
@@ -592,9 +607,9 @@ import { currency, date } from 'maz-ui'
 import { formatCurrency, formatDate } from 'maz-ui'
 ```
 
-## 📝 TypeScript Changes
+## TypeScript Changes
 
-### 🔄 Type Prefixing
+### Type Prefixing
 
 **All component types are now prefixed with `Maz`:**
 
@@ -608,7 +623,7 @@ import type { MazBtnProps } from 'maz-ui/components/MazBtn'
 import type { MazRadioButtonsOption, MazTableRow, MazColor, MazSize } from 'maz-ui'
 ```
 
-### 🔄 Type Import Changes
+### Type Import Changes
 
 ```typescript
 // ❌ BEFORE (v3.x)
@@ -618,7 +633,7 @@ import type { Color, Size } from 'maz-ui'
 import type { MazColor, MazSize } from 'maz-ui'
 ```
 
-## 🎨 Theme System
+## Theme System
 
 ### Basic Configuration
 
@@ -686,7 +701,7 @@ toggleDarkMode()
 
 **📖 Complete documentation:** [Theme Guide](/guide/themes)
 
-## 🌍 Translation System
+## Translation System
 
 ### Configuration
 
@@ -726,9 +741,9 @@ setLocale('fr')
 
 **📖 Complete documentation:** [Translation Guide](/guide/translations)
 
-## 🚨 Common Errors and Solutions
+## Common Errors and Solutions
 
-### ❌ "idleTimeout is not a function"
+### "idleTimeout is not a function"
 
 ```typescript
 // ❌ Old way
@@ -786,9 +801,9 @@ app.use(MazUi)
 <MazBtn outlined>Button</MazBtn>
 ```
 
-## 📊 Migration Benefits
+## Migration Benefits
 
-### 📈 Performance
+### Performance
 
 | Metric | v3.x | v4.0.0 | Improvement |
 |--------|------|--------|-------------|
@@ -797,22 +812,22 @@ app.use(MazUi)
 | **Lazy Loading** | ❌ Basic | ✅ Advanced | Intelligent |
 | **TypeScript** | ✅ Good | ✅ Excellent | Strict |
 
-### 🛠️ Developer Experience
+### Developer Experience
 
 - **Auto-imports**: Resolvers for unplugin-vue-components
 - **TypeScript**: Strict types and perfect auto-completion
 - **DevTools**: Nuxt DevTools integration
 - **Documentation**: Interactive guides and examples
 
-### 🎯 Maintenance
+### Maintenance
 
 - **Modularity**: Separate packages for better maintenance
 - **Versioning**: Semantic versioning for each package
 - **Stability**: Mature and tested architecture
 
-## ✅ Complete Migration Checklist
+## Complete Migration Checklist
 
-### 📦 Dependencies
+### Dependencies
 
 - [ ] Update maz-ui to v4.0.0+
 - [ ] Remove `dropzone` dependency
@@ -820,21 +835,21 @@ app.use(MazUi)
 - [ ] Update unplugin-auto-import to v19+
 - [ ] Update unplugin-vue-components to v28+
 
-### 🔧 Configuration
+### Configuration
 
 - [ ] Add MazUi plugin in main.ts
 - [ ] Configure theme with new system
 - [ ] Configure translations with new system
 - [ ] Migrate Nuxt configuration to @maz-ui/nuxt
 
-### 📥 Imports
+### Imports
 
 - [ ] Migrate plugin imports to `maz-ui/plugins/*`
 - [ ] Migrate directive imports to `maz-ui/directives/*`
 - [ ] Migrate composable imports to `maz-ui/composables/*`
 - [ ] Update utility imports (currency → formatCurrency, etc.)
 
-### 🧩 Components
+### Components
 
 - [ ] Replace `MazBtn variant="link"` with `MazLink`
 - [ ] Update `MazBtn outline` to `outlined`
@@ -844,8 +859,9 @@ app.use(MazUi)
 - [ ] Update `MazDropdown`/`MazSelect` position props
 - [ ] Rename `MazDialogPromise` to `MazDialogConfirm`
 - [ ] Check new `MazDropzone` props
+- [ ] Rename `MazPicker` to `MazDatePicker`
 
-### 🔄 API Changes
+### API Changes
 
 - [ ] Migrate `useDialog` from Promise to callback API
 - [ ] Rename `useLanguageDisplayNames` to `useDisplayNames`
@@ -853,7 +869,7 @@ app.use(MazUi)
 - [ ] Replace removed colors (theme → contrast, danger → destructive)
 - [ ] Remove `v-closable` directive usage
 
-### 🔄 Helpers to Composables
+### Helpers to Composables
 
 - [ ] Migrate `idleTimeout` to `useIdleTimeout`
 - [ ] Migrate `userVisibility` to `useUserVisibility`
@@ -861,13 +877,13 @@ app.use(MazUi)
 - [ ] Migrate `injectStrict` to `useInjectStrict`
 - [ ] Migrate `freezeValue` to `useFreezeValue`
 
-### 📝 TypeScript
+### TypeScript
 
 - [ ] Update all type imports to use `Maz` prefix
 - [ ] Update prop type imports (Props → MazBtnProps)
 - [ ] Update generic types (Color → MazColor, Size → MazSize)
 
-### 🧪 Testing and Validation
+### Testing and Validation
 
 - [ ] Test TypeScript compilation
 - [ ] Test production build
@@ -877,23 +893,23 @@ app.use(MazUi)
 - [ ] Test SSR/Nuxt if applicable
 - [ ] Validate critical functionality
 
-## 🔗 Additional Resources
+## Additional Resources
 
-- **📚 [Official v4 Documentation](https://maz-ui.com)** - Complete documentation
-- **🎨 [Theme Guide](/guide/themes)** - Advanced theme system
-- **🌍 [Translation Guide](/guide/translations)** - Internationalization
-- **🚀 [Vue Installation Guide](/guide/vue)** - Vue 3 setup
-- **⚡ [Nuxt Installation Guide](/guide/nuxt)** - Nuxt 3 setup
-- **🔧 [Resolvers Guide](/guide/resolvers)** - Smart auto-imports
-- **📖 [Complete Changelog](https://github.com/LouisMazel/maz-ui/blob/master/CHANGELOG.md)** - All changes
+- **[Official v4 Documentation](https://maz-ui.com)** - Complete documentation
+- **[Theme Guide](/guide/themes)** - Advanced theme system
+- **[Translation Guide](/guide/translations)** - Internationalization
+- **[Vue Installation Guide](/guide/vue)** - Vue 3 setup
+- **[Nuxt Installation Guide](/guide/nuxt)** - Nuxt 3 setup
+- **[Resolvers Guide](/guide/resolvers)** - Smart auto-imports
+- **[Complete Changelog](https://github.com/LouisMazel/maz-ui/blob/master/CHANGELOG.md)** - All changes
 
-## 💡 Need Help?
+## Need Help?
 
 Migration seems complex? We're here to help:
 
-- **🐛 [Create Issue](https://github.com/LouisMazel/maz-ui/issues)** - Report bugs
-- **💬 [Discussions](https://github.com/LouisMazel/maz-ui/discussions)** - Ask questions
-- **📧 [Contact](mailto:me@loicmazuel.com)** - Personal support
+- **[Create Issue](https://github.com/LouisMazel/maz-ui/issues)** - Report bugs
+- **[Discussions](https://github.com/LouisMazel/maz-ui/discussions)**
+- **[MCP](./mcp.md)**
 
 ---
 

@@ -1,4 +1,4 @@
-import type { MazUiThemeOptions } from '@maz-ui/themes'
+import type { MazUiThemeOptions, ThemePreset, ThemePresetName } from '@maz-ui/themes'
 import type { MazUiTranslationsOptions } from '@maz-ui/translations'
 import type { VFullscreenImgOptions, VLazyImgOptions, VTooltipOptions } from 'maz-ui/directives'
 import type { AosOptions, DialogOptions, ToastOptions } from 'maz-ui/plugins'
@@ -52,7 +52,9 @@ export interface MazUiNuxtOptions {
    *   colorMode: 'auto',
    * }
    */
-  theme?: MazUiNuxtThemeOptions
+  theme?: Omit<MazUiNuxtThemeOptions, 'preset'> & {
+    preset?: ThemePreset | ThemePresetName
+  }
 
   /**
    * Translations configuration
