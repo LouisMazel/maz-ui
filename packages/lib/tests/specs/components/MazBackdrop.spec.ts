@@ -1,6 +1,6 @@
 import MazBackdrop from '@components/MazBackdrop.vue'
-import { sleep } from '@maz-ui/utils/src/helpers/sleep.js'
 import { mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
 
 describe('mazBackdrop', () => {
   it('opens and closes correctly', async () => {
@@ -10,7 +10,8 @@ describe('mazBackdrop', () => {
       },
     })
     expect(wrapper.vm.present).toBe(true)
-    await wrapper.vm.close()
+    wrapper.vm.close()
+    await nextTick()
     expect(wrapper.vm.present).toBe(false)
   })
 
@@ -24,7 +25,7 @@ describe('mazBackdrop', () => {
   })
 
   it('calls beforeClose function correctly', () => {
-    const spyBeforeClose = vitest.fn()
+    const spyBeforeClose = vi.fn()
     const wrapper = mount(MazBackdrop, {
       props: { beforeClose: spyBeforeClose },
     })
@@ -32,7 +33,7 @@ describe('mazBackdrop', () => {
     expect(spyBeforeClose).toHaveBeenCalled()
   })
 
-  it('adds and removes class from document correctly', async () => {
+  it('adds and removes class from document correctly', () => {
     document.documentElement.classList.remove('--backdrop-present')
     expect(document.documentElement.classList.contains('--backdrop-present')).toBe(false)
     const wrapper = mount(MazBackdrop, {
@@ -41,9 +42,8 @@ describe('mazBackdrop', () => {
       },
     })
     expect(document.documentElement.classList.contains('--backdrop-present')).toBe(true)
-    await wrapper.vm.close()
-    await sleep(300)
-    await wrapper.vm.onBackdropAnimationLeave()
+    wrapper.vm.close()
+    wrapper.vm.onBackdropAnimationLeave()
     expect(document.documentElement.classList.contains('--backdrop-present')).toBe(false)
   })
 
@@ -55,7 +55,8 @@ describe('mazBackdrop', () => {
       },
     })
 
-    await wrapper.vm.onKeyPress({ key: 'Escape' })
+    wrapper.vm.onKeyPress({ key: 'Escape' } as KeyboardEvent)
+    await nextTick()
     expect(wrapper.vm.present).toBe(false)
   })
 
@@ -68,7 +69,8 @@ describe('mazBackdrop', () => {
       },
     })
 
-    await wrapper.vm.onKeyPress({ key: 'Escape' })
+    wrapper.vm.onKeyPress({ key: 'Escape' } as KeyboardEvent)
+    await nextTick()
     expect(wrapper.vm.present).toBe(true)
   })
 })

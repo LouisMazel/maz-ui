@@ -102,7 +102,7 @@ if (scrollable) {
   <MazBackdrop
     v-bind="backdropProps"
     ref="backdrop"
-    v-slot="{ close, onBackdropClicked }"
+    v-slot="{ close }"
     :model-value="modelValue"
     transition-name="modal-anim"
     aria-labelledby="dialogTitle"
@@ -127,9 +127,8 @@ if (scrollable) {
       <!--
         @slot Header slot
           @binding {Function} close close function
-          @binding {Function} onBackdropClicked onBackdropClicked function (respects persistent option)
       -->
-      <slot name="header" :close :on-backdrop-clicked>
+      <slot name="header" :close>
         <div class="m-dialog-header" :class="{ '--has-title': $slots.title || title }">
           <h2
             v-if="$slots.title || title"
@@ -157,17 +156,15 @@ if (scrollable) {
         <!--
             @slot Default content
               @binding {Function} close close function
-              @binding {Function} onBackdropClicked onBackdropClicked function (respects persistent option)
           -->
-        <slot :close :on-backdrop-clicked />
+        <slot :close />
       </div>
       <div v-if="hasFooter" class="m-dialog-footer">
         <!--
             @slot Footer slot
               @binding {Function} close close function
-              @binding {Function} onBackdropClicked onBackdropClicked function (respects persistent option)
           -->
-        <slot name="footer" :close :on-backdrop-clicked />
+        <slot name="footer" :close />
       </div>
     </div>
   </MazBackdrop>
