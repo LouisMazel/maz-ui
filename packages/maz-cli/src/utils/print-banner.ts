@@ -1,4 +1,4 @@
-import { logger } from '@maz-ui/node/index.ts'
+import { logger } from '@maz-ui/node'
 import clear from 'clear'
 import figlet from 'figlet'
 

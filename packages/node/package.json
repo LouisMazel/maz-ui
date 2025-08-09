@@ -46,9 +46,11 @@
     "lint:fix": "pnpm lint --fix",
     "pre-commit": "lint-staged"
   },
-  "devDependencies": {
+  "dependencies": {
     "@maz-ui/utils": "workspace:*",
-    "colorette": "^2.0.20",
+    "colorette": "^2.0.20"
+  },
+  "devDependencies": {
     "typescript": "^5.9.2",
     "unbuild": "^3.6.0"
   },

@@ -20,24 +20,27 @@
   "scripts": {
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
-    "cli": "node --import=./register.js src/cli.ts",
+    "cli": "tsx src/cli.ts",
     "build": "unbuild",
     "build:stub": "unbuild --stub",
     "pre-commit": "lint-staged",
     "vue-docgen": "vue-docgen",
     "typecheck": "tsc --noEmit --skipLibCheck"
   },
-  "devDependencies": {
+  "dependencies": {
     "@clack/prompts": "^0.11.0",
     "@maz-ui/node": "workspace:*",
     "@maz-ui/utils": "workspace:*",
-    "@types/clear": "^0.1.4",
-    "@types/figlet": "^1.7.0",
     "clear": "^0.1.0",
     "commander": "^14.0.0",
     "figlet": "^1.8.2",
-    "typescript": "~5.9.2",
     "vue-docgen-cli": "^4.79.0"
+  },
+  "devDependencies": {
+    "@types/clear": "^0.1.4",
+    "@types/figlet": "^1.7.0",
+    "tsx": "^4.20.3",
+    "typescript": "~5.9.2"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

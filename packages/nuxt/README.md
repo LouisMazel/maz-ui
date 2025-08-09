@@ -152,18 +152,6 @@ async function changeToOceanTheme() {
 
 ## Configuration Options
 
-### Minimal Setup (Recommended)
-
-```ts
-// nuxt.config.ts
-export default defineNuxtConfig({
-  modules: ['@maz-ui/nuxt'],
-  // That's all you need! 🎉
-})
-```
-
-### Full Configuration Example
-
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
