@@ -1,4 +1,5 @@
 :root {
+  --vp-layout-top-height: 48px;
   --vp-font-family-base: Manrope, sans-serif;
   --vp-c-brand: var(--maz-color-primary);
   --vp-c-brand-1: var(--maz-color-primary);

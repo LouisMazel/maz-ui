@@ -1,10 +1,10 @@
 // @ts-check
 
 /* eslint-disable no-console */
+import { deploy, excludeDefaults } from '@samkirkland/ftp-deploy'
 import { readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { deploy, excludeDefaults } from '@samkirkland/ftp-deploy'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -34,12 +34,13 @@ function loadEnvFile(envFileName = '.env') {
 async function deployToHostinger() {
   const env = loadEnvFile()
   console.log('🚚 Deploy started')
+
   await deploy({
     'server': process.env.FTP_SERVER || env.FTP_SERVER,
     'username': process.env.FTP_USERNAME || env.FTP_USERNAME,
     'password': process.env.FTP_PASSWORD || env.FTP_PASSWORD,
     'local-dir': join(resolve(_dirname, './docs/.vitepress/dist/'), '/'),
-    // 'server-dir': '/public_html/',
+    'server-dir': '/v3/',
     'exclude': [...excludeDefaults, '.env', '.git/**', 'node_modules/**'],
     'timeout': 1000000,
   })

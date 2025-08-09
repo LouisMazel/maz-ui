@@ -1,7 +1,7 @@
 import type { AosOptions, ToasterOptions } from 'maz-ui'
 
-import type { Theme } from 'vitepress'
 import { getAosInstance, installAos, installDialog, installToaster, installWait, vFullscreenImgInstall } from 'maz-ui'
+import type { Theme } from 'vitepress'
 
 import * as components from 'maz-ui/components'
 import { inBrowser } from 'vitepress'
@@ -12,13 +12,13 @@ import { watch } from 'vue'
 
 import ColorContainer from './components/ColorContainer.vue'
 
+import 'maz-ui/tailwindcss/tailwind.css'
 import ComponentDemo from './components/ComponentDemo.vue'
 import DemoAuthPage from './components/DemoAuthPage.vue'
 import DemoDashboardPage from './components/DemoDashboardPage.vue'
 import DemoProductPage from './components/DemoProductPage.vue'
 import Layout from './components/Layout.vue'
 import NpmBadge from './components/NpmBadge.vue'
-import 'maz-ui/tailwindcss/tailwind.css'
 // import 'maz-ui/css/main.css'
 import 'maz-ui/modules/plugins/aos/scss/index.scss'
 import './main.css'

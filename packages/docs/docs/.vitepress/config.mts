@@ -1,10 +1,10 @@
-import type { Plugin } from 'postcss'
-import type { HeadConfig } from 'vitepress'
+import autoprefixer from 'autoprefixer'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import autoprefixer from 'autoprefixer'
+import type { Plugin } from 'postcss'
 import postcssImport from 'postcss-import'
 import postcssNested from 'postcss-nested'
+import type { HeadConfig } from 'vitepress'
 
 import postcssUrl from 'postcss-url'
 import tailwind from 'tailwindcss'
@@ -21,7 +21,7 @@ function pascalCaseToKebabCase(value: string): string {
 }
 
 function getAssetBaseUrl(path: string): string {
-  const base = process.env.NODE_ENV === 'production' ? 'https://maz-ui.com' : ''
+  const base = process.env.NODE_ENV === 'production' ? 'https://v3.maz-ui.com' : ''
   return `${base}${path}`
 }
 
@@ -46,7 +46,7 @@ export default defineConfig({
   },
 
   sitemap: {
-    hostname: 'https://maz-ui.com/',
+    hostname: 'https://v3.maz-ui.com/',
     transformItems: (items) => {
       // add new items or modify/filter existing items
       const modifyItems: typeof items = []

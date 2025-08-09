@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 defineProps<{
-  color: string
-  hex: string
+  color: string;
+  hex: string;
 }>()
 </script>
 

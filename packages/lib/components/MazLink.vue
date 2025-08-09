@@ -5,6 +5,10 @@ import {
   defineAsyncComponent,
 } from 'vue'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 withDefaults(defineProps<MazLinkProps>(), {
   id: undefined,
   title: undefined,

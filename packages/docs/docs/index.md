@@ -11,6 +11,22 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   #   alt: Logo of Maz-UI
 ---
 
+<section class="vp-raw maz-flex maz-flex-col mob-l:maz-flex-center maz-gap-4 dark maz-text-white maz-rounded maz-p-8 maz-my-12 maz-from-primary-400 maz-to-secondary-700 maz-bg-gradient-to-br">
+  <h2 class="maz-inline-flex maz-gap-4 mob-l:maz-text-center maz-text-2xl maz-font-semibold dark">
+    <span class="maz-text-3xl">🎉</span>
+    Maz-UI v4 is here!
+  </h2>
+  <p class="mob-l:maz-text-center maz-text-lg maz-mb-3 mob-l:maz-max-w-3xl dark">
+    Discover the latest major release with improved performance, better tree-shaking, and enhanced TypeScript support, advanced theming, translations, icons set and more.
+  </p>
+
+  <div class="maz-flex maz-gap-2 maz-justify-center maz-flex-wrap">
+    <MazBtn  href="https://maz-ui.com" color="theme" class="maz-w-full mob-l:maz-w-auto">
+      Discover v4
+    </MazBtn>
+  </div>
+</section>
+
 <section id="hero" class="maz-py-12 tab-m:maz-py-24 vp-raw">
   <div class="maz-mx-auto maz-max-w-3xl">
     <MazAnimatedText

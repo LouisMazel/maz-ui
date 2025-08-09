@@ -26,6 +26,10 @@ export const nav = [
     text: `v${packageJson.version}`,
     items: [
       {
+        text: 'v4',
+        link: 'https://maz-ui.com',
+      },
+      {
         text: 'Changelog',
         link: 'https://github.com/LouisMazel/maz-ui/blob/master/CHANGELOG.md',
       },

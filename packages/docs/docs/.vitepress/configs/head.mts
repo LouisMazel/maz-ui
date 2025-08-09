@@ -1,7 +1,7 @@
 import type { UserConfig } from 'vitepress'
 
 export function getAssetBaseUrl(path: string): string {
-  const base = process.env.NODE_ENV === 'production' ? 'https://maz-ui.com' : ''
+  const base = process.env.NODE_ENV === 'production' ? 'https://v3.maz-ui.com' : ''
   return `${base}${path}`
 }
 
@@ -49,7 +49,7 @@ export const head = [
     },
   ],
   ['link', { rel: 'manifest', href: getAssetBaseUrl('/manifest.webmanifest') }],
-  ['meta', { name: 'robots', content: 'index, follow' }],
+  ['meta', { name: 'robots', content: 'noindex, nofollow' }],
   ['meta', { name: 'application-name', content: 'Maz-UI' }],
   ['meta', { name: 'apple-mobile-web-app-title', content: 'Maz-UI' }],
   [
