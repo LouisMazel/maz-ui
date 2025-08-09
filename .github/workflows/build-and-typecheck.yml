@@ -7,9 +7,6 @@ on:
       - 'apps/docs/**'
       - pnpm-lock.yaml
       - .github/workflows/typecheck.yml
-    branches-ignore:
-      - develop
-      - master
 
 jobs:
   build-and-typecheck:

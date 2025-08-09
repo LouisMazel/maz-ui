@@ -2,10 +2,6 @@ name: Unit Tests
 
 on:
   pull_request:
-    branches-ignore:
-      - dependabot/**
-      - develop
-      - master
     paths:
       - .github/workflows/test-unit.yml
       - 'packages/**'
@@ -27,7 +23,7 @@ jobs:
       - name: Setup Node.js, pnpm and Nx cache
         uses: ./.github/actions/setup
 
-      - name: Build utils
+      - name: Build packages
         run: pnpm build:packages
 
       - name: Test units
