@@ -4,13 +4,31 @@ import type { MazColor } from './types'
 import { throttle } from '@maz-ui/utils/helpers/throttle'
 import {
   computed,
-
   nextTick,
   onBeforeUnmount,
   onMounted,
   ref,
   watch,
 } from 'vue'
+
+defineOptions({
+  inheritAttrs: false,
+})
+
+const props = withDefaults(defineProps<MazReadingProgressBarProps>(), {
+  height: '4px',
+  color: 'primary',
+  teleportSelector: 'body',
+  contentSelector: 'body',
+  offset: 0,
+  barClass: undefined,
+  distance: undefined,
+})
+
+const emits = defineEmits<{
+  (name: 'begin'): void
+  (name: 'complete'): void
+}>()
 
 export interface MazReadingProgressBarProps {
   /**
@@ -49,21 +67,6 @@ export interface MazReadingProgressBarProps {
    */
   distance?: number
 }
-
-const props = withDefaults(defineProps<MazReadingProgressBarProps>(), {
-  height: '4px',
-  color: 'primary',
-  teleportSelector: 'body',
-  contentSelector: 'body',
-  offset: 0,
-  barClass: undefined,
-  distance: undefined,
-})
-
-const emits = defineEmits<{
-  (name: 'begin'): void
-  (name: 'complete'): void
-}>()
 
 const barColor = computed<string>(() => {
   return `hsl(var(--maz-${props.color}))`

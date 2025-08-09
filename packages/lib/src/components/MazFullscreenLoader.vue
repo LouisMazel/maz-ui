@@ -3,6 +3,10 @@ import type { MazColor } from './types'
 import { onMounted, onUnmounted } from 'vue'
 import MazSpinner from './MazSpinner.vue'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 const { color = 'primary', size = '3em', teleportSelector = 'body' } = defineProps<MazFullscreenLoaderProps>()
 
 export interface MazFullscreenLoaderProps {
