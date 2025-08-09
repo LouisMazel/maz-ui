@@ -42,7 +42,7 @@ function applyDarkMode(darkModeStrategy: DarkModeStrategy, isDark: boolean) {
   }
 }
 
-function injectThemeCSS(finalPreset: ThemePreset, config: Required<MazUiThemeOptions>) {
+function injectThemeCSS(finalPreset: ThemePreset, config: Required<Omit<MazUiThemeOptions, 'preset'>> & Pick<MazUiThemeOptions, 'preset'>) {
   if (typeof document === 'undefined')
     return
 
@@ -100,7 +100,7 @@ export const MazUiTheme: Plugin<[MazUiThemeOptions]> = {
       injectFullCSS: true,
       mode: 'both',
       ...options,
-    } satisfies Required<MazUiThemeOptions>
+    } satisfies Required<Omit<MazUiThemeOptions, 'preset'>> & Pick<MazUiThemeOptions, 'preset'>
 
     const colorMode = config.mode !== 'both' ? config.mode : getColorMode(config.colorMode)
 
@@ -109,8 +109,7 @@ export const MazUiTheme: Plugin<[MazUiThemeOptions]> = {
       : colorMode === 'dark' || config.mode === 'dark'
 
     const themeState = reactive<ThemeState>({
-      // @ts-expect-error - empty currentPreset to avoid error
-      currentPreset: {},
+      currentPreset: undefined,
       mode: config.mode,
       colorMode,
       isDark,
@@ -122,15 +121,17 @@ export const MazUiTheme: Plugin<[MazUiThemeOptions]> = {
 
     injectThemeState(app, themeState)
 
-    const preset = await getPreset(config.preset)
+    const preset = config.strategy === 'buildtime' ? config.preset : await getPreset(config.preset)
 
-    const finalPreset = Object.keys(config.overrides).length > 0
+    const finalPreset = Object.keys(config.overrides).length > 0 && preset
       ? mergePresets(preset, config.overrides)
       : preset
 
-    themeState.currentPreset = finalPreset
+    if (finalPreset) {
+      themeState.currentPreset = finalPreset
+    }
 
-    if (config.strategy === 'buildtime') {
+    if (config.strategy === 'buildtime' || !finalPreset) {
       return
     }
 
