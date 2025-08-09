@@ -18,6 +18,9 @@ jobs:
       - name: Setup Node.js, pnpm and Nx cache
         uses: ./.github/actions/setup
 
+      - name: Build packages
+        run: pnpm build:packages
+
       - name: Build docs
         env:
           VITE_GITHUB_TOKEN: ${{ secrets.GH_TOKEN_STARS }}
