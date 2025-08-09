@@ -22,7 +22,7 @@ export const mazUi: ThemePreset = {
       'success-foreground': '210 8% 14%',
       'warning': '40 97% 59%',
       'warning-foreground': '210 8% 14%',
-      'destructive': '1 100% 71%',
+      'destructive': '356.95 95.91% 57.73%',
       'destructive-foreground': '0 0% 100%',
       'info': '188 78% 41%',
       'info-foreground': '0 0% 100%',
