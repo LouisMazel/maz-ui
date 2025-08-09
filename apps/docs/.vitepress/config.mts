@@ -1,8 +1,13 @@
 import type { Plugin } from 'postcss'
 import type { DefaultTheme, HeadConfig, UserConfig } from 'vitepress'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import {
+  buildSeparateThemeFiles,
+  CSS_IDS,
+  mazUi,
+} from '@maz-ui/themes'
 import autoprefixer from 'autoprefixer'
 import postcssImport from 'postcss-import'
 import postcssNested from 'postcss-nested'
@@ -12,9 +17,18 @@ import tailwindcssNesting from 'tailwindcss/nesting'
 import svgLoader from 'vite-svg-loader'
 import { defineConfig, postcssIsolateStyles } from 'vitepress'
 import { head, nav, sidebar } from './configs/index.mjs'
+
 import { getOgImage } from './og-image'
 
-const _dirname = fileURLToPath(new URL('.', import.meta.url))
+const _dirname = dirname(fileURLToPath(import.meta.url))
+
+// Generate complete CSS
+const {
+  critical,
+  full,
+} = buildSeparateThemeFiles(mazUi, {
+  darkSelector: 'class',
+})
 
 function pascalCaseToKebabCase(value: string): string {
   return value.replaceAll(/([\da-z])([A-Z])/g, '$1-$2').toLowerCase()
@@ -67,7 +81,11 @@ export default defineConfig<DefaultTheme.Config>({
     },
   },
 
-  head,
+  head: [
+    ...head,
+    ['style', { id: CSS_IDS.CRITICAL, type: 'text/css' }, critical],
+    ['style', { id: CSS_IDS.FULL, type: 'text/css' }, full],
+  ] satisfies HeadConfig[],
 
   themeConfig: {
     siteTitle: 'Maz-UI',
@@ -82,7 +100,7 @@ export default defineConfig<DefaultTheme.Config>({
     ],
     footer: {
       // message: 'Released under the MIT License.',
-      copyright: 'Made by LouisMazel with ❤️',
+      copyright: 'Made by LouisMazel with 🖤',
     },
 
     editLink: {

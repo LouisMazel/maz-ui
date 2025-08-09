@@ -21,6 +21,9 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   </p>
 
   <div class="maz-flex maz-gap-2 maz-justify-center maz-flex-wrap">
+    <MazBtn href="https://v3.maz-ui.com" color="contrast" outlined class="dark maz-w-full mob-l:maz-w-auto" target="blank">
+      V3 documentation
+    </MazBtn>
     <MazBtn href="https://github.com/LouisMazel/maz-ui/blob/master/CHANGELOG.md" color="contrast" outlined class="dark maz-w-full mob-l:maz-w-auto" target="blank">
       Changelog
     </MazBtn>

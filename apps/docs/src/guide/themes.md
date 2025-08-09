@@ -323,7 +323,9 @@ app.use(MazUi, {
 ### 🏗️ Buildtime
 
 CSS generated at build-time and included in the bundle.
-Optimal for static sites without theme changes.
+You have to build your CSS files before running your app.
+
+See [Build-time](#build-time-strategy-complete-guide) for more details.
 
 ```typescript
 import { mazUi } from '@maz-ui/themes/presets'
@@ -494,13 +496,85 @@ The build-time strategy allows you to generate your theme CSS files at compile t
 
 ### Step-by-step configuration
 
-#### 1. Create a generation script
+#### 1. Generate CSS
 
-Create `scripts/build-themes.ts`:
+::: code-group
 
-```typescript
+```typescript [Vue]
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import {
+  // Build all css in one file
+  buildThemeCSS,
+  // Build multiple themes with one file each
+  generateThemeBundle,
+  // Build separate css files
+  buildSeparateThemeFiles,
+
+  definePreset,
+  mazUi,
+} from '@maz-ui/themes'
+
+import App from './App.vue'
+
+const _dirname = dirname(fileURLToPath(import.meta.url))
+
+// Custom theme
+const customPreset = definePreset({
+  base: mazUi,
+  overrides: {
+    name: 'custom',
+    colors: {
+      light: { primary: '221.2 83.2% 53.3%' },
+      dark: { primary: '217.2 91.2% 59.8%' },
+    },
+  },
+})
+
+/**
+ * Generate complete CSS
+ */
+const fullCSS = buildThemeCSS({
+  preset: customPreset,
+  mode: 'both',
+  criticalOnly: false,
+})
+
+writeFileSync(join(_dirname, 'public/custom.css'), fullCSS)
+
+/**
+ * Or generate theme in  separate CSS files
+ */
+const { critical, full } = buildSeparateThemeFiles(customPreset, {
+  darkSelector: 'class',
+})
+
+writeFileSync(join(_dirname, 'public/critical.css'), critical)
+writeFileSync(join(_dirname, 'public/custom-full.css'), full)
+
+/**
+ * Or generate bundle for multiple themes in one file each
+ */
+const themeBundle = generateThemeBundle([customPreset, mazUi], {
+  mode: 'both',
+})
+
+Object.entries(themeBundle).forEach(([name, css]) => {
+  writeFileSync(join(_dirname, `public/${name}.css`), css)
+})
+
+const app = createApp(App)
+
+app.use(MazUiTheme, {
+  preset: customPreset,
+  strategy: 'buildtime', // Important!
+  darkModeStrategy: 'class',
+})
+
+app.mount('#app')
+```
+
+```typescript [Vitepress]
 import {
   buildThemeCSS,
   generateThemeBundle,
@@ -508,6 +582,7 @@ import {
   createThemeStylesheet,
   definePreset,
   mazUi,
+  CSS_IDS,
 } from '@maz-ui/themes'
 
 // Custom theme
@@ -522,42 +597,65 @@ const customPreset = definePreset({
   },
 })
 
-// Create destination folder
-mkdirSync(join(process.cwd(), 'public/themes'), { recursive: true })
-
 // Generate complete CSS
-const customCSS = buildThemeCSS({
+const fullCSS = buildThemeCSS({
   preset: customPreset,
   mode: 'both',
   criticalOnly: false,
 })
 
-writeFileSync(join(process.cwd(), 'public/themes/custom.css'), customCSS)
+// Or generate separate CSS files
+const { critical, full, lightOnly, darkOnly } = buildSeparateThemeFiles(customPreset, {
+  darkSelector: 'class',
+})
 
-// Generate bundle for multiple themes
+// Or generate bundle for multiple themes
 const themeBundle = generateThemeBundle([customPreset, mazUi], {
   mode: 'both',
 })
 
-Object.entries(themeBundle).forEach(([name, css]) => {
-  writeFileSync(join(process.cwd(), `public/themes/${name}.css`), css)
+export default defineConfig<DefaultTheme.Config>({
+  head: [
+    ['style', { id: CSS_IDS.CRITICAL, type: 'text/css' }, critical],
+    ['style', { id: CSS_IDS.FULL, type: 'text/css' }, full],
+  ] satisfies HeadConfig[],
+})
+```
+
+```typescript [Nuxt]
+/*
+ * You dont need to do anything,
+ * The module will handle it for you.
+ *
+ * Just provide a preset to the module
+ */
+
+const customPreset = definePreset({
+  base: mazUi,
+  overrides: {
+    name: 'custom',
+    colors: {
+      light: { primary: '221.2 83.2% 53.3%' },
+      dark: { primary: '217.2 91.2% 59.8%' },
+    },
+  },
 })
 
-console.log('✅ Themes generated in public/themes/')
+export default defineConfig({
+  modules: ['@maz-ui/nuxt'],
+  mazUi: {
+    theme: {
+      preset: customPreset,
+      mode: 'both',
+      colorMode: 'auto',
+    },
+  },
+})
 ```
 
-#### 2. Add script to package.json
+:::
 
-```json
-{
-  "scripts": {
-    "build:themes": "tsx scripts/build-themes.ts",
-    "build": "npm run build:themes && vite build"
-  }
-}
-```
-
-#### 3. Include in your HTML
+#### 2. Include in your HTML (Only for Vue users)
 
 ```html
 <!-- Critical CSS first -->
@@ -565,15 +663,6 @@ console.log('✅ Themes generated in public/themes/')
 
 <!-- Full CSS deferred -->
 <link rel="stylesheet" href="/themes/custom-full.css" media="print" onload="this.media='all'">
-```
-
-#### 4. Plugin configuration
-
-```typescript
-app.use(MazThemePlugin, {
-  strategy: 'buildtime', // Important!
-  darkModeStrategy: 'class',
-})
 ```
 
 ### Utility functions
