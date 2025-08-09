@@ -10,6 +10,8 @@ on:
       - 'packages/*/package.json'
       - 'apps/**/*'
       - 'tools/**/*'
+      - 'scripts/**/*'
+      - '.github/**/*'
       - 'CHANGELOG*.md'
       - '**/CHANGELOG*.md'
 
