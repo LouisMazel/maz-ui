@@ -5,8 +5,7 @@
     "lib": [
       "ESNext"
     ],
-    "types": ["node"],
-    "allowImportingTsExtensions": true
+    "types": ["node"]
   },
   "include": [
     "bin/**/*",

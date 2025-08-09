@@ -17,7 +17,6 @@
         "fix/*"
       ],
       "conventionalCommits": true,
-      "conventionalPrerelease": true,
       "message": "chore(release): version packages %v",
       "tagVersionPrefix": "v",
       "push": false,
@@ -37,7 +36,6 @@
     "./apps/vue-app/*",
     "./apps/nuxt-app/*",
     "./tools/*",
-    "./docs/*",
     "**/__tests__/*",
     "**/*.spec.ts",
     "**/*.test.ts"

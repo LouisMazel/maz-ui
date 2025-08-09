@@ -10,6 +10,5 @@ export default defineBuildConfig({
     },
   },
   entries: ['src/cli'],
-  externals: [],
   failOnWarn: true,
 })

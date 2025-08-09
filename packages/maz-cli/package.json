@@ -52,7 +52,6 @@
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
-    "@maz-ui/node": "workspace:*",
     "@types/clear": "^0.1.4",
     "@types/figlet": "^1.7.0",
     "@types/tinycolor2": "^1.4.6",
