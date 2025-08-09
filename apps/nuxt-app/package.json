@@ -38,5 +38,6 @@
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix",
     "*.{vue,css,scss,postcss,pcss}": "stylelint --fix"
-  }
+  },
+  "version": "4.0.0"
 }
