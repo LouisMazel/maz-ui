@@ -4,6 +4,10 @@ import type { MazColor } from './types'
 import { MazPencil } from '@maz-ui/icons'
 import { computed, defineAsyncComponent } from 'vue'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 const props = withDefaults(defineProps<MazAvatarProps>(), {
   src: undefined,
   caption: undefined,

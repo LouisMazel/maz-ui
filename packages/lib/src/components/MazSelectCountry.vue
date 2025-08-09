@@ -143,6 +143,10 @@ export interface MazSelectCountryProps<Option extends { name: string, code: Disp
   open?: boolean
 }
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 const {
   id,
   listPosition,

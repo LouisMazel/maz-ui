@@ -7,6 +7,10 @@ import { MazArrowTopRightOnSquare } from '@maz-ui/icons'
 import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 const {
   class: classProp,
   style: styleProp,
