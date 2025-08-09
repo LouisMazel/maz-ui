@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.0.0-beta.37...v4.0.0-beta.38
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.37...v4.0.0-beta.38)
+
+### 🚀 Features
+
+- **@maz-ui/icons:** Add country flags ([faee5d8df](https://github.com/LouisMazel/maz-ui/commit/faee5d8df))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.36...v4.0.0-beta.37
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.36...v4.0.0-beta.37)
