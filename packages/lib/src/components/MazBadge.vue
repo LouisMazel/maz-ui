@@ -106,7 +106,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
 
     &.--pastel {
-      @apply maz-border-primary-100 maz-bg-primary-100 maz-text-primary;
+      @apply maz-border-primary-100 maz-bg-primary-100 maz-text-primary-700;
     }
   }
 
@@ -118,7 +118,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
 
     &.--pastel {
-      @apply maz-border-info-100 maz-bg-info-100 maz-text-info;
+      @apply maz-border-info-100 maz-bg-info-100 maz-text-info-700;
     }
   }
 
@@ -130,7 +130,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
 
     &.--pastel {
-      @apply maz-border-secondary-100 maz-bg-secondary-100 maz-text-secondary;
+      @apply maz-border-secondary-100 maz-bg-secondary-100 maz-text-secondary-700;
     }
   }
 
@@ -142,7 +142,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
 
     &.--pastel {
-      @apply maz-border-destructive-100 maz-bg-destructive-100 maz-text-destructive;
+      @apply maz-border-destructive-200 maz-bg-destructive-200 maz-text-destructive-700;
     }
   }
 
@@ -154,7 +154,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
 
     &.--pastel {
-      @apply maz-border-warning-100 maz-bg-warning-100 maz-text-warning;
+      @apply maz-border-warning-100 maz-bg-warning-100 maz-text-warning-700;
     }
   }
 
@@ -166,7 +166,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
 
     &.--pastel {
-      @apply maz-border-success-100 maz-bg-success-100 maz-text-success;
+      @apply maz-border-success-100 maz-bg-success-100 maz-text-success-700;
     }
   }
 
@@ -190,19 +190,19 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
 
     &.--pastel {
-      @apply maz-border-accent-100 maz-bg-accent-100 maz-text-accent;
+      @apply maz-border-accent-100 maz-bg-accent-100 maz-text-accent-700;
     }
   }
 
   &.--surface {
-    @apply maz-border-surface-600 maz-bg-surface maz-text-surface-foreground;
+    @apply maz-border-divider maz-bg-surface maz-text-surface-foreground;
 
     &.--outlined {
-      @apply maz-border-surface-600 maz-bg-transparent maz-text-surface-foreground;
+      @apply maz-border-divider maz-bg-transparent maz-text-surface-foreground;
     }
 
     &.--pastel {
-      @apply maz-border-surface-100 maz-bg-surface-100 maz-text-surface-foreground;
+      @apply maz-border-surface-100 dark:maz-bg-surface-100 maz-bg-surface-600 maz-text-surface-foreground;
     }
   }
 }

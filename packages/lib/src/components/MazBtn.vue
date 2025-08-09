@@ -120,9 +120,9 @@ const component = computed(() => {
 
 const btnColorClass = computed(() => {
   if (pastel)
-    return `--${color}-pastel`
+    return `--${getColor(color)}-pastel`
   if (outlined)
-    return `--${color}-outlined`
+    return `--${getColor(color)}-outlined`
   return `--${getColor(color)}`
 })
 const isDisabled = computed(
@@ -411,6 +411,10 @@ const iconClassSize = computed(() => {
     &:not(:disabled):hover {
       @apply maz-bg-surface-600 dark:maz-bg-surface-400;
     }
+
+    .m-btn-loader-container {
+      @apply maz-text-surface-foreground maz-bg-surface-600 dark:maz-bg-surface-400;
+    }
   }
 
   /* OUTLINED */
@@ -511,8 +515,8 @@ const iconClassSize = computed(() => {
     }
   }
 
-  &.--background-outlined {
-    @apply maz-border-surface-600 maz-bg-surface dark:maz-border-divider maz-text-surface-foreground;
+  &.--surface-outlined {
+    @apply maz-border-divider maz-bg-surface dark:maz-border-divider maz-text-surface-foreground;
 
     &:not(:disabled):hover {
       @apply maz-bg-surface-600/30;
@@ -524,7 +528,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--transparent-outlined {
-    @apply maz-border-surface-600 maz-bg-transparent dark:maz-border-divider maz-text-surface-foreground;
+    @apply maz-border-divider maz-bg-transparent dark:maz-border-divider maz-text-surface-foreground;
 
     &:not(:disabled):hover {
       @apply maz-bg-surface-600/30;
@@ -538,7 +542,7 @@ const iconClassSize = computed(() => {
   /* PASTEL */
 
   &.--primary-pastel {
-    @apply maz-bg-primary-50 maz-text-primary;
+    @apply maz-bg-primary-100 maz-text-primary-700;
 
     &:not(:disabled):hover {
       @apply maz-bg-primary maz-text-primary-foreground;
@@ -550,7 +554,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--secondary-pastel {
-    @apply maz-bg-secondary-50 maz-text-secondary;
+    @apply maz-bg-secondary-100 maz-text-secondary-700;
 
     &:not(:disabled):hover {
       @apply maz-bg-secondary maz-text-secondary-foreground;
@@ -562,7 +566,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--info-pastel {
-    @apply maz-bg-info-50 maz-text-info;
+    @apply maz-bg-info-100 maz-text-info-700;
 
     &:not(:disabled):hover {
       @apply maz-bg-info maz-text-info-foreground;
@@ -574,7 +578,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--success-pastel {
-    @apply maz-bg-success-50 maz-text-success;
+    @apply maz-bg-success-100 maz-text-success-700;
 
     &:not(:disabled):hover {
       @apply maz-bg-success maz-text-success-foreground;
@@ -586,7 +590,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--destructive-pastel {
-    @apply maz-bg-destructive-50 maz-text-destructive;
+    @apply maz-bg-destructive-200 maz-text-destructive-700;
 
     &:not(:disabled):hover {
       @apply maz-bg-destructive maz-text-destructive-foreground;
@@ -598,7 +602,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--warning-pastel {
-    @apply maz-bg-warning-50 maz-text-warning;
+    @apply maz-bg-warning-100 maz-text-warning-700;
 
     &:not(:disabled):hover {
       @apply maz-bg-warning maz-text-warning-foreground;
@@ -610,10 +614,10 @@ const iconClassSize = computed(() => {
   }
 
   &.--contrast-pastel {
-    @apply maz-bg-contrast-50 maz-text-contrast;
+    @apply maz-bg-contrast-100 maz-text-contrast-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-contrast maz-text-contrast-foreground;
+      @apply maz-bg-contrast;
     }
 
     .m-btn-loader-container {
@@ -622,7 +626,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--accent-pastel {
-    @apply maz-bg-accent-50 maz-text-accent;
+    @apply maz-bg-accent-100 maz-text-accent-700;
 
     &:not(:disabled):hover {
       @apply maz-bg-accent maz-text-accent-foreground;
