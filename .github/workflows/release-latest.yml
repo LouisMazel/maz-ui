@@ -43,7 +43,13 @@ jobs:
         run: pnpm lint:all
 
       - name: Test units
-        run: pnpm test:unit:all
+        run: pnpm test:unit:coverage:all
+
+      - name: Push Coverage to Qlty
+        uses: qltysh/qlty-action/coverage@main
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: ${{github.workspace}}/packages/lib/coverage/lcov.info
 
       - name: Setup Git User
         run: |

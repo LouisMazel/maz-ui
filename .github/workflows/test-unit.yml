@@ -10,10 +10,6 @@ on:
       - .github/workflows/test-unit.yml
       - 'packages/**'
       - pnpm-lock.yaml
-  push:
-    branches:
-      - master
-      - develop
 
 jobs:
   coverage:
@@ -34,7 +30,7 @@ jobs:
       - name: Build utils
         run: pnpm build:packages
 
-      - name: Run others tests
+      - name: Test units
         run: pnpm test:unit:coverage:all
 
       - name: Qlty Coverage
