@@ -11,18 +11,6 @@ description: MazInputPhoneNumber is a powerful and user-friendly component that 
 
 <!--@include: ./../.vitepress/mixins/translated-component.md-->
 
-## Prerequisites
-
-To use this component, you need to install the `libphonenumber-js` dependency:
-
-<NpmBadge package="libphonenumber-js" />
-
-```bash
-npm install libphonenumber-js
-```
-
----
-
 ::: tip ✨ What makes this component special?
 - **Smart country detection** - Automatically detects country from browser locale or IP
 - **Real-time validation** - Visual feedback as you type
