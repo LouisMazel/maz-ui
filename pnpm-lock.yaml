@@ -115,8 +115,8 @@ importers:
         specifier: ^19.1.1
         version: 19.1.1
       tailwindcss:
-        specifier: ^3.4.17
-        version: 3.4.17(ts-node@10.9.2(@swc/core@1.13.3)(@types/node@24.2.1)(typescript@5.9.2))
+        specifier: ^4.1.11
+        version: 4.1.11
       typescript:
         specifier: ~5.9.2
         version: 5.9.2
@@ -171,10 +171,10 @@ importers:
         version: 39.0.0(stylelint@16.23.1(typescript@5.9.2))
       stylelint-config-tailwindcss:
         specifier: ^1.0.0
-        version: 1.0.0(stylelint@16.23.1(typescript@5.9.2))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.13.3)(@types/node@24.2.1)(typescript@5.9.2)))
+        version: 1.0.0(stylelint@16.23.1(typescript@5.9.2))(tailwindcss@4.1.11)
       tailwindcss:
-        specifier: ^3.4.17
-        version: 3.4.17(ts-node@10.9.2(@swc/core@1.13.3)(@types/node@24.2.1)(typescript@5.9.2))
+        specifier: ^4.1.11
+        version: 4.1.11
       typescript:
         specifier: ~5.9.2
         version: 5.9.2
@@ -259,7 +259,7 @@ importers:
         version: 3.0.2(eslint@9.32.0(jiti@2.5.1))
       eslint-plugin-tailwindcss:
         specifier: ^3.18.0
-        version: 3.18.0(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.13.3)(@types/node@24.2.1)(typescript@5.9.2)))
+        version: 3.18.0(tailwindcss@4.1.11)
       eslint-plugin-vuejs-accessibility:
         specifier: ^2.4.0
         version: 2.4.1(eslint@9.32.0(jiti@2.5.1))
@@ -411,13 +411,13 @@ importers:
         version: 15.0.1(postcss@8.5.6)(stylelint@16.23.1(typescript@5.9.2))
       stylelint-config-tailwindcss:
         specifier: ^1.0.0
-        version: 1.0.0(stylelint@16.23.1(typescript@5.9.2))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.13.3)(@types/node@24.2.1)(typescript@5.9.2)))
+        version: 1.0.0(stylelint@16.23.1(typescript@5.9.2))(tailwindcss@4.1.11)
       stylelint-scss:
         specifier: ^6.12.0
         version: 6.12.1(stylelint@16.23.1(typescript@5.9.2))
       tailwindcss:
-        specifier: ^3.4.16
-        version: 3.4.17(ts-node@10.9.2(@swc/core@1.13.3)(@types/node@24.2.1)(typescript@5.9.2))
+        specifier: ^4.1.11
+        version: 4.1.11
       typescript:
         specifier: ~5.9.2
         version: 5.9.2
@@ -10554,6 +10554,9 @@ packages:
     engines: {node: '>=14.0.0'}
     hasBin: true
 
+  tailwindcss@4.1.11:
+    resolution: {integrity: sha512-2E9TBm6MDD/xKYe+dvJZAmg3yxIEDNRc0jwlNyDg/4Fil2QcSLjFKGVff0lAf1jjeaArlG/M75Ey/EYr/OJtBA==}
+
   tapable@2.2.2:
     resolution: {integrity: sha512-Re10+NauLTMCudc7T5WLFLAwDhQ0JWdrMK+9B2M8zR5hRExKmsRDCBA7/aV/pNJFltmBFO5BAMlQFi/vq3nKOg==}
     engines: {node: '>=6'}
@@ -18178,11 +18181,11 @@ snapshots:
       semver: 7.7.1
       typescript: 5.8.3
 
-  eslint-plugin-tailwindcss@3.18.0(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.13.3)(@types/node@24.2.1)(typescript@5.9.2))):
+  eslint-plugin-tailwindcss@3.18.0(tailwindcss@4.1.11):
     dependencies:
       fast-glob: 3.3.3
       postcss: 8.5.6
-      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.13.3)(@types/node@24.2.1)(typescript@5.9.2))
+      tailwindcss: 4.1.11
 
   eslint-plugin-toml@0.12.0(eslint@9.32.0(jiti@2.5.1)):
     dependencies:
@@ -23393,10 +23396,10 @@ snapshots:
       stylelint: 16.23.1(typescript@5.9.2)
       stylelint-config-recommended: 17.0.0(stylelint@16.23.1(typescript@5.9.2))
 
-  stylelint-config-tailwindcss@1.0.0(stylelint@16.23.1(typescript@5.9.2))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.13.3)(@types/node@24.2.1)(typescript@5.9.2))):
+  stylelint-config-tailwindcss@1.0.0(stylelint@16.23.1(typescript@5.9.2))(tailwindcss@4.1.11):
     dependencies:
       stylelint: 16.23.1(typescript@5.9.2)
-      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.13.3)(@types/node@24.2.1)(typescript@5.9.2))
+      tailwindcss: 4.1.11
 
   stylelint-scss@6.12.1(stylelint@16.23.1(typescript@5.9.2)):
     dependencies:
@@ -23578,6 +23581,8 @@ snapshots:
       sucrase: 3.35.0
     transitivePeerDependencies:
       - ts-node
+
+  tailwindcss@4.1.11: {}
 
   tapable@2.2.2: {}
 
