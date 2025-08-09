@@ -27,7 +27,7 @@ export const nav = [
     items: [
       {
         text: 'Changelog',
-        link: 'https://github.com/LouisMazel/maz-ui/blob/master/CHANGELOG.md',
+        link: 'https://github.com/LouisMazel/maz-ui/releases',
       },
       {
         text: 'Contributing',
