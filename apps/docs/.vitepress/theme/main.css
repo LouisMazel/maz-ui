@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  --vp-layout-top-height: 3rem;
   --vp-font-family-base: var(--maz-font-family);
   --vp-c-bg: hsl(var(--maz-background));
   --vp-c-brand: hsl(var(--maz-primary));
