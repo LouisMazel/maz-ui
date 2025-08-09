@@ -1,5 +1,20 @@
 # Change Log
 
+## v4.0.0-beta.39...v4.0.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.39...v4.0.1)
+
+### 💅 Refactors
+
+- **maz-ui:** Disable heritage attributs for some components ([8222257d4](https://github.com/LouisMazel/maz-ui/commit/8222257d4))
+- **maz-ui:** Adjust destructive color to be darker ([f9bef9710](https://github.com/LouisMazel/maz-ui/commit/f9bef9710))
+- **maz-ui:** MazBtn, MazBadge - adjust colors of pastel variant ([23e5cfed2](https://github.com/LouisMazel/maz-ui/commit/23e5cfed2))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.39...v4.0.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.39...v4.0.0)

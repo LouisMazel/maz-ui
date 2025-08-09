@@ -1,5 +1,19 @@
 # Change Log
 
+## v4.0.0-beta.39...v4.0.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.39...v4.0.1)
+
+### 💅 Refactors
+
+- **@maz-ui/themes:** Preset can be optional for buildtime strategie ([55d124287](https://github.com/LouisMazel/maz-ui/commit/55d124287))
+- **maz-ui:** Adjust destructive color to be darker ([f9bef9710](https://github.com/LouisMazel/maz-ui/commit/f9bef9710))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.39...v4.0.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.39...v4.0.0)
