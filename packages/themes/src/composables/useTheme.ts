@@ -1,9 +1,12 @@
 import type { ColorMode, DarkModeStrategy, Strategy, ThemeMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
 import type { CriticalCSSOptions, FullCSSOptions } from '../utils/css-generator'
-import { computed, getCurrentInstance, inject, ref, watch, watchEffect } from 'vue'
+import { isServer } from '@maz-ui/utils/helpers/isServer'
+import { computed, getCurrentInstance, inject, onMounted, ref, watch, watchEffect } from 'vue'
+import { useMutationObserver } from '../../../lib/src/composables/useMutationObserver'
 import { setCookie } from '../utils/cookie-storage'
 import { CSS_IDS, generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'
 import { getColorMode, isSystemPrefersDark } from '../utils/get-color-mode'
+
 import { getPreset } from '../utils/get-preset'
 import { mergePresets } from '../utils/preset-merger'
 
@@ -150,6 +153,24 @@ function toggleDarkMode() {
 }
 
 export function useTheme() {
+  const htmlElement = ref<HTMLElement>()
+
+  onMounted(() => {
+    htmlElement.value = document.documentElement
+  })
+
+  useMutationObserver(
+    htmlElement,
+    () => {
+      if (!state.value || isServer())
+        return
+
+      state.value.isDark = document.documentElement.classList.contains('dark')
+    },
+    {
+      attributes: true,
+    },
+  )
   let mazThemeState: ThemeState | undefined
 
   try {
