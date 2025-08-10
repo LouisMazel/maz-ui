@@ -237,7 +237,7 @@ const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
 const popoverComponent = useTemplateRef('popover')
 const inputRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('input')
 const searchInputRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('searchInput')
-const optionListRef = useTemplateRef('optionListRef')
+const optionListElement = useTemplateRef('optionListRef')
 const optionListWrapperRef = useTemplateRef('optionListWrapper')
 
 const selectedTextColor = computed(() => `hsl(var(--maz-${props.color}))`)
@@ -484,7 +484,7 @@ async function scrollToOptionIndex(index?: number) {
     return
   }
 
-  const item = optionListRef.value?.querySelector<HTMLButtonElement>(`.m-select-list-item:nth-child(${index + 1})`)
+  const item = optionListElement.value?.querySelector<HTMLButtonElement>(`.m-select-list-item:nth-child(${index + 1})`)
 
   if (item && optionListWrapperRef.value) {
     const wrapperRect = optionListWrapperRef.value.getBoundingClientRect()
