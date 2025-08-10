@@ -133,18 +133,19 @@ const btnType = computed(() => (component.value === 'button' ? type : undefined)
 
 const iconClassSize = computed(() => {
   if (size === 'xl')
-    return 'maz-text-3xl'
-  if (size === 'lg')
     return 'maz-text-2xl'
-  if (size === 'md')
+  if (size === 'lg')
     return 'maz-text-xl'
-  if (size === 'sm')
+  if (size === 'md')
     return 'maz-text-lg'
-  if (size === 'xs')
+  if (size === 'sm')
     return 'maz-text-base'
-  if (size === 'mini')
+  if (size === 'xs')
     return 'maz-text-sm'
-  return 'maz-text-xl'
+  if (size === 'mini')
+    return 'maz-text-xs'
+
+  return 'maz-text-lg'
 })
 </script>
 
@@ -163,6 +164,8 @@ const iconClassSize = computed(() => {
         '--fab': fab,
         '--loading': loading,
         '--no-padding': !padding,
+        '--has-left-icon': !!leftIcon || !!$slots['left-icon'],
+        '--has-right-icon': !!rightIcon || !!$slots['right-icon'],
       },
     ]"
     :style="[`--justify: ${justify}`, `--color: var(--maz-${getColor(color)})`]"
@@ -277,18 +280,50 @@ const iconClassSize = computed(() => {
   /* Sizes */
   &.--xl {
     @apply maz-min-h-16 maz-px-8 maz-text-xl;
+
+    &.--has-left-icon {
+      @apply maz-ps-6;
+    }
+
+    &.--has-right-icon {
+      @apply maz-pe-6;
+    }
   }
 
   &.--lg {
     @apply maz-min-h-14 maz-px-6;
+
+    &.--has-left-icon {
+      @apply maz-ps-4;
+    }
+
+    &.--has-right-icon {
+      @apply maz-pe-4;
+    }
   }
 
   &.--md {
     @apply maz-min-h-12 maz-px-4;
+
+    &.--has-left-icon {
+      @apply maz-ps-2;
+    }
+
+    &.--has-right-icon {
+      @apply maz-pe-2;
+    }
   }
 
   &.--sm {
     @apply maz-min-h-10 maz-px-3;
+
+    &.--has-left-icon {
+      @apply maz-ps-2;
+    }
+
+    &.--has-right-icon {
+      @apply maz-pe-2;
+    }
   }
 
   &.--xs {
@@ -542,7 +577,7 @@ const iconClassSize = computed(() => {
   /* PASTEL */
 
   &.--primary-pastel {
-    @apply maz-bg-primary-100 maz-text-primary-700;
+    @apply maz-bg-primary-50 maz-text-primary-700;
 
     &:not(:disabled):hover {
       @apply maz-bg-primary maz-text-primary-foreground;
@@ -554,7 +589,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--secondary-pastel {
-    @apply maz-bg-secondary-100 maz-text-secondary-700;
+    @apply maz-bg-secondary-50 maz-text-secondary-700;
 
     &:not(:disabled):hover {
       @apply maz-bg-secondary maz-text-secondary-foreground;
@@ -566,7 +601,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--info-pastel {
-    @apply maz-bg-info-100 maz-text-info-700;
+    @apply maz-bg-info-50 maz-text-info-700;
 
     &:not(:disabled):hover {
       @apply maz-bg-info maz-text-info-foreground;
@@ -578,7 +613,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--success-pastel {
-    @apply maz-bg-success-100 maz-text-success-700;
+    @apply maz-bg-success-50 maz-text-success-700;
 
     &:not(:disabled):hover {
       @apply maz-bg-success maz-text-success-foreground;
@@ -590,7 +625,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--destructive-pastel {
-    @apply maz-bg-destructive-200 maz-text-destructive-700;
+    @apply maz-bg-destructive-50 maz-text-destructive-700;
 
     &:not(:disabled):hover {
       @apply maz-bg-destructive maz-text-destructive-foreground;
@@ -602,7 +637,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--warning-pastel {
-    @apply maz-bg-warning-100 maz-text-warning-700;
+    @apply maz-bg-warning-50 maz-text-warning-700;
 
     &:not(:disabled):hover {
       @apply maz-bg-warning maz-text-warning-foreground;
@@ -614,7 +649,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--contrast-pastel {
-    @apply maz-bg-contrast-100 maz-text-contrast-foreground;
+    @apply maz-bg-contrast-50 maz-text-contrast-foreground;
 
     &:not(:disabled):hover {
       @apply maz-bg-contrast;
@@ -626,7 +661,7 @@ const iconClassSize = computed(() => {
   }
 
   &.--accent-pastel {
-    @apply maz-bg-accent-100 maz-text-accent-700;
+    @apply maz-bg-accent-50 maz-text-accent-700;
 
     &:not(:disabled):hover {
       @apply maz-bg-accent maz-text-accent-foreground;
@@ -634,6 +669,22 @@ const iconClassSize = computed(() => {
 
     .m-btn-loader-container {
       @apply maz-text-accent-foreground;
+    }
+  }
+
+  &.--surface-pastel {
+    @apply maz-text-foreground maz-bg-surface-600;
+
+    &:not(:disabled):hover {
+      @apply maz-bg-surface-700;
+    }
+  }
+
+  &.--transparent-pastel {
+    @apply maz-text-foreground;
+
+    &:not(:disabled):hover {
+      @apply maz-bg-surface-600;
     }
   }
 
