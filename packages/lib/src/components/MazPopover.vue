@@ -254,8 +254,8 @@ const triggerId = useInstanceUniqId({
 
 const attrs = useAttrs()
 
-const triggerElement = useTemplateRef<HTMLElement>('trigger')
-const panelElement = useTemplateRef<HTMLElement>('panel')
+const triggerRef = useTemplateRef<HTMLElement>('trigger')
+const panelRef = useTemplateRef<HTMLElement>('panel')
 
 const middleware = computed(() => {
   const middleware = [
@@ -294,11 +294,28 @@ const transitionName = computed(() => {
 
   return transition
 })
-const reference = computed(() => getPositionReference() || triggerElement.value)
+const positionRef = computed(() => {
+  if (!positionReference) {
+    return triggerRef.value
+  }
+
+  if (typeof positionReference === 'string') {
+    const withinTrigger = triggerRef.value?.querySelector<HTMLElement>(positionReference)
+
+    if (withinTrigger) {
+      return withinTrigger
+    }
+
+    return isClient() ? document.querySelector<HTMLElement>(positionReference) : null
+  }
+
+  return positionReference
+})
+const reference = computed(() => positionRef.value || triggerRef.value)
 
 const { floatingStyles, placement, update, middlewareData } = useFloating(
   reference,
-  panelElement,
+  panelRef,
   {
     placement: floatingPosition,
     middleware,
@@ -309,25 +326,8 @@ const { floatingStyles, placement, update, middlewareData } = useFloating(
 
 const computedPosition = computed(() => placement.value ?? floatingPosition.value)
 
-function getPositionReference(): HTMLElement | null {
-  if (!positionReference) {
-    return triggerElement.value
-  }
+const isOpen = defineModel({ default: false })
 
-  if (typeof positionReference === 'string') {
-    const withinTrigger = triggerElement.value?.querySelector<HTMLElement>(positionReference)
-
-    if (withinTrigger) {
-      return withinTrigger
-    }
-
-    return isClient() ? document.querySelector<HTMLElement>(positionReference) : null
-  }
-
-  return positionReference
-}
-
-const isOpen = defineModel<boolean>({ required: false, default: false })
 let openTimeout: NodeJS.Timeout | null = null
 let closeTimeout: NodeJS.Timeout | null = null
 let initialFocusElement: HTMLElement | null = null
@@ -470,9 +470,9 @@ function toggle() {
 }
 
 function setOpen(value: boolean) {
+  isOpen.value = value
   if (value) {
     emits('open')
-    isOpen.value = value
     emits('toggle', value)
 
     nextTick(() => {
@@ -481,7 +481,6 @@ function setOpen(value: boolean) {
     })
   }
   else {
-    isOpen.value = value
     emits('toggle', value)
     emits('close')
     ignoreNextClickOutside = false
@@ -544,7 +543,7 @@ function setupFocusTrap() {
   initialFocusElement = document.activeElement as HTMLElement
 
   nextTick(() => {
-    const focusableElements = panelElement.value?.querySelectorAll<HTMLElement>(
+    const focusableElements = panelRef.value?.querySelectorAll<HTMLElement>(
       'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select, [tabindex]:not([tabindex="-1"])',
     )
 
@@ -552,7 +551,7 @@ function setupFocusTrap() {
       focusableElements[0].focus({ preventScroll: true })
     }
     else {
-      panelElement.value?.focus({ preventScroll: true })
+      panelRef.value?.focus({ preventScroll: true })
     }
   })
 }
@@ -581,10 +580,10 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 function handleTrapFocus(event: KeyboardEvent) {
-  if (!panelElement.value || !isClient())
+  if (!panelRef.value || !isClient())
     return
 
-  const focusableElements = panelElement.value.querySelectorAll(
+  const focusableElements = panelRef.value.querySelectorAll(
     'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select, [tabindex]:not([tabindex="-1"])',
   )
 
@@ -618,7 +617,7 @@ function onClickOutside(event: Event) {
   }
 
   if (closeOnClickOutside && !persistent) {
-    if (triggerElement.value && triggerElement.value.contains(event.target as Node)) {
+    if (triggerRef.value && triggerRef.value.contains(event.target as Node)) {
       return
     }
     close()
@@ -672,11 +671,11 @@ defineExpose({
   toggle,
   /**
    * Check if the popover is open
-   * @type {ComputedRef<boolean>}
+   * @type {ModelRef<boolean>}
    * @description Reactive reference to the popover open state
    * @usage `const isPopoverOpen = mazPopoverInstance.value?.isOpen`
    */
-  isOpen: computed(() => isOpen.value),
+  isOpen,
   /**
    * Update the popover position
    * @description Manually recalculate and update the popover position
@@ -766,7 +765,7 @@ defineExpose({
 
 <style lang="postcss" scoped>
 .m-popover {
-  @apply maz-inline-block;
+  @apply maz-inline-block maz-w-max;
 
   .m-popover-trigger {
     @apply maz-inline-block maz-size-full;
