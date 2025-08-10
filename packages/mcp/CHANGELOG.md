@@ -4,6 +4,10 @@
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.1-beta.0...v4.1.1)
 
+## v4.1.1-beta.0...v4.1.1-beta.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.1-beta.0...v4.1.1-beta.1)
+
 **Note:** No relevant commits found
 
 
