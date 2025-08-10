@@ -3,6 +3,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import MazSelect from '@components/MazSelect.vue'
 import { mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
 
 describe('components/MazSelect.vue', () => {
   expect(MazSelect).toBeTruthy()
@@ -70,9 +71,8 @@ describe('components/MazSelect.vue', () => {
 
   it('should update modelValue and close list', async () => {
     await wrapper.vm.updateValue(options[2])
-    // expect(wrapper.vm.mazInputValue).toBe('Test 1')
-    // expect(wrapper.vm.modelValue).toBe(3)
     expect(wrapper.emitted()['update:model-value']).toStrictEqual([[3]])
+    expect(wrapper.vm.isOpen).toBe(false)
   })
 
   it('should open the list', async () => {
@@ -99,12 +99,12 @@ describe('components/MazSelect.vue', () => {
 
     await wrapper.vm.$nextTick()
 
-    // Selecting the second option should update the input value and emit a change event with the option value
     const options = wrapper.findAll('.m-select-list-item')
 
     await options.at(0)?.trigger('click')
 
     expect(wrapper.vm.inputValue).toBe('Test 1')
+    await nextTick()
     expect(wrapper.emitted('update:model-value')?.[0][0]).toBe(1)
   })
 

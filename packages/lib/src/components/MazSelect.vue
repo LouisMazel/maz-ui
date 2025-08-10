@@ -248,21 +248,7 @@ const messages = computed(() => ({
   searchPlaceholder: props.translations?.searchPlaceholder || t('select.searchPlaceholder'),
 } satisfies MazUiTranslationsNestedSchema['select']))
 
-const hasPopoverOpen = defineModel('open', { default: false })
-
-// Ref locale pour éviter les conflits avec le defineModel dans les watchers
-const hasPopoverOpenLocal = ref(false)
-
-// Sync avec le defineModel
-watch(hasPopoverOpen, (value) => {
-  hasPopoverOpenLocal.value = value
-}, { immediate: true })
-
-watch(hasPopoverOpenLocal, (value) => {
-  if (hasPopoverOpen.value !== value) {
-    hasPopoverOpen.value = value
-  }
-})
+const isOpen = defineModel('open', { default: false })
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazSelect',
@@ -481,7 +467,7 @@ function mainInputKeyboardHandler(event: KeyboardEvent) {
 
   const keyPressed = event.key
 
-  if ((keyPressed === 'ArrowDown' || keyPressed === 'ArrowUp' || /^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed)) && !hasPopoverOpen.value) {
+  if ((keyPressed === 'ArrowDown' || keyPressed === 'ArrowUp' || /^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed)) && !isOpen.value) {
     event.preventDefault()
     popoverComponent.value?.open()
   }
@@ -587,7 +573,7 @@ function updateListPosition() {
 }
 
 watch(
-  hasPopoverOpenLocal,
+  isOpen,
   (value) => {
     if (!isClient())
       return
@@ -624,11 +610,11 @@ defineExpose({
   <MazPopover
     :id="`${instanceId}-popover`"
     ref="popover"
-    v-model="hasPopoverOpen"
+    v-model="isOpen"
     class="m-select m-reset-css"
     :class="[
       {
-        '--is-open': hasPopoverOpen,
+        '--is-open': isOpen,
         '--disabled': disabled,
       },
       props.class,
@@ -646,14 +632,14 @@ defineExpose({
     @close="emits('close')"
     @open="onOpenList"
   >
-    <template #trigger="{ isOpen, close, open: openPicker, toggle: togglePopover }">
+    <template #trigger="{ close, open: openPicker, toggle: togglePopover }">
       <MazInput
         :id="instanceId"
         ref="input"
         class="m-select-input"
         v-bind="$attrs"
         :required="required"
-        :border-active="hasPopoverOpen"
+        :border-active="isOpen"
         :color="color"
         :model-value="inputValue"
         :size
@@ -694,7 +680,7 @@ defineExpose({
               tabindex="-1"
               type="button"
               class="m-select-input__toggle-button maz-custom"
-              :aria-label="`${hasPopoverOpen ? 'collapse' : 'expand'} list of options`"
+              :aria-label="`${isOpen ? 'collapse' : 'expand'} list of options`"
             >
               <MazChevronDown class="m-select-chevron" />
             </button>
@@ -703,7 +689,7 @@ defineExpose({
       </MazInput>
     </template>
 
-    <template #default="{ isOpen, close, open: openPicker, toggle: togglePopover }">
+    <template #default="{ close, open: openPicker, toggle: togglePopover }">
       <div
         :id="`${instanceId}-option-list`"
         ref="optionListRef"
@@ -760,7 +746,6 @@ defineExpose({
               type="button"
               :tabindex="multiple ? -1 : 0"
               class="m-select-list-item maz-custom maz-flex-none"
-              :disabled="isSelectedOption(option)"
               :class="[
                 {
                   '--is-selected': isSelectedOption(option),
