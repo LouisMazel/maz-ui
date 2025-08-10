@@ -1,9 +1,11 @@
 name: Release Beta
 
 on:
-  push:
+  pull_request:
     branches:
       - develop
+    paths:
+      - 'packages/**/*'
     paths-ignore:
       - lerna.json
       - package.json
