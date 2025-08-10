@@ -24,6 +24,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
+          ref: develop
           fetch-depth: 0
           token: ${{ secrets.RELEASE_TOKEN }}
 
