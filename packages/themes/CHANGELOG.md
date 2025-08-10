@@ -1,5 +1,19 @@
 # Change Log
 
+## v4.1.1-beta.0...v4.1.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.1-beta.0...v4.1.1)
+
+### 💅 Refactors
+
+- **@maz-ui/themes:** Preset is only required when strategy is runtime or hybrid ([a1585f765](https://github.com/LouisMazel/maz-ui/commit/a1585f765))
+- **@maz-ui/themes:** Preset is only required when strategy is runtime or hybrid ([f4c0d1ecf](https://github.com/LouisMazel/maz-ui/commit/f4c0d1ecf))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.0...v4.1.1-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.0...v4.1.1-beta.0)

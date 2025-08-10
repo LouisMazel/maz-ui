@@ -1,5 +1,19 @@
 # Change Log
 
+## v4.1.1-beta.0...v4.1.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.1-beta.0...v4.1.1)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSelect - reactivity warning with useTemplateRef - fix #1305 ([#1305](https://github.com/LouisMazel/maz-ui/issues/1305))
+- **maz-ui:** MazSelect - reactivity warning with useTemplateRef - fix #1305 ([#1305](https://github.com/LouisMazel/maz-ui/issues/1305))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.0...v4.1.1-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.0...v4.1.1-beta.0)
