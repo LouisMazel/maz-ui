@@ -90,13 +90,18 @@ const isDark = computed(() => state.value?.isDark ?? false)
 const strategy = computed(() => state.value?.strategy as Strategy)
 const mode = computed(() => state.value?.mode as ThemeMode)
 const darkModeStrategy = computed(() => state.value?.darkModeStrategy as DarkModeStrategy)
-const presetName = computed(() => state.value?.currentPreset.name as string)
+const presetName = computed(() => state.value?.currentPreset?.name)
 
 async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePresetName) {
   if (!state.value)
     return
 
   const _preset = typeof preset === 'string' ? await getPreset(preset) : preset
+
+  if (!_preset || !state.value.currentPreset) {
+    console.error('[@maz-ui/themes] No preset found - If you are using the buildtime strategy, you must provide a complete preset')
+    return
+  }
 
   const newPreset = 'name' in _preset && _preset.name !== state.value.currentPreset.name
     ? _preset as ThemePreset

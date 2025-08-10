@@ -27,15 +27,19 @@ export const nav = [
     items: [
       {
         text: 'Changelog',
-        link: 'https://github.com/LouisMazel/maz-ui/blob/master/CHANGELOG.md',
+        link: 'https://github.com/LouisMazel/maz-ui/releases',
       },
       {
-        text: 'Contributing',
-        link: 'https://github.com/LouisMazel/maz-ui/blob/master/CONTRIBUTING.md',
+        text: 'v3 documentation',
+        link: 'https://v3.maz-ui.com',
       },
       {
         text: 'Migration v3 to v4',
         link: '/guide/migration-v4',
+      },
+      {
+        text: 'Contributing',
+        link: 'https://github.com/LouisMazel/maz-ui/blob/master/CONTRIBUTING.md',
       },
     ],
   },

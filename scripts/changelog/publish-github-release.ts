@@ -12,8 +12,8 @@ async function main() {
   logger.log('🚀 Publishing GitHub release...')
 
   try {
-    const { stdout: penultimateTag } = await execPromise('git tag --sort=-v:refname | sed -n \'2p\'')
-    const { stdout: lastTag } = await execPromise('git tag --sort=-v:refname | sed -n \'1p\'', {
+    const { stdout: penultimateTag } = await execPromise('git tag --sort=-creatordate | sed -n \'2p\'')
+    const { stdout: lastTag } = await execPromise('git tag --sort=-creatordate | sed -n \'1p\'', {
       noSuccess: true,
       noStdout: true,
     })

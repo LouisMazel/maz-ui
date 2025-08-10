@@ -7,16 +7,6 @@ description: useFormValidator and useFormField are two Vue 3 composables designe
 
 `useFormValidator` and `useFormField` are two Vue 3 composables designed to simplify form validation using [Valibot](https://valibot.dev/guides/introduction/) as the validation library. These composables offer a flexible and typed approach to handle form validation in your Vue 3 applications.
 
-## Prerequisites
-
-To use this composable, you have to install the [`Valibot`](https://valibot.dev/) dependency
-
-<NpmBadge package="valibot" />
-
-```bash
-npm install valibot
-```
-
 ## Introduction
 
 ::: details Best Practices

@@ -11,28 +11,6 @@ description: A powerful and flexible date picker component with support for sing
 
 <!--@include: ./../.vitepress/mixins/translated-component.md-->
 
-## Prerequisites
-
-To use this component, you need to install `dayjs`:
-
-<NpmBadge package="dayjs" />
-
-::: code-group
-
-```bash [pnpm]
-pnpm add dayjs
-```
-
-```bash
-npm install dayjs
-```
-
-```bash [yarn]
-yarn add dayjs
-```
-
-:::
-
 ## Table of Contents
 
 - [Basic Usage](#basic-usage)

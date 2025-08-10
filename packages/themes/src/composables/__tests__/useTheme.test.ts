@@ -228,6 +228,21 @@ describe('useTheme', () => {
   })
 
   describe('given composable functions', () => {
+    describe('when updateTheme is called with partial preset', () => {
+      it('then it merges partial preset with current preset', async () => {
+        const mergedPreset = { ...mazUi, name: 'merged' }
+        vi.mocked(inject).mockReturnValue(mockThemeState)
+        vi.mocked(mergePresets).mockReturnValue(mergedPreset)
+
+        const { updateTheme } = useTheme()
+        const partialPreset = { foundation: { 'border-width': '2px' } } as ThemePresetOverrides
+
+        await updateTheme(partialPreset)
+
+        expect(mergePresets).toHaveBeenCalled()
+      })
+    })
+
     describe('when setColorMode is called with dark', () => {
       it('then it updates document cookie', () => {
         vi.mocked(inject).mockReturnValue(mockThemeState)
@@ -277,21 +292,6 @@ describe('useTheme', () => {
         expect(generateCriticalCSS).toHaveBeenCalled()
         expect(generateFullCSS).toHaveBeenCalled()
         expect(injectCSS).toHaveBeenCalledTimes(2)
-      })
-    })
-
-    describe('when updateTheme is called with partial preset', () => {
-      it('then it merges partial preset with current preset', async () => {
-        const mergedPreset = { ...mazUi, name: 'merged' }
-        vi.mocked(inject).mockReturnValue(mockThemeState)
-        vi.mocked(mergePresets).mockReturnValue(mergedPreset)
-
-        const { updateTheme } = useTheme()
-        const partialPreset = { foundation: { 'border-width': '2px' } } as ThemePresetOverrides
-
-        await updateTheme(partialPreset)
-
-        expect(mergePresets).toHaveBeenCalled()
       })
     })
 

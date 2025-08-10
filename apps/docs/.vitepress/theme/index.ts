@@ -3,7 +3,6 @@ import type { Theme } from 'vitepress'
 import type { Component } from 'vue'
 
 import { MazUiTheme } from '@maz-ui/themes/plugin'
-import { mazUi } from '@maz-ui/themes/presets/mazUi'
 import { en, MazUiTranslations } from '@maz-ui/translations'
 import * as components from 'maz-ui/src/components/index.js'
 import { AosPlugin } from 'maz-ui/src/plugins/aos.js'
@@ -33,9 +32,10 @@ export default {
   },
   enhanceApp({ app, router: { route } }) {
     app.use(MazUiTheme, {
-      preset: mazUi,
       darkModeStrategy: 'class',
       strategy: 'hybrid',
+      injectCriticalCSS: false,
+      injectFullCSS: false,
     })
     app.use(MazUiTranslations, {
       locale: 'en',

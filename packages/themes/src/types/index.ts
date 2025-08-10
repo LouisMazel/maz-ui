@@ -88,11 +88,11 @@ export interface ThemeConfig {
   prefix?: string
 
   /**
-   * Theme preset to use
+   * Theme preset to use - Optional if you use buildtime strategy
    * @description Can be a predefined preset name or a custom preset object
-   * @default mazUi preset
+   * @default undefined
    */
-  preset: ThemePreset
+  preset?: ThemePreset
 
   /**
    * Custom preset overrides
@@ -156,7 +156,7 @@ export interface ColorScale {
 }
 
 export interface ThemeState {
-  currentPreset: ThemePreset
+  currentPreset?: ThemePreset
   colorMode: ColorMode
   mode: ThemeMode
   isDark: boolean

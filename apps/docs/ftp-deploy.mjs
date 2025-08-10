@@ -35,9 +35,9 @@ async function deployToHostinger() {
   console.warn('🚚 Deploy started')
 
   await deploy({
-    'server': process.env.FTP_SERVER || env.FTP_SERVER,
-    'username': process.env.FTP_USERNAME || env.FTP_USERNAME,
-    'password': process.env.FTP_PASSWORD || env.FTP_PASSWORD,
+    'server': process.env.HOSTINGER_FTP_SERVER || process.env.FTP_SERVER || env.FTP_SERVER,
+    'username': process.env.HOSTINGER_FTP_USERNAME || process.env.FTP_USERNAME || env.FTP_USERNAME,
+    'password': process.env.HOSTINGER_FTP_PASSWORD || process.env.FTP_PASSWORD || env.FTP_PASSWORD,
     'local-dir': join(resolve(_dirname, './.vitepress/dist/'), '/'),
     // 'server-dir': '/public_html/',
     'exclude': [...excludeDefaults, '.env', '.git/**', 'node_modules/**'],
