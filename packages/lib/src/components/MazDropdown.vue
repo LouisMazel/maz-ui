@@ -251,9 +251,7 @@ async function runAction(item: MazDropdownActionItem, event: Event) {
 
   await item.onClick?.()
 
-  if (closeOnClick) {
-    closeDropdown()
-  }
+  closeDropdown()
 }
 
 function closeDropdown() {
