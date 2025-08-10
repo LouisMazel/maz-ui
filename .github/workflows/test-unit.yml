@@ -2,6 +2,8 @@ name: Unit Tests
 
 on:
   pull_request:
+    branches-ignore:
+      - dependabot/**
     paths:
       - .github/workflows/test-unit.yml
       - 'packages/**'
@@ -9,7 +11,6 @@ on:
 
 jobs:
   coverage:
-    name: coverage
     runs-on: ubuntu-latest
 
     steps:
