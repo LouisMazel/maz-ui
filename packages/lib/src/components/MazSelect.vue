@@ -4,7 +4,8 @@
   generic="Value extends MazInputValue, Option extends MazSelectOption, Multiple extends boolean"
 >
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
-import type { ComponentPublicInstance, HTMLAttributes } from 'vue'
+import type { GenericInstanceType } from '@maz-ui/utils'
+import type { HTMLAttributes } from 'vue'
 import type { MazInputValue } from './MazInput.vue'
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
@@ -192,48 +193,40 @@ const emits = defineEmits<MazSelectEmits>()
 interface MazSelectEmits {
   /**
    * On list is closed
-   * @event 'close'
    * @property {Event} value - the event
    */
   'close': []
   /**
    * On list is opened
-   * @event 'open'
    */
   'open': []
   /**
    * On input blur
-   * @event 'blur'
    * @property {Event} value - the event
    */
   'blur': [value: Event]
   /**
    * On input focus
-   * @event 'focus'
    * @property {Event} value - the event
    */
   'focus': [value?: Event]
   /**
    * On input change value
-   * @event 'change'
    * @property {Event} value - the event
    */
   'change': [value: Event]
   /**
    * On input value
-   * @event 'input'
    * @property {Event} value - the event
    */
   'input': [value: Event]
   /**
    * On model value update, returns the new value
-   * @event 'update:model-value'
    * @property {MazInputValue | MazInputValue[]} value - the new value
    */
   'update:model-value': [value: Multiple extends true ? Value[] : Value]
   /**
    * On selected value, returns the option object
-   * @event 'selected-option'
    * @property {MazSelectOption} value - the option object
    */
   'selected-option': [value: Option]
@@ -241,7 +234,11 @@ interface MazSelectEmits {
 
 const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
 
-const popoverComponent = useTemplateRef('popoverComponent')
+const popoverComponent = useTemplateRef('popover')
+const inputRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('input')
+const searchInputRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('searchInput')
+const optionListRef = useTemplateRef('optionListRef')
+const optionListWrapperRef = useTemplateRef('optionListWrapper')
 
 const selectedTextColor = computed(() => `hsl(var(--maz-${props.color}))`)
 const selectedBgColor = computed(() => `hsl(var(--maz-${props.color}-500) / 0.1)`)
@@ -251,7 +248,21 @@ const messages = computed(() => ({
   searchPlaceholder: props.translations?.searchPlaceholder || t('select.searchPlaceholder'),
 } satisfies MazUiTranslationsNestedSchema['select']))
 
-const isOpen = defineModel<boolean>('open', { required: false, default: false })
+const hasPopoverOpen = defineModel('open', { default: false })
+
+// Ref locale pour éviter les conflits avec le defineModel dans les watchers
+const hasPopoverOpenLocal = ref(false)
+
+// Sync avec le defineModel
+watch(hasPopoverOpen, (value) => {
+  hasPopoverOpenLocal.value = value
+}, { immediate: true })
+
+watch(hasPopoverOpenLocal, (value) => {
+  if (hasPopoverOpen.value !== value) {
+    hasPopoverOpen.value = value
+  }
+})
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazSelect',
@@ -324,11 +335,6 @@ function isOptionInSelection(option: MazSelectNormalizedOption): boolean {
 const selectedOptions = computed(
   () => optionsNormalized.value?.filter(isOptionInSelection) ?? [],
 )
-
-const mazInputComponent = useTemplateRef<ComponentPublicInstance<typeof MazInput>>('mazInputComponent')
-const searchInputComponent = useTemplateRef<ComponentPublicInstance<typeof MazInput>>('searchInputComponent')
-const optionListElement = ref<HTMLDivElement>()
-const optionListScrollWrapper = ref<HTMLDivElement>()
 
 function isNullOrUndefined(value: unknown) {
   return value === undefined || value === null
@@ -416,10 +422,6 @@ const optionList = computed(() => {
   return getFilteredOptionWithQuery(searchQuery.value)
 })
 
-function onCloseList() {
-  emits('close')
-}
-
 async function onOpenList() {
   const selectedIndex = optionList.value?.findIndex(
     option => isSelectedOption(option),
@@ -431,15 +433,15 @@ async function onOpenList() {
 }
 
 function focusMainInput() {
-  mazInputComponent.value?.$el?.querySelector('input')?.focus()
+  inputRef.value?.$el?.querySelector('input')?.focus()
 }
 function emitInputMainInput() {
-  mazInputComponent.value?.$el?.querySelector('input')?.dispatchEvent(new Event('input'))
+  inputRef.value?.$el?.querySelector('input')?.dispatchEvent(new Event('input'))
 }
 
 function focusSearchInputAndSetQuery(q: string) {
   searchQuery.value = q
-  searchInputComponent.value?.$el?.querySelector('input')?.focus()
+  searchInputRef.value?.$el?.querySelector('input')?.focus()
 }
 
 function searchOptionWithQuery(keyPressed: string) {
@@ -479,7 +481,7 @@ function mainInputKeyboardHandler(event: KeyboardEvent) {
 
   const keyPressed = event.key
 
-  if ((keyPressed === 'ArrowDown' || keyPressed === 'ArrowUp' || /^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed)) && !isOpen.value) {
+  if ((keyPressed === 'ArrowDown' || keyPressed === 'ArrowUp' || /^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed)) && !hasPopoverOpen.value) {
     event.preventDefault()
     popoverComponent.value?.open()
   }
@@ -496,14 +498,14 @@ async function scrollToOptionIndex(index?: number) {
     return
   }
 
-  const item = optionListElement.value?.querySelector<HTMLButtonElement>(`.m-select-list-item:nth-child(${index + 1})`)
+  const item = optionListRef.value?.querySelector<HTMLButtonElement>(`.m-select-list-item:nth-child(${index + 1})`)
 
-  if (item && optionListScrollWrapper.value) {
-    const wrapperRect = optionListScrollWrapper.value.getBoundingClientRect()
+  if (item && optionListWrapperRef.value) {
+    const wrapperRect = optionListWrapperRef.value.getBoundingClientRect()
     const itemRect = item.getBoundingClientRect()
     const scrollTop = item.offsetTop - wrapperRect.height / 2 + itemRect.height / 2
 
-    optionListScrollWrapper.value.scrollTo?.({
+    optionListWrapperRef.value.scrollTo?.({
       top: scrollTop,
       behavior: 'auto',
     })
@@ -585,7 +587,7 @@ function updateListPosition() {
 }
 
 watch(
-  isOpen,
+  hasPopoverOpenLocal,
   (value) => {
     if (!isClient())
       return
@@ -620,11 +622,15 @@ defineExpose({
 
 <template>
   <MazPopover
-    ref="popoverComponent"
-    v-model="isOpen"
+    :id="`${instanceId}-popover`"
+    ref="popover"
+    v-model="hasPopoverOpen"
     class="m-select m-reset-css"
     :class="[
-      { '--is-open': isOpen, '--disabled': disabled },
+      {
+        '--is-open': hasPopoverOpen,
+        '--disabled': disabled,
+      },
       props.class,
       `--${size}`,
     ]"
@@ -636,18 +642,18 @@ defineExpose({
     :position="listPosition"
     prefer-position="bottom-start"
     fallback-position="top-start"
-    position-reference=".m-input-wrapper"
-    @close="onCloseList"
+    :position-reference="`#${instanceId}-popover .m-input-wrapper`"
+    @close="emits('close')"
     @open="onOpenList"
   >
-    <template #trigger>
+    <template #trigger="{ isOpen, close, open: openPicker, toggle: togglePopover }">
       <MazInput
         :id="instanceId"
-        ref="mazInputComponent"
+        ref="input"
         class="m-select-input"
         v-bind="$attrs"
         :required="required"
-        :border-active="isOpen"
+        :border-active="hasPopoverOpen"
         :color="color"
         :model-value="inputValue"
         :size
@@ -664,16 +670,31 @@ defineExpose({
         @keydown="mainInputKeyboardHandler"
       >
         <template v-if="$slots['left-icon']" #left-icon>
-          <slot name="left-icon" />
+          <!--
+          @slot Add a custom left icon
+          @binding {boolean} is-open Current open state of the popover
+          @binding {function} close Function to close the popover
+          @binding {function} open Function to open the popover
+          @binding {function} toggle Function to toggle the popover
+        -->
+          <slot name="left-icon" :is-open="isOpen" :close="close" :open="openPicker" :toggle="togglePopover" />
         </template>
 
         <template #right-icon>
-          <slot name="right-icon">
+          <!--
+            @slot Add and replace a custom right icon
+            @binding {boolean} is-open Current open state of the popover
+            @binding {function} close Function to close the popover
+            @binding {function} open Function to open the popover
+            @binding {function} toggle Function to toggle the popover
+            @default MazChevronDown
+          -->
+          <slot name="right-icon" :is-open="isOpen" :close="close" :open="openPicker" :toggle="togglePopover">
             <button
               tabindex="-1"
               type="button"
               class="m-select-input__toggle-button maz-custom"
-              :aria-label="`${isOpen ? 'collapse' : 'expand'} list of options`"
+              :aria-label="`${hasPopoverOpen ? 'collapse' : 'expand'} list of options`"
             >
               <MazChevronDown class="m-select-chevron" />
             </button>
@@ -682,10 +703,10 @@ defineExpose({
       </MazInput>
     </template>
 
-    <template #default>
+    <template #default="{ isOpen, close, open: openPicker, toggle: togglePopover }">
       <div
         :id="`${instanceId}-option-list`"
-        ref="optionListElement"
+        ref="optionListRef"
         class="m-select-list"
         :class="`--${size}`"
         :style="[{
@@ -699,7 +720,7 @@ defineExpose({
       >
         <MazInput
           v-if="search"
-          ref="searchInputComponent"
+          ref="searchInput"
           v-model="searchQuery"
           size="sm"
           :disabled
@@ -722,7 +743,7 @@ defineExpose({
           </span>
         </slot>
 
-        <div v-else ref="optionListScrollWrapper" class="m-select-list__scroll-wrapper" tabindex="-1">
+        <div v-else ref="optionListWrapper" class="m-select-list__scroll-wrapper" tabindex="-1">
           <template v-for="(option, i) in optionList" :key="i">
             <!--
                 @slot Custom optgroup label
@@ -739,6 +760,7 @@ defineExpose({
               type="button"
               :tabindex="multiple ? -1 : 0"
               class="m-select-list-item maz-custom maz-flex-none"
+              :disabled="isSelectedOption(option)"
               :class="[
                 {
                   '--is-selected': isSelectedOption(option),
@@ -755,11 +777,22 @@ defineExpose({
                 :color
               />
               <!--
-                  @slot Custom option
-                    @binding {Object} option - the option object
-                    @binding {Boolean} is-selected - if the option is selected
-                -->
-              <slot :option="(option as Option)" :is-selected="isSelectedOption(option)">
+                @slot Custom option
+                  @binding {Object} option - the option object
+                  @binding {Boolean} is-selected - if the option is selected
+                  @binding {Boolean} is-open - if the popover is open
+                  @binding {function} close - function to close the popover
+                  @binding {function} open - function to open the popover
+                  @binding {function} toggle - function to toggle the popover
+              -->
+              <slot
+                :option="(option as Option)"
+                :is-selected="isSelectedOption(option)"
+                :is-open="isOpen"
+                :close="close"
+                :open="openPicker"
+                :toggle="togglePopover"
+              >
                 <span>
                   {{ option[optionLabelKey] }}
                 </span>
@@ -779,6 +812,10 @@ defineExpose({
   &-input {
     @apply maz-size-full;
 
+    &:not(.--disabled) {
+      @apply maz-cursor-pointer;
+    }
+
     &__toggle-button {
       @apply maz-flex maz-h-full maz-bg-transparent maz-pl-0 maz-flex-center;
     }
@@ -786,14 +823,6 @@ defineExpose({
     &:deep(input) {
       @apply maz-caret-transparent;
     }
-  }
-
-  &-input:deep(.m-input-input) {
-    @apply maz-pr-0;
-  }
-
-  &-input.--has-label:deep(.m-input-input) {
-    @apply maz-pr-0;
   }
 
   &.--mini {
