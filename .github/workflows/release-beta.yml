@@ -3,19 +3,11 @@ name: Release Beta
 on:
   pull_request:
     branches:
-      - develop
+      - master
     paths:
       - 'packages/**/*'
-    paths-ignore:
-      - lerna.json
-      - package.json
-      - 'packages/*/package.json'
-      - 'apps/**/*'
-      - 'tools/**/*'
-      - 'scripts/**/*'
-      - '.github/**/*'
-      - 'CHANGELOG*.md'
-      - '**/CHANGELOG*.md'
+      - '!packages/*/package.json'
+      - '!packages/*/CHANGELOG.md'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
