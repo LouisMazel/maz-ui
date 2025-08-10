@@ -283,23 +283,38 @@ export function injectCSS(id: CSS_IDS, css: string): void {
   if (typeof document === 'undefined')
     return
 
-  let styleElement = document.getElementById(id) as HTMLStyleElement | null
+  const styleElements = document.querySelectorAll<HTMLStyleElement>(`#${id}`)
 
-  if (!styleElement) {
-    styleElement = document.createElement('style')
-    styleElement.id = id
-    document.head.appendChild(styleElement)
+  if (!styleElements || styleElements.length === 0) {
+    const element = document.createElement('style')
+    element.id = id
+    document.head.appendChild(element)
+
+    element.textContent = css
+    return
   }
 
-  styleElement.textContent = css
+  if (styleElements.length === 1) {
+    styleElements[0].textContent = css
+    return
+  }
+
+  if (styleElements.length > 1) {
+    for (let i = 0; i < styleElements.length - 1; i++) {
+      styleElements[i].remove()
+    }
+
+    styleElements[styleElements.length - 1].textContent = css
+  }
 }
 
 export function removeCSS(id: CSS_IDS): void {
   if (typeof document === 'undefined')
     return
 
-  const styleElement = document.getElementById(id)
-  if (styleElement) {
-    styleElement.remove()
+  const styleElements = document.querySelectorAll<HTMLStyleElement>(`#${id}`)
+
+  for (const styleElement of styleElements) {
+    styleElement && styleElement.remove()
   }
 }
