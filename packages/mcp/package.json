@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/mcp",
   "type": "module",
-  "version": "4.1.1-beta.0",
+  "version": "4.1.1-beta.1",
   "description": "Maz-UI ModelContextProtocol Client",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
