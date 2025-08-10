@@ -1,5 +1,33 @@
 # Change Log
 
+## v4.0.1...v4.1.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.1...v4.1.0)
+
+### 🚀 Features
+
+- **maz-ui:** Add new composable - useMutationObserver ([01f6edc84](https://github.com/LouisMazel/maz-ui/commit/01f6edc84))
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDatePicker - correct position ref selector for popover ([bc8e729c7](https://github.com/LouisMazel/maz-ui/commit/bc8e729c7))
+- **maz-ui:** MazSelect - reactivity warning with optionList ref - fix #1305 ([#1305](https://github.com/LouisMazel/maz-ui/issues/1305))
+
+### 💅 Refactors
+
+- **maz-ui:** MazBtn - add with max-content to fit with content ([62c125832](https://github.com/LouisMazel/maz-ui/commit/62c125832))
+
+### 💄 Styles
+
+- **maz-ui:** MazInput - adjust position of floating label ([319a6200e](https://github.com/LouisMazel/maz-ui/commit/319a6200e))
+- **maz-ui:** MazBtn - adjust icon sizing/spacing and pastel variant colors ([6ff110469](https://github.com/LouisMazel/maz-ui/commit/6ff110469))
+- **maz-ui:** MazBadge - adujst color of pastel variant ([29a6cc3fa](https://github.com/LouisMazel/maz-ui/commit/29a6cc3fa))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.39...v4.0.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.39...v4.0.1)

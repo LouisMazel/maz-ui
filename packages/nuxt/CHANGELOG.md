@@ -1,5 +1,19 @@
 # Change Log
 
+## v4.0.1...v4.1.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.1...v4.1.0)
+
+### 🚀 Features
+
+- **@maz-ui/nuxt:** Add auto import support of useMutationObserver ([4a4b1afbd](https://github.com/LouisMazel/maz-ui/commit/4a4b1afbd))
+- **@maz-ui/nuxt:** State of isDark is automatically updated when dark class is added on the html element ([c244721b9](https://github.com/LouisMazel/maz-ui/commit/c244721b9))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.39...v4.0.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.39...v4.0.1)

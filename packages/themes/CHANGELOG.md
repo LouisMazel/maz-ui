@@ -1,5 +1,22 @@
 # Change Log
 
+## v4.0.1...v4.1.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.1...v4.1.0)
+
+### 🚀 Features
+
+- **@maz-ui/nuxt:** State of isDark is automatically updated when dark class is added on the html element ([c244721b9](https://github.com/LouisMazel/maz-ui/commit/c244721b9))
+
+### 🩹 Fixes
+
+- **@maz-ui/themes:** Theme switching when multiples style element existing ([aa7d8d3e4](https://github.com/LouisMazel/maz-ui/commit/aa7d8d3e4))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.0.0-beta.39...v4.0.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.39...v4.0.1)
