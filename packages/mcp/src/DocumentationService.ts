@@ -68,10 +68,6 @@ export class DocumentationService {
     this.helpersDir = join(this.docsRoot, 'helpers')
   }
 
-  /**
-   * Convert un nom de composant PascalCase vers kebab-case
-   * MazBtn -> maz-btn
-   */
   private pascalToKebabCase(pascalName: string): string {
     return pascalName
       .replace(/([A-Z])/g, '-$1')
@@ -79,9 +75,6 @@ export class DocumentationService {
       .replace(/^-/, '')
   }
 
-  /**
-   * Lit un fichier markdown et retourne son contenu ou une chaîne vide
-   */
   private readMarkdownFile(filePath: string): string {
     try {
       if (!existsSync(filePath)) {
@@ -94,9 +87,6 @@ export class DocumentationService {
     }
   }
 
-  /**
-   * Liste les fichiers markdown dans un répertoire
-   */
   private listMarkdownFiles(dirPath: string): string[] {
     try {
       if (!existsSync(dirPath)) {
@@ -113,11 +103,8 @@ export class DocumentationService {
     }
   }
 
-  // ========== COMPOSANTS ==========
+  // ========== COMPONENTS ==========
 
-  /**
-   * Récupère la documentation complète d'un composant (manuelle + générée)
-   */
   getComponentDocumentation(componentName: string): string {
     // Accepte MazBtn ou maz-btn, normalise en kebab-case
     const kebabName = componentName.startsWith('Maz')
@@ -149,124 +136,83 @@ export class DocumentationService {
     return combinedDoc.trim()
   }
 
-  /**
-   * Liste tous les composants disponibles
-   */
   getAllComponents(): string[] {
     const [manualFiles, generatedFiles] = [
       this.listMarkdownFiles(this.componentsDir),
       this.listMarkdownFiles(this.generatedDocsDir).map(file => file.replace('.doc', '')),
     ]
 
-    // Combine et déduplique
     const allComponents = new Set([...manualFiles, ...generatedFiles])
     return Array.from(allComponents).sort()
   }
 
   // ========== GUIDES ==========
 
-  /**
-   * Récupère la documentation d'un guide
-   */
   getGuideDocumentation(guideName: string): string {
     const guidePath = join(this.guidesDir, `${guideName}.md`)
     return this.readMarkdownFile(guidePath)
   }
 
-  /**
-   * Liste tous les guides disponibles
-   */
   getAllGuides(): string[] {
     return this.listMarkdownFiles(this.guidesDir)
   }
 
   // ========== COMPOSABLES ==========
 
-  /**
-   * Récupère la documentation d'un composable
-   */
   getComposableDocumentation(composableName: string): string {
     const composablePath = join(this.composablesDir, `${composableName}.md`)
     return this.readMarkdownFile(composablePath)
   }
 
-  /**
-   * Liste tous les composables disponibles
-   */
   getAllComposables(): string[] {
     return this.listMarkdownFiles(this.composablesDir)
   }
 
   // ========== DIRECTIVES ==========
 
-  /**
-   * Récupère la documentation d'une directive
-   */
   getDirectiveDocumentation(directiveName: string): string {
     const directivePath = join(this.directivesDir, `${directiveName}.md`)
     return this.readMarkdownFile(directivePath)
   }
 
-  /**
-   * Liste toutes les directives disponibles
-   */
   getAllDirectives(): string[] {
     return this.listMarkdownFiles(this.directivesDir)
   }
 
   // ========== PLUGINS ==========
 
-  /**
-   * Récupère la documentation d'un plugin
-   */
   getPluginDocumentation(pluginName: string): string {
     const pluginPath = join(this.pluginsDir, `${pluginName}.md`)
     return this.readMarkdownFile(pluginPath)
   }
 
-  /**
-   * Liste tous les plugins disponibles
-   */
   getAllPlugins(): string[] {
     return this.listMarkdownFiles(this.pluginsDir)
   }
 
   // ========== HELPERS ==========
 
-  /**
-   * Récupère la documentation d'un helper
-   */
   getHelperDocumentation(helperName: string): string {
     const helperPath = join(this.helpersDir, `${helperName}.md`)
     return this.readMarkdownFile(helperPath)
   }
 
-  /**
-   * Liste tous les helpers disponibles
-   */
   getAllHelpers(): string[] {
     return this.listMarkdownFiles(this.helpersDir)
   }
 
   // ========== UTILITAIRES ==========
 
-  /**
-   * Récupère la vue d'ensemble de la librairie
-   */
   getOverview(): string {
     const overviewPath = join(this.docsRoot, 'index.md')
     return this.readMarkdownFile(overviewPath)
   }
 
-  /**
-   * Recherche dans toute la documentation
-   */
   // eslint-disable-next-line sonarjs/cognitive-complexity
   searchDocumentation(query: string): string[] {
     const searchTerm = query.toLowerCase()
     const results: string[] = []
 
-    // Chercher dans les composants
     const components = this.getAllComponents()
     for (const component of components) {
       if (component.toLowerCase().includes(searchTerm)) {
@@ -274,7 +220,6 @@ export class DocumentationService {
       }
     }
 
-    // Chercher dans les guides
     const guides = this.getAllGuides()
     for (const guide of guides) {
       if (guide.toLowerCase().includes(searchTerm)) {
@@ -282,7 +227,6 @@ export class DocumentationService {
       }
     }
 
-    // Chercher dans les composables
     const composables = this.getAllComposables()
     for (const composable of composables) {
       if (composable.toLowerCase().includes(searchTerm)) {
@@ -290,7 +234,6 @@ export class DocumentationService {
       }
     }
 
-    // Chercher dans les directives
     const directives = this.getAllDirectives()
     for (const directive of directives) {
       if (directive.toLowerCase().includes(searchTerm)) {
@@ -298,7 +241,6 @@ export class DocumentationService {
       }
     }
 
-    // Chercher dans les plugins
     const plugins = this.getAllPlugins()
     for (const plugin of plugins) {
       if (plugin.toLowerCase().includes(searchTerm)) {
@@ -306,7 +248,6 @@ export class DocumentationService {
       }
     }
 
-    // Chercher dans les helpers
     const helpers = this.getAllHelpers()
     for (const helper of helpers) {
       if (helper.toLowerCase().includes(searchTerm)) {
@@ -317,9 +258,6 @@ export class DocumentationService {
     return results
   }
 
-  /**
-   * Récupère les diagnostics détaillés pour debugging
-   */
   getDiagnostics(): DocumentationDiagnostics {
     const [components, guides, composables, directives, plugins, helpers] = [
       this.getAllComponents(),
@@ -330,7 +268,6 @@ export class DocumentationService {
       this.getAllHelpers(),
     ]
 
-    // Diagnostics pour les composants
     let withManualDoc = 0
     let withGeneratedDoc = 0
     let withBothDocs = 0
