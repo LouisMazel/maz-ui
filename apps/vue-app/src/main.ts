@@ -1,16 +1,16 @@
 import { mazUi, MazUiTheme } from '@maz-ui/themes'
 
 import { fr, MazUiTranslations } from '@maz-ui/translations'
-import { AosPlugin } from 'maz-ui/plugins/aos'
-import { DialogPlugin } from 'maz-ui/plugins/dialog'
-import { ToastPlugin } from 'maz-ui/plugins/toast'
-
-import { WaitPlugin } from 'maz-ui/plugins/wait'
-
 import { createApp } from 'vue'
+import { AosPlugin } from '../../../packages/lib/src/plugins/aos'
+import { DialogPlugin } from '../../../packages/lib/src/plugins/dialog'
+
+import { ToastPlugin } from '../../../packages/lib/src/plugins/toast'
+
+import { WaitPlugin } from '../../../packages/lib/src/plugins/wait'
 import App from './App.vue'
 import router from './router'
-import 'maz-ui/styles'
+import 'maz-ui/src/css/index.css'
 
 import 'maz-ui/src/tailwindcss/tailwind.css'
 import './assets/main.css'
