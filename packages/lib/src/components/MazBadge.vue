@@ -67,7 +67,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
 
 <style lang="postcss" scoped>
 .m-badge {
-  @apply maz-inline-flex maz-items-center maz-justify-center maz-border maz-align-top maz-font-semibold;
+  @apply maz-inline-flex maz-items-center maz-justify-center maz-border maz-border-transparent maz-align-top maz-font-semibold;
 
   padding: 0.25em 0.5em;
   line-height: 1.4em;
@@ -106,7 +106,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
 
     &.--pastel {
-      @apply maz-border-primary-100 maz-bg-primary-100 maz-text-primary-700;
+      @apply maz-border-primary-50 maz-bg-primary-50 maz-text-primary-700;
     }
   }
 
@@ -118,7 +118,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
 
     &.--pastel {
-      @apply maz-border-info-100 maz-bg-info-100 maz-text-info-700;
+      @apply maz-border-info-50 maz-bg-info-50 maz-text-info-700;
     }
   }
 
@@ -130,7 +130,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
 
     &.--pastel {
-      @apply maz-border-secondary-100 maz-bg-secondary-100 maz-text-secondary-700;
+      @apply maz-border-secondary-50 maz-bg-secondary-50 maz-text-secondary-700;
     }
   }
 
@@ -154,7 +154,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
 
     &.--pastel {
-      @apply maz-border-warning-100 maz-bg-warning-100 maz-text-warning-700;
+      @apply maz-border-warning-50 maz-bg-warning-50 maz-text-warning-700;
     }
   }
 
@@ -166,7 +166,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
 
     &.--pastel {
-      @apply maz-border-success-100 maz-bg-success-100 maz-text-success-700;
+      @apply maz-border-success-50 maz-bg-success-50 maz-text-success-700;
     }
   }
 
@@ -178,7 +178,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
 
     &.--pastel {
-      @apply maz-bg-contrast-100 maz-border-contrast-100 maz-text-contrast-foreground;
+      @apply maz-bg-contrast-50 maz-border-contrast-50 maz-text-contrast-foreground;
     }
   }
 
@@ -190,19 +190,19 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
 
     &.--pastel {
-      @apply maz-border-accent-100 maz-bg-accent-100 maz-text-accent-700;
+      @apply maz-border-accent-50 maz-bg-accent-50 maz-text-accent-700;
     }
   }
 
   &.--surface {
-    @apply maz-border-divider maz-bg-surface maz-text-surface-foreground;
+    @apply maz-bg-surface maz-text-foreground;
 
     &.--outlined {
-      @apply maz-border-divider maz-bg-transparent maz-text-surface-foreground;
+      @apply maz-border-divider maz-bg-transparent;
     }
 
     &.--pastel {
-      @apply maz-border-surface-100 dark:maz-bg-surface-100 maz-bg-surface-600 maz-text-surface-foreground;
+      @apply maz-border-surface-600 maz-bg-surface-600;
     }
   }
 }
