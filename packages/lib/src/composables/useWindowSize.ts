@@ -59,13 +59,13 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
 
   onMounted(() => {
     if (internalWindow) {
-      window.addEventListener('resize', update, { passive: true })
+      internalWindow.addEventListener('resize', update, { passive: true })
     }
   })
 
   onUnmounted(() => {
     if (internalWindow) {
-      window.removeEventListener('resize', update)
+      internalWindow.removeEventListener('resize', update)
     }
   })
 
