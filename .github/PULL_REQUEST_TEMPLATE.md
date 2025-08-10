@@ -22,7 +22,7 @@
 
 <!-- Check all packages that are affected by this PR -->
 
-- [ ] `@maz-ui/lib` (main component library)
+- [ ] `maz-ui` (main component library)
 - [ ] `@maz-ui/nuxt` (Nuxt module)
 - [ ] `@maz-ui/icons` (icon library)
 - [ ] `@maz-ui/themes` (theme system)

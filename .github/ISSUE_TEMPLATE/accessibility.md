@@ -14,7 +14,7 @@ assignees: LouisMazel
 
 <!-- Check all packages that are affected by this accessibility issue -->
 
-- [ ] `@maz-ui/lib` (main component library)
+- [ ] `maz-ui` (main component library)
 - [ ] `@maz-ui/nuxt` (Nuxt module)
 - [ ] `@maz-ui/icons` (icon library)
 - [ ] `@maz-ui/themes` (theme system)
