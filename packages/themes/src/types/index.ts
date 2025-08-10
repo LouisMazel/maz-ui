@@ -78,7 +78,7 @@ export type DarkModeStrategy = 'class' | 'media'
 
 export type Strategy = 'runtime' | 'buildtime' | 'hybrid'
 
-export interface ThemeConfig {
+interface BaseThemeConfig {
   /**
    * CSS variables prefix
    * @description Prefix for CSS variables
@@ -92,7 +92,7 @@ export interface ThemeConfig {
    * @description Can be a predefined preset name or a custom preset object
    * @default undefined
    */
-  preset?: ThemePreset
+  preset: ThemePreset
 
   /**
    * Custom preset overrides
@@ -140,6 +140,13 @@ export interface ThemeConfig {
    */
   mode?: ThemeMode
 }
+
+export type ThemeConfig
+  = | (BaseThemeConfig & { strategy?: Exclude<Strategy, 'buildtime'> })
+    | (Omit<BaseThemeConfig, 'preset'> & {
+      preset?: ThemePreset
+      strategy: 'buildtime'
+    })
 
 export interface ColorScale {
   50: string
