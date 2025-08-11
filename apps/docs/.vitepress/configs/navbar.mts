@@ -30,6 +30,10 @@ export const nav = [
         link: 'https://github.com/LouisMazel/maz-ui/releases',
       },
       {
+        text: 'v4 announcement',
+        link: '/blog/v4',
+      },
+      {
         text: 'v3 documentation',
         link: 'https://v3.maz-ui.com',
       },
