@@ -10,7 +10,7 @@ include = [
 # Exclude test files and generated content
 exclude = [
   "packages/lib/src/**/*.spec.ts",
-  "packages/lib/src/**/*.test.ts", 
+  "packages/lib/src/**/*.test.ts",
   "packages/lib/src/**/__tests__/**",
   "packages/lib/tests/**",
   "packages/lib/src/**/types.ts",
