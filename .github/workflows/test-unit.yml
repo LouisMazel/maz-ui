@@ -1,6 +1,14 @@
 name: Unit Tests
 
 on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/test-unit.yml'
+      - 'packages/**/*'
+      - '!packages/*/CHANGELOG.md'
+      - '!packages/*/package.json'
   pull_request:
     branches-ignore:
       - dependabot/**

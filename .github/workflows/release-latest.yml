@@ -4,16 +4,10 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - lerna.json
-      - package.json
-      - 'packages/*/package.json'
-      - 'apps/**/*'
-      - 'tools/**/*'
-      - 'scripts/**/*'
-      - '.github/**/*'
-      - 'CHANGELOG*.md'
-      - '**/CHANGELOG*.md'
+    paths:
+      - 'packages/**/*'
+      - '!packages/*/CHANGELOG.md'
+      - '!packages/*/package.json'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
