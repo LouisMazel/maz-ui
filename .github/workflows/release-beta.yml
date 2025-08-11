@@ -1,13 +1,12 @@
 name: Release Beta
 
 on:
-  pull_request:
-    branches:
-      - master
-    paths:
-      - 'packages/**/*'
-      - '!packages/*/package.json'
-      - '!packages/*/CHANGELOG.md'
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull Request number to create beta release for
+        required: true
+        type: string
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
