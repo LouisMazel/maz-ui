@@ -12,6 +12,10 @@ on:
 jobs:
   coverage:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # Required for OIDC
+      pull-requests: write # Required to post coverage comments
 
     steps:
       - uses: szenius/set-timezone@v1.1
@@ -31,7 +35,7 @@ jobs:
         run: pnpm test:unit:coverage:all
 
       - name: Qlty Coverage
-        uses: qltysh/qlty-action/coverage@main
+        uses: qltysh/qlty-action/coverage@v2
         with:
-          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-          files: ${{github.workspace}}/packages/lib/coverage/lcov.info
+          oidc: true
+          files: packages/lib/coverage/lcov.info

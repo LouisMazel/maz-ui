@@ -1,0 +1,21 @@
+# QLTY project configuration
+[sources]
+# Include main library source code
+include = [
+  "packages/lib/src/**/*.vue",
+  "packages/lib/src/**/*.ts",
+  "packages/lib/src/**/*.js"
+]
+
+# Exclude test files and generated content
+exclude = [
+  "packages/lib/src/**/*.spec.ts",
+  "packages/lib/src/**/*.test.ts", 
+  "packages/lib/src/**/__tests__/**",
+  "packages/lib/tests/**",
+  "packages/lib/src/**/types.ts",
+  "packages/lib/src/**/index.ts",
+  "packages/*/dist/**",
+  "apps/**",
+  "tools/**"
+]
