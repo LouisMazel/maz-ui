@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.1.1-beta.1...v4.1.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.1-beta.1...v4.1.2)
+
+### 💅 Refactors
+
+- **@maz-ui/icons:** Correct typo into icon list export ([94756b7f2](https://github.com/LouisMazel/maz-ui/commit/94756b7f2))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.1-beta.0...v4.1.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.1-beta.0...v4.1.1)

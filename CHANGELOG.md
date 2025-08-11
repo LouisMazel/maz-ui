@@ -1,5 +1,31 @@
 # Change Log
 
+## v4.1.1-beta.1...v4.1.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.1-beta.1...v4.1.2)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSelect - reactivity warning with useTemplateRef - fix #1305 ([#1305](https://github.com/LouisMazel/maz-ui/issues/1305))
+- **maz-ui:** MazSelect - reactivity warning with useTemplateRef - fix #1305 ([#1305](https://github.com/LouisMazel/maz-ui/issues/1305))
+- **maz-ui:** MazBtn - remove width max-content CSS rule ([2b3d69f9a](https://github.com/LouisMazel/maz-ui/commit/2b3d69f9a))
+
+### 💅 Refactors
+
+- **@maz-ui/themes:** Preset is only required when strategy is runtime or hybrid ([a1585f765](https://github.com/LouisMazel/maz-ui/commit/a1585f765))
+- **@maz-ui/themes:** Preset is only required when strategy is runtime or hybrid ([f4c0d1ecf](https://github.com/LouisMazel/maz-ui/commit/f4c0d1ecf))
+- **@maz-ui/icons:** Correct typo into icon list export ([94756b7f2](https://github.com/LouisMazel/maz-ui/commit/94756b7f2))
+- **docs:** Add v4 annoucement ([264d13e27](https://github.com/LouisMazel/maz-ui/commit/264d13e27))
+
+### 📖 Documentation
+
+- **maz-ui:** Updte readme with plugin installation ([305be8a89](https://github.com/LouisMazel/maz-ui/commit/305be8a89))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.1-beta.0...v4.1.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.1-beta.0...v4.1.1)
