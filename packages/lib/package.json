@@ -1,7 +1,7 @@
 {
   "name": "maz-ui",
   "type": "module",
-  "version": "4.1.2",
+  "version": "4.1.3",
   "description": "A standalone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",

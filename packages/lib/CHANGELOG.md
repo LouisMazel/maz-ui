@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.1.2...v4.1.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.2...v4.1.3)
+
+### 💅 Refactors
+
+- **maz-ui:** MazRadioButtons - introduce size prop option ([4f52fb43d](https://github.com/LouisMazel/maz-ui/commit/4f52fb43d))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.1-beta.1...v4.1.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.1-beta.1...v4.1.2)
