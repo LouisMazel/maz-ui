@@ -17,6 +17,7 @@
         "fix/*"
       ],
       "conventionalCommits": true,
+      "changelogPreset": "./.conventional-changelog-preset.js",
       "message": "chore(release): version packages %v",
       "tagVersionPrefix": "v",
       "push": false,
@@ -33,8 +34,9 @@
     }
   },
   "ignoreChanges": [
-    "./apps/**/*",
+    "./apps/*",
     "./tools/*",
+    "./scripts/*",
     "**/__tests__/*",
     "**/*.spec.ts",
     "**/*.test.ts"

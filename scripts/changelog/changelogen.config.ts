@@ -2,14 +2,13 @@ import type { ChangelogConfig } from 'changelogen'
 
 export default <Partial<ChangelogConfig>>{
   types: {
-    feat: { title: '🚀 Features' },
-    perf: { title: '🔥 Performance' },
-    fix: { title: '🩹 Fixes' },
-    refactor: { title: '💅 Refactors' },
-    docs: { title: '📖 Documentation' },
-    types: { title: '🌊 Types' },
-    examples: { title: '🏀 Examples' },
-    style: { title: '💄 Styles' },
+    feat: { title: '🚀 Features', semver: 'minor' },
+    perf: { title: '🔥 Performance', semver: 'patch' },
+    fix: { title: '🩹 Fixes', semver: 'patch' },
+    refactor: { title: '💅 Refactors', semver: 'patch' },
+    docs: { title: '📖 Documentation', semver: 'patch' },
+    types: { title: '🌊 Types', semver: 'patch' },
+    style: { title: '💄 Styles', semver: 'patch' },
     build: false,
     chore: false,
     test: false,
