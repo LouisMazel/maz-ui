@@ -337,7 +337,7 @@ const iconClassSize = computed(() => {
   /* Fab */
 
   &.--fab {
-    @apply maz-flex maz-items-center maz-justify-center maz-rounded-full maz-px-1 maz-py-1;
+    @apply maz-flex maz-items-center maz-justify-center maz-rounded-full maz-p-1;
 
     &.--xl {
       @apply maz-w-16;
