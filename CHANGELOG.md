@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.1.4...v4.1.5
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.4...v4.1.5)
+
+### 🩹 Fixes
+
+- **@maz-ui/themes:** Infinite loop when html class changed during the color mode switching ([d919e5225](https://github.com/LouisMazel/maz-ui/commit/d919e5225))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.3...v4.1.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.3...v4.1.4)
