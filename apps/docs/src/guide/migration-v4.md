@@ -5,7 +5,11 @@ description: Complete guide to migrate from Maz-UI v3.x to v4.0.0 - Modular arch
 
 # {{ $frontmatter.title }}
 
-Welcome to the most comprehensive migration guide for upgrading from Maz-UI v3.x to v4.0.0. This major version revolutionizes the library architecture with a modular approach, optimized performance, and enhanced developer experience.
+Maz-UI v4.0.0 isn’t just an update — it’s a complete rebuild designed to give developers more flexibility and simplicity.
+
+The library is now split into independent packages, allowing you to install and use only what you need.\
+The theme system has been redesigned to make customizing and managing multiple themes easier, while the internationalization system offers full control over translations.\
+Performance has also been significantly improved thanks to optimal tree-shaking, more efficient minification, and a modernized architecture.
 
 ::: tip Connected to Maz-UI MCP
 
@@ -17,12 +21,12 @@ Follow the [MCP](/guide/mcp) guide to connect your AI assistant to Maz-UI's docu
 
 ### Architectural Revolution
 
-v4.0.0 isn't just an update, it's a **complete rebuild** that transforms Maz-UI into a modern, performant component library:
+v4.0.0 isn't just an update, it's a **complete rebuild** that transforms Maz-UI into a modern and performant library:
 
 #### Optimized Tree-Shaking
 
 - **Dramatic bundle reduction**: 60-90% size reduction
-- **Granular imports**: Every component, directive, and utility is individually importable
+- **Granular imports**: Every component, composables, plugins, directive, and utility is individually importable
 - **Modern bundlers**: Perfect compatibility with Vite, Webpack 5, Rollup
 
 #### Modular Architecture
@@ -35,15 +39,16 @@ v4.0.0 isn't just an update, it's a **complete rebuild** that transforms Maz-UI 
 
 - **Predefined presets**: `mazUi`, `obsidian`, `ocean`, `pristine`
 - **Dynamic CSS Variables**: Automatic CSS variable generation
-- **Intelligent dark mode**: Configurable strategies for dark mode
+- **Intelligent dark mode**: Configurable strategies for dark mode based on system preferences and user choice stored in cookies
 
 #### Complete Internationalization
 
-- **9 supported languages**: EN, FR, DE, ES, IT, PT, JA, ZH-CN
+- **9 supported languages by default**: EN, FR, DE, ES, IT, PT, JA, ZH-CN
+- **Add your own languages**: Easy integration of custom translations
 - **Translation system**: Vue plugin and dedicated composables
 - **Automatic fallback**: Smart handling of missing translations
 
-#### New Components
+#### New Components or refactored
 
 - **MazLink**: Modern link component replacing `MazBtn variant="link"`
 - **MazExpandAnimation**: CSS Grid expansion animation (replaces `MazTransitionExpand`)
@@ -63,10 +68,10 @@ v4.0.0 separates functionality into specialized packages for better modularity:
 | **@maz-ui/themes** | Theme system and presets | New |
 | **@maz-ui/translations** | i18n translations | New |
 | **@maz-ui/utils** | JavaScript/TypeScript utilities | New |
-| **@maz-ui/icons** | SVG icons (336+ icons) | 🆕 New |
-| **@maz-ui/cli** | CLI for theme generation | 🆕 New |
-| **@maz-ui/nuxt** | Nuxt 3 module | 🆕 New |
-| **@maz-ui/mcp** | MCP server for IA agent | 🆕 New |
+| **@maz-ui/icons** | SVG icons and flags (840+ icons) | New |
+| **@maz-ui/cli** | CLI for theme generation | Renamed |
+| **@maz-ui/nuxt** | Nuxt 3 module | New |
+| **@maz-ui/mcp** | MCP server for IA agent | New |
 
 ## Migration Checklist
 
@@ -88,10 +93,10 @@ npm uninstall dropzone
 
 **Updated peer dependencies:**
 - **Vue**: `^3.5.0` (was `^3.0.0`)
-- **unplugin-vue-components**: `>=28.0.0` (was `>=0.27.0`)
-- **unplugin-auto-import**: `>=19.0.0` (was `>=0.18.0`)
+- **unplugin-vue-components**: `>=28.0.0`
+- **unplugin-auto-import**: `>=19.0.0`
 
-### Step 2: Vue Plugin Configuration
+### Vue users - Plugin configuration
 
 **NEW**: v4.0.0 introduces a mandatory Vue plugin for configuration.
 
@@ -123,7 +128,7 @@ import App from './App.vue'
 
 const app = createApp(App)
 
-// 🆕 NEW: MazUi plugin required
+// NEW: MazUi plugin required
 app.use(MazUi, {
   // Theme configuration (optional)
   theme: {
@@ -142,7 +147,7 @@ app.use(MazUi, {
 app.mount('#app')
 ```
 
-### Step 3: Nuxt Configuration
+### Nuxt users - Module Configuration
 
 **NEW**: Dedicated Nuxt module with simplified API.
 
@@ -163,9 +168,9 @@ export default defineNuxtConfig({
 ```typescript
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['@maz-ui/nuxt'], // 🆕 New package
+  modules: ['@maz-ui/nuxt'], // New package
   mazUi: {
-    // 🆕 New configuration API
+    // New configuration API
     theme: {
       preset: 'maz-ui',
       strategy: 'hybrid',
@@ -190,7 +195,7 @@ export default defineNuxtConfig({
 })
 ```
 
-### Step 4: Import Migration
+### Import Migration
 
 **MAJOR CHANGE**: New modular import structure.
 
@@ -463,7 +468,7 @@ import { MazDialogPromise } from 'maz-ui'
 import { MazDialogConfirm } from 'maz-ui'
 ```
 
-## 🔧 Composable Changes
+## Composable Changes
 
 ### useDialog - API Changes
 
@@ -829,69 +834,69 @@ app.use(MazUi)
 
 ### Dependencies
 
-- [ ] Update maz-ui to v4.0.0+
-- [ ] Remove `dropzone` dependency
-- [ ] Update Vue to v3.5+
-- [ ] Update unplugin-auto-import to v19+
-- [ ] Update unplugin-vue-components to v28+
+- <MazCheckbox> Update maz-ui to v4.0.0+ </MazCheckbox>
+- <MazCheckbox> Remove `dropzone` dependency </MazCheckbox>
+- <MazCheckbox> Update Vue to v3.5+ </MazCheckbox>
+- <MazCheckbox> Update unplugin-auto-import to v19+ </MazCheckbox>
+- <MazCheckbox> Update unplugin-vue-components to v28+ </MazCheckbox>
 
 ### Configuration
 
-- [ ] Add MazUi plugin in main.ts
-- [ ] Configure theme with new system
-- [ ] Configure translations with new system
-- [ ] Migrate Nuxt configuration to @maz-ui/nuxt
+- <MazCheckbox> Add MazUi plugin in main.ts </MazCheckbox>
+- <MazCheckbox> Configure theme with new system </MazCheckbox>
+- <MazCheckbox> Configure translations with new system </MazCheckbox>
+- <MazCheckbox> Migrate Nuxt configuration to @maz-ui/nuxt (if using Nuxt) </MazCheckbox>
 
 ### Imports
 
-- [ ] Migrate plugin imports to `maz-ui/plugins/*`
-- [ ] Migrate directive imports to `maz-ui/directives/*`
-- [ ] Migrate composable imports to `maz-ui/composables/*`
-- [ ] Update utility imports (currency → formatCurrency, etc.)
+- <MazCheckbox> Migrate plugin imports to `maz-ui/plugins/*` </MazCheckbox>
+- <MazCheckbox> Migrate directive imports to `maz-ui/directives/*` </MazCheckbox>
+- <MazCheckbox> Migrate composable imports to `maz-ui/composables/*` </MazCheckbox>
+- <MazCheckbox> Update utility imports (e.g. currency → formatCurrency, etc.) </MazCheckbox>
 
 ### Components
 
-- [ ] Replace `MazBtn variant="link"` with `MazLink`
-- [ ] Update `MazBtn outline` to `outlined`
-- [ ] Rename `MazPhoneNumberInput` to `MazInputPhoneNumber`
-- [ ] Rename `MazPicker` to `MazDatePicker`
-- [ ] Replace `MazTransitionExpand` with `MazExpandAnimation`
-- [ ] Update `MazDropdown`/`MazSelect` position props
-- [ ] Rename `MazDialogPromise` to `MazDialogConfirm`
-- [ ] Check new `MazDropzone` props
-- [ ] Rename `MazPicker` to `MazDatePicker`
+- <MazCheckbox> Replace `MazBtn variant="link"` with `MazLink` </MazCheckbox>
+- <MazCheckbox> Update `MazBtn outline` to `outlined` </MazCheckbox>
+- <MazCheckbox> Rename `MazPhoneNumberInput` to `MazInputPhoneNumber` </MazCheckbox>
+- <MazCheckbox> Rename `MazPicker` to `MazDatePicker` </MazCheckbox>
+- <MazCheckbox> Replace `MazTransitionExpand` with `MazExpandAnimation` </MazCheckbox>
+- <MazCheckbox> Update `MazDropdown`/`MazSelect` position props </MazCheckbox>
+- <MazCheckbox> Rename `MazDialogPromise` to `MazDialogConfirm` </MazCheckbox>
+- <MazCheckbox> Check new `MazDropzone` props </MazCheckbox>
+- <MazCheckbox> Rename `MazPicker` to `MazDatePicker` </MazCheckbox>
 
 ### API Changes
 
-- [ ] Migrate `useDialog` from Promise to callback API
-- [ ] Rename `useLanguageDisplayNames` to `useDisplayNames`
-- [ ] Update `@update` to `@data` in `MazInputPhoneNumber`
-- [ ] Replace removed colors (theme → contrast, danger → destructive)
-- [ ] Remove `v-closable` directive usage
+- <MazCheckbox> Migrate `useDialog` from Promise to callback API </MazCheckbox>
+- <MazCheckbox> Rename `useLanguageDisplayNames` to `useDisplayNames` </MazCheckbox>
+- <MazCheckbox> Update `@update` to `@data` in `MazInputPhoneNumber` </MazCheckbox>
+- <MazCheckbox> Replace removed colors (theme → contrast, danger → destructive) </MazCheckbox>
+- <MazCheckbox> Remove `v-closable` directive usage </MazCheckbox>
 
 ### Helpers to Composables
 
-- [ ] Migrate `idleTimeout` to `useIdleTimeout`
-- [ ] Migrate `userVisibility` to `useUserVisibility`
-- [ ] Migrate `mountComponent` to `useMountComponent`
-- [ ] Migrate `injectStrict` to `useInjectStrict`
-- [ ] Migrate `freezeValue` to `useFreezeValue`
+- <MazCheckbox> Migrate `idleTimeout` to `useIdleTimeout` </MazCheckbox>
+- <MazCheckbox> Migrate `userVisibility` to `useUserVisibility` </MazCheckbox>
+- <MazCheckbox> Migrate `mountComponent` to `useMountComponent` </MazCheckbox>
+- <MazCheckbox> Migrate `injectStrict` to `useInjectStrict` </MazCheckbox>
+- <MazCheckbox> Migrate `freezeValue` to `useFreezeValue` </MazCheckbox>
 
 ### TypeScript
 
-- [ ] Update all type imports to use `Maz` prefix
-- [ ] Update prop type imports (Props → MazBtnProps)
-- [ ] Update generic types (Color → MazColor, Size → MazSize)
+- <MazCheckbox> Update all type imports to use `Maz` prefix </MazCheckbox>
+- <MazCheckbox> Update prop type imports (e.g. Props → MazBtnProps) </MazCheckbox>
+- <MazCheckbox> Update generic types (e.g. Color → MazColor, Size → MazSize) </MazCheckbox>
 
 ### Testing and Validation
 
-- [ ] Test TypeScript compilation
-- [ ] Test production build
-- [ ] Check bundle size
-- [ ] Run unit tests
-- [ ] Test in development and production
-- [ ] Test SSR/Nuxt if applicable
-- [ ] Validate critical functionality
+- <MazCheckbox> Test TypeScript compilation </MazCheckbox>
+- <MazCheckbox> Test production build </MazCheckbox>
+- <MazCheckbox> Check bundle size </MazCheckbox>
+- <MazCheckbox> Run unit tests </MazCheckbox>
+- <MazCheckbox> Test in development and production </MazCheckbox>
+- <MazCheckbox> Test SSR/Nuxt if applicable </MazCheckbox>
+- <MazCheckbox> Validate critical functionality </MazCheckbox>
 
 ## Additional Resources
 
