@@ -2,7 +2,7 @@
 import dataLabels from 'chartjs-plugin-datalabels'
 import { ref } from 'vue'
 
-const { delay = 100 } = defineProps<{
+const { delay = 0 } = defineProps<{
   delay?: number
 }>()
 
@@ -117,7 +117,6 @@ const tableHeaders = [
             color="success"
             size="3rem"
             :delay
-            :once="false"
           />
           <div class="maz-truncate">
             <div class="maz-text-xl maz-font-bold">
@@ -126,7 +125,6 @@ const tableHeaders = [
                 :count="28945"
                 prefix="$"
                 separator=","
-                :once="false"
               />
             </div>
             <div class="maz-truncate maz-text-sm maz-text-muted">
@@ -143,7 +141,6 @@ const tableHeaders = [
             color="info"
             size="3rem"
             :delay
-            :once="false"
           />
           <div class="maz-truncate">
             <div class="maz-text-xl maz-font-bold">
@@ -151,7 +148,6 @@ const tableHeaders = [
                 :delay
                 :count="384"
                 separator=","
-                :once="false"
               />
             </div>
             <div class="maz-truncate maz-text-sm maz-text-muted">
@@ -168,7 +164,6 @@ const tableHeaders = [
             color="warning"
             size="3rem"
             :delay
-            :once="false"
           />
           <div class="maz-truncate">
             <div class="maz-text-xl maz-font-bold">
@@ -176,7 +171,6 @@ const tableHeaders = [
                 :delay
                 :count="1482"
                 separator=","
-                :once="false"
               />
             </div>
             <div class="maz-truncate maz-text-sm maz-text-muted">
@@ -193,7 +187,6 @@ const tableHeaders = [
             color="destructive"
             size="3rem"
             :delay
-            :once="false"
           />
           <div class="maz-truncate">
             <div class="maz-text-xl maz-font-bold">
@@ -201,7 +194,6 @@ const tableHeaders = [
                 :delay
                 :count="94"
                 suffix="%"
-                :once="false"
               />
             </div>
             <div class="maz-truncate maz-text-sm maz-text-muted">
@@ -223,6 +215,7 @@ const tableHeaders = [
       input-size="sm"
       pagination
       selectable
+      scrollable
     >
       <template #cell-amount="{ value }">
         <span class="maz-font-semibold">

@@ -21,7 +21,7 @@ export const nav = [
     activeMatch: '/plugins',
     items: [plugins, composables, directives, utils],
   },
-  { text: 'Made w/ Maz-UI', link: '/made-with-maz-ui' },
+  { text: 'Themes', link: '/theme-editor' },
   {
     text: `v${packageJson.version}`,
     items: [

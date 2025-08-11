@@ -19,6 +19,10 @@ description: Modern and performant theme system for Maz-UI with TypeScript, HSL 
 - **Zero FOUC** - Critical CSS injected inline to avoid flashes
 - **Flexible Presets** - Ready-to-use and customizable configurations
 
+## Theme Editor
+
+Create your own theme with the [Theme Editor](./../theme-editor.md).
+
 ## Quick Usage
 
 ### 1. Plugin Configuration with `MazUi` plugin
