@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useTheme } from '@maz-ui/themes/composables/useTheme'
-import MazRadioButtons from 'maz-ui/components/MazRadioButtons'
+import MazRadioButtons from 'maz-ui/src/components/MazRadioButtons.vue'
 
 const { colorMode, updateTheme, presetName } = useTheme()
 </script>

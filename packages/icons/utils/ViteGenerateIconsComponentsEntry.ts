@@ -98,7 +98,7 @@ ${imports}
   }
 }
 
-function generateIconsList(files: { file: string, name: string }[]) {
+function generateIconList(files: { file: string, name: string }[]) {
   try {
     const outputPath = resolve(_dirname, '../src/icon-list.ts')
     const reservedNames = getReservedNames()
@@ -112,18 +112,18 @@ function generateIconsList(files: { file: string, name: string }[]) {
       .join(',\n  ')
 
     const content = `// Ce fichier est généré automatiquement, ne pas modifier manuellement
-export const iconsList = [
+export const iconList = [
   ${iconNames}
 ] as const
 
-export type IconName = typeof iconsList[number]
+export type IconName = typeof iconList[number]
 `
 
     writeFileSync(outputPath, content)
-    logger.success('[ViteGenerateIconsComponentsEntry](generateIconsList) ✅ icons list generated')
+    logger.success('[ViteGenerateIconsComponentsEntry](generateIconList) ✅ icons list generated')
   }
   catch (error) {
-    logger.error('[ViteGenerateIconsComponentsEntry](generateIconsList) 🔴 error while generating icons list', error)
+    logger.error('[ViteGenerateIconsComponentsEntry](generateIconList) 🔴 error while generating icons list', error)
     throw error
   }
 }
@@ -159,7 +159,7 @@ export function ViteGenerateIconsComponentsEntry(): Plugin {
 
         replaceValuesInSvg(svgFiles)
         generateIconsComponentsEntry(files)
-        generateIconsList(files)
+        generateIconList(files)
 
         logger.success('[ViteGenerateIconsComponentsEntry] ✅ icons components entry generated')
       }

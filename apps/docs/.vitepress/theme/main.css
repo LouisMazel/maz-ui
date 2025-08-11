@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --vp-layout-top-height: 3rem;
+  --vp-layout-top-height: 3.9375rem;
+  /* --vp-nav-logo-height: 42px; */
   --vp-font-family-base: var(--maz-font-family);
   --vp-c-bg: hsl(var(--maz-background));
   --vp-c-brand: hsl(var(--maz-primary));
@@ -33,6 +34,12 @@
   --vp-code-tab-divider: hsl(var(--maz-contrast-200));
   --vp-code-block-color: hsl(var(--maz-contrast-foreground));
   /* --vp-code-tab-bg: hsl(var(--maz-contrast-600)); */
+}
+
+@screen mob-l {
+  :root {
+    --vp-layout-top-height: 2rem;
+  }
 }
 
 html {

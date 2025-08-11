@@ -1,19 +1,12 @@
 name: Release Beta
 
 on:
-  push:
-    branches:
-      - develop
-    paths-ignore:
-      - lerna.json
-      - package.json
-      - 'packages/*/package.json'
-      - 'apps/**/*'
-      - 'tools/**/*'
-      - 'scripts/**/*'
-      - '.github/**/*'
-      - 'CHANGELOG*.md'
-      - '**/CHANGELOG*.md'
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull Request number to create beta release for
+        required: true
+        type: string
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -30,6 +23,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
+          ref: develop
           fetch-depth: 0
           token: ${{ secrets.RELEASE_TOKEN }}
 

@@ -14,7 +14,7 @@ const languages: MazDropdownProps['items'] = [
 </script>
 
 <template>
-  <MazDropdown class="language-switcher" position="bottom-end" trigger="click" :items="languages">
+  <MazDropdown class="language-switcher" position="bottom-end" close-on-click transition="scale-fade" trigger="click" :items="languages">
     {{ languages.find(l => l.locale === locale)?.label }}
   </MazDropdown>
 </template>

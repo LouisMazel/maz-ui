@@ -29,10 +29,10 @@ const sliderValue = ref(50)
 
 ### Step
 
-<MazSlider v-model="sliderValue" :step="10" class="vp-raw" />
+<MazSlider v-model="sliderStepValue" :step="10" class="vp-raw" />
 
 ```html
-<MazSlider v-model="sliderValue" :step="10" class="vp-raw" />
+<MazSlider v-model="value" :step="10" class="vp-raw" />
 ```
 
 ### Multiple sliders & labels
@@ -181,6 +181,7 @@ const multipleSilders = ref([25, 50, 75])
 <script lang="ts" setup>
   import { ref } from 'vue'
   const sliderValue = ref(50)
+  const sliderStepValue = ref(50)
   const multipleSilders = ref([25, 50, 75])
   const multipleSildersLabels = ['Small', 'Middle', 'Big']
 

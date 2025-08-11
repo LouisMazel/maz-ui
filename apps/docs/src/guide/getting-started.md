@@ -19,7 +19,7 @@ head:
 - 🆕 **New components** - MazPopover & MazSelectCountry
 - 🎨 **Theming system** - Customizable themes and dark mode support (4 presets available) - [@maz-ui/themes](./themes.md)
 - 🌐 **Internationalization** - Locale management and tree-shakable imports - [@maz-ui/translations](./translations.md)
-- 🎨 **Icon library** - Comprehensive collection of SVG icons designed for performance and flexibility (300+ icons) - [@maz-ui/icons](./icons.md)
+- 🎨 **Icon library** - Comprehensive collection of SVG icons designed for performance and flexibility (400+ icons) - [@maz-ui/icons](./icons.md)
 - 🧰 **Nuxt module** - Effortless Maz-UI integration with auto-imports - [@maz-ui/nuxt](./nuxt.md)
 - 🤖 **MCP** - Connect your IA agents to the documentation - [@maz-ui/mcp](./mcp.md)
 
@@ -131,7 +131,7 @@ npm install @maz-ui/icons
 
 **Features:**
 
-- 300+ icons
+- 840+ icons
 - Usable as Vue components (e.g. `<MazStar />`)
 - Tree-shakable imports
 - Multiple sizes and variants

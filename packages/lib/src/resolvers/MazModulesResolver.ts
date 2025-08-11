@@ -25,6 +25,7 @@ const composablesMap: Record<Composables, true> = {
   useDialog: true,
   useMountComponent: true,
   useDropzone: true,
+  useMutationObserver: true,
 }
 
 const modulesMap: Record<Modules, true> = {

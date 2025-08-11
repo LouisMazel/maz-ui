@@ -1,11 +1,32 @@
 # Change Log
 
+## v4.1.1-beta.0...v4.1.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.1-beta.0...v4.1.1)
+
+## v4.1.1-beta.0...v4.1.1-beta.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.1-beta.0...v4.1.1-beta.1)
+
+**Note:** No relevant commits found
+
+## v4.1.0...v4.1.1-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.0...v4.1.1-beta.0)
+
+**Note:** No relevant commits found
+
+## v4.0.1...v4.1.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.1...v4.1.0)
+
+**Note:** No relevant commits found
+
 ## v4.0.0-beta.39...v4.0.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.39...v4.0.1)
 
 **Note:** No relevant commits found
-
 
 ## v4.0.0-beta.39...v4.0.0
 
@@ -13,13 +34,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.0.0-beta.37...v4.0.0-beta.38
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.37...v4.0.0-beta.38)
 
 **Note:** No relevant commits found
-
 
 ## v4.0.0-beta.36...v4.0.0-beta.37
 
@@ -27,13 +46,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.0.0-beta.35...v4.0.0-beta.36
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.35...v4.0.0-beta.36)
 
 **Note:** No relevant commits found
-
 
 ## v4.0.0-beta.34...v4.0.0-beta.35
 
@@ -41,13 +58,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.0.0-beta.33...v4.0.0-beta.34
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.33...v4.0.0-beta.34)
 
 **Note:** No relevant commits found
-
 
 ## v4.0.0-beta.32...v4.0.0-beta.33
 
@@ -55,13 +70,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.0.0-beta.31...v4.0.0-beta.32
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.31...v4.0.0-beta.32)
 
 **Note:** No relevant commits found
-
 
 ## v4.0.0-beta.30...v4.0.0-beta.31
 
@@ -69,13 +82,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.0.0-beta.29...v4.0.0-beta.30
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.29...v4.0.0-beta.30)
 
 **Note:** No relevant commits found
-
 
 ## v4.0.0-beta.28...v4.0.0-beta.29
 
@@ -83,13 +94,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.0.0-beta.27...v4.0.0-beta.28
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.27...v4.0.0-beta.28)
 
 **Note:** No relevant commits found
-
 
 ## v4.0.0-beta.26...v4.0.0-beta.27
 
@@ -97,13 +106,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.0.0-beta.25...v4.0.0-beta.26
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.25...v4.0.0-beta.26)
 
 **Note:** No relevant commits found
-
 
 ## v4.0.0-beta.24...v4.0.0-beta.25
 
@@ -111,13 +118,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.0.0-beta.23...v4.0.0-beta.24
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.23...v4.0.0-beta.24)
 
 **Note:** No relevant commits found
-
 
 ## v4.0.0-beta.22...v4.0.0-beta.23
 
@@ -125,13 +130,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.0.0-beta.21...v4.0.0-beta.22
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.21...v4.0.0-beta.22)
 
 **Note:** No relevant commits found
-
 
 ## v4.0.0-beta.20...v4.0.0-beta.21
 
@@ -139,13 +142,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.0.0-beta.19...v4.0.0-beta.20
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.19...v4.0.0-beta.20)
 
 **Note:** No relevant commits found
-
 
 ## v4.0.0-beta.18...v4.0.0-beta.19
 
@@ -176,7 +177,6 @@
 - LouisMazel <me@loicmazuel.com>
 - Mazel <me@loicmazuel.com>
 
-
 ## v4.0.0-beta.17...v4.0.0-beta.18
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.17...v4.0.0-beta.18)
@@ -206,13 +206,11 @@
 - LouisMazel <me@loicmazuel.com>
 - Mazel <me@loicmazuel.com>
 
-
 ## v4.0.0-beta.16...v4.0.0-beta.17
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.16...v4.0.0-beta.17)
 
 **Note:** No relevant commits found
-
 
 ## v4.0.0-beta.15...v4.0.0-beta.16
 
@@ -243,13 +241,11 @@
 - LouisMazel <me@loicmazuel.com>
 - Mazel <me@loicmazuel.com>
 
-
 ## v4.0.0-beta.14...v4.0.0-beta.15
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.14...v4.0.0-beta.15)
 
 **Note:** No relevant commits found
-
 
 ## v4.0.0-beta.13...v4.0.0-beta.14
 
@@ -257,13 +253,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.0.0-beta.12...v4.0.0-beta.13
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.12...v4.0.0-beta.13)
 
 **Note:** No relevant commits found
-
 
 ## v4.0.0-beta.11...v4.0.0-beta.12
 
@@ -271,13 +265,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.0.0-beta.10...v4.0.0-beta.11
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.10...v4.0.0-beta.11)
 
 **Note:** Version bump only to follow ecosystem versioning
-
 
 ## v4.0.0-beta.9...v4.0.0-beta.10
 
@@ -285,13 +277,11 @@
 
 **Note:** Version bump only to follow ecosystem versioning
 
-
 ## v4.0.0-beta.8...v4.0.0-beta.9
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.8...v4.0.0-beta.9)
 
 **Note:** Version bump only to follow ecosystem versioning
-
 
 ## v4.0.0-beta.7...v4.0.0-beta.8
 
@@ -299,13 +289,11 @@
 
 **Note:** Version bump only to follow ecosystem versioning
 
-
 ## v4.0.0-beta.6...v4.0.0-beta.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.0.0-beta.6...v4.0.0-beta.7)
 
 **Note:** Version bump only to follow ecosystem versioning
-
 
 ## v4.0.0-beta.5...v4.0.0-beta.6
 
@@ -319,41 +307,41 @@
 
 ## 4.0.0-beta.3 (2025-07-10)
 
-* chore: remove catalog feature from pnpm workspace ([0176319](https://github.com/LouisMazel/maz-ui/commit/0176319))
+- chore: remove catalog feature from pnpm workspace ([0176319](https://github.com/LouisMazel/maz-ui/commit/0176319))
 
 ## 4.0.0-beta.1 (2025-07-09)
 
-* chore: upgrade dependencies in major versions ([2d10379](https://github.com/LouisMazel/maz-ui/commit/2d10379))
-* chore: upgrade dependencies in minor versions ([120c580](https://github.com/LouisMazel/maz-ui/commit/120c580))
-* chore(release): bump version to 4.0.0-alpha.0 ([074e0b0](https://github.com/LouisMazel/maz-ui/commit/074e0b0))
-* chore(release): bump version to 4.0.0-alpha.2 ([7eb3ec0](https://github.com/LouisMazel/maz-ui/commit/7eb3ec0))
-* chore(release): bump version to 4.0.0-alpha.3 ([936c813](https://github.com/LouisMazel/maz-ui/commit/936c813))
-* chore(release): bump version to 4.0.0-alpha.4 ([0cb8e72](https://github.com/LouisMazel/maz-ui/commit/0cb8e72))
-* chore(release): bump version to 4.0.0-alpha.5 ([bebfcfb](https://github.com/LouisMazel/maz-ui/commit/bebfcfb))
-* chore(release): bump version to v3.50.1 ([2874d45](https://github.com/LouisMazel/maz-ui/commit/2874d45))
-* chore(release): version packages 4.0.0-beta.0 ([531325a](https://github.com/LouisMazel/maz-ui/commit/531325a))
-* fix: package config to be published on npm ([ceb1f68](https://github.com/LouisMazel/maz-ui/commit/ceb1f68))
-* feat(@maz-ui/icons): Add resolver to auto-import icons as  Vue Components ([b76f65c](https://github.com/LouisMazel/maz-ui/commit/b76f65c))
-* feat(@maz-ui/themes): new package - create and manage theme with maz-ui ([7726ff8](https://github.com/LouisMazel/maz-ui/commit/7726ff8))
-* feat(@maz-ui/translations): new packages to manage maz-ui's translations easily ([f8c2518](https://github.com/LouisMazel/maz-ui/commit/f8c2518))
-* fix(@maz-ui/icons): export svg files correctly ([dd760f3](https://github.com/LouisMazel/maz-ui/commit/dd760f3))
-* feat(maz-ui): implement new theme manager provided by @maz-ui/themes ([bc23c6a](https://github.com/LouisMazel/maz-ui/commit/bc23c6a))
-* feat(maz-ui): MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) (#118 ([cfabd9b](https://github.com/LouisMazel/maz-ui/commit/cfabd9b)), closes [#1189](https://github.com/LouisMazel/maz-ui/issues/1189)
+- chore: upgrade dependencies in major versions ([2d10379](https://github.com/LouisMazel/maz-ui/commit/2d10379))
+- chore: upgrade dependencies in minor versions ([120c580](https://github.com/LouisMazel/maz-ui/commit/120c580))
+- chore(release): bump version to 4.0.0-alpha.0 ([074e0b0](https://github.com/LouisMazel/maz-ui/commit/074e0b0))
+- chore(release): bump version to 4.0.0-alpha.2 ([7eb3ec0](https://github.com/LouisMazel/maz-ui/commit/7eb3ec0))
+- chore(release): bump version to 4.0.0-alpha.3 ([936c813](https://github.com/LouisMazel/maz-ui/commit/936c813))
+- chore(release): bump version to 4.0.0-alpha.4 ([0cb8e72](https://github.com/LouisMazel/maz-ui/commit/0cb8e72))
+- chore(release): bump version to 4.0.0-alpha.5 ([bebfcfb](https://github.com/LouisMazel/maz-ui/commit/bebfcfb))
+- chore(release): bump version to v3.50.1 ([2874d45](https://github.com/LouisMazel/maz-ui/commit/2874d45))
+- chore(release): version packages 4.0.0-beta.0 ([531325a](https://github.com/LouisMazel/maz-ui/commit/531325a))
+- fix: package config to be published on npm ([ceb1f68](https://github.com/LouisMazel/maz-ui/commit/ceb1f68))
+- feat(@maz-ui/icons): Add resolver to auto-import icons as  Vue Components ([b76f65c](https://github.com/LouisMazel/maz-ui/commit/b76f65c))
+- feat(@maz-ui/themes): new package - create and manage theme with maz-ui ([7726ff8](https://github.com/LouisMazel/maz-ui/commit/7726ff8))
+- feat(@maz-ui/translations): new packages to manage maz-ui's translations easily ([f8c2518](https://github.com/LouisMazel/maz-ui/commit/f8c2518))
+- fix(@maz-ui/icons): export svg files correctly ([dd760f3](https://github.com/LouisMazel/maz-ui/commit/dd760f3))
+- feat(maz-ui): implement new theme manager provided by @maz-ui/themes ([bc23c6a](https://github.com/LouisMazel/maz-ui/commit/bc23c6a))
+- feat(maz-ui): MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) (#118 ([cfabd9b](https://github.com/LouisMazel/maz-ui/commit/cfabd9b)), closes [#1189](https://github.com/LouisMazel/maz-ui/issues/1189)
 
 ## 4.0.0-beta.0 (2025-07-09)
 
-* fix: package config to be published on npm ([ceb1f68](https://github.com/LouisMazel/maz-ui/commit/ceb1f68))
-* feat(@maz-ui/icons): Add resolver to auto-import icons as  Vue Components ([b76f65c](https://github.com/LouisMazel/maz-ui/commit/b76f65c))
-* feat(@maz-ui/themes): new package - create and manage theme with maz-ui ([7726ff8](https://github.com/LouisMazel/maz-ui/commit/7726ff8))
-* feat(@maz-ui/translations): new packages to manage maz-ui's translations easily ([f8c2518](https://github.com/LouisMazel/maz-ui/commit/f8c2518))
-* fix(@maz-ui/icons): export svg files correctly ([dd760f3](https://github.com/LouisMazel/maz-ui/commit/dd760f3))
-* feat(maz-ui): implement new theme manager provided by @maz-ui/themes ([bc23c6a](https://github.com/LouisMazel/maz-ui/commit/bc23c6a))
-* feat(maz-ui): MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) (#118 ([cfabd9b](https://github.com/LouisMazel/maz-ui/commit/cfabd9b)), closes [#1189](https://github.com/LouisMazel/maz-ui/issues/1189)
-* chore: upgrade dependencies in major versions ([2d10379](https://github.com/LouisMazel/maz-ui/commit/2d10379))
-* chore: upgrade dependencies in minor versions ([120c580](https://github.com/LouisMazel/maz-ui/commit/120c580))
-* chore(release): bump version to 4.0.0-alpha.0 ([074e0b0](https://github.com/LouisMazel/maz-ui/commit/074e0b0))
-* chore(release): bump version to 4.0.0-alpha.2 ([7eb3ec0](https://github.com/LouisMazel/maz-ui/commit/7eb3ec0))
-* chore(release): bump version to 4.0.0-alpha.3 ([936c813](https://github.com/LouisMazel/maz-ui/commit/936c813))
-* chore(release): bump version to 4.0.0-alpha.4 ([0cb8e72](https://github.com/LouisMazel/maz-ui/commit/0cb8e72))
-* chore(release): bump version to 4.0.0-alpha.5 ([bebfcfb](https://github.com/LouisMazel/maz-ui/commit/bebfcfb))
-* chore(release): bump version to v3.50.1 ([2874d45](https://github.com/LouisMazel/maz-ui/commit/2874d45))
+- fix: package config to be published on npm ([ceb1f68](https://github.com/LouisMazel/maz-ui/commit/ceb1f68))
+- feat(@maz-ui/icons): Add resolver to auto-import icons as  Vue Components ([b76f65c](https://github.com/LouisMazel/maz-ui/commit/b76f65c))
+- feat(@maz-ui/themes): new package - create and manage theme with maz-ui ([7726ff8](https://github.com/LouisMazel/maz-ui/commit/7726ff8))
+- feat(@maz-ui/translations): new packages to manage maz-ui's translations easily ([f8c2518](https://github.com/LouisMazel/maz-ui/commit/f8c2518))
+- fix(@maz-ui/icons): export svg files correctly ([dd760f3](https://github.com/LouisMazel/maz-ui/commit/dd760f3))
+- feat(maz-ui): implement new theme manager provided by @maz-ui/themes ([bc23c6a](https://github.com/LouisMazel/maz-ui/commit/bc23c6a))
+- feat(maz-ui): MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) (#118 ([cfabd9b](https://github.com/LouisMazel/maz-ui/commit/cfabd9b)), closes [#1189](https://github.com/LouisMazel/maz-ui/issues/1189)
+- chore: upgrade dependencies in major versions ([2d10379](https://github.com/LouisMazel/maz-ui/commit/2d10379))
+- chore: upgrade dependencies in minor versions ([120c580](https://github.com/LouisMazel/maz-ui/commit/120c580))
+- chore(release): bump version to 4.0.0-alpha.0 ([074e0b0](https://github.com/LouisMazel/maz-ui/commit/074e0b0))
+- chore(release): bump version to 4.0.0-alpha.2 ([7eb3ec0](https://github.com/LouisMazel/maz-ui/commit/7eb3ec0))
+- chore(release): bump version to 4.0.0-alpha.3 ([936c813](https://github.com/LouisMazel/maz-ui/commit/936c813))
+- chore(release): bump version to 4.0.0-alpha.4 ([0cb8e72](https://github.com/LouisMazel/maz-ui/commit/0cb8e72))
+- chore(release): bump version to 4.0.0-alpha.5 ([bebfcfb](https://github.com/LouisMazel/maz-ui/commit/bebfcfb))
+- chore(release): bump version to v3.50.1 ([2874d45](https://github.com/LouisMazel/maz-ui/commit/2874d45))

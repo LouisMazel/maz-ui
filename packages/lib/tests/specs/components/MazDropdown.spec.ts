@@ -1,12 +1,15 @@
 import type { MazDropdownProps } from '@components/MazDropdown.vue'
+import type { GenericInstanceType } from '@maz-ui/utils'
 import type { VueWrapper } from '@vue/test-utils'
-import type { ComponentPublicInstance } from 'vue'
 import MazDropdown from '@components/MazDropdown.vue'
 import { MazStar } from '@maz-ui/icons'
 import { mount } from '@vue/test-utils'
 import { markRaw } from 'vue'
 
-let wrapper: VueWrapper<ComponentPublicInstance<typeof MazDropdown> & { [key: string]: any }>
+let wrapper: VueWrapper<GenericInstanceType<typeof MazDropdown> & {
+  isOpen: boolean
+  instanceId: string
+}>
 
 const actionSpy = vi.fn()
 
@@ -45,6 +48,7 @@ describe('components/MazDropdown.vue', () => {
   expect(MazDropdown).toBeTruthy()
 
   beforeEach(async () => {
+    // @ts-expect-error - isOpen and instanceId are private
     wrapper = await getWrapper()
     actionSpy.mockClear()
   })
@@ -65,7 +69,7 @@ describe('components/MazDropdown.vue', () => {
   })
 
   it('closes dropdown by default', () => {
-    expect(wrapper.vm.modelValue).toBe(false)
+    expect(wrapper.vm.isOpen).toBe(false)
     expect(wrapper.find('[aria-label="Menu"]').exists()).toBe(false)
   })
 
@@ -76,7 +80,7 @@ describe('components/MazDropdown.vue', () => {
 
         await trigger.trigger('click')
 
-        expect(wrapper.vm.modelValue).toBe(true)
+        expect(wrapper.vm.isOpen).toBe(true)
         expect(wrapper.find('[aria-label="Menu"]').exists()).toBe(true)
       })
     })
@@ -88,7 +92,7 @@ describe('components/MazDropdown.vue', () => {
 
         await trigger.trigger('mouseenter')
 
-        expect(wrapper.vm.modelValue).toBe(true)
+        expect(wrapper.vm.isOpen).toBe(true)
       })
     })
   })
@@ -104,7 +108,7 @@ describe('components/MazDropdown.vue', () => {
 
         await trigger.trigger('click')
 
-        expect(wrapper.vm.modelValue).toBe(false)
+        expect(wrapper.vm.isOpen).toBe(false)
       })
     })
 
@@ -125,7 +129,7 @@ describe('components/MazDropdown.vue', () => {
 
         await settingsItem?.trigger('click')
 
-        expect(wrapper.vm.modelValue).toBe(true)
+        expect(wrapper.vm.isOpen).toBe(true)
       })
     })
 
@@ -136,7 +140,7 @@ describe('components/MazDropdown.vue', () => {
 
         await profileItem?.trigger('click')
 
-        expect(wrapper.vm.modelValue).toBe(true)
+        expect(wrapper.vm.isOpen).toBe(true)
       })
     })
   })
@@ -151,7 +155,7 @@ describe('components/MazDropdown.vue', () => {
         const settingsItem = menuItems.find(item => item.text() === 'Settings')
         await settingsItem?.trigger('click')
 
-        expect(wrapper.vm.modelValue).toBe(false)
+        expect(wrapper.vm.isOpen).toBe(false)
       })
     })
 
@@ -161,7 +165,7 @@ describe('components/MazDropdown.vue', () => {
 
         await wrapper.find('[role="button"]').trigger('click')
 
-        expect(wrapper.vm.modelValue).toBe(false)
+        expect(wrapper.vm.isOpen).toBe(false)
       })
     })
 

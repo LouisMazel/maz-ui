@@ -252,7 +252,7 @@ const emits = defineEmits<{
    * This event is debounced if the debounce prop is enabled
    * @property {T} value - The new input value (string, number, boolean, null, or undefined)
    * @example
-   * <MazInput @update:modelValue="handleValueChange" />
+   * <MazInput @update:model-value="handleValueChange" />
    */
   'update:model-value': [value?: T]
   /**
@@ -464,7 +464,16 @@ const stateColor = computed(() => {
         </slot>
       </div>
 
-      <div class="m-input-wrapper-input" :class="[`--${size}`, { '--top-label': !!topLabel }]">
+      <div
+        class="m-input-wrapper-input"
+        :class="[
+          `--${size}`,
+          { '--top-label': !!topLabel,
+            '--has-left-icon': hasLeftPart(),
+            '--has-right-icon': hasRightPart(),
+          },
+        ]"
+      >
         <input
           :id="instanceId"
           v-bind="$attrs"
@@ -577,6 +586,22 @@ const stateColor = computed(() => {
     &-input {
       @apply maz-relative maz-flex maz-w-full maz-max-w-full maz-flex-1 maz-items-center;
 
+      &.--has-left-icon {
+        .m-input-input {
+          @apply maz-pl-2;
+        }
+
+        .m-input-label {
+          @apply maz-left-2;
+        }
+      }
+
+      &.--has-right-icon {
+        .m-input-input {
+          @apply maz-pr-2;
+        }
+      }
+
       &.--xl {
         height: calc(4rem - (var(--maz-border-width) * 2));
 
@@ -664,7 +689,7 @@ const stateColor = computed(() => {
   }
 
   &-input {
-    @apply maz-m-0 maz-h-full maz-w-full maz-appearance-none maz-truncate maz-border-none maz-bg-transparent maz-px-4 maz-py-0 maz-text-foreground maz-shadow-none maz-outline-none;
+    @apply maz-m-0 maz-h-full maz-w-full maz-appearance-none maz-truncate maz-border-none maz-bg-transparent maz-py-0 maz-text-foreground maz-shadow-none maz-outline-none maz-px-4;
 
     transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
@@ -674,7 +699,7 @@ const stateColor = computed(() => {
   }
 
   &-label {
-    @apply maz-pointer-events-none maz-absolute maz-left-3 maz-w-full maz-origin-top-left maz-items-center maz-overflow-hidden maz-truncate maz-whitespace-nowrap maz-text-start maz-leading-6;
+    @apply maz-pointer-events-none maz-absolute maz-w-full maz-origin-top-left maz-items-center maz-overflow-hidden maz-truncate maz-whitespace-nowrap maz-text-start maz-leading-6 maz-left-4;
 
     width: calc(100% + 1.3rem);
     transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
@@ -688,6 +713,7 @@ const stateColor = computed(() => {
 
   &.--should-up {
     & .m-input-label {
+      /* @apply maz-top-2; */
       transform: scale(0.8) translateY(-0.65em);
     }
 
@@ -737,10 +763,6 @@ const stateColor = computed(() => {
   &.--has-label {
     .m-input-label {
       @apply maz-pe-3;
-    }
-
-    .m-input-input {
-      @apply maz-px-3;
     }
   }
 }

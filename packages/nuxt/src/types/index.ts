@@ -53,6 +53,9 @@ export interface MazUiNuxtOptions {
    * }
    */
   theme?: Omit<MazUiNuxtThemeOptions, 'preset'> & {
+    /**
+     * @default 'maz-ui'
+     */
     preset?: ThemePreset | ThemePresetName
   }
 

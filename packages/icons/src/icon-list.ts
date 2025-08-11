@@ -1,5 +1,5 @@
 // Ce fichier est généré automatiquement, ne pas modifier manuellement
-export const iconsList = [
+export const iconList = [
   'MazAcademicCap',
   'MazAdjustmentsHorizontal',
   'MazAdjustmentsVertical',
@@ -842,4 +842,4 @@ export const iconsList = [
   'MazFlagZW'
 ] as const
 
-export type IconName = typeof iconsList[number]
+export type IconName = typeof iconList[number]

@@ -69,14 +69,12 @@ const props = withDefaults(defineProps<MazDatePickerProps>(), {
 const emits = defineEmits<{
   /**
    * Emitted when the picker value changes
-   * @event update:model-value
    * @property {MazDatePickerValue | undefined} value - The new selected value
    */
   'update:model-value': [value: MazDatePickerValue | undefined]
 
   /**
    * Emitted when the picker closes
-   * @event close
    */
   'close': [void]
 }>()
@@ -409,7 +407,7 @@ localeModel.value = props.locale ?? locale.value
 
 const containerUniqueId = computed(() => `MazDatePickerContainer-${instanceId.value}`)
 
-const popoverComponent = useTemplateRef('popover')
+const popoverRef = useTemplateRef('popover')
 
 onBeforeMount(() => {
   if (isRangeMode.value && hasTime.value) {
@@ -490,10 +488,10 @@ const inputValue = computed(() => {
   return props.inputDateTransformer && formattedDate ? props.inputDateTransformer({ formattedDate, value: props.modelValue, locale: localeModel.value }) : formattedDate
 })
 
-const hasPickerOpen = defineModel<boolean>('open', { default: false })
+const hasPickerOpen = defineModel('open', { default: false })
 
 function closeCalendar() {
-  popoverComponent.value?.close()
+  popoverRef.value?.close()
   emits('close')
 }
 
@@ -644,7 +642,9 @@ watch(
 <template>
   <MazPopover
     v-if="!inline"
+    :id="`${instanceId}-popover`"
     ref="popover"
+    v-model="hasPickerOpen"
     class="m-date-picker m-reset-css"
     :style
     :offset="0"
@@ -663,7 +663,7 @@ watch(
     :position="pickerPosition"
     prefer-position="bottom-start"
     fallback-position="top-start"
-    position-reference=".m-input-wrapper"
+    :position-reference="`#${instanceId}-popover .m-input-wrapper`"
   >
     <template #trigger="{ isOpen, close, open: openPicker, toggle: togglePicker }">
       <!--
@@ -678,6 +678,7 @@ watch(
       <slot name="trigger" :is-open="isOpen" :close="close" :open="openPicker" :toggle="togglePicker">
         <MazInput
           v-show="!customElementSelector && !inline"
+          :id="instanceId"
           :model-value="inputValue"
           readonly
           v-bind="{ ...inputProps, ...$attrs }"

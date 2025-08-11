@@ -214,8 +214,7 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue'> {
   transition?: MazPopoverProps['transition']
 }
 
-const modelValue = defineModel<boolean>({
-  required: false,
+const isOpen = defineModel({
   default: false,
 })
 
@@ -239,7 +238,7 @@ function setDropdown(value: boolean) {
   if (disabled)
     return
 
-  modelValue.value = value
+  isOpen.value = value
 }
 
 function isLinkItem(item: MazDropdownMenuItem): item is MazDropdownLinkItem {
@@ -251,9 +250,7 @@ async function runAction(item: MazDropdownActionItem, event: Event) {
 
   await item.onClick?.()
 
-  if (closeOnClick) {
-    closeDropdown()
-  }
+  closeDropdown()
 }
 
 function closeDropdown() {
@@ -300,7 +297,7 @@ function arrowHandler(event: KeyboardEvent) {
 }
 
 watch(
-  modelValue,
+  isOpen,
   (value) => {
     if (!isClient())
       return
@@ -318,7 +315,7 @@ watch(
 <template>
   <MazPopover
     :trigger
-    :model-value
+    :model-value="isOpen"
     class="m-dropdown m-reset-css"
     role="menu"
     :style="styleProp"
@@ -332,12 +329,12 @@ watch(
     :block
     @update:model-value="setDropdown"
   >
-    <template #trigger="{ toggle, close, isOpen, open, trigger: triggerType }">
+    <template #trigger="{ toggle, close, open, trigger: triggerType }">
       <div
         :id="instanceId"
         tabindex="-1"
         class="m-dropdown__wrapper"
-        :aria-expanded="modelValue"
+        :aria-expanded="isOpen"
         aria-haspopup="menu"
       >
         <span :id="`${instanceId}-labelspan`" class="maz-sr-only">
@@ -380,14 +377,14 @@ watch(
                 @default MazChevronDown icon with rotation animation
               -->
               <slot name="dropdown-icon" :is-open="isOpen" :toggle="toggle" :close="close" :open="open">
-                <MazIcon v-if="typeof dropdownIcon === 'string'" :name="dropdownIcon" :class="[{ '--open': modelValue && dropdownIconAnimation }, iconClassSize]" />
+                <MazIcon v-if="typeof dropdownIcon === 'string'" :name="dropdownIcon" :class="[{ '--open': isOpen && dropdownIconAnimation }, iconClassSize]" />
                 <Component
-                  :is="dropdownIcon" v-else-if="dropdownIcon" :class="[{ '--open': modelValue && dropdownIconAnimation }, iconClassSize]"
+                  :is="dropdownIcon" v-else-if="dropdownIcon" :class="[{ '--open': isOpen && dropdownIconAnimation }, iconClassSize]"
                   class="m-dropdown__icon"
                 />
                 <MazChevronDown
                   v-else
-                  :class="[{ '--open': modelValue && dropdownIconAnimation }, iconClassSize]"
+                  :class="[{ '--open': isOpen && dropdownIconAnimation }, iconClassSize]"
                   class="m-dropdown__icon"
                 />
               </slot>
@@ -397,7 +394,7 @@ watch(
       </div>
     </template>
 
-    <template #default="{ open, close, isOpen, toggle }">
+    <template #default="{ open, close, toggle }">
       <div
         :id="`${instanceId}-menu`"
         role="menu"

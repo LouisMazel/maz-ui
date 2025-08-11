@@ -1,7 +1,7 @@
 {
   "name": "maz-ui",
   "type": "module",
-  "version": "4.0.1",
+  "version": "4.1.1",
   "description": "A standalone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -162,8 +162,7 @@
     "lint:style:fix": "pnpm lint:style --fix",
     "build": "pnpm typecheck && pnpm build:only",
     "build:only": "vite build",
-    "build:watch": "vite build --watch",
-    "build:dev": "vite build --watch",
+    "build:watch": "vite build --watch --mode development",
     "build:analyze": "vite-node build/analyze-bundle.ts",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest watch",
