@@ -90,7 +90,7 @@ export default defineConfig<DefaultTheme.Config>({
   themeConfig: {
     siteTitle: 'Maz-UI',
 
-    logo: { src: '/img/logo.svg', alt: 'Maz-UI logo' },
+    logo: { src: '/img/logo-linear.svg', alt: 'Maz-UI logo' },
     sidebar,
     nav,
     socialLinks: [

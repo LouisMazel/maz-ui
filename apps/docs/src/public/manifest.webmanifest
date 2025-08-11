@@ -2,7 +2,7 @@
     "name": "Maz-UI",
     "short_name": "Maz-UI",
     "description": "Documentation of Maz-UI",
-    "start_url": "/index.html",
+    "start_url": "/",
     "icons": [
         {
             "src": "https://maz-ui.com/img/icons/android-chrome-192x192.png",
@@ -18,4 +18,4 @@
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
     "display": "standalone"
-}
+  }
