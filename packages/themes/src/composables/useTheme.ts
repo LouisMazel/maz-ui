@@ -128,7 +128,7 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
   }
 }
 
-function setColorMode(colorMode: ColorMode) {
+function setColorMode(colorMode: ColorMode, updateClass = true) {
   if (!state.value)
     return
 
@@ -141,7 +141,9 @@ function setColorMode(colorMode: ColorMode) {
     state.value.isDark = colorMode === 'dark'
   }
 
-  updateDocumentClass(state.value)
+  if (updateClass) {
+    updateDocumentClass(state.value)
+  }
 
   setCookie('maz-color-mode', colorMode)
 }
@@ -163,15 +165,20 @@ export function useTheme() {
   useMutationObserver(
     htmlElement,
     () => {
-      if (!state.value || isServer())
+      if (isServer() || !state.value)
         return
 
-      state.value.isDark = document.documentElement.classList.contains('dark')
+      const colorMode: 'light' | 'dark' = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+
+      if (state.value.colorMode !== colorMode) {
+        setColorMode(colorMode, false)
+      }
     },
     {
       attributes: true,
     },
   )
+
   let mazThemeState: ThemeState | undefined
 
   try {
