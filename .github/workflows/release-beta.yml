@@ -19,6 +19,10 @@ jobs:
       issues: write
       pull-requests: write
       packages: write
+
+    env:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -40,12 +44,6 @@ jobs:
 
       - name: Test units
         run: pnpm test:unit:coverage:all
-
-      - name: Push Coverage to Qlty
-        uses: qltysh/qlty-action/coverage@main
-        with:
-          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-          files: ${{github.workspace}}/packages/lib/coverage/lcov.info
 
       - name: Setup Git User
         run: |

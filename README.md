@@ -18,8 +18,10 @@
 </p>
 
 <p align="center">
-  <a href="https://qlty.sh/gh/LouisMazel/projects/maz-ui"><img src="https://qlty.sh/gh/LouisMazel/projects/maz-ui/maintainability.svg" alt="Maintainability" /></a>
-  <a href="https://qlty.sh/gh/LouisMazel/projects/maz-ui"><img src="https://qlty.sh/gh/LouisMazel/projects/maz-ui/coverage.svg" alt="Code Coverage" /></a>
+  <a href="https://app.codecov.io/gh/LouisMazel/maz-ui/branch/master?flags=lib">
+    <img src="https://codecov.io/gh/LouisMazel/maz-ui/branch/master/graph/badge.svg?flag=lib" alt="Coverage lib" />
+  </a>
+
   <img src="https://github.com/LouisMazel/maz-ui/actions/workflows/lib-test-unit.yml/badge.svg" alt="github actions test unit">
 </p>
 
