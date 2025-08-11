@@ -150,17 +150,14 @@ watch(() => props.modelValue, () => {
 
     &::-webkit-color-swatch-wrapper {
       padding: 0;
-      @apply maz-rounded;
     }
 
     &::-webkit-color-swatch {
       border: none;
-      @apply maz-rounded;
     }
 
     &::-moz-color-swatch {
       border: none;
-      @apply maz-rounded;
     }
   }
 }

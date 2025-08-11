@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import type { ThemePreset } from '@maz-ui/themes'
-import { useTheme } from '@maz-ui/themes/composables/useTheme'
 import { mazUi } from '@maz-ui/themes/presets/mazUi'
 import { useToast } from 'maz-ui/composables'
 import { codeToHtml } from 'shiki'
-import { computed, nextTick, reactive, ref, watch } from 'vue'
+import { computed, nextTick, reactive, ref, unref, watch, watchEffect } from 'vue'
+import { useTheme } from './../../../../packages/themes/src/composables/useTheme'
 import ColorPicker from './ColorPicker.vue'
 import DemoAuthPage from './DemoAuthPage.vue'
 import DemoDashboardPage from './DemoDashboardPage.vue'
 import DemoProductPage from './DemoProductPage.vue'
 
-const { updateTheme, isDark, toggleDarkMode, presetName } = useTheme()
+const { updateTheme, isDark, toggleDarkMode, presetName, currentPreset } = useTheme()
 const toast = useToast()
 
 const currentTab = ref(1)
@@ -20,23 +20,20 @@ const highlightedCode = ref('')
 const showExportModal = ref(false)
 const isTransitioning = ref(false)
 
+const preset = computed(() => {
+  return unref(currentPreset) ?? mazUi
+})
+
 const themeData = reactive<ThemePreset>({
-  name: mazUi.name,
-  foundation: { ...mazUi.foundation },
+  name: preset.value.name,
+  foundation: { ...preset.value.foundation },
   colors: {
-    light: { ...mazUi.colors.light },
-    dark: { ...mazUi.colors.dark },
+    light: { ...preset.value.colors.light },
+    dark: { ...preset.value.colors.dark },
   },
 })
 
-const originalTheme = {
-  name: mazUi.name,
-  foundation: { ...mazUi.foundation },
-  colors: {
-    light: { ...mazUi.colors.light },
-    dark: { ...mazUi.colors.dark },
-  },
-}
+const originalTheme = preset.value
 
 const colorCategories = [
   {
@@ -49,9 +46,28 @@ const colorCategories = [
   },
 ]
 
-watch([themeData, editingMode], async () => {
-  await nextTick()
-  await updateTheme(themeData)
+const isUpdatingFromPreset = ref(false)
+
+watchEffect(() => {
+  if (!isUpdatingFromPreset.value && preset.value && preset.value.name !== themeData.name) {
+    isUpdatingFromPreset.value = true
+    Object.assign(themeData, {
+      name: preset.value.name,
+      foundation: { ...preset.value.foundation },
+      colors: {
+        light: { ...preset.value.colors.light },
+        dark: { ...preset.value.colors.dark },
+      },
+    })
+    isUpdatingFromPreset.value = false
+  }
+})
+
+watch([themeData], async () => {
+  if (!isUpdatingFromPreset.value) {
+    await nextTick()
+    await updateTheme(themeData)
+  }
 }, { deep: true })
 
 function handleThemeModeToggle() {
@@ -64,9 +80,7 @@ function handleThemeModeToggle() {
 }
 
 function resetTheme() {
-  Object.assign(themeData.foundation, originalTheme.foundation)
-  Object.assign(themeData.colors.light, originalTheme.colors.light)
-  Object.assign(themeData.colors.dark, originalTheme.colors.dark)
+  updateTheme(originalTheme)
 }
 
 function copyToClipboard(text: string) {
