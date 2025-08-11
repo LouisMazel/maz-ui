@@ -11,16 +11,23 @@
 
 <p align="center">
   <a href="https://vuejs.org"><img src="https://img.shields.io/badge/vue-3-42b983.svg" alt="vue badge"></a>
-  <a href="https://v3.nuxtjs.org"><img src="https://img.shields.io/badge/nuxt-3-42b983.svg" alt="nuxt badge"></a>
+  <a href="https://nuxt.com/"><img src="https://img.shields.io/badge/nuxt-4-42b983.svg" alt="nuxt badge"></a>
+  <a href="https://nuxt.com/"><img src="https://img.shields.io/badge/nuxt-3-42b983.svg" alt="nuxt badge"></a>
   <a href="https://www.npmjs.com/package/maz-ui"><img src="https://img.shields.io/npm/v/maz-ui/latest.svg" alt="npm"></a>
   <a href="https://www.npmjs.com/package/maz-ui"><img src="https://badgen.net/npm/types/maz-ui" alt="types"></a>
   <a href="https://npm-stat.com/charts.html?package=maz-ui"><img src="https://badgen.net/npm/dm/maz-ui" alt="Downloads"></a>
 </p>
 
 <p align="center">
-  <a href="https://codeclimate.com/github/LouisMazel/maz-ui/maintainability"><img src="https://api.codeclimate.com/v1/badges/6b27047dcf150ccddfac/maintainability" alt="maintainability"></a>
-  <a href="https://codeclimate.com/github/LouisMazel/maz-ui/test_coverage"><img src="https://api.codeclimate.com/v1/badges/6b27047dcf150ccddfac/test_coverage" alt="test coverage"></a>
-  <img src="https://github.com/LouisMazel/maz-ui/actions/workflows/lib-test-unit.yml/badge.svg" alt="github actions test unit">
+  <!-- <a href="https://codecov.io/github/LouisMazel/maz-ui" >
+<img src="https://codecov.io/github/LouisMazel/maz-ui/branch/master/graph/bundle/lib-esm/badge.svg" alt="Coverage"/>
+</a> -->
+  <a href="https://codecov.io/github/LouisMazel/maz-ui" >
+<img src="https://codecov.io/github/LouisMazel/maz-ui/branch/master/graph/badge.svg?token=C6WEHHD8T9" alt="Coverage"/>
+</a>
+  <a href="https://github.com/LouisMazel/maz-ui/actions/workflows/lib-test-unit.yml">
+    <img src="https://github.com/LouisMazel/maz-ui/actions/workflows/lib-test-unit.yml/badge.svg" alt="github actions test unit">
+  </a>
 </p>
 
 <h3 align="center">
@@ -33,8 +40,8 @@
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./resources/dashboard-dark.png">
-    <img src="./resources/dashboard-light.png" alt="Maz UI Demo Dashboard" width="100%" style="border-radius: 1rem;">
+    <source media="(prefers-color-scheme: dark)" srcset="https://maz-ui.com/img/demo/dashboard-dark.png">
+    <img src="https://maz-ui.com/img/demo/dashboard-light.png" alt="Maz UI Demo Dashboard" width="100%" style="border-radius: 1rem;">
   </picture>
   <br>
   <sub><i>Example of a dashboard built with Maz UI components</i></sub>

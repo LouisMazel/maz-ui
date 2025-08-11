@@ -18,11 +18,15 @@
 </p>
 
 <p align="center">
-  <a href="https://app.codecov.io/gh/LouisMazel/maz-ui/branch/master?flags=lib">
-    <img src="https://codecov.io/gh/LouisMazel/maz-ui/branch/master/graph/badge.svg?flag=lib" alt="Coverage lib" />
+  <!-- <a href="https://codecov.io/github/LouisMazel/maz-ui" >
+<img src="https://codecov.io/github/LouisMazel/maz-ui/branch/master/graph/bundle/lib-esm/badge.svg" alt="Coverage"/>
+</a> -->
+  <a href="https://codecov.io/github/LouisMazel/maz-ui" >
+<img src="https://codecov.io/github/LouisMazel/maz-ui/branch/master/graph/badge.svg?token=C6WEHHD8T9" alt="Coverage"/>
+</a>
+  <a href="https://github.com/LouisMazel/maz-ui/actions/workflows/lib-test-unit.yml">
+    <img src="https://github.com/LouisMazel/maz-ui/actions/workflows/lib-test-unit.yml/badge.svg" alt="github actions test unit">
   </a>
-
-  <img src="https://github.com/LouisMazel/maz-ui/actions/workflows/lib-test-unit.yml/badge.svg" alt="github actions test unit">
 </p>
 
 <h3 align="center">
@@ -30,7 +34,7 @@
   <span> · </span>
   <a href="https://maz-ui.com/guide/getting-started">Getting Started</a>
   <span> · </span>
-  <a href="https://maz-ui.com/made-with-maz-ui">Showcase</a>
+  <a href="https://maz-ui.com/guide/themes">Theming</a>
 </h3>
 
 <p align="center">
