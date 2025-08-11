@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/test-unit.yml'
+      - .github/workflows/test-unit.yml
       - 'packages/**/*'
       - '!packages/*/CHANGELOG.md'
       - '!packages/*/package.json'
