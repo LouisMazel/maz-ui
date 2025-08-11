@@ -1,4 +1,5 @@
 import { extname, relative, resolve } from 'node:path'
+import { codecovVitePlugin } from '@codecov/vite-plugin'
 import Vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
 import { defineConfig } from 'vite'
@@ -64,6 +65,11 @@ export default defineConfig(({ mode }) => {
         outDir: [resolver('dist/types'), resolver('dist')],
       }),
       ViteCompileStyles(),
+      codecovVitePlugin({
+        enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+        bundleName: 'lib',
+        uploadToken: process.env.CODECOV_TOKEN,
+      }),
     ],
     esbuild: {
       drop: ['debugger'],

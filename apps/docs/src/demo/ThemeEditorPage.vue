@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { ThemePreset } from '@maz-ui/themes'
+import { useTheme } from '@maz-ui/themes/composables/useTheme'
 import { mazUi } from '@maz-ui/themes/presets/mazUi'
 import { useToast } from 'maz-ui/composables'
 import { codeToHtml } from 'shiki'
 import { computed, nextTick, reactive, ref, unref, watch, watchEffect } from 'vue'
-import { useTheme } from './../../../../packages/themes/src/composables/useTheme'
 import ColorPicker from './ColorPicker.vue'
 import DemoAuthPage from './DemoAuthPage.vue'
 import DemoDashboardPage from './DemoDashboardPage.vue'
