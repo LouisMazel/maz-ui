@@ -33,8 +33,7 @@
     }
   },
   "ignoreChanges": [
-    "./apps/vue-app/*",
-    "./apps/nuxt-app/*",
+    "./apps/**/*",
     "./tools/*",
     "**/__tests__/*",
     "**/*.spec.ts",
