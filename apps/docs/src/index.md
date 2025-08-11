@@ -80,10 +80,10 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       <div class="maz-flex maz-justify-between maz-items-start tab-l:maz-items-center maz-gap-4 maz-mb-4 maz-flex-col-reverse tab-l:maz-flex-row">
         <MazTabsBar :items="['Dashboard', 'Product Page', 'Auth Page']" />
         <div class="maz-flex maz-gap-2 maz-items-center maz-flex-row-reverse tab-l:maz-flex-row">
-          <MazBtn fab color="background" :icon="isDark ? MazMoon : MazSun" outlined @click="toggleDarkMode" />
+          <MazBtn size="sm" fab color="background" :icon="isDark ? MazMoon : MazSun" outlined @click="toggleDarkMode" />
           <MazRadioButtons
             :model-value="presetName"
-            size="lg"
+            size="sm"
             :options="[{
               label: 'Pristine',
               value: 'pristine'

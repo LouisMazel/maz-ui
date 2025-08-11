@@ -10,11 +10,11 @@ import DemoAuthPage from './DemoAuthPage.vue'
 import DemoDashboardPage from './DemoDashboardPage.vue'
 import DemoProductPage from './DemoProductPage.vue'
 
-const { updateTheme, isDark, toggleDarkMode, presetName, currentPreset } = useTheme()
+const { updateTheme, isDark, toggleDarkMode, presetName, colorMode, currentPreset } = useTheme()
 const toast = useToast()
 
 const currentTab = ref(1)
-const editingMode = ref<'light' | 'dark'>('light')
+const editingMode = computed<'light' | 'dark'>(() => colorMode.value === 'dark' ? 'dark' : 'light')
 const exportedCode = ref('')
 const highlightedCode = ref('')
 const showExportModal = ref(false)
@@ -247,8 +247,8 @@ function formatColorName(colorName: string): string {
                 </label>
                 <MazSwitch
                   id="dark-mode-switch"
-                  :model-value="editingMode === 'dark'"
-                  @update:model-value="editingMode = $event ? 'dark' : 'light'; handleThemeModeToggle()"
+                  :model-value="colorMode === 'dark'"
+                  @update:model-value="handleThemeModeToggle()"
                 />
               </div>
             </div>
@@ -378,19 +378,16 @@ function formatColorName(colorName: string): string {
 </style>
 
 <style lang="postcss">
-/* Global styles to disable transitions during theme mode switch */
+/* Global styles to disable only color-related transitions during theme mode switch */
 .no-transitions *,
 .no-transitions *::before,
 .no-transitions *::after {
-  transition-duration: 0ms !important;
-  transition-delay: 0ms !important;
-  animation-duration: 0ms !important;
-  animation-delay: 0ms !important;
+  transition-property: transform, opacity, scale, rotate, translate !important;
 }
 
 /* Shiki code highlighting styles */
 .shiki-wrapper {
-  @apply maz-rounded-md maz-overflow-hidden maz-bg-contrast dark:maz-bg-surface-400;
+  @apply maz-rounded-md maz-overflow-hidden maz-bg-contrast dark:maz-bg-surface-600;
 }
 
 .shiki-wrapper pre {
