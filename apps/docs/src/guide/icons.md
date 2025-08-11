@@ -4,7 +4,7 @@ A comprehensive collection of **328 beautiful SVG icons** ready for use in your 
 
 ## Features
 
-- **300+ icons** - Comprehensive set covering all common use cases
+- **840+ icons** - All icons are available [in the icon set page](./icon-set.md)
 - **Multiple usage patterns** - Direct SVG files, Vue components, or auto-import
 - **TypeScript support** - Full type definitions included
 - **Tree-shakeable** - Import only the icons you need
@@ -270,7 +270,7 @@ All icons support CSS custom properties for advanced styling:
 
 ## Available Icons
 
-The library includes **300+ carefully** covering all common use cases:
+The library includes **840+ carefully** covering all common use cases:
 
 ### Icon Naming Convention
 

@@ -1,6 +1,6 @@
-# Icon Set (300+ icons)
+# Icon Set (840+ icons)
 
-The library includes **300+ carefully**
+The library includes **840+ carefully**
 
 ## Icon Naming Convention
 
@@ -16,13 +16,16 @@ All icons follow a consistent naming pattern:
     <div class="maz-flex maz-gap-2 maz-items-start">
       <MazInput v-model="search" label="Search icon" @update:model-value="search = $event.trim()" :left-icon="MazIcons.MazMagnifyingGlass" class="flex-1" :assistive-text="`${filteredIcons.length} icons found`" />
     </div>
+    <MazTabs v-model="currentTab">
+      <MazTabsBar :items="tabs" />
+    </MazTabs>
     <div class="maz-grid maz-grid-cols-3 maz-gap-2">
-      <div v-for="icon in filteredIcons" :key="icon.label" class="maz-flex maz-flex-col maz-items-center maz-gap-3 maz-text-center maz-border maz-border-solid maz-border-divider maz-rounded maz-p-4 maz-truncate hover:maz-bg-surface-600/50 dark:hover:maz-bg-surface-400">
-        <Component :is="icon.value" class="maz-size-8" />
-        <span class="maz-text-xs maz-text-muted maz-truncate">{{ icon.label }}</span>
+      <div v-for="icon in filteredIcons" :key="icon.name" class="maz-flex maz-flex-col maz-items-center maz-gap-3 maz-text-center maz-border maz-border-solid maz-border-divider maz-rounded maz-p-4 maz-truncate hover:maz-bg-surface-600/50 dark:hover:maz-bg-surface-400">
+        <Component :is="icon.component" class="maz-size-8" />
+        <span class="maz-text-xs maz-text-muted maz-truncate">{{ icon.name }}</span>
         <div class="maz-flex maz-flex-row maz-gap-2 maz-w-full">
-          <MazBtn v-tooltip="'Copy Name'" class="maz-flex-1" size="xs" color="background" outlined @click="copyIcon(icon.label)" :icon="MazClipboardDocument" />
-          <MazBtn v-tooltip="'Copy Import'" class="maz-flex-1" size="xs" color="background" outlined @click="copyIconImport(icon.label)" :icon="MazClipboardDocumentList" />
+          <MazBtn v-tooltip="{ text: 'Copy Name', panelClass: 'maz-text-xs' }" class="maz-flex-1" size="xs" color="background" outlined @click="copyIcon(icon.name)" :icon="MazClipboardDocument" />
+          <MazBtn v-tooltip="{ text: 'Copy Import', panelClass: 'maz-text-xs' }" class="maz-flex-1" size="xs" color="background" outlined @click="copyIconImport(icon.name)" :icon="MazClipboardDocumentList" />
         </div>
       </div>
     </div>
@@ -36,20 +39,51 @@ import { vTooltip } from 'maz-ui/directives/vTooltip'
 import { MazClipboardDocument, MazClipboardDocumentList } from '@maz-ui/icons'
 
 const MazIcons = await import('@maz-ui/icons')
-const { success} = useToast()
 
 const icons = Object.entries(MazIcons).sort(([nameA, _], [nameB, __]) => nameA.localeCompare(nameB)).map(([name, component]) => ({
-  label: name,
-  value: component,
+  name,
+  component,
 }))
+
+const { commonIcons, flags, flagsSquare, all } = icons.reduce((acc, iconComponent) => {
+  if (iconComponent.name.startsWith('MazFlagSquare')) {
+    acc.flagsSquare.push(iconComponent)
+  }
+  else if (iconComponent.name.startsWith('MazFlag') && iconComponent.name.length >= 8) acc.flags.push(iconComponent)
+  else if (iconComponent.name.startsWith('Maz')) acc.commonIcons.push(iconComponent)
+
+  acc.all.push(iconComponent)
+
+  return acc
+}, {
+  commonIcons: [],
+  flags: [],
+  flagsSquare: [],
+  all: [],
+})
+
+const currentTab = ref(1)
+
+const tabs = [
+  { label: 'All', badge: { color: 'secondary', content: all.length, roundedSize: 'full' } },
+  { label: 'Icons', badge: { color: 'secondary', content: commonIcons.length, roundedSize: 'full' } },
+  { label: 'Flags', badge: { color: 'secondary', content: flags.length, roundedSize: 'full' } },
+  { label: 'Flags Square', badge: { color: 'secondary', content: flagsSquare.length, roundedSize: 'full' } },
+]
+
+const { success } = useToast()
 
 const search = ref()
 
 const filteredIcons = computed(() => {
-  const _search = search.value?.toLowerCase().replace(/\s/g, '')
-  if (!_search) return icons
+  const _currentTab = currentTab.value
 
-  return icons.filter(icon => icon.label.toLowerCase().includes(_search) || _search.includes(icon.label.toLowerCase()))
+  const baseIcons = _currentTab === 1 ? all : _currentTab === 2 ? commonIcons : _currentTab === 3 ? flags : _currentTab === 4 ? flagsSquare : all
+
+  const _search = search.value?.toLowerCase().replace(/\s/g, '')
+  if (!_search) return baseIcons
+
+  return baseIcons.filter(icon => icon.name.toLowerCase().includes(_search) || _search.includes(icon.name.toLowerCase()))
 })
 
 const copyIcon = (icon) => {
