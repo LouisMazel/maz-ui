@@ -1,6 +1,6 @@
 ---
 title: vTooltip
-description: vTooltip is a Vue 3 directive to display a text when the user hovers an element
+description: vTooltip is a Vue directive to display a text when the user hovers an element
 ---
 
 # {{ $frontmatter.title }}

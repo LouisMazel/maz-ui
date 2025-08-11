@@ -62,10 +62,8 @@ assignees: LouisMazel
 
 **Framework:**
 
-- [ ] Vue 3
-- [ ] Vue 2
-- [ ] Nuxt 3
-- [ ] Nuxt 2
+- [ ] Vue
+- [ ] Nuxt
 - [ ] Other:
 
 **Package Version:**

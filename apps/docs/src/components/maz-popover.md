@@ -1,6 +1,6 @@
 ---
 title: MazPopover
-description: MazPopover is a versatile Vue 3 component for displaying content in overlays that bypass overflow constraints of parent elements
+description: MazPopover is a versatile Vue component for displaying content in overlays that bypass overflow constraints of parent elements
 ---
 
 # {{ $frontmatter.title }}

@@ -1,6 +1,6 @@
 ---
 title: useIdleTimeout
-description: A Vue 3 composable that provides an easy way to track user inactivity on your website and execute a callback function when the user becomes idle.
+description: A Vue composable that provides an easy way to track user inactivity on your website and execute a callback function when the user becomes idle.
 ---
 
 # {{ $frontmatter.title }}

@@ -1189,7 +1189,7 @@
 - [`@maz-ui/themes`](https://github.com/LouisMazel/maz-ui/commit/a6ce6e6) – Manage themes in Vue/Nuxt projects
 - [`@maz-ui/translations`](https://github.com/LouisMazel/maz-ui/commit/f8c2518) – Translation system for Maz-UI
 - [`@maz-ui/eslint-config`](https://github.com/LouisMazel/maz-ui/commit/d975107) – Shareable ESLint config
-- [`@maz-ui/nuxt`](https://github.com/LouisMazel/maz-ui/commit/d8e4dd4) – Nuxt 3 integration of Maz-UI
+- [`@maz-ui/nuxt`](https://github.com/LouisMazel/maz-ui/commit/d8e4dd4) – Nuxt integration of Maz-UI
 
 #### 🧩 New components
 

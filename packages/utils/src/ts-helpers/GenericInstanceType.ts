@@ -1,7 +1,7 @@
 import type { DefineComponent } from 'vue'
 
 /**
- * This type solves a problem with generic Vue 3 components.
+ * This type solves a problem with generic Vue components.
  *
  * When a component is not generic, we can simply use InstanceType<typeof Component>
  * to get the correct typing. However, with generic components, this approach doesn't work

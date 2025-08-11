@@ -70,7 +70,7 @@ v4.0.0 separates functionality into specialized packages for better modularity:
 | **@maz-ui/utils** | JavaScript/TypeScript utilities | New |
 | **@maz-ui/icons** | SVG icons and flags (840+ icons) | New |
 | **@maz-ui/cli** | CLI for theme generation | Renamed |
-| **@maz-ui/nuxt** | Nuxt 3 module | New |
+| **@maz-ui/nuxt** | Nuxt module | New |
 | **@maz-ui/mcp** | MCP server for IA agent | New |
 
 ## Migration Checklist
@@ -903,8 +903,8 @@ app.use(MazUi)
 - **[Official v4 Documentation](https://maz-ui.com)** - Complete documentation
 - **[Theme Guide](/guide/themes)** - Advanced theme system
 - **[Translation Guide](/guide/translations)** - Internationalization
-- **[Vue Installation Guide](/guide/vue)** - Vue 3 setup
-- **[Nuxt Installation Guide](/guide/nuxt)** - Nuxt 3 setup
+- **[Vue Installation Guide](/guide/vue)** - Vue setup
+- **[Nuxt Installation Guide](/guide/nuxt)** - Nuxt setup
 - **[Resolvers Guide](/guide/resolvers)** - Smart auto-imports
 - **[Complete Changelog](https://github.com/LouisMazel/maz-ui/blob/master/CHANGELOG.md)** - All changes
 

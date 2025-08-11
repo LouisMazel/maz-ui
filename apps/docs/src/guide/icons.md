@@ -73,7 +73,7 @@ import { MazCheck, MazHeart, MazUser } from '@maz-ui/icons'
 
 - ✅ Tree-shaking - Only bundled icons are included
 - ✅ TypeScript support with full IntelliSense
-- ✅ Vue 3 optimized with `defineAsyncComponent`
+- ✅ Vue optimized with `defineAsyncComponent`
 - ✅ Easy to style with CSS classes
 
 ### Method 2: Auto-import with Resolver

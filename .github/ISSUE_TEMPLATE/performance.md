@@ -70,8 +70,8 @@ assignees: LouisMazel
 
 **Framework:**
 
-- [ ] Vue 3
-- [ ] Nuxt 3
+- [ ] Vue
+- [ ] Nuxt
 - [ ] Other:
 
 **Package Version:**

@@ -435,7 +435,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       </div>
       <h3 class="maz-text-base maz-font-semibold">useFormValidator</h3>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
-        A Vue 3 composable designed to simplify form validation using Valibot as the validation library. Offers a flexible and typed approach to handle form validation.
+        A Vue composable designed to simplify form validation using Valibot as the validation library. Offers a flexible and typed approach to handle form validation.
       </p>
       <div class="maz-flex-1"></div>
       <MazBtn color="background" outlined size="sm" block href="/composables/use-form-validator">Discover</MazBtn>
@@ -491,7 +491,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       </div>
       <h3 class="maz-text-base maz-font-semibold">useDisplayNames</h3>
       <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
-        A Vue 3 composable that provides functions to work with localized display names based on ISO codes, leveraging the Intl.DisplayNames API.
+        A Vue composable that provides functions to work with localized display names based on ISO codes, leveraging the Intl.DisplayNames API.
       </p>
       <div class="maz-flex-1"></div>
       <MazBtn color="background" outlined size="sm" block href="/composables/use-display-names">Discover</MazBtn>

@@ -41,7 +41,7 @@ Install the development dependencies by running:
 pnpm install
 ```
 
-Once your dependencies are installed, to run the server of the developing nuxt 3 app, use this command:
+Once your dependencies are installed, to run the server of the developing nuxt app, use this command:
 
 ```shell
 pnpm -F nuxt-app dev

@@ -1,6 +1,6 @@
 ---
 title: MazSelectCountry
-description: MazSelectCountry is a versatile Vue 3 component for selecting countries or languages with built-in internationalization support and customizable display options
+description: MazSelectCountry is a versatile Vue component for selecting countries or languages with built-in internationalization support and customizable display options
 ---
 
 # {{ $frontmatter.title }}

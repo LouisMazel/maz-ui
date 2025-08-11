@@ -1,6 +1,6 @@
 ---
 title: useDisplayNames
-description: useDisplayNames is a Vue 3 composable specialized in displaying localized country names (regions) and language names. It supports various code formats including ISO 639-1 (language codes), ISO 3166-1 (country codes), and BCP 47 (language tags), using the Intl.DisplayNames API for internationalization.
+description: useDisplayNames is a Vue composable specialized in displaying localized country names (regions) and language names. It supports various code formats including ISO 639-1 (language codes), ISO 3166-1 (country codes), and BCP 47 (language tags), using the Intl.DisplayNames API for internationalization.
 ---
 
 # {{ $frontmatter.title }}
@@ -20,7 +20,7 @@ Depending on your environment (client or node server) and the browser you are us
 ## Key Features
 
 - Displays localized country names (regions) and language names
-- Supports multiple code formats: ISO 639-1 (language codes), ISO 3166-1 (country codes), and BCP 47 (language tags)  
+- Supports multiple code formats: ISO 639-1 (language codes), ISO 3166-1 (country codes), and BCP 47 (language tags)
 - Works with any locale supported by the browser's Intl.DisplayNames API
 - Provides functions to get individual names or bulk retrieve all available names
 - Handles errors gracefully with fallback values
@@ -154,7 +154,7 @@ function getAllDisplayNames(options: {
 
 ## Notes
 
-- The `useDisplayNames` composable is designed to be used with Vue 3.
+- The `useDisplayNames` composable is designed to be used with Vue.
 - The composable functions return `ComputedRef` values, which are reactive and will update automatically when their dependencies change.
 - Handle errors gracefully by providing fallback values when the display name cannot be fetched.
 - The `Intl.DisplayNames` API is used internally to fetch and format the display names based on the provided locale and code.

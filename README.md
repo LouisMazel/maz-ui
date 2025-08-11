@@ -4,14 +4,14 @@
   <h1>Maz UI</h1>
   <p>
     <strong>
-      Lightweight and efficient library for Vue 3 & Nuxt 3
+      Lightweight and efficient library for Vue & Nuxt
     </strong>
   </p>
 </div>
 
 <p align="center">
-  <a href="https://vuejs.org"><img src="https://img.shields.io/badge/vue-3-42b983.svg" alt="vue 3"></a>
-  <a href="https://v3.nuxtjs.org"><img src="https://img.shields.io/badge/nuxt-3-42b983.svg" alt="nuxt 3"></a>
+  <a href="https://vuejs.org"><img src="https://img.shields.io/badge/vue-3-42b983.svg" alt="vue badge"></a>
+  <a href="https://v3.nuxtjs.org"><img src="https://img.shields.io/badge/nuxt-3-42b983.svg" alt="nuxt badge"></a>
   <a href="https://www.npmjs.com/package/maz-ui"><img src="https://img.shields.io/npm/v/maz-ui/latest.svg" alt="npm"></a>
   <a href="https://www.npmjs.com/package/maz-ui"><img src="https://badgen.net/npm/types/maz-ui" alt="types"></a>
   <a href="https://npm-stat.com/charts.html?package=maz-ui"><img src="https://badgen.net/npm/dm/maz-ui" alt="Downloads"></a>
@@ -60,7 +60,7 @@ Check the [Documentation](https://maz-ui.com) for more information.
 npm install maz-ui
 ```
 
-### Vue 3
+### Vue
 
 ```ts
 import { mazUi } from '@maz-ui/themes/presets'
@@ -99,7 +99,7 @@ import MazBtn from 'maz-ui/components/MazBtn'
 
 Use provided resolvers to enjoy auto-imports and TypeScript support: [Resolvers documentation](https://maz-ui.com/guide/getting-started#recommendations)
 
-### Nuxt 3
+### Nuxt
 
 The Nuxt module automatically:
 

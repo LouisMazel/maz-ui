@@ -1,6 +1,6 @@
 ---
 title: useSwipe
-description: useSwipe is a Vue 3 composable that simplifies the management of "swipe" interactions on HTML elements.
+description: useSwipe is a Vue composable that simplifies the management of "swipe" interactions on HTML elements.
 ---
 
 # {{ $frontmatter.title }}

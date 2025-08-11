@@ -19,7 +19,7 @@ The composable provides the following functionality:
 
 The composable also includes cleanup logic using onBeforeUnmount to ensure that the timer is stopped when the component is unmounted.
 
-This composable can be used in Vue 3 components to handle timeouts in a flexible and reactive manner.
+This composable can be used in Vue components to handle timeouts in a flexible and reactive manner.
 
 ## Usage
 

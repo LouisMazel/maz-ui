@@ -4,7 +4,7 @@ description: Build Vue and Nuxt applications faster with Maz-UI v4 - The modern,
 head:
   - - meta
     - name: keywords
-      content: vue ui library, vue components, nuxt ui, maz-ui installation, vue 3 components
+      content: vue ui library, vue components, nuxt ui, maz-ui installation, components, nuxt, vue, themes, translations, icons, mcp, maz-ui
 ---
 
 # {{ $frontmatter.title }}

@@ -201,7 +201,7 @@ export class MazUiMcpServer {
           },
           {
             name: 'list_composables',
-            description: 'List all Vue 3 composables (useToast, useDialog, etc.)',
+            description: 'List all Vue or Nuxt composables (useToast, useDialog, etc.)',
             inputSchema: {
               type: 'object',
               properties: {},

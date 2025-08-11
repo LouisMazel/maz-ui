@@ -1,6 +1,6 @@
 ---
 title: vLazyImg
-description: vLazyImg is a Vue 3 directive to lazy load images with many options. The image will be loaded on user's scroll
+description: vLazyImg is a Vue directive to lazy load images with many options. The image will be loaded on user's scroll
 ---
 
 # {{ $frontmatter.title }}
