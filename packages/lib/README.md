@@ -60,7 +60,23 @@ npm install maz-ui
 
 ```ts
 // main.ts
+import { mazUi } from '@maz-ui/themes/presets'
+import { fr } from '@maz-ui/translations'
+import { MazUi } from 'maz-ui/plugins/maz-ui'
 import 'maz-ui/styles'
+
+const app = createApp(App)
+
+app.use(MazUi, {
+  theme: {
+    preset: mazUi,
+  },
+  translations: {
+    messages: {
+      fr,
+    },
+  },
+})
 ```
 
 #### 💡 Usage
