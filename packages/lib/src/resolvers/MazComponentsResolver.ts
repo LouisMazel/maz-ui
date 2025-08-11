@@ -2,7 +2,7 @@
 
 import type { IconName } from '@maz-ui/icons/icon-list'
 import type { ComponentResolver } from 'unplugin-vue-components/types'
-import { iconsList } from '@maz-ui/icons/icon-list'
+import { iconList } from '@maz-ui/icons/icon-list'
 import { pascalCase } from '@maz-ui/utils/helpers/pascalCase'
 
 /**
@@ -19,7 +19,7 @@ export function MazComponentsResolver(options?: { devMode?: boolean }): Componen
       const base = devMode ? 'maz-ui/src/components' : 'maz-ui/components'
       const extension = devMode ? '.vue' : ''
 
-      if (/^(Maz[A-Z])/.test(name) && !iconsList.includes(name as IconName)) {
+      if (/^(Maz[A-Z])/.test(name) && !iconList.includes(name as IconName)) {
         return { from: `${base}/${name}${extension}` }
       }
       else if (/^(maz-[a-z])/.test(name)) {
