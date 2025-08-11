@@ -93,7 +93,8 @@ const isDark = computed(() => state.value?.isDark ?? false)
 const strategy = computed(() => state.value?.strategy as Strategy)
 const mode = computed(() => state.value?.mode as ThemeMode)
 const darkModeStrategy = computed(() => state.value?.darkModeStrategy as DarkModeStrategy)
-const presetName = computed(() => state.value?.currentPreset?.name)
+const currentPreset = computed(() => state.value?.currentPreset)
+const presetName = computed(() => currentPreset.value?.name)
 
 async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePresetName) {
   if (!state.value)
@@ -221,5 +222,6 @@ export function useTheme() {
     toggleDarkMode,
     mode,
     darkModeStrategy,
+    currentPreset,
   }
 }
