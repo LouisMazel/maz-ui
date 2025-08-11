@@ -1,5 +1,22 @@
 # Change Log
 
+## v4.1.3...v4.1.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.3...v4.1.4)
+
+### 🩹 Fixes
+
+- **docs:** Theme switching in theme editor ([ee76e0034](https://github.com/LouisMazel/maz-ui/commit/ee76e0034))
+
+### 💅 Refactors
+
+- **@maz-ui/themes:** UseTheme expose currentPreset ([80b4274a0](https://github.com/LouisMazel/maz-ui/commit/80b4274a0))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.2...v4.1.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.2...v4.1.3)
