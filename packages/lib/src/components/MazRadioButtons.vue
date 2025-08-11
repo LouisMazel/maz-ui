@@ -1,6 +1,6 @@
 <script lang="ts" setup generic="T extends string | number | boolean, Option extends MazRadioButtonsOption<T>">
 import type { HTMLAttributes } from 'vue'
-import type { MazColor } from './types'
+import type { MazColor, MazSize } from './types'
 import { MazCheck } from '@maz-ui/icons'
 import { ref } from 'vue'
 import { getColor } from './types'
@@ -49,6 +49,11 @@ export interface MazRadioButtonsProps<T = string | number | boolean, Option exte
   warning?: boolean
   /** The hint text to display below the input. */
   hint?: string
+  /**
+   * The size of the radio buttons
+   * @default 'md'
+   */
+  size?: MazSize
 }
 
 const props = withDefaults(defineProps<MazRadioButtonsProps<T, Option>>(), {
@@ -61,6 +66,7 @@ const props = withDefaults(defineProps<MazRadioButtonsProps<T, Option>>(), {
   equalSize: false,
   selector: false,
   block: false,
+  size: 'md',
 })
 
 const emits = defineEmits<{
@@ -129,6 +135,7 @@ function onFocus(index: number, event: FocusEvent) {
         :for="getOptionId(option, i)"
         class="m-radio-buttons__items maz-group"
         :class="[
+          `--size-${size}`,
           {
             '--is-selected': isSelected(option.value),
             '--elevation': elevation,
@@ -226,7 +233,31 @@ function onFocus(index: number, event: FocusEvent) {
 
   &__items {
     @apply maz-flex maz-cursor-pointer maz-gap-4 maz-rounded maz-border maz-border-divider
-        maz-bg-surface maz-px-4 maz-py-2 maz-font-medium maz-transition-colors maz-duration-300;
+        maz-bg-surface maz-px-4 maz-py-2 maz-font-medium maz-transition-colors maz-duration-300 maz-flex-center;
+
+    &.--size-mini {
+      @apply maz-px-1 maz-min-h-6 maz-text-xs;
+    }
+
+    &.--size-xs {
+      @apply maz-px-2 maz-min-h-8 maz-text-xs;
+    }
+
+    &.--size-sm {
+      @apply maz-px-3 maz-min-h-10 maz-text-sm;
+    }
+
+    &.--size-md {
+      @apply maz-px-4 maz-min-h-12;
+    }
+
+    &.--size-lg {
+      @apply maz-px-5 maz-min-h-14 maz-text-lg;
+    }
+
+    &.--size-xl {
+      @apply maz-px-6 maz-min-h-16 maz-text-xl;
+    }
 
     &.--elevation {
       @apply maz-drop-shadow-md maz-shadow-elevation;
