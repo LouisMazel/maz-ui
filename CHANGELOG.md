@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.1.5...v4.1.6
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.5...v4.1.6)
+
+### 📖 Documentation
+
+- **docs:** Themes - add all CSS generated variables ([6d01faf99](https://github.com/LouisMazel/maz-ui/commit/6d01faf99))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.4...v4.1.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.4...v4.1.5)

@@ -1,5 +1,12 @@
 # Changelog
 
+## v4.1.5...v4.1.6
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.5...v4.1.6)
+
+**Note:** No relevant commits found
+
+
 ## v4.1.4...v4.1.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.4...v4.1.5)
