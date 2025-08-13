@@ -6,7 +6,6 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.1.4...v4.1.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.4...v4.1.5)
@@ -18,7 +17,6 @@
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.1.3...v4.1.4
 
@@ -32,13 +30,11 @@
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.2...v4.1.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.2...v4.1.3)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.1-beta.1...v4.1.2
 
@@ -52,7 +48,6 @@
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.1.1-beta.0...v4.1.1
 
