@@ -27,7 +27,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
-          ref: develop
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
           token: ${{ secrets.RELEASE_TOKEN }}
 
@@ -74,7 +74,7 @@ jobs:
         run: |
           VERSION=$(jq -r '.version' lerna.json)
           git tag -a "v$VERSION" -m "chore(release): version packages $VERSION"
-          git push origin develop --follow-tags
+          git push origin ${{ github.ref_name }} --follow-tags
 
       - name: Publish to NPM (Beta)
         run: |
