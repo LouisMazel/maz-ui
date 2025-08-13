@@ -496,9 +496,9 @@ async function scrollToOptionIndex(index?: number) {
       behavior: 'auto',
     })
 
-    nextTick(() => {
+    setTimeout(() => {
       item.focus({ preventScroll: true })
-    })
+    }, 100)
   }
 }
 
@@ -854,7 +854,7 @@ defineExpose({
 }
 
 .m-select-list {
-  @apply maz-z-default-backdrop maz-flex maz-flex-col maz-gap-1 maz-overflow-hidden maz-rounded maz-bg-surface maz-p-2 maz-drop-shadow-md maz-shadow-elevation;
+  @apply maz-z-default-backdrop maz-flex maz-flex-col maz-gap-1 maz-overflow-hidden maz-rounded maz-bg-surface maz-drop-shadow-md maz-shadow-elevation;
 
   &-optgroup {
     @apply maz-flex-none maz-p-0.5 maz-text-start maz-text-[0.875em] maz-text-muted;
@@ -887,7 +887,7 @@ defineExpose({
   min-width: 3.5rem;
 
   &__scroll-wrapper {
-    @apply maz-flex maz-flex-1 maz-flex-col maz-gap-1 maz-overflow-auto;
+    @apply maz-flex maz-flex-1 maz-flex-col maz-gap-1 maz-overflow-auto maz-p-2;
 
     /* Custom scrollbar for webkit browsers (Chrome, Safari, Edge) */
     &::-webkit-scrollbar {
@@ -929,7 +929,9 @@ defineExpose({
       background-color: var(--selected-bg-color);
 
       &:focus {
-        @apply maz-border-[var(--selected-text-color)];
+        @apply maz-outline-[var(--selected-text-color)];
+
+        outline-width: var(--maz-border-width);
       }
 
       &.--transparent {
