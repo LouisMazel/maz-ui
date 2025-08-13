@@ -3,8 +3,6 @@ import type { ThemePreset } from '@maz-ui/themes'
 import { useTheme } from '@maz-ui/themes/composables/useTheme'
 import { mazUi } from '@maz-ui/themes/presets/mazUi'
 import { useToast } from 'maz-ui/composables'
-// Import dynamique pour ne pas ralentir le démarrage
-// import { codeToHtml } from 'shiki'
 import { computed, nextTick, reactive, ref, unref, watch, watchEffect } from 'vue'
 import ColorPicker from './ColorPicker.vue'
 import DemoAuthPage from './DemoAuthPage.vue'
