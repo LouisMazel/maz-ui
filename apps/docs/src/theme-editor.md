@@ -17,5 +17,5 @@ sidebar: false
 <ThemeEditorPage />
 
 <script setup lang="ts">
-  import ThemeEditorPage from './demo/ThemeEditorPage.vue'
+  import ThemeEditorPage from '../components/ThemeEditorPage.vue'
 </script>
