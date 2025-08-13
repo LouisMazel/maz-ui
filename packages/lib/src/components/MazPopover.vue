@@ -765,7 +765,7 @@ defineExpose({
 
 <style lang="postcss" scoped>
 .m-popover {
-  @apply maz-inline-block maz-w-max;
+  @apply maz-inline-block;
 
   .m-popover-trigger {
     @apply maz-inline-block maz-size-full;
