@@ -35,27 +35,31 @@ import MazLink from 'maz-ui/components/MazLink'
 
 <ComponentDemo>
   <div class="maz-flex maz-flex-col maz-gap-2 maz-justify-center">
-    <MazLink color="primary"> View product detail </MazLink>
-    <MazLink color="secondary"> View product detail </MazLink>
-    <MazLink color="info"> View product detail </MazLink>
-    <MazLink color="success"> View product detail </MazLink>
-    <MazLink color="warning"> View product detail </MazLink>
-    <MazLink color="destructive"> View product detail </MazLink>
-    <MazLink color="accent"> View product detail </MazLink>
-    <MazLink color="contrast"> View product detail </MazLink>
+    <MazLink color="primary"> View product detail (primary) </MazLink>
+    <MazLink color="secondary"> View product detail (secondary) </MazLink>
+    <MazLink color="info"> View product detail (info) </MazLink>
+    <MazLink color="success"> View product detail (success) </MazLink>
+    <MazLink color="warning"> View product detail (warning) </MazLink>
+    <MazLink color="destructive"> View product detail (destructive) </MazLink>
+    <MazLink color="accent"> View product detail (accent) </MazLink>
+    <MazLink color="contrast"> View product detail (contrast) </MazLink>
+    <MazLink color="background"> View product detail (background) </MazLink>
+    <MazLink color="muted"> View product detail (muted) </MazLink>
   </div>
 
 <template #code>
 
 ```html
-<MazLink color="primary"> View product detail </MazLink>
-<MazLink color="secondary"> View product detail </MazLink>
-<MazLink color="info"> View product detail </MazLink>
-<MazLink color="success"> View product detail </MazLink>
-<MazLink color="warning"> View product detail </MazLink>
-<MazLink color="destructive"> View product detail </MazLink>
-<MazLink color="accent"> View product detail </MazLink>
-<MazLink color="contrast"> View product detail </MazLink>
+<MazLink color="primary"> View product detail (primary) </MazLink>
+<MazLink color="secondary"> View product detail (secondary) </MazLink>
+<MazLink color="info"> View product detail (info) </MazLink>
+<MazLink color="success"> View product detail (success) </MazLink>
+<MazLink color="warning"> View product detail (warning) </MazLink>
+<MazLink color="destructive"> View product detail (destructive) </MazLink>
+<MazLink color="accent"> View product detail (accent) </MazLink>
+<MazLink color="contrast"> View product detail (contrast) </MazLink>
+<MazLink color="background"> View product detail (background) </MazLink>
+<MazLink color="muted"> View product detail (muted) </MazLink>
 ```
 
   </template>
