@@ -54,10 +54,10 @@
     }
   },
   "dependencies": {
-    "@antfu/eslint-config": "^5.2.0",
+    "@antfu/eslint-config": "^5.2.1",
     "eslint-plugin-format": "^1.0.1",
-    "eslint-plugin-sonarjs": "^3.0.2",
-    "eslint-plugin-tailwindcss": "^3.18.0",
+    "eslint-plugin-sonarjs": "^3.0.4",
+    "eslint-plugin-tailwindcss": "^3.18.2",
     "eslint-plugin-vuejs-accessibility": "^2.4.0"
   },
   "devDependencies": {

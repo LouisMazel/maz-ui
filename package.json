@@ -81,7 +81,7 @@
     "lint-staged": "^16.1.5",
     "nx": "^21.3.11",
     "ts-node": "^10.9.2",
-    "tsx": "^4.20.3"
+    "tsx": "^4.20.4"
   },
   "pnpm": {
     "catalog": false,

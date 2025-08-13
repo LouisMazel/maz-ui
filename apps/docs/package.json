@@ -26,7 +26,7 @@
     "chart.js": "^4.5.0",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.13",
-    "libphonenumber-js": "^1.12.10",
+    "libphonenumber-js": "^1.12.11",
     "maz-ui": "workspace:*",
     "vitepress-plugin-google-analytics": "^1.0.2"
   },
@@ -34,14 +34,14 @@
     "@samkirkland/ftp-deploy": "^1.2.4",
     "@types/postcss-import": "^14.0.3",
     "@types/postcss-url": "^10.0.4",
-    "@types/react": "^19.1.9",
+    "@types/react": "^19.1.10",
     "@vercel/og": "^0.8.5",
     "postcss-import": "^16.1.0",
     "postcss-url": "^10.1.3",
     "react": "^19.1.1",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.9.2",
-    "vitepress": "^2.0.0-alpha.9",
+    "vitepress": "2.0.0-alpha.10",
     "vue": "^3.5.18"
   },
   "lint-staged": {
