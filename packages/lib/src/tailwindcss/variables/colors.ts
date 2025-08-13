@@ -17,6 +17,8 @@ export const scaleColors = {
   muted: 'muted',
 } as const
 
+export const noForegroundColors = ['surface', 'foreground', 'overlay', 'divider', 'muted', 'elevation'] as const satisfies ScaleColorName[]
+
 export const colorScales = [
   '50',
   '100',
