@@ -1,5 +1,19 @@
 # Change Log
 
+## v4.1.6...v4.1.7-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7-beta.0)
+
+### 💄 Styles
+
+- **maz-ui:** MazBtn - adjust text color of background and contrast colors ([6db8243b](https://github.com/LouisMazel/maz-ui/commit/6db8243b))
+- **maz-ui:** MazPopover - use text foreground for background color ([7f594790](https://github.com/LouisMazel/maz-ui/commit/7f594790))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.5...v4.1.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.5...v4.1.6)
