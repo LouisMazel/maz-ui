@@ -55,7 +55,11 @@ export interface MazCardProps {
   hrefTarget?: '_blank' | '_self' | '_parent' | '_top' | string
   /** Footer text alignment: `right | left` */
   footerAlign?: 'right' | 'left'
-  /** Images gallery props options (see `MazGallery` component) */
+  /**
+   * Images gallery props options (see `MazGallery` component)
+   * @default `{ displayedCount: 3, remaining: false, zoom: !href && !to, width: 200, height: 150 }`
+   * If `href` or `to` is set, `zoom` is set to `false`
+   */
   gallery?: MazGalleryProps
   /** scale animation on hover (only linked cards) */
   scale?: boolean
@@ -191,7 +195,10 @@ function toggleCollapse() {
     >
       <div v-if="galleryOptions.images" class="m-card__gallery__wrapper">
         <MazGallery
-          v-bind="galleryOptions"
+          v-bind="{
+            ...galleryOptions,
+            zoom: !isLinked,
+          }"
           class="m-card__gallery"
         />
       </div>
