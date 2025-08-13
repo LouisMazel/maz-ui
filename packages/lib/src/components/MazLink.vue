@@ -67,7 +67,7 @@ export interface MazLinkProps {
    * @default 'primary'
    * When 'none', the link will not have any color, so it will inherit the color of the parent
    */
-  color?: MazColor | 'muted' | 'background' | 'none'
+  color?: MazColor | 'muted' | 'background' | 'inherit'
   /**
    * The target of the link
    * @default '_self'
@@ -150,7 +150,7 @@ const isButton = computed(() => component.value === 'button')
         '--underline': underline,
         '--underline-hover': !underline && underlineHover,
       },
-      color !== 'none' && `--${getColor(color)}`,
+      color !== 'inherit' && `--${getColor(color)}`,
       classProp,
     ]"
     :to
