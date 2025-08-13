@@ -822,7 +822,7 @@ defineExpose({
   }
 
   &.--background {
-    @apply maz-bg-surface maz-text-surface-foreground;
+    @apply maz-bg-surface maz-text-foreground;
   }
 }
 
