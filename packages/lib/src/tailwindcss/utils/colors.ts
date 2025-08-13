@@ -1,5 +1,5 @@
 import type { ThemeConfig } from 'tailwindcss/types/config'
-import { baseColors, colorScales, scaleColors } from '../variables/colors'
+import { baseColors, colorScales, noForegroundColors, scaleColors } from '../variables/colors'
 
 export function getColors(): ThemeConfig['colors'] {
   const colors: ThemeConfig['colors'] = baseColors
@@ -12,7 +12,10 @@ export function getColors(): ThemeConfig['colors'] {
     }, {} as Record<string, string>)
 
     colorVariations.DEFAULT = `hsl(var(--maz-${variableName}) / <alpha-value>)`
-    colorVariations.foreground = `hsl(var(--maz-${variableName}-foreground) / <alpha-value>)`
+
+    if (!noForegroundColors.includes(colorNameTailwind as any)) {
+      colorVariations.foreground = `hsl(var(--maz-${variableName}-foreground) / <alpha-value>)`
+    }
 
     colors[colorNameTailwind] = colorVariations
   }
