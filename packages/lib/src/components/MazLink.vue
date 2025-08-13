@@ -65,8 +65,9 @@ export interface MazLinkProps {
   /**
    * The color of the link
    * @default 'primary'
+   * When 'none', the link will not have any color, so it will inherit the color of the parent
    */
-  color?: MazColor | 'muted' | 'background'
+  color?: MazColor | 'muted' | 'background' | 'none'
   /**
    * The target of the link
    * @default '_self'
@@ -149,7 +150,7 @@ const isButton = computed(() => component.value === 'button')
         '--underline': underline,
         '--underline-hover': !underline && underlineHover,
       },
-      `--${getColor(color)}`,
+      color !== 'none' && `--${getColor(color)}`,
       classProp,
     ]"
     :to
@@ -233,7 +234,7 @@ const isButton = computed(() => component.value === 'button')
   }
 
   &.--contrast:not(:disabled) {
-    @apply maz-text-contrast-foreground hover:maz-text-contrast-foreground-700;
+    @apply maz-text-foreground hover:maz-text-foreground-900 dark:hover:maz-text-foreground-100;
   }
 
   &.--muted:not(:disabled) {
