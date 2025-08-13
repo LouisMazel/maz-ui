@@ -10,7 +10,7 @@ import DefaultTheme from 'vitepress/theme'
           <span class="maz-text-white">
             You are currently browsing the v4 documentation -
           </span>
-          <MazLink href="https://v3.maz-ui.com" color="contrast" underline class="dark">
+          <MazLink href="https://v3.maz-ui.com" color="none" underline class="dark">
             View v3 documentation
           </MazLink>
         </div>
