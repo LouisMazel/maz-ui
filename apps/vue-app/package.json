@@ -24,13 +24,13 @@
     "@tsconfig/node22": "^22.0.1",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.7.0",
-    "eslint-plugin-oxlint": "^1.11.0",
+    "eslint-plugin-oxlint": "^1.11.2",
     "maz-ui": "workspace:*",
     "npm-run-all2": "^8.0.4",
-    "oxlint": "^1.11.0",
+    "oxlint": "^1.11.2",
     "rollup-plugin-visualizer": "^6.0.3",
     "typescript": "~5.9.2",
-    "vite": "^7.1.1",
+    "vite": "^7.1.2",
     "vite-plugin-vue-devtools": "^8.0.0",
     "vue-tsc": "^3.0.5"
   }
