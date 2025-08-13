@@ -86,10 +86,9 @@
   "pnpm": {
     "catalog": false,
     "onlyBuiltDependencies": [
-      "@parcel/watcher",
-      "esbuild",
+      "@swc/core",
       "nx",
-      "unrs-resolver"
+      "vue-demi"
     ]
   },
   "lint-staged": {

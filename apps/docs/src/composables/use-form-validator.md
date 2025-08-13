@@ -690,7 +690,6 @@ You can use async functions in the validation schema.
         minLength(3, 'Name must be at least 3 characters'),
         checkAsync(
           async (name) => {
-            console.log('name', name)
             await sleep(2000)
             return false
           },
@@ -1111,7 +1110,6 @@ interface FormFieldOptions<T> {
         minLength(3, 'Name must be at least 3 characters'),
         checkAsync(
           async (name) => {
-            console.log('name', name)
             await sleep(2000)
             return false
           },
