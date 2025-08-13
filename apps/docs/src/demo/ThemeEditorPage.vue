@@ -349,7 +349,7 @@ function formatColorName(colorName: string): string {
             v-else
             class="maz-bg-contrast maz-p-4 dark:maz-bg-surface-300"
           >
-            <pre class="maz-whitespace-pre-wrap maz-font-mono maz-text-xs maz-text-contrast-foreground dark:maz-text-surface-foreground">{{ exportedCode }}</pre>
+            <pre class="maz-whitespace-pre-wrap maz-font-mono maz-text-xs maz-text-contrast-foreground dark:maz-text-foreground">{{ exportedCode }}</pre>
           </div>
         </div>
       </div>
