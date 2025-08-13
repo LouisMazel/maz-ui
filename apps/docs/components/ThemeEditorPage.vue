@@ -3,7 +3,8 @@ import type { ThemePreset } from '@maz-ui/themes'
 import { useTheme } from '@maz-ui/themes/composables/useTheme'
 import { mazUi } from '@maz-ui/themes/presets/mazUi'
 import { useToast } from 'maz-ui/composables'
-import { codeToHtml } from 'shiki'
+// Import dynamique pour ne pas ralentir le démarrage
+// import { codeToHtml } from 'shiki'
 import { computed, nextTick, reactive, ref, unref, watch, watchEffect } from 'vue'
 import ColorPicker from './ColorPicker.vue'
 import DemoAuthPage from './DemoAuthPage.vue'
@@ -97,18 +98,20 @@ async function exportTheme() {
   const themeCode = `import type { ThemePreset } from '@maz-ui/themes'
 
 export const customTheme: ThemePreset = ${JSON.stringify(themeData, null, 2)
-// Escape single quotes within string values
+  // Escape single quotes within string values
   .replace(/: "([^"]*)"/g, (match, value) => {
     const escapedValue = value.replace(/'/g, '\\\'')
     return `: '${escapedValue}'`
   })
-// Remove quotes from top-level keys and nested object keys
+  // Remove quotes from top-level keys and nested object keys
   .replace(/^(\s*)"(name|foundation|colors)":/gm, '$1$2:')
   .replace(/^(\s*)"(light|dark)":/gm, '$1$2:')}`
 
   exportedCode.value = themeCode
 
   try {
+    // Import dynamique de Shiki
+    const { codeToHtml } = await import('shiki')
     const html = await codeToHtml(themeCode, {
       lang: 'typescript',
       theme: isDark.value ? 'tokyo-night' : 'github-dark',
