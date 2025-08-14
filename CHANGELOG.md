@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.1.7-beta.1...v4.1.7-beta.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.1...v4.1.7-beta.2)
+
+### 💅 Refactors
+
+- **maz-ui:** MazCard - ensure card has no zoom feature on gallery when it's linked ([0dd16faa](https://github.com/LouisMazel/maz-ui/commit/0dd16faa))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7-beta.0...v4.1.7-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.0...v4.1.7-beta.1)
