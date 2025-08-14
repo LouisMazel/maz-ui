@@ -32,10 +32,12 @@ defineEmits<{
   'update:collapseOpen': [boolean]
 }>()
 
+const isLinked = computed(() => !!href || !!to)
+
 const DEFAULT_GALLERY_OPTIONS: MazGalleryProps = {
   displayedCount: 3,
   remaining: false,
-  zoom: !href && !to,
+  zoom: !isLinked.value,
   width: 200,
   height: 150,
 }
@@ -130,8 +132,6 @@ const wrapperData = computed(() => {
 const footerAlignClass = computed(() =>
   footerAlign === 'right' ? 'maz-text-end' : 'maz-text-start',
 )
-
-const isLinked = computed(() => href || to)
 
 function toggleCollapse() {
   if (collapsible)
