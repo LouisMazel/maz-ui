@@ -1,5 +1,33 @@
 # Change Log
 
+## v4.1.7-beta.0...v4.1.7-beta.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.0...v4.1.7-beta.1)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazCard - a linked card should not have zoom feature on the gallery ([863fb1cf](https://github.com/LouisMazel/maz-ui/commit/863fb1cf))
+- **maz-ui:** MazDropdown - correct prop heritage to popover component ([cd679d9d](https://github.com/LouisMazel/maz-ui/commit/cd679d9d))
+- **maz-ui:** MazSelect - selected option should be focus on open & selected option focused has outline style ([5807d3bf](https://github.com/LouisMazel/maz-ui/commit/5807d3bf))
+- **docs:** Add components folder to tailwindcss content ([7786faf1](https://github.com/LouisMazel/maz-ui/commit/7786faf1))
+
+### 💅 Refactors
+
+- **maz-ui:** MazDatePicker - prefer-position and fallback-position are controllable with props ([30935856](https://github.com/LouisMazel/maz-ui/commit/30935856))
+- **maz-ui:** MazLink - supports background, muted and contrast colors ([b44858f5](https://github.com/LouisMazel/maz-ui/commit/b44858f5))
+- **maz-ui:** MazLink - supports colors 'none' to inherits color from parent ([e46367f0](https://github.com/LouisMazel/maz-ui/commit/e46367f0))
+- **maz-ui:** MazLink - rename 'none' to 'inherit' ([a69f356a](https://github.com/LouisMazel/maz-ui/commit/a69f356a))
+- **maz-ui:** MazPopover - remove width max-content ([b2abc9f6](https://github.com/LouisMazel/maz-ui/commit/b2abc9f6))
+
+### 📖 Documentation
+
+- **docs:** MazLink - add new colors in demo ([99abc23b](https://github.com/LouisMazel/maz-ui/commit/99abc23b))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.6...v4.1.7-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7-beta.0)
