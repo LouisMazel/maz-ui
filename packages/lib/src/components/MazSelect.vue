@@ -1,7 +1,7 @@
 <script
   lang="ts"
   setup
-  generic="Value extends MazInputValue, Option extends MazSelectOption, Multiple extends boolean"
+  generic="Option extends MazSelectOption, Value extends MazInputValue, Multiple extends boolean"
 >
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { GenericInstanceType } from '@maz-ui/utils'
@@ -41,7 +41,7 @@ export type MazSelectOption
     | boolean
     | MazSelectOptionWithOptGroup
 
-export interface MazSelectProps<Value extends MazInputValue = MazInputValue, Option extends MazSelectOption = MazSelectOption, Multiple extends boolean = false> {
+export interface MazSelectProps<Value extends MazInputValue, Option extends MazSelectOption, Multiple extends boolean> {
   /**
    * Style attribut of the component root element
    * @type {HTMLAttributes['style']}
@@ -93,9 +93,24 @@ export interface MazSelectProps<Value extends MazInputValue = MazInputValue, Opt
    * @default 'auto'
    */
   listPosition?: MazPopoverProps['position']
+  /**
+   * The prefer position of the list
+   * @type {MazPopoverProps['preferPosition']}
+   * @default 'bottom-start'
+   */
+  preferPosition?: MazPopoverProps['preferPosition']
+  /**
+   * The fallback position of the list
+   * @type {MazPopoverProps['fallbackPosition']}
+   * @default 'top-start'
+   */
+  fallbackPosition?: MazPopoverProps['fallbackPosition']
   /** The height of the option list item */
   itemHeight?: number
-  /** The max height of the option list */
+  /**
+   * The max height of the option list
+   * @default 240
+   */
   maxListHeight?: number
   /** The max width of the option list */
   maxListWidth?: number
@@ -166,27 +181,36 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MazSelectProps<Value, Option, Multiple>>(), {
-  id: undefined,
-  class: undefined,
-  multiple: undefined,
-  style: undefined,
-  modelValue: undefined,
-  optionValueKey: 'value',
-  optionLabelKey: 'label',
-  optionInputValueKey: 'label',
-  listPosition: undefined,
-  itemHeight: undefined,
-  maxListHeight: 240,
-  maxListWidth: undefined,
-  minListWidth: undefined,
-  minListHeight: undefined,
-  size: 'md',
-  color: 'primary',
-  transition: 'scale-fade',
-  searchThreshold: 0.75,
-  autocomplete: 'off',
-})
+const {
+  id = undefined,
+  class: classProp = undefined,
+  multiple = false,
+  style = undefined,
+  modelValue = undefined,
+  optionValueKey = 'value',
+  optionLabelKey = 'label',
+  optionInputValueKey = 'label',
+  listPosition = 'auto',
+  preferPosition = 'bottom-start',
+  fallbackPosition = 'top-start',
+  itemHeight = undefined,
+  maxListHeight = 240,
+  maxListWidth = undefined,
+  minListWidth = undefined,
+  minListHeight = undefined,
+  size = 'md',
+  color = 'primary',
+  transition = 'scale-fade',
+  searchThreshold = 0.75,
+  autocomplete = 'off',
+  formatInputValue,
+  translations,
+  searchFunction,
+  search,
+  options,
+} = defineProps<MazSelectProps<Value, Option, Multiple> & {
+  multiple?: boolean
+}>()
 
 const emits = defineEmits<MazSelectEmits>()
 
@@ -240,34 +264,34 @@ const searchInputRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('sea
 const optionListElement = useTemplateRef('optionListRef')
 const optionListWrapperRef = useTemplateRef('optionListWrapper')
 
-const selectedTextColor = computed(() => `hsl(var(--maz-${props.color}))`)
-const selectedBgColor = computed(() => `hsl(var(--maz-${props.color}-500) / 0.1)`)
+const selectedTextColor = computed(() => `hsl(var(--maz-${color}))`)
+const selectedBgColor = computed(() => `hsl(var(--maz-${color}-500) / 0.1)`)
 
 const { t } = useTranslations()
 const messages = computed(() => ({
-  searchPlaceholder: props.translations?.searchPlaceholder || t('select.searchPlaceholder'),
+  searchPlaceholder: translations?.searchPlaceholder || t('select.searchPlaceholder'),
 } satisfies MazUiTranslationsNestedSchema['select']))
 
 const isOpen = defineModel('open', { default: false })
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazSelect',
-  providedId: props.id,
+  providedId: id,
 })
 
 function getOptionPayload(option: string | number | boolean) {
   return {
-    [props.optionValueKey]: option,
-    [props.optionLabelKey]: option,
-    [props.optionInputValueKey]: option,
+    [optionValueKey]: option,
+    [optionLabelKey]: option,
+    [optionInputValueKey]: option,
   } satisfies MazSelectNormalizedOption
 }
 function getNormalizedOptionPayload(option: MazSelectNormalizedOption) {
   return {
     ...option,
-    [props.optionValueKey]: option[props.optionValueKey],
-    [props.optionLabelKey]: option[props.optionLabelKey],
-    [props.optionInputValueKey]: option[props.optionInputValueKey],
+    [optionValueKey]: option[optionValueKey],
+    [optionLabelKey]: option[optionLabelKey],
+    [optionInputValueKey]: option[optionInputValueKey],
   } satisfies MazSelectNormalizedOption
 }
 
@@ -304,18 +328,18 @@ function getNormalizedOptions(options: Option[] | undefined) {
   return normalizedOptions satisfies MazSelectNormalizedOption[]
 }
 
-const optionsNormalized = computed(() => getNormalizedOptions(props.options ?? [] satisfies MazSelectNormalizedOption[]))
+const optionsNormalized = computed(() => getNormalizedOptions(options ?? [] satisfies MazSelectNormalizedOption[]))
 
 function isOptionInSelection(option: MazSelectNormalizedOption): boolean {
-  if (isNullOrUndefined(option[props.optionValueKey])) {
+  if (isNullOrUndefined(option[optionValueKey])) {
     return false
   }
 
-  if (props.multiple) {
-    return Array.isArray(props.modelValue) && props.modelValue.includes(option[props.optionValueKey] as Value)
+  if (multiple) {
+    return Array.isArray(modelValue) && modelValue.includes(option[optionValueKey] as Value)
   }
 
-  return props.modelValue === option[props.optionValueKey]
+  return modelValue === option[optionValueKey]
 }
 
 const selectedOptions = computed(
@@ -329,39 +353,39 @@ function isNullOrUndefined(value: unknown) {
 function isSelectedOption(option: MazSelectNormalizedOption) {
   const hasOption
       = selectedOptions.value?.some(
-        selectedOption => selectedOption[props.optionValueKey] === option[props.optionValueKey],
+        selectedOption => selectedOption[optionValueKey] === option[optionValueKey],
       ) ?? false
 
-  return hasOption && !isNullOrUndefined(option[props.optionValueKey])
+  return hasOption && !isNullOrUndefined(option[optionValueKey])
 }
 
 const inputValue = computed(() => {
-  if (props.multiple && props.modelValue && Array.isArray(props.modelValue)) {
-    const values = props.modelValue
+  if (multiple && modelValue && Array.isArray(modelValue)) {
+    const values = modelValue
       .map(
         value =>
-          optionsNormalized.value?.find(option => option[props.optionValueKey] === value)?.[
-            props.optionInputValueKey
+          optionsNormalized.value?.find(option => option[optionValueKey] === value)?.[
+            optionInputValueKey
           ],
       )
 
-    if (props.formatInputValue) {
-      return props.formatInputValue(values as Multiple extends true ? Value[] : Value)
+    if (formatInputValue) {
+      return formatInputValue(values as unknown as Multiple extends true ? Value[] : Value)
     }
 
     return values.join(', ')
   }
 
   const selectedOption = optionsNormalized.value?.find(
-    option => option[props.optionValueKey] === props.modelValue,
+    option => option[optionValueKey] === modelValue,
   )
 
-  const value = isNullOrUndefined(props.modelValue)
+  const value = isNullOrUndefined(modelValue)
     ? undefined
-    : selectedOption?.[props.optionInputValueKey]
+    : selectedOption?.[optionInputValueKey]
 
-  if (props.formatInputValue) {
-    return props.formatInputValue(value as Multiple extends true ? Value[] : Value)
+  if (formatInputValue) {
+    return formatInputValue(value as unknown as Multiple extends true ? Value[] : Value)
   }
 
   return value
@@ -380,11 +404,11 @@ function getFilteredOptionWithQuery(query?: string) {
   }
 
   return optionsNormalized.value?.filter((option) => {
-    const searchValue = option[props.optionLabelKey]
-    const searchValue3 = option[props.optionValueKey]
-    const searchValue2 = option[props.optionInputValueKey]
+    const searchValue = option[optionLabelKey]
+    const searchValue3 = option[optionValueKey]
+    const searchValue2 = option[optionInputValueKey]
 
-    const threshold = props.searchThreshold
+    const threshold = searchThreshold
 
     return (
       searchInValue(searchValue, query)
@@ -401,8 +425,8 @@ function getFilteredOptionWithQuery(query?: string) {
 }
 
 const optionList = computed(() => {
-  if (props.searchFunction && props.search && searchQuery.value) {
-    return getNormalizedOptions(props.searchFunction(searchQuery.value, props.options ?? []) ?? [])
+  if (searchFunction && search && searchQuery.value) {
+    return getNormalizedOptions(searchFunction(searchQuery.value, options ?? []) ?? [])
   }
 
   return getFilteredOptionWithQuery(searchQuery.value)
@@ -445,7 +469,7 @@ function searchOptionWithQuery(keyPressed: string) {
   }
 
   const optionIndex = optionList.value?.findIndex(
-    option => option[props.optionValueKey] === filteredOptions[0][props.optionValueKey],
+    option => option[optionValueKey] === filteredOptions[0][optionValueKey],
   )
 
   if (typeof optionIndex !== 'number' || optionIndex === -1) {
@@ -472,7 +496,7 @@ function mainInputKeyboardHandler(event: KeyboardEvent) {
     popoverComponent.value?.open()
   }
 
-  if (/^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed) && props.search) {
+  if (/^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed) && search) {
     focusSearchInputAndSetQuery(keyPressed)
   }
 }
@@ -503,7 +527,7 @@ async function scrollToOptionIndex(index?: number) {
 }
 
 function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = true) {
-  if (mustCloseList && !props.multiple) {
+  if (mustCloseList && !multiple) {
     nextTick(() => {
       popoverComponent.value?.close()
     })
@@ -512,26 +536,26 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
   searchQuery.value = ''
 
   const isAlreadySelected = selectedOptions.value?.some(
-    option => option[props.optionValueKey] === inputOption[props.optionValueKey],
+    option => option[optionValueKey] === inputOption[optionValueKey],
   )
 
   let newValue = selectedOptions.value
 
-  if (isAlreadySelected && props.multiple) {
+  if (isAlreadySelected && multiple) {
     newValue = newValue?.filter(
-      option => option[props.optionValueKey] !== inputOption[props.optionValueKey],
+      option => option[optionValueKey] !== inputOption[optionValueKey],
     )
   }
-  else if (props.multiple) {
+  else if (multiple) {
     newValue.push(inputOption)
   }
   else {
     newValue = [inputOption]
   }
 
-  const selectedValues = newValue.map(option => option[props.optionValueKey])
+  const selectedValues = newValue.map(option => option[optionValueKey])
 
-  emits('update:model-value', (props.multiple ? selectedValues : selectedValues[0]) as Multiple extends true ? Value[] : Value)
+  emits('update:model-value', (multiple ? selectedValues : selectedValues[0]) as Multiple extends true ? Value[] : Value)
   emits('selected-option', inputOption as Option)
   emitInputMainInput()
   focusMainInput()
@@ -561,7 +585,7 @@ function keydownHandler(event: KeyboardEvent) {
 
     itemsElements[nextIndex]?.focus()
   }
-  else if (!props.search && /^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed)) {
+  else if (!search && /^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed)) {
     searchOptionWithQuery(keyPressed)
   }
 }
@@ -617,7 +641,7 @@ defineExpose({
         '--is-open': isOpen,
         '--disabled': disabled,
       },
-      props.class,
+      classProp,
       `--${size}`,
     ]"
     :style
@@ -626,8 +650,8 @@ defineExpose({
     :transition
     :offset="0"
     :position="listPosition"
-    prefer-position="bottom-start"
-    fallback-position="top-start"
+    :prefer-position
+    :fallback-position
     :position-reference="`#${instanceId}-popover .m-input-wrapper`"
     @close="emits('close')"
     @open="onOpenList"
