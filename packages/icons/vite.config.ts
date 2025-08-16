@@ -35,7 +35,7 @@ export default defineConfig({
     pure: ['console.log', 'console.debug'],
     legalComments: 'none',
     target: 'es2022',
-    minifyIdentifiers: true,
+    minifyIdentifiers: false,
     minifySyntax: true,
     minifyWhitespace: true,
     treeShaking: true,

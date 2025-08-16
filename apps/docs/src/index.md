@@ -514,9 +514,9 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
 </section>
 
 <script lang="ts" setup>
-  import DemoAuthPage from './demo/DemoAuthPage.vue'
-  import DemoDashboardPage from './demo/DemoDashboardPage.vue'
-  import DemoProductPage from './demo/DemoProductPage.vue'
+  import DemoAuthPage from '../components/DemoAuthPage.vue'
+  import DemoDashboardPage from '../components/DemoDashboardPage.vue'
+  import DemoProductPage from '../components/DemoProductPage.vue'
 
   import { ref, computed } from 'vue'
   import { MazStar, MazPlay, MazGithub, MazSun, MazMoon } from '@maz-ui/icons'

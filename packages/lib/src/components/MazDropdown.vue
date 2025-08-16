@@ -78,7 +78,7 @@ export type MazDropdownMenuItem
   = | (MazDropdownLinkItem & { action?: never })
     | (MazDropdownActionItem & { href?: never, to?: never, target?: never })
 
-export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue'> {
+export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue' | 'role'> {
   /**
    * Controls whether the dropdown menu is open
    * @model
@@ -324,6 +324,24 @@ watch(
     :position
     :transition
     :disabled
+    :offset
+    :delay
+    :fallback-position
+    :persistent
+    :hover-delay
+    :panel-class
+    :panel-style
+    :close-on-escape
+    :close-on-click
+    :teleport-to
+    :trap-focus
+    :overlay-class
+    :close-on-click-outside
+    :aria-describedby
+    :announce-changes
+    :aria-label
+    :aria-labelledby
+    :position-reference
     :keep-open-on-hover="trigger === 'hover' || trigger === 'adaptive'"
     :class="[classProp]"
     :block
