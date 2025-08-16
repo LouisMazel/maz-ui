@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.1.7-beta.2...v4.1.7-beta.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.2...v4.1.7-beta.3)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSelect - multiple not working, correct declaration type of props ([0fe6791f](https://github.com/LouisMazel/maz-ui/commit/0fe6791f))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7-beta.1...v4.1.7-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.1...v4.1.7-beta.2)
