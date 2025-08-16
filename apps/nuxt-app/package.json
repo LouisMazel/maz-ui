@@ -1,6 +1,6 @@
 {
   "name": "nuxt-app",
-  "version": "4.1.7-beta.2",
+  "version": "4.1.7-beta.3",
   "private": true,
   "scripts": {
     "dev": "nuxi dev",
