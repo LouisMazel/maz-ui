@@ -334,7 +334,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         A powerful phone number input component with international number formatting and validation.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn color="background" outlined size="sm" block href="/components/maz-phone-number-input">Discover</MazBtn>
+      <MazBtn color="background" outlined size="sm" block href="/components/maz-input-phone-number">Discover</MazBtn>
     </MazCardSpotlight>
     <MazCardSpotlight color="info" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
