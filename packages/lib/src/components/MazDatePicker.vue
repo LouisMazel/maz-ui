@@ -409,6 +409,10 @@ const internalShortcuts = computed(() => {
     return false
   }
 
+  if (props.shortcuts && Array.isArray(props.shortcuts)) {
+    return props.shortcuts
+  }
+
   return getDefaultsShortcuts({
     lastSevenDays: t('datePicker.shortcuts.lastSevenDays'),
     lastThirtyDays: t('datePicker.shortcuts.lastThirtyDays'),
