@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.1.7-beta.3...v4.1.7-beta.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.3...v4.1.7-beta.4)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDatePicker - custom shortcuts was not displayed ([f232da95](https://github.com/LouisMazel/maz-ui/commit/f232da95))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7-beta.2...v4.1.7-beta.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.2...v4.1.7-beta.3)
