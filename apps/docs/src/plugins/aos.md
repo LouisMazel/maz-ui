@@ -231,7 +231,7 @@ You can choose one of these timing function to animate elements nicely:
 ## Nuxt
 
 ::: tip
-For **NuxtJS v3** and higher, use the dedicated Nuxt module to take advantage of auto-imports of components, plugins, composables and css files: [Nuxt Module Documentation](./nuxt.md)
+For **NuxtJS v3** and higher, use the dedicated Nuxt module to take advantage of auto-imports of components, plugins, composables and css files: [Nuxt Module Documentation](./../guide/nuxt.md)
 :::
 
 Should be executed on client side

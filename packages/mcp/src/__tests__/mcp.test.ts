@@ -50,6 +50,15 @@ describe('Given MazUiMcpServer instance', () => {
     toolsListHandler = null
     callToolHandler = null
 
+    // Setup default return values for all methods
+    mockDocumentationService.getAllComponents.mockReturnValue(['maz-btn', 'maz-input'])
+    mockDocumentationService.getAllGuides.mockReturnValue(['getting-started'])
+    mockDocumentationService.getAllComposables.mockReturnValue(['use-toast'])
+    mockDocumentationService.getAllDirectives.mockReturnValue(['tooltip'])
+    mockDocumentationService.getAllPlugins.mockReturnValue(['toast'])
+    mockDocumentationService.getAllHelpers.mockReturnValue(['currency'])
+    mockDocumentationService.getOverview.mockReturnValue('# Maz-UI Overview')
+
     let callIndex = 0
     mockServer.setRequestHandler.mockImplementation((schema: any, handler: any) => {
       if (callIndex === 0)
@@ -93,22 +102,15 @@ describe('Given MazUiMcpServer instance', () => {
 
   describe('When handling resource list requests', () => {
     it('Then returns comprehensive resource list', () => {
-      mockDocumentationService.getAllComponents.mockReturnValue(['maz-btn'])
-      mockDocumentationService.getAllGuides.mockReturnValue(['getting-started'])
-      mockDocumentationService.getAllComposables.mockReturnValue(['use-toast'])
-      mockDocumentationService.getAllDirectives.mockReturnValue(['tooltip'])
-      mockDocumentationService.getAllPlugins.mockReturnValue(['toast'])
-      mockDocumentationService.getAllHelpers.mockReturnValue(['currency'])
-
       const result = resourceListHandler()
 
-      expect(result.resources).toHaveLength(7)
-      expect(result.resources[0]).toEqual({
-        uri: 'maz-ui://overview',
-        name: 'Maz-UI Library Overview',
-        description: 'Complete overview of the Maz-UI component library',
-        mimeType: 'text/markdown',
-      })
+      expect(result.resources.length).toBeGreaterThan(0)
+
+      // Check that overview is included
+      const overview = result.resources.find((r: any) => r.uri === 'overview://')
+      expect(overview).toBeDefined()
+      expect(overview.name).toBe('Library Overview')
+      expect(overview.mimeType).toBe('text/markdown')
     })
   })
 
@@ -117,15 +119,15 @@ describe('Given MazUiMcpServer instance', () => {
       mockDocumentationService.getComponentDocumentation.mockReturnValue('# MazBtn Component')
 
       const mockRequest = {
-        params: { uri: 'maz-ui://component/MazBtn' },
+        params: { uri: 'component://maz-btn' },
       }
 
       const result = resourceReadHandler(mockRequest)
 
-      expect(mockDocumentationService.getComponentDocumentation).toHaveBeenCalledWith('MazBtn')
+      expect(mockDocumentationService.getComponentDocumentation).toHaveBeenCalledWith('maz-btn')
       expect(result).toEqual({
         contents: [{
-          uri: 'maz-ui://component/MazBtn',
+          uri: 'component://maz-btn',
           mimeType: 'text/markdown',
           text: '# MazBtn Component',
         }],
@@ -134,20 +136,20 @@ describe('Given MazUiMcpServer instance', () => {
 
     it('Then throws error for invalid URI format', () => {
       const mockRequest = {
-        params: { uri: 'invalid://uri' },
+        params: { uri: 'invalid-format' },
       }
 
-      expect(() => resourceReadHandler(mockRequest)).toThrow('Invalid URI')
+      expect(() => resourceReadHandler(mockRequest)).toThrow('Invalid URI format')
     })
 
     it('Then throws error when resource not found', () => {
       mockDocumentationService.getComponentDocumentation.mockReturnValue('')
 
       const mockRequest = {
-        params: { uri: 'maz-ui://component/NonExistent' },
+        params: { uri: 'component://non-existent' },
       }
 
-      expect(() => resourceReadHandler(mockRequest)).toThrow('Resource not found')
+      expect(() => resourceReadHandler(mockRequest)).toThrow('Documentation not found')
     })
   })
 
@@ -155,59 +157,61 @@ describe('Given MazUiMcpServer instance', () => {
     it('Then returns comprehensive tools list', () => {
       const result = toolsListHandler()
 
-      expect(result.tools).toHaveLength(7)
+      expect(result.tools).toHaveLength(6)
+      const toolNames = result.tools.map((t: any) => t.name)
+      expect(toolNames).toContain('list_all_docs')
+      expect(toolNames).toContain('smart_search')
+      expect(toolNames).toContain('get_doc')
+      expect(toolNames).toContain('get_installation_guide')
+      expect(toolNames).toContain('get_components_by_category')
+      expect(toolNames).toContain('suggest_similar')
     })
   })
 
   describe('When handling tool call requests', () => {
-    it('Then executes list_all_components tool', () => {
-      mockDocumentationService.getAllComponents.mockReturnValue(['maz-btn', 'maz-input'])
-
+    it('Then executes list_all_docs tool', () => {
       const mockRequest = {
         params: {
-          name: 'list_all_components',
-          arguments: {},
+          name: 'list_all_docs',
+          arguments: { category: 'all' },
         },
       }
 
       const result = callToolHandler(mockRequest)
 
-      expect(result.content[0].text).toContain('Available components (2)')
-      expect(result.content[0].text).toContain('- maz-btn')
-      expect(result.content[0].text).toContain('- maz-input')
+      expect(result.content[0].text).toContain('# Maz-UI Documentation Index')
+      expect(result.content[0].text).toContain('## Vue Components')
     })
 
-    it('Then executes list_guides tool', () => {
-      mockDocumentationService.getAllGuides.mockReturnValue(['getting-started', 'themes'])
-
+    it('Then executes smart_search tool', () => {
       const mockRequest = {
         params: {
-          name: 'list_guides',
-          arguments: {},
+          name: 'smart_search',
+          arguments: { query: 'button' },
         },
       }
 
       const result = callToolHandler(mockRequest)
 
-      expect(result.content[0].text).toContain('Available guides (2)')
+      expect(result.content[0].text).toContain('# Search Results for "button"')
     })
 
-    it('Then executes get_getting_started tool', () => {
-      mockDocumentationService.getGuideDocumentation.mockReturnValue('# Getting Started')
+    it('Then executes get_doc tool', () => {
+      mockDocumentationService.getComponentDocumentation.mockReturnValue('# MazBtn Component')
 
       const mockRequest = {
         params: {
-          name: 'get_getting_started',
-          arguments: {},
+          name: 'get_doc',
+          arguments: { name: 'maz-btn' },
         },
       }
 
       const result = callToolHandler(mockRequest)
 
-      expect(result.content[0].text).toBe('# Getting Started')
+      expect(result.content[0].text).toBe('# MazBtn Component')
     })
 
-    it('Then throws error for unknown tool names', () => {
+    it('Then returns error for unknown tool names', () => {
       const mockRequest = {
         params: {
           name: 'unknown_tool',
@@ -215,7 +219,10 @@ describe('Given MazUiMcpServer instance', () => {
         },
       }
 
-      expect(() => callToolHandler(mockRequest)).toThrow('Unknown tool: unknown_tool')
+      const result = callToolHandler(mockRequest)
+
+      expect(result.content[0].text).toContain('❌ **Error**: Unknown tool: unknown_tool')
+      expect(result.isError).toBe(true)
     })
   })
 

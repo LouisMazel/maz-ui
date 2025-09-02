@@ -334,7 +334,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         A powerful phone number input component with international number formatting and validation.
       </p>
       <div class="maz-flex-1"></div>
-      <MazBtn color="background" outlined size="sm" block href="/components/maz-phone-number-input">Discover</MazBtn>
+      <MazBtn color="background" outlined size="sm" block href="/components/maz-input-phone-number">Discover</MazBtn>
     </MazCardSpotlight>
     <MazCardSpotlight color="info" content-class="maz-flex maz-flex-col maz-gap-2">
       <div class="maz-flex maz-items-start maz-gap-2 maz-justify-between w-full">
@@ -514,9 +514,9 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
 </section>
 
 <script lang="ts" setup>
-  import DemoAuthPage from './demo/DemoAuthPage.vue'
-  import DemoDashboardPage from './demo/DemoDashboardPage.vue'
-  import DemoProductPage from './demo/DemoProductPage.vue'
+  import DemoAuthPage from '../components/DemoAuthPage.vue'
+  import DemoDashboardPage from '../components/DemoDashboardPage.vue'
+  import DemoProductPage from '../components/DemoProductPage.vue'
 
   import { ref, computed } from 'vue'
   import { MazStar, MazPlay, MazGithub, MazSun, MazMoon } from '@maz-ui/icons'

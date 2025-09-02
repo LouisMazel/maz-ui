@@ -58,7 +58,7 @@ export default defineConfig({
     pure: ['console.log', 'console.debug'],
     legalComments: 'none',
     target: 'node22',
-    minifyIdentifiers: true,
+    minifyIdentifiers: false,
     minifySyntax: true,
     minifyWhitespace: true,
     treeShaking: true,

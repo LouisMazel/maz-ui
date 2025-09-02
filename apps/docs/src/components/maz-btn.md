@@ -57,8 +57,6 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
 ## Colors
 
-Use the attribute `color` with a value in this [list](./../guide/colors.md), the component will use this color
-
 <ComponentDemo>
   <div class="flex items-start gap-05 flex-wrap">
     <MazBtn v-for="color of colors" :key="color" :color="color">{{ color }}</MazBtn>

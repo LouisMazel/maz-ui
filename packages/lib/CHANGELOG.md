@@ -1,11 +1,86 @@
 # Change Log
 
+## v4.1.7-beta.3...v4.1.7-beta.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.3...v4.1.7-beta.4)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDatePicker - custom shortcuts was not displayed ([f232da95](https://github.com/LouisMazel/maz-ui/commit/f232da95))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
+## v4.1.7-beta.2...v4.1.7-beta.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.2...v4.1.7-beta.3)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSelect - multiple not working, correct declaration type of props ([0fe6791f](https://github.com/LouisMazel/maz-ui/commit/0fe6791f))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
+## v4.1.7-beta.1...v4.1.7-beta.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.1...v4.1.7-beta.2)
+
+### 💅 Refactors
+
+- **maz-ui:** MazCard - ensure card has no zoom feature on gallery when it's linked ([0dd16faa](https://github.com/LouisMazel/maz-ui/commit/0dd16faa))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
+## v4.1.7-beta.0...v4.1.7-beta.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.0...v4.1.7-beta.1)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazCard - a linked card should not have zoom feature on the gallery ([863fb1cf](https://github.com/LouisMazel/maz-ui/commit/863fb1cf))
+- **maz-ui:** MazDropdown - correct prop heritage to popover component ([cd679d9d](https://github.com/LouisMazel/maz-ui/commit/cd679d9d))
+- **maz-ui:** MazSelect - selected option should be focus on open & selected option focused has outline style ([5807d3bf](https://github.com/LouisMazel/maz-ui/commit/5807d3bf))
+
+### 💅 Refactors
+
+- **maz-ui:** MazDatePicker - prefer-position and fallback-position are controllable with props ([30935856](https://github.com/LouisMazel/maz-ui/commit/30935856))
+- **maz-ui:** MazLink - supports background, muted and contrast colors ([b44858f5](https://github.com/LouisMazel/maz-ui/commit/b44858f5))
+- **maz-ui:** MazLink - supports colors 'none' to inherits color from parent ([e46367f0](https://github.com/LouisMazel/maz-ui/commit/e46367f0))
+- **maz-ui:** MazLink - rename 'none' to 'inherit' ([a69f356a](https://github.com/LouisMazel/maz-ui/commit/a69f356a))
+- **maz-ui:** MazPopover - remove width max-content ([b2abc9f6](https://github.com/LouisMazel/maz-ui/commit/b2abc9f6))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
+## v4.1.6...v4.1.7-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7-beta.0)
+
+### 💄 Styles
+
+- **maz-ui:** MazBtn - adjust text color of background and contrast colors ([6db8243b](https://github.com/LouisMazel/maz-ui/commit/6db8243b))
+- **maz-ui:** MazPopover - use text foreground for background color ([7f594790](https://github.com/LouisMazel/maz-ui/commit/7f594790))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.5...v4.1.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.5...v4.1.6)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.4...v4.1.5
 
@@ -13,13 +88,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.1.3...v4.1.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.3...v4.1.4)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.2...v4.1.3
 
@@ -32,7 +105,6 @@
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.1.1-beta.1...v4.1.2
 
@@ -51,7 +123,6 @@
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.1.1-beta.0...v4.1.1
 

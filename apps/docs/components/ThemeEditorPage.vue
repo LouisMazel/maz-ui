@@ -3,7 +3,6 @@ import type { ThemePreset } from '@maz-ui/themes'
 import { useTheme } from '@maz-ui/themes/composables/useTheme'
 import { mazUi } from '@maz-ui/themes/presets/mazUi'
 import { useToast } from 'maz-ui/composables'
-import { codeToHtml } from 'shiki'
 import { computed, nextTick, reactive, ref, unref, watch, watchEffect } from 'vue'
 import ColorPicker from './ColorPicker.vue'
 import DemoAuthPage from './DemoAuthPage.vue'
@@ -97,18 +96,20 @@ async function exportTheme() {
   const themeCode = `import type { ThemePreset } from '@maz-ui/themes'
 
 export const customTheme: ThemePreset = ${JSON.stringify(themeData, null, 2)
-// Escape single quotes within string values
+  // Escape single quotes within string values
   .replace(/: "([^"]*)"/g, (match, value) => {
     const escapedValue = value.replace(/'/g, '\\\'')
     return `: '${escapedValue}'`
   })
-// Remove quotes from top-level keys and nested object keys
+  // Remove quotes from top-level keys and nested object keys
   .replace(/^(\s*)"(name|foundation|colors)":/gm, '$1$2:')
   .replace(/^(\s*)"(light|dark)":/gm, '$1$2:')}`
 
   exportedCode.value = themeCode
 
   try {
+    // Import dynamique de Shiki
+    const { codeToHtml } = await import('shiki')
     const html = await codeToHtml(themeCode, {
       lang: 'typescript',
       theme: isDark.value ? 'tokyo-night' : 'github-dark',
@@ -349,7 +350,7 @@ function formatColorName(colorName: string): string {
             v-else
             class="maz-bg-contrast maz-p-4 dark:maz-bg-surface-300"
           >
-            <pre class="maz-whitespace-pre-wrap maz-font-mono maz-text-xs maz-text-contrast-foreground dark:maz-text-surface-foreground">{{ exportedCode }}</pre>
+            <pre class="maz-whitespace-pre-wrap maz-font-mono maz-text-xs maz-text-contrast-foreground dark:maz-text-foreground">{{ exportedCode }}</pre>
           </div>
         </div>
       </div>

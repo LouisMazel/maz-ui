@@ -321,10 +321,6 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 Click on each input to show colors
 :::
 
-::: info
-Use the attribute `color` with a value in this [list](./../guide/colors.md), the component will use this color
-:::
-
 <ComponentDemo>
   <div class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
     <MazInput

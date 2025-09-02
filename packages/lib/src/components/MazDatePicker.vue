@@ -49,7 +49,9 @@ const props = withDefaults(defineProps<MazDatePickerProps>(), {
   double: false,
   inline: false,
   color: 'primary',
-  pickerPosition: 'bottom-start',
+  pickerPosition: 'auto',
+  pickerPreferPosition: 'bottom-start',
+  pickerFallbackPosition: 'top-start',
   time: false,
   onlyTime: false,
   minuteInterval: 5,
@@ -233,6 +235,22 @@ export interface MazDatePickerProps {
   pickerPosition?: MazPopoverProps['position']
 
   /**
+   * The preferred position of the picker popover
+   * @type {MazPopoverProps['preferPosition']}
+   * @values top, bottom, left, right, top-end, bottom-end, left-end, right-end, top-start, bottom-start, left-start, right-start
+   * @default 'bottom-start'
+   */
+  pickerPreferPosition?: MazPopoverProps['preferPosition']
+
+  /**
+   * The fallback position of the picker popover
+   * @type {MazPopoverProps['fallbackPosition']}
+   * @values top, bottom, left, right, top-end, bottom-end, left-end, right-end, top-start, bottom-start, left-start, right-start
+   * @default 'top-start'
+   */
+  pickerFallbackPosition?: MazPopoverProps['fallbackPosition']
+
+  /**
    * Controls whether the picker includes a time selector
    * @default false
    */
@@ -389,6 +407,10 @@ const isRangeMode = computed(() => typeof currentValue.value === 'object' || pro
 const internalShortcuts = computed(() => {
   if (!isRangeMode.value || props.shortcuts === false) {
     return false
+  }
+
+  if (props.shortcuts && Array.isArray(props.shortcuts)) {
+    return props.shortcuts
   }
 
   return getDefaultsShortcuts({

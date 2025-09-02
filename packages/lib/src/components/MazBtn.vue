@@ -168,7 +168,7 @@ const iconClassSize = computed(() => {
         '--has-right-icon': !!rightIcon || !!$slots['right-icon'],
       },
     ]"
-    :style="[`--justify: ${justify}`, `--color: var(--maz-${getColor(color)})`]"
+    :style="[`--justify: ${justify}`, `--color: var(--maz-${color})`]"
     :type="btnType"
   >
     <!--
@@ -441,14 +441,14 @@ const iconClassSize = computed(() => {
   }
 
   &.--surface {
-    @apply maz-bg-surface maz-text-surface-foreground;
+    @apply maz-bg-surface maz-text-foreground;
 
     &:not(:disabled):hover {
       @apply maz-bg-surface-600 dark:maz-bg-surface-400;
     }
 
     .m-btn-loader-container {
-      @apply maz-text-surface-foreground maz-bg-surface-600 dark:maz-bg-surface-400;
+      @apply maz-text-foreground maz-bg-surface-600 dark:maz-bg-surface-400;
     }
   }
 
@@ -551,26 +551,26 @@ const iconClassSize = computed(() => {
   }
 
   &.--surface-outlined {
-    @apply maz-border-divider maz-bg-surface dark:maz-border-divider maz-text-surface-foreground;
+    @apply maz-border-divider maz-text-foreground;
 
     &:not(:disabled):hover {
       @apply maz-bg-surface-600/30;
     }
 
     .m-btn-loader-container {
-      @apply maz-text-surface-foreground;
+      @apply maz-text-foreground;
     }
   }
 
   &.--transparent-outlined {
-    @apply maz-border-divider maz-bg-transparent dark:maz-border-divider maz-text-surface-foreground;
+    @apply maz-border-divider maz-bg-transparent maz-text-foreground;
 
     &:not(:disabled):hover {
       @apply maz-bg-surface-600/30;
     }
 
     .m-btn-loader-container {
-      @apply maz-text-surface-foreground;
+      @apply maz-text-foreground;
     }
   }
 

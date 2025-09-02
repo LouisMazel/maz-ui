@@ -88,3 +88,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Rebase develop branch onto master
+        run: |
+          git checkout develop
+          git rebase master
+          git push origin develop --force-with-lease
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}

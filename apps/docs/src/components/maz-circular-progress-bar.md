@@ -74,8 +74,6 @@ The duration of the animation can be changed by passing the `duration` prop. The
 
 ## Color
 
-The color of the component can be changed by passing the `color` prop. Should be a valid color in [basic colors](./../guide/colors.md).
-
 <ComponentDemo>
   <div class="maz-flex maz-gap-3 maz-flex-wrap maz-items-center">
     <MazCircularProgressBar :percentage="75" color="primary" />

@@ -229,10 +229,10 @@ function showSuccess() {
 
 | Category             | Composables                               |
 | -------------------- | --------------------------------------------------- |
-| **UI Management**    | [`useToast`](./../composables/use-toast.md), [`useDialog`](./../composables/use-dialog.md), [`useTheme`](./../composables/use-theme.md), [`useWait`](./../composables/use-wait.md)      |
+| **UI Management**    | [`useToast`](./../composables/use-toast.md), [`useDialog`](./../composables/use-dialog.md), [`useTheme`](./../guide/themes.md#usetheme-composable-api), [`useWait`](./../composables/use-wait.md)      |
 | **Responsive**       | [`useBreakpoints`](./../composables/use-breakpoints.md), [`useWindowSize`](./../composables/use-window-size.md)                   |
 | **User Interaction** | [`useUserVisibility`](./../composables/use-user-visibility.md), [`useIdleTimeout`](./../composables/use-idle-timeout.md), [`useSwipe`](./../composables/use-swipe.md)   |
-| **Form Handling**    | [`useFormValidator`](./../composables/use-form-validator.md), [`useFormField`](./../composables/use-form-field.md)                  |
+| **Form Handling**    | [`useFormValidator`](./../composables/use-form-validator.md)                  |
 | **Advanced**         | [`useTimer`](./../composables/use-timer.md), [`useStringMatching`](./../composables/use-string-matching.md)           |
 
 **Most used available formatters and utilities:**

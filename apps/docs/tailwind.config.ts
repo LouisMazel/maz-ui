@@ -6,6 +6,7 @@ export default defineMazTailwindConfig({
   content: [
     './.vitepress/**/*.{js,ts,vue,css}',
     './src/**/*.{md,js,ts,vue,css}',
+    './components/**/*.{js,ts,vue,css}',
     './../lib/src/components/**/*.vue',
     './../lib/src/modules/**/*.vue',
   ],

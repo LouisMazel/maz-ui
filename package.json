@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "4.1.6",
+  "version": "4.1.7-beta.4",
   "private": true,
   "description": "A standalone components library for Vue.Js & Nuxt.Js",
   "author": "LouisMazel <me@loicmazuel.com>",
@@ -81,15 +81,14 @@
     "lint-staged": "^16.1.5",
     "nx": "^21.3.11",
     "ts-node": "^10.9.2",
-    "tsx": "^4.20.3"
+    "tsx": "^4.20.4"
   },
   "pnpm": {
     "catalog": false,
     "onlyBuiltDependencies": [
-      "@parcel/watcher",
-      "esbuild",
+      "@swc/core",
       "nx",
-      "unrs-resolver"
+      "vue-demi"
     ]
   },
   "lint-staged": {
