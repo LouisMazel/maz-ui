@@ -1,14 +1,13 @@
 import type { App, Plugin, Ref } from 'vue'
 import type { ThemeConfig, ThemePreset, ThemeState } from './types'
-import type { CriticalCSSOptions } from './utils/css-generator'
+import type { CSSOptions } from './utils/css-generator'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { ref, watch } from 'vue'
 import { useMutationObserver } from '../../lib/src/composables/useMutationObserver'
 import { getPreset, mergePresets } from './utils'
 import {
-  CSS_IDS,
-  generateCriticalCSS,
-  generateFullCSS,
+  CSS_ID,
+  generateCSS,
   injectCSS,
 } from './utils/css-generator'
 import { getColorMode, getSavedColorMode, getSystemColorMode } from './utils/get-color-mode'
@@ -36,29 +35,32 @@ function injectThemeCSS(finalPreset: ThemePreset, config: Required<Omit<MazUiThe
   if (typeof document === 'undefined')
     return
 
-  const cssOptions: CriticalCSSOptions = {
+  const cssOptions: CSSOptions = {
     mode: config.mode,
     darkSelectorStrategy: config.darkModeStrategy,
     darkClass: config.darkClass,
   }
 
   if (config.injectCriticalCSS) {
-    const criticalCSS = generateCriticalCSS(finalPreset, cssOptions)
-    injectCSS(CSS_IDS.CRITICAL, criticalCSS)
+    const criticalCSS = generateCSS(finalPreset, {
+      ...cssOptions,
+      onlyCritical: true,
+    })
+    injectCSS(CSS_ID, criticalCSS)
   }
 
   if (!config.injectFullCSS) {
     return
   }
 
-  const fullCSS = generateFullCSS(finalPreset, cssOptions)
+  const fullCSS = generateCSS(finalPreset, cssOptions)
 
   if (config.strategy === 'runtime') {
-    injectCSS(CSS_IDS.FULL, fullCSS)
+    injectCSS(CSS_ID, fullCSS)
   }
   else if (config.strategy === 'hybrid') {
     requestIdleCallback(() => {
-      injectCSS(CSS_IDS.FULL, fullCSS)
+      injectCSS(CSS_ID, fullCSS)
     }, { timeout: 100 })
   }
 }
@@ -133,7 +135,7 @@ function watchMutationClassOnHtmlElement(themeState: Ref<ThemeState>) {
 export const MazUiTheme: Plugin<[MazUiThemeOptions]> = {
   async install(app: App, options) {
     const config = {
-      strategy: 'runtime',
+      strategy: 'hybrid',
       overrides: {},
       darkModeStrategy: 'class',
       preset: undefined,
