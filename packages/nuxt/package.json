@@ -57,16 +57,16 @@
   "dependencies": {
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
-    "@nuxt/kit": "^4.0.3",
+    "@nuxt/kit": "^4.1.2",
     "defu": "^6.1.4",
     "maz-ui": "workspace:*"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^2.6.2",
+    "@nuxt/devtools": "^2.6.3",
     "@nuxt/module-builder": "^1.0.2",
-    "@nuxt/schema": "^4.0.3",
+    "@nuxt/schema": "^4.1.2",
     "@nuxt/test-utils": "^3.19.2",
-    "nuxt": "^4.0.3",
+    "nuxt": "^4.1.2",
     "typescript": "~5.9.2",
     "vitest": "^3.2.4"
   },

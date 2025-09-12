@@ -67,8 +67,8 @@
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@commitlint/cz-commitlint": "^19.8.1",
-    "@nx/js": "^21.3.11",
-    "@types/node": "^24.2.1",
+    "@nx/js": "^21.5.2",
+    "@types/node": "^24.3.2",
     "@types/parse-path": "^7.1.0",
     "changelogen": "^0.6.2",
     "commitizen": "^4.3.1",
@@ -78,10 +78,10 @@
     "cross-env": "^10.0.0",
     "husky": "^9.1.7",
     "lerna": "^8.2.3",
-    "lint-staged": "^16.1.5",
-    "nx": "^21.3.11",
+    "lint-staged": "^16.1.6",
+    "nx": "^21.5.2",
     "ts-node": "^10.9.2",
-    "tsx": "^4.20.4"
+    "tsx": "^4.20.5"
   },
   "pnpm": {
     "catalog": false,
