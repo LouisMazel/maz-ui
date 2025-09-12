@@ -11,6 +11,7 @@ describe('cSS Generator', () => {
           criticalColors: ['accent'],
           criticalFoundation: ['border-width'],
           darkSelectorStrategy: 'class',
+          darkClass: 'dark',
         })
 
         expect(css).toContain('@layer maz-ui-theme {\n')
@@ -26,6 +27,7 @@ describe('cSS Generator', () => {
           prefix: 'maz',
           mode: 'dark',
           darkSelectorStrategy: 'class',
+          darkClass: 'dark',
           criticalColors: ['accent'],
           criticalFoundation: ['border-width'],
         })
@@ -43,6 +45,7 @@ describe('cSS Generator', () => {
           prefix: 'maz',
           mode: 'both',
           darkSelectorStrategy: 'class',
+          darkClass: 'dark',
         })
 
         expect(css).toContain(':root {')
@@ -58,6 +61,7 @@ describe('cSS Generator', () => {
           prefix: 'maz',
           mode: 'light',
           darkSelectorStrategy: 'class',
+          darkClass: 'dark',
         })
 
         expect(css).toContain('@layer maz-ui-theme {\n')
@@ -75,6 +79,7 @@ describe('cSS Generator', () => {
           prefix: 'maz',
           mode: 'light',
           darkSelectorStrategy: 'class',
+          darkClass: 'dark',
         })
 
         const fullCSS = generateFullCSS(mazUi, {
@@ -82,6 +87,7 @@ describe('cSS Generator', () => {
           prefix: 'maz',
           mode: 'light',
           darkSelectorStrategy: 'class',
+          darkClass: 'dark',
         })
 
         // Critical variables bes in critical CSS
@@ -102,6 +108,7 @@ describe('cSS Generator', () => {
           prefix: 'maz',
           mode: 'light',
           darkSelectorStrategy: 'class',
+          darkClass: 'dark',
         })
 
         expect(css).toContain('--maz-primary-500:')
@@ -115,6 +122,7 @@ describe('cSS Generator', () => {
           prefix: 'maz',
           mode: 'light',
           darkSelectorStrategy: 'class',
+          darkClass: 'dark',
         })
 
         expect(css).toMatch(/--maz-shadow:/)

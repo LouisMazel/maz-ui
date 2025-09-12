@@ -3,14 +3,16 @@ import { generateCriticalCSS, generateFullCSS } from '../utils/css-generator'
 
 export interface BuildThemeOptions {
   preset: ThemePreset
-  /** Mode de thème à générer */
+  /** Theme mode to generate */
   mode?: 'light' | 'dark' | 'both'
-  /** Sélecteur pour le mode sombre */
+  /** Dark mode selector: 'class' (.dark) | 'media' (@media) */
   darkSelector?: 'class' | 'media'
-  /** Préfixe des variables CSS */
+  /** CSS variables prefix */
   prefix?: string
-  /** Générer seulement le CSS critique */
+  /** Generate only critical CSS */
   criticalOnly?: boolean
+  /** Dark class name */
+  darkClass?: string
 }
 
 export function buildThemeCSS(options: BuildThemeOptions): string {
@@ -19,6 +21,7 @@ export function buildThemeCSS(options: BuildThemeOptions): string {
     mode = 'both',
     darkSelector = 'class',
     prefix = 'maz',
+    darkClass = 'dark',
     criticalOnly = false,
   } = options
 
@@ -26,6 +29,7 @@ export function buildThemeCSS(options: BuildThemeOptions): string {
     mode,
     darkSelectorStrategy: darkSelector,
     prefix,
+    darkClass,
   }
 
   if (criticalOnly) {
@@ -88,15 +92,16 @@ export function createThemeStylesheet(css: string, options: {
 export function buildSeparateThemeFiles(preset: ThemePreset, options: {
   prefix?: string
   darkSelector?: 'class' | 'media'
+  darkClass?: string
 } = {}): {
   critical: string
   full: string
   lightOnly: string
   darkOnly: string
 } {
-  const { prefix = 'maz', darkSelector = 'class' } = options
+  const { prefix = 'maz', darkSelector = 'class', darkClass = 'dark' } = options
 
-  const baseOptions = { prefix, darkSelectorStrategy: darkSelector }
+  const baseOptions = { prefix, darkSelectorStrategy: darkSelector, darkClass }
 
   return {
     critical: generateCriticalCSS(preset, { ...baseOptions, mode: 'both' }),

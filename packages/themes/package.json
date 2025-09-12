@@ -75,7 +75,7 @@
   },
   "scripts": {
     "build": "vite build",
-    "build:watch": "vite build --watch",
+    "build:watch": "vite build --watch --mode development",
     "typecheck": "vue-tsc --noEmit",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
