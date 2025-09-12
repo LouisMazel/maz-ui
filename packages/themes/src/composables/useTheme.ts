@@ -1,11 +1,11 @@
 import type { Ref } from 'vue'
 import type { ColorMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
-import type { CriticalCSSOptions, FullCSSOptions } from '../utils/css-generator'
+import type { CSSOptions } from '../utils/css-generator'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, getCurrentInstance, inject, ref } from 'vue'
 
 import { setCookie } from '../utils/cookie-storage'
-import { CSS_IDS, generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'
+import { CSS_ID, generateCSS, injectCSS } from '../utils/css-generator'
 import { getPreset } from '../utils/get-preset'
 import { mergePresets } from '../utils/preset-merger'
 
@@ -41,18 +41,15 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
   themeState.value.preset = newPreset
 
   if (themeState.value.strategy === 'runtime' || themeState.value.strategy === 'hybrid') {
-    const cssOptions: CriticalCSSOptions | FullCSSOptions = {
+    const cssOptions: CSSOptions = {
       mode: themeState.value.mode,
       darkSelectorStrategy: themeState.value.darkModeStrategy,
       prefix: 'maz',
       darkClass: themeState.value.darkClass,
     }
 
-    const criticalCSS = generateCriticalCSS(newPreset, cssOptions)
-    const fullCSS = generateFullCSS(newPreset, cssOptions)
-
-    injectCSS(CSS_IDS.CRITICAL, criticalCSS)
-    injectCSS(CSS_IDS.FULL, fullCSS)
+    const fullCSS = generateCSS(newPreset, cssOptions)
+    injectCSS(CSS_ID, fullCSS)
   }
 }
 
