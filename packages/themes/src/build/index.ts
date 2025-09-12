@@ -1,5 +1,5 @@
 import type { ThemePreset } from '../types'
-import { generateCriticalCSS, generateFullCSS } from '../utils/css-generator'
+import { generateCSS } from '../utils/css-generator'
 
 export interface BuildThemeOptions {
   preset: ThemePreset
@@ -32,13 +32,13 @@ export function buildThemeCSS(options: BuildThemeOptions): string {
     darkClass,
   }
 
+  const criticalCSS = generateCSS(preset, { ...cssOptions, onlyCritical: true })
+
   if (criticalOnly) {
-    return generateCriticalCSS(preset, cssOptions)
+    return criticalCSS
   }
 
-  // Générer le CSS complet (critique + full)
-  const criticalCSS = generateCriticalCSS(preset, cssOptions)
-  const fullCSS = generateFullCSS(preset, cssOptions)
+  const fullCSS = generateCSS(preset, cssOptions)
 
   return `${criticalCSS}\n${fullCSS}`
 }
@@ -104,8 +104,8 @@ export function buildSeparateThemeFiles(preset: ThemePreset, options: {
   const baseOptions = { prefix, darkSelectorStrategy: darkSelector, darkClass }
 
   return {
-    critical: generateCriticalCSS(preset, { ...baseOptions, mode: 'both' }),
-    full: generateFullCSS(preset, { ...baseOptions, mode: 'both' }),
+    critical: generateCSS(preset, { ...baseOptions, mode: 'both', onlyCritical: true }),
+    full: generateCSS(preset, { ...baseOptions, mode: 'both' }),
     lightOnly: buildThemeCSS({ preset, mode: 'light', ...options }),
     darkOnly: buildThemeCSS({ preset, mode: 'dark', ...options }),
   }

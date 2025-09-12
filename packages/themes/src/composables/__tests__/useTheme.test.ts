@@ -3,7 +3,7 @@ import { getCurrentInstance, inject } from 'vue'
 import { mazUi } from '../../presets'
 import { mergePresets } from '../../utils'
 import { setCookie } from '../../utils/cookie-storage'
-import { generateCriticalCSS, generateFullCSS, injectCSS } from '../../utils/css-generator'
+import { generateCSS, injectCSS } from '../../utils/css-generator'
 import { getPreset } from '../../utils/get-preset'
 import { useTheme } from '../useTheme'
 
@@ -197,8 +197,7 @@ describe('useTheme', () => {
         await updateTheme('ocean')
 
         expect(getPreset).toHaveBeenCalledWith('ocean')
-        expect(generateCriticalCSS).toHaveBeenCalled()
-        expect(generateFullCSS).toHaveBeenCalled()
+        expect(generateCSS).toHaveBeenCalledTimes(2)
         expect(injectCSS).toHaveBeenCalledTimes(2)
       })
     })
