@@ -1,18 +1,28 @@
-import type { ColorMode, CriticalCSSOptions, ThemeMode, ThemePreset, ThemeState } from '@maz-ui/themes'
+import type { ColorMode, CriticalCSSOptions, ThemeState } from '@maz-ui/themes'
+import type { Ref } from 'vue'
 import type { MazUiNuxtThemeOptions } from './../../types'
 import { MazUiTheme } from '@maz-ui/themes/plugin'
 import { CSS_IDS, generateCriticalCSS, generateFullCSS, getPreset, mergePresets } from '@maz-ui/themes/utils'
+import { getSystemColorMode } from '@maz-ui/themes/utils/get-color-mode'
 import { defineNuxtPlugin, useCookie, useHead, useRequestHeaders } from 'nuxt/app'
 
-function getServerInitialColorMode(colorMode: ColorMode): ColorMode {
-  if (colorMode !== 'auto') {
+function getSavedColorMode(): ColorMode | undefined {
+  const colorModeCookie = useCookie<ColorMode>('maz-color-mode')
+  if (colorModeCookie.value && ['light', 'dark', 'auto'].includes(colorModeCookie.value)) {
+    return colorModeCookie.value
+  }
+
+  return undefined
+}
+
+function getInitialColorMode(colorMode: ColorMode) {
+  if (colorMode && ['light', 'dark'].includes(colorMode)) {
     return colorMode
   }
 
-  const colorModeCookie = useCookie<ColorMode>('maz-color-mode')
-
-  if (colorModeCookie.value && ['light', 'dark', 'auto'].includes(colorModeCookie.value)) {
-    return colorModeCookie.value
+  const savedColorMode = getSavedColorMode()
+  if (savedColorMode && ['light', 'dark'].includes(savedColorMode)) {
+    return savedColorMode
   }
 
   if (import.meta.server) {
@@ -27,27 +37,26 @@ function getServerInitialColorMode(colorMode: ColorMode): ColorMode {
       return 'dark'
     }
   }
+  else {
+    const systemColorMode = getSystemColorMode()
+    if (systemColorMode === 'dark') {
+      return 'dark'
+    }
+  }
 
   return 'auto'
 }
 
-function injectThemeCSS({
-  mode,
-  preset,
-  config,
-}: {
-  mode: ThemeMode
-  preset: ThemePreset
-  config: MazUiNuxtThemeOptions
-}): void {
+function injectThemeCSS(config: Required<MazUiNuxtThemeOptions>) {
   const cssOptions = {
-    mode,
+    mode: config.mode,
     darkSelectorStrategy: config.darkModeStrategy ?? 'class',
     prefix: 'maz',
+    darkClass: config.darkClass ?? 'dark',
   } satisfies CriticalCSSOptions
 
   if (config.injectCriticalCSS) {
-    const criticalCSS = generateCriticalCSS(preset, cssOptions)
+    const criticalCSS = generateCriticalCSS(config.preset, cssOptions)
 
     useHead({
       style: [{ innerHTML: criticalCSS, id: CSS_IDS.CRITICAL }],
@@ -55,7 +64,7 @@ function injectThemeCSS({
   }
 
   if (config.injectAllCSSOnServer) {
-    const fullCSS = generateFullCSS(preset, cssOptions)
+    const fullCSS = generateFullCSS(config.preset, cssOptions)
 
     useHead({
       style: [{ innerHTML: fullCSS, id: CSS_IDS.FULL }],
@@ -87,8 +96,9 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
 
   const config = {
     strategy: 'hybrid',
+    darkClass: 'dark',
     darkModeStrategy: 'class',
-    colorMode: options.mode && options.mode !== 'both' ? options.mode : options.colorMode ?? 'auto',
+    colorMode: getSavedColorMode() ?? options.colorMode ?? 'auto',
     mode: 'both',
     injectAllCSSOnServer: false,
     injectCriticalCSS: true,
@@ -98,16 +108,14 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     preset,
   } satisfies Required<MazUiNuxtThemeOptions>
 
-  const colorMode = config.mode !== 'both' ? config.mode : getServerInitialColorMode(config.colorMode)
-
-  const isDark = colorMode === 'auto' && config.mode === 'both'
-    ? getServerInitialColorMode(config.colorMode) === 'dark'
-    : colorMode === 'dark' || config.mode === 'dark'
+  const isDark = config.colorMode === 'auto' && config.mode === 'both'
+    ? getInitialColorMode(config.colorMode) === 'dark'
+    : config.colorMode === 'dark' || config.mode === 'dark'
 
   if (isDark && config.darkModeStrategy === 'class') {
     useHead({
       htmlAttrs: {
-        class: 'dark',
+        class: config.darkClass,
       },
     })
   }
@@ -115,21 +123,14 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const { shouldInjectCriticalCSSOnClient, shouldInjectFullCSSOnClient } = getInjectCSSStates(config)
 
   if (import.meta.server) {
-    injectThemeCSS({
-      mode: config.mode,
-      preset: config.preset,
-      config,
-    })
+    injectThemeCSS(config)
   }
 
   MazUiTheme.install?.(vueApp, {
-
-    colorMode,
-    preset: config.preset,
-    strategy: config.strategy,
-    darkModeStrategy: config.darkModeStrategy,
-    mode: config.mode,
-
+    ...config,
+    colorMode: getSavedColorMode() ?? config.colorMode,
+    // @ts-expect-error _isDark is a private property
+    _isDark: isDark,
     injectFullCSS: shouldInjectFullCSSOnClient,
     injectCriticalCSS: shouldInjectCriticalCSSOnClient,
   })
@@ -137,6 +138,6 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
 
 declare module 'nuxt/app' {
   interface NuxtApp {
-    $mazThemeState: ThemeState
+    $mazThemeState: Ref<ThemeState>
   }
 }
