@@ -32,14 +32,14 @@
     "@maz-ui/node": "workspace:*",
     "@maz-ui/utils": "workspace:*",
     "clear": "^0.1.0",
-    "commander": "^14.0.0",
-    "figlet": "^1.8.2",
+    "commander": "^14.0.1",
+    "figlet": "^1.9.1",
     "vue-docgen-cli": "^4.79.0"
   },
   "devDependencies": {
     "@types/clear": "^0.1.4",
     "@types/figlet": "^1.7.0",
-    "tsx": "^4.20.4",
+    "tsx": "^4.20.5",
     "typescript": "~5.9.2"
   },
   "lint-staged": {
