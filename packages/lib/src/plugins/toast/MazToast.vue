@@ -162,16 +162,16 @@ const progressBarWidth = ref<string>('100%')
 function getProgressBarColor() {
   switch (type) {
     case 'destructive': {
-      return 'maz-bg-destructive-700'
+      return 'maz-bg-destructive-800'
     }
     case 'info': {
-      return 'maz-bg-info-700'
+      return 'maz-bg-info-800'
     }
     case 'success': {
-      return 'maz-bg-success-700'
+      return 'maz-bg-success-800'
     }
     case 'warning': {
-      return 'maz-bg-warning-700'
+      return 'maz-bg-warning-800'
     }
     default: {
       return 'maz-bg-contrast-foreground'
@@ -428,41 +428,49 @@ onMounted(() => {
 
   &.--info {
     .m-toast__button {
-      @apply maz-bg-info/10 maz-text-info-600 maz-border-info/20 hover:maz-bg-info/20;
+      @apply maz-bg-info maz-text-info-foreground maz-border-info-600 hover:maz-bg-info-600
+        dark:maz-bg-info/10 dark:maz-text-info-400 dark:maz-border-info/20 hover:dark:maz-bg-info/20;
     }
 
     & .m-toast__close {
-      @apply maz-bg-info/10 maz-border-info/20 maz-text-info-600 hover:maz-bg-info/20 hover:maz-text-info-700;
+      @apply maz-bg-info maz-text-info-foreground maz-border-info-400 hover:maz-bg-info-600
+        dark:maz-bg-info/10 dark:maz-border-info/20 dark:maz-text-info-600 hover:dark:maz-bg-info/20;
     }
   }
 
   &.--success {
     .m-toast__button {
-      @apply maz-bg-success/10 maz-text-success-600 maz-border-success/20 hover:maz-bg-success/20;
+      @apply maz-bg-success maz-text-success-foreground maz-border-success-600 hover:maz-bg-success-600
+        dark:maz-bg-success/10 dark:maz-text-success-400 dark:maz-border-success/20 dark:hover:maz-bg-success/20;
     }
 
     & .m-toast__close {
-      @apply maz-bg-success/10 maz-border-success/20 maz-text-success-600 hover:maz-bg-success/20 hover:maz-text-success-700;
+      @apply maz-bg-success maz-text-success-foreground maz-border-success-600 hover:maz-bg-success-600
+        dark:maz-bg-success/10 dark:maz-border-success/20 dark:maz-text-success-600 dark:hover:maz-bg-success/20;
     }
   }
 
   &.--warning {
     .m-toast__button {
-      @apply maz-bg-warning/10 maz-text-warning-600 maz-border-warning/20 hover:maz-bg-warning/20;
+      @apply maz-bg-warning maz-text-warning-foreground maz-border-warning-600 hover:maz-bg-warning-600
+        dark:maz-bg-warning/10 dark:maz-text-warning-400 dark:maz-border-warning/20 dark:hover:maz-bg-warning/20;
     }
 
     & .m-toast__close {
-      @apply maz-bg-warning/10 maz-border-warning/20 maz-text-warning-600 hover:maz-bg-warning/20 hover:maz-text-warning-700;
+      @apply maz-bg-warning maz-text-warning-foreground maz-border-warning-600 hover:maz-bg-warning-600
+        dark:maz-bg-warning/10 dark:maz-border-warning/20 dark:maz-text-warning-600 dark:hover:maz-bg-warning/20;
     }
   }
 
   &.--destructive {
     .m-toast__button {
-      @apply maz-bg-destructive/10 maz-text-destructive-600 maz-border-destructive/20 hover:maz-bg-destructive/20;
+      @apply maz-bg-destructive maz-text-destructive-foreground maz-border-destructive-600 hover:maz-bg-destructive-600
+        dark:maz-bg-destructive/10 dark:maz-text-destructive-400 dark:maz-border-destructive/20 dark:hover:maz-bg-destructive/20;
     }
 
     & .m-toast__close {
-      @apply maz-bg-destructive/10 maz-border-destructive/20 maz-text-destructive-600 hover:maz-bg-destructive/20 hover:maz-text-destructive-700;
+      @apply maz-bg-destructive maz-text-destructive-foreground maz-border-destructive-600 hover:maz-bg-destructive-600
+        dark:maz-bg-destructive/10 dark:maz-border-destructive/20 dark:maz-text-destructive-600 dark:hover:maz-bg-destructive/20;
     }
   }
 
