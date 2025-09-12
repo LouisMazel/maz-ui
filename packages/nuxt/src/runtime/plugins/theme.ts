@@ -1,8 +1,8 @@
-import type { ColorMode, CriticalCSSOptions, ThemeState } from '@maz-ui/themes'
+import type { ColorMode, CSSOptions, ThemeState } from '@maz-ui/themes'
 import type { Ref } from 'vue'
 import type { MazUiNuxtThemeOptions } from './../../types'
 import { MazUiTheme } from '@maz-ui/themes/plugin'
-import { CSS_IDS, generateCriticalCSS, generateFullCSS, getPreset, mergePresets } from '@maz-ui/themes/utils'
+import { CSS_ID, generateCSS, getPreset, mergePresets } from '@maz-ui/themes/utils'
 import { getSystemColorMode } from '@maz-ui/themes/utils/get-color-mode'
 import { defineNuxtPlugin, useCookie, useHead, useRequestHeaders } from 'nuxt/app'
 
@@ -53,35 +53,33 @@ function injectThemeCSS(config: Required<MazUiNuxtThemeOptions>) {
     darkSelectorStrategy: config.darkModeStrategy ?? 'class',
     prefix: 'maz',
     darkClass: config.darkClass ?? 'dark',
-  } satisfies CriticalCSSOptions
+  } satisfies CSSOptions
 
-  if (config.injectCriticalCSS) {
-    const criticalCSS = generateCriticalCSS(config.preset, cssOptions)
+  if (config.injectCriticalCSS && !config.injectAllCSSOnServer) {
+    const criticalCSS = generateCSS(config.preset, {
+      ...cssOptions,
+      onlyCritical: true,
+    })
 
     useHead({
-      style: [{ innerHTML: criticalCSS, id: CSS_IDS.CRITICAL }],
+      style: [{ innerHTML: criticalCSS, id: CSS_ID }],
     })
   }
 
   if (config.injectAllCSSOnServer) {
-    const fullCSS = generateFullCSS(config.preset, cssOptions)
+    const fullCSS = generateCSS(config.preset, cssOptions)
 
     useHead({
-      style: [{ innerHTML: fullCSS, id: CSS_IDS.FULL }],
+      style: [{ innerHTML: fullCSS, id: CSS_ID }],
     })
   }
 }
 
-function getInjectCSSStates(config: MazUiNuxtThemeOptions) {
-  const criticalCSSAlreadyInjected = import.meta.client && !!document.getElementById(CSS_IDS.CRITICAL)
-  const shouldInjectCriticalCSSOnClient = !!config.injectCriticalCSS && import.meta.client && !criticalCSSAlreadyInjected
-
-  const fullCSSAlreadyInjected = import.meta.client && !!document.getElementById(CSS_IDS.FULL)
-  const shouldInjectFullCSSOnClient = !!config.injectFullCSS && import.meta.client && !fullCSSAlreadyInjected
+function getInjectCSSStates(config: Required<MazUiNuxtThemeOptions>) {
+  const isCSSAlreadyInjected = import.meta.client && !!document.getElementById(CSS_ID)
 
   return {
-    shouldInjectCriticalCSSOnClient,
-    shouldInjectFullCSSOnClient,
+    shouldInjectCSSOnClient: !!config.injectAllCSSOnServer && import.meta.client && !isCSSAlreadyInjected,
   }
 }
 
@@ -120,19 +118,19 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     })
   }
 
-  const { shouldInjectCriticalCSSOnClient, shouldInjectFullCSSOnClient } = getInjectCSSStates(config)
-
   if (import.meta.server) {
     injectThemeCSS(config)
   }
+
+  const { shouldInjectCSSOnClient } = getInjectCSSStates(config)
 
   MazUiTheme.install?.(vueApp, {
     ...config,
     colorMode: getSavedColorMode() ?? config.colorMode,
     // @ts-expect-error _isDark is a private property
     _isDark: isDark,
-    injectFullCSS: shouldInjectFullCSSOnClient,
-    injectCriticalCSS: shouldInjectCriticalCSSOnClient,
+    injectFullCSS: !config.injectAllCSSOnServer || shouldInjectCSSOnClient,
+    injectCriticalCSS: shouldInjectCSSOnClient,
   })
 })
 
