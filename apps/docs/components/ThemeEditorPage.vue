@@ -9,7 +9,7 @@ import DemoAuthPage from './DemoAuthPage.vue'
 import DemoDashboardPage from './DemoDashboardPage.vue'
 import DemoProductPage from './DemoProductPage.vue'
 
-const { updateTheme, isDark, toggleDarkMode, presetName, colorMode, currentPreset } = useTheme()
+const { updateTheme, isDark, toggleDarkMode, presetName, colorMode, preset: currentPreset } = useTheme()
 const toast = useToast()
 
 const currentTab = ref(1)
@@ -17,7 +17,6 @@ const editingMode = computed<'light' | 'dark'>(() => colorMode.value === 'dark' 
 const exportedCode = ref('')
 const highlightedCode = ref('')
 const showExportModal = ref(false)
-const isTransitioning = ref(false)
 
 const preset = computed(() => {
   return unref(currentPreset) ?? mazUi
@@ -68,15 +67,6 @@ watch([themeData], async () => {
     await updateTheme(themeData)
   }
 }, { deep: true })
-
-function handleThemeModeToggle() {
-  isTransitioning.value = true
-  toggleDarkMode()
-
-  setTimeout(() => {
-    isTransitioning.value = false
-  }, 500)
-}
 
 function resetTheme() {
   updateTheme(originalTheme)
@@ -162,7 +152,7 @@ function formatColorName(colorName: string): string {
 </script>
 
 <template>
-  <div class="vp-raw theme-configurator" :class="{ 'no-transitions': isTransitioning }">
+  <div class="vp-raw theme-configurator">
     <div class="maz-grid maz-min-h-[80vh] maz-grid-cols-1 maz-gap-4 lg:maz-grid-cols-12">
       <!-- Editor Panel -->
       <div class="maz-space-y-6 lg:maz-col-span-4 lg:maz-border-r lg:maz-pr-4">
@@ -249,7 +239,7 @@ function formatColorName(colorName: string): string {
                 <MazSwitch
                   id="dark-mode-switch"
                   :model-value="colorMode === 'dark'"
-                  @update:model-value="handleThemeModeToggle()"
+                  @update:model-value="toggleDarkMode"
                 />
               </div>
             </div>
@@ -379,13 +369,6 @@ function formatColorName(colorName: string): string {
 </style>
 
 <style lang="postcss">
-/* Global styles to disable only color-related transitions during theme mode switch */
-.no-transitions *,
-.no-transitions *::before,
-.no-transitions *::after {
-  transition-property: transform, opacity, scale, rotate, translate !important;
-}
-
 /* Shiki code highlighting styles */
 .shiki-wrapper {
   @apply maz-rounded-md maz-overflow-hidden maz-bg-contrast dark:maz-bg-surface-600;

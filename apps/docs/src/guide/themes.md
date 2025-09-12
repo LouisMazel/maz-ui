@@ -1219,7 +1219,7 @@ import { ref } from 'vue'
 const {
   isDark,
   colorMode,
-  currentPreset,
+  preset,
   setColorMode,
   updateTheme,
   presetName
