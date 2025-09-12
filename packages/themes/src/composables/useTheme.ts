@@ -1,123 +1,51 @@
-import type { ColorMode, DarkModeStrategy, Strategy, ThemeMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
+import type { Ref } from 'vue'
+import type { ColorMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
 import type { CriticalCSSOptions, FullCSSOptions } from '../utils/css-generator'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
-import { computed, getCurrentInstance, inject, onMounted, ref, watch, watchEffect } from 'vue'
-import { useMutationObserver } from '../../../lib/src/composables/useMutationObserver'
+import { computed, getCurrentInstance, inject, ref } from 'vue'
+
 import { setCookie } from '../utils/cookie-storage'
 import { CSS_IDS, generateCriticalCSS, generateFullCSS, injectCSS } from '../utils/css-generator'
-import { getColorMode, isSystemPrefersDark } from '../utils/get-color-mode'
-
 import { getPreset } from '../utils/get-preset'
 import { mergePresets } from '../utils/preset-merger'
 
-const state = ref<ThemeState>()
-
-function updateDocumentClass(themeState: ThemeState) {
-  if (typeof document === 'undefined' || !themeState || themeState.darkModeStrategy === 'media' || themeState.mode === 'light')
-    return
-
-  if (themeState.isDark) {
-    document.documentElement.classList.add('dark')
-  }
-  else {
-    document.documentElement.classList.remove('dark')
-  }
-}
-
-function updateGlobalProperties() {
-  const app = getCurrentInstance()?.appContext.app
-  if (app && state.value) {
-    app.config.globalProperties.$mazThemeState = state.value
-  }
-}
-
-function initializeThemeFromData(themeData: ThemeState) {
-  if (themeData.currentPreset && themeData.colorMode !== undefined) {
-    initThemeState({
-      currentPreset: themeData.currentPreset,
-      colorMode: themeData.colorMode,
-      mode: themeData.mode,
-      isDark: themeData.isDark,
-      strategy: themeData.strategy,
-      darkModeStrategy: themeData.darkModeStrategy,
-    })
-
-    return
-  }
-
-  const colorMode = getColorMode(themeData.colorMode)
-  const isDark = colorMode === 'auto'
-    ? isSystemPrefersDark()
-    : colorMode === 'dark'
-
-  initThemeState({
-    currentPreset: themeData.currentPreset,
-    colorMode,
-    mode: themeData.mode,
-    isDark,
-    strategy: themeData.strategy,
-    darkModeStrategy: themeData.darkModeStrategy,
-  })
-}
-
-export function initThemeState(initialState: ThemeState) {
-  state.value = initialState
-
-  if (typeof globalThis.window !== 'undefined' && state.value.colorMode === 'auto') {
-    const mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)')
-
-    const updateFromMedia = () => {
-      if (state.value && state.value.colorMode === 'auto') {
-        state.value.isDark = mediaQuery.matches
-      }
-    }
-
-    mediaQuery.addEventListener('change', updateFromMedia)
-    updateFromMedia()
-  }
-
-  watchEffect(() => {
-    if (state.value) {
-      updateDocumentClass(state.value)
-      updateGlobalProperties()
-    }
-  })
-}
+const themeState = ref<ThemeState>()
 
 const colorMode = computed<ColorMode>({
-  get: () => state.value?.colorMode as ColorMode,
+  get: () => themeState.value?.colorMode as ColorMode,
   set: mode => setColorMode(mode),
 })
 
-const isDark = computed(() => state.value?.isDark ?? false)
-const strategy = computed(() => state.value?.strategy as Strategy)
-const mode = computed(() => state.value?.mode as ThemeMode)
-const darkModeStrategy = computed(() => state.value?.darkModeStrategy as DarkModeStrategy)
-const currentPreset = computed(() => state.value?.currentPreset)
-const presetName = computed(() => currentPreset.value?.name)
+const isDark = computed(() => themeState.value?.isDark || false)
+const strategy = computed(() => themeState.value?.strategy as Required<ThemeState>['strategy'])
+const mode = computed(() => themeState.value?.mode as Required<ThemeState>['mode'])
+const darkModeStrategy = computed(() => themeState.value?.darkModeStrategy as Required<ThemeState>['darkModeStrategy'])
+const preset = computed(() => themeState.value?.preset as Required<ThemeState>['preset'])
+const presetName = computed(() => preset.value?.name as string)
 
 async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePresetName) {
-  if (!state.value)
+  if (!themeState.value)
     return
 
   const _preset = typeof preset === 'string' ? await getPreset(preset) : preset
 
-  if (!_preset || !state.value.currentPreset) {
+  if (!_preset || !themeState.value.preset) {
     console.error('[@maz-ui/themes] No preset found - If you are using the buildtime strategy, you must provide a complete preset')
     return
   }
 
-  const newPreset = 'name' in _preset && _preset.name !== state.value.currentPreset.name
+  const newPreset = 'name' in _preset && _preset.name !== themeState.value.preset.name
     ? _preset as ThemePreset
-    : mergePresets(state.value.currentPreset, _preset)
+    : mergePresets(themeState.value.preset, _preset)
 
-  state.value.currentPreset = newPreset
+  themeState.value.preset = newPreset
 
-  if (state.value.strategy === 'runtime' || state.value.strategy === 'hybrid') {
+  if (themeState.value.strategy === 'runtime' || themeState.value.strategy === 'hybrid') {
     const cssOptions: CriticalCSSOptions | FullCSSOptions = {
-      mode: state.value.mode,
-      darkSelectorStrategy: state.value.darkModeStrategy,
+      mode: themeState.value.mode,
+      darkSelectorStrategy: themeState.value.darkModeStrategy,
       prefix: 'maz',
+      darkClass: themeState.value.darkClass,
     }
 
     const criticalCSS = generateCriticalCSS(newPreset, cssOptions)
@@ -128,107 +56,103 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
   }
 }
 
-function setColorMode(colorMode: ColorMode, updateClass = true) {
-  if (!state.value)
+function setColorMode(colorMode: ColorMode) {
+  if (!themeState.value)
     return
 
-  state.value.colorMode = colorMode
-
-  if (colorMode === 'auto') {
-    state.value.isDark = typeof globalThis.window !== 'undefined' && globalThis.matchMedia('(prefers-color-scheme: dark)').matches
-  }
-  else {
-    state.value.isDark = colorMode === 'dark'
-  }
-
-  if (updateClass) {
-    updateDocumentClass(state.value)
-  }
+  themeState.value.colorMode = colorMode
 
   setCookie('maz-color-mode', colorMode)
 }
 
 function toggleDarkMode() {
-  if (!state.value)
-    return
-
-  setColorMode(state.value.isDark ? 'light' : 'dark')
+  setColorMode(isDark.value ? 'light' : 'dark')
 }
 
-export function useTheme() {
-  const htmlElement = ref<HTMLElement>()
-
-  onMounted(() => {
-    htmlElement.value = document.documentElement
-  })
-
-  useMutationObserver(
-    htmlElement,
-    () => {
-      if (isServer() || !state.value)
-        return
-
-      const colorMode: 'light' | 'dark' = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
-
-      if (state.value.colorMode !== colorMode) {
-        setColorMode(colorMode, false)
-      }
-    },
-    {
-      attributes: true,
-    },
-  )
-
-  let mazThemeState: ThemeState | undefined
+function setThemeStateFromGlobalProperties() {
+  themeState.value = undefined
 
   try {
-    mazThemeState = inject<ThemeState | undefined>('mazThemeState', undefined)
+    const injectedState = inject<Ref<ThemeState> | undefined>('mazThemeState', undefined)
+    themeState.value = injectedState?.value
 
-    if (!mazThemeState) {
+    if (!themeState.value) {
       throw new Error('mazThemeState not found')
     }
   }
   catch {
     const instance = getCurrentInstance()
     if (instance?.appContext?.app?.config?.globalProperties) {
-      mazThemeState = instance.appContext.app.config.globalProperties.$mazThemeState
+      themeState.value = instance.appContext.app.config.globalProperties.$mazThemeState.value
     }
   }
+}
 
-  if (mazThemeState) {
-    if (!state.value) {
-      initializeThemeFromData(mazThemeState)
-    }
-    else if (typeof document === 'undefined' || typeof globalThis.window === 'undefined') {
-      state.value = {
-        ...state.value,
-        ...mazThemeState,
-      }
-    }
+export function useTheme() {
+  if (isServer()) {
+    themeState.value = undefined
   }
 
-  watch(() => mazThemeState?.currentPreset, (preset) => {
-    if (state.value && preset) {
-      state.value.currentPreset = preset
-    }
-  }, {
-    once: true,
-  })
+  if (!themeState.value) {
+    setThemeStateFromGlobalProperties()
+  }
 
-  if (!state.value) {
+  if (!themeState.value) {
     throw new Error('[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin before using useTheme composable')
   }
 
   return {
+    /**
+     * Current theme preset
+     */
+    preset,
+    /**
+     * Current theme name
+     */
     presetName,
+    /**
+     * Current color mode
+     * @description The color mode - Can be 'auto', 'dark' or 'light'
+     */
     colorMode,
+    /**
+     * Whether the current color mode is dark
+     */
     isDark,
+    /**
+     * Strategy used to apply the theme
+     */
     strategy,
+    /**
+     * Update the theme
+     * @param preset The new theme preset
+     * @description Update the theme with a new preset or override some tokens
+     */
     updateTheme,
+    /**
+     * Set the color mode
+     * @description Set the color mode - Can be 'auto', 'dark' or 'light'
+     * @param colorMode The new color mode
+     */
     setColorMode,
+    /**
+     * Toggle the dark mode
+     * @description Toggle the dark mode
+     */
     toggleDarkMode,
+    /**
+     * Mode
+     * @description Supported themes - Can be 'both', 'light' or 'dark'
+     */
     mode,
+    /**
+     * Dark mode strategy
+     * @description Strategy used to apply the dark mode - Can be 'class' or 'media'
+     */
     darkModeStrategy,
-    currentPreset,
+    /**
+     * @deprecated use `preset` instead
+     */
+    currentPreset: preset,
   }
 }

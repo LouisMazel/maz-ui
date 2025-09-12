@@ -92,7 +92,7 @@ interface BaseThemeConfig {
    * @description Can be a predefined preset name or a custom preset object
    * @default undefined
    */
-  preset: ThemePreset
+  preset?: ThemePreset
 
   /**
    * Custom preset overrides
@@ -110,6 +110,13 @@ interface BaseThemeConfig {
    * @default 'hybrid'
    */
   strategy?: Strategy
+
+  /**
+   * Dark mode class
+   * @description Class added to the document root when dark mode is active
+   * @default 'dark'
+   */
+  darkClass?: string
 
   /**
    * Dark mode handling
@@ -163,10 +170,42 @@ export interface ColorScale {
 }
 
 export interface ThemeState {
-  currentPreset?: ThemePreset
+  /**
+   * Current preset
+   * @description The preset used
+   */
+  preset?: ThemePreset
+  /**
+   * Color mode
+   * @description The color mode chosen
+   * @values 'light', 'dark', 'auto'
+   */
   colorMode: ColorMode
-  mode: ThemeMode
+  /**
+   * Whether the current color mode is dark
+   */
   isDark: boolean
+  /**
+   * Theme mode
+   * @description The theme mode chosen
+   * @values 'light', 'dark', 'both'
+   */
+  mode: ThemeMode
+  /**
+   * CSS generation strategy
+   * @description The strategy used to generate CSS
+   * @values 'runtime', 'buildtime', 'hybrid'
+   */
   strategy: Strategy
+  /**
+   * Dark mode strategy
+   * @description The strategy used to handle dark mode
+   * @values 'class', 'media'
+   */
   darkModeStrategy: DarkModeStrategy
+  /**
+   * Dark class
+   * @description The class added to the document root when dark mode is active
+   */
+  darkClass: string
 }

@@ -1,16 +1,18 @@
-import type { App, Plugin } from 'vue'
-import type { DarkModeStrategy, ThemeConfig, ThemePreset, ThemeState } from './types'
+import type { App, Plugin, Ref } from 'vue'
+import type { ThemeConfig, ThemePreset, ThemeState } from './types'
 import type { CriticalCSSOptions } from './utils/css-generator'
-import { reactive } from 'vue'
+import { isServer } from '@maz-ui/utils/helpers/isServer'
+import { ref, watch } from 'vue'
+import { useMutationObserver } from '../../lib/src/composables/useMutationObserver'
 import { getPreset, mergePresets } from './utils'
 import {
-
   CSS_IDS,
   generateCriticalCSS,
   generateFullCSS,
   injectCSS,
 } from './utils/css-generator'
-import { getColorMode, isSystemPrefersDark } from './utils/get-color-mode'
+import { getColorMode, getSavedColorMode, getSystemColorMode } from './utils/get-color-mode'
+import { updateDocumentClass } from './utils/update-document-class'
 
 export interface MazUiThemeOptions extends Omit<ThemeConfig, 'prefix'> {
   /**
@@ -30,18 +32,6 @@ export interface MazUiThemeOptions extends Omit<ThemeConfig, 'prefix'> {
   injectFullCSS?: boolean
 }
 
-function applyDarkMode(darkModeStrategy: DarkModeStrategy, isDark: boolean) {
-  if (typeof document === 'undefined' || darkModeStrategy !== 'class')
-    return
-
-  if (isDark) {
-    document.documentElement.classList.add('dark')
-  }
-  else {
-    document.documentElement.classList.remove('dark')
-  }
-}
-
 function injectThemeCSS(finalPreset: ThemePreset, config: Required<Omit<MazUiThemeOptions, 'preset'>> & Pick<MazUiThemeOptions, 'preset'>) {
   if (typeof document === 'undefined')
     return
@@ -49,6 +39,7 @@ function injectThemeCSS(finalPreset: ThemePreset, config: Required<Omit<MazUiThe
   const cssOptions: CriticalCSSOptions = {
     mode: config.mode,
     darkSelectorStrategy: config.darkModeStrategy,
+    darkClass: config.darkClass,
   }
 
   if (config.injectCriticalCSS) {
@@ -72,18 +63,68 @@ function injectThemeCSS(finalPreset: ThemePreset, config: Required<Omit<MazUiThe
   }
 }
 
-function injectThemeState(app: App, themeState: ThemeState) {
+function injectThemeState(app: App, themeState: Ref<ThemeState>) {
   app.provide('mazThemeState', themeState)
   app.config.globalProperties.$mazThemeState = themeState
+}
+
+function watchColorSchemeFromMedia(themeState: Ref<ThemeState>) {
+  if (isServer())
+    return
+
+  if (themeState.value && themeState.value.colorMode === 'auto') {
+    const mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)')
+
+    const updateFromMedia = () => {
+      if (themeState.value.colorMode === 'auto') {
+        const newColorMode = mediaQuery.matches ? 'dark' : 'light'
+        updateDocumentClass(newColorMode === 'dark', themeState.value)
+        themeState.value.isDark = newColorMode === 'dark'
+      }
+    }
+
+    mediaQuery.addEventListener('change', updateFromMedia)
+  }
+
+  watch(() => themeState.value.colorMode, (colorMode) => {
+    updateDocumentClass(
+      colorMode === 'auto' ? getSystemColorMode() === 'dark' : colorMode === 'dark',
+      themeState.value,
+    )
+  })
+}
+
+function watchMutationClassOnHtmlElement(themeState: Ref<ThemeState>) {
+  if (isServer())
+    return
+
+  useMutationObserver(
+    document.documentElement,
+    () => {
+      if (isServer() || !themeState.value)
+        return
+
+      const activeColorMode = document.documentElement.classList.contains(themeState.value.darkClass) ? 'dark' : 'light'
+      themeState.value.isDark = activeColorMode === 'dark'
+
+      if (themeState.value.colorMode !== activeColorMode && themeState.value.colorMode !== 'auto') {
+        themeState.value.colorMode = activeColorMode
+      }
+    },
+    {
+      attributes: true,
+    },
+  )
 }
 
 /**
  * @example
  * ```ts
- * import { MazUi } from 'maz-ui/plugins/maz-ui'
+ * import { MazUiTheme } from '@maz-ui/themes/plugin'
+ * import { mazUi } from '@maz-ui/themes/presets/mazUi'
  *
- * app.use(MazUi, {
- *   preset: defaultPreset,
+ * app.use(MazUiTheme, {
+ *   preset: mazUi,
  *   strategy: 'hybrid',
  *   darkMode: 'class',
  * })
@@ -95,31 +136,33 @@ export const MazUiTheme: Plugin<[MazUiThemeOptions]> = {
       strategy: 'runtime',
       overrides: {},
       darkModeStrategy: 'class',
-      colorMode: (options?.mode !== 'both' ? options?.mode : options?.colorMode) ?? 'auto',
+      preset: undefined,
       injectCriticalCSS: true,
       injectFullCSS: true,
       mode: 'both',
+      darkClass: 'dark',
       ...options,
+      colorMode: getSavedColorMode() ?? options.colorMode ?? (options.mode === 'dark' ? 'dark' : 'auto'),
     } satisfies Required<Omit<MazUiThemeOptions, 'preset'>> & Pick<MazUiThemeOptions, 'preset'>
 
-    const colorMode = config.mode !== 'both' ? config.mode : getColorMode(config.colorMode)
+    const isDark = config.colorMode === 'auto' && config.mode === 'both'
+      ? getSystemColorMode() === 'dark' || getColorMode(config.colorMode) === 'dark'
+      : getColorMode(config.colorMode) === 'dark' || config.mode === 'dark'
 
-    const isDark = colorMode === 'auto' && config.mode === 'both'
-      ? isSystemPrefersDark()
-      : colorMode === 'dark' || config.mode === 'dark'
-
-    const themeState = reactive<ThemeState>({
-      currentPreset: undefined,
-      mode: config.mode,
-      colorMode,
-      isDark,
+    const themeState = ref<Required<Omit<ThemeState, 'preset'>> & Pick<ThemeState, 'preset'>>({
       strategy: config.strategy,
+      darkClass: config.darkClass,
       darkModeStrategy: config.darkModeStrategy,
+      colorMode: config.colorMode,
+      mode: config.mode,
+      preset: undefined,
+      // @ts-expect-error _isDark is a private property
+      isDark: options._isDark || isDark,
     })
 
-    applyDarkMode(config.darkModeStrategy, isDark)
-
     injectThemeState(app, themeState)
+
+    updateDocumentClass(themeState.value.isDark, themeState.value)
 
     const preset = config.strategy === 'buildtime' ? config.preset : await getPreset(config.preset)
 
@@ -128,7 +171,7 @@ export const MazUiTheme: Plugin<[MazUiThemeOptions]> = {
       : preset
 
     if (finalPreset) {
-      themeState.currentPreset = finalPreset
+      themeState.value.preset = finalPreset
     }
 
     if (config.strategy === 'buildtime' || !finalPreset) {
@@ -136,6 +179,9 @@ export const MazUiTheme: Plugin<[MazUiThemeOptions]> = {
     }
 
     injectThemeCSS(finalPreset, config)
+
+    watchColorSchemeFromMedia(themeState)
+    watchMutationClassOnHtmlElement(themeState)
   },
 }
 
@@ -152,10 +198,10 @@ declare module 'vue' {
      * const app = createApp(App)
      * app.use(MazUi)
      *
-     * const { setColorMode, toggleDarkMode } = useMazTheme()
+     * const { setColorMode, toggleDarkMode } = useTheme()
      * setColorMode('dark')
      * toggleDarkMode()
      */
-    $mazThemeState: ThemeState
+    $mazThemeState: Ref<ThemeState>
   }
 }
