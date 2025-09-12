@@ -14,7 +14,7 @@ export const MazUiTranslations: Plugin<[MazUiTranslationsOptions?]> = {
   },
 }
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
   interface ComponentCustomProperties {
     /**
      * Maz translations instance
