@@ -21,11 +21,13 @@ export function useMutationObserver(
   } = options
   let observer: MutationObserver | undefined
 
-  const isSupported = ref(false)
+  const isSupported = ref((internalWindow && 'MutationObserver' in internalWindow) ?? false)
 
-  onMounted(() => {
-    isSupported.value = (internalWindow && 'MutationObserver' in internalWindow) ?? false
-  })
+  if (!isSupported.value) {
+    onMounted(() => {
+      isSupported.value = (internalWindow && 'MutationObserver' in internalWindow) ?? false
+    })
+  }
 
   const cleanup = () => {
     if (observer) {
@@ -48,13 +50,13 @@ export function useMutationObserver(
   })
 
   const stopWatch = watch(
-    targets,
-    (newTargets) => {
+    [targets, isSupported],
+    ([newTargets, isSupported]) => {
       cleanup()
 
-      if (isSupported.value && newTargets.size) {
+      if (isSupported && newTargets.size) {
         observer = new MutationObserver(callback)
-        newTargets.forEach(el => observer!.observe(el, mutationOptions))
+        newTargets.forEach(el => observer?.observe(el, mutationOptions))
       }
     },
     { immediate: true, flush: 'post' },
