@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "typescript": "^5.9.2",
-    "unbuild": "^3.6.0"
+    "unbuild": "^3.6.1"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [
