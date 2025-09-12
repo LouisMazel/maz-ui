@@ -23,14 +23,15 @@ npm install @maz-ui/themes
 ### 1. Plugin installation
 
 ```typescript
-import { MazUiTheme } from '@maz-ui/themes'
 // main.ts
+import { MazUiTheme } from '@maz-ui/themes/plugin'
+import { mazUi } from '@maz-ui/themes/presets/mazUi'
 import { createApp } from 'vue'
 
 const app = createApp(App)
 
 app.use(MazUiTheme, {
-  preset: 'maz-ui',
+  preset: mazUi,
   strategy: 'hybrid',
   darkModeStrategy: 'class'
 })
@@ -40,9 +41,9 @@ app.use(MazUiTheme, {
 
 ```vue
 <script setup>
-import { useMazTheme } from '@maz-ui/themes'
+import { useTheme } from '@maz-ui/themes'
 
-const { toggleDarkMode, isDark } = useMazTheme()
+const { toggleDarkMode, isDark } = useTheme()
 </script>
 
 <template>
@@ -59,28 +60,28 @@ const { toggleDarkMode, isDark } = useMazTheme()
 
 ## Available presets
 
-### Default (Shadcn-like)
+### Default
 
 ```typescript
-import { mazUi } from '@maz-ui/themes'
+import { mazUi } from '@maz-ui/themes/presets/mazUi'
 ```
 
-### Dark
+### Pristine
 
 ```typescript
-import { dark } from '@maz-ui/themes'
+import { pristine } from '@maz-ui/themes/presets/pristine'
 ```
 
 ### Ocean
 
 ```typescript
-import { ocean } from '@maz-ui/themes'
+import { ocean } from '@maz-ui/themes/presets/ocean'
 ```
 
 ### Obsidian
 
 ```typescript
-import { obsidian } from '@maz-ui/themes'
+import { obsidian } from '@maz-ui/themes/presets/obsidian'
 ```
 
 ## Creating custom presets
@@ -110,15 +111,18 @@ const myPreset = definePreset({
 ## Composable API
 
 ```typescript
+import { useTheme } from '@maz-ui/themes'
+
 const {
-  currentPreset, // Ref<ThemePreset>
+  preset, // ComputedRef<ThemePreset>
+  presetName, // ComputedRef<string>
   colorMode, // Ref<'light' | 'dark' | 'auto'>
-  isDark, // Ref<boolean>
-  strategy, // Ref<'runtime' | 'build' | 'hybrid'>
+  isDark, // ComputedRef<boolean>
+  strategy, // ComputedRef<'runtime' | 'build' | 'hybrid'>
   updateTheme, // (preset: ThemePreset | ThemePresetName | ThemePresetOverrides) => void
   setColorMode, // (mode: 'light' | 'dark' | 'auto') => void
-  toggleDarkMode // () => void
-} = useMazTheme()
+  toggleDarkMode, // () => void
+} = useTheme()
 ```
 
 ## Strategies

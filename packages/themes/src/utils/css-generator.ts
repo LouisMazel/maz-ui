@@ -1,4 +1,5 @@
 import type { DarkModeStrategy, ThemeColors, ThemeFoundation, ThemeMode, ThemePreset } from '../types'
+import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { generateColorScale } from './color-utils'
 
 export interface CriticalCSSOptions {
@@ -12,6 +13,8 @@ export interface CriticalCSSOptions {
   darkSelectorStrategy: DarkModeStrategy
   /** CSS variables prefix */
   prefix?: string
+  /** Dark class name */
+  darkClass: string
 }
 
 export interface FullCSSOptions {
@@ -25,6 +28,8 @@ export interface FullCSSOptions {
   prefix?: string
   /** Include color scales (50-900) */
   includeColorScales?: boolean
+  /** Dark class name */
+  darkClass: string
 }
 
 const DEFAULT_CRITICAL_COLORS: (keyof ThemeColors)[] = [
@@ -65,6 +70,7 @@ export function generateCriticalCSS(
   options: CriticalCSSOptions = {
     mode: 'both',
     darkSelectorStrategy: 'class',
+    darkClass: 'dark',
   },
 ): string {
   const {
@@ -73,6 +79,7 @@ export function generateCriticalCSS(
     mode,
     darkSelectorStrategy,
     prefix = 'maz',
+    darkClass = 'dark',
   } = options
 
   const foundationCritical = extractCriticalFoundation(preset.foundation, criticalFoundation)
@@ -96,7 +103,7 @@ export function generateCriticalCSS(
     const darkCritical = extractCriticalVariables(preset.colors.dark, criticalColors)
 
     css += generateVariablesBlock({
-      selector: darkSelectorStrategy === 'media' ? ':root' : '.dark',
+      selector: darkSelectorStrategy === 'media' ? ':root' : `.${darkClass}`,
       mediaQuery: darkSelectorStrategy === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
       colors: darkCritical,
       foundation: foundationCritical,
@@ -113,6 +120,7 @@ export function generateFullCSS(
   options: FullCSSOptions = {
     mode: 'both',
     darkSelectorStrategy: 'class',
+    darkClass: 'dark',
   },
 ): string {
   const {
@@ -121,6 +129,7 @@ export function generateFullCSS(
     darkSelectorStrategy,
     prefix = 'maz',
     includeColorScales = true,
+    darkClass = 'dark',
   } = options
 
   const foundation = excludeFoundationVariables(preset.foundation, DEFAULT_CRITICAL_FOUNDATION)
@@ -145,7 +154,7 @@ export function generateFullCSS(
     const darkColors = excludeVariables(preset.colors.dark, excludeCritical)
 
     css += generateVariablesBlock({
-      selector: darkSelectorStrategy === 'media' ? ':root' : '.dark',
+      selector: darkSelectorStrategy === 'media' ? ':root' : `.${darkClass}`,
       mediaQuery: darkSelectorStrategy === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
       colors: darkColors,
       foundation: mode === 'dark' ? foundation : undefined, // Appearance only if dark mode only
@@ -280,7 +289,7 @@ export enum CSS_IDS {
 }
 
 export function injectCSS(id: CSS_IDS, css: string): void {
-  if (typeof document === 'undefined')
+  if (isServer())
     return
 
   const styleElements = document.querySelectorAll<HTMLStyleElement>(`#${id}`)
@@ -309,7 +318,7 @@ export function injectCSS(id: CSS_IDS, css: string): void {
 }
 
 export function removeCSS(id: CSS_IDS): void {
-  if (typeof document === 'undefined')
+  if (isServer())
     return
 
   const styleElements = document.querySelectorAll<HTMLStyleElement>(`#${id}`)

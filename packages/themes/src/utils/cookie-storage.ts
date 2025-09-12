@@ -1,5 +1,7 @@
+import { isServer } from '@maz-ui/utils/helpers/isServer'
+
 export function getCookie(key: string): string | null {
-  if (typeof document === 'undefined')
+  if (isServer())
     return null
 
   const cookies = document.cookie.split(';')
@@ -11,7 +13,7 @@ export function getCookie(key: string): string | null {
 }
 
 export function setCookie(key: string, value: string): void {
-  if (typeof document === 'undefined')
+  if (isServer())
     return
 
   document.cookie = `${key}=${encodeURIComponent(value)}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`
