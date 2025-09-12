@@ -213,7 +213,7 @@ export const AosPlugin: Plugin<[AosOptions?]> = {
   },
 }
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
   interface ComponentCustomProperties {
     /**
      * Aos handler instance

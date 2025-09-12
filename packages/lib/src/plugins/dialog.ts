@@ -14,7 +14,7 @@ export const DialogPlugin: Plugin<[DialogOptions?]> = {
   },
 }
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
   interface ComponentCustomProperties {
     /**
      * Dialog handler instance

@@ -10,7 +10,7 @@ export const ToastPlugin: Plugin<[ToastOptions?]> = {
   },
 }
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
   interface ComponentCustomProperties {
     /**
      * Toast handler instance

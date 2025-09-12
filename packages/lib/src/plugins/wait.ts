@@ -63,7 +63,7 @@ export const WaitPlugin: Plugin = {
   },
 }
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
   interface ComponentCustomProperties {
     /**
      * Wait handler instance
