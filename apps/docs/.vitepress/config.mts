@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 
 import {
   buildSeparateThemeFiles,
-  CSS_IDS,
+  CSS_ID,
   mazUi,
 } from '@maz-ui/themes'
 import autoprefixer from 'autoprefixer'
@@ -24,7 +24,6 @@ const _dirname = dirname(fileURLToPath(import.meta.url))
 
 // Generate complete CSS
 const {
-  critical,
   full,
 } = buildSeparateThemeFiles(mazUi, {
   darkSelector: 'class',
@@ -83,8 +82,7 @@ export default defineConfig<DefaultTheme.Config>({
 
   head: [
     ...head,
-    ['style', { id: CSS_IDS.CRITICAL, type: 'text/css' }, critical],
-    ['style', { id: CSS_IDS.FULL, type: 'text/css' }, full],
+    ['style', { id: CSS_ID, type: 'text/css' }, full],
   ] satisfies HeadConfig[],
 
   themeConfig: {

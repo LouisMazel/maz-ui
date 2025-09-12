@@ -586,7 +586,7 @@ import {
   createThemeStylesheet,
   definePreset,
   mazUi,
-  CSS_IDS,
+  CSS_ID,
 } from '@maz-ui/themes'
 
 // Custom theme
@@ -620,8 +620,7 @@ const themeBundle = generateThemeBundle([customPreset, mazUi], {
 
 export default defineConfig<DefaultTheme.Config>({
   head: [
-    ['style', { id: CSS_IDS.CRITICAL, type: 'text/css' }, critical],
-    ['style', { id: CSS_IDS.FULL, type: 'text/css' }, full],
+    ['style', { id: CSS_ID, type: 'text/css' }, full],
   ] satisfies HeadConfig[],
 })
 ```
