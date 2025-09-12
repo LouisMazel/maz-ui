@@ -1,24 +1,9 @@
 <script lang="ts" setup>
-import { useTheme } from '@maz-ui/themes'
-
 const { color = 'background' } = defineProps<{
   color?: string
 }>()
 
-const { colorMode, presetName } = useTheme()
-
-// --maz-background-50: 0 5% 95%;
-//     --maz-background-100: 0 5% 95%;
-//     --maz-background-200: 0 5% 95%;
-//     --maz-background-300: 0 5% 95%;
-//     --maz-background-400: 0 5% 95%;
-//     --maz-background-500: 0 0% 99%;
-//     --maz-background-600: 0 5% 89%;
-//     --maz-background-700: 0 5% 79%;
-//     --maz-background-800: 0 5% 69%;
-//     --maz-background-900: 0 5% 59%;
-
-function generateColorScale(color: string, _colorMode: string, _currentPresetName: string) {
+function generateColorScale(color: string) {
   const variants = [
     '50',
     '100',
@@ -45,7 +30,7 @@ function generateColorScale(color: string, _colorMode: string, _currentPresetNam
 }
 
 const colorScale = computed(() => {
-  return generateColorScale(color, colorMode.value, presetName.value)
+  return generateColorScale(color)
 })
 </script>
 
@@ -58,14 +43,14 @@ const colorScale = computed(() => {
     <div class="maz-flex maz-w-full maz-gap-2">
       <div
         v-for="({ key, bgColor, textColor, cssVarValue }) in colorScale"
-        :key="key" class="maz-min-h-20 maz-flex-1 maz-flex maz-flex-col maz-gap-2"
+        :key="key" class="maz-flex maz-min-h-20 maz-flex-1 maz-flex-col maz-gap-2"
       >
         <div>
           <p>
             {{ key }}
           </p>
 
-          <p class="maz-text-sm maz-text-muted-foreground">
+          <p class="maz-text-muted-foreground maz-text-sm">
             {{ cssVarValue }}
           </p>
         </div>

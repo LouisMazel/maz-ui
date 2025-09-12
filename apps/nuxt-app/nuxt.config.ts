@@ -1,6 +1,6 @@
-import mazUiModule from '@maz-ui/nuxt'
 import postcss from 'maz-ui/postcss.config.cjs'
 import svgLoader from 'vite-svg-loader'
+import mazUiModule from './../../packages/nuxt/src/module'
 
 export default defineNuxtConfig({
   modules: [mazUiModule, '@nuxtjs/tailwindcss'],
@@ -31,8 +31,8 @@ export default defineNuxtConfig({
   mazUi: {
     theme: {
       preset: 'maz-ui',
-      mode: 'dark',
-      colorMode: 'light',
+      mode: 'both',
+      colorMode: 'auto',
     },
     translations: {
       locale: 'fr',

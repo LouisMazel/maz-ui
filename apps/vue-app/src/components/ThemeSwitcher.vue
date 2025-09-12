@@ -1,18 +1,19 @@
 <script lang="ts" setup>
-import { useTheme } from '@maz-ui/themes/composables/useTheme'
 import MazRadioButtons from 'maz-ui/src/components/MazRadioButtons.vue'
+import { useTheme } from './../../../../packages/themes/src/composables/useTheme'
 
-const { colorMode, updateTheme, presetName } = useTheme()
+const { colorMode, updateTheme, presetName, isDark } = useTheme()
 </script>
 
 <template>
   <MazDropdown
     id="dropdown"
     color="transparent"
+    transition="scale-fade"
     prefer-position="bottom-end"
   >
     <span class="maz-capitalize">
-      {{ colorMode }}
+      {{ colorMode }} ({{ isDark ? 'dark' : 'light' }})
     </span>
 
     <template #dropdown>
