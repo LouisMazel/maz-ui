@@ -44,13 +44,9 @@ vi.mock('vue', async (importOriginal) => {
 })
 
 vi.mock('../../utils/css-generator', () => ({
-  generateCriticalCSS: vi.fn(() => 'critical-css'),
-  generateFullCSS: vi.fn(() => 'full-css'),
+  generateCSS: vi.fn(() => 'full-css'),
   injectCSS: vi.fn(),
-  CSS_IDS: {
-    CRITICAL: 'maz-theme-critical',
-    FULL: 'maz-theme-full',
-  },
+  CSS_ID: 'maz-theme-css',
 }))
 
 vi.mock('../../utils/get-color-mode', () => ({
@@ -197,8 +193,8 @@ describe('useTheme', () => {
         await updateTheme('ocean')
 
         expect(getPreset).toHaveBeenCalledWith('ocean')
-        expect(generateCSS).toHaveBeenCalledTimes(2)
-        expect(injectCSS).toHaveBeenCalledTimes(2)
+        expect(generateCSS).toHaveBeenCalledTimes(1)
+        expect(injectCSS).toHaveBeenCalledTimes(1)
       })
     })
 
