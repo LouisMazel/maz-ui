@@ -84,14 +84,6 @@
     "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   },
-  "pnpm": {
-    "catalog": false,
-    "onlyBuiltDependencies": [
-      "@swc/core",
-      "nx",
-      "vue-demi"
-    ]
-  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs,mts,md,yml,json}": [
       "eslint --fix"

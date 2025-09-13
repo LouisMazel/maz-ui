@@ -133,13 +133,6 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue' | '
    * @default 'auto'
    */
   position?: MazPopoverProps['position']
-
-  /**
-   * Preferred position of the menu relative to trigger when auto position is used
-   * @values auto, top, bottom, left, right, top-start, top-end, bottom-start, bottom-end, left-start, left-end, right-start, right-end
-   * @default 'bottom-start'
-   */
-  preferPosition?: MazPopoverProps['preferPosition']
   /**
    * Controls whether the dropdown menu closes when a menu item is clicked
    * @type {boolean}
