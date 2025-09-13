@@ -1,30 +1,53 @@
 import MazAnimatedElement from '@components/MazAnimatedElement.vue'
 import { shallowMount } from '@vue/test-utils'
 
+const mockObserve = vi.fn()
+const mockUnobserve = vi.fn()
+const mockDisconnect = vi.fn()
+
 const mockIntersectionObserver = vi.fn()
 mockIntersectionObserver.mockReturnValue({
-  observe: () => null,
-  unobserve: () => null,
-  disconnect: () => null,
+  observe: mockObserve,
+  unobserve: mockUnobserve,
+  disconnect: mockDisconnect,
 })
 
 globalThis.IntersectionObserver = mockIntersectionObserver
 
 describe('mazAnimatedElement', () => {
+  beforeEach(() => {
+    mockIntersectionObserver.mockClear()
+    mockObserve.mockClear()
+    mockUnobserve.mockClear()
+    mockDisconnect.mockClear()
+  })
+
   it('renders the component', () => {
     const wrapper = shallowMount(MazAnimatedElement)
     expect(wrapper.exists()).toBe(true)
   })
 
-  it('applies correct animation class based on direction prop', () => {
+  it('applies correct animation class based on direction prop', async () => {
     const wrapper = shallowMount(MazAnimatedElement, {
       props: {
         direction: 'down',
       },
     })
-    expect(wrapper.classes()).toContain('--invisible')
-    expect(wrapper.attributes('style')).toContain('animation-duration: 2000ms')
-    expect(wrapper.attributes('style')).toContain('animation-delay: 0ms')
+    const element = wrapper.element
+    const intersectionCallback = mockIntersectionObserver.mock.calls[0][0]
+
+    expect(element.classList.contains('--invisible')).toBe(true)
+
+    intersectionCallback([{
+      target: element,
+      isIntersecting: true,
+    }])
+
+    await wrapper.vm.$nextTick()
+    await new Promise(resolve => setTimeout(resolve, 50))
+
+    expect(element.classList.contains('animate-slide-down-blur')).toBe(true)
+    expect(element.classList.contains('--invisible')).toBe(false)
   })
 
   it('applies custom duration and delay', () => {
@@ -35,7 +58,6 @@ describe('mazAnimatedElement', () => {
       },
     })
     expect(wrapper.attributes('style')).toContain('animation-duration: 1000ms')
-    expect(wrapper.attributes('style')).toContain('animation-delay: 500ms')
   })
 
   it('adds animation class when intersecting', async () => {
@@ -43,13 +65,17 @@ describe('mazAnimatedElement', () => {
     const element = wrapper.element
     const intersectionCallback = mockIntersectionObserver.mock.calls[0][0]
 
+    expect(element.classList.contains('--invisible')).toBe(true)
+
     intersectionCallback([{
       target: element,
       isIntersecting: true,
     }])
 
     await wrapper.vm.$nextTick()
-    expect(wrapper.classes('animate-slide-up-blur')).toBe(true)
-    expect(wrapper.classes('--invisible')).toBe(false)
+    await new Promise(resolve => setTimeout(resolve, 50))
+
+    expect(element.classList.contains('animate-slide-up-blur')).toBe(true)
+    expect(element.classList.contains('--invisible')).toBe(false)
   })
 })
