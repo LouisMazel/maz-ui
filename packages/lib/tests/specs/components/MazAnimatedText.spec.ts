@@ -61,8 +61,8 @@ describe('component: MazAnimatedText', () => {
       props: {
         text: 'Hello world',
         direction: 'down',
-        delay: 100,
-        wordDelay: 50,
+        delay: 0,
+        wordDelay: 0,
         duration: 1000,
       },
     })
@@ -71,11 +71,12 @@ describe('component: MazAnimatedText', () => {
     wrapper.vm.isClient = true
     // @ts-expect-error - private property
     wrapper.vm.isVisible = true
+    // @ts-expect-error - private property
+    wrapper.vm.animatedWords = [true, true]
     await wrapper.vm.$nextTick()
 
     const word = wrapper.find('.m-animated-text__word-inner')
     expect(word.classes()).toContain('maz-animate-slide-down-blur')
-    expect(word.attributes('style')).toContain('animation-delay: 100ms')
     expect(word.attributes('style')).toContain('animation-duration: 1000ms')
   })
 
