@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { Placement } from '@floating-ui/vue'
 import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
 
@@ -76,9 +75,9 @@ const emits = defineEmits<{
   'toggle': [value: boolean]
 }>()
 
-export type MazPopoverPosition = Placement | 'auto'
-export type MazPopoverPreferPosition = Placement
-export type MazPopoverFallbackPosition = Placement
+export type MazPopoverPosition = 'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end' | 'auto'
+export type MazPopoverPreferPosition = 'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'
+export type MazPopoverFallbackPosition = 'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'
 export type MazPopoverTrigger = 'click' | 'hover' | 'manual' | 'adaptive'
 export type MazPopoverRole = 'dialog' | 'tooltip' | 'menu'
 
