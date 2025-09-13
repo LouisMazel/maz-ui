@@ -238,7 +238,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
   }
 
   &__item {
-    @apply maz-absolute maz-top-0 maz-m-0 maz-h-1/2 maz-w-full maz-overflow-hidden maz-border-l-2 maz-p-0;
+    @apply maz-absolute maz-top-0 maz-m-0 maz-h-1/2 maz-w-full maz-overflow-hidden maz-border-s-2 maz-p-0;
 
     border-color: var(--gallery-separator-color);
 

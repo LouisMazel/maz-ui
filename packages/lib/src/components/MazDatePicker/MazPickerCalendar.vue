@@ -127,7 +127,7 @@ const calendarDate = computed({
       width: 34rem;
 
       & .maz-picker-calendar__months > :first-child {
-        @apply maz-border-r maz-border-divider;
+        @apply maz-border-e maz-border-divider;
       }
     }
   }

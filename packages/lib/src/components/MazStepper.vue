@@ -380,7 +380,7 @@ function isLastStep(step: number): boolean {
   }
 
   &__content {
-    @apply maz-ml-[1.95rem] maz-border-l-2 maz-border-transparent maz-py-2 maz-pl-8;
+    @apply maz-ms-[1.95rem] maz-border-s-2 maz-border-transparent maz-py-2 maz-ps-8;
 
     &__wrapper {
       @apply maz-py-2;

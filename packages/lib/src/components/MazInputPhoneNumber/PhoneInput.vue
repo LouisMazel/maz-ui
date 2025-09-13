@@ -139,7 +139,7 @@ defineExpose({
   @apply maz-hidden;
 
   &.--responsive .m-phone-input {
-    @apply -maz-mt-[var(--maz-border-width)] maz-flex-none mob-m:-maz-ml-[var(--maz-border-width)] mob-m:maz-mt-0 mob-m:maz-flex-auto;
+    @apply -maz-mt-[var(--maz-border-width)] maz-flex-none mob-m:-maz-ms-[var(--maz-border-width)] mob-m:maz-mt-0 mob-m:maz-flex-auto;
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {
@@ -149,7 +149,7 @@ defineExpose({
   }
 
   &.--row .m-phone-input {
-    @apply -maz-ml-[var(--maz-border-width)] maz-flex-auto;
+    @apply -maz-ms-[var(--maz-border-width)] maz-flex-auto;
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {
@@ -159,7 +159,7 @@ defineExpose({
   }
 
   &.--col .m-phone-input {
-    @apply -maz-mt-[var(--maz-border-width)] maz-ml-0 maz-flex-none;
+    @apply -maz-mt-[var(--maz-border-width)] maz-ms-0 maz-flex-none;
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {

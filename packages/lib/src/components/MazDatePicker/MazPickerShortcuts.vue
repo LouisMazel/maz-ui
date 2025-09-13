@@ -65,7 +65,7 @@ watch(
 
 <style lang="postcss" scoped>
 .maz-picker-shortcuts {
-  @apply maz-flex maz-flex-col maz-items-start maz-gap-1 maz-overflow-y-auto maz-border-r maz-border-divider maz-p-2;
+  @apply maz-flex maz-flex-col maz-items-start maz-gap-1 maz-overflow-y-auto maz-border-e maz-border-divider maz-p-2;
 
   &::-webkit-scrollbar {
     display: none;

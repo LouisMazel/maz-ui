@@ -177,7 +177,7 @@ function toggleCollapse() {
       <MazBtn
         v-if="collapsible"
         color="transparent"
-        class="maz-ml-2 maz-text-sm"
+        class="maz-ms-2 maz-text-sm"
         size="xs"
         @click.stop="toggleCollapse"
       >
@@ -349,7 +349,7 @@ function toggleCollapse() {
     @apply maz-absolute maz-left-0 maz-top-0 maz-z-2;
 
     & > *:not(:last-child) {
-      @apply maz-mr-2;
+      @apply maz-me-2;
     }
   }
 }
