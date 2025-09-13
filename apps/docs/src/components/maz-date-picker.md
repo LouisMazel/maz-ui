@@ -34,6 +34,7 @@ The simplest way to use MazDatePicker:
     v-model="basicDate"
     label="Select a date"
     placeholder="Choose your date"
+    format="YYYY-MM-DD"
   />
 
 <template #code>
@@ -44,6 +45,7 @@ The simplest way to use MazDatePicker:
     v-model="date"
     label="Select a date"
     placeholder="Choose your date"
+    format="YYYY-MM-DD"
   />
 </template>
 
