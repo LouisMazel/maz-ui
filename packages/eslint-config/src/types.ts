@@ -6,7 +6,7 @@ export type MazESLintUserConfig = TypedFlatConfigItem | TypedFlatConfigItem[] | 
 export interface MazESLintOptions extends OptionsConfig {
   /**
    * Enable Tailwind CSS support
-   * @default true
+   * @default false
    */
   tailwindcss?: boolean
 
