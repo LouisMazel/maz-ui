@@ -51,7 +51,6 @@
     "colorette": "^2.0.20"
   },
   "devDependencies": {
-    "typescript": "^5.9.2",
     "unbuild": "^3.6.1"
   },
   "lint-staged": {

@@ -29,7 +29,6 @@
     "npm-run-all2": "^8.0.4",
     "oxlint": "^1.15.0",
     "rollup-plugin-visualizer": "^6.0.3",
-    "typescript": "~5.9.2",
     "vite": "^7.1.5",
     "vite-plugin-vue-devtools": "^8.0.2",
     "vue-tsc": "^3.0.7"

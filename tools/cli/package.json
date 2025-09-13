@@ -39,8 +39,7 @@
   "devDependencies": {
     "@types/clear": "^0.1.4",
     "@types/figlet": "^1.7.0",
-    "tsx": "^4.20.5",
-    "typescript": "~5.9.2"
+    "tsx": "^4.20.5"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
