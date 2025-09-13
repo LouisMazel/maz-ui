@@ -123,10 +123,14 @@ export function useFormField<
 
       if (elementToBind instanceof HTMLElement) {
         handleInteractiveElements(elementToBind)
+        return
       }
-      else {
-        console.warn(`[maz-ui](useFormField) No element found for ref in field '${String(name)}'. Make sure the ref is properly bound to an HTMLElement or Vue component (form identifier: ${String(formOptions.identifier)})`)
+      else if (elementToBind instanceof Text && elementToBind.nextElementSibling instanceof HTMLElement) {
+        handleInteractiveElements(elementToBind.nextElementSibling)
+        return
       }
+
+      console.warn(`[maz-ui](useFormField) No element found for ref in field '${String(name)}'. Make sure the ref is properly bound to an HTMLElement or Vue component (form identifier: ${String(formOptions.identifier)})`)
     })
 
     onUnmounted(() => {

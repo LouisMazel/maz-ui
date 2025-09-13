@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { sleep } from 'maz-ui'
+import { string } from 'valibot'
 
 const toast = useToast()
 const wait = useWait()
@@ -29,7 +30,25 @@ onMounted(async () => {
   wait.stop('APP_LOADING')
 })
 
-const selected = ref('1')
+const { model } = useFormValidator({
+  schema: {
+    name: string(),
+    select: string(),
+  },
+  options: {
+    mode: 'progressive',
+  },
+})
+
+const select = useTemplateRef('select')
+const input = useTemplateRef('input')
+
+useFormField('name', {
+  ref: input,
+})
+useFormField('select', {
+  ref: select,
+})
 </script>
 
 <template>
@@ -41,9 +60,18 @@ const selected = ref('1')
         Coucou
       </MazBtn>
 
+      <MazInput
+        ref="input"
+        v-model="model.name"
+        label="Name"
+      />
+
       <MazSelect
-        v-model="selected"
+        ref="select"
+        v-model="model.select"
         :options="['1', '2', '3']"
+        placeholder="Select"
+        color="secondary"
         search
       />
 
