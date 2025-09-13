@@ -513,7 +513,7 @@ async function scrollToOptionIndex(index?: number) {
   if (item && optionListWrapperRef.value) {
     const wrapperRect = optionListWrapperRef.value.getBoundingClientRect()
     const itemRect = item.getBoundingClientRect()
-    const scrollTop = item.offsetTop - wrapperRect.height / 2 + itemRect.height / 2
+    const scrollTop = item.offsetTop - wrapperRect.height / 2 - itemRect.height
 
     optionListWrapperRef.value.scrollTo?.({
       top: scrollTop,
@@ -728,22 +728,24 @@ defineExpose({
           '--selected-text-color': selectedTextColor,
         }]"
       >
-        <MazInput
-          v-if="search"
-          ref="searchInput"
-          v-model="searchQuery"
-          size="sm"
-          :disabled
-          :color
-          :placeholder="messages.searchPlaceholder"
-          name="search"
-          inputmode="search"
-          autocomplete="off"
-          block
-          class="m-select-list__search-input maz-flex-none"
-          :left-icon="MazMagnifyingGlass"
-          @update:model-value="updateListPosition"
-        />
+        <div class="m-select-list__search-wrapper">
+          <MazInput
+            v-if="search"
+            ref="searchInput"
+            v-model="searchQuery"
+            size="sm"
+            :disabled
+            :color
+            :placeholder="messages.searchPlaceholder"
+            name="search"
+            inputmode="search"
+            autocomplete="off"
+            block
+            class="m-select-list__search-input maz-flex-none"
+            :left-icon="MazMagnifyingGlass"
+            @update:model-value="updateListPosition"
+          />
+        </div>
         <!--
             @slot No results slot - Displayed when no results corresponding with search query
           -->
@@ -910,8 +912,12 @@ defineExpose({
 
   min-width: 3.5rem;
 
+  &__search-wrapper {
+    @apply maz-px-2 maz-pt-2;
+  }
+
   &__scroll-wrapper {
-    @apply maz-flex maz-flex-1 maz-flex-col maz-gap-1 maz-overflow-auto maz-p-2;
+    @apply maz-flex maz-flex-1 maz-flex-col maz-gap-1 maz-overflow-auto maz-px-2 maz-pe-2;
 
     /* Custom scrollbar for webkit browsers (Chrome, Safari, Edge) */
     &::-webkit-scrollbar {
