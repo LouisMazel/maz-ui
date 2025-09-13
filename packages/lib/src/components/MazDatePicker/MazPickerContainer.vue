@@ -113,6 +113,7 @@ const currentCalendarDate = computed({
         :double
         :min-date
         :max-date
+        :inline
         :first-day-of-week
         :disabled
         :disabled-weekly

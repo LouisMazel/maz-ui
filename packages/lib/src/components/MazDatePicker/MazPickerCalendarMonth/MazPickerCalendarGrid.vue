@@ -21,6 +21,7 @@ const props = defineProps({
   firstDayOfWeek: { type: Number, required: true },
   color: { type: String as PropType<MazColor>, required: true },
   minDate: { type: String, default: undefined },
+  inline: { type: Boolean, required: true },
   maxDate: { type: String, default: undefined },
   disabledWeekly: { type: Array as PropType<number[]>, required: true },
   disabledDates: { type: Array as PropType<string[]>, required: true },
@@ -288,6 +289,7 @@ watch(
           size="mini"
           :color="getDayButtonColor(date)"
           type="button"
+          :block="inline"
           :disabled="
             disabled
               || isSmallerMinDate(date)
