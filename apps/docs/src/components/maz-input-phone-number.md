@@ -485,7 +485,7 @@ Replace the default flag emojis with your own design.
           </span>
         </template>
         <template #country-list-flag="{ countryCode }">
-          <MazBadge size="sm" class="maz-mr-2 maz-min-w-[2.5rem]">
+          <MazBadge size="sm" class="maz-me-2 maz-min-w-[2.5rem]">
             {{ countryCode }}
           </MazBadge>
         </template>
@@ -504,7 +504,7 @@ Replace the default flag emojis with your own design.
           </div>
         </template>
         <template #country-list-flag="{ countryCode }">
-          <div class="maz-w-6 maz-h-6 maz-bg-gradient-to-r maz-from-purple-500 maz-to-pink-500 maz-rounded maz-flex maz-items-center maz-justify-center maz-text-white maz-text-xs maz-font-bold maz-mr-2">
+          <div class="maz-w-6 maz-h-6 maz-bg-gradient-to-r maz-from-purple-500 maz-to-pink-500 maz-rounded maz-flex maz-items-center maz-justify-center maz-text-white maz-text-xs maz-font-bold maz-me-2">
             {{ countryCode?.charAt(0) }}
           </div>
         </template>
@@ -524,7 +524,7 @@ Replace the default flag emojis with your own design.
       </span>
     </template>
     <template #country-list-flag="{ countryCode }">
-      <MazBadge size="sm" class="maz-mr-2">
+      <MazBadge size="sm" class="maz-me-2">
         {{ countryCode }}
       </MazBadge>
     </template>
@@ -556,7 +556,7 @@ Replace the default flag emojis with your own design.
 }
 
 .custom-list-icon {
-  @apply maz-mr-2;
+  @apply maz-me-2;
 }
 </style>
 ```

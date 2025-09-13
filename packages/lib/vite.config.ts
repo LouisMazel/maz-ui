@@ -72,7 +72,7 @@ export default defineConfig(({ mode }) => {
       }),
     ],
     esbuild: {
-      drop: ['debugger'],
+      drop: isDev ? [] : ['debugger'],
       pure: isDev ? [] : ['console.log', 'console.debug'],
       legalComments: 'none',
       target: 'es2022',

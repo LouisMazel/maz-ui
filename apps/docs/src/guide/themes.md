@@ -352,7 +352,7 @@ app.use(MazUi, {
   <MazBtn @click="applyCustomTheme" color="info">
     Apply Custom Theme
   </MazBtn>
-  <MazBtn @click="resetTheme" color="secondary" class="maz-ml-2">
+  <MazBtn @click="resetTheme" color="secondary" class="maz-ms-2">
     Reset
   </MazBtn>
 
