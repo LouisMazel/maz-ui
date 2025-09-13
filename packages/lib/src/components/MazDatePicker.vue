@@ -8,9 +8,7 @@ import type { MazColor } from './types'
 import { MazCalendar, MazChevronDown, MazClock } from '@maz-ui/icons'
 import { useTranslations } from '@maz-ui/translations'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
-
 import dayjs from 'dayjs'
-
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import isBetween from 'dayjs/plugin/isBetween'
 import {
@@ -21,7 +19,9 @@ import {
   useTemplateRef,
   watch,
 } from 'vue'
+
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import MazPickerContainer from './MazDatePicker/MazPickerContainer.vue'
 import {
   checkValueWithMinMaxDates,
   getDefaultsShortcuts,
@@ -33,6 +33,7 @@ import {
   isValueDisabledDate,
   isValueDisabledWeekly,
 } from './MazDatePicker/utils'
+import MazPopover from './MazPopover.vue'
 
 defineOptions({
   inheritAttrs: false,
@@ -354,8 +355,6 @@ export interface MazDatePickerProps {
 }
 
 const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
-const MazPopover = defineAsyncComponent(() => import('./MazPopover.vue'))
-const MazPickerContainer = defineAsyncComponent(() => import('./MazDatePicker/MazPickerContainer.vue'))
 
 const instanceId = useInstanceUniqId({ componentName: 'MazDatePicker', providedId: props.id })
 
@@ -599,7 +598,6 @@ function emitValue(value: MazDatePickerValue) {
     emits('update:model-value', getISODate(value, props.format))
   }
 }
-
 // model value watcher
 watch(
   () => [currentValue.value, props.minDate, props.maxDate],
@@ -683,8 +681,8 @@ watch(
     :disabled
     :block
     :position="pickerPosition"
-    prefer-position="bottom-start"
-    fallback-position="top-start"
+    :prefer-position="pickerPreferPosition"
+    :fallback-position="pickerFallbackPosition"
     :position-reference="`#${instanceId}-popover .m-input-wrapper`"
   >
     <template #trigger="{ isOpen, close, open: openPicker, toggle: togglePicker }">

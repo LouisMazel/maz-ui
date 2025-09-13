@@ -9,6 +9,7 @@ const props = defineProps<{
   calendarDate: string
   color: MazColor
   locale: string
+  inline: boolean
   firstDayOfWeek: number
   double: boolean
   minDate: string | undefined
@@ -99,6 +100,7 @@ const calendarDate = computed({
           :calendar-date="calendarDate"
           :locale="locale"
           :has-time="hasTime"
+          :inline
           :color="color"
           :offset-month="month"
           :first-day-of-week="firstDayOfWeek"
