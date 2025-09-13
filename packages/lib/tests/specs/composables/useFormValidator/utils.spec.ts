@@ -60,7 +60,7 @@ describe('given getFieldState function', () => {
         name: pipe(string(), minLength(3)),
       }
 
-      const state = getFieldState({ name: 'name', schema, initialValue: 'John', fieldState: {} as FieldState<{ name: string }> })
+      const state = getFieldState({ name: 'name', schema, initialValue: 'John', fieldState: {} as FieldState<{ name: string }, 'name', string> })
 
       expect(state).toEqual({
         blurred: false,
@@ -79,7 +79,7 @@ describe('given getFieldState function', () => {
 
   describe('when called for a field without validation', () => {
     it('then it returns the correct field state', () => {
-      const state = getFieldState({ name: 'name', initialValue: 'John', fieldState: {} as FieldState<{ name: string }> })
+      const state = getFieldState({ name: 'name', initialValue: 'John', fieldState: {} as FieldState<{ name: string }, 'name', string> })
 
       expect(state).toEqual({
         blurred: false,
@@ -102,12 +102,12 @@ describe('given getFieldsStates function', () => {
       const schema = {
         name: { type: 'string' },
         age: { type: 'number' },
-      } as unknown as Record<string, Validation>
+      } as unknown as FormSchema<{ name: string, age: number }>
 
       const states = getFieldsStates({
         schema,
         payload: {},
-        options: { mode: 'lazy' } as StrictOptions,
+        options: { mode: 'lazy' } as StrictOptions<{ name: string, age: number }, 'name' | 'age'>,
       })
 
       expect(states).toEqual({
@@ -150,7 +150,7 @@ describe('given getFieldsErrors function', () => {
         age: {
           errors: [],
         },
-      } as unknown as FieldsStates
+      } as unknown as FieldsStates<{ name: string, age: number }, 'name' | 'age'>
 
       const errors = getFieldsErrors(fieldsStates)
 
@@ -336,7 +336,7 @@ describe('given updateFieldsStates function', () => {
       validateFunction: vi.fn(),
       mode: 'eager',
     },
-  } as FieldsStates<{ name: string, age: number }>
+  } as FieldsStates<{ name: string, age: number }, 'name' | 'age'>
   const freezeStates = { ...fieldsStates }
 
   it('merges existing field state with new field state', () => {
@@ -378,7 +378,7 @@ describe('given updateFieldState function', () => {
     initialValue: 'John',
     validateFunction: vi.fn(),
     mode: 'eager',
-  } as unknown as FieldState<{ name: string }>
+  } as unknown as FieldState<{ name: string }, 'name', string>
 
   it('merges existing field state with new field state', () => {
     const result = updateFieldState({
@@ -416,7 +416,7 @@ describe('given getFieldValidationResult function', () => {
 })
 
 describe('given canExecuteValidation function', () => {
-  const fieldState = { dirty: false, blurred: false, mode: 'eager', valid: false } as FieldState<{ name: string }>
+  const fieldState = { dirty: false, blurred: false, mode: 'eager', valid: false } as FieldState<{ name: string }, 'name', string>
 
   it('returns true when form is submitted', () => {
     expect(canExecuteValidation({ eventName: 'input', fieldState, isSubmitted: true })).toBe(true)
@@ -444,7 +444,7 @@ describe('given handleFieldBlur function', () => {
     mode: 'eager',
     valid: false,
     initialValue: '',
-  } as unknown as FieldState<{ name: string }>
+  } as unknown as FieldState<{ name: string }, 'name', string>
 
   it('updates field state and validates on blur', () => {
     const payload = { name: 'John' }
@@ -466,7 +466,7 @@ describe('given handleFieldInput function', () => {
     valid: true,
     initialValue: '',
     validateFunction: vi.fn(),
-  } as unknown as FieldState<{ name: string }>
+  } as unknown as FieldState<{ name: string }, 'name', string>
 
   it('updates field state and validates on input', () => {
     const payload = { name: 'John' }
@@ -480,7 +480,7 @@ describe('given getErrorMessages function', () => {
   const fieldsStates = {
     name: { error: true },
     age: { error: false },
-  } as unknown as FieldsStates<{ name: string, age: number }>
+  } as unknown as FieldsStates<{ name: string, age: number }, 'name' | 'age'>
 
   const errors = {
     name: [{ message: 'Name is required' }],
@@ -502,7 +502,7 @@ describe('given getValidationEvents function', () => {
   it('returns undefined when ref is provided', () => {
     const result = getValidationEvents({
       hasRef: true,
-      fieldState: { mode: 'eager' } as FieldState<{ name: string }>,
+      fieldState: { mode: 'eager' } as unknown as FieldState<{ name: string }, 'name', string>,
       onBlur,
     })
     expect(result).toBeUndefined()
@@ -510,13 +510,13 @@ describe('given getValidationEvents function', () => {
 
   it('returns undefined for aggressive or lazy mode', () => {
     const result = getValidationEvents({
-      fieldState: { mode: 'aggressive' } as FieldState<{ name: string }>,
+      fieldState: { mode: 'aggressive' } as FieldState<{ name: string }, 'name', string>,
       onBlur,
     })
     expect(result).toBeUndefined()
 
     const result2 = getValidationEvents({
-      fieldState: { mode: 'lazy' } as FieldState<{ name: string }>,
+      fieldState: { mode: 'lazy' } as FieldState<{ name: string }, 'name', string>,
       onBlur,
     })
     expect(result2).toBeUndefined()
@@ -524,13 +524,13 @@ describe('given getValidationEvents function', () => {
 
   it('returns all events for other modes', () => {
     const result = getValidationEvents({
-      fieldState: { mode: 'blur' } as FieldState<{ name: string }>,
+      fieldState: { mode: 'blur' } as FieldState<{ name: string }, 'name', string>,
       onBlur,
     })
     expect(result).toEqual({ onBlur })
 
     const result3 = getValidationEvents({
-      fieldState: { mode: 'eager' } as FieldState<{ name: string }>,
+      fieldState: { mode: 'eager' } as FieldState<{ name: string }, 'name', string>,
       onBlur,
     })
     expect(result3).toEqual({ onBlur })

@@ -155,7 +155,7 @@ function formatColorName(colorName: string): string {
   <div class="vp-raw theme-configurator">
     <div class="maz-grid maz-min-h-[80vh] maz-grid-cols-1 maz-gap-4 lg:maz-grid-cols-12">
       <!-- Editor Panel -->
-      <div class="maz-space-y-6 lg:maz-col-span-4 lg:maz-border-r lg:maz-pr-4">
+      <div class="maz-space-y-6 lg:maz-col-span-4 lg:maz-border-e lg:maz-pr-4">
         <h2 class="maz-text-2xl maz-text-foreground">
           Editor
         </h2>

@@ -55,7 +55,7 @@ You can use the `label` and `append` slots to customize the label and the append
   >
     <template #label>
       <MazIcon name="envelope" class="maz-text-xl" />
-      <span class="maz-ml-2">
+      <span class="maz-ms-2">
         The custom label
       </span>
     </template>
@@ -90,7 +90,7 @@ function sendMessage() {
   >
     <template #label>
       <MazIcon name="envelope" class="maz-text-xl" />
-      <span class="maz-ml-2">
+      <span class="maz-ms-2">
         The custom label
       </span>
     </template>

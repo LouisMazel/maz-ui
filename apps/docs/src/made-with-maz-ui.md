@@ -23,7 +23,7 @@ Propose your website by opening an [issue](https://github.com/LouisMazel/maz-ui/
       {{ description }}
     </h5>
     <template #footer>
-      <MazBtn v-if="github" color="black" :href="github" target="_blank" left-icon="github" class="maz-mr-4">
+      <MazBtn v-if="github" color="black" :href="github" target="_blank" left-icon="github" class="maz-me-4">
         Github
       </MazBtn>
       <MazBtn :href="link" target="_blank" left-icon="arrow-top-right-on-square">

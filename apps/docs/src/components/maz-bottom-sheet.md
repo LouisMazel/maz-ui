@@ -35,11 +35,11 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
         </div>
         <div class="maz-flex maz-gap-2">
           <MazBtn color="primary" @click="openProductOptions">
-            <MazIcon name="cog" class="maz-mr-2" />
+            <MazIcon name="cog" class="maz-me-2" />
             Customize Options
           </MazBtn>
           <MazBtn color="secondary" @click="openUserSettings">
-            <MazIcon name="user" class="maz-mr-2" />
+            <MazIcon name="user" class="maz-me-2" />
             Profile Settings
           </MazBtn>
         </div>
@@ -105,7 +105,7 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
       </div>
       <div class="maz-flex maz-gap-3 maz-pt-4">
         <MazBtn color="primary" class="maz-flex-1" @click="addToCart">
-          <MazIcon name="shopping-cart" class="maz-mr-2" />
+          <MazIcon name="shopping-cart" class="maz-me-2" />
           Add to Cart (${{ (129.99 * quantity).toFixed(2) }})
         </MazBtn>
         <MazBtn color="secondary" @click="isProductOpen = false">
@@ -162,7 +162,7 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
       </div>
       <div class="maz-flex maz-gap-3 maz-pt-4">
         <MazBtn color="primary" class="maz-flex-1" @click="saveSettings">
-          <MazIcon name="check" class="maz-mr-2" />
+          <MazIcon name="check" class="maz-me-2" />
           Save Changes
         </MazBtn>
         <MazBtn color="secondary" @click="isUserOpen = false">
@@ -319,7 +319,7 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
       </div>
       <div class="maz-flex maz-gap-3 maz-pt-4">
         <MazBtn color="primary" class="maz-flex-1" @click="saveSettings">
-          <MazIcon name="check" class="maz-mr-2" />
+          <MazIcon name="check" class="maz-me-2" />
           Save Changes
         </MazBtn>
         <MazBtn color="secondary" @click="isUserOpen = false">

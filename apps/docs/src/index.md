@@ -67,7 +67,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         <template #left-icon>
           <MazGithub class="maz-text-3xl" />
         </template>
-        <MazAnimatedCounter :delay="1250" :count="starCount" class="maz-text-xl maz-pl-2" />
+        <MazAnimatedCounter :delay="1250" :count="starCount" class="maz-text-xl maz-ps-2" />
         <template #right-icon>
           <MazStar class="maz-text-2xl" />
         </template>
