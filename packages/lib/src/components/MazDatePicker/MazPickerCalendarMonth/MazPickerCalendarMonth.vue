@@ -18,6 +18,7 @@ const props = defineProps({
   locale: { type: String, required: true },
   hasTime: { type: Boolean, required: true },
   firstDayOfWeek: { type: Number, required: true },
+  inline: { type: Boolean, required: true },
   calendarDate: { type: String, required: true },
   offsetMonth: { type: Number, default: 0 },
   minDate: { type: String, default: undefined },
@@ -65,6 +66,7 @@ const calendarDateWithOffset = computed({
       :locale="locale"
       :color="color"
       :has-time="hasTime"
+      :inline
       :calendar-date="calendarDateWithOffset"
       :first-day-of-week="firstDayOfWeek"
       :min-date="minDate"
