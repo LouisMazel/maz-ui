@@ -98,13 +98,10 @@ const tableHeaders = [
         v-model="dateRange"
         range
         label="Date Range"
-        class="maz-w-64"
-        locale="en-US"
+        class="maz-w-72"
         picker-position="bottom-end"
-        :input-date-style="{
-          dateStyle: 'medium',
-        }"
         double
+        locale="en-US"
       />
     </div>
 

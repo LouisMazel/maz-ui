@@ -33,71 +33,74 @@ const entries = Object.fromEntries(
     .map(getEntries),
 )
 
-export default defineConfig({
-  plugins: [
-    vue(),
-    dts({
-      tsconfigPath: resolver('./tsconfig.json'),
-      entryRoot: resolver('src'),
-      outDir: resolver('dist/types'),
-      include: ['src/**/*.ts'],
-      exclude: testPaths,
-    }),
-  ],
+export default defineConfig(({ mode }) => {
+  const isProduction = mode === 'production'
+  return {
+    plugins: [
+      vue(),
+      dts({
+        tsconfigPath: resolver('./tsconfig.json'),
+        entryRoot: resolver('src'),
+        outDir: resolver('dist/types'),
+        include: ['src/**/*.ts'],
+        exclude: testPaths,
+      }),
+    ],
 
-  resolve: {
-    conditions: ['node'],
-  },
-
-  define: {
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
-  },
-
-  esbuild: {
-    drop: ['debugger'],
-    pure: ['console.log', 'console.debug'],
-    legalComments: 'none',
-    target: 'node22',
-    minifyIdentifiers: false,
-    minifySyntax: true,
-    minifyWhitespace: true,
-    treeShaking: true,
-    platform: 'node',
-  },
-  build: {
-    emptyOutDir: true,
-    sourcemap: false,
-    cssMinify: 'lightningcss',
-    minify: 'esbuild',
-    target: 'node22',
-    lib: {
-      entry: {
-        ...entries,
-        'index': 'src/index.ts',
-        'helpers/index': 'src/helpers/index.ts',
-      },
-      formats: ['es'],
-      fileName: (_, name) => `${name}.js`,
+    resolve: {
+      conditions: ['node'],
     },
-    rollupOptions: {
-      external,
-      treeshake: {
-        moduleSideEffects: false,
-        preset: 'smallest',
-        propertyReadSideEffects: false,
-        unknownGlobalSideEffects: false,
+
+    define: {
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
+    },
+
+    esbuild: {
+      drop: isProduction ? ['debugger'] : [],
+      pure: isProduction ? ['console.log', 'console.debug'] : [],
+      legalComments: 'none',
+      target: 'node22',
+      minifyIdentifiers: false,
+      minifySyntax: true,
+      minifyWhitespace: true,
+      treeShaking: true,
+      platform: 'node',
+    },
+    build: {
+      emptyOutDir: true,
+      sourcemap: isProduction ? false : 'inline',
+      cssMinify: 'lightningcss',
+      minify: 'esbuild',
+      target: 'node22',
+      lib: {
+        entry: {
+          ...entries,
+          'index': 'src/index.ts',
+          'helpers/index': 'src/helpers/index.ts',
+        },
+        formats: ['es'],
+        fileName: (_, name) => `${name}.js`,
       },
-      output: {
-        format: 'es',
-        compact: true,
-        chunkFileNames: 'chunks/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash][extname]',
-        exports: 'named',
-        minifyInternalExports: true,
-        preserveModules: false,
-        interop: 'auto',
-        generatedCode: 'es2015',
+      rollupOptions: {
+        external,
+        treeshake: {
+          moduleSideEffects: false,
+          preset: 'smallest',
+          propertyReadSideEffects: false,
+          unknownGlobalSideEffects: false,
+        },
+        output: {
+          format: 'es',
+          compact: true,
+          chunkFileNames: 'chunks/[name].[hash].js',
+          assetFileNames: 'assets/[name].[hash][extname]',
+          exports: 'named',
+          minifyInternalExports: true,
+          preserveModules: false,
+          interop: 'auto',
+          generatedCode: 'es2015',
+        },
       },
     },
-  },
+  }
 })
