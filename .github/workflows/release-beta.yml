@@ -2,11 +2,6 @@ name: Release Beta
 
 on:
   workflow_dispatch:
-    inputs:
-      pr_number:
-        description: Pull Request number to create beta release for
-        required: true
-        type: string
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
