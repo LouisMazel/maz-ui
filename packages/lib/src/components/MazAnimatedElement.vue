@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 export interface MazAnimatedElementProps {
   /**
@@ -30,21 +30,42 @@ const { direction = 'up', delay = 0, duration = 2000, once = true } = defineProp
 const animatedClass = computed(() => `animate-slide-${direction}-blur`)
 
 const element = ref<HTMLDivElement>()
+const isAnimated = ref(false)
 
 let observer: IntersectionObserver | null = null
+let animationFrameId: number | null = null
+
+function triggerAnimation() {
+  animationFrameId = requestAnimationFrame(() => {
+    if (element.value) {
+      element.value.classList.remove('--invisible')
+      element.value.classList.add(animatedClass.value)
+      isAnimated.value = true
+    }
+  })
+}
+
+function resetAnimation() {
+  if (element.value) {
+    element.value.classList.add('--invisible')
+    element.value.classList.remove(animatedClass.value)
+    isAnimated.value = false
+  }
+}
 
 onMounted(() => {
   observer = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.remove('--invisible')
-      entry.target.classList.add(animatedClass.value)
+    if (entry.isIntersecting && !isAnimated.value) {
+      nextTick(() => {
+        setTimeout(triggerAnimation, delay)
+      })
+
       if (once === true) {
         observer?.unobserve(entry.target)
       }
     }
-    else if (once === false) {
-      entry.target.classList.add('--invisible')
-      entry.target.classList.remove(animatedClass.value)
+    else if (once === false && !entry.isIntersecting) {
+      resetAnimation()
     }
   })
 
@@ -53,7 +74,12 @@ onMounted(() => {
   }
 })
 
-onBeforeUnmount(() => observer?.disconnect())
+onBeforeUnmount(() => {
+  observer?.disconnect()
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId)
+  }
+})
 </script>
 
 <template>
@@ -61,7 +87,6 @@ onBeforeUnmount(() => observer?.disconnect())
     ref="element"
     class="m-animated-element m-reset-css --invisible" :style="{
       animationDuration: `${duration}ms`,
-      animationDelay: `${delay}ms`,
     }"
   >
     <slot />
@@ -70,6 +95,9 @@ onBeforeUnmount(() => observer?.disconnect())
 
 <style scoped lang="postcss">
 .m-animated-element {
+  will-change: transform, opacity, filter;
+  transform: translateZ(0);
+
   &.--invisible {
     @apply maz-invisible;
   }

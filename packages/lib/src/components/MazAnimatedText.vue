@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { checkAvailability } from '@maz-ui/utils/helpers/checkAvailability'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 export interface MazAnimatedTextProps {
   /**
@@ -79,21 +79,49 @@ const wordCount = computed(() => words.value.length)
 
 const isVisible = ref(false)
 const isClient = ref(false)
-
-const animatedClass = computed(() => isVisible.value ? `maz-animate-slide-${direction}-blur` : 'maz-invisible')
+const animatedWords = ref<boolean[]>([])
 
 const element = ref<HTMLDivElement>()
 
 let observer: IntersectionObserver | null = null
+let animationFrameId: NodeJS.Timeout | null = null
+
+function triggerWordAnimations() {
+  const totalWords = words.value.length + (lastWord ? 1 : 0)
+  animatedWords.value = Array.from({ length: totalWords }, () => false)
+
+  let currentIndex = 0
+
+  const animateNextWord = () => {
+    if (currentIndex < totalWords) {
+      requestAnimationFrame(() => {
+        animatedWords.value[currentIndex] = true
+        currentIndex++
+
+        if (currentIndex < totalWords) {
+          animationFrameId = setTimeout(animateNextWord, wordDelay)
+        }
+      })
+    }
+  }
+
+  setTimeout(animateNextWord, delay)
+}
 
 onMounted(() => {
   isClient.value = true
 
   observer = new IntersectionObserver(([entry]) => {
-    isVisible.value = entry.isIntersecting
+    if (entry.isIntersecting && !isVisible.value) {
+      isVisible.value = true
 
-    if (once && element.value) {
-      observer?.unobserve(element.value)
+      nextTick(() => {
+        triggerWordAnimations()
+      })
+
+      if (once && element.value) {
+        observer?.unobserve(element.value)
+      }
     }
   })
 
@@ -102,7 +130,12 @@ onMounted(() => {
   })
 })
 
-onBeforeUnmount(() => observer?.disconnect())
+onBeforeUnmount(() => {
+  observer?.disconnect()
+  if (animationFrameId) {
+    clearTimeout(animationFrameId)
+  }
+})
 </script>
 
 <template>
@@ -116,9 +149,8 @@ onBeforeUnmount(() => observer?.disconnect())
         >
           <span
             class="m-animated-text__word-inner"
-            :class="animatedClass"
+            :class="animatedWords[index] ? `maz-animate-slide-${direction}-blur` : 'maz-invisible'"
             :style="{
-              animationDelay: `${delay + (index * (wordDelay ?? 150))}ms`,
               animationDuration: `${duration}ms`,
             }"
           >
@@ -130,9 +162,8 @@ onBeforeUnmount(() => observer?.disconnect())
         <span
           v-if="lastWord"
           class="m-animated-text__last-word"
-          :class="animatedClass"
+          :class="animatedWords[wordCount] ? `maz-animate-slide-${direction}-blur` : 'maz-invisible'"
           :style="{
-            animationDelay: `${delay + (wordCount * (wordDelay ?? 150))}ms`,
             animationDuration: `${duration}ms`,
           }"
         >
@@ -168,10 +199,16 @@ onBeforeUnmount(() => observer?.disconnect())
 
   &__word-inner {
     @apply maz-inline-flex;
+
+    will-change: transform, opacity, filter;
+    transform: translateZ(0);
   }
 
   &__last-word {
     @apply maz-inline-flex;
+
+    will-change: transform, opacity, filter;
+    transform: translateZ(0);
   }
 
   &__last-word-inner {
