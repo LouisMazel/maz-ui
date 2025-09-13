@@ -73,7 +73,6 @@
     "prettier": "^3.5.3",
     "ts-node-maintained": "^10.9.5",
     "tsx": "^4.20.5",
-    "typescript": "^5.9.2",
     "unbuild": "^3.6.1",
     "vitest": "^3.2.4"
   },

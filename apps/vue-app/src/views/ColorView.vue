@@ -1,10 +1,3 @@
-<script lang="ts" setup>
-import { useTheme } from '@maz-ui/themes/composables/useTheme'
-import MazCheckbox from 'maz-ui/src/components/MazCheckbox.vue';
-
-const { colorMode } = useTheme()
-</script>
-
 <template>
   <div class="maz-flex maz-flex-col maz-gap-4 maz-padded-container">
     <ColorScale color="background" />
