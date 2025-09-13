@@ -828,7 +828,7 @@ defineExpose({
     }
 
     &__toggle-button {
-      @apply maz-flex maz-h-full maz-bg-transparent maz-pl-0 maz-flex-center;
+      @apply maz-flex maz-h-full maz-bg-transparent maz-ps-0 maz-flex-center;
     }
 
     &:deep(input) {
@@ -917,7 +917,7 @@ defineExpose({
   }
 
   &__scroll-wrapper {
-    @apply maz-flex maz-flex-1 maz-flex-col maz-gap-1 maz-overflow-auto maz-px-2 maz-pe-2;
+    @apply maz-flex maz-flex-1 maz-flex-col maz-gap-1 maz-overflow-auto maz-px-2 maz-py-2;
 
     /* Custom scrollbar for webkit browsers (Chrome, Safari, Edge) */
     &::-webkit-scrollbar {

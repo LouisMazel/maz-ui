@@ -151,7 +151,7 @@ function setScrollState(event: Event) {
 
   &__items {
     @apply maz-z-1 maz-flex maz-flex-1 maz-items-center maz-justify-start
-        maz-space-x-5 maz-overflow-y-hidden maz-py-4 maz-pl-3;
+        maz-space-x-5 maz-overflow-y-hidden maz-py-4 maz-ps-3;
 
     scroll-behavior: smooth;
 

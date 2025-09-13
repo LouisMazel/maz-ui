@@ -331,7 +331,7 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
   }
 
   &.--has-date {
-    @apply maz-border-l maz-border-divider;
+    @apply maz-border-s maz-border-divider;
   }
 
   &::before {
