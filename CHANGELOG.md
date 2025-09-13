@@ -1,5 +1,26 @@
 # Change Log
 
+## v4.1.7-beta.5...v4.1.7-beta.6
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.5...v4.1.7-beta.6)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSelect - search input padding and scroll to option behavior ([cdd1fdbb](https://github.com/LouisMazel/maz-ui/commit/cdd1fdbb))
+- **maz-ui:** MazDatePicker - popover won't open when MazDatePicker is lazy loaded ([8e29f870](https://github.com/LouisMazel/maz-ui/commit/8e29f870))
+
+### 💅 Refactors
+
+- **maz-ui:** MazAnimatedElement & MazAnimatedText - animation optimization with requestAnimationFrame ([719a4002](https://github.com/LouisMazel/maz-ui/commit/719a4002))
+- **maz-ui:** Accessibilty - support of rtl direction ([9bd1a3d9](https://github.com/LouisMazel/maz-ui/commit/9bd1a3d9))
+- **docs:** Accessibilty - support of rtl direction ([b7c04c49](https://github.com/LouisMazel/maz-ui/commit/b7c04c49))
+- **maz-ui:** MazDatePicker - show hour in input only if time picker is enabled ([a020562b](https://github.com/LouisMazel/maz-ui/commit/a020562b))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7-beta.4...v4.1.7-beta.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.4...v4.1.7-beta.5)

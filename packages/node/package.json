@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/node",
   "type": "module",
-  "version": "4.1.7-beta.5",
+  "version": "4.1.7-beta.6",
   "description": "Node utilities for Maz-UI library",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
