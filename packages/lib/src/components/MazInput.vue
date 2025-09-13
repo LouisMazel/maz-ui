@@ -588,7 +588,7 @@ const stateColor = computed(() => {
 
       &.--has-left-icon {
         .m-input-input {
-          @apply maz-pl-2;
+          @apply maz-ps-2;
         }
 
         .m-input-label {
@@ -598,7 +598,7 @@ const stateColor = computed(() => {
 
       &.--has-right-icon {
         .m-input-input {
-          @apply maz-pr-2;
+          @apply maz-pe-2;
         }
       }
 
@@ -658,11 +658,11 @@ const stateColor = computed(() => {
     }
 
     &-right {
-      @apply maz-pr-2;
+      @apply maz-pe-2;
     }
 
     &-left {
-      @apply maz-pl-2;
+      @apply maz-ps-2;
     }
 
     &.--rounded {

@@ -180,7 +180,7 @@ if (scrollable) {
   }
 
   &-header {
-    @apply maz-flex maz-items-baseline maz-justify-end maz-pl-6 maz-pr-2 maz-pt-2 maz-pb-4;
+    @apply maz-flex maz-items-baseline maz-justify-end maz-ps-6 maz-pe-2 maz-pt-2 maz-pb-4;
 
     &.--has-title {
       @apply maz-justify-between;

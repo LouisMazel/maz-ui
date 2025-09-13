@@ -415,7 +415,7 @@ onMounted(() => {
   }
 
   &__button {
-    @apply maz-relative maz-flex maz-w-full maz-items-center maz-gap-2 maz-self-center maz-rounded maz-pl-2 maz-pr-2 maz-shadow-md maz-transition maz-duration-300 maz-ease-in-out maz-overflow-hidden maz-border maz-backdrop-blur-xl;
+    @apply maz-relative maz-flex maz-w-full maz-items-center maz-gap-2 maz-self-center maz-rounded maz-ps-2 maz-pe-2 maz-shadow-md maz-transition maz-duration-300 maz-ease-in-out maz-overflow-hidden maz-border maz-backdrop-blur-xl;
   }
 
   &__close {
