@@ -41,7 +41,7 @@ defineOptions({
 const props = withDefaults(defineProps<MazDatePickerProps>(), {
   format: 'YYYY-MM-DD',
   open: false,
-  inputDateFormat: () => ({ dateStyle: 'medium', timeStyle: 'full' }),
+  inputDateFormat: () => ({ dateStyle: 'medium', timeStyle: 'short' }),
   hideHeader: false,
   disabled: false,
   firstDayOfWeek: 0,
@@ -153,7 +153,7 @@ export interface MazDatePickerProps {
   /**
    * The Intl.DateTimeFormatOptions for styling the input date display
    * @type {Intl.DateTimeFormatOptions}
-   * @default { dateStyle: 'medium', timeStyle: 'full' }
+   * @default { dateStyle: 'medium', timeStyle: 'short' }
    */
   inputDateFormat?: Intl.DateTimeFormatOptions
 
@@ -474,7 +474,7 @@ const isHour12 = computed(
 
 const formatterOptions = computed<DateTimeFormatOptions>(() => ({
   ...props.inputDateFormat,
-  timeStyle: props.inputDateFormat.timeStyle ?? hasTime.value ? 'short' : undefined,
+  timeStyle: hasTime.value ? props.inputDateFormat.timeStyle ?? 'short' : undefined,
   hour12: hasTime.value ? props.inputDateFormat.hour12 ?? isHour12.value : undefined,
 } satisfies DateTimeFormatOptions))
 
