@@ -48,13 +48,13 @@ const hours = computed(() => {
     const hourValue = dayjs(currentDate.value).set('hour', hour12or24)
 
     const isDisabled
-        = isDisableHour(hour12or24)
-          || (props.minDate && currentDate.value
-            ? dayjs(props.minDate).isAfter(hourValue, 'hour')
-            : false)
-          || (props.maxDate && currentDate.value
-            ? dayjs(props.maxDate).isBefore(hourValue, 'hour')
-            : false)
+      = isDisableHour(hour12or24)
+        || (props.minDate && currentDate.value
+          ? dayjs(props.minDate).isAfter(hourValue, 'hour')
+          : false)
+        || (props.maxDate && currentDate.value
+          ? dayjs(props.maxDate).isBefore(hourValue, 'hour')
+          : false)
 
     return {
       label: `${hourBase < 10 ? '0' : ''}${hourBase}`,
@@ -71,12 +71,12 @@ const minutes = computed(() => {
     const minuteValue = dayjs(currentDate.value).set('minute', minute)
 
     const isDisabled
-        = (props.minDate && currentDate.value
-          ? dayjs(props.minDate).isAfter(minuteValue, 'minute')
-          : false)
-        || (props.maxDate && currentDate.value
-          ? dayjs(props.maxDate).isBefore(minuteValue, 'minute')
-          : false)
+      = (props.minDate && currentDate.value
+        ? dayjs(props.minDate).isAfter(minuteValue, 'minute')
+        : false)
+      || (props.maxDate && currentDate.value
+        ? dayjs(props.maxDate).isBefore(minuteValue, 'minute')
+        : false)
 
     return {
       label: `${minute < 10 ? '0' : ''}${minute}`,
@@ -280,7 +280,7 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
       const baseHour = newDate.get('hour')
 
       const newHour
-          = baseHour + 12 > 12 && baseHour + 12 < 24 ? baseHour + 12 : baseHour === 0 ? 12 : baseHour
+        = baseHour + 12 > 12 && baseHour + 12 < 24 ? baseHour + 12 : baseHour === 0 ? 12 : baseHour
 
       currentDate.value = newDate.set('hour', newHour).format()
     }

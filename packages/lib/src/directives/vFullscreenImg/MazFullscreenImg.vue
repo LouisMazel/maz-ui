@@ -151,7 +151,7 @@ function nextPreviousImage(which: 'next' | 'previous'): void {
     const allInstances = getAllInstances()
     const currentInstanceIndex = allInstances.indexOf(currentInstance)
     const newInstanceIndex
-        = which === 'next' ? currentInstanceIndex + 1 : currentInstanceIndex - 1
+      = which === 'next' ? currentInstanceIndex + 1 : currentInstanceIndex - 1
 
     const nextInstance = allInstances[getNewInstanceIndex(allInstances, newInstanceIndex)]
     currentClickedElement.value = nextInstance

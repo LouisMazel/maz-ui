@@ -137,7 +137,7 @@ function isStepSuccess(step: number): boolean {
   const hasErrorOrWarningState = isStepError(step) || isStepWarning(step)
 
   const isAutoValidated
-      = autoValidateSteps && step < currentStep.value && !hasErrorOrWarningState
+    = autoValidateSteps && step < currentStep.value && !hasErrorOrWarningState
   return isValidated ?? (isAutoValidated || allStepsValidated)
 }
 

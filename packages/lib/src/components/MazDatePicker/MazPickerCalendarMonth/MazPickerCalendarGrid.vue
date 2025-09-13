@@ -180,7 +180,7 @@ function selectDay(value: Dayjs) {
     const isBeforeStartDate = dayjs(valueFormatted).isBefore(values.start, 'date')
 
     modelValue.value
-        = !values.start || isBeforeStartDate
+      = !values.start || isBeforeStartDate
         ? {
             start: valueFormatted,
             end: undefined,
