@@ -55,7 +55,6 @@
     "@maz-ui/utils": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.9.2",
     "unbuild": "^3.6.1",
     "vue": "^3.5.21"
   },
