@@ -1,5 +1,7 @@
 import { defineBuildConfig } from 'unbuild'
 
+import { dependencies, devDependencies } from './package.json'
+
 export default defineBuildConfig({
   entries: [
     'src/index',
@@ -10,5 +12,5 @@ export default defineBuildConfig({
   rollup: {
     emitCJS: false,
   },
-  externals: ['@antfu/eslint-config', 'eslint-plugin-sonarjs', 'eslint-plugin-tailwindcss', 'eslint-plugin-vuejs-accessibility', 'eslint'],
+  externals: [...Object.keys(dependencies), ...Object.keys(devDependencies)],
 })
