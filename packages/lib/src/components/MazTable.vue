@@ -550,7 +550,7 @@ function sortColumn(columnIndex: number) {
   if (columnIndex === sortedColumnIndex.value) {
     const sortTypeValue = sortType.value === 'DESC' ? 'ASC' : undefined
     sortType.value
-        = sortType.value === undefined ? 'DESC' : sortTypeValue
+      = sortType.value === undefined ? 'DESC' : sortTypeValue
   }
   else {
     sortType.value = 'DESC'
