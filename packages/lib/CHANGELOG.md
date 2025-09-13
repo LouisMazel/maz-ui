@@ -1,5 +1,28 @@
 # Change Log
 
+## v4.1.7-beta.4...v4.1.7-beta.5
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.4...v4.1.7-beta.5)
+
+### 🩹 Fixes
+
+- Plugin declarations component custom properties - fix #1331 ([#1331](https://github.com/LouisMazel/maz-ui/issues/1331))
+- **maz-ui:** MazInput - reduce complexity of css selectors - fix #1319 ([#1319](https://github.com/LouisMazel/maz-ui/issues/1319))
+
+### 💅 Refactors
+
+- **maz-ui:** UseMutationObserver - can be used outside from setup function ([32f0ee5b](https://github.com/LouisMazel/maz-ui/commit/32f0ee5b))
+
+### 💄 Styles
+
+- **maz-ui:** MazRadioButtons - use provided color for the button borders ([0e52a678](https://github.com/LouisMazel/maz-ui/commit/0e52a678))
+- **maz-ui:** Toaster - toast has different style between dark and light ([bded3e77](https://github.com/LouisMazel/maz-ui/commit/bded3e77))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7-beta.3...v4.1.7-beta.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.3...v4.1.7-beta.4)
