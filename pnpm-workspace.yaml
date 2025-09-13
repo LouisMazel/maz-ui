@@ -6,3 +6,5 @@ packages:
 
 onlyBuiltDependencies:
   - nx
+  - '@swc/core'
+  - vue-demi
