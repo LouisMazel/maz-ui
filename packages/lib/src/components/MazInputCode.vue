@@ -177,9 +177,9 @@ function setValueOnPaste(event: ClipboardEvent) {
   setTimeout(() => {
     const lastInputWithoutValueIndex = getLastInputWithoutValueIndex()
     const lastIndex
-        = lastInputWithoutValueIndex >= props.codeLength
-          ? props.codeLength - 1
-          : lastInputWithoutValueIndex
+      = lastInputWithoutValueIndex >= props.codeLength
+        ? props.codeLength - 1
+        : lastInputWithoutValueIndex
     focusAndSelectInputByIndex(lastIndex, false)
   }, 0)
 }

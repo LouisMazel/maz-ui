@@ -88,7 +88,7 @@ Chart.register(
 
 const component = defineAsyncComponent(async () => {
   const { Bar, Bubble, Doughnut, Line, Pie, PolarArea, Radar, Scatter } = await import(
-    'vue-chartjs'
+    'vue-chartjs',
   )
 
   const components = {

@@ -352,9 +352,9 @@ function isNullOrUndefined(value: unknown) {
 
 function isSelectedOption(option: MazSelectNormalizedOption) {
   const hasOption
-      = selectedOptions.value?.some(
-        selectedOption => selectedOption[optionValueKey] === option[optionValueKey],
-      ) ?? false
+    = selectedOptions.value?.some(
+      selectedOption => selectedOption[optionValueKey] === option[optionValueKey],
+    ) ?? false
 
   return hasOption && !isNullOrUndefined(option[optionValueKey])
 }

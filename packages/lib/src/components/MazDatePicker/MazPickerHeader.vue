@@ -128,8 +128,8 @@ watch(
     const oldValue = typeof oldModelValue === 'object' ? oldModelValue.start : oldModelValue
 
     transitionName.value
-        = dayjs(currentValue).isAfter(oldValue, 'date')
-          || dayjs(currentValue).isSame(oldValue, 'date')
+      = dayjs(currentValue).isAfter(oldValue, 'date')
+        || dayjs(currentValue).isSame(oldValue, 'date')
         ? 'maz-slidevnext'
         : 'maz-slidevprev'
   },

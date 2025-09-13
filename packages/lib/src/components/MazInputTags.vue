@@ -88,7 +88,7 @@ function addTags(event: Event) {
       .filter(truthyFilter)
 
     const newValues = values.filter(
-      value => !props.modelValue?.filter(truthyFilter)?.some(tag => tag === value),
+      value => !props.modelValue?.filter(truthyFilter)?.includes(value),
     )
     emits(
       'update:model-value',

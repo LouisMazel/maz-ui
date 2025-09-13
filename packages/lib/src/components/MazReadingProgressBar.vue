@@ -118,7 +118,7 @@ async function setupScroll() {
     await nextTick()
 
     elementHeight.value
-        = element.offsetHeight + element.offsetTop + props.offset - window.innerHeight
+      = element.offsetHeight + element.offsetTop + props.offset - window.innerHeight
   }
 
   window.addEventListener('scroll', handleScroll, {
