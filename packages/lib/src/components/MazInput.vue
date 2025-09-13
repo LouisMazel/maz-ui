@@ -738,19 +738,17 @@ const stateColor = computed(() => {
     }
   }
 
+  & .m-input-wrapper {
+    @apply dark:maz-bg-surface-400;
+  }
+
   &:has(input:disabled) {
     & .m-input-wrapper {
-      @apply maz-bg-surface-600 dark:maz-bg-surface-300 maz-text-muted;
+      @apply maz-bg-surface-600 maz-text-muted dark:maz-bg-surface-300;
     }
 
     & .m-input-input {
       @apply maz-cursor-not-allowed maz-text-muted;
-    }
-  }
-
-  &:not(:has(input:disabled)) {
-    & .m-input-wrapper {
-      @apply dark:maz-bg-surface-400;
     }
   }
 
