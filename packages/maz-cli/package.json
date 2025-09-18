@@ -31,7 +31,6 @@
     "dist"
   ],
   "scripts": {
-    "pre-commit": "lint-staged",
     "commit": "cz",
     "lint": "cross-env NODE_ENV=production eslint --fix src",
     "typecheck": "tsc --noEmit --skipLibCheck",

@@ -60,8 +60,7 @@
     "build": "vite build",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "cross-env NODE_ENV=production eslint .",
-    "lint:fix": "pnpm lint --fix",
-    "pre-commit": "lint-staged"
+    "lint:fix": "pnpm lint --fix"
   },
   "peerDependencies": {
     "unplugin-vue-components": "^29.0.0",

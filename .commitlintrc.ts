@@ -1,4 +1,6 @@
-module.exports = {
+import type { UserConfig } from '@commitlint/types'
+
+export default <UserConfig> {
   extends: ['@commitlint/config-conventional'],
   rules: {
     'scope-enum': [

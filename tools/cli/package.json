@@ -23,7 +23,6 @@
     "cli": "tsx src/cli.ts",
     "build": "unbuild",
     "build:stub": "unbuild --stub",
-    "pre-commit": "lint-staged",
     "vue-docgen": "vue-docgen",
     "typecheck": "tsc --noEmit --skipLibCheck"
   },

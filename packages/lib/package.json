@@ -169,7 +169,6 @@
     "test:unit:coverage": "vitest run --coverage",
     "test:unit:coverage:watch": "vitest watch --coverage",
     "test:unit:coverage:master": "vitest run --coverage --changed master",
-    "pre-commit": "lint-staged",
     "typecheck": "vue-tsc --noEmit --skipLibCheck"
   },
   "peerDependencies": {
