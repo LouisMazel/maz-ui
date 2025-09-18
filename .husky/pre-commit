@@ -5,4 +5,4 @@
 #   exit 1
 # fi
 
-pnpm nx:affected:pre-commit
+pnpx lint-staged

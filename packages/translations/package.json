@@ -45,8 +45,7 @@
     "dev": "unbuild --stub",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "cross-env NODE_ENV=production eslint .",
-    "lint:fix": "pnpm lint --fix",
-    "pre-commit": "lint-staged"
+    "lint:fix": "pnpm lint --fix"
   },
   "peerDependencies": {
     "vue": "^3.5.0"

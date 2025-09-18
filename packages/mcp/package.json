@@ -52,7 +52,6 @@
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
     "typecheck": "tsc --noEmit",
-    "pre-commit": "lint-staged",
     "test:unit": "pnpm generate:docs && vitest run",
     "test:unit:watch": "pnpm generate:docs && vitest watch",
     "test:unit:coverage": "pnpm generate:docs && vitest run --coverage"
