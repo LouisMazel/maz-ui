@@ -1,8 +1,11 @@
 <script lang="ts" setup>
+import type { IconComponent } from '@maz-ui/icons'
+import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
+import type { DeepPartial } from '@maz-ui/utils'
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazSpinnerProps } from './MazSpinner.vue'
 import type { MazColor } from './types'
-import { MazArrowUpOnSquare, MazCheckCircle, MazTrash, MazXCircle } from '@maz-ui/icons'
+import { MazArchiveBox, MazArrowUpOnSquare, MazCheckCircle, MazCodeBracket, MazCog, MazCommandLine, MazDocumentIcon, MazDocumentText, MazFilm, MazLogoAndroid, MazLogoApple, MazLogoCsv, MazLogoHtml, MazLogoJs, MazLogoJson, MazLogoMarkdown, MazLogoProperties, MazLogoReact, MazLogoTxt, MazLogoTypescript, MazLogoVue, MazLogoXliff, MazLogoXls, MazLogoXml, MazPaintBrush, MazPencilSquare, MazPhoto, MazPresentationChartBar, MazSpeakerWave, MazTrash, MazXCircle } from '@maz-ui/icons'
 import { useTranslations } from '@maz-ui/translations'
 import { sleep } from '@maz-ui/utils/helpers/sleep'
 import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
@@ -31,6 +34,7 @@ const {
   requestOptions,
   transformBody,
   minFileSize,
+  maxConcurrentUploads = 5,
 } = defineProps<MazDropzoneProps>()
 
 const emits = defineEmits<{
@@ -144,23 +148,9 @@ export type MazDropzoneProps = {
   /**
    * Translations
    * @description Custom translations for the component
-   * @default {
-   *   dragAndDrop: 'Drag and drop your files',
-   *   fileMaxCount: 'Maximum {count} files',
-   *   fileMaxSize: 'Maximum {size} MB',
-   *   fileTypes: 'Allowed file types: {types}',
-   *   selectFile: 'Select file',
-   *   divider: 'or'
-   * }
+   * @type {Partial<MazUiTranslationsNestedSchema['dropzone']>}
    */
-  translations?: {
-    dragAndDrop?: string
-    fileMaxCount?: string
-    fileMaxSize?: string
-    fileTypes?: string
-    selectFile?: string
-    divider?: string
-  }
+  translations?: DeepPartial<MazUiTranslationsNestedSchema['dropzone']>
   /**
    * Main color of the component
    * @default 'primary'
@@ -202,6 +192,12 @@ export type MazDropzoneProps = {
    * Transform the body of the request
    */
   transformBody?: (formData: FormData) => RequestInit['body']
+  /**
+   * Maximum number of concurrent uploads
+   * @description Limit the number of files uploaded simultaneously to avoid overwhelming the server
+   * @default 5
+   */
+  maxConcurrentUploads?: number
 }
 
 /**
@@ -328,7 +324,10 @@ async function uploadFiles() {
   try {
     isUploading.value = true
 
-    for await (const fileData of filesData.value) {
+    const queue = [...filesData.value]
+    const activeUploads: Promise<void>[] = []
+
+    async function uploadFileData(fileData: MazDropzoneFileData) {
       const formData = getFormData(fileData.file)
 
       try {
@@ -350,6 +349,21 @@ async function uploadFiles() {
         fileData.uploading = false
       }
     }
+
+    async function processQueue() {
+      while (queue.length > 0) {
+        const fileData = queue.shift()
+        if (fileData) {
+          await uploadFileData(fileData)
+        }
+      }
+    }
+
+    for (let i = 0; i < Math.min(maxConcurrentUploads, filesData.value.length); i++) {
+      activeUploads.push(processQueue())
+    }
+
+    await Promise.allSettled(activeUploads)
   }
   finally {
     isUploading.value = false
@@ -526,55 +540,51 @@ function handleFileUpload(event: Event) {
   }, 3000)
 }
 
-const fileIconMap: Record<string, string> = {
-  jpeg: 'photo',
-  png: 'photo',
-  tiff: 'photo',
-  bmp: 'photo',
-  webp: 'photo',
-  svg: 'photo',
-  ico: 'photo',
-  gif: 'gif',
-  mp4: 'camera',
-  webm: 'camera',
-  ogg: 'camera',
-  mp3: 'speaker-wave',
-  wav: 'speaker-wave',
-  m4a: 'speaker-wave',
-  aac: 'speaker-wave',
-  flac: 'speaker-wave',
-  zip: 'archive-box',
-  rar: 'archive-box',
-  tar: 'archive-box',
-  gz: 'archive-box',
-  exe: 'command-line',
-  dll: 'command-line',
-  so: 'command-line',
-  dylib: 'command-line',
-  dmg: 'command-line',
-  deb: 'command-line',
-  rpm: 'command-line',
-  apk: 'command-line',
-  app: 'command-line',
-  xls: 'document',
-  xlsx: 'document',
-  ppt: 'document',
-  pptx: 'document',
-  pdf: 'document',
-  json: 'document',
-  xml: 'document',
-  csv: 'document',
-  tsv: 'document',
-  txt: 'document',
-  doc: 'document',
-  docx: 'document',
-  document: 'document',
-}
+const extensionIconMap = (() => {
+  const map = new Map<string, IconComponent>()
+  const groups = [
+    [MazLogoJs, ['js', 'mjs', 'cjs']],
+    [MazLogoTypescript, ['ts', 'tsx', 'mts', 'cts']],
+    [MazLogoVue, ['vue']],
+    [MazLogoReact, ['jsx']],
+    [MazLogoJson, ['json', 'jsonc', 'json5']],
+    [MazLogoXml, ['xml']],
+    [MazLogoHtml, ['html', 'htm']],
+    [MazLogoMarkdown, ['md', 'markdown', 'mdx']],
+    [MazLogoProperties, ['properties']],
+    [MazLogoTxt, ['txt']],
+    [MazLogoCsv, ['csv']],
+    [MazLogoXls, ['xls', 'xlsx']],
+    [MazLogoXliff, ['xliff', 'xlf']],
+    [MazLogoApple, ['strings', 'stringsdict', 'xcstrings']],
+    [MazLogoAndroid, ['apk']],
+    [MazPhoto, ['jpeg', 'jpg', 'png', 'tiff', 'bmp', 'webp', 'svg', 'ico', 'gif', 'heic', 'heif', 'avif']],
+    [MazFilm, ['mp4', 'webm', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'm4v', 'mpeg', 'mpg', '3gp', 'ogv']],
+    [MazSpeakerWave, ['mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg', 'oga', 'opus', 'wma', 'alac', 'aiff']],
+    [MazArchiveBox, ['zip', 'rar', 'tar', 'gz', '7z', 'bz2', 'xz']],
+    [MazCommandLine, ['exe', 'dll', 'so', 'dylib', 'dmg', 'deb', 'rpm', 'app', 'bat', 'cmd']],
+    [MazCodeBracket, ['css', 'scss', 'sass', 'less', 'py', 'java', 'cpp', 'c', 'h', 'hpp', 'go', 'rs', 'rust', 'php', 'rb', 'swift', 'kt', 'kotlin', 'sql', 'sh', 'bash', 'zsh', 'yaml', 'yml', 'toml', 'ini']],
+    [MazCog, ['conf', 'config', 'env', 'cfg']],
+    [MazPresentationChartBar, ['ppt', 'pptx', 'key', 'odp']],
+    [MazDocumentText, ['rtf', 'odt']],
+    [MazPencilSquare, ['ttf', 'otf', 'woff', 'woff2', 'eot']],
+    [MazPaintBrush, ['ai', 'psd', 'sketch', 'fig', 'xd', 'eps']],
+    [MazDocumentIcon, ['pdf', 'doc', 'docx', 'tsv', 'document']],
+  ] as const
 
-function getFileIcon(fileData: MazDropzoneFileData) {
+  for (const [icon, extensions] of groups) {
+    for (const ext of extensions) {
+      map.set(ext, icon)
+    }
+  }
+
+  return map
+})()
+
+function getIconComponent(fileData: MazDropzoneFileData) {
   const type = fileData.file.type.split('/')?.[1]?.split('+')?.[0]?.toLowerCase()
   const extension = fileData.file.name.split('.').pop()?.toLowerCase()
-  return fileIconMap[type] || (extension && fileIconMap[extension]) || fileIconMap.document
+  return extensionIconMap.get(type) || (extension && extensionIconMap.get(extension)) || extensionIconMap.get('document')
 }
 
 function handleFileInputClick() {
@@ -593,23 +603,49 @@ function handleFileRemove(fileData: MazDropzoneFileData) {
 
 const selectAreaCanBeDisplayed = ref(true)
 
-const dataTypesString = computed(() => {
-  return dataTypes?.map(type => type.split('/')[1]?.split('+')[0]?.toUpperCase()).join(', ')
-})
+const dataTypesString = computed(() => dataTypes?.map(formatReadable).join(', '))
 
 const allFileIsAccepted = computed<boolean>(() => dataTypes?.length === 1 && dataTypes[0] === '*/*')
 
 const { t } = useTranslations()
+
 const messages = computed(() => {
+  const customTranslations = translations || {}
+
   return {
-    dragAndDrop: translations?.dragAndDrop || t('dropzone.dragAndDrop'),
-    fileMaxCount: translations?.fileMaxCount || maxFiles ? t('dropzone.fileMaxCount', { count: maxFiles }) : undefined,
-    fileMaxSize: translations?.fileMaxSize || maxFileSize ? t('dropzone.fileMaxSize', { size: maxFileSize }) : undefined,
-    fileTypes: translations?.fileTypes || dataTypesString.value ? t('dropzone.fileTypes', { types: dataTypesString.value }) : undefined,
-    selectFile: translations?.selectFile || t('dropzone.selectFile'),
-    divider: translations?.divider || t('dropzone.divider'),
+    dragAndDrop: customTranslations.dragAndDrop ?? t('dropzone.dragAndDrop'),
+    fileMaxCount: maxFiles ? (customTranslations.fileMaxCount ?? t('dropzone.fileMaxCount', { count: maxFiles })) : undefined,
+    fileMaxSize: maxFileSize ? (customTranslations.fileMaxSize ?? t('dropzone.fileMaxSize', { size: maxFileSize })) : undefined,
+    fileTypes: dataTypesString.value ? (customTranslations.fileTypes ?? t('dropzone.fileTypes', { types: dataTypesString.value })) : undefined,
+    selectFile: customTranslations.selectFile ?? t('dropzone.selectFile'),
+    divider: customTranslations.divider ?? t('dropzone.divider'),
   } satisfies MazDropzoneProps['translations']
 })
+
+function formatReadable(fmt: string): string {
+  if (fmt.startsWith('.')) {
+    return fmt
+  }
+
+  if (fmt.includes('/')) {
+    const [type, subtype] = fmt.split('/')
+
+    if (subtype === '*') {
+      const customTypes = translations?.types || {}
+      switch (type) {
+        case 'image': return customTypes.image ?? t('dropzone.types.image')
+        case 'video': return customTypes.video ?? t('dropzone.types.video')
+        case 'audio': return customTypes.audio ?? t('dropzone.types.audio')
+        case 'text': return customTypes.text ?? t('dropzone.types.text')
+        default: return fmt
+      }
+    }
+
+    return subtype
+  }
+
+  return fmt
+}
 
 function reset() {
   filesData.value.forEach((fileData) => {
@@ -633,6 +669,9 @@ function isFileTypeAllowed(file: File): boolean {
     return true
 
   return dataTypes.some((type) => {
+    if (type.startsWith('.')) {
+      return file.name.toLowerCase().endsWith(type.toLowerCase())
+    }
     if (type.endsWith('/*')) {
       return file.type.startsWith(type.slice(0, -1))
     }
@@ -722,15 +761,19 @@ defineExpose({
             @binding {MazDropzoneFileData} file - The drop file data
           -->
           <slot name="file-item" :file="file">
-            <div v-if="file.thumbnail && preview" :style="{ backgroundImage: `url(${file.thumbnail})`, backgroundSize: 'cover', backgroundPosition: 'center' }" class="m-dropzone__thumbnail" />
-            <div class="m-dropzone__overlay" />
+            <template v-if="file.thumbnail && preview">
+              <div :style="{ backgroundImage: `url(${file.thumbnail})`, backgroundSize: 'cover', backgroundPosition: 'center' }" class="m-dropzone__thumbnail" />
+              <div class="m-dropzone__overlay" />
+            </template>
 
             <div class="m-dropzone__icon-container">
               <Transition name="icon-scale">
                 <MazSpinner v-if="file.uploading" :color class="m-dropzone__spinner" v-bind="spinnerProps" />
                 <MazCheckCircle v-else-if="file.success" class="m-dropzone__success-icon" />
                 <MazXCircle v-else-if="file.error" class="m-dropzone__error-icon" />
-                <MazIcon v-else :name="getFileIcon(file)" class="m-dropzone__file-icon" />
+                <div v-else class="m-dropzone__file-icon-wrapper">
+                  <MazIcon :icon="getIconComponent(file)" size="lg" class="m-dropzone__file-icon" />
+                </div>
               </Transition>
             </div>
 
@@ -742,10 +785,10 @@ defineExpose({
               <MazBtn
                 v-if="!file.uploading && !file.success"
                 size="xs"
-                rounded-size="full"
                 :icon="MazTrash"
                 :disabled
-                :color
+                color="destructive"
+                pastel
                 v-bind="removeFileBtnProps"
                 @click.prevent="handleFileRemove(file)"
               />
@@ -808,7 +851,7 @@ defineExpose({
 
 <style lang="postcss" scoped>
 .m-dropzone {
-  @apply maz-flex maz-w-full maz-flex-col maz-gap-2 maz-overflow-hidden maz-rounded maz-border maz-border-dashed maz-border-divider maz-p-6 maz-transition-colors maz-duration-200 maz-ease-in-out maz-flex-center maz-bg-surface hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400 maz-cursor-pointer;
+  @apply maz-flex maz-w-full maz-flex-col maz-gap-2 maz-overflow-hidden maz-rounded maz-border maz-border-dashed maz-border-divider maz-p-6 maz-transition-colors maz-duration-200 maz-ease-in-out maz-flex-center maz-bg-surface hover:maz-bg-surface-600/50 dark:hover:maz-bg-surface-400/50 maz-cursor-pointer;
 
   &--disabled {
     @apply maz-cursor-not-allowed maz-opacity-50;
@@ -857,7 +900,7 @@ defineExpose({
   }
 
   &__overlay {
-    @apply maz-absolute maz-inset-0 maz-backdrop-blur-sm maz-bg-overlay/50 maz-rounded;
+    @apply maz-absolute maz-inset-0 maz-backdrop-blur-[0.125rem] maz-bg-surface/40 maz-rounded;
   }
 
   &__icon-container {
@@ -876,12 +919,12 @@ defineExpose({
     @apply maz-text-4xl maz-text-destructive;
   }
 
-  &__file-icon {
-    @apply maz-text-3xl maz-text-gray-100;
+  &__file-icon-wrapper {
+    @apply maz-p-1 maz-rounded maz-bg-surface maz-text-foreground;
   }
 
   &__description {
-    @apply maz-z-2 maz-flex maz-w-full maz-flex-col maz-gap-1 maz-truncate maz-p-2  maz-text-gray-100;
+    @apply maz-z-2 maz-flex maz-w-full maz-flex-col maz-gap-1 maz-truncate maz-p-2;
   }
 
   &__file-info {
@@ -905,7 +948,7 @@ defineExpose({
   }
 
   &__info-text {
-    @apply maz-mt-4 maz-text-center maz-text-sm maz-text-muted;
+    @apply maz-mt-4 maz-text-center maz-text-sm maz-text-muted maz-max-w-full;
   }
 
   &__file-input {
