@@ -49,6 +49,12 @@ export default {
     fileMaxCount: 'Maximum {count} files',
     fileMaxSize: 'Maximum {size} MB',
     fileTypes: 'Allowed file types: {types}',
+    types: {
+      image: 'images',
+      video: 'videos',
+      audio: 'audios',
+      text: 'texts',
+    },
   },
   /**
    * This is the translation for the date picker component.
