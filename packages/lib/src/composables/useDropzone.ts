@@ -43,6 +43,7 @@ export function useDropzone(
 
   if (isClient()) {
     const _options = typeof options === 'function' ? { onDrop: options } : options
+
     const multiple = _options.multiple ?? true
     const preventDefaultForUnhandled = _options.preventDefaultForUnhandled ?? false
 
@@ -60,11 +61,18 @@ export function useDropzone(
       if (!dataTypes || dataTypes?.length === 0)
         return true
 
-      if (types.length === 0)
-        return false
+      const mimeTypes = dataTypes.filter(type => !type.startsWith('.'))
 
-      return types.every(type =>
-        dataTypes?.some(allowedType => type.includes(allowedType)),
+      if (mimeTypes.length === 0)
+        return true
+
+      const validTypes = types.filter(Boolean)
+
+      if (validTypes.length === 0)
+        return true
+
+      return validTypes.every(type =>
+        mimeTypes?.some(allowedType => type.includes(allowedType)),
       )
     }
 
@@ -97,8 +105,6 @@ export function useDropzone(
         if (event.dataTransfer) {
           event.dataTransfer.dropEffect = 'none'
         }
-        // isOverError.value = true
-        // return
       }
 
       event.preventDefault()

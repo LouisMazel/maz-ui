@@ -1,24 +1,12 @@
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, ref, watchEffect } from 'vue'
+import type { IconComponent } from '@maz-ui/icons'
 
+import type { StyleValue } from 'vue'
+import { computed, nextTick, onMounted, ref, watchEffect } from 'vue'
 import { useInjectStrict } from '../composables/useInjectStrict'
 
-export interface MazIconProps {
-  /** The source path of the SVG file - e.g: `/icons/home.svg` */
-  src?: string
-  /** The path of the folder where the SVG files are stored - e.g: `/icons` */
-  path?: string
-  /** The name of the SVG file - e.g: `home` */
-  name?: string
-  /** The size of the SVG file - e.g: `1em` */
-  size?: string
-  /** The title of the SVG file - e.g: `Home` */
-  title?: string
-  /** The function to transform the source of the SVG file - e.g: `(svg) => svg` */
-  transformSource?: (svg: SVGElement) => SVGElement
-}
-
 const {
+  icon,
   src,
   path,
   name,
@@ -26,6 +14,7 @@ const {
   title,
   transformSource = (svg: SVGElement) => svg,
 } = defineProps<MazIconProps>()
+
 const emits = defineEmits<{
   /**
    * emitted when SVG file is loaded
@@ -42,6 +31,44 @@ const emits = defineEmits<{
    */
   (event: 'error', error: Error): void
 }>()
+
+const predefinedSizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const
+
+type SizeUnit
+  = | `${number}px`
+    | `${number}em`
+    | `${number}rem`
+    | `${number}%`
+    | `${number}vw`
+    | `${number}vh`
+    | `${number}cm`
+    | `${number}mm`
+    | `${number}in`
+    | `${number}pt`
+    | `${number}pc`
+    | `${number}ex`
+
+type PredefinedSize = typeof predefinedSizes[number]
+
+type MazIconSize = SizeUnit | PredefinedSize
+
+export interface MazIconProps {
+  /** The icon component to render - e.g: `import { MazStar } from '@maz-ui/icons'` */
+  icon?: IconComponent
+  /** The source path of the SVG file - e.g: `/icons/home.svg` */
+  src?: string
+  /** The path of the folder where the SVG files are stored - e.g: `/icons` */
+  path?: string
+  /** The name of the SVG file - e.g: `home` */
+  name?: string
+  /** The size of the SVG file - e.g: `1em` or can be a predefined size: `'xs' | 'sm' | 'md' | 'lg' | 'xl'` */
+  size?: MazIconSize
+  /** The title of the SVG file - e.g: `Home` */
+  title?: string
+  /** The function to transform the source of the SVG file - e.g: `(svg) => svg` */
+  transformSource?: (svg: SVGElement) => SVGElement
+}
+
 const cache: Record<string, Promise<SVGElement>> = {}
 const svgElSource = ref<SVGElement>()
 const svgElem = ref<SVGElement>()
@@ -57,7 +84,10 @@ function getMazIconPath() {
 
 const iconPath = computed(() => path ?? getMazIconPath())
 const fullSrc = computed(() => {
-  if (src) {
+  if (icon) {
+    return undefined
+  }
+  else if (src) {
     return src
   }
   else if (iconPath.value) {
@@ -69,8 +99,11 @@ const fullSrc = computed(() => {
 })
 
 onMounted(() => {
-  if (!name && !src) {
+  if ((icon && src) || (icon && name)) {
     console.error('[maz-ui](MazIcon) you should provide "name" or "src" as prop')
+  }
+  if (!icon && !name && !src) {
+    console.error('[maz-ui](MazIcon) you should provide "icon", "name" or "src" as prop')
   }
 })
 
@@ -181,7 +214,32 @@ function download(url: string): Promise<SVGElement> {
   })
 }
 
-watchEffect(() => getSource(fullSrc.value))
+const svgStyle = computed<StyleValue | undefined>(() => {
+  const isPredefinedSize = size && predefinedSizes.includes(size as PredefinedSize)
+  if (isPredefinedSize) {
+    return
+  }
+
+  return {
+    fontSize: size,
+  }
+})
+
+const svgClasses = computed<string | undefined>(() => {
+  const isPredefinedSize = size && predefinedSizes.includes(size as PredefinedSize)
+  if (!isPredefinedSize) {
+    return
+  }
+
+  return `m-icon--${size}`
+})
+
+watchEffect(() => {
+  if (!fullSrc.value)
+    return
+
+  getSource(fullSrc.value)
+})
 </script>
 
 <template>
@@ -189,20 +247,42 @@ watchEffect(() => getSource(fullSrc.value))
     v-if="svgElSource"
     ref="svgElem"
     class="m-icon m-reset-css"
+    :class="svgClasses"
     width="1em"
     height="1em"
     v-bind="{
       ...getSvgAttrs(svgElSource),
       ...filterAttrs($attrs),
     }"
-    :style="`font-size: ${size}`"
+    :style="svgStyle"
     v-html="getSvgContent(svgElSource)"
   />
+  <Component :is="icon" v-else class="m-icon m-reset-css" :class="svgClasses" :style="svgStyle" />
 </template>
 
 <style lang="postcss" scoped>
 .m-icon {
   width: 1em !important;
   height: 1em !important;
+
+  &--xs {
+    @apply maz-text-base;
+  }
+
+  &--sm {
+    @apply maz-text-xl;
+  }
+
+  &--md {
+    @apply maz-text-2xl;
+  }
+
+  &--lg {
+    @apply maz-text-4xl;
+  }
+
+  &--xl {
+    @apply maz-text-5xl;
+  }
 }
 </style>
