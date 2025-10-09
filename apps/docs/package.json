@@ -25,7 +25,7 @@
     "chart.js": "^4.5.0",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.18",
-    "libphonenumber-js": "^1.12.17",
+    "libphonenumber-js": "^1.12.23",
     "maz-ui": "workspace:*",
     "vitepress-plugin-google-analytics": "^1.0.2"
   },
@@ -33,14 +33,14 @@
     "@samkirkland/ftp-deploy": "^1.2.5",
     "@types/postcss-import": "^14.0.3",
     "@types/postcss-url": "^10.0.4",
-    "@types/react": "^19.1.13",
+    "@types/react": "^19.2.2",
     "@vercel/og": "^0.8.5",
     "postcss-import": "^16.1.0",
     "postcss-url": "^10.1.3",
-    "react": "^19.1.1",
+    "react": "^19.2.0",
     "tailwindcss": "^3.4.17",
     "vitepress": "2.0.0-alpha.10",
-    "vue": "^3.5.21"
+    "vue": "^3.5.22"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
