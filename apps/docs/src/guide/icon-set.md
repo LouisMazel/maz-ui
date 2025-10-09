@@ -45,11 +45,12 @@ const icons = Object.entries(MazIcons).sort(([nameA, _], [nameB, __]) => nameA.l
   component,
 }))
 
-const { commonIcons, flags, flagsSquare, all } = icons.reduce((acc, iconComponent) => {
+const { commonIcons, flags, flagsSquare, logos, all } = icons.reduce((acc, iconComponent) => {
   if (iconComponent.name.startsWith('MazFlagSquare')) {
     acc.flagsSquare.push(iconComponent)
   }
   else if (iconComponent.name.startsWith('MazFlag') && iconComponent.name.length >= 8) acc.flags.push(iconComponent)
+  else if (iconComponent.name.startsWith('MazLogo') && iconComponent.name.length >= 8) acc.logos.push(iconComponent)
   else if (iconComponent.name.startsWith('Maz')) acc.commonIcons.push(iconComponent)
 
   acc.all.push(iconComponent)
@@ -59,6 +60,7 @@ const { commonIcons, flags, flagsSquare, all } = icons.reduce((acc, iconComponen
   commonIcons: [],
   flags: [],
   flagsSquare: [],
+  logos: [],
   all: [],
 })
 
@@ -67,6 +69,7 @@ const currentTab = ref(1)
 const tabs = [
   { label: 'All', badge: { color: 'secondary', content: all.length, roundedSize: 'full' } },
   { label: 'Icons', badge: { color: 'secondary', content: commonIcons.length, roundedSize: 'full' } },
+  { label: 'Logos', badge: { color: 'secondary', content: logos.length, roundedSize: 'full' } },
   { label: 'Flags', badge: { color: 'secondary', content: flags.length, roundedSize: 'full' } },
   { label: 'Flags Square', badge: { color: 'secondary', content: flagsSquare.length, roundedSize: 'full' } },
 ]
@@ -78,7 +81,7 @@ const search = ref()
 const filteredIcons = computed(() => {
   const _currentTab = currentTab.value
 
-  const baseIcons = _currentTab === 1 ? all : _currentTab === 2 ? commonIcons : _currentTab === 3 ? flags : _currentTab === 4 ? flagsSquare : all
+  const baseIcons = _currentTab === 1 ? all : _currentTab === 2 ? commonIcons : _currentTab === 3 ? logos : _currentTab === 4 ? flags : _currentTab === 5 ? flagsSquare : all
 
   const _search = search.value?.toLowerCase().replace(/\s/g, '')
   if (!_search) return baseIcons
