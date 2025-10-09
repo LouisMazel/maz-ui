@@ -1,5 +1,22 @@
 # Change Log
 
+## v4.1.7-beta.6...v4.1.7-beta.7
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.6...v4.1.7-beta.7)
+
+### 🚀 Features
+
+- **maz-ui:** Add parallel upload with worker pool and enhanced file type detection in MazDropzone ([fe9b489c](https://github.com/LouisMazel/maz-ui/commit/fe9b489c))
+
+### 💅 Refactors
+
+- **maz-ui:** Minor improvements in MazBtn, MazIcon and composables ([1186d201](https://github.com/LouisMazel/maz-ui/commit/1186d201))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7-beta.5...v4.1.7-beta.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.5...v4.1.7-beta.6)
