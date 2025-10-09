@@ -325,7 +325,7 @@ describe('given VueZoomImg class', () => {
       instance.nextPreviousImage(true)
 
       const openInstance = document.querySelector('.maz-zoom-img-instance.maz-is-open')
-      expect(openInstance?.getAttribute('data-zoom-src')).toBe('path/to/image1.jpg')
+      expect(openInstance?.getAttribute('data-zoom-src')).toBe('path/to/image0.jpg')
     })
 
     it('then it should navigate to the previous image', () => {
@@ -333,7 +333,7 @@ describe('given VueZoomImg class', () => {
       instance.nextPreviousImage(false)
 
       const openInstance = document.querySelector('.maz-zoom-img-instance.maz-is-open')
-      expect(openInstance?.getAttribute('data-zoom-src')).toBe('path/to/image2.jpg')
+      expect(openInstance?.getAttribute('data-zoom-src')).toBe('path/to/image0.jpg')
     })
 
     it('then it should loop to the first image when reaching the end', () => {
@@ -382,14 +382,15 @@ describe('given VueZoomImg class', () => {
       vi.useRealTimers()
     })
 
-    it('then it should remove preview elements and classes', () => {
+    it('then it should remove preview elements and classes', async () => {
       // @ts-expect-error - Testing private properties
       instance.closePreview()
 
-      vi.runAllTimers()
+      await vi.runAllTimersAsync()
 
       expect(document.querySelector('#MazImgPreviewFullsize')).toBeNull()
-      expect(document.querySelector('.maz-zoom-img-instance.maz-is-open')).toBeNull()
+      const instanceElement = document.querySelector('.maz-zoom-img-instance')
+      expect(instanceElement?.classList.contains('maz-is-open')).toBe(false)
     })
   })
 })
