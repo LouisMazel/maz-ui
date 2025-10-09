@@ -22,6 +22,12 @@ export default {
     fileMaxCount: '最大 {count} ファイル',
     fileMaxSize: '最大 {size} MB',
     fileTypes: '許可されるファイルタイプ：{types}',
+    types: {
+      image: '画像',
+      video: 'ビデオ',
+      audio: '音声',
+      text: 'テキスト',
+    },
   },
   datePicker: {
     shortcuts: {

@@ -22,6 +22,12 @@ export default {
     fileMaxCount: '最多 {count} 个文件',
     fileMaxSize: '最大 {size} MB',
     fileTypes: '允许的文件类型：{types}',
+    types: {
+      image: '图片',
+      video: '视频',
+      audio: '音频',
+      text: '文本',
+    },
   },
   datePicker: {
     shortcuts: {

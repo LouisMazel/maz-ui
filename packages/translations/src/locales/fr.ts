@@ -22,6 +22,12 @@ export default {
     fileMaxCount: 'Maximum {count} fichiers',
     fileMaxSize: 'Maximum {size} MB',
     fileTypes: 'Types de fichiers autorisés: {types}',
+    types: {
+      image: 'images',
+      video: 'videos',
+      audio: 'audios',
+      text: 'textes',
+    },
   },
   datePicker: {
     shortcuts: {
