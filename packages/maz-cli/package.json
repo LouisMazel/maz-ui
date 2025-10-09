@@ -32,7 +32,8 @@
   ],
   "scripts": {
     "commit": "cz",
-    "lint": "cross-env NODE_ENV=production eslint --fix src",
+    "lint": "cross-env NODE_ENV=production eslint src",
+    "lint:fix": "pnpm lint --fix",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "build": "unbuild",
     "build:stub": "unbuild --stub",

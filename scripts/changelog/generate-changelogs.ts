@@ -6,6 +6,8 @@ import { execPromise, logger } from '@maz-ui/node/index.js'
 import { name } from '../../package.json'
 import { generateChangelog, getChangelogConfig, packagesDir, rootDir } from './utils'
 
+type ReleaseType = 'latest' | 'prerelease'
+
 interface PackageInfo {
   name: string
   path: string
@@ -73,15 +75,38 @@ function getPackages(): PackageInfo[] {
   return packages
 }
 
-async function main() {
-  logger.log('🚀 Starting changelog generation...')
+async function getLastTag(releaseType: ReleaseType): Promise<string> {
+  if (releaseType === 'latest') {
+    const { stdout } = await execPromise(
+      'git tag --sort=-v:refname | grep -E \'^v[0-9]+\\.[0-9]+\\.[0-9]+$\' | sed -n \'1p\'',
+      {
+        noSuccess: true,
+        noStdout: true,
+      },
+    )
+    return stdout.trim()
+  }
 
-  const { stdout: lastTag } = await execPromise('git tag --sort=-v:refname | sed -n \'1p\'', {
+  const { stdout } = await execPromise('git tag --sort=-v:refname | sed -n \'1p\'', {
     noSuccess: true,
     noStdout: true,
   })
+  return stdout.trim()
+}
 
-  const config = await getChangelogConfig({ from: lastTag.trim(), to: 'HEAD' })
+async function main() {
+  logger.log('🚀 Starting changelog generation...')
+
+  const args = process.argv.slice(2)
+  const releaseTypeArg = args.find(arg => arg.startsWith('--release-type='))
+  const releaseType: ReleaseType = releaseTypeArg?.split('=')[1] as ReleaseType || 'prerelease'
+
+  logger.log(`📋 Release type: ${releaseType}`)
+
+  const lastTag = await getLastTag(releaseType)
+  logger.log(`🏷️  Last tag: ${lastTag}`)
+
+  const config = await getChangelogConfig({ from: lastTag, to: 'HEAD' })
 
   const releaseChangelog = await generateChangelog(
     {
