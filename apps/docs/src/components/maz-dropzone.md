@@ -80,7 +80,8 @@ function handleError({ code, files }) {
     ref="dropzone"
     v-model="files"
     :max-file-size="3"
-    :max-files="5"
+    multiple
+    :max-concurrent-uploads="3"
     @upload-success="onUploadSuccess"
     @upload-error="onUploadError"
     @error="onError"
@@ -128,9 +129,10 @@ function onError({ files, event, code }) {
 <template>
   <MazDropzone
     v-model="files"
-    :data-types="['image/*']"
+    :data-types="['image/*', '.zip', '.strings', '.json', '.stringsdict']"
     :max-file-size="3"
     :max-files="5"
+    :max-concurrent-uploads="5"
     url="https://httpbin.org/post"
     :request-options="{
       headers: { 'My-Awesome-Header': 'header value' },
@@ -156,15 +158,52 @@ You can restrict allowed file types using the `data-types` prop:
 <ComponentDemo>
   <MazDropzone
     v-model="files"
-    :data-types="['image/jpeg', 'image/png']"
+    :data-types="acceptedFormats"
     :max-file-size="5"
     @error="onError"
   />
 
 <template #code>
 
-```html
-<MazDropzone v-model="files" :data-types="['image/jpeg', 'image/png']" :max-file-size="5" @error="onError" />
+```vue
+<script lang="ts" setup>
+const acceptedFormats = [
+  '.strings',
+  '.stringsdict',
+  '.plist',
+  '.xliff',
+  '.xlf',
+  '.xml',
+  '.json',
+  '.yaml',
+  '.yml',
+  '.po',
+  '.pot',
+  '.mo',
+  '.properties',
+  '.arb',
+  '.csv',
+  '.tsv',
+  '.txt',
+  'text/*',
+  'application/json',
+  'text/xml',
+  'application/xml',
+  'text/yaml',
+  'text/html',
+  'image/svg+xml',
+  'video/mp4',
+  'video/quicktime',
+  'video/mpeg',
+  'video/ogg',
+  'video/webm',
+  'audio/*',
+]
+</script>
+
+<template>
+  <MazDropzone v-model="files" :data-types="acceptedFormats" :max-file-size="5" @error="onError" />
+</template>
 ```
 
   </template>
@@ -439,4 +478,44 @@ const onError = ({ files, event, code }) => {
   console.error('Error:', files, event, code)
   toast.error(`${files?.length} files upload failed: ${code} - ${files?.map(file => file.name).join(', ')}`)
 }
+
+const acceptedFormats = [
+  // iOS
+  '.strings',
+  '.stringsdict',
+  '.plist',
+  '.xliff',
+  '.xlf',
+  // Android
+  '.xml',
+  // Web
+  '.json',
+  '.yaml',
+  '.yml',
+  '.po',
+  '.pot',
+  '.mo',
+  // Java
+  '.properties',
+  // Flutter
+  '.arb',
+  // Général
+  '.csv',
+  '.tsv',
+  '.txt',
+  // MIME types fallback
+  'text/*',
+  'application/json',
+  'text/xml',
+  'application/xml',
+  'text/yaml',
+  'text/html',
+  'image/svg+xml',
+  'video/mp4',
+  'video/quicktime',
+  'video/mpeg',
+  'video/ogg',
+  'video/webm',
+  'audio/*',
+]
 </script>
