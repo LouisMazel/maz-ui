@@ -32,13 +32,13 @@
     "@maz-ui/utils": "workspace:*",
     "clear": "^0.1.0",
     "commander": "^14.0.1",
-    "figlet": "^1.9.1",
+    "figlet": "^1.9.3",
     "vue-docgen-cli": "^4.79.0"
   },
   "devDependencies": {
     "@types/clear": "^0.1.4",
     "@types/figlet": "^1.7.0",
-    "tsx": "^4.20.5"
+    "tsx": "^4.20.6"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

@@ -62,11 +62,11 @@
     "test:unit:coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "eslint-plugin-format": "^1.0.1",
+    "eslint-plugin-format": "^1.0.2",
     "glob": "^11.0.3",
-    "libphonenumber-js": "^1.12.17",
-    "vite": "^7.1.5",
-    "vue": "^3.5.21"
+    "libphonenumber-js": "^1.12.23",
+    "vite": "^7.1.9",
+    "vue": "^3.5.22"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [
