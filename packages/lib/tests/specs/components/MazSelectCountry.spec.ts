@@ -567,6 +567,7 @@ describe('mazSelectCountry', () => {
   it('renders country item with code when showCodeInList is true', async () => {
     const wrapper = await getWrapper({
       props: {
+        modelValue: 'FR',
         showCodeInList: true,
         open: true,
       },
