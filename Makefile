@@ -1,7 +1,3 @@
-version := $(shell jq -r .version packages/lib/package.json)
-pretype := 'prerelease'
-preid := 'alpha'
-
 clean:
 	find . -name 'node_modules' -type d -prune -exec rm -rf {} +
 	find . -name 'dist' -type d -prune -exec rm -rf {} +

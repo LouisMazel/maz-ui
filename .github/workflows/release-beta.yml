@@ -51,7 +51,7 @@ jobs:
 
       - name: Generate Changelogs
         run: |
-          pnpm generate:changelogs
+          pnpm generate:changelogs --release-type=prerelease
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
