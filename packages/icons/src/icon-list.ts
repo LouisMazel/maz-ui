@@ -1,4 +1,6 @@
-// Ce fichier est généré automatiquement, ne pas modifier manuellement
+/**
+ * This file is generated automatically, do not manually modify it
+ */
 export const iconList = [
   'MazAcademicCap',
   'MazAdjustmentsHorizontal',
@@ -328,6 +330,21 @@ export const iconList = [
   'MazWrench',
   'MazXCircle',
   'MazXMark',
+  'MazLogoAndroid',
+  'MazLogoApple',
+  'MazLogoCsv',
+  'MazLogoHtml',
+  'MazLogoJs',
+  'MazLogoJson',
+  'MazLogoMarkdown',
+  'MazLogoProperties',
+  'MazLogoReact',
+  'MazLogoTxt',
+  'MazLogoTypescript',
+  'MazLogoVue',
+  'MazLogoXliff',
+  'MazLogoXls',
+  'MazLogoXml',
   'MazFlagSquareAC',
   'MazFlagSquareAD',
   'MazFlagSquareAE',

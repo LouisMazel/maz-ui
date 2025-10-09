@@ -17,6 +17,7 @@ const _dirname = fileURLToPath(new URL('.', import.meta.url))
 const svgDir = resolve(_dirname, '../svg')
 const flags1x1Dir = resolve(_dirname, '../flags/1x1')
 const flags3x2Dir = resolve(_dirname, '../flags/3x2')
+const logosDir = resolve(_dirname, '../logos')
 const outputIndex = resolve(_dirname, '../src/index.ts')
 
 function replaceValuesInSvg(files: { file: string, name: string, path: string, dir: string }[]) {
@@ -74,13 +75,17 @@ function generateIconsComponentsEntry(files: { file: string, name: string, path:
     const imports = files.map(({ file, name, path }) => {
       const iconName = toPascalCase(name)
       const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
-      return `export const Maz${finalName} = defineAsyncComponent(() => import('${path}/${file}?component'));`
+      return `export const Maz${finalName} = markRaw(defineAsyncComponent(() => import('${path}/${file}?component')))`
     }).join('\n')
 
     const content = `/// <reference types="vite-svg-loader" />
 
-import type { Component, ComponentPublicInstance, FunctionalComponent } from 'vue';
-import { defineAsyncComponent } from 'vue';
+/**
+ * This file is generated automatically, do not manually modify it
+ */
+
+import type { Component, ComponentPublicInstance, FunctionalComponent } from 'vue'
+import { defineAsyncComponent, markRaw } from 'vue'
 
 export type IconComponent = FunctionalComponent | ComponentPublicInstance | Component
 
@@ -111,7 +116,9 @@ function generateIconList(files: { file: string, name: string }[]) {
       })
       .join(',\n  ')
 
-    const content = `// Ce fichier est généré automatiquement, ne pas modifier manuellement
+    const content = `/**
+ * This file is generated automatically, do not manually modify it
+ */
 export const iconList = [
   ${iconNames}
 ] as const
@@ -134,20 +141,26 @@ export function ViteGenerateIconsComponentsEntry(): Plugin {
     configResolved() {
       try {
         logger.log('[ViteGenerateIconsComponentsEntry] ✅ starting to generate icons components entry')
-        const [svgFiles, flags1x1Files, flags3x2Files] = [
-          readdirSync(svgDir).filter(file => file.endsWith('.svg') && !file.endsWith('.DS_Store')).map(file => ({
+        const [svgFiles, flags1x1Files, flags3x2Files, logos] = [
+          readdirSync(svgDir).map(file => ({
             file,
             name: file.replace('.svg', ''),
             path: '../svg',
             dir: 'svg',
           })),
-          readdirSync(flags1x1Dir).filter(file => file.endsWith('.svg') && !file.endsWith('.DS_Store')).map(file => ({
+          readdirSync(logosDir).map(file => ({
+            file,
+            name: `logo-${file.replace('.svg', '')}`,
+            path: '../logos',
+            dir: 'logos',
+          })),
+          readdirSync(flags1x1Dir).map(file => ({
             file,
             name: `flag-square-${file.replace('.svg', '').split('').join('-')}`,
             path: '../flags/1x1',
             dir: 'flags/1x1',
           })),
-          readdirSync(flags3x2Dir).filter(file => file.endsWith('.svg') && !file.endsWith('.DS_Store')).map(file => ({
+          readdirSync(flags3x2Dir).map(file => ({
             file,
             name: `flag-${file.replace('.svg', '').split('').join('-')}`,
             path: '../flags/3x2',
@@ -155,7 +168,7 @@ export function ViteGenerateIconsComponentsEntry(): Plugin {
           })),
         ]
 
-        const files = [...svgFiles, ...flags1x1Files, ...flags3x2Files].filter(({ file }) => file.endsWith('.svg') && !file.endsWith('.DS_Store'))
+        const files = [...svgFiles, ...flags1x1Files, ...flags3x2Files, ...logos].filter(({ file }) => file.endsWith('.svg') && !file.endsWith('.DS_Store'))
 
         replaceValuesInSvg(svgFiles)
         generateIconsComponentsEntry(files)
