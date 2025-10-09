@@ -44,7 +44,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build packages
-        run: pnpm build:packages
+        run: pnpm build:packages:test
 
       - name: Test units
         run: pnpm test:unit:coverage:all
