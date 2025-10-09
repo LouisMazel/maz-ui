@@ -573,10 +573,18 @@ describe('mazSelectCountry', () => {
       shallow: false,
     })
 
+    await wrapper.vm.$nextTick()
+    await vi.dynamicImportSettled()
+
+    // Wait for the dropdown to be fully rendered
+    await new Promise(resolve => setTimeout(resolve, 100))
+
     const code = wrapper.find('.maz-truncate .maz-text-muted')
 
     expect(code.exists()).toBe(true)
-    expect(code.text()).toBe('AF')
+    if (code.exists()) {
+      expect(code.text()).toBe('AF')
+    }
   })
 
   it('provides selector-flag slot', async () => {
