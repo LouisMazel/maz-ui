@@ -310,15 +310,50 @@ By default, the justify is `center`
 ## Icons
 
 <ComponentDemo>
+  <h4 class="maz-mb-2 maz-font-semibold maz-text-lg">
+    Left Icon and Right Icon
+  </h4>
+
   <div class="maz-flex maz-gap-2 maz-rounded maz-flex-wrap maz-items-center">
+    <MazBtn :left-icon="MazCheck" size="mini">
+      left-icon
+    </MazBtn>
+    <MazBtn :left-icon="MazCheck" size="xs">
+      left-icon
+    </MazBtn>
     <MazBtn :left-icon="MazCheck" size="sm">
       left-icon
     </MazBtn>
-    <MazBtn :right-icon="MazHome">
-      right-icon
+    <MazBtn :right-icon="MazCheck" size="md">
+      left-icon
     </MazBtn>
+    <MazBtn :right-icon="MazCheck" size="lg">
+      left-icon
+    </MazBtn>
+    <MazBtn :right-icon="MazCheck" size="xl">
+      left-icon
+    </MazBtn>
+  </div>
+
+  <h4 class="maz-my-2 maz-font-semibold maz-text-lg">
+    Fab
+  </h4>
+
+  <div class="maz-flex maz-gap-2 maz-rounded maz-flex-wrap maz-items-center">
+    <MazBtn fab :icon="MazCommandLine" size="mini" />
+    <MazBtn fab :icon="MazCommandLine" size="xs" />
+    <MazBtn fab :icon="MazCommandLine" size="sm" />
+    <MazBtn fab :icon="MazCommandLine" size="md" />
     <MazBtn fab :icon="MazCommandLine" size="lg" />
-    <MazBtn :left-icon="MazSpinner" size="sm" color="warning">
+    <MazBtn fab :icon="MazCommandLine" size="xl" />
+  </div>
+
+  <h4 class="maz-my-2 maz-font-semibold maz-text-lg">
+    Icon component
+  </h4>
+
+  <div class="maz-flex maz-gap-2 maz-rounded maz-flex-wrap maz-items-center">
+    <MazBtn :left-icon="MazSpinner" size="md" color="warning">
       icon component
     </MazBtn>
   </div>
@@ -326,14 +361,26 @@ By default, the justify is `center`
 <template #code>
 
 ```html
+<MazBtn :left-icon="MazCheck" size="mini">
+  left-icon
+</MazBtn>
+<MazBtn :left-icon="MazCheck" size="xs">
+  left-icon
+</MazBtn>
 <MazBtn :left-icon="MazCheck" size="sm">
   left-icon
 </MazBtn>
-<MazBtn :right-icon="MazHome">
-  right-icon
+<MazBtn :left-icon="MazCheck" size="md">
+  left-icon
+</MazBtn>
+<MazBtn :left-icon="MazCheck" size="lg">
+  left-icon
+</MazBtn>
+<MazBtn :left-icon="MazCheck" size="xl">
+  left-icon
 </MazBtn>
 <MazBtn fab :icon="MazCommandLine" size="lg" />
-<MazBtn :icon="MazSpinner" size="sm" color="warning">
+<MazBtn :left-icon="MazSpinner" size="sm" color="warning">
   icon component
 </MazBtn>
 ```
