@@ -1,7 +1,7 @@
 {
   "name": "vue-app",
   "type": "module",
-  "version": "4.1.7-beta.6",
+  "version": "4.1.7-beta.7",
   "private": true,
   "scripts": {
     "dev": "vite",

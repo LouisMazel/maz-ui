@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.1.7-beta.6...v4.1.7-beta.7
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.6...v4.1.7-beta.7)
+
+### 🚀 Features
+
+- **@maz-ui/translations:** Add dropzone translation keys ([cd9c24b4](https://github.com/LouisMazel/maz-ui/commit/cd9c24b4))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7-beta.5...v4.1.7-beta.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.5...v4.1.7-beta.6)
