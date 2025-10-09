@@ -46,7 +46,7 @@
     "clear": "^0.1.0",
     "commander": "^14.0.1",
     "cosmiconfig": "^9.0.0",
-    "figlet": "^1.9.1",
+    "figlet": "^1.9.3",
     "tinycolor2": "^1.6.0"
   },
   "devDependencies": {
