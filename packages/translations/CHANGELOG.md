@@ -1,5 +1,22 @@
 # Change Log
 
+## v4.1.6...v4.1.7
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7)
+
+### 🚀 Features
+
+- **@maz-ui/translations:** Add dropzone translation keys ([b5f56a89](https://github.com/LouisMazel/maz-ui/commit/b5f56a89))
+
+### 🩹 Fixes
+
+- Plugin declarations component custom properties - fix #1331 ([#1331](https://github.com/LouisMazel/maz-ui/issues/1331))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7-beta.7...v4.1.7-beta.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.7...v4.1.7-beta.8)

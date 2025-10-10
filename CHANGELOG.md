@@ -1,5 +1,71 @@
 # Change Log
 
+## v4.1.6...v4.1.7
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7)
+
+### 🚀 Features
+
+- **@maz-ui/icons:** Add 15 file type logos and 2 new icons ([c6c119ea](https://github.com/LouisMazel/maz-ui/commit/c6c119ea))
+- **maz-ui:** Add parallel upload with worker pool and enhanced file type detection in MazDropzone ([5e28bb23](https://github.com/LouisMazel/maz-ui/commit/5e28bb23))
+- **@maz-ui/translations:** Add dropzone translation keys ([b5f56a89](https://github.com/LouisMazel/maz-ui/commit/b5f56a89))
+
+### 🔥 Performance
+
+- Tree-shaking improvements of packages ([4dd42ba4](https://github.com/LouisMazel/maz-ui/commit/4dd42ba4))
+
+### 🩹 Fixes
+
+- **docs:** Rendering issue with dev server ([325839e6](https://github.com/LouisMazel/maz-ui/commit/325839e6))
+- **maz-ui:** MazCard - a linked card should not have zoom feature on the gallery ([7379bed1](https://github.com/LouisMazel/maz-ui/commit/7379bed1))
+- **maz-ui:** MazDropdown - correct prop heritage to popover component ([f1296857](https://github.com/LouisMazel/maz-ui/commit/f1296857))
+- **maz-ui:** MazSelect - selected option should be focus on open & selected option focused has outline style ([0ef32339](https://github.com/LouisMazel/maz-ui/commit/0ef32339))
+- **docs:** Add components folder to tailwindcss content ([cd8e6177](https://github.com/LouisMazel/maz-ui/commit/cd8e6177))
+- **maz-ui:** MazSelect - multiple not working, correct declaration type of props ([cf262929](https://github.com/LouisMazel/maz-ui/commit/cf262929))
+- **maz-ui:** MazDatePicker - custom shortcuts was not displayed ([cdf4e954](https://github.com/LouisMazel/maz-ui/commit/cdf4e954))
+- Plugin declarations component custom properties - fix #1331 ([#1331](https://github.com/LouisMazel/maz-ui/issues/1331))
+- **maz-ui:** MazInput - reduce complexity of css selectors - fix #1319 ([#1319](https://github.com/LouisMazel/maz-ui/issues/1319))
+- **maz-ui:** MazSelect - search input padding and scroll to option behavior ([6235d52a](https://github.com/LouisMazel/maz-ui/commit/6235d52a))
+- **maz-ui:** MazDatePicker - popover won't open when MazDatePicker is lazy loaded ([e2476f03](https://github.com/LouisMazel/maz-ui/commit/e2476f03))
+- **maz-ui:** Fix invalid country code detection from browser locale in MazInputPhoneNumber ([80a9fe26](https://github.com/LouisMazel/maz-ui/commit/80a9fe26))
+- **maz-ui:** MazSelect - remove search wrapper when search is not enabled ([6f6752c1](https://github.com/LouisMazel/maz-ui/commit/6f6752c1))
+
+### 💅 Refactors
+
+- **maz-ui:** MazDatePicker - prefer-position and fallback-position are controllable with props ([87f1be02](https://github.com/LouisMazel/maz-ui/commit/87f1be02))
+- **maz-ui:** MazLink - supports background, muted and contrast colors ([07a65ffd](https://github.com/LouisMazel/maz-ui/commit/07a65ffd))
+- **maz-ui:** MazLink - supports colors 'none' to inherits color from parent ([b21f8c0a](https://github.com/LouisMazel/maz-ui/commit/b21f8c0a))
+- **maz-ui:** MazLink - rename 'none' to 'inherit' ([6268c49e](https://github.com/LouisMazel/maz-ui/commit/6268c49e))
+- **maz-ui:** MazPopover - remove width max-content ([e7fbc35c](https://github.com/LouisMazel/maz-ui/commit/e7fbc35c))
+- **maz-ui:** MazCard - ensure card has no zoom feature on gallery when it's linked ([d44ab79c](https://github.com/LouisMazel/maz-ui/commit/d44ab79c))
+- **@maz-ui/mcp:** Improve tools, descriptions and add search to help agents ([05cf7939](https://github.com/LouisMazel/maz-ui/commit/05cf7939))
+- **@maz-ui/themes:** Introduce darkClass option & fix some bugs with current colorMode and auto update theme when browser color scheme changes ([ba0a1a28](https://github.com/LouisMazel/maz-ui/commit/ba0a1a28))
+- **maz-ui:** UseMutationObserver - can be used outside from setup function ([a0a6ccd5](https://github.com/LouisMazel/maz-ui/commit/a0a6ccd5))
+- **@maz-ui/nuxt:** Improve theme reactivity and get browser color scheme on server side ([a5c069a0](https://github.com/LouisMazel/maz-ui/commit/a5c069a0))
+- **maz-ui:** MazAnimatedElement & MazAnimatedText - animation optimization with requestAnimationFrame ([e519aad9](https://github.com/LouisMazel/maz-ui/commit/e519aad9))
+- **maz-ui:** Accessibilty - support of rtl direction ([8cc99bf5](https://github.com/LouisMazel/maz-ui/commit/8cc99bf5))
+- **docs:** Accessibilty - support of rtl direction ([aa715eda](https://github.com/LouisMazel/maz-ui/commit/aa715eda))
+- **maz-ui:** MazDatePicker - show hour in input only if time picker is enabled ([5a4701c8](https://github.com/LouisMazel/maz-ui/commit/5a4701c8))
+- **maz-ui:** Minor improvements in MazBtn, MazIcon and composables ([b4fec020](https://github.com/LouisMazel/maz-ui/commit/b4fec020))
+- **@maz-ui/icons:** Improve tree-shaking with individual icon files ([dc0bd1f8](https://github.com/LouisMazel/maz-ui/commit/dc0bd1f8))
+
+### 📖 Documentation
+
+- **docs:** MazLink - add new colors in demo ([7467ffd4](https://github.com/LouisMazel/maz-ui/commit/7467ffd4))
+
+### 💄 Styles
+
+- **maz-ui:** MazBtn - adjust text color of background and contrast colors ([84b265c5](https://github.com/LouisMazel/maz-ui/commit/84b265c5))
+- **maz-ui:** MazPopover - use text foreground for background color ([a1f40d8e](https://github.com/LouisMazel/maz-ui/commit/a1f40d8e))
+- **docs:** Use good text color for exported code ([251e1304](https://github.com/LouisMazel/maz-ui/commit/251e1304))
+- **maz-ui:** MazRadioButtons - use provided color for the button borders ([0cf90bfc](https://github.com/LouisMazel/maz-ui/commit/0cf90bfc))
+- **maz-ui:** Toaster - toast has different style between dark and light ([81afe160](https://github.com/LouisMazel/maz-ui/commit/81afe160))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7-beta.7...v4.1.7-beta.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.7...v4.1.7-beta.8)

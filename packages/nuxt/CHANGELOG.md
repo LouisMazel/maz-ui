@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.1.6...v4.1.7
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7)
+
+### 💅 Refactors
+
+- **@maz-ui/nuxt:** Improve theme reactivity and get browser color scheme on server side ([a5c069a0](https://github.com/LouisMazel/maz-ui/commit/a5c069a0))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7-beta.7...v4.1.7-beta.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.7...v4.1.7-beta.8)
