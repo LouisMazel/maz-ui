@@ -13,14 +13,64 @@ vi.mock('libphonenumber-js', () => ({
 
 describe('unit Tests for useMazInputPhoneNumber.ts', () => {
   describe('browserLocale', () => {
-    it('should return the browser locale', () => {
-      // Mock de window.navigator.language
-      Object.defineProperty(globalThis.navigator, 'language', {
-        value: 'en-US',
-      })
+    describe('when navigator language is en-US', () => {
+      it('returns US as locale', () => {
+        Object.defineProperty(globalThis.navigator, 'language', {
+          value: 'en-US',
+          configurable: true,
+        })
 
-      const result = getBrowserLocale()
-      expect(result).toEqual({ locale: 'US', browserLocale: 'en-US' })
+        const result = getBrowserLocale()
+        expect(result).toEqual({ locale: 'US', browserLocale: 'en-US' })
+      })
+    })
+
+    describe('when navigator language has extended format (en-GB-oxendict)', () => {
+      it('extracts only the first 2 characters of the region code', () => {
+        Object.defineProperty(globalThis.navigator, 'language', {
+          value: 'en-GB-oxendict',
+          configurable: true,
+        })
+
+        const result = getBrowserLocale()
+        expect(result).toEqual({ locale: 'GB', browserLocale: 'en-GB-oxendict' })
+      })
+    })
+
+    describe('when navigator language is fr-FR', () => {
+      it('returns FR as locale', () => {
+        Object.defineProperty(globalThis.navigator, 'language', {
+          value: 'fr-FR',
+          configurable: true,
+        })
+
+        const result = getBrowserLocale()
+        expect(result).toEqual({ locale: 'FR', browserLocale: 'fr-FR' })
+      })
+    })
+
+    describe('when navigator language is en without region', () => {
+      it('returns US as locale', () => {
+        Object.defineProperty(globalThis.navigator, 'language', {
+          value: 'en',
+          configurable: true,
+        })
+
+        const result = getBrowserLocale()
+        expect(result).toEqual({ locale: 'US', browserLocale: 'en' })
+      })
+    })
+
+    describe('when navigator language is ja', () => {
+      it('returns JP as locale', () => {
+        Object.defineProperty(globalThis.navigator, 'language', {
+          value: 'ja',
+          configurable: true,
+        })
+
+        const result = getBrowserLocale()
+        expect(result).toEqual({ locale: 'JP', browserLocale: 'ja' })
+      })
     })
   })
 
