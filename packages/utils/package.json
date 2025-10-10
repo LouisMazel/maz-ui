@@ -16,6 +16,7 @@
     "typescript",
     "maz-ui"
   ],
+  "sideEffects": false,
   "publishConfig": {
     "access": "public"
   },

@@ -27,7 +27,7 @@
     "nuxt-module"
   ],
   "sideEffects": [
-    "*.css",
+    "**/*.css",
     "./dist/css/**"
   ],
   "exports": {
