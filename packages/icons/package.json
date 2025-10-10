@@ -46,6 +46,10 @@
       "types": "./dist/types/icon-list.d.ts",
       "import": "./dist/icon-list.js"
     },
+    "./*": {
+      "types": "./dist/types/components/*.d.ts",
+      "import": "./dist/components/*.js"
+    },
     "./svg/*": "./svg/*"
   },
   "module": "./dist/index.js",
