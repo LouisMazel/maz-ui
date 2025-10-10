@@ -728,9 +728,8 @@ defineExpose({
           '--selected-text-color': selectedTextColor,
         }]"
       >
-        <div class="m-select-list__search-wrapper">
+        <div v-if="search" class="m-select-list__search-wrapper">
           <MazInput
-            v-if="search"
             ref="searchInput"
             v-model="searchQuery"
             size="sm"
@@ -917,7 +916,7 @@ defineExpose({
   }
 
   &__scroll-wrapper {
-    @apply maz-flex maz-flex-1 maz-flex-col maz-gap-1 maz-overflow-auto maz-px-2 maz-py-2;
+    @apply maz-flex maz-flex-1 maz-flex-col maz-gap-1 maz-overflow-auto maz-p-2;
 
     /* Custom scrollbar for webkit browsers (Chrome, Safari, Edge) */
     &::-webkit-scrollbar {
