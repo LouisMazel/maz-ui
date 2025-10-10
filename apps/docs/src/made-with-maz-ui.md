@@ -8,7 +8,7 @@ aside: false
 
 # {{ $frontmatter.title }}
 
-{{ $frontmatter.description }}
+List of websites using maz-ui library
 
 ::: info
 Propose your website by opening an [issue](https://github.com/LouisMazel/maz-ui/issues/new?assignees=LouisMazel&labels=enhancement&projects=&template=feature_request.md&title=%5BFEATURE%5D) or a [pull request](https://github.com/LouisMazel/maz-ui/edit/master/apps/docs/src/made-with-maz-ui.md) and editing this page.
