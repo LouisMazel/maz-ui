@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/icons",
   "type": "module",
-  "version": "4.1.7-beta.7",
+  "version": "4.1.7-beta.8",
   "description": "Icons set in SVG and Vue components",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
