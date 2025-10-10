@@ -69,7 +69,7 @@
     "@commitlint/config-conventional": "^20.0.0",
     "@commitlint/cz-commitlint": "^20.1.0",
     "@nx/js": "^21.6.4",
-    "@types/node": "^24.7.0",
+    "@types/node": "^24.7.1",
     "@types/parse-path": "^7.1.0",
     "changelogen": "^0.6.2",
     "commitizen": "^4.3.1",

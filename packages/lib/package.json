@@ -201,7 +201,7 @@
     "@maz-ui/utils": "workspace:*",
     "chart.js": "^4.5.0",
     "dayjs": "^1.11.18",
-    "libphonenumber-js": "^1.12.23",
+    "libphonenumber-js": "^1.12.24",
     "valibot": "^1.1.0",
     "vue-chartjs": "^5.3.2"
   },
