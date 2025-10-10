@@ -381,7 +381,9 @@ onBeforeMount(async () => {
 onMounted(() => {
   if (!selectedCountry.value && props.useBrowserLocale) {
     const countryCode = getBrowserLocale()?.locale
-    onCountryChanged({ countryCode: countryCode as CountryCode })
+    if (countryCode && isCountryAvailable(countryCode)) {
+      onCountryChanged({ countryCode: countryCode as CountryCode })
+    }
   }
 })
 
