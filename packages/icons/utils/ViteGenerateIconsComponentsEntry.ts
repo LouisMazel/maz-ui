@@ -1,5 +1,5 @@
 import type { Plugin } from 'vite'
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { logger } from '@maz-ui/node'
@@ -19,6 +19,7 @@ const flags1x1Dir = resolve(_dirname, '../flags/1x1')
 const flags3x2Dir = resolve(_dirname, '../flags/3x2')
 const logosDir = resolve(_dirname, '../logos')
 const outputIndex = resolve(_dirname, '../src/index.ts')
+const componentsDir = resolve(_dirname, '../src/components')
 
 function replaceValuesInSvg(files: { file: string, name: string, path: string, dir: string }[]) {
   try {
@@ -69,13 +70,54 @@ function getReservedNames() {
   return [...componentNameList, 'Map', 'Object', 'String', 'Number', 'Boolean', 'Array', 'Date', 'RegExp', 'Error', 'Function', 'Promise', 'Set', 'WeakMap', 'WeakSet', 'Symbol', 'Proxy', 'Reflect', 'Math', 'JSON', 'Intl', 'Console', 'Window', 'Document', 'Element', 'HTMLElement', 'Node', 'Event', 'EventTarget', 'Location', 'History', 'Navigator', 'Screen', 'Storage', 'URL', 'URLSearchParams', 'FormData', 'File', 'Blob', 'FileReader', 'XMLHttpRequest', 'WebSocket', 'Worker', 'SharedWorker', 'ServiceWorker', 'Cache', 'Request', 'Response', 'Headers', 'Body', 'ReadableStream', 'WritableStream', 'TransformStream', 'ByteLengthQueuingStrategy', 'CountQueuingStrategy', 'TextEncoder', 'TextDecoder', 'Image', 'ImageData', 'Canvas', 'CanvasRenderingContext2D', 'WebGLRenderingContext', 'WebGL2RenderingContext', 'Audio', 'AudioContext', 'AudioBuffer', 'AudioBufferSourceNode', 'GainNode', 'OscillatorNode', 'AnalyserNode', 'BiquadFilterNode', 'ChannelMergerNode', 'ChannelSplitterNode', 'ConvolverNode', 'DelayNode', 'DynamicsCompressorNode', 'IIRFilterNode', 'MediaElementAudioSourceNode', 'MediaStreamAudioDestinationNode', 'MediaStreamAudioSourceNode', 'PannerNode', 'StereoPannerNode', 'WaveShaperNode', 'MediaStream', 'MediaStreamTrack', 'MediaRecorder', 'MediaDevices', 'MediaQueryList', 'MutationObserver', 'IntersectionObserver', 'ResizeObserver', 'Performance', 'PerformanceEntry', 'PerformanceMark', 'PerformanceMeasure', 'PerformanceNavigation', 'PerformanceResourceTiming', 'PerformanceTiming', 'PerformanceObserver', 'PerformanceObserverEntryList', 'PerformancePaintTiming', 'PerformanceServerTiming', 'PerformanceNavigationTiming', 'PerformanceLongTaskTiming', 'PerformanceEventTiming', 'PerformanceLayoutShift', 'PerformanceFirstInput', 'PerformanceLargestContentfulPaint', 'PerformanceElementTiming', 'PerformanceResourceTiming', 'PerformanceServerTiming', 'PerformanceNavigationTiming', 'PerformancePaintTiming', 'PerformanceLongTaskTiming', 'PerformanceEventTiming', 'PerformanceLayoutShift', 'PerformanceFirstInput', 'PerformanceLargestContentfulPaint', 'PerformanceElementTiming']
 }
 
+function generateIndividualIconFiles(files: { file: string, name: string, path: string }[]) {
+  try {
+    if (!existsSync(componentsDir)) {
+      mkdirSync(componentsDir, { recursive: true })
+    }
+
+    const reservedNames = getReservedNames()
+
+    for (const { file, name, path } of files) {
+      const iconName = toPascalCase(name)
+      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
+      const componentName = `Maz${finalName}`
+
+      // path already contains '../', so we only need one '../' to go from components/ to src/ then use path
+      const relativePath = path.startsWith('../') ? `../${path}` : `../../${path}`
+
+      const content = `/// <reference types="vite-svg-loader" />
+
+/**
+ * This file is generated automatically, do not manually modify it
+ */
+
+import { defineAsyncComponent, markRaw } from 'vue'
+
+export const ${componentName} = markRaw(defineAsyncComponent(() => import('${relativePath}/${file}?component')))
+`
+
+      const outputPath = resolve(componentsDir, `${componentName}.ts`)
+      writeFileSync(outputPath, content)
+    }
+
+    logger.success(`[ViteGenerateIconsComponentsEntry](generateIndividualIconFiles) ✅ ${files.length} individual icon files generated`)
+  }
+  catch (error) {
+    logger.error('[ViteGenerateIconsComponentsEntry](generateIndividualIconFiles) 🔴 error while generating individual icon files', error)
+
+    throw error
+  }
+}
+
 function generateIconsComponentsEntry(files: { file: string, name: string, path: string }[]) {
   try {
     const reservedNames = getReservedNames()
-    const imports = files.map(({ file, name, path }) => {
+    const exports = files.map(({ name }) => {
       const iconName = toPascalCase(name)
       const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
-      return `export const Maz${finalName} = markRaw(defineAsyncComponent(() => import('${path}/${file}?component')))`
+      const componentName = `Maz${finalName}`
+      return `export { ${componentName} } from './components/${componentName}'`
     }).join('\n')
 
     const content = `/// <reference types="vite-svg-loader" />
@@ -85,11 +127,10 @@ function generateIconsComponentsEntry(files: { file: string, name: string, path:
  */
 
 import type { Component, ComponentPublicInstance, FunctionalComponent } from 'vue'
-import { defineAsyncComponent, markRaw } from 'vue'
 
 export type IconComponent = FunctionalComponent | ComponentPublicInstance | Component
 
-${imports}
+${exports}
 `
 
     writeFileSync(outputIndex, content)
@@ -171,6 +212,7 @@ export function ViteGenerateIconsComponentsEntry(): Plugin {
         const files = [...svgFiles, ...flags1x1Files, ...flags3x2Files, ...logos].filter(({ file }) => file.endsWith('.svg') && !file.endsWith('.DS_Store'))
 
         replaceValuesInSvg(svgFiles)
+        generateIndividualIconFiles(files)
         generateIconsComponentsEntry(files)
         generateIconList(files)
 

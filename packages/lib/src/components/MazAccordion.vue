@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { MazPlus } from '@maz-ui/icons'
+import { MazPlus } from '@maz-ui/icons/MazPlus'
 import { computed, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 

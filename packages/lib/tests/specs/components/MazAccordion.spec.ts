@@ -79,6 +79,8 @@ describe('mazAccordion', () => {
       },
     })
 
+    await vi.dynamicImportSettled()
+
     await wrapper.vm.$nextTick()
     const step = wrapper.findComponent(MazCardSpotlight)
 
