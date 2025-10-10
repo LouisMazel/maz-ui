@@ -65,7 +65,7 @@
   "devDependencies": {
     "eslint-plugin-format": "^1.0.2",
     "glob": "^11.0.3",
-    "libphonenumber-js": "^1.12.23",
+    "libphonenumber-js": "^1.12.24",
     "vite": "^7.1.9",
     "vue": "^3.5.22"
   },
