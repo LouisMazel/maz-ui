@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.1.7-beta.7...v4.1.7-beta.8
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.7...v4.1.7-beta.8)
+
+### 💅 Refactors
+
+- **@maz-ui/icons:** Improve tree-shaking with individual icon files ([c0838f05](https://github.com/LouisMazel/maz-ui/commit/c0838f05))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7-beta.6...v4.1.7-beta.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.6...v4.1.7-beta.7)
