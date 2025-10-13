@@ -75,13 +75,15 @@ function injectThemeCSS(config: Required<MazUiNuxtThemeOptions>) {
   }
 }
 
-function getInjectCSSStates(config: Required<MazUiNuxtThemeOptions>) {
-  const isCSSAlreadyInjected = import.meta.client && !!document.getElementById(CSS_ID)
+/* eslint-disable sonarjs/no-commented-code */
+// function getInjectCSSStates(config: Required<MazUiNuxtThemeOptions>) {
+//   const isCSSAlreadyInjected = import.meta.client && !!document.getElementById(CSS_ID)
 
-  return {
-    shouldInjectCSSOnClient: !!config.injectAllCSSOnServer && import.meta.client && !isCSSAlreadyInjected,
-  }
-}
+//   return {
+//     shouldInjectCSSOnClient: !!config.injectAllCSSOnServer && import.meta.client && !isCSSAlreadyInjected,
+//   }
+// }
+/* eslint-enable sonarjs/no-commented-code */
 
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const options = $config.public.mazUi.theme
@@ -122,15 +124,15 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     injectThemeCSS(config)
   }
 
-  const { shouldInjectCSSOnClient } = getInjectCSSStates(config)
+  // const { shouldInjectCSSOnClient } = getInjectCSSStates(config)
 
   MazUiTheme.install?.(vueApp, {
     ...config,
     colorMode: getSavedColorMode() ?? config.colorMode,
     // @ts-expect-error _isDark is a private property
     _isDark: isDark,
-    injectFullCSS: !config.injectAllCSSOnServer || shouldInjectCSSOnClient,
-    injectCriticalCSS: shouldInjectCSSOnClient,
+    // injectFullCSS: !config.injectAllCSSOnServer || shouldInjectCSSOnClient,
+    // injectCriticalCSS: shouldInjectCSSOnClient,
   })
 })
 

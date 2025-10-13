@@ -5,6 +5,7 @@ packages:
   - .
 
 onlyBuiltDependencies:
-  - nx
   - '@swc/core'
+  - nx
+  - unrs-resolver
   - vue-demi
