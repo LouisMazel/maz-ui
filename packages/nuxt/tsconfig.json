@@ -1,8 +1,15 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "types": ["@nuxt/devtools"],
-    "skipLibCheck": true
-  },
-  "include": ["./src/**/*"]
+  "extends": "./.nuxt/tsconfig.json",
+  "exclude": [
+    "dist",
+    "node_modules",
+    "../../node_modules",
+    "../lib/**/*",
+    "../utils/**/*",
+    "../node/**/*",
+    "../themes/**/*",
+    "../mcp/**/*",
+    "../icons/**/*",
+    "../../apps/**/*"
+  ]
 }

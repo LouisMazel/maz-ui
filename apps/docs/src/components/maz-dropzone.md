@@ -203,7 +203,13 @@ const acceptedFormats = [
 </script>
 
 <template>
-  <MazDropzone v-model="files" :data-types="acceptedFormats" :max-file-size="5" @error="onError" />
+  <MazDropzone
+    v-model="files"
+    :data-types="acceptedFormats"
+    :max-file-size="5"
+    :max-files="5"
+    @error="onError"
+  />
 </template>
 ```
 
