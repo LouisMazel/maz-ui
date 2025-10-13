@@ -1,5 +1,23 @@
 # Change Log
 
+## v4.1.7-beta.8...v4.1.8-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.8...v4.1.8-beta.0)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Type declarations of composables ([54fc2e1d](https://github.com/LouisMazel/maz-ui/commit/54fc2e1d))
+
+### 💅 Refactors
+
+- **@maz-ui/nuxt:** Improve theme reactivity and get browser color scheme on server side ([bf24581f](https://github.com/LouisMazel/maz-ui/commit/bf24581f))
+- **@maz-ui/nuxt:** Improve theme reactivity and get browser color scheme on server side ([a5c069a0](https://github.com/LouisMazel/maz-ui/commit/a5c069a0))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.6...v4.1.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7)
