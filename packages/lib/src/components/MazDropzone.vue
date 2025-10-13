@@ -13,6 +13,7 @@ import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useDropzone } from './../composables/useDropzone'
 import MazBtn from './MazBtn.vue'
 import MazIcon from './MazIcon.vue'
+import MazLink from './MazLink.vue'
 
 const {
   id,
@@ -25,7 +26,6 @@ const {
   maxFileSize,
   preview = true,
   translations,
-  selectFileBtnProps = {},
   removeFileBtnProps = {},
   color = 'primary',
   spinnerProps = {},
@@ -156,11 +156,6 @@ export type MazDropzoneProps = {
    * @default 'primary'
    */
   color?: MazColor
-  /**
-   * MazBtn props [MazBtn props](/components/maz-btn#props)
-   * @default {}
-   */
-  selectFileBtnProps?: MazBtnProps
   /**
    * MazBtn props [MazBtn props](/components/maz-btn#props)
    * @default {}
@@ -813,24 +808,22 @@ defineExpose({
           </slot>
 
           <span class="m-dropzone__upload-text">
-            {{ messages.dragAndDrop }}
+            {{ messages.dragAndDrop }} {{ messages.divider }} <MazLink color="inherit" underline @click.prevent="!disabled && handleFileInputClick()">
+              {{ messages.selectFile }}
+            </MazLink>
           </span>
         </div>
-        <span class="m-dropzone__divider">{{ messages.divider }}</span>
-        <MazBtn :disabled :color v-bind="selectFileBtnProps" @click="handleFileInputClick">
-          {{ messages.selectFile }}
-        </MazBtn>
 
         <p v-if="!allFileIsAccepted && (messages.fileMaxCount || messages.fileMaxSize || messages.fileTypes)" class="m-dropzone__info-text">
-          <template v-if="messages.fileMaxCount">
-            {{ messages.fileMaxCount }} <span v-if="messages.fileMaxSize || messages.fileTypes"> - </span>
-          </template>
-          <template v-if="messages.fileMaxSize">
-            {{ messages.fileMaxSize }} <span v-if="messages.fileTypes"> - </span>
-          </template>
-          <template v-if="messages.fileTypes">
+          <span v-if="messages.fileMaxCount">
+            {{ messages.fileMaxCount }}
+          </span>
+          <span v-if="messages.fileMaxSize">
+            {{ messages.fileMaxSize }}
+          </span>
+          <span v-if="messages.fileTypes">
             {{ messages.fileTypes }}
-          </template>
+          </span>
         </p>
       </slot>
     </template>
@@ -948,7 +941,7 @@ defineExpose({
   }
 
   &__info-text {
-    @apply maz-mt-4 maz-text-center maz-text-sm maz-text-muted maz-max-w-full;
+    @apply maz-mt-4 maz-text-center maz-text-sm maz-text-muted maz-max-w-full maz-flex maz-flex-col;
   }
 
   &__file-input {
