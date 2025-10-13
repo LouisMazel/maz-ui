@@ -10,7 +10,7 @@ description: MazDialog is a standalone dialog component to show important inform
 <!--@include: ./../.vitepress/mixins/getting-started.md-->
 
 ::: tip
-This component usex `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component anywhere and it inherits all its props
+This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component anywhere and it inherits all its props
 :::
 
 ## Basic usage
