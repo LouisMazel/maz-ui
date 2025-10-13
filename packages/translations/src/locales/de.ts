@@ -20,7 +20,7 @@ export default {
     selectFile: 'Datei auswählen',
     divider: 'oder',
     fileMaxCount: 'Maximal {count} Dateien',
-    fileMaxSize: 'Maximal {size} MB',
+    fileMaxSize: 'Maximal {size} MB pro Datei',
     fileTypes: 'Erlaubte Dateitypen: {types}',
     types: {
       image: 'Bilder',

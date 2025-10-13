@@ -44,10 +44,10 @@ export default {
    */
   dropzone: {
     dragAndDrop: 'Drop your files',
-    selectFile: 'Select file',
+    selectFile: 'select file',
     divider: 'or',
     fileMaxCount: 'Maximum {count} files',
-    fileMaxSize: 'Maximum {size} MB',
+    fileMaxSize: 'Maximum {size} MB per file',
     fileTypes: 'Allowed file types: {types}',
     types: {
       image: 'images',

@@ -312,7 +312,7 @@ export default {
   },
   dropzone: {
     dragAndDrop: 'Déposez vos fichiers',
-    selectFile: 'Sélectionner un fichier',
+    selectFile: 'sélectionner un fichier',
     divider: 'ou'
   },
   // You can omit translations you don't want to override
@@ -336,7 +336,7 @@ export default {
   },
   dropzone: {
     dragAndDrop: 'Sleep je bestanden hierheen',
-    selectFile: 'Bestand selecteren',
+    selectFile: 'bestand selecteren',
     divider: 'of'
   }
 }
@@ -633,7 +633,7 @@ export default {
   },
   dropzone: {
     dragAndDrop: 'Déposez vos fichiers',
-    selectFile: 'Sélectionner un fichier',
+    selectFile: 'sélectionner un fichier',
     divider: 'ou'
   }
   // ... other translations
@@ -656,7 +656,7 @@ export default {
   },
   dropzone: {
     dragAndDrop: 'Suelta tus archivos',
-    selectFile: 'Seleccionar archivo',
+    selectFile: 'seleccionar archivo',
     divider: 'o'
   }
   // ... other translations
@@ -887,7 +887,7 @@ app.use(MazUi, {
         },
         dropzone: {
           dragAndDrop: 'Déposez vos fichiers',
-          selectFile: 'Sélectionner un fichier',
+          selectFile: 'sélectionner un fichier',
           divider: 'ou',
           fileMaxCount: 'Maximum {count} fichiers',
           fileMaxSize: 'Maximum {size} MB',
@@ -920,7 +920,7 @@ app.use(MazUi, {
         },
         dropzone: {
           dragAndDrop: 'Suelta tus archivos',
-          selectFile: 'Seleccionar archivo',
+          selectFile: 'seleccionar archivo',
           divider: 'o',
           fileMaxCount: 'Máximo {count} archivos',
           fileMaxSize: 'Máximo {size} MB',
@@ -1020,7 +1020,7 @@ export default {
    */
   dropzone: {
     dragAndDrop: 'Drop your files',
-    selectFile: 'Select file',
+    selectFile: 'select file',
     divider: 'or',
     fileMaxCount: 'Maximum {count} files',
     fileMaxSize: 'Maximum {size} MB',

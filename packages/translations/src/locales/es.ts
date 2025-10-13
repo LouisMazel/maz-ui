@@ -17,10 +17,10 @@ export default {
   },
   dropzone: {
     dragAndDrop: 'Arrastra tus archivos',
-    selectFile: 'Seleccionar archivo',
+    selectFile: 'seleccionar archivo',
     divider: 'o',
     fileMaxCount: 'Máximo {count} archivos',
-    fileMaxSize: 'Máximo {size} MB',
+    fileMaxSize: 'Máximo {size} MB por archivo',
     fileTypes: 'Tipos de archivo permitidos: {types}',
     types: {
       image: 'imágenes',
