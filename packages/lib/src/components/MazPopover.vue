@@ -470,6 +470,7 @@ function toggle() {
 
 function setOpen(value: boolean) {
   isOpen.value = value
+  ignoreNextClickOutside = false
   if (value) {
     emits('open')
     emits('toggle', value)
@@ -482,7 +483,6 @@ function setOpen(value: boolean) {
   else {
     emits('toggle', value)
     emits('close')
-    ignoreNextClickOutside = false
 
     if (trapFocus) {
       restoreFocus()
