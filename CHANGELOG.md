@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.1.8-beta.2...v4.1.8-beta.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.2...v4.1.8-beta.3)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDropdown - popover should be closed on click outside ([efa438db](https://github.com/LouisMazel/maz-ui/commit/efa438db))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.8-beta.1...v4.1.8-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.1...v4.1.8-beta.2)
