@@ -20,7 +20,7 @@ export default {
     selectFile: '选择文件',
     divider: '或',
     fileMaxCount: '最多 {count} 个文件',
-    fileMaxSize: '最大 {size} MB',
+    fileMaxSize: '最大 {size} MB 每个文件',
     fileTypes: '允许的文件类型：{types}',
     types: {
       image: '图片',

@@ -20,7 +20,7 @@ export default {
     selectFile: 'ファイルを選択',
     divider: 'または',
     fileMaxCount: '最大 {count} ファイル',
-    fileMaxSize: '最大 {size} MB',
+    fileMaxSize: '最大 {size} MB / ファイル',
     fileTypes: '許可されるファイルタイプ：{types}',
     types: {
       image: '画像',
