@@ -1,5 +1,19 @@
 # Changelog
 
+## v4.1.7-beta.8...v4.1.8-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.8...v4.1.8-beta.0)
+
+### 💅 Refactors
+
+- **@maz-ui/mcp:** Improve tools, descriptions and add search to help agents ([db9e45a2](https://github.com/LouisMazel/maz-ui/commit/db9e45a2))
+- **@maz-ui/mcp:** Improve tools, descriptions and add search to help agents ([05cf7939](https://github.com/LouisMazel/maz-ui/commit/05cf7939))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.6...v4.1.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7)

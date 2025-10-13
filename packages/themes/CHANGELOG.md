@@ -1,5 +1,23 @@
 # Change Log
 
+## v4.1.7-beta.8...v4.1.8-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.8...v4.1.8-beta.0)
+
+### 🔥 Performance
+
+- Tree-shaking improvements of packages ([4dd42ba4](https://github.com/LouisMazel/maz-ui/commit/4dd42ba4))
+
+### 💅 Refactors
+
+- **@maz-ui/themes:** Introduce darkClass option & fix some bugs with current colorMode and auto update theme when browser color scheme changes ([58e973eb](https://github.com/LouisMazel/maz-ui/commit/58e973eb))
+- **@maz-ui/themes:** Introduce darkClass option & fix some bugs with current colorMode and auto update theme when browser color scheme changes ([ba0a1a28](https://github.com/LouisMazel/maz-ui/commit/ba0a1a28))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.6...v4.1.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7)
