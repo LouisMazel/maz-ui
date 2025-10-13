@@ -340,7 +340,7 @@ watch(
     :block
     @update:model-value="setDropdown"
   >
-    <template #trigger="{ toggle, close, open, trigger: triggerType }">
+    <template #trigger="{ toggle, close, open }">
       <div
         :id="instanceId"
         tabindex="-1"
@@ -376,7 +376,7 @@ watch(
             :size
             @keydown.enter.stop.prevent="toggle"
             @keydown.space.stop.prevent="toggle"
-            @blur.stop.prevent="triggerType === 'hover' ? close() : undefined"
+            @blur.stop.prevent="close"
           >
             <!-- @slot Text content of the trigger element -->
             <slot />
