@@ -1,5 +1,24 @@
 # Change Log
 
+## v4.1.7-beta.8...v4.1.8-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.8...v4.1.8-beta.0)
+
+### 🚀 Features
+
+- **@maz-ui/icons:** Add 15 file type logos and 2 new icons ([695bf91f](https://github.com/LouisMazel/maz-ui/commit/695bf91f))
+- **@maz-ui/icons:** Add 15 file type logos and 2 new icons ([c6c119ea](https://github.com/LouisMazel/maz-ui/commit/c6c119ea))
+
+### 💅 Refactors
+
+- **@maz-ui/icons:** Improve tree-shaking with individual icon files ([c0838f05](https://github.com/LouisMazel/maz-ui/commit/c0838f05))
+- **@maz-ui/icons:** Improve tree-shaking with individual icon files ([dc0bd1f8](https://github.com/LouisMazel/maz-ui/commit/dc0bd1f8))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.6...v4.1.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7)

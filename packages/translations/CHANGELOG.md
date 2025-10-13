@@ -1,5 +1,28 @@
 # Change Log
 
+## v4.1.7-beta.8...v4.1.8-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.8...v4.1.8-beta.0)
+
+### 🚀 Features
+
+- **@maz-ui/translations:** Add dropzone translation keys ([cd9c24b4](https://github.com/LouisMazel/maz-ui/commit/cd9c24b4))
+- **@maz-ui/translations:** Add dropzone translation keys ([b5f56a89](https://github.com/LouisMazel/maz-ui/commit/b5f56a89))
+
+### 🩹 Fixes
+
+- Plugin declarations component custom properties - fix #1331 ([#1331](https://github.com/LouisMazel/maz-ui/issues/1331))
+- Plugin declarations component custom properties - fix #1331 ([#1331](https://github.com/LouisMazel/maz-ui/issues/1331))
+
+### 💅 Refactors
+
+- **@maz-ui/translations:** Update dropzone translations - remove capitalization from translation selectFile ([4d47d853](https://github.com/LouisMazel/maz-ui/commit/4d47d853))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.6...v4.1.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7)
