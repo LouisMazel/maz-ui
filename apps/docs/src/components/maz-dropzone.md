@@ -160,6 +160,7 @@ You can restrict allowed file types using the `data-types` prop:
     v-model="files"
     :data-types="acceptedFormats"
     :max-file-size="5"
+    :max-files="5"
     @error="onError"
   />
 
@@ -343,7 +344,7 @@ Customize text messages using the `translations` prop:
     v-model="files"
     :translations="{
       dragAndDrop: 'Drag files here',
-      selectFile: 'Browse files',
+      selectFile: 'browse files',
       fileInfos: 'Accepted files: Images up to 5MB'
     }"
     @error="onError"
@@ -356,7 +357,7 @@ Customize text messages using the `translations` prop:
   v-model="files"
   :translations="{
     dragAndDrop: 'Drag files here',
-    selectFile: 'Browse files',
+    selectFile: 'browse files',
     fileInfos: 'Accepted files: Images up to 5MB'
   }"
   @error="onError"
@@ -382,7 +383,7 @@ app.use(MazUi, {
       en: {
         dropzone: {
           dragAndDrop: 'Drag files here',
-          selectFile: 'Select files',
+          selectFile: 'select files',
           divider: 'or',
           fileMaxCount: 'Maximum {count} files',
           fileMaxSize: 'Maximum {size} MB',
