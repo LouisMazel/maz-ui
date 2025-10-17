@@ -13,7 +13,6 @@ export { getPackagePatterns, loadMonorepoConfig } from './config'
 export { generateChangelog, writeChangelogToFile } from './core/changelog'
 export { getPackageCommits, getPackages, getRootPackage } from './core/monorepo'
 export {
-  bumpPackagesVersions,
   bumpPackageVersion,
   readVersion,
   updateLernaVersion,

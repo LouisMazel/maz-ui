@@ -1,9 +1,8 @@
 import type { ReleaseType } from 'semver'
-import type { PackageInfo, VersionMode } from '../types'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { consola } from 'consola'
-import { inc } from 'semver'
+import * as semver from 'semver'
 
 export function readVersion(pkgPath: string): string {
   const packageJsonPath = join(pkgPath, 'package.json')
@@ -45,48 +44,13 @@ export function bumpPackageVersion(
   release: ReleaseType,
   preid?: string,
 ): string {
-  const newVersion = inc(currentVersion, release, preid)
+  const newVersion = semver.inc(currentVersion, release, preid as string)
 
   if (!newVersion) {
     throw new Error(`Unable to bump version ${currentVersion} with release type ${release}`)
   }
 
   return newVersion
-}
-
-export function bumpPackagesVersions(
-  packages: PackageInfo[],
-  versionMode: VersionMode,
-  release: ReleaseType,
-  preid?: string,
-  dryRun = false,
-): Map<string, string> {
-  const versionMap = new Map<string, string>()
-
-  if (versionMode === 'unified') {
-    const currentVersion = packages[0]?.version || '0.0.0'
-    const newVersion = bumpPackageVersion(currentVersion, release, preid)
-
-    for (const pkg of packages) {
-      writeVersion(pkg.path, newVersion, dryRun)
-      versionMap.set(pkg.name, newVersion)
-    }
-
-    consola.success(`Bumped all packages to ${newVersion}`)
-  }
-  else {
-    for (const pkg of packages) {
-      const currentVersion = pkg.version || '0.0.0'
-      const newVersion = bumpPackageVersion(currentVersion, release, preid)
-
-      writeVersion(pkg.path, newVersion, dryRun)
-      versionMap.set(pkg.name, newVersion)
-    }
-
-    consola.success(`Bumped ${packages.length} packages independently`)
-  }
-
-  return versionMap
 }
 
 export function updateLernaVersion(
