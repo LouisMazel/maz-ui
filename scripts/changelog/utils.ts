@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import { logger } from '@maz-ui/node/index.js'
 import { generateMarkDown, getGitDiff, loadChangelogConfig, parseCommits } from 'changelogen'
 import { version } from '../../lerna.json'
-import changelogenConfig from './changelogen.config'
+import { defaultConfig } from './default-config'
 
 export interface PackageInfo {
   name: string
@@ -15,7 +15,7 @@ export const packagesDir = join(__dirname, '../../packages')
 
 export async function getChangelogConfig({ from, to }: { from: string, to: string }) {
   const config = await loadChangelogConfig(rootDir, {
-    ...changelogenConfig,
+    ...defaultConfig,
     tokens: {
       github:
         process.env.CHANGELOGEN_TOKENS_GITHUB || process.env.GITHUB_TOKEN || process.env.GH_TOKEN,
