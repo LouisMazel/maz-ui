@@ -1,6 +1,6 @@
 import type { ChangelogConfig } from 'changelogen'
 
-export default <Partial<ChangelogConfig>>{
+export const defaultConfig = <Partial<ChangelogConfig>>{
   types: {
     feat: { title: '🚀 Features', semver: 'minor' },
     perf: { title: '🔥 Performance', semver: 'patch' },
