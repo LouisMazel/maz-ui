@@ -2,6 +2,7 @@
 
 import { Command } from 'commander'
 import { consola } from 'consola'
+import { version } from './../package.json'
 import { bumpCommand } from './commands/bump'
 import { changelogCommand } from './commands/changelog'
 import { githubCommand } from './commands/github'
@@ -14,7 +15,7 @@ const program = new Command()
 program
   .name('changelogen-monorepo')
   .description('Changelogen adapter for monorepo management')
-  .version('0.0.1')
+  .version(version)
 
 program
   .command('bump')
@@ -73,7 +74,7 @@ program
 
 program
   .command('release')
-  .description('Complete release workflow (bump + changelog + commit + tag + publish)')
+  .description('Complete release workflow (bump + changelog + commit + tag + push to remote + publish release)')
   .option('--major', 'Bump major version')
   .option('--minor', 'Bump minor version')
   .option('--patch', 'Bump patch version')
@@ -81,7 +82,7 @@ program
   .option('--preid <id>', 'Prerelease identifier (alpha, beta, rc, etc.)')
   .option('--from <ref>', 'Start commit reference')
   .option('--to <ref>', 'End commit reference', 'HEAD')
-  .option('--push', 'Push changes and tags to remote')
+  .option('--no-push', 'Skip push changes and tags to remote')
   .option('--no-release', 'Skip release creation (GitHub/GitLab)')
   .option('--no-publish', 'Skip npm publish')
   .option('--registry <url>', 'Custom npm registry URL')
@@ -92,6 +93,7 @@ program
   .action(async (options) => {
     try {
       let type: 'major' | 'minor' | 'patch' | 'prerelease' | undefined
+
       if (options.major)
         type = 'major'
       else if (options.minor)
@@ -106,9 +108,9 @@ program
         preid: options.preid,
         from: options.from,
         to: options.to,
-        push: options.push,
+        push: !options.noPush,
         release: options.release,
-        publish: options.publish,
+        publish: !options.noPublish,
         registry: options.registry,
         tag: options.tag,
         access: options.access,
