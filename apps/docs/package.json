@@ -22,7 +22,7 @@
   "dependencies": {
     "@maz-ui/eslint-config": "workspace:*",
     "@maz-ui/utils": "workspace:*",
-    "chart.js": "^4.5.0",
+    "chart.js": "^4.5.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.18",
     "libphonenumber-js": "^1.12.24",
