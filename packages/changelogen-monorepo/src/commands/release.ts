@@ -116,7 +116,7 @@ export async function releaseCommand(options: ReleaseOptions = {}): Promise<void
       }
     }
 
-    if (options.publish !== false && options.dryRun) {
+    if (options.publish !== false && !options.dryRun) {
       consola.info('Step 5/6: Publish packages to npm')
       await publishCommand({
         registry: options.registry,
