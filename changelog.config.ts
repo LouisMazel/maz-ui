@@ -9,25 +9,29 @@ export default defineConfig({
     docs: { title: '📖 Documentation', semver: 'patch' },
     types: { title: '🌊 Types', semver: 'patch' },
     style: { title: '💄 Styles', semver: 'patch' },
-    build: false,
-    chore: false,
-    test: false,
-    ci: false,
+    chore: { title: '🏡 Chore' },
+    examples: { title: '🏀 Examples' },
+    test: { title: '✅ Tests' },
+    ci: { title: '🤖 CI' },
+    build: { title: '📦 Build' },
   },
   templates: {
     commitMessage: 'chore(release): bump version to v{{newVersion}}',
     tagMessage: 'v{{newVersion}}',
     tagBody: 'v{{newVersion}}',
   },
-  excludeAuthors: [],
   noAuthors: false,
   hideAuthorEmail: false,
 
   monorepo: {
-    versionMode: 'unified',
+    versionMode: 'selective',
     packages: ['packages/*'],
     ignorePackages: [],
     filterCommits: true,
     rootChangelog: true,
+  },
+
+  changelog: {
+    formatCmd: 'pnpm lint:fix:all',
   },
 })

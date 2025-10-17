@@ -1,8 +1,8 @@
 import type { ChangelogConfig } from 'changelogen'
 
-export type VersionMode = 'unified' | 'independent'
+export type VersionMode = 'unified' | 'independent' | 'selective'
 
-export type ReleaseType = 'latest' | 'prerelease'
+export type GitProvider = 'github' | 'gitlab'
 
 export interface MonorepoConfig {
   versionMode?: VersionMode
@@ -12,8 +12,16 @@ export interface MonorepoConfig {
   rootChangelog?: boolean
 }
 
-export interface ExtendedChangelogConfig extends Partial<ChangelogConfig> {
-  monorepo?: MonorepoConfig
+export interface IChangelogConfig {
+  formatCmd?: string
+  from?: string
+  to?: string
+}
+
+export interface ChangelogMonorepoConfig extends ChangelogConfig {
+  monorepo: MonorepoConfig
+  publish: PublishConfig
+  changelog?: IChangelogConfig
 }
 
 export interface PackageInfo {
@@ -28,20 +36,40 @@ export interface BumpOptions {
   dryRun?: boolean
 }
 
-export interface ChangelogOptions {
-  releaseType?: ReleaseType
-  from?: string
-  to?: string
+export interface ChangelogOptions extends IChangelogConfig {
   dryRun?: boolean
 }
 
 export interface ReleaseOptions extends BumpOptions, ChangelogOptions {
   push?: boolean
-  github?: boolean
+  release?: boolean
+  publish?: boolean
+  registry?: string
+  tag?: string
+  access?: 'public' | 'restricted'
+  otp?: string
 }
 
 export interface GithubOptions {
   versions?: string[]
   all?: boolean
   token?: string
+}
+
+export interface GitlabOptions {
+  versions?: string[]
+  all?: boolean
+  token?: string
+}
+
+export interface PublishConfig {
+  registry?: string
+  tag?: string
+  access?: 'public' | 'restricted'
+  otp?: string
+  packages?: string[]
+}
+
+export interface PublishOptions extends PublishConfig {
+  dryRun?: boolean
 }

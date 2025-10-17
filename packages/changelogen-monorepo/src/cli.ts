@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander'
-import consola from 'consola'
+import { consola } from 'consola'
 import { bumpCommand } from './commands/bump'
 import { changelogCommand } from './commands/changelog'
 import { githubCommand } from './commands/github'
+import { gitlabCommand } from './commands/gitlab'
+import { publishCommand } from './commands/publish'
 import { releaseCommand } from './commands/release'
 
 const program = new Command()
@@ -50,15 +52,15 @@ program
 program
   .command('changelog')
   .description('Generate changelogs for all packages')
-  .option('--release-type <type>', 'Release type (latest or prerelease)', 'prerelease')
   .option('--from <ref>', 'Start commit reference')
   .option('--to <ref>', 'End commit reference', 'HEAD')
+  .option('--format-cmd <cmd>', 'Command to format CHANGELOG files after generation (e.g. "pnpm lint"')
   .option('--dry-run', 'Preview changes without writing files')
   .action(async (options) => {
     try {
       await changelogCommand({
-        releaseType: options.releaseType,
         from: options.from,
+        formatCmd: options.formatCmd,
         to: options.to,
         dryRun: options.dryRun,
       })
@@ -71,17 +73,21 @@ program
 
 program
   .command('release')
-  .description('Complete release workflow (bump + changelog + commit + tag)')
+  .description('Complete release workflow (bump + changelog + commit + tag + publish)')
   .option('--major', 'Bump major version')
   .option('--minor', 'Bump minor version')
   .option('--patch', 'Bump patch version')
   .option('--prerelease', 'Bump prerelease version')
   .option('--preid <id>', 'Prerelease identifier (alpha, beta, rc, etc.)')
-  .option('--release-type <type>', 'Release type (latest or prerelease)', 'prerelease')
   .option('--from <ref>', 'Start commit reference')
   .option('--to <ref>', 'End commit reference', 'HEAD')
   .option('--push', 'Push changes and tags to remote')
-  .option('--no-github', 'Skip GitHub release creation')
+  .option('--no-release', 'Skip release creation (GitHub/GitLab)')
+  .option('--no-publish', 'Skip npm publish')
+  .option('--registry <url>', 'Custom npm registry URL')
+  .option('--tag <tag>', 'Publish with specific tag (default: latest for stable, next for prerelease)')
+  .option('--access <type>', 'Package access level (public or restricted)')
+  .option('--otp <code>', 'One-time password for 2FA')
   .option('--dry-run', 'Preview changes without writing files or making commits')
   .action(async (options) => {
     try {
@@ -98,11 +104,39 @@ program
       await releaseCommand({
         type,
         preid: options.preid,
-        releaseType: options.releaseType,
         from: options.from,
         to: options.to,
         push: options.push,
-        github: options.github,
+        release: options.release,
+        publish: options.publish,
+        registry: options.registry,
+        tag: options.tag,
+        access: options.access,
+        otp: options.otp,
+        dryRun: options.dryRun,
+      })
+    }
+    catch (error) {
+      consola.error(error)
+      process.exit(1)
+    }
+  })
+
+program
+  .command('publish')
+  .description('Publish packages to npm registry')
+  .option('--registry <url>', 'Custom npm registry URL')
+  .option('--tag <tag>', 'Publish with specific tag (default: latest for stable, next for prerelease)')
+  .option('--access <type>', 'Package access level (public or restricted)')
+  .option('--otp <code>', 'One-time password for 2FA')
+  .option('--dry-run', 'Preview publish without actually publishing')
+  .action(async (options) => {
+    try {
+      await publishCommand({
+        registry: options.registry,
+        tag: options.tag,
+        access: options.access,
+        otp: options.otp,
         dryRun: options.dryRun,
       })
     }
@@ -121,6 +155,26 @@ program
   .action(async (versions, options) => {
     try {
       await githubCommand({
+        versions,
+        all: options.all,
+        token: options.token,
+      })
+    }
+    catch (error) {
+      consola.error(error)
+      process.exit(1)
+    }
+  })
+
+program
+  .command('gitlab')
+  .description('Publish GitLab release for the latest tag')
+  .option('--token <token>', 'GitLab token (or use GITLAB_TOKEN env var)')
+  .option('--all', 'Publish releases for all versions in CHANGELOG.md')
+  .argument('[versions...]', 'Specific versions to publish')
+  .action(async (versions, options) => {
+    try {
+      await gitlabCommand({
         versions,
         all: options.all,
         token: options.token,
