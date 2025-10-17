@@ -1,0 +1,7 @@
+src/
+tsconfig.json
+build.config.ts
+eslint.config.ts
+*.log
+.DS_Store
+node_modules/
