@@ -54,12 +54,14 @@ export interface GithubOptions {
   versions?: string[]
   all?: boolean
   token?: string
+  dryRun?: boolean
 }
 
 export interface GitlabOptions {
   versions?: string[]
   all?: boolean
   token?: string
+  dryRun?: boolean
 }
 
 export interface PublishConfig {
