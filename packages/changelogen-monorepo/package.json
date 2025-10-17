@@ -65,7 +65,7 @@
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
-    "@types/semver": "^7.7.0",
+    "@types/semver": "^7.7.1",
     "unbuild": "^3.6.1"
   },
   "lint-staged": {
