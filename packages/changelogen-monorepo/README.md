@@ -89,7 +89,7 @@ Packages are published in dependency graph order, ensuring dependencies are avai
 ### Full release workflow
 
 ```bash
-# Complete release: bump + changelog + commit + tag + publish to npm + publish release
+# Complete release: bump + changelog + commit + tag + push to remote + publish release
 clm release --prerelease --preid beta
 
 # With push to remote
@@ -180,6 +180,10 @@ export default defineConfig({
     filterCommits: true,
     rootChangelog: true,
   },
+
+  changelog: {
+    formatCmd: 'pnpm lint'
+  }
 })
 ```
 
@@ -293,7 +297,7 @@ export default defineConfig({
 
 **Behavior example:**
 
-```
+```txt
 Commits:
 - feat(ui): add button component → ui has commits
 - fix(utils): fix date parser → utils has commits

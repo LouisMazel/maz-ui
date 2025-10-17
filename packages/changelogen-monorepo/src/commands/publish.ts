@@ -1,4 +1,4 @@
-import type { PublishOptions } from '../types'
+import type { ChangelogMonorepoConfig, PublishOptions } from '../types'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { execPromise } from '@maz-ui/node'
@@ -14,9 +14,13 @@ function isPrerelease(version?: string): boolean {
   return parsed ? parsed.prerelease.length > 0 : false
 }
 
-function determinePublishTag(version: string | undefined, options: PublishOptions): string {
+function determinePublishTag(version: string | undefined, options: PublishOptions, config: ChangelogMonorepoConfig): string {
   if (options.tag) {
     return options.tag
+  }
+
+  if (config.publish.tag) {
+    return config.publish.tag
   }
 
   if (isPrerelease(version)) {
@@ -121,20 +125,24 @@ async function publishPackage(
   packageName: string,
   version: string | undefined,
   options: PublishOptions,
+  config: ChangelogMonorepoConfig,
 ): Promise<void> {
-  const tag = determinePublishTag(version, options)
+  const tag = determinePublishTag(version, options, config)
   const args = ['publish', '--tag', tag]
 
-  if (options.registry) {
-    args.push('--registry', options.registry)
+  const registry = options.registry || config.publish.registry
+  if (registry) {
+    args.push('--registry', registry)
   }
 
-  if (options.access) {
-    args.push('--access', options.access)
+  const access = options.access || config.publish.access
+  if (access) {
+    args.push('--access', access)
   }
 
-  if (options.otp) {
-    args.push('--otp', options.otp)
+  const otp = options.otp || config.publish.otp
+  if (otp) {
+    args.push('--otp', otp)
   }
 
   const command = `npm ${args.join(' ')}`
@@ -206,7 +214,7 @@ export async function publishCommand(options: PublishOptions = {}): Promise<void
 
       for (const pkg of sortedPackages) {
         if (packagesToBump.includes(pkg.name)) {
-          await publishPackage(pkg.path, pkg.name, pkg.version, options)
+          await publishPackage(pkg.path, pkg.name, pkg.version, options, config)
         }
         else {
           consola.info(`Skipping ${pkg.name} (version unchanged)`)
@@ -215,7 +223,7 @@ export async function publishCommand(options: PublishOptions = {}): Promise<void
     }
     else {
       for (const pkg of sortedPackages) {
-        await publishPackage(pkg.path, pkg.name, pkg.version, options)
+        await publishPackage(pkg.path, pkg.name, pkg.version, options, config)
       }
     }
 
