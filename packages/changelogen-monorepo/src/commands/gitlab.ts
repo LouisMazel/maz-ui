@@ -1,14 +1,14 @@
-import type { GithubOptions } from '../types'
+import type { GitlabOptions } from '../types'
 import { execPromise } from '@maz-ui/node'
-import { createGithubRelease } from 'changelogen'
 import { consola } from 'consola'
 import { loadMonorepoConfig } from '../config'
 import { generateChangelog } from '../core/changelog'
 import { getPackageCommits, getRootPackage } from '../core/monorepo'
+import { createGitlabRelease } from '../utils/gitlab'
 
-export async function githubCommand(options: GithubOptions = {}): Promise<void> {
+export async function gitlabCommand(options: GitlabOptions = {}): Promise<void> {
   try {
-    consola.start('Publishing GitHub release...')
+    consola.start('Publishing GitLab release...')
 
     const rootDir = process.cwd()
 
@@ -27,12 +27,12 @@ export async function githubCommand(options: GithubOptions = {}): Promise<void> 
       from: penultimateTagTrimmed,
       to: lastTagTrimmed,
       tokens: {
-        github: options.token || process.env.CHANGELOGEN_TOKENS_GITHUB || process.env.GITHUB_TOKEN || process.env.GH_TOKEN,
+        gitlab: options.token || process.env.CHANGELOGEN_TOKENS_GITLAB || process.env.GITLAB_TOKEN || process.env.CI_JOB_TOKEN,
       },
     })
 
-    if (!config.tokens.github) {
-      throw new Error('No GitHub token specified. Set GITHUB_TOKEN or GH_TOKEN environment variable.')
+    if (!config.tokens.gitlab) {
+      throw new Error('No GitLab token specified. Set GITLAB_TOKEN or CI_JOB_TOKEN environment variable.')
     }
 
     const rootPackage = getRootPackage(rootDir)
@@ -48,27 +48,31 @@ export async function githubCommand(options: GithubOptions = {}): Promise<void> 
     const releaseBody = changelog.split('\n').slice(2).join('\n')
 
     const tagName = lastTagTrimmed.startsWith('v') ? lastTagTrimmed : `v${lastTagTrimmed}`
-    const isPrerelease = /-(?:alpha|beta|rc|dev|next)/.test(lastTagTrimmed)
+
+    const { stdout: currentBranch } = await execPromise('git rev-parse --abbrev-ref HEAD', {
+      noSuccess: true,
+      noStdout: true,
+    })
 
     const release = {
       tag_name: tagName,
       name: tagName,
-      body: releaseBody,
-      prerelease: isPrerelease,
+      description: releaseBody,
+      ref: currentBranch.trim() || 'main',
     }
 
     consola.info('Release details:', {
       tag_name: release.tag_name,
       name: release.name,
-      prerelease: release.prerelease,
+      ref: release.ref,
     })
 
-    await createGithubRelease(config, release)
+    await createGitlabRelease(config, release)
 
-    consola.success(`Release ${tagName} published to GitHub!`)
+    consola.success(`Release ${tagName} published to GitLab!`)
   }
   catch (error) {
-    consola.error('Error publishing GitHub release:', (error as Error).message)
+    consola.error('Error publishing GitLab release:', (error as Error).message)
     throw error
   }
 }

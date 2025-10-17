@@ -1,12 +1,12 @@
-import type { GitCommit, ResolvedChangelogConfig } from 'changelogen'
-import type { MonorepoConfig, PackageInfo } from '../types'
+import type { GitCommit } from 'changelogen'
+import type { ChangelogMonorepoConfig, PackageInfo } from '../types'
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { getGitDiff, parseCommits } from 'changelogen'
-import consola from 'consola'
+import { consola } from 'consola'
 import fg from 'fast-glob'
 
-function isValidPackage(packagePath: string, monorepoConfig: MonorepoConfig): PackageInfo | null {
+function isValidPackage(packagePath: string, config: ChangelogMonorepoConfig): PackageInfo | null {
   const packageJsonPath = join(packagePath, 'package.json')
 
   if (!existsSync(packageJsonPath))
@@ -19,7 +19,7 @@ function isValidPackage(packagePath: string, monorepoConfig: MonorepoConfig): Pa
 
     if (packageJson.private)
       return null
-    if (monorepoConfig.ignorePackages?.includes(packageJson.name))
+    if (config.monorepo.ignorePackages?.includes(packageJson.name))
       return null
 
     return {
@@ -37,7 +37,7 @@ function isValidPackage(packagePath: string, monorepoConfig: MonorepoConfig): Pa
 export function getPackages(
   cwd: string,
   patterns: string[],
-  monorepoConfig: MonorepoConfig,
+  config: ChangelogMonorepoConfig,
 ): PackageInfo[] {
   const packages: PackageInfo[] = []
   const foundPaths = new Set<string>()
@@ -55,7 +55,7 @@ export function getPackages(
         if (foundPaths.has(matchPath))
           continue
 
-        const packageInfo = isValidPackage(matchPath, monorepoConfig)
+        const packageInfo = isValidPackage(matchPath, config)
         if (packageInfo) {
           foundPaths.add(matchPath)
           packages.push(packageInfo)
@@ -72,22 +72,29 @@ export function getPackages(
 
 export async function getPackageCommits(
   pkg: PackageInfo,
-  config: ResolvedChangelogConfig,
+  config: ChangelogMonorepoConfig,
   rootDir: string,
 ): Promise<GitCommit[]> {
   const rawCommits = await getGitDiff(config.from, config.to, config.cwd)
+  const allCommits = parseCommits(rawCommits, config)
 
-  const pathFilter = pkg.path === rootDir ? undefined : pkg.path.replace(`${rootDir}/`, '')
-
-  const commits = parseCommits(rawCommits, config).filter((commit) => {
+  const commits = allCommits.filter((commit) => {
     const isAllowedType = config.types[commit.type]
-    const isAllowedScope = pkg.name === 'root' || commit.scope === pkg.name
 
-    const body: string = commit.body
+    if (!isAllowedType) {
+      return false
+    }
 
-    const isAllowedBody = (pathFilter && body.includes(`${pathFilter}`)) ?? true
+    if (pkg.path === rootDir || pkg.name === 'root') {
+      return true
+    }
 
-    return isAllowedType && (isAllowedScope || isAllowedBody)
+    const packageRelativePath = pkg.path.replace(`${rootDir}/`, '')
+
+    const scopeMatches = commit.scope === pkg.name
+    const bodyContainsPath = commit.body.includes(packageRelativePath)
+
+    return scopeMatches || bodyContainsPath
   })
 
   return commits
@@ -104,7 +111,7 @@ export function getRootPackage(rootDir: string): PackageInfo {
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'))
 
     return {
-      name: packageJson.name || 'root',
+      name: packageJson.name,
       path: rootDir,
       version: packageJson.version,
     }

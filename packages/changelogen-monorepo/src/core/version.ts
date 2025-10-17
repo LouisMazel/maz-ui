@@ -1,8 +1,9 @@
+import type { ReleaseType } from 'semver'
 import type { PackageInfo, VersionMode } from '../types'
-import { readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import consola from 'consola'
-import * as semver from 'semver'
+import { consola } from 'consola'
+import { inc } from 'semver'
 
 export function readVersion(pkgPath: string): string {
   const packageJsonPath = join(pkgPath, 'package.json')
@@ -41,10 +42,10 @@ export function writeVersion(pkgPath: string, version: string, dryRun = false): 
 
 export function bumpPackageVersion(
   currentVersion: string,
-  release: semver.ReleaseType,
+  release: ReleaseType,
   preid?: string,
 ): string {
-  const newVersion = semver.inc(currentVersion, release, preid)
+  const newVersion = inc(currentVersion, release, preid)
 
   if (!newVersion) {
     throw new Error(`Unable to bump version ${currentVersion} with release type ${release}`)
@@ -56,7 +57,7 @@ export function bumpPackageVersion(
 export function bumpPackagesVersions(
   packages: PackageInfo[],
   versionMode: VersionMode,
-  release: semver.ReleaseType,
+  release: ReleaseType,
   preid?: string,
   dryRun = false,
 ): Map<string, string> {
@@ -94,6 +95,10 @@ export function updateLernaVersion(
   dryRun = false,
 ): void {
   const lernaJsonPath = join(rootDir, 'lerna.json')
+
+  if (!existsSync(lernaJsonPath)) {
+    return
+  }
 
   try {
     const content = readFileSync(lernaJsonPath, 'utf8')
