@@ -550,7 +550,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
     }
   }
 
-  const starCount = ref<number>(0)
+  const starCount = ref(0)
 
   getStarCount().then((count) => {
     starCount.value = count
