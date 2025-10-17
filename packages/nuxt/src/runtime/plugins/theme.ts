@@ -80,7 +80,7 @@ function injectThemeCSS(config: Required<MazUiNuxtThemeOptions>) {
 //   const isCSSAlreadyInjected = import.meta.client && !!document.getElementById(CSS_ID)
 
 //   return {
-//     shouldInjectCSSOnClient: !!config.injectAllCSSOnServer && import.meta.client && !isCSSAlreadyInjected,
+//     shouldInjectCSSOnClient: config.injectAllCSSOnServer === false && !isCSSAlreadyInjected,
 //   }
 // }
 /* eslint-enable sonarjs/no-commented-code */
