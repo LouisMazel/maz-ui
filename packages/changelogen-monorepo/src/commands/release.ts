@@ -10,7 +10,11 @@ import { githubCommand } from './github'
 import { gitlabCommand } from './gitlab'
 import { publishCommand } from './publish'
 
-async function commitAndTag(newVersion: string, config: ChangelogMonorepoConfig): Promise<string> {
+async function commitAndTag(
+  newVersion: string,
+  config: ChangelogMonorepoConfig,
+  noVerify?: boolean,
+): Promise<string> {
   const filesToAdd = ['package.json', 'lerna.json', '**/CHANGELOG.md', '**/package.json']
   await execPromise(`git add ${filesToAdd.join(' ')}`, { noSuccess: true })
 
@@ -18,8 +22,9 @@ async function commitAndTag(newVersion: string, config: ChangelogMonorepoConfig)
     ?.replaceAll('{{newVersion}}', newVersion)
     || `chore(release): bump version to v${newVersion}`
 
-  await execPromise(`git commit -m "${commitMessage}"`, { noSuccess: true })
-  consola.success(`Committed: ${commitMessage}`)
+  const noVerifyFlag = (noVerify ?? config.noVerify) ? '--no-verify ' : ''
+  await execPromise(`git commit ${noVerifyFlag}-m "${commitMessage}"`, { noSuccess: true })
+  consola.success(`Committed: ${commitMessage}${noVerify || config.noVerify ? ' (--no-verify)' : ''}`)
 
   const tagName = `v${newVersion}`
   const tagMessage = config.templates.tagMessage
@@ -94,7 +99,7 @@ export async function releaseCommand(options: ReleaseOptions = {}): Promise<void
     }
     else {
       consola.info('Step 3/6: Commit changes and create tag')
-      tagName = await commitAndTag(newVersion, config)
+      tagName = await commitAndTag(newVersion, config, options.noVerify)
     }
 
     if (options.push && !options.dryRun) {

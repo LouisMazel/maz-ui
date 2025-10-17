@@ -4,6 +4,7 @@ import type { BumpOptions, ChangelogMonorepoConfig, PackageInfo } from '../types
 import { determineSemverChange, getGitDiff, parseCommits } from 'changelogen'
 import { consola } from 'consola'
 import { getPackagePatterns, loadMonorepoConfig } from '../config'
+import { expandPackagesToBumpWithDependents } from '../core/dependencies'
 import { getPackageCommits, getPackages, getRootPackage } from '../core/monorepo'
 import { bumpPackageVersion, updateLernaVersion, writeVersion } from '../core/version'
 
@@ -72,30 +73,37 @@ async function bumpPackageIndependently(
   config: ChangelogMonorepoConfig,
   rootDir: string,
   options: BumpOptions,
-): Promise<boolean> {
+  forcedBumpType?: ReleaseType,
+): Promise<{ bumped: boolean, newVersion?: string }> {
   consola.info(`Analyzing ${pkg.name}...`)
 
   const commits = await getPackageCommits(pkg, config, rootDir)
 
-  if (commits.length === 0) {
+  let releaseType: ReleaseType | null = null
+
+  if (forcedBumpType) {
+    releaseType = forcedBumpType
+    consola.info(`  Using forced bump type (dependency updated): ${releaseType}`)
+  }
+  else if (commits.length === 0) {
     consola.info(`  No commits found for ${pkg.name}, skipping bump`)
-    return false
-  }
-
-  consola.info(`  Found ${commits.length} commits for ${pkg.name}`)
-
-  const releaseType = determineReleaseType(commits, config, options)
-
-  if (!releaseType) {
-    consola.info(`  No version bump required for ${pkg.name}`)
-    return false
-  }
-
-  if (options.type) {
-    consola.info(`  Using specified release type: ${releaseType}`)
+    return { bumped: false }
   }
   else {
-    consola.info(`  Detected release type: ${releaseType}`)
+    consola.info(`  Found ${commits.length} commits for ${pkg.name}`)
+    releaseType = determineReleaseType(commits, config, options)
+
+    if (!releaseType) {
+      consola.info(`  No version bump required for ${pkg.name}`)
+      return { bumped: false }
+    }
+
+    if (options.type) {
+      consola.info(`  Using specified release type: ${releaseType}`)
+    }
+    else {
+      consola.info(`  Detected release type: ${releaseType}`)
+    }
   }
 
   const currentVersion = pkg.version || '0.0.0'
@@ -104,7 +112,7 @@ async function bumpPackageIndependently(
   consola.info(`  Bumping ${pkg.name} from ${currentVersion} to ${newVersion}`)
 
   writeVersion(pkg.path, newVersion, options.dryRun)
-  return true
+  return { bumped: true, newVersion }
 }
 
 async function bumpIndependentMode(
@@ -116,23 +124,78 @@ async function bumpIndependentMode(
   consola.start('Bumping versions in independent mode...')
 
   const rootPackage = getRootPackage(rootDir)
-  let bumpedCount = 0
 
+  // First, identify packages with commits
+  const packagesWithCommits: PackageInfo[] = []
   for (const pkg of packages) {
-    const wasBumped = await bumpPackageIndependently(pkg, config, rootDir, options)
-    if (wasBumped) {
-      bumpedCount++
+    const commits = await getPackageCommits(pkg, config, rootDir)
+    if (commits.length > 0) {
+      packagesWithCommits.push(pkg)
+    }
+  }
+
+  consola.info(`Found ${packagesWithCommits.length} package(s) with commits`)
+
+  // Expand with dependent packages
+  const allPackagesToBump = expandPackagesToBumpWithDependents(packagesWithCommits, packages)
+
+  consola.info(`Total packages to bump (including dependents): ${allPackagesToBump.length}`)
+
+  let bumpedByCommits = 0
+  let bumpedByDependency = 0
+
+  for (const pkgToBump of allPackagesToBump) {
+    const forcedBumpType = pkgToBump.reason === 'dependency' ? 'patch' : undefined
+    const result = await bumpPackageIndependently(pkgToBump, config, rootDir, options, forcedBumpType)
+
+    if (result.bumped) {
+      if (pkgToBump.reason === 'commits') {
+        bumpedByCommits++
+      }
+      else {
+        bumpedByDependency++
+      }
     }
   }
 
   writeVersion(rootPackage.path, rootPackage.version || '0.0.0', options.dryRun)
 
-  if (bumpedCount === 0) {
+  if (bumpedByCommits === 0 && bumpedByDependency === 0) {
     consola.warn('No packages were bumped')
   }
   else {
-    consola.success(`${bumpedCount} package(s) bumped independently`)
+    consola.success(
+      `${bumpedByCommits + bumpedByDependency} package(s) bumped independently `
+      + `(${bumpedByCommits} from commits, ${bumpedByDependency} from dependencies)`,
+    )
   }
+}
+async function getPackageToBump({
+  packages,
+  config,
+  rootDir,
+}: {
+  packages: PackageInfo[]
+  config: ChangelogMonorepoConfig
+  rootDir: string
+}) {
+  // First, identify packages with commits
+  const packagesWithCommits: PackageInfo[] = []
+  for (const pkg of packages) {
+    const commits = await getPackageCommits(pkg, config, rootDir)
+    if (commits.length > 0) {
+      packagesWithCommits.push(pkg)
+      consola.info(`  ${pkg.name}: ${commits.length} commit(s) found`)
+    }
+    else {
+      consola.info(`  ${pkg.name}: no commits`)
+    }
+  }
+
+  // Expand with dependent packages (transitive)
+  const allPackagesToBump = expandPackagesToBumpWithDependents(packagesWithCommits, packages)
+
+  return allPackagesToBump
 }
 
 async function bumpSelectiveMode(
@@ -164,18 +227,11 @@ async function bumpSelectiveMode(
     consola.info(`Detected release type from commits: ${releaseType}`)
   }
 
-  const packagesToBump: PackageInfo[] = []
-
-  for (const pkg of packages) {
-    const commits = await getPackageCommits(pkg, config, rootDir)
-    if (commits.length > 0) {
-      packagesToBump.push(pkg)
-      consola.info(`  ${pkg.name}: ${commits.length} commit(s) found`)
-    }
-    else {
-      consola.info(`  ${pkg.name}: no commits, skipping`)
-    }
-  }
+  const packagesToBump = await getPackageToBump({
+    packages,
+    config,
+    rootDir,
+  })
 
   if (packagesToBump.length === 0) {
     consola.warn('No packages have commits, skipping bump')
@@ -185,7 +241,13 @@ async function bumpSelectiveMode(
   const currentVersion = rootPackage.version || '0.0.0'
   const newVersion = bumpPackageVersion(currentVersion, releaseType, options.preid)
 
-  consola.info(`Bumping ${packagesToBump.length} package(s) from ${currentVersion} to ${newVersion}`)
+  const bumpedByCommits = packagesToBump.filter(p => p.reason === 'commits').length
+  const bumpedByDependency = packagesToBump.filter(p => p.reason === 'dependency').length
+
+  consola.info(
+    `Bumping ${packagesToBump.length} package(s) from ${currentVersion} to ${newVersion} `
+    + `(${bumpedByCommits} from commits, ${bumpedByDependency} from dependencies)`,
+  )
 
   for (const pkg of packagesToBump) {
     writeVersion(pkg.path, newVersion, options.dryRun)

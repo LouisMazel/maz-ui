@@ -22,6 +22,7 @@ export interface ChangelogMonorepoConfig extends ChangelogConfig {
   monorepo: MonorepoConfig
   publish: PublishConfig
   changelog?: IChangelogConfig
+  noVerify?: boolean
 }
 
 export interface PackageInfo {
@@ -48,6 +49,7 @@ export interface ReleaseOptions extends BumpOptions, ChangelogOptions {
   tag?: string
   access?: 'public' | 'restricted'
   otp?: string
+  noVerify?: boolean
 }
 
 export interface GithubOptions {

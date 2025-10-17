@@ -10,11 +10,14 @@ Changelogen adapter for monorepo management with unified and independent version
 - 📝 Generate changelogs per package + root aggregate
 - 🏷️ Pre-release support (alpha, beta, rc)
 - 📢 NPM publish with smart tag detection and dependency ordering
+- 🔗 **Automatic dependency bumping** - packages are bumped when their workspace dependencies change
 - 🐙 GitHub & GitLab release automation
 - 🔍 Auto-detect Git provider (GitHub/GitLab)
 - 🎯 Commit filtering by scope and path
 - 🔐 2FA/OTP support for npm publishing
 - 🎛️ Custom registry support (private registries, GitHub Packages, etc.)
+- 🪝 Skip git hooks with `--no-verify` option
+- 🎨 Optional changelog formatting with custom commands
 - ⚙️ Optional Lerna integration (updates `lerna.json` if present)
 
 ## Installation
@@ -28,7 +31,8 @@ pnpm add -D @maz-ui/changelogen-monorepo
 ### Bump versions
 
 ```bash
-# Bump all changed packages (patch)
+# Bump all changed packages
+# Automatically bumps dependent packages when their dependencies change
 clm bump
 
 # Bump with specific type
@@ -37,6 +41,9 @@ clm bump --major
 
 # Pre-release
 clm bump --prerelease --preid beta
+
+# Example: If package-b is updated, package-a (which depends on package-b)
+# will also be bumped (patch in independent mode, same version in selective/unified)
 ```
 
 ### Generate changelogs
@@ -89,7 +96,7 @@ Packages are published in dependency graph order, ensuring dependencies are avai
 ### Full release workflow
 
 ```bash
-# Complete release: bump + changelog + commit + tag + push to remote + publish release
+# Complete release: bump + changelog + commit + tag + publish to npm + publish release
 clm release --prerelease --preid beta
 
 # With push to remote
@@ -100,6 +107,9 @@ clm release --no-release
 
 # Skip npm publish
 clm release --no-publish
+
+# Skip git hooks during commit (useful for CI or to bypass pre-commit hooks)
+clm release --no-verify
 
 # With npm options
 clm release --registry https://npm.pkg.github.com --access public --otp 123456
@@ -204,6 +214,39 @@ export default defineConfig({
   })
   ```
 
+#### `noVerify`
+
+- **Type:** `boolean`
+- **Default:** `false`
+- **Description:** Skip git hooks when creating the release commit. Useful in CI environments or when you want to bypass pre-commit hooks during automated releases.
+- **Example:**
+
+  ```typescript
+  export default defineConfig({
+    noVerify: true, // Skip all git hooks during commits
+  })
+  ```
+
+#### `changelog`
+
+- **Type:** `{ formatCmd?: string, from?: string, to?: string }`
+- **Default:** `{}`
+- **Description:** Changelog-specific configuration options.
+  - `formatCmd`: Optional command to run after generating changelogs (e.g., `'pnpm lint:fix'` to format the files). If this command fails, a warning is displayed but the process continues.
+  - `from`: Starting commit reference for changelog generation
+  - `to`: Ending commit reference (defaults to HEAD)
+- **Example:**
+
+  ```typescript
+  export default defineConfig({
+    changelog: {
+      formatCmd: 'pnpm lint:fix', // Auto-format generated changelogs
+      from: 'v1.0.0',
+      to: 'HEAD',
+    }
+  })
+  ```
+
 ### Monorepo Configuration Options
 
 #### `versionMode`
@@ -279,6 +322,53 @@ export default defineConfig({
 - **Type:** `boolean`
 - **Default:** `true`
 - **Description:** When enabled, generates a `CHANGELOG.md` at the repository root that aggregates changes from all packages. This provides an overview of all changes across the entire monorepo.
+
+## Dependency Management
+
+The tool automatically detects and bumps packages that depend on other packages in the monorepo. This ensures that when a package is updated, all packages depending on it are also bumped and republished with the correct dependency versions.
+
+### How It Works
+
+**Automatic Detection:**
+
+- When package B is updated, all packages that depend on B are automatically identified
+- Only `dependencies` and `peerDependencies` are considered (not `devDependencies`, following industry best practices)
+- Transitive dependencies are handled: if A→B→C and C is updated, both B and A are bumped
+
+**Bump Types by Mode:**
+
+- **Selective/Unified mode**: Dependent packages get the same unified version as the root
+- **Independent mode**: Dependent packages get a `patch` bump minimum (can be higher if they also have commits)
+
+**Example Scenario:**
+
+```
+Packages:
+  - @maz-ui/utils@1.0.0
+  - @maz-ui/components@2.0.0 (depends on @maz-ui/utils)
+  - @maz-ui/forms@1.5.0 (depends on @maz-ui/components)
+
+Commit: feat: add new utility function (in @maz-ui/utils)
+
+Result in Independent Mode:
+  - @maz-ui/utils: 1.0.0 → 1.1.0 (minor - from commit type)
+  - @maz-ui/components: 2.0.0 → 2.0.1 (patch - dependency updated)
+  - @maz-ui/forms: 1.5.0 → 1.5.1 (patch - transitive dependency)
+
+Result in Selective Mode:
+  - All three packages: bumped to unified version 2.1.0
+  - Root version: 2.0.0 → 2.1.0
+```
+
+**Why This Matters:**
+
+1. **Consistency**: Ensures `package.json` files reference the correct workspace dependency versions
+2. **Publishing**: New versions on npm point to the updated dependencies
+3. **Semver Compliance**: Dependency changes are considered package changes
+
+**Exclusions:**
+
+Changes to `devDependencies` do NOT trigger dependent package bumps, as dev dependencies are not published and don't affect runtime behavior (following Lerna and Changesets best practices).
 
 ### Example Configurations
 
