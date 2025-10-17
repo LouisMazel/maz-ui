@@ -88,12 +88,18 @@ export async function changelogCommand(options: ChangelogOptions = {}): Promise<
     }
 
     if (config.changelog?.formatCmd && !options.dryRun) {
-      consola.info('Format command is running...')
-      await execPromise(config.changelog.formatCmd, {
-        noStderr: true,
-        noSuccess: true,
-      })
-      consola.info('Format completed')
+      consola.info('Running format command...')
+      try {
+        await execPromise(config.changelog.formatCmd, {
+          noStderr: true,
+          noSuccess: true,
+        })
+        consola.success('Format completed')
+      }
+      catch (error) {
+        consola.warn('Format command failed:', (error as Error).message)
+        consola.info('Continuing anyway...')
+      }
     }
 
     consola.success('Changelog generation completed!')

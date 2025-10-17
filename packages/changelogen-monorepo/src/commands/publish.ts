@@ -1,10 +1,12 @@
+import type { PackageWithDeps } from '../core/dependencies'
 import type { ChangelogMonorepoConfig, PublishOptions } from '../types'
-import { existsSync, readFileSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { execPromise } from '@maz-ui/node'
 import { consola } from 'consola'
 import * as semver from 'semver'
 import { getPackagePatterns, loadMonorepoConfig } from '../config'
+import { getPackagesWithDependencies, topologicalSort } from '../core/dependencies'
 import { getPackages, getRootPackage } from '../core/monorepo'
 
 function isPrerelease(version?: string): boolean {
@@ -28,78 +30,6 @@ function determinePublishTag(version: string | undefined, options: PublishOption
   }
 
   return 'latest'
-}
-
-interface PackageWithDeps {
-  name: string
-  path: string
-  version?: string
-  dependencies: string[]
-}
-
-function getPackageDependencies(packagePath: string, allPackageNames: Set<string>): string[] {
-  const packageJsonPath = join(packagePath, 'package.json')
-  if (!existsSync(packageJsonPath)) {
-    return []
-  }
-
-  const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'))
-  const deps: string[] = []
-
-  const allDeps = {
-    ...packageJson.dependencies,
-    ...packageJson.devDependencies,
-    ...packageJson.peerDependencies,
-  }
-
-  for (const depName of Object.keys(allDeps)) {
-    if (allPackageNames.has(depName)) {
-      deps.push(depName)
-    }
-  }
-
-  return deps
-}
-
-function topologicalSort(packages: PackageWithDeps[]): PackageWithDeps[] {
-  const sorted: PackageWithDeps[] = []
-  const visited = new Set<string>()
-  const visiting = new Set<string>()
-
-  const packageMap = new Map<string, PackageWithDeps>()
-  for (const pkg of packages) {
-    packageMap.set(pkg.name, pkg)
-  }
-
-  function visit(pkgName: string) {
-    if (visited.has(pkgName))
-      return
-
-    if (visiting.has(pkgName)) {
-      consola.warn(`Circular dependency detected involving ${pkgName}`)
-      return
-    }
-
-    visiting.add(pkgName)
-
-    const pkg = packageMap.get(pkgName)
-    if (!pkg)
-      return
-
-    for (const depName of pkg.dependencies) {
-      visit(depName)
-    }
-
-    visiting.delete(pkgName)
-    visited.add(pkgName)
-    sorted.push(pkg)
-  }
-
-  for (const pkg of packages) {
-    visit(pkg.name)
-  }
-
-  return sorted
 }
 
 function getPackagesToPublishInSelectiveMode(
@@ -188,13 +118,7 @@ export async function publishCommand(options: PublishOptions = {}): Promise<void
 
     consola.info(`Found ${packages.length} packages`)
 
-    const allPackageNames = new Set(packages.map(p => p.name))
-
-    const packagesWithDeps: PackageWithDeps[] = packages.map(pkg => ({
-      ...pkg,
-      dependencies: getPackageDependencies(pkg.path, allPackageNames),
-    }))
-
+    const packagesWithDeps = getPackagesWithDependencies(packages)
     const sortedPackages = topologicalSort(packagesWithDeps)
 
     consola.info('Publish order (based on dependency graph):')
