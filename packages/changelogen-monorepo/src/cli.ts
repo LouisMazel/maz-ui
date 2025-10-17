@@ -89,6 +89,7 @@ program
   .option('--tag <tag>', 'Publish with specific tag (default: latest for stable, next for prerelease)')
   .option('--access <type>', 'Package access level (public or restricted)')
   .option('--otp <code>', 'One-time password for 2FA')
+  .option('--no-verify', 'Skip git hooks during commit')
   .option('--dry-run', 'Preview changes without writing files or making commits')
   .action(async (options) => {
     try {
@@ -115,6 +116,7 @@ program
         tag: options.tag,
         access: options.access,
         otp: options.otp,
+        noVerify: options.noVerify,
         dryRun: options.dryRun,
       })
     }

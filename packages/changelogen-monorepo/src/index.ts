@@ -11,7 +11,19 @@ export { releaseCommand } from './commands/release'
 export { getPackagePatterns, loadMonorepoConfig } from './config'
 
 export { generateChangelog, writeChangelogToFile } from './core/changelog'
+export {
+  expandPackagesToBumpWithDependents,
+  getDependentsOf,
+  getPackageDependencies,
+  getPackagesWithDependencies,
+  topologicalSort,
+} from './core/dependencies'
+export type {
+  PackageToBump,
+  PackageWithDeps,
+} from './core/dependencies'
 export { getPackageCommits, getPackages, getRootPackage } from './core/monorepo'
+
 export {
   bumpPackageVersion,
   readVersion,
