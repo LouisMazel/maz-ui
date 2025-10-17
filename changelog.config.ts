@@ -31,6 +31,10 @@ export default defineConfig({
     rootChangelog: true,
   },
 
+  publish: {
+    registry: 'https://registry.npmjs.org',
+  },
+
   changelog: {
     formatCmd: 'pnpm lint:fix:all',
   },
