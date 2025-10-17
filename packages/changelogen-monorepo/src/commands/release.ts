@@ -58,6 +58,7 @@ async function publishToGitProvider(rootDir: string, options: ReleaseOptions): P
   return provider
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export async function releaseCommand(options: ReleaseOptions = {}): Promise<void> {
   try {
     consola.box('Starting release workflow...')
@@ -76,12 +77,6 @@ export async function releaseCommand(options: ReleaseOptions = {}): Promise<void
       dryRun: options.dryRun,
     })
 
-    if (options.dryRun) {
-      consola.info('[DRY RUN] Skipping commit, tag, push, publish, and release')
-      consola.success('Release workflow completed (dry run)!')
-      return
-    }
-
     const rootDir = process.cwd()
     const rootPackage = getRootPackage(rootDir)
     const newVersion = rootPackage.version
@@ -91,35 +86,60 @@ export async function releaseCommand(options: ReleaseOptions = {}): Promise<void
     }
 
     const config = await loadMonorepoConfig(rootDir)
+    let tagName: string
 
-    consola.info('Step 3/6: Commit changes and create tag')
-    const tagName = await commitAndTag(newVersion, config)
+    if (options.dryRun) {
+      consola.info('Step 3/6: Skip commit changes and create tag')
+      tagName = 'FAKE_TAGS'
+    }
+    else {
+      consola.info('Step 3/6: Commit changes and create tag')
+      tagName = await commitAndTag(newVersion, config)
+    }
 
-    if (options.push) {
+    if (options.push && !options.dryRun) {
       consola.info('Step 4/6: Push changes and tags')
       await execPromise('git push --follow-tags', { noSuccess: true })
       consola.success('Pushed changes and tags to remote')
     }
     else {
-      consola.info('Step 4/6: Skipped push (use --push to enable)')
+      if (options.dryRun) {
+        consola.info('Step 4/6: Skipped push (--dry-run)')
+      }
+      else {
+        consola.info('Step 4/6: Skipped push (remove --no-push to enable)')
+      }
     }
 
-    if (options.publish !== false) {
+    if (options.publish !== false && options.dryRun) {
       consola.info('Step 5/6: Publish packages to npm')
       await publishCommand({
         registry: options.registry,
         tag: options.tag || options.preid,
         access: options.access,
         otp: options.otp,
-        dryRun: false,
+        dryRun: options.dryRun,
       })
     }
     else {
-      consola.info('Step 5/6: Skipped npm publish (--no-publish)')
+      if (options.dryRun) {
+        consola.info('Step 5/6: Skipped npm publish (--dry-run)')
+      }
+      else {
+        consola.info('Step 5/6: Skipped npm publish (--no-publish)')
+      }
     }
 
-    consola.info('Step 6/6: Publish Git release')
-    const provider = await publishToGitProvider(rootDir, options)
+    let provider: string
+
+    if (options.dryRun) {
+      consola.info('Step 6/6: Skipped publish git release')
+      provider = 'FAKE_PROVIDER'
+    }
+    else {
+      consola.info('Step 6/6: Publish Git release')
+      provider = await publishToGitProvider(rootDir, options)
+    }
 
     consola.box('Release workflow completed!\n\n'
       + `Version: ${newVersion}\n`

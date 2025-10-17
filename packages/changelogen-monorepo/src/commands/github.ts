@@ -31,7 +31,7 @@ export async function githubCommand(options: GithubOptions = {}): Promise<void> 
       },
     })
 
-    if (!config.tokens.github) {
+    if (!config.tokens.github && !options.dryRun) {
       throw new Error('No GitHub token specified. Set GITHUB_TOKEN or GH_TOKEN environment variable.')
     }
 
@@ -57,11 +57,16 @@ export async function githubCommand(options: GithubOptions = {}): Promise<void> 
       prerelease: isPrerelease,
     }
 
-    consola.info('Release details:', {
+    consola.info('Release details:', JSON.stringify({
       tag_name: release.tag_name,
       name: release.name,
       prerelease: release.prerelease,
-    })
+    }, null, 2))
+
+    if (options.dryRun) {
+      consola.info('Release content', release.body)
+      return
+    }
 
     await createGithubRelease(config, release)
 

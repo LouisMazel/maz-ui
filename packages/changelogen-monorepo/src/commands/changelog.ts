@@ -87,7 +87,7 @@ export async function changelogCommand(options: ChangelogOptions = {}): Promise<
       }
     }
 
-    if (config.changelog?.formatCmd) {
+    if (config.changelog?.formatCmd && !options.dryRun) {
       consola.info('Format command is running...')
       await execPromise(config.changelog.formatCmd, {
         noStderr: true,
