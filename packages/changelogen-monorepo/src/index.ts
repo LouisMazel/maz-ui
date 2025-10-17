@@ -1,11 +1,14 @@
-import type { ExtendedChangelogConfig } from './types'
+import type { DeepPartial } from '@maz-ui/utils'
+import type { ChangelogMonorepoConfig } from './types'
 
 export { bumpCommand } from './commands/bump'
 export { changelogCommand } from './commands/changelog'
 export { githubCommand } from './commands/github'
+export { gitlabCommand } from './commands/gitlab'
+export { publishCommand } from './commands/publish'
 export { releaseCommand } from './commands/release'
 
-export { getPackagePatterns, getRootDir, loadMonorepoConfig } from './config'
+export { getPackagePatterns, loadMonorepoConfig } from './config'
 
 export { generateChangelog, writeChangelogToFile } from './core/changelog'
 export { getPackageCommits, getPackages, getRootPackage } from './core/monorepo'
@@ -19,16 +22,21 @@ export {
 
 export type {
   BumpOptions,
+  ChangelogMonorepoConfig,
   ChangelogOptions,
-  ExtendedChangelogConfig,
   GithubOptions,
+  GitlabOptions,
+  GitProvider,
   MonorepoConfig,
   PackageInfo,
+  PublishOptions,
   ReleaseOptions,
-  ReleaseType,
   VersionMode,
 } from './types'
 
-export function defineConfig(config: ExtendedChangelogConfig): ExtendedChangelogConfig {
+export { detectGitProvider, parseGitRemoteUrl } from './utils/git'
+export { createGitlabRelease, getGitlabReleaseByTag, listGitlabReleases } from './utils/gitlab'
+
+export function defineConfig(config: DeepPartial<ChangelogMonorepoConfig>): DeepPartial<ChangelogMonorepoConfig> {
   return config
 }

@@ -3,14 +3,14 @@ import type { PackageInfo } from '../types'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { generateMarkDown } from 'changelogen'
-import consola from 'consola'
+import { consola } from 'consola'
 
 export async function generateChangelog(
   pkg: PackageInfo,
   commits: GitCommit[],
   config: ResolvedChangelogConfig,
   version?: string,
-): Promise<string> {
+): Promise<string | undefined> {
   consola.info(`Generating changelog for ${pkg.name}...`)
 
   try {
@@ -22,7 +22,7 @@ export async function generateChangelog(
 
     if (commits.length === 0) {
       consola.warn(`No relevant commits found for ${pkg.name}`)
-      changelog = `${changelog}\n\n**Note:** No relevant commits found`
+      return undefined
     }
     else {
       consola.success(`Changelog generated for ${pkg.name} (${commits.length} commits)`)
@@ -39,7 +39,7 @@ export function writeChangelogToFile(
   pkg: PackageInfo,
   changelog: string,
   dryRun = false,
-): void {
+) {
   const changelogPath = join(pkg.path, 'CHANGELOG.md')
 
   let existingChangelog = ''
@@ -62,10 +62,12 @@ export function writeChangelogToFile(
   }
 
   if (dryRun) {
-    consola.info(`[DRY RUN] Would write changelog to ${changelogPath}`)
+    consola.info(`[DRY RUN] ${pkg.name} - Would write changelog to ${changelogPath}`)
+    consola.info(`[DRY RUN] ${pkg.name} - ${changelog}`)
     return
   }
 
   writeFileSync(changelogPath, updatedChangelog, 'utf8')
+
   consola.success(`Updated ${changelogPath}`)
 }

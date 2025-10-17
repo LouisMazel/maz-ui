@@ -1,9 +1,9 @@
 import type { ResolvedChangelogConfig } from 'changelogen'
-import type { ExtendedChangelogConfig, MonorepoConfig } from '../types'
+import type { ChangelogMonorepoConfig, IChangelogConfig, MonorepoConfig, PublishConfig } from '../types'
 import { loadChangelogConfig } from 'changelogen'
 
 const defaultMonorepoConfig: Required<MonorepoConfig> = {
-  versionMode: 'unified',
+  versionMode: 'selective',
   packages: ['packages/*'],
   ignorePackages: [],
   filterCommits: true,
@@ -12,28 +12,26 @@ const defaultMonorepoConfig: Required<MonorepoConfig> = {
 
 export async function loadMonorepoConfig(
   cwd: string,
-  overrides?: Partial<ExtendedChangelogConfig>,
-): Promise<{
-  changelogConfig: ResolvedChangelogConfig
-  monorepoConfig: Required<MonorepoConfig>
-}> {
-  const changelogConfig = await loadChangelogConfig(cwd, overrides)
+  overrides?: Partial<ChangelogMonorepoConfig>,
+) {
+  const changelogConfig = await loadChangelogConfig(cwd, overrides) as ResolvedChangelogConfig & {
+    monorepo?: MonorepoConfig
+    publish?: PublishConfig
+    changelog?: IChangelogConfig
+  }
 
-  const monorepoConfig: Required<MonorepoConfig> = {
+  const monorepo: Required<MonorepoConfig> = {
     ...defaultMonorepoConfig,
     ...overrides?.monorepo,
+    ...changelogConfig.monorepo,
   }
 
   return {
-    changelogConfig,
-    monorepoConfig,
-  }
+    ...changelogConfig,
+    monorepo,
+  } satisfies ChangelogMonorepoConfig
 }
 
 export function getPackagePatterns(monorepoConfig: MonorepoConfig): string[] {
   return monorepoConfig.packages || ['packages/*']
-}
-
-export function getRootDir(cwd: string): string {
-  return cwd
 }
