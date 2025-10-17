@@ -23,6 +23,7 @@ export default <UserConfig> {
         '@maz-ui/utils',
         '@maz-ui/node',
         '@maz-ui/mcp',
+        '@maz-ui/changelogen-monorepo',
       ],
     ],
     'subject-case': [2, 'never', ['upper-case', 'pascal-case', 'start-case']],
