@@ -199,6 +199,60 @@ export default defineConfig({
 
 ### Configuration Options
 
+#### `types`
+
+- **Type:** `Record<string, { title: string, semver: 'major' | 'minor' | 'patch' } | false>`
+- **Default:** Changelogen defaults (feat, fix, etc.)
+- **Description:** Defines commit types and their impact on version bumping:
+  - **Object with `semver`**: Triggers version bump
+    - `semver: 'major'`: Breaking changes → major version bump (1.0.0 → 2.0.0)
+    - `semver: 'minor'`: New features → minor version bump (1.0.0 → 1.1.0)
+    - `semver: 'patch'`: Bug fixes → patch version bump (1.0.0 → 1.0.1)
+  - **`false`**: No version bump (commit type is ignored for versioning and won't appear in changelog)
+
+**Controlling Version Bumps:**
+
+By default, any commit that touches a package will cause it to be bumped. However, you can exclude certain commit types from triggering bumps by setting them to `false`:
+
+```typescript
+export default defineConfig({
+  types: {
+    // These WILL trigger version bumps
+    feat: { title: '🚀 Features', semver: 'minor' },
+    fix: { title: '🩹 Fixes', semver: 'patch' },
+    perf: { title: '🔥 Performance', semver: 'patch' },
+
+    // These will NOT trigger version bumps (set to false)
+    chore: false,
+    docs: false,
+    style: false,
+    ci: false,
+    test: false,
+  },
+})
+```
+
+**Use Cases:**
+
+- **Dependency updates**: Use `chore(deps):` for devDependencies updates that don't need a release
+- **Documentation**: Use `docs:` for README updates that don't change functionality
+- **CI/Tests**: Use `ci:` or `test:` for changes that don't affect the package code
+
+**Example:**
+
+```bash
+# This WILL bump the version (feat has semver: 'minor')
+git commit -m "feat(utils): add new utility function"
+
+# This will NOT bump the version (chore is set to false)
+git commit -m "chore(utils): upgrade vite to latest"
+
+# This will NOT bump the version (docs is set to false)
+git commit -m "docs(components): update API documentation"
+```
+
+**Note:** Commits with types set to `false` are completely ignored - they won't bump versions and won't appear in changelogs.
+
 #### `provider`
 
 - **Type:** `'github' | 'gitlab'`
