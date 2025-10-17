@@ -31,7 +31,7 @@ export async function gitlabCommand(options: GitlabOptions = {}): Promise<void> 
       },
     })
 
-    if (!config.tokens.gitlab) {
+    if (!config.tokens.gitlab && !options.dryRun) {
       throw new Error('No GitLab token specified. Set GITLAB_TOKEN or CI_JOB_TOKEN environment variable.')
     }
 
@@ -61,11 +61,16 @@ export async function gitlabCommand(options: GitlabOptions = {}): Promise<void> 
       ref: currentBranch.trim() || 'main',
     }
 
-    consola.info('Release details:', {
+    consola.info('Release details:', JSON.stringify({
       tag_name: release.tag_name,
       name: release.name,
       ref: release.ref,
-    })
+    }, null, 2))
+
+    if (options.dryRun) {
+      consola.info('Release content', release.description)
+      return
+    }
 
     await createGitlabRelease(config, release)
 

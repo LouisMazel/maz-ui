@@ -153,6 +153,7 @@ program
   .description('Publish GitHub release for the latest tag')
   .option('--token <token>', 'GitHub token (or use GITHUB_TOKEN env var)')
   .option('--all', 'Publish releases for all versions in CHANGELOG.md')
+  .option('--dry-run', 'Preview github release content')
   .argument('[versions...]', 'Specific versions to publish')
   .action(async (versions, options) => {
     try {
@@ -160,6 +161,7 @@ program
         versions,
         all: options.all,
         token: options.token,
+        dryRun: options.dryRun,
       })
     }
     catch (error) {
@@ -173,6 +175,7 @@ program
   .description('Publish GitLab release for the latest tag')
   .option('--token <token>', 'GitLab token (or use GITLAB_TOKEN env var)')
   .option('--all', 'Publish releases for all versions in CHANGELOG.md')
+  .option('--dry-run', 'Preview github release content')
   .argument('[versions...]', 'Specific versions to publish')
   .action(async (versions, options) => {
     try {
@@ -180,6 +183,7 @@ program
         versions,
         all: options.all,
         token: options.token,
+        dryRun: options.dryRun,
       })
     }
     catch (error) {
