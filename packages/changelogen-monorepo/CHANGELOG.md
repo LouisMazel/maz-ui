@@ -1,5 +1,29 @@
 # Changelog
 
+## v4.1.8-beta.4...v4.1.9-alpha.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.4...v4.1.9-alpha.0)
+
+### 🚀 Features
+
+- **@maz-ui/changelogen-monorepo:** New package to manage monorepo with changelogen ([656033a15](https://github.com/LouisMazel/maz-ui/commit/656033a15))
+- **@maz-ui/changelogen-monorepo:** New package to manage monorepo with changelogen ([835f2fdd4](https://github.com/LouisMazel/maz-ui/commit/835f2fdd4))
+
+### 🩹 Fixes
+
+- **@maz-ui/changelogen-monorepo:** Publish command ([81f0788b6](https://github.com/LouisMazel/maz-ui/commit/81f0788b6))
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Bump improvements ([6cb2a7063](https://github.com/LouisMazel/maz-ui/commit/6cb2a7063))
+- **@maz-ui/changelogen-monorepo:** Bump improvements ([ad49b02f1](https://github.com/LouisMazel/maz-ui/commit/ad49b02f1))
+- **@maz-ui/changelogen-monorepo:** Changelog generation improvements ([a1bfacea6](https://github.com/LouisMazel/maz-ui/commit/a1bfacea6))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7...v4.1.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7...v4.1.8)
