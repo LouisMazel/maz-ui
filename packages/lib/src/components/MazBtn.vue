@@ -35,7 +35,7 @@ export interface MazBtnProps {
    */
   text?: string
   /**
-   * The size of the button
+   * Predifined sizes of the button
    * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
    */
   size?: MazSize
