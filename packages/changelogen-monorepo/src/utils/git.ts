@@ -2,7 +2,7 @@ import type { ChangelogMonorepoConfig, GitProvider, PackageInfo } from '../types
 import { execSync } from 'node:child_process'
 
 import { execPromise } from '@maz-ui/node/execPromise.js'
-import consola from 'consola'
+import { consola } from 'consola'
 
 export function detectGitProvider(cwd: string = process.cwd()): GitProvider | null {
   try {
