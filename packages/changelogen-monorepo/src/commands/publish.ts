@@ -4,17 +4,10 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { execPromise } from '@maz-ui/node'
 import { consola } from 'consola'
-import * as semver from 'semver'
 import { getPackagePatterns, loadMonorepoConfig } from '../config'
 import { getPackagesWithDependencies, topologicalSort } from '../core/dependencies'
-import { getPackages, getRootPackage } from '../core/monorepo'
-
-function isPrerelease(version?: string): boolean {
-  if (!version)
-    return false
-  const parsed = semver.parse(version)
-  return parsed ? parsed.prerelease.length > 0 : false
-}
+import { getPackageCommits, getPackages, getRootPackage } from '../core/monorepo'
+import { getLastTag, isPrerelease } from '../core/version'
 
 function determinePublishTag(version: string | undefined, options: PublishOptions, config: ChangelogMonorepoConfig): string {
   if (options.tag) {
@@ -36,18 +29,42 @@ function getPackagesToPublishInSelectiveMode(
   sortedPackages: PackageWithDeps[],
   rootVersion: string | undefined,
 ): string[] {
-  const packagesToBump: string[] = []
+  const packagesToPublish: string[] = []
 
   for (const pkg of sortedPackages) {
     const pkgJsonPath = join(pkg.path, 'package.json')
     const pkgJson = JSON.parse(readFileSync(pkgJsonPath, 'utf-8'))
 
-    if (pkgJson.version !== rootVersion) {
-      packagesToBump.push(pkg.name)
+    if (pkgJson.version === rootVersion) {
+      packagesToPublish.push(pkg.name)
     }
   }
 
-  return packagesToBump
+  return packagesToPublish
+}
+
+async function getPackagesToPublishInIndependentMode(
+  sortedPackages: PackageWithDeps[],
+  config: ChangelogMonorepoConfig,
+): Promise<string[]> {
+  const packagesToPublish: string[] = []
+  const rootPackage = getRootPackage(config.cwd)
+  const lastTag = await getLastTag(rootPackage.version)
+
+  for (const pkg of sortedPackages) {
+    const commits = await getPackageCommits({
+      pkg,
+      config,
+      from: lastTag,
+      to: 'HEAD',
+    })
+
+    if (commits.length > 0) {
+      packagesToPublish.push(pkg.name)
+    }
+  }
+
+  return packagesToPublish
 }
 
 async function publishPackage(
@@ -84,7 +101,6 @@ async function publishPackage(
     return
   }
 
-  const currentDir = process.cwd()
   try {
     process.chdir(packagePath)
 
@@ -102,59 +118,64 @@ async function publishPackage(
     throw error
   }
   finally {
-    process.chdir(currentDir)
+    process.chdir(config.cwd)
   }
 }
 
-export async function publishCommand(options: PublishOptions = {}): Promise<void> {
+export async function publish(options: PublishOptions = {}) {
   try {
     consola.start('Publishing packages...')
 
-    const rootDir = process.cwd()
-    const config = await loadMonorepoConfig(rootDir)
-    const patterns = options.packages ?? getPackagePatterns(config.monorepo)
-    const packages = getPackages(rootDir, patterns, config)
-    const rootPackage = getRootPackage(rootDir)
+    const config = await loadMonorepoConfig()
+
+    const patterns = options.packages ?? config.publish.packages ?? getPackagePatterns(config.monorepo)
+
+    const packages = getPackages({
+      cwd: config.cwd,
+      patterns,
+      ignorePackages: config.monorepo.ignorePackages,
+    })
+    const rootPackage = getRootPackage(config.cwd)
 
     consola.info(`Found ${packages.length} packages`)
 
     const packagesWithDeps = getPackagesWithDependencies(packages)
     const sortedPackages = topologicalSort(packagesWithDeps)
 
-    consola.info('Publish order (based on dependency graph):')
-    for (const pkg of sortedPackages) {
-      consola.info(`  - ${pkg.name}`)
+    let packagesToPublish: string[] = []
+
+    if (config.monorepo.versionMode === 'independent') {
+      packagesToPublish = await getPackagesToPublishInIndependentMode(sortedPackages, config)
+      consola.info(`Publishing packages that were bumped (independent mode): ${packagesToPublish.join(', ')}`)
     }
-
-    if (config.monorepo.versionMode === 'selective') {
-      const packagesToBump = getPackagesToPublishInSelectiveMode(sortedPackages, rootPackage.version)
-
-      if (packagesToBump.length === 0) {
-        consola.warn('No packages need to be published (all versions match root)')
-        return
-      }
-
-      consola.info(`Publishing only packages that were bumped: ${packagesToBump.join(', ')}`)
-
-      for (const pkg of sortedPackages) {
-        if (packagesToBump.includes(pkg.name)) {
-          await publishPackage(pkg.path, pkg.name, pkg.version, options, config)
-        }
-        else {
-          consola.info(`Skipping ${pkg.name} (version unchanged)`)
-        }
-      }
+    else if (config.monorepo.versionMode === 'selective') {
+      packagesToPublish = getPackagesToPublishInSelectiveMode(sortedPackages, rootPackage.version)
+      consola.info(`Publishing packages that match root version (selective mode): ${packagesToPublish.join(', ')}`)
     }
     else {
-      for (const pkg of sortedPackages) {
+      packagesToPublish = sortedPackages.map(pkg => pkg.name)
+      consola.info('Publishing all packages (unified mode)')
+    }
+
+    if (packagesToPublish.length === 0) {
+      consola.warn('No packages need to be published')
+      return
+    }
+
+    for (const pkg of sortedPackages) {
+      if (packagesToPublish.includes(pkg.name)) {
         await publishPackage(pkg.path, pkg.name, pkg.version, options, config)
       }
     }
 
-    consola.success('Publishing completed!')
-
     if (!options.dryRun) {
       consola.box('Packages have been published to npm registry')
+    }
+
+    consola.success('Publishing completed!')
+
+    return {
+      packagesToPublish,
     }
   }
   catch (error) {

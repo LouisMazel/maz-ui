@@ -1,44 +1,50 @@
-import type { GithubOptions } from '../types'
-import { execPromise } from '@maz-ui/node'
+import type { GitProviderOptions } from '../types'
 import { createGithubRelease } from 'changelogen'
 import { consola } from 'consola'
 import { loadMonorepoConfig } from '../config'
 import { generateChangelog } from '../core/changelog'
 import { getPackageCommits, getRootPackage } from '../core/monorepo'
+import { getLastTag, isPrerelease } from '../core/version'
 
-export async function githubCommand(options: GithubOptions = {}): Promise<void> {
+export async function github(options: GitProviderOptions = {}): Promise<void> {
   try {
     consola.start('Publishing GitHub release...')
 
-    const rootDir = process.cwd()
-
-    const { stdout: penultimateTag } = await execPromise('git tag --sort=-creatordate | sed -n \'2p\'')
-    const { stdout: lastTag } = await execPromise('git tag --sort=-creatordate | sed -n \'1p\'', {
-      noSuccess: true,
-      noStdout: true,
-    })
-
-    const lastTagTrimmed = lastTag.trim()
-    const penultimateTagTrimmed = penultimateTag.trim()
-
-    consola.info(`Creating release for tag: ${lastTagTrimmed} (from ${penultimateTagTrimmed})`)
-
-    const config = await loadMonorepoConfig(rootDir, {
-      from: penultimateTagTrimmed,
-      to: lastTagTrimmed,
-      tokens: {
-        github: options.token || process.env.CHANGELOGEN_TOKENS_GITHUB || process.env.GITHUB_TOKEN || process.env.GH_TOKEN,
+    const rootPackage = getRootPackage(process.cwd())
+    const config = await loadMonorepoConfig({
+      overrides: {
+        from: options.from || await getLastTag(rootPackage.version),
+        to: options.to,
       },
     })
 
-    if (!config.tokens.github && !options.dryRun) {
+    const opts = {
+      from: config.from,
+      to: config.to,
+      token: options.token || config.tokens.github || process.env.CHANGELOGEN_TOKENS_GITHUB || process.env.GITHUB_TOKEN || process.env.GH_TOKEN,
+      dryRun: options.dryRun ?? false,
+    } satisfies Required<Omit<GitProviderOptions, 'token'>> & { token: string | undefined }
+
+    consola.info(`Creating release for tag: ${opts.to} (from ${opts.from})`)
+
+    if (!opts.token && !opts.dryRun) {
       throw new Error('No GitHub token specified. Set GITHUB_TOKEN or GH_TOKEN environment variable.')
     }
 
-    const rootPackage = getRootPackage(rootDir)
-
-    const commits = await getPackageCommits(rootPackage, config, rootDir)
-    const changelog = await generateChangelog(rootPackage, commits, config)
+    const commits = await getPackageCommits({
+      pkg: rootPackage,
+      config,
+      from: opts.from,
+      to: opts.to,
+    })
+    const to = rootPackage.version || opts.to
+    const changelog = await generateChangelog({
+      pkg: rootPackage,
+      commits,
+      config,
+      from: opts.from,
+      to,
+    })
 
     if (!changelog) {
       consola.error('No changelog found for latest version')
@@ -47,14 +53,13 @@ export async function githubCommand(options: GithubOptions = {}): Promise<void> 
 
     const releaseBody = changelog.split('\n').slice(2).join('\n')
 
-    const tagName = lastTagTrimmed.startsWith('v') ? lastTagTrimmed : `v${lastTagTrimmed}`
-    const isPrerelease = /-(?:alpha|beta|rc|dev|next)/.test(lastTagTrimmed)
+    const tagName = config.templates.tagBody?.replaceAll('{{newVersion}}', to) ?? to
 
     const release = {
       tag_name: tagName,
       name: tagName,
       body: releaseBody,
-      prerelease: isPrerelease,
+      prerelease: isPrerelease(to),
     }
 
     consola.info('Release details:', JSON.stringify({
