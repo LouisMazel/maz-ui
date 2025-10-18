@@ -100,7 +100,7 @@ Packages are published in dependency graph order, ensuring dependencies are avai
 clm release --prerelease --preid beta
 
 # With push to remote
-clm release --prerelease --preid beta --push
+clm release --prerelease --preid beta
 
 # Skip Git release publication (GitHub/GitLab)
 clm release --no-release
@@ -128,12 +128,6 @@ The provider (GitHub or GitLab) is automatically detected from your git remote U
 # Publish latest tag to GitHub
 clm github
 
-# Publish specific versions
-clm github v1.0.0 v1.0.1
-
-# Publish all versions
-clm github --all
-
 # With custom token
 clm github --token YOUR_GITHUB_TOKEN
 ```
@@ -147,12 +141,6 @@ clm github --token YOUR_GITHUB_TOKEN
 ```bash
 # Publish latest tag to GitLab
 clm gitlab
-
-# Publish specific versions
-clm gitlab v1.0.0 v1.0.1
-
-# Publish all versions
-clm gitlab --all
 
 # With custom token
 clm gitlab --token YOUR_GITLAB_TOKEN
@@ -551,7 +539,7 @@ release:
   stage: deploy
   script:
     - pnpm install
-    - pnpm clm release --push
+    - pnpm clm release
   only:
     - main
 ```
@@ -576,35 +564,35 @@ You can also use the tool programmatically:
 
 ```typescript
 import {
-  bumpCommand,
-  changelogCommand,
+  bump,
+  changelog,
   detectGitProvider,
-  githubCommand,
-  gitlabCommand,
-  releaseCommand,
+  github,
+  gitlab,
+  release,
 } from '@maz-ui/changelogen-monorepo'
 
 // Auto-detect provider - 'github' or 'gitlab'
 const provider = detectGitProvider()
 
 // Run bump
-await bumpCommand({ type: 'patch' })
+await bump({ type: 'patch' })
 
 // Run changelog
-await changelogCommand({ releaseType: 'latest' })
+await changelog({ releaseType: 'latest' })
 
 // Run full release
-await releaseCommand({
+await release({
   type: 'minor',
   push: true,
   release: true,
 })
 
-// Publish to GitHub
-await githubCommand()
+// Publish release to GitHub
+await github()
 
-// Publish to GitLab
-await gitlabCommand()
+// Publish release to GitLab
+await gitlab()
 ```
 
 ## License
