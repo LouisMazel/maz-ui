@@ -1,50 +1,24 @@
-import type { ChangelogMonorepoConfig, ReleaseOptions } from '../types'
+import type { GitProvider, ReleaseOptions } from '../types'
+
 import { execPromise } from '@maz-ui/node'
 import { consola } from 'consola'
 import { loadMonorepoConfig } from '../config'
 import { getRootPackage } from '../core/monorepo'
-import { detectGitProvider } from '../utils/git'
-import { bumpCommand } from './bump'
-import { changelogCommand } from './changelog'
-import { githubCommand } from './github'
-import { gitlabCommand } from './gitlab'
-import { publishCommand } from './publish'
+import { getLastTag } from '../core/version'
+import { commitAndTag, detectGitProvider } from '../utils/git'
+import { bump } from './bump'
+import { changelog } from './changelog'
+import { github } from './github'
+import { gitlab } from './gitlab'
+import { publish } from './publish'
 
-async function commitAndTag(
-  newVersion: string,
-  config: ChangelogMonorepoConfig,
-  noVerify?: boolean,
-): Promise<string> {
-  const filesToAdd = ['package.json', 'lerna.json', '**/CHANGELOG.md', '**/package.json']
-  await execPromise(`git add ${filesToAdd.join(' ')}`, { noSuccess: true })
-
-  const commitMessage = config.templates.commitMessage
-    ?.replaceAll('{{newVersion}}', newVersion)
-    || `chore(release): bump version to v${newVersion}`
-
-  const noVerifyFlag = (noVerify ?? config.noVerify) ? '--no-verify ' : ''
-  await execPromise(`git commit ${noVerifyFlag}-m "${commitMessage}"`, { noSuccess: true })
-  consola.success(`Committed: ${commitMessage}${noVerify || config.noVerify ? ' (--no-verify)' : ''}`)
-
-  const tagName = `v${newVersion}`
-  const tagMessage = config.templates.tagMessage
-    ?.replaceAll('{{newVersion}}', newVersion)
-    || tagName
-
-  const signTags = config.signTags ? '-s' : ''
-  await execPromise(`git tag ${signTags} -a ${tagName} -m "${tagMessage}"`, { noSuccess: true })
-  consola.success(`Created tag: ${tagName}`)
-
-  return tagName
-}
-
-async function publishToGitProvider(rootDir: string, options: ReleaseOptions): Promise<string> {
+async function publishToGitProvider(options: ReleaseOptions): Promise<GitProvider | 'none' | 'unknown'> {
   if (options.release === false) {
     consola.info('Skipping release publication (--no-release)')
     return 'none'
   }
 
-  const provider = detectGitProvider(rootDir)
+  const provider = detectGitProvider()
 
   if (!provider) {
     consola.warn('Unable to detect Git provider. Skipping release publication.')
@@ -53,104 +27,136 @@ async function publishToGitProvider(rootDir: string, options: ReleaseOptions): P
 
   if (provider === 'github') {
     consola.info('Publishing GitHub release...')
-    await githubCommand()
+    await github()
   }
   else if (provider === 'gitlab') {
     consola.info('Publishing GitLab release...')
-    await gitlabCommand()
+    await gitlab()
   }
 
   return provider
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
-export async function releaseCommand(options: ReleaseOptions = {}): Promise<void> {
+// eslint-disable-next-line complexity
+export async function release(options: Partial<ReleaseOptions> = {}): Promise<void> {
   try {
     consola.box('Starting release workflow...')
 
+    const config = await loadMonorepoConfig({
+      overrides: {
+        from: options.from,
+        to: options.to,
+      },
+    })
+
+    const opts = {
+      from: config.from,
+      to: config.to,
+      type: options.type || config.bump.type,
+      noVerify: options.noVerify || config.release.noVerify,
+      access: options.access || config.release.access,
+      formatCmd: options.formatCmd || config.changelog.formatCmd,
+      otp: options.otp || config.release.otp,
+      packages: config.monorepo.packages,
+      preid: options.preid || config.bump.preid,
+      push: options.push || config.release.push,
+      publish: options.publish || config.release.publish,
+      registry: options.registry || config.publish.registry,
+      release: options.release || config.release.release,
+      tag: options.tag || config.publish.tag,
+      token: options.token || config.publish.tag,
+      dryRun: options.dryRun || false,
+      rootChangelog: options.rootChangelog || config.changelog.rootChangelog,
+    } satisfies ReleaseOptions
+
     consola.info('Step 1/6: Bump versions')
-    await bumpCommand({
-      type: options.type,
-      preid: options.preid,
-      dryRun: options.dryRun,
+    consola.log('')
+    const bumpResult = await bump({
+      type: opts.type,
+      preid: opts.preid,
+      dryRun: opts.dryRun,
     })
 
+    const rootPackage = getRootPackage(config.cwd)
+    const currentVersion = bumpResult.newVersion || rootPackage.version
+    const lastTag = options.from || await getLastTag(currentVersion)
+
+    consola.log('')
     consola.info('Step 2/6: Generate changelogs')
-    await changelogCommand({
-      from: options.from,
-      to: options.to,
-      dryRun: options.dryRun,
+    consola.log('')
+    await changelog({
+      from: lastTag,
+      to: opts.to,
+      dryRun: opts.dryRun,
+      formatCmd: opts.formatCmd,
+      rootChangelog: opts.rootChangelog,
     })
 
-    const rootDir = process.cwd()
-    const rootPackage = getRootPackage(rootDir)
-    const newVersion = rootPackage.version
-
-    if (!newVersion) {
+    if (!currentVersion) {
       throw new Error('Unable to determine new version')
     }
 
-    const config = await loadMonorepoConfig(rootDir)
-    let tagName: string
+    consola.log('')
+    consola.info('Step 3/6: Commit changes and create tag')
+    consola.log('')
+    const createdTags = await commitAndTag({
+      newVersion: currentVersion,
+      config,
+      noVerify: opts.noVerify,
+      bumpedPackages: bumpResult.bumpedPackages,
+      dryRun: opts.dryRun,
+    })
 
-    if (options.dryRun) {
-      consola.info('Step 3/6: Skip commit changes and create tag')
-      tagName = 'FAKE_TAGS'
-    }
-    else {
-      consola.info('Step 3/6: Commit changes and create tag')
-      tagName = await commitAndTag(newVersion, config, options.noVerify)
-    }
-
-    if (options.push && !options.dryRun) {
+    consola.log('')
+    if (opts.push && !opts.dryRun) {
       consola.info('Step 4/6: Push changes and tags')
+      consola.log('')
       await execPromise('git push --follow-tags', { noSuccess: true })
       consola.success('Pushed changes and tags to remote')
     }
     else {
-      if (options.dryRun) {
+      if (opts.dryRun) {
         consola.info('Step 4/6: Skipped push (--dry-run)')
       }
       else {
         consola.info('Step 4/6: Skipped push (remove --no-push to enable)')
       }
+      consola.log('')
     }
 
-    if (options.publish !== false && !options.dryRun) {
-      consola.info('Step 5/6: Publish packages to npm')
-      await publishCommand({
-        registry: options.registry,
-        tag: options.tag || options.preid,
-        access: options.access,
-        otp: options.otp,
-        dryRun: options.dryRun,
-      })
-    }
-    else {
-      if (options.dryRun) {
-        consola.info('Step 5/6: Skipped npm publish (--dry-run)')
-      }
-      else {
-        consola.info('Step 5/6: Skipped npm publish (--no-publish)')
-      }
-    }
+    consola.info('Step 5/6: Publish packages to npm')
+    consola.log('')
+    const publishResponse = await publish({
+      registry: opts.registry,
+      tag: opts.tag,
+      access: opts.access,
+      otp: opts.otp,
+      dryRun: opts.dryRun,
+    })
+    consola.log('')
 
-    let provider: string
+    let provider: GitProvider | 'none' | 'unknown'
 
-    if (options.dryRun) {
+    if (opts.dryRun) {
       consola.info('Step 6/6: Skipped publish git release')
-      provider = 'FAKE_PROVIDER'
+      consola.log('')
+      provider = detectGitProvider() ?? 'github'
     }
     else {
       consola.info('Step 6/6: Publish Git release')
-      provider = await publishToGitProvider(rootDir, options)
+      consola.log('')
+      provider = await publishToGitProvider(opts)
     }
+    consola.log('')
+
+    const publishedPackageCount = publishResponse?.packagesToPublish.length ?? 0
 
     consola.box('Release workflow completed!\n\n'
-      + `Version: ${newVersion}\n`
-      + `Tag: ${tagName}\n`
-      + `Pushed: ${options.push ? 'Yes' : 'No'}\n`
-      + `Published: ${options.publish !== false ? 'Yes' : 'No'}\n`
+      + `Version: ${currentVersion}\n`
+      + `Tag(s): ${createdTags.join(', ')}\n`
+      + `Published packages: ${publishedPackageCount}\n`
+      + `Pushed: ${opts.push ? 'Yes' : 'No'}\n`
+      + `Published: ${opts.publish !== false ? 'Yes' : 'No'}\n`
       + `Provider: ${provider}`)
   }
   catch (error) {

@@ -1,45 +1,51 @@
-import type { GitlabOptions } from '../types'
+import type { GitProviderOptions } from '../types'
 import { execPromise } from '@maz-ui/node'
 import { consola } from 'consola'
 import { loadMonorepoConfig } from '../config'
 import { generateChangelog } from '../core/changelog'
 import { getPackageCommits, getRootPackage } from '../core/monorepo'
+import { getLastTag } from '../core/version'
 import { createGitlabRelease } from '../utils/gitlab'
 
-export async function gitlabCommand(options: GitlabOptions = {}): Promise<void> {
+export async function gitlab(options: GitProviderOptions = {}): Promise<void> {
   try {
     consola.start('Publishing GitLab release...')
 
-    const rootDir = process.cwd()
-
-    const { stdout: penultimateTag } = await execPromise('git tag --sort=-creatordate | sed -n \'2p\'')
-    const { stdout: lastTag } = await execPromise('git tag --sort=-creatordate | sed -n \'1p\'', {
-      noSuccess: true,
-      noStdout: true,
-    })
-
-    const lastTagTrimmed = lastTag.trim()
-    const penultimateTagTrimmed = penultimateTag.trim()
-
-    consola.info(`Creating release for tag: ${lastTagTrimmed} (from ${penultimateTagTrimmed})`)
-
-    const config = await loadMonorepoConfig(rootDir, {
-      from: penultimateTagTrimmed,
-      to: lastTagTrimmed,
-      tokens: {
-        gitlab: options.token || process.env.CHANGELOGEN_TOKENS_GITLAB || process.env.GITLAB_TOKEN || process.env.CI_JOB_TOKEN,
+    const rootPackage = getRootPackage(process.cwd())
+    const config = await loadMonorepoConfig({
+      overrides: {
+        from: options.from || await getLastTag(rootPackage.version),
+        to: options.to,
       },
     })
 
-    if (!config.tokens.gitlab && !options.dryRun) {
+    const opts = {
+      from: config.from,
+      to: config.to,
+      token: options.token || config.tokens.github || process.env.CHANGELOGEN_TOKENS_GITHUB || process.env.GITHUB_TOKEN || process.env.GH_TOKEN,
+      dryRun: options.dryRun ?? false,
+    } satisfies Required<Omit<GitProviderOptions, 'token'>> & { token: string | undefined }
+
+    consola.info(`Creating release for tag: ${opts.to} (from ${opts.from})`)
+
+    if (!config.tokens.gitlab && !opts.dryRun) {
       throw new Error('No GitLab token specified. Set GITLAB_TOKEN or CI_JOB_TOKEN environment variable.')
     }
 
-    const rootPackage = getRootPackage(rootDir)
-
-    const commits = await getPackageCommits(rootPackage, config, rootDir)
-    const changelog = await generateChangelog(rootPackage, commits, config)
-
+    const commits = await getPackageCommits({
+      pkg: rootPackage,
+      config,
+      from: config.from,
+      to: config.to,
+    })
+    const to = rootPackage.version || opts.to
+    const changelog = await generateChangelog({
+      pkg: rootPackage,
+      commits,
+      config,
+      from: config.from,
+      to,
+    })
     if (!changelog) {
       consola.error('No changelog found for latest version')
       return
@@ -47,7 +53,7 @@ export async function gitlabCommand(options: GitlabOptions = {}): Promise<void> 
 
     const releaseBody = changelog.split('\n').slice(2).join('\n')
 
-    const tagName = lastTagTrimmed.startsWith('v') ? lastTagTrimmed : `v${lastTagTrimmed}`
+    const tagName = config.templates.tagBody?.replaceAll('{{newVersion}}', to) ?? to
 
     const { stdout: currentBranch } = await execPromise('git rev-parse --abbrev-ref HEAD', {
       noSuccess: true,
@@ -58,7 +64,7 @@ export async function gitlabCommand(options: GitlabOptions = {}): Promise<void> 
       tag_name: tagName,
       name: tagName,
       description: releaseBody,
-      ref: currentBranch.trim() || 'main',
+      ref: currentBranch.trim(),
     }
 
     consola.info('Release details:', JSON.stringify({
@@ -67,7 +73,7 @@ export async function gitlabCommand(options: GitlabOptions = {}): Promise<void> 
       ref: release.ref,
     }, null, 2))
 
-    if (options.dryRun) {
+    if (opts.dryRun) {
       consola.info('Release content', release.description)
       return
     }

@@ -5,8 +5,12 @@ import { join } from 'node:path'
 import { getGitDiff, parseCommits } from 'changelogen'
 import { consola } from 'consola'
 import fg from 'fast-glob'
+import { expandPackagesToBumpWithDependents } from './dependencies'
 
-function isValidPackage(packagePath: string, config: ChangelogMonorepoConfig): PackageInfo | null {
+function isValidPackage(
+  packagePath: string,
+  ignorePackages: ChangelogMonorepoConfig['monorepo']['ignorePackages'],
+): PackageInfo | null {
   const packageJsonPath = join(packagePath, 'package.json')
 
   if (!existsSync(packageJsonPath))
@@ -19,7 +23,7 @@ function isValidPackage(packagePath: string, config: ChangelogMonorepoConfig): P
 
     if (packageJson.private)
       return null
-    if (config.monorepo.ignorePackages?.includes(packageJson.name))
+    if (ignorePackages?.includes(packageJson.name))
       return null
 
     return {
@@ -34,11 +38,15 @@ function isValidPackage(packagePath: string, config: ChangelogMonorepoConfig): P
   }
 }
 
-export function getPackages(
-  cwd: string,
-  patterns: string[],
-  config: ChangelogMonorepoConfig,
-): PackageInfo[] {
+export function getPackages({
+  cwd,
+  patterns,
+  ignorePackages,
+}: {
+  cwd: string
+  patterns: string[]
+  ignorePackages: ChangelogMonorepoConfig['monorepo']['ignorePackages']
+}): PackageInfo[] {
   const packages: PackageInfo[] = []
   const foundPaths = new Set<string>()
 
@@ -55,7 +63,7 @@ export function getPackages(
         if (foundPaths.has(matchPath))
           continue
 
-        const packageInfo = isValidPackage(matchPath, config)
+        const packageInfo = isValidPackage(matchPath, ignorePackages)
         if (packageInfo) {
           foundPaths.add(matchPath)
           packages.push(packageInfo)
@@ -70,13 +78,24 @@ export function getPackages(
   return packages
 }
 
-export async function getPackageCommits(
-  pkg: PackageInfo,
-  config: ChangelogMonorepoConfig,
-  rootDir: string,
-): Promise<GitCommit[]> {
-  const rawCommits = await getGitDiff(config.from, config.to, config.cwd)
-  const allCommits = parseCommits(rawCommits, config)
+export async function getPackageCommits({
+  pkg,
+  from,
+  to,
+  config,
+}: {
+  pkg: PackageInfo
+  from: string
+  to: string
+  config: ChangelogMonorepoConfig
+}): Promise<GitCommit[]> {
+  const rawCommits = await getGitDiff(from, to, config.cwd)
+  const allCommits = parseCommits(rawCommits, {
+    ...config,
+    from,
+    to,
+  })
+  const rootPackage = getRootPackage(config.cwd)
 
   const commits = allCommits.filter((commit) => {
     const isAllowedType = config.types[commit.type]
@@ -85,11 +104,11 @@ export async function getPackageCommits(
       return false
     }
 
-    if (pkg.path === rootDir || pkg.name === 'root') {
+    if (pkg.path === config.cwd || pkg.name === rootPackage.name) {
       return true
     }
 
-    const packageRelativePath = pkg.path.replace(`${rootDir}/`, '')
+    const packageRelativePath = pkg.path.replace(`${config.cwd}/`, '')
 
     const scopeMatches = commit.scope === pkg.name
     const bodyContainsPath = commit.body.includes(packageRelativePath)
@@ -119,4 +138,32 @@ export function getRootPackage(rootDir: string): PackageInfo {
   catch (error) {
     throw new Error(`Unable to read ${packageJsonPath}: ${(error as Error).message}`)
   }
+}
+
+export async function getPackageToBump({
+  packages,
+  config,
+}: {
+  packages: PackageInfo[]
+  config: ChangelogMonorepoConfig
+}) {
+  // First, identify packages with commits
+  const packagesWithCommits: PackageInfo[] = []
+  for (const pkg of packages) {
+    const commits = await getPackageCommits({
+      pkg,
+      from: config.from,
+      to: config.to,
+      config,
+    })
+    if (commits.length > 0) {
+      packagesWithCommits.push(pkg)
+      consola.info(`  ${pkg.name}: ${commits.length} commit(s) found`)
+    }
+  }
+
+  // Expand with dependent packages (transitive)
+  const allPackagesToBump = expandPackagesToBumpWithDependents(packagesWithCommits, packages)
+
+  return allPackagesToBump
 }

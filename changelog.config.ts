@@ -28,14 +28,18 @@ export default defineConfig({
     packages: ['packages/*'],
     ignorePackages: [],
     filterCommits: true,
-    rootChangelog: true,
   },
 
+  bump: {},
+  changelog: {
+    formatCmd: 'pnpm lint:fix:all',
+    rootChangelog: true,
+  },
   publish: {
     registry: 'https://registry.npmjs.org',
   },
 
-  changelog: {
-    formatCmd: 'pnpm lint:fix:all',
+  release: {
   },
+
 })

@@ -6,28 +6,34 @@ import { generateMarkDown } from 'changelogen'
 import { consola } from 'consola'
 
 export async function generateChangelog(
-  pkg: PackageInfo,
-  commits: GitCommit[],
-  config: ResolvedChangelogConfig,
-  version?: string,
-): Promise<string | undefined> {
-  consola.info(`Generating changelog for ${pkg.name}...`)
-
+  { pkg, commits, config, from, to }: {
+    pkg: PackageInfo
+    commits: GitCommit[]
+    config: ResolvedChangelogConfig
+    from: string
+    to: string
+  },
+) {
   try {
-    let changelog = await generateMarkDown(commits, config)
-
-    if (version && config.to === 'HEAD') {
-      changelog = changelog.replaceAll(/HEAD/g, `v${version}`)
-    }
-
     if (commits.length === 0) {
-      consola.warn(`No relevant commits found for ${pkg.name}`)
       return undefined
     }
-    else {
-      consola.success(`Changelog generated for ${pkg.name} (${commits.length} commits)`)
+
+    to = !to.startsWith('v') ? `v${to}` : to
+
+    consola.info(`Generating changelog for ${pkg.name} - from ${from} to ${to}`)
+
+    let changelog = await generateMarkDown(commits, {
+      ...config,
+      from,
+      to,
+    })
+
+    if (pkg.version && !config.to.startsWith('v')) {
+      changelog = changelog.replace(config.to, `v${pkg.version}`)
     }
 
+    consola.success(`Changelog generated for ${pkg.name} (${commits.length} commits)`)
     return changelog
   }
   catch (error) {
@@ -35,11 +41,15 @@ export async function generateChangelog(
   }
 }
 
-export function writeChangelogToFile(
-  pkg: PackageInfo,
-  changelog: string,
+export function writeChangelogToFile({
+  pkg,
+  changelog,
   dryRun = false,
-) {
+}: {
+  pkg: PackageInfo
+  changelog: string
+  dryRun: boolean
+}) {
   const changelogPath = join(pkg.path, 'CHANGELOG.md')
 
   let existingChangelog = ''
