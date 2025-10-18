@@ -12,12 +12,10 @@ import { github } from './github'
 import { gitlab } from './gitlab'
 import { publish } from './publish'
 
-async function publishToGitProvider(options: ReleaseOptions): Promise<GitProvider | 'none' | 'unknown'> {
-  if (options.release === false) {
-    consola.info('Skipping release publication (--no-release)')
-    return 'none'
-  }
-
+async function publishToGitProvider(versions: {
+  from: string
+  to: string
+}): Promise<GitProvider | 'none' | 'unknown'> {
   const provider = detectGitProvider()
 
   if (!provider) {
@@ -27,11 +25,11 @@ async function publishToGitProvider(options: ReleaseOptions): Promise<GitProvide
 
   if (provider === 'github') {
     consola.info('Publishing GitHub release...')
-    await github()
+    await github(versions)
   }
   else if (provider === 'gitlab') {
     consola.info('Publishing GitLab release...')
-    await gitlab()
+    await gitlab(versions)
   }
 
   return provider
@@ -145,7 +143,16 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
     else {
       consola.info('Step 6/6: Publish Git release')
       consola.log('')
-      provider = await publishToGitProvider(opts)
+      if (options.release === false) {
+        consola.info('Skipping release publication (--no-release)')
+        provider = 'none'
+      }
+      else {
+        provider = await publishToGitProvider({
+          from: lastTag,
+          to: opts.to,
+        })
+      }
     }
     consola.log('')
 

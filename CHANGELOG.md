@@ -1,5 +1,35 @@
 # Change Log
 
+## v4.1.7...v4.1.8
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7...v4.1.8)
+
+### 🚀 Features
+
+- **@maz-ui/changelogen-monorepo:** New package to manage monorepo with changelogen ([656033a15](https://github.com/LouisMazel/maz-ui/commit/656033a15))
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Type declarations of composables ([54fc2e1d3](https://github.com/LouisMazel/maz-ui/commit/54fc2e1d3))
+- **maz-ui:** MazDropdown - popover should be closed on click outside ([efa438db9](https://github.com/LouisMazel/maz-ui/commit/efa438db9))
+- **@maz-ui/changelogen-monorepo:** Publish command ([f714835f7](https://github.com/LouisMazel/maz-ui/commit/f714835f7))
+
+### 💅 Refactors
+
+- **@maz-ui/translations:** Update dropzone translations - remove capitalization from translation selectFile ([4d47d8531](https://github.com/LouisMazel/maz-ui/commit/4d47d8531))
+- **@maz-ui/changelogen-monorepo:** Bump improvements ([6cb2a7063](https://github.com/LouisMazel/maz-ui/commit/6cb2a7063))
+- **@maz-ui/changelogen-monorepo:** Changelog generation improvements ([0f4e86fa3](https://github.com/LouisMazel/maz-ui/commit/0f4e86fa3))
+
+### 💄 Styles
+
+- **maz-ui:** MazBackdrop - make the overlay background darker ([41b90845e](https://github.com/LouisMazel/maz-ui/commit/41b90845e))
+- **maz-ui:** MazDropzone - use a link instead of a button to select file ([535d409ee](https://github.com/LouisMazel/maz-ui/commit/535d409ee))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.8-beta.2...v4.1.8-beta.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.2...v4.1.8-beta.3)
