@@ -1,5 +1,16 @@
 # Changelog
 
+## v4.1.8-beta.4...v4.1.9-alpha.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.4...v4.1.9-alpha.0)
+
+No relevant commits
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7...v4.1.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7...v4.1.8)
