@@ -6,6 +6,7 @@
     "rootDir": "./src",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "types": ["node", "vitest/globals"],
     "outDir": "./dist",
     "skipLibCheck": true
   },

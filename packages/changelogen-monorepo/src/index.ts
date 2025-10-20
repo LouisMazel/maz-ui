@@ -7,30 +7,21 @@ export { gitlab } from './commands/gitlab'
 export { publish } from './commands/publish'
 export { release } from './commands/release'
 
-export { getPackagePatterns, loadMonorepoConfig } from './config'
+export * from './config'
 
-export { generateChangelog, writeChangelogToFile } from './core/changelog'
-export {
-  expandPackagesToBumpWithDependents,
-  getDependentsOf,
-  getPackageDependencies,
-  getPackagesWithDependencies,
-  topologicalSort,
-} from './core/dependencies'
+export * from './core/changelog'
+export * from './core/dependencies'
 export type * from './core/dependencies'
-export { getPackageCommits, getPackages, getRootPackage } from './core/monorepo'
+export type * from './core/dependencies'
+export * from './core/monorepo'
 
-export {
-  bumpPackageVersion,
-  readVersion,
-  updateLernaVersion,
-  writeVersion,
-} from './core/version'
+export * from './core/version'
 
 export type * from './types'
 
-export { detectGitProvider, parseGitRemoteUrl } from './utils/git'
-export { createGitlabRelease, getGitlabReleaseByTag, listGitlabReleases } from './utils/gitlab'
+export * from './utils/git'
+export * from './utils/gitlab'
+export type * from './utils/gitlab'
 
 export function defineConfig(config: Partial<ChangelogMonorepoConfig>): Partial<ChangelogMonorepoConfig> {
   return config
