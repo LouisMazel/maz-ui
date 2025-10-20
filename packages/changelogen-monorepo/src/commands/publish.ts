@@ -3,20 +3,31 @@ import { consola } from 'consola'
 import { getPackagePatterns, loadMonorepoConfig } from '../config'
 import { getPackagesWithDependencies, topologicalSort } from '../core/dependencies'
 import { getPackages, getRootPackage } from '../core/monorepo'
-import { getPackagesToPublishInIndependentMode, getPackagesToPublishInSelectiveMode, publishPackage } from '../core/npm'
+import { detectPackageManager, getPackagesToPublishInIndependentMode, getPackagesToPublishInSelectiveMode, publishPackage } from '../core/npm'
 
 export async function publish(options: PublishOptions = {}) {
   try {
     consola.start('Publishing packages...')
 
-    const config = await loadMonorepoConfig()
+    const packageManager = detectPackageManager(process.cwd())
+
+    const config = await loadMonorepoConfig({
+      overrides: {
+        publish: {
+          access: options.access,
+          otp: options.otp,
+          registry: options.registry,
+          tag: options.tag,
+        },
+      },
+    })
 
     const patterns = options.packages ?? config.publish.packages ?? getPackagePatterns(config.monorepo)
 
     const packages = getPackages({
       cwd: config.cwd,
       patterns,
-      ignorePackages: config.monorepo.ignorePackages,
+      ignorePackageNames: config.monorepo.ignorePackageNames,
     })
     const rootPackage = getRootPackage(config.cwd)
 
@@ -53,6 +64,7 @@ export async function publish(options: PublishOptions = {}) {
           version: pkg.version,
           options,
           config,
+          packageManager,
         })
       }
     }

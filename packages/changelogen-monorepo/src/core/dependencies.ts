@@ -3,10 +3,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { consola } from 'consola'
 
-export interface PackageWithDeps {
-  name: string
-  path: string
-  version?: string
+export interface PackageWithDeps extends PackageInfo {
   dependencies: string[]
 }
 

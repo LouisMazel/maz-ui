@@ -1,4 +1,4 @@
-import type { ChangelogConfig as IChangelogConfig } from 'changelogen'
+import type { GitCommit, ChangelogConfig as IChangelogConfig } from 'changelogen'
 import type { ReleaseType } from 'semver'
 
 export type VersionMode = 'unified' | 'independent' | 'selective'
@@ -7,18 +7,36 @@ export type GitProvider = 'github' | 'gitlab'
 export interface PackageInfo {
   name: string
   path: string
-  version?: string
+  version: string
+}
+export interface PackageWithCommits extends PackageInfo {
+  commits: GitCommit[]
 }
 
 export interface BumpResult {
+  /**
+   * @default undefined
+   */
   newVersion?: string
   bumpedPackages: PackageInfo[]
 }
 
 export interface MonorepoConfig {
+  /**
+   * @default 'selective'
+   */
   versionMode?: VersionMode
+  /**
+   * @default ['packages/*']
+   */
   packages?: string[]
-  ignorePackages?: string[]
+  /**
+   * @default []
+   */
+  ignorePackageNames?: string[]
+  /**
+   * @default true
+   */
   filterCommits?: boolean
 }
 
@@ -33,11 +51,20 @@ export interface ChangelogOptions extends ChangelogConfig {
 }
 
 export interface BumpConfig {
+  /**
+   * @default 'release'
+   */
   type?: ReleaseType
+  /**
+   * @default undefined
+   */
   preid?: string
 }
 
 export interface BumpOptions extends BumpConfig {
+  /**
+   * @default false
+   */
   dryRun?: boolean
 }
 
@@ -61,32 +88,60 @@ export interface PublishOptions extends PublishConfig {
 }
 
 export interface ReleaseConfig {
-  push: boolean
-  release: boolean
-  publish: boolean
-  noVerify: boolean
-  registry?: string
-  tag?: string
-  access?: 'public' | 'restricted'
-  otp?: string
+  /**
+   * @default true
+   */
+  push?: boolean
+  /**
+   * @default true
+   */
+  release?: boolean
+  /**
+   * @default true
+   */
+  publish?: boolean
+  /**
+   * @default true
+   */
+  verify?: boolean
 }
 
-export interface ReleaseOptions extends ReleaseConfig, BumpConfig, PublishConfig, ChangelogConfig {
+export interface ReleaseOptions extends ReleaseConfig, BumpConfig, ChangelogConfig, PublishConfig {
+  /**
+   * @default false
+   */
   dryRun?: boolean
+  /**
+   * @default undefined
+   */
   from?: string
+  /**
+   * @default undefined
+   */
   to?: string
+  /**
+   * @default undefined
+   */
   token?: string
 }
 
 export interface ChangelogMonorepoConfig extends IChangelogConfig {
+  /**
+   * @default `{
+    versionMode: 'selective',
+    packages: ['packages/*'],
+    ignorePackageNames: [],
+    filterCommits: true,
+  }`
+   */
   monorepo: MonorepoConfig
 
   repo: IChangelogConfig['repo'] & {
     provider?: GitProvider
   }
 
-  bump: Partial<BumpConfig>
-  publish: Partial<PublishConfig>
-  changelog: Partial<ChangelogConfig>
-  release: Partial<ReleaseConfig>
+  bump: BumpConfig
+  publish: PublishConfig
+  changelog: ChangelogConfig
+  release: ReleaseConfig
 }

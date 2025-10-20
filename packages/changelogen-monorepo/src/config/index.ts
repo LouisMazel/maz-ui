@@ -1,4 +1,4 @@
-import type { ChangelogConfig as IChangelogConfig, ResolvedChangelogConfig } from 'changelogen'
+import type { ResolvedChangelogConfig } from 'changelogen'
 import type { BumpConfig, ChangelogConfig, ChangelogMonorepoConfig, MonorepoConfig, PublishConfig, ReleaseConfig } from '../types'
 import { loadChangelogConfig } from 'changelogen'
 
@@ -6,7 +6,7 @@ const defaultConfig = {
   monorepo: {
     versionMode: 'selective',
     packages: ['packages/*'],
-    ignorePackages: [],
+    ignorePackageNames: [],
     filterCommits: true,
   },
   bump: {
@@ -22,12 +22,12 @@ const defaultConfig = {
     publish: true,
     push: true,
     release: true,
-    noVerify: false,
+    verify: true,
   },
 } satisfies Required<Pick<ChangelogMonorepoConfig, 'monorepo' | 'bump' | 'changelog' | 'release' | 'publish'>>
 
 export async function loadMonorepoConfig(options?: {
-  overrides?: Partial<Pick<IChangelogConfig, 'cwd' | 'from' | 'to'>>
+  overrides?: Partial<ChangelogMonorepoConfig>
 }) {
   const rootDir = options?.overrides?.cwd ?? process.cwd()
   const config = await loadChangelogConfig(rootDir) as ResolvedChangelogConfig & Partial<ChangelogMonorepoConfig>
@@ -37,24 +37,28 @@ export async function loadMonorepoConfig(options?: {
     ...config.monorepo,
   } satisfies Required<MonorepoConfig>
 
+  const bump = {
+    ...defaultConfig.bump,
+    ...config.bump,
+    ...options?.overrides?.bump,
+  } satisfies Required<Omit<BumpConfig, 'preid'>> & { preid?: string }
+
   const changelog = {
     ...defaultConfig.changelog,
     ...config.changelog,
-  } satisfies ChangelogConfig
+    ...options?.overrides?.changelog,
+  } satisfies Required<Omit<ChangelogConfig, 'formatCmd'>> & { formatCmd?: string }
 
   const publish = {
     ...defaultConfig.publish,
     ...config.publish,
+    ...options?.overrides?.publish,
   } satisfies PublishConfig
-
-  const bump = {
-    ...defaultConfig.bump,
-    ...config.bump,
-  } satisfies BumpConfig
 
   const release = {
     ...defaultConfig.release,
     ...config.release,
+    ...options?.overrides?.release,
   } satisfies ReleaseConfig
 
   return {
@@ -68,6 +72,8 @@ export async function loadMonorepoConfig(options?: {
     from: options?.overrides?.from || config.from,
   } satisfies ChangelogMonorepoConfig
 }
+
+export type ResolvedChangelogMonorepoConfig = Awaited<ReturnType<typeof loadMonorepoConfig>>
 
 export function getPackagePatterns(monorepoConfig: MonorepoConfig): string[] {
   return monorepoConfig.packages || ['packages/*']

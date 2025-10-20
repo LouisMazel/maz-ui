@@ -11,40 +11,33 @@ export async function gitlab(options: GitProviderOptions = {}): Promise<void> {
   try {
     consola.start('Publishing GitLab release...')
 
+    const dryRun = options.dryRun ?? false
+
     const rootPackage = getRootPackage(process.cwd())
     const config = await loadMonorepoConfig({
       overrides: {
         from: options.from || await getLastTag(rootPackage.version),
         to: options.to,
+        tokens: {
+          gitlab: options.token || process.env.CHANGELOGEN_TOKENS_GITLAB || process.env.GITLAB_TOKEN || process.env.GITLAB_API_TOKEN,
+        },
       },
     })
 
-    const opts = {
-      from: config.from,
-      to: config.to,
-      token: options.token || config.tokens.github || process.env.CHANGELOGEN_TOKENS_GITHUB || process.env.GITHUB_TOKEN || process.env.GH_TOKEN,
-      dryRun: options.dryRun ?? false,
-    } satisfies Required<Omit<GitProviderOptions, 'token'>> & { token: string | undefined }
+    consola.info(`Creating release for tag: ${config.to} (from ${config.from})`)
 
-    consola.info(`Creating release for tag: ${opts.to} (from ${opts.from})`)
-
-    if (!config.tokens.gitlab && !opts.dryRun) {
+    if (!config.tokens.gitlab && !dryRun) {
       throw new Error('No GitLab token specified. Set GITLAB_TOKEN or CI_JOB_TOKEN environment variable.')
     }
 
     const commits = await getPackageCommits({
       pkg: rootPackage,
       config,
-      from: config.from,
-      to: config.to,
     })
-    const to = rootPackage.version || opts.to
     const changelog = await generateChangelog({
       pkg: rootPackage,
       commits,
       config,
-      from: config.from,
-      to,
     })
     if (!changelog) {
       consola.error('No changelog found for latest version')
@@ -53,6 +46,7 @@ export async function gitlab(options: GitProviderOptions = {}): Promise<void> {
 
     const releaseBody = changelog.split('\n').slice(2).join('\n')
 
+    const to = rootPackage.version || config.to
     const tagName = config.templates.tagBody?.replaceAll('{{newVersion}}', to) ?? to
 
     const { stdout: currentBranch } = await execPromise('git rev-parse --abbrev-ref HEAD', {
@@ -73,7 +67,7 @@ export async function gitlab(options: GitProviderOptions = {}): Promise<void> {
       ref: release.ref,
     }, null, 2))
 
-    if (opts.dryRun) {
+    if (dryRun) {
       consola.info('Release content', release.description)
       return
     }

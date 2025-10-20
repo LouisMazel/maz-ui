@@ -10,40 +10,35 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
   try {
     consola.start('Generating changelogs...')
 
+    const dryRun = options.dryRun ?? false
+
     const config = await loadMonorepoConfig({
       overrides: {
         from: options.from,
         to: options.to,
+        changelog: {
+          rootChangelog: options.rootChangelog,
+          formatCmd: options.formatCmd,
+        },
       },
     })
 
-    const opts = {
-      to: config.to,
-      dryRun: options.dryRun ?? false,
-      formatCmd: options.formatCmd || config.changelog.formatCmd || '',
-      rootChangelog: options.rootChangelog || config.changelog.rootChangelog,
-    } satisfies ChangelogOptions
-
-    if (opts.rootChangelog) {
+    if (config.changelog?.rootChangelog) {
       const rootPackage = getRootPackage(config.cwd)
 
       const fromTag = options.from || await getLastTag(rootPackage.version)
-      const toTag = opts.to
+      const toTag = config.to
 
       consola.info(`Generating root changelog - Commit range: ${fromTag}...${toTag}`)
 
       const rootCommits = await getPackageCommits({
         pkg: rootPackage,
-        from: fromTag,
-        to: toTag,
         config,
       })
       const rootChangelog = await generateChangelog({
         pkg: rootPackage,
         commits: rootCommits,
         config,
-        from: fromTag,
-        to: toTag,
       })
 
       if (!rootChangelog) {
@@ -53,7 +48,7 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
       writeChangelogToFile({
         changelog: rootChangelog,
         pkg: rootPackage,
-        dryRun: opts.dryRun,
+        dryRun,
       })
     }
 
@@ -63,7 +58,7 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
       const patterns = getPackagePatterns(config.monorepo)
       const packages = getPackages({
         cwd: config.cwd,
-        ignorePackages: config.monorepo.ignorePackages,
+        ignorePackageNames: config.monorepo.ignorePackageNames,
         patterns,
       })
 
@@ -74,15 +69,15 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
         const commits = await getPackageCommits({
           pkg,
           config,
-          from: lastTag,
-          to: opts.to,
         })
         const changelog = await generateChangelog({
           pkg,
           commits,
-          config,
-          from: lastTag,
-          to: pkg.version || opts.to,
+          config: {
+            ...config,
+            from: lastTag,
+            to: pkg.version || config.to,
+          },
         })
 
         if (!changelog) {
@@ -92,12 +87,12 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
         writeChangelogToFile({
           pkg,
           changelog,
-          dryRun: opts.dryRun,
+          dryRun,
         })
       }
     }
 
-    if (config.changelog?.formatCmd && !opts.dryRun) {
+    if (config.changelog?.formatCmd && !dryRun) {
       consola.info('Running format command...')
       try {
         await execPromise(config.changelog.formatCmd, {

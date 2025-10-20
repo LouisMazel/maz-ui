@@ -6,12 +6,10 @@ import { generateMarkDown } from 'changelogen'
 import { consola } from 'consola'
 
 export async function generateChangelog(
-  { pkg, commits, config, from, to }: {
+  { pkg, commits, config }: {
     pkg: PackageInfo
     commits: GitCommit[]
     config: ResolvedChangelogConfig
-    from: string
-    to: string
   },
 ) {
   try {
@@ -19,18 +17,12 @@ export async function generateChangelog(
       return undefined
     }
 
-    to = !to.startsWith('v') ? `v${to}` : to
+    consola.info(`Generating changelog for ${pkg.name} - from ${config.from} to ${config.to}`)
 
-    consola.info(`Generating changelog for ${pkg.name} - from ${from} to ${to}`)
+    let changelog = await generateMarkDown(commits, config)
 
-    let changelog = await generateMarkDown(commits, {
-      ...config,
-      from,
-      to,
-    })
-
-    if (pkg.version && !config.to.startsWith('v')) {
-      changelog = changelog.replace(config.to, `v${pkg.version}`)
+    if (!config.to.startsWith('v')) {
+      changelog = changelog.replaceAll(config.to, `v${pkg.version}`)
     }
 
     consola.success(`Changelog generated for ${pkg.name} (${commits.length} commits)`)

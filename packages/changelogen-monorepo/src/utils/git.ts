@@ -54,13 +54,13 @@ export function parseGitRemoteUrl(remoteUrl: string): { owner: string, repo: str
 export async function commitAndTag({
   newVersion,
   config,
-  noVerify,
+  verify,
   bumpedPackages,
   dryRun,
 }: {
   newVersion?: string
   config: ChangelogMonorepoConfig
-  noVerify?: boolean
+  verify?: boolean
   bumpedPackages?: PackageInfo[]
   dryRun: boolean
 }): Promise<string[]> {
@@ -73,14 +73,14 @@ export async function commitAndTag({
     ?.replaceAll('{{newVersion}}', versionForMessage)
     || `chore(release): bump version to v${versionForMessage}`
 
-  const noVerifyFlag = (noVerify) ? '--no-verify ' : ''
+  const noVerifyFlag = (verify) ? '' : '--no-verify '
 
   if (dryRun) {
     consola.info(`Would exec: git commit ${noVerifyFlag}-m "${commitMessage}"`)
   }
   else {
     await execPromise(`git commit ${noVerifyFlag}-m "${commitMessage}"`, { noSuccess: true })
-    consola.success(`Committed: ${commitMessage}${noVerify ? ' (--no-verify)' : ''}`)
+    consola.success(`Committed: ${commitMessage}${verify ? '' : ' (--no-verify)'}`)
   }
 
   const signTags = config.signTags ? '-s' : ''

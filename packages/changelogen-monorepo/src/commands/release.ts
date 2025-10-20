@@ -43,125 +43,135 @@ async function publishToGitProvider({ provider, from, to }: {
   return detectedProvider
 }
 
-// eslint-disable-next-line complexity
+function getReleaseConfig(options: Partial<ReleaseOptions>) {
+  return loadMonorepoConfig({
+    overrides: {
+      from: options.from,
+      to: options.to,
+      bump: {
+        type: options.type,
+        preid: options.preid,
+      },
+      publish: {
+        access: options.access,
+        otp: options.otp,
+        registry: options.registry,
+        tag: options.tag,
+      },
+      changelog: {
+        formatCmd: options.formatCmd,
+        rootChangelog: options.rootChangelog,
+      },
+      release: {
+        push: options.push,
+        publish: options.publish,
+        verify: options.verify,
+        release: options.release,
+      },
+      tokens: {
+        github: options.token,
+        gitlab: options.token,
+      },
+    },
+  })
+}
+
 export async function release(options: Partial<ReleaseOptions> = {}): Promise<void> {
   try {
-    consola.box('Starting release workflow...')
+    consola.box('Starting release workflow...', options.push)
 
-    const config = await loadMonorepoConfig({
-      overrides: {
-        from: options.from,
-        to: options.to,
-      },
-    })
+    const dryRun = options.dryRun ?? false
 
-    const opts = {
-      from: config.from,
-      to: config.to,
-      type: options.type || config.bump.type,
-      noVerify: options.noVerify || config.release.noVerify,
-      access: options.access || config.release.access,
-      formatCmd: options.formatCmd || config.changelog.formatCmd,
-      otp: options.otp || config.release.otp,
-      packages: config.monorepo.packages,
-      preid: options.preid || config.bump.preid,
-      push: options.push || config.release.push,
-      publish: options.publish || config.release.publish,
-      registry: options.registry || config.publish.registry,
-      release: options.release || config.release.release,
-      tag: options.tag,
-      token: options.token || config.publish.tag,
-      dryRun: options.dryRun || false,
-      rootChangelog: options.rootChangelog || config.changelog.rootChangelog,
-    } satisfies ReleaseOptions
+    const config = await getReleaseConfig(options)
 
     consola.info('Step 1/6: Bump versions')
     consola.log('')
     const bumpResult = await bump({
-      type: opts.type,
-      preid: opts.preid,
-      dryRun: opts.dryRun,
+      type: config.bump.type,
+      preid: config.bump.preid,
+      dryRun,
     })
 
     const rootPackage = getRootPackage(config.cwd)
     const currentVersion = bumpResult.newVersion || rootPackage.version
     const lastTag = options.from || await getLastTag(currentVersion)
 
-    consola.log('')
-    consola.info('Step 2/6: Generate changelogs')
-    consola.log('')
-    await changelog({
-      from: lastTag,
-      to: opts.to,
-      dryRun: opts.dryRun,
-      formatCmd: opts.formatCmd,
-      rootChangelog: opts.rootChangelog,
-    })
-
     if (!currentVersion) {
       throw new Error('Unable to determine new version')
     }
 
     consola.log('')
+    consola.info('Step 2/6: Generate changelogs')
+    consola.log('')
+    await changelog({
+      from: lastTag,
+      to: config.to,
+      dryRun,
+      formatCmd: config.changelog.formatCmd,
+      rootChangelog: config.changelog.rootChangelog,
+    })
+
+    consola.log('')
+
     consola.info('Step 3/6: Commit changes and create tag')
     consola.log('')
     const createdTags = await commitAndTag({
       newVersion: currentVersion,
       config,
-      noVerify: opts.noVerify,
+      verify: config.release.verify,
       bumpedPackages: bumpResult.bumpedPackages,
-      dryRun: opts.dryRun,
+      dryRun,
     })
 
-    consola.log('')
-    if (opts.push && !opts.dryRun) {
-      consola.info('Step 4/6: Push changes and tags')
-      consola.log('')
-      await execPromise('git push --follow-tags', { noSuccess: true })
-      consola.success('Pushed changes and tags to remote')
-    }
-    else {
-      if (opts.dryRun) {
+    if (config.release.push) {
+      if (dryRun) {
         consola.info('Step 4/6: Skipped push (--dry-run) - Would exec: git push --follow-tags')
       }
       else {
-        consola.info('Step 4/6: Skipped push (remove --no-push to enable)')
+        consola.info('Step 4/6: Push changes and tags')
+        consola.log('')
+        await execPromise('git push --follow-tags', { noSuccess: true })
+        consola.success('Pushed changes and tags to remote')
       }
-      consola.log('')
     }
+    else {
+      consola.info('Step 4/6: Skipped push (remove --no-push to enable)')
+    }
+
+    consola.log('')
 
     consola.info('Step 5/6: Publish packages to npm')
     consola.log('')
     const publishResponse = await publish({
-      registry: opts.registry,
-      tag: opts.tag,
-      access: opts.access,
-      otp: opts.otp,
-      dryRun: opts.dryRun,
+      registry: config.publish.registry,
+      tag: config.publish.tag,
+      access: config.publish.access,
+      otp: config.publish.otp,
+      dryRun,
     })
+
     consola.log('')
 
     let provider: RepoProvider | 'none' | 'unknown' | undefined = config.repo.provider
 
-    if (opts.dryRun) {
-      consola.info('Step 6/6: Skipped publish git release')
-      consola.log('')
-      provider = detectGitProvider() ?? 'none'
-    }
-    else {
+    if (config.release.release) {
       consola.info('Step 6/6: Publish Git release')
       consola.log('')
-      if (options.release === false) {
-        consola.info('Skipping release publication (--no-release)')
-        provider = 'none'
-      }
-      else {
+
+      if (!dryRun) {
         provider = await publishToGitProvider({
           provider,
           from: lastTag,
-          to: opts.to,
+          to: config.to,
         })
       }
+      else {
+        consola.info('Step 6/6: Skipping release publication (--dry-run)')
+      }
+    }
+    else {
+      consola.info('Step 6/6: Skipping release publication (--no-release)')
+      provider = 'none'
     }
     consola.log('')
 
@@ -171,8 +181,8 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
       + `Version: ${currentVersion}\n`
       + `Tag(s): ${createdTags.join(', ')}\n`
       + `Published packages: ${publishedPackageCount}\n`
-      + `Pushed: ${opts.push ? 'Yes' : 'No'}\n`
-      + `Published: ${opts.publish !== false ? 'Yes' : 'No'}\n`
+      + `Pushed: ${config.release.push ? 'Yes' : 'No'}\n`
+      + `Published: ${config.release.publish !== false ? 'Yes' : 'No'}\n`
       + `Provider: ${provider}`)
   }
   catch (error) {

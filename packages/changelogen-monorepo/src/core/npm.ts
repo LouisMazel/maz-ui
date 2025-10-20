@@ -1,15 +1,16 @@
-import type { ChangelogMonorepoConfig, PublishOptions } from '../types'
+import type { ResolvedChangelogMonorepoConfig } from '../config'
+import type { PublishOptions } from '../types'
 import type { PackageWithDeps } from './dependencies'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { execPromise } from '@maz-ui/node'
 import { consola } from 'consola'
-import { getPackageCommits, getRootPackage } from './monorepo'
-import { getLastTag, isPrerelease } from './version'
+import { getPackageCommits } from './monorepo'
+import { getLastPackageTag, isPrerelease } from './version'
 
 type PackageManager = 'npm' | 'yarn' | 'pnpm'
 
-function detectPackageManager(cwd: string): PackageManager {
+export function detectPackageManager(cwd: string): PackageManager {
   try {
     // Check for lock files in order of preference
     const lockFiles = [
@@ -47,7 +48,7 @@ function detectPackageManager(cwd: string): PackageManager {
   }
 }
 
-export function determinePublishTag(version: string | undefined, options: PublishOptions, config: ChangelogMonorepoConfig): string {
+export function determinePublishTag(version: string | undefined, options: PublishOptions, config: ResolvedChangelogMonorepoConfig): string {
   let tag: string = 'latest'
 
   if (options.tag) {
@@ -89,22 +90,25 @@ export function getPackagesToPublishInSelectiveMode(
 
 export async function getPackagesToPublishInIndependentMode(
   sortedPackages: PackageWithDeps[],
-  config: ChangelogMonorepoConfig,
+  config: ResolvedChangelogMonorepoConfig,
 ): Promise<string[]> {
   const packagesToPublish: string[] = []
-  const rootPackage = getRootPackage(config.cwd)
-  const lastTag = await getLastTag(rootPackage.version)
 
   for (const pkg of sortedPackages) {
+    const pkgLastTag = await getLastPackageTag(pkg.name)
+    const fromTag = pkgLastTag || config.from
+
     const commits = await getPackageCommits({
       pkg,
-      config,
-      from: lastTag,
-      to: 'HEAD',
+      config: {
+        ...config,
+        from: fromTag,
+      },
     })
 
     if (commits.length > 0) {
       packagesToPublish.push(pkg.name)
+      consola.info(`  ${pkg.name}: ${commits.length} commits since ${fromTag}`)
     }
   }
 
@@ -117,15 +121,16 @@ export async function publishPackage({
   version,
   options,
   config,
+  packageManager,
 }: {
   packagePath: string
   packageName: string
   version: string | undefined
   options: PublishOptions
-  config: ChangelogMonorepoConfig
+  config: ResolvedChangelogMonorepoConfig
+  packageManager: PackageManager
 }): Promise<void> {
   const tag = determinePublishTag(version, options, config)
-  const packageManager = detectPackageManager(config.cwd)
 
   const args = ['publish', '--tag', tag]
 
