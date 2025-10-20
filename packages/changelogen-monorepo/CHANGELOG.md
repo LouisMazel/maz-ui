@@ -1,5 +1,24 @@
 # Changelog
 
+## v4.1.9-alpha.0...v4.1.9-alpha.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.9-alpha.0...v4.1.9-alpha.1)
+
+### 🩹 Fixes
+
+- **@maz-ui/changelogen-monorepo:** Detect package manager to publish on npm - fix #1356 ([#1356](https://github.com/LouisMazel/maz-ui/issues/1356))
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Publish tag improvements - tag is set 'next' when no tag option is provided to avoid publish mistake ([ff527f62c](https://github.com/LouisMazel/maz-ui/commit/ff527f62c))
+- **@maz-ui/changelogen-monorepo:** Publish tag improvements ([f4bca9397](https://github.com/LouisMazel/maz-ui/commit/f4bca9397))
+- **@maz-ui/changelogen-monorepo:** Use resolved config instead writing options object ([84afa58b7](https://github.com/LouisMazel/maz-ui/commit/84afa58b7))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.8-beta.4...v4.1.9-alpha.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.4...v4.1.9-alpha.0)

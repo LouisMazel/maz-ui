@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.1.9-alpha.0...v4.1.9-alpha.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.9-alpha.0...v4.1.9-alpha.1)
+
+### 📖 Documentation
+
+- **maz-ui:** MazBtn - update doc ([f25b9849d](https://github.com/LouisMazel/maz-ui/commit/f25b9849d))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7...v4.1.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7...v4.1.8)
