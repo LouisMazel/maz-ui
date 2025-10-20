@@ -2,7 +2,7 @@ import type { ResolvedChangelogConfig } from 'changelogen'
 import { consola } from 'consola'
 import { parseGitRemoteUrl } from './git'
 
-interface GitlabRelease {
+export interface GitlabRelease {
   tag_name: string
   name?: string
   description?: string
@@ -17,7 +17,7 @@ interface GitlabRelease {
   released_at?: string
 }
 
-interface GitlabReleaseResponse {
+export interface GitlabReleaseResponse {
   tag_name: string
   name: string
   description: string

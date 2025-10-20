@@ -81,6 +81,10 @@ export interface ReleaseOptions extends ReleaseConfig, BumpConfig, PublishConfig
 export interface ChangelogMonorepoConfig extends IChangelogConfig {
   monorepo: MonorepoConfig
 
+  repo: IChangelogConfig['repo'] & {
+    provider?: GitProvider
+  }
+
   bump: Partial<BumpConfig>
   publish: Partial<PublishConfig>
   changelog: Partial<ChangelogConfig>
