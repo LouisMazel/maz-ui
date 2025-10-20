@@ -2,44 +2,59 @@ import type { ResolvedChangelogMonorepoConfig } from '../config'
 import type { PublishOptions } from '../types'
 import type { PackageWithDeps } from './dependencies'
 import { existsSync, readFileSync } from 'node:fs'
-import { join } from 'node:path'
+import path, { join } from 'node:path'
 import { execPromise } from '@maz-ui/node'
 import { consola } from 'consola'
 import { getPackageCommits } from './monorepo'
 import { getLastPackageTag, isPrerelease } from './version'
 
-type PackageManager = 'npm' | 'yarn' | 'pnpm'
+type PackageManager = 'npm' | 'yarn' | 'pnpm' | 'bun'
 
-export function detectPackageManager(cwd: string): PackageManager {
+export function detectPackageManager(cwd: string = process.cwd()): PackageManager {
   try {
-    // Check for lock files in order of preference
-    const lockFiles = [
-      { file: 'pnpm-lock.yaml', manager: 'pnpm' as const },
-      { file: 'yarn.lock', manager: 'yarn' as const },
-      { file: 'package-lock.json', manager: 'npm' as const },
-    ]
-
-    for (const { file, manager } of lockFiles) {
-      if (existsSync(join(cwd, file))) {
-        consola.info(`Detected package manager: ${manager}`)
-        return manager
-      }
-    }
-
-    // Check npm/yarn/pnpm in package.json packageManager field
     const packageJsonPath = join(cwd, 'package.json')
-    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'))
-
-    if (packageJson.packageManager) {
-      const pmName = packageJson.packageManager.split('@')[0]
-      if (['npm', 'yarn', 'pnpm'].includes(pmName)) {
-        consola.info(`Detected package manager from package.json: ${pmName}`)
-        return pmName as PackageManager
+    if (existsSync(packageJsonPath)) {
+      try {
+        const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'))
+        const pmField = packageJson.packageManager
+        if (typeof pmField === 'string') {
+          const pmName = pmField.split('@')[0]
+          // eslint-disable-next-line max-depth
+          if (['npm', 'pnpm', 'yarn', 'bun'].includes(pmName as string)) {
+            consola.success(`Detected package manager from package.json: ${pmName}`)
+            return pmName as PackageManager
+          }
+        }
+      }
+      catch (e) {
+        consola.warn(`Failed to parse package.json: ${(e as Error).message}`)
       }
     }
 
-    // Default to npm
-    consola.info('No package manager detected, using npm as default')
+    const lockFiles: Record<PackageManager, string> = {
+      pnpm: 'pnpm-lock.yaml',
+      yarn: 'yarn.lock',
+      npm: 'package-lock.json',
+      bun: 'bun.lockb',
+    }
+
+    for (const [manager, file] of Object.entries(lockFiles)) {
+      if (existsSync(join(cwd, file))) {
+        consola.success(`Detected package manager from lockfile: ${manager}`)
+        return manager as PackageManager
+      }
+    }
+
+    const ua = process.env.npm_config_user_agent
+    if (ua) {
+      const match = /(pnpm|yarn|npm|bun)/.exec(ua)
+      if (match) {
+        consola.success(`Detected package manager from user agent: ${match[1]}`)
+        return match[1] as PackageManager
+      }
+    }
+
+    consola.info('No package manager detected, defaulting to npm')
     return 'npm'
   }
   catch (error) {
@@ -115,6 +130,10 @@ export async function getPackagesToPublishInIndependentMode(
   return packagesToPublish
 }
 
+function isYarnBerry() {
+  return existsSync(path.join(process.cwd(), '.yarnrc.yml'))
+}
+
 export async function publishPackage({
   packagePath,
   packageName,
@@ -134,6 +153,20 @@ export async function publishPackage({
 
   const args = ['publish', '--tag', tag]
 
+  // Adjust for package managers
+  if (packageManager === 'pnpm') {
+    args.push('--no-git-checks')
+  }
+  else if (packageManager === 'yarn') {
+    args.push('--non-interactive')
+    // Yarn Berry only
+    if (isYarnBerry())
+      args.push('--no-git-checks')
+  }
+  else if (packageManager === 'npm') {
+    args.push('--yes')
+  }
+
   const registry = options.registry || config.publish.registry
   if (registry) {
     args.push('--registry', registry)
@@ -149,7 +182,8 @@ export async function publishPackage({
     args.push('--otp', otp)
   }
 
-  const command = `${packageManager} ${args.join(' ')}`
+  const baseCommand = packageManager === 'yarn' && isYarnBerry() ? 'yarn npm' : packageManager
+  const command = `${baseCommand} ${args.join(' ')}`
 
   consola.info(`Publishing ${packageName}@${version} with tag '${tag}' using ${packageManager}`)
 

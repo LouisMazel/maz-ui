@@ -52,9 +52,6 @@
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
-    "test:unit": "vitest",
-    "test:unit:watch": "vitest --watch",
-    "test:unit:coverage": "vitest --coverage",
     "cli": "node bin/clm.mjs"
   },
   "dependencies": {

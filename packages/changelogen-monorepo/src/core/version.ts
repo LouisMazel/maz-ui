@@ -18,6 +18,10 @@ export function determineReleaseType(
     return config.bump.type
   }
 
+  if (config.bump.type === 'release' && isPrerelease(config.from)) {
+    return 'release'
+  }
+
   return determineSemverChange(commits, config)
 }
 

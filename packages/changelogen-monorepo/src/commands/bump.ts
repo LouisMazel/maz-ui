@@ -221,11 +221,11 @@ async function bumpSelectiveMode({
 
   let fromTag = config.from
   let rawCommits = await getGitDiff(fromTag, config.to, config.cwd)
-  let allCommits = parseCommits(rawCommits, config)
+  let commits = parseCommits(rawCommits, config)
 
-  consola.info(`Found ${allCommits.length} commits since ${fromTag}`)
+  consola.info(`Found ${commits.length} commits since ${fromTag}`)
 
-  const releaseType = determineReleaseType(allCommits, config)
+  const releaseType = determineReleaseType(commits, config)
 
   if (!releaseType) {
     consola.warn('No commits require a version bump')
@@ -233,7 +233,7 @@ async function bumpSelectiveMode({
   }
 
   if (config.bump.type) {
-    consola.info(`Using specified release type: ${releaseType}`)
+    consola.info(`Using specified release type: ${config.bump.type}`)
   }
   else {
     consola.info(`Detected release type from commits: ${releaseType}`)
@@ -248,9 +248,9 @@ async function bumpSelectiveMode({
 
     fromTag = await getLastTag(currentVersion, true)
     rawCommits = await getGitDiff(fromTag, config.to, config.cwd)
-    allCommits = parseCommits(rawCommits, config)
+    commits = parseCommits(rawCommits, config)
 
-    consola.info(`Found ${allCommits.length} commits since last stable tag ${fromTag}`)
+    consola.info(`Found ${commits.length} commits since last stable tag ${fromTag}`)
   }
 
   const packagesToBump = await getPackageToBump({
