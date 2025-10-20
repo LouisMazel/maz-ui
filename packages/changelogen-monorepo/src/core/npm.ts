@@ -1,11 +1,51 @@
 import type { ChangelogMonorepoConfig, PublishOptions } from '../types'
 import type { PackageWithDeps } from './dependencies'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { execPromise } from '@maz-ui/node'
 import { consola } from 'consola'
 import { getPackageCommits, getRootPackage } from './monorepo'
 import { getLastTag, isPrerelease } from './version'
+
+type PackageManager = 'npm' | 'yarn' | 'pnpm'
+
+function detectPackageManager(cwd: string): PackageManager {
+  try {
+    // Check for lock files in order of preference
+    const lockFiles = [
+      { file: 'pnpm-lock.yaml', manager: 'pnpm' as const },
+      { file: 'yarn.lock', manager: 'yarn' as const },
+      { file: 'package-lock.json', manager: 'npm' as const },
+    ]
+
+    for (const { file, manager } of lockFiles) {
+      if (existsSync(join(cwd, file))) {
+        consola.info(`Detected package manager: ${manager}`)
+        return manager
+      }
+    }
+
+    // Check npm/yarn/pnpm in package.json packageManager field
+    const packageJsonPath = join(cwd, 'package.json')
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'))
+
+    if (packageJson.packageManager) {
+      const pmName = packageJson.packageManager.split('@')[0]
+      if (['npm', 'yarn', 'pnpm'].includes(pmName)) {
+        consola.info(`Detected package manager from package.json: ${pmName}`)
+        return pmName as PackageManager
+      }
+    }
+
+    // Default to npm
+    consola.info('No package manager detected, using npm as default')
+    return 'npm'
+  }
+  catch (error) {
+    consola.warn(`Error detecting package manager: ${(error as Error).message}, defaulting to npm`)
+    return 'npm'
+  }
+}
 
 export function determinePublishTag(version: string | undefined, options: PublishOptions, config: ChangelogMonorepoConfig): string {
   let tag: string = 'latest'
@@ -85,6 +125,8 @@ export async function publishPackage({
   config: ChangelogMonorepoConfig
 }): Promise<void> {
   const tag = determinePublishTag(version, options, config)
+  const packageManager = detectPackageManager(config.cwd)
+
   const args = ['publish', '--tag', tag]
 
   const registry = options.registry || config.publish.registry
@@ -102,9 +144,9 @@ export async function publishPackage({
     args.push('--otp', otp)
   }
 
-  const command = `npm ${args.join(' ')}`
+  const command = `${packageManager} ${args.join(' ')}`
 
-  consola.info(`Publishing ${packageName}@${version} with tag '${tag}'`)
+  consola.info(`Publishing ${packageName}@${version} with tag '${tag}' using ${packageManager}`)
 
   if (options.dryRun) {
     consola.info(`[DRY RUN] Would run: ${command} in ${packagePath}`)
