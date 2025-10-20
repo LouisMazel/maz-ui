@@ -68,6 +68,7 @@ export async function commitAndTag({
   await execPromise(`git add ${filesToAdd.join(' ')}`, { noSuccess: true })
 
   const versionForMessage = newVersion || (bumpedPackages?.[0]?.version) || 'unknown'
+
   const commitMessage = config.templates.commitMessage
     ?.replaceAll('{{newVersion}}', versionForMessage)
     || `chore(release): bump version to v${versionForMessage}`
@@ -88,7 +89,7 @@ export async function commitAndTag({
   if (config.monorepo.versionMode === 'independent' && bumpedPackages && bumpedPackages.length > 0) {
     for (const pkg of bumpedPackages) {
       const tagName = `${pkg.name}@${pkg.version}`
-      const tagMessage = config.templates.tagMessage
+      const tagMessage = config.templates?.tagMessage
         ?.replaceAll('{{newVersion}}', pkg.version || '')
         || tagName
 
@@ -96,7 +97,16 @@ export async function commitAndTag({
         consola.info(`Would exec: git tag ${signTags} -a ${tagName} -m "${tagMessage}"`)
       }
       else {
-        await execPromise(`git tag ${signTags} -a ${tagName} -m "${tagMessage}"`, { noSuccess: true })
+        const cmd = `git tag ${signTags} -a ${tagName} -m "${tagMessage}"`
+        consola.info(`Executing: ${cmd}`)
+        try {
+          await execPromise(cmd, { noSuccess: true, noStdout: true })
+          consola.success(`Tag created: ${tagName}`)
+        }
+        catch (error) {
+          consola.error(`Failed to create tag ${tagName}:`, (error as Error).message)
+          throw error
+        }
       }
       createdTags.push(tagName)
     }
@@ -108,7 +118,7 @@ export async function commitAndTag({
   }
   else if (newVersion) {
     const tagName = `v${newVersion}`
-    const tagMessage = config.templates.tagMessage
+    const tagMessage = config.templates?.tagMessage
       ?.replaceAll('{{newVersion}}', newVersion)
       || tagName
 
@@ -116,7 +126,16 @@ export async function commitAndTag({
       consola.info(`Would exec: git tag ${signTags} -a ${tagName} -m "${tagMessage}"`)
     }
     else {
-      await execPromise(`git tag ${signTags} -a ${tagName} -m "${tagMessage}"`, { noSuccess: true })
+      const cmd = `git tag ${signTags} -a ${tagName} -m "${tagMessage}"`
+      consola.info(`Executing: ${cmd}`)
+      try {
+        await execPromise(cmd, { noSuccess: true, noStdout: true })
+        consola.success(`Tag created: ${tagName}`)
+      }
+      catch (error) {
+        consola.error(`Failed to create tag ${tagName}:`, (error as Error).message)
+        throw error
+      }
     }
     createdTags.push(tagName)
     consola.success(`Created tag: ${tagName}`)

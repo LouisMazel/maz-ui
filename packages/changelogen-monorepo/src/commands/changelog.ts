@@ -6,7 +6,6 @@ import { generateChangelog, writeChangelogToFile } from '../core/changelog'
 import { getPackageCommits, getPackages, getRootPackage } from '../core/monorepo'
 import { getLastTag } from '../core/version'
 
-// eslint-disable-next-line complexity
 export async function changelog(options: ChangelogOptions = {}): Promise<void> {
   try {
     consola.start('Generating changelogs...')
@@ -28,13 +27,14 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
     if (opts.rootChangelog) {
       const rootPackage = getRootPackage(config.cwd)
 
-      const lastTag = options.from || await getLastTag(rootPackage.version)
+      const fromTag = options.from || await getLastTag(rootPackage.version)
+      const toTag = opts.to
 
-      consola.info(`Generating root changelog - Commit range: ${lastTag}...${rootPackage.version || opts.to}`)
+      consola.info(`Generating root changelog - Commit range: ${fromTag}...${toTag}`)
 
       const rootCommits = await getPackageCommits({
         pkg: rootPackage,
-        from: lastTag,
+        from: fromTag,
         to: opts.to,
         config,
       })
@@ -42,8 +42,8 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
         pkg: rootPackage,
         commits: rootCommits,
         config,
-        from: lastTag,
-        to: rootPackage.version || opts.to,
+        from: fromTag,
+        to: toTag,
       })
 
       if (!rootChangelog) {

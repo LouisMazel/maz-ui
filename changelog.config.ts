@@ -17,7 +17,7 @@ export default defineConfig({
   },
   templates: {
     commitMessage: 'chore(release): bump version to v{{newVersion}}',
-    tagMessage: 'v{{newVersion}}',
+    tagMessage: 'chore(release): bump version to v{{newVersion}}',
     tagBody: 'v{{newVersion}}',
   },
   noAuthors: false,
