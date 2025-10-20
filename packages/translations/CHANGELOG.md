@@ -1,5 +1,19 @@
 # Change Log
 
+## v4.1.8...v4.2.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8...v4.2.0)
+
+### 💅 Refactors
+
+- **@maz-ui/translations:** Update dropzone translations - remove capitalization from translation selectFile ([4d47d853](https://github.com/LouisMazel/maz-ui/commit/4d47d853))
+- **@maz-ui/translations:** Update dropzone translations - remove capitalization from translation selectFile ([bf9a950b](https://github.com/LouisMazel/maz-ui/commit/bf9a950b))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7...v4.1.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7...v4.1.8)

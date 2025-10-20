@@ -1,5 +1,32 @@
 # Change Log
 
+## v4.1.8...v4.2.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8...v4.2.0)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Type declarations of composables ([54fc2e1d](https://github.com/LouisMazel/maz-ui/commit/54fc2e1d))
+- **maz-ui:** MazDropdown - popover should be closed on click outside ([efa438db](https://github.com/LouisMazel/maz-ui/commit/efa438db))
+- **@maz-ui/nuxt:** Type declarations of composables ([b32b9608](https://github.com/LouisMazel/maz-ui/commit/b32b9608))
+- **maz-ui:** MazDropdown - popover should be closed on click outside ([06053305](https://github.com/LouisMazel/maz-ui/commit/06053305))
+
+### 📖 Documentation
+
+- **maz-ui:** MazBtn - update doc ([813fd51a](https://github.com/LouisMazel/maz-ui/commit/813fd51a))
+
+### 💄 Styles
+
+- **maz-ui:** MazBackdrop - make the overlay background darker ([41b90845](https://github.com/LouisMazel/maz-ui/commit/41b90845))
+- **maz-ui:** MazDropzone - use a link instead of a button to select file ([535d409e](https://github.com/LouisMazel/maz-ui/commit/535d409e))
+- **maz-ui:** MazBackdrop - make the overlay background darker ([cdd1a9b4](https://github.com/LouisMazel/maz-ui/commit/cdd1a9b4))
+- **maz-ui:** MazDropzone - use a link instead of a button to select file ([7fa6843f](https://github.com/LouisMazel/maz-ui/commit/7fa6843f))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.9-alpha.0...v4.1.9-alpha.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.9-alpha.0...v4.1.9-alpha.1)

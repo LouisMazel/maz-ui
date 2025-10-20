@@ -1,5 +1,53 @@
 # Change Log
 
+## v4.1.8...v4.2.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8...v4.2.0)
+
+### 🚀 Features
+
+- **@maz-ui/changelogen-monorepo:** New package to manage monorepo with changelogen ([656033a1](https://github.com/LouisMazel/maz-ui/commit/656033a1))
+- **@maz-ui/changelogen-monorepo:** New package to manage monorepo with changelogen ([1ca707d7](https://github.com/LouisMazel/maz-ui/commit/1ca707d7))
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Type declarations of composables ([54fc2e1d](https://github.com/LouisMazel/maz-ui/commit/54fc2e1d))
+- **maz-ui:** MazDropdown - popover should be closed on click outside ([efa438db](https://github.com/LouisMazel/maz-ui/commit/efa438db))
+- **@maz-ui/changelogen-monorepo:** Publish command ([f714835f](https://github.com/LouisMazel/maz-ui/commit/f714835f))
+- **@maz-ui/nuxt:** Type declarations of composables ([b32b9608](https://github.com/LouisMazel/maz-ui/commit/b32b9608))
+- **maz-ui:** MazDropdown - popover should be closed on click outside ([06053305](https://github.com/LouisMazel/maz-ui/commit/06053305))
+- **@maz-ui/changelogen-monorepo:** Publish command ([c49fe967](https://github.com/LouisMazel/maz-ui/commit/c49fe967))
+- **@maz-ui/changelogen-monorepo:** Detect package manager to publish on npm - fix #1356 ([#1356](https://github.com/LouisMazel/maz-ui/issues/1356))
+
+### 💅 Refactors
+
+- **@maz-ui/translations:** Update dropzone translations - remove capitalization from translation selectFile ([4d47d853](https://github.com/LouisMazel/maz-ui/commit/4d47d853))
+- **@maz-ui/changelogen-monorepo:** Bump improvements ([6cb2a706](https://github.com/LouisMazel/maz-ui/commit/6cb2a706))
+- **@maz-ui/changelogen-monorepo:** Changelog generation improvements ([0f4e86fa](https://github.com/LouisMazel/maz-ui/commit/0f4e86fa))
+- **@maz-ui/translations:** Update dropzone translations - remove capitalization from translation selectFile ([bf9a950b](https://github.com/LouisMazel/maz-ui/commit/bf9a950b))
+- **@maz-ui/changelogen-monorepo:** Bump improvements ([229e2d8c](https://github.com/LouisMazel/maz-ui/commit/229e2d8c))
+- **@maz-ui/changelogen-monorepo:** Changelog generation improvements ([73925ca4](https://github.com/LouisMazel/maz-ui/commit/73925ca4))
+- **docs:** Correct description of made with page ([f195773f](https://github.com/LouisMazel/maz-ui/commit/f195773f))
+- **@maz-ui/changelogen-monorepo:** Publish tag improvements - tag is set 'next' when no tag option is provided to avoid publish mistake ([64636d58](https://github.com/LouisMazel/maz-ui/commit/64636d58))
+- **@maz-ui/changelogen-monorepo:** Publish tag improvements ([a7bd4ca3](https://github.com/LouisMazel/maz-ui/commit/a7bd4ca3))
+- **@maz-ui/changelogen-monorepo:** Use resolved config instead writing options object ([0c666439](https://github.com/LouisMazel/maz-ui/commit/0c666439))
+
+### 📖 Documentation
+
+- **maz-ui:** MazBtn - update doc ([813fd51a](https://github.com/LouisMazel/maz-ui/commit/813fd51a))
+
+### 💄 Styles
+
+- **maz-ui:** MazBackdrop - make the overlay background darker ([41b90845](https://github.com/LouisMazel/maz-ui/commit/41b90845))
+- **maz-ui:** MazDropzone - use a link instead of a button to select file ([535d409e](https://github.com/LouisMazel/maz-ui/commit/535d409e))
+- **maz-ui:** MazBackdrop - make the overlay background darker ([cdd1a9b4](https://github.com/LouisMazel/maz-ui/commit/cdd1a9b4))
+- **maz-ui:** MazDropzone - use a link instead of a button to select file ([7fa6843f](https://github.com/LouisMazel/maz-ui/commit/7fa6843f))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.9-alpha.0...v4.1.9-alpha.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.9-alpha.0...v4.1.9-alpha.1)

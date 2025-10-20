@@ -1,5 +1,19 @@
 # Change Log
 
+## v4.1.8...v4.2.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8...v4.2.0)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Type declarations of composables ([54fc2e1d](https://github.com/LouisMazel/maz-ui/commit/54fc2e1d))
+- **@maz-ui/nuxt:** Type declarations of composables ([b32b9608](https://github.com/LouisMazel/maz-ui/commit/b32b9608))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.7...v4.1.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7...v4.1.8)
