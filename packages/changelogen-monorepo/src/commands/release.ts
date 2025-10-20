@@ -69,7 +69,7 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
       publish: options.publish || config.release.publish,
       registry: options.registry || config.publish.registry,
       release: options.release || config.release.release,
-      tag: options.tag || config.publish.tag,
+      tag: options.tag,
       token: options.token || config.publish.tag,
       dryRun: options.dryRun || false,
       rootChangelog: options.rootChangelog || config.changelog.rootChangelog,
@@ -122,7 +122,7 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
     }
     else {
       if (opts.dryRun) {
-        consola.info('Step 4/6: Skipped push (--dry-run)')
+        consola.info('Step 4/6: Skipped push (--dry-run) - Would exec: git push --follow-tags')
       }
       else {
         consola.info('Step 4/6: Skipped push (remove --no-push to enable)')
