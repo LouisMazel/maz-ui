@@ -79,7 +79,7 @@ program
         from: options.from,
         to: options.to,
         formatCmd: options.formatCmd,
-        rootChangelog: !options.noRootChangelog,
+        rootChangelog: options.rootChangelog,
         dryRun: options.dryRun,
       })
     }
@@ -189,17 +189,17 @@ program
         preid: options.preid,
         from: options.from,
         to: options.to,
-        push: !options.noPush,
+        push: options.push,
         release: options.release,
-        publish: !options.noPublish,
+        publish: options.publish,
         registry: options.registry,
         tag: options.tag,
         access: options.access,
         otp: options.otp,
-        noVerify: options.noVerify,
+        verify: options.verify,
         dryRun: options.dryRun,
         formatCmd: options.formatCmd,
-        rootChangelog: !options.noRootChangelog,
+        rootChangelog: options.rootChangelog,
         token: options.token,
       })
     }

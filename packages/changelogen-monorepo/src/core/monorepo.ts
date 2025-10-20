@@ -1,5 +1,6 @@
 import type { GitCommit } from 'changelogen'
-import type { ChangelogMonorepoConfig, PackageInfo } from '../types'
+import type { ResolvedChangelogMonorepoConfig } from '../config'
+import type { PackageInfo } from '../types'
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { getGitDiff, parseCommits } from 'changelogen'
@@ -7,9 +8,9 @@ import { consola } from 'consola'
 import fg from 'fast-glob'
 import { expandPackagesToBumpWithDependents } from './dependencies'
 
-function isValidPackage(
+function getPackageInfo(
   packagePath: string,
-  ignorePackages: ChangelogMonorepoConfig['monorepo']['ignorePackages'],
+  ignorePackageNames: ResolvedChangelogMonorepoConfig['monorepo']['ignorePackageNames'],
 ): PackageInfo | null {
   const packageJsonPath = join(packagePath, 'package.json')
 
@@ -21,10 +22,18 @@ function isValidPackage(
   try {
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'))
 
-    if (packageJson.private)
+    if (packageJson.private) {
+      consola.info(`${packageJson.name} is private and will be ignored`)
       return null
-    if (ignorePackages?.includes(packageJson.name))
+    }
+    if (ignorePackageNames?.includes(packageJson.name)) {
+      consola.info(`${packageJson.name} ignored by config monorepo.ignorePackageNames`)
       return null
+    }
+    if (!packageJson.version) {
+      consola.warn(`${packageJson.name} has no version and will be ignored`)
+      return null
+    }
 
     return {
       name: packageJson.name,
@@ -33,7 +42,8 @@ function isValidPackage(
     }
   }
   catch (error) {
-    consola.warn(`Unable to read ${packageJsonPath}:`, (error as Error).message)
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    consola.warn(`Unable to read ${packageJsonPath}:`, errorMessage)
     return null
   }
 }
@@ -41,11 +51,11 @@ function isValidPackage(
 export function getPackages({
   cwd,
   patterns,
-  ignorePackages,
+  ignorePackageNames,
 }: {
   cwd: string
   patterns: string[]
-  ignorePackages: ChangelogMonorepoConfig['monorepo']['ignorePackages']
+  ignorePackageNames: ResolvedChangelogMonorepoConfig['monorepo']['ignorePackageNames']
 }): PackageInfo[] {
   const packages: PackageInfo[] = []
   const foundPaths = new Set<string>()
@@ -63,7 +73,7 @@ export function getPackages({
         if (foundPaths.has(matchPath))
           continue
 
-        const packageInfo = isValidPackage(matchPath, ignorePackages)
+        const packageInfo = getPackageInfo(matchPath, ignorePackageNames)
         if (packageInfo) {
           foundPaths.add(matchPath)
           packages.push(packageInfo)
@@ -80,21 +90,14 @@ export function getPackages({
 
 export async function getPackageCommits({
   pkg,
-  from,
-  to,
   config,
 }: {
   pkg: PackageInfo
-  from: string
-  to: string
-  config: ChangelogMonorepoConfig
+  config: ResolvedChangelogMonorepoConfig
 }): Promise<GitCommit[]> {
-  const rawCommits = await getGitDiff(from, to, config.cwd)
-  const allCommits = parseCommits(rawCommits, {
-    ...config,
-    from,
-    to,
-  })
+  const rawCommits = await getGitDiff(config.from, config.to, config.cwd)
+  const allCommits = parseCommits(rawCommits, config)
+
   const rootPackage = getRootPackage(config.cwd)
 
   const commits = allCommits.filter((commit) => {
@@ -132,7 +135,7 @@ export function getRootPackage(rootDir: string): PackageInfo {
     return {
       name: packageJson.name,
       path: rootDir,
-      version: packageJson.version,
+      version: packageJson.version || '0.0.0',
     }
   }
   catch (error) {
@@ -145,15 +148,13 @@ export async function getPackageToBump({
   config,
 }: {
   packages: PackageInfo[]
-  config: ChangelogMonorepoConfig
+  config: ResolvedChangelogMonorepoConfig
 }) {
   // First, identify packages with commits
   const packagesWithCommits: PackageInfo[] = []
   for (const pkg of packages) {
     const commits = await getPackageCommits({
       pkg,
-      from: config.from,
-      to: config.to,
       config,
     })
     if (commits.length > 0) {

@@ -1,6 +1,7 @@
 import type { GitCommit } from 'changelogen'
 import type { ReleaseType } from 'semver'
-import type { BumpOptions, ChangelogMonorepoConfig, PackageInfo } from '../types'
+import type { ResolvedChangelogMonorepoConfig } from '../config'
+import type { BumpOptions, PackageInfo } from '../types'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { execPromise } from '@maz-ui/node'
@@ -11,26 +12,13 @@ import { getPackageCommits } from './monorepo'
 
 export function determineReleaseType(
   commits: GitCommit[],
-  config: ChangelogMonorepoConfig,
-  options: Required<BumpOptions>,
+  config: ResolvedChangelogMonorepoConfig,
 ): BumpOptions['type'] | null {
-  if (options.type) {
-    return options.type
+  if (config.bump.type && config.bump.type !== 'release') {
+    return config.bump.type
   }
 
   return determineSemverChange(commits, config)
-}
-
-export function readVersion(pkgPath: string): string {
-  const packageJsonPath = join(pkgPath, 'package.json')
-
-  try {
-    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'))
-    return packageJson.version || '0.0.0'
-  }
-  catch (error) {
-    throw new Error(`Unable to read version from ${packageJsonPath}: ${(error as Error).message}`)
-  }
 }
 
 export function writeVersion(pkgPath: string, version: string, dryRun = false): void {
@@ -64,7 +52,7 @@ export function bumpPackageVersion(
   const newVersion = semver.inc(currentVersion, release, preid as string)
 
   if (!newVersion) {
-    throw new Error(`Unable to bump version ${currentVersion} with release type ${release}`)
+    throw new Error(`Unable to bump version "${currentVersion}" with release type "${release}"`)
   }
 
   return newVersion
@@ -127,6 +115,42 @@ export async function getLastTag(version?: string, onlyStable?: boolean): Promis
   return stdout.trim()
 }
 
+export async function getLastPackageTag(packageName: string, onlyStable?: boolean): Promise<string | null> {
+  try {
+    const escapedPackageName = packageName.replace(/[@/]/g, '\\$&')
+
+    let grepPattern: string
+    if (onlyStable) {
+      grepPattern = `^${escapedPackageName}@[0-9]+\\.[0-9]+\\.[0-9]+$`
+    }
+    else {
+      grepPattern = `^${escapedPackageName}@`
+    }
+
+    const { stdout } = await execPromise(
+      `git tag --sort=-v:refname | grep -E '${grepPattern}' | sed -n '1p'`,
+      {
+        noSuccess: true,
+        noStdout: true,
+      },
+    )
+
+    const tag = stdout.trim()
+    return tag || null
+  }
+  catch {
+    return null
+  }
+}
+
+export function extractVersionFromPackageTag(tag: string): string | null {
+  const atIndex = tag.lastIndexOf('@')
+  if (atIndex === -1) {
+    return null
+  }
+  return tag.slice(atIndex + 1)
+}
+
 export function isGraduating(currentVersion: string, newVersion: string): boolean {
   return isPrerelease(currentVersion) && !isPrerelease(newVersion)
 }
@@ -134,21 +158,24 @@ export function isGraduating(currentVersion: string, newVersion: string): boolea
 export async function bumpPackageIndependently({
   pkg,
   config,
-  options,
   forcedBumpType,
+  fromTag,
+  dryRun,
 }: {
   pkg: PackageInfo
-  config: ChangelogMonorepoConfig
-  options: Required<BumpOptions>
+  config: ResolvedChangelogMonorepoConfig
   forcedBumpType?: BumpOptions['type']
-}): Promise<{ bumped: boolean, newVersion?: string }> {
+  fromTag?: string
+  dryRun: boolean
+}): Promise<{ bumped: true, newVersion: string } | { bumped: false }> {
   consola.info(`Analyzing ${pkg.name}`)
 
   const commits = await getPackageCommits({
     pkg,
-    config,
-    from: config.from,
-    to: config.to,
+    config: {
+      ...config,
+      from: fromTag || config.from,
+    },
   })
 
   let releaseType: BumpOptions['type'] | null = null
@@ -163,14 +190,14 @@ export async function bumpPackageIndependently({
   }
   else {
     consola.info(`  Found ${commits.length} commits for ${pkg.name}`)
-    releaseType = determineReleaseType(commits, config, options)
+    releaseType = determineReleaseType(commits, config)
 
     if (!releaseType) {
       consola.info(`  No version bump required for ${pkg.name}`)
       return { bumped: false }
     }
 
-    if (options.type) {
+    if (config.bump.type) {
       consola.info(`  Using specified release type: ${releaseType}`)
     }
     else {
@@ -179,10 +206,10 @@ export async function bumpPackageIndependently({
   }
 
   const currentVersion = pkg.version || '0.0.0'
-  const newVersion = bumpPackageVersion(currentVersion, releaseType, options.preid)
+  const newVersion = bumpPackageVersion(currentVersion, releaseType, config.bump.preid)
 
   consola.info(`  Bumping ${pkg.name} from ${currentVersion} to ${newVersion}`)
 
-  writeVersion(pkg.path, newVersion, options.dryRun)
+  writeVersion(pkg.path, newVersion, dryRun)
   return { bumped: true, newVersion }
 }

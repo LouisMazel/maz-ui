@@ -26,11 +26,10 @@ export default defineConfig({
   monorepo: {
     versionMode: 'selective',
     packages: ['packages/*'],
-    ignorePackages: [],
+    ignorePackageNames: [],
     filterCommits: true,
   },
 
-  bump: {},
   changelog: {
     formatCmd: 'pnpm lint:fix:all',
     rootChangelog: true,
@@ -39,7 +38,5 @@ export default defineConfig({
     registry: 'https://registry.npmjs.org',
   },
 
-  release: {
-  },
-
+  release: {},
 })

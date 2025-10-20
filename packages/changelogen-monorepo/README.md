@@ -174,7 +174,7 @@ export default defineConfig({
   monorepo: {
     versionMode: 'unified', // or 'independent'
     packages: ['packages/*'],
-    ignorePackages: [],
+    ignorePackageNames: [],
     filterCommits: true,
     rootChangelog: true,
   },
@@ -342,7 +342,7 @@ git commit -m "docs(components): update API documentation"
   }
   ```
 
-#### `ignorePackages`
+#### `ignorePackageNames`
 
 - **Type:** `string[]`
 - **Default:** `[]`
@@ -463,7 +463,7 @@ export default defineConfig({
   monorepo: {
     versionMode: 'independent',
     packages: ['packages/*'],
-    ignorePackages: ['@myorg/eslint-config'],
+    ignorePackageNames: ['@myorg/eslint-config'],
     filterCommits: true,
     rootChangelog: true,
   },
