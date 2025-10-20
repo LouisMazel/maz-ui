@@ -35,7 +35,7 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
       const rootCommits = await getPackageCommits({
         pkg: rootPackage,
         from: fromTag,
-        to: opts.to,
+        to: toTag,
         config,
       })
       const rootChangelog = await generateChangelog({
