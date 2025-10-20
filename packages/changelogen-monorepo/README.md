@@ -566,26 +566,28 @@ You can also use the tool programmatically:
 import {
   bump,
   changelog,
-  detectGitProvider,
   github,
   gitlab,
+  publish,
   release,
 } from '@maz-ui/changelogen-monorepo'
 
-// Auto-detect provider - 'github' or 'gitlab'
-const provider = detectGitProvider()
-
 // Run bump
-await bump({ type: 'patch' })
+await bump({
+  type: 'prerelease',
+  preid: 'beta'
+})
 
 // Run changelog
-await changelog({ releaseType: 'latest' })
+await changelog({
+  from: 'v1.0.0',
+  to: 'v1.0.1',
+})
 
-// Run full release
-await release({
-  type: 'minor',
-  push: true,
-  release: true,
+// Publish packages on registry
+await publish({
+  registry: 'https://registry.npmjs.org',
+  tag: 'latest'
 })
 
 // Publish release to GitHub
@@ -593,6 +595,18 @@ await github()
 
 // Publish release to GitLab
 await gitlab()
+
+// Run full release
+await release({
+  packages: ['./packages/*'],
+  preid: 'beta',
+  tag: 'beta',
+  registry: 'https://registry.npmjs.org',
+  release: true,
+  push: true,
+  publish: true,
+  type: 'prerelease',
+})
 ```
 
 ## License

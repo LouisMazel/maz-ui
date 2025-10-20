@@ -3,7 +3,7 @@ import type { ReleaseType } from 'semver'
 import type { BumpOptions, ChangelogMonorepoConfig, PackageInfo } from '../types'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { execPromise } from '@maz-ui/node/execPromise.js'
+import { execPromise } from '@maz-ui/node'
 import { determineSemverChange } from 'changelogen'
 import { consola } from 'consola'
 import * as semver from 'semver'
@@ -18,8 +18,7 @@ export function determineReleaseType(
     return options.type
   }
 
-  const semverChange = determineSemverChange(commits, config)
-  return semverChange
+  return determineSemverChange(commits, config)
 }
 
 export function readVersion(pkgPath: string): string {

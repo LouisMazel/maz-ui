@@ -1,5 +1,6 @@
-import type { GitProvider, ReleaseOptions } from '../types'
+import type { RepoProvider } from 'changelogen'
 
+import type { GitProvider, ReleaseOptions } from '../types'
 import { execPromise } from '@maz-ui/node'
 import { consola } from 'consola'
 import { loadMonorepoConfig } from '../config'
@@ -12,27 +13,34 @@ import { github } from './github'
 import { gitlab } from './gitlab'
 import { publish } from './publish'
 
-async function publishToGitProvider(versions: {
+async function publishToGitProvider({ provider, from, to }: {
+  provider?: GitProvider
   from: string
   to: string
 }): Promise<GitProvider | 'none' | 'unknown'> {
-  const provider = detectGitProvider()
+  const detectedProvider = provider || detectGitProvider()
 
-  if (!provider) {
+  if (!detectedProvider) {
     consola.warn('Unable to detect Git provider. Skipping release publication.')
     return 'unknown'
   }
 
-  if (provider === 'github') {
+  if (detectedProvider === 'github') {
     consola.info('Publishing GitHub release...')
-    await github(versions)
+    await github({
+      from,
+      to,
+    })
   }
-  else if (provider === 'gitlab') {
+  else if (detectedProvider === 'gitlab') {
     consola.info('Publishing GitLab release...')
-    await gitlab(versions)
+    await gitlab({
+      from,
+      to,
+    })
   }
 
-  return provider
+  return detectedProvider
 }
 
 // eslint-disable-next-line complexity
@@ -133,12 +141,12 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
     })
     consola.log('')
 
-    let provider: GitProvider | 'none' | 'unknown'
+    let provider: RepoProvider | 'none' | 'unknown' | undefined = config.repo.provider
 
     if (opts.dryRun) {
       consola.info('Step 6/6: Skipped publish git release')
       consola.log('')
-      provider = detectGitProvider() ?? 'github'
+      provider = detectGitProvider() ?? 'none'
     }
     else {
       consola.info('Step 6/6: Publish Git release')
@@ -149,6 +157,7 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
       }
       else {
         provider = await publishToGitProvider({
+          provider,
           from: lastTag,
           to: opts.to,
         })
