@@ -1,5 +1,5 @@
 import type { GitProvider } from '../types'
-import consola from 'consola'
+import { consola } from 'consola'
 import { github } from '../commands/github'
 import { gitlab } from '../commands/gitlab'
 import { detectGitProvider } from '../utils/git'
