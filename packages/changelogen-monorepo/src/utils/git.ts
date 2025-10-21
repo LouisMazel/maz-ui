@@ -1,6 +1,8 @@
 import type { ChangelogMonorepoConfig, GitProvider, PackageInfo } from '../types'
 import { execSync } from 'node:child_process'
 
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
 import { execPromise } from '@maz-ui/node'
 import { consola } from 'consola'
 
@@ -64,7 +66,10 @@ export async function commitAndTag({
   bumpedPackages?: PackageInfo[]
   dryRun: boolean
 }): Promise<string[]> {
-  const filesToAdd = ['package.json', 'lerna.json', 'CHANGELOG.md', '**/CHANGELOG.md', '**/package.json']
+  const lernaJsonPath = join(config.cwd, 'lerna.json')
+  const hasLerna = existsSync(lernaJsonPath)
+
+  const filesToAdd = ['package.json', ...(hasLerna ? ['lerna.json'] : []), 'CHANGELOG.md', '**/CHANGELOG.md', '**/package.json']
   await execPromise(`git add ${filesToAdd.join(' ')}`, { noSuccess: true })
 
   const versionForMessage = newVersion || (bumpedPackages?.[0]?.version) || 'unknown'
