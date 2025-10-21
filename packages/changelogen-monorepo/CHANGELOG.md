@@ -1,5 +1,19 @@
 # Changelog
 
+## v4.2.1-alpha.5...v4.2.1-alpha.6
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.5...v4.2.1-alpha.6)
+
+### 🩹 Fixes
+
+- **@maz-ui/changelogen-monorepo:** Release - generate changelog only for bumped packages ([05d0f08f4](https://github.com/LouisMazel/maz-ui/commit/05d0f08f4))
+- **@maz-ui/changelogen-monorepo:** Improvement getting last tag ([6f58b4375](https://github.com/LouisMazel/maz-ui/commit/6f58b4375))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.4...v4.2.1-alpha.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.4...v4.2.1-alpha.5)
