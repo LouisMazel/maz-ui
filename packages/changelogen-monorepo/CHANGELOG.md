@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.2.1-alpha.0...v4.2.1-alpha.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.0...v4.2.1-alpha.1)
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Build for node20 instead of node18 ([9d2af2387](https://github.com/LouisMazel/maz-ui/commit/9d2af2387))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.0...v4.2.1-alpha.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.0...v4.2.1-alpha.0)
