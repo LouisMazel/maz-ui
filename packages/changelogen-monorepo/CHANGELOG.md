@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.2.1-alpha.7...v4.2.1-alpha.8
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.7...v4.2.1-alpha.8)
+
+### 🩹 Fixes
+
+- **@maz-ui/changelogen-monorepo:** Add all changelog files to release commit ([38e08a93a](https://github.com/LouisMazel/maz-ui/commit/38e08a93a))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.6...v4.2.1-alpha.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.6...v4.2.1-alpha.7)
