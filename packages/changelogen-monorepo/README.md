@@ -1,6 +1,6 @@
 # @maz-ui/changelogen-monorepo
 
-Changelogen adapter for monorepo management with unified and independent versioning support.
+Changelogen adapter for monorepo management with selective, unified and independent versioning support.
 
 ## Features
 
