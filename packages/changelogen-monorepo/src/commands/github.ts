@@ -4,7 +4,8 @@ import { consola } from 'consola'
 import { loadMonorepoConfig } from '../config'
 import { generateChangelog } from '../core/changelog'
 import { getPackageCommits, getRootPackage } from '../core/monorepo'
-import { getLastTag, isPrerelease } from '../core/version'
+import { isPrerelease } from '../core/version'
+import { getLastTag } from '../utils/git'
 
 export async function github(options: GitProviderOptions = {}): Promise<void> {
   try {

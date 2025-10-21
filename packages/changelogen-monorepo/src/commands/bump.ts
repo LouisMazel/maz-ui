@@ -6,7 +6,8 @@ import { consola } from 'consola'
 import { getPackagePatterns, loadMonorepoConfig } from '../config'
 import { expandPackagesToBumpWithDependents } from '../core/dependencies'
 import { getPackageCommits, getPackages, getPackageToBump, getRootPackage } from '../core/monorepo'
-import { bumpPackageIndependently, bumpPackageVersion, determineReleaseType, extractVersionFromPackageTag, getLastPackageTag, getLastTag, isGraduating, isPrerelease, updateLernaVersion, writeVersion } from '../core/version'
+import { bumpPackageIndependently, bumpPackageVersion, determineReleaseType, extractVersionFromPackageTag, isGraduating, isPrerelease, updateLernaVersion, writeVersion } from '../core/version'
+import { getLastPackageTag, getLastTag } from '../utils/git'
 
 function isStableReleaseType(releaseType: ReleaseType): boolean {
   const stableTypes = ['release', 'major', 'minor', 'patch']

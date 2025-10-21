@@ -1,6 +1,7 @@
 import type { ResolvedChangelogConfig } from 'changelogen'
 import type { BumpConfig, ChangelogConfig, ChangelogMonorepoConfig, MonorepoConfig, PublishConfig, ReleaseConfig, TemplatesConfig } from '../types'
 import { loadChangelogConfig } from 'changelogen'
+import { getLastTag } from '../utils/git'
 
 const defaultConfig = {
   monorepo: {
@@ -76,7 +77,7 @@ export async function loadMonorepoConfig(options?: {
     release,
     templates,
     to: options?.overrides?.to || config.to,
-    from: options?.overrides?.from || config.from,
+    from: options?.overrides?.from || await getLastTag() || config.from,
   } satisfies ChangelogMonorepoConfig
 }
 

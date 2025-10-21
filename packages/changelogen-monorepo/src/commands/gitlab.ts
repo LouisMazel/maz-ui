@@ -4,7 +4,8 @@ import { consola } from 'consola'
 import { loadMonorepoConfig } from '../config'
 import { generateChangelog } from '../core/changelog'
 import { getPackageCommits, getRootPackage } from '../core/monorepo'
-import { getLastTag } from '../core/version'
+
+import { getLastTag } from '../utils/git'
 import { createGitlabRelease } from '../utils/gitlab'
 
 export async function gitlab(options: GitProviderOptions = {}): Promise<void> {
