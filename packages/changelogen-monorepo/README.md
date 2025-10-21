@@ -501,13 +501,13 @@ If a `lerna.json` file is present in your repository root, the tool will automat
 
 You can replace Lerna versioning commands with `changelogen-monorepo`:
 
-| Lerna Command                           | changelogen-monorepo Equivalent         |
-| --------------------------------------- | --------------------------------------- |
-| `lerna version patch`                   | `clm release --patch`                   |
-| `lerna version minor`                   | `clm release --minor`                   |
-| `lerna version major`                   | `clm release --major`                   |
-| `lerna version prerelease --preid beta` | `clm release --prerelease --preid beta` |
-| `lerna publish from-package`            | Not needed (use `pnpm publish -r`)      |
+| Lerna Command                                       | changelogen-monorepo Equivalent                     |
+| --------------------------------------------------- | --------------------------------------------------- |
+| `lerna version patch`                               | `clm release --patch`                               |
+| `lerna version minor`                               | `clm release --minor`                               |
+| `lerna version major`                               | `clm release --major`                               |
+| `lerna version prerelease --preid beta --tag alpha` | `clm release --prerelease --preid beta --tag alpha` |
+| `lerna publish from-package`                        | Not needed (use `pnpm publish -r`)                  |
 
 ### Migration from Lerna
 
