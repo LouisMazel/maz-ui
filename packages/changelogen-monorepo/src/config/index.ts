@@ -15,9 +15,7 @@ const defaultConfig = {
   changelog: {
     rootChangelog: true,
   },
-  publish: {
-    packages: ['packages/*'],
-  },
+  publish: {},
   release: {
     publish: true,
     push: true,

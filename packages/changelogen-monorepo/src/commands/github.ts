@@ -40,7 +40,7 @@ export async function github(options: GitProviderOptions = {}): Promise<void> {
     })
 
     if (!changelog) {
-      consola.error('No changelog found for latest version')
+      consola.warn('No changelog found for latest version')
       return
     }
 

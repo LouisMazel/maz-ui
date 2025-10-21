@@ -92,6 +92,11 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
       dryRun,
     })
 
+    if (bumpResult.bumpedPackages.length === 0) {
+      consola.warn('No packages to bump. Skipping release workflow.')
+      return
+    }
+
     const rootPackage = getRootPackage(config.cwd)
     const currentVersion = bumpResult.newVersion || rootPackage.version
     const lastTag = options.from || await getLastTag(currentVersion)

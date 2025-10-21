@@ -41,15 +41,16 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
         config,
       })
 
-      if (!rootChangelog) {
-        return
+      if (rootChangelog) {
+        writeChangelogToFile({
+          changelog: rootChangelog,
+          pkg: rootPackage,
+          dryRun,
+        })
       }
-
-      writeChangelogToFile({
-        changelog: rootChangelog,
-        pkg: rootPackage,
-        dryRun,
-      })
+      else {
+        consola.info('No changelog to generate for root package')
+      }
     }
 
     if (config.monorepo.filterCommits) {
@@ -81,6 +82,7 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
         })
 
         if (!changelog) {
+          consola.info(`No changelog to generate for ${pkg.name}`)
           continue
         }
 
