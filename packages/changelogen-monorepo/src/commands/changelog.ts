@@ -1,10 +1,31 @@
-import type { ChangelogOptions } from '../types'
+import type { ResolvedChangelogMonorepoConfig } from '../config'
+import type { ChangelogOptions, PackageInfo } from '../types'
 import { execPromise } from '@maz-ui/node'
 import { consola } from 'consola'
 import { getPackagePatterns, loadMonorepoConfig } from '../config'
 import { generateChangelog, writeChangelogToFile } from '../core/changelog'
 import { getPackageCommits, getPackages, getRootPackage } from '../core/monorepo'
 import { getLastTag } from '../core/version'
+
+function getPackagesToGenerateChangelogFor({
+
+  config,
+  packages,
+}: {
+  config: ResolvedChangelogMonorepoConfig
+  packages?: PackageInfo[]
+}) {
+  if (packages && packages.length > 0) {
+    return packages
+  }
+
+  const patterns = getPackagePatterns(config.monorepo)
+  return getPackages({
+    cwd: config.cwd,
+    ignorePackageNames: config.monorepo.ignorePackageNames,
+    patterns,
+  })
+}
 
 export async function changelog(options: ChangelogOptions = {}): Promise<void> {
   try {
@@ -56,11 +77,9 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
     if (config.monorepo.filterCommits) {
       consola.info('Generating package changelogs...')
 
-      const patterns = getPackagePatterns(config.monorepo)
-      const packages = getPackages({
-        cwd: config.cwd,
-        ignorePackageNames: config.monorepo.ignorePackageNames,
-        patterns,
+      const packages = getPackagesToGenerateChangelogFor({
+        config,
+        packages: options.packages,
       })
 
       consola.info(`Found ${packages.length} packages`)
@@ -74,8 +93,6 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
 
         const toTag = config.to
 
-        consola.info(`Generating changelog for ${pkg.name} - Commit range: ${lastTag}...${toTag}`)
-
         const changelog = await generateChangelog({
           pkg,
           commits,
@@ -85,11 +102,6 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
             to: toTag,
           },
         })
-
-        if (!changelog) {
-          consola.info(`No changelog to generate for ${pkg.name}`)
-          continue
-        }
 
         writeChangelogToFile({
           pkg,

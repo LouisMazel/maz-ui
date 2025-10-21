@@ -1,4 +1,4 @@
-import type { ResolvedChangelogConfig } from 'changelogen'
+import type { ResolvedChangelogMonorepoConfig } from '../config'
 import { consola } from 'consola'
 
 export interface GitlabRelease {
@@ -32,7 +32,7 @@ export async function createGitlabRelease({
   release,
   dryRun,
 }: {
-  config: ResolvedChangelogConfig
+  config: ResolvedChangelogMonorepoConfig
   release: GitlabRelease
   dryRun?: boolean
 }): Promise<GitlabReleaseResponse> {
