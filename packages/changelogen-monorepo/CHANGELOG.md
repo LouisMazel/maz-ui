@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.2.1-alpha.1...v4.2.1-alpha.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.1...v4.2.1-alpha.2)
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Doc improvement ([b381d6b22](https://github.com/LouisMazel/maz-ui/commit/b381d6b22))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.0...v4.2.1-alpha.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.0...v4.2.1-alpha.1)
