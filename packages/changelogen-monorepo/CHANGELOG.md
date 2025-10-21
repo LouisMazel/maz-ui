@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.2.1-alpha.4...v4.2.1-alpha.5
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.4...v4.2.1-alpha.5)
+
+### 🩹 Fixes
+
+- **@maz-ui/changelogen-monorepo:** Gitlab release - support of CI_JOB_TOKEN environment variable ([9a0e0d386](https://github.com/LouisMazel/maz-ui/commit/9a0e0d386))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.3...v4.2.1-alpha.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.3...v4.2.1-alpha.4)
