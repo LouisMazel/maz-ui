@@ -81,7 +81,7 @@ export function getPackages({
       }
     }
     catch (error) {
-      consola.warn(`Unable to match pattern "${pattern}":`, (error as Error).message)
+      consola.error(`Unable to match pattern "${pattern}":`, (error as Error).message)
     }
   }
 

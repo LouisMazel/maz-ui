@@ -54,7 +54,7 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
     }
 
     if (config.monorepo.filterCommits) {
-      consola.start('Generating package changelogs...')
+      consola.info('Generating package changelogs...')
 
       const patterns = getPackagePatterns(config.monorepo)
       const packages = getPackages({
@@ -71,13 +71,18 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
           pkg,
           config,
         })
+
+        const toTag = config.to
+
+        consola.info(`Generating changelog for ${pkg.name} - Commit range: ${lastTag}...${toTag}`)
+
         const changelog = await generateChangelog({
           pkg,
           commits,
           config: {
             ...config,
             from: lastTag,
-            to: pkg.version || config.to,
+            to: toTag,
           },
         })
 

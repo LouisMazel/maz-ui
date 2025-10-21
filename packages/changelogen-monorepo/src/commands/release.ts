@@ -1,47 +1,14 @@
-import type { RepoProvider } from 'changelogen'
-
 import type { GitProvider, ReleaseOptions } from '../types'
 import { execPromise } from '@maz-ui/node'
 import { consola } from 'consola'
 import { loadMonorepoConfig } from '../config'
 import { getRootPackage } from '../core/monorepo'
+import { publishToGitProvider } from '../core/release'
 import { getLastTag } from '../core/version'
-import { commitAndTag, detectGitProvider } from '../utils/git'
+import { commitAndTag } from '../utils/git'
 import { bump } from './bump'
 import { changelog } from './changelog'
-import { github } from './github'
-import { gitlab } from './gitlab'
 import { publish } from './publish'
-
-async function publishToGitProvider({ provider, from, to }: {
-  provider?: GitProvider
-  from: string
-  to: string
-}): Promise<GitProvider | 'none' | 'unknown'> {
-  const detectedProvider = provider || detectGitProvider()
-
-  if (!detectedProvider) {
-    consola.warn('Unable to detect Git provider. Skipping release publication.')
-    return 'unknown'
-  }
-
-  if (detectedProvider === 'github') {
-    consola.info('Publishing GitHub release...')
-    await github({
-      from,
-      to,
-    })
-  }
-  else if (detectedProvider === 'gitlab') {
-    consola.info('Publishing GitLab release...')
-    await gitlab({
-      from,
-      to,
-    })
-  }
-
-  return detectedProvider
-}
 
 function getReleaseConfig(options: Partial<ReleaseOptions>) {
   return loadMonorepoConfig({
@@ -78,7 +45,7 @@ function getReleaseConfig(options: Partial<ReleaseOptions>) {
 
 export async function release(options: Partial<ReleaseOptions> = {}): Promise<void> {
   try {
-    consola.box('Starting release workflow...', options.push)
+    consola.box('Starting release workflow...')
 
     const dryRun = options.dryRun ?? false
 
@@ -157,7 +124,7 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
 
     consola.log('')
 
-    let provider: RepoProvider | 'none' | 'unknown' | undefined = config.repo.provider
+    let provider: GitProvider | 'none' | 'unknown' | undefined = config.repo.provider
 
     if (config.release.release) {
       consola.info('Step 6/6: Publish Git release')
