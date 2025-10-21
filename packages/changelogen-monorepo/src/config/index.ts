@@ -1,5 +1,5 @@
 import type { ResolvedChangelogConfig } from 'changelogen'
-import type { BumpConfig, ChangelogConfig, ChangelogMonorepoConfig, MonorepoConfig, PublishConfig, ReleaseConfig } from '../types'
+import type { BumpConfig, ChangelogConfig, ChangelogMonorepoConfig, MonorepoConfig, PublishConfig, ReleaseConfig, TemplatesConfig } from '../types'
 import { loadChangelogConfig } from 'changelogen'
 
 const defaultConfig = {
@@ -22,7 +22,10 @@ const defaultConfig = {
     release: true,
     verify: true,
   },
-} satisfies Required<Pick<ChangelogMonorepoConfig, 'monorepo' | 'bump' | 'changelog' | 'release' | 'publish'>>
+  templates: {
+    emptyChangelogContent: 'No relevant changes for this release',
+  },
+} satisfies Required<Pick<ChangelogMonorepoConfig, 'monorepo' | 'bump' | 'changelog' | 'release' | 'publish' | 'templates'>>
 
 export async function loadMonorepoConfig(options?: {
   overrides?: Partial<ChangelogMonorepoConfig>
@@ -59,6 +62,11 @@ export async function loadMonorepoConfig(options?: {
     ...options?.overrides?.release,
   } satisfies ReleaseConfig
 
+  const templates = {
+    ...defaultConfig.templates,
+    ...config.templates,
+  } satisfies TemplatesConfig
+
   return {
     ...config,
     bump,
@@ -66,6 +74,7 @@ export async function loadMonorepoConfig(options?: {
     monorepo,
     publish,
     release,
+    templates,
     to: options?.overrides?.to || config.to,
     from: options?.overrides?.from || config.from,
   } satisfies ChangelogMonorepoConfig

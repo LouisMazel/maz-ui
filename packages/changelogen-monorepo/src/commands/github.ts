@@ -39,11 +39,6 @@ export async function github(options: GitProviderOptions = {}): Promise<void> {
       config,
     })
 
-    if (!changelog) {
-      consola.warn('No changelog found for latest version')
-      return
-    }
-
     const releaseBody = changelog.split('\n').slice(2).join('\n')
 
     const to = rootPackage.version || config.to

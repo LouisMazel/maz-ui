@@ -48,6 +48,7 @@ export interface ChangelogOptions extends ChangelogConfig {
   from?: string
   to?: string
   dryRun?: boolean
+  packages?: PackageInfo[]
 }
 
 export interface BumpConfig {
@@ -125,6 +126,10 @@ export interface ReleaseOptions extends ReleaseConfig, BumpConfig, ChangelogConf
   token?: string
 }
 
+export type TemplatesConfig = IChangelogConfig['templates'] & {
+  emptyChangelogContent: string
+}
+
 export interface ChangelogMonorepoConfig extends IChangelogConfig {
   /**
    * @default `{
@@ -139,6 +144,8 @@ export interface ChangelogMonorepoConfig extends IChangelogConfig {
   repo: IChangelogConfig['repo'] & {
     provider?: GitProvider
   }
+
+  templates: TemplatesConfig
 
   bump: BumpConfig
   publish: PublishConfig

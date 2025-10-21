@@ -1,4 +1,5 @@
-import type { GitCommit, ResolvedChangelogConfig } from 'changelogen'
+import type { GitCommit } from 'changelogen'
+import type { ResolvedChangelogMonorepoConfig } from '../config'
 import type { PackageInfo } from '../types'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -6,17 +7,17 @@ import { generateMarkDown } from 'changelogen'
 import { consola } from 'consola'
 
 export async function generateChangelog(
-  { pkg, commits, config }: {
+  {
+    pkg,
+    commits,
+    config,
+  }: {
     pkg: PackageInfo
     commits: GitCommit[]
-    config: ResolvedChangelogConfig
+    config: ResolvedChangelogMonorepoConfig
   },
 ) {
   try {
-    if (commits.length === 0) {
-      return undefined
-    }
-
     consola.info(`Generating changelog for ${pkg.name} - from ${config.from} to ${config.to}`)
 
     let changelog = await generateMarkDown(commits, config)
@@ -26,6 +27,10 @@ export async function generateChangelog(
     }
 
     consola.success(`Changelog generated for ${pkg.name} (${commits.length} commits)`)
+
+    if (commits.length === 0) {
+      return `${changelog}\n\n${config.templates.emptyChangelogContent}`
+    }
     return changelog
   }
   catch (error) {

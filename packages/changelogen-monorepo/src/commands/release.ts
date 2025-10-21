@@ -81,6 +81,7 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
       dryRun,
       formatCmd: config.changelog.formatCmd,
       rootChangelog: config.changelog.rootChangelog,
+      packages: bumpResult.bumpedPackages,
     })
 
     consola.log('')
@@ -130,16 +131,12 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
       consola.info('Step 6/6: Publish Git release')
       consola.log('')
 
-      if (!dryRun) {
-        provider = await publishToGitProvider({
-          provider,
-          from: lastTag,
-          to: config.to,
-        })
-      }
-      else {
-        consola.info('Step 6/6: Skipping release publication (--dry-run)')
-      }
+      provider = await publishToGitProvider({
+        provider,
+        from: lastTag,
+        to: config.to,
+        dryRun,
+      })
     }
     else {
       consola.info('Step 6/6: Skipping release publication (--no-release)')
