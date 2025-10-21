@@ -5,7 +5,7 @@ import { consola } from 'consola'
 import { getPackagePatterns, loadMonorepoConfig } from '../config'
 import { generateChangelog, writeChangelogToFile } from '../core/changelog'
 import { getPackageCommits, getPackages, getRootPackage } from '../core/monorepo'
-import { getLastTag } from '../core/version'
+import { getLastTag } from '../utils/git'
 
 function getPackagesToGenerateChangelogFor({
 

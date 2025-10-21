@@ -4,7 +4,6 @@ import type { ResolvedChangelogMonorepoConfig } from '../config'
 import type { BumpOptions, PackageInfo } from '../types'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { execPromise } from '@maz-ui/node'
 import { determineSemverChange } from 'changelogen'
 import { consola } from 'consola'
 import * as semver from 'semver'
@@ -98,53 +97,6 @@ export function isPrerelease(version?: string): boolean {
     return false
   const parsed = semver.parse(version)
   return parsed ? parsed.prerelease.length > 0 : false
-}
-
-export async function getLastTag(version?: string, onlyStable?: boolean): Promise<string> {
-  if (onlyStable || (!isPrerelease(version) && !onlyStable)) {
-    const { stdout } = await execPromise(
-      'git tag --sort=-v:refname | grep -E \'^v[0-9]+\\.[0-9]+\\.[0-9]+$\' | sed -n \'1p\'',
-      {
-        noSuccess: true,
-        noStdout: true,
-      },
-    )
-    return stdout.trim()
-  }
-
-  const { stdout } = await execPromise('git tag --sort=-v:refname | sed -n \'1p\'', {
-    noSuccess: true,
-    noStdout: true,
-  })
-  return stdout.trim()
-}
-
-export async function getLastPackageTag(packageName: string, onlyStable?: boolean): Promise<string | null> {
-  try {
-    const escapedPackageName = packageName.replace(/[@/]/g, '\\$&')
-
-    let grepPattern: string
-    if (onlyStable) {
-      grepPattern = `^${escapedPackageName}@[0-9]+\\.[0-9]+\\.[0-9]+$`
-    }
-    else {
-      grepPattern = `^${escapedPackageName}@`
-    }
-
-    const { stdout } = await execPromise(
-      `git tag --sort=-v:refname | grep -E '${grepPattern}' | sed -n '1p'`,
-      {
-        noSuccess: true,
-        noStdout: true,
-      },
-    )
-
-    const tag = stdout.trim()
-    return tag || null
-  }
-  catch {
-    return null
-  }
 }
 
 export function extractVersionFromPackageTag(tag: string): string | null {

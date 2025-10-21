@@ -5,8 +5,9 @@ import { existsSync, readFileSync } from 'node:fs'
 import path, { join } from 'node:path'
 import { execPromise } from '@maz-ui/node'
 import { consola } from 'consola'
+import { getLastPackageTag } from '../utils/git'
 import { getPackageCommits } from './monorepo'
-import { getLastPackageTag, isPrerelease } from './version'
+import { isPrerelease } from './version'
 
 type PackageManager = 'npm' | 'yarn' | 'pnpm' | 'bun'
 
