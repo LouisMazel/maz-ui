@@ -1,8 +1,6 @@
 import type { ChangelogMonorepoConfig, GitProvider, PackageInfo } from '../types'
 import { execSync } from 'node:child_process'
 
-import { existsSync } from 'node:fs'
-import { join } from 'node:path'
 import { execPromise } from '@maz-ui/node'
 import { consola } from 'consola'
 import { isPrerelease } from '../core/version'
@@ -66,27 +64,21 @@ export async function commitAndTag({
   bumpedPackages?: PackageInfo[]
   dryRun: boolean
 }): Promise<string[]> {
-  const lernaJsonPath = join(config.cwd, 'lerna.json')
-  const hasLerna = existsSync(lernaJsonPath)
+  const filePatternsToAdd = [
+    'package.json',
+    'lerna.json',
+    'CHANGELOG.md',
+    '**/CHANGELOG.md',
+    '**/package.json',
+  ]
 
-  const potentialFilesToAdd = ['package.json', ...(hasLerna ? ['lerna.json'] : []), 'CHANGELOG.md', '**/CHANGELOG.md', '**/package.json']
-
-  const gitStatus = execSync('git status --porcelain', {
-    cwd: config.cwd,
-    encoding: 'utf8',
-  }).trim()
-
-  const modifiedFiles = gitStatus.split('\n').map(line => line.slice(3).trim()).filter(Boolean)
-
-  const filesToAdd = potentialFilesToAdd.filter((pattern) => {
-    if (pattern.includes('*')) {
-      return modifiedFiles.some(file => file.includes('CHANGELOG.md') || file.includes('package.json'))
+  for (const pattern of filePatternsToAdd) {
+    try {
+      execSync(`git add ${pattern}`)
     }
-    return modifiedFiles.includes(pattern)
-  })
-
-  if (filesToAdd.length > 0) {
-    await execPromise(`git add ${filesToAdd.join(' ')}`, { noSuccess: true })
+    catch {
+      // Ignore errors if pattern doesn't match any files
+    }
   }
 
   const versionForMessage = newVersion || (bumpedPackages?.[0]?.version) || 'unknown'

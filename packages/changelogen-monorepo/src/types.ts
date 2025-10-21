@@ -127,7 +127,7 @@ export interface ReleaseOptions extends ReleaseConfig, BumpConfig, ChangelogConf
 }
 
 export type TemplatesConfig = IChangelogConfig['templates'] & {
-  emptyChangelogContent: string
+  emptyChangelogContent?: string
 }
 
 export interface ChangelogMonorepoConfig extends IChangelogConfig {
