@@ -19,16 +19,12 @@ export async function gitlab(options: GitProviderOptions = {}): Promise<void> {
         from: options.from || await getLastTag(rootPackage.version),
         to: options.to,
         tokens: {
-          gitlab: options.token || process.env.CHANGELOGEN_TOKENS_GITLAB || process.env.GITLAB_TOKEN || process.env.GITLAB_API_TOKEN,
+          gitlab: options.token || process.env.CHANGELOGEN_TOKENS_GITLAB || process.env.GITLAB_TOKEN || process.env.GITLAB_API_TOKEN || process.env.CI_JOB_TOKEN,
         },
       },
     })
 
     consola.info(`Creating release for tag: ${config.to} (from ${config.from})`)
-
-    if (!config.tokens.gitlab && !dryRun) {
-      throw new Error('No GitLab token specified. Set GITLAB_TOKEN or CI_JOB_TOKEN environment variable.')
-    }
 
     const commits = await getPackageCommits({
       pkg: rootPackage,
@@ -68,12 +64,11 @@ export async function gitlab(options: GitProviderOptions = {}): Promise<void> {
       ref: release.ref,
     }, null, 2))
 
-    if (dryRun) {
-      consola.info('Release content', release.description)
-      return
-    }
-
-    await createGitlabRelease(config, release)
+    await createGitlabRelease({
+      config,
+      release,
+      dryRun,
+    })
 
     consola.success(`Release ${tagName} published to GitLab!`)
   }

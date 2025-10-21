@@ -8,7 +8,6 @@ import { consola } from 'consola'
 
 export function detectGitProvider(cwd: string = process.cwd()): GitProvider | null {
   try {
-    // eslint-disable-next-line sonarjs/no-os-command-from-path
     const remoteUrl = execSync('git remote get-url origin', {
       cwd,
       encoding: 'utf8',
@@ -69,8 +68,25 @@ export async function commitAndTag({
   const lernaJsonPath = join(config.cwd, 'lerna.json')
   const hasLerna = existsSync(lernaJsonPath)
 
-  const filesToAdd = ['package.json', ...(hasLerna ? ['lerna.json'] : []), 'CHANGELOG.md', '**/CHANGELOG.md', '**/package.json']
-  await execPromise(`git add ${filesToAdd.join(' ')}`, { noSuccess: true })
+  const potentialFilesToAdd = ['package.json', ...(hasLerna ? ['lerna.json'] : []), 'CHANGELOG.md', '**/CHANGELOG.md', '**/package.json']
+
+  const gitStatus = execSync('git status --porcelain', {
+    cwd: config.cwd,
+    encoding: 'utf8',
+  }).trim()
+
+  const modifiedFiles = gitStatus.split('\n').map(line => line.slice(3).trim()).filter(Boolean)
+
+  const filesToAdd = potentialFilesToAdd.filter((pattern) => {
+    if (pattern.includes('*')) {
+      return modifiedFiles.some(file => file.includes('CHANGELOG.md') || file.includes('package.json'))
+    }
+    return modifiedFiles.includes(pattern)
+  })
+
+  if (filesToAdd.length > 0) {
+    await execPromise(`git add ${filesToAdd.join(' ')}`, { noSuccess: true })
+  }
 
   const versionForMessage = newVersion || (bumpedPackages?.[0]?.version) || 'unknown'
 

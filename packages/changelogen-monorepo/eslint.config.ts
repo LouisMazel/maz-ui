@@ -4,4 +4,9 @@ export default defineConfig({
   formatters: true,
   typescript: true,
   sonarjs: true,
+}, {
+  rules: {
+    'sonarjs/no-os-command-from-path': 'off',
+    'sonarjs/os-command': 'off',
+  },
 })
