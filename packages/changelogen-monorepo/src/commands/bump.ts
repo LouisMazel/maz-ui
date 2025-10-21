@@ -340,7 +340,9 @@ export async function bump(options: BumpOptions = {}): Promise<BumpResult> {
       })
     }
 
-    consola.success('Version bump completed!')
+    if (result.bumpedPackages.length) {
+      consola.success('Version bump completed!')
+    }
 
     return result
   }
