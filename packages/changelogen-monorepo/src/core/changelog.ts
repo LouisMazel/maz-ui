@@ -73,10 +73,12 @@ export function writeChangelogToFile({
 
   if (dryRun) {
     logger.info(`[dry-run] ${pkg.name} - Write changelog to ${changelogPath}`)
+    logger.debug(`Changelog content:\n${updatedChangelog}`)
   }
   else {
     logger.debug(`Writing changelog to ${changelogPath}`)
     writeFileSync(changelogPath, updatedChangelog, 'utf8')
     logger.info(`Changelog updated for ${pkg.name}`)
+    logger.debug(`Changelog content:\n${updatedChangelog}`)
   }
 }
