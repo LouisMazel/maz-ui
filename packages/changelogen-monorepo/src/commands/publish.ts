@@ -1,17 +1,18 @@
-import type { PublishOptions } from '../types'
-import { consola } from 'consola'
-import { getPackagePatterns, loadMonorepoConfig } from '../config'
-import { getPackagesWithDependencies, topologicalSort } from '../core/dependencies'
-import { getPackages, getRootPackage } from '../core/monorepo'
-import { detectPackageManager, getPackagesToPublishInIndependentMode, getPackagesToPublishInSelectiveMode, publishPackage } from '../core/npm'
+import type { PackageInfo, PublishOptions, PublishResponse } from '../types'
+import { logger } from '@maz-ui/node'
+import { detectPackageManager, getPackagePatterns, getPackages, getPackagesToPublishInIndependentMode, getPackagesToPublishInSelectiveMode, getPackagesWithDependencies, getRootPackage, loadMonorepoConfig, publishPackage, topologicalSort } from '../core'
 
 export async function publish(options: PublishOptions = {}) {
   try {
-    consola.start('Publishing packages...')
+    logger.start('Start publishing packages')
+
+    const dryRun = options.dryRun ?? false
+    logger.debug(`Dry run: ${dryRun}`)
 
     const packageManager = detectPackageManager(process.cwd())
+    logger.debug(`Package manager: ${packageManager}`)
 
-    const config = await loadMonorepoConfig({
+    const config = options.config || await loadMonorepoConfig({
       overrides: {
         publish: {
           access: options.access,
@@ -22,7 +23,16 @@ export async function publish(options: PublishOptions = {}) {
       },
     })
 
+    logger.debug(`Version mode: ${config.monorepo.versionMode}`)
+    if (config.publish.registry) {
+      logger.debug(`Registry: ${config.publish.registry}`)
+    }
+    if (config.publish.tag) {
+      logger.debug(`Tag: ${config.publish.tag}`)
+    }
+
     const patterns = options.packages ?? config.publish.packages ?? getPackagePatterns(config.monorepo)
+    logger.debug(`Package patterns: ${patterns.join(', ')}`)
 
     const packages = getPackages({
       cwd: config.cwd,
@@ -31,56 +41,60 @@ export async function publish(options: PublishOptions = {}) {
     })
     const rootPackage = getRootPackage(config.cwd)
 
-    consola.info(`Found ${packages.length} packages`)
+    logger.debug(`Found ${packages.length} package(s)`)
 
+    logger.debug('Building dependency graph and sorting...')
     const packagesWithDeps = getPackagesWithDependencies(packages)
     const sortedPackages = topologicalSort(packagesWithDeps)
 
-    let packagesToPublish: string[] = []
+    let publishedPackages: PackageInfo[] = options.bumpedPackages || []
 
-    if (config.monorepo.versionMode === 'independent') {
-      packagesToPublish = await getPackagesToPublishInIndependentMode(sortedPackages, config)
-      consola.info(`Publishing packages that were bumped (independent mode): ${packagesToPublish.join(', ')}`)
+    if (publishedPackages.length === 0 && config.monorepo.versionMode === 'independent') {
+      logger.debug('Determining packages to publish in independent mode...')
+      publishedPackages = await getPackagesToPublishInIndependentMode(sortedPackages, config)
+      logger.info(`Publishing ${publishedPackages.length} package(s) (independent mode)`)
+      logger.debug(`Packages: ${publishedPackages.join(', ')}`)
     }
-    else if (config.monorepo.versionMode === 'selective') {
-      packagesToPublish = getPackagesToPublishInSelectiveMode(sortedPackages, rootPackage.version)
-      consola.info(`Publishing packages that match root version (selective mode): ${packagesToPublish.join(', ')}`)
+    else if (publishedPackages.length === 0 && config.monorepo.versionMode === 'selective') {
+      logger.debug('Determining packages to publish in selective mode...')
+      publishedPackages = getPackagesToPublishInSelectiveMode(sortedPackages, rootPackage.version)
+      logger.info(`Publishing ${publishedPackages.length} package(s) matching root version (selective mode)`)
+      logger.debug(`Packages: ${publishedPackages.join(', ')}`)
     }
-    else {
-      packagesToPublish = sortedPackages.map(pkg => pkg.name)
-      consola.info('Publishing all packages (unified mode)')
+    else if (publishedPackages.length === 0) {
+      publishedPackages = sortedPackages
+      logger.info(`Publishing ${publishedPackages.length} package(s) (unified mode)`)
     }
 
-    if (packagesToPublish.length === 0) {
-      consola.warn('No packages need to be published')
+    if (publishedPackages.length === 0) {
+      logger.warn('No packages need to be published')
       return
     }
 
     for (const pkg of sortedPackages) {
-      if (packagesToPublish.includes(pkg.name)) {
+      if (publishedPackages.some(p => p.name === pkg.name)) {
+        logger.debug(`Publishing ${pkg.name}@${pkg.version}...`)
         await publishPackage({
-          packagePath: pkg.path,
-          packageName: pkg.name,
-          version: pkg.version,
-          options,
+          pkg,
           config,
           packageManager,
+          dryRun,
         })
       }
     }
 
-    if (!options.dryRun) {
-      consola.box('Packages have been published to npm registry')
+    if (!dryRun) {
+      logger.info('Packages have been published to npm registry')
     }
 
-    consola.success('Publishing completed!')
+    logger.success('Publishing completed!')
 
     return {
-      packagesToPublish,
-    }
+      publishedPackages,
+    } satisfies PublishResponse
   }
   catch (error) {
-    consola.error('Error publishing packages:', (error as Error).message)
+    logger.error('Error publishing packages:', error)
     throw error
   }
 }

@@ -1,5 +1,6 @@
-import type { ResolvedChangelogMonorepoConfig } from '../config'
-import { consola } from 'consola'
+import type { ResolvedChangelogMonorepoConfig } from '../core'
+import { logger } from '@maz-ui/node'
+import { formatJson } from '@maz-ui/utils'
 
 export interface GitlabRelease {
   tag_name: string
@@ -50,14 +51,14 @@ export async function createGitlabRelease({
     throw new Error('No repository URL found in config')
   }
 
-  consola.debug(`Parsed repository URL: ${repo}`)
+  logger.debug(`Parsed repository URL: ${repo}`)
 
   const projectPath = encodeURIComponent(repo)
 
   const gitlabDomain = config.repo.domain || 'gitlab.com'
   const apiUrl = `https://${gitlabDomain}/api/v4/projects/${projectPath}/releases`
 
-  consola.info(`Creating GitLab release at: ${apiUrl}`)
+  logger.info(`Creating GitLab release at: ${apiUrl}`)
 
   const payload = {
     tag_name: release.tag_name,
@@ -68,7 +69,7 @@ export async function createGitlabRelease({
 
   try {
     if (dryRun) {
-      consola.info('Would create GitLab release:', JSON.stringify(payload, null, 2))
+      logger.info('[dry-run] GitLab release:', formatJson(payload))
       return {
         tag_name: release.tag_name,
         name: release.name || release.tag_name,
@@ -80,6 +81,8 @@ export async function createGitlabRelease({
         },
       }
     }
+
+    logger.debug(`POST GitLab release to ${apiUrl} with payload: ${formatJson(payload)}`)
 
     const response = await fetch(apiUrl, {
       method: 'POST',
@@ -97,12 +100,12 @@ export async function createGitlabRelease({
 
     const result = (await response.json()) as GitlabReleaseResponse
 
-    consola.success(`Created GitLab release: ${result._links.self}`)
+    logger.debug(`Created GitLab release: ${result._links.self}`)
 
     return result
   }
   catch (error) {
-    consola.error('Failed to create GitLab release:', (error as Error).message)
+    logger.error('Failed to create GitLab release:', error)
     throw error
   }
 }

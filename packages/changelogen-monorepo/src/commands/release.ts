@@ -1,10 +1,6 @@
-import type { GitProvider, ReleaseOptions } from '../types'
-import { execPromise } from '@maz-ui/node'
-import { consola } from 'consola'
-import { loadMonorepoConfig } from '../config'
-import { getRootPackage } from '../core/monorepo'
-import { publishToGitProvider } from '../core/release'
-import { commitAndTag, getLastTag } from '../utils/git'
+import type { GitProvider, PublishResponse, ReleaseOptions } from '../types'
+import { logger } from '@maz-ui/node'
+import { commitAndTag, getLastTag, getRootPackage, loadMonorepoConfig, publishToGitProvider, pushCommitAndTags } from '../core'
 import { bump } from './bump'
 import { changelog } from './changelog'
 import { publish } from './publish'
@@ -14,9 +10,17 @@ function getReleaseConfig(options: Partial<ReleaseOptions>) {
     overrides: {
       from: options.from,
       to: options.to,
+      tokens: {
+        github: options.token,
+        gitlab: options.token,
+      },
       bump: {
         type: options.type,
         preid: options.preid,
+      },
+      changelog: {
+        formatCmd: options.formatCmd,
+        rootChangelog: options.rootChangelog,
       },
       publish: {
         access: options.access,
@@ -24,19 +28,11 @@ function getReleaseConfig(options: Partial<ReleaseOptions>) {
         registry: options.registry,
         tag: options.tag,
       },
-      changelog: {
-        formatCmd: options.formatCmd,
-        rootChangelog: options.rootChangelog,
-      },
       release: {
         push: options.push,
         publish: options.publish,
         verify: options.verify,
         release: options.release,
-      },
-      tokens: {
-        github: options.token,
-        gitlab: options.token,
       },
     },
   })
@@ -44,36 +40,37 @@ function getReleaseConfig(options: Partial<ReleaseOptions>) {
 
 export async function release(options: Partial<ReleaseOptions> = {}): Promise<void> {
   try {
-    consola.box('Starting release workflow...')
-
     const dryRun = options.dryRun ?? false
+    logger.debug(`Dry run: ${dryRun}`)
 
     const config = await getReleaseConfig(options)
+    logger.debug(`Version mode: ${config.monorepo.versionMode}`)
+    logger.debug(`Push: ${config.release.push}, Publish: ${config.release.publish}, Release: ${config.release.release}`)
 
-    consola.info('Step 1/6: Bump versions')
-    consola.log('')
+    logger.debug(`Commit range: ${config.from}...${config.to}`)
+
+    logger.box('Step 1/6: Bump versions')
     const bumpResult = await bump({
       type: config.bump.type,
       preid: config.bump.preid,
       dryRun,
+      config,
     })
 
-    if (bumpResult.bumpedPackages.length === 0) {
-      consola.warn('No packages to bump. Skipping release workflow.')
+    if (!bumpResult.bumped) {
       return
     }
 
     const rootPackage = getRootPackage(config.cwd)
     const currentVersion = bumpResult.newVersion || rootPackage.version
-    const lastTag = options.from || await getLastTag(currentVersion)
+    const lastTag = options.from || await getLastTag({ version: currentVersion })
+    logger.debug(`Current version: ${currentVersion}, Last tag: ${lastTag}`)
 
     if (!currentVersion) {
       throw new Error('Unable to determine new version')
     }
 
-    consola.log('')
-    consola.info('Step 2/6: Generate changelogs')
-    consola.log('')
+    logger.box('Step 2/6: Generate changelogs')
     await changelog({
       from: lastTag,
       to: config.to,
@@ -81,12 +78,11 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
       formatCmd: config.changelog.formatCmd,
       rootChangelog: config.changelog.rootChangelog,
       packages: bumpResult.bumpedPackages,
+      config,
     })
 
-    consola.log('')
-
-    consola.info('Step 3/6: Commit changes and create tag')
-    consola.log('')
+    logger.box('Step 3/6: Commit changes and create tag')
+    logger.debug(`Verify hooks: ${config.release.verify}`)
     const createdTags = await commitAndTag({
       newVersion: currentVersion,
       config,
@@ -95,57 +91,58 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
       dryRun,
     })
 
+    logger.box('Step 4/6: Push changes and tags')
     if (config.release.push) {
-      if (dryRun) {
-        consola.info('Step 4/6: Skipped push (--dry-run) - Would exec: git push --follow-tags')
-      }
-      else {
-        consola.info('Step 4/6: Push changes and tags')
-        consola.log('')
-        await execPromise('git push --follow-tags', { noSuccess: true })
-        consola.success('Pushed changes and tags to remote')
-      }
+      await pushCommitAndTags({ dryRun })
     }
     else {
-      consola.info('Step 4/6: Skipped push (remove --no-push to enable)')
+      logger.info('Skipping push (--no-push)')
     }
 
-    consola.log('')
+    logger.box('Step 5/6: Publish packages to registry')
+    let publishResponse: PublishResponse | undefined
 
-    consola.info('Step 5/6: Publish packages to npm')
-    consola.log('')
-    const publishResponse = await publish({
-      registry: config.publish.registry,
-      tag: config.publish.tag,
-      access: config.publish.access,
-      otp: config.publish.otp,
-      dryRun,
-    })
-
-    consola.log('')
-
-    let provider: GitProvider | 'none' | 'unknown' | undefined = config.repo.provider
-
-    if (config.release.release) {
-      consola.info('Step 6/6: Publish Git release')
-      consola.log('')
-
-      provider = await publishToGitProvider({
-        provider,
-        from: lastTag,
-        to: config.to,
+    if (config.release.publish) {
+      publishResponse = await publish({
+        registry: config.publish.registry,
+        tag: config.publish.tag,
+        access: config.publish.access,
+        otp: config.publish.otp,
+        bumpedPackages: bumpResult.bumpedPackages,
         dryRun,
+        config,
       })
     }
     else {
-      consola.info('Step 6/6: Skipping release publication (--no-release)')
-      provider = 'none'
+      logger.info('Skipping publish (--no-publish)')
     }
-    consola.log('')
 
-    const publishedPackageCount = publishResponse?.packagesToPublish.length ?? 0
+    let provider: GitProvider | 'none' | 'unknown' | undefined = config.repo.provider
 
-    consola.box('Release workflow completed!\n\n'
+    logger.box('Step 6/6: Publish Git release')
+    if (config.release.release) {
+      logger.debug(`Provider from config: ${provider}`)
+
+      try {
+        provider = await publishToGitProvider({
+          provider,
+          from: lastTag,
+          to: config.to,
+          dryRun,
+          config,
+        })
+      }
+      catch (error) {
+        logger.error('Error during release publication:', error)
+      }
+    }
+    else {
+      logger.info('Skipping release (--no-release)')
+    }
+
+    const publishedPackageCount = publishResponse?.publishedPackages.length ?? 0
+
+    logger.box('Release workflow completed!\n\n'
       + `Version: ${currentVersion}\n`
       + `Tag(s): ${createdTags.join(', ')}\n`
       + `Published packages: ${publishedPackageCount}\n`
@@ -154,7 +151,7 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
       + `Provider: ${provider}`)
   }
   catch (error) {
-    consola.error('Error during release workflow:', (error as Error).message)
+    logger.error('Error during release workflow:', error)
     throw error
   }
 }

@@ -1,10 +1,10 @@
 import type { GitCommit } from 'changelogen'
-import type { ResolvedChangelogMonorepoConfig } from '../config'
+import type { ResolvedChangelogMonorepoConfig } from '../core'
 import type { PackageInfo } from '../types'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { logger } from '@maz-ui/node'
 import { generateMarkDown } from 'changelogen'
-import { consola } from 'consola'
 
 export async function generateChangelog(
   {
@@ -18,7 +18,7 @@ export async function generateChangelog(
   },
 ) {
   try {
-    consola.info(`Generating changelog for ${pkg.name} - from ${config.from} to ${config.to}`)
+    logger.debug(`Generating changelog for ${pkg.name} - from ${config.from} to ${config.to}`)
 
     let changelog = await generateMarkDown(commits, config)
 
@@ -26,15 +26,18 @@ export async function generateChangelog(
       changelog = changelog.replaceAll(config.to, `v${pkg.version}`)
     }
 
-    consola.success(`Changelog generated for ${pkg.name} (${commits.length} commits)`)
+    logger.debug(`Changelog generated for ${pkg.name} (${commits.length} commits)`)
 
     if (commits.length === 0) {
-      return `${changelog}\n\n${config.templates.emptyChangelogContent}`
+      changelog = `${changelog}\n\n${config.templates.emptyChangelogContent}`
     }
+
+    logger.verbose('Generated changelog:', changelog)
+
     return changelog
   }
   catch (error) {
-    throw new Error(`Error generating changelog for ${pkg.name}: ${(error as Error).message}`)
+    throw new Error(`Error generating changelog for ${pkg.name}: ${error}`)
   }
 }
 
@@ -69,12 +72,12 @@ export function writeChangelogToFile({
   }
 
   if (dryRun) {
-    consola.info(`[DRY RUN] ${pkg.name} - Would write changelog to ${changelogPath}`)
-    consola.info(`[DRY RUN] ${pkg.name} - ${changelog}`)
-    return
+    logger.info(`[dry-run] ${pkg.name} - Write changelog to ${changelogPath}`)
+  }
+  else {
+    logger.debug(`Writing changelog to ${changelogPath}`)
+    writeFileSync(changelogPath, updatedChangelog, 'utf8')
   }
 
-  writeFileSync(changelogPath, updatedChangelog, 'utf8')
-
-  consola.success(`Updated ${changelogPath}`)
+  logger.debug(`Updated ${changelogPath}`)
 }

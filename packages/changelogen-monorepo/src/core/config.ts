@@ -1,7 +1,9 @@
 import type { ResolvedChangelogConfig } from 'changelogen'
 import type { BumpConfig, ChangelogConfig, ChangelogMonorepoConfig, MonorepoConfig, PublishConfig, ReleaseConfig, TemplatesConfig } from '../types'
+import { logger } from '@maz-ui/node'
+import { formatJson } from '@maz-ui/utils'
 import { loadChangelogConfig } from 'changelogen'
-import { getLastTag } from '../utils/git'
+import { getLastTag } from '../core'
 
 const defaultConfig = {
   monorepo: {
@@ -28,12 +30,7 @@ const defaultConfig = {
   },
 } satisfies Required<Pick<ChangelogMonorepoConfig, 'monorepo' | 'bump' | 'changelog' | 'release' | 'publish' | 'templates'>>
 
-export async function loadMonorepoConfig(options?: {
-  overrides?: Partial<ChangelogMonorepoConfig>
-}) {
-  const rootDir = options?.overrides?.cwd ?? process.cwd()
-  const config = await loadChangelogConfig(rootDir) as ResolvedChangelogConfig & Partial<ChangelogMonorepoConfig>
-
+async function mergeConfig(config: ResolvedChangelogConfig & Partial<ChangelogMonorepoConfig>, overrides?: Partial<ChangelogMonorepoConfig>) {
   const monorepo = {
     ...defaultConfig.monorepo,
     ...config.monorepo,
@@ -42,25 +39,25 @@ export async function loadMonorepoConfig(options?: {
   const bump = {
     ...defaultConfig.bump,
     ...config.bump,
-    ...options?.overrides?.bump,
+    ...overrides?.bump,
   } satisfies Required<Omit<BumpConfig, 'preid'>> & { preid?: string }
 
   const changelog = {
     ...defaultConfig.changelog,
     ...config.changelog,
-    ...options?.overrides?.changelog,
+    ...overrides?.changelog,
   } satisfies Required<Omit<ChangelogConfig, 'formatCmd'>> & { formatCmd?: string }
 
   const publish = {
     ...defaultConfig.publish,
     ...config.publish,
-    ...options?.overrides?.publish,
+    ...overrides?.publish,
   } satisfies PublishConfig
 
   const release = {
     ...defaultConfig.release,
     ...config.release,
-    ...options?.overrides?.release,
+    ...overrides?.release,
   } satisfies ReleaseConfig
 
   const templates = {
@@ -76,9 +73,29 @@ export async function loadMonorepoConfig(options?: {
     publish,
     release,
     templates,
-    to: options?.overrides?.to || config.to,
-    from: options?.overrides?.from || await getLastTag() || config.from,
+    to: overrides?.to || config.to,
+    from: overrides?.from || await getLastTag({ onlyStable: false }) || config.from,
   } satisfies ChangelogMonorepoConfig
+}
+
+export async function loadMonorepoConfig(options?: {
+  overrides?: Partial<ChangelogMonorepoConfig>
+}) {
+  logger.debug('Loading monorepo configuration')
+
+  const rootDir = options?.overrides?.cwd ?? process.cwd()
+  const config = await loadChangelogConfig(rootDir) as ResolvedChangelogConfig & Partial<ChangelogMonorepoConfig>
+
+  logger.verbose('config loaded with changelogen:', formatJson(config))
+  logger.verbose('overrides:', options?.overrides ? formatJson(options?.overrides) : 'none')
+
+  const resolvedConfig = await mergeConfig(config, options?.overrides)
+
+  logger.verbose('Resolved config:', formatJson(resolvedConfig))
+
+  logger.debug('Monorepo configuration loaded')
+
+  return resolvedConfig
 }
 
 export type ResolvedChangelogMonorepoConfig = Awaited<ReturnType<typeof loadMonorepoConfig>>

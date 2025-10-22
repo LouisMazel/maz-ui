@@ -1,22 +1,22 @@
 import type { GitProviderOptions } from '../types'
+import { logger } from '@maz-ui/node'
+import { formatJson } from '@maz-ui/utils'
 import { createGithubRelease } from 'changelogen'
-import { consola } from 'consola'
-import { loadMonorepoConfig } from '../config'
-import { generateChangelog } from '../core/changelog'
-import { getPackageCommits, getRootPackage } from '../core/monorepo'
-import { isPrerelease } from '../core/version'
-import { getLastTag } from '../utils/git'
+import { generateChangelog, getLastTag, getPackageCommits, getRootPackage, isPrerelease, loadMonorepoConfig } from '../core'
 
 export async function github(options: GitProviderOptions = {}): Promise<void> {
   try {
-    consola.start('Publishing GitHub release...')
+    logger.start('Start publishing GitHub release')
 
     const dryRun = options.dryRun ?? false
+    logger.debug(`Dry run: ${dryRun}`)
 
     const rootPackage = getRootPackage(process.cwd())
-    const config = await loadMonorepoConfig({
+    logger.debug(`Root package: ${rootPackage.name}@${rootPackage.version}`)
+
+    const config = options.config || await loadMonorepoConfig({
       overrides: {
-        from: options.from || await getLastTag(rootPackage.version),
+        from: options.from || await getLastTag({ version: rootPackage.version }),
         to: options.to,
         tokens: {
           github: options.token || process.env.CHANGELOGEN_TOKENS_GITHUB || process.env.GITHUB_TOKEN || process.env.GH_TOKEN,
@@ -24,7 +24,8 @@ export async function github(options: GitProviderOptions = {}): Promise<void> {
       },
     })
 
-    consola.info(`Creating release for tag: ${config.to} (from ${config.from})`)
+    logger.debug(`Commit range: ${config.from}...${config.to}`)
+    logger.debug(`GitHub token: ${config.tokens.github ? '✓ provided' : '✗ missing'}`)
 
     if (!config.tokens.github && !dryRun) {
       throw new Error('No GitHub token specified. Set GITHUB_TOKEN or GH_TOKEN environment variable.')
@@ -34,6 +35,8 @@ export async function github(options: GitProviderOptions = {}): Promise<void> {
       pkg: rootPackage,
       config,
     })
+    logger.debug(`Found ${commits.length} commit(s)`)
+
     const changelog = await generateChangelog({
       pkg: rootPackage,
       commits,
@@ -52,23 +55,25 @@ export async function github(options: GitProviderOptions = {}): Promise<void> {
       prerelease: isPrerelease(to),
     }
 
-    consola.info('Release details:', JSON.stringify({
+    logger.debug(`Creating release for ${tagName}${release.prerelease ? ' (prerelease)' : ''}`)
+    logger.debug('Release details:', formatJson({
       tag_name: release.tag_name,
       name: release.name,
       prerelease: release.prerelease,
-    }, null, 2))
+    }))
 
     if (options.dryRun) {
-      consola.info('Release content', release.body)
-      return
+      logger.debug('Release content:', release.body)
+    }
+    else {
+      logger.debug('Publishing release to GitHub...')
+      await createGithubRelease(config, release)
     }
 
-    await createGithubRelease(config, release)
-
-    consola.success(`Release ${tagName} published to GitHub!`)
+    logger.success(`Release ${tagName} published to GitHub!`)
   }
   catch (error) {
-    consola.error('Error publishing GitHub release:', (error as Error).message)
+    logger.error('Error publishing GitHub release:', error)
     throw error
   }
 }

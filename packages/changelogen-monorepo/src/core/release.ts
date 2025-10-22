@@ -1,23 +1,25 @@
 import type { GitProvider } from '../types'
-import { consola } from 'consola'
+import type { ResolvedChangelogMonorepoConfig } from './config'
+import { logger } from '@maz-ui/node'
 import { github } from '../commands/github'
 import { gitlab } from '../commands/gitlab'
-import { detectGitProvider } from '../utils/git'
+import { detectGitProvider } from '../core'
 
-export async function publishToGitProvider({ provider, from, to, dryRun }: {
+export async function publishToGitProvider({ provider, from, to, dryRun, config }: {
   provider?: GitProvider
   from: string
   to: string
   dryRun?: boolean
-}): Promise<GitProvider | 'none' | 'unknown'> {
+  config?: ResolvedChangelogMonorepoConfig
+}): Promise<GitProvider> {
   const detectedProvider = provider || detectGitProvider()
 
   if (!detectedProvider) {
-    consola.warn('Unable to detect Git provider. Skipping release publication.')
-    return 'unknown'
+    logger.warn('Unable to detect Git provider. Skipping release publication.')
+    throw new Error('Unable to detect Git provider')
   }
   else {
-    consola.info(`Detected Git provider: ${detectedProvider}`)
+    logger.info(`Detected Git provider: ${detectedProvider}`)
   }
 
   if (detectedProvider === 'github') {
@@ -25,6 +27,7 @@ export async function publishToGitProvider({ provider, from, to, dryRun }: {
       from,
       to,
       dryRun,
+      config,
     })
   }
   else if (detectedProvider === 'gitlab') {
@@ -32,6 +35,7 @@ export async function publishToGitProvider({ provider, from, to, dryRun }: {
       from,
       to,
       dryRun,
+      config,
     })
   }
 

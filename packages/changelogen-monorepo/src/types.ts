@@ -1,5 +1,6 @@
 import type { GitCommit, ChangelogConfig as IChangelogConfig } from 'changelogen'
 import type { ReleaseType } from 'semver'
+import type { ResolvedChangelogMonorepoConfig } from './core'
 
 export type VersionMode = 'unified' | 'independent' | 'selective'
 
@@ -11,14 +12,6 @@ export interface PackageInfo {
 }
 export interface PackageWithCommits extends PackageInfo {
   commits: GitCommit[]
-}
-
-export interface BumpResult {
-  /**
-   * @default undefined
-   */
-  newVersion?: string
-  bumpedPackages: PackageInfo[]
 }
 
 export interface MonorepoConfig {
@@ -40,15 +33,13 @@ export interface MonorepoConfig {
   filterCommits?: boolean
 }
 
-export interface ChangelogConfig {
-  formatCmd?: string
-  rootChangelog?: boolean
-}
-export interface ChangelogOptions extends ChangelogConfig {
-  from?: string
-  to?: string
-  dryRun?: boolean
-  packages?: PackageInfo[]
+export type BumpResult = {
+  oldVersion?: string
+  newVersion?: string
+  bumpedPackages: PackageInfo[]
+  bumped: true
+} | {
+  bumped: false
 }
 
 export interface BumpConfig {
@@ -67,6 +58,22 @@ export interface BumpOptions extends BumpConfig {
    * @default false
    */
   dryRun?: boolean
+  /**
+   * @default undefined
+   */
+  config?: ResolvedChangelogMonorepoConfig
+}
+
+export interface ChangelogConfig {
+  formatCmd?: string
+  rootChangelog?: boolean
+}
+export interface ChangelogOptions extends ChangelogConfig {
+  from?: string
+  to?: string
+  dryRun?: boolean
+  packages?: PackageInfo[]
+  config?: ResolvedChangelogMonorepoConfig
 }
 
 export interface GitProviderOptions {
@@ -74,6 +81,7 @@ export interface GitProviderOptions {
   to?: string
   token?: string
   dryRun?: boolean
+  config?: ResolvedChangelogMonorepoConfig
 }
 
 export interface PublishConfig {
@@ -86,6 +94,12 @@ export interface PublishConfig {
 
 export interface PublishOptions extends PublishConfig {
   dryRun?: boolean
+  config?: ResolvedChangelogMonorepoConfig
+  bumpedPackages?: PackageInfo[]
+}
+
+export interface PublishResponse {
+  publishedPackages: PackageInfo[]
 }
 
 export interface ReleaseConfig {
@@ -152,3 +166,5 @@ export interface ChangelogMonorepoConfig extends IChangelogConfig {
   changelog: ChangelogConfig
   release: ReleaseConfig
 }
+
+export type PackageManager = 'npm' | 'yarn' | 'pnpm' | 'bun'

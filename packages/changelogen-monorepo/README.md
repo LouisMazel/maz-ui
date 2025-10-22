@@ -28,6 +28,59 @@ pnpm add -D @maz-ui/changelogen-monorepo
 
 ## Usage
 
+### Log Levels
+
+All commands support a `--log-level` option to control verbosity:
+
+```bash
+# Default level (essential information only)
+clm bump
+
+# Debug level (detailed information for troubleshooting)
+clm release --patch --log-level debug
+
+# Silent level (errors only)
+clm publish --log-level silent
+
+# Available levels: silent, error, warning, normal, default, debug, trace, verbose
+```
+
+**Log Levels:**
+
+- `default` (default): Essential information - version changes, success/errors, main workflow steps
+- `debug`: Detailed debugging information - configuration loaded, patterns, commit counts, git/npm commands executed
+- `silent`: Errors only
+- `error`: Errors and critical warnings
+- `warning`: Warnings and above
+- `normal`: Normal information
+- `trace`: Very detailed trace information
+- `verbose`: Everything
+
+**Examples:**
+
+```bash
+# Default: Clean output with essential info
+$ clm bump --patch
+ℹ 4.2.0 → 4.2.1 (unified mode)
+✔ All 3 package(s) bumped to 4.2.1
+
+# Debug: Detailed information for troubleshooting
+$ clm bump --patch --log-level debug
+● Loading monorepo configuration
+● Version mode: unified
+● From: v4.2.0, To: HEAD
+● Package patterns: packages/*
+● Found 3 package(s)
+● Starting bump in unified mode
+● Fetching commits from v4.2.0 to HEAD
+● Found 5 commits since v4.2.0
+● Detected release type from commits: patch
+ℹ 4.2.0 → 4.2.1 (unified mode)
+● Writing version to 3 package(s)
+● Updating lerna.json version
+✔ All 3 package(s) bumped to 4.2.1
+```
+
 ### Bump versions
 
 ```bash
@@ -42,6 +95,9 @@ clm bump --major
 # Pre-release
 clm bump --prerelease --preid beta
 
+# With debug logging
+clm bump --minor --log-level debug
+
 # Example: If package-b is updated, package-a (which depends on package-b)
 # will also be bumped (patch in independent mode, same version in selective/unified)
 ```
@@ -55,6 +111,9 @@ clm changelog
 # Generate from specific commit
 clm changelog --from v1.0.0
 
+# With debug logging to see detailed commit processing
+clm changelog --from v1.0.0 --log-level debug
+
 # Dry run (preview without writing files)
 clm changelog --dry-run
 ```
@@ -62,7 +121,7 @@ clm changelog --dry-run
 ### Publish to npm
 
 ```bash
-# Publish packages to npm registry
+# Publish packages to registry
 clm publish
 
 # With custom registry
@@ -76,6 +135,9 @@ clm publish --access public
 
 # With 2FA/OTP
 clm publish --otp 123456
+
+# With debug logging to see npm commands
+clm publish --log-level debug
 
 # Dry run (preview without publishing)
 clm publish --dry-run
@@ -114,6 +176,9 @@ clm release --no-verify
 # With npm options
 clm release --registry https://npm.pkg.github.com --access public --otp 123456
 
+# With debug logging to see all steps in detail
+clm release --patch --log-level debug
+
 # Dry run (preview changes)
 clm release --dry-run
 ```
@@ -130,6 +195,9 @@ clm github
 
 # With custom token
 clm github --token YOUR_GITHUB_TOKEN
+
+# With debug logging
+clm github --log-level debug
 ```
 
 **Required environment variables:**
@@ -144,6 +212,9 @@ clm gitlab
 
 # With custom token
 clm gitlab --token YOUR_GITLAB_TOKEN
+
+# With debug logging
+clm gitlab --log-level debug
 ```
 
 **Required environment variables:**

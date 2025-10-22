@@ -1,23 +1,21 @@
 import type { GitProviderOptions } from '../types'
-import { execPromise } from '@maz-ui/node'
-import { consola } from 'consola'
-import { loadMonorepoConfig } from '../config'
-import { generateChangelog } from '../core/changelog'
-import { getPackageCommits, getRootPackage } from '../core/monorepo'
-
-import { getLastTag } from '../utils/git'
-import { createGitlabRelease } from '../utils/gitlab'
+import { execPromise, logger } from '@maz-ui/node'
+import { formatJson } from '@maz-ui/utils'
+import { createGitlabRelease, generateChangelog, getLastTag, getPackageCommits, getRootPackage, loadMonorepoConfig } from '../core'
 
 export async function gitlab(options: GitProviderOptions = {}): Promise<void> {
   try {
-    consola.start('Publishing GitLab release...')
+    logger.start('Start publishing GitLab release')
 
     const dryRun = options.dryRun ?? false
+    logger.debug(`Dry run: ${dryRun}`)
 
     const rootPackage = getRootPackage(process.cwd())
-    const config = await loadMonorepoConfig({
+    logger.debug(`Root package: ${rootPackage.name}@${rootPackage.version}`)
+
+    const config = options.config || await loadMonorepoConfig({
       overrides: {
-        from: options.from || await getLastTag(rootPackage.version),
+        from: options.from || await getLastTag({ version: rootPackage.version }),
         to: options.to,
         tokens: {
           gitlab: options.token || process.env.CHANGELOGEN_TOKENS_GITLAB || process.env.GITLAB_TOKEN || process.env.GITLAB_API_TOKEN || process.env.CI_JOB_TOKEN,
@@ -25,12 +23,16 @@ export async function gitlab(options: GitProviderOptions = {}): Promise<void> {
       },
     })
 
-    consola.info(`Creating release for tag: ${config.to} (from ${config.from})`)
+    logger.debug(`Commit range: ${config.from}...${config.to}`)
+    logger.debug(`GitLab token: ${config.tokens.gitlab ? '✓ provided' : '✗ missing'}`)
 
+    logger.debug('Fetching commits for changelog...')
     const commits = await getPackageCommits({
       pkg: rootPackage,
       config,
     })
+    logger.debug(`Found ${commits.length} commit(s)`)
+
     const changelog = await generateChangelog({
       pkg: rootPackage,
       commits,
@@ -38,7 +40,7 @@ export async function gitlab(options: GitProviderOptions = {}): Promise<void> {
     })
 
     if (!changelog) {
-      consola.warn('No changelog found for latest version')
+      logger.warn('No changelog found for latest version')
       return
     }
 
@@ -47,6 +49,7 @@ export async function gitlab(options: GitProviderOptions = {}): Promise<void> {
     const to = rootPackage.version || config.to
     const tagName = config.templates.tagBody?.replaceAll('{{newVersion}}', to) ?? to
 
+    logger.debug('Getting current branch...')
     const { stdout: currentBranch } = await execPromise('git rev-parse --abbrev-ref HEAD', {
       noSuccess: true,
       noStdout: true,
@@ -59,22 +62,29 @@ export async function gitlab(options: GitProviderOptions = {}): Promise<void> {
       ref: currentBranch.trim(),
     }
 
-    consola.info('Release details:', JSON.stringify({
+    logger.info(`Creating release for ${tagName} (ref: ${release.ref})`)
+    logger.debug('Release details:', formatJson({
       tag_name: release.tag_name,
       name: release.name,
       ref: release.ref,
-    }, null, 2))
+    }))
 
-    await createGitlabRelease({
-      config,
-      release,
-      dryRun,
-    })
+    if (dryRun) {
+      logger.debug('Release content:', release.description)
+    }
+    else {
+      logger.debug('Publishing release to GitLab...')
+      await createGitlabRelease({
+        config,
+        release,
+        dryRun,
+      })
+    }
 
-    consola.success(`Release ${tagName} published to GitLab!`)
+    logger.success(`Release ${tagName} published to GitLab!`)
   }
   catch (error) {
-    consola.error('Error publishing GitLab release:', (error as Error).message)
+    logger.error('Error publishing GitLab release:', error)
     throw error
   }
 }
