@@ -36,7 +36,7 @@ export function createLogger(options?: LoggerOptions) {
     fatal: (message: InputLogObject | any, ...args: any[]) => consola.fatal(message, ...args),
     ready: (message: InputLogObject | any, ...args: any[]) => consola.ready(message, ...args),
     silent: (message: InputLogObject | any, ...args: any[]) => consola.silent(message, ...args),
-    divider: () => console.log('-'.repeat(process.stdout.columns ?? 20)),
+    divider: (character: string = '=') => console.log(character.repeat(process.stdout.columns ?? 20)),
     eot: () => console.log(),
     brand: (message: string) => console.log(blueBright(message)),
     clear: () => console.clear(),
