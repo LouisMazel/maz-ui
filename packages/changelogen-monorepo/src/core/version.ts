@@ -1,11 +1,12 @@
 import type { GitCommit } from 'changelogen'
 import type { ReleaseType } from 'semver'
-import type { ResolvedChangelogMonorepoConfig } from '../config'
+import type { ResolvedChangelogMonorepoConfig } from '../core'
 import type { BumpOptions, PackageInfo } from '../types'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { logger } from '@maz-ui/node'
+import { formatJson } from '@maz-ui/utils'
 import { determineSemverChange } from 'changelogen'
-import { consola } from 'consola'
 import * as semver from 'semver'
 import { getPackageCommits } from './monorepo'
 
@@ -35,15 +36,15 @@ export function writeVersion(pkgPath: string, version: string, dryRun = false): 
     packageJson.version = version
 
     if (dryRun) {
-      consola.info(`[DRY RUN] Would update ${packageJsonPath}: ${oldVersion} → ${version}`)
+      logger.info(`[dry-run] Update ${packageJson.name}: ${oldVersion} → ${version}`)
       return
     }
 
-    writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`, 'utf8')
-    consola.success(`Updated ${packageJsonPath}: ${oldVersion} → ${version}`)
+    writeFileSync(packageJsonPath, `${formatJson(packageJson)}\n`, 'utf8')
+    logger.success(`Updated ${packageJson.name}: ${oldVersion} → ${version}`)
   }
   catch (error) {
-    throw new Error(`Unable to write version to ${packageJsonPath}: ${(error as Error).message}`)
+    throw new Error(`Unable to write version to ${packageJsonPath}: ${error}`)
   }
 }
 
@@ -80,15 +81,15 @@ export function updateLernaVersion(
     lernaJson.version = version
 
     if (dryRun) {
-      consola.info(`[DRY RUN] Would update ${lernaJsonPath}: ${oldVersion} → ${version}`)
+      logger.info(`[dry-run] update lerna.json: ${oldVersion} → ${version}`)
       return
     }
 
-    writeFileSync(lernaJsonPath, `${JSON.stringify(lernaJson, null, 2)}\n`, 'utf8')
-    consola.success(`Updated lerna.json: ${oldVersion} → ${version}`)
+    writeFileSync(lernaJsonPath, `${formatJson(lernaJson)}\n`, 'utf8')
+    logger.success(`Updated lerna.json: ${oldVersion} → ${version}`)
   }
   catch (error) {
-    consola.warn(`Unable to update lerna.json: ${(error as Error).message}`)
+    logger.warn(`Unable to update lerna.json: ${error}`)
   }
 }
 
@@ -123,8 +124,8 @@ export async function bumpPackageIndependently({
   forcedBumpType?: BumpOptions['type']
   fromTag?: string
   dryRun: boolean
-}): Promise<{ bumped: true, newVersion: string } | { bumped: false }> {
-  consola.info(`Analyzing ${pkg.name}`)
+}): Promise<{ bumped: true, newVersion: string, oldVersion: string } | { bumped: false }> {
+  logger.info(`Analyzing ${pkg.name}`)
 
   const commits = await getPackageCommits({
     pkg,
@@ -138,34 +139,39 @@ export async function bumpPackageIndependently({
 
   if (forcedBumpType) {
     releaseType = forcedBumpType
-    consola.info(`  Using forced bump type (dependency updated): ${releaseType}`)
+    logger.info(`  Using forced bump type (dependency updated): ${releaseType}`)
   }
   else if (commits.length === 0) {
-    consola.info(`  No commits found for ${pkg.name}, skipping bump`)
+    logger.info(`  No commits found for ${pkg.name}, skipping bump`)
     return { bumped: false }
   }
   else {
-    consola.info(`  Found ${commits.length} commits for ${pkg.name}`)
+    logger.info(`  Found ${commits.length} commits for ${pkg.name}`)
     releaseType = determineReleaseType(commits, config)
 
     if (!releaseType) {
-      consola.info(`  No version bump required for ${pkg.name}`)
+      logger.info(`  No version bump required for ${pkg.name}`)
       return { bumped: false }
     }
 
     if (config.bump.type) {
-      consola.info(`  Using specified release type: ${releaseType}`)
+      logger.info(`  Using specified release type: ${releaseType}`)
     }
     else {
-      consola.info(`  Detected release type: ${releaseType}`)
+      logger.info(`  Detected release type: ${releaseType}`)
     }
   }
 
   const currentVersion = pkg.version || '0.0.0'
   const newVersion = bumpPackageVersion(currentVersion, releaseType, config.bump.preid)
 
-  consola.info(`  Bumping ${pkg.name} from ${currentVersion} to ${newVersion}`)
+  logger.info(`  Bumping ${pkg.name} from ${currentVersion} to ${newVersion}`)
 
   writeVersion(pkg.path, newVersion, dryRun)
-  return { bumped: true, newVersion }
+  return { bumped: true, newVersion, oldVersion: currentVersion }
+}
+
+export function isStableReleaseType(releaseType: ReleaseType): boolean {
+  const stableTypes = ['release', 'major', 'minor', 'patch']
+  return stableTypes.includes(releaseType)
 }

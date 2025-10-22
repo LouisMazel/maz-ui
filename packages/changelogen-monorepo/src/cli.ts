@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
+import type { LogLevel } from '@maz-ui/node'
 import type { BumpOptions } from './types'
+import { logger } from '@maz-ui/node'
 import { Command } from 'commander'
-import { consola } from 'consola'
 import { version } from './../package.json'
 import { bump } from './commands/bump'
 import { changelog } from './commands/changelog'
@@ -12,6 +13,13 @@ import { publish } from './commands/publish'
 import { release } from './commands/release'
 
 const program = new Command()
+
+function setupLogger(logLevel?: LogLevel) {
+  if (logLevel) {
+    logger.setLevel(logLevel)
+    logger.debug(`Log level set to: ${logLevel}`)
+  }
+}
 
 function getReleaseType(options: any) {
   let type: BumpOptions['type'] = 'release'
@@ -38,6 +46,7 @@ program
   .name('changelogen-monorepo')
   .description('Changelogen adapter for monorepo management')
   .version(version)
+  .option('--log-level <level>', 'Set log level (silent, error, warning, normal, default, debug, trace, verbose)', 'default')
 
 program
   .command('bump')
@@ -53,6 +62,7 @@ program
   .option('--dry-run', 'Preview changes without writing files')
   .action(async (options) => {
     try {
+      setupLogger(program.opts().logLevel)
       await bump({
         type: getReleaseType(options),
         preid: options.preid,
@@ -60,7 +70,7 @@ program
       })
     }
     catch (error) {
-      consola.error(error)
+      logger.error(error)
       process.exit(1)
     }
   })
@@ -75,6 +85,7 @@ program
   .option('--dry-run', 'Preview changes without writing files')
   .action(async (options) => {
     try {
+      setupLogger(program.opts().logLevel)
       await changelog({
         from: options.from,
         to: options.to,
@@ -84,21 +95,22 @@ program
       })
     }
     catch (error) {
-      consola.error(error)
+      logger.error(error)
       process.exit(1)
     }
   })
 
 program
   .command('publish')
-  .description('Publish packages to npm registry')
-  .option('--registry <url>', 'Custom npm registry URL')
+  .description('Publish packages to registry')
+  .option('--registry <url>', 'Custom registry URL')
   .option('--tag <tag>', 'Publish with specific tag (default: latest for stable, next for prerelease)')
   .option('--access <type>', 'Package access level (public or restricted)')
   .option('--otp <code>', 'One-time password for 2FA')
   .option('--dry-run', 'Preview publish without actually publishing')
   .action(async (options) => {
     try {
+      setupLogger(program.opts().logLevel)
       await publish({
         registry: options.registry,
         tag: options.tag,
@@ -108,7 +120,7 @@ program
       })
     }
     catch (error) {
-      consola.error(error)
+      logger.error(error)
       process.exit(1)
     }
   })
@@ -122,6 +134,7 @@ program
   .option('--dry-run', 'Preview github release content')
   .action(async (options) => {
     try {
+      setupLogger(program.opts().logLevel)
       await github({
         token: options.token,
         dryRun: options.dryRun,
@@ -130,7 +143,7 @@ program
       })
     }
     catch (error) {
-      consola.error(error)
+      logger.error(error)
       process.exit(1)
     }
   })
@@ -144,6 +157,7 @@ program
   .option('--dry-run', 'Preview github release content')
   .action(async (options) => {
     try {
+      setupLogger(program.opts().logLevel)
       await gitlab({
         token: options.token,
         dryRun: options.dryRun,
@@ -152,7 +166,7 @@ program
       })
     }
     catch (error) {
-      consola.error(error)
+      logger.error(error)
       process.exit(1)
     }
   })
@@ -184,6 +198,7 @@ program
   .option('--token <token>', 'Git token (github or gitlab)')
   .action(async (options) => {
     try {
+      setupLogger(program.opts().logLevel)
       await release({
         type: getReleaseType(options),
         preid: options.preid,
@@ -204,7 +219,7 @@ program
       })
     }
     catch (error) {
-      consola.error(error)
+      logger.error(error)
       process.exit(1)
     }
   })

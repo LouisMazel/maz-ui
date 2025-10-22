@@ -1,7 +1,7 @@
 import type { PackageInfo } from '../types'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { consola } from 'consola'
+import { logger } from '@maz-ui/node'
 
 export interface PackageWithDeps extends PackageInfo {
   dependencies: string[]
@@ -112,7 +112,7 @@ export function expandPackagesToBumpWithDependents(
           // Add to processing queue to find transitive dependents
           toProcess.push(dependent.name)
 
-          consola.info(`  ${dependent.name} will be bumped (depends on ${chain.join(' → ')})`)
+          logger.debug(`${dependent.name} will be bumped (depends on ${chain.join(' → ')})`)
         }
       }
     }
@@ -140,7 +140,7 @@ export function topologicalSort(packages: PackageWithDeps[]): PackageWithDeps[] 
       return
 
     if (visiting.has(pkgName)) {
-      consola.warn(`Circular dependency detected involving ${pkgName}`)
+      logger.warn(`Circular dependency detected involving ${pkgName}`)
       return
     }
 

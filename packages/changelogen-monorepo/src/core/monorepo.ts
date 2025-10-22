@@ -1,11 +1,11 @@
 import type { GitCommit } from 'changelogen'
-import type { ResolvedChangelogMonorepoConfig } from '../config'
+import type { ResolvedChangelogMonorepoConfig } from '../core'
 import type { PackageInfo } from '../types'
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
+import { logger } from '@maz-ui/node'
 import { getGitDiff, parseCommits } from 'changelogen'
-import { consola } from 'consola'
-import fg from 'fast-glob'
+import fastGlob from 'fast-glob'
 import { expandPackagesToBumpWithDependents } from './dependencies'
 
 function getPackageInfo(
@@ -23,15 +23,15 @@ function getPackageInfo(
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'))
 
     if (packageJson.private) {
-      consola.info(`${packageJson.name} is private and will be ignored`)
+      logger.info(`${packageJson.name} is private and will be ignored`)
       return null
     }
     if (ignorePackageNames?.includes(packageJson.name)) {
-      consola.info(`${packageJson.name} ignored by config monorepo.ignorePackageNames`)
+      logger.info(`${packageJson.name} ignored by config monorepo.ignorePackageNames`)
       return null
     }
     if (!packageJson.version) {
-      consola.warn(`${packageJson.name} has no version and will be ignored`)
+      logger.warn(`${packageJson.name} has no version and will be ignored`)
       return null
     }
 
@@ -43,7 +43,7 @@ function getPackageInfo(
   }
   catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error)
-    consola.warn(`Unable to read ${packageJsonPath}:`, errorMessage)
+    logger.warn(`Unable to read ${packageJsonPath}:`, errorMessage)
     return null
   }
 }
@@ -62,7 +62,7 @@ export function getPackages({
 
   for (const pattern of patterns) {
     try {
-      const matches = fg.sync(pattern, {
+      const matches = fastGlob.sync(pattern, {
         cwd,
         onlyDirectories: true,
         absolute: true,
@@ -81,7 +81,7 @@ export function getPackages({
       }
     }
     catch (error) {
-      consola.error(`Unable to match pattern "${pattern}":`, (error as Error).message)
+      logger.error(`Unable to match pattern "${pattern}":`, error)
     }
   }
 
@@ -139,7 +139,7 @@ export function getRootPackage(rootDir: string): PackageInfo {
     }
   }
   catch (error) {
-    throw new Error(`Unable to read ${packageJsonPath}: ${(error as Error).message}`)
+    throw new Error(`Unable to read ${packageJsonPath}: ${error}`)
   }
 }
 
@@ -159,11 +159,10 @@ export async function getPackageToBump({
     })
     if (commits.length > 0) {
       packagesWithCommits.push(pkg)
-      consola.info(`  ${pkg.name}: ${commits.length} commit(s) found`)
+      logger.info(`${pkg.name}: ${commits.length} commit(s) found`)
     }
   }
 
-  // Expand with dependent packages (transitive)
   const allPackagesToBump = expandPackagesToBumpWithDependents(packagesWithCommits, packages)
 
   return allPackagesToBump

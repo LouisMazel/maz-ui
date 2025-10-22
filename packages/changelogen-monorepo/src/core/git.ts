@@ -1,9 +1,9 @@
+import type { ReleaseType } from 'semver'
 import type { ChangelogMonorepoConfig, GitProvider, PackageInfo } from '../types'
-import { execSync } from 'node:child_process'
 
-import { execPromise } from '@maz-ui/node'
-import { consola } from 'consola'
-import { isPrerelease } from '../core/version'
+import { execSync } from 'node:child_process'
+import { execPromise, logger } from '@maz-ui/node'
+import { extractVersionFromPackageTag, isPrerelease, isStableReleaseType } from '../core'
 
 export function detectGitProvider(cwd: string = process.cwd()): GitProvider | null {
   try {
@@ -72,8 +72,12 @@ export async function commitAndTag({
     '**/package.json',
   ]
 
+  logger.start('Start commit and tag')
+
+  logger.debug('Adding files to git staging area...')
   for (const pattern of filePatternsToAdd) {
     try {
+      logger.debug(`git add ${pattern}`)
       execSync(`git add ${pattern}`)
     }
     catch {
@@ -90,17 +94,20 @@ export async function commitAndTag({
   const noVerifyFlag = (verify) ? '' : '--no-verify '
 
   if (dryRun) {
-    consola.info(`Would exec: git commit ${noVerifyFlag}-m "${commitMessage}"`)
+    logger.info(`[dry-run] git commit ${noVerifyFlag}-m "${commitMessage}"`)
   }
   else {
+    logger.debug(`Executing: git commit ${noVerifyFlag}-m "${commitMessage}"`)
     await execPromise(`git commit ${noVerifyFlag}-m "${commitMessage}"`, { noSuccess: true })
-    consola.success(`Committed: ${commitMessage}${verify ? '' : ' (--no-verify)'}`)
+    logger.success(`Committed: ${commitMessage}${verify ? '' : ' (--no-verify)'}`)
   }
 
   const signTags = config.signTags ? '-s' : ''
+  logger.debug(`Sign tags: ${config.signTags}`)
   const createdTags: string[] = []
 
   if (config.monorepo.versionMode === 'independent' && bumpedPackages && bumpedPackages.length > 0) {
+    logger.debug(`Creating ${bumpedPackages.length} independent package tags`)
     for (const pkg of bumpedPackages) {
       const tagName = `${pkg.name}@${pkg.version}`
       const tagMessage = config.templates?.tagMessage
@@ -108,27 +115,24 @@ export async function commitAndTag({
         || tagName
 
       if (dryRun) {
-        consola.info(`Would exec: git tag ${signTags} -a ${tagName} -m "${tagMessage}"`)
+        logger.info(`[dry-run] git tag ${signTags} -a ${tagName} -m "${tagMessage}"`)
       }
       else {
         const cmd = `git tag ${signTags} -a ${tagName} -m "${tagMessage}"`
-        consola.info(`Executing: ${cmd}`)
+        logger.debug(`Executing: ${cmd}`)
         try {
           await execPromise(cmd, { noSuccess: true, noStdout: true })
-          consola.success(`Tag created: ${tagName}`)
+          logger.debug(`Tag created: ${tagName}`)
         }
         catch (error) {
-          consola.error(`Failed to create tag ${tagName}:`, (error as Error).message)
+          logger.error(`Failed to create tag ${tagName}:`, error)
           throw error
         }
       }
       createdTags.push(tagName)
     }
 
-    consola.success(`Created ${createdTags.length} tags for independent packages`)
-    for (const tag of createdTags) {
-      consola.info(`  - ${tag}`)
-    }
+    logger.success(`Created ${createdTags.length} tags for independent packages, ${createdTags.join(', ')}`)
   }
   else if (newVersion) {
     const tagName = `v${newVersion}`
@@ -137,33 +141,36 @@ export async function commitAndTag({
       || tagName
 
     if (dryRun) {
-      consola.info(`Would exec: git tag ${signTags} -a ${tagName} -m "${tagMessage}"`)
+      logger.info(`[dry-run] git tag ${signTags} -a ${tagName} -m "${tagMessage}"`)
     }
     else {
       const cmd = `git tag ${signTags} -a ${tagName} -m "${tagMessage}"`
-      consola.info(`Executing: ${cmd}`)
+      logger.debug(`Executing: ${cmd}`)
       try {
         await execPromise(cmd, { noSuccess: true, noStdout: true })
-        consola.success(`Tag created: ${tagName}`)
+        logger.debug(`Tag created: ${tagName}`)
       }
       catch (error) {
-        consola.error(`Failed to create tag ${tagName}:`, (error as Error).message)
+        logger.error(`Failed to create tag ${tagName}:`, error)
         throw error
       }
     }
+
     createdTags.push(tagName)
-    consola.success(`Created tag: ${tagName}`)
   }
 
-  if (dryRun) {
-    consola.info('Created Tags:', createdTags)
-  }
+  logger.debug('Created Tags:', createdTags.join(', '))
+
+  logger.success('Commit and tag completed!')
 
   return createdTags
 }
 
-export async function getLastTag(version?: string, onlyStable?: boolean): Promise<string> {
-  if (onlyStable || (!isPrerelease(version) && !onlyStable)) {
+export async function getLastTag(options?: {
+  version?: string
+  onlyStable?: boolean
+}): Promise<string> {
+  if (options?.onlyStable || (options?.version && !isPrerelease(options.version) && !options?.onlyStable)) {
     const { stdout } = await execPromise(
       'git tag --sort=-v:refname | grep -E \'^v[0-9]+\\.[0-9]+\\.[0-9]+$\' | sed -n \'1p\'',
       {
@@ -171,6 +178,9 @@ export async function getLastTag(version?: string, onlyStable?: boolean): Promis
         noStdout: true,
       },
     )
+
+    logger.debug('Last stable tag:', stdout.trim())
+
     return stdout.trim()
   }
 
@@ -178,6 +188,9 @@ export async function getLastTag(version?: string, onlyStable?: boolean): Promis
     noSuccess: true,
     noStdout: true,
   })
+
+  logger.debug('Last tag:', stdout.trim())
+
   return stdout.trim()
 }
 
@@ -207,4 +220,56 @@ export async function getLastPackageTag(packageName: string, onlyStable?: boolea
   catch {
     return null
   }
+}
+
+export async function determinePackageFromTag({
+  packageName,
+  globalFrom,
+  releaseType,
+}: {
+  packageName: string
+  globalFrom: string
+  releaseType: ReleaseType
+}): Promise<string> {
+  const lastPackageTag = await getLastPackageTag(packageName)
+
+  if (!lastPackageTag) {
+    logger.debug(`No previous tag found for ${packageName}, using global from: ${globalFrom}`)
+    return globalFrom
+  }
+
+  const tagVersion = extractVersionFromPackageTag(lastPackageTag)
+  if (!tagVersion) {
+    logger.warn(`Could not extract version from tag ${lastPackageTag}, using global from: ${globalFrom}`)
+    return globalFrom
+  }
+
+  const graduating = isPrerelease(tagVersion) && isStableReleaseType(releaseType)
+
+  if (graduating) {
+    logger.info(`Graduating ${packageName} from prerelease ${tagVersion} to stable`)
+    const stablePackageTag = await getLastPackageTag(packageName, true)
+    if (stablePackageTag) {
+      logger.debug(`Using last stable tag: ${stablePackageTag}`)
+      return stablePackageTag
+    }
+  }
+
+  logger.debug(`Using last package tag: ${lastPackageTag}`)
+  return lastPackageTag
+}
+
+export async function pushCommitAndTags({ dryRun }: { dryRun?: boolean }) {
+  logger.start('Start push changes and tags')
+
+  if (dryRun) {
+    logger.info('[dry-run] git push --follow-tags')
+  }
+  else {
+    logger.debug('Executing: git push --follow-tags')
+
+    await execPromise('git push --follow-tags', { noSuccess: true })
+  }
+
+  logger.success('End push changes and tags')
 }
