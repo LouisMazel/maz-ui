@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.2.1-alpha.11...v4.2.1-alpha.12
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.11...v4.2.1-alpha.12)
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Disable success log for get tag command ([7fcd3dde2](https://github.com/LouisMazel/maz-ui/commit/7fcd3dde2))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.10...v4.2.1-alpha.11
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.10...v4.2.1-alpha.11)
