@@ -36,7 +36,7 @@ export async function publish(options: PublishOptions) {
     const patterns = options.packages ?? config.publish.packages ?? config.monorepo.packages
     logger.debug(`Package patterns: ${patterns.join(', ')}`)
 
-    const packages = getPackages({
+    const packages = options.bumpedPackages || getPackages({
       cwd: config.cwd,
       patterns,
       ignorePackageNames: config.monorepo.ignorePackageNames,
@@ -49,7 +49,7 @@ export async function publish(options: PublishOptions) {
     const packagesWithDeps = getPackagesWithDependencies(packages)
     const sortedPackages = topologicalSort(packagesWithDeps)
 
-    let publishedPackages: PackageInfo[] = options.bumpedPackages || []
+    let publishedPackages: PackageInfo[] = packages || []
 
     if (publishedPackages.length === 0 && config.monorepo.versionMode === 'independent') {
       logger.debug('Determining packages to publish in independent mode...')
