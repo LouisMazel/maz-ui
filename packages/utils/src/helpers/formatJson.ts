@@ -1,3 +1,3 @@
-export function formatJson(json: unknown) {
-  return JSON.stringify(json, null, 2)
+export function formatJson(json: unknown, indent: number = 2) {
+  return JSON.stringify(json, null, indent)
 }
