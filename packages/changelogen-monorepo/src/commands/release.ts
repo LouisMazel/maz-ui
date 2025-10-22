@@ -44,6 +44,9 @@ export async function release(options: ReleaseOptions): Promise<void> {
     const dryRun = options.dryRun ?? false
     logger.debug(`Dry run: ${dryRun}`)
 
+    const force = options.force ?? false
+    logger.debug(`Force bump: ${force}`)
+
     const config = await getReleaseConfig(options)
     logger.debug(`Version mode: ${config.monorepo.versionMode}`)
     logger.debug(`Push: ${config.release.push}, Publish: ${config.release.publish}, Release: ${config.release.release}`)
@@ -56,6 +59,7 @@ export async function release(options: ReleaseOptions): Promise<void> {
       preid: config.bump.preid,
       dryRun,
       config,
+      force,
     })
 
     if (!bumpResult.bumped) {

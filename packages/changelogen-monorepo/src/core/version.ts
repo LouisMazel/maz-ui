@@ -10,10 +10,19 @@ import { determineSemverChange } from 'changelogen'
 import * as semver from 'semver'
 import { getPackageCommits } from './monorepo'
 
-export function determineReleaseType(
-  commits: GitCommit[],
-  config: ResolvedChangelogMonorepoConfig,
-): BumpOptions['type'] | null {
+export function determineReleaseType({
+  commits,
+  config,
+  force,
+}: {
+  commits?: GitCommit[]
+  config: ResolvedChangelogMonorepoConfig
+  force: boolean
+}): BumpOptions['type'] | null {
+  if (!commits?.length && !force) {
+    return undefined
+  }
+
   if (config.bump.type && config.bump.type !== 'release') {
     return config.bump.type
   }
@@ -22,7 +31,11 @@ export function determineReleaseType(
     return 'release'
   }
 
-  return determineSemverChange(commits, config)
+  if (commits) {
+    return determineSemverChange(commits, config)
+  }
+
+  return force ? config.bump.type : undefined
 }
 
 export function writeVersion(pkgPath: string, version: string, dryRun = false): void {
@@ -118,14 +131,16 @@ export async function bumpPackageIndependently({
   forcedBumpType,
   fromTag,
   dryRun,
+  force,
 }: {
   pkg: PackageInfo
   config: ResolvedChangelogMonorepoConfig
   forcedBumpType?: BumpOptions['type']
   fromTag?: string
   dryRun: boolean
+  force: boolean
 }): Promise<{ bumped: true, newVersion: string, oldVersion: string } | { bumped: false }> {
-  logger.info(`Analyzing ${pkg.name}`)
+  logger.debug(`Analyzing ${pkg.name}`)
 
   const commits = await getPackageCommits({
     pkg,
@@ -139,33 +154,33 @@ export async function bumpPackageIndependently({
 
   if (forcedBumpType) {
     releaseType = forcedBumpType
-    logger.info(`  Using forced bump type (dependency updated): ${releaseType}`)
+    logger.debug(`Using forced bump type (dependency updated): ${releaseType}`)
   }
   else if (commits.length === 0) {
-    logger.info(`  No commits found for ${pkg.name}, skipping bump`)
+    logger.debug(`No commits found for ${pkg.name}, skipping bump`)
     return { bumped: false }
   }
   else {
-    logger.info(`  Found ${commits.length} commits for ${pkg.name}`)
-    releaseType = determineReleaseType(commits, config)
+    logger.debug(`Found ${commits.length} commits for ${pkg.name}`)
+    releaseType = determineReleaseType({ commits, config, force })
 
     if (!releaseType) {
-      logger.info(`  No version bump required for ${pkg.name}`)
+      logger.debug(`No version bump required for ${pkg.name}`)
       return { bumped: false }
     }
 
     if (config.bump.type) {
-      logger.info(`  Using specified release type: ${releaseType}`)
+      logger.debug(`Using specified release type: ${releaseType}`)
     }
     else {
-      logger.info(`  Detected release type: ${releaseType}`)
+      logger.debug(`Detected release type: ${releaseType}`)
     }
   }
 
   const currentVersion = pkg.version || '0.0.0'
   const newVersion = bumpPackageVersion(currentVersion, releaseType, config.bump.preid)
 
-  logger.info(`  Bumping ${pkg.name} from ${currentVersion} to ${newVersion}`)
+  logger.info(`Bumping ${pkg.name} from ${currentVersion} to ${newVersion}`)
 
   writeVersion(pkg.path, newVersion, dryRun)
   return { bumped: true, newVersion, oldVersion: currentVersion }

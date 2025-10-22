@@ -241,6 +241,7 @@ export async function getLastPackageTag({
         logLevel,
         noStderr: true,
         noStdout: true,
+        noSuccess: true,
       },
     )
 

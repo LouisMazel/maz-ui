@@ -185,6 +185,9 @@ clm release --patch --log-level debug
 
 # Dry run (preview changes)
 clm release --dry-run
+
+# Bump even if there are no commits
+clm release --force
 ```
 
 ### Publish releases

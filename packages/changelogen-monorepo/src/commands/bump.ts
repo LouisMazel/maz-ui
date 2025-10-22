@@ -4,15 +4,19 @@ import { logger } from '@maz-ui/node'
 import { getGitDiff, parseCommits } from 'changelogen'
 import { bumpPackageIndependently, bumpPackageVersion, determinePackageFromTag, determineReleaseType, expandPackagesToBumpWithDependents, getLastTag, getPackageCommits, getPackages, getPackageToBump, getRootPackage, isGraduating, loadMonorepoConfig, updateLernaVersion, writeVersion } from '../core'
 
+interface BumpStrategyInput {
+  config: ResolvedChangelogMonorepoConfig
+  packages: PackageInfo[]
+  dryRun: boolean
+  force: boolean
+}
+
 async function bumpUnifiedMode({
   config,
   packages,
   dryRun,
-}: {
-  config: ResolvedChangelogMonorepoConfig
-  packages: PackageInfo[]
-  dryRun: boolean
-}): Promise<BumpResult> {
+  force,
+}: BumpStrategyInput): Promise<BumpResult> {
   logger.debug('Starting bump in unified mode')
 
   const rootPackage = getRootPackage(config.cwd)
@@ -25,14 +29,18 @@ async function bumpUnifiedMode({
 
   logger.debug(`Found ${commits.length} commits since ${fromTag}`)
 
-  const releaseType = determineReleaseType(commits, config)
+  const releaseType = determineReleaseType({
+    commits,
+    config,
+    force,
+  })
 
   if (!releaseType) {
-    logger.warn('No commits require a version bump')
+    logger.debug('No commits require a version bump')
     return { bumped: false }
   }
 
-  if (config.bump.type) {
+  if (config.bump.type && force) {
     logger.debug(`Using specified release type: ${releaseType}`)
   }
   else {
@@ -74,17 +82,14 @@ async function bumpIndependentMode({
   config,
   packages,
   dryRun,
-}: {
-  config: ResolvedChangelogMonorepoConfig
-  packages: PackageInfo[]
-  dryRun: boolean
-}): Promise<BumpResult> {
+  force,
+}: BumpStrategyInput): Promise<BumpResult> {
   logger.debug('Starting bump in independent mode')
 
   const releaseType = config.bump.type
   const packagesWithCommits: PackageWithCommits[] = []
 
-  logger.debug(`Checking for commits in ${packages.length} package(s)...`)
+  logger.debug(`Checking for commits in ${packages.length} package(s)`)
 
   for (const pkg of packages) {
     const fromTag = await determinePackageFromTag({
@@ -103,18 +108,18 @@ async function bumpIndependentMode({
       },
     })
 
-    if (commits.length > 0) {
+    if (commits.length > 0 || force) {
       packagesWithCommits.push({ ...pkg, commits })
       logger.debug(`${pkg.name}: ${commits.length} commit(s)`)
     }
   }
 
   if (packagesWithCommits.length === 0) {
-    logger.warn('No packages have commits')
+    logger.debug('No packages have commits')
     return { bumped: false }
   }
 
-  logger.debug(`Found ${packagesWithCommits.length} package(s) with commits`)
+  logger.debug(`Found ${packagesWithCommits.length} package(s) to bump`)
 
   const allPackagesToBump = expandPackagesToBumpWithDependents(packagesWithCommits, packages)
 
@@ -139,6 +144,7 @@ async function bumpIndependentMode({
       forcedBumpType,
       fromTag,
       dryRun,
+      force,
     })
 
     if (result.bumped) {
@@ -157,7 +163,7 @@ async function bumpIndependentMode({
   const bumpedByDependency = bumpedPackages.length - bumpedByCommits
 
   if (bumpedPackages.length === 0) {
-    logger.warn('No packages were bumped')
+    logger.debug('No packages were bumped')
   }
   else {
     logger.info(
@@ -167,7 +173,7 @@ async function bumpIndependentMode({
   }
 
   return {
-    bumped: true,
+    bumped: bumpedPackages.length > 0,
     bumpedPackages,
   }
 }
@@ -176,11 +182,8 @@ async function bumpSelectiveMode({
   config,
   packages,
   dryRun,
-}: {
-  config: ResolvedChangelogMonorepoConfig
-  packages: PackageInfo[]
-  dryRun: boolean
-}): Promise<BumpResult> {
+  force,
+}: BumpStrategyInput): Promise<BumpResult> {
   logger.debug('Starting bump in selective mode')
 
   const rootPackage = getRootPackage(config.cwd)
@@ -193,7 +196,7 @@ async function bumpSelectiveMode({
 
   logger.debug(`Found ${commits.length} commits since ${fromTag}`)
 
-  const releaseType = determineReleaseType(commits, config)
+  const releaseType = determineReleaseType({ commits, config, force })
 
   if (!releaseType) {
     logger.warn('No commits require a version bump')
@@ -222,25 +225,32 @@ async function bumpSelectiveMode({
   }
 
   logger.debug('Determining packages to bump...')
-  const packagesToBump = await getPackageToBump({
-    packages,
-    config: {
-      ...config,
-      from: fromTag,
-    },
-  })
+  const packagesToBump = force
+    ? packages
+    : await getPackageToBump({
+        packages,
+        config: {
+          ...config,
+          from: fromTag,
+        },
+      })
 
   if (packagesToBump.length === 0) {
-    logger.warn('No packages have commits, skipping bump')
+    logger.debug('No packages have commits, skipping bump')
     return { bumped: false }
   }
 
-  const bumpedByCommits = packagesToBump.filter(p => p.reason === 'commits').length
-  const bumpedByDependency = packagesToBump.filter(p => p.reason === 'dependency').length
+  if (force) {
+    logger.info(`${packagesToBump.length} package(s) bumped to ${newVersion} (force)`)
+  }
+  else {
+    const bumpedByCommits = packagesToBump.filter(p => 'reason' in p && p.reason === 'commits').length
+    const bumpedByDependency = packagesToBump.filter(p => 'reason' in p && p.reason === 'dependency').length
 
-  logger.info(
-    `${currentVersion} → ${newVersion} (selective mode: ${bumpedByCommits} with commits, ${bumpedByDependency} as dependents)`,
-  )
+    logger.info(
+      `${currentVersion} → ${newVersion} (selective mode: ${bumpedByCommits} with commits, ${bumpedByDependency} as dependents)`,
+    )
+  }
 
   logger.debug(`Writing version to ${packagesToBump.length} package(s)`)
   for (const pkg of packagesToBump) {
@@ -277,6 +287,8 @@ export async function bump(options: BumpOptions): Promise<BumpResult> {
     const dryRun = options.dryRun ?? false
     logger.debug(`Dry run: ${dryRun}`)
 
+    const force = options.force ?? false
+
     const config = options.config || await loadMonorepoConfig({
       overrides: {
         bump: options,
@@ -304,6 +316,7 @@ export async function bump(options: BumpOptions): Promise<BumpResult> {
         config,
         packages,
         dryRun,
+        force,
       })
     }
     else if (config.monorepo.versionMode === 'selective') {
@@ -311,6 +324,7 @@ export async function bump(options: BumpOptions): Promise<BumpResult> {
         config,
         packages,
         dryRun,
+        force,
       })
     }
     else {
@@ -318,6 +332,7 @@ export async function bump(options: BumpOptions): Promise<BumpResult> {
         config,
         packages,
         dryRun,
+        force,
       })
     }
 
@@ -325,7 +340,7 @@ export async function bump(options: BumpOptions): Promise<BumpResult> {
       logger.success(`Version bump completed (${result.bumpedPackages.length} package(s) bumped)`)
     }
     else {
-      logger.warn('No packages to bump')
+      logger.fail('No packages to bump, no commits found')
     }
 
     return result

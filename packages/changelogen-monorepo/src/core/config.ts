@@ -1,7 +1,7 @@
 import type { LogLevel } from '@maz-ui/node'
 import type { DeepPartial } from '@maz-ui/utils'
 import type { ResolvedChangelogConfig } from 'changelogen'
-import type { BumpConfig, ChangelogConfig, ChangelogMonorepoConfig, MonorepoConfig, PublishConfig, ReleaseConfig, TemplatesConfig } from '../types'
+import type { BumpConfig, ChangelogConfig, ChangelogMonorepoConfig, MonorepoConfig, PublishConfig, ReleaseConfig, RepoConfig, TemplatesConfig } from '../types'
 import { logger } from '@maz-ui/node'
 import { formatJson } from '@maz-ui/utils'
 import { loadChangelogConfig } from 'changelogen'
@@ -94,8 +94,24 @@ async function mergeConfig({ config, overrides, logLevel }: {
     ...config.templates,
   } satisfies TemplatesConfig
 
+  const repo = {
+    ...defaultConfig.repo,
+    ...config.repo,
+  } satisfies RepoConfig
+
+  const tokens = {
+    ...config.tokens,
+    ...overrides?.tokens,
+  }
+
   return {
     ...config,
+    from: overrides?.from || config.from,
+    to: overrides?.to || config.to,
+    logLevel: overrides?.logLevel || config.logLevel,
+    cwd: overrides?.cwd || config.cwd,
+    repo,
+    tokens,
     monorepo,
     bump,
     changelog,
