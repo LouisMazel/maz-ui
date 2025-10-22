@@ -1,2 +1,3 @@
-export * from './execPromise.js'
-export * from './logger.js'
+export * from './execPromise'
+export * from './logger'
+export * from './printBanner'
