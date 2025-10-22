@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.2.1-alpha.16...v4.2.1-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.16...v4.2.1-beta.0)
+
+### 💅 Refactors
+
+- **@maz-ui/node:** Add utility to print banner (useful for CLI) ([044aa02f](https://github.com/LouisMazel/maz-ui/commit/044aa02f))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.12...v4.2.1-alpha.13
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.12...v4.2.1-alpha.13)

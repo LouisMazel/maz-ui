@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.2.1-alpha.16...v4.2.1-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.16...v4.2.1-beta.0)
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Add banner ([b6eafacb](https://github.com/LouisMazel/maz-ui/commit/b6eafacb))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.15...v4.2.1-alpha.16
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.15...v4.2.1-alpha.16)
