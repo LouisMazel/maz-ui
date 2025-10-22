@@ -1,11 +1,10 @@
 import { createRequire } from 'node:module'
-import { logger } from '@maz-ui/node'
+import { logger, printBanner } from '@maz-ui/node'
 
 import { blueBright, bold } from 'colorette'
 import { Command } from 'commander'
 import { createFilesCommand } from './commands/create-files'
 import { generateComponentsDocumentationCommand } from './commands/generate-components-docs'
-import { clearAndPrintBanner } from './utils/print-banner'
 
 const name = 'cli'
 const program = new Command()
@@ -16,7 +15,10 @@ const { version } = nodeRequire('../package.json')
 const options = program.opts()
 
 if (!options.silent) {
-  clearAndPrintBanner()
+  printBanner({
+    name,
+    version,
+  })
 }
 
 program.version(`${name} ${version}`).usage('<command> [options]')
