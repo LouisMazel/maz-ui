@@ -1,7 +1,7 @@
 import type { ResolvedChangelogMonorepoConfig } from '../core'
 import type { ChangelogOptions, PackageInfo } from '../types'
 import { execPromise, logger } from '@maz-ui/node'
-import { generateChangelog, getLastTag, getPackageCommits, getPackagePatterns, getPackages, getRootPackage, loadMonorepoConfig, writeChangelogToFile } from '../core'
+import { generateChangelog, getLastTag, getPackageCommits, getPackages, getRootPackage, loadMonorepoConfig, writeChangelogToFile } from '../core'
 
 function getPackagesToGenerateChangelogFor({
   config,
@@ -14,7 +14,7 @@ function getPackagesToGenerateChangelogFor({
     return packages
   }
 
-  const patterns = getPackagePatterns(config.monorepo)
+  const patterns = config.monorepo.packages
   return getPackages({
     cwd: config.cwd,
     ignorePackageNames: config.monorepo.ignorePackageNames,
@@ -22,7 +22,7 @@ function getPackagesToGenerateChangelogFor({
   })
 }
 
-export async function changelog(options: ChangelogOptions = {}): Promise<void> {
+export async function changelog(options: ChangelogOptions): Promise<void> {
   try {
     logger.start('Start generating changelogs')
 
@@ -33,6 +33,7 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
       overrides: {
         from: options.from,
         to: options.to,
+        logLevel: options.logLevel,
         changelog: {
           rootChangelog: options.rootChangelog,
           formatCmd: options.formatCmd,
@@ -45,7 +46,7 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
     if (config.changelog?.rootChangelog) {
       const rootPackage = getRootPackage(config.cwd)
 
-      const fromTag = options.from || await getLastTag({ version: rootPackage.version })
+      const fromTag = options.from || await getLastTag({ version: rootPackage.version, logLevel: config.logLevel })
       const toTag = config.to
 
       logger.debug(`Generating root changelog (${fromTag}...${toTag})`)
@@ -129,7 +130,8 @@ export async function changelog(options: ChangelogOptions = {}): Promise<void> {
       try {
         await execPromise(config.changelog.formatCmd, {
           noStderr: true,
-          noSuccess: true,
+          noStdout: true,
+          logLevel: config.logLevel,
         })
         logger.debug('Format completed')
       }

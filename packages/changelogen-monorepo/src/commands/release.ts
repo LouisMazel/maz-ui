@@ -1,4 +1,4 @@
-import type { GitProvider, PublishResponse, ReleaseOptions } from '../types'
+import type { PublishResponse, ReleaseOptions } from '../types'
 import { logger } from '@maz-ui/node'
 import { commitAndTag, getLastTag, getRootPackage, loadMonorepoConfig, publishToGitProvider, pushCommitAndTags } from '../core'
 import { bump } from './bump'
@@ -8,6 +8,7 @@ import { publish } from './publish'
 function getReleaseConfig(options: Partial<ReleaseOptions>) {
   return loadMonorepoConfig({
     overrides: {
+      logLevel: options.logLevel,
       from: options.from,
       to: options.to,
       tokens: {
@@ -38,7 +39,7 @@ function getReleaseConfig(options: Partial<ReleaseOptions>) {
   })
 }
 
-export async function release(options: Partial<ReleaseOptions> = {}): Promise<void> {
+export async function release(options: ReleaseOptions): Promise<void> {
   try {
     const dryRun = options.dryRun ?? false
     logger.debug(`Dry run: ${dryRun}`)
@@ -79,6 +80,7 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
       rootChangelog: config.changelog.rootChangelog,
       packages: bumpResult.bumpedPackages,
       config,
+      logLevel: config.logLevel,
     })
 
     logger.box('Step 3/6: Commit changes and create tag')
@@ -89,6 +91,7 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
       verify: config.release.verify,
       bumpedPackages: bumpResult.bumpedPackages,
       dryRun,
+      logLevel: config.logLevel,
     })
 
     logger.box('Step 4/6: Push changes and tags')
@@ -117,7 +120,7 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
       logger.info('Skipping publish (--no-publish)')
     }
 
-    let provider: GitProvider | 'none' | 'unknown' | undefined = config.repo.provider
+    let provider = config.repo.provider
 
     logger.box('Step 6/6: Publish Git release')
     if (config.release.release) {
@@ -130,6 +133,7 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
           to: config.to,
           dryRun,
           config,
+          logLevel: config.logLevel,
         })
       }
       catch (error) {

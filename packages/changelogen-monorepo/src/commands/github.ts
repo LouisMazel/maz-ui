@@ -4,7 +4,7 @@ import { formatJson } from '@maz-ui/utils'
 import { createGithubRelease } from 'changelogen'
 import { generateChangelog, getLastTag, getPackageCommits, getRootPackage, isPrerelease, loadMonorepoConfig } from '../core'
 
-export async function github(options: GitProviderOptions = {}): Promise<void> {
+export async function github(options: Partial<GitProviderOptions> = {}): Promise<void> {
   try {
     logger.start('Start publishing GitHub release')
 
@@ -16,8 +16,9 @@ export async function github(options: GitProviderOptions = {}): Promise<void> {
 
     const config = options.config || await loadMonorepoConfig({
       overrides: {
-        from: options.from || await getLastTag({ version: rootPackage.version }),
+        from: options.from || await getLastTag({ version: rootPackage.version, logLevel: options.logLevel }),
         to: options.to,
+        logLevel: options.logLevel,
         tokens: {
           github: options.token || process.env.CHANGELOGEN_TOKENS_GITHUB || process.env.GITHUB_TOKEN || process.env.GH_TOKEN,
         },

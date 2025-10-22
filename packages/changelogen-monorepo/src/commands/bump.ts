@@ -2,7 +2,7 @@ import type { ResolvedChangelogMonorepoConfig } from '../core'
 import type { BumpOptions, BumpResult, PackageInfo, PackageWithCommits } from '../types'
 import { logger } from '@maz-ui/node'
 import { getGitDiff, parseCommits } from 'changelogen'
-import { bumpPackageIndependently, bumpPackageVersion, determinePackageFromTag, determineReleaseType, expandPackagesToBumpWithDependents, getLastTag, getPackageCommits, getPackagePatterns, getPackages, getPackageToBump, getRootPackage, isGraduating, loadMonorepoConfig, updateLernaVersion, writeVersion } from '../core'
+import { bumpPackageIndependently, bumpPackageVersion, determinePackageFromTag, determineReleaseType, expandPackagesToBumpWithDependents, getLastTag, getPackageCommits, getPackages, getPackageToBump, getRootPackage, isGraduating, loadMonorepoConfig, updateLernaVersion, writeVersion } from '../core'
 
 async function bumpUnifiedMode({
   config,
@@ -91,6 +91,7 @@ async function bumpIndependentMode({
       packageName: pkg.name,
       globalFrom: config.from,
       releaseType,
+      logLevel: config.logLevel,
     })
 
     logger.debug(`Checking commits for ${pkg.name} since ${fromTag}`)
@@ -126,6 +127,7 @@ async function bumpIndependentMode({
       packageName: pkgToBump.name,
       globalFrom: config.from,
       releaseType,
+      logLevel: config.logLevel,
     })
 
     const forcedBumpType = pkgToBump.reason === 'dependency' ? 'patch' : undefined
@@ -212,7 +214,7 @@ async function bumpSelectiveMode({
     logger.info(`Graduating from prerelease ${currentVersion} to stable ${newVersion}`)
     logger.debug('Recalculating commits since last stable release...')
 
-    fromTag = await getLastTag({ version: currentVersion, onlyStable: true })
+    fromTag = await getLastTag({ version: currentVersion, onlyStable: true, logLevel: config.logLevel })
     rawCommits = await getGitDiff(fromTag, config.to, config.cwd)
     commits = parseCommits(rawCommits, config)
 
@@ -268,7 +270,7 @@ async function bumpSelectiveMode({
   }
 }
 
-export async function bump(options: BumpOptions = {}): Promise<BumpResult> {
+export async function bump(options: BumpOptions): Promise<BumpResult> {
   try {
     logger.start('Start bumping versions')
 
@@ -278,13 +280,14 @@ export async function bump(options: BumpOptions = {}): Promise<BumpResult> {
     const config = options.config || await loadMonorepoConfig({
       overrides: {
         bump: options,
+        logLevel: options.logLevel,
       },
     })
 
     logger.debug(`Version mode: ${config.monorepo.versionMode}`)
     logger.debug(`Commit range: ${config.from}...${config.to}`)
 
-    const patterns = getPackagePatterns(config.monorepo)
+    const patterns = config.monorepo.packages
     logger.debug(`Package patterns: ${patterns.join(', ')}`)
     const packages = getPackages({
       cwd: config.cwd,
