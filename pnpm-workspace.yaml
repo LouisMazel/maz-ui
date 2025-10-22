@@ -6,6 +6,7 @@ packages:
 
 onlyBuiltDependencies:
   - '@swc/core'
+  - esbuild
   - nx
   - unrs-resolver
   - vue-demi
