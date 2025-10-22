@@ -18,7 +18,7 @@ export async function execPromise(
     noSuccess = false,
     noStdout = false,
     noStderr = false,
-    logLevel = 'default',
+    logLevel,
   }: {
     logger?: CustomLogger
     packageName?: string
