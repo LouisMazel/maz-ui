@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.2.1-alpha.12...v4.2.1-alpha.13
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.12...v4.2.1-alpha.13)
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Add option to force packages bump ([c347fb84a](https://github.com/LouisMazel/maz-ui/commit/c347fb84a))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.11...v4.2.1-alpha.12
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.11...v4.2.1-alpha.12)

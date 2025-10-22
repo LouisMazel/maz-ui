@@ -1,5 +1,22 @@
 # Changelog
 
+## v4.2.1-alpha.12...v4.2.1-alpha.13
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.12...v4.2.1-alpha.13)
+
+### 🩹 Fixes
+
+- **@maz-ui/node:** Not set log level by default ([d3cdd1b69](https://github.com/LouisMazel/maz-ui/commit/d3cdd1b69))
+
+### 💅 Refactors
+
+- **@maz-ui/node:** Logger - add method to get current log level ([fe3b9a64b](https://github.com/LouisMazel/maz-ui/commit/fe3b9a64b))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.9...v4.2.1-alpha.10
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.9...v4.2.1-alpha.10)
