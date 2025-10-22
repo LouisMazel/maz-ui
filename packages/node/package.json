@@ -43,7 +43,8 @@
     "dev": "unbuild --stub",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "cross-env NODE_ENV=production eslint .",
-    "lint:fix": "pnpm lint --fix"
+    "lint:fix": "pnpm lint --fix",
+    "test": "tsx test.ts"
   },
   "dependencies": {
     "colorette": "^2.0.20",
