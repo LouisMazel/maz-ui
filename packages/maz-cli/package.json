@@ -43,7 +43,6 @@
   "dependencies": {
     "@clack/prompts": "^0.11.0",
     "@maz-ui/node": "workspace:*",
-    "clear": "^0.1.0",
     "commander": "^14.0.1",
     "cosmiconfig": "^9.0.0",
     "figlet": "^1.9.3",
@@ -51,7 +50,6 @@
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
-    "@types/clear": "^0.1.4",
     "@types/figlet": "^1.7.0",
     "@types/tinycolor2": "^1.4.6",
     "unbuild": "^3.6.1"

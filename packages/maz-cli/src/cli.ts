@@ -1,11 +1,10 @@
 import { createRequire } from 'node:module'
-import { logger } from '@maz-ui/node'
+import { logger, printBanner } from '@maz-ui/node'
 import { bgRed, blueBright, bold, white } from 'colorette'
 
 import { Command } from 'commander'
 
 import { commands } from './commands'
-import { clearAndPrintBanner } from './utils'
 
 const nodeRequire = createRequire(import.meta.url)
 
@@ -19,7 +18,10 @@ const argv = process.argv.slice(2)
 const hasSilentOption = argv?.find(argument => ['-s', '--silent'].includes(argument))
 
 if (!hasSilentOption) {
-  clearAndPrintBanner(true)
+  printBanner({
+    name,
+    version,
+  })
 }
 
 program.option('-s --silent', 'Disable CLI banner log', false)
