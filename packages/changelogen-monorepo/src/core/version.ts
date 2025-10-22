@@ -14,11 +14,17 @@ export function determineReleaseType({
   commits,
   config,
   force,
+  graduating,
 }: {
   commits?: GitCommit[]
   config: ResolvedChangelogMonorepoConfig
   force: boolean
+  graduating?: boolean
 }): BumpOptions['type'] | null {
+  if (graduating) {
+    return config.bump.type
+  }
+
   if (!commits?.length && !force) {
     return undefined
   }
@@ -121,8 +127,8 @@ export function extractVersionFromPackageTag(tag: string): string | null {
   return tag.slice(atIndex + 1)
 }
 
-export function isGraduating(currentVersion: string, newVersion: string): boolean {
-  return isPrerelease(currentVersion) && !isPrerelease(newVersion)
+export function isGraduating(currentVersion: string, releaseType: ReleaseType): boolean {
+  return isPrerelease(currentVersion) && isStableReleaseType(releaseType)
 }
 
 export async function bumpPackageIndependently({

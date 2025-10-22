@@ -33,6 +33,7 @@ async function bumpUnifiedMode({
     commits,
     config,
     force,
+    graduating: isGraduating(currentVersion, config.bump.type),
   })
 
   if (!releaseType) {
@@ -196,7 +197,8 @@ async function bumpSelectiveMode({
 
   logger.debug(`Found ${commits.length} commits since ${fromTag}`)
 
-  const releaseType = determineReleaseType({ commits, config, force })
+  const graduating = isGraduating(currentVersion, config.bump.type)
+  const releaseType = determineReleaseType({ commits, config, force, graduating })
 
   if (!releaseType) {
     logger.warn('No commits require a version bump')
@@ -211,7 +213,6 @@ async function bumpSelectiveMode({
   }
 
   const newVersion = bumpPackageVersion(currentVersion, releaseType, config.bump.preid)
-  const graduating = isGraduating(currentVersion, newVersion)
 
   if (graduating) {
     logger.info(`Graduating from prerelease ${currentVersion} to stable ${newVersion}`)
@@ -297,7 +298,6 @@ export async function bump(options: BumpOptions): Promise<BumpResult> {
     })
 
     logger.debug(`Version mode: ${config.monorepo.versionMode}`)
-    logger.debug(`Commit range: ${config.from}...${config.to}`)
 
     const patterns = config.monorepo.packages
     logger.debug(`Package patterns: ${patterns.join(', ')}`)
