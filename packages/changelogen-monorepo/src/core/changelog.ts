@@ -77,7 +77,6 @@ export function writeChangelogToFile({
   else {
     logger.debug(`Writing changelog to ${changelogPath}`)
     writeFileSync(changelogPath, updatedChangelog, 'utf8')
+    logger.info(`Changelog updated for ${pkg.name}`)
   }
-
-  logger.debug(`Updated ${changelogPath}`)
 }
