@@ -41,7 +41,7 @@ export function writeVersion(pkgPath: string, version: string, dryRun = false): 
     }
 
     writeFileSync(packageJsonPath, `${formatJson(packageJson)}\n`, 'utf8')
-    logger.success(`Updated ${packageJson.name}: ${oldVersion} → ${version}`)
+    logger.info(`Updated ${packageJson.name}: ${oldVersion} → ${version}`)
   }
   catch (error) {
     throw new Error(`Unable to write version to ${packageJsonPath}: ${error}`)

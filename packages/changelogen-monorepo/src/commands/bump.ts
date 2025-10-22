@@ -56,7 +56,7 @@ async function bumpUnifiedMode({
   }
 
   if (!dryRun) {
-    logger.success(`All ${allPackages.length} package(s) bumped to ${newVersion}`)
+    logger.info(`All ${allPackages.length} package(s) bumped to ${newVersion}`)
   }
 
   return {
@@ -158,7 +158,7 @@ async function bumpIndependentMode({
     logger.warn('No packages were bumped')
   }
   else {
-    logger.success(
+    logger.info(
       `${bumpedPackages.length} package(s) bumped independently `
       + `(${bumpedByCommits} from commits, ${bumpedByDependency} from dependencies)`,
     )
@@ -252,7 +252,7 @@ async function bumpSelectiveMode({
   updateLernaVersion(config.cwd, newVersion, dryRun)
 
   if (!dryRun) {
-    logger.success(
+    logger.info(
       `${packagesToBump.length} package(s) bumped to ${newVersion} (${packages.length - packagesToBump.length} skipped)`,
     )
   }
