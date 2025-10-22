@@ -188,6 +188,7 @@ program
   .option('--no-root-changelog', 'Skip generation of root changelog file')
   .option('--dry-run', 'Preview changes without writing files or making commits')
   .option('--token <token>', 'Git token (github or gitlab)')
+  .option('--force', 'Bump even if there are no commits')
   .action(async (options) => {
     try {
       await release({
@@ -208,6 +209,7 @@ program
         rootChangelog: options.rootChangelog,
         token: options.token,
         logLevel: program.opts().logLevel,
+        force: options.force,
       })
     }
     catch (error) {

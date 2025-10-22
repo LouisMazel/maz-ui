@@ -63,7 +63,14 @@ export interface BumpOptions extends BumpConfig {
    * @default undefined
    */
   config?: ResolvedChangelogMonorepoConfig
+  /**
+   * @default undefined
+   */
   logLevel?: LogLevel
+  /**
+   * @default false
+   */
+  force?: boolean
 }
 
 export interface ChangelogConfig {
@@ -124,11 +131,16 @@ export interface ReleaseConfig {
    * @default true
    */
   verify?: boolean
+  /**
+   * @default false
+   * @description Bump even if there are no commits
+   */
+  force?: boolean
 }
 
 export interface ReleaseOptions extends ReleaseConfig, BumpConfig, ChangelogConfig, PublishConfig {
   /**
-   * @default undefined
+   * @default false
    */
   dryRun?: boolean
   /**
@@ -143,6 +155,9 @@ export interface ReleaseOptions extends ReleaseConfig, BumpConfig, ChangelogConf
    * @default undefined
    */
   token?: string
+  /**
+   * @default undefined
+   */
   logLevel?: LogLevel
 }
 
