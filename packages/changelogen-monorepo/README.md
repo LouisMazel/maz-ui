@@ -20,6 +20,10 @@ Changelogen adapter for monorepo management with selective, unified and independ
 - 🎨 Optional changelog formatting with custom commands
 - ⚙️ Optional Lerna integration (updates `lerna.json` if present)
 
+## Warning
+
+The independent mode has not been fully tested, some edge cases may not be handled correctly. Use it with caution and before running the release flow with `--dry-run` to see what will happen.
+
 ## Installation
 
 ```bash
@@ -455,7 +459,7 @@ The tool automatically detects and bumps packages that depend on other packages 
 
 **Example Scenario:**
 
-```
+```bash
 Packages:
   - @maz-ui/utils@1.0.0
   - @maz-ui/components@2.0.0 (depends on @maz-ui/utils)
@@ -500,7 +504,7 @@ export default defineConfig({
 
 **Behavior example:**
 
-```txt
+```bash
 Commits:
 - feat(ui): add button component → ui has commits
 - fix(utils): fix date parser → utils has commits

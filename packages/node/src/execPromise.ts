@@ -18,7 +18,6 @@ export async function execPromise(
     noSuccess = false,
     noStdout = false,
     noStderr = false,
-    silent = false,
     logLevel = 'default',
   }: {
     logger?: CustomLogger
@@ -26,7 +25,6 @@ export async function execPromise(
     noSuccess?: boolean
     noStdout?: boolean
     noStderr?: boolean
-    silent?: boolean
     logLevel?: LogLevel
   } = {},
 ): Promise<{ stdout: string, stderr: string }> {
@@ -40,14 +38,19 @@ export async function execPromise(
   return await new Promise((resolve, reject) => {
     // eslint-disable-next-line sonarjs/os-command
     exec(command, (error, stdout, stderr) => {
-      internalLogger.debug(`${command} stdout output:`, stdout)
-      internalLogger.debug(`${command} stderr output:`, stderr)
+      if (stdout) {
+        internalLogger.debug(`${command} - stdout output:`, stdout)
+      }
 
-      if (stdout && !noStdout && !silent) {
+      if (stderr) {
+        internalLogger.debug(`${command} - stderr output:`, stderr)
+      }
+
+      if (stdout && !noStdout) {
         internalLogger.log(`${packageNameStr}stdout -`, stdout.trim())
       }
 
-      if (stderr && !noStderr && !silent) {
+      if (stderr && !noStderr) {
         internalLogger.log(`${packageNameStr}stderr -`, stderr.trim())
       }
 
@@ -56,8 +59,8 @@ export async function execPromise(
         reject(error)
       }
       else {
-        if (!noSuccess && !silent) {
-          internalLogger.info(`${packageNameStr}${command} success`)
+        if (!noSuccess) {
+          internalLogger.info(`${packageNameStr}${command} - Success!`)
         }
         resolve({ stdout, stderr })
       }
