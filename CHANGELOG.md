@@ -1,5 +1,21 @@
 # Change Log
 
+## v4.2.1-alpha.8...v4.2.1-alpha.9
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.8...v4.2.1-alpha.9)
+
+### 💅 Refactors
+
+- **@maz-ui/node:** Improve logger by using consola ([e9614e873](https://github.com/LouisMazel/maz-ui/commit/e9614e873))
+- **@maz-ui/utils:** Add formatJson utility method ([a29dfe21f](https://github.com/LouisMazel/maz-ui/commit/a29dfe21f))
+- **@maz-ui/changelogen-monorepo:** Add log-level options ([c3045e859](https://github.com/LouisMazel/maz-ui/commit/c3045e859))
+- **maz-ui:** MazModulesResolver - add formatJson to auto imported modules ([b62ff36cf](https://github.com/LouisMazel/maz-ui/commit/b62ff36cf))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.7...v4.2.1-alpha.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.7...v4.2.1-alpha.8)

@@ -1,5 +1,12 @@
 # Changelog
 
+## v4.2.1-alpha.8...v4.2.1-alpha.9
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.8...v4.2.1-alpha.9)
+
+No relevant changes for this release
+
+
 ## v4.1.8-beta.2...v4.1.8-beta.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.2...v4.1.8-beta.3)

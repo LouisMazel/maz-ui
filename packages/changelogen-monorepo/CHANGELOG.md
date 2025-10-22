@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.2.1-alpha.8...v4.2.1-alpha.9
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.8...v4.2.1-alpha.9)
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Add log-level options ([c3045e859](https://github.com/LouisMazel/maz-ui/commit/c3045e859))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.7...v4.2.1-alpha.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.7...v4.2.1-alpha.8)
