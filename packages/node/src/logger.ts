@@ -45,6 +45,7 @@ export function createLogger(options?: LoggerOptions) {
     setLevel: (level: LogLevel) => {
       consola.level = LogLevelMap[level]
     },
+    getLevel: () => consola.level,
   }
 }
 
