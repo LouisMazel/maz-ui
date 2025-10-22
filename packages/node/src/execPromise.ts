@@ -1,44 +1,52 @@
-import type { Logger } from './logger.js'
 import { exec } from 'node:child_process'
 import { logger as defaultLogger } from './logger.js'
+
+interface CustomLogger {
+  log: (message: string, ...args: any[]) => void
+  error: (message: string, ...args: any[]) => void
+  info: (message: string, ...args: any[]) => void
+  warn: (message: string, ...args: any[]) => void
+}
 
 export async function execPromise(
   command: string,
   {
     logger,
     packageName,
-    noSuccess,
-    noStdout,
-    noStderr,
+    noSuccess = false,
+    noStdout = false,
+    noStderr = false,
+    silent = false,
   }: {
-    logger?: Logger
+    logger?: CustomLogger
     packageName?: string
     noSuccess?: boolean
     noStdout?: boolean
     noStderr?: boolean
+    silent?: boolean
   } = {},
 ): Promise<{ stdout: string, stderr: string }> {
   const internalLogger = logger ?? defaultLogger
-  const packageNameStr = packageName ? `[${packageName}]` : ''
+  const packageNameStr = packageName ? `[${packageName}]: ` : ''
 
   return await new Promise((resolve, reject) => {
     // eslint-disable-next-line sonarjs/os-command
     exec(command, (error, stdout, stderr) => {
-      if (stdout && !noStdout) {
-        internalLogger.log(`🟡 ${packageNameStr}(${command})`, stdout)
+      if (stdout && !noStdout && !silent) {
+        internalLogger.log(`${packageNameStr}stdout -`, stdout.trim())
       }
 
-      if (stderr && !noStderr) {
-        internalLogger.warn(`🟡 ${packageNameStr}(${command})`, stderr)
+      if (stderr && !noStderr && !silent) {
+        internalLogger.log(`${packageNameStr}stderr -`, stderr.trim())
       }
 
       if (error) {
-        internalLogger.error(`🔴 ${packageNameStr}(${command}) Execution failed - ${error.message}.`, error.message)
+        internalLogger.error(`${packageNameStr}${command} failed`, error)
         reject(error)
       }
       else {
-        if (!noSuccess) {
-          internalLogger.success(`🟢 ${packageNameStr}(${command}) Execution success`)
+        if (!noSuccess && !silent) {
+          internalLogger.info(`${packageNameStr}${command} success`)
         }
         resolve({ stdout, stderr })
       }
