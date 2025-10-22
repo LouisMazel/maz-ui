@@ -99,11 +99,6 @@ async function mergeConfig({ config, overrides, logLevel }: {
     ...config.repo,
   } satisfies RepoConfig
 
-  const tokens = {
-    ...config.tokens,
-    ...overrides?.tokens,
-  }
-
   return {
     ...config,
     from: overrides?.from || config.from,
@@ -111,7 +106,6 @@ async function mergeConfig({ config, overrides, logLevel }: {
     logLevel: overrides?.logLevel || config.logLevel,
     cwd: overrides?.cwd || config.cwd,
     repo,
-    tokens,
     monorepo,
     bump,
     changelog,

@@ -28,7 +28,7 @@ export async function github(options: Partial<GitProviderOptions> = {}): Promise
     logger.debug(`Commit range: ${config.from}...${config.to}`)
     logger.debug(`GitHub token: ${config.tokens.github ? '✓ provided' : '✗ missing'}`)
 
-    if (!config.tokens.github && !dryRun) {
+    if (!config.tokens.github) {
       throw new Error('No GitHub token specified. Set GITHUB_TOKEN or GH_TOKEN environment variable.')
     }
 
