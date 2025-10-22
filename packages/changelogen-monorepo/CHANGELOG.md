@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.2.1-alpha.15...v4.2.1-alpha.16
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.15...v4.2.1-alpha.16)
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Manage graduating versions ([fee8d3479](https://github.com/LouisMazel/maz-ui/commit/fee8d3479))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.14...v4.2.1-alpha.14
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.14...v4.2.1-alpha.14)
