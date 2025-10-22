@@ -2,7 +2,22 @@ import type { Logger } from './logger.js'
 import { exec } from 'node:child_process'
 import { logger as defaultLogger } from './logger.js'
 
-export async function execPromise(command: string, { logger, packageName, noSuccess, noStdout, noStderr }: { logger?: Logger, packageName?: string, noSuccess?: boolean, noStdout?: boolean, noStderr?: boolean } = {}): Promise<{ stdout: string, stderr: string }> {
+export async function execPromise(
+  command: string,
+  {
+    logger,
+    packageName,
+    noSuccess,
+    noStdout,
+    noStderr,
+  }: {
+    logger?: Logger
+    packageName?: string
+    noSuccess?: boolean
+    noStdout?: boolean
+    noStderr?: boolean
+  } = {},
+): Promise<{ stdout: string, stderr: string }> {
   const internalLogger = logger ?? defaultLogger
   const packageNameStr = packageName ? `[${packageName}]` : ''
 
