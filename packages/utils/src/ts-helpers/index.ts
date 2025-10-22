@@ -1,5 +1,6 @@
 export * from './DeepKeyOf'
 export * from './DeepPartial'
+export * from './DeepRequired'
 export * from './FlattenObjectKeys'
 export * from './GenericInstanceType'
 export * from './InferMaybeRef'
