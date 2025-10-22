@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.2.1-alpha.10...v4.2.1-alpha.11
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.10...v4.2.1-alpha.11)
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Change log level for getting packages ([2ecad195f](https://github.com/LouisMazel/maz-ui/commit/2ecad195f))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.9...v4.2.1-alpha.10
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.9...v4.2.1-alpha.10)
