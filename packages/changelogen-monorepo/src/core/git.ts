@@ -194,6 +194,7 @@ export async function getLastTag(options: {
         logLevel: options?.logLevel,
         noStderr: true,
         noStdout: true,
+        noSuccess: true,
       },
     )
 
@@ -206,6 +207,7 @@ export async function getLastTag(options: {
     logLevel: options?.logLevel,
     noStderr: true,
     noStdout: true,
+    noSuccess: true,
   })
 
   logger.debug('Last tag:', stdout.trim())
