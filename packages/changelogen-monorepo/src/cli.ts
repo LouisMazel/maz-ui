@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import type { LogLevel } from '@maz-ui/node'
 import type { BumpOptions } from './types'
 import { logger } from '@maz-ui/node'
 import { Command } from 'commander'
@@ -13,13 +12,6 @@ import { publish } from './commands/publish'
 import { release } from './commands/release'
 
 const program = new Command()
-
-function setupLogger(logLevel?: LogLevel) {
-  if (logLevel) {
-    logger.setLevel(logLevel)
-    logger.debug(`Log level set to: ${logLevel}`)
-  }
-}
 
 function getReleaseType(options: any) {
   let type: BumpOptions['type'] = 'release'
@@ -62,11 +54,11 @@ program
   .option('--dry-run', 'Preview changes without writing files')
   .action(async (options) => {
     try {
-      setupLogger(program.opts().logLevel)
       await bump({
         type: getReleaseType(options),
         preid: options.preid,
         dryRun: options.dryRun,
+        logLevel: program.opts().logLevel,
       })
     }
     catch (error) {
@@ -85,13 +77,13 @@ program
   .option('--dry-run', 'Preview changes without writing files')
   .action(async (options) => {
     try {
-      setupLogger(program.opts().logLevel)
       await changelog({
         from: options.from,
         to: options.to,
         formatCmd: options.formatCmd,
         rootChangelog: options.rootChangelog,
         dryRun: options.dryRun,
+        logLevel: program.opts().logLevel,
       })
     }
     catch (error) {
@@ -110,13 +102,13 @@ program
   .option('--dry-run', 'Preview publish without actually publishing')
   .action(async (options) => {
     try {
-      setupLogger(program.opts().logLevel)
       await publish({
         registry: options.registry,
         tag: options.tag,
         access: options.access,
         otp: options.otp,
         dryRun: options.dryRun,
+        logLevel: program.opts().logLevel,
       })
     }
     catch (error) {
@@ -134,12 +126,12 @@ program
   .option('--dry-run', 'Preview github release content')
   .action(async (options) => {
     try {
-      setupLogger(program.opts().logLevel)
       await github({
         token: options.token,
         dryRun: options.dryRun,
         from: options.from,
         to: options.to,
+        logLevel: program.opts().logLevel,
       })
     }
     catch (error) {
@@ -157,12 +149,12 @@ program
   .option('--dry-run', 'Preview github release content')
   .action(async (options) => {
     try {
-      setupLogger(program.opts().logLevel)
       await gitlab({
         token: options.token,
         dryRun: options.dryRun,
         from: options.from,
         to: options.to,
+        logLevel: program.opts().logLevel,
       })
     }
     catch (error) {
@@ -198,7 +190,6 @@ program
   .option('--token <token>', 'Git token (github or gitlab)')
   .action(async (options) => {
     try {
-      setupLogger(program.opts().logLevel)
       await release({
         type: getReleaseType(options),
         preid: options.preid,
@@ -216,6 +207,7 @@ program
         formatCmd: options.formatCmd,
         rootChangelog: options.rootChangelog,
         token: options.token,
+        logLevel: program.opts().logLevel,
       })
     }
     catch (error) {

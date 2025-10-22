@@ -1,3 +1,4 @@
+import type { LogLevel } from '@maz-ui/node'
 import type { GitCommit, ChangelogConfig as IChangelogConfig } from 'changelogen'
 import type { ReleaseType } from 'semver'
 import type { ResolvedChangelogMonorepoConfig } from './core'
@@ -18,19 +19,19 @@ export interface MonorepoConfig {
   /**
    * @default 'selective'
    */
-  versionMode?: VersionMode
+  versionMode: VersionMode
   /**
    * @default ['packages/*']
    */
-  packages?: string[]
+  packages: string[]
   /**
    * @default []
    */
-  ignorePackageNames?: string[]
+  ignorePackageNames: string[]
   /**
    * @default true
    */
-  filterCommits?: boolean
+  filterCommits: boolean
 }
 
 export type BumpResult = {
@@ -62,6 +63,7 @@ export interface BumpOptions extends BumpConfig {
    * @default undefined
    */
   config?: ResolvedChangelogMonorepoConfig
+  logLevel?: LogLevel
 }
 
 export interface ChangelogConfig {
@@ -74,6 +76,7 @@ export interface ChangelogOptions extends ChangelogConfig {
   dryRun?: boolean
   packages?: PackageInfo[]
   config?: ResolvedChangelogMonorepoConfig
+  logLevel?: LogLevel
 }
 
 export interface GitProviderOptions {
@@ -82,6 +85,7 @@ export interface GitProviderOptions {
   token?: string
   dryRun?: boolean
   config?: ResolvedChangelogMonorepoConfig
+  logLevel?: LogLevel
 }
 
 export interface PublishConfig {
@@ -96,6 +100,7 @@ export interface PublishOptions extends PublishConfig {
   dryRun?: boolean
   config?: ResolvedChangelogMonorepoConfig
   bumpedPackages?: PackageInfo[]
+  logLevel?: LogLevel
 }
 
 export interface PublishResponse {
@@ -123,7 +128,7 @@ export interface ReleaseConfig {
 
 export interface ReleaseOptions extends ReleaseConfig, BumpConfig, ChangelogConfig, PublishConfig {
   /**
-   * @default false
+   * @default undefined
    */
   dryRun?: boolean
   /**
@@ -138,10 +143,18 @@ export interface ReleaseOptions extends ReleaseConfig, BumpConfig, ChangelogConf
    * @default undefined
    */
   token?: string
+  logLevel?: LogLevel
 }
 
 export type TemplatesConfig = IChangelogConfig['templates'] & {
   emptyChangelogContent?: string
+}
+
+export interface RepoConfig {
+  domain?: string
+  repo?: string
+  token?: string
+  provider?: GitProvider
 }
 
 export interface ChangelogMonorepoConfig extends IChangelogConfig {
@@ -155,9 +168,7 @@ export interface ChangelogMonorepoConfig extends IChangelogConfig {
    */
   monorepo: MonorepoConfig
 
-  repo: IChangelogConfig['repo'] & {
-    provider?: GitProvider
-  }
+  repo: RepoConfig
 
   templates: TemplatesConfig
 
@@ -165,6 +176,10 @@ export interface ChangelogMonorepoConfig extends IChangelogConfig {
   publish: PublishConfig
   changelog: ChangelogConfig
   release: ReleaseConfig
+  /**
+   * @default 'default'
+   */
+  logLevel: LogLevel
 }
 
 export type PackageManager = 'npm' | 'yarn' | 'pnpm' | 'bun'

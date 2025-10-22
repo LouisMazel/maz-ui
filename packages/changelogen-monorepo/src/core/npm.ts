@@ -103,7 +103,10 @@ export async function getPackagesToPublishInIndependentMode(
   const packagesToPublish: PackageInfo[] = []
 
   for (const pkg of sortedPackages) {
-    const pkgLastTag = await getLastPackageTag(pkg.name)
+    const pkgLastTag = await getLastPackageTag({
+      packageName: pkg.name,
+      logLevel: config.logLevel,
+    })
     const fromTag = pkgLastTag || config.from
 
     logger.debug(`Checking ${pkg.name} for commits since ${fromTag}`)
@@ -209,7 +212,9 @@ export async function publishPackage({
     }
     else {
       const { stdout } = await execPromise(command, {
-        noSuccess: true,
+        noStderr: true,
+        noStdout: true,
+        logLevel: config.logLevel,
       })
       if (stdout) {
         logger.debug(stdout)

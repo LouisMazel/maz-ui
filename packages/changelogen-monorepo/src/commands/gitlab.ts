@@ -3,7 +3,7 @@ import { execPromise, logger } from '@maz-ui/node'
 import { formatJson } from '@maz-ui/utils'
 import { createGitlabRelease, generateChangelog, getLastTag, getPackageCommits, getRootPackage, loadMonorepoConfig } from '../core'
 
-export async function gitlab(options: GitProviderOptions = {}): Promise<void> {
+export async function gitlab(options: Partial<GitProviderOptions> = {}): Promise<void> {
   try {
     logger.start('Start publishing GitLab release')
 
@@ -15,8 +15,9 @@ export async function gitlab(options: GitProviderOptions = {}): Promise<void> {
 
     const config = options.config || await loadMonorepoConfig({
       overrides: {
-        from: options.from || await getLastTag({ version: rootPackage.version }),
+        from: options.from || await getLastTag({ version: rootPackage.version, logLevel: options.logLevel }),
         to: options.to,
+        logLevel: options.logLevel,
         tokens: {
           gitlab: options.token || process.env.CHANGELOGEN_TOKENS_GITLAB || process.env.GITLAB_TOKEN || process.env.GITLAB_API_TOKEN || process.env.CI_JOB_TOKEN,
         },
@@ -53,6 +54,7 @@ export async function gitlab(options: GitProviderOptions = {}): Promise<void> {
     const { stdout: currentBranch } = await execPromise('git rev-parse --abbrev-ref HEAD', {
       noSuccess: true,
       noStdout: true,
+      logLevel: config.logLevel,
     })
 
     const release = {

@@ -1,3 +1,4 @@
+import type { LogLevel } from '@maz-ui/node'
 import type { GitProvider } from '../types'
 import type { ResolvedChangelogMonorepoConfig } from './config'
 import { logger } from '@maz-ui/node'
@@ -5,12 +6,13 @@ import { github } from '../commands/github'
 import { gitlab } from '../commands/gitlab'
 import { detectGitProvider } from '../core'
 
-export async function publishToGitProvider({ provider, from, to, dryRun, config }: {
+export async function publishToGitProvider({ provider, from, to, dryRun, config, logLevel }: {
   provider?: GitProvider
   from: string
   to: string
   dryRun?: boolean
   config?: ResolvedChangelogMonorepoConfig
+  logLevel?: LogLevel
 }): Promise<GitProvider> {
   const detectedProvider = provider || detectGitProvider()
 
@@ -28,6 +30,7 @@ export async function publishToGitProvider({ provider, from, to, dryRun, config 
       to,
       dryRun,
       config,
+      logLevel,
     })
   }
   else if (detectedProvider === 'gitlab') {
@@ -36,6 +39,7 @@ export async function publishToGitProvider({ provider, from, to, dryRun, config 
       to,
       dryRun,
       config,
+      logLevel,
     })
   }
 

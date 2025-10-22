@@ -1,6 +1,8 @@
+import type { LogLevel } from '@maz-ui/node'
 import type { ReleaseType } from 'semver'
-import type { ChangelogMonorepoConfig, GitProvider, PackageInfo } from '../types'
 
+import type { ResolvedChangelogMonorepoConfig } from '../core'
+import type { GitProvider, PackageInfo } from '../types'
 import { execSync } from 'node:child_process'
 import { execPromise, logger } from '@maz-ui/node'
 import { extractVersionFromPackageTag, isPrerelease, isStableReleaseType } from '../core'
@@ -57,12 +59,14 @@ export async function commitAndTag({
   verify,
   bumpedPackages,
   dryRun,
+  logLevel,
 }: {
   newVersion?: string
-  config: ChangelogMonorepoConfig
+  config: ResolvedChangelogMonorepoConfig
   verify?: boolean
   bumpedPackages?: PackageInfo[]
   dryRun: boolean
+  logLevel?: LogLevel
 }): Promise<string[]> {
   const filePatternsToAdd = [
     'package.json',
@@ -98,7 +102,11 @@ export async function commitAndTag({
   }
   else {
     logger.debug(`Executing: git commit ${noVerifyFlag}-m "${commitMessage}"`)
-    await execPromise(`git commit ${noVerifyFlag}-m "${commitMessage}"`, { noSuccess: true })
+    await execPromise(`git commit ${noVerifyFlag}-m "${commitMessage}"`, {
+      logLevel,
+      noStderr: true,
+      noStdout: true,
+    })
     logger.success(`Committed: ${commitMessage}${verify ? '' : ' (--no-verify)'}`)
   }
 
@@ -121,7 +129,11 @@ export async function commitAndTag({
         const cmd = `git tag ${signTags} -a ${tagName} -m "${tagMessage}"`
         logger.debug(`Executing: ${cmd}`)
         try {
-          await execPromise(cmd, { noSuccess: true, noStdout: true })
+          await execPromise(cmd, {
+            logLevel,
+            noStderr: true,
+            noStdout: true,
+          })
           logger.debug(`Tag created: ${tagName}`)
         }
         catch (error) {
@@ -147,7 +159,11 @@ export async function commitAndTag({
       const cmd = `git tag ${signTags} -a ${tagName} -m "${tagMessage}"`
       logger.debug(`Executing: ${cmd}`)
       try {
-        await execPromise(cmd, { noSuccess: true, noStdout: true })
+        await execPromise(cmd, {
+          logLevel,
+          noStderr: true,
+          noStdout: true,
+        })
         logger.debug(`Tag created: ${tagName}`)
       }
       catch (error) {
@@ -166,15 +182,17 @@ export async function commitAndTag({
   return createdTags
 }
 
-export async function getLastTag(options?: {
+export async function getLastTag(options: {
   version?: string
   onlyStable?: boolean
+  logLevel?: LogLevel
 }): Promise<string> {
   if (options?.onlyStable || (options?.version && !isPrerelease(options.version) && !options?.onlyStable)) {
     const { stdout } = await execPromise(
       'git tag --sort=-v:refname | grep -E \'^v[0-9]+\\.[0-9]+\\.[0-9]+$\' | sed -n \'1p\'',
       {
-        noSuccess: true,
+        logLevel: options?.logLevel,
+        noStderr: true,
         noStdout: true,
       },
     )
@@ -185,7 +203,8 @@ export async function getLastTag(options?: {
   }
 
   const { stdout } = await execPromise('git tag --sort=-v:refname | sed -n \'1p\'', {
-    noSuccess: true,
+    logLevel: options?.logLevel,
+    noStderr: true,
     noStdout: true,
   })
 
@@ -194,7 +213,15 @@ export async function getLastTag(options?: {
   return stdout.trim()
 }
 
-export async function getLastPackageTag(packageName: string, onlyStable?: boolean): Promise<string | null> {
+export async function getLastPackageTag({
+  packageName,
+  onlyStable,
+  logLevel,
+}: {
+  packageName: string
+  onlyStable?: boolean
+  logLevel?: LogLevel
+}): Promise<string | null> {
   try {
     const escapedPackageName = packageName.replace(/[@/]/g, '\\$&')
 
@@ -209,7 +236,8 @@ export async function getLastPackageTag(packageName: string, onlyStable?: boolea
     const { stdout } = await execPromise(
       `git tag --sort=-v:refname | grep -E '${grepPattern}' | sed -n '1p'`,
       {
-        noSuccess: true,
+        logLevel,
+        noStderr: true,
         noStdout: true,
       },
     )
@@ -226,12 +254,17 @@ export async function determinePackageFromTag({
   packageName,
   globalFrom,
   releaseType,
+  logLevel,
 }: {
   packageName: string
   globalFrom: string
   releaseType: ReleaseType
+  logLevel?: LogLevel
 }): Promise<string> {
-  const lastPackageTag = await getLastPackageTag(packageName)
+  const lastPackageTag = await getLastPackageTag({
+    packageName,
+    logLevel,
+  })
 
   if (!lastPackageTag) {
     logger.debug(`No previous tag found for ${packageName}, using global from: ${globalFrom}`)
@@ -248,7 +281,11 @@ export async function determinePackageFromTag({
 
   if (graduating) {
     logger.info(`Graduating ${packageName} from prerelease ${tagVersion} to stable`)
-    const stablePackageTag = await getLastPackageTag(packageName, true)
+    const stablePackageTag = await getLastPackageTag({
+      packageName,
+      onlyStable: true,
+      logLevel,
+    })
     if (stablePackageTag) {
       logger.debug(`Using last stable tag: ${stablePackageTag}`)
       return stablePackageTag
@@ -259,7 +296,7 @@ export async function determinePackageFromTag({
   return lastPackageTag
 }
 
-export async function pushCommitAndTags({ dryRun }: { dryRun?: boolean }) {
+export async function pushCommitAndTags({ dryRun, logLevel }: { dryRun?: boolean, logLevel?: LogLevel }) {
   logger.start('Start push changes and tags')
 
   if (dryRun) {
@@ -268,7 +305,7 @@ export async function pushCommitAndTags({ dryRun }: { dryRun?: boolean }) {
   else {
     logger.debug('Executing: git push --follow-tags')
 
-    await execPromise('git push --follow-tags', { noSuccess: true })
+    await execPromise('git push --follow-tags', { noStderr: true, noStdout: true, logLevel })
   }
 
   logger.success('End push changes and tags')

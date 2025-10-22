@@ -1,8 +1,8 @@
 import type { PackageInfo, PublishOptions, PublishResponse } from '../types'
 import { logger } from '@maz-ui/node'
-import { detectPackageManager, getPackagePatterns, getPackages, getPackagesToPublishInIndependentMode, getPackagesToPublishInSelectiveMode, getPackagesWithDependencies, getRootPackage, loadMonorepoConfig, publishPackage, topologicalSort } from '../core'
+import { detectPackageManager, getPackages, getPackagesToPublishInIndependentMode, getPackagesToPublishInSelectiveMode, getPackagesWithDependencies, getRootPackage, loadMonorepoConfig, publishPackage, topologicalSort } from '../core'
 
-export async function publish(options: PublishOptions = {}) {
+export async function publish(options: PublishOptions) {
   try {
     logger.start('Start publishing packages')
 
@@ -15,11 +15,13 @@ export async function publish(options: PublishOptions = {}) {
     const config = options.config || await loadMonorepoConfig({
       overrides: {
         publish: {
+          packages: options.packages,
           access: options.access,
           otp: options.otp,
           registry: options.registry,
           tag: options.tag,
         },
+        logLevel: options.logLevel,
       },
     })
 
@@ -31,7 +33,7 @@ export async function publish(options: PublishOptions = {}) {
       logger.debug(`Tag: ${config.publish.tag}`)
     }
 
-    const patterns = options.packages ?? config.publish.packages ?? getPackagePatterns(config.monorepo)
+    const patterns = options.packages ?? config.publish.packages ?? config.monorepo.packages
     logger.debug(`Package patterns: ${patterns.join(', ')}`)
 
     const packages = getPackages({
