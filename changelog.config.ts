@@ -37,6 +37,4 @@ export default defineConfig({
   publish: {
     registry: 'https://registry.npmjs.org',
   },
-
-  release: {},
 })
