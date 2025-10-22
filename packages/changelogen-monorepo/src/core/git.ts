@@ -5,7 +5,7 @@ import type { ResolvedChangelogMonorepoConfig } from '../core'
 import type { GitProvider, PackageInfo } from '../types'
 import { execSync } from 'node:child_process'
 import { execPromise, logger } from '@maz-ui/node'
-import { extractVersionFromPackageTag, isPrerelease, isStableReleaseType } from '../core'
+import { extractVersionFromPackageTag, isGraduating, isPrerelease } from '../core'
 
 export function detectGitProvider(cwd: string = process.cwd()): GitProvider | null {
   try {
@@ -280,7 +280,7 @@ export async function determinePackageFromTag({
     return globalFrom
   }
 
-  const graduating = isPrerelease(tagVersion) && isStableReleaseType(releaseType)
+  const graduating = isGraduating(tagVersion, releaseType)
 
   if (graduating) {
     logger.info(`Graduating ${packageName} from prerelease ${tagVersion} to stable`)
