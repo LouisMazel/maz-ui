@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.2.1-alpha.13...v4.2.1-alpha.14
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.13...v4.2.1-alpha.14)
+
+### 🩹 Fixes
+
+- **@maz-ui/changelogen-monorepo:** Config should not override tokens ([6d917587d](https://github.com/LouisMazel/maz-ui/commit/6d917587d))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.12...v4.2.1-alpha.13
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.12...v4.2.1-alpha.13)
