@@ -19,6 +19,7 @@ export default defineConfig({
     commitMessage: 'chore(release): bump version to v{{newVersion}}',
     tagMessage: 'chore(release): bump version to v{{newVersion}}',
     tagBody: 'v{{newVersion}}',
+    emptyChangelogContent: 'No relevant changes since last release',
   },
   noAuthors: false,
   hideAuthorEmail: false,
