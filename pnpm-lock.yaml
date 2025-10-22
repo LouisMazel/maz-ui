@@ -260,9 +260,6 @@ importers:
       commander:
         specifier: ^14.0.1
         version: 14.0.1
-      consola:
-        specifier: ^3.4.2
-        version: 3.4.2
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.3
@@ -580,12 +577,12 @@ importers:
 
   packages/node:
     dependencies:
-      '@maz-ui/utils':
-        specifier: workspace:*
-        version: link:../utils
       colorette:
         specifier: ^2.0.20
         version: 2.0.20
+      consola:
+        specifier: ^3.4.2
+        version: 3.4.2
     devDependencies:
       unbuild:
         specifier: ^3.6.1
