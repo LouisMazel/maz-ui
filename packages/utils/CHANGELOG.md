@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.2.1-alpha.16...v4.2.1-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.16...v4.2.1-beta.0)
+
+### 💅 Refactors
+
+- **@maz-ui/utils:** Add option to choose indentation with formatJson ([0d854b82](https://github.com/LouisMazel/maz-ui/commit/0d854b82))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.9...v4.2.1-alpha.10
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.9...v4.2.1-alpha.10)
