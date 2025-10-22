@@ -23,11 +23,11 @@ function getPackageInfo(
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'))
 
     if (packageJson.private) {
-      logger.info(`${packageJson.name} is private and will be ignored`)
+      logger.debug(`${packageJson.name} is private and will be ignored`)
       return null
     }
     if (ignorePackageNames?.includes(packageJson.name)) {
-      logger.info(`${packageJson.name} ignored by config monorepo.ignorePackageNames`)
+      logger.debug(`${packageJson.name} ignored by config monorepo.ignorePackageNames`)
       return null
     }
     if (!packageJson.version) {
