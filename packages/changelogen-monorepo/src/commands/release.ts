@@ -155,7 +155,7 @@ export async function release(options: ReleaseOptions): Promise<void> {
       + `Tag(s): ${createdTags.join(', ')}\n`
       + `Published packages: ${publishedPackageCount}\n`
       + `Pushed: ${config.release.push ? 'Yes' : 'No'}\n`
-      + `Published: ${config.release.publish !== false ? 'Yes' : 'No'}\n`
+      + `Published release: ${config.release.publish !== false ? 'Yes' : 'No'}\n`
       + `Provider: ${provider}`)
   }
   catch (error) {

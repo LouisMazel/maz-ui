@@ -59,19 +59,19 @@ export function detectPackageManager(cwd: string = process.cwd()): PackageManage
   }
 }
 
-export function determinePublishTag(version: string | undefined, config: ResolvedChangelogMonorepoConfig): string {
+export function determinePublishTag(version: string | undefined, configTag?: string): string {
   let tag: string = 'latest'
 
-  if (config.publish.tag) {
-    tag = config.publish.tag
+  if (configTag) {
+    tag = configTag
   }
 
-  if (isPrerelease(version) && !config.publish.tag) {
+  if (isPrerelease(version) && !configTag) {
     logger.warn('You are about to publish a "prerelease" version with the "latest" tag. To avoid mistake, the tag is set to "next"')
     tag = 'next'
   }
 
-  if (isPrerelease(version) && config.publish.tag === 'latest') {
+  if (isPrerelease(version) && configTag === 'latest') {
     logger.warn('Please note, you are about to publish a "prerelease" version with the "latest" tag.')
   }
 
@@ -185,7 +185,7 @@ export async function publishPackage({
   packageManager: PackageManager
   dryRun: boolean
 }): Promise<void> {
-  const tag = determinePublishTag(pkg.version, config)
+  const tag = determinePublishTag(pkg.version, config.publish.tag)
 
   logger.debug(`Building publish command for ${pkg.name}`)
 
