@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.2.1-alpha.8...v4.2.1-alpha.9
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.8...v4.2.1-alpha.9)
+
+### 💅 Refactors
+
+- **@maz-ui/node:** Improve logger by using consola ([e9614e873](https://github.com/LouisMazel/maz-ui/commit/e9614e873))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.8-beta.2...v4.1.8-beta.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.2...v4.1.8-beta.3)

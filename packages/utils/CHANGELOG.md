@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.2.1-alpha.8...v4.2.1-alpha.9
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.8...v4.2.1-alpha.9)
+
+### 💅 Refactors
+
+- **@maz-ui/utils:** Add formatJson utility method ([a29dfe21f](https://github.com/LouisMazel/maz-ui/commit/a29dfe21f))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.1.8-beta.2...v4.1.8-beta.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.2...v4.1.8-beta.3)
