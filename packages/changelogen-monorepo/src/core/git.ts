@@ -80,6 +80,11 @@ export async function commitAndTag({
 
   logger.debug('Adding files to git staging area...')
   for (const pattern of filePatternsToAdd) {
+    if (dryRun) {
+      logger.info(`[dry-run] git add ${pattern}`)
+      continue
+    }
+
     try {
       logger.debug(`git add ${pattern}`)
       execSync(`git add ${pattern}`)

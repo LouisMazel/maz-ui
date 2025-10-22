@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import type { BumpOptions } from './types'
-import { logger } from '@maz-ui/node'
+import { logger, printBanner } from '@maz-ui/node'
 import { Command } from 'commander'
 import { version } from './../package.json'
 import { bump } from './commands/bump'
@@ -10,6 +10,17 @@ import { github } from './commands/github'
 import { gitlab } from './commands/gitlab'
 import { publish } from './commands/publish'
 import { release } from './commands/release'
+
+printBanner({
+  name: 'CLM',
+  version: `By Maz-UI (v${version})`,
+  options: {
+    horizontalLayout: 'full',
+    verticalLayout: 'full',
+    font: 'ANSI Shadow',
+    clear: false,
+  },
+})
 
 const program = new Command()
 
