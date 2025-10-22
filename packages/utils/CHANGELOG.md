@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.2.1-alpha.9...v4.2.1-alpha.10
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.9...v4.2.1-alpha.10)
+
+### 💅 Refactors
+
+- **@maz-ui/utils:** Add helper type 'DeepRequired' ([5c5b903e6](https://github.com/LouisMazel/maz-ui/commit/5c5b903e6))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.8...v4.2.1-alpha.9
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.8...v4.2.1-alpha.9)

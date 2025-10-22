@@ -1,5 +1,20 @@
 # Changelog
 
+## v4.2.1-alpha.9...v4.2.1-alpha.10
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.9...v4.2.1-alpha.10)
+
+### 💅 Refactors
+
+- **@maz-ui/node:** Improve logging of execPromise utility ([4264c45b7](https://github.com/LouisMazel/maz-ui/commit/4264c45b7))
+- **@maz-ui/changelogen-monorepo:** Logging flow improvements ([4b231b0c2](https://github.com/LouisMazel/maz-ui/commit/4b231b0c2))
+- **@maz-ui/node:** Choose log level of execPromise ([ece81b276](https://github.com/LouisMazel/maz-ui/commit/ece81b276))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.8...v4.2.1-alpha.9
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.8...v4.2.1-alpha.9)
