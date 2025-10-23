@@ -1,5 +1,22 @@
 # Change Log
 
+## v4.2.1-beta.0...v4.2.1-beta.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.1)
+
+### 🩹 Fixes
+
+- **@maz-ui/changelogen-monorepo:** User config was not apply for boolean properties ([9658123b](https://github.com/LouisMazel/maz-ui/commit/9658123b))
+
+### 💅 Refactors
+
+- **@maz-ui/node:** PrintBanner - add option to add break line before and after banner ([c85127c6](https://github.com/LouisMazel/maz-ui/commit/c85127c6))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.16...v4.2.1-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.16...v4.2.1-beta.0)
