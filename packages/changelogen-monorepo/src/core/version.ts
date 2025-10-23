@@ -37,7 +37,7 @@ export function determineReleaseType({
     return 'release'
   }
 
-  if (commits) {
+  if (commits && commits.length > 0) {
     return determineSemverChange(commits, config)
   }
 
@@ -97,6 +97,12 @@ export function updateLernaVersion(
     const lernaJson = JSON.parse(content)
 
     const oldVersion = lernaJson.version
+
+    if (lernaJson.version === 'independent') {
+      logger.debug('Lerna version is independent, skipping update')
+      return
+    }
+
     lernaJson.version = version
 
     if (dryRun) {

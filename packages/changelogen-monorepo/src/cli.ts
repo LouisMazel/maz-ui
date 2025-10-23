@@ -24,6 +24,10 @@ printBanner({
 
 const program = new Command()
 
+function hasCliFlag(flag: string): boolean {
+  return process.argv.includes(flag)
+}
+
 function getReleaseType(options: any) {
   let type: BumpOptions['type'] = 'release'
 
@@ -62,6 +66,7 @@ program
   .option('--preminor', 'Bump preminor version')
   .option('--prepatch', 'Bump prepatch version')
   .option('--preid <id>', 'Prerelease identifier (alpha, beta, rc, etc.)')
+  .option('--force', 'Bump even if there are no commits')
   .option('--dry-run', 'Preview changes without writing files')
   .action(async (options) => {
     try {
@@ -70,6 +75,7 @@ program
         preid: options.preid,
         dryRun: options.dryRun,
         logLevel: program.opts().logLevel,
+        force: options.force,
       })
     }
     catch (error) {
@@ -92,7 +98,7 @@ program
         from: options.from,
         to: options.to,
         formatCmd: options.formatCmd,
-        rootChangelog: options.rootChangelog,
+        rootChangelog: hasCliFlag('--no-root-changelog') ? false : undefined,
         dryRun: options.dryRun,
         logLevel: program.opts().logLevel,
       })
@@ -207,17 +213,17 @@ program
         preid: options.preid,
         from: options.from,
         to: options.to,
-        push: options.push,
-        release: options.release,
-        publish: options.publish,
+        push: hasCliFlag('--no-push') ? false : undefined,
+        release: hasCliFlag('--no-release') ? false : undefined,
+        publish: hasCliFlag('--no-publish') ? false : undefined,
         registry: options.registry,
         tag: options.tag,
         access: options.access,
         otp: options.otp,
-        verify: options.verify,
+        verify: hasCliFlag('--no-verify') ? false : undefined,
         dryRun: options.dryRun,
         formatCmd: options.formatCmd,
-        rootChangelog: options.rootChangelog,
+        rootChangelog: hasCliFlag('--no-root-changelog') ? false : undefined,
         token: options.token,
         logLevel: program.opts().logLevel,
         force: options.force,

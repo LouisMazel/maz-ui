@@ -48,6 +48,7 @@ export async function release(options: ReleaseOptions): Promise<void> {
     logger.debug(`Force bump: ${force}`)
 
     const config = await getReleaseConfig(options)
+
     logger.debug(`Version mode: ${config.monorepo.versionMode}`)
     logger.debug(`Push: ${config.release.push}, Publish: ${config.release.publish}, Release: ${config.release.release}`)
 
@@ -153,9 +154,9 @@ export async function release(options: ReleaseOptions): Promise<void> {
     logger.box('Release workflow completed!\n\n'
       + `Version: ${currentVersion}\n`
       + `Tag(s): ${createdTags.join(', ')}\n`
-      + `Published packages: ${publishedPackageCount}\n`
       + `Pushed: ${config.release.push ? 'Yes' : 'No'}\n`
-      + `Published release: ${config.release.publish !== false ? 'Yes' : 'No'}\n`
+      + `Published packages: ${config.release.publish ? publishedPackageCount : 'No'}\n`
+      + `Published release: ${config.release.release !== false ? 'Yes' : 'No'}\n`
       + `Provider: ${provider}`)
   }
   catch (error) {
