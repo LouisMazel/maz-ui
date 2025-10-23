@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.2.1-beta.0...v4.2.1-beta.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.1)
+
+### 🩹 Fixes
+
+- **@maz-ui/changelogen-monorepo:** User config was not apply for boolean properties ([9658123b](https://github.com/LouisMazel/maz-ui/commit/9658123b))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.16...v4.2.1-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.16...v4.2.1-beta.0)
