@@ -285,17 +285,18 @@ export async function bump(options: BumpOptions): Promise<BumpResult> {
   try {
     logger.start('Start bumping versions')
 
-    const dryRun = options.dryRun ?? false
-    logger.debug(`Dry run: ${dryRun}`)
-
-    const force = options.force ?? false
-
     const config = options.config || await loadMonorepoConfig({
       overrides: {
         bump: options,
         logLevel: options.logLevel,
       },
     })
+
+    const dryRun = options.dryRun ?? false
+    logger.debug(`Dry run: ${dryRun}`)
+
+    const force = options.force ?? false
+    logger.debug(`Bump forced: ${force}`)
 
     logger.debug(`Version mode: ${config.monorepo.versionMode}`)
 

@@ -15,23 +15,8 @@ export interface PackageWithCommits extends PackageInfo {
   commits: GitCommit[]
 }
 
-export interface MonorepoConfig {
-  /**
-   * @default 'selective'
-   */
-  versionMode: VersionMode
-  /**
-   * @default ['packages/*']
-   */
-  packages: string[]
-  /**
-   * @default []
-   */
-  ignorePackageNames: string[]
-  /**
-   * @default true
-   */
-  filterCommits: boolean
+export interface PublishResponse {
+  publishedPackages: PackageInfo[]
 }
 
 export type BumpResult = {
@@ -41,6 +26,24 @@ export type BumpResult = {
   bumped: true
 } | {
   bumped: false
+}
+export interface MonorepoConfig {
+  /**
+   * @default 'selective'
+   */
+  versionMode?: VersionMode
+  /**
+   * @default ['packages/*']
+   */
+  packages?: string[]
+  /**
+   * @default []
+   */
+  ignorePackageNames?: string[]
+  /**
+   * @default true
+   */
+  filterCommits?: boolean
 }
 
 export interface BumpConfig {
@@ -108,10 +111,6 @@ export interface PublishOptions extends PublishConfig {
   config?: ResolvedChangelogMonorepoConfig
   bumpedPackages?: PackageInfo[]
   logLevel?: LogLevel
-}
-
-export interface PublishResponse {
-  publishedPackages: PackageInfo[]
 }
 
 export interface ReleaseConfig {

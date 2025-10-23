@@ -5,23 +5,23 @@ import type { BumpConfig, ChangelogConfig, ChangelogMonorepoConfig, MonorepoConf
 import { logger } from '@maz-ui/node'
 import { formatJson } from '@maz-ui/utils'
 import { loadChangelogConfig } from 'changelogen'
+import { defu } from 'defu'
 
 import { getLastTag } from '../core'
 
 async function getDefaultConfig({
-  config,
+  userConfig,
   logLevel,
 }: {
-  config: ResolvedChangelogConfig & Partial<ChangelogMonorepoConfig>
+  userConfig: ResolvedChangelogConfig & Partial<ChangelogMonorepoConfig>
   logLevel?: LogLevel
 }) {
   return {
-    ...config,
+    ...userConfig,
     from: await getLastTag({ onlyStable: false, logLevel }),
     monorepo: {
       versionMode: 'selective',
       packages: ['packages/*'],
-      ignorePackageNames: [],
       filterCommits: true,
     },
     bump: {
@@ -50,61 +50,63 @@ function setupLogger(logLevel?: LogLevel) {
   }
 }
 
-async function mergeConfig({ config, overrides, logLevel }: {
-  config: ResolvedChangelogConfig & Partial<ChangelogMonorepoConfig>
+async function mergeConfig({ userConfig, overrides, logLevel }: {
+  userConfig: ResolvedChangelogConfig & Partial<ChangelogMonorepoConfig>
   overrides?: Partial<ChangelogMonorepoConfig>
   logLevel?: LogLevel
 }) {
   const defaultConfig = await getDefaultConfig({
-    config,
+    userConfig,
     logLevel,
   })
 
-  const monorepo = {
-    ...defaultConfig.monorepo,
-    ...config.monorepo,
-  } satisfies MonorepoConfig
+  logger.verbose('default config:', formatJson(defaultConfig))
 
-  const bump = {
-    ...defaultConfig.bump,
-    ...config.bump,
-    ...overrides?.bump,
-  } satisfies Omit<BumpConfig, 'preid'> & { preid?: string }
+  const monorepo = defu(
+    userConfig.monorepo,
+    defaultConfig.monorepo,
+  ) satisfies MonorepoConfig
 
-  const changelog = {
-    ...defaultConfig.changelog,
-    ...config.changelog,
-    ...overrides?.changelog,
-  } satisfies Omit<ChangelogConfig, 'formatCmd'> & { formatCmd?: string }
+  const bump = defu(
+    overrides?.bump,
+    userConfig.bump,
+    defaultConfig.bump,
+  ) satisfies BumpConfig
 
-  const publish = {
-    ...defaultConfig.publish,
-    ...config.publish,
-    ...overrides?.publish,
-  } satisfies Omit<PublishConfig, 'packages'> & { packages?: string[] }
+  const changelog = defu(
+    overrides?.changelog,
+    userConfig.changelog,
+    defaultConfig.changelog,
+  ) satisfies ChangelogConfig
 
-  const release = {
-    ...defaultConfig.release,
-    ...config.release,
-    ...overrides?.release,
-  } satisfies ReleaseConfig
+  const publish = defu(
+    overrides?.publish,
+    userConfig.publish,
+    defaultConfig.publish,
+  ) satisfies PublishConfig
 
-  const templates = {
-    ...defaultConfig.templates,
-    ...config.templates,
-  } satisfies TemplatesConfig
+  const release = defu(
+    overrides?.release,
+    userConfig.release,
+    defaultConfig.release,
+  ) satisfies ReleaseConfig
 
-  const repo = {
-    ...defaultConfig.repo,
-    ...config.repo,
-  } satisfies RepoConfig
+  const templates = defu(
+    userConfig.templates,
+    defaultConfig.templates,
+  ) satisfies TemplatesConfig
+
+  const repo = defu(
+    userConfig.repo,
+    defaultConfig.repo,
+  ) satisfies RepoConfig
 
   return {
-    ...config,
-    from: overrides?.from || config.from,
-    to: overrides?.to || config.to,
-    logLevel: overrides?.logLevel || config.logLevel,
-    cwd: overrides?.cwd || config.cwd,
+    ...userConfig,
+    from: overrides?.from ?? userConfig.from,
+    to: overrides?.to ?? userConfig.to,
+    logLevel: overrides?.logLevel ?? userConfig.logLevel,
+    cwd: overrides?.cwd ?? userConfig.cwd,
     repo,
     monorepo,
     bump,
@@ -119,25 +121,19 @@ export async function loadMonorepoConfig(options?: {
   overrides?: Partial<ChangelogMonorepoConfig>
 }) {
   const rootDir = options?.overrides?.cwd ?? process.cwd()
-  const config = await loadChangelogConfig(rootDir) as ResolvedChangelogConfig & Partial<ChangelogMonorepoConfig>
+  const userConfig = await loadChangelogConfig(rootDir) as ResolvedChangelogConfig & Partial<ChangelogMonorepoConfig>
 
-  const logLevel = options?.overrides?.logLevel || config.logLevel || 'default'
-  const defaultConfig = await getDefaultConfig({
-    config,
-    logLevel,
-  })
+  const logLevel = options?.overrides?.logLevel || userConfig.logLevel || 'default'
   setupLogger(logLevel)
 
-  logger.verbose('config loaded with changelogen:', formatJson(config))
+  logger.verbose('User config loaded:', formatJson(userConfig))
 
   if (options?.overrides) {
     logger.verbose('overrides:', formatJson(options.overrides))
   }
 
-  logger.verbose('default config:', formatJson(defaultConfig))
-
   const resolvedConfig = await mergeConfig({
-    config,
+    userConfig,
     overrides: options?.overrides,
     logLevel,
   })
