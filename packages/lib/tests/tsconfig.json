@@ -11,7 +11,7 @@
       "@plugins/*": ["./../src/plugins/*"],
       "@resolvers/*": ["./../src/resolvers/*"]
     },
-    "types": ["@types/node", "vite-svg-loader", "vitest/globals", "vue"]
+    "types": ["node", "vite-svg-loader", "vitest/globals", "vue"]
   },
   "include": ["./../types/*", "**/*", "./../src/**/*"]
 }
