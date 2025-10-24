@@ -15,27 +15,22 @@ export default defineConfig({
     ci: false,
     build: false,
   },
+
   templates: {
-    commitMessage: 'chore(release): bump version to v{{newVersion}}',
-    tagMessage: 'chore(release): bump version to v{{newVersion}}',
-    tagBody: 'v{{newVersion}}',
     emptyChangelogContent: 'No relevant changes since last release',
   },
-  noAuthors: false,
-  hideAuthorEmail: false,
 
   monorepo: {
     versionMode: 'selective',
     packages: ['packages/*'],
-    ignorePackageNames: [],
-    filterCommits: true,
   },
 
   changelog: {
     formatCmd: 'pnpm lint:fix:all',
-    rootChangelog: true,
   },
+
   publish: {
     registry: 'https://registry.npmjs.org',
+    access: 'public',
   },
 })
