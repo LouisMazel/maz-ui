@@ -100,13 +100,14 @@ async function bumpIndependentMode({
       logLevel: config.logLevel,
     })
 
-    logger.debug(`Checking commits for ${pkg.name} since ${fromTag}`)
+    logger.debug(`Checking commits for ${pkg.name} since ${fromTag} to ${config.to}`)
     const commits = await getPackageCommits({
       pkg,
       config: {
         ...config,
         from: fromTag,
       },
+      changelog: false,
     })
 
     if (commits.length > 0 || force) {
@@ -136,7 +137,7 @@ async function bumpIndependentMode({
       logLevel: config.logLevel,
     })
 
-    const forcedBumpType = pkgToBump.reason === 'dependency' ? 'patch' : undefined
+    const forcedBumpType = pkgToBump.reason === 'dependency' ? config.bump.type : undefined
     logger.debug(`Bumping ${pkgToBump.name} (reason: ${pkgToBump.reason})`)
 
     const result = await bumpPackageIndependently({

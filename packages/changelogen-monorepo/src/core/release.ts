@@ -42,6 +42,9 @@ export async function publishToGitProvider({ provider, from, to, dryRun, config,
       logLevel,
     })
   }
+  else {
+    logger.warn(`Unsupported Git provider: ${detectedProvider}`)
+  }
 
   return detectedProvider
 }

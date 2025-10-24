@@ -1,4 +1,4 @@
-import type { GitCommit } from 'changelogen'
+import type { GitCommit, SemverBumpType } from 'changelogen'
 import type { ResolvedChangelogMonorepoConfig } from '../core'
 import type { PackageInfo } from '../types'
 import { existsSync, readFileSync, statSync } from 'node:fs'
@@ -88,12 +88,35 @@ export function getPackages({
   return packages
 }
 
+function isAllowedType({
+  type,
+  changelog,
+}: {
+  type: {
+    title: string
+    semver?: SemverBumpType
+  } | boolean
+  changelog: boolean
+}): boolean {
+  if (typeof type === 'object') {
+    return !!type.semver || (changelog && !!type.title)
+  }
+
+  if (typeof type === 'boolean') {
+    return type
+  }
+
+  return false
+}
+
 export async function getPackageCommits({
   pkg,
   config,
+  changelog,
 }: {
   pkg: PackageInfo
   config: ResolvedChangelogMonorepoConfig
+  changelog: boolean
 }): Promise<GitCommit[]> {
   const rawCommits = await getGitDiff(config.from, config.to, config.cwd)
   const allCommits = parseCommits(rawCommits, config)
@@ -101,9 +124,9 @@ export async function getPackageCommits({
   const rootPackage = getRootPackage(config.cwd)
 
   const commits = allCommits.filter((commit) => {
-    const isAllowedType = config.types[commit.type]
+    const type = config?.types[commit.type]
 
-    if (!isAllowedType) {
+    if (!isAllowedType({ type, changelog })) {
       return false
     }
 
@@ -156,6 +179,7 @@ export async function getPackageToBump({
     const commits = await getPackageCommits({
       pkg,
       config,
+      changelog: false,
     })
     if (commits.length > 0) {
       packagesWithCommits.push(pkg)

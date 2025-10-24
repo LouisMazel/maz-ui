@@ -31,11 +31,11 @@ export interface MonorepoConfig {
   /**
    * @default 'selective'
    */
-  versionMode?: VersionMode
+  versionMode: VersionMode
   /**
    * @default ['packages/*']
    */
-  packages?: string[]
+  packages: string[]
   /**
    * @default []
    */
@@ -50,7 +50,7 @@ export interface BumpConfig {
   /**
    * @default 'release'
    */
-  type?: ReleaseType
+  type: ReleaseType
   /**
    * @default undefined
    */
@@ -98,7 +98,7 @@ export interface GitProviderOptions {
   logLevel?: LogLevel
 }
 
-export interface PublishConfig {
+export type PublishConfig = IChangelogConfig['publish'] & {
   registry?: string
   tag?: string
   access?: 'public' | 'restricted'
@@ -115,30 +115,35 @@ export interface PublishOptions extends PublishConfig {
 
 export interface ReleaseConfig {
   /**
+   * Push changes to your repository (commit and tag(s))
    * @default true
    */
   push?: boolean
   /**
+   * Publish release to your repository (github or gitlab)
    * @default true
    */
   release?: boolean
   /**
+   * Publish release to your registry
    * @default true
    */
   publish?: boolean
   /**
+   * Skip git verification while committing by using --no-verify flag
    * @default true
    */
-  verify?: boolean
+  noVerify?: boolean
   /**
+   * Bump even if there are no commits
    * @default false
-   * @description Bump even if there are no commits
    */
   force?: boolean
 }
 
 export interface ReleaseOptions extends ReleaseConfig, BumpConfig, ChangelogConfig, PublishConfig {
   /**
+   * Run without side effects
    * @default false
    */
   dryRun?: boolean
@@ -171,7 +176,10 @@ export interface RepoConfig {
   provider?: GitProvider
 }
 
-export interface ChangelogMonorepoConfig extends IChangelogConfig {
+export interface ChangelogMonorepoConfig extends Partial<Omit<IChangelogConfig, 'output' | 'templates' | 'publish'>> {
+  cwd?: string
+  from?: string
+  to?: string
   /**
    * @default `{
     versionMode: 'selective',
@@ -182,18 +190,15 @@ export interface ChangelogMonorepoConfig extends IChangelogConfig {
    */
   monorepo: MonorepoConfig
 
-  repo: RepoConfig
+  repo?: RepoConfig
 
-  templates: TemplatesConfig
+  templates?: TemplatesConfig
 
-  bump: BumpConfig
-  publish: PublishConfig
-  changelog: ChangelogConfig
-  release: ReleaseConfig
-  /**
-   * @default 'default'
-   */
-  logLevel: LogLevel
+  bump?: BumpConfig
+  publish?: PublishConfig
+  changelog?: ChangelogConfig
+  release?: ReleaseConfig
+  logLevel?: LogLevel
 }
 
 export type PackageManager = 'npm' | 'yarn' | 'pnpm' | 'bun'

@@ -22,6 +22,38 @@ function getPackagesToGenerateChangelogFor({
   })
 }
 
+async function formatChangelog({
+  config,
+  dryRun,
+}: {
+  config: ResolvedChangelogMonorepoConfig
+  dryRun: boolean
+}) {
+  if (config.changelog?.formatCmd) {
+    logger.debug(`Running format command: ${config.changelog.formatCmd}`)
+    try {
+      if (!dryRun) {
+        await execPromise(config.changelog.formatCmd, {
+          noStderr: true,
+          noStdout: true,
+          logLevel: config.logLevel,
+        })
+      }
+      else {
+        logger.log('[dry-run] running format command: ', config.changelog.formatCmd)
+      }
+      logger.debug('Format completed')
+    }
+    catch (error) {
+      logger.warn('Format command failed:', error)
+      logger.debug('Continuing anyway...')
+    }
+  }
+  else {
+    logger.debug('No format command specified')
+  }
+}
+
 export async function changelog(options: ChangelogOptions): Promise<void> {
   try {
     logger.start('Start generating changelogs')
@@ -55,6 +87,7 @@ export async function changelog(options: ChangelogOptions): Promise<void> {
       const rootCommits = await getPackageCommits({
         pkg: rootPackage,
         config,
+        changelog: true,
       })
       logger.debug(`Found ${rootCommits.length} commit(s) for root package`)
 
@@ -95,6 +128,7 @@ export async function changelog(options: ChangelogOptions): Promise<void> {
         const commits = await getPackageCommits({
           pkg,
           config,
+          changelog: true,
         })
 
         logger.debug(`${pkg.name}: ${commits.length} commit(s)`)
@@ -125,21 +159,10 @@ export async function changelog(options: ChangelogOptions): Promise<void> {
       logger.debug(`Generated ${generatedCount} package changelog(s)`)
     }
 
-    if (config.changelog?.formatCmd && !dryRun) {
-      logger.debug(`Running format command: ${config.changelog.formatCmd}`)
-      try {
-        await execPromise(config.changelog.formatCmd, {
-          noStderr: true,
-          noStdout: true,
-          logLevel: config.logLevel,
-        })
-        logger.debug('Format completed')
-      }
-      catch (error) {
-        logger.warn('Format command failed:', error)
-        logger.debug('Continuing anyway...')
-      }
-    }
+    await formatChangelog({
+      config,
+      dryRun,
+    })
 
     logger.success('Changelog generation completed!')
   }

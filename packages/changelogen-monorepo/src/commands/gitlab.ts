@@ -31,6 +31,7 @@ export async function gitlab(options: Partial<GitProviderOptions> = {}): Promise
     const commits = await getPackageCommits({
       pkg: rootPackage,
       config,
+      changelog: true,
     })
     logger.debug(`Found ${commits.length} commit(s)`)
 

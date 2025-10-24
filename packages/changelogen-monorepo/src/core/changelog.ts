@@ -1,4 +1,4 @@
-import type { GitCommit } from 'changelogen'
+import type { GitCommit, ResolvedChangelogConfig } from 'changelogen'
 import type { ResolvedChangelogMonorepoConfig } from '../core'
 import type { PackageInfo } from '../types'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
@@ -20,7 +20,7 @@ export async function generateChangelog(
   try {
     logger.debug(`Generating changelog for ${pkg.name} - from ${config.from} to ${config.to}`)
 
-    let changelog = await generateMarkDown(commits, config)
+    let changelog = await generateMarkDown(commits, config as ResolvedChangelogConfig)
 
     if (!config.to.startsWith('v')) {
       changelog = changelog.replaceAll(config.to, `v${pkg.version}`)
