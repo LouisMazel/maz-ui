@@ -2,7 +2,7 @@ import type { App, Plugin, Ref } from 'vue'
 import type { ThemeConfig, ThemePreset, ThemeState } from './types'
 import type { CSSOptions } from './utils/css-generator'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
-import { ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import { useMutationObserver } from '../../lib/src/composables/useMutationObserver'
 import { getPreset, mergePresets } from './utils'
 import {
@@ -59,9 +59,16 @@ function injectThemeCSS(finalPreset: ThemePreset, config: Required<Omit<MazUiThe
     injectCSS(CSS_ID, fullCSS)
   }
   else if (config.strategy === 'hybrid') {
-    requestIdleCallback(() => {
-      injectCSS(CSS_ID, fullCSS)
-    }, { timeout: 100 })
+    if (typeof requestIdleCallback !== 'undefined') {
+      requestIdleCallback(() => {
+        injectCSS(CSS_ID, fullCSS)
+      }, { timeout: 100 })
+    }
+    else {
+      nextTick(() => {
+        injectCSS(CSS_ID, fullCSS)
+      })
+    }
   }
 }
 
