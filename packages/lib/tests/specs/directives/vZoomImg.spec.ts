@@ -325,7 +325,7 @@ describe('given VueZoomImg class', () => {
       instance.nextPreviousImage(true)
 
       const openInstance = document.querySelector('.maz-zoom-img-instance.maz-is-open')
-      expect(openInstance?.getAttribute('data-zoom-src')).toBe('path/to/image0.jpg')
+      expect(openInstance?.getAttribute('data-zoom-src')).toBe('path/to/image1.jpg')
     })
 
     it('then it should navigate to the previous image', () => {
@@ -333,7 +333,7 @@ describe('given VueZoomImg class', () => {
       instance.nextPreviousImage(false)
 
       const openInstance = document.querySelector('.maz-zoom-img-instance.maz-is-open')
-      expect(openInstance?.getAttribute('data-zoom-src')).toBe('path/to/image0.jpg')
+      expect(openInstance?.getAttribute('data-zoom-src')).toBe('path/to/image2.jpg')
     })
 
     it('then it should loop to the first image when reaching the end', () => {
