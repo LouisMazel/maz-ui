@@ -45,17 +45,17 @@ export async function createGitlabRelease({
     )
   }
 
-  const repo = config.repo.repo
+  const repoConfig = config.repo?.repo
 
-  if (!repo) {
+  if (!repoConfig) {
     throw new Error('No repository URL found in config')
   }
 
-  logger.debug(`Parsed repository URL: ${repo}`)
+  logger.debug(`Parsed repository URL: ${repoConfig}`)
 
-  const projectPath = encodeURIComponent(repo)
+  const projectPath = encodeURIComponent(repoConfig)
 
-  const gitlabDomain = config.repo.domain || 'gitlab.com'
+  const gitlabDomain = config.repo?.domain || 'gitlab.com'
   const apiUrl = `https://${gitlabDomain}/api/v4/projects/${projectPath}/releases`
 
   logger.info(`Creating GitLab release at: ${apiUrl}`)

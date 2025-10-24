@@ -57,9 +57,9 @@
   "dependencies": {
     "@maz-ui/node": "workspace:*",
     "@maz-ui/utils": "workspace:*",
+    "c12": "^3.3.1",
     "changelogen": "^0.6.2",
     "commander": "^14.0.1",
-    "defu": "^6.1.4",
     "fast-glob": "^3.3.2",
     "semver": "^7.7.2"
   },

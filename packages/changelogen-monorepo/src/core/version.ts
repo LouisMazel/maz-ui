@@ -26,7 +26,7 @@ export function determineReleaseType({
   }
 
   if (!commits?.length && !force) {
-    return undefined
+    return null
   }
 
   if (config.bump.type && config.bump.type !== 'release') {
@@ -41,7 +41,7 @@ export function determineReleaseType({
     return determineSemverChange(commits, config)
   }
 
-  return force ? config.bump.type : undefined
+  return force ? config.bump.type : null
 }
 
 export function writeVersion(pkgPath: string, version: string, dryRun = false): void {
@@ -160,6 +160,7 @@ export async function bumpPackageIndependently({
       ...config,
       from: fromTag || config.from,
     },
+    changelog: false,
   })
 
   let releaseType: BumpOptions['type'] | null = null

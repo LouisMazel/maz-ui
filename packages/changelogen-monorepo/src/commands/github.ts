@@ -25,6 +25,12 @@ export async function github(options: Partial<GitProviderOptions> = {}): Promise
       },
     })
 
+    const repoConfig = config.repo
+
+    if (!repoConfig) {
+      throw new Error('No repository configuration found. Please check your changelog config.')
+    }
+
     logger.debug(`Commit range: ${config.from}...${config.to}`)
     logger.debug(`GitHub token: ${config.tokens.github ? '✓ provided' : '✗ missing'}`)
 
@@ -35,6 +41,7 @@ export async function github(options: Partial<GitProviderOptions> = {}): Promise
     const commits = await getPackageCommits({
       pkg: rootPackage,
       config,
+      changelog: true,
     })
     logger.debug(`Found ${commits.length} commit(s)`)
 
@@ -46,7 +53,7 @@ export async function github(options: Partial<GitProviderOptions> = {}): Promise
 
     const releaseBody = changelog.split('\n').slice(2).join('\n')
 
-    const to = rootPackage.version || config.to
+    const to = config.monorepo.versionMode === 'independent' ? await getLastTag({ sort: 'creatordate' }) : rootPackage.version
     const tagName = config.templates.tagBody?.replaceAll('{{newVersion}}', to) ?? to
 
     const release = {
@@ -68,7 +75,10 @@ export async function github(options: Partial<GitProviderOptions> = {}): Promise
     }
     else {
       logger.debug('Publishing release to GitHub...')
-      await createGithubRelease(config, release)
+      await createGithubRelease({
+        ...config,
+        repo: repoConfig,
+      }, release)
     }
 
     logger.success(`Release ${tagName} published to GitHub!`)

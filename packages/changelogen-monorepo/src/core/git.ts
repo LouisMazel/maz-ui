@@ -56,14 +56,14 @@ export function parseGitRemoteUrl(remoteUrl: string): { owner: string, repo: str
 export async function commitAndTag({
   newVersion,
   config,
-  verify,
+  noVerify,
   bumpedPackages,
   dryRun,
   logLevel,
 }: {
   newVersion?: string
   config: ResolvedChangelogMonorepoConfig
-  verify?: boolean
+  noVerify?: boolean
   bumpedPackages?: PackageInfo[]
   dryRun: boolean
   logLevel?: LogLevel
@@ -100,7 +100,7 @@ export async function commitAndTag({
     ?.replaceAll('{{newVersion}}', versionForMessage)
     || `chore(release): bump version to v${versionForMessage}`
 
-  const noVerifyFlag = (verify) ? '' : '--no-verify '
+  const noVerifyFlag = (noVerify) ? '--no-verify ' : ''
 
   if (dryRun) {
     logger.info(`[dry-run] git commit ${noVerifyFlag}-m "${commitMessage}"`)
@@ -112,7 +112,7 @@ export async function commitAndTag({
       noStderr: true,
       noStdout: true,
     })
-    logger.success(`Committed: ${commitMessage}${verify ? '' : ' (--no-verify)'}`)
+    logger.success(`Committed: ${commitMessage}${noVerify ? ' (--no-verify)' : ''}`)
   }
 
   const signTags = config.signTags ? '-s' : ''
@@ -187,14 +187,17 @@ export async function commitAndTag({
   return createdTags
 }
 
-export async function getLastTag(options: {
+export async function getLastTag(options?: {
+  sort?: 'refname' | 'creatordate'
   version?: string
   onlyStable?: boolean
   logLevel?: LogLevel
 }): Promise<string> {
+  const sort = options?.sort === 'creatordate' ? '-creatordate' : '-v:refname'
+
   if (options?.onlyStable || (options?.version && !isPrerelease(options.version) && !options?.onlyStable)) {
     const { stdout } = await execPromise(
-      'git tag --sort=-v:refname | grep -E \'^v[0-9]+\\.[0-9]+\\.[0-9]+$\' | sed -n \'1p\'',
+      `git tag --sort=${sort} | grep -E \'^v[0-9]+\\.[0-9]+\\.[0-9]+$\' | head -n 1`,
       {
         logLevel: options?.logLevel,
         noStderr: true,
@@ -208,7 +211,7 @@ export async function getLastTag(options: {
     return stdout.trim()
   }
 
-  const { stdout } = await execPromise('git tag --sort=-v:refname | sed -n \'1p\'', {
+  const { stdout } = await execPromise(`git tag --sort=${sort} | head -n 1`, {
     logLevel: options?.logLevel,
     noStderr: true,
     noStdout: true,

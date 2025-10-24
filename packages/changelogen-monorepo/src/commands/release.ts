@@ -32,7 +32,7 @@ function getReleaseConfig(options: Partial<ReleaseOptions>) {
       release: {
         push: options.push,
         publish: options.publish,
-        verify: options.verify,
+        noVerify: options.noVerify,
         release: options.release,
       },
     },
@@ -89,11 +89,11 @@ export async function release(options: ReleaseOptions): Promise<void> {
     })
 
     logger.box('Step 3/6: Commit changes and create tag')
-    logger.debug(`Verify hooks: ${config.release.verify}`)
+    logger.debug(`Verify hooks: ${config.release.noVerify}`)
     const createdTags = await commitAndTag({
       newVersion: currentVersion,
       config,
-      verify: config.release.verify,
+      noVerify: config.release.noVerify,
       bumpedPackages: bumpResult.bumpedPackages,
       dryRun,
       logLevel: config.logLevel,
@@ -125,7 +125,7 @@ export async function release(options: ReleaseOptions): Promise<void> {
       logger.info('Skipping publish (--no-publish)')
     }
 
-    let provider = config.repo.provider
+    let provider = config.repo?.provider
 
     logger.box('Step 6/6: Publish Git release')
     if (config.release.release) {

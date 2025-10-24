@@ -116,6 +116,7 @@ export async function getPackagesToPublishInIndependentMode(
         ...config,
         from: fromTag,
       },
+      changelog: false,
     })
 
     if (commits.length > 0) {

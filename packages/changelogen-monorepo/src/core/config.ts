@@ -1,24 +1,43 @@
 import type { LogLevel } from '@maz-ui/node'
 import type { DeepPartial } from '@maz-ui/utils'
-import type { ResolvedChangelogConfig } from 'changelogen'
-import type { BumpConfig, ChangelogConfig, ChangelogMonorepoConfig, MonorepoConfig, PublishConfig, ReleaseConfig, RepoConfig, TemplatesConfig } from '../types'
+import type { ChangelogConfig } from 'changelogen'
+import type { ChangelogMonorepoConfig, GitProvider } from '../types'
+import process from 'node:process'
 import { logger } from '@maz-ui/node'
 import { formatJson } from '@maz-ui/utils'
-import { loadChangelogConfig } from 'changelogen'
-import { defu } from 'defu'
 
-import { getLastTag } from '../core'
+import { loadConfig, setupDotenv } from 'c12'
+import { getCurrentGitBranch, getCurrentGitRef, getRepoConfig, resolveRepoConfig } from 'changelogen'
 
-async function getDefaultConfig({
-  userConfig,
-  logLevel,
-}: {
-  userConfig: ResolvedChangelogConfig & Partial<ChangelogMonorepoConfig>
-  logLevel?: LogLevel
-}) {
+import { getLastTag } from './git'
+
+function getDefaultConfig() {
   return {
-    ...userConfig,
-    from: await getLastTag({ onlyStable: false, logLevel }),
+    from: '',
+    to: '',
+    cwd: process.cwd(),
+    types: {
+      feat: { title: '🚀 Enhancements', semver: 'minor' },
+      perf: { title: '🔥 Performance', semver: 'patch' },
+      fix: { title: '🩹 Fixes', semver: 'patch' },
+      refactor: { title: '💅 Refactors', semver: 'patch' },
+      docs: { title: '📖 Documentation', semver: 'patch' },
+      build: { title: '📦 Build', semver: 'patch' },
+      types: { title: '🌊 Types', semver: 'patch' },
+      chore: { title: '🏡 Chore' },
+      examples: { title: '🏀 Examples' },
+      test: { title: '✅ Tests' },
+      style: { title: '🎨 Styles' },
+      ci: { title: '🤖 CI' },
+    } as ChangelogConfig['types'],
+    templates: {
+      commitMessage: 'chore(release): bump version to v{{newVersion}}',
+      tagMessage: 'Bump version to v{{newVersion}}',
+      tagBody: 'v{{newVersion}}',
+      emptyChangelogContent: 'No relevant changes for this release',
+    },
+    excludeAuthors: [],
+    noAuthors: false,
     monorepo: {
       versionMode: 'selective',
       packages: ['packages/*'],
@@ -30,17 +49,31 @@ async function getDefaultConfig({
     changelog: {
       rootChangelog: true,
     },
+    publish: {
+      private: false,
+      tag: 'latest',
+      args: [],
+    },
+    tokens: {
+      gitlab:
+        process.env.CHANGELOGEN_TOKENS_GITLAB
+        || process.env.GITLAB_TOKEN
+        || process.env.GITLAB_API_TOKEN
+        || process.env.CI_JOB_TOKEN,
+      github:
+        process.env.CHANGELOGEN_TOKENS_GITHUB
+        || process.env.GITHUB_TOKEN
+        || process.env.GH_TOKEN,
+    },
+    scopeMap: {},
     release: {
       publish: true,
       push: true,
       release: true,
-      verify: true,
+      noVerify: false,
     },
-    templates: {
-      emptyChangelogContent: 'No relevant changes for this release',
-    },
-    logLevel: logLevel || 'default',
-  } satisfies DeepPartial<ChangelogMonorepoConfig>
+    logLevel: 'default',
+  }
 }
 
 function setupLogger(logLevel?: LogLevel) {
@@ -50,97 +83,74 @@ function setupLogger(logLevel?: LogLevel) {
   }
 }
 
-async function mergeConfig({ userConfig, overrides, logLevel }: {
-  userConfig: ResolvedChangelogConfig & Partial<ChangelogMonorepoConfig>
-  overrides?: Partial<ChangelogMonorepoConfig>
-  logLevel?: LogLevel
+export async function loadMonorepoConfig({ overrides }: {
+  overrides?: DeepPartial<ChangelogMonorepoConfig>
 }) {
-  const defaultConfig = await getDefaultConfig({
-    userConfig,
-    logLevel,
+  const cwd = overrides?.cwd ?? process.cwd()
+
+  await setupDotenv({ cwd })
+
+  const defaultConfig = getDefaultConfig()
+
+  const { config } = await loadConfig<ResolvedConfig>({
+    cwd,
+    name: 'changelog',
+    packageJson: true,
+    defaults: defaultConfig as ResolvedConfig,
+    overrides: {
+      ...(overrides as ResolvedConfig),
+    },
   })
 
-  logger.verbose('default config:', formatJson(defaultConfig))
+  setupLogger(overrides?.logLevel || config.logLevel)
 
-  const monorepo = defu(
-    userConfig.monorepo,
-    defaultConfig.monorepo,
-  ) satisfies MonorepoConfig
+  logger.debug('User config:', formatJson(config))
 
-  const bump = defu(
-    overrides?.bump,
-    userConfig.bump,
-    defaultConfig.bump,
-  ) satisfies BumpConfig
-
-  const changelog = defu(
-    overrides?.changelog,
-    userConfig.changelog,
-    defaultConfig.changelog,
-  ) satisfies ChangelogConfig
-
-  const publish = defu(
-    overrides?.publish,
-    userConfig.publish,
-    defaultConfig.publish,
-  ) satisfies PublishConfig
-
-  const release = defu(
-    overrides?.release,
-    userConfig.release,
-    defaultConfig.release,
-  ) satisfies ReleaseConfig
-
-  const templates = defu(
-    userConfig.templates,
-    defaultConfig.templates,
-  ) satisfies TemplatesConfig
-
-  const repo = defu(
-    userConfig.repo,
-    defaultConfig.repo,
-  ) satisfies RepoConfig
-
-  return {
-    ...userConfig,
-    from: overrides?.from ?? userConfig.from,
-    to: overrides?.to ?? userConfig.to,
-    logLevel: overrides?.logLevel ?? userConfig.logLevel,
-    cwd: overrides?.cwd ?? userConfig.cwd,
-    repo,
-    monorepo,
-    bump,
-    changelog,
-    publish,
-    release,
-    templates,
-  }
-}
-
-export async function loadMonorepoConfig(options?: {
-  overrides?: Partial<ChangelogMonorepoConfig>
-}) {
-  const rootDir = options?.overrides?.cwd ?? process.cwd()
-  const userConfig = await loadChangelogConfig(rootDir) as ResolvedChangelogConfig & Partial<ChangelogMonorepoConfig>
-
-  const logLevel = options?.overrides?.logLevel || userConfig.logLevel || 'default'
-  setupLogger(logLevel)
-
-  logger.verbose('User config loaded:', formatJson(userConfig))
-
-  if (options?.overrides) {
-    logger.verbose('overrides:', formatJson(options.overrides))
-  }
-
-  const resolvedConfig = await mergeConfig({
-    userConfig,
-    overrides: options?.overrides,
-    logLevel,
-  })
+  const resolvedConfig = await resolveConfig(config, cwd)
 
   logger.debug('Resolved config:', formatJson(resolvedConfig))
 
-  return resolvedConfig
+  return resolvedConfig as ResolvedChangelogMonorepoConfig
 }
 
-export type ResolvedChangelogMonorepoConfig = Awaited<ReturnType<typeof loadMonorepoConfig>>
+export async function resolveConfig(
+  config: ResolvedConfig,
+  cwd: string,
+) {
+  if (!config.from) {
+    config.from = await getLastTag({
+      sort: config.monorepo.versionMode === 'independent' ? 'creatordate' : 'refname',
+    })
+  }
+
+  if (!config.to) {
+    config.to = config.monorepo.versionMode === 'independent' ? getCurrentGitBranch(cwd) : getCurrentGitRef(cwd)
+  }
+
+  if (!config.repo) {
+    const resolvedRepoConfig = await resolveRepoConfig(cwd)
+    config.repo = {
+      ...resolvedRepoConfig,
+      provider: resolvedRepoConfig.provider as GitProvider,
+    }
+  }
+
+  if (typeof config.repo === 'string') {
+    const resolvedRepoConfig = getRepoConfig(config.repo)
+    config.repo = {
+      ...resolvedRepoConfig,
+      provider: resolvedRepoConfig.provider as GitProvider,
+    }
+  }
+
+  return config
+}
+
+type ResolvedConfig = ChangelogMonorepoConfig & ReturnType<typeof getDefaultConfig>
+export type ResolvedChangelogMonorepoConfig = ResolvedConfig & {
+  output: string
+}
+
+export function defineConfig(config: ChangelogMonorepoConfig) {
+  return config
+}
