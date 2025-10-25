@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.2.1-beta.0...v4.2.1-beta.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.2)
+
+### 🩹 Fixes
+
+- **@maz-ui/themes:** Safari issue with requestIdleCallback - fix #1361 ([#1361](https://github.com/LouisMazel/maz-ui/issues/1361))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.16...v4.2.1-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.16...v4.2.1-beta.0)

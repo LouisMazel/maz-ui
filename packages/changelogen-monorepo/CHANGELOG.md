@@ -1,5 +1,22 @@
 # Changelog
 
+## v4.2.1-beta.0...v4.2.1-beta.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.2)
+
+### 🩹 Fixes
+
+- **@maz-ui/changelogen-monorepo:** User config was not apply for boolean properties ([9658123bf](https://github.com/LouisMazel/maz-ui/commit/9658123bf))
+- **@maz-ui/changelogen-monorepo:** Release bugs with independent mode ([b32af65f6](https://github.com/LouisMazel/maz-ui/commit/b32af65f6))
+- **@maz-ui/changelogen-monorepo:** Independent mode ([050df0f46](https://github.com/LouisMazel/maz-ui/commit/050df0f46))
+- **@maz-ui/changelogen-monorepo:** Path to node package ([24a934cb0](https://github.com/LouisMazel/maz-ui/commit/24a934cb0))
+- **@maz-ui/changelogen-monorepo:** Selective mode - changelog generation ([748f5a19e](https://github.com/LouisMazel/maz-ui/commit/748f5a19e))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-beta.0...v4.2.1-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.1)
