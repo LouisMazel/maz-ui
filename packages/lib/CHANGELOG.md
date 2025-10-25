@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.2.0...v4.2.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.0...v4.2.1)
+
+### 💅 Refactors
+
+- **maz-ui:** MazModulesResolver - add formatJson to auto imported modules ([2de93fe5](https://github.com/LouisMazel/maz-ui/commit/2de93fe5))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-beta.0...v4.2.1-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.2)
