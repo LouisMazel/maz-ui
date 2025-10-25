@@ -93,6 +93,8 @@ export async function executeFormatCmd({
   dryRun: boolean
 }) {
   if (config.changelog?.formatCmd) {
+    logger.info('Running format command')
+
     logger.debug(`Running format command: ${config.changelog.formatCmd}`)
     try {
       if (!dryRun) {
@@ -105,11 +107,11 @@ export async function executeFormatCmd({
       else {
         logger.log('[dry-run] running format command: ', config.changelog.formatCmd)
       }
-      logger.debug('Format completed')
+      logger.info('Format completed')
     }
     catch (error) {
       logger.warn('Format command failed:', error)
-      logger.debug('Continuing anyway...')
+      logger.info('Continuing anyway...')
     }
   }
   else {
