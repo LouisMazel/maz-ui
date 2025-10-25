@@ -3,8 +3,7 @@ import type { ResolvedChangelogMonorepoConfig } from '../core'
 import type { PackageInfo } from '../types'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { logger } from '@maz-ui/node'
-import { execPromise } from '@maz-ui/node/execPromise.js'
+import { execPromise, logger } from '@maz-ui/node'
 import { generateMarkDown } from 'changelogen'
 
 export async function generateChangelog(
