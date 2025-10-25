@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.2.1-beta.0...v4.2.1-beta.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.2)
+
+### 💅 Refactors
+
+- **@maz-ui/node:** PrintBanner - add option to add break line before and after banner ([c85127c64](https://github.com/LouisMazel/maz-ui/commit/c85127c64))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-beta.0...v4.2.1-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.1)

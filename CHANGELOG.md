@@ -1,5 +1,28 @@
 # Change Log
 
+## v4.2.1-beta.0...v4.2.1-beta.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.2)
+
+### 🩹 Fixes
+
+- **@maz-ui/changelogen-monorepo:** User config was not apply for boolean properties ([9658123bf](https://github.com/LouisMazel/maz-ui/commit/9658123bf))
+- **@maz-ui/themes:** Safari issue with requestIdleCallback - fix #1361 ([#1361](https://github.com/LouisMazel/maz-ui/issues/1361))
+- **@maz-ui/changelogen-monorepo:** Release bugs with independent mode ([b32af65f6](https://github.com/LouisMazel/maz-ui/commit/b32af65f6))
+- **@maz-ui/changelogen-monorepo:** Independent mode ([050df0f46](https://github.com/LouisMazel/maz-ui/commit/050df0f46))
+- **@maz-ui/changelogen-monorepo:** Path to node package ([24a934cb0](https://github.com/LouisMazel/maz-ui/commit/24a934cb0))
+- **@maz-ui/changelogen-monorepo:** Selective mode - changelog generation ([748f5a19e](https://github.com/LouisMazel/maz-ui/commit/748f5a19e))
+
+### 💅 Refactors
+
+- **@maz-ui/node:** PrintBanner - add option to add break line before and after banner ([c85127c64](https://github.com/LouisMazel/maz-ui/commit/c85127c64))
+- **@maz-ui/eslint-config:** Disable sonar rules for mardown files ([d9e4738f3](https://github.com/LouisMazel/maz-ui/commit/d9e4738f3))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-beta.0...v4.2.1-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.1)
