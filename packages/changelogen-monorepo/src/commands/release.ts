@@ -79,8 +79,6 @@ export async function release(options: ReleaseOptions): Promise<void> {
 
     const newVersion = config.monorepo.versionMode === 'independent' ? undefined : bumpResult.newVersion || rootPackage.version
 
-    config.to = newVersion ? `v${newVersion}` : config.to
-
     const lastTag = config.monorepo.versionMode === 'independent'
       ? config.from
       : (options.from || await getLastTag({ version: newVersion }))
@@ -101,6 +99,7 @@ export async function release(options: ReleaseOptions): Promise<void> {
         rootChangelog: config.changelog.rootChangelog,
         packages: bumpResult.bumpedPackages,
         config,
+        newTag: newVersion ? `v${newVersion}` : config.to,
         logLevel: config.logLevel,
       })
     }
@@ -120,6 +119,8 @@ export async function release(options: ReleaseOptions): Promise<void> {
         dryRun,
         logLevel: config.logLevel,
       })
+
+      config.to = newVersion ? `v${newVersion}` : config.to
     }
     else {
       logger.info('Skipping commit and tag (--no-commit)')
