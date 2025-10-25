@@ -1,5 +1,20 @@
 # Change Log
 
+## v4.2.0...v4.2.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.0...v4.2.1)
+
+### 💅 Refactors
+
+- **@maz-ui/utils:** Add formatJson utility method ([2fa26a39](https://github.com/LouisMazel/maz-ui/commit/2fa26a39))
+- **@maz-ui/utils:** Add helper type 'DeepRequired' ([ed82b303](https://github.com/LouisMazel/maz-ui/commit/ed82b303))
+- **@maz-ui/utils:** Add option to choose indentation with formatJson ([9e130398](https://github.com/LouisMazel/maz-ui/commit/9e130398))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-alpha.16...v4.2.1-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.16...v4.2.1-beta.0)

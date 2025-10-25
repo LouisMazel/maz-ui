@@ -1,5 +1,92 @@
 # Change Log
 
+## v4.2.1-beta.2...v4.2.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.2...v4.2.1)
+
+### 🩹 Fixes
+
+- **@maz-ui/changelogen-monorepo:** Add lerna to commit release only if lerna exists ([42bdecdb](https://github.com/LouisMazel/maz-ui/commit/42bdecdb))
+- **@maz-ui/changelogen-monorepo:** Gitlab release - support of CI_JOB_TOKEN environment variable ([9a0e0d38](https://github.com/LouisMazel/maz-ui/commit/9a0e0d38))
+- **@maz-ui/changelogen-monorepo:** Release - generate changelog only for bumped packages ([05d0f08f](https://github.com/LouisMazel/maz-ui/commit/05d0f08f))
+- **@maz-ui/changelogen-monorepo:** Improvement getting last tag ([6f58b437](https://github.com/LouisMazel/maz-ui/commit/6f58b437))
+- **@maz-ui/changelogen-monorepo:** Add all changelog files to release commit ([5f106d4f](https://github.com/LouisMazel/maz-ui/commit/5f106d4f))
+- **@maz-ui/changelogen-monorepo:** Add all changelog files to release commit ([38e08a93](https://github.com/LouisMazel/maz-ui/commit/38e08a93))
+- **@maz-ui/node:** Not set log level by default ([d3cdd1b6](https://github.com/LouisMazel/maz-ui/commit/d3cdd1b6))
+- **@maz-ui/changelogen-monorepo:** Config should not override tokens ([6d917587](https://github.com/LouisMazel/maz-ui/commit/6d917587))
+- **@maz-ui/changelogen-monorepo:** User config was not apply for boolean properties ([9658123b](https://github.com/LouisMazel/maz-ui/commit/9658123b))
+- **@maz-ui/themes:** Safari issue with requestIdleCallback - fix #1361 ([#1361](https://github.com/LouisMazel/maz-ui/issues/1361))
+- **@maz-ui/changelogen-monorepo:** Release bugs with independent mode ([b32af65f](https://github.com/LouisMazel/maz-ui/commit/b32af65f))
+- **@maz-ui/changelogen-monorepo:** Independent mode ([050df0f4](https://github.com/LouisMazel/maz-ui/commit/050df0f4))
+- **@maz-ui/changelogen-monorepo:** Path to node package ([24a934cb](https://github.com/LouisMazel/maz-ui/commit/24a934cb))
+- **@maz-ui/changelogen-monorepo:** Selective mode - changelog generation ([748f5a19](https://github.com/LouisMazel/maz-ui/commit/748f5a19))
+- **@maz-ui/changelogen-monorepo:** Add lerna to commit release only if lerna exists ([5061bd2a](https://github.com/LouisMazel/maz-ui/commit/5061bd2a))
+- **@maz-ui/changelogen-monorepo:** Gitlab release - support of CI_JOB_TOKEN environment variable ([2dfc37c5](https://github.com/LouisMazel/maz-ui/commit/2dfc37c5))
+- **@maz-ui/changelogen-monorepo:** Release - generate changelog only for bumped packages ([9ea17178](https://github.com/LouisMazel/maz-ui/commit/9ea17178))
+- **@maz-ui/changelogen-monorepo:** Improvement getting last tag ([dd5350e5](https://github.com/LouisMazel/maz-ui/commit/dd5350e5))
+- **@maz-ui/changelogen-monorepo:** Add all changelog files to release commit ([e6719346](https://github.com/LouisMazel/maz-ui/commit/e6719346))
+- **@maz-ui/changelogen-monorepo:** Add all changelog files to release commit ([c8a11701](https://github.com/LouisMazel/maz-ui/commit/c8a11701))
+- **@maz-ui/node:** Not set log level by default ([c9983ae6](https://github.com/LouisMazel/maz-ui/commit/c9983ae6))
+- **@maz-ui/changelogen-monorepo:** Config should not override tokens ([aefdfb5c](https://github.com/LouisMazel/maz-ui/commit/aefdfb5c))
+- **@maz-ui/changelogen-monorepo:** User config was not apply for boolean properties ([4a113789](https://github.com/LouisMazel/maz-ui/commit/4a113789))
+- **@maz-ui/themes:** Safari issue with requestIdleCallback - fix #1361 ([#1361](https://github.com/LouisMazel/maz-ui/issues/1361))
+- **@maz-ui/changelogen-monorepo:** Release bugs with independent mode ([32420452](https://github.com/LouisMazel/maz-ui/commit/32420452))
+- **@maz-ui/changelogen-monorepo:** Independent mode ([1922e37f](https://github.com/LouisMazel/maz-ui/commit/1922e37f))
+- **@maz-ui/changelogen-monorepo:** Path to node package ([02b764ff](https://github.com/LouisMazel/maz-ui/commit/02b764ff))
+- **@maz-ui/changelogen-monorepo:** Selective mode - changelog generation ([1634a005](https://github.com/LouisMazel/maz-ui/commit/1634a005))
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Build for node20 instead of node18 ([9d2af238](https://github.com/LouisMazel/maz-ui/commit/9d2af238))
+- **@maz-ui/changelogen-monorepo:** Doc improvement ([b381d6b2](https://github.com/LouisMazel/maz-ui/commit/b381d6b2))
+- **@maz-ui/changelogen-monorepo:** Doc improvement ([da19900c](https://github.com/LouisMazel/maz-ui/commit/da19900c))
+- **@maz-ui/node:** Improve logger by using consola ([e9614e87](https://github.com/LouisMazel/maz-ui/commit/e9614e87))
+- **@maz-ui/utils:** Add formatJson utility method ([a29dfe21](https://github.com/LouisMazel/maz-ui/commit/a29dfe21))
+- **@maz-ui/changelogen-monorepo:** Add log-level options ([c3045e85](https://github.com/LouisMazel/maz-ui/commit/c3045e85))
+- **maz-ui:** MazModulesResolver - add formatJson to auto imported modules ([b62ff36c](https://github.com/LouisMazel/maz-ui/commit/b62ff36c))
+- **@maz-ui/node:** Improve logging of execPromise utility ([4264c45b](https://github.com/LouisMazel/maz-ui/commit/4264c45b))
+- **@maz-ui/changelogen-monorepo:** Logging flow improvements ([4b231b0c](https://github.com/LouisMazel/maz-ui/commit/4b231b0c))
+- **@maz-ui/utils:** Add helper type 'DeepRequired' ([5c5b903e](https://github.com/LouisMazel/maz-ui/commit/5c5b903e))
+- **@maz-ui/changelogen-monorepo:** Config loading improvements ([3d4e85bc](https://github.com/LouisMazel/maz-ui/commit/3d4e85bc))
+- **@maz-ui/node:** Choose log level of execPromise ([ece81b27](https://github.com/LouisMazel/maz-ui/commit/ece81b27))
+- **@maz-ui/changelogen-monorepo:** Change log level for getting packages ([2ecad195](https://github.com/LouisMazel/maz-ui/commit/2ecad195))
+- **@maz-ui/changelogen-monorepo:** Disable success log for get tag command ([7fcd3dde](https://github.com/LouisMazel/maz-ui/commit/7fcd3dde))
+- **@maz-ui/changelogen-monorepo:** Add option to force packages bump ([c347fb84](https://github.com/LouisMazel/maz-ui/commit/c347fb84))
+- **@maz-ui/node:** Logger - add method to get current log level ([fe3b9a64](https://github.com/LouisMazel/maz-ui/commit/fe3b9a64))
+- **@maz-ui/changelogen-monorepo:** Manage graduating versions ([fee8d347](https://github.com/LouisMazel/maz-ui/commit/fee8d347))
+- **@maz-ui/node:** Add utility to print banner (useful for CLI) ([044aa02f](https://github.com/LouisMazel/maz-ui/commit/044aa02f))
+- **@maz-ui/changelogen-monorepo:** Add banner ([b6eafacb](https://github.com/LouisMazel/maz-ui/commit/b6eafacb))
+- **@maz-ui/utils:** Add option to choose indentation with formatJson ([0d854b82](https://github.com/LouisMazel/maz-ui/commit/0d854b82))
+- **@maz-ui/node:** PrintBanner - add option to add break line before and after banner ([c85127c6](https://github.com/LouisMazel/maz-ui/commit/c85127c6))
+- **@maz-ui/eslint-config:** Disable sonar rules for mardown files ([d9e4738f](https://github.com/LouisMazel/maz-ui/commit/d9e4738f))
+- **@maz-ui/changelogen-monorepo:** Build for node20 instead of node18 ([d442f65d](https://github.com/LouisMazel/maz-ui/commit/d442f65d))
+- **@maz-ui/changelogen-monorepo:** Doc improvement ([63980fa5](https://github.com/LouisMazel/maz-ui/commit/63980fa5))
+- **@maz-ui/changelogen-monorepo:** Doc improvement ([1836be19](https://github.com/LouisMazel/maz-ui/commit/1836be19))
+- **@maz-ui/node:** Improve logger by using consola ([d8a0c350](https://github.com/LouisMazel/maz-ui/commit/d8a0c350))
+- **@maz-ui/utils:** Add formatJson utility method ([2fa26a39](https://github.com/LouisMazel/maz-ui/commit/2fa26a39))
+- **@maz-ui/changelogen-monorepo:** Add log-level options ([dc4dac95](https://github.com/LouisMazel/maz-ui/commit/dc4dac95))
+- **maz-ui:** MazModulesResolver - add formatJson to auto imported modules ([2de93fe5](https://github.com/LouisMazel/maz-ui/commit/2de93fe5))
+- **@maz-ui/node:** Improve logging of execPromise utility ([a53ab14e](https://github.com/LouisMazel/maz-ui/commit/a53ab14e))
+- **@maz-ui/changelogen-monorepo:** Logging flow improvements ([7cfafb28](https://github.com/LouisMazel/maz-ui/commit/7cfafb28))
+- **@maz-ui/utils:** Add helper type 'DeepRequired' ([ed82b303](https://github.com/LouisMazel/maz-ui/commit/ed82b303))
+- **@maz-ui/changelogen-monorepo:** Config loading improvements ([f67ddc6a](https://github.com/LouisMazel/maz-ui/commit/f67ddc6a))
+- **@maz-ui/node:** Choose log level of execPromise ([491bf63e](https://github.com/LouisMazel/maz-ui/commit/491bf63e))
+- **@maz-ui/changelogen-monorepo:** Change log level for getting packages ([8ffbfc12](https://github.com/LouisMazel/maz-ui/commit/8ffbfc12))
+- **@maz-ui/changelogen-monorepo:** Disable success log for get tag command ([e356a3fb](https://github.com/LouisMazel/maz-ui/commit/e356a3fb))
+- **@maz-ui/changelogen-monorepo:** Add option to force packages bump ([a019327f](https://github.com/LouisMazel/maz-ui/commit/a019327f))
+- **@maz-ui/node:** Logger - add method to get current log level ([2579c675](https://github.com/LouisMazel/maz-ui/commit/2579c675))
+- **@maz-ui/changelogen-monorepo:** Manage graduating versions ([3a0bc873](https://github.com/LouisMazel/maz-ui/commit/3a0bc873))
+- **@maz-ui/node:** Add utility to print banner (useful for CLI) ([47356edd](https://github.com/LouisMazel/maz-ui/commit/47356edd))
+- **@maz-ui/changelogen-monorepo:** Add banner ([9f8d866f](https://github.com/LouisMazel/maz-ui/commit/9f8d866f))
+- **@maz-ui/utils:** Add option to choose indentation with formatJson ([9e130398](https://github.com/LouisMazel/maz-ui/commit/9e130398))
+- **@maz-ui/node:** PrintBanner - add option to add break line before and after banner ([77cdc303](https://github.com/LouisMazel/maz-ui/commit/77cdc303))
+- **@maz-ui/eslint-config:** Disable sonar rules for mardown files ([af550581](https://github.com/LouisMazel/maz-ui/commit/af550581))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-beta.0...v4.2.1-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.2)

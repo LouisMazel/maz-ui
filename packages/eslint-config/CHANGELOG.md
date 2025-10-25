@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.2.0...v4.2.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.0...v4.2.1)
+
+### 💅 Refactors
+
+- **@maz-ui/eslint-config:** Disable sonar rules for mardown files ([af550581](https://github.com/LouisMazel/maz-ui/commit/af550581))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-beta.0...v4.2.1-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.2)

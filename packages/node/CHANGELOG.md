@@ -1,5 +1,28 @@
 # Changelog
 
+## v4.2.0...v4.2.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.0...v4.2.1)
+
+### 🩹 Fixes
+
+- **@maz-ui/node:** Not set log level by default ([c9983ae6](https://github.com/LouisMazel/maz-ui/commit/c9983ae6))
+
+### 💅 Refactors
+
+- **@maz-ui/node:** Improve logger by using consola ([d8a0c350](https://github.com/LouisMazel/maz-ui/commit/d8a0c350))
+- **@maz-ui/node:** Improve logging of execPromise utility ([a53ab14e](https://github.com/LouisMazel/maz-ui/commit/a53ab14e))
+- **@maz-ui/changelogen-monorepo:** Logging flow improvements ([7cfafb28](https://github.com/LouisMazel/maz-ui/commit/7cfafb28))
+- **@maz-ui/node:** Choose log level of execPromise ([491bf63e](https://github.com/LouisMazel/maz-ui/commit/491bf63e))
+- **@maz-ui/node:** Logger - add method to get current log level ([2579c675](https://github.com/LouisMazel/maz-ui/commit/2579c675))
+- **@maz-ui/node:** Add utility to print banner (useful for CLI) ([47356edd](https://github.com/LouisMazel/maz-ui/commit/47356edd))
+- **@maz-ui/node:** PrintBanner - add option to add break line before and after banner ([77cdc303](https://github.com/LouisMazel/maz-ui/commit/77cdc303))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-beta.0...v4.2.1-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.2)
