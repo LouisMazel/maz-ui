@@ -22,22 +22,27 @@ export function determineReleaseType({
   graduating?: boolean
 }): BumpOptions['type'] | null {
   if (graduating) {
+    logger.debug(`Graduating to stable release type: ${config.bump.type}`)
     return config.bump.type
   }
 
   if (!commits?.length && !force) {
+    logger.debug(`No commits found, skipping bump`)
     return null
   }
 
   if (config.bump.type && config.bump.type !== 'release') {
+    logger.debug(`Using specified release type: ${config.bump.type}`)
     return config.bump.type
   }
 
   if (config.bump.type === 'release' && isPrerelease(config.from)) {
+    logger.debug(`Using release type: ${config.bump.type}`)
     return 'release'
   }
 
   if (commits && commits.length > 0) {
+    logger.debug(`Using detected release type: ${determineSemverChange(commits, config)}`)
     return determineSemverChange(commits, config)
   }
 
@@ -60,7 +65,7 @@ export function writeVersion(pkgPath: string, version: string, dryRun = false): 
     }
 
     writeFileSync(packageJsonPath, `${formatJson(packageJson)}\n`, 'utf8')
-    logger.info(`Updated ${packageJson.name}: ${oldVersion} → ${version}`)
+    logger.debug(`Updated ${packageJson.name}: ${oldVersion} → ${version}`)
   }
   catch (error) {
     throw new Error(`Unable to write version to ${packageJsonPath}: ${error}`)
@@ -193,7 +198,7 @@ export async function bumpPackageIndependently({
   const currentVersion = pkg.version || '0.0.0'
   const newVersion = bumpPackageVersion(currentVersion, releaseType, config.bump.preid)
 
-  logger.info(`Bumping ${pkg.name} from ${currentVersion} to ${newVersion}`)
+  logger.debug(`Bumping ${pkg.name} from ${currentVersion} to ${newVersion}`)
 
   writeVersion(pkg.path, newVersion, dryRun)
   return { bumped: true, newVersion, oldVersion: currentVersion }

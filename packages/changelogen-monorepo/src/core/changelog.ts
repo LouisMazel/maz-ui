@@ -4,6 +4,7 @@ import type { PackageInfo } from '../types'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { logger } from '@maz-ui/node'
+import { execPromise } from '@maz-ui/node/execPromise.js'
 import { generateMarkDown } from 'changelogen'
 
 export async function generateChangelog(
@@ -11,10 +12,12 @@ export async function generateChangelog(
     pkg,
     commits,
     config,
+    newTag,
   }: {
     pkg: PackageInfo
     commits: GitCommit[]
     config: ResolvedChangelogMonorepoConfig
+    newTag: string
   },
 ) {
   try {
@@ -22,17 +25,19 @@ export async function generateChangelog(
 
     let changelog = await generateMarkDown(commits, config as ResolvedChangelogConfig)
 
-    if (!config.to.startsWith('v')) {
-      changelog = changelog.replaceAll(config.to, `v${pkg.version}`)
-    }
+    logger.verbose(`Output changelog for ${pkg.name}:\n${changelog}`)
 
-    logger.debug(`Changelog generated for ${pkg.name} (${commits.length} commits)`)
+    if (!config.to.startsWith('v')) {
+      changelog = changelog.replaceAll(config.to, newTag)
+    }
 
     if (commits.length === 0) {
       changelog = `${changelog}\n\n${config.templates.emptyChangelogContent}`
     }
 
-    logger.verbose('Generated changelog:', changelog)
+    logger.debug(`Changelog generated for ${pkg.name} (${commits.length} commits)`)
+
+    logger.debug(`Final changelog for ${pkg.name}:\n\n${changelog}\n\n`)
 
     return changelog
   }
@@ -73,12 +78,42 @@ export function writeChangelogToFile({
 
   if (dryRun) {
     logger.info(`[dry-run] ${pkg.name} - Write changelog to ${changelogPath}`)
-    logger.debug(`Changelog content:\n${changelog}`)
   }
   else {
     logger.debug(`Writing changelog to ${changelogPath}`)
     writeFileSync(changelogPath, updatedChangelog, 'utf8')
     logger.info(`Changelog updated for ${pkg.name}`)
-    logger.debug(`Changelog content:\n${changelog}`)
+  }
+}
+
+export async function executeFormatCmd({
+  config,
+  dryRun,
+}: {
+  config: ResolvedChangelogMonorepoConfig
+  dryRun: boolean
+}) {
+  if (config.changelog?.formatCmd) {
+    logger.debug(`Running format command: ${config.changelog.formatCmd}`)
+    try {
+      if (!dryRun) {
+        await execPromise(config.changelog.formatCmd, {
+          noStderr: true,
+          noStdout: true,
+          logLevel: config.logLevel,
+        })
+      }
+      else {
+        logger.log('[dry-run] running format command: ', config.changelog.formatCmd)
+      }
+      logger.debug('Format completed')
+    }
+    catch (error) {
+      logger.warn('Format command failed:', error)
+      logger.debug('Continuing anyway...')
+    }
+  }
+  else {
+    logger.debug('No format command specified')
   }
 }

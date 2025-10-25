@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 import type { BumpOptions } from './types'
-import { logger, printBanner } from '@maz-ui/node'
+import process from 'node:process'
+import { printBanner } from '@maz-ui/node'
 import { Command } from 'commander'
 import { version } from './../package.json'
 import { bump } from './commands/bump'
@@ -66,6 +67,7 @@ program
   .option('--preminor', 'Bump preminor version')
   .option('--prepatch', 'Bump prepatch version')
   .option('--preid <id>', 'Prerelease identifier (alpha, beta, rc, etc.)')
+  .option('--no-clean', 'Skip check if the working directory is clean')
   .option('--force', 'Bump even if there are no commits')
   .option('--dry-run', 'Preview changes without writing files')
   .action(async (options) => {
@@ -73,13 +75,13 @@ program
       await bump({
         type: getReleaseType(options),
         preid: options.preid,
+        clean: hasCliFlag('--no-clean') ? false : undefined,
         dryRun: options.dryRun,
         logLevel: program.opts().logLevel,
         force: options.force,
       })
     }
-    catch (error) {
-      logger.error(error)
+    catch {
       process.exit(1)
     }
   })
@@ -103,8 +105,7 @@ program
         logLevel: program.opts().logLevel,
       })
     }
-    catch (error) {
-      logger.error(error)
+    catch {
       process.exit(1)
     }
   })
@@ -128,8 +129,7 @@ program
         logLevel: program.opts().logLevel,
       })
     }
-    catch (error) {
-      logger.error(error)
+    catch {
       process.exit(1)
     }
   })
@@ -151,8 +151,7 @@ program
         logLevel: program.opts().logLevel,
       })
     }
-    catch (error) {
-      logger.error(error)
+    catch {
       process.exit(1)
     }
   })
@@ -174,8 +173,7 @@ program
         logLevel: program.opts().logLevel,
       })
     }
-    catch (error) {
-      logger.error(error)
+    catch {
       process.exit(1)
     }
   })
@@ -206,6 +204,9 @@ program
   .option('--dry-run', 'Preview changes without writing files or making commits')
   .option('--token <token>', 'Git token (github or gitlab)')
   .option('--force', 'Bump even if there are no commits')
+  .option('--no-clean', 'Skip check if the working directory is clean')
+  .option('--no-commit', 'Skip commit and tag')
+  .option('--no-changelog', 'Skip changelog generation files')
   .action(async (options) => {
     try {
       await release({
@@ -213,14 +214,17 @@ program
         preid: options.preid,
         from: options.from,
         to: options.to,
-        push: hasCliFlag('--no-push') ? false : undefined,
-        release: hasCliFlag('--no-release') ? false : undefined,
+        changelog: hasCliFlag('--no-changelog') ? false : undefined,
+        commit: hasCliFlag('--no-commit') ? false : undefined,
+        push: hasCliFlag('--no-push') || hasCliFlag('--no-commit') ? false : undefined,
         publish: hasCliFlag('--no-publish') ? false : undefined,
+        release: hasCliFlag('--no-release') ? false : undefined,
+        noVerify: hasCliFlag('--no-verify') ? true : undefined,
+        clean: hasCliFlag('--no-clean') ? false : undefined,
         registry: options.registry,
         tag: options.tag,
         access: options.access,
         otp: options.otp,
-        noVerify: hasCliFlag('--no-verify') ? true : undefined,
         dryRun: options.dryRun,
         formatCmd: options.formatCmd,
         rootChangelog: !hasCliFlag('--no-root-changelog'),
@@ -229,8 +233,7 @@ program
         force: options.force,
       })
     }
-    catch (error) {
-      logger.error(error)
+    catch {
       process.exit(1)
     }
   })

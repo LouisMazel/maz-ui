@@ -1,8 +1,7 @@
 import type { ResolvedChangelogMonorepoConfig } from '../core'
 import type { BumpOptions, BumpResult, PackageInfo, PackageWithCommits } from '../types'
 import { logger } from '@maz-ui/node'
-import { getGitDiff, parseCommits } from 'changelogen'
-import { bumpPackageIndependently, bumpPackageVersion, determinePackageFromTag, determineReleaseType, expandPackagesToBumpWithDependents, getLastTag, getPackageCommits, getPackages, getPackageToBump, getRootPackage, isGraduating, loadMonorepoConfig, updateLernaVersion, writeVersion } from '../core'
+import { bumpPackageIndependently, bumpPackageVersion, checkGitStatusIfDirty, determinePackageFromTag, determineReleaseType, expandPackagesToBumpWithDependents, getLastTag, getPackageCommits, getPackages, getPackageToBump, getRootPackage, isGraduating, isStableReleaseType, loadMonorepoConfig, updateLernaVersion, writeVersion } from '../core'
 
 interface BumpStrategyInput {
   config: ResolvedChangelogMonorepoConfig
@@ -22,12 +21,13 @@ async function bumpUnifiedMode({
   const rootPackage = getRootPackage(config.cwd)
   const currentVersion = rootPackage.version
 
-  const fromTag = config.from
-  logger.debug(`Fetching commits from ${fromTag} to ${config.to}`)
-  const rawCommits = await getGitDiff(fromTag, config.to, config.cwd)
-  const commits = parseCommits(rawCommits, config)
+  const commits = await getPackageCommits({
+    pkg: rootPackage,
+    config,
+    changelog: false,
+  })
 
-  logger.debug(`Found ${commits.length} commits since ${fromTag}`)
+  logger.debug(`Found ${commits.length} commits since ${config.from}`)
 
   const releaseType = determineReleaseType({
     commits,
@@ -137,7 +137,16 @@ async function bumpIndependentMode({
       logLevel: config.logLevel,
     })
 
-    const forcedBumpType = pkgToBump.reason === 'dependency' ? config.bump.type : undefined
+    const forcedBump = pkgToBump.reason === 'dependency'
+
+    const forcedType = isStableReleaseType(releaseType)
+      ? 'patch'
+      : 'prepatch'
+
+    const forcedBumpType = forcedBump
+      ? forcedType
+      : undefined
+
     logger.debug(`Bumping ${pkgToBump.name} (reason: ${pkgToBump.reason})`)
 
     const result = await bumpPackageIndependently({
@@ -151,6 +160,7 @@ async function bumpIndependentMode({
 
     if (result.bumped) {
       bumpedPackages.push({
+        fromTag,
         name: pkgToBump.name,
         path: pkgToBump.path,
         version: result.newVersion,
@@ -192,9 +202,12 @@ async function bumpSelectiveMode({
   const currentVersion = rootPackage.version
 
   let fromTag = config.from
-  logger.debug(`Fetching commits from ${fromTag} to ${config.to}`)
-  let rawCommits = await getGitDiff(fromTag, config.to, config.cwd)
-  let commits = parseCommits(rawCommits, config)
+
+  let commits = await getPackageCommits({
+    pkg: rootPackage,
+    config,
+    changelog: false,
+  })
 
   logger.debug(`Found ${commits.length} commits since ${fromTag}`)
 
@@ -220,8 +233,15 @@ async function bumpSelectiveMode({
     logger.debug('Recalculating commits since last stable release...')
 
     fromTag = await getLastTag({ version: currentVersion, onlyStable: true, logLevel: config.logLevel })
-    rawCommits = await getGitDiff(fromTag, config.to, config.cwd)
-    commits = parseCommits(rawCommits, config)
+
+    commits = await getPackageCommits({
+      pkg: rootPackage,
+      config: {
+        ...config,
+        from: fromTag,
+      },
+      changelog: false,
+    })
 
     logger.debug(`Found ${commits.length} commits since last stable tag ${fromTag}`)
   }
@@ -286,6 +306,12 @@ export async function bump(options: BumpOptions): Promise<BumpResult> {
   try {
     logger.start('Start bumping versions')
 
+    const dryRun = options.dryRun ?? false
+    logger.debug(`Dry run: ${dryRun}`)
+
+    const force = options.force ?? false
+    logger.debug(`Bump forced: ${force}`)
+
     const config = options.config || await loadMonorepoConfig({
       overrides: {
         bump: options,
@@ -293,11 +319,9 @@ export async function bump(options: BumpOptions): Promise<BumpResult> {
       },
     })
 
-    const dryRun = options.dryRun ?? false
-    logger.debug(`Dry run: ${dryRun}`)
-
-    const force = options.force ?? false
-    logger.debug(`Bump forced: ${force}`)
+    if (config.bump.clean && (typeof options.shouldCheckGitStatus === 'boolean' ? options.shouldCheckGitStatus : true)) {
+      checkGitStatusIfDirty()
+    }
 
     logger.debug(`Version mode: ${config.monorepo.versionMode}`)
 

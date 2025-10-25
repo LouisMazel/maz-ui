@@ -1,5 +1,5 @@
 import type { LogLevel } from '@maz-ui/node'
-import type { GitCommit, ChangelogConfig as IChangelogConfig } from 'changelogen'
+import type { GitCommit, ChangelogConfig as IChangelogConfig, SemverBumpType } from 'changelogen'
 import type { ReleaseType } from 'semver'
 import type { ResolvedChangelogMonorepoConfig } from './core'
 
@@ -7,6 +7,7 @@ export type VersionMode = 'unified' | 'independent' | 'selective'
 
 export type GitProvider = 'github' | 'gitlab'
 export interface PackageInfo {
+  fromTag?: string
   name: string
   path: string
   version: string
@@ -27,6 +28,14 @@ export type BumpResult = {
 } | {
   bumped: false
 }
+
+export interface PostedRelease {
+  name: string
+  tag: string
+  prerelease: boolean
+  version: string
+}
+
 export interface MonorepoConfig {
   /**
    * @default 'selective'
@@ -46,6 +55,11 @@ export interface MonorepoConfig {
   filterCommits?: boolean
 }
 
+export type ConfigType = {
+  title: string
+  semver?: SemverBumpType
+} | boolean
+
 export interface BumpConfig {
   /**
    * @default 'release'
@@ -55,6 +69,11 @@ export interface BumpConfig {
    * @default undefined
    */
   preid?: string
+  /**
+   * Check if there are any changes to commit before bumping.
+   * @default true
+   */
+  clean?: boolean
 }
 
 export interface BumpOptions extends BumpConfig {
@@ -74,6 +93,10 @@ export interface BumpOptions extends BumpConfig {
    * @default false
    */
   force?: boolean
+  /**
+   * @default false
+   */
+  shouldCheckGitStatus?: boolean
 }
 
 export interface ChangelogConfig {
@@ -115,10 +138,20 @@ export interface PublishOptions extends PublishConfig {
 
 export interface ReleaseConfig {
   /**
+   * Commit changes and create tag
+   * @default true
+   */
+  commit?: boolean
+  /**
    * Push changes to your repository (commit and tag(s))
    * @default true
    */
   push?: boolean
+  /**
+   * Generate changelog files (CHANGELOG.md)
+   * @default true
+   */
+  changelog?: boolean
   /**
    * Publish release to your repository (github or gitlab)
    * @default true
@@ -139,6 +172,11 @@ export interface ReleaseConfig {
    * @default false
    */
   force?: boolean
+  /**
+   * Determine if the working directory is clean and if it is not clean, exit
+   * @default false
+   */
+  clean?: boolean
 }
 
 export interface ReleaseOptions extends ReleaseConfig, BumpConfig, ChangelogConfig, PublishConfig {

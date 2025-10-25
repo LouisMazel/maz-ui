@@ -1,7 +1,8 @@
 import type { ResolvedChangelogMonorepoConfig } from '../core'
 import type { ChangelogOptions, PackageInfo } from '../types'
-import { execPromise, logger } from '@maz-ui/node'
-import { generateChangelog, getLastTag, getPackageCommits, getPackages, getRootPackage, loadMonorepoConfig, writeChangelogToFile } from '../core'
+import { logger } from '@maz-ui/node'
+import { getCurrentGitBranch } from 'changelogen'
+import { executeFormatCmd, generateChangelog, getLastPackageTag, getLastTag, getPackageCommits, getPackages, getRootPackage, loadMonorepoConfig, writeChangelogToFile } from '../core'
 
 function getPackagesToGenerateChangelogFor({
   config,
@@ -22,38 +23,118 @@ function getPackagesToGenerateChangelogFor({
   })
 }
 
-async function formatChangelog({
+async function generateAggregatedRootChangelog({
+  packages,
+  config,
+  dryRun,
+}: {
+  packages: PackageInfo[]
+  config: ResolvedChangelogMonorepoConfig
+  dryRun: boolean
+}) {
+  logger.debug('Generating aggregated root changelog for independent mode')
+
+  const rootPackage = getRootPackage(config.cwd)
+  const packageChangelogs: string[] = []
+
+  for (const pkg of packages) {
+    const lastTag = pkg.fromTag || await getLastPackageTag({ packageName: pkg.name, logLevel: config.logLevel }) || config.from
+    const toTag = `${pkg.name}@${pkg.version}`
+
+    logger.debug(`Generating changelog for ${pkg.name} (${lastTag}...${toTag})`)
+
+    const commits = await getPackageCommits({
+      pkg,
+      config: {
+        ...config,
+        from: lastTag,
+      },
+      changelog: true,
+    })
+
+    const changelog = await generateChangelog({
+      pkg,
+      commits,
+      config: {
+        ...config,
+        from: lastTag,
+        to: toTag,
+      },
+      newTag: toTag,
+    })
+
+    if (changelog) {
+      const cleanedChangelog = changelog.split('\n').slice(2).join('\n')
+      packageChangelogs.push(`## ${pkg.name}@${pkg.version}\n\n${cleanedChangelog}`)
+    }
+  }
+
+  if (packageChangelogs.length === 0) {
+    logger.debug('No changelogs to aggregate')
+    return
+  }
+
+  const date = new Date().toISOString().split('T')[0]
+  const aggregatedChangelog = `**Multiple Packages Updated** - ${date}\n\n${packageChangelogs.join('\n\n')}`
+
+  logger.debug(`Aggregated root changelog: ${aggregatedChangelog}`)
+
+  writeChangelogToFile({
+    pkg: rootPackage,
+    changelog: aggregatedChangelog,
+    dryRun,
+  })
+
+  logger.debug('Aggregated root changelog written')
+}
+
+async function generateSimpleRootChangelog({
   config,
   dryRun,
 }: {
   config: ResolvedChangelogMonorepoConfig
   dryRun: boolean
 }) {
-  if (config.changelog?.formatCmd) {
-    logger.debug(`Running format command: ${config.changelog.formatCmd}`)
-    try {
-      if (!dryRun) {
-        await execPromise(config.changelog.formatCmd, {
-          noStderr: true,
-          noStdout: true,
-          logLevel: config.logLevel,
-        })
-      }
-      else {
-        logger.log('[dry-run] running format command: ', config.changelog.formatCmd)
-      }
-      logger.debug('Format completed')
-    }
-    catch (error) {
-      logger.warn('Format command failed:', error)
-      logger.debug('Continuing anyway...')
-    }
+  logger.debug('Generating simple root changelog')
+
+  const rootPackage = getRootPackage(config.cwd)
+
+  const toTag = dryRun ? getCurrentGitBranch() : config.to
+  const configWithTags = {
+    ...config,
+    to: toTag,
+  }
+
+  logger.debug(`Generating root changelog (${config.from}...${toTag})`)
+  logger.debug(`Root package: ${rootPackage.name} at ${rootPackage.path}`)
+
+  const rootCommits = await getPackageCommits({
+    pkg: rootPackage,
+    config: configWithTags,
+    changelog: true,
+  })
+
+  const rootChangelog = await generateChangelog({
+    pkg: rootPackage,
+    commits: rootCommits,
+    config: configWithTags,
+    newTag: config.to,
+  })
+
+  if (rootChangelog) {
+    writeChangelogToFile({
+      changelog: rootChangelog,
+      pkg: rootPackage,
+      dryRun,
+    })
+    logger.debug('Root changelog written')
   }
   else {
-    logger.debug('No format command specified')
+    logger.debug('No changelog to generate for root package')
   }
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export async function changelog(options: ChangelogOptions): Promise<void> {
   try {
     logger.start('Start generating changelogs')
@@ -76,37 +157,23 @@ export async function changelog(options: ChangelogOptions): Promise<void> {
     logger.debug(`Commit range: ${config.from}...${config.to}`)
 
     if (config.changelog?.rootChangelog) {
-      const rootPackage = getRootPackage(config.cwd)
+      if (config.monorepo.versionMode === 'independent') {
+        const packagesToAggregate = getPackagesToGenerateChangelogFor({
+          config,
+          packages: options.packages,
+        })
 
-      const fromTag = options.from || await getLastTag({ version: rootPackage.version, logLevel: config.logLevel })
-      const toTag = config.to
-
-      logger.debug(`Generating root changelog (${fromTag}...${toTag})`)
-      logger.debug(`Root package: ${rootPackage.name} at ${rootPackage.path}`)
-
-      const rootCommits = await getPackageCommits({
-        pkg: rootPackage,
-        config,
-        changelog: true,
-      })
-      logger.debug(`Found ${rootCommits.length} commit(s) for root package`)
-
-      const rootChangelog = await generateChangelog({
-        pkg: rootPackage,
-        commits: rootCommits,
-        config,
-      })
-
-      if (rootChangelog) {
-        writeChangelogToFile({
-          changelog: rootChangelog,
-          pkg: rootPackage,
+        await generateAggregatedRootChangelog({
+          packages: packagesToAggregate,
+          config,
           dryRun,
         })
-        logger.debug('Root changelog written')
       }
       else {
-        logger.debug('No changelog to generate for root package')
+        await generateSimpleRootChangelog({
+          config,
+          dryRun,
+        })
       }
     }
 
@@ -122,18 +189,31 @@ export async function changelog(options: ChangelogOptions): Promise<void> {
 
       let generatedCount = 0
       for await (const pkg of packages) {
-        const lastTag = options.from || await getLastTag({ version: pkg.version })
-        logger.debug(`Processing ${pkg.name} (${lastTag}...${config.to})`)
+        const lastTag = options.from || (
+          config.monorepo.versionMode === 'independent'
+            ? (pkg.fromTag || (await getLastPackageTag({ packageName: pkg.name, logLevel: config.logLevel }) || config.from))
+            : await getLastTag({ version: pkg.version })
+        )
+
+        const toTag = config.monorepo.versionMode === 'independent'
+          ? `${pkg.name}@${pkg.version}`
+          : config.to
+
+        const finalToTag = getCurrentGitBranch()
+
+        logger.debug(`Processing ${pkg.name} (${lastTag}...${finalToTag})`)
 
         const commits = await getPackageCommits({
           pkg,
-          config,
+          config: {
+            ...config,
+            from: lastTag,
+            to: finalToTag,
+          },
           changelog: true,
         })
 
         logger.debug(`${pkg.name}: ${commits.length} commit(s)`)
-
-        const toTag = config.to
 
         const changelog = await generateChangelog({
           pkg,
@@ -141,8 +221,9 @@ export async function changelog(options: ChangelogOptions): Promise<void> {
           config: {
             ...config,
             from: lastTag,
-            to: toTag,
+            to: finalToTag,
           },
+          newTag: toTag,
         })
 
         if (changelog) {
@@ -159,7 +240,7 @@ export async function changelog(options: ChangelogOptions): Promise<void> {
       logger.debug(`Generated ${generatedCount} package changelog(s)`)
     }
 
-    await formatChangelog({
+    await executeFormatCmd({
       config,
       dryRun,
     })
