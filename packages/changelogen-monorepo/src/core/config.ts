@@ -31,7 +31,7 @@ function getDefaultConfig() {
       ci: { title: '🤖 CI' },
     } as ChangelogConfig['types'],
     templates: {
-      commitMessage: 'chore(release): bump version to v{{newVersion}}',
+      commitMessage: 'chore(release): bump version to {{newVersion}}',
       tagMessage: 'Bump version to v{{newVersion}}',
       tagBody: 'v{{newVersion}}',
       emptyChangelogContent: 'No relevant changes for this release',
@@ -39,12 +39,11 @@ function getDefaultConfig() {
     excludeAuthors: [],
     noAuthors: false,
     monorepo: {
-      versionMode: 'selective',
-      packages: ['packages/*'],
       filterCommits: true,
     },
     bump: {
       type: 'release',
+      clean: true,
     },
     changelog: {
       rootChangelog: true,
@@ -67,8 +66,11 @@ function getDefaultConfig() {
     },
     scopeMap: {},
     release: {
+      commit: true,
       publish: true,
+      changelog: true,
       push: true,
+      clean: true,
       release: true,
       noVerify: false,
     },
@@ -104,7 +106,7 @@ export async function loadMonorepoConfig({ overrides }: {
 
   setupLogger(overrides?.logLevel || config.logLevel)
 
-  logger.debug('User config:', formatJson(config))
+  logger.verbose('User config:', formatJson(config))
 
   const resolvedConfig = await resolveConfig(config, cwd)
 

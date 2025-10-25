@@ -1,6 +1,6 @@
-import type { GitCommit, SemverBumpType } from 'changelogen'
+import type { GitCommit } from 'changelogen'
 import type { ResolvedChangelogMonorepoConfig } from '../core'
-import type { PackageInfo } from '../types'
+import type { ConfigType, PackageInfo } from '../types'
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { logger } from '@maz-ui/node'
@@ -88,16 +88,23 @@ export function getPackages({
   return packages
 }
 
-function isAllowedType({
+function isAllowedCommit({
+  commit,
   type,
   changelog,
 }: {
-  type: {
-    title: string
-    semver?: SemverBumpType
-  } | boolean
+  commit: GitCommit
+  type?: ConfigType
   changelog: boolean
 }): boolean {
+  if (
+    commit.type === 'chore'
+    && ['deps', 'release'].includes(commit.scope)
+    && !commit.isBreaking
+  ) {
+    return false
+  }
+
   if (typeof type === 'object') {
     return !!type.semver || (changelog && !!type.title)
   }
@@ -118,15 +125,20 @@ export async function getPackageCommits({
   config: ResolvedChangelogMonorepoConfig
   changelog: boolean
 }): Promise<GitCommit[]> {
+  logger.debug(`Fetching commits from ${config.from} to ${config.to}`)
+
   const rawCommits = await getGitDiff(config.from, config.to, config.cwd)
   const allCommits = parseCommits(rawCommits, config)
+
+  const hasBreakingChanges = allCommits.some(commit => commit.isBreaking)
+  logger.debug(`Has breaking changes: ${hasBreakingChanges}`)
 
   const rootPackage = getRootPackage(config.cwd)
 
   const commits = allCommits.filter((commit) => {
-    const type = config?.types[commit.type]
+    const type = config?.types[commit.type] as ConfigType | undefined
 
-    if (!isAllowedType({ type, changelog })) {
+    if (!isAllowedCommit({ commit, type, changelog })) {
       return false
     }
 
@@ -141,6 +153,8 @@ export async function getPackageCommits({
 
     return scopeMatches || bodyContainsPath
   })
+
+  logger.debug(`Found ${commits.length} commit(s) for ${pkg.name} from ${config.from} to ${config.to}`)
 
   return commits
 }

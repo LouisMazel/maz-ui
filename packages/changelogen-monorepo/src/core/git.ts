@@ -7,6 +7,22 @@ import { execSync } from 'node:child_process'
 import { execPromise, logger } from '@maz-ui/node'
 import { extractVersionFromPackageTag, isGraduating, isPrerelease } from '../core'
 
+export function getGitStatus(cwd?: string) {
+  return execSync('git status --porcelain', {
+    cwd,
+    encoding: 'utf8',
+  }).trim()
+}
+
+export function checkGitStatusIfDirty() {
+  logger.debug('Checking git status')
+  const dirty = getGitStatus()
+  if (dirty) {
+    logger.debug('git status:', `\n${dirty.trim().split('\n').map(line => line.trim()).join('\n')}`)
+    throw new Error('Working directory is not clean')
+  }
+}
+
 export function detectGitProvider(cwd: string = process.cwd()): GitProvider | null {
   try {
     const remoteUrl = execSync('git remote get-url origin', {
@@ -94,13 +110,14 @@ export async function commitAndTag({
     }
   }
 
-  const versionForMessage = newVersion || (bumpedPackages?.[0]?.version) || 'unknown'
+  const versionForMessage = config.monorepo.versionMode === 'independent' ? bumpedPackages?.map(pkg => `${pkg.name}@${pkg.version}`).join(', ') || 'unknown' : newVersion || 'unknown'
 
   const commitMessage = config.templates.commitMessage
     ?.replaceAll('{{newVersion}}', versionForMessage)
-    || `chore(release): bump version to v${versionForMessage}`
+    || `chore(release): bump version to ${versionForMessage}`
 
   const noVerifyFlag = (noVerify) ? '--no-verify ' : ''
+  logger.debug(`No verify: ${noVerify}`)
 
   if (dryRun) {
     logger.info(`[dry-run] git commit ${noVerifyFlag}-m "${commitMessage}"`)
@@ -244,7 +261,7 @@ export async function getLastPackageTag({
     }
 
     const { stdout } = await execPromise(
-      `git tag --sort=-v:refname | grep -E '${grepPattern}' | sed -n '1p'`,
+      `git tag --sort=-creatordate | grep -E '${grepPattern}' | sed -n '1p'`,
       {
         logLevel,
         noStderr: true,
@@ -307,7 +324,7 @@ export async function determinePackageFromTag({
   return lastPackageTag
 }
 
-export async function pushCommitAndTags({ dryRun, logLevel }: { dryRun?: boolean, logLevel?: LogLevel }) {
+export async function pushCommitAndTags({ dryRun, logLevel }: { dryRun: boolean, logLevel?: LogLevel }) {
   logger.start('Start push changes and tags')
 
   if (dryRun) {

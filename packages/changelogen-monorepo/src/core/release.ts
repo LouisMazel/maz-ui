@@ -1,19 +1,20 @@
 import type { LogLevel } from '@maz-ui/node'
-import type { GitProvider } from '../types'
+import type { GitProvider, PackageInfo, PostedRelease } from '../types'
 import type { ResolvedChangelogMonorepoConfig } from './config'
 import { logger } from '@maz-ui/node'
+import { getCurrentGitBranch } from 'changelogen'
 import { github } from '../commands/github'
 import { gitlab } from '../commands/gitlab'
 import { detectGitProvider } from '../core'
 
-export async function publishToGitProvider({ provider, from, to, dryRun, config, logLevel }: {
+export async function publishToGitProvider({ provider, from, dryRun, config, logLevel, bumpedPackages }: {
   provider?: GitProvider
   from: string
-  to: string
-  dryRun?: boolean
-  config?: ResolvedChangelogMonorepoConfig
+  config: ResolvedChangelogMonorepoConfig
+  bumpedPackages: PackageInfo[]
   logLevel?: LogLevel
-}): Promise<GitProvider> {
+  dryRun?: boolean
+}): Promise<{ detectedProvider: GitProvider, postedReleases: PostedRelease[] }> {
   const detectedProvider = provider || detectGitProvider()
 
   if (!detectedProvider) {
@@ -24,27 +25,37 @@ export async function publishToGitProvider({ provider, from, to, dryRun, config,
     logger.info(`Detected Git provider: ${detectedProvider}`)
   }
 
+  let postedReleases: PostedRelease[] = []
+
+  const configWithTags = {
+    ...config,
+    to: dryRun ? getCurrentGitBranch() : config.to,
+  }
+
   if (detectedProvider === 'github') {
-    await github({
+    postedReleases = await github({
       from,
-      to,
       dryRun,
-      config,
+      config: configWithTags,
       logLevel,
+      bumpedPackages,
     })
   }
   else if (detectedProvider === 'gitlab') {
-    await gitlab({
+    postedReleases = await gitlab({
       from,
-      to,
       dryRun,
-      config,
+      config: configWithTags,
       logLevel,
+      bumpedPackages,
     })
   }
   else {
     logger.warn(`Unsupported Git provider: ${detectedProvider}`)
   }
 
-  return detectedProvider
+  return {
+    detectedProvider,
+    postedReleases,
+  }
 }

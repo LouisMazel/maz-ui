@@ -24,10 +24,6 @@ Imagine you have multiple packages in your project (like a box with several toys
 - 🔐 2FA/OTP support for npm publishing
 - 🎛️ Custom registry support (private registries, GitHub Packages, etc.)
 
-## ⚠️ Warning
-
-The `independent` mode has not been fully tested. Use `--dry-run` before any command to preview what will happen.
-
 ## 📦 Installation
 
 ```bash
@@ -535,6 +531,14 @@ Version bump configuration.
 
 **Description:** Identifier for pre-releases (alpha, beta, rc, etc.)
 
+##### `bump.clean`
+
+**Type:** `boolean`
+
+**Default:** `true`
+
+**Description:** Check if there are any changes to commit before bumping.
+
 #### `publish`
 
 **Type:** `object`
@@ -571,13 +575,29 @@ npm publishing configuration.
 
 Release workflow configuration.
 
+##### `release.clean`
+
+**Type:** `boolean`
+
+**Default:** `true`
+
+**Description:** Check if there are any changes to commit before bumping.
+
+##### `release.commit`
+
+**Type:** `boolean`
+
+**Default:** `true`
+
+**Description:** Commit changes and create tag.
+
 ##### `release.push`
 
 **Type:** `boolean`
 
 **Default:** `true`
 
-**Description:** Push changes and tags to remote.
+**Description:** Push changes and tags to remote. Will be false if `release.commit` is false.
 
 ##### `release.release`
 

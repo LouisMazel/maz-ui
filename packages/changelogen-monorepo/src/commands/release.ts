@@ -1,4 +1,4 @@
-import type { PublishResponse, ReleaseOptions } from '../types'
+import type { PostedRelease, PublishResponse, ReleaseOptions } from '../types'
 import { logger } from '@maz-ui/node'
 import { commitAndTag, getLastTag, getRootPackage, loadMonorepoConfig, publishToGitProvider, pushCommitAndTags } from '../core'
 import { bump } from './bump'
@@ -18,6 +18,7 @@ function getReleaseConfig(options: Partial<ReleaseOptions>) {
       bump: {
         type: options.type,
         preid: options.preid,
+        clean: options.clean,
       },
       changelog: {
         formatCmd: options.formatCmd,
@@ -30,15 +31,19 @@ function getReleaseConfig(options: Partial<ReleaseOptions>) {
         tag: options.tag,
       },
       release: {
+        commit: options.commit,
+        changelog: options.changelog,
         push: options.push,
         publish: options.publish,
         noVerify: options.noVerify,
         release: options.release,
+        clean: options.clean,
       },
     },
   })
 }
 
+// eslint-disable-next-line complexity, sonarjs/cognitive-complexity
 export async function release(options: ReleaseOptions): Promise<void> {
   try {
     const dryRun = options.dryRun ?? false
@@ -55,56 +60,77 @@ export async function release(options: ReleaseOptions): Promise<void> {
     logger.debug(`Commit range: ${config.from}...${config.to}`)
 
     logger.box('Step 1/6: Bump versions')
+
     const bumpResult = await bump({
       type: config.bump.type,
       preid: config.bump.preid,
       dryRun,
       config,
       force,
+      shouldCheckGitStatus: config.release.clean,
     })
 
     if (!bumpResult.bumped) {
+      logger.debug('No packages bumped')
       return
     }
 
     const rootPackage = getRootPackage(config.cwd)
-    const currentVersion = bumpResult.newVersion || rootPackage.version
-    const lastTag = options.from || await getLastTag({ version: currentVersion })
-    logger.debug(`Current version: ${currentVersion}, Last tag: ${lastTag}`)
 
-    if (!currentVersion) {
+    const newVersion = config.monorepo.versionMode === 'independent' ? undefined : bumpResult.newVersion || rootPackage.version
+
+    config.to = newVersion ? `v${newVersion}` : config.to
+
+    const lastTag = config.monorepo.versionMode === 'independent'
+      ? config.from
+      : (options.from || await getLastTag({ version: newVersion }))
+
+    logger.debug(`Current version: ${newVersion || 'independent'}, Last tag: ${lastTag}`)
+
+    if (!newVersion && config.monorepo.versionMode !== 'independent') {
       throw new Error('Unable to determine new version')
     }
 
     logger.box('Step 2/6: Generate changelogs')
-    await changelog({
-      from: lastTag,
-      to: config.to,
-      dryRun,
-      formatCmd: config.changelog.formatCmd,
-      rootChangelog: config.changelog.rootChangelog,
-      packages: bumpResult.bumpedPackages,
-      config,
-      logLevel: config.logLevel,
-    })
+    if (config.release.changelog) {
+      await changelog({
+        from: config.monorepo.versionMode === 'independent' ? undefined : lastTag,
+        to: config.to,
+        dryRun,
+        formatCmd: config.changelog.formatCmd,
+        rootChangelog: config.changelog.rootChangelog,
+        packages: bumpResult.bumpedPackages,
+        config,
+        logLevel: config.logLevel,
+      })
+    }
+    else {
+      logger.info('Skipping changelog generation (--no-changelog)')
+    }
 
     logger.box('Step 3/6: Commit changes and create tag')
-    logger.debug(`Verify hooks: ${config.release.noVerify}`)
-    const createdTags = await commitAndTag({
-      newVersion: currentVersion,
-      config,
-      noVerify: config.release.noVerify,
-      bumpedPackages: bumpResult.bumpedPackages,
-      dryRun,
-      logLevel: config.logLevel,
-    })
+
+    let createdTags: string[] = []
+    if (config.release.commit) {
+      createdTags = await commitAndTag({
+        newVersion,
+        config,
+        noVerify: config.release.noVerify,
+        bumpedPackages: bumpResult.bumpedPackages,
+        dryRun,
+        logLevel: config.logLevel,
+      })
+    }
+    else {
+      logger.info('Skipping commit and tag (--no-commit)')
+    }
 
     logger.box('Step 4/6: Push changes and tags')
-    if (config.release.push) {
+    if (config.release.push && config.release.commit) {
       await pushCommitAndTags({ dryRun })
     }
     else {
-      logger.info('Skipping push (--no-push)')
+      logger.info('Skipping push (--no-push or --no-commit)')
     }
 
     logger.box('Step 5/6: Publish packages to registry')
@@ -126,20 +152,23 @@ export async function release(options: ReleaseOptions): Promise<void> {
     }
 
     let provider = config.repo?.provider
+    let postedReleases: PostedRelease[] = []
 
     logger.box('Step 6/6: Publish Git release')
     if (config.release.release) {
       logger.debug(`Provider from config: ${provider}`)
 
       try {
-        provider = await publishToGitProvider({
+        const response = await publishToGitProvider({
           provider,
           from: lastTag,
-          to: config.to,
           dryRun,
           config,
           logLevel: config.logLevel,
+          bumpedPackages: bumpResult.bumpedPackages,
         })
+        provider = response.detectedProvider
+        postedReleases = response.postedReleases
       }
       catch (error) {
         logger.error('Error during release publication:', error)
@@ -150,14 +179,17 @@ export async function release(options: ReleaseOptions): Promise<void> {
     }
 
     const publishedPackageCount = publishResponse?.publishedPackages.length ?? 0
+    const versionDisplay = config.monorepo.versionMode === 'independent'
+      ? `${bumpResult.bumpedPackages.length} packages bumped independently`
+      : newVersion
 
     logger.box('Release workflow completed!\n\n'
-      + `Version: ${currentVersion}\n`
-      + `Tag(s): ${createdTags.join(', ')}\n`
-      + `Pushed: ${config.release.push ? 'Yes' : 'No'}\n`
-      + `Published packages: ${config.release.publish ? publishedPackageCount : 'No'}\n`
-      + `Published release: ${config.release.release !== false ? 'Yes' : 'No'}\n`
-      + `Provider: ${provider}`)
+      + `Version: ${versionDisplay}\n`
+      + `Tag(s): ${createdTags.length ? createdTags.join(', ') : 'No'}\n`
+      + `Pushed: ${config.release.push ? 'Yes' : 'Disabled'}\n`
+      + `Published packages: ${config.release.publish ? publishedPackageCount : 'Disabled'}\n`
+      + `Published release: ${config.release.release ? postedReleases.length : 'Disabled'}\n`
+      + `Git provider: ${provider}`)
   }
   catch (error) {
     logger.error('Error during release workflow:', error)
