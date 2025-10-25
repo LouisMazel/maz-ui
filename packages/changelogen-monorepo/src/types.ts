@@ -110,6 +110,7 @@ export interface ChangelogOptions extends ChangelogConfig {
   packages?: PackageInfo[]
   config?: ResolvedChangelogMonorepoConfig
   logLevel?: LogLevel
+  newTag?: string
 }
 
 export interface GitProviderOptions {

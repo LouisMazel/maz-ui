@@ -91,15 +91,17 @@ async function generateAggregatedRootChangelog({
 async function generateSimpleRootChangelog({
   config,
   dryRun,
+  newTag,
 }: {
   config: ResolvedChangelogMonorepoConfig
   dryRun: boolean
+  newTag: string
 }) {
   logger.debug('Generating simple root changelog')
 
   const rootPackage = getRootPackage(config.cwd)
 
-  const toTag = dryRun ? getCurrentGitBranch() : config.to
+  const toTag = config.to
   const configWithTags = {
     ...config,
     to: toTag,
@@ -118,7 +120,7 @@ async function generateSimpleRootChangelog({
     pkg: rootPackage,
     commits: rootCommits,
     config: configWithTags,
-    newTag: config.to,
+    newTag: newTag ?? config.to,
   })
 
   if (rootChangelog) {
@@ -173,6 +175,7 @@ export async function changelog(options: ChangelogOptions): Promise<void> {
         await generateSimpleRootChangelog({
           config,
           dryRun,
+          newTag: options.newTag || config.to,
         })
       }
     }
@@ -197,11 +200,11 @@ export async function changelog(options: ChangelogOptions): Promise<void> {
 
         const toTag = config.monorepo.versionMode === 'independent'
           ? `${pkg.name}@${pkg.version}`
-          : config.to
+          : options.newTag || config.to
 
         const finalToTag = getCurrentGitBranch()
 
-        logger.debug(`Processing ${pkg.name} (${lastTag}...${finalToTag})`)
+        logger.debug(`Processing ${pkg.name} (${lastTag}...${toTag})`)
 
         const commits = await getPackageCommits({
           pkg,
