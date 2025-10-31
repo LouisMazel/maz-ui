@@ -30,6 +30,23 @@ Imagine you have multiple packages in your project (like a box with several toys
 pnpm add -D @maz-ui/changelogen-monorepo
 ```
 
+## ⚙️ Minimal configuration
+
+Create a `changelog.config.ts` file in the root of your project (the config file is loaded using [c12](https://github.com/unjs/c12), so you can use mulitple languages and formats, more information in [c12 docs](https://github.com/unjs/c12)).
+
+This is a **minimal configuration example** (check all options in the [configuration section](#configuration-options)), you have to specify the version mode and the packages to bump.
+
+```typescript
+import { defineConfig } from '@maz-ui/changelogen-monorepo'
+
+export default defineConfig({
+  monorepo: {
+    versionMode: 'selective', // 'unified', 'selective', 'independent'
+    packages: ['packages/*'], // glob pattern matching
+  },
+})
+```
+
 ## 🚀 Usage
 
 ### Available commands
@@ -307,7 +324,7 @@ $ clm bump --patch --log-level debug
 
 ## ⚙️ Configuration
 
-Create a `changelogen.config.ts` file at the root of your project:
+Create a `changelog.config.ts` file at the root of your project:
 
 ```typescript
 import { defineConfig } from '@maz-ui/changelogen-monorepo'
@@ -324,7 +341,6 @@ export default defineConfig({
     versionMode: 'selective',
     packages: ['packages/*'],
     ignorePackageNames: [],
-    filterCommits: true,
   },
 
   // Optional configuration
@@ -474,19 +490,6 @@ packages: ['packages/*', 'tools/cli', 'apps/*']
 ignorePackageNames: ['@myorg/internal-utils', '@myorg/eslint-config']
 ```
 
-##### `monorepo.filterCommits`
-
-**Type:** `boolean`
-
-**Default:** `true`
-
-**Description:** Filters commits per package based on:
-
-- **Commit scope:** `feat(my-package):` appears only in `my-package`'s changelog
-- **File paths:** Only includes commits that modified files within the package directory
-
-When `false`, all commits appear in all changelogs (not recommended).
-
 #### `changelog`
 
 **Type:** `object`
@@ -538,6 +541,34 @@ Version bump configuration.
 **Default:** `true`
 
 **Description:** Check if there are any changes to commit before bumping.
+
+##### `bump.dependencyTypes`
+
+**Type:** `('dependencies' | 'devDependencies' | 'peerDependencies')[]`
+
+**Default:** `['dependencies']`
+
+**Description:** Choose which types of dependencies trigger a version bump.
+
+When a package is updated, this option decides if other packages should be bumped based on how they use it:
+
+- `'dependencies'`: Bump packages that need it to work (like a toy needs batteries)
+- `'devDependencies'`: Bump packages that need it for building or testing (like tools to make the toy)
+- `'peerDependencies'`: Bump packages that work alongside it (like compatible accessories)
+
+**Example:**
+
+```typescript
+// Only bump when normal dependencies change
+bump: {
+  dependencyTypes: ['dependencies']
+}
+
+// Bump for all types of dependencies
+bump: {
+  dependencyTypes: ['dependencies', 'devDependencies', 'peerDependencies']
+}
+```
 
 #### `publish`
 
@@ -696,7 +727,7 @@ Templates for commit and tag messages.
 
 **Default:** `'chore(release): bump version to v{{newVersion}}'`
 
-**Description:** Commit message template during release.
+**Description:** Commit message template during release. Tips: add `[skip ci]` with Gitlab to skip CI run for the release commit.
 
 ##### `templates.tagMessage`
 
@@ -712,7 +743,7 @@ Templates for commit and tag messages.
 
 **Default:** `'v{{newVersion}}'`
 
-**Description:** Git tag body template.
+**Description:** Git tag body template. **Not used with "independent" version mode, independent tags are created per package (e.g. `package-name@1.0.0`)**
 
 ##### `templates.emptyChangelogContent`
 
@@ -730,6 +761,91 @@ Templates for commit and tag messages.
 
 **Description:** Default log level for all commands.
 
+### Configuration Examples
+
+#### Simple configuration (selective mode)
+
+```typescript
+import { defineConfig } from '@maz-ui/changelogen-monorepo'
+
+export default defineConfig({
+  types: {
+    feat: { title: '🚀 Features', semver: 'minor' },
+    fix: { title: '🩹 Fixes', semver: 'patch' },
+  },
+  monorepo: {
+    versionMode: 'selective',
+    packages: ['packages/*'],
+  },
+})
+```
+
+#### Advanced configuration
+
+```typescript
+import { defineConfig } from '@maz-ui/changelogen-monorepo'
+
+export default defineConfig({
+  types: {
+    feat: { title: '🚀 Features', semver: 'minor' },
+    fix: { title: '🩹 Fixes', semver: 'patch' },
+    perf: { title: '🔥 Performance', semver: 'patch' },
+    docs: { title: '📖 Documentation' },
+    chore: { title: '🏡 Chore' },
+    ci: false,
+    test: false,
+  },
+
+  monorepo: {
+    versionMode: 'selective',
+    packages: ['packages/*', 'tools/*'],
+    ignorePackageNames: ['@myorg/eslint-config'],
+  },
+
+  changelog: {
+    formatCmd: 'pnpm lint:fix',
+    rootChangelog: true,
+  },
+
+  bump: {
+    type: 'release',
+  },
+
+  publish: {
+    private: false,
+    tag: 'latest',
+  },
+
+  release: {
+    push: true,
+    release: true,
+    publish: true,
+    noVerify: false,
+  },
+
+  templates: {
+    commitMessage: 'chore(release): v{{newVersion}}',
+  },
+})
+```
+
+#### Configuration for self-hosted GitLab
+
+```typescript
+import { defineConfig } from '@maz-ui/changelogen-monorepo'
+
+export default defineConfig({
+  repo: {
+    domain: 'gitlab.mycompany.com',
+    provider: 'gitlab',
+  },
+  monorepo: {
+    versionMode: 'selective',
+    packages: ['packages/*'],
+  },
+})
+```
+
 ## 🔗 Dependency Management
 
 The tool automatically detects and bumps packages that depend on other packages in the monorepo.
@@ -739,7 +855,7 @@ The tool automatically detects and bumps packages that depend on other packages 
 **Automatic detection:**
 
 - When package B is updated, all packages that depend on B are automatically identified
-- Only `dependencies` and `peerDependencies` are considered (not `devDependencies`)
+- By default only `dependencies` are considered (not `devDependencies` or `peerDependencies`). You can change this behavior using the [dependencyTypes](#bumpdependencytypes) option.
 - Transitive dependencies are handled: if A→B→C and C is updated, both B and A are bumped
 
 **Bump types by mode:**
@@ -788,11 +904,11 @@ If a `lerna.json` file exists at the root, the tool automatically updates its `v
 ### Migration from Lerna
 
 1. Keep your existing `lerna.json` (optional)
-2. Create a `changelogen.config.ts` with your versioning strategy
+2. Create a `changelog.config.ts` with your versioning strategy
 3. Replace `lerna version` with `clm release`
 4. Use your package manager to publish (e.g., `pnpm publish -r`)
 
-## 🦊 GitLab Configuration
+## 🦊 GitLab CI/CD Configuration
 
 ### Personal Access Token
 
@@ -801,7 +917,7 @@ If a `lerna.json` file exists at the root, the tool automatically updates its `v
 3. Set the environment variable:
 
 ```bash
-export GITLAB_TOKEN="your-token-here"
+GITLAB_TOKEN="your-token-here"
 ```
 
 ### CI/CD Pipeline
@@ -813,25 +929,12 @@ release:
   stage: deploy
   script:
     - pnpm install
-    - pnpm clm release --patch
+    - pnpm clm release
   only:
     - main
 ```
 
-### Self-hosted GitLab
-
-For self-hosted GitLab instances, configure the domain in your config:
-
-```typescript
-export default defineConfig({
-  repo: {
-    domain: 'gitlab.mycompany.com',
-    provider: 'gitlab',
-  },
-})
-```
-
-## 📚 Programmatic Usage (API)
+## Programmatic Usage (API)
 
 You can also use the tool programmatically:
 
@@ -881,92 +984,6 @@ await release({
 })
 ```
 
-## 📝 Configuration Examples
-
-### Simple configuration (selective mode)
-
-```typescript
-import { defineConfig } from '@maz-ui/changelogen-monorepo'
-
-export default defineConfig({
-  types: {
-    feat: { title: '🚀 Features', semver: 'minor' },
-    fix: { title: '🩹 Fixes', semver: 'patch' },
-  },
-  monorepo: {
-    versionMode: 'selective',
-    packages: ['packages/*'],
-  },
-})
-```
-
-### Advanced configuration
-
-```typescript
-import { defineConfig } from '@maz-ui/changelogen-monorepo'
-
-export default defineConfig({
-  types: {
-    feat: { title: '🚀 Features', semver: 'minor' },
-    fix: { title: '🩹 Fixes', semver: 'patch' },
-    perf: { title: '🔥 Performance', semver: 'patch' },
-    docs: { title: '📖 Documentation' },
-    chore: { title: '🏡 Chore' },
-    ci: false,
-    test: false,
-  },
-
-  monorepo: {
-    versionMode: 'selective',
-    packages: ['packages/*', 'tools/*'],
-    ignorePackageNames: ['@myorg/eslint-config'],
-    filterCommits: true,
-  },
-
-  changelog: {
-    formatCmd: 'pnpm lint:fix',
-    rootChangelog: true,
-  },
-
-  bump: {
-    type: 'release',
-  },
-
-  publish: {
-    private: false,
-    tag: 'latest',
-  },
-
-  release: {
-    push: true,
-    release: true,
-    publish: true,
-    noVerify: false,
-  },
-
-  templates: {
-    commitMessage: 'chore(release): v{{newVersion}}',
-  },
-})
-```
-
-### Configuration for self-hosted GitLab
-
-```typescript
-import { defineConfig } from '@maz-ui/changelogen-monorepo'
-
-export default defineConfig({
-  repo: {
-    domain: 'gitlab.mycompany.com',
-    provider: 'gitlab',
-  },
-  monorepo: {
-    versionMode: 'selective',
-    packages: ['packages/*'],
-  },
-})
-```
-
-## 📄 License
+## License
 
 MIT
