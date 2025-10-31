@@ -11,23 +11,33 @@ export async function generateChangelog(
     pkg,
     commits,
     config,
+    from,
+    to,
     newTag,
   }: {
     pkg: PackageInfo
     commits: GitCommit[]
     config: ResolvedChangelogMonorepoConfig
+    from: string
+    to: string
     newTag: string
   },
 ) {
   try {
-    logger.debug(`Generating changelog for ${pkg.name} - from ${config.from} to ${config.to}`)
+    logger.debug(`Generating changelog for ${pkg.name} - from ${from} to ${to}`)
+
+    config = {
+      ...config,
+      from,
+      to: newTag ?? to,
+    }
 
     let changelog = await generateMarkDown(commits, config as ResolvedChangelogConfig)
 
     logger.verbose(`Output changelog for ${pkg.name}:\n${changelog}`)
 
-    if (!config.to.startsWith('v')) {
-      changelog = changelog.replaceAll(config.to, newTag)
+    if (to !== newTag) {
+      changelog = changelog.replaceAll(to, newTag)
     }
 
     if (commits.length === 0) {
@@ -41,7 +51,7 @@ export async function generateChangelog(
     return changelog
   }
   catch (error) {
-    throw new Error(`Error generating changelog for ${pkg.name}: ${error}`)
+    throw new Error(`Error generating changelog for ${pkg.name} (${from}...${to}): ${error}`)
   }
 }
 
