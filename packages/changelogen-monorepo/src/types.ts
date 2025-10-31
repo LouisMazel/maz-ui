@@ -38,21 +38,20 @@ export interface PostedRelease {
 
 export interface MonorepoConfig {
   /**
-   * @default 'selective'
+   * Version mode for the monorepo.
+   * @required
    */
   versionMode: VersionMode
   /**
-   * @default ['packages/*']
+   * Glob pattern matching for packages to bump.
+   * @required
    */
   packages: string[]
   /**
+   * Package names to ignore.
    * @default []
    */
   ignorePackageNames?: string[]
-  /**
-   * @default true
-   */
-  filterCommits?: boolean
 }
 
 export type ConfigType = {
@@ -74,6 +73,16 @@ export interface BumpConfig {
    * @default true
    */
   clean?: boolean
+  /**
+   * Include dev dependencies when bumping.
+   * @default ['dependencies']
+   */
+  dependencyTypes?: ('dependencies' | 'devDependencies' | 'peerDependencies')[]
+  /**
+   * Skip confirmation prompt about bumping packages
+   * @default true
+   */
+  yes?: boolean
 }
 
 export interface BumpOptions extends BumpConfig {
@@ -93,10 +102,6 @@ export interface BumpOptions extends BumpConfig {
    * @default false
    */
   force?: boolean
-  /**
-   * @default false
-   */
-  shouldCheckGitStatus?: boolean
 }
 
 export interface ChangelogConfig {
@@ -127,7 +132,16 @@ export type PublishConfig = IChangelogConfig['publish'] & {
   tag?: string
   access?: 'public' | 'restricted'
   otp?: string
+  /**
+   * Glob pattern matching for packages to publish.
+   * @default undefined
+   */
   packages?: string[]
+  /**
+   * Command to build your packages before publishing.
+   * @default undefined
+   */
+  buildCmd?: string
 }
 
 export interface PublishOptions extends PublishConfig {
@@ -204,7 +218,13 @@ export interface ReleaseOptions extends ReleaseConfig, BumpConfig, ChangelogConf
   logLevel?: LogLevel
 }
 
-export type TemplatesConfig = IChangelogConfig['templates'] & {
+export interface TemplatesConfig {
+  commitMessage?: string
+  tagMessage?: string
+  /**
+   * Not used with "independent" version mode
+   */
+  tagBody?: string
   emptyChangelogContent?: string
 }
 
@@ -224,7 +244,6 @@ export interface ChangelogMonorepoConfig extends Partial<Omit<IChangelogConfig, 
     versionMode: 'selective',
     packages: ['packages/*'],
     ignorePackageNames: [],
-    filterCommits: true,
   }`
    */
   monorepo: MonorepoConfig
