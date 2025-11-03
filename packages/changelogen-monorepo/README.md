@@ -924,7 +924,7 @@ release:
   stage: deploy
   script:
     - pnpm install
-    - pnpm clm release
+    - pnpm clm release --yes
   only:
     - main
 ```
