@@ -161,63 +161,50 @@ clm publish --dry-run
 - Stable version (e.g., `1.2.3`) → tag `latest`
 - Prerelease version (e.g., `1.2.3-beta.0`) → tag `next`
 
-#### 4. `github` - Publish a GitHub release
+#### 4. `provider-release` - Publish a release to git provider (github or gitlab)
 
-Publishes a GitHub release for the latest tag.
+Publishes a release for the latest tag.
 
 ```bash
-# Publish to GitHub
-clm github
+# Publish release
+clm provider-release
 
 # With custom token
-clm github --token YOUR_GITHUB_TOKEN
+clm provider-release --token YOUR_GITHUB_TOKEN
+
+# Force git provider
+clm provider-release --provider github
 
 # Specify range
-clm github --from v1.0.0 --to v1.1.0
+clm provider-release --from v1.0.0 --to v1.1.0
 
 # Preview
-clm github --dry-run
+clm provider-release --dry-run
 ```
 
 **Available options:**
 
 - `--from <ref>` - Start commit reference
 - `--to <ref>` - End commit reference
-- `--token <token>` - GitHub token (or environment variable `GITHUB_TOKEN` / `GH_TOKEN`)
+- `--token <token>` - Git provider token
+- `--provider <provider>` - Git provider (github or gitlab)
 - `--dry-run` - Preview release content
 
-**Required environment variables:**
+**Token:**
 
-- `GITHUB_TOKEN` or `GH_TOKEN`
+Multiple ways to provide the token:
 
-#### 5. `gitlab` - Publish a GitLab release
-
-Publishes a GitLab release for the latest tag.
-
-```bash
-# Publish to GitLab
-clm gitlab
-
-# With custom token
-clm gitlab --token YOUR_GITLAB_TOKEN
-
-# Specify range
-clm gitlab --from v1.0.0 --to v1.1.0
-
-# Preview
-clm gitlab --dry-run
-```
-
-**Available options:**
-
-- `--from <ref>` - Start commit reference
-- `--to <ref>` - End commit reference
-- `--token <token>` - GitLab token (or environment variable `GITLAB_TOKEN` / `CI_JOB_TOKEN`)
-- `--dry-run` - Preview release content
-
-**Required environment variables:**
-
-- `GITLAB_TOKEN` or `CI_JOB_TOKEN`
+- Command line option (`--token`)
+- Checked environment variables:
+  - GitHub
+    - `CHANGELOGEN_TOKENS_GITHUB`
+    - `GITHUB_TOKEN`
+    - `GH_TOKEN`
+  - GitLab
+    - `CHANGELOGEN_TOKENS_GITLAB`
+    - `GITLAB_TOKEN`
+    - `GITLAB_API_TOKEN`
+    - `CI_JOB_TOKEN`
 
 #### 6. `release` - Complete release workflow
 
@@ -262,7 +249,7 @@ clm release --patch --force
 
 **Available options:**
 
-All options from `bump`, `changelog`, `publish`, `github` and `gitlab` are available, plus:
+All options from `bump`, `changelog`, `publish` and `provider-release` are available, plus:
 
 - `--no-push` - Don't push changes and tags to remote
 - `--no-release` - Don't create GitHub/GitLab release
