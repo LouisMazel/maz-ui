@@ -23,6 +23,7 @@ Imagine you have multiple packages in your project (like a box with several toys
 - 🐙 GitHub & GitLab release automation
 - 🔐 2FA/OTP support for npm publishing
 - 🎛️ Custom registry support (private registries, GitHub Packages, etc.)
+- ⚙️ Multiple configuration files support for different release workflows
 
 ## 📦 Installation
 
@@ -32,11 +33,30 @@ pnpm add -D @maz-ui/changelogen-monorepo
 
 ## ⚙️ Minimal configuration
 
-Create a `changelog.config.ts` file in the root of your project (the config file is loaded using [c12](https://github.com/unjs/c12), so you can use mulitple languages and formats, more information in [c12 docs](https://github.com/unjs/c12)).
+Create a configuration file in the root of your project. The config file is loaded using [c12](https://github.com/unjs/c12), which supports multiple formats.
 
-This is a **minimal configuration example** (check all options in the [configuration section](#configuration-options)), you have to specify the version mode and the packages to bump.
+### Supported Configuration Formats
+
+You can use any of these formats for your configuration file:
+
+- **JavaScript/TypeScript:** `.js`, `.ts`, `.mjs`, `.cjs`, `.mts`, `.cts`
+- **JSON:** `.json`, `.jsonc`, `.json5`
+- **YAML:** `.yaml`, `.yml`
+- **TOML:** `.toml`
+
+**Examples:**
+
+- `changelog.config.ts` (TypeScript - recommended)
+- `changelog.config.js` (JavaScript)
+- `changelog.config.json` (JSON)
+- `changelog.config.yaml` (YAML)
+
+### Minimal Configuration Example
+
+**TypeScript/JavaScript** (recommended):
 
 ```typescript
+// changelog.config.ts
 import { defineConfig } from '@maz-ui/changelogen-monorepo'
 
 export default defineConfig({
@@ -46,6 +66,28 @@ export default defineConfig({
   },
 })
 ```
+
+**JSON:**
+
+```json
+{
+  "monorepo": {
+    "versionMode": "selective",
+    "packages": ["packages/*"]
+  }
+}
+```
+
+**YAML:**
+
+```yaml
+monorepo:
+  versionMode: selective
+  packages:
+    - packages/*
+```
+
+Check all options in the [configuration section](#configuration-options).
 
 ## 🚀 Usage
 
@@ -78,7 +120,6 @@ clm bump --prepatch --preid beta       # 1.0.0 → 1.0.1-beta.0
 
 # Options
 clm bump --force      # Force bump even without commits
-clm bump --dry-run    # Preview without writing
 ```
 
 **Available options:**
@@ -92,7 +133,6 @@ clm bump --dry-run    # Preview without writing
 - `--prepatch` - Bump prepatch version
 - `--preid <id>` - Prerelease identifier (alpha, beta, rc, etc.)
 - `--force` - Force bump even without commits
-- `--dry-run` - Preview without writing
 
 #### 2. `changelog` - Generate changelogs
 
@@ -111,9 +151,6 @@ clm changelog --format-cmd "pnpm lint:fix"
 
 # Without root changelog
 clm changelog --no-root-changelog
-
-# Preview
-clm changelog --dry-run
 ```
 
 **Available options:**
@@ -122,7 +159,6 @@ clm changelog --dry-run
 - `--to <ref>` - End commit reference
 - `--format-cmd <cmd>` - Command to format CHANGELOGs after generation
 - `--no-root-changelog` - Skip root changelog generation
-- `--dry-run` - Preview without writing
 
 #### 3. `publish` - Publish to npm
 
@@ -143,9 +179,6 @@ clm publish --access public
 
 # With 2FA
 clm publish --otp 123456
-
-# Preview
-clm publish --dry-run
 ```
 
 **Available options:**
@@ -154,7 +187,6 @@ clm publish --dry-run
 - `--tag <tag>` - Publish tag (default: `latest` for stable, `next` for prerelease)
 - `--access <type>` - Access level (`public` or `restricted`)
 - `--otp <code>` - OTP code for 2FA
-- `--dry-run` - Preview without publishing
 
 **Automatic tag detection:**
 
@@ -177,9 +209,6 @@ clm provider-release --provider github
 
 # Specify range
 clm provider-release --from v1.0.0 --to v1.1.0
-
-# Preview
-clm provider-release --dry-run
 ```
 
 **Available options:**
@@ -188,7 +217,6 @@ clm provider-release --dry-run
 - `--to <ref>` - End commit reference
 - `--token <token>` - Git provider token
 - `--provider <provider>` - Git provider (github or gitlab)
-- `--dry-run` - Preview release content
 
 **Token:**
 
@@ -240,9 +268,6 @@ clm release --patch --no-verify
 # With npm options
 clm release --patch --registry https://npm.pkg.github.com --access public --otp 123456
 
-# Preview entire workflow
-clm release --patch --dry-run
-
 # Force even without commits
 clm release --patch --force
 ```
@@ -258,9 +283,49 @@ All options from `bump`, `changelog`, `publish` and `provider-release` are avail
 - `--token <token>` - Git token (GitHub or GitLab)
 - `--force` - Force bump even without commits
 
-### Global option: Log Level
+### Global options
 
-All commands support the `--log-level` option to control verbosity:
+All commands support these global options:
+
+#### Config File
+
+Use `--config` to specify a custom configuration file name (without the file extension):
+
+```bash
+# Use default config (changelog.config.{ts,js,json,yaml,...})
+clm bump --patch
+
+# Use custom config (changelog.standalone.config.{ts,js,json,yaml,...})
+clm bump --config changelog.standalone --patch
+
+# Use another config (changelog.experimental.config.{ts,js,json,yaml,...})
+clm release --config changelog.experimental --minor
+```
+
+**Important:**
+
+- The config file name must follow the pattern: `<name>.config.<ext>` (e.g., `myconfig.config.ts`, `myconfig.config.json`)
+- In the `--config` option, you only specify the `<name>` part (without `.config.<ext>`)
+- Supported extensions: `.ts`, `.js`, `.mjs`, `.cjs`, `.mts`, `.cts`, `.json`, `.jsonc`, `.json5`, `.yaml`, `.yml`, `.toml`
+
+#### Dry Run
+
+Use `--dry-run` to preview changes without writing files, creating tags, commits, or publishing:
+
+```bash
+# Preview bump
+clm bump --patch --dry-run
+
+# Preview entire release workflow
+clm release --minor --dry-run
+
+# Preview publish
+clm publish --dry-run
+```
+
+#### Log Level
+
+Use `--log-level` to control verbosity:
 
 ```bash
 # Default level (essential information)
@@ -840,6 +905,169 @@ export default defineConfig({
   },
 })
 ```
+
+## 📁 Multiple Configuration Files
+
+You can create multiple configuration files to manage different release workflows in your monorepo. This is useful when you have packages with different versioning strategies or release cadences.
+
+### Use Cases
+
+**Common scenarios for multiple configs:**
+
+1. **Separate core packages from standalone utilities** - Core UI packages use `selective` mode together, while standalone utilities use `independent` mode
+2. **Different release cadences** - Stable packages vs experimental packages
+3. **Different registries** - Public npm vs private registry
+4. **Different package groups** - Apps vs libraries vs tools
+
+### How to Create Multiple Configs
+
+Create multiple configuration files following this naming pattern: `<name>.config.<ext>`
+
+**Example file structure:**
+
+```
+/
+├── changelog.config.ts              # Main config (core packages)
+├── changelog.standalone.config.ts   # Standalone utilities config
+└── changelog.experimental.config.json # Experimental packages config
+```
+
+You can use any supported format (`.ts`, `.js`, `.json`, `.yaml`, etc.) for each config file.
+
+### Example: Core UI Packages vs Standalone Utilities
+
+This is a real-world example where you want to separate UI components (which should be released together) from standalone utilities (which can evolve independently).
+
+**`changelog.config.ts`** - Core UI packages (selective mode):
+
+```typescript
+import { defineConfig } from '@maz-ui/changelogen-monorepo'
+
+export default defineConfig({
+  types: {
+    feat: { title: '🚀 Features', semver: 'minor' },
+    fix: { title: '🩹 Fixes', semver: 'patch' },
+  },
+  monorepo: {
+    versionMode: 'selective',
+    packages: [
+      'packages/lib',
+      'packages/icons',
+      'packages/themes',
+      'packages/nuxt',
+      'packages/translations',
+    ],
+  },
+  templates: {
+    commitMessage: 'chore(release): v{{newVersion}}',
+  },
+})
+```
+
+**`changelog.standalone.config.ts`** - Standalone utilities (independent mode):
+
+```typescript
+import { defineConfig } from '@maz-ui/changelogen-monorepo'
+
+export default defineConfig({
+  types: {
+    feat: { title: '🚀 Features', semver: 'minor' },
+    fix: { title: '🩹 Fixes', semver: 'patch' },
+  },
+  monorepo: {
+    versionMode: 'independent',
+    packages: [
+      'packages/utils',
+      'packages/node',
+      'packages/changelogen-monorepo',
+      'packages/eslint-config',
+    ],
+  },
+  templates: {
+    commitMessage: 'chore(release): {{packageName}}@{{newVersion}}',
+  },
+  changelog: {
+    rootChangelog: false, // No root changelog for independent packages
+  },
+})
+```
+
+### Usage with Multiple Configs
+
+```bash
+# Release core UI packages together (selective mode)
+pnpm clm release --patch
+# or explicitly
+pnpm clm release --config changelog --patch
+
+# Release standalone utilities independently
+pnpm clm release --config changelog.standalone --patch
+
+# You can also use different configs for different commands
+pnpm clm bump --config changelog.standalone --minor
+pnpm clm changelog --config changelog.standalone
+pnpm clm publish --config changelog.standalone
+```
+
+### Example: Different Registries
+
+**`changelog.config.ts`** - Public packages (npm registry):
+
+```typescript
+import { defineConfig } from '@maz-ui/changelogen-monorepo'
+
+export default defineConfig({
+  monorepo: {
+    versionMode: 'selective',
+    packages: ['packages/public/*'],
+  },
+  publish: {
+    registry: 'https://registry.npmjs.org',
+    access: 'public',
+  },
+})
+```
+
+**`changelog.private.config.ts`** - Private packages (GitHub Packages):
+
+```typescript
+import { defineConfig } from '@maz-ui/changelogen-monorepo'
+
+export default defineConfig({
+  monorepo: {
+    versionMode: 'independent',
+    packages: ['packages/private/*'],
+  },
+  publish: {
+    registry: 'https://npm.pkg.github.com',
+    access: 'restricted',
+  },
+})
+```
+
+```bash
+# Publish public packages to npm
+pnpm clm publish
+
+# Publish private packages to GitHub Packages
+pnpm clm publish --config changelog.private
+```
+
+### Best Practices
+
+1. **Use descriptive config names** - `changelog.standalone.config.ts` is better than `changelog.alt.config.ts`
+2. **Document your workflow** - Add comments in your config files explaining the purpose
+3. **Keep it simple** - Don't create too many configs unless necessary
+4. **Version control** - Commit all config files to your repository
+5. **CI/CD integration** - Use different configs in different CI jobs if needed
+
+### Tips
+
+- The default config is `changelog.config.<ext>` where c12 will auto-detect the extension (you don't need `--config` flag)
+- Config files must follow the pattern `<name>.config.<ext>` (c12 requirement)
+- Supported formats: `.ts`, `.js`, `.mjs`, `.cjs`, `.mts`, `.cts`, `.json`, `.jsonc`, `.json5`, `.yaml`, `.yml`, `.toml`
+- All commands support the `--config` option
+- You can combine `--config` with `--dry-run` to preview different workflows
 
 ## 🔗 Dependency Management
 
