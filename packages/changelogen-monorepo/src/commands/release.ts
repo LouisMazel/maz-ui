@@ -70,6 +70,7 @@ export async function release(options: ReleaseOptions): Promise<void> {
       config,
       force,
       clean: config.release.clean,
+      configName: options.configName,
     })
 
     if (!bumpResult.bumped) {
@@ -88,6 +89,7 @@ export async function release(options: ReleaseOptions): Promise<void> {
         bumpedPackages: bumpResult.bumpedPackages,
         config,
         logLevel: config.logLevel,
+        configName: options.configName,
       })
     }
     else {
@@ -131,6 +133,7 @@ export async function release(options: ReleaseOptions): Promise<void> {
         bumpedPackages: bumpResult.bumpedPackages,
         dryRun,
         config,
+        configName: options.configName,
       })
     }
     else {
@@ -151,6 +154,7 @@ export async function release(options: ReleaseOptions): Promise<void> {
           config,
           logLevel: config.logLevel,
           bumpResult,
+          configName: options.configName,
         })
         provider = response.detectedProvider
         postedReleases = response.postedReleases
