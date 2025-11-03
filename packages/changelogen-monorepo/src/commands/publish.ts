@@ -1,6 +1,6 @@
 import type { PackageInfo, PublishOptions, PublishResponse } from '../types'
 import { logger } from '@maz-ui/node'
-import { detectPackageManager, getPackages, getPackagesToPublishInIndependentMode, getPackagesToPublishInSelectiveMode, getPackagesWithDependencies, getRootPackage, loadMonorepoConfig, publishPackage, topologicalSort } from '../core'
+import { detectPackageManager, executeBuildCmd, getPackages, getPackagesToPublishInIndependentMode, getPackagesToPublishInSelectiveMode, getPackagesWithDependencies, getRootPackage, loadMonorepoConfig, publishPackage, topologicalSort } from '../core'
 
 export async function publish(options: PublishOptions) {
   try {
@@ -12,14 +12,15 @@ export async function publish(options: PublishOptions) {
     const packageManager = detectPackageManager(process.cwd())
     logger.debug(`Package manager: ${packageManager}`)
 
-    const config = options.config || await loadMonorepoConfig({
+    const config = await loadMonorepoConfig({
+      baseConfig: options.config,
       overrides: {
         publish: {
-          packages: options.packages,
           access: options.access,
           otp: options.otp,
           registry: options.registry,
           tag: options.tag,
+          buildCmd: options.buildCmd,
         },
         logLevel: options.logLevel,
       },
@@ -33,12 +34,9 @@ export async function publish(options: PublishOptions) {
       logger.debug(`Tag: ${config.publish.tag}`)
     }
 
-    const patterns = options.packages ?? config.publish.packages ?? config.monorepo.packages
-    logger.debug(`Package patterns: ${patterns.join(', ')}`)
-
     const packages = options.bumpedPackages || getPackages({
       cwd: config.cwd,
-      patterns,
+      patterns: config.publish.packages ?? config.monorepo.packages,
       ignorePackageNames: config.monorepo.ignorePackageNames,
     })
     const rootPackage = getRootPackage(config.cwd)
@@ -46,7 +44,7 @@ export async function publish(options: PublishOptions) {
     logger.debug(`Found ${packages.length} package(s)`)
 
     logger.debug('Building dependency graph and sorting...')
-    const packagesWithDeps = getPackagesWithDependencies(packages)
+    const packagesWithDeps = getPackagesWithDependencies(packages, config.bump.dependencyTypes)
     const sortedPackages = topologicalSort(packagesWithDeps)
 
     let publishedPackages: PackageInfo[] = packages || []
@@ -72,6 +70,11 @@ export async function publish(options: PublishOptions) {
       logger.warn('No packages need to be published')
       return
     }
+
+    await executeBuildCmd({
+      config,
+      dryRun,
+    })
 
     for (const pkg of sortedPackages) {
       if (publishedPackages.some(p => p.name === pkg.name)) {

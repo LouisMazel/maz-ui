@@ -1,6 +1,5 @@
 export * from './bump'
 export * from './changelog'
-export * from './github'
-export * from './gitlab'
+export * from './provider-release'
 export * from './publish'
 export * from './release'
