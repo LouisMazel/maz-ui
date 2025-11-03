@@ -1,8 +1,9 @@
 import type { PostedRelease, PublishResponse, ReleaseOptions } from '../types'
 import { logger } from '@maz-ui/node'
-import { commitAndTag, getLastTag, getRootPackage, loadMonorepoConfig, publishToGitProvider, pushCommitAndTags } from '../core'
+import { createCommitAndTags, getRootPackage, loadMonorepoConfig, pushCommitAndTags } from '../core'
 import { bump } from './bump'
 import { changelog } from './changelog'
+import { providerRelease } from './provider-release'
 import { publish } from './publish'
 
 function getReleaseConfig(options: Partial<ReleaseOptions>) {
@@ -19,6 +20,7 @@ function getReleaseConfig(options: Partial<ReleaseOptions>) {
         type: options.type,
         preid: options.preid,
         clean: options.clean,
+        yes: options.yes,
       },
       changelog: {
         formatCmd: options.formatCmd,
@@ -29,6 +31,7 @@ function getReleaseConfig(options: Partial<ReleaseOptions>) {
         otp: options.otp,
         registry: options.registry,
         tag: options.tag,
+        buildCmd: options.buildCmd,
       },
       release: {
         commit: options.commit,
@@ -43,7 +46,7 @@ function getReleaseConfig(options: Partial<ReleaseOptions>) {
   })
 }
 
-// eslint-disable-next-line complexity, sonarjs/cognitive-complexity
+// eslint-disable-next-line sonarjs/cognitive-complexity, complexity
 export async function release(options: ReleaseOptions): Promise<void> {
   try {
     const dryRun = options.dryRun ?? false
@@ -57,8 +60,6 @@ export async function release(options: ReleaseOptions): Promise<void> {
     logger.debug(`Version mode: ${config.monorepo.versionMode}`)
     logger.debug(`Push: ${config.release.push}, Publish: ${config.release.publish}, Release: ${config.release.release}`)
 
-    logger.debug(`Commit range: ${config.from}...${config.to}`)
-
     logger.box('Step 1/6: Bump versions')
 
     const bumpResult = await bump({
@@ -67,7 +68,7 @@ export async function release(options: ReleaseOptions): Promise<void> {
       dryRun,
       config,
       force,
-      shouldCheckGitStatus: config.release.clean,
+      clean: config.release.clean,
     })
 
     if (!bumpResult.bumped) {
@@ -75,31 +76,16 @@ export async function release(options: ReleaseOptions): Promise<void> {
       return
     }
 
-    const rootPackage = getRootPackage(config.cwd)
-
-    const newVersion = config.monorepo.versionMode === 'independent' ? undefined : bumpResult.newVersion || rootPackage.version
-
-    const lastTag = config.monorepo.versionMode === 'independent'
-      ? config.from
-      : (options.from || await getLastTag({ version: newVersion }))
-
-    logger.debug(`Current version: ${newVersion || 'independent'}, Last tag: ${lastTag}`)
-
-    if (!newVersion && config.monorepo.versionMode !== 'independent') {
-      throw new Error('Unable to determine new version')
-    }
-
     logger.box('Step 2/6: Generate changelogs')
     if (config.release.changelog) {
       await changelog({
-        from: config.monorepo.versionMode === 'independent' ? undefined : lastTag,
+        from: config.from,
         to: config.to,
         dryRun,
         formatCmd: config.changelog.formatCmd,
         rootChangelog: config.changelog.rootChangelog,
-        packages: bumpResult.bumpedPackages,
+        bumpedPackages: bumpResult.bumpedPackages,
         config,
-        newTag: newVersion ? `v${newVersion}` : config.to,
         logLevel: config.logLevel,
       })
     }
@@ -111,16 +97,14 @@ export async function release(options: ReleaseOptions): Promise<void> {
 
     let createdTags: string[] = []
     if (config.release.commit) {
-      createdTags = await commitAndTag({
-        newVersion,
+      createdTags = await createCommitAndTags({
         config,
         noVerify: config.release.noVerify,
         bumpedPackages: bumpResult.bumpedPackages,
+        newVersion: bumpResult.newVersion,
         dryRun,
         logLevel: config.logLevel,
       })
-
-      config.to = newVersion ? `v${newVersion}` : config.to
     }
     else {
       logger.info('Skipping commit and tag (--no-commit)')
@@ -160,13 +144,12 @@ export async function release(options: ReleaseOptions): Promise<void> {
       logger.debug(`Provider from config: ${provider}`)
 
       try {
-        const response = await publishToGitProvider({
+        const response = await providerRelease({
           provider,
-          from: lastTag,
           dryRun,
           config,
           logLevel: config.logLevel,
-          bumpedPackages: bumpResult.bumpedPackages,
+          bumpResult,
         })
         provider = response.detectedProvider
         postedReleases = response.postedReleases
@@ -182,7 +165,7 @@ export async function release(options: ReleaseOptions): Promise<void> {
     const publishedPackageCount = publishResponse?.publishedPackages.length ?? 0
     const versionDisplay = config.monorepo.versionMode === 'independent'
       ? `${bumpResult.bumpedPackages.length} packages bumped independently`
-      : newVersion
+      : bumpResult.newVersion || getRootPackage(config.cwd).version
 
     logger.box('Release workflow completed!\n\n'
       + `Version: ${versionDisplay}\n`
