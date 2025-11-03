@@ -505,6 +505,14 @@ Changelog generation configuration.
 
 Version bump configuration.
 
+##### `bump.yes`
+
+**Type:** `boolean`
+
+**Default:** `true`
+
+**Description:** Choose to skip the confirmation prompt to accept the version updates.
+
 ##### `bump.type`
 
 **Type:** `'release' | 'major' | 'minor' | 'patch' | 'premajor' | 'preminor' | 'prepatch' | 'prerelease'`
