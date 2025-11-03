@@ -13,7 +13,7 @@ export async function getLastRepoTag(options?: {
 
   if (options?.onlyStable) {
     const { stdout } = await execPromise(
-      `git tag --sort=-version:refname | grep -E '^[^0-9]*[0-9]+\\.[0-9]+\\.[0-9]+$' | head -n 1`,
+      `git tag --sort=-creatordate | grep -E '^[^0-9]*[0-9]+\\.[0-9]+\\.[0-9]+$' | head -n 1`,
       {
         logLevel: options?.logLevel,
         noStderr: true,
@@ -29,7 +29,7 @@ export async function getLastRepoTag(options?: {
     return lastTag
   }
 
-  const { stdout } = await execPromise(`git tag --sort=-version:refname | head -n 1`, {
+  const { stdout } = await execPromise(`git tag --sort=-creatordate | head -n 1`, {
     logLevel: options?.logLevel,
     noStderr: true,
     noStdout: true,
@@ -64,7 +64,7 @@ export async function getLastPackageTag({
     }
 
     const { stdout } = await execPromise(
-      `git tag --sort=-version:refname | grep -E '${grepPattern}' | sed -n '1p'`,
+      `git tag --sort=-creatordate | grep -E '${grepPattern}' | sed -n '1p'`,
       {
         logLevel,
         noStderr: true,
