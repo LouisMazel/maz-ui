@@ -1,11 +1,12 @@
 import type { GitCommit } from 'changelogen'
 import type { ResolvedChangelogMonorepoConfig } from '../core'
-import type { ConfigType, PackageInfo } from '../types'
+import type { ConfigType, PackageInfo, PackageWithCommits } from '../types'
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { logger } from '@maz-ui/node'
 import { getGitDiff, parseCommits } from 'changelogen'
 import fastGlob from 'fast-glob'
+import { isGraduating } from '../core'
 import { expandPackagesToBumpWithDependents } from './dependencies'
 
 function getPackageInfo(
@@ -37,6 +38,7 @@ function getPackageInfo(
 
     return {
       name: packageJson.name,
+      currentVersion: packageJson.version,
       path: packagePath,
       version: packageJson.version,
     }
@@ -59,6 +61,8 @@ export function getPackages({
 }): PackageInfo[] {
   const packages: PackageInfo[] = []
   const foundPaths = new Set<string>()
+
+  logger.debug(`Getting packages from patterns: ${patterns.join(', ')}`)
 
   for (const pattern of patterns) {
     try {
@@ -118,35 +122,45 @@ function isAllowedCommit({
 
 export async function getPackageCommits({
   pkg,
+  from,
+  to,
   config,
   changelog,
 }: {
   pkg: PackageInfo
+  from: string
+  to: string
   config: ResolvedChangelogMonorepoConfig
   changelog: boolean
 }): Promise<GitCommit[]> {
-  logger.debug(`Fetching commits from ${config.from} to ${config.to}`)
+  logger.debug(`Analyzing commits for ${pkg.name} since ${from} to ${to}`)
 
-  const rawCommits = await getGitDiff(config.from, config.to, config.cwd)
-  const allCommits = parseCommits(rawCommits, config)
+  const changelogConfig = {
+    ...config,
+    from,
+    to,
+  }
+
+  const rawCommits = await getGitDiff(from, to, changelogConfig.cwd)
+  const allCommits = parseCommits(rawCommits, changelogConfig)
 
   const hasBreakingChanges = allCommits.some(commit => commit.isBreaking)
   logger.debug(`Has breaking changes: ${hasBreakingChanges}`)
 
-  const rootPackage = getRootPackage(config.cwd)
+  const rootPackage = getRootPackage(changelogConfig.cwd)
 
   const commits = allCommits.filter((commit) => {
-    const type = config?.types[commit.type] as ConfigType | undefined
+    const type = changelogConfig?.types[commit.type] as ConfigType | undefined
 
     if (!isAllowedCommit({ commit, type, changelog })) {
       return false
     }
 
-    if (pkg.path === config.cwd || pkg.name === rootPackage.name) {
+    if (pkg.path === changelogConfig.cwd || pkg.name === rootPackage.name) {
       return true
     }
 
-    const packageRelativePath = pkg.path.replace(`${config.cwd}/`, '')
+    const packageRelativePath = pkg.path.replace(`${changelogConfig.cwd}/`, '')
 
     const scopeMatches = commit.scope === pkg.name
     const bodyContainsPath = commit.body.includes(packageRelativePath)
@@ -154,7 +168,14 @@ export async function getPackageCommits({
     return scopeMatches || bodyContainsPath
   })
 
-  logger.debug(`Found ${commits.length} commit(s) for ${pkg.name} from ${config.from} to ${config.to}`)
+  logger.debug(`Found ${commits.length} commit(s) for ${pkg.name} from ${from} to ${to}`)
+
+  if (commits.length > 0) {
+    logger.debug(`${pkg.name}: ${commits.length} commit(s) found`)
+  }
+  else {
+    logger.debug(`${pkg.name}: No commits found`)
+  }
 
   return commits
 }
@@ -171,6 +192,7 @@ export function getRootPackage(rootDir: string): PackageInfo {
 
     return {
       name: packageJson.name,
+      currentVersion: packageJson.version || '0.0.0',
       path: rootDir,
       version: packageJson.version || '0.0.0',
     }
@@ -180,28 +202,45 @@ export function getRootPackage(rootDir: string): PackageInfo {
   }
 }
 
+export function hasLernaJson(rootDir: string): boolean {
+  const lernaJsonPath = join(rootDir, 'lerna.json')
+  return existsSync(lernaJsonPath)
+}
+
 export async function getPackageToBump({
   packages,
   config,
+  from,
+  to,
 }: {
   packages: PackageInfo[]
   config: ResolvedChangelogMonorepoConfig
+  from: string
+  to: string
 }) {
-  // First, identify packages with commits
-  const packagesWithCommits: PackageInfo[] = []
+  const packagesWithCommits: PackageWithCommits[] = []
+
   for (const pkg of packages) {
     const commits = await getPackageCommits({
       pkg,
+      from,
+      to,
       config,
       changelog: false,
     })
+
+    const graduating = isGraduating(pkg.version, config.bump.type)
+
     if (commits.length > 0) {
-      packagesWithCommits.push(pkg)
-      logger.info(`${pkg.name}: ${commits.length} commit(s) found`)
+      packagesWithCommits.push({ ...pkg, commits, graduating })
     }
   }
 
-  const allPackagesToBump = expandPackagesToBumpWithDependents(packagesWithCommits, packages)
+  const allPackagesToBump = expandPackagesToBumpWithDependents({
+    allPackages: packages,
+    packagesWithCommits,
+    dependencyTypes: config.bump?.dependencyTypes,
+  })
 
   return allPackagesToBump
 }

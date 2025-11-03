@@ -55,6 +55,7 @@
     "cli": "node bin/clm.mjs"
   },
   "dependencies": {
+    "@inquirer/prompts": "^7.9.0",
     "@maz-ui/node": "workspace:*",
     "@maz-ui/utils": "workspace:*",
     "c12": "^3.3.1",

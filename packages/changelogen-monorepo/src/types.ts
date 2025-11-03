@@ -7,13 +7,15 @@ export type VersionMode = 'unified' | 'independent' | 'selective'
 
 export type GitProvider = 'github' | 'gitlab'
 export interface PackageInfo {
-  fromTag?: string
   name: string
   path: string
+  currentVersion: string
   version: string
+  fromTag?: string
 }
 export interface PackageWithCommits extends PackageInfo {
   commits: GitCommit[]
+  graduating: boolean
 }
 
 export interface PublishResponse {
@@ -23,6 +25,7 @@ export interface PublishResponse {
 export type BumpResult = {
   oldVersion?: string
   newVersion?: string
+  fromTag?: string
   bumpedPackages: PackageInfo[]
   bumped: true
 } | {
@@ -63,7 +66,7 @@ export interface BumpConfig {
   /**
    * @default 'release'
    */
-  type: ReleaseType
+  type?: ReleaseType
   /**
    * @default undefined
    */
@@ -112,10 +115,9 @@ export interface ChangelogOptions extends ChangelogConfig {
   from?: string
   to?: string
   dryRun?: boolean
-  packages?: PackageInfo[]
+  bumpedPackages?: PackageInfo[]
   config?: ResolvedChangelogMonorepoConfig
   logLevel?: LogLevel
-  newTag?: string
 }
 
 export interface GitProviderOptions {
