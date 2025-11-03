@@ -4,7 +4,8 @@ import type { PackageWithDeps } from './dependencies'
 import { existsSync, readFileSync } from 'node:fs'
 import path, { join } from 'node:path'
 import { execPromise, logger } from '@maz-ui/node'
-import { getLastPackageTag, getPackageCommits, isPrerelease } from '../core'
+import { getPackageCommits, isPrerelease } from '../core'
+import { resolveTags } from './tags'
 
 export function detectPackageManager(cwd: string = process.cwd()): PackageManager {
   try {
@@ -103,25 +104,27 @@ export async function getPackagesToPublishInIndependentMode(
   const packagesToPublish: PackageInfo[] = []
 
   for (const pkg of sortedPackages) {
-    const pkgLastTag = await getLastPackageTag({
-      packageName: pkg.name,
+    const { from, to } = await resolveTags<'independent', 'publish'>({
+      config,
+      versionMode: 'independent',
+      step: 'publish',
+      pkg,
+      newVersion: pkg.version,
+      currentVersion: undefined,
       logLevel: config.logLevel,
     })
-    const fromTag = pkgLastTag || config.from
 
-    logger.debug(`Checking ${pkg.name} for commits since ${fromTag}`)
     const commits = await getPackageCommits({
       pkg,
-      config: {
-        ...config,
-        from: fromTag,
-      },
+      from,
+      to,
+      config,
       changelog: false,
     })
 
     if (commits.length > 0) {
       packagesToPublish.push(pkg)
-      logger.debug(`${pkg.name}: ${commits.length} commit(s) since ${fromTag}`)
+      logger.debug(`${pkg.name}: ${commits.length} commit(s) since ${from} → ${to}`)
     }
   }
 
