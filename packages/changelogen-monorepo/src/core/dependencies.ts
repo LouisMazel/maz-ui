@@ -1,4 +1,5 @@
-import type { PackageInfo } from '../types'
+import type { GitCommit } from 'changelogen'
+import type { BumpConfig, PackageInfo, PackageWithCommits } from '../types'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { logger } from '@maz-ui/node'
@@ -10,12 +11,13 @@ export interface PackageWithDeps extends PackageInfo {
 export interface PackageToBump extends PackageInfo {
   reason: 'commits' | 'dependency'
   dependencyChain?: string[]
+  commits: GitCommit[]
 }
 
 /**
  * Get workspace dependencies of a package (only dependencies and peerDependencies, not devDependencies)
  */
-export function getPackageDependencies(packagePath: string, allPackageNames: Set<string>): string[] {
+export function getPackageDependencies(packagePath: string, allPackageNames: Set<string>, dependencyTypes: BumpConfig['dependencyTypes']): string[] {
   const packageJsonPath = join(packagePath, 'package.json')
   if (!existsSync(packageJsonPath)) {
     return []
@@ -26,8 +28,9 @@ export function getPackageDependencies(packagePath: string, allPackageNames: Set
 
   // Only check dependencies and peerDependencies (not devDependencies per industry best practices)
   const allDeps = {
-    ...packageJson.dependencies,
-    ...packageJson.peerDependencies,
+    ...(dependencyTypes?.includes('dependencies') ? packageJson.dependencies : {}),
+    ...(dependencyTypes?.includes('peerDependencies') ? packageJson.peerDependencies : {}),
+    ...(dependencyTypes?.includes('devDependencies') ? packageJson.devDependencies : {}),
   }
 
   for (const depName of Object.keys(allDeps)) {
@@ -42,12 +45,12 @@ export function getPackageDependencies(packagePath: string, allPackageNames: Set
 /**
  * Transform packages array into PackageWithDeps with their workspace dependencies
  */
-export function getPackagesWithDependencies(packages: PackageInfo[]): PackageWithDeps[] {
+export function getPackagesWithDependencies(packages: PackageInfo[], dependencyTypes: BumpConfig['dependencyTypes']): PackageWithDeps[] {
   const allPackageNames = new Set(packages.map(p => p.name))
 
   return packages.map(pkg => ({
     ...pkg,
-    dependencies: getPackageDependencies(pkg.path, allPackageNames),
+    dependencies: getPackageDependencies(pkg.path, allPackageNames, dependencyTypes),
   }))
 }
 
@@ -64,29 +67,35 @@ export function getDependentsOf(packageName: string, allPackages: PackageWithDep
  * Recursively expand packages to bump with all their dependents (transitive)
  * Returns packages with reason for bumping and dependency chain for traceability
  */
-export function expandPackagesToBumpWithDependents(
-  packagesToBump: PackageInfo[],
-  allPackages: PackageInfo[],
-): PackageToBump[] {
-  const packagesWithDeps = getPackagesWithDependencies(allPackages)
+export function expandPackagesToBumpWithDependents({
+  packagesWithCommits,
+  allPackages,
+  dependencyTypes,
+}: {
+  packagesWithCommits: PackageWithCommits[]
+  allPackages: PackageInfo[]
+  dependencyTypes: BumpConfig['dependencyTypes']
+}): PackageToBump[] {
+  const packagesWithDeps = getPackagesWithDependencies(allPackages, dependencyTypes)
   const result = new Map<string, PackageToBump>()
 
-  // Add initial packages (those with commits)
-  for (const pkg of packagesToBump) {
+  logger.debug(`Expanding packages to bump: ${packagesWithCommits.length} packages with commits, ${allPackages.length} total packages`)
+
+  for (const pkg of packagesWithCommits) {
     result.set(pkg.name, {
       ...pkg,
       reason: 'commits',
+      commits: pkg.commits,
     })
   }
 
-  // Track packages to process for finding dependents
-  const toProcess = [...packagesToBump.map(p => p.name)]
+  const toProcess = [...packagesWithCommits.map(p => p.name)]
   const processed = new Set<string>()
 
   while (toProcess.length > 0) {
-    const currentPkgName = toProcess.shift()!
+    const currentPkgName = toProcess.shift()
 
-    if (processed.has(currentPkgName)) {
+    if (!currentPkgName || processed.has(currentPkgName)) {
       continue
     }
 
@@ -107,9 +116,9 @@ export function expandPackagesToBumpWithDependents(
             ...packageInfo,
             reason: 'dependency',
             dependencyChain: chain,
+            commits: [],
           })
 
-          // Add to processing queue to find transitive dependents
           toProcess.push(dependent.name)
 
           logger.debug(`${dependent.name} will be bumped (depends on ${chain.join(' → ')})`)
