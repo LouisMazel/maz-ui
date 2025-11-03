@@ -1,5 +1,41 @@
 # Change Log
 
+## v4.2.1...v4.3.0-alpha.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1...v4.3.0-alpha.0)
+
+### 🚀 Features
+
+- **@maz-ui/changelogen-monorepo:** Remove and replace commands 'gitlab' and 'github' by 'provider-release' ([b79f0eb5d](https://github.com/LouisMazel/maz-ui/commit/b79f0eb5d))
+- **@maz-ui/changelogen-monorepo:** Add 'yes' option to bump config to have a confirmation prompt to accept new versions ([259f9e4bd](https://github.com/LouisMazel/maz-ui/commit/259f9e4bd))
+- **@maz-ui/changelogen-monorepo:** Add support for multiple configuration files ([3b067cc92](https://github.com/LouisMazel/maz-ui/commit/3b067cc92))
+
+### 🩹 Fixes
+
+- **@maz-ui/changelogen-monorepo:** Store fromTag during bump to fix empty changelogs ([2fde3763f](https://github.com/LouisMazel/maz-ui/commit/2fde3763f))
+- **@maz-ui/changelogen-monorepo:** Prevent version inlining by reading package.json at runtime ([ecb263c69](https://github.com/LouisMazel/maz-ui/commit/ecb263c69))
+- **@maz-ui/changelogen-monorepo:** Sort tags by date instead of version refname ([e88ee503f](https://github.com/LouisMazel/maz-ui/commit/e88ee503f))
+- **@maz-ui/changelogen-monorepo:** Improve error handling in version confirmation prompt ([cbdf5db30](https://github.com/LouisMazel/maz-ui/commit/cbdf5db30))
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Introduce new options: buildCmd to build your packages before publishing and dependencyTypes to choose how depends package should be bump ([9c5ce8279](https://github.com/LouisMazel/maz-ui/commit/9c5ce8279))
+- **@maz-ui/changelogen-monorepo:** Extract tag resolution logic into dedicated module ([2fecb674d](https://github.com/LouisMazel/maz-ui/commit/2fecb674d))
+- **@maz-ui/changelogen-monorepo:** Simplify git utilities after tags extraction ([ec547d8d2](https://github.com/LouisMazel/maz-ui/commit/ec547d8d2))
+- **@maz-ui/changelogen-monorepo:** Add interactive confirmation prompt before version bump ([e58543402](https://github.com/LouisMazel/maz-ui/commit/e58543402))
+- **@maz-ui/changelogen-monorepo:** Add dependencyTypes option ([1030e52b7](https://github.com/LouisMazel/maz-ui/commit/1030e52b7))
+- **@maz-ui/changelogen-monorepo:** Unify provider commands under provider-release ([0a0959d9a](https://github.com/LouisMazel/maz-ui/commit/0a0959d9a))
+
+### 📖 Documentation
+
+- **@maz-ui/changelogen-monorepo:** Improve readme about configuration ([45c78fc84](https://github.com/LouisMazel/maz-ui/commit/45c78fc84))
+- **@maz-ui/changelogen-monorepo:** Add comprehensive guide for multiple configuration files ([24ad96997](https://github.com/LouisMazel/maz-ui/commit/24ad96997))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
+
 ## v4.2.1-beta.2...v4.2.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.2...v4.2.1)
