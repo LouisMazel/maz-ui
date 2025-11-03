@@ -351,14 +351,20 @@ export async function confirmBump({
     displayIndependentModePackages({ packages, force, dryRun })
   }
 
-  const confirmed = await confirm({
-    message: 'Do you want to proceed with these version updates?',
-    default: true,
-  })
+  try {
+    const confirmed = await confirm({
+      message: 'Do you want to proceed with these version updates?',
+      default: true,
+    })
 
-  if (!confirmed) {
-    logger.warn('Bump cancelled by user')
-    process.exit(0)
+    if (!confirmed) {
+      logger.warn('Bump cancelled by user')
+      process.exit(1)
+    }
+  }
+  catch {
+    logger.error('Error while confirming bump')
+    process.exit(1)
   }
 
   logger.log('')
