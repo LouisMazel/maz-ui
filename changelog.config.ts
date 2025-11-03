@@ -25,6 +25,10 @@ export default defineConfig({
     packages: ['packages/*'],
   },
 
+  bump: {
+    yes: false,
+  },
+
   changelog: {
     formatCmd: 'pnpm lint:fix:all',
   },
