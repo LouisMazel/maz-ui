@@ -13,6 +13,7 @@ export async function publish(options: PublishOptions) {
     logger.debug(`Package manager: ${packageManager}`)
 
     const config = await loadMonorepoConfig({
+      configName: options.configName,
       baseConfig: options.config,
       overrides: {
         publish: {

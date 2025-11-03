@@ -103,9 +103,10 @@ async function resolveConfig(
   return config
 }
 
-export async function loadMonorepoConfig({ baseConfig, overrides }: {
+export async function loadMonorepoConfig({ baseConfig, overrides, configName = 'changelog' }: {
   baseConfig?: ResolvedChangelogMonorepoConfig
   overrides?: DeepPartial<ChangelogMonorepoConfig>
+  configName?: string
 }) {
   const cwd = overrides?.cwd ?? process.cwd()
 
@@ -115,19 +116,24 @@ export async function loadMonorepoConfig({ baseConfig, overrides }: {
 
   const overridesConfig = defu(overrides, baseConfig)
 
-  const { config } = await loadConfig<ResolvedConfig>({
+  const results = await loadConfig<ResolvedConfig>({
     cwd,
-    name: 'changelog',
+    name: configName,
     packageJson: true,
     defaults: defaultConfig as ResolvedConfig,
     overrides: overridesConfig as ResolvedConfig,
   })
 
-  setupLogger(overrides?.logLevel || config.logLevel)
+  if (!results._configFile) {
+    logger.error(`No config file found with name "${configName}"`)
+    process.exit(1)
+  }
 
-  logger.verbose('User config:', formatJson(config.changelog))
+  setupLogger(overrides?.logLevel || results.config.logLevel)
 
-  const resolvedConfig = await resolveConfig(config, cwd)
+  logger.verbose('User config:', formatJson(results.config.changelog))
+
+  const resolvedConfig = await resolveConfig(results.config, cwd)
 
   logger.debug('Resolved config:', formatJson(resolvedConfig))
 

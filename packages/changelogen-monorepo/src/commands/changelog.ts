@@ -162,6 +162,7 @@ export async function changelog(options: ChangelogOptions): Promise<void> {
     logger.debug(`Dry run: ${dryRun}`)
 
     const config = await loadMonorepoConfig({
+      configName: options.configName,
       baseConfig: options.config,
       overrides: {
         from: options.from,

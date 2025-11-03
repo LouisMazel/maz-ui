@@ -8,6 +8,7 @@ import { publish } from './publish'
 
 function getReleaseConfig(options: Partial<ReleaseOptions>) {
   return loadMonorepoConfig({
+    configName: options.configName,
     overrides: {
       logLevel: options.logLevel,
       from: options.from,

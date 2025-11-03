@@ -105,6 +105,10 @@ export interface BumpOptions extends BumpConfig {
    * @default false
    */
   force?: boolean
+  /**
+   * @default 'changelog'
+   */
+  configName?: string
 }
 
 export interface ChangelogConfig {
@@ -118,15 +122,19 @@ export interface ChangelogOptions extends ChangelogConfig {
   bumpedPackages?: PackageInfo[]
   config?: ResolvedChangelogMonorepoConfig
   logLevel?: LogLevel
+  configName?: string
 }
 
 export interface GitProviderOptions {
   from?: string
   to?: string
   token?: string
-  dryRun?: boolean
   config?: ResolvedChangelogMonorepoConfig
+  configName?: string
+  provider?: GitProvider
+  bumpResult?: BumpResult
   logLevel?: LogLevel
+  dryRun?: boolean
 }
 
 export type PublishConfig = IChangelogConfig['publish'] & {
@@ -151,6 +159,7 @@ export interface PublishOptions extends PublishConfig {
   config?: ResolvedChangelogMonorepoConfig
   bumpedPackages?: PackageInfo[]
   logLevel?: LogLevel
+  configName?: string
 }
 
 export interface ReleaseConfig {
@@ -218,6 +227,10 @@ export interface ReleaseOptions extends ReleaseConfig, BumpConfig, ChangelogConf
    * @default undefined
    */
   logLevel?: LogLevel
+  /**
+   * @default 'changelog'
+   */
+  configName?: string
 }
 
 export interface TemplatesConfig {
