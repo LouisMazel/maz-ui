@@ -303,6 +303,7 @@ export async function gitlab(options: Partial<GitProviderOptions> & { bumpResult
     logger.debug(`Dry run: ${dryRun}`)
 
     const config = await loadMonorepoConfig({
+      configName: options.configName,
       baseConfig: options.config,
       overrides: {
         from: options.from,

@@ -60,6 +60,7 @@ program
   .name('changelogen-monorepo')
   .description('Changelogen adapter for monorepo management')
   .version(version)
+  .option('--config <name>', 'Config file name (without .config.ts - e.g. changelog-test)', 'changelog')
   .option('--log-level <level>', 'Set log level (silent, error, warning, normal, default, debug, trace, verbose)', 'default')
   .option('--dry-run', 'Preview changes without writing files, creating tags, commits or publishing')
 
@@ -87,6 +88,7 @@ program
         logLevel: program.opts().logLevel,
         force: options.force,
         yes: options.yes,
+        configName: program.opts().config,
       })
     }
     catch {
@@ -110,6 +112,7 @@ program
         rootChangelog: hasCliFlag('--no-root-changelog') ? false : undefined,
         dryRun: program.opts().dryRun,
         logLevel: program.opts().logLevel,
+        configName: program.opts().config,
       })
     }
     catch {
@@ -135,6 +138,7 @@ program
         buildCmd: options.buildCmd,
         dryRun: program.opts().dryRun,
         logLevel: program.opts().logLevel,
+        configName: program.opts().config,
       })
     }
     catch {
@@ -158,6 +162,7 @@ program
         provider: options.provider,
         dryRun: program.opts().dryRun,
         logLevel: program.opts().logLevel,
+        configName: program.opts().config,
       })
     }
     catch {
@@ -221,6 +226,7 @@ program
         logLevel: program.opts().logLevel,
         force: options.force,
         yes: options.yes,
+        configName: program.opts().config,
       })
     }
     catch {

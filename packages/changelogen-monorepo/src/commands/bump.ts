@@ -304,6 +304,7 @@ export async function bump(options: BumpOptions): Promise<BumpResult> {
     logger.debug(`Bump forced: ${force}`)
 
     const config = await loadMonorepoConfig({
+      configName: options.configName,
       baseConfig: options.config,
       overrides: {
         bump: {
