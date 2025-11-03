@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/changelogen-monorepo",
   "type": "module",
-  "version": "4.2.1",
+  "version": "4.3.0-alpha.0",
   "description": "Changelogen adapter for monorepo management with unified and independent versioning",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
