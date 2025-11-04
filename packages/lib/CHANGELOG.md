@@ -1,5 +1,15 @@
 # Change Log
 
+## v4.3.0-alpha.1...v4.3.0-beta.0
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDatePicker - correct check if model is range value and not null - #1366 ([#1366](https://github.com/LouisMazel/maz-ui/issues/1366))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.0-alpha.0...v4.3.0-alpha.1
 
 No relevant changes since last release
