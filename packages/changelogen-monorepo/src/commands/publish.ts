@@ -2,7 +2,7 @@ import type { PackageInfo, PublishOptions, PublishResponse } from '../types'
 import { logger } from '@maz-ui/node'
 import { detectPackageManager, executeBuildCmd, getPackages, getPackagesToPublishInIndependentMode, getPackagesToPublishInSelectiveMode, getPackagesWithDependencies, getRootPackage, loadMonorepoConfig, publishPackage, topologicalSort } from '../core'
 
-export async function publish(options: PublishOptions) {
+export async function publish(options: Partial<PublishOptions> = {}) {
   try {
     logger.start('Start publishing packages')
 
