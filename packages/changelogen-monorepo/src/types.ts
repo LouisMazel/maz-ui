@@ -114,6 +114,11 @@ export interface BumpOptions extends BumpConfig {
 export interface ChangelogConfig {
   formatCmd?: string
   rootChangelog?: boolean
+  /**
+   * Include commit body in the changelog.
+   * @default false
+   */
+  includeCommitBody?: boolean
 }
 export interface ChangelogOptions extends ChangelogConfig {
   from?: string
