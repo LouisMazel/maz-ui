@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import type { ConsolaInstance, ConsolaOptions, ConsolaReporter, InputLogObject } from 'consola'
 import process from 'node:process'
 import { blueBright } from 'colorette'

@@ -5,5 +5,6 @@ export const markdown = {
     'sonarjs/unused-import': 'off',
     'sonarjs/no-labels': 'off',
     'sonarjs/label-position': 'off',
+    'no-console': 'off',
   } as const,
 }

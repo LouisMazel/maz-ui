@@ -8,6 +8,7 @@ import tailwind from 'eslint-plugin-tailwindcss'
 import vueA11y from 'eslint-plugin-vuejs-accessibility'
 
 import { baseRules } from './configs/base'
+import { GLOBAL_IGNORES } from './configs/global'
 import { markdown } from './configs/markdown'
 import { sonarjsRules, sonarjsTestRules } from './configs/sonarjs'
 import { tailwindcssRules } from './configs/tailwindcss'
@@ -23,7 +24,7 @@ const defaultOptions: MazESLintOptions = {
   sonarjs: true,
   tailwindcss: false,
   unicorn: true,
-  ignores: ['dist/**', 'node_modules/**'],
+  ignores: GLOBAL_IGNORES,
   rules: {},
 }
 
@@ -46,7 +47,7 @@ const defaultOptions: MazESLintOptions = {
  * ```
  */
 export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: MazESLintUserConfig[]): MazESLintConfig {
-  const opts = { ...defaultOptions, ...options }
+  const opts = { ...defaultOptions, ...options, ignores: [...GLOBAL_IGNORES, ...(options.ignores || [])] }
 
   const env = opts.env || process.env.NODE_ENV || 'production'
 
@@ -128,6 +129,9 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
     formatters: opts.formatters,
     ...opts,
     rules: allRules,
+    ignores: (() => {
+      return opts.ignores
+    }) as any,
   }, ...additionalConfigs, ...userConfigs, markdown) as MazESLintConfig
 }
 
