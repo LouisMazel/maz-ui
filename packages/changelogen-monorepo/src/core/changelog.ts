@@ -1,11 +1,11 @@
-import type { GitCommit, ResolvedChangelogConfig } from 'changelogen'
+import type { GitCommit } from 'changelogen'
 import type { ResolvedChangelogMonorepoConfig } from '../core'
 import type { PackageInfo } from '../types'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { execPromise, logger } from '@maz-ui/node'
-import { generateMarkDown } from 'changelogen'
 import { getFirstCommit } from '../core'
+import { generateMarkDown } from './markdown'
 
 function fromTagIsFirstCommit(fromTag: string, cwd: string) {
   return fromTag === getFirstCommit(cwd)
@@ -47,7 +47,7 @@ export async function generateChangelog(
       to: toTag,
     }
 
-    let changelog = await generateMarkDown(commits, config as ResolvedChangelogConfig)
+    let changelog = await generateMarkDown(commits, config)
 
     logger.verbose(`Output changelog for ${pkg.name}:\n${changelog}`)
 
