@@ -319,7 +319,13 @@ export async function bump(options: Partial<BumpOptions> = {}): Promise<BumpResu
     })
 
     if (config.bump.clean && config.release.clean) {
-      checkGitStatusIfDirty()
+      try {
+        checkGitStatusIfDirty()
+      }
+      catch {
+        logger.error('Git status is dirty, please commit or stash your changes before bumping or use --no-clean flag')
+        process.exit(1)
+      }
     }
 
     logger.info(`Version mode: ${config.monorepo.versionMode}`)
