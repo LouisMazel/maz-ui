@@ -35,7 +35,6 @@
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.2.0...v4.2.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.0...v4.2.1)
@@ -76,7 +75,6 @@
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.2.1-beta.0...v4.2.1-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.2)
@@ -93,7 +91,6 @@
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.2.1-beta.0...v4.2.1-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.1)
@@ -105,7 +102,6 @@
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.2.1-alpha.16...v4.2.1-beta.0
 
@@ -119,7 +115,6 @@
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.2.1-alpha.15...v4.2.1-alpha.16
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.15...v4.2.1-alpha.16)
@@ -132,13 +127,11 @@
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.2.1-alpha.14...v4.2.1-alpha.14
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.14...v4.2.1-alpha.14)
 
 No relevant changes for this release
-
 
 ## v4.2.1-alpha.13...v4.2.1-alpha.14
 
@@ -152,7 +145,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.2.1-alpha.12...v4.2.1-alpha.13
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.12...v4.2.1-alpha.13)
@@ -164,7 +156,6 @@ No relevant changes for this release
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.2.1-alpha.11...v4.2.1-alpha.12
 
@@ -178,7 +169,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.2.1-alpha.10...v4.2.1-alpha.11
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.10...v4.2.1-alpha.11)
@@ -190,7 +180,6 @@ No relevant changes for this release
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.2.1-alpha.9...v4.2.1-alpha.10
 
@@ -207,7 +196,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.2.1-alpha.8...v4.2.1-alpha.9
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.8...v4.2.1-alpha.9)
@@ -219,7 +207,6 @@ No relevant changes for this release
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.2.1-alpha.7...v4.2.1-alpha.8
 
@@ -233,7 +220,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.2.1-alpha.6...v4.2.1-alpha.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.6...v4.2.1-alpha.7)
@@ -245,7 +231,6 @@ No relevant changes for this release
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.2.1-alpha.5...v4.2.1-alpha.6
 
@@ -260,7 +245,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.2.1-alpha.4...v4.2.1-alpha.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.4...v4.2.1-alpha.5)
@@ -272,7 +256,6 @@ No relevant changes for this release
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.2.1-alpha.3...v4.2.1-alpha.4
 
@@ -286,7 +269,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.2.1-alpha.2...v4.2.1-alpha.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.2...v4.2.1-alpha.3)
@@ -298,7 +280,6 @@ No relevant changes for this release
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.2.1-alpha.1...v4.2.1-alpha.2
 
@@ -312,7 +293,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.2.1-alpha.0...v4.2.1-alpha.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.0...v4.2.1-alpha.1)
@@ -325,7 +305,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.2.0...v4.2.1-alpha.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.0...v4.2.1-alpha.0)
@@ -337,7 +316,6 @@ No relevant changes for this release
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.1.8...v4.2.0
 
@@ -368,7 +346,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.9-alpha.0...v4.1.9-alpha.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.9-alpha.0...v4.1.9-alpha.1)
@@ -387,7 +364,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.8-beta.4...v4.1.9-alpha.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.4...v4.1.9-alpha.0)
@@ -397,7 +373,6 @@ No relevant commits
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.1.7...v4.1.8
 
@@ -419,7 +394,6 @@ No relevant commits
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.1.8-beta.3...v4.1.8-beta.4
 

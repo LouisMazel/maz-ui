@@ -79,7 +79,6 @@ const { value: textarea, errorMessage: textareaError, isValid: isValidTextarea }
 const { value: date, errorMessage: dateError, isValid: isValidDate } = useFormField<MazDatePickerPartialRangeValue>('date', { ref: dateRef })
 
 const onSubmit = handleSubmit((formData) => {
-  // eslint-disable-next-line no-console
   console.log(formData)
 })
 </script>

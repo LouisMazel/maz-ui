@@ -12,13 +12,11 @@
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.2.1-beta.0...v4.2.1-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.2)
 
 No relevant changes since last release
-
 
 ## v4.2.1-beta.0...v4.2.1-beta.1
 
@@ -26,13 +24,11 @@ No relevant changes since last release
 
 No relevant changes since last release
 
-
 ## v4.2.1-alpha.16...v4.2.1-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.16...v4.2.1-beta.0)
 
 No relevant changes since last release
-
 
 ## v4.2.1-alpha.12...v4.2.1-alpha.13
 
@@ -40,13 +36,11 @@ No relevant changes since last release
 
 No relevant changes for this release
 
-
 ## v4.2.1-alpha.9...v4.2.1-alpha.10
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.9...v4.2.1-alpha.10)
 
 No relevant changes for this release
-
 
 ## v4.2.1-alpha.8...v4.2.1-alpha.9
 
@@ -59,7 +53,6 @@ No relevant changes for this release
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.1.8...v4.2.0
 
@@ -87,7 +80,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.9-alpha.0...v4.1.9-alpha.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.9-alpha.0...v4.1.9-alpha.1)
@@ -99,7 +91,6 @@ No relevant changes for this release
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.1.7...v4.1.8
 
@@ -119,7 +110,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.8-beta.2...v4.1.8-beta.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.2...v4.1.8-beta.3)
@@ -132,20 +122,17 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.8-beta.1...v4.1.8-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.1...v4.1.8-beta.2)
 
 **Note:** No relevant commits found
 
-
 ## v4.1.8-beta.0...v4.1.8-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.0...v4.1.8-beta.1)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.8...v4.1.8-beta.0
 
@@ -230,7 +217,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.6...v4.1.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7)
@@ -284,7 +270,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.7-beta.7...v4.1.7-beta.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.7...v4.1.7-beta.8)
@@ -296,7 +281,6 @@ No relevant changes for this release
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.1.7-beta.6...v4.1.7-beta.7
 
@@ -313,7 +297,6 @@ No relevant changes for this release
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.1.7-beta.5...v4.1.7-beta.6
 
@@ -334,7 +317,6 @@ No relevant changes for this release
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.1.7-beta.4...v4.1.7-beta.5
 
@@ -358,7 +340,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.7-beta.3...v4.1.7-beta.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.3...v4.1.7-beta.4)
@@ -370,7 +351,6 @@ No relevant changes for this release
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.1.7-beta.2...v4.1.7-beta.3
 
@@ -384,7 +364,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.7-beta.1...v4.1.7-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.1...v4.1.7-beta.2)
@@ -396,7 +375,6 @@ No relevant changes for this release
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.1.7-beta.0...v4.1.7-beta.1
 
@@ -420,7 +398,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.6...v4.1.7-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7-beta.0)
@@ -433,7 +410,6 @@ No relevant changes for this release
 ### ❤️ Contributors
 
 - LouisMazel <me@loicmazuel.com>
-
 
 ## v4.1.5...v4.1.6
 
@@ -782,7 +758,7 @@ No relevant changes for this release
 - **maz-ui:** MazSlider - add step option ([eafb4cf56](https://github.com/LouisMazel/maz-ui/commit/eafb4cf56))
 - **@maz-ui/icons:** Add new @maz-ui/icons package to export SVG icons and Vue JS components icons ([cb1a243dd](https://github.com/LouisMazel/maz-ui/commit/cb1a243dd))
 - **maz-ui:** Plugin Toaster and useToast - improve UI and UX of toast (BREAKING_CHANGES) ([414e1c6b5](https://github.com/LouisMazel/maz-ui/commit/414e1c6b5))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
 - **@maz-ui/nuxt:** New standalone package for the nuxt module (no longer included in maz-ui bundle) ([2922aed6a](https://github.com/LouisMazel/maz-ui/commit/2922aed6a))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([d81463fc0](https://github.com/LouisMazel/maz-ui/commit/d81463fc0))
 - **@maz-ui/nuxt:** Implemente @maz-ui/themes - set and manage themes with nuxt ([0dc3d8656](https://github.com/LouisMazel/maz-ui/commit/0dc3d8656))
@@ -813,7 +789,7 @@ No relevant changes for this release
 - **maz-ui:** MazSlider - add step option ([af399673a](https://github.com/LouisMazel/maz-ui/commit/af399673a))
 - **@maz-ui/icons:** Add new @maz-ui/icons package to export SVG icons and Vue JS components icons ([3d4701bdd](https://github.com/LouisMazel/maz-ui/commit/3d4701bdd))
 - **maz-ui:** Plugin Toaster and useToast - improve UI and UX of toast (BREAKING_CHANGES) ([7ad14ee68](https://github.com/LouisMazel/maz-ui/commit/7ad14ee68))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([84366e00b](https://github.com/LouisMazel/maz-ui/commit/84366e00b))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([84366e00b](https://github.com/LouisMazel/maz-ui/commit/84366e00b))
 - **@maz-ui/nuxt:** New standalone package for the nuxt module (no longer included in maz-ui bundle) ([9b1439661](https://github.com/LouisMazel/maz-ui/commit/9b1439661))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([5c5a8f4f4](https://github.com/LouisMazel/maz-ui/commit/5c5a8f4f4))
 - **@maz-ui/nuxt:** Implemente @maz-ui/themes - set and manage themes with nuxt ([7915d1e73](https://github.com/LouisMazel/maz-ui/commit/7915d1e73))
@@ -908,7 +884,7 @@ No relevant changes for this release
 - **maz-ui:** MazSlider - add step option ([eafb4cf56](https://github.com/LouisMazel/maz-ui/commit/eafb4cf56))
 - **@maz-ui/icons:** Add new @maz-ui/icons package to export SVG icons and Vue JS components icons ([cb1a243dd](https://github.com/LouisMazel/maz-ui/commit/cb1a243dd))
 - **maz-ui:** Plugin Toaster and useToast - improve UI and UX of toast (BREAKING_CHANGES) ([414e1c6b5](https://github.com/LouisMazel/maz-ui/commit/414e1c6b5))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
 - **@maz-ui/nuxt:** New standalone package for the nuxt module (no longer included in maz-ui bundle) ([2922aed6a](https://github.com/LouisMazel/maz-ui/commit/2922aed6a))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([d81463fc0](https://github.com/LouisMazel/maz-ui/commit/d81463fc0))
 - **@maz-ui/nuxt:** Implemente @maz-ui/themes - set and manage themes with nuxt ([0dc3d8656](https://github.com/LouisMazel/maz-ui/commit/0dc3d8656))
@@ -938,7 +914,7 @@ No relevant changes for this release
 - **maz-ui:** MazSlider - add step option ([af399673a](https://github.com/LouisMazel/maz-ui/commit/af399673a))
 - **@maz-ui/icons:** Add new @maz-ui/icons package to export SVG icons and Vue JS components icons ([3d4701bdd](https://github.com/LouisMazel/maz-ui/commit/3d4701bdd))
 - **maz-ui:** Plugin Toaster and useToast - improve UI and UX of toast (BREAKING_CHANGES) ([7ad14ee68](https://github.com/LouisMazel/maz-ui/commit/7ad14ee68))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([84366e00b](https://github.com/LouisMazel/maz-ui/commit/84366e00b))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([84366e00b](https://github.com/LouisMazel/maz-ui/commit/84366e00b))
 - **@maz-ui/nuxt:** New standalone package for the nuxt module (no longer included in maz-ui bundle) ([9b1439661](https://github.com/LouisMazel/maz-ui/commit/9b1439661))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([5c5a8f4f4](https://github.com/LouisMazel/maz-ui/commit/5c5a8f4f4))
 - **@maz-ui/nuxt:** Implemente @maz-ui/themes - set and manage themes with nuxt ([7915d1e73](https://github.com/LouisMazel/maz-ui/commit/7915d1e73))
@@ -1038,7 +1014,7 @@ No relevant changes for this release
 - **maz-ui:** MazSlider - add step option ([9becb79c2](https://github.com/LouisMazel/maz-ui/commit/9becb79c2))
 - **@maz-ui/icons:** Add new @maz-ui/icons package to export SVG icons and Vue JS components icons ([9e3955d6b](https://github.com/LouisMazel/maz-ui/commit/9e3955d6b))
 - **maz-ui:** Plugin Toaster and useToast - improve UI and UX of toast (BREAKING_CHANGES) ([d7617bd74](https://github.com/LouisMazel/maz-ui/commit/d7617bd74))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([b76f65c52](https://github.com/LouisMazel/maz-ui/commit/b76f65c52))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([b76f65c52](https://github.com/LouisMazel/maz-ui/commit/b76f65c52))
 - **@maz-ui/nuxt:** New standalone package for the nuxt module (no longer included in maz-ui bundle) ([d8e4dd466](https://github.com/LouisMazel/maz-ui/commit/d8e4dd466))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([7726ff8e7](https://github.com/LouisMazel/maz-ui/commit/7726ff8e7))
 - **@maz-ui/nuxt:** Implemente @maz-ui/themes - set and manage themes with nuxt ([d369b1f62](https://github.com/LouisMazel/maz-ui/commit/d369b1f62))
@@ -1068,7 +1044,7 @@ No relevant changes for this release
 - **maz-ui:** MazSlider - add step option ([eafb4cf56](https://github.com/LouisMazel/maz-ui/commit/eafb4cf56))
 - **@maz-ui/icons:** Add new @maz-ui/icons package to export SVG icons and Vue JS components icons ([cb1a243dd](https://github.com/LouisMazel/maz-ui/commit/cb1a243dd))
 - **maz-ui:** Plugin Toaster and useToast - improve UI and UX of toast (BREAKING_CHANGES) ([414e1c6b5](https://github.com/LouisMazel/maz-ui/commit/414e1c6b5))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
 - **@maz-ui/nuxt:** New standalone package for the nuxt module (no longer included in maz-ui bundle) ([2922aed6a](https://github.com/LouisMazel/maz-ui/commit/2922aed6a))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([d81463fc0](https://github.com/LouisMazel/maz-ui/commit/d81463fc0))
 - **@maz-ui/nuxt:** Implemente @maz-ui/themes - set and manage themes with nuxt ([0dc3d8656](https://github.com/LouisMazel/maz-ui/commit/0dc3d8656))
@@ -1316,7 +1292,7 @@ No relevant changes for this release
 - chore(release): bump version to v3.50.1 ([2874d45](https://github.com/LouisMazel/maz-ui/commit/2874d45))
 - chore(release): version packages 4.0.0-beta.0 ([531325a](https://github.com/LouisMazel/maz-ui/commit/531325a))
 - feat(@maz-ui/icons): Add new @maz-ui/icons package to export SVG icons and Vue JS components icons ([9e3955d](https://github.com/LouisMazel/maz-ui/commit/9e3955d))
-- feat(@maz-ui/icons): Add resolver to auto-import icons as  Vue Components ([b76f65c](https://github.com/LouisMazel/maz-ui/commit/b76f65c))
+- feat(@maz-ui/icons): Add resolver to auto-import icons as Vue Components ([b76f65c](https://github.com/LouisMazel/maz-ui/commit/b76f65c))
 - feat(@maz-ui/nuxt): implemente @maz-ui/themes - set and manage themes with nuxt ([d369b1f](https://github.com/LouisMazel/maz-ui/commit/d369b1f))
 - feat(@maz-ui/nuxt): new standalone package for the nuxt module (no longer included in maz-ui bundle) ([d8e4dd4](https://github.com/LouisMazel/maz-ui/commit/d8e4dd4))
 - feat(@maz-ui/themes): new package - create and manage theme with maz-ui ([a6ce6e6](https://github.com/LouisMazel/maz-ui/commit/a6ce6e6))
@@ -1353,7 +1329,7 @@ No relevant changes for this release
 ## 4.0.0-beta.0 (2025-07-09)
 
 - feat(@maz-ui/icons): Add new @maz-ui/icons package to export SVG icons and Vue JS components icons ([9e3955d](https://github.com/LouisMazel/maz-ui/commit/9e3955d))
-- feat(@maz-ui/icons): Add resolver to auto-import icons as  Vue Components ([b76f65c](https://github.com/LouisMazel/maz-ui/commit/b76f65c))
+- feat(@maz-ui/icons): Add resolver to auto-import icons as Vue Components ([b76f65c](https://github.com/LouisMazel/maz-ui/commit/b76f65c))
 - feat(@maz-ui/nuxt): implemente @maz-ui/themes - set and manage themes with nuxt ([d369b1f](https://github.com/LouisMazel/maz-ui/commit/d369b1f))
 - feat(@maz-ui/nuxt): new standalone package for the nuxt module (no longer included in maz-ui bundle) ([d8e4dd4](https://github.com/LouisMazel/maz-ui/commit/d8e4dd4))
 - feat(@maz-ui/themes): new package - create and manage theme with maz-ui ([a6ce6e6](https://github.com/LouisMazel/maz-ui/commit/a6ce6e6))
