@@ -365,7 +365,7 @@ export async function confirmBump({
   const lernaJsonExists = hasLernaJson(config.cwd)
 
   logger.log('')
-  logger.info(`${dryRun ? '[dry-run] ' : ''}The following files will be updated:\n`)
+  logger.info(`${dryRun ? '[dry-run] ' : ''}The following packages will be updated:\n`)
 
   displayRootAndLernaUpdates({
     versionMode,
