@@ -30,7 +30,7 @@ export default defineConfig({
   },
 
   changelog: {
-    formatCmd: 'pnpm lint:fix:all',
+    formatCmd: 'git add --all && pnpm pre-commit && git reset',
     includeCommitBody: true,
   },
 
