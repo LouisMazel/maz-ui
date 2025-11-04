@@ -198,19 +198,21 @@ function displayRootAndLernaUpdates({
   versionMode,
   currentVersion,
   newVersion,
+  dryRun,
   lernaJsonExists,
 }: {
   versionMode: VersionMode
   currentVersion?: string
   newVersion?: string
+  dryRun: boolean
   lernaJsonExists: boolean
 }) {
   if (versionMode !== 'independent' && currentVersion && newVersion) {
-    logger.log(`Root package.json: ${currentVersion} → ${newVersion}`)
+    logger.log(`${dryRun ? '[dry-run] ' : ''}Root package.json: ${currentVersion} → ${newVersion}`)
     logger.log('')
 
     if (lernaJsonExists) {
-      logger.log(`lerna.json: ${currentVersion} → ${newVersion}`)
+      logger.log(`${dryRun ? '[dry-run] ' : ''}lerna.json: ${currentVersion} → ${newVersion}`)
       logger.log('')
     }
   }
@@ -220,14 +222,12 @@ function displayUnifiedModePackages({
   packages,
   newVersion,
   force,
-  dryRun,
 }: {
   packages: PackageInfo[]
   newVersion: string
   force: boolean
-  dryRun: boolean
 }) {
-  logger.log(`${dryRun ? '[dry-run] ' : ''}${packages.length} package(s)${force ? ' (force)' : ''}:`)
+  logger.log(`${packages.length} package(s)${force ? ' (force)' : ''}:`)
   packages.forEach((pkg) => {
     logger.log(`  • ${pkg.name}: ${pkg.version} → ${newVersion}`)
   })
@@ -238,15 +238,13 @@ function displaySelectiveModePackages({
   packages,
   newVersion,
   force,
-  dryRun,
 }: {
   packages: PackageInfo[]
   newVersion: string
   force: boolean
-  dryRun: boolean
 }) {
   if (force) {
-    logger.log(`${dryRun ? '[dry-run] ' : ''}${packages.length} package(s) (force):`)
+    logger.log(`${packages.length} package(s) (force):`)
     packages.forEach((pkg) => {
       logger.log(`  • ${pkg.name}: ${pkg.version} → ${newVersion}`)
     })
@@ -257,7 +255,7 @@ function displaySelectiveModePackages({
     const packagesAsDependents = packages.filter(p => 'reason' in p && p.reason === 'dependency')
 
     if (packagesWithCommits.length > 0) {
-      logger.log(`${dryRun ? '[dry-run] ' : ''}${packagesWithCommits.length} package(s) with commits:`)
+      logger.log(`${packagesWithCommits.length} package(s) with commits:`)
       packagesWithCommits.forEach((pkg) => {
         logger.log(`  • ${pkg.name}: ${pkg.version} → ${newVersion}`)
       })
@@ -265,7 +263,7 @@ function displaySelectiveModePackages({
     }
 
     if (packagesAsDependents.length > 0) {
-      logger.log(`${dryRun ? '[dry-run] ' : ''}${packagesAsDependents.length} dependent package(s):`)
+      logger.log(`${packagesAsDependents.length} dependent package(s):`)
       packagesAsDependents.forEach((pkg) => {
         logger.log(`  • ${pkg.name}: ${pkg.version} → ${newVersion}`)
       })
@@ -332,20 +330,21 @@ export async function confirmBump({
   const lernaJsonExists = hasLernaJson(config.cwd)
 
   logger.log('')
-  logger.info('The following files will be updated:\n')
+  logger.info(`${dryRun ? '[dry-run] ' : ''}The following files will be updated:\n`)
 
   displayRootAndLernaUpdates({
     versionMode,
     currentVersion,
     newVersion,
     lernaJsonExists,
+    dryRun,
   })
 
   if (versionMode === 'unified' && newVersion) {
-    displayUnifiedModePackages({ packages, newVersion, force, dryRun })
+    displayUnifiedModePackages({ packages, newVersion, force })
   }
   else if (versionMode === 'selective' && newVersion) {
-    displaySelectiveModePackages({ packages, newVersion, force, dryRun })
+    displaySelectiveModePackages({ packages, newVersion, force })
   }
   else if (versionMode === 'independent') {
     displayIndependentModePackages({ packages, force, dryRun })
@@ -353,13 +352,13 @@ export async function confirmBump({
 
   try {
     const confirmed = await confirm({
-      message: 'Do you want to proceed with these version updates?',
+      message: `${dryRun ? '[dry-run] ' : ''}Do you want to proceed with these version updates?`,
       default: true,
     })
 
     if (!confirmed) {
       logger.warn('Bump cancelled by user')
-      process.exit(1)
+      process.exit(0)
     }
   }
   catch {
