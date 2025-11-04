@@ -43,6 +43,7 @@ function getDefaultConfig() {
     },
     changelog: {
       rootChangelog: true,
+      includeCommitBody: false,
     },
     publish: {
       private: false,

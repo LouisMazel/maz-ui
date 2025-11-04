@@ -31,6 +31,7 @@ export default defineConfig({
 
   changelog: {
     formatCmd: 'pnpm lint:fix:all',
+    includeCommitBody: true,
   },
 
   publish: {

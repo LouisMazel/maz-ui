@@ -531,10 +531,11 @@ export default defineConfig({
 
 Changelog generation configuration.
 
-| Property        | Type      | Default     | Description                                        |
-| --------------- | --------- | ----------- | -------------------------------------------------- |
-| `formatCmd`     | `string`  | `undefined` | Command to format changelogs after generation      |
-| `rootChangelog` | `boolean` | `true`      | Generate root CHANGELOG.md with aggregated changes |
+| Property            | Type      | Default     | Description                                        |
+| ------------------- | --------- | ----------- | -------------------------------------------------- |
+| `formatCmd`         | `string`  | `undefined` | Command to format changelogs after generation      |
+| `rootChangelog`     | `boolean` | `true`      | Generate root CHANGELOG.md with aggregated changes |
+| `includeCommitBody` | `boolean` | `false`     | Include full commit bodies in changelog entries    |
 
 **Example:**
 
@@ -543,6 +544,7 @@ export default defineConfig({
   changelog: {
     formatCmd: 'pnpm lint:fix',
     rootChangelog: true,
+    includeCommitBody: true,
   },
 })
 ```
