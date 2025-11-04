@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { MazDatePickerShortcut, MazDatePickerValue } from './MazDatePicker/types'
+import type { MazDatePickerPartialRangeValue, MazDatePickerShortcut, MazDatePickerValue } from './MazDatePicker/types'
 import type { DateTimeFormatOptions } from './MazDatePicker/utils'
 import type { MazInputProps } from './MazInput.vue'
 import type { MazPopoverProps } from './MazPopover.vue'
@@ -358,16 +358,20 @@ const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
 
 const instanceId = useInstanceUniqId({ componentName: 'MazDatePicker', providedId: props.id })
 
+function isRangeModelValue(value: unknown): value is MazDatePickerPartialRangeValue {
+  return typeof value === 'object' && value !== null
+}
+
 const currentValue = computed<MazDatePickerValue>({
   get: () => {
-    const isRangeMode = typeof props.modelValue === 'object' || props.range
+    const isRangeMode = isRangeModelValue(props.modelValue) || props.range
 
     if (isRangeMode) {
       return {
-        start: typeof props.modelValue === 'object' && props.modelValue.start
+        start: isRangeModelValue(props.modelValue) && props.modelValue.start
           ? dayjs(props.modelValue.start, props.format).format()
           : undefined,
-        end: typeof props.modelValue === 'object' && props.modelValue.end
+        end: isRangeModelValue(props.modelValue) && props.modelValue.end
           ? dayjs(props.modelValue.end, props.format).format()
           : undefined,
       }
@@ -391,9 +395,9 @@ const currentValue = computed<MazDatePickerValue>({
 
     emitValue(emittedValue)
 
-    const isRangeMode = typeof value === 'object' || props.range
+    const isRangeMode = isRangeModelValue(value) || props.range
 
-    if (props.autoClose && (!isRangeMode || (isRangeMode && typeof value === 'object' && value.end))) {
+    if (props.autoClose && (!isRangeMode || (isRangeMode && isRangeModelValue(value) && value.end))) {
       closeCalendar()
     }
   },
@@ -401,7 +405,7 @@ const currentValue = computed<MazDatePickerValue>({
 const hasTime = computed(() => props.time || props.onlyTime)
 const hasDouble = computed(() => props.double && !props.onlyTime)
 const hasDate = computed(() => !props.onlyTime)
-const isRangeMode = computed(() => typeof currentValue.value === 'object' || props.range)
+const isRangeMode = computed(() => isRangeModelValue(currentValue.value) || props.range)
 
 const internalShortcuts = computed(() => {
   if (!isRangeMode.value || props.shortcuts === false) {
@@ -452,7 +456,7 @@ onBeforeMount(() => {
  * @returns {string} The formatted date for the calendar
  */
 function getCalendarDate(value: MazDatePickerValue): string {
-  const baseDate = (typeof value === 'object' ? value.start : value) ?? dayjs().format()
+  const baseDate = (isRangeModelValue(value) ? value.start : value) ?? dayjs().format()
 
   if (props.minDate && dayjs(baseDate).isBefore(props.minDate)) {
     return props.minDate
@@ -586,7 +590,7 @@ function setCalendarDate(value: string) {
 }
 
 function emitValue(value: MazDatePickerValue) {
-  if (isRangeMode.value && (typeof value === 'object' || value === undefined)) {
+  if (isRangeMode.value && (isRangeModelValue(value) || value === undefined)) {
     const newValue = getRangeISODate(value, props.format) ?? { start: undefined, end: undefined }
     emits('update:model-value', newValue)
 
@@ -605,10 +609,10 @@ watch(
     const value = values[0] as MazDatePickerValue
     const oldValue = oldValues?.[0] as MazDatePickerValue
 
-    if (typeof value === 'object' && (value.start || value.end)) {
+    if (isRangeModelValue(value) && (value.start || value.end)) {
       if (
         !oldValue
-        || (typeof oldValue === 'object'
+        || (isRangeModelValue(oldValue)
           && (oldValue.start !== value.start || oldValue.end !== value.end))
       ) {
         emitValue(value)
@@ -631,7 +635,7 @@ watch(
     const disabledWeekly = values[1] as number[]
     const disabledDates = values[2] as string[]
 
-    if (typeof value === 'object' && (value.start || value.end)) {
+    if (isRangeModelValue(value) && (value.start || value.end)) {
       if (
         (value.start && isValueDisabledWeekly({ value: value.start, disabledWeekly }))
         || (value.start && isValueDisabledDate({ value: value.start, disabledDates }))
