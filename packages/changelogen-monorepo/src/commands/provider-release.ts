@@ -2,7 +2,7 @@ import type { GitProvider, GitProviderOptions, PostedRelease } from '../types'
 import { logger } from '@maz-ui/node'
 import { detectGitProvider, github, gitlab, loadMonorepoConfig } from '../core'
 
-export async function providerRelease(options: GitProviderOptions): Promise<{ detectedProvider: GitProvider, postedReleases: PostedRelease[] }> {
+export async function providerRelease(options: Partial<GitProviderOptions> = {}): Promise<{ detectedProvider: GitProvider, postedReleases: PostedRelease[] }> {
   const dryRun = options.dryRun ?? false
   logger.debug(`Dry run: ${dryRun}`)
 

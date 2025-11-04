@@ -293,7 +293,7 @@ async function bumpSelectiveMode({
   }
 }
 
-export async function bump(options: BumpOptions): Promise<BumpResult> {
+export async function bump(options: Partial<BumpOptions> = {}): Promise<BumpResult> {
   try {
     logger.start('Start bumping versions')
 
