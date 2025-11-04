@@ -6,7 +6,7 @@ import { join } from 'node:path'
 import { logger } from '@maz-ui/node'
 import { getGitDiff, parseCommits } from 'changelogen'
 import fastGlob from 'fast-glob'
-import { isGraduating } from '../core'
+import { isGraduating, isGraduatingBetweenPreleases } from '../core'
 import { expandPackagesToBumpWithDependents } from './dependencies'
 
 function getPackageInfo(
@@ -229,9 +229,9 @@ export async function getPackageToBump({
       changelog: false,
     })
 
-    const graduating = isGraduating(pkg.version, config.bump.type)
+    const graduating = isGraduating(pkg.version, config.bump.type) || isGraduatingBetweenPreleases(pkg.version, config.bump.preid)
 
-    if (commits.length > 0) {
+    if (commits.length > 0 || graduating) {
       packagesWithCommits.push({ ...pkg, commits, graduating })
     }
   }

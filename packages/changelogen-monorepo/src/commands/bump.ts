@@ -47,6 +47,7 @@ async function bumpUnifiedMode({
   const releaseType = determineReleaseType({
     from,
     to,
+    currentVersion,
     commits,
     config,
     force,
@@ -209,7 +210,7 @@ async function bumpSelectiveMode({
     changelog: false,
   })
 
-  const releaseType = determineReleaseType({ from, to, commits, config, force, graduating })
+  const releaseType = determineReleaseType({ from, to, commits, config, force, graduating, currentVersion })
 
   if (!releaseType) {
     logger.debug('No commits require a version bump')
