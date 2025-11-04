@@ -71,7 +71,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.1.6...v4.1.7
 
@@ -83,7 +83,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.1.7-beta.7...v4.1.7-beta.8
 
@@ -119,7 +119,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.1.7-beta.2...v4.1.7-beta.3
 
@@ -273,7 +273,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.0.0-beta.27...v4.0.0-beta.28
 
@@ -285,7 +285,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.0.0-beta.26...v4.0.0-beta.27
 
@@ -317,4 +317,4 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))

@@ -20,7 +20,7 @@
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.2.1-beta.0...v4.2.1-beta.2
 
@@ -32,7 +32,7 @@
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.2.1-beta.0...v4.2.1-beta.1
 
@@ -44,7 +44,7 @@
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.2.1-alpha.16...v4.2.1-beta.0
 
@@ -56,7 +56,7 @@
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.2.1-alpha.12...v4.2.1-alpha.13
 
@@ -72,7 +72,7 @@
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.2.1-alpha.9...v4.2.1-alpha.10
 
@@ -86,7 +86,7 @@
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.2.1-alpha.8...v4.2.1-alpha.9
 
@@ -98,7 +98,7 @@
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.1.8-beta.2...v4.1.8-beta.3
 
