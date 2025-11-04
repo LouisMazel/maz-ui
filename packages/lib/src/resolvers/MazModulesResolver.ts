@@ -58,6 +58,7 @@ const modulesMap: Record<Modules, true> = {
   TextareaAutogrow: true,
   kebabCase: true,
   snakeCase: true,
+  upperFirst: true,
   formatJson: true,
 }
 
