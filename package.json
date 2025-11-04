@@ -27,7 +27,6 @@
     "clean": "make clean",
     "prepare": "npx husky",
     "pre-commit": "lint-staged",
-    "pre-commit:all": "pnpm -r exec lint-staged --concurrency=1",
     "commit": "cz",
     "build:all": "lerna run build",
     "build:apps": "lerna run build --scope='{docs,nuxt-app,vue-app}'",
