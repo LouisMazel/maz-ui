@@ -12,7 +12,6 @@
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.2.1-beta.0...v4.2.1-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.2)
@@ -25,13 +24,11 @@
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.8-beta.2...v4.1.8-beta.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.2...v4.1.8-beta.3)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.8-beta.1...v4.1.8-beta.2
 
@@ -39,13 +36,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.1.8-beta.0...v4.1.8-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.0...v4.1.8-beta.1)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.8...v4.1.8-beta.0
 
@@ -59,7 +54,6 @@
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.6...v4.1.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7)
@@ -72,13 +66,11 @@
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.7-beta.7...v4.1.7-beta.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.7...v4.1.7-beta.8)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.6...v4.1.7-beta.7
 
@@ -86,13 +78,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.1.7-beta.5...v4.1.7-beta.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.5...v4.1.7-beta.6)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.4...v4.1.7-beta.5
 
@@ -100,13 +90,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.1.7-beta.3...v4.1.7-beta.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.3...v4.1.7-beta.4)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.2...v4.1.7-beta.3
 
@@ -114,13 +102,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.1.7-beta.1...v4.1.7-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.1...v4.1.7-beta.2)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.0...v4.1.7-beta.1
 
@@ -128,13 +114,11 @@
 
 **Note:** No relevant commits found
 
-
 ## v4.1.6...v4.1.7-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7-beta.0)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.5...v4.1.6
 

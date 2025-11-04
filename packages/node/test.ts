@@ -1,4 +1,4 @@
-/* eslint-disable no-console, complexity, sonarjs/cognitive-complexity */
+/* eslint-disable complexity, sonarjs/cognitive-complexity */
 
 import { execPromise } from './src'
 

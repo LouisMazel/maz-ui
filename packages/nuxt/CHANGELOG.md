@@ -6,13 +6,11 @@
 
 No relevant changes since last release
 
-
 ## v4.2.1-beta.0...v4.2.1-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.2)
 
 No relevant changes since last release
-
 
 ## v4.2.1-beta.0...v4.2.1-beta.1
 
@@ -20,13 +18,11 @@ No relevant changes since last release
 
 No relevant changes since last release
 
-
 ## v4.2.1-alpha.16...v4.2.1-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.16...v4.2.1-beta.0)
 
 No relevant changes since last release
-
 
 ## v4.2.1-alpha.12...v4.2.1-alpha.13
 
@@ -34,20 +30,17 @@ No relevant changes since last release
 
 No relevant changes for this release
 
-
 ## v4.2.1-alpha.9...v4.2.1-alpha.10
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.9...v4.2.1-alpha.10)
 
 No relevant changes for this release
 
-
 ## v4.2.1-alpha.8...v4.2.1-alpha.9
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.8...v4.2.1-alpha.9)
 
 No relevant changes for this release
-
 
 ## v4.1.8...v4.2.0
 
@@ -62,7 +55,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.7...v4.1.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7...v4.1.8)
@@ -75,13 +67,11 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.8-beta.2...v4.1.8-beta.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.2...v4.1.8-beta.3)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.8-beta.1...v4.1.8-beta.2
 
@@ -89,13 +79,11 @@ No relevant changes for this release
 
 **Note:** No relevant commits found
 
-
 ## v4.1.8-beta.0...v4.1.8-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.0...v4.1.8-beta.1)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.8...v4.1.8-beta.0
 
@@ -114,7 +102,6 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.6...v4.1.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7)
@@ -127,13 +114,11 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.7-beta.7...v4.1.7-beta.8
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.7...v4.1.7-beta.8)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.6...v4.1.7-beta.7
 
@@ -141,13 +126,11 @@ No relevant changes for this release
 
 **Note:** No relevant commits found
 
-
 ## v4.1.7-beta.5...v4.1.7-beta.6
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.5...v4.1.7-beta.6)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.4...v4.1.7-beta.5
 
@@ -161,13 +144,11 @@ No relevant changes for this release
 
 - LouisMazel <me@loicmazuel.com>
 
-
 ## v4.1.7-beta.3...v4.1.7-beta.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.3...v4.1.7-beta.4)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.2...v4.1.7-beta.3
 
@@ -175,13 +156,11 @@ No relevant changes for this release
 
 **Note:** No relevant commits found
 
-
 ## v4.1.7-beta.1...v4.1.7-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.1...v4.1.7-beta.2)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.0...v4.1.7-beta.1
 
@@ -189,13 +168,11 @@ No relevant changes for this release
 
 **Note:** No relevant commits found
 
-
 ## v4.1.6...v4.1.7-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7-beta.0)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.5...v4.1.6
 
@@ -435,7 +412,7 @@ No relevant changes for this release
 ### 🚀 Features
 
 - **maz-ui:** MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) ([#1189](https://github.com/LouisMazel/maz-ui/pull/1189))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
 - **@maz-ui/nuxt:** New standalone package for the nuxt module (no longer included in maz-ui bundle) ([2922aed6a](https://github.com/LouisMazel/maz-ui/commit/2922aed6a))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([d81463fc0](https://github.com/LouisMazel/maz-ui/commit/d81463fc0))
 - **@maz-ui/nuxt:** Implemente @maz-ui/themes - set and manage themes with nuxt ([0dc3d8656](https://github.com/LouisMazel/maz-ui/commit/0dc3d8656))
@@ -448,7 +425,7 @@ No relevant changes for this release
 - **@maz-ui/nuxt:** Add spa mode option to inject all CSS on client side ([d2dc8c2c1](https://github.com/LouisMazel/maz-ui/commit/d2dc8c2c1))
 - **@maz-ui/themes:** Add new option to choose the color modes supported ([2bdde86e0](https://github.com/LouisMazel/maz-ui/commit/2bdde86e0))
 - **maz-ui:** MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) ([#1189](https://github.com/LouisMazel/maz-ui/pull/1189))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([84366e00b](https://github.com/LouisMazel/maz-ui/commit/84366e00b))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([84366e00b](https://github.com/LouisMazel/maz-ui/commit/84366e00b))
 - **@maz-ui/nuxt:** New standalone package for the nuxt module (no longer included in maz-ui bundle) ([9b1439661](https://github.com/LouisMazel/maz-ui/commit/9b1439661))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([5c5a8f4f4](https://github.com/LouisMazel/maz-ui/commit/5c5a8f4f4))
 - **@maz-ui/nuxt:** Implemente @maz-ui/themes - set and manage themes with nuxt ([7915d1e73](https://github.com/LouisMazel/maz-ui/commit/7915d1e73))
@@ -518,7 +495,7 @@ No relevant changes for this release
 ### 🚀 Features
 
 - **maz-ui:** MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) ([#1189](https://github.com/LouisMazel/maz-ui/pull/1189))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
 - **@maz-ui/nuxt:** New standalone package for the nuxt module (no longer included in maz-ui bundle) ([2922aed6a](https://github.com/LouisMazel/maz-ui/commit/2922aed6a))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([d81463fc0](https://github.com/LouisMazel/maz-ui/commit/d81463fc0))
 - **@maz-ui/nuxt:** Implemente @maz-ui/themes - set and manage themes with nuxt ([0dc3d8656](https://github.com/LouisMazel/maz-ui/commit/0dc3d8656))
@@ -530,7 +507,7 @@ No relevant changes for this release
 - **@maz-ui/themes:** Use cookie to store color mode ([e9853bec1](https://github.com/LouisMazel/maz-ui/commit/e9853bec1))
 - **@maz-ui/nuxt:** Add spa mode option to inject all CSS on client side ([d2dc8c2c1](https://github.com/LouisMazel/maz-ui/commit/d2dc8c2c1))
 - **maz-ui:** MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) ([#1189](https://github.com/LouisMazel/maz-ui/pull/1189))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([84366e00b](https://github.com/LouisMazel/maz-ui/commit/84366e00b))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([84366e00b](https://github.com/LouisMazel/maz-ui/commit/84366e00b))
 - **@maz-ui/nuxt:** New standalone package for the nuxt module (no longer included in maz-ui bundle) ([9b1439661](https://github.com/LouisMazel/maz-ui/commit/9b1439661))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([5c5a8f4f4](https://github.com/LouisMazel/maz-ui/commit/5c5a8f4f4))
 - **@maz-ui/nuxt:** Implemente @maz-ui/themes - set and manage themes with nuxt ([7915d1e73](https://github.com/LouisMazel/maz-ui/commit/7915d1e73))
@@ -611,7 +588,7 @@ No relevant changes for this release
 ### 🚀 Features
 
 - **maz-ui:** MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) ([#1189](https://github.com/LouisMazel/maz-ui/pull/1189))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([b76f65c52](https://github.com/LouisMazel/maz-ui/commit/b76f65c52))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([b76f65c52](https://github.com/LouisMazel/maz-ui/commit/b76f65c52))
 - **@maz-ui/nuxt:** New standalone package for the nuxt module (no longer included in maz-ui bundle) ([d8e4dd466](https://github.com/LouisMazel/maz-ui/commit/d8e4dd466))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([7726ff8e7](https://github.com/LouisMazel/maz-ui/commit/7726ff8e7))
 - **@maz-ui/nuxt:** Implemente @maz-ui/themes - set and manage themes with nuxt ([d369b1f62](https://github.com/LouisMazel/maz-ui/commit/d369b1f62))
@@ -622,7 +599,7 @@ No relevant changes for this release
 - **maz-ui:** MazSelectCountry - new form component to select country and languages ([97fedf75e](https://github.com/LouisMazel/maz-ui/commit/97fedf75e))
 - **@maz-ui/themes:** Use cookie to store color mode ([780157cd7](https://github.com/LouisMazel/maz-ui/commit/780157cd7))
 - **maz-ui:** MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) ([#1189](https://github.com/LouisMazel/maz-ui/pull/1189))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
 - **@maz-ui/nuxt:** New standalone package for the nuxt module (no longer included in maz-ui bundle) ([2922aed6a](https://github.com/LouisMazel/maz-ui/commit/2922aed6a))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([d81463fc0](https://github.com/LouisMazel/maz-ui/commit/d81463fc0))
 - **@maz-ui/nuxt:** Implemente @maz-ui/themes - set and manage themes with nuxt ([0dc3d8656](https://github.com/LouisMazel/maz-ui/commit/0dc3d8656))
