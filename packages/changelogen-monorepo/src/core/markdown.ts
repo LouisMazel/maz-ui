@@ -47,7 +47,7 @@ export async function generateMarkDown(
       continue
     }
 
-    markdown.push('', `### ${config.types[type].title}`, '')
+    markdown.push('', `### ${config.types[type]?.title}`, '')
     for (const commit of group.reverse()) {
       const line = formatCommit(commit, config)
       markdown.push(line)
@@ -147,14 +147,14 @@ export function parseChangelogMarkdown(contents: string) {
   for (let i = 0; i < headings.length; i++) {
     const heading = headings[i]
     const nextHeading = headings[i + 1]
-    const [, title] = heading
-    const version = title.match(VERSION_RE)
+    const [, title] = heading as RegExpExecArray
+    const version = title?.match(VERSION_RE)
     const release = {
       version: version ? version[1] : undefined,
       body: contents
         .slice(
-          heading.index + heading[0].length,
-          nextHeading?.index ?? contents.length,
+          heading?.index as number + (heading?.[0]?.length || 0),
+          nextHeading?.index as number ?? contents.length,
         )
         .trim(),
     }
@@ -226,7 +226,7 @@ function formatReferences(
     )
   }
   if (references.length > 0) {
-    return ` (${formatReference(references[0], config.repo)})`
+    return ` (${formatReference(references[0] as Reference, config.repo)})`
   }
   return ''
 }
@@ -242,7 +242,7 @@ function groupBy(items: any[], key: string) {
   const groups: Record<string, any[]> = {}
   for (const item of items) {
     groups[item[key]] = groups[item[key]] || []
-    groups[item[key]].push(item)
+    groups[item[key]]?.push(item)
   }
   return groups
 }
