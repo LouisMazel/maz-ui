@@ -1,5 +1,9 @@
 # Change Log
 
+## v4.3.0-beta.0...v4.3.0-rc.0
+
+No relevant changes since last release
+
 ## v4.1.8-beta.2...v4.1.8-beta.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.2...v4.1.8-beta.3)
