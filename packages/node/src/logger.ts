@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import type { ConsolaInstance, ConsolaOptions, ConsolaReporter, InputLogObject } from 'consola'
 import process from 'node:process'
 import { blueBright } from 'colorette'
@@ -55,3 +57,5 @@ export type { ConsolaOptions }
 export type LoggerOptions = Partial<ConsolaOptions>
 export type LogLevel = keyof typeof LogLevelMap
 export type Logger = ReturnType<typeof createLogger>
+
+/* eslint-enable no-console */
