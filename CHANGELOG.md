@@ -1,5 +1,42 @@
 # Change Log
 
+## v4.3.0-alpha.0...v4.3.0-alpha.1
+
+### 🚀 Features
+
+- **@maz-ui/utils:** Add new utility - upperFirst ([5f6ca7b96](https://github.com/LouisMazel/maz-ui/commit/5f6ca7b96))
+- **@maz-ui/changelogen-monorepo:** Add support for commit body in changelog ([b7df0a054](https://github.com/LouisMazel/maz-ui/commit/b7df0a054))
+
+  Allows including commit body content in changelog entries for richer context.
+
+### 🩹 Fixes
+
+- **@maz-ui/eslint-config:** Markdown rules was applied to all files ([3d6cbcb80](https://github.com/LouisMazel/maz-ui/commit/3d6cbcb80))
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Add default values to command function parameters ([f2f04187a](https://github.com/LouisMazel/maz-ui/commit/f2f04187a))
+  - Make command function options optional with default empty object
+  - Improves API flexibility for programmatic usage
+
+- **@maz-ui/changelogen-monorepo:** Show dry run mode in bump prompt ([e9c29a106](https://github.com/LouisMazel/maz-ui/commit/e9c29a106))
+- **@maz-ui/changelogen-monorepo:** Use prerelease type to bump when specified ([d47b43976](https://github.com/LouisMazel/maz-ui/commit/d47b43976))
+
+### 📖 Documentation
+
+- **@maz-ui/changelogen-monorepo:** Restructure README with improved formatting and completeness ([950bf9e65](https://github.com/LouisMazel/maz-ui/commit/950bf9e65))
+  - Restructure Configuration section with compact table format for better readability
+  - Add Package Manager Support section documenting npm, yarn, pnpm, bun auto-detection
+  - Document all missing CLI options (--yes, --build-cmd, --no-clean, --no-commit, --no-changelog)
+  - Add new 'tokens' configuration section with environment variable documentation
+  - Add 'Inherited from Changelogen' section for inherited configuration options
+  - Improve overall organization and consistency of documentation
+  - Maintain all existing information while improving presentation
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.2.1...v4.3.0-alpha.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1...v4.3.0-alpha.0)

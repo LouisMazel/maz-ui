@@ -1,5 +1,9 @@
 # Change Log
 
+## v4.3.0-alpha.0...v4.3.0-alpha.1
+
+No relevant changes since last release
+
 ## v4.2.0...v4.2.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.0...v4.2.1)
