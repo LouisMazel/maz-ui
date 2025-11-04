@@ -42,13 +42,14 @@ export function determineReleaseType({
     logger.debug(`No commits found, skipping bump`)
     releaseType = null
   }
-  else if (releaseType && releaseType !== 'release' && releaseType !== 'prerelease') {
+  else if (releaseType && releaseType !== 'release') {
     logger.debug(`Using specified release type: ${releaseType}`)
   }
   else if (commits && commits.length > 0) {
     const serverChange = determineSemverChange(commits, configWithRange) as 'major' | 'minor' | 'patch' | null
-    logger.debug(`Using detected release type: ${serverChange}`)
-    releaseType = configWithRange.bump.type.includes('pre') && serverChange ? `pre${serverChange}` : serverChange
+    const type = (configWithRange.bump.type.includes('pre') && serverChange ? `pre${serverChange}` : serverChange) as BumpOptions['type'] | null
+    logger.debug(`Using detected release type: ${type}`)
+    releaseType = type
   }
 
   if (force) {
