@@ -26,7 +26,7 @@ export async function generateChangelog(
     dryRun: boolean
   },
 ) {
-  let fromTag = config.from || from
+  let fromTag = config.from || config.templates.tagBody.replace('{{newVersion}}', pkg.version) || from
 
   const isFirstCommit = fromTagIsFirstCommit(fromTag, config.cwd)
 
