@@ -35,7 +35,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.1.7...v4.1.8
 
@@ -47,7 +47,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.1.8-beta.2...v4.1.8-beta.3
 
@@ -87,7 +87,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.1.6...v4.1.7
 
@@ -103,7 +103,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.1.7-beta.7...v4.1.7-beta.8
 
@@ -121,7 +121,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.1.7-beta.5...v4.1.7-beta.6
 
@@ -139,7 +139,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.1.7-beta.3...v4.1.7-beta.4
 
@@ -264,7 +264,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.0.0-beta.33...v4.0.0-beta.34
 
@@ -388,7 +388,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.0.0-beta.17...v4.0.0-beta.18
 
@@ -422,7 +422,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.0.0-beta.16...v4.0.0-beta.17
 
@@ -462,7 +462,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.0.0-beta.14...v4.0.0-beta.15
 
@@ -526,7 +526,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.0.0-beta.5...v4.0.0-beta.6
 

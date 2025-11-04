@@ -6,13 +6,11 @@
 
 No relevant changes since last release
 
-
 ## v4.2.1-beta.0...v4.2.1-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-beta.0...v4.2.1-beta.2)
 
 No relevant changes since last release
-
 
 ## v4.2.1-beta.0...v4.2.1-beta.1
 
@@ -20,13 +18,11 @@ No relevant changes since last release
 
 No relevant changes since last release
 
-
 ## v4.2.1-alpha.16...v4.2.1-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.16...v4.2.1-beta.0)
 
 No relevant changes since last release
-
 
 ## v4.2.1-alpha.12...v4.2.1-alpha.13
 
@@ -34,13 +30,11 @@ No relevant changes since last release
 
 No relevant changes for this release
 
-
 ## v4.2.1-alpha.9...v4.2.1-alpha.10
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1-alpha.9...v4.2.1-alpha.10)
 
 No relevant changes for this release
-
 
 ## v4.2.1-alpha.8...v4.2.1-alpha.9
 
@@ -48,13 +42,11 @@ No relevant changes for this release
 
 No relevant changes for this release
 
-
 ## v4.1.8-beta.2...v4.1.8-beta.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.2...v4.1.8-beta.3)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.8-beta.1...v4.1.8-beta.2
 
@@ -62,13 +54,11 @@ No relevant changes for this release
 
 **Note:** No relevant commits found
 
-
 ## v4.1.8-beta.0...v4.1.8-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.8-beta.0...v4.1.8-beta.1)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.8...v4.1.8-beta.0
 
@@ -76,13 +66,11 @@ No relevant changes for this release
 
 **Note:** No relevant commits found
 
-
 ## v4.1.6...v4.1.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.7...v4.1.7-beta.8
 
@@ -90,13 +78,11 @@ No relevant changes for this release
 
 **Note:** No relevant commits found
 
-
 ## v4.1.7-beta.6...v4.1.7-beta.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.6...v4.1.7-beta.7)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.5...v4.1.7-beta.6
 
@@ -104,13 +90,11 @@ No relevant changes for this release
 
 **Note:** No relevant commits found
 
-
 ## v4.1.7-beta.4...v4.1.7-beta.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.4...v4.1.7-beta.5)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.3...v4.1.7-beta.4
 
@@ -118,13 +102,11 @@ No relevant changes for this release
 
 **Note:** No relevant commits found
 
-
 ## v4.1.7-beta.2...v4.1.7-beta.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.2...v4.1.7-beta.3)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.7-beta.1...v4.1.7-beta.2
 
@@ -132,20 +114,17 @@ No relevant changes for this release
 
 **Note:** No relevant commits found
 
-
 ## v4.1.7-beta.0...v4.1.7-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.7-beta.0...v4.1.7-beta.1)
 
 **Note:** No relevant commits found
 
-
 ## v4.1.6...v4.1.7-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.1.6...v4.1.7-beta.0)
 
 **Note:** No relevant commits found
-
 
 ## v4.1.5...v4.1.6
 
@@ -332,12 +311,12 @@ No relevant changes for this release
 ### 🚀 Features
 
 - **maz-ui:** MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) ([#1189](https://github.com/LouisMazel/maz-ui/pull/1189))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([d81463fc0](https://github.com/LouisMazel/maz-ui/commit/d81463fc0))
 - **maz-ui:** Implement new theme manager provided by @maz-ui/themes ([f6978f418](https://github.com/LouisMazel/maz-ui/commit/f6978f418))
 - **@maz-ui/translations:** New packages to manage maz-ui's translations easily ([05f936be9](https://github.com/LouisMazel/maz-ui/commit/05f936be9))
 - **maz-ui:** MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) ([#1189](https://github.com/LouisMazel/maz-ui/pull/1189))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([84366e00b](https://github.com/LouisMazel/maz-ui/commit/84366e00b))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([84366e00b](https://github.com/LouisMazel/maz-ui/commit/84366e00b))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([5c5a8f4f4](https://github.com/LouisMazel/maz-ui/commit/5c5a8f4f4))
 - **maz-ui:** Implement new theme manager provided by @maz-ui/themes ([58344db69](https://github.com/LouisMazel/maz-ui/commit/58344db69))
 - **@maz-ui/translations:** New packages to manage maz-ui's translations easily ([edebcbf3d](https://github.com/LouisMazel/maz-ui/commit/edebcbf3d))
@@ -351,8 +330,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
-- Mazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.0.0-beta.17...v4.0.0-beta.18
 
@@ -361,12 +339,12 @@ No relevant changes for this release
 ### 🚀 Features
 
 - **maz-ui:** MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) ([#1189](https://github.com/LouisMazel/maz-ui/pull/1189))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([d81463fc0](https://github.com/LouisMazel/maz-ui/commit/d81463fc0))
 - **maz-ui:** Implement new theme manager provided by @maz-ui/themes ([f6978f418](https://github.com/LouisMazel/maz-ui/commit/f6978f418))
 - **@maz-ui/translations:** New packages to manage maz-ui's translations easily ([05f936be9](https://github.com/LouisMazel/maz-ui/commit/05f936be9))
 - **maz-ui:** MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) ([#1189](https://github.com/LouisMazel/maz-ui/pull/1189))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([84366e00b](https://github.com/LouisMazel/maz-ui/commit/84366e00b))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([84366e00b](https://github.com/LouisMazel/maz-ui/commit/84366e00b))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([5c5a8f4f4](https://github.com/LouisMazel/maz-ui/commit/5c5a8f4f4))
 - **maz-ui:** Implement new theme manager provided by @maz-ui/themes ([58344db69](https://github.com/LouisMazel/maz-ui/commit/58344db69))
 - **@maz-ui/translations:** New packages to manage maz-ui's translations easily ([edebcbf3d](https://github.com/LouisMazel/maz-ui/commit/edebcbf3d))
@@ -380,8 +358,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
-- Mazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.0.0-beta.16...v4.0.0-beta.17
 
@@ -396,12 +373,12 @@ No relevant changes for this release
 ### 🚀 Features
 
 - **maz-ui:** MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) ([#1189](https://github.com/LouisMazel/maz-ui/pull/1189))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([b76f65c52](https://github.com/LouisMazel/maz-ui/commit/b76f65c52))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([b76f65c52](https://github.com/LouisMazel/maz-ui/commit/b76f65c52))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([7726ff8e7](https://github.com/LouisMazel/maz-ui/commit/7726ff8e7))
 - **maz-ui:** Implement new theme manager provided by @maz-ui/themes ([bc23c6a66](https://github.com/LouisMazel/maz-ui/commit/bc23c6a66))
 - **@maz-ui/translations:** New packages to manage maz-ui's translations easily ([f8c2518f0](https://github.com/LouisMazel/maz-ui/commit/f8c2518f0))
 - **maz-ui:** MazDropzone - new version - completely rewritten without deps (BREAKING_CHANGES) ([#1189](https://github.com/LouisMazel/maz-ui/pull/1189))
-- **@maz-ui/icons:** Add resolver to auto-import icons as  Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
+- **@maz-ui/icons:** Add resolver to auto-import icons as Vue Components ([6254ffa7e](https://github.com/LouisMazel/maz-ui/commit/6254ffa7e))
 - **@maz-ui/themes:** New package - create and manage theme with maz-ui ([d81463fc0](https://github.com/LouisMazel/maz-ui/commit/d81463fc0))
 - **maz-ui:** Implement new theme manager provided by @maz-ui/themes ([f6978f418](https://github.com/LouisMazel/maz-ui/commit/f6978f418))
 - **@maz-ui/translations:** New packages to manage maz-ui's translations easily ([05f936be9](https://github.com/LouisMazel/maz-ui/commit/05f936be9))
@@ -415,8 +392,7 @@ No relevant changes for this release
 
 ### ❤️ Contributors
 
-- LouisMazel <me@loicmazuel.com>
-- Mazel <me@loicmazuel.com>
+- Louis Mazel ([@LouisMazel](https://github.com/LouisMazel))
 
 ## v4.0.0-beta.14...v4.0.0-beta.15
 
@@ -498,7 +474,7 @@ No relevant changes for this release
 - chore(release): bump version to v3.50.1 ([2874d45](https://github.com/LouisMazel/maz-ui/commit/2874d45))
 - chore(release): version packages 4.0.0-beta.0 ([531325a](https://github.com/LouisMazel/maz-ui/commit/531325a))
 - fix: package config to be published on npm ([ceb1f68](https://github.com/LouisMazel/maz-ui/commit/ceb1f68))
-- feat(@maz-ui/icons): Add resolver to auto-import icons as  Vue Components ([b76f65c](https://github.com/LouisMazel/maz-ui/commit/b76f65c))
+- feat(@maz-ui/icons): Add resolver to auto-import icons as Vue Components ([b76f65c](https://github.com/LouisMazel/maz-ui/commit/b76f65c))
 - feat(@maz-ui/themes): new package - create and manage theme with maz-ui ([7726ff8](https://github.com/LouisMazel/maz-ui/commit/7726ff8))
 - feat(@maz-ui/translations): new packages to manage maz-ui's translations easily ([f8c2518](https://github.com/LouisMazel/maz-ui/commit/f8c2518))
 - fix(@maz-ui/icons): export svg files correctly ([dd760f3](https://github.com/LouisMazel/maz-ui/commit/dd760f3))
@@ -508,7 +484,7 @@ No relevant changes for this release
 ## 4.0.0-beta.0 (2025-07-09)
 
 - fix: package config to be published on npm ([ceb1f68](https://github.com/LouisMazel/maz-ui/commit/ceb1f68))
-- feat(@maz-ui/icons): Add resolver to auto-import icons as  Vue Components ([b76f65c](https://github.com/LouisMazel/maz-ui/commit/b76f65c))
+- feat(@maz-ui/icons): Add resolver to auto-import icons as Vue Components ([b76f65c](https://github.com/LouisMazel/maz-ui/commit/b76f65c))
 - feat(@maz-ui/themes): new package - create and manage theme with maz-ui ([7726ff8](https://github.com/LouisMazel/maz-ui/commit/7726ff8))
 - feat(@maz-ui/translations): new packages to manage maz-ui's translations easily ([f8c2518](https://github.com/LouisMazel/maz-ui/commit/f8c2518))
 - fix(@maz-ui/icons): export svg files correctly ([dd760f3](https://github.com/LouisMazel/maz-ui/commit/dd760f3))
