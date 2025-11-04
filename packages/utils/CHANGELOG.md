@@ -1,5 +1,16 @@
 # Change Log
 
+## v4.3.0...v4.3.0
+
+### 🚀 Features
+
+- **@maz-ui/utils:** Add new utility - upperFirst ([5f6ca7b9](https://github.com/LouisMazel/maz-ui/commit/5f6ca7b9))
+- **@maz-ui/utils:** Add new utility - upperFirst ([52467ce8](https://github.com/LouisMazel/maz-ui/commit/52467ce8))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.0-beta.0...v4.3.0-rc.0
 
 No relevant changes since last release

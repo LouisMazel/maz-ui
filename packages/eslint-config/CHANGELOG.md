@@ -1,5 +1,16 @@
 # Change Log
 
+## v4.3.0...v4.3.0
+
+### 🩹 Fixes
+
+- **@maz-ui/eslint-config:** Markdown rules was applied to all files ([3d6cbcb8](https://github.com/LouisMazel/maz-ui/commit/3d6cbcb8))
+- **@maz-ui/eslint-config:** Markdown rules was applied to all files ([c5e711f7](https://github.com/LouisMazel/maz-ui/commit/c5e711f7))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.0-beta.0...v4.3.0-rc.0
 
 No relevant changes since last release

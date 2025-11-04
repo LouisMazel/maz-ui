@@ -1,5 +1,189 @@
 # Changelog
 
+## v4.3.0...v4.3.0
+
+### 🚀 Features
+
+- **@maz-ui/changelogen-monorepo:** Remove and replace commands 'gitlab' and 'github' by 'provider-release' ([b79f0eb5](https://github.com/LouisMazel/maz-ui/commit/b79f0eb5))
+- **@maz-ui/changelogen-monorepo:** Add 'yes' option to bump config to have a confirmation prompt to accept new versions ([259f9e4b](https://github.com/LouisMazel/maz-ui/commit/259f9e4b))
+- **@maz-ui/changelogen-monorepo:** Add support for multiple configuration files ([3b067cc9](https://github.com/LouisMazel/maz-ui/commit/3b067cc9))
+
+  This enables users to manage different release workflows using separate config files.
+  Use --config flag to specify custom config name (e.g., --config changelog.standalone).
+  Supports all c12 formats: .ts, .js, .json, .yaml, .toml, etc.
+
+- **@maz-ui/changelogen-monorepo:** Add support for commit body in changelog ([b7df0a05](https://github.com/LouisMazel/maz-ui/commit/b7df0a05))
+
+  Allows including commit body content in changelog entries for richer context.
+
+- **@maz-ui/changelogen-monorepo:** Support prerelease graduation between different preids ([713ad8c7](https://github.com/LouisMazel/maz-ui/commit/713ad8c7))
+
+  Allow bumping packages from one prerelease channel to another without new
+  commits (e.g., alpha to beta). This enables better control over release
+  workflows when transitioning between prerelease stages.
+
+- **@maz-ui/changelogen-monorepo:** Remove and replace commands 'gitlab' and 'github' by 'provider-release' ([b1329137](https://github.com/LouisMazel/maz-ui/commit/b1329137))
+- **@maz-ui/changelogen-monorepo:** Add 'yes' option to bump config to have a confirmation prompt to accept new versions ([d676f2f9](https://github.com/LouisMazel/maz-ui/commit/d676f2f9))
+- **@maz-ui/changelogen-monorepo:** Add support for multiple configuration files ([0d2a2251](https://github.com/LouisMazel/maz-ui/commit/0d2a2251))
+
+  This enables users to manage different release workflows using separate config files.
+  Use --config flag to specify custom config name (e.g., --config changelog.standalone).
+  Supports all c12 formats: .ts, .js, .json, .yaml, .toml, etc.
+
+- **@maz-ui/changelogen-monorepo:** Add support for commit body in changelog ([64537ba4](https://github.com/LouisMazel/maz-ui/commit/64537ba4))
+
+  Allows including commit body content in changelog entries for richer context.
+
+- **@maz-ui/changelogen-monorepo:** Support prerelease graduation between different preids ([a3e553b9](https://github.com/LouisMazel/maz-ui/commit/a3e553b9))
+
+  Allow bumping packages from one prerelease channel to another without new
+  commits (e.g., alpha to beta). This enables better control over release
+  workflows when transitioning between prerelease stages.
+
+### 🩹 Fixes
+
+- **@maz-ui/changelogen-monorepo:** Store fromTag during bump to fix empty changelogs ([2fde3763](https://github.com/LouisMazel/maz-ui/commit/2fde3763))
+
+  Store fromTag in PackageInfo during bump and reuse it in GitHub/GitLab
+  releases instead of calling resolveTags which returned from===to
+
+- **@maz-ui/changelogen-monorepo:** Prevent version inlining by reading package.json at runtime ([ecb263c6](https://github.com/LouisMazel/maz-ui/commit/ecb263c6))
+
+  Read package.json dynamically instead of import to prevent unbuild
+  from inlining the version at build time
+
+- **@maz-ui/changelogen-monorepo:** Sort tags by date instead of version refname ([e88ee503](https://github.com/LouisMazel/maz-ui/commit/e88ee503))
+- **@maz-ui/changelogen-monorepo:** Improve error handling in version confirmation prompt ([cbdf5db3](https://github.com/LouisMazel/maz-ui/commit/cbdf5db3))
+- **@maz-ui/changelogen-monorepo:** Improve fromTag resolution by using config template as fallback ([cbe31407](https://github.com/LouisMazel/maz-ui/commit/cbe31407))
+- **@maz-ui/changelogen-monorepo:** Store fromTag during bump to fix empty changelogs ([3d836f77](https://github.com/LouisMazel/maz-ui/commit/3d836f77))
+
+  Store fromTag in PackageInfo during bump and reuse it in GitHub/GitLab
+  releases instead of calling resolveTags which returned from===to
+
+- **@maz-ui/changelogen-monorepo:** Prevent version inlining by reading package.json at runtime ([0f4e5c0f](https://github.com/LouisMazel/maz-ui/commit/0f4e5c0f))
+
+  Read package.json dynamically instead of import to prevent unbuild
+  from inlining the version at build time
+
+- **@maz-ui/changelogen-monorepo:** Sort tags by date instead of version refname ([7c2947b6](https://github.com/LouisMazel/maz-ui/commit/7c2947b6))
+- **@maz-ui/changelogen-monorepo:** Improve error handling in version confirmation prompt ([d550a072](https://github.com/LouisMazel/maz-ui/commit/d550a072))
+- **@maz-ui/changelogen-monorepo:** Improve fromTag resolution by using config template as fallback ([d5950e0c](https://github.com/LouisMazel/maz-ui/commit/d5950e0c))
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Introduce new options: buildCmd to build your packages before publishing and dependencyTypes to choose how depends package should be bump ([9c5ce827](https://github.com/LouisMazel/maz-ui/commit/9c5ce827))
+- **@maz-ui/changelogen-monorepo:** Extract tag resolution logic into dedicated module ([2fecb674](https://github.com/LouisMazel/maz-ui/commit/2fecb674))
+
+  Create new tags.ts module to centralize all tag resolution logic:
+  - resolveTags() for unified tag resolution across all version modes
+  - getLastRepoTag() for repository-level tag queries
+  - getLastPackageTag() for package-specific tags in independent mode
+  - getCurrentGitRef() implementation adapted for monorepo usage
+
+- **@maz-ui/changelogen-monorepo:** Simplify git utilities after tags extraction ([ec547d8d](https://github.com/LouisMazel/maz-ui/commit/ec547d8d))
+
+  Remove tag-related functions moved to tags.ts module
+
+- **@maz-ui/changelogen-monorepo:** Add interactive confirmation prompt before version bump ([e5854340](https://github.com/LouisMazel/maz-ui/commit/e5854340))
+
+  Add @inquirer/prompts dependency and implement confirmBump
+  function with display helpers for all version modes
+
+- **@maz-ui/changelogen-monorepo:** Add dependencyTypes option ([1030e52b](https://github.com/LouisMazel/maz-ui/commit/1030e52b))
+
+  Allow users to configure which dependency types (dependencies,
+  devDependencies, peerDependencies) trigger dependent package bumping
+
+- **@maz-ui/changelogen-monorepo:** Unify provider commands under provider-release ([0a0959d9](https://github.com/LouisMazel/maz-ui/commit/0a0959d9))
+
+  Move github.ts and gitlab.ts to core/ and create unified
+  provider-release command replacing separate github/gitlab commands
+
+- **@maz-ui/changelogen-monorepo:** Add default values to command function parameters ([f2f04187](https://github.com/LouisMazel/maz-ui/commit/f2f04187))
+  - Make command function options optional with default empty object
+  - Improves API flexibility for programmatic usage
+
+- **@maz-ui/changelogen-monorepo:** Show dry run mode in bump prompt ([e9c29a10](https://github.com/LouisMazel/maz-ui/commit/e9c29a10))
+- **@maz-ui/changelogen-monorepo:** Use prerelease type to bump when specified ([d47b4397](https://github.com/LouisMazel/maz-ui/commit/d47b4397))
+- **@maz-ui/changelogen-monorepo:** Typo - replace files by packages ([b7afbae3](https://github.com/LouisMazel/maz-ui/commit/b7afbae3))
+- **@maz-ui/changelogen-monorepo:** Introduce new options: buildCmd to build your packages before publishing and dependencyTypes to choose how depends package should be bump ([099197c1](https://github.com/LouisMazel/maz-ui/commit/099197c1))
+- **@maz-ui/changelogen-monorepo:** Extract tag resolution logic into dedicated module ([189226f1](https://github.com/LouisMazel/maz-ui/commit/189226f1))
+
+  Create new tags.ts module to centralize all tag resolution logic:
+  - resolveTags() for unified tag resolution across all version modes
+  - getLastRepoTag() for repository-level tag queries
+  - getLastPackageTag() for package-specific tags in independent mode
+  - getCurrentGitRef() implementation adapted for monorepo usage
+
+- **@maz-ui/changelogen-monorepo:** Simplify git utilities after tags extraction ([43e876fc](https://github.com/LouisMazel/maz-ui/commit/43e876fc))
+
+  Remove tag-related functions moved to tags.ts module
+
+- **@maz-ui/changelogen-monorepo:** Add interactive confirmation prompt before version bump ([e1db15aa](https://github.com/LouisMazel/maz-ui/commit/e1db15aa))
+
+  Add @inquirer/prompts dependency and implement confirmBump
+  function with display helpers for all version modes
+
+- **@maz-ui/changelogen-monorepo:** Add dependencyTypes option ([a1cf556c](https://github.com/LouisMazel/maz-ui/commit/a1cf556c))
+
+  Allow users to configure which dependency types (dependencies,
+  devDependencies, peerDependencies) trigger dependent package bumping
+
+- **@maz-ui/changelogen-monorepo:** Unify provider commands under provider-release ([24b71cb8](https://github.com/LouisMazel/maz-ui/commit/24b71cb8))
+
+  Move github.ts and gitlab.ts to core/ and create unified
+  provider-release command replacing separate github/gitlab commands
+
+- **@maz-ui/changelogen-monorepo:** Add default values to command function parameters ([20673a9d](https://github.com/LouisMazel/maz-ui/commit/20673a9d))
+  - Make command function options optional with default empty object
+  - Improves API flexibility for programmatic usage
+
+- **@maz-ui/changelogen-monorepo:** Show dry run mode in bump prompt ([45d1f29b](https://github.com/LouisMazel/maz-ui/commit/45d1f29b))
+- **@maz-ui/changelogen-monorepo:** Use prerelease type to bump when specified ([eacba536](https://github.com/LouisMazel/maz-ui/commit/eacba536))
+- **@maz-ui/changelogen-monorepo:** Typo - replace files by packages ([fdef9005](https://github.com/LouisMazel/maz-ui/commit/fdef9005))
+
+### 📖 Documentation
+
+- **@maz-ui/changelogen-monorepo:** Improve readme about configuration ([45c78fc8](https://github.com/LouisMazel/maz-ui/commit/45c78fc8))
+- **@maz-ui/changelogen-monorepo:** Add comprehensive guide for multiple configuration files ([24ad9699](https://github.com/LouisMazel/maz-ui/commit/24ad9699))
+
+  Includes real-world examples for:
+  - Separating core packages from standalone utilities
+  - Managing different registries
+  - Using different version modes per package group
+    Documents all supported config formats by c12.
+
+- **@maz-ui/changelogen-monorepo:** Restructure README with improved formatting and completeness ([950bf9e6](https://github.com/LouisMazel/maz-ui/commit/950bf9e6))
+  - Restructure Configuration section with compact table format for better readability
+  - Add Package Manager Support section documenting npm, yarn, pnpm, bun auto-detection
+  - Document all missing CLI options (--yes, --build-cmd, --no-clean, --no-commit, --no-changelog)
+  - Add new 'tokens' configuration section with environment variable documentation
+  - Add 'Inherited from Changelogen' section for inherited configuration options
+  - Improve overall organization and consistency of documentation
+  - Maintain all existing information while improving presentation
+
+- **@maz-ui/changelogen-monorepo:** Improve readme about configuration ([2670a876](https://github.com/LouisMazel/maz-ui/commit/2670a876))
+- **@maz-ui/changelogen-monorepo:** Add comprehensive guide for multiple configuration files ([031a6adf](https://github.com/LouisMazel/maz-ui/commit/031a6adf))
+
+  Includes real-world examples for:
+  - Separating core packages from standalone utilities
+  - Managing different registries
+  - Using different version modes per package group
+    Documents all supported config formats by c12.
+
+- **@maz-ui/changelogen-monorepo:** Restructure README with improved formatting and completeness ([77673de3](https://github.com/LouisMazel/maz-ui/commit/77673de3))
+  - Restructure Configuration section with compact table format for better readability
+  - Add Package Manager Support section documenting npm, yarn, pnpm, bun auto-detection
+  - Document all missing CLI options (--yes, --build-cmd, --no-clean, --no-commit, --no-changelog)
+  - Add new 'tokens' configuration section with environment variable documentation
+  - Add 'Inherited from Changelogen' section for inherited configuration options
+  - Improve overall organization and consistency of documentation
+  - Maintain all existing information while improving presentation
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.0-rc.3...v4.3.0-rc.3
 
 No relevant changes since last release
