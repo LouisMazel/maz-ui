@@ -1,5 +1,9 @@
 # Change Log
 
+## v4.3.0-beta.0...v4.3.0-rc.0
+
+No relevant changes since last release
+
 ## v4.3.0-alpha.1...v4.3.0-beta.0
 
 No relevant changes since last release

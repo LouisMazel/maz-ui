@@ -1,5 +1,19 @@
 # Changelog
 
+## v4.3.0-beta.0...v4.3.0-rc.0
+
+### 🚀 Features
+
+- **@maz-ui/changelogen-monorepo:** Support prerelease graduation between different preids ([713ad8c74](https://github.com/LouisMazel/maz-ui/commit/713ad8c74))
+
+  Allow bumping packages from one prerelease channel to another without new
+  commits (e.g., alpha to beta). This enables better control over release
+  workflows when transitioning between prerelease stages.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.0-alpha.0...v4.3.0-alpha.1
 
 ### 🚀 Features
