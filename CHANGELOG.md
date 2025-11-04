@@ -1,5 +1,15 @@
 # Change Log
 
+## v4.3.0-rc.1...v4.3.0-rc.1
+
+### 🩹 Fixes
+
+- **@maz-ui/changelogen-monorepo:** Improve fromTag resolution by using config template as fallback ([cbe314071](https://github.com/LouisMazel/maz-ui/commit/cbe314071))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.0-beta.0...v4.3.0-rc.0
 
 ### 🚀 Features
