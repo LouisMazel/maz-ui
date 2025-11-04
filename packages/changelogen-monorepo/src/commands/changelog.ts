@@ -154,7 +154,7 @@ async function generateSimpleRootChangelog({
   }
 }
 
-export async function changelog(options: ChangelogOptions): Promise<void> {
+export async function changelog(options: Partial<ChangelogOptions> = {}): Promise<void> {
   try {
     logger.start('Start generating changelogs')
 

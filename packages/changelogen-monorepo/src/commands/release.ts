@@ -6,7 +6,7 @@ import { changelog } from './changelog'
 import { providerRelease } from './provider-release'
 import { publish } from './publish'
 
-function getReleaseConfig(options: Partial<ReleaseOptions>) {
+function getReleaseConfig(options: Partial<ReleaseOptions> = {}) {
   return loadMonorepoConfig({
     configName: options.configName,
     overrides: {
@@ -48,7 +48,7 @@ function getReleaseConfig(options: Partial<ReleaseOptions>) {
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity, complexity
-export async function release(options: ReleaseOptions): Promise<void> {
+export async function release(options: Partial<ReleaseOptions> = {}): Promise<void> {
   try {
     const dryRun = options.dryRun ?? false
     logger.debug(`Dry run: ${dryRun}`)
