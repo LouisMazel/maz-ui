@@ -1,5 +1,5 @@
 export const markdown = {
-  ignores: ['**/*.md'],
+  files: ['**/*.md/**'],
   rules: {
     'ts/no-unused-vars': 'off',
     'sonarjs/unused-import': 'off',
