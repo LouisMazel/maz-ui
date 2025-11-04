@@ -1,5 +1,15 @@
 # Changelog
 
+## v4.3.0-rc.2...v4.3.0-rc.2
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Typo - replace files by packages ([b7afbae33](https://github.com/LouisMazel/maz-ui/commit/b7afbae33))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.0-rc.1...v4.3.0-rc.1
 
 ### 🩹 Fixes
