@@ -13,6 +13,7 @@ import { expandPackagesToBumpWithDependents, resolveTags } from '../core'
 import { getPackageCommits, hasLernaJson } from './monorepo'
 
 export function determineReleaseType({
+  currentVersion,
   from,
   to,
   commits,
@@ -20,6 +21,7 @@ export function determineReleaseType({
   force,
   graduating,
 }: {
+  currentVersion: string
   from: string
   to: string
   commits?: GitCommit[]
@@ -36,7 +38,12 @@ export function determineReleaseType({
   let releaseType: BumpOptions['type'] | null = configWithRange.bump.type
 
   if (graduating) {
-    logger.debug(`Graduating to stable release type: ${configWithRange.bump.type}`)
+    logger.debug(`Graduating to stable release type: ${releaseType}`)
+  }
+  else if (isGraduatingBetweenPreleases(currentVersion, configWithRange.bump.preid)) {
+    const currentPreid = getPreid(currentVersion)
+    logger.debug(`Graduating from ${currentPreid} to ${configWithRange.bump.preid} prerelease`)
+    releaseType = 'prerelease'
   }
   else if (!commits?.length && !force) {
     logger.debug(`No commits found, skipping bump`)
@@ -47,7 +54,7 @@ export function determineReleaseType({
   }
   else if (commits && commits.length > 0) {
     const serverChange = determineSemverChange(commits, configWithRange) as 'major' | 'minor' | 'patch' | null
-    const type = (configWithRange.bump.type.includes('pre') && serverChange ? `pre${serverChange}` : serverChange) as BumpOptions['type'] | null
+    const type = (releaseType.includes('pre') && serverChange ? `pre${serverChange}` : serverChange) as BumpOptions['type'] | null
     logger.debug(`Using detected release type: ${type}`)
     releaseType = type
   }
@@ -175,6 +182,33 @@ export function isStableReleaseType(releaseType: ReleaseType): boolean {
 
 export function isGraduating(currentVersion: string, releaseType: ReleaseType): boolean {
   return isPrerelease(currentVersion) && isStableReleaseType(releaseType)
+}
+
+export function getPreid(version: string): string | null {
+  if (!version)
+    return null
+  const parsed = semver.parse(version)
+  if (!parsed || parsed.prerelease.length === 0) {
+    return null
+  }
+  return parsed.prerelease[0] as string
+}
+
+export function isGraduatingBetweenPreleases(
+  currentVersion: string,
+  targetPreid?: string,
+): boolean {
+  if (!targetPreid || !isPrerelease(currentVersion)) {
+    return false
+  }
+
+  const currentPreid = getPreid(currentVersion)
+
+  if (!currentPreid) {
+    return false
+  }
+
+  return currentPreid !== targetPreid
 }
 
 export function bumpPackageIndependently({
@@ -425,7 +459,7 @@ async function calculatePackageNewVersion({
 }): Promise<(PackageInfo & PackageToBump) | null> {
   const releaseType = config.bump.type
 
-  const { from, to } = await resolveTags<'independent', 'bump'>({
+  const { from, to, graduating } = await resolveTags<'independent', 'bump'>({
     config,
     versionMode: 'independent',
     step: 'bump',
@@ -466,7 +500,7 @@ async function calculatePackageNewVersion({
     return null
   }
   else {
-    calculatedReleaseType = determineReleaseType({ from, to, commits, config, force })
+    calculatedReleaseType = determineReleaseType({ from, to, commits, config, force, currentVersion: pkg.version, graduating })
     if (!calculatedReleaseType) {
       return null
     }
