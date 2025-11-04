@@ -7,38 +7,5 @@
     "apps/*",
     "tools/*",
     "."
-  ],
-  "command": {
-    "version": {
-      "allowBranch": [
-        "master",
-        "develop",
-        "release/*",
-        "fix/*"
-      ],
-      "conventionalCommits": true,
-      "changelogPreset": "./.conventional-changelog-preset.js",
-      "message": "chore(release): version packages %v",
-      "tagVersionPrefix": "v",
-      "push": false,
-      "exact": true,
-      "yes": true,
-      "gitTagVersion": false,
-      "changelog": false
-    },
-    "publish": {
-      "conventionalCommits": true,
-      "message": "chore(release): publish packages %v",
-      "registry": "https://registry.npmjs.org/",
-      "yes": true
-    }
-  },
-  "ignoreChanges": [
-    "./apps/*",
-    "./tools/*",
-    "./scripts/*",
-    "**/__tests__/*",
-    "**/*.spec.ts",
-    "**/*.test.ts"
   ]
 }
