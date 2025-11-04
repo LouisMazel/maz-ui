@@ -24,12 +24,28 @@ Imagine you have multiple packages in your project (like a box with several toys
 - 🔐 2FA/OTP support for npm publishing
 - 🎛️ Custom registry support (private registries, GitHub Packages, etc.)
 - ⚙️ Multiple configuration files support for different release workflows
+- 🔧 Support for npm, yarn, pnpm, and bun (auto-detected)
 
 ## 📦 Installation
 
 ```bash
 pnpm add -D @maz-ui/changelogen-monorepo
 ```
+
+## 📦 Package Manager Support
+
+This tool automatically detects your package manager and uses the appropriate commands:
+
+- **npm** - Standard npm registry commands
+- **yarn** - Supports both Yarn Classic and Yarn Berry
+- **pnpm** - Optimized for pnpm workspaces
+- **bun** - Full support for bun package manager
+
+Detection is automatic based on:
+
+1. `packageManager` field in package.json
+2. Lock file presence (pnpm-lock.yaml, yarn.lock, package-lock.json, bun.lockb)
+3. npm_config_user_agent environment variable
 
 ## ⚙️ Minimal configuration
 
@@ -99,7 +115,61 @@ The CLI uses the `clm` command (ChangeLogen Monorepo):
 clm <command> [options]
 ```
 
-#### 1. `bump` - Update versions
+#### 1. `release` - Complete release workflow
+
+Executes the entire release workflow in one command:
+
+1. Bump versions
+2. Generate changelogs
+3. Commit changes
+4. Create git tag
+5. Push to remote
+6. Publish to npm
+7. Create GitHub/GitLab release
+
+```bash
+# Complete release
+clm release --patch
+
+# Release with pre-release
+clm release --prerelease --preid beta --tag beta
+
+# Without push to remote
+clm release --patch --no-push
+
+# Without GitHub/GitLab release creation
+clm release --patch --no-release
+
+# Without npm publish
+clm release --patch --no-publish
+
+# Without git verification (skip hooks)
+clm release --patch --no-verify
+
+# With npm options
+clm release --patch --registry https://npm.pkg.github.com --access public --otp 123456
+
+# Force even without commits
+clm release --patch --force
+```
+
+**Available options:**
+
+All options from `bump`, `changelog`, `publish` and `provider-release` are available, and:
+
+- `--no-push` - Don't push changes and tags to remote
+- `--no-release` - Don't create GitHub/GitLab release
+- `--no-publish` - Don't publish to npm
+- `--no-verify` - Skip git hooks during commit
+- `--no-commit` - Skip commit and tag creation
+- `--no-changelog` - Skip changelog generation
+- `--no-clean` - Skip working directory clean check
+- `--token <token>` - Git token (GitHub or GitLab)
+- `--force` - Force bump even without commits
+- `--yes` - Skip confirmation prompt
+- `--build-cmd <cmd>` - Command to build packages before publish
+
+#### 2. `bump` - Update versions
 
 Updates package version numbers.
 
@@ -120,6 +190,8 @@ clm bump --prepatch --preid beta       # 1.0.0 → 1.0.1-beta.0
 
 # Options
 clm bump --force      # Force bump even without commits
+clm bump --yes        # Skip confirmation prompt
+clm bump --no-clean   # Skip working directory clean check
 ```
 
 **Available options:**
@@ -133,8 +205,10 @@ clm bump --force      # Force bump even without commits
 - `--prepatch` - Bump prepatch version
 - `--preid <id>` - Prerelease identifier (alpha, beta, rc, etc.)
 - `--force` - Force bump even without commits
+- `--yes` - Skip confirmation prompt
+- `--no-clean` - Skip working directory clean check
 
-#### 2. `changelog` - Generate changelogs
+#### 3. `changelog` - Generate changelogs
 
 Generates CHANGELOG.md files for each package and at the root.
 
@@ -160,7 +234,7 @@ clm changelog --no-root-changelog
 - `--format-cmd <cmd>` - Command to format CHANGELOGs after generation
 - `--no-root-changelog` - Skip root changelog generation
 
-#### 3. `publish` - Publish to npm
+#### 4. `publish` - Publish to npm
 
 Publishes packages to npm registry (or other registry).
 
@@ -179,6 +253,9 @@ clm publish --access public
 
 # With 2FA
 clm publish --otp 123456
+
+# Build before publish
+clm publish --build-cmd "pnpm build"
 ```
 
 **Available options:**
@@ -187,13 +264,14 @@ clm publish --otp 123456
 - `--tag <tag>` - Publish tag (default: `latest` for stable, `next` for prerelease)
 - `--access <type>` - Access level (`public` or `restricted`)
 - `--otp <code>` - OTP code for 2FA
+- `--build-cmd <cmd>` - Command to build packages before publish
 
 **Automatic tag detection:**
 
 - Stable version (e.g., `1.2.3`) → tag `latest`
 - Prerelease version (e.g., `1.2.3-beta.0`) → tag `next`
 
-#### 4. `provider-release` - Publish a release to git provider (github or gitlab)
+#### 5. `provider-release` - Publish a release to git provider (github or gitlab)
 
 Publishes a release for the latest tag.
 
@@ -223,65 +301,10 @@ clm provider-release --from v1.0.0 --to v1.1.0
 Multiple ways to provide the token:
 
 - Command line option (`--token`)
-- Checked environment variables:
-  - GitHub
-    - `CHANGELOGEN_TOKENS_GITHUB`
-    - `GITHUB_TOKEN`
-    - `GH_TOKEN`
-  - GitLab
-    - `CHANGELOGEN_TOKENS_GITLAB`
-    - `GITLAB_TOKEN`
-    - `GITLAB_API_TOKEN`
-    - `CI_JOB_TOKEN`
-
-#### 6. `release` - Complete release workflow
-
-Executes the entire release workflow in one command:
-
-1. Bump versions
-2. Generate changelogs
-3. Commit changes
-4. Create git tag
-5. Push to remote
-6. Publish to npm
-7. Create GitHub/GitLab release
-
-```bash
-# Complete release
-clm release --patch
-
-# Release with pre-release
-clm release --prerelease --preid beta
-
-# Without push to remote
-clm release --patch --no-push
-
-# Without GitHub/GitLab release creation
-clm release --patch --no-release
-
-# Without npm publish
-clm release --patch --no-publish
-
-# Without git verification (skip hooks)
-clm release --patch --no-verify
-
-# With npm options
-clm release --patch --registry https://npm.pkg.github.com --access public --otp 123456
-
-# Force even without commits
-clm release --patch --force
-```
-
-**Available options:**
-
-All options from `bump`, `changelog`, `publish` and `provider-release` are available, plus:
-
-- `--no-push` - Don't push changes and tags to remote
-- `--no-release` - Don't create GitHub/GitLab release
-- `--no-publish` - Don't publish to npm
-- `--no-verify` - Skip git hooks during commit
-- `--token <token>` - Git token (GitHub or GitLab)
-- `--force` - Force bump even without commits
+- Configuration file (see [tokens](#tokens) section)
+- Environment variables (checked in order):
+  - **GitHub:** `CHANGELOGEN_TOKENS_GITHUB`, `GITHUB_TOKEN`, `GH_TOKEN`
+  - **GitLab:** `CHANGELOGEN_TOKENS_GITLAB`, `GITLAB_TOKEN`, `GITLAB_API_TOKEN`, `CI_JOB_TOKEN`
 
 ### Global options
 
@@ -376,6 +399,8 @@ $ clm bump --patch --log-level debug
 
 ## ⚙️ Configuration
 
+This tool extends [changelogen](https://github.com/unjs/changelogen) configuration with additional monorepo-specific options. Some options from changelogen are overridden to provide better monorepo support.
+
 Create a `changelog.config.ts` file at the root of your project:
 
 ```typescript
@@ -423,6 +448,8 @@ export default defineConfig({
 
 ### Configuration options
 
+The configuration extends [ChangelogConfig](https://github.com/unjs/changelogen#configuration) from changelogen with additional monorepo-specific options.
+
 #### `types`
 
 **Type:** `Record<string, { title: string, semver?: 'major' | 'minor' | 'patch' } | false>`
@@ -459,17 +486,15 @@ export default defineConfig({
 
 #### `monorepo`
 
-**Type:** `object`
+Monorepo-specific configuration (required).
 
-Monorepo-specific configuration.
+| Property             | Type                                            | Default          | Description                              |
+| -------------------- | ----------------------------------------------- | ---------------- | ---------------------------------------- |
+| `versionMode`        | `'unified'` \| `'selective'` \| `'independent'` | `'selective'`    | How versions are managed across packages |
+| `packages`           | `string[]`                                      | `['packages/*']` | Glob patterns to locate packages         |
+| `ignorePackageNames` | `string[]`                                      | `[]`             | Package names to ignore                  |
 
-##### `monorepo.versionMode`
-
-**Type:** `'unified' | 'selective' | 'independent'`
-
-**Default:** `'selective'` (recommended)
-
-**Description:** Determines how versions are managed.
+**Version modes:**
 
 | Mode               | Version     | Scope                      | Root & Lerna | Best for                       |
 | ------------------ | ----------- | -------------------------- | ------------ | ------------------------------ |
@@ -480,346 +505,254 @@ Monorepo-specific configuration.
 **Examples:**
 
 ```typescript
-// Selective mode (default, recommended)
-// Example: 10 packages, 3 have commits
-// → Only these 3 are bumped to the unified version
-monorepo: {
-  versionMode: 'selective'
-}
+export default defineConfig({
+  // Selective mode (recommended) - Only bump packages with commits
+  monorepo: {
+    versionMode: 'selective',
+    packages: ['packages/*'],
+  },
 
-// Unified mode
-// Example: 10 packages, 3 have commits
-// → All 10 packages are bumped to the unified version
-monorepo: {
-  versionMode: 'unified'
-}
+  // Unified mode - Bump ALL packages together
+  // monorepo: {
+  //   versionMode: 'unified',
+  //   packages: ['packages/*', 'tools/*'],
+  // },
 
-// Independent mode
-// Example: 10 packages, 3 have commits
-// → package-a: 2.1.0 (feat)
-// → package-b: 1.0.1 (fix)
-// → package-c: 1.5.0 (unchanged)
-monorepo: {
-  versionMode: 'independent'
-}
-```
-
-##### `monorepo.packages`
-
-**Type:** `string[]`
-
-**Default:** `['packages/*']`
-
-**Description:** Glob patterns to locate your packages. Only non-private packages (with `"private": false` or without `private` field) are included.
-
-**Examples:**
-
-```typescript
-// Single directory
-packages: ['packages/*']
-
-// Multiple directories
-packages: ['packages/*', 'tools/*']
-
-// Specific packages
-packages: ['packages/core', 'packages/utils', 'apps/cli']
-
-// Mixed patterns
-packages: ['packages/*', 'tools/cli', 'apps/*']
-```
-
-##### `monorepo.ignorePackageNames`
-
-**Type:** `string[]`
-
-**Default:** `[]`
-
-**Description:** List of package names to ignore during changelog generation and version bumping.
-
-**Example:**
-
-```typescript
-ignorePackageNames: ['@myorg/internal-utils', '@myorg/eslint-config']
+  // Independent mode - Each package has its own version
+  // monorepo: {
+  //   versionMode: 'independent',
+  //   packages: ['packages/*'],
+  //   ignorePackageNames: ['@myorg/internal-utils'],
+  // },
+})
 ```
 
 #### `changelog`
 
-**Type:** `object`
-
 Changelog generation configuration.
 
-##### `changelog.formatCmd`
-
-**Type:** `string | undefined`
-
-**Default:** `undefined`
-
-**Description:** Command to execute after generating changelogs to format them (e.g., `'pnpm lint:fix'`). If the command fails, a warning is displayed but the process continues.
-
-##### `changelog.rootChangelog`
-
-**Type:** `boolean`
-
-**Default:** `true`
-
-**Description:** Generates a `CHANGELOG.md` at the root that aggregates changes from all packages.
-
-#### `bump`
-
-**Type:** `object`
-
-Version bump configuration.
-
-##### `bump.yes`
-
-**Type:** `boolean`
-
-**Default:** `true`
-
-**Description:** Choose to skip the confirmation prompt to accept the version updates.
-
-##### `bump.type`
-
-**Type:** `'release' | 'major' | 'minor' | 'patch' | 'premajor' | 'preminor' | 'prepatch' | 'prerelease'`
-
-**Default:** `'release'`
-
-**Description:** Default bump type. `'release'` automatically detects the type from commits.
-
-##### `bump.preid`
-
-**Type:** `string | undefined`
-
-**Default:** `undefined`
-
-**Description:** Identifier for pre-releases (alpha, beta, rc, etc.)
-
-##### `bump.clean`
-
-**Type:** `boolean`
-
-**Default:** `true`
-
-**Description:** Check if there are any changes to commit before bumping.
-
-##### `bump.dependencyTypes`
-
-**Type:** `('dependencies' | 'devDependencies' | 'peerDependencies')[]`
-
-**Default:** `['dependencies']`
-
-**Description:** Choose which types of dependencies trigger a version bump.
-
-When a package is updated, this option decides if other packages should be bumped based on how they use it:
-
-- `'dependencies'`: Bump packages that need it to work (like a toy needs batteries)
-- `'devDependencies'`: Bump packages that need it for building or testing (like tools to make the toy)
-- `'peerDependencies'`: Bump packages that work alongside it (like compatible accessories)
+| Property        | Type      | Default     | Description                                        |
+| --------------- | --------- | ----------- | -------------------------------------------------- |
+| `formatCmd`     | `string`  | `undefined` | Command to format changelogs after generation      |
+| `rootChangelog` | `boolean` | `true`      | Generate root CHANGELOG.md with aggregated changes |
 
 **Example:**
 
 ```typescript
-// Only bump when normal dependencies change
-bump: {
-  dependencyTypes: ['dependencies']
-}
+export default defineConfig({
+  changelog: {
+    formatCmd: 'pnpm lint:fix',
+    rootChangelog: true,
+  },
+})
+```
 
-// Bump for all types of dependencies
-bump: {
-  dependencyTypes: ['dependencies', 'devDependencies', 'peerDependencies']
-}
+#### `bump`
+
+Version bump configuration.
+
+| Property          | Type                                                                        | Default            | Description                                             |
+| ----------------- | --------------------------------------------------------------------------- | ------------------ | ------------------------------------------------------- |
+| `type`            | `'release'` \| `'major'` \| `'minor'` \| `'patch'` \| `'prerelease'` \| ... | `'release'`        | Default bump type ('release' auto-detects from commits) |
+| `preid`           | `string`                                                                    | `undefined`        | Pre-release identifier (alpha, beta, rc, etc.)          |
+| `clean`           | `boolean`                                                                   | `true`             | Check if working directory is clean before bumping      |
+| `dependencyTypes` | `Array<'dependencies' \| 'devDependencies' \| 'peerDependencies'>`          | `['dependencies']` | Which dependency types trigger a version bump           |
+| `yes`             | `boolean`                                                                   | `true`             | Skip confirmation prompt                                |
+
+**Dependency types:** When a package is updated, this decides which dependent packages should also be bumped:
+
+- `dependencies` - Packages that need it to work
+- `devDependencies` - Packages that need it for building/testing
+- `peerDependencies` - Packages that work alongside it
+
+**Example:**
+
+```typescript
+export default defineConfig({
+  bump: {
+    type: 'release',
+    dependencyTypes: ['dependencies', 'devDependencies'],
+    clean: true,
+    yes: true,
+  },
+})
 ```
 
 #### `publish`
 
-**Type:** `object`
-
 npm publishing configuration.
 
-##### `publish.private`
-
-**Type:** `boolean`
-
-**Default:** `false`
-
-**Description:** Don't publish packages (equivalent to `"private": true` in package.json).
-
-##### `publish.tag`
-
-**Type:** `string`
-
-**Default:** `'latest'`
-
-**Description:** Default npm tag. Auto-detected: `latest` for stable, `next` for prerelease.
-
-##### `publish.args`
-
-**Type:** `string[]`
-
-**Default:** `[]`
-
-**Description:** Additional arguments passed to the `npm publish` command.
-
-#### `release`
-
-**Type:** `object`
-
-Release workflow configuration.
-
-##### `release.clean`
-
-**Type:** `boolean`
-
-**Default:** `true`
-
-**Description:** Check if there are any changes to commit before bumping.
-
-##### `release.commit`
-
-**Type:** `boolean`
-
-**Default:** `true`
-
-**Description:** Commit changes and create tag.
-
-##### `release.push`
-
-**Type:** `boolean`
-
-**Default:** `true`
-
-**Description:** Push changes and tags to remote. Will be false if `release.commit` is false.
-
-##### `release.release`
-
-**Type:** `boolean`
-
-**Default:** `true`
-
-**Description:** Create a release on GitHub/GitLab.
-
-##### `release.publish`
-
-**Type:** `boolean`
-
-**Default:** `true`
-
-**Description:** Publish to npm.
-
-##### `release.noVerify`
-
-**Type:** `boolean`
-
-**Default:** `false`
-
-**Description:** Skip git hooks during commit (`--no-verify` flag).
-
-##### `release.force`
-
-**Type:** `boolean`
-
-**Default:** `false`
-
-**Description:** Force bump even without commits.
-
-#### `repo`
-
-**Type:** `object`
-
-Git repository configuration.
-
-##### `repo.provider`
-
-**Type:** `'github' | 'gitlab' | undefined`
-
-**Default:** Auto-detected from git remote URL
-
-**Description:** Forces git provider (GitHub or GitLab). Auto-detection:
-
-- URLs containing `github.com` → GitHub
-- URLs containing `gitlab.com` or `gitlab` → GitLab
-
-##### `repo.domain`
-
-**Type:** `string | undefined`
-
-**Default:** `undefined`
-
-**Description:** Custom domain for self-hosted GitLab.
+| Property   | Type                         | Default     | Description                                         |
+| ---------- | ---------------------------- | ----------- | --------------------------------------------------- |
+| `private`  | `boolean`                    | `false`     | Don't publish packages                              |
+| `tag`      | `string`                     | `'latest'`  | npm tag (auto: 'latest' for stable, 'next' for pre) |
+| `registry` | `string`                     | `undefined` | Custom registry URL                                 |
+| `access`   | `'public'` \| `'restricted'` | `undefined` | Package access level                                |
+| `otp`      | `string`                     | `undefined` | One-time password for 2FA                           |
+| `buildCmd` | `string`                     | `undefined` | Command to build packages before publish            |
+| `args`     | `string[]`                   | `[]`        | Additional arguments for publish command            |
 
 **Example:**
 
 ```typescript
-// For self-hosted GitLab
 export default defineConfig({
-  repo: {
-    domain: 'gitlab.mycompany.com',
-    provider: 'gitlab',
-  }
+  publish: {
+    private: false,
+    tag: 'latest',
+    registry: 'https://registry.npmjs.org',
+    access: 'public',
+    buildCmd: 'pnpm build',
+  },
 })
 ```
 
-##### `repo.repo`
+#### `release`
 
-**Type:** `string | undefined`
+Release workflow configuration.
 
-**Default:** Auto-detected from git remote
+| Property    | Type      | Default | Description                         |
+| ----------- | --------- | ------- | ----------------------------------- |
+| `commit`    | `boolean` | `true`  | Commit changes and create tag       |
+| `push`      | `boolean` | `true`  | Push changes and tags to remote     |
+| `changelog` | `boolean` | `true`  | Generate changelog files            |
+| `release`   | `boolean` | `true`  | Create release on GitHub/GitLab     |
+| `publish`   | `boolean` | `true`  | Publish to npm                      |
+| `clean`     | `boolean` | `true`  | Check if working directory is clean |
+| `noVerify`  | `boolean` | `false` | Skip git hooks during commit        |
+| `force`     | `boolean` | `false` | Force bump even without commits     |
 
-**Description:** Repository in `owner/repo` format.
+**Example:**
 
-##### `repo.token`
+```typescript
+export default defineConfig({
+  release: {
+    commit: true,
+    push: true,
+    changelog: true,
+    release: true,
+    publish: true,
+    noVerify: false,
+  },
+})
+```
 
-**Type:** `string | undefined`
+#### `repo`
 
-**Default:** From environment variables
+Git repository configuration (auto-detected by default).
 
-**Description:** Authentication token for GitHub/GitLab.
+| Property   | Type                     | Default       | Description                            |
+| ---------- | ------------------------ | ------------- | -------------------------------------- |
+| `provider` | `'github'` \| `'gitlab'` | Auto-detected | Git provider (auto from remote URL)    |
+| `domain`   | `string`                 | `undefined`   | Custom domain for self-hosted instance |
+| `repo`     | `string`                 | Auto-detected | Repository in 'owner/repo' format      |
+| `token`    | `string`                 | From env vars | Authentication token                   |
+
+**Auto-detection:**
+
+- Provider: Detected from git remote URL (github.com → GitHub, gitlab.com → GitLab)
+- Repository: Parsed from git remote URL
+- Token: Read from environment variables (see [tokens](#tokens) section)
+
+**Example:**
+
+```typescript
+export default defineConfig({
+  // For self-hosted GitLab
+  repo: {
+    provider: 'gitlab',
+    domain: 'gitlab.mycompany.com',
+  },
+})
+```
+
+#### `tokens`
+
+Authentication tokens for git providers (read from environment variables by default).
+
+| Property | Type     | Default       | Description                 |
+| -------- | -------- | ------------- | --------------------------- |
+| `github` | `string` | From env vars | GitHub authentication token |
+| `gitlab` | `string` | From env vars | GitLab authentication token |
+
+**Environment variables checked (in order):**
+
+- GitHub: `CHANGELOGEN_TOKENS_GITHUB`, `GITHUB_TOKEN`, `GH_TOKEN`
+- GitLab: `CHANGELOGEN_TOKENS_GITLAB`, `GITLAB_TOKEN`, `GITLAB_API_TOKEN`, `CI_JOB_TOKEN`
+
+**Example:**
+
+```typescript
+export default defineConfig({
+  tokens: {
+    github: process.env.GITHUB_TOKEN,
+    gitlab: process.env.GITLAB_TOKEN,
+  },
+})
+```
 
 #### `templates`
 
-**Type:** `object`
-
 Templates for commit and tag messages.
 
-##### `templates.commitMessage`
+| Property                | Type     | Default                                            | Description                                 |
+| ----------------------- | -------- | -------------------------------------------------- | ------------------------------------------- |
+| `commitMessage`         | `string` | `'chore(release): bump version to {{newVersion}}'` | Commit message template                     |
+| `tagMessage`            | `string` | `'Bump version to v{{newVersion}}'`                | Git tag message template                    |
+| `tagBody`               | `string` | `'v{{newVersion}}'`                                | Git tag body (not used in independent mode) |
+| `emptyChangelogContent` | `string` | `'No relevant changes for this release'`           | Changelog content when no changes           |
 
-**Type:** `string`
+**Available variables:** `{{newVersion}}`, `{{oldVersion}}`, `{{packageName}}`
 
-**Default:** `'chore(release): bump version to v{{newVersion}}'`
+**Example:**
 
-**Description:** Commit message template during release. Tips: add `[skip ci]` with Gitlab to skip CI run for the release commit.
-
-##### `templates.tagMessage`
-
-**Type:** `string`
-
-**Default:** `'Bump version to v{{newVersion}}'`
-
-**Description:** Git tag message template.
-
-##### `templates.tagBody`
-
-**Type:** `string`
-
-**Default:** `'v{{newVersion}}'`
-
-**Description:** Git tag body template. **Not used with "independent" version mode, independent tags are created per package (e.g. `package-name@1.0.0`)**
-
-##### `templates.emptyChangelogContent`
-
-**Type:** `string`
-
-**Default:** `'No relevant changes for this release'`
-
-**Description:** Changelog content when there are no changes.
+```typescript
+export default defineConfig({
+  templates: {
+    commitMessage: 'chore(release): v{{newVersion}} [skip ci]',
+    tagMessage: 'Release {{newVersion}}',
+    tagBody: 'Version {{newVersion}}',
+  },
+})
+```
 
 #### `logLevel`
+
+Control verbosity of command output.
 
 **Type:** `'silent' | 'error' | 'warning' | 'normal' | 'default' | 'debug' | 'trace' | 'verbose'`
 
 **Default:** `'default'`
 
-**Description:** Default log level for all commands.
+See [Log Level](#log-level) section for details.
+
+#### Inherited from Changelogen
+
+The following options are inherited from [changelogen configuration](https://github.com/unjs/changelogen#configuration):
+
+| Property         | Type                     | Default         | Description                               |
+| ---------------- | ------------------------ | --------------- | ----------------------------------------- |
+| `cwd`            | `string`                 | `process.cwd()` | Working directory                         |
+| `from`           | `string`                 | Last git tag    | Start reference for changelog             |
+| `to`             | `string`                 | `HEAD`          | End reference for changelog               |
+| `excludeAuthors` | `string[]`               | `[]`            | List of authors to exclude from changelog |
+| `noAuthors`      | `boolean`                | `false`         | Don't include authors in changelog        |
+| `scopeMap`       | `Record<string, string>` | `{}`            | Map scopes to custom names                |
+
+**Example:**
+
+```typescript
+export default defineConfig({
+  cwd: process.cwd(),
+  from: 'v1.0.0',
+  to: 'HEAD',
+  excludeAuthors: ['bot[bot]', 'dependabot'],
+  noAuthors: false,
+  scopeMap: {
+    ui: 'User Interface',
+    api: 'API',
+  },
+})
+```
 
 ### Configuration Examples
 
@@ -1165,8 +1098,7 @@ You can also use the tool programmatically:
 import {
   bump,
   changelog,
-  github,
-  gitlab,
+  providerRelease,
   publish,
   release,
 } from '@maz-ui/changelogen-monorepo'
@@ -1186,14 +1118,14 @@ await changelog({
 // Publish to npm
 await publish({
   registry: 'https://registry.npmjs.org',
-  tag: 'latest',
+  tag: 'beta',
 })
 
 // GitHub release
-await github()
-
-// GitLab release
-await gitlab()
+// Git provider is detected automatically but you can also specify it explicitly
+await providerRelease({
+  provider: 'github',
+})
 
 // Complete workflow
 await release({
