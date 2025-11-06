@@ -1,5 +1,45 @@
 # Change Log
 
+## v4.3.1-alpha.0...v4.3.1-alpha.0
+
+### 🩹 Fixes
+
+- **@maz-ui/node:** Update execPromise type handling ([4f2ab147f](https://github.com/LouisMazel/maz-ui/commit/4f2ab147f))
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Refactor determineReleaseType for clarity and robustness ([fe96c826b](https://github.com/LouisMazel/maz-ui/commit/fe96c826b))
+  - Extract separate functions for each scenario (stable/prerelease, release/prerelease types)
+  - Improve prerelease downgrade validation with explicit error messages
+  - Simplify main function logic with clear branching
+  - Add detailed logging for better debugging
+  - Handle all edge cases: version graduation, preid changes, force flag override
+
+- **@maz-ui/changelogen-monorepo:** Add suffix option support for prerelease versions ([de0a2138e](https://github.com/LouisMazel/maz-ui/commit/de0a2138e))
+  - Introduce suffix parameter for customizing prerelease identifiers
+  - Allow flexibility in prerelease version naming conventions
+  - Update configuration and version handling to support suffix parameter
+
+- **@maz-ui/changelogen-monorepo:** Add git fetch before bumping packages ([37ceba828](https://github.com/LouisMazel/maz-ui/commit/37ceba828))
+
+### 📖 Documentation
+
+- **@maz-ui/changelogen-monorepo:** Add documentation about --suffix flag of release and bump commands ([333f15b93](https://github.com/LouisMazel/maz-ui/commit/333f15b93))
+
+### 🧪 Tests
+
+- **@maz-ui/changelogen-monorepo:** Add comprehensive tests for bumpPackageVersion and determineReleaseType ([b1ce4072a](https://github.com/LouisMazel/maz-ui/commit/b1ce4072a))
+  - Add 82 tests for bumpPackageVersion covering all scenarios
+  - Add 51 tests for determineReleaseType with complete edge case coverage
+  - Follow Gherkin method (Given/When/Then) for test clarity
+  - Test stable releases, prerelease types, version graduation, and edge cases
+
+- **@maz-ui/changelogen-monorepo:** Add vitest configuration ([8cc8de601](https://github.com/LouisMazel/maz-ui/commit/8cc8de601))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.0...v4.3.0
 
 ### 🚀 Features
