@@ -27,13 +27,12 @@ export function checkGitStatusIfDirty() {
 export async function fetchGitTags(cwd?: string): Promise<void> {
   logger.debug('Fetching git tags from remote')
   try {
-    await execPromise('git fetch --tags', { cwd })
+    await execPromise('git fetch --tags', { cwd, noStderr: true, noStdout: true, noSuccess: true })
     logger.debug('Git tags fetched successfully')
   }
   catch (error) {
-    logger.warn('Failed to fetch git tags from remote')
-    logger.debug('Error:', error)
-    logger.warn('Continuing with local tags only')
+    logger.warn('Failed to fetch some git tags from remote (tags might already exist locally)', error)
+    logger.info('Continuing with local tags')
   }
 }
 
