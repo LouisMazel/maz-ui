@@ -219,7 +219,7 @@ export async function publishPackage({
         noStderr: true,
         noStdout: true,
         logLevel: config.logLevel,
-        cwd: config.cwd,
+        cwd: pkg.path,
       })
       if (stdout) {
         logger.debug(stdout)

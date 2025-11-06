@@ -40,6 +40,7 @@ export async function publish(options: Partial<PublishOptions> = {}) {
       patterns: config.publish.packages ?? config.monorepo.packages,
       ignorePackageNames: config.monorepo.ignorePackageNames,
     })
+
     const rootPackage = getRootPackage(config.cwd)
 
     logger.debug(`Found ${packages.length} package(s)`)
