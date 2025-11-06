@@ -127,6 +127,7 @@ export async function executeFormatCmd({
           noStderr: true,
           noStdout: true,
           logLevel: config.logLevel,
+          cwd: config.cwd,
         })
         logger.info('Format completed')
       }
@@ -135,8 +136,8 @@ export async function executeFormatCmd({
       }
     }
     catch (error) {
-      logger.warn('Format command failed:', error)
-      logger.info('Continuing anyway...')
+      logger.error('Format command failed:', error)
+      process.exit(1)
     }
   }
   else {
@@ -160,6 +161,7 @@ export async function executeBuildCmd({
         noStderr: true,
         noStdout: true,
         logLevel: config.logLevel,
+        cwd: config.cwd,
       })
       logger.info('Build completed')
     }

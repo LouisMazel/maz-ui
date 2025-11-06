@@ -15,7 +15,7 @@ export interface PackageInfo {
 }
 export interface PackageWithCommits extends PackageInfo {
   commits: GitCommit[]
-  graduating: boolean
+  // graduating: boolean
 }
 
 export interface PublishResponse {
@@ -109,6 +109,11 @@ export interface BumpOptions extends BumpConfig {
    * @default 'changelog'
    */
   configName?: string
+  /**
+   * Custom suffix for prerelease versions - replace the last .X with .suffix (e.g. 1.0.0-beta.0 -> 1.0.0-beta.suffix)
+   * @default undefined
+   */
+  suffix?: string
 }
 
 export interface ChangelogConfig {
@@ -199,11 +204,6 @@ export interface ReleaseConfig {
    */
   noVerify?: boolean
   /**
-   * Bump even if there are no commits
-   * @default false
-   */
-  force?: boolean
-  /**
    * Determine if the working directory is clean and if it is not clean, exit
    * @default false
    */
@@ -236,6 +236,16 @@ export interface ReleaseOptions extends ReleaseConfig, BumpConfig, ChangelogConf
    * @default 'changelog'
    */
   configName?: string
+  /**
+   * Bump even if there are no commits
+   * @default false
+   */
+  force?: boolean
+  /**
+   * Custom suffix for prerelease versions - replace the last .X with .suffix (e.g. 1.0.0-beta.0 -> 1.0.0-beta.suffix)
+   * @default undefined
+   */
+  suffix?: string
 }
 
 export interface TemplatesConfig {

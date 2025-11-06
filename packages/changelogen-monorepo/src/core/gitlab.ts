@@ -136,6 +136,7 @@ async function gitlabIndependentMode({
     noSuccess: true,
     noStdout: true,
     logLevel: config.logLevel,
+    cwd: config.cwd,
   })
 
   const postedReleases: PostedRelease[] = []
@@ -257,6 +258,7 @@ async function gitlabUnified({
     noSuccess: true,
     noStdout: true,
     logLevel: config.logLevel,
+    cwd: config.cwd,
   })
 
   const release = {

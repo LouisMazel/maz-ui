@@ -3,8 +3,10 @@ import type { LogLevel } from '@maz-ui/node'
 import type { ResolvedChangelogMonorepoConfig } from '../core'
 import type { GitProvider, PackageInfo } from '../types'
 import { execSync } from 'node:child_process'
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
 import { execPromise, logger } from '@maz-ui/node'
-import { getRootPackage } from '../core'
+import { getRootPackage, hasLernaJson } from '../core'
 
 export function getGitStatus(cwd?: string) {
   return execSync('git status --porcelain', {
@@ -19,6 +21,19 @@ export function checkGitStatusIfDirty() {
   if (dirty) {
     logger.debug('git status:', `\n${dirty.trim().split('\n').map(line => line.trim()).join('\n')}`)
     throw new Error('Working directory is not clean')
+  }
+}
+
+export async function fetchGitTags(cwd?: string): Promise<void> {
+  logger.debug('Fetching git tags from remote')
+  try {
+    await execPromise('git fetch --tags', { cwd })
+    logger.debug('Git tags fetched successfully')
+  }
+  catch (error) {
+    logger.warn('Failed to fetch git tags from remote')
+    logger.debug('Error:', error)
+    logger.warn('Continuing with local tags only')
   }
 }
 
@@ -95,6 +110,16 @@ export async function createCommitAndTags({
 
   logger.debug('Adding files to git staging area...')
   for (const pattern of filePatternsToAdd) {
+    if (pattern === 'lerna.json' && !hasLernaJson(config.cwd)) {
+      logger.verbose(`Skipping lerna.json as it doesn't exist`)
+      continue
+    }
+
+    if ((pattern === 'lerna.json' || pattern === 'CHANGELOG.md') && !existsSync(join(config.cwd, pattern))) {
+      logger.verbose(`Skipping ${pattern} as it doesn't exist`)
+      continue
+    }
+
     if (dryRun) {
       logger.info(`[dry-run] git add ${pattern}`)
       continue
@@ -130,6 +155,7 @@ export async function createCommitAndTags({
       logLevel,
       noStderr: true,
       noStdout: true,
+      cwd: config.cwd,
     })
     logger.success(`Committed: ${commitMessage}${noVerify ? ' (--no-verify)' : ''}`)
   }
@@ -157,6 +183,7 @@ export async function createCommitAndTags({
             logLevel,
             noStderr: true,
             noStdout: true,
+            cwd: config.cwd,
           })
           logger.debug(`Tag created: ${tagName}`)
         }
@@ -189,6 +216,7 @@ export async function createCommitAndTags({
           logLevel,
           noStderr: true,
           noStdout: true,
+          cwd: config.cwd,
         })
         logger.debug(`Tag created: ${tagName}`)
       }
@@ -208,7 +236,7 @@ export async function createCommitAndTags({
   return createdTags
 }
 
-export async function pushCommitAndTags({ dryRun, logLevel }: { dryRun: boolean, logLevel?: LogLevel }) {
+export async function pushCommitAndTags({ dryRun, logLevel, cwd }: { dryRun: boolean, logLevel?: LogLevel, cwd: string }) {
   logger.start('Start push changes and tags')
 
   if (dryRun) {
@@ -217,7 +245,7 @@ export async function pushCommitAndTags({ dryRun, logLevel }: { dryRun: boolean,
   else {
     logger.debug('Executing: git push --follow-tags')
 
-    await execPromise('git push --follow-tags', { noStderr: true, noStdout: true, logLevel })
+    await execPromise('git push --follow-tags', { noStderr: true, noStdout: true, logLevel, cwd })
   }
 
   logger.success('End push changes and tags')

@@ -75,6 +75,7 @@ program
   .option('--preminor', 'Bump preminor version')
   .option('--prepatch', 'Bump prepatch version')
   .option('--preid <id>', 'Prerelease identifier (alpha, beta, rc, etc.)')
+  .option('--suffix <suffix>', 'Custom suffix for prerelease versions - replace the last .X with .suffix (e.g. 1.0.0-beta.0 -> 1.0.0-beta.suffix)')
   .option('--no-clean', 'Skip check if the working directory is clean')
   .option('--force', 'Bump even if there are no commits')
   .option('--yes', 'Skip confirmation prompt about bumping packages')
@@ -88,6 +89,7 @@ program
         logLevel: program.opts().logLevel,
         force: options.force,
         yes: options.yes,
+        suffix: options.suffix,
         configName: program.opts().config,
       })
     }
@@ -181,6 +183,7 @@ program
   .option('--preminor', 'Bump preminor version')
   .option('--prepatch', 'Bump prepatch version')
   .option('--preid <id>', 'Prerelease identifier (alpha, beta, rc, etc.)')
+  .option('--suffix <suffix>', 'Custom suffix for prerelease versions - replace the last .X with .suffix (e.g. 1.0.0-beta.0 -> 1.0.0-beta.suffix)')
   .option('--from <ref>', 'Start commit reference')
   .option('--to <ref>', 'End commit reference')
   .option('--no-push', 'Skip push changes and tags to remote')
@@ -205,6 +208,7 @@ program
       await release({
         type: getReleaseType(options),
         preid: options.preid,
+        suffix: options.suffix,
         from: options.from,
         to: options.to,
         changelog: hasCliFlag('--no-changelog') ? false : undefined,

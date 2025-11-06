@@ -8,6 +8,7 @@ import { isGraduating } from './version'
 export async function getLastRepoTag(options?: {
   onlyStable?: boolean
   logLevel?: LogLevel
+  cwd?: string
 }): Promise<string | null> {
   let lastTag: string | null = null
 
@@ -19,6 +20,7 @@ export async function getLastRepoTag(options?: {
         noStderr: true,
         noStdout: true,
         noSuccess: true,
+        cwd: options?.cwd,
       },
     )
 
@@ -34,6 +36,7 @@ export async function getLastRepoTag(options?: {
     noStderr: true,
     noStdout: true,
     noSuccess: true,
+    cwd: options?.cwd,
   })
 
   lastTag = stdout.trim()
@@ -47,10 +50,12 @@ export async function getLastPackageTag({
   packageName,
   onlyStable,
   logLevel,
+  cwd,
 }: {
   packageName: string
   onlyStable?: boolean
   logLevel?: LogLevel
+  cwd?: string
 }): Promise<string | null> {
   try {
     const escapedPackageName = packageName.replace(/[@/]/g, '\\$&')
@@ -70,6 +75,7 @@ export async function getLastPackageTag({
         noStderr: true,
         noStdout: true,
         noSuccess: true,
+        cwd,
       },
     )
 
@@ -86,7 +92,6 @@ type Step = 'bump' | 'changelog' | 'publish' | 'provider-release'
 interface ResolvedTags {
   from: string
   to: string
-  graduating: boolean
 }
 
 async function resolveTagsIndependent({
@@ -196,10 +201,7 @@ export async function resolveTags<T extends VersionMode, S extends Step>({
 
     logger.debug(`[${versionMode}](${step}) Using specified tags: ${tags.from} → ${tags.to}`)
 
-    return {
-      ...tags,
-      graduating,
-    }
+    return tags
   }
 
   if (versionMode === 'independent') {
@@ -214,10 +216,7 @@ export async function resolveTags<T extends VersionMode, S extends Step>({
 
     logger.debug(`[${versionMode}](${step}) Using tags: ${tags.from} → ${tags.to}`)
 
-    return {
-      ...tags,
-      graduating,
-    }
+    return tags
   }
 
   const tags = await resolveTagsUnified({
@@ -230,8 +229,5 @@ export async function resolveTags<T extends VersionMode, S extends Step>({
 
   logger.debug(`[${versionMode}](${step}) Using tags: ${tags.from} → ${tags.to}`)
 
-  return {
-    ...tags,
-    graduating,
-  }
+  return tags
 }

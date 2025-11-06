@@ -1,7 +1,6 @@
 import type { LogLevel } from '@maz-ui/node'
 import type { DeepPartial } from '@maz-ui/utils'
-import type { ChangelogConfig } from 'changelogen'
-import type { ChangelogMonorepoConfig, GitProvider } from '../types'
+import type { BumpConfig, ChangelogConfig, ChangelogMonorepoConfig, GitProvider, ReleaseConfig } from '../types'
 import process from 'node:process'
 import { logger } from '@maz-ui/node'
 import { formatJson } from '@maz-ui/utils'
@@ -10,7 +9,7 @@ import { loadConfig, setupDotenv } from 'c12'
 import { getRepoConfig, resolveRepoConfig } from 'changelogen'
 import { defu } from 'defu'
 
-function getDefaultConfig() {
+export function getDefaultConfig() {
   return {
     cwd: process.cwd(),
     types: {
@@ -26,7 +25,7 @@ function getDefaultConfig() {
       test: { title: '✅ Tests' },
       style: { title: '🎨 Styles' },
       ci: { title: '🤖 CI' },
-    } as ChangelogConfig['types'],
+    } as NonNullable<ChangelogMonorepoConfig['types']>,
     templates: {
       commitMessage: 'chore(release): bump version to {{newVersion}}',
       tagMessage: 'Bump version to v{{newVersion}}',
@@ -36,15 +35,15 @@ function getDefaultConfig() {
     excludeAuthors: [],
     noAuthors: false,
     bump: {
-      type: 'release',
+      type: 'release' satisfies NonNullable<BumpConfig['type']>,
       clean: true,
       dependencyTypes: ['dependencies'],
       yes: true,
-    },
+    } as Required<Omit<BumpConfig, 'preid'>>,
     changelog: {
       rootChangelog: true,
       includeCommitBody: false,
-    },
+    } as Required<ChangelogConfig>,
     publish: {
       private: false,
       args: [],
@@ -69,8 +68,8 @@ function getDefaultConfig() {
       clean: true,
       release: true,
       noVerify: false,
-    },
-    logLevel: 'default',
+    } as Required<ReleaseConfig>,
+    logLevel: 'default' as LogLevel,
   }
 }
 

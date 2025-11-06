@@ -115,7 +115,7 @@ export async function release(options: Partial<ReleaseOptions> = {}): Promise<vo
 
     logger.box('Step 4/6: Push changes and tags')
     if (config.release.push && config.release.commit) {
-      await pushCommitAndTags({ dryRun })
+      await pushCommitAndTags({ dryRun, logLevel: config.logLevel, cwd: config.cwd })
     }
     else {
       logger.info('Skipping push (--no-push or --no-commit)')

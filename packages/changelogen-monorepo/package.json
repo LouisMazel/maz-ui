@@ -17,7 +17,14 @@
     "release",
     "versioning",
     "lerna",
-    "maz-ui"
+    "semantic-release",
+    "conventional-commits",
+    "turbo",
+    "git-tag",
+    "npm-publish",
+    "version-bump",
+    "changesets",
+    "release-automation"
   ],
   "sideEffects": false,
   "publishConfig": {
@@ -52,7 +59,10 @@
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
-    "cli": "node bin/clm.mjs"
+    "cli": "node bin/clm.mjs",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest watch",
+    "test:unit:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@inquirer/prompts": "^7.9.0",

@@ -9,6 +9,7 @@ interface BumpStrategyInput {
   packages: PackageInfo[]
   dryRun: boolean
   force: boolean
+  suffix: string | undefined
 }
 
 async function bumpUnifiedMode({
@@ -16,13 +17,14 @@ async function bumpUnifiedMode({
   packages,
   dryRun,
   force,
+  suffix,
 }: BumpStrategyInput): Promise<BumpResult> {
   logger.debug('Starting bump in unified mode')
 
   const rootPackage = getRootPackage(config.cwd)
   const currentVersion = rootPackage.version
 
-  const { from, to, graduating } = await resolveTags<'unified', 'bump'>({
+  const { from, to } = await resolveTags<'unified', 'bump'>({
     config,
     versionMode: 'unified',
     step: 'bump',
@@ -51,7 +53,6 @@ async function bumpUnifiedMode({
     commits,
     config,
     force,
-    graduating,
   })
 
   if (!releaseType) {
@@ -66,7 +67,12 @@ async function bumpUnifiedMode({
     logger.debug(`Detected release type from commits: ${releaseType}`)
   }
 
-  const newVersion = bumpPackageVersion(currentVersion, releaseType, config.bump.preid)
+  const newVersion = bumpPackageVersion({
+    currentVersion,
+    releaseType,
+    preid: config.bump.preid,
+    suffix,
+  })
 
   logger.debug(`${currentVersion} → ${newVersion} (unified mode)`)
 
@@ -122,6 +128,7 @@ async function bumpIndependentMode({
   packages,
   dryRun,
   force,
+  suffix,
 }: BumpStrategyInput): Promise<BumpResult> {
   logger.debug('Starting bump in independent mode')
 
@@ -129,6 +136,7 @@ async function bumpIndependentMode({
     packages,
     config,
     force,
+    suffix,
   })
 
   if (packagesWithNewVersions.length === 0) {
@@ -184,13 +192,14 @@ async function bumpSelectiveMode({
   packages,
   dryRun,
   force,
+  suffix,
 }: BumpStrategyInput): Promise<BumpResult> {
   logger.debug('Starting bump in selective mode')
 
   const rootPackage = getRootPackage(config.cwd)
   const currentVersion = rootPackage.version
 
-  const { from, to, graduating } = await resolveTags<'selective', 'bump'>({
+  const { from, to } = await resolveTags<'selective', 'bump'>({
     config,
     versionMode: 'selective',
     step: 'bump',
@@ -210,14 +219,19 @@ async function bumpSelectiveMode({
     changelog: false,
   })
 
-  const releaseType = determineReleaseType({ from, to, commits, config, force, graduating, currentVersion })
+  const releaseType = determineReleaseType({ from, to, commits, config, force, currentVersion })
 
   if (!releaseType) {
     logger.debug('No commits require a version bump')
     return { bumped: false }
   }
 
-  const newVersion = bumpPackageVersion(currentVersion, releaseType, config.bump.preid)
+  const newVersion = bumpPackageVersion({
+    currentVersion,
+    releaseType,
+    preid: config.bump.preid,
+    suffix,
+  })
 
   logger.debug('Determining packages to bump...')
   const packagesToBump = force
@@ -345,6 +359,7 @@ export async function bump(options: Partial<BumpOptions> = {}): Promise<BumpResu
       packages,
       dryRun,
       force,
+      suffix: options.suffix,
     }
 
     if (config.monorepo.versionMode === 'unified') {
