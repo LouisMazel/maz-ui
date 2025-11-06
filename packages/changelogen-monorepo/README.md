@@ -134,6 +134,9 @@ clm release --patch
 # Release with pre-release
 clm release --prerelease --preid beta --tag beta
 
+# Release with custom suffix (see bump --suffix)
+clm release --prerelease --preid beta --suffix abc123
+
 # Without push to remote
 clm release --patch --no-push
 
@@ -168,6 +171,7 @@ All options from `bump`, `changelog`, `publish` and `provider-release` are avail
 - `--force` - Force bump even without commits
 - `--yes` - Skip confirmation prompt
 - `--build-cmd <cmd>` - Command to build packages before publish
+- `--suffix <suffix>` - Custom suffix for prerelease versions (see [bump --suffix](#suffix))
 
 #### 2. `bump` - Update versions
 
@@ -188,6 +192,10 @@ clm bump --premajor --preid alpha      # 1.0.0 → 2.0.0-alpha.0
 clm bump --preminor --preid rc         # 1.0.0 → 1.1.0-rc.0
 clm bump --prepatch --preid beta       # 1.0.0 → 1.0.1-beta.0
 
+# Pre-releases with custom suffix
+clm bump --prepatch --preid beta --suffix abc123    # 1.0.0 → 1.0.1-beta.abc123
+clm bump --prerelease --preid alpha --suffix 20241106  # 1.0.0-alpha.0 → 1.0.0-alpha.20241106
+
 # Options
 clm bump --force      # Force bump even without commits
 clm bump --yes        # Skip confirmation prompt
@@ -204,9 +212,76 @@ clm bump --no-clean   # Skip working directory clean check
 - `--preminor` - Bump preminor version
 - `--prepatch` - Bump prepatch version
 - `--preid <id>` - Prerelease identifier (alpha, beta, rc, etc.)
+- `--suffix <suffix>` - Custom suffix for prerelease versions
 - `--force` - Force bump even without commits
 - `--yes` - Skip confirmation prompt
 - `--no-clean` - Skip working directory clean check
+
+##### `--suffix`
+
+The `--suffix` option allows you to customize the prerelease version number with a custom identifier instead of an auto-incremented number. This is particularly useful for CI/CD pipelines where you want to include build metadata in your version.
+
+**How it works:**
+
+When you use a prerelease bump type (`prepatch`, `preminor`, `premajor`, or `prerelease`) with the `--suffix` option, the version number's prerelease suffix will be replaced with your custom value instead of an auto-incremented number.
+
+**Examples:**
+
+```bash
+# Without suffix (default behavior)
+clm bump --prepatch --preid beta
+# 1.0.0 → 1.0.1-beta.0
+
+# With custom suffix
+clm bump --prepatch --preid beta --suffix abc123
+# 1.0.0 → 1.0.1-beta.abc123
+
+# Incrementing an existing prerelease with suffix
+clm bump --prerelease --preid beta --suffix xyz789
+# 1.0.1-beta.0 → 1.0.1-beta.xyz789
+
+# Common CI/CD use case: Git commit SHA
+clm bump --prerelease --preid alpha --suffix $(git rev-parse --short HEAD)
+# 1.0.0-alpha.5 → 1.0.0-alpha.a1b2c3d
+
+# Common CI/CD use case: Build number
+clm bump --prepatch --preid rc --suffix ${CI_PIPELINE_ID}
+# 2.5.0 → 2.5.1-rc.12345
+
+# Common CI/CD use case: Timestamp
+clm bump --preminor --preid beta --suffix $(date +%Y%m%d%H%M%S)
+# 1.0.0 → 1.1.0-beta.20241106153045
+```
+
+**Important notes:**
+
+- The `--suffix` option **only works with prerelease bump types** (`prepatch`, `preminor`, `premajor`, `prerelease`)
+- It has **no effect on stable release types** (`patch`, `minor`, `major`)
+- The suffix can contain letters, numbers, or hyphens
+- Suffix values follow semantic versioning rules for prerelease identifiers
+
+**Use cases:**
+
+1. **CI/CD Pipelines**: Include build numbers, commit SHAs, or timestamps in your prerelease versions
+2. **Feature Branches**: Create unique prerelease versions for different branches
+3. **Testing**: Generate identifiable test releases
+4. **Reproducible Builds**: Track exact build metadata in version numbers
+
+**Example in CI/CD (GitHub Actions):**
+
+```yaml
+- name: Bump prerelease version
+  run: |
+    pnpm clm bump --prerelease --preid beta --suffix ${{ github.sha }}
+```
+
+**Example in CI/CD (GitLab CI):**
+
+```yaml
+bump:
+  script:
+    - pnpm clm bump --prepatch --preid rc --suffix $CI_COMMIT_SHORT_SHA
+```
 
 #### 3. `changelog` - Generate changelogs
 
