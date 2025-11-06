@@ -1,4 +1,4 @@
-import type { GitCommit } from 'changelogen'
+import type { ChangelogConfig, GitCommit } from 'changelogen'
 import type { ReleaseType } from 'semver'
 import type { PackageToBump, ResolvedChangelogMonorepoConfig } from '../core'
 import type { BumpOptions, PackageInfo, PackageWithCommits, VersionMode } from '../types'
@@ -12,6 +12,140 @@ import * as semver from 'semver'
 import { expandPackagesToBumpWithDependents, resolveTags } from '../core'
 import { getPackageCommits, hasLernaJson } from './monorepo'
 
+function detectReleaseTypeFromCommits(
+  commits: GitCommit[],
+  config: ResolvedChangelogMonorepoConfig,
+): 'major' | 'minor' | 'patch' | null {
+  return determineSemverChange(commits, config as ChangelogConfig) as 'major' | 'minor' | 'patch' | null
+}
+
+function validatePrereleaseDowngrade(
+  currentVersion: string,
+  targetPreid: string | undefined,
+  configuredType: BumpOptions['type'],
+): void {
+  if (configuredType !== 'prerelease' || !targetPreid || !isPrerelease(currentVersion)) {
+    return
+  }
+
+  const testVersion = semver.inc(currentVersion, 'prerelease', targetPreid)
+  if (testVersion && !semver.gt(testVersion, currentVersion)) {
+    throw new Error(`Unable to graduate from ${currentVersion} to ${testVersion}, it's not a valid prerelease`)
+  }
+}
+
+function handleStableVersionWithReleaseType(
+  commits: GitCommit[] | undefined,
+  config: ResolvedChangelogMonorepoConfig,
+  force: boolean,
+): BumpOptions['type'] | null {
+  if (!commits?.length && !force) {
+    logger.debug('No commits found for stable version with "release" type, skipping bump')
+    return null
+  }
+
+  const detectedType = commits?.length
+    ? detectReleaseTypeFromCommits(commits, config)
+    : null
+
+  if (!detectedType && !force) {
+    logger.debug('No significant commits found, skipping bump')
+    return null
+  }
+
+  logger.debug(`Auto-detected release type from commits: ${detectedType}`)
+  return detectedType
+}
+
+function handleStableVersionWithPrereleaseType(
+  commits: GitCommit[] | undefined,
+  config: ResolvedChangelogMonorepoConfig,
+  force: boolean,
+): BumpOptions['type'] | null {
+  if (!commits?.length && !force) {
+    logger.debug('No commits found for stable version with "prerelease" type, skipping bump')
+    return null
+  }
+
+  const detectedType = commits?.length
+    ? detectReleaseTypeFromCommits(commits, config)
+    : null
+
+  if (!detectedType) {
+    logger.debug('No significant commits found, using prepatch as default')
+    return 'prepatch'
+  }
+
+  const prereleaseType = `pre${detectedType}` as BumpOptions['type']
+  logger.debug(`Auto-detected prerelease type from commits: ${prereleaseType}`)
+  return prereleaseType
+}
+
+function handlePrereleaseVersionToStable(
+  currentVersion: string,
+): BumpOptions['type'] {
+  logger.debug(`Graduating from prerelease ${currentVersion} to stable release`)
+  return 'release'
+}
+
+function handlePrereleaseVersionWithPrereleaseType(
+  currentVersion: string,
+  targetPreid: string | undefined,
+  commits: GitCommit[] | undefined,
+  config: ResolvedChangelogMonorepoConfig,
+  force: boolean,
+): BumpOptions['type'] | null {
+  const currentPreid = getPreid(currentVersion)
+  const hasChangedPreid = targetPreid && currentPreid && currentPreid !== targetPreid
+
+  if (hasChangedPreid) {
+    const testVersion = semver.inc(currentVersion, 'prerelease', targetPreid)
+
+    if (!testVersion) {
+      throw new Error(`Unable to change preid from ${currentPreid} to ${targetPreid} for version ${currentVersion}`)
+    }
+
+    const isUpgrade = semver.gt(testVersion, currentVersion)
+
+    if (!isUpgrade) {
+      throw new Error(`Unable to change preid from ${currentVersion} to ${testVersion}, it's not a valid upgrade (cannot downgrade from ${currentPreid} to ${targetPreid})`)
+    }
+
+    const detectedType = commits?.length
+      ? detectReleaseTypeFromCommits(commits, config)
+      : null
+
+    const prereleaseType = detectedType ? `pre${detectedType}` as BumpOptions['type'] : 'prepatch'
+    logger.debug(`Changing preid from ${currentPreid} to ${targetPreid} with release type: ${prereleaseType}`)
+    return prereleaseType
+  }
+
+  if (!commits?.length && !force) {
+    logger.debug('No commits found for prerelease version, skipping bump')
+    return null
+  }
+
+  logger.debug(`Incrementing prerelease version: ${currentVersion}`)
+  return 'prerelease'
+}
+
+function handleExplicitReleaseType(
+  configuredType: NonNullable<BumpOptions['type']>,
+  currentVersion: string,
+): BumpOptions['type'] {
+  const isCurrentPrerelease = isPrerelease(currentVersion)
+  const isGraduatingToStable = isCurrentPrerelease && isStableReleaseType(configuredType)
+
+  if (isGraduatingToStable) {
+    logger.debug(`Graduating from prerelease ${currentVersion} to stable with type: ${configuredType}`)
+  }
+  else {
+    logger.debug(`Using explicit release type: ${configuredType}`)
+  }
+
+  return configuredType
+}
+
 export function determineReleaseType({
   currentVersion,
   from,
@@ -19,7 +153,6 @@ export function determineReleaseType({
   commits,
   config,
   force,
-  graduating,
 }: {
   currentVersion: string
   from: string
@@ -27,7 +160,6 @@ export function determineReleaseType({
   commits?: GitCommit[]
   config: ResolvedChangelogMonorepoConfig
   force: boolean
-  graduating?: boolean
 }): BumpOptions['type'] | null {
   const configWithRange = {
     ...config,
@@ -35,35 +167,55 @@ export function determineReleaseType({
     to,
   }
 
-  let releaseType: BumpOptions['type'] | null = configWithRange.bump.type
+  const configuredType = configWithRange.bump.type
+  const targetPreid = configWithRange.bump.preid
 
-  if (graduating) {
-    logger.debug(`Graduating to stable release type: ${releaseType}`)
+  if (configuredType === 'release' && targetPreid) {
+    throw new Error('You cannot use a "release" type with a "preid", to use a preid you must use a "prerelease" type')
   }
-  else if (isGraduatingBetweenPreleases(currentVersion, configWithRange.bump.preid)) {
-    const currentPreid = getPreid(currentVersion)
-    logger.debug(`Graduating from ${currentPreid} to ${configWithRange.bump.preid} prerelease`)
-    releaseType = 'prerelease'
-  }
-  else if (!commits?.length && !force) {
-    logger.debug(`No commits found, skipping bump`)
-    releaseType = null
-  }
-  else if (releaseType && releaseType !== 'release') {
-    logger.debug(`Using specified release type: ${releaseType}`)
-  }
-  else if (commits && commits.length > 0) {
-    const serverChange = determineSemverChange(commits, configWithRange) as 'major' | 'minor' | 'patch' | null
-    const type = (releaseType.includes('pre') && serverChange ? `pre${serverChange}` : serverChange) as BumpOptions['type'] | null
-    logger.debug(`Using detected release type: ${type}`)
-    releaseType = type
-  }
+
+  validatePrereleaseDowngrade(currentVersion, targetPreid, configuredType)
 
   if (force) {
-    releaseType = configWithRange.bump.type
+    logger.debug(`Force flag enabled, using configured type: ${configuredType}`)
+    return configuredType
   }
 
-  return releaseType
+  const isCurrentPrerelease = isPrerelease(currentVersion)
+
+  /**
+   * Stable branch
+   */
+  if (!isCurrentPrerelease) {
+    if (configuredType === 'release') {
+      return handleStableVersionWithReleaseType(commits, configWithRange, force)
+    }
+
+    if (configuredType === 'prerelease') {
+      return handleStableVersionWithPrereleaseType(commits, configWithRange, force)
+    }
+
+    return handleExplicitReleaseType(configuredType, currentVersion)
+  }
+
+  /**
+   * Prerelease branch
+   */
+  if (configuredType === 'release') {
+    return handlePrereleaseVersionToStable(currentVersion)
+  }
+
+  if (configuredType === 'prerelease') {
+    return handlePrereleaseVersionWithPrereleaseType(
+      currentVersion,
+      targetPreid,
+      commits,
+      configWithRange,
+      force,
+    )
+  }
+
+  return handleExplicitReleaseType(configuredType, currentVersion)
 }
 
 export function writeVersion(pkgPath: string, version: string, dryRun = false): void {
@@ -91,15 +243,32 @@ export function writeVersion(pkgPath: string, version: string, dryRun = false): 
   }
 }
 
-export function bumpPackageVersion(
-  currentVersion: string,
-  releaseType: ReleaseType,
-  preid?: string,
-): string {
-  const newVersion = semver.inc(currentVersion, releaseType, preid as string)
+export function bumpPackageVersion({
+  currentVersion,
+  releaseType,
+  preid,
+  suffix,
+}: {
+  currentVersion: string
+  releaseType: ReleaseType
+  preid: string | undefined
+  suffix: string | undefined
+}): string {
+  let newVersion = semver.inc(currentVersion, releaseType, preid as string)
 
   if (!newVersion) {
     throw new Error(`Unable to bump version "${currentVersion}" with release type "${releaseType}"`)
+  }
+
+  if (isPrereleaseReleaseType(releaseType) && suffix) {
+    // Remplace le dernier .X par .suffix
+    newVersion = newVersion.replace(/\.(\d+)$/, `.${suffix}`)
+  }
+
+  const isValidVersion = semver.gt(newVersion, currentVersion)
+
+  if (!isValidVersion) {
+    throw new Error(`Unable to bump version "${currentVersion}" to "${newVersion}", new version is not greater than current version`)
   }
 
   if (isGraduating(currentVersion, releaseType)) {
@@ -171,13 +340,19 @@ export function extractVersionFromPackageTag(tag: string): string | null {
 export function isPrerelease(version?: string): boolean {
   if (!version)
     return false
-  const parsed = semver.parse(version)
-  return parsed ? parsed.prerelease.length > 0 : false
+
+  const prerelease = semver.prerelease(version)
+  return prerelease ? prerelease.length > 0 : false
 }
 
 export function isStableReleaseType(releaseType: ReleaseType): boolean {
   const stableTypes = ['release', 'major', 'minor', 'patch']
   return stableTypes.includes(releaseType)
+}
+
+export function isPrereleaseReleaseType(releaseType: ReleaseType): boolean {
+  const prereleaseTypes = ['prerelease', 'premajor', 'preminor', 'prepatch']
+  return prereleaseTypes.includes(releaseType)
 }
 
 export function isGraduating(currentVersion: string, releaseType: ReleaseType): boolean {
@@ -187,14 +362,16 @@ export function isGraduating(currentVersion: string, releaseType: ReleaseType): 
 export function getPreid(version: string): string | null {
   if (!version)
     return null
-  const parsed = semver.parse(version)
-  if (!parsed || parsed.prerelease.length === 0) {
+
+  const prerelease = semver.prerelease(version)
+  if (!prerelease || prerelease.length === 0) {
     return null
   }
-  return parsed.prerelease[0] as string
+
+  return prerelease[0] as string
 }
 
-export function isGraduatingBetweenPreleases(
+export function isChangedPreid(
   currentVersion: string,
   targetPreid?: string,
 ): boolean {
@@ -418,7 +595,7 @@ async function findPackagesWithCommits({
   logger.debug(`Checking for commits in ${packages.length} package(s)`)
 
   for (const pkg of packages) {
-    const { from, to, graduating } = await resolveTags<'independent', 'bump'>({
+    const { from, to } = await resolveTags<'independent', 'bump'>({
       config,
       versionMode: 'independent',
       step: 'bump',
@@ -441,7 +618,7 @@ async function findPackagesWithCommits({
       continue
     }
 
-    packagesWithCommits.push({ ...pkg, commits, graduating })
+    packagesWithCommits.push({ ...pkg, commits })
     logger.debug(`${pkg.name}: ${commits.length} commit(s)`)
   }
 
@@ -452,14 +629,16 @@ async function calculatePackageNewVersion({
   pkg,
   config,
   force,
+  suffix,
 }: {
   pkg: PackageToBump
   config: ResolvedChangelogMonorepoConfig
   force: boolean
+  suffix: string | undefined
 }): Promise<(PackageInfo & PackageToBump) | null> {
   const releaseType = config.bump.type
 
-  const { from, to, graduating } = await resolveTags<'independent', 'bump'>({
+  const { from, to } = await resolveTags<'independent', 'bump'>({
     config,
     versionMode: 'independent',
     step: 'bump',
@@ -500,14 +679,19 @@ async function calculatePackageNewVersion({
     return null
   }
   else {
-    calculatedReleaseType = determineReleaseType({ from, to, commits, config, force, currentVersion: pkg.version, graduating })
+    calculatedReleaseType = determineReleaseType({ from, to, commits, config, force, currentVersion: pkg.version })
     if (!calculatedReleaseType) {
       return null
     }
   }
 
   const currentVersion = pkg.version || '0.0.0'
-  const newVersion = bumpPackageVersion(currentVersion, calculatedReleaseType, config.bump.preid)
+  const newVersion = bumpPackageVersion({
+    currentVersion,
+    releaseType: calculatedReleaseType,
+    preid: config.bump.preid,
+    suffix,
+  })
 
   return {
     name: pkg.name,
@@ -525,10 +709,12 @@ async function calculateNewVersionsForPackages({
   allPackagesToBump,
   config,
   force,
+  suffix,
 }: {
   allPackagesToBump: PackageToBump[]
   config: ResolvedChangelogMonorepoConfig
   force: boolean
+  suffix: string | undefined
 }): Promise<(PackageInfo & PackageToBump)[]> {
   const packagesWithNewVersions: (PackageInfo & PackageToBump)[] = []
 
@@ -537,6 +723,7 @@ async function calculateNewVersionsForPackages({
       pkg: pkgToBump,
       config,
       force,
+      suffix,
     })
 
     if (packageWithNewVersion) {
@@ -551,10 +738,12 @@ export async function findPackagesWithCommitsAndCalculateVersions({
   packages,
   config,
   force,
+  suffix,
 }: {
   packages: PackageInfo[]
   config: ResolvedChangelogMonorepoConfig
   force: boolean
+  suffix: string | undefined
 }): Promise<(PackageInfo & PackageToBump)[]> {
   const packagesWithCommits = await findPackagesWithCommits({
     packages,
@@ -578,6 +767,7 @@ export async function findPackagesWithCommitsAndCalculateVersions({
     allPackagesToBump,
     config,
     force,
+    suffix,
   })
 
   logger.debug(`Found ${packagesWithNewVersions.length} package(s) to bump`)
