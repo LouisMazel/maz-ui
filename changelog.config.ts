@@ -37,5 +37,6 @@ export default defineConfig({
   publish: {
     registry: 'https://registry.npmjs.org',
     access: 'public',
+    buildCmd: 'pnpm -F @maz-ui/changelogen-monorepo build',
   },
 })
