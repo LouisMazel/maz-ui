@@ -2,7 +2,7 @@ import type { ResolvedChangelogMonorepoConfig } from '../core'
 import type { BumpConfig, BumpOptions, BumpResult, PackageInfo } from '../types'
 import { logger } from '@maz-ui/node'
 
-import { bumpIndependentPackages, bumpPackageVersion, checkGitStatusIfDirty, confirmBump, determineReleaseType, findPackagesWithCommitsAndCalculateVersions, getPackageCommits, getPackages, getPackageToBump, getRootPackage, loadMonorepoConfig, resolveTags, updateLernaVersion, writeVersion } from '../core'
+import { bumpIndependentPackages, bumpPackageVersion, checkGitStatusIfDirty, confirmBump, determineReleaseType, fetchGitTags, findPackagesWithCommitsAndCalculateVersions, getPackageCommits, getPackages, getPackageToBump, getRootPackage, loadMonorepoConfig, resolveTags, updateLernaVersion, writeVersion } from '../core'
 
 interface BumpStrategyInput {
   config: ResolvedChangelogMonorepoConfig
@@ -341,6 +341,8 @@ export async function bump(options: Partial<BumpOptions> = {}): Promise<BumpResu
         process.exit(1)
       }
     }
+
+    await fetchGitTags(config.cwd)
 
     logger.info(`Version mode: ${config.monorepo.versionMode}`)
 
