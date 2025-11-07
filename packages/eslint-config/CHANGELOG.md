@@ -1,5 +1,15 @@
 # Change Log
 
+## v4.3.1-alpha.2...v4.3.1-alpha.2
+
+### 🩹 Fixes
+
+- **@maz-ui/eslint-config:** Add vue rules only if vue is enabled or detected in dependencies ([ec90fea02](https://github.com/LouisMazel/maz-ui/commit/ec90fea02))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.0...v4.3.0
 
 ### 🩹 Fixes
