@@ -1,12 +1,14 @@
 // @ts-check
 import type { Rules } from '@antfu/eslint-config'
 import type { MazESLintConfig, MazESLintOptions, MazESLintUserConfig } from './types'
-import antfu from '@antfu/eslint-config'
+import { readFileSync } from 'node:fs'
 
+import { resolve } from 'node:path'
+import antfu from '@antfu/eslint-config'
 import sonarjs from 'eslint-plugin-sonarjs'
+
 import tailwind from 'eslint-plugin-tailwindcss'
 import vueA11y from 'eslint-plugin-vuejs-accessibility'
-
 import { baseRules } from './configs/base'
 import { GLOBAL_IGNORES } from './configs/global'
 import { markdown } from './configs/markdown'
@@ -26,6 +28,20 @@ const defaultOptions: MazESLintOptions = {
   unicorn: true,
   ignores: GLOBAL_IGNORES,
   rules: {},
+}
+
+function getPackageJson() {
+  const packageJsonPath = resolve(process.cwd(), 'package.json')
+  return JSON.parse(readFileSync(packageJsonPath, 'utf-8'))
+}
+
+function hasVueDependency() {
+  const packageJson = getPackageJson()
+
+  return packageJson.dependencies?.vue
+    || packageJson.dependencies?.['@vue/*']
+    || packageJson.devDependencies?.vue
+    || packageJson.devDependencies?.['@vue/*']
 }
 
 /**
@@ -57,7 +73,7 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
     ...opts.rules,
   }
 
-  if (opts.vue || opts.formatters) {
+  if (opts.vue || opts.vueAccessibility || hasVueDependency()) {
     allRules = {
       ...allRules,
       ...vueRules,
