@@ -4,16 +4,7 @@
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.0...v4.3.1-beta.0)
 
-### 🧹 Clean
-
-- Remove package changelogen-monorepo ([63db3a3f](https://github.com/LouisMazel/maz-ui/commit/63db3a3f))
-
-  It's moved and replaced by Relizy: https://louismazel.github.io/relizy/
-  R081 changelog.config.ts relizy.config.ts
-
-### ❤️ Contributors
-
-- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+No relevant changes since last release
 
 ## v4.2.1...v4.3.0
 
