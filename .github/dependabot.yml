@@ -12,7 +12,6 @@ updates:
       interval: weekly # Check for updates every week
     commit-message:
       prefix: chore(deps)
-      include: scope
     ignore:
       - dependency-name: '*'
         update-types: ['version-update:semver-patch']
