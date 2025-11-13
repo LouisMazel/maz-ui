@@ -157,8 +157,14 @@ const toast = useToast()
 - [Utils](https://maz-ui.com/helpers/capitalize) - Useful utilities for common tasks
 - [Node](https://www.npmjs.com/package/@maz-ui/node) - Useful utilities for node
 - [MCP](https://maz-ui.com/guide/mcp) - AI assistant for documentation
-- [Changelogen-Monorepo](./packages/changelogen-monorepo/README.md) - Releases manager for monorepos with beautiful changelogs using conventional commits
 - [EslintConfig](./packages/eslint-config/README.md) - ESLint configuration of Maz UI (built on top of [@antfu/eslint-config](https://www.npmjs.com/package/@antfu/eslint-config))
+
+## Are you looking for a package or release manager?
+
+Check out [Relizy](https://github.com/LouisMazel/relizy) for an auto-release manager for your packages or apps.
+
+- [Documentation](https://louismazel.github.io/relizy/)
+- [GitHub](https://github.com/LouisMazel/relizy)
 
 ## 🤝 Contributing
 

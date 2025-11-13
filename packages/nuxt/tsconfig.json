@@ -10,7 +10,6 @@
     "../themes/**/*",
     "../mcp/**/*",
     "../icons/**/*",
-    "../changelogen-monorepo/**/*",
     "../../apps/**/*"
   ]
 }
