@@ -8,6 +8,7 @@ on:
       - 'packages/**/*'
       - '!packages/*/CHANGELOG.md'
       - '!packages/*/package.json'
+  workflow_dispatch:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
