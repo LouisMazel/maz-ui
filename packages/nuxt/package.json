@@ -57,16 +57,16 @@
   "dependencies": {
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
-    "@nuxt/kit": "^4.2.0",
+    "@nuxt/kit": "^4.2.1",
     "defu": "^6.1.4",
     "maz-ui": "workspace:*"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^3.0.1",
+    "@nuxt/devtools": "^3.1.0",
     "@nuxt/module-builder": "^1.0.2",
-    "@nuxt/schema": "^4.2.0",
+    "@nuxt/schema": "^4.2.1",
     "@nuxt/test-utils": "^3.20.1",
-    "nuxt": "^4.2.0"
+    "nuxt": "^4.2.1"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
