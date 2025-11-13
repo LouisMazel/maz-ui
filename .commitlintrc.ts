@@ -16,6 +16,9 @@ export default <UserConfig> {
         'style',
         'chore',
         'clean',
+        'ci',
+        'revert',
+        'build',
       ],
     ],
     'scope-enum': [

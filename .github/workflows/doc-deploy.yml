@@ -8,6 +8,7 @@ on:
       - 'apps/docs/**'
       - 'packages/lib/**'
       - .github/workflows/doc-deploy.yml
+  workflow_dispatch:
 
 jobs:
   doc-build-and-deploy:
