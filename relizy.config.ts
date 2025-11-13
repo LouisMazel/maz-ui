@@ -1,4 +1,4 @@
-import { defineConfig } from '@maz-ui/changelogen-monorepo'
+import { defineConfig } from 'relizy'
 
 export default defineConfig({
   types: {
@@ -9,9 +9,10 @@ export default defineConfig({
     docs: { title: '📖 Documentation', semver: 'patch' },
     types: { title: '🌊 Types', semver: 'patch' },
     style: { title: '💄 Styles', semver: 'patch' },
+    test: { title: '🧪 Tests' },
+    clean: { title: '🧹 Clean' },
     chore: false,
     examples: false,
-    test: false,
     ci: false,
     build: false,
   },
@@ -25,17 +26,11 @@ export default defineConfig({
     packages: ['packages/*'],
   },
 
-  bump: {
-    yes: false,
-  },
-
   changelog: {
     formatCmd: 'git add --all && pnpm pre-commit && git reset',
-    includeCommitBody: true,
   },
 
   publish: {
-    registry: 'https://registry.npmjs.org',
     access: 'public',
   },
 })

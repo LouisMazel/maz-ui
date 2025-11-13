@@ -22,7 +22,6 @@ assignees: LouisMazel
 - [ ] `@maz-ui/utils` (utilities)
 - [ ] `@maz-ui/cli` (CLI tools)
 - [ ] `@maz-ui/eslint-config` (ESLint config)
-- [ ] `@maz-ui/changelogen-monorepo` (Package manager)
 - [ ] `@maz-ui/mcp` (MCP of maz-ui)
 - [ ] `@maz-ui/node` (Node utilities)
 - [ ] `docs` (documentation)
