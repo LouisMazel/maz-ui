@@ -1,5 +1,17 @@
 # Changelog
 
+## v4.3.1-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.1...v4.3.1-beta.0)
+
+### 🩹 Fixes
+
+- **@maz-ui/node:** Update execPromise type handling ([4f2ab147](https://github.com/LouisMazel/maz-ui/commit/4f2ab147))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.2.0...v4.2.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.2.0...v4.2.1)

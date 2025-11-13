@@ -1,5 +1,55 @@
 # Change Log
 
+## v4.3.1-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.1-beta.0...v4.3.1-beta.0)
+
+### 🩹 Fixes
+
+- **@maz-ui/node:** Update execPromise type handling ([4f2ab147](https://github.com/LouisMazel/maz-ui/commit/4f2ab147))
+- **@maz-ui/eslint-config:** Add vue rules only if vue is enabled or detected in dependencies ([ec90fea0](https://github.com/LouisMazel/maz-ui/commit/ec90fea0))
+
+### 💅 Refactors
+
+- **@maz-ui/changelogen-monorepo:** Refactor determineReleaseType for clarity and robustness ([fe96c826](https://github.com/LouisMazel/maz-ui/commit/fe96c826))
+  - Extract separate functions for each scenario (stable/prerelease, release/prerelease types)
+  - Improve prerelease downgrade validation with explicit error messages
+  - Simplify main function logic with clear branching
+  - Add detailed logging for better debugging
+  - Handle all edge cases: version graduation, preid changes, force flag override
+
+- **@maz-ui/changelogen-monorepo:** Add suffix option support for prerelease versions ([de0a2138](https://github.com/LouisMazel/maz-ui/commit/de0a2138))
+  - Introduce suffix parameter for customizing prerelease identifiers
+  - Allow flexibility in prerelease version naming conventions
+  - Update configuration and version handling to support suffix parameter
+
+- **@maz-ui/changelogen-monorepo:** Add git fetch before bumping packages ([37ceba82](https://github.com/LouisMazel/maz-ui/commit/37ceba82))
+
+### 📖 Documentation
+
+- **@maz-ui/changelogen-monorepo:** Add documentation about --suffix flag of release and bump commands ([333f15b9](https://github.com/LouisMazel/maz-ui/commit/333f15b9))
+
+### 🧪 Tests
+
+- **@maz-ui/changelogen-monorepo:** Add comprehensive tests for bumpPackageVersion and determineReleaseType ([b1ce4072](https://github.com/LouisMazel/maz-ui/commit/b1ce4072))
+  - Add 82 tests for bumpPackageVersion covering all scenarios
+  - Add 51 tests for determineReleaseType with complete edge case coverage
+  - Follow Gherkin method (Given/When/Then) for test clarity
+  - Test stable releases, prerelease types, version graduation, and edge cases
+
+- **@maz-ui/changelogen-monorepo:** Add vitest configuration ([8cc8de60](https://github.com/LouisMazel/maz-ui/commit/8cc8de60))
+
+### 🧹 Clean
+
+- Remove package changelogen-monorepo ([63db3a3f](https://github.com/LouisMazel/maz-ui/commit/63db3a3f))
+
+  It's moved and replaced by Relizy: https://louismazel.github.io/relizy/
+  R081 changelog.config.ts relizy.config.ts
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.2.1...v4.3.0
 
 ### 🚀 Features
