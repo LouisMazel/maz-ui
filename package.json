@@ -63,10 +63,10 @@
     "conventional-changelog-gitmoji-config": "^1.5.2",
     "cross-env": "^10.1.0",
     "husky": "^9.1.7",
-    "lerna": "^9.0.0",
+    "lerna": "^9.0.1",
     "lint-staged": "^16.2.6",
     "nx": "^22.0.3",
-    "relizy": "^0.2.2",
+    "relizy": "^0.2.4",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4"
