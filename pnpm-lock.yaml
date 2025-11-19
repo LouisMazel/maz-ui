@@ -464,9 +464,6 @@ importers:
       '@maz-ui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@types/figlet':
-        specifier: ^1.7.0
-        version: 1.7.0
       '@types/tinycolor2':
         specifier: ^1.4.6
         version: 1.4.6
@@ -632,9 +629,6 @@ importers:
         specifier: ^4.79.0
         version: 4.79.0(vue@3.5.24(typescript@5.9.3))
     devDependencies:
-      '@types/figlet':
-        specifier: ^1.7.0
-        version: 1.7.0
       tsx:
         specifier: ^4.20.6
         version: 4.20.6
@@ -4344,9 +4338,6 @@ packages:
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
-
-  '@types/figlet@1.7.0':
-    resolution: {integrity: sha512-KwrT7p/8Eo3Op/HBSIwGXOsTZKYiM9NpWRBJ5sVjWP/SmlS+oxxRvJht/FNAtliJvja44N3ul1yATgohnVBV0Q==}
 
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
@@ -15923,8 +15914,6 @@ snapshots:
       '@types/json-schema': 7.0.15
 
   '@types/estree@1.0.8': {}
-
-  '@types/figlet@1.7.0': {}
 
   '@types/hast@3.0.4':
     dependencies:

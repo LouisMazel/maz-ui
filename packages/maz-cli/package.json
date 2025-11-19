@@ -50,7 +50,6 @@
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
-    "@types/figlet": "^1.7.0",
     "@types/tinycolor2": "^1.4.6",
     "unbuild": "^3.6.1"
   },
