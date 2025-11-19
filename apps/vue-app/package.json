@@ -21,16 +21,16 @@
     "@maz-ui/icons": "workspace:*",
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
-    "@tsconfig/node22": "^22.0.3",
+    "@tsconfig/node22": "^22.0.5",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.8.1",
-    "eslint-plugin-oxlint": "^1.28.0",
+    "eslint-plugin-oxlint": "^1.29.0",
     "maz-ui": "workspace:*",
     "npm-run-all2": "^8.0.4",
-    "oxlint": "^1.28.0",
+    "oxlint": "^1.29.0",
     "rollup-plugin-visualizer": "^6.0.5",
     "vite": "^7.2.2",
-    "vite-plugin-vue-devtools": "^8.0.3",
-    "vue-tsc": "^3.1.3"
+    "vite-plugin-vue-devtools": "^8.0.5",
+    "vue-tsc": "^3.1.4"
   }
 }
