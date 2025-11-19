@@ -45,7 +45,7 @@
     "@maz-ui/node": "workspace:*",
     "commander": "^14.0.2",
     "cosmiconfig": "^9.0.0",
-    "figlet": "^1.9.3",
+    "figlet": "^1.9.4",
     "tinycolor2": "^1.6.0"
   },
   "devDependencies": {

@@ -201,7 +201,7 @@
     "@maz-ui/utils": "workspace:*",
     "chart.js": "^4.5.1",
     "dayjs": "^1.11.19",
-    "libphonenumber-js": "^1.12.26",
+    "libphonenumber-js": "^1.12.27",
     "valibot": "^1.1.0",
     "vue-chartjs": "^5.3.3"
   },
@@ -213,7 +213,7 @@
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.8.1",
     "autoprefixer": "^10.4.22",
-    "glob": "^11.0.3",
+    "glob": "^12.0.0",
     "jsdom": "^27.2.0",
     "lightningcss": "^1.30.2",
     "nuxt": "^4.2.1",
@@ -223,7 +223,7 @@
     "postcss-nested": "^7.0.2",
     "postcss-replace": "^2.0.1",
     "postcss-url": "^10.1.3",
-    "sass": "^1.94.0",
+    "sass": "^1.94.1",
     "stylelint": "^16.25.0",
     "stylelint-config-recommended-vue": "^1.6.1",
     "stylelint-config-standard": "^39.0.1",
@@ -239,7 +239,7 @@
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.5.24",
     "vue-router": "^4.6.3",
-    "vue-tsc": "^3.1.3"
+    "vue-tsc": "^3.1.4"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix",

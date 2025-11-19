@@ -25,7 +25,7 @@
     "chart.js": "^4.5.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.19",
-    "libphonenumber-js": "^1.12.26",
+    "libphonenumber-js": "^1.12.27",
     "maz-ui": "workspace:*",
     "vitepress-plugin-google-analytics": "^1.0.2"
   },
@@ -33,7 +33,7 @@
     "@samkirkland/ftp-deploy": "^1.2.5",
     "@types/postcss-import": "^14.0.3",
     "@types/postcss-url": "^10.0.4",
-    "@types/react": "^19.2.4",
+    "@types/react": "^19.2.6",
     "@vercel/og": "^0.8.5",
     "postcss-import": "^16.1.0",
     "postcss-url": "^10.1.3",
