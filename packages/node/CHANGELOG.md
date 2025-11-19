@@ -1,5 +1,17 @@
 # Changelog
 
+## v4.3.1...v4.3.2-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.1...v4.3.2-beta.0)
+
+### 🩹 Fixes
+
+- **@maz-ui/node:** Logger - break method break 2 lines when 1 requested ([a58415a9](https://github.com/LouisMazel/maz-ui/commit/a58415a9))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.1-beta.0...v4.3.1)
