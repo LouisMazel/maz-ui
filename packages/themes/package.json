@@ -94,7 +94,7 @@
     "@maz-ui/utils": "workspace:*"
   },
   "devDependencies": {
-    "glob": "^12.0.0",
+    "glob": "^13.0.0",
     "vue": "^3.5.24",
     "vue-tsc": "^3.1.4"
   },
