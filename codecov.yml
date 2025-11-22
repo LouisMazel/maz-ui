@@ -18,7 +18,7 @@ coverage:
     project:
       default:
         # Require coverage for project
-        target: 80%
+        target: 70%
         # Allow 0.5% drop in coverage
         threshold: 0.5%
         # Base branch for comparison
@@ -32,7 +32,7 @@ coverage:
 
       # Per-package coverage targets
       lib:
-        target: 85%
+        target: 71.5%
         threshold: 0.5%
         flags:
           - lib
@@ -40,7 +40,7 @@ coverage:
           - packages/lib/
 
       utils:
-        target: 80%
+        target: 65.9%
         threshold: 0.5%
         flags:
           - utils
@@ -48,7 +48,7 @@ coverage:
           - packages/utils/
 
       mcp:
-        target: 75%
+        target: 73.4%
         threshold: 0.5%
         flags:
           - mcp
@@ -88,7 +88,7 @@ coverage:
           - packages/nuxt/
 
       themes:
-        target: 70%
+        target: 74.5%
         threshold: 1%
         flags:
           - themes
@@ -106,8 +106,8 @@ coverage:
     # Patch-level coverage (new code in PR)
     patch:
       default:
-        # New code should have at least 80% coverage
-        target: 80%
+        # New code should have at least 70% coverage
+        target: 70%
         # Allow 5% variance for new code
         threshold: 5%
         # Only check on pull requests

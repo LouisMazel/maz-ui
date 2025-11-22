@@ -81,3 +81,14 @@ jobs:
           name: mcp-coverage
           fail_ci_if_error: false
           verbose: true
+
+      - name: Upload coverage to Codecov (themes)
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/themes/coverage/lcov.info
+          flags: themes
+          name: themes-coverage
+          fail_ci_if_error: false
+          verbose: true
