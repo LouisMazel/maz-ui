@@ -10,6 +10,14 @@ on:
 jobs:
   coverage:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
+
+    env:
+      TEST_ENV: 'true'
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     steps:
       - uses: szenius/set-timezone@v1.1
@@ -23,10 +31,40 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build packages
-        run: pnpm build:packages
+        run: pnpm build:packages:test
 
       - name: Test units
-        run: pnpm test:unit:all
+        run: pnpm test:unit:coverage:all
 
-      - name: Build docs
-        run: pnpm -F docs build
+      - name: Upload coverage to Codecov (lib)
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/lib/coverage/lcov.info
+          flags: lib
+          name: lib-coverage-dependabot
+          fail_ci_if_error: false
+          verbose: true
+
+      - name: Upload coverage to Codecov (utils)
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/utils/coverage/lcov.info
+          flags: utils
+          name: utils-coverage-dependabot
+          fail_ci_if_error: false
+          verbose: true
+
+      - name: Upload coverage to Codecov (mcp)
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/mcp/coverage/lcov.info
+          flags: mcp
+          name: mcp-coverage-dependabot
+          fail_ci_if_error: false
+          verbose: true
