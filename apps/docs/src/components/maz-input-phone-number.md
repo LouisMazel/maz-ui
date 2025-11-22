@@ -25,7 +25,7 @@ description: MazInputPhoneNumber is a powerful and user-friendly component that 
 
 The simplest way to use MazInputPhoneNumber - just add it and it works!
 
-<ComponentDemo>
+<ComponentDemo expanded>
   <MazInputPhoneNumber
     v-model="phoneNumber"
     v-model:country-code="countryCode"
@@ -42,12 +42,13 @@ The simplest way to use MazInputPhoneNumber - just add it and it works!
 
 ```vue
 <script setup lang="ts">
-import { MazInputPhoneNumber } from 'maz-ui'
+import type { MazInputPhoneNumberData } from 'maz-ui/components/MazInputPhoneNumber'
+import MazInputPhoneNumber from 'maz-ui/components/MazInputPhoneNumber'
 import { ref } from 'vue'
 
-const phoneNumber = ref()
-const countryCode = ref()
-const results = ref()
+const phoneNumber = ref<string>()
+const countryCode = ref<string>()
+const results = ref<MazInputPhoneNumberData>()
 </script>
 
 <template>
