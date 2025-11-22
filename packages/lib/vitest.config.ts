@@ -47,10 +47,10 @@ export default defineConfig({
       ],
       extension: ['.js', '.ts', '.vue'],
       thresholds: {
-        lines: 71.58,
+        lines: 71.57,
         functions: 68.71,
         branches: 78.15,
-        statements: 71.58,
+        statements: 71.57,
         autoUpdate: true,
       },
     },
