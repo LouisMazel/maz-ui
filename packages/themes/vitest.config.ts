@@ -19,7 +19,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       all: true,
-      reporter: ['clover', 'html', 'lcov'],
+      reporter: ['clover', 'html', 'lcov', 'text', 'text-summary'],
       include: ['src/**/*'],
       exclude: [
         ...coverageConfigDefaults.exclude,
@@ -28,6 +28,13 @@ export default defineConfig({
         'src/**/*/index.ts',
       ],
       extension: ['.js', '.ts', '.vue'],
+      thresholds: {
+        lines: 74,
+        functions: 73,
+        branches: 83,
+        statements: 74,
+        autoUpdate: false,
+      },
     },
     exclude: defaultExclude,
   },
