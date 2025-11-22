@@ -8,5 +8,4 @@ export default defineBuildConfig({
   rollup: {
     emitCJS: false,
   },
-  externals: ['colorette', 'consola'],
 })

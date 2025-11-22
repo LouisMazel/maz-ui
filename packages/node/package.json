@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/node",
   "type": "module",
-  "version": "4.3.1",
+  "version": "4.3.2-beta.1",
   "description": "Node utilities for Maz-UI library",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -49,7 +49,7 @@
   "dependencies": {
     "colorette": "^2.0.20",
     "consola": "^3.4.2",
-    "figlet": "^1.9.3"
+    "figlet": "^1.9.4"
   },
   "devDependencies": {
     "unbuild": "^3.6.1"

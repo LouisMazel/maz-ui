@@ -39,7 +39,11 @@ export function createLogger(options?: LoggerOptions) {
     silent: (message: InputLogObject | any, ...args: any[]) => consola.silent(message, ...args),
     divider: (character: string = '=') => console.log(character.repeat(process.stdout.columns || 20)),
     eot: () => console.log(),
-    break: (count: number = 1) => console.log('\n'.repeat(count)),
+    break: (count: number = 1) => {
+      for (let i = 0; i < count; i++) {
+        console.log('')
+      }
+    },
     brand: (message: string) => console.log(blueBright(message)),
     clear: () => console.clear(),
     addReporter: (reporter: ConsolaReporter) => consola.addReporter(reporter),
