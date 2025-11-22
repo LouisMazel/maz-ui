@@ -1,5 +1,37 @@
 # Change Log
 
+## v4.3.1...v4.3.2-beta.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.1...v4.3.2-beta.2)
+
+### 🩹 Fixes
+
+- **@maz-ui/node:** Logger - break method break 2 lines when 1 requested ([a58415a9](https://github.com/LouisMazel/maz-ui/commit/a58415a9))
+- **maz-ui:** MazInputPhoneNumber - emit correct country code when detected from phone input #1390 ([#1390](https://github.com/LouisMazel/maz-ui/issues/1390))
+
+  When a user enters a phone number in international format, the component
+  now correctly emits the detected country code. Previously, the country
+  selector would update visually but the model would retain the original
+  value because results.value.countryCode was not updated when updateResults
+  was false.
+
+- **maz-ui:** MazSelect - prevent focus loss in modals when using search feature #1378 ([#1378](https://github.com/LouisMazel/maz-ui/issues/1378))
+
+  When MazSelect with search feature is placed inside a modal (e.g. Bootstrap Modal),
+  prevent the keyboard event from propagating which caused focus management conflicts.
+  The modal's focus trap was intercepting the focus transfer to the search input,
+  causing the input to lose focus after a single character.
+
+### 💅 Refactors
+
+- **@maz-ui/eslint-config:** Detecte vue from dependencies to add rules ([b607ca41](https://github.com/LouisMazel/maz-ui/commit/b607ca41))
+- **@maz-ui/node:** ExecPromise - you can pass a cwd to execute the command ([d48c8faa](https://github.com/LouisMazel/maz-ui/commit/d48c8faa))
+- **docs:** Improve MazInputPhoneNumber documentation with typing ([788c8671](https://github.com/LouisMazel/maz-ui/commit/788c8671))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v4.3.1...v4.3.2-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.1...v4.3.2-beta.1)
