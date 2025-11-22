@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/eslint-config",
   "type": "module",
-  "version": "4.3.2-beta.2",
+  "version": "4.3.2",
   "description": "ESLint configuration for JavaScript/TypeScript projects",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",

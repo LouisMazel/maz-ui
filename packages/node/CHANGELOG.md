@@ -1,5 +1,21 @@
 # Changelog
 
+## v4.3.1...v4.3.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.1...v4.3.2)
+
+### 🩹 Fixes
+
+- **@maz-ui/node:** Logger - break method break 2 lines when 1 requested ([f9e5449e](https://github.com/LouisMazel/maz-ui/commit/f9e5449e))
+
+### 💅 Refactors
+
+- **@maz-ui/node:** ExecPromise - you can pass a cwd to execute the command ([4cdebdb8](https://github.com/LouisMazel/maz-ui/commit/4cdebdb8))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.1...v4.3.2-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.1...v4.3.2-beta.2)

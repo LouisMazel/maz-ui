@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.3.1...v4.3.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.1...v4.3.2)
+
+### 💅 Refactors
+
+- **@maz-ui/eslint-config:** Detecte vue from dependencies to add rules ([9b95ba34](https://github.com/LouisMazel/maz-ui/commit/9b95ba34))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.1...v4.3.2-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.1...v4.3.2-beta.2)
