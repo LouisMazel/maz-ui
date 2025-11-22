@@ -487,7 +487,7 @@ function onCountryChanged({
     })
   }
 
-  const code = results.value.countryCode || results.value.parsedCountryCode
+  const code = selectedCountry.value
   emits('country-code', code)
   emits('update:country-code', code)
 
