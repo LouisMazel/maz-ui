@@ -32,5 +32,7 @@ export default defineConfig({
 
   publish: {
     access: 'public',
+    safetyCheck: true,
+    token: process.env.NPM_TOKEN,
   },
 })
