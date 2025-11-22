@@ -497,6 +497,8 @@ function mainInputKeyboardHandler(event: KeyboardEvent) {
   }
 
   if (/^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed) && search) {
+    event.preventDefault()
+    event.stopPropagation()
     focusSearchInputAndSetQuery(keyPressed)
   }
 }
