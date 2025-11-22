@@ -19,6 +19,7 @@ export async function execPromise(
     noStdout = false,
     noStderr = false,
     logLevel,
+    cwd,
   }: {
     logger?: CustomLogger
     packageName?: string
@@ -26,6 +27,7 @@ export async function execPromise(
     noStdout?: boolean
     noStderr?: boolean
     logLevel?: LogLevel
+    cwd?: string
   } = {},
 ): Promise<{ stdout: string, stderr: string }> {
   if (logLevel) {
@@ -37,7 +39,7 @@ export async function execPromise(
 
   return await new Promise((resolve, reject) => {
     // eslint-disable-next-line sonarjs/os-command
-    exec(command, (error, stdout, stderr) => {
+    exec(command, { cwd }, (error, stdout, stderr) => {
       if (stdout) {
         internalLogger.debug(`${command} - stdout output:`, stdout)
       }

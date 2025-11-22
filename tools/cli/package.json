@@ -31,11 +31,10 @@
     "@maz-ui/node": "workspace:*",
     "@maz-ui/utils": "workspace:*",
     "commander": "^14.0.2",
-    "figlet": "^1.9.3",
+    "figlet": "^1.9.4",
     "vue-docgen-cli": "^4.79.0"
   },
   "devDependencies": {
-    "@types/figlet": "^1.7.0",
     "tsx": "^4.20.6"
   },
   "lint-staged": {
