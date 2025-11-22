@@ -1,0 +1,246 @@
+# Codecov configuration
+# Documentation: https://docs.codecov.com/docs/codecov-yaml
+
+# Coverage configuration
+coverage:
+  # Precision for coverage percentages (2 decimals)
+  precision: 2
+
+  # Round coverage to nearest value
+  round: down
+
+  # Coverage range (red to green)
+  range: 70..100
+
+  # Status checks configuration
+  status:
+    # Project-level coverage
+    project:
+      default:
+        # Require coverage for project
+        target: 80%
+        # Allow 0.5% drop in coverage
+        threshold: 0.5%
+        # Base branch for comparison
+        base: auto
+        # Only check changed files
+        only_pulls: false
+        # Informational mode (won't block PR)
+        informational: false
+        # Coverage must increase or stay same
+        if_ci_failed: error
+
+      # Per-package coverage targets
+      lib:
+        target: 85%
+        threshold: 0.5%
+        flags:
+          - lib
+        paths:
+          - packages/lib/
+
+      utils:
+        target: 80%
+        threshold: 0.5%
+        flags:
+          - utils
+        paths:
+          - packages/utils/
+
+      mcp:
+        target: 75%
+        threshold: 0.5%
+        flags:
+          - mcp
+        paths:
+          - packages/mcp/
+
+      icons:
+        target: 70%
+        threshold: 1%
+        flags:
+          - icons
+        paths:
+          - packages/icons/
+
+      translations:
+        target: 70%
+        threshold: 1%
+        flags:
+          - translations
+        paths:
+          - packages/translations/
+
+      node:
+        target: 75%
+        threshold: 0.5%
+        flags:
+          - node
+        paths:
+          - packages/node/
+
+      nuxt:
+        target: 70%
+        threshold: 1%
+        flags:
+          - nuxt
+        paths:
+          - packages/nuxt/
+
+      themes:
+        target: 70%
+        threshold: 1%
+        flags:
+          - themes
+        paths:
+          - packages/themes/
+
+      maz-cli:
+        target: 70%
+        threshold: 1%
+        flags:
+          - maz-cli
+        paths:
+          - packages/maz-cli/
+
+    # Patch-level coverage (new code in PR)
+    patch:
+      default:
+        # New code should have at least 80% coverage
+        target: 80%
+        # Allow 5% variance for new code
+        threshold: 5%
+        # Only check on pull requests
+        only_pulls: true
+        # Make it informational for now
+        informational: false
+
+# Comment configuration
+comment:
+  # Behavior for PR comments
+  layout: 'header, diff, flags, components, footer'
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true
+
+  # Show coverage for these sections
+  after_n_builds: 1
+
+# GitHub integration
+github_checks:
+  annotations: true
+
+# Flags for different packages
+flags:
+  lib:
+    paths:
+      - packages/lib/
+    carryforward: false
+
+  utils:
+    paths:
+      - packages/utils/
+    carryforward: false
+
+  mcp:
+    paths:
+      - packages/mcp/
+    carryforward: false
+
+  icons:
+    paths:
+      - packages/icons/
+    carryforward: false
+
+  translations:
+    paths:
+      - packages/translations/
+    carryforward: false
+
+  node:
+    paths:
+      - packages/node/
+    carryforward: false
+
+  nuxt:
+    paths:
+      - packages/nuxt/
+    carryforward: false
+
+  themes:
+    paths:
+      - packages/themes/
+    carryforward: false
+
+  maz-cli:
+    paths:
+      - packages/maz-cli/
+    carryforward: false
+
+# Ignore paths
+ignore:
+  - '**/*.test.ts'
+  - '**/*.test.js'
+  - '**/*.spec.ts'
+  - '**/*.spec.js'
+  - '**/tests/**'
+  - '**/test/**'
+  - '**/__tests__/**'
+  - '**/node_modules/**'
+  - '**/dist/**'
+  - '**/build/**'
+  - '**/.next/**'
+  - '**/coverage/**'
+  - '**/*.d.ts'
+  - '**/types/**'
+  - '**/index.ts'
+  - 'packages/lib/src/tailwindcss/**'
+
+# Component management (for monorepo)
+component_management:
+  individual_components:
+    - component_id: lib
+      name: maz-ui Library
+      paths:
+        - packages/lib/**
+
+    - component_id: utils
+      name: Utils Package
+      paths:
+        - packages/utils/**
+
+    - component_id: mcp
+      name: MCP Package
+      paths:
+        - packages/mcp/**
+
+    - component_id: icons
+      name: Icons Package
+      paths:
+        - packages/icons/**
+
+    - component_id: translations
+      name: Translations Package
+      paths:
+        - packages/translations/**
+
+    - component_id: node
+      name: Node Package
+      paths:
+        - packages/node/**
+
+    - component_id: nuxt
+      name: Nuxt Package
+      paths:
+        - packages/nuxt/**
+
+    - component_id: themes
+      name: Themes Package
+      paths:
+        - packages/themes/**
+
+    - component_id: maz-cli
+      name: Maz CLI
+      paths:
+        - packages/maz-cli/**

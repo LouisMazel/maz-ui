@@ -49,34 +49,35 @@ jobs:
       - name: Test units
         run: pnpm test:unit:coverage:all
 
-      - name: Find coverage files
-        id: find_cov
-        run: |
-          echo "Looking for coverage files:"
-          find packages -type f -path '*/coverage/lcov.info' -print || true
-          # export a newline-separated list for later steps
-          files=$(find packages -type f -path '*/coverage/lcov.info' -print | tr '\n' ' ')
-          echo "files=$files" >> $GITHUB_OUTPUT
+      - name: Upload coverage to Codecov (lib)
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/lib/coverage/lcov.info
+          flags: lib
+          name: lib-coverage
+          fail_ci_if_error: true
+          verbose: true
 
-      - name: Upload coverage files to Codecov (per-package flags)
-        run: |
-          if [ -z "${{ steps.find_cov.outputs.files }}" ]; then
-            echo "No coverage files found — skipping upload"
-            exit 0
-          fi
+      - name: Upload coverage to Codecov (utils)
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/utils/coverage/lcov.info
+          flags: utils
+          name: utils-coverage
+          fail_ci_if_error: false
+          verbose: true
 
-          for f in ${{ steps.find_cov.outputs.files }}; do
-            # derive package name from path like packages/<pkg>/coverage/lcov.info
-            pkg=$(echo "$f" | sed -E 's|^packages/([^/]+)/.*$|\1|')
-            echo "Uploading $f with flag=$pkg"
-            if [ -n "$CODECOV_TOKEN" ]; then
-              # private repos: use token
-              bash <(curl -s https://codecov.io/bash) -f "$f" -F "$pkg" -t "$CODECOV_TOKEN" || (echo "Codecov upload failed for $f" && exit 1)
-            else
-              # public repos: token optional
-              bash <(curl -s https://codecov.io/bash) -f "$f" -F "$pkg" || (echo "Codecov upload failed for $f" && exit 1)
-            fi
-          done
-
-      - name: Done
-        run: echo "Coverage upload done."
+      - name: Upload coverage to Codecov (mcp)
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/mcp/coverage/lcov.info
+          flags: mcp
+          name: mcp-coverage
+          fail_ci_if_error: false
+          verbose: true
