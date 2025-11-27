@@ -513,10 +513,19 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   </div>
 </section>
 
+<Contributors
+  repo="louismazel/maz-ui"
+  :creators="['LouisMazel']"
+  :links="[
+    { username: 'LouisMazel', link: 'https://twitter.com/mazeel', type: 'twitter' },
+  ]"
+/>
+
 <script lang="ts" setup>
   import DemoAuthPage from '../components/DemoAuthPage.vue'
   import DemoDashboardPage from '../components/DemoDashboardPage.vue'
   import DemoProductPage from '../components/DemoProductPage.vue'
+  import Contributors from './../.vitepress/theme/components/Contributors.vue'
 
   import { ref, computed } from 'vue'
   import { MazStar, MazPlay, MazGithub, MazSun, MazMoon } from '@maz-ui/icons'
