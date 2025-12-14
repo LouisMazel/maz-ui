@@ -8,7 +8,7 @@ import type { MazColor, MazSize } from './types'
 import { MazChevronDown } from '@maz-ui/icons'
 import { useTranslations } from '@maz-ui/translations'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
-import { computed, defineAsyncComponent, watch } from 'vue'
+import { computed, defineAsyncComponent, useTemplateRef, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import MazPopover from './MazPopover.vue'
 
@@ -289,6 +289,23 @@ function arrowHandler(event: KeyboardEvent) {
   itemsElements[nextIndex]?.focus()
 }
 
+const mazPopoverElement = useTemplateRef('mazPopoverRef')
+
+function onBlurTrigger(event: FocusEvent) {
+  event.preventDefault()
+
+  const nextElementSibling = mazPopoverElement.value?.panelRef
+  const relatedTarget = event.relatedTarget
+
+  const isContaining = nextElementSibling?.contains(relatedTarget as Node)
+
+  if (isContaining) {
+    return
+  }
+
+  setDropdown(false)
+}
+
 watch(
   isOpen,
   (value) => {
@@ -307,6 +324,7 @@ watch(
 
 <template>
   <MazPopover
+    ref="mazPopoverRef"
     :trigger
     :model-value="isOpen"
     class="m-dropdown m-reset-css"
@@ -376,7 +394,8 @@ watch(
             :size
             @keydown.enter.stop.prevent="toggle"
             @keydown.space.stop.prevent="toggle"
-            @blur.stop.prevent="close"
+            @keydown.escape.stop.prevent="close"
+            @blur.stop.prevent="onBlurTrigger"
           >
             <!-- @slot Text content of the trigger element -->
             <slot />

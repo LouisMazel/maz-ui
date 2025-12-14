@@ -681,6 +681,13 @@ defineExpose({
    * @usage `mazPopoverInstance.value?.updatePosition()`
    */
   updatePosition: update,
+  /**
+   * Panel reference
+   * @type {Ref<HTMLElement>}
+   * @description Reference to the popover panel element
+   * @usage `mazPopoverInstance.value?.panelRef`
+   */
+  panelRef,
 })
 </script>
 
