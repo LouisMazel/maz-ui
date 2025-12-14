@@ -460,7 +460,7 @@ const stateColor = computed(() => {
         -->
         <slot v-if="$slots['left-icon'] || leftIcon" name="left-icon">
           <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
-          <Component :is="leftIcon" v-else-if="leftIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
+          <component :is="leftIcon" v-else-if="leftIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
         </slot>
       </div>
 
@@ -513,7 +513,7 @@ const stateColor = computed(() => {
         -->
         <slot v-if="$slots['right-icon'] || rightIcon" name="right-icon">
           <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
-          <Component :is="rightIcon" v-else-if="rightIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
+          <component :is="rightIcon" v-else-if="rightIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
         </slot>
 
         <MazBtn

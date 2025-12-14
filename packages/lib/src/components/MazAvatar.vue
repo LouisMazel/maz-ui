@@ -130,7 +130,7 @@ function handleImageError(event: Event) {
 </script>
 
 <template>
-  <Component
+  <component
     :is="componentType"
     :style="[{ fontSize: size }, style]"
     class="m-avatar m-reset-css"
@@ -208,7 +208,7 @@ function handleImageError(event: Event) {
         {{ caption }}
       </p>
     </slot>
-  </Component>
+  </component>
 </template>
 
 <style lang="postcss" scoped>
