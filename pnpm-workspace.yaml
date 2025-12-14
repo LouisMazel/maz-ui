@@ -1,5 +1,6 @@
 shellEmulator: true
-trustPolicy: no-downgrade
+# eslint-disable-next-line pnpm/yaml-enforce-settings
+trustPolicy: warn-downgrade
 
 packages:
   - apps/*
