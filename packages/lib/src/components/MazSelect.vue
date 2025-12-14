@@ -652,6 +652,7 @@ defineExpose({
     :transition
     :offset="0"
     :position="listPosition"
+    :disabled
     :prefer-position
     :fallback-position
     :position-reference="`#${instanceId}-popover .m-input-wrapper`"
@@ -704,6 +705,7 @@ defineExpose({
           <slot name="right-icon" :is-open="isOpen" :close="close" :open="openPicker" :toggle="togglePopover">
             <button
               tabindex="-1"
+              :disabled
               type="button"
               class="m-select-input__toggle-button maz-custom"
               :aria-label="`${isOpen ? 'collapse' : 'expand'} list of options`"
@@ -821,12 +823,15 @@ defineExpose({
 .m-select {
   @apply maz-relative maz-inline-flex maz-align-top;
 
+  &.--disabled {
+    .m-select-input {
+      @apply maz-cursor-not-allowed;
+    }
+  }
+
   &-input {
     @apply maz-size-full;
-
-    &:not(.--disabled) {
-      @apply maz-cursor-pointer;
-    }
+    @apply maz-cursor-pointer;
 
     &__toggle-button {
       @apply maz-flex maz-h-full maz-bg-transparent maz-ps-0 maz-flex-center;
@@ -877,6 +882,10 @@ defineExpose({
 
   & button.maz-custom {
     @apply maz-cursor-pointer maz-appearance-none maz-border-none;
+
+    &:disabled {
+      @apply maz-cursor-not-allowed;
+    }
   }
 }
 

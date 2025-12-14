@@ -766,6 +766,10 @@ defineExpose({
 .m-popover {
   @apply maz-inline-block;
 
+  &.--disabled {
+    @apply maz-cursor-not-allowed;
+  }
+
   .m-popover-trigger {
     @apply maz-inline-block maz-size-full;
   }
