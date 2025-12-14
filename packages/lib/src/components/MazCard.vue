@@ -154,7 +154,7 @@ function toggleCollapse() {
       },
     ]"
   >
-    <Component
+    <component
       :is="collapsible ? 'button' : 'div'"
       v-if="$slots.title || title || collapsible"
       class="m-card__header maz-border-b maz-border-solid"
@@ -186,10 +186,10 @@ function toggleCollapse() {
           class="m-card__collapse-icon maz-text-xl"
         />
       </MazBtn>
-    </Component>
-    <Component
-      :is="wrapperData.is"
+    </component>
+    <component
       v-bind="wrapperData"
+      :is="wrapperData.is"
       class="m-card__wrapper"
       :class="[`m-card__wrapper--${orientation}`, { 'm-card__link': isLinked }]"
     >
@@ -203,7 +203,7 @@ function toggleCollapse() {
         />
       </div>
       <div class="maz-min-w-0 maz-flex-1">
-        <Component :is="collapsible ? MazExpandAnimation : 'div'" v-model="collapseOpenModel" class="maz-h-full">
+        <component :is="collapsible ? MazExpandAnimation : 'div'" v-model="collapseOpenModel" class="maz-h-full">
           <div
             :class="[wrapperClass, { 'maz-p-4': padding }]"
             class="m-card__content__wrapper"
@@ -233,9 +233,9 @@ function toggleCollapse() {
             -->
             <slot :collapse-open="collapseOpenModel" />
           </div>
-        </Component>
+        </component>
       </div>
-    </Component>
+    </component>
     <div
       v-if="$slots.footer"
       class="m-card__footer maz-overflow-x-auto maz-p-3"

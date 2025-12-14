@@ -141,7 +141,7 @@ const isButton = computed(() => component.value === 'button')
 </script>
 
 <template>
-  <Component
+  <component
     :is="component"
     :id="instanceId"
     class="m-link m-reset-css"
@@ -170,7 +170,7 @@ const isButton = computed(() => component.value === 'button')
     -->
     <slot name="left-icon">
       <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" />
-      <Component :is="leftIcon" v-else-if="leftIcon" />
+      <component :is="leftIcon" v-else-if="leftIcon" />
     </slot>
     <!--
       @slot Text of the link
@@ -182,7 +182,7 @@ const isButton = computed(() => component.value === 'button')
     -->
     <slot name="right-icon">
       <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" />
-      <Component :is="rightIcon" v-else-if="rightIcon" />
+      <component :is="rightIcon" v-else-if="rightIcon" />
     </slot>
     <!--
       @slot external-icon - Replace the default external icon
@@ -190,7 +190,7 @@ const isButton = computed(() => component.value === 'button')
     <slot v-if="autoExternal && target === '_blank'" name="external-icon">
       <MazArrowTopRightOnSquare />
     </slot>
-  </Component>
+  </component>
 </template>
 
 <style lang="postcss" scoped>

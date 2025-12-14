@@ -190,7 +190,7 @@ function isLastStep(step: number): boolean {
         <div class="m-stepper__header__wrapper">
           <span class="m-stepper__count --primary">
             <div class="m-stepper__count__circle">
-              <Component
+              <component
                 :is="getStepStateData(step).icon"
                 v-if="getStepStateData(step).icon"
                 class="icon maz-text-xl"
@@ -205,7 +205,7 @@ function isLastStep(step: number): boolean {
                   v-if="typeof getStepIcon(step) === 'string'"
                   :name="getStepIcon(step) as string"
                 />
-                <Component :is="getStepIcon(step)" v-else-if="getStepIcon(step)" />
+                <component :is="getStepIcon(step)" v-else-if="getStepIcon(step)" />
               </template>
               <template v-else>
                 {{ step }}
