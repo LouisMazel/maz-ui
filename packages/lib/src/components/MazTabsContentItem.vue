@@ -7,7 +7,6 @@ const props = defineProps({
   tab: { type: Number, required: true },
 })
 const transitionName = ref<string>('maz-tab-transition')
-const MazTabsContentItem = ref()
 
 const { currentTab } = useInjectStrict<MazTabsProvide>('maz-tabs')
 
@@ -29,7 +28,7 @@ const isCurrentTab = computed(() => currentTab.value - 1 === itemTabNumber.value
 
 <template>
   <Transition :name="transitionName">
-    <div v-if="isCurrentTab" ref="MazTabsContentItem" class="m-tabs-content-item m-reset-css">
+    <div v-if="isCurrentTab" class="m-tabs-content-item m-reset-css">
       <slot />
     </div>
   </Transition>

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo",
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
-    "types": ["node", "vite-svg-loader", "vite/client"],
+    "types": ["node", "vite-svg-loader", "vite/client", "vue"],
     "esModuleInterop": true,
     "isolatedModules": true,
     "skipLibCheck": true

@@ -54,15 +54,15 @@
     }
   },
   "dependencies": {
-    "@antfu/eslint-config": "^6.2.0",
-    "eslint-plugin-format": "^1.0.2",
+    "@antfu/eslint-config": "^6.7.1",
+    "eslint-plugin-format": "^1.1.0",
     "eslint-plugin-sonarjs": "^3.0.5",
     "eslint-plugin-tailwindcss": "^3.18.2",
     "eslint-plugin-vuejs-accessibility": "^2.4.0"
   },
   "devDependencies": {
     "@types/eslint-plugin-tailwindcss": "^3.17.0",
-    "eslint": "^9.39.1",
+    "eslint": "^9.39.2",
     "unbuild": "^3.6.1"
   },
   "lint-staged": {

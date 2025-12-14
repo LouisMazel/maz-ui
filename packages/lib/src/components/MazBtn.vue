@@ -147,7 +147,7 @@ const iconSize = computed<MazIconProps['size']>(() => {
 </script>
 
 <template>
-  <Component
+  <component
     :is="component"
     :disabled="isDisabled"
     class="m-btn m-reset-css"
@@ -207,7 +207,7 @@ const iconSize = computed<MazIconProps['size']>(() => {
         <MazSpinner size="2em" />
       </slot>
     </div>
-  </Component>
+  </component>
 </template>
 
 <style lang="postcss" scoped>
