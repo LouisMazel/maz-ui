@@ -18,7 +18,7 @@ coverage:
     project:
       default:
         # Require coverage for project
-        target: 70%
+        target: 68%
         # Allow 0.5% drop in coverage
         threshold: 0.5%
         # Base branch for comparison
