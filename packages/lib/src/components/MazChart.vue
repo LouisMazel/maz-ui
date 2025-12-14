@@ -108,5 +108,5 @@ const component = defineAsyncComponent(async () => {
 
 <template>
   <!-- @vue-expect-error -->
-  <Component :is="component" class="m-chart m-reset-css" :data :options :plugins :dataset-id-key :update-mode />
+  <component :is="component" class="m-chart m-reset-css" :data :options :plugins :dataset-id-key :update-mode />
 </template>

@@ -35,7 +35,7 @@
     "vue-docgen-cli": "^4.79.0"
   },
   "devDependencies": {
-    "tsx": "^4.20.6"
+    "tsx": "^4.21.0"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

@@ -13,8 +13,8 @@
     "vue-app:lint": "run-s lint:*"
   },
   "dependencies": {
-    "vue": "^3.5.24",
-    "vue-router": "^4.6.3"
+    "vue": "^3.5.25",
+    "vue-router": "^4.6.4"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
@@ -22,15 +22,15 @@
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
     "@tsconfig/node22": "^22.0.5",
-    "@vitejs/plugin-vue": "^6.0.2",
+    "@vitejs/plugin-vue": "^6.0.3",
     "@vue/tsconfig": "^0.8.1",
-    "eslint-plugin-oxlint": "^1.29.0",
+    "eslint-plugin-oxlint": "^1.32.0",
     "maz-ui": "workspace:*",
     "npm-run-all2": "^8.0.4",
-    "oxlint": "^1.29.0",
+    "oxlint": "^1.32.0",
     "rollup-plugin-visualizer": "^6.0.5",
-    "vite": "^7.2.4",
+    "vite": "^7.2.7",
     "vite-plugin-vue-devtools": "^8.0.5",
-    "vue-tsc": "^3.1.4"
+    "vue-tsc": "^3.1.8"
   }
 }

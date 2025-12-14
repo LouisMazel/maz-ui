@@ -389,7 +389,7 @@ watch(
               -->
               <slot name="dropdown-icon" :is-open="isOpen" :toggle="toggle" :close="close" :open="open">
                 <MazIcon v-if="typeof dropdownIcon === 'string'" :name="dropdownIcon" :class="[{ '--open': isOpen && dropdownIconAnimation }, iconClassSize]" />
-                <Component
+                <component
                   :is="dropdownIcon" v-else-if="dropdownIcon" :class="[{ '--open': isOpen && dropdownIconAnimation }, iconClassSize]"
                   class="m-dropdown__icon"
                 />
