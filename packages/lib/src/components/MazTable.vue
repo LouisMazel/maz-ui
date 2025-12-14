@@ -588,7 +588,7 @@ function emitValues(selectedRows?: (T | string | number | boolean)[]) {
 }
 
 function getSelectedRows(): (T | string | number | boolean)[] {
-  return rowsFiltered.value
+  return rowsNormalized.value
     .filter(row => row.selected)
     .map(row => (props.selectedKey ? row[props.selectedKey] : row))
 }
