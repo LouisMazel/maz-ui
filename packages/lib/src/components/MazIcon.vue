@@ -257,7 +257,7 @@ watchEffect(() => {
     :style="svgStyle"
     v-html="getSvgContent(svgElSource)"
   />
-  <Component :is="icon" v-else class="m-icon m-reset-css" :class="svgClasses" :style="svgStyle" />
+  <component :is="icon" v-else class="m-icon m-reset-css" :class="svgClasses" :style="svgStyle" />
 </template>
 
 <style lang="postcss" scoped>

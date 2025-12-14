@@ -302,7 +302,7 @@ onMounted(() => {
         @touchend.passive="toggleTimer(false)"
         @click.stop="click($event)"
       >
-        <Component :is="iconComponent" v-if="iconComponent" class="maz-text-2xl" />
+        <component :is="iconComponent" v-if="iconComponent" class="maz-text-2xl" />
 
         <div class="m-toast__message" v-text="html ? undefined : message" v-html="html ? message : undefined" />
 
