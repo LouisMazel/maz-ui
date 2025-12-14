@@ -1,5 +1,19 @@
 # Change Log
 
+## v4.3.2...v4.3.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.2...v4.3.3)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSelect - cannot open the option list when disabled - #1404 ([#1404](https://github.com/LouisMazel/maz-ui/issues/1404))
+- **maz-ui:** MazDropdown - don't close dropdown panel when close-on-click is false - #1403 ([#1403](https://github.com/LouisMazel/maz-ui/issues/1403))
+- **maz-ui:** MazTable - The selected rows are no longer reset when changing pages - #1402 ([#1402](https://github.com/LouisMazel/maz-ui/issues/1402))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.1...v4.3.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.1...v4.3.2)
