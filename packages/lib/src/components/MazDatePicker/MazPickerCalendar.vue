@@ -55,7 +55,7 @@ const calendarDate = computed({
 <template>
   <div class="maz-picker-calendar flex">
     <MazPickerShortcuts
-      v-if="hasShortcuts"
+      v-if="hasShortcuts && shortcuts"
       v-model="currentValue"
       :color="color"
       :shortcuts="shortcuts"
