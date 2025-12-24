@@ -35,4 +35,15 @@ export default defineConfig({
     safetyCheck: true,
     token: process.env.NPM_TOKEN,
   },
+
+  release: {
+    social: true,
+  },
+
+  social: {
+    changelogUrl: 'https://maz-ui.com/changelog',
+    twitter: {
+      enabled: true,
+    },
+  },
 })

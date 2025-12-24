@@ -18,14 +18,28 @@ export async function execPromise(
     noSuccess = false,
     noStdout = false,
     noStderr = false,
+    noError = false,
     logLevel,
     cwd,
   }: {
     logger?: CustomLogger
     packageName?: string
+    /**
+     * Don't log success message
+     */
     noSuccess?: boolean
+    /**
+     * Don't log stdout
+     */
     noStdout?: boolean
+    /**
+     * Don't log stderr
+     */
     noStderr?: boolean
+    /**
+     * Don't log error
+     */
+    noError?: boolean
     logLevel?: LogLevel
     cwd?: string
   } = {},
@@ -57,7 +71,9 @@ export async function execPromise(
       }
 
       if (error) {
-        internalLogger.error(`${packageNameStr}${command} failed`, error)
+        if (!noError) {
+          internalLogger.error(`${packageNameStr}${command} failed`, error)
+        }
         reject(error)
       }
       else {

@@ -8,7 +8,7 @@ import MazBtn from '../MazBtn.vue'
 const props = defineProps<{
   color: MazColor
   modelValue: MazDatePickerValue
-  shortcuts: MazDatePickerShortcut[] | false
+  shortcuts: MazDatePickerShortcut[]
   double: boolean
   shortcut: MazDatePickerShortcut['identifier'] | undefined
   disabled: boolean
