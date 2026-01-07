@@ -26,7 +26,7 @@ describe('${filename}', () => {
   try {
     const TEST_FILE_OUTPUT = resolve(
       _dirname,
-      `../../../../lib/tests/specs/components/${filename}.spec.ts`,
+      `../../../../../packages/lib/tests/specs/components/${filename}.spec.ts`,
     )
 
     await writeFile(TEST_FILE_OUTPUT, testComponentTemplate)
