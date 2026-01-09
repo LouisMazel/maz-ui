@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.3.4-beta.0...v4.3.4-beta.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.4-beta.0...v4.3.4-beta.1)
+
+### 💅 Refactors
+
+- **maz-ui:** MazAnimatedText - you can now choose the gradient colors ([9e46d9ff](https://github.com/LouisMazel/maz-ui/commit/9e46d9ff))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.3...v4.3.4-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.3...v4.3.4-beta.0)
