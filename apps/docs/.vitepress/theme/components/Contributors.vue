@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { MazGithub } from '@maz-ui/icons'
+import { truthyFilter } from 'maz-ui'
 import { MazAvatar, MazCardSpotlight } from 'maz-ui/components'
 
 const {
@@ -27,6 +28,10 @@ async function fetchContributors() {
     const baseContributors = await response.json() as { contributors: { id: number, username: string, contributions: number }[] }
 
     const contributors = await Promise.all(baseContributors.contributors.map(async (contributor) => {
+      if (ignored?.includes(contributor?.username)) {
+        return null
+      }
+
       const userResponse = await fetch(`https://ungh.cc/users/find/${contributor.username}`)
       const isCreator = creators?.includes(contributor.username)
       const isMaintainer = maintainers?.includes(contributor.username)
@@ -58,7 +63,7 @@ async function fetchContributors() {
       }
     }))
 
-    return contributors
+    return contributors.filter(truthyFilter)
   }
   catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error)
