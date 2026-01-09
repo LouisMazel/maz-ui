@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { MazColor } from './types'
 import { checkAvailability } from '@maz-ui/utils/helpers/checkAvailability'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
@@ -54,6 +55,21 @@ export interface MazAnimatedTextProps {
    * @default true
    */
   once?: boolean
+  /**
+   * The gradient from color
+   * @default "info"
+   */
+  gradientFrom?: MazColor
+  /**
+   * The gradient via color
+   * @default "secondary"
+   */
+  gradientVia?: MazColor
+  /**
+   * The gradient to color
+   * @default "secondary"
+   */
+  gradientTo?: MazColor
 }
 
 defineOptions({
@@ -71,6 +87,9 @@ const {
   rowGap = 0,
   duration = 2000,
   once = true,
+  gradientFrom = 'primary',
+  gradientVia = 'info',
+  gradientTo = 'secondary',
 } = defineProps<MazAnimatedTextProps>()
 
 const words = computed(() => text.split(' '))
@@ -136,10 +155,12 @@ onBeforeUnmount(() => {
     clearTimeout(animationFrameId)
   }
 })
+
+const gradientStyle = computed(() => lastWord ? `linear-gradient(to right, hsl(var(--maz-${gradientFrom})), hsl(var(--maz-${gradientVia})), hsl(var(--maz-${gradientTo})))` : undefined)
 </script>
 
 <template>
-  <div class="m-reset-css m-animated-text">
+  <div class="m-reset-css m-animated-text" :style="{ '--maz-gradient-style': gradientStyle }">
     <template v-if="isClient">
       <component :is="tag" ref="element" v-bind="$attrs" class="m-animated-text__root" :style="{ columnGap: `${columnGap}rem`, rowGap: `${rowGap}rem` }">
         <span
@@ -168,7 +189,6 @@ onBeforeUnmount(() => {
           }"
         >
           <span class="m-animated-text__last-word-inner">
-            <span class="m-animated-text__last-word-inner-gradient" />
             <span class="m-animated-text__last-word-inner-text">{{ lastWord }}</span>
           </span>
         </span>
@@ -213,10 +233,14 @@ onBeforeUnmount(() => {
 
   &__last-word-inner {
     @apply maz-relative maz-inline-flex;
-  }
 
-  &__last-word-inner-gradient {
-    @apply maz-absolute maz-inset-0 maz-size-full maz-bg-gradient-to-r maz-from-primary maz-via-info maz-to-secondary maz-opacity-30 maz-blur-lg;
+    &::before {
+      content: '';
+
+      @apply maz-z-0 maz-absolute maz-inset-0 maz-size-full maz-opacity-40 dark:maz-opacity-50 maz-blur-lg;
+
+      background-image: var(--maz-gradient-style);
+    }
   }
 
   &__last-word-inner-text {
