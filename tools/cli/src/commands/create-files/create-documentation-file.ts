@@ -13,7 +13,7 @@ export async function createDocumentFile({
   filename: string
   filenameKebab: string
 }): Promise<void> {
-  const DOCS_FILE_OUTPUT = resolve(_dirname, `../../../../docs/src/components/${filenameKebab}.md`)
+  const DOCS_FILE_OUTPUT = resolve(_dirname, `../../../../../apps/docs/src/components/${filenameKebab}.md`)
 
   const documentationFileTemplate = `---
 title: ${filename}
