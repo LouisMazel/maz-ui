@@ -130,7 +130,7 @@ const contributors = (await fetchContributors())?.filter(contributor => !ignored
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style lang="css" scoped>
 .contributors {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15.625rem, 1fr));
