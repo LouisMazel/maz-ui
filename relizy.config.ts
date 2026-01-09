@@ -37,13 +37,13 @@ export default defineConfig({
   },
 
   release: {
-    social: true,
+    social: false,
   },
 
   social: {
     changelogUrl: 'https://maz-ui.com/changelog',
     twitter: {
-      enabled: true,
+      enabled: false,
     },
   },
 })

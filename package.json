@@ -50,9 +50,9 @@
   },
   "devDependencies": {
     "@codecov/vite-plugin": "^1.9.1",
-    "@commitlint/cli": "^20.2.0",
-    "@commitlint/config-conventional": "^20.2.0",
-    "@commitlint/cz-commitlint": "^20.2.0",
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
+    "@commitlint/cz-commitlint": "^20.3.1",
     "@nx/js": "^22.3.3",
     "@types/node": "^25.0.3",
     "@types/parse-path": "^7.1.0",
