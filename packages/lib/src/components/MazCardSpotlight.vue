@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import type { HTMLAttributes, StyleValue } from 'vue'
 import type { MazColor } from './types'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { isServer } from '@maz-ui/utils'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 export interface MazCardSpotlightProps {
   /**
@@ -45,45 +46,99 @@ const {
   innerOpacity = 0.95,
 } = defineProps<MazCardSpotlightProps>()
 
+const containerElement = ref<HTMLDivElement>()
 const blobElement = ref<HTMLDivElement>()
-const fakeblobElement = ref<HTMLDivElement>()
 const blobVisible = ref<boolean>(false)
 
-function animateBlob({ clientX, clientY }: { clientX: number, clientY: number }) {
-  blobVisible.value = true
-  const rec = fakeblobElement.value?.getBoundingClientRect()
-
-  if (rec) {
-    blobElement.value?.animate?.(
-      [
-        {
-          transform: `translate(${clientX - rec.left - rec.width / 2}px,${
-            clientY - rec.top - rec.height / 2
-          }px)`,
-        },
-      ],
-      {
-        duration: 300,
-        fill: 'forwards',
-      },
-    )
-  }
-}
+let rafId: number | null = null
+let isIntersecting = false
+let cachedRect: DOMRect | null = null
 
 const alphaColor = computed(() => `hsl(var(--maz-${color}) / 60%)`)
 const alphaColor20 = computed(() => `hsl(var(--maz-${color}) / 20%)`)
 
-onMounted(() => {
-  globalThis.addEventListener('mousemove', animateBlob)
-})
+function updateCachedRect() {
+  if (containerElement.value) {
+    cachedRect = containerElement.value.getBoundingClientRect()
+  }
+}
 
-onUnmounted(() => {
-  globalThis.removeEventListener('mousemove', animateBlob)
+function updateBlobPosition(x: number, y: number) {
+  if (!blobElement.value || !cachedRect) {
+    return
+  }
+
+  const blobWidth = 208
+  const blobHeight = 208
+  const translateX = x - cachedRect.left - blobWidth / 2
+  const translateY = y - cachedRect.top - blobHeight / 2
+
+  blobElement.value.style.transform = `translate(${translateX}px, ${translateY}px)`
+}
+
+function handleMouseMove(event: MouseEvent) {
+  if (!isIntersecting || rafId !== null) {
+    return
+  }
+
+  blobVisible.value = true
+
+  rafId = requestAnimationFrame(() => {
+    updateBlobPosition(event.clientX, event.clientY)
+    rafId = null
+  })
+}
+
+function stopBlobAnimation() {
+  blobVisible.value = false
+  if (rafId !== null) {
+    cancelAnimationFrame(rafId)
+    rafId = null
+  }
+}
+
+onMounted(() => {
+  if (isServer() || !containerElement.value) {
+    return
+  }
+
+  updateCachedRect()
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      isIntersecting = entries[0].isIntersecting
+      if (!isIntersecting) {
+        stopBlobAnimation()
+      }
+    },
+    { threshold: 0 },
+  )
+
+  observer.observe(containerElement.value)
+
+  const handleScrollResize = () => {
+    updateCachedRect()
+  }
+
+  globalThis.addEventListener('mousemove', handleMouseMove, { passive: true })
+  globalThis.addEventListener('scroll', handleScrollResize, { passive: true })
+  globalThis.addEventListener('resize', handleScrollResize, { passive: true })
+
+  onBeforeUnmount(() => {
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId)
+    }
+    observer.disconnect()
+    globalThis.removeEventListener('mousemove', handleMouseMove)
+    globalThis.removeEventListener('scroll', handleScrollResize)
+    globalThis.removeEventListener('resize', handleScrollResize)
+  })
 })
 </script>
 
 <template>
   <div
+    ref="containerElement"
     class="m-card-spotlight m-reset-css"
     :class="{ 'maz-shadow-elevation maz-drop-shadow-md': elevation }"
     :style="{ 'backgroundColor': alphaColor20, '--inner-opacity': innerOpacity }"
@@ -99,15 +154,15 @@ onUnmounted(() => {
       class="blob"
       :style="{ backgroundColor: alphaColor }"
     />
-    <div v-show="blobVisible" ref="fakeblobElement" class="fakeblob" />
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-card-spotlight {
   @apply maz-relative maz-inline-flex maz-overflow-hidden maz-rounded;
 
   padding: max(var(--maz-border-width), 1px);
+  contain: layout style paint;
 
   .inner {
     @apply maz-relative maz-h-auto maz-w-full maz-overflow-hidden;
@@ -128,19 +183,14 @@ onUnmounted(() => {
   }
 
   .blob {
-    @apply maz-absolute maz-left-0 maz-top-0 maz-z-[0] maz-h-64 maz-w-64 maz-rounded-full maz-blur-2xl;
-  }
+    @apply maz-absolute maz-left-0 maz-top-0 maz-z-[0] maz-rounded-full maz-blur-2xl;
 
-  .fakeblob {
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-
-    @apply maz-h-52 maz-w-52 maz-rounded-full;
+    width: 208px;
+    height: 208px;
+    will-change: transform;
+    transition:
+      transform 120ms cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 150ms ease-out;
   }
 }
 </style>
