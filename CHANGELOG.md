@@ -1,5 +1,22 @@
 # Change Log
 
+## v4.3.4-beta.1...v4.3.4-beta.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.4-beta.1...v4.3.4-beta.2)
+
+### 🔥 Performance
+
+- **maz-ui:** Optimize MazCardSpotlight animation performance ([ccf1bfa6](https://github.com/LouisMazel/maz-ui/commit/ccf1bfa6))
+
+  The MazCardSpotlight component now has significantly better performance when used in
+  lists with multiple cards. The spotlight animation is now much smoother and consumes
+  less resources, especially when scrolling through long lists.
+  The animation is automatically paused when the component is not visible in the viewport.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.4-beta.0...v4.3.4-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.4-beta.0...v4.3.4-beta.1)
