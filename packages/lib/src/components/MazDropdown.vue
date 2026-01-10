@@ -568,6 +568,10 @@ watch(
       &.--contrast {
         @apply maz-text-contrast hover:maz-text-contrast-600;
       }
+
+      &.--accent {
+        @apply maz-text-accent hover:maz-text-accent-600;
+      }
     }
   }
 }
