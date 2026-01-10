@@ -188,9 +188,7 @@ onMounted(() => {
     width: 208px;
     height: 208px;
     will-change: transform;
-    transition:
-      transform 120ms cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 150ms ease-out;
+    transition: opacity 150ms ease-out;
   }
 }
 </style>
