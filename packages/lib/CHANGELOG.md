@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.3.4-beta.2...v4.3.4-beta.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.4-beta.2...v4.3.4-beta.3)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDropdown - add support of accent color for menu item ([4cd49edb](https://github.com/LouisMazel/maz-ui/commit/4cd49edb))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.4-beta.1...v4.3.4-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.4-beta.1...v4.3.4-beta.2)
