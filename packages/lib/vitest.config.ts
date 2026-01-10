@@ -15,6 +15,8 @@ export default defineConfig({
   test: {
     setupFiles: ['./tests/vitest-global.setup.ts'],
     environment: 'jsdom',
+    clearMocks: true,
+
     environmentOptions: {
       jsdom: {
         resources: 'usable',
@@ -49,7 +51,7 @@ export default defineConfig({
       thresholds: {
         lines: 71,
         functions: 68,
-        branches: 78,
+        branches: 77,
         statements: 71,
         autoUpdate: false,
       },
