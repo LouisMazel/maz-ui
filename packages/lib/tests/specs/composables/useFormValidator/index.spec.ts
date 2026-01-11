@@ -110,7 +110,7 @@ describe('given useFormValidator', () => {
   describe('when form is submitted', () => {
     it('then it validates form on submit', async () => {
       const mockSuccessCallback = vi.fn()
-      const submitHandler = form.handleSubmit(mockSuccessCallback)
+      const submitHandler = form.handleSubmit(mockSuccessCallback, undefined, { resetOnSuccess: false })
 
       await submitHandler(new Event('submit'))
 

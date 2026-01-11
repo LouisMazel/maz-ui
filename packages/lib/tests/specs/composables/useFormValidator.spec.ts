@@ -556,7 +556,7 @@ describe('given useFormValidator composable', () => {
         return 'success'
       })
 
-      const submit = handleSubmit(successCallback)
+      const submit = handleSubmit(successCallback, undefined, { resetOnSuccess: false })
 
       // Start submission - don't await immediately
       const submitPromise = submit()
@@ -607,6 +607,321 @@ describe('given useFormValidator composable', () => {
 
       expect(isSubmitting.value).toBe(false)
       expect(successCallback).toHaveBeenCalledTimes(1) // Only called once
+    })
+  })
+
+  describe('given form with modified data', () => {
+    describe('when resetForm is called', () => {
+      it('then resets model to default values', async () => {
+        const schema = {
+          email: pipe(string(), email()),
+        }
+
+        const defaultValues = {
+          email: 'default@example.com',
+        }
+
+        const [{ model, resetForm }] = withSetup(() => useFormValidator({
+          schema,
+          defaultValues,
+          options: { mode: 'aggressive' },
+        }))
+
+        await flushPromises()
+
+        model.value.email = 'changed@example.com'
+        await flushPromises()
+
+        expect(model.value.email).toBe('changed@example.com')
+
+        resetForm()
+        await flushPromises()
+
+        expect(model.value.email).toBe('default@example.com')
+      })
+
+      it('then clears all validation errors', async () => {
+        const schema = {
+          email: pipe(string(), email()),
+          name: pipe(string(), minLength(3)),
+        }
+
+        const defaultValues = {
+          email: 'valid@example.com',
+          name: 'John',
+        }
+
+        const [{ model, errors, resetForm, isValid }] = withSetup(() => useFormValidator({
+          schema,
+          defaultValues,
+          options: { mode: 'aggressive' },
+        }))
+
+        await flushPromises()
+
+        model.value.email = 'invalid-email'
+        model.value.name = 'ab'
+        await flushPromises()
+
+        expect(isValid.value).toBe(false)
+        expect(errors.value.email).toBeDefined()
+        expect(errors.value.name).toBeDefined()
+
+        resetForm()
+        await flushPromises()
+
+        expect(errors.value.email).toEqual([])
+        expect(errors.value.name).toEqual([])
+        expect(isValid.value).toBe(true)
+      })
+
+      it('then resets isDirty to false', async () => {
+        const schema = {
+          email: pipe(string(), email()),
+        }
+
+        const defaultValues = {
+          email: 'test@example.com',
+        }
+
+        const [{ model, isDirty, resetForm }] = withSetup(() => useFormValidator({
+          schema,
+          defaultValues,
+          options: { mode: 'aggressive' },
+        }))
+
+        await flushPromises()
+
+        expect(isDirty.value).toBe(false)
+
+        model.value.email = 'changed@example.com'
+        await flushPromises()
+
+        expect(isDirty.value).toBe(true)
+
+        resetForm()
+        await flushPromises()
+
+        expect(isDirty.value).toBe(false)
+      })
+
+      it('then resets isSubmitted to false', async () => {
+        const schema = {
+          email: pipe(string(), email()),
+        }
+
+        const defaultValues = {
+          email: 'test@example.com',
+        }
+
+        const [{ isSubmitted, handleSubmit, resetForm }] = withSetup(() => useFormValidator({
+          schema,
+          defaultValues,
+          options: { mode: 'aggressive' },
+        }))
+
+        await flushPromises()
+
+        const successCallback = vi.fn()
+        const submit = handleSubmit(successCallback, undefined, { resetOnSuccess: false })
+
+        await submit()
+
+        expect(isSubmitted.value).toBe(true)
+
+        resetForm()
+        await flushPromises()
+
+        expect(isSubmitted.value).toBe(false)
+      })
+
+      it('then resets isSubmitting to false', async () => {
+        const schema = {
+          email: pipe(string(), email()),
+        }
+
+        const defaultValues = {
+          email: 'test@example.com',
+        }
+
+        const [{ isSubmitting, resetForm }] = withSetup(() => useFormValidator({
+          schema,
+          defaultValues,
+          options: { mode: 'aggressive' },
+        }))
+
+        await flushPromises()
+
+        isSubmitting.value = true
+
+        expect(isSubmitting.value).toBe(true)
+
+        resetForm()
+        await flushPromises()
+
+        expect(isSubmitting.value).toBe(false)
+      })
+
+      it('then resets all fieldsStates to initial state', async () => {
+        const schema = {
+          email: pipe(string(), email()),
+        }
+
+        const defaultValues = {
+          email: 'test@example.com',
+        }
+
+        const [{ model, fieldsStates, resetForm }] = withSetup(() => useFormValidator({
+          schema,
+          defaultValues,
+          options: { mode: 'aggressive' },
+        }))
+
+        await flushPromises()
+
+        model.value.email = 'changed@example.com'
+        await flushPromises()
+
+        expect(fieldsStates.value.email.dirty).toBe(true)
+
+        resetForm()
+        await flushPromises()
+
+        expect(fieldsStates.value.email.dirty).toBe(false)
+        expect(fieldsStates.value.email.blurred).toBe(false)
+        expect(fieldsStates.value.email.error).toBe(false)
+        expect(fieldsStates.value.email.errors).toEqual([])
+        expect(fieldsStates.value.email.valid).toBe(true)
+      })
+
+      it('then does not trigger validation errors on required fields', async () => {
+        const schema = {
+          email: pipe(string(), email()),
+          name: pipe(string(), minLength(3)),
+        }
+
+        const defaultValues = {
+          email: 'default@example.com',
+          name: 'John',
+        }
+
+        const [{ model, errors, resetForm, isValid }] = withSetup(() => useFormValidator({
+          schema,
+          defaultValues,
+          options: { mode: 'aggressive' },
+        }))
+
+        await flushPromises()
+
+        model.value.email = 'changed@example.com'
+        model.value.name = 'Jane'
+        await flushPromises()
+
+        resetForm()
+        await flushPromises()
+
+        expect(errors.value.email).toEqual([])
+        expect(errors.value.name).toEqual([])
+        expect(isValid.value).toBe(true)
+      })
+    })
+
+    describe('when handleSubmit is called with resetOnSuccess option', () => {
+      it('then resets form after successful submission', async () => {
+        const schema = {
+          email: pipe(string(), email()),
+        }
+
+        const defaultValues = {
+          email: 'default@example.com',
+        }
+
+        const [{ model, handleSubmit, isDirty }] = withSetup(() => useFormValidator({
+          schema,
+          defaultValues,
+          options: { mode: 'aggressive' },
+        }))
+
+        await flushPromises()
+
+        model.value.email = 'changed@example.com'
+        await flushPromises()
+
+        expect(model.value.email).toBe('changed@example.com')
+        expect(isDirty.value).toBe(true)
+
+        const successCallback = vi.fn()
+        const submit = handleSubmit(successCallback, undefined, { resetOnSuccess: true })
+
+        await submit()
+
+        expect(successCallback).toHaveBeenCalled()
+        expect(model.value.email).toBe('default@example.com')
+        expect(isDirty.value).toBe(false)
+      })
+
+      it('then does not reset form when resetOnSuccess is false', async () => {
+        const schema = {
+          email: pipe(string(), email()),
+        }
+
+        const defaultValues = {
+          email: 'default@example.com',
+        }
+
+        const [{ model, handleSubmit }] = withSetup(() => useFormValidator({
+          schema,
+          defaultValues,
+          options: { mode: 'aggressive' },
+        }))
+
+        await flushPromises()
+
+        model.value.email = 'changed@example.com'
+        await flushPromises()
+
+        const successCallback = vi.fn()
+        const submit = handleSubmit(successCallback, undefined, { resetOnSuccess: false })
+
+        await submit()
+
+        expect(successCallback).toHaveBeenCalled()
+        expect(model.value.email).toBe('changed@example.com')
+      })
+    })
+
+    describe('when resetForm is called with external model ref', () => {
+      it('then syncs reset with external model', async () => {
+        const schema = {
+          email: pipe(string(), email()),
+        }
+
+        const defaultValues = {
+          email: 'default@example.com',
+        }
+
+        const externalModel = ref({ email: 'default@example.com' })
+
+        const [{ model, resetForm }] = withSetup(() => useFormValidator({
+          schema,
+          defaultValues,
+          model: externalModel,
+          options: { mode: 'aggressive' },
+        }))
+
+        await flushPromises()
+
+        model.value.email = 'changed@example.com'
+        await flushPromises()
+
+        expect(externalModel.value.email).toBe('changed@example.com')
+
+        resetForm()
+        await flushPromises()
+
+        expect(model.value.email).toBe('default@example.com')
+        expect(externalModel.value.email).toBe('default@example.com')
+      })
     })
   })
 })

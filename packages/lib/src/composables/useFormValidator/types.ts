@@ -64,6 +64,11 @@ export interface FormValidatorOptions<
    * @default `main-form-validator`
    */
   identifier?: string | symbol
+  /**
+   * Reset the form on submit success - you must use handleSubmit to handle the form submission
+   * @default true
+   */
+  resetOnSuccess?: boolean
 }
 export type StrictOptions<Model extends BaseFormPayload, ModelKey extends ExtractModelKey<FormSchema<Model>>> = Required<FormValidatorOptions<Model, ModelKey>>
 
