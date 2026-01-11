@@ -1,5 +1,31 @@
 # Change Log
 
+## v4.3.4-beta.3...v4.3.4-beta.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.4-beta.3...v4.3.4-beta.4)
+
+### 🚀 Features
+
+- **maz-ui:** Add resetForm function and auto-reset on submit success ([9eb89c52](https://github.com/LouisMazel/maz-ui/commit/9eb89c52))
+
+  This commit introduces a new resetForm() function in useFormValidator
+  that completely resets the form to its initial state.
+  The form is now automatically reset after successful submission by
+  default. This behavior can be controlled using the resetOnSuccess option.
+  Usage:
+  - Automatic reset (default): The form resets automatically after
+    handleSubmit succeeds
+  - Manual reset: Call resetForm() at any time to reset the form
+  - Disable auto-reset: Pass { resetOnSuccess: false } to handleSubmit
+    options or to useFormValidator options
+    When the form is reset, all fields return to their default values,
+    all validation errors are cleared, and all state flags (isDirty,
+    isSubmitted, isSubmitting) are reset.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.4-beta.2...v4.3.4-beta.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.4-beta.2...v4.3.4-beta.3)
