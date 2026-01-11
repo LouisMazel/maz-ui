@@ -537,6 +537,100 @@ const onSubmit = handleSubmit(async (formData) => {
   </template>
 </ComponentDemo>
 
+## Reset Form
+
+Default: `true`
+
+You can use the `resetForm` function to reset the form to its initial state.
+
+You must use `handleSubmit` to handle the form submission and reset the form.
+
+<ComponentDemo>
+  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitReset">
+    <MazInput
+      v-model="modelReset.name"
+      label="Enter your name"
+      :hint="errorMessagesReset.name"
+      :error="fieldsStatesReset.name.error"
+      :success="fieldsStatesReset.name.valid"
+      :class="{ 'has-error-reset': fieldsStatesReset.name.error }"
+    />
+    <MazInput
+      v-model="modelReset.age"
+      type="number"
+      label="Enter your age"
+      :hint="errorMessagesReset.age"
+      :error="fieldsStatesReset.age.error"
+      :success="fieldsStatesReset.age.valid"
+      :class="{ 'has-error-reset': fieldsStatesReset.age.error }"
+    />
+    <MazBtn type="submit" :loading="isSubmittingReset">
+      Submit
+    </MazBtn>
+    <MazBtn @click="resetFormReset" color="destructive">
+      Reset
+    </MazBtn>
+  </form>
+
+<template #code>
+
+```vue{37,38}
+<template>
+  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmit">
+    <MazInput
+      v-model="model.name"
+      label="Enter your name"
+      :hint="errorMessages.name"
+      :error="fieldsStates.name.error"
+      :success="fieldsStates.name.valid"
+      :class="{ 'has-error-debounced': fieldsStates.name.error }"
+    />
+    <MazInput
+      v-model="model.age"
+      type="number"
+      label="Enter your age"
+      :hint="errorMessages.age"
+      :error="fieldsStates.age.error"
+      :success="fieldsStates.age.valid"
+      :class="{ 'has-error-debounced': fieldsStates.age.error }"
+    />
+    <MazBtn type="submit" :loading="isSubmitting">
+      Submit
+    </MazBtn>
+    <MazBtn @click="resetForm" color="destructive">
+      Reset
+    </MazBtn>
+  </form>
+</template>
+
+<script setup lang="ts">
+  import { sleep } from 'maz-ui'
+  import { useFormValidator, useToast, InferFormValidatorSchema } from 'maz-ui/composables'
+  import { string, nonEmpty, pipe, number, minValue, minLength } from 'valibot'
+
+  const { model, fieldsStates, isValid, isSubmitting, errorMessages, handleSubmit, resetForm } = useFormValidator({
+    schema: {
+      name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
+      age: pipe(number('Age is required'), nonEmpty('Age is required'), minValue(18, 'Age must be greater than 18')),
+    },
+    options: {
+      resetOnSuccess: true,
+      scrollToError: '.has-error-reset',
+    },
+  })
+
+  const onSubmit = handleSubmit(async (formData) => {
+    // Form submission logic
+    console.log(formData)
+    await sleep(2000)
+    toast.success('Form submitted', { position: 'top' })
+  })
+</script>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Throlling and Debouncing
 
 You can use the `throttledFields` and `debouncedFields` options to throttle or debounce the validation of specific fields.
@@ -745,7 +839,26 @@ It accepts a validation schema, default values, and configuration options to han
 - `fieldsStates`: `FieldsStates` - The validation state of each field.
 - `validateForm`: `(setErrors?: boolean) => Promise<boolean>` - Function to validate the entire form.
 - `scrollToError`: `(selector?: string, options?: { offset?: number }) => void` - Function to scroll to the first field with an error.
-- `handleSubmit`: `successCallback: (model: Model) => Promise<unknown> | unknown, scrollToError?: false | string` - Form submission handler, the callback is called if the form is valid and passes the complete payload as an argument. The second argument is optional and can be used to disable or provide a CSS selector for scrolling to errors (default '.has-field-error').
+- `handleSubmit`: `(successCallback: (model: Model) => Promise<unknown> | unknown, scrollToError?: false | string, options?: { resetOnSuccess?: boolean }) => Promise<void>` - Form submission handler, the callback is called if the form is valid and passes the complete payload as an argument. The second argument is optional and can be used to disable or provide a CSS selector for scrolling to errors (default '.has-field-error'). The third argument is an optional object with options `resetOnSuccess` that is a boolean and is optional.
+- `resetForm`: `() => void` - Function to reset the form to its initial state.
+
+```ts
+interface useFormValidationReturn {
+  identifier: string | symbol;
+  isDirty: import('vue').ComputedRef<boolean>;
+  isSubmitting: Ref<boolean, boolean>;
+  isSubmitted: Ref<boolean, boolean>;
+  isValid: import('vue').ComputedRef<boolean>;
+  errors: import('vue').ComputedRef<Record<ExtractModelKey<FormSchema<InferSchemaFormValidator<TSchema>>>, import('./useFormValidator/types').ValidationIssues>>;
+  model: Ref<InferSchemaFormValidator<TSchema>, InferSchemaFormValidator<TSchema>>;
+  fieldsStates: Ref<FieldsStates<InferSchemaFormValidator<TSchema>, ExtractModelKey<FormSchema<InferSchemaFormValidator<TSchema>>>>, FieldsStates<InferSchemaFormValidator<TSchema>, ExtractModelKey<FormSchema<InferSchemaFormValidator<TSchema>>>>>;
+  validateForm: (setErrors?: boolean) => Promise<void[]>;
+  scrollToError: typeof scrollToError;
+  handleSubmit: <Func extends (model: InferOutputSchemaFormValidator<TSchema>) => Promise<Awaited<ReturnType<Func>>> | ReturnType<Func>>(successCallback: Func, enableScrollOrSelector?: FormValidatorOptions["scrollToError"], options?: { resetOnSuccess?: boolean }) => (event?: Event) => Promise<ReturnType<Func> | undefined>;
+  errorMessages: import('vue').ComputedRef<Record<ExtractModelKey<FormSchema<InferSchemaFormValidator<TSchema>>>, string | undefined>>;
+  resetForm: () => void;
+}
+```
 
 ## useFormField
 
@@ -786,6 +899,24 @@ To use the modes `eager`, `progressive` or `blur`, you must use this `useFormFie
 - `mode`: `ComputedRef<StrictOptions['mode']>` - The validation mode for the field.
 - `value`: `WritableComputedRef<T>` - The reactive value of the field with proper TypeScript typing.
 - `validationEvents`: `ComputedRef<{ onBlur?: () => void; }>` - Validation events to bind to the field. They are used to trigger field validation, to be used like this `v-bind="validationEvents"` (components must emit `blur` event to trigger field validation) - Not necessary for `lazy`, `aggressive` validation modes or if you use the component reference when initializing the composable.
+
+```ts
+interface useFormFieldReturn {
+  hasError: import('vue').ComputedRef<boolean>;
+  errors: import('vue').ComputedRef<import('./useFormValidator/types').ValidationIssues>;
+  errorMessage: import('vue').ComputedRef<Record<ModelKey, string | undefined>[ModelKey]>;
+  isValid: import('vue').ComputedRef<boolean>;
+  isDirty: import('vue').ComputedRef<boolean>;
+  isBlurred: import('vue').ComputedRef<boolean>;
+  isValidated: import('vue').ComputedRef<boolean>;
+  isValidating: import('vue').ComputedRef<boolean>;
+  mode: import('vue').ComputedRef<"blur" | "eager" | "lazy" | "aggressive" | "progressive" | undefined>;
+  value: import('vue').WritableComputedRef<FieldType, FieldType>;
+  validationEvents: import('vue').ComputedRef<{
+      onBlur: () => void;
+  } | undefined>;
+}
+```
 
 ## Recent Improvements (v4.0.0)
 
@@ -1017,7 +1148,7 @@ interface FormFieldOptions<T> {
     agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
   })
 
-  const { model, isValid, isSubmitting, isDirty, isSubmitted, handleSubmit, errorMessages, fieldsStates } = useFormValidator<typeof schema>({
+  const { model, isValid, isSubmitting, isDirty, isSubmitted, handleSubmit, errorMessages, fieldsStates, resetForm } = useFormValidator<typeof schema>({
     schema,
     defaultValues: { name: 'John Doe', age: 10 },
     options: { mode: 'lazy', scrollToError: '.has-error' },
@@ -1083,6 +1214,17 @@ interface FormFieldOptions<T> {
     toast.success('Form submitted', { position: 'top' })
   })
 
+  const { model: modelReset, fieldsStates: fieldsStatesReset, isValid: isValidReset, isSubmitting: isSubmittingReset, errorMessages: errorMessagesReset, handleSubmit: handleSubmitReset, resetForm: resetFormReset } = useFormValidator({
+    schema: {
+      name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
+      age: pipe(number('Age is required'), nonEmpty('Age is required'), minValue(18, 'Age must be greater than 18')),
+    },
+    options: {
+      resetOnSuccess: true,
+      scrollToError: '.has-error-reset',
+    },
+  })
+
   const { model: modelDebounced, fieldsStates: fieldsStatesDebounced, isValid: isValidDebounced, isSubmitting: isSubmittingDebounced, errorMessages: errorMessagesDebounced, handleSubmit: handleSubmitDebounced } = useFormValidator({
     schema: {
       name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
@@ -1093,6 +1235,13 @@ interface FormFieldOptions<T> {
       throttledFields: { age: true },
       scrollToError: '.has-error-debounced',
     },
+  })
+
+  const onSubmitReset = handleSubmitReset(async (formData) => {
+    // Form submission logic
+    console.log(formData)
+    await sleep(2000)
+    toast.success(`Form submitted with ${JSON.stringify(formData)}`, { position: 'top' })
   })
 
   const onSubmitDebounced = handleSubmitDebounced(async (formData) => {

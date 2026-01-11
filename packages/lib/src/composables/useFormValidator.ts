@@ -72,6 +72,7 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
     debouncedFields: null,
     throttledFields: null,
     identifier: 'main-form-validator',
+    resetOnSuccess: true,
     ...options,
   } satisfies StrictOptions<Model, ExtractModelKey<FormSchema<Model>>>
 
@@ -204,10 +205,35 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
     )
   }
 
+  function resetForm() {
+    if (payloadWatchStop) {
+      payloadWatchStop()
+    }
+
+    isSubmitting.value = false
+    isSubmitted.value = false
+
+    payload.value = { ...internalDefaultValues.value } as Model
+    fieldsStates.value = getFieldsStates<Model, ExtractModelKey<FormSchema<Model>>>({
+      schema: internalSchema.value,
+      payload: payload.value,
+      options: opts,
+    })
+
+    internalValidateForm(false)
+    setupOptimizedWatch()
+  }
+
   function handleSubmit<Func extends (model: InferOutputSchemaFormValidator<TSchema>) => Promise<Awaited<ReturnType<Func>>> | ReturnType<Func>>(
     successCallback: Func,
     enableScrollOrSelector?: FormValidatorOptions['scrollToError'],
+    options?: {
+      resetOnSuccess?: boolean
+    },
   ) {
+    const finalOptions = {
+      resetOnSuccess: options?.resetOnSuccess ?? opts.resetOnSuccess,
+    }
     return async (event?: Event) => {
       event?.preventDefault()
 
@@ -227,6 +253,9 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
 
         if (isValid.value) {
           response = await successCallback(payload.value as InferOutputSchemaFormValidator<TSchema>)
+          if (finalOptions.resetOnSuccess || options?.resetOnSuccess) {
+            resetForm()
+          }
         }
         else if (typeof scrollToErrorParam !== 'boolean') {
           scrollToError(scrollToErrorParam)
@@ -269,6 +298,7 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
     fieldsStates,
     validateForm: internalValidateForm,
     scrollToError,
+    resetForm,
     handleSubmit,
     errorMessages,
   }
