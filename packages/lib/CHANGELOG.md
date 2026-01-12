@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.3.4-beta.4...v4.3.4-beta.5
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.4-beta.4...v4.3.4-beta.5)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazAnimateCounter - hydration issue with SSR ([7c54eccd](https://github.com/LouisMazel/maz-ui/commit/7c54eccd))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.4-beta.3...v4.3.4-beta.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.4-beta.3...v4.3.4-beta.4)
