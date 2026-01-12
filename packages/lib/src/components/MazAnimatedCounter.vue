@@ -32,16 +32,14 @@ export interface MazAnimatedCounterProps {
   once?: boolean
 }
 
-const props = withDefaults(
-  defineProps<MazAnimatedCounterProps>(),
-  {
-    duration: 1000,
-    prefix: undefined,
-    suffix: undefined,
-    delay: 100,
-    once: true,
-  },
-)
+const {
+  count,
+  duration = 1000,
+  prefix,
+  suffix,
+  delay = 100,
+  once = true,
+} = defineProps<MazAnimatedCounterProps>()
 
 const currentCount = ref(0)
 
@@ -62,12 +60,13 @@ function getRequestAnimationFrame() {
 function animate(start: number, end: number, duration: number, delay: number) {
   const requestAnim = getRequestAnimationFrame()
 
+  currentCount.value = start
+
   if (!isClient()) {
-    currentCount.value = end
     return
   }
 
-  currentCount.value = start
+  // currentCount.value = start
   setTimeout(() => {
     const startTime = performance.now()
 
@@ -91,20 +90,20 @@ function animate(start: number, end: number, duration: number, delay: number) {
 }
 
 function startAnimation(start: number, end: number) {
-  animate(start, end, props.duration, props.delay)
+  animate(start, end, duration, delay)
 }
 
 let observer: IntersectionObserver | null = null
 
 onMounted(() => {
-  if (props.once)
+  if (once)
     return
 
   observer = new IntersectionObserver(([entry]) => {
     if (entry.isIntersecting) {
-      startAnimation(0, props.count)
+      startAnimation(0, count)
 
-      if (props.once) {
+      if (once) {
         observer?.unobserve(entry.target)
       }
     }
@@ -118,7 +117,7 @@ onMounted(() => {
 onBeforeUnmount(() => observer?.disconnect())
 
 watch(
-  () => props.count,
+  () => count,
   (newCount, oldCount) => {
     if (newCount === oldCount) {
       return
