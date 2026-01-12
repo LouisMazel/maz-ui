@@ -161,36 +161,57 @@ description: MazStepper is a standalone UI component customizable, reactive for 
 
 ## Use `step` property instead of slots
 
-Displayed steps are generated with the slots `<template #content-1 />`, but you can provide its title, subtitle and title-info with the `steps` props
+Instead of using slots, you can provide its data with the `steps` property
+
+You can use html in all properties
 
 <MazStepper
   :steps="[
-    { title: 'Title 1', subtitle: 'Subtitle 1', titleInfo: 'Info 1', },
-    { title: 'Title 2', subtitle: 'Subtitle 2', titleInfo: 'Info 2' },
-    { title: 'Title 3', subtitle: 'Subtitle 3', titleInfo: 'Info 3' },
-    { title: 'Title 4', subtitle: 'Subtitle 4', titleInfo: 'Info 4' },
+    { title: 'Title 1', subtitle: 'Subtitle 1', titleInfo: 'Info 1', content: 'Content 1' },
+    { title: 'Title 2', subtitle: `<span class='maz-text-primary'>Subtitle 2</span>`, titleInfo: 'Info 2', content: 'Content 2' },
+    { title: 'Title 3', subtitle: 'Subtitle 3', titleInfo: 'Info 3', content: 'Content 3' },
+    { title: 'Title 4', subtitle: 'Subtitle 4', titleInfo: 'Info 4', content: 'Content 4' },
   ]"
 >
-  <template #content-1> Content 1 </template>
-  <template #content-2> Content 2 </template>
-  <template #content-3> Content 3 </template>
-  <template #content-4> Content 4 </template>
+
 </MazStepper>
 
 ```vue{3-8}
 <template>
   <MazStepper
     :steps="[
-      { title: 'Title 1', subtitle: 'Subtitle 1', titleInfo: 'Info 1' },
-      { title: 'Title 2', subtitle: 'Subtitle 2', titleInfo: 'Info 2' },
-      { title: 'Title 3', subtitle: 'Subtitle 3', titleInfo: 'Info 3' },
-      { title: 'Title 4', subtitle: 'Subtitle 4', titleInfo: 'Info 4' },
+      { title: 'Title 1', subtitle: 'Subtitle 1', titleInfo: 'Info 1', content: 'Content 1' },
+      { title: 'Title 2', subtitle: '<span class="maz-text-primary">Subtitle 2</span>', titleInfo: 'Info 2', content: 'Content 2' },
+      { title: 'Title 3', subtitle: 'Subtitle 3', titleInfo: 'Info 3', content: 'Content 3' },
+      { title: 'Title 4', subtitle: 'Subtitle 4', titleInfo: 'Info 4', content: 'Content 4' },
+    ]"
+  />
+</template>
+```
+
+## Replace default step point
+
+<MazStepper
+  :steps="[
+      { title: 'Title 1', subtitle: 'Subtitle 1', titleInfo: 'Info 1', content: 'Content 1' },
+      { title: 'Title 2', subtitle: 'Subtitle 2', titleInfo: 'Info 2', content: 'Content 2' },
+  ]">
+  <template #point="{ step }">
+    <div class="maz-bg-red-500 maz-p-1 maz-size-8 maz-rounded maz-flex maz-flex-center">{{ step }}</div>
+  </template>
+</MazStepper>
+
+```vue{8-10}
+<template>
+  <MazStepper
+    :steps="[
+      { title: 'Title 1', subtitle: 'Subtitle 1', titleInfo: 'Info 1', content: 'Content 1' },
+      { title: 'Title 2', subtitle: 'Subtitle 2', titleInfo: 'Info 2', content: 'Content 2' },
     ]"
   >
-    <template #content-1> Content 1 </template>
-    <template #content-2> Content 2 </template>
-    <template #content-3> Content 3 </template>
-    <template #content-4> Content 4 </template>
+    <template #point="{ step }">
+      <div class="bg-red-500 p-1 size-8 rounded flex flex-center">{{ step }}</div>
+    </template>
   </MazStepper>
 </template>
 ```

@@ -4,25 +4,11 @@ import type { Component } from 'vue'
 import type { MazColor } from './types'
 import { MazCheckCircle, MazExclamationCircle, MazExclamationTriangle } from '@maz-ui/icons'
 import {
-
   computed,
+  defineAsyncComponent,
   ref,
   useSlots,
 } from 'vue'
-
-import MazExpandAnimation from './MazExpandAnimation.vue'
-import MazIcon from './MazIcon.vue'
-
-export interface MazStepperStep {
-  title?: string
-  subtitle?: string
-  titleInfo?: string
-  disabled?: boolean
-  error?: boolean
-  success?: boolean
-  warning?: boolean
-  icon?: string | IconComponent
-}
 
 const {
   modelValue,
@@ -39,6 +25,18 @@ const {
 const emits = defineEmits<{
   'update:model-value': [value: number]
 }>()
+
+export interface MazStepperStep {
+  title?: string
+  subtitle?: string
+  titleInfo?: string
+  content?: string
+  disabled?: boolean
+  error?: boolean
+  success?: boolean
+  warning?: boolean
+  icon?: string | IconComponent
+}
 
 export interface MazStepperProps {
   /** The current step */
@@ -64,13 +62,16 @@ export interface MazStepperProps {
   canCloseSteps?: boolean
 }
 
+const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
+const MazExpandAnimation = defineAsyncComponent(() => import('./MazExpandAnimation.vue'))
+
 const roundStepBgColor = computed(() => `hsl(var(--maz-${color}))`)
 const roundStepTextColor = computed(() => `hsl(var(--maz-${color}-foreground))`)
 
 const slots = useSlots()
 
 const stepCount = computed<number>(
-  (): number => Object.keys(slots).filter(slot => slot.startsWith('content-')).length,
+  (): number => Object.keys(slots).filter(slot => slot.startsWith('content-')).length || steps?.filter(step => step.content).length || 0,
 )
 
 const localModelValue = ref(1)
@@ -101,7 +102,7 @@ function getStepIcon(step: number): IconComponent | string | undefined {
   return steps?.[step - 1]?.icon
 }
 
-function getPropertyInStep(property: 'title' | 'titleInfo' | 'subtitle', step: number) {
+function getPropertyInStep(property: 'title' | 'titleInfo' | 'subtitle' | 'content', step: number) {
   return steps?.[step - 1]?.[property]
 }
 
@@ -188,30 +189,34 @@ function isLastStep(step: number): boolean {
         @click="selectStep(step)"
       >
         <div class="m-stepper__header__wrapper">
-          <span class="m-stepper__count --primary">
-            <div class="m-stepper__count__circle">
-              <component
-                :is="getStepStateData(step).icon"
-                v-if="getStepStateData(step).icon"
-                class="icon maz-text-xl"
-              />
-            </div>
-            <!--
-              @slot icon-${step} - Replace step number in the circle by an icon for the step
-            -->
-            <slot :name="`icon-${step}`">
-              <template v-if="getStepIcon(step)">
-                <MazIcon
-                  v-if="typeof getStepIcon(step) === 'string'"
-                  :name="getStepIcon(step) as string"
-                />
-                <component :is="getStepIcon(step)" v-else-if="getStepIcon(step)" />
-              </template>
-              <template v-else>
-                {{ step }}
-              </template>
+          <div class="m-stepper__header__point__wrapper">
+            <slot name="point" :step>
+              <span class="m-stepper__count --primary">
+                <div class="m-stepper__count__circle">
+                  <component
+                    :is="getStepStateData(step).icon"
+                    v-if="getStepStateData(step).icon"
+                    class="icon maz-text-xl"
+                  />
+                </div>
+                <!--
+                @slot icon-${step} - Replace step number in the circle by an icon for the step
+              -->
+                <slot :name="`icon-${step}`">
+                  <template v-if="getStepIcon(step)">
+                    <MazIcon
+                      v-if="typeof getStepIcon(step) === 'string'"
+                      :name="getStepIcon(step) as string"
+                    />
+                    <component :is="getStepIcon(step)" v-else-if="getStepIcon(step)" />
+                  </template>
+                  <template v-else>
+                    {{ step }}
+                  </template>
+                </slot>
+              </span>
             </slot>
-          </span>
+          </div>
 
           <div class="m-stepper__header__content">
             <span class="m-stepper__title">
@@ -219,7 +224,7 @@ function isLastStep(step: number): boolean {
                 @slot title-${step} - Title of the step
               -->
               <slot :name="`title-${step}`">
-                {{ getPropertyInStep('title', step) }}
+                <span v-if="getPropertyInStep('title', step)" v-html="getPropertyInStep('title', step)" />
               </slot>
             </span>
             <span v-if="hasDataForStep('subtitle', step)" class="m-stepper__subtitle">
@@ -227,7 +232,7 @@ function isLastStep(step: number): boolean {
                 @slot title-${step} - Subtitle of the step
               -->
               <slot :name="`subtitle-${step}`">
-                {{ getPropertyInStep('subtitle', step) }}
+                <span v-if="getPropertyInStep('subtitle', step)" v-html="getPropertyInStep('subtitle', step)" />
               </slot>
             </span>
           </div>
@@ -238,7 +243,7 @@ function isLastStep(step: number): boolean {
             @slot title-info-${step} - Info of the right of the step
           -->
           <slot :name="`title-info-${step}`">
-            {{ getPropertyInStep('titleInfo', step) }}
+            <span v-if="getPropertyInStep('titleInfo', step)" v-html="getPropertyInStep('titleInfo', step)" />
           </slot>
         </span>
       </button>
@@ -268,7 +273,9 @@ function isLastStep(step: number): boolean {
               :warning="isStepWarning(step)"
               :next-step="() => selectStep(step + 1)"
               :previous-step="() => selectStep(step - 1)"
-            />
+            >
+              <span v-if="getPropertyInStep('content', step)" v-html="getPropertyInStep('content', step)" />
+            </slot>
           </div>
         </MazExpandAnimation>
       </div>
@@ -276,7 +283,7 @@ function isLastStep(step: number): boolean {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-stepper {
   &__right {
     @apply maz-truncate maz-text-end maz-text-sm maz-text-primary;
@@ -289,6 +296,10 @@ function isLastStep(step: number): boolean {
 
     &__content {
       @apply maz-flex maz-flex-none maz-flex-col maz-items-start;
+    }
+
+    &__point__wrapper {
+      @apply maz-flex maz-size-8 maz-flex-center;
     }
 
     &:not(:disabled) {
