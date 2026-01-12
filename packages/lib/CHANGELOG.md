@@ -1,5 +1,26 @@
 # Change Log
 
+## v4.3.4-beta.5...v4.3.4-beta.6
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.4-beta.5...v4.3.4-beta.6)
+
+### 🚀 Features
+
+- **maz-ui:** MazStepper - add content property and point slot ([f7519f23](https://github.com/LouisMazel/maz-ui/commit/f7519f23))
+
+  Add ability to define step content directly via steps property instead of using slots.
+  Support HTML in all step properties (title, subtitle, titleInfo, content) using v-html.
+  Add new "point" slot to customize step number/icon display.
+  Optimize component loading with async imports.
+  Usage:
+  - Use content property: :steps="[{ content: 'My content' }]"
+  - Customize point: <template #point="{ step }">...</template>
+  - Use HTML in properties: { title: '<span class="text-primary">Title</span>' }
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.4-beta.4...v4.3.4-beta.5
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.4-beta.4...v4.3.4-beta.5)
