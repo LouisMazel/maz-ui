@@ -44,6 +44,9 @@ function showToast() {
       <MazLink to="/about" color="contrast">
         About
       </MazLink>
+      <MazLink to="/color" color="contrast">
+        Color
+      </MazLink>
 
       <div class="maz-flex-1" />
       <ThemeSwitcher />
