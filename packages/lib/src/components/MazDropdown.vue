@@ -363,8 +363,6 @@ watch(
         :id="instanceId"
         tabindex="-1"
         class="m-dropdown__wrapper"
-        :aria-expanded="isOpen"
-        aria-haspopup="menu"
       >
         <span :id="`${instanceId}-labelspan`" class="maz-sr-only">
           <!--
@@ -512,7 +510,7 @@ watch(
   </MazPopover>
 </template>
 
-<style lang="postcss">
+<style scoped>
   .m-dropdown {
   @apply maz-relative maz-inline-flex maz-flex-col maz-items-start maz-align-top;
 

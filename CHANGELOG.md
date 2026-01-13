@@ -14,8 +14,8 @@
   Optimize component loading with async imports.
   Usage:
   - Use content property: :steps="[{ content: 'My content' }]"
-  - Customize point: <template #point="{ step }">...</template>
-  - Use HTML in properties: { title: '<span class="text-primary">Title</span>' }
+  - Customize point: `<template #point="{ step }">...</template>`
+  - Use HTML in properties: { title: `<span class="text-primary">Title</span>` }
 
 ### ❤️ Contributors
 
