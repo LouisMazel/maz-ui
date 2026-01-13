@@ -26,7 +26,6 @@ import { ref } from 'vue'
 const currentPage = ref(1)
 
 const props: MazPaginationProps = {
-  resultsSize: 100,
   totalPages: 10,
   activeColor: 'contrast',
 }
@@ -72,7 +71,6 @@ const props: MazPaginationProps = {
   const currentPage = ref(1)
 
   const props: Props = {
-    resultsSize: 100,
     totalPages: 10,
     activeColor: 'contrast',
   }
