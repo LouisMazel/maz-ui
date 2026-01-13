@@ -714,6 +714,7 @@ defineExpose({
       :aria-haspopup="role === 'dialog' ? 'dialog' : undefined"
       :aria-describedby="role === 'tooltip' && isOpen ? panelId : ariaDescribedby"
       :aria-labelledby="ariaLabelledby"
+      :aria-controls="panelId"
       v-bind="triggerEvents"
     >
       <!--
@@ -769,7 +770,7 @@ defineExpose({
   </Teleport>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-popover {
   @apply maz-inline-block;
 

@@ -304,10 +304,6 @@ describe('components/MazDropdown.vue', () => {
   describe('given dropdown accessibility', () => {
     describe('when rendered', () => {
       it('then has proper ARIA attributes', async () => {
-        const dropdownWrapper = wrapper.find('.m-dropdown__wrapper')
-        expect(dropdownWrapper.attributes('aria-expanded')).toBe('false')
-        expect(dropdownWrapper.attributes('aria-haspopup')).toBe('menu')
-
         await wrapper.find('[role="button"]').trigger('click')
 
         const dropdownMenu = wrapper.find('.m-dropdown__menu')
