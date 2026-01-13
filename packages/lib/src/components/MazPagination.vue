@@ -10,7 +10,6 @@ const {
   modelValue = 1,
   buttonProps,
   pageRange = 1,
-  resultsSize,
   activeColor = 'background',
   totalPages,
   loading,
@@ -45,11 +44,6 @@ export interface MazPaginationProps {
    * @default undefined
    */
   buttonProps?: Partial<MazBtnProps>
-  /**
-   * Number of results in this page. Useful for accessibility to set aria-setsize attribute. Partial of MazBtn props.
-   * @default undefined
-   */
-  resultsSize?: number
   /**
    * Color of the active button.
    * @values 'contrast', 'primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent', 'background'
@@ -159,8 +153,6 @@ function setPageNumber(page: number) {
           v-bind="buttonsPropsMerged"
           :disabled="modelValue === 1"
           aria-label="First Page, Page 1"
-          :aria-setsize="resultsSize ?? undefined"
-          aria-posinset="1"
           :size="size"
           @click="setPageNumber(1)"
         >
@@ -182,8 +174,6 @@ function setPageNumber(page: number) {
           v-bind="buttonsPropsMerged"
           :disabled="modelValue === 1"
           :aria-label="`Previous Page, Page ${previousPage}`"
-          :aria-setsize="resultsSize ?? undefined"
-          :aria-posinset="previousPage"
           :size="size"
           @click="setPageNumber(previousPage)"
         >
@@ -214,10 +204,8 @@ function setPageNumber(page: number) {
             }"
             :size="size"
             :aria-label="`Page ${page.number}`"
-            :aria-current="page.isActive ? 'true' : 'false'"
-            :aria-setsize="resultsSize ?? undefined"
+            :aria-current="page.isActive ? 'page' : undefined"
             :loading="page.loading"
-            :aria-posinset="page.number"
             :class="{ active: page.isActive }"
             @click="page.isActive ? undefined : setPageNumber(page.number)"
           >
@@ -246,8 +234,6 @@ function setPageNumber(page: number) {
           v-bind="buttonsPropsMerged"
           :disabled="modelValue === totalPages"
           :aria-label="`Next Page, Page ${nextPage}`"
-          :aria-setsize="resultsSize ?? undefined"
-          :aria-posinset="nextPage"
           :size="size"
           @click="setPageNumber(nextPage)"
         >
@@ -269,8 +255,6 @@ function setPageNumber(page: number) {
           v-bind="buttonsPropsMerged"
           :disabled="modelValue === totalPages"
           :aria-label="`Next Page, Page ${totalPages}`"
-          :aria-setsize="resultsSize ?? undefined"
-          :aria-posinset="totalPages"
           :size="size"
           @click="setPageNumber(totalPages)"
         >

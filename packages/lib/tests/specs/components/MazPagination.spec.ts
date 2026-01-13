@@ -14,7 +14,6 @@ describe('mazPagination.vue', () => {
     expect(wrapper.exists()).toBe(true)
     expect(wrapper.props('buttonProps')).toBeUndefined()
     expect(wrapper.props('pageRange')).toBe(1)
-    expect(wrapper.props('resultsSize')).toBeUndefined()
     expect(wrapper.props('activeColor')).toBe('background')
   })
 
@@ -30,7 +29,6 @@ describe('mazPagination.vue', () => {
           fab: false,
         },
         pageRange: 3,
-        resultsSize: 50,
         activeColor: 'secondary',
       },
     })
@@ -45,7 +43,6 @@ describe('mazPagination.vue', () => {
       fab: false,
     })
     expect(wrapper.props('pageRange')).toBe(3)
-    expect(wrapper.props('resultsSize')).toBe(50)
     expect(wrapper.props('activeColor')).toBe('secondary')
   })
 
@@ -82,7 +79,6 @@ describe('mazPagination.vue', () => {
       props: {
         totalPages: 10,
         modelValue: 1,
-        resultsSize: 100,
       },
     })
     await wrapper.vm.$nextTick()
