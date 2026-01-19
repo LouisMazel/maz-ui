@@ -211,7 +211,7 @@ function onFocus(index: number, event: FocusEvent) {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-radio-buttons {
   @apply maz-inline-flex maz-gap-1 maz-align-top maz-flex-col;
 
@@ -237,7 +237,7 @@ function onFocus(index: number, event: FocusEvent) {
 
   &__items {
     @apply maz-flex maz-cursor-pointer maz-gap-4 maz-rounded maz-border maz-border-divider
-        maz-bg-surface maz-px-4 maz-py-2 maz-font-medium maz-transition-colors maz-duration-300 maz-flex-center;
+        maz-bg-surface maz-px-4 maz-py-2 maz-font-medium maz-transition-colors maz-duration-300 maz-items-center;
 
     &.--size-mini {
       @apply maz-px-1 maz-min-h-6 maz-text-xs;

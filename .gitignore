@@ -11,3 +11,4 @@ lerna-debug.log*
 CLAUDE.md
 dist
 **/.DS_Store
+.ralph-tui
