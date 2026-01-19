@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.3.3...v4.4.0-beta.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.3...v4.4.0-beta.1)
+
+### 🚀 Features
+
+- **maz-ui:** MazBtnGroup - new component to group MazBtn components ([496de3c4a](https://github.com/LouisMazel/maz-ui/commit/496de3c4a))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.4-beta.6...v4.3.4-beta.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.4-beta.6...v4.3.4-beta.7)
