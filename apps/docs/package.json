@@ -40,7 +40,7 @@
     "react": "^19.2.3",
     "tailwindcss": "^3.4.17",
     "vitepress": "2.0.0-alpha.15",
-    "vue": "^3.5.26"
+    "vue": "^3.5.27"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
