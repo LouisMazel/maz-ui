@@ -50,13 +50,13 @@ const showCode = ref(props.expanded)
   </MazCard>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .component-demo {
   :deep(.m-card__footer) {
     @apply maz-p-0 maz-rounded-b;
   }
 
-  :deep(a):not(.m-link) {
+  :deep(a):not(.m-link, .m-btn) {
     @apply maz-text-primary maz-underline;
   }
 
