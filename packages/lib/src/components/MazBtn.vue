@@ -21,6 +21,7 @@ const {
   disabled,
   block,
   padding = true,
+  active,
 } = defineProps<MazBtnProps>()
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
@@ -109,6 +110,11 @@ export interface MazBtnProps {
    * Choose how the elements are aligned in the button
    */
   justify?: 'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'
+  /**
+   * If true, the button will have an active state
+   * @default false
+   */
+  active?: boolean
 }
 
 const component = computed(() => {
@@ -160,12 +166,13 @@ const iconSize = computed<MazIconProps['size']>(() => {
         '--block': block,
         '--fab': fab,
         '--loading': loading,
+        '--active': active,
         '--no-padding': !padding,
         '--has-left-icon': !!leftIcon || !!$slots['left-icon'],
         '--has-right-icon': !!rightIcon || !!$slots['right-icon'],
       },
     ]"
-    :style="[`--justify: ${justify}`, `--color: var(--maz-${color})`]"
+    :style="[`--justify: ${justify}`, `--bg-color: var(--maz-${color})`]"
     :type="btnType"
   >
     <!--
@@ -224,7 +231,7 @@ const iconSize = computed<MazIconProps['size']>(() => {
   &-loader-container {
     @apply maz-absolute maz-inset-0 maz-flex maz-flex-center;
 
-    background-color: hsl(var(--color) / 100%);
+    background-color: hsl(var(--bg-color) / 100%);
   }
 
   &.--transparent,
@@ -371,6 +378,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
     &:not(:disabled):hover {
       @apply maz-bg-primary-600;
     }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-primary-700;
+    }
   }
 
   &.--secondary {
@@ -379,12 +391,22 @@ const iconSize = computed<MazIconProps['size']>(() => {
     &:not(:disabled):hover {
       @apply maz-bg-secondary-600;
     }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-secondary-700;
+    }
   }
 
   &.--info {
     @apply maz-bg-info maz-text-info-foreground;
 
     &:not(:disabled):hover {
+      @apply maz-bg-info-600;
+    }
+
+    &:not(:disabled):active,
+    &.--active {
       @apply maz-bg-info-700;
     }
   }
@@ -395,6 +417,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
     &:not(:disabled):hover {
       @apply maz-bg-success-600;
     }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-success-700;
+    }
   }
 
   &.--warning {
@@ -403,6 +430,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
     &:not(:disabled):hover {
       @apply maz-bg-warning-600;
     }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-warning-700;
+    }
   }
 
   &.--destructive {
@@ -410,6 +442,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
 
     &:not(:disabled):hover {
       @apply maz-bg-destructive-600;
+    }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-destructive-700;
     }
   }
 
@@ -425,6 +462,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
     @apply maz-bg-contrast maz-text-contrast-foreground;
 
     &:not(:disabled):hover {
+      @apply maz-bg-contrast-600;
+    }
+
+    &:not(:disabled):active,
+    &.--active {
       @apply maz-bg-contrast-700;
     }
   }
@@ -435,6 +477,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
     &:not(:disabled):hover {
       @apply maz-bg-accent-600;
     }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-accent-700;
+    }
   }
 
   &.--surface {
@@ -442,6 +489,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
 
     &:not(:disabled):hover {
       @apply maz-bg-surface-600 dark:maz-bg-surface-400;
+    }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-surface-700 dark:maz-bg-surface-300;
     }
 
     .m-btn-loader-container {
@@ -458,6 +510,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
       @apply maz-bg-primary/10;
     }
 
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-primary/20;
+    }
+
     .m-btn-loader-container {
       @apply maz-text-primary-foreground;
     }
@@ -468,6 +525,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
 
     &:not(:disabled):hover {
       @apply maz-bg-secondary/10;
+    }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-secondary/20;
     }
 
     .m-btn-loader-container {
@@ -482,6 +544,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
       @apply maz-bg-info/10;
     }
 
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-info/20;
+    }
+
     .m-btn-loader-container {
       @apply maz-text-info-foreground;
     }
@@ -492,6 +559,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
 
     &:not(:disabled):hover {
       @apply maz-bg-success/10;
+    }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-success/20;
     }
 
     .m-btn-loader-container {
@@ -506,6 +578,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
       @apply maz-bg-destructive/10;
     }
 
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-destructive/20;
+    }
+
     .m-btn-loader-container {
       @apply maz-text-destructive-foreground;
     }
@@ -516,6 +593,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
 
     &:not(:disabled):hover {
       @apply maz-bg-warning/10;
+    }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-warning/20;
     }
 
     .m-btn-loader-container {
@@ -530,6 +612,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
       @apply maz-bg-contrast/10;
     }
 
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-contrast/20;
+    }
+
     .m-btn-loader-container {
       @apply maz-text-contrast-foreground;
     }
@@ -542,6 +629,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
       @apply maz-bg-accent/10;
     }
 
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-accent/20;
+    }
+
     .m-btn-loader-container {
       @apply maz-text-accent-foreground;
     }
@@ -551,7 +643,12 @@ const iconSize = computed<MazIconProps['size']>(() => {
     @apply maz-border-divider maz-text-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-surface-600/30;
+      @apply maz-bg-surface-600/50;
+    }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-surface-600;
     }
 
     .m-btn-loader-container {
@@ -563,7 +660,12 @@ const iconSize = computed<MazIconProps['size']>(() => {
     @apply maz-border-divider maz-bg-transparent maz-text-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-surface-600/30;
+      @apply maz-bg-surface-600/50;
+    }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-surface-600;
     }
 
     .m-btn-loader-container {
@@ -580,6 +682,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
       @apply maz-bg-primary maz-text-primary-foreground;
     }
 
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-primary-600 maz-text-primary-foreground;
+    }
+
     .m-btn-loader-container {
       @apply maz-text-primary-foreground;
     }
@@ -590,6 +697,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
 
     &:not(:disabled):hover {
       @apply maz-bg-secondary maz-text-secondary-foreground;
+    }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-secondary-600 maz-text-secondary-foreground;
     }
 
     .m-btn-loader-container {
@@ -604,6 +716,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
       @apply maz-bg-info maz-text-info-foreground;
     }
 
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-info-600 maz-text-info-foreground;
+    }
+
     .m-btn-loader-container {
       @apply maz-text-info-foreground;
     }
@@ -614,6 +731,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
 
     &:not(:disabled):hover {
       @apply maz-bg-success maz-text-success-foreground;
+    }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-success-600 maz-text-success-foreground;
     }
 
     .m-btn-loader-container {
@@ -628,6 +750,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
       @apply maz-bg-destructive maz-text-destructive-foreground;
     }
 
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-destructive-600 maz-text-destructive-foreground;
+    }
+
     .m-btn-loader-container {
       @apply maz-text-destructive-foreground;
     }
@@ -638,6 +765,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
 
     &:not(:disabled):hover {
       @apply maz-bg-warning maz-text-warning-foreground;
+    }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-warning-600 maz-text-warning-foreground;
     }
 
     .m-btn-loader-container {
@@ -652,6 +784,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
       @apply maz-bg-contrast;
     }
 
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-contrast-600;
+    }
+
     .m-btn-loader-container {
       @apply maz-text-contrast-foreground;
     }
@@ -662,6 +799,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
 
     &:not(:disabled):hover {
       @apply maz-bg-accent maz-text-accent-foreground;
+    }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-accent-600 maz-text-accent-foreground;
     }
 
     .m-btn-loader-container {
@@ -675,6 +817,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
     &:not(:disabled):hover {
       @apply maz-bg-surface-700;
     }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-surface-800;
+    }
   }
 
   &.--transparent-pastel {
@@ -682,6 +829,11 @@ const iconSize = computed<MazIconProps['size']>(() => {
 
     &:not(:disabled):hover {
       @apply maz-bg-surface-600;
+    }
+
+    &:not(:disabled):active,
+    &.--active {
+      @apply maz-bg-surface-700;
     }
   }
 
