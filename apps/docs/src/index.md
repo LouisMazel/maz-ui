@@ -11,7 +11,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
 #     alt: Logo of Maz-UI
 ---
 
-<section id="hero" class="maz-py-6 tab-m:maz-py-12 vp-raw">
+<section id="hero" class="maz-py-12 tab-m:maz-py-24 vp-raw">
   <div class="maz-mx-auto maz-max-w-3xl">
     <MazAnimatedText
       text="Collection of standalone components, plugins, directives, composables and more"
