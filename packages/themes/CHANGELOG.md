@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.3.3...v4.4.0-beta.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.3...v4.4.0-beta.1)
+
+### 💅 Refactors
+
+- **@maz-ui/themes:** MazUi & pristine - increase border-width from 0.5px to 1px ([1151a7baf](https://github.com/LouisMazel/maz-ui/commit/1151a7baf))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.2.1...v4.3.0
 
 No relevant changes since last release
