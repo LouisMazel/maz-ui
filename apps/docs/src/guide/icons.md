@@ -235,7 +235,7 @@ Icons inherit the current text color and can be styled like any other element:
     <MazSky class="text-blue-400" />
 
     <!-- Interactive states -->
-    <MazButton class="hover:text-blue-500 transition-colors cursor-pointer" />
+    <MazBtn class="hover:text-blue-500 transition-colors cursor-pointer" />
 
     <!-- Animations -->
     <MazSpinner class="animate-spin" />
