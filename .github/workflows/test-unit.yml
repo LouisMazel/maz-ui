@@ -10,8 +10,6 @@ on:
       - '!packages/*/CHANGELOG.md'
       - '!packages/*/package.json'
   pull_request:
-    branches-ignore:
-      - dependabot/*
     paths:
       - .github/workflows/test-unit.yml
       - 'packages/**'
@@ -19,6 +17,7 @@ on:
 
 jobs:
   coverage:
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: read
