@@ -1,5 +1,73 @@
 # Change Log
 
+## v4.3.3...v4.4.0-beta.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.3...v4.4.0-beta.1)
+
+### 🚀 Features
+
+- **maz-ui:** Add resetForm function and auto-reset on submit success ([9eb89c52d](https://github.com/LouisMazel/maz-ui/commit/9eb89c52d))
+
+  This commit introduces a new resetForm() function in useFormValidator
+  that completely resets the form to its initial state.
+  The form is now automatically reset after successful submission by
+  default. This behavior can be controlled using the resetOnSuccess option.
+  Usage:
+  - Automatic reset (default): The form resets automatically after
+    handleSubmit succeeds
+  - Manual reset: Call resetForm() at any time to reset the form
+  - Disable auto-reset: Pass { resetOnSuccess: false } to handleSubmit
+    options or to useFormValidator options
+    When the form is reset, all fields return to their default values,
+    all validation errors are cleared, and all state flags (isDirty,
+    isSubmitted, isSubmitting) are reset.
+
+- **maz-ui:** MazStepper - add content property and point slot ([f7519f23b](https://github.com/LouisMazel/maz-ui/commit/f7519f23b))
+
+  Add ability to define step content directly via steps property instead of using slots.
+  Support HTML in all step properties (title, subtitle, titleInfo, content) using v-html.
+  Add new "point" slot to customize step number/icon display.
+  Optimize component loading with async imports.
+  Usage:
+  - Use content property: :steps="[{ content: 'My content' }]"
+  - Customize point: `<template #point="{ step }">...</template>`
+  - Use HTML in properties: `{ title: '<span class="text-primary">Title</span>' }`
+
+- **maz-ui:** MazBtnGroup - new component to group MazBtn components ([496de3c4a](https://github.com/LouisMazel/maz-ui/commit/496de3c4a))
+- **maz-ui:** MazBtn - add active prop and active state styles ([6a538d6c4](https://github.com/LouisMazel/maz-ui/commit/6a538d6c4))
+
+  Use the `active` prop to programmatically set an active visual state on the button.
+
+### 🔥 Performance
+
+- **maz-ui:** Optimize MazCardSpotlight animation performance ([ccf1bfa6e](https://github.com/LouisMazel/maz-ui/commit/ccf1bfa6e))
+
+  The MazCardSpotlight component now has significantly better performance when used in
+  lists with multiple cards. The spotlight animation is now much smoother and consumes
+  less resources, especially when scrolling through long lists.
+  The animation is automatically paused when the component is not visible in the viewport.
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDropdown - add support of accent color for menu item ([4cd49edb5](https://github.com/LouisMazel/maz-ui/commit/4cd49edb5))
+- **maz-ui:** MazAnimateCounter - hydration issue with SSR ([7c54eccd5](https://github.com/LouisMazel/maz-ui/commit/7c54eccd5))
+- **maz-ui:** MazDropdown - accessibility issues with aria attributes ([2b77b7ff3](https://github.com/LouisMazel/maz-ui/commit/2b77b7ff3))
+- **maz-ui:** MazPagination - accessibility issues with aria attributes ([fbc437d82](https://github.com/LouisMazel/maz-ui/commit/fbc437d82))
+- **maz-ui:** MazRadioButtons - items alignment ([f66286c93](https://github.com/LouisMazel/maz-ui/commit/f66286c93))
+
+### 💅 Refactors
+
+- **@maz-ui/node:** Add noError option to execPromise logger ([ddbed1f91](https://github.com/LouisMazel/maz-ui/commit/ddbed1f91))
+  - Add optional noError parameter to suppress error logging
+  - Add JSDoc comments for all logging control parameters (noSuccess, noStdout, noStderr, noError)
+
+- **maz-ui:** MazAnimatedText - you can now choose the gradient colors ([9e46d9ffa](https://github.com/LouisMazel/maz-ui/commit/9e46d9ffa))
+- **@maz-ui/themes:** MazUi & pristine - increase border-width from 0.5px to 1px ([1151a7baf](https://github.com/LouisMazel/maz-ui/commit/1151a7baf))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.4-beta.6...v4.3.4-beta.7
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.4-beta.6...v4.3.4-beta.7)
@@ -28,7 +96,7 @@
   Usage:
   - Use content property: :steps="[{ content: 'My content' }]"
   - Customize point: `<template #point="{ step }">...</template>`
-  - Use HTML in properties: { title: `<span class="text-primary">Title</span>` }
+  - Use HTML in properties: `{ title: '<span class="text-primary">Title</span>' }`
 
 ### ❤️ Contributors
 
