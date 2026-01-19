@@ -5,7 +5,7 @@ export const pristine: ThemePreset = {
   foundation: {
     'base-font-size': '14px',
     'radius': '0.6rem',
-    'border-width': '0.5px',
+    'border-width': '1px',
     'font-family': `-apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
   },
   colors: {

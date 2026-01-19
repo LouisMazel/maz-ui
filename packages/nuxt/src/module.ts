@@ -47,6 +47,7 @@ const COMPONENT_NAMES: Omit<
   MazBadge: true,
   MazBottomSheet: true,
   MazBtn: true,
+  MazBtnGroup: true,
   MazCard: true,
   MazCardSpotlight: true,
   MazCarousel: true,
@@ -223,7 +224,6 @@ export default defineNuxtModule<MazUiNuxtOptions>({
         addComponent({
           name,
           filePath: `maz-ui/components/${name}`,
-
         })
       }
     }

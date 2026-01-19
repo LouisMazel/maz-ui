@@ -272,7 +272,7 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
   </label>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-textarea {
   @apply maz-min-h-[6.25rem] maz-relative maz-flex maz-flex-col maz-align-top maz-text-foreground;
 

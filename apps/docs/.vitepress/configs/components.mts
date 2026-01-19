@@ -9,6 +9,7 @@ export const components = {
       collapsed: false,
       items: [
         { text: 'Btn', link: '/components/maz-btn' },
+        { text: 'BtnGroup', link: '/components/maz-btn-group' },
         { text: 'Checkbox', link: '/components/maz-checkbox' },
         { text: 'Checklist', link: '/components/maz-checklist' },
         { text: 'DatePicker (time, range)', link: '/components/maz-date-picker' },
