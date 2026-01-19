@@ -19,7 +19,6 @@ export default {
     'selector-class-pattern': undefined,
     'no-descending-specificity': undefined,
     'function-no-unknown': [true, { ignoreFunctions: ['v-bind'] }],
-    'scss/at-import-partial-extension': undefined,
   },
 
   overrides: [
