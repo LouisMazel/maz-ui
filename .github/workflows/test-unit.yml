@@ -17,7 +17,6 @@ on:
 
 jobs:
   coverage:
-    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -49,7 +48,7 @@ jobs:
         run: pnpm test:unit:coverage:all
 
       - name: Upload coverage to Codecov (lib)
-        if: always()
+        if: always() && github.actor != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -60,7 +59,7 @@ jobs:
           verbose: true
 
       - name: Upload coverage to Codecov (utils)
-        if: always()
+        if: always() && github.actor != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -71,7 +70,7 @@ jobs:
           verbose: true
 
       - name: Upload coverage to Codecov (mcp)
-        if: always()
+        if: always() && github.actor != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -82,7 +81,7 @@ jobs:
           verbose: true
 
       - name: Upload coverage to Codecov (themes)
-        if: always()
+        if: always() && github.actor != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
