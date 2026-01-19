@@ -11,29 +11,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
 #     alt: Logo of Maz-UI
 ---
 
-<section class="vp-raw maz-flex maz-flex-col mob-l:maz-flex-center maz-gap-4 dark maz-text-secondary-foreground maz-rounded maz-p-8 maz-my-12 maz-from-primary-400 maz-to-secondary-700 maz-bg-gradient-to-br">
-  <h2 class="maz-inline-flex maz-gap-4 mob-l:maz-text-center maz-text-2xl maz-font-semibold dark">
-    <span class="maz-text-3xl">🎉</span>
-    Maz-UI v4 is here!
-  </h2>
-  <p class="mob-l:maz-text-center maz-text-lg maz-mb-3 mob-l:maz-max-w-3xl dark">
-    Discover the latest major release with improved performance, better tree-shaking, and enhanced TypeScript support, advanced theming, translations, icons set and more.
-  </p>
-
-  <div class="maz-flex maz-gap-2 maz-justify-center maz-flex-wrap maz-flex-col-reverse mob-l:maz-flex-row">
-    <MazBtn href="https://v3.maz-ui.com" color="contrast" outlined class="dark maz-w-full mob-l:maz-w-auto">
-      V3 documentation
-    </MazBtn>
-    <MazBtn href="https://github.com/LouisMazel/maz-ui/blob/master/CHANGELOG.md" color="contrast" outlined class="dark maz-w-full mob-l:maz-w-auto" target="blank">
-      Changelog
-    </MazBtn>
-    <MazBtn  href="/guide/migration-v4" color="contrast" class="dark maz-w-full mob-l:maz-w-auto">
-      Migration guide
-    </MazBtn>
-  </div>
-</section>
-
-<section id="hero" class="maz-pb-6 tab-m:maz-pb-12 vp-raw">
+<section id="hero" class="maz-py-6 tab-m:maz-py-12 vp-raw">
   <div class="maz-mx-auto maz-max-w-3xl">
     <MazAnimatedText
       text="Collection of standalone components, plugins, directives, composables and more"
