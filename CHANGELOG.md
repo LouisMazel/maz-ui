@@ -30,8 +30,8 @@
   Optimize component loading with async imports.
   Usage:
   - Use content property: :steps="[{ content: 'My content' }]"
-  - Customize point: <template #point="{ step }">...</template>
-  - Use HTML in properties: { title: '<span class="text-primary">Title</span>' }
+  - Customize point: `<template #point="{ step }">...</template>`
+  - Use HTML in properties: `{ title: '<span class="text-primary">Title</span>' }`
 
 - **maz-ui:** MazBtnGroup - new component to group MazBtn components ([1f525753](https://github.com/LouisMazel/maz-ui/commit/1f525753))
 - **maz-ui:** MazBtn - add active prop and active state styles ([54b08bef](https://github.com/LouisMazel/maz-ui/commit/54b08bef))
