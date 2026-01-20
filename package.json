@@ -66,7 +66,7 @@
     "lerna": "^9.0.3",
     "lint-staged": "^16.2.7",
     "nx": "^22.3.3",
-    "relizy": "^1.0.0-beta.2",
+    "relizy": "^1.0.0-beta.3",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4"
