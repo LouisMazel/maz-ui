@@ -7,11 +7,17 @@ import { deploy, excludeDefaults } from '@samkirkland/ftp-deploy'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
+/**
+ * Load environment variables from a .env file
+ * @param {string} envFileName
+ * @returns {Record<string, string>} environment variables
+ */
 function loadEnvFile(envFileName = '.env') {
   try {
     const envPath = join(_dirname, envFileName)
     const envContent = readFileSync(envPath, 'utf-8')
 
+    /** @type {Record<string, string>} */
     const envVars = {}
 
     envContent.split('\n').forEach((line) => {
@@ -30,6 +36,9 @@ function loadEnvFile(envFileName = '.env') {
   }
 }
 
+/**
+ * Deploy to Hostinger
+ */
 async function deployToHostinger() {
   const env = loadEnvFile()
   console.warn('🚚 Deploy started')
