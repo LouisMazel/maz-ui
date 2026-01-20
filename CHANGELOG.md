@@ -1,5 +1,74 @@
 # Change Log
 
+## v4.3.3...v4.4.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.3...v4.4.0)
+
+### 🚀 Features
+
+- **maz-ui:** Add resetForm function and auto-reset on submit success ([2f0e40bb](https://github.com/LouisMazel/maz-ui/commit/2f0e40bb))
+
+  This commit introduces a new resetForm() function in useFormValidator
+  that completely resets the form to its initial state.
+  The form is now automatically reset after successful submission by
+  default. This behavior can be controlled using the resetOnSuccess option.
+  Usage:
+  - Automatic reset (default): The form resets automatically after
+    handleSubmit succeeds
+  - Manual reset: Call resetForm() at any time to reset the form
+  - Disable auto-reset: Pass { resetOnSuccess: false } to handleSubmit
+    options or to useFormValidator options
+    When the form is reset, all fields return to their default values,
+    all validation errors are cleared, and all state flags (isDirty,
+    isSubmitted, isSubmitting) are reset.
+
+- **maz-ui:** MazStepper - add content property and point slot ([17b8285d](https://github.com/LouisMazel/maz-ui/commit/17b8285d))
+
+  Add ability to define step content directly via steps property instead of using slots.
+  Support HTML in all step properties (title, subtitle, titleInfo, content) using v-html.
+  Add new "point" slot to customize step number/icon display.
+  Optimize component loading with async imports.
+  Usage:
+  - Use content property: :steps="[{ content: 'My content' }]"
+  - Customize point: <template #point="{ step }">...</template>
+  - Use HTML in properties: { title: '<span class="text-primary">Title</span>' }
+
+- **maz-ui:** MazBtnGroup - new component to group MazBtn components ([1f525753](https://github.com/LouisMazel/maz-ui/commit/1f525753))
+- **maz-ui:** MazBtn - add active prop and active state styles ([54b08bef](https://github.com/LouisMazel/maz-ui/commit/54b08bef))
+
+  Use the `active` prop to programmatically set an active visual state on the button.
+
+### 🔥 Performance
+
+- **maz-ui:** Optimize MazCardSpotlight animation performance ([fb48f617](https://github.com/LouisMazel/maz-ui/commit/fb48f617))
+
+  The MazCardSpotlight component now has significantly better performance when used in
+  lists with multiple cards. The spotlight animation is now much smoother and consumes
+  less resources, especially when scrolling through long lists.
+  The animation is automatically paused when the component is not visible in the viewport.
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDropdown - add support of accent color for menu item ([e7a392b1](https://github.com/LouisMazel/maz-ui/commit/e7a392b1))
+- **maz-ui:** MazAnimateCounter - hydration issue with SSR ([70e2feec](https://github.com/LouisMazel/maz-ui/commit/70e2feec))
+- **maz-ui:** MazDropdown - accessibility issues with aria attributes ([69569a0f](https://github.com/LouisMazel/maz-ui/commit/69569a0f))
+- **maz-ui:** MazPagination - accessibility issues with aria attributes ([32465823](https://github.com/LouisMazel/maz-ui/commit/32465823))
+- **maz-ui:** MazRadioButtons - items alignment ([9fc4e064](https://github.com/LouisMazel/maz-ui/commit/9fc4e064))
+
+### 💅 Refactors
+
+- **@maz-ui/node:** Add noError option to execPromise logger ([0cff1147](https://github.com/LouisMazel/maz-ui/commit/0cff1147))
+  - Add optional noError parameter to suppress error logging
+  - Add JSDoc comments for all logging control parameters (noSuccess, noStdout, noStderr, noError)
+
+- **maz-ui:** MazAnimatedText - you can now choose the gradient colors ([d54fe39e](https://github.com/LouisMazel/maz-ui/commit/d54fe39e))
+- **@maz-ui/themes:** MazUi & pristine - increase border-width from 0.5px to 1px ([e0a8c1c7](https://github.com/LouisMazel/maz-ui/commit/e0a8c1c7))
+- **maz-ui:** MazAnimatedText - make gradientVia prop optionnal ([de8b2e29](https://github.com/LouisMazel/maz-ui/commit/de8b2e29))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.3...v4.4.0-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.3...v4.4.0-beta.1)

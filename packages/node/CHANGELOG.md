@@ -1,5 +1,19 @@
 # Changelog
 
+## v4.3.3...v4.4.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.3...v4.4.0)
+
+### 💅 Refactors
+
+- **@maz-ui/node:** Add noError option to execPromise logger ([0cff1147](https://github.com/LouisMazel/maz-ui/commit/0cff1147))
+  - Add optional noError parameter to suppress error logging
+  - Add JSDoc comments for all logging control parameters (noSuccess, noStdout, noStderr, noError)
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.3...v4.4.0-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.3...v4.4.0-beta.1)
