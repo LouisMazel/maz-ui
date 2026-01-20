@@ -37,13 +37,15 @@ export default defineConfig({
   },
 
   release: {
-    social: false,
+    social: true,
   },
 
   social: {
     changelogUrl: 'https://maz-ui.com/changelog',
     twitter: {
-      enabled: false,
+      enabled: true,
+      onlyStable: false,
+      postMaxLength: 280,
     },
   },
 })
