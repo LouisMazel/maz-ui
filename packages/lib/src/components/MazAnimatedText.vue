@@ -156,7 +156,19 @@ onBeforeUnmount(() => {
   }
 })
 
-const gradientStyle = computed(() => lastWord ? `linear-gradient(to right, hsl(var(--maz-${gradientFrom})), hsl(var(--maz-${gradientVia})), hsl(var(--maz-${gradientTo})))` : undefined)
+const gradientStyle = computed(() => {
+  if (!lastWord) {
+    return undefined
+  }
+
+  const colors: string[] = [
+    `hsl(var(--maz-${gradientFrom}))`,
+    ...(gradientVia ? [`hsl(var(--maz-${gradientVia}))`] : []),
+    `hsl(var(--maz-${gradientTo}))`,
+  ]
+
+  return `linear-gradient(to right, ${colors.join(', ')})`
+})
 </script>
 
 <template>
