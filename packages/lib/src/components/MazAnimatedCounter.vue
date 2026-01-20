@@ -66,7 +66,6 @@ function animate(start: number, end: number, duration: number, delay: number) {
     return
   }
 
-  // currentCount.value = start
   setTimeout(() => {
     const startTime = performance.now()
 
