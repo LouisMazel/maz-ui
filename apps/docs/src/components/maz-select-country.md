@@ -7,7 +7,7 @@ description: MazSelectCountry is a versatile Vue component for selecting countri
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/translated-component.md-->
+<!--@include: ./../../.vitepress/mixins/translated-component.md-->
 
 ## Basic usage
 

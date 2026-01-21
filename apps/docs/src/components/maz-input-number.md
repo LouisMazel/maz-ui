@@ -7,7 +7,7 @@ description: MazInputNumber is a number input component with increment and decre
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
 
@@ -72,7 +72,7 @@ You can remove the buttons with the props `hide-buttons`
   </template>
 </ComponentDemo>
 
-<!--@include: ./../.vitepress/mixins/maz-input-props.md-->
+<!--@include: ./../../.vitepress/mixins/maz-input-props.md-->
 <!--@include: ./../../.vitepress/generated-docs/maz-input-number.doc.md-->
 
 <script lang="ts" setup>

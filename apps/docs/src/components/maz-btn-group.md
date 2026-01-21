@@ -7,7 +7,7 @@ description: MazBtnGroup is a component to group multiple MazBtn buttons togethe
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage with items
 

@@ -7,7 +7,7 @@ description: MazTable is designed to be a reusable data table with advanced feat
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ## Key Features
 

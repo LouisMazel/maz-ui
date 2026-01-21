@@ -7,7 +7,7 @@ description: MazAnimatedElement is a standalone component that animates its cont
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
 

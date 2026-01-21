@@ -7,7 +7,7 @@ description: MazPullToRefresh is a standalone component to add pull to refresh f
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ## Demo
 

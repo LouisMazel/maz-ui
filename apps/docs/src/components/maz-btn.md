@@ -7,7 +7,7 @@ description: MazBtn is a standalone component that replaces the standard html bu
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
 

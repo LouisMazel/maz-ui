@@ -7,9 +7,9 @@ description: A powerful and flexible date picker component with support for sing
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
-<!--@include: ./../.vitepress/mixins/translated-component.md-->
+<!--@include: ./../../.vitepress/mixins/translated-component.md-->
 
 ## Table of Contents
 
@@ -1006,7 +1006,7 @@ interface MazDatePickerShortcut {
 }
 ```
 
-<!--@include: ./../.vitepress/mixins/maz-input-props.md-->
+<!--@include: ./../../.vitepress/mixins/maz-input-props.md-->
 
 <!--@include: ./../../.vitepress/generated-docs/maz-date-picker.doc.md-->
 

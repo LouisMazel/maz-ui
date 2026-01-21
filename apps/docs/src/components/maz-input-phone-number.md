@@ -7,9 +7,9 @@ description: MazInputPhoneNumber is a powerful and user-friendly component that 
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
-<!--@include: ./../.vitepress/mixins/translated-component.md-->
+<!--@include: ./../../.vitepress/mixins/translated-component.md-->
 
 ::: tip ✨ What makes this component special?
 - **Smart country detection** - Automatically detects country from browser locale or IP
@@ -878,7 +878,7 @@ interface MazInputPhoneNumberData {
 }
 ```
 
-<!--@include: ./../.vitepress/mixins/maz-input-props.md-->
+<!--@include: ./../../.vitepress/mixins/maz-input-props.md-->
 <!--@include: ./../../.vitepress/generated-docs/maz-input-phone-number.doc.md-->
 
 <script setup lang="ts">

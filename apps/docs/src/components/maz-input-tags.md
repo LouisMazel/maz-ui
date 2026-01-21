@@ -7,7 +7,7 @@ description: MazInputTags is a standalone component like free inputs to help use
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
 
@@ -110,5 +110,5 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 </template>
 ```
 
-<!--@include: ./../.vitepress/mixins/maz-input-props.md-->
+<!--@include: ./../../.vitepress/mixins/maz-input-props.md-->
 <!--@include: ./../../.vitepress/generated-docs/maz-input-tags.doc.md-->
