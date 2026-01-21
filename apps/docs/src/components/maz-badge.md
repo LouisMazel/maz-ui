@@ -7,7 +7,7 @@ description: MazBadge is a standalone component to show short text in colored co
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
 

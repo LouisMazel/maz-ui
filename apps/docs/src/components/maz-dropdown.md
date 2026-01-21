@@ -7,9 +7,9 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
-<!--@include: ./../.vitepress/mixins/translated-component.md-->
+<!--@include: ./../../.vitepress/mixins/translated-component.md-->
 
 ## Basic usage
 

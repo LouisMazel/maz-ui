@@ -7,7 +7,7 @@ description: MazReadingProgressBar is a standalone component to display a readin
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 This component use the `<Teleport />` component to move the progress bar to the top of the page. You can set the `teleport-selector` prop to change the target of the teleportation.
 

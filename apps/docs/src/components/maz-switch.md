@@ -7,7 +7,7 @@ description: MazSwitch is a standalone component that replaces the standard html
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 <div class="maz-flex maz-flex-col maz-gap-3">
   <MazSwitch

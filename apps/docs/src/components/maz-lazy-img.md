@@ -7,7 +7,7 @@ description: MazLazyImg is a standalone component to display images and svgs wit
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 <MazLazyImg src="https://placedog.net/1000/1000" block />
 

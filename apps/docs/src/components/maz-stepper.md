@@ -7,7 +7,7 @@ description: MazStepper is a standalone UI component customizable, reactive for 
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
 

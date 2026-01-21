@@ -7,7 +7,7 @@ description: MazBackdrop is a flexible backdrop component that provides a founda
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ::: tip
 This component uses `<Teleport to="body">` and is the foundation for [MazDialog](./maz-dialog.md), [MazDrawer](./maz-drawer.md), and [MazBottomSheet](./maz-bottom-sheet.md)

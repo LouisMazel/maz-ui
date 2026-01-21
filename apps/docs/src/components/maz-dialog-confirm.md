@@ -8,7 +8,7 @@ description: MazDialogConfirm is a standalone component that dialogs with the us
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ::: info
 This component uses [MazDialog](./maz-dialog.md), so it inherits all its props

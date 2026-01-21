@@ -7,7 +7,7 @@ description: MazCardSpotlight is a standalone component
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 **This component is better in dark mode**
 

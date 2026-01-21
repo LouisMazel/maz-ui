@@ -7,7 +7,7 @@ description: This component creates a customizable input code field with feature
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
 

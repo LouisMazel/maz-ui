@@ -7,7 +7,7 @@ description: MazAnimatedText is a standalone component that animates text with a
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
 

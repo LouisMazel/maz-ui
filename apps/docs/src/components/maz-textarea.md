@@ -7,7 +7,7 @@ description: MazTextarea is a standalone component that replaces the standard ht
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ::: info
 This component has the "autogrow" feature, so when the user writes, the textarea expands automatically

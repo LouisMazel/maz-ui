@@ -7,7 +7,7 @@ description: MazExpandAnimation is a standalone component that allows you to ani
 
 {{ $frontmatter.description }}
 
-<!--@include: ./../.vitepress/mixins/getting-started.md-->
+<!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ## Basic usage
 
