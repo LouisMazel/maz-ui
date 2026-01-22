@@ -1,16 +1,17 @@
 <script lang="ts" setup generic="T extends Record<string, unknown>">
 import type { MazBtnProps } from 'maz-ui/components/MazBtn'
 import type { Component, ComputedRef, Ref } from 'vue'
+import type { FormBuilderState } from '../composables/useFormBuilder'
 import type {
   ErrorMessageValue,
   FieldsValidationStates,
   FormBuilderValidationOptions,
   FormBuilderValidationReturn,
 } from '../composables/useFormBuilderValidation'
-import type { FormComponentName, FormSchema, ValidationMode } from '../utils/schema-helpers'
+import type { FormComponentName, FormSchema, ValidationIssues, ValidationMode } from '../utils/schema-helpers'
 import { computed, defineAsyncComponent, provide, ref, shallowRef, toRef, watch } from 'vue'
 import { createSchemaAsyncComponents } from '../utils/component-map'
-import { FORM_BUILDER_VALIDATION_KEY } from '../utils/constants'
+import { FORM_BUILDER_STATE_KEY, FORM_BUILDER_VALIDATION_KEY } from '../utils/constants'
 import FormSection from './FormSection.vue'
 
 export interface SubmitButtonProps extends Omit<MazBtnProps, 'type'> {
@@ -102,6 +103,8 @@ function hasValidationRules(formSchema: FormSchema<T>): boolean {
 
 const validationInstance = shallowRef<FormBuilderValidationReturn<T> | null>(null)
 const validationLoaded = ref(false)
+const isSubmitting = ref(false)
+const isSubmitted = ref(false)
 
 const fieldsStates = computed<FieldsValidationStates<T>>(() => {
   const instance = validationInstance.value
@@ -141,6 +144,19 @@ const isValidating = computed<boolean>(() => {
     return instance.isValidating.value
   }
   return false
+})
+
+const errors = computed<Partial<Record<keyof T, ValidationIssues>>>(() => {
+  const states = fieldsStates.value
+  const result: Partial<Record<keyof T, ValidationIssues>> = {}
+  for (const key in states) {
+    const fieldKey = key as keyof T
+    const state = states[fieldKey]
+    if (state?.errors && state.errors.length > 0) {
+      result[fieldKey] = state.errors
+    }
+  }
+  return result
 })
 
 async function loadValidationComposable(): Promise<void> {
@@ -189,24 +205,50 @@ const validationContext = computed<FormBuilderValidationContext<T>>(() => ({
 
 provide(FORM_BUILDER_VALIDATION_KEY, validationContext)
 
+const fieldsStatesRef = ref(fieldsStates.value) as Ref<FieldsValidationStates<T>>
+
+watch(fieldsStates, (newValue) => {
+  fieldsStatesRef.value = newValue
+}, { deep: true })
+
+const formBuilderState = computed<FormBuilderState<T>>(() => ({
+  isValid: isFormValid,
+  isSubmitting,
+  isSubmitted,
+  isDirty,
+  errors,
+  errorMessages,
+  fieldsStates: fieldsStatesRef,
+  handleFieldBlur,
+}))
+
+provide(FORM_BUILDER_STATE_KEY, formBuilderState)
+
 async function handleSubmit(): Promise<void> {
   if (props.disabled || props.readonly) {
     return
   }
 
+  isSubmitting.value = true
   let isValid = true
 
-  if (validationInstance.value) {
-    isValid = await validationInstance.value.validateForm()
+  try {
+    if (validationInstance.value) {
+      isValid = await validationInstance.value.validateForm()
 
-    if (!isValid && props.scrollToError) {
-      validationInstance.value.scrollToFirstError(
-        typeof props.scrollToError === 'string' ? props.scrollToError : undefined,
-      )
+      if (!isValid && props.scrollToError) {
+        validationInstance.value.scrollToFirstError(
+          typeof props.scrollToError === 'string' ? props.scrollToError : undefined,
+        )
+      }
     }
-  }
 
-  emit('submit', model.value, isValid)
+    emit('submit', model.value, isValid)
+  }
+  finally {
+    isSubmitting.value = false
+    isSubmitted.value = true
+  }
 }
 
 defineExpose({
@@ -214,10 +256,13 @@ defineExpose({
   validateField: (name: keyof T) => validationInstance.value?.validateField(name),
   resetValidation: () => validationInstance.value?.resetValidation(),
   isValid: isFormValid,
+  isSubmitting,
+  isSubmitted,
   isDirty,
   isValidating,
-  fieldsStates,
+  errors,
   errorMessages,
+  fieldsStates,
 })
 </script>
 
