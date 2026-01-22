@@ -14,10 +14,23 @@ import type { MazSelectCountryProps } from 'maz-ui/components/MazSelectCountry'
 import type { MazSliderProps } from 'maz-ui/components/MazSlider'
 import type { MazSwitchProps } from 'maz-ui/components/MazSwitch'
 import type { MazTextareaProps } from 'maz-ui/components/MazTextarea'
-import type { BaseIssue, BaseSchema, BaseSchemaAsync } from 'valibot'
+import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferIssue } from 'valibot'
 import type { HTMLAttributes, InputHTMLAttributes } from 'vue'
 
 export type FormFieldValidation = BaseSchema<unknown, unknown, BaseIssue<unknown>> | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
+
+export type ValidationMode = 'eager' | 'lazy' | 'aggressive' | 'blur' | 'change' | 'submit' | 'progressive'
+
+export type ValidationIssues = InferIssue<FormFieldValidation>[]
+
+export interface FormFieldValidationOptions {
+  rule?: FormFieldValidation
+  mode?: ValidationMode
+  throttled?: number | true
+  debounced?: number | true
+  messages?: Record<string, string>
+  useMultipleErrorMessages?: boolean
+}
 
 export interface FormComponentPropsMap {
   MazInput: MazInputProps
@@ -74,7 +87,7 @@ export interface FormField<
   props?: FormFieldProps<C>
   attrs?: FormFieldAttrs
   defaultValue?: T[K]
-  validation?: FormFieldValidation
+  validation?: FormFieldValidationOptions
   condition?: (model: T) => boolean
 }
 
