@@ -16,6 +16,13 @@ export interface FormErrorSummaryProps {
   errorSummary?: ErrorSummaryOptions | boolean
 }
 
+export interface ErrorSummarySlotProps {
+  errors: Partial<Record<string, unknown>>
+  errorMessages: Partial<Record<string, ErrorMessageValue>>
+  errorCount: number
+  isSubmitted: boolean
+}
+
 interface FormBuilderStateContext<T extends Record<string, unknown>> {
   isValid: ComputedRef<boolean>
   isSubmitting: Ref<boolean>
