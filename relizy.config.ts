@@ -1,6 +1,7 @@
 import { defineConfig } from 'relizy'
 
 export default defineConfig({
+  projectName: 'maz-ui',
   types: {
     feat: { title: '🚀 Features', semver: 'minor' },
     perf: { title: '🔥 Performance', semver: 'patch' },
@@ -24,6 +25,7 @@ export default defineConfig({
   monorepo: {
     versionMode: 'selective',
     packages: ['packages/*'],
+    ignorePackageNames: ['packages/forms'],
   },
 
   changelog: {

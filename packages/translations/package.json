@@ -54,8 +54,7 @@
     "@maz-ui/utils": "workspace:*"
   },
   "devDependencies": {
-    "unbuild": "^3.6.1",
-    "vue": "^3.5.27"
+    "unbuild": "^3.6.1"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [

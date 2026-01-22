@@ -178,7 +178,7 @@ Submit the form to show the validation errors
 
 ```vue
 <script lang="ts" setup>
-import { sleep } from 'maz-ui'
+import { sleep } from '@maz-ui/utils'
 import { useFormValidator, useToast } from 'maz-ui/composables'
 import { boolean, literal, maxValue, minLength, minValue, nonEmpty, number, pipe, string } from 'valibot'
 
@@ -306,7 +306,7 @@ With eager mode, each form field is validated on blur (if not empty) and then on
 
 ```vue
 <script setup lang="ts">
-import { sleep } from 'maz-ui'
+import { sleep } from '@maz-ui/utils'
 import { useFormField, useFormValidator, useToast } from 'maz-ui/composables'
 import { boolean, literal, maxValue, minLength, minValue, nonEmpty, number, pipe, string } from 'valibot'
 import { useTemplateRef } from 'vue'
@@ -448,7 +448,7 @@ With progressive mode, the field becomes valid after the first successful valida
 
 ```vue
 <script setup lang="ts">
-import { sleep } from 'maz-ui'
+import { sleep } from '@maz-ui/utils'
 import { useFormField, useFormValidator, useToast } from 'maz-ui/composables'
 import { boolean, literal, maxValue, minLength, minValue, nonEmpty, number, pipe, string } from 'valibot'
 import { useTemplateRef } from 'vue'
@@ -604,7 +604,7 @@ You must use `handleSubmit` to handle the form submission and reset the form.
 </template>
 
 <script setup lang="ts">
-  import { sleep } from 'maz-ui'
+  import { sleep } from '@maz-ui/utils'
   import { useFormValidator, useToast, InferFormValidatorSchema } from 'maz-ui/composables'
   import { string, nonEmpty, pipe, number, minValue, minLength } from 'valibot'
 
@@ -692,7 +692,7 @@ You can set the throttle or debounce time in milliseconds or use `true` for the 
 </template>
 
 <script setup lang="ts">
-  import { sleep } from 'maz-ui'
+  import { sleep } from '@maz-ui/utils'
   import { useFormValidator, useToast, InferFormValidatorSchema } from 'maz-ui/composables'
   import { string, nonEmpty, pipe, number, minValue, minLength } from 'valibot'
 
@@ -765,7 +765,7 @@ You can use async functions in the validation schema.
 </template>
 
 <script setup lang="ts">
-  import { sleep } from 'maz-ui'
+  import { sleep } from '@maz-ui/utils'
   import { useFormValidator, useToast, InferFormValidatorSchema } from 'maz-ui/composables'
   import { string, nonEmpty, pipe, number, minValue, minLength, pipeAsync, checkAsync } from 'valibot'
 
@@ -1136,7 +1136,7 @@ interface FormFieldOptions<T> {
   import { useFormValidator } from 'maz-ui/src/composables/useFormValidator'
   import { useFormField } from 'maz-ui/src/composables/useFormField'
   import { useToast } from 'maz-ui/src/composables/useToast'
-  import { sleep } from 'maz-ui'
+  import { sleep } from '@maz-ui/utils'
   import { string, nonEmpty, pipe, number, minValue, maxValue, boolean, literal, minLength, pipeAsync, checkAsync } from 'valibot'
 
   const toast = useToast()

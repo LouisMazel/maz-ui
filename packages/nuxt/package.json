@@ -57,6 +57,7 @@
   "dependencies": {
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
+    "@maz-ui/utils": "workspace:*",
     "@nuxt/kit": "^4.2.2",
     "defu": "^6.1.4",
     "maz-ui": "workspace:*"

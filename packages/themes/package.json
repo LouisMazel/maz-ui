@@ -94,9 +94,7 @@
     "@maz-ui/utils": "workspace:*"
   },
   "devDependencies": {
-    "glob": "^13.0.0",
-    "vue": "^3.5.27",
-    "vue-tsc": "^3.2.1"
+    "vite": "^7.3.0"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
