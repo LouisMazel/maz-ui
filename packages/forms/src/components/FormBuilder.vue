@@ -1,7 +1,7 @@
 <script lang="ts" setup generic="T extends Record<string, unknown>">
 import type { MazBtnProps } from 'maz-ui/components/MazBtn'
 import type { FormValidatorOptions } from 'maz-ui/composables'
-import type { Component, ComputedRef, Ref } from 'vue'
+import type { Component, ComputedRef, Ref, VNode } from 'vue'
 import type { FormBuilderState } from '../composables/useFormBuilder'
 import type {
   ExtractedValidationOptions,
@@ -10,14 +10,16 @@ import type {
   FieldFocusEventPayload,
   FieldValidateEventPayload,
   FormComponentName,
+  FormField as FormFieldType,
   FormResetEventPayload,
   FormSchema,
+  FormSection as FormSectionType,
   FormSubmitErrorEventPayload,
   FormSubmitEventPayload,
   ValidationIssues,
   ValidationMode,
 } from '../utils/schema-helpers'
-import type { ErrorSummaryOptions } from './FormErrorSummary.vue'
+import type { ErrorSummaryOptions, ErrorSummarySlotProps } from './FormErrorSummary.vue'
 import { useFormValidator } from 'maz-ui/composables/useFormValidator'
 import { computed, defineAsyncComponent, nextTick, provide, ref, shallowRef, toRef, useId, watch } from 'vue'
 import { createSchemaAsyncComponents } from '../utils/component-map'
@@ -45,6 +47,29 @@ export type FieldsValidationStates<TModel extends Record<string, unknown>> = Par
 
 export interface SubmitButtonProps extends Omit<MazBtnProps, 'type'> {
   text?: string
+}
+
+export interface SubmitButtonSlotProps {
+  submit: () => Promise<void>
+  isSubmitting: boolean
+  isValid: boolean
+  isLoading: boolean
+}
+
+export interface SectionSlotProps<T extends Record<string, unknown>> {
+  section: FormSectionType<T>
+  model: T
+  readonly: boolean
+  disabled: boolean
+}
+
+export interface FieldSlotProps<T extends Record<string, unknown>> {
+  field: FormFieldType<T, keyof T, FormComponentName>
+  modelValue: T[keyof T]
+  model: T
+  readonly: boolean
+  disabled: boolean
+  updateValue: (value: T[keyof T]) => void
 }
 
 export interface FormBuilderProps<T extends Record<string, unknown>> {
@@ -94,6 +119,15 @@ const emit = defineEmits<{
   'field-focus': [payload: FieldFocusEventPayload<T>]
   'field-blur': [payload: FieldBlurEventPayload<T>]
   'field-validate': [payload: FieldValidateEventPayload<T>]
+}>()
+
+defineSlots<{
+  'default'?: () => VNode[]
+  'submit-button'?: (props: SubmitButtonSlotProps) => VNode[]
+  'error-summary'?: (props: ErrorSummarySlotProps) => VNode[]
+  'append-section'?: () => VNode[]
+  [key: `section-${string}`]: (props: SectionSlotProps<T>) => VNode[]
+  [key: `field-${string}`]: (props: FieldSlotProps<T>) => VNode[]
 }>()
 
 const model = defineModel<T>({ required: true })
@@ -514,6 +548,29 @@ function resetValidation(): void {
   }
 }
 
+const submitButtonSlotProps = computed<SubmitButtonSlotProps>(() => ({
+  submit: handleSubmit,
+  isSubmitting: isSubmitting.value,
+  isValid: isFormValid.value,
+  isLoading: isSubmitting.value || isValidating.value,
+}))
+
+const errorSummarySlotProps = computed<ErrorSummarySlotProps>(() => ({
+  errors: errors.value,
+  errorMessages: errorMessages.value,
+  errorCount: errorCount.value,
+  isSubmitted: isSubmitted.value,
+}))
+
+function getSectionSlotProps(section: FormSectionType<T>): SectionSlotProps<T> {
+  return {
+    section,
+    model: model.value,
+    readonly: props.readonly,
+    disabled: props.disabled,
+  }
+}
+
 defineExpose({
   validateForm,
   validateField,
@@ -546,33 +603,58 @@ defineExpose({
       aria-atomic="true"
     />
 
-    <FormErrorSummary
-      v-if="errorSummaryPosition === 'top'"
-      :error-summary="{ position: 'top', selector: errorSummarySelector }"
-    />
+    <!-- Error Summary slot (top position) -->
+    <template v-if="errorSummaryPosition === 'top'">
+      <slot name="error-summary" v-bind="errorSummarySlotProps">
+        <FormErrorSummary
+          :error-summary="{ position: 'top', selector: errorSummarySelector }"
+        />
+      </slot>
+    </template>
 
-    <FormSection
-      v-for="section in schema.sections"
-      :key="section.id"
-      v-model="model"
-      :section="section"
-      :model="model"
-      :components="componentsWithGlobalState"
-      :readonly="readonly"
-      :disabled="disabled"
-    />
+    <!-- Sections with individual section slots -->
+    <template v-for="section in schema.sections" :key="section.id">
+      <slot :name="`section-${section.id}`" v-bind="getSectionSlotProps(section)">
+        <FormSection
+          v-model="model"
+          :section="section"
+          :model="model"
+          :components="componentsWithGlobalState"
+          :readonly="readonly"
+          :disabled="disabled"
+        >
+          <!-- Pass field slots to FormSection -->
+          <template v-for="field in section.fields" :key="String(field.name)" #[`field-${String(field.name)}`]="slotProps">
+            <slot :name="`field-${String(field.name)}`" v-bind="slotProps" />
+          </template>
+        </FormSection>
+      </slot>
+    </template>
 
-    <FormErrorSummary
-      v-if="errorSummaryPosition === 'bottom'"
-      :error-summary="{ position: 'bottom', selector: errorSummarySelector }"
-    />
+    <!-- Append section slot -->
+    <slot name="append-section" />
 
-    <MazBtn
-      v-if="hasSubmitButton"
-      v-bind="submitButtonProps"
-    >
-      {{ submitButtonText }}
-    </MazBtn>
+    <!-- Error Summary slot (bottom position) -->
+    <template v-if="errorSummaryPosition === 'bottom'">
+      <slot name="error-summary" v-bind="errorSummarySlotProps">
+        <FormErrorSummary
+          :error-summary="{ position: 'bottom', selector: errorSummarySelector }"
+        />
+      </slot>
+    </template>
+
+    <!-- Default slot for additional content -->
+    <slot />
+
+    <!-- Submit button slot -->
+    <slot name="submit-button" v-bind="submitButtonSlotProps">
+      <MazBtn
+        v-if="hasSubmitButton"
+        v-bind="submitButtonProps"
+      >
+        {{ submitButtonText }}
+      </MazBtn>
+    </slot>
   </form>
 </template>
 

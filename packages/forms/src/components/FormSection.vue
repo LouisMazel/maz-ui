@@ -1,8 +1,17 @@
 <script lang="ts" setup generic="T extends Record<string, unknown>">
-import type { Component } from 'vue'
-import type { FormComponentName, FormSection, FormSectionCardOption } from '../utils/schema-helpers'
-import { computed, defineAsyncComponent, toRef, useId } from 'vue'
+import type { Component, VNode } from 'vue'
+import type { FormComponentName, FormField as FormFieldType, FormSection, FormSectionCardOption } from '../utils/schema-helpers'
+import { computed, defineAsyncComponent, toRef, useId, useSlots } from 'vue'
 import FormField from './FormField.vue'
+
+export interface FieldSlotProps<T extends Record<string, unknown>> {
+  field: FormFieldType<T, keyof T, FormComponentName>
+  modelValue: T[keyof T]
+  model: T
+  readonly: boolean
+  disabled: boolean
+  updateValue: (value: T[keyof T]) => void
+}
 
 export interface FormSectionComponentProps<T extends Record<string, unknown>> {
   section: FormSection<T>
@@ -17,6 +26,12 @@ defineOptions({
 })
 
 const props = defineProps<FormSectionComponentProps<T>>()
+
+defineSlots<{
+  [key: `field-${string}`]: (props: FieldSlotProps<T>) => VNode[]
+}>()
+
+const slots = useSlots()
 
 const model = defineModel<T>({ required: true })
 
@@ -55,6 +70,21 @@ function updateFieldValue(fieldName: keyof T, value: T[keyof T]) {
     [fieldName]: value,
   }
 }
+
+function getFieldSlotProps(field: FormFieldType<T, keyof T, FormComponentName>): FieldSlotProps<T> {
+  return {
+    field,
+    modelValue: model.value[field.name],
+    model: model.value,
+    readonly: props.readonly ?? false,
+    disabled: props.disabled ?? false,
+    updateValue: (value: T[keyof T]) => updateFieldValue(field.name, value),
+  }
+}
+
+function hasFieldSlot(fieldName: keyof T): boolean {
+  return !!slots[`field-${String(fieldName)}`]
+}
 </script>
 
 <template>
@@ -69,17 +99,23 @@ function updateFieldValue(fieldName: keyof T, value: T[keyof T]) {
     <fieldset
       :aria-labelledby="hasLegend ? undefined : legendId"
     >
-      <FormField
-        v-for="field in section.fields"
-        :key="String(field.name)"
-        :field="field"
-        :model-value="model[field.name] as T[keyof T]"
-        :model="model"
-        :components="components"
-        :readonly="readonly"
-        :disabled="disabled"
-        @update:model-value="updateFieldValue(field.name, $event)"
-      />
+      <template v-for="field in section.fields" :key="String(field.name)">
+        <slot
+          v-if="hasFieldSlot(field.name)"
+          :name="`field-${String(field.name)}`"
+          v-bind="getFieldSlotProps(field)"
+        />
+        <FormField
+          v-else
+          :field="field"
+          :model-value="model[field.name] as T[keyof T]"
+          :model="model"
+          :components="components"
+          :readonly="readonly"
+          :disabled="disabled"
+          @update:model-value="updateFieldValue(field.name, $event)"
+        />
+      </template>
     </fieldset>
   </MazCard>
 
@@ -93,16 +129,22 @@ function updateFieldValue(fieldName: keyof T, value: T[keyof T]) {
     >
       {{ section.legend }}
     </legend>
-    <FormField
-      v-for="field in section.fields"
-      :key="String(field.name)"
-      :field="field"
-      :model-value="model[field.name] as T[keyof T]"
-      :model="model"
-      :components="components"
-      :readonly="readonly"
-      :disabled="disabled"
-      @update:model-value="updateFieldValue(field.name, $event)"
-    />
+    <template v-for="field in section.fields" :key="String(field.name)">
+      <slot
+        v-if="hasFieldSlot(field.name)"
+        :name="`field-${String(field.name)}`"
+        v-bind="getFieldSlotProps(field)"
+      />
+      <FormField
+        v-else
+        :field="field"
+        :model-value="model[field.name] as T[keyof T]"
+        :model="model"
+        :components="components"
+        :readonly="readonly"
+        :disabled="disabled"
+        @update:model-value="updateFieldValue(field.name, $event)"
+      />
+    </template>
   </fieldset>
 </template>
