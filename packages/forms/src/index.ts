@@ -5,6 +5,12 @@ export type {
   SubmitButtonProps,
 } from './components/FormBuilder.vue'
 
+export { default as MazFormErrorSummary } from './components/FormErrorSummary.vue'
+export type {
+  ErrorSummaryOptions,
+  FormErrorSummaryProps as MazFormErrorSummaryProps,
+} from './components/FormErrorSummary.vue'
+
 export { default as MazFormField } from './components/FormField.vue'
 export type { FormFieldComponentProps as MazFormFieldProps } from './components/FormField.vue'
 
