@@ -84,4 +84,13 @@ export default {
       placeholder: 'Buscar',
     },
   },
+  readMore: {
+    expand: 'Leer más',
+    collapse: 'Leer menos',
+    ariaLabel: 'Contenido expandible',
+  },
+  skeleton: {
+    ariaLabel: 'Contenido en carga',
+    loadingText: 'Cargando...',
+  },
 } satisfies MazUiTranslationsNestedSchema

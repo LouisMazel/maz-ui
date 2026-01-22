@@ -84,4 +84,13 @@ export default {
       placeholder: '搜索',
     },
   },
+  readMore: {
+    expand: '阅读更多',
+    collapse: '阅读更少',
+    ariaLabel: '可展开内容',
+  },
+  skeleton: {
+    ariaLabel: '内容加载中',
+    loadingText: '加载中...',
+  },
 } satisfies MazUiTranslationsNestedSchema

@@ -84,4 +84,13 @@ export default {
       of: 'sur',
     },
   },
+  readMore: {
+    expand: 'Lire plus',
+    collapse: 'Lire moins',
+    ariaLabel: 'Contenu extensible',
+  },
+  skeleton: {
+    ariaLabel: 'Contenu en chargement',
+    loadingText: 'Chargement...',
+  },
 } satisfies MazUiTranslationsNestedSchema
