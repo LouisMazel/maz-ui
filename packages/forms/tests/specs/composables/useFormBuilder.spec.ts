@@ -4,7 +4,7 @@ import { computed, defineComponent, h, provide, ref } from 'vue'
 import { useFormBuilder } from '../../../src/composables/useFormBuilder'
 import { FORM_BUILDER_STATE_KEY } from '../../../src/utils/constants'
 
-interface TestFormModel {
+interface TestFormModel extends Record<string, unknown> {
   name: string
   email: string
 }
@@ -19,6 +19,10 @@ function createMockFormBuilderState(): FormBuilderState<TestFormModel> {
     errorMessages: computed(() => ({})),
     fieldsStates: ref({}),
     handleFieldBlur: async () => {},
+    emitFieldChange: () => {},
+    emitFieldFocus: () => {},
+    emitFieldBlur: () => {},
+    emitFieldValidate: () => {},
   }
 }
 
@@ -43,7 +47,7 @@ describe('useFormBuilder', () => {
 
     describe('When the composable is used inside FormBuilder context', () => {
       it('returns the form state with all expected properties', () => {
-        let capturedFormState: ReturnType<typeof useFormBuilder<TestFormModel>> | undefined
+        let capturedFormState: FormBuilderState<TestFormModel> | undefined
 
         const ChildComponent = defineComponent({
           setup() {
@@ -79,7 +83,7 @@ describe('useFormBuilder', () => {
       })
 
       it('provides reactive isValid state', () => {
-        let capturedFormState: ReturnType<typeof useFormBuilder<TestFormModel>> | undefined
+        let capturedFormState: FormBuilderState<TestFormModel> | undefined
 
         const ChildComponent = defineComponent({
           setup() {
@@ -108,7 +112,7 @@ describe('useFormBuilder', () => {
       })
 
       it('provides reactive isSubmitting state', () => {
-        let capturedFormState: ReturnType<typeof useFormBuilder<TestFormModel>> | undefined
+        let capturedFormState: FormBuilderState<TestFormModel> | undefined
 
         const ChildComponent = defineComponent({
           setup() {
@@ -137,7 +141,7 @@ describe('useFormBuilder', () => {
       })
 
       it('provides reactive isSubmitted state', () => {
-        let capturedFormState: ReturnType<typeof useFormBuilder<TestFormModel>> | undefined
+        let capturedFormState: FormBuilderState<TestFormModel> | undefined
 
         const ChildComponent = defineComponent({
           setup() {
@@ -166,7 +170,7 @@ describe('useFormBuilder', () => {
       })
 
       it('provides reactive isDirty state', () => {
-        let capturedFormState: ReturnType<typeof useFormBuilder<TestFormModel>> | undefined
+        let capturedFormState: FormBuilderState<TestFormModel> | undefined
 
         const ChildComponent = defineComponent({
           setup() {
@@ -195,7 +199,7 @@ describe('useFormBuilder', () => {
       })
 
       it('provides reactive errors state', () => {
-        let capturedFormState: ReturnType<typeof useFormBuilder<TestFormModel>> | undefined
+        let capturedFormState: FormBuilderState<TestFormModel> | undefined
 
         const ChildComponent = defineComponent({
           setup() {
@@ -225,7 +229,7 @@ describe('useFormBuilder', () => {
       })
 
       it('provides reactive errorMessages state', () => {
-        let capturedFormState: ReturnType<typeof useFormBuilder<TestFormModel>> | undefined
+        let capturedFormState: FormBuilderState<TestFormModel> | undefined
 
         const ChildComponent = defineComponent({
           setup() {
@@ -255,7 +259,7 @@ describe('useFormBuilder', () => {
       })
 
       it('provides reactive fieldsStates', () => {
-        let capturedFormState: ReturnType<typeof useFormBuilder<TestFormModel>> | undefined
+        let capturedFormState: FormBuilderState<TestFormModel> | undefined
 
         const ChildComponent = defineComponent({
           setup() {
@@ -285,7 +289,7 @@ describe('useFormBuilder', () => {
       })
 
       it('provides handleFieldBlur function', () => {
-        let capturedFormState: ReturnType<typeof useFormBuilder<TestFormModel>> | undefined
+        let capturedFormState: FormBuilderState<TestFormModel> | undefined
 
         const ChildComponent = defineComponent({
           setup() {

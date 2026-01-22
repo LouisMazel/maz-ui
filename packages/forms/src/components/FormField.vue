@@ -1,7 +1,10 @@
 <script lang="ts" setup generic="T extends Record<string, unknown>">
 import type { Component, ComputedRef, Ref } from 'vue'
-import type { FormBuilderState } from '../composables/useFormBuilder'
-import type { ErrorMessageValue, FieldsValidationStates } from '../composables/useFormBuilderValidation'
+import type {
+  ErrorMessageValue,
+  FieldsValidationStates,
+  FormBuilderState,
+} from '../composables/useFormBuilder'
 import type {
   FieldBlurEventPayload,
   FieldChangeEventPayload,
@@ -27,7 +30,7 @@ export interface FormFieldComponentProps<T extends Record<string, unknown>> {
 interface ValidationContext<T extends Record<string, unknown>> {
   fieldsStates: Ref<FieldsValidationStates<T>>
   errorMessages: ComputedRef<Partial<Record<keyof T, ErrorMessageValue>>>
-  handleFieldBlur: (name: keyof T) => Promise<void>
+  handleFieldBlur: (name: keyof T) => void
   isValid: ComputedRef<boolean>
 }
 
@@ -132,7 +135,7 @@ function handleFocus(): void {
   }
 }
 
-async function handleBlur(): Promise<void> {
+function handleBlur(): void {
   const blurPayload: FieldBlurEventPayload<T> = {
     name: field.value.name,
     value: props.modelValue,
@@ -145,7 +148,7 @@ async function handleBlur(): Promise<void> {
   }
 
   if (validationContext?.value && hasValidation.value) {
-    await validationContext.value.handleFieldBlur(field.value.name)
+    validationContext.value.handleFieldBlur(field.value.name)
   }
 }
 

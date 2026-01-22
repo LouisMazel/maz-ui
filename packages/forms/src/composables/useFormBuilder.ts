@@ -5,10 +5,27 @@ import type {
   FieldFocusEventPayload,
   FieldValidateEventPayload,
   ValidationIssues,
+  ValidationMode,
 } from '../utils/schema-helpers'
-import type { ErrorMessageValue, FieldsValidationStates } from './useFormBuilderValidation'
 import { inject } from 'vue'
 import { FORM_BUILDER_STATE_KEY } from '../utils/constants'
+
+export type ErrorMessageValue = string | string[] | undefined
+
+export interface FieldValidationState {
+  blurred: boolean
+  dirty: boolean
+  error: boolean
+  errors: ValidationIssues
+  valid: boolean
+  validating: boolean
+  validated: boolean
+  mode?: ValidationMode
+}
+
+export type FieldsValidationStates<TModel extends Record<string, unknown>> = Partial<
+  Record<keyof TModel, FieldValidationState>
+>
 
 export interface FormBuilderState<T extends Record<string, unknown>> {
   isValid: ComputedRef<boolean>
