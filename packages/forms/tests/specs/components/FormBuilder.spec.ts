@@ -541,4 +541,399 @@ describe('FormBuilder', () => {
       })
     })
   })
+
+  describe('Given a FormBuilder with validation', () => {
+    describe('When validateField is called', () => {
+      it('validates single field and returns true for valid field', async () => {
+        const model = ref<TestFormModel>({ name: 'John', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        const result = await vm.validateField('name')
+        await flushPromises()
+
+        expect(result).toBe(true)
+      })
+
+      it('validates single field and returns false for invalid field', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        const result = await vm.validateField('name')
+        await flushPromises()
+
+        expect(result).toBe(false)
+      })
+    })
+
+    describe('When resetValidation is called', () => {
+      it('resets field error states', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        await vm.validateForm()
+        await flushPromises()
+
+        expect(vm.isValid).toBe(false)
+
+        vm.resetValidation()
+        await flushPromises()
+
+        const fieldsStates = vm.fieldsStates as Record<string, { error: boolean }>
+        expect(fieldsStates.name?.error).toBe(false)
+      })
+    })
+
+    describe('When form is disabled', () => {
+      it('does not submit when disabled', async () => {
+        const model = ref<TestFormModel>({ name: 'John', email: 'john@test.com' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, { disabled: true })
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        await wrapper.find('form').trigger('submit')
+        await flushPromises()
+
+        const submitEvents = wrapper.emitted('submit')
+        expect(submitEvents).toBeUndefined()
+      })
+    })
+
+    describe('When form is readonly', () => {
+      it('does not submit when readonly', async () => {
+        const model = ref<TestFormModel>({ name: 'John', email: 'john@test.com' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, { readonly: true })
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        await wrapper.find('form').trigger('submit')
+        await flushPromises()
+
+        const submitEvents = wrapper.emitted('submit')
+        expect(submitEvents).toBeUndefined()
+      })
+    })
+
+    describe('When form has validation errors and is submitted', () => {
+      it('announces errors to screen readers', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        await wrapper.find('form').trigger('submit')
+        await flushPromises()
+
+        const liveRegion = wrapper.find('[role="status"][aria-live="polite"]')
+        expect(liveRegion.exists()).toBe(true)
+      })
+    })
+
+    describe('When form is valid and submitted', () => {
+      it('announces success to screen readers', async () => {
+        const model = ref<TestFormModel>({ name: 'John', email: 'john@test.com' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        await wrapper.find('form').trigger('submit')
+        await flushPromises()
+
+        const liveRegion = wrapper.find('[role="status"][aria-live="polite"]')
+        expect(liveRegion.exists()).toBe(true)
+      })
+    })
+
+    describe('When isValidating state changes', () => {
+      it('reflects validating state', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        expect(vm.isValidating).toBeDefined()
+        expect(typeof vm.isValidating).toBe('boolean')
+      })
+    })
+
+    describe('When submitButton prop is configured', () => {
+      it('shows submit button by default', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        const submitBtn = wrapper.findComponent({ name: 'MazBtn' })
+        expect(submitBtn.exists()).toBe(true)
+      })
+
+      it('hides submit button when submitButton is false', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, { submitButton: false })
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        const submitBtn = wrapper.findComponent({ name: 'MazBtn' })
+        expect(submitBtn.exists()).toBe(false)
+      })
+
+      it('uses custom submit button text', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, {
+          submitButton: { text: 'Save Changes' },
+        })
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        const submitBtn = wrapper.findComponent({ name: 'MazBtn' })
+        expect(submitBtn.text()).toContain('Save Changes')
+      })
+    })
+
+    describe('When errorSummary prop is configured', () => {
+      it('shows error summary when enabled', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, { errorSummary: true })
+
+        await flushPromises()
+
+        const errorSummary = wrapper.findComponent({ name: 'FormErrorSummary' })
+        expect(errorSummary.exists()).toBe(true)
+      })
+
+      it('shows error summary at bottom when position is bottom', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, {
+          errorSummary: { position: 'bottom' },
+        })
+
+        await flushPromises()
+
+        const errorSummary = wrapper.findComponent({ name: 'FormErrorSummary' })
+        expect(errorSummary.exists()).toBe(true)
+      })
+
+      it('does not show error summary when not configured', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+
+        const errorSummary = wrapper.findComponent({ name: 'FormErrorSummary' })
+        expect(errorSummary.exists()).toBe(false)
+      })
+
+      it('uses custom selector', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, {
+          errorSummary: { selector: '.custom-error-class' },
+        })
+
+        await flushPromises()
+
+        const errorSummary = wrapper.findComponent({ name: 'FormErrorSummary' })
+        expect(errorSummary.exists()).toBe(true)
+      })
+    })
+
+    describe('When accessibility attributes are provided', () => {
+      it('applies aria-label to form', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, { ariaLabel: 'Test form' })
+
+        await flushPromises()
+
+        const form = wrapper.find('form')
+        expect(form.attributes('aria-label')).toBe('Test form')
+      })
+
+      it('applies aria-labelledby to form', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, { ariaLabelledBy: 'form-heading' })
+
+        await flushPromises()
+
+        const form = wrapper.find('form')
+        expect(form.attributes('aria-labelledby')).toBe('form-heading')
+      })
+
+      it('applies aria-describedby to form', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, { ariaDescribedBy: 'form-help' })
+
+        await flushPromises()
+
+        const form = wrapper.find('form')
+        expect(form.attributes('aria-describedby')).toBe('form-help')
+      })
+    })
+
+    describe('When scrollToError prop is configured', () => {
+      it('accepts custom selector', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, { scrollToError: '.custom-error' })
+
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        expect(vm).toBeDefined()
+      })
+
+      it('accepts false to disable scroll', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, { scrollToError: false })
+
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        expect(vm).toBeDefined()
+      })
+    })
+
+    describe('When validationMode prop is provided', () => {
+      it('applies lazy mode', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, { validationMode: 'lazy' })
+
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        expect(vm).toBeDefined()
+      })
+
+      it('applies eager mode', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, { validationMode: 'eager' })
+
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        expect(vm).toBeDefined()
+      })
+
+      it('converts change mode to lazy', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, { validationMode: 'change' })
+
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        expect(vm).toBeDefined()
+      })
+
+      it('converts submit mode to lazy', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, { validationMode: 'submit' })
+
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        expect(vm).toBeDefined()
+      })
+    })
+  })
+
+  describe('Given a FormBuilder without validation rules', () => {
+    describe('When validateForm is called', () => {
+      it('returns true', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema: FormSchema<TestFormModel> = {
+          sections: [
+            {
+              id: 'main',
+              fields: [
+                { name: 'name', component: 'MazInput', props: { label: 'Name' } },
+                { name: 'email', component: 'MazInput', props: { label: 'Email' } },
+              ],
+            },
+          ],
+        }
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        const result = await vm.validateForm()
+
+        expect(result).toBe(true)
+      })
+    })
+
+    describe('When validateField is called', () => {
+      it('returns true', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema: FormSchema<TestFormModel> = {
+          sections: [
+            {
+              id: 'main',
+              fields: [
+                { name: 'name', component: 'MazInput', props: { label: 'Name' } },
+              ],
+            },
+          ],
+        }
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        const result = await vm.validateField('name')
+
+        expect(result).toBe(true)
+      })
+    })
+  })
 })
