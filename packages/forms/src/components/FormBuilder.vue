@@ -83,6 +83,12 @@ export interface FormBuilderProps<T extends Record<string, unknown>> {
   ariaLabel?: string
   ariaLabelledBy?: string
   ariaDescribedBy?: string
+  /**
+   * Optional unique identifier for the form instance.
+   * When not provided, a unique ID is automatically generated.
+   * Useful when you need to reference a specific form instance.
+   */
+  formId?: string
 }
 
 export interface FormBuilderValidationContext<T extends Record<string, unknown>> {
@@ -108,17 +114,18 @@ const props = withDefaults(defineProps<FormBuilderProps<T>>(), {
   ariaLabel: undefined,
   ariaLabelledBy: undefined,
   ariaDescribedBy: undefined,
+  formId: undefined,
 })
 
 const emit = defineEmits<{
   'submit': [payload: FormSubmitEventPayload<T>]
-  'submit-error': [payload: FormSubmitErrorEventPayload<T>]
+  'submitError': [payload: FormSubmitErrorEventPayload<T>]
   'update:modelValue': [value: T]
   'reset': [payload: FormResetEventPayload<T>]
-  'field-change': [payload: FieldChangeEventPayload<T>]
-  'field-focus': [payload: FieldFocusEventPayload<T>]
-  'field-blur': [payload: FieldBlurEventPayload<T>]
-  'field-validate': [payload: FieldValidateEventPayload<T>]
+  'fieldChange': [payload: FieldChangeEventPayload<T>]
+  'fieldFocus': [payload: FieldFocusEventPayload<T>]
+  'fieldBlur': [payload: FieldBlurEventPayload<T>]
+  'fieldValidate': [payload: FieldValidateEventPayload<T>]
 }>()
 
 defineSlots<{
@@ -134,7 +141,8 @@ const model = defineModel<T>({ required: true })
 
 const schema = toRef(props, 'schema')
 
-const formUniqueId = useId()
+const generatedId = useId()
+const formUniqueId = computed(() => props.formId ?? generatedId)
 const formRef = ref<HTMLFormElement | null>(null)
 const liveRegionRef = ref<HTMLElement | null>(null)
 
@@ -191,7 +199,7 @@ const errorSummarySelector = computed<string>(() => {
   return props.errorSummary.selector
 })
 
-const liveRegionId = computed(() => `${formUniqueId}-live-region`)
+const liveRegionId = computed(() => `${formUniqueId.value}-live-region`)
 
 const formAccessibilityAttrs = computed(() => {
   const attrs: Record<string, string | undefined> = {}
@@ -408,22 +416,23 @@ watch(fieldsStates, (newValue) => {
 }, { deep: true })
 
 function emitFieldChange(payload: FieldChangeEventPayload<T>): void {
-  emit('field-change', payload)
+  emit('fieldChange', payload)
 }
 
 function emitFieldFocus(payload: FieldFocusEventPayload<T>): void {
-  emit('field-focus', payload)
+  emit('fieldFocus', payload)
 }
 
 function emitFieldBlurEvent(payload: FieldBlurEventPayload<T>): void {
-  emit('field-blur', payload)
+  emit('fieldBlur', payload)
 }
 
 function emitFieldValidate(payload: FieldValidateEventPayload<T>): void {
-  emit('field-validate', payload)
+  emit('fieldValidate', payload)
 }
 
 const formBuilderState = computed<FormBuilderState<T>>(() => ({
+  formId: formUniqueId,
   isValid: isFormValid,
   isSubmitting: ref(isSubmitting.value),
   isSubmitted: ref(isSubmitted.value),
@@ -497,7 +506,7 @@ async function handleSubmit(): Promise<void> {
       data: model.value,
       errors: errors.value,
     }
-    emit('submit-error', submitErrorPayload)
+    emit('submitError', submitErrorPayload)
 
     await nextTick()
     const errCount = errorCount.value
@@ -572,6 +581,7 @@ function getSectionSlotProps(section: FormSectionType<T>): SectionSlotProps<T> {
 }
 
 defineExpose({
+  formId: formUniqueId,
   validateForm,
   validateField,
   resetValidation,

@@ -11,6 +11,7 @@ interface TestFormModel extends Record<string, unknown> {
 
 function createMockFormBuilderState(): FormBuilderState<TestFormModel> {
   return {
+    formId: computed(() => 'test-form-id'),
     isValid: computed(() => true),
     isSubmitting: ref(false),
     isSubmitted: ref(false),
