@@ -78,6 +78,7 @@ const COMPONENT_NAMES: Omit<
   MazPullToRefresh: true,
   MazRadio: true,
   MazRadioButtons: true,
+  MazReadMore: true,
   MazReadingProgressBar: true,
   MazSelect: true,
   MazSelectCountry: true,
