@@ -12,6 +12,7 @@ interface TestFormModel extends Record<string, unknown> {
 }
 
 interface FormBuilderExposed {
+  formId: string
   validateForm: () => Promise<boolean>
   validateField: (name: keyof TestFormModel) => Promise<boolean>
   resetValidation: () => void
@@ -294,8 +295,8 @@ describe('FormBuilder', () => {
       })
     })
 
-    describe('When submit-error event is emitted', () => {
-      it('emits submit-error event with FormSubmitErrorEventPayload containing data and errors', async () => {
+    describe('When submitError event is emitted', () => {
+      it('emits submitError event with FormSubmitErrorEventPayload containing data and errors', async () => {
         const model = ref<TestFormModel>({ name: '', email: '' })
         const schema = createTestSchema()
         const wrapper = mountFormBuilder(model.value, schema)
@@ -307,7 +308,7 @@ describe('FormBuilder', () => {
         await wrapper.find('form').trigger('submit')
         await flushPromises()
 
-        const submitErrorEvents = wrapper.emitted('submit-error')
+        const submitErrorEvents = wrapper.emitted('submitError')
         expect(submitErrorEvents).toBeDefined()
         expect(submitErrorEvents?.length).toBe(1)
 
@@ -317,7 +318,7 @@ describe('FormBuilder', () => {
         expect(typeof payload.errors).toBe('object')
       })
 
-      it('does not emit submit-error event when form is valid', async () => {
+      it('does not emit submitError event when form is valid', async () => {
         const model = ref<TestFormModel>({ name: 'John', email: 'john@test.com' })
         const schema = createTestSchema()
         const wrapper = mountFormBuilder(model.value, schema)
@@ -329,7 +330,7 @@ describe('FormBuilder', () => {
         await wrapper.find('form').trigger('submit')
         await flushPromises()
 
-        const submitErrorEvents = wrapper.emitted('submit-error')
+        const submitErrorEvents = wrapper.emitted('submitError')
         expect(submitErrorEvents).toBeUndefined()
       })
     })
@@ -355,6 +356,188 @@ describe('FormBuilder', () => {
         const payload = resetEvents?.[0][0] as { data: TestFormModel }
         expect(payload.data).toBeDefined()
         expect(typeof payload.data).toBe('object')
+      })
+    })
+
+    describe('When formId prop is provided', () => {
+      it('exposes the provided formId', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema, { formId: 'custom-form-id' })
+
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        expect(vm.formId).toBe('custom-form-id')
+      })
+    })
+
+    describe('When formId prop is not provided', () => {
+      it('generates a unique formId automatically', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        expect(vm.formId).toBeDefined()
+        expect(typeof vm.formId).toBe('string')
+        expect(vm.formId.length).toBeGreaterThan(0)
+      })
+    })
+  })
+
+  describe('Given multiple FormBuilder instances', () => {
+    describe('When mounting two forms simultaneously', () => {
+      it('generates a formId for each instance', async () => {
+        const model1 = ref<TestFormModel>({ name: '', email: '' })
+        const model2 = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+
+        const wrapper1 = mountFormBuilder(model1.value, schema)
+        const wrapper2 = mountFormBuilder(model2.value, schema)
+
+        await flushPromises()
+
+        const vm1 = getVm(wrapper1)
+        const vm2 = getVm(wrapper2)
+
+        expect(vm1.formId).toBeDefined()
+        expect(vm2.formId).toBeDefined()
+        expect(typeof vm1.formId).toBe('string')
+        expect(typeof vm2.formId).toBe('string')
+      })
+    })
+
+    describe('When validating one form', () => {
+      it('does not affect the validation state of the other form', async () => {
+        const model1 = ref<TestFormModel>({ name: '', email: '' })
+        const model2 = ref<TestFormModel>({ name: 'John', email: 'john@test.com' })
+        const schema = createTestSchema()
+
+        const wrapper1 = mountFormBuilder(model1.value, schema)
+        const wrapper2 = mountFormBuilder(model2.value, schema)
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        const vm1 = getVm(wrapper1)
+        const vm2 = getVm(wrapper2)
+
+        await vm1.validateForm()
+        await flushPromises()
+
+        expect(vm1.isValid).toBe(false)
+        expect(vm2.isValid).toBe(true)
+      })
+    })
+
+    describe('When submitting one form', () => {
+      it('does not affect the submission state of the other form', async () => {
+        const model1 = ref<TestFormModel>({ name: 'Alice', email: 'alice@test.com' })
+        const model2 = ref<TestFormModel>({ name: 'Bob', email: 'bob@test.com' })
+        const schema = createTestSchema()
+
+        const wrapper1 = mountFormBuilder(model1.value, schema)
+        const wrapper2 = mountFormBuilder(model2.value, schema)
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        const vm1 = getVm(wrapper1)
+        const vm2 = getVm(wrapper2)
+
+        await wrapper1.find('form').trigger('submit')
+        await flushPromises()
+
+        expect(vm1.isSubmitted).toBe(true)
+        expect(vm2.isSubmitted).toBe(false)
+      })
+    })
+
+    describe('When resetting one form', () => {
+      it('does not affect the state of the other form', async () => {
+        const model1 = ref<TestFormModel>({ name: '', email: '' })
+        const model2 = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+
+        const wrapper1 = mountFormBuilder(model1.value, schema)
+        const wrapper2 = mountFormBuilder(model2.value, schema)
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        const vm1 = getVm(wrapper1)
+        const vm2 = getVm(wrapper2)
+
+        await vm1.validateForm()
+        await vm2.validateForm()
+        await flushPromises()
+
+        expect(vm1.isValid).toBe(false)
+        expect(vm2.isValid).toBe(false)
+
+        vm1.resetForm()
+        await flushPromises()
+
+        const fieldsStates1 = vm1.fieldsStates as Record<string, { error: boolean }>
+        const fieldsStates2 = vm2.fieldsStates as Record<string, { error: boolean }>
+
+        expect(fieldsStates1.name?.error).toBe(false)
+        expect(fieldsStates2.name?.error).toBe(true)
+      })
+    })
+
+    describe('When using custom formIds', () => {
+      it('preserves the custom formIds for each instance', async () => {
+        const model1 = ref<TestFormModel>({ name: '', email: '' })
+        const model2 = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+
+        const wrapper1 = mountFormBuilder(model1.value, schema, { formId: 'form-1' })
+        const wrapper2 = mountFormBuilder(model2.value, schema, { formId: 'form-2' })
+
+        await flushPromises()
+
+        const vm1 = getVm(wrapper1)
+        const vm2 = getVm(wrapper2)
+
+        expect(vm1.formId).toBe('form-1')
+        expect(vm2.formId).toBe('form-2')
+      })
+    })
+
+    describe('When forms have different validation states', () => {
+      it('maintains independent error states', async () => {
+        const model1 = ref<TestFormModel>({ name: 'A', email: '' })
+        const model2 = ref<TestFormModel>({ name: '', email: 'valid@test.com' })
+        const schema = createTestSchema()
+
+        const wrapper1 = mountFormBuilder(model1.value, schema)
+        const wrapper2 = mountFormBuilder(model2.value, schema)
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        const vm1 = getVm(wrapper1)
+        const vm2 = getVm(wrapper2)
+
+        await vm1.validateForm()
+        await vm2.validateForm()
+        await flushPromises()
+
+        const errors1 = vm1.errors
+        const errors2 = vm2.errors
+
+        expect(errors1.name).toBeDefined()
+        expect(errors1.email).toBeDefined()
+        expect(errors2.name).toBeDefined()
+        expect(errors2.email).toBeUndefined()
       })
     })
   })

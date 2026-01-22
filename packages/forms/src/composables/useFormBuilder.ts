@@ -28,6 +28,7 @@ export type FieldsValidationStates<TModel extends Record<string, unknown>> = Par
 >
 
 export interface FormBuilderState<T extends Record<string, unknown>> {
+  formId: ComputedRef<string>
   isValid: ComputedRef<boolean>
   isSubmitting: Ref<boolean>
   isSubmitted: Ref<boolean>
