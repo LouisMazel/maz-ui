@@ -17,6 +17,15 @@ export type { FormFieldComponentProps as MazFormFieldProps } from './components/
 export { default as MazFormSection } from './components/FormSection.vue'
 export type { FormSectionComponentProps as MazFormSectionProps } from './components/FormSection.vue'
 
+export { default as MazFormWizard } from './components/FormWizard.vue'
+export type {
+  FormWizardProps as MazFormWizardProps,
+  StepperDisplayOptions,
+  StepperSlotProps,
+  WizardNavigationProps,
+  WizardNavigationSlotProps,
+} from './components/FormWizard.vue'
+
 export { useFormBuilder } from './composables/useFormBuilder'
 export type {
   ErrorMessageValue,
@@ -69,6 +78,10 @@ export type {
   FormSubmitErrorEventPayload,
   FormSubmitEventPayload,
   InferFormModel,
+  StepChangeEventPayload,
+  StepErrorEventPayload,
+  StepValidateEventPayload,
   ValidationIssues,
   ValidationMode,
+  WizardStep,
 } from './utils/schema-helpers'

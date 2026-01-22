@@ -260,3 +260,28 @@ export interface FieldValidateEventPayload<T, K extends keyof T = keyof T> {
   isValid: boolean
   errors: ValidationIssues
 }
+
+export interface WizardStep<T> {
+  id: string
+  legend?: string
+  index: number
+  fields: FormField<T, keyof T, FormComponentName>[]
+  completed: boolean
+  hasError: boolean
+}
+
+export interface StepChangeEventPayload {
+  previousStep: number
+  currentStep: number
+}
+
+export interface StepValidateEventPayload {
+  step: number
+  isValid: boolean
+  errors: Partial<Record<string, ValidationIssues>>
+}
+
+export interface StepErrorEventPayload {
+  step: number
+  errors: Partial<Record<string, ValidationIssues>>
+}
