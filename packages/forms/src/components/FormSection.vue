@@ -8,6 +8,8 @@ export interface FormSectionComponentProps<T extends Record<string, unknown>> {
   section: FormSection<T>
   model: T
   components: Partial<Record<FormComponentName, Component>>
+  readonly?: boolean
+  disabled?: boolean
 }
 
 defineOptions({
@@ -67,6 +69,8 @@ function updateFieldValue(fieldName: keyof T, value: T[keyof T]) {
         :model-value="model[field.name] as T[keyof T]"
         :model="model"
         :components="components"
+        :readonly="readonly"
+        :disabled="disabled"
         @update:model-value="updateFieldValue(field.name, $event)"
       />
     </fieldset>
@@ -83,6 +87,8 @@ function updateFieldValue(fieldName: keyof T, value: T[keyof T]) {
       :model-value="model[field.name] as T[keyof T]"
       :model="model"
       :components="components"
+      :readonly="readonly"
+      :disabled="disabled"
       @update:model-value="updateFieldValue(field.name, $event)"
     />
   </fieldset>
