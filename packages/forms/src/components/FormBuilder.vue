@@ -344,10 +344,7 @@ const formBuilderState = computed<FormBuilderState<T>>(() => ({
   errors,
   errorMessages,
   fieldsStates: fieldsStatesRef,
-  handleFieldBlur: (name: keyof T) => {
-    handleFieldBlur(name)
-    return Promise.resolve()
-  },
+  handleFieldBlur: (name: keyof T) => handleFieldBlur(name),
   emitFieldChange,
   emitFieldFocus,
   emitFieldBlur: emitFieldBlurEvent,
@@ -365,25 +362,14 @@ async function handleSubmit(): Promise<void> {
   let isValid = true
 
   if (validator) {
-    if (validator.isSubmitting.value) {
-      return
-    }
-
     validator.isSubmitted.value = true
-    validator.isSubmitting.value = true
+    await validator.validateForm(true)
+    isValid = validator.isValid.value
 
-    try {
-      await validator.validateForm(true)
-      isValid = validator.isValid.value
-
-      if (!isValid && props.scrollToError) {
-        validator.scrollToError(
-          typeof props.scrollToError === 'string' ? props.scrollToError : undefined,
-        )
-      }
-    }
-    finally {
-      validator.isSubmitting.value = false
+    if (!isValid && props.scrollToError) {
+      validator.scrollToError(
+        typeof props.scrollToError === 'string' ? props.scrollToError : undefined,
+      )
     }
   }
 
