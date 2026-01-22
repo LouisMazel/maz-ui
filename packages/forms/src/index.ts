@@ -1,4 +1,17 @@
 export {
+  createAsyncComponent,
+  createAsyncComponents,
+  createSchemaAsyncComponents,
+  getComponentImport,
+  getUsedComponentNames,
+} from './utils/component-map'
+
+export type {
+  AsyncComponentOptions,
+  ComponentImportFn,
+} from './utils/component-map'
+
+export {
   defineFormField,
   defineFormSchema,
   defineFormSection,
