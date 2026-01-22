@@ -4,7 +4,10 @@ import { glob } from 'glob'
 
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
+import { libInjectCss } from 'vite-plugin-lib-inject-css'
+import SvgLoader from 'vite-svg-loader'
 import rootPkg from '../../package.json'
+
 import pkg from './package.json'
 
 const external = [
@@ -35,6 +38,8 @@ export default defineConfig((option) => {
   return {
     plugins: [
       vue(),
+      SvgLoader(),
+      libInjectCss(),
       dts({
         tsconfigPath: resolver('./tsconfig.json'),
         entryRoot: resolver('src'),
