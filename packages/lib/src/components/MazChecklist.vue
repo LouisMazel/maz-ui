@@ -260,7 +260,7 @@ function updateQuery(value?: string) {
   }
 
   .no-results-content {
-    @apply maz-flex maz-h-full maz-flex-col maz-gap-3 maz-flex-center;
+    @apply maz-flex maz-h-full maz-flex-col maz-gap-3 maz-flex-center maz-py-8;
   }
 
   .no-results-icon {
