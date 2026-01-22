@@ -103,6 +103,14 @@ const COMPONENT_NAMES: Omit<
   MazPopover: true,
 }
 
+const FORM_BUILDER_COMPONENT_NAMES = {
+  MazFormBuilder: true,
+  MazFormErrorSummary: true,
+  MazFormField: true,
+  MazFormSection: true,
+  MazFormWizard: true,
+} as const
+
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
 const pluginComposables: Record<'useTheme' | 'useTranslations', true> = {
@@ -171,6 +179,9 @@ const defaults = {
     vFullscreenImg: false,
     vTooltip: false,
   },
+  formBuilder: {
+    autoImport: true,
+  },
 } satisfies Required<MazUiNuxtOptions>
 
 function addMazUiComposableImport({
@@ -202,7 +213,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
   setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
 
-    nuxt.options.build.transpile.push('maz-ui', '@maz-ui/themes', '@maz-ui/translations')
+    nuxt.options.build.transpile.push('maz-ui', '@maz-ui/themes', '@maz-ui/translations', '@maz-ui/forms')
 
     const moduleOptions = defu(
       nuxt.options.runtimeConfig.public.mazUi,
@@ -211,6 +222,8 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     )
 
     nuxt.options.runtimeConfig.public.mazUi = moduleOptions
+
+    const autoImportPrefix = moduleOptions.general.autoImportPrefix
 
     // CSS
 
@@ -234,9 +247,30 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       }
     }
 
-    // Plugins
+    // FormBuilder Components, Composables, and Helpers
 
-    const autoImportPrefix = moduleOptions.general.autoImportPrefix
+    if (moduleOptions.formBuilder.autoImport) {
+      for (const name of Object.keys(FORM_BUILDER_COMPONENT_NAMES)) {
+        addComponent({
+          name,
+          filePath: '@maz-ui/forms',
+          export: name,
+        })
+      }
+
+      addImports({
+        name: 'useFormBuilder',
+        from: '@maz-ui/forms',
+        as: `use${capitalize(autoImportPrefix)}FormBuilder`,
+      })
+
+      addImports({
+        name: 'defineFormSchema',
+        from: '@maz-ui/forms',
+      })
+    }
+
+    // Plugins
 
     if (moduleOptions.plugins.aos) {
       addPlugin(resolve(_dirname, './runtime/plugins/aos'))
