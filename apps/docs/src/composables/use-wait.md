@@ -24,7 +24,7 @@ More info about the [wait plugin](./../plugins/wait.md) in its documentation
 
 ```vue
 <script lang="ts" setup>
-import { sleep } from 'maz-ui'
+import { sleep } from '@maz-ui/utils'
 import { useWait } from 'maz-ui/composables'
 import { onMounted } from 'vue'
 

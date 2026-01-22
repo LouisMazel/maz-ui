@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { MazGithub } from '@maz-ui/icons'
-import { truthyFilter } from 'maz-ui'
+import { truthyFilter } from '@maz-ui/utils'
 import { MazAvatar, MazCardSpotlight } from 'maz-ui/components'
 
 const {

@@ -102,7 +102,7 @@ function handleError({ code, files }) {
 
 ```vue
 <script setup lang="ts">
-import { useToast } from 'maz-ui'
+import { useToast } from 'maz-ui/composables'
 import { ref } from 'vue'
 
 const toast = useToast()
@@ -284,7 +284,7 @@ Multiple upload is allowed:
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { useToast } from 'maz-ui'
+  import { useToast } from 'maz-ui/composables'
 
   const files = ref<File[]>([])
 
