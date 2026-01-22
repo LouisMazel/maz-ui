@@ -1,9 +1,19 @@
 <script lang="ts" setup generic="T extends Record<string, unknown>">
 import type { Component, ComputedRef, Ref } from 'vue'
+import type { FormBuilderState } from '../composables/useFormBuilder'
 import type { ErrorMessageValue, FieldsValidationStates } from '../composables/useFormBuilderValidation'
-import type { FormComponentName, FormField, FormFieldAttrs, FormFieldProps } from '../utils/schema-helpers'
-import { computed, inject, toRef } from 'vue'
-import { FORM_BUILDER_VALIDATION_KEY } from '../utils/constants'
+import type {
+  FieldBlurEventPayload,
+  FieldChangeEventPayload,
+  FieldFocusEventPayload,
+  FieldValidateEventPayload,
+  FormComponentName,
+  FormField,
+  FormFieldAttrs,
+  FormFieldProps,
+} from '../utils/schema-helpers'
+import { computed, inject, toRef, watch } from 'vue'
+import { FORM_BUILDER_STATE_KEY, FORM_BUILDER_VALIDATION_KEY } from '../utils/constants'
 
 export interface FormFieldComponentProps<T extends Record<string, unknown>> {
   field: FormField<T, keyof T, FormComponentName>
@@ -29,6 +39,10 @@ const props = defineProps<FormFieldComponentProps<T>>()
 
 const emit = defineEmits<{
   'update:modelValue': [value: T[keyof T]]
+  'field-change': [payload: FieldChangeEventPayload<T>]
+  'field-focus': [payload: FieldFocusEventPayload<T>]
+  'field-blur': [payload: FieldBlurEventPayload<T>]
+  'field-validate': [payload: FieldValidateEventPayload<T>]
 }>()
 
 const field = toRef(props, 'field')
@@ -38,6 +52,13 @@ const validationContext = inject<ComputedRef<ValidationContext<T>> | null>(
   FORM_BUILDER_VALIDATION_KEY,
   null,
 )
+
+const formBuilderState = inject<ComputedRef<FormBuilderState<T>> | null>(
+  FORM_BUILDER_STATE_KEY,
+  null,
+)
+
+let previousValue: T[keyof T] = props.modelValue
 
 const isVisible = computed(() => {
   if (!field.value.condition) {
@@ -82,14 +103,76 @@ const hasValidation = computed(() => {
 })
 
 function handleUpdate(value: T[keyof T]): void {
+  const changePayload: FieldChangeEventPayload<T> = {
+    name: field.value.name,
+    value,
+    previousValue,
+  }
+
   emit('update:modelValue', value)
+  emit('field-change', changePayload)
+
+  if (formBuilderState?.value) {
+    formBuilderState.value.emitFieldChange(changePayload)
+  }
+
+  previousValue = value
+}
+
+function handleFocus(): void {
+  const focusPayload: FieldFocusEventPayload<T> = {
+    name: field.value.name,
+    value: props.modelValue,
+  }
+
+  emit('field-focus', focusPayload)
+
+  if (formBuilderState?.value) {
+    formBuilderState.value.emitFieldFocus(focusPayload)
+  }
 }
 
 async function handleBlur(): Promise<void> {
+  const blurPayload: FieldBlurEventPayload<T> = {
+    name: field.value.name,
+    value: props.modelValue,
+  }
+
+  emit('field-blur', blurPayload)
+
+  if (formBuilderState?.value) {
+    formBuilderState.value.emitFieldBlur(blurPayload)
+  }
+
   if (validationContext?.value && hasValidation.value) {
     await validationContext.value.handleFieldBlur(field.value.name)
   }
 }
+
+watch(
+  () => fieldState.value,
+  (newState, oldState) => {
+    if (!newState || !hasValidation.value) {
+      return
+    }
+
+    if (newState.validated && (!oldState || !oldState.validated || newState.valid !== oldState.valid)) {
+      const validatePayload: FieldValidateEventPayload<T> = {
+        name: field.value.name,
+        value: props.modelValue,
+        isValid: newState.valid,
+        errors: newState.errors,
+      }
+
+      emit('field-validate', validatePayload)
+
+      if (formBuilderState?.value) {
+        formBuilderState.value.emitFieldValidate(validatePayload)
+      }
+    }
+  },
+  { deep: true },
+)
 </script>
 
 <template>
@@ -109,6 +192,7 @@ async function handleBlur(): Promise<void> {
       :error="hasError"
       v-bind="{ ...fieldProps, ...fieldAttrs }"
       @update:model-value="handleUpdate"
+      @focus="handleFocus"
       @blur="handleBlur"
     />
     <div
