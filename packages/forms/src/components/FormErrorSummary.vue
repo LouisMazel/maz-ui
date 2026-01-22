@@ -4,7 +4,7 @@ import type {
   ErrorMessageValue,
   FieldsValidationStates,
 } from '../composables/useFormBuilder'
-import { computed, inject, nextTick, ref, watch } from 'vue'
+import { computed, inject, nextTick, ref, useId, watch } from 'vue'
 import { FORM_BUILDER_STATE_KEY } from '../utils/constants'
 
 export interface ErrorSummaryOptions {
@@ -42,6 +42,10 @@ const formBuilderState = inject<ComputedRef<FormBuilderStateContext<T>> | null>(
 )
 
 const summaryElement = ref<HTMLElement | null>(null)
+
+const summaryUniqueId = useId()
+const headingId = computed(() => `${summaryUniqueId}-heading`)
+const listId = computed(() => `${summaryUniqueId}-list`)
 
 const isEnabled = computed(() => {
   return props.errorSummary !== undefined && props.errorSummary !== false
@@ -138,9 +142,12 @@ defineExpose({
     class="maz-form-error-summary"
     role="alert"
     aria-live="polite"
+    :aria-labelledby="headingId"
+    :aria-describedby="listId"
+    tabindex="-1"
   >
     <div class="maz-form-error-summary__header">
-      <span class="maz-form-error-summary__icon">
+      <span class="maz-form-error-summary__icon" aria-hidden="true">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
@@ -154,11 +161,17 @@ defineExpose({
           />
         </svg>
       </span>
-      <span class="maz-form-error-summary__title">
+      <h2
+        :id="headingId"
+        class="maz-form-error-summary__title"
+      >
         {{ errorItems.length }} error{{ errorItems.length > 1 ? 's' : '' }} found
-      </span>
+      </h2>
     </div>
-    <ul class="maz-form-error-summary__list">
+    <ul
+      :id="listId"
+      class="maz-form-error-summary__list"
+    >
       <li
         v-for="(error, index) in errorItems"
         :key="`${error.fieldName}-${index}`"
@@ -167,7 +180,10 @@ defineExpose({
         <button
           type="button"
           class="maz-form-error-summary__link"
+          :aria-label="`Go to field with error: ${error.message}`"
           @click="scrollToField(error.selector)"
+          @keydown.enter="scrollToField(error.selector)"
+          @keydown.space.prevent="scrollToField(error.selector)"
         >
           {{ error.message }}
         </button>

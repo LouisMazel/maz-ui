@@ -1,7 +1,7 @@
 <script lang="ts" setup generic="T extends Record<string, unknown>">
 import type { Component } from 'vue'
 import type { FormComponentName, FormSection, FormSectionCardOption } from '../utils/schema-helpers'
-import { computed, defineAsyncComponent, toRef } from 'vue'
+import { computed, defineAsyncComponent, toRef, useId } from 'vue'
 import FormField from './FormField.vue'
 
 export interface FormSectionComponentProps<T extends Record<string, unknown>> {
@@ -46,6 +46,9 @@ const hasLegend = computed(() => {
   return section.value.legend !== undefined && section.value.legend !== ''
 })
 
+const sectionUniqueId = useId()
+const legendId = computed(() => `${sectionUniqueId}-legend`)
+
 function updateFieldValue(fieldName: keyof T, value: T[keyof T]) {
   model.value = {
     ...model.value,
@@ -60,8 +63,12 @@ function updateFieldValue(fieldName: keyof T, value: T[keyof T]) {
     v-bind="cardProps"
     :title="hasLegend ? section.legend : undefined"
     block
+    role="group"
+    :aria-label="hasLegend ? section.legend : undefined"
   >
-    <fieldset>
+    <fieldset
+      :aria-labelledby="hasLegend ? undefined : legendId"
+    >
       <FormField
         v-for="field in section.fields"
         :key="String(field.name)"
@@ -76,8 +83,14 @@ function updateFieldValue(fieldName: keyof T, value: T[keyof T]) {
     </fieldset>
   </MazCard>
 
-  <fieldset v-else>
-    <legend v-if="hasLegend">
+  <fieldset
+    v-else
+    :aria-labelledby="hasLegend ? legendId : undefined"
+  >
+    <legend
+      v-if="hasLegend"
+      :id="legendId"
+    >
       {{ section.legend }}
     </legend>
     <FormField

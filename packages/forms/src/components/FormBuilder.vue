@@ -19,7 +19,7 @@ import type {
 } from '../utils/schema-helpers'
 import type { ErrorSummaryOptions } from './FormErrorSummary.vue'
 import { useFormValidator } from 'maz-ui/composables/useFormValidator'
-import { computed, defineAsyncComponent, provide, ref, shallowRef, toRef, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, provide, ref, shallowRef, toRef, useId, watch } from 'vue'
 import { createSchemaAsyncComponents } from '../utils/component-map'
 import { FORM_BUILDER_STATE_KEY, FORM_BUILDER_VALIDATION_KEY } from '../utils/constants'
 import { extractValidationFromSchema, hasValidationRules } from '../utils/schema-helpers'
@@ -55,6 +55,9 @@ export interface FormBuilderProps<T extends Record<string, unknown>> {
   validationMode?: ValidationMode
   scrollToError?: string | false
   errorSummary?: ErrorSummaryOptions | boolean
+  ariaLabel?: string
+  ariaLabelledBy?: string
+  ariaDescribedBy?: string
 }
 
 export interface FormBuilderValidationContext<T extends Record<string, unknown>> {
@@ -77,6 +80,9 @@ const props = withDefaults(defineProps<FormBuilderProps<T>>(), {
   validationMode: 'lazy',
   scrollToError: '.has-field-error',
   errorSummary: undefined,
+  ariaLabel: undefined,
+  ariaLabelledBy: undefined,
+  ariaDescribedBy: undefined,
 })
 
 const emit = defineEmits<{
@@ -93,6 +99,10 @@ const emit = defineEmits<{
 const model = defineModel<T>({ required: true })
 
 const schema = toRef(props, 'schema')
+
+const formUniqueId = useId()
+const formRef = ref<HTMLFormElement | null>(null)
+const liveRegionRef = ref<HTMLElement | null>(null)
 
 const MazBtn = defineAsyncComponent(() => import('maz-ui/components/MazBtn'))
 
@@ -145,6 +155,24 @@ const errorSummarySelector = computed<string>(() => {
     return '.has-field-error'
   }
   return props.errorSummary.selector
+})
+
+const liveRegionId = computed(() => `${formUniqueId}-live-region`)
+
+const formAccessibilityAttrs = computed(() => {
+  const attrs: Record<string, string | undefined> = {}
+
+  if (props.ariaLabel) {
+    attrs['aria-label'] = props.ariaLabel
+  }
+  if (props.ariaLabelledBy) {
+    attrs['aria-labelledby'] = props.ariaLabelledBy
+  }
+  if (props.ariaDescribedBy) {
+    attrs['aria-describedby'] = props.ariaDescribedBy
+  }
+
+  return attrs
 })
 
 interface ValidatorInstance {
@@ -312,6 +340,10 @@ const errors = computed<Partial<Record<keyof T, ValidationIssues>>>(() => {
   return result
 })
 
+const errorCount = computed(() => {
+  return Object.keys(errors.value).length
+})
+
 function handleFieldBlur(name: keyof T): void {
   const validator = validatorRef.value
   if (!validator) {
@@ -374,6 +406,31 @@ const formBuilderState = computed<FormBuilderState<T>>(() => ({
 
 provide(FORM_BUILDER_STATE_KEY, formBuilderState)
 
+function focusFirstErrorField(): void {
+  if (!formRef.value) {
+    return
+  }
+
+  const firstErrorField = formRef.value.querySelector('.has-field-error')
+  if (!firstErrorField) {
+    return
+  }
+
+  const focusableElement = firstErrorField.querySelector(
+    'input, textarea, select, [tabindex]:not([tabindex="-1"])',
+  )
+
+  if (focusableElement instanceof HTMLElement) {
+    focusableElement.focus()
+  }
+}
+
+function announceToScreenReader(message: string): void {
+  if (liveRegionRef.value) {
+    liveRegionRef.value.textContent = message
+  }
+}
+
 async function handleSubmit(): Promise<void> {
   if (props.disabled || props.readonly) {
     return
@@ -407,6 +464,15 @@ async function handleSubmit(): Promise<void> {
       errors: errors.value,
     }
     emit('submit-error', submitErrorPayload)
+
+    await nextTick()
+    const errCount = errorCount.value
+    const errorText = errCount === 1 ? 'error' : 'errors'
+    announceToScreenReader(`Form submission failed. ${errCount} ${errorText} found. Please correct the errors and try again.`)
+    focusFirstErrorField()
+  }
+  else {
+    announceToScreenReader('Form submitted successfully.')
   }
 }
 
@@ -466,8 +532,20 @@ defineExpose({
 
 <template>
   <form
+    ref="formRef"
+    v-bind="formAccessibilityAttrs"
+    novalidate
     @submit.prevent="handleSubmit"
   >
+    <div
+      :id="liveRegionId"
+      ref="liveRegionRef"
+      class="maz-sr-only"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    />
+
     <FormErrorSummary
       v-if="errorSummaryPosition === 'top'"
       :error-summary="{ position: 'top', selector: errorSummarySelector }"
@@ -497,3 +575,17 @@ defineExpose({
     </MazBtn>
   </form>
 </template>
+
+<style scoped>
+.maz-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+</style>
