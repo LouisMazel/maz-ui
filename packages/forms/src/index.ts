@@ -11,6 +11,9 @@ export type { FormFieldComponentProps as MazFormFieldProps } from './components/
 export { default as MazFormSection } from './components/FormSection.vue'
 export type { FormSectionComponentProps as MazFormSectionProps } from './components/FormSection.vue'
 
+export { useFormBuilder } from './composables/useFormBuilder'
+export type { FormBuilderState } from './composables/useFormBuilder'
+
 export { useFormBuilderValidation } from './composables/useFormBuilderValidation'
 export type {
   ErrorMessageValue,
@@ -33,7 +36,7 @@ export type {
   ComponentImportFn,
 } from './utils/component-map'
 
-export { FORM_BUILDER_VALIDATION_KEY } from './utils/constants'
+export { FORM_BUILDER_STATE_KEY, FORM_BUILDER_VALIDATION_KEY } from './utils/constants'
 
 export {
   defineFormField,
