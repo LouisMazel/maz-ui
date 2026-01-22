@@ -17,11 +17,13 @@ import type {
   ValidationIssues,
   ValidationMode,
 } from '../utils/schema-helpers'
+import type { ErrorSummaryOptions } from './FormErrorSummary.vue'
 import { useFormValidator } from 'maz-ui/composables/useFormValidator'
 import { computed, defineAsyncComponent, provide, ref, shallowRef, toRef, watch } from 'vue'
 import { createSchemaAsyncComponents } from '../utils/component-map'
 import { FORM_BUILDER_STATE_KEY, FORM_BUILDER_VALIDATION_KEY } from '../utils/constants'
 import { extractValidationFromSchema, hasValidationRules } from '../utils/schema-helpers'
+import FormErrorSummary from './FormErrorSummary.vue'
 import FormSection from './FormSection.vue'
 
 export type ErrorMessageValue = string | string[] | undefined
@@ -52,6 +54,7 @@ export interface FormBuilderProps<T extends Record<string, unknown>> {
   submitButton?: SubmitButtonProps | false
   validationMode?: ValidationMode
   scrollToError?: string | false
+  errorSummary?: ErrorSummaryOptions | boolean
 }
 
 export interface FormBuilderValidationContext<T extends Record<string, unknown>> {
@@ -73,6 +76,7 @@ const props = withDefaults(defineProps<FormBuilderProps<T>>(), {
   submitButton: undefined,
   validationMode: 'lazy',
   scrollToError: '.has-field-error',
+  errorSummary: undefined,
 })
 
 const emit = defineEmits<{
@@ -124,6 +128,23 @@ const submitButtonText = computed(() => {
     return props.submitButton.text
   }
   return 'Submit'
+})
+
+const errorSummaryPosition = computed<'top' | 'bottom' | null>(() => {
+  if (!props.errorSummary) {
+    return null
+  }
+  if (typeof props.errorSummary === 'boolean') {
+    return 'top'
+  }
+  return props.errorSummary.position ?? 'top'
+})
+
+const errorSummarySelector = computed<string>(() => {
+  if (typeof props.errorSummary === 'boolean' || !props.errorSummary?.selector) {
+    return '.has-field-error'
+  }
+  return props.errorSummary.selector
 })
 
 interface ValidatorInstance {
@@ -447,6 +468,11 @@ defineExpose({
   <form
     @submit.prevent="handleSubmit"
   >
+    <FormErrorSummary
+      v-if="errorSummaryPosition === 'top'"
+      :error-summary="{ position: 'top', selector: errorSummarySelector }"
+    />
+
     <FormSection
       v-for="section in schema.sections"
       :key="section.id"
@@ -456,6 +482,11 @@ defineExpose({
       :components="componentsWithGlobalState"
       :readonly="readonly"
       :disabled="disabled"
+    />
+
+    <FormErrorSummary
+      v-if="errorSummaryPosition === 'bottom'"
+      :error-summary="{ position: 'bottom', selector: errorSummarySelector }"
     />
 
     <MazBtn

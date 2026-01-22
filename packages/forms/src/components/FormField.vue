@@ -186,6 +186,7 @@ watch(
       'has-field-error': hasError,
       'maz-form-field--error': hasError,
     }"
+    :data-field-name="field.name"
   >
     <component
       :is="componentToRender"
