@@ -124,6 +124,106 @@ export function defineFormSchema<T extends Record<string, unknown>>(
   return schema
 }
 
+export type FlatValidationSchema<T extends Record<string, unknown>> = {
+  [K in keyof T]?: FormFieldValidation
+}
+
+export interface ExtractedValidationOptions<T extends Record<string, unknown>> {
+  schema: FlatValidationSchema<T>
+  debouncedFields: Partial<Record<keyof T, number | true>> | null
+  throttledFields: Partial<Record<keyof T, number | true>> | null
+  fieldModes: Partial<Record<keyof T, ValidationMode>>
+  customMessages: Partial<Record<keyof T, Record<string, string>>>
+  useMultipleErrorMessages: Partial<Record<keyof T, boolean>>
+}
+
+interface FieldExtractionContext<T extends Record<string, unknown>> {
+  schema: FlatValidationSchema<T>
+  debouncedFields: Partial<Record<keyof T, number | true>>
+  throttledFields: Partial<Record<keyof T, number | true>>
+  fieldModes: Partial<Record<keyof T, ValidationMode>>
+  customMessages: Partial<Record<keyof T, Record<string, string>>>
+  useMultipleErrorMessages: Partial<Record<keyof T, boolean>>
+  hasDebouncedFields: boolean
+  hasThrottledFields: boolean
+}
+
+function processFieldValidation<T extends Record<string, unknown>>(
+  field: FormField<T, keyof T, FormComponentName>,
+  context: FieldExtractionContext<T>,
+): void {
+  const fieldName = field.name as keyof T
+  const validation = field.validation
+
+  if (!validation) {
+    return
+  }
+
+  if (validation.rule) {
+    context.schema[fieldName] = validation.rule
+  }
+  if (validation.mode) {
+    context.fieldModes[fieldName] = validation.mode
+  }
+  if (validation.debounced) {
+    context.debouncedFields[fieldName] = validation.debounced
+    context.hasDebouncedFields = true
+  }
+  if (validation.throttled) {
+    context.throttledFields[fieldName] = validation.throttled
+    context.hasThrottledFields = true
+  }
+  if (validation.messages) {
+    context.customMessages[fieldName] = validation.messages
+  }
+  if (validation.useMultipleErrorMessages !== undefined) {
+    context.useMultipleErrorMessages[fieldName] = validation.useMultipleErrorMessages
+  }
+}
+
+export function extractValidationFromSchema<T extends Record<string, unknown>>(
+  formSchema: FormSchema<T>,
+): ExtractedValidationOptions<T> {
+  const context: FieldExtractionContext<T> = {
+    schema: {},
+    debouncedFields: {},
+    throttledFields: {},
+    fieldModes: {},
+    customMessages: {},
+    useMultipleErrorMessages: {},
+    hasDebouncedFields: false,
+    hasThrottledFields: false,
+  }
+
+  for (const section of formSchema.sections) {
+    for (const field of section.fields) {
+      processFieldValidation(field, context)
+    }
+  }
+
+  return {
+    schema: context.schema,
+    debouncedFields: context.hasDebouncedFields ? context.debouncedFields : null,
+    throttledFields: context.hasThrottledFields ? context.throttledFields : null,
+    fieldModes: context.fieldModes,
+    customMessages: context.customMessages,
+    useMultipleErrorMessages: context.useMultipleErrorMessages,
+  }
+}
+
+export function hasValidationRules<T extends Record<string, unknown>>(
+  formSchema: FormSchema<T>,
+): boolean {
+  for (const section of formSchema.sections) {
+    for (const field of section.fields) {
+      if (field.validation?.rule) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
 export interface FormSubmitEventPayload<T> {
   data: T
   isValid: boolean
