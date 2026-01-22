@@ -123,3 +123,40 @@ export function defineFormSchema<T extends Record<string, unknown>>(
 ): FormSchema<T> {
   return schema
 }
+
+export interface FormSubmitEventPayload<T> {
+  data: T
+  isValid: boolean
+}
+
+export interface FormSubmitErrorEventPayload<T> {
+  data: T
+  errors: Partial<Record<keyof T, ValidationIssues>>
+}
+
+export interface FormResetEventPayload<T> {
+  data: T
+}
+
+export interface FieldChangeEventPayload<T, K extends keyof T = keyof T> {
+  name: K
+  value: T[K]
+  previousValue: T[K]
+}
+
+export interface FieldFocusEventPayload<T, K extends keyof T = keyof T> {
+  name: K
+  value: T[K]
+}
+
+export interface FieldBlurEventPayload<T, K extends keyof T = keyof T> {
+  name: K
+  value: T[K]
+}
+
+export interface FieldValidateEventPayload<T, K extends keyof T = keyof T> {
+  name: K
+  value: T[K]
+  isValid: boolean
+  errors: ValidationIssues
+}
