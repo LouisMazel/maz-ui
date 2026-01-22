@@ -1,9 +1,10 @@
 /// <reference types="vitest" />
 
+import vue from '@vitejs/plugin-vue'
 import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
 
 export default defineConfig({
-  plugins: [],
+  plugins: [vue()],
   test: {
     environment: 'jsdom',
     environmentOptions: {
