@@ -1,7 +1,7 @@
 import { defineConfig } from 'relizy'
 
 export default defineConfig({
-  projectName: 'maz-ui',
+  projectName: '@maz-ui/forms',
   types: {
     feat: { title: '🚀 Features', semver: 'minor' },
     perf: { title: '🔥 Performance', semver: 'patch' },
@@ -23,9 +23,8 @@ export default defineConfig({
   },
 
   monorepo: {
-    versionMode: 'selective',
-    packages: ['packages/*'],
-    ignorePackageNames: ['packages/forms'],
+    versionMode: 'independent',
+    packages: ['packages/forms'],
   },
 
   changelog: {
@@ -36,6 +35,7 @@ export default defineConfig({
     access: 'public',
     safetyCheck: true,
     token: process.env.NPM_TOKEN,
+    packages: ['packages/forms'],
   },
 
   release: {

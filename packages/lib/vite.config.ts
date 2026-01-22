@@ -40,7 +40,7 @@ const external = [
 
 const moduleEntries = Object.fromEntries(
   glob.sync([
-    'src/components/*.vue',
+    'src/components/**/*.vue',
     'src/composables/*.ts',
     'src/directives/*.ts',
     'src/resolvers/*.ts',
