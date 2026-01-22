@@ -12,16 +12,12 @@ export { default as MazFormSection } from './components/FormSection.vue'
 export type { FormSectionComponentProps as MazFormSectionProps } from './components/FormSection.vue'
 
 export { useFormBuilder } from './composables/useFormBuilder'
-export type { FormBuilderState } from './composables/useFormBuilder'
-
-export { useFormBuilderValidation } from './composables/useFormBuilderValidation'
 export type {
   ErrorMessageValue,
   FieldsValidationStates,
   FieldValidationState,
-  FormBuilderValidationOptions,
-  FormBuilderValidationReturn,
-} from './composables/useFormBuilderValidation'
+  FormBuilderState,
+} from './composables/useFormBuilder'
 
 export {
   createAsyncComponent,
@@ -42,13 +38,17 @@ export {
   defineFormField,
   defineFormSchema,
   defineFormSection,
+  extractValidationFromSchema,
+  hasValidationRules,
 } from './utils/schema-helpers'
 
 export type {
+  ExtractedValidationOptions,
   FieldBlurEventPayload,
   FieldChangeEventPayload,
   FieldFocusEventPayload,
   FieldValidateEventPayload,
+  FlatValidationSchema,
   FormComponentName,
   FormComponentPropsMap,
   FormField,

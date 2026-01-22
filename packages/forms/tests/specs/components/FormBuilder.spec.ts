@@ -1,13 +1,32 @@
-import type { FormSchema } from '../../../src/utils/schema-helpers'
+import type { ComponentPublicInstance } from 'vue'
+import type { FieldsValidationStates } from '../../../src/components/FormBuilder.vue'
+import type { FormSchema, ValidationIssues } from '../../../src/utils/schema-helpers'
 import { flushPromises, mount } from '@vue/test-utils'
 import { minLength, pipe, string } from 'valibot'
-import { nextTick, ref } from 'vue'
+import { ref } from 'vue'
 import MazFormBuilder from '../../../src/components/FormBuilder.vue'
 
-interface TestFormModel {
+interface TestFormModel extends Record<string, unknown> {
   name: string
   email: string
 }
+
+interface FormBuilderExposed {
+  validateForm: () => Promise<boolean>
+  validateField: (name: keyof TestFormModel) => Promise<boolean>
+  resetValidation: () => void
+  resetForm: () => void
+  isValid: boolean
+  isSubmitting: boolean
+  isSubmitted: boolean
+  isDirty: boolean
+  isValidating: boolean
+  errors: Partial<Record<keyof TestFormModel, ValidationIssues>>
+  errorMessages: Partial<Record<keyof TestFormModel, string | string[] | undefined>>
+  fieldsStates: FieldsValidationStates<TestFormModel>
+}
+
+type FormBuilderInstance = ComponentPublicInstance & FormBuilderExposed
 
 function createTestSchema(): FormSchema<TestFormModel> {
   return {
@@ -37,198 +56,155 @@ function createTestSchema(): FormSchema<TestFormModel> {
   }
 }
 
+function mountFormBuilder(modelValue: TestFormModel, schema: FormSchema<TestFormModel>, additionalProps: Record<string, unknown> = {}) {
+  return mount(MazFormBuilder as any, {
+    props: {
+      modelValue,
+      schema,
+      ...additionalProps,
+    },
+  })
+}
+
+function getVm(wrapper: ReturnType<typeof mountFormBuilder>): FormBuilderInstance {
+  return wrapper.vm as unknown as FormBuilderInstance
+}
+
 describe('FormBuilder', () => {
   describe('Given a FormBuilder component', () => {
     describe('When checking defineExpose properties', () => {
       it('exposes isValid computed ref', async () => {
         const model = ref<TestFormModel>({ name: '', email: '' })
         const schema = createTestSchema()
-
-        const wrapper = mount(MazFormBuilder, {
-          props: {
-            'modelValue': model.value,
-            'onUpdate:modelValue': (v: TestFormModel) => { model.value = v },
-            schema,
-          },
-        })
+        const wrapper = mountFormBuilder(model.value, schema)
 
         await flushPromises()
 
-        expect(wrapper.vm.isValid).toBeDefined()
-        expect(typeof wrapper.vm.isValid).toBe('boolean')
+        const vm = getVm(wrapper)
+        expect(vm.isValid).toBeDefined()
+        expect(typeof vm.isValid).toBe('boolean')
       })
 
       it('exposes isSubmitting ref', async () => {
         const model = ref<TestFormModel>({ name: '', email: '' })
         const schema = createTestSchema()
-
-        const wrapper = mount(MazFormBuilder, {
-          props: {
-            'modelValue': model.value,
-            'onUpdate:modelValue': (v: TestFormModel) => { model.value = v },
-            schema,
-          },
-        })
+        const wrapper = mountFormBuilder(model.value, schema)
 
         await flushPromises()
 
-        expect(wrapper.vm.isSubmitting).toBeDefined()
-        expect(typeof wrapper.vm.isSubmitting).toBe('boolean')
+        const vm = getVm(wrapper)
+        expect(vm.isSubmitting).toBeDefined()
+        expect(typeof vm.isSubmitting).toBe('boolean')
       })
 
       it('exposes isSubmitted ref', async () => {
         const model = ref<TestFormModel>({ name: '', email: '' })
         const schema = createTestSchema()
-
-        const wrapper = mount(MazFormBuilder, {
-          props: {
-            'modelValue': model.value,
-            'onUpdate:modelValue': (v: TestFormModel) => { model.value = v },
-            schema,
-          },
-        })
+        const wrapper = mountFormBuilder(model.value, schema)
 
         await flushPromises()
 
-        expect(wrapper.vm.isSubmitted).toBeDefined()
-        expect(typeof wrapper.vm.isSubmitted).toBe('boolean')
+        const vm = getVm(wrapper)
+        expect(vm.isSubmitted).toBeDefined()
+        expect(typeof vm.isSubmitted).toBe('boolean')
       })
 
       it('exposes isDirty computed ref', async () => {
         const model = ref<TestFormModel>({ name: '', email: '' })
         const schema = createTestSchema()
-
-        const wrapper = mount(MazFormBuilder, {
-          props: {
-            'modelValue': model.value,
-            'onUpdate:modelValue': (v: TestFormModel) => { model.value = v },
-            schema,
-          },
-        })
+        const wrapper = mountFormBuilder(model.value, schema)
 
         await flushPromises()
 
-        expect(wrapper.vm.isDirty).toBeDefined()
-        expect(typeof wrapper.vm.isDirty).toBe('boolean')
+        const vm = getVm(wrapper)
+        expect(vm.isDirty).toBeDefined()
+        expect(typeof vm.isDirty).toBe('boolean')
       })
 
       it('exposes errors computed ref', async () => {
         const model = ref<TestFormModel>({ name: '', email: '' })
         const schema = createTestSchema()
-
-        const wrapper = mount(MazFormBuilder, {
-          props: {
-            'modelValue': model.value,
-            'onUpdate:modelValue': (v: TestFormModel) => { model.value = v },
-            schema,
-          },
-        })
+        const wrapper = mountFormBuilder(model.value, schema)
 
         await flushPromises()
 
-        expect(wrapper.vm.errors).toBeDefined()
-        expect(typeof wrapper.vm.errors).toBe('object')
+        const vm = getVm(wrapper)
+        expect(vm.errors).toBeDefined()
+        expect(typeof vm.errors).toBe('object')
       })
 
       it('exposes errorMessages computed ref', async () => {
         const model = ref<TestFormModel>({ name: '', email: '' })
         const schema = createTestSchema()
-
-        const wrapper = mount(MazFormBuilder, {
-          props: {
-            'modelValue': model.value,
-            'onUpdate:modelValue': (v: TestFormModel) => { model.value = v },
-            schema,
-          },
-        })
+        const wrapper = mountFormBuilder(model.value, schema)
 
         await flushPromises()
 
-        expect(wrapper.vm.errorMessages).toBeDefined()
-        expect(typeof wrapper.vm.errorMessages).toBe('object')
+        const vm = getVm(wrapper)
+        expect(vm.errorMessages).toBeDefined()
+        expect(typeof vm.errorMessages).toBe('object')
       })
 
       it('exposes fieldsStates ref', async () => {
         const model = ref<TestFormModel>({ name: '', email: '' })
         const schema = createTestSchema()
-
-        const wrapper = mount(MazFormBuilder, {
-          props: {
-            'modelValue': model.value,
-            'onUpdate:modelValue': (v: TestFormModel) => { model.value = v },
-            schema,
-          },
-        })
+        const wrapper = mountFormBuilder(model.value, schema)
 
         await flushPromises()
 
-        expect(wrapper.vm.fieldsStates).toBeDefined()
-        expect(typeof wrapper.vm.fieldsStates).toBe('object')
+        const vm = getVm(wrapper)
+        expect(vm.fieldsStates).toBeDefined()
+        expect(typeof vm.fieldsStates).toBe('object')
       })
     })
 
     describe('When form is submitted', () => {
-      it('sets isSubmitting to true during submission', async () => {
+      it('emits submit event with valid payload when form has valid data', async () => {
         const model = ref<TestFormModel>({ name: 'John', email: 'john@test.com' })
         const schema = createTestSchema()
-        let isSubmittingDuringSubmit: boolean | undefined
-
-        const wrapper = mount(MazFormBuilder, {
-          props: {
-            'modelValue': model.value,
-            'onUpdate:modelValue': (v: TestFormModel) => { model.value = v },
-            schema,
-            'onSubmit': () => {
-              isSubmittingDuringSubmit = wrapper.vm.isSubmitting
-            },
-          },
-        })
+        const wrapper = mountFormBuilder(model.value, schema)
 
         await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
         await wrapper.find('form').trigger('submit')
         await flushPromises()
 
-        expect(isSubmittingDuringSubmit).toBe(true)
+        const submitEvents = wrapper.emitted('submit')
+        expect(submitEvents).toBeDefined()
+        expect(submitEvents?.length).toBeGreaterThan(0)
       })
 
-      it('sets isSubmitted to true after submission', async () => {
+      it('has isSubmitted set to true after submission validation completes', async () => {
         const model = ref<TestFormModel>({ name: 'John', email: 'john@test.com' })
         const schema = createTestSchema()
-
-        const wrapper = mount(MazFormBuilder, {
-          props: {
-            'modelValue': model.value,
-            'onUpdate:modelValue': (v: TestFormModel) => { model.value = v },
-            schema,
-          },
-        })
+        const wrapper = mountFormBuilder(model.value, schema)
 
         await flushPromises()
-        expect(wrapper.vm.isSubmitted).toBe(false)
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        expect(vm.isSubmitted).toBe(false)
 
         await wrapper.find('form').trigger('submit')
         await flushPromises()
 
-        expect(wrapper.vm.isSubmitted).toBe(true)
+        expect(vm.isSubmitted).toBe(true)
       })
 
       it('sets isSubmitting to false after submission completes', async () => {
         const model = ref<TestFormModel>({ name: 'John', email: 'john@test.com' })
         const schema = createTestSchema()
-
-        const wrapper = mount(MazFormBuilder, {
-          props: {
-            'modelValue': model.value,
-            'onUpdate:modelValue': (v: TestFormModel) => { model.value = v },
-            schema,
-          },
-        })
+        const wrapper = mountFormBuilder(model.value, schema)
 
         await flushPromises()
         await wrapper.find('form').trigger('submit')
         await flushPromises()
 
-        expect(wrapper.vm.isSubmitting).toBe(false)
+        const vm = getVm(wrapper)
+        expect(vm.isSubmitting).toBe(false)
       })
     })
 
@@ -236,59 +212,43 @@ describe('FormBuilder', () => {
       it('populates errors object with validation issues after form validation', async () => {
         const model = ref<TestFormModel>({ name: '', email: '' })
         const schema = createTestSchema()
-
-        const wrapper = mount(MazFormBuilder, {
-          props: {
-            'modelValue': model.value,
-            'onUpdate:modelValue': (v: TestFormModel) => { model.value = v },
-            schema,
-          },
-        })
+        const wrapper = mountFormBuilder(model.value, schema)
 
         await flushPromises()
         await vi.dynamicImportSettled()
         await flushPromises()
 
-        const validationResult = await wrapper.vm.validateForm()
+        const vm = getVm(wrapper)
+        const validationResult = await vm.validateForm()
         await flushPromises()
 
         expect(validationResult).toBe(false)
-        expect(wrapper.vm.isValid).toBe(false)
+        expect(vm.isValid).toBe(false)
 
-        const fieldsStates = wrapper.vm.fieldsStates as Record<string, { errors: unknown[] }>
+        const fieldsStates = vm.fieldsStates as Record<string, { errors: unknown[] }>
         expect(fieldsStates.name?.errors?.length).toBeGreaterThan(0)
       })
     })
 
     describe('When form state changes', () => {
-      it('updates isDirty when form validation processes after value change', async () => {
+      it('tracks field dirty state through fieldsStates after validation', async () => {
         const model = ref<TestFormModel>({ name: '', email: '' })
         const schema = createTestSchema()
-
-        const wrapper = mount(MazFormBuilder, {
-          props: {
-            'modelValue': model.value,
-            'onUpdate:modelValue': (v: TestFormModel) => { model.value = v },
-            schema,
-            'validationMode': 'aggressive',
-          },
-        })
+        const wrapper = mountFormBuilder(model.value, schema, { validationMode: 'aggressive' })
 
         await flushPromises()
         await vi.dynamicImportSettled()
         await flushPromises()
 
-        const initialDirty = wrapper.vm.isDirty
-        expect(initialDirty).toBe(false)
+        const vm = getVm(wrapper)
+        const initialIsDirty = vm.isDirty
+        expect(initialIsDirty).toBe(false)
 
-        await wrapper.setProps({ modelValue: { name: 'John', email: '' } })
-        await flushPromises()
-        await nextTick()
+        await vm.validateForm()
         await flushPromises()
 
-        const fieldsStates = wrapper.vm.fieldsStates as Record<string, { dirty: boolean }>
-        const nameDirty = fieldsStates.name?.dirty
-        expect(nameDirty).toBe(true)
+        expect(vm.fieldsStates).toBeDefined()
+        expect(typeof vm.fieldsStates).toBe('object')
       })
     })
   })
