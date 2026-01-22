@@ -157,4 +157,26 @@ export default {
       placeholder: 'Search',
     },
   },
+  /**
+   * This is the translation for the read more component.
+   * The keys are:
+   * - expand: The translation for the expand text.
+   * - collapse: The translation for the collapse text.
+   * - ariaLabel: The translation for the aria label.
+   */
+  readMore: {
+    expand: 'Read more',
+    collapse: 'Read less',
+    ariaLabel: 'Expandable content',
+  },
+  /**
+   * This is the translation for the skeleton component.
+   * The keys are:
+   * - ariaLabel: The translation for the aria label.
+   * - loadingText: The translation for the loading text.
+   */
+  skeleton: {
+    ariaLabel: 'Loading content',
+    loadingText: 'Loading...',
+  },
 }
