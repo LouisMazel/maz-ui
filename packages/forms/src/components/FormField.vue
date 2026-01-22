@@ -15,7 +15,7 @@ import type {
   FormFieldAttrs,
   FormFieldProps,
 } from '../utils/schema-helpers'
-import { computed, inject, toRef, watch } from 'vue'
+import { computed, inject, toRef, useId, watch } from 'vue'
 import { FORM_BUILDER_STATE_KEY, FORM_BUILDER_VALIDATION_KEY } from '../utils/constants'
 
 export interface FormFieldComponentProps<T extends Record<string, unknown>> {
@@ -50,6 +50,10 @@ const emit = defineEmits<{
 
 const field = toRef(props, 'field')
 const model = toRef(props, 'model')
+
+const fieldUniqueId = useId()
+const errorMessageId = computed(() => `${fieldUniqueId}-error`)
+const fieldId = computed(() => `${fieldUniqueId}-field`)
 
 const validationContext = inject<ComputedRef<ValidationContext<T>> | null>(
   FORM_BUILDER_VALIDATION_KEY,
@@ -103,6 +107,24 @@ const errorMessage = computed(() => {
 
 const hasValidation = computed(() => {
   return !!field.value.validation?.rule
+})
+
+const isRequired = computed(() => {
+  return !!field.value.props?.required || !!field.value.attrs?.required
+})
+
+const accessibilityAttrs = computed(() => {
+  const attrs: Record<string, string | boolean | undefined> = {
+    'id': fieldId.value,
+    'aria-invalid': hasError.value || undefined,
+    'aria-describedby': hasError.value && errorMessage.value ? errorMessageId.value : undefined,
+  }
+
+  if (isRequired.value) {
+    attrs['aria-required'] = true
+  }
+
+  return attrs
 })
 
 function handleUpdate(value: T[keyof T]): void {
@@ -187,6 +209,7 @@ watch(
       'maz-form-field--error': hasError,
     }"
     :data-field-name="field.name"
+    :data-field-id="fieldId"
   >
     <component
       :is="componentToRender"
@@ -194,14 +217,17 @@ watch(
       :readonly="readonly"
       :disabled="disabled"
       :error="hasError"
-      v-bind="{ ...fieldProps, ...fieldAttrs }"
+      v-bind="{ ...fieldProps, ...fieldAttrs, ...accessibilityAttrs }"
       @update:model-value="handleUpdate"
       @focus="handleFocus"
       @blur="handleBlur"
     />
     <div
       v-if="hasError && errorMessage"
+      :id="errorMessageId"
       class="maz-form-field__error"
+      role="alert"
+      aria-live="polite"
     >
       <template v-if="Array.isArray(errorMessage)">
         <p
