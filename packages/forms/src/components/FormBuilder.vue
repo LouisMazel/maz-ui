@@ -1,14 +1,10 @@
 <script lang="ts" setup generic="T extends Record<string, unknown>">
 import type { MazBtnProps } from 'maz-ui/components/MazBtn'
+import type { FormValidatorOptions } from 'maz-ui/composables'
 import type { Component, ComputedRef, Ref } from 'vue'
 import type { FormBuilderState } from '../composables/useFormBuilder'
 import type {
-  ErrorMessageValue,
-  FieldsValidationStates,
-  FormBuilderValidationOptions,
-  FormBuilderValidationReturn,
-} from '../composables/useFormBuilderValidation'
-import type {
+  ExtractedValidationOptions,
   FieldBlurEventPayload,
   FieldChangeEventPayload,
   FieldFocusEventPayload,
@@ -21,10 +17,29 @@ import type {
   ValidationIssues,
   ValidationMode,
 } from '../utils/schema-helpers'
+import { useFormValidator } from 'maz-ui/composables/useFormValidator'
 import { computed, defineAsyncComponent, provide, ref, shallowRef, toRef, watch } from 'vue'
 import { createSchemaAsyncComponents } from '../utils/component-map'
 import { FORM_BUILDER_STATE_KEY, FORM_BUILDER_VALIDATION_KEY } from '../utils/constants'
+import { extractValidationFromSchema, hasValidationRules } from '../utils/schema-helpers'
 import FormSection from './FormSection.vue'
+
+export type ErrorMessageValue = string | string[] | undefined
+
+export interface FieldValidationState {
+  blurred: boolean
+  dirty: boolean
+  error: boolean
+  errors: ValidationIssues
+  valid: boolean
+  validating: boolean
+  validated: boolean
+  mode?: ValidationMode
+}
+
+export type FieldsValidationStates<TModel extends Record<string, unknown>> = Partial<
+  Record<keyof TModel, FieldValidationState>
+>
 
 export interface SubmitButtonProps extends Omit<MazBtnProps, 'type'> {
   text?: string
@@ -42,8 +57,10 @@ export interface FormBuilderProps<T extends Record<string, unknown>> {
 export interface FormBuilderValidationContext<T extends Record<string, unknown>> {
   fieldsStates: Ref<FieldsValidationStates<T>>
   errorMessages: ComputedRef<Partial<Record<keyof T, ErrorMessageValue>>>
-  handleFieldBlur: (name: keyof T) => Promise<void>
+  handleFieldBlur: (name: keyof T) => void
   isValid: ComputedRef<boolean>
+  customMessages: Partial<Record<keyof T, Record<string, string>>>
+  useMultipleErrorMessages: Partial<Record<keyof T, boolean>>
 }
 
 defineOptions({
@@ -109,58 +126,154 @@ const submitButtonText = computed(() => {
   return 'Submit'
 })
 
-function hasValidationRules(formSchema: FormSchema<T>): boolean {
-  for (const section of formSchema.sections) {
-    for (const field of section.fields) {
-      if (field.validation?.rule) {
-        return true
-      }
-    }
-  }
-  return false
+interface ValidatorInstance {
+  isValid: Ref<boolean>
+  isDirty: Ref<boolean>
+  isSubmitting: Ref<boolean>
+  isSubmitted: Ref<boolean>
+  fieldsStates: Ref<Record<string, FieldValidationState>>
+  validateForm: (setErrors?: boolean) => Promise<boolean>
+  resetForm: () => void
+  scrollToError: (selector?: string) => void
 }
 
-const validationInstance = shallowRef<FormBuilderValidationReturn<T> | null>(null)
+const validatorRef = shallowRef<ValidatorInstance | null>(null)
 const validationLoaded = ref(false)
-const isSubmitting = ref(false)
-const isSubmitted = ref(false)
+const extractedOptions = shallowRef<ExtractedValidationOptions<T> | null>(null)
+
+function initializeValidator(): void {
+  const currentSchema = schema.value
+  if (!hasValidationRules(currentSchema)) {
+    validatorRef.value = null
+    extractedOptions.value = null
+    return
+  }
+
+  const extracted = extractValidationFromSchema(currentSchema)
+  extractedOptions.value = extracted
+
+  const validationSchema = extracted.schema
+
+  const validatorMode = props.validationMode === 'change' || props.validationMode === 'submit'
+    ? 'lazy'
+    : props.validationMode
+
+  const validatorOptions: FormValidatorOptions = {
+    mode: validatorMode,
+    scrollToError: props.scrollToError,
+    identifier: 'form-builder-validator',
+    debouncedFields: extracted.debouncedFields as FormValidatorOptions['debouncedFields'],
+    throttledFields: extracted.throttledFields as FormValidatorOptions['throttledFields'],
+    resetOnSuccess: false,
+  }
+
+  const validator = useFormValidator({
+    schema: ref(validationSchema) as any,
+    model: model as any,
+    options: validatorOptions,
+  })
+
+  validatorRef.value = validator as unknown as ValidatorInstance
+
+  validationLoaded.value = true
+}
+
+watch(
+  schema,
+  () => {
+    initializeValidator()
+  },
+  { immediate: true, deep: true },
+)
 
 const fieldsStates = computed<FieldsValidationStates<T>>(() => {
-  const instance = validationInstance.value
-  if (instance) {
-    return instance.fieldsStates.value
+  const validator = validatorRef.value
+  if (validator) {
+    return validator.fieldsStates.value as unknown as FieldsValidationStates<T>
   }
   return {} as FieldsValidationStates<T>
 })
 
 const errorMessages = computed<Partial<Record<keyof T, ErrorMessageValue>>>(() => {
-  const instance = validationInstance.value
-  if (instance) {
-    return instance.errorMessages.value
+  const validator = validatorRef.value
+  const extracted = extractedOptions.value
+  if (!validator) {
+    return {}
   }
-  return {}
+
+  const messages: Partial<Record<keyof T, ErrorMessageValue>> = {}
+  const states = validator.fieldsStates.value
+
+  for (const key in states) {
+    const fieldKey = key as keyof T
+    const state = states[key]
+
+    if (!state?.error || state.errors.length === 0) {
+      messages[fieldKey] = undefined
+      continue
+    }
+
+    const customMsgs = extracted?.customMessages[fieldKey]
+    const useMultiple = extracted?.useMultipleErrorMessages[fieldKey] ?? false
+
+    const resolvedMessages = state.errors.map((issue: { type?: string, message: string }) => {
+      const issueType = issue.type ?? 'unknown'
+      if (customMsgs?.[issueType]) {
+        return customMsgs[issueType]
+      }
+      return issue.message
+    })
+
+    if (useMultiple) {
+      messages[fieldKey] = resolvedMessages
+    }
+    else {
+      messages[fieldKey] = resolvedMessages[0]
+    }
+  }
+
+  return messages
 })
 
 const isFormValid = computed<boolean>(() => {
-  const instance = validationInstance.value
-  if (instance) {
-    return instance.isValid.value
+  const validator = validatorRef.value
+  if (validator) {
+    return validator.isValid.value
   }
   return true
 })
 
 const isDirty = computed<boolean>(() => {
-  const instance = validationInstance.value
-  if (instance) {
-    return instance.isDirty.value
+  const validator = validatorRef.value
+  if (validator) {
+    return validator.isDirty.value
+  }
+  return false
+})
+
+const isSubmitting = computed<boolean>(() => {
+  const validator = validatorRef.value
+  if (validator) {
+    return validator.isSubmitting.value
+  }
+  return false
+})
+
+const isSubmitted = computed<boolean>(() => {
+  const validator = validatorRef.value
+  if (validator) {
+    return validator.isSubmitted.value
   }
   return false
 })
 
 const isValidating = computed<boolean>(() => {
-  const instance = validationInstance.value
-  if (instance) {
-    return instance.isValidating.value
+  const states = fieldsStates.value
+  for (const key in states) {
+    const state = states[key as keyof T]
+    if (state?.validating) {
+      return true
+    }
   }
   return false
 })
@@ -178,48 +291,25 @@ const errors = computed<Partial<Record<keyof T, ValidationIssues>>>(() => {
   return result
 })
 
-async function loadValidationComposable(): Promise<void> {
-  if (validationLoaded.value) {
+function handleFieldBlur(name: keyof T): void {
+  const validator = validatorRef.value
+  if (!validator) {
     return
   }
 
-  const { useFormBuilderValidation } = await import('../composables/useFormBuilderValidation')
-
-  const validationOptions: FormBuilderValidationOptions = {
-    mode: props.validationMode,
-    scrollToError: props.scrollToError,
-  }
-
-  validationInstance.value = useFormBuilderValidation<T>(
-    schema as Ref<FormSchema<T>>,
-    model as Ref<T>,
-    validationOptions,
-  )
-
-  validationLoaded.value = true
-}
-
-async function handleFieldBlur(name: keyof T): Promise<void> {
-  if (validationInstance.value) {
-    await validationInstance.value.handleFieldBlur(name)
+  const fieldState = validator.fieldsStates.value[name as string]
+  if (fieldState) {
+    fieldState.blurred = true
   }
 }
-
-watch(
-  schema,
-  async (newSchema) => {
-    if (hasValidationRules(newSchema) && !validationLoaded.value) {
-      await loadValidationComposable()
-    }
-  },
-  { immediate: true, deep: true },
-)
 
 const validationContext = computed<FormBuilderValidationContext<T>>(() => ({
   fieldsStates: ref(fieldsStates.value) as Ref<FieldsValidationStates<T>>,
   errorMessages,
   handleFieldBlur,
   isValid: isFormValid,
+  customMessages: extractedOptions.value?.customMessages ?? {},
+  useMultipleErrorMessages: extractedOptions.value?.useMultipleErrorMessages ?? {},
 }))
 
 provide(FORM_BUILDER_VALIDATION_KEY, validationContext)
@@ -248,13 +338,16 @@ function emitFieldValidate(payload: FieldValidateEventPayload<T>): void {
 
 const formBuilderState = computed<FormBuilderState<T>>(() => ({
   isValid: isFormValid,
-  isSubmitting,
-  isSubmitted,
+  isSubmitting: ref(isSubmitting.value),
+  isSubmitted: ref(isSubmitted.value),
   isDirty,
   errors,
   errorMessages,
   fieldsStates: fieldsStatesRef,
-  handleFieldBlur,
+  handleFieldBlur: (name: keyof T) => {
+    handleFieldBlur(name)
+    return Promise.resolve()
+  },
   emitFieldChange,
   emitFieldFocus,
   emitFieldBlur: emitFieldBlurEvent,
@@ -268,46 +361,53 @@ async function handleSubmit(): Promise<void> {
     return
   }
 
-  isSubmitting.value = true
+  const validator = validatorRef.value
   let isValid = true
 
-  try {
-    if (validationInstance.value) {
-      isValid = await validationInstance.value.validateForm()
+  if (validator) {
+    if (validator.isSubmitting.value) {
+      return
+    }
+
+    validator.isSubmitted.value = true
+    validator.isSubmitting.value = true
+
+    try {
+      await validator.validateForm(true)
+      isValid = validator.isValid.value
 
       if (!isValid && props.scrollToError) {
-        validationInstance.value.scrollToFirstError(
+        validator.scrollToError(
           typeof props.scrollToError === 'string' ? props.scrollToError : undefined,
         )
       }
     }
-
-    const submitPayload: FormSubmitEventPayload<T> = {
-      data: model.value,
-      isValid,
-    }
-
-    emit('submit', submitPayload)
-
-    if (!isValid) {
-      const submitErrorPayload: FormSubmitErrorEventPayload<T> = {
-        data: model.value,
-        errors: errors.value,
-      }
-      emit('submit-error', submitErrorPayload)
+    finally {
+      validator.isSubmitting.value = false
     }
   }
-  finally {
-    isSubmitting.value = false
-    isSubmitted.value = true
+
+  const submitPayload: FormSubmitEventPayload<T> = {
+    data: model.value,
+    isValid,
+  }
+
+  emit('submit', submitPayload)
+
+  if (!isValid) {
+    const submitErrorPayload: FormSubmitErrorEventPayload<T> = {
+      data: model.value,
+      errors: errors.value,
+    }
+    emit('submit-error', submitErrorPayload)
   }
 }
 
 function resetForm(): void {
-  if (validationInstance.value) {
-    validationInstance.value.resetValidation()
+  const validator = validatorRef.value
+  if (validator) {
+    validator.resetForm()
   }
-  isSubmitted.value = false
 
   const resetPayload: FormResetEventPayload<T> = {
     data: model.value,
@@ -315,10 +415,36 @@ function resetForm(): void {
   emit('reset', resetPayload)
 }
 
+async function validateForm(): Promise<boolean> {
+  const validator = validatorRef.value
+  if (validator) {
+    await validator.validateForm(true)
+    return validator.isValid.value
+  }
+  return true
+}
+
+async function validateField(name: keyof T): Promise<boolean> {
+  const validator = validatorRef.value
+  if (validator) {
+    await validator.validateForm(true)
+    const fieldState = validator.fieldsStates.value[name as string]
+    return fieldState?.valid ?? true
+  }
+  return true
+}
+
+function resetValidation(): void {
+  const validator = validatorRef.value
+  if (validator) {
+    validator.resetForm()
+  }
+}
+
 defineExpose({
-  validateForm: () => validationInstance.value?.validateForm(),
-  validateField: (name: keyof T) => validationInstance.value?.validateField(name),
-  resetValidation: () => validationInstance.value?.resetValidation(),
+  validateForm,
+  validateField,
+  resetValidation,
   resetForm,
   isValid: isFormValid,
   isSubmitting,
