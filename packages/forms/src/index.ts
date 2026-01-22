@@ -1,3 +1,6 @@
+export { default as MazFormField } from './components/FormField.vue'
+export type { FormFieldComponentProps as MazFormFieldProps } from './components/FormField.vue'
+
 export {
   createAsyncComponent,
   createAsyncComponents,
