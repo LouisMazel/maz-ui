@@ -8,6 +8,8 @@ export interface FormFieldComponentProps<T extends Record<string, unknown>> {
   modelValue: T[keyof T]
   model: T
   components: Partial<Record<FormComponentName, Component>>
+  readonly?: boolean
+  disabled?: boolean
 }
 
 defineOptions({
@@ -53,6 +55,8 @@ function handleUpdate(value: T[keyof T]) {
     :is="componentToRender"
     v-if="isVisible && componentToRender"
     :model-value="modelValue"
+    :readonly="readonly"
+    :disabled="disabled"
     v-bind="{ ...fieldProps, ...fieldAttrs }"
     @update:model-value="handleUpdate"
   />

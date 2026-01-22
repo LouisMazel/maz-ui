@@ -1,3 +1,6 @@
+export { default as MazFormBuilder } from './components/FormBuilder.vue'
+export type { FormBuilderProps as MazFormBuilderProps, SubmitButtonProps } from './components/FormBuilder.vue'
+
 export { default as MazFormField } from './components/FormField.vue'
 export type { FormFieldComponentProps as MazFormFieldProps } from './components/FormField.vue'
 
