@@ -82,6 +82,7 @@ const COMPONENT_NAMES: Omit<
   MazReadingProgressBar: true,
   MazSelect: true,
   MazSelectCountry: true,
+  MazSkeleton: true,
   MazSlider: true,
   MazSpinner: true,
   MazStepper: true,
