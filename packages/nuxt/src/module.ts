@@ -1,7 +1,7 @@
 import type { MazUiNuxtOptions } from './types'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { capitalize } from '@maz-ui/utils'
+import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { addCustomTab } from '@nuxt/devtools-kit'
 import {
   addComponent,
