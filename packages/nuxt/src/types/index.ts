@@ -263,6 +263,19 @@ export interface MazUiNuxtOptions {
   }
 
   /**
+   * FormBuilder configuration
+   * @description Configure @maz-ui/forms auto-imports
+   */
+  formBuilder?: {
+    /**
+     * Auto-import FormBuilder components, composables, and helpers
+     * @description Makes MazFormBuilder, MazFormField, MazFormSection, MazFormWizard, MazFormErrorSummary, useFormBuilder, and defineFormSchema available globally
+     * @default true
+     */
+    autoImport?: boolean
+  }
+
+  /**
    * Vue directives configuration
    */
   directives?: {
