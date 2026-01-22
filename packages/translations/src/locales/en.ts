@@ -179,4 +179,36 @@ export default {
     ariaLabel: 'Loading content',
     loadingText: 'Loading...',
   },
+  /**
+   * This is the translation for the form validation messages.
+   * The keys are:
+   * - required: The translation for the required field error.
+   * - email: The translation for the invalid email error.
+   * - minLength: The translation for the minimum length error.
+   * - maxLength: The translation for the maximum length error.
+   * - min: The translation for the minimum value error.
+   * - max: The translation for the maximum value error.
+   * - pattern: The translation for the pattern mismatch error.
+   * - url: The translation for the invalid URL error.
+   * - number: The translation for the invalid number error.
+   * - integer: The translation for the invalid integer error.
+   * - date: The translation for the invalid date error.
+   * - phone: The translation for the invalid phone number error.
+   * - custom: The translation for the custom validation error.
+   */
+  formValidation: {
+    required: 'This field is required',
+    email: 'Please enter a valid email address',
+    minLength: 'Must be at least {min} characters',
+    maxLength: 'Must be at most {max} characters',
+    min: 'Must be at least {min}',
+    max: 'Must be at most {max}',
+    pattern: 'Invalid format',
+    url: 'Please enter a valid URL',
+    number: 'Please enter a valid number',
+    integer: 'Please enter a valid integer',
+    date: 'Please enter a valid date',
+    phone: 'Please enter a valid phone number',
+    custom: 'This field is invalid',
+  },
 }
