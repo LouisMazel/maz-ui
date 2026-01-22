@@ -1,0 +1,65 @@
+{
+  "name": "@maz-ui/forms",
+  "type": "module",
+  "version": "0.0.0",
+  "description": "Form builder and validation utilities for Maz-UI",
+  "author": "Louis Mazel <me@loicmazuel.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouisMazel/maz-ui.git"
+  },
+  "bugs": "https://github.com/LouisMazel/maz-ui/issues",
+  "keywords": [
+    "forms",
+    "validation",
+    "maz-ui",
+    "vue",
+    "valibot"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "vite build",
+    "build:watch": "vite build --watch --mode development",
+    "typecheck": "vue-tsc --noEmit",
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "lint:fix": "pnpm lint --fix",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest watch",
+    "test:unit:coverage": "vitest run --coverage"
+  },
+  "peerDependencies": {
+    "maz-ui": ">=4.0.0",
+    "valibot": ">=1.0.0",
+    "vue": ">=3.5.0"
+  },
+  "devDependencies": {
+    "glob": "^11.0.0",
+    "maz-ui": "workspace:*",
+    "valibot": "^1.0.0",
+    "vue": "^3.5.27",
+    "vue-tsc": "^3.2.1"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
+  }
+}
