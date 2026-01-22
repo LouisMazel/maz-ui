@@ -18,7 +18,7 @@ function createMockFormBuilderState(): FormBuilderState<TestFormModel> {
     errors: computed(() => ({})),
     errorMessages: computed(() => ({})),
     fieldsStates: ref({}),
-    handleFieldBlur: async () => {},
+    handleFieldBlur: () => {},
     emitFieldChange: () => {},
     emitFieldFocus: () => {},
     emitFieldBlur: () => {},

@@ -251,5 +251,111 @@ describe('FormBuilder', () => {
         expect(typeof vm.fieldsStates).toBe('object')
       })
     })
+
+    describe('When submit event is emitted', () => {
+      it('emits submit event with FormSubmitEventPayload containing data and isValid', async () => {
+        const model = ref<TestFormModel>({ name: 'John', email: 'john@test.com' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        await wrapper.find('form').trigger('submit')
+        await flushPromises()
+
+        const submitEvents = wrapper.emitted('submit')
+        expect(submitEvents).toBeDefined()
+        expect(submitEvents?.length).toBe(1)
+
+        const payload = submitEvents?.[0][0] as { data: TestFormModel, isValid: boolean }
+        expect(payload.data).toEqual({ name: 'John', email: 'john@test.com' })
+        expect(payload.isValid).toBe(true)
+      })
+
+      it('emits submit event with isValid false when form has validation errors', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        await wrapper.find('form').trigger('submit')
+        await flushPromises()
+
+        const submitEvents = wrapper.emitted('submit')
+        expect(submitEvents).toBeDefined()
+
+        const payload = submitEvents?.[0][0] as { data: TestFormModel, isValid: boolean }
+        expect(payload.isValid).toBe(false)
+      })
+    })
+
+    describe('When submit-error event is emitted', () => {
+      it('emits submit-error event with FormSubmitErrorEventPayload containing data and errors', async () => {
+        const model = ref<TestFormModel>({ name: '', email: '' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        await wrapper.find('form').trigger('submit')
+        await flushPromises()
+
+        const submitErrorEvents = wrapper.emitted('submit-error')
+        expect(submitErrorEvents).toBeDefined()
+        expect(submitErrorEvents?.length).toBe(1)
+
+        const payload = submitErrorEvents?.[0][0] as { data: TestFormModel, errors: Record<string, unknown[]> }
+        expect(payload.data).toEqual({ name: '', email: '' })
+        expect(payload.errors).toBeDefined()
+        expect(typeof payload.errors).toBe('object')
+      })
+
+      it('does not emit submit-error event when form is valid', async () => {
+        const model = ref<TestFormModel>({ name: 'John', email: 'john@test.com' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        await wrapper.find('form').trigger('submit')
+        await flushPromises()
+
+        const submitErrorEvents = wrapper.emitted('submit-error')
+        expect(submitErrorEvents).toBeUndefined()
+      })
+    })
+
+    describe('When reset event is emitted', () => {
+      it('emits reset event with FormResetEventPayload containing data', async () => {
+        const model = ref<TestFormModel>({ name: 'John', email: 'john@test.com' })
+        const schema = createTestSchema()
+        const wrapper = mountFormBuilder(model.value, schema)
+
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        await flushPromises()
+
+        const vm = getVm(wrapper)
+        vm.resetForm()
+        await flushPromises()
+
+        const resetEvents = wrapper.emitted('reset')
+        expect(resetEvents).toBeDefined()
+        expect(resetEvents?.length).toBe(1)
+
+        const payload = resetEvents?.[0][0] as { data: TestFormModel }
+        expect(payload.data).toBeDefined()
+        expect(typeof payload.data).toBe('object')
+      })
+    })
   })
 })

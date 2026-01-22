@@ -35,7 +35,7 @@ export interface FormBuilderState<T extends Record<string, unknown>> {
   errors: ComputedRef<Partial<Record<keyof T, ValidationIssues>>>
   errorMessages: ComputedRef<Partial<Record<keyof T, ErrorMessageValue>>>
   fieldsStates: Ref<FieldsValidationStates<T>>
-  handleFieldBlur: (name: keyof T) => Promise<void>
+  handleFieldBlur: (name: keyof T) => void
   emitFieldChange: (payload: FieldChangeEventPayload<T>) => void
   emitFieldFocus: (payload: FieldFocusEventPayload<T>) => void
   emitFieldBlur: (payload: FieldBlurEventPayload<T>) => void
