@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.4.0...v4.5.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.4.0...v4.5.0)
+
+### 🚀 Features
+
+- **@maz-ui/nuxt:** Auto-import MazReadMore and MazSkeleton ([08832f4f](https://github.com/LouisMazel/maz-ui/commit/08832f4f))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.3...v4.4.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.3...v4.4.0)

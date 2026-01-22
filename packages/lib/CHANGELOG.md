@@ -1,5 +1,34 @@
 # Change Log
 
+## v4.4.0...v4.5.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.4.0...v4.5.0)
+
+### 🚀 Features
+
+- **maz-ui:** MazReadMore - new component to truncate long text ([3d4b4e32](https://github.com/LouisMazel/maz-ui/commit/3d4b4e32))
+
+  Truncate text or slot content with "Read more" / "Read less" toggle.
+  Features:
+  - maxLines: truncate by line count (CSS line-clamp)
+  - maxChars: truncate by character count (works with text prop and slot)
+  - Customizable colors, expand/collapse text
+  - Full accessibility support (aria-expanded, aria-controls)
+
+- **maz-ui:** MazSkeleton - new component for loading placeholders ([05133f82](https://github.com/LouisMazel/maz-ui/commit/05133f82))
+
+  Display loading placeholders with animated shimmer effect.
+  Features:
+  - Shapes: rectangle, circle, square
+  - Customizable size, width, height
+  - Rounded sizes: none, sm, md, lg, xl, full
+  - Disable animation option
+  - Accessibility support (role="status", aria-live)
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.3.3...v4.4.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.3.3...v4.4.0)

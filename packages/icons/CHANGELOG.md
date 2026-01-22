@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.4.0...v4.5.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.4.0...v4.5.0)
+
+### 🚀 Features
+
+- **@maz-ui/icons:** Add new iconsAdded icons: MazFacebook, MazInstagram, MazLinkedin MazNpm, MazTwitter and MazQuote ([aaf0acdd](https://github.com/LouisMazel/maz-ui/commit/aaf0acdd))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.2.1...v4.3.0
 
 No relevant changes since last release
