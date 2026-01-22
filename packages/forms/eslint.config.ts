@@ -4,5 +4,7 @@ export default defineConfig({
   formatters: true,
   typescript: true,
   sonarjs: true,
-  ignores: ['README.md', 'LICENSE'],
+  vueAccessibility: true,
+  tailwindcss: true,
+  ignores: ['LICENSE'],
 })
