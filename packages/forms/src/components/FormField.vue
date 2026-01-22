@@ -42,10 +42,10 @@ const props = defineProps<FormFieldComponentProps<T>>()
 
 const emit = defineEmits<{
   'update:modelValue': [value: T[keyof T]]
-  'field-change': [payload: FieldChangeEventPayload<T>]
-  'field-focus': [payload: FieldFocusEventPayload<T>]
-  'field-blur': [payload: FieldBlurEventPayload<T>]
-  'field-validate': [payload: FieldValidateEventPayload<T>]
+  'fieldChange': [payload: FieldChangeEventPayload<T>]
+  'fieldFocus': [payload: FieldFocusEventPayload<T>]
+  'fieldBlur': [payload: FieldBlurEventPayload<T>]
+  'fieldValidate': [payload: FieldValidateEventPayload<T>]
 }>()
 
 const field = toRef(props, 'field')
@@ -135,7 +135,7 @@ function handleUpdate(value: T[keyof T]): void {
   }
 
   emit('update:modelValue', value)
-  emit('field-change', changePayload)
+  emit('fieldChange', changePayload)
 
   if (formBuilderState?.value) {
     formBuilderState.value.emitFieldChange(changePayload)
@@ -150,7 +150,7 @@ function handleFocus(): void {
     value: props.modelValue,
   }
 
-  emit('field-focus', focusPayload)
+  emit('fieldFocus', focusPayload)
 
   if (formBuilderState?.value) {
     formBuilderState.value.emitFieldFocus(focusPayload)
@@ -163,7 +163,7 @@ function handleBlur(): void {
     value: props.modelValue,
   }
 
-  emit('field-blur', blurPayload)
+  emit('fieldBlur', blurPayload)
 
   if (formBuilderState?.value) {
     formBuilderState.value.emitFieldBlur(blurPayload)
@@ -189,7 +189,7 @@ watch(
         errors: newState.errors,
       }
 
-      emit('field-validate', validatePayload)
+      emit('fieldValidate', validatePayload)
 
       if (formBuilderState?.value) {
         formBuilderState.value.emitFieldValidate(validatePayload)
