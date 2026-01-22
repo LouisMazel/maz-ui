@@ -42,6 +42,7 @@ export default <UserConfig> {
         '@maz-ui/node',
         '@maz-ui/mcp',
         '@maz-ui/vite-config',
+        '@maz-ui/forms',
       ],
     ],
     'subject-case': [2, 'never', ['upper-case', 'pascal-case', 'start-case']],
