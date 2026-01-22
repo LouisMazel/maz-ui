@@ -35,6 +35,7 @@ export const components = {
         { text: 'Accordion', link: '/components/maz-accordion' },
         { text: 'Card', link: '/components/maz-card' },
         { text: 'CardSpotlight', link: '/components/maz-card-spotlight' },
+        { text: 'ReadMore', link: '/components/maz-read-more' },
       ],
     },
     {
@@ -76,9 +77,10 @@ export const components = {
       collapsed: false,
       items: [
         { text: 'Spinner', link: '/components/maz-spinner' },
+        { text: 'Skeleton', link: '/components/maz-skeleton' },
         { text: 'LoadingBar', link: '/components/maz-loading-bar' },
         { text: 'FullscreenLoader', link: '/components/maz-fullscreen-loader' },
-        { text: 'CircularProgressBar', link: '/components/maz-circular-progress-bar' },
+        { text: 'CircularProggstressBar', link: '/components/maz-circular-progress-bar' },
         { text: 'Badge', link: '/components/maz-badge' },
       ],
     },
