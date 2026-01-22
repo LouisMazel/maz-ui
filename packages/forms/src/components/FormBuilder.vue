@@ -8,7 +8,19 @@ import type {
   FormBuilderValidationOptions,
   FormBuilderValidationReturn,
 } from '../composables/useFormBuilderValidation'
-import type { FormComponentName, FormSchema, ValidationIssues, ValidationMode } from '../utils/schema-helpers'
+import type {
+  FieldBlurEventPayload,
+  FieldChangeEventPayload,
+  FieldFocusEventPayload,
+  FieldValidateEventPayload,
+  FormComponentName,
+  FormResetEventPayload,
+  FormSchema,
+  FormSubmitErrorEventPayload,
+  FormSubmitEventPayload,
+  ValidationIssues,
+  ValidationMode,
+} from '../utils/schema-helpers'
 import { computed, defineAsyncComponent, provide, ref, shallowRef, toRef, watch } from 'vue'
 import { createSchemaAsyncComponents } from '../utils/component-map'
 import { FORM_BUILDER_STATE_KEY, FORM_BUILDER_VALIDATION_KEY } from '../utils/constants'
@@ -47,7 +59,14 @@ const props = withDefaults(defineProps<FormBuilderProps<T>>(), {
 })
 
 const emit = defineEmits<{
-  submit: [payload: T, isValid: boolean]
+  'submit': [payload: FormSubmitEventPayload<T>]
+  'submit-error': [payload: FormSubmitErrorEventPayload<T>]
+  'update:modelValue': [value: T]
+  'reset': [payload: FormResetEventPayload<T>]
+  'field-change': [payload: FieldChangeEventPayload<T>]
+  'field-focus': [payload: FieldFocusEventPayload<T>]
+  'field-blur': [payload: FieldBlurEventPayload<T>]
+  'field-validate': [payload: FieldValidateEventPayload<T>]
 }>()
 
 const model = defineModel<T>({ required: true })
@@ -211,6 +230,22 @@ watch(fieldsStates, (newValue) => {
   fieldsStatesRef.value = newValue
 }, { deep: true })
 
+function emitFieldChange(payload: FieldChangeEventPayload<T>): void {
+  emit('field-change', payload)
+}
+
+function emitFieldFocus(payload: FieldFocusEventPayload<T>): void {
+  emit('field-focus', payload)
+}
+
+function emitFieldBlurEvent(payload: FieldBlurEventPayload<T>): void {
+  emit('field-blur', payload)
+}
+
+function emitFieldValidate(payload: FieldValidateEventPayload<T>): void {
+  emit('field-validate', payload)
+}
+
 const formBuilderState = computed<FormBuilderState<T>>(() => ({
   isValid: isFormValid,
   isSubmitting,
@@ -220,6 +255,10 @@ const formBuilderState = computed<FormBuilderState<T>>(() => ({
   errorMessages,
   fieldsStates: fieldsStatesRef,
   handleFieldBlur,
+  emitFieldChange,
+  emitFieldFocus,
+  emitFieldBlur: emitFieldBlurEvent,
+  emitFieldValidate,
 }))
 
 provide(FORM_BUILDER_STATE_KEY, formBuilderState)
@@ -243,7 +282,20 @@ async function handleSubmit(): Promise<void> {
       }
     }
 
-    emit('submit', model.value, isValid)
+    const submitPayload: FormSubmitEventPayload<T> = {
+      data: model.value,
+      isValid,
+    }
+
+    emit('submit', submitPayload)
+
+    if (!isValid) {
+      const submitErrorPayload: FormSubmitErrorEventPayload<T> = {
+        data: model.value,
+        errors: errors.value,
+      }
+      emit('submit-error', submitErrorPayload)
+    }
   }
   finally {
     isSubmitting.value = false
@@ -251,10 +303,23 @@ async function handleSubmit(): Promise<void> {
   }
 }
 
+function resetForm(): void {
+  if (validationInstance.value) {
+    validationInstance.value.resetValidation()
+  }
+  isSubmitted.value = false
+
+  const resetPayload: FormResetEventPayload<T> = {
+    data: model.value,
+  }
+  emit('reset', resetPayload)
+}
+
 defineExpose({
   validateForm: () => validationInstance.value?.validateForm(),
   validateField: (name: keyof T) => validationInstance.value?.validateField(name),
   resetValidation: () => validationInstance.value?.resetValidation(),
+  resetForm,
   isValid: isFormValid,
   isSubmitting,
   isSubmitted,
