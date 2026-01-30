@@ -839,7 +839,7 @@ It accepts a validation schema, default values, and configuration options to han
 - `fieldsStates`: `FieldsStates` - The validation state of each field.
 - `validateForm`: `(setErrors?: boolean) => Promise<boolean>` - Function to validate the entire form.
 - `scrollToError`: `(selector?: string, options?: { offset?: number }) => void` - Function to scroll to the first field with an error.
-- `handleSubmit`: `(successCallback: (model: Model) => Promise<unknown> | unknown, scrollToError?: false | string, options?: { resetOnSuccess?: boolean }) => Promise<void>` - Form submission handler, the callback is called if the form is valid and passes the complete payload as an argument. The second argument is optional and can be used to disable or provide a CSS selector for scrolling to errors (default '.has-field-error'). The third argument is an optional object with options `resetOnSuccess` that is a boolean and is optional.
+- `handleSubmit`: `(successCallback: (model: Model) => Promise<unknown> | unknown, scrollToError?: false | string, options?: { resetOnSuccess?: boolean, onError?: (payload: { model: Model, errorMessages: Record<string, string | undefined>, errors: Record<string, ValidationIssues> }) => void }) => Promise<void>` - Form submission handler, the callback is called if the form is valid and passes the complete payload as an argument. The second argument is optional and can be used to disable or provide a CSS selector for scrolling to errors (default '.has-field-error'). The third argument is an optional object with options `resetOnSuccess` that is a boolean and is optional. The `onError` option is a function that is called if the form is invalid and passes the complete payload as an argument.
 - `resetForm`: `() => void` - Function to reset the form to its initial state.
 
 ```ts
@@ -854,7 +854,7 @@ interface useFormValidationReturn {
   fieldsStates: Ref<FieldsStates<InferSchemaFormValidator<TSchema>, ExtractModelKey<FormSchema<InferSchemaFormValidator<TSchema>>>>, FieldsStates<InferSchemaFormValidator<TSchema>, ExtractModelKey<FormSchema<InferSchemaFormValidator<TSchema>>>>>;
   validateForm: (setErrors?: boolean) => Promise<void[]>;
   scrollToError: typeof scrollToError;
-  handleSubmit: <Func extends (model: InferOutputSchemaFormValidator<TSchema>) => Promise<Awaited<ReturnType<Func>>> | ReturnType<Func>>(successCallback: Func, enableScrollOrSelector?: FormValidatorOptions["scrollToError"], options?: { resetOnSuccess?: boolean }) => (event?: Event) => Promise<ReturnType<Func> | undefined>;
+  handleSubmit: <Func extends (model: InferOutputSchemaFormValidator<TSchema>) => Promise<Awaited<ReturnType<Func>>> | ReturnType<Func>>(successCallback: Func, enableScrollOrSelector?: FormValidatorOptions["scrollToError"], options?: { resetOnSuccess?: boolean, onError?: (payload: { model: InferOutputSchemaFormValidator<TSchema>, errorMessages: Record<string, string | undefined>, errors: Record<string, ValidationIssues> }) => void }) => (event?: Event) => Promise<ReturnType<Func> | undefined>;
   errorMessages: import('vue').ComputedRef<Record<ExtractModelKey<FormSchema<InferSchemaFormValidator<TSchema>>>, string | undefined>>;
   resetForm: () => void;
 }
