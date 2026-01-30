@@ -12,6 +12,7 @@ import type {
   InferOutputSchemaFormValidator,
   InferSchemaFormValidator,
   StrictOptions,
+  ValidationIssues,
 } from './useFormValidator/types'
 import { computed, nextTick, provide, ref, toValue, watch } from 'vue'
 import { CONFIG } from './useFormValidator/config'
@@ -64,6 +65,7 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
   },
 ) {
   type Model = InferSchemaFormValidator<TSchema>
+  type SuccessPayload = InferOutputSchemaFormValidator<TSchema>
   const instance = getInstance<Model>('useFormValidator')
 
   const opts = {
@@ -110,10 +112,22 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
   const errorMessages = computed(() => getErrorMessages(errors.value, fieldsStates.value))
 
   if (model) {
+    // Sync payload → model (internal changes propagate to external model)
     watch(
       payload,
+      (newPayload) => {
+        model.value = { ...internalDefaultValues.value, ...newPayload }
+      },
+      { deep: true },
+    )
+
+    // Sync model → payload (external changes propagate to internal payload)
+    watch(
+      model,
       (newModel) => {
-        model.value = { ...internalDefaultValues.value, ...newModel }
+        if (newModel) {
+          Object.assign(payload.value, newModel)
+        }
       },
       { deep: true },
     )
@@ -224,10 +238,11 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
     setupOptimizedWatch()
   }
 
-  function handleSubmit<Func extends (model: InferOutputSchemaFormValidator<TSchema>) => Promise<Awaited<ReturnType<Func>>> | ReturnType<Func>>(
+  function handleSubmit<Func extends (model: SuccessPayload) => Promise<Awaited<ReturnType<Func>>> | ReturnType<Func>>(
     successCallback: Func,
     enableScrollOrSelector?: FormValidatorOptions['scrollToError'],
     options?: {
+      onError?: (payload: { model: Model, errorMessages: Record<ExtractModelKey<FormSchema<Model>>, string | undefined>, errors: Record<ExtractModelKey<FormSchema<Model>>, ValidationIssues> }) => void
       resetOnSuccess?: boolean
     },
   ) {
@@ -252,12 +267,13 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
         let response: Awaited<ReturnType<Func>> | ReturnType<Func> | undefined
 
         if (isValid.value) {
-          response = await successCallback(payload.value as InferOutputSchemaFormValidator<TSchema>)
+          response = await successCallback(payload.value as SuccessPayload)
           if (finalOptions.resetOnSuccess || options?.resetOnSuccess) {
             resetForm()
           }
         }
         else if (typeof scrollToErrorParam !== 'boolean') {
+          options?.onError?.({ model: payload.value, errorMessages: errorMessages.value, errors: errors.value })
           scrollToError(scrollToErrorParam)
         }
 
