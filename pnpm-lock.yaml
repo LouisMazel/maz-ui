@@ -290,22 +290,17 @@ importers:
         version: 3.6.1(sass@1.97.3)(typescript@5.9.3)(vue-sfc-transformer@0.1.16(@vue/compiler-core@3.5.27)(esbuild@0.27.2)(vue@3.5.27(typescript@5.9.3)))(vue-tsc@3.2.4(typescript@5.9.3))(vue@3.5.27(typescript@5.9.3))
 
   packages/forms:
+    dependencies:
+      vue:
+        specifier: ^3.5.0
+        version: 3.5.27(typescript@5.9.3)
     devDependencies:
-      glob:
-        specifier: ^11.0.0
-        version: 11.1.0
       maz-ui:
         specifier: workspace:*
         version: link:../lib
       valibot:
         specifier: ^1.0.0
         version: 1.2.0(typescript@5.9.3)
-      vue:
-        specifier: ^3.5.27
-        version: 3.5.27(typescript@5.9.3)
-      vue-tsc:
-        specifier: ^3.2.1
-        version: 3.2.4(typescript@5.9.3)
 
   packages/icons:
     dependencies:
@@ -10829,6 +10824,10 @@ packages:
     resolution: {integrity: sha512-tsaTIkKW9b4N+AEj+SVA+WhJzV7/zMhcSu78mLKWSk7cXMOSHsBKFWUs0fWwq8QyK3MgJBQRX6Gbi4kYbdvGkQ==}
     engines: {node: '>=18'}
 
+  string-width@8.1.0:
+    resolution: {integrity: sha512-Kxl3KJGb/gxkaUMOjRsQ8IrXiGW75O4E3RPjFIINOVH8AMl2SQ/yWdTzWwF3FevIX9LcMAjJW+GRwAlAbTSXdg==}
+    engines: {node: '>=20'}
+
   string-width@8.1.1:
     resolution: {integrity: sha512-KpqHIdDL9KwYk22wEOg/VIqYbrnLeSApsKT/bSj6Ez7pn3CftUiLAv2Lccpq1ALcpLV9UX1Ppn92npZWu2w/aw==}
     engines: {node: '>=20'}
@@ -18046,7 +18045,7 @@ snapshots:
   cli-truncate@5.1.1:
     dependencies:
       slice-ansi: 7.1.2
-      string-width: 8.1.1
+      string-width: 8.1.0
 
   cli-width@3.0.0: {}
 
@@ -23890,6 +23889,11 @@ snapshots:
   string-width@7.2.0:
     dependencies:
       emoji-regex: 10.6.0
+      get-east-asian-width: 1.4.0
+      strip-ansi: 7.1.2
+
+  string-width@8.1.0:
+    dependencies:
       get-east-asian-width: 1.4.0
       strip-ansi: 7.1.2
 
