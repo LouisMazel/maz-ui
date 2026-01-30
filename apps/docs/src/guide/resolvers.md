@@ -634,6 +634,16 @@ import { vTooltip } from 'maz-ui/directives'
 const toast = useToast()
 // ... rest of component
 </script>
+
+<template>
+  <MazBtn>Click me</MazBtn>
+  <MazInput v-model="name" />
+  <MazCard>
+    <p class="text-sm text-muted">
+      Hello World!
+    </p>
+  </MazCard>
+</template>
 ```
 
 ### After (Auto-Import)
@@ -644,6 +654,16 @@ const toast = useToast()
 const toast = useToast()
 // ... rest of component
 </script>
+
+<template>
+  <MazBtn>Click me</MazBtn>
+  <MazInput v-model="name" />
+  <MazCard>
+    <p class="text-sm text-muted">
+      Hello World!
+    </p>
+  </MazCard>
+</template>
 ```
 
 ## Related Resources

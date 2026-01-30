@@ -17,12 +17,12 @@
   --vp-home-hero-name-color: hsl(var(--maz-primary));
   --vp-button-brand-bg: hsl(var(--maz-primary));
   --vp-button-brand-border: hsl(var(--maz-primary-600));
-  --vp-button-brand-text: hsl(var(--maz-primary-contrast));
+  --vp-button-brand-text: hsl(var(--maz-primary-foreground));
   --vp-button-brand-hover-border: hsl(var(--maz-primary-700));
-  --vp-button-brand-hover-text: hsl(var(--maz-primary-contrast));
+  --vp-button-brand-hover-text: hsl(var(--maz-primary-foreground));
   --vp-button-brand-hover-bg: hsl(var(--maz-primary-600));
   --vp-button-brand-active-border: hsl(var(--maz-primary-700));
-  --vp-button-brand-active-text: hsl(var(--maz-primary-contrast));
+  --vp-button-brand-active-text: hsl(var(--maz-primary-foreground));
   --vp-button-brand-active-bg: hsl(var(--maz-primary-600));
 
   --vp-code-font-size: calc(var(--maz-base-font-size) - 2px);

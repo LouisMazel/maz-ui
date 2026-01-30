@@ -11,12 +11,11 @@ head:
 
 {{ $frontmatter.description }}
 
-::: tip ✨ What's New in v4
+::: tip **Why Maz-UI?**
 
-- 🌱 **Tree-shaking improvements** - Import only what you need
+- 🌱 **Tree-shaking** - Import only what you need
 - 🛠️ **TypeScript-first** - Full type safety out of the box
-- 🚀 **Performance optimizations** - Tree-shaking benefits and maximum optimization
-- 🆕 **New components** - MazPopover & MazSelectCountry
+- 🚀 **Performance** - Tree-shaking benefits and maximum optimization
 - 🎨 **Theming system** - Customizable themes and dark mode support (4 presets available) - [@maz-ui/themes](./themes.md)
 - 🌐 **Internationalization** - Locale management and tree-shakable imports - [@maz-ui/translations](./translations.md)
 - 🎨 **Icon library** - Comprehensive collection of SVG icons designed for performance and flexibility (400+ icons) - [@maz-ui/icons](./icons.md)
@@ -46,7 +45,7 @@ Start by choosing your framework:
     </template>
     <template #footer>
       <MazBtn color="contrast" href="/guide/vue">
-        Go to Vue guide
+        Vue guide
       </MazBtn>
     </template>
   </MazCard>
@@ -55,7 +54,7 @@ Start by choosing your framework:
     class="maz-flex-1"
     content-title="Nuxt Users Guide"
     :gallery="{
-      images: ['https://seeklogo.com/images/N/nuxt-2023-logo-7D939E3251-seeklogo.com.png'],
+      images: ['https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8mpeku6brwkfmrsumu3h.png'],
       height: 200,
       width: '100%',
     }"
@@ -67,7 +66,7 @@ Start by choosing your framework:
     </template>
     <template #footer>
       <MazBtn color="contrast" href="/guide/nuxt">
-        Go to Nuxt guide
+        Nuxt guide
       </MazBtn>
     </template>
   </MazCard>
@@ -163,9 +162,9 @@ Maz-UI v4 is built with tree-shaking in mind. Import only what you need for opti
  */
 
 // ❌ Avoid importing everything
-import * as MazUI from 'maz-ui'
-// ✅ Import specific utilities
 import { formatCurrency, debounce } from 'maz-ui'
+// ✅ Import from @maz-ui/utils
+import { formatCurrency, debounce } from '@maz-ui/utils'
 
 /**
  * Components
