@@ -1,13 +1,13 @@
 import { extname, relative, resolve } from 'node:path'
 import { codecovVitePlugin } from '@codecov/vite-plugin'
+import { getExternalDependencies } from '@maz-ui/vite-config'
 import Vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import { libInjectCss } from 'vite-plugin-lib-inject-css'
 
+import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import SvgLoader from 'vite-svg-loader'
-import rootPkg from '../../package.json'
 
 import {
   ViteCompileStyles,
@@ -26,21 +26,9 @@ function getEntries(pattern: string) {
   ]
 }
 
-const external = [
-  ...Object.keys(pkg.dependencies),
-  ...Object.keys(pkg.peerDependencies),
-  ...Object.keys(pkg.devDependencies),
-  ...Object.keys(rootPkg.devDependencies),
-  'dayjs/plugin/customParseFormat',
-  'dayjs/plugin/weekday',
-  'dayjs/plugin/isBetween',
-  'node:child_process',
-  'colorette',
-]
-
 const moduleEntries = Object.fromEntries(
   glob.sync([
-    'src/components/*.vue',
+    'src/components/**/*.vue',
     'src/composables/*.ts',
     'src/directives/*.ts',
     'src/resolvers/*.ts',
@@ -104,7 +92,7 @@ export default defineConfig(({ mode }) => {
         cssFileName: '[name].[hash].css',
       },
       rollupOptions: {
-        external,
+        external: getExternalDependencies(pkg),
         treeshake: {
           moduleSideEffects: false,
           preset: 'smallest',

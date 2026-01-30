@@ -20,6 +20,9 @@ importers:
       '@commitlint/cz-commitlint':
         specifier: ^20.3.1
         version: 20.3.1(@types/node@25.0.9)(commitizen@4.3.1(@types/node@25.0.9)(typescript@5.9.3))(inquirer@12.9.6(@types/node@25.0.9))(typescript@5.9.3)
+      '@maz-ui/node':
+        specifier: workspace:*
+        version: link:packages/node
       '@nx/js':
         specifier: ^22.3.3
         version: 22.3.3(@babel/traverse@7.28.5)(@swc/core@1.15.10)(nx@22.4.1(@swc/core@1.15.10))
