@@ -26,7 +26,7 @@ export default defineConfig({
   monorepo: {
     versionMode: 'selective',
     packages: ['packages/*'],
-    ignorePackageNames: ['packages/forms'],
+    ignorePackageNames: ['@maz-ui/forms'],
   },
 
   changelog: {

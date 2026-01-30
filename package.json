@@ -42,6 +42,7 @@
     "test:unit:coverage:all": "lerna run test:unit:coverage",
     "healthcheck": "pnpm lint:all && pnpm typecheck:all && pnpm test:unit:all && pnpm build:packages && pnpm -F docs build",
     "relizy": "relizy",
+    "relizy:independent": "relizy --config relizy.independent",
     "lerna:status": "lerna changed",
     "lerna:diff": "lerna diff",
     "lerna:clean": "lerna clean",

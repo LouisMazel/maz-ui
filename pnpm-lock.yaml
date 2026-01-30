@@ -294,16 +294,19 @@ importers:
 
   packages/forms:
     dependencies:
-      vue:
-        specifier: ^3.5.0
-        version: 3.5.28(typescript@5.9.3)
-    devDependencies:
       maz-ui:
         specifier: workspace:*
         version: link:../lib
       valibot:
-        specifier: ^1.0.0
+        specifier: ^1.2.0
         version: 1.2.0(typescript@5.9.3)
+      vue:
+        specifier: ^3.5.0
+        version: 3.5.28(typescript@5.9.3)
+    devDependencies:
+      '@maz-ui/vite-config':
+        specifier: workspace:*
+        version: link:../../tools/vite-config
 
   packages/icons:
     dependencies:
@@ -498,6 +501,9 @@ importers:
 
   packages/nuxt:
     dependencies:
+      '@maz-ui/forms':
+        specifier: workspace:*
+        version: link:../forms
       '@maz-ui/themes':
         specifier: workspace:*
         version: link:../themes

@@ -35,7 +35,6 @@ export default defineConfig({
     access: 'public',
     safetyCheck: true,
     token: process.env.NPM_TOKEN,
-    packages: ['packages/forms'],
   },
 
   release: {
