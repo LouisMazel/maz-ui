@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs'
 
 import { join } from 'node:path'
 import antfu from '@antfu/eslint-config'
-import sonarjs from 'eslint-plugin-sonarjs'
+import { configs as sonarConfigs } from 'eslint-plugin-sonarjs'
 
 import tailwind from 'eslint-plugin-tailwindcss'
 import vueA11y from 'eslint-plugin-vuejs-accessibility'
@@ -82,11 +82,11 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
   const additionalConfigs: MazESLintUserConfig[] = []
 
   if (opts.sonarjs) {
-    additionalConfigs.push(sonarjs.configs.recommended)
+    additionalConfigs.push(sonarConfigs.recommended)
 
     additionalConfigs.push({
       rules: {
-        ...sonarjs.configs.recommended.rules,
+        ...sonarConfigs.recommended.rules,
       },
     })
 

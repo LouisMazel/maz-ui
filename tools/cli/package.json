@@ -31,7 +31,7 @@
     "@maz-ui/node": "workspace:*",
     "@maz-ui/utils": "workspace:*",
     "commander": "^14.0.2",
-    "figlet": "^1.9.4",
+    "figlet": "^1.10.0",
     "vue-docgen-cli": "^4.79.0"
   },
   "devDependencies": {

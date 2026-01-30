@@ -63,7 +63,7 @@
     "test:unit:coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "libphonenumber-js": "^1.12.34",
+    "libphonenumber-js": "^1.12.36",
     "vite": "^7.3.0"
   },
   "lint-staged": {

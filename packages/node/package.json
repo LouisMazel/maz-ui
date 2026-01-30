@@ -49,7 +49,7 @@
   "dependencies": {
     "colorette": "^2.0.20",
     "consola": "^3.4.2",
-    "figlet": "^1.9.4"
+    "figlet": "^1.10.0"
   },
   "devDependencies": {
     "unbuild": "^3.6.1"
