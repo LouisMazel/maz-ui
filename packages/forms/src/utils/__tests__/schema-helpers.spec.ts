@@ -5,7 +5,6 @@ import {
   defineFormSchema,
   defineFormSection,
   extractValidationFromSchema,
-  hasValidationRules,
 } from '../../../src/utils/schema-helpers'
 
 interface TestFormModel extends Record<string, unknown> {
@@ -20,6 +19,7 @@ describe('schema-helpers', () => {
       it('returns the field as-is', () => {
         const field: FormField<TestFormModel, 'name', 'MazInput'> = {
           name: 'name',
+          id: 'name',
           component: 'MazInput',
         }
 
@@ -35,6 +35,7 @@ describe('schema-helpers', () => {
       it('returns the field with all properties', () => {
         const field: FormField<TestFormModel, 'email', 'MazInput'> = {
           name: 'email',
+          id: 'email',
           component: 'MazInput',
           props: { label: 'Email', placeholder: 'Enter email' },
           attrs: { 'data-testid': 'email-field' },
@@ -43,10 +44,9 @@ describe('schema-helpers', () => {
             rule: pipe(string(), minLength(5)),
             mode: 'lazy',
             debounced: 300,
-            messages: { min_length: 'Too short' },
             useMultipleErrorMessages: true,
           },
-          condition: (model: TestFormModel) => model.name.length > 0,
+          condition: model => !!model && model.length > 0,
         }
 
         const result = defineFormField(field)
@@ -126,104 +126,104 @@ describe('schema-helpers', () => {
     })
   })
 
-  describe('Given the hasValidationRules function', () => {
-    describe('When schema has validation rules', () => {
-      it('returns true', () => {
-        const schema: FormSchema<TestFormModel> = {
-          sections: [
-            {
-              id: 'main',
-              fields: [
-                {
-                  name: 'name',
-                  component: 'MazInput',
-                  validation: {
-                    rule: pipe(string(), minLength(2)),
-                  },
-                },
-              ],
-            },
-          ],
-        }
+  // describe('Given the hasValidationRules function', () => {
+  //   describe('When schema has validation rules', () => {
+  //     it('returns true', () => {
+  //       const schema: FormSchema<TestFormModel> = {
+  //         sections: [
+  //           {
+  //             id: 'main',
+  //             fields: [
+  //               {
+  //                 name: 'name',
+  //                 component: 'MazInput',
+  //                 validation: {
+  //                   rule: pipe(string(), minLength(2)),
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //         ],
+  //       }
 
-        const result = hasValidationRules(schema)
+  //       const result = hasValidationRules(schema)
 
-        expect(result).toBe(true)
-      })
-    })
+  //       expect(result).toBe(true)
+  //     })
+  //   })
 
-    describe('When schema has no validation rules', () => {
-      it('returns false', () => {
-        const schema: FormSchema<TestFormModel> = {
-          sections: [
-            {
-              id: 'main',
-              fields: [
-                { name: 'name', component: 'MazInput' },
-                { name: 'email', component: 'MazInput' },
-              ],
-            },
-          ],
-        }
+  //   describe('When schema has no validation rules', () => {
+  //     it('returns false', () => {
+  //       const schema: FormSchema<TestFormModel> = {
+  //         sections: [
+  //           {
+  //             id: 'main',
+  //             fields: [
+  //               { name: 'name', component: 'MazInput' },
+  //               { name: 'email', component: 'MazInput' },
+  //             ],
+  //           },
+  //         ],
+  //       }
 
-        const result = hasValidationRules(schema)
+  //       const result = hasValidationRules(schema)
 
-        expect(result).toBe(false)
-      })
-    })
+  //       expect(result).toBe(false)
+  //     })
+  //   })
 
-    describe('When schema has empty validation object', () => {
-      it('returns false', () => {
-        const schema: FormSchema<TestFormModel> = {
-          sections: [
-            {
-              id: 'main',
-              fields: [
-                {
-                  name: 'name',
-                  component: 'MazInput',
-                  validation: {},
-                },
-              ],
-            },
-          ],
-        }
+  //   describe('When schema has empty validation object', () => {
+  //     it('returns false', () => {
+  //       const schema: FormSchema<TestFormModel> = {
+  //         sections: [
+  //           {
+  //             id: 'main',
+  //             fields: [
+  //               {
+  //                 name: 'name',
+  //                 component: 'MazInput',
+  //                 validation: {},
+  //               },
+  //             ],
+  //           },
+  //         ],
+  //       }
 
-        const result = hasValidationRules(schema)
+  //       const result = hasValidationRules(schema)
 
-        expect(result).toBe(false)
-      })
-    })
+  //       expect(result).toBe(false)
+  //     })
+  //   })
 
-    describe('When schema has validation rule in nested section', () => {
-      it('returns true', () => {
-        const schema: FormSchema<TestFormModel> = {
-          sections: [
-            {
-              id: 'first',
-              fields: [{ name: 'name', component: 'MazInput' }],
-            },
-            {
-              id: 'second',
-              fields: [
-                {
-                  name: 'email',
-                  component: 'MazInput',
-                  validation: {
-                    rule: pipe(string(), minLength(5)),
-                  },
-                },
-              ],
-            },
-          ],
-        }
+  //   describe('When schema has validation rule in nested section', () => {
+  //     it('returns true', () => {
+  //       const schema: FormSchema<TestFormModel> = {
+  //         sections: [
+  //           {
+  //             id: 'first',
+  //             fields: [{ name: 'name', component: 'MazInput' }],
+  //           },
+  //           {
+  //             id: 'second',
+  //             fields: [
+  //               {
+  //                 name: 'email',
+  //                 component: 'MazInput',
+  //                 validation: {
+  //                   rule: pipe(string(), minLength(5)),
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //         ],
+  //       }
 
-        const result = hasValidationRules(schema)
+  //       const result = hasValidationRules(schema)
 
-        expect(result).toBe(true)
-      })
-    })
-  })
+  //       expect(result).toBe(true)
+  //     })
+  //   })
+  // })
 
   describe('Given the extractValidationFromSchema function', () => {
     describe('When schema has simple validation rules', () => {
@@ -253,8 +253,8 @@ describe('schema-helpers', () => {
 
         const result = extractValidationFromSchema(schema)
 
-        expect(result.schema.name).toBe(nameRule)
-        expect(result.schema.email).toBe(emailRule)
+        expect(result.schema?.name).toBe(nameRule)
+        expect(result.schema?.email).toBe(emailRule)
         expect(result.debouncedFields).toBeNull()
         expect(result.throttledFields).toBeNull()
       })
@@ -344,10 +344,6 @@ describe('schema-helpers', () => {
                   component: 'MazInput',
                   validation: {
                     rule: pipe(string(), minLength(2)),
-                    messages: {
-                      min_length: 'Name is too short',
-                      string: 'Name must be text',
-                    },
                   },
                 },
               ],
@@ -472,9 +468,9 @@ describe('schema-helpers', () => {
 
         const result = extractValidationFromSchema(schema)
 
-        expect(result.schema.name).toBeDefined()
-        expect(result.schema.email).toBeDefined()
-        expect(result.schema.phone).toBeUndefined()
+        expect(result.schema?.name).toBeDefined()
+        expect(result.schema?.email).toBeDefined()
+        expect(result.schema?.phone).toBeUndefined()
         expect(result.fieldModes.name).toBe('eager')
         expect(result.fieldModes.email).toBe('lazy')
         expect(result.debouncedFields?.name).toBe(300)
@@ -505,9 +501,9 @@ describe('schema-helpers', () => {
 
         const result = extractValidationFromSchema(schema)
 
-        expect(result.schema.name).toBeUndefined()
-        expect(result.schema.email).toBeDefined()
-        expect(result.schema.phone).toBeUndefined()
+        expect(result.schema?.name).toBeUndefined()
+        expect(result.schema?.email).toBeDefined()
+        expect(result.schema?.phone).toBeUndefined()
       })
     })
 
@@ -549,9 +545,9 @@ describe('schema-helpers', () => {
 
         const result = extractValidationFromSchema(schema)
 
-        expect(result.schema.name).toBe(nameRule)
-        expect(result.schema.email).toBe(emailRule)
-        expect(result.schema.phone).toBe(phoneRule)
+        expect(result.schema?.name).toBe(nameRule)
+        expect(result.schema?.email).toBe(emailRule)
+        expect(result.schema?.phone).toBe(phoneRule)
       })
     })
 

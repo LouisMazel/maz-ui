@@ -1,8 +1,6 @@
 <script lang="ts" setup generic="T extends Record<string, unknown>">
-import type { Component, ComputedRef, Ref } from 'vue'
+import type { Component, ComputedRef } from 'vue'
 import type {
-  ErrorMessageValue,
-  FieldsValidationStates,
   FormBuilderState,
 } from '../composables/useFormBuilder'
 import type {
@@ -15,83 +13,72 @@ import type {
   FormFieldAttrs,
   FormFieldProps,
 } from '../utils/schema-helpers'
-import { computed, inject, toRef, useId, watch } from 'vue'
+import { useInstanceUniqId } from 'maz-ui/composables'
+import { computed, inject, watch } from 'vue'
 import { FORM_BUILDER_STATE_KEY, FORM_BUILDER_VALIDATION_KEY } from '../utils/constants'
 
 export interface FormFieldComponentProps<T extends Record<string, unknown>> {
   field: FormField<T, keyof T, FormComponentName>
-  modelValue: T[keyof T]
   model: T
   components: Partial<Record<FormComponentName, Component>>
   readonly?: boolean
   disabled?: boolean
 }
 
-interface ValidationContext<T extends Record<string, unknown>> {
-  fieldsStates: Ref<FieldsValidationStates<T>>
-  errorMessages: ComputedRef<Partial<Record<keyof T, ErrorMessageValue>>>
-  handleFieldBlur: (name: keyof T) => void
-  isValid: ComputedRef<boolean>
-}
-
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps<FormFieldComponentProps<T>>()
+const { field, components, readonly, disabled } = defineProps<FormFieldComponentProps<T>>()
 
 const emit = defineEmits<{
-  'update:modelValue': [value: T[keyof T]]
-  'fieldChange': [payload: FieldChangeEventPayload<T>]
-  'fieldFocus': [payload: FieldFocusEventPayload<T>]
-  'fieldBlur': [payload: FieldBlurEventPayload<T>]
-  'fieldValidate': [payload: FieldValidateEventPayload<T>]
+  'update:model-value': [value: T[keyof T]]
+  'field-change': [payload: FieldChangeEventPayload<T>]
+  'field-focus': [payload: FieldFocusEventPayload<T>]
+  'field-blur': [payload: FieldBlurEventPayload<T>]
+  'field-validate': [payload: FieldValidateEventPayload<T>]
 }>()
 
-const field = toRef(props, 'field')
-const model = toRef(props, 'model')
+const model = defineModel<T[keyof T]>()
 
-const fieldUniqueId = useId()
-const errorMessageId = computed(() => `${fieldUniqueId}-error`)
-const fieldId = computed(() => `${fieldUniqueId}-field`)
+const fieldUniqueId = useInstanceUniqId({
+  componentName: 'FormField',
+  providedId: field.id,
+})
+const errorMessageId = computed(() => `${fieldUniqueId.value}-error`)
+const fieldId = computed(() => `${fieldUniqueId.value}-field`)
 
-const validationContext = inject<ComputedRef<ValidationContext<T>> | null>(
-  FORM_BUILDER_VALIDATION_KEY,
-  null,
-)
+const validationContext = inject(FORM_BUILDER_VALIDATION_KEY)
 
 const formBuilderState = inject<ComputedRef<FormBuilderState<T>> | null>(
   FORM_BUILDER_STATE_KEY,
   null,
 )
 
-let previousValue: T[keyof T] = props.modelValue
+let previousValue: T[keyof T] | undefined = model.value
 
 const isVisible = computed(() => {
-  if (!field.value.condition) {
+  if (!field.condition) {
     return true
   }
-  return field.value.condition(model.value)
+  return field.condition(model.value)
 })
 
 const componentToRender = computed(() => {
-  const componentName = field.value.component as FormComponentName
-  return props.components[componentName]
+  const componentName = field.component as FormComponentName
+  return components[componentName]
 })
 
 const fieldProps = computed(() => {
-  return field.value.props as FormFieldProps<FormComponentName> | undefined
+  return field.props as FormFieldProps<FormComponentName> | undefined
 })
 
 const fieldAttrs = computed(() => {
-  return field.value.attrs as FormFieldAttrs | undefined
+  return field.attrs as FormFieldAttrs | undefined
 })
 
 const fieldState = computed(() => {
-  if (!validationContext?.value) {
-    return null
-  }
-  return validationContext.value.fieldsStates.value[field.value.name] ?? null
+  return validationContext?.value.fieldsStates[field.name as string]
 })
 
 const hasError = computed(() => {
@@ -99,18 +86,16 @@ const hasError = computed(() => {
 })
 
 const errorMessage = computed(() => {
-  if (!validationContext?.value) {
-    return undefined
-  }
-  return validationContext.value.errorMessages.value[field.value.name]
+  return validationContext?.value.errorMessages[field.name as string]
 })
 
 const hasValidation = computed(() => {
-  return !!field.value.validation?.rule
+  return !!field.validation?.rule
 })
 
 const isRequired = computed(() => {
-  return !!field.value.props?.required || !!field.value.attrs?.required
+  return (field.props && 'required' in field.props && !!field.props?.required)
+    || (field.attrs && 'required' in field.attrs && !!field.attrs?.required)
 })
 
 const accessibilityAttrs = computed(() => {
@@ -129,13 +114,13 @@ const accessibilityAttrs = computed(() => {
 
 function handleUpdate(value: T[keyof T]): void {
   const changePayload: FieldChangeEventPayload<T> = {
-    name: field.value.name,
+    name: field.name,
     value,
     previousValue,
   }
 
-  emit('update:modelValue', value)
-  emit('fieldChange', changePayload)
+  model.value = value
+  emit('field-change', changePayload)
 
   if (formBuilderState?.value) {
     formBuilderState.value.emitFieldChange(changePayload)
@@ -146,11 +131,11 @@ function handleUpdate(value: T[keyof T]): void {
 
 function handleFocus(): void {
   const focusPayload: FieldFocusEventPayload<T> = {
-    name: field.value.name,
-    value: props.modelValue,
+    name: field.name,
+    value: model.value,
   }
 
-  emit('fieldFocus', focusPayload)
+  emit('field-focus', focusPayload)
 
   if (formBuilderState?.value) {
     formBuilderState.value.emitFieldFocus(focusPayload)
@@ -159,18 +144,18 @@ function handleFocus(): void {
 
 function handleBlur(): void {
   const blurPayload: FieldBlurEventPayload<T> = {
-    name: field.value.name,
-    value: props.modelValue,
+    name: field.name,
+    value: model.value,
   }
 
-  emit('fieldBlur', blurPayload)
+  emit('field-blur', blurPayload)
 
   if (formBuilderState?.value) {
     formBuilderState.value.emitFieldBlur(blurPayload)
   }
 
   if (validationContext?.value && hasValidation.value) {
-    validationContext.value.handleFieldBlur(field.value.name)
+    validationContext.value.handleFieldBlur(field.name as string)
   }
 }
 
@@ -183,13 +168,13 @@ watch(
 
     if (newState.validated && (!oldState || !oldState.validated || newState.valid !== oldState.valid)) {
       const validatePayload: FieldValidateEventPayload<T> = {
-        name: field.value.name,
-        value: props.modelValue,
+        name: field.name,
+        value: model.value,
         isValid: newState.valid,
         errors: newState.errors,
       }
 
-      emit('fieldValidate', validatePayload)
+      emit('field-validate', validatePayload)
 
       if (formBuilderState?.value) {
         formBuilderState.value.emitFieldValidate(validatePayload)
@@ -251,7 +236,6 @@ watch(
 <style scoped>
 .maz-form-field {
   position: relative;
-  margin-bottom: 1rem;
 }
 
 .maz-form-field__error {

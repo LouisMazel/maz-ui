@@ -1,7 +1,7 @@
 <script lang="ts" setup generic="T extends Record<string, unknown>">
-import type { Component, VNode } from 'vue'
-import type { FormComponentName, FormField as FormFieldType, FormSection, FormSectionCardOption } from '../utils/schema-helpers'
-import { computed, defineAsyncComponent, toRef, useId, useSlots } from 'vue'
+import type { Component, Slot, VNode } from 'vue'
+import type { FormComponentName, FormField as FormFieldType, FormSection, FormSectionContainerOption } from '../utils/schema-helpers'
+import { computed, defineAsyncComponent, useId, useSlots } from 'vue'
 import FormField from './FormField.vue'
 
 export interface FieldSlotProps<T extends Record<string, unknown>> {
@@ -25,7 +25,12 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps<FormSectionComponentProps<T>>()
+const {
+  section,
+  components,
+  readonly,
+  disabled,
+} = defineProps<FormSectionComponentProps<T>>()
 
 defineSlots<{
   [key: `field-${string}`]: (props: FieldSlotProps<T>) => VNode[]
@@ -35,36 +40,34 @@ const slots = useSlots()
 
 const model = defineModel<T>({ required: true })
 
-const section = toRef(props, 'section')
-
-const MazCard = defineAsyncComponent(() => import('maz-ui/components/MazCard'))
+const MazContainer = defineAsyncComponent(() => import('maz-ui/components/MazContainer'))
 
 const hasCard = computed(() => {
-  return section.value.card !== undefined && section.value.card !== false
+  return section.container !== undefined && section.container !== false
 })
 
-const cardProps = computed(() => {
-  const cardOption = section.value.card as FormSectionCardOption
+const containerProps = computed(() => {
+  const containerOption = section.container as FormSectionContainerOption
 
-  if (cardOption === true) {
+  if (containerOption === true) {
     return {}
   }
 
-  if (typeof cardOption === 'object') {
-    return cardOption
+  if (typeof containerOption === 'object') {
+    return containerOption
   }
 
   return {}
 })
 
 const hasLegend = computed(() => {
-  return section.value.legend !== undefined && section.value.legend !== ''
+  return section.legend !== undefined && section.legend !== ''
 })
 
 const sectionUniqueId = useId()
 const legendId = computed(() => `${sectionUniqueId}-legend`)
 
-function updateFieldValue(fieldName: keyof T, value: T[keyof T]) {
+function updateFieldValue(fieldName: keyof T, value?: T[keyof T]) {
   model.value = {
     ...model.value,
     [fieldName]: value,
@@ -76,28 +79,33 @@ function getFieldSlotProps(field: FormFieldType<T, keyof T, FormComponentName>):
     field,
     modelValue: model.value[field.name],
     model: model.value,
-    readonly: props.readonly ?? false,
-    disabled: props.disabled ?? false,
+    readonly,
+    disabled,
     updateValue: (value: T[keyof T]) => updateFieldValue(field.name, value),
   }
 }
 
+function isEmptySlot(el: Slot | undefined): boolean {
+  const elements = el?.() ?? []
+  return elements.map(el => el.children).flat().length === 0
+}
+
 function hasFieldSlot(fieldName: keyof T): boolean {
-  return !!slots[`field-${String(fieldName)}`]
+  return !isEmptySlot(slots[`field-${String(fieldName)}`])
 }
 </script>
 
 <template>
-  <MazCard
+  <MazContainer
     v-if="hasCard"
-    v-bind="cardProps"
-    :title="hasLegend ? section.legend : undefined"
-    block
+    v-bind="containerProps"
+    :title="hasLegend ? containerProps.title : section.legend"
     role="group"
     :aria-label="hasLegend ? section.legend : undefined"
   >
     <fieldset
       :aria-labelledby="hasLegend ? undefined : legendId"
+      :disabled
     >
       <template v-for="field in section.fields" :key="String(field.name)">
         <slot
@@ -107,21 +115,22 @@ function hasFieldSlot(fieldName: keyof T): boolean {
         />
         <FormField
           v-else
-          :field="field"
-          :model-value="model[field.name] as T[keyof T]"
-          :model="model"
-          :components="components"
-          :readonly="readonly"
-          :disabled="disabled"
+          :field
+          :model-value="model[field.name]"
+          :model
+          :components
+          :readonly
+          :disabled
           @update:model-value="updateFieldValue(field.name, $event)"
         />
       </template>
     </fieldset>
-  </MazCard>
+  </MazContainer>
 
   <fieldset
     v-else
     :aria-labelledby="hasLegend ? legendId : undefined"
+    :disabled
   >
     <legend
       v-if="hasLegend"
@@ -137,14 +146,22 @@ function hasFieldSlot(fieldName: keyof T): boolean {
       />
       <FormField
         v-else
-        :field="field"
+        :field
         :model-value="model[field.name] as T[keyof T]"
-        :model="model"
-        :components="components"
-        :readonly="readonly"
-        :disabled="disabled"
+        :model
+        :components
+        :readonly
+        :disabled
         @update:model-value="updateFieldValue(field.name, $event)"
       />
     </template>
   </fieldset>
 </template>
+
+<style scoped>
+fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+</style>
