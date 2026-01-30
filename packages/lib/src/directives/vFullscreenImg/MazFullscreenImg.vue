@@ -475,7 +475,7 @@ onBeforeUnmount(() => {
     }
 
     &.--close {
-      @apply maz-right-0 maz-top-0 maz-items-start maz-justify-end;
+      @apply maz-end-0 maz-top-0 maz-items-start maz-justify-end;
     }
 
     &.--previous {
@@ -483,7 +483,7 @@ onBeforeUnmount(() => {
     }
 
     &.--next {
-      @apply maz-right-0 maz-top-1/2 maz-h-screen maz--translate-y-1/2 maz-transform maz-items-center maz-justify-end;
+      @apply maz-end-0 maz-top-1/2 maz-h-screen maz--translate-y-1/2 maz-transform maz-items-center maz-justify-end;
     }
   }
 }

@@ -84,7 +84,7 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
   &__close {
     @apply !maz-absolute;
-    @apply maz-right-2 maz-top-2;
+    @apply maz-end-2 maz-top-2;
   }
 }
 </style>
