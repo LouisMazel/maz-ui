@@ -90,3 +90,14 @@ jobs:
           name: themes-coverage
           fail_ci_if_error: false
           verbose: true
+
+      - name: Upload coverage to Codecov (forms)
+        if: always() && github.actor != 'dependabot[bot]'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/forms/coverage/lcov.info
+          flags: forms
+          name: forms-coverage
+          fail_ci_if_error: false
+          verbose: true
