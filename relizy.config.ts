@@ -19,6 +19,7 @@ export default defineConfig({
 
   templates: {
     emptyChangelogContent: 'No relevant changes since last release',
+    twitterMessage: '🚀 {{projectName}} {{newVersion}} is out!\n\n{{changelog}}\n\n{{changelogUrl}}\n{{releaseUrl}}',
   },
 
   monorepo: {
