@@ -293,22 +293,17 @@ importers:
         version: 3.6.1(sass@1.97.3)(typescript@5.9.3)(vue-sfc-transformer@0.1.16(@vue/compiler-core@3.5.28)(esbuild@0.27.3)(vue@3.5.28(typescript@5.9.3)))(vue-tsc@3.2.5(typescript@5.9.3))(vue@3.5.28(typescript@5.9.3))
 
   packages/forms:
+    dependencies:
+      vue:
+        specifier: ^3.5.0
+        version: 3.5.28(typescript@5.9.3)
     devDependencies:
-      glob:
-        specifier: ^11.0.0
-        version: 11.1.0
       maz-ui:
         specifier: workspace:*
         version: link:../lib
       valibot:
         specifier: ^1.0.0
         version: 1.2.0(typescript@5.9.3)
-      vue:
-        specifier: ^3.5.27
-        version: 3.5.28(typescript@5.9.3)
-      vue-tsc:
-        specifier: ^3.2.1
-        version: 3.2.5(typescript@5.9.3)
 
   packages/icons:
     dependencies:
