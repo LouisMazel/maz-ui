@@ -53,6 +53,7 @@
     "@commitlint/cli": "^20.3.1",
     "@commitlint/config-conventional": "^20.3.1",
     "@commitlint/cz-commitlint": "^20.3.1",
+    "@maz-ui/node": "workspace:*",
     "@nx/js": "^22.3.3",
     "@types/node": "^25.0.9",
     "@types/parse-path": "^7.1.0",
