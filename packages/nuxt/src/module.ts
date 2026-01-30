@@ -2,6 +2,7 @@ import type { MazUiNuxtOptions } from './types'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { capitalize } from '@maz-ui/utils'
+import { addCustomTab } from '@nuxt/devtools-kit'
 import {
   addComponent,
   addImports,
@@ -340,16 +341,14 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     // Devtools
     if (moduleOptions.general.devtools) {
-      nuxt.hook('devtools:customTabs', (iframeTabs) => {
-        iframeTabs.push({
-          name: 'maz-ui',
-          title: 'maz-ui',
-          icon: 'https://maz-ui.com/img/icons/android-chrome-512x512.png',
-          view: {
-            type: 'iframe',
-            src: 'https://maz-ui.com',
-          },
-        })
+      addCustomTab({
+        name: 'maz-ui',
+        title: 'maz-ui',
+        icon: 'https://maz-ui.com/img/icons/android-chrome-512x512.png',
+        view: {
+          type: 'iframe',
+          src: 'https://maz-ui.com',
+        },
       })
     }
   },
