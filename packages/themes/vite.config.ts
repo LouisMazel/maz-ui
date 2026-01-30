@@ -1,17 +1,11 @@
 import { extname, relative, resolve } from 'node:path'
+import { getExternalDependencies } from '@maz-ui/vite-config'
 import vue from '@vitejs/plugin-vue'
-import { glob } from 'glob'
 
+import { glob } from 'glob'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import rootPkg from '../../package.json'
 import pkg from './package.json'
-
-const external = [
-  ...Object.keys(pkg.peerDependencies),
-  ...Object.keys(pkg.devDependencies),
-  ...Object.keys(rootPkg.devDependencies),
-]
 
 function resolver(path: string) {
   return resolve(__dirname, path)
@@ -73,7 +67,7 @@ export default defineConfig((option) => {
         fileName: (_, name) => `${name}.js`,
       },
       rollupOptions: {
-        external,
+        external: getExternalDependencies(pkg),
         treeshake: {
           moduleSideEffects: false,
           preset: 'smallest',
