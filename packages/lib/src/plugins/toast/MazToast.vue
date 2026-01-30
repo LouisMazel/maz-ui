@@ -362,7 +362,7 @@ onMounted(() => {
   }
 
   &.--right {
-    @apply maz-right-0 maz-w-full tab-m:maz-w-auto;
+    @apply maz-end-0 maz-w-full tab-m:maz-w-auto;
   }
 
   &.--left {
@@ -383,7 +383,7 @@ onMounted(() => {
 
   &.--left {
     & .m-toast__close {
-      @apply -maz-right-2;
+      @apply -maz-end-2;
     }
   }
 

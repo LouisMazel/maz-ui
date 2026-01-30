@@ -554,14 +554,14 @@ const stateColor = computed(() => {
 
 <style scoped>
 .m-input {
-  @apply maz-inline-flex maz-flex-col maz-align-top maz-items-start;
+  @apply maz-inline-flex maz-flex-col maz-align-top maz-items-start maz-text-foreground;
 
   &.--block {
     @apply maz-w-full;
   }
 
   &-top-label {
-    @apply maz-mb-2 maz-text-foreground;
+    @apply maz-mb-2;
   }
 
   &-bottom-text {
@@ -592,7 +592,7 @@ const stateColor = computed(() => {
         }
 
         .m-input-label {
-          @apply maz-left-2;
+          @apply maz-start-2;
         }
       }
 
@@ -699,7 +699,7 @@ const stateColor = computed(() => {
   }
 
   &-label {
-    @apply maz-pointer-events-none maz-absolute maz-w-full maz-origin-top-left maz-items-center maz-overflow-hidden maz-truncate maz-whitespace-nowrap maz-text-start maz-leading-6 maz-left-4;
+    @apply maz-pointer-events-none maz-absolute maz-w-full maz-origin-top-left maz-items-center maz-overflow-hidden maz-truncate maz-whitespace-nowrap maz-text-start maz-leading-6 maz-start-4;
 
     width: calc(100% + 1.3rem);
     transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
@@ -722,7 +722,7 @@ const stateColor = computed(() => {
     }
   }
 
-  &:not(.--has-state) {
+  &:not(.--has-state) .m-input-wrapper {
     @apply maz-text-muted;
   }
 

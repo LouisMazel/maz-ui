@@ -393,7 +393,7 @@ watch(
 .maz-slidenext-enter-active,
 .maz-slideprev-leave-active,
 .maz-slideprev-enter-active {
-  @apply maz-absolute maz-left-0 maz-right-0 maz-top-0;
+  @apply maz-absolute maz-left-0 maz-end-0 maz-top-0;
 
   transition: transform 300ms ease-in-out;
 }
