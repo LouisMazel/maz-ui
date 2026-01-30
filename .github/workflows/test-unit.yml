@@ -48,7 +48,7 @@ jobs:
         run: pnpm test:unit:coverage:all
 
       - name: Upload coverage to Codecov (lib)
-        if: always() && github.actor != 'dependabot[bot]'
+        if: always() && github.event.pull_request.user.login != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -59,7 +59,7 @@ jobs:
           verbose: true
 
       - name: Upload coverage to Codecov (utils)
-        if: always() && github.actor != 'dependabot[bot]'
+        if: always() && github.event.pull_request.user.login != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -70,7 +70,7 @@ jobs:
           verbose: true
 
       - name: Upload coverage to Codecov (mcp)
-        if: always() && github.actor != 'dependabot[bot]'
+        if: always() && github.event.pull_request.user.login != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -81,7 +81,7 @@ jobs:
           verbose: true
 
       - name: Upload coverage to Codecov (themes)
-        if: always() && github.actor != 'dependabot[bot]'
+        if: always() && github.event.pull_request.user.login != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -92,7 +92,7 @@ jobs:
           verbose: true
 
       - name: Upload coverage to Codecov (forms)
-        if: always() && github.actor != 'dependabot[bot]'
+        if: always() && github.event.pull_request.user.login != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
