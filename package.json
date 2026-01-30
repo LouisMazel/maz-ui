@@ -89,7 +89,6 @@
     "vite-plugin-lib-inject-css": "^2.2.2",
     "vite-svg-loader": "^5.1.0",
     "vitest": "^3.2.4",
-    "vue": "^3.5.27",
     "vue-tsc": "^3.2.1"
   },
   "lint-staged": {
