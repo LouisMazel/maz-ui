@@ -25,6 +25,18 @@
     ".": {
       "types": "./dist/types/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./components": {
+      "types": "./dist/types/components.d.ts",
+      "import": "./dist/components/index.js"
+    },
+    "./composables": {
+      "types": "./dist/types/composables.d.ts",
+      "import": "./dist/composables/index.js"
+    },
+    "./utils": {
+      "types": "./dist/types/utils.d.ts",
+      "import": "./dist/utils/index.js"
     }
   },
   "main": "./dist/index.js",
@@ -41,25 +53,25 @@
     "build": "vite build",
     "build:watch": "vite build --watch --mode development",
     "typecheck": "vue-tsc --noEmit",
-    "lint": "cross-env NODE_ENV=production eslint .",
-    "lint:fix": "pnpm lint --fix",
+    "lint": "pnpm lint:js && pnpm lint:style",
+    "lint:fix": "pnpm lint:js:fix && pnpm lint:style:fix",
+    "lint:js": "cross-env NODE_ENV=production eslint",
+    "lint:js:fix": "pnpm lint:js --fix",
+    "lint:style": "stylelint \"./**/*.{vue,css,scss,postcss,pcss,html}\"",
+    "lint:style:fix": "pnpm lint:style --fix",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest watch",
     "test:unit:coverage": "vitest run --coverage"
   },
   "peerDependencies": {
-    "maz-ui": "^4.4.0",
-    "valibot": "^1.0.0",
     "vue": "^3.5.0"
   },
-  "peerDependenciesMeta": {
-    "valibot": {
-      "optional": true
-    }
+  "dependencies": {
+    "maz-ui": "workspace:*",
+    "valibot": "^1.2.0"
   },
   "devDependencies": {
-    "maz-ui": "workspace:*",
-    "valibot": "^1.0.0"
+    "@maz-ui/vite-config": "workspace:*"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

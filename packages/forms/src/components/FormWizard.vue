@@ -3,9 +3,8 @@ import type { MazBtnProps } from 'maz-ui/components/MazBtn'
 import type { MazStepperProps, MazStepperStep } from 'maz-ui/components/MazStepper'
 import type { FormValidatorOptions } from 'maz-ui/composables'
 import type { Component, Ref, VNode } from 'vue'
-import type { FormBuilderState } from '../composables/useFormBuilder'
+import type { ErrorMessageValue, FieldsValidationStates, FieldValidationState, FormBuilderState } from '../composables/useFormBuilder'
 import type {
-  ExtractedValidationOptions,
   FieldBlurEventPayload,
   FieldChangeEventPayload,
   FieldFocusEventPayload,
@@ -20,22 +19,17 @@ import type {
   StepChangeEventPayload,
   StepErrorEventPayload,
   StepValidateEventPayload,
-  ValidationIssues,
-  ValidationMode,
   WizardStep,
 } from '../utils/schema-helpers'
 import type {
-  ErrorMessageValue,
-  FieldsValidationStates,
-  FieldValidationState,
   FormBuilderValidationContext,
 } from './FormBuilder.vue'
 import type { ErrorSummaryOptions, ErrorSummarySlotProps } from './FormErrorSummary.vue'
 import { useFormValidator } from 'maz-ui/composables/useFormValidator'
-import { computed, defineAsyncComponent, nextTick, provide, ref, shallowRef, toRef, useId, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, provide, ref, shallowRef, useId, watch } from 'vue'
 import { createSchemaAsyncComponents } from '../utils/component-map'
 import { FORM_BUILDER_STATE_KEY, FORM_BUILDER_VALIDATION_KEY } from '../utils/constants'
-import { extractValidationFromSchema, hasValidationRules } from '../utils/schema-helpers'
+import { extractValidationFromSchema } from '../utils/schema-helpers'
 import FormErrorSummary from './FormErrorSummary.vue'
 import FormSection from './FormSection.vue'
 
@@ -114,22 +108,23 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<FormWizardProps<T>>(), {
-  readonly: false,
-  disabled: false,
-  validationMode: 'lazy',
-  scrollToError: '.has-field-error',
-  errorSummary: undefined,
-  ariaLabel: undefined,
-  ariaLabelledBy: undefined,
-  ariaDescribedBy: undefined,
-  formId: undefined,
-  navigation: undefined,
-  stepper: true,
-  validateOnStepChange: true,
-  allowStepNavigation: false,
-  initialStep: 1,
-})
+const {
+  readonly = false,
+  disabled = false,
+  validationMode = 'lazy',
+  scrollToError = '.has-field-error',
+  errorSummary = undefined,
+  ariaLabel = undefined,
+  ariaLabelledBy = undefined,
+  ariaDescribedBy = undefined,
+  formId = undefined,
+  navigation = undefined,
+  stepper = true,
+  validateOnStepChange = true,
+  allowStepNavigation = false,
+  initialStep = 1,
+  schema,
+} = defineProps<FormWizardProps<T>>()
 
 const emit = defineEmits<{
   'submit': [payload: FormSubmitEventPayload<T>]
@@ -157,10 +152,8 @@ defineSlots<{
 
 const model = defineModel<T>({ required: true })
 
-const schema = toRef(props, 'schema')
-
 const generatedId = useId()
-const formUniqueId = computed(() => props.formId ?? generatedId)
+const formUniqueId = computed(() => formId ?? generatedId)
 const formRef = ref<HTMLFormElement | null>(null)
 const liveRegionRef = ref<HTMLElement | null>(null)
 
@@ -168,20 +161,20 @@ const MazBtn = defineAsyncComponent(() => import('maz-ui/components/MazBtn'))
 const MazStepper = defineAsyncComponent(() => import('maz-ui/components/MazStepper'))
 
 const asyncComponents = computed(() => {
-  return createSchemaAsyncComponents(schema.value)
+  return createSchemaAsyncComponents(schema)
 })
 
 const componentsWithGlobalState = computed<Partial<Record<FormComponentName, Component>>>(() => {
   return asyncComponents.value
 })
 
-const currentStep = ref(props.initialStep)
-const totalSteps = computed(() => schema.value.sections.length)
+const currentStep = ref(initialStep)
+const totalSteps = computed(() => schema.sections.length)
 const isFirstStep = computed(() => currentStep.value === 1)
 const isLastStep = computed(() => currentStep.value === totalSteps.value)
 
 const wizardSteps = computed<WizardStep<T>[]>(() => {
-  return schema.value.sections.map((section, index) => ({
+  return schema.sections.map((section, index) => ({
     id: section.id,
     legend: section.legend,
     index: index + 1,
@@ -192,7 +185,7 @@ const wizardSteps = computed<WizardStep<T>[]>(() => {
 })
 
 const currentSection = computed(() => {
-  return schema.value.sections[currentStep.value - 1]
+  return schema.sections[currentStep.value - 1]
 })
 
 const stepperSteps = computed<MazStepperStep[]>(() => {
@@ -204,34 +197,34 @@ const stepperSteps = computed<MazStepperStep[]>(() => {
 })
 
 const showStepper = computed(() => {
-  if (typeof props.stepper === 'boolean') {
-    return props.stepper
+  if (typeof stepper === 'boolean') {
+    return stepper
   }
-  return props.stepper?.enabled !== false
+  return stepper?.enabled !== false
 })
 
 const stepperProps = computed(() => {
-  if (typeof props.stepper === 'object' && props.stepper.props) {
-    return props.stepper.props
+  if (typeof stepper === 'object' && stepper.props) {
+    return stepper.props
   }
   return {}
 })
 
 const errorSummaryPosition = computed<'top' | 'bottom' | null>(() => {
-  if (!props.errorSummary) {
+  if (!errorSummary) {
     return null
   }
-  if (typeof props.errorSummary === 'boolean') {
+  if (typeof errorSummary === 'boolean') {
     return 'top'
   }
-  return props.errorSummary.position ?? 'top'
+  return errorSummary.position ?? 'top'
 })
 
 const errorSummarySelector = computed<string>(() => {
-  if (typeof props.errorSummary === 'boolean' || !props.errorSummary?.selector) {
+  if (typeof errorSummary === 'boolean' || !errorSummary?.selector) {
     return '.has-field-error'
   }
-  return props.errorSummary.selector
+  return errorSummary.selector
 })
 
 const liveRegionId = computed(() => `${formUniqueId.value}-live-region`)
@@ -239,53 +232,41 @@ const liveRegionId = computed(() => `${formUniqueId.value}-live-region`)
 const formAccessibilityAttrs = computed(() => {
   const attrs: Record<string, string | undefined> = {}
 
-  if (props.ariaLabel) {
-    attrs['aria-label'] = props.ariaLabel
+  if (ariaLabel) {
+    attrs['aria-label'] = ariaLabel
   }
-  if (props.ariaLabelledBy) {
-    attrs['aria-labelledby'] = props.ariaLabelledBy
+  if (ariaLabelledBy) {
+    attrs['aria-labelledby'] = ariaLabelledBy
   }
-  if (props.ariaDescribedBy) {
-    attrs['aria-describedby'] = props.ariaDescribedBy
+  if (ariaDescribedBy) {
+    attrs['aria-describedby'] = ariaDescribedBy
   }
 
   return attrs
 })
 
-interface ValidatorInstance {
-  isValid: Ref<boolean>
-  isDirty: Ref<boolean>
-  isSubmitting: Ref<boolean>
-  isSubmitted: Ref<boolean>
-  fieldsStates: Ref<Record<string, FieldValidationState>>
-  validateForm: (setErrors?: boolean) => Promise<boolean>
-  resetForm: () => void
-  scrollToError: (selector?: string) => void
-}
-
-const validatorRef = shallowRef<ValidatorInstance | null>(null)
+const validatorRef = shallowRef<ReturnType<typeof useFormValidator> | null>(null)
 const extractedOptions = shallowRef<ExtractedValidationOptions<T> | null>(null)
 
 function initializeValidator(): void {
-  const currentSchema = schema.value
-  if (!hasValidationRules(currentSchema)) {
+  if (!hasValidationRules(schema)) {
     validatorRef.value = null
     extractedOptions.value = null
     return
   }
 
-  const extracted = extractValidationFromSchema(currentSchema)
+  const extracted = extractValidationFromSchema(schema)
   extractedOptions.value = extracted
 
   const validationSchema = extracted.schema
 
-  const validatorMode = props.validationMode === 'change' || props.validationMode === 'submit'
+  const validatorMode = validationMode === 'change' || validationMode === 'submit'
     ? 'lazy'
-    : props.validationMode
+    : validationMode
 
   const validatorOptions: FormValidatorOptions = {
     mode: validatorMode,
-    scrollToError: props.scrollToError,
+    scrollToError,
     identifier: 'form-wizard-validator',
     debouncedFields: extracted.debouncedFields as FormValidatorOptions['debouncedFields'],
     throttledFields: extracted.throttledFields as FormValidatorOptions['throttledFields'],
@@ -293,19 +274,17 @@ function initializeValidator(): void {
   }
 
   const validator = useFormValidator({
-    schema: ref(validationSchema) as any,
-    model: model as any,
+    schema: validationSchema,
+    model: model,
     options: validatorOptions,
   })
 
-  validatorRef.value = validator as unknown as ValidatorInstance
+  validatorRef.value = validator
 }
 
 watch(
-  schema,
-  () => {
-    initializeValidator()
-  },
+  () => schema,
+  () => initializeValidator(),
   { immediate: true, deep: true },
 )
 
@@ -419,7 +398,7 @@ const errorCount = computed(() => {
 })
 
 function getStepFieldNames(stepIndex: number): (keyof T)[] {
-  const section = schema.value.sections[stepIndex - 1]
+  const section = schema.sections[stepIndex - 1]
   if (!section) {
     return []
   }
@@ -469,7 +448,7 @@ async function validateStep(stepIndex: number): Promise<boolean> {
 }
 
 function scrollToFirstError(): void {
-  if (!props.scrollToError) {
+  if (!scrollToError) {
     return
   }
 
@@ -478,7 +457,7 @@ function scrollToFirstError(): void {
     return
   }
 
-  const selector = typeof props.scrollToError === 'string' ? props.scrollToError : undefined
+  const selector = typeof scrollToError === 'string' ? scrollToError : undefined
   validator.scrollToError(selector)
 }
 
@@ -494,7 +473,7 @@ async function goToStep(step: number): Promise<boolean> {
   const previousStep = currentStep.value
   const isMovingForward = step > currentStep.value
 
-  if (props.validateOnStepChange && isMovingForward) {
+  if (validateOnStepChange && isMovingForward) {
     const isValid = await validateStep(currentStep.value)
     if (!isValid) {
       scrollToFirstError()
@@ -615,7 +594,7 @@ function announceToScreenReader(message: string): void {
 }
 
 async function handleSubmit(): Promise<void> {
-  if (props.disabled || props.readonly) {
+  if (disabled || readonly) {
     return
   }
 
@@ -627,9 +606,9 @@ async function handleSubmit(): Promise<void> {
     await validator.validateForm(true)
     isValid = validator.isValid.value
 
-    if (!isValid && props.scrollToError) {
+    if (!isValid && scrollToError) {
       validator.scrollToError(
-        typeof props.scrollToError === 'string' ? props.scrollToError : undefined,
+        typeof scrollToError === 'string' ? scrollToError : undefined,
       )
     }
   }
@@ -665,7 +644,7 @@ function resetForm(): void {
     validator.resetForm()
   }
 
-  currentStep.value = props.initialStep
+  currentStep.value = initialStep
 
   const resetPayload: FormResetEventPayload<T> = {
     data: model.value,
@@ -733,20 +712,20 @@ function getSectionSlotProps(section: FormSectionType<T>): SectionSlotProps<T> {
   return {
     section,
     model: model.value,
-    readonly: props.readonly,
-    disabled: props.disabled,
+    readonly,
+    disabled,
   }
 }
 
 const previousButtonProps = computed<MazBtnProps>(() => {
   const baseProps: MazBtnProps = {
     type: 'button',
-    disabled: props.disabled || isFirstStep.value,
+    disabled: disabled || isFirstStep.value,
     outlined: true,
   }
 
-  if (props.navigation?.previousButton && typeof props.navigation.previousButton === 'object') {
-    return { ...baseProps, ...props.navigation.previousButton }
+  if (navigation?.previousButton && typeof navigation.previousButton === 'object') {
+    return { ...baseProps, ...navigation.previousButton }
   }
 
   return baseProps
@@ -755,11 +734,11 @@ const previousButtonProps = computed<MazBtnProps>(() => {
 const nextButtonProps = computed<MazBtnProps>(() => {
   const baseProps: MazBtnProps = {
     type: 'button',
-    disabled: props.disabled || isLastStep.value,
+    disabled: disabled || isLastStep.value,
   }
 
-  if (props.navigation?.nextButton && typeof props.navigation.nextButton === 'object') {
-    return { ...baseProps, ...props.navigation.nextButton }
+  if (navigation?.nextButton && typeof navigation.nextButton === 'object') {
+    return { ...baseProps, ...navigation.nextButton }
   }
 
   return baseProps
@@ -768,26 +747,26 @@ const nextButtonProps = computed<MazBtnProps>(() => {
 const submitButtonProps = computed<MazBtnProps>(() => {
   const baseProps: MazBtnProps = {
     type: 'submit',
-    disabled: props.disabled,
+    disabled,
   }
 
-  if (props.navigation?.submitButton && typeof props.navigation.submitButton === 'object') {
-    return { ...baseProps, ...props.navigation.submitButton }
+  if (navigation?.submitButton && typeof navigation.submitButton === 'object') {
+    return { ...baseProps, ...navigation.submitButton }
   }
 
   return baseProps
 })
 
-const previousText = computed(() => props.navigation?.previousText ?? 'Previous')
-const nextText = computed(() => props.navigation?.nextText ?? 'Next')
-const submitText = computed(() => props.navigation?.submitText ?? 'Submit')
+const previousText = computed(() => navigation?.previousText ?? 'Previous')
+const nextText = computed(() => navigation?.nextText ?? 'Next')
+const submitText = computed(() => navigation?.submitText ?? 'Submit')
 
-const showPreviousButton = computed(() => props.navigation?.previousButton !== false)
-const showNextButton = computed(() => props.navigation?.nextButton !== false)
-const showSubmitButton = computed(() => props.navigation?.submitButton !== false)
+const showPreviousButton = computed(() => navigation?.previousButton !== false)
+const showNextButton = computed(() => navigation?.nextButton !== false)
+const showSubmitButton = computed(() => navigation?.submitButton !== false)
 
 function handleStepperClick(step: number): void {
-  if (props.allowStepNavigation) {
+  if (allowStepNavigation) {
     goToStep(step)
   }
 }

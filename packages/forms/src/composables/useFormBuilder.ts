@@ -1,3 +1,4 @@
+import type { FormValidatorOptions } from 'maz-ui/composables'
 import type { ComputedRef, Ref } from 'vue'
 import type {
   FieldBlurEventPayload,
@@ -5,14 +6,13 @@ import type {
   FieldFocusEventPayload,
   FieldValidateEventPayload,
   ValidationIssues,
-  ValidationMode,
 } from '../utils/schema-helpers'
 import { inject } from 'vue'
 import { FORM_BUILDER_STATE_KEY } from '../utils/constants'
 
 export type ErrorMessageValue = string | string[] | undefined
 
-export interface FieldValidationState {
+export interface FieldValidationState<T extends Record<string, unknown>> {
   blurred: boolean
   dirty: boolean
   error: boolean
@@ -20,11 +20,11 @@ export interface FieldValidationState {
   valid: boolean
   validating: boolean
   validated: boolean
-  mode?: ValidationMode
+  mode?: FormValidatorOptions<T>['mode']
 }
 
-export type FieldsValidationStates<TModel extends Record<string, unknown>> = Partial<
-  Record<keyof TModel, FieldValidationState>
+export type FieldsValidationStates<T extends Record<string, unknown>> = Partial<
+  Record<keyof T, FieldValidationState<T>>
 >
 
 export interface FormBuilderState<T extends Record<string, unknown>> {

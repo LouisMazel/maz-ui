@@ -1,20 +1,14 @@
 import { extname, relative, resolve } from 'node:path'
+import { getExternalDependencies } from '@maz-ui/vite-config'
 import vue from '@vitejs/plugin-vue'
-import { glob } from 'glob'
 
+import { glob } from 'glob'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import SvgLoader from 'vite-svg-loader'
-import rootPkg from '../../package.json'
 
 import pkg from './package.json'
-
-const external = [
-  ...Object.keys(pkg.peerDependencies),
-  ...Object.keys(pkg.devDependencies),
-  ...Object.keys(rootPkg.devDependencies),
-]
 
 function resolver(path: string) {
   return resolve(__dirname, path)
@@ -28,8 +22,12 @@ function getEntries(pattern: string) {
 }
 
 const entries = Object.fromEntries(
-  glob.sync('src/**/*.ts', {
-    ignore: ['**/*/index.ts', '**/*/types.ts', '**/*/__tests__/**/*', '**/*/*.spec.ts', '**/*/*.test.ts'],
+  glob.sync([
+    'src/components/*',
+    'src/composables/*',
+    'src/utils/*',
+  ], {
+    ignore: ['**/*/types.ts', '**/__tests__', '**/__tests__/**/*', '**/*/*.spec.ts', '**/*/*.test.ts'],
   })
     .map(getEntries),
 )
@@ -43,9 +41,9 @@ export default defineConfig((option) => {
       dts({
         tsconfigPath: resolver('./tsconfig.json'),
         entryRoot: resolver('src'),
-        outDir: resolver('dist/types'),
+        outDir: resolver('dist'),
         exclude: ['src/**/__tests__/**/*', 'src/**/*.spec.ts', 'src/**/*.test.ts'],
-        include: ['src/**/*.ts'],
+        // include: ['src/**/*.ts', 'src/components/*', 'src/composables/*', 'src/utils/*'],
       }),
     ],
     esbuild: {
@@ -73,7 +71,7 @@ export default defineConfig((option) => {
         fileName: (_, name) => `${name}.js`,
       },
       rollupOptions: {
-        external,
+        external: getExternalDependencies(pkg),
         treeshake: {
           moduleSideEffects: false,
           preset: 'smallest',

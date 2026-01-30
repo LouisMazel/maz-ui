@@ -1,35 +1,16 @@
-import type { MazCardProps } from 'maz-ui/components/MazCard'
-import type { MazCheckboxProps } from 'maz-ui/components/MazCheckbox'
-import type { MazDatePickerProps } from 'maz-ui/components/MazDatePicker'
-import type { MazInputProps, MazInputValue } from 'maz-ui/components/MazInput'
-import type { MazInputCodeProps } from 'maz-ui/components/MazInputCode'
-import type { MazInputNumberProps } from 'maz-ui/components/MazInputNumber'
-import type { MazInputPhoneNumberProps } from 'maz-ui/components/MazInputPhoneNumber'
-import type { MazInputPriceProps } from 'maz-ui/components/MazInputPrice'
-import type { MazInputTagsProps } from 'maz-ui/components/MazInputTags'
-import type { MazRadioProps } from 'maz-ui/components/MazRadio'
-import type { MazRadioButtonsProps } from 'maz-ui/components/MazRadioButtons'
-import type { MazSelectOption, MazSelectProps } from 'maz-ui/components/MazSelect'
-import type { MazSelectCountryProps } from 'maz-ui/components/MazSelectCountry'
-import type { MazSliderProps } from 'maz-ui/components/MazSlider'
-import type { MazSwitchProps } from 'maz-ui/components/MazSwitch'
-import type { MazTextareaProps } from 'maz-ui/components/MazTextarea'
+import type { MazCheckboxProps, MazContainerProps, MazDatePickerProps, MazInputCodeProps, MazInputNumberProps, MazInputPhoneNumberProps, MazInputPriceProps, MazInputProps, MazInputTagsProps, MazRadioButtonsProps, MazRadioProps, MazSelectCountryProps, MazSelectOption, MazSelectProps, MazSliderProps, MazSwitchProps, MazTextareaProps } from 'maz-ui/components'
+import type { MazInputValue } from 'maz-ui/components/MazInput'
+import type { FormValidatorOptions } from 'maz-ui/composables'
+import type { FormSchema as FormSchemaType, Validation } from 'maz-ui/composables/useFormValidator/types'
 import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferIssue } from 'valibot'
 import type { HTMLAttributes, InputHTMLAttributes } from 'vue'
 
-export type FormFieldValidation = BaseSchema<unknown, unknown, BaseIssue<unknown>> | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
+// export type FormFieldValidation = BaseSchema<unknown, unknown, BaseIssue<unknown>> | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
 
-export type ValidationMode = 'eager' | 'lazy' | 'aggressive' | 'blur' | 'change' | 'submit' | 'progressive'
+export type ValidationIssues = InferIssue<Validation>[]
 
-export type ValidationIssues = InferIssue<FormFieldValidation>[]
-
-export interface FormFieldValidationOptions {
-  rule?: FormFieldValidation
-  mode?: ValidationMode
-  throttled?: number | true
-  debounced?: number | true
-  messages?: Record<string, string>
-  useMultipleErrorMessages?: boolean
+export interface FormSchema<T> {
+  sections: FormSection<T>[]
 }
 
 export interface FormComponentPropsMap {
@@ -54,12 +35,12 @@ export type FormComponentName = keyof FormComponentPropsMap
 
 export type FormFieldProps<C extends FormComponentName> = Omit<
   FormComponentPropsMap[C],
-  'modelValue' | 'style' | 'class'
+  'modelValue'
 >
 
 export type NativeInputAttributes = Omit<
   InputHTMLAttributes,
-  'type' | 'value' | 'disabled' | 'readonly' | 'required' | 'placeholder' | 'name' | 'id'
+  'type' | 'value' | 'disabled' | 'readonly' | 'required' | 'placeholder' | 'name'
 >
 
 export interface FormFieldAttrs extends NativeInputAttributes {
@@ -77,26 +58,41 @@ export interface FormFieldAttrs extends NativeInputAttributes {
   'title'?: HTMLAttributes['title']
 }
 
+export interface FormFieldValidation {
+  /**
+   * valibot rule
+   */
+  rule: Validation
+  /**
+   * @default 'eager'
+   */
+  mode?: FormValidatorOptions['mode']
+  throttled?: boolean | number
+  debounced?: boolean | number
+  useMultipleErrorMessages?: boolean
+}
+
 export interface FormField<
   T,
   K extends keyof T = keyof T,
   C extends FormComponentName = FormComponentName,
 > {
   name: K
+  id?: string
   component: C
   props?: FormFieldProps<C>
   attrs?: FormFieldAttrs
   defaultValue?: T[K]
-  validation?: FormFieldValidationOptions
-  condition?: (model: T) => boolean
+  validation?: FormFieldValidation
+  condition?: (model?: T[K]) => boolean
 }
 
-export type FormSectionCardOption = boolean | Omit<MazCardProps, 'collapsible' | 'collapseOpen'>
+export type FormSectionContainerOption = boolean | MazContainerProps
 
 export interface FormSection<T> {
   id: string
   legend?: string
-  card?: FormSectionCardOption
+  container?: FormSectionContainerOption
   fields: FormField<T, keyof T, FormComponentName>[]
 }
 
@@ -128,20 +124,11 @@ export type FlatValidationSchema<T extends Record<string, unknown>> = {
   [K in keyof T]?: FormFieldValidation
 }
 
-export interface ExtractedValidationOptions<T extends Record<string, unknown>> {
-  schema: FlatValidationSchema<T>
-  debouncedFields: Partial<Record<keyof T, number | true>> | null
-  throttledFields: Partial<Record<keyof T, number | true>> | null
-  fieldModes: Partial<Record<keyof T, ValidationMode>>
-  customMessages: Partial<Record<keyof T, Record<string, string>>>
-  useMultipleErrorMessages: Partial<Record<keyof T, boolean>>
-}
-
 interface FieldExtractionContext<T extends Record<string, unknown>> {
-  schema: FlatValidationSchema<T>
+  schema: FormSchemaType<T>
   debouncedFields: Partial<Record<keyof T, number | true>>
   throttledFields: Partial<Record<keyof T, number | true>>
-  fieldModes: Partial<Record<keyof T, ValidationMode>>
+  fieldModes: Partial<Record<keyof T, FormValidatorOptions['mode']>>
   customMessages: Partial<Record<keyof T, Record<string, string>>>
   useMultipleErrorMessages: Partial<Record<keyof T, boolean>>
   hasDebouncedFields: boolean
@@ -160,7 +147,7 @@ function processFieldValidation<T extends Record<string, unknown>>(
   }
 
   if (validation.rule) {
-    context.schema[fieldName] = validation.rule
+    context.schema[fieldName as keyof FormSchemaType<T>] = validation.rule
   }
   if (validation.mode) {
     context.fieldModes[fieldName] = validation.mode
@@ -173,19 +160,27 @@ function processFieldValidation<T extends Record<string, unknown>>(
     context.throttledFields[fieldName] = validation.throttled
     context.hasThrottledFields = true
   }
-  if (validation.messages) {
-    context.customMessages[fieldName] = validation.messages
-  }
+  // if (validation.messages) {
+  //   context.customMessages[fieldName] = validation.messages
+  // }
   if (validation.useMultipleErrorMessages !== undefined) {
     context.useMultipleErrorMessages[fieldName] = validation.useMultipleErrorMessages
   }
 }
+// export interface ExtractedValidationOptions<T extends Record<string, unknown>> {
+//   schema: FlatValidationSchema<T>
+//   debouncedFields: Partial<Record<keyof T, number | true>> | null
+//   throttledFields: Partial<Record<keyof T, number | true>> | null
+//   fieldModes: Partial<Record<keyof T, FormValidatorOptions['mode']>>
+//   customMessages: Partial<Record<keyof T, Record<string, string>>>
+//   useMultipleErrorMessages: Partial<Record<keyof T, boolean>>
+// }
 
 export function extractValidationFromSchema<T extends Record<string, unknown>>(
   formSchema: FormSchema<T>,
-): ExtractedValidationOptions<T> {
+) {
   const context: FieldExtractionContext<T> = {
-    schema: {},
+    schema: {} as FormSchemaType<T>,
     debouncedFields: {},
     throttledFields: {},
     fieldModes: {},
@@ -211,18 +206,18 @@ export function extractValidationFromSchema<T extends Record<string, unknown>>(
   }
 }
 
-export function hasValidationRules<T extends Record<string, unknown>>(
-  formSchema: FormSchema<T>,
-): boolean {
-  for (const section of formSchema.sections) {
-    for (const field of section.fields) {
-      if (field.validation?.rule) {
-        return true
-      }
-    }
-  }
-  return false
-}
+// export function hasValidationRules<T extends Record<string, unknown>>(
+//   formSchema: FormSchema<T>,
+// ): boolean {
+//   for (const section of formSchema.sections) {
+//     for (const field of section.fields) {
+//       if (field.validation?.rule) {
+//         return true
+//       }
+//     }
+//   }
+//   return false
+// }
 
 export interface FormSubmitEventPayload<T> {
   data: T
@@ -240,23 +235,23 @@ export interface FormResetEventPayload<T> {
 
 export interface FieldChangeEventPayload<T, K extends keyof T = keyof T> {
   name: K
-  value: T[K]
-  previousValue: T[K]
+  value?: T[K]
+  previousValue?: T[K]
 }
 
 export interface FieldFocusEventPayload<T, K extends keyof T = keyof T> {
   name: K
-  value: T[K]
+  value?: T[K]
 }
 
 export interface FieldBlurEventPayload<T, K extends keyof T = keyof T> {
   name: K
-  value: T[K]
+  value?: T[K]
 }
 
 export interface FieldValidateEventPayload<T, K extends keyof T = keyof T> {
   name: K
-  value: T[K]
+  value?: T[K]
   isValid: boolean
   errors: ValidationIssues
 }
