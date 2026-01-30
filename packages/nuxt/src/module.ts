@@ -39,6 +39,7 @@ const COMPONENT_NAMES: Omit<
   'useMazDialogConfirm'
 > = {
   MazAccordion: true,
+  MazAlert: true,
   MazAnimatedCounter: true,
   MazAnimatedElement: true,
   MazAnimatedText: true,
@@ -54,6 +55,7 @@ const COMPONENT_NAMES: Omit<
   MazChart: true,
   MazCheckbox: true,
   MazChecklist: true,
+  MazContainer: true,
   MazCircularProgressBar: true,
   MazDialog: true,
   MazDialogConfirm: true,
