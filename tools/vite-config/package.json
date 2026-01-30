@@ -1,0 +1,20 @@
+{
+  "name": "@maz-ui/vite-config",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    }
+  },
+  "devDependencies": {
+    "@maz-ui/eslint-config": "workspace:*"
+  },
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "files": [
+    "src/index.js"
+  ]
+}
