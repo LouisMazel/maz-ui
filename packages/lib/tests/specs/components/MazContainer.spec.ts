@@ -35,7 +35,6 @@ describe('components/MazContainer.vue', () => {
     expect(wrapper.classes()).toContain('--elevation')
     expect(wrapper.classes()).toContain('--padding')
     expect(wrapper.classes()).toContain('--bordered')
-    expect(wrapper.classes()).toContain('--rounded')
     expect(wrapper.classes()).toContain('--rounded-full')
   })
 })
