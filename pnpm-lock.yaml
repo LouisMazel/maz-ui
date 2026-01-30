@@ -636,6 +636,12 @@ importers:
         specifier: ^4.21.0
         version: 4.21.0
 
+  tools/vite-config:
+    devDependencies:
+      '@maz-ui/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+
 packages:
 
   '@acemir/cssom@0.9.31':
