@@ -1,5 +1,5 @@
 import type { ComponentPublicInstance } from 'vue'
-import type { FieldsValidationStates } from '../../../src/components/FormBuilder.vue'
+import type { FieldsValidationStates } from '../../../src/composables/useFormBuilder'
 import type { FormSchema, ValidationIssues, WizardStep } from '../../../src/utils/schema-helpers'
 import { flushPromises, mount } from '@vue/test-utils'
 import { minLength, pipe, string } from 'valibot'
