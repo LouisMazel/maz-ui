@@ -33,10 +33,11 @@ declare module '@nuxt/schema' {
   }
 }
 
-type ComponentNames = keyof typeof import('maz-ui/components')
+type MazUiComponentNames = keyof typeof import('maz-ui/components')
+type FormBuilderComponentNames = keyof typeof import('@maz-ui/forms/components')
 
 const COMPONENT_NAMES: Omit<
-  Record<ComponentNames, true>,
+  Record<MazUiComponentNames, true>,
   'useMazDialogConfirm'
 > = {
   MazAccordion: true,
@@ -103,12 +104,12 @@ const COMPONENT_NAMES: Omit<
   MazPopover: true,
 }
 
-const FORM_BUILDER_COMPONENT_NAMES = {
-  MazFormBuilder: true,
-  MazFormErrorSummary: true,
-  MazFormField: true,
-  MazFormSection: true,
-  MazFormWizard: true,
+const FORM_BUILDER_COMPONENT_NAMES: Omit<Record<FormBuilderComponentNames, true>, 'useMazDialogConfirm'> = {
+  FormBuilder: true,
+  FormErrorSummary: true,
+  FormField: true,
+  FormSection: true,
+  // FormWizard: true,
 } as const
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
@@ -252,22 +253,32 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     if (moduleOptions.formBuilder.autoImport) {
       for (const name of Object.keys(FORM_BUILDER_COMPONENT_NAMES)) {
         addComponent({
-          name,
-          filePath: '@maz-ui/forms',
+          name: `Maz${name}`,
+          filePath: '@maz-ui/forms/components',
           export: name,
         })
       }
 
       addImports({
         name: 'useFormBuilder',
-        from: '@maz-ui/forms',
+        from: '@maz-ui/forms/composables',
         as: `use${capitalize(autoImportPrefix)}FormBuilder`,
       })
 
-      addImports({
-        name: 'defineFormSchema',
-        from: '@maz-ui/forms',
-      })
+      addImports([
+        {
+          name: `define${capitalize(autoImportPrefix)}FormSchema`,
+          from: '@maz-ui/forms/utils',
+        },
+        {
+          name: `define${capitalize(autoImportPrefix)}FormSection`,
+          from: '@maz-ui/forms/utils',
+        },
+        {
+          name: `define${capitalize(autoImportPrefix)}FormField`,
+          from: '@maz-ui/forms/utils',
+        },
+      ])
     }
 
     // Plugins
