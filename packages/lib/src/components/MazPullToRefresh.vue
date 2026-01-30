@@ -249,7 +249,7 @@ onUnmounted(() => {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-pull-to-refresh {
   .loading-header,
   .loading-footer {

@@ -26,7 +26,7 @@ const colorCSSVariables = computed(() => ({
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-loading-bar {
   @apply maz-relative maz-block maz-w-full maz-overflow-hidden;
 

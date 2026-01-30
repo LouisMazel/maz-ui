@@ -116,7 +116,7 @@ const calendarDate = computed({
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .maz-picker-calendar {
   @apply maz-relative maz-flex maz-w-full;
 

@@ -320,7 +320,7 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-date-picker-time {
   @apply maz-relative maz-flex;
 

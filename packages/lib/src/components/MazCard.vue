@@ -260,7 +260,7 @@ function toggleCollapse() {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-card {
   @apply maz-relative maz-inline-flex maz-max-h-full maz-flex-col maz-bg-surface dark:maz-border dark:maz-border-divider;
 

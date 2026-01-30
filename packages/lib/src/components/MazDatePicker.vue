@@ -784,7 +784,7 @@ watch(
   />
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-date-picker {
   @apply maz-relative maz-inline-block;
 

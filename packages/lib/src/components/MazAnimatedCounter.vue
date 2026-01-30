@@ -140,7 +140,7 @@ watch(
   </span>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-animated-counter {
   @apply maz-whitespace-nowrap maz-tabular-nums;
 }

@@ -339,7 +339,7 @@ onMounted(() => {
   </Transition>
 </template>
 
-<style lang="postcss">
+<style>
 .m-toast-container {
   @apply maz-fixed maz-flex maz-flex-col maz-gap-2 maz-p-4;
 
@@ -371,7 +371,7 @@ onMounted(() => {
 }
 </style>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-toast {
   box-sizing: border-box;
 

@@ -18,7 +18,7 @@ const days = computed(() => getDaysOfWeek(props.locale, props.firstDayOfWeek))
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .maz-picker-calendar-days {
   @apply maz-grid maz-grid-cols-7 maz-justify-between maz-gap-1 maz-text-center;
 

@@ -211,7 +211,7 @@ function handleImageError(event: Event) {
   </component>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-avatar {
   @apply maz-inline-flex maz-flex-col maz-gap-[0.5em] maz-align-top maz-flex-center;
   @apply !maz-no-underline;

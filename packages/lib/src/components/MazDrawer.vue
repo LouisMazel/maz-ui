@@ -113,7 +113,7 @@ const hasTitle = computed(() => {
   </MazBackdrop>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-drawer {
   @apply maz-items-stretch;
 

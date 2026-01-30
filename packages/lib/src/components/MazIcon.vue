@@ -260,7 +260,7 @@ watchEffect(() => {
   <component :is="icon" v-else class="m-icon m-reset-css" :class="svgClasses" :style="svgStyle" />
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-icon {
   width: 1em !important;
   height: 1em !important;

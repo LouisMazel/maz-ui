@@ -65,7 +65,7 @@ withDefaults(defineProps<MazBadgeProps>(), {
   </span>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-badge {
   @apply maz-inline-flex maz-items-center maz-justify-center maz-border maz-border-transparent maz-align-top maz-font-semibold;
 

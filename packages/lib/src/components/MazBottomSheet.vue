@@ -66,7 +66,7 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
   </MazBackdrop>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-bottom-sheet {
   &__container {
     @apply maz-relative maz-bg-surface maz-text-foreground maz-drop-shadow-md maz-shadow-elevation maz-w-full maz-px-12 maz-rounded-t-2xl;

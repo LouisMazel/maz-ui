@@ -427,13 +427,13 @@ onBeforeUnmount(() => {
   </div>
 </template>
 
-<style lang="postcss">
+<style>
   html.--m-fullscreen-open {
   @apply maz-h-screen maz-overflow-hidden;
 }
 </style>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-fullscreen-img {
   @apply maz-fixed maz-inset-0 maz-z-default-backdrop maz-h-screen maz-w-screen maz-items-center maz-bg-overlay/5 maz-outline-none maz-backdrop-blur;
 

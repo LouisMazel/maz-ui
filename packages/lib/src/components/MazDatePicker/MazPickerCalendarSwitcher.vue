@@ -77,7 +77,7 @@ function nextMonth() {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-date-picker-calendar-switcher {
   @apply maz-flex maz-space-x-2 maz-border-b maz-border-divider maz-px-2 maz-py-1;
 

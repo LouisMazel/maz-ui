@@ -356,7 +356,7 @@ function formatColorName(colorName: string): string {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 @media (max-width: 1024px) {
   .theme-configurator {
     @apply maz-space-y-8;
@@ -368,7 +368,7 @@ function formatColorName(colorName: string): string {
 }
 </style>
 
-<style lang="postcss">
+<style>
 /* Shiki code highlighting styles */
 .shiki-wrapper {
   @apply maz-rounded-md maz-overflow-hidden maz-bg-contrast dark:maz-bg-surface-600;

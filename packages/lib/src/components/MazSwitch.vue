@@ -151,7 +151,7 @@ function onFocus(event: FocusEvent) {
   </label>
 </template>
 
-<style lang="postcss">
+<style>
   .m-switch {
   @apply maz-relative maz-inline-flex maz-cursor-pointer maz-items-center maz-gap-2 maz-align-top;
 

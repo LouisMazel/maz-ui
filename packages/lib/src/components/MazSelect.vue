@@ -819,7 +819,7 @@ defineExpose({
   </MazPopover>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-select {
   @apply maz-relative maz-inline-flex maz-align-top;
 

@@ -253,7 +253,7 @@ onBeforeUnmount(() => observer?.disconnect())
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-circular-progress-bar {
   @apply maz-relative maz-inline-flex maz-h-[1em] maz-w-[1em] maz-flex-center;
 
