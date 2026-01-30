@@ -239,7 +239,7 @@ function updateQuery(value?: string) {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-checklist {
   @apply maz-flex maz-flex-col maz-gap-4;
 

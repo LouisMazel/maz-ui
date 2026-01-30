@@ -132,7 +132,7 @@ watch(() => props.modelValue, () => {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .color-picker {
   @apply maz-inline-flex maz-flex-col maz-gap-1;
 

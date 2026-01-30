@@ -274,7 +274,7 @@ function setPageNumber(page: number) {
   </nav>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-pagination {
   ul {
     @apply !maz-m-0 maz-inline-flex !maz-list-none maz-items-center maz-gap-2 -maz-space-x-px !maz-p-0 maz-align-top maz-text-base;

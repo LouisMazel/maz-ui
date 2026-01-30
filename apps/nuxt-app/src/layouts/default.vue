@@ -39,7 +39,7 @@ function action() {
   </MazPullToRefresh>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 header {
   @apply maz-flex maz-w-full maz-flex-wrap maz-items-center maz-justify-between maz-border-b maz-border-divider maz-px-2 maz-py-4 maz-padded-container;
 

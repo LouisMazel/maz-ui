@@ -93,7 +93,7 @@ onBeforeUnmount(() => {
   </div>
 </template>
 
-<style scoped lang="postcss">
+<style scoped>
 .m-animated-element {
   will-change: transform, opacity, filter;
   transform: translateZ(0);

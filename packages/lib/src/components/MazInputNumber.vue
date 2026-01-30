@@ -267,7 +267,7 @@ function decrement() {
   </div>
 </template>
 
-<style lang="postcss">
+<style>
   .m-input-number {
   @apply maz-inline-flex maz-align-top;
 

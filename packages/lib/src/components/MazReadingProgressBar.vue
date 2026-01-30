@@ -150,7 +150,7 @@ onBeforeUnmount(() => {
   </Teleport>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-reading-progress-bar {
   @apply maz-fixed maz-top-0 maz-z-default-backdrop maz-w-full;
 }

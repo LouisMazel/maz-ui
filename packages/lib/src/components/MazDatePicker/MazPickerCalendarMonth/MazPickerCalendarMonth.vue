@@ -79,7 +79,7 @@ const calendarDateWithOffset = computed({
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .maz-picker-calendar-month {
   @apply maz-w-full maz-overflow-hidden maz-py-2;
 

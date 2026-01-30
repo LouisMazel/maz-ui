@@ -85,7 +85,7 @@ function selectMonth(date: Dayjs) {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .maz-picker-month-switcher {
   @apply maz-absolute maz-inset-0 maz-z-1 maz-flex maz-flex-col maz-bg-surface;
 

@@ -170,7 +170,7 @@ if (scrollable) {
   </MazBackdrop>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-dialog {
   @apply maz-flex maz-origin-center maz-flex-col maz-min-w-full maz-rounded maz-bg-surface maz-text-foreground dark:maz-border dark:maz-border-divider tab-s:maz-my-8 maz-max-w-full maz-touch-none;
 

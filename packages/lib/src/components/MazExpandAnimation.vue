@@ -73,7 +73,7 @@ onUnmounted(() => {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-expand-animation {
   display: grid;
   grid-template-rows: 0fr;

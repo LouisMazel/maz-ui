@@ -552,7 +552,7 @@ const stateColor = computed(() => {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-input {
   @apply maz-inline-flex maz-flex-col maz-align-top maz-items-start;
 

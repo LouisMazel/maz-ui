@@ -30,7 +30,7 @@ const { backgroundEven, backgroundOdd, hoverable: injectedHoverable } = useInjec
   </tr>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-table-row {
   &.--background-odd {
     @apply odd:maz-bg-surface-600 dark:odd:maz-bg-surface-400;

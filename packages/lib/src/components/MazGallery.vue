@@ -221,7 +221,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-gallery {
   @apply maz-relative maz-overflow-hidden maz-flex;
 

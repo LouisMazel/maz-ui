@@ -322,7 +322,7 @@ watch(
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .maz-picker-calendar-grid {
   @apply maz-relative;
 

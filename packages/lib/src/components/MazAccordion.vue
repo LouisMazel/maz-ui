@@ -87,7 +87,7 @@ function selectStep(index: number) {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-accordion {
   @apply maz-relative maz-inline-flex maz-flex-col maz-gap-4 maz-align-top;
 

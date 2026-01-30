@@ -355,7 +355,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-slider {
   padding: 1em 1.5rem;
 
