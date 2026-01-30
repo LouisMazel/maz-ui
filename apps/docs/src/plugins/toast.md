@@ -273,7 +273,7 @@ interface ToastOptions {
 
 <script lang="ts" setup>
   import { useToast } from 'maz-ui/composables/useToast'
-  import { sleep } from 'maz-ui'
+  import { sleep } from '@maz-ui/utils'
 
   const toast = useToast()
 
