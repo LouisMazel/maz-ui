@@ -86,13 +86,13 @@ const packageJsons = findPackageJsons(process.cwd())
 packageJsons.forEach(checkPackage)
 
 if (errors.length > 0) {
-  logger.error('Peer dependencies désynchronisées')
+  logger.error('Peer dependencies out of sync')
   for (const err of errors) {
     logger.error(`${err.file}`)
-    logger.error(`${err.dep}: devDep=${err.devVersion} mais peerDep="${err.peerRange}" (max ~${err.peerMax})\n`)
+    logger.error(`${err.dep}: devDep=${err.devVersion} but peerDep="${err.peerRange}" (max ~${err.peerMax})\n`)
   }
   process.exit(1)
 }
 else {
-  logger.success('Toutes les peer dependencies sont synchronisées avec les devDependencies')
+  logger.success('All peer dependencies are synchronized with devDependencies')
 }
