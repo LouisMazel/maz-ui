@@ -1,0 +1,22 @@
+# .github/workflows/check-peer-deps.yml
+name: Check Peer Dependencies
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check-peers-deps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js, pnpm and Nx cache
+        uses: ./.github/actions/setup
+
+      - name: Build packages
+        run: pnpm -F @maz-ui/node build
+
+      - name: Check peer vs dev dependencies
+        run: node .github/scripts/check-peer-deps.mjs

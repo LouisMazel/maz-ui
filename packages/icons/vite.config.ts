@@ -1,10 +1,10 @@
 import { resolve } from 'node:path'
+import { getExternalDependencies } from '@maz-ui/vite-config'
 import Vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import SvgLoader from 'vite-svg-loader'
 
-import rootPkg from '../../package.json'
 import pkg from './package.json'
 
 import { ViteGenerateIconsComponentsEntry } from './utils/ViteGenerateIconsComponentsEntry'
@@ -12,12 +12,6 @@ import { ViteGenerateIconsComponentsEntry } from './utils/ViteGenerateIconsCompo
 function resolver(path: string) {
   return resolve(__dirname, path)
 }
-
-const external = [
-  ...Object.keys(pkg.peerDependencies),
-  ...Object.keys(pkg.devDependencies),
-  ...Object.keys(rootPkg.devDependencies),
-]
 
 export default defineConfig({
   plugins: [
@@ -57,7 +51,7 @@ export default defineConfig({
       name: '@maz-ui/icons',
     },
     rollupOptions: {
-      external,
+      external: getExternalDependencies(pkg),
       treeshake: {
         moduleSideEffects: false,
         preset: 'smallest',

@@ -1,0 +1,520 @@
+{
+  "name": "@maz-ui/forms - Dynamic Form Builder",
+  "description": "Create a @maz-ui/forms package (version 0.0.0) to generate dynamic forms from a JS/TS/JSON schema, using Maz-UI form components with native Valibot support for validation.",
+  "branchName": "feature/form-builder",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Create package structure and base configuration",
+      "description": "As a developer, I want the package scaffolding with proper TypeScript config, Vite build setup, and dependencies configured.",
+      "acceptanceCriteria": [
+        "packages/forms/ directory created with proper structure",
+        "package.json configured with name @maz-ui/forms, version 0.0.0",
+        "Peer dependencies: maz-ui, valibot, vue >= 3.5",
+        "tsconfig.json extends monorepo config",
+        "vite.config.ts configured for library build",
+        "vitest.config.ts configured for testing",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 1,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-002",
+      "title": "Define TypeScript types for form schema",
+      "description": "As a developer, I want comprehensive TypeScript types for form schemas so that I get full autocompletion and type safety.",
+      "acceptanceCriteria": [
+        "FormSchema<T> generic type exported",
+        "FormSection type with id, legend (optional), card (boolean or MazCardProps)",
+        "FormField type with name, component, props, attrs, defaultValue, validation, condition",
+        "Props typed according to chosen component (automatic inference)",
+        "Support for HTML native attributes (name, autocomplete, etc.)",
+        "Types exported from src/types/index.ts",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 2,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-001"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-003",
+      "title": "Implement defineFormSchema helper",
+      "description": "As a developer, I want to define a form via a TypeScript helper defineFormSchema() to benefit from autocompletion and full typing.",
+      "acceptanceCriteria": [
+        "defineFormSchema() helper with inferred generic typing",
+        "Support sections with id, legend (optional), and card (boolean or MazCardProps)",
+        "Each field defines: name, component, props, attrs, defaultValue, validation, condition",
+        "Props for each field typed according to chosen component",
+        "Helper exported from src/utils/schema-helpers.ts",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 3,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-002"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-004",
+      "title": "Create component map with lazy loading",
+      "description": "As a developer, I want only the used components to be loaded to optimize bundle size.",
+      "acceptanceCriteria": [
+        "Map of components with async imports in src/utils/component-map.ts",
+        "Each Maz-UI component loaded dynamically via import()",
+        "Support defineAsyncComponent with loading/error states",
+        "No performance regression on simple forms",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 4,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-001"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-005",
+      "title": "Implement FormField component",
+      "description": "As a developer, I want a FormField component that renders individual form fields with proper bindings.",
+      "acceptanceCriteria": [
+        "FormField.vue component created in src/components/",
+        "Renders the correct component based on field.component",
+        "Passes props and attrs to the component",
+        "Supports v-model binding",
+        "Handles conditional rendering via field.condition",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 5,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-003",
+        "US-004"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-006",
+      "title": "Implement FormSection component",
+      "description": "As a developer, I want a FormSection component that groups fields with optional card wrapper.",
+      "acceptanceCriteria": [
+        "FormSection.vue component created",
+        "Renders fieldset with legend when legend is provided",
+        "Wraps in MazCard when card: true",
+        "Supports card: MazCardProps for advanced configuration",
+        "Legend displayed as card title if present",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 6,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-005"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-007",
+      "title": "Implement basic FormBuilder component",
+      "description": "As a developer, I want to use a <FormBuilder> component that generates the form without manually writing markup.",
+      "acceptanceCriteria": [
+        "FormBuilder.vue component created",
+        "Prop schema accepting defineFormSchema() return value",
+        "Prop v-model for bidirectional payload binding",
+        "Automatic generation of semantic HTML markup (form, fieldset, legend)",
+        "Support readonly and disabled global modes",
+        "Prop submitButton to configure submission button (MazBtn props + text)",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 7,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-006"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-008",
+      "title": "Add Valibot validation support",
+      "description": "As a developer, I want to define Valibot validation rules per field for automatic form validation.",
+      "acceptanceCriteria": [
+        "Each field can have validation property with rule (Valibot schema)",
+        "Support validation modes: eager, lazy, blur, change, submit",
+        "throttled and debounced options per field",
+        "Default Valibot error messages via @maz-ui/translations",
+        "Override possible via validation.messages per field",
+        "Support useMultipleErrorMessages for multiple errors",
+        "Validation composables loaded lazily only when validation is present",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 8,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-007"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-009",
+      "title": "Implement form state management",
+      "description": "As a developer, I want to access the complete form state to react to changes.",
+      "acceptanceCriteria": [
+        "Expose via defineExpose: isValid, isSubmitting, isSubmitted, isDirty, errors, errorMessages, fieldsStates",
+        "useFormBuilder() composable for programmatic access",
+        "Provide/Inject for access in child components",
+        "Complete reactivity of all states",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 9,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-008"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-010",
+      "title": "[BLOCKER] FIX ERROR: Delete useFormBuilderValidation.ts and use existing maz-ui composables instead",
+      "description": "MANDATORY FIX: The previous agent made a MISTAKE by creating packages/forms/src/composables/useFormBuilderValidation.ts instead of using the EXISTING composables from maz-ui lib. This MUST be fixed NOW. You MUST: 1) DELETE useFormBuilderValidation.ts, 2) Refactor to use useFormValidator and useFormField from packages/lib/src/composables/. DO NOT SKIP THIS TASK. DO NOT MARK AS COMPLETE WITHOUT ACTUALLY DOING THE WORK.",
+      "acceptanceCriteria": [
+        "FIRST: Read and understand packages/lib/src/composables/useFormValidator.ts",
+        "FIRST: Read and understand packages/lib/src/composables/useFormField.ts",
+        "DELETE packages/forms/src/composables/useFormBuilderValidation.ts completely",
+        "Refactor FormBuilder.vue to import and use useFormValidator from maz-ui lib",
+        "Refactor FormField.vue to import and use useFormField from maz-ui lib",
+        "If useFormValidator or useFormField need improvements, modify them (no breaking changes allowed)",
+        "Commit maz-ui lib changes separately with 'refactor(maz-ui):' prefix",
+        "Verify all validation features work: modes (eager/lazy/blur/change/submit), throttle, debounce",
+        "Run: pnpm typecheck (MUST PASS)",
+        "Run: pnpm lint (MUST PASS)",
+        "Run: pnpm test:unit (MUST PASS)"
+      ],
+      "priority": 0,
+      "passes": true,
+      "notes": "BLOCKER - DO NOT PROCEED TO ANY OTHER TASK UNTIL THIS IS DONE. The file useFormBuilderValidation.ts should NOT EXIST. It was created by mistake. Use the EXISTING composables from maz-ui lib instead.",
+      "dependsOn": [
+        "US-009"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-011",
+      "title": "Implement form events",
+      "description": "As a developer, I want to react to form events to integrate with my business logic.",
+      "acceptanceCriteria": [
+        "Events emitted: submit, submit-error, update:model-value",
+        "Events per field: field-change, field-focus, field-blur, field-validate",
+        "Event reset when form is reset",
+        "Typed payload for each event",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 11,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-010"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-012",
+      "title": "Add configurable layouts",
+      "description": "As a developer, I want to configure field layouts to adapt the display to my needs.",
+      "acceptanceCriteria": [
+        "Default layout: vertical (stacked fields)",
+        "Support horizontal layout (label on left)",
+        "Support grid layout with column configuration",
+        "Configuration at section or field level",
+        "Customizable CSS classes via class and style props",
+        "Responsive by default",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 12,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-007",
+        "US-010"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-013",
+      "title": "Implement error summary component",
+      "description": "As a developer, I want to display an error summary to improve UX on long forms.",
+      "acceptanceCriteria": [
+        "FormErrorSummary.vue component created",
+        "Prop errorSummary: { position: 'top' | 'bottom', selector?: string }",
+        "List of errors with links to corresponding fields",
+        "Automatic scroll to summary on submit if errors",
+        "Uses selector for useFormValidator",
+        "Style consistent with Maz-UI design system",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 13,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-010"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-014",
+      "title": "Implement accessibility features",
+      "description": "As a user, I want a fully accessible form to use it with assistive technologies.",
+      "acceptanceCriteria": [
+        "ARIA attributes: aria-invalid, aria-required, aria-describedby, aria-live",
+        "Appropriate roles on elements",
+        "Complete keyboard navigation (Tab, Shift+Tab, Enter)",
+        "Correct focus management (focus on first error field on submit)",
+        "Labels correctly associated with inputs",
+        "Error messages announced to screen readers",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 14,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-013",
+        "US-010"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-015",
+      "title": "Add support for custom components",
+      "description": "As a developer, I want to integrate my own components to extend the form with specific needs.",
+      "acceptanceCriteria": [
+        "Support component: markRaw(MyComponent) for custom components",
+        "Prop isStandalone: true for components without v-model",
+        "Custom sections for marketing or informational content",
+        "Support native HTML elements (input, select, textarea)",
+        "Props and attrs passed to custom component",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 15,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-007",
+        "US-010"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-016",
+      "title": "Implement customization slots",
+      "description": "As a developer, I want slots to customize rendering for total control over display.",
+      "acceptanceCriteria": [
+        "Slot default for additional content",
+        "Slot submit-button with props: submit, isSubmitting, isValid, isLoading",
+        "Slot error-summary to customize error display",
+        "Slot section-{id} for each section",
+        "Slot field-{name} for each field",
+        "Slot append-section after all sections",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 16,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-014",
+        "US-010"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-017",
+      "title": "Support multiple form instances",
+      "description": "As a developer, I want to have multiple FormBuilder instances on the same page for complex interfaces.",
+      "acceptanceCriteria": [
+        "Complete state isolation between instances",
+        "Automatically generated unique IDs",
+        "No validation conflicts",
+        "Each form independent",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 17,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-016",
+        "US-010"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-018",
+      "title": "Implement multi-step wizard mode",
+      "description": "As a developer, I want to create multi-step forms to simplify complex forms.",
+      "acceptanceCriteria": [
+        "FormWizard.vue component created",
+        "Prop wizard: true to activate multi-step mode",
+        "Each section becomes a step",
+        "Previous/next navigation with step validation",
+        "Progress indicator (stepper)",
+        "Current step validation before moving to next",
+        "Events: step-change, step-validate, step-error",
+        "Slots to customize navigation",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 18,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-017",
+        "US-010"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-019",
+      "title": "Implement form persistence",
+      "description": "As a developer, I want to persist form state to avoid losing data on refresh.",
+      "acceptanceCriteria": [
+        "usePersistence.ts composable created",
+        "Prop persist: { storage: 'localStorage' | 'sessionStorage', key: string, ttl?: number }",
+        "Automatic saving of model (not validation state)",
+        "Restoration on component mount",
+        "Configurable TTL for automatic expiration",
+        "clearPersisted() method exposed",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 19,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-017",
+        "US-010"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-020",
+      "title": "Add Nuxt module integration",
+      "description": "As a Nuxt developer, I want FormBuilder to be auto-imported for use without configuration.",
+      "acceptanceCriteria": [
+        "Update @maz-ui/nuxt to auto-import FormBuilder",
+        "Auto-import defineFormSchema",
+        "Auto-import useFormBuilder",
+        "SSR compatible without hydration mismatch",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 20,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-019",
+        "US-010"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-021",
+      "title": "Write unit tests with >90% coverage",
+      "description": "As a maintainer, I want >90% test coverage to guarantee stability.",
+      "acceptanceCriteria": [
+        "Tests with Vitest",
+        "Minimum 90% coverage",
+        "Component tests with Vue Test Utils",
+        "Composable tests",
+        "Lazy loading tests",
+        "Validation tests",
+        "Codecov integration in CI workflow",
+        "pnpm test:unit:coverage passes with >90%",
+        "pnpm typecheck passes",
+        "pnpm lint passes"
+      ],
+      "priority": 21,
+      "passes": true,
+      "notes": "",
+      "dependsOn": [
+        "US-020",
+        "US-010"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-022",
+      "title": "Create documentation",
+      "description": "As a developer, I want interactive documentation to understand and test the package.",
+      "acceptanceCriteria": [
+        "New page in apps/docs/ for @maz-ui/forms",
+        "Complete API documentation",
+        "Live JSON editor to build schema",
+        "Real-time preview of generated form",
+        "Copyable code export (schema)",
+        "Examples for each feature",
+        "pnpm typecheck:all passes",
+        "pnpm lint:all passes"
+      ],
+      "priority": 22,
+      "passes": false,
+      "notes": "Drag & drop editor planned for later version",
+      "dependsOn": [
+        "US-021",
+        "US-010"
+      ],
+      "completionNotes": ""
+    },
+    {
+      "id": "US-023",
+      "title": "Create live editor in documentation",
+      "description": "As a developer, I want interactive documentation to understand and test the package.",
+      "acceptanceCriteria": [
+        "New page in apps/docs/ for @maz-ui/forms",
+        "Complete API documentation",
+        "Live JSON editor to build schema",
+        "Real-time preview of generated form",
+        "Copyable code export (schema)",
+        "Examples for each feature",
+        "pnpm typecheck:all passes",
+        "pnpm lint:all passes"
+      ],
+      "priority": 23,
+      "passes": false,
+      "notes": "Drag & drop editor planned for later version",
+      "dependsOn": [
+        "US-021",
+        "US-010"
+      ],
+      "completionNotes": ""
+    }
+  ],
+  "metadata": {
+    "updatedAt": "2026-01-22T21:12:13.925Z"
+  }
+}

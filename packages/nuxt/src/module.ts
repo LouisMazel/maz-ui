@@ -1,6 +1,7 @@
 import type { MazUiNuxtOptions } from './types'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { capitalize } from '@maz-ui/utils'
 import {
   addComponent,
   addImports,
@@ -9,7 +10,6 @@ import {
   defineNuxtModule,
 } from '@nuxt/kit'
 import { defu } from 'defu'
-import { capitalize } from 'maz-ui'
 
 type MazUiComposables = keyof typeof import('maz-ui/composables')
 
@@ -39,6 +39,7 @@ const COMPONENT_NAMES: Omit<
   'useMazDialogConfirm'
 > = {
   MazAccordion: true,
+  MazAlert: true,
   MazAnimatedCounter: true,
   MazAnimatedElement: true,
   MazAnimatedText: true,
@@ -54,6 +55,7 @@ const COMPONENT_NAMES: Omit<
   MazChart: true,
   MazCheckbox: true,
   MazChecklist: true,
+  MazContainer: true,
   MazCircularProgressBar: true,
   MazDialog: true,
   MazDialogConfirm: true,

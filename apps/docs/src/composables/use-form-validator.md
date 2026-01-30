@@ -1,249 +1,101 @@
 ---
 title: useFormValidator
-description: useFormValidator and useFormField are two Vue composables designed to simplify form validation using Valibot as the validation library. These composables offer a flexible and typed approach to handle form validation in your Vue applications.
+description: Vue composables for form validation with Valibot - useFormValidator and useFormField provide a flexible and typed approach to handle form validation in your Vue applications.
 ---
 
 # {{ $frontmatter.title }}
 
-`useFormValidator` and `useFormField` are two Vue composables designed to simplify form validation using [Valibot](https://valibot.dev/guides/introduction/) as the validation library. These composables offer a flexible and typed approach to handle form validation in your Vue applications.
+{{ $frontmatter.description }}
 
 ## Introduction
 
-::: details Best Practices
+`useFormValidator` and `useFormField` are two Vue composables that work together to provide powerful form validation using [Valibot](https://valibot.dev/guides/introduction/).
 
-1. Use typed Valibot schemas to ensure type consistency.
-2. Choose the appropriate validation mode based on your form's needs.
-3. Use `useFormField` for fine-grained management of each form field.
-4. Use the `handleSubmit` returned by `useFormValidator` to handle form submission securely.
-5. Leverage computed values like `isValid`, `hasError`, `errorMessage`, and others to control your user interface state.
+- **useFormValidator**: Initializes form validation for your entire form. Use it in your form's parent component.
+- **useFormField**: Manages individual field validation states. Use it when you need fine-grained control over a field or when fields are in child components.
 
-:::
+**When to use each:**
 
-::: details Validation modes details
+| Composable | Use When |
+|------------|----------|
+| `useFormValidator` only | Simple forms where all fields are in the same component |
+| `useFormValidator` + `useFormField` | Fields in child components, or when using `eager`, `blur`, or `progressive` validation modes |
 
-- `lazy`: (default) Validates only on value changes
-- `aggressive`: Validates all fields immediately and on every change
-- `eager`: (recommended) Validates on initial blur (if not empty), then on every change **(requires `useFormField` to add validation events)**
-- `blur`: Validates only on focus loss **(requires `useFormField` to add validation events)**
-- `progressive`: Validates the field at each user interaction (value change or blur). The field becomes valid after the first successful validation and then validated on input value change. If the field is invalid, the error message on the first blur event **(requires `useFormField` to add validation events)**
+## Quick Start
 
-:::
-
-::: details How to get TypeScript type safety?
-
-The model is typed automatically from the schema.
-
-```ts{11,16}
-import { pipe, string, nonEmpty, number, minValue, maxValue, minLength } from 'valibot'
-import { useFormValidator, useFormField } from 'maz-ui/composables'
-
-const schema = {
-  name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
-  age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
-  country: pipe(string('Country is required'), nonEmpty('Country is required')),
-}
-
-// Automatic type inference from schema
-const { model } = useFormValidator({
-  schema,
-})
-
-// For useFormField, specify both schema and field name for precise typing
-const { value: name } = useFormField<string>('name', { formIdentifier: 'form' })
-```
-
-:::
-
-::: details How to bind validation events with useFormField for eager, blur, or progressive modes?
-
-To use the `eager`, `blur`, or `progressive` validation modes, you must use the `useFormField` composable to add the necessary validation events.
-
-2 ways to bind validation events:
-
-#### 1. Use the `ref` attribute on the component to get the reference
-
-You can use the `ref` attribute on the component and pass the reference to the `useFormField` composable.
-
-This method will automatically detect interactive elements (input, select, textarea, button, elements with ARIA roles, etc.) within the component and add the necessary validation events.
-
-```vue{3,10,17}
-<template>
-  <MazInput
-    ref="inputRef"
-    v-model="value"
-    :hint="errorMessage"
-    :error="hasError"
-    :success="isValid"
-  />
-  <!-- Work with HTML input -->
-  <input ref="inputRef" v-model="value" />
-</template>
-
-<script setup lang="ts">
-import { useFormField } from 'maz-ui/composables'
-import { useTemplateRef } from 'vue'
-
-const { value, errorMessage, isValid, hasError } = useFormField<string>('name', {
-  ref: useTemplateRef<HTMLInputElement>('inputRef'),
-})
-</script>
-```
-
-#### 2. Use the `v-bind` directive to bind the validation events
-
-You can use the `v-bind` directive to bind the validation events to the component or HTML element.
-
-If you use this method with a custom component, the component must emit the `blur` event to trigger the field validation. Otherwise, use the first method.
-
-```vue{7,16}
-<template>
-  <MazInput
-    v-model="value"
-    :hint="errorMessage"
-    :error="hasError"
-    :success="isValid"
-    v-bind="validationEvents"
-  />
-  <!-- or -->
-  <input v-model="value" v-bind="validationEvents" />
-</template>
-
-<script setup lang="ts">
-import { useFormField } from 'maz-ui/composables'
-
-const { value, errorMessage, isValid, hasError, validationEvents } = useFormField<string>('name')
-</script>
-```
-
-:::
-
-## Basic Usage with lazy mode
-
-In this example, we will create a simple form with four fields: `name`, `age`, `agree` and `country`. The form will be validated in `lazy` mode, which means that the fields will be validated on every change.
-
-::: tip
-Submit the form to show the validation errors
-:::
+Here's the simplest form you can create with `useFormValidator`:
 
 <ComponentDemo>
-  <b>Form State</b>
-
-  <div class="maz-text-xs maz-p-2 maz-bg-surface-600/50 dark:maz-bg-surface-400 maz-rounded maz-mt-2">
-    <pre>{{ { isValid, isSubmitting, isDirty, isSubmitted, errorMessages } }}</pre>
-  </div>
-
-  <br />
-
-  <form novalidate class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmit">
+  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitQuickStart">
     <MazInput
-      v-model="model.name"
-      label="Enter your name (min 3 characters)"
-      :hint="errorMessages.name"
-      :error="!!errorMessages.name"
-      :success="fieldsStates.name.valid"
-      :class="{ 'has-error': !!errorMessages.name }"
+      v-model="quickStartModel.email"
+      label="Email"
+      type="email"
+      :hint="quickStartErrors.email"
+      :error="!!quickStartErrors.email"
+      :success="quickStartStates.email.valid"
     />
     <MazInput
-      v-model="model.age"
-      type="number"
-      label="Enter your age (18-100)"
-      :hint="errorMessages.age"
-      :error="!!errorMessages.age"
-      :success="fieldsStates.age.valid"
-      :class="{ 'has-error': !!errorMessages.age }"
+      v-model="quickStartModel.password"
+      label="Password"
+      type="password"
+      :hint="quickStartErrors.password"
+      :error="!!quickStartErrors.password"
+      :success="quickStartStates.password.valid"
     />
-    <MazSelect
-      v-model="model.country"
-      :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
-      label="Select your nationality (required)"
-      :hint="errorMessages.country"
-      :error="!!errorMessages.country"
-      :success="fieldsStates.country.valid"
-      :class="{ 'has-error': !!errorMessages.country }"
-    />
-    <MazCheckbox
-      v-model="model.agree"
-      :hint="errorMessages.agree"
-      :error="fieldsStates.agree.error"
-      :success="fieldsStates.agree.valid"
-      :class="{ 'has-error': !!errorMessages.agree }"
-    >
-      I agree to the terms and conditions (required)
-    </MazCheckbox>
-    <MazBtn type="submit" :loading="isSubmitting">
-      Submit
+    <MazBtn type="submit" :loading="quickStartSubmitting">
+      Login
     </MazBtn>
   </form>
+
   <template #code>
 
 ```vue
 <script lang="ts" setup>
-import { sleep } from 'maz-ui'
-import { useFormValidator, useToast } from 'maz-ui/composables'
-import { boolean, literal, maxValue, minLength, minValue, nonEmpty, number, pipe, string } from 'valibot'
+import { useFormValidator } from 'maz-ui/composables'
+import { pipe, string, email, nonEmpty, minLength } from 'valibot'
 
-const toast = useToast()
-
+// 1. Define your validation schema
 const schema = {
-  name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
-  age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
-  country: pipe(string('Country is required'), nonEmpty('Country is required')),
-  agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
+  email: pipe(string(), nonEmpty('Email is required'), email('Invalid email')),
+  password: pipe(string(), nonEmpty('Password is required'), minLength(8, 'Min 8 characters')),
 }
 
-const { model, isSubmitting, handleSubmit, errorMessages, fieldsStates } = useFormValidator<typeof schema>({
-  schema,
-  defaultValues: { name: 'John Doe', age: 10 },
-  options: { mode: 'lazy', scrollToError: '.has-error' },
-})
+// 2. Initialize the form validator
+const {
+  model,           // Form data (reactive)
+  errorMessages,   // First error message for each field
+  fieldsStates,    // Detailed state of each field
+  isSubmitting,    // Is the form being submitted?
+  handleSubmit,    // Submit handler wrapper
+} = useFormValidator({ schema })
 
-const onSubmit = handleSubmit(async (formData) => {
-  // Form submission logic
-  console.log(formData)
-  await sleep(2000)
-  toast.success('Form submitted', { position: 'top' })
+// 3. Handle form submission
+const onSubmit = handleSubmit((data) => {
+  // Called only if the form is valid
+  console.log('Form submitted:', data)
 })
 </script>
 
 <template>
   <form @submit="onSubmit">
     <MazInput
-      v-model="model.name"
-      label="Enter your name"
-      :hint="errorMessages.name"
-      :error="!!errorMessages.name"
-      :success="fieldsStates.name.valid"
-      :class="{ 'has-error': !!errorMessages.name }"
+      v-model="model.email"
+      label="Email"
+      :hint="errorMessages.email"
+      :error="!!errorMessages.email"
+      :success="fieldsStates.email.valid"
     />
     <MazInput
-      v-model="model.age"
-      type="number"
-      label="Enter your age"
-      :hint="errorMessages.age"
-      :error="!!errorMessages.age"
-      :success="fieldsStates.age.valid"
-      :class="{ 'has-error': !!errorMessages.age }"
+      v-model="model.password"
+      label="Password"
+      type="password"
+      :hint="errorMessages.password"
+      :error="!!errorMessages.password"
+      :success="fieldsStates.password.valid"
     />
-    <MazSelect
-      v-model="model.country"
-      :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
-      label="Select your nationality"
-      :hint="errorMessages.country"
-      :error="!!errorMessages.country"
-      :success="fieldsStates.country.valid"
-      :class="{ 'has-error': !!errorMessages.country }"
-    />
-    <MazCheckbox
-      v-model="model.agree"
-      :hint="errorMessages.agree"
-      :error="fieldsStates.agree.error"
-      :success="fieldsStates.agree.valid"
-      :class="{ 'has-error': !!errorMessages.agree }"
-    >
-      I agree to the terms and conditions
-    </MazCheckbox>
     <MazBtn type="submit" :loading="isSubmitting">
-      Submit
+      Login
     </MazBtn>
   </form>
 </template>
@@ -252,142 +104,332 @@ const onSubmit = handleSubmit(async (formData) => {
   </template>
 </ComponentDemo>
 
-## Usage with useFormField
+## Understanding Form State
 
-In this example, we will use the `useFormField` composable to handle the validation of each field individually.
+`useFormValidator` returns several reactive values to help you manage your form:
 
-### Eager mode
+| Property | Type | Description |
+|----------|------|-------------|
+| `model` | `Ref<Model>` | The form data object - bind this to your inputs with `v-model` |
+| `isValid` | `ComputedRef<boolean>` | `true` when all fields pass validation |
+| `isDirty` | `ComputedRef<boolean>` | `true` when any field has been modified from its initial value |
+| `isSubmitting` | `Ref<boolean>` | `true` while the form is being submitted |
+| `isSubmitted` | `Ref<boolean>` | `true` after the form has been submitted at least once |
+| `errorMessages` | `ComputedRef<Record<string, string>>` | The first error message for each field (if any) |
+| `errors` | `ComputedRef<Record<string, ValidationIssues>>` | All validation issues for each field |
+| `fieldsStates` | `Ref<FieldsStates>` | Detailed state object for each field |
+| `handleSubmit` | `Function` | Wrapper function for form submission |
+| `validateForm` | `Function` | Manually trigger form validation |
+| `resetForm` | `Function` | Reset the form to its initial state |
+| `scrollToError` | `Function` | Scroll to the first field with an error |
 
-With eager mode, each form field is validated on blur (if not empty) and then on every change. This mode is made for a better user experience, as the user will see the validation errors only after they have finished typing.
+### Field States
+
+Each field in `fieldsStates` contains:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `valid` | `boolean` | Field passes validation |
+| `error` | `boolean` | Field has an error that should be displayed |
+| `errors` | `ValidationIssues` | Array of all validation issues |
+| `dirty` | `boolean` | Field value differs from initial value |
+| `blurred` | `boolean` | Field has lost focus at least once |
+| `validated` | `boolean` | Validation has run at least once |
+| `validating` | `boolean` | Async validation is in progress |
 
 <ComponentDemo>
+  <div class="maz-flex maz-flex-col maz-gap-4">
+    <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitState">
+      <MazInput
+        v-model="stateModel.name"
+        label="Name (min 3 characters)"
+        :hint="stateErrors.name"
+        :error="!!stateErrors.name"
+        :success="stateFields.name.valid"
+      />
+      <MazInput
+        v-model="stateModel.age"
+        label="Age (18-100)"
+        type="number"
+        :hint="stateErrors.age"s
+        :error="!!stateErrors.age"
+        :success="stateFields.age.valid"
+      />
+      <MazBtn type="submit">Submit</MazBtn>
+    </form>
+    <div class="maz-rounded">
+      <p class="maz-font-semibold maz-mb-2">Form State:</p>
+      <pre class="maz-text-xs maz-bg-surface-600/70 dark:maz-bg-surface-600/60 maz-p-2 maz-rounded">{{ JSON.stringify({ isValid: stateValid, isDirty: stateDirty, isSubmitted: stateSubmitted, isSubmitting: stateSubmitting }, null, 2) }}</pre>
+      <p class="maz-font-semibold maz-mb-2 maz-mt-4">Fields States:</p>
+      <pre class="maz-text-xs maz-bg-surface-600/70 dark:maz-bg-surface-600/60 maz-p-2 maz-rounded">{{ JSON.stringify(stateFields, null, 2) }}</pre>
+    </div>
+  </div>
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import { useFormValidator } from 'maz-ui/composables'
+import { pipe, string, number, nonEmpty, minLength, minValue, maxValue } from 'valibot'
+
+const schema = {
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  age: pipe(number(), minValue(18, 'Min 18'), maxValue(100, 'Max 100')),
+}
+
+const {
+  model,
+  errorMessages,
+  fieldsStates,
+  isValid,
+  isDirty,
+  isSubmitted,
+  handleSubmit,
+} = useFormValidator({ schema })
+
+const onSubmit = handleSubmit((data) => {
+  console.log('Submitted:', data)
+})
+</script>
+
+<template>
+  <form @submit="onSubmit">
+    <MazInput v-model="model.name" label="Name" />
+    <MazInput v-model="model.age" label="Age" type="number" />
+    <MazBtn type="submit">Submit</MazBtn>
+  </form>
+
+  <!-- Debug panel -->
+  <pre>{{ { isValid, isDirty, isSubmitted } }}</pre>
+  <pre>{{ fieldsStates }}</pre>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Validation Modes
+
+Validation modes control **when** validation runs and **when** errors are displayed. Choose the mode that best fits your UX needs.
+
+| Mode | Validates On | Shows Errors | Best For |
+|------|--------------|--------------|----------|
+| `lazy` (default) | Value change | After change (if not empty) | Simple forms |
+| `aggressive` | Immediately + every change | Always | Real-time feedback |
+| `eager` | Blur, then on change | After first blur | Better UX |
+| `blur` | Only on blur | After blur | Minimal interruption |
+| `progressive` | Silently, shows on blur if invalid | After blur or validation | Optimal UX |
+
+::: tip
+For `eager`, `blur`, and `progressive` modes, you must use `useFormField` with the `ref` option or `validationEvents` to capture blur events.
+:::
+
+### Lazy Mode (Default)
+
+The default mode. Validates when field values change. Errors only appear if the field is not empty.
+
+<ComponentDemo>
+  <div class="maz-mb-4">
+    <p class="maz-text-sm maz-text-muted">Type in the field and clear it - notice the error appears only when there's content.</p>
+  </div>
+  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitLazy">
+    <MazInput
+      v-model="lazyModel.name"
+      label="Name (min 3 characters)"
+      :hint="lazyErrors.name"
+      :error="!!lazyErrors.name"
+      :success="lazyStates.name.valid"
+      :class="{ 'has-error-lazy': !!lazyErrors.name }"
+    />
+    <MazInput
+      v-model="lazyModel.email"
+      label="Email"
+      type="email"
+      :hint="lazyErrors.email"
+      :error="!!lazyErrors.email"
+      :success="lazyStates.email.valid"
+      :class="{ 'has-error-lazy': !!lazyErrors.email }"
+    />
+    <MazBtn type="submit" :loading="lazySubmitting">Submit</MazBtn>
+  </form>
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import { useFormValidator } from 'maz-ui/composables'
+import { pipe, string, email, nonEmpty, minLength } from 'valibot'
+
+const schema = {
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  email: pipe(string(), nonEmpty('Required'), email('Invalid email')),
+}
+
+const { model, errorMessages, fieldsStates, isSubmitting, handleSubmit } = useFormValidator({
+  schema,
+  options: {
+    mode: 'lazy', // This is the default
+    scrollToError: '.has-error-lazy',
+  },
+})
+
+const onSubmit = handleSubmit((data) => {
+  console.log('Submitted:', data)
+})
+</script>
+```
+
+  </template>
+</ComponentDemo>
+
+### Aggressive Mode
+
+Validates all fields immediately when the form is created and on every change. Errors are always displayed.
+
+<ComponentDemo>
+  <div class="maz-mb-4">
+    <p class="maz-text-sm maz-text-muted">Notice all fields show errors immediately, even before any interaction.</p>
+  </div>
+  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitAggressive">
+    <MazInput
+      v-model="aggressiveModel.name"
+      label="Name (min 3 characters)"
+      :hint="aggressiveErrors.name"
+      :error="!!aggressiveErrors.name"
+      :success="aggressiveStates.name.valid"
+    />
+    <MazInput
+      v-model="aggressiveModel.email"
+      label="Email"
+      type="email"
+      :hint="aggressiveErrors.email"
+      :error="!!aggressiveErrors.email"
+      :success="aggressiveStates.email.valid"
+    />
+    <MazBtn type="submit" :loading="aggressiveSubmitting">Submit</MazBtn>
+  </form>
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import { useFormValidator } from 'maz-ui/composables'
+import { pipe, string, email, nonEmpty, minLength } from 'valibot'
+
+const schema = {
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  email: pipe(string(), nonEmpty('Required'), email('Invalid email')),
+}
+
+const { model, errorMessages, fieldsStates, isSubmitting, handleSubmit } = useFormValidator({
+  schema,
+  options: {
+    mode: 'aggressive', // Validates immediately
+  },
+})
+</script>
+```
+
+  </template>
+</ComponentDemo>
+
+### Eager Mode (Recommended)
+
+Validates on blur first (if the field is not empty), then on every change. This provides a good balance between immediate feedback and not overwhelming the user.
+
+::: warning
+Requires `useFormField` with `ref` option or `validationEvents`.
+:::
+
+<ComponentDemo>
+  <div class="maz-mb-4">
+    <p class="maz-text-sm maz-text-muted">Type something, then click outside the field (blur) to see validation. After that, errors update as you type.</p>
+  </div>
   <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitEager">
     <MazInput
-      v-model="name"
-      ref="nameRef"
-      label="Enter your name"
-      :hint="nameErrorMessage"
-      :error="hasErrorName"
-      :class="{ 'has-error-form2': hasErrorName }"
+      ref="eagerNameRef"
+      v-model="eagerName"
+      label="Name (min 3 characters)"
+      :hint="eagerNameError"
+      :error="eagerNameHasError"
+      :success="eagerNameValid"
+      :class="{ 'has-error-eager': eagerNameHasError }"
     />
     <MazInput
-      v-model="age"
-      ref="ageRef"
-      type="number"
-      label="Enter your age"
-      :hint="ageErrorMessage"
-      :error="hasErrorAge"
-      :class="{ 'has-error-form2': hasErrorAge }"
+      ref="eagerEmailRef"
+      v-model="eagerEmail"
+      label="Email"
+      type="email"
+      :hint="eagerEmailError"
+      :error="eagerEmailHasError"
+      :success="eagerEmailValid"
+      :class="{ 'has-error-eager': eagerEmailHasError }"
     />
-    <MazSelect
-      v-model="country"
-      ref="countryRef"
-      :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
-      label="Select your nationality"
-      :hint="countryErrorMessage"
-      :error="hasErrorCountry"
-      :class="{ 'has-error-form2': hasErrorCountry }"
-    />
-    <MazCheckbox
-      v-model="agree"
-      ref="agreeRef"
-      :hint="agreeErrorMessage"
-      :error="hasErrorAgree"
-      :class="{ 'has-error': hasErrorAgree }"
-    >
-      I agree to the terms and conditions
-    </MazCheckbox>
-    <MazBtn type="submit" :loading="isSubmittingEager">
-      Submit
-    </MazBtn>
+    <MazBtn type="submit" :loading="eagerSubmitting">Submit</MazBtn>
   </form>
 
-<template #code>
+  <template #code>
 
 ```vue
-<script setup lang="ts">
-import { sleep } from 'maz-ui'
-import { useFormField, useFormValidator, useToast } from 'maz-ui/composables'
-import { boolean, literal, maxValue, minLength, minValue, nonEmpty, number, pipe, string } from 'valibot'
+<script lang="ts" setup>
+import { useFormValidator, useFormField } from 'maz-ui/composables'
+import { pipe, string, email, nonEmpty, minLength } from 'valibot'
 import { useTemplateRef } from 'vue'
 
 const schema = {
-  name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
-  age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
-  country: pipe(string('Country is required'), nonEmpty('Country is required')),
-  agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  email: pipe(string(), nonEmpty('Required'), email('Invalid email')),
 }
 
-const { isSubmitting, handleSubmit } = useFormValidator<typeof schema>({
+const { isSubmitting, handleSubmit } = useFormValidator({
   schema,
-  options: { mode: 'eager', scrollToError: '.has-error-form2', identifier: 'form-eager' },
+  options: {
+    mode: 'eager',
+    scrollToError: '.has-error-eager',
+    identifier: 'form-eager',
+  },
 })
 
-const { value: name, hasError: hasErrorName, errorMessage: nameErrorMessage } = useFormField<string>('name', {
+// useFormField for each field with ref for blur detection
+const {
+  value: name,
+  hasError: nameHasError,
+  errorMessage: nameError,
+  isValid: nameValid,
+} = useFormField<string>('name', {
   ref: useTemplateRef('nameRef'),
   formIdentifier: 'form-eager',
 })
-const { value: age, hasError: hasErrorAge, errorMessage: ageErrorMessage } = useFormField<number>('age', {
-  ref: useTemplateRef('ageRef'),
-  formIdentifier: 'form-eager',
-})
-const { value: agree, hasError: hasErrorAgree, errorMessage: agreeErrorMessage } = useFormField<boolean>('agree', {
-  ref: useTemplateRef('agreeRef'),
-  formIdentifier: 'form-eager'
-})
-const { value: country, hasError: hasErrorCountry, errorMessage: countryErrorMessage, validationEvents } = useFormField<string>('country', {
-  mode: 'lazy',
-  formIdentifier: 'form-eager'
-})
 
-const onSubmit = handleSubmit(async (formData) => {
-  // Form submission logic
-  console.log(formData)
-  await sleep(2000)
-  toast.success('Form submitted', { position: 'top' })
+const {
+  value: email,
+  hasError: emailHasError,
+  errorMessage: emailError,
+  isValid: emailValid,
+} = useFormField<string>('email', {
+  ref: useTemplateRef('emailRef'),
+  formIdentifier: 'form-eager',
 })
 </script>
 
 <template>
-  <form @submit="onSubmit">
+  <form @submit="handleSubmit(onSubmit)">
     <MazInput
       ref="nameRef"
       v-model="name"
-      label="Enter your name"
-      :hint="nameErrorMessage"
-      :error="hasErrorName"
-      :class="{ 'has-error-form2': hasErrorName }"
+      label="Name"
+      :hint="nameError"
+      :error="nameHasError"
+      :success="nameValid"
     />
     <MazInput
-      ref="ageRef"
-      v-model="age"
-      type="number"
-      label="Enter your age"
-      :hint="ageErrorMessage"
-      :error="hasErrorAge"
-      :class="{ 'has-error-form2': hasErrorAge }"
+      ref="emailRef"
+      v-model="email"
+      label="Email"
+      :hint="emailError"
+      :error="emailHasError"
+      :success="emailValid"
     />
-    <MazSelect
-      ref="countryRef"
-      v-model="country"
-      :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
-      label="Select your nationality"
-      :hint="countryErrorMessage"
-      :error="hasErrorCountry"
-      :class="{ 'has-error-form2': hasErrorCountry }"
-    />
-    <MazCheckbox
-      ref="agreeRef"
-      v-model="agree"
-      :hint="agreeErrorMessage"
-      :error="hasErrorAgree"
-      :class="{ 'has-error': hasErrorAgree }"
-    >
-      I agree to the terms and conditions
-    </MazCheckbox>
-    <MazBtn type="submit" :loading="isSubmitting">
-      Submit
-    </MazBtn>
   </form>
 </template>
 ```
@@ -395,143 +437,401 @@ const onSubmit = handleSubmit(async (formData) => {
   </template>
 </ComponentDemo>
 
-### Progressive mode
+### Blur Mode
 
-With progressive mode, the field becomes valid after the first successful validation and then validated on input value change. If the field is invalid, the error message is shown on the first blur event.
+::: warning
+Requires `useFormField` with `ref` option or `validationEvents`.
+:::
+
+Validates only when the field loses focus. Errors are only shown after blur.
 
 <ComponentDemo>
-  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitProgressive">
+  <div class="maz-mb-4">
+    <p class="maz-text-sm maz-text-muted">Type in the field, then click outside. Errors only appear after blur, and don't update while typing.</p>
+  </div>
+  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitBlur">
     <MazInput
-      v-model="nameProgressive"
-      ref="nameProgressiveRef"
-      label="Enter your name"
-      :hint="nameMessageProgressive"
-      :error="!!nameMessageProgressive"
-      :success="nameValidProgressive"
-      :class="{ 'has-error-progressive': !!nameMessageProgressive }"
+      ref="blurNameRef"
+      v-model="blurName"
+      label="Name (min 3 characters)"
+      :hint="blurNameError"
+      :error="blurNameHasError"
+      :success="blurNameValid"
+      :class="{ 'has-error-blur': blurNameHasError }"
     />
     <MazInput
-      v-model="ageProgressive"
-      ref="ageProgressiveRef"
-      type="number"
-      label="Enter your age"
-      :hint="ageMessageProgressive"
-      :error="!!ageMessageProgressive"
-      :success="ageValidProgressive"
-      :class="{ 'has-error-progressive': !!ageMessageProgressive }"
+      ref="blurEmailRef"
+      v-model="blurEmail"
+      label="Email"
+      type="email"
+      :hint="blurEmailError"
+      :error="blurEmailHasError"
+      :success="blurEmailValid"
+      :class="{ 'has-error-blur': blurEmailHasError }"
     />
-    <MazSelect
-      v-model="countryProgressive"
-      ref="countryProgressiveRef"
-      :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
-      label="Select your nationality"
-      :hint="countryMessageProgressive"
-      :error="!!countryMessageProgressive"
-      :success="countryValidProgressive"
-      :class="{ 'has-error-progressive': !!countryErrorProgressive }"
-    />
-    <MazCheckbox
-      v-model="agreeProgressive"
-      ref="agreeProgressiveRef"
-      :hint="agreeMessageProgressive"
-      :error="!!agreeMessageProgressive"
-      :class="{ 'has-error-progressive': !!agreeMessageProgressive }"
-    >
-      I agree to the terms and conditions
-    </MazCheckbox>
-    <MazBtn type="submit" :loading="isSubmittingProgressive">
-      Submit
-    </MazBtn>
+    <MazBtn type="submit" :loading="blurSubmitting">Submit</MazBtn>
   </form>
 
-<template #code>
+  <template #code>
 
 ```vue
-<script setup lang="ts">
-import { sleep } from 'maz-ui'
-import { useFormField, useFormValidator, useToast } from 'maz-ui/composables'
-import { boolean, literal, maxValue, minLength, minValue, nonEmpty, number, pipe, string } from 'valibot'
+<script lang="ts" setup>
+import { useFormValidator, useFormField } from 'maz-ui/composables'
+import { pipe, string, email, nonEmpty, minLength } from 'valibot'
 import { useTemplateRef } from 'vue'
 
 const schema = {
-  name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
-  age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
-  country: pipe(string('Country is required'), nonEmpty('Country is required')),
-  agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  email: pipe(string(), nonEmpty('Required'), email('Invalid email')),
 }
 
-const { isSubmitting, handleSubmit } = useFormValidator<typeof schema>({
+const { isSubmitting, handleSubmit } = useFormValidator({
   schema,
-  options: { mode: 'progressive', scrollToError: '.has-error-progressive', identifier: 'form-progressive' },
+  options: {
+    mode: 'blur',
+    identifier: 'form-blur',
+  },
 })
 
-const { value: name, hasError: nameHasError, errorMessage: nameErrorMessage } = useFormField<string>('name', {
+const { value: name, hasError, errorMessage, isValid } = useFormField<string>('name', {
+  ref: useTemplateRef('nameRef'),
+  formIdentifier: 'form-blur',
+})
+
+const { value: email, hasError: emailHasError, errorMessage: emailError, isValid: emailValid } = useFormField<string>('email', {
+  ref: useTemplateRef('emailRef'),
+  formIdentifier: 'form-blur',
+})
+</script>
+```
+
+  </template>
+</ComponentDemo>
+
+### Progressive Mode
+
+::: warning
+Requires `useFormField` with `ref` option or `validationEvents`.
+:::
+
+The most user-friendly mode. Validates silently in the background. Shows errors only on blur if the field is invalid. Once valid, it stays valid until it becomes invalid again.
+
+<ComponentDemo>
+  <div class="maz-mb-4">
+    <p class="maz-text-sm maz-text-muted">Start typing - the field becomes valid (green) as soon as validation passes. Errors only show after blur.</p>
+  </div>
+  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitProgressive">
+    <MazInput
+      ref="progressiveNameRef"
+      v-model="progressiveName"
+      label="Name (min 3 characters)"
+      :hint="progressiveNameError"
+      :error="progressiveNameHasError"
+      :success="progressiveNameValid"
+      :class="{ 'has-error-progressive': progressiveNameHasError }"
+    />
+    <MazInput
+      ref="progressiveEmailRef"
+      v-model="progressiveEmail"
+      label="Email"
+      type="email"
+      :hint="progressiveEmailError"
+      :error="progressiveEmailHasError"
+      :success="progressiveEmailValid"
+      :class="{ 'has-error-progressive': progressiveEmailHasError }"
+    />
+    <MazCheckbox
+      ref="progressiveAgreeRef"
+      v-model="progressiveAgree"
+      :hint="progressiveAgreeError"
+      :error="progressiveAgreeHasError"
+      :class="{ 'has-error-progressive': progressiveAgreeHasError }"
+    >
+      I agree to the terms and conditions
+    </MazCheckbox>
+    <MazBtn type="submit" :loading="progressiveSubmitting">Submit</MazBtn>
+  </form>
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import { useFormValidator, useFormField } from 'maz-ui/composables'
+import { pipe, string, email, nonEmpty, minLength, boolean, literal } from 'valibot'
+import { useTemplateRef } from 'vue'
+
+const schema = {
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  email: pipe(string(), nonEmpty('Required'), email('Invalid email')),
+  agree: pipe(boolean(), literal(true, 'You must agree')),
+}
+
+const { isSubmitting, handleSubmit } = useFormValidator({
+  schema,
+  options: {
+    mode: 'progressive',
+    identifier: 'form-progressive',
+  },
+})
+
+const { value: name, hasError, errorMessage, isValid } = useFormField<string>('name', {
   ref: useTemplateRef('nameRef'),
   formIdentifier: 'form-progressive',
 })
-const { value: age, hasError: ageHasError, errorMessage: ageErrorMessage } = useFormField<number>('age', {
-  ref: useTemplateRef('ageRef'),
-  formIdentifier: 'form-progressive',
-})
-const { value: country, hasError: countryHasError, errorMessage: countryErrorMessage, validationEvents } = useFormField<string>('country', {
-  mode: 'lazy',
-  formIdentifier: 'form-progressive',
-})
-const { value: agree, hasError: agreeHasError, errorMessage: agreeErrorMessage } = useFormField<boolean>('agree', {
-  ref: useTemplateRef('agreeRef'),
-  formIdentifier: 'form-progressive',
-})
+// ... same for other fields
+</script>
+```
 
-const onSubmit = handleSubmit(async (formData) => {
-  // Form submission logic
-  console.log(formData)
-  await sleep(2000)
-  toast.success('Form submitted', { position: 'top' })
+  </template>
+</ComponentDemo>
+
+## useFormField for Child Components
+
+`useFormField` is essential when:
+1. Your form fields are in child components
+2. You need the `eager`, `blur`, or `progressive` validation modes
+3. You want fine-grained control over individual field states
+
+### Return Values
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `value` | `WritableComputedRef<T>` | The field value (use with `v-model`) |
+| `hasError` | `ComputedRef<boolean>` | Field has an error that should be displayed |
+| `errors` | `ComputedRef<ValidationIssues>` | All validation issues |
+| `errorMessage` | `ComputedRef<string>` | First error message |
+| `isValid` | `ComputedRef<boolean>` | Field passes validation |
+| `isDirty` | `ComputedRef<boolean>` | Field has been modified |
+| `isBlurred` | `ComputedRef<boolean>` | Field has lost focus |
+| `isValidated` | `ComputedRef<boolean>` | Validation has run |
+| `isValidating` | `ComputedRef<boolean>` | Async validation in progress |
+| `mode` | `ComputedRef<string>` | The validation mode |
+| `validationEvents` | `ComputedRef<object>` | Blur event handler for `v-bind` |
+
+### Two Ways to Bind Validation Events
+
+#### Option 1: Using `ref` (Recommended)
+
+Pass a template ref to `useFormField`. It will automatically detect interactive elements and attach blur listeners.
+
+```vue
+<script setup>
+import { useFormField } from 'maz-ui/composables'
+import { useTemplateRef } from 'vue'
+
+const { value, errorMessage, hasError } = useFormField<string>('email', {
+  ref: useTemplateRef('emailRef'),
+  formIdentifier: 'my-form',
 })
 </script>
 
 <template>
-  <form @submit="onSubmit">
-    <MazInput
-      ref="nameRef"
-      v-model="name"
-      label="Enter your name"
-      :hint="nameErrorMessage"
-      :error="nameHasError"
-      :class="{ 'has-error-progressive': nameHasError }"
-    />
-    <MazInput
-      ref="ageRef"
-      v-model="age"
-      type="number"
-      label="Enter your age"
-      :hint="ageErrorMessage"
-      :error="ageHasError"
-      :class="{ 'has-error-progressive': ageHasError }"
-    />
-    <MazSelect
-      v-model="country"
-      v-bind="validationEvents"
-      :options="[{ label: 'France', value: 'FR' }, { label: 'United States', value: 'US' }]"
-      label="Select your nationality"
-      :hint="countryErrorMessage"
-      :error="countryHasError"
-      :class="{ 'has-error-progressive': countryHasError }"
-    />
-    <MazCheckbox
-      ref="agreeRef"
-      v-model="agree"
-      :hint="agreeErrorMessage"
-      :error="agreeHasError"
-      :class="{ 'has-error-progressive': agreeHasError }"
-    >
-      I agree to the terms and conditions
-    </MazCheckbox>
-    <MazBtn type="submit" :loading="isSubmitting">
-      Submit
-    </MazBtn>
-  </form>
+  <MazInput
+    ref="emailRef"
+    v-model="value"
+    :hint="errorMessage"
+    :error="hasError"
+  />
 </template>
+```
+
+#### Option 2: Using `validationEvents`
+
+If your component emits a `blur` event, you can use `v-bind` with `validationEvents`.
+
+```vue
+<script setup>
+import { useFormField } from 'maz-ui/composables'
+
+const { value, errorMessage, hasError, validationEvents } = useFormField<string>('email', {
+  formIdentifier: 'my-form',
+})
+</script>
+
+<template>
+  <MazInput
+    v-model="value"
+    v-bind="validationEvents"
+    :hint="errorMessage"
+    :error="hasError"
+  />
+</template>
+```
+
+## TypeScript Type Inference
+
+The form model is automatically typed based on your schema:
+
+```ts
+const schema = {
+  name: pipe(string(), nonEmpty()),
+  age: pipe(number(), minValue(0)),
+  email: pipe(string(), email()),
+}
+
+const { model } = useFormValidator({ schema })
+// model.value is typed as: { name?: string, age?: number, email?: string }
+```
+
+For `useFormField`, specify the field type as a generic parameter:
+
+```ts
+// Specify the type for better type safety
+const { value } = useFormField<string>('name', { formIdentifier: 'my-form' })
+// value is typed as WritableComputedRef<string>
+```
+
+::: warning Common TypeScript Errors
+If you get circular reference errors with `useTemplateRef`, use the classic `ref()` instead:
+
+```ts
+// May cause TypeScript errors
+const { value: email } = useFormField<string>('email', {
+  ref: useTemplateRef('emailRef'),
+})
+
+// Solution 1: Add generic to useTemplateRef
+const { value: email } = useFormField<string>('email', {
+  ref: useTemplateRef<HTMLInputElement>('emailRef'),
+})
+
+// Solution 2: Use classic ref
+const emailRef = ref<HTMLInputElement>()
+const { value: email } = useFormField<string>('email', {
+  ref: emailRef,
+})
+```
+
+:::
+
+## Async Validation
+
+Use Valibot's `pipeAsync` and `checkAsync` for async validations like checking username availability:
+
+<ComponentDemo>
+  <div class="maz-mb-4">
+    <p class="maz-text-sm maz-text-muted">Try typing "taken" - the async validator will reject it after a 2-second delay.</p>
+  </div>
+  <form class="maz-flex maz-gap-4" @submit="onSubmitAsync">
+    <MazInput
+      ref="asyncUsernameRef"
+      v-model="asyncUsername"
+      label="Username"
+      :hint="asyncUsernameError"
+      :error="asyncUsernameHasError"
+      :success="asyncUsernameValid"
+      :loading="asyncUsernameValidating"
+      class="maz-flex-1"
+    />
+    <MazBtn type="submit" :loading="asyncSubmitting">Submit</MazBtn>
+  </form>
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import { useFormValidator, useFormField } from 'maz-ui/composables'
+import { pipeAsync, string, nonEmpty, minLength, checkAsync } from 'valibot'
+import { useTemplateRef } from 'vue'
+
+const schema = {
+  username: pipeAsync(
+    string(),
+    nonEmpty('Username is required'),
+    minLength(3, 'Min 3 characters'),
+    checkAsync(async (value) => {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      return value !== 'taken' // Return true if valid
+    }, 'Username is already taken'),
+  ),
+}
+
+const { isSubmitting, handleSubmit } = useFormValidator({
+  schema,
+  options: { mode: 'eager', identifier: 'form-async' },
+})
+
+const {
+  value: username,
+  hasError,
+  errorMessage,
+  isValid,
+  isValidating, // Shows loading state during async validation
+} = useFormField<string>('username', {
+  ref: useTemplateRef('usernameRef'),
+  formIdentifier: 'form-async',
+})
+</script>
+
+<template>
+  <MazInput
+    ref="usernameRef"
+    v-model="username"
+    :hint="errorMessage"
+    :error="hasError"
+    :success="isValid"
+    :loading="isValidating"
+  />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Throttling and Debouncing
+
+For expensive validations (like API calls), use throttling or debouncing to limit how often validation runs.
+
+| Option | Behavior | Default Time | Use Case |
+|--------|----------|--------------|----------|
+| `debouncedFields` | Waits until user stops typing | 300ms | Search fields, API calls |
+| `throttledFields` | Runs at most once per interval | 1000ms | Rate-limited APIs |
+
+<ComponentDemo>
+  <div class="maz-mb-4">
+    <p class="maz-text-sm maz-text-muted">Name has 500ms debounce, Age has 1000ms throttle. Watch the console to see validation timing.</p>
+  </div>
+  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitDebounced">
+    <MazInput
+      v-model="debouncedModel.name"
+      label="Name (debounced 500ms)"
+      :hint="debouncedErrors.name"
+      :error="debouncedStates.name.error"
+      :success="debouncedStates.name.valid"
+    />
+    <MazInput
+      v-model="debouncedModel.age"
+      label="Age (throttled 1000ms)"
+      type="number"
+      :hint="debouncedErrors.age"
+      :error="debouncedStates.age.error"
+      :success="debouncedStates.age.valid"
+    />
+    <MazBtn type="submit" :loading="debouncedSubmitting">Submit</MazBtn>
+  </form>
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import { useFormValidator } from 'maz-ui/composables'
+import { pipe, string, number, nonEmpty, minLength, minValue } from 'valibot'
+
+const schema = {
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  age: pipe(number('Must be a number'), minValue(18, 'Must be 18+')),
+}
+
+const { model, errorMessages, fieldsStates, isSubmitting, handleSubmit } = useFormValidator({
+  schema,
+  options: {
+    debouncedFields: { name: 500 },   // Wait 500ms after typing stops
+    throttledFields: { age: 1000 },   // Validate at most every 1000ms
+    // Use `true` for default times: debouncedFields: { name: true } // 300ms
+  },
+})
+</script>
 ```
 
   </template>
@@ -539,514 +839,331 @@ const onSubmit = handleSubmit(async (formData) => {
 
 ## Reset Form
 
-Default: `true`
-
-You can use the `resetForm` function to reset the form to its initial state.
-
-You must use `handleSubmit` to handle the form submission and reset the form.
+Use `resetForm()` to reset the form to its initial state, or set `resetOnSuccess` to automatically reset after successful submission.
 
 <ComponentDemo>
   <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitReset">
     <MazInput
-      v-model="modelReset.name"
-      label="Enter your name"
-      :hint="errorMessagesReset.name"
-      :error="fieldsStatesReset.name.error"
-      :success="fieldsStatesReset.name.valid"
-      :class="{ 'has-error-reset': fieldsStatesReset.name.error }"
+      v-model="resetModel.name"
+      label="Name"
+      :hint="resetErrors.name"
+      :error="resetStates.name.error"
+      :success="resetStates.name.valid"
     />
     <MazInput
-      v-model="modelReset.age"
+      v-model="resetModel.age"
+      label="Age"
       type="number"
-      label="Enter your age"
-      :hint="errorMessagesReset.age"
-      :error="fieldsStatesReset.age.error"
-      :success="fieldsStatesReset.age.valid"
-      :class="{ 'has-error-reset': fieldsStatesReset.age.error }"
+      :hint="resetErrors.age"
+      :error="resetStates.age.error"
+      :success="resetStates.age.valid"
     />
-    <MazBtn type="submit" :loading="isSubmittingReset">
-      Submit
-    </MazBtn>
-    <MazBtn @click="resetFormReset" color="destructive">
-      Reset
-    </MazBtn>
+    <div class="maz-flex maz-gap-2">
+      <MazBtn type="submit" :loading="resetSubmitting">Submit</MazBtn>
+      <MazBtn type="button" color="danger" @click="resetFormFn">Reset</MazBtn>
+    </div>
   </form>
 
-<template #code>
-
-```vue{37,38}
-<template>
-  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmit">
-    <MazInput
-      v-model="model.name"
-      label="Enter your name"
-      :hint="errorMessages.name"
-      :error="fieldsStates.name.error"
-      :success="fieldsStates.name.valid"
-      :class="{ 'has-error-debounced': fieldsStates.name.error }"
-    />
-    <MazInput
-      v-model="model.age"
-      type="number"
-      label="Enter your age"
-      :hint="errorMessages.age"
-      :error="fieldsStates.age.error"
-      :success="fieldsStates.age.valid"
-      :class="{ 'has-error-debounced': fieldsStates.age.error }"
-    />
-    <MazBtn type="submit" :loading="isSubmitting">
-      Submit
-    </MazBtn>
-    <MazBtn @click="resetForm" color="destructive">
-      Reset
-    </MazBtn>
-  </form>
-</template>
-
-<script setup lang="ts">
-  import { sleep } from 'maz-ui'
-  import { useFormValidator, useToast, InferFormValidatorSchema } from 'maz-ui/composables'
-  import { string, nonEmpty, pipe, number, minValue, minLength } from 'valibot'
-
-  const { model, fieldsStates, isValid, isSubmitting, errorMessages, handleSubmit, resetForm } = useFormValidator({
-    schema: {
-      name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
-      age: pipe(number('Age is required'), nonEmpty('Age is required'), minValue(18, 'Age must be greater than 18')),
-    },
-    options: {
-      resetOnSuccess: true,
-      scrollToError: '.has-error-reset',
-    },
-  })
-
-  const onSubmit = handleSubmit(async (formData) => {
-    // Form submission logic
-    console.log(formData)
-    await sleep(2000)
-    toast.success('Form submitted', { position: 'top' })
-  })
-</script>
-```
-
-  </template>
-</ComponentDemo>
-
-## Throlling and Debouncing
-
-You can use the `throttledFields` and `debouncedFields` options to throttle or debounce the validation of specific fields.
-
-The fields are validated with throttling or debouncing to avoid spamming the server or to wait for the user to finish typing before validating.
-
-You can set the throttle or debounce time in milliseconds or use `true` for the default throttle time (1000ms) or debounce time (300ms).
-
-<ComponentDemo>
-  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitDebounced">
-    <MazInput
-      v-model="modelDebounced.name"
-      label="Enter your name"
-      :hint="errorMessagesDebounced.name"
-      :error="fieldsStatesDebounced.name.error"
-      :success="fieldsStatesDebounced.name.valid"
-      :class="{ 'has-error-debounced': fieldsStatesDebounced.name.error }"
-    />
-    <MazInput
-      v-model="modelDebounced.age"
-      type="number"
-      label="Enter your age"
-      :hint="errorMessagesDebounced.age"
-      :error="fieldsStatesDebounced.age.error"
-      :success="fieldsStatesDebounced.age.valid"
-      :class="{ 'has-error-debounced': fieldsStatesDebounced.age.error }"
-    />
-    <MazBtn type="submit" :loading="isSubmittingDebounced">
-      Submit
-    </MazBtn>
-  </form>
-
-<template #code>
-
-```vue{37,38}
-<template>
-  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmit">
-    <MazInput
-      v-model="model.name"
-      label="Enter your name"
-      :hint="errorMessages.name"
-      :error="fieldsStates.name.error"
-      :success="fieldsStates.name.valid"
-      :class="{ 'has-error-debounced': fieldsStates.name.error }"
-    />
-    <MazInput
-      v-model="model.age"
-      type="number"
-      label="Enter your age"
-      :hint="errorMessages.age"
-      :error="fieldsStates.age.error"
-      :success="fieldsStates.age.valid"
-      :class="{ 'has-error-debounced': fieldsStates.age.error }"
-    />
-    <MazBtn type="submit" :loading="isSubmitting">
-      Submit
-    </MazBtn>
-  </form>
-</template>
-
-<script setup lang="ts">
-  import { sleep } from 'maz-ui'
-  import { useFormValidator, useToast, InferFormValidatorSchema } from 'maz-ui/composables'
-  import { string, nonEmpty, pipe, number, minValue, minLength } from 'valibot'
-
-  const { model, fieldsStates, isValid, isSubmitting, errorMessages, handleSubmit } = useFormValidator({
-    schema: {
-      name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
-      age: pipe(number('Age is required'), nonEmpty('Age is required'), minValue(18, 'Age must be greater than 18')),
-    },
-    options: {
-      debouncedFields: { name: 500 },
-      throttledFields: { age: true },
-      scrollToError: '.has-error-debounced',
-    },
-  })
-
-  const onSubmit = handleSubmit(async (formData) => {
-    // Form submission logic
-    console.log(formData)
-    await sleep(2000)
-    toast.success('Form submitted', { position: 'top' })
-  })
-</script>
-```
-
-  </template>
-</ComponentDemo>
-
-## Validation with async function
-
-You can use async functions in the validation schema.
-
-<ComponentDemo>
-  <form class="maz-flex maz-gap-4" @submit="onSubmitAsync">
-    <MazInput
-      v-model="modelAsync.name"
-      label="Enter your name"
-      ref="nameAsyncRef"
-      v-bind="validationEventsAsync"
-      :hint="errorMessagesAsync.name"
-      :error="fieldsStatesAsync.name.error"
-      :success="fieldsStatesAsync.name.valid"
-      :loading="fieldsStatesAsync.name.validating"
-      :class="{ 'has-error-async': fieldsStatesAsync.name.error }"
-    />
-    <MazBtn type="submit" :loading="isSubmittingAsync">
-      Submit
-    </MazBtn>
-  </form>
-
-<template #code>
+  <template #code>
 
 ```vue
-<template>
-  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmit">
-    <MazInput
-      v-model="model.name"
-      label="Enter your name"
-      ref="nameRef"
-      v-bind="validationEvents"
-      :hint="errorMessages.name"
-      :error="fieldsStates.name.error"
-      :success="fieldsStates.name.valid"
-      :loading="fieldsStates.name.validating"
-      :class="{ 'has-error-debounced': fieldsStates.name.error }"
-    />
-    <MazBtn type="submit" :loading="isSubmitting">
-      Submit
-    </MazBtn>
-  </form>
-</template>
+<script lang="ts" setup>
+import { useFormValidator } from 'maz-ui/composables'
+import { pipe, string, number, nonEmpty, minLength, minValue } from 'valibot'
 
-<script setup lang="ts">
-  import { sleep } from 'maz-ui'
-  import { useFormValidator, useToast, InferFormValidatorSchema } from 'maz-ui/composables'
-  import { string, nonEmpty, pipe, number, minValue, minLength, pipeAsync, checkAsync } from 'valibot'
+const schema = {
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  age: pipe(number(), minValue(18, 'Must be 18+')),
+}
 
-  const {
-    model,
-    fieldsStates,
-    isValid,
-    isSubmitting,
-    errorMessages,
-    handleSubmit,
-  } = useFormValidator({
-    schema: {
-      name: pipeAsync(
-        string('Name is required'),
-        nonEmpty('Name is required'),
-        minLength(3, 'Name must be at least 3 characters'),
-        checkAsync(
-          async (name) => {
-            await sleep(2000)
-            return false
-          },
-          'Name is already taken',
-        )),
-    },
-    options: { mode: 'eager', scrollToError: '.has-error-async', identifier: 'form-async' },
-  })
+const { model, errorMessages, fieldsStates, isSubmitting, handleSubmit, resetForm } = useFormValidator({
+  schema,
+  defaultValues: { name: 'John', age: 25 },
+  options: {
+    resetOnSuccess: true, // Auto-reset after successful submission (default: true)
+  },
+})
 
-  const onSubmit = handleSubmit((formData) => {
-    // Form submission logic
-    console.log(formData)
-    toast.success('Form submitted', { position: 'top' })
-  })
+const onSubmit = handleSubmit((data) => {
+  console.log('Submitted:', data)
+  // Form will auto-reset because resetOnSuccess: true
+})
+
+// Manual reset
+function handleReset() {
+  resetForm()
+}
 </script>
 ```
 
-</template>
-
+  </template>
 </ComponentDemo>
 
-## useFormValidator
+## Multiple Forms on Same Page
 
-`useFormValidator` is the main composable for initializing form validation.
+Use the `identifier` option to have multiple independent forms on the same page. Make sure to match the identifier in both `useFormValidator` and `useFormField`.
 
-It accepts a validation schema, default values, and configuration options to handle form validation. You can also provide a model reference to bind the form data.
+```vue
+<script lang="ts" setup>
+import { useFormValidator, useFormField } from 'maz-ui/composables'
 
-### Parameters
+// Form 1
+const form1 = useFormValidator({
+  schema: schema1,
+  options: { identifier: 'login-form' },
+})
 
-`useFormValidator<TSchema>` accepts an object with the following properties:
+// Form 2
+const form2 = useFormValidator({
+  schema: schema2,
+  options: { identifier: 'register-form' },
+})
 
-- `schema`: `TSchema` - The Valibot validation schema for the form.
-- `model`: `Ref<Model>` (optional) - A reference to the form's data model.
-- `defaultValues`: `DeepPartial<Model>` (optional) - Default values for the form fields.
-- `options`: `FormValidatorOptions` (optional) - Configuration options for the form validation behavior.
-  - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'` (optional) - Form validation mode. (default: 'lazy') - To use the `eager`, `blur`, or `progressive` validation modes, you must use the `useFormField` composable to add the necessary validation events. - [see validation modes](#introduction)
-  - `throttledFields`: `Partial<Record<ModelKey, number | true>>` (optional) - Fields to validate with throttling. It's an object where the key is the field name and the value is the throttle time in milliseconds or `true` for the default throttle time (1000ms).
-  - `debouncedFields`: `Partial<Record<ModelKey, number | true>>` (optional) - Fields to validate with debouncing. It's an object where the key is the field name and the value is the debounce time in milliseconds or `true` for the default debounce time (300ms).
-  - `scrollToError`: `string | false` (optional) - Disable or provide a CSS selector for scrolling to errors (default '.has-field-error')
-  - `identifier`: `string | symbol` (optional) - Identifier for the form (useful when you have multiple forms on the same component)
+// useFormField must use matching identifier
+const { value: loginEmail } = useFormField<string>('email', {
+  formIdentifier: 'login-form',
+})
 
-### Return
-
-`useFormValidator` returns an object containing:
-
-- `isDirty`: `ComputedRef<boolean>` - Indicates if the form has been modified.
-- `isSubmitting`: `Ref<boolean>` - Indicates if the form is currently being submitted.
-- `isSubmitted`: `Ref<boolean>` - Indicates if the form has been submitted.
-- `isValid`: `ComputedRef<boolean>` - Indicates if the form is valid.
-- `errors`: `ComputedRef<Record<ModelKey, ValidationIssues>>` - Validation errors for each field.
-- `errorsMessages`: `ComputedRef<Record<string, string>>` - The first validation error message for each field.
-- `model`: `Ref<Model>` - The form's data model.
-- `fieldsStates`: `FieldsStates` - The validation state of each field.
-- `validateForm`: `(setErrors?: boolean) => Promise<boolean>` - Function to validate the entire form.
-- `scrollToError`: `(selector?: string, options?: { offset?: number }) => void` - Function to scroll to the first field with an error.
-- `handleSubmit`: `(successCallback: (model: Model) => Promise<unknown> | unknown, scrollToError?: false | string, options?: { resetOnSuccess?: boolean }) => Promise<void>` - Form submission handler, the callback is called if the form is valid and passes the complete payload as an argument. The second argument is optional and can be used to disable or provide a CSS selector for scrolling to errors (default '.has-field-error'). The third argument is an optional object with options `resetOnSuccess` that is a boolean and is optional.
-- `resetForm`: `() => void` - Function to reset the form to its initial state.
-
-```ts
-interface useFormValidationReturn {
-  identifier: string | symbol;
-  isDirty: import('vue').ComputedRef<boolean>;
-  isSubmitting: Ref<boolean, boolean>;
-  isSubmitted: Ref<boolean, boolean>;
-  isValid: import('vue').ComputedRef<boolean>;
-  errors: import('vue').ComputedRef<Record<ExtractModelKey<FormSchema<InferSchemaFormValidator<TSchema>>>, import('./useFormValidator/types').ValidationIssues>>;
-  model: Ref<InferSchemaFormValidator<TSchema>, InferSchemaFormValidator<TSchema>>;
-  fieldsStates: Ref<FieldsStates<InferSchemaFormValidator<TSchema>, ExtractModelKey<FormSchema<InferSchemaFormValidator<TSchema>>>>, FieldsStates<InferSchemaFormValidator<TSchema>, ExtractModelKey<FormSchema<InferSchemaFormValidator<TSchema>>>>>;
-  validateForm: (setErrors?: boolean) => Promise<void[]>;
-  scrollToError: typeof scrollToError;
-  handleSubmit: <Func extends (model: InferOutputSchemaFormValidator<TSchema>) => Promise<Awaited<ReturnType<Func>>> | ReturnType<Func>>(successCallback: Func, enableScrollOrSelector?: FormValidatorOptions["scrollToError"], options?: { resetOnSuccess?: boolean }) => (event?: Event) => Promise<ReturnType<Func> | undefined>;
-  errorMessages: import('vue').ComputedRef<Record<ExtractModelKey<FormSchema<InferSchemaFormValidator<TSchema>>>, string | undefined>>;
-  resetForm: () => void;
-}
+const { value: registerEmail } = useFormField<string>('email', {
+  formIdentifier: 'register-form',
+})
+</script>
 ```
 
-## useFormField
+## Error Handling and scrollToError
 
-::: warning
-Before using `useFormField`, make sure you have initialized the form with `useFormValidator`.
-:::
+### scrollToError
 
-`useFormField` is a composable for handling validation at the individual form field level.
-
-Useful for fine-grained control over form fields, `useFormField` provides computed properties for validation state, error messages, and more.
-Can be very useful when you are using fields in child components of form.
-
-To use the modes `eager`, `progressive` or `blur`, you must use this `useFormField` composable to add the [necessary validation events](#introduction).
-
-### Parameters
-
-`useFormField<T>` takes the following parameters:
-
-- `name`: `string` - The name of the field in the validation schema (must be a key from the schema).
-- `options`: `FormFieldOptions<T>` (optional) - Field-specific options.
-  - `defaultValue`: `T` (optional) - The default value of the field.
-  - `mode`: `'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'` (optional) - The validation mode for the field - [see validation modes](#introduction)
-  - `ref`: `Ref<HTMLElement | ComponentInstance>` (optional) - Vue ref to the component/element for automatic event binding - use `useTemplateRef()` for type safety
-  - `formIdentifier`: `string | symbol` (optional) - Identifier for the form (must match the one used in `useFormValidator`)
-
-### Return
-
-`useFormField` returns an object containing:
-
-- `errors`: `ComputedRef<ValidationIssues>` - Validation errors for this field.
-- `errorMessage`: `ComputedRef<string>` - The first validation error message.
-- `isValid`: `ComputedRef<boolean>` - Indicates if the field is valid.
-- `isDirty`: `ComputedRef<boolean>` - Indicates if the field has been modified.
-- `isBlurred`: `ComputedRef<boolean>` - Indicates if the field has lost focus.
-- `hasError`: `ComputedRef<boolean>` - Indicates if the field has errors.
-- `isValidated`: `ComputedRef<boolean>` - Indicates if the field has been validated.
-- `isValidating`: `ComputedRef<boolean>` - Indicates if the field is currently being validated.
-- `mode`: `ComputedRef<StrictOptions['mode']>` - The validation mode for the field.
-- `value`: `WritableComputedRef<T>` - The reactive value of the field with proper TypeScript typing.
-- `validationEvents`: `ComputedRef<{ onBlur?: () => void; }>` - Validation events to bind to the field. They are used to trigger field validation, to be used like this `v-bind="validationEvents"` (components must emit `blur` event to trigger field validation) - Not necessary for `lazy`, `aggressive` validation modes or if you use the component reference when initializing the composable.
+Automatically scroll to the first field with an error when validation fails:
 
 ```ts
-interface useFormFieldReturn {
-  hasError: import('vue').ComputedRef<boolean>;
-  errors: import('vue').ComputedRef<import('./useFormValidator/types').ValidationIssues>;
-  errorMessage: import('vue').ComputedRef<Record<ModelKey, string | undefined>[ModelKey]>;
-  isValid: import('vue').ComputedRef<boolean>;
-  isDirty: import('vue').ComputedRef<boolean>;
-  isBlurred: import('vue').ComputedRef<boolean>;
-  isValidated: import('vue').ComputedRef<boolean>;
-  isValidating: import('vue').ComputedRef<boolean>;
-  mode: import('vue').ComputedRef<"blur" | "eager" | "lazy" | "aggressive" | "progressive" | undefined>;
-  value: import('vue').WritableComputedRef<FieldType, FieldType>;
-  validationEvents: import('vue').ComputedRef<{
-      onBlur: () => void;
-  } | undefined>;
-}
+const { handleSubmit } = useFormValidator({
+  schema,
+  options: {
+    scrollToError: '.has-error', // CSS selector for error elements
+    // scrollToError: false,     // Disable scrolling
+  },
+})
 ```
 
-## Recent Improvements (v4.0.0)
+Add the matching class to your fields:
 
-### 🚀 Enhanced Type Safety
+```html
+<MazInput
+  :class="{ 'has-error': hasError }"
+  :error="hasError"
+/>
+```
 
-- **Automatic schema inference**: Use `typeof schema` for precise TypeScript types
-- **Field-level type safety**: `useFormField<T>` provides exact field types
-- **Improved reactivity**: Optimized watchers with better performance and memory management
+### onError Callback
 
-### 🎯 Better Interactive Element Detection
+Handle validation failures with the `onError` callback:
 
-The `ref` option in `useFormField` now automatically detects and binds events to:
-- Standard form elements: `input`, `select`, `textarea`, `button`
-- Focusable elements: links with `href`, elements with `tabindex`
-- ARIA interactive elements: `role="button"`, `role="textbox"`, etc.
-- Custom interactive elements: `data-interactive`, `data-clickable`, `.interactive`
-
-### 🔧 Improved Memory Management
-
-- Automatic cleanup of event listeners to prevent memory leaks
-- WeakMap-based tracking for better garbage collection
-- Race condition protection in async validation
-
-### 📝 Better Development Experience
-
-- More informative warning messages
-- Improved error handling and validation states
-- Enhanced debugging capabilities
+```ts
+const onSubmit = handleSubmit(
+  (data) => {
+    // Success callback
+    console.log('Valid:', data)
+  },
+  '.has-error', // scrollToError selector (optional)
+  {
+    onError: ({ model, errorMessages, errors }) => {
+      // Called when validation fails
+      console.log('Validation failed:', errorMessages)
+    },
+  }
+)
+```
 
 ## Performance & Best Practices
 
-### 🚀 Performance Tips
+### Performance Tips
 
-- **Use `throttledFields` or `debouncedFields`** for expensive validations or network requests
-- **Prefer `eager` or `progressive` modes** for better UX instead of `aggressive`
-- **Use `lazy` mode** for simple forms with minimal validation
-- **Leverage TypeScript**: Always use `typeof schema` for automatic type inference
+1. **Use throttling/debouncing** for expensive validations (API calls, complex logic)
+2. **Prefer `eager` or `progressive` modes** over `aggressive` for better performance
+3. **Use `lazy` mode** for simple forms with minimal validation
+4. **Avoid `aggressive` mode on large forms** - it validates every field on every change
 
-### 💡 Common Patterns
+### Common Patterns
 
-#### Multiple Forms on Same Page
+#### Multiple Forms with Identifiers
 
 ```ts
-const form1 = useFormValidator<typeof schema1>({
-  schema: schema1,
-  options: { identifier: 'form-1' }
+const { handleSubmit } = useFormValidator({
+  schema,
+  options: { identifier: 'my-unique-form' },
 })
 
-const form2 = useFormValidator<typeof schema2>({
-  schema: schema2,
-  options: { identifier: 'form-2' }
-})
-
-// Use matching identifiers in useFormField
-const { value } = useFormField<string>('name', {
-  formIdentifier: 'form-1'
+const { value } = useFormField<string>('email', {
+  formIdentifier: 'my-unique-form', // Must match!
 })
 ```
 
 #### Custom Interactive Elements
 
+If your custom component isn't detected for blur events, add `data-interactive`:
+
 ```vue
-<template>
-  <!-- Add data-interactive for custom components -->
-  <div data-interactive class="custom-input" tabindex="0">
-    Custom Input
-  </div>
-</template>
+<div data-interactive class="custom-input" tabindex="0">
+  Custom Input
+</div>
 ```
 
-### ⚠️ Common Pitfalls
+### Common Pitfalls
 
-- **Mismatched form identifiers**: Ensure `useFormField` uses the same `formIdentifier` as `useFormValidator`
-- **Missing refs for interactive modes**: `eager`, `blur`, and `progressive` modes require either `ref` or `validationEvents`
-- **Incorrect TypeScript generics**: Always specify both schema and field name: `useFormField<T>`
+| Pitfall | Solution |
+|---------|----------|
+| Mismatched `formIdentifier` | Ensure `useFormField`'s `formIdentifier` matches `useFormValidator`'s `identifier` |
+| Validation not triggering in eager/blur/progressive modes | Use `ref` option or `v-bind="validationEvents"` |
+| TypeScript errors with `useTemplateRef` | Add generic type or use classic `ref()` |
+| Field not found warning | Make sure the field name exists in your schema |
+
+## API Reference
+
+### useFormValidator
+
+#### Parameters
+
+```ts
+useFormValidator<TSchema>({
+  schema: TSchema,                                    // Valibot validation schema (required)
+  model?: Ref<Model>,                                 // External model ref (optional)
+  defaultValues?: DeepPartial<Model>,                 // Initial values (optional)
+  options?: {
+    mode?: 'lazy' | 'aggressive' | 'eager' | 'blur' | 'progressive', // Default: 'lazy'
+    throttledFields?: Record<string, number | true>,  // Fields to throttle
+    debouncedFields?: Record<string, number | true>,  // Fields to debounce
+    scrollToError?: string | false,                   // CSS selector, default: '.has-field-error'
+    identifier?: string | symbol,                     // Form identifier, default: 'main-form-validator'
+    resetOnSuccess?: boolean,                         // Reset after submit, default: true
+  }
+})
+```
+
+#### Return Values
+
+```ts
+{
+  identifier: string | symbol
+  model: Ref<Model>
+  isValid: ComputedRef<boolean>
+  isDirty: ComputedRef<boolean>
+  isSubmitting: Ref<boolean>
+  isSubmitted: Ref<boolean>
+  errors: ComputedRef<Record<string, ValidationIssues>>
+  errorMessages: ComputedRef<Record<string, string | undefined>>
+  fieldsStates: Ref<FieldsStates<Model>>
+  validateForm: (setErrors?: boolean) => Promise<void[]>
+  scrollToError: (selector?: string) => void
+  resetForm: () => void
+  handleSubmit: <Func>(
+    successCallback: Func,
+    scrollToError?: string | false,
+    options?: { onError?: Function, resetOnSuccess?: boolean }
+  ) => (event?: Event) => Promise<ReturnType<Func>>
+}
+```
+
+### useFormField
+
+#### Parameters
+
+```ts
+useFormField<FieldType>(
+  name: string,                                      // Field name in schema (required)
+  options?: {
+    defaultValue?: FieldType,                         // Default value for this field
+    mode?: 'lazy' | 'aggressive' | 'eager' | 'blur' | 'progressive', // Override form mode
+    ref?: Ref<HTMLElement | ComponentInstance>,       // Template ref for blur detection
+    formIdentifier?: string | symbol,                 // Must match useFormValidator's identifier
+  }
+)
+```
+
+#### Return Values
+
+```ts
+{
+  value: WritableComputedRef<FieldType>
+  hasError: ComputedRef<boolean>
+  errors: ComputedRef<ValidationIssues>
+  errorMessage: ComputedRef<string | undefined>
+  isValid: ComputedRef<boolean>
+  isDirty: ComputedRef<boolean>
+  isBlurred: ComputedRef<boolean>
+  isValidated: ComputedRef<boolean>
+  isValidating: ComputedRef<boolean>
+  mode: ComputedRef<string | undefined>
+  validationEvents: ComputedRef<{ onBlur?: () => void }>
+}
+```
+
+### Types
+
+```ts
+interface FormValidatorOptions<Model> {
+  mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'
+  throttledFields?: Partial<Record<keyof Model, number | true>>
+  debouncedFields?: Partial<Record<keyof Model, number | true>>
+  scrollToError?: string | false
+  identifier?: string | symbol
+  resetOnSuccess?: boolean
+}
+
+interface FormFieldOptions<FieldType> {
+  defaultValue?: FieldType
+  mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'
+  ref?: Ref<HTMLElement | ComponentInstance>
+  formIdentifier?: string | symbol
+}
+
+interface FieldState<FieldType> {
+  valid: boolean
+  error: boolean
+  errors: ValidationIssues
+  dirty: boolean
+  blurred: boolean
+  validated: boolean
+  validating: boolean
+  initialValue?: Readonly<FieldType>
+  mode?: string
+}
+```
 
 ## Troubleshooting
 
-### Type Errors
+### Type Errors with useTemplateRef
 
-**Problem**: `WritableComputedRef<string | number | boolean | undefined>`
+**Problem**: TypeScript circular reference errors when using `useTemplateRef`
+
+**Solutions**:
 
 ```ts
-// ❌ Wrong - loses type precision
-const { value } = useFormField('name')
-
-// ✅ Correct - precise typing
-const { value } = useFormField<string>('name')
-```
-
-### Using `useTemplateRef` with `useFormField` cause TypeScript errors
-
-**Cause:** `useTemplateRef` can create TypeScript circular references when the destructured variable name resembles the template ref name.
-
-If you encounter TypeScript errors when using `useFormField` with `useTemplateRef`, use classic `ref()` instead:
-
-```typescript
-// ❌ May cause TypeScript errors
-const { value: email } = useFormField<string>('email', {
-  ref: useTemplateRef('emailRef'),
+// Solution 1: Add generic type
+const { value } = useFormField<string>('email', {
+  ref: useTemplateRef<HTMLInputElement>('emailRef'),
 })
 
-// ✅ Correct - precise typing
-const { value: email } = useFormField<string>('email', {
-  ref: useTemplateRef<string>('emailRef'),
-})
-
-// ✅ Use classic `ref()` instead
+// Solution 2: Use classic ref
 const emailRef = ref<HTMLInputElement>()
-const { value: email } = useFormField<string>('email', {
-  ref: emailRef,
-})
+const { value } = useFormField<string>('email', { ref: emailRef })
 ```
 
 ### Validation Not Triggering
 
-**Problem**: Field validation doesn't work with `eager`/`blur`/`progressive` modes
+**Problem**: `eager`, `blur`, or `progressive` mode not validating
+
+**Solution**: These modes require blur event detection. Use either:
 
 ```ts
-// ❌ Missing ref or validation events
-const { value } = useFormField<string>('name')
-
-// ✅ Use ref for automatic detection
+// Option 1: ref option
 const { value } = useFormField<string>('name', {
-  ref: useTemplateRef('inputRef')
+  ref: useTemplateRef('inputRef'),
 })
 
-// ✅ Or use validation events manually
+// Option 2: validationEvents
 const { value, validationEvents } = useFormField<string>('name')
-// Then: v-bind="validationEvents" on your component
+// Then: v-bind="validationEvents" on your input
 ```
 
 ### Element Not Found Warning
@@ -1054,233 +1171,346 @@ const { value, validationEvents } = useFormField<string>('name')
 **Problem**: `No element found for ref in field 'name'`
 
 **Solutions**:
-1. Ensure the ref is properly bound to an HTML element or Vue component
-2. Make sure the component has a `$el` property if it's a Vue component
-3. Use `data-interactive` attribute for custom interactive elements
+1. Ensure the ref is bound to an HTML element or Vue component
+2. Make sure the component has a `$el` property
+3. For custom components, add `data-interactive` attribute
 
-## Types
+### Mismatched Form Identifiers
 
-### FormValidatorOptions
+**Problem**: `useFormField` not finding the form context
 
-```ts
-interface FormValidatorOptions {
-  /**
-   * Validation mode
-   * - lazy: validate on input value change
-   * - aggressive: validate all fields immediately on form creation and on input value change
-   * - blur: validate on blur
-   * - eager: validate on blur at first (only if the field is not empty) and then on input value change
-   * - progressive: The field becomes valid after the first successful validation and then validated on input value change. If the field is invalid, the error message on the first blur event.
-   * @default 'lazy'
-   */
-  mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'
-  /**
-   * Fields to validate with throttling
-   * Useful for fields that require a network request to avoid spamming the server
-   * @example { name: 1000 } or { name: true } for the default throttle time (1000ms)
-   */
-  throttledFields?: Partial<Record<ModelKey, number | true>>
-  /**
-   * Fields to validate with debouncing
-   * Useful to wait for the user to finish typing before validating
-   * Useful for fields that require a network request to avoid spamming the server
-   * @example { name: 300 } or { name: true } for the default debounce time (300ms)
-   */
-  debouncedFields?: Partial<Record<ModelKey, number | true>>
-  /**
-   * Scroll to the first error found
-   * @default '.has-field-error'
-   */
-  scrollToError?: string | false
-  /**
-   * Identifier to use for the form
-   * Useful to have multiple forms on the same page
-   * @default `main-form-validator`
-   */
-  identifier?: string | symbol
-}
-```
-
-### FormFieldOptions
+**Solution**: Ensure identifiers match:
 
 ```ts
-interface FormFieldOptions<T> {
-  /**
-   * Default value of the field
-   * @default undefined
-   */
-  defaultValue?: T
-  /**
-   * Validation mode
-   * To override the form validation mode
-   */
-  mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'
-  /**
-   * Vue ref to the component or HTML element for automatic event binding
-   * Use useTemplateRef() for type safety
-   * Automatically detects interactive elements (input, select, textarea, button, ARIA elements, etc.)
-   * Necessary for 'eager', 'progressive' and 'blur' validation modes
-   */
-  ref?: Ref<HTMLElement | ComponentInstance>
-  /**
-   * Identifier for the form
-   * Useful when you have multiple forms on the same component
-   * Should be the same as the one used in `useFormValidator`
-   */
-  formIdentifier?: string | symbol
-}
+// In parent
+const { handleSubmit } = useFormValidator({
+  schema,
+  options: { identifier: 'my-form' }, // This identifier...
+})
+
+// In child
+const { value } = useFormField<string>('email', {
+  formIdentifier: 'my-form', // ...must match this one
+})
 ```
 
 <script lang="ts" setup>
-  import { ref, useTemplateRef } from 'vue'
-  import { useFormValidator } from 'maz-ui/src/composables/useFormValidator'
-  import { useFormField } from 'maz-ui/src/composables/useFormField'
-  import { useToast } from 'maz-ui/src/composables/useToast'
-  import { sleep } from 'maz-ui'
-  import { string, nonEmpty, pipe, number, minValue, maxValue, boolean, literal, minLength, pipeAsync, checkAsync } from 'valibot'
+import { ref, useTemplateRef } from 'vue'
+import { useFormValidator } from 'maz-ui/src/composables/useFormValidator'
+import { useFormField } from 'maz-ui/src/composables/useFormField'
+import { useToast } from 'maz-ui/src/composables/useToast'
+import { sleep } from '@maz-ui/utils'
+import {
+  string,
+  nonEmpty,
+  pipe,
+  number,
+  minValue,
+  maxValue,
+  boolean,
+  literal,
+  minLength,
+  email,
+  pipeAsync,
+  checkAsync,
+} from 'valibot'
 
-  const toast = useToast()
+const toast = useToast()
 
-  const schema = ref({
-    name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
-    age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
-    country: pipe(string('Country is required'), nonEmpty('Country is required')),
-    agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
-  })
+// Quick Start Demo
+const quickStartSchema = {
+  email: pipe(string(), nonEmpty('Email is required'), email('Invalid email')),
+  password: pipe(string(), nonEmpty('Password is required'), minLength(8, 'Min 8 characters')),
+}
 
-  const { model, isValid, isSubmitting, isDirty, isSubmitted, handleSubmit, errorMessages, fieldsStates, resetForm } = useFormValidator<typeof schema>({
-    schema,
-    defaultValues: { name: 'John Doe', age: 10 },
-    options: { mode: 'lazy', scrollToError: '.has-error' },
-  })
+const {
+  model: quickStartModel,
+  errorMessages: quickStartErrors,
+  fieldsStates: quickStartStates,
+  isSubmitting: quickStartSubmitting,
+  handleSubmit: handleQuickStart,
+} = useFormValidator({ schema: quickStartSchema })
 
-  const onSubmit = handleSubmit(async (formData) => {
-    // Form submission logic
-    console.log(formData)
-    await sleep(2000)
-    toast.success('Form submitted', { position: 'top' })
-  })
+const onSubmitQuickStart = handleQuickStart(async () => {
+  await sleep(1000)
+  toast.success('Login successful!', { position: 'top' })
+})
 
-  const eagerSchema = {
-    name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
-    age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
-    country: pipe(string('Country is required'), nonEmpty('Country is required')),
-    agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
-  }
+// Form State Demo
+const stateSchema = {
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  age: pipe(number('Must be a number'), minValue(18, 'Min 18'), maxValue(100, 'Max 100')),
+}
 
-  const { isValid: isValidEager, isSubmitting: isSubmittingEager, handleSubmit: handleSubmitEager } = useFormValidator<typeof eagerSchema>({
-    schema: eagerSchema,
-    options: { mode: 'eager', scrollToError: '.has-error-form2', identifier: 'form-eager' },
-  })
+const {
+  model: stateModel,
+  errorMessages: stateErrors,
+  fieldsStates: stateFields,
+  isValid: stateValid,
+  isDirty: stateDirty,
+  isSubmitted: stateSubmitted,
+  isSubmitting: stateSubmitting,
+  handleSubmit: handleState,
+} = useFormValidator({ schema: stateSchema })
 
-  const { value: name, hasError: hasErrorName, errorMessage: nameErrorMessage } = useFormField<string>('name', { ref: useTemplateRef('nameRef'), formIdentifier: 'form-eager' })
-  const { value: age, hasError: hasErrorAge, errorMessage: ageErrorMessage } = useFormField<number>('age', { ref: useTemplateRef('ageRef'), formIdentifier: 'form-eager'  })
-  const { value: country, hasError: hasErrorCountry, errorMessage: countryErrorMessage, validationEvents } = useFormField<string>('country', { mode: 'lazy', formIdentifier: 'form-eager'  })
-  const { value: agree, hasError: hasErrorAgree, errorMessage: agreeErrorMessage } = useFormField<boolean>('agree', { ref: useTemplateRef('agreeRef'), formIdentifier: 'form-eager'  })
+const onSubmitState = handleState(() => {
+  toast.success('Submitted!', { position: 'top' })
+})
 
-  const onSubmitEager = handleSubmitEager(async (formData) => {
-    // Form submission logic
-    console.log(formData)
-    await sleep(2000)
-    toast.success('Form submitted', { position: 'top' })
-  })
+// Lazy Mode Demo
+const lazySchema = {
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  email: pipe(string(), nonEmpty('Required'), email('Invalid email')),
+}
 
-  const { isValid: isValidProgressive, isSubmitting: isSubmittingProgressive, handleSubmit: handleSubmitProgressive } = useFormValidator<Model>({
-    schema: {
-      name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
-      age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
-      country: pipe(string('Country is required'), nonEmpty('Country is required')),
-      agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
-    },
-    options: { mode: 'progressive', scrollToError: '.has-error-progressive', identifier: 'form-progressive' },
-  })
+const {
+  model: lazyModel,
+  errorMessages: lazyErrors,
+  fieldsStates: lazyStates,
+  isSubmitting: lazySubmitting,
+  handleSubmit: handleLazy,
+} = useFormValidator({
+  schema: lazySchema,
+  options: { mode: 'lazy', scrollToError: '.has-error-lazy' },
+})
 
-  const progressiveSchema = {
-    name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
-    age: pipe(number('Age is required'), minValue(18, 'Age must be greater than 18'), maxValue(100, 'Age must be less than 100')),
-    country: pipe(string('Country is required'), nonEmpty('Country is required')),
-    agree: pipe(boolean('You must agree to the terms and conditions'), literal(true, 'You must agree to the terms and conditions')),
-  }
+const onSubmitLazy = handleLazy(async () => {
+  await sleep(1000)
+  toast.success('Submitted!', { position: 'top' })
+})
 
-  const { value: nameProgressive, isValid: nameValidProgressive, hasError: nameErrorProgressive, errorMessage: nameMessageProgressive } = useFormField<string>('name', { ref: useTemplateRef('nameProgressiveRef'), formIdentifier: 'form-progressive' })
-  const { value: ageProgressive, isValid: ageValidProgressive, hasError: ageErrorProgressive, errorMessage: ageMessageProgressive } = useFormField<number>('age', { ref: useTemplateRef('ageProgressiveRef'), formIdentifier: 'form-progressive'  })
-  const { value: countryProgressive, isValid: countryValidProgressive, hasError: countryErrorProgressive, errorMessage: countryMessageProgressive, validationEventsProgressive } = useFormField<string>('country', { ref: useTemplateRef('countryProgressiveRef'), formIdentifier: 'form-progressive' })
-  const { value: agreeProgressive, isValid: agreeValidProgressive, hasError: agreeErrorProgressive, errorMessage: agreeMessageProgressive } = useFormField<boolean>('agree', { ref: useTemplateRef('agreeProgressiveRef'), formIdentifier: 'form-progressive'  })
+// Aggressive Mode Demo
+const aggressiveSchema = {
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  email: pipe(string(), nonEmpty('Required'), email('Invalid email')),
+}
 
-  const onSubmitProgressive = handleSubmitProgressive(async (formData) => {
-    // Form submission logic
-    console.log(formData)
-    await sleep(2000)
-    toast.success('Form submitted', { position: 'top' })
-  })
+const {
+  model: aggressiveModel,
+  errorMessages: aggressiveErrors,
+  fieldsStates: aggressiveStates,
+  isSubmitting: aggressiveSubmitting,
+  handleSubmit: handleAggressive,
+} = useFormValidator({
+  schema: aggressiveSchema,
+  options: { mode: 'aggressive' },
+})
 
-  const { model: modelReset, fieldsStates: fieldsStatesReset, isValid: isValidReset, isSubmitting: isSubmittingReset, errorMessages: errorMessagesReset, handleSubmit: handleSubmitReset, resetForm: resetFormReset } = useFormValidator({
-    schema: {
-      name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
-      age: pipe(number('Age is required'), nonEmpty('Age is required'), minValue(18, 'Age must be greater than 18')),
-    },
-    options: {
-      resetOnSuccess: true,
-      scrollToError: '.has-error-reset',
-    },
-  })
+const onSubmitAggressive = handleAggressive(async () => {
+  await sleep(1000)
+  toast.success('Submitted!', { position: 'top' })
+})
 
-  const { model: modelDebounced, fieldsStates: fieldsStatesDebounced, isValid: isValidDebounced, isSubmitting: isSubmittingDebounced, errorMessages: errorMessagesDebounced, handleSubmit: handleSubmitDebounced } = useFormValidator({
-    schema: {
-      name: pipe(string('Name is required'), nonEmpty('Name is required'), minLength(3, 'Name must be at least 3 characters')),
-      age: pipe(number('Age is required'), nonEmpty('Age is required'), minValue(18, 'Age must be greater than 18')),
-    },
-    options: {
-      debouncedFields: { name: 500 },
-      throttledFields: { age: true },
-      scrollToError: '.has-error-debounced',
-    },
-  })
+// Eager Mode Demo
+const eagerSchema = {
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  email: pipe(string(), nonEmpty('Required'), email('Invalid email')),
+}
 
-  const onSubmitReset = handleSubmitReset(async (formData) => {
-    // Form submission logic
-    console.log(formData)
-    await sleep(2000)
-    toast.success(`Form submitted with ${JSON.stringify(formData)}`, { position: 'top' })
-  })
+const {
+  isSubmitting: eagerSubmitting,
+  handleSubmit: handleEager,
+} = useFormValidator({
+  schema: eagerSchema,
+  options: { mode: 'eager', scrollToError: '.has-error-eager', identifier: 'form-eager' },
+})
 
-  const onSubmitDebounced = handleSubmitDebounced(async (formData) => {
-    // Form submission logic
-    console.log(formData)
-    await sleep(2000)
-    toast.success(`Form submitted with ${JSON.stringify(formData)}`, { position: 'top' })
-  })
+const {
+  value: eagerName,
+  hasError: eagerNameHasError,
+  errorMessage: eagerNameError,
+  isValid: eagerNameValid,
+} = useFormField<string>('name', {
+  ref: useTemplateRef<HTMLInputElement>('eagerNameRef'),
+  formIdentifier: 'form-eager',
+})
 
-  const { model: modelAsync, fieldsStates: fieldsStatesAsync, isValid: isValidAsync, isSubmitting: isSubmittingAsync, errorMessages: errorMessagesAsync, handleSubmit: handleSubmitAsync } = useFormValidator({
-    schema: {
-      name: pipeAsync(
-        string('Name is required'),
-        nonEmpty('Name is required'),
-        minLength(3, 'Name must be at least 3 characters'),
-        checkAsync(
-          async (name) => {
-            await sleep(2000)
-            return false
-          },
-          'Name is already taken',
-        )),
-    },
-    options: { mode: 'eager', scrollToError: '.has-error-async', identifier: 'form-async' },
-  })
+const {
+  value: eagerEmail,
+  hasError: eagerEmailHasError,
+  errorMessage: eagerEmailError,
+  isValid: eagerEmailValid,
+} = useFormField<string>('email', {
+  ref: useTemplateRef<HTMLInputElement>('eagerEmailRef'),
+  formIdentifier: 'form-eager',
+})
 
-  const {
-    value: nameAsync,
-    hasError: hasErrorNameAsync,
-    errorMessage: nameErrorMessageAsync,
-    validationEvents: validationEventsAsync,
-  } = useFormField<string>('name', {
-    ref: useTemplateRef('nameAsyncRef'),
-    formIdentifier: 'form-async',
-  })
+const onSubmitEager = handleEager(async () => {
+  await sleep(1000)
+  toast.success('Submitted!', { position: 'top' })
+})
 
-  const onSubmitAsync = handleSubmitAsync((formData) => {
-    // Form submission logic
-    console.log(formData)
-    toast.success('Form submitted', { position: 'top' })
-  })
+// Blur Mode Demo
+const blurSchema = {
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  email: pipe(string(), nonEmpty('Required'), email('Invalid email')),
+}
+
+const {
+  isSubmitting: blurSubmitting,
+  handleSubmit: handleBlur,
+} = useFormValidator({
+  schema: blurSchema,
+  options: { mode: 'blur', scrollToError: '.has-error-blur', identifier: 'form-blur' },
+})
+
+const {
+  value: blurName,
+  hasError: blurNameHasError,
+  errorMessage: blurNameError,
+  isValid: blurNameValid,
+} = useFormField<string>('name', {
+  ref: useTemplateRef<HTMLInputElement>('blurNameRef'),
+  formIdentifier: 'form-blur',
+})
+
+const {
+  value: blurEmail,
+  hasError: blurEmailHasError,
+  errorMessage: blurEmailError,
+  isValid: blurEmailValid,
+} = useFormField<string>('email', {
+  ref: useTemplateRef<HTMLInputElement>('blurEmailRef'),
+  formIdentifier: 'form-blur',
+})
+
+const onSubmitBlur = handleBlur(async () => {
+  await sleep(1000)
+  toast.success('Submitted!', { position: 'top' })
+})
+
+// Progressive Mode Demo
+const progressiveSchema = {
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  email: pipe(string(), nonEmpty('Required'), email('Invalid email')),
+  agree: pipe(boolean(), literal(true, 'You must agree')),
+}
+
+const {
+  isSubmitting: progressiveSubmitting,
+  handleSubmit: handleProgressive,
+} = useFormValidator({
+  schema: progressiveSchema,
+  options: { mode: 'progressive', scrollToError: '.has-error-progressive', identifier: 'form-progressive' },
+})
+
+const {
+  value: progressiveName,
+  hasError: progressiveNameHasError,
+  errorMessage: progressiveNameError,
+  isValid: progressiveNameValid,
+} = useFormField<string>('name', {
+  ref: useTemplateRef<HTMLInputElement>('progressiveNameRef'),
+  formIdentifier: 'form-progressive',
+})
+
+const {
+  value: progressiveEmail,
+  hasError: progressiveEmailHasError,
+  errorMessage: progressiveEmailError,
+  isValid: progressiveEmailValid,
+} = useFormField<string>('email', {
+  ref: useTemplateRef<HTMLInputElement>('progressiveEmailRef'),
+  formIdentifier: 'form-progressive',
+})
+
+const {
+  value: progressiveAgree,
+  hasError: progressiveAgreeHasError,
+  errorMessage: progressiveAgreeError,
+} = useFormField<boolean>('agree', {
+  ref: useTemplateRef<HTMLInputElement>('progressiveAgreeRef'),
+  formIdentifier: 'form-progressive',
+})
+
+const onSubmitProgressive = handleProgressive(async () => {
+  await sleep(1000)
+  toast.success('Submitted!', { position: 'top' })
+})
+
+// Async Validation Demo
+const asyncSchema = {
+  username: pipeAsync(
+    string(),
+    nonEmpty('Username is required'),
+    minLength(3, 'Min 3 characters'),
+    checkAsync(async (value) => {
+      await sleep(2000)
+      return value !== 'taken'
+    }, 'Username is already taken'),
+  ),
+}
+
+const {
+  isSubmitting: asyncSubmitting,
+  handleSubmit: handleAsync,
+} = useFormValidator({
+  schema: asyncSchema,
+  options: { mode: 'eager', identifier: 'form-async' },
+})
+
+const {
+  value: asyncUsername,
+  hasError: asyncUsernameHasError,
+  errorMessage: asyncUsernameError,
+  isValid: asyncUsernameValid,
+  isValidating: asyncUsernameValidating,
+} = useFormField<string>('username', {
+  ref: useTemplateRef<HTMLInputElement>('asyncUsernameRef'),
+  formIdentifier: 'form-async',
+})
+
+const onSubmitAsync = handleAsync(async () => {
+  await sleep(1000)
+  toast.success('Submitted!', { position: 'top' })
+})
+
+// Debounce/Throttle Demo
+const debouncedSchema = {
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  age: pipe(number('Must be a number'), minValue(18, 'Must be 18+')),
+}
+
+const {
+  model: debouncedModel,
+  errorMessages: debouncedErrors,
+  fieldsStates: debouncedStates,
+  isSubmitting: debouncedSubmitting,
+  handleSubmit: handleDebounced,
+} = useFormValidator({
+  schema: debouncedSchema,
+  options: {
+    debouncedFields: { name: 500 },
+    throttledFields: { age: 1000 },
+  },
+})
+
+const onSubmitDebounced = handleDebounced(async () => {
+  await sleep(1000)
+  toast.success('Submitted!', { position: 'top' })
+})
+
+// Reset Form Demo
+const resetSchema = {
+  name: pipe(string(), nonEmpty('Required'), minLength(3, 'Min 3 characters')),
+  age: pipe(number('Must be a number'), minValue(18, 'Must be 18+')),
+}
+
+const {
+  model: resetModel,
+  errorMessages: resetErrors,
+  fieldsStates: resetStates,
+  isSubmitting: resetSubmitting,
+  handleSubmit: handleReset,
+  resetForm: resetFormFn,
+} = useFormValidator({
+  schema: resetSchema,
+  defaultValues: { name: 'John', age: 25 },
+  options: { resetOnSuccess: false },
+})
+
+const onSubmitReset = handleReset(async () => {
+  await sleep(1000)
+  toast.success('Submitted!', { position: 'top' })
+})
 </script>

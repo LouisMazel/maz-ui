@@ -63,7 +63,7 @@ watch(
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .maz-picker-shortcuts {
   @apply maz-flex maz-flex-col maz-items-start maz-gap-1 maz-overflow-y-auto maz-border-e maz-border-divider maz-p-2;
 

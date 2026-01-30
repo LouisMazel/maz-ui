@@ -164,7 +164,7 @@ watch(
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-date-picker-header {
   @apply maz-z-1 maz-flex maz-justify-between maz-space-y-1 maz-p-2 maz-font-normal;
 

@@ -124,7 +124,7 @@ defineExpose({
   />
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-phone-input {
   @apply maz-min-w-52 maz-flex-1;
 

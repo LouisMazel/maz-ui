@@ -133,7 +133,7 @@ function setScrollState(event: Event) {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-carousel {
   @apply maz-relative maz-flex maz-flex-col;
 

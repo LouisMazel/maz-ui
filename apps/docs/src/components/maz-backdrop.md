@@ -229,7 +229,7 @@ These features work automatically - you don't need to do anything extra!
   const animatedOpen = ref(false)
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .demo-content {
   background: hsl(var(--maz-background));
   padding: 2rem;

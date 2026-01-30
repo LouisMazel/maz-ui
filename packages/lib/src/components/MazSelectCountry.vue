@@ -366,7 +366,7 @@ const flagUrl = computed(() => {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-select-country {
   @apply maz-relative maz-inline-flex;
 

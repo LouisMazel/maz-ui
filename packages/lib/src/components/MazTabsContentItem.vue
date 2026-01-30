@@ -34,7 +34,7 @@ const isCurrentTab = computed(() => currentTab.value - 1 === itemTabNumber.value
   </Transition>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-tabs-content-item {
   @apply maz-relative maz-top-0 maz-w-full;
 

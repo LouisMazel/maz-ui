@@ -146,7 +146,7 @@ const currentCalendarDate = computed({
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-date-picker-container {
   @apply maz-overflow-hidden maz-rounded maz-bg-surface dark:maz-border dark:maz-border-divider;
 

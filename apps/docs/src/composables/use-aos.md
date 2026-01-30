@@ -19,7 +19,7 @@ More info about the [aos plugin](./../plugins/aos.md) can be found in its docume
 
 ```vue
 <script lang="ts" setup>
-import { useAos } from 'maz-ui'
+import { useAos } from 'maz-ui/composables'
 
 const aos = useAos()
 

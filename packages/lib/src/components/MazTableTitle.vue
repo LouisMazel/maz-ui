@@ -11,7 +11,7 @@ const { size } = useInjectStrict(mazTableKey)
   </th>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-table-title {
   &.--truncate {
     @apply maz-truncate;

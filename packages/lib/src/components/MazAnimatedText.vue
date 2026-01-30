@@ -219,7 +219,7 @@ const gradientStyle = computed(() => {
   </div>
 </template>
 
-<style scoped lang="postcss">
+<style scoped>
 .m-animated-text {
   &__root {
     @apply maz-inline-flex maz-flex-wrap;

@@ -268,7 +268,7 @@ function onFocus(event: FocusEvent) {
   </label>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-checkbox {
   @apply maz-relative maz-inline-flex maz-items-center maz-gap-2 maz-align-top maz-outline-none;
 

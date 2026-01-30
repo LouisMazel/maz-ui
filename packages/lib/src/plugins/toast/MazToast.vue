@@ -339,7 +339,7 @@ onMounted(() => {
   </Transition>
 </template>
 
-<style lang="postcss">
+<style>
 .m-toast-container {
   @apply maz-fixed maz-flex maz-flex-col maz-gap-2 maz-p-4;
 
@@ -362,7 +362,7 @@ onMounted(() => {
   }
 
   &.--right {
-    @apply maz-right-0 maz-w-full tab-m:maz-w-auto;
+    @apply maz-end-0 maz-w-full tab-m:maz-w-auto;
   }
 
   &.--left {
@@ -371,7 +371,7 @@ onMounted(() => {
 }
 </style>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-toast {
   box-sizing: border-box;
 
@@ -383,7 +383,7 @@ onMounted(() => {
 
   &.--left {
     & .m-toast__close {
-      @apply -maz-right-2;
+      @apply -maz-end-2;
     }
   }
 

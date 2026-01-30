@@ -427,13 +427,13 @@ onBeforeUnmount(() => {
   </div>
 </template>
 
-<style lang="postcss">
+<style>
   html.--m-fullscreen-open {
   @apply maz-h-screen maz-overflow-hidden;
 }
 </style>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-fullscreen-img {
   @apply maz-fixed maz-inset-0 maz-z-default-backdrop maz-h-screen maz-w-screen maz-items-center maz-bg-overlay/5 maz-outline-none maz-backdrop-blur;
 
@@ -475,7 +475,7 @@ onBeforeUnmount(() => {
     }
 
     &.--close {
-      @apply maz-right-0 maz-top-0 maz-items-start maz-justify-end;
+      @apply maz-end-0 maz-top-0 maz-items-start maz-justify-end;
     }
 
     &.--previous {
@@ -483,7 +483,7 @@ onBeforeUnmount(() => {
     }
 
     &.--next {
-      @apply maz-right-0 maz-top-1/2 maz-h-screen maz--translate-y-1/2 maz-transform maz-items-center maz-justify-end;
+      @apply maz-end-0 maz-top-1/2 maz-h-screen maz--translate-y-1/2 maz-transform maz-items-center maz-justify-end;
     }
   }
 }

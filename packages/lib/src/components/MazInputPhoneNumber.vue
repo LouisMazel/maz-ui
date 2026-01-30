@@ -669,7 +669,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
 .m-input-phone-number {
   @apply maz-relative maz-inline-flex maz-items-center maz-align-top;
 

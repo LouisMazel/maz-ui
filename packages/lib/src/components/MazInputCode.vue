@@ -269,7 +269,7 @@ const borderColorState = computed(() => {
   </fieldset>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-input-code {
   @apply maz-inline-flex maz-flex-col maz-gap-[0.5em] maz-align-top;
 

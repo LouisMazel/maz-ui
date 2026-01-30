@@ -114,7 +114,7 @@ const sources = computed(() => {
   </picture>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-lazy-img-component {
   @apply maz-relative maz-inline-flex maz-align-top maz-flex-center;
 

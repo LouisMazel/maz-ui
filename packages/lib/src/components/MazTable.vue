@@ -879,7 +879,7 @@ onBeforeMount(() => {
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style scoped>
   .m-table {
   @apply maz-relative maz-max-w-full;
 
