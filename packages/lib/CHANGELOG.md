@@ -1,5 +1,28 @@
 # Change Log
 
+## v4.5.0...v4.6.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.5.0...v4.6.0)
+
+### 🚀 Features
+
+- **maz-ui:** UseFormValidator - add onError callback option to handleSubmit method ([843ee04b](https://github.com/LouisMazel/maz-ui/commit/843ee04b))
+
+  More info: [https://maz-ui.com/composables/use-form-validator#return](https://maz-ui.com/composables/use-form-validator#return)
+
+- **maz-ui:** MazAlert - new component to display messages ([0a3d4d2d](https://github.com/LouisMazel/maz-ui/commit/0a3d4d2d))
+- **maz-ui:** MazContainer - new lightweight component to wrap content, a simpler alternative to MazCard ([fe2e944a](https://github.com/LouisMazel/maz-ui/commit/fe2e944a))
+- **maz-ui:** MazInputPhoneNumber - add support of top-label ([431a4fa8](https://github.com/LouisMazel/maz-ui/commit/431a4fa8))
+
+### 💅 Refactors
+
+- **maz-ui:** MazChecklist - increase padding-block of no results container ([75a3f02b](https://github.com/LouisMazel/maz-ui/commit/75a3f02b))
+- **maz-ui:** Improve support of html direction (ltr, rtl) in comopnents ([43cb07b9](https://github.com/LouisMazel/maz-ui/commit/43cb07b9))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.4.0...v4.5.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.4.0...v4.5.0)
