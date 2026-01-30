@@ -3,26 +3,32 @@ import type { HTMLAttributes } from 'vue'
 import type { MazInputProps } from './MazInput.vue'
 import type { MazSize } from './types'
 import { MazMinus, MazPlus } from '@maz-ui/icons'
-import { debounce } from '@maz-ui/utils/helpers/debounce'
+import { throttle } from '@maz-ui/utils/helpers/throttle'
 import { computed, defineAsyncComponent } from 'vue'
+import { useInstanceUniqId } from '../composables'
 import MazInput from './MazInput.vue'
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MazInputNumberProps>(), {
-  style: undefined,
-  class: undefined,
-  modelValue: undefined,
-  disabled: false,
-  max: Number.POSITIVE_INFINITY,
-  min: Number.NEGATIVE_INFINITY,
-  step: 1,
-  size: 'md',
-  textCenter: true,
-  inputmode: 'numeric',
-})
+const {
+  id = undefined,
+  style = undefined,
+  class: className = undefined,
+  modelValue = undefined,
+  disabled = false,
+  max = Number.POSITIVE_INFINITY,
+  min = Number.NEGATIVE_INFINITY,
+  step = 1,
+  size = 'md',
+  textCenter = true,
+  inputmode = 'numeric',
+  topLabel = undefined,
+  error = false,
+  success = false,
+  warning = false,
+} = defineProps<MazInputNumberProps>()
 
 const emits = defineEmits<{
   /**
@@ -52,7 +58,16 @@ const emits = defineEmits<{
   'change': [value: Event]
 }>()
 
+const instanceId = useInstanceUniqId({
+  componentName: 'MazInput',
+  providedId: id,
+})
+
 export interface MazInputNumberProps {
+  /**
+   * The id of the input.
+   */
+  id?: string
   /**
    * The inline style object for the component.
    * @type {HTMLAttributes['style']}
@@ -66,29 +81,24 @@ export interface MazInputNumberProps {
   /**
    * The value of the component (v-model).
    * @model
-   * @type {number}
    */
   modelValue?: number
   /**
    * Whether the input number is disabled or not.
-   * @type {boolean}
    */
   disabled?: boolean
   /**
    * The maximum value allowed for the input number.
-   * @type {number}
    * @default Number.POSITIVE_INFINITY
    */
   max?: number
   /**
    * The minimum value allowed for the input number.
-   * @type {number}
    * @default Number.NEGATIVE_INFINITY
    */
   min?: number
   /**
    * The step value for incrementing or decrementing the input number.
-   * @type {number}
    * @default 1
    */
   step?: number
@@ -100,13 +110,11 @@ export interface MazInputNumberProps {
   size?: MazSize
   /**
    * Whether to hide the increment and decrement buttons or not.
-   * @type {boolean}
    * @default false
    */
   hideButtons?: boolean
   /**
    * Whether to center the text inside the input or not.
-   * @type {boolean}
    * @default true
    */
   textCenter?: boolean
@@ -117,29 +125,24 @@ export interface MazInputNumberProps {
   inputmode?: HTMLAttributes['inputmode']
   /**
    * The input will be displayed in full width
-   * @type {boolean}
    */
   block?: boolean
   /**
    * Will display the input in error state.
-   * @type {boolean}
    * @default false
    */
   error?: boolean
   /**
    * The hint text to display below the input.
-   * @type {string}
    */
   hint?: string
   /**
    * Will display the input in success state.
-   * @type {boolean}
    * @default false
    */
   success?: boolean
   /**
    * Will display the input in warning state.
-   * @type {boolean}
    * @default false
    */
   warning?: boolean
@@ -148,28 +151,33 @@ export interface MazInputNumberProps {
    * @type {MazInputProps}
    */
   inputProps?: MazInputProps
+  /**
+   * Static label displayed above the input field. Unlike the floating label, this remains fixed
+   * @example "User Information"
+   */
+  topLabel?: string
 }
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 const currentValue = computed({
-  get: () => props.modelValue,
+  get: () => modelValue,
   set: value => emitValue(value),
 })
 
 function findClosestStep(number: number) {
-  return Math.round(number / props.step) * props.step
+  return Math.round(number / step) * step
 }
 
 function checkValue(value?: number) {
   if (typeof value !== 'number')
     return
-  if (value <= props.min)
-    return props.min
-  return value >= props.max ? props.max : findClosestStep(value)
+  if (value <= min)
+    return min
+  return value >= max ? max : findClosestStep(value)
 }
 
-const emitDebounced = debounce((value?: number) => emitValue(value), 300)
+const emitThrottled = throttle((value?: number) => emitValue(value), 300)
 
 function emitValue(newValue?: number) {
   newValue = checkValue(newValue)
@@ -180,96 +188,116 @@ function emitValue(newValue?: number) {
 
 emitValue(currentValue.value)
 
-const incrementDisabled = computed(() => props.modelValue && props.modelValue >= props.max)
-const decrementDisabled = computed(() => props.modelValue && props.modelValue <= props.min)
+const incrementDisabled = computed(() => modelValue && modelValue >= max)
+const decrementDisabled = computed(() => modelValue && modelValue <= min)
 
 function increment() {
-  if (props.disabled || incrementDisabled.value)
+  if (disabled || incrementDisabled.value)
     return
 
   if (
     (currentValue.value === undefined || currentValue.value === null)
-    && Number.isFinite(props.min)
+    && Number.isFinite(min)
   ) {
-    currentValue.value = props.min
+    currentValue.value = min
     return
   }
 
-  currentValue.value = (currentValue.value ?? 0) + 1 * props.step
+  currentValue.value = (currentValue.value ?? 0) + 1 * step
 }
 function decrement() {
-  if (props.disabled || decrementDisabled.value)
+  if (disabled || decrementDisabled.value)
     return
 
   if (
     (currentValue.value === undefined || currentValue.value === null)
-    && Number.isFinite(props.min)
+    && Number.isFinite(min)
   ) {
-    currentValue.value = props.min
+    currentValue.value = min
     return
   }
 
-  currentValue.value = (currentValue.value ?? 0) - 1 * props.step
+  currentValue.value = (currentValue.value ?? 0) - 1 * step
 }
+
+const stateColor = computed(() => {
+  if (error)
+    return '!maz-text-destructive-600'
+  if (success)
+    return '!maz-text-success-600'
+  if (warning)
+    return '!maz-text-warning-600'
+  return undefined
+})
 </script>
 
 <template>
   <div
     class="m-input-number m-reset-css"
-    :class="[`m-input-number--${size}`, props.class, { '--block': block }]"
+    :class="[`m-input-number--${size}`, className, { '--block': block }]"
     :style="style"
   >
-    <MazBtn
-      v-if="!hideButtons"
-      color="transparent"
-      :size
-      class="m-input-number__button m-input-number__decrement-button"
-      :disabled="decrementDisabled || disabled"
-      @click="decrement"
-    >
-      <MazMinus class="m-input-number__button__icon" />
-    </MazBtn>
-    <MazInput
-      :model-value="currentValue"
-      type="number"
-      class="m-input-number__input"
-      :class="{ '--no-buttons': hideButtons, '--text-center': textCenter }"
-      v-bind="{ ...$attrs, ...inputProps }"
-      :disabled
-      :min
-      :max
-      :step
-      :error
-      :success
-      :warning
-      :hint
-      :inputmode
-      :size
-      block
-      @keydown.up.prevent="increment"
-      @keydown.down.prevent="decrement"
-      @focus="$emit('focus', $event)"
-      @change="$emit('change', $event)"
-      @blur="$emit('blur', $event)"
-      @click="$emit('click', $event)"
-      @update:model-value="emitDebounced($event as number | undefined)"
-    />
-    <MazBtn
-      v-if="!hideButtons"
-      color="transparent"
-      :size
-      class="m-input-number__button m-input-number__increment-button"
-      :disabled="incrementDisabled || disabled"
-      @click="increment"
-    >
-      <MazPlus class="m-input-number__button__icon" />
-    </MazBtn>
+    <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
+    <label v-if="topLabel" :for="instanceId" class="m-input-number__top-label" :class="stateColor">{{ topLabel }}</label>
+
+    <div class="m-input-number__wrapper">
+      <MazBtn
+        v-if="!hideButtons"
+        color="transparent"
+        :size
+        class="m-input-number__button m-input-number__decrement-button"
+        :disabled="decrementDisabled || disabled"
+        @click="decrement"
+      >
+        <MazMinus class="m-input-number__button__icon" />
+      </MazBtn>
+      <MazInput
+        v-bind="{ ...$attrs, ...inputProps }"
+        :id="instanceId"
+        :model-value="currentValue"
+        type="number"
+        class="m-input-number__input"
+        :class="{ '--no-buttons': hideButtons, '--text-center': textCenter }"
+        :disabled
+        :min
+        :max
+        :step
+        :error
+        :success
+        :warning
+        :hint
+        :inputmode
+        :size
+        block
+        @keydown.up.prevent="increment"
+        @keydown.down.prevent="decrement"
+        @focus="$emit('focus', $event)"
+        @change="$emit('change', $event)"
+        @blur="$emit('blur', $event)"
+        @click="$emit('click', $event)"
+        @update:model-value="emitThrottled($event as number | undefined)"
+      />
+      <MazBtn
+        v-if="!hideButtons"
+        color="transparent"
+        :size
+        class="m-input-number__button m-input-number__increment-button"
+        :disabled="incrementDisabled || disabled"
+        @click="increment"
+      >
+        <MazPlus class="m-input-number__button__icon" />
+      </MazBtn>
+    </div>
   </div>
 </template>
 
-<style>
-  .m-input-number {
-  @apply maz-inline-flex maz-align-top;
+<style scoped>
+.m-input-number {
+  @apply maz-inline-flex maz-flex-col maz-gap-2;
+
+  &__wrapper {
+    @apply maz-flex maz-items-center maz-align-top;
+  }
 
   &.--block {
     @apply maz-w-full;
@@ -306,23 +334,33 @@ function decrement() {
   }
 
   &__input {
-    &:not(.--no-buttons) .m-input-wrapper {
+    &:not(.--no-buttons) :deep(.m-input-wrapper) {
       @apply maz-z-1 !maz-rounded-none;
     }
 
-    &.--text-center input {
-      @apply maz-p-0 maz-text-center;
+    &.--text-center {
+      &:deep(input) {
+        @apply maz-p-0 maz-text-center;
+      }
+
+      &:deep(.m-input-label) {
+        @apply !maz-text-center !maz-w-full !maz-p-0 !maz-start-0;
+      }
+
+      &.--should-up:deep(.m-input-label) {
+        @apply !maz-w-[calc(125%)];
+      }
     }
 
     /* Chrome, Safari, Edge, Opera */
-    & input::-webkit-outer-spin-button,
-    & input::-webkit-inner-spin-button {
+    &:deep(input::-webkit-outer-spin-button),
+    &:deep(input::-webkit-inner-spin-button) {
       appearance: none;
       margin: 0;
     }
 
     /* Firefox */
-    & input[type='number'] {
+    &:deep(input[type='number']) {
       appearance: textfield;
     }
   }
