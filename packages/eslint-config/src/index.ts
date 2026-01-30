@@ -70,7 +70,7 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
 
   const packageJson = getPackageJson()
 
-  const vueDetected = packageJson?.dependencies?.vue || packageJson?.devDependencies?.vue
+  const vueDetected = packageJson?.dependencies?.vue || packageJson?.devDependencies?.vue || packageJson?.peerDependencies?.vue
 
   if (opts.vue || vueDetected) {
     allRules = {
