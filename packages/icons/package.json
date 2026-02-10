@@ -38,6 +38,10 @@
       "types": "./dist/types/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./*": {
+      "types": "./dist/types/components/*.d.ts",
+      "import": "./dist/components/*.js"
+    },
     "./resolvers": {
       "types": "./dist/types/resolvers.d.ts",
       "import": "./dist/resolvers.js"
@@ -45,10 +49,6 @@
     "./icon-list": {
       "types": "./dist/types/icon-list.d.ts",
       "import": "./dist/icon-list.js"
-    },
-    "./*": {
-      "types": "./dist/types/components/*.d.ts",
-      "import": "./dist/components/*.js"
     },
     "./svg/*": "./svg/*"
   },
