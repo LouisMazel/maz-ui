@@ -43,29 +43,17 @@
       "module": "./dist/components/index.js",
       "default": "./dist/components/index.js"
     },
-    "./composables": {
-      "types": "./dist/types/composables/index.d.ts",
-      "import": "./dist/composables/index.js",
-      "module": "./dist/composables/index.js",
-      "default": "./dist/composables/index.js"
-    },
-    "./plugins": {
-      "types": "./dist/types/plugins/index.d.ts",
-      "import": "./dist/plugins/index.js",
-      "module": "./dist/plugins/index.js",
-      "default": "./dist/plugins/index.js"
-    },
-    "./directives": {
-      "types": "./dist/types/directives/index.d.ts",
-      "import": "./dist/directives/index.js",
-      "module": "./dist/directives/index.js",
-      "default": "./dist/directives/index.js"
-    },
     "./components/*": {
       "types": "./dist/types/components/*.vue.d.ts",
       "import": "./dist/components/*.js",
       "module": "./dist/components/*.js",
       "default": "./dist/components/*.js"
+    },
+    "./composables": {
+      "types": "./dist/types/composables/index.d.ts",
+      "import": "./dist/composables/index.js",
+      "module": "./dist/composables/index.js",
+      "default": "./dist/composables/index.js"
     },
     "./composables/*": {
       "types": "./dist/types/composables/*.d.ts",
@@ -73,11 +61,23 @@
       "module": "./dist/composables/*.js",
       "default": "./dist/composables/*.js"
     },
+    "./plugins": {
+      "types": "./dist/types/plugins/index.d.ts",
+      "import": "./dist/plugins/index.js",
+      "module": "./dist/plugins/index.js",
+      "default": "./dist/plugins/index.js"
+    },
     "./plugins/*": {
       "types": "./dist/types/plugins/*.d.ts",
       "import": "./dist/plugins/*.js",
       "module": "./dist/plugins/*.js",
       "default": "./dist/plugins/*.js"
+    },
+    "./directives": {
+      "types": "./dist/types/directives/index.d.ts",
+      "import": "./dist/directives/index.js",
+      "module": "./dist/directives/index.js",
+      "default": "./dist/directives/index.js"
     },
     "./directives/*": {
       "types": "./dist/types/directives/*.d.ts",
@@ -97,12 +97,6 @@
       "module": "./dist/resolvers/*.js",
       "default": "./dist/resolvers/*.js"
     },
-    "./icons": {
-      "types": "./dist/types/icons/index.d.ts",
-      "import": "./dist/icons/index.js",
-      "module": "./dist/icons/index.js",
-      "default": "./dist/icons/index.js"
-    },
     "./tailwindcss": {
       "types": "./dist/types/tailwindcss/index.d.ts",
       "import": "./dist/tailwindcss/index.js",
@@ -114,18 +108,6 @@
       "import": "./dist/tailwindcss/*.js",
       "module": "./dist/tailwindcss/*.js",
       "default": "./dist/tailwindcss/*.js"
-    },
-    "./themes": {
-      "types": "./dist/types/themes.d.ts",
-      "import": "./dist/themes.js",
-      "module": "./dist/themes.js",
-      "default": "./dist/themes.js"
-    },
-    "./translations": {
-      "types": "./dist/types/translations.d.ts",
-      "import": "./dist/translations.js",
-      "module": "./dist/translations.js",
-      "default": "./dist/translations.js"
     },
     "./styles": "./dist/css/main.css",
     "./aos-styles": "./dist/css/aos.css",
