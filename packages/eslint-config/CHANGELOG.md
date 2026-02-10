@@ -1,12 +1,8 @@
 # Change Log
 
-## v4.5.0...v4.6.1
+## v4.6.0...v4.6.1
 
-[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.5.0...v4.6.1)
-
-### 💅 Refactors
-
-- **@maz-ui/eslint-config:** Improve vue detection ([fd6505a7d](https://github.com/LouisMazel/maz-ui/commit/fd6505a7d))
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.0...v4.6.1)
 
 ### 📦 Build
 
