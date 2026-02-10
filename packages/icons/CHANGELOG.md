@@ -1,5 +1,22 @@
 # Change Log
 
+## v4.5.0...v4.6.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.5.0...v4.6.1)
+
+### 💅 Refactors
+
+- **@maz-ui/icons:** Reorder package exports ([fa5f6239a](https://github.com/LouisMazel/maz-ui/commit/fa5f6239a))
+
+### 📦 Build
+
+- Update peer dependencies versions - fix #1443 ([#1443](https://github.com/LouisMazel/maz-ui/issues/1443))
+- Upgrade dependencies ([5dd041ed6](https://github.com/LouisMazel/maz-ui/commit/5dd041ed6))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.4.0...v4.5.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.4.0...v4.5.0)

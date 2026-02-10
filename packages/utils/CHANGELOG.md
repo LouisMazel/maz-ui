@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.5.0...v4.6.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.5.0...v4.6.1)
+
+### 📦 Build
+
+- Upgrade dependencies ([5dd041ed6](https://github.com/LouisMazel/maz-ui/commit/5dd041ed6))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.2.1...v4.3.0
 
 ### 🚀 Features

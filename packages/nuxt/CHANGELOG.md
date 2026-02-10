@@ -1,5 +1,22 @@
 # Change Log
 
+## v4.5.0...v4.6.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.5.0...v4.6.1)
+
+### 🚀 Features
+
+- **@maz-ui/nuxt:** Add auto import support for MazAlert and MazContainer components ([48642c66d](https://github.com/LouisMazel/maz-ui/commit/48642c66d))
+
+### 📦 Build
+
+- Upgrade dependencies ([5dd041ed6](https://github.com/LouisMazel/maz-ui/commit/5dd041ed6))
+- Upgrade to nuxt 4.3.0 ([132e5dc97](https://github.com/LouisMazel/maz-ui/commit/132e5dc97))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.5.0...v4.6.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.5.0...v4.6.0)

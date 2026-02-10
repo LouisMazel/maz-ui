@@ -1,5 +1,38 @@
 # Change Log
 
+## v4.5.0...v4.6.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.5.0...v4.6.1)
+
+### 🚀 Features
+
+- **maz-ui:** UseFormValidator - add onError callback option to handleSubmit method ([843ee04be](https://github.com/LouisMazel/maz-ui/commit/843ee04be))
+
+  More info: [https://maz-ui.com/composables/use-form-validator#return](https://maz-ui.com/composables/use-form-validator#return)
+
+- **maz-ui:** MazAlert - new component to display messages ([0a3d4d2d0](https://github.com/LouisMazel/maz-ui/commit/0a3d4d2d0))
+- **maz-ui:** MazContainer - new lightweight component to wrap content, a simpler alternative to MazCard ([fe2e944a3](https://github.com/LouisMazel/maz-ui/commit/fe2e944a3))
+- **@maz-ui/nuxt:** Add auto import support for MazAlert and MazContainer components ([48642c66d](https://github.com/LouisMazel/maz-ui/commit/48642c66d))
+- **maz-ui:** MazInputPhoneNumber - add support of top-label ([431a4fa83](https://github.com/LouisMazel/maz-ui/commit/431a4fa83))
+
+### 💅 Refactors
+
+- **maz-ui:** MazChecklist - increase padding-block of no results container ([75a3f02b3](https://github.com/LouisMazel/maz-ui/commit/75a3f02b3))
+- **@maz-ui/eslint-config:** Improve vue detection ([fd6505a7d](https://github.com/LouisMazel/maz-ui/commit/fd6505a7d))
+- **maz-ui:** Improve support of html direction (ltr, rtl) in comopnents ([43cb07b97](https://github.com/LouisMazel/maz-ui/commit/43cb07b97))
+- **maz-ui:** Clean and reorder package exports ([9f133c190](https://github.com/LouisMazel/maz-ui/commit/9f133c190))
+- **@maz-ui/icons:** Reorder package exports ([fa5f6239a](https://github.com/LouisMazel/maz-ui/commit/fa5f6239a))
+
+### 📦 Build
+
+- Update peer dependencies versions - fix #1443 ([#1443](https://github.com/LouisMazel/maz-ui/issues/1443))
+- Upgrade dependencies ([5dd041ed6](https://github.com/LouisMazel/maz-ui/commit/5dd041ed6))
+- Upgrade to nuxt 4.3.0 ([132e5dc97](https://github.com/LouisMazel/maz-ui/commit/132e5dc97))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.5.0...v4.6.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.5.0...v4.6.0)
