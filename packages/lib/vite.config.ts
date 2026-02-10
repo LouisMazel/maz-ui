@@ -92,7 +92,12 @@ export default defineConfig(({ mode }) => {
         cssFileName: '[name].[hash].css',
       },
       rollupOptions: {
-        external: getExternalDependencies(pkg),
+        external: (id) => {
+          // Bundle dayjs plugins to avoid CJS interop issues
+          if (id.startsWith('dayjs/plugin/'))
+            return false
+          return getExternalDependencies(pkg)(id)
+        },
         treeshake: {
           moduleSideEffects: false,
           preset: 'smallest',
