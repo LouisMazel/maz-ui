@@ -1,5 +1,19 @@
 # Change Log
 
+## v4.6.1...v4.6.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.1...v4.6.2)
+
+### 🩹 Fixes
+
+- **maz-ui:** Bundle dayjs plugins to fix CJS interop issues in SSR ([baa4f52f](https://github.com/LouisMazel/maz-ui/commit/baa4f52f))
+
+  Closes #1447
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.6.0...v4.6.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.0...v4.6.1)
