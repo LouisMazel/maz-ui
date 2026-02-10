@@ -9,12 +9,12 @@ export default defineConfig({
     docs: { title: '📖 Documentation', semver: 'patch' },
     types: { title: '🌊 Types', semver: 'patch' },
     style: { title: '💄 Styles', semver: 'patch' },
+    build: { title: '📦 Build', semver: 'patch' },
     test: { title: '🧪 Tests' },
     clean: { title: '🧹 Clean' },
     chore: false,
     examples: false,
     ci: false,
-    build: false,
   },
 
   templates: {
