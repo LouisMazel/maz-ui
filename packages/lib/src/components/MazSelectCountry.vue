@@ -389,6 +389,8 @@ const flagUrl = computed(() => {
   }
 
   &__select {
+    @apply maz-w-full;
+
     &:deep(.m-input-label) {
       @apply !maz-p-0;
     }

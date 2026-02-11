@@ -192,8 +192,6 @@ const formAccessibilityAttrs = computed(() => {
 
 const extracted = extractValidationFromSchema(schema)
 
-console.log(extracted.schema)
-
 const {
   handleSubmit,
   fieldsStates,
@@ -288,7 +286,6 @@ const submitForm = handleSubmit((payload) => {
   } satisfies FormSubmitEventPayload<T>)
 }, undefined, {
   onError: (payload) => {
-    console.log(payload, errors.value)
     emit('submit-error', {
       data: payload as unknown as T,
       errors: errorMessages.value,

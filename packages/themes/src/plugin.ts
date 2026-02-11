@@ -1,4 +1,4 @@
-import type { App, Plugin, Ref } from 'vue'
+import type { Plugin, Ref } from 'vue'
 import type { ThemeConfig, ThemeState } from './types'
 import { injectThemeState } from './utils'
 import { setupTheme } from './utils/setup-theme'
@@ -35,7 +35,7 @@ export interface MazUiThemeOptions extends Omit<ThemeConfig, 'prefix'> {
  * ```
  */
 export const MazUiTheme: Plugin<[MazUiThemeOptions]> = {
-  install(app: App, options) {
+  install(app, options) {
     const { themeState } = setupTheme(options)
     injectThemeState({ app, themeState })
   },
@@ -48,11 +48,15 @@ declare module 'vue' {
      * @description You should install the plugin to use this property
      * @example
      * ```ts
-     * import { MazUi } from 'maz-ui/plugins/maz-ui'
+     * import { MazUiTheme } from '@maz-ui/themes/plugin'
      * import { createApp } from 'vue'
      *
      * const app = createApp(App)
-     * app.use(MazUi)
+     * app.use(MazUiTheme, {
+     *   preset: mazUi,
+     *   strategy: 'hybrid',
+     *   darkMode: 'class',
+     * })
      *
      * const { setColorMode, toggleDarkMode } = useTheme()
      * setColorMode('dark')
