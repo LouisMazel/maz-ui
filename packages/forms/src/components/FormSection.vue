@@ -6,7 +6,7 @@ import FormField from './FormField.vue'
 
 export interface FieldSlotProps<T extends Record<string, unknown>> {
   field: FormFieldType<T, keyof T, FormComponentName>
-  modelValue: T[keyof T]
+  value: T[keyof T]
   model: T
   readonly: boolean
   disabled: boolean
@@ -77,7 +77,7 @@ function updateFieldValue(fieldName: keyof T, value?: T[keyof T]) {
 function getFieldSlotProps(field: FormFieldType<T, keyof T, FormComponentName>): FieldSlotProps<T> {
   return {
     field,
-    modelValue: model.value[field.name],
+    value: model.value[field.name],
     model: model.value,
     readonly,
     disabled,

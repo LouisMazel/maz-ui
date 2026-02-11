@@ -203,6 +203,7 @@ watch(
       :disabled="disabled"
       :error="hasError"
       v-bind="{ ...fieldProps, ...fieldAttrs, ...accessibilityAttrs }"
+      class="maz-form-field__input"
       @update:model-value="handleUpdate"
       @focus="handleFocus"
       @blur="handleBlur"
@@ -236,10 +237,16 @@ watch(
 <style scoped>
 .maz-form-field {
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .maz-form-field__error {
   margin-top: 0.25rem;
+}
+
+:deep(.maz-form-field__input) {
+  flex: 1;
 }
 
 .maz-form-field__error-message {

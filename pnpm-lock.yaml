@@ -195,9 +195,15 @@ importers:
 
   apps/nuxt-app:
     dependencies:
+      '@maz-ui/forms':
+        specifier: workspace:*
+        version: link:../../packages/forms
       '@maz-ui/nuxt':
         specifier: workspace:*
         version: link:../../packages/nuxt
+      valibot:
+        specifier: ^1.2.0
+        version: 1.2.0(typescript@5.9.3)
     devDependencies:
       '@nuxt/devtools':
         specifier: ^3.2.1
