@@ -2,7 +2,7 @@
 import type { Dayjs } from 'dayjs'
 import type { PropType } from 'vue'
 import type { MazColor } from '../types'
-import { MazChevronLeft, MazXMark } from '@maz-ui/icons'
+import { MazChevronLeft, MazXMark } from '@maz-ui/icons/static'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 import dayjs from 'dayjs'
 
