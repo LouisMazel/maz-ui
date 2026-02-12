@@ -212,11 +212,11 @@ ${exports}
 function generateIconsComponentsEntry(files: { file: string, name: string, path: string }[]) {
   try {
     const reservedNames = getReservedNames()
-    const exports = files.map(({ name }) => {
+    const lazyExports = files.map(({ name }) => {
       const iconName = toPascalCase(name)
       const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
       const componentName = `Maz${finalName}`
-      return `export { ${componentName} } from './static/${componentName}'`
+      return `export { ${componentName} as Lazy${componentName} } from './lazy/${componentName}'`
     }).sort((a, b) => a.localeCompare(b, undefined, { numeric: true })).join('\n')
 
     const content = `/// <reference types="vite-svg-loader" />
@@ -229,7 +229,9 @@ import type { Component, ComponentPublicInstance, FunctionalComponent } from 'vu
 
 export type IconComponent = FunctionalComponent | ComponentPublicInstance | Component
 
-${exports}
+export * from './static'
+
+${lazyExports}
 `
 
     writeFileSync(outputIndex, content)
