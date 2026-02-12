@@ -30,7 +30,7 @@
     "@clack/prompts": "^0.11.0",
     "@maz-ui/node": "workspace:*",
     "@maz-ui/utils": "workspace:*",
-    "commander": "^14.0.2",
+    "commander": "^14.0.3",
     "figlet": "^1.10.0",
     "vue-docgen-cli": "^4.79.0"
   },
