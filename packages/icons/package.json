@@ -42,6 +42,14 @@
       "types": "./dist/types/static/*.d.ts",
       "import": "./dist/static/*.js"
     },
+    "./static": {
+      "types": "./dist/types/static/index.d.ts",
+      "import": "./dist/static/index.js"
+    },
+    "./static/*": {
+      "types": "./dist/types/static/*.d.ts",
+      "import": "./dist/static/*.js"
+    },
     "./lazy": {
       "types": "./dist/types/lazy/index.d.ts",
       "import": "./dist/lazy/index.js"
