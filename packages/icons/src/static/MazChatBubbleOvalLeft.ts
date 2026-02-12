@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazChatBubbleOvalLeft } from '../../svg/chat-bubble-oval-left.svg?component'
+import _component from '../../svg/chat-bubble-oval-left.svg?component'
+
+export const MazChatBubbleOvalLeft = _component

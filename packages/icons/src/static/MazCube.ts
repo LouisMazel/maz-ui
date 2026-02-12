@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazCube } from '../../svg/cube.svg?component'
+import _component from '../../svg/cube.svg?component'
+
+export const MazCube = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazTicket } from '../../svg/ticket.svg?component'
+import _component from '../../svg/ticket.svg?component'
+
+export const MazTicket = _component

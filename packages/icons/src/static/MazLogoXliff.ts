@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLogoXliff } from '../../logos/xliff.svg?component'
+import _component from '../../logos/xliff.svg?component'
+
+export const MazLogoXliff = _component

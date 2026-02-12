@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazShoppingBag } from '../../svg/shopping-bag.svg?component'
+import _component from '../../svg/shopping-bag.svg?component'
+
+export const MazShoppingBag = _component

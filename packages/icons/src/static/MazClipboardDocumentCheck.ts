@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazClipboardDocumentCheck } from '../../svg/clipboard-document-check.svg?component'
+import _component from '../../svg/clipboard-document-check.svg?component'
+
+export const MazClipboardDocumentCheck = _component

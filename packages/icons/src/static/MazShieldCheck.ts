@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazShieldCheck } from '../../svg/shield-check.svg?component'
+import _component from '../../svg/shield-check.svg?component'
+
+export const MazShieldCheck = _component

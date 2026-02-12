@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazQuote } from '../../svg/quote.svg?component'
+import _component from '../../svg/quote.svg?component'
+
+export const MazQuote = _component

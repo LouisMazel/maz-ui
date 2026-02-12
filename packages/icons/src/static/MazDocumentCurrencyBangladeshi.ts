@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazDocumentCurrencyBangladeshi } from '../../svg/document-currency-bangladeshi.svg?component'
+import _component from '../../svg/document-currency-bangladeshi.svg?component'
+
+export const MazDocumentCurrencyBangladeshi = _component

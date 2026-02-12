@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazTag } from '../../svg/tag.svg?component'
+import _component from '../../svg/tag.svg?component'
+
+export const MazTag = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazMegaphone } from '../../svg/megaphone.svg?component'
+import _component from '../../svg/megaphone.svg?component'
+
+export const MazMegaphone = _component

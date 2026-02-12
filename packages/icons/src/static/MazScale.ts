@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazScale } from '../../svg/scale.svg?component'
+import _component from '../../svg/scale.svg?component'
+
+export const MazScale = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLogoInstagram } from '../../logos/instagram.svg?component'
+import _component from '../../logos/instagram.svg?component'
+
+export const MazLogoInstagram = _component

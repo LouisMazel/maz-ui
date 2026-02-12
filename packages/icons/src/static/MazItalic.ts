@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazItalic } from '../../svg/italic.svg?component'
+import _component from '../../svg/italic.svg?component'
+
+export const MazItalic = _component

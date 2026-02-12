@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLogoXml } from '../../logos/xml.svg?component'
+import _component from '../../logos/xml.svg?component'
+
+export const MazLogoXml = _component

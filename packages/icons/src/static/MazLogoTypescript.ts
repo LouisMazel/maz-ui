@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLogoTypescript } from '../../logos/typescript.svg?component'
+import _component from '../../logos/typescript.svg?component'
+
+export const MazLogoTypescript = _component

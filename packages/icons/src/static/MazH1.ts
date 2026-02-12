@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazH1 } from '../../svg/h1.svg?component'
+import _component from '../../svg/h1.svg?component'
+
+export const MazH1 = _component

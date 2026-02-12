@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazAtSymbol } from '../../svg/at-symbol.svg?component'
+import _component from '../../svg/at-symbol.svg?component'
+
+export const MazAtSymbol = _component

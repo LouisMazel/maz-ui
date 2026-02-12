@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazReceiptRefund } from '../../svg/receipt-refund.svg?component'
+import _component from '../../svg/receipt-refund.svg?component'
+
+export const MazReceiptRefund = _component

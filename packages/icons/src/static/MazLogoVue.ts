@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLogoVue } from '../../logos/vue.svg?component'
+import _component from '../../logos/vue.svg?component'
+
+export const MazLogoVue = _component

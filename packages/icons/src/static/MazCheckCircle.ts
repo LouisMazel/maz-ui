@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazCheckCircle } from '../../svg/check-circle.svg?component'
+import _component from '../../svg/check-circle.svg?component'
+
+export const MazCheckCircle = _component

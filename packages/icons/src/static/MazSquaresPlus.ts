@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazSquaresPlus } from '../../svg/squares-plus.svg?component'
+import _component from '../../svg/squares-plus.svg?component'
+
+export const MazSquaresPlus = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazFaceSmile } from '../../svg/face-smile.svg?component'
+import _component from '../../svg/face-smile.svg?component'
+
+export const MazFaceSmile = _component

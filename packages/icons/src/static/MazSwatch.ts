@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazSwatch } from '../../svg/swatch.svg?component'
+import _component from '../../svg/swatch.svg?component'
+
+export const MazSwatch = _component

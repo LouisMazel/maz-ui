@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazRectangleGroup } from '../../svg/rectangle-group.svg?component'
+import _component from '../../svg/rectangle-group.svg?component'
+
+export const MazRectangleGroup = _component

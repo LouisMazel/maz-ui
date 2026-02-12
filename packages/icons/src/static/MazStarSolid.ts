@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazStarSolid } from '../../svg/star-solid.svg?component'
+import _component from '../../svg/star-solid.svg?component'
+
+export const MazStarSolid = _component

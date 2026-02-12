@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazArchiveBoxXMark } from '../../svg/archive-box-x-mark.svg?component'
+import _component from '../../svg/archive-box-x-mark.svg?component'
+
+export const MazArchiveBoxXMark = _component

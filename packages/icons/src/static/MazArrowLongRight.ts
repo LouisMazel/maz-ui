@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazArrowLongRight } from '../../svg/arrow-long-right.svg?component'
+import _component from '../../svg/arrow-long-right.svg?component'
+
+export const MazArrowLongRight = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazCheck } from '../../svg/check.svg?component'
+import _component from '../../svg/check.svg?component'
+
+export const MazCheck = _component

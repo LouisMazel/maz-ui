@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazPower } from '../../svg/power.svg?component'
+import _component from '../../svg/power.svg?component'
+
+export const MazPower = _component

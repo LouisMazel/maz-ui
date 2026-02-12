@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazBellSnooze } from '../../svg/bell-snooze.svg?component'
+import _component from '../../svg/bell-snooze.svg?component'
+
+export const MazBellSnooze = _component

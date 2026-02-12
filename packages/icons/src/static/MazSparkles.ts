@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazSparkles } from '../../svg/sparkles.svg?component'
+import _component from '../../svg/sparkles.svg?component'
+
+export const MazSparkles = _component

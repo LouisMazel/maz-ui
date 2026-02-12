@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazNoImage } from '../../svg/no-image.svg?component'
+import _component from '../../svg/no-image.svg?component'
+
+export const MazNoImage = _component

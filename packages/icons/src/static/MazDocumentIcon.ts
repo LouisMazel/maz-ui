@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazDocumentIcon } from '../../svg/document.svg?component'
+import _component from '../../svg/document.svg?component'
+
+export const MazDocumentIcon = _component

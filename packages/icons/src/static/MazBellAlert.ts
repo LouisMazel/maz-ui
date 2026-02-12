@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazBellAlert } from '../../svg/bell-alert.svg?component'
+import _component from '../../svg/bell-alert.svg?component'
+
+export const MazBellAlert = _component

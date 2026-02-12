@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazMicrophone } from '../../svg/microphone.svg?component'
+import _component from '../../svg/microphone.svg?component'
+
+export const MazMicrophone = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazPlus } from '../../svg/plus.svg?component'
+import _component from '../../svg/plus.svg?component'
+
+export const MazPlus = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazArrowTopRightOnSquare } from '../../svg/arrow-top-right-on-square.svg?component'
+import _component from '../../svg/arrow-top-right-on-square.svg?component'
+
+export const MazArrowTopRightOnSquare = _component

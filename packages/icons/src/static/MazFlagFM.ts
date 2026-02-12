@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazFlagFM } from '../../flags/3x2/FM.svg?component'
+import _component from '../../flags/3x2/FM.svg?component'
+
+export const MazFlagFM = _component

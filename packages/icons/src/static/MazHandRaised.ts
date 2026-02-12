@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazHandRaised } from '../../svg/hand-raised.svg?component'
+import _component from '../../svg/hand-raised.svg?component'
+
+export const MazHandRaised = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazGithub } from '../../svg/github.svg?component'
+import _component from '../../svg/github.svg?component'
+
+export const MazGithub = _component

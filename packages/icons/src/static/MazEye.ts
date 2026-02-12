@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazEye } from '../../svg/eye.svg?component'
+import _component from '../../svg/eye.svg?component'
+
+export const MazEye = _component

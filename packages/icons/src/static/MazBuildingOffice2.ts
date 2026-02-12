@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazBuildingOffice2 } from '../../svg/building-office-2.svg?component'
+import _component from '../../svg/building-office-2.svg?component'
+
+export const MazBuildingOffice2 = _component

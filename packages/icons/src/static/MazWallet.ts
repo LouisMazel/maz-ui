@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazWallet } from '../../svg/wallet.svg?component'
+import _component from '../../svg/wallet.svg?component'
+
+export const MazWallet = _component

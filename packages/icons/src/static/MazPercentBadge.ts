@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazPercentBadge } from '../../svg/percent-badge.svg?component'
+import _component from '../../svg/percent-badge.svg?component'
+
+export const MazPercentBadge = _component

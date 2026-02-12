@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazFlagSquareHN } from '../../flags/1x1/HN.svg?component'
+import _component from '../../flags/1x1/HN.svg?component'
+
+export const MazFlagSquareHN = _component

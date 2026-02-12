@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazArchiveBoxArrowDown } from '../../svg/archive-box-arrow-down.svg?component'
+import _component from '../../svg/archive-box-arrow-down.svg?component'
+
+export const MazArchiveBoxArrowDown = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazBackward } from '../../svg/backward.svg?component'
+import _component from '../../svg/backward.svg?component'
+
+export const MazBackward = _component

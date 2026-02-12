@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazNoSymbol } from '../../svg/no-symbol.svg?component'
+import _component from '../../svg/no-symbol.svg?component'
+
+export const MazNoSymbol = _component

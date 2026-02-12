@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazViewfinderCircle } from '../../svg/viewfinder-circle.svg?component'
+import _component from '../../svg/viewfinder-circle.svg?component'
+
+export const MazViewfinderCircle = _component

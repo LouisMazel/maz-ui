@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazDocumentCheck } from '../../svg/document-check.svg?component'
+import _component from '../../svg/document-check.svg?component'
+
+export const MazDocumentCheck = _component

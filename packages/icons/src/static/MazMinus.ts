@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazMinus } from '../../svg/minus.svg?component'
+import _component from '../../svg/minus.svg?component'
+
+export const MazMinus = _component

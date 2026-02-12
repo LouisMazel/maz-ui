@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazHome } from '../../svg/home.svg?component'
+import _component from '../../svg/home.svg?component'
+
+export const MazHome = _component

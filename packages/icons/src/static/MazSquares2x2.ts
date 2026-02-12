@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazSquares2x2 } from '../../svg/squares-2x2.svg?component'
+import _component from '../../svg/squares-2x2.svg?component'
+
+export const MazSquares2x2 = _component

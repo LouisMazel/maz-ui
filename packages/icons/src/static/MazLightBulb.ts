@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLightBulb } from '../../svg/light-bulb.svg?component'
+import _component from '../../svg/light-bulb.svg?component'
+
+export const MazLightBulb = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazQueueList } from '../../svg/queue-list.svg?component'
+import _component from '../../svg/queue-list.svg?component'
+
+export const MazQueueList = _component

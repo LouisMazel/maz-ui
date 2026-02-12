@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazCpuChip } from '../../svg/cpu-chip.svg?component'
+import _component from '../../svg/cpu-chip.svg?component'
+
+export const MazCpuChip = _component

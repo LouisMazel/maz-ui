@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLockClosed } from '../../svg/lock-closed.svg?component'
+import _component from '../../svg/lock-closed.svg?component'
+
+export const MazLockClosed = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazFolderOpen } from '../../svg/folder-open.svg?component'
+import _component from '../../svg/folder-open.svg?component'
+
+export const MazFolderOpen = _component

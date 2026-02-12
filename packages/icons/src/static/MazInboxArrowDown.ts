@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazInboxArrowDown } from '../../svg/inbox-arrow-down.svg?component'
+import _component from '../../svg/inbox-arrow-down.svg?component'
+
+export const MazInboxArrowDown = _component

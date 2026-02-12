@@ -93,7 +93,9 @@ function generateStaticIconFiles(files: { file: string, name: string, path: stri
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as ${componentName} } from '${relativePath}/${file}?component'
+import _component from '${relativePath}/${file}?component'
+
+export const ${componentName} = _component
 `
 
       const outputPath = resolve(staticDir, `${componentName}.ts`)

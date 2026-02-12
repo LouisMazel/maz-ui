@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLogoProperties } from '../../logos/properties.svg?component'
+import _component from '../../logos/properties.svg?component'
+
+export const MazLogoProperties = _component

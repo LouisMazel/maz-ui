@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazEnvelopeOpen } from '../../svg/envelope-open.svg?component'
+import _component from '../../svg/envelope-open.svg?component'
+
+export const MazEnvelopeOpen = _component

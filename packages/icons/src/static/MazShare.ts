@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazShare } from '../../svg/share.svg?component'
+import _component from '../../svg/share.svg?component'
+
+export const MazShare = _component

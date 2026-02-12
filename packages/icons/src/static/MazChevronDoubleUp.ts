@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazChevronDoubleUp } from '../../svg/chevron-double-up.svg?component'
+import _component from '../../svg/chevron-double-up.svg?component'
+
+export const MazChevronDoubleUp = _component

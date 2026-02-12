@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazUser } from '../../svg/user.svg?component'
+import _component from '../../svg/user.svg?component'
+
+export const MazUser = _component

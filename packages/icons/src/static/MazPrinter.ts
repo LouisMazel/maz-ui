@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazPrinter } from '../../svg/printer.svg?component'
+import _component from '../../svg/printer.svg?component'
+
+export const MazPrinter = _component

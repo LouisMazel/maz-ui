@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazChartBarSquare } from '../../svg/chart-bar-square.svg?component'
+import _component from '../../svg/chart-bar-square.svg?component'
+
+export const MazChartBarSquare = _component

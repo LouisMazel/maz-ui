@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazFunnel } from '../../svg/funnel.svg?component'
+import _component from '../../svg/funnel.svg?component'
+
+export const MazFunnel = _component

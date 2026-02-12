@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazArrowPath } from '../../svg/arrow-path.svg?component'
+import _component from '../../svg/arrow-path.svg?component'
+
+export const MazArrowPath = _component

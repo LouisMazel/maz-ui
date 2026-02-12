@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLogoLinkedin } from '../../logos/linkedin.svg?component'
+import _component from '../../logos/linkedin.svg?component'
+
+export const MazLogoLinkedin = _component

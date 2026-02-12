@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazBanknotes } from '../../svg/banknotes.svg?component'
+import _component from '../../svg/banknotes.svg?component'
+
+export const MazBanknotes = _component

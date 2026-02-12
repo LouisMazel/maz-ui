@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazVideoCamera } from '../../svg/video-camera.svg?component'
+import _component from '../../svg/video-camera.svg?component'
+
+export const MazVideoCamera = _component

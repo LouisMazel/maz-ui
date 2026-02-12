@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazInbox } from '../../svg/inbox.svg?component'
+import _component from '../../svg/inbox.svg?component'
+
+export const MazInbox = _component

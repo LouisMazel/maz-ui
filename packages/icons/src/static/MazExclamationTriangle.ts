@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazExclamationTriangle } from '../../svg/exclamation-triangle.svg?component'
+import _component from '../../svg/exclamation-triangle.svg?component'
+
+export const MazExclamationTriangle = _component

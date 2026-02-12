@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazChevronRight } from '../../svg/chevron-right.svg?component'
+import _component from '../../svg/chevron-right.svg?component'
+
+export const MazChevronRight = _component
