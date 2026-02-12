@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazColor, MazSize } from './types'
-import { MazChevronDoubleLeft, MazChevronLeft, MazEllipsisHorizontal } from '@maz-ui/icons'
+import { MazEllipsisHorizontal } from '@maz-ui/icons/lazy'
+import { MazChevronDoubleLeft, MazChevronLeft } from '@maz-ui/icons/static'
 import { useTranslations } from '@maz-ui/translations'
 import { computed } from 'vue'
 import MazBtn from './MazBtn.vue'
