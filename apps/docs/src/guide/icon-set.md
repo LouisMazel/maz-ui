@@ -1,12 +1,13 @@
 # Icon Set (840+ icons)
 
-The library includes **840+ carefully**
+The library includes **840+ carefully crafted icons**
 
 ## Icon Naming Convention
 
 All icons follow a consistent naming pattern:
 
-- Vue components: `Maz` + PascalCase (e.g., `MazUserCircle`)
+- Static Vue components: `Maz` + PascalCase (e.g., `MazUserCircle`)
+- Lazy Vue components: `LazyMaz` + PascalCase (e.g., `LazyMazUserCircle`)
 - SVG files: kebab-case (e.g., `user-circle.svg`)
 
 ## Find your icon
@@ -14,7 +15,7 @@ All icons follow a consistent naming pattern:
 <ComponentDemo>
   <div class="maz-flex maz-flex-col maz-gap-4">
     <div class="maz-flex maz-gap-2 maz-items-start">
-      <MazInput v-model="search" label="Search icon" @update:model-value="search = $event.trim()" :left-icon="MazIcons.MazMagnifyingGlass" class="flex-1" :assistive-text="`${filteredIcons.length} icons found`" />
+      <MazInput v-model="search" label="Search icon" @update:model-value="search = $event.trim()" :left-icon="SearchIcon" class="flex-1" :assistive-text="`${filteredIcons.length} icons found`" />
     </div>
     <MazTabs v-model="currentTab">
       <MazTabsBar :items="tabs" />
@@ -24,8 +25,9 @@ All icons follow a consistent naming pattern:
         <component :is="icon.component" class="maz-size-8" />
         <span class="maz-text-xs maz-text-muted maz-truncate">{{ icon.name }}</span>
         <div class="maz-flex maz-flex-row maz-gap-2 maz-w-full">
-          <MazBtn v-tooltip="{ text: 'Copy Name', panelClass: 'maz-text-xs' }" class="maz-flex-1" size="xs" color="background" outlined @click="copyIcon(icon.name)" :icon="MazClipboardDocument" />
-          <MazBtn v-tooltip="{ text: 'Copy Import', panelClass: 'maz-text-xs' }" class="maz-flex-1" size="xs" color="background" outlined @click="copyIconImport(icon.name)" :icon="MazClipboardDocumentList" />
+          <MazBtn v-tooltip="{ text: 'Copy Name', panelClass: 'maz-text-xs' }" class="maz-flex-1" size="xs" color="background" outlined @click="copyIcon(icon.name)" :icon="ClipboardDocumentIcon" />
+          <MazBtn v-tooltip="{ text: 'Copy Static Import', panelClass: 'maz-text-xs' }" class="maz-flex-1" size="xs" color="background" outlined @click="copyStaticImport(icon.name)" :icon="ClipboardDocumentListIcon" />
+          <MazBtn v-tooltip="{ text: 'Copy Lazy Import', panelClass: 'maz-text-xs' }" class="maz-flex-1" size="xs" color="info" outlined @click="copyLazyImport(icon.name)" :icon="ClipboardDocumentListIcon" />
         </div>
       </div>
     </div>
@@ -33,25 +35,39 @@ All icons follow a consistent naming pattern:
 </ComponentDemo>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed, ref, shallowRef } from 'vue'
 import { useToast } from 'maz-ui/composables/useToast'
 import { vTooltip } from 'maz-ui/directives/vTooltip'
-import { MazClipboardDocument, MazClipboardDocumentList } from '@maz-ui/icons'
 
-const MazIcons = await import('@maz-ui/icons')
+const LazyIcons = shallowRef()
+const SearchIcon = shallowRef()
+const ClipboardDocumentIcon = shallowRef()
+const ClipboardDocumentListIcon = shallowRef()
 
-const icons = Object.entries(MazIcons).sort(([nameA, _], [nameB, __]) => nameA.localeCompare(nameB)).map(([name, component]) => ({
-  name,
-  component,
-}))
+const lazyIconModule = await import('@maz-ui/icons/lazy')
+LazyIcons.value = lazyIconModule
+SearchIcon.value = lazyIconModule.MazMagnifyingGlass
+ClipboardDocumentIcon.value = lazyIconModule.MazClipboardDocument
+ClipboardDocumentListIcon.value = lazyIconModule.MazClipboardDocumentList
+
+const icons = Object.entries(LazyIcons.value)
+  .filter(([name]) => name.startsWith('Maz'))
+  .sort(([nameA], [nameB]) => nameA.localeCompare(nameB))
+  .map(([name, component]) => ({ name, component }))
 
 const { commonIcons, flags, flagsSquare, logos, all } = icons.reduce((acc, iconComponent) => {
   if (iconComponent.name.startsWith('MazFlagSquare')) {
     acc.flagsSquare.push(iconComponent)
   }
-  else if (iconComponent.name.startsWith('MazFlag') && iconComponent.name.length >= 8) acc.flags.push(iconComponent)
-  else if (iconComponent.name.startsWith('MazLogo') && iconComponent.name.length >= 8) acc.logos.push(iconComponent)
-  else if (iconComponent.name.startsWith('Maz')) acc.commonIcons.push(iconComponent)
+  else if (iconComponent.name.startsWith('MazFlag') && iconComponent.name.length >= 8) {
+    acc.flags.push(iconComponent)
+  }
+  else if (iconComponent.name.startsWith('MazLogo') && iconComponent.name.length >= 8) {
+    acc.logos.push(iconComponent)
+  }
+  else if (iconComponent.name.startsWith('Maz')) {
+    acc.commonIcons.push(iconComponent)
+  }
 
   acc.all.push(iconComponent)
 
@@ -81,7 +97,8 @@ const search = ref()
 const filteredIcons = computed(() => {
   const _currentTab = currentTab.value
 
-  const baseIcons = _currentTab === 1 ? all : _currentTab === 2 ? commonIcons : _currentTab === 3 ? logos : _currentTab === 4 ? flags : _currentTab === 5 ? flagsSquare : all
+  const tabMap = { 1: all, 2: commonIcons, 3: logos, 4: flags, 5: flagsSquare }
+  const baseIcons = tabMap[_currentTab] || all
 
   const _search = search.value?.toLowerCase().replace(/\s/g, '')
   if (!_search) return baseIcons
@@ -91,11 +108,16 @@ const filteredIcons = computed(() => {
 
 const copyIcon = (icon) => {
   navigator.clipboard.writeText(icon)
-  success('Icon copied to clipboard')
+  success('Icon name copied to clipboard')
 }
 
-const copyIconImport = (icon) => {
+const copyStaticImport = (icon) => {
   navigator.clipboard.writeText(`import { ${icon} } from '@maz-ui/icons'`)
-  success('Icon import copied to clipboard')
+  success('Static import copied to clipboard')
+}
+
+const copyLazyImport = (icon) => {
+  navigator.clipboard.writeText(`import { Lazy${icon} } from '@maz-ui/icons'`)
+  success('Lazy import copied to clipboard')
 }
 </script>
