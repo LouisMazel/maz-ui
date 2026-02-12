@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
-import { MazPencil } from '@maz-ui/icons'
+import { MazPencil } from '@maz-ui/icons/lazy'
 import { computed, defineAsyncComponent } from 'vue'
 
 defineOptions({
