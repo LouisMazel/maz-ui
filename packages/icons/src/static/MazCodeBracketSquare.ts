@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazCodeBracketSquare } from '../../svg/code-bracket-square.svg?component'
+import _component from '../../svg/code-bracket-square.svg?component'
+
+export const MazCodeBracketSquare = _component

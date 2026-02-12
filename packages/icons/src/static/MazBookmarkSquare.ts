@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazBookmarkSquare } from '../../svg/bookmark-square.svg?component'
+import _component from '../../svg/bookmark-square.svg?component'
+
+export const MazBookmarkSquare = _component

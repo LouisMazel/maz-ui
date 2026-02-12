@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazChartPie } from '../../svg/chart-pie.svg?component'
+import _component from '../../svg/chart-pie.svg?component'
+
+export const MazChartPie = _component

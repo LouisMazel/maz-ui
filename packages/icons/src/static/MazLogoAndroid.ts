@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLogoAndroid } from '../../logos/android.svg?component'
+import _component from '../../logos/android.svg?component'
+
+export const MazLogoAndroid = _component

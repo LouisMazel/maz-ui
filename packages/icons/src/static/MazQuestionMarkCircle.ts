@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazQuestionMarkCircle } from '../../svg/question-mark-circle.svg?component'
+import _component from '../../svg/question-mark-circle.svg?component'
+
+export const MazQuestionMarkCircle = _component

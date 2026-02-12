@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazFlagSX } from '../../flags/3x2/SX.svg?component'
+import _component from '../../flags/3x2/SX.svg?component'
+
+export const MazFlagSX = _component

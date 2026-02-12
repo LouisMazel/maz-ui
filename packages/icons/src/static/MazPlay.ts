@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazPlay } from '../../svg/play.svg?component'
+import _component from '../../svg/play.svg?component'
+
+export const MazPlay = _component

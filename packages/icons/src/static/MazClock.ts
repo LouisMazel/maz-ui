@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazClock } from '../../svg/clock.svg?component'
+import _component from '../../svg/clock.svg?component'
+
+export const MazClock = _component

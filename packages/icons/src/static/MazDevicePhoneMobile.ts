@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazDevicePhoneMobile } from '../../svg/device-phone-mobile.svg?component'
+import _component from '../../svg/device-phone-mobile.svg?component'
+
+export const MazDevicePhoneMobile = _component

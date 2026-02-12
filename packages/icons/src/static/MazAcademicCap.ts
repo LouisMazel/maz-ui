@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazAcademicCap } from '../../svg/academic-cap.svg?component'
+import _component from '../../svg/academic-cap.svg?component'
+
+export const MazAcademicCap = _component

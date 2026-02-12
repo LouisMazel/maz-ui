@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazShieldExclamation } from '../../svg/shield-exclamation.svg?component'
+import _component from '../../svg/shield-exclamation.svg?component'
+
+export const MazShieldExclamation = _component

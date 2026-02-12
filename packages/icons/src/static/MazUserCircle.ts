@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazUserCircle } from '../../svg/user-circle.svg?component'
+import _component from '../../svg/user-circle.svg?component'
+
+export const MazUserCircle = _component

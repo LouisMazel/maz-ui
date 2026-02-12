@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazArrowsPointingIn } from '../../svg/arrows-pointing-in.svg?component'
+import _component from '../../svg/arrows-pointing-in.svg?component'
+
+export const MazArrowsPointingIn = _component

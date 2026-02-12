@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazFlagPF } from '../../flags/3x2/PF.svg?component'
+import _component from '../../flags/3x2/PF.svg?component'
+
+export const MazFlagPF = _component

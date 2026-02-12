@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLanguage } from '../../svg/language.svg?component'
+import _component from '../../svg/language.svg?component'
+
+export const MazLanguage = _component

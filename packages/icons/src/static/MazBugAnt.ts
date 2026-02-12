@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazBugAnt } from '../../svg/bug-ant.svg?component'
+import _component from '../../svg/bug-ant.svg?component'
+
+export const MazBugAnt = _component

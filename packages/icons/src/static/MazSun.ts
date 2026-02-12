@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazSun } from '../../svg/sun.svg?component'
+import _component from '../../svg/sun.svg?component'
+
+export const MazSun = _component

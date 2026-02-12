@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazWifi } from '../../svg/wifi.svg?component'
+import _component from '../../svg/wifi.svg?component'
+
+export const MazWifi = _component

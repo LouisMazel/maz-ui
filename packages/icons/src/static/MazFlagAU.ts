@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazFlagAU } from '../../flags/3x2/AU.svg?component'
+import _component from '../../flags/3x2/AU.svg?component'
+
+export const MazFlagAU = _component

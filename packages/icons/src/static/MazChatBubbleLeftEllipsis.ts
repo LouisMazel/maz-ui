@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazChatBubbleLeftEllipsis } from '../../svg/chat-bubble-left-ellipsis.svg?component'
+import _component from '../../svg/chat-bubble-left-ellipsis.svg?component'
+
+export const MazChatBubbleLeftEllipsis = _component

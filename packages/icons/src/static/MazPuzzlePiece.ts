@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazPuzzlePiece } from '../../svg/puzzle-piece.svg?component'
+import _component from '../../svg/puzzle-piece.svg?component'
+
+export const MazPuzzlePiece = _component

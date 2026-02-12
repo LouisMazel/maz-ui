@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazBars3CenterLeft } from '../../svg/bars-3-center-left.svg?component'
+import _component from '../../svg/bars-3-center-left.svg?component'
+
+export const MazBars3CenterLeft = _component

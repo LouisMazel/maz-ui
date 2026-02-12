@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazCurrencyYen } from '../../svg/currency-yen.svg?component'
+import _component from '../../svg/currency-yen.svg?component'
+
+export const MazCurrencyYen = _component

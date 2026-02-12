@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazMapIcon } from '../../svg/map.svg?component'
+import _component from '../../svg/map.svg?component'
+
+export const MazMapIcon = _component

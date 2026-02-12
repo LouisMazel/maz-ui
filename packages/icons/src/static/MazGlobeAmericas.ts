@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazGlobeAmericas } from '../../svg/globe-americas.svg?component'
+import _component from '../../svg/globe-americas.svg?component'
+
+export const MazGlobeAmericas = _component

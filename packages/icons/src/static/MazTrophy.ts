@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazTrophy } from '../../svg/trophy.svg?component'
+import _component from '../../svg/trophy.svg?component'
+
+export const MazTrophy = _component

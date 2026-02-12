@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLogoTwitter } from '../../logos/twitter.svg?component'
+import _component from '../../logos/twitter.svg?component'
+
+export const MazLogoTwitter = _component

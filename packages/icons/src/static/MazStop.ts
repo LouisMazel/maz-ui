@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazStop } from '../../svg/stop.svg?component'
+import _component from '../../svg/stop.svg?component'
+
+export const MazStop = _component

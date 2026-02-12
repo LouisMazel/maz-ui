@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazQrCode } from '../../svg/qr-code.svg?component'
+import _component from '../../svg/qr-code.svg?component'
+
+export const MazQrCode = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazPaperClip } from '../../svg/paper-clip.svg?component'
+import _component from '../../svg/paper-clip.svg?component'
+
+export const MazPaperClip = _component

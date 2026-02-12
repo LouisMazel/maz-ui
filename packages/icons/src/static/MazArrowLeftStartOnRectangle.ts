@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazArrowLeftStartOnRectangle } from '../../svg/arrow-left-start-on-rectangle.svg?component'
+import _component from '../../svg/arrow-left-start-on-rectangle.svg?component'
+
+export const MazArrowLeftStartOnRectangle = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazDivide } from '../../svg/divide.svg?component'
+import _component from '../../svg/divide.svg?component'
+
+export const MazDivide = _component

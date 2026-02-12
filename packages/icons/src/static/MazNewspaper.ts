@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazNewspaper } from '../../svg/newspaper.svg?component'
+import _component from '../../svg/newspaper.svg?component'
+
+export const MazNewspaper = _component

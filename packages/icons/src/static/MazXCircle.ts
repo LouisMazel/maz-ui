@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazXCircle } from '../../svg/x-circle.svg?component'
+import _component from '../../svg/x-circle.svg?component'
+
+export const MazXCircle = _component

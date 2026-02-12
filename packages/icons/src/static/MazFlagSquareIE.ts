@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazFlagSquareIE } from '../../flags/1x1/IE.svg?component'
+import _component from '../../flags/1x1/IE.svg?component'
+
+export const MazFlagSquareIE = _component

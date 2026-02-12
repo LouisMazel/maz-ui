@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazMagnifyingGlassPlus } from '../../svg/magnifying-glass-plus.svg?component'
+import _component from '../../svg/magnifying-glass-plus.svg?component'
+
+export const MazMagnifyingGlassPlus = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazUnderline } from '../../svg/underline.svg?component'
+import _component from '../../svg/underline.svg?component'
+
+export const MazUnderline = _component

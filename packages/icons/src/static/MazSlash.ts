@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazSlash } from '../../svg/slash.svg?component'
+import _component from '../../svg/slash.svg?component'
+
+export const MazSlash = _component

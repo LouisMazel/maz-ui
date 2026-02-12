@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazBattery0 } from '../../svg/battery-0.svg?component'
+import _component from '../../svg/battery-0.svg?component'
+
+export const MazBattery0 = _component

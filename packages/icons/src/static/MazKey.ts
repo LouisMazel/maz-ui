@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazKey } from '../../svg/key.svg?component'
+import _component from '../../svg/key.svg?component'
+
+export const MazKey = _component

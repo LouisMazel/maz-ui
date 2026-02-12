@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazChatBubbleBottomCenter } from '../../svg/chat-bubble-bottom-center.svg?component'
+import _component from '../../svg/chat-bubble-bottom-center.svg?component'
+
+export const MazChatBubbleBottomCenter = _component

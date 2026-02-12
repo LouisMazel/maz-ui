@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazTrash } from '../../svg/trash.svg?component'
+import _component from '../../svg/trash.svg?component'
+
+export const MazTrash = _component

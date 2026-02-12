@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazCake } from '../../svg/cake.svg?component'
+import _component from '../../svg/cake.svg?component'
+
+export const MazCake = _component

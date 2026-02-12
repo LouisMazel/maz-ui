@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazFire } from '../../svg/fire.svg?component'
+import _component from '../../svg/fire.svg?component'
+
+export const MazFire = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazEllipsisHorizontal } from '../../svg/ellipsis-horizontal.svg?component'
+import _component from '../../svg/ellipsis-horizontal.svg?component'
+
+export const MazEllipsisHorizontal = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazWrenchScrewdriver } from '../../svg/wrench-screwdriver.svg?component'
+import _component from '../../svg/wrench-screwdriver.svg?component'
+
+export const MazWrenchScrewdriver = _component

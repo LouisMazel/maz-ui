@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazBuildingLibrary } from '../../svg/building-library.svg?component'
+import _component from '../../svg/building-library.svg?component'
+
+export const MazBuildingLibrary = _component

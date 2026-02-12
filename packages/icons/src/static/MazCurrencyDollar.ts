@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazCurrencyDollar } from '../../svg/currency-dollar.svg?component'
+import _component from '../../svg/currency-dollar.svg?component'
+
+export const MazCurrencyDollar = _component

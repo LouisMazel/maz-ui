@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazCursorArrowRays } from '../../svg/cursor-arrow-rays.svg?component'
+import _component from '../../svg/cursor-arrow-rays.svg?component'
+
+export const MazCursorArrowRays = _component

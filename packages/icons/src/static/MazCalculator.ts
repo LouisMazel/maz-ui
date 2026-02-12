@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazCalculator } from '../../svg/calculator.svg?component'
+import _component from '../../svg/calculator.svg?component'
+
+export const MazCalculator = _component

@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazCheckBadge } from '../../svg/check-badge.svg?component'
+import _component from '../../svg/check-badge.svg?component'
+
+export const MazCheckBadge = _component

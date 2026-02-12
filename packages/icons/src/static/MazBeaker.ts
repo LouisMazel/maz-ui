@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazBeaker } from '../../svg/beaker.svg?component'
+import _component from '../../svg/beaker.svg?component'
+
+export const MazBeaker = _component

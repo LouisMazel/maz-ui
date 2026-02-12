@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazServer } from '../../svg/server.svg?component'
+import _component from '../../svg/server.svg?component'
+
+export const MazServer = _component

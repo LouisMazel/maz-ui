@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazBold } from '../../svg/bold.svg?component'
+import _component from '../../svg/bold.svg?component'
+
+export const MazBold = _component

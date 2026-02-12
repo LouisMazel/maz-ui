@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazClipboard } from '../../svg/clipboard.svg?component'
+import _component from '../../svg/clipboard.svg?component'
+
+export const MazClipboard = _component

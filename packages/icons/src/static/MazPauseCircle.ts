@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazPauseCircle } from '../../svg/pause-circle.svg?component'
+import _component from '../../svg/pause-circle.svg?component'
+
+export const MazPauseCircle = _component

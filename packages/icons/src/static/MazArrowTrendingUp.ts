@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazArrowTrendingUp } from '../../svg/arrow-trending-up.svg?component'
+import _component from '../../svg/arrow-trending-up.svg?component'
+
+export const MazArrowTrendingUp = _component

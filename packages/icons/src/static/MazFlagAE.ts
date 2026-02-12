@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazFlagAE } from '../../flags/3x2/AE.svg?component'
+import _component from '../../flags/3x2/AE.svg?component'
+
+export const MazFlagAE = _component

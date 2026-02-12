@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazFolderMinus } from '../../svg/folder-minus.svg?component'
+import _component from '../../svg/folder-minus.svg?component'
+
+export const MazFolderMinus = _component

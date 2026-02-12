@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazArrowDownOnSquareStack } from '../../svg/arrow-down-on-square-stack.svg?component'
+import _component from '../../svg/arrow-down-on-square-stack.svg?component'
+
+export const MazArrowDownOnSquareStack = _component

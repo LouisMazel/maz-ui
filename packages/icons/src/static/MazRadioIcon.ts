@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazRadioIcon } from '../../svg/radio.svg?component'
+import _component from '../../svg/radio.svg?component'
+
+export const MazRadioIcon = _component

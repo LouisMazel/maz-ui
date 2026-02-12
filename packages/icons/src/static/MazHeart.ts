@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazHeart } from '../../svg/heart.svg?component'
+import _component from '../../svg/heart.svg?component'
+
+export const MazHeart = _component

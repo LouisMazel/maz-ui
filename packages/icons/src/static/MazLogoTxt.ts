@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLogoTxt } from '../../logos/txt.svg?component'
+import _component from '../../logos/txt.svg?component'
+
+export const MazLogoTxt = _component

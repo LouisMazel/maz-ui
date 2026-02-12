@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazTableCells } from '../../svg/table-cells.svg?component'
+import _component from '../../svg/table-cells.svg?component'
+
+export const MazTableCells = _component

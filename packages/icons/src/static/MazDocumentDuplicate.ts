@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazDocumentDuplicate } from '../../svg/document-duplicate.svg?component'
+import _component from '../../svg/document-duplicate.svg?component'
+
+export const MazDocumentDuplicate = _component

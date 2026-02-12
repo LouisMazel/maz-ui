@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazArrowLeftCircle } from '../../svg/arrow-left-circle.svg?component'
+import _component from '../../svg/arrow-left-circle.svg?component'
+
+export const MazArrowLeftCircle = _component

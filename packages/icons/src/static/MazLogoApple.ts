@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLogoApple } from '../../logos/apple.svg?component'
+import _component from '../../logos/apple.svg?component'
+
+export const MazLogoApple = _component

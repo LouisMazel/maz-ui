@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazPhoto } from '../../svg/photo.svg?component'
+import _component from '../../svg/photo.svg?component'
+
+export const MazPhoto = _component

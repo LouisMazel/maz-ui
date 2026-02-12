@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazTruck } from '../../svg/truck.svg?component'
+import _component from '../../svg/truck.svg?component'
+
+export const MazTruck = _component

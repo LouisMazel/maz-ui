@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazScissors } from '../../svg/scissors.svg?component'
+import _component from '../../svg/scissors.svg?component'
+
+export const MazScissors = _component

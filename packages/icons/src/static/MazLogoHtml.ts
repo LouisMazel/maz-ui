@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLogoHtml } from '../../logos/html.svg?component'
+import _component from '../../logos/html.svg?component'
+
+export const MazLogoHtml = _component

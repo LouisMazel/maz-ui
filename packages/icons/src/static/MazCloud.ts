@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazCloud } from '../../svg/cloud.svg?component'
+import _component from '../../svg/cloud.svg?component'
+
+export const MazCloud = _component

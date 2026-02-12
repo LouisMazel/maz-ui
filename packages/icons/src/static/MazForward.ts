@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazForward } from '../../svg/forward.svg?component'
+import _component from '../../svg/forward.svg?component'
+
+export const MazForward = _component

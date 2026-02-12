@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazHandThumbDown } from '../../svg/hand-thumb-down.svg?component'
+import _component from '../../svg/hand-thumb-down.svg?component'
+
+export const MazHandThumbDown = _component

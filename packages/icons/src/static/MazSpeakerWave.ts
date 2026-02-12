@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazSpeakerWave } from '../../svg/speaker-wave.svg?component'
+import _component from '../../svg/speaker-wave.svg?component'
+
+export const MazSpeakerWave = _component

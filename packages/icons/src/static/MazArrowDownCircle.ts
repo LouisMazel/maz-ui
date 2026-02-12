@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazArrowDownCircle } from '../../svg/arrow-down-circle.svg?component'
+import _component from '../../svg/arrow-down-circle.svg?component'
+
+export const MazArrowDownCircle = _component

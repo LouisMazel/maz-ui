@@ -4,4 +4,6 @@
  * This file is generated automatically, do not manually modify it
  */
 
-export { default as MazLogoJson } from '../../logos/json.svg?component'
+import _component from '../../logos/json.svg?component'
+
+export const MazLogoJson = _component
