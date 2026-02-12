@@ -5,6 +5,7 @@ A comprehensive collection of **328 beautiful SVG icons** ready for use in your 
 ## Features
 
 - **840+ icons** - All icons are available [in the icon set page](./icon-set.md)
+- **Static & Lazy components** - Static (eagerly loaded) by default, lazy (async) when you need to optimize bundle size
 - **Multiple usage patterns** - Direct SVG files, Vue components, or auto-import
 - **TypeScript support** - Full type definitions included
 - **Tree-shakeable** - Import only the icons you need
@@ -53,11 +54,18 @@ npm install @maz-ui/icons vite-svg-loader
 
 ### Method 1: Vue Components (Recommended)
 
-Import and use icons as Vue components:
+Import and use icons as Vue components. Icons are available in two variants:
+
+- **Static** (default) — eagerly loaded, rendered immediately with no async overhead
+- **Lazy** — loaded on demand via `defineAsyncComponent`, ideal for optimizing bundle size
+
+#### Static Icons (default)
 
 ```vue
 <script setup lang="ts">
 import { MazCheck, MazHeart, MazUser } from '@maz-ui/icons'
+// Or import from the static sub-path:
+// import { MazCheck } from '@maz-ui/icons/static'
 </script>
 
 <template>
@@ -69,11 +77,44 @@ import { MazCheck, MazHeart, MazUser } from '@maz-ui/icons'
 </template>
 ```
 
+#### Lazy Icons
+
+Lazy icons are prefixed with `Lazy` and use `defineAsyncComponent` under the hood. Use them when you want to reduce your initial bundle size:
+
+```vue
+<script setup lang="ts">
+import { LazyMazCheck, LazyMazHeart, LazyMazUser } from '@maz-ui/icons'
+// Or import from the lazy sub-path (without Lazy prefix):
+// import { MazCheck } from '@maz-ui/icons/lazy'
+</script>
+
+<template>
+  <div>
+    <LazyMazCheck class="text-green-500" />
+    <LazyMazUser class="w-6 h-6" />
+    <LazyMazHeart class="text-red-500 hover:scale-110 transition-transform" />
+  </div>
+</template>
+```
+
+::: tip Sub-path imports for better tree-shaking
+You can also import individual icons directly for optimal tree-shaking:
+
+```ts
+// Static icon (individual file)
+import { MazCheck } from '@maz-ui/icons/MazCheck'
+
+// Lazy icon (individual file)
+import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
+```
+
+:::
+
 **Benefits:**
 
 - ✅ Tree-shaking - Only bundled icons are included
 - ✅ TypeScript support with full IntelliSense
-- ✅ Vue optimized with `defineAsyncComponent`
+- ✅ Static icons render immediately, lazy icons optimize bundle size
 - ✅ Easy to style with CSS classes
 
 ### Method 2: Auto-import with Resolver
@@ -115,11 +156,13 @@ export default defineConfig({
 
 <template>
   <div class="navigation">
-    <!-- Icons are automatically imported when used -->
+    <!-- Static icons (eagerly loaded) -->
     <MazHome class="nav-icon" />
     <MazUser class="nav-icon" />
     <MazSettings class="nav-icon" />
-    <MazLogout class="nav-icon" />
+
+    <!-- Lazy icons (async loaded) — prefix with "Lazy" -->
+    <LazyMazLogout class="nav-icon" />
   </div>
 </template>
 
@@ -130,11 +173,16 @@ export default defineConfig({
 </style>
 ```
 
+The resolver automatically resolves:
+- `MazXxx` → static icon from `@maz-ui/icons/MazXxx`
+- `LazyMazXxx` → lazy icon from `@maz-ui/icons/lazy/MazXxx`
+
 **Benefits:**
 
 - ✅ Zero import boilerplate
 - ✅ Full TypeScript support
 - ✅ Tree-shaking still works
+- ✅ Both static and lazy variants supported
 - ✅ IntelliSense for all available icons
 
 ### Method 3: With vite-svg-loader
@@ -276,17 +324,27 @@ The library includes **840+ carefully** covering all common use cases:
 
 All icons follow a consistent naming pattern:
 
-- Vue components: `Maz` + PascalCase (e.g., `MazUserCircle`)
+- Static Vue components: `Maz` + PascalCase (e.g., `MazUserCircle`)
+- Lazy Vue components: `LazyMaz` + PascalCase (e.g., `LazyMazUserCircle`)
 - SVG files: kebab-case (e.g., `user-circle.svg`)
 
 ```typescript
-// Component imports
+// Static component imports (eagerly loaded)
 import {
   MazArrowRight, // arrow-right.svg
   MazChatBubbleLeft, // chat-bubble-left.svg
   MazShoppingCart, // shopping-cart.svg
   MazUserCircle // user-circle.svg
 } from '@maz-ui/icons'
+
+// Lazy component imports (async loaded)
+import {
+  LazyMazArrowRight,
+  LazyMazUserCircle
+} from '@maz-ui/icons'
+
+// Or import lazy icons without the Lazy prefix from the sub-path
+import { MazArrowRight } from '@maz-ui/icons/lazy'
 ```
 
 You can search icons on [Heroicons](https://heroicons.com/) and copy the name of the icon to use it in your project.
@@ -474,12 +532,13 @@ export const useIconStore = defineStore('icons', () => {
 
 ## Bundle Size
 
-| Usage Method    | Bundle Impact | Best For                      |
-| --------------- | ------------- | ----------------------------- |
-| Direct SVG      | Minimal       | Static usage, minimal bundles |
-| Vue Components  | Tree-shaken   | Dynamic usage, Vue apps       |
-| Auto-import     | Tree-shaken   | Development experience        |
-| vite-svg-loader | Optimized     | Build-time optimization       |
+| Usage Method         | Bundle Impact | Best For                              |
+| -------------------- | ------------- | ------------------------------------- |
+| Static components    | Tree-shaken   | Immediate rendering, critical UI      |
+| Lazy components      | Code-split    | Non-critical icons, large icon sets   |
+| Direct SVG           | Minimal       | Static usage, minimal bundles         |
+| Auto-import          | Tree-shaken   | Development experience                |
+| vite-svg-loader      | Optimized     | Build-time optimization               |
 
 ## Related Packages
 
