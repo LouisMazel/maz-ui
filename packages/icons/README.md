@@ -1,6 +1,6 @@
 # @maz-ui/icons
 
-A comprehensive collection of **840+ SVG icons** as Vue components for your Vue.js applications.
+A comprehensive collection of **860+ SVG icons** as Vue components for your Vue.js applications.
 
 ## Installation
 
