@@ -4,7 +4,7 @@ import type { NormalizeStringOptions } from '@maz-ui/utils/helpers/normalizeStri
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import type { MazInputProps } from './MazInput.vue'
 import type { MazColor } from './types'
-import { MazMagnifyingGlass, MazNoSymbol } from '@maz-ui/icons'
+import { MazMagnifyingGlass, MazNoSymbol } from '@maz-ui/icons/lazy'
 import { useTranslations } from '@maz-ui/translations'
 import { normalizeString } from '@maz-ui/utils/helpers/normalizeString'
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
