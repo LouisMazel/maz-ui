@@ -239,7 +239,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         </div>
         <h3 class="maz-text-base maz-font-semibold">@maz-ui/icons</h3>
         <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm">
-          328+ beautiful SVG icons ready for Vue. Multiple usage patterns: components, direct SVG files, or auto-import.
+          860+ beautiful SVG icons ready for Vue. Multiple usage patterns: components, direct SVG files, or auto-import.
         </p>
         <div class="maz-flex-1"></div>
         <MazBtn color="background" outlined size="sm" block href="/guide/icons">Discover</MazBtn>
