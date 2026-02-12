@@ -12,15 +12,17 @@ export function MazIconsResolver(): ComponentResolver {
   return {
     type: 'component',
     resolve: (name: string) => {
-      const base = '@maz-ui/icons'
-      if (iconList.includes(name as IconName)) {
-        return {
-          name,
-          from: base,
-        }
+      if (!iconList.includes(name as IconName)) {
+        return null
       }
 
-      return null
+      const isLazy = name.startsWith('Lazy')
+      const staticName = isLazy ? name.slice(4) : name
+
+      return {
+        name: isLazy ? staticName : name,
+        from: isLazy ? `@maz-ui/icons/lazy/${staticName}` : '@maz-ui/icons',
+      }
     },
   }
 }
