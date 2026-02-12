@@ -45,6 +45,7 @@ export default defineConfig({
         'index': resolver('./src/index.ts'),
         'resolvers': resolver('./src/resolvers.ts'),
         'icon-list': resolver('./src/icon-list.ts'),
+        'lazy/index': resolver('./src/lazy/index.ts'),
       },
       formats: ['es'],
       fileName: (_, name) => `${name}.js`,

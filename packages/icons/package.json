@@ -42,6 +42,14 @@
       "types": "./dist/types/static/*.d.ts",
       "import": "./dist/static/*.js"
     },
+    "./lazy": {
+      "types": "./dist/types/lazy/index.d.ts",
+      "import": "./dist/lazy/index.js"
+    },
+    "./lazy/*": {
+      "types": "./dist/types/lazy/*.d.ts",
+      "import": "./dist/lazy/*.js"
+    },
     "./resolvers": {
       "types": "./dist/types/resolvers.d.ts",
       "import": "./dist/resolvers.js"

@@ -20,6 +20,7 @@ const flags3x2Dir = resolve(_dirname, '../flags/3x2')
 const logosDir = resolve(_dirname, '../logos')
 const outputIndex = resolve(_dirname, '../src/index.ts')
 const staticDir = resolve(_dirname, '../src/static')
+const lazyDir = resolve(_dirname, '../src/lazy')
 
 function replaceValuesInSvg(files: { file: string, name: string, path: string, dir: string }[]) {
   try {
@@ -139,6 +140,75 @@ ${exports}
   }
 }
 
+function generateLazyIconFiles(files: { file: string, name: string, path: string }[]) {
+  try {
+    if (!existsSync(lazyDir)) {
+      mkdirSync(lazyDir, { recursive: true })
+    }
+
+    const reservedNames = getReservedNames()
+
+    for (const { file, name, path } of files) {
+      const iconName = toPascalCase(name)
+      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
+      const componentName = `Maz${finalName}`
+
+      // path already contains '../', so we only need one '../' to go from lazy/ to src/ then use path
+      const relativePath = path.startsWith('../') ? `../${path}` : `../../${path}`
+
+      const content = `/// <reference types="vite-svg-loader" />
+
+/**
+ * This file is generated automatically, do not manually modify it
+ */
+
+import { defineAsyncComponent, markRaw } from 'vue'
+
+export const ${componentName} = markRaw(defineAsyncComponent(() => import('${relativePath}/${file}?component')))
+`
+
+      const outputPath = resolve(lazyDir, `${componentName}.ts`)
+      writeFileSync(outputPath, content)
+    }
+
+    logger.success(`[ViteGenerateIconsComponentsEntry](generateLazyIconFiles) ✅ ${files.length} lazy icon files generated`)
+  }
+  catch (error) {
+    logger.error('[ViteGenerateIconsComponentsEntry](generateLazyIconFiles) 🔴 error while generating lazy icon files', error)
+
+    throw error
+  }
+}
+
+function generateLazyIndex(files: { file: string, name: string, path: string }[]) {
+  try {
+    const reservedNames = getReservedNames()
+    const exports = files.map(({ name }) => {
+      const iconName = toPascalCase(name)
+      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
+      const componentName = `Maz${finalName}`
+      return `export { ${componentName} } from './${componentName}'`
+    }).sort((a, b) => a.localeCompare(b, undefined, { numeric: true })).join('\n')
+
+    const content = `/**
+ * This file is generated automatically, do not manually modify it
+ */
+
+${exports}
+`
+
+    const lazyIndexPath = resolve(lazyDir, 'index.ts')
+    writeFileSync(lazyIndexPath, content)
+
+    logger.success('[ViteGenerateIconsComponentsEntry](generateLazyIndex) ✅ lazy index generated')
+  }
+  catch (error) {
+    logger.error('[ViteGenerateIconsComponentsEntry](generateLazyIndex) 🔴 error while generating lazy index', error)
+
+    throw error
+  }
+}
+
 function generateIconsComponentsEntry(files: { file: string, name: string, path: string }[]) {
   try {
     const reservedNames = getReservedNames()
@@ -243,6 +313,8 @@ export function ViteGenerateIconsComponentsEntry(): Plugin {
         replaceValuesInSvg(svgFiles)
         generateStaticIconFiles(files)
         generateStaticIndex(files)
+        generateLazyIconFiles(files)
+        generateLazyIndex(files)
         generateIconsComponentsEntry(files)
         generateIconList(files)
 
