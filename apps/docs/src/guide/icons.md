@@ -1,10 +1,10 @@
 # @maz-ui/icons
 
-A comprehensive collection of **328 beautiful SVG icons** ready for use in your Vue.js applications. Built with performance and flexibility in mind, these icons are optimized for modern web development.
+A comprehensive collection of **860 beautiful SVG icons** ready for use in your Vue.js applications. Built with performance and flexibility in mind, these icons are optimized for modern web development.
 
 ## Features
 
-- **840+ icons** - All icons are available [in the icon set page](./icon-set.md)
+- **860+ icons** - All icons are available [in the icon set page](./icon-set.md)
 - **Static & Lazy components** - Static (eagerly loaded) by default, lazy (async) when you need to optimize bundle size
 - **Multiple usage patterns** - Direct SVG files, Vue components, or auto-import
 - **TypeScript support** - Full type definitions included
@@ -318,7 +318,7 @@ All icons support CSS custom properties for advanced styling:
 
 ## Available Icons
 
-The library includes **840+ carefully** covering all common use cases:
+The library includes **860+ carefully** covering all common use cases:
 
 ### Icon Naming Convention
 

@@ -11,7 +11,7 @@ export const guide = {
     { text: 'Translations (i18n)', link: '/guide/translations' },
     { text: 'Resolvers (auto-imports)', link: '/guide/resolvers' },
     { text: 'Icons', link: '/guide/icons', collapsed: true, items: [
-      { text: 'Icon Set - 840+ icons', link: '/guide/icon-set' },
+      { text: 'Icon Set - 860+ icons', link: '/guide/icon-set' },
     ] },
     { text: 'Migration v3 to v4', link: '/guide/migration-v4' },
     { text: 'Model Context Protocol (MCP)', link: '/guide/mcp' },
