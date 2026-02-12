@@ -39,8 +39,8 @@
       "import": "./dist/index.js"
     },
     "./*": {
-      "types": "./dist/types/components/*.d.ts",
-      "import": "./dist/components/*.js"
+      "types": "./dist/types/static/*.d.ts",
+      "import": "./dist/static/*.js"
     },
     "./resolvers": {
       "types": "./dist/types/resolvers.d.ts",
