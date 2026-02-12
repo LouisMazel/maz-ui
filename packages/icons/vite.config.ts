@@ -1,6 +1,7 @@
-import { resolve } from 'node:path'
+import { extname, relative, resolve } from 'node:path'
 import { getExternalDependencies } from '@maz-ui/vite-config'
 import Vue from '@vitejs/plugin-vue'
+import { glob } from 'glob'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import SvgLoader from 'vite-svg-loader'
@@ -12,6 +13,23 @@ import { ViteGenerateIconsComponentsEntry } from './utils/ViteGenerateIconsCompo
 function resolver(path: string) {
   return resolve(__dirname, path)
 }
+
+function getEntries(pattern: string) {
+  return [
+    relative('src', pattern.slice(0, pattern.length - extname(pattern).length)),
+    resolver(pattern),
+  ]
+}
+
+const moduleEntries = Object.fromEntries(
+  glob.sync([
+    'src/lazy/*.ts',
+    'src/static/*.ts',
+  ], {
+    ignore: ['**/*/index.ts'],
+  })
+    .map(getEntries),
+)
 
 export default defineConfig({
   plugins: [
@@ -42,9 +60,11 @@ export default defineConfig({
     target: 'es2022',
     lib: {
       entry: {
+        ...moduleEntries,
         'index': resolver('./src/index.ts'),
         'resolvers': resolver('./src/resolvers.ts'),
         'icon-list': resolver('./src/icon-list.ts'),
+        'static/index': resolver('./src/static/index.ts'),
         'lazy/index': resolver('./src/lazy/index.ts'),
       },
       formats: ['es'],

@@ -249,20 +249,24 @@ function generateIconList(files: { file: string, name: string }[]) {
   try {
     const outputPath = resolve(_dirname, '../src/icon-list.ts')
     const reservedNames = getReservedNames()
-    const iconNames = files
+    const staticNames = files
       .filter(({ file }) => file.endsWith('.svg'))
       .map(({ name }) => {
         const iconName = toPascalCase(name)
         const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
-        return `'Maz${finalName}'`
+        return `Maz${finalName}`
       })
-      .join(',\n  ')
+
+    const allNames = [
+      ...staticNames.map(n => `'${n}'`),
+      ...staticNames.map(n => `'Lazy${n}'`),
+    ].join(',\n  ')
 
     const content = `/**
  * This file is generated automatically, do not manually modify it
  */
 export const iconList = [
-  ${iconNames}
+  ${allNames}
 ] as const
 
 export type IconName = typeof iconList[number]
