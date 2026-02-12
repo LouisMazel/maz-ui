@@ -35,25 +35,41 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
     "./*": {
-      "types": "./dist/types/components/*.d.ts",
-      "import": "./dist/components/*.js"
+      "types": "./dist/static/*.d.ts",
+      "import": "./dist/static/*.js"
+    },
+    "./static": {
+      "types": "./dist/static/index.d.ts",
+      "import": "./dist/static/index.js"
+    },
+    "./static/*": {
+      "types": "./dist/static/*.d.ts",
+      "import": "./dist/static/*.js"
+    },
+    "./lazy": {
+      "types": "./dist/lazy/index.d.ts",
+      "import": "./dist/lazy/index.js"
+    },
+    "./lazy/*": {
+      "types": "./dist/lazy/*.d.ts",
+      "import": "./dist/lazy/*.js"
     },
     "./resolvers": {
-      "types": "./dist/types/resolvers.d.ts",
+      "types": "./dist/resolvers.d.ts",
       "import": "./dist/resolvers.js"
     },
     "./icon-list": {
-      "types": "./dist/types/icon-list.d.ts",
+      "types": "./dist/icon-list.d.ts",
       "import": "./dist/icon-list.js"
     },
     "./svg/*": "./svg/*"
   },
   "module": "./dist/index.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/index.d.ts",
   "files": [
     "LICENSE",
     "README.md",
@@ -68,14 +84,10 @@
   },
   "peerDependencies": {
     "unplugin-vue-components": ">=28.0.0 <32.0.0",
-    "vite-svg-loader": ">=4.0.0 <6.0.0",
     "vue": ">=3.5.0 <4.0.0"
   },
   "peerDependenciesMeta": {
     "unplugin-vue-components": {
-      "optional": true
-    },
-    "vite-svg-loader": {
       "optional": true
     },
     "vue": {
