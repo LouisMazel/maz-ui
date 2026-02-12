@@ -21,7 +21,7 @@ export function MazIconsResolver(): ComponentResolver {
 
       return {
         name: isLazy ? staticName : name,
-        from: isLazy ? `@maz-ui/icons/lazy/${staticName}` : '@maz-ui/icons',
+        from: isLazy ? `@maz-ui/icons/lazy/${staticName}` : `@maz-ui/icons/${name}`,
       }
     },
   }
