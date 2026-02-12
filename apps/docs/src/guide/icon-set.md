@@ -1,6 +1,6 @@
-# Icon Set (840+ icons)
+# Icon Set (860+ icons)
 
-The library includes **840+ carefully crafted icons**
+The library includes **860+ icons**
 
 ## Icon Naming Convention
 
@@ -21,13 +21,13 @@ All icons follow a consistent naming pattern:
       <MazTabsBar :items="tabs" />
     </MazTabs>
     <div class="maz-grid maz-grid-cols-3 maz-gap-2">
-      <div v-for="icon in filteredIcons" :key="icon.name" class="maz-flex maz-flex-col maz-items-center maz-gap-3 maz-text-center maz-border maz-border-solid maz-border-divider maz-rounded maz-p-4 maz-truncate hover:maz-bg-surface-600/50 dark:hover:maz-bg-surface-400">
+      <div v-for="icon in filteredIcons" :key="icon.name" class="maz-flex maz-flex-col maz-items-center maz-gap-3 maz-text-center maz-border maz-border-solid maz-border-divider maz-rounded maz-p-4 maz-truncate">
         <component :is="icon.component" class="maz-size-8" />
         <span class="maz-text-xs maz-text-muted maz-truncate">{{ icon.name }}</span>
         <div class="maz-flex maz-flex-row maz-gap-2 maz-w-full">
           <MazBtn v-tooltip="{ text: 'Copy Name', panelClass: 'maz-text-xs' }" class="maz-flex-1" size="xs" color="background" outlined @click="copyIcon(icon.name)" :icon="ClipboardDocumentIcon" />
           <MazBtn v-tooltip="{ text: 'Copy Static Import', panelClass: 'maz-text-xs' }" class="maz-flex-1" size="xs" color="background" outlined @click="copyStaticImport(icon.name)" :icon="ClipboardDocumentListIcon" />
-          <MazBtn v-tooltip="{ text: 'Copy Lazy Import', panelClass: 'maz-text-xs' }" class="maz-flex-1" size="xs" color="info" outlined @click="copyLazyImport(icon.name)" :icon="ClipboardDocumentListIcon" />
+          <MazBtn v-tooltip="{ text: 'Copy Lazy Import', panelClass: 'maz-text-xs' }" class="maz-flex-1" size="xs" color="background" outlined @click="copyLazyImport(icon.name)" :icon="ClipboardDocumentListIcon" />
         </div>
       </div>
     </div>
