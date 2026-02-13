@@ -1,3 +1,4 @@
+export * from './core'
 export * from './locales'
 export * from './plugin'
 export * from './types'

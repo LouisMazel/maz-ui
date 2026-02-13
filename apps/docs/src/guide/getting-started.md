@@ -231,6 +231,10 @@ Learn about [theming and customization](./themes.md) to match your brand.
 
 Learn about [internationalization](./translations.md) to support multiple languages.
 
+### Lazy Loading with MazUiProvider
+
+Use [`MazUiProvider`](./maz-ui-provider.md) to defer Maz-UI initialization to lazy-loaded pages for zero entry-bundle overhead.
+
 ### Get Help
 
 Browse [GitHub discussions](https://github.com/LouisMazel/maz-ui/discussions) or open an issue on [GitHub](https://github.com/LouisMazel/maz-ui/issues).

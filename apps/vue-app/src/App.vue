@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { MazTrash } from '@maz-ui/icons'
+import { mazUi } from '@maz-ui/themes'
+import { fr } from '@maz-ui/translations'
+import { MazUiProvider } from 'maz-ui/components'
 
 const { message, success, error, info, warning } = useToast()
 
@@ -36,28 +39,50 @@ function showToast() {
 </script>
 
 <template>
-  <div class="maz-flex maz-h-full maz-flex-col">
-    <nav class="maz-flex maz-h-16 maz-flex-none maz-items-center maz-gap-4 maz-border-b maz-p-4 maz-padded-container">
-      <MazLink to="/" color="contrast">
-        Home
-      </MazLink>
-      <MazLink to="/about" color="contrast">
-        About
-      </MazLink>
-      <MazLink to="/color" color="contrast">
-        Color
-      </MazLink>
+  <MazUiProvider
+    :theme="{
+      preset: mazUi,
+      overrides: {
+        colors: {
+          light: {
+            primary: '272 99% 54%',
+            destructive: '357 96% 58%',
+          },
+        },
+      },
+    }"
+    :translations="{
+      locale: 'fr',
+      fallbackLocale: 'en',
+      preloadFallback: false,
+      messages: {
+        fr,
+      },
+    }"
+  >
+    <div class="maz-flex maz-h-full maz-flex-col">
+      <nav class="maz-flex maz-h-16 maz-flex-none maz-items-center maz-gap-4 maz-border-b maz-p-4 maz-padded-container">
+        <MazLink to="/" color="contrast">
+          Home
+        </MazLink>
+        <MazLink to="/about" color="contrast">
+          About
+        </MazLink>
+        <MazLink to="/color" color="contrast">
+          Color
+        </MazLink>
 
-      <div class="maz-flex-1" />
-      <ThemeSwitcher />
-      <LangSwitcher />
-      <MazBtn @click="showToast">
-        Show Toast
-      </MazBtn>
-    </nav>
+        <div class="maz-flex-1" />
+        <ThemeSwitcher />
+        <LangSwitcher />
+        <MazBtn @click="showToast">
+          Show Toast
+        </MazBtn>
+      </nav>
 
-    <main class="maz-flex-1 maz-overflow-y-auto maz-py-8 maz-padded-container">
-      <RouterView />
-    </main>
-  </div>
+      <main class="maz-flex-1 maz-overflow-y-auto maz-py-8 maz-padded-container">
+        <RouterView />
+      </main>
+    </div>
+  </MazUiProvider>
 </template>

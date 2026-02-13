@@ -48,6 +48,10 @@ app.use(MazUi, {
 })
 ```
 
+::: tip Alternative: MazUiProvider
+You can also initialize the theme via the [`MazUiProvider`](./maz-ui-provider.md) component for lazy-loaded pages or subtree-scoped themes.
+:::
+
 ### 2. Setup your CSS to support theme foundation and dark mode
 
 ```css
