@@ -24,49 +24,49 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
     "./presets": {
-      "types": "./dist/types/presets/index.d.ts",
+      "types": "./dist/presets/index.d.ts",
       "import": "./dist/presets/index.js"
     },
     "./presets/*": {
-      "types": "./dist/types/presets/*.d.ts",
+      "types": "./dist/presets/*.d.ts",
       "import": "./dist/presets/*.js"
     },
     "./composables": {
-      "types": "./dist/types/composables/index.d.ts",
+      "types": "./dist/composables/index.d.ts",
       "import": "./dist/composables/index.js"
     },
     "./composables/*": {
-      "types": "./dist/types/composables/*.d.ts",
+      "types": "./dist/composables/*.d.ts",
       "import": "./dist/composables/*.js"
     },
     "./utils": {
-      "types": "./dist/types/utils/index.d.ts",
+      "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js"
     },
     "./utils/*": {
-      "types": "./dist/types/utils/*.d.ts",
+      "types": "./dist/utils/*.d.ts",
       "import": "./dist/utils/*.js"
     },
     "./build": {
-      "types": "./dist/types/build/index.d.ts",
+      "types": "./dist/build/index.d.ts",
       "import": "./dist/build/index.js"
     },
     "./build/*": {
-      "types": "./dist/types/build/*.d.ts",
+      "types": "./dist/build/*.d.ts",
       "import": "./dist/build/*.js"
     },
     "./plugin": {
-      "types": "./dist/types/plugin.d.ts",
-      "import": "./dist/plugin/index.js"
+      "types": "./dist/plugin.d.ts",
+      "import": "./dist/plugin.js"
     }
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/index.d.ts",
   "files": [
     "LICENSE",
     "dist"
@@ -92,9 +92,6 @@
   },
   "dependencies": {
     "@maz-ui/utils": "workspace:*"
-  },
-  "devDependencies": {
-    "vite": "^7.3.0"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
