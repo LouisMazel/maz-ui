@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import type { MazInputProps } from './MazInput.vue'
 import type { MazSize } from './types'
-import { MazMinus, MazPlus } from '@maz-ui/icons'
+import { MazMinus, MazPlus } from '@maz-ui/icons/static'
 import { throttle } from '@maz-ui/utils/helpers/throttle'
 import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables'

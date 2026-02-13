@@ -3,7 +3,7 @@
   "compilerOptions": {
     "paths": {
       "../../../../packages/lib/dist/composables/index": [
-        "../../packages/lib/dist/types/composables/index.d.ts"
+        "../../packages/lib/dist/composables/index.d.ts"
       ]
     },
     "allowImportingTsExtensions": true

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { MazChevronLeft } from '@maz-ui/icons'
+import { MazChevronLeft } from '@maz-ui/icons/static'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 

@@ -1,6 +1,7 @@
 import { fileURLToPath, URL } from 'node:url'
 import { MazIconsResolver } from '@maz-ui/icons/resolvers'
 import vue from '@vitejs/plugin-vue'
+import { MazComponentsResolver, MazDirectivesResolver, MazModulesResolver } from 'maz-ui/resolvers'
 import { visualizer } from 'rollup-plugin-visualizer'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
@@ -8,9 +9,6 @@ import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import VueSvgLoader from 'vite-svg-loader'
-import { MazComponentsResolver } from '../../packages/lib/src/resolvers/MazComponentsResolver.js'
-import { MazDirectivesResolver } from '../../packages/lib/src/resolvers/MazDirectivesResolver.js'
-import { MazModulesResolver } from '../../packages/lib/src/resolvers/MazModulesResolver.js'
 
 export default defineConfig({
   plugins: [

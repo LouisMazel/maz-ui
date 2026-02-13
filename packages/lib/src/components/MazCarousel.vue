@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
-import { MazChevronLeft, MazChevronRight } from '@maz-ui/icons'
-import { useTranslations } from '@maz-ui/translations'
+import { MazChevronLeft, MazChevronRight } from '@maz-ui/icons/static'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, defineAsyncComponent, ref, useSlots } from 'vue'
 
 const {

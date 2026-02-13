@@ -1,5 +1,37 @@
 # Change Log
 
+## v4.6.2...v4.7.0-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.2...v4.7.0-beta.0)
+
+### 💅 Refactors
+
+- **@maz-ui/icons:** Exports static and dynamic icon svg components ([a679884e](https://github.com/LouisMazel/maz-ui/commit/a679884e))
+
+  How to use?
+
+  ```ts
+  import { LazyMazCheck, MazCheck } from '@maz-ui/icons'
+  import { MazCheck } from '@maz-ui/icons/lazy'
+  import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
+  // or
+  import { MazCheck } from '@maz-ui/icons/static'
+  // or
+  import { MazCheck } from '@maz-ui/icons/static/MazCheck'
+  ```
+
+### 📖 Documentation
+
+- **@maz-ui/icons:** Set icon set count in README ([dad863c2](https://github.com/LouisMazel/maz-ui/commit/dad863c2))
+
+### 📦 Build
+
+- Upgrade dependencies ([f10305a9](https://github.com/LouisMazel/maz-ui/commit/f10305a9))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.6.0...v4.6.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.0...v4.6.1)

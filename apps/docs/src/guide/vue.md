@@ -41,7 +41,7 @@ yarn add maz-ui @maz-ui/themes
 import { MazUi } from 'maz-ui/plugins/maz-ui'
 
 import { mazUi } from '@maz-ui/themes'
-import { en } from '@maz-ui/translations'
+import { en } from '@maz-ui/translations/locales'
 
 import 'maz-ui/styles'
 
@@ -65,7 +65,8 @@ You must the MazUi plugin to initialize the theme and translations.
 ```typescript
 import { MazUi } from 'maz-ui/plugins/maz-ui'
 import { mazUi } from '@maz-ui/themes/presets'
-import { fr } from '@maz-ui/translations'
+import { fr } from '@maz-ui/translations/locales'
+// or import fr from '@maz-ui/translations/locales/fr'
 
 // Import Maz-UI styles before your own CSS
 import 'maz-ui/styles'
@@ -107,6 +108,10 @@ app.use(MazUi, {
 
 app.mount('#app')
 ```
+
+::: tip Alternative: MazUiProvider
+If Maz-UI is only used on specific pages, you can use the [`MazUiProvider`](./maz-ui-provider.md) component instead of the plugin to keep Maz-UI out of your entry bundle.
+:::
 
 ## Using your first component
 

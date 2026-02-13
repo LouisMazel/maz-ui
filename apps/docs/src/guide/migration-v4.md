@@ -68,7 +68,7 @@ v4.0.0 separates functionality into specialized packages for better modularity:
 | **@maz-ui/themes** | Theme system and presets | New |
 | **@maz-ui/translations** | i18n translations | New |
 | **@maz-ui/utils** | JavaScript/TypeScript utilities | New |
-| **@maz-ui/icons** | SVG icons and flags (840+ icons) | New |
+| **@maz-ui/icons** | SVG icons and flags (860+ icons) | New |
 | **@maz-ui/cli** | CLI for theme generation | Renamed |
 | **@maz-ui/nuxt** | Nuxt module | New |
 | **@maz-ui/mcp** | MCP server for IA agent | New |

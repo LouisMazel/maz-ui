@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
-import { useTranslations } from '@maz-ui/translations'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 
 export interface MazTableHeadersEnriched {
   label: string
@@ -255,7 +255,7 @@ export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz-table')
 import type { HTMLAttributes, InjectionKey, Ref, ThHTMLAttributes } from 'vue'
 import type { MazSelectOption } from './MazSelect.vue'
 import type { MazColor, MazSize } from './types'
-import { MazArrowUp, MazChevronDoubleLeft, MazChevronLeft, MazMagnifyingGlass } from '@maz-ui/icons'
+import { MazArrowUp, MazChevronDoubleLeft, MazChevronLeft, MazMagnifyingGlass } from '@maz-ui/icons/lazy'
 
 import {
   computed,

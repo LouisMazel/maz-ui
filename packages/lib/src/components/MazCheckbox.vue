@@ -1,7 +1,7 @@
 <script lang="ts" setup generic="T extends boolean | (string | number)[]">
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
-import { MazCheck } from '@maz-ui/icons'
+import { MazCheck } from '@maz-ui/icons/static'
 import { computed, ref } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 

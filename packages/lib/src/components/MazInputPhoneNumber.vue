@@ -6,7 +6,7 @@ import type { HTMLAttributes } from 'vue'
 
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
-import { useTranslations } from '@maz-ui/translations'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import {
   computed,
   defineAsyncComponent,

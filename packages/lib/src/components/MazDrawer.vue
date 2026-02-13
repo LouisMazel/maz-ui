@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { MazXMark } from '@maz-ui/icons'
+import { MazXMark } from '@maz-ui/icons/static'
 
 import { computed, defineAsyncComponent, useSlots } from 'vue'
 import MazBackdrop from './MazBackdrop.vue'

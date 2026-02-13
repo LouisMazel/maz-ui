@@ -1,7 +1,7 @@
 {
   "name": "maz-ui",
   "type": "module",
-  "version": "4.6.2",
+  "version": "4.7.0-beta.0",
   "description": "A standalone components library for Vue.Js 3 & Nuxt.Js 3",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -32,79 +32,79 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "module": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./components": {
-      "types": "./dist/types/components/index.d.ts",
+      "types": "./dist/components/index.d.ts",
       "import": "./dist/components/index.js",
       "module": "./dist/components/index.js",
       "default": "./dist/components/index.js"
     },
     "./components/*": {
-      "types": "./dist/types/components/*.vue.d.ts",
+      "types": "./dist/components/*.vue.d.ts",
       "import": "./dist/components/*.js",
       "module": "./dist/components/*.js",
       "default": "./dist/components/*.js"
     },
     "./composables": {
-      "types": "./dist/types/composables/index.d.ts",
+      "types": "./dist/composables/index.d.ts",
       "import": "./dist/composables/index.js",
       "module": "./dist/composables/index.js",
       "default": "./dist/composables/index.js"
     },
     "./composables/*": {
-      "types": "./dist/types/composables/*.d.ts",
+      "types": "./dist/composables/*.d.ts",
       "import": "./dist/composables/*.js",
       "module": "./dist/composables/*.js",
       "default": "./dist/composables/*.js"
     },
     "./plugins": {
-      "types": "./dist/types/plugins/index.d.ts",
+      "types": "./dist/plugins/index.d.ts",
       "import": "./dist/plugins/index.js",
       "module": "./dist/plugins/index.js",
       "default": "./dist/plugins/index.js"
     },
     "./plugins/*": {
-      "types": "./dist/types/plugins/*.d.ts",
+      "types": "./dist/plugins/*.d.ts",
       "import": "./dist/plugins/*.js",
       "module": "./dist/plugins/*.js",
       "default": "./dist/plugins/*.js"
     },
     "./directives": {
-      "types": "./dist/types/directives/index.d.ts",
+      "types": "./dist/directives/index.d.ts",
       "import": "./dist/directives/index.js",
       "module": "./dist/directives/index.js",
       "default": "./dist/directives/index.js"
     },
     "./directives/*": {
-      "types": "./dist/types/directives/*.d.ts",
+      "types": "./dist/directives/*.d.ts",
       "import": "./dist/directives/*.js",
       "module": "./dist/directives/*.js",
       "default": "./dist/directives/*.js"
     },
     "./resolvers": {
-      "types": "./dist/types/resolvers/index.d.ts",
+      "types": "./dist/resolvers/index.d.ts",
       "import": "./dist/resolvers/index.js",
       "module": "./dist/resolvers/index.js",
       "default": "./dist/resolvers/index.js"
     },
     "./resolvers/*": {
-      "types": "./dist/types/resolvers/*.d.ts",
+      "types": "./dist/resolvers/*.d.ts",
       "import": "./dist/resolvers/*.js",
       "module": "./dist/resolvers/*.js",
       "default": "./dist/resolvers/*.js"
     },
     "./tailwindcss": {
-      "types": "./dist/types/tailwindcss/index.d.ts",
+      "types": "./dist/tailwindcss/index.d.ts",
       "import": "./dist/tailwindcss/index.js",
       "module": "./dist/tailwindcss/index.js",
       "default": "./dist/tailwindcss/index.js"
     },
     "./tailwindcss/*": {
-      "types": "./dist/types/tailwindcss/*.d.ts",
+      "types": "./dist/tailwindcss/*.d.ts",
       "import": "./dist/tailwindcss/*.js",
       "module": "./dist/tailwindcss/*.js",
       "default": "./dist/tailwindcss/*.js"
@@ -116,7 +116,7 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "unpkg": "./dist/index.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/index.d.ts",
   "bin": {
     "maz": "./bin/maz.mjs",
     "maz-ui": "./bin/maz.mjs"
@@ -190,18 +190,18 @@
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
     "@maz-ui/node": "workspace:*",
-    "@vitejs/plugin-vue": "^6.0.3",
-    "@vue/compiler-sfc": "^3.5.27",
+    "@vitejs/plugin-vue": "^6.0.4",
+    "@vue/compiler-sfc": "^3.5.28",
     "@vue/test-utils": "^2.4.6",
-    "autoprefixer": "^10.4.23",
-    "jsdom": "^27.4.0",
+    "autoprefixer": "^10.4.24",
+    "jsdom": "^28.0.0",
     "lightningcss": "^1.31.1",
-    "nuxt": "^4.3.0",
+    "nuxt": "^4.3.1",
     "sass": "^1.97.3",
     "tailwindcss": "^3.4.16",
     "unplugin-auto-import": "^21.0.0",
     "unplugin-vue-components": "^31.0.0",
-    "vue-router": "^5.0.1"
+    "vue-router": "^5.0.2"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix",

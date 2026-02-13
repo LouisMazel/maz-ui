@@ -156,9 +156,10 @@ Object.defineProperty(globalThis.navigator, 'sendBeacon', {
   configurable: true,
 })
 
-vi.mock('@maz-ui/translations', () => ({
+vi.mock('@maz-ui/translations/composables/useTranslations', () => ({
   useTranslations: vi.fn().mockReturnValue({
     t: vi.fn().mockReturnValue('test'),
+    locale: { value: 'en' },
   }),
 }))
 

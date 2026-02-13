@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
-import { MazTrash } from '@maz-ui/icons'
+import { MazTrash } from '@maz-ui/icons/lazy'
 import { truthyFilter } from '@maz-ui/utils/helpers/truthyFilter'
 import { computed, ref } from 'vue'
 import MazBtn from './MazBtn.vue'

@@ -6,7 +6,7 @@ import type { CodesType, DisplayNameCode, DisplayNamesOptions } from '../composa
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazSelectProps } from './MazSelect.vue'
 import type { MazColor, MazSize } from './types'
-import { useTranslations } from '@maz-ui/translations'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { getBrowserLocale } from '@maz-ui/utils/helpers/getBrowserLocale'
 import { getCountryFlagUrl } from '@maz-ui/utils/helpers/getCountryFlagUrl'
 import { computed, defineAsyncComponent } from 'vue'

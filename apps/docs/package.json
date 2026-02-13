@@ -33,7 +33,7 @@
     "@samkirkland/ftp-deploy": "^1.2.5",
     "@types/postcss-import": "^14.0.3",
     "@types/postcss-url": "^10.0.4",
-    "@types/react": "^19.2.10",
+    "@types/react": "^19.2.14",
     "@vercel/og": "^0.8.6",
     "postcss-import": "^16.1.0",
     "postcss-url": "^10.1.3",

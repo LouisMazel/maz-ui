@@ -130,7 +130,7 @@ npm install @maz-ui/icons
 
 **Features:**
 
-- 840+ icons
+- 860+ icons
 - Usable as Vue components (e.g. `<MazStar />`)
 - Tree-shakable imports
 - Multiple sizes and variants
@@ -230,6 +230,10 @@ Learn about [theming and customization](./themes.md) to match your brand.
 ### Internationalization
 
 Learn about [internationalization](./translations.md) to support multiple languages.
+
+### Lazy Loading with MazUiProvider
+
+Use [`MazUiProvider`](./maz-ui-provider.md) to defer Maz-UI initialization to lazy-loaded pages for zero entry-bundle overhead.
 
 ### Get Help
 

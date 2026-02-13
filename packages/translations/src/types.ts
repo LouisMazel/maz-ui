@@ -70,3 +70,10 @@ export interface MazUiTranslationsInstance {
 export type MazUiTranslationsFlattenSchema = Record<FlattenObjectKeys<typeof defaultMessages>, string>
 export type MazUiTranslationsNestedSchema = typeof defaultMessages
 export type MazUiTranslationsSchema = DeepPartial<MazUiTranslationsFlattenSchema | MazUiTranslationsNestedSchema>
+
+export interface GlobalState {
+  loadedLocales: Set<string>
+  messages: Record<string, Partial<MazUiTranslationsSchema>>
+  userMessages: MazUiTranslationsMessages
+  loadingPromises: Map<string, Promise<void>>
+}

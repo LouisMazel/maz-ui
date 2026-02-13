@@ -3,7 +3,7 @@ import type { IconComponent } from '@maz-ui/icons'
 import type { CSSProperties } from 'vue'
 import type { MazIconProps } from './MazIcon.vue'
 import type { MazColor } from './types'
-import { MazCheckCircle, MazExclamationCircle, MazInformationCircle, MazXCircle } from '@maz-ui/icons'
+import { MazCheckCircle, MazExclamationCircle, MazInformationCircle, MazXCircle } from '@maz-ui/icons/lazy'
 import { computed, defineAsyncComponent, useId, useSlots } from 'vue'
 
 export type MazAlertColor = Exclude<MazColor, 'transparent'>

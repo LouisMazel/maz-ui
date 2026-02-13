@@ -12,16 +12,16 @@ export interface MazAccordionProps {
   contentClass?: unknown
 }
 
-const props = withDefaults(defineProps<MazAccordionProps>(), {
-  id: undefined,
-  modelValue: 0,
-  contentClass: undefined,
-})
+const {
+  id = undefined,
+  modelValue = 0,
+  contentClass = undefined,
+} = defineProps<MazAccordionProps>()
 
 const emits = defineEmits(['update:model-value'])
 const instanceId = useInstanceUniqId({
   componentName: 'MazAccordion',
-  providedId: props.id,
+  providedId: id,
 })
 
 const slots = useSlots()
@@ -30,10 +30,10 @@ const stepCount = computed<number>(
   (): number => Object.keys(slots).filter(slot => slot.startsWith('title-')).length,
 )
 
-const localModelValue = ref(props.modelValue)
+const localModelValue = ref(modelValue)
 
 const currentStep = computed({
-  get: () => props.modelValue || localModelValue.value,
+  get: () => modelValue || localModelValue.value,
   set: (value: number) => {
     localModelValue.value = value
     emits('update:model-value', value)

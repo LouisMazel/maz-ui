@@ -2,7 +2,7 @@
 import type { Component, HTMLAttributes } from 'vue'
 import type { RouterLinkProps } from 'vue-router'
 import type { MazGalleryProps } from './MazGallery.vue'
-import { MazChevronDown } from '@maz-ui/icons'
+import { MazChevronDown } from '@maz-ui/icons/lazy'
 import { computed, defineAsyncComponent, useSlots } from 'vue'
 import { RouterLink } from 'vue-router'
 
