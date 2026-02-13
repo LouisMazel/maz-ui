@@ -528,10 +528,6 @@ importers:
       vue:
         specifier: '>=3.5.0 <4.0.0'
         version: 3.5.27(typescript@5.9.3)
-    devDependencies:
-      vite:
-        specifier: ^7.3.0
-        version: 7.3.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
 
   packages/translations:
     dependencies:
@@ -551,9 +547,6 @@ importers:
       libphonenumber-js:
         specifier: ^1.12.36
         version: 1.12.36
-      vite:
-        specifier: ^7.3.0
-        version: 7.3.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.31.1)(sass@1.97.3)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
 
   tools/cli:
     dependencies:
