@@ -91,6 +91,17 @@ jobs:
           fail_ci_if_error: false
           verbose: true
 
+      - name: Upload coverage to Codecov (translations)
+        if: always() && github.event.pull_request.user.login != 'dependabot[bot]'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/translations/coverage/lcov.info
+          flags: translations
+          name: translations-coverage
+          fail_ci_if_error: false
+          verbose: true
+
       - name: Upload coverage to Codecov (forms)
         if: always() && github.event.pull_request.user.login != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
