@@ -1,4 +1,4 @@
-import type { MazUiTranslationsInstance } from './types'
+import type { MazUiTranslationsInstance } from '../types'
 import { getCurrentInstance, inject } from 'vue'
 
 export function useTranslations(): MazUiTranslationsInstance {
