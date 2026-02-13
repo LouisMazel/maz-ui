@@ -1,5 +1,25 @@
 # Change Log
 
+## v4.6.2...v4.7.0-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.2...v4.7.0-beta.0)
+
+### 🚀 Features
+
+- **maz-ui:** MazUiProvider - alternative to MazUi plugin ([3a2018cc](https://github.com/LouisMazel/maz-ui/commit/3a2018cc))
+
+### 💅 Refactors
+
+- **maz-ui:** Optimize icon imports with static and lazy sub-paths ([db48dd5a](https://github.com/LouisMazel/maz-ui/commit/db48dd5a))
+
+### 📦 Build
+
+- Upgrade dependencies ([f10305a9](https://github.com/LouisMazel/maz-ui/commit/f10305a9))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.6.1...v4.6.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.1...v4.6.2)
