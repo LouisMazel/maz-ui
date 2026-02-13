@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { MazTrash } from '@maz-ui/icons'
 import { mazUi } from '@maz-ui/themes'
-import { fr } from '@maz-ui/translations'
+import fr from '@maz-ui/translations/locales/fr'
 import { MazUiProvider } from 'maz-ui/components'
 
 const { message, success, error, info, warning } = useToast()
