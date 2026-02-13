@@ -31,6 +31,11 @@ export interface MazUiThemeOptions extends Omit<ThemeConfig, 'prefix'> {
   injectFullCSS?: boolean
 }
 
+export interface SetupThemeReturn {
+  themeState: Ref<ThemeState>
+  cleanup: () => void
+}
+
 function injectThemeCSS(finalPreset: ThemePreset, config: Required<Omit<MazUiThemeOptions, 'preset'>> & Pick<MazUiThemeOptions, 'preset'>) {
   if (typeof document === 'undefined')
     return
@@ -77,9 +82,11 @@ function injectThemeState(app: App, themeState: Ref<ThemeState>) {
   app.config.globalProperties.$mazThemeState = themeState
 }
 
-function watchColorSchemeFromMedia(themeState: Ref<ThemeState>) {
+function watchColorSchemeFromMedia(themeState: Ref<ThemeState>): () => void {
   if (isServer())
-    return
+    return () => {}
+
+  let mediaCleanup: (() => void) | undefined
 
   if (themeState.value && themeState.value.colorMode === 'auto') {
     const mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)')
@@ -93,21 +100,27 @@ function watchColorSchemeFromMedia(themeState: Ref<ThemeState>) {
     }
 
     mediaQuery.addEventListener('change', updateFromMedia)
+    mediaCleanup = () => mediaQuery.removeEventListener('change', updateFromMedia)
   }
 
-  watch(() => themeState.value.colorMode, (colorMode) => {
+  const stopWatch = watch(() => themeState.value.colorMode, (colorMode) => {
     updateDocumentClass(
       colorMode === 'auto' ? getSystemColorMode() === 'dark' : colorMode === 'dark',
       themeState.value,
     )
   })
+
+  return () => {
+    mediaCleanup?.()
+    stopWatch()
+  }
 }
 
-function watchMutationClassOnHtmlElement(themeState: Ref<ThemeState>) {
+function watchMutationClassOnHtmlElement(themeState: Ref<ThemeState>): () => void {
   if (isServer())
-    return
+    return () => {}
 
-  useMutationObserver(
+  const { stop } = useMutationObserver(
     document.documentElement,
     () => {
       if (isServer() || !themeState.value)
@@ -124,6 +137,70 @@ function watchMutationClassOnHtmlElement(themeState: Ref<ThemeState>) {
       attributes: true,
     },
   )
+
+  return stop
+}
+
+/**
+ * Sets up the theme state, CSS injection, and watchers without binding to a Vue app.
+ * The caller is responsible for calling `app.provide()` and setting `app.config.globalProperties`.
+ */
+export async function setupTheme(options: MazUiThemeOptions): Promise<SetupThemeReturn> {
+  const config = {
+    strategy: 'hybrid',
+    overrides: {},
+    darkModeStrategy: 'class',
+    preset: undefined,
+    injectCriticalCSS: true,
+    injectFullCSS: true,
+    mode: 'both',
+    darkClass: 'dark',
+    ...options,
+    colorMode: getSavedColorMode() ?? options.colorMode ?? (options.mode === 'dark' ? 'dark' : 'auto'),
+  } satisfies Required<Omit<MazUiThemeOptions, 'preset'>> & Pick<MazUiThemeOptions, 'preset'>
+
+  const isDark = config.colorMode === 'auto' && config.mode === 'both'
+    ? getSystemColorMode() === 'dark' || getColorMode(config.colorMode) === 'dark'
+    : getColorMode(config.colorMode) === 'dark' || config.mode === 'dark'
+
+  const themeState = ref<Required<Omit<ThemeState, 'preset'>> & Pick<ThemeState, 'preset'>>({
+    strategy: config.strategy,
+    darkClass: config.darkClass,
+    darkModeStrategy: config.darkModeStrategy,
+    colorMode: config.colorMode,
+    mode: config.mode,
+    preset: undefined,
+    // @ts-expect-error _isDark is a private property
+    isDark: options._isDark || isDark,
+  })
+
+  updateDocumentClass(themeState.value.isDark, themeState.value)
+
+  const preset = config.strategy === 'buildtime' ? config.preset : await getPreset(config.preset)
+
+  const finalPreset = Object.keys(config.overrides).length > 0 && preset
+    ? mergePresets(preset, config.overrides)
+    : preset
+
+  if (finalPreset) {
+    themeState.value.preset = finalPreset
+  }
+
+  if (config.strategy === 'buildtime' || !finalPreset) {
+    return { themeState: themeState as Ref<ThemeState>, cleanup: () => {} }
+  }
+
+  injectThemeCSS(finalPreset, config)
+
+  const cleanupColorScheme = watchColorSchemeFromMedia(themeState)
+  const cleanupMutation = watchMutationClassOnHtmlElement(themeState)
+
+  const cleanup = () => {
+    cleanupColorScheme()
+    cleanupMutation()
+  }
+
+  return { themeState: themeState as Ref<ThemeState>, cleanup }
 }
 
 /**
@@ -141,56 +218,8 @@ function watchMutationClassOnHtmlElement(themeState: Ref<ThemeState>) {
  */
 export const MazUiTheme: Plugin<[MazUiThemeOptions]> = {
   async install(app: App, options) {
-    const config = {
-      strategy: 'hybrid',
-      overrides: {},
-      darkModeStrategy: 'class',
-      preset: undefined,
-      injectCriticalCSS: true,
-      injectFullCSS: true,
-      mode: 'both',
-      darkClass: 'dark',
-      ...options,
-      colorMode: getSavedColorMode() ?? options.colorMode ?? (options.mode === 'dark' ? 'dark' : 'auto'),
-    } satisfies Required<Omit<MazUiThemeOptions, 'preset'>> & Pick<MazUiThemeOptions, 'preset'>
-
-    const isDark = config.colorMode === 'auto' && config.mode === 'both'
-      ? getSystemColorMode() === 'dark' || getColorMode(config.colorMode) === 'dark'
-      : getColorMode(config.colorMode) === 'dark' || config.mode === 'dark'
-
-    const themeState = ref<Required<Omit<ThemeState, 'preset'>> & Pick<ThemeState, 'preset'>>({
-      strategy: config.strategy,
-      darkClass: config.darkClass,
-      darkModeStrategy: config.darkModeStrategy,
-      colorMode: config.colorMode,
-      mode: config.mode,
-      preset: undefined,
-      // @ts-expect-error _isDark is a private property
-      isDark: options._isDark || isDark,
-    })
-
+    const { themeState } = await setupTheme(options)
     injectThemeState(app, themeState)
-
-    updateDocumentClass(themeState.value.isDark, themeState.value)
-
-    const preset = config.strategy === 'buildtime' ? config.preset : await getPreset(config.preset)
-
-    const finalPreset = Object.keys(config.overrides).length > 0 && preset
-      ? mergePresets(preset, config.overrides)
-      : preset
-
-    if (finalPreset) {
-      themeState.value.preset = finalPreset
-    }
-
-    if (config.strategy === 'buildtime' || !finalPreset) {
-      return
-    }
-
-    injectThemeCSS(finalPreset, config)
-
-    watchColorSchemeFromMedia(themeState)
-    watchMutationClassOnHtmlElement(themeState)
   },
 }
 

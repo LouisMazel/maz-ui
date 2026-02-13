@@ -32,79 +32,79 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "module": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./components": {
-      "types": "./dist/types/components/index.d.ts",
+      "types": "./dist/components/index.d.ts",
       "import": "./dist/components/index.js",
       "module": "./dist/components/index.js",
       "default": "./dist/components/index.js"
     },
     "./components/*": {
-      "types": "./dist/types/components/*.vue.d.ts",
+      "types": "./dist/components/*.vue.d.ts",
       "import": "./dist/components/*.js",
       "module": "./dist/components/*.js",
       "default": "./dist/components/*.js"
     },
     "./composables": {
-      "types": "./dist/types/composables/index.d.ts",
+      "types": "./dist/composables/index.d.ts",
       "import": "./dist/composables/index.js",
       "module": "./dist/composables/index.js",
       "default": "./dist/composables/index.js"
     },
     "./composables/*": {
-      "types": "./dist/types/composables/*.d.ts",
+      "types": "./dist/composables/*.d.ts",
       "import": "./dist/composables/*.js",
       "module": "./dist/composables/*.js",
       "default": "./dist/composables/*.js"
     },
     "./plugins": {
-      "types": "./dist/types/plugins/index.d.ts",
+      "types": "./dist/plugins/index.d.ts",
       "import": "./dist/plugins/index.js",
       "module": "./dist/plugins/index.js",
       "default": "./dist/plugins/index.js"
     },
     "./plugins/*": {
-      "types": "./dist/types/plugins/*.d.ts",
+      "types": "./dist/plugins/*.d.ts",
       "import": "./dist/plugins/*.js",
       "module": "./dist/plugins/*.js",
       "default": "./dist/plugins/*.js"
     },
     "./directives": {
-      "types": "./dist/types/directives/index.d.ts",
+      "types": "./dist/directives/index.d.ts",
       "import": "./dist/directives/index.js",
       "module": "./dist/directives/index.js",
       "default": "./dist/directives/index.js"
     },
     "./directives/*": {
-      "types": "./dist/types/directives/*.d.ts",
+      "types": "./dist/directives/*.d.ts",
       "import": "./dist/directives/*.js",
       "module": "./dist/directives/*.js",
       "default": "./dist/directives/*.js"
     },
     "./resolvers": {
-      "types": "./dist/types/resolvers/index.d.ts",
+      "types": "./dist/resolvers/index.d.ts",
       "import": "./dist/resolvers/index.js",
       "module": "./dist/resolvers/index.js",
       "default": "./dist/resolvers/index.js"
     },
     "./resolvers/*": {
-      "types": "./dist/types/resolvers/*.d.ts",
+      "types": "./dist/resolvers/*.d.ts",
       "import": "./dist/resolvers/*.js",
       "module": "./dist/resolvers/*.js",
       "default": "./dist/resolvers/*.js"
     },
     "./tailwindcss": {
-      "types": "./dist/types/tailwindcss/index.d.ts",
+      "types": "./dist/tailwindcss/index.d.ts",
       "import": "./dist/tailwindcss/index.js",
       "module": "./dist/tailwindcss/index.js",
       "default": "./dist/tailwindcss/index.js"
     },
     "./tailwindcss/*": {
-      "types": "./dist/types/tailwindcss/*.d.ts",
+      "types": "./dist/tailwindcss/*.d.ts",
       "import": "./dist/tailwindcss/*.js",
       "module": "./dist/tailwindcss/*.js",
       "default": "./dist/tailwindcss/*.js"
@@ -116,7 +116,7 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "unpkg": "./dist/index.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/index.d.ts",
   "bin": {
     "maz": "./bin/maz.mjs",
     "maz-ui": "./bin/maz.mjs"

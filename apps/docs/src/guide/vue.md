@@ -108,6 +108,10 @@ app.use(MazUi, {
 app.mount('#app')
 ```
 
+::: tip Alternative: MazUiProvider
+If Maz-UI is only used on specific pages, you can use the [`MazUiProvider`](./maz-ui-provider.md) component instead of the plugin to keep Maz-UI out of your entry bundle.
+:::
+
 ## Using your first component
 
 Let's start with a simple button to see Maz-UI in action:

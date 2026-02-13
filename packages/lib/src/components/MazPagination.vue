@@ -3,7 +3,7 @@ import type { MazBtnProps } from './MazBtn.vue'
 import type { MazColor, MazSize } from './types'
 import { MazEllipsisHorizontal } from '@maz-ui/icons/lazy'
 import { MazChevronDoubleLeft, MazChevronLeft } from '@maz-ui/icons/static'
-import { useTranslations } from '@maz-ui/translations'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed } from 'vue'
 import MazBtn from './MazBtn.vue'
 
