@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTranslations } from '@maz-ui/translations'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed } from 'vue'
 
 type SizeUnit = `${number}rem` | `${number}px` | `${number}em` | `${number}vh` | `${number}vw` | `${number}%`

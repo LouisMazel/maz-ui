@@ -2,7 +2,7 @@ import type { Ref } from 'vue'
 import type { ColorMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
 import type { CSSOptions } from '../utils/css-generator'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
-import { computed, getCurrentInstance, inject, ref } from 'vue'
+import { computed, getCurrentInstance, inject, ref, watch } from 'vue'
 
 import { setCookie } from '../utils/cookie-storage'
 import { CSS_ID, generateCSS, injectCSS } from '../utils/css-generator'
@@ -66,12 +66,24 @@ function toggleDarkMode() {
   setColorMode(isDark.value ? 'light' : 'dark')
 }
 
+let stopInjectedWatch: (() => void) | undefined
+
 function setThemeStateFromGlobalProperties() {
   themeState.value = undefined
+  stopInjectedWatch?.()
+  stopInjectedWatch = undefined
 
   try {
     const injectedState = inject<Ref<ThemeState> | undefined>('mazThemeState', undefined)
     themeState.value = injectedState?.value
+
+    if (injectedState) {
+      stopInjectedWatch = watch(injectedState, (newState) => {
+        if (newState) {
+          themeState.value = newState
+        }
+      }, { deep: true })
+    }
 
     if (!themeState.value) {
       throw new Error('mazThemeState not found')
@@ -89,13 +101,17 @@ export function useTheme() {
   if (isServer()) {
     themeState.value = undefined
   }
+  try {
+    if (!themeState.value) {
+      setThemeStateFromGlobalProperties()
+    }
 
-  if (!themeState.value) {
-    setThemeStateFromGlobalProperties()
+    if (!themeState.value) {
+      throw new Error('[@maz-ui/themes] no theme state found')
+    }
   }
-
-  if (!themeState.value) {
-    throw new Error('[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin before using useTheme composable')
+  catch {
+    throw new Error('[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin, or wrap your components in a MazUiProvider, before using useTheme composable')
   }
 
   return {

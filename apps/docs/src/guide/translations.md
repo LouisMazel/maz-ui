@@ -72,6 +72,10 @@ app.use(MazUi, {
 })
 ```
 
+::: tip Alternative: MazUiProvider
+You can also provide translations via the [`MazUiProvider`](./maz-ui-provider.md) component for lazy-loaded pages or subtree-scoped configurations.
+:::
+
 ## How it works
 
 1. 🌍 **You install the MazUi plugin** - This tells your app to use translations

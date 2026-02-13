@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
-import { useTranslations } from '@maz-ui/translations'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 
 export interface MazTableHeadersEnriched {
   label: string

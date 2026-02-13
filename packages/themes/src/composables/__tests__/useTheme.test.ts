@@ -106,7 +106,7 @@ describe('useTheme', () => {
         vi.mocked(getCurrentInstance).mockReturnValue(null)
 
         expect(() => useTheme()).toThrowError(
-          '[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin before using useTheme composable',
+          '[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin, or wrap your components in a MazUiProvider, before using useTheme composable',
         )
       })
     })
@@ -350,7 +350,7 @@ describe('useTheme', () => {
         vi.mocked(getCurrentInstance).mockReturnValue(null)
 
         expect(() => useTheme()).toThrowError(
-          '[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin before using useTheme composable',
+          '[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin, or wrap your components in a MazUiProvider, before using useTheme composable',
         )
       })
     })
@@ -371,7 +371,7 @@ describe('useTheme', () => {
         } as never)
 
         expect(() => useTheme()).toThrowError(
-          '[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin before using useTheme composable',
+          '[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin, or wrap your components in a MazUiProvider, before using useTheme composable',
         )
       })
     })

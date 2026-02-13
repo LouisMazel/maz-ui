@@ -445,6 +445,10 @@ export default defineNuxtConfig({
 })
 ```
 
+::: tip Subtree Overrides with MazUiProvider
+You can use [`MazUiProvider`](./maz-ui-provider.md) within a Nuxt app to override theme or translations in a specific subtree, while the module handles global defaults.
+:::
+
 ## Troubleshooting
 
 ### Theme System Issues
