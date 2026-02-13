@@ -2,7 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "types": [
-      "vite/client"
+      "vite/client",
+      "vitest/globals"
     ],
     "strict": true,
     "noFallthroughCasesInSwitch": true,
