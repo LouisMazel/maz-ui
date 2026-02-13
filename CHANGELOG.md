@@ -1,5 +1,46 @@
 # Change Log
 
+## v4.6.2...v4.7.0-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.2...v4.7.0-beta.0)
+
+### 🚀 Features
+
+- **maz-ui:** MazUiProvider - alternative to MazUi plugin ([3a2018cc](https://github.com/LouisMazel/maz-ui/commit/3a2018cc))
+
+### 💅 Refactors
+
+- **@maz-ui/icons:** Exports static and dynamic icon svg components ([a679884e](https://github.com/LouisMazel/maz-ui/commit/a679884e))
+
+  How to use?
+
+  ```ts
+  import { LazyMazCheck, MazCheck } from '@maz-ui/icons'
+  import { MazCheck } from '@maz-ui/icons/lazy'
+  import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
+  // or
+  import { MazCheck } from '@maz-ui/icons/static'
+  // or
+  import { MazCheck } from '@maz-ui/icons/static/MazCheck'
+  ```
+
+- **maz-ui:** Optimize icon imports with static and lazy sub-paths ([db48dd5a](https://github.com/LouisMazel/maz-ui/commit/db48dd5a))
+- **@maz-ui/themes:** Extract theme setup into modular utilities ([cc2b8924](https://github.com/LouisMazel/maz-ui/commit/cc2b8924))
+- **@maz-ui/translations:** Restructure to modular architecture with vite build ([84b3454f](https://github.com/LouisMazel/maz-ui/commit/84b3454f))
+
+### 📖 Documentation
+
+- **@maz-ui/icons:** Set icon set count in README ([dad863c2](https://github.com/LouisMazel/maz-ui/commit/dad863c2))
+
+### 📦 Build
+
+- Upgrade dependencies ([f10305a9](https://github.com/LouisMazel/maz-ui/commit/f10305a9))
+- **@maz-ui/utils:** Fix types output path in build config ([e62d3e3d](https://github.com/LouisMazel/maz-ui/commit/e62d3e3d))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.6.1...v4.6.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.1...v4.6.2)
