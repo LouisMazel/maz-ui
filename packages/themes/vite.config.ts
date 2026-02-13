@@ -32,7 +32,7 @@ export default defineConfig((option) => {
       dts({
         tsconfigPath: resolver('./tsconfig.json'),
         entryRoot: resolver('src'),
-        outDir: resolver('dist/types'),
+        outDir: resolver('dist'),
         exclude: ['src/**/__tests__/**/*', 'src/**/*.spec.ts', 'src/**/*.test.ts'],
         include: ['src/**/*.ts'],
       }),
@@ -61,7 +61,6 @@ export default defineConfig((option) => {
           'presets/index': 'src/presets/index.ts',
           'utils/index': 'src/utils/index.ts',
           'composables/index': 'src/composables/useTheme.ts',
-          'plugin/index': 'src/plugin.ts',
         },
         formats: ['es'],
         fileName: (_, name) => `${name}.js`,
