@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import type { MazUiThemeOptions, ThemePreset } from '@maz-ui/themes'
+import type { MazUiThemeOptions, ThemePreset, ThemeState } from '@maz-ui/themes'
 import type { MazUiTranslationsOptions } from '@maz-ui/translations'
-import { injectThemeState } from '@maz-ui/themes/utils/inject'
+import type { Ref } from 'vue'
 import { setupTheme } from '@maz-ui/themes/utils/setup-theme'
-import { injectTranslations } from '@maz-ui/translations/utils/inject'
 import { createMazUiTranslations } from '@maz-ui/translations/utils/instance'
-import { getCurrentInstance, onUnmounted, watch } from 'vue'
+import { onUnmounted, provide, ref, watch } from 'vue'
 
 export interface MazUiProviderProps {
   theme: MazUiThemeOptions & { preset: ThemePreset }
@@ -17,18 +16,26 @@ const {
   translations = {},
 } = defineProps<MazUiProviderProps>()
 
-const currentInstance = getCurrentInstance()
-const app = currentInstance?.appContext?.app
-
 const i18n = createMazUiTranslations(translations)
-injectTranslations({ app, i18n })
+provide('mazTranslations', i18n)
+
+const providedThemeState = ref<ThemeState>() as Ref<ThemeState>
+provide('mazThemeState', providedThemeState)
 
 let themeCleanup: (() => void) | undefined
+let stopThemeSync: (() => void) | undefined
 
 function initTheme(options: MazUiThemeOptions & { preset: ThemePreset }) {
   themeCleanup?.()
+  stopThemeSync?.()
+
   const { themeState, cleanup } = setupTheme(options)
-  injectThemeState({ app, themeState })
+  providedThemeState.value = themeState.value
+
+  stopThemeSync = watch(themeState, (newState) => {
+    providedThemeState.value = { ...newState }
+  }, { deep: true })
+
   themeCleanup = cleanup
 }
 
@@ -46,6 +53,7 @@ watch(() => translations, (newTranslationsOptions) => {
 
 onUnmounted(() => {
   themeCleanup?.()
+  stopThemeSync?.()
 })
 </script>
 
