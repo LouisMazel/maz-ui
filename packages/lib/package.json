@@ -183,7 +183,7 @@
     "@maz-ui/utils": "workspace:*",
     "chart.js": "^4.5.1",
     "dayjs": "^1.11.19",
-    "libphonenumber-js": "^1.12.36",
+    "libphonenumber-js": "^1.12.37",
     "valibot": "^1.2.0",
     "vue-chartjs": "^5.3.3"
   },
@@ -194,7 +194,7 @@
     "@vue/compiler-sfc": "^3.5.28",
     "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4.24",
-    "jsdom": "^28.0.0",
+    "jsdom": "^28.1.0",
     "lightningcss": "^1.31.1",
     "nuxt": "^4.3.1",
     "sass": "^1.97.3",

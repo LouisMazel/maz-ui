@@ -58,7 +58,7 @@
     "eslint-plugin-format": "^1.4.0",
     "eslint-plugin-sonarjs": "^3.0.7",
     "eslint-plugin-tailwindcss": "^3.18.2",
-    "eslint-plugin-vuejs-accessibility": "^2.4.0"
+    "eslint-plugin-vuejs-accessibility": "^2.5.0"
   },
   "devDependencies": {
     "@types/eslint-plugin-tailwindcss": "^3.17.0",
