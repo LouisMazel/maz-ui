@@ -5,11 +5,9 @@ import MazUiProvider from '@components/MazUiProvider.vue'
 import { mount } from '@vue/test-utils'
 import { defineComponent, h, inject, ref } from 'vue'
 
-const { mockSetupTheme, mockCreateMazUiTranslations, mockInjectThemeState, mockInjectTranslations, mockSetLocale } = vi.hoisted(() => ({
+const { mockSetupTheme, mockCreateMazUiTranslations, mockSetLocale } = vi.hoisted(() => ({
   mockSetupTheme: vi.fn(),
   mockCreateMazUiTranslations: vi.fn(),
-  mockInjectThemeState: vi.fn(),
-  mockInjectTranslations: vi.fn(),
   mockSetLocale: vi.fn(),
 }))
 
@@ -17,16 +15,8 @@ vi.mock('@maz-ui/themes/utils/setup-theme', () => ({
   setupTheme: mockSetupTheme,
 }))
 
-vi.mock('@maz-ui/themes/utils/inject', () => ({
-  injectThemeState: mockInjectThemeState,
-}))
-
 vi.mock('@maz-ui/translations/utils/instance', () => ({
   createMazUiTranslations: mockCreateMazUiTranslations,
-}))
-
-vi.mock('@maz-ui/translations/utils/inject', () => ({
-  injectTranslations: mockInjectTranslations,
 }))
 
 const mockPreset: ThemePreset = {
@@ -137,20 +127,6 @@ describe('given MazUiProvider component', () => {
     mockSetupTheme.mockReturnValue({
       themeState: ref<ThemeState>(createDefaultThemeState()),
       cleanup: mockCleanupFn,
-    })
-
-    mockInjectThemeState.mockImplementation(({ app, themeState }) => {
-      if (app) {
-        app.provide('mazThemeState', themeState)
-        app.config.globalProperties.$mazThemeState = themeState
-      }
-    })
-
-    mockInjectTranslations.mockImplementation(({ app, i18n }) => {
-      if (app) {
-        app.provide('mazTranslations', i18n)
-        app.config.globalProperties.$mazTranslations = i18n
-      }
     })
 
     mockSetLocale.mockResolvedValue(undefined)
