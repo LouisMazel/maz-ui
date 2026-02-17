@@ -23,10 +23,10 @@
     "@tsconfig/node22": "^22.0.5",
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/tsconfig": "^0.8.1",
-    "eslint-plugin-oxlint": "^1.46.0",
+    "eslint-plugin-oxlint": "^1.48.0",
     "maz-ui": "workspace:*",
     "npm-run-all2": "^8.0.4",
-    "oxlint": "^1.47.0",
+    "oxlint": "^1.48.0",
     "rollup-plugin-visualizer": "^6.0.5",
     "vite-plugin-vue-devtools": "^8.0.6"
   }
