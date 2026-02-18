@@ -42,6 +42,11 @@ function showToast() {
   <MazUiProvider
     :theme="{
       preset: mazUi,
+      colorMode: 'auto',
+      darkClass: 'dark',
+      darkModeStrategy: 'class',
+      mode: 'both',
+      strategy: 'hybrid',
       overrides: {
         colors: {
           light: {
@@ -52,11 +57,11 @@ function showToast() {
       },
     }"
     :translations="{
-      locale: 'fr',
+      locale: 'en',
       fallbackLocale: 'en',
       preloadFallback: false,
       messages: {
-        fr,
+        en: fr,
       },
     }"
   >
