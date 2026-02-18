@@ -88,16 +88,16 @@ The entire Maz-UI setup is now code-split into the Dashboard chunk.
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `theme` | `MazUiThemeOptions` | Yes | -- | Theme configuration (preset, strategy, dark mode, etc.). Same options as the `theme` key in the [MazUi plugin](./vue.md#install-plugin). See [Theming](./themes.md) for details. |
-| `translations` | `MazUiTranslationsOptions` | No | `undefined` | Translations configuration (locale, messages, fallback). Same options as the `translations` key in the [MazUi plugin](./vue.md#install-plugin). See [Translations](./translations.md) for details. |
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `theme` | `object` | Yes | Theme configuration. Must include `preset`. See [Theming](./themes.md) for details. |
+| `translations` | `object` | Yes | Translations configuration. Must include `locale` and `messages` with at least the current locale's messages. See [Translations](./translations.md) for details. |
 
-### MazUiThemeOptions
+### theme
 
 ```typescript
-interface MazUiThemeOptions {
-  preset?: ThemePreset         // Theme preset (mazUi, ocean, pristine, obsidian, or custom)
+interface ThemeOptions {
+  preset: ThemePreset              // Required - Theme preset (mazUi, ocean, pristine, obsidian, or custom)
   overrides?: ThemePresetOverrides // Partial overrides for colors, foundation, etc.
   strategy?: 'runtime' | 'buildtime' | 'hybrid' // CSS generation strategy (default: 'hybrid')
   darkModeStrategy?: 'class' | 'media'           // Dark mode handling (default: 'class')
@@ -106,16 +106,35 @@ interface MazUiThemeOptions {
 }
 ```
 
-### MazUiTranslationsOptions
+::: warning Why is preset required?
+Providing the theme preset synchronously avoids FOUC (Flash of Unstyled Content). Without a preset, components would render without their CSS variables until the theme loads, causing a visible flash.
+:::
+
+### translations
 
 ```typescript
-interface MazUiTranslationsOptions {
-  locale?: string                    // Active locale (default: 'en')
+interface TranslationsOptions {
+  locale: string                     // Required - Active locale (e.g. 'fr')
+  messages: MazUiTranslationsMessages // Required - Must contain at least the locale's messages
   fallbackLocale?: string            // Fallback locale (default: 'en')
   preloadFallback?: boolean          // Preload fallback locale (default: true)
-  messages?: MazUiTranslationsMessages // Locale messages (static objects or lazy loaders)
 }
 ```
+
+::: warning Why are locale and messages required?
+By default, Maz-UI does not bundle any translations to keep your bundle small. Translation files are loaded asynchronously on demand.
+
+If you don't provide the messages for the current locale synchronously, components like `MazInputPhoneNumber` will briefly show translation keys (e.g. `inputPhoneNumber.countrySelect.placeholder`) instead of actual text until the async loading completes.
+
+Providing messages upfront avoids this flash:
+
+```typescript
+import { fr } from '@maz-ui/translations'
+
+// Messages for 'fr' are available immediately -- no flash
+const translations = { locale: 'fr', messages: { fr } }
+```
+:::
 
 ## Plugin vs Provider
 
@@ -148,13 +167,22 @@ If you use both the plugin and the provider, **the provider takes precedence in 
 ```vue
 <!-- App.vue -->
 <!-- Plugin provides global defaults -->
+<script setup lang="ts">
+import { MazUiProvider } from 'maz-ui/components'
+import { ocean } from '@maz-ui/themes/presets/ocean'
+import { en } from '@maz-ui/translations'
+</script>
+
 <template>
   <div>
     <!-- Uses plugin theme (mazUi preset) -->
     <MazBtn color="primary">Global Theme</MazBtn>
 
     <!-- Provider overrides in this subtree -->
-    <MazUiProvider :theme="{ preset: ocean }">
+    <MazUiProvider
+      :theme="{ preset: ocean }"
+      :translations="{ locale: 'en', messages: { en } }"
+    >
       <!-- Uses ocean preset -->
       <MazBtn color="primary">Ocean Theme</MazBtn>
     </MazUiProvider>

@@ -55,6 +55,11 @@ app.use(MazUi, {
 })
 ```
 
+::: tip Why provide preset and messages?
+- **`preset`** -- Providing the theme preset synchronously avoids FOUC (Flash of Unstyled Content). Without it, components render without their CSS variables until the theme loads.
+- **`messages`** -- By default, Maz-UI does not bundle any translations. If you don't provide messages for the current locale, components will briefly show raw translation keys instead of actual text until the async loading completes.
+:::
+
 ## Advanced Integration
 
 You must the MazUi plugin to initialize the theme and translations.
