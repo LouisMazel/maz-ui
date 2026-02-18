@@ -1,5 +1,21 @@
 # Change Log
 
+## v4.7.0-beta.0...v4.7.0-beta.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.0-beta.0...v4.7.0-beta.1)
+
+### 🩹 Fixes
+
+- **maz-ui:** Use component-level provide instead of app.provide in MazUiProvider ([35676984](https://github.com/LouisMazel/maz-ui/commit/35676984))
+
+### 📦 Build
+
+- Upgrade dependencies ([02cacb32](https://github.com/LouisMazel/maz-ui/commit/02cacb32))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.6.2...v4.7.0-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.2...v4.7.0-beta.0)
