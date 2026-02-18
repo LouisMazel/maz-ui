@@ -1,20 +1,29 @@
-<script lang="ts" setup>
+<script lang="ts" setup generic="TLocale extends string">
 import type { MazUiThemeOptions, ThemePreset, ThemeState } from '@maz-ui/themes'
-import type { MazUiTranslationsOptions } from '@maz-ui/translations'
+import type { MazUiTranslationsMessages, MazUiTranslationsOptions } from '@maz-ui/translations'
 import type { Ref } from 'vue'
 import { setupTheme } from '@maz-ui/themes/utils/setup-theme'
 import { createMazUiTranslations } from '@maz-ui/translations/utils/instance'
 import { onUnmounted, provide, ref, watch } from 'vue'
 
-export interface MazUiProviderProps {
+export type MazUiProviderTranslations<T extends string = string> = Omit<MazUiTranslationsOptions, 'messages' | 'locale'> & {
+  locale: T
+  messages: MazUiTranslationsMessages & Record<T, MazUiTranslationsMessages[string]>
+}
+
+export interface MazUiProviderProps<T extends string = string> {
   theme: MazUiThemeOptions & { preset: ThemePreset }
-  translations?: MazUiTranslationsOptions
+  /**
+   * Must include `locale` and at least the messages for that locale in `messages`
+   * @example { locale: 'fr', messages: { fr: { ... } } }
+   */
+  translations: MazUiProviderTranslations<T>
 }
 
 const {
   theme,
-  translations = {},
-} = defineProps<MazUiProviderProps>()
+  translations,
+} = defineProps<MazUiProviderProps<TLocale>>()
 
 const i18n = createMazUiTranslations(translations)
 provide('mazTranslations', i18n)
