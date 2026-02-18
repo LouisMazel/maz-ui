@@ -1,5 +1,30 @@
 # Change Log
 
+## v4.7.0-beta.1...v4.7.0-beta.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.0-beta.1...v4.7.0-beta.2)
+
+### 🚀 Features
+
+- **maz-ui:** Enforce locale presence in MazUiProvider translations prop ([ea657089](https://github.com/LouisMazel/maz-ui/commit/ea657089))
+
+  The `translations` prop is now required and uses a generic `TLocale` parameter to ensure
+  that `messages` contains at least the specified locale's translations at compile time.
+
+  ```vue
+  <!-- TypeScript will error if 'fr' key is missing from messages -->
+  <MazUiProvider
+    :theme="{ preset: mazUi }"
+    :translations="{ locale: 'fr', messages: { fr } }"
+  />
+  ```
+
+  New exported type: `MazUiProviderTranslations<T>`
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.0-beta.0...v4.7.0-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.0-beta.0...v4.7.0-beta.1)
