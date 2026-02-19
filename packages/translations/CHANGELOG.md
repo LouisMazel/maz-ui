@@ -1,5 +1,21 @@
 # Change Log
 
+## v4.6.2...v4.7.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.2...v4.7.0)
+
+### 🚀 Features
+
+- **maz-ui:** MazUiProvider - alternative to MazUi plugin ([aa9f599b](https://github.com/LouisMazel/maz-ui/commit/aa9f599b))
+
+### 💅 Refactors
+
+- **@maz-ui/translations:** Restructure to modular architecture with vite build ([0b00771f](https://github.com/LouisMazel/maz-ui/commit/0b00771f))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.0-beta.0...v4.7.0-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.0-beta.0...v4.7.0-beta.1)

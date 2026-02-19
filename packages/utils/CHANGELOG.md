@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.6.2...v4.7.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.2...v4.7.0)
+
+### 📦 Build
+
+- **@maz-ui/utils:** Fix types output path in build config ([3332d487](https://github.com/LouisMazel/maz-ui/commit/3332d487))
+- Upgrade dependencies ([7053722b](https://github.com/LouisMazel/maz-ui/commit/7053722b))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.0-beta.0...v4.7.0-beta.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.0-beta.0...v4.7.0-beta.1)

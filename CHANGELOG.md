@@ -1,5 +1,66 @@
 # Change Log
 
+## v4.6.2...v4.7.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.2...v4.7.0)
+
+### 🚀 Features
+
+- **maz-ui:** MazUiProvider - alternative to MazUi plugin ([aa9f599b](https://github.com/LouisMazel/maz-ui/commit/aa9f599b))
+- **maz-ui:** Enforce locale presence in MazUiProvider translations prop ([861e9e9a](https://github.com/LouisMazel/maz-ui/commit/861e9e9a))
+
+  The `translations` prop is now required and uses a generic `TLocale` parameter to ensure
+  that `messages` contains at least the specified locale's translations at compile time.
+
+  ```vue
+  <!-- TypeScript will error if 'fr' key is missing from messages -->
+  <MazUiProvider
+    :theme="{ preset: mazUi }"
+    :translations="{ locale: 'fr', messages: { fr } }"
+  />
+  ```
+
+  New exported type: `MazUiProviderTranslations<T>`
+
+### 🩹 Fixes
+
+- **maz-ui:** Use component-level provide instead of app.provide in MazUiProvider ([7abcd7c4](https://github.com/LouisMazel/maz-ui/commit/7abcd7c4))
+- **maz-ui:** Remove vue-router imports to be used without the vue-router dependency - fix #1396 ([#1396](https://github.com/LouisMazel/maz-ui/issues/1396))
+
+### 💅 Refactors
+
+- **@maz-ui/icons:** Exports static and dynamic icon svg components ([1ac39983](https://github.com/LouisMazel/maz-ui/commit/1ac39983))
+
+  How to use?
+
+  ```ts
+  import { LazyMazCheck, MazCheck } from '@maz-ui/icons'
+  import { MazCheck } from '@maz-ui/icons/lazy'
+  import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
+  // or
+  import { MazCheck } from '@maz-ui/icons/static'
+  // or
+  import { MazCheck } from '@maz-ui/icons/static/MazCheck'
+  ```
+
+- **maz-ui:** Optimize icon imports with static and lazy sub-paths ([b3aad665](https://github.com/LouisMazel/maz-ui/commit/b3aad665))
+- **@maz-ui/themes:** Extract theme setup into modular utilities ([c803cd73](https://github.com/LouisMazel/maz-ui/commit/c803cd73))
+- **@maz-ui/translations:** Restructure to modular architecture with vite build ([0b00771f](https://github.com/LouisMazel/maz-ui/commit/0b00771f))
+
+### 📖 Documentation
+
+- **@maz-ui/icons:** Set icon set count in README ([758bd9c4](https://github.com/LouisMazel/maz-ui/commit/758bd9c4))
+
+### 📦 Build
+
+- Upgrade dependencies ([6332ddd8](https://github.com/LouisMazel/maz-ui/commit/6332ddd8))
+- **@maz-ui/utils:** Fix types output path in build config ([3332d487](https://github.com/LouisMazel/maz-ui/commit/3332d487))
+- Upgrade dependencies ([7053722b](https://github.com/LouisMazel/maz-ui/commit/7053722b))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.0-beta.1...v4.7.0-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.0-beta.1...v4.7.0-beta.2)

@@ -1,5 +1,21 @@
 # Change Log
 
+## v4.6.2...v4.7.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.2...v4.7.0)
+
+### 🚀 Features
+
+- **maz-ui:** MazUiProvider - alternative to MazUi plugin ([aa9f599b](https://github.com/LouisMazel/maz-ui/commit/aa9f599b))
+
+### 📦 Build
+
+- Upgrade dependencies ([6332ddd8](https://github.com/LouisMazel/maz-ui/commit/6332ddd8))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.0-beta.1...v4.7.0-beta.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.0-beta.1...v4.7.0-beta.2)
