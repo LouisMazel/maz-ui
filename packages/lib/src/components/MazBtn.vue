@@ -4,6 +4,7 @@ import type { MazIconProps } from './MazIcon.vue'
 
 import type { MazColor, MazSize } from './types'
 import { computed, defineAsyncComponent, useAttrs } from 'vue'
+import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 import { getColor } from './types'
 
 const {
@@ -117,11 +118,13 @@ export interface MazBtnProps {
   active?: boolean
 }
 
+const routerLinkComponent = resolveLinkComponent()
+
 const component = computed(() => {
   if (href)
     return 'a'
   else if (to)
-    return 'router-link'
+    return routerLinkComponent
   return 'button'
 })
 

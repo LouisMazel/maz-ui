@@ -2,7 +2,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import MazLink from '@components/MazLink.vue'
 import { shallowMount } from '@vue/test-utils'
 
-describe('mazLink', () => {
+describe('MazLink component', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazLink>>
 
   beforeEach(() => {
@@ -20,6 +20,11 @@ describe('mazLink', () => {
       },
       slots: {
         default: 'Link',
+      },
+      global: {
+        stubs: {
+          RouterLink: true,
+        },
       },
     })
   })
@@ -48,6 +53,6 @@ describe('mazLink', () => {
     await wrapper.setProps({ to: 'https://www.google.com' })
 
     expect(wrapper.attributes('to')).toBe('https://www.google.com')
-    expect(wrapper.find('router-link').exists()).toBe(true)
+    expect(wrapper.find('router-link-stub').exists()).toBe(true)
   })
 })

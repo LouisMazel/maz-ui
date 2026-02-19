@@ -3,6 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
 import { MazPencil } from '@maz-ui/icons/lazy'
 import { computed, defineAsyncComponent } from 'vue'
+import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 
 defineOptions({
   inheritAttrs: false,
@@ -49,7 +50,7 @@ export interface MazAvatarProps {
   caption?: string | null
   /** The link of the avatar */
   href?: string
-  /** The link (router-link) of the avatar */
+  /** The link (router-link or nuxt-link) of the avatar */
   to?: string | Record<string, unknown>
   /** The alt of the image */
   alt?: string
@@ -92,9 +93,11 @@ export interface MazAvatarProps {
   loading?: 'lazy' | 'eager' | 'intersecting'
 }
 
+const routerLinkComponent = resolveLinkComponent()
+
 const componentType = computed(() => {
   if (props.to)
-    return 'RouterLink'
+    return routerLinkComponent
   if (props.href)
     return 'a'
   return 'div'

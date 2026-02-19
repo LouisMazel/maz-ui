@@ -9,7 +9,7 @@ export interface MazButtonGroupOption extends Omit<MazBtnProps, 'block' | 'fab'>
   onClick?: () => void
   /** The href for anchor links */
   href?: string
-  /** The route for router-link */
+  /** The route for router-link or nuxt-link */
   to?: RouteLocationRaw
 }
 
