@@ -4,7 +4,7 @@ import type { RouterLinkProps } from 'vue-router'
 import type { MazGalleryProps } from './MazGallery.vue'
 import { MazChevronDown } from '@maz-ui/icons/lazy'
 import { computed, defineAsyncComponent, useSlots } from 'vue'
-import { RouterLink } from 'vue-router'
+import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 
 const {
   gallery = undefined,
@@ -51,7 +51,7 @@ export interface MazCardProps {
   orientation?: 'column' | 'row' | 'row-reverse' | 'column-reverse'
   /** Make card a link (footer area excluded) */
   href?: string
-  /** Make card a link with a router-link (footer area excluded) */
+  /** Make card a link with a router-link or nuxt-link (footer area excluded) */
   to?: RouterLinkProps['to']
   /** Target option of link: Muse be one of `_blank | _self | _parent | _top | framename` */
   hrefTarget?: '_blank' | '_self' | '_parent' | '_top' | string
@@ -112,6 +112,9 @@ const galleryOptions = computed(() => {
     ...gallery,
   }
 })
+
+const routerLinkComponent = resolveLinkComponent()
+
 const wrapperData = computed(() => {
   let componentType: string | Component = 'div'
 
@@ -119,7 +122,7 @@ const wrapperData = computed(() => {
     componentType = 'a'
   }
   else if (to) {
-    componentType = RouterLink
+    componentType = routerLinkComponent
   }
 
   return {

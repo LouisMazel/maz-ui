@@ -6,6 +6,7 @@ import type { MazColor } from './types'
 import { MazArrowTopRightOnSquare } from '@maz-ui/icons/lazy'
 import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables'
+import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 import { getColor } from './types'
 
 defineOptions({
@@ -40,11 +41,11 @@ export interface MazLinkProps {
    */
   style?: HTMLAttributes['style']
   /**
-   * The component to use for the link - if not provided, it will be `router-link` if `to` is provided, will be `a` if `href` is provided, otherwise it will be `button`, you can force the component to be used with `as` prop
+   * The component to use for the link - if not provided, it will be `router-link` or `nuxt-link` if `to` is provided, will be `a` if `href` is provided, otherwise it will be `button`, you can force the component to be used with `as` prop
    * @default depends on the provided props
    * @values 'a', 'router-link', 'nuxt-link', 'button'
    */
-  as?: string | 'a' | 'router-link' | 'nuxt-link' | 'button'
+  as?: string | 'a' | 'router-link' | 'nuxt-link' | 'button' | 'RouterLink' | 'NuxtLink'
   /**
    * The id of the link
    * @default undefined
@@ -126,11 +127,11 @@ const instanceId = useInstanceUniqId({
   providedId: id,
 })
 
-const component = computed<HTMLElement['nodeName'] | 'nuxt-link' | 'router-link' | 'button'>(() => {
+const component = computed<HTMLElement['nodeName'] | 'NuxtLink' | 'RouterLink' | 'nuxt-link' | 'router-link' | 'button'>(() => {
   if (as)
     return as
   if (to)
-    return 'router-link'
+    return resolveLinkComponent()
   if (href)
     return 'a'
 
