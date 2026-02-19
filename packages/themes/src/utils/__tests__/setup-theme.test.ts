@@ -190,31 +190,35 @@ describe('setup-theme', () => {
       })
     })
 
-    describe('when no preset is provided (async path)', () => {
-      it('then it returns a Promise', () => {
+    describe('when no preset is provided (async resolution in background)', () => {
+      it('then it returns a SetupThemeReturn synchronously', () => {
         vi.mocked(getPreset).mockResolvedValue(mockPreset)
 
         const result = setupTheme({})
 
-        expect(result).toBeInstanceOf(Promise)
+        expect(result).not.toBeInstanceOf(Promise)
+        expect(result).toHaveProperty('themeState')
+        expect(result).toHaveProperty('cleanup')
       })
 
-      it('then it calls getPreset to resolve the preset', async () => {
+      it('then it calls getPreset to resolve the default preset', () => {
         vi.mocked(getPreset).mockResolvedValue(mockPreset)
 
-        await setupTheme({})
+        setupTheme({})
 
         expect(getPreset).toHaveBeenCalled()
       })
 
-      it('then it returns a SetupThemeReturn after resolution', async () => {
+      it('then themeState preset is undefined initially and set after resolution', async () => {
         vi.mocked(getPreset).mockResolvedValue(mockPreset)
 
-        const result = await setupTheme({})
+        const result = setupTheme({}) as SetupThemeReturn
 
-        expect(result).toHaveProperty('themeState')
-        expect(result).toHaveProperty('cleanup')
-        expect(result.themeState.value.preset).toStrictEqual(mockPreset)
+        expect(result.themeState.value.preset).toBeUndefined()
+
+        await vi.waitFor(() => {
+          expect(result.themeState.value.preset).toStrictEqual(mockPreset)
+        })
       })
     })
 
