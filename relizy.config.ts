@@ -46,7 +46,7 @@ export default defineConfig({
     changelogUrl: 'https://maz-ui.com/changelog',
     twitter: {
       enabled: true,
-      onlyStable: false,
+      onlyStable: true,
       postMaxLength: 280,
     },
   },
