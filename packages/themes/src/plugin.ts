@@ -35,8 +35,8 @@ export interface MazUiThemeOptions extends Omit<ThemeConfig, 'prefix'> {
  * ```
  */
 export const MazUiTheme: Plugin<[MazUiThemeOptions]> = {
-  async install(app: App, options) {
-    const { themeState } = await setupTheme(options)
+  install(app: App, options) {
+    const { themeState } = setupTheme(options)
     injectThemeState({ app, themeState })
   },
 }

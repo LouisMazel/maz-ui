@@ -154,18 +154,19 @@ function finalizeTheme(
  * Sets up the theme state, CSS injection, and watchers without binding to a Vue app.
  * The caller is responsible for calling `app.provide()` and setting `app.config.globalProperties`.
  *
- * Synchronous when a preset object is provided directly.
- * Asynchronous when a preset name (string) needs to be resolved.
+ * Always returns synchronously with a populated themeState ref.
+ * When no preset object is provided, the default preset is resolved asynchronously
+ * in the background and the themeState is updated reactively (causes FOUC).
  */
-export function setupTheme(options: MazUiThemeOptions & { preset: ThemePreset }): SetupThemeReturn
-export function setupTheme(options: MazUiThemeOptions): Promise<SetupThemeReturn>
-export function setupTheme(options: MazUiThemeOptions): SetupThemeReturn | Promise<SetupThemeReturn> {
+export function setupTheme(options: MazUiThemeOptions): SetupThemeReturn {
   const config = resolveConfig(options)
   const themeState = createThemeState(options, config)
 
-  if (typeof config.preset === 'object' || config.strategy === 'buildtime') {
+  if ((config.preset && typeof config.preset !== 'string') || config.strategy === 'buildtime') {
     return finalizeTheme(themeState, config.preset, config)
   }
 
-  return getPreset(config.preset).then(preset => finalizeTheme(themeState, preset, config))
+  getPreset(config.preset).then(preset => finalizeTheme(themeState, preset, config))
+
+  return { themeState: themeState as Ref<ThemeState>, cleanup: () => {} }
 }
