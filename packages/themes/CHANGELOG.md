@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.7.0...v4.7.1
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.0...v4.7.1)
+
+### 🩹 Fixes
+
+- **@maz-ui/themes:** Make setupTheme always return synchronously to fix plugin state injection ([86b98e81](https://github.com/LouisMazel/maz-ui/commit/86b98e81))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.6.2...v4.7.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.2...v4.7.0)
