@@ -1,0 +1,30 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo",
+    "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
+    "types": [
+      "vitest/globals",
+      "vite-svg-loader",
+      "vite/client",
+      "vue"
+    ],
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "esModuleInterop": true,
+    "isolatedModules": true
+  },
+  "vueCompilerOptions": {
+    "checkUnknownComponents": true
+  },
+  "include": ["**/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "vite.config.ts",
+    "vitest.config.ts"
+  ]
+}

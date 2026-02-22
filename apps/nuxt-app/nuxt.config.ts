@@ -41,6 +41,7 @@ export default defineNuxtConfig({
       preset: 'maz-ui',
       mode: 'both',
       colorMode: 'auto',
+      injectAllCSSOnServer: true,
     },
     translations: {
       locale: 'fr',

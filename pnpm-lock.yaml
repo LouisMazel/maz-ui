@@ -195,9 +195,15 @@ importers:
 
   apps/nuxt-app:
     dependencies:
+      '@maz-ui/forms':
+        specifier: workspace:*
+        version: link:../../packages/forms
       '@maz-ui/nuxt':
         specifier: workspace:*
         version: link:../../packages/nuxt
+      valibot:
+        specifier: ^1.2.0
+        version: 1.2.0(typescript@5.9.3)
     devDependencies:
       '@nuxt/devtools':
         specifier: ^3.2.1
@@ -291,6 +297,22 @@ importers:
       unbuild:
         specifier: ^3.6.1
         version: 3.6.1(sass@1.97.3)(typescript@5.9.3)(vue-sfc-transformer@0.1.16(@vue/compiler-core@3.5.28)(esbuild@0.27.3)(vue@3.5.28(typescript@5.9.3)))(vue-tsc@3.2.5(typescript@5.9.3))(vue@3.5.28(typescript@5.9.3))
+
+  packages/forms:
+    dependencies:
+      maz-ui:
+        specifier: workspace:*
+        version: link:../lib
+      valibot:
+        specifier: ^1.2.0
+        version: 1.2.0(typescript@5.9.3)
+      vue:
+        specifier: ^3.5.0
+        version: 3.5.28(typescript@5.9.3)
+    devDependencies:
+      '@maz-ui/vite-config':
+        specifier: workspace:*
+        version: link:../../tools/vite-config
 
   packages/icons:
     dependencies:
@@ -485,6 +507,9 @@ importers:
 
   packages/nuxt:
     dependencies:
+      '@maz-ui/forms':
+        specifier: workspace:*
+        version: link:../forms
       '@maz-ui/themes':
         specifier: workspace:*
         version: link:../themes

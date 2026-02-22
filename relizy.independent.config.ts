@@ -1,7 +1,7 @@
 import { defineConfig } from 'relizy'
 
 export default defineConfig({
-  projectName: 'maz-ui',
+  projectName: '@maz-ui/forms',
   types: {
     feat: { title: '🚀 Features', semver: 'minor' },
     perf: { title: '🔥 Performance', semver: 'patch' },
@@ -10,23 +10,21 @@ export default defineConfig({
     docs: { title: '📖 Documentation', semver: 'patch' },
     types: { title: '🌊 Types', semver: 'patch' },
     style: { title: '💄 Styles', semver: 'patch' },
-    build: { title: '📦 Build', semver: 'patch' },
     test: { title: '🧪 Tests' },
     clean: { title: '🧹 Clean' },
     chore: false,
     examples: false,
     ci: false,
+    build: false,
   },
 
   templates: {
     emptyChangelogContent: 'No relevant changes since last release',
-    twitterMessage: '🚀 {{projectName}} {{newVersion}} is out!\n\n{{changelog}}\n\n{{changelogUrl}}\n{{releaseUrl}}',
   },
 
   monorepo: {
-    versionMode: 'selective',
-    packages: ['packages/*'],
-    ignorePackageNames: ['@maz-ui/forms'],
+    versionMode: 'independent',
+    packages: ['packages/forms'],
   },
 
   changelog: {
@@ -47,7 +45,7 @@ export default defineConfig({
     changelogUrl: 'https://maz-ui.com/changelog',
     twitter: {
       enabled: true,
-      onlyStable: true,
+      onlyStable: false,
       postMaxLength: 280,
     },
   },

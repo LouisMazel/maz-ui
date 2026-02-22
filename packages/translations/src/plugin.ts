@@ -1,10 +1,10 @@
-import type { App, Plugin } from 'vue'
+import type { Plugin } from 'vue'
 import type { MazUiTranslationsInstance, MazUiTranslationsOptions } from './types'
 import { injectTranslations } from './utils/inject'
 import { createMazUiTranslations } from './utils/instance'
 
 export const MazUiTranslations: Plugin<[MazUiTranslationsOptions?]> = {
-  install(app: App, options: MazUiTranslationsOptions = {}) {
+  install(app, options: MazUiTranslationsOptions = {}) {
     const i18n = createMazUiTranslations(options)
 
     // Injection globale
