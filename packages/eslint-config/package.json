@@ -56,7 +56,7 @@
   "dependencies": {
     "@antfu/eslint-config": "^7.4.3",
     "eslint-plugin-format": "^1.4.0",
-    "eslint-plugin-sonarjs": "^3.0.7",
+    "eslint-plugin-sonarjs": "^4.0.0",
     "eslint-plugin-tailwindcss": "^3.18.2",
     "eslint-plugin-vuejs-accessibility": "^2.5.0"
   },

@@ -1,0 +1,58 @@
+name: Release Canary
+
+on:
+  workflow_dispatch:
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release-canary:
+    name: Release Canary
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      packages: write
+
+    env:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Setup Node.js, pnpm and Nx cache
+        uses: ./.github/actions/setup
+        with:
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Build Packages
+        run: pnpm build:packages
+
+      - name: Linters
+        run: pnpm lint:all
+
+      - name: Test units
+        run: pnpm test:unit:coverage:all
+
+      - name: Setup Git User
+        run: |
+          git config --global user.name "LouisMazel"
+          git config --global user.email "12446546+LouisMazel@users.noreply.github.com"
+
+      - name: Version Packages (Canary)
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          RELIZY_TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          RELIZY_TWITTER_API_KEY_SECRET: ${{ secrets.TWITTER_API_KEY_SECRET }}
+          RELIZY_TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          RELIZY_TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+        run: |
+          pnpm relizy release --canary --yes

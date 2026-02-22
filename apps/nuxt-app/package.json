@@ -21,7 +21,7 @@
     "autoprefixer": "^10.4.24",
     "nuxt": "^4.3.1",
     "tailwindcss": "^3.4.17",
-    "vue-router": "^5.0.2"
+    "vue-router": "^5.0.3"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix",
