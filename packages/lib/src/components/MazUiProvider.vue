@@ -1,7 +1,6 @@
 <script lang="ts" setup generic="TLocale extends string">
 import type { MazUiThemeOptions, ThemePreset, ThemeState } from '@maz-ui/themes'
 import type { MazUiTranslationsMessages, MazUiTranslationsOptions } from '@maz-ui/translations'
-import type { Ref } from 'vue'
 import { setupTheme } from '@maz-ui/themes/utils/setup-theme'
 import { createMazUiTranslations } from '@maz-ui/translations/utils/instance'
 import { onUnmounted, provide, ref, watch } from 'vue'
@@ -28,7 +27,7 @@ const {
 const i18n = createMazUiTranslations(translations)
 provide('mazTranslations', i18n)
 
-const providedThemeState = ref<ThemeState>() as Ref<ThemeState>
+const providedThemeState = ref<ThemeState>()
 provide('mazThemeState', providedThemeState)
 
 let themeCleanup: (() => void) | undefined

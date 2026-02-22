@@ -166,4 +166,5 @@ vi.mock('@maz-ui/translations/composables/useTranslations', () => ({
 config.global.stubs = {
   teleport: true,
   Teleport: true,
+  RouterLink: true,
 }
