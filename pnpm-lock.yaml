@@ -84,8 +84,8 @@ importers:
         specifier: ^10.1.3
         version: 10.1.3(postcss@8.5.6)
       relizy:
-        specifier: ^1.1.0-canary.4738097.0
-        version: 1.1.0-canary.bdfae3d.0(@types/node@25.3.0)(magicast@0.5.2)(twitter-api-v2@1.29.0)
+        specifier: ^1.1.0-canary-test.4738097.0
+        version: 1.1.0-canary-test.4738097.0(@types/node@25.3.0)(magicast@0.5.2)(twitter-api-v2@1.29.0)
       stylelint:
         specifier: ^17.3.0
         version: 17.3.0(typescript@5.9.3)
@@ -9715,8 +9715,8 @@ packages:
     resolution: {integrity: sha512-NZQZdC5wOE/H3UT28fVGL+ikOZcEzfMGk/c3iN9UGxzWHMa1op7274oyiUVrAG4B2EuFhus8SvkaYnhvW92p9Q==}
     hasBin: true
 
-  relizy@1.1.0-canary.bdfae3d.0:
-    resolution: {integrity: sha512-SPXjOuyeHw6vQvSiJjH+TsxubbrCuTGwzpZHZURNyXeqanFkfb05E/AMQ5kxMrn5HpLtR+OuP0RnvN/3q2tWeg==}
+  relizy@1.1.0-canary-test.4738097.0:
+    resolution: {integrity: sha512-Dq/ljYty0k8I05/Z/DWkzKrGJbPmZlNaDyu6zx/snIvDyg28xBkXSzNoTeCEUsSwCVruBSCwQIj9WJgurarb9g==}
     engines: {node: '>=20.0.0'}
     hasBin: true
     peerDependencies:
@@ -21849,7 +21849,7 @@ snapshots:
     dependencies:
       jsesc: 3.1.0
 
-  relizy@1.1.0-canary.bdfae3d.0(@types/node@25.3.0)(magicast@0.5.2)(twitter-api-v2@1.29.0):
+  relizy@1.1.0-canary-test.4738097.0(@types/node@25.3.0)(magicast@0.5.2)(twitter-api-v2@1.29.0):
     dependencies:
       '@inquirer/prompts': 8.2.1(@types/node@25.3.0)
       '@maz-ui/node': 4.6.1
