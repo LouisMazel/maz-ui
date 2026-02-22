@@ -41,7 +41,7 @@
     "start": "node --es-module-specifier-resolution=node dist/cli.mjs"
   },
   "dependencies": {
-    "@clack/prompts": "^0.11.0",
+    "@clack/prompts": "^1.0.1",
     "@maz-ui/node": "workspace:*",
     "commander": "^14.0.3",
     "cosmiconfig": "^9.0.0",
