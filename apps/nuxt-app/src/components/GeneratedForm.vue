@@ -240,7 +240,7 @@ const schema = defineFormSchema<FormModel>({
           },
           condition: val => !!val,
           validation: {
-            rule: v.pipe(v.string(), v.minLength(5, 'Address too short')),
+            rule: v.pipe(v.string(), v.minLength(4, 'Address too short')),
             mode: 'lazy',
           },
         },
@@ -339,7 +339,7 @@ const schema = defineFormSchema<FormModel>({
             max: 100,
           },
           validation: {
-            rule: v.pipe(v.number(), v.nonEmpty('Please select a priority')),
+            rule: v.pipe(v.number(), v.minValue(0, 'Minimum 0%')),
             mode: 'lazy',
           },
         },
@@ -375,7 +375,7 @@ const schema = defineFormSchema<FormModel>({
             'max': 50,
           },
           validation: {
-            rule: v.pipe(v.number(), v.minValue(10, 'Cannot be negative'), v.maxValue(50, 'Max 50 years')),
+            rule: v.pipe(v.number(), v.minValue(10, 'Minimum 10 years of experience'), v.maxValue(50, 'Maximum 50 years of experience')),
             mode: 'lazy',
           },
         },
@@ -388,7 +388,7 @@ const schema = defineFormSchema<FormModel>({
             'locale': 'fr-FR',
           },
           validation: {
-            rule: v.pipe(v.number(), v.minValue(1000, 'Cannot be negative')),
+            rule: v.pipe(v.number(), v.minValue(1000, 'Minimum 1000 EUR')),
             mode: 'lazy',
             throttled: 500,
           },
@@ -487,6 +487,8 @@ async function handleValidate() {
         Validate All
       </MazBtn>
     </div>
+
+    <pre>{{ { formModel } }}</pre>
 
     <MazFormBuilder
       ref="formRef"
