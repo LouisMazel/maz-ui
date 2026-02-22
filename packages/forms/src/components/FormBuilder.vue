@@ -284,7 +284,8 @@ const submitForm = handleSubmit((payload) => {
     data: payload as unknown as T,
     isValid: isValid.value,
   } satisfies FormSubmitEventPayload<T>)
-}, undefined, {
+}, errorSummary ? '.form-builder__error-summary' : undefined, {
+  resetOnSuccess: false,
   onError: (payload) => {
     emit('submit-error', {
       data: payload as unknown as T,
@@ -368,12 +369,11 @@ defineExpose({
       aria-atomic="true"
     />
 
-    errorSummaryPosition: {{ errorSummaryPosition }}
-
     <!-- Error Summary slot (top position) -->
     <template v-if="errorSummaryPosition === 'top'">
       <slot name="error-summary" v-bind="errorSummarySlotProps">
         <FormErrorSummary
+          class="form-builder__error-summary"
           :error-summary="{
             position: 'top',
             selector: errorSummarySelector,
@@ -408,6 +408,7 @@ defineExpose({
     <template v-if="errorSummaryPosition === 'bottom'">
       <slot name="error-summary" v-bind="errorSummarySlotProps">
         <FormErrorSummary
+          class="form-builder__error-summary"
           :error-summary="{ position: 'bottom', selector: errorSummarySelector }"
         />
       </slot>

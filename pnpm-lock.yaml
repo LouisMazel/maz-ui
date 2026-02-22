@@ -302,7 +302,7 @@ importers:
         version: 1.2.0(typescript@5.9.3)
       vue:
         specifier: ^3.5.0
-        version: 3.5.28(typescript@5.9.3)
+        version: 3.5.29(typescript@5.9.3)
     devDependencies:
       '@maz-ui/vite-config':
         specifier: workspace:*
