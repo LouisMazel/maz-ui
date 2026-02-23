@@ -18,7 +18,6 @@ export default defineConfig({
     globals: true,
     coverage: {
       provider: 'v8',
-      all: true,
       reporter: ['clover', 'html', 'lcov', 'text', 'text-summary'],
       include: ['src/**/*'],
       exclude: [

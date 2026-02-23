@@ -58,11 +58,12 @@
         "pnpm lint:fix:all passes"
       ],
       "priority": 2,
-      "passes": false,
+      "passes": true,
       "notes": "In v4, coverage.all is removed — only covered files are included by default",
       "dependsOn": [
         "US-001"
-      ]
+      ],
+      "completionNotes": "Completed by agent"
     },
     {
       "id": "US-004",
@@ -105,6 +106,6 @@
     }
   ],
   "metadata": {
-    "updatedAt": "2026-02-23T21:14:25.741Z"
+    "updatedAt": "2026-02-23T21:26:03.528Z"
   }
 }
