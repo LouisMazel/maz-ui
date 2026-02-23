@@ -1,11 +1,9 @@
 import MazDropzone from '@components/MazDropzone.vue'
 import { mount, shallowMount } from '@vue/test-utils'
 
-// Mock URL for file handling
-vi.stubGlobal('URL', class {
-  static readonly createObjectURL = vi.fn().mockImplementation(() => 'mocked-url')
-  static readonly revokeObjectURL = vi.fn()
-})
+// Mock URL static methods for file handling (preserve URL constructor for Vitest module resolution)
+URL.createObjectURL = vi.fn().mockImplementation(() => 'mocked-url')
+URL.revokeObjectURL = vi.fn()
 
 // Mock fetch with proper error handling
 vi.stubGlobal('fetch', vi.fn(() =>
@@ -42,19 +40,22 @@ vi.stubGlobal('FormData', class {
 // Prevent any actual network requests from happening in tests
 const originalXMLHttpRequest = globalThis.XMLHttpRequest
 beforeAll(() => {
-  globalThis.XMLHttpRequest = vi.fn().mockImplementation(() => ({
-    open: vi.fn(),
-    send: vi.fn(),
-    setRequestHeader: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    abort: vi.fn(),
-    readyState: 4,
-    status: 200,
-    statusText: 'OK',
-    responseText: '',
-    response: '',
-  })) as any
+  // eslint-disable-next-line prefer-arrow-callback
+  globalThis.XMLHttpRequest = vi.fn(function () {
+    return {
+      open: vi.fn(),
+      send: vi.fn(),
+      setRequestHeader: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      abort: vi.fn(),
+      readyState: 4,
+      status: 200,
+      statusText: 'OK',
+      responseText: '',
+      response: '',
+    }
+  }) as any
 })
 
 afterAll(() => {
@@ -130,6 +131,8 @@ describe('MazDropzone', () => {
       },
     })
 
+    await vi.dynamicImportSettled()
+
     const file = new File(['test'], 'test.txt', { type: 'text/plain' })
     const input = wrapper.find('input[type="file"]')
 
@@ -156,6 +159,8 @@ describe('MazDropzone', () => {
         multiple: true,
       },
     })
+
+    await vi.dynamicImportSettled()
 
     const file1 = new File(['test1'], 'test1.txt', { type: 'text/plain' })
     const file2 = new File(['test2'], 'test2.txt', { type: 'text/plain' })

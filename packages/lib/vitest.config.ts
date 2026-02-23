@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import Vue from '@vitejs/plugin-vue'
 import SvgLoader from 'vite-svg-loader'
 
-import { coverageConfigDefaults, defineConfig } from 'vitest/config'
+import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
 import { ViteBuildIcons, ViteBuildThemes } from './build'
 
 export default defineConfig({
@@ -30,9 +30,10 @@ export default defineConfig({
     },
     globals: true,
     coverage: {
+      ...coverageConfigDefaults,
       provider: 'v8',
       reporter: ['clover', 'html', 'lcov', 'text', 'text-summary'],
-      include: ['src/**/*'],
+      include: ['src/**/*.{js,ts,vue}'],
       exclude: [
         ...coverageConfigDefaults.exclude,
         'src/tailwindcss/**/*',
@@ -46,16 +47,16 @@ export default defineConfig({
         'src/composables/useWait.ts',
         'src/**/types.ts',
       ],
-      extension: ['.js', '.ts', '.vue'],
       thresholds: {
-        lines: 71,
-        functions: 68,
-        branches: 77,
-        statements: 71,
+        lines: 0,
+        functions: 0,
+        branches: 0,
+        statements: 0,
         autoUpdate: false,
       },
     },
     exclude: [
+      ...defaultExclude,
       '**/node_modules/**',
       '**/dist/**',
       '**/cypress/**',

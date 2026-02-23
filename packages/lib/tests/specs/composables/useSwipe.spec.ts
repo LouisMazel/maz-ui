@@ -8,7 +8,8 @@ const swipeHandlerMock = {
   onValuesChanged: vi.fn(),
 }
 vi.mock('@maz-ui/utils/helpers/swipeHandler', () => ({
-  Swipe: vi.fn().mockImplementation(() => swipeHandlerMock),
+  // eslint-disable-next-line prefer-arrow-callback
+  Swipe: vi.fn(function () { return swipeHandlerMock }),
 }))
 
 describe('given the useSwipe composable', () => {

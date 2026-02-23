@@ -37,15 +37,22 @@ describe('given LazyImg handler', () => {
       value: 'https://example.com/image.jpg',
     }
 
-    vi.spyOn(globalThis, 'IntersectionObserver').mockImplementation(callback => ({
-      observe: vi.fn(target => callback([{ target, isIntersecting: true } as IntersectionObserverEntry], {
-        observe: vi.fn(target => callback([{ target, isIntersecting: true } as IntersectionObserverEntry], this as unknown as IntersectionObserver)),
+    // eslint-disable-next-line prefer-arrow-callback
+    vi.spyOn(globalThis, 'IntersectionObserver').mockImplementation(function (callback: IntersectionObserverCallback) {
+      return {
+        // eslint-disable-next-line prefer-arrow-callback
+        observe: vi.fn(function (target: Element) {
+          callback([{ target, isIntersecting: true } as IntersectionObserverEntry], {
+
+            observe: vi.fn(function (target: Element) { callback([{ target, isIntersecting: true } as IntersectionObserverEntry], this as unknown as IntersectionObserver) }),
+            unobserve: vi.fn(),
+            disconnect: vi.fn(),
+          } as unknown as IntersectionObserver)
+        }),
         unobserve: vi.fn(),
         disconnect: vi.fn(),
-      } as unknown as IntersectionObserver)),
-      unobserve: vi.fn(),
-      disconnect: vi.fn(),
-    } as unknown as IntersectionObserver))
+      } as unknown as IntersectionObserver
+    })
   })
 
   afterEach(() => {
