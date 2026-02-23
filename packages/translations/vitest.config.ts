@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 
-import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
+import { coverageConfigDefaults, defineConfig } from 'vitest/config'
 
 export default defineConfig({
   plugins: [],
@@ -38,6 +38,12 @@ export default defineConfig({
         autoUpdate: true,
       },
     },
-    exclude: defaultExclude,
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/cypress/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*',
+    ],
   },
 })
