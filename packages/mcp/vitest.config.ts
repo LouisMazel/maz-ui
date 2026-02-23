@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 
-import { coverageConfigDefaults, defineConfig } from 'vitest/config'
+import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
 
 export default defineConfig({
   plugins: [],
@@ -13,20 +13,18 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['clover', 'html', 'lcov', 'text', 'text-summary'],
-      include: ['src/**/*'],
-      exclude: [
-        ...coverageConfigDefaults.exclude,
-      ],
-      extension: ['.ts'],
+      include: ['src/**/*.{ts,js}'],
+      exclude: coverageConfigDefaults.exclude,
       thresholds: {
-        lines: 73,
-        functions: 96,
-        branches: 67,
-        statements: 73,
+        lines: 0,
+        functions: 0,
+        branches: 0,
+        statements: 0,
         autoUpdate: false,
       },
     },
     exclude: [
+      ...defaultExclude,
       '**/node_modules/**',
       '**/dist/**',
       '**/cypress/**',

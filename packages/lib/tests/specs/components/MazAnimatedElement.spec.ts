@@ -5,14 +5,16 @@ const mockObserve = vi.fn()
 const mockUnobserve = vi.fn()
 const mockDisconnect = vi.fn()
 
-const mockIntersectionObserver = vi.fn()
-mockIntersectionObserver.mockReturnValue({
-  observe: mockObserve,
-  unobserve: mockUnobserve,
-  disconnect: mockDisconnect,
+// eslint-disable-next-line prefer-arrow-callback
+const mockIntersectionObserver = vi.fn(function () {
+  return {
+    observe: mockObserve,
+    unobserve: mockUnobserve,
+    disconnect: mockDisconnect,
+  }
 })
 
-globalThis.IntersectionObserver = mockIntersectionObserver
+globalThis.IntersectionObserver = mockIntersectionObserver as unknown as typeof IntersectionObserver
 
 describe('mazAnimatedElement', () => {
   beforeEach(() => {

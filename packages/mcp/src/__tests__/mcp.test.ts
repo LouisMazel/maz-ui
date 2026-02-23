@@ -72,9 +72,18 @@ describe('Given MazUiMcpServer instance', () => {
       callIndex++
     })
 
-    MockServer.mockImplementation(() => mockServer as any)
-    MockStdioServerTransport.mockImplementation(() => ({}) as any)
-    MockDocumentationService.mockImplementation(() => mockDocumentationService as any)
+    // eslint-disable-next-line prefer-arrow-callback
+    MockServer.mockImplementation(function () {
+      return mockServer as any
+    })
+    // eslint-disable-next-line prefer-arrow-callback
+    MockStdioServerTransport.mockImplementation(function () {
+      return {} as any
+    })
+    // eslint-disable-next-line prefer-arrow-callback
+    MockDocumentationService.mockImplementation(function () {
+      return mockDocumentationService as any
+    })
 
     server = new MazUiMcpServer()
   })
@@ -229,7 +238,10 @@ describe('Given MazUiMcpServer instance', () => {
   describe('When running server', () => {
     it('Then creates transport and connects server', async () => {
       const mockTransport = {}
-      MockStdioServerTransport.mockImplementation(() => mockTransport as any)
+      // eslint-disable-next-line prefer-arrow-callback
+      MockStdioServerTransport.mockImplementation(function () {
+        return mockTransport as any
+      })
 
       await server.run()
 

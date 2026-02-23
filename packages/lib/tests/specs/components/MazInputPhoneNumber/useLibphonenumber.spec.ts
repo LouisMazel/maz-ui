@@ -60,9 +60,10 @@ describe('unit Tests for useLibphonenumber.ts', () => {
     it('should return the formatted phone number for a given input', () => {
       // Mock de la classe AsYouType
       // @ts-expect-error - test case
-      AsYouType.mockImplementation(() => ({
-        input: (phoneNumber: string) => `Formatted: ${phoneNumber}`,
-      }))
+      // eslint-disable-next-line prefer-arrow-callback
+      AsYouType.mockImplementation(function () {
+        return { input: (phoneNumber: string) => `Formatted: ${phoneNumber}` }
+      })
 
       const result = getAsYouTypeFormat('US', '123-456-7890')
       expect(result).toBe('Formatted: 123-456-7890')
