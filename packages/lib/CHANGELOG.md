@@ -1,5 +1,21 @@
 # Change Log
 
+## v4.7.1...v4.7.2-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.1...v4.7.2-beta.0)
+
+### 📦 Build
+
+- Update dependencies ([#1470](https://github.com/LouisMazel/maz-ui/pull/1470))
+  - build: upgrade dependencies
+  - ci: add canary release workflow
+  - chore: use relizy canary version
+  - chore: use relizy beta version
+
+### ❤️ Contributors
+
+- Mazel ([@mazel](https://github.com/mazel))
+
 ## v4.7.0...v4.7.1
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.0...v4.7.1)
