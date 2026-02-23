@@ -1,0 +1,109 @@
+{
+  "name": "Migration Vitest v3 → v4",
+  "description": "Migrate the Maz UI monorepo from Vitest v3 to Vitest v4.0.18, updating all 5 packages (lib, utils, themes, translations, mcp) with config adaptations, snapshot regeneration, and regression fixes.",
+  "branchName": "feature/vitest-v4",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Bump Vitest dependencies to v4.0.18",
+      "description": "As a developer, I want vitest and @vitest/coverage-v8 updated to 4.0.18 across all packages so that the monorepo uses the latest major version.",
+      "acceptanceCriteria": [
+        "vitest is updated to 4.0.18 in all package.json files that reference it",
+        "@vitest/coverage-v8 is updated to 4.0.18 in all package.json files that reference it",
+        "Any other vitest-related dependency (@vitest/*) is updated to a compatible version",
+        "pnpm install runs without errors after the updates",
+        "pnpm typecheck:all passes",
+        "pnpm lint:fix:all passes"
+      ],
+      "priority": 1,
+      "passes": true,
+      "notes": "Packages with vitest config: packages/lib, packages/utils, packages/themes, packages/translations, packages/mcp",
+      "dependsOn": [],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-002",
+      "title": "Update vitest.config.ts exclude patterns",
+      "description": "As a developer, I want the vitest configs to explicitly define exclude patterns so that the removal of v3 defaults (dist, cypress, .nuxt, etc.) does not cause unwanted test file discovery.",
+      "acceptanceCriteria": [
+        "Each vitest.config.ts includes explicit exclude patterns: **/node_modules/**, **/dist/**, **/cypress/**, **/.{idea,git,cache,output,temp}/**, **/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*",
+        "Patterns are added only where relevant (no unnecessary patterns)",
+        "No non-test files are discovered by vitest",
+        "pnpm test:unit:all passes",
+        "pnpm typecheck:all passes",
+        "pnpm lint:fix:all passes"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": "In v4, exclude defaults are reduced to just node_modules and .git",
+      "dependsOn": [
+        "US-001"
+      ]
+    },
+    {
+      "id": "US-003",
+      "title": "Configure coverage.include for all packages",
+      "description": "As a developer, I want coverage.include explicitly configured in all packages with coverage config so that Codecov reports are accurate and don't show inflated coverage.",
+      "acceptanceCriteria": [
+        "coverage.include is added in vitest config of packages/lib",
+        "coverage.include is added in vitest config of packages/utils",
+        "coverage.include is added in vitest config of packages/themes",
+        "coverage.include is added in vitest config of packages/translations",
+        "coverage.include is added in vitest config of packages/mcp (if coverage is configured)",
+        "Include patterns target relevant source files (e.g., src/**/*.ts, src/**/*.vue)",
+        "Coverage reports reflect only actual source code",
+        "pnpm test:unit:all passes",
+        "pnpm typecheck:all passes",
+        "pnpm lint:fix:all passes"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": "In v4, coverage.all is removed — only covered files are included by default",
+      "dependsOn": [
+        "US-001"
+      ]
+    },
+    {
+      "id": "US-004",
+      "title": "Regenerate snapshots in v4 format",
+      "description": "As a developer, I want all snapshots regenerated in the v4 format so that tests using snapshots pass without manual intervention.",
+      "acceptanceCriteria": [
+        "All existing snapshot files are regenerated with vitest --update",
+        "Snapshots use the new v4 format (no quotes around names)",
+        "All tests using snapshots pass",
+        "pnpm test:unit:all passes",
+        "pnpm typecheck:all passes",
+        "pnpm lint:fix:all passes"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": "",
+      "dependsOn": [
+        "US-002",
+        "US-003"
+      ]
+    },
+    {
+      "id": "US-005",
+      "title": "Fix regressions from vi.mock and other breaking changes",
+      "description": "As a developer, I want any test failures caused by v4 breaking changes (vi.mock hoisting, globals access, etc.) fixed so that the full test suite passes.",
+      "acceptanceCriteria": [
+        "All vi.mock usages with factory work correctly after migration",
+        "Any globals access in vi.mock factories is fixed",
+        "Imports of vi from vitest are added where needed if globals: true is no longer sufficient",
+        "pnpm test:unit:all passes at 100% with no skips or exclusions",
+        "pnpm typecheck:all passes",
+        "pnpm lint:fix:all passes"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": "In v4, vi.mock factories are no longer automatically hoisted",
+      "dependsOn": [
+        "US-004"
+      ]
+    }
+  ],
+  "metadata": {
+    "updatedAt": "2026-02-23T21:05:10.729Z"
+  }
+}
