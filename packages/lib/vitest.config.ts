@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import Vue from '@vitejs/plugin-vue'
 import SvgLoader from 'vite-svg-loader'
 
-import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
+import { coverageConfigDefaults, defineConfig } from 'vitest/config'
 import { ViteBuildIcons, ViteBuildThemes } from './build'
 
 export default defineConfig({
@@ -56,7 +56,13 @@ export default defineConfig({
         autoUpdate: false,
       },
     },
-    exclude: defaultExclude,
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/cypress/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*',
+    ],
   },
   resolve: {
     alias: {
