@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/anchor-precedence */
 /* eslint-disable sonarjs/no-nested-template-literals */
 /* eslint-disable sonarjs/cognitive-complexity */
 
