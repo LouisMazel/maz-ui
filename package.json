@@ -63,6 +63,7 @@
     "conventional-changelog-conventionalcommits": "^9.1.0",
     "conventional-changelog-gitmoji-config": "^1.5.2",
     "cross-env": "^10.1.0",
+    "eslint": "^10.0.1",
     "glob": "^13.0.6",
     "husky": "^9.1.7",
     "lerna": "^9.0.4",

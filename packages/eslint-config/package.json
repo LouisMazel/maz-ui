@@ -46,12 +46,7 @@
     "lint:fix": "pnpm lint --fix"
   },
   "peerDependencies": {
-    "eslint": ">=9.0.0 <10.0.0"
-  },
-  "peerDependenciesMeta": {
-    "eslint": {
-      "optional": true
-    }
+    "eslint": ">=9.0.0 <11.0.0"
   },
   "dependencies": {
     "@antfu/eslint-config": "^7.4.3",
@@ -62,7 +57,7 @@
   },
   "devDependencies": {
     "@types/eslint-plugin-tailwindcss": "^3.17.0",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.1",
     "unbuild": "^3.6.1"
   },
   "lint-staged": {
