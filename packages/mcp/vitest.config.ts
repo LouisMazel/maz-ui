@@ -11,16 +11,16 @@ export default defineConfig({
     },
     globals: true,
     coverage: {
-      provider: 'v8',
+      provider: 'istanbul',
       reporter: ['clover', 'html', 'lcov', 'text', 'text-summary'],
       include: ['src/**/*.{ts,js}'],
       exclude: coverageConfigDefaults.exclude,
       thresholds: {
-        lines: 0,
-        functions: 0,
-        branches: 0,
-        statements: 0,
-        autoUpdate: false,
+        lines: 73,
+        functions: 96,
+        branches: 67,
+        statements: 73,
+        autoUpdate: true,
       },
     },
     exclude: [

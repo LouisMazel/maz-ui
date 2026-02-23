@@ -17,7 +17,7 @@ export default defineConfig({
     },
     globals: true,
     coverage: {
-      provider: 'v8',
+      provider: 'istanbul',
       reporter: ['clover', 'html', 'lcov', 'text', 'text-summary'],
       include: ['src/**/*.{js,ts,vue}'],
       exclude: [
@@ -28,11 +28,11 @@ export default defineConfig({
         'src/**/*/index.ts',
       ],
       thresholds: {
-        lines: 0,
-        functions: 0,
-        branches: 0,
-        statements: 0,
-        autoUpdate: false,
+        lines: 65,
+        functions: 87,
+        branches: 84,
+        statements: 65,
+        autoUpdate: true,
       },
     },
     exclude: [
