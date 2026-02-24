@@ -38,6 +38,10 @@ runs:
         node-version: ${{ inputs.node-version }}
         registry-url: ${{ inputs.registry-url }}
 
+    - name: Disable Nx database cache machine ID check
+      shell: bash
+      run: echo "NX_REJECT_UNKNOWN_LOCAL_CACHE=0" >> $GITHUB_ENV
+
     - name: Setup Nx cache
       uses: actions/cache@v4
       with:
