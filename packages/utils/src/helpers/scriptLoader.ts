@@ -90,7 +90,7 @@ export class ScriptLoader {
         document.head.append(script)
       }
       catch (error) {
-        throw new Error(`[ScriptLoader](init) ${error}`)
+        throw new Error(`[ScriptLoader](init) ${error}`, { cause: error })
       }
     })
   }

@@ -28,6 +28,11 @@ export function baseRules(isProduction: boolean): Partial<Rules> {
     'max-depth': ['error', { max: 4 }],
     'max-nested-callbacks': ['error', { max: 3 }],
 
+    // ESLint 10 recommended rules (not yet in @eslint/js v9)
+    'no-unassigned-vars': 'error',
+    'no-useless-assignment': 'error',
+    'preserve-caught-error': 'error',
+
     // Unicorn
     'unicorn/prefer-global-this': 'error',
 

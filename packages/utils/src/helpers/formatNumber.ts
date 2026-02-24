@@ -22,6 +22,6 @@ export function formatNumber(number: number | string, locale: string, options?: 
     return new Intl.NumberFormat(locale, filterOptions).format(Number(number))
   }
   catch (error) {
-    throw new Error(`[maz-ui](FilterNumber) ${error}`)
+    throw new Error(`[maz-ui](FilterNumber) ${error}`, { cause: error })
   }
 }
