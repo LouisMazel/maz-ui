@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type {
+  ClassValue,
   ComponentPublicInstance,
-  HTMLAttributes,
   StyleValue,
 } from 'vue'
 import type { MazBackdropProps } from './MazBackdrop.vue'
@@ -75,9 +75,10 @@ defineExpose({
 })
 
 const wrapperAttrs = computed<{
-  class?: HTMLAttributes['class']
+  class?: ClassValue
+  style: StyleValue
 }>(() => ({
-  class: attrs.class,
+  class: attrs.class as ClassValue,
   style: attrs.style as StyleValue,
 }))
 

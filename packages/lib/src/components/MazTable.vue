@@ -3,6 +3,8 @@ import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 
+type NonRecursiveClassValue = string | Record<string, any> | (string | false | null | undefined | Record<string, any>)[]
+
 export interface MazTableHeadersEnriched {
   label: string
   key?: string
@@ -11,7 +13,7 @@ export interface MazTableHeadersEnriched {
   srOnly?: boolean
   width?: string
   maxWidth?: string
-  classes?: ThHTMLAttributes['class']
+  classes?: NonRecursiveClassValue
   scope?: ThHTMLAttributes['scope']
   align?: ThHTMLAttributes['align']
   rowspan?: ThHTMLAttributes['rowspan']
@@ -24,7 +26,7 @@ type MazTableHeadersNormalized = MazTableHeadersEnriched & {
   sorted?: 'ASC' | 'DESC'
 }
 
-export type MazTableRow<T extends MazTableRow<T>> = Record<string, any> & {
+export type MazTableRow<T = Record<string, any>> = Record<string, any> & {
   selected?: boolean
   action?: (row: T) => unknown
   classes?: HTMLAttributes['class']
@@ -447,18 +449,16 @@ watch(
 const sortedColumnIndex = ref<number>()
 const sortType = ref<'ASC' | 'DESC'>()
 
-const headersNormalized = ref<MazTableHeadersNormalized[]>(getNormalizedHeaders())
+const headersNormalized = computed<MazTableHeadersNormalized[]>(() => (getNormalizedHeaders(props.headers)))
 
 const searchByKey = ref<string>()
-const searchByOptions = computed<MazSelectOption[]>(() => [
-  { label: messages.value.searchByInput.all, value: null },
-  ...headersNormalized.value.map((header) => {
-    return {
-      label: header.label,
-      value: header.key,
-    }
-  }),
-])
+const searchByOptions = computed<MazSelectOption[]>(() => {
+  const headerOptions: MazSelectOption[] = headersNormalized.value.map(({ label, key }) => ({
+    label,
+    value: key,
+  }))
+  return [{ label: messages.value.searchByInput.all, value: null }, ...headerOptions]
+})
 
 const searchQueryModelInternal = ref(props.searchQuery)
 watch(
@@ -527,9 +527,9 @@ const slots = useSlots()
 const hasHeader = computed<boolean>((): boolean => props.search || !!props.title || !!slots.title)
 const hasFooter = computed<boolean>(() => props.pagination)
 
-function getNormalizedHeaders(): MazTableHeadersNormalized[] {
+function getNormalizedHeaders(headers?: MazTableHeader[]): MazTableHeadersNormalized[] {
   return (
-    props.headers?.map(header =>
+    headers?.map(header =>
       typeof header === 'string'
         ? { label: header, align: props.headersAlign }
         : { align: props.headersAlign, thHeaders: header.headers, ...header },
@@ -559,9 +559,7 @@ function sortColumn(columnIndex: number) {
 }
 
 const allSelected = computed<boolean>({
-  get: () => {
-    return rowsFiltered.value.every(row => row.selected) ?? false
-  },
+  get: () => rowsFiltered.value.every(row => row.selected) ?? false,
   set: selectAll,
 })
 

@@ -90,7 +90,7 @@
     "vite-plugin-lib-inject-css": "^2.2.2",
     "vite-svg-loader": "^5.1.0",
     "vitest": "^4.0.18",
-    "vue": "^3.5.28",
+    "vue": "^3.5.29",
     "vue-tsc": "^3.2.5"
   },
   "lint-staged": {
