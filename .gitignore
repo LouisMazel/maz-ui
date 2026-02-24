@@ -6,7 +6,7 @@ coverage
 *.tsbuildinfo
 **/*.tsbuildinfo.nx
 .nx
-lerna-debug.log*
+
 .cursor/rules
 CLAUDE.md
 dist
