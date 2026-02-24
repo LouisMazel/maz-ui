@@ -27,4 +27,4 @@ jobs:
         run: pnpm build:packages
 
       - name: Build docs
-        run: pnpm -F docs build
+        run: pnpm exec nx run docs:build

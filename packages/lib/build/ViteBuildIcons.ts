@@ -6,7 +6,7 @@ import { execPromise, logger } from '@maz-ui/node'
 
 async function buildIcons() {
   try {
-    await execPromise('pnpm -F @maz-ui/icons build')
+    await execPromise('pnpm exec nx run @maz-ui/icons:build')
 
     logger.success('[BuildIcons] ✅ icons built')
   }

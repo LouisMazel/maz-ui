@@ -25,7 +25,7 @@ jobs:
       - name: Build docs
         env:
           VITE_GITHUB_TOKEN: ${{ secrets.GH_TOKEN_STARS }}
-        run: pnpm -F docs build
+        run: pnpm exec nx run docs:build
 
       - name: Deploy to Hostinger
         env:

@@ -7,8 +7,7 @@ export function ViteBuildMazCli(): Plugin {
     name: 'vite-build-maz-cli',
     async buildEnd() {
       try {
-        await execPromise('pnpm -F @maz-ui/cli typecheck')
-        await execPromise('pnpm -F @maz-ui/cli build')
+        await execPromise('pnpm exec nx run @maz-ui/cli:build')
 
         logger.success('[BuildMazCli] ✅ maz cli built')
       }
