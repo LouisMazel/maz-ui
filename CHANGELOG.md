@@ -1,5 +1,24 @@
 # Change Log
 
+## v4.7.1...v4.7.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.1...v4.7.2)
+
+### 📦 Build
+
+- Update dependencies ([#1470](https://github.com/LouisMazel/maz-ui/pull/1470))
+  - build: upgrade dependencies
+  - ci: add canary release workflow
+  - chore: use relizy canary version
+  - chore: use relizy beta version
+
+- Migrate to eslint v10 ([#1474](https://github.com/LouisMazel/maz-ui/pull/1474))
+- Upgrade dependencies ([#1476](https://github.com/LouisMazel/maz-ui/pull/1476))
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.1...v4.7.2-beta.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.1...v4.7.2-beta.0)

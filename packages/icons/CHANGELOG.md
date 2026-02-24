@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.7.1...v4.7.2
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.1...v4.7.2)
+
+### 📦 Build
+
+- Migrate to eslint v10 ([#1474](https://github.com/LouisMazel/maz-ui/pull/1474))
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.6.2...v4.7.0
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.6.2...v4.7.0)
