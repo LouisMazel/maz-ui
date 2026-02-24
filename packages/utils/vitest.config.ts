@@ -32,7 +32,7 @@ export default defineConfig({
         functions: 100,
         branches: 89.43,
         statements: 95.12,
-        autoUpdate: true,
+        autoUpdate: !process.env.CI,
       },
     },
     exclude: [

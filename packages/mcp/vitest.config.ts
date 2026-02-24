@@ -20,7 +20,7 @@ export default defineConfig({
         functions: 98.66,
         branches: 90.14,
         statements: 96.42,
-        autoUpdate: true,
+        autoUpdate: !process.env.CI,
       },
     },
     exclude: [

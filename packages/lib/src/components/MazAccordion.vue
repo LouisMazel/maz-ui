@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { ClassValue } from 'vue'
 import { MazPlus } from '@maz-ui/icons/MazPlus'
 import { computed, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
@@ -9,7 +10,7 @@ import MazExpandAnimation from './MazExpandAnimation.vue'
 export interface MazAccordionProps {
   id?: string
   modelValue?: number
-  contentClass?: unknown
+  contentClass?: ClassValue
 }
 
 const {
