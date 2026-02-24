@@ -190,7 +190,7 @@ export class IdleTimeout {
       this.callback({ isIdle: this.isIdle, eventType: event.type, instance: this })
     }
     catch (error) {
-      throw new Error(`[IdleTimeout](handleEvent) ${error}`)
+      throw new Error(`[IdleTimeout](handleEvent) ${error}`, { cause: error })
     }
   }
 
