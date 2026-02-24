@@ -21,7 +21,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build eslint config
-        run: pnpm -F @maz-ui/eslint-config build
+        run: pnpm exec nx run @maz-ui/eslint-config:build
 
       - name: Run linters
         run: pnpm lint:all
