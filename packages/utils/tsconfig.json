@@ -2,7 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "types": [
-      "vitest/globals"
+      "vitest/globals",
+      "node"
     ],
     "strict": true,
     "noFallthroughCasesInSwitch": true,

@@ -168,5 +168,19 @@ describe('instance', () => {
         errorSpy.mockRestore()
       })
     })
+
+    describe('when fallback loadLocale rejects during setTimeout', () => {
+      it('then it catches the fallback error without throwing', () => {
+        const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+        vi.mocked(loadLocale)
+          .mockResolvedValueOnce(undefined)
+          .mockRejectedValueOnce(new Error('fallback load failed'))
+
+        createMazUiTranslations({ locale: 'fr', fallbackLocale: 'en' })
+
+        expect(() => vi.runAllTimers()).not.toThrow()
+        errorSpy.mockRestore()
+      })
+    })
   })
 })

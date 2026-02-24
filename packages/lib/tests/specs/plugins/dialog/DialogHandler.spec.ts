@@ -76,4 +76,14 @@ describe('dialogHandler', () => {
 
     expect(callback).toHaveBeenCalled()
   })
+
+  it('should store globalOptions when provided', () => {
+    const customDialog = new DialogHandler(app, { title: 'Custom Title' })
+    expect(customDialog.globalOptions).toEqual({ title: 'Custom Title' })
+  })
+
+  it('should use default globalOptions when none provided', () => {
+    const defaultDialog = new DialogHandler(app)
+    expect(defaultDialog.globalOptions).toEqual({ identifier: 'main-dialog' })
+  })
 })

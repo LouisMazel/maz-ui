@@ -65,11 +65,14 @@ Object.defineProperty(HTMLCanvasElement.prototype, 'height', {
 })
 
 // Mock ResizeObserver for Chart.js
-vi.stubGlobal('ResizeObserver', vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-})))
+// eslint-disable-next-line prefer-arrow-callback
+vi.stubGlobal('ResizeObserver', vi.fn(function () {
+  return {
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn(),
+  }
+}))
 
 // Mock IntersectionObserver for components that use viewport detection
 export const IntersectionObserverMock = {
@@ -81,7 +84,10 @@ export const IntersectionObserverMock = {
   rootMargin: '',
   thresholds: [],
 }
-vi.stubGlobal('IntersectionObserver', vi.fn().mockImplementation(_callback => IntersectionObserverMock))
+// eslint-disable-next-line prefer-arrow-callback
+vi.stubGlobal('IntersectionObserver', vi.fn(function () {
+  return IntersectionObserverMock
+}))
 
 // Mock fetch to prevent network requests in tests
 vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
@@ -93,61 +99,68 @@ vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
 }))
 
 // Mock XMLHttpRequest to prevent network requests
-const MockXMLHttpRequest = vi.fn().mockImplementation(() => ({
-  open: vi.fn(),
-  send: vi.fn(() => {
-    // Do nothing to prevent network calls
-  }),
-  setRequestHeader: vi.fn(),
-  addEventListener: vi.fn(),
-  removeEventListener: vi.fn(),
-  abort: vi.fn(),
-  readyState: 4,
-  status: 200,
-  statusText: 'OK',
-  responseText: '',
-  response: '',
-  responseType: '',
-  responseURL: '',
-  timeout: 0,
-  upload: {
+// eslint-disable-next-line prefer-arrow-callback
+const MockXMLHttpRequest = vi.fn(function () {
+  return {
+    open: vi.fn(),
+    send: vi.fn(),
+    setRequestHeader: vi.fn(),
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
-  },
-  withCredentials: false,
-  onreadystatechange: null,
-  onload: null,
-  onerror: null,
-  ontimeout: null,
-  onabort: null,
-  onloadstart: null,
-  onloadend: null,
-  onprogress: null,
-}))
+    abort: vi.fn(),
+    readyState: 4,
+    status: 200,
+    statusText: 'OK',
+    responseText: '',
+    response: '',
+    responseType: '',
+    responseURL: '',
+    timeout: 0,
+    upload: {
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    },
+    withCredentials: false,
+    onreadystatechange: null,
+    onload: null,
+    onerror: null,
+    ontimeout: null,
+    onabort: null,
+    onloadstart: null,
+    onloadend: null,
+    onprogress: null,
+  }
+})
 
 vi.stubGlobal('XMLHttpRequest', MockXMLHttpRequest as any)
 
 // Mock Image constructor to prevent image loading
-const MockImage = vi.fn().mockImplementation(() => ({
-  addEventListener: vi.fn(),
-  removeEventListener: vi.fn(),
-  src: '',
-  onload: null,
-  onerror: null,
-  complete: true,
-  naturalWidth: 100,
-  naturalHeight: 100,
-}))
+// eslint-disable-next-line prefer-arrow-callback
+const MockImage = vi.fn(function () {
+  return {
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    src: '',
+    onload: null,
+    onerror: null,
+    complete: true,
+    naturalWidth: 100,
+    naturalHeight: 100,
+  }
+})
 vi.stubGlobal('Image', MockImage as any)
 
 // Mock WebSocket to prevent websocket connections
-vi.stubGlobal('WebSocket', vi.fn().mockImplementation(() => ({
-  send: vi.fn(),
-  close: vi.fn(),
-  addEventListener: vi.fn(),
-  removeEventListener: vi.fn(),
-  readyState: 1, // OPEN
-})))
+// eslint-disable-next-line prefer-arrow-callback
+vi.stubGlobal('WebSocket', vi.fn(function () {
+  return {
+    send: vi.fn(),
+    close: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    readyState: 1, // OPEN
+  }
+}))
 
 // Mock navigator.sendBeacon
 Object.defineProperty(globalThis.navigator, 'sendBeacon', {

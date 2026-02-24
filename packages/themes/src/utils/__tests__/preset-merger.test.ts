@@ -1,5 +1,5 @@
 import type { ThemePreset, ThemePresetOverrides } from '../../types'
-import { mergePresets } from '../preset-merger'
+import { deepMerge, mergePresets } from '../preset-merger'
 
 describe('preset-merger', () => {
   describe('given mergePresets function', () => {
@@ -255,6 +255,51 @@ describe('preset-merger', () => {
         expect(result.foundation.radius).toBe('4px')
         expect(result.foundation['border-width']).toBe('1px')
         expect(result.foundation['font-family']).toBe('Arial')
+      })
+    })
+  })
+
+  describe('given deepMerge function', () => {
+    describe('when merging flat objects', () => {
+      it('then it merges source into target', () => {
+        const result = deepMerge({ a: 1, b: 2 }, { b: 3, c: 4 })
+
+        expect(result).toEqual({ a: 1, b: 3, c: 4 })
+      })
+    })
+
+    describe('when merging nested objects', () => {
+      it('then it deep merges nested structures', () => {
+        const result = deepMerge(
+          { a: { x: 1, y: 2 }, b: 'keep' },
+          { a: { y: 3, z: 4 } },
+        )
+
+        expect(result).toEqual({ a: { x: 1, y: 3, z: 4 }, b: 'keep' })
+      })
+    })
+
+    describe('when source has undefined values', () => {
+      it('then it preserves target values', () => {
+        const result = deepMerge({ a: 1, b: 2 }, { a: undefined })
+
+        expect(result).toEqual({ a: 1, b: 2 })
+      })
+    })
+
+    describe('when source contains an array', () => {
+      it('then it replaces the target value with the array', () => {
+        const result = deepMerge({ a: [1, 2] }, { a: [3, 4] })
+
+        expect(result).toEqual({ a: [3, 4] })
+      })
+    })
+
+    describe('when source value is a primitive overriding an object', () => {
+      it('then it replaces the object with the primitive', () => {
+        const result = deepMerge({ a: { x: 1 } } as any, { a: 'string' } as any)
+
+        expect(result).toEqual({ a: 'string' })
       })
     })
   })

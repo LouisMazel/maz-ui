@@ -8,7 +8,8 @@ const swipeHandlerMock = {
   onValuesChanged: vi.fn(),
 }
 vi.mock('@maz-ui/utils/helpers/swipeHandler', () => ({
-  Swipe: vi.fn().mockImplementation(() => swipeHandlerMock),
+  // eslint-disable-next-line prefer-arrow-callback
+  Swipe: vi.fn(function () { return swipeHandlerMock }),
 }))
 
 describe('given the useSwipe composable', () => {
@@ -36,6 +37,16 @@ describe('given the useSwipe composable', () => {
 
       stop()
       expect(swipeHandlerMock.stop).toHaveBeenCalled()
+    })
+  })
+
+  describe('when element is null', () => {
+    it('then start should still call swiper.start', () => {
+      const options = { element: null }
+      const { start } = useSwipe(options)
+
+      start()
+      expect(swipeHandlerMock.start).toHaveBeenCalled()
     })
   })
 })

@@ -427,6 +427,126 @@ describe('setup-theme', () => {
       })
     })
 
+    describe('when matchMedia change event fires with auto colorMode', () => {
+      it('then it updates isDark based on media query match', () => {
+        let changeHandler: (() => void) | undefined
+        vi.stubGlobal('matchMedia', vi.fn(() => ({
+          matches: true,
+          addEventListener: vi.fn((_event: string, handler: () => void) => {
+            changeHandler = handler
+          }),
+          removeEventListener: vi.fn(),
+        })))
+        vi.mocked(isServer).mockReturnValue(false)
+        vi.mocked(getSystemColorMode).mockReturnValue('dark')
+
+        setupTheme({ preset: mockPreset, colorMode: 'auto', mode: 'both' })
+
+        if (changeHandler) {
+          changeHandler()
+        }
+
+        expect(updateDocumentClass).toHaveBeenCalled()
+      })
+    })
+
+    describe('when mutation observer callback fires', () => {
+      it('then it updates themeState based on document class', () => {
+        let mutationCallback: (() => void) | undefined
+        vi.mocked(useMutationObserver).mockImplementation((_el: any, cb: any, _opts: any) => {
+          mutationCallback = cb
+          return { stop: vi.fn() } as never
+        })
+        vi.mocked(isServer).mockReturnValue(false)
+
+        const result = setupTheme({ preset: mockPreset }) as SetupThemeReturn
+
+        document.documentElement.classList.remove('dark')
+
+        if (mutationCallback) {
+          mutationCallback()
+        }
+
+        expect(result.themeState.value.isDark).toBe(false)
+      })
+    })
+
+    describe('when mutation observer callback fires with dark class', () => {
+      it('then it sets isDark to true and updates colorMode', () => {
+        let mutationCallback: (() => void) | undefined
+        vi.mocked(useMutationObserver).mockImplementation((_el: any, cb: any, _opts: any) => {
+          mutationCallback = cb
+          return { stop: vi.fn() } as never
+        })
+        vi.mocked(isServer).mockReturnValue(false)
+
+        const result = setupTheme({ preset: mockPreset }) as SetupThemeReturn
+
+        document.documentElement.classList.add('dark')
+
+        if (mutationCallback) {
+          mutationCallback()
+        }
+
+        expect(result.themeState.value.isDark).toBe(true)
+      })
+    })
+
+    describe('when mutation observer callback fires with dark class and colorMode is light', () => {
+      it('then it updates colorMode to dark', () => {
+        let mutationCallback: (() => void) | undefined
+        vi.mocked(useMutationObserver).mockImplementation((_el: any, cb: any, _opts: any) => {
+          mutationCallback = cb
+          return { stop: vi.fn() } as never
+        })
+        vi.mocked(isServer).mockReturnValue(false)
+        vi.mocked(getColorMode).mockReturnValue('light')
+
+        const result = setupTheme({ preset: mockPreset, colorMode: 'light' }) as SetupThemeReturn
+
+        document.documentElement.classList.add('dark')
+
+        if (mutationCallback) {
+          mutationCallback()
+        }
+
+        expect(result.themeState.value.isDark).toBe(true)
+        expect(result.themeState.value.colorMode).toBe('dark')
+      })
+    })
+
+    describe('when mutation observer callback fires on server', () => {
+      it('then it returns early without updating', () => {
+        let mutationCallback: (() => void) | undefined
+        vi.mocked(useMutationObserver).mockImplementation((_el: any, cb: any, _opts: any) => {
+          mutationCallback = cb
+          return { stop: vi.fn() } as never
+        })
+
+        vi.mocked(isServer)
+          .mockReturnValueOnce(false)
+          .mockReturnValueOnce(false)
+
+        setupTheme({ preset: mockPreset })
+
+        vi.mocked(isServer).mockReturnValue(true)
+
+        if (mutationCallback) {
+          expect(() => mutationCallback!()).not.toThrow()
+        }
+      })
+    })
+
+    describe('when no preset is provided and no preset resolves', () => {
+      it('then finalizeTheme still sets up without preset', () => {
+        vi.mocked(getPreset).mockResolvedValue(undefined as any)
+
+        const result = setupTheme({}) as SetupThemeReturn
+
+        expect(result.themeState.value.preset).toBeUndefined()
+      })
+    })
+
     describe('when themeState values are set from config', () => {
       it('then it populates strategy, darkClass, darkModeStrategy, and mode from config', () => {
         const result = setupTheme({

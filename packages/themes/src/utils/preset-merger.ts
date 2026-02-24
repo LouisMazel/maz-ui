@@ -24,8 +24,11 @@ function mergeColors(base: ThemeColors, overrides?: Partial<ThemeColors>): Theme
   }
 }
 
-export function deepMerge<T extends Record<string, any>>(target: T, source: Partial<T>): T {
-  const result = { ...target }
+export function deepMerge<
+  T extends Record<string, any>,
+  S extends Record<string, any>,
+>(target: T, source: S): T & S {
+  const result = { ...target } as Record<string, any>
 
   for (const key in source) {
     const sourceValue = source[key]
@@ -36,12 +39,12 @@ export function deepMerge<T extends Record<string, any>>(target: T, source: Part
         result[key] = deepMerge(targetValue, sourceValue)
       }
       else {
-        result[key] = sourceValue as T[Extract<keyof T, string>]
+        result[key] = sourceValue
       }
     }
   }
 
-  return result
+  return result as T & S
 }
 
 function isObject(value: any): value is Record<string, any> {

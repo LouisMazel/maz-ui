@@ -1,4 +1,4 @@
-import { getOffset, getOpacityCoeff, isBetween } from '@components/MazSlider/utils'
+import { getOffset, getOpacityCoeff, getPos, isBetween } from '@components/MazSlider/utils'
 
 describe('utils', () => {
   it('should return the correct offset for an element', () => {
@@ -26,5 +26,50 @@ describe('utils', () => {
     expect(getOpacityCoeff(5, 5, 10)).toBe(0.1)
     expect(getOpacityCoeff(6, 5, 10)).toBe(0.2)
     expect(getOpacityCoeff(9, 5, 10)).toBe(0.5)
+  })
+
+  describe('getPos', () => {
+    it('should return position for mouse event', () => {
+      const elem = document.createElement('div') as HTMLDivElement
+      document.body.appendChild(elem)
+
+      const event = new MouseEvent('click', { clientX: 100, clientY: 50 })
+      const pos = getPos(event, elem)
+
+      expect(pos).toHaveProperty('x')
+      expect(pos).toHaveProperty('y')
+
+      document.body.removeChild(elem)
+    })
+
+    it('should return reversed position when isReverse is true', () => {
+      const elem = document.createElement('div') as HTMLDivElement
+      Object.defineProperty(elem, 'offsetWidth', { value: 200 })
+      Object.defineProperty(elem, 'offsetHeight', { value: 100 })
+      document.body.appendChild(elem)
+
+      const event = new MouseEvent('click', { clientX: 50, clientY: 25 })
+      const pos = getPos(event, elem, true)
+
+      expect(typeof pos.x).toBe('number')
+      expect(typeof pos.y).toBe('number')
+
+      document.body.removeChild(elem)
+    })
+
+    it('should handle touch events', () => {
+      const elem = document.createElement('div') as HTMLDivElement
+      document.body.appendChild(elem)
+
+      const touchEvent = {
+        targetTouches: [{ pageX: 100, pageY: 50 }],
+      } as unknown as TouchEvent
+
+      const pos = getPos(touchEvent, elem)
+      expect(pos).toHaveProperty('x')
+      expect(pos).toHaveProperty('y')
+
+      document.body.removeChild(elem)
+    })
   })
 })

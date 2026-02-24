@@ -93,4 +93,90 @@ describe('fullscreenImgHandler', () => {
     expect(el.getAttribute('id')).toBe('test-id')
     expect(el.classList.contains('existing-class')).toBeTruthy()
   })
+
+  it('should not create when disabled', () => {
+    binding.value = { src: 'https://example.com/image.jpg', disabled: true }
+    handler.create(el, binding)
+    expect(el.style.cursor).not.toBe('move')
+    expect(el.classList.contains('m-fullscreen-img-instance')).toBeFalsy()
+  })
+
+  it('should apply scale on hover', () => {
+    binding.value = { src: 'https://example.com/image.jpg', scaleOnHover: true }
+    handler.create(el, binding)
+    expect(el.style.transition).toBe('all 200ms ease-in-out')
+  })
+
+  it('should apply blur on hover', () => {
+    binding.value = { src: 'https://example.com/image.jpg', blurOnHover: true }
+    handler.create(el, binding)
+    expect(el.style.transition).toBe('all 200ms ease-in-out')
+  })
+
+  it('should handle mouseenter with scaleOnHover', () => {
+    binding.value = { src: 'https://example.com/image.jpg', scaleOnHover: true }
+    handler.create(el, binding)
+    el.dispatchEvent(new Event('mouseenter'))
+    expect(el.style.zIndex).toBe('1')
+    expect(el.style.transform).toBe('scale(1.04)')
+  })
+
+  it('should handle mouseenter with blurOnHover', () => {
+    binding.value = { src: 'https://example.com/image.jpg', blurOnHover: true }
+    handler.create(el, binding)
+    el.dispatchEvent(new Event('mouseenter'))
+    expect(el.style.filter).toBe('blur(3px)')
+  })
+
+  it('should handle mouseleave with scaleOnHover', () => {
+    binding.value = { src: 'https://example.com/image.jpg', scaleOnHover: true }
+    handler.create(el, binding)
+    el.dispatchEvent(new Event('mouseenter'))
+    el.dispatchEvent(new Event('mouseleave'))
+    expect(el.style.transform).toBe('')
+    expect(el.style.zIndex).toBe('')
+  })
+
+  it('should handle mouseleave with blurOnHover', () => {
+    binding.value = { src: 'https://example.com/image.jpg', blurOnHover: true }
+    handler.create(el, binding)
+    el.dispatchEvent(new Event('mouseenter'))
+    el.dispatchEvent(new Event('mouseleave'))
+    expect(el.style.filter).toBe('')
+  })
+
+  it('should throw error when no src is available', () => {
+    const imgEl = document.createElement('div')
+    expect(() => {
+      handler.create(imgEl, { value: undefined } as VFullscreenImgBinding)
+    }).toThrow('[maz-ui](fullscreen-img)')
+  })
+
+  it('should use data-src attribute when no other src', () => {
+    const imgEl = document.createElement('div')
+    imgEl.setAttribute('data-src', 'https://example.com/fallback.jpg')
+    handler.create(imgEl, { value: undefined } as VFullscreenImgBinding)
+    expect(imgEl.getAttribute('data-src')).toBe('https://example.com/fallback.jpg')
+  })
+
+  it('should use data-alt attribute', () => {
+    el.setAttribute('data-alt', 'Fallback Alt')
+    handler.create(el, binding)
+    expect(el.getAttribute('data-alt')).toBe('Fallback Alt')
+  })
+
+  it('should remove event listeners on remove', () => {
+    const removeEventListenerSpy = vi.spyOn(el, 'removeEventListener')
+    handler.create(el, binding)
+    handler.remove(el)
+    expect(removeEventListenerSpy).toHaveBeenCalledTimes(3)
+  })
+
+  it('should get allInstances', () => {
+    handler.create(el, binding)
+    document.body.appendChild(el)
+    const instances = handler.allInstances
+    expect(instances.length).toBeGreaterThanOrEqual(1)
+    document.body.removeChild(el)
+  })
 })
