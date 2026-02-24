@@ -49,6 +49,7 @@
     "eslint": ">=9.0.0 <11.0.0"
   },
   "dependencies": {
+    "//eslint-plugin-tailwindcss": "TODO: incompatible with ESLint 10+ (uses removed context.getSourceCode API). Both v3.18.2 and v4.0.0-beta.0 are affected. Tailwind CSS rules are auto-skipped at runtime when ESLint >=10 is detected. Track: https://github.com/francoismassart/eslint-plugin-tailwindcss/issues",
     "@antfu/eslint-config": "^7.4.3",
     "eslint-plugin-format": "^1.4.0",
     "eslint-plugin-sonarjs": "^4.0.0",
