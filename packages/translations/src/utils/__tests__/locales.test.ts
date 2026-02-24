@@ -59,6 +59,38 @@ describe('locales', () => {
         expect(en).not.toBe(de)
       })
     })
+
+    describe('when loading all available default locales', () => {
+      it('then it returns messages for es', async () => {
+        const messages = await loadDefaultMessages('es')
+        expect(messages).toBeDefined()
+        expect(Object.keys(messages).length).toBeGreaterThan(0)
+      })
+
+      it('then it returns messages for it', async () => {
+        const messages = await loadDefaultMessages('it')
+        expect(messages).toBeDefined()
+        expect(Object.keys(messages).length).toBeGreaterThan(0)
+      })
+
+      it('then it returns messages for ja', async () => {
+        const messages = await loadDefaultMessages('ja')
+        expect(messages).toBeDefined()
+        expect(Object.keys(messages).length).toBeGreaterThan(0)
+      })
+
+      it('then it returns messages for pt', async () => {
+        const messages = await loadDefaultMessages('pt')
+        expect(messages).toBeDefined()
+        expect(Object.keys(messages).length).toBeGreaterThan(0)
+      })
+
+      it('then it returns messages for zh-CN', async () => {
+        const messages = await loadDefaultMessages('zh-CN')
+        expect(messages).toBeDefined()
+        expect(Object.keys(messages).length).toBeGreaterThan(0)
+      })
+    })
   })
 
   describe('given getAvailableLocales function', () => {
@@ -195,6 +227,15 @@ describe('locales', () => {
         await loadLocale('en')
 
         expect(globalState.loadingPromises.has('en')).toBe(false)
+      })
+    })
+
+    describe('when loading a locale that has no default messages and no user messages', () => {
+      it('then it loads with empty messages', async () => {
+        await loadLocale('xx-unknown')
+
+        expect(globalState.loadedLocales.has('xx-unknown')).toBe(true)
+        expect(globalState.messages['xx-unknown']).toEqual({})
       })
     })
   })

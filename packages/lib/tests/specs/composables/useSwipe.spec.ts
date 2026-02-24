@@ -39,4 +39,14 @@ describe('given the useSwipe composable', () => {
       expect(swipeHandlerMock.stop).toHaveBeenCalled()
     })
   })
+
+  describe('when element is null', () => {
+    it('then start should still call swiper.start', () => {
+      const options = { element: null }
+      const { start } = useSwipe(options)
+
+      start()
+      expect(swipeHandlerMock.start).toHaveBeenCalled()
+    })
+  })
 })

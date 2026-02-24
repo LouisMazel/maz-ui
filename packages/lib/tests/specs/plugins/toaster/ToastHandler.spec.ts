@@ -29,4 +29,35 @@ describe('toastHandler', () => {
     toastHandler.warning('Warning message', { timeout: 1000 })
     // Assert that the toast with the correct message and options was displayed
   })
+
+  it('should show a message toast with default options', () => {
+    toastHandler.message('Hello world')
+  })
+
+  it('should show a message toast with button option', () => {
+    toastHandler.message('Hello', {
+      button: { text: 'OK', action: () => {} },
+    })
+  })
+
+  it('should show a message toast with multiple buttons', () => {
+    toastHandler.message('Hello', {
+      buttons: [
+        { text: 'OK', action: () => {} },
+        { text: 'Cancel', action: () => {} },
+      ],
+    })
+  })
+
+  it('should show a message toast with custom type and button', () => {
+    toastHandler.message('Hello', {
+      type: 'success',
+      button: { text: 'OK', action: () => {} },
+    })
+  })
+
+  it('should handle handler without globalOptions', () => {
+    const handler = new ToastHandler(app)
+    handler.message('Hello')
+  })
 })

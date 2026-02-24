@@ -141,4 +141,151 @@ describe('given Swipe class', () => {
       expect(swipe.yDiff).toBe(undefined)
     })
   })
+
+  describe('when handling directional swipes', () => {
+    it('then it should call onLeft for left swipe', () => {
+      const onLeft = vi.fn()
+      const swipe = new Swipe({ ...defaultOptions, onLeft, threshold: 10 })
+      swipe.start()
+
+      const touchStart = new TouchEvent('touchstart', { touches: [{ clientX: 200, clientY: 100 }] as unknown as Touch[] })
+      const touchMove = new TouchEvent('touchmove', { touches: [{ clientX: 50, clientY: 100 }] as unknown as Touch[] })
+
+      mockElement.dispatchEvent(touchStart)
+      mockElement.dispatchEvent(touchMove)
+
+      expect(onLeft).toHaveBeenCalled()
+    })
+
+    it('then it should call onRight for right swipe', () => {
+      const onRight = vi.fn()
+      const swipe = new Swipe({ ...defaultOptions, onRight, threshold: 10 })
+      swipe.start()
+
+      const touchStart = new TouchEvent('touchstart', { touches: [{ clientX: 50, clientY: 100 }] as unknown as Touch[] })
+      const touchMove = new TouchEvent('touchmove', { touches: [{ clientX: 200, clientY: 100 }] as unknown as Touch[] })
+
+      mockElement.dispatchEvent(touchStart)
+      mockElement.dispatchEvent(touchMove)
+
+      expect(onRight).toHaveBeenCalled()
+    })
+
+    it('then it should call onUp for up swipe', () => {
+      const onUp = vi.fn()
+      const swipe = new Swipe({ ...defaultOptions, onUp, threshold: 10 })
+      swipe.start()
+
+      const touchStart = new TouchEvent('touchstart', { touches: [{ clientX: 100, clientY: 200 }] as unknown as Touch[] })
+      const touchMove = new TouchEvent('touchmove', { touches: [{ clientX: 100, clientY: 50 }] as unknown as Touch[] })
+
+      mockElement.dispatchEvent(touchStart)
+      mockElement.dispatchEvent(touchMove)
+
+      expect(onUp).toHaveBeenCalled()
+    })
+
+    it('then it should call onDown for down swipe', () => {
+      const onDown = vi.fn()
+      const swipe = new Swipe({ ...defaultOptions, onDown, threshold: 10 })
+      swipe.start()
+
+      const touchStart = new TouchEvent('touchstart', { touches: [{ clientX: 100, clientY: 50 }] as unknown as Touch[] })
+      const touchMove = new TouchEvent('touchmove', { touches: [{ clientX: 100, clientY: 200 }] as unknown as Touch[] })
+
+      mockElement.dispatchEvent(touchStart)
+      mockElement.dispatchEvent(touchMove)
+
+      expect(onDown).toHaveBeenCalled()
+    })
+  })
+
+  describe('when preventDefaultOnTouchMove is true', () => {
+    it('then it should prevent default on cancelable touchmove', () => {
+      const swipe = new Swipe({ ...defaultOptions, preventDefaultOnTouchMove: true })
+      swipe.start()
+
+      const touchStart = new TouchEvent('touchstart', { touches: [{ clientX: 0, clientY: 0 }] as unknown as Touch[] })
+      const touchMove = new TouchEvent('touchmove', { cancelable: true, touches: [{ clientX: 100, clientY: 0 }] as unknown as Touch[] })
+
+      const preventSpy = vi.spyOn(touchMove, 'preventDefault')
+
+      mockElement.dispatchEvent(touchStart)
+      mockElement.dispatchEvent(touchMove)
+
+      expect(preventSpy).toHaveBeenCalled()
+    })
+  })
+
+  describe('when mousewheel event occurs with preventDefaultOnMouseWheel', () => {
+    it('then it should prevent default on the event', () => {
+      const swipe = new Swipe({ ...defaultOptions, preventDefaultOnMouseWheel: true })
+      swipe.start()
+
+      const event = new Event('mousewheel', { cancelable: true })
+      const preventSpy = vi.spyOn(event, 'preventDefault')
+
+      mockElement.dispatchEvent(event)
+
+      expect(preventSpy).toHaveBeenCalled()
+    })
+  })
+
+  describe('when stop is called with preventDefaultOnMouseWheel', () => {
+    it('then it should remove the mousewheel listener', () => {
+      const swipe = new Swipe({ ...defaultOptions, preventDefaultOnMouseWheel: true })
+      swipe.start()
+      swipe.stop()
+
+      expect(mockElement.removeEventListener).toHaveBeenCalledWith('mousewheel', expect.any(Function))
+    })
+  })
+
+  describe('when no element is provided', () => {
+    it('then it should log an error', () => {
+      const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const swipe = new Swipe({})
+      swipe.start()
+
+      expect(spy).toHaveBeenCalledWith(
+        '[maz-ui][SwipeHandler](setElement) Element should be provided. Its can be a string selector or an HTMLElement',
+      )
+    })
+  })
+
+  describe('when touchmove occurs without prior touchstart', () => {
+    it('then it should not compute diffs', () => {
+      const swipe = new Swipe(defaultOptions)
+      swipe.start()
+
+      const touchMove = new TouchEvent('touchmove', { touches: [{ clientX: 100, clientY: 50 }] as unknown as Touch[] })
+      mockElement.dispatchEvent(touchMove)
+
+      expect(swipe.xDiff).toBeUndefined()
+      expect(swipe.yDiff).toBeUndefined()
+    })
+  })
+
+  describe('when triggerOnEnd is true and swipe distance exceeds threshold', () => {
+    it('then it should call direction callbacks on touchend and reset values', () => {
+      const onLeft = vi.fn()
+      const onValuesChanged = vi.fn()
+      const swipe = new Swipe({ ...defaultOptions, onLeft, onValuesChanged, triggerOnEnd: true, threshold: 10 })
+      swipe.start()
+
+      const touchStart = new TouchEvent('touchstart', { touches: [{ clientX: 200, clientY: 100 }] as unknown as Touch[] })
+      const touchMove = new TouchEvent('touchmove', { touches: [{ clientX: 50, clientY: 100 }] as unknown as Touch[] })
+      const touchEnd = new TouchEvent('touchend')
+
+      mockElement.dispatchEvent(touchStart)
+      mockElement.dispatchEvent(touchMove)
+
+      expect(onLeft).not.toHaveBeenCalled()
+
+      mockElement.dispatchEvent(touchEnd)
+
+      expect(onLeft).toHaveBeenCalled()
+      expect(swipe.xStart).toBeUndefined()
+    })
+  })
 })

@@ -141,6 +141,16 @@ describe('get-preset', () => {
       })
     })
 
+    describe('when pristine string is provided', () => {
+      it('then it returns pristine preset', async () => {
+        const result = await getPreset('pristine')
+
+        expect(result).toBeDefined()
+        expect(result.name).toBe('pristine')
+        expect(result.colors).toBeDefined()
+      })
+    })
+
     describe('when unknown preset string is provided', () => {
       it('then it throws TypeError', async () => {
         await expect(getPreset('unknown' as never)).rejects.toThrow(

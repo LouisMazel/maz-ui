@@ -222,6 +222,22 @@ describe('useTheme', () => {
       })
     })
 
+    describe('when strategy is buildtime', () => {
+      it('then it does not call injectCSS after updateTheme', async () => {
+        const buildtimeState: ThemeState = {
+          ...mockThemeState,
+          strategy: 'buildtime',
+        }
+        vi.mocked(inject).mockReturnValue({ value: buildtimeState })
+        vi.mocked(mergePresets).mockReturnValue({ ...mazUi, name: 'merged' })
+
+        const { updateTheme } = useTheme()
+        await updateTheme({ foundation: { radius: '1rem' } } as ThemePresetOverrides)
+
+        expect(injectCSS).not.toHaveBeenCalled()
+      })
+    })
+
     describe('when preset is not found', () => {
       it('then it logs error and returns', async () => {
         vi.mocked(inject).mockReturnValue(mockRefThemeState)
