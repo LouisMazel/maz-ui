@@ -9,6 +9,6 @@ export default defineConfig(
     tailwindcss: false,
   },
   {
-    ignores: ['./packages/**/*', './apps/**/*', './tools/**/*'],
+    ignores: ['./packages/**/*', './apps/**/*', './tools/**/*', './plans/**/*'],
   },
 )
