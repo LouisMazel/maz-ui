@@ -38,14 +38,12 @@ runs:
         node-version: ${{ inputs.node-version }}
         registry-url: ${{ inputs.registry-url }}
 
-    - name: Accept Nx cache from other CI runners
-      shell: bash
-      run: echo "NX_REJECT_UNKNOWN_LOCAL_CACHE=0" >> $GITHUB_ENV
-
     - name: Setup Nx cache
       uses: actions/cache@v4
       with:
-        path: .nx/cache
+        path: |
+          .nx/cache
+          .nx/workspace-data
         key: ${{ runner.os }}-nx-${{ hashFiles('nx.json', 'pnpm-lock.yaml') }}
         restore-keys: |
           ${{ runner.os }}-nx-${{ hashFiles('nx.json', 'pnpm-lock.yaml') }}

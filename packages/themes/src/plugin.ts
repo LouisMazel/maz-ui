@@ -48,11 +48,11 @@ declare module 'vue' {
      * @description You should install the plugin to use this property
      * @example
      * ```ts
-     * import { MazUi } from 'maz-ui/plugins/maz-ui'
+     * import { MazUiTheme } from '@maz-ui/themes'
      * import { createApp } from 'vue'
      *
      * const app = createApp(App)
-     * app.use(MazUi)
+     * app.use(MazUiTheme, { preset: mazUi })
      *
      * const { setColorMode, toggleDarkMode } = useTheme()
      * setColorMode('dark')

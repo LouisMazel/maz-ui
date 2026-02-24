@@ -16,7 +16,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Build packages
-        run: pnpm -F @maz-ui/node build
+        run: pnpm exec nx run @maz-ui/node:build
 
       - name: Check peer vs dev dependencies
         run: node .github/scripts/check-peer-deps.mjs
