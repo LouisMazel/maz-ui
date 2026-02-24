@@ -3,12 +3,12 @@ import type { MazUiThemeOptions } from '../plugin'
 import type { ThemePreset, ThemeState } from '../types'
 import { isServer } from '@maz-ui/utils'
 import { ref, watch } from 'vue'
-import { useMutationObserver } from '../../../lib/src/composables/useMutationObserver'
 import { getColorMode, getSavedColorMode, getSystemColorMode } from './get-color-mode'
 import { getPreset } from './get-preset'
 import { injectThemeCSS } from './inject-theme-css'
 import { mergePresets } from './preset-merger'
 import { updateDocumentClass } from './update-document-class'
+import { useMutationObserver } from './use-mutation-observer'
 
 function watchColorSchemeFromMedia(themeState: Ref<ThemeState>): () => void {
   if (isServer())

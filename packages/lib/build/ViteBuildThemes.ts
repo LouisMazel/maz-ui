@@ -6,7 +6,7 @@ import { execPromise, logger } from '@maz-ui/node'
 
 async function buildThemes() {
   try {
-    await execPromise('pnpm -F @maz-ui/themes build')
+    await execPromise('pnpm exec nx run @maz-ui/themes:build')
 
     logger.success('[BuildThemes] ✅ themes built')
   }

@@ -40,7 +40,7 @@
     "typecheck:all": "lerna run typecheck",
     "test:unit:all": "lerna run test:unit",
     "test:unit:coverage:all": "lerna run test:unit:coverage",
-    "healthcheck": "pnpm lint:all && pnpm typecheck:all && pnpm test:unit:all && pnpm build:packages && pnpm -F docs build",
+    "healthcheck": "pnpm lint:all && pnpm typecheck:all && pnpm test:unit:all && pnpm build:packages && nx run docs:build",
     "relizy": "relizy",
     "lerna:status": "lerna changed",
     "lerna:diff": "lerna diff",

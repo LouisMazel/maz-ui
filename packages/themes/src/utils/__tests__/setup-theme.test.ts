@@ -27,7 +27,7 @@ vi.mock('@maz-ui/utils', () => ({
   isServer: vi.fn(() => false),
 }))
 
-vi.mock('../../../../lib/src/composables/useMutationObserver', () => ({
+vi.mock('../use-mutation-observer', () => ({
   useMutationObserver: vi.fn(() => ({ stop: vi.fn() })),
 }))
 
@@ -37,7 +37,7 @@ const { injectThemeCSS } = await import('../inject-theme-css')
 const { mergePresets } = await import('../preset-merger')
 const { updateDocumentClass } = await import('../update-document-class')
 const { isServer } = await import('@maz-ui/utils')
-const { useMutationObserver } = await import('../../../../lib/src/composables/useMutationObserver')
+const { useMutationObserver } = await import('../use-mutation-observer')
 const { defaultOptions, setupTheme } = await import('../setup-theme')
 
 const mockPreset: ThemePreset = {
