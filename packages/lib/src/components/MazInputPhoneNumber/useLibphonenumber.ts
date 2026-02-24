@@ -71,7 +71,7 @@ function getPhoneNumberResults({
     }
   }
   catch (error) {
-    throw new Error(`[MazInputPhoneNumber](getResultsFromPhoneNumber) ${error}`)
+    throw new Error(`[MazInputPhoneNumber](getResultsFromPhoneNumber) ${error}`, { cause: error })
   }
 }
 

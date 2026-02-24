@@ -431,7 +431,7 @@ export class MazUiMcpServer {
         throw new Error('Resource name is required')
       }
 
-      let content = ''
+      let content: string
 
       try {
         switch (type) {
@@ -477,7 +477,7 @@ export class MazUiMcpServer {
         }
       }
       catch (error) {
-        throw new Error(`Failed to read ${type} documentation for "${name}": ${getErrorMessage(error)}`)
+        throw new Error(`Failed to read ${type} documentation for "${name}": ${getErrorMessage(error)}`, { cause: error })
       }
     })
 

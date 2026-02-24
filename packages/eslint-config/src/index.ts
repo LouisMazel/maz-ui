@@ -2,6 +2,7 @@
 import type { Rules } from '@antfu/eslint-config'
 import type { MazESLintConfig, MazESLintOptions, MazESLintUserConfig } from './types'
 import { readFileSync } from 'node:fs'
+import { createRequire } from 'node:module'
 
 import { join } from 'node:path'
 import antfu from '@antfu/eslint-config'
@@ -36,6 +37,17 @@ function getPackageJson(): Record<string, any> | undefined {
   }
   catch {
     return undefined
+  }
+}
+
+function getEslintMajorVersion(): number {
+  try {
+    const _require = createRequire(import.meta.url)
+    const eslintPkg = _require('eslint/package.json')
+    return Number(eslintPkg.version.split('.')[0])
+  }
+  catch {
+    return 0
   }
 }
 
@@ -128,11 +140,18 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
   }
 
   if (opts.tailwindcss) {
-    // @ts-expect-error - tailwind.configs['flat/recommended'] is not typed correctly
-    additionalConfigs.push(...tailwind.configs['flat/recommended'])
-    additionalConfigs.push({
-      rules: tailwindcssRules,
-    })
+    // eslint-plugin-tailwindcss uses the removed `context.getSourceCode()` API and is incompatible with ESLint 10+
+    // @see https://github.com/francoismassart/eslint-plugin-tailwindcss/issues
+    if (getEslintMajorVersion() >= 10) {
+      console.warn('[maz-eslint-config] eslint-plugin-tailwindcss is not compatible with ESLint 10+ (uses removed context.getSourceCode API). Tailwind CSS rules are disabled.')
+    }
+    else {
+      // @ts-expect-error - tailwind.configs['flat/recommended'] is not typed correctly
+      additionalConfigs.push(...tailwind.configs['flat/recommended'])
+      additionalConfigs.push({
+        rules: tailwindcssRules,
+      })
+    }
   }
 
   additionalConfigs.push({

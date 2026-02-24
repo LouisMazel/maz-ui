@@ -20,6 +20,6 @@ export function formatDate(date: string | number | Date, locale: string, options
     return new Intl.DateTimeFormat(locale, opts).format(usedDate)
   }
   catch (error: unknown) {
-    throw new Error(`[maz-ui](FilterDate) ${error}`)
+    throw new Error(`[maz-ui](FilterDate) ${error}`, { cause: error })
   }
 }

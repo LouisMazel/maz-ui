@@ -30,6 +30,7 @@ export function getComponentList(inputComponentDir: string = INPUT_COMPONENT_DIR
   catch (error) {
     throw new Error(
       `[getComponentList] 🔴 Error occurred while getting component list ${error}`,
+      { cause: error },
     )
   }
 }

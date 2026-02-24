@@ -42,6 +42,6 @@ export function formatCurrency(number: number | string, locale: string, options:
     return getFormattedCurrency(number, locale, options_)
   }
   catch (error: any) {
-    throw new Error(`[maz-ui](FilterCurrency) ${error}`)
+    throw new Error(`[maz-ui](FilterCurrency) ${error}`, { cause: error })
   }
 }
