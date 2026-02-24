@@ -138,8 +138,6 @@
     "lint:fix": "pnpm lint:js:fix && pnpm lint:style:fix",
     "lint:js": "cross-env NODE_ENV=production eslint",
     "lint:js:fix": "pnpm lint:js --fix",
-    "lint:oxlint": "oxlint . -D correctness --ignore-path .gitignore",
-    "lint:oxlint:fix": "oxlint . --fix -D correctness --ignore-path .gitignore",
     "lint:style": "stylelint \"./**/*.{vue,css,scss,postcss,pcss,html}\"",
     "lint:style:fix": "pnpm lint:style --fix",
     "build": "pnpm typecheck && pnpm build:only",

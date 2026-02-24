@@ -8,7 +8,6 @@
     "preview": "vite preview",
     "build:only": "vite build",
     "type-check": "vue-tsc --build",
-    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
     "lint:eslint": "eslint . --fix",
     "vue-app:lint": "run-s lint:*"
   },
@@ -23,10 +22,8 @@
     "@tsconfig/node22": "^22.0.5",
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/tsconfig": "^0.8.1",
-    "eslint-plugin-oxlint": "^1.49.0",
     "maz-ui": "workspace:*",
     "npm-run-all2": "^8.0.4",
-    "oxlint": "^1.49.0",
     "rollup-plugin-visualizer": "^7.0.0",
     "vite-plugin-vue-devtools": "^8.0.6"
   }
