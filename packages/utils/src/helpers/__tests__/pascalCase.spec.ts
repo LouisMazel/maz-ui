@@ -37,8 +37,16 @@ describe('Given pascalCase', () => {
     })
 
     describe('When string is uppercase', () => {
-      it('Then return pascal case string', () => {
+      it('Then return pascal case string from underscores', () => {
         expect(pascalCase('HELLO_WORLD')).toBe('HelloWorld')
+      })
+
+      it('Then return pascal case string from hyphens', () => {
+        expect(pascalCase('HELLO-WORLD')).toBe('HelloWorld')
+      })
+
+      it('Then return pascal case string from spaces', () => {
+        expect(pascalCase('HELLO WORLD')).toBe('HelloWorld')
       })
     })
   })
