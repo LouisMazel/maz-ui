@@ -25,7 +25,7 @@ runs:
       run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
     - name: Setup pnpm cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ${{ env.STORE_PATH }}
         key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -38,13 +38,17 @@ runs:
         node-version: ${{ inputs.node-version }}
         registry-url: ${{ inputs.registry-url }}
 
+    - name: Accept Nx cache from other CI runners
+      shell: bash
+      run: echo "NX_REJECT_UNKNOWN_LOCAL_CACHE=0" >> $GITHUB_ENV
+
     - name: Setup Nx cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .nx/cache
-        key: ${{ runner.os }}-nx-${{ hashFiles('**/package.json', '**/pnpm-lock.yaml') }}
+        key: ${{ runner.os }}-nx-${{ hashFiles('nx.json', 'pnpm-lock.yaml') }}
         restore-keys: |
-          ${{ runner.os }}-nx-
+          ${{ runner.os }}-nx-${{ hashFiles('nx.json', 'pnpm-lock.yaml') }}
 
     - name: Install dependencies
       shell: bash
