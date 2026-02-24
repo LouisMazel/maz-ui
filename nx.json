@@ -1,36 +1,53 @@
 {
   "$schema": "https://raw.githubusercontent.com/nrwl/nx/master/packages/nx/schemas/nx-schema.json",
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": ["{workspaceRoot}/tsconfig*.json", "{workspaceRoot}/pnpm-lock.yaml"],
+    "production": [
+      "default",
+      "!{projectRoot}/**/*.spec.ts",
+      "!{projectRoot}/**/*.test.ts",
+      "!{projectRoot}/tests/**/*",
+      "!{projectRoot}/coverage/**/*"
+    ]
+  },
   "targetDefaults": {
     "build": {
       "cache": true,
-      "dependsOn": [
-        "^build",
-        "typecheck"
-      ],
-      "outputs": [
-        "{projectRoot}/dist",
-        "{projectRoot}/lib",
-        "{projectRoot}/types"
-      ]
+      "dependsOn": ["^build", "typecheck"],
+      "inputs": ["production", "^production"],
+      "outputs": ["{projectRoot}/dist", "{projectRoot}/lib", "{projectRoot}/types"]
     },
     "lint": {
       "cache": true,
+      "inputs": ["default"],
       "outputs": []
+    },
+    "lint:fix": {
+      "cache": false
     },
     "typecheck": {
       "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["^build"],
+      "inputs": ["default", "^default"],
       "outputs": []
     },
     "test:unit": {
       "cache": true,
-      "outputs": [
-        "{projectRoot}/coverage"
-      ]
+      "inputs": ["default", "^production"],
+      "outputs": []
+    },
+    "test:unit:coverage": {
+      "cache": true,
+      "inputs": ["default", "^production"],
+      "outputs": ["{projectRoot}/coverage"]
+    },
+    "dev": {
+      "cache": false
     }
   },
+  "tui": { "enabled": false },
   "parallel": 4,
-  "cacheDirectory": ".nx/cache"
+  "cacheDirectory": ".nx/cache",
+  "useDaemonProcess": true
 }
