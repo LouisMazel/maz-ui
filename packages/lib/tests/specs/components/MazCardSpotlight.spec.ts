@@ -13,12 +13,13 @@ describe('given mazCardSpotlight component', () => {
       unobserve: vi.fn(),
     }
 
-    globalThis.IntersectionObserver = vi.fn((callback) => {
+    // eslint-disable-next-line prefer-arrow-callback
+    globalThis.IntersectionObserver = vi.fn(function (callback: IntersectionObserverCallback) {
       intersectionObserverCallback = callback
       return intersectionObserverInstance
     }) as any
 
-    globalThis.requestAnimationFrame = vi.fn((callback) => {
+    globalThis.requestAnimationFrame = vi.fn((callback: FrameRequestCallback) => {
       callback(0)
       return 0
     })

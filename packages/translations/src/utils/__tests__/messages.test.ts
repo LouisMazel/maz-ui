@@ -131,6 +131,35 @@ describe('messages', () => {
         expect(result).toEqual({})
       })
     })
+
+    describe('when source is null or non-object', () => {
+      it('then it handles null gracefully', () => {
+        const result = mergeMessages({ a: 'value' } as any, null as any)
+        expect(result).toBeDefined()
+      })
+    })
+
+    describe('when source has mixed dot-notation and regular keys', () => {
+      it('then it handles both correctly', () => {
+        const target = {} as any
+        const source = { 'a.b': 'dotted', 'c': 'regular' } as any
+
+        const result = mergeMessages(target, source)
+
+        expect(result).toEqual({ a: { b: 'dotted' }, c: 'regular' })
+      })
+    })
+
+    describe('when merging with nested source overriding simple target key', () => {
+      it('then it deep merges the nested source into target', () => {
+        const target = { a: { x: 'keep' } } as any
+        const source = { a: { b: 'nested' } } as any
+
+        const result = mergeMessages(target, source)
+
+        expect(result).toEqual({ a: { x: 'keep', b: 'nested' } })
+      })
+    })
   })
 
   describe('given interpolate function', () => {

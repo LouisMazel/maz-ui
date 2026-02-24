@@ -30,10 +30,10 @@ export default defineConfig({
     },
     globals: true,
     coverage: {
-      provider: 'v8',
-      all: true,
+      ...coverageConfigDefaults,
+      provider: 'istanbul',
       reporter: ['clover', 'html', 'lcov', 'text', 'text-summary'],
-      include: ['src/**/*'],
+      include: ['src/**/*.{js,ts,vue}'],
       exclude: [
         ...coverageConfigDefaults.exclude,
         'src/tailwindcss/**/*',
@@ -47,16 +47,22 @@ export default defineConfig({
         'src/composables/useWait.ts',
         'src/**/types.ts',
       ],
-      extension: ['.js', '.ts', '.vue'],
       thresholds: {
-        lines: 71,
-        functions: 68,
-        branches: 77,
-        statements: 71,
-        autoUpdate: false,
+        lines: 83.65,
+        functions: 83.23,
+        branches: 78.6,
+        statements: 83.72,
+        autoUpdate: true,
       },
     },
-    exclude: defaultExclude,
+    exclude: [
+      ...defaultExclude,
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/cypress/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*',
+    ],
   },
   resolve: {
     alias: {

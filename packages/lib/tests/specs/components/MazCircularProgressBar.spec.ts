@@ -2,14 +2,16 @@ import type { VueWrapper } from '@vue/test-utils'
 import MazCircularProgressBar from '@components/MazCircularProgressBar.vue'
 import { mount } from '@vue/test-utils'
 
-const mockIntersectionObserver = vi.fn()
-mockIntersectionObserver.mockReturnValue({
-  observe: () => null,
-  unobserve: () => null,
-  disconnect: () => null,
+// eslint-disable-next-line prefer-arrow-callback
+const mockIntersectionObserver = vi.fn(function () {
+  return {
+    observe: () => null,
+    unobserve: () => null,
+    disconnect: () => null,
+  }
 })
 
-globalThis.IntersectionObserver = mockIntersectionObserver
+globalThis.IntersectionObserver = mockIntersectionObserver as unknown as typeof IntersectionObserver
 
 describe('mazCircularProgressBar', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazCircularProgressBar>>
