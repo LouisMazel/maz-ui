@@ -21,7 +21,7 @@
     "@maz-ui/translations": "workspace:*",
     "@tsconfig/node22": "^22.0.5",
     "@vitejs/plugin-vue": "^6.0.4",
-    "@vue/tsconfig": "^0.8.1",
+    "@vue/tsconfig": "^0.9.0",
     "maz-ui": "workspace:*",
     "npm-run-all2": "^8.0.4",
     "rollup-plugin-visualizer": "^7.0.0",
