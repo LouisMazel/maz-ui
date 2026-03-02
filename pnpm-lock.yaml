@@ -437,8 +437,8 @@ importers:
         specifier: workspace:*
         version: link:../eslint-config
       '@modelcontextprotocol/inspector':
-        specifier: ^0.20.0
-        version: 0.20.0(@preact/signals-core@1.13.0)(@swc/core@1.15.13)(@types/node@25.3.0)(@types/react@19.2.14)(typescript@5.9.3)
+        specifier: ^0.21.1
+        version: 0.21.1(@preact/signals-core@1.13.0)(@swc/core@1.15.13)(@types/node@25.3.0)(@types/react@19.2.14)(typescript@5.9.3)
       '@swc/core':
         specifier: 1.15.13
         version: 1.15.13
@@ -2340,8 +2340,8 @@ packages:
     resolution: {integrity: sha512-ORgRw9dtPynSrCkweM8MYWMvNs+2BohWW3NybftlOVOmB8cXBgOSbAHIyyyRzFHUPb12g2TxxRTtuH5Ey65WBQ==}
     engines: {node: '>=18.0.0'}
 
-  '@mcp-ui/client@6.0.0':
-    resolution: {integrity: sha512-dHIQGjFOoBWBntSRUJH5YFeq7xi2rEPS0EwokeNAnMg6xrjGjvNd6vTWDHFRC04OlO/ogvM1r5+xUoo0OETaaQ==}
+  '@mcp-ui/client@6.1.0':
+    resolution: {integrity: sha512-Wk/9uhu8xdOgHjiaEtAq2RbXn4WGstpFeJ6I71JCP7JC7MtvQB/qnEKDVGSbjwyLnIeZYMSILHf5E+57/YCftQ==}
     peerDependencies:
       react: ^18 || ^19
       react-dom: ^18 || ^19
@@ -2372,8 +2372,8 @@ packages:
       react-dom:
         optional: true
 
-  '@modelcontextprotocol/ext-apps@1.0.1':
-    resolution: {integrity: sha512-rAPzBbB5GNgYk216paQjGKUgbNXSy/yeR95c0ni6Y4uvhWI2AeF+ztEOqQFLBMQy/MPM+02pbVK1HaQmQjMwYQ==}
+  '@modelcontextprotocol/ext-apps@1.1.2':
+    resolution: {integrity: sha512-Gx4TEo3/F8yq1Ix6LdgLwMrKqfZqD7++eakZdbMUewrYtHeeJn3nKpeNhgEfO7nYRwonqWYomOAszWZWJS0IbA==}
     peerDependencies:
       '@modelcontextprotocol/sdk': ^1.24.0
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -2385,20 +2385,20 @@ packages:
       react-dom:
         optional: true
 
-  '@modelcontextprotocol/inspector-cli@0.20.0':
-    resolution: {integrity: sha512-T5lbD4tPOPZHCElnPW26eZEnHapsCMEhRdiis/9RHjDdgZfuXk1lee1iPc4llt0UmymG3wrFBs5Ywyal8nFZ2Q==}
+  '@modelcontextprotocol/inspector-cli@0.21.1':
+    resolution: {integrity: sha512-IuBHJXEjuprPm+YtJGunAuqS3dnDtqf5VOVkzauRGICCEbT860YnDHNhxZARo5h0iMFYwEgRJvMQQwYayEE28w==}
     hasBin: true
 
-  '@modelcontextprotocol/inspector-client@0.20.0':
-    resolution: {integrity: sha512-dxV9dj5SiIV0aoWNu/WscDXGsAHK9wJ9CtQZHDwy8dfhJQ4FKBvKxpEstt5K7KXawMV/sHRm4AGvm92h5FbOtw==}
+  '@modelcontextprotocol/inspector-client@0.21.1':
+    resolution: {integrity: sha512-IZlriZkASr0nbObb4HmNY+dw6Q2/jb126Eh2D97xasuhMZNB1TTBrIt7QHNy2TjhH/qV3acx29rgzMBIys3FAQ==}
     hasBin: true
 
-  '@modelcontextprotocol/inspector-server@0.20.0':
-    resolution: {integrity: sha512-ZQnR3axv2s7qJfbo6wEvkD0ctveugJqgH1vBjAb5FdgJb5CIPkLOQkK5qS3lqxM5g0L/OO4ep82eFvnCz7qSSw==}
+  '@modelcontextprotocol/inspector-server@0.21.1':
+    resolution: {integrity: sha512-dNPbz37aHMkuwwr/AZCnmoigDFSCbilMHkDQ2SVt0yORCgeoIX2li2La6XbmZIKAp14sCpJCKKKpmhwJ9uRiLA==}
     hasBin: true
 
-  '@modelcontextprotocol/inspector@0.20.0':
-    resolution: {integrity: sha512-GlCBFK1Vqe5xiLT5LfUCJb/yfHrCMXmO4rKOfsZ/jDcWYkwIZyUwPekK7aS8BsbscpcyNSSL2XV7qBypDTR6bw==}
+  '@modelcontextprotocol/inspector@0.21.1':
+    resolution: {integrity: sha512-9d2zJ97Bg9hHj4Qz1b06aCmIu4/Ts84H8RqqJteORJUyxaK8DGfXQ3JoS0PsU8gHoHWabFAs4HAiy/ePU8Oa2A==}
     engines: {node: '>=22.7.5'}
     hasBin: true
 
@@ -2426,8 +2426,8 @@ packages:
     resolution: {integrity: sha512-5XUvZuffe3KetyhbWwd4n2ktd7wraocCYw10tlM+/u/95iAz29GjNiuNxbCD1T6Bn1MyGc4QLVNKOWhzJkVFAw==}
     engines: {node: ^14.16.0 || >=16.0.0}
 
-  '@netlify/open-api@2.49.1':
-    resolution: {integrity: sha512-4jFX59dqSBJIlFK/qXrEmWsMDHBErS9cFSFweWmPFKRNCuIVlkeibQrRQcVtqKfek3al1UuXscVVIZEYM05LMA==}
+  '@netlify/open-api@2.49.2':
+    resolution: {integrity: sha512-0YqRW4Yn4XmZjljmuIMakwOS6ERtwpkMOz3F1j4QoFFdatZCiJ7PgkRzCGt61cR4iIBcA+mgIFmGSdjAqDjJxQ==}
     engines: {node: '>=14.8.0'}
 
   '@netlify/runtime-utils@1.3.1':
@@ -2683,58 +2683,58 @@ packages:
   '@one-ini/wasm@0.1.1':
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
 
-  '@oven/bun-darwin-aarch64@1.3.9':
-    resolution: {integrity: sha512-df7smckMWSUfaT5mzwN9Lfpd3ZGkOqo+vmQ8VV2a32gl14v6uZ/qeeo+1RlANXn8M0uzXPWWCkrKZIWSZUR0qw==}
+  '@oven/bun-darwin-aarch64@1.3.10':
+    resolution: {integrity: sha512-PXgg5gqcS/rHwa1hF0JdM1y5TiyejVrMHoBmWY/DjtfYZoFTXie1RCFOkoG0b5diOOmUcuYarMpH7CSNTqwj+w==}
     cpu: [arm64]
     os: [darwin]
 
-  '@oven/bun-darwin-x64-baseline@1.3.9':
-    resolution: {integrity: sha512-XbhsA2XAFzvFr0vPSV6SNqGxab4xHKdPmVTLqoSHAx9tffrSq/012BDptOskulwnD+YNsrJUx2D2Ve1xvfgGcg==}
+  '@oven/bun-darwin-x64-baseline@1.3.10':
+    resolution: {integrity: sha512-w1gaTlqU0IJCmJ1X+PGHkdNU1n8Gemx5YKkjhkJIguvFINXEBB5U1KG82QsT65Tk4KyNMfbLTlmy4giAvUoKfA==}
     cpu: [x64]
     os: [darwin]
 
-  '@oven/bun-darwin-x64@1.3.9':
-    resolution: {integrity: sha512-YiLxfsPzQqaVvT2a+nxH9do0YfUjrlxF3tKP0b1DDgvfgCcVKGsrQH3Wa82qHgL4dnT8h2bqi94JxXESEuPmcA==}
+  '@oven/bun-darwin-x64@1.3.10':
+    resolution: {integrity: sha512-Nhssuh7GBpP5PiDSOl3+qnoIG7PJo+ec2oomDevnl9pRY6x6aD2gRt0JE+uf+A8Om2D6gjeHCxjEdrw5ZHE8mA==}
     cpu: [x64]
     os: [darwin]
 
-  '@oven/bun-linux-aarch64-musl@1.3.9':
-    resolution: {integrity: sha512-t8uimCVBTw5f9K2QTZE5wN6UOrFETNrh/Xr7qtXT9nAOzaOnIFvYA+HcHbGfi31fRlCVfTxqm/EiCwJ1gEw9YQ==}
+  '@oven/bun-linux-aarch64-musl@1.3.10':
+    resolution: {integrity: sha512-Ui5pAgM7JE9MzHokF0VglRMkbak3lTisY4Mf1AZutPACXWgKJC5aGrgnHBfkl7QS6fEeYb0juy1q4eRznRHOsw==}
     cpu: [arm64]
     os: [linux]
 
-  '@oven/bun-linux-aarch64@1.3.9':
-    resolution: {integrity: sha512-VaNQTu0Up4gnwZLQ6/Hmho6jAlLxTQ1PwxEth8EsXHf82FOXXPV5OCQ6KC9mmmocjKlmWFaIGebThrOy8DUo4g==}
+  '@oven/bun-linux-aarch64@1.3.10':
+    resolution: {integrity: sha512-OUgPHfL6+PM2Q+tFZjcaycN3D7gdQdYlWnwMI31DXZKY1r4HINWk9aEz9t/rNaHg65edwNrt7dsv9TF7xK8xIA==}
     cpu: [arm64]
     os: [linux]
 
-  '@oven/bun-linux-x64-baseline@1.3.9':
-    resolution: {integrity: sha512-nZ12g22cy7pEOBwAxz2tp0wVqekaCn9QRKuGTHqOdLlyAqR4SCdErDvDhUWd51bIyHTQoCmj72TegGTgG0WNPw==}
+  '@oven/bun-linux-x64-baseline@1.3.10':
+    resolution: {integrity: sha512-oqvMDYpX6dGJO03HgO5bXuccEsH3qbdO3MaAiAlO4CfkBPLUXz3N0DDElg5hz0L6ktdDVKbQVE5lfe+LAUISQg==}
     cpu: [x64]
     os: [linux]
 
-  '@oven/bun-linux-x64-musl-baseline@1.3.9':
-    resolution: {integrity: sha512-3FXQgtYFsT0YOmAdMcJn56pLM5kzSl6y942rJJIl5l2KummB9Ea3J/vMJMzQk7NCAGhleZGWU/pJSS/uXKGa7w==}
+  '@oven/bun-linux-x64-musl-baseline@1.3.10':
+    resolution: {integrity: sha512-/hOZ6S1VsTX6vtbhWVL9aAnOrdpuO54mAGUWpTdMz7dFG5UBZ/VUEiK0pBkq9A1rlBk0GeD/6Y4NBFl8Ha7cRA==}
     cpu: [x64]
     os: [linux]
 
-  '@oven/bun-linux-x64-musl@1.3.9':
-    resolution: {integrity: sha512-4ZjIUgCxEyKwcKXideB5sX0KJpnHTZtu778w73VNq2uNH2fNpMZv98+DBgJyQ9OfFoRhmKn1bmLmSefvnHzI9w==}
+  '@oven/bun-linux-x64-musl@1.3.10':
+    resolution: {integrity: sha512-poVXvOShekbexHq45b4MH/mRjQKwACAC8lHp3Tz/hEDuz0/20oncqScnmKwzhBPEpqJvydXficXfBYuSim8opw==}
     cpu: [x64]
     os: [linux]
 
-  '@oven/bun-linux-x64@1.3.9':
-    resolution: {integrity: sha512-oQyAW3+ugulvXTZ+XYeUMmNPR94sJeMokfHQoKwPvVwhVkgRuMhcLGV2ZesHCADVu30Oz2MFXbgdC8x4/o9dRg==}
+  '@oven/bun-linux-x64@1.3.10':
+    resolution: {integrity: sha512-bzUgYj/PIZziB/ZesIP9HUyfvh6Vlf3od+TrbTTyVEuCSMKzDPQVW/yEbRp0tcHO3alwiEXwJDrWrHAguXlgiQ==}
     cpu: [x64]
     os: [linux]
 
-  '@oven/bun-windows-x64-baseline@1.3.9':
-    resolution: {integrity: sha512-a/+hSrrDpMD7THyXvE2KJy1skxzAD0cnW4K1WjuI/91VqsphjNzvf5t/ZgxEVL4wb6f+hKrSJ5J3aH47zPr61g==}
+  '@oven/bun-windows-x64-baseline@1.3.10':
+    resolution: {integrity: sha512-gh3UAHbUdDUG6fhLc1Csa4IGdtghue6U8oAIXWnUqawp6lwb3gOCRvp25IUnLF5vUHtgfMxuEUYV7YA2WxVutw==}
     cpu: [x64]
     os: [win32]
 
-  '@oven/bun-windows-x64@1.3.9':
-    resolution: {integrity: sha512-/d6vAmgKvkoYlsGPsRPlPmOK1slPis/F40UG02pYwypTH0wmY0smgzdFqR4YmryxFh17XrW1kITv+U99Oajk9Q==}
+  '@oven/bun-windows-x64@1.3.10':
+    resolution: {integrity: sha512-qaS1In3yfC/Z/IGQriVmF8GWwKuNqiw7feTSJWaQhH5IbL6ENR+4wGNPniZSJFaM/SKUO0e/YCRdoVBvgU4C1g==}
     cpu: [x64]
     os: [win32]
 
@@ -3450,11 +3450,11 @@ packages:
       '@preact/signals-core':
         optional: true
 
-  '@r2wc/core@1.3.0':
-    resolution: {integrity: sha512-aPBnND92Itl+SWWbWyyxdFFF0+RqKB6dptGHEdiPB8ZvnHWHlVzOfEvbEcyUYGtB6HBdsfkVuBiaGYyBFVTzVQ==}
+  '@r2wc/core@1.3.1':
+    resolution: {integrity: sha512-x9nMthXsTjqr1alE+boX1Zuzqb6/oFi4wAOdWaWcWKcrwq9M/PATK74c3DFJfRnUOkYWPlsz0e4CsFBXJGStSA==}
 
-  '@r2wc/react-to-web-component@2.1.0':
-    resolution: {integrity: sha512-m/PzgUOEiL1HxmvfP5LgBLqB7sHeRj+d1QAeZklwS4OEI2HUU+xTpT3hhJipH5DQoFInDqDTfe0lNFFKcrqk4w==}
+  '@r2wc/react-to-web-component@2.1.1':
+    resolution: {integrity: sha512-AXsIdjxK9ALv0ySWjVadUg3uJ5nS8L4H8eZMYaaWuM+9LNj9DP/r4+sMjI+6jZwb7/FqwxRPHQUq8yimQwBfOA==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -4005,8 +4005,18 @@ packages:
     cpu: [arm64]
     os: [darwin]
 
+  '@rollup/rollup-darwin-arm64@4.59.0':
+    resolution: {integrity: sha512-W2Psnbh1J8ZJw0xKAd8zdNgF9HRLkdWwwdWqubSVk0pUuQkoHnv7rx4GiF9rT4t5DIZGAsConRE3AxCdJ4m8rg==}
+    cpu: [arm64]
+    os: [darwin]
+
   '@rollup/rollup-darwin-x64@4.57.1':
     resolution: {integrity: sha512-Ji8g8ChVbKrhFtig5QBV7iMaJrGtpHelkB3lsaKzadFBe58gmjfGXAOfI5FV0lYMH8wiqsxKQ1C9B0YTRXVy4w==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@rollup/rollup-darwin-x64@4.59.0':
+    resolution: {integrity: sha512-ZW2KkwlS4lwTv7ZVsYDiARfFCnSGhzYPdiOU4IM2fDbL+QGlyAbjgSFuqNRbSthybLbIJ915UtZBtmuLrQAT/w==}
     cpu: [x64]
     os: [darwin]
 
@@ -4032,6 +4042,11 @@ packages:
 
   '@rollup/rollup-linux-arm64-gnu@4.57.1':
     resolution: {integrity: sha512-MMtej3YHWeg/0klK2Qodf3yrNzz6CGjo2UntLvk2RSPlhzgLvYEB3frRvbEF2wRKh1Z2fDIg9KRPe1fawv7C+g==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@rollup/rollup-linux-arm64-gnu@4.59.0':
+    resolution: {integrity: sha512-jYgUGk5aLd1nUb1CtQ8E+t5JhLc9x5WdBKew9ZgAXg7DBk0ZHErLHdXM24rfX+bKrFe+Xp5YuJo54I5HFjGDAA==}
     cpu: [arm64]
     os: [linux]
 
@@ -4080,6 +4095,11 @@ packages:
     cpu: [x64]
     os: [linux]
 
+  '@rollup/rollup-linux-x64-gnu@4.59.0':
+    resolution: {integrity: sha512-3AHmtQq/ppNuUspKAlvA8HtLybkDflkMuLK4DPo77DfthRb71V84/c4MlWJXixZz4uruIH4uaa07IqoAkG64fg==}
+    cpu: [x64]
+    os: [linux]
+
   '@rollup/rollup-linux-x64-musl@4.57.1':
     resolution: {integrity: sha512-HFps0JeGtuOR2convgRRkHCekD7j+gdAuXM+/i6kGzQtFhlCtQkpwtNzkNj6QhCDp7DRJ7+qC/1Vg2jt5iSOFw==}
     cpu: [x64]
@@ -4100,6 +4120,11 @@ packages:
     cpu: [arm64]
     os: [win32]
 
+  '@rollup/rollup-win32-arm64-msvc@4.59.0':
+    resolution: {integrity: sha512-V5B6mG7OrGTwnxaNUzZTDTjDS7F75PO1ae6MJYdiMu60sq0CqN5CVeVsbhPxalupvTX8gXVSU9gq+Rx1/hvu6A==}
+    cpu: [arm64]
+    os: [win32]
+
   '@rollup/rollup-win32-ia32-msvc@4.57.1':
     resolution: {integrity: sha512-P3dLS+IerxCT/7D2q2FYcRdWRl22dNbrbBEtxdWhXrfIMPP9lQhb5h4Du04mdl5Woq05jVCDPCMF7Ub0NAjIew==}
     cpu: [ia32]
@@ -4112,6 +4137,11 @@ packages:
 
   '@rollup/rollup-win32-x64-msvc@4.57.1':
     resolution: {integrity: sha512-mxRFDdHIWRxg3UfIIAwCm6NzvxG0jDX/wBN6KsQFTvKFqqg9vTrWUE68qEjHt19A5wwx5X5aUi2zuZT7YR0jrA==}
+    cpu: [x64]
+    os: [win32]
+
+  '@rollup/rollup-win32-x64-msvc@4.59.0':
+    resolution: {integrity: sha512-2HRCml6OztYXyJXAvdDXPKcawukWY2GpR5/nxKp4iBgiO3wcoEGkAaqctIbZcNB6KlUQBIqt8VYkNSj2397EfA==}
     cpu: [x64]
     os: [win32]
 
@@ -4769,6 +4799,10 @@ packages:
     resolution: {integrity: sha512-ueEepnujpqee2o5aIYnvHU6C0A42MNdsIDeqy5BydrkuC5R1ZuUFnm27EeFJGoEHJQgn3uleRvmTXaJgfXbt4g==}
     engines: {node: '>=0.4.0'}
 
+  acorn-walk@8.3.5:
+    resolution: {integrity: sha512-HEHNfbars9v4pgpW6SO1KSPkfoS0xVOM/9UzkJltjlsHZmJasxg8aXkuZa7SMf8vKGIBhpUsPluQSqhJFCqebw==}
+    engines: {node: '>=0.4.0'}
+
   acorn@7.4.1:
     resolution: {integrity: sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==}
     engines: {node: '>=0.4.0'}
@@ -5046,6 +5080,7 @@ packages:
   basic-ftp@5.0.5:
     resolution: {integrity: sha512-4Bcg1P8xhUuqcii/S0Z9wiHIrQVPMermM1any+MX5GeGD7faD3/msQUDGLol9wOcz4/jbg/WJnGqoJF6LiBdtg==}
     engines: {node: '>=10.0.0'}
+    deprecated: Security vulnerability fixed in 5.2.0, please upgrade
 
   before-after-hook@2.2.3:
     resolution: {integrity: sha512-NzUnlZexiaH/46WDhANlyR2bXRopNg4F/zuSA3OpZnllCUgRaOF2znDioDWrmbNVsuZk6l9pMquQB38cfBZwkQ==}
@@ -5084,6 +5119,10 @@ packages:
 
   brace-expansion@5.0.3:
     resolution: {integrity: sha512-fy6KJm2RawA5RcHkLa1z/ScpBeA762UF9KmZQxwIbDtRJrgLzM10depAiEQ+CXYcoiqW1/m96OAAoke2nE9EeA==}
+    engines: {node: 18 || 20 || >=22}
+
+  brace-expansion@5.0.4:
+    resolution: {integrity: sha512-h+DEnpVvxmfVefa4jFbCf5HdH5YMDXRsmKflpf1pILZWRFlTbJpxeU55nJl4Smt5HQaGzg1o6RHFPJaOqnmBDg==}
     engines: {node: 18 || 20 || >=22}
 
   braces@3.0.3:
@@ -7834,6 +7873,10 @@ packages:
     resolution: {integrity: sha512-+G4CpNBxa5MprY+04MbgOw1v7So6n5JY166pFi9KfYwT78fxScCeSNQSNzp6dpPSW2rONOps6Ocam1wFhCgoVw==}
     engines: {node: 18 || 20 || >=22}
 
+  minimatch@10.2.4:
+    resolution: {integrity: sha512-oRjTw/97aTBN0RHbYCdtF1MQfvusSIBQM0IZEgzl6426+8jSC0nF1a/GmnVLpfB9yyr6g6FTqWqiZVbxrtaCIg==}
+    engines: {node: 18 || 20 || >=22}
+
   minimatch@3.0.8:
     resolution: {integrity: sha512-6FsRAQsxQ61mw+qP1ZzbL9Bc78x2p5OqNgNpnoAFLTrX8n5Kxph0CsnhmKKNXTWjXqU5L0pGPR7hYk+XWZr60Q==}
 
@@ -7843,8 +7886,8 @@ packages:
   minimatch@3.1.3:
     resolution: {integrity: sha512-M2GCs7Vk83NxkUyQV1bkABc4yxgz9kILhHImZiBPAZ9ybuvCb0/H7lEl5XvIg3g+9d4eNotkZA5IWwYl0tibaA==}
 
-  minimatch@5.1.7:
-    resolution: {integrity: sha512-FjiwU9HaHW6YB3H4a1sFudnv93lvydNjz2lmyUXR6IwKhGI+bgL3SOZrBGn6kvvX2pJvhEkGSGjyTHN47O4rqA==}
+  minimatch@5.1.9:
+    resolution: {integrity: sha512-7o1wEA2RyMP7Iu7GNba9vc0RWWGACJOCZBJX2GJWip0ikV+wcOsgVuY9uE8CPiyQhkGFSlhuSkZPavN7u1c2Fw==}
     engines: {node: '>=10'}
 
   minimatch@9.0.1:
@@ -9568,8 +9611,8 @@ packages:
     peerDependencies:
       tailwindcss: 1 || 2 || 2.0.1-compat || 3
 
-  tailwind-merge@2.6.0:
-    resolution: {integrity: sha512-P+Vu1qXfzediirmHOC3xKGAYeZtPcV9g76X+xg2FD4tYgR71ewMA35Y3sCz3zhiN/dwefRpJX0yBcgwi1fXNQA==}
+  tailwind-merge@2.6.1:
+    resolution: {integrity: sha512-Oo6tHdpZsGpkKG88HJ8RR1rg/RdnEkQEfMoEk2x1XRI3F1AxeU+ijRXpiVUF4UbLfcxxRGw6TbUINKYdWVsQTQ==}
 
   tailwindcss@3.4.17:
     resolution: {integrity: sha512-w33E2aCvSDP0tW9RZuNXadXlkHXqFzSkQew/aIa2i/Sj8fThxwovwlXHSPXTbAHwEIhBFXAedUhP2tueAKP8Og==}
@@ -12422,12 +12465,12 @@ snapshots:
 
   '@maz-ui/utils@4.7.0': {}
 
-  '@mcp-ui/client@6.0.0(@preact/signals-core@1.13.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@mcp-ui/client@6.1.0(@preact/signals-core@1.13.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@modelcontextprotocol/ext-apps': 0.3.1(@modelcontextprotocol/sdk@1.27.0(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zod@3.25.76)
       '@modelcontextprotocol/sdk': 1.27.0(zod@3.25.76)
       '@quilted/threads': 3.3.1(@preact/signals-core@1.13.0)
-      '@r2wc/react-to-web-component': 2.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@r2wc/react-to-web-component': 2.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@remote-dom/core': 1.10.1(@preact/signals-core@1.13.0)
       '@remote-dom/react': 1.2.2(@preact/signals-core@1.13.0)(react@18.3.1)
       react: 18.3.1
@@ -12479,52 +12522,52 @@ snapshots:
       '@modelcontextprotocol/sdk': 1.27.0(zod@3.25.76)
       zod: 3.25.76
     optionalDependencies:
-      '@oven/bun-darwin-aarch64': 1.3.9
-      '@oven/bun-darwin-x64': 1.3.9
-      '@oven/bun-darwin-x64-baseline': 1.3.9
-      '@oven/bun-linux-aarch64': 1.3.9
-      '@oven/bun-linux-aarch64-musl': 1.3.9
-      '@oven/bun-linux-x64': 1.3.9
-      '@oven/bun-linux-x64-baseline': 1.3.9
-      '@oven/bun-linux-x64-musl': 1.3.9
-      '@oven/bun-linux-x64-musl-baseline': 1.3.9
-      '@oven/bun-windows-x64': 1.3.9
-      '@oven/bun-windows-x64-baseline': 1.3.9
-      '@rollup/rollup-darwin-arm64': 4.57.1
-      '@rollup/rollup-darwin-x64': 4.57.1
-      '@rollup/rollup-linux-arm64-gnu': 4.57.1
-      '@rollup/rollup-linux-x64-gnu': 4.57.1
-      '@rollup/rollup-win32-arm64-msvc': 4.57.1
-      '@rollup/rollup-win32-x64-msvc': 4.57.1
+      '@oven/bun-darwin-aarch64': 1.3.10
+      '@oven/bun-darwin-x64': 1.3.10
+      '@oven/bun-darwin-x64-baseline': 1.3.10
+      '@oven/bun-linux-aarch64': 1.3.10
+      '@oven/bun-linux-aarch64-musl': 1.3.10
+      '@oven/bun-linux-x64': 1.3.10
+      '@oven/bun-linux-x64-baseline': 1.3.10
+      '@oven/bun-linux-x64-musl': 1.3.10
+      '@oven/bun-linux-x64-musl-baseline': 1.3.10
+      '@oven/bun-windows-x64': 1.3.10
+      '@oven/bun-windows-x64-baseline': 1.3.10
+      '@rollup/rollup-darwin-arm64': 4.59.0
+      '@rollup/rollup-darwin-x64': 4.59.0
+      '@rollup/rollup-linux-arm64-gnu': 4.59.0
+      '@rollup/rollup-linux-x64-gnu': 4.59.0
+      '@rollup/rollup-win32-arm64-msvc': 4.59.0
+      '@rollup/rollup-win32-x64-msvc': 4.59.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@modelcontextprotocol/ext-apps@1.0.1(@modelcontextprotocol/sdk@1.27.0(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zod@3.25.76)':
+  '@modelcontextprotocol/ext-apps@1.1.2(@modelcontextprotocol/sdk@1.27.0(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zod@3.25.76)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.27.0(zod@3.25.76)
       zod: 3.25.76
     optionalDependencies:
-      '@oven/bun-darwin-aarch64': 1.3.9
-      '@oven/bun-darwin-x64': 1.3.9
-      '@oven/bun-darwin-x64-baseline': 1.3.9
-      '@oven/bun-linux-aarch64': 1.3.9
-      '@oven/bun-linux-aarch64-musl': 1.3.9
-      '@oven/bun-linux-x64': 1.3.9
-      '@oven/bun-linux-x64-baseline': 1.3.9
-      '@oven/bun-linux-x64-musl': 1.3.9
-      '@oven/bun-linux-x64-musl-baseline': 1.3.9
-      '@oven/bun-windows-x64': 1.3.9
-      '@oven/bun-windows-x64-baseline': 1.3.9
-      '@rollup/rollup-darwin-arm64': 4.57.1
-      '@rollup/rollup-darwin-x64': 4.57.1
-      '@rollup/rollup-linux-arm64-gnu': 4.57.1
-      '@rollup/rollup-linux-x64-gnu': 4.57.1
-      '@rollup/rollup-win32-arm64-msvc': 4.57.1
-      '@rollup/rollup-win32-x64-msvc': 4.57.1
+      '@oven/bun-darwin-aarch64': 1.3.10
+      '@oven/bun-darwin-x64': 1.3.10
+      '@oven/bun-darwin-x64-baseline': 1.3.10
+      '@oven/bun-linux-aarch64': 1.3.10
+      '@oven/bun-linux-aarch64-musl': 1.3.10
+      '@oven/bun-linux-x64': 1.3.10
+      '@oven/bun-linux-x64-baseline': 1.3.10
+      '@oven/bun-linux-x64-musl': 1.3.10
+      '@oven/bun-linux-x64-musl-baseline': 1.3.10
+      '@oven/bun-windows-x64': 1.3.10
+      '@oven/bun-windows-x64-baseline': 1.3.10
+      '@rollup/rollup-darwin-arm64': 4.59.0
+      '@rollup/rollup-darwin-x64': 4.59.0
+      '@rollup/rollup-linux-arm64-gnu': 4.59.0
+      '@rollup/rollup-linux-x64-gnu': 4.59.0
+      '@rollup/rollup-win32-arm64-msvc': 4.59.0
+      '@rollup/rollup-win32-x64-msvc': 4.59.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@modelcontextprotocol/inspector-cli@0.20.0(zod@3.25.76)':
+  '@modelcontextprotocol/inspector-cli@0.21.1(zod@3.25.76)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.27.0(zod@3.25.76)
       commander: 13.1.0
@@ -12535,10 +12578,10 @@ snapshots:
       - supports-color
       - zod
 
-  '@modelcontextprotocol/inspector-client@0.20.0(@preact/signals-core@1.13.0)(@types/react@19.2.14)':
+  '@modelcontextprotocol/inspector-client@0.21.1(@preact/signals-core@1.13.0)(@types/react@19.2.14)':
     dependencies:
-      '@mcp-ui/client': 6.0.0(@preact/signals-core@1.13.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@modelcontextprotocol/ext-apps': 1.0.1(@modelcontextprotocol/sdk@1.27.0(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zod@3.25.76)
+      '@mcp-ui/client': 6.1.0(@preact/signals-core@1.13.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@modelcontextprotocol/ext-apps': 1.1.2(@modelcontextprotocol/sdk@1.27.0(zod@3.25.76))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(zod@3.25.76)
       '@modelcontextprotocol/sdk': 1.27.0(zod@3.25.76)
       '@radix-ui/react-checkbox': 1.3.3(@types/react@19.2.14)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dialog': 1.1.15(@types/react@19.2.14)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -12562,7 +12605,7 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       react-simple-code-editor: 0.14.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       serve-handler: 6.1.6
-      tailwind-merge: 2.6.0
+      tailwind-merge: 2.6.1
       zod: 3.25.76
     transitivePeerDependencies:
       - '@cfworker/json-schema'
@@ -12572,7 +12615,7 @@ snapshots:
       - preact
       - supports-color
 
-  '@modelcontextprotocol/inspector-server@0.20.0':
+  '@modelcontextprotocol/inspector-server@0.21.1':
     dependencies:
       '@modelcontextprotocol/sdk': 1.27.0(zod@3.25.76)
       cors: 2.8.6
@@ -12589,11 +12632,11 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@modelcontextprotocol/inspector@0.20.0(@preact/signals-core@1.13.0)(@swc/core@1.15.13)(@types/node@25.3.0)(@types/react@19.2.14)(typescript@5.9.3)':
+  '@modelcontextprotocol/inspector@0.21.1(@preact/signals-core@1.13.0)(@swc/core@1.15.13)(@types/node@25.3.0)(@types/react@19.2.14)(typescript@5.9.3)':
     dependencies:
-      '@modelcontextprotocol/inspector-cli': 0.20.0(zod@3.25.76)
-      '@modelcontextprotocol/inspector-client': 0.20.0(@preact/signals-core@1.13.0)(@types/react@19.2.14)
-      '@modelcontextprotocol/inspector-server': 0.20.0
+      '@modelcontextprotocol/inspector-cli': 0.21.1(zod@3.25.76)
+      '@modelcontextprotocol/inspector-client': 0.21.1(@preact/signals-core@1.13.0)(@types/react@19.2.14)
+      '@modelcontextprotocol/inspector-server': 0.21.1
       '@modelcontextprotocol/sdk': 1.27.0(zod@3.25.76)
       concurrently: 9.2.1
       node-fetch: 3.3.2
@@ -12672,7 +12715,7 @@ snapshots:
       write-file-atomic: 6.0.0
     optional: true
 
-  '@netlify/open-api@2.49.1':
+  '@netlify/open-api@2.49.2':
     optional: true
 
   '@netlify/runtime-utils@1.3.1':
@@ -13229,37 +13272,37 @@ snapshots:
 
   '@one-ini/wasm@0.1.1': {}
 
-  '@oven/bun-darwin-aarch64@1.3.9':
+  '@oven/bun-darwin-aarch64@1.3.10':
     optional: true
 
-  '@oven/bun-darwin-x64-baseline@1.3.9':
+  '@oven/bun-darwin-x64-baseline@1.3.10':
     optional: true
 
-  '@oven/bun-darwin-x64@1.3.9':
+  '@oven/bun-darwin-x64@1.3.10':
     optional: true
 
-  '@oven/bun-linux-aarch64-musl@1.3.9':
+  '@oven/bun-linux-aarch64-musl@1.3.10':
     optional: true
 
-  '@oven/bun-linux-aarch64@1.3.9':
+  '@oven/bun-linux-aarch64@1.3.10':
     optional: true
 
-  '@oven/bun-linux-x64-baseline@1.3.9':
+  '@oven/bun-linux-x64-baseline@1.3.10':
     optional: true
 
-  '@oven/bun-linux-x64-musl-baseline@1.3.9':
+  '@oven/bun-linux-x64-musl-baseline@1.3.10':
     optional: true
 
-  '@oven/bun-linux-x64-musl@1.3.9':
+  '@oven/bun-linux-x64-musl@1.3.10':
     optional: true
 
-  '@oven/bun-linux-x64@1.3.9':
+  '@oven/bun-linux-x64@1.3.10':
     optional: true
 
-  '@oven/bun-windows-x64-baseline@1.3.9':
+  '@oven/bun-windows-x64-baseline@1.3.10':
     optional: true
 
-  '@oven/bun-windows-x64@1.3.9':
+  '@oven/bun-windows-x64@1.3.10':
     optional: true
 
   '@oxc-minify/binding-android-arm-eabi@0.112.0':
@@ -13660,11 +13703,11 @@ snapshots:
     optionalDependencies:
       '@preact/signals-core': 1.13.0
 
-  '@r2wc/core@1.3.0': {}
+  '@r2wc/core@1.3.1': {}
 
-  '@r2wc/react-to-web-component@2.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@r2wc/react-to-web-component@2.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@r2wc/core': 1.3.0
+      '@r2wc/core': 1.3.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
@@ -14166,7 +14209,13 @@ snapshots:
   '@rollup/rollup-darwin-arm64@4.57.1':
     optional: true
 
+  '@rollup/rollup-darwin-arm64@4.59.0':
+    optional: true
+
   '@rollup/rollup-darwin-x64@4.57.1':
+    optional: true
+
+  '@rollup/rollup-darwin-x64@4.59.0':
     optional: true
 
   '@rollup/rollup-freebsd-arm64@4.57.1':
@@ -14182,6 +14231,9 @@ snapshots:
     optional: true
 
   '@rollup/rollup-linux-arm64-gnu@4.57.1':
+    optional: true
+
+  '@rollup/rollup-linux-arm64-gnu@4.59.0':
     optional: true
 
   '@rollup/rollup-linux-arm64-musl@4.57.1':
@@ -14211,6 +14263,9 @@ snapshots:
   '@rollup/rollup-linux-x64-gnu@4.57.1':
     optional: true
 
+  '@rollup/rollup-linux-x64-gnu@4.59.0':
+    optional: true
+
   '@rollup/rollup-linux-x64-musl@4.57.1':
     optional: true
 
@@ -14223,6 +14278,9 @@ snapshots:
   '@rollup/rollup-win32-arm64-msvc@4.57.1':
     optional: true
 
+  '@rollup/rollup-win32-arm64-msvc@4.59.0':
+    optional: true
+
   '@rollup/rollup-win32-ia32-msvc@4.57.1':
     optional: true
 
@@ -14230,6 +14288,9 @@ snapshots:
     optional: true
 
   '@rollup/rollup-win32-x64-msvc@4.57.1':
+    optional: true
+
+  '@rollup/rollup-win32-x64-msvc@4.59.0':
     optional: true
 
   '@rushstack/node-core-library@5.14.0(@types/node@25.3.0)':
@@ -15014,6 +15075,10 @@ snapshots:
     dependencies:
       acorn: 8.16.0
 
+  acorn-walk@8.3.5:
+    dependencies:
+      acorn: 8.16.0
+
   acorn@7.4.1: {}
 
   acorn@8.16.0: {}
@@ -15321,6 +15386,10 @@ snapshots:
       balanced-match: 1.0.2
 
   brace-expansion@5.0.3:
+    dependencies:
+      balanced-match: 4.0.4
+
+  brace-expansion@5.0.4:
     dependencies:
       balanced-match: 4.0.4
 
@@ -16826,7 +16895,7 @@ snapshots:
 
   filelist@1.0.5:
     dependencies:
-      minimatch: 10.2.2
+      minimatch: 10.2.4
 
   fill-range@7.1.1:
     dependencies:
@@ -18389,6 +18458,10 @@ snapshots:
     dependencies:
       brace-expansion: 5.0.3
 
+  minimatch@10.2.4:
+    dependencies:
+      brace-expansion: 5.0.4
+
   minimatch@3.0.8:
     dependencies:
       brace-expansion: 1.1.12
@@ -18401,7 +18474,7 @@ snapshots:
     dependencies:
       brace-expansion: 1.1.12
 
-  minimatch@5.1.7:
+  minimatch@5.1.9:
     dependencies:
       brace-expansion: 2.0.2
 
@@ -18506,7 +18579,7 @@ snapshots:
 
   netlify@13.3.5:
     dependencies:
-      '@netlify/open-api': 2.49.1
+      '@netlify/open-api': 2.49.2
       lodash-es: 4.17.23
       micro-api-client: 3.3.0
       node-fetch: 3.3.2
@@ -19781,7 +19854,7 @@ snapshots:
 
   readdir-glob@1.1.3:
     dependencies:
-      minimatch: 5.1.7
+      minimatch: 5.1.9
 
   readdirp@3.6.0:
     dependencies:
@@ -20544,7 +20617,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  tailwind-merge@2.6.0: {}
+  tailwind-merge@2.6.1: {}
 
   tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.15.13)(@types/node@25.3.0)(typescript@5.9.3)):
     dependencies:
@@ -20735,7 +20808,7 @@ snapshots:
       '@tsconfig/node16': 1.0.4
       '@types/node': 25.3.0
       acorn: 8.16.0
-      acorn-walk: 8.3.4
+      acorn-walk: 8.3.5
       arg: 4.1.3
       create-require: 1.1.1
       diff: 4.0.4
