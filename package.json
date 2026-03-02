@@ -64,7 +64,7 @@
     "glob": "^13.0.6",
     "husky": "^9.1.7",
 
-    "lint-staged": "^16.2.7",
+    "lint-staged": "^16.3.1",
     "nx": "^22.5.2",
     "postcss": "^8.5.6",
     "postcss-html": "^1.8.1",
