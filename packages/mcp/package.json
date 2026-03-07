@@ -65,7 +65,7 @@
     "@maz-ui/eslint-config": "workspace:*",
     "@modelcontextprotocol/inspector": "^0.21.1",
     "@swc/core": "1.15.13",
-    "lint-staged": "^16.2.7",
+    "lint-staged": "^16.3.1",
     "prettier": "^3.8.1",
     "ts-node-maintained": "^10.9.5",
     "tsx": "^4.21.0",
