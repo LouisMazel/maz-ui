@@ -16,6 +16,8 @@ const DEFAULT_OPTIONS = {
 } satisfies RequiredDialogOptions
 
 export class DialogHandler {
+  private activeDialogs = new Map<string, { destroy: () => void }>()
+
   constructor(
     private readonly app: App,
     readonly globalOptions: DialogOptions = DEFAULT_OPTIONS,
@@ -28,14 +30,26 @@ export class DialogHandler {
       ...options,
     }
 
+    const { removeDialogFromState } = useMazDialogConfirm()
+
+    // Destroy any existing dialog with the same identifier to prevent duplicates
+    const existing = this.activeDialogs.get(props.identifier)
+    if (existing) {
+      removeDialogFromState(props.identifier)
+      existing.destroy()
+      this.activeDialogs.delete(props.identifier)
+    }
+
     const { destroy, vNode } = useMountComponent<typeof MazDialogConfirm, MazDialogConfirmProps>(MazDialogConfirm, {
       props,
       app: this.app,
     })
 
+    this.activeDialogs.set(props.identifier, { destroy })
+
     const { showDialogAndWaitChoice } = useMazDialogConfirm()
 
-    function close(): void {
+    const close = (): void => {
       if (!vNode.component?.exposed?.isActive?.value) {
         return
       }
@@ -45,10 +59,11 @@ export class DialogHandler {
 
       setTimeout(() => {
         destroy()
+        this.activeDialogs.delete(props.identifier)
       }, 700)
     }
 
-    async function runDialog() {
+    const runDialog = async () => {
       try {
         const response = await showDialogAndWaitChoice(props.identifier)
         if (props.onAccept) {
@@ -61,12 +76,18 @@ export class DialogHandler {
           props.onReject(response)
         }
       }
+      finally {
+        this.activeDialogs.delete(props.identifier)
+      }
     }
 
     runDialog()
 
     return {
-      destroy,
+      destroy: () => {
+        destroy()
+        this.activeDialogs.delete(props.identifier)
+      },
       close,
     }
   }
