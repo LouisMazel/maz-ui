@@ -48,7 +48,8 @@ jobs:
         run: pnpm test:unit:coverage:all
 
       - name: Upload coverage to Codecov (lib)
-        if: always() && github.event.pull_request.user.login != 'dependabot[bot]'
+        if: always()
+        # && github.event.pull_request.user.login != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -59,7 +60,8 @@ jobs:
           verbose: false
 
       - name: Upload coverage to Codecov (utils)
-        if: always() && github.event.pull_request.user.login != 'dependabot[bot]'
+        if: always()
+        # && github.event.pull_request.user.login != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -70,7 +72,8 @@ jobs:
           verbose: false
 
       - name: Upload coverage to Codecov (mcp)
-        if: always() && github.event.pull_request.user.login != 'dependabot[bot]'
+        if: always()
+        # && github.event.pull_request.user.login != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -81,7 +84,8 @@ jobs:
           verbose: false
 
       - name: Upload coverage to Codecov (themes)
-        if: always() && github.event.pull_request.user.login != 'dependabot[bot]'
+        if: always()
+        # && github.event.pull_request.user.login != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -92,7 +96,8 @@ jobs:
           verbose: false
 
       - name: Upload coverage to Codecov (translations)
-        if: always() && github.event.pull_request.user.login != 'dependabot[bot]'
+        if: always()
+        # && github.event.pull_request.user.login != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -103,7 +108,8 @@ jobs:
           verbose: false
 
       - name: Upload coverage to Codecov (forms)
-        if: always() && github.event.pull_request.user.login != 'dependabot[bot]'
+        if: always()
+        # && github.event.pull_request.user.login != 'dependabot[bot]'
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
