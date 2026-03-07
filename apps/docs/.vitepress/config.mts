@@ -106,10 +106,13 @@ export default defineConfig<DefaultTheme.Config>({
       text: 'Edit this page on GitHub',
     },
 
-    algolia: {
-      appId: '4ML7HKE73Z',
-      apiKey: 'a98bd8a34144a39eb5c59898582e093f',
-      indexName: 'maz-ui-3',
+    search: {
+      provider: 'algolia',
+      options: {
+        appId: '4ML7HKE73Z',
+        apiKey: 'a98bd8a34144a39eb5c59898582e093f',
+        indexName: 'maz-ui-3',
+      },
     },
   } satisfies DefaultTheme.Config,
 
@@ -155,10 +158,10 @@ export default defineConfig<DefaultTheme.Config>({
         plugins: [
           postcssUrl() as Plugin,
           postcssNested(),
-          tailwindcssNesting(),
+          tailwindcssNesting() as Plugin,
           postcssImport(),
           autoprefixer(),
-          tailwind(),
+          tailwind() as Plugin,
           postcssIsolateStyles({
             includeFiles: [/vp-doc\.css/],
           }),
