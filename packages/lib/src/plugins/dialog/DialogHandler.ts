@@ -77,7 +77,11 @@ export class DialogHandler {
         }
       }
       finally {
-        this.activeDialogs.delete(props.identifier)
+        // Wait for close animation to finish before destroying the component
+        setTimeout(() => {
+          destroy()
+          this.activeDialogs.delete(props.identifier)
+        }, 700)
       }
     }
 
