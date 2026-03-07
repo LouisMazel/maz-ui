@@ -15,8 +15,13 @@ const DEFAULT_OPTIONS = {
   identifier: 'main-dialog',
 } satisfies RequiredDialogOptions
 
+interface ActiveDialogEntry {
+  destroy: () => void
+  cleanupTimer?: ReturnType<typeof setTimeout>
+}
+
 export class DialogHandler {
-  private activeDialogs = new Map<string, { destroy: () => void }>()
+  private activeDialogs = new Map<string, ActiveDialogEntry>()
 
   constructor(
     private readonly app: App,
@@ -35,6 +40,9 @@ export class DialogHandler {
     // Destroy any existing dialog with the same identifier to prevent duplicates
     const existing = this.activeDialogs.get(props.identifier)
     if (existing) {
+      if (existing.cleanupTimer) {
+        clearTimeout(existing.cleanupTimer)
+      }
       removeDialogFromState(props.identifier)
       existing.destroy()
       this.activeDialogs.delete(props.identifier)
@@ -45,9 +53,21 @@ export class DialogHandler {
       app: this.app,
     })
 
-    this.activeDialogs.set(props.identifier, { destroy })
+    const entry: ActiveDialogEntry = { destroy }
+    this.activeDialogs.set(props.identifier, entry)
 
     const { showDialogAndWaitChoice } = useMazDialogConfirm()
+
+    const scheduleDestroy = () => {
+      const timer = setTimeout(() => {
+        // Only destroy if this entry is still the active one for this identifier
+        if (this.activeDialogs.get(props.identifier) === entry) {
+          destroy()
+          this.activeDialogs.delete(props.identifier)
+        }
+      }, 700)
+      entry.cleanupTimer = timer
+    }
 
     const close = (): void => {
       if (!vNode.component?.exposed?.isActive?.value) {
@@ -56,11 +76,7 @@ export class DialogHandler {
 
       vNode.component?.exposed?.close()
       props.onClose?.()
-
-      setTimeout(() => {
-        destroy()
-        this.activeDialogs.delete(props.identifier)
-      }, 700)
+      scheduleDestroy()
     }
 
     const runDialog = async () => {
@@ -77,11 +93,7 @@ export class DialogHandler {
         }
       }
       finally {
-        // Wait for close animation to finish before destroying the component
-        setTimeout(() => {
-          destroy()
-          this.activeDialogs.delete(props.identifier)
-        }, 700)
+        scheduleDestroy()
       }
     }
 
@@ -89,8 +101,13 @@ export class DialogHandler {
 
     return {
       destroy: () => {
+        if (entry.cleanupTimer) {
+          clearTimeout(entry.cleanupTimer)
+        }
         destroy()
-        this.activeDialogs.delete(props.identifier)
+        if (this.activeDialogs.get(props.identifier) === entry) {
+          this.activeDialogs.delete(props.identifier)
+        }
       },
       close,
     }

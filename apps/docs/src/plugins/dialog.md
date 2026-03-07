@@ -138,6 +138,11 @@ function openDialogActions() {
         },
       }
     ],
+    onClose: () => {
+      toast.info('Dialog closed', {
+        position: 'bottom',
+      })
+    },
   })
 }
 </script>
