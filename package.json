@@ -2,7 +2,7 @@
   "name": "root",
   "version": "4.7.2",
   "private": true,
-  "packageManager": "pnpm@10.28.1",
+  "packageManager": "pnpm@10.30.3",
   "description": "A standalone components library for Vue.Js & Nuxt.Js",
   "author": "LouisMazel <me@loicmazuel.com>",
   "license": "ISC",
@@ -63,7 +63,6 @@
     "eslint": "^10.0.1",
     "glob": "^13.0.6",
     "husky": "^9.1.7",
-
     "lint-staged": "^16.3.1",
     "nx": "^22.5.2",
     "postcss": "^8.5.6",
