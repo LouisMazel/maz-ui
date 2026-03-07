@@ -27,7 +27,7 @@
     "typecheck": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
-    "@clack/prompts": "^1.0.1",
+    "@clack/prompts": "^1.1.0",
     "@maz-ui/node": "workspace:*",
     "@maz-ui/utils": "workspace:*",
     "commander": "^14.0.3",

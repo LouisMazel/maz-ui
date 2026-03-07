@@ -173,7 +173,7 @@
     }
   },
   "dependencies": {
-    "@floating-ui/vue": "^1.1.10",
+    "@floating-ui/vue": "^1.1.11",
     "@maz-ui/cli": "workspace:*",
     "@maz-ui/icons": "workspace:*",
     "@maz-ui/themes": "workspace:*",
@@ -181,7 +181,7 @@
     "@maz-ui/utils": "workspace:*",
     "chart.js": "^4.5.1",
     "dayjs": "^1.11.19",
-    "libphonenumber-js": "^1.12.37",
+    "libphonenumber-js": "^1.12.38",
     "valibot": "^1.2.0",
     "vue-chartjs": "^5.3.3"
   },
@@ -191,7 +191,7 @@
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/compiler-sfc": "^3.5.29",
     "@vue/test-utils": "^2.4.6",
-    "autoprefixer": "^10.4.24",
+    "autoprefixer": "^10.4.27",
     "jsdom": "^28.1.0",
     "lightningcss": "^1.31.1",
     "nuxt": "^4.3.1",
