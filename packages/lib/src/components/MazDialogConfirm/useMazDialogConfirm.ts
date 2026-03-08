@@ -93,6 +93,7 @@ export function useMazDialogConfirm() {
     data,
     dialogState,
     showDialogAndWaitChoice,
+    removeDialogFromState,
     reject: async (currentDialog: MazDialogConfirmState, response: unknown = 'reject', onClick?: () => unknown) => {
       await onClick?.()
       return responseDialog('reject', currentDialog, response)
