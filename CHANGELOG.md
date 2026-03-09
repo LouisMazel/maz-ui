@@ -1,5 +1,22 @@
 # Change Log
 
+## v4.7.2...v4.7.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.2...v4.7.3)
+
+### 🩹 Fixes
+
+- **maz-ui:** Prevent duplicate dialogs opening with same identifier - fix #1485 ([#1486](https://github.com/LouisMazel/maz-ui/pull/1486), [#1485](https://github.com/LouisMazel/maz-ui/issues/1485))
+
+### 📦 Build
+
+- Upgrade dependencies ([68a1671b](https://github.com/LouisMazel/maz-ui/commit/68a1671b))
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.1...v4.7.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.1...v4.7.2)

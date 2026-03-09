@@ -1,5 +1,17 @@
 # Changelog
 
+## v4.7.2...v4.7.3
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.2...v4.7.3)
+
+### 📦 Build
+
+- Upgrade dependencies ([68a1671b](https://github.com/LouisMazel/maz-ui/commit/68a1671b))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.1...v4.7.2
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.1...v4.7.2)
