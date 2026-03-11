@@ -10,7 +10,7 @@ coverage:
   round: down
 
   # Coverage range (red to green)
-  range: 70..100
+  range: 80..100
 
   # Status checks configuration
   status:
@@ -18,7 +18,7 @@ coverage:
     project:
       default:
         # Require coverage for project
-        target: 68%
+        target: 80%
         # Allow 0.5% drop in coverage
         threshold: 0.5%
         # Base branch for comparison
@@ -32,7 +32,7 @@ coverage:
 
       # Per-package coverage targets
       lib:
-        target: 68%
+        target: 80%
         threshold: 0.5%
         flags:
           - lib
@@ -40,7 +40,7 @@ coverage:
           - packages/lib/
 
       utils:
-        target: 63%
+        target: 90%
         threshold: 0.5%
         flags:
           - utils
@@ -48,7 +48,7 @@ coverage:
           - packages/utils/
 
       mcp:
-        target: 68%
+        target: 90%
         threshold: 0.5%
         flags:
           - mcp
@@ -64,7 +64,7 @@ coverage:
           - packages/icons/
 
       translations:
-        target: 70%
+        target: 90%
         threshold: 1%
         flags:
           - translations
@@ -88,7 +88,7 @@ coverage:
           - packages/nuxt/
 
       themes:
-        target: 72%
+        target: 90%
         threshold: 1%
         flags:
           - themes
@@ -107,9 +107,9 @@ coverage:
     patch:
       default:
         # New code should have at least 70% coverage
-        target: 68%
+        target: 80%
         # Allow 5% variance for new code
-        threshold: 5%
+        threshold: 1%
         # Only check on pull requests
         only_pulls: true
         # Make it informational for now
