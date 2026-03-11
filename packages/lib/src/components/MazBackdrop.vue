@@ -192,13 +192,13 @@ function trapFocus(event: KeyboardEvent) {
   if (event.shiftKey) {
     if (document.activeElement === firstFocusable) {
       event.preventDefault()
-      lastFocusable.focus()
+      lastFocusable?.focus()
     }
   }
   else {
     if (document.activeElement === lastFocusable) {
       event.preventDefault()
-      firstFocusable.focus()
+      firstFocusable?.focus()
     }
   }
 }

@@ -1,3 +1,5 @@
+const pascalCaseToKebabCaseRegex = /([\da-z])([A-Z])/g
+
 export function pascalCaseToKebabCase(value: string): string {
-  return value.replaceAll(/([\da-z])([A-Z])/g, '$1-$2').toLowerCase()
+  return value.replaceAll(pascalCaseToKebabCaseRegex, '$1-$2').toLowerCase()
 }
