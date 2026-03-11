@@ -130,3 +130,15 @@ jobs:
           name: node-coverage
           fail_ci_if_error: false
           verbose: false
+
+      - name: Upload coverage to Codecov (nuxt)
+        if: always()
+        # && github.event.pull_request.user.login != 'dependabot[bot]'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/nuxt/coverage/lcov.info
+          flags: nuxt
+          name: nuxt-coverage
+          fail_ci_if_error: false
+          verbose: false
