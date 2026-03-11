@@ -405,8 +405,8 @@ importers:
         specifier: ^9.0.1
         version: 9.0.1(typescript@5.9.3)
       figlet:
-        specifier: ^1.10.0
-        version: 1.10.0
+        specifier: ^1.11.0
+        version: 1.11.0
       tinycolor2:
         specifier: ^1.6.0
         version: 1.6.0
@@ -467,8 +467,8 @@ importers:
         specifier: ^3.4.2
         version: 3.4.2
       figlet:
-        specifier: ^1.10.0
-        version: 1.10.0
+        specifier: ^1.11.0
+        version: 1.11.0
     devDependencies:
       unbuild:
         specifier: ^3.6.1
@@ -557,8 +557,8 @@ importers:
         specifier: ^14.0.3
         version: 14.0.3
       figlet:
-        specifier: ^1.10.0
-        version: 1.10.0
+        specifier: ^1.11.0
+        version: 1.11.0
       vue-docgen-cli:
         specifier: ^4.79.0
         version: 4.79.0(vue@3.5.29(typescript@5.9.3))
@@ -6774,8 +6774,8 @@ packages:
   fflate@0.7.4:
     resolution: {integrity: sha512-5u2V/CDW15QM1XbbgS+0DfPxVB+jUKhWEKuuFuHncbk3tEEqzmoXL+2KyOFuKGqOnmdIy0/davWF1CkuwtibCw==}
 
-  figlet@1.10.0:
-    resolution: {integrity: sha512-aktIwEZZ6Gp9AWdMXW4YCi0J2Ahuxo67fNJRUIWD81w8pQ0t9TS8FFpbl27ChlTLF06VkwjDesZSzEVzN75rzA==}
+  figlet@1.11.0:
+    resolution: {integrity: sha512-EEx3OS/l2bFqcUNN2NM9FPJp8vAMrgbCxsbl2hbcJNNxOEwVe3mEzrhan7TbJQViZa8mMqhihlbCaqD+LyYKTQ==}
     engines: {node: '>= 17.0.0'}
     hasBin: true
 
@@ -12914,7 +12914,7 @@ snapshots:
     dependencies:
       colorette: 2.0.20
       consola: 3.4.2
-      figlet: 1.10.0
+      figlet: 1.11.0
 
   '@maz-ui/utils@4.7.2': {}
 
@@ -17354,7 +17354,7 @@ snapshots:
 
   fflate@0.7.4: {}
 
-  figlet@1.10.0:
+  figlet@1.11.0:
     dependencies:
       commander: 14.0.3
 
