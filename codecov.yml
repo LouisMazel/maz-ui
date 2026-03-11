@@ -80,7 +80,7 @@ coverage:
           - packages/node/
 
       nuxt:
-        target: 70%
+        target: 90%
         threshold: 1%
         flags:
           - nuxt

@@ -47,6 +47,9 @@
     "prepack": "nuxt-module-build build",
     "build": "pnpm dev && nuxt-module-build build",
     "dev": "nuxt-module-build build --stub && nuxt-module-build prepare",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest watch",
+    "test:unit:coverage": "vitest run --coverage",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
     "typecheck": "nuxi typecheck --skipLibCheck"
