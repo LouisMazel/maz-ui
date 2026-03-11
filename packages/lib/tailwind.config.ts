@@ -1,11 +1,12 @@
 import { defineMazTailwindConfig } from './src/tailwindcss/tailwind.config'
 
+const regex = /<style[^>]*>([\s\S]*?)<\/style>/g
+
 export default defineMazTailwindConfig({
   content: {
     files: ['./src/**/*', 'tailwindcss/**/*'],
     transform: {
       vue: (content) => {
-        const regex = /<style[^>]*>([\s\S]*?)<\/style>/g
         return content.replaceAll(regex, '')
       },
     },

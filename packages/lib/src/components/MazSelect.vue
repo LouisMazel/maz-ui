@@ -484,6 +484,9 @@ function searchOptionWithQuery(keyPressed: string) {
   }, 1000)
 }
 
+// eslint-disable-next-line regexp/no-unused-capturing-group
+const isLetterOrNumberRegex = /^([\dA-Za-z\u0400-\u04FF])$/
+
 function mainInputKeyboardHandler(event: KeyboardEvent) {
   // Ignore keyboard shortcuts with modifier keys
   if (event.ctrlKey || event.metaKey || event.altKey) {
@@ -492,12 +495,12 @@ function mainInputKeyboardHandler(event: KeyboardEvent) {
 
   const keyPressed = event.key
 
-  if ((keyPressed === 'ArrowDown' || keyPressed === 'ArrowUp' || /^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed)) && !isOpen.value) {
+  if ((keyPressed === 'ArrowDown' || keyPressed === 'ArrowUp' || isLetterOrNumberRegex.test(keyPressed)) && !isOpen.value) {
     event.preventDefault()
     popoverComponent.value?.open()
   }
 
-  if (/^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed) && search) {
+  if (isLetterOrNumberRegex.test(keyPressed) && search) {
     event.preventDefault()
     event.stopPropagation()
     focusSearchInputAndSetQuery(keyPressed)
@@ -575,7 +578,7 @@ function keydownHandler(event: KeyboardEvent) {
 
     const currentElement = document.activeElement as HTMLElement
     const itemsElements = document.querySelectorAll<HTMLElement>(`#${instanceId.value}-option-list .m-select-list-item`)
-    const currentIndex = Array.from(itemsElements).indexOf(currentElement)
+    const currentIndex = [...itemsElements].indexOf(currentElement)
 
     if (currentIndex === -1) {
       (itemsElements[0] as HTMLElement)?.focus({ preventScroll: true })
@@ -588,7 +591,7 @@ function keydownHandler(event: KeyboardEvent) {
 
     itemsElements[nextIndex]?.focus()
   }
-  else if (!search && /^[\dA-Za-z\u0400-\u04FF]$/.test(keyPressed)) {
+  else if (!search && isLetterOrNumberRegex.test(keyPressed)) {
     searchOptionWithQuery(keyPressed)
   }
 }

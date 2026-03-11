@@ -275,7 +275,7 @@ function arrowHandler(event: KeyboardEvent) {
 
   const currentElement = document.activeElement as HTMLElement
   const itemsElements = document.querySelectorAll<HTMLElement>(`#${instanceId.value}-menu .menuitem`)
-  const currentIndex = Array.from(itemsElements).indexOf(currentElement)
+  const currentIndex = [...itemsElements].indexOf(currentElement)
 
   if (currentIndex === -1) {
     (itemsElements[0] as HTMLElement)?.focus()

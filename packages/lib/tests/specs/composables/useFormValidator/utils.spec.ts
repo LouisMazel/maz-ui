@@ -187,7 +187,7 @@ describe('given findInteractiveElements function', () => {
 
       const result = findInteractiveElements(element)
 
-      expect(result).toEqual(Array.from(mockNodeList))
+      expect(result).toEqual([...mockNodeList])
       expect(element.querySelectorAll).toHaveBeenCalledWith('input, select, textarea, button, a[href], [tabindex]:not([tabindex=\"-1\"]), [role=\"button\"], [role=\"textbox\"], [role=\"combobox\"], [role=\"listbox\"], [role=\"slider\"], [role=\"spinbutton\"], [role=\"switch\"], [role=\"checkbox\"], [role=\"radio\"], [role=\"menuitem\"], [role=\"option\"], [contenteditable=\"true\"], [data-interactive], .interactive, [data-clickable]')
     })
   })

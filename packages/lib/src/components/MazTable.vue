@@ -476,7 +476,7 @@ const searchQueryModel = computed({
 })
 
 function getSortedRows(rows: T[]) {
-  return [...rows].sort((a, b) => {
+  return rows.toSorted((a, b) => {
     if (sortedColumnIndex.value === undefined || sortType.value === undefined)
       return 0
 
