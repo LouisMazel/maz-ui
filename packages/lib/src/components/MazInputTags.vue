@@ -137,7 +137,7 @@ function removeLastTag() {
     lastIdToDelete.value = undefined
   }
   else {
-    lastIdToDelete.value = tags.value.at(-1)?.id
+    lastIdToDelete.value = tags.value?.at(-1)?.id
     currentDeleteTimeout.value = setTimeout(() => {
       lastIdToDelete.value = undefined
     }, 2000)

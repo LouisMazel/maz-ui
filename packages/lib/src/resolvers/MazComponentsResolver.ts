@@ -5,8 +5,8 @@ import type { ComponentResolver } from 'unplugin-vue-components/types'
 import { iconList } from '@maz-ui/icons/icon-list'
 import { pascalCase } from '@maz-ui/utils/helpers/pascalCase'
 
-const mazRegexPascalCase = /^(Maz[A-Z])/g
-const mazRegexKebabCase = /^(maz-[a-z])/g
+const mazRegexPascalCase = /^(Maz[A-Z])/
+const mazRegexKebabCase = /^(maz-[a-z])/
 
 /**
  * Resolver for Maz-UI (components)

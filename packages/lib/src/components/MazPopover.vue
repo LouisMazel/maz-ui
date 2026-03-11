@@ -590,7 +590,7 @@ function handleTrapFocus(event: KeyboardEvent) {
     return
 
   const firstElement = focusableElements[0] as HTMLElement
-  const lastElement = focusableElements.at(-1) as HTMLElement
+  const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
 
   if (event.shiftKey) {
     if (document.activeElement === firstElement) {

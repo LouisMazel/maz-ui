@@ -107,7 +107,7 @@ let animationFrameId: NodeJS.Timeout | null = null
 
 function triggerWordAnimations() {
   const totalWords = words.value.length + (lastWord ? 1 : 0)
-  animatedWords.value = Array.from({ length: totalWords }).fill(false)
+  animatedWords.value = Array.from({ length: totalWords }, () => false)
 
   let currentIndex = 0
 
