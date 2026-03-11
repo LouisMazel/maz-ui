@@ -72,7 +72,7 @@ coverage:
           - packages/translations/
 
       node:
-        target: 75%
+        target: 90%
         threshold: 0.5%
         flags:
           - node
