@@ -193,7 +193,7 @@
     "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4.27",
     "jsdom": "^28.1.0",
-    "lightningcss": "^1.31.1",
+    "lightningcss": "^1.32.0",
     "nuxt": "^4.3.1",
     "sass": "^1.97.3",
     "tailwindcss": "^3.4.16",
