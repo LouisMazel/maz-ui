@@ -468,7 +468,7 @@ async function handleFiles(files: File[] | FileList | null) {
       continue
     }
 
-    if (!allowDuplicates && filesData.value.find(f => f.name === file.name && f.size === file.size && f.type === file.type)) {
+    if (!allowDuplicates && filesData.value.some(f => f.name === file.name && f.size === file.size && f.type === file.type)) {
       emits('error', {
         files: [file],
         event: null,

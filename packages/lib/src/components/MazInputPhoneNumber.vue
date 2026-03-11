@@ -425,6 +425,8 @@ function setSelectedCountry(countryCode?: string | undefined | null) {
   selectedCountry.value = countryCode as CountryCode
 }
 
+const isLetterRegex = /\D/g
+
 function onPhoneNumberChanged({
   newPhoneNumber,
 }: {
@@ -440,7 +442,7 @@ function onPhoneNumberChanged({
   }
 
   if (results.value.isValid && (props.autoFormat === 'blur' || props.autoFormat === 'typing')) {
-    phoneNumber.value = results.value.formatNational?.trim().replace(new RegExp(/\D/g), '')
+    phoneNumber.value = results.value.formatNational?.trim().replaceAll(isLetterRegex, '')
   }
   else {
     phoneNumber.value = newPhoneNumber

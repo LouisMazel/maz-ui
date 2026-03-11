@@ -45,7 +45,7 @@ export function findInteractiveElements(el: HTMLElement): HTMLElement[] {
     '[data-clickable]',
   ].join(', ')
 
-  return Array.from(el.querySelectorAll<HTMLElement>(selector)).filter(isInteractiveElement)
+  return [...el.querySelectorAll<HTMLElement>(selector)].filter(isInteractiveElement)
 }
 
 function isInteractiveElement(el: HTMLElement): boolean {

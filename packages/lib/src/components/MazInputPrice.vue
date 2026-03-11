@@ -64,11 +64,13 @@ const priceFormatted = computed(() =>
   typeof valueNumber.value === 'number' ? formatCurrency(valueNumber.value, props.locale, { ...props.currencyOptions, currency: props.currency }) : undefined,
 )
 
+const isLetterRegex = /[^\d.]/g
+
 function getAdjustedPrice(value?: string | number) {
   const isNegative = typeof value === 'string' && value.startsWith('-')
 
   let newValue = typeof value === 'string'
-    ? Number.parseFloat(value.replace(',', '.').replaceAll(/[^\d.]/g, ''))
+    ? Number.parseFloat(value.replace(',', '.').replaceAll(isLetterRegex, ''))
     : value
 
   newValue = isNegative && newValue ? -newValue : newValue

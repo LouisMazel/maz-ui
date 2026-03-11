@@ -1,6 +1,7 @@
 import type { ComponentResolver } from 'unplugin-vue-components/types'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 
+const vRegex = /^v/
 /**
  * Resolver for Maz-UI (directives)
  *
@@ -14,7 +15,7 @@ export function MazDirectivesResolver(options?: { devMode?: boolean, prefix?: st
       const { devMode = false, prefix = '' } = options || {}
       const base = devMode ? 'maz-ui/src/directives/index.ts' : 'maz-ui/directives'
 
-      return { from: base, as: `v${capitalize(prefix)}${capitalize(name.replace(/^v/, ''))}`, name: `v${name}` }
+      return { from: base, as: `v${capitalize(prefix)}${capitalize(name.replace(vRegex, ''))}`, name: `v${name}` }
     },
   }
 }

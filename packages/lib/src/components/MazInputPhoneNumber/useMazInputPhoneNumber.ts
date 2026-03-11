@@ -110,13 +110,14 @@ async function fetchCountryCode(): Promise<{ data: CountryCode, error: undefined
   }
 }
 
+const isLetterOrNumberRegex = /[^\d ()+-]/g
+
 function sanitizePhoneNumber(input?: string | undefined | null) {
   if (!input) {
     return ''
   }
-  const regex = new RegExp(/[^\d ()+-]/g) // Keep only digits, (), - and + characters
 
-  return input.replaceAll(regex, '').trim()
+  return input.replaceAll(isLetterOrNumberRegex, '').trim()
 }
 
 export function useMazInputPhoneNumber() {

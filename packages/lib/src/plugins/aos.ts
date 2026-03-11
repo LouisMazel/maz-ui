@@ -96,9 +96,8 @@ export class AosHandler {
         : []
 
       if (hasChildren) {
-        const children = [...document.querySelectorAll('[data-maz-aos-anchor]')].map(child =>
-          child.getAttribute('data-maz-aos-anchor') === `#${entry.target.id}` ? child : undefined,
-        )
+        const children = Array.from(document.querySelectorAll('[data-maz-aos-anchor]'), child =>
+          child.getAttribute('data-maz-aos-anchor') === `#${entry.target.id}` ? child : undefined)
 
         for (const child of children) {
           if (child) {

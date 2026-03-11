@@ -68,6 +68,9 @@ const modulesMap: Record<Modules, true> = {
  * @author @louismazel
  * @link https://maz-ui.com
  */
+
+const useRegex = /^use/
+
 export function MazModulesResolver(options?: { devMode?: boolean, prefix?: string }): ResolverFunction {
   return (name) => {
     const { devMode = false, prefix = '' } = options || {}
@@ -86,7 +89,7 @@ export function MazModulesResolver(options?: { devMode?: boolean, prefix?: strin
       return {
         from: `${base}/composables${extension}`,
         name,
-        as: `use${capitalize(prefix)}${name.replace(/^use/, '')}`,
+        as: `use${capitalize(prefix)}${name.replace(useRegex, '')}`,
       }
     }
 

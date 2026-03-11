@@ -1,5 +1,6 @@
 import { computed, useId } from 'vue'
 
+const pointRegex = /:/g
 export function useInstanceUniqId({
   componentName,
   providedId,
@@ -13,6 +14,6 @@ export function useInstanceUniqId({
     if (providedId)
       return providedId
 
-    return `${componentName}-${generatedId.replace(/:/g, '')}`
+    return `${componentName}-${generatedId.replace(pointRegex, '')}`
   })
 }

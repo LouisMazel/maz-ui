@@ -131,8 +131,11 @@ function getEmittedValue(map: ReturnType<typeof getMapValues>) {
     : undefined
 }
 
+const isLetterOrNumberRegex = /^[\w.]$/
+const isNumberRegex = /\d+/g
+
 function getValueSanitized(value: string) {
-  return (props.acceptAlpha ? value.match(/^[\w.]$/) : value.match(/\d+/g))?.toString()
+  return (props.acceptAlpha ? value.match(isLetterOrNumberRegex) : value.match(isNumberRegex))?.toString()
 }
 
 function handleKeydown(event: KeyboardEvent, inputIndex: number) {
