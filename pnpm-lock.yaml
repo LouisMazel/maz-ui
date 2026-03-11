@@ -267,8 +267,8 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1(eslint@10.0.3(jiti@2.6.1))
       eslint-plugin-sonarjs:
-        specifier: ^4.0.1
-        version: 4.0.1(eslint@10.0.3(jiti@2.6.1))
+        specifier: ^4.0.2
+        version: 4.0.2(eslint@10.0.3(jiti@2.6.1))
       eslint-plugin-tailwindcss:
         specifier: ^3.18.2
         version: 3.18.2(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.15.18)(@types/node@25.3.5)(typescript@5.9.3)))
@@ -6513,8 +6513,8 @@ packages:
     peerDependencies:
       eslint: '>=9.38.0'
 
-  eslint-plugin-sonarjs@4.0.1:
-    resolution: {integrity: sha512-lmqzFTrw0/zpHQMRmwdgdEEw50s3md0c8RE23JqNom9ovsGQxC/azZ9H00aGKVDkxIXywfcxwzyFJ9Sm3bp2ng==}
+  eslint-plugin-sonarjs@4.0.2:
+    resolution: {integrity: sha512-BTcT1zr1iTbmJtVlcesISwnXzh+9uhf9LEOr+RRNf4kR8xA0HQTPft4oiyOCzCOGKkpSJxjR8ZYF6H7VPyplyw==}
     peerDependencies:
       eslint: ^8.0.0 || ^9.0.0 || ^10.0.0
 
@@ -17013,7 +17013,7 @@ snapshots:
       regexp-ast-analysis: 0.7.1
       scslre: 0.3.0
 
-  eslint-plugin-sonarjs@4.0.1(eslint@10.0.3(jiti@2.6.1)):
+  eslint-plugin-sonarjs@4.0.2(eslint@10.0.3(jiti@2.6.1)):
     dependencies:
       '@eslint-community/regexpp': 4.12.2
       builtin-modules: 3.3.0
