@@ -10,6 +10,8 @@ export interface UseDropzoneReturn {
   isOverError: Ref<boolean>
 }
 
+const isSafariRegex = /^(?:(?!chrome|android).)*safari/i
+
 export interface UseDropzoneOptions {
   /**
    * Allowed data types, if not set, all data types are allowed.
@@ -48,7 +50,7 @@ export function useDropzone(
     const preventDefaultForUnhandled = _options.preventDefaultForUnhandled ?? false
 
     function getFiles(event: DragEvent) {
-      const list = Array.from(event.dataTransfer?.files ?? [])
+      const list = [...event.dataTransfer?.files ?? []]
       return list.length === 0 ? null : (multiple ? list : [list[0]])
     }
 
@@ -77,7 +79,7 @@ export function useDropzone(
     }
 
     function checkValidity(items: DataTransferItemList) {
-      const types = Array.from(items ?? []).map(item => item.type)
+      const types = Array.from(items ?? [], item => item.type)
 
       const dataTypesValid = checkDataTypes(types)
       const multipleFilesValid = multiple || items.length <= 1
@@ -86,7 +88,7 @@ export function useDropzone(
 
     function isSafari() {
       return (
-        /^(?:(?!chrome|android).)*safari/i.test(navigator.userAgent)
+        isSafariRegex.test(navigator.userAgent)
         && !('chrome' in globalThis)
       )
     }

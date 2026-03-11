@@ -26,8 +26,9 @@ export interface ReadingTimeReturn {
   duration: ComputedRef<number>
 }
 
+const wordRegex = /\b\w+\b/g
 function countWords(text: (string | null | undefined)[]) {
-  const words = text.join(', ').match(/\b\w+\b/g)
+  const words = text.join(', ').match(wordRegex)
   return words ? words.length : 0
 }
 

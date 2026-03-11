@@ -356,7 +356,7 @@ describe('given MazTable component', () => {
 
         expect(wrapper.emitted('update:model-value')).toBeTruthy()
         const emittedValues = wrapper.emitted('update:model-value')
-        expect(emittedValues?.[emittedValues.length - 1]).toStrictEqual([[1, 2]])
+        expect(emittedValues?.at(-1)).toStrictEqual([[1, 2]])
 
         wrapper.vm.currentPageModel = 2
 
@@ -367,14 +367,14 @@ describe('given MazTable component', () => {
         await checkboxesPage2[1].vm.$emit('update:model-value', true)
 
         const emittedValuesAfterPageChange = wrapper.emitted('update:model-value')
-        expect(emittedValuesAfterPageChange?.[emittedValuesAfterPageChange.length - 1]).toStrictEqual([[1, 2, 3]])
+        expect(emittedValuesAfterPageChange?.at(-1)).toStrictEqual([[1, 2, 3]])
 
         wrapper.vm.currentPageModel = 1
 
         await vi.dynamicImportSettled()
 
         const emittedValuesBackToPage1 = wrapper.emitted('update:model-value')
-        expect(emittedValuesBackToPage1?.[emittedValuesBackToPage1.length - 1]).toStrictEqual([[1, 2, 3]])
+        expect(emittedValuesBackToPage1?.at(-1)).toStrictEqual([[1, 2, 3]])
       })
     })
   })

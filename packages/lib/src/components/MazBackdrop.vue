@@ -162,7 +162,7 @@ function getAllFocusableElements(selector: string) {
   const modal = document.querySelector(selector)
   const focusableElements = 'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], input[type="email"], input[type="password"], input[type="url"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], input[type="time"], select, [tabindex]:not([tabindex="-1"]), [contenteditable="true"]'
 
-  const focusableElementsArray = modal && Array.from(modal.querySelectorAll<HTMLElement>(focusableElements))
+  const focusableElementsArray = modal && [...modal.querySelectorAll<HTMLElement>(focusableElements)]
 
   const visibleFocusableElements = focusableElementsArray?.filter((el) => {
     const style = globalThis.getComputedStyle(el)
@@ -187,7 +187,7 @@ function trapFocus(event: KeyboardEvent) {
     return
 
   const firstFocusable = focusableElements[0]
-  const lastFocusable = focusableElements[focusableElements.length - 1]
+  const lastFocusable = focusableElements.at(-1)
 
   if (event.shiftKey) {
     if (document.activeElement === firstFocusable) {

@@ -324,7 +324,7 @@ describe('MazSlider branch coverage', () => {
       const emitted = wrapper.emitted('update:model-value')
       // Should emit value - step
       if (emitted && emitted.length > 1) {
-        expect(emitted[emitted.length - 1][0]).toBe(49)
+        expect(emitted.at(-1)?.[0]).toBe(49)
       }
     })
 
@@ -338,7 +338,7 @@ describe('MazSlider branch coverage', () => {
 
       const emitted = wrapper.emitted('update:model-value')
       if (emitted && emitted.length > 1) {
-        expect(emitted[emitted.length - 1][0]).toBe(51)
+        expect(emitted.at(-1)?.[0]).toBe(51)
       }
     })
 
@@ -352,7 +352,7 @@ describe('MazSlider branch coverage', () => {
 
       const emitted = wrapper.emitted('update:model-value')
       if (emitted) {
-        const lastVal = emitted[emitted.length - 1][0]
+        const lastVal = emitted.at(-1)?.[0]
         expect(lastVal).toBeGreaterThanOrEqual(0)
       }
     })
@@ -367,7 +367,7 @@ describe('MazSlider branch coverage', () => {
 
       const emitted = wrapper.emitted('update:model-value')
       if (emitted) {
-        const lastVal = emitted[emitted.length - 1][0]
+        const lastVal = emitted.at(-1)?.[0]
         expect(lastVal).toBeLessThanOrEqual(100)
       }
     })
@@ -383,7 +383,7 @@ describe('MazSlider branch coverage', () => {
 
       const emitted = wrapper.emitted('update:model-value')
       if (emitted && emitted.length > 1) {
-        const lastEmitted = emitted[emitted.length - 1][0] as number[]
+        const lastEmitted = emitted.at(-1)?.[0] as number[]
         expect(lastEmitted[1]).toBeLessThanOrEqual(50)
       }
     })
@@ -398,7 +398,7 @@ describe('MazSlider branch coverage', () => {
 
       const emitted = wrapper.emitted('update:model-value')
       if (emitted && emitted.length > 1) {
-        const lastEmitted = emitted[emitted.length - 1][0] as number[]
+        const lastEmitted = emitted.at(-1)?.[0] as number[]
         expect(lastEmitted[1]).toBeGreaterThanOrEqual(50)
       }
     })
@@ -428,7 +428,7 @@ describe('MazSlider branch coverage', () => {
 
       const emitted = wrapper.emitted('update:model-value')
       if (emitted && emitted.length > 1) {
-        expect(emitted[emitted.length - 1][0]).toBe(40)
+        expect(emitted.at(-1)?.[0]).toBe(40)
       }
     })
   })
