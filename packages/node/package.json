@@ -44,7 +44,10 @@
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
-    "test": "tsx test.ts"
+    "test": "tsx test.ts",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest watch",
+    "test:unit:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "colorette": "^2.0.20",
