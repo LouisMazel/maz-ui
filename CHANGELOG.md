@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.7.3...v4.7.4
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.3...v4.7.4)
+
+### 🔥 Performance
+
+- **maz-ui:** Improving performances of JS code ([7b17e7c8](https://github.com/LouisMazel/maz-ui/commit/7b17e7c8))
+- **@maz-ui/utils:** Improving performances of JS code ([3307ee3c](https://github.com/LouisMazel/maz-ui/commit/3307ee3c))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.2...v4.7.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.2...v4.7.3)
