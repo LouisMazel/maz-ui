@@ -710,10 +710,10 @@ watch(
           block
           autocomplete="off"
           class="m-date-picker__input"
-          :label="label"
-          :disabled="disabled"
-          :placeholder="placeholder"
-          :color="color"
+          :label
+          :disabled
+          :placeholder
+          :color
         >
           <template #left-icon>
             <MazCalendar v-if="hasDate" class="maz-text-xl" />

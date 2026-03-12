@@ -30,6 +30,7 @@ The simplest way to use MazInputPhoneNumber - just add it and it works!
     v-model="phoneNumber"
     v-model:country-code="countryCode"
     @data="results = $event"
+    required
   />
 
   <div class="maz-mt-4 maz-text-sm">

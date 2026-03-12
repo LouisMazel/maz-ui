@@ -51,6 +51,7 @@ const props = withDefaults(defineProps<MazInputPhoneNumberProps>(), {
   validationSuccess: true,
   example: true,
   disabled: false,
+  required: false,
   hideCountrySelect: false,
   showCodeInList: false,
   displayCountryName: false,
@@ -215,10 +216,15 @@ export interface MazInputPhoneNumberProps {
    */
   hideFlags?: boolean
   /**
-   * Disable input
+   * Make the input disabled
    * @default false
    */
   disabled?: boolean
+  /**
+   * Make the input required
+   * @default false
+   */
+  required?: boolean
   /**
    * Show the phone number example
    * @default true
@@ -607,6 +613,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
       :hint="!!phoneNumber && !selectedCountry ? messages.countrySelect.error : undefined"
       :options="countriesList"
       :disabled
+      :required
       :search-threshold
       :format-input-value="displayCountryName || !selectedCountry ? undefined : (value) => `+${value}`"
       :show-code-in-list
@@ -659,6 +666,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
       :example
       block
       :disabled
+      :required
       :name="phoneInputAttributes.name"
       :has-radius="!hideCountrySelect"
       :success="success || (validationSuccess ? results.isValid : false)"
