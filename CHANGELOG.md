@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.7.4...v4.7.5
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.4...v4.7.5)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazInputPhoneNumber - The 'required' attribute was not applied to the select and input elements - #1496 ([#1496](https://github.com/LouisMazel/maz-ui/issues/1496))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.3...v4.7.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.3...v4.7.4)
