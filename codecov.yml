@@ -1,6 +1,9 @@
 # Codecov configuration
 # Documentation: https://docs.codecov.com/docs/codecov-yaml
 
+codecov:
+  max_report_age: off
+
 # Coverage configuration
 coverage:
   # Precision for coverage percentages (2 decimals)
