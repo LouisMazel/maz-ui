@@ -11,26 +11,25 @@ description: MazInputPrice is a standalone component that replaces the standard 
 
 ## Basic usage
 
-<MazInputPrice
-v-model="priceValue"
-label="Enter your price"
-currency="USD"
-locale="en-US"
-:min="5"
-:max="1000"
-@formatted="formattedPrice = $event"
-/>
+<ComponentDemo expanded>
+  <MazInputPrice
+    v-model="priceValue"
+    label="Enter your price"
+    currency="USD"
+    locale="en-US"
+    :min="5"
+    :max="1000"
+    @formatted="formattedPrice = $event"
+  />
 
-priceValue: {{ priceValue }}
+  <br />
+  <br />
 
-formattedPrice: {{ formattedPrice }}
+  priceValue: {{ priceValue }}
 
-<script lang="ts" setup>
-  import { ref } from 'vue'
+  formattedPrice: {{ formattedPrice }}
 
-  const priceValue = ref(2)
-  const formattedPrice = ref()
-</script>
+  <template #code>
 
 ```vue
 <script lang="ts" setup>
@@ -53,6 +52,16 @@ const formattedPrice = ref()
   />
 </template>
 ```
+
+  </template>
+</ComponentDemo>
+
+<script lang="ts" setup>
+  import { ref } from 'vue'
+
+  const priceValue = ref(2)
+  const formattedPrice = ref()
+</script>
 
 <!--@include: ./../../.vitepress/mixins/maz-input-props.md-->
 <!--@include: ./../../.vitepress/generated-docs/maz-input-price.doc.md-->
