@@ -99,8 +99,6 @@ const inputValue = ref()
 
 ## Required
 
-> Will make the input required and `*` charac to the label or the placeholder
-
 <ComponentDemo>
   <MazInput v-model="inputValue" label="label required" required autocomplete="off" />
 
