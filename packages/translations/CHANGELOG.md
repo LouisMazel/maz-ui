@@ -1,5 +1,23 @@
 # Change Log
 
+## v4.7.5...v4.7.6-beta.0
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.5...v4.7.6-beta.0)
+
+### 📦 Build
+
+- Migrate vite to v8 ([771199de](https://github.com/LouisMazel/maz-ui/commit/771199de))
+
+  Migrate build toolchain from Rollup + esbuild to Rolldown + Oxc.
+  For library consumers:
+  - ~8% smaller bundle size
+  - More efficient treeshaking, less dead code shipped to your app
+  - Better ES module output
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.3...v4.7.4
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.3...v4.7.4)
