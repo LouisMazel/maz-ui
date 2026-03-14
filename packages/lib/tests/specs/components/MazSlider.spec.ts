@@ -108,7 +108,7 @@ describe('given MazSlider component', () => {
       wrapper = mount(MazSlider, {
         props: {
           modelValue: [25, 75],
-          noDivider: true,
+          divider: false,
         },
       })
     })
