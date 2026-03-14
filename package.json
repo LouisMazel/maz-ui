@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@codecov/vite-plugin": "^1.9.1",
-    "@commitlint/cli": "20.4.4",
+    "@commitlint/cli": "^20.4.4",
     "@commitlint/config-conventional": "^20.4.4",
     "@commitlint/cz-commitlint": "^20.4.4",
     "@maz-ui/node": "workspace:*",
@@ -63,7 +63,7 @@
     "eslint": "^10.0.3",
     "glob": "^13.0.6",
     "husky": "^9.1.7",
-    "lint-staged": "16.4.0",
+    "lint-staged": "^16.4.0",
     "nx": "^22.5.4",
     "postcss": "^8.5.8",
     "postcss-html": "^1.8.1",
@@ -85,7 +85,7 @@
     "vite-plugin-dts": "^4.5.4",
     "vite-plugin-lib-inject-css": "^2.2.2",
     "vite-svg-loader": "^5.1.1",
-    "vitest": "4.1.0",
+    "vitest": "^4.1.0",
     "vue": "^3.5.30",
     "vue-tsc": "^3.2.5"
   },
