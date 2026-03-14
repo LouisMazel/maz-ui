@@ -20,11 +20,11 @@
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
     "@tsconfig/node22": "^22.0.5",
-    "@vitejs/plugin-vue": "^6.0.4",
+    "@vitejs/plugin-vue": "^6.0.5",
     "@vue/tsconfig": "^0.9.0",
     "maz-ui": "workspace:*",
     "npm-run-all2": "^8.0.4",
     "rollup-plugin-visualizer": "^7.0.1",
-    "vite-plugin-vue-devtools": "^8.0.7"
+    "vite-plugin-vue-devtools": "^8.1.0"
   }
 }
