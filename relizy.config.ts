@@ -20,6 +20,7 @@ export default defineConfig({
 
   templates: {
     emptyChangelogContent: 'No relevant changes since last release',
+    changelogTitle: '{{newVersion}} ({{date}})',
     twitterMessage: '🚀 {{projectName}} {{newVersion}} is out!\n\n{{changelog}}\n\n{{changelogUrl}}\n{{releaseUrl}}',
   },
 
