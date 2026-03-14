@@ -3,7 +3,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { logger } from '@maz-ui/node/index.js'
+import { logger } from '@maz-ui/node'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 

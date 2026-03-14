@@ -41,7 +41,7 @@ const moduleEntries = Object.fromEntries(
 )
 
 export default defineConfig(({ mode }) => {
-  const isDev = mode === 'development'
+  const isProduction = mode === 'production'
   return {
     plugins: [
       Vue(),
@@ -57,24 +57,13 @@ export default defineConfig(({ mode }) => {
         enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
         bundleName: 'lib',
         uploadToken: process.env.CODECOV_TOKEN,
+        telemetry: false,
       }),
     ],
-    esbuild: {
-      drop: isDev ? [] : ['debugger'],
-      pure: isDev ? [] : ['console.log', 'console.debug'],
-      legalComments: 'none',
-      target: 'es2022',
-      minifyIdentifiers: false, // to fix the issue "SyntaxError: Identifier 'h' has already been declared"
-      minifySyntax: true,
-      minifyWhitespace: true,
-      treeShaking: true,
-    },
     build: {
       cssCodeSplit: true,
       emptyOutDir: true,
       sourcemap: false,
-      cssMinify: 'lightningcss',
-      minify: 'esbuild',
       target: 'es2022',
       lib: {
         entry: {
@@ -91,29 +80,29 @@ export default defineConfig(({ mode }) => {
         fileName: (_, name) => `${name}.js`,
         cssFileName: '[name].[hash].css',
       },
-      rollupOptions: {
+      rolldownOptions: {
+        treeshake: {
+          moduleSideEffects: false,
+          propertyReadSideEffects: false,
+          unknownGlobalSideEffects: false,
+          manualPureFunctions: isProduction ? ['console.log', 'console.debug'] : [],
+        },
         external: (id) => {
           // Bundle dayjs plugins to avoid CJS interop issues
           if (id.startsWith('dayjs/plugin/'))
             return false
           return getExternalDependencies(pkg)(id)
         },
-        treeshake: {
-          moduleSideEffects: false,
-          preset: 'smallest',
-          propertyReadSideEffects: false,
-          unknownGlobalSideEffects: false,
-        },
         output: {
           format: 'es',
-          compact: true,
+          comments: { legal: false },
+          minify: isProduction
+            ? { compress: { dropDebugger: true, dropConsole: false, joinVars: false }, mangle: false }
+            : false,
           chunkFileNames: 'chunks/[name].[hash].js',
           assetFileNames: 'assets/[name].[hash][extname]',
           exports: 'named',
           minifyInternalExports: true,
-          preserveModules: false,
-          interop: 'auto',
-          generatedCode: 'es2015',
         },
       },
     },
