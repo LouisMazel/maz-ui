@@ -1,4 +1,5 @@
 import { extname, relative, resolve } from 'node:path'
+import { codecovVitePlugin } from '@codecov/vite-plugin'
 import { getExternalDependencies } from '@maz-ui/vite-config'
 import Vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
@@ -41,22 +42,16 @@ export default defineConfig({
       outDir: resolver('dist'),
     }),
     ViteGenerateIconsComponentsEntry(),
+    codecovVitePlugin({
+      enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+      bundleName: 'icons',
+      uploadToken: process.env.CODECOV_TOKEN,
+      telemetry: false,
+    }),
   ],
-  esbuild: {
-    drop: ['debugger'],
-    pure: ['console.log', 'console.debug'],
-    legalComments: 'none',
-    target: 'es2022',
-    minifyIdentifiers: false,
-    minifySyntax: true,
-    minifyWhitespace: true,
-    treeShaking: true,
-  },
   build: {
     emptyOutDir: true,
     sourcemap: false,
-    cssMinify: 'lightningcss',
-    minify: 'esbuild',
     target: 'es2022',
     lib: {
       entry: {
@@ -71,23 +66,22 @@ export default defineConfig({
       fileName: (_, name) => `${name}.js`,
       name: '@maz-ui/icons',
     },
-    rollupOptions: {
-      external: getExternalDependencies(pkg),
+    rolldownOptions: {
       treeshake: {
         moduleSideEffects: false,
-        preset: 'smallest',
         propertyReadSideEffects: false,
         unknownGlobalSideEffects: false,
+        manualPureFunctions: ['console.log', 'console.debug'],
       },
+      external: getExternalDependencies(pkg),
       output: {
         format: 'es',
-        compact: true,
+        comments: { legal: false },
+        minify: { compress: { dropDebugger: true, dropConsole: false, joinVars: false }, mangle: false },
         exports: 'named',
         preserveModules: true,
         preserveModulesRoot: 'src',
         entryFileNames: '[name].js',
-        interop: 'auto',
-        generatedCode: 'es2015',
       },
     },
   },
