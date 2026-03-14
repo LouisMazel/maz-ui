@@ -13,9 +13,8 @@ const resolveAliases = {
 }
 
 export default defineConfig({
-  esbuild: {
-    tsconfigRaw: '{}',
-  },
+  // @ts-expect-error -- tsconfig is omitted from Vite's OxcOptions type but supported by Rolldown; needed to prevent coverage query params from breaking tsconfig resolution in CI
+  oxc: { tsconfig: false },
   resolve: {
     alias: resolveAliases,
   },

@@ -1,4 +1,5 @@
 import { extname, relative, resolve } from 'node:path'
+import { codecovVitePlugin } from '@codecov/vite-plugin'
 import { getExternalDependencies } from '@maz-ui/vite-config'
 import vue from '@vitejs/plugin-vue'
 
@@ -39,6 +40,12 @@ export default defineConfig(({ mode }) => {
         include: ['src/**/*.ts'],
         exclude: testPaths,
       }),
+      codecovVitePlugin({
+        enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+        bundleName: 'utils',
+        uploadToken: process.env.CODECOV_TOKEN,
+        telemetry: false,
+      }),
     ],
 
     resolve: {
@@ -49,22 +56,9 @@ export default defineConfig(({ mode }) => {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
     },
 
-    esbuild: {
-      drop: isProduction ? ['debugger'] : [],
-      pure: isProduction ? ['console.log', 'console.debug'] : [],
-      legalComments: 'none',
-      target: 'node22',
-      minifyIdentifiers: false,
-      minifySyntax: true,
-      minifyWhitespace: true,
-      treeShaking: true,
-      platform: 'node',
-    },
     build: {
       emptyOutDir: true,
       sourcemap: isProduction ? false : 'inline',
-      cssMinify: 'lightningcss',
-      minify: 'esbuild',
       target: 'node22',
       lib: {
         entry: {
@@ -75,24 +69,24 @@ export default defineConfig(({ mode }) => {
         formats: ['es'],
         fileName: (_, name) => `${name}.js`,
       },
-      rollupOptions: {
-        external: getExternalDependencies(pkg),
+      rolldownOptions: {
         treeshake: {
           moduleSideEffects: false,
-          preset: 'smallest',
           propertyReadSideEffects: false,
           unknownGlobalSideEffects: false,
+          manualPureFunctions: isProduction ? ['console.log', 'console.debug'] : [],
         },
+        external: getExternalDependencies(pkg),
         output: {
           format: 'es',
-          compact: true,
+          comments: { legal: false },
+          minify: isProduction
+            ? { compress: { dropDebugger: true, dropConsole: false, joinVars: false }, mangle: false }
+            : false,
           chunkFileNames: 'chunks/[name].[hash].js',
           assetFileNames: 'assets/[name].[hash][extname]',
           exports: 'named',
           minifyInternalExports: true,
-          preserveModules: false,
-          interop: 'auto',
-          generatedCode: 'es2015',
         },
       },
     },

@@ -45,17 +45,14 @@ export default defineConfig({
     },
   },
   build: {
-    rollupOptions: {
+    rolldownOptions: {
       output: {
         format: 'es',
-        compact: true,
+
         chunkFileNames: 'chunks/[name].[hash].js',
         assetFileNames: 'assets/[name].[hash][extname]',
         exports: 'named',
         minifyInternalExports: true,
-        preserveModules: false,
-        interop: 'auto',
-        generatedCode: 'es2015',
       },
     },
   },

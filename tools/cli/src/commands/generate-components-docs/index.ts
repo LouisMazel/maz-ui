@@ -1,6 +1,6 @@
 import { readdirSync } from 'node:fs'
 import { exit } from 'node:process'
-import { execPromise, logger } from '@maz-ui/node/index.js'
+import { execPromise, logger } from '@maz-ui/node'
 import { Command } from 'commander'
 
 export function generateComponentsDocumentationCommand(): Command {
