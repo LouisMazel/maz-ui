@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { MazXMark } from '@maz-ui/icons/static'
+import { MazXMark } from '@maz-ui/icons/static/MazXMark'
 import MazBackdrop from './MazBackdrop.vue'
 import MazBtn from './MazBtn.vue'
 
