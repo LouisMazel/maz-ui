@@ -7,9 +7,7 @@ export function getCookie(key: string): string | null {
   const cookies = document.cookie.split(';')
   const cookie = cookies.find(c => c.trim().startsWith(`${key}=`))
 
-  const cookieValue = cookie ? decodeURIComponent(cookie.split('=')[1]) : null
-
-  return cookieValue
+  return cookie ? decodeURIComponent(cookie.split('=')[1]) : null
 }
 
 export function setCookie(key: string, value: string): void {

@@ -9,7 +9,7 @@ export function getComponentList(inputComponentDir: string = INPUT_COMPONENT_DIR
   try {
     const fileList = readdirSync(inputComponentDir, { withFileTypes: true })
 
-    const componentList = fileList
+    return fileList
       .filter(
         dirent =>
           dirent.isFile()
@@ -24,8 +24,6 @@ export function getComponentList(inputComponentDir: string = INPUT_COMPONENT_DIR
         fullName: `${name}`,
         path: `${inputComponentDir}/${name}`,
       }))
-
-    return componentList
   }
   catch (error) {
     throw new Error(

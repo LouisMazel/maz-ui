@@ -30,7 +30,7 @@ export function createMazUiTranslations(options: MazUiTranslationsOptions = {}) 
     }
   }, 0)
 
-  const instance = {
+  return {
     locale,
     t: (key: TranslationKey, variables?: Record<string, unknown>) => t(key, variables, fallbackLocale),
     setLocale,
@@ -41,6 +41,4 @@ export function createMazUiTranslations(options: MazUiTranslationsOptions = {}) 
     getLoadedLocales,
     getAvailableLocales,
   } satisfies MazUiTranslationsInstance
-
-  return instance
 }
