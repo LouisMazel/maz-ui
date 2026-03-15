@@ -43,7 +43,7 @@
       "outputs": ["{projectRoot}/coverage"]
     },
     "dev": {
-      "cache": false
+      "cache": true
     }
   },
   "tui": { "enabled": false },
