@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { getErrorMessage } from '@maz-ui/utils'
+import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 import { Server } from '@modelcontextprotocol/sdk/server/index.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import {

@@ -1,4 +1,4 @@
-import { isServer } from '@maz-ui/utils'
+import { isServer } from '@maz-ui/utils/helpers/isServer'
 
 export function useMutationObserver(
   target: HTMLElement,

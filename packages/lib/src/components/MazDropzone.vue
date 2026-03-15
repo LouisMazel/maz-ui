@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { IconComponent } from '@maz-ui/icons'
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
-import type { DeepPartial } from '@maz-ui/utils'
+import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazSpinnerProps } from './MazSpinner.vue'
 import type { MazColor } from './types'

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { sleep } from '@maz-ui/utils'
+import { sleep } from '@maz-ui/utils/helpers/sleep'
 import { string } from 'valibot'
 
 const toast = useToast()

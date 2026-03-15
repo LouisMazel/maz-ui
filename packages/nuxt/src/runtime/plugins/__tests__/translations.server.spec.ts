@@ -12,7 +12,7 @@ const { mockSetLocale, mockInstall } = vi.hoisted(() => {
   }
 })
 
-vi.mock('@maz-ui/translations', () => ({
+vi.mock('@maz-ui/translations/plugin', () => ({
   MazUiTranslations: { install: mockInstall },
 }))
 

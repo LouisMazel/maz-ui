@@ -433,9 +433,6 @@ importers:
       '@swc/core':
         specifier: 1.15.18
         version: 1.15.18
-      lint-staged:
-        specifier: ^16.4.0
-        version: 16.4.0
       prettier:
         specifier: ^3.8.1
         version: 3.8.1

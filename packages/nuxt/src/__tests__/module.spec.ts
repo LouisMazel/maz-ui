@@ -29,7 +29,7 @@ vi.mock('defu', () => ({
   defu: (...args: any[]) => Object.assign({}, ...args.reverse()),
 }))
 
-vi.mock('@maz-ui/utils', () => ({
+vi.mock('@maz-ui/utils/helpers/capitalize', () => ({
   capitalize: (str: string) => str.charAt(0).toUpperCase() + str.slice(1),
 }))
 
