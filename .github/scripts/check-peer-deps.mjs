@@ -1,11 +1,20 @@
+// @ts-check
 // .github/scripts/check-peer-deps.mjs
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { logger } from '@maz-ui/node'
 import { coerce, gt, minVersion } from 'semver'
 
+/**
+ * @type {Array<{ file: string, dep: string, devVersion: string, peerRange: string, peerMax: string }>}
+ */
 const errors = []
 
+/**
+ * @param {string} dir
+ * @param {Array<string>} results
+ * @returns {Array<string>} results
+ */
 function findPackageJsons(dir, results = []) {
   for (const file of readdirSync(dir)) {
     if (file === 'node_modules' || file.startsWith('.'))
@@ -22,6 +31,9 @@ function findPackageJsons(dir, results = []) {
   return results
 }
 
+/**
+ * @param {string} pkgPath
+ */
 function checkPackage(pkgPath) {
   const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'))
   const { peerDependencies = {}, devDependencies = {} } = pkg
@@ -46,6 +58,10 @@ function checkPackage(pkgPath) {
   }
 }
 
+/**
+ * @param {string} range
+ * @returns {import('semver').SemVer | null} max version
+ */
 function extractMaxVersion(range) {
   // Gère "<=" (inclusive) - DOIT être avant "<"
   const lessThanOrEqualMatch = range.match(/<=\s*(\d+\.\d+\.\d+)/)
