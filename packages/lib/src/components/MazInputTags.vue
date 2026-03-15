@@ -98,7 +98,6 @@ function addTags(event: Event) {
   }
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 const borderStyle = computed(() => {
   if (props.error)
     return 'maz-border-destructive'

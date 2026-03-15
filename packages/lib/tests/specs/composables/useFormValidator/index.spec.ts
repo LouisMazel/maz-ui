@@ -1,4 +1,3 @@
-import type { StrictOptions } from '@/composables/useFormValidator/types'
 import { useFormField, useFormValidator } from '@composables/index'
 import { flushPromises, mount } from '@vue/test-utils'
 
@@ -6,7 +5,7 @@ import { minLength, minValue, number, pipe, string } from 'valibot'
 import { defineComponent, nextTick, ref } from 'vue'
 
 const defaultOptions: {
-  mode?: StrictOptions['mode']
+  mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'
   useEvents?: boolean
 } = {
   mode: 'aggressive',
@@ -26,7 +25,7 @@ function createFormComponent(options?: typeof defaultOptions) {
       const initialModel = ref({
         name: '',
         age: 0,
-        // eslint-disable-next-line sonarjs/no-hardcoded-passwords
+
         password: '12345678',
       })
 
@@ -242,7 +241,6 @@ describe('given useFormField with eager mode', () => {
       // @ts-expect-error - method is defined
       nameField.validationEvents.value.onBlur()
 
-      // eslint-disable-next-line sonarjs/no-hardcoded-passwords
       passwordField.value.value = 'password'
       // @ts-expect-error - method is defined
       passwordField.validationEvents.value.onBlur()
