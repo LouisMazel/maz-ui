@@ -103,10 +103,8 @@ export function useDropzone(
 
       const currentFiles = getFiles(event)
 
-      if (!isSafari() && !isValid) {
-        if (event.dataTransfer) {
-          event.dataTransfer.dropEffect = 'none'
-        }
+      if (!isSafari() && !isValid && event.dataTransfer) {
+        event.dataTransfer.dropEffect = 'none'
       }
 
       event.preventDefault()

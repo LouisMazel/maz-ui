@@ -161,15 +161,13 @@ function getDisplayName(code: MaybeRefOrGetter<DisplayNameCode | string>, option
     }
 
     try {
-      const name = getName(resolvedCode, resolvedLocale, {
+      return getName(resolvedCode, resolvedLocale, {
         type: resolvedType,
         languageDisplay: resolvedLanguageDisplay,
         fallback: resolvedFallback,
         style: resolvedStyle,
         localeMatcher: resolvedLocaleMatcher,
       })
-
-      return name
     }
     catch {
       return resolvedCode
