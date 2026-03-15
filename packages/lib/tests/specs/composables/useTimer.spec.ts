@@ -5,8 +5,7 @@ describe('useTimer', () => {
   it('should start and trigger callback when timeout is reached', async () => {
     const callbackMock = vi.fn()
     const [{ start }, app] = withSetup(() => {
-      const timer = useTimer({ timeout: 1000, callback: callbackMock })
-      return timer
+      return useTimer({ timeout: 1000, callback: callbackMock })
     })
 
     start()

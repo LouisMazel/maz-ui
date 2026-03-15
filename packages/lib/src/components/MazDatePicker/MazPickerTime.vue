@@ -258,7 +258,6 @@ async function scrollColumn(identifier: ColumnIdentifier, hasSmoothEffect = true
   }
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
   const newDate = dayjs(currentDate.value)
 

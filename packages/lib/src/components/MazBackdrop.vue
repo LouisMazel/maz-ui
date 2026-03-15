@@ -37,8 +37,7 @@ const emits = defineEmits<{
 const MODAL_OPENED_CLASS = '--backdrop-present'
 
 function getScrollbarWidth() {
-  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
-  return scrollbarWidth
+  return window.innerWidth - document.documentElement.clientWidth
 }
 
 function addClassToDocument() {
