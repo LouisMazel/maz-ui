@@ -37,7 +37,11 @@ export default defineConfig({
       resolvers: [MazModulesResolver({ devMode: true })],
       dts: true,
     }),
-    visualizer(),
+    visualizer({
+      filename: 'stats.html',
+      open: true,
+      emitFile: true,
+    }),
   ],
   resolve: {
     alias: {

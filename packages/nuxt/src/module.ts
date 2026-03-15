@@ -1,7 +1,7 @@
 import type { MazUiNuxtOptions } from './types'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { capitalize } from '@maz-ui/utils'
+import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { addCustomTab } from '@nuxt/devtools-kit'
 import {
   addComponent,
@@ -33,10 +33,11 @@ declare module '@nuxt/schema' {
   }
 }
 
-type ComponentNames = keyof typeof import('maz-ui/components')
+type MazUiComponentNames = keyof typeof import('maz-ui/components')
+type FormBuilderComponentNames = keyof typeof import('@maz-ui/forms/components')
 
 const COMPONENT_NAMES: Omit<
-  Record<ComponentNames, true>,
+  Record<MazUiComponentNames, true>,
   'useMazDialogConfirm'
 > = {
   MazAccordion: true,
@@ -102,6 +103,14 @@ const COMPONENT_NAMES: Omit<
   MazUiProvider: true,
   MazPopover: true,
 }
+
+const FORM_BUILDER_COMPONENT_NAMES: Omit<Record<FormBuilderComponentNames, true>, 'useMazDialogConfirm'> = {
+  FormBuilder: true,
+  FormErrorSummary: true,
+  FormField: true,
+  FormSection: true,
+  // FormWizard: true,
+} as const
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -171,6 +180,9 @@ const defaults = {
     vFullscreenImg: false,
     vTooltip: false,
   },
+  formBuilder: {
+    autoImport: true,
+  },
 } satisfies Required<MazUiNuxtOptions>
 
 function addMazUiComposableImport({
@@ -202,7 +214,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
   setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
 
-    nuxt.options.build.transpile.push('maz-ui', '@maz-ui/themes', '@maz-ui/translations')
+    nuxt.options.build.transpile.push('maz-ui', '@maz-ui/themes', '@maz-ui/translations', '@maz-ui/forms')
 
     const moduleOptions = defu(
       nuxt.options.runtimeConfig.public.mazUi,
@@ -211,6 +223,8 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     )
 
     nuxt.options.runtimeConfig.public.mazUi = moduleOptions
+
+    const autoImportPrefix = moduleOptions.general.autoImportPrefix
 
     // CSS
 
@@ -234,9 +248,40 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       }
     }
 
-    // Plugins
+    // FormBuilder Components, Composables, and Helpers
 
-    const autoImportPrefix = moduleOptions.general.autoImportPrefix
+    if (moduleOptions.formBuilder.autoImport) {
+      for (const name of Object.keys(FORM_BUILDER_COMPONENT_NAMES)) {
+        addComponent({
+          name: `Maz${name}`,
+          filePath: '@maz-ui/forms/components',
+          export: name,
+        })
+      }
+
+      addImports({
+        name: 'useFormBuilder',
+        from: '@maz-ui/forms/composables',
+        as: `use${capitalize(autoImportPrefix)}FormBuilder`,
+      })
+
+      addImports([
+        {
+          name: `define${capitalize(autoImportPrefix)}FormSchema`,
+          from: '@maz-ui/forms/utils',
+        },
+        {
+          name: `define${capitalize(autoImportPrefix)}FormSection`,
+          from: '@maz-ui/forms/utils',
+        },
+        {
+          name: `define${capitalize(autoImportPrefix)}FormField`,
+          from: '@maz-ui/forms/utils',
+        },
+      ])
+    }
+
+    // Plugins
 
     if (moduleOptions.plugins.aos) {
       addPlugin(resolve(_dirname, './runtime/plugins/aos'))

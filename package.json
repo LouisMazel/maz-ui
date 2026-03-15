@@ -43,7 +43,8 @@
     "healthcheck": "pnpm lint:all && pnpm typecheck:all && pnpm test:unit:all && pnpm build:packages && nx run docs:build",
     "relizy": "relizy",
     "nx:cache:clear": "nx reset",
-    "dev:watch": "nx run-many -t dev"
+    "dev:watch": "nx run-many -t dev",
+    "relizy:independent": "relizy --config relizy.independent"
   },
   "devDependencies": {
     "@codecov/vite-plugin": "^1.9.1",
