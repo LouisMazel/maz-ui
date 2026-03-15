@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.7.9 (2026-03-15)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.8...v4.7.9)
+
+### 🩹 Fixes
+
+- Replace internal barrel imports by selective imports ([4c9a8a1b](https://github.com/LouisMazel/maz-ui/commit/4c9a8a1b))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.6 (2026-03-14)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.5...v4.7.6)
