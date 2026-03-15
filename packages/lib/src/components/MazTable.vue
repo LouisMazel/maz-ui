@@ -257,7 +257,10 @@ export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz-table')
 import type { HTMLAttributes, InjectionKey, Ref, ThHTMLAttributes } from 'vue'
 import type { MazSelectOption } from './MazSelect.vue'
 import type { MazColor, MazSize } from './types'
-import { MazArrowUp, MazChevronDoubleLeft, MazChevronLeft, MazMagnifyingGlass } from '@maz-ui/icons/lazy'
+import { MazArrowUp } from '@maz-ui/icons/lazy/MazArrowUp'
+import { MazChevronDoubleLeft } from '@maz-ui/icons/lazy/MazChevronDoubleLeft'
+import { MazChevronLeft } from '@maz-ui/icons/lazy/MazChevronLeft'
+import { MazMagnifyingGlass } from '@maz-ui/icons/lazy/MazMagnifyingGlass'
 
 import {
   computed,

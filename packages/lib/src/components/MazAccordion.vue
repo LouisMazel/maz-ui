@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { ClassValue } from 'vue'
-import { MazPlus } from '@maz-ui/icons/MazPlus'
+import { MazPlus } from '@maz-ui/icons/static/MazPlus'
 import { computed, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 

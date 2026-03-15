@@ -1,7 +1,7 @@
 <script lang="ts" setup generic="T extends string | number | boolean, Option extends MazRadioButtonsOption<T>">
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
-import { MazCheck } from '@maz-ui/icons/lazy'
+import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
 import { ref } from 'vue'
 import { getColor } from './types'
 
