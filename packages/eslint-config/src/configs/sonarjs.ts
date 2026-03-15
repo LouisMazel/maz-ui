@@ -8,7 +8,7 @@ export const sonarjsRules = {
   'sonarjs/class-name': 'off',
   'sonarjs/no-nested-conditional': 'off',
   'sonarjs/sonar-no-unused-vars': 'off',
-  'sonarjs/cognitive-complexity': ['error', 20],
+  'sonarjs/cognitive-complexity': ['error', 20] as ['error', number],
 
   // Keep useful SonarJS rules
   'sonarjs/no-identical-functions': 'error',

@@ -94,11 +94,14 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
   const additionalConfigs: MazESLintUserConfig[] = []
 
   if (opts.sonarjs) {
-    additionalConfigs.push(sonarConfigs.recommended)
+    const sonarjsFiles = ['**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue}']
 
     additionalConfigs.push({
+      ...sonarConfigs.recommended,
+      files: sonarjsFiles,
       rules: {
         ...sonarConfigs.recommended.rules,
+        ...sonarjsRules,
       },
     })
 
