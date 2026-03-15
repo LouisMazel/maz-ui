@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.7.7 (2026-03-15)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.6...v4.7.7)
+
+### 🩹 Fixes
+
+- **@maz-ui/eslint-config:** Restrict sonarjs config to JS/TS/Vue files ([7584744c](https://github.com/LouisMazel/maz-ui/commit/7584744c))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.2...v4.7.3
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.2...v4.7.3)
