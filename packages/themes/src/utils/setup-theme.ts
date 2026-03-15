@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import type { MazUiThemeOptions } from '../plugin'
 import type { ThemePreset, ThemeState } from '../types'
-import { isServer } from '@maz-ui/utils'
+import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { ref, watch } from 'vue'
 import { getColorMode, getSavedColorMode, getSystemColorMode } from './get-color-mode'
 import { getPreset } from './get-preset'

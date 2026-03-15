@@ -1,5 +1,5 @@
 import type { MazUiTranslationsInstance } from '@maz-ui/translations'
-import { MazUiTranslations } from '@maz-ui/translations'
+import { MazUiTranslations } from '@maz-ui/translations/plugin'
 import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {

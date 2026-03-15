@@ -48,7 +48,7 @@ declare module 'vue' {
      * @description You should install the plugin to use this property
      * @example
      * ```ts
-     * import { MazUiTheme } from '@maz-ui/themes'
+     * import { MazUiTheme } from '@maz-ui/themes/plugin'
      * import { createApp } from 'vue'
      *
      * const app = createApp(App)

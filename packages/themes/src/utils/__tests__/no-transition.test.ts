@@ -1,6 +1,6 @@
 import { noTransition } from '../no-transition'
 
-vi.mock('@maz-ui/utils', () => ({
+vi.mock('@maz-ui/utils/helpers/isServer', () => ({
   isServer: vi.fn(() => false),
 }))
 
@@ -19,7 +19,7 @@ describe('no-transition', () => {
   describe('given noTransition function', () => {
     describe('when running on the server', () => {
       it('then it calls the callback without DOM manipulation', async () => {
-        const { isServer } = await import('@maz-ui/utils')
+        const { isServer } = await import('@maz-ui/utils/helpers/isServer')
         vi.mocked(isServer).mockReturnValue(true)
 
         const fn = vi.fn()

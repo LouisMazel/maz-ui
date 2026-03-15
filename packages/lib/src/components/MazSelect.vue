@@ -4,7 +4,7 @@
   generic="Option extends MazSelectOption, Value extends MazInputValue, Multiple extends boolean"
 >
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
-import type { GenericInstanceType } from '@maz-ui/utils'
+import type { GenericInstanceType } from '@maz-ui/utils/ts-helpers/GenericInstanceType'
 import type { HTMLAttributes } from 'vue'
 import type { MazInputValue } from './MazInput.vue'
 import type { MazPopoverProps } from './MazPopover.vue'

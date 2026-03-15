@@ -5,7 +5,7 @@ import { copyFile, mkdir, readdir, stat } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { logger } from '@maz-ui/node'
-import { getErrorMessage } from '@maz-ui/utils'
+import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 

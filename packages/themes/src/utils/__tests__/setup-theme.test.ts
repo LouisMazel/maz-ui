@@ -23,7 +23,7 @@ vi.mock('../update-document-class', () => ({
   updateDocumentClass: vi.fn(),
 }))
 
-vi.mock('@maz-ui/utils', () => ({
+vi.mock('@maz-ui/utils/helpers/isServer', () => ({
   isServer: vi.fn(() => false),
 }))
 

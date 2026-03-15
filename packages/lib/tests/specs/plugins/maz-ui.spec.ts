@@ -1,6 +1,6 @@
 import type { App } from 'vue'
 import { MazUiTheme } from '@maz-ui/themes/plugin'
-import { MazUiTranslations } from '@maz-ui/translations'
+import { MazUiTranslations } from '@maz-ui/translations/plugin'
 import { MazUi } from '@plugins/maz-ui'
 import { vi } from 'vitest'
 
@@ -10,7 +10,7 @@ vi.mock('@maz-ui/themes/plugin', () => ({
   },
 }))
 
-vi.mock('@maz-ui/translations', () => ({
+vi.mock('@maz-ui/translations/plugin', () => ({
   MazUiTranslations: {
     install: vi.fn(),
   },

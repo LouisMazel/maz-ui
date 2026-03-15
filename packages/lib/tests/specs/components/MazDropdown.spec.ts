@@ -1,5 +1,5 @@
 import type { MazDropdownProps } from '@components/MazDropdown.vue'
-import type { GenericInstanceType } from '@maz-ui/utils'
+import type { GenericInstanceType } from '@maz-ui/utils/ts-helpers/GenericInstanceType'
 import type { VueWrapper } from '@vue/test-utils'
 import MazDropdown from '@components/MazDropdown.vue'
 import { MazStar } from '@maz-ui/icons'

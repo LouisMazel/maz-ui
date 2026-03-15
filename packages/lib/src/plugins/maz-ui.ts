@@ -2,7 +2,7 @@ import type { MazUiThemeOptions } from '@maz-ui/themes/plugin'
 import type { MazUiTranslationsOptions } from '@maz-ui/translations'
 import type { Plugin } from 'vue'
 import { MazUiTheme } from '@maz-ui/themes/plugin'
-import { MazUiTranslations } from '@maz-ui/translations'
+import { MazUiTranslations } from '@maz-ui/translations/plugin'
 
 export interface MazUiOptions {
   /**

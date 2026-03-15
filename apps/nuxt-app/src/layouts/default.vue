@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { sleep } from '@maz-ui/utils'
+import { sleep } from '@maz-ui/utils/helpers/sleep'
 
 function action() {
   return sleep(2000)
