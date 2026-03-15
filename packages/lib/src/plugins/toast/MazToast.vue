@@ -1,6 +1,12 @@
 <script lang="ts" setup>
 import type { ToastButton, ToastOptions } from './types'
-import { MazArrowTopRightOnSquare, MazCheckCircle, MazExclamationCircle, MazExclamationTriangle, MazInformationCircle, MazLinkIcon, MazXMark } from '@maz-ui/icons/lazy'
+import { MazArrowTopRightOnSquare } from '@maz-ui/icons/lazy/MazArrowTopRightOnSquare'
+import { MazCheckCircle } from '@maz-ui/icons/lazy/MazCheckCircle'
+import { MazExclamationCircle } from '@maz-ui/icons/lazy/MazExclamationCircle'
+import { MazExclamationTriangle } from '@maz-ui/icons/lazy/MazExclamationTriangle'
+import { MazInformationCircle } from '@maz-ui/icons/lazy/MazInformationCircle'
+import { MazLinkIcon } from '@maz-ui/icons/lazy/MazLinkIcon'
+import { MazXMark } from '@maz-ui/icons/lazy/MazXMark'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useTimer } from '../../composables/useTimer'
 

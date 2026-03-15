@@ -2,7 +2,9 @@
 import type { IconComponent } from '@maz-ui/icons'
 import type { Component } from 'vue'
 import type { MazColor } from './types'
-import { MazCheckCircle, MazExclamationCircle, MazExclamationTriangle } from '@maz-ui/icons/lazy'
+import { MazCheckCircle } from '@maz-ui/icons/lazy/MazCheckCircle'
+import { MazExclamationCircle } from '@maz-ui/icons/lazy/MazExclamationCircle'
+import { MazExclamationTriangle } from '@maz-ui/icons/lazy/MazExclamationTriangle'
 import {
   computed,
   defineAsyncComponent,

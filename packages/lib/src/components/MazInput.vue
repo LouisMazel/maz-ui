@@ -2,7 +2,8 @@
 import type { IconComponent } from '@maz-ui/icons'
 import type { HTMLAttributes, InputHTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
-import { MazEye, MazEyeSlash } from '@maz-ui/icons/lazy'
+import { MazEye } from '@maz-ui/icons/lazy/MazEye'
+import { MazEyeSlash } from '@maz-ui/icons/lazy/MazEyeSlash'
 import { debounce as debounceFn } from '@maz-ui/utils/helpers/debounce'
 import {
   computed,

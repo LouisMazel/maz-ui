@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import { MazChevronLeft, MazXMark } from '@maz-ui/icons/lazy'
+import { MazChevronLeft } from '@maz-ui/icons/lazy/MazChevronLeft'
+import { MazXMark } from '@maz-ui/icons/lazy/MazXMark'
 import { checkAvailability } from '@maz-ui/utils/helpers/checkAvailability'
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 
