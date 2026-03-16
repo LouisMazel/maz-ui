@@ -48,7 +48,7 @@
   "devDependencies": {
     "@codecov/vite-plugin": "^1.9.1",
     "@commitlint/cli": "20.5.0",
-    "@commitlint/config-conventional": "^20.4.4",
+    "@commitlint/config-conventional": "^20.5.0",
     "@commitlint/cz-commitlint": "^20.5.0",
     "@maz-ui/node": "workspace:*",
     "@nx/js": "^22.5.4",
