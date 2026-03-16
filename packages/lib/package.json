@@ -191,7 +191,7 @@
     "@vue/compiler-sfc": "^3.5.30",
     "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4.27",
-    "jsdom": "^28.1.0",
+    "jsdom": "^29.0.0",
     "lightningcss": "^1.32.0",
     "nuxt": "^4.4.2",
     "sass": "^1.98.0",
