@@ -1,6 +1,16 @@
 /* eslint-disable sonarjs/no-nested-template-literals */
 /* eslint-disable sonarjs/cognitive-complexity */
 
+const PIPE_RE = /\|/g
+const NEWLINE_RE = /\n/g
+const MULTI_WHITESPACE_RE = /\s+/g
+const CAMEL_TO_KEBAB_RE = /([a-z])([A-Z])/g
+const WHITESPACE_UNDERSCORE_RE = /[\s_]+/g
+const STARTS_WITH_UPPERCASE_RE = /^[A-Z]/
+const SURROUNDING_QUOTES_RE = /^["']|['"]$/g
+const SURROUNDING_BACKTICK_QUOTES_RE = /^[`"']|[`"']$/g
+const SURROUNDING_BACKTICK_RE = /^`|`$/g
+
 /** @type {import('vue-docgen-cli').Templates['component']} */
 
 // eslint-disable-next-line complexity
@@ -36,8 +46,8 @@ function escapeMarkdownTableContent(text) {
     return text
 
   return String(text)
-    .replace(/\|/g, '\\|') // Échapper les pipes
-    .replace(/\n/g, ' ') // Remplacer les retours à la ligne par des espaces
+    .replace(PIPE_RE, '\\|')
+    .replace(NEWLINE_RE, ' ')
     .trim()
 }
 
@@ -63,7 +73,7 @@ function formatComplexType(type) {
   }
 
   // Pour les interfaces et types TypeScript, garder le nom complet
-  if (type.name && /^[A-Z]/.test(type.name)) {
+  if (type.name && STARTS_WITH_UPPERCASE_RE.test(type.name)) {
     // C'est probablement une interface ou un type custom (commence par une majuscule)
     return type.name
   }
@@ -71,13 +81,13 @@ function formatComplexType(type) {
   // Pour les types avec des accolades (types object literals)
   if (type.name && (type.name.includes('{') || type.name.includes('}'))) {
     // Nettoyer le type pour éviter les retours à la ligne
-    return type.name.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim()
+    return type.name.replace(NEWLINE_RE, ' ').replace(MULTI_WHITESPACE_RE, ' ').trim()
   }
 
   // Gérer les types avec des propriétés détaillées qui causent des retours à la ligne
   if (type.name && type.name.includes('\n')) {
     // Remplacer les retours à la ligne par des espaces pour éviter de casser le tableau
-    return type.name.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim()
+    return type.name.replace(NEWLINE_RE, ' ').replace(MULTI_WHITESPACE_RE, ' ').trim()
   }
 
   return type.name || 'any'
@@ -85,8 +95,8 @@ function formatComplexType(type) {
 
 function toKebabCase(input) {
   return input
-    .replaceAll(/([a-z])([A-Z])/g, '$1-$2')
-    .replaceAll(/[\s_]+/g, '-')
+    .replaceAll(CAMEL_TO_KEBAB_RE, '$1-$2')
+    .replaceAll(WHITESPACE_UNDERSCORE_RE, '-')
     .toLowerCase()
 }
 
@@ -110,19 +120,19 @@ function extractTagInfo(tags) {
   // 2. Extraire @default
   if (tags.default && tags.default.length > 0) {
     result.default = tags.default[0].description || tags.default[0].title
-    result.default = result.default.replace(/^["']|['"]$/g, '')
+    result.default = result.default.replace(SURROUNDING_QUOTES_RE, '')
   }
 
   // 3. Extraire @values
   if (tags.values && tags.values.length > 0) {
     result.values = tags.values[0].description || tags.values[0].title
-    result.values = result.values.replace(/^[`"']|[`"']$/g, '')
+    result.values = result.values.replace(SURROUNDING_BACKTICK_QUOTES_RE, '')
   }
 
   // 4. Extraire @example
   if (tags.example && tags.example.length > 0) {
     result.example = tags.example[0].description || tags.example[0].title
-    result.example = result.example.replace(/^`|`$/g, '')
+    result.example = result.example.replace(SURROUNDING_BACKTICK_RE, '')
   }
 
   // 5. Extraire @model (pour v-model two-way binding)

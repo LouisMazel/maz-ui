@@ -88,7 +88,7 @@ describe('MazInputPrice branch coverage', () => {
       await nextTick()
       const emitted = wrapper.emitted('update:model-value')
       expect(emitted).toBeTruthy()
-      const lastValue = emitted![emitted!.length - 1][0]
+      const lastValue = emitted!.at(-1)[0]
       expect(lastValue).toBe(100)
       wrapper.unmount()
     })
@@ -102,7 +102,7 @@ describe('MazInputPrice branch coverage', () => {
       await nextTick()
       const emitted = wrapper.emitted('update:model-value')
       expect(emitted).toBeTruthy()
-      const lastValue = emitted![emitted!.length - 1][0]
+      const lastValue = emitted!.at(-1)[0]
       expect(lastValue).toBe(10)
       wrapper.unmount()
     })

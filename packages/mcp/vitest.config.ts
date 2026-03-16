@@ -16,10 +16,10 @@ export default defineConfig({
       include: ['src/**/*.{ts,js}'],
       exclude: coverageConfigDefaults.exclude,
       thresholds: {
-        lines: 96.3,
+        lines: 96.33,
         functions: 98.66,
         branches: 90.14,
-        statements: 96.42,
+        statements: 96.46,
         autoUpdate: !process.env.CI,
       },
     },

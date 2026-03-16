@@ -4,6 +4,9 @@ import { fileURLToPath } from 'node:url'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
+const UPPERCASE_LETTER_RE = /([A-Z])/g
+const LEADING_DASH_RE = /^-/
+
 export interface DocumentationDiagnostics {
   components: {
     total: number
@@ -70,9 +73,9 @@ export class DocumentationService {
 
   private pascalToKebabCase(pascalName: string): string {
     return pascalName
-      .replace(/([A-Z])/g, '-$1')
+      .replace(UPPERCASE_LETTER_RE, '-$1')
       .toLowerCase()
-      .replace(/^-/, '')
+      .replace(LEADING_DASH_RE, '')
   }
 
   private readMarkdownFile(filePath: string): string {
@@ -208,7 +211,6 @@ export class DocumentationService {
     return this.readMarkdownFile(overviewPath)
   }
 
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   searchDocumentation(query: string): string[] {
     const searchTerm = query.toLowerCase()
     const results: string[] = []

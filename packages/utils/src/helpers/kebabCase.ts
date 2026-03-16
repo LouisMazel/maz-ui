@@ -1,15 +1,15 @@
+const LOWER_UPPER = /([a-z])([A-Z])/g
+const CONSECUTIVE_UPPER = /([A-Z])([A-Z][a-z])/g
+const SPACES_OR_UNDERSCORES = /[\s_]+/g
+const MULTIPLE_DASHES = /-+/g
+const LEADING_TRAILING_DASH = /(^-)|(-$)/g
+
 export function kebabCase(str: string): string {
   return str
-    // Handle PascalCase/camelCase: MyComponent -> my-component
-    .replace(/([a-z])([A-Z])/g, '$1-$2')
-    // Handle consecutive capitals: XMLParser -> xml-parser
-    .replace(/([A-Z])([A-Z][a-z])/g, '$1-$2')
-    // Replace spaces, underscores with dashes
-    .replace(/[\s_]+/g, '-')
-    // Convert to lowercase
+    .replace(LOWER_UPPER, '$1-$2')
+    .replace(CONSECUTIVE_UPPER, '$1-$2')
+    .replace(SPACES_OR_UNDERSCORES, '-')
     .toLowerCase()
-    // Clean up multiple dashes
-    .replace(/-+/g, '-')
-    // Remove leading/trailing dashes
-    .replace(/(^-)|(-$)/g, '')
+    .replace(MULTIPLE_DASHES, '-')
+    .replace(LEADING_TRAILING_DASH, '')
 }

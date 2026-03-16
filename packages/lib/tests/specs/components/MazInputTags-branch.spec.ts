@@ -58,7 +58,7 @@ describe('MazInputTags branch coverage', () => {
       await nextTick()
       const emitted = wrapper.emitted('update:model-value')
       if (emitted) {
-        const lastEmitted = emitted[emitted.length - 1][0] as string[]
+        const lastEmitted = emitted.at(-1)[0] as string[]
         expect(lastEmitted.filter(t => t === 'existing').length).toBe(1)
       }
       wrapper.unmount()

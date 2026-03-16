@@ -2,6 +2,8 @@ import type { MazUiTranslationsSchema, TranslationKey } from '../types'
 import { globalState, locale } from '../states'
 import { loadLocale } from './locales'
 
+const INTERPOLATION_RE = /\{(\w+)\}/g
+
 export function getMessage(obj: any, path: string): any {
   return path.split('.').reduce((current, key) => current?.[key], obj)
 }
@@ -61,7 +63,7 @@ export function interpolate(message: string, variables?: Record<string, unknown>
   if (!variables)
     return message
 
-  return message.replace(/\{(\w+)\}/g, (match, key) => {
+  return message.replace(INTERPOLATION_RE, (match, key) => {
     return variables[key] !== undefined ? String(variables[key]) : match
   })
 }

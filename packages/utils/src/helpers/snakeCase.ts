@@ -1,15 +1,15 @@
+const LOWER_UPPER = /([a-z])([A-Z])/g
+const CONSECUTIVE_UPPER = /([A-Z])([A-Z][a-z])/g
+const SPACES_OR_DASHES = /[\s-]+/g
+const MULTIPLE_UNDERSCORES = /_+/g
+const LEADING_TRAILING_UNDERSCORE = /(^_)|(_$)/g
+
 export function snakeCase(str: string): string {
   return str
-    // Handle PascalCase/camelCase: MyComponent -> my_component
-    .replace(/([a-z])([A-Z])/g, '$1_$2')
-    // Handle consecutive capitals: XMLParser -> xml_parser
-    .replace(/([A-Z])([A-Z][a-z])/g, '$1_$2')
-    // Replace spaces, dashes with underscores
-    .replace(/[\s-]+/g, '_')
-    // Convert to lowercase
+    .replace(LOWER_UPPER, '$1_$2')
+    .replace(CONSECUTIVE_UPPER, '$1_$2')
+    .replace(SPACES_OR_DASHES, '_')
     .toLowerCase()
-    // Clean up multiple underscores
-    .replace(/_+/g, '_')
-    // Remove leading/trailing underscores
-    .replace(/(^_)|(_$)/g, '')
+    .replace(MULTIPLE_UNDERSCORES, '_')
+    .replace(LEADING_TRAILING_UNDERSCORE, '')
 }

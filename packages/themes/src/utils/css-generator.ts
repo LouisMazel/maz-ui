@@ -21,6 +21,8 @@ export interface CSSOptions {
   darkClass: string
 }
 
+const LINE_START_RE = /^/gm
+
 const DEFAULT_CRITICAL_COLORS: (keyof ThemeColors)[] = [
   'background',
   'foreground',
@@ -250,7 +252,7 @@ function generateVariablesBlock({
   const content = variables.join('\n')
 
   if (mediaQuery) {
-    return `\n  ${mediaQuery} {\n    ${selector} {\n${content.replace(/^/gm, '  ')}\n    }\n  }\n`
+    return `\n  ${mediaQuery} {\n    ${selector} {\n${content.replace(LINE_START_RE, '  ')}\n    }\n  }\n`
   }
 
   return `\n  ${selector} {\n${content}\n  }\n`
@@ -278,7 +280,7 @@ export function injectCSS(id = CSS_ID, css: string): void {
   if (isServer())
     return
 
-  const styleElements = document.querySelectorAll<HTMLStyleElement>(`#${id}`)
+  const styleElements = [...document.querySelectorAll<HTMLStyleElement>(`#${id}`)]
 
   if (!styleElements || styleElements.length === 0) {
     const element = document.createElement('style')
@@ -294,12 +296,14 @@ export function injectCSS(id = CSS_ID, css: string): void {
     return
   }
 
-  if (styleElements.length > 1) {
+  const lastElement = styleElements.at(-1)
+
+  if (lastElement) {
     for (let i = 0; i < styleElements.length - 1; i++) {
       styleElements[i].remove()
     }
 
-    styleElements[styleElements.length - 1].textContent = css
+    lastElement.textContent = css
   }
 }
 

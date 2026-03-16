@@ -5,9 +5,19 @@ import { fileURLToPath } from 'node:url'
 import { logger } from '@maz-ui/node'
 import { getComponentList } from './getComponentList.js'
 
+const PASCAL_CASE_SPLIT_RE = /[-_]/
+const WIDTH_ATTR_RE = /\swidth\s*=/
+const WIDTH_VALUE_RE = /\swidth\s*=\s*"[^"]*"/g
+const HEIGHT_ATTR_RE = /\sheight\s*=/
+const HEIGHT_VALUE_RE = /\sheight\s*=\s*"[^"]*"/g
+const SVG_OPEN_RE = /<svg\b/
+// eslint-disable-next-line sonarjs/regex-complexity, regexp/no-useless-assertions
+const COLOR_ATTR_RE = /\b(stroke|fill|color|stop-color|flood-color|lighting-color)\b="(?:#[\dA-Fa-f]{3,8}|rgb\([^)]+\)|rgba\([^)]+\)|hsl\([^)]+\)|hsla\([^)]+\)|[a-zA-Z]+)"/g
+const QUOTE_RE = /"/g
+
 function toPascalCase(str: string) {
   return str
-    .split(/[-_]/)
+    .split(PASCAL_CASE_SPLIT_RE)
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join('')
 }
@@ -30,24 +40,22 @@ function replaceValuesInSvg(files: { file: string, name: string, path: string, d
       const filePath = resolve(file.dir, file.file)
       let content = readFileSync(filePath, 'utf-8')
 
-      if (!/\swidth\s*=/.test(content)) {
-        content = content.replace(/<svg\b/, '<svg width="1em"')
+      if (!WIDTH_ATTR_RE.test(content)) {
+        content = content.replace(SVG_OPEN_RE, '<svg width="1em"')
       }
       else {
-        content = content.replace(/\swidth\s*=\s*"[^"]*"/g, ' width="1em"')
+        content = content.replace(WIDTH_VALUE_RE, ' width="1em"')
       }
 
-      if (!/\sheight\s*=/.test(content)) {
-        content = content.replace(/<svg\b/, '<svg height="1em"')
+      if (!HEIGHT_ATTR_RE.test(content)) {
+        content = content.replace(SVG_OPEN_RE, '<svg height="1em"')
       }
       else {
-        content = content.replace(/\sheight\s*=\s*"[^"]*"/g, ' height="1em"')
+        content = content.replace(HEIGHT_VALUE_RE, ' height="1em"')
       }
 
-      // eslint-disable-next-line sonarjs/regex-complexity, regexp/no-useless-assertions
-      const colorRegex = /\b(stroke|fill|color|stop-color|flood-color|lighting-color)\b="(?:#[\dA-Fa-f]{3,8}|rgb\([^)]+\)|rgba\([^)]+\)|hsl\([^)]+\)|hsla\([^)]+\)|[a-zA-Z]+)"/g
-      content = content.replace(colorRegex, (match, attribute) => {
-        const colorValue = match.split('=')[1].replace(/"/g, '')
+      content = content.replace(COLOR_ATTR_RE, (match, attribute) => {
+        const colorValue = match.split('=')[1].replace(QUOTE_RE, '')
         if (colorValue === 'none' || colorValue === 'transparent') {
           return match
         }

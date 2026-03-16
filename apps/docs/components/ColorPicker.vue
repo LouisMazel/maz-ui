@@ -20,8 +20,10 @@ const emit = defineEmits<{
 
 const colorInput = ref<HTMLInputElement>()
 
+const HSL_RE = /(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)%\s+(\d+(?:\.\d+)?)%/
+
 function hslToHex(hsl: HSL): string {
-  const match = hsl.match(/(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)%\s+(\d+(?:\.\d+)?)%/)
+  const match = hsl.match(HSL_RE)
   if (!match)
     return '#000000'
 

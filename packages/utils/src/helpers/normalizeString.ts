@@ -57,6 +57,12 @@ export interface NormalizeStringOptions {
   customNormalizationForms?: string[]
 }
 
+const WHITESPACE = /\s+/g
+const DIGIT = /\d/g
+const ACCENTED_CHARS = /[ÀÁÂÃÄÅÇÈÉÊËÎÏÑÔÕÖØÙÚÛÜàáâãäåçèéêëíîïñóôõöøùúûüÿ]/g
+const COMBINING_DIACRITICS = /[\u0300-\u036F]/g
+const NON_ALPHANUMERIC_DASH = /[^\dA-Z-]/gi
+
 const defaultOptions: NormalizeStringOptions = {
   removeAccents: true,
   caseSensitive: false,
@@ -107,7 +113,7 @@ export function normalizeString(
   }
 
   if (finalOptions.normalizeSpaces) {
-    result = result.replaceAll(/\s+/g, ' ')
+    result = result.replaceAll(WHITESPACE, ' ')
   }
 
   if (finalOptions.replaceSpaces) {
@@ -115,15 +121,15 @@ export function normalizeString(
   }
 
   if (finalOptions.removeNumbers) {
-    result = result.replaceAll(/\d/g, '')
+    result = result.replaceAll(DIGIT, '')
   }
 
   if (finalOptions.removeAccents) {
-    result = result.replaceAll(/[ÀÁÂÃÄÅÇÈÉÊËÎÏÑÔÕÖØÙÚÛÜàáâãäåçèéêëíîïñóôõöøùúûüÿ]/g, (char) => {
+    result = result.replaceAll(ACCENTED_CHARS, (char) => {
       return accentsMap[char] || char
     })
 
-    result = result.replaceAll(/[\u0300-\u036F]/g, '')
+    result = result.replaceAll(COMBINING_DIACRITICS, '')
   }
 
   // Apply case transformation BEFORE caseSensitive check
@@ -135,7 +141,7 @@ export function normalizeString(
   }
 
   if (finalOptions.removeSpecialCharacters) {
-    result = result.replaceAll(/[^\dA-Z-]/gi, '')
+    result = result.replaceAll(NON_ALPHANUMERIC_DASH, '')
   }
 
   if (finalOptions.trim) {

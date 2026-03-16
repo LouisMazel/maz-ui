@@ -7,6 +7,9 @@ import { deploy, excludeDefaults } from '@samkirkland/ftp-deploy'
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url))
 
+const ENV_LINE_RE = /^([^=]+)=(.*)$/
+const SURROUNDING_QUOTES_RE = /^['"](.*)['"]$/
+
 /**
  * Load environment variables from a .env file
  * @param {string} envFileName
@@ -21,11 +24,11 @@ function loadEnvFile(envFileName = '.env') {
     const envVars = {}
 
     envContent.split('\n').forEach((line) => {
-      const match = line.match(/^([^=]+)=(.*)$/)
+      const match = line.match(ENV_LINE_RE)
       if (match) {
         const key = match[1].trim()
         let value = match[2].trim()
-        value = value.replace(/^['"](.*)['"]$/, '$1')
+        value = value.replace(SURROUNDING_QUOTES_RE, '$1')
         envVars[key] = value
       }
     })

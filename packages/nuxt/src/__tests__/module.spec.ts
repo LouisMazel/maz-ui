@@ -26,7 +26,7 @@ vi.mock('@nuxt/devtools-kit', () => ({
 }))
 
 vi.mock('defu', () => ({
-  defu: (...args: any[]) => Object.assign({}, ...args.reverse()),
+  defu: (...args: any[]) => args.reverse().reduce((acc: any, arg: any) => ({ ...acc, ...arg }), {}),
 }))
 
 vi.mock('@maz-ui/utils/helpers/capitalize', () => ({

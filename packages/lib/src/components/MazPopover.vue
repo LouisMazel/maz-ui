@@ -582,26 +582,26 @@ function handleTrapFocus(event: KeyboardEvent) {
   if (!panelRef.value || !isClient())
     return
 
-  const focusableElements = panelRef.value.querySelectorAll(
+  const focusableElements = [...panelRef.value.querySelectorAll(
     'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select, [tabindex]:not([tabindex="-1"])',
-  )
+  )]
 
   if (focusableElements.length === 0)
     return
 
-  const firstElement = focusableElements[0] as HTMLElement
-  const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
+  const firstElement = focusableElements[0] as HTMLElement | undefined
+  const lastElement = focusableElements.at(-1) as HTMLElement | undefined
 
   if (event.shiftKey) {
     if (document.activeElement === firstElement) {
       event.preventDefault()
-      lastElement.focus()
+      lastElement?.focus()
     }
   }
   else {
     if (document.activeElement === lastElement) {
       event.preventDefault()
-      firstElement.focus()
+      firstElement?.focus()
     }
   }
 }

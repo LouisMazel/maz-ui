@@ -12,6 +12,9 @@ import {
 import { version } from '../package.json' assert { type: 'json' }
 import { DocumentationService } from './DocumentationService'
 
+const NON_WORD_RE = /[^\w\s]/g
+const WHITESPACE_RE = /\s+/
+
 interface DocumentationIndex {
   type: 'component' | 'guide' | 'composable' | 'directive' | 'plugin' | 'helper'
   name: string
@@ -902,8 +905,8 @@ export class MazUiMcpServer {
 
             // Extract keywords from description
             const keywords = description.toLowerCase()
-              .replace(/[^\w\s]/g, ' ')
-              .split(/\s+/)
+              .replace(NON_WORD_RE, ' ')
+              .split(WHITESPACE_RE)
               .filter(word => word.length > 2)
 
             const suggestions = new Map<string, number>()
@@ -941,7 +944,7 @@ export class MazUiMcpServer {
             // Combine and deduplicate results
             const allSuggestions = new Set([
               ...Array.from(suggestions.entries())
-                .sort(([,a], [,b]) => b - a)
+                .sort(([, a], [, b]) => b - a)
                 .slice(0, 5)
                 .map(([key]) => key),
               ...fuzzyResults.slice(0, 3).map(item => `${item.type}:${item.name}`),

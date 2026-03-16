@@ -22,6 +22,8 @@ import { getOgImage } from './og-image'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
+const PASCAL_TO_KEBAB_RE = /([\da-z])([A-Z])/g
+
 // Generate complete CSS
 const {
   full,
@@ -30,7 +32,7 @@ const {
 })
 
 function pascalCaseToKebabCase(value: string): string {
-  return value.replaceAll(/([\da-z])([A-Z])/g, '$1-$2').toLowerCase()
+  return value.replaceAll(PASCAL_TO_KEBAB_RE, '$1-$2').toLowerCase()
 }
 
 function getAssetBaseUrl(path: string): string {

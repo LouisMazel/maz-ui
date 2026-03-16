@@ -1,7 +1,9 @@
 import type { ColorScale } from '../types'
 
+const HSL_RE = /^(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)%\s+(\d+(?:\.\d+)?)%$/
+
 export function parseHSL(hsl: string): { h: number, s: number, l: number } {
-  const match = hsl.match(/^(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)%\s+(\d+(?:\.\d+)?)%$/)
+  const match = hsl.match(HSL_RE)
   if (!match) {
     throw new Error(`Invalid HSL format: ${hsl}`)
   }

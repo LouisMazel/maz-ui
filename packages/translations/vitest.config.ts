@@ -29,10 +29,10 @@ export default defineConfig({
         'src/**/*/index.ts',
       ],
       thresholds: {
-        lines: 96.37,
+        lines: 96.4,
         functions: 95.74,
         branches: 98.75,
-        statements: 95.39,
+        statements: 95.42,
         autoUpdate: !process.env.CI,
       },
     },

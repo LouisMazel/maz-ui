@@ -842,7 +842,7 @@ describe('given MazDatePicker component (branch coverage)', () => {
 
       const emitted = wrapper.emitted('update:model-value')
       if (emitted) {
-        const lastEmit = emitted[emitted.length - 1][0] as any
+        const lastEmit = emitted.at(-1)[0] as any
         expect(lastEmit).toHaveProperty('start')
         expect(lastEmit).toHaveProperty('end')
       }

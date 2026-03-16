@@ -9,6 +9,11 @@ import DemoAuthPage from './DemoAuthPage.vue'
 import DemoDashboardPage from './DemoDashboardPage.vue'
 import DemoProductPage from './DemoProductPage.vue'
 
+const DOUBLE_QUOTED_VALUE_RE = /: "([^"]*)"/g
+const SINGLE_QUOTE_RE = /'/g
+const TOP_LEVEL_KEYS_RE = /^(\s*)"(name|foundation|colors)":/gm
+const NESTED_KEYS_RE = /^(\s*)"(light|dark)":/gm
+
 const { updateTheme, isDark, toggleDarkMode, presetName, colorMode, preset: currentPreset } = useTheme()
 const toast = useToast()
 
@@ -86,14 +91,12 @@ async function exportTheme() {
   const themeCode = `import type { ThemePreset } from '@maz-ui/themes'
 
 export const customTheme: ThemePreset = ${JSON.stringify(themeData, null, 2)
-  // Escape single quotes within string values
-  .replace(/: "([^"]*)"/g, (match, value) => {
-    const escapedValue = value.replace(/'/g, '\\\'')
+  .replace(DOUBLE_QUOTED_VALUE_RE, (match, value) => {
+    const escapedValue = value.replace(SINGLE_QUOTE_RE, '\\\'')
     return `: '${escapedValue}'`
   })
-  // Remove quotes from top-level keys and nested object keys
-  .replace(/^(\s*)"(name|foundation|colors)":/gm, '$1$2:')
-  .replace(/^(\s*)"(light|dark)":/gm, '$1$2:')}`
+  .replace(TOP_LEVEL_KEYS_RE, '$1$2:')
+  .replace(NESTED_KEYS_RE, '$1$2:')}`
 
   exportedCode.value = themeCode
 
