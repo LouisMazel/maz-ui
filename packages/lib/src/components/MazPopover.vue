@@ -590,6 +590,7 @@ function handleTrapFocus(event: KeyboardEvent) {
     return
 
   const firstElement = focusableElements[0] as HTMLElement
+  // eslint-disable-next-line e18e/prefer-array-at
   const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
 
   if (event.shiftKey) {

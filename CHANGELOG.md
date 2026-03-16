@@ -6131,7 +6131,7 @@ No relevant changes for this release
 
 - **lib:** add helper to transform locale to unicode flag ([5f89873](https://github.com/LouisMazel/maz-ui/commit/5f89873c71d97956f3a57cdf1b17260b996a3912))
 
-# [3.17.0](https://github.com/LouisMazel/maz-ui/compare/v3.16.0...v3.17.0) (2023-09-28)
+## [3.17.0](https://github.com/LouisMazel/maz-ui/compare/v3.16.0...v3.17.0) (2023-09-28)
 
 **Note:** Version bump only for package root
 
@@ -6141,7 +6141,7 @@ No relevant changes for this release
 
 - add @mazui/cli to generate theme ([5b64c1c](https://github.com/LouisMazel/maz-ui/commit/5b64c1c51f6e20a8cb3f5c9ca00af5158f3734eb))
 
-# [3.16.0](https://github.com/LouisMazel/maz-ui/compare/v3.15.3...v3.16.0) (2023-09-27)
+## [3.16.0](https://github.com/LouisMazel/maz-ui/compare/v3.15.3...v3.16.0) (2023-09-27)
 
 ### Features
 
@@ -6157,7 +6157,7 @@ No relevant changes for this release
 
 **Note:** Version bump only for package root
 
-# [3.15.0](https://github.com/LouisMazel/maz-ui/compare/v3.14.3-alpha.3...v3.15.0) (2023-09-26)
+## [3.15.0](https://github.com/LouisMazel/maz-ui/compare/v3.14.3-alpha.3...v3.15.0) (2023-09-26)
 
 **Note:** Version bump only for package root
 
@@ -6191,7 +6191,7 @@ No relevant changes for this release
 
 - **lib:** v-fullscreen-img - add lazy loading of vue-scrollto ([c1343d7](https://github.com/LouisMazel/maz-ui/commit/c1343d70da18453620010bdb4c7f5af8f7c2a4cb))
 
-# [3.14.0](https://github.com/LouisMazel/maz-ui/compare/v3.13.0...v3.14.0) (2023-09-22)
+## [3.14.0](https://github.com/LouisMazel/maz-ui/compare/v3.13.0...v3.14.0) (2023-09-22)
 
 ### Bug Fixes
 
@@ -6205,7 +6205,7 @@ No relevant changes for this release
 - add new v-fullscreen-img directive ([373483a](https://github.com/LouisMazel/maz-ui/commit/373483ad0841f6781e51fce06576bc356294643f))
 - **lib:** nuxt module - add auto-import of multiple composables, directives and plugins ([d0020c6](https://github.com/LouisMazel/maz-ui/commit/d0020c65dd9f00ec70cc9487cb2e98b236df4e79))
 
-# [3.13.0](https://github.com/LouisMazel/maz-ui/compare/v3.12.2...v3.13.0) (2023-09-20)
+## [3.13.0](https://github.com/LouisMazel/maz-ui/compare/v3.12.2...v3.13.0) (2023-09-20)
 
 ### Bug Fixes
 
@@ -6227,7 +6227,7 @@ No relevant changes for this release
 
 - **lib:** maz-tabs - better deduction to current tab when use-anchor option is enable ([b82bf6f](https://github.com/LouisMazel/maz-ui/commit/b82bf6f0803dac2f25a3f689c09b567624a74951))
 
-# [3.12.0](https://github.com/LouisMazel/maz-ui/compare/v3.11.4...v3.12.0) (2023-09-19)
+## [3.12.0](https://github.com/LouisMazel/maz-ui/compare/v3.11.4...v3.12.0) (2023-09-19)
 
 ### Bug Fixes
 
@@ -6261,7 +6261,7 @@ No relevant changes for this release
 - **lib:** dark mode with tailwind ([2e4ee54](https://github.com/LouisMazel/maz-ui/commit/2e4ee545ed29f3f66efb6ccdaee2fba7262c0a6d))
 - **lib:** declaration types file of MazChart ([82155a7](https://github.com/LouisMazel/maz-ui/commit/82155a7ffc655a8d859939b53233312550ef8d61))
 
-# [3.11.0](https://github.com/LouisMazel/maz-ui/compare/v3.10.5...v3.11.0) (2023-09-14)
+## [3.11.0](https://github.com/LouisMazel/maz-ui/compare/v3.10.5...v3.11.0) (2023-09-14)
 
 ### Features
 
@@ -6293,7 +6293,7 @@ No relevant changes for this release
 
 - **lib:** building process ([2f1bbeb](https://github.com/LouisMazel/maz-ui/commit/2f1bbebb4e1552c44e762ee485dbd5c0675ce8c8))
 
-# [3.10.0](https://github.com/LouisMazel/maz-ui/compare/v3.9.1...v3.10.0) (2023-09-01)
+## [3.10.0](https://github.com/LouisMazel/maz-ui/compare/v3.9.1...v3.10.0) (2023-09-01)
 
 ### Features
 
@@ -6303,11 +6303,11 @@ No relevant changes for this release
 
 **Note:** Version bump only for package root
 
-# [3.9.0](https://github.com/LouisMazel/maz-ui/compare/v3.8.0...v3.9.0) (2023-04-24)
+## [3.9.0](https://github.com/LouisMazel/maz-ui/compare/v3.8.0...v3.9.0) (2023-04-24)
 
 **Note:** Version bump only for package root
 
-# [3.8.0](https://github.com/LouisMazel/maz-ui/compare/v3.7.1...v3.8.0) (2023-03-28)
+## [3.8.0](https://github.com/LouisMazel/maz-ui/compare/v3.7.1...v3.8.0) (2023-03-28)
 
 ### Bug Fixes
 
@@ -6323,7 +6323,7 @@ No relevant changes for this release
 
 - **lib:** maz-dialog - add max-height & scrollable options ([64e16c8](https://github.com/LouisMazel/maz-ui/commit/64e16c86e8ff1c565538c6ef32c48364d930495c))
 
-# [3.7.0](https://github.com/LouisMazel/maz-ui/compare/v3.6.12...v3.7.0) (2023-03-06)
+## [3.7.0](https://github.com/LouisMazel/maz-ui/compare/v3.6.12...v3.7.0) (2023-03-06)
 
 ### Bug Fixes
 
@@ -6399,13 +6399,13 @@ No relevant changes for this release
 
 **Note:** Version bump only for package root
 
-# [3.6.0](https://github.com/LouisMazel/maz-ui/compare/v3.5.0...v3.6.0) (2022-12-13)
+## [3.6.0](https://github.com/LouisMazel/maz-ui/compare/v3.5.0...v3.6.0) (2022-12-13)
 
 ### Features
 
 - **lib:** use vite 4 to build lib ([#447](https://github.com/LouisMazel/maz-ui/issues/447)) ([4a277d8](https://github.com/LouisMazel/maz-ui/commit/4a277d8e378e30a0becf2c73ba698a9458ec4120))
 
-# [3.5.0](https://github.com/LouisMazel/maz-ui/compare/v3.4.2...v3.5.0) (2022-12-12)
+## [3.5.0](https://github.com/LouisMazel/maz-ui/compare/v3.4.2...v3.5.0) (2022-12-12)
 
 ## [3.4.2](https://github.com/LouisMazel/maz-ui/compare/v3.4.1...v3.4.2) (2022-12-06)
 
@@ -6423,7 +6423,7 @@ No relevant changes for this release
 
 - **lib:** toaster - use max z-index to always show it ([dbb9e28](https://github.com/LouisMazel/maz-ui/commit/dbb9e286aa10076e62b7137068e9eb93fea4336b))
 
-# [3.4.0](https://github.com/LouisMazel/maz-ui/compare/v3.3.2...v3.4.0) (2022-12-03)
+## [3.4.0](https://github.com/LouisMazel/maz-ui/compare/v3.3.2...v3.4.0) (2022-12-03)
 
 ### Features
 
@@ -6439,7 +6439,7 @@ No relevant changes for this release
 
 - **lib:** maz-phone-number-input - model-value reactivity ([255fbd2](https://github.com/LouisMazel/maz-ui/commit/255fbd2d3ab4cd01f789eb24290cfdc6db1d6c6e))
 
-# [3.3.0](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.3.0) (2022-12-01)
+## [3.3.0](https://github.com/LouisMazel/maz-ui/compare/v2.3.13...v3.3.0) (2022-12-01)
 
 ### Bug Fixes
 
@@ -6471,7 +6471,7 @@ No relevant changes for this release
 
 **Note:** Version bump only for package root
 
-# [3.2.0](https://github.com/LouisMazel/maz-ui/compare/v3.1.1...v3.2.0) (2022-12-01)
+## [3.2.0](https://github.com/LouisMazel/maz-ui/compare/v3.1.1...v3.2.0) (2022-12-01)
 
 - **lib:** maz-select - scroll in to view behaviour ([#389](https://github.com/LouisMazel/maz-ui/issues/389)) ([ebac7c8](https://github.com/LouisMazel/maz-ui/commit/ebac7c8aade9ff87d95f8e4af2b0e31950c718de))
 

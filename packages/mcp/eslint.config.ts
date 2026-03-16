@@ -4,6 +4,7 @@ export default defineConfig({
   formatters: true,
   typescript: true,
   sonarjs: true,
+  e18e: false,
 }, {
   rules: {
     'antfu/no-top-level-await': 'off',

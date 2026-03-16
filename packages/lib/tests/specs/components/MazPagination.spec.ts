@@ -104,10 +104,10 @@ describe('mazPagination.vue', () => {
 
     // When on last page, next and last page buttons should be disabled
     if (allButtonsOnLastPage.length >= 2) {
-      const nextPageButton = allButtonsOnLastPage[allButtonsOnLastPage.length - 2]
-      const lastPageButton = allButtonsOnLastPage[allButtonsOnLastPage.length - 1]
-      expect(nextPageButton.attributes('disabled')).toBeDefined()
-      expect(lastPageButton.attributes('disabled')).toBeDefined()
+      const nextPageButton = allButtonsOnLastPage.at(-2)
+      const lastPageButton = allButtonsOnLastPage.at(-1)
+      expect(nextPageButton?.attributes('disabled')).toBeDefined()
+      expect(lastPageButton?.attributes('disabled')).toBeDefined()
     }
   })
 
