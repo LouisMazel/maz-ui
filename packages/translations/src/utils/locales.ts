@@ -52,7 +52,7 @@ export function getAvailableLocales() {
     locales.add(path)
   }
 
-  return Array.from(locales)
+  return [...locales]
 }
 
 export function loadLocale(targetLocale: string): Promise<void> {

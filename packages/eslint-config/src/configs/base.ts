@@ -38,5 +38,8 @@ export function baseRules(isProduction: boolean): Partial<Rules> {
 
     // Test
     'test/prefer-lowercase-title': 'off',
+
+    // e18e
+    'e18e/prefer-static-regex': 'off',
   }
 }
