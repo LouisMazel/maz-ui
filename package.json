@@ -49,7 +49,7 @@
     "@codecov/vite-plugin": "^1.9.1",
     "@commitlint/cli": "20.4.4",
     "@commitlint/config-conventional": "^20.4.4",
-    "@commitlint/cz-commitlint": "^20.4.4",
+    "@commitlint/cz-commitlint": "^20.5.0",
     "@maz-ui/node": "workspace:*",
     "@nx/js": "^22.5.4",
     "@types/node": "^25.5.0",
