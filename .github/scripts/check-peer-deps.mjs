@@ -1,3 +1,4 @@
+/* eslint-disable e18e/prefer-static-regex */
 // @ts-check
 // .github/scripts/check-peer-deps.mjs
 import { readdirSync, readFileSync, statSync } from 'node:fs'
