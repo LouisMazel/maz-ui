@@ -49,7 +49,7 @@
     "eslint": ">=9.0.0 <11.0.0"
   },
   "dependencies": {
-    "@antfu/eslint-config": "^7.4.3",
+    "@antfu/eslint-config": "^7.5.0",
     "eslint-plugin-format": "^2.0.1",
     "eslint-plugin-sonarjs": "^4.0.2",
     "eslint-plugin-tailwindcss": "^3.18.2",
