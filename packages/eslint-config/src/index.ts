@@ -1,5 +1,3 @@
-// @ts-check
-import type { Rules } from '@antfu/eslint-config'
 import type { MazESLintConfig, MazESLintOptions, MazESLintUserConfig } from './types'
 import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
@@ -51,6 +49,12 @@ function getEslintMajorVersion(): number {
   }
 }
 
+function isVueOrNuxtProject(): boolean {
+  const packageJson = getPackageJson()
+
+  return packageJson?.dependencies?.vue || packageJson?.devDependencies?.vue || packageJson?.peerDependencies?.vue || packageJson?.dependencies?.nuxt || packageJson?.devDependencies?.nuxt || packageJson?.peerDependencies?.nuxt
+}
+
 /**
  * Create ESLint configuration for Maz-UI and JavaScript/TypeScript projects
  *
@@ -73,25 +77,14 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
   const opts = { ...defaultOptions, ...options, ignores: [...GLOBAL_IGNORES, ...(options.ignores || [])] }
 
   const env = opts.env || process.env.NODE_ENV || 'production'
-
-  // Merge all rules
-  let allRules: Partial<Rules> = {
-    ...baseRules(env === 'production'),
-    ...opts.rules,
-  }
-
-  const packageJson = getPackageJson()
-
-  const vueDetected = packageJson?.dependencies?.vue || packageJson?.devDependencies?.vue || packageJson?.peerDependencies?.vue
-
-  if (opts.vue || vueDetected) {
-    allRules = {
-      ...allRules,
-      ...vueRules,
-    }
-  }
-
   const additionalConfigs: MazESLintUserConfig[] = []
+
+  if (opts.vue || isVueOrNuxtProject()) {
+    additionalConfigs.push({
+      files: ['**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue}'],
+      rules: vueRules,
+    })
+  }
 
   if (opts.sonarjs) {
     const sonarjsFiles = ['**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue}']
@@ -165,7 +158,10 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
   return antfu({
     formatters: opts.formatters,
     ...opts,
-    rules: allRules,
+    rules: {
+      ...baseRules(env === 'production'),
+      ...opts.rules,
+    },
     ignores: (() => {
       return opts.ignores
     }) as any,
