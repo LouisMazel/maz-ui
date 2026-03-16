@@ -278,7 +278,7 @@ export function injectCSS(id = CSS_ID, css: string): void {
   if (isServer())
     return
 
-  const styleElements = document.querySelectorAll<HTMLStyleElement>(`#${id}`)
+  const styleElements = [...document.querySelectorAll<HTMLStyleElement>(`#${id}`)]
 
   if (!styleElements || styleElements.length === 0) {
     const element = document.createElement('style')
@@ -294,12 +294,16 @@ export function injectCSS(id = CSS_ID, css: string): void {
     return
   }
 
+  const lastElement = styleElements.at(-1)
+
   if (styleElements.length > 1) {
     for (let i = 0; i < styleElements.length - 1; i++) {
       styleElements[i].remove()
     }
 
-    styleElements[styleElements.length - 1].textContent = css
+    if (lastElement) {
+      lastElement.textContent = css
+    }
   }
 }
 

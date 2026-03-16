@@ -107,6 +107,7 @@ let animationFrameId: NodeJS.Timeout | null = null
 
 function triggerWordAnimations() {
   const totalWords = words.value.length + (lastWord ? 1 : 0)
+  // eslint-disable-next-line e18e/prefer-array-fill
   animatedWords.value = Array.from({ length: totalWords }, () => false)
 
   let currentIndex = 0

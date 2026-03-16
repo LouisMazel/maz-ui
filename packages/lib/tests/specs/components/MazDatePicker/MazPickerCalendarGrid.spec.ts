@@ -376,8 +376,8 @@ describe('given MazPickerCalendarGrid component', () => {
       const emitted = wrapper.emitted('update:hoverred-day')
       // Should emit but with undefined (clearing), not a day value
       if (emitted) {
-        const lastEmit = emitted[emitted.length - 1]
-        expect(lastEmit[0]).toBeUndefined()
+        const lastEmit = emitted.at(-1)
+        expect(lastEmit?.[0]).toBeUndefined()
       }
     })
 
