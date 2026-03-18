@@ -1,0 +1,173 @@
+{
+  "name": "Refonte MCP Maz-UI — Recherche Full-Text Performante",
+  "branchName": "feature/mcp-fulltext-search",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Moteur d'indexation full-text avec scoring TF-IDF",
+      "description": "As a developer using the MCP, I want the server to build a full-text search index at startup so that searches return relevant results based on document content, not just names and tags.",
+      "acceptanceCriteria": [
+        "Créer un module SearchEngine (fichier src/SearchEngine.ts) séparé de la logique serveur",
+        "Au démarrage, lire tous les fichiers markdown et construire un index inversé (terme → liste de documents avec fréquence)",
+        "Implémenter le scoring TF-IDF : TF (fréquence du terme dans le doc) × IDF (log(N/df) où df = nombre de docs contenant le terme)",
+        "Tokeniser le contenu : lowercase, suppression de la ponctuation markdown, split par espaces/tirets/underscores",
+        "Supporter les requêtes multi-mots : scorer chaque terme individuellement et combiner les scores",
+        "Supporter la recherche par phrases exactes (entre guillemets)",
+        "Retourner les résultats triés par score décroissant avec un extrait contextuel (snippet de ~150 caractères autour du match)",
+        "Le temps d'indexation au démarrage ne dépasse pas 500ms pour l'ensemble des docs (~100 fichiers)",
+        "Tests unitaires couvrant : indexation, recherche mono-mot, multi-mots, phrase exacte, scoring, snippets"
+      ],
+      "priority": 1,
+      "passes": true,
+      "dependsOn": [],
+      "labels": [
+        "core",
+        "search-engine"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-002",
+      "title": "Extraction automatique des métadonnées depuis le contenu des docs",
+      "description": "As a developer using the MCP, I want document metadata to be automatically extracted from markdown content so that search results are enriched without manual maintenance.",
+      "acceptanceCriteria": [
+        "Créer un module MetadataExtractor (fichier src/MetadataExtractor.ts)",
+        "Extraire depuis le frontmatter YAML : title, description",
+        "Extraire depuis les docs générés (.doc.md) : noms des props, noms des slots, noms des events/emits",
+        "Extraire depuis le contenu : titres de sections (h2, h3), premiers paragraphes de chaque section",
+        "Stocker les métadonnées dans une structure DocumentMetadata : { name, displayName, type, description, tags, props?, slots?, events?, sections[] }",
+        "Conserver les tags manuels existants (aliases comme btn→button, dialog→modal) et les fusionner avec les métadonnées extraites",
+        "Tests unitaires couvrant : extraction frontmatter, extraction props/slots/events, fusion tags manuels + extraits"
+      ],
+      "priority": 1,
+      "passes": true,
+      "dependsOn": [],
+      "labels": [
+        "core",
+        "metadata"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-003",
+      "title": "Refonte du DocumentationService pour alimenter l'index",
+      "description": "As a developer using the MCP, I want the DocumentationService to provide structured document data to the search engine so that all documentation types are indexed uniformly.",
+      "acceptanceCriteria": [
+        "Refactorer DocumentationService.ts pour retourner des objets Document avec { name, type, content, metadata } au lieu de simples strings",
+        "Unifier le chargement : une seule méthode getAllDocuments() qui retourne tous les docs de toutes les catégories",
+        "Conserver les méthodes getComponentDoc(name), getGuideDoc(name), etc. pour la récupération de contenu individuel",
+        "Intégrer le MetadataExtractor pour enrichir chaque document au chargement",
+        "Gérer correctement la combinaison docs manuels + générés pour les composants",
+        "Tests unitaires couvrant : chargement unifié, métadonnées enrichies, combinaison manual+generated"
+      ],
+      "priority": 2,
+      "passes": true,
+      "dependsOn": [
+        "US-002"
+      ],
+      "labels": [
+        "core",
+        "service"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-004",
+      "title": "Implémenter l'outil search unifié",
+      "description": "As an AI assistant, I want a single powerful search tool so that I can find relevant documentation with any type of query (name, description, use case, prop name).",
+      "acceptanceCriteria": [
+        "Outil search avec paramètres : query (string, required), category (enum optionnel), maxResults (number, default 10)",
+        "La recherche combine : score exact sur le nom (boost ×3), score sur les tags/aliases (boost ×2), score TF-IDF sur le contenu (×1)",
+        "Les résultats incluent : name, displayName, type, description, score, snippet (extrait contextuel du match)",
+        "Si un filtre category est fourni, ne retourner que les docs de cette catégorie",
+        "La description de l'outil dans le schema MCP est claire et explicite pour guider l'IA",
+        "Retourner un message explicite si aucun résultat n'est trouvé (avec suggestion de reformuler)",
+        "Tests unitaires couvrant : recherche par nom, par description fonctionnelle, par nom de prop, avec filtre catégorie, sans résultat"
+      ],
+      "priority": 2,
+      "passes": true,
+      "dependsOn": [
+        "US-001",
+        "US-003"
+      ],
+      "labels": [
+        "mcp-tool",
+        "search"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-005",
+      "title": "Implémenter l'outil get_doc",
+      "description": "As an AI assistant, I want a get_doc tool to retrieve the full content of a specific documentation item so that I can provide complete information to the user.",
+      "acceptanceCriteria": [
+        "Outil get_doc avec paramètres : name (string, required), type (enum optionnel)",
+        "Résolution intelligente du nom : supporte PascalCase (MazBtn), kebab-case (maz-btn), nom court (btn), alias connus",
+        "Si type n'est pas fourni, chercher dans toutes les catégories (auto-detect)",
+        "Retourner le contenu markdown complet du document",
+        "Si le document n'est pas trouvé, retourner une erreur avec les 3 suggestions les plus proches (via SearchEngine)",
+        "Tests unitaires couvrant : résolution PascalCase, kebab-case, alias, auto-detect type, document not found avec suggestions"
+      ],
+      "priority": 2,
+      "passes": true,
+      "dependsOn": [
+        "US-001",
+        "US-003"
+      ],
+      "labels": [
+        "mcp-tool"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-006",
+      "title": "Implémenter l'outil list",
+      "description": "As an AI assistant, I want a list tool to browse all available documentation so that I can discover what components and features exist.",
+      "acceptanceCriteria": [
+        "Outil list avec paramètres : category (enum optionnel, default 'all')",
+        "Retourner la liste groupée par catégorie avec pour chaque item : name, displayName, description",
+        "Inclure un compteur par catégorie (ex: Components (56), Helpers (22))",
+        "Format de sortie clair en markdown pour une lecture facile par l'IA",
+        "Tests unitaires couvrant : list all, list par catégorie, format de sortie"
+      ],
+      "priority": 2,
+      "passes": true,
+      "dependsOn": [
+        "US-003"
+      ],
+      "labels": [
+        "mcp-tool"
+      ],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-007",
+      "title": "Assembler le serveur MCP avec les 3 nouveaux outils",
+      "description": "As a developer, I want the MCP server to be rewritten cleanly with only the 3 new tools so that the codebase is simple and maintainable.",
+      "acceptanceCriteria": [
+        "Réécrire mcp.ts en utilisant les modules SearchEngine, MetadataExtractor, DocumentationService refactoré",
+        "Enregistrer exactement 3 outils : search, get_doc, list",
+        "Conserver les resources MCP (URI schemes : component://, guide://, etc.) pour la compatibilité",
+        "Les descriptions des outils dans le schema MCP sont optimisées pour guider l'IA (exemples de requêtes)",
+        "Le serveur démarre correctement et l'index est construit au démarrage",
+        "Le binary bin/maz-ui-mcp.mjs continue de fonctionner",
+        "Tests d'intégration couvrant : démarrage serveur, appel de chaque outil, resources"
+      ],
+      "priority": 3,
+      "passes": true,
+      "dependsOn": [
+        "US-004",
+        "US-005",
+        "US-006"
+      ],
+      "labels": [
+        "integration",
+        "mcp-server"
+      ],
+      "completionNotes": "Completed by agent"
+    }
+  ],
+  "metadata": {
+    "updatedAt": "2026-03-18T23:35:59.417Z"
+  }
+}

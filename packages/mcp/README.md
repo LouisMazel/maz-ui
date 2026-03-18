@@ -179,13 +179,9 @@ A Model Context Protocol (MCP) server that provides AI assistants with comprehen
 
 The MCP server provides the following tools that AI assistants can use:
 
-- **`get_getting_started`** - Get the getting started guide
-- **`list_all_components`** - Get a complete list of available components
-- **`list_guides`** - List all installation and usage guides
-- **`list_composables`** - List all Vue composables
-- **`list_directives`** - List all Vue directives
-- **`list_plugins`** - List all Vue plugins
-- **`list_helpers`** - List all utility helpers
+- **`search`** — Search across ALL Maz-UI documentation using a powerful unified search engine. Returns ranked results with contextual snippets.
+- **`get_doc`** — Get the complete documentation for a specific item.
+- **`list`** — Browse all available Maz-UI documentation grouped by category.
 
 ## Available Resources
 
