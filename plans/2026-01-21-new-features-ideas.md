@@ -166,7 +166,7 @@ interface MazRatingEmits {
   v-model="rating"
   :count="10"
   icon="heart"
-  color="danger"
+  color="destructive"
   show-value
 />
 

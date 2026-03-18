@@ -99,6 +99,7 @@ const COMPONENT_NAMES: Omit<
   MazTabsContent: true,
   MazTabsContentItem: true,
   MazTicker: true,
+  MazTimeline: true,
   MazTextarea: true,
   MazUiProvider: true,
   MazPopover: true,
