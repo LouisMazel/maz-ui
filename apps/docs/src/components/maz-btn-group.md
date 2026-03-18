@@ -364,7 +364,7 @@ const items: MazButtonGroupOption[] = [
   { text: 'Primary', color: 'primary' },
   { text: 'Success', color: 'success' },
   { text: 'Warning', color: 'warning', outlined: true },
-  { text: 'Danger', color: 'destructive', pastel: true },
+  { text: 'Destructive', color: 'destructive', pastel: true },
 ]
 </script>
 ```
@@ -470,6 +470,6 @@ const mixedItems: MazButtonGroupOption[] = [
   { text: 'Primary', color: 'primary' },
   { text: 'Success', color: 'success' },
   { text: 'Warning', color: 'warning', outlined: true },
-  { text: 'Danger', color: 'destructive', pastel: true },
+  { text: 'Destructive', color: 'destructive', pastel: true },
 ]
 </script>

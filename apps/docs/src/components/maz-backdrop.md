@@ -87,7 +87,7 @@ A persistent backdrop cannot be closed by clicking outside or pressing Escape. P
     <div class="demo-content">
       <h3>I'm persistent!</h3>
       <p>You can only close me by clicking the button below</p>
-      <MazBtn @click="persistentOpen = false" color="danger">
+      <MazBtn @click="persistentOpen = false" color="destructive">
         Force Close
       </MazBtn>
     </div>
@@ -100,7 +100,7 @@ A persistent backdrop cannot be closed by clicking outside or pressing Escape. P
   <div class="my-content">
     <h3>I'm persistent!</h3>
     <p>You can only close me by clicking the button below</p>
-    <MazBtn @click="persistentOpen = false" color="danger">
+    <MazBtn @click="persistentOpen = false" color="destructive">
       Force Close
     </MazBtn>
   </div>
