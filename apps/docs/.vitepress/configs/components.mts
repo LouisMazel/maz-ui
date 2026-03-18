@@ -105,6 +105,7 @@ export const components = {
         { text: 'AnimatedElement', link: '/components/maz-animated-element' },
         { text: 'AnimatedText', link: '/components/maz-animated-text' },
         { text: 'ExpandAnimation', link: '/components/maz-expand-animation' },
+        { text: 'Ticker', link: '/components/maz-ticker' },
       ],
     },
   ],

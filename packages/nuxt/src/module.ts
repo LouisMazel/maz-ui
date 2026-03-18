@@ -98,6 +98,7 @@ const COMPONENT_NAMES: Omit<
   MazTabsBar: true,
   MazTabsContent: true,
   MazTabsContentItem: true,
+  MazTicker: true,
   MazTextarea: true,
   MazUiProvider: true,
   MazPopover: true,
