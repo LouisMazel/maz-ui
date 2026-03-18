@@ -225,13 +225,11 @@ Every component, composable, and directive is auto-imported. Theme CSS is inject
 
 This is the one that gets the most "wait, what?" reactions. `@maz-ui/mcp` is a [Model Context Protocol](https://modelcontextprotocol.io/) server that exposes the entire maz-ui documentation to AI coding agents.
 
-It's not a simple dump of markdown files. The MCP server provides **5 specialized tools**:
+It's not a simple dump of markdown files. The MCP server provides **3 specialized tools**:
 
-- **`smart_search`** — fuzzy search across 200+ indexed items (components, composables, directives, guides, helpers) with score-based ranking
-- **`get_doc`** — exact documentation lookup with fallback suggestions if you misspell something
-- **`get_components_by_category`** — browse components by function (form, overlay, animation, data display...)
-- **`suggest_similar`** — "I need something like a toast" → finds `useToast`, `MazAlert`, `MazDialog`
-- **`list_all_docs`** — categorized inventory of everything available
+- **`search`** — Search across ALL Maz-UI documentation using a powerful unified search engine. Returns ranked results with contextual snippets.
+- **`get_doc`** — Get the complete documentation for a specific item.
+- **`list`** — Browse all available Maz-UI documentation grouped by category.
 
 That means when you use Claude, Cursor, or any MCP-compatible tool, it can look up the correct props, events, slots, and usage patterns **from the actual docs** — instead of hallucinating an API that doesn't exist.
 
