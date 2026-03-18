@@ -1,8 +1,20 @@
+import type { DocumentMetadata } from './MetadataExtractor'
+
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { MetadataExtractor } from './MetadataExtractor'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
+
+export type DocumentType = 'component' | 'guide' | 'composable' | 'directive' | 'plugin' | 'helper'
+
+export interface Document {
+  name: string
+  type: DocumentType
+  content: string
+  metadata: DocumentMetadata
+}
 
 export interface DocumentationDiagnostics {
   components: {
@@ -52,6 +64,7 @@ export class DocumentationService {
   private readonly directivesDir: string
   private readonly pluginsDir: string
   private readonly helpersDir: string
+  private readonly metadataExtractor = new MetadataExtractor()
 
   constructor() {
     const localDocsRoot = resolve(_dirname, '../docs/src')
@@ -201,6 +214,47 @@ export class DocumentationService {
     return this.listMarkdownFiles(this.helpersDir)
   }
 
+  // ========== UNIFIED LOADING ==========
+
+  getAllDocuments(): Document[] {
+    const documents: Document[] = []
+
+    for (const name of this.getAllComponents()) {
+      const content = this.getComponentDocumentation(name)
+      if (content) {
+        documents.push(this.buildDocument(name, 'component', content))
+      }
+    }
+
+    const categories: Array<{ type: DocumentType, names: string[], getContent: (name: string) => string }> = [
+      { type: 'guide', names: this.getAllGuides(), getContent: name => this.getGuideDocumentation(name) },
+      { type: 'composable', names: this.getAllComposables(), getContent: name => this.getComposableDocumentation(name) },
+      { type: 'directive', names: this.getAllDirectives(), getContent: name => this.getDirectiveDocumentation(name) },
+      { type: 'plugin', names: this.getAllPlugins(), getContent: name => this.getPluginDocumentation(name) },
+      { type: 'helper', names: this.getAllHelpers(), getContent: name => this.getHelperDocumentation(name) },
+    ]
+
+    for (const category of categories) {
+      for (const name of category.names) {
+        const content = category.getContent(name)
+        if (content) {
+          documents.push(this.buildDocument(name, category.type, content))
+        }
+      }
+    }
+
+    return documents
+  }
+
+  private buildDocument(name: string, type: DocumentType, content: string): Document {
+    return {
+      name,
+      type,
+      content,
+      metadata: this.metadataExtractor.extract(name, type, content),
+    }
+  }
+
   // ========== UTILITAIRES ==========
 
   getOverview(): string {
@@ -208,7 +262,6 @@ export class DocumentationService {
     return this.readMarkdownFile(overviewPath)
   }
 
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   searchDocumentation(query: string): string[] {
     const searchTerm = query.toLowerCase()
     const results: string[] = []

@@ -11,6 +11,7 @@ import {
 } from '@modelcontextprotocol/sdk/types.js'
 import { version } from '../package.json' assert { type: 'json' }
 import { DocumentationService } from './DocumentationService'
+import { UnifiedSearchService } from './UnifiedSearchService'
 
 interface DocumentationIndex {
   type: 'component' | 'guide' | 'composable' | 'directive' | 'plugin' | 'helper'
@@ -29,6 +30,7 @@ interface DocumentationIndex {
 export class MazUiMcpServer {
   private server: Server
   private documentationService = new DocumentationService()
+  private unifiedSearchService = new UnifiedSearchService()
   private documentationIndex: DocumentationIndex[] = []
 
   constructor() {
@@ -213,6 +215,7 @@ export class MazUiMcpServer {
     }
 
     this.documentationIndex = index
+    this.unifiedSearchService.initialize(this.documentationService.getAllDocuments())
   }
 
   /**
@@ -313,85 +316,231 @@ export class MazUiMcpServer {
   }
 
   /**
-   * Fuzzy search implementation
+   * Resolve a document name using intelligent matching:
+   * PascalCase (MazBtn), kebab-case (maz-btn), short name (btn), aliases
    */
-  private fuzzySearch(query: string, targets: string[]): string[] {
-    const normalizedQuery = query.toLowerCase().trim()
+  private resolveDocumentName(name: string, type?: string): DocumentationIndex | undefined {
+    const normalizedName = name.toLowerCase().trim()
+    const candidates = type && type !== 'auto'
+      ? this.documentationIndex.filter(item => item.type === type)
+      : this.documentationIndex
 
-    return targets
-      .map(target => ({
-        target,
-        score: this.calculateFuzzyScore(normalizedQuery, target.toLowerCase()),
-      }))
-      .filter(item => item.score > 0.3)
-      .sort((a, b) => b.score - a.score)
-      .map(item => item.target)
-  }
+    // 1. Exact match on name
+    const exactMatch = candidates.find(item => item.name.toLowerCase() === normalizedName)
+    if (exactMatch) {
+      return exactMatch
+    }
 
-  /**
-   * Calculate fuzzy match score
-   */
-  private calculateFuzzyScore(query: string, target: string): number {
-    if (target.includes(query))
-      return 1.0
-    if (query.length === 0)
-      return 0
+    // 2. PascalCase → kebab-case conversion (e.g. MazBtn → maz-btn)
+    if (/[A-Z]/.test(name)) {
+      const kebabName = name
+        .replace(/([A-Z])/g, '-$1')
+        .toLowerCase()
+        .replace(/^-/, '')
 
-    let score = 0
-    let queryIndex = 0
-
-    for (let i = 0; i < target.length && queryIndex < query.length; i++) {
-      if (target[i] === query[queryIndex]) {
-        score += 1 / target.length
-        queryIndex++
+      const kebabMatch = candidates.find(item => item.name.toLowerCase() === kebabName)
+      if (kebabMatch) {
+        return kebabMatch
       }
     }
 
-    return queryIndex === query.length ? score : 0
-  }
-
-  /**
-   * Search in documentation index with fuzzy matching
-   */
-  private searchInIndex(query: string): DocumentationIndex[] {
-    const normalizedQuery = query.toLowerCase().trim()
-    const results: Array<{ item: DocumentationIndex, score: number }> = []
-
-    for (const item of this.documentationIndex) {
-      let maxScore = 0
-
-      // Check exact name match (highest priority)
-      if (item.name.toLowerCase() === normalizedQuery) {
-        maxScore = 1.0
-      }
-      // Check display name match
-      else if (item.displayName.toLowerCase().includes(normalizedQuery)) {
-        maxScore = Math.max(maxScore, 0.9)
-      }
-      // Check tag matches with fuzzy search
-      else {
-        // Use fuzzy search on all tags
-        const tagMatches = this.fuzzySearch(normalizedQuery, item.tags)
-        if (tagMatches.length > 0) {
-          maxScore = Math.max(maxScore, 0.8)
-        }
-
-        // Also check fuzzy match on name and display name
-        const nameScore = this.calculateFuzzyScore(normalizedQuery, item.name.toLowerCase())
-        const displayScore = this.calculateFuzzyScore(normalizedQuery, item.displayName.toLowerCase())
-
-        maxScore = Math.max(maxScore, nameScore * 0.7, displayScore * 0.6)
-      }
-
-      if (maxScore > 0.3) {
-        results.push({ item, score: maxScore })
+    // 3. Short name with maz- prefix (e.g. btn → maz-btn)
+    if (!normalizedName.startsWith('maz-')) {
+      const prefixedName = `maz-${normalizedName}`
+      const prefixMatch = candidates.find(item => item.name.toLowerCase() === prefixedName)
+      if (prefixMatch) {
+        return prefixMatch
       }
     }
 
-    return results
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 10) // Limit results
-      .map(r => r.item)
+    // 4. Match on displayName
+    const displayMatch = candidates.find(item =>
+      item.displayName.toLowerCase() === normalizedName,
+    )
+    if (displayMatch) {
+      return displayMatch
+    }
+
+    // 5. Match on tags/aliases
+    const tagMatch = candidates.find(item =>
+      item.tags.some(tag => tag.toLowerCase() === normalizedName),
+    )
+    if (tagMatch) {
+      return tagMatch
+    }
+
+    // 6. Partial name match (contains)
+    const partialMatch = candidates.find(item =>
+      item.name.toLowerCase().includes(normalizedName)
+      || item.displayName.toLowerCase().includes(normalizedName),
+    )
+    if (partialMatch) {
+      return partialMatch
+    }
+
+    return undefined
+  }
+
+  private handleSearch(args: Record<string, unknown> | undefined) {
+    const query = args?.query as string
+    const category = args?.category as string | undefined
+    const maxResults = (args?.maxResults as number) || 10
+
+    if (!query) {
+      throw new Error('Search query is required. Provide a component name, description, prop name, or use case.')
+    }
+
+    const results = this.unifiedSearchService.search(query, {
+      category: category as any,
+      maxResults,
+    })
+
+    if (results.length === 0) {
+      return {
+        content: [{
+          type: 'text',
+          text: `No results found for "${query}".${category ? ` (filtered by category: ${category})` : ''}\n\n**Suggestions:**\n- Try broader or different terms (e.g. "button" instead of "btn")\n- Remove the category filter to search all documentation\n- Use \`list\` to browse all available documentation`,
+        }],
+      }
+    }
+
+    let resultText = `# Search Results for "${query}" (${results.length} found)\n\n`
+
+    for (const item of results) {
+      resultText += `## ${item.displayName}\n`
+      resultText += `- **Name**: \`${item.name}\`\n`
+      resultText += `- **Type**: ${item.type}\n`
+      resultText += `- **Description**: ${item.description}\n`
+      resultText += `- **Score**: ${item.score}\n`
+      resultText += `- **Snippet**: ${item.snippet}\n`
+      resultText += `- **Get full doc**: Use \`get_doc\` with name \`${item.name}\`\n\n`
+    }
+
+    return {
+      content: [{
+        type: 'text',
+        text: resultText,
+      }],
+    }
+  }
+
+  private handleList(args: Record<string, unknown> | undefined) {
+    const category = (args?.category as string) || 'all'
+
+    const filteredIndex = category === 'all'
+      ? this.documentationIndex
+      : this.documentationIndex.filter(item => item.type === category)
+
+    const groupedDocs = filteredIndex.reduce((acc, item) => {
+      if (!acc[item.type])
+        acc[item.type] = []
+      acc[item.type].push(item)
+      return acc
+    }, {} as Record<string, DocumentationIndex[]>)
+
+    const typeLabels: Record<string, string> = {
+      component: 'Components',
+      guide: 'Guides',
+      composable: 'Composables',
+      directive: 'Directives',
+      plugin: 'Plugins',
+      helper: 'Helpers',
+    }
+
+    const typeOrder = ['component', 'guide', 'composable', 'directive', 'plugin', 'helper']
+
+    let result = `# Maz-UI Documentation (${filteredIndex.length} items)\n\n`
+
+    for (const type of typeOrder) {
+      if (!groupedDocs[type])
+        continue
+
+      const items = groupedDocs[type].sort((a, b) => a.name.localeCompare(b.name))
+      result += `## ${typeLabels[type]} (${items.length})\n\n`
+
+      for (const item of items) {
+        result += `- **${item.displayName}** (\`${item.name}\`) — ${item.description}\n`
+      }
+      result += '\n'
+    }
+
+    return {
+      content: [{
+        type: 'text',
+        text: result.trim(),
+      }],
+    }
+  }
+
+  private handleGetDoc(args: Record<string, unknown> | undefined) {
+    const docName = args?.name as string
+    const docType = (args?.type as string) || 'auto'
+
+    if (!docName) {
+      throw new Error('Name is required')
+    }
+
+    const found = this.resolveDocumentName(docName, docType)
+
+    if (!found) {
+      return this.handleDocNotFound(docName)
+    }
+
+    const content = this.getDocumentContent(found)
+
+    if (!content) {
+      return {
+        content: [{
+          type: 'text',
+          text: `Found "${found.displayName}" but documentation content is not available. This might be a documentation file that needs to be created.`,
+        }],
+      }
+    }
+
+    return {
+      content: [{
+        type: 'text',
+        text: content,
+      }],
+    }
+  }
+
+  private handleDocNotFound(docName: string) {
+    const searchResults = this.unifiedSearchService.search(docName, { maxResults: 3 })
+
+    if (searchResults.length === 0) {
+      return {
+        content: [{
+          type: 'text',
+          text: `Documentation not found for "${docName}".\n\n**Available options:**\n- Use \`search\` to find similar items\n- Use \`list\` to see all available documentation`,
+        }],
+      }
+    }
+
+    const suggestions = searchResults
+      .map(item => `- **${item.displayName}** (\`${item.name}\`) - ${item.description}`)
+      .join('\n')
+
+    return {
+      content: [{
+        type: 'text',
+        text: `Exact match not found for "${docName}". Did you mean:\n\n${suggestions}\n\n**Use \`get_doc\` with the exact name from above.**`,
+      }],
+    }
+  }
+
+  private getDocumentContent(doc: DocumentationIndex): string {
+    const contentMethods: Record<string, (name: string) => string> = {
+      component: name => this.documentationService.getComponentDocumentation(name),
+      guide: name => this.documentationService.getGuideDocumentation(name),
+      composable: name => this.documentationService.getComposableDocumentation(name),
+      directive: name => this.documentationService.getDirectiveDocumentation(name),
+      plugin: name => this.documentationService.getPluginDocumentation(name),
+      helper: name => this.documentationService.getHelperDocumentation(name),
+    }
+
+    const getContent = contentMethods[doc.type]
+    return getContent ? getContent(doc.name) : ''
   }
 
   private setupHandlers() {
@@ -439,7 +588,7 @@ export class MazUiMcpServer {
             content = this.documentationService.getOverview()
             if (!content) {
               const diagnostics = this.documentationService.getDiagnostics()
-              content = `# Maz-UI Vue.js Component Library\n\n## Quick Stats\n- **${diagnostics.components.total} Components** - Ready-to-use Vue components\n- **${diagnostics.composables.total} Composables** - Vue 3 reactive utilities\n- **${diagnostics.directives.total} Directives** - DOM helpers\n- **${diagnostics.plugins.total} Plugins** - App-wide services\n- **${diagnostics.helpers.total} Helpers** - Utility functions\n- **${diagnostics.guides.total} Guides** - Documentation\n\n## Getting Started\nUse the MCP tools to explore components and features:\n- \`list_all_docs\` - See everything available\n- \`smart_search\` - Find specific features\n- \`get_doc\` - Get detailed documentation`
+              content = `# Maz-UI Vue.js Component Library\n\n## Quick Stats\n- **${diagnostics.components.total} Components** - Ready-to-use Vue components\n- **${diagnostics.composables.total} Composables** - Vue 3 reactive utilities\n- **${diagnostics.directives.total} Directives** - DOM helpers\n- **${diagnostics.plugins.total} Plugins** - App-wide services\n- **${diagnostics.helpers.total} Helpers** - Utility functions\n- **${diagnostics.guides.total} Guides** - Documentation\n\n## Getting Started\nUse the MCP tools to explore components and features:\n- \`list\` - See everything available\n- \`search\` - Find specific features\n- \`get_doc\` - Get detailed documentation`
             }
             break
           case 'component':
@@ -485,38 +634,23 @@ export class MazUiMcpServer {
       return {
         tools: [
           {
-            name: 'list_all_docs',
-            description: 'Get a complete, categorized index of ALL available documentation in Maz-UI. This is the best starting point to understand what\'s available. Returns components, guides, composables, directives, plugins, and helpers with descriptions and search tags.',
-            inputSchema: {
-              type: 'object',
-              properties: {
-                category: {
-                  type: 'string',
-                  enum: ['all', 'components', 'guides', 'composables', 'directives', 'plugins', 'helpers'],
-                  description: 'Filter by category (optional). Use "all" or omit to see everything.',
-                  default: 'all',
-                },
-                includeDescriptions: {
-                  type: 'boolean',
-                  description: 'Include detailed descriptions for each item',
-                  default: true,
-                },
-              },
-            },
-          },
-          {
-            name: 'smart_search',
-            description: 'Intelligent search across ALL Maz-UI documentation with fuzzy matching and suggestions. Searches names, descriptions, and tags. Perfect when you know roughly what you\'re looking for but not the exact name (e.g., "button", "dropdown", "form validation", "dark mode").',
+            name: 'search',
+            description: 'Search across ALL Maz-UI documentation using a powerful unified search engine. Combines exact name matching, tag/alias matching, and full-text content search with TF-IDF scoring. Use this tool for any search query: component names (e.g. "MazBtn"), functional descriptions (e.g. "date picker"), prop names (e.g. "model-value"), use cases (e.g. "form validation"), or aliases (e.g. "modal" for dialog). Returns ranked results with contextual snippets.',
             inputSchema: {
               type: 'object',
               properties: {
                 query: {
                   type: 'string',
-                  description: 'Search term - can be partial, fuzzy, or describe functionality. Examples: "button", "modal", "form", "tooltip", "validation", "date picker"',
+                  description: 'Search query — can be a component name, description, prop name, use case, or alias. Examples: "button", "MazDialog", "model-value", "phone number input", "lazy loading"',
+                },
+                category: {
+                  type: 'string',
+                  enum: ['component', 'guide', 'composable', 'directive', 'plugin', 'helper'],
+                  description: 'Optional filter to restrict results to a specific documentation category',
                 },
                 maxResults: {
                   type: 'number',
-                  description: 'Maximum number of results to return',
+                  description: 'Maximum number of results to return (default: 10)',
                   default: 10,
                   minimum: 1,
                   maximum: 50,
@@ -546,449 +680,44 @@ export class MazUiMcpServer {
             },
           },
           {
-            name: 'get_installation_guide',
-            description: 'Get comprehensive installation and setup instructions for Maz-UI, including npm installation, Vue.js integration, and initial configuration.',
-            inputSchema: {
-              type: 'object',
-              properties: {},
-            },
-          },
-          {
-            name: 'get_components_by_category',
-            description: 'Get components organized by functional category (form, layout, navigation, overlay, data, feedback, display, animation). Helps discover related components and understand the library structure.',
+            name: 'list',
+            description: 'Browse all available Maz-UI documentation grouped by category. Returns a structured list with counters per category and for each item: name, displayName, description. Use this tool to discover what components, composables, directives, plugins, helpers, and guides are available. Examples: list all docs, list only components, list composables.',
             inputSchema: {
               type: 'object',
               properties: {
                 category: {
                   type: 'string',
-                  enum: ['all', 'form', 'layout', 'navigation', 'overlay', 'data', 'feedback', 'display', 'animation', 'general'],
-                  description: 'Component category to filter by',
+                  enum: ['all', 'component', 'guide', 'composable', 'directive', 'plugin', 'helper'],
+                  description: 'Filter by documentation category. Use "all" or omit to see everything.',
                   default: 'all',
                 },
               },
-            },
-          },
-          {
-            name: 'suggest_similar',
-            description: 'When you can\'t find exactly what you\'re looking for, this tool suggests similar or related documentation based on functionality, naming patterns, and common use cases.',
-            inputSchema: {
-              type: 'object',
-              properties: {
-                description: {
-                  type: 'string',
-                  description: 'Describe what you\'re trying to achieve or find. Example: "I need a way to show notifications", "looking for form validation", "need a date selector"',
-                },
-              },
-              required: ['description'],
             },
           },
         ],
       }
     })
 
-    // eslint-disable-next-line complexity, sonarjs/cognitive-complexity
     this.server.setRequestHandler(CallToolRequestSchema, (request) => {
       const { name, arguments: args } = request.params
 
       try {
         switch (name) {
-          case 'list_all_docs': {
-            const category = (args?.category as string) || 'all'
-            const includeDescriptions = (args?.includeDescriptions as boolean) ?? true
-
-            let filteredIndex = this.documentationIndex
-            if (category !== 'all') {
-              filteredIndex = this.documentationIndex.filter(item =>
-                category === 'components' ? item.type === 'component' : item.type === category,
-              )
-            }
-
-            const groupedDocs = filteredIndex.reduce((acc, item) => {
-              if (!acc[item.type])
-                acc[item.type] = []
-              acc[item.type].push(item)
-              return acc
-            }, {} as Record<string, DocumentationIndex[]>)
-
-            let result = `# Maz-UI Documentation Index (${filteredIndex.length} items)\n\n`
-
-            const typeOrder = ['component', 'guide', 'composable', 'directive', 'plugin', 'helper']
-            const typeLabels = {
-              component: 'Vue Components',
-              guide: 'Documentation Guides',
-              composable: 'Vue 3 Composables',
-              directive: 'Vue Directives',
-              plugin: 'Vue Plugins',
-              helper: 'Utility Helpers',
-            }
-
-            for (const type of typeOrder) {
-              if (!groupedDocs[type])
-                continue
-
-              result += `## ${typeLabels[type as keyof typeof typeLabels]} (${groupedDocs[type].length})\n\n`
-
-              for (const item of groupedDocs[type].sort((a, b) => a.name.localeCompare(b.name))) {
-                result += `### ${item.displayName}\n`
-                result += `- **Name**: \`${item.name}\`\n`
-
-                // eslint-disable-next-line max-depth
-                if (includeDescriptions) {
-                  result += `- **Description**: ${item.description}\n`
-                  result += `- **Tags**: ${item.tags.slice(0, 5).join(', ')}\n`
-                }
-                result += `- **Get docs**: Use \`get_doc\` with name \`${item.name}\`\n\n`
-              }
-            }
-
-            result += `\n---\n**💡 Tips:**\n- Use \`smart_search\` to find specific functionality\n- Use \`get_doc\` with any name from above\n- Use \`get_components_by_category\` to explore by function`
-
-            return {
-              content: [{
-                type: 'text',
-                text: result,
-              }],
-            }
-          }
-
-          case 'smart_search': {
-            const query = args?.query as string
-            const maxResults = (args?.maxResults as number) || 10
-
-            if (!query) {
-              throw new Error('Search query is required')
-            }
-
-            const results = this.searchInIndex(query).slice(0, maxResults)
-
-            if (results.length === 0) {
-              // Provide helpful suggestions when nothing is found
-              const suggestions = this.documentationIndex
-                .map(item => item.name)
-                .slice(0, 10)
-                .join(', ')
-
-              return {
-                content: [{
-                  type: 'text',
-                  text: `No results found for "${query}".\n\n**Suggestions:**\n- Try broader terms like "button", "form", "modal"\n- Check available items: ${suggestions}\n- Use \`list_all_docs\` to see everything available\n- Use \`suggest_similar\` if you're looking for specific functionality`,
-                }],
-              }
-            }
-
-            let resultText = `# Search Results for "${query}" (${results.length} found)\n\n`
-
-            for (const item of results) {
-              resultText += `## ${item.displayName}\n`
-              resultText += `- **Type**: ${item.type}\n`
-              resultText += `- **Name**: \`${item.name}\`\n`
-              resultText += `- **Description**: ${item.description}\n`
-              resultText += `- **Use**: \`get_doc\` with name \`${item.name}\`\n\n`
-            }
-
-            resultText += `\n**💡 Use \`get_doc\` with any name above to see full documentation.**`
-
-            return {
-              content: [{
-                type: 'text',
-                text: resultText,
-              }],
-            }
-          }
-
-          case 'get_doc': {
-            const name = args?.name as string
-            const type = (args?.type as string) || 'auto'
-
-            if (!name) {
-              throw new Error('Name is required')
-            }
-
-            // First, try exact match in index
-            let found = this.documentationIndex.find(item =>
-              item.name.toLowerCase() === name.toLowerCase()
-              || item.displayName.toLowerCase() === name.toLowerCase()
-              || item.tags.some(tag => tag.toLowerCase() === name.toLowerCase()),
-            )
-
-            // If type specified, filter by type
-            if (!found && type !== 'auto') {
-              found = this.documentationIndex.find(item =>
-                item.type === type && (
-                  item.name.toLowerCase().includes(name.toLowerCase())
-                  || item.displayName.toLowerCase().includes(name.toLowerCase())
-                ),
-              )
-            }
-
-            if (!found) {
-              // Use fuzzy search as fallback with enhanced matching
-              const fuzzyResults = this.searchInIndex(name).slice(0, 5)
-
-              // Also try fuzzy search specifically on names
-              const allNames = this.documentationIndex.map(item => item.name)
-              const fuzzyNameMatches = this.fuzzySearch(name, allNames).slice(0, 3)
-
-              // Combine results
-              const combinedResults = new Set([
-                ...fuzzyResults.map(item => item.name),
-                ...fuzzyNameMatches,
-              ])
-
-              if (combinedResults.size === 0) {
-                return {
-                  content: [{
-                    type: 'text',
-                    text: `Documentation not found for "${name}".\n\n**Available options:**\n- Use \`smart_search\` to find similar items\n- Use \`list_all_docs\` to see all available documentation\n- Use \`suggest_similar\` to describe what you're looking for`,
-                  }],
-                }
-              }
-
-              // Build suggestions from combined results
-              const suggestions = Array.from(combinedResults)
-                .slice(0, 5)
-                .map((itemName) => {
-                  const item = this.documentationIndex.find(i => i.name === itemName)
-                  return item ? `- **${item.displayName}** (\`${item.name}\`) - ${item.description}` : `- \`${itemName}\``
-                })
-                .join('\n')
-
-              return {
-                content: [{
-                  type: 'text',
-                  text: `Exact match not found for "${name}". Did you mean:\n\n${suggestions}\n\n**💡 Use \`get_doc\` with the exact name from above.**`,
-                }],
-              }
-            }
-
-            // Get the actual documentation content
-            let content = ''
-            const docName = found.name
-
-            switch (found.type) {
-              case 'component':
-                content = this.documentationService.getComponentDocumentation(docName)
-                break
-              case 'guide':
-                content = this.documentationService.getGuideDocumentation(docName)
-                break
-              case 'composable':
-                content = this.documentationService.getComposableDocumentation(docName)
-                break
-              case 'directive':
-                content = this.documentationService.getDirectiveDocumentation(docName)
-                break
-              case 'plugin':
-                content = this.documentationService.getPluginDocumentation(docName)
-                break
-              case 'helper':
-                content = this.documentationService.getHelperDocumentation(docName)
-                break
-            }
-
-            if (!content) {
-              return {
-                content: [{
-                  type: 'text',
-                  text: `Found "${found.displayName}" but documentation content is not available. This might be a documentation file that needs to be created.`,
-                }],
-              }
-            }
-
-            return {
-              content: [{
-                type: 'text',
-                text: content,
-              }],
-            }
-          }
-
-          case 'get_installation_guide': {
-            // Try multiple common guide names for installation
-            const installationGuides = ['getting-started', 'installation', 'setup', 'quick-start']
-            let guide = ''
-
-            for (const guideName of installationGuides) {
-              guide = this.documentationService.getGuideDocumentation(guideName)
-              if (guide)
-                break
-            }
-
-            if (!guide) {
-              guide = this.documentationService.getOverview()
-            }
-
-            if (!guide) {
-              guide = `# Maz-UI Installation\n\n## Quick Start\n\n\`\`\`bash\nnpm install maz-ui\n# or\nyarn add maz-ui\n# or  \npnpm add maz-ui\n\`\`\`\n\n## Vue.js Integration\n\n\`\`\`javascript\nimport { createApp } from 'vue'\nimport MazUI from 'maz-ui'\nimport 'maz-ui/dist/style.css'\n\nconst app = createApp(App)\napp.use(MazUI)\napp.mount('#app')\n\`\`\`\n\n**💡 Use \`smart_search\` with "setup" or "configuration" for more detailed guides.**`
-            }
-
-            return {
-              content: [{
-                type: 'text',
-                text: guide,
-              }],
-            }
-          }
-
-          case 'get_components_by_category': {
-            const category = (args?.category as string) || 'all'
-
-            const componentsByCategory = this.documentationIndex
-              .filter(item => item.type === 'component')
-              .reduce((acc, item) => {
-                const componentType = this.getComponentType(item.name)
-                if (!acc[componentType])
-                  acc[componentType] = []
-                acc[componentType].push(item)
-                return acc
-              }, {} as Record<string, DocumentationIndex[]>)
-
-            let result = ''
-
-            if (category === 'all') {
-              result = `# Components by Category\n\n`
-
-              const categoryDescriptions = {
-                form: 'Input elements and form controls',
-                layout: 'Structure and positioning components',
-                navigation: 'Navigation and wayfinding components',
-                overlay: 'Modal dialogs and overlay components',
-                data: 'Data visualization and table components',
-                feedback: 'Loading states and progress indicators',
-                display: 'Media display and visual components',
-                animation: 'Animated and interactive elements',
-                general: 'General purpose components',
-              }
-
-              for (const [cat, components] of Object.entries(componentsByCategory)) {
-                result += `## ${cat.charAt(0).toUpperCase() + cat.slice(1)} Components (${components.length})\n`
-                result += `*${categoryDescriptions[cat as keyof typeof categoryDescriptions]}*\n\n`
-
-                // eslint-disable-next-line max-depth
-                for (const component of components.sort((a, b) => a.name.localeCompare(b.name))) {
-                  result += `- **${component.displayName}** (\`${component.name}\`) - ${component.description.split(' - ')[1]}\n`
-                }
-                result += '\n'
-              }
-            }
-            else {
-              const components = componentsByCategory[category] || []
-              result = `# ${category.charAt(0).toUpperCase() + category.slice(1)} Components (${components.length})\n\n`
-
-              for (const component of components.sort((a, b) => a.name.localeCompare(b.name))) {
-                result += `## ${component.displayName}\n`
-                result += `- **Name**: \`${component.name}\`\n`
-                result += `- **Description**: ${component.description}\n`
-                result += `- **Get docs**: Use \`get_doc\` with name \`${component.name}\`\n\n`
-              }
-            }
-
-            result += `\n**💡 Use \`get_doc\` with any component name to see full documentation.**`
-
-            return {
-              content: [{
-                type: 'text',
-                text: result,
-              }],
-            }
-          }
-
-          case 'suggest_similar': {
-            const description = args?.description as string
-
-            if (!description) {
-              throw new Error('Description is required')
-            }
-
-            // Extract keywords from description
-            const keywords = description.toLowerCase()
-              .replace(/[^\w\s]/g, ' ')
-              .split(/\s+/)
-              .filter(word => word.length > 2)
-
-            const suggestions = new Map<string, number>()
-
-            // Score items based on keyword matches and fuzzy search
-            for (const item of this.documentationIndex) {
-              let score = 0
-              const itemText = `${item.name} ${item.displayName} ${item.description} ${item.tags.join(' ')}`.toLowerCase()
-
-              // Keyword matching
-              for (const keyword of keywords) {
-                // eslint-disable-next-line max-depth
-                if (itemText.includes(keyword)) {
-                  score += 1
-                }
-              }
-
-              // Fuzzy search on tags for each keyword
-              for (const keyword of keywords) {
-                const fuzzyMatches = this.fuzzySearch(keyword, item.tags)
-                // eslint-disable-next-line max-depth
-                if (fuzzyMatches.length > 0) {
-                  score += 0.5 * fuzzyMatches.length
-                }
-              }
-
-              if (score > 0) {
-                suggestions.set(`${item.type}:${item.name}`, score)
-              }
-            }
-
-            // Also do direct fuzzy search on the full description
-            const fuzzyResults = this.searchInIndex(description)
-
-            // Combine and deduplicate results
-            const allSuggestions = new Set([
-              ...Array.from(suggestions.entries())
-                .sort(([,a], [,b]) => b - a)
-                .slice(0, 5)
-                .map(([key]) => key),
-              ...fuzzyResults.slice(0, 3).map(item => `${item.type}:${item.name}`),
-            ])
-
-            if (allSuggestions.size === 0) {
-              return {
-                content: [{
-                  type: 'text',
-                  text: `No direct suggestions found for "${description}".\n\n**Try these approaches:**\n- Use \`list_all_docs\` to browse all available features\n- Use \`smart_search\` with simpler keywords\n- Use \`get_components_by_category\` to explore by function\n\nCommon categories: form, layout, navigation, feedback, display, action`,
-                }],
-              }
-            }
-
-            let result = `# Suggestions based on: "${description}"\n\n`
-
-            for (const suggestionKey of Array.from(allSuggestions).slice(0, 8)) {
-              const [type, name] = suggestionKey.split(':')
-              const item = this.documentationIndex.find(i => i.type === type && i.name === name)
-
-              if (item) {
-                result += `## ${item.displayName}\n`
-                result += `- **Type**: ${item.type}\n`
-                result += `- **Description**: ${item.description}\n`
-                result += `- **Get docs**: Use \`get_doc\` with name \`${item.name}\`\n\n`
-              }
-            }
-
-            result += `\n**💡 Use \`get_doc\` with any name above, or try \`smart_search\` with specific terms.**`
-
-            return {
-              content: [{
-                type: 'text',
-                text: result,
-              }],
-            }
-          }
-
+          case 'search':
+            return this.handleSearch(args)
+          case 'list':
+            return this.handleList(args)
+          case 'get_doc':
+            return this.handleGetDoc(args)
           default:
-            throw new Error(`Unknown tool: ${name}. Available tools: list_all_docs, smart_search, get_doc, get_installation_guide, get_components_by_category, suggest_similar`)
+            throw new Error(`Unknown tool: ${name}. Available tools: search, get_doc, list`)
         }
       }
       catch (error) {
         return {
           content: [{
             type: 'text',
-            text: `❌ **Error**: ${getErrorMessage(error)}\n\n**Available tools:**\n- \`list_all_docs\` - See all documentation\n- \`smart_search\` - Search by keyword\n- \`get_doc\` - Get specific documentation\n- \`get_installation_guide\` - Setup instructions\n- \`get_components_by_category\` - Browse by function\n- \`suggest_similar\` - Find related items`,
+            text: `Error: ${getErrorMessage(error)}\n\n**Available tools:**\n- \`search\` - Search across all documentation\n- \`get_doc\` - Get specific documentation\n- \`list\` - Browse all available documentation`,
           }],
           isError: true,
         }
