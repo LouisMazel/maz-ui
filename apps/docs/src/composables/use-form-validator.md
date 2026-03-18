@@ -860,7 +860,7 @@ Use `resetForm()` to reset the form to its initial state, or set `resetOnSuccess
     />
     <div class="maz-flex maz-gap-2">
       <MazBtn type="submit" :loading="resetSubmitting">Submit</MazBtn>
-      <MazBtn type="button" color="danger" @click="resetFormFn">Reset</MazBtn>
+      <MazBtn type="button" color="destructive" @click="resetFormFn">Reset</MazBtn>
     </div>
   </form>
 

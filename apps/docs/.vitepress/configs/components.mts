@@ -45,6 +45,7 @@ export const components = {
       items: [
         { text: 'Tabs', link: '/components/maz-tabs' },
         { text: 'Stepper', link: '/components/maz-stepper' },
+        { text: 'Timeline', link: '/components/maz-timeline' },
         { text: 'Pagination', link: '/components/maz-pagination' },
         { text: 'Link', link: '/components/maz-link' },
         { text: 'PullToRefresh', link: '/components/maz-pull-to-refresh' },
