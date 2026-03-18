@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.7.10-beta.0 (2026-03-16)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.9...v4.7.10-beta.0)
+
+### 📦 Build
+
+- **@maz-ui/eslint-config:** Upggrade @antfu/eslint-config to v7.7.2 ([4b959a8a](https://github.com/LouisMazel/maz-ui/commit/4b959a8a))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.9 (2026-03-15)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.8...v4.7.9)
