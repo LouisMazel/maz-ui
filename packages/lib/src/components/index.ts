@@ -116,6 +116,8 @@ export { default as MazTabsContent } from './MazTabsContent.vue'
 export { default as MazTabsContentItem } from './MazTabsContentItem.vue'
 export { default as MazTextarea } from './MazTextarea.vue'
 export type { MazTextareaProps } from './MazTextarea.vue'
+export { default as MazTicker } from './MazTicker.vue'
+export type { MazTickerOrientation, MazTickerProps } from './MazTicker.vue'
 export { default as MazUiProvider } from './MazUiProvider.vue'
 export type { MazUiProviderProps, MazUiProviderTranslations } from './MazUiProvider.vue'
 
