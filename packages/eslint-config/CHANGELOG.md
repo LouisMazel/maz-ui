@@ -1,5 +1,21 @@
 # Change Log
 
+## v4.8.0 (2026-03-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.9...v4.8.0)
+
+### 🩹 Fixes
+
+- **@maz-ui/eslint-config:** Don't apply vue rules on MD files ([de28ef07d](https://github.com/LouisMazel/maz-ui/commit/de28ef07d))
+
+### 📦 Build
+
+- **@maz-ui/eslint-config:** Upggrade @antfu/eslint-config to v7.7.2 ([4014c0a56](https://github.com/LouisMazel/maz-ui/commit/4014c0a56))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.10-beta.0 (2026-03-16)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.9...v4.7.10-beta.0)

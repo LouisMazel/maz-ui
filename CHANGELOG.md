@@ -1,5 +1,62 @@
 # Change Log
 
+## v4.8.0 (2026-03-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.9...v4.8.0)
+
+### 🚀 Features
+
+- **maz-ui:** Add MazTicker component ([d860c5dc9](https://github.com/LouisMazel/maz-ui/commit/d860c5dc9))
+
+  New scrolling ticker component that continuously animates content in a loop.
+  Supports horizontal/vertical orientation, configurable speed, pause controls (hover, focus, programmatic), gradient overlays, and any HTML content.
+  Usage:
+
+  ```html
+  <MazTicker pause-on-hover :duration="15">
+    <span>Item 1</span>
+    <span>Item 2</span>
+    <span>Item 3</span>
+  </MazTicker>
+  ```
+
+  ***
+
+  Issue: #1517
+
+- **maz-ui:** Add MazTimeline component ([bc6b9c814](https://github.com/LouisMazel/maz-ui/commit/bc6b9c814))
+
+  Step/progress timeline component with horizontal, vertical, and responsive auto layout.
+  Supports v-model for active step, clickable steps, step states (completed, active, error, warning, pending), custom colors, sizes, and scoped slots.
+
+  ```html
+  <MazTimeline
+    v-model="currentStep"
+    :steps="[
+      { title: 'Account', subtitle: 'Create account' },
+      { title: 'Profile', subtitle: 'Set up profile' },
+      { title: 'Done', subtitle: 'All set!' },
+    ]"
+    clickable
+  />
+  ```
+
+  ***
+
+  Issue: #1518
+
+### 🩹 Fixes
+
+- **@maz-ui/eslint-config:** Don't apply vue rules on MD files ([de28ef07d](https://github.com/LouisMazel/maz-ui/commit/de28ef07d))
+
+### 📦 Build
+
+- **@maz-ui/eslint-config:** Upggrade @antfu/eslint-config to v7.7.2 ([4014c0a56](https://github.com/LouisMazel/maz-ui/commit/4014c0a56))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.10-beta.0 (2026-03-16)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.9...v4.7.10-beta.0)
