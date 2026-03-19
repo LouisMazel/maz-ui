@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { IconComponent } from '@maz-ui/icons'
-import type { HTMLAttributes } from 'vue'
+import type { Component, HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazColor } from './types'
 import { MazArrowTopRightOnSquare } from '@maz-ui/icons/lazy/MazArrowTopRightOnSquare'
@@ -127,7 +127,7 @@ const instanceId = useInstanceUniqId({
   providedId: id,
 })
 
-const component = computed<HTMLElement['nodeName'] | 'NuxtLink' | 'RouterLink' | 'nuxt-link' | 'router-link' | 'button'>(() => {
+const component = computed<Component | string>(() => {
   if (as)
     return as
   if (to)
@@ -157,12 +157,12 @@ const isButton = computed(() => component.value === 'button')
     :to
     :href
     :title
-    :target="!isButton && target"
-    :rel="!isButton && rel"
-    :download="!isButton && download"
-    :aria-label="!isButton && ariaLabel"
-    :type="isButton && 'button'"
-    :disabled="isButton && disabled"
+    :target="!isButton ? target : undefined"
+    :rel="!isButton ? rel : undefined"
+    :download="!isButton ? download : undefined"
+    :aria-label="!isButton ? ariaLabel : undefined"
+    :type="isButton ? 'button' : undefined"
+    :disabled="isButton ? disabled : undefined"
     :style="styleProp"
     v-bind="$attrs"
   >
@@ -195,7 +195,7 @@ const isButton = computed(() => component.value === 'button')
 </template>
 
 <style scoped>
-  .m-link {
+.m-link {
   @apply maz-inline-flex maz-cursor-pointer maz-items-center maz-gap-1 maz-transition-colors maz-duration-200 maz-ease-in-out maz-no-underline;
 
   &.--underline {

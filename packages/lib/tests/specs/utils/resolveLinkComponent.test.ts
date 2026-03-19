@@ -1,109 +1,87 @@
+import { createApp, defineComponent, h } from 'vue'
 import { resolveLinkComponent } from '@/utils/resolveLinkComponent'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue')
-  return {
-    ...actual,
-    getCurrentInstance: vi.fn(),
-  }
-})
+function callInsideSetup(fn: () => unknown): unknown {
+  let result: unknown
+  const app = createApp(defineComponent({
+    setup() {
+      result = fn()
+      return () => h('div')
+    },
+  }))
+  app.mount(document.createElement('div'))
+  app.unmount()
+  return result
+}
+
+const NuxtLinkStub = defineComponent({ name: 'NuxtLink', render: () => h('a') })
+const RouterLinkStub = defineComponent({ name: 'RouterLink', render: () => h('a') })
 
 describe('Given resolveLinkComponent helper', () => {
-  describe('When NuxtLink is available', () => {
-    it('Then it returns NuxtLink', async () => {
-      const mockApp = {
-        component: vi.fn(name => name === 'NuxtLink' ? 'NuxtLink' : null),
-      }
+  describe('When a link component is provided via inject', () => {
+    it('Then it returns the provided component', () => {
+      let result: unknown
+      const app = createApp(defineComponent({
+        setup() {
+          result = resolveLinkComponent()
+          return () => h('div')
+        },
+      }))
+      app.provide('mazLinkComponent', NuxtLinkStub)
+      app.mount(document.createElement('div'))
+      app.unmount()
 
-      const { getCurrentInstance } = await import('vue')
-      vi.mocked(getCurrentInstance).mockReturnValue({
-        appContext: { app: mockApp },
-      } as any)
-
-      const result = resolveLinkComponent()
-
-      expect(result).toBe('NuxtLink')
-      expect(mockApp.component).toHaveBeenCalledWith('NuxtLink')
+      expect(result).toBe(NuxtLinkStub)
     })
   })
 
   describe('When only RouterLink is available', () => {
-    it('Then it returns RouterLink', async () => {
-      const mockApp = {
-        component: vi.fn(name => name === 'RouterLink' ? 'RouterLink' : null),
-      }
+    it('Then it returns RouterLink', () => {
+      let result: unknown
+      const app = createApp(defineComponent({
+        setup() {
+          result = resolveLinkComponent()
+          return () => h('div')
+        },
+      }))
+      app.component('RouterLink', RouterLinkStub)
+      app.mount(document.createElement('div'))
+      app.unmount()
 
-      const { getCurrentInstance } = await import('vue')
-      vi.mocked(getCurrentInstance).mockReturnValue({
-        appContext: { app: mockApp },
-      } as any)
-
-      const result = resolveLinkComponent()
-
-      expect(result).toBe('RouterLink')
-      expect(mockApp.component).toHaveBeenCalledWith('NuxtLink')
-      expect(mockApp.component).toHaveBeenCalledWith('RouterLink')
+      expect(result).toBe(RouterLinkStub)
     })
   })
 
   describe('When no router components are available', () => {
-    it('Then it returns anchor tag and log warning', async () => {
+    it('Then it returns anchor tag and log warning', () => {
       const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
-      const mockApp = {
-        component: vi.fn(() => null),
-      }
 
-      const { getCurrentInstance } = await import('vue')
-      vi.mocked(getCurrentInstance).mockReturnValue({
-        appContext: { app: mockApp },
-      } as any)
-
-      const result = resolveLinkComponent()
+      const result = callInsideSetup(() => resolveLinkComponent())
 
       expect(result).toBe('a')
       expect(consoleSpy).toHaveBeenCalledWith(
-        'Your are using "to" property but no router component found (NuxtLink or RouterLink), falling back to anchor ("<a />" - HTMLAnchorElement) tag',
+        'You are using the "to" property but no router component was found (NuxtLink or RouterLink), falling back to anchor ("<a />" - HTMLAnchorElement) tag',
       )
 
       consoleSpy.mockRestore()
     })
   })
 
-  describe('When getCurrentInstance returns null', () => {
-    it('Then it returns anchor tag and log warning', async () => {
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+  describe('When provided component takes priority over RouterLink', () => {
+    it('Then it returns the provided component', () => {
+      let result: unknown
+      const app = createApp(defineComponent({
+        setup() {
+          result = resolveLinkComponent()
+          return () => h('div')
+        },
+      }))
+      app.component('RouterLink', RouterLinkStub)
+      app.provide('mazLinkComponent', NuxtLinkStub)
+      app.mount(document.createElement('div'))
+      app.unmount()
 
-      const { getCurrentInstance } = await import('vue')
-      vi.mocked(getCurrentInstance).mockReturnValue(null)
-
-      const result = resolveLinkComponent()
-
-      expect(result).toBe('a')
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Your are using "to" property but no router component found (NuxtLink or RouterLink), falling back to anchor ("<a />" - HTMLAnchorElement) tag',
-      )
-
-      consoleSpy.mockRestore()
-    })
-  })
-
-  describe('When app context is not available', () => {
-    it('Then it returns anchor tag and log warning', async () => {
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
-
-      const { getCurrentInstance } = await import('vue')
-      vi.mocked(getCurrentInstance).mockReturnValue({
-        appContext: { app: null },
-      } as any)
-
-      const result = resolveLinkComponent()
-
-      expect(result).toBe('a')
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Your are using "to" property but no router component found (NuxtLink or RouterLink), falling back to anchor ("<a />" - HTMLAnchorElement) tag',
-      )
-
-      consoleSpy.mockRestore()
+      expect(result).toBe(NuxtLinkStub)
     })
   })
 })
