@@ -158,4 +158,66 @@ describe('theme plugin (server)', () => {
       }),
     )
   })
+
+  it('should inject blocking script when colorMode is auto, mode is both, and darkModeStrategy is class', async () => {
+    const context = createContext({ colorMode: 'auto', mode: 'both', darkModeStrategy: 'class' })
+    await (themePlugin as (...args: any[]) => any)(context)
+    const scriptCall = mockUseHead.mock.calls.find(
+      ([arg]: any[]) => arg.script,
+    )
+    expect(scriptCall).toBeDefined()
+    expect(scriptCall![0].script[0].innerHTML).toContain('prefers-color-scheme')
+    expect(scriptCall![0].script[0].id).toBe('maz-color-mode-blocking')
+    expect(scriptCall![0].meta[0]['http-equiv']).toBe('Accept-CH')
+  })
+
+  it('should not inject blocking script when mode is light', async () => {
+    const context = createContext({ colorMode: 'auto', mode: 'light', darkModeStrategy: 'class' })
+    await (themePlugin as (...args: any[]) => any)(context)
+    const scriptCall = mockUseHead.mock.calls.find(
+      ([arg]: any[]) => arg.script,
+    )
+    expect(scriptCall).toBeUndefined()
+  })
+
+  it('should not inject blocking script when darkModeStrategy is media', async () => {
+    const context = createContext({ colorMode: 'auto', mode: 'both', darkModeStrategy: 'media' })
+    await (themePlugin as (...args: any[]) => any)(context)
+    const scriptCall = mockUseHead.mock.calls.find(
+      ([arg]: any[]) => arg.script,
+    )
+    expect(scriptCall).toBeUndefined()
+  })
+
+  it('should not inject blocking script when colorMode is dark', async () => {
+    const context = createContext({ colorMode: 'dark', mode: 'both', darkModeStrategy: 'class' })
+    await (themePlugin as (...args: any[]) => any)(context)
+    const scriptCall = mockUseHead.mock.calls.find(
+      ([arg]: any[]) => arg.script,
+    )
+    expect(scriptCall).toBeUndefined()
+  })
+
+  it('should use configured darkClass in blocking script', async () => {
+    const context = createContext({ colorMode: 'auto', mode: 'both', darkModeStrategy: 'class', darkClass: 'my-dark' })
+    await (themePlugin as (...args: any[]) => any)(context)
+    const scriptCall = mockUseHead.mock.calls.find(
+      ([arg]: any[]) => arg.script,
+    )
+    expect(scriptCall![0].script[0].innerHTML).toContain('my-dark')
+  })
+
+  it('should use resolved color mode cookie on server', async () => {
+    mockUseCookie.mockImplementation(((name: string) => {
+      if (name === 'maz-resolved-color-mode') {
+        return { value: 'dark' }
+      }
+      return { value: undefined }
+    }) as any)
+    const context = createContext({ colorMode: 'auto', mode: 'both' })
+    await (themePlugin as (...args: any[]) => any)(context)
+    expect(mockUseHead).toHaveBeenCalledWith({
+      htmlAttrs: { class: 'dark' },
+    })
+  })
 })
