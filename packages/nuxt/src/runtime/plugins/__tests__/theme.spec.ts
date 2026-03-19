@@ -164,4 +164,55 @@ describe('theme plugin', () => {
       }),
     )
   })
+
+  it('should use resolved color mode cookie when color mode cookie is auto', async () => {
+    mockUseCookie.mockImplementation(((name: string) => {
+      if (name === 'maz-color-mode') {
+        return { value: 'auto' }
+      }
+      if (name === 'maz-resolved-color-mode') {
+        return { value: 'dark' }
+      }
+      return { value: undefined }
+    }) as any)
+    const context = createContext({ colorMode: 'auto', mode: 'both' })
+    await (themePlugin as (...args: any[]) => any)(context)
+    expect(mockUseHead).toHaveBeenCalledWith({
+      htmlAttrs: { class: 'dark' },
+    })
+  })
+
+  it('should ignore invalid resolved color mode cookie values', async () => {
+    mockUseCookie.mockImplementation(((name: string) => {
+      if (name === 'maz-resolved-color-mode') {
+        return { value: 'invalid' }
+      }
+      return { value: undefined }
+    }) as any)
+    const context = createContext({ colorMode: 'auto', mode: 'both' })
+    await (themePlugin as (...args: any[]) => any)(context)
+    expect(mockInstall).toHaveBeenCalledWith(
+      context.vueApp,
+      expect.objectContaining({
+        _isDark: false,
+      }),
+    )
+  })
+
+  it('should use resolved color mode light from cookie', async () => {
+    mockUseCookie.mockImplementation(((name: string) => {
+      if (name === 'maz-resolved-color-mode') {
+        return { value: 'light' }
+      }
+      return { value: undefined }
+    }) as any)
+    const context = createContext({ colorMode: 'auto', mode: 'both' })
+    await (themePlugin as (...args: any[]) => any)(context)
+    expect(mockInstall).toHaveBeenCalledWith(
+      context.vueApp,
+      expect.objectContaining({
+        _isDark: false,
+      }),
+    )
+  })
 })

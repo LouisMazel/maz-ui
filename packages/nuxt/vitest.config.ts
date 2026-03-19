@@ -69,10 +69,10 @@ export default defineConfig({
         'src/types/**/*',
       ],
       thresholds: {
-        lines: 99.29,
+        lines: 99.35,
         functions: 100,
-        branches: 93.96,
-        statements: 99.29,
+        branches: 94.48,
+        statements: 99.36,
         autoUpdate: !process.env.CI,
       },
     },
