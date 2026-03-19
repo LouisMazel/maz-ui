@@ -1,5 +1,25 @@
 # Change Log
 
+## v4.9.0 (2026-03-19)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.8.0...v4.9.0)
+
+### 🚀 Features
+
+- **@maz-ui/nuxt:** Provide NuxtLink component via maz-link-component plugin ([3a409ba9](https://github.com/LouisMazel/maz-ui/commit/3a409ba9))
+
+  New plugin that uses defineNuxtLink({}) and provides it via app.provide('mazLinkComponent'). This allows maz-ui components (MazLink, MazBtn, MazCard, MazAvatar) to automatically use NuxtLink when the @maz-ui/nuxt module is installed, enabling prefetching and proper SSR href rendering.
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Prevent dark mode FOUC with blocking script and resolved color mode cookie ([2070d649](https://github.com/LouisMazel/maz-ui/commit/2070d649))
+
+  When color mode is set to "auto", the server now reads the `maz-resolved-color-mode` cookie to determine the user's preference. A blocking inline script is injected in `<head>` to detect and apply dark mode before first paint, eliminating FOUC on first visit. The `Accept-CH` meta tag enables `Sec-CH-Prefers-Color-Scheme` client hint for Chromium browsers.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.8.0 (2026-03-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.9...v4.8.0)

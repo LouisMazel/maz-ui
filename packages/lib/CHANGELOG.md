@@ -1,5 +1,19 @@
 # Change Log
 
+## v4.9.0 (2026-03-19)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.8.0...v4.9.0)
+
+### 🩹 Fixes
+
+- **maz-ui:** Use provide/inject to resolve NuxtLink in resolveLinkComponent ([5a84767c](https://github.com/LouisMazel/maz-ui/commit/5a84767c))
+
+  resolveLinkComponent now checks for a provided link component via inject('mazLinkComponent') before falling back to RouterLink from appContext.components. This fixes NuxtLink not being detected in Nuxt apps because it is auto-imported and not registered in the global component registry. The @maz-ui/nuxt module provides NuxtLink automatically via a new plugin.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.8.0 (2026-03-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.9...v4.8.0)
