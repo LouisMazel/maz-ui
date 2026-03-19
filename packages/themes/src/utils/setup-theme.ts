@@ -3,7 +3,7 @@ import type { MazUiThemeOptions } from '../plugin'
 import type { ThemePreset, ThemeState } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { ref, watch } from 'vue'
-import { getColorMode, getSavedColorMode, getSystemColorMode } from './get-color-mode'
+import { getColorMode, getSavedColorMode, getSystemColorMode, saveResolvedColorMode } from './get-color-mode'
 import { getPreset } from './get-preset'
 import { injectThemeCSS } from './inject-theme-css'
 import { mergePresets } from './preset-merger'
@@ -24,6 +24,7 @@ function watchColorSchemeFromMedia(themeState: Ref<ThemeState>): () => void {
         const newColorMode = mediaQuery.matches ? 'dark' : 'light'
         updateDocumentClass(newColorMode === 'dark', themeState.value)
         themeState.value.isDark = newColorMode === 'dark'
+        saveResolvedColorMode(newColorMode)
       }
     }
 
@@ -32,10 +33,11 @@ function watchColorSchemeFromMedia(themeState: Ref<ThemeState>): () => void {
   }
 
   const stopWatch = watch(() => themeState.value.colorMode, (colorMode) => {
-    updateDocumentClass(
-      colorMode === 'auto' ? getSystemColorMode() === 'dark' : colorMode === 'dark',
-      themeState.value,
-    )
+    const resolvedIsDark = colorMode === 'auto' ? getSystemColorMode() === 'dark' : colorMode === 'dark'
+    updateDocumentClass(resolvedIsDark, themeState.value)
+    if (colorMode === 'auto') {
+      saveResolvedColorMode(resolvedIsDark ? 'dark' : 'light')
+    }
   })
 
   return () => {
@@ -102,6 +104,10 @@ function createThemeState(options: MazUiThemeOptions, config: ResolvedConfig): T
   const isDark = config.colorMode === 'auto' && config.mode === 'both'
     ? getSystemColorMode() === 'dark' || getColorMode(config.colorMode) === 'dark'
     : getColorMode(config.colorMode) === 'dark' || config.mode === 'dark'
+
+  if (!isServer() && config.colorMode === 'auto') {
+    saveResolvedColorMode(isDark ? 'dark' : 'light')
+  }
 
   const themeState: ThemeStateRef = ref({
     strategy: config.strategy,

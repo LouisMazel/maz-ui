@@ -1,6 +1,6 @@
 import type { ColorMode } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
-import { getCookie } from './cookie-storage'
+import { getCookie, setCookie } from './cookie-storage'
 
 export function getSavedColorMode(): ColorMode | undefined {
   const savedMode = getCookie('maz-color-mode') as ColorMode | null
@@ -30,4 +30,16 @@ export function getSystemColorMode() {
   }
 
   return globalThis.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
+
+export function saveResolvedColorMode(resolvedMode: 'light' | 'dark'): void {
+  setCookie('maz-resolved-color-mode', resolvedMode)
+}
+
+export function getSavedResolvedColorMode(): 'light' | 'dark' | undefined {
+  const saved = getCookie('maz-resolved-color-mode') as 'light' | 'dark' | null
+  if (saved && ['light', 'dark'].includes(saved)) {
+    return saved
+  }
+  return undefined
 }

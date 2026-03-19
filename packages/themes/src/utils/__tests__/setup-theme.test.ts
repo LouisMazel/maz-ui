@@ -5,6 +5,7 @@ vi.mock('../get-color-mode', () => ({
   getColorMode: vi.fn(() => 'light'),
   getSavedColorMode: vi.fn(() => null),
   getSystemColorMode: vi.fn(() => 'light'),
+  saveResolvedColorMode: vi.fn(),
 }))
 
 vi.mock('../get-preset', () => ({

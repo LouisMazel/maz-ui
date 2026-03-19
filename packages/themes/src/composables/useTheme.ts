@@ -6,6 +6,7 @@ import { computed, getCurrentInstance, inject, ref, watch } from 'vue'
 
 import { setCookie } from '../utils/cookie-storage'
 import { CSS_ID, generateCSS, injectCSS } from '../utils/css-generator'
+import { getSystemColorMode, saveResolvedColorMode } from '../utils/get-color-mode'
 import { getPreset } from '../utils/get-preset'
 import { mergePresets } from '../utils/preset-merger'
 
@@ -60,6 +61,10 @@ function setColorMode(colorMode: ColorMode) {
   themeState.value.colorMode = colorMode
 
   setCookie('maz-color-mode', colorMode)
+
+  if (colorMode === 'auto') {
+    saveResolvedColorMode(getSystemColorMode() === 'dark' ? 'dark' : 'light')
+  }
 }
 
 function toggleDarkMode() {

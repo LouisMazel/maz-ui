@@ -52,6 +52,8 @@ vi.mock('../../utils/css-generator', () => ({
 vi.mock('../../utils/get-color-mode', () => ({
   getColorMode: vi.fn(),
   isSystemPrefersDark: vi.fn(),
+  getSystemColorMode: vi.fn(() => 'light'),
+  saveResolvedColorMode: vi.fn(),
 }))
 
 vi.mock('../../utils/get-preset', () => ({
