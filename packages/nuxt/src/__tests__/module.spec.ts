@@ -208,6 +208,13 @@ describe('nuxt module', () => {
         )
       })
 
+      it('should always add maz-link-component plugin', () => {
+        callSetup()
+        expect(addPlugin).toHaveBeenCalledWith(
+          expect.stringContaining('runtime/plugins/maz-link-component'),
+        )
+      })
+
       it('should add aos plugin when aos is enabled', () => {
         callSetup({ plugins: { aos: true } })
         expect(addPlugin).toHaveBeenCalledWith(
