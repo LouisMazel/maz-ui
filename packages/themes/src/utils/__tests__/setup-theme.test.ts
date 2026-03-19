@@ -1,5 +1,6 @@
 import type { ThemePreset } from '../../types'
 import type { SetupThemeReturn } from '../setup-theme'
+import { nextTick } from 'vue'
 
 vi.mock('../get-color-mode', () => ({
   getColorMode: vi.fn(() => 'light'),
@@ -32,7 +33,7 @@ vi.mock('../use-mutation-observer', () => ({
   useMutationObserver: vi.fn(() => ({ stop: vi.fn() })),
 }))
 
-const { getColorMode, getSavedColorMode, getSystemColorMode } = await import('../get-color-mode')
+const { getColorMode, getSavedColorMode, getSystemColorMode, saveResolvedColorMode } = await import('../get-color-mode')
 const { getPreset } = await import('../get-preset')
 const { injectThemeCSS } = await import('../inject-theme-css')
 const { mergePresets } = await import('../preset-merger')
@@ -449,6 +450,29 @@ describe('setup-theme', () => {
 
         expect(updateDocumentClass).toHaveBeenCalled()
       })
+
+      it('then it saves the resolved color mode', () => {
+        let changeHandler: (() => void) | undefined
+        vi.stubGlobal('matchMedia', vi.fn(() => ({
+          matches: true,
+          addEventListener: vi.fn((_event: string, handler: () => void) => {
+            changeHandler = handler
+          }),
+          removeEventListener: vi.fn(),
+        })))
+        vi.mocked(isServer).mockReturnValue(false)
+        vi.mocked(getSystemColorMode).mockReturnValue('dark')
+
+        setupTheme({ preset: mockPreset, colorMode: 'auto', mode: 'both' })
+
+        vi.mocked(saveResolvedColorMode).mockClear()
+
+        if (changeHandler) {
+          changeHandler()
+        }
+
+        expect(saveResolvedColorMode).toHaveBeenCalledWith('dark')
+      })
     })
 
     describe('when mutation observer callback fires', () => {
@@ -545,6 +569,53 @@ describe('setup-theme', () => {
         const result = setupTheme({}) as SetupThemeReturn
 
         expect(result.themeState.value.preset).toBeUndefined()
+      })
+    })
+
+    describe('when colorMode changes to auto on client', () => {
+      it('then it saves the resolved color mode via the watcher', async () => {
+        vi.mocked(isServer).mockReturnValue(false)
+        vi.mocked(getSystemColorMode).mockReturnValue('dark')
+
+        const result = setupTheme({ preset: mockPreset, colorMode: 'auto', mode: 'both' }) as SetupThemeReturn
+
+        vi.mocked(saveResolvedColorMode).mockClear()
+
+        result.themeState.value.colorMode = 'light'
+        await nextTick()
+        result.themeState.value.colorMode = 'auto'
+        await nextTick()
+
+        expect(saveResolvedColorMode).toHaveBeenCalledWith('dark')
+      })
+    })
+
+    describe('when colorMode changes to non-auto on client', () => {
+      it('then it does not save the resolved color mode', async () => {
+        vi.mocked(isServer).mockReturnValue(false)
+        vi.mocked(getColorMode).mockReturnValue('light')
+
+        const result = setupTheme({ preset: mockPreset, colorMode: 'light' }) as SetupThemeReturn
+
+        vi.mocked(saveResolvedColorMode).mockClear()
+        vi.mocked(updateDocumentClass).mockClear()
+
+        result.themeState.value.colorMode = 'dark'
+        await nextTick()
+
+        expect(updateDocumentClass).toHaveBeenCalled()
+        expect(saveResolvedColorMode).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('when running on client with auto colorMode and resolved cookie', () => {
+      it('then it saves the resolved color mode in createThemeState', () => {
+        vi.mocked(isServer).mockReturnValue(false)
+        vi.mocked(getSystemColorMode).mockReturnValue('dark')
+
+        setupTheme({ preset: mockPreset, colorMode: 'auto', mode: 'both' })
+
+        expect(saveResolvedColorMode).toHaveBeenCalledWith('dark')
       })
     })
 

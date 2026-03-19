@@ -1,5 +1,5 @@
 import type { ColorMode } from '../../types'
-import { getColorMode, getSystemColorMode } from '../get-color-mode'
+import { getColorMode, getSavedResolvedColorMode, getSystemColorMode, saveResolvedColorMode } from '../get-color-mode'
 
 // Mock document.cookie
 function mockDocumentCookie(cookies: string = '') {
@@ -167,6 +167,88 @@ describe('get-color-mode', () => {
         const result = getSystemColorMode()
 
         expect(result).toBe('light')
+      })
+    })
+  })
+
+  describe('given saveResolvedColorMode function', () => {
+    afterEach(() => {
+      vi.unstubAllGlobals()
+    })
+
+    describe('when called with dark', () => {
+      it('then it sets the maz-resolved-color-mode cookie to dark', () => {
+        let cookieValue = ''
+        Object.defineProperty(document, 'cookie', {
+          get: () => cookieValue,
+          set: (val: string) => { cookieValue = val },
+          configurable: true,
+        })
+
+        saveResolvedColorMode('dark')
+
+        expect(cookieValue).toContain('maz-resolved-color-mode=dark')
+      })
+    })
+
+    describe('when called with light', () => {
+      it('then it sets the maz-resolved-color-mode cookie to light', () => {
+        let cookieValue = ''
+        Object.defineProperty(document, 'cookie', {
+          get: () => cookieValue,
+          set: (val: string) => { cookieValue = val },
+          configurable: true,
+        })
+
+        saveResolvedColorMode('light')
+
+        expect(cookieValue).toContain('maz-resolved-color-mode=light')
+      })
+    })
+  })
+
+  describe('given getSavedResolvedColorMode function', () => {
+    afterEach(() => {
+      vi.unstubAllGlobals()
+    })
+
+    describe('when resolved cookie is dark', () => {
+      it('then it returns dark', () => {
+        mockDocumentCookie('maz-resolved-color-mode=dark')
+
+        const result = getSavedResolvedColorMode()
+
+        expect(result).toBe('dark')
+      })
+    })
+
+    describe('when resolved cookie is light', () => {
+      it('then it returns light', () => {
+        mockDocumentCookie('maz-resolved-color-mode=light')
+
+        const result = getSavedResolvedColorMode()
+
+        expect(result).toBe('light')
+      })
+    })
+
+    describe('when resolved cookie has invalid value', () => {
+      it('then it returns undefined', () => {
+        mockDocumentCookie('maz-resolved-color-mode=invalid')
+
+        const result = getSavedResolvedColorMode()
+
+        expect(result).toBeUndefined()
+      })
+    })
+
+    describe('when resolved cookie does not exist', () => {
+      it('then it returns undefined', () => {
+        mockDocumentCookie('')
+
+        const result = getSavedResolvedColorMode()
+
+        expect(result).toBeUndefined()
       })
     })
   })

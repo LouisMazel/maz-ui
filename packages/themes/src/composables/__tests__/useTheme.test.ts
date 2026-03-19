@@ -4,6 +4,7 @@ import { mazUi } from '../../presets'
 import { mergePresets } from '../../utils'
 import { setCookie } from '../../utils/cookie-storage'
 import { generateCSS, injectCSS } from '../../utils/css-generator'
+import { saveResolvedColorMode } from '../../utils/get-color-mode'
 import { getPreset } from '../../utils/get-preset'
 import { useTheme } from '../useTheme'
 
@@ -40,6 +41,7 @@ vi.mock('vue', async (importOriginal) => {
     }),
     inject: vi.fn(),
     getCurrentInstance: vi.fn(),
+    watch: vi.fn(() => vi.fn()),
   }
 })
 
@@ -291,6 +293,16 @@ describe('useTheme', () => {
 
         expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'auto')
       })
+
+      it('then it saves resolved color mode', () => {
+        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+
+        const { setColorMode } = useTheme()
+
+        setColorMode('auto')
+
+        expect(saveResolvedColorMode).toHaveBeenCalledWith('light')
+      })
     })
   })
 
@@ -391,6 +403,70 @@ describe('useTheme', () => {
         expect(() => useTheme()).toThrowError(
           '[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin, or wrap your components in a MazUiProvider, before using useTheme composable',
         )
+      })
+    })
+  })
+
+  describe('given setColorMode guard clause', () => {
+    describe('when theme state becomes unavailable', () => {
+      it('then it returns early without setting cookie', async () => {
+        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+        const { setColorMode } = useTheme()
+
+        const { isServer } = await import('@maz-ui/utils/helpers/isServer')
+        vi.mocked(isServer).mockReturnValue(true)
+        vi.mocked(inject).mockReturnValue({ value: undefined })
+        vi.mocked(getCurrentInstance).mockReturnValue(null)
+
+        try {
+          useTheme()
+        }
+        catch {}
+
+        vi.mocked(isServer).mockReturnValue(false)
+        vi.clearAllMocks()
+
+        setColorMode('dark')
+
+        expect(setCookie).not.toHaveBeenCalled()
+      })
+    })
+  })
+
+  describe('given updateTheme guard clause', () => {
+    describe('when theme state becomes unavailable', () => {
+      it('then it returns early without updating', async () => {
+        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+        const { updateTheme } = useTheme()
+
+        const { isServer } = await import('@maz-ui/utils/helpers/isServer')
+        vi.mocked(isServer).mockReturnValue(true)
+        vi.mocked(inject).mockReturnValue({ value: undefined })
+        vi.mocked(getCurrentInstance).mockReturnValue(null)
+
+        try {
+          useTheme()
+        }
+        catch {}
+
+        vi.mocked(isServer).mockReturnValue(false)
+
+        await expect(updateTheme({ foundation: { radius: '1rem' } } as ThemePresetOverrides)).resolves.toBeUndefined()
+        expect(mergePresets).not.toHaveBeenCalled()
+      })
+    })
+  })
+
+  describe('given colorMode computed setter', () => {
+    describe('when colorMode value is set', () => {
+      it('then it calls setColorMode via the setter', () => {
+        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+
+        const { colorMode } = useTheme()
+
+        colorMode.value = 'dark'
+
+        expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'dark')
       })
     })
   })
