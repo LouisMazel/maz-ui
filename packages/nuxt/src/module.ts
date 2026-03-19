@@ -224,6 +224,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     addPlugin(resolve(_dirname, './runtime/plugins/theme'))
     addPlugin(resolve(_dirname, './runtime/plugins/translations'))
+    addPlugin(resolve(_dirname, './runtime/plugins/maz-link-component'))
 
     // Components
 
