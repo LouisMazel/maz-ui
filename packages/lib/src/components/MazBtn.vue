@@ -4,6 +4,7 @@ import type { MazIconProps } from './MazIcon.vue'
 
 import type { MazColor, MazSize } from './types'
 import { computed, defineAsyncComponent, useAttrs } from 'vue'
+import { hasSlotContent } from '../utils/hasSlotContent'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 import { getColor } from './types'
 
@@ -171,8 +172,8 @@ const iconSize = computed<MazIconProps['size']>(() => {
         '--loading': loading,
         '--active': active,
         '--no-padding': !padding,
-        '--has-left-icon': !!leftIcon || !!$slots['left-icon'],
-        '--has-right-icon': !!rightIcon || !!$slots['right-icon'],
+        '--has-left-icon': !!leftIcon || hasSlotContent($slots['left-icon']),
+        '--has-right-icon': !!rightIcon || hasSlotContent($slots['right-icon']),
       },
     ]"
     :style="[`--justify: ${justify}`, `--bg-color: var(--maz-${color})`]"

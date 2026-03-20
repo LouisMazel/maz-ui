@@ -16,6 +16,7 @@ import {
   useSlots,
   watch,
 } from 'vue'
+import { hasSlotContent } from '../utils/hasSlotContent'
 import MazBackdrop from './MazBackdrop.vue'
 
 defineOptions({
@@ -130,9 +131,9 @@ if (scrollable) {
           @binding {Function} close close function
       -->
       <slot name="header" :close>
-        <div class="m-dialog-header" :class="{ '--has-title': $slots.title || title }">
+        <div class="m-dialog-header" :class="{ '--has-title': hasSlotContent(slots.title) || title }">
           <h2
-            v-if="$slots.title || title"
+            v-if="hasSlotContent(slots.title) || title"
             id="dialogTitle"
             class="m-dialog-title"
           >

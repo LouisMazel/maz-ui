@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { MazColor } from './types'
 import { onMounted, onUnmounted } from 'vue'
+import { hasSlotContent } from '../utils/hasSlotContent'
 import MazSpinner from './MazSpinner.vue'
 
 defineOptions({
@@ -43,7 +44,7 @@ onUnmounted(() => {
     >
       <MazSpinner :color="color" :size="size" />
 
-      <span v-if="$slots.default">
+      <span v-if="hasSlotContent($slots.default)">
         <slot />
       </span>
     </div>

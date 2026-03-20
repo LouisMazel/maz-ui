@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
 import { computed } from 'vue'
+import { hasSlotContent } from '../utils/hasSlotContent'
 
 export type MazTickerOrientation = 'horizontal' | 'vertical'
 
@@ -107,7 +108,7 @@ const cssVars = computed<CSSProperties>(() => ({
     <slot name="before" />
 
     <div class="m-ticker-wrapper">
-      <div v-if="overlay || $slots['overlay-start']" class="m-ticker-overlay --start">
+      <div v-if="overlay || hasSlotContent($slots['overlay-start'])" class="m-ticker-overlay --start">
         <!-- @slot Custom overlay for the start edge (left in horizontal, top in vertical). Replaces default gradient. -->
         <slot name="overlay-start" />
       </div>
@@ -122,7 +123,7 @@ const cssVars = computed<CSSProperties>(() => ({
         <slot />
       </div>
 
-      <div v-if="overlay || $slots['overlay-end']" class="m-ticker-overlay --end">
+      <div v-if="overlay || hasSlotContent($slots['overlay-end'])" class="m-ticker-overlay --end">
         <!-- @slot Custom overlay for the end edge (right in horizontal, bottom in vertical). Replaces default gradient. -->
         <slot name="overlay-end" />
       </div>

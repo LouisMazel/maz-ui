@@ -4,6 +4,7 @@ import type { MazColor, MazSize } from './types'
 import { MazCheck } from '@maz-ui/icons/static/MazCheck'
 import { computed, ref } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { hasSlotContent } from '../utils/hasSlotContent'
 
 export type MazCheckboxValue = string | number | boolean
 
@@ -251,7 +252,7 @@ function onFocus(event: FocusEvent) {
     <span :style="{ width: checkboxSize, height: checkboxSize }">
       <MazCheck class="check-icon" :class="checkIconSize" :style="{ color: checkIconColor }" />
     </span>
-    <div v-if="label || $slots.default || hint" class="m-checkbox__text">
+    <div v-if="label || hasSlotContent($slots.default) || hint" class="m-checkbox__text">
       <slot :value>
         {{ label }}
       </slot>

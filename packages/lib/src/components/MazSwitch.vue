@@ -2,8 +2,9 @@
 import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
 import { computed, ref } from 'vue'
-
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+
+import { hasSlotContent } from '../utils/hasSlotContent'
 
 defineOptions({
   inheritAttrs: false,
@@ -130,7 +131,7 @@ function onFocus(event: FocusEvent) {
     >
     <span class="m-switch__toggle" />
 
-    <span v-if="$slots.default || label || hint" class="m-switch__text">
+    <span v-if="hasSlotContent($slots.default) || label || hint" class="m-switch__text">
       <!--
         @slot The label of the switch
           @binding {Boolean} value - The value of the switch
