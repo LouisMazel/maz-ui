@@ -4,6 +4,7 @@ import type { RouterLinkProps } from 'vue-router'
 import type { MazGalleryProps } from './MazGallery.vue'
 import { MazChevronDown } from '@maz-ui/icons/lazy/MazChevronDown'
 import { computed, defineAsyncComponent, useSlots } from 'vue'
+import { hasSlotContent } from '../utils/hasSlotContent'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 
 const {
@@ -98,8 +99,10 @@ collapseOpenModel.value = collapsible ? collapseOpen : true
 
 const isColumnVariant = computed(() => ['column', 'column-reverse'].includes(orientation))
 const haveSomeContent = computed(() => {
-  const supportedSlots = new Set(['default', 'content-title', 'content-subtitle', 'content-body'])
-  return Object.keys(slots).some(val => supportedSlots.has(val))
+  return hasSlotContent(slots.default)
+    || hasSlotContent(slots['content-title'])
+    || hasSlotContent(slots['content-subtitle'])
+    || hasSlotContent(slots['content-body'])
 })
 const galleryHeightComputed = computed(() => (haveSomeContent.value ? gallery?.height ?? DEFAULT_GALLERY_OPTIONS.height : '100%'))
 const galleryWidthComputed = computed(() => (haveSomeContent.value ? gallery?.width ?? DEFAULT_GALLERY_OPTIONS.width : '100%'))
@@ -159,13 +162,13 @@ function toggleCollapse() {
   >
     <component
       :is="collapsible ? 'button' : 'div'"
-      v-if="$slots.title || title || collapsible"
+      v-if="hasSlotContent(slots.title) || title || collapsible"
       class="m-card__header maz-border-b maz-border-solid"
       :class="[
         collapseOpenModel ? 'maz-rounded-t maz-border-divider' : 'maz-border-transparent',
         { '--is-collapsible': collapsible },
-        { 'maz-justify-end': (!$slots.title || !title) && collapsible },
-        { 'maz-justify-between': $slots.title || title },
+        { 'maz-justify-end': (!hasSlotContent(slots.title) || !title) && collapsible },
+        { 'maz-justify-between': hasSlotContent(slots.title) || title },
       ]"
       tabindex="-1"
       @click.stop="collapsible ? toggleCollapse() : undefined"
@@ -173,7 +176,7 @@ function toggleCollapse() {
       <!--
         @slot title - The title of the card
       -->
-      <slot v-if="$slots.title || title" name="title">
+      <slot v-if="hasSlotContent(slots.title) || title" name="title">
         {{ title }}
       </slot>
 
@@ -211,20 +214,20 @@ function toggleCollapse() {
             :class="[wrapperClass, { 'maz-p-4': padding }]"
             class="m-card__content__wrapper"
           >
-            <div v-if="$slots['content-title']" class="m-card__title">
+            <div v-if="hasSlotContent(slots['content-title'])" class="m-card__title">
               <!--
               @slot content-title - The title of the card
               @binding collapse-open - The collapse open state of the card
             -->
               <slot name="content-title" :collapse-open="collapseOpenModel" />
             </div>
-            <div v-if="$slots['content-subtitle']" class="m-card__subtitle">
+            <div v-if="hasSlotContent(slots['content-subtitle'])" class="m-card__subtitle">
               <!--
               @slot content-subtitle - The subtitle of the card
             -->
               <slot name="content-subtitle" />
             </div>
-            <div v-if="$slots['content-body']" class="m-card__content">
+            <div v-if="hasSlotContent(slots['content-body'])" class="m-card__content">
               <!--
               @slot content-body - The body of the card
             -->
@@ -240,7 +243,7 @@ function toggleCollapse() {
       </div>
     </component>
     <div
-      v-if="$slots.footer"
+      v-if="hasSlotContent(slots.footer)"
       class="m-card__footer maz-overflow-x-auto maz-p-3"
       :class="[
         {
@@ -254,7 +257,7 @@ function toggleCollapse() {
       -->
       <slot name="footer" />
     </div>
-    <div v-if="$slots.actions && galleryOptions.images" class="m-card__actions maz-flex maz-p-2">
+    <div v-if="hasSlotContent(slots.actions) && galleryOptions.images" class="m-card__actions maz-flex maz-p-2">
       <!--
         @slot actions - The actions of the image gallery (only if gallery is displayed)
       -->

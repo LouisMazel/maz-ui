@@ -11,6 +11,7 @@ import { normalizeString } from '@maz-ui/utils/helpers/normalizeString'
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useStringMatching } from '../composables/useStringMatching'
+import { hasSlotContent } from '../utils/hasSlotContent'
 import MazCardSpotlight from './MazCardSpotlight.vue'
 import MazCheckbox from './MazCheckbox.vue'
 
@@ -169,7 +170,7 @@ function updateQuery(value?: string) {
   <div class="m-checklist m-reset-css">
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label :for="search ? `${id}-query` : undefined" class="search-label">
-      <span v-if="$slots.title || title" class="title">
+      <span v-if="hasSlotContent($slots.title) || title" class="title">
         <!-- @slot use this slot to customize the title -->
         <slot name="title">
           {{ title }}

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { StyleValue } from 'vue'
-import type { MazColor } from './types'
+import type { MazLinkProps } from './MazLink.vue'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, nextTick, onMounted, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
@@ -22,9 +22,10 @@ export interface MazReadMoreProps {
   maxChars?: number
   /**
    * The color of the link (MazLink).
+   * @type {MazLinkProps['color']}
    * @default 'primary'
    */
-  color?: MazColor
+  color?: MazLinkProps['color']
   /**
    * The text of the link when the content is collapsed.
    * @default 'readMore.collapse' (translations)

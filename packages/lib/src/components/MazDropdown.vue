@@ -10,6 +10,7 @@ import { useTranslations } from '@maz-ui/translations/composables/useTranslation
 import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { computed, defineAsyncComponent, useTemplateRef, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { hasSlotContent } from '../utils/hasSlotContent'
 import MazPopover from './MazPopover.vue'
 
 defineOptions({
@@ -398,7 +399,7 @@ watch(
             <!-- @slot Text content of the trigger element -->
             <slot />
 
-            <template v-if="chevron || $slots['dropdown-icon']" #right-icon>
+            <template v-if="chevron || hasSlotContent($slots['dropdown-icon'])" #right-icon>
               <!--
                 @slot Dropdown indicator icon
                 @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)

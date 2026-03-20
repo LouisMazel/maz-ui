@@ -13,6 +13,7 @@ import {
   useSlots,
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { hasSlotContent } from '../utils/hasSlotContent'
 
 export type MazInputValue = string | number | null | undefined | boolean
 
@@ -387,7 +388,7 @@ const hasLabel = computed(() => !!props.label || !!props.hint)
 
 function hasRightPart(): boolean {
   return (
-    !!slots['right-icon']
+    hasSlotContent(slots['right-icon'])
     || isPasswordType.value
     || !!props.rightIcon
     || props.loading
@@ -395,7 +396,7 @@ function hasRightPart(): boolean {
 }
 
 function hasLeftPart(): boolean {
-  return !!slots['left-icon'] || !!props.leftIcon
+  return hasSlotContent(slots['left-icon']) || !!props.leftIcon
 }
 
 function focus(event: Event) {
@@ -459,7 +460,7 @@ const stateColor = computed(() => {
           @slot Custom content for the left side of the input field.
           Typically used for icons, buttons, or text. Overrides the leftIcon prop when used
         -->
-        <slot v-if="$slots['left-icon'] || leftIcon" name="left-icon">
+        <slot v-if="hasSlotContent(slots['left-icon']) || leftIcon" name="left-icon">
           <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
           <component :is="leftIcon" v-else-if="leftIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
         </slot>
@@ -512,7 +513,7 @@ const stateColor = computed(() => {
           Typically used for icons, buttons, or action elements. Overrides the rightIcon prop when used.
           Note: For password inputs, the visibility toggle button will appear after this slot content
         -->
-        <slot v-if="$slots['right-icon'] || rightIcon" name="right-icon">
+        <slot v-if="hasSlotContent(slots['right-icon']) || rightIcon" name="right-icon">
           <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
           <component :is="rightIcon" v-else-if="rightIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
         </slot>

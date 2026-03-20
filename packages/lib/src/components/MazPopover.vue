@@ -16,6 +16,7 @@ import {
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { vClickOutside } from '../directives/vClickOutside'
+import { hasSlotContent } from '../utils/hasSlotContent'
 import { getColor } from './types'
 
 defineOptions({
@@ -694,7 +695,7 @@ defineExpose({
 
 <template>
   <div
-    v-if="$slots.trigger"
+    v-if="hasSlotContent($slots.trigger)"
     class="m-popover m-reset-css"
     :class="[
       attrs.class,

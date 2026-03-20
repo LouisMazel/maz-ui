@@ -272,6 +272,7 @@ import {
   useSlots,
   watch,
 } from 'vue'
+import { hasSlotContent } from '../utils/hasSlotContent'
 
 const props = withDefaults(defineProps<MazTableProps<T>>(), {
   size: 'md',
@@ -606,7 +607,7 @@ onBeforeMount(() => {
 <template>
   <div class="m-table m-reset-css" :class="{ '--has-header': hasHeader }">
     <div v-if="hasHeader" class="m-table-header">
-      <div v-if="title || $slots.title" class="m-table-spacer">
+      <div v-if="title || hasSlotContent(slots.title)" class="m-table-spacer">
         <!--
           @slot Replace the title of the table
         -->
@@ -648,7 +649,7 @@ onBeforeMount(() => {
         :class="[{ '--elevation': elevation, '--has-layout': tableLayout }, tableClass]"
         :style="tableStyle"
       >
-        <caption v-if="caption || $slots.caption">
+        <caption v-if="caption || hasSlotContent(slots.caption)">
           <!--
             @slot Add caption on top or bottom of the table
           -->
@@ -717,7 +718,7 @@ onBeforeMount(() => {
                   </slot>
                 </span>
               </MazTableTitle>
-              <MazTableTitle v-if="$slots.actions" align="left" :class="`--${size}`">
+              <MazTableTitle v-if="hasSlotContent(slots.actions)" align="left" :class="`--${size}`">
                 <!--
                   @slot Replace text of actions header
                 -->
@@ -776,7 +777,7 @@ onBeforeMount(() => {
                     </slot>
                   </slot>
                 </MazTableCell>
-                <MazTableCell v-if="$slots.actions">
+                <MazTableCell v-if="hasSlotContent(slots.actions)">
                   <!--
                     @slot Add actions column
                       @binding {Object} row - Row data
@@ -789,7 +790,7 @@ onBeforeMount(() => {
               <MazTableRowComponent>
                 <MazTableCell
                   :colspan="
-                    headersNormalized.length + (isSelectable ? 1 : 0) + ($slots.actions ? 1 : 0)
+                    headersNormalized.length + (isSelectable ? 1 : 0) + (hasSlotContent(slots.actions) ? 1 : 0)
                   "
                 >
                   <!--

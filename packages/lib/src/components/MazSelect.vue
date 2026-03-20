@@ -26,6 +26,7 @@ import {
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useStringMatching } from '../composables/useStringMatching'
+import { hasSlotContent } from '../utils/hasSlotContent'
 import MazInput from './MazInput.vue'
 import MazPopover from './MazPopover.vue'
 
@@ -687,7 +688,7 @@ defineExpose({
         @blur="emits('blur', $event)"
         @keydown="mainInputKeyboardHandler"
       >
-        <template v-if="$slots['left-icon']" #left-icon>
+        <template v-if="hasSlotContent($slots['left-icon'])" #left-icon>
           <!--
           @slot Add a custom left icon
           @binding {boolean} is-open Current open state of the popover

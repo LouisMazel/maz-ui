@@ -2,6 +2,7 @@
 import type { IconComponent } from '@maz-ui/icons'
 import type { MazIconProps } from './MazIcon.vue'
 import { defineAsyncComponent } from 'vue'
+import { hasSlotContent } from '../utils/hasSlotContent'
 
 export interface MazContainerProps {
   /**
@@ -94,7 +95,7 @@ const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
   >
     <!-- @slot Replace the header -->
     <slot name="header">
-      <div v-if="title || $slots.title" class="m-container__header">
+      <div v-if="title || hasSlotContent($slots.title)" class="m-container__header">
         <!-- @slot icon left -->
         <slot name="icon-left">
           <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" :size="iconSize" />
