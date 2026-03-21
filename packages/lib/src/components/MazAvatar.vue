@@ -9,20 +9,22 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MazAvatarProps>(), {
-  src: undefined,
-  caption: undefined,
-  href: undefined,
-  to: undefined,
-  alt: 'avatar image',
-  target: '_self',
-  size: undefined,
-  buttonColor: 'info',
-  letterCount: undefined,
-  roundedSize: 'full',
-  fallbackSrc: undefined,
-  loading: 'intersecting',
-})
+const {
+  src = undefined,
+  caption = undefined,
+  href = undefined,
+  to = undefined,
+  alt = 'avatar image',
+  target = '_self',
+  size = undefined,
+  class: className,
+  color = 'primary',
+  buttonColor = 'info',
+  letterCount = undefined,
+  roundedSize = 'base',
+  fallbackSrc = undefined,
+  loading = 'intersecting',
+} = defineProps<MazAvatarProps>()
 
 const emits = defineEmits<{
   /** Emitted when the avatar is clicked */
@@ -72,7 +74,10 @@ export interface MazAvatarProps {
   imageHeightFull?: boolean
   /** Remove the loader */
   hideLoader?: boolean
-  /** The color of the clickable button */
+  /**
+   * The color of the clickable button
+   * @values `"primary" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "contrast" | "transparent"`
+   */
   buttonColor?: MazColor
   /** Remove the icon on hover when component is clickable */
   hideClickableIcon?: boolean
@@ -91,20 +96,25 @@ export interface MazAvatarProps {
    * @values `'lazy' | 'eager' | 'intersecting'`
    */
   loading?: 'lazy' | 'eager' | 'intersecting'
+  /**
+   * The color of the avatar
+   * @values `"primary" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "contrast" | "transparent"`
+   */
+  color?: MazColor
 }
 
 const routerLinkComponent = resolveLinkComponent()
 
 const componentType = computed(() => {
-  if (props.to)
+  if (to)
     return routerLinkComponent
-  if (props.href)
+  if (href)
     return 'a'
   return 'div'
 })
-const isLink = computed(() => !!props.to || !!props.href)
+const isLink = computed(() => !!to || !!href)
 
-function getInitials(name: string, lettersCount = props.letterCount) {
+function getInitials(name: string, lettersCount = letterCount) {
   const words = name.split(' ')
 
   const initials = words.map(word => word[0])
@@ -114,22 +124,24 @@ function getInitials(name: string, lettersCount = props.letterCount) {
   return letters.slice(0, lettersCount)
 }
 
-const shouldDisplayImg = computed(() => props.src || (!props.src && !props.caption))
+const shouldDisplayImg = computed(() => src || (!src && !caption))
 
 function handleImageError(event: Event) {
   emits('error', event.target as Element)
 
-  if (props.fallbackSrc && event.target instanceof HTMLImageElement) {
+  if (fallbackSrc && event.target instanceof HTMLImageElement) {
     const currentSrc = new URL(event.target.src)
-    const fallbackSrc = new URL(props.fallbackSrc)
+    const fallbackSource = new URL(fallbackSrc)
 
-    if (currentSrc.href === fallbackSrc.href) {
+    if (currentSrc.href === fallbackSource.href) {
       return
     }
 
-    event.target.src = props.fallbackSrc
+    event.target.src = fallbackSource.href
   }
 }
+
+const hasInitial = computed(() => !src && caption)
 </script>
 
 <template>
@@ -141,7 +153,7 @@ function handleImageError(event: Event) {
       {
         '--has-link': isLink,
       },
-      props.class,
+      className,
     ]"
     :href
     :to="to"
@@ -155,10 +167,14 @@ function handleImageError(event: Event) {
           '--has-shadow': !noElevation,
           '--bordered': bordered,
           '--clickable': clickable,
-          '--has-initial': !src && caption,
+          '--has-initial': hasInitial,
         },
         `--rounded-${square ? 'none' : roundedSize}`,
       ]"
+      :style="hasInitial ? {
+        backgroundColor: `hsl(var(--maz-${color}))`,
+        color: `hsl(var(--maz-${color}-foreground))`,
+      } : undefined"
     >
       <template v-if="shouldDisplayImg">
         <MazLazyImg
@@ -230,6 +246,38 @@ function handleImageError(event: Event) {
   &__wrapper {
     @apply maz-relative maz-flex maz-h-[3em] maz-w-[3em] maz-flex-none maz-justify-center maz-overflow-hidden;
 
+    &:not(.--rounded-none) {
+      @apply maz-rounded;
+
+      &.--rounded {
+        @apply maz-rounded-full;
+
+        &-sm {
+          @apply maz-rounded-sm;
+        }
+
+        &-md {
+          @apply maz-rounded-md;
+        }
+
+        &-base {
+          @apply maz-rounded;
+        }
+
+        &-lg {
+          @apply maz-rounded-lg;
+        }
+
+        &-xl {
+          @apply maz-rounded-xl;
+        }
+
+        &-full {
+          @apply maz-rounded-full;
+        }
+      }
+    }
+
     &.--clickable {
       & .m-avatar__button {
         @apply maz-absolute maz-inset-0 maz-flex maz-w-full
@@ -279,10 +327,18 @@ function handleImageError(event: Event) {
       }
 
       &-lg {
-        @apply maz-rounded;
+        @apply maz-rounded-lg;
 
         .m-avatar__button {
           @apply maz-rounded-lg;
+        }
+      }
+
+      &-base {
+        @apply maz-rounded;
+
+        .m-avatar__button {
+          @apply maz-rounded;
         }
       }
 
@@ -308,7 +364,7 @@ function handleImageError(event: Event) {
     }
 
     &.--has-initial {
-      @apply maz-items-center maz-bg-primary;
+      @apply maz-items-center;
     }
   }
 

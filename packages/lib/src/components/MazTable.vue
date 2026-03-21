@@ -231,10 +231,10 @@ export interface MazTableProps<T extends MazTableRow<T>> {
   /**
    * Size radius of the component's border
    * @type {string}
-   * @values none, sm, md, lg, xl, full
-   * @default lg
+   * @values none, sm, md, lg, xl, full, base
+   * @default base
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'
   /**
    * Enable scrollable on table
    * @type {boolean}
@@ -1015,6 +1015,38 @@ onBeforeMount(() => {
 
           td:last-child {
             @apply maz-rounded-br-lg;
+          }
+        }
+      }
+    }
+
+    &.--rounded-base {
+      @apply maz-rounded;
+
+      table {
+        @apply maz-rounded;
+
+        thead tr:hover:first-child {
+          @apply maz-rounded-b;
+
+          th:first-child {
+            @apply maz-rounded-tl;
+          }
+
+          th:last-child {
+            @apply maz-rounded-tr;
+          }
+        }
+
+        tbody tr:hover:last-child {
+          @apply maz-rounded-b;
+
+          td:first-child {
+            @apply maz-rounded-bl;
+          }
+
+          td:last-child {
+            @apply maz-rounded-br;
           }
         }
       }

@@ -116,7 +116,7 @@ const {
   autoValidateSteps = true,
   clickable = false,
   animated = true,
-  roundedSize = 'full',
+  roundedSize = 'base',
   steps,
 } = defineProps<MazTimelineProps>()
 

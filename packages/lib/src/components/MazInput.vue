@@ -185,10 +185,11 @@ export interface MazInputProps<T = MazInputValue> {
   /**
    * Controls the border radius of the input component
    * @values none, sm, md, lg, xl, full
-   * @type {'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'}
+   * @type {'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'}
+   * @default 'base'
    * @example "lg"
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'
   /**
    * Makes the input expand to the full width of its container
    * @type {boolean}
@@ -244,7 +245,7 @@ const props = withDefaults(defineProps<MazInputProps<T>>(), {
   borderActive: false,
   leftIcon: undefined,
   rightIcon: undefined,
-  roundedSize: 'lg',
+  roundedSize: 'base',
   loading: false,
 })
 
@@ -676,8 +677,12 @@ const stateColor = computed(() => {
         @apply maz-rounded-md;
       }
 
-      &-lg {
+      &-base {
         @apply maz-rounded;
+      }
+
+      &-lg {
+        @apply maz-rounded-lg;
       }
 
       &-xl {

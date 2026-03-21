@@ -15,7 +15,7 @@ const {
   icon,
   leftIcon,
   rightIcon,
-  roundedSize = 'lg',
+  roundedSize = 'base',
   justify = 'center',
   pastel,
   outlined,
@@ -54,10 +54,10 @@ export interface MazBtnProps {
   type?: 'submit' | 'reset' | 'button'
   /**
    * Size of the rounded
-   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
-   * @default 'lg'
+   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'`
+   * @default 'base'
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'
   /**
    * If true, the button have the "border" style
    * @default false
@@ -271,8 +271,12 @@ const iconSize = computed<MazIconProps['size']>(() => {
         @apply maz-rounded-md;
       }
 
-      &-lg {
+      &-base {
         @apply maz-rounded;
+      }
+
+      &-lg {
+        @apply maz-rounded-lg;
       }
 
       &-xl {

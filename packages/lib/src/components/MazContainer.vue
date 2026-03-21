@@ -26,11 +26,11 @@ export interface MazContainerProps {
   bordered?: boolean
   /**
    * Size of the rounded
-   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
-   * @type {'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'}
-   * @default undefined
+   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'`
+   * @type {'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'}
+   * @default 'base'
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'
   /**
    * Remove background color
    * @default false
@@ -68,7 +68,7 @@ const {
   elevation = false,
   padding = true,
   bordered = true,
-  roundedSize = 'lg',
+  roundedSize = 'base',
   title = undefined,
   transparent = false,
   overflowHidden = true,
@@ -178,8 +178,12 @@ const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
     @apply maz-rounded-md;
   }
 
-  &.--rounded-lg {
+  &.--rounded-base {
     @apply maz-rounded;
+  }
+
+  &.--rounded-lg {
+    @apply maz-rounded-lg;
   }
 
   &.--rounded-xl {

@@ -15,7 +15,7 @@ describe('MazContainer branch coverage', () => {
       expect(classes).toContain('--padding')
       expect(classes).toContain('--bordered')
       expect(classes).toContain('--overflow-hidden')
-      expect(classes).toContain('--rounded-lg')
+      expect(classes).toContain('--rounded-base')
       wrapper.unmount()
     })
   })
