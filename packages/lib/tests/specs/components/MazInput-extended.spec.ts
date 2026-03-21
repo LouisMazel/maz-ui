@@ -44,9 +44,9 @@ describe('MazInput extended coverage', () => {
       expect(wrapper.find('.m-input-wrapper.--border').exists()).toBe(true)
     })
 
-    it('should have rounded-lg by default', () => {
+    it('should have rounded-base by default', () => {
       const wrapper = getWrapper()
-      expect(wrapper.find('.m-input-wrapper.--rounded-lg').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.--rounded-base').exists()).toBe(true)
     })
   })
 

@@ -34,9 +34,9 @@ export interface MazTextareaProps<T extends string | undefined | null> {
   color?: MazColor
   /**
    * Size radius of the component's border
-   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'`
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'
   /**
    * If the textarea has a padding
    * @default true
@@ -299,6 +299,10 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
 
   &.--rounded-md {
     @apply maz-rounded-md;
+  }
+
+  &.--rounded-base {
+    @apply maz-rounded;
   }
 
   &.--rounded-lg {

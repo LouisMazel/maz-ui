@@ -22,10 +22,10 @@ describe('given MazSkeleton component', () => {
       expect(wrapper.classes()).toContain('m-skeleton--animated')
     })
 
-    it('then it has md rounded size by default', () => {
+    it('then it has base rounded size by default', () => {
       const wrapper = shallowMount(MazSkeleton)
 
-      expect(wrapper.classes()).toContain('m-skeleton--rounded-md')
+      expect(wrapper.classes()).toContain('m-skeleton--rounded-base')
     })
 
     it('then it has the correct accessibility attributes', () => {
