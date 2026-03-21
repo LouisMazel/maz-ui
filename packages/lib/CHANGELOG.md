@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.9.1-beta.0 (2026-03-21)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.0...v4.9.1-beta.0)
+
+### 💅 Refactors
+
+- **maz-ui:** Check slot content to render the slot ([3d668ebb](https://github.com/LouisMazel/maz-ui/commit/3d668ebb))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.9.0 (2026-03-19)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.8.0...v4.9.0)
