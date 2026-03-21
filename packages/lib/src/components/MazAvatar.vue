@@ -240,7 +240,7 @@ const hasInitial = computed(() => !src && caption)
   }
 
   &__initial {
-    @apply maz-text-[1.5em] maz-capitalize maz-text-white;
+    @apply maz-text-[1.5em] maz-capitalize;
   }
 
   &__wrapper {
