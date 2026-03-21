@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.9.1-beta.2 (2026-03-21)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1-beta.1...v4.9.1-beta.2)
+
+### 💅 Refactors
+
+- **maz-ui:** Use base rounded size in all components to inherits theme value ([1158e9a3](https://github.com/LouisMazel/maz-ui/commit/1158e9a3))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.9.1-beta.1 (2026-03-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1-beta.0...v4.9.1-beta.1)
