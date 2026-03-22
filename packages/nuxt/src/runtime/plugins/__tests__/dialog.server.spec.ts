@@ -18,14 +18,14 @@ vi.mock('nuxt/app', () => ({
 }))
 
 describe('dialog plugin (server)', () => {
-  it('should provide server stub on server', () => {
+  it('should provide server stub on server', async () => {
     const vueApp = {}
     const context = {
       $config: { public: { mazUi: { plugins: { dialog: true } } } },
       vueApp,
     }
 
-    const result = (dialogPlugin as (...args: any[]) => any)(context)
+    const result = await (dialogPlugin as (...args: any[]) => any)(context)
 
     const stub = result.provide.mazDialog
     expect(stub).not.toBeInstanceOf(MockDialogHandler)

@@ -19,8 +19,8 @@ vi.mock('nuxt/app', () => ({
 }))
 
 describe('wait plugin (server)', () => {
-  it('should provide server stub on server', () => {
-    const result = (waitPlugin as (...args: any[]) => any)()
+  it('should provide server stub on server', async () => {
+    const result = await (waitPlugin as (...args: any[]) => any)()
 
     const stub = result.provide.mazWait
     expect(stub).not.toBeInstanceOf(MockWaitHandler)

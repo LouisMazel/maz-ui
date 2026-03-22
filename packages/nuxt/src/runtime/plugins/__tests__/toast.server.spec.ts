@@ -18,14 +18,14 @@ vi.mock('nuxt/app', () => ({
 }))
 
 describe('toast plugin (server)', () => {
-  it('should provide server stub on server', () => {
+  it('should provide server stub on server', async () => {
     const vueApp = {}
     const context = {
       $config: { public: { mazUi: { plugins: { toast: true } } } },
       vueApp,
     }
 
-    const result = (toastPlugin as (...args: any[]) => any)(context)
+    const result = await (toastPlugin as (...args: any[]) => any)(context)
 
     const stub = result.provide.mazToast
     expect(stub).not.toBeInstanceOf(MockToastHandler)

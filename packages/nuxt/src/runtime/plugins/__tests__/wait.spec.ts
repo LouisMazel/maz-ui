@@ -22,8 +22,8 @@ vi.mock('nuxt/app', () => ({
 }))
 
 describe('wait plugin', () => {
-  it('should provide mazWait as WaitHandler in client mode (import.meta.server is false)', () => {
-    const result = (waitPlugin as (...args: any[]) => any)()
+  it('should provide mazWait as WaitHandler in client mode (import.meta.server is false)', async () => {
+    const result = await (waitPlugin as (...args: any[]) => any)()
 
     expect(result.provide.mazWait).toBeInstanceOf(MockWaitHandler)
   })

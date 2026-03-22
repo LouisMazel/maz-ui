@@ -1,25 +1,32 @@
-import { ToastHandler } from 'maz-ui/plugins/toast'
+import type { ToastHandler } from 'maz-ui/plugins/toast'
 import { defineNuxtPlugin } from 'nuxt/app'
 
-export default defineNuxtPlugin(({ vueApp, $config }) => {
+const toastServer = {
+  show: (_message: string) => {},
+  success: (_message: string) => {},
+  error: (_message: string) => {},
+  warning: (_message: string) => {},
+  info: (_message: string) => {},
+  message: (_message: string) => {},
+} as unknown as ToastHandler
+
+export default defineNuxtPlugin(async ({ vueApp, $config }) => {
+  if (import.meta.server) {
+    return {
+      provide: {
+        mazToast: toastServer,
+      },
+    }
+  }
+
+  const { ToastHandler } = await import('maz-ui/plugins/toast')
+
   const toastOptions = $config.public.mazUi?.plugins?.toast
-
   const options = typeof toastOptions === 'object' ? toastOptions : undefined
-
-  const instance = new ToastHandler(vueApp, options)
-
-  const toastServer = {
-    show: (_message: string) => {},
-    success: (_message: string) => {},
-    error: (_message: string) => {},
-    warning: (_message: string) => {},
-    info: (_message: string) => {},
-    message: (_message: string) => {},
-  } as unknown as ToastHandler
 
   return {
     provide: {
-      mazToast: import.meta.server ? toastServer : instance,
+      mazToast: new ToastHandler(vueApp, options),
     },
   }
 })

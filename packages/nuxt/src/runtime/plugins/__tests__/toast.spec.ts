@@ -31,21 +31,21 @@ describe('toast plugin', () => {
     toastInstances.length = 0
   })
 
-  it('should create ToastHandler with vueApp', () => {
+  it('should create ToastHandler with vueApp', async () => {
     const vueApp = {}
     const context = {
       $config: { public: { mazUi: { plugins: { toast: true } } } },
       vueApp,
     }
 
-    ;(toastPlugin as (...args: any[]) => any)(context)
+    await (toastPlugin as (...args: any[]) => any)(context)
 
     expect(toastInstances).toHaveLength(1)
     expect(toastInstances[0].args[0]).toBe(vueApp)
     expect(toastInstances[0].args[1]).toBeUndefined()
   })
 
-  it('should pass toast options when config is an object', () => {
+  it('should pass toast options when config is an object', async () => {
     const vueApp = {}
     const toastOptions = { position: 'top-right', timeout: 5000 }
     const context = {
@@ -53,31 +53,31 @@ describe('toast plugin', () => {
       vueApp,
     }
 
-    ;(toastPlugin as (...args: any[]) => any)(context)
+    await (toastPlugin as (...args: any[]) => any)(context)
 
     expect(toastInstances[0].args[1]).toEqual(toastOptions)
   })
 
-  it('should provide mazToast in client mode (import.meta.server is false)', () => {
+  it('should provide mazToast in client mode (import.meta.server is false)', async () => {
     const vueApp = {}
     const context = {
       $config: { public: { mazUi: { plugins: { toast: true } } } },
       vueApp,
     }
 
-    const result = (toastPlugin as (...args: any[]) => any)(context)
+    const result = await (toastPlugin as (...args: any[]) => any)(context)
 
     expect(result.provide.mazToast).toBeInstanceOf(MockToastHandler)
   })
 
-  it('should pass undefined options when toast is boolean', () => {
+  it('should pass undefined options when toast is boolean', async () => {
     const vueApp = {}
     const context = {
       $config: { public: { mazUi: { plugins: { toast: true } } } },
       vueApp,
     }
 
-    ;(toastPlugin as (...args: any[]) => any)(context)
+    await (toastPlugin as (...args: any[]) => any)(context)
 
     expect(toastInstances[0].args[1]).toBeUndefined()
   })
