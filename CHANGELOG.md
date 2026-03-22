@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.9.1-beta.4 (2026-03-22)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1-beta.3...v4.9.1-beta.4)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** ColorMode config option overrides user cookie preference on page reload ([25a032c6](https://github.com/LouisMazel/maz-ui/commit/25a032c6))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.9.1-beta.3 (2026-03-22)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1-beta.2...v4.9.1-beta.3)
