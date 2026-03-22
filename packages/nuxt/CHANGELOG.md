@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.9.1-beta.3 (2026-03-22)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1-beta.2...v4.9.1-beta.3)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** SSR build with toast plugin anc Vite@8 (Rolldown) ([652ef1c2](https://github.com/LouisMazel/maz-ui/commit/652ef1c2))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.9.1-beta.2 (2026-03-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1-beta.1...v4.9.1-beta.2)
