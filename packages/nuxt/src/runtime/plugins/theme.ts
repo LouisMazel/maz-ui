@@ -23,16 +23,7 @@ function getSavedResolvedColorMode(): 'light' | 'dark' | undefined {
   return undefined
 }
 
-function getInitialColorMode(colorMode: ColorMode) {
-  if (colorMode && ['light', 'dark'].includes(colorMode)) {
-    return colorMode
-  }
-
-  const savedColorMode = getSavedColorMode()
-  if (savedColorMode && ['light', 'dark'].includes(savedColorMode)) {
-    return savedColorMode
-  }
-
+function getInitialColorMode() {
   const resolvedColorMode = getSavedResolvedColorMode()
   if (resolvedColorMode) {
     return resolvedColorMode
@@ -118,18 +109,18 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     strategy: 'hybrid',
     darkClass: 'dark',
     darkModeStrategy: 'class',
-    colorMode: getSavedColorMode() ?? options.colorMode ?? 'auto',
     mode: 'both',
     injectAllCSSOnServer: false,
     injectCriticalCSS: true,
     injectFullCSS: true,
     overrides: {},
     ...options,
+    colorMode: getSavedColorMode() ?? options?.colorMode ?? 'auto',
     preset,
   } satisfies Required<MazUiNuxtThemeOptions>
 
   const isDark = config.colorMode === 'auto' && config.mode === 'both'
-    ? getInitialColorMode(config.colorMode) === 'dark'
+    ? getInitialColorMode() === 'dark'
     : config.colorMode === 'dark' || config.mode === 'dark'
 
   if (isDark && config.darkModeStrategy === 'class') {
