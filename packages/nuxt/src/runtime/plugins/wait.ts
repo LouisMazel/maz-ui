@@ -1,18 +1,28 @@
-import { WaitHandler } from 'maz-ui/plugins/wait'
+import type { WaitHandler } from 'maz-ui/plugins/wait'
 import { defineNuxtPlugin } from 'nuxt/app'
 
-export default defineNuxtPlugin(() => {
-  const waitServer = {
-    loaders: { value: [] },
-    anyLoading: { value: false },
-    isLoading: () => false,
-    stop: () => {},
-    start: () => {},
-  } as unknown as WaitHandler
+const waitServer = {
+  loaders: { value: [] },
+  anyLoading: { value: false },
+  isLoading: () => false,
+  stop: () => {},
+  start: () => {},
+} as unknown as WaitHandler
+
+export default defineNuxtPlugin(async () => {
+  if (import.meta.server) {
+    return {
+      provide: {
+        mazWait: waitServer,
+      },
+    }
+  }
+
+  const { WaitHandler } = await import('maz-ui/plugins/wait')
 
   return {
     provide: {
-      mazWait: import.meta.server ? waitServer : new WaitHandler(),
+      mazWait: new WaitHandler(),
     },
   }
 })

@@ -34,7 +34,7 @@ describe('aos plugin', () => {
     aosInstances.length = 0
   })
 
-  it('should install AosPlugin on the vue app', () => {
+  it('should install AosPlugin on the vue app', async () => {
     const mockUse = vi.fn()
     const vueApp = { use: mockUse }
     const context = {
@@ -42,13 +42,13 @@ describe('aos plugin', () => {
       vueApp,
     }
 
-    const result = (aosPlugin as (...args: any[]) => any)(context)
+    const result = await (aosPlugin as (...args: any[]) => any)(context)
 
     expect(mockUse).toHaveBeenCalled()
     expect(result.provide.mazAos).toBeInstanceOf(MockAosHandler)
   })
 
-  it('should pass options from config when aos is an object', () => {
+  it('should pass options from config when aos is an object', async () => {
     const mockUse = vi.fn()
     const vueApp = { use: mockUse }
     const aosOptions = { delay: 200, duration: 500 }
@@ -57,7 +57,7 @@ describe('aos plugin', () => {
       vueApp,
     }
 
-    ;(aosPlugin as (...args: any[]) => any)(context)
+    await (aosPlugin as (...args: any[]) => any)(context)
 
     expect(mockUse).toHaveBeenCalledWith(
       expect.anything(),
@@ -65,7 +65,7 @@ describe('aos plugin', () => {
     )
   })
 
-  it('should use router when router option is truthy', () => {
+  it('should use router when router option is truthy', async () => {
     const mockUse = vi.fn()
     const vueApp = { use: mockUse }
     const context = {
@@ -73,7 +73,7 @@ describe('aos plugin', () => {
       vueApp,
     }
 
-    ;(aosPlugin as (...args: any[]) => any)(context)
+    await (aosPlugin as (...args: any[]) => any)(context)
 
     expect(mockUse).toHaveBeenCalledWith(
       expect.anything(),
@@ -81,7 +81,7 @@ describe('aos plugin', () => {
     )
   })
 
-  it('should not use router when router option is falsy', () => {
+  it('should not use router when router option is falsy', async () => {
     const mockUse = vi.fn()
     const vueApp = { use: mockUse }
     const context = {
@@ -89,7 +89,7 @@ describe('aos plugin', () => {
       vueApp,
     }
 
-    ;(aosPlugin as (...args: any[]) => any)(context)
+    await (aosPlugin as (...args: any[]) => any)(context)
 
     expect(mockUse).toHaveBeenCalledWith(
       expect.anything(),
@@ -97,7 +97,7 @@ describe('aos plugin', () => {
     )
   })
 
-  it('should pass empty options when aos is boolean true', () => {
+  it('should pass empty options when aos is boolean true', async () => {
     const mockUse = vi.fn()
     const vueApp = { use: mockUse }
     const context = {
@@ -105,7 +105,7 @@ describe('aos plugin', () => {
       vueApp,
     }
 
-    ;(aosPlugin as (...args: any[]) => any)(context)
+    await (aosPlugin as (...args: any[]) => any)(context)
 
     expect(mockUse).toHaveBeenCalledWith(expect.anything(), {})
   })

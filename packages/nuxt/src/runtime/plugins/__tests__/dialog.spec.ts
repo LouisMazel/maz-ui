@@ -26,21 +26,21 @@ describe('dialog plugin', () => {
     dialogInstances.length = 0
   })
 
-  it('should create DialogHandler with vueApp', () => {
+  it('should create DialogHandler with vueApp', async () => {
     const vueApp = {}
     const context = {
       $config: { public: { mazUi: { plugins: { dialog: true } } } },
       vueApp,
     }
 
-    ;(dialogPlugin as (...args: any[]) => any)(context)
+    await (dialogPlugin as (...args: any[]) => any)(context)
 
     expect(dialogInstances).toHaveLength(1)
     expect(dialogInstances[0].args[0]).toBe(vueApp)
     expect(dialogInstances[0].args[1]).toBeUndefined()
   })
 
-  it('should pass dialog options when config is an object', () => {
+  it('should pass dialog options when config is an object', async () => {
     const vueApp = {}
     const dialogOptions = { closable: false }
     const context = {
@@ -48,31 +48,31 @@ describe('dialog plugin', () => {
       vueApp,
     }
 
-    ;(dialogPlugin as (...args: any[]) => any)(context)
+    await (dialogPlugin as (...args: any[]) => any)(context)
 
     expect(dialogInstances[0].args[1]).toEqual(dialogOptions)
   })
 
-  it('should provide mazDialog in client mode (import.meta.server is false)', () => {
+  it('should provide mazDialog in client mode (import.meta.server is false)', async () => {
     const vueApp = {}
     const context = {
       $config: { public: { mazUi: { plugins: { dialog: true } } } },
       vueApp,
     }
 
-    const result = (dialogPlugin as (...args: any[]) => any)(context)
+    const result = await (dialogPlugin as (...args: any[]) => any)(context)
 
     expect(result.provide.mazDialog).toBeInstanceOf(MockDialogHandler)
   })
 
-  it('should pass undefined options when dialog is boolean', () => {
+  it('should pass undefined options when dialog is boolean', async () => {
     const vueApp = {}
     const context = {
       $config: { public: { mazUi: { plugins: { dialog: true } } } },
       vueApp,
     }
 
-    ;(dialogPlugin as (...args: any[]) => any)(context)
+    await (dialogPlugin as (...args: any[]) => any)(context)
 
     expect(dialogInstances[0].args[1]).toBeUndefined()
   })
