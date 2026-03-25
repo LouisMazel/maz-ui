@@ -1,5 +1,11 @@
 # Change Log
 
+## v4.9.1-beta.5 (2026-03-25)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1-beta.4...v4.9.1-beta.5)
+
+No relevant changes since last release
+
 ## v4.9.1-beta.4 (2026-03-22)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1-beta.3...v4.9.1-beta.4)
