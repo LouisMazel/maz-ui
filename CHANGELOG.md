@@ -1,5 +1,19 @@
 # Change Log
 
+## v4.9.1-beta.6 (2026-03-25)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1-beta.5...v4.9.1-beta.6)
+
+### 🚀 Features
+
+- **maz-ui:** Add topLabel prop and autogrow toggle to MazTextarea ([db19dcfd](https://github.com/LouisMazel/maz-ui/commit/db19dcfd))
+  - `topLabel`: displays a static label above the textarea, supports error/success/warning states
+  - `autogrow` (default: true): set to `false` to disable auto-expand and use a fixed-height textarea with manual resize
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.9.1-beta.5 (2026-03-25)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1-beta.4...v4.9.1-beta.5)
