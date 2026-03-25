@@ -1,5 +1,22 @@
 # Change Log
 
+## v4.9.1-beta.5 (2026-03-25)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1-beta.4...v4.9.1-beta.5)
+
+### 🔥 Performance
+
+- **maz-ui:** Replace JS autogrow with native CSS field-sizing in MazTextarea ([b35d8bfd](https://github.com/LouisMazel/maz-ui/commit/b35d8bfd))
+
+  Use the native CSS `field-sizing: content` property instead of the JavaScript
+  TextareaAutogrow class. This eliminates resize/focus event listeners, DOM height
+  recalculations, and the MutationObserver overhead — resulting in zero JS cost
+  for textarea auto-sizing.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.9.1-beta.2 (2026-03-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1-beta.1...v4.9.1-beta.2)
