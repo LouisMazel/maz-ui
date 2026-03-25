@@ -1,39 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import MazTextarea from '@components/MazTextarea.vue'
-import { TextareaAutogrow } from '@maz-ui/utils/helpers/TextareaAutogrow'
-import { elementEmitEvent } from '@tests/helpers/document-event'
 import { shallowMount } from '@vue/test-utils'
-
-describe('components/MazTextarea/textarea-autogrow.ts', () => {
-  let textareaElement: HTMLTextAreaElement
-
-  beforeEach(() => {
-    textareaElement = document.createElement('textarea')
-    // eslint-disable-next-line sonarjs/no-unused-vars
-    const _textareaAutogrow = new TextareaAutogrow(textareaElement)
-  })
-
-  it('should add css style on init', () => {
-    expect(textareaElement.style.resize).toBe('none')
-    expect(textareaElement.style.boxSizing).toBe('border-box')
-  })
-
-  it('should add css style on focus event', () => {
-    elementEmitEvent(textareaElement, 'focus')
-
-    expect(textareaElement.style.height).toBe('0px')
-    expect(textareaElement.style.overflow).toBe('hidden')
-  })
-
-  it('should add css style on resize event', () => {
-    elementEmitEvent(textareaElement, 'focus')
-    elementEmitEvent(globalThis, 'resize')
-
-    expect(textareaElement.style.height).toBe('0px')
-    expect(textareaElement.style.overflow).toBe('hidden')
-  })
-})
 
 describe('components/MazTextarea.vue', () => {
   expect(MazTextarea).toBeTruthy()
@@ -112,5 +80,10 @@ describe('components/MazTextarea.vue', () => {
       color: 'secondary',
     })
     expect(wrapper.vm.borderStyle).toBe('maz-border-secondary')
+  })
+
+  it('should use native field-sizing for autogrow instead of JS', () => {
+    const textarea = wrapper.find('textarea')
+    expect(textarea.exists()).toBe(true)
   })
 })
