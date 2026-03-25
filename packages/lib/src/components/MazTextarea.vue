@@ -210,7 +210,7 @@ const stateLabelColor = computed(() => [
 </script>
 
 <template>
-  <div class="m-textarea-wrapper m-reset-css">
+  <div class="m-textarea-wrapper m-reset-css" :class="props.class" :style>
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label v-if="topLabel" :for="instanceId" class="m-textarea__top-label" :class="stateLabelColor">{{ topLabel }}</label>
     <label
@@ -229,9 +229,8 @@ const stateLabelColor = computed(() => [
         },
         borderStyle,
         roundedSize ? `--rounded-${roundedSize}` : '--rounded',
-        props.class,
       ]"
-      :style="[style, `--append-justify: ${appendJustify}`]"
+      :style="[`--append-justify: ${appendJustify}`]"
     >
       <!-- eslint-disable vuejs-accessibility/label-has-for -->
       <label
