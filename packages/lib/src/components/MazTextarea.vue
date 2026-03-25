@@ -63,8 +63,7 @@ export interface MazTextareaProps<T extends string | undefined | null> {
 
 <script lang="ts" setup generic="T extends string | undefined | null">
 import type { HTMLAttributes } from 'vue'
-import { TextareaAutogrow } from '@maz-ui/utils/helpers/TextareaAutogrow'
-import { computed, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
+import { computed, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
 defineOptions({
@@ -121,26 +120,13 @@ const emits = defineEmits<{
   (event: 'change', value: Event): void
 }>()
 
-let textareaAutogrow: TextareaAutogrow | undefined
-
 const instanceId = useInstanceUniqId({
   componentName: 'MazTextarea',
   providedId: props.id,
 })
 
-const TextareaElement = ref<HTMLTextAreaElement>()
 const isFocused = ref(false)
 const hasValue = computed(() => props.modelValue !== undefined && props.modelValue !== '')
-
-onMounted(() => {
-  if (TextareaElement.value) {
-    textareaAutogrow = new TextareaAutogrow(TextareaElement.value)
-  }
-})
-
-onBeforeUnmount(() => {
-  textareaAutogrow?.disconnect()
-})
 
 const inputValue = computed({
   get: () => props.modelValue,
@@ -250,7 +236,6 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
 
     <textarea
       :id="instanceId"
-      ref="TextareaElement"
       v-bind="$attrs"
       v-model="inputValue"
       :placeholder
@@ -275,7 +260,9 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
   .m-textarea {
   @apply maz-min-h-[6.25rem] maz-relative maz-flex maz-flex-col maz-align-top maz-text-foreground;
 
-  transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  &.--should-up textarea {
+    @apply maz-pt-3.5;
+  }
 
   &:not(.--background-transparent, .--is-disabled) {
     @apply maz-bg-surface dark:maz-bg-surface-400;
@@ -328,7 +315,11 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
   }
 
   textarea {
-    @apply maz-w-full maz-resize-y maz-outline-none maz-bg-transparent;
+    @apply maz-w-full maz-resize-none maz-outline-none maz-bg-transparent;
+
+    field-sizing: content;
+    min-block-size: 3lh;
+    transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
     &.--has-append {
       @apply maz-pb-4;
@@ -364,8 +355,6 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
   }
 
   &.--should-up {
-    @apply maz-pt-6;
-
     & .m-textarea__label {
       transform: scale(0.8) translateY(-0.65rem);
     }
