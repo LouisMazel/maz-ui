@@ -344,6 +344,8 @@ const stateLabelColor = computed(() => [
   textarea {
     @apply maz-w-full maz-outline-none maz-bg-transparent;
 
+    field-sizing: content;
+    min-block-size: 3lh;
     transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
     &.--has-append {
