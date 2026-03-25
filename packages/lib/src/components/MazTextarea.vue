@@ -63,8 +63,7 @@ export interface MazTextareaProps<T extends string | undefined | null> {
 
 <script lang="ts" setup generic="T extends string | undefined | null">
 import type { HTMLAttributes } from 'vue'
-import { TextareaAutogrow } from '@maz-ui/utils/helpers/TextareaAutogrow'
-import { computed, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
+import { computed, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
 defineOptions({
@@ -121,26 +120,13 @@ const emits = defineEmits<{
   (event: 'change', value: Event): void
 }>()
 
-let textareaAutogrow: TextareaAutogrow | undefined
-
 const instanceId = useInstanceUniqId({
   componentName: 'MazTextarea',
   providedId: props.id,
 })
 
-const TextareaElement = ref<HTMLTextAreaElement>()
 const isFocused = ref(false)
 const hasValue = computed(() => props.modelValue !== undefined && props.modelValue !== '')
-
-onMounted(() => {
-  if (TextareaElement.value) {
-    textareaAutogrow = new TextareaAutogrow(TextareaElement.value)
-  }
-})
-
-onBeforeUnmount(() => {
-  textareaAutogrow?.disconnect()
-})
 
 const inputValue = computed({
   get: () => props.modelValue,
@@ -250,7 +236,6 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
 
     <textarea
       :id="instanceId"
-      ref="TextareaElement"
       v-bind="$attrs"
       v-model="inputValue"
       :placeholder
@@ -328,7 +313,10 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
   }
 
   textarea {
-    @apply maz-w-full maz-resize-y maz-outline-none maz-bg-transparent;
+    @apply maz-w-full maz-resize-none maz-outline-none maz-bg-transparent;
+
+    field-sizing: content;
+    min-block-size: 3lh;
 
     &.--has-append {
       @apply maz-pb-4;
