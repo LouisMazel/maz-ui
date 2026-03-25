@@ -53,11 +53,21 @@ export interface MazTextareaProps<T extends string | undefined | null> {
    */
   border?: boolean
   /**
+   * If the textarea should autogrow based on its content
+   * @default true
+   */
+  autogrow?: boolean
+  /**
    * The alignment of the append slot
    * @values `'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'`
    * @default 'end'
    */
   appendJustify?: 'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'
+  /**
+   * Static label displayed above the textarea. Unlike the floating label, this remains fixed
+   * @default undefined
+   */
+  topLabel?: string
 }
 </script>
 
@@ -89,7 +99,9 @@ const props = withDefaults(defineProps<MazTextareaProps<T>>(), {
   padding: true,
   transparent: false,
   border: true,
+  autogrow: true,
   appendJustify: 'end',
+  topLabel: undefined,
 })
 
 const emits = defineEmits<{
@@ -126,7 +138,7 @@ const instanceId = useInstanceUniqId({
 })
 
 const isFocused = ref(false)
-const hasValue = computed(() => props.modelValue !== undefined && props.modelValue !== '')
+const hasValue = computed(() => props.modelValue !== undefined && props.modelValue !== '' && props.modelValue?.trim() !== '')
 
 const inputValue = computed({
   get: () => props.modelValue,
@@ -187,77 +199,93 @@ const borderStyle = computed(() => {
 })
 
 const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
+
+const stateLabelColor = computed(() => [
+  {
+    'maz-text-destructive-600': props.error,
+    'maz-text-success-600': props.success,
+    'maz-text-warning-600': props.warning,
+  },
+])
 </script>
 
 <template>
-  <label
-    class="m-textarea m-reset-css"
-    :for="instanceId"
-    :class="[
-      {
-        '--is-disabled': disabled,
-        '--has-label': hasLabelOrHint,
-        '--background-transparent': transparent,
-        '--padding': padding,
-        '--border': border,
-        '--has-border-style': hasBorderStyle,
-        '--should-up': shouldUp,
-      },
-      borderStyle,
-      roundedSize ? `--rounded-${roundedSize}` : '--rounded',
-      props.class,
-    ]"
-    :style="[style, `--append-justify: ${appendJustify}`]"
-  >
-    <!-- eslint-disable vuejs-accessibility/label-has-for -->
+  <div class="m-textarea-wrapper m-reset-css">
+    <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
+    <label v-if="topLabel" :for="instanceId" class="m-textarea__top-label" :class="stateLabelColor">{{ topLabel }}</label>
     <label
-      v-if="hasLabelOrHint"
+      class="m-textarea"
       :for="instanceId"
-      class="m-textarea__label"
       :class="[
         {
-          'maz-text-destructive-600': error,
-          'maz-text-success-600': success,
-          'maz-text-warning-600': warning,
-          '--has-state': error || warning || success,
+          '--is-disabled': disabled,
+          '--has-label': hasLabelOrHint,
+          '--background-transparent': transparent,
+          '--padding': padding,
+          '--border': border,
+          '--has-border-style': hasBorderStyle,
+          '--should-up': shouldUp,
+          '--autogrow': autogrow,
         },
+        borderStyle,
+        roundedSize ? `--rounded-${roundedSize}` : '--rounded',
+        props.class,
       ]"
+      :style="[style, `--append-justify: ${appendJustify}`]"
     >
-      <!-- @slot Label - Replace the label -->
-      <slot v-if="!hint" name="label">
-        {{ label }}
-      </slot>
-      <span v-else>
-        {{ hint }}
-      </span>
-      <sup v-if="required">*</sup>
-    </label>
-    <!-- eslint-enable vuejs-accessibility/label-has-for -->
+      <!-- eslint-disable vuejs-accessibility/label-has-for -->
+      <label
+        v-if="hasLabelOrHint"
+        :for="instanceId"
+        class="m-textarea__label"
+        :class="[
+          ...stateLabelColor,
+          {
+            '--has-state': error || warning || success,
+          },
+        ]"
+      >
+        <!-- @slot Label - Replace the label -->
+        <slot v-if="!hint" name="label">
+          {{ label }}
+        </slot>
+        <span v-else>
+          {{ hint }}
+        </span>
+        <sup v-if="required">*</sup>
+      </label>
+      <!-- eslint-enable vuejs-accessibility/label-has-for -->
 
-    <textarea
-      :id="instanceId"
-      v-bind="$attrs"
-      v-model="inputValue"
-      :placeholder
-      :name
-      :disabled
-      :required
-      :class="{ '--has-append': hasAppend }"
-      v-on="{
-        blur,
-        focus,
-        change,
-      }"
-    />
-    <div v-if="hasAppend" class="m-textarea__append">
-      <!-- @slot Append - Replace the append -->
-      <slot name="append" />
-    </div>
-  </label>
+      <textarea
+        :id="instanceId"
+        v-bind="$attrs"
+        v-model="inputValue"
+        :placeholder
+        :name
+        :disabled
+        :readonly
+        :required
+        :class="{ '--has-append': hasAppend }"
+        v-on="{
+          blur,
+          focus,
+          change,
+        }"
+      />
+      <div v-if="hasAppend" class="m-textarea__append">
+        <!-- @slot Append - Replace the append -->
+        <slot name="append" />
+      </div>
+    </label>
+  </div>
 </template>
 
 <style scoped>
-  .m-textarea {
+.m-textarea-wrapper {
+  @apply maz-flex maz-flex-col maz-gap-2;
+}
+
+.m-textarea {
   @apply maz-min-h-[6.25rem] maz-relative maz-flex maz-flex-col maz-align-top maz-text-foreground;
 
   &.--should-up textarea {
@@ -315,10 +343,8 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
   }
 
   textarea {
-    @apply maz-w-full maz-resize-none maz-outline-none maz-bg-transparent;
+    @apply maz-w-full maz-outline-none maz-bg-transparent;
 
-    field-sizing: content;
-    min-block-size: 3lh;
     transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
     &.--has-append {
@@ -358,6 +384,17 @@ const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
     & .m-textarea__label {
       transform: scale(0.8) translateY(-0.65rem);
     }
+  }
+
+  &.--autogrow textarea {
+    @apply maz-resize-none;
+
+    field-sizing: content;
+    min-block-size: 3lh;
+  }
+
+  &:not(.--autogrow) textarea {
+    @apply maz-resize-y;
   }
 }
 </style>

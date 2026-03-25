@@ -17,7 +17,7 @@ This component uses the native CSS `field-sizing: content` property for autogrow
 
 <ComponentDemo expanded>
   <MazTextarea
-    v-model="value"
+    v-model="mainValue"
     name="comment"
     label="Enter your comment"
   />
@@ -39,6 +39,30 @@ const value = ref()
     label="Enter your comment"
   />
 </template>
+```
+
+  </template>
+</ComponentDemo>
+
+## With top-label
+
+You can use the `top-label` attribute to display a top label above the textarea.
+
+<ComponentDemo>
+  <MazTextarea
+    v-model="value"
+    top-label="Your message"
+    placeholder="Type your message..."
+  />
+
+<template #code>
+
+```html
+<MazTextarea
+  v-model="value"
+  top-label="Your message"
+  placeholder="Type your message..."
+/>
 ```
 
   </template>
@@ -137,6 +161,34 @@ You can use the `hint` attribute to display a hint message. This will replace th
       hint="This is a hint message"
       warning
     />
+    <hr class="maz-my-4">
+    <MazTextarea
+      v-model="value"
+      name="comment"
+      top-label="This is a label"
+      hint="This is a hint message"
+    />
+    <MazTextarea
+      v-model="value"
+      name="comment"
+      top-label="This is a label"
+      hint="This is a hint message"
+      error
+    />
+    <MazTextarea
+      v-model="value"
+      name="comment"
+      top-label="This is a label"
+      hint="This is a hint message"
+      success
+    />
+    <MazTextarea
+      v-model="value"
+      name="comment"
+      top-label="This is a label"
+      hint="This is a hint message"
+      warning
+    />
   </div>
 
 <template #code>
@@ -170,7 +222,56 @@ You can use the `hint` attribute to display a hint message. This will replace th
     hint="This is a hint message"
     warning
   />
+  <hr class="maz-my-4">
+  <MazTextarea
+    v-model="value"
+    name="comment"
+    top-label="This is a label"
+    hint="This is a hint message"
+  />
+  <MazTextarea
+    v-model="value"
+    name="comment"
+    top-label="This is a label"
+    hint="This is a hint message"
+    error
+  />
+  <MazTextarea
+    v-model="value"
+    name="comment"
+    top-label="This is a label"
+    hint="This is a hint message"
+    success
+  />
+  <MazTextarea
+    v-model="value"
+    name="comment"
+    top-label="This is a label"
+    hint="This is a hint message"
+    warning
+  />
 </template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Disable autogrow
+
+By default, the textarea automatically expands as the user types. You can disable this behavior with the `autogrow` prop set to `false` — the textarea will then have a fixed height with a manual resize handle.
+
+<ComponentDemo>
+  <MazTextarea
+    v-model="value"
+    name="comment"
+    label="Fixed height textarea"
+    :autogrow="false"
+  />
+
+<template #code>
+
+```html
+<MazTextarea v-model="value" name="comment" label="Fixed height textarea" :autogrow="false" />
 ```
 
   </template>
@@ -201,6 +302,7 @@ You can use the `hint` attribute to display a hint message. This will replace th
   import { ref } from 'vue'
   import { useToast } from 'maz-ui/src/composables/useToast'
 
+  const mainValue = ref()
   const value = ref()
 
   const toast = useToast()
@@ -212,7 +314,3 @@ You can use the `hint` attribute to display a hint message. This will replace th
     value.value = ''
   }
 </script>
-
-```
-
-```
