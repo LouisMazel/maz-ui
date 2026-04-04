@@ -63,7 +63,7 @@
     "@maz-ui/utils": "workspace:*",
     "@nuxt/devtools-kit": "^3.2.3",
     "@nuxt/kit": "^4.4.2",
-    "defu": "^6.1.4",
+    "defu": "^6.1.5",
     "maz-ui": "workspace:*"
   },
   "devDependencies": {
