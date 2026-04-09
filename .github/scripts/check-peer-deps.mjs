@@ -1,14 +1,18 @@
 // @ts-check
-// .github/scripts/check-peer-deps.mjs
+
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
+import process from 'node:process'
 import { logger } from '@maz-ui/node'
-import { coerce, gt, minVersion } from 'semver'
+import { coerce, satisfies } from 'semver'
 
 /**
- * @type {Array<{ file: string, dep: string, devVersion: string, peerRange: string, peerMax: string }>}
+ * @type {Array<{ file: string, dep: string, devVersion: string, peerRange: string }>}
  */
 const errors = []
+
+const rootPkg = JSON.parse(readFileSync(join(process.cwd(), 'package.json'), 'utf-8'))
+const rootDevDependencies = rootPkg.devDependencies || {}
 
 /**
  * @param {string} dir
@@ -39,65 +43,24 @@ function checkPackage(pkgPath) {
   const { peerDependencies = {}, devDependencies = {} } = pkg
 
   for (const [dep, peerRange] of Object.entries(peerDependencies)) {
-    const devVersion = devDependencies[dep]
+    const devVersion = devDependencies[dep] || rootDevDependencies[dep]
     if (!devVersion)
       continue
 
     const devSemver = coerce(devVersion)
-    const peerMax = extractMaxVersion(peerRange)
 
-    if (devSemver && peerMax && gt(devSemver, peerMax)) {
+    if (devSemver?.version && !satisfies(devSemver, peerRange)) {
       errors.push({
         file: pkgPath,
         dep,
         devVersion: devSemver.version,
         peerRange,
-        peerMax: peerMax.version,
       })
     }
   }
 }
 
-/**
- * @param {string} range
- * @returns {import('semver').SemVer | null} max version
- */
-function extractMaxVersion(range) {
-  // Gère "<=" (inclusive) - DOIT être avant "<"
-  const lessThanOrEqualMatch = range.match(/<=\s*(\d+\.\d+\.\d+)/)
-  if (lessThanOrEqualMatch) {
-    return coerce(lessThanOrEqualMatch[1]) // La version est incluse
-  }
-
-  // Gère "<" (exclusive)
-  const lessThanMatch = range.match(/<\s*(\d+\.\d+\.\d+)/)
-  if (lessThanMatch) {
-    const ver = coerce(lessThanMatch[1])
-    // <29.0.0 → max réelle est 28.x.x
-    return ver ? coerce(`${ver.major - 1}.999.999`) : null
-  }
-
-  // Pour "^28.0.0", la max est la major suivante - 1
-  const caretMatch = range.match(/\^(\d+)/)
-  if (caretMatch) {
-    return coerce(`${caretMatch[1]}.999.999`)
-  }
-
-  // Pour "~28.0.0"
-  const tildeMatch = range.match(/~(\d+\.\d+)/)
-  if (tildeMatch) {
-    return coerce(`${tildeMatch[1]}.999`)
-  }
-
-  // Pour ">=X" sans limite haute → pas de max
-  if (range.startsWith('>=') && !range.includes('<')) {
-    return null
-  }
-
-  return minVersion(range)
-}
-
-// Scan tout le monorepo
+// Scan the entire monorepo
 const packageJsons = findPackageJsons(process.cwd())
 packageJsons.forEach(checkPackage)
 
@@ -105,7 +68,7 @@ if (errors.length > 0) {
   logger.error('Peer dependencies out of sync')
   for (const err of errors) {
     logger.error(`${err.file}`)
-    logger.error(`${err.dep}: devDep=${err.devVersion} but peerDep="${err.peerRange}" (max ~${err.peerMax})\n`)
+    logger.error(`${err.dep}: devDep=${err.devVersion} does not satisfy peerDep="${err.peerRange}"\n`)
   }
   process.exit(1)
 }
