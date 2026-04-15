@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "@types/eslint-plugin-tailwindcss": "^3.17.0",
-    "eslint": "^10.0.3",
+    "eslint": "^10.2.0",
     "unbuild": "^3.6.1"
   },
   "lint-staged": {
