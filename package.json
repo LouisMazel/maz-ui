@@ -63,7 +63,7 @@
     "glob": "^13.0.6",
     "husky": "^9.1.7",
     "lint-staged": "16.4.0",
-    "nx": "^22.5.4",
+    "nx": "^22.6.5",
     "postcss": "^8.5.8",
     "postcss-html": "^1.8.1",
     "postcss-import": "^16.1.1",
