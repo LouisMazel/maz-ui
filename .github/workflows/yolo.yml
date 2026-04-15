@@ -1,0 +1,37 @@
+name: Yoloship
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Issue number to process
+        required: true
+        type: number
+  issues:
+    types: [labeled]
+
+jobs:
+  run-agent:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.label.name == 'yolo' }}
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js, pnpm and caches
+        uses: ./.github/actions/setup
+
+      - name: Install Claude Code
+        run: pnpm add -g @anthropic-ai/claude-code
+
+      - name: Run Yolo Ship CLI
+        env:
+          YOLO_API_KEY: ${{ secrets.YOLO_API_KEY }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          GIT_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: pnpm yolo run
