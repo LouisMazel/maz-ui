@@ -55,6 +55,13 @@ export function ViteCompileStyles(): Plugin {
         await compileScss()
 
         logger.success('[CompileStyles] ✅ scss compiled')
+
+        // Write type declaration stubs for TypeScript 6 compatibility (TS2882)
+        // Side-effect CSS imports require a `types` field in package.json subpath exports
+        writeFileSync(resolve(cssDir, 'main.css.d.ts'), 'export {}\n')
+        writeFileSync(resolve(cssDir, 'aos.css.d.ts'), 'export {}\n')
+
+        logger.success('[CompileStyles] ✅ type declarations written')
       }
       catch (error) {
         logger.error('[CompileStyles] 🔴 error while compiling styles', error)
