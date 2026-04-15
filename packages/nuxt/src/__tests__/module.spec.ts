@@ -1,4 +1,3 @@
-/* eslint-disable e18e/prefer-spread-syntax */
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import moduleConfig from '../module'

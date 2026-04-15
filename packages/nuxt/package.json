@@ -63,14 +63,14 @@
     "@maz-ui/utils": "workspace:*",
     "@nuxt/devtools-kit": "^3.2.3",
     "@nuxt/kit": "^4.4.2",
-    "defu": "^6.1.4",
+    "defu": "^6.1.7",
     "maz-ui": "workspace:*"
   },
   "devDependencies": {
     "@nuxt/devtools": "^3.2.3",
     "@nuxt/module-builder": "^1.0.2",
     "@nuxt/schema": "^4.4.2",
-    "@nuxt/test-utils": "^4.0.0",
+    "@nuxt/test-utils": "^4.0.2",
     "nuxt": "^4.4.2"
   },
   "lint-staged": {
