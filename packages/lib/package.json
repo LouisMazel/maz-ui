@@ -109,8 +109,14 @@
       "module": "./dist/tailwindcss/*.js",
       "default": "./dist/tailwindcss/*.js"
     },
-    "./styles": "./dist/css/main.css",
-    "./aos-styles": "./dist/css/aos.css",
+    "./styles": {
+      "types": "./dist/css/main.css.d.ts",
+      "default": "./dist/css/main.css"
+    },
+    "./aos-styles": {
+      "types": "./dist/css/aos.css.d.ts",
+      "default": "./dist/css/aos.css"
+    },
     "./*": "./*"
   },
   "main": "./dist/index.js",
