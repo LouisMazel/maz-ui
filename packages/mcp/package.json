@@ -59,13 +59,13 @@
   "dependencies": {
     "@maz-ui/node": "workspace:*",
     "@maz-ui/utils": "workspace:*",
-    "@modelcontextprotocol/sdk": "^1.28.0"
+    "@modelcontextprotocol/sdk": "^1.29.0"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
-    "@modelcontextprotocol/inspector": "^0.21.1",
-    "@swc/core": "1.15.21",
-    "prettier": "^3.8.1",
+    "@modelcontextprotocol/inspector": "^0.21.2",
+    "@swc/core": "1.15.26",
+    "prettier": "^3.8.3",
     "ts-node-maintained": "^10.9.5",
     "tsx": "^4.21.0",
     "unbuild": "^3.6.1"
