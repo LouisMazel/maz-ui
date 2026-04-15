@@ -1,5 +1,18 @@
 # Change Log
 
+## v4.9.1 (2026-04-15)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.0...v4.9.1)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** SSR build with toast plugin anc Vite@8 (Rolldown) ([1e063c17](https://github.com/LouisMazel/maz-ui/commit/1e063c17))
+- **@maz-ui/nuxt:** ColorMode config option overrides user cookie preference on page reload ([94ac2b65](https://github.com/LouisMazel/maz-ui/commit/94ac2b65))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.9.1-beta.7 (2026-03-25)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1-beta.6...v4.9.1-beta.7)

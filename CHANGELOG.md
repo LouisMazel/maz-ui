@@ -1,5 +1,48 @@
 # Change Log
 
+## v4.9.1 (2026-04-15)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.0...v4.9.1)
+
+### 🚀 Features
+
+- **maz-ui:** Add topLabel prop and autogrow toggle to MazTextarea ([808bc789](https://github.com/LouisMazel/maz-ui/commit/808bc789))
+  - `topLabel`: displays a static label above the textarea, supports error/success/warning states
+  - `autogrow` (default: true): set to `false` to disable auto-expand and use a fixed-height textarea with manual resize
+
+- **maz-ui:** Add topLabel prop and autogrow toggle to MazTextarea ([28faa9cc](https://github.com/LouisMazel/maz-ui/commit/28faa9cc))
+  - `topLabel`: displays a static label above the textarea, supports error/success/warning states
+  - `autogrow` (default: true): set to `false` to disable auto-expand and use a fixed-height textarea with manual resize
+
+### 🔥 Performance
+
+- **maz-ui:** Replace JS autogrow with native CSS field-sizing in MazTextarea ([63a1ee7b](https://github.com/LouisMazel/maz-ui/commit/63a1ee7b))
+
+  Use the native CSS `field-sizing: content` property instead of the JavaScript
+  TextareaAutogrow class. This eliminates resize/focus event listeners, DOM height
+  recalculations, and the MutationObserver overhead — resulting in zero JS cost
+  for textarea auto-sizing.
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** SSR build with toast plugin anc Vite@8 (Rolldown) ([1e063c17](https://github.com/LouisMazel/maz-ui/commit/1e063c17))
+- **@maz-ui/nuxt:** ColorMode config option overrides user cookie preference on page reload ([94ac2b65](https://github.com/LouisMazel/maz-ui/commit/94ac2b65))
+
+### 💅 Refactors
+
+- **maz-ui:** Check slot content to render the slot ([323c609b](https://github.com/LouisMazel/maz-ui/commit/323c609b))
+- **maz-ui:** Use base rounded size in all components to inherits theme value ([444c24fc](https://github.com/LouisMazel/maz-ui/commit/444c24fc))
+- **maz-ui:** Use base rounded size in all components to inherits theme value ([c5bdf98a](https://github.com/LouisMazel/maz-ui/commit/c5bdf98a))
+
+### 📦 Build
+
+- Upgrade dependencies ([58c9be1e](https://github.com/LouisMazel/maz-ui/commit/58c9be1e))
+- Upgrade dependencies ([b43bbf17](https://github.com/LouisMazel/maz-ui/commit/b43bbf17))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.9.1-beta.7 (2026-03-25)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1-beta.6...v4.9.1-beta.7)
