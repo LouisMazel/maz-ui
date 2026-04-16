@@ -1,4 +1,4 @@
-import { getCountryFlagUrl } from '../getCountryFlagUrl'
+import { FLAG_CDN_BASE_URL, getCountryFlagUrl } from '../getCountryFlagUrl'
 
 describe('given getCountryFlagUrl function', () => {
   describe('when called with a supported country code', () => {
@@ -29,6 +29,30 @@ describe('given getCountryFlagUrl function', () => {
     it('then it should return undefined', () => {
       expect(getCountryFlagUrl('zz')).toBeUndefined()
       expect(getCountryFlagUrl('invalid')).toBeUndefined()
+    })
+  })
+
+  describe('when called with a custom baseUrl', () => {
+    it('then it should use the custom base URL for SVG', () => {
+      expect(getCountryFlagUrl('fr', undefined, '/assets/flags')).toBe('/assets/flags/fr.svg')
+    })
+
+    it('then it should use the custom base URL for PNG with size', () => {
+      expect(getCountryFlagUrl('us', 'h20', '/assets/flags')).toBe('/assets/flags/h20/us.png')
+    })
+
+    it('then it should strip trailing slash from baseUrl', () => {
+      expect(getCountryFlagUrl('de', undefined, '/assets/flags/')).toBe('/assets/flags/de.svg')
+    })
+
+    it('then it should return undefined for unsupported codes even with custom baseUrl', () => {
+      expect(getCountryFlagUrl('zz', undefined, '/assets/flags')).toBeUndefined()
+    })
+  })
+
+  describe('FLAG_CDN_BASE_URL constant', () => {
+    it('then it should export the default flagcdn.com base URL', () => {
+      expect(FLAG_CDN_BASE_URL).toBe('https://flagcdn.com')
     })
   })
 })

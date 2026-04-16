@@ -46,7 +46,9 @@ const _supportedCodes = ['ad', 'ae', 'af', 'ag', 'ai', 'al', 'am', 'ao', 'aq', '
 
 type SupportedCodes = typeof _supportedCodes[number]
 
-export function getCountryFlagUrl(countryIsoCode: SupportedCodes | string, size?: Size) {
+export const FLAG_CDN_BASE_URL = 'https://flagcdn.com'
+
+export function getCountryFlagUrl(countryIsoCode: SupportedCodes | string, size?: Size, baseUrl?: string) {
   const code = countryIsoCode.toLowerCase()
 
   if (!_supportedCodes.includes(code as SupportedCodes)) {
@@ -55,5 +57,7 @@ export function getCountryFlagUrl(countryIsoCode: SupportedCodes | string, size?
     return undefined
   }
 
-  return size ? `https://flagcdn.com/${size}/${code}.png` : `https://flagcdn.com/${code}.svg`
+  const base = (baseUrl ?? FLAG_CDN_BASE_URL).replace(/\/$/, '')
+
+  return size ? `${base}/${size}/${code}.png` : `${base}/${code}.svg`
 }

@@ -16,7 +16,10 @@ vi.mock('@maz-ui/utils/helpers/getBrowserLocale', () => ({
 }))
 
 vi.mock('@maz-ui/utils/helpers/getCountryFlagUrl', () => ({
-  getCountryFlagUrl: (code: string) => `https://flagcdn.com/h20/${code.toLowerCase()}.png`,
+  getCountryFlagUrl: (code: string, _size?: string, baseUrl?: string) => {
+    const base = (baseUrl ?? 'https://flagcdn.com').replace(/\/$/, '')
+    return `${base}/h20/${code.toLowerCase()}.png`
+  },
 }))
 
 vi.mock('../composables/useDisplayNames', () => ({
@@ -476,6 +479,22 @@ describe('mazSelectCountry', () => {
     })
     const mazLazyImg = wrapper.findComponent({ name: 'MazLazyImg' })
     expect(mazLazyImg.exists()).toBe(false)
+  })
+
+  it('renders flag from custom flagsBaseUrl when provided', async () => {
+    const wrapper = await getWrapper({
+      props: {
+        modelValue: 'FR',
+        flagsBaseUrl: '/assets/flags',
+      },
+      shallow: false,
+    })
+    await vi.dynamicImportSettled()
+
+    const mazLazyImg = wrapper.findComponent(MazLazyImg)
+
+    expect(mazLazyImg.exists()).toBe(true)
+    expect(mazLazyImg.props('src')).toBe('/assets/flags/h20/fr.png')
   })
 
   it('renders with custom option value key', async () => {

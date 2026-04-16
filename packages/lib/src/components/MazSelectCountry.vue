@@ -115,6 +115,13 @@ export interface MazSelectCountryProps<Option extends { name: string, code: Disp
   hint?: string
 
   /**
+   * Base URL for country flag images. Defaults to flagcdn.com.
+   * Override this to serve flags from a local path for offline/hybrid apps.
+   * @example "/assets/flags"
+   */
+  flagsBaseUrl?: string
+
+  /**
    * Options
    * @type {Option[]}
    */
@@ -188,6 +195,7 @@ const {
   style,
   codesType,
   formatInputValue,
+  flagsBaseUrl,
 } = defineProps<MazSelectCountryProps<Option>>()
 
 defineEmits<{
@@ -246,7 +254,7 @@ const messages = computed<MazUiTranslationsNestedSchema['selectCountry']>(() => 
 }))
 
 function getFlagUrl(code: Option['code'], size: Parameters<typeof getCountryFlagUrl>[1] = 'h20') {
-  return getCountryFlagUrl(code.slice(0, 2), size) || getCountryFlagUrl(code.slice(3, 5), size) || getCountryFlagUrl(code, size)
+  return getCountryFlagUrl(code.slice(0, 2), size, flagsBaseUrl) || getCountryFlagUrl(code.slice(3, 5), size, flagsBaseUrl) || getCountryFlagUrl(code, size, flagsBaseUrl)
 }
 
 const flagUrl = computed(() => {
