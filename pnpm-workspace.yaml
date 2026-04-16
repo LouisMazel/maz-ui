@@ -10,6 +10,7 @@ packages:
 
 overrides:
   vue: $vue
+
 onlyBuiltDependencies:
   - '@swc/core'
   - nx
