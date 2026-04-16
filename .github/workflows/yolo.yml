@@ -26,9 +26,6 @@ jobs:
       - name: Setup Node.js, pnpm and caches
         uses: ./.github/actions/setup
 
-      - name: Install Claude Code
-        run: pnpm add -g @anthropic-ai/claude-code
-
       - name: Fetch issue and validate labels
         if: github.event_name == 'workflow_dispatch'
         id: issue
