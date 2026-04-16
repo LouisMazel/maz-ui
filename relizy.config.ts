@@ -18,6 +18,17 @@ export default defineConfig({
     ci: false,
   },
 
+  ai: {
+    provider: 'claude-code',
+    providers: {
+      'claude-code': {
+        oauthToken: process.env.CLAUDE_CODE_OAUTH_TOKEN,
+      },
+    },
+    providerRelease: { enabled: true },
+    social: { twitter: { enabled: true }, slack: { enabled: false } },
+  },
+
   templates: {
     emptyChangelogContent: 'No relevant changes since last release',
     changelogTitle: '{{newVersion}} ({{date}})',
