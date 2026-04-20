@@ -75,18 +75,11 @@ describe('mazBtn.vue', () => {
     expect(wrapper.attributes('disabled')).toBeDefined()
   })
 
-  it('applies the correct cursor class when disabled', () => {
+  it('applies the loading class when loading prop is true', () => {
     const wrapper = shallowMount(MazBtn, {
-      props: { disabled: true },
+      props: { loading: true },
     })
-    expect(wrapper.classes()).toContain('--cursor-default')
-  })
-
-  it('applies the correct cursor class when not disabled', () => {
-    const wrapper = shallowMount(MazBtn, {
-      props: { disabled: false },
-    })
-    expect(wrapper.classes()).toContain('--cursor-pointer')
+    expect(wrapper.classes()).toContain('--loading')
   })
 
   it('renders default slot content', () => {
