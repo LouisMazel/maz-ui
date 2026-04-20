@@ -8,11 +8,13 @@ import { debounce as debounceFn } from '@maz-ui/utils/helpers/debounce'
 import {
   computed,
   defineAsyncComponent,
+  onBeforeUnmount,
   onMounted,
   ref,
   useSlots,
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { onAutofillSync } from '../utils/autofillSync'
 import { hasSlotContent } from '../utils/hasSlotContent'
 
 export type MazInputValue = string | number | null | undefined | boolean
@@ -302,53 +304,46 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
 const hasPasswordVisible = ref(false)
-const isFocused = ref(false)
-const input = ref<HTMLElement | undefined>()
+const input = ref<HTMLInputElement | undefined>()
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazInput',
   providedId: props.id,
 })
 
+let autofillCleanup: (() => void) | undefined
+
 onMounted(() => {
   if (props.autoFocus) {
     input.value?.focus()
   }
+
+  if (input.value) {
+    autofillCleanup = onAutofillSync(input.value, (value) => {
+      if (value !== props.modelValue) {
+        emits('update:model-value', value as T)
+      }
+    })
+  }
+})
+
+onBeforeUnmount(() => {
+  autofillCleanup?.()
 })
 
 const isPasswordType = computed(() => props.type === 'password')
 
 const inputType = computed(() => (hasPasswordVisible.value ? 'text' : props.type))
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 const borderStyle = computed(() => {
   if (!props.border)
     return undefined
-  if (props.error && !isFocused.value)
+  if (props.error)
     return 'maz-border-destructive'
-  if (props.success && !isFocused.value)
+  if (props.success)
     return 'maz-border-success'
-  if (props.warning && !isFocused.value)
+  if (props.warning)
     return 'maz-border-warning'
-
-  if (isFocused.value || props.borderActive) {
-    if (props.color === 'destructive')
-      return 'maz-border-destructive'
-    if (props.color === 'info')
-      return 'maz-border-info'
-    if (props.color === 'primary')
-      return 'maz-border-primary'
-    if (props.color === 'secondary')
-      return 'maz-border-secondary'
-    if (props.color === 'success')
-      return 'maz-border-success'
-    if (props.color === 'warning')
-      return 'maz-border-warning'
-    if (props.color === 'accent')
-      return 'maz-border-accent'
-    if (props.color === 'contrast')
-      return 'maz-border-contrast'
-  }
   return '--default-border'
 })
 
@@ -372,20 +367,9 @@ const model = computed({
   set: (value?: T) => emitValue(value),
 })
 
-const hasValue = computed(() => model.value !== undefined && model.value !== '')
-
-const shouldUp = computed(() => {
-  return (
-    (!!props.label || !!props.hint)
-    && (
-      !!hasValue.value
-      || !!props.placeholder
-      || ['date', 'month', 'week'].includes(props.type)
-    )
-  )
-})
-
 const hasLabel = computed(() => !!props.label || !!props.hint)
+
+const alwaysUp = computed(() => ['date', 'month', 'week'].includes(props.type))
 
 function hasRightPart(): boolean {
   return (
@@ -402,12 +386,10 @@ function hasLeftPart(): boolean {
 
 function focus(event: Event) {
   emits('focus', event)
-  isFocused.value = true
 }
 
 function blur(event: Event) {
   emits('blur', event)
-  isFocused.value = false
 }
 
 function change(event: Event) {
@@ -432,8 +414,9 @@ const stateColor = computed(() => {
   <div
     class="m-input m-reset-css" :class="[
       {
-        '--is-focused': isFocused || borderActive,
-        '--should-up': shouldUp,
+        '--border-active': borderActive,
+        '--always-up': alwaysUp,
+        '--has-placeholder': !!placeholder,
         '--has-label': hasLabel,
         '--is-readonly': readonly,
         '--has-z-2': error || warning || success,
@@ -482,7 +465,7 @@ const stateColor = computed(() => {
           v-bind="$attrs"
           ref="input"
           v-model="model"
-          :placeholder
+          :placeholder="placeholder || ' '"
           :aria-label="label || placeholder"
           :type="inputType"
           :inputmode
@@ -708,25 +691,23 @@ const stateColor = computed(() => {
   &-label {
     @apply maz-pointer-events-none maz-absolute maz-w-full maz-origin-top-left maz-items-center maz-overflow-hidden maz-truncate maz-whitespace-nowrap maz-text-start maz-leading-6 maz-start-4;
 
-    width: calc(100% + 1.3rem);
+    width: calc(100% - 0.75rem);
     transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
   }
 
-  &:not(.--should-up) {
-    & .m-input-label {
-      width: calc(100% - 0.75rem);
-    }
+  &.--always-up .m-input-label,
+  &.--has-placeholder .m-input-label,
+  & .m-input-input:not(:placeholder-shown) ~ .m-input-label,
+  & .m-input-input:-webkit-autofill ~ .m-input-label {
+    width: calc(100% + 1.3rem);
+    transform: scale(0.8) translateY(-0.65em);
   }
 
-  &.--should-up {
-    & .m-input-label {
-      /* @apply maz-top-2; */
-      transform: scale(0.8) translateY(-0.65em);
-    }
-
-    & .m-input-input {
-      @apply maz-pt-4;
-    }
+  &.--always-up .m-input-input,
+  &.--has-placeholder .m-input-input,
+  & .m-input-input:not(:placeholder-shown),
+  & .m-input-input:-webkit-autofill {
+    @apply maz-pt-4;
   }
 
   &:not(.--has-state) .m-input-wrapper {
@@ -759,10 +740,49 @@ const stateColor = computed(() => {
     }
   }
 
-  &.--is-focused {
-    & .m-input-wrapper {
-      @apply maz-z-3;
-    }
+  & .m-input-wrapper:focus-within,
+  &.--border-active .m-input-wrapper {
+    @apply maz-z-3;
+  }
+
+  &.--primary .m-input-wrapper:focus-within,
+  &.--primary.--border-active .m-input-wrapper {
+    @apply maz-border-primary;
+  }
+
+  &.--secondary .m-input-wrapper:focus-within,
+  &.--secondary.--border-active .m-input-wrapper {
+    @apply maz-border-secondary;
+  }
+
+  &.--accent .m-input-wrapper:focus-within,
+  &.--accent.--border-active .m-input-wrapper {
+    @apply maz-border-accent;
+  }
+
+  &.--info .m-input-wrapper:focus-within,
+  &.--info.--border-active .m-input-wrapper {
+    @apply maz-border-info;
+  }
+
+  &.--success .m-input-wrapper:focus-within,
+  &.--success.--border-active .m-input-wrapper {
+    @apply maz-border-success;
+  }
+
+  &.--warning .m-input-wrapper:focus-within,
+  &.--warning.--border-active .m-input-wrapper {
+    @apply maz-border-warning;
+  }
+
+  &.--destructive .m-input-wrapper:focus-within,
+  &.--destructive.--border-active .m-input-wrapper {
+    @apply maz-border-destructive;
+  }
+
+  &.--contrast .m-input-wrapper:focus-within,
+  &.--contrast.--border-active .m-input-wrapper {
+    @apply maz-border-contrast;
   }
 
   &.--has-label {
