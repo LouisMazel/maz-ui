@@ -73,8 +73,9 @@ export interface MazTextareaProps<T extends string | undefined | null> {
 
 <script lang="ts" setup generic="T extends string | undefined | null">
 import type { HTMLAttributes } from 'vue'
-import { computed, ref, useSlots } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { onAutofillSync } from '../utils/autofillSync'
 
 defineOptions({
   inheritAttrs: false,
@@ -137,8 +138,7 @@ const instanceId = useInstanceUniqId({
   providedId: props.id,
 })
 
-const isFocused = ref(false)
-const hasValue = computed(() => props.modelValue !== undefined && props.modelValue !== '' && props.modelValue?.trim() !== '')
+const textarea = ref<HTMLTextAreaElement | undefined>()
 
 const inputValue = computed({
   get: () => props.modelValue,
@@ -150,12 +150,10 @@ const inputValue = computed({
 
 function focus(event: FocusEvent) {
   emits('focus', event)
-  isFocused.value = true
 }
 
 function blur(event: FocusEvent) {
   emits('blur', event)
-  isFocused.value = false
 }
 
 function change(event: Event) {
@@ -166,10 +164,6 @@ const slots = useSlots()
 
 const hasLabelOrHint = computed(() => props.label || props.hint || !!slots.label)
 
-const shouldUp = computed(
-  () => hasLabelOrHint.value && (hasValue.value || !!props.placeholder),
-)
-
 const hasAppend = computed(() => !!slots.append)
 
 const borderStyle = computed(() => {
@@ -179,26 +173,26 @@ const borderStyle = computed(() => {
     return 'maz-border-success'
   if (props.warning)
     return 'maz-border-warning'
-
-  if (isFocused.value) {
-    if (props.color === 'destructive')
-      return 'maz-border-destructive'
-    if (props.color === 'info')
-      return 'maz-border-info'
-    if (props.color === 'primary')
-      return 'maz-border-primary'
-    if (props.color === 'secondary')
-      return 'maz-border-secondary'
-    if (props.color === 'success')
-      return 'maz-border-success'
-    if (props.color === 'warning')
-      return 'maz-border-warning'
-  }
-
   return '--default-border'
 })
 
 const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
+
+let autofillCleanup: (() => void) | undefined
+
+onMounted(() => {
+  if (textarea.value) {
+    autofillCleanup = onAutofillSync(textarea.value, (value) => {
+      if (value !== props.modelValue) {
+        emits('update:model-value', value as T)
+      }
+    })
+  }
+})
+
+onBeforeUnmount(() => {
+  autofillCleanup?.()
+})
 
 const stateLabelColor = computed(() => [
   {
@@ -224,11 +218,12 @@ const stateLabelColor = computed(() => [
           '--padding': padding,
           '--border': border,
           '--has-border-style': hasBorderStyle,
-          '--should-up': shouldUp,
+          '--has-placeholder': !!placeholder,
           '--autogrow': autogrow,
         },
         borderStyle,
         roundedSize ? `--rounded-${roundedSize}` : '--rounded',
+        `--${color}`,
       ]"
       :style="[`--append-justify: ${appendJustify}`]"
     >
@@ -257,9 +252,10 @@ const stateLabelColor = computed(() => [
 
       <textarea
         :id="instanceId"
+        ref="textarea"
         v-bind="$attrs"
         v-model="inputValue"
-        :placeholder
+        :placeholder="placeholder || ' '"
         :name
         :disabled
         :readonly
@@ -287,7 +283,9 @@ const stateLabelColor = computed(() => [
 .m-textarea {
   @apply maz-min-h-[6.25rem] maz-relative maz-flex maz-flex-col maz-align-top maz-text-foreground;
 
-  &.--should-up textarea {
+  &.--has-placeholder textarea,
+  &:has(textarea:not(:placeholder-shown)) textarea,
+  &:has(textarea:-webkit-autofill) textarea {
     @apply maz-pt-3.5;
   }
 
@@ -370,19 +368,47 @@ const stateLabelColor = computed(() => [
 
     transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
-    &.--should-up {
-      transform: scale(0.8) translateY(-0.65rem);
-    }
-
     &:not(.--has-state) {
       @apply maz-text-muted;
     }
   }
 
-  &.--should-up {
-    & .m-textarea__label {
-      transform: scale(0.8) translateY(-0.65rem);
-    }
+  &.--has-placeholder .m-textarea__label,
+  &:has(textarea:not(:placeholder-shown)) .m-textarea__label,
+  &:has(textarea:-webkit-autofill) .m-textarea__label {
+    transform: scale(0.8) translateY(-0.65rem);
+  }
+
+  &.--primary:focus-within {
+    @apply maz-border-primary;
+  }
+
+  &.--secondary:focus-within {
+    @apply maz-border-secondary;
+  }
+
+  &.--accent:focus-within {
+    @apply maz-border-accent;
+  }
+
+  &.--info:focus-within {
+    @apply maz-border-info;
+  }
+
+  &.--success:focus-within {
+    @apply maz-border-success;
+  }
+
+  &.--warning:focus-within {
+    @apply maz-border-warning;
+  }
+
+  &.--destructive:focus-within {
+    @apply maz-border-destructive;
+  }
+
+  &.--contrast:focus-within {
+    @apply maz-border-contrast;
   }
 
   &.--autogrow textarea {
