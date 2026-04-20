@@ -30,10 +30,8 @@ describe('components/MazInput.vue', () => {
     expect(wrapper.classes()).toContain('--has-label')
   })
 
-  it('should apply the --is-focused class when the input is focused', async () => {
-    const input = wrapper.find('input')
-    await input.trigger('focus')
-    expect(wrapper.classes()).toContain('--is-focused')
+  it('should set a whitespace placeholder fallback when no placeholder prop is provided', () => {
+    expect(wrapper.find('input').attributes('placeholder')).toBe(' ')
   })
 
   it('should apply the --is-readonly class when the readonly prop is passed', async () => {

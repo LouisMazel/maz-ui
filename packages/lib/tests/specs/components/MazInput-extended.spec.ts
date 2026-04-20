@@ -215,9 +215,9 @@ describe('MazInput extended coverage', () => {
       expect(wrapper.find('.m-input.--has-label').exists()).toBe(true)
     })
 
-    it('should apply --should-up class when value is present with label', () => {
+    it('should render the label element when label prop is provided', () => {
       const wrapper = getWrapper({ label: 'Email', modelValue: 'test@test.com' })
-      expect(wrapper.find('.m-input.--should-up').exists()).toBe(true)
+      expect(wrapper.find('.m-input-label').exists()).toBe(true)
     })
   })
 
@@ -280,9 +280,9 @@ describe('MazInput extended coverage', () => {
       expect(wrapper.find('input').attributes('placeholder')).toBe('Enter text...')
     })
 
-    it('should apply --should-up when placeholder and label both exist', () => {
+    it('should apply --has-placeholder class when placeholder is set', () => {
       const wrapper = getWrapper({ label: 'Name', placeholder: 'Enter name' })
-      expect(wrapper.find('.m-input.--should-up').exists()).toBe(true)
+      expect(wrapper.find('.m-input.--has-placeholder').exists()).toBe(true)
     })
   })
 
@@ -329,60 +329,9 @@ describe('MazInput extended coverage', () => {
       expect(wrapper.find('.m-input').classes()).toContain(`--${color}`)
     })
 
-    it('should apply color border when focused', async () => {
+    it('should apply the color class on the root when color prop is set', () => {
       const wrapper = getWrapper({ color: 'info' })
-      const input = wrapper.find('input')
-      await input.trigger('focus')
-      expect(wrapper.find('.m-input-wrapper.maz-border-info').exists()).toBe(true)
-    })
-
-    it('should apply primary border when focused with primary color', async () => {
-      const wrapper = getWrapper({ color: 'primary' })
-      const input = wrapper.find('input')
-      await input.trigger('focus')
-      expect(wrapper.find('.m-input-wrapper.maz-border-primary').exists()).toBe(true)
-    })
-
-    it('should apply secondary border when focused', async () => {
-      const wrapper = getWrapper({ color: 'secondary' })
-      const input = wrapper.find('input')
-      await input.trigger('focus')
-      expect(wrapper.find('.m-input-wrapper.maz-border-secondary').exists()).toBe(true)
-    })
-
-    it('should apply success border when focused', async () => {
-      const wrapper = getWrapper({ color: 'success' })
-      const input = wrapper.find('input')
-      await input.trigger('focus')
-      expect(wrapper.find('.m-input-wrapper.maz-border-success').exists()).toBe(true)
-    })
-
-    it('should apply warning border when focused', async () => {
-      const wrapper = getWrapper({ color: 'warning' })
-      const input = wrapper.find('input')
-      await input.trigger('focus')
-      expect(wrapper.find('.m-input-wrapper.maz-border-warning').exists()).toBe(true)
-    })
-
-    it('should apply destructive border when focused', async () => {
-      const wrapper = getWrapper({ color: 'destructive' })
-      const input = wrapper.find('input')
-      await input.trigger('focus')
-      expect(wrapper.find('.m-input-wrapper.maz-border-destructive').exists()).toBe(true)
-    })
-
-    it('should apply accent border when focused', async () => {
-      const wrapper = getWrapper({ color: 'accent' })
-      const input = wrapper.find('input')
-      await input.trigger('focus')
-      expect(wrapper.find('.m-input-wrapper.maz-border-accent').exists()).toBe(true)
-    })
-
-    it('should apply contrast border when focused', async () => {
-      const wrapper = getWrapper({ color: 'contrast' })
-      const input = wrapper.find('input')
-      await input.trigger('focus')
-      expect(wrapper.find('.m-input-wrapper.maz-border-contrast').exists()).toBe(true)
+      expect(wrapper.find('.m-input.--info').exists()).toBe(true)
     })
   })
 
@@ -413,14 +362,9 @@ describe('MazInput extended coverage', () => {
   })
 
   describe('when borderActive is true', () => {
-    it('should apply --is-focused class even without focus', () => {
+    it('should apply --border-active class on the root', () => {
       const wrapper = getWrapper({ borderActive: true })
-      expect(wrapper.find('.m-input.--is-focused').exists()).toBe(true)
-    })
-
-    it('should apply color border without focus', () => {
-      const wrapper = getWrapper({ borderActive: true, color: 'primary' })
-      expect(wrapper.find('.m-input-wrapper.maz-border-primary').exists()).toBe(true)
+      expect(wrapper.find('.m-input.--border-active').exists()).toBe(true)
     })
   })
 
@@ -487,27 +431,12 @@ describe('MazInput extended coverage', () => {
       expect(wrapper.emitted('focus')).toBeTruthy()
     })
 
-    it('should apply --is-focused class on focus', async () => {
-      const wrapper = getWrapper()
-      const input = wrapper.find('input')
-      await input.trigger('focus')
-      expect(wrapper.find('.m-input.--is-focused').exists()).toBe(true)
-    })
-
     it('should emit blur event on input blur', async () => {
       const wrapper = getWrapper()
       const input = wrapper.find('input')
       await input.trigger('focus')
       await input.trigger('blur')
       expect(wrapper.emitted('blur')).toBeTruthy()
-    })
-
-    it('should remove --is-focused class on blur', async () => {
-      const wrapper = getWrapper()
-      const input = wrapper.find('input')
-      await input.trigger('focus')
-      await input.trigger('blur')
-      expect(wrapper.find('.m-input.--is-focused').exists()).toBe(false)
     })
   })
 
@@ -569,40 +498,35 @@ describe('MazInput extended coverage', () => {
     })
   })
 
-  describe('when shouldUp is computed', () => {
-    it('should be true when label and value are present', () => {
-      const wrapper = getWrapper({ label: 'Name', modelValue: 'John' })
-      expect(wrapper.find('.m-input.--should-up').exists()).toBe(true)
-    })
-
-    it('should be true when label and placeholder are present', () => {
+  describe('when the label float state is driven by CSS', () => {
+    it('should apply --has-placeholder when placeholder prop is set', () => {
       const wrapper = getWrapper({ label: 'Name', placeholder: 'Enter name' })
-      expect(wrapper.find('.m-input.--should-up').exists()).toBe(true)
+      expect(wrapper.find('.m-input.--has-placeholder').exists()).toBe(true)
     })
 
-    it('should be true when label exists and type is date', () => {
+    it('should apply --always-up when type is date', () => {
       const wrapper = getWrapper({ label: 'Date', type: 'date' })
-      expect(wrapper.find('.m-input.--should-up').exists()).toBe(true)
+      expect(wrapper.find('.m-input.--always-up').exists()).toBe(true)
     })
 
-    it('should be true when label exists and type is month', () => {
+    it('should apply --always-up when type is month', () => {
       const wrapper = getWrapper({ label: 'Month', type: 'month' })
-      expect(wrapper.find('.m-input.--should-up').exists()).toBe(true)
+      expect(wrapper.find('.m-input.--always-up').exists()).toBe(true)
     })
 
-    it('should be true when label exists and type is week', () => {
+    it('should apply --always-up when type is week', () => {
       const wrapper = getWrapper({ label: 'Week', type: 'week' })
-      expect(wrapper.find('.m-input.--should-up').exists()).toBe(true)
+      expect(wrapper.find('.m-input.--always-up').exists()).toBe(true)
     })
 
-    it('should be false when no label', () => {
-      const wrapper = getWrapper({ modelValue: 'value' })
-      expect(wrapper.find('.m-input.--should-up').exists()).toBe(false)
-    })
-
-    it('should be false when label but no value, placeholder, or date type', () => {
+    it('should not apply --always-up for text type', () => {
       const wrapper = getWrapper({ label: 'Name', type: 'text' })
-      expect(wrapper.find('.m-input.--should-up').exists()).toBe(false)
+      expect(wrapper.find('.m-input.--always-up').exists()).toBe(false)
+    })
+
+    it('should fall back to a whitespace placeholder when none is provided', () => {
+      const wrapper = getWrapper()
+      expect(wrapper.find('input').attributes('placeholder')).toBe(' ')
     })
   })
 
@@ -700,31 +624,24 @@ describe('MazInput extended coverage', () => {
     })
   })
 
-  describe('border style when error and focused', () => {
-    it('should apply color border instead of error border when focused', async () => {
+  describe('border style when error', () => {
+    it('should apply the destructive state border', () => {
       const wrapper = getWrapper({ error: true, color: 'primary' })
-      const input = wrapper.find('input')
-      await input.trigger('focus')
-      // When focused, the color border takes precedence
-      expect(wrapper.find('.m-input-wrapper.maz-border-primary').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.maz-border-destructive').exists()).toBe(true)
     })
   })
 
-  describe('border style when success and focused', () => {
-    it('should apply color border instead of success border when focused', async () => {
+  describe('border style when success', () => {
+    it('should apply the success state border', () => {
       const wrapper = getWrapper({ success: true, color: 'info' })
-      const input = wrapper.find('input')
-      await input.trigger('focus')
-      expect(wrapper.find('.m-input-wrapper.maz-border-info').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.maz-border-success').exists()).toBe(true)
     })
   })
 
-  describe('border style when warning and focused', () => {
-    it('should apply color border instead of warning border when focused', async () => {
+  describe('border style when warning', () => {
+    it('should apply the warning state border', () => {
       const wrapper = getWrapper({ warning: true, color: 'secondary' })
-      const input = wrapper.find('input')
-      await input.trigger('focus')
-      expect(wrapper.find('.m-input-wrapper.maz-border-secondary').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.maz-border-warning').exists()).toBe(true)
     })
   })
 
