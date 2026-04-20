@@ -20,8 +20,10 @@ function ensureStylesInjected() {
   document.head.appendChild(style)
 }
 
+type AutofillableField = HTMLInputElement | HTMLTextAreaElement
+
 /**
- * Detects browser autofill on an input and syncs the value.
+ * Detects browser autofill on an input or textarea and syncs the value.
  *
  * Browsers do not fire the `input` event when autofilling, so v-model stays
  * out of sync with the DOM (empty state, label does not float, value cleared
@@ -29,27 +31,27 @@ function ensureStylesInjected() {
  * `:autofill` and listens to `animationstart` to detect autofill and emit
  * the value.
  *
- * @param input The input element to watch
+ * @param field The input or textarea element to watch
  * @param onSync Callback invoked with the autofilled value
  * @returns Cleanup function to stop watching
  */
 export function onAutofillSync(
-  input: HTMLInputElement,
+  field: AutofillableField,
   onSync: (value: string) => void,
 ): () => void {
   ensureStylesInjected()
-  input.setAttribute('data-maz-autofill-sync', '')
+  field.setAttribute('data-maz-autofill-sync', '')
 
-  function handleAnimationStart(event: AnimationEvent) {
-    if (event.animationName !== ANIMATION_NAME)
+  function handleAnimationStart(event: Event) {
+    if ((event as AnimationEvent).animationName !== ANIMATION_NAME)
       return
-    onSync((event.target as HTMLInputElement).value)
+    onSync((event.target as AutofillableField).value)
   }
 
-  input.addEventListener('animationstart', handleAnimationStart)
+  field.addEventListener('animationstart', handleAnimationStart)
 
   return () => {
-    input.removeEventListener('animationstart', handleAnimationStart)
-    input.removeAttribute('data-maz-autofill-sync')
+    field.removeEventListener('animationstart', handleAnimationStart)
+    field.removeAttribute('data-maz-autofill-sync')
   }
 }

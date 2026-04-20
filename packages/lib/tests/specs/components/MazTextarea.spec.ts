@@ -23,19 +23,14 @@ describe('components/MazTextarea.vue', () => {
     expect(wrapper.vm.instanceId).toBe('MazTextarea-v-0')
   })
 
-  it('should up the label if the component has value', async () => {
-    await wrapper.setProps({
-      modelValue: undefined,
-      label: 'Label',
-    })
+  it('should fall back to a whitespace placeholder when no placeholder prop is provided', () => {
+    expect(wrapper.find('textarea').attributes('placeholder')).toBe(' ')
+  })
 
-    expect(wrapper.vm.shouldUp).toBeFalsy()
-
-    await wrapper.setProps({
-      modelValue: 'Un text',
-    })
-
-    expect(wrapper.vm.shouldUp).toBeTruthy()
+  it('should apply --has-placeholder class when a placeholder prop is provided', async () => {
+    await wrapper.setProps({ placeholder: 'Type here' })
+    expect(wrapper.find('.m-textarea').classes()).toContain('--has-placeholder')
+    await wrapper.setProps({ placeholder: undefined })
   })
 
   it('should emit focus event', () => {
@@ -53,7 +48,7 @@ describe('components/MazTextarea.vue', () => {
     expect(wrapper.emitted().change).toBeTruthy()
   })
 
-  it('should have border color according with the color prop', async () => {
+  it('should have border color according with the state prop', async () => {
     await wrapper.setProps({
       error: true,
     })
@@ -74,12 +69,13 @@ describe('components/MazTextarea.vue', () => {
       warning: false,
       success: false,
     })
-    wrapper.vm.focus()
-    expect(wrapper.vm.borderStyle).toBe('maz-border-primary')
-    await wrapper.setProps({
-      color: 'secondary',
-    })
-    expect(wrapper.vm.borderStyle).toBe('maz-border-secondary')
+    expect(wrapper.vm.borderStyle).toBe('--default-border')
+  })
+
+  it('should apply the color class on the root for :focus-within styling', async () => {
+    await wrapper.setProps({ color: 'secondary' })
+    expect(wrapper.find('.m-textarea').classes()).toContain('--secondary')
+    await wrapper.setProps({ color: 'primary' })
   })
 
   it('should use native field-sizing for autogrow instead of JS', () => {
