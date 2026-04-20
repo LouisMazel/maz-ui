@@ -115,7 +115,8 @@ describe('given MazBtnGroup component', () => {
       await vi.dynamicImportSettled()
 
       const button = wrapper.findComponent(MazBtn)
-      expect(button.classes()).toContain('--primary-outlined')
+      expect(button.classes()).toContain('--primary')
+      expect(button.classes()).toContain('--outlined')
     })
 
     it('then it passes loading prop to button', async () => {
@@ -221,7 +222,8 @@ describe('given MazBtnGroup component', () => {
       await vi.dynamicImportSettled()
 
       const button = wrapper.findComponent(MazBtn)
-      expect(button.classes()).toContain('--success-outlined')
+      expect(button.classes()).toContain('--success')
+      expect(button.classes()).toContain('--outlined')
     })
 
     it('then pastel variant works with group color', async () => {
@@ -236,7 +238,8 @@ describe('given MazBtnGroup component', () => {
       await vi.dynamicImportSettled()
 
       const button = wrapper.findComponent(MazBtn)
-      expect(button.classes()).toContain('--warning-pastel')
+      expect(button.classes()).toContain('--warning')
+      expect(button.classes()).toContain('--pastel')
     })
 
     it('then fab variant works with group size and color', async () => {
@@ -308,7 +311,8 @@ describe('given MazBtnGroup component', () => {
       const buttons = wrapper.findAllComponents(MazBtn)
       expect(buttons).toHaveLength(3)
       buttons.forEach((button) => {
-        expect(button.classes()).toContain('--primary-outlined')
+        expect(button.classes()).toContain('--primary')
+        expect(button.classes()).toContain('--outlined')
       })
     })
 
@@ -347,7 +351,8 @@ describe('given MazBtnGroup component', () => {
       const buttons = wrapper.findAllComponents(MazBtn)
       expect(buttons).toHaveLength(3)
       buttons.forEach((button) => {
-        expect(button.classes()).toContain('--success-pastel')
+        expect(button.classes()).toContain('--success')
+        expect(button.classes()).toContain('--pastel')
       })
     })
 
@@ -365,7 +370,8 @@ describe('given MazBtnGroup component', () => {
 
       const buttons = wrapper.findAllComponents(MazBtn)
       buttons.forEach((button) => {
-        expect(button.classes()).toContain('--info-pastel')
+        expect(button.classes()).toContain('--info')
+        expect(button.classes()).toContain('--pastel')
         expect(button.classes()).toContain('m-button-group__button')
       })
     })
@@ -389,8 +395,8 @@ describe('given MazBtnGroup component', () => {
       expect(buttons).toHaveLength(3)
       buttons.forEach((button) => {
         expect(button.classes()).toContain('--destructive')
-        expect(button.classes()).not.toContain('--destructive-outlined')
-        expect(button.classes()).not.toContain('--destructive-pastel')
+        expect(button.classes()).not.toContain('--outlined')
+        expect(button.classes()).not.toContain('--pastel')
       })
     })
 
@@ -430,8 +436,10 @@ describe('given MazBtnGroup component', () => {
 
       const buttons = wrapper.findAllComponents(MazBtn)
       expect(buttons[0].classes()).toContain('--primary')
-      expect(buttons[1].classes()).toContain('--success-outlined')
-      expect(buttons[2].classes()).toContain('--warning-pastel')
+      expect(buttons[1].classes()).toContain('--success')
+      expect(buttons[1].classes()).toContain('--outlined')
+      expect(buttons[2].classes()).toContain('--warning')
+      expect(buttons[2].classes()).toContain('--pastel')
     })
   })
 
