@@ -45,6 +45,9 @@ jobs:
           git config --global user.name "LouisMazel"
           git config --global user.email "12446546+LouisMazel@users.noreply.github.com"
 
+      - name: Install Claude binary
+        run: npm install -g @anthropic-ai/claude-code
+
       - name: Version Packages (Canary)
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
@@ -54,5 +57,6 @@ jobs:
           RELIZY_TWITTER_API_KEY_SECRET: ${{ secrets.TWITTER_API_KEY_SECRET }}
           RELIZY_TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
           RELIZY_TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+          RELIZY_CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
           pnpm relizy release --canary --yes
