@@ -66,8 +66,10 @@ const badgeStyle = computed<CSSProperties>(() => {
     ...base,
     '--m-badge-bg': `var(--maz-${c})`,
     '--m-badge-fg': `var(--maz-${c}-foreground)`,
-    '--m-badge-pastel-bg': `var(--maz-${c}-${pastelShade})`,
-    '--m-badge-pastel-fg': `var(--maz-${pastelFg})`,
+    ...(pastel && {
+      '--m-badge-pastel-bg': `var(--maz-${c}-${pastelShade})`,
+      '--m-badge-pastel-fg': `var(--maz-${pastelFg})`,
+    }),
   }
 })
 </script>
@@ -137,7 +139,7 @@ const badgeStyle = computed<CSSProperties>(() => {
   }
 
   &.--surface {
-    @apply maz-bg-surface maz-text-foreground;
+    @apply maz-border-surface maz-bg-surface maz-text-foreground;
 
     &.--outlined {
       @apply maz-border-divider maz-bg-transparent;
@@ -146,6 +148,10 @@ const badgeStyle = computed<CSSProperties>(() => {
     &.--pastel {
       @apply maz-border-surface-600 maz-bg-surface-600;
     }
+  }
+
+  &.--transparent {
+    @apply maz-border-transparent maz-bg-transparent;
   }
 }
 </style>

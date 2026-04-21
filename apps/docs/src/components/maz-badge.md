@@ -55,6 +55,7 @@ description: MazBadge is a standalone component to show short text in colored co
     'contrast',
     'accent',
     'background',
+    'transparent',
   ]
 </script>
 
@@ -89,6 +90,7 @@ const colors = [
   'contrast',
   'accent',
   'background',
+  'transparent',
 ]
 </script>
 
@@ -123,6 +125,7 @@ const colors = [
     'contrast',
     'accent',
     'background',
+    'transparent',
   ]
 </script>
 
@@ -214,6 +217,7 @@ const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
     'contrast',
     'accent',
     'background',
+    'transparent',
   ]
 
   const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
