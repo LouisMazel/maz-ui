@@ -1,5 +1,7 @@
 <script lang="ts" setup>
+import type { CSSProperties } from 'vue'
 import type { MazColor } from './types'
+import { computed } from 'vue'
 
 export interface MazSpinnerProps {
   /**
@@ -18,6 +20,17 @@ const {
   size = '2em',
   color = 'theme',
 } = defineProps<MazSpinnerProps>()
+
+const spinnerStyle = computed<CSSProperties>(() => {
+  const c = color as string
+  if (!c || c === 'theme')
+    return {}
+  if (c === 'normal')
+    return { color: 'hsl(var(--maz-foreground))' }
+  if (c === 'transparent')
+    return { color: 'white' }
+  return { color: `hsl(var(--maz-${c}))` }
+})
 </script>
 
 <template>
@@ -32,6 +45,7 @@ const {
     xml:space="preserve"
     class="m-spinner m-reset-css"
     :class="`m-spinner--${color}`"
+    :style="spinnerStyle"
   >
     <path
       d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z"
@@ -40,48 +54,8 @@ const {
 </template>
 
 <style scoped>
-  .m-spinner {
+.m-spinner {
   @apply maz-animate-spin maz-fill-current;
   @apply maz-m-0 !important;
-
-  &--normal {
-    @apply maz-text-foreground;
-  }
-
-  &--primary {
-    @apply maz-text-primary;
-  }
-
-  &--secondary {
-    @apply maz-text-secondary;
-  }
-
-  &--accent {
-    @apply maz-text-accent;
-  }
-
-  &--info {
-    @apply maz-text-info;
-  }
-
-  &--warning {
-    @apply maz-text-warning;
-  }
-
-  &--destructive {
-    @apply maz-text-destructive;
-  }
-
-  &--success {
-    @apply maz-text-success;
-  }
-
-  &--transparent {
-    @apply maz-text-white;
-  }
-
-  &--contrast {
-    @apply maz-text-contrast;
-  }
 }
 </style>
