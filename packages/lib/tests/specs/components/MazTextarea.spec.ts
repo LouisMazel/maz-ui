@@ -109,6 +109,137 @@ describe('components/MazTextarea.vue', () => {
     })
   })
 
+  describe('Given an append slot is provided', () => {
+    describe('When the component renders', () => {
+      it('Then it displays the append content below the textarea', () => {
+        const appendWrapper = shallowMount(MazTextarea, {
+          props: { modelValue: '' },
+          slots: { append: '<button class="custom-append">Send</button>' },
+        })
+
+        expect(appendWrapper.find('.m-textarea__append .custom-append').exists()).toBe(true)
+      })
+    })
+  })
+
+  describe('Given the disabled prop is enabled', () => {
+    describe('When the component renders', () => {
+      it('Then it applies the --is-disabled class', () => {
+        const disabledWrapper = shallowMount(MazTextarea, {
+          props: { modelValue: '', disabled: true },
+        })
+
+        expect(disabledWrapper.find('.m-textarea').classes()).toContain('--is-disabled')
+      })
+    })
+  })
+
+  describe('Given the transparent prop is enabled', () => {
+    describe('When the component renders', () => {
+      it('Then it applies the --background-transparent class', () => {
+        const transparentWrapper = shallowMount(MazTextarea, {
+          props: { modelValue: '', transparent: true },
+        })
+
+        expect(transparentWrapper.find('.m-textarea').classes()).toContain('--background-transparent')
+      })
+    })
+  })
+
+  describe('Given the user types inside the textarea', () => {
+    describe('When the textarea value changes', () => {
+      it('Then it emits update:model-value and input with the new value', async () => {
+        const typingWrapper = shallowMount(MazTextarea, {
+          props: { modelValue: '' },
+        })
+
+        await typingWrapper.find('textarea').setValue('hello world')
+
+        expect(typingWrapper.emitted('update:model-value')?.[0]).toEqual(['hello world'])
+        expect(typingWrapper.emitted('input')?.[0]).toEqual(['hello world'])
+      })
+    })
+  })
+
+  describe('Given the required prop is enabled', () => {
+    describe('When the component renders', () => {
+      it('Then it displays a required asterisk marker', () => {
+        const requiredWrapper = shallowMount(MazTextarea, {
+          props: { modelValue: '', label: 'Message', required: true },
+        })
+
+        expect(requiredWrapper.find('sup').exists()).toBe(true)
+      })
+    })
+  })
+
+  describe('Given the hint prop is provided', () => {
+    describe('When the component renders', () => {
+      it('Then the hint text replaces the label', () => {
+        const hintWrapper = shallowMount(MazTextarea, {
+          props: { modelValue: '', hint: 'Helpful hint' },
+        })
+
+        expect(hintWrapper.find('.m-textarea__label span').text()).toBe('Helpful hint')
+      })
+    })
+  })
+
+  describe('Given a browser autofill occurs on the textarea', () => {
+    describe('When the autofill value differs from the current modelValue', () => {
+      it('Then it emits update:model-value with the autofilled value', async () => {
+        const autofillWrapper = shallowMount(MazTextarea, {
+          props: { modelValue: '' },
+        })
+
+        const textarea = autofillWrapper.find('textarea').element
+        textarea.value = '10 Downing Street'
+        textarea.dispatchEvent(
+          Object.assign(new Event('animationstart'), { animationName: 'maz-autofill-start' }),
+        )
+        await autofillWrapper.vm.$nextTick()
+
+        expect(autofillWrapper.emitted('update:model-value')?.[0]).toEqual(['10 Downing Street'])
+      })
+    })
+
+    describe('When the autofill value matches the current modelValue', () => {
+      it('Then it does not emit update:model-value', async () => {
+        const autofillWrapper = shallowMount(MazTextarea, {
+          props: { modelValue: 'same' },
+        })
+
+        const textarea = autofillWrapper.find('textarea').element
+        textarea.value = 'same'
+        textarea.dispatchEvent(
+          Object.assign(new Event('animationstart'), { animationName: 'maz-autofill-start' }),
+        )
+        await autofillWrapper.vm.$nextTick()
+
+        expect(autofillWrapper.emitted('update:model-value')).toBeUndefined()
+      })
+    })
+  })
+
+  describe('Given the textarea has a registered autofill listener', () => {
+    describe('When the component is unmounted', () => {
+      it('Then subsequent autofill animations do not emit update:model-value', () => {
+        const unmountWrapper = shallowMount(MazTextarea, {
+          props: { modelValue: '' },
+        })
+        const textarea = unmountWrapper.find('textarea').element
+        unmountWrapper.unmount()
+
+        textarea.value = 'late-autofill'
+        textarea.dispatchEvent(
+          Object.assign(new Event('animationstart'), { animationName: 'maz-autofill-start' }),
+        )
+
+        expect(unmountWrapper.emitted('update:model-value')).toBeUndefined()
+      })
+    })
+  })
+
   describe('topLabel prop', () => {
     it('should not render top label by default', () => {
       const defaultWrapper = shallowMount(MazTextarea, {

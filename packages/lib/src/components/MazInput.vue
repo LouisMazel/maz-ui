@@ -704,8 +704,8 @@ const stateColor = computed(() => {
   }
 
   &.--always-up .m-input-input,
-  &.--has-placeholder .m-input-input,
-  & .m-input-input:not(:placeholder-shown),
+  &.--has-placeholder.--has-label .m-input-input,
+  &.--has-label .m-input-input:not(:placeholder-shown),
   & .m-input-input:-webkit-autofill {
     @apply maz-pt-4;
   }
