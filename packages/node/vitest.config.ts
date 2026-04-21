@@ -8,7 +8,7 @@ export default defineConfig({
     environment: 'node',
     globals: true,
     coverage: {
-      provider: 'istanbul',
+      provider: 'v8',
       reporter: ['clover', 'html', 'lcov', 'text', 'text-summary'],
       include: ['src/**/*.{js,ts}'],
       exclude: [

@@ -11,7 +11,7 @@ export default defineConfig({
     },
     globals: true,
     coverage: {
-      provider: 'istanbul',
+      provider: 'v8',
       reporter: ['clover', 'html', 'lcov', 'text', 'text-summary'],
       include: ['src/**/*.{ts,js}'],
       exclude: coverageConfigDefaults.exclude,
