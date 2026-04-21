@@ -1,5 +1,17 @@
 # Change Log
 
+## v4.9.2-beta.0 (2026-04-21)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1...v4.9.2-beta.0)
+
+### 📦 Build
+
+- Reset correctly vue peer dependencies versions ([23112bd2](https://github.com/LouisMazel/maz-ui/commit/23112bd2))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.7.6 (2026-03-14)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.7.5...v4.7.6)
