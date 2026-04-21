@@ -55,7 +55,8 @@ describe('given LazyImg handler', () => {
     })
   })
 
-  afterEach(() => {
+  afterEach(async () => {
+    await vi.runAllTimersAsync()
     vi.useRealTimers()
     vi.restoreAllMocks()
   })

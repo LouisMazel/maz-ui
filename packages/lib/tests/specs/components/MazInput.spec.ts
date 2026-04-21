@@ -1,5 +1,7 @@
 import MazInput from '@components/MazInput.vue'
-import { shallowMount } from '@vue/test-utils'
+import { mount, shallowMount } from '@vue/test-utils'
+
+const AUTOFILL_ANIMATION = 'maz-autofill-start'
 
 describe('components/MazInput.vue', () => {
   expect(MazInput).toBeTruthy()
@@ -48,5 +50,88 @@ describe('components/MazInput.vue', () => {
 
     await wrapper.setProps({ warning: false, success: true })
     expect(wrapper.classes()).toContain('--has-state')
+  })
+
+  describe('Given an icon component is passed as leftIcon and rightIcon props', () => {
+    describe('When the component renders', () => {
+      it('Then it renders both component icons inside the wrapper', () => {
+        const IconStub = { name: 'IconStub', template: '<svg class="icon-stub" />' }
+
+        const iconWrapper = mount(MazInput, {
+          props: { leftIcon: IconStub, rightIcon: IconStub },
+        })
+
+        expect(iconWrapper.findAll('.icon-stub').length).toBe(2)
+      })
+    })
+  })
+
+  describe('Given the autoFocus prop is enabled', () => {
+    describe('When the component mounts', () => {
+      it('Then it focuses the input element', () => {
+        const wrapper = mount(MazInput, {
+          attachTo: document.body,
+          props: { autoFocus: true },
+        })
+
+        expect(document.activeElement).toBe(wrapper.find('input').element)
+        wrapper.unmount()
+      })
+    })
+  })
+
+  describe('Given a browser autofill occurs on the input', () => {
+    describe('When the autofill value differs from the current modelValue', () => {
+      it('Then it emits update:model-value with the autofilled value', async () => {
+        const wrapper = mount(MazInput, {
+          props: { modelValue: '' },
+        })
+
+        const input = wrapper.find('input').element
+        input.value = 'autofilled@example.com'
+        input.dispatchEvent(
+          Object.assign(new Event('animationstart'), { animationName: AUTOFILL_ANIMATION }),
+        )
+        await wrapper.vm.$nextTick()
+
+        expect(wrapper.emitted('update:model-value')?.[0]).toEqual(['autofilled@example.com'])
+      })
+    })
+
+    describe('When the autofill value matches the current modelValue', () => {
+      it('Then it does not emit update:model-value', async () => {
+        const wrapper = mount(MazInput, {
+          props: { modelValue: 'same' },
+        })
+
+        const input = wrapper.find('input').element
+        input.value = 'same'
+        input.dispatchEvent(
+          Object.assign(new Event('animationstart'), { animationName: AUTOFILL_ANIMATION }),
+        )
+        await wrapper.vm.$nextTick()
+
+        expect(wrapper.emitted('update:model-value')).toBeUndefined()
+      })
+    })
+  })
+
+  describe('Given the component has a registered autofill listener', () => {
+    describe('When the component is unmounted', () => {
+      it('Then subsequent autofill animations do not emit update:model-value', () => {
+        const wrapper = mount(MazInput, {
+          props: { modelValue: '' },
+        })
+        const input = wrapper.find('input').element
+        wrapper.unmount()
+
+        input.value = 'late-autofill'
+        input.dispatchEvent(
+          Object.assign(new Event('animationstart'), { animationName: AUTOFILL_ANIMATION }),
+        )
+
+        expect(wrapper.emitted('update:model-value')).toBeUndefined()
+      })
+    })
   })
 })

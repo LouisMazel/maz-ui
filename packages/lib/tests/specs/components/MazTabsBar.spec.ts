@@ -2,6 +2,17 @@ import MazTabsBar from '@components/MazTabsBar.vue'
 import { mount } from '@vue/test-utils'
 import { ref } from 'vue'
 
+Element.prototype.scrollTo = vi.fn()
+
+beforeEach(() => {
+  vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
+})
+
+afterEach(async () => {
+  await vi.runAllTimersAsync()
+  vi.useRealTimers()
+})
+
 describe('mazTabsBar.vue', () => {
   it('correctly displays tabs', () => {
     const items = [{ label: 'Tab 1' }, { label: 'Tab 2', disabled: true }, { label: 'Tab 3' }]
