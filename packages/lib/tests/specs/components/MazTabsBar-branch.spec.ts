@@ -32,6 +32,8 @@ function mountTabsBar(props: Record<string, unknown> = {}, provide?: ReturnType<
 describe('MazTabsBar branch coverage', () => {
   let originalLocation: Location
   beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
+
     originalLocation = globalThis.location
 
     // @ts-expect-error - mocking location
@@ -45,7 +47,9 @@ describe('MazTabsBar branch coverage', () => {
     globalThis.history.replaceState = vi.fn()
   })
 
-  afterEach(() => {
+  afterEach(async () => {
+    await vi.runAllTimersAsync()
+    vi.useRealTimers()
     globalThis.location = originalLocation
   })
 
