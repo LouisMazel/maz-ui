@@ -90,6 +90,11 @@ const wrapperStyle = computed(() => {
     paddingTop: labels ? `2.5em` : `1em`,
   }
 })
+const sliderStyle = computed<CSSProperties>(() => {
+  if (color === 'transparent')
+    return {}
+  return { '--m-slider-color': `var(--maz-${color})` } as CSSProperties
+})
 const hasMultipleValues = computed(() => Array.isArray(modelValue))
 
 watch(
@@ -305,7 +310,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
 <template>
   <!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
   <div
-    :style="[wrapperStyle, { fontSize: size }]"
+    :style="[wrapperStyle, sliderStyle, { fontSize: size }]"
     class="m-slider m-reset-css"
     role="button"
     tabindex="-1"
@@ -363,6 +368,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     @apply maz-relative maz-flex maz-items-center maz-justify-center maz-rounded-full;
 
     height: 0.5em;
+    background-color: hsl(var(--m-slider-color));
   }
 
   &__divider {
@@ -399,9 +405,10 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     }
 
     &.active-cursor {
-      transform: scale(1.3);
+      @apply maz-border maz-shadow-lg maz-z-2;
 
-      @apply maz-z-2;
+      transform: scale(1.3);
+      border-color: hsl(var(--m-slider-color));
     }
 
     &::before {
@@ -414,102 +421,6 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
 
     &:hover {
       @apply maz-bg-surface-200;
-    }
-  }
-
-  &--primary {
-    & .m-slider {
-      &__bar {
-        @apply maz-bg-primary;
-      }
-
-      &__btn.active-cursor {
-        @apply maz-border maz-border-primary maz-shadow-lg;
-      }
-    }
-  }
-
-  &--secondary {
-    & .m-slider {
-      &__bar {
-        @apply maz-bg-secondary;
-      }
-
-      &__btn.active-cursor {
-        @apply maz-border maz-border-secondary maz-shadow-lg;
-      }
-    }
-  }
-
-  &--info {
-    & .m-slider {
-      &__bar {
-        @apply maz-bg-info;
-      }
-
-      &__btn.active-cursor {
-        @apply maz-border maz-border-info maz-shadow-lg;
-      }
-    }
-  }
-
-  &--success {
-    & .m-slider {
-      &__bar {
-        @apply maz-bg-success;
-      }
-
-      &__btn.active-cursor {
-        @apply maz-border maz-border-success maz-shadow-lg;
-      }
-    }
-  }
-
-  &--warning {
-    & .m-slider {
-      &__bar {
-        @apply maz-bg-warning;
-      }
-
-      &__btn.active-cursor {
-        @apply maz-border maz-border-warning maz-shadow-lg;
-      }
-    }
-  }
-
-  &--destructive {
-    & .m-slider {
-      &__bar {
-        @apply maz-bg-destructive;
-      }
-
-      &__btn.active-cursor {
-        @apply maz-border maz-border-destructive maz-shadow-lg;
-      }
-    }
-  }
-
-  &--contrast {
-    & .m-slider {
-      &__bar {
-        @apply maz-bg-contrast;
-      }
-
-      &__btn.active-cursor {
-        @apply maz-border maz-border-contrast maz-shadow-lg;
-      }
-    }
-  }
-
-  &--accent {
-    & .m-slider {
-      &__bar {
-        @apply maz-bg-accent;
-      }
-
-      &__btn.active-cursor {
-        @apply maz-border maz-border-accent maz-shadow-lg;
-      }
     }
   }
 }
