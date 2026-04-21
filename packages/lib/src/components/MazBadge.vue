@@ -1,5 +1,7 @@
 <script lang="ts" setup>
+import type { CSSProperties } from 'vue'
 import type { MazColor } from './types'
+import { computed } from 'vue'
 import { getColor } from './types'
 
 export type MazBadgeColor = MazColor | 'background'
@@ -40,13 +42,33 @@ export interface MazBadgeProps {
   roundedSize?: MazBadgeRoundedSize
 }
 
-withDefaults(defineProps<MazBadgeProps>(), {
-  color: 'primary',
-  size: '0.8em',
-  nowrap: false,
-  outlined: false,
-  pastel: false,
-  roundedSize: 'md',
+const {
+  color = 'primary',
+  size = '0.8em',
+  nowrap = false,
+  outlined = false,
+  pastel = false,
+  roundedSize = 'md',
+} = defineProps<MazBadgeProps>()
+
+const resolvedColor = computed(() => getColor(color))
+
+const badgeStyle = computed<CSSProperties>(() => {
+  const c = resolvedColor.value
+  const base: Record<string, string> = { fontSize: size }
+  if (c === 'surface' || c === 'transparent')
+    return base
+
+  const pastelFg = c === 'contrast' ? 'contrast-foreground' : `${c}-700`
+  const pastelShade = c === 'destructive' ? '200' : '50'
+
+  return {
+    ...base,
+    '--m-badge-bg': `var(--maz-${c})`,
+    '--m-badge-fg': `var(--maz-${c}-foreground)`,
+    '--m-badge-pastel-bg': `var(--maz-${c}-${pastelShade})`,
+    '--m-badge-pastel-fg': `var(--maz-${pastelFg})`,
+  }
 })
 </script>
 
@@ -54,11 +76,11 @@ withDefaults(defineProps<MazBadgeProps>(), {
   <span
     class="m-badge m-reset-css"
     :class="[
-      `--${getColor(color)}`,
+      `--${resolvedColor}`,
       { '--outlined': outlined, '--pastel': pastel, '--nowrap': nowrap },
       `--rounded-${roundedSize}`,
     ]"
-    :style="{ fontSize: size }"
+    :style="badgeStyle"
   >
     <!-- @slot Badge content -->
     <slot />
@@ -71,6 +93,9 @@ withDefaults(defineProps<MazBadgeProps>(), {
 
   padding: 0.25em 0.5em;
   line-height: 1.4em;
+  background-color: hsl(var(--m-badge-bg));
+  color: hsl(var(--m-badge-fg));
+  border-color: hsl(var(--m-badge-bg));
 
   &.--nowrap {
     @apply maz-whitespace-nowrap;
@@ -98,100 +123,17 @@ withDefaults(defineProps<MazBadgeProps>(), {
     }
   }
 
-  &.--primary {
-    @apply maz-border-primary maz-bg-primary maz-text-primary-foreground;
+  &.--outlined {
+    @apply maz-bg-transparent;
 
-    &.--outlined {
-      @apply maz-border-primary maz-bg-transparent maz-text-primary;
-    }
-
-    &.--pastel {
-      @apply maz-border-primary-50 maz-bg-primary-50 maz-text-primary-700;
-    }
+    color: hsl(var(--m-badge-bg));
+    border-color: hsl(var(--m-badge-bg));
   }
 
-  &.--info {
-    @apply maz-border-info maz-bg-info maz-text-info-foreground;
-
-    &.--outlined {
-      @apply maz-border-info maz-bg-transparent maz-text-info;
-    }
-
-    &.--pastel {
-      @apply maz-border-info-50 maz-bg-info-50 maz-text-info-700;
-    }
-  }
-
-  &.--secondary {
-    @apply maz-border-secondary maz-bg-secondary maz-text-secondary-foreground;
-
-    &.--outlined {
-      @apply maz-border-secondary maz-bg-transparent maz-text-secondary;
-    }
-
-    &.--pastel {
-      @apply maz-border-secondary-50 maz-bg-secondary-50 maz-text-secondary-700;
-    }
-  }
-
-  &.--destructive {
-    @apply maz-border-destructive maz-bg-destructive maz-text-destructive-foreground;
-
-    &.--outlined {
-      @apply maz-border-destructive maz-bg-transparent maz-text-destructive;
-    }
-
-    &.--pastel {
-      @apply maz-border-destructive-200 maz-bg-destructive-200 maz-text-destructive-700;
-    }
-  }
-
-  &.--warning {
-    @apply maz-border-warning maz-bg-warning maz-text-warning-foreground;
-
-    &.--outlined {
-      @apply maz-border-warning maz-bg-transparent maz-text-warning;
-    }
-
-    &.--pastel {
-      @apply maz-border-warning-50 maz-bg-warning-50 maz-text-warning-700;
-    }
-  }
-
-  &.--success {
-    @apply maz-border-success maz-bg-success maz-text-success-foreground;
-
-    &.--outlined {
-      @apply maz-border-success maz-bg-transparent maz-text-success;
-    }
-
-    &.--pastel {
-      @apply maz-border-success-50 maz-bg-success-50 maz-text-success-700;
-    }
-  }
-
-  &.--contrast {
-    @apply maz-border-contrast maz-bg-contrast maz-text-contrast-foreground;
-
-    &.--outlined {
-      @apply maz-border-contrast maz-bg-transparent maz-text-contrast;
-    }
-
-    &.--pastel {
-      @apply maz-bg-contrast-50 maz-border-contrast-50 maz-text-contrast-foreground;
-    }
-  }
-
-  &.--accent {
-    @apply maz-border-accent maz-bg-accent maz-text-accent-foreground;
-
-    &.--outlined {
-      @apply maz-border-accent maz-bg-transparent maz-text-accent;
-    }
-
-    &.--pastel {
-      @apply maz-border-accent-50 maz-bg-accent-50 maz-text-accent-700;
-    }
+  &.--pastel {
+    background-color: hsl(var(--m-badge-pastel-bg));
+    color: hsl(var(--m-badge-pastel-fg));
+    border-color: hsl(var(--m-badge-pastel-bg));
   }
 
   &.--surface {
