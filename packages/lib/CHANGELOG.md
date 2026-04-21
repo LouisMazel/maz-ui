@@ -1,5 +1,46 @@
 # Change Log
 
+## v4.9.2-beta.0 (2026-04-21)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1...v4.9.2-beta.0)
+
+### 🩹 Fixes
+
+- **lib:** Add TypeScript 6 compatibility for CSS subpath exports ([69b73108](https://github.com/LouisMazel/maz-ui/commit/69b73108))
+
+  TypeScript 6 raises TS2882 when a side-effect import (e.g. `import
+'maz-ui/styles'`) resolves to a subpath export that has no `types`
+  field.
+  Fixes #1531
+
+- **maz-ui:** Sync MazInput state on browser autofill ([d12c8bd2](https://github.com/LouisMazel/maz-ui/commit/d12c8bd2))
+
+  Fixes the floating label staying down and the value being wiped when the browser autofills the input.
+
+- **maz-ui:** Sync MazTextarea state on browser autofill ([eb36c32c](https://github.com/LouisMazel/maz-ui/commit/eb36c32c))
+
+  Applies the same autofill handling to MazTextarea.
+
+### 💅 Refactors
+
+- **maz-ui:** Reduce MazBtn CSS bundle size with CSS variables ([de5d65bc](https://github.com/LouisMazel/maz-ui/commit/de5d65bc))
+
+  Replace 24 color-specific CSS blocks (8 colors x 3 variants) with 3
+  generic rules driven by inline CSS variables. Style block 57% smaller.
+
+- **maz-ui:** Reduce MazSpinner CSS bundle size with CSS variable ([582bda1d](https://github.com/LouisMazel/maz-ui/commit/582bda1d))
+- **maz-ui:** Reduce MazBadge CSS bundle size with CSS variables ([03109e27](https://github.com/LouisMazel/maz-ui/commit/03109e27))
+- **maz-ui:** Reduce MazSlider CSS bundle size with CSS variable ([c61d2bb0](https://github.com/LouisMazel/maz-ui/commit/c61d2bb0))
+
+### 📦 Build
+
+- Reset correctly vue peer dependencies versions ([23112bd2](https://github.com/LouisMazel/maz-ui/commit/23112bd2))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+- YOLO Agent <agent@yolo.dev>
+
 ## v4.9.1 (2026-04-15)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.0...v4.9.1)
