@@ -2,6 +2,10 @@ import MazStepper from '@components/MazStepper.vue'
 import { mount } from '@vue/test-utils'
 
 describe('MazStepper branch coverage', () => {
+  afterEach(async () => {
+    await vi.dynamicImportSettled()
+  })
+
   const defaultSteps = [
     { title: 'Step 1', content: 'Content 1' },
     { title: 'Step 2', content: 'Content 2' },
