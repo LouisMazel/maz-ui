@@ -11,7 +11,29 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
 #     alt: Logo of Maz-UI
 ---
 
-<section id="hero" class="maz-py-12 tab-m:maz-py-24 vp-raw">
+<section class="vp-raw maz-pt-8">
+  <MazAnimatedElement :delay="0" class="maz-w-full">
+    <a href="https://relizy.dev" target="_blank" rel="noopener" class="maz-block maz-no-underline">
+      <MazCardSpotlight color="secondary" content-class="maz-flex maz-flex-col tab-m:maz-flex-row maz-gap-4 maz-items-start tab-m:maz-items-center maz-w-full" class="maz-w-full" :inner-opacity="0.70">
+        <img src="https://raw.githubusercontent.com/LouisMazel/relizy/refs/heads/main/resources/logo.svg" alt="Relizy logo" class="maz-h-14 maz-w-14 maz-shrink-0" />
+        <div class="maz-flex-1 maz-flex maz-flex-col maz-gap-1 maz-items-start">
+          <MazBadge color="primary" class="maz-text-xs" size="0.7rem">
+            <MazSparkles class="maz-mr-1" /> New
+          </MazBadge>
+          <h3 class="maz-text-lg maz-font-semibold maz-m-0">Relizy.dev — Ship releases in one command</h3>
+          <p class="dark:maz-text-gray-300 maz-text-muted maz-text-sm maz-m-0">
+            Automate versioning, changelogs, Git tagging & publishing to npm, GitHub & GitLab — built for monorepos and single packages.
+          </p>
+        </div>
+        <MazBtn href="https://relizy.dev" color="secondary" size="sm" class="maz-w-full tab-m:maz-w-auto maz-shrink-0" target="_blank" :right-icon="MazArrowTopRightOnSquare">
+          Discover Relizy
+        </MazBtn>
+      </MazCardSpotlight>
+    </a>
+  </MazAnimatedElement>
+</section>
+
+<section id="hero" class="maz-pt-8 maz-pb-12 tab-m:maz-py-12 vp-raw">
   <div class="maz-mx-auto maz-max-w-3xl">
     <MazAnimatedText
       text="Collection of standalone components, plugins, directives, composables and more"
@@ -88,7 +110,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
             class="maz-relative maz-w-full"
             content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
           >
-            <DemoDashboardPage :delay="2000" class="maz-hidden tab-m:maz-block" />
+            <!-- <DemoDashboardPage :delay="2000" class="maz-hidden tab-m:maz-block" /> -->
             <div class="dark:maz-hidden">
               <MazLazyImg class="maz-block tab-m:!maz-hidden maz-w-full maz-min-h-40" src="/img/demo/dashboard-light.png" alt="Maz-UI" />
             </div>
@@ -105,7 +127,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
             class="maz-relative maz-w-full"
             content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
           >
-            <DemoProductPage class="maz-hidden tab-m:maz-block" />
+            <!-- <DemoProductPage class="maz-hidden tab-m:maz-block" /> -->
             <div class="dark:maz-hidden">
               <MazLazyImg class="maz-block tab-m:!maz-hidden maz-w-full maz-min-h-40" src="/img/demo/product-page-light.png" alt="Maz-UI" />
             </div>
@@ -122,7 +144,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
             class="maz-relative maz-w-full"
             content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
           >
-            <DemoAuthPage class="maz-hidden tab-m:maz-flex" />
+            <!-- <DemoAuthPage class="maz-hidden tab-m:maz-flex" /> -->
             <div class="dark:maz-hidden">
               <MazLazyImg class="maz-block tab-m:!maz-hidden maz-w-full maz-min-h-40" src="/img/demo/auth-page-light.png" alt="Maz-UI" />
             </div>
@@ -504,9 +526,15 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   import DemoDashboardPage from '../components/DemoDashboardPage.vue'
   import DemoProductPage from '../components/DemoProductPage.vue'
   import Contributors from './../.vitepress/theme/components/Contributors.vue'
+  import { MazArrowTopRightOnSquare } from '@maz-ui/icons/MazArrowTopRightOnSquare'
+  import { MazStar } from '@maz-ui/icons/MazStar'
+  import { MazPlay } from '@maz-ui/icons/MazPlay'
+  import { MazGithub } from '@maz-ui/icons/MazGithub'
+  import { MazSun } from '@maz-ui/icons/MazSun'
+  import { MazMoon } from '@maz-ui/icons/MazMoon'
+  import { MazSparkles } from '@maz-ui/icons/MazSparkles'
 
   import { ref, computed } from 'vue'
-  import { MazStar, MazPlay, MazGithub, MazSun, MazMoon } from '@maz-ui/icons'
   import { useTheme } from '@maz-ui/themes/composables/useTheme'
 
   const {
