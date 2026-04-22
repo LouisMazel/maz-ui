@@ -479,12 +479,12 @@ No relevant changes since last release
 
 - Remove package changelogen-monorepo ([63db3a3f](https://github.com/LouisMazel/maz-ui/commit/63db3a3f))
 
-  It's moved and replaced by Relizy: [https://relizy.pages.dev/](https://relizy.pages.dev/)
+  It's moved and replaced by Relizy: [https://relizy.dev/](https://relizy.dev/)
   R081 changelog.config.ts relizy.config.ts
 
 - Remove package changelogen-monorepo ([c062eb0d](https://github.com/LouisMazel/maz-ui/commit/c062eb0d))
 
-  It's moved and replaced by Relizy: [https://relizy.pages.dev/](https://relizy.pages.dev/)
+  It's moved and replaced by Relizy: [https://relizy.dev/](https://relizy.dev/)
   R081 changelog.config.ts relizy.config.ts
 
 ### ❤️ Contributors
