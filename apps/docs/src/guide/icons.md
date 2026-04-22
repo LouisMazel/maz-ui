@@ -83,9 +83,9 @@ Lazy icons are prefixed with `Lazy` and use `defineAsyncComponent` under the hoo
 
 ```vue
 <script setup lang="ts">
-import { LazyMazCheck, LazyMazHeart, LazyMazUser } from '@maz-ui/icons'
-// Or import from the lazy sub-path (without Lazy prefix):
-// import { MazCheck } from '@maz-ui/icons/lazy'
+import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
+import { MazHeart } from '@maz-ui/icons/lazy/MazHeart'
+import { MazUser } from '@maz-ui/icons/lazy/MazUser'
 </script>
 
 <template>

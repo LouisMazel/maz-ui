@@ -26,7 +26,7 @@ description: MazIcon is a standalone component to load your svg files
 
 ## Icon Component
 
-`icon` is the icon component to render - e.g: `import { MazStar } from '@maz-ui/icons'`
+`icon` is the icon component to render - e.g: `import { MazStar } from '@maz-ui/icons/MazStar'`
 
 Can be custom component from your stack - e.g: `import ComponentIcon from './path_to_your/ComponentIcon.vue'`
 
@@ -38,7 +38,7 @@ Can be custom component from your stack - e.g: `import ComponentIcon from './pat
 
 ```vue
 <script lang="ts" setup>
-  import { MazStar } from '@maz-ui/icons'
+  import { MazStar } from '@maz-ui/icons/MazStar'
 </script>
 
 <template>
@@ -99,7 +99,7 @@ Can be `xs`, `sm`, `md`, `lg`, `xl`
 
 ```vue
 <script lang="ts" setup>
-  import { MazStar } from '@maz-ui/icons'
+  import { MazStar } from '@maz-ui/icons/MazStar'
 </script>
 
 <template>
@@ -129,7 +129,7 @@ Allowed units: `px`, `em`, `rem`, `%`, `vw`, `vh`, `cm`, `mm`, `in`, `pt`, `pc`,
 
 ```vue
 <script lang="ts" setup>
-  import { MazStar } from '@maz-ui/icons'
+  import { MazStar } from '@maz-ui/icons/MazStar'
 </script>
 
 <template>
