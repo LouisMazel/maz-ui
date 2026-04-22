@@ -462,7 +462,9 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 <script lang="ts" setup>
 import MazBtn from 'maz-ui/components/MazBtn'
 
-import { MazCheck, MazHome, MazCommandLine } from '@maz-ui/icons'
+import { MazCheck } from '@maz-ui/icons/MazCheck'
+import { MazHome } from '@maz-ui/icons/MazHome'
+import { MazCommandLine } from '@maz-ui/icons/MazCommandLine'
 </script>
 
 <template>
@@ -548,7 +550,9 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 
 <script setup lang="ts">
   import { computed } from 'vue'
-  import { MazCheck, MazHome, MazCommandLine } from '@maz-ui/icons'
+  import { MazCheck } from '@maz-ui/icons/MazCheck'
+  import { MazHome } from '@maz-ui/icons/MazHome'
+  import { MazCommandLine } from '@maz-ui/icons/MazCommandLine'
   import MazSpinner from 'maz-ui/src/components/MazSpinner.vue'
 
   const colors = [

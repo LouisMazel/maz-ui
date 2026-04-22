@@ -112,12 +112,12 @@ const copyIcon = (icon) => {
 }
 
 const copyStaticImport = (icon) => {
-  navigator.clipboard.writeText(`import { ${icon} } from '@maz-ui/icons'`)
+  navigator.clipboard.writeText(`import { ${icon} } from '@maz-ui/icons/${icon}'`)
   success('Static import copied to clipboard')
 }
 
 const copyLazyImport = (icon) => {
-  navigator.clipboard.writeText(`import { Lazy${icon} } from '@maz-ui/icons'`)
+  navigator.clipboard.writeText(`import { ${icon} } from '@maz-ui/icons/lazy/${icon}'`)
   success('Lazy import copied to clipboard')
 }
 </script>
