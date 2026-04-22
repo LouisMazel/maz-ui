@@ -163,7 +163,7 @@ const toast = useToast()
 
 Check out [Relizy](https://github.com/LouisMazel/relizy) for an auto-release manager for your packages or apps.
 
-- [Documentation](https://relizy.pages.dev)
+- [Documentation](https://relizy.dev)
 - [GitHub](https://github.com/LouisMazel/relizy)
 
 ## 🤝 Contributing
