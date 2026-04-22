@@ -116,8 +116,6 @@ const galleryOptions = computed(() => {
   }
 })
 
-const routerLinkComponent = resolveLinkComponent()
-
 const wrapperData = computed(() => {
   let componentType: string | Component = 'div'
 
@@ -125,7 +123,7 @@ const wrapperData = computed(() => {
     componentType = 'a'
   }
   else if (to) {
-    componentType = routerLinkComponent
+    componentType = resolveLinkComponent()
   }
 
   return {

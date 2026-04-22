@@ -120,13 +120,11 @@ export interface MazBtnProps {
   active?: boolean
 }
 
-const routerLinkComponent = resolveLinkComponent()
-
 const component = computed(() => {
   if (href)
     return 'a'
   else if (to)
-    return routerLinkComponent
+    return resolveLinkComponent()
   return 'button'
 })
 
