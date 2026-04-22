@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MazTrash } from '@maz-ui/icons'
+import { MazTrash } from '@maz-ui/icons/MazTrash'
 import { mazUi } from '@maz-ui/themes/presets/mazUi'
 import fr from '@maz-ui/translations/locales/fr'
 import { MazUiProvider } from 'maz-ui/components'
