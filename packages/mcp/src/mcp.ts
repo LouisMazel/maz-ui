@@ -9,7 +9,7 @@ import {
   ListToolsRequestSchema,
   ReadResourceRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js'
-import { version } from '../package.json' assert { type: 'json' }
+import { version } from '../package.json' with { type: 'json' }
 import { DocumentationService } from './DocumentationService'
 import { UnifiedSearchService } from './UnifiedSearchService'
 

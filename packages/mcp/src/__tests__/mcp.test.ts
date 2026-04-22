@@ -1,6 +1,6 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
-import { version } from '../../package.json' assert { type: 'json' }
+import { version } from '../../package.json' with { type: 'json' }
 import { DocumentationService } from '../DocumentationService'
 
 import { MazUiMcpServer } from '../mcp'
