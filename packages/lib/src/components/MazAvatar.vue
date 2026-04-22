@@ -103,11 +103,9 @@ export interface MazAvatarProps {
   color?: MazColor
 }
 
-const routerLinkComponent = resolveLinkComponent()
-
 const componentType = computed(() => {
   if (to)
-    return routerLinkComponent
+    return resolveLinkComponent()
   if (href)
     return 'a'
   return 'div'
