@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "types": ["node"],
     "allowImportingTsExtensions": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
