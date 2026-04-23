@@ -5,12 +5,13 @@ export default {
   extends: [
     'stylelint-config-standard',
     'stylelint-config-recommended-vue',
-    'stylelint-config-tailwindcss',
   ],
 
   // add your custom config here
   // https://stylelint.io/user-guide/configuration
   rules: {
+    'at-rule-no-unknown': [true, { ignoreAtRules: ['theme', 'utility', 'source', 'custom-variant', 'variant', 'reference', 'apply', 'layer', 'tailwind'] }],
+    'scss/at-rule-no-unknown': [true, { ignoreAtRules: ['theme', 'utility', 'source', 'custom-variant', 'variant', 'reference', 'apply', 'layer', 'tailwind'] }],
     'at-rule-no-deprecated': [true, { ignoreAtRules: ['apply'] }],
   },
 

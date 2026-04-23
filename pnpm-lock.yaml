@@ -86,9 +86,6 @@ importers:
       stylelint-config-standard-scss:
         specifier: ^17.0.0
         version: 17.0.0(postcss@8.5.10)(stylelint@17.8.0(typescript@5.9.3))
-      stylelint-config-tailwindcss:
-        specifier: ^1.0.1
-        version: 1.0.1(stylelint@17.8.0(typescript@5.9.3))(tailwindcss@4.2.4)
       stylelint-scss:
         specifier: ^7.0.0
         version: 7.0.0(stylelint@17.8.0(typescript@5.9.3))
@@ -263,16 +260,10 @@ importers:
       eslint-plugin-sonarjs:
         specifier: ^4.0.3
         version: 4.0.3(eslint@10.2.1(jiti@2.6.1))
-      eslint-plugin-tailwindcss:
-        specifier: ^3.18.3
-        version: 3.18.3(tailwindcss@4.2.4)
       eslint-plugin-vuejs-accessibility:
         specifier: ^2.5.0
         version: 2.5.0(eslint@10.2.1(jiti@2.6.1))(globals@17.5.0)
     devDependencies:
-      '@types/eslint-plugin-tailwindcss':
-        specifier: ^3.17.0
-        version: 3.17.0
       eslint:
         specifier: ^10.2.1
         version: 10.2.1(jiti@2.6.1)
@@ -4775,12 +4766,6 @@ packages:
   '@types/deep-eql@4.0.2':
     resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
 
-  '@types/eslint-plugin-tailwindcss@3.17.0':
-    resolution: {integrity: sha512-ucQGf2YIdTcndYcxRU3UdZgmhUHsOlbIF4BaRtl0op+7k2JmqM2i3aXZ6XIcfZgVq1ZKov7VM5c/BR81ukmkyg==}
-
-  '@types/eslint@9.6.1':
-    resolution: {integrity: sha512-FXx2pKgId/WyYo2jXw63kk7/+TY7u7AziEJxJAnSFzHlqTAS3Ync6SvgYAN/k4/PQpnnVuzoMuVnByKK2qp0ag==}
-
   '@types/esrecurse@4.3.1':
     resolution: {integrity: sha512-xJBAbDifo5hpffDBuHl0Y8ywswbiAp/Wi7Y/GtAgSlZyIABppyurxVueOPE8LUQOxdlgi6Zqce7uoEpqNTeiUw==}
 
@@ -6588,12 +6573,6 @@ packages:
     resolution: {integrity: sha512-5drkJKLC9qQddIiaATV0e8+ygbUc7b0Ti6VB7M2d3jmKNh3X0RaiIJYTs3dr9xnlhlrxo+/s1FoO3Jgv6O/c7g==}
     peerDependencies:
       eslint: ^8.0.0 || ^9.0.0 || ^10.0.0
-
-  eslint-plugin-tailwindcss@3.18.3:
-    resolution: {integrity: sha512-lqjNX7mt1Ip2qR236hvhbZ9ff2TFLUWou+tBHz82SA1nWFzOZSoEOI+9UBZmuf2977r2MMp9/y3/broyz8AYig==}
-    engines: {node: '>=18.12.0'}
-    peerDependencies:
-      tailwindcss: ^3.4.0 || ^4.0.0
 
   eslint-plugin-toml@1.3.1:
     resolution: {integrity: sha512-1l00fBP03HIt9IPV7ZxBi7x0y0NMdEZmakL1jBD6N/FoKBvfKxPw5S8XkmzBecOnFBTn5Z8sNJtL5vdf9cpRMQ==}
@@ -9615,12 +9594,6 @@ packages:
     peerDependencies:
       stylelint: ^17.0.0
 
-  stylelint-config-tailwindcss@1.0.1:
-    resolution: {integrity: sha512-IeIMivgaB1kxPBgllMzBqyv0g61IwFxxZKo/fDDelfZ/JtPPlSBT04VuOCslk6PIaq5GQvdRnHOP1K3HpxSkeg==}
-    peerDependencies:
-      stylelint: '>=13.13.1'
-      tailwindcss: '>=2.2.16'
-
   stylelint-scss@7.0.0:
     resolution: {integrity: sha512-H88kCC+6Vtzj76NsC8rv6x/LW8slBzIbyeSjsKVlS+4qaEJoDrcJR4L+8JdrR2ORdTscrBzYWiiT2jq6leYR1Q==}
     engines: {node: '>=20.19.0'}
@@ -9690,11 +9663,6 @@ packages:
   tagged-tag@1.0.0:
     resolution: {integrity: sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng==}
     engines: {node: '>=20'}
-
-  tailwind-api-utils@1.0.3:
-    resolution: {integrity: sha512-KpzUHkH1ug1sq4394SLJX38ZtpeTiqQ1RVyFTTSY2XuHsNSTWUkRo108KmyyrMWdDbQrLYkSHaNKj/a3bmA4sQ==}
-    peerDependencies:
-      tailwindcss: ^3.3.0 || ^4.0.0 || ^4.0.0-beta
 
   tailwind-merge@2.6.1:
     resolution: {integrity: sha512-Oo6tHdpZsGpkKG88HJ8RR1rg/RdnEkQEfMoEk2x1XRI3F1AxeU+ijRXpiVUF4UbLfcxxRGw6TbUINKYdWVsQTQ==}
@@ -14801,15 +14769,6 @@ snapshots:
 
   '@types/deep-eql@4.0.2': {}
 
-  '@types/eslint-plugin-tailwindcss@3.17.0':
-    dependencies:
-      '@types/eslint': 9.6.1
-
-  '@types/eslint@9.6.1':
-    dependencies:
-      '@types/estree': 1.0.8
-      '@types/json-schema': 7.0.15
-
   '@types/esrecurse@4.3.1': {}
 
   '@types/estree@1.0.8': {}
@@ -16832,14 +16791,6 @@ snapshots:
       semver: 7.7.4
       ts-api-utils: 2.5.0(typescript@5.9.3)
       typescript: 5.9.3
-
-  eslint-plugin-tailwindcss@3.18.3(tailwindcss@4.2.4):
-    dependencies:
-      fast-glob: 3.3.3
-      postcss: 8.5.10
-      synckit: 0.11.12
-      tailwind-api-utils: 1.0.3(tailwindcss@4.2.4)
-      tailwindcss: 4.2.4
 
   eslint-plugin-toml@1.3.1(eslint@10.2.1(jiti@2.6.1)):
     dependencies:
@@ -20502,11 +20453,6 @@ snapshots:
       stylelint: 17.8.0(typescript@5.9.3)
       stylelint-config-recommended: 18.0.0(stylelint@17.8.0(typescript@5.9.3))
 
-  stylelint-config-tailwindcss@1.0.1(stylelint@17.8.0(typescript@5.9.3))(tailwindcss@4.2.4):
-    dependencies:
-      stylelint: 17.8.0(typescript@5.9.3)
-      tailwindcss: 4.2.4
-
   stylelint-scss@7.0.0(stylelint@17.8.0(typescript@5.9.3)):
     dependencies:
       css-tree: 3.2.1
@@ -20666,13 +20612,6 @@ snapshots:
       strip-ansi: 6.0.1
 
   tagged-tag@1.0.0: {}
-
-  tailwind-api-utils@1.0.3(tailwindcss@4.2.4):
-    dependencies:
-      enhanced-resolve: 5.18.4
-      jiti: 2.6.1
-      local-pkg: 1.1.2
-      tailwindcss: 4.2.4
 
   tailwind-merge@2.6.1: {}
 

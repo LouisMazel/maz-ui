@@ -73,7 +73,6 @@
     "stylelint-config-recommended-vue": "^1.6.1",
     "stylelint-config-standard": "^40.0.0",
     "stylelint-config-standard-scss": "^17.0.0",
-    "stylelint-config-tailwindcss": "^1.0.1",
     "stylelint-scss": "^7.0.0",
     "tsx": "^4.21.0",
     "twitter-api-v2": "^1.29.0",

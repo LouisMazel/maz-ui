@@ -52,11 +52,9 @@
     "@antfu/eslint-config": "^8.2.0",
     "eslint-plugin-format": "^2.0.1",
     "eslint-plugin-sonarjs": "^4.0.3",
-    "eslint-plugin-tailwindcss": "^3.18.3",
     "eslint-plugin-vuejs-accessibility": "^2.5.0"
   },
   "devDependencies": {
-    "@types/eslint-plugin-tailwindcss": "^3.17.0",
     "eslint": "^10.2.1",
     "unbuild": "^3.6.1"
   },
