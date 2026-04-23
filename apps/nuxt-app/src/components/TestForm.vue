@@ -86,10 +86,10 @@ const onSubmit = handleSubmit((formData) => {
 
 <template>
   <form
-    class="maz-flex maz-flex-col maz-gap-4"
+    class="maz:flex maz:flex-col maz:gap-4"
     @submit="onSubmit"
   >
-    model: <pre class="maz-text-xs">{{ model }}</pre>
+    model: <pre class="maz:text-xs">{{ model }}</pre>
 
     <MazInput
       id="name"

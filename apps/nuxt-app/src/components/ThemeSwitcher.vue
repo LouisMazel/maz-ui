@@ -9,12 +9,12 @@ const { colorMode, updateTheme, presetName, isDark } = useTheme()
     transition="scale-fade"
     prefer-position="bottom-end"
   >
-    <span class="maz-cap-f">
+    <span class="maz:cap-f">
       {{ colorMode }} ({{ isDark ? 'dark' : 'light' }})
     </span>
 
     <template #dropdown>
-      <div class="maz-flex maz-max-w-60 maz-flex-col maz-gap-4">
+      <div class="maz:flex maz:max-w-60 maz:flex-col maz:gap-4">
         <MazRadioButtons
           v-model="colorMode"
           :options="[
