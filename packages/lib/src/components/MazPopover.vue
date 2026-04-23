@@ -773,6 +773,8 @@ defineExpose({
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-popover {
   @apply maz:inline-block;
 

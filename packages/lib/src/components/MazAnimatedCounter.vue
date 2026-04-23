@@ -141,6 +141,8 @@ watch(
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-animated-counter {
   @apply maz:whitespace-nowrap maz:tabular-nums;
 }

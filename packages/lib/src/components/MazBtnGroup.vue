@@ -106,6 +106,8 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-button-group {
   @apply maz:inline-flex;
 

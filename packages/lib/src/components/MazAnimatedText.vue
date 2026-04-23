@@ -221,6 +221,8 @@ const gradientStyle = computed(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-animated-text {
   &__root {
     @apply maz:inline-flex maz:flex-wrap;

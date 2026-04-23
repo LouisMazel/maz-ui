@@ -107,6 +107,8 @@ const customStyles = computed(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-skeleton {
   @apply maz:relative maz:overflow-hidden maz:bg-linear-to-r maz:from-surface-800/40 maz:via-surface-700/30 maz:to-surface-800/40 maz:dark:from-surface-700/30 maz:dark:via-surface-600/20 maz:dark:to-surface-700/30;
 

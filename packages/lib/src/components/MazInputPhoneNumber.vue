@@ -680,6 +680,8 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-input-phone-number {
   @apply maz:relative maz:inline-flex maz:items-center maz:align-top;
 

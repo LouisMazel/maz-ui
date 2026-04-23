@@ -89,7 +89,9 @@ function selectStep(index: number) {
 </template>
 
 <style scoped>
-  .m-accordion {
+@reference "../tailwindcss/tailwind.css";
+
+.m-accordion {
   @apply maz:relative maz:inline-flex maz:flex-col maz:gap-4 maz:align-top;
 
   &__spotlight {

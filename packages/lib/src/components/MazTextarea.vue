@@ -276,6 +276,8 @@ const stateLabelColor = computed(() => [
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-textarea-wrapper {
   @apply maz:flex maz:flex-col maz:gap-2;
 }

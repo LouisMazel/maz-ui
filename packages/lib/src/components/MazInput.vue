@@ -539,6 +539,8 @@ const stateColor = computed(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-input {
   @apply maz:inline-flex maz:flex-col maz:align-top maz:items-start maz:text-foreground;
 

@@ -229,7 +229,9 @@ const hasInitial = computed(() => !src && caption)
 </template>
 
 <style scoped>
-  .m-avatar {
+@reference "../tailwindcss/tailwind.css";
+
+.m-avatar {
   @apply maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top maz:flex-center;
   @apply maz:no-underline!;
 

@@ -367,6 +367,8 @@ const flagUrl = computed(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-select-country {
   @apply maz:relative maz:inline-flex;
 

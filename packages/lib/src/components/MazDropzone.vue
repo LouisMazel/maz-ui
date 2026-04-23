@@ -873,6 +873,8 @@ defineExpose({
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-dropzone {
   @apply maz:flex maz:w-full maz:flex-col maz:gap-2 maz:overflow-hidden maz:rounded maz:border maz:border-dashed maz:border-divider maz:p-6 maz:transition-colors maz:duration-200 maz:ease-in-out maz:flex-center maz:bg-surface maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400/50 maz:cursor-pointer;
 

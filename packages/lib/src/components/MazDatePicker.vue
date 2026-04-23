@@ -787,6 +787,8 @@ watch(
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-date-picker {
   @apply maz:relative maz:inline-block;
 
@@ -814,7 +816,7 @@ watch(
     }
 
     & .m-date-picker__input:deep(input) {
-      @apply maz:cursor-pointer !important;
+      @apply maz:cursor-pointer!;
     }
   }
 }

@@ -12,6 +12,8 @@ const { size } = useInjectStrict(mazTableKey)
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-table-title {
   &.--truncate {
     @apply maz:truncate;

@@ -199,7 +199,9 @@ function onFocus(event: FocusEvent) {
 </template>
 
 <style scoped>
-  .m-radio {
+@reference "../tailwindcss/tailwind.css";
+
+.m-radio {
   @apply maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden;
 
   > span {
@@ -209,7 +211,7 @@ function onFocus(event: FocusEvent) {
     height: var(--radio-size);
 
     .round {
-      @apply maz:h-[50%] maz:w-[50%] maz-scale-0 maz:rounded-full maz:transition-transform maz:duration-300 maz:ease-in-out;
+      @apply maz:h-[50%] maz:w-[50%] maz:scale-0 maz:rounded-full maz:transition-transform maz:duration-300 maz:ease-in-out;
 
       background-color: var(--radio-selected-color);
     }
@@ -223,7 +225,7 @@ function onFocus(event: FocusEvent) {
     border-color: var(--radio-selected-color);
 
     .round {
-      @apply maz-scale-100;
+      @apply maz:scale-100;
     }
   }
 

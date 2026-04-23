@@ -476,6 +476,8 @@ const hasCheckIcon = computed(() => autoValidateSteps)
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-timeline {
   @apply maz:flex maz:items-stretch;
 

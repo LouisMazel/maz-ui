@@ -64,6 +64,8 @@ watch(
 </template>
 
 <style scoped>
+@reference "../../tailwindcss/tailwind.css";
+
 .maz-picker-shortcuts {
   @apply maz:flex maz:flex-col maz:items-start maz:gap-1 maz:overflow-y-auto maz:border-e maz:border-divider maz:p-2;
 
@@ -77,10 +79,10 @@ watch(
 
   & > button {
     @apply maz:w-full maz:flex-none maz:truncate;
-    @apply maz:text-xs !important;
+    @apply maz:text-xs!;
 
     &:not(.--is-selected) {
-      @apply maz:border maz:border-divider !important;
+      @apply maz:border! maz:border-divider!;
     }
   }
 }

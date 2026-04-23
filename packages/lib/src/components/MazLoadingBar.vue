@@ -27,7 +27,9 @@ const colorCSSVariables = computed(() => ({
 </template>
 
 <style scoped>
-  .m-loading-bar {
+@reference "../tailwindcss/tailwind.css";
+
+.m-loading-bar {
   @apply maz:relative maz:block maz:w-full maz:overflow-hidden;
 
   height: var(--loading-bar-height);

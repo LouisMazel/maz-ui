@@ -147,6 +147,8 @@ const currentCalendarDate = computed({
 </template>
 
 <style scoped>
+@reference "../../tailwindcss/tailwind.css";
+
 .m-date-picker-container {
   @apply maz:overflow-hidden maz:rounded maz:bg-surface maz:dark:border maz:dark:border-divider;
 

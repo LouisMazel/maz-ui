@@ -195,6 +195,8 @@ const isButton = computed(() => component.value === 'button')
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-link {
   @apply maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-1 maz:transition-colors maz:duration-200 maz:ease-in-out maz:no-underline;
 

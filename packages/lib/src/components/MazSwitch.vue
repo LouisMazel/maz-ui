@@ -153,7 +153,9 @@ function onFocus(event: FocusEvent) {
 </template>
 
 <style>
-  .m-switch {
+@reference "../tailwindcss/tailwind.css";
+
+.m-switch {
   @apply maz:relative maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-2 maz:align-top;
 
   &:has(input:disabled) {

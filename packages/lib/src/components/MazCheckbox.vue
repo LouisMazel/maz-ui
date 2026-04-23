@@ -270,11 +270,13 @@ function onFocus(event: FocusEvent) {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-checkbox {
   @apply maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden;
 
   .check-icon {
-    @apply maz-scale-0 maz:transition-transform maz:duration-300 maz:ease-in-out;
+    @apply maz:scale-0 maz:transition-transform maz:duration-300 maz:ease-in-out;
 
     :deep(path) {
       stroke-width: 2.5;
@@ -297,7 +299,7 @@ function onFocus(event: FocusEvent) {
       background-color: var(--checkbox-selected-color);
 
       .check-icon {
-        @apply maz-scale-100;
+        @apply maz:scale-100;
       }
     }
 

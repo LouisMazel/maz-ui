@@ -135,6 +135,8 @@ const cssVars = computed<CSSProperties>(() => ({
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-ticker {
   @apply maz:flex maz:flex-col maz:max-w-full maz:max-h-full;
 

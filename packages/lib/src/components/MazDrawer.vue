@@ -114,6 +114,8 @@ const hasTitle = computed(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-drawer {
   @apply maz:items-stretch;
 

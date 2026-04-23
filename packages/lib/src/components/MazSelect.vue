@@ -826,6 +826,8 @@ defineExpose({
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-select {
   @apply maz:relative maz:inline-flex maz:align-top;
 

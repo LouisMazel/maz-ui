@@ -135,7 +135,9 @@ function setScrollState(event: Event) {
 </template>
 
 <style scoped>
-  .m-carousel {
+@reference "../tailwindcss/tailwind.css";
+
+.m-carousel {
   @apply maz:relative maz:flex maz:flex-col;
 
   &__header {

@@ -54,8 +54,10 @@ const spinnerStyle = computed<CSSProperties>(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-spinner {
-  @apply maz-animate-spin maz:fill-current;
-  @apply maz:m-0 !important;
+  @apply maz:animate-spin maz:fill-current;
+  @apply maz:m-0!;
 }
 </style>

@@ -273,7 +273,9 @@ const borderColorState = computed(() => {
 </template>
 
 <style scoped>
-  .m-input-code {
+@reference "../tailwindcss/tailwind.css";
+
+.m-input-code {
   @apply maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top;
 
   &.--mini {

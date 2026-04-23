@@ -222,6 +222,8 @@ function shouldHaveRemainingLayer(index: number): boolean {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-gallery {
   @apply maz:relative maz:overflow-hidden maz:flex;
 
