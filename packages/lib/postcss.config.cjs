@@ -1,12 +1,7 @@
 module.exports = {
-  syntax: 'postcss-scss',
   plugins: {
     'postcss-url': {},
-    'postcss-nested': {},
-    'tailwindcss/nesting': {},
-    'postcss-import': {},
-    'autoprefixer': {},
-    'tailwindcss': {},
+    '@tailwindcss/postcss': {},
     'postcss-replace': {
       pattern: /(--tw|\*)/g,
       data: {
