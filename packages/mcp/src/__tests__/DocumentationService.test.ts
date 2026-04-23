@@ -65,6 +65,7 @@ describe('Given DocumentationService instance', () => {
         'migration-v4',
         'nuxt',
         'resolvers',
+        'tailwind',
         'themes',
         'translations',
         'vue',
@@ -188,7 +189,7 @@ describe('Given DocumentationService instance', () => {
       expect(result).toHaveProperty('paths')
 
       expect(result.components.total).toBeGreaterThanOrEqual(56)
-      expect(result.guides.total).toBe(12)
+      expect(result.guides.total).toBe(13)
       expect(result.composables.total).toBe(14)
       expect(result.directives.total).toBe(5)
       expect(result.plugins.total).toBe(4)
