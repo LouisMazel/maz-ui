@@ -7,6 +7,12 @@ export const mazUi: ThemePreset = {
     'font-family': `Manrope, sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
     'radius': '0.7rem',
     'border-width': '1px',
+    'duration-fast': '100ms',
+    'duration-normal': '200ms',
+    'duration-slow': '300ms',
+    'easing-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
+    'easing-in': 'cubic-bezier(0.4, 0, 1, 1)',
+    'easing-in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
   },
   colors: {
     light: {

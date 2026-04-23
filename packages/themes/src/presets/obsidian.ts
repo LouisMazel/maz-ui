@@ -7,6 +7,12 @@ export const obsidian: ThemePreset = {
     'radius': '0.6rem',
     'border-width': '1px',
     'font-family': `'Inter', system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
+    'duration-fast': '80ms',
+    'duration-normal': '160ms',
+    'duration-slow': '240ms',
+    'easing-out': 'cubic-bezier(0.16, 1, 0.3, 1)',
+    'easing-in': 'cubic-bezier(0.7, 0, 0.84, 0)',
+    'easing-in-out': 'cubic-bezier(0.87, 0, 0.13, 1)',
   },
   colors: {
     light: {

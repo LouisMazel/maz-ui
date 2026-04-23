@@ -14,6 +14,8 @@ export type CSSColor = string
 
 export type SizeUnit = `${number}${'rem' | 'px' | 'em' | 'vw' | 'vh' | 'vmin' | 'vmax' | '%'}`
 
+export type Duration = `${number}${'ms' | 's'}`
+
 export interface ThemeColors {
   'background': CSSColor
   'foreground': CSSColor
@@ -44,6 +46,12 @@ export interface ThemeFoundation {
   'radius': SizeUnit
   'border-width': SizeUnit
   'font-family'?: string
+  'duration-fast'?: Duration
+  'duration-normal'?: Duration
+  'duration-slow'?: Duration
+  'easing-out'?: string
+  'easing-in'?: string
+  'easing-in-out'?: string
 }
 
 export interface ThemePresetOverrides {

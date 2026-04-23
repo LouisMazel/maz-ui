@@ -7,6 +7,12 @@ export const ocean: ThemePreset = {
     'radius': '1rem',
     'border-width': '0.125rem',
     'font-family': `'Poppins', 'Inter', system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
+    'duration-fast': '120ms',
+    'duration-normal': '240ms',
+    'duration-slow': '360ms',
+    'easing-out': 'cubic-bezier(0.32, 0.72, 0, 1)',
+    'easing-in': 'cubic-bezier(0.7, 0, 0.84, 0)',
+    'easing-in-out': 'cubic-bezier(0.65, 0, 0.35, 1)',
   },
   colors: {
     light: {
