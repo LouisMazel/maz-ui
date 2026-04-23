@@ -11,11 +11,11 @@ description: vTooltip is a Vue directive to display a text when the user hovers 
 ## Basic usage
 
 <ComponentDemo>
-  <p class="maz-mb-4">
+  <p class="maz:mb-4">
     Hover the buttons
   </p>
   <div
-    class="maz-flex maz-gap-3 maz-flex-wrap"
+    class="maz:flex maz:gap-3 maz:flex-wrap"
   >
     <MazBtn v-tooltip="'This is a top tooltip'">
       Top
@@ -256,7 +256,7 @@ You can customize the tooltip by passing a `panelClass` or `panelStyle` option.
   <div
     class="maz-flex maz-gap-3 maz-flex-wrap"
   >
-    <MazBtn v-tooltip="{ text: 'Custom panel class', panelClass: '!maz-text-red-500' }">
+    <MazBtn v-tooltip="{ text: 'Custom panel class', panelClass: 'maz-text-red-500!' }">
       panelClass
     </MazBtn>
     <MazBtn v-tooltip="{ text: 'Custom panel style', panelStyle: 'background-color: red; color: white;' }">
@@ -267,7 +267,7 @@ You can customize the tooltip by passing a `panelClass` or `panelStyle` option.
 <template #code>
 
 ```html
-<MazBtn v-tooltip="{ text: 'Custom panel class', panelClass: '!maz-text-red-500' }">
+<MazBtn v-tooltip="{ text: 'Custom panel class', panelClass: 'maz-text-red-500!' }">
   panelClass
 </MazBtn>
 <MazBtn v-tooltip="{ text: 'Custom panel style', panelStyle: 'background-color: red; color: white;' }">

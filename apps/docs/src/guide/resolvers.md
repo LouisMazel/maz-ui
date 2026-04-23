@@ -677,6 +677,7 @@ const toast = useToast()
 Ready to boost your productivity? Set up auto-import resolvers and never write import statements again! 🚀
 
 <style scoped>
+@reference "../../.vitepress/theme/main.css";
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));

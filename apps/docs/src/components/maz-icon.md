@@ -170,7 +170,7 @@ Source: [Hericons](https://heroicons.com/)
 You can also find icons in the [icon set page](./../guide/icon-set.md)
 
 <div class="flex items-start flex-wrap gap-05">
-  <div v-for="({ component, name }, i) in iconsList" :key="i" class="flex flex-col flex-center maz-p-2 maz-rounded maz-border">
+  <div v-for="({ component, name }, i) in iconsList" :key="i" class="flex flex-col flex-center maz:p-2 maz:rounded maz:border">
     <MazIcon :icon="component" size="lg" />
     <span style="font-size: 11px;">
       {{ name }}

@@ -167,6 +167,7 @@ export default defineConfig({
 </template>
 
 <style scoped>
+@reference "../../.vitepress/theme/main.css";
 .nav-icon {
   @apply w-6 h-6 text-gray-600 hover:text-blue-500 transition-colors cursor-pointer;
 }

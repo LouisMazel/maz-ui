@@ -50,21 +50,21 @@ A vertical ticker with images, similar to a screenshot showcase. Uses `orientati
     <MazTicker orientation="vertical" :overlay="false" :duration="30" pause-on-hover>
       <img
         v-for="i in 4" :key="i" :src="`https://picsum.photos/seed/maz-ticker-${i}/400/225`"
-        :alt="`Screenshot ${i}`" class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover dark:maz-border-gray-700"
+        :alt="`Screenshot ${i}`" class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover maz-dark:border-gray-700"
         style="width: 400px; height: 225px"
       />
     </MazTicker>
     <MazTicker orientation="vertical" :overlay="false" :duration="30" reverse pause-on-hover>
       <img
         v-for="i in 4" :key="i" :src="`https://picsum.photos/seed/maz-ticker-${i + 4}/400/225`"
-        :alt="`Screenshot ${i + 4}`" class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover dark:maz-border-gray-700"
+        :alt="`Screenshot ${i + 4}`" class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover maz-dark:border-gray-700"
         style="width: 400px; height: 225px"
       />
     </MazTicker>
-    <MazTicker class="maz-hidden md:maz-flex" orientation="vertical" :overlay="false" :duration="30" pause-on-hover>
+    <MazTicker class="maz-hidden maz-md:flex" orientation="vertical" :overlay="false" :duration="30" pause-on-hover>
       <img
         v-for="i in 4" :key="i" :src="`https://picsum.photos/seed/maz-ticker-${i + 8}/400/225`"
-        :alt="`Screenshot ${i + 8}`" class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover dark:maz-border-gray-700"
+        :alt="`Screenshot ${i + 8}`" class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover maz-dark:border-gray-700"
         style="width: 400px; height: 225px"
       />
     </MazTicker>
@@ -86,7 +86,7 @@ A vertical ticker with images, similar to a screenshot showcase. Uses `orientati
         :key="i"
         :src="`https://picsum.photos/seed/maz-ticker-${i}/400/225`"
         :alt="`Screenshot ${i}`"
-        class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover dark:maz-border-gray-700"
+        class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover maz-dark:border-gray-700"
         style="width: 400px; height: 225px"
       />
     </MazTicker>
@@ -102,12 +102,12 @@ A vertical ticker with images, similar to a screenshot showcase. Uses `orientati
         :key="i"
         :src="`https://picsum.photos/seed/maz-ticker-${i + 4}/400/225`"
         :alt="`Screenshot ${i + 4}`"
-        class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover dark:maz-border-gray-700"
+        class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover maz-dark:border-gray-700"
         style="width: 400px; height: 225px"
       />
     </MazTicker>
     <MazTicker
-      class="maz-hidden md:maz-flex"
+      class="maz-hidden maz-md:flex"
       orientation="vertical"
       :overlay="false"
       :duration="30"
@@ -118,7 +118,7 @@ A vertical ticker with images, similar to a screenshot showcase. Uses `orientati
         :key="i"
         :src="`https://picsum.photos/seed/maz-ticker-${i + 8}/400/225`"
         :alt="`Screenshot ${i + 8}`"
-        class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover dark:maz-border-gray-700"
+        class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover maz-dark:border-gray-700"
         style="width: 400px; height: 225px"
       />
     </MazTicker>
@@ -138,7 +138,7 @@ A vertical ticker with images, similar to a screenshot showcase. Uses `orientati
 Create an eye-catching 3D perspective effect with tilted vertical tickers, inspired by the Nuxt UI Marquee screenshots demo.
 
 <ComponentDemo>
-  <div class="maz-overflow-hidden maz-rounded-lg maz-bg-gray-100 dark:maz-bg-gray-800" style="height: 400px; perspective: 1500px">
+  <div class="maz-overflow-hidden maz-rounded-lg maz-bg-gray-100 maz-dark:bg-gray-800" style="height: 400px; perspective: 1500px">
     <div class="maz-flex maz-gap-4" style="height: 900px; margin-top: -300px; margin-left: -150px; transform: rotateX(55deg) rotateZ(30deg); transform-origin: center center">
       <MazTicker reverse orientation="vertical" :overlay="false" :duration="40" style="width: 300px; flex-shrink: 0">
         <img
@@ -149,7 +149,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
           width="460"
           height="258"
           loading="lazy"
-          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover dark:maz-border-gray-700"
+          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover maz-dark:border-gray-700"
           style="width: 300px; height: 168px"
         />
       </MazTicker>
@@ -162,7 +162,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
           width="460"
           height="258"
           loading="lazy"
-          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover dark:maz-border-gray-700"
+          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover maz-dark:border-gray-700"
           style="width: 300px; height: 168px"
         />
       </MazTicker>
@@ -175,7 +175,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
           width="460"
           height="258"
           loading="lazy"
-          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover dark:maz-border-gray-700"
+          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover maz-dark:border-gray-700"
           style="width: 300px; height: 168px"
         />
       </MazTicker>
@@ -187,7 +187,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
 ```vue
 <template>
   <div
-    class="maz-overflow-hidden maz-rounded-lg maz-bg-gray-100 dark:maz-bg-gray-800"
+    class="maz-overflow-hidden maz-rounded-lg maz-bg-gray-100 maz-dark:bg-gray-800"
     style="height: 400px; perspective: 1500px"
   >
     <div
@@ -209,7 +209,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
           width="460"
           height="258"
           loading="lazy"
-          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover dark:maz-border-gray-700"
+          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover maz-dark:border-gray-700"
           style="width: 300px; height: 168px"
         />
       </MazTicker>
@@ -227,7 +227,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
           width="460"
           height="258"
           loading="lazy"
-          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover dark:maz-border-gray-700"
+          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover maz-dark:border-gray-700"
           style="width: 300px; height: 168px"
         />
       </MazTicker>
@@ -246,7 +246,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
           width="460"
           height="258"
           loading="lazy"
-          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover dark:maz-border-gray-700"
+          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover maz-dark:border-gray-700"
           style="width: 300px; height: 168px"
         />
       </MazTicker>

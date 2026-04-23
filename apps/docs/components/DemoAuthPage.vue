@@ -65,15 +65,15 @@ const onSubmit = handleSubmit(() => {
 </script>
 
 <template>
-  <div class="vp-raw maz-flex">
-    <div class="maz-hidden maz-flex-1 maz-flex-col maz-gap-2 maz-bg-contrast maz-p-6 maz-flex-center tab-m:maz-flex">
+  <div class="vp-raw maz:flex">
+    <div class="maz:hidden maz:flex-1 maz:flex-col maz:gap-2 maz:bg-contrast maz:p-6 maz:flex-center maz:tab-m:flex">
       <MazIcon src="/img/logo.svg" size="6rem" style="width: auto;" />
 
-      <p class="maz-text-center maz-text-sm maz-text-contrast-foreground">
+      <p class="maz:text-center maz:text-sm maz:text-contrast-foreground">
         Standalone components and tools library for Vue & Nuxt
       </p>
     </div>
-    <div class="maz-flex maz-flex-1 maz-items-center maz-py-6 maz-pr-0">
+    <div class="maz:flex maz:flex-1 maz:items-center maz:py-6 maz:pr-0">
       <MazStepper v-model="step" auto-validate-steps>
         <template #title-1>
           Sign In
@@ -82,7 +82,7 @@ const onSubmit = handleSubmit(() => {
           Welcome back!
         </template>
         <template #content-1>
-          <form novalidate class="maz-space-y-4" @submit.prevent="onSubmit">
+          <form novalidate class="maz:space-y-4" @submit.prevent="onSubmit">
             <MazInput
               ref="emailRef"
               v-model="model.email"
@@ -111,7 +111,7 @@ const onSubmit = handleSubmit(() => {
               block
             />
 
-            <div class="maz-flex maz-items-center maz-justify-between">
+            <div class="maz:flex maz:items-center maz:justify-between">
               <MazCheckbox v-model="model.rememberMe" color="contrast">
                 Remember me
               </MazCheckbox>
@@ -125,7 +125,7 @@ const onSubmit = handleSubmit(() => {
               Sign In
             </MazBtn>
 
-            <div class="maz-text-center maz-text-muted">
+            <div class="maz:text-center maz:text-muted">
               Don't have an account?
               <MazLink color="contrast" href="#" @click.prevent="goToRegister">
                 Register
@@ -141,7 +141,7 @@ const onSubmit = handleSubmit(() => {
           Enter the code sent to your email
         </template>
         <template #content-2="{ previousStep }">
-          <div class="maz-space-y-4">
+          <div class="maz:space-y-4">
             <MazInputCode
               v-model="twoFactorCode"
               length="6"
@@ -149,7 +149,7 @@ const onSubmit = handleSubmit(() => {
               :hint="errorMessage"
             />
 
-            <div class="maz-flex maz-gap-4">
+            <div class="maz:flex maz:gap-4">
               <MazBtn color="secondary" block @click="previousStep">
                 Back
               </MazBtn>

@@ -12,7 +12,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
 ## Basic usage
 
 <ComponentDemo>
-  <p class="maz-mb-4">
+  <p class="maz:mb-4">
     Select a competition
   </p>
 

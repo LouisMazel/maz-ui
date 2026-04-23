@@ -13,7 +13,7 @@ description: The module formatNumber is a function that formats numbers with the
 
 <div
   style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-background-300));"
-  class="maz-flex maz-flex-center maz-rounded maz-gap-0.5"
+  class="maz:flex maz:flex-center maz:rounded maz:gap-0.5"
 >
   formatted value: <strong>{{ numberFormatted }}</strong>
 </div>

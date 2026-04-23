@@ -28,10 +28,10 @@ head:
 
 Start by choosing your framework:
 
-<div class="maz-flex maz-gap-4 maz-w-full maz-flex-col tab-m:maz-flex-row vp-raw">
+<div class="maz:flex maz:gap-4 maz:w-full maz:flex-col maz:tab-m:flex-row vp-raw">
   <MazCard
     href="/guide/vue"
-    class="maz-flex-1"
+    class="maz:flex-1"
     :gallery="{
       images: ['https://positivethinking.tech/wp-content/uploads/2021/01/Logo-Vuejs.png'],
       height: 200,
@@ -51,7 +51,7 @@ Start by choosing your framework:
   </MazCard>
   <MazCard
     href="/guide/nuxt"
-    class="maz-flex-1"
+    class="maz:flex-1"
     content-title="Nuxt Users Guide"
     :gallery="{
       images: ['https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8mpeku6brwkfmrsumu3h.png'],
@@ -242,8 +242,9 @@ Browse [GitHub discussions](https://github.com/LouisMazel/maz-ui/discussions) or
 </div>
 
 <style scoped>
+@reference "../../.vitepress/theme/main.css";
 .hero-section {
-  @apply maz-rounded maz-p-8 maz-my-12 maz-from-primary-400 maz-to-secondary-700 maz-bg-gradient-to-br;
+  @apply maz:rounded maz:p-8 maz:my-12 maz:from-primary-400 maz:to-secondary-700 maz:bg-linear-to-br;
 }
 
 .features-grid {

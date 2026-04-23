@@ -110,7 +110,7 @@ const sizes: Size[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
 ## Disabled
 
-<div class="maz-flex maz-flex-col maz-gap-2">
+<div class="maz:flex maz:flex-col maz:gap-2">
   <MazRadio disabled name="disabled" value="disabled2">
     disabled
   </MazRadio>

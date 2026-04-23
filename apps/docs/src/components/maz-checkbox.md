@@ -133,7 +133,7 @@ const sizes: MazSize[] = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
 ## Disabled
 
-<div class="maz-flex maz-flex-col maz-gap-2">
+<div class="maz:flex maz:flex-col maz:gap-2">
   <MazCheckbox :model-value="false" disabled name="disabled">
     disabled
   </MazCheckbox>

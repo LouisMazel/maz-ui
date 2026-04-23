@@ -25,7 +25,7 @@ This composable can be used in Vue components to handle timeouts in a flexible a
 
 **Remaning time**: {{ remainingTime }}ms
 
-<div class="maz-flex maz-items-center maz-gap-2">
+<div class="maz:flex maz:items-center maz:gap-2">
   <MazBtn @click="start">
     Start
   </MazBtn>

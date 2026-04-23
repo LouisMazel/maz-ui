@@ -12,7 +12,7 @@ description: vClickOutside is a Vue directive to trigger a function when the use
 <ComponentDemo>
   <div
     style="padding: 50px; background-color: hsl(var(--maz-background-300));"
-    class="maz-flex maz-flex-center maz-rounded"
+    class="maz:flex maz:flex-center maz:rounded"
   >
     <MazCard v-click-outside="clikedOutside">
       Click outside me
@@ -22,7 +22,7 @@ description: vClickOutside is a Vue directive to trigger a function when the use
   <div
     v-if="hasClikedOutside"
     style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-success)); color: black;"
-    class="maz-flex maz-flex-center maz-rounded"
+    class="maz:flex maz:flex-center maz:rounded"
   >
     You clicked outside
   </div>
