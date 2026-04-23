@@ -64,7 +64,7 @@ describe('MazInputCode branch coverage', () => {
     it('applies primary color CSS variable by default', () => {
       const wrapper = shallowMount(MazInputCode)
       const style = wrapper.find('.m-input-code').attributes('style') || ''
-      expect(style).toContain('--input-border-color: hsl(var(--maz-primary))')
+      expect(style).toContain('--input-border-color: var(--maz-primary)')
     })
 
     it('applies secondary color CSS variable', () => {
@@ -72,7 +72,7 @@ describe('MazInputCode branch coverage', () => {
         props: { color: 'secondary' },
       })
       const style = wrapper.find('.m-input-code').attributes('style') || ''
-      expect(style).toContain('--input-border-color: hsl(var(--maz-secondary))')
+      expect(style).toContain('--input-border-color: var(--maz-secondary)')
     })
 
     it('applies info color CSS variable', () => {
@@ -80,7 +80,7 @@ describe('MazInputCode branch coverage', () => {
         props: { color: 'info' },
       })
       const style = wrapper.find('.m-input-code').attributes('style') || ''
-      expect(style).toContain('--input-border-color: hsl(var(--maz-info))')
+      expect(style).toContain('--input-border-color: var(--maz-info)')
     })
 
     it('applies success color CSS variable', () => {
@@ -88,7 +88,7 @@ describe('MazInputCode branch coverage', () => {
         props: { color: 'success' },
       })
       const style = wrapper.find('.m-input-code').attributes('style') || ''
-      expect(style).toContain('--input-border-color: hsl(var(--maz-success))')
+      expect(style).toContain('--input-border-color: var(--maz-success)')
     })
   })
 

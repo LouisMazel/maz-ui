@@ -46,7 +46,7 @@ export default defineNuxtConfig({
 
 <br />
 
-<div v-if="submitted" style="padding: 20px; background-color: hsl(var(--maz-background-300)); border-radius: 10px; margin-top: 1rem;">
+<div v-if="submitted" style="padding: 20px; background-color: var(--maz-background-300); border-radius: 10px; margin-top: 1rem;">
   Data Submitted
 </div>
 

@@ -770,7 +770,7 @@ defineExpose({
       'm-dropzone--is-over-error': isOverError,
     }"
     :style="{
-      '--active-color': `hsl(var(--maz-${color}))`,
+      '--active-color': `var(--maz-${color})`,
     }"
   >
     <!--

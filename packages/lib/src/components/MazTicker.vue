@@ -163,13 +163,13 @@ const cssVars = computed<CSSProperties>(() => ({
       &.--start {
         @apply maz:left-0;
 
-        background: linear-gradient(to right, hsl(var(--maz-background)), transparent);
+        background: linear-gradient(to right, var(--maz-background), transparent);
       }
 
       &.--end {
         @apply maz:right-0;
 
-        background: linear-gradient(to left, hsl(var(--maz-background)), transparent);
+        background: linear-gradient(to left, var(--maz-background), transparent);
       }
     }
   }
@@ -195,13 +195,13 @@ const cssVars = computed<CSSProperties>(() => ({
       &.--start {
         @apply maz:top-0;
 
-        background: linear-gradient(to bottom, hsl(var(--maz-background)), transparent);
+        background: linear-gradient(to bottom, var(--maz-background), transparent);
       }
 
       &.--end {
         @apply maz:bottom-0;
 
-        background: linear-gradient(to top, hsl(var(--maz-background)), transparent);
+        background: linear-gradient(to top, var(--maz-background), transparent);
       }
     }
   }

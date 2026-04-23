@@ -21,8 +21,8 @@ function generateColorScale(color: string) {
   const rootStyles = getComputedStyle(document.documentElement)
 
   return variants.map(variant => ({
-    bgColor: `hsl(var(--maz-${color}-${variant}))`,
-    textColor: `hsl(var(--maz-${color}-foreground, #FF0000))`,
+    bgColor: `var(--maz-${color}-${variant})`,
+    textColor: `var(--maz-${color}-foreground, #FF0000)`,
     color,
     key: variant,
     cssVarValue: rootStyles.getPropertyValue(`--maz-${color}-${variant}`),

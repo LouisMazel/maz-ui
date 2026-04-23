@@ -502,7 +502,7 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     }
 
     .m-timeline-connector {
-      @apply maz:flex maz:flex-1 maz:items-center maz:pt-[var(--m-timeline-indicator-half)];
+      @apply maz:flex maz:flex-1 maz:items-center maz:pt-(--m-timeline-indicator-half);
     }
 
     .m-timeline-connector-track {
@@ -535,7 +535,7 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     }
 
     .m-timeline-connector {
-      @apply maz:flex maz:items-stretch maz:py-1 maz:pl-[var(--m-timeline-indicator-half)];
+      @apply maz:flex maz:items-stretch maz:py-1 maz:pl-(--m-timeline-indicator-half);
     }
 
     .m-timeline-connector-track {
@@ -558,25 +558,25 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     width: var(--m-timeline-indicator-size);
     height: var(--m-timeline-indicator-size);
 
-    @apply maz:bg-[hsl(var(--maz-muted)/30%)] maz:text-[hsl(var(--maz-muted))];
+    @apply maz:bg-(--maz-muted)/30 maz:text-(--maz-muted);
   }
 
   /* --- Step states --- */
   .m-timeline-step {
     &.--active .m-timeline-indicator {
-      @apply maz:bg-[hsl(var(--m-timeline-bg))] maz:text-[hsl(var(--m-timeline-fg))];
+      @apply maz:bg-(--m-timeline-bg) maz:text-(--m-timeline-fg);
     }
 
     &.--completed .m-timeline-indicator {
-      @apply maz:bg-[hsl(var(--m-timeline-state-bg,var(--m-timeline-bg)))] maz:text-[hsl(var(--m-timeline-state-fg,var(--m-timeline-fg)))];
+      @apply maz:bg-[var(--m-timeline-state-bg,var(--m-timeline-bg))] maz:text-[var(--m-timeline-state-fg,var(--m-timeline-fg))];
     }
 
     &.--error .m-timeline-indicator {
-      @apply maz:bg-[hsl(var(--m-timeline-state-bg))] maz:text-[hsl(var(--m-timeline-state-fg))];
+      @apply maz:bg-(--m-timeline-state-bg) maz:text-(--m-timeline-state-fg);
     }
 
     &.--warning .m-timeline-indicator {
-      @apply maz:bg-[hsl(var(--m-timeline-state-bg))] maz:text-[hsl(var(--m-timeline-state-fg))];
+      @apply maz:bg-(--m-timeline-state-bg) maz:text-(--m-timeline-state-fg);
     }
 
     &.--disabled {
@@ -586,11 +586,11 @@ const hasCheckIcon = computed(() => autoValidateSteps)
 
   /* --- Connector --- */
   .m-timeline-connector-track {
-    @apply maz:bg-[hsl(var(--maz-muted)/20%)];
+    @apply maz:bg-(--maz-muted)/20;
   }
 
   .m-timeline-connector-fill {
-    @apply maz:bg-[hsl(var(--m-timeline-bg))];
+    @apply maz:bg-(--m-timeline-bg);
   }
 
   /* --- Content --- */
@@ -599,11 +599,11 @@ const hasCheckIcon = computed(() => autoValidateSteps)
   }
 
   .m-timeline-title {
-    @apply maz:m-0 maz:font-semibold maz:leading-tight maz:text-[hsl(var(--maz-foreground))];
+    @apply maz:m-0 maz:font-semibold maz:leading-tight maz:text-(--maz-foreground);
   }
 
   .m-timeline-subtitle {
-    @apply maz:m-0 maz:leading-snug maz:text-[hsl(var(--maz-muted))];
+    @apply maz:m-0 maz:leading-snug maz:text-(--maz-muted);
   }
 
   /* --- Step number --- */
@@ -630,11 +630,11 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     @apply maz:cursor-pointer;
 
     &:hover .m-timeline-indicator {
-      @apply maz:ring-2 maz:ring-[hsl(var(--m-timeline-color)/30%)];
+      @apply maz:ring-2 maz:ring-(--m-timeline-color)/30;
     }
 
     &:focus-visible .m-timeline-indicator {
-      @apply maz:outline-hidden maz:ring-2 maz:ring-[hsl(var(--m-timeline-color))] maz:ring-offset-2;
+      @apply maz:outline-hidden maz:ring-2 maz:ring-(--m-timeline-color) maz:ring-offset-2;
     }
   }
 
@@ -792,11 +792,11 @@ const hasCheckIcon = computed(() => autoValidateSteps)
 @keyframes m-timeline-pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 0 hsl(var(--m-timeline-bg) / 40%);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--m-timeline-bg) 40%, transparent);
   }
 
   50% {
-    box-shadow: 0 0 0 6px hsl(var(--m-timeline-bg) / 0%);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--m-timeline-bg) 0%, transparent);
   }
 }
 

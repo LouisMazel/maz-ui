@@ -7,14 +7,14 @@ export function getColors(): ThemeConfig['colors'] {
   // Générer les couleurs avec échelles complètes
   for (const [colorNameTailwind, variableName] of Object.entries(scaleColors)) {
     const colorVariations = colorScales.reduce((variants, scale) => {
-      variants[scale] = `hsl(var(--maz-${variableName}-${scale}) / <alpha-value>)`
+      variants[scale] = `color-mix(in srgb, var(--maz-${variableName}-${scale}) <alpha-value>, transparent)`
       return variants
     }, {} as Record<string, string>)
 
-    colorVariations.DEFAULT = `hsl(var(--maz-${variableName}) / <alpha-value>)`
+    colorVariations.DEFAULT = `color-mix(in srgb, var(--maz-${variableName}) <alpha-value>, transparent)`
 
     if (!noForegroundColors.includes(colorNameTailwind as any)) {
-      colorVariations.foreground = `hsl(var(--maz-${variableName}-foreground) / <alpha-value>)`
+      colorVariations.foreground = `color-mix(in srgb, var(--maz-${variableName}-foreground) <alpha-value>, transparent)`
     }
 
     colors[colorNameTailwind] = colorVariations
@@ -26,24 +26,24 @@ export function getColors(): ThemeConfig['colors'] {
 // Fonction utilitaire pour créer une couleur personnalisée avec échelle
 export function createScaleColor(colorName: string) {
   const variants = colorScales.reduce((acc, scale) => {
-    acc[scale] = `hsl(var(--maz-${colorName}-${scale}) / <alpha-value>)`
+    acc[scale] = `color-mix(in srgb, var(--maz-${colorName}-${scale}) <alpha-value>, transparent)`
     return acc
   }, {} as Record<string, string>)
 
-  variants.DEFAULT = `hsl(var(--maz-${colorName}) / <alpha-value>)`
-  variants.foreground = `hsl(var(--maz-${colorName}-foreground) / <alpha-value>)`
+  variants.DEFAULT = `color-mix(in srgb, var(--maz-${colorName}) <alpha-value>, transparent)`
+  variants.foreground = `color-mix(in srgb, var(--maz-${colorName}-foreground) <alpha-value>, transparent)`
 
   return variants
 }
 
 // Fonction utilitaire pour créer une couleur simple (sans échelle)
 export function createSimpleColor(colorName: string, withForeground: boolean = false) {
-  const color = `hsl(var(--maz-${colorName}) / <alpha-value>)`
+  const color = `color-mix(in srgb, var(--maz-${colorName}) <alpha-value>, transparent)`
 
   if (withForeground) {
     return {
       DEFAULT: color,
-      foreground: `hsl(var(--maz-${colorName}-foreground) / <alpha-value>)`,
+      foreground: `color-mix(in srgb, var(--maz-${colorName}-foreground) <alpha-value>, transparent)`,
     }
   }
 

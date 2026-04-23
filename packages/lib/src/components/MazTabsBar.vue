@@ -176,8 +176,8 @@ function getTabStyle(index: number, disabled: boolean): StyleValue {
     return {}
   }
   return currentTab.value === index + 1
-    ? `color: hsl(var(--maz-foreground))`
-    : 'color: hsl(var(--maz-muted))'
+    ? `color: var(--maz-foreground)`
+    : 'color: var(--maz-muted)'
 }
 
 onBeforeMount(() => {

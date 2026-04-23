@@ -105,21 +105,21 @@ const radioSize = computed(() => {
   }
 })
 
-const radioSelectedColor = computed(() => `hsl(var(--maz-${props.color}))`)
+const radioSelectedColor = computed(() => `var(--maz-${props.color})`)
 const radioBoxShadow = computed(() => {
   if (props.error && !isFocused.value) {
-    return `hsl(var(--maz-destructive))`
+    return `var(--maz-destructive)`
   }
   else if (props.warning && !isFocused.value) {
-    return `hsl(var(--maz-warning))`
+    return `var(--maz-warning)`
   }
   else if (props.success && !isFocused.value) {
-    return `hsl(var(--maz-success))`
+    return `var(--maz-success)`
   }
 
   return ['transparent', 'contrast'].includes(props.color)
-    ? `hsl(var(--maz-muted))`
-    : `hsl(var(--maz-${props.color}) / 60%)`
+    ? `var(--maz-muted)`
+    : `color-mix(in srgb, var(--maz-${props.color}) 60%, transparent)`
 })
 
 function keyboardHandler(event: KeyboardEvent) {

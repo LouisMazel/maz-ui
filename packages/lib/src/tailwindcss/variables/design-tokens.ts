@@ -10,7 +10,7 @@ export const designTokens = {
   },
 
   borderColor: {
-    DEFAULT: 'hsl(var(--maz-border) / <alpha-value>)',
+    DEFAULT: 'color-mix(in srgb, var(--maz-border) <alpha-value>, transparent)',
   },
 
   // Bordures

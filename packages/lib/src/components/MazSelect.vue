@@ -267,8 +267,8 @@ const searchInputRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('sea
 const optionListElement = useTemplateRef('optionListRef')
 const optionListWrapperRef = useTemplateRef('optionListWrapper')
 
-const selectedTextColor = computed(() => `hsl(var(--maz-${color}))`)
-const selectedBgColor = computed(() => `hsl(var(--maz-${color}-500) / 0.1)`)
+const selectedTextColor = computed(() => `var(--maz-${color})`)
+const selectedBgColor = computed(() => `color-mix(in srgb, var(--maz-${color}-500) 0.1, transparent)`)
 
 const { t } = useTranslations()
 const messages = computed(() => ({
@@ -954,7 +954,7 @@ defineExpose({
 
     /* Modern CSS for all browsers (fallback) */
     scrollbar-width: thin;
-    scrollbar-color: hsl(var(--maz-background-600)) transparent;
+    scrollbar-color: var(--maz-background-600) transparent;
   }
 
   &__no-results {

@@ -227,13 +227,13 @@ onBeforeUnmount(() => observer?.disconnect())
           <stop
             offset="0%"
             :stop-color="
-              currentColor ? `hsl(var(--maz-${currentColor}-400))` : `hsl(var(--maz-primary))`
+              currentColor ? `var(--maz-${currentColor}-400)` : `var(--maz-primary)`
             "
           />
           <stop
             offset="100%"
             :stop-color="
-              currentColor ? `hsl(var(--maz-${currentColor}-700))` : `hsl(var(--maz-secondary))`
+              currentColor ? `var(--maz-${currentColor}-700)` : `var(--maz-secondary)`
             "
           />
         </linearGradient>

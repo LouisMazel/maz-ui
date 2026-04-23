@@ -67,8 +67,8 @@ export interface MazStepperProps {
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazExpandAnimation = defineAsyncComponent(() => import('./MazExpandAnimation.vue'))
 
-const roundStepBgColor = computed(() => `hsl(var(--maz-${color}))`)
-const roundStepTextColor = computed(() => `hsl(var(--maz-${color}-foreground))`)
+const roundStepBgColor = computed(() => `var(--maz-${color})`)
+const roundStepTextColor = computed(() => `var(--maz-${color}-foreground)`)
 
 const slots = useSlots()
 

@@ -152,32 +152,32 @@ const checkIconSize = computed(() => {
 
 const checkIconColor = computed(() => {
   if (props.color === 'contrast') {
-    return 'hsl(var(--maz-background))'
+    return 'var(--maz-background)'
   }
 
-  return `hsl(var(--maz-${props.color}-foreground))`
+  return `var(--maz-${props.color}-foreground)`
 })
 const checkboxSelectedColor = computed(() => {
   if (props.color === 'contrast') {
-    return 'hsl(var(--maz-contrast))'
+    return 'var(--maz-contrast)'
   }
 
-  return `hsl(var(--maz-${props.color}))`
+  return `var(--maz-${props.color})`
 })
 const checkboxBoxShadow = computed(() => {
   if (props.error && !isFocused.value) {
-    return `hsl(var(--maz-destructive))`
+    return `var(--maz-destructive)`
   }
   else if (props.warning && !isFocused.value) {
-    return `hsl(var(--maz-warning))`
+    return `var(--maz-warning)`
   }
   else if (props.success && !isFocused.value) {
-    return `hsl(var(--maz-success))`
+    return `var(--maz-success)`
   }
 
   return ['transparent', 'contrast'].includes(props.color)
-    ? `hsl(var(--maz-muted))`
-    : `hsl(var(--maz-${props.color}) / 60%)`
+    ? `var(--maz-muted)`
+    : `color-mix(in srgb, var(--maz-${props.color}) 60%, transparent)`
 })
 
 function keyboardHandler(event: KeyboardEvent) {

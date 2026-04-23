@@ -55,7 +55,7 @@ const basicOpen = ref(false)
 <style lang="css" scoped>
 @reference "../../.vitepress/theme/main.css";
 .demo-content {
-  background: hsl(var(--maz-background));
+  background: var(--maz-background);
   padding: 2rem;
   border-radius: var(--maz-radius);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
@@ -69,7 +69,7 @@ const basicOpen = ref(false)
 
 .demo-content p {
   margin-bottom: 1.5rem;
-  color: hsl(var(--maz-muted));
+  color: var(--maz-muted);
 }
 </style>
 ```
@@ -233,7 +233,7 @@ These features work automatically - you don't need to do anything extra!
 <style scoped>
 @reference "../../.vitepress/theme/main.css";
 .demo-content {
-  background: hsl(var(--maz-background));
+  background: var(--maz-background);
   padding: 2rem;
   border-radius: var(--maz-radius);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
@@ -247,6 +247,6 @@ These features work automatically - you don't need to do anything extra!
 
 .demo-content p {
   margin-bottom: 1.5rem;
-  color: hsl(var(--maz-muted));
+  color: var(--maz-muted);
 }
 </style>

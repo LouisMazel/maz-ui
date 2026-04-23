@@ -97,9 +97,9 @@ const badgeStyle = computed<CSSProperties>(() => {
 
   padding: 0.25em 0.5em;
   line-height: 1.4em;
-  background-color: hsl(var(--m-badge-bg));
-  color: hsl(var(--m-badge-fg));
-  border-color: hsl(var(--m-badge-bg));
+  background-color: var(--m-badge-bg);
+  color: var(--m-badge-fg);
+  border-color: var(--m-badge-bg);
 
   &.--nowrap {
     @apply maz:whitespace-nowrap;
@@ -130,14 +130,14 @@ const badgeStyle = computed<CSSProperties>(() => {
   &.--outlined {
     @apply maz:bg-transparent;
 
-    color: hsl(var(--m-badge-bg));
-    border-color: hsl(var(--m-badge-bg));
+    color: var(--m-badge-bg);
+    border-color: var(--m-badge-bg);
   }
 
   &.--pastel {
-    background-color: hsl(var(--m-badge-pastel-bg));
-    color: hsl(var(--m-badge-pastel-fg));
-    border-color: hsl(var(--m-badge-pastel-bg));
+    background-color: var(--m-badge-pastel-bg);
+    color: var(--m-badge-pastel-fg);
+    border-color: var(--m-badge-pastel-bg);
   }
 
   &.--surface {

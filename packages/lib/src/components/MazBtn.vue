@@ -245,59 +245,59 @@ const btnStyle = computed<CSSProperties>(() => {
   @apply maz:relative maz:cursor-pointer maz:items-center maz:gap-2 maz:border maz:border-solid maz:border-transparent maz:bg-transparent maz:py-0.5 maz:text-center maz:align-top maz:text-foreground maz:no-underline maz:transition-all maz:duration-200 maz:ease-in-out maz:inline-flex maz:overflow-hidden;
 
   justify-content: var(--m-btn-justify, center);
-  background-color: hsl(var(--m-btn-bg));
-  color: hsl(var(--m-btn-fg));
+  background-color: var(--m-btn-bg);
+  color: var(--m-btn-fg);
 
   & span {
     @apply maz:leading-none;
   }
 
   &:not(:disabled):hover {
-    background-color: hsl(var(--m-btn-bg-hover));
+    background-color: var(--m-btn-bg-hover);
   }
 
   &:not(:disabled):active,
   &.--active {
-    background-color: hsl(var(--m-btn-bg-active));
+    background-color: var(--m-btn-bg-active);
   }
 
   &-loader-container {
     @apply maz:absolute maz:inset-0 maz:flex maz:flex-center;
 
-    background-color: hsl(var(--m-btn-bg));
-    color: hsl(var(--m-btn-fg));
+    background-color: var(--m-btn-bg);
+    color: var(--m-btn-fg);
   }
 
   /* Outlined variant */
   &.--outlined {
-    @apply maz:bg-transparent maz:border-[hsl(var(--m-btn-bd-light))] maz:dark:border-[hsl(var(--m-btn-bd-dark))];
+    @apply maz:bg-transparent maz:border-(--m-btn-bd-light) maz:dark:border-(--m-btn-bd-dark);
 
-    color: hsl(var(--m-btn-bg));
+    color: var(--m-btn-bg);
 
     &:not(:disabled):hover {
-      background-color: hsl(var(--m-btn-bg) / 10%);
+      background-color: color-mix(in srgb, var(--m-btn-bg) 10%, transparent);
     }
 
     &:not(:disabled):active,
     &.--active {
-      background-color: hsl(var(--m-btn-bg) / 20%);
+      background-color: color-mix(in srgb, var(--m-btn-bg) 20%, transparent);
     }
   }
 
   /* Pastel variant */
   &.--pastel {
-    background-color: hsl(var(--m-btn-pastel-bg));
-    color: hsl(var(--m-btn-pastel-fg));
+    background-color: var(--m-btn-pastel-bg);
+    color: var(--m-btn-pastel-fg);
 
     &:not(:disabled):hover {
-      background-color: hsl(var(--m-btn-bg));
-      color: hsl(var(--m-btn-fg));
+      background-color: var(--m-btn-bg);
+      color: var(--m-btn-fg);
     }
 
     &:not(:disabled):active,
     &.--active {
-      background-color: hsl(var(--m-btn-bg-hover));
-      color: hsl(var(--m-btn-fg));
+      background-color: var(--m-btn-bg-hover);
+      color: var(--m-btn-fg);
     }
   }
 

@@ -69,7 +69,7 @@ export interface MazReadingProgressBarProps {
 }
 
 const barColor = computed<string>(() => {
-  return `hsl(var(--maz-${props.color}))`
+  return `var(--maz-${props.color})`
 })
 
 const progressBarWidth = ref<string>()

@@ -169,22 +169,22 @@ const currentIcon = computed(() => {
   @apply maz:flex maz:items-start maz:gap-3 maz:p-4;
 
   &.--soft {
-    background-color: hsl(var(--m-alert-color) / 10%);
+    background-color: color-mix(in srgb, var(--m-alert-color) 10%, transparent);
 
-    @apply maz:text-[hsl(var(--m-alert-color))] maz:dark:text-[hsl(var(--m-alert-color-dark))];
+    @apply maz:text-(--m-alert-color) maz:dark:text-(--m-alert-color-dark);
 
     &.--bordered {
       @apply maz:border;
 
-      border-color: hsl(var(--m-alert-color) / 30%);
+      border-color: color-mix(in srgb, var(--m-alert-color) 30%, transparent);
     }
   }
 
   &.--solid {
-    @apply maz:bg-[hsl(var(--m-alert-bg))] maz:text-[hsl(var(--m-alert-fg))];
+    @apply maz:bg-(--m-alert-bg) maz:text-(--m-alert-fg);
 
     &.--bordered {
-      @apply maz:border maz:border-[hsl(var(--m-alert-border))];
+      @apply maz:border maz:border-(--m-alert-border);
     }
   }
 

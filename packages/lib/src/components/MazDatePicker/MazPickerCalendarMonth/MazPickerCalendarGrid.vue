@@ -44,8 +44,8 @@ const transitionName = ref<'maz-slidenext' | 'maz-slideprev'>('maz-slidenext')
 
 const calendarDateArray = computed<string[]>(() => [props.calendarDate])
 
-const hoverColor = computed(() => `hsl(var(--maz-${props.color}) / 20%)`)
-const hoverTextColor = computed(() => `hsl(var(--maz-${props.color}-foreground))`)
+const hoverColor = computed(() => `color-mix(in srgb, var(--maz-${props.color}) 20%, transparent)`)
+const hoverTextColor = computed(() => `var(--maz-${props.color}-foreground)`)
 
 const modelValue = computed({
   get: () => props.modelValue,
