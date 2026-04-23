@@ -15,6 +15,7 @@ export const guide = {
     { text: 'Icons', link: '/guide/icons', collapsed: true, items: [
       { text: 'Icon Set - 860+ icons', link: '/guide/icon-set' },
     ] },
+    { text: 'Migration v4 to v5', link: '/guide/migration-v5' },
     { text: 'Migration v3 to v4', link: '/guide/migration-v4' },
     { text: 'Model Context Protocol (MCP)', link: '/guide/mcp' },
     { text: 'CLI (v3)', link: '/guide/cli' },
