@@ -47,20 +47,20 @@ describe('mazCircularProgressBar', () => {
       autoColor: true,
     })
 
-    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz:destructive')
+    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-destructive')
 
     await wrapper.setProps({
       percentage: 50,
       autoColor: true,
     })
 
-    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz:warning')
+    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-warning')
 
     await wrapper.setProps({
       percentage: 100,
       autoColor: true,
     })
 
-    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz:success')
+    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-success')
   })
 })
