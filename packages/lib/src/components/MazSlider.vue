@@ -233,7 +233,7 @@ async function calcPos() {
     )
   }
   else {
-    console.warn('[maz:ui][MazSlider] ref component not found')
+    console.warn('[maz-ui][MazSlider] ref component not found')
   }
 }
 async function getCursorsValues() {
@@ -251,7 +251,7 @@ async function getCursorsValues() {
         )
   }
   else {
-    console.warn('[maz:ui][MazSlider] ref component not found')
+    console.warn('[maz-ui][MazSlider] ref component not found')
   }
 }
 function handleMousedown(_event: MouseEvent | TouchEvent | FocusEvent, i: number) {
@@ -285,7 +285,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
 
     if (!MazSlider.value)
 
-      return console.error('[maz:ui](MazSlider/handleMousemove) MazSlider not available')
+      return console.error('[maz-ui](MazSlider/handleMousemove) MazSlider not available')
 
     buttonPositions.value[activeCursor.value] = (() => {
       const movement = getPos(event, MazSlider.value).x

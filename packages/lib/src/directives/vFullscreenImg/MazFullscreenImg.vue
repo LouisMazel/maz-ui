@@ -186,7 +186,7 @@ function setZoomStyles() {
   const imgElement = ImgElement.value
 
   if (!imgElement) {
-    console.error('[maz:ui](vFullscreenImg) ImgElement is not defined')
+    console.error('[maz-ui](vFullscreenImg) ImgElement is not defined')
     return
   }
 
@@ -226,7 +226,7 @@ function runAnimation(frames: Keyframe[] | PropertyIndexedKeyframes) {
   })
 
   if (!animation) {
-    console.error('[maz:ui](vFullscreenImg) animation is not defined')
+    console.error('[maz-ui](vFullscreenImg) animation is not defined')
     animationState.running = false
     animationState.ended = true
     return
@@ -300,7 +300,7 @@ function setEndAnimationStyles() {
       }
 
   if (!ImgElement.value) {
-    console.error('[maz:ui](vFullscreenImg) ImgElement is not defined')
+    console.error('[maz-ui](vFullscreenImg) ImgElement is not defined')
     return
   }
 
@@ -324,7 +324,7 @@ function openFullscreen() {
   const openAnimation = runAnimation(frames)
 
   if (!openAnimation) {
-    console.error('[maz:ui](vFullscreenImg) open animation is not defined')
+    console.error('[maz-ui](vFullscreenImg) open animation is not defined')
     setEndAnimationStyles()
     return
   }
@@ -352,7 +352,7 @@ function closeFullscreen() {
   }
 
   if (!closeAnimation) {
-    console.error('[maz:ui](vFullscreenImg) close animation is not defined')
+    console.error('[maz-ui](vFullscreenImg) close animation is not defined')
     onFinish()
     return
   }

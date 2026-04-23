@@ -438,16 +438,16 @@ const popoverRef = useTemplateRef('popover')
 
 onBeforeMount(() => {
   if (isRangeMode.value && hasTime.value) {
-    console.error(`[maz:ui](MazDatePicker) You can't use time picker with range picker`)
+    console.error(`[maz-ui](MazDatePicker) You can't use time picker with range picker`)
   }
   if (hasTime.value && !(props.format.includes('h') || props.format.includes('H'))) {
     console.error(
-      `[maz:ui](MazDatePicker) When you use the time picker, you must provided a format with time - Ex: "YYYY-MM-DD HH:mm"`,
+      `[maz-ui](MazDatePicker) When you use the time picker, you must provided a format with time - Ex: "YYYY-MM-DD HH:mm"`,
     )
   }
   if (props.format.includes('h') && !(props.format.includes('a') || props.format.includes('A'))) {
     console.error(
-      '[maz:ui](MazDatePicker) if you use the 12 format "h" or "hh", you must add "a" or "A" at the end of the format - Ex: "YYYY-MM-DD hh:mm a"',
+      '[maz-ui](MazDatePicker) if you use the 12 format "h" or "hh", you must add "a" or "A" at the end of the format - Ex: "YYYY-MM-DD hh:mm a"',
     )
   }
 })
