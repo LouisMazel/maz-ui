@@ -704,6 +704,131 @@ Les consommateurs qui utilisent leur propre Tailwind v4 pourront importer :
 
 - Mettre à jour `stylelint-config-tailwindcss` vers une version compatible v4
 
+### 6.4 Intégration consommateur — API publique
+
+**Contexte** : maz-ui est consommé par des projets tiers (et par les projets propres du mainteneur) qui utilisent leur propre instance de Tailwind v4 — sans le `prefix(maz)` interne à la lib. Ces consommateurs doivent pouvoir **réutiliser les design tokens de maz-ui** (couleurs, radius, breakpoints, shadows, z-index) directement dans leur propre code applicatif, pour que `bg-primary`, `rounded`, `shadow-elevation`, etc. résolvent vers les variables du thème maz-ui actif.
+
+Cette section définit le contrat public v5 pour cette intégration.
+
+#### 6.4.1 Fichiers CSS granulaires
+
+Éclater `theme.css` en modules thématiques pour permettre l'intégration partielle. Le fichier agrégat `theme.css` se contente d'importer les modules.
+
+**Nouveaux fichiers** :
+
+- `/packages/lib/src/tailwindcss/theme-colors.css` — tokens couleur (primary, secondary, accent, destructive, success, warning, info, contrast, surface, foreground, divider, elevation, overlay, muted + scales)
+- `/packages/lib/src/tailwindcss/theme-radius.css` — `--radius-*`
+- `/packages/lib/src/tailwindcss/theme-breakpoints.css` — `--breakpoint-*`
+- `/packages/lib/src/tailwindcss/theme-shadows.css` — `--shadow-*`
+- `/packages/lib/src/tailwindcss/theme-z-index.css` — `--z-*`
+- `/packages/lib/src/tailwindcss/theme-typography.css` — `--font-*`, `--default-transition-*`, `--default-border-width`
+
+**Fichier agrégat** : `/packages/lib/src/tailwindcss/theme.css`
+
+```css
+@import "./theme-colors.css";
+@import "./theme-radius.css";
+@import "./theme-breakpoints.css";
+@import "./theme-shadows.css";
+@import "./theme-z-index.css";
+@import "./theme-typography.css";
+```
+
+#### 6.4.2 Exports enrichis
+
+**Fichier** : `/packages/lib/package.json`
+
+Remplacer les deux exports de la Phase 6.1 par :
+
+```json
+{
+  "exports": {
+    "./tailwindcss/theme.css": "./src/tailwindcss/theme.css",
+    "./tailwindcss/theme-colors.css": "./src/tailwindcss/theme-colors.css",
+    "./tailwindcss/theme-radius.css": "./src/tailwindcss/theme-radius.css",
+    "./tailwindcss/theme-breakpoints.css": "./src/tailwindcss/theme-breakpoints.css",
+    "./tailwindcss/theme-shadows.css": "./src/tailwindcss/theme-shadows.css",
+    "./tailwindcss/theme-z-index.css": "./src/tailwindcss/theme-z-index.css",
+    "./tailwindcss/theme-typography.css": "./src/tailwindcss/theme-typography.css",
+    "./tailwindcss/utilities.css": "./src/tailwindcss/utilities.css"
+  }
+}
+```
+
+#### 6.4.3 Scénarios d'intégration documentés
+
+Prérequis commun à tous les scénarios : le consommateur bootstrappe `@maz-ui/themes` pour que les variables `--maz-*` soient injectées dans le DOM.
+
+```ts
+// main.ts — identique pour tous les scénarios
+import { setupTheme } from "@maz-ui/themes";
+import mazUiPreset from "@maz-ui/themes/presets/mazUi";
+
+setupTheme(mazUiPreset);
+```
+
+Le bridge Tailwind (`theme.css` et ses modules) est **preset-agnostic** : il référence `var(--maz-primary)`, pas la valeur. Le changement de preset, de dark/light ou de thème à chaud via `setupTheme()` se reflète automatiquement dans les utilities Tailwind du consommateur — aucune recompilation CSS.
+
+Trois scénarios à documenter dans la doc (`apps/docs`), section **Installation → Integrating with your Tailwind**.
+
+**Scénario A — Design system complet** (recommandé par défaut)
+
+Le consommateur adopte intégralement le design system maz-ui. Ses propres `bg-primary`, `rounded`, `shadow-elevation`, `md:…`, etc., utilisent les tokens maz-ui.
+
+```css
+@import "tailwindcss";
+@import "maz-ui/tailwindcss/theme.css";
+@import "maz-ui/tailwindcss/utilities.css";
+```
+
+**Scénario B — Tokens aliasés** (cohabitation avec un design system existant)
+
+Le consommateur garde son propre design system mais réutilise certains tokens maz-ui sous ses propres noms :
+
+```css
+@import "tailwindcss";
+
+@theme inline {
+  --color-brand: var(--maz-primary);
+  --color-brand-foreground: var(--maz-primary-foreground);
+  --radius-brand: var(--maz-radius);
+}
+```
+
+Le consommateur utilise `bg-brand`, `rounded-brand` sans conflit avec ses propres tokens. Les variables `--maz-*` sont disponibles grâce au bootstrap de `@maz-ui/themes`.
+
+**Scénario C — Intégration partielle** (cherry-pick)
+
+Le consommateur ne veut que les couleurs de maz-ui et garde ses propres radius, breakpoints, shadows :
+
+```css
+@import "tailwindcss";
+@import "maz-ui/tailwindcss/theme-colors.css";
+```
+
+#### 6.4.4 Contrat de stabilité (API publique)
+
+À documenter explicitement dans le CHANGELOG v5 et dans la doc :
+
+1. **Chemins d'import** : les chemins `maz-ui/tailwindcss/*` et `@maz-ui/themes/presets/*` sont versionnés avec la lib. Un renommage ou un déplacement constitue un breaking change (major release).
+2. **Noms de tokens** : les noms des CSS variables exposées (`--color-primary`, `--color-surface-*`, `--radius-*`, `--shadow-elevation`, `--breakpoint-mob-s`, etc.) sont le contrat public. Les renommer est un breaking change.
+3. **Valeurs** : les valeurs peuvent évoluer entre minors (c'est le design system qui évolue), les noms non.
+4. **Breakpoints** : les breakpoints non-standard (`mob-s`, `mob-m`, `mob-l`, `tab-s`, `tab-m`, `tab-l`, `lap-s`, …) s'**ajoutent** aux breakpoints par défaut de Tailwind v4 (`sm`, `md`, `lg`, `xl`, `2xl`) — le `theme-breakpoints.css` ne fait pas `--breakpoint-*: initial`. Les consommateurs conservent les breakpoints standards.
+5. **Couleurs** : le `theme-colors.css` **écrase** `--color-primary`, `--color-secondary`, etc. dans l'instance Tailwind du consommateur. C'est voulu — c'est le design system qui prend le dessus. Pour éviter ce comportement, utiliser le Scénario B.
+
+#### 6.4.5 Vérification Phase 6.4
+
+Créer un projet de test minimal `tools/integration-test-consumer/` avec :
+
+1. Un `package.json` déclarant `maz-ui` et `@maz-ui/themes` en dépendance locale (workspace).
+2. Un `src/styles.css` qui teste chacun des trois scénarios dans des fichiers séparés.
+3. Un build Vite qui compile chaque scénario et valide :
+   - Le CSS final contient bien `var(--maz-primary)` dans les utilities `bg-primary`.
+   - Les breakpoints standards (`sm:`, `md:`, `lg:`) fonctionnent toujours en scénario A.
+   - Les alias `bg-brand` résolvent vers `var(--maz-primary)` en scénario B.
+
+Ce test sert aussi de documentation exécutable et de régression pour les futures versions.
+
 ---
 
 ## Phase 7 : Vérification complète
@@ -812,15 +937,25 @@ grep "color-mix" packages/lib/dist/css/main.css | head -5
 | `apps/nuxt-app/tailwind.config.ts` | Supprimer ou adapter    |
 | `apps/nuxt-app/nuxt.config.ts`     | Adapter Tailwind module |
 
-### Nettoyage (Phase 6)
+### Nettoyage et intégration consommateur (Phase 6)
 
-| Fichier                                                   | Action                          |
-| --------------------------------------------------------- | ------------------------------- |
-| `packages/lib/src/tailwindcss/variables/design-tokens.ts` | Supprimer                       |
-| `packages/lib/src/tailwindcss/variables/utilities.ts`     | Supprimer                       |
-| `packages/lib/src/tailwindcss/variables/z-indexes.ts`     | Supprimer                       |
-| `packages/lib/src/tailwindcss/utils/colors.ts`            | Nettoyer exports                |
-| `package.json` (root)                                     | Supprimer deps PostCSS inutiles |
+| Fichier                                                      | Action                                         |
+| ------------------------------------------------------------ | ---------------------------------------------- |
+| `packages/lib/src/tailwindcss/variables/design-tokens.ts`    | Supprimer                                      |
+| `packages/lib/src/tailwindcss/variables/utilities.ts`        | Supprimer                                      |
+| `packages/lib/src/tailwindcss/variables/z-indexes.ts`        | Supprimer                                      |
+| `packages/lib/src/tailwindcss/utils/colors.ts`               | Nettoyer exports                               |
+| `package.json` (root)                                        | Supprimer deps PostCSS inutiles                |
+| `packages/lib/src/tailwindcss/theme-colors.css`              | **NOUVEAU** — module couleurs (6.4)            |
+| `packages/lib/src/tailwindcss/theme-radius.css`              | **NOUVEAU** — module radius (6.4)              |
+| `packages/lib/src/tailwindcss/theme-breakpoints.css`         | **NOUVEAU** — module breakpoints (6.4)         |
+| `packages/lib/src/tailwindcss/theme-shadows.css`             | **NOUVEAU** — module shadows (6.4)             |
+| `packages/lib/src/tailwindcss/theme-z-index.css`             | **NOUVEAU** — module z-index (6.4)             |
+| `packages/lib/src/tailwindcss/theme-typography.css`          | **NOUVEAU** — module typography (6.4)          |
+| `packages/lib/src/tailwindcss/theme.css`                     | Devenir agrégateur `@import` des modules (6.4) |
+| `packages/lib/package.json`                                  | Exports granulaires (6.4.2)                    |
+| `tools/integration-test-consumer/`                           | **NOUVEAU** — test des 3 scénarios (6.4.5)     |
+| `apps/docs/` — section Installation                          | **NOUVEAU** — doc des 3 scénarios (6.4.3)      |
 
 ---
 
