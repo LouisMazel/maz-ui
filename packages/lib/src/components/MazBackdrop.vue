@@ -310,7 +310,7 @@ html.--backdrop-present.--has-scrollbar {
 @reference "../tailwindcss/tailwind.css";
 
 .m-backdrop {
-  @apply maz:fixed maz:inset-0 maz:z-default-backdrop maz:bg-overlay/25 maz:backdrop-blur;
+  @apply maz:fixed maz:inset-0 maz:z-default-backdrop maz:bg-overlay/25 maz:backdrop-blur-sm;
 
   transition-behavior: allow-discrete;
 
