@@ -20,7 +20,9 @@ function parseArgs(argv: string[]): CliOptions {
 
   for (let i = 2; i < argv.length; i++) {
     const arg = argv[i]
-    if (arg === '--dry-run' || arg === '-n') dryRun = true
+    if (arg === '--dry-run' || arg === '-n') {
+      dryRun = true
+    }
     else if (arg === '--help' || arg === '-h') {
       printHelp()
       process.exit(0)
@@ -29,14 +31,22 @@ function parseArgs(argv: string[]): CliOptions {
       printVersion()
       process.exit(0)
     }
-    else if (arg.startsWith('--add-reference=')) addReference = arg.slice('--add-reference='.length)
-    else if (arg === '--add-reference') addReference = argv[++i]
-    else if (arg === 'tailwind-v4') command = 'tailwind-v4'
+    else if (arg.startsWith('--add-reference=')) {
+      addReference = arg.slice('--add-reference='.length)
+    }
+    else if (arg === '--add-reference') {
+      addReference = argv[++i]
+    }
+    else if (arg === 'tailwind-v4') {
+      command = 'tailwind-v4'
+    }
     else if (arg.startsWith('-')) {
       console.error(`Unknown option: ${arg}`)
       process.exit(1)
     }
-    else roots.push(arg)
+    else {
+      roots.push(arg)
+    }
   }
 
   if (command === null) {
@@ -103,7 +113,8 @@ function printVersion(): void {
 const STYLE_BLOCK = /(<style\b[^>]*>)(\n?)/g
 
 function injectReference(filePath: string, content: string, entry: string): string {
-  if (content.includes('@reference')) return content
+  if (content.includes('@reference'))
+    return content
 
   const rel = relative(dirname(filePath), entry).replace(/\\/g, '/')
   return content.replace(STYLE_BLOCK, (_match, open) => `${open}\n@reference "${rel}";\n`)
@@ -138,7 +149,8 @@ async function run(): Promise<void> {
         after = injectReference(file, after, addReferenceAbs)
       }
 
-      if (after === before) continue
+      if (after === before)
+        continue
       changed += 1
 
       const shown = file.replace(`${cwd}/`, '')

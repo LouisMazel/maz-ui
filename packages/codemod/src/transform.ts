@@ -26,15 +26,17 @@ const UTILITY_RENAMES: Record<string, string> = {
 
 const TOKEN_PARSE = /^(!?)((?:[\w-]+:)*)(!?)(-?)maz-(-?)(.+)$/
 
-const TEXT_SCAN = /(?<![\w-])(?:!)?(?:[\w-]+:)*(?:!)?-?maz--?[a-zA-Z][\w\-\/]*(?:\[[^\]]+\][\w\-\/]*)*(?![\w-])/g
+const TEXT_SCAN = /(?<![\w-])!?(?:[\w-]+:)*!?-?maz--?[a-zA-Z][\w\-/]*(?:\[[^\]]+\][\w\-/]*)*(?![\w-])/g
 
 export function transformClassToken(token: string): string {
   const match = token.match(TOKEN_PARSE)
-  if (!match) return token
+  if (!match)
+    return token
 
   const [, importantPrefix, variants, importantMid, negBefore, negAfter, utility] = match
 
-  if (utility === 'ui' || utility.startsWith('ui/')) return token
+  if (utility === 'ui' || utility.startsWith('ui/'))
+    return token
 
   const renamedUtility = UTILITY_RENAMES[utility] ?? utility
   const isImportant = Boolean(importantPrefix || importantMid)
