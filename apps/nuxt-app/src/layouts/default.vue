@@ -40,19 +40,21 @@ function action() {
 </template>
 
 <style scoped>
+@reference "../css/main.css";
+
 header {
-  @apply maz-flex maz-w-full maz-flex-wrap maz-items-center maz-justify-between maz-border-b maz-border-divider maz-px-2 maz-py-4 maz-padded-container;
+  @apply maz:flex maz:w-full maz:flex-wrap maz:items-center maz:justify-between maz:border-b maz:border-divider maz:px-2 maz:py-4 maz:padded-container;
 
   nav {
-    @apply maz-flex maz-gap-1;
+    @apply maz:flex maz:gap-1;
   }
 }
 
 main {
-  @apply maz-flex maz-min-h-screen maz-flex-col maz-padded-container;
+  @apply maz:flex maz:min-h-screen maz:flex-col maz:padded-container;
 
   .content {
-    @apply maz-flex maz-flex-1 maz-flex-col maz-py-4;
+    @apply maz:flex maz:flex-1 maz:flex-col maz:py-4;
   }
 }
 </style>

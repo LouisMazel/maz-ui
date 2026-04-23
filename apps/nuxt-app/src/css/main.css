@@ -1,10 +1,18 @@
+@import "tailwindcss" prefix(maz);
+@import "maz-ui/src/css/index.css";
+@import "maz-ui/src/tailwindcss/theme.css";
+@import "maz-ui/src/tailwindcss/utilities.css";
+
+@source "./../**/*.vue";
+@source "./../**/*.ts";
+
 /* stylelint-disable selector-id-pattern */
 html {
   font-size: var(--maz-base-font-size);
   font-family: var(--maz-font-family);
-  background-color: hsl(var(--maz-background));
-  color: hsl(var(--maz-foreground));
+  background-color: var(--maz-background);
+  color: var(--maz-foreground);
 
-  @apply maz-min-h-screen maz-h-screen maz-overflow-y-auto;
+  @apply maz:min-h-screen maz:h-screen maz:overflow-y-auto;
 }
 /* stylelint-enable selector-id-pattern */

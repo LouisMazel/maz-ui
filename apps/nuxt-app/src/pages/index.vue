@@ -52,7 +52,7 @@ useFormField('select', {
 </script>
 
 <template>
-  <div class="home maz-h-screen">
+  <div class="home maz:h-screen">
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
@@ -83,7 +83,7 @@ useFormField('select', {
         </template>
 
         <template #default>
-          <div class="maz-p-4">
+          <div class="maz:p-4">
             Hello
           </div>
         </template>
