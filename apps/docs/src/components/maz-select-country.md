@@ -50,13 +50,13 @@ const selectedCountry = ref('FR')
 Configure the component to display languages instead of countries by setting the appropriate `displayNamesOptions`.
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-4 maz-flex-wrap">
+  <div class="maz:flex maz:gap-4 maz:flex-wrap">
     <MazSelectCountry
       v-model="selectedLanguage"
       label="Select a language"
       :display-names-options="{ type: 'language' }"
     />
-    <div class="maz-text-sm maz-text-muted">
+    <div class="maz:text-sm maz:text-muted">
       Selected: {{ selectedLanguage || 'None' }}
     </div>
   </div>
@@ -85,9 +85,9 @@ const selectedLanguage = ref('en')
 ## Sizes and colors
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4">
-    <div class="maz-space-y-4">
-      <h4 class="maz-font-semibold">Sizes</h4>
+  <div class="maz:grid maz:grid-cols-1 maz:md:grid-cols-2 maz:gap-4">
+    <div class="maz:space-y-4">
+      <h4 class="maz:font-semibold">Sizes</h4>
       <MazSelectCountry
         v-model="sizeExample1"
         size="sm"
@@ -104,8 +104,8 @@ const selectedLanguage = ref('en')
         label="Large"
       />
     </div>
-    <div class="maz-space-y-4">
-      <h4 class="maz-font-semibold">Colors</h4>
+    <div class="maz:space-y-4">
+      <h4 class="maz:font-semibold">Colors</h4>
       <MazSelectCountry
         v-model="colorExample1"
         color="primary"
@@ -172,7 +172,7 @@ const selectedLanguage = ref('en')
 You can prioritize certain countries to appear at the top of the list using the `preferredCodes` prop.
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-4 maz-flex-wrap">
+  <div class="maz:flex maz:gap-4 maz:flex-wrap">
     <MazSelectCountry
       v-model="preferredExample"
       label="European countries first"
@@ -200,9 +200,9 @@ You can prioritize certain countries to appear at the top of the list using the 
 Control which countries are displayed using `onlyCodes` to show only specific countries, or `ignoredCodes` to exclude certain ones.
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4">
+  <div class="maz:grid maz:grid-cols-1 maz:md:grid-cols-2 maz:gap-4">
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Only European countries</h4>
+      <h4 class="maz:font-semibold maz:mb-2">Only European countries</h4>
       <MazSelectCountry
         v-model="europeExample"
         label="European countries only"
@@ -210,7 +210,7 @@ Control which countries are displayed using `onlyCodes` to show only specific co
       />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Exclude specific countries</h4>
+      <h4 class="maz:font-semibold maz:mb-2">Exclude specific countries</h4>
       <MazSelectCountry
         v-model="excludeExample"
         label="All except some countries"
@@ -247,9 +247,9 @@ Control which countries are displayed using `onlyCodes` to show only specific co
 Configure how country/language names are displayed using the `displayNamesOptions` prop, which leverages the browser's `Intl.DisplayNames` API.
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4">
+  <div class="maz:grid maz:grid-cols-1 maz:md:grid-cols-2 maz:gap-4">
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Short country names</h4>
+      <h4 class="maz:font-semibold maz:mb-2">Short country names</h4>
       <MazSelectCountry
         v-model="shortExample"
         label="Short names"
@@ -257,7 +257,7 @@ Configure how country/language names are displayed using the `displayNamesOption
       />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Languages with narrow style</h4>
+      <h4 class="maz:font-semibold maz:mb-2">Languages with narrow style</h4>
       <MazSelectCountry
         v-model="languageNarrowExample"
         label="Language names (narrow)"
@@ -296,7 +296,7 @@ Configure how country/language names are displayed using the `displayNamesOption
 Hide country flags using the `hideFlags` prop for a cleaner text-only interface.
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-4 maz-flex-wrap">
+  <div class="maz:flex maz:gap-4 maz:flex-wrap">
     <MazSelectCountry
       v-model="noFlagsExample"
       label="Countries without flags"
@@ -326,9 +326,9 @@ Hide country flags using the `hideFlags` prop for a cleaner text-only interface.
 Override the default locale to display country/language names in a specific language.
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4">
+  <div class="maz:grid maz:grid-cols-1 maz:md:grid-cols-2 maz:gap-4">
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Countries in French</h4>
+      <h4 class="maz:font-semibold maz:mb-2">Countries in French</h4>
       <MazSelectCountry
         v-model="frenchExample"
         label="Pays (French)"
@@ -336,7 +336,7 @@ Override the default locale to display country/language names in a specific lang
       />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Countries in Spanish</h4>
+      <h4 class="maz:font-semibold maz:mb-2">Countries in Spanish</h4>
       <MazSelectCountry
         v-model="spanishExample"
         label="País (Spanish)"
@@ -373,8 +373,8 @@ Override the default locale to display country/language names in a specific lang
 The component supports all the standard form states for better user experience.
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4">
-    <div class="maz-space-y-4">
+  <div class="maz:grid maz:grid-cols-1 maz:md:grid-cols-2 maz:gap-4">
+    <div class="maz:space-y-4">
       <MazSelectCountry
         v-model="successExample"
         label="Success state"
@@ -388,7 +388,7 @@ The component supports all the standard form states for better user experience.
         hint="Please verify your selection"
       />
     </div>
-    <div class="maz-space-y-4">
+    <div class="maz:space-y-4">
       <MazSelectCountry
         v-model="errorExample"
         label="Error state"
@@ -446,7 +446,7 @@ The component supports all the standard form states for better user experience.
 Provide your own list of options instead of using the built-in country/language codes.
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-4 maz-flex-wrap">
+  <div class="maz:flex maz:gap-4 maz:flex-wrap">
     <MazSelectCountry
       v-model="customExample"
       label="Custom regions"
@@ -489,7 +489,7 @@ const customRegions = [
 Show country/language codes in the input field instead of names using the `displayCode` prop.
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-4 maz-flex-wrap">
+  <div class="maz:flex maz:gap-4 maz:flex-wrap">
     <MazSelectCountry
       v-model="codeDisplayExample"
       label="Display country codes"
@@ -519,7 +519,7 @@ Show country/language codes in the input field instead of names using the `displ
 Combine multiple features for complex use cases, such as business applications requiring specific country lists with custom styling.
 
 <ComponentDemo>
-  <div class="maz-max-w-md">
+  <div class="maz:max-w-md">
     <MazSelectCountry
       v-model="advancedExample"
       label="Business countries"

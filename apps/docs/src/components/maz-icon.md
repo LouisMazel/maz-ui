@@ -91,7 +91,7 @@ Provide the full src path to the icon
 Can be `xs`, `sm`, `md`, `lg`, `xl`
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-2 maz-flex-wrap maz-items-center">
+  <div class="maz:flex maz:gap-2 maz:flex-wrap maz:items-center">
     <MazIcon v-for="size in ['xs', 'sm', 'md', 'lg', 'xl']" :key="size" :size="size" :icon="icons.MazStar" />
   </div>
 
@@ -117,7 +117,7 @@ Can be any valid CSS size - e.g: `1em`, `1rem`, `10px`, `100%`, `10vw`, `10vh`
 Allowed units: `px`, `em`, `rem`, `%`, `vw`, `vh`, `cm`, `mm`, `in`, `pt`, `pc`, `ex`
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-2 maz-flex-wrap maz-items-center">
+  <div class="maz:flex maz:gap-2 maz:flex-wrap maz:items-center">
     <MazIcon size="0.5em" :icon="icons.MazStar" />
     <MazIcon size="1em" :icon="icons.MazStar" />
     <MazIcon size="24px" :icon="icons.MazStar" />

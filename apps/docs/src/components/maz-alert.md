@@ -38,7 +38,7 @@ MazAlert supports two visual variants: `soft` (default) with transparent backgro
 The soft variant uses a transparent background with colored text.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazAlert color="info" variant="soft" title="Soft Info" content="This is the default soft variant with transparent background." />
     <MazAlert color="success" variant="soft" title="Soft Success" content="Subtle and non-intrusive style." />
     <MazAlert color="destructive" variant="soft" title="Soft Error" content="Easy on the eyes while still noticeable." />
@@ -62,7 +62,7 @@ The soft variant uses a transparent background with colored text.
 The solid variant uses the full color as background with contrasting text.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazAlert color="info" variant="solid" title="Solid Info" content="Full color background for high visibility." />
     <MazAlert color="success" variant="solid" title="Solid Success" content="Great for important notifications." />
     <MazAlert color="destructive" variant="solid" title="Solid Error" content="Impossible to miss critical alerts." />
@@ -84,7 +84,7 @@ The solid variant uses the full color as background with contrasting text.
 ### All colors with solid variant
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazAlert v-for="color in colors" :key="color" :color="color" variant="solid" :title="capitalize(color)" :content="`Solid ${color} alert.`" />
   </div>
 
@@ -108,7 +108,7 @@ The solid variant uses the full color as background with contrasting text.
 MazAlert supports all theme colors to convey different types of messages.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazAlert v-for="color in colors" :key="color" :color="color" :title="capitalize(color)" :content="`This is a ${color} alert message.`" />
   </div>
 
@@ -139,7 +139,7 @@ Use slots for more complex content with custom HTML.
     <template #title>
       3 errors found
     </template>
-    <ul class="maz-m-0 maz-list-inside maz-list-disc maz-pl-0">
+    <ul class="maz:m-0 maz:list-inside maz:list-disc maz:pl-0">
       <li>firstname - Invalid length: Expected >=5 but received 0</li>
       <li>lastname - Invalid length: Expected >=2 but received 0</li>
       <li>age - Invalid type: Expected number but received ""</li>
@@ -154,7 +154,7 @@ Use slots for more complex content with custom HTML.
     <template #title>
       3 errors found
     </template>
-    <ul class="maz-m-0 maz-list-inside maz-list-disc maz-pl-0">
+    <ul class="maz:m-0 maz:list-inside maz:list-disc maz:pl-0">
       <li>firstname - Invalid length: Expected >=5 but received 0</li>
       <li>lastname - Invalid length: Expected >=2 but received 0</li>
       <li>age - Invalid type: Expected number but received ""</li>
@@ -171,7 +171,7 @@ Use slots for more complex content with custom HTML.
 Remove the border with `:bordered="false"`.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazAlert color="success" title="Without border" content="This alert has no border." :bordered="false" />
     <MazAlert color="success" title="With border (default)" content="This alert has a border." />
   </div>
@@ -203,7 +203,7 @@ Remove the border with `:bordered="false"`.
 Customize the border radius with the `rounded-size` prop.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazAlert v-for="size in roundedSizes" :key="size" :rounded-size="size" :title="`Rounded: ${size}`" content="Customize the border radius." />
   </div>
 
@@ -230,7 +230,7 @@ Customize the border radius with the `rounded-size` prop.
 Hide the default icon with `hide-icon`.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazAlert color="warning" title="With icon (default)" content="The icon is visible." />
     <MazAlert color="warning" title="Without icon" content="The icon is hidden." hide-icon />
   </div>
@@ -275,7 +275,7 @@ Provide a custom icon using the `icon` prop.
 You can use either title, content, or both.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazAlert color="info" title="Title only alert" />
     <MazAlert color="success" content="Content only alert without a title." />
     <MazAlert color="warning" title="Both title and content" content="This alert has both." />
@@ -300,7 +300,7 @@ You can use either title, content, or both.
 
 <ComponentDemo>
   <MazAlert color="destructive" title="Please fix the following errors:">
-    <ul class="maz-m-0 maz-list-inside maz-list-disc maz-pl-0">
+    <ul class="maz:m-0 maz:list-inside maz:list-disc maz:pl-0">
       <li>Email address is required</li>
       <li>Password must be at least 8 characters</li>
     </ul>
@@ -311,7 +311,7 @@ You can use either title, content, or both.
 ```vue
 <template>
   <MazAlert color="destructive" title="Please fix the following errors:">
-    <ul class="maz-m-0 maz-list-inside maz-list-disc maz-pl-0">
+    <ul class="maz:m-0 maz:list-inside maz:list-disc maz:pl-0">
       <li>Email address is required</li>
       <li>Password must be at least 8 characters</li>
     </ul>

@@ -23,12 +23,12 @@ description: Get country flag from flagcdn.com with a simple function call
       <MazBadge
         pastel
         size="0.7rem"
-        class="maz-w-9"
-        :class="{ 'maz-text-muted': !isSelected }"
+        class="maz:w-9"
+        :class="{ 'maz:text-muted': !isSelected }"
       >
         {{ option.value }}
       </MazBadge>
-      <span :class="{ 'maz-font-semibold': isSelected }">
+      <span :class="{ 'maz:font-semibold': isSelected }">
         {{ option.label }}
       </span>
     </div>
@@ -53,7 +53,7 @@ description: Get country flag from flagcdn.com with a simple function call
 
 ## Sizing
 
-<div class="maz-gap-2 maz-flex maz-flex-wrap maz-items-center">
+<div class="maz:gap-2 maz:flex maz:flex-wrap maz:items-center">
   <img
     v-for="{ src, size, countryCode } in sizedFlags"
     :key="src"

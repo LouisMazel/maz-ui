@@ -27,7 +27,7 @@ If you want to increase the border width, you must just add padding @default: `v
       Hover this component <br />
       To see the magic appear
     </h3>
-    <div class="maz-flex maz-gap-2">
+    <div class="maz:flex maz:gap-2">
       <MazBtn color="contrast" @click="setColorMode('light')">
         Switch to light mode
       </MazBtn>
@@ -66,7 +66,7 @@ const { setColorMode } = useTheme()
 ## Effect with multiple cards and with secondary color
 
 <ComponentDemo>
-  <div class="maz-grid maz-gap-4 maz-grid-cols-1 maz-mob-l:grid-cols-2 maz-tab-l:grid-cols-3">
+  <div class="maz:grid maz:gap-4 maz:grid-cols-1 maz:mob-l:grid-cols-2 maz:tab-l:grid-cols-3">
     <MazCardSpotlight v-for="competition of competitions" :key="competition.label" color="secondary">
       <div style="display: flex;">
         <MazAvatar
@@ -75,11 +75,11 @@ const { setColorMode } = useTheme()
           style="margin-right: 16px;"
           size="0.8rem"
         />
-        <div style="display: flex; flex-direction: column;" class="maz-truncate">
-          <span class="maz-truncate">
+        <div style="display: flex; flex-direction: column;" class="maz:truncate">
+          <span class="maz:truncate">
             {{ competition.label }}
           </span>
-          <span class="maz-truncate">
+          <span class="maz:truncate">
             {{ competition.area }}
           </span>
         </div>

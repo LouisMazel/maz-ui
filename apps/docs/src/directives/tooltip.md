@@ -60,11 +60,11 @@ import { vTooltip } from 'maz-ui/directives'
 ## Colors
 
 <ComponentDemo>
-  <p class="maz-mb-4">
+  <p class="maz:mb-4">
     Hover the buttons
   </p>
   <div
-    class="maz-flex maz-gap-3 maz-flex-wrap"
+    class="maz:flex maz:gap-3 maz:flex-wrap"
   >
     <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'primary' }">
       Primary
@@ -144,7 +144,7 @@ You can change the position of the tooltip by passing a `position` option or usi
 
 <ComponentDemo>
   <div
-    class="maz-flex maz-gap-3 maz-flex-wrap"
+    class="maz:flex maz:gap-3 maz:flex-wrap"
   >
     <MazBtn v-tooltip.bottom="{ text: 'Tooltip text' }">
       Bottom
@@ -230,7 +230,7 @@ You can also use HTML content in the tooltip by passing a string to the `html` o
 
 <ComponentDemo>
   <div
-    class="maz-flex maz-gap-3 maz-flex-wrap"
+    class="maz:flex maz:gap-3 maz:flex-wrap"
   >
     <MazBtn v-tooltip="{ html: '<strong>Tooltip</strong> text <br> with <br> line breaks' }">
       HTML
@@ -254,9 +254,9 @@ You can customize the tooltip by passing a `panelClass` or `panelStyle` option.
 
 <ComponentDemo>
   <div
-    class="maz-flex maz-gap-3 maz-flex-wrap"
+    class="maz:flex maz:gap-3 maz:flex-wrap"
   >
-    <MazBtn v-tooltip="{ text: 'Custom panel class', panelClass: 'maz-text-red-500!' }">
+    <MazBtn v-tooltip="{ text: 'Custom panel class', panelClass: 'maz:text-red-500!' }">
       panelClass
     </MazBtn>
     <MazBtn v-tooltip="{ text: 'Custom panel style', panelStyle: 'background-color: red; color: white;' }">
@@ -267,7 +267,7 @@ You can customize the tooltip by passing a `panelClass` or `panelStyle` option.
 <template #code>
 
 ```html
-<MazBtn v-tooltip="{ text: 'Custom panel class', panelClass: 'maz-text-red-500!' }">
+<MazBtn v-tooltip="{ text: 'Custom panel class', panelClass: 'maz:text-red-500!' }">
   panelClass
 </MazBtn>
 <MazBtn v-tooltip="{ text: 'Custom panel style', panelStyle: 'background-color: red; color: white;' }">
@@ -288,7 +288,7 @@ The `adaptive` trigger will use the `click` trigger on touch devices (mobile and
 
 <ComponentDemo>
   <div
-    class="maz-flex maz-gap-3 maz-flex-wrap"
+    class="maz:flex maz:gap-3 maz:flex-wrap"
   >
     <MazBtn v-tooltip="{ text: 'Tooltip text', trigger: 'click' }">
       Click
@@ -326,7 +326,7 @@ The `offset` (in px) option allows you to adjust the position of the tooltip rel
 
 <ComponentDemo>
   <div
-    class="maz-flex maz-gap-3 maz-flex-wrap"
+    class="maz:flex maz:gap-3 maz:flex-wrap"
   >
     <MazBtn v-tooltip="{ text: 'Tooltip text', offset: 0 }">
       0
@@ -368,7 +368,7 @@ The `offset` (in px) option allows you to adjust the position of the tooltip rel
 ## Open programmatically
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-3 maz-flex-wrap">
+  <div class="maz:flex maz:gap-3 maz:flex-wrap">
     <MazBtn v-tooltip.top="{ text: 'Tooltip text', open: open }">
       Primary
     </MazBtn>

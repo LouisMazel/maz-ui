@@ -74,13 +74,13 @@ import MazBtn from 'maz-ui/components/MazBtn'
 Use the `orientation` prop to arrange buttons horizontally (`row`) or vertically (`col`).
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-8 maz-flex-wrap">
+  <div class="maz:flex maz:gap-8 maz:flex-wrap">
     <div>
-      <p class="maz-mb-2 maz-text-muted">Row (default)</p>
+      <p class="maz:mb-2 maz:text-muted">Row (default)</p>
       <MazBtnGroup :items="basicItems" orientation="row" />
     </div>
     <div>
-      <p class="maz-mb-2 maz-text-muted">Column</p>
+      <p class="maz:mb-2 maz:text-muted">Column</p>
       <MazBtnGroup :items="basicItems" orientation="col" />
     </div>
   </div>
@@ -102,7 +102,7 @@ Use the `orientation` prop to arrange buttons horizontally (`row`) or vertically
 Use the `size` prop to apply a size to all buttons in the group.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4 maz-items-start">
+  <div class="maz:flex maz:flex-col maz:gap-4 maz:items-start">
     <MazBtnGroup v-for="size in sizes" :key="size" :items="basicItems" :size="size" />
   </div>
 
@@ -127,7 +127,7 @@ Use the `size` prop to apply a size to all buttons in the group.
 Use the `color` prop to apply a color to all buttons in the group.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4 maz-items-start">
+  <div class="maz:flex maz:flex-col maz:gap-4 maz:items-start">
     <MazBtnGroup v-for="color in colors" :key="color" :items="basicItems" :color="color" />
   </div>
 
@@ -214,7 +214,7 @@ const items: MazButtonGroupOption[] = [
 <br />
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4 maz-items-start">
+  <div class="maz:flex maz:flex-col maz:gap-4 maz:items-start">
     <MazBtnGroup>
       <MazBtn outlined>Edit</MazBtn>
       <MazBtn outlined>Save</MazBtn>

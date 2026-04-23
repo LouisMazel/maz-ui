@@ -78,8 +78,8 @@ You can use the `label` and `append` slots to customize the label and the append
     name="comment"
   >
     <template #label>
-      <MazIcon name="envelope" class="maz-text-xl" />
-      <span class="maz-ms-2">
+      <MazIcon name="envelope" class="maz:text-xl" />
+      <span class="maz:ms-2">
         The custom label
       </span>
     </template>
@@ -113,8 +113,8 @@ function sendMessage() {
     name="comment"
   >
     <template #label>
-      <MazIcon name="envelope" class="maz-text-xl" />
-      <span class="maz-ms-2">
+      <MazIcon name="envelope" class="maz:text-xl" />
+      <span class="maz:ms-2">
         The custom label
       </span>
     </template>
@@ -133,7 +133,7 @@ function sendMessage() {
 You can use the `hint` attribute to display a hint message. This will replace the label.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazTextarea
       v-model="value"
       name="comment"
@@ -161,7 +161,7 @@ You can use the `hint` attribute to display a hint message. This will replace th
       hint="This is a hint message"
       warning
     />
-    <hr class="maz-my-4">
+    <hr class="maz:my-4">
     <MazTextarea
       v-model="value"
       name="comment"
@@ -222,7 +222,7 @@ You can use the `hint` attribute to display a hint message. This will replace th
     hint="This is a hint message"
     warning
   />
-  <hr class="maz-my-4">
+  <hr class="maz:my-4">
   <MazTextarea
     v-model="value"
     name="comment"

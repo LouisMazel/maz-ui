@@ -16,38 +16,38 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
 ## Interactive Demo
 
 <ComponentDemo expanded>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <!-- Product Selection Demo -->
     <MazCard>
       <template #title>
-        <div class="maz-flex maz-items-center maz-gap-3">
+        <div class="maz:flex maz:items-center maz:gap-3">
           <MazAvatar src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100" size="lg" />
           <div>
-            <h3 class="maz-text-lg maz-font-semibold">Nike Air Max</h3>
-            <p class="maz-text-muted maz-text-sm">Premium Running Shoes</p>
+            <h3 class="maz:text-lg maz:font-semibold">Nike Air Max</h3>
+            <p class="maz:text-muted maz:text-sm">Premium Running Shoes</p>
           </div>
         </div>
       </template>
-      <div class="maz-space-y-4">
-        <div class="maz-flex maz-items-center maz-justify-between">
-          <span class="maz-font-medium">Price:</span>
-          <span class="maz-text-xl maz-font-bold maz-text-primary">$129.99</span>
+      <div class="maz:space-y-4">
+        <div class="maz:flex maz:items-center maz:justify-between">
+          <span class="maz:font-medium">Price:</span>
+          <span class="maz:text-xl maz:font-bold maz:text-primary">$129.99</span>
         </div>
-        <div class="maz-flex maz-gap-2">
+        <div class="maz:flex maz:gap-2">
           <MazBtn color="primary" @click="openProductOptions">
-            <MazIcon name="cog" class="maz-me-2" />
+            <MazIcon name="cog" class="maz:me-2" />
             Customize Options
           </MazBtn>
           <MazBtn color="secondary" @click="openUserSettings">
-            <MazIcon name="user" class="maz-me-2" />
+            <MazIcon name="user" class="maz:me-2" />
             Profile Settings
           </MazBtn>
         </div>
       </div>
     </MazCard>
-    <MazCard v-if="selectedOptions.size || selectedOptions.color" class="maz-bg-secondary/10">
+    <MazCard v-if="selectedOptions.size || selectedOptions.color" class="maz:bg-secondary/10">
       <template #title>Selected Options</template>
-      <div class="maz-flex maz-gap-4">
+      <div class="maz:flex maz:gap-4">
         <MazBadge v-if="selectedOptions.size" color="info">
           Size: {{ selectedOptions.size }}
         </MazBadge>
@@ -61,11 +61,11 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
     </MazCard>
   </div>
   <MazBottomSheet v-model="isProductOpen" title="Customize Your Shoes">
-    <div class="maz-space-y-6 maz-p-6">
+    <div class="maz:space-y-6 maz:p-6">
       <!-- Size Selection -->
       <div>
-        <h4 class="maz-text-lg maz-font-semibold maz-mb-3">Select Size</h4>
-        <div class="maz-grid maz-grid-cols-4 maz-gap-2">
+        <h4 class="maz:text-lg maz:font-semibold maz:mb-3">Select Size</h4>
+        <div class="maz:grid maz:grid-cols-4 maz:gap-2">
           <MazBtn
             v-for="size in sizes"
             :key="size"
@@ -78,20 +78,20 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
         </div>
       </div>
       <div>
-        <h4 class="maz-text-lg maz-font-semibold maz-mb-3">Select Color</h4>
-        <div class="maz-grid maz-grid-cols-3 maz-gap-3">
+        <h4 class="maz:text-lg maz:font-semibold maz:mb-3">Select Color</h4>
+        <div class="maz:grid maz:grid-cols-3 maz:gap-3">
           <div
             v-for="color in colors"
             :key="color.name"
-            class="maz-flex maz-flex-col maz-items-center maz-cursor-pointer maz-p-3 maz-rounded-lg maz-border-2 maz-transition-all"
-            :class="selectedOptions.color === color.name ? 'maz-border-primary maz-bg-primary/10' : 'maz-border-border maz-hover:border-primary/50'"
+            class="maz:flex maz:flex-col maz:items-center maz:cursor-pointer maz:p-3 maz:rounded-lg maz:border-2 maz:transition-all"
+            :class="selectedOptions.color === color.name ? 'maz:border-primary maz:bg-primary/10' : 'maz:border-border maz:hover:border-primary/50'"
             @click="selectedOptions.color = color.name"
           >
             <div
-              class="maz-w-8 maz-h-8 maz-rounded-full maz-mb-2"
+              class="maz:w-8 maz:h-8 maz:rounded-full maz:mb-2"
               :style="{ backgroundColor: color.value }"
             />
-            <span class="maz-text-sm maz-font-medium">{{ color.name }}</span>
+            <span class="maz:text-sm maz:font-medium">{{ color.name }}</span>
           </div>
         </div>
       </div>
@@ -103,9 +103,9 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
           :max="10"
         />
       </div>
-      <div class="maz-flex maz-gap-3 maz-pt-4">
-        <MazBtn color="primary" class="maz-flex-1" @click="addToCart">
-          <MazIcon name="shopping-cart" class="maz-me-2" />
+      <div class="maz:flex maz:gap-3 maz:pt-4">
+        <MazBtn color="primary" class="maz:flex-1" @click="addToCart">
+          <MazIcon name="shopping-cart" class="maz:me-2" />
           Add to Cart (${{ (129.99 * quantity).toFixed(2) }})
         </MazBtn>
         <MazBtn color="secondary" @click="isProductOpen = false">
@@ -116,16 +116,16 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
   </MazBottomSheet>
 
   <MazBottomSheet v-model="isUserOpen" title="Profile Settings">
-    <div class="maz-space-y-6 maz-p-6">
-      <div class="maz-flex maz-items-center maz-gap-4 maz-p-4 maz-bg-secondary/10 maz-rounded-lg">
+    <div class="maz:space-y-6 maz:p-6">
+      <div class="maz:flex maz:items-center maz:gap-4 maz:p-4 maz:bg-secondary/10 maz:rounded-lg">
         <MazAvatar src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100" size="xl" />
         <div>
-          <h4 class="maz-font-semibold">John Doe</h4>
-          <p class="maz-text-muted maz-text-sm">john.doe@example.com</p>
+          <h4 class="maz:font-semibold">John Doe</h4>
+          <p class="maz:text-muted maz:text-sm">john.doe@example.com</p>
           <MazBadge color="success" size="xs">Premium Member</MazBadge>
         </div>
       </div>
-      <div class="maz-flex maz-gap-4 maz-items-start">
+      <div class="maz:flex maz:gap-4 maz:items-start">
         <MazInput
           v-model="userForm.name"
           label="Full Name"
@@ -144,25 +144,25 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
           placeholder="Select your country"
         />
       </div>
-      <div class="maz-flex maz-gap-4">
-        <div class="maz-flex maz-items-center maz-justify-between maz-p-4 maz-border maz-border-border maz-rounded-lg">
+      <div class="maz:flex maz:gap-4">
+        <div class="maz:flex maz:items-center maz:justify-between maz:p-4 maz:border maz:border-border maz:rounded-lg">
           <div>
-            <p class="maz-font-medium">Email Notifications</p>
-            <p class="maz-text-sm maz-text-muted">Receive updates about your orders</p>
+            <p class="maz:font-medium">Email Notifications</p>
+            <p class="maz:text-sm maz:text-muted">Receive updates about your orders</p>
           </div>
           <MazSwitch v-model="userForm.notifications" />
         </div>
-        <div class="maz-flex maz-items-center maz-justify-between maz-p-4 maz-border maz-border-border maz-rounded-lg">
+        <div class="maz:flex maz:items-center maz:justify-between maz:p-4 maz:border maz:border-border maz:rounded-lg">
           <div>
-            <p class="maz-font-medium">Dark Mode</p>
-            <p class="maz-text-sm maz-text-muted">Switch to dark theme</p>
+            <p class="maz:font-medium">Dark Mode</p>
+            <p class="maz:text-sm maz:text-muted">Switch to dark theme</p>
           </div>
           <MazSwitch v-model="userForm.darkMode" />
         </div>
       </div>
-      <div class="maz-flex maz-gap-3 maz-pt-4">
-        <MazBtn color="primary" class="maz-flex-1" @click="saveSettings">
-          <MazIcon name="check" class="maz-me-2" />
+      <div class="maz:flex maz:gap-3 maz:pt-4">
+        <MazBtn color="primary" class="maz:flex-1" @click="saveSettings">
+          <MazIcon name="check" class="maz:me-2" />
           Save Changes
         </MazBtn>
         <MazBtn color="secondary" @click="isUserOpen = false">
@@ -176,30 +176,30 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
 
 ```vue
 <template>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <!-- Product Card -->
     <MazCard>
       <template #title>
-        <div class="maz-flex maz-items-center maz-gap-3">
+        <div class="maz:flex maz:items-center maz:gap-3">
           <MazAvatar src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100" size="lg" />
           <div>
-            <h3 class="maz-text-lg maz-font-semibold">
+            <h3 class="maz:text-lg maz:font-semibold">
               Nike Air Max
             </h3>
-            <p class="maz-text-sm maz-text-muted">
+            <p class="maz:text-sm maz:text-muted">
               Premium Running Shoes
             </p>
           </div>
         </div>
       </template>
 
-      <div class="maz-space-y-4">
-        <div class="maz-flex maz-items-center maz-justify-between">
-          <span class="maz-font-medium">Price:</span>
-          <span class="maz-text-xl maz-font-bold maz-text-primary">$129.99</span>
+      <div class="maz:space-y-4">
+        <div class="maz:flex maz:items-center maz:justify-between">
+          <span class="maz:font-medium">Price:</span>
+          <span class="maz:text-xl maz:font-bold maz:text-primary">$129.99</span>
         </div>
 
-        <div class="maz-flex maz-gap-2">
+        <div class="maz:flex maz:gap-2">
           <MazBtn color="primary" @click="openProductOptions">
             Customize Options
           </MazBtn>
@@ -213,13 +213,13 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
 
   <!-- Product Options Bottom Sheet -->
   <MazBottomSheet v-model="isProductOpen" title="Customize Your Shoes">
-    <div class="maz-space-y-6 maz-p-6">
+    <div class="maz:space-y-6 maz:p-6">
       <!-- Size Selection -->
       <div>
-        <h4 class="maz-mb-3 maz-text-lg maz-font-semibold">
+        <h4 class="maz:mb-3 maz:text-lg maz:font-semibold">
           Select Size
         </h4>
-        <div class="maz-grid maz-grid-cols-4 maz-gap-2">
+        <div class="maz:grid maz:grid-cols-4 maz:gap-2">
           <MazBtn
             v-for="size in sizes"
             :key="size"
@@ -234,22 +234,22 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
 
       <!-- Color Selection with Visual Swatches -->
       <div>
-        <h4 class="maz-mb-3 maz-text-lg maz-font-semibold">
+        <h4 class="maz:mb-3 maz:text-lg maz:font-semibold">
           Select Color
         </h4>
-        <div class="maz-grid maz-grid-cols-3 maz-gap-3">
+        <div class="maz:grid maz:grid-cols-3 maz:gap-3">
           <div
             v-for="color in colors"
             :key="color.name"
-            class="maz-flex maz-cursor-pointer maz-flex-col maz-items-center maz-rounded-lg maz-border-2 maz-p-3"
-            :class="selectedOptions.color === color.name ? 'maz-border-primary' : 'maz-border-border'"
+            class="maz:flex maz:cursor-pointer maz:flex-col maz:items-center maz:rounded-lg maz:border-2 maz:p-3"
+            :class="selectedOptions.color === color.name ? 'maz:border-primary' : 'maz:border-border'"
             @click="selectedOptions.color = color.name"
           >
             <div
-              class="maz-mb-2 maz-size-8 maz-rounded-full"
+              class="maz:mb-2 maz:size-8 maz:rounded-full"
               :style="{ backgroundColor: color.value }"
             />
-            <span class="maz-text-sm">{{ color.name }}</span>
+            <span class="maz:text-sm">{{ color.name }}</span>
           </div>
         </div>
       </div>
@@ -263,8 +263,8 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
       />
 
       <!-- Actions -->
-      <div class="maz-flex maz-gap-3 maz-pt-4">
-        <MazBtn color="primary" class="maz-flex-1" @click="addToCart">
+      <div class="maz:flex maz:gap-3 maz:pt-4">
+        <MazBtn color="primary" class="maz:flex-1" @click="addToCart">
           Add to Cart (${{ (129.99 * quantity).toFixed(2) }})
         </MazBtn>
         <MazBtn color="secondary" @click="isProductOpen = false">
@@ -275,16 +275,16 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
   </MazBottomSheet>
 
   <MazBottomSheet v-model="isUserOpen" title="Profile Settings">
-    <div class="maz-space-y-6 maz-p-6">
-      <div class="maz-flex maz-items-center maz-gap-4 maz-p-4 maz-bg-secondary/10 maz-rounded-lg">
+    <div class="maz:space-y-6 maz:p-6">
+      <div class="maz:flex maz:items-center maz:gap-4 maz:p-4 maz:bg-secondary/10 maz:rounded-lg">
         <MazAvatar src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100" size="xl" />
         <div>
-          <h4 class="maz-font-semibold">John Doe</h4>
-          <p class="maz-text-muted maz-text-sm">john.doe@example.com</p>
+          <h4 class="maz:font-semibold">John Doe</h4>
+          <p class="maz:text-muted maz:text-sm">john.doe@example.com</p>
           <MazBadge color="success" size="xs">Premium Member</MazBadge>
         </div>
       </div>
-      <div class="maz-space-y-4">
+      <div class="maz:space-y-4">
         <MazInput
           v-model="userForm.name"
           label="Full Name"
@@ -302,24 +302,24 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
           :options="countries"
           placeholder="Select your country"
         />
-        <div class="maz-flex maz-items-center maz-justify-between maz-p-4 maz-border maz-border-border maz-rounded-lg">
+        <div class="maz:flex maz:items-center maz:justify-between maz:p-4 maz:border maz:border-border maz:rounded-lg">
           <div>
-            <p class="maz-font-medium">Email Notifications</p>
-            <p class="maz-text-sm maz-text-muted">Receive updates about your orders</p>
+            <p class="maz:font-medium">Email Notifications</p>
+            <p class="maz:text-sm maz:text-muted">Receive updates about your orders</p>
           </div>
           <MazSwitch v-model="userForm.notifications" />
         </div>
-        <div class="maz-flex maz-items-center maz-justify-between maz-p-4 maz-border maz-border-border maz-rounded-lg">
+        <div class="maz:flex maz:items-center maz:justify-between maz:p-4 maz:border maz:border-border maz:rounded-lg">
           <div>
-            <p class="maz-font-medium">Dark Mode</p>
-            <p class="maz-text-sm maz-text-muted">Switch to dark theme</p>
+            <p class="maz:font-medium">Dark Mode</p>
+            <p class="maz:text-sm maz:text-muted">Switch to dark theme</p>
           </div>
           <MazSwitch v-model="userForm.darkMode" />
         </div>
       </div>
-      <div class="maz-flex maz-gap-3 maz-pt-4">
-        <MazBtn color="primary" class="maz-flex-1" @click="saveSettings">
-          <MazIcon name="check" class="maz-me-2" />
+      <div class="maz:flex maz:gap-3 maz:pt-4">
+        <MazBtn color="primary" class="maz:flex-1" @click="saveSettings">
+          <MazIcon name="check" class="maz:me-2" />
           Save Changes
         </MazBtn>
         <MazBtn color="secondary" @click="isUserOpen = false">

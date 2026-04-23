@@ -13,7 +13,7 @@ description: MazRadio is a standalone component
 
 `v-model="{{chosenColor ?? 'undefined'}}"`
 
-<div class="maz-flex maz-flex-col maz-gap-2">
+<div class="maz:flex maz:flex-col maz:gap-2">
   <MazRadio
     v-for="color in colors"
     v-model="chosenColor"
@@ -68,7 +68,7 @@ const colors: Color[] = [
 
 `v-model="{{chosenSize ?? 'undefined'}}"`
 
-<div class="maz-flex maz-flex-col maz-gap-2">
+<div class="maz:flex maz:flex-col maz:gap-2">
   <MazRadio
     v-for="size in sizes"
     v-model="chosenSize"

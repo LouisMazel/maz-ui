@@ -72,12 +72,12 @@ The directive can accept an options object to customize its behavior:
 <ComponentDemo>
   <div
     style="padding: 50px; background-color: var(--maz-background-300);"
-    class="maz-flex maz-flex-center maz-rounded"
+    class="maz:flex maz:flex-center maz:rounded"
   >
     <MazCard v-click-outside="{ callback: clickedOutsideWithIgnore, ignore: ['.ignore-me'] }">
-      <div class="maz-p-4">
+      <div class="maz:p-4">
         <p>Click outside me (but not on the button below)</p>
-        <MazBtn class="ignore-me maz-mt-2" color="secondary">
+        <MazBtn class="ignore-me maz:mt-2" color="secondary">
           This button is ignored
         </MazBtn>
       </div>
@@ -87,7 +87,7 @@ The directive can accept an options object to customize its behavior:
   <div
     v-if="hasClickedOutsideWithIgnore"
     style="padding: 16px; margin-top: 16px; background-color: var(--maz-warning); color: black;"
-    class="maz-flex maz-flex-center maz-rounded"
+    class="maz:flex maz:flex-center maz:rounded"
   >
     You clicked outside (button clicks are ignored)
   </div>
@@ -129,7 +129,7 @@ The directive can be configured to trigger only once:
 <ComponentDemo>
   <div
     style="padding: 50px; background-color: var(--maz-background-300);"
-    class="maz-flex maz-flex-center maz-rounded"
+    class="maz:flex maz:flex-center maz:rounded"
   >
     <MazCard v-click-outside="{ callback: clickedOnce, once: true }">
       Click outside me (works only once)
@@ -139,7 +139,7 @@ The directive can be configured to trigger only once:
   <div
     v-if="hasClickedOnce"
     style="padding: 16px; margin-top: 16px; background-color: var(--maz-info); color: white;"
-    class="maz-flex maz-flex-center maz-rounded"
+    class="maz:flex maz:flex-center maz:rounded"
   >
     This will only show once!
   </div>
