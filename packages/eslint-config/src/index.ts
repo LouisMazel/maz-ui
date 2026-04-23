@@ -1,18 +1,15 @@
 import type { MazESLintConfig, MazESLintOptions, MazESLintUserConfig } from './types'
 import { readFileSync } from 'node:fs'
-import { createRequire } from 'node:module'
 
 import { join } from 'node:path'
 import antfu from '@antfu/eslint-config'
 import { configs as sonarConfigs } from 'eslint-plugin-sonarjs'
 
-import tailwind from 'eslint-plugin-tailwindcss'
 import vueA11y from 'eslint-plugin-vuejs-accessibility'
 import { baseRules } from './configs/base'
 import { GLOBAL_IGNORES } from './configs/global'
 import { markdown } from './configs/markdown'
 import { sonarjsRules, sonarjsTestRules } from './configs/sonarjs'
-import { tailwindcssRules } from './configs/tailwindcss'
 import { testRules } from './configs/test'
 import { vueRules } from './configs/vue'
 
@@ -35,17 +32,6 @@ function getPackageJson(): Record<string, any> | undefined {
   }
   catch {
     return undefined
-  }
-}
-
-function getEslintMajorVersion(): number {
-  try {
-    const _require = createRequire(import.meta.url)
-    const eslintPkg = _require('eslint/package.json')
-    return Number(eslintPkg.version.split('.')[0])
-  }
-  catch {
-    return 0
   }
 }
 
@@ -136,18 +122,12 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
   }
 
   if (opts.tailwindcss) {
-    // eslint-plugin-tailwindcss uses the removed `context.getSourceCode()` API and is incompatible with ESLint 10+
-    // @see https://github.com/francoismassart/eslint-plugin-tailwindcss/issues
-    if (getEslintMajorVersion() >= 10) {
-      console.warn('[maz-eslint-config] eslint-plugin-tailwindcss is not compatible with ESLint 10+ (uses removed context.getSourceCode API). Tailwind CSS rules are disabled.')
-    }
-    else {
-      // @ts-expect-error - tailwind.configs['flat/recommended'] is not typed correctly
-      additionalConfigs.push(...tailwind.configs['flat/recommended'])
-      additionalConfigs.push({
-        rules: tailwindcssRules,
-      })
-    }
+    // eslint-plugin-tailwindcss v3 only supports Tailwind CSS v3 and uses the
+    // removed context.getSourceCode() API from ESLint 10+. No v4-compatible
+    // replacement exists yet, so the option is a no-op. Kept for backwards
+    // compatibility with configs that still set `tailwindcss: true` and will
+    // be removed in a future major.
+    console.warn('[maz-eslint-config] eslint-plugin-tailwindcss is not compatible with Tailwind v4 / ESLint 10+. Option ignored.')
   }
 
   additionalConfigs.push({
@@ -172,4 +152,4 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
 export type { MazESLintConfig, MazESLintOptions }
 
 // Export individual configs for advanced usage
-export { baseRules, sonarjsRules, sonarjsTestRules, tailwindcssRules, vueRules }
+export { baseRules, sonarjsRules, sonarjsTestRules, vueRules }
