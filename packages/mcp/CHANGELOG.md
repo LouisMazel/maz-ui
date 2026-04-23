@@ -1,5 +1,17 @@
 # Changelog
 
+## v4.9.3 (2026-04-23)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.2...v4.9.3)
+
+### 💅 Refactors
+
+- **@maz-ui/mcp:** Use import attributes 'with' instead of deprecated 'assert' ([4eec201d](https://github.com/LouisMazel/maz-ui/commit/4eec201d))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.9.1 (2026-04-15)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.0...v4.9.1)

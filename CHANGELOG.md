@@ -1,5 +1,25 @@
 # Change Log
 
+## v4.9.3 (2026-04-23)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.2...v4.9.3)
+
+### 🩹 Fixes
+
+- **maz-ui:** Prevent spurious router link warning on MazBtn, MazCard and MazAvatar ([235da67c](https://github.com/LouisMazel/maz-ui/commit/235da67c))
+
+### 💅 Refactors
+
+- **@maz-ui/mcp:** Use import attributes 'with' instead of deprecated 'assert' ([4eec201d](https://github.com/LouisMazel/maz-ui/commit/4eec201d))
+
+### 📖 Documentation
+
+- **maz-ui:** Update README icon import examples to per-icon paths ([d2b56e88](https://github.com/LouisMazel/maz-ui/commit/d2b56e88))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.9.2 (2026-04-22)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.1...v4.9.2)
