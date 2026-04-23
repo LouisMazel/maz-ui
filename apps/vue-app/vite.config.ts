@@ -1,5 +1,6 @@
 import { fileURLToPath, URL } from 'node:url'
 import { MazIconsResolver } from '@maz-ui/icons/resolvers'
+import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import { MazComponentsResolver, MazDirectivesResolver, MazModulesResolver } from 'maz-ui/resolvers'
 import { visualizer } from 'rollup-plugin-visualizer'
@@ -13,6 +14,7 @@ import VueSvgLoader from 'vite-svg-loader'
 export default defineConfig({
   plugins: [
     vue(),
+    tailwindcss(),
     vueDevTools(),
     VueSvgLoader(),
     dts({

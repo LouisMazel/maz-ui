@@ -1,5 +1,5 @@
 <template>
-  <div class="maz-flex maz-flex-col maz-gap-4 maz-padded-container">
+  <div class="maz:flex maz:flex-col maz:gap-4 maz:padded-container">
     <ColorScale color="background" />
     <ColorScale color="primary" />
     <ColorScale color="secondary" />

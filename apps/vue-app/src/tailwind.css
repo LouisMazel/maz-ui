@@ -1,0 +1,14 @@
+/*
+ * Vue-app Tailwind v4 entry.
+ *
+ * Uses the maz-ui design system (Scenario A from Phase 6.4): imports
+ * maz-ui's base CSS + theme bridge + custom utilities, then adds @source
+ * directives so Tailwind scans this app's own templates too.
+ */
+@import "tailwindcss" prefix(maz);
+@import "maz-ui/src/css/index.css";
+@import "maz-ui/src/tailwindcss/theme.css";
+@import "maz-ui/src/tailwindcss/utilities.css";
+
+@source "./**/*.vue";
+@source "./**/*.ts";
