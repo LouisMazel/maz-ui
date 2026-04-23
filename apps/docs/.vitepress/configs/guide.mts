@@ -8,6 +8,7 @@ export const guide = {
     { text: 'Vue', link: '/guide/vue' },
     { text: 'Nuxt', link: '/guide/nuxt' },
     { text: 'Theming', link: '/guide/themes' },
+    { text: 'Tailwind CSS', link: '/guide/tailwind' },
     { text: 'Translations (i18n)', link: '/guide/translations' },
     { text: 'MazUiProvider', link: '/guide/maz-ui-provider' },
     { text: 'Resolvers (auto-imports)', link: '/guide/resolvers' },

@@ -103,6 +103,14 @@
       "module": "./dist/tailwindcss/index.js",
       "default": "./dist/tailwindcss/index.js"
     },
+    "./tailwindcss/theme.css": "./src/tailwindcss/theme.css",
+    "./tailwindcss/theme-colors.css": "./src/tailwindcss/theme-colors.css",
+    "./tailwindcss/theme-radius.css": "./src/tailwindcss/theme-radius.css",
+    "./tailwindcss/theme-breakpoints.css": "./src/tailwindcss/theme-breakpoints.css",
+    "./tailwindcss/theme-shadows.css": "./src/tailwindcss/theme-shadows.css",
+    "./tailwindcss/theme-z-index.css": "./src/tailwindcss/theme-z-index.css",
+    "./tailwindcss/theme-typography.css": "./src/tailwindcss/theme-typography.css",
+    "./tailwindcss/utilities.css": "./src/tailwindcss/utilities.css",
     "./tailwindcss/*": {
       "types": "./dist/tailwindcss/*.d.ts",
       "import": "./dist/tailwindcss/*.js",
@@ -132,6 +140,7 @@
     "README.md",
     "bin",
     "dist",
+    "src/tailwindcss",
     "svg",
     "tailwindcss"
   ],
