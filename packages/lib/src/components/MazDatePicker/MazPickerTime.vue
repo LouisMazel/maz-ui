@@ -320,6 +320,8 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
 </template>
 
 <style scoped>
+@reference "../../tailwindcss/tailwind.css";
+
 .m-date-picker-time {
   @apply maz:relative maz:flex;
 

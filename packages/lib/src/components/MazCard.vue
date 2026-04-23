@@ -265,7 +265,9 @@ function toggleCollapse() {
 </template>
 
 <style scoped>
-  .m-card {
+@reference "../tailwindcss/tailwind.css";
+
+.m-card {
   @apply maz:relative maz:inline-flex maz:max-h-full maz:flex-col maz:bg-surface maz:dark:border maz:dark:border-divider;
 
   &.--block {

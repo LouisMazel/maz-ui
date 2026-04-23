@@ -242,6 +242,8 @@ function updateQuery(value?: string) {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-checklist {
   @apply maz:flex maz:flex-col maz:gap-4;
 

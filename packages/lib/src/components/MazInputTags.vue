@@ -221,6 +221,8 @@ const buttonSize = computed(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-input-tags {
   @apply maz:relative maz:inline-flex maz:flex-wrap maz:gap-1
       maz:overflow-hidden maz:rounded maz:border maz:bg-surface maz:px-[0.5em] maz:py-[0.25em] maz:align-top maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:bg-surface-400 maz:border-divider maz:dark:border-divider-400;

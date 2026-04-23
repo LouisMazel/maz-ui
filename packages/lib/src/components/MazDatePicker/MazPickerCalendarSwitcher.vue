@@ -78,7 +78,9 @@ function nextMonth() {
 </template>
 
 <style scoped>
-  .m-date-picker-calendar-switcher {
+@reference "../../tailwindcss/tailwind.css";
+
+.m-date-picker-calendar-switcher {
   @apply maz:flex maz:space-x-2 maz:border-b maz:border-divider maz:px-2 maz:py-1;
 
   &__date {

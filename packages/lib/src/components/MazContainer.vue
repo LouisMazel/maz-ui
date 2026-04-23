@@ -121,6 +121,8 @@ const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-container {
   @apply maz:relative maz:inline-flex maz:flex-col;
 

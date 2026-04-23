@@ -94,6 +94,8 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-animated-element {
   will-change: transform, opacity, filter;
   transform: translateZ(0);

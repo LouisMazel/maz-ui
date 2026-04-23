@@ -361,7 +361,9 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
 </template>
 
 <style scoped>
-  .m-slider {
+@reference "../tailwindcss/tailwind.css";
+
+.m-slider {
   padding: 1em 1.5rem;
 
   &__bar {

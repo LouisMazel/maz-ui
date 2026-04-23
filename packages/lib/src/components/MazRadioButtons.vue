@@ -212,7 +212,9 @@ function onFocus(index: number, event: FocusEvent) {
 </template>
 
 <style scoped>
-  .m-radio-buttons {
+@reference "../tailwindcss/tailwind.css";
+
+.m-radio-buttons {
   @apply maz:inline-flex maz:gap-1 maz:align-top maz:flex-col;
 
   &__wrapper {

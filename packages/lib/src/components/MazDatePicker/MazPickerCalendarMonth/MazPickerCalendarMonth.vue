@@ -80,7 +80,9 @@ const calendarDateWithOffset = computed({
 </template>
 
 <style scoped>
-  .maz-picker-calendar-month {
+@reference "../../../tailwindcss/tailwind.css";
+
+.maz-picker-calendar-month {
   @apply maz:w-full maz:overflow-hidden maz:py-2;
 
   &.--has-padding {

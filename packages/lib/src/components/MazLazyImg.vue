@@ -115,7 +115,9 @@ const sources = computed(() => {
 </template>
 
 <style scoped>
-  .m-lazy-img-component {
+@reference "../tailwindcss/tailwind.css";
+
+.m-lazy-img-component {
   @apply maz:relative maz:inline-flex maz:align-top maz:flex-center;
 
   &.--block {
@@ -131,7 +133,7 @@ const sources = computed(() => {
   }
 
   &.--height-full img {
-    @apply maz:max-h-full maz:w-min maz:max-w-min !important;
+    @apply maz:max-h-full! maz:w-min! maz:max-w-min!;
   }
 
   &.m-lazy-error:not(.m-lazy-fallback) {

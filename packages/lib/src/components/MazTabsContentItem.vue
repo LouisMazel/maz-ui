@@ -35,7 +35,9 @@ const isCurrentTab = computed(() => currentTab.value - 1 === itemTabNumber.value
 </template>
 
 <style scoped>
-  .m-tabs-content-item {
+@reference "../tailwindcss/tailwind.css";
+
+.m-tabs-content-item {
   @apply maz:relative maz:top-0 maz:w-full;
 
   flex: 1 0 auto;

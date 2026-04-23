@@ -286,7 +286,9 @@ function isLastStep(step: number): boolean {
 </template>
 
 <style scoped>
-  .m-stepper {
+@reference "../tailwindcss/tailwind.css";
+
+.m-stepper {
   &__right {
     @apply maz:truncate maz:text-end maz:text-sm maz:text-primary;
   }
@@ -326,7 +328,7 @@ function isLastStep(step: number): boolean {
 
     &.--success {
       .m-stepper__count__circle {
-        @apply maz-scale-100 maz:bg-success;
+        @apply maz:scale-100 maz:bg-success;
       }
 
       .m-stepper__right {
@@ -340,7 +342,7 @@ function isLastStep(step: number): boolean {
 
     &.--warning {
       .m-stepper__count__circle {
-        @apply maz-scale-100 maz:bg-warning;
+        @apply maz:scale-100 maz:bg-warning;
       }
 
       .m-stepper__right {
@@ -354,7 +356,7 @@ function isLastStep(step: number): boolean {
 
     &.--error {
       .m-stepper__count__circle {
-        @apply maz-scale-100 maz:bg-destructive;
+        @apply maz:scale-100 maz:bg-destructive;
       }
 
       .m-stepper__right {
@@ -383,7 +385,7 @@ function isLastStep(step: number): boolean {
     color: var(--round-step-text-color);
 
     &__circle {
-      @apply maz:absolute maz:inset-0 maz:flex maz-scale-0 maz:rounded-full
+      @apply maz:absolute maz:inset-0 maz:flex maz:scale-0 maz:rounded-full
           maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center;
     }
 

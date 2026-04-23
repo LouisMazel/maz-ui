@@ -323,7 +323,9 @@ watch(
 </template>
 
 <style scoped>
-  .maz-picker-calendar-grid {
+@reference "../../../tailwindcss/tailwind.css";
+
+.maz-picker-calendar-grid {
   @apply maz:relative;
 
   transition: all 300ms ease-in-out;

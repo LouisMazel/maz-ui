@@ -882,7 +882,9 @@ onBeforeMount(() => {
 </template>
 
 <style scoped>
-  .m-table {
+@reference "../tailwindcss/tailwind.css";
+
+.m-table {
   @apply maz:relative maz:max-w-full;
 
   &-header {

@@ -158,7 +158,9 @@ onMounted(() => {
 </template>
 
 <style scoped>
-  .m-card-spotlight {
+@reference "../tailwindcss/tailwind.css";
+
+.m-card-spotlight {
   @apply maz:relative maz:inline-flex maz:overflow-hidden maz:rounded;
 
   padding: max(var(--maz-border-width), 1px);

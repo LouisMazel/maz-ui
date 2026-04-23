@@ -273,6 +273,8 @@ onMounted(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-tabs-bar {
   @apply maz:relative maz:inline-flex maz:max-w-full maz:gap-1 maz:overflow-x-auto maz:rounded maz:p-2 maz:align-top maz:bg-surface;
 

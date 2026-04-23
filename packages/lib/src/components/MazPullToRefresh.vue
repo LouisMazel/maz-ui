@@ -250,7 +250,9 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-  .m-pull-to-refresh {
+@reference "../tailwindcss/tailwind.css";
+
+.m-pull-to-refresh {
   .loading-header,
   .loading-footer {
     @apply maz:relative maz:flex maz:w-full maz:text-center maz:text-[0.8em] maz:flex-center;

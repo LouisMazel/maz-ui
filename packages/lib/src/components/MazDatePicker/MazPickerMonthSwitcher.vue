@@ -86,7 +86,9 @@ function selectMonth(date: Dayjs) {
 </template>
 
 <style scoped>
-  .maz-picker-month-switcher {
+@reference "../../tailwindcss/tailwind.css";
+
+.maz-picker-month-switcher {
   @apply maz:absolute maz:inset-0 maz:z-1 maz:flex maz:flex-col maz:bg-surface;
 
   &__header {
@@ -101,7 +103,7 @@ function selectMonth(date: Dayjs) {
     }
 
     & > button {
-      @apply maz:h-full !important;
+      @apply maz:h-full!;
     }
   }
 }

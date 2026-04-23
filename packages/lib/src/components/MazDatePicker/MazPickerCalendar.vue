@@ -117,6 +117,8 @@ const calendarDate = computed({
 </template>
 
 <style scoped>
+@reference "../../tailwindcss/tailwind.css";
+
 .maz-picker-calendar {
   @apply maz:relative maz:flex maz:w-full;
 

@@ -254,6 +254,8 @@ onBeforeUnmount(() => observer?.disconnect())
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-circular-progress-bar {
   @apply maz:relative maz:inline-flex maz:h-[1em] maz:w-[1em] maz:flex-center;
 

@@ -19,7 +19,9 @@ const days = computed(() => getDaysOfWeek(props.locale, props.firstDayOfWeek))
 </template>
 
 <style scoped>
-  .maz-picker-calendar-days {
+@reference "../../../tailwindcss/tailwind.css";
+
+.maz-picker-calendar-days {
   @apply maz:grid maz:grid-cols-7 maz:justify-between maz:gap-1 maz:text-center;
 
   & span {

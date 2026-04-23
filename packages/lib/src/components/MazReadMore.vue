@@ -206,6 +206,8 @@ onMounted(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-read-more {
   @apply maz:w-full maz:flex maz:flex-col maz:gap-1;
 

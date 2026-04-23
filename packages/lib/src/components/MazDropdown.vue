@@ -512,7 +512,9 @@ watch(
 </template>
 
 <style scoped>
-  .m-dropdown {
+@reference "../tailwindcss/tailwind.css";
+
+.m-dropdown {
   @apply maz:relative maz:inline-flex maz:flex-col maz:items-start maz:align-top;
 
   &__wrapper {

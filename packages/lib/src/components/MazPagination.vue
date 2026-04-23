@@ -277,6 +277,8 @@ function setPageNumber(page: number) {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-pagination {
   ul {
     @apply maz:m-0! maz:inline-flex maz:list-none! maz:items-center maz:gap-2 maz:-space-x-px maz:p-0! maz:align-top maz:text-base;

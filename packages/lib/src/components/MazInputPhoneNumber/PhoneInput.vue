@@ -125,6 +125,8 @@ defineExpose({
 </template>
 
 <style scoped>
+@reference "../../tailwindcss/tailwind.css";
+
 .m-phone-input {
   @apply maz:min-w-52 maz:flex-1;
 

@@ -90,6 +90,8 @@ const badgeStyle = computed<CSSProperties>(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-badge {
   @apply maz:inline-flex maz:items-center maz:justify-center maz:border maz:border-transparent maz:align-top maz:font-semibold;
 

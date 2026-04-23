@@ -163,6 +163,8 @@ const currentIcon = computed(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-alert {
   @apply maz:flex maz:items-start maz:gap-3 maz:p-4;
 

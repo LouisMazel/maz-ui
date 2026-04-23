@@ -31,6 +31,8 @@ const { backgroundEven, backgroundOdd, hoverable: injectedHoverable } = useInjec
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-table-row {
   &.--background-odd {
     @apply maz:odd:bg-surface-600 maz:dark:odd:bg-surface-400;
