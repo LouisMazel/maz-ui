@@ -175,7 +175,7 @@ function onFocus(event: FocusEvent) {
       content: '';
       transition: all 200ms ease-in-out;
 
-      @apply maz:relative maz:left-0 maz:top-0.5 maz:block maz:h-6 maz:w-[3rem] maz:rounded-full;
+      @apply maz:relative maz:left-0 maz:top-0.5 maz:block maz:h-6 maz:w-12 maz:rounded-full;
       @apply maz:bg-surface-600 maz:dark:bg-surface-400 maz:border maz:border-solid maz:border-divider;
     }
 

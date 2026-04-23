@@ -185,7 +185,7 @@ onMounted(() => {
   }
 
   .blob {
-    @apply maz:absolute maz:left-0 maz:top-0 maz:z-[0] maz:rounded-full maz:blur-2xl;
+    @apply maz:absolute maz:left-0 maz:top-0 maz:z-0 maz:rounded-full maz:blur-2xl;
 
     width: 208px;
     height: 208px;
