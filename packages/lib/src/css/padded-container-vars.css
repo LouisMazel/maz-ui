@@ -1,3 +1,14 @@
+/*
+ * The mob-l / lap-s breakpoint values mirror tailwindcss/theme-breakpoints.css
+ * so this file stays self-contained: it can be imported by consumers without
+ * the Tailwind bridge, and the dev-mode transform never hits an unknown-variant
+ * error. Keep the two files in sync when changing the breakpoint scale.
+ */
+@theme {
+  --breakpoint-mob-l: 576px;
+  --breakpoint-lap-s: 1024px;
+}
+
 @layer maz-ui-utilities {
   :root {
     --maz-container-padding-mobile: 1rem;
