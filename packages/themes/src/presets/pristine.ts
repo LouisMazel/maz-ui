@@ -7,6 +7,12 @@ export const pristine: ThemePreset = {
     'radius': '0.6rem',
     'border-width': '1px',
     'font-family': `-apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
+    'duration-fast': '100ms',
+    'duration-normal': '200ms',
+    'duration-slow': '300ms',
+    'easing-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
+    'easing-in': 'cubic-bezier(0.4, 0, 1, 1)',
+    'easing-in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
   },
   colors: {
     light: {

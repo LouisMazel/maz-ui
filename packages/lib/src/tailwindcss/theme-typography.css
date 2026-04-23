@@ -1,13 +1,20 @@
 /*
- * Typography, border width and default transition tokens.
+ * Typography, border width and motion tokens — all sourced from @maz-ui/themes.
  *
- * font-sans and default-border-width follow the @maz-ui/themes runtime so a
- * consumer overriding --maz-font-family or --maz-border-width reflows the
- * Tailwind utilities.
+ * Consumers overriding --maz-* at runtime get reflowed Tailwind utilities:
+ *   font-sans / default-border-width / *-duration-* / *-easing-* / default-transition-*
+ *
+ * Fallbacks apply when a custom preset does not declare motion tokens.
  */
 @theme inline {
   --font-sans: var(--maz-font-family);
   --default-border-width: var(--maz-border-width);
-  --default-transition-duration: 200ms;
-  --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: var(--maz-duration-fast, 100ms);
+  --duration-normal: var(--maz-duration-normal, 200ms);
+  --duration-slow: var(--maz-duration-slow, 300ms);
+  --default-transition-duration: var(--duration-normal);
+  --ease-out: var(--maz-easing-out, cubic-bezier(0.4, 0, 0.2, 1));
+  --ease-in: var(--maz-easing-in, cubic-bezier(0.4, 0, 1, 1));
+  --ease-in-out: var(--maz-easing-in-out, cubic-bezier(0.4, 0, 0.2, 1));
+  --default-transition-timing-function: var(--ease-out);
 }
