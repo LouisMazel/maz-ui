@@ -56,6 +56,7 @@ describe('Given DocumentationService instance', () => {
       const result = service.getAllGuides()
 
       expect(result).toEqual([
+        'browser-support',
         'cli',
         'getting-started',
         'icon-set',
@@ -190,7 +191,7 @@ describe('Given DocumentationService instance', () => {
       expect(result).toHaveProperty('paths')
 
       expect(result.components.total).toBeGreaterThanOrEqual(56)
-      expect(result.guides.total).toBe(14)
+      expect(result.guides.total).toBe(15)
       expect(result.composables.total).toBe(14)
       expect(result.directives.total).toBe(5)
       expect(result.plugins.total).toBe(4)
