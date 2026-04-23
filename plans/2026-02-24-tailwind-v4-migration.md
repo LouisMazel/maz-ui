@@ -386,6 +386,8 @@ Tous les tests doivent passer. Les presets génèrent des variables CSS avec des
 
 ## Phase 2 : Tailwind CSS — Configuration CSS-first
 
+**Statut** : 🟡 mostly done — bridge + utilities + entry + padded-container migrés et compile OK via `@tailwindcss/cli`. Snapshot tests (2.6) reportés à une session dédiée (subagent-driven après Phase 3 quand les utilities réelles seront générées).
+
 ### 2.1 Nouveau fichier de thème CSS pour Tailwind
 
 **Nouveau fichier** : `/packages/lib/src/tailwindcss/theme.css`

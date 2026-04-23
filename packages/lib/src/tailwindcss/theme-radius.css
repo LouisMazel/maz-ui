@@ -1,0 +1,15 @@
+/*
+ * Border-radius bridge.
+ *
+ * The scale hangs off --maz-radius (injected by @maz-ui/themes) so that
+ * rounded, rounded-xs, rounded-lg, etc. all move together when the theme
+ * radius is tweaked.
+ */
+@theme inline {
+  --radius-xs: calc(var(--maz-radius) - 8px);
+  --radius-sm: calc(var(--maz-radius) - 4px);
+  --radius-md: var(--maz-radius);
+  --radius: var(--maz-radius);
+  --radius-lg: calc(var(--maz-radius) + 4px);
+  --radius-xl: calc(var(--maz-radius) + 8px);
+}

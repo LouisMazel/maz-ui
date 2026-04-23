@@ -1,0 +1,13 @@
+/*
+ * Typography, border width and default transition tokens.
+ *
+ * font-sans and default-border-width follow the @maz-ui/themes runtime so a
+ * consumer overriding --maz-font-family or --maz-border-width reflows the
+ * Tailwind utilities.
+ */
+@theme inline {
+  --font-sans: var(--maz-font-family);
+  --default-border-width: var(--maz-border-width);
+  --default-transition-duration: 200ms;
+  --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
