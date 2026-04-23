@@ -440,7 +440,7 @@ html.--m-fullscreen-open {
 @reference "../../tailwindcss/tailwind.css";
 
 .m-fullscreen-img {
-  @apply maz:fixed maz:inset-0 maz:z-default-backdrop maz:h-screen maz:w-screen maz:items-center maz:bg-overlay/5 maz:outline-hidden maz:backdrop-blur;
+  @apply maz:fixed maz:inset-0 maz:z-default-backdrop maz:h-screen maz:w-screen maz:items-center maz:bg-overlay/5 maz:outline-hidden maz:backdrop-blur-sm;
 
   .m-fullscreen-img-scroller {
     @apply maz:flex maz:h-screen maz:w-screen maz:overflow-auto maz:flex-center;

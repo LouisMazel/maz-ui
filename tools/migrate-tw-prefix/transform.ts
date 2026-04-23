@@ -1,7 +1,19 @@
+// v3 → v4 utility renames, applied by the codemod before the prefix transform.
+// Source: https://tailwindcss.com/docs/upgrade-guide#renamed-utilities.
+// Note: bare `rounded` is NOT renamed here because maz-ui maps it to
+// `var(--maz-radius)` in both v3 and v4 (identical semantic in both versions).
 const UTILITY_RENAMES: Record<string, string> = {
   'rounded-sm': 'rounded-xs',
   'outline-none': 'outline-hidden',
+  'shadow': 'shadow-sm',
+  'shadow-sm': 'shadow-xs',
+  'drop-shadow': 'drop-shadow-sm',
+  'drop-shadow-sm': 'drop-shadow-xs',
+  'blur': 'blur-sm',
+  'blur-sm': 'blur-xs',
+  'backdrop-blur': 'backdrop-blur-sm',
   'backdrop-blur-sm': 'backdrop-blur-xs',
+  'ring': 'ring-3',
   'bg-gradient-to-r': 'bg-linear-to-r',
   'bg-gradient-to-l': 'bg-linear-to-l',
   'bg-gradient-to-t': 'bg-linear-to-t',
@@ -10,7 +22,6 @@ const UTILITY_RENAMES: Record<string, string> = {
   'bg-gradient-to-tl': 'bg-linear-to-tl',
   'bg-gradient-to-br': 'bg-linear-to-br',
   'bg-gradient-to-bl': 'bg-linear-to-bl',
-  'shadow': 'shadow-sm',
 }
 
 const TOKEN_PARSE = /^(!?)((?:[\w-]+:)*)(!?)(-?)maz-(-?)(.+)$/
