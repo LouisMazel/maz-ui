@@ -559,7 +559,7 @@ describe('mazSelectCountry', () => {
       shallow: false,
     })
 
-    const mazLazyImg = wrapper.findAll('.maz\\:size-5.maz:rounded')
+    const mazLazyImg = wrapper.findAll('.maz\\:size-5.maz\\:rounded')
 
     expect(mazLazyImg.length).toBe(0)
   })
@@ -574,7 +574,7 @@ describe('mazSelectCountry', () => {
       shallow: false,
     })
 
-    const code = wrapper.find('.maz\\:truncate .maz:text-muted')
+    const code = wrapper.find('.maz\\:truncate .maz\\:text-muted')
 
     expect(code.exists()).toBe(true)
     if (code.exists()) {
