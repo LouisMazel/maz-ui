@@ -429,13 +429,17 @@ onBeforeUnmount(() => {
 </template>
 
 <style>
-  html.--m-fullscreen-open {
+@reference "../../tailwindcss/tailwind.css";
+
+html.--m-fullscreen-open {
   @apply maz:h-screen maz:overflow-hidden;
 }
 </style>
 
 <style scoped>
-  .m-fullscreen-img {
+@reference "../../tailwindcss/tailwind.css";
+
+.m-fullscreen-img {
   @apply maz:fixed maz:inset-0 maz:z-default-backdrop maz:h-screen maz:w-screen maz:items-center maz:bg-overlay/5 maz:outline-hidden maz:backdrop-blur;
 
   .m-fullscreen-img-scroller {
@@ -471,7 +475,7 @@ onBeforeUnmount(() => {
 
     &:hover {
       svg {
-        @apply maz-scale-150;
+        @apply maz:scale-150;
       }
     }
 

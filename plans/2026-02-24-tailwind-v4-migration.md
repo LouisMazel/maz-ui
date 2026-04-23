@@ -639,6 +639,8 @@ cd packages/themes && pnpm test:unit -- preset-output
 
 ## Phase 3 : Composants — Rename des classes
 
+**Statut** : ✅ done — codemod appliqué, classes transformées, tous les tests passent (2835/2835). 106 classes custom BEM/Vue Transition/JS handler state ont été correctement isolées du rename Tailwind. Commits `3c28865ba`, `ee450333c`, `8e30b2ee9`, `34c48e5f7`.
+
 ### 3.1 Exécuter le script de rename
 
 Exécuter le script créé en Phase 0.2 sur :
