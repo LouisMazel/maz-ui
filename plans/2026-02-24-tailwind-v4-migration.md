@@ -695,6 +695,8 @@ grep -r "maz-flex\|maz-bg-\|maz-text-\|maz-border\|maz-rounded\|maz-p-\|maz-m-" 
 
 ## Phase 4 : Build system
 
+**Statut** : ✅ done — `pnpm -C packages/lib build` passe en 10.12s. `@tailwindcss/cli` utilisé pour main.css, `@tailwindcss/vite` pour résolution `@apply` dans les `<style>` blocks, `@reference` directive ajoutée dans chaque SFC (71 fichiers). Utilitaires bare (blur, backdrop-blur, drop-shadow) renommés au passage. Validation officielle : passe `npx @tailwindcss/upgrade` qui apporte quelques améliorations idiomatiques (`[var(--x)]` → `(--x)`, `w-[3rem]` → `w-12`, `end-0` → `inset-e-0`).
+
 ### 4.1 PostCSS config
 
 **Fichier** : `/packages/lib/postcss.config.cjs`
