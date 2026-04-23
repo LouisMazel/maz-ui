@@ -34,7 +34,7 @@ import MazLink from 'maz-ui/components/MazLink'
 ## Color
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-2 maz-justify-center">
+  <div class="maz:flex maz:flex-col maz:gap-2 maz:justify-center">
     <MazLink color="primary"> View product detail (primary) </MazLink>
     <MazLink color="secondary"> View product detail (secondary) </MazLink>
     <MazLink color="info"> View product detail (info) </MazLink>
@@ -133,7 +133,7 @@ When you use the `autoExternal` prop, the component will have an external icon i
 If no `to` or `href` is provided, the component will be a `button` by default. You can force the component to be a `button`, `a`, `router-link` or `nuxt-link` with the `as` prop.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-2 maz-justify-center">
+  <div class="maz:flex maz:flex-col maz:gap-2 maz:justify-center">
     <MazLink as="button"> View product detail </MazLink>
     <MazLink as="button" disabled> View product detail </MazLink>
   </div>

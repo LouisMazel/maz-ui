@@ -67,7 +67,7 @@ export default defineNuxtConfig({
 ## Basic usage
 
 <MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">
-  <div class="maz-flex" style="display: flex; align-items: start; gap: 1rem; margin-bottom: 1rem;">
+  <div class="maz:flex" style="display: flex; align-items: start; gap: 1rem; margin-bottom: 1rem;">
     <MazAvatar
       data-maz-aos-delay="300"
       data-maz-aos="scale-in"
@@ -87,7 +87,7 @@ export default defineNuxtConfig({
         data-maz-aos="zoom-in-left"
         data-maz-aos-delay="900"
         style="margin: 0"
-        class="maz-text-muted"
+        class="maz:text-muted"
       >
         Library
       </p>
@@ -105,7 +105,7 @@ export default defineNuxtConfig({
 
 ```html{1,13}
 <MazCard overflow-hidden data-maz-aos="scale-out" id="parentCard">
-  <div class="maz-flex" style="display: flex; align-items: start; gap: 1rem; margin-bottom: 1rem;">
+  <div class="maz:flex" style="display: flex; align-items: start; gap: 1rem; margin-bottom: 1rem;">
     <MazAvatar
       data-maz-aos-delay="300"
       data-maz-aos="scale-in"
@@ -125,7 +125,7 @@ export default defineNuxtConfig({
         data-maz-aos="zoom-in-left"
         data-maz-aos-delay="900"
         style="margin: 0"
-        class="maz-text-muted"
+        class="maz:text-muted"
       >
         Library
       </p>

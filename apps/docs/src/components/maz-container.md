@@ -66,7 +66,7 @@ Add a header with a title using the `title` prop or the `title` slot.
 Add icons to the header using `left-icon` and `right-icon` props.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazContainer title="Settings" left-icon="cog-6-tooth">
       Configure your application settings here.
     </MazContainer>
@@ -121,7 +121,7 @@ Add shadow to make the container stand out.
 By default, the container has a border. You can disable it.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazContainer title="With border (default)">
       This container has a border.
     </MazContainer>
@@ -174,7 +174,7 @@ Remove the background color with the `transparent` prop.
 Customize the border radius with the `rounded-size` prop.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-wrap maz-gap-4">
+  <div class="maz:flex maz:flex-wrap maz:gap-4">
     <MazContainer v-for="size in roundedSizes" :key="size" :rounded-size="size">
       {{ size }}
     </MazContainer>
@@ -250,9 +250,9 @@ Use the `header` slot to fully customize the header, or use `title`, `icon-left`
 <ComponentDemo>
   <MazContainer>
     <template #header>
-      <div class="maz-flex maz-items-center maz-justify-between maz-w-full maz-px-4 maz-py-3 maz-bg-primary maz-text-primary-foreground">
-        <span class="maz-font-semibold">Custom Header</span>
-        <MazBadge size="0.8rem" color="white" class="maz-text-primary">
+      <div class="maz:flex maz:items-center maz:justify-between maz:w-full maz:px-4 maz:py-3 maz:bg-primary maz:text-primary-foreground">
+        <span class="maz:font-semibold">Custom Header</span>
+        <MazBadge size="0.8rem" color="white" class="maz:text-primary">
           New
         </MazBadge>
       </div>
@@ -266,9 +266,9 @@ Use the `header` slot to fully customize the header, or use `title`, `icon-left`
 <template>
   <MazContainer>
     <template #header>
-      <div class="maz-flex maz-items-center maz-justify-between maz-w-full maz-px-4 maz-py-3 maz-bg-primary maz-text-primary-foreground">
-        <span class="maz-font-semibold">Custom Header</span>
-        <MazBadge size="0.8rem" color="white" class="maz-text-primary">
+      <div class="maz:flex maz:items-center maz:justify-between maz:w-full maz:px-4 maz:py-3 maz:bg-primary maz:text-primary-foreground">
+        <span class="maz:font-semibold">Custom Header</span>
+        <MazBadge size="0.8rem" color="white" class="maz:text-primary">
           New
         </MazBadge>
       </div>
@@ -292,18 +292,18 @@ Use the `header` slot to fully customize the header, or use `title`, `icon-left`
     rounded-size="xl"
     block
   >
-    <div class="maz-flex maz-gap-4 maz-flex-wrap">
-      <MazContainer class="maz-flex-1 maz-min-w-[150px]">
-        <p class="maz-text-muted maz-text-sm">Users</p>
-        <p class="maz-text-2xl maz-font-bold">1,234</p>
+    <div class="maz:flex maz:gap-4 maz:flex-wrap">
+      <MazContainer class="maz:flex-1 maz:min-w-[150px]">
+        <p class="maz:text-muted maz:text-sm">Users</p>
+        <p class="maz:text-2xl maz:font-bold">1,234</p>
       </MazContainer>
-      <MazContainer class="maz-flex-1 maz-min-w-[150px]">
-        <p class="maz-text-muted maz-text-sm">Revenue</p>
-        <p class="maz-text-2xl maz-font-bold">$12.5k</p>
+      <MazContainer class="maz:flex-1 maz:min-w-[150px]">
+        <p class="maz:text-muted maz:text-sm">Revenue</p>
+        <p class="maz:text-2xl maz:font-bold">$12.5k</p>
       </MazContainer>
-      <MazContainer class="maz-flex-1 maz-min-w-[150px]">
-        <p class="maz-text-muted maz-text-sm">Orders</p>
-        <p class="maz-text-2xl maz-font-bold">567</p>
+      <MazContainer class="maz:flex-1 maz:min-w-[150px]">
+        <p class="maz:text-muted maz:text-sm">Orders</p>
+        <p class="maz:text-2xl maz:font-bold">567</p>
       </MazContainer>
     </div>
   </MazContainer>
@@ -320,18 +320,18 @@ Use the `header` slot to fully customize the header, or use `title`, `icon-left`
     rounded-size="xl"
     block
   >
-    <div class="maz-flex maz-gap-4 maz-flex-wrap">
-      <MazContainer class="maz-flex-1 maz-min-w-[150px]">
-        <p class="maz-text-muted maz-text-sm">Users</p>
-        <p class="maz-text-2xl maz-font-bold">1,234</p>
+    <div class="maz:flex maz:gap-4 maz:flex-wrap">
+      <MazContainer class="maz:flex-1 maz:min-w-[150px]">
+        <p class="maz:text-muted maz:text-sm">Users</p>
+        <p class="maz:text-2xl maz:font-bold">1,234</p>
       </MazContainer>
-      <MazContainer class="maz-flex-1 maz-min-w-[150px]">
-        <p class="maz-text-muted maz-text-sm">Revenue</p>
-        <p class="maz-text-2xl maz-font-bold">$12.5k</p>
+      <MazContainer class="maz:flex-1 maz:min-w-[150px]">
+        <p class="maz:text-muted maz:text-sm">Revenue</p>
+        <p class="maz:text-2xl maz:font-bold">$12.5k</p>
       </MazContainer>
-      <MazContainer class="maz-flex-1 maz-min-w-[150px]">
-        <p class="maz-text-muted maz-text-sm">Orders</p>
-        <p class="maz-text-2xl maz-font-bold">567</p>
+      <MazContainer class="maz:flex-1 maz:min-w-[150px]">
+        <p class="maz:text-muted maz:text-sm">Orders</p>
+        <p class="maz:text-2xl maz:font-bold">567</p>
       </MazContainer>
     </div>
   </MazContainer>

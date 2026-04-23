@@ -42,7 +42,7 @@ const images: MazGalleryImage[] = [
 
 <MazGallery
   :images="images2"
-  class="maz-h-48 maz-mob-l:h-60 maz-tab-s:h-80"
+  class="maz:h-48 maz:mob-l:h-60 maz:tab-s:h-80"
   :height="false"
 />
 

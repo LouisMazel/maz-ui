@@ -100,7 +100,7 @@ The default direction is `'auto'`, which switches from horizontal to vertical ba
 Use the `color` prop to change the theme color.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-6">
+  <div class="maz:flex maz:flex-col maz:gap-6">
     <MazTimeline v-for="color in colors" :key="color" :model-value="1" :steps="colorSteps" :color="color" direction="horizontal" />
   </div>
 
@@ -125,7 +125,7 @@ Use the `color` prop to change the theme color.
 Use the `size` prop to change the indicator size.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-6">
+  <div class="maz:flex maz:flex-col maz:gap-6">
     <MazTimeline v-for="size in sizes" :key="size" :model-value="1" :steps="colorSteps" :size="size" direction="horizontal" />
   </div>
 
@@ -273,7 +273,7 @@ By default, completed steps show a checkmark. Disable this with `:auto-validate-
 Customize the indicator border radius with the `rounded-size` prop.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-6">
+  <div class="maz:flex maz:flex-col maz:gap-6">
     <MazTimeline v-for="rounded in roundedSizes" :key="rounded" :model-value="1" :steps="colorSteps" :rounded-size="rounded" direction="horizontal" />
   </div>
 
@@ -325,9 +325,9 @@ MazTimeline provides scoped slots for full customization.
 <ComponentDemo>
   <MazTimeline v-model="currentStep" :steps="steps" direction="horizontal">
     <template #content="{ step, index, state }">
-      <div class="maz-text-center">
+      <div class="maz:text-center">
         <strong>{{ step.title }}</strong>
-        <p class="maz-text-muted maz-text-sm maz-m-0">Step {{ index + 1 }} - {{ state }}</p>
+        <p class="maz:text-muted maz:text-sm maz:m-0">Step {{ index + 1 }} - {{ state }}</p>
       </div>
     </template>
   </MazTimeline>
@@ -338,9 +338,9 @@ MazTimeline provides scoped slots for full customization.
 <template>
   <MazTimeline v-model="currentStep" :steps="steps">
     <template #content="{ step, index, state }">
-      <div class="maz-text-center">
+      <div class="maz:text-center">
         <strong>{{ step.title }}</strong>
-        <p class="maz-text-muted maz-text-sm maz-m-0">
+        <p class="maz:text-muted maz:text-sm maz:m-0">
           Step {{ index + 1 }} - {{ state }}
         </p>
       </div>
@@ -357,7 +357,7 @@ MazTimeline provides scoped slots for full customization.
 <ComponentDemo>
   <MazTimeline v-model="currentStep" :steps="steps" direction="horizontal">
     <template #connector="{ index, state }">
-      <div class="maz-text-center maz-text-xs maz-text-muted">---</div>
+      <div class="maz:text-center maz:text-xs maz:text-muted">---</div>
     </template>
   </MazTimeline>
 
@@ -367,7 +367,7 @@ MazTimeline provides scoped slots for full customization.
 <template>
   <MazTimeline v-model="currentStep" :steps="steps">
     <template #connector="{ index, state }">
-      <div class="maz-text-center maz-text-xs maz-text-muted">---</div>
+      <div class="maz:text-center maz:text-xs maz:text-muted">---</div>
     </template>
   </MazTimeline>
 </template>

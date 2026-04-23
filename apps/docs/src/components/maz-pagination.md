@@ -38,7 +38,7 @@ const props: MazPaginationProps = {
 
 ## Sizes
 
-<div class="maz-flex maz-flex-col maz-gap-4">
+<div class="maz:flex maz:flex-col maz:gap-4">
   <MazPagination v-bind="props" v-model="currentPage" size="xs" />
   <MazPagination v-bind="props" v-model="currentPage" size="sm" />
   <MazPagination v-bind="props" v-model="currentPage" size="md" />

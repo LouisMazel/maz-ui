@@ -116,7 +116,7 @@ const checklistItems = [
 
 <template>
   <div class="maz:flex maz:flex-col maz:gap-16 maz:p-8" style="max-width: 1400px; margin: 0 auto;">
-    <!-- ==================== MazBtn ==================== -->
+    ==================== MazBtn ====================
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazBtn
@@ -1402,21 +1402,21 @@ const checklistItems = [
       <div class="maz:flex maz:gap-4 maz:overflow-hidden" style="height: 300px">
         <MazTicker orientation="vertical" :overlay="false" :duration="30" pause-on-hover>
           <img
-            v-for="i in 4" :key="i" :src="`https://picsum.photos/seed/maz:ticker-${i}/400/225`"
+            v-for="i in 4" :key="i" :src="`https://picsum.photos/seed/maz-ticker-${i}/400/225`"
             :alt="`Screenshot ${i}`" class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
             style="width: 400px; height: 225px"
           >
         </MazTicker>
         <MazTicker orientation="vertical" :overlay="false" :duration="30" reverse pause-on-hover>
           <img
-            v-for="i in 4" :key="i" :src="`https://picsum.photos/seed/maz:ticker-${i + 4}/400/225`"
+            v-for="i in 4" :key="i" :src="`https://picsum.photos/seed/maz-ticker-${i + 4}/400/225`"
             :alt="`Screenshot ${i + 4}`" class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
             style="width: 400px; height: 225px"
           >
         </MazTicker>
         <MazTicker class="maz:hidden maz:md:flex" orientation="vertical" :overlay="false" :duration="30" pause-on-hover>
           <img
-            v-for="i in 4" :key="i" :src="`https://picsum.photos/seed/maz:ticker-${i + 8}/400/225`"
+            v-for="i in 4" :key="i" :src="`https://picsum.photos/seed/maz-ticker-${i + 8}/400/225`"
             :alt="`Screenshot ${i + 8}`" class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
             style="width: 400px; height: 225px"
           >

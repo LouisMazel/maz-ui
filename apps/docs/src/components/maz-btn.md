@@ -114,7 +114,7 @@ The loading state is available with the attribute `loading`
 <ComponentDemo>
   <div class="flex items-start gap-05 flex-wrap">
     <div v-for="color of colors"
-        :key="color" class="maz-flex maz-flex-col maz-flex-center">
+        :key="color" class="maz:flex maz:flex-col maz:flex-center">
       <MazBtn
         loading
         :color="color"
@@ -123,7 +123,7 @@ The loading state is available with the attribute `loading`
       >
         {{ color }}
       </MazBtn>
-      <span class="maz-text-muted maz-text-xs"> {{ color }} </span>
+      <span class="maz:text-muted maz:text-xs"> {{ color }} </span>
     </div>
   </div>
 
@@ -170,7 +170,7 @@ Better in light mode
 
 <ComponentDemo>
 
-  <div class="flex items-start gap-05 rounded maz-p-3 flex-wrap">
+  <div class="flex items-start gap-05 rounded maz:p-3 flex-wrap">
     <MazBtn v-for="color of colors" :color="color" pastel>{{ color }}</MazBtn>
   </div>
 
@@ -198,7 +198,7 @@ Choose the size of the rounded with the attribute `rounded-size` and value `none
 
 <ComponentDemo>
 
-  <div class="flex items-start gap-05 rounded maz-p-3 flex-wrap">
+  <div class="flex items-start gap-05 rounded maz:p-3 flex-wrap">
     <MazBtn v-for="size of ['none', 'sm', 'md', 'lg', 'xl', 'full']" :rounded-size="size">{{ size }}</MazBtn>
   </div>
 
@@ -221,7 +221,7 @@ Choose the size of the rounded with the attribute `rounded-size` and value `none
 The button can be a fab button with the attribute `fab`
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-5 maz-items-center">
+  <div class="maz:flex maz:gap-5 maz:items-center">
     <MazBtn fab icon="sun" size="mini" />
     <MazBtn fab icon="sun" size="xs" />
     <MazBtn fab icon="sun" size="sm" />
@@ -269,7 +269,7 @@ This property is used to align the content of the button.
 By default, the justify is `center`
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-2">
+  <div class="maz:flex maz:flex-col maz:gap-2">
     <MazBtn block justify="center" icon="users" right-icon="sun" size="md">center</MazBtn>
     <MazBtn block justify="start" icon="users" right-icon="sun" size="md">start</MazBtn>
     <MazBtn block justify="end" icon="users" right-icon="sun" size="md">end</MazBtn>
@@ -310,11 +310,11 @@ By default, the justify is `center`
 ## Icons
 
 <ComponentDemo>
-  <h4 class="maz-mb-2 maz-font-semibold maz-text-lg">
+  <h4 class="maz:mb-2 maz:font-semibold maz:text-lg">
     Left Icon and Right Icon
   </h4>
 
-  <div class="maz-flex maz-gap-2 maz-rounded maz-flex-wrap maz-items-center">
+  <div class="maz:flex maz:gap-2 maz:rounded maz:flex-wrap maz:items-center">
     <MazBtn :left-icon="MazCheck" size="mini">
       left-icon
     </MazBtn>
@@ -335,11 +335,11 @@ By default, the justify is `center`
     </MazBtn>
   </div>
 
-  <h4 class="maz-my-2 maz-font-semibold maz-text-lg">
+  <h4 class="maz:my-2 maz:font-semibold maz:text-lg">
     Fab
   </h4>
 
-  <div class="maz-flex maz-gap-2 maz-rounded maz-flex-wrap maz-items-center">
+  <div class="maz:flex maz:gap-2 maz:rounded maz:flex-wrap maz:items-center">
     <MazBtn fab :icon="MazCommandLine" size="mini" />
     <MazBtn fab :icon="MazCommandLine" size="xs" />
     <MazBtn fab :icon="MazCommandLine" size="sm" />
@@ -348,11 +348,11 @@ By default, the justify is `center`
     <MazBtn fab :icon="MazCommandLine" size="xl" />
   </div>
 
-  <h4 class="maz-my-2 maz-font-semibold maz-text-lg">
+  <h4 class="maz:my-2 maz:font-semibold maz:text-lg">
     Icon component
   </h4>
 
-  <div class="maz-flex maz-gap-2 maz-rounded maz-flex-wrap maz-items-center">
+  <div class="maz:flex maz:gap-2 maz:rounded maz:flex-wrap maz:items-center">
     <MazBtn :left-icon="MazSpinner" size="md" color="warning">
       icon component
     </MazBtn>

@@ -29,7 +29,7 @@ Choose the color of the spinner
 
 By default the color is `theme`
 
-<div class="maz-flex maz-gap-2 maz-flex-wrap">
+<div class="maz:flex maz:gap-2 maz:flex-wrap">
   <MazSpinner color="primary" />
   <MazSpinner color="secondary" />
   <MazSpinner color="destructive" />
@@ -64,7 +64,7 @@ Choose the size of the spinner
 
 The default size is `2em`
 
-<div class="maz-flex maz-gap-2 maz-flex-wrap maz-items-center">
+<div class="maz:flex maz:gap-2 maz:flex-wrap maz:items-center">
   <MazSpinner size="1em" />
   <MazSpinner />
   <MazSpinner size="3em" />

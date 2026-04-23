@@ -38,18 +38,18 @@ import MazSkeleton from 'maz-ui/components/MazSkeleton'
 Use the `shape` prop to change the skeleton shape: `rectangle` (default), `circle`, or `square`.
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-4 maz-items-center">
-    <div class="maz-flex maz-flex-col maz-items-center maz-gap-2">
+  <div class="maz:flex maz:gap-4 maz:items-center">
+    <div class="maz:flex maz:flex-col maz:items-center maz:gap-2">
       <MazSkeleton shape="rectangle" width="100px" height="1rem" />
-      <span class="maz-text-sm maz-text-muted">rectangle</span>
+      <span class="maz:text-sm maz:text-muted">rectangle</span>
     </div>
-    <div class="maz-flex maz-flex-col maz-items-center maz-gap-2">
+    <div class="maz:flex maz:flex-col maz:items-center maz:gap-2">
       <MazSkeleton shape="circle" size="3rem" />
-      <span class="maz-text-sm maz-text-muted">circle</span>
+      <span class="maz:text-sm maz:text-muted">circle</span>
     </div>
-    <div class="maz-flex maz-flex-col maz-items-center maz-gap-2">
+    <div class="maz:flex maz:flex-col maz:items-center maz:gap-2">
       <MazSkeleton shape="square" size="3rem" />
-      <span class="maz-text-sm maz-text-muted">square</span>
+      <span class="maz:text-sm maz:text-muted">square</span>
     </div>
   </div>
 
@@ -75,7 +75,7 @@ import MazSkeleton from 'maz-ui/components/MazSkeleton'
 Use the `size` prop to set both width and height (for circle and square shapes), or use `width` and `height` props for more control.
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-4 maz-items-end">
+  <div class="maz:flex maz:gap-4 maz:items-end">
     <MazSkeleton shape="circle" size="2rem" />
     <MazSkeleton shape="circle" size="3rem" />
     <MazSkeleton shape="circle" size="4rem" />
@@ -105,7 +105,7 @@ import MazSkeleton from 'maz-ui/components/MazSkeleton'
 For rectangles, use `width` and `height` props for precise control.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazSkeleton width="100%" height="0.75rem" />
     <MazSkeleton width="80%" height="0.75rem" />
     <MazSkeleton width="60%" height="0.75rem" />
@@ -133,10 +133,10 @@ import MazSkeleton from 'maz-ui/components/MazSkeleton'
 Control the border radius using the `rounded-size` prop.
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-4 maz-flex-wrap">
-    <div v-for="size in roundedSizes" :key="size" class="maz-flex maz-flex-col maz-items-center maz-gap-2">
+  <div class="maz:flex maz:gap-4 maz:flex-wrap">
+    <div v-for="size in roundedSizes" :key="size" class="maz:flex maz:flex-col maz:items-center maz:gap-2">
       <MazSkeleton :rounded-size="size" width="80px" height="2rem" />
-      <span class="maz-text-sm maz-text-muted">{{ size }}</span>
+      <span class="maz:text-sm maz:text-muted">{{ size }}</span>
     </div>
   </div>
 
@@ -165,14 +165,14 @@ import MazSkeleton from 'maz-ui/components/MazSkeleton'
 Use the `animated` prop set to `false` to disable the shimmer animation.
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-4">
-    <div class="maz-flex maz-flex-col maz-items-center maz-gap-2">
+  <div class="maz:flex maz:gap-4">
+    <div class="maz:flex maz:flex-col maz:items-center maz:gap-2">
       <MazSkeleton shape="circle" size="3rem" :animated="true" />
-      <span class="maz-text-sm maz-text-muted">animated</span>
+      <span class="maz:text-sm maz:text-muted">animated</span>
     </div>
-    <div class="maz-flex maz-flex-col maz-items-center maz-gap-2">
+    <div class="maz:flex maz:flex-col maz:items-center maz:gap-2">
       <MazSkeleton shape="circle" size="3rem" :animated="false" />
-      <span class="maz-text-sm maz-text-muted">static</span>
+      <span class="maz:text-sm maz:text-muted">static</span>
     </div>
   </div>
 
@@ -197,9 +197,9 @@ import MazSkeleton from 'maz-ui/components/MazSkeleton'
 Combine multiple skeletons to create loading placeholders for complex layouts.
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-4 maz-p-4 maz-w-full maz-max-w-sm">
+  <div class="maz:flex maz:gap-4 maz:p-4 maz:w-full maz:max-w-sm">
     <MazSkeleton shape="circle" size="3rem" />
-    <div class="maz-flex maz-flex-col maz-gap-2 maz-flex-1">
+    <div class="maz:flex maz:flex-col maz:gap-2 maz:flex-1">
       <MazSkeleton width="60%" height="0.875rem" />
       <MazSkeleton width="40%" height="0.75rem" />
     </div>
@@ -231,15 +231,15 @@ import MazSkeleton from 'maz-ui/components/MazSkeleton'
 Create an article loading placeholder with various skeleton elements.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4 maz-w-full maz-max-w-md">
+  <div class="maz:flex maz:flex-col maz:gap-4 maz:w-full maz:max-w-md">
     <MazSkeleton width="100%" height="200px" rounded-size="lg" />
-    <div class="maz-flex maz-flex-col maz-gap-2">
+    <div class="maz:flex maz:flex-col maz:gap-2">
       <MazSkeleton width="80%" height="1.5rem" />
       <MazSkeleton width="100%" height="0.75rem" />
       <MazSkeleton width="100%" height="0.75rem" />
       <MazSkeleton width="60%" height="0.75rem" />
     </div>
-    <div class="maz-flex maz-gap-2 maz-items-center">
+    <div class="maz:flex maz:gap-2 maz:items-center">
       <MazSkeleton shape="circle" size="2rem" />
       <MazSkeleton width="100px" height="0.75rem" />
     </div>
@@ -280,10 +280,10 @@ import MazSkeleton from 'maz-ui/components/MazSkeleton'
 Create a list loading placeholder.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-3 maz-w-full maz-max-w-sm">
-    <div v-for="i in 4" :key="i" class="maz-flex maz-gap-3 maz-items-center maz-p-2 maz-bg-surface-50 maz-dark:bg-surface-800 maz-rounded">
+  <div class="maz:flex maz:flex-col maz:gap-3 maz:w-full maz:max-w-sm">
+    <div v-for="i in 4" :key="i" class="maz:flex maz:gap-3 maz:items-center maz:p-2 maz:bg-surface-50 maz:dark:bg-surface-800 maz:rounded">
       <MazSkeleton shape="square" size="2.5rem" rounded-size="md" />
-      <div class="maz-flex maz-flex-col maz-gap-1 maz-flex-1">
+      <div class="maz:flex maz:flex-col maz:gap-1 maz:flex-1">
         <MazSkeleton width="70%" height="0.75rem" />
         <MazSkeleton width="50%" height="0.625rem" />
       </div>

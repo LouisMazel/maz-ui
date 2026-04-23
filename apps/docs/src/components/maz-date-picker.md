@@ -72,7 +72,7 @@ This controls how dates are stored and transmitted in your `v-model`. Default is
 This controls how dates appear in the input field using `Intl.DateTimeFormatOptions`.
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 maz-mob-l:grid-cols-3 maz-gap-4">
+  <div class="maz:grid maz:grid-cols-1 maz:mob-l:grid-cols-3 maz:gap-4">
     <MazDatePicker
       v-model="formatExample1"
       label="ISO Format (YYYY-MM-DD)"
@@ -346,7 +346,7 @@ const dateTime = ref()
 ### Time Only Selection
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 maz-mob-l:grid-cols-2 maz-gap-4">
+  <div class="maz:grid maz:grid-cols-1 maz:mob-l:grid-cols-2 maz:gap-4">
     <MazDatePicker
       v-model="timeOnly24"
       label="Time Only (24h)"
@@ -400,7 +400,7 @@ const time12 = ref('02:30 pm')
 ### Custom Minute Intervals
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 maz-mob-l:grid-cols-3 maz-gap-4">
+  <div class="maz:grid maz:grid-cols-1 maz:mob-l:grid-cols-3 maz:gap-4">
     <MazDatePicker
       v-model="timeInterval1"
       label="5min intervals"
@@ -698,7 +698,7 @@ const shortcuts = [
     color="info"
     @update:model-value="console.log($event)"
   />
-  <p class="maz-text-sm maz-text-muted maz-mt-2">
+  <p class="maz:text-sm maz:text-muted maz:mt-2">
     Min: {{ minMaxDates.min }} | Max: {{ minMaxDates.max }}
   </p>
 
@@ -772,7 +772,7 @@ const maxDate = dayjs().add(30, 'day').format('YYYY-MM-DD')
 <br />
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 maz-mob-l:grid-cols-2 maz-gap-4">
+  <div class="maz:grid maz:grid-cols-1 maz:mob-l:grid-cols-2 maz:gap-4">
     <MazDatePicker
       v-model="weekendDisabled"
       label="Weekends Disabled"
@@ -839,7 +839,7 @@ const holidays = [
 <br />
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 maz-mob-l:grid-cols-2 maz-gap-4">
+  <div class="maz:grid maz:grid-cols-1 maz:mob-l:grid-cols-2 maz:gap-4">
     <MazDatePicker
       v-model="dateTime"
       format="YYYY-MM-DD hh:mm a"
@@ -899,7 +899,7 @@ const disabledHours = [0, 1, 2, 11, 22, 23]
 MazDatePicker supports full internationalization. **By default, it uses the locale from the [MazUiTranslations](../guide/translations.md) plugin**, but you can override it:
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 maz-mob-l:grid-cols-2 maz-gap-4">
+  <div class="maz:grid maz:grid-cols-1 maz:mob-l:grid-cols-2 maz:gap-4">
     <MazDatePicker
       v-model="frenchDate"
       label="French Locale"

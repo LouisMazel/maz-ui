@@ -115,7 +115,7 @@ A persistent backdrop cannot be closed by clicking outside or pressing Escape. P
 You can control where your content appears using `justify` and `align` props. It's like choosing where to place a sticker on your screen!
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-wrap maz-gap-2">
+  <div class="maz:flex maz:flex-wrap maz:gap-2">
     <MazBtn @click="topLeftOpen = true">Top Left</MazBtn>
     <MazBtn @click="centerOpen = true">Center</MazBtn>
     <MazBtn @click="bottomRightOpen = true">Bottom Right</MazBtn>

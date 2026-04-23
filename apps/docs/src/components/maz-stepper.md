@@ -168,7 +168,7 @@ You can use html in all properties
 <MazStepper
   :steps="[
     { title: 'Title 1', subtitle: 'Subtitle 1', titleInfo: 'Info 1', content: 'Content 1' },
-    { title: 'Title 2', subtitle: `<span class='maz-text-primary'>Subtitle 2</span>`, titleInfo: 'Info 2', content: 'Content 2' },
+    { title: 'Title 2', subtitle: `<span class='maz:text-primary'>Subtitle 2</span>`, titleInfo: 'Info 2', content: 'Content 2' },
     { title: 'Title 3', subtitle: 'Subtitle 3', titleInfo: 'Info 3', content: 'Content 3' },
     { title: 'Title 4', subtitle: 'Subtitle 4', titleInfo: 'Info 4', content: 'Content 4' },
   ]"
@@ -181,7 +181,7 @@ You can use html in all properties
   <MazStepper
     :steps="[
       { title: 'Title 1', subtitle: 'Subtitle 1', titleInfo: 'Info 1', content: 'Content 1' },
-      { title: 'Title 2', subtitle: '<span class="maz-text-primary">Subtitle 2</span>', titleInfo: 'Info 2', content: 'Content 2' },
+      { title: 'Title 2', subtitle: '<span class="maz:text-primary">Subtitle 2</span>', titleInfo: 'Info 2', content: 'Content 2' },
       { title: 'Title 3', subtitle: 'Subtitle 3', titleInfo: 'Info 3', content: 'Content 3' },
       { title: 'Title 4', subtitle: 'Subtitle 4', titleInfo: 'Info 4', content: 'Content 4' },
     ]"
@@ -197,7 +197,7 @@ You can use html in all properties
       { title: 'Title 2', subtitle: 'Subtitle 2', titleInfo: 'Info 2', content: 'Content 2' },
   ]">
   <template #point="{ step }">
-    <div class="maz-bg-red-500 maz-p-1 maz-size-8 maz-rounded maz-flex maz-flex-center">{{ step }}</div>
+    <div class="maz:bg-red-500 maz:p-1 maz:size-8 maz:rounded maz:flex maz:flex-center">{{ step }}</div>
   </template>
 </MazStepper>
 

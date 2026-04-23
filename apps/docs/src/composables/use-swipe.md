@@ -26,7 +26,7 @@ You can use this information to implement specific interactions in your applicat
 <div ref="swipeContainer" class="swipe-container">
   <p>
     Swipe in any direction<br>
-    <span class="maz-text-xs maz-text-muted">
+    <span class="maz:text-xs maz:text-muted">
       (You should use a real device or a mobile simulator to test the swipe functionality)
     </span>
     <br><br>
@@ -73,7 +73,7 @@ onUnmounted(() => {
   <div ref="swipeContainer" class="swipe-container">
     <p>
       Swipe in any direction<br>
-      <span class="maz-text-sm maz-text-muted">
+      <span class="maz:text-sm maz:text-muted">
         (You should use a real device or a mobile simulator to test the swipe functionality)
       </span>
       <br><br>

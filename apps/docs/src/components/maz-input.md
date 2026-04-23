@@ -262,7 +262,7 @@ const inputValue = ref('value')
 <ComponentDemo>
   <MazInput v-model="inputValue" label="label debounce" :debounce="1000" autocomplete="off" />
 
-  <p class="maz-mt-2">
+  <p class="maz:mt-2">
     modelValue: {{ inputValue ?? 'null' }}
   </p>
 
@@ -280,7 +280,7 @@ const inputValue = ref('value')
 > Use the attribute `size` with a value in {{ sizes.join(', ') }}
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+  <div class="maz:flex maz:flex-col maz:gap-2 maz:items-start">
     <MazInput
       v-for="size in sizes"
       :key="size"
@@ -320,7 +320,7 @@ Click on each input to show colors
 :::
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+  <div class="maz:flex maz:flex-col maz:gap-2 maz:items-start">
     <MazInput
       v-for="name in colors"
       :key="name"
@@ -357,7 +357,7 @@ const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructi
 Use the attribute `rounded-size` with a value in `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-2 maz-items-start">
+  <div class="maz:flex maz:flex-col maz:gap-2 maz:items-start">
     <MazInput rounded-size="none" placeholder="Rounded input" autocomplete="off" />
     <MazInput rounded-size="sm" placeholder="Rounded input" autocomplete="off" />
     <MazInput rounded-size="md" placeholder="Rounded input" autocomplete="off" />

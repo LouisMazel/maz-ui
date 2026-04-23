@@ -32,7 +32,7 @@ const checked = ref(false)
 
 `v-model="{{chosenColors}}"`
 
-<div class="maz-flex maz-flex-col maz-gap-2">
+<div class="maz:flex maz:flex-col maz:gap-2">
   <MazCheckbox
     v-for="color in colors"
     :key="color"
@@ -89,7 +89,7 @@ const colors: Color[] = [
 
 `v-model="{{chosenSizes}}"`
 
-<div class="maz-flex maz-flex-col maz-gap-2">
+<div class="maz:flex maz:flex-col maz:gap-2">
   <MazCheckbox
     v-for="size in sizes"
     :key="size"

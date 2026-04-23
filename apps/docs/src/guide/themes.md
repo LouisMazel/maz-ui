@@ -73,9 +73,9 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 </script>
 
 <template>
-  <div class="maz-bg-background maz-text-foreground">
+  <div class="maz:bg-background maz:text-foreground">
     <button
-      class="maz-rounded maz-bg-primary maz-text-primary-foreground"
+      class="maz:rounded maz:bg-primary maz:text-primary-foreground"
       @click="toggleDarkMode"
     >
       {{ isDark ? '☀️' : '🌙' }} Toggle theme
@@ -97,17 +97,17 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 
 <ComponentDemo title="Real-time theme control">
   <div class="demo-theme-controls">
-    <div class="maz-space-y-4">
-      <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4">
+    <div class="maz:space-y-4">
+      <div class="maz:grid maz:grid-cols-1 maz:md:grid-cols-2 maz:gap-4">
         <MazBtn color="primary">Primary Button</MazBtn>
         <MazBtn color="secondary">Secondary Button</MazBtn>
         <MazBtn color="success">Success Button</MazBtn>
         <MazBtn color="warning">Warning Button</MazBtn>
       </div>
-      <div class="theme-controls maz-space-y-4">
-        <div class="maz-flex maz-flex-col maz-gap-4">
-          <label class="maz-text-sm maz-font-medium">Color Mode: {{ colorMode }}</label>
-          <div class="maz-flex maz-gap-2">
+      <div class="theme-controls maz:space-y-4">
+        <div class="maz:flex maz:flex-col maz:gap-4">
+          <label class="maz:text-sm maz:font-medium">Color Mode: {{ colorMode }}</label>
+          <div class="maz:flex maz:gap-2">
             <MazBtn
               size="sm"
               :color="colorMode === 'light' ? 'primary' : 'contrast'"
@@ -131,9 +131,9 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
             </MazBtn>
           </div>
         </div>
-        <div class="maz-space-y-2">
-          <label class="maz-text-sm maz-font-medium">Preset:</label>
-          <div class="maz-flex maz-gap-2">
+        <div class="maz:space-y-2">
+          <label class="maz:text-sm maz:font-medium">Preset:</label>
+          <div class="maz:flex maz:gap-2">
             <MazBtn
               size="sm"
               :color="presetName === 'maz-ui' ? 'primary' : 'contrast'"
@@ -179,16 +179,16 @@ const { presetName, updateTheme, colorMode, setColorMode } = useTheme()
 
 <template>
   <div class="demo-theme-controls">
-    <div class="maz-space-y-4">
-      <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4">
+    <div class="maz:space-y-4">
+      <div class="maz:grid maz:grid-cols-1 maz:md:grid-cols-2 maz:gap-4">
         <MazBtn color="primary">Primary Button</MazBtn>
         <MazBtn color="secondary">Secondary Button</MazBtn>
         <MazBtn color="success">Success Button</MazBtn>
         <MazBtn color="warning">Warning Button</MazBtn>
       </div>
-      <div class="theme-controls maz-space-y-4">
-        <div class="maz-flex maz-items-center maz-gap-4">
-          <label class="maz-text-sm maz-font-medium">Mode:</label>
+      <div class="theme-controls maz:space-y-4">
+        <div class="maz:flex maz:items-center maz:gap-4">
+          <label class="maz:text-sm maz:font-medium">Mode:</label>
           <MazBtn
             size="sm"
             :color="colorMode === 'light' ? 'primary' : 'secondary'"
@@ -211,9 +211,9 @@ const { presetName, updateTheme, colorMode, setColorMode } = useTheme()
             🔄 Auto
           </MazBtn>
         </div>
-        <div class="maz-space-y-2">
-          <label class="maz-text-sm maz-font-medium">Preset:</label>
-          <div class="maz-flex maz-gap-2">
+        <div class="maz:space-y-2">
+          <label class="maz:text-sm maz:font-medium">Preset:</label>
+          <div class="maz:flex maz:gap-2">
             <MazBtn
               size="sm"
               :color="presetName === 'maz-ui' ? 'primary' : 'secondary'"
@@ -356,15 +356,15 @@ app.use(MazUi, {
   <MazBtn @click="applyCustomTheme" color="info">
     Apply Custom Theme
   </MazBtn>
-  <MazBtn @click="resetTheme" color="secondary" class="maz-ms-2">
+  <MazBtn @click="resetTheme" color="secondary" class="maz:ms-2">
     Reset
   </MazBtn>
 
-  <div class="maz-mt-4 maz-p-4 maz-bg-primary/10 maz-rounded-[var(--maz-radius)]">
-    <p v-if="presetName === 'custom-purple'" class="maz-text-primary maz-font-medium">
+  <div class="maz:mt-4 maz:p-4 maz:bg-primary/10 maz:rounded-[var(--maz-radius)]">
+    <p v-if="presetName === 'custom-purple'" class="maz:text-primary maz:font-medium">
       Custom theme applied with purple colors!
     </p>
-    <p v-else class="maz-text-primary maz-font-medium">
+    <p v-else class="maz:text-primary maz:font-medium">
       Default theme
     </p>
   </div>

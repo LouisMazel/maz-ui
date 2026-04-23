@@ -97,7 +97,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
 ## Custom slot template
 
 <ComponentDemo>
-  <p class="maz-mb-4">
+  <p class="maz:mb-4">
     Select a competition
   </p>
 
@@ -118,7 +118,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
         <span>
           {{ option.label }}
         </span>
-        <span :class="{ 'maz-text-muted': !selected }">
+        <span :class="{ 'maz:text-muted': !selected }">
           {{ option.areaName }}
         </span>
       </div>
@@ -145,7 +145,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
           <span>
             {{ option.label }}
           </span>
-          <span :class="{ 'maz-text-muted': !selected }">
+          <span :class="{ 'maz:text-muted': !selected }">
             {{ option.areaName }}
           </span>
         </div>
@@ -161,7 +161,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
 ## Orientation - Column
 
 <ComponentDemo>
-  <p class="maz-mb-4">
+  <p class="maz:mb-4">
     Select a competition
   </p>
 
@@ -182,7 +182,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
         <span>
           {{ option.label }}
         </span>
-        <span :class="{ 'maz-text-muted': !selected }">
+        <span :class="{ 'maz:text-muted': !selected }">
           {{ option.areaName }}
         </span>
       </div>
@@ -210,7 +210,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
           <span>
             {{ option.label }}
           </span>
-          <span :class="{ 'maz-text-muted': !selected }">
+          <span :class="{ 'maz:text-muted': !selected }">
             {{ option.areaName }}
           </span>
         </div>
@@ -296,11 +296,11 @@ This option will display a select icon on the left of the label
     block
     class="vp-raw"
   >
-    <div class="maz-flex maz-flex-col maz-items-start maz-p-2">
-      <h3 class="maz-mb-2 maz-text-xl maz-font-semibold">
+    <div class="maz:flex maz:flex-col maz:items-start maz:p-2">
+      <h3 class="maz:mb-2 maz:text-xl maz:font-semibold">
         {{ option.label }}
       </h3>
-      <span :class="{ 'maz-text-muted': !selected }">
+      <span :class="{ 'maz:text-muted': !selected }">
         {{ option.description }}
       </span>
     </div>

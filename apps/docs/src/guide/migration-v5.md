@@ -120,7 +120,7 @@ Check the preset's type — if you imported `HSL` explicitly, switch to `CSSColo
 
 ## Advanced: you had your own Tailwind setup
 
-If you were already running Tailwind v3 in your app, shipping classes like `maz:flex` yourself, you need the same migration as any Tailwind v3 → v4 upgrade:
+If you were already running Tailwind v3 in your app, shipping classes like `maz-flex` yourself, you need the same migration as any Tailwind v3 → v4 upgrade:
 
 1. Run the official Tailwind upgrade tool: `npx @tailwindcss/upgrade` — it handles 95% of the work (utility renames, `@apply !important` syntax, `tailwind.config` → CSS-first, …).
 2. Replace any `hsl(var(--maz-<color>))` in your own CSS (see above).

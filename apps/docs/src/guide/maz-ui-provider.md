@@ -217,7 +217,7 @@ const locale = ref('fr')
       messages: { fr },
     }"
   >
-    <div class="maz-bg-background maz-text-foreground maz-p-4">
+    <div class="maz:bg-background maz:text-foreground maz:p-4">
       <h1>My Dashboard</h1>
       <MazBtn color="primary">Action</MazBtn>
       <MazInput placeholder="Search..." />
