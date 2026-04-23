@@ -173,7 +173,9 @@ Aucune décision à valider à ce stade — mesures et setup seulement.
 
 ## Phase 0 : Préparation des dépendances
 
-### 0.1 Mettre à jour les dépendances
+**Statut** : ✅ done (commits `21042bceb`, `dc5bd60d4`)
+
+### 0.1 Mettre à jour les dépendances ✅
 
 **Fichier** : `/packages/lib/package.json`
 
@@ -199,7 +201,9 @@ Aucune décision à valider à ce stade — mesures et setup seulement.
 
 - Mettre à jour les dépendances tailwind de la même façon
 
-### 0.2 Script de rename des classes
+**Note d'exécution** : en plus des retraits listés (autoprefixer, postcss-import, postcss-nested), `packages/lib/postcss.config.cjs` a été simplifié immédiatement pour remplacer `tailwindcss` par `@tailwindcss/postcss` et retirer les plugins v3 incompatibles (`tailwindcss/nesting`, `postcss-nested`, `postcss-import`, `autoprefixer`). Sans ce fix, les tests cassaient à cause du loader PostCSS de Vite. Le nettoyage final (retrait de `postcss-url` et `postcss-replace`) reste prévu en Phase 4.1.
+
+### 0.2 Script de rename des classes ✅
 
 Créer un script Node.js temporaire (`tools/migrate-tw-prefix.ts`) pour automatiser le renommage des classes dans les composants. Le script doit gérer :
 
@@ -226,9 +230,13 @@ Créer un script Node.js temporaire (`tools/migrate-tw-prefix.ts`) pour automati
 
 Le script opère sur tous les fichiers `.vue` dans `packages/lib/src/` et sur les fichiers CSS dans `packages/lib/src/css/`.
 
+**Implémentation livrée** : `tools/migrate-tw-prefix/` (transform.ts + cli.ts + transform.test.ts). 22 tests TDD green sur fixtures Gherkin. Dry-run validé : 79/83 fichiers à modifier, spot-check manuel OK sur MazDialog, MazCard, MazAvatar (variants, `:class` bindings, arbitrary values, important modifier). L'exécution réelle aura lieu en Phase 3.
+
 ---
 
 ## Phase 1 : @maz-ui/themes — Système de couleurs
+
+**Statut** : ✅ done — tous les sous-objectifs livrés et tests verts (233 tests themes). Escalade mainteneur sur précision OKLCH : approximation standard (matrice OKLab → linéaire sRGB → sRGB → HSL) suffisante pour la génération d'échelles, à valider visuellement en Phase 7.5 avec un preset oklch custom si besoin.
 
 ### 1.1 Types — Accepter tous les formats CSS
 

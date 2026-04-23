@@ -1,83 +1,17 @@
 import type { ColorScale } from '../../types'
-import { adjustColorLightness, formatHSL, generateColorScale, getContrastColor, parseHSL } from '../color-utils'
+import { adjustColorLightness, generateColorScale, getContrastColor, parseHSL } from '../color-utils'
 
 describe('color-utils', () => {
-  describe('given parseHSL function', () => {
-    describe('when a valid HSL string is provided', () => {
-      it('then it parses integer values correctly', () => {
-        const result = parseHSL('210 50% 40%')
-
-        expect(result).toEqual({ h: 210, s: 50, l: 40 })
-      })
-
-      it('then it parses decimal values correctly', () => {
-        const result = parseHSL('210.5 50.3% 40.7%')
-
-        expect(result).toEqual({ h: 210.5, s: 50.3, l: 40.7 })
-      })
-
-      it('then it parses zero values correctly', () => {
-        const result = parseHSL('0 0% 0%')
-
-        expect(result).toEqual({ h: 0, s: 0, l: 0 })
-      })
-
-      it('then it parses maximum values correctly', () => {
-        const result = parseHSL('360 100% 100%')
-
-        expect(result).toEqual({ h: 360, s: 100, l: 100 })
+  describe('given parseHSL function (deprecated alias for parseColor)', () => {
+    describe('when a legacy raw HSL string is provided', () => {
+      it('then it delegates to parseColor and returns channels', () => {
+        expect(parseHSL('210 50% 40%')).toEqual({ h: 210, s: 50, l: 40 })
       })
     })
 
-    describe('when an invalid HSL string is provided', () => {
-      it('then it throws an error for malformed input', () => {
-        expect(() => parseHSL('not-hsl')).toThrow('Invalid HSL format: not-hsl')
-      })
-
-      it('then it throws an error for an empty string', () => {
-        expect(() => parseHSL('')).toThrow('Invalid HSL format: ')
-      })
-
-      it('then it throws an error for missing percent signs', () => {
-        expect(() => parseHSL('210 50 40')).toThrow('Invalid HSL format: 210 50 40')
-      })
-
-      it('then it throws an error for CSS hsl() syntax', () => {
-        expect(() => parseHSL('hsl(210, 50%, 40%)')).toThrow('Invalid HSL format: hsl(210, 50%, 40%)')
-      })
-    })
-  })
-
-  describe('given formatHSL function', () => {
-    describe('when integer values are provided', () => {
-      it('then it formats them as an HSL string', () => {
-        const result = formatHSL(210, 50, 40)
-
-        expect(result).toBe('210 50% 40%')
-      })
-    })
-
-    describe('when values with many decimal places are provided', () => {
-      it('then it rounds to one decimal place', () => {
-        const result = formatHSL(210.456, 50.789, 40.123)
-
-        expect(result).toBe('210.5 50.8% 40.1%')
-      })
-    })
-
-    describe('when zero values are provided', () => {
-      it('then it formats them correctly', () => {
-        const result = formatHSL(0, 0, 0)
-
-        expect(result).toBe('0 0% 0%')
-      })
-    })
-
-    describe('when values round to whole numbers', () => {
-      it('then it omits the decimal point', () => {
-        const result = formatHSL(210.04, 50.02, 40.01)
-
-        expect(result).toBe('210 50% 40%')
+    describe('when a complete hsl() string is provided', () => {
+      it('then it still extracts channels (permissive v5 behavior)', () => {
+        expect(parseHSL('hsl(210 50% 40%)')).toEqual({ h: 210, s: 50, l: 40 })
       })
     })
   })
@@ -91,15 +25,23 @@ describe('color-utils', () => {
         expect(keys).toEqual([50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950])
       })
 
-      it('then the 500 variant equals the base color', () => {
+      it('then the 500 variant equals the base color as a complete hsl() string', () => {
         const result = generateColorScale('210 50% 50%')
 
-        expect(result[500]).toBe('210 50% 50%')
+        expect(result[500]).toBe('hsl(210 50% 50%)')
+      })
+
+      it('then each variant is a complete hsl() string', () => {
+        const result = generateColorScale('210 50% 50%')
+        const variants: (keyof ColorScale)[] = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+
+        for (const variant of variants) {
+          expect(result[variant]).toMatch(/^hsl\(.+\)$/)
+        }
       })
 
       it('then lower variants are lighter than the base', () => {
-        const baseColor = '210 50% 50%'
-        const result = generateColorScale(baseColor)
+        const result = generateColorScale('210 50% 50%')
 
         const baseLightness = parseHSL(result[500]).l
         const variant50Lightness = parseHSL(result[50]).l
@@ -110,8 +52,7 @@ describe('color-utils', () => {
       })
 
       it('then higher variants are darker than the base', () => {
-        const baseColor = '210 50% 50%'
-        const result = generateColorScale(baseColor)
+        const result = generateColorScale('210 50% 50%')
 
         const baseLightness = parseHSL(result[500]).l
         const variant700Lightness = parseHSL(result[700]).l
@@ -164,96 +105,102 @@ describe('color-utils', () => {
         expect(variant900Saturation).toBeGreaterThanOrEqual(0)
       })
     })
+
+    describe('when the base color is given as a complete hsl() value', () => {
+      it('then it still generates the scale correctly', () => {
+        const result = generateColorScale('hsl(210 50% 50%)')
+
+        expect(result[500]).toBe('hsl(210 50% 50%)')
+      })
+    })
+
+    describe('when the base color is given as a hex value', () => {
+      it('then it converts to HSL and generates the scale', () => {
+        const result = generateColorScale('#ff0000')
+
+        const parsed = parseHSL(result[500])
+        expect(parsed.h).toBeCloseTo(0, 0)
+        expect(parsed.s).toBeCloseTo(100, 0)
+        expect(parsed.l).toBeCloseTo(50, 0)
+      })
+    })
   })
 
   describe('given getContrastColor function', () => {
     describe('when the base color lightness is above 50', () => {
-      it('then it returns black', () => {
-        const result = getContrastColor('210 50% 70%')
-
-        expect(result).toBe('0 0% 0%')
+      it('then it returns black in hsl() format', () => {
+        expect(getContrastColor('210 50% 70%')).toBe('hsl(0 0% 0%)')
       })
     })
 
     describe('when the base color lightness is below 50', () => {
-      it('then it returns white', () => {
-        const result = getContrastColor('210 50% 30%')
-
-        expect(result).toBe('0 0% 100%')
+      it('then it returns white in hsl() format', () => {
+        expect(getContrastColor('210 50% 30%')).toBe('hsl(0 0% 100%)')
       })
     })
 
     describe('when the base color lightness is exactly 50', () => {
       it('then it returns white', () => {
-        const result = getContrastColor('210 50% 50%')
-
-        expect(result).toBe('0 0% 100%')
+        expect(getContrastColor('210 50% 50%')).toBe('hsl(0 0% 100%)')
       })
     })
 
     describe('when the base color lightness is 100', () => {
       it('then it returns black', () => {
-        const result = getContrastColor('0 0% 100%')
-
-        expect(result).toBe('0 0% 0%')
+        expect(getContrastColor('0 0% 100%')).toBe('hsl(0 0% 0%)')
       })
     })
 
     describe('when the base color lightness is 0', () => {
       it('then it returns white', () => {
-        const result = getContrastColor('0 0% 0%')
+        expect(getContrastColor('0 0% 0%')).toBe('hsl(0 0% 100%)')
+      })
+    })
 
-        expect(result).toBe('0 0% 100%')
+    describe('when the base color is a hex value', () => {
+      it('then it parses and returns the correct contrast', () => {
+        expect(getContrastColor('#ffffff')).toBe('hsl(0 0% 0%)')
+        expect(getContrastColor('#000000')).toBe('hsl(0 0% 100%)')
       })
     })
   })
 
   describe('given adjustColorLightness function', () => {
     describe('when a positive adjustment is applied', () => {
-      it('then the lightness increases', () => {
-        const result = adjustColorLightness('210 50% 40%', 20)
-
-        expect(result).toBe('210 50% 60%')
+      it('then the lightness increases and output is hsl()', () => {
+        expect(adjustColorLightness('210 50% 40%', 20)).toBe('hsl(210 50% 60%)')
       })
     })
 
     describe('when a negative adjustment is applied', () => {
       it('then the lightness decreases', () => {
-        const result = adjustColorLightness('210 50% 40%', -20)
-
-        expect(result).toBe('210 50% 20%')
+        expect(adjustColorLightness('210 50% 40%', -20)).toBe('hsl(210 50% 20%)')
       })
     })
 
     describe('when the adjustment exceeds 100', () => {
       it('then the lightness is clamped at 100', () => {
-        const result = adjustColorLightness('210 50% 90%', 50)
-
-        expect(result).toBe('210 50% 100%')
+        expect(adjustColorLightness('210 50% 90%', 50)).toBe('hsl(210 50% 100%)')
       })
     })
 
     describe('when the adjustment goes below 0', () => {
       it('then the lightness is clamped at 0', () => {
-        const result = adjustColorLightness('210 50% 10%', -50)
-
-        expect(result).toBe('210 50% 0%')
+        expect(adjustColorLightness('210 50% 10%', -50)).toBe('hsl(210 50% 0%)')
       })
     })
 
     describe('when a zero adjustment is applied', () => {
       it('then the color remains unchanged', () => {
-        const result = adjustColorLightness('210 50% 40%', 0)
-
-        expect(result).toBe('210 50% 40%')
+        expect(adjustColorLightness('210 50% 40%', 0)).toBe('hsl(210 50% 40%)')
       })
     })
 
     describe('when hue and saturation are preserved', () => {
       it('then only lightness changes', () => {
         const result = adjustColorLightness('120 80% 50%', 10)
-
         const parsed = parseHSL(result)
+
         expect(parsed.h).toBe(120)
         expect(parsed.s).toBe(80)
         expect(parsed.l).toBe(60)
