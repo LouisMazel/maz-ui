@@ -1052,6 +1052,14 @@ Ce test sert aussi de documentation exécutable et de régression pour les futur
 
 ## Phase 7 : Vérification complète
 
+**Statut** : 🟡 mostly done — typecheck, lint, build, CSS inspection et métriques bundle/build faits. Phases 7.5 (inspection visuelle manuelle) et 7.7 (tests Playwright) reportées à des sessions dédiées.
+- Typecheck ✅ (correctif `tailwindcss/types/config` retiré)
+- Lint ✅ (nuxt stylelint config nettoyé)
+- Build ✅ (3 apps + lib)
+- Tests ✅ (2835 + 26 codemod + 233 themes)
+- CSS inspection ✅ (prefix propre, color-mix pour alpha, pas de leak)
+- Bundle size + build time capturés dans `tools/baselines/SUMMARY.md` : main.css +35KB raw mais dist total +5%, build +45% sur cold NX cache (trade-off per-SFC @tailwindcss/vite)
+
 ### 7.1 Tests unitaires
 
 ```bash
