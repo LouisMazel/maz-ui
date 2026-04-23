@@ -84,7 +84,7 @@ const emits = defineEmits<{
 
   &__close {
     @apply maz:absolute!;
-    @apply maz:end-2 maz:top-2;
+    @apply maz:inset-e-2 maz:top-2;
   }
 }
 </style>

@@ -480,7 +480,7 @@ html.--m-fullscreen-open {
     }
 
     &.--close {
-      @apply maz:end-0 maz:top-0 maz:items-start maz:justify-end;
+      @apply maz:inset-e-0 maz:top-0 maz:items-start maz:justify-end;
     }
 
     &.--previous {
@@ -488,7 +488,7 @@ html.--m-fullscreen-open {
     }
 
     &.--next {
-      @apply maz:end-0 maz:top-1/2 maz:h-screen maz:-translate-y-1/2 maz:transform maz:items-center maz:justify-end;
+      @apply maz:inset-e-0 maz:top-1/2 maz:h-screen maz:-translate-y-1/2 maz:transform maz:items-center maz:justify-end;
     }
   }
 }

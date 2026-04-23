@@ -370,7 +370,7 @@ onMounted(() => {
   }
 
   &.--right {
-    @apply maz:end-0 maz:w-full maz:tab-m:w-auto;
+    @apply maz:inset-e-0 maz:w-full maz:tab-m:w-auto;
   }
 
   &.--left {
@@ -409,7 +409,7 @@ onMounted(() => {
     }
 
     & .m-toast__button {
-      @apply maz:tab-m:w-[22rem] maz:tab-m:justify-center;
+      @apply maz:tab-m:w-88 maz:tab-m:justify-center;
     }
   }
 

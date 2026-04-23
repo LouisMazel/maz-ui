@@ -163,7 +163,7 @@ function toggleCollapse() {
       v-if="hasSlotContent(slots.title) || title || collapsible"
       class="m-card__header maz:border-b maz:border-solid"
       :class="[
-        collapseOpenModel ? 'maz:rounded-t maz:border-divider' : 'maz:border-transparent',
+        collapseOpenModel ? 'maz:rounded-t-md maz:border-divider' : 'maz:border-transparent',
         { '--is-collapsible': collapsible },
         { 'maz:justify-end': (!hasSlotContent(slots.title) || !title) && collapsible },
         { 'maz:justify-between': hasSlotContent(slots.title) || title },

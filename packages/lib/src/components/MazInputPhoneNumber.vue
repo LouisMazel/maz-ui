@@ -726,13 +726,13 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
       }
 
       &:deep(.m-input-wrapper) {
-        @apply maz:rounded-b-none maz:mob-l:rounded-b maz:mob-l:rounded-r-none;
+        @apply maz:rounded-b-none maz:mob-l:rounded-b-md maz:mob-l:rounded-r-none;
       }
     }
   }
 
   &__country-list-code {
-    @apply maz:text-muted maz:min-w-[2rem] maz:text-center;
+    @apply maz:text-muted maz:min-w-8 maz:text-center;
   }
 }
 </style>

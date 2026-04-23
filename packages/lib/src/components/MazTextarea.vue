@@ -283,7 +283,7 @@ const stateLabelColor = computed(() => [
 }
 
 .m-textarea {
-  @apply maz:min-h-[6.25rem] maz:relative maz:flex maz:flex-col maz:align-top maz:text-foreground;
+  @apply maz:min-h-25 maz:relative maz:flex maz:flex-col maz:align-top maz:text-foreground;
 
   &.--has-placeholder.--has-label textarea,
   &.--has-label:has(textarea:not(:placeholder-shown)) textarea,
