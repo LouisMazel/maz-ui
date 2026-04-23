@@ -1,22 +1,13 @@
 import type { ColorScale } from '../types'
+import { formatAsHSL, parseColor } from './color-parser'
 
-export function parseHSL(hsl: string): { h: number, s: number, l: number } {
-  const match = hsl.match(/^(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)%\s+(\d+(?:\.\d+)?)%$/)
-  if (!match) {
-    throw new Error(`Invalid HSL format: ${hsl}`)
-  }
-  return {
-    h: Number.parseFloat(match[1]),
-    s: Number.parseFloat(match[2]),
-    l: Number.parseFloat(match[3]),
-  }
-}
-
-export function formatHSL(h: number, s: number, l: number): string {
-  const roundedH = Math.round(h * 10) / 10
-  const roundedS = Math.round(s * 10) / 10
-  const roundedL = Math.round(l * 10) / 10
-  return `${roundedH} ${roundedS}% ${roundedL}%`
+/**
+ * @deprecated Prefer `parseColor` from `./color-parser` — it accepts any CSS color format
+ * (hsl(), rgb(), oklch(), #hex, or the legacy raw "H S% L%"). This alias is kept for
+ * internal backwards-compatibility during the v5 migration and may be removed in v6.
+ */
+export function parseHSL(value: string): { h: number, s: number, l: number } {
+  return parseColor(value)
 }
 
 const LUMINOSITY_OFFSETS = {
@@ -51,8 +42,15 @@ function calculateSaturationMultiplier(baseVariant: number, targetVariant: numbe
   }
 }
 
+/**
+ * Generate an 11-step color scale from a base color.
+ *
+ * The base color can be given in any CSS color format (`hsl()`, `rgb()`, `oklch()`, `#hex`,
+ * or the legacy raw `"H S% L%"`). Values are converted to HSL for scale computation and
+ * emitted as complete `hsl()` strings.
+ */
 export function generateColorScale(baseColor: string): ColorScale {
-  const { h, s, l } = parseHSL(baseColor)
+  const { h, s, l } = parseColor(baseColor)
 
   const baseVariant = 500
   const baseLuminosity = l
@@ -62,7 +60,7 @@ export function generateColorScale(baseColor: string): ColorScale {
 
   variants.forEach((variant) => {
     if (variant === baseVariant) {
-      scale[variant] = formatHSL(h, s, l)
+      scale[variant] = formatAsHSL({ h, s, l })
     }
     else {
       const isUnderBase = variant < baseVariant
@@ -87,20 +85,30 @@ export function generateColorScale(baseColor: string): ColorScale {
       const saturationMultiplier = calculateSaturationMultiplier(baseVariant, variant, s)
       const adjustedSaturation = Math.min(100, Math.max(5, s * saturationMultiplier))
 
-      scale[variant] = formatHSL(h, adjustedSaturation, targetLuminosity)
+      scale[variant] = formatAsHSL({ h, s: adjustedSaturation, l: targetLuminosity })
     }
   })
 
   return scale as ColorScale
 }
 
+/**
+ * Return a black or white `hsl()` string suitable for text drawn on top of `baseColor`.
+ *
+ * The base color may be any CSS color format.
+ */
 export function getContrastColor(baseColor: string): string {
-  const { l } = parseHSL(baseColor)
-  return l > 50 ? '0 0% 0%' : '0 0% 100%'
+  const { l } = parseColor(baseColor)
+  return l > 50 ? 'hsl(0 0% 0%)' : 'hsl(0 0% 100%)'
 }
 
+/**
+ * Shift the lightness of a color by `adjustment` (in L% units), clamped to [0, 100].
+ *
+ * The input can be in any CSS color format; the output is always a complete `hsl()` string.
+ */
 export function adjustColorLightness(baseColor: string, adjustment: number): string {
-  const { h, s, l } = parseHSL(baseColor)
+  const { h, s, l } = parseColor(baseColor)
   const newL = Math.max(0, Math.min(100, l + adjustment))
-  return formatHSL(h, s, newL)
+  return formatAsHSL({ h, s, l: newL })
 }

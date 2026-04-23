@@ -1,5 +1,6 @@
 import type { DarkModeStrategy, ThemeColors, ThemeFoundation, ThemeMode, ThemePreset } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
+import { normalizeColor } from './color-parser'
 import { generateColorScale } from './color-utils'
 
 export interface CSSOptions {
@@ -228,7 +229,7 @@ function generateVariablesBlock({
   if (colors) {
     Object.entries(colors).forEach(([key, value]) => {
       if (value) {
-        variables.push(`  --${prefix}-${key}: ${value};`)
+        variables.push(`  --${prefix}-${key}: ${normalizeColor(value)};`)
       }
     })
   }

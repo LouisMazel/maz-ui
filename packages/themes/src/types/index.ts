@@ -1,29 +1,42 @@
+/**
+ * @deprecated Use {@link CSSColor}. The raw HSL form is still accepted at runtime
+ * (auto-wrapped in `hsl()`), but prefer a complete CSS color value in new code.
+ */
 export type HSL = `${number} ${number}% ${number}%`
+
+/**
+ * Any valid CSS color value. Accepts complete forms (`hsl(210 100% 56%)`,
+ * `oklch(0.7 0.15 30)`, `rgb(255 0 0)`, `#ff0000`) and the legacy raw form
+ * `"210 100% 56%"` for backwards compatibility with v4 presets.
+ */
+// eslint-disable-next-line sonarjs/redundant-type-aliases -- Semantic alias used throughout the public ThemeColors contract; kept for documentation even though it widens to string.
+export type CSSColor = string
+
 export type SizeUnit = `${number}${'rem' | 'px' | 'em' | 'vw' | 'vh' | 'vmin' | 'vmax' | '%'}`
 
 export interface ThemeColors {
-  'background': HSL
-  'foreground': HSL
-  'primary': HSL
-  'primary-foreground': HSL
-  'secondary': HSL
-  'secondary-foreground': HSL
-  'accent': HSL
-  'accent-foreground': HSL
-  'info': HSL
-  'info-foreground': HSL
-  'contrast': HSL
-  'contrast-foreground': HSL
-  'destructive': HSL
-  'destructive-foreground': HSL
-  'success': HSL
-  'success-foreground': HSL
-  'warning': HSL
-  'warning-foreground': HSL
-  'overlay': HSL
-  'muted': HSL
-  'border': HSL
-  'shadow': HSL
+  'background': CSSColor
+  'foreground': CSSColor
+  'primary': CSSColor
+  'primary-foreground': CSSColor
+  'secondary': CSSColor
+  'secondary-foreground': CSSColor
+  'accent': CSSColor
+  'accent-foreground': CSSColor
+  'info': CSSColor
+  'info-foreground': CSSColor
+  'contrast': CSSColor
+  'contrast-foreground': CSSColor
+  'destructive': CSSColor
+  'destructive-foreground': CSSColor
+  'success': CSSColor
+  'success-foreground': CSSColor
+  'warning': CSSColor
+  'warning-foreground': CSSColor
+  'overlay': CSSColor
+  'muted': CSSColor
+  'border': CSSColor
+  'shadow': CSSColor
 }
 
 export interface ThemeFoundation {
