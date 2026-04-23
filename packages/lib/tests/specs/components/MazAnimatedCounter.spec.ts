@@ -7,7 +7,7 @@ describe('mazAnimatedCounter', () => {
       props: { count: 10, prefix: '$' },
     })
 
-    expect(wrapper.find('.maz-sr-only').text()).toBe('$10')
+    expect(wrapper.find('.maz\\:sr-only').text()).toBe('$10')
   })
 
   it('updates count and triggers animation', () => {
@@ -15,7 +15,7 @@ describe('mazAnimatedCounter', () => {
       props: { count: 10, suffix: '%' },
     })
 
-    expect(wrapper.find('.maz-sr-only').text()).toBe('10%')
+    expect(wrapper.find('.maz\\:sr-only').text()).toBe('10%')
   })
 
   it('respects delay prop', () => {

@@ -1,4 +1,4 @@
-@layer maz-ui-utilities {
+@layer maz:ui-utilities {
   :root {
     --maz-container-padding-mobile: 1rem;
     --maz-container-padding-tablet: 2rem;

@@ -52,18 +52,18 @@ describe('components/MazTextarea.vue', () => {
     await wrapper.setProps({
       error: true,
     })
-    expect(wrapper.vm.borderStyle).toBe('maz-border-destructive')
+    expect(wrapper.vm.borderStyle).toBe('maz:border-destructive')
     await wrapper.setProps({
       error: false,
       warning: true,
     })
-    expect(wrapper.vm.borderStyle).toBe('maz-border-warning')
+    expect(wrapper.vm.borderStyle).toBe('maz:border-warning')
     await wrapper.setProps({
       error: false,
       warning: false,
       success: true,
     })
-    expect(wrapper.vm.borderStyle).toBe('maz-border-success')
+    expect(wrapper.vm.borderStyle).toBe('maz:border-success')
     await wrapper.setProps({
       error: false,
       warning: false,
@@ -270,7 +270,7 @@ describe('components/MazTextarea.vue', () => {
         props: { modelValue: 'text', topLabel: 'Your message', error: true },
       })
       const topLabel = errorWrapper.find('.m-textarea__top-label')
-      expect(topLabel.classes()).toContain('maz-text-destructive-600')
+      expect(topLabel.classes()).toContain('maz:text-destructive-600')
     })
 
     it('should apply success color class to top label', () => {
@@ -278,7 +278,7 @@ describe('components/MazTextarea.vue', () => {
         props: { modelValue: 'text', topLabel: 'Your message', success: true },
       })
       const topLabel = successWrapper.find('.m-textarea__top-label')
-      expect(topLabel.classes()).toContain('maz-text-success-600')
+      expect(topLabel.classes()).toContain('maz:text-success-600')
     })
 
     it('should apply warning color class to top label', () => {
@@ -286,7 +286,7 @@ describe('components/MazTextarea.vue', () => {
         props: { modelValue: 'text', topLabel: 'Your message', warning: true },
       })
       const topLabel = warningWrapper.find('.m-textarea__top-label')
-      expect(topLabel.classes()).toContain('maz-text-warning-600')
+      expect(topLabel.classes()).toContain('maz:text-warning-600')
     })
   })
 })

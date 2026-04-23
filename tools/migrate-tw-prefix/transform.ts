@@ -13,36 +13,37 @@ const UTILITY_RENAMES: Record<string, string> = {
   'shadow': 'shadow-sm',
 }
 
-const TOKEN_PARSE = /^(!?)((?:[\w-]+:)*)(!?)maz-(.+)$/
+const TOKEN_PARSE = /^(!?)((?:[\w-]+:)*)(!?)(-?)maz-(-?)(.+)$/
 
-const TEXT_SCAN = /(?<![\w-])(?:!)?(?:[\w-]+:)*(?:!)?maz-[a-zA-Z][\w\-\/.[\]]*(?![\w-])/g
+const TEXT_SCAN = /(?<![\w-])(?:!)?(?:[\w-]+:)*(?:!)?-?maz--?[a-zA-Z][\w\-\/]*(?:\[[^\]]+\][\w\-\/]*)*(?![\w-])/g
 
 export function transformClassToken(token: string): string {
   const match = token.match(TOKEN_PARSE)
   if (!match) return token
 
-  const [, importantPrefix, variants, importantMid, utility] = match
+  const [, importantPrefix, variants, importantMid, negBefore, negAfter, utility] = match
 
   if (utility === 'ui' || utility.startsWith('ui/')) return token
 
   const renamedUtility = UTILITY_RENAMES[utility] ?? utility
   const isImportant = Boolean(importantPrefix || importantMid)
+  const isNegative = Boolean(negBefore || negAfter)
   const variantPart = variants ?? ''
 
-  return `maz:${variantPart}${renamedUtility}${isImportant ? '!' : ''}`
+  return `maz:${variantPart}${isNegative ? '-' : ''}${renamedUtility}${isImportant ? '!' : ''}`
 }
 
 export function transformText(text: string): string {
   return text.replace(TEXT_SCAN, match => transformClassToken(match))
 }
 
-const VUE_TEMPLATE = /(<template\b[^>]*>)([\s\S]*?)(<\/template>)/g
-const VUE_STYLE = /(<style\b[^>]*>)([\s\S]*?)(<\/style>)/g
-
 export function transformVueFile(content: string): string {
-  return content
-    .replace(VUE_TEMPLATE, (_, open, inner, close) => `${open}${transformText(inner)}${close}`)
-    .replace(VUE_STYLE, (_, open, inner, close) => `${open}${transformText(inner)}${close}`)
+  // The token parser (transformClassToken) already protects `maz-ui` and
+  // `maz-ui/...` strings, so we can safely scan the whole file — this catches
+  // dynamic class names returned from script-block computed properties such as
+  //   return 'maz-text-sm'
+  // while leaving imports like `from 'maz-ui/components'` untouched.
+  return transformText(content)
 }
 
 export function transformCssFile(content: string): string {

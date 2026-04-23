@@ -9,7 +9,7 @@ describe('given MazTabsContentItem component', () => {
         props: { tab: 1 },
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab: ref(1),
             },
           },
@@ -28,7 +28,7 @@ describe('given MazTabsContentItem component', () => {
         props: { tab: 1 },
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab: ref(1),
             },
           },
@@ -45,7 +45,7 @@ describe('given MazTabsContentItem component', () => {
         props: { tab: 2 },
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab: ref(1),
             },
           },
@@ -63,7 +63,7 @@ describe('given MazTabsContentItem component', () => {
         props: { tab: 2 },
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab,
             },
           },
@@ -89,7 +89,7 @@ describe('given MazTabsContentItem component', () => {
         props: { tab: 1 },
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab,
             },
           },
@@ -112,7 +112,7 @@ describe('given MazTabsContentItem component', () => {
         props: { tab: 1 },
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab,
             },
           },
@@ -139,7 +139,7 @@ describe('given MazTabsContentItem component', () => {
         props: { tab: 1 },
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab,
             },
           },
@@ -168,7 +168,7 @@ describe('given MazTabsContentItem component', () => {
         },
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab: ref(1),
             },
           },
@@ -188,7 +188,7 @@ describe('given MazTabsContentItem component', () => {
         },
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab: ref(1),
             },
           },
@@ -205,7 +205,7 @@ describe('given MazTabsContentItem component', () => {
         props: { tab: 3 },
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab: ref(3),
             },
           },
@@ -220,7 +220,7 @@ describe('given MazTabsContentItem component', () => {
         props: { tab: 0 },
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab: ref(0),
             },
           },

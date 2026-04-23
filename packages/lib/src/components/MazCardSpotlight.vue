@@ -140,11 +140,11 @@ onMounted(() => {
   <div
     ref="containerElement"
     class="m-card-spotlight m-reset-css"
-    :class="{ 'maz-shadow-elevation maz-drop-shadow-md': elevation }"
+    :class="{ 'maz:shadow-elevation maz:drop-shadow-md': elevation }"
     :style="{ 'backgroundColor': alphaColor20, '--inner-opacity': innerOpacity }"
   >
     <div class="inner">
-      <div class="content" :class="[{ 'maz-p-4': padding }, contentClass]" :style="contentStyle">
+      <div class="content" :class="[{ 'maz:p-4': padding }, contentClass]" :style="contentStyle">
         <slot />
       </div>
     </div>
@@ -159,31 +159,31 @@ onMounted(() => {
 
 <style scoped>
   .m-card-spotlight {
-  @apply maz-relative maz-inline-flex maz-overflow-hidden maz-rounded;
+  @apply maz:relative maz:inline-flex maz:overflow-hidden maz:rounded;
 
   padding: max(var(--maz-border-width), 1px);
   contain: layout style paint;
 
   .inner {
-    @apply maz-relative maz-h-auto maz-w-full maz-overflow-hidden;
+    @apply maz:relative maz:h-auto maz:w-full maz:overflow-hidden;
 
     border-radius: calc(var(--maz-radius) - max(var(--maz-border-width), 1px));
 
     &::before {
       content: '';
 
-      @apply maz-absolute maz-left-0 maz-top-0 maz-z-1 maz-h-full maz-w-full maz-bg-surface;
+      @apply maz:absolute maz:left-0 maz:top-0 maz:z-1 maz:h-full maz:w-full maz:bg-surface;
 
       opacity: var(--inner-opacity);
     }
   }
 
   .content {
-    @apply maz-relative maz-z-2 maz-h-full maz-w-full;
+    @apply maz:relative maz:z-2 maz:h-full maz:w-full;
   }
 
   .blob {
-    @apply maz-absolute maz-left-0 maz-top-0 maz-z-[0] maz-rounded-full maz-blur-2xl;
+    @apply maz:absolute maz:left-0 maz:top-0 maz:z-[0] maz:rounded-full maz:blur-2xl;
 
     width: 208px;
     height: 208px;

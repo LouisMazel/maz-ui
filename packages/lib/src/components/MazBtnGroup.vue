@@ -107,68 +107,68 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 <style scoped>
 .m-button-group {
-  @apply maz-inline-flex;
+  @apply maz:inline-flex;
 
   &.--row {
-    @apply maz-flex-row;
+    @apply maz:flex-row;
 
     .m-button-group__button,
     :deep(.m-btn) {
-      @apply maz-rounded-none;
+      @apply maz:rounded-none;
 
       &:first-child {
-        @apply maz-rounded-l;
+        @apply maz:rounded-l;
       }
 
       &:last-child {
-        @apply maz-rounded-r;
+        @apply maz:rounded-r;
       }
 
       &:not(:last-child) {
-        @apply maz-border-r-0;
+        @apply maz:border-r-0;
       }
 
       &:not(:first-child) {
-        @apply -maz-ml-px;
+        @apply maz:-ml-px;
 
-        /* maz-border-l-[1px] maz-border-l-surface */
+        /* maz:border-l-[1px] maz:border-l-surface */
       }
 
       &:focus-visible,
       &:active,
       &.--active {
-        @apply maz-z-1;
+        @apply maz:z-1;
       }
     }
   }
 
   &.--col {
-    @apply maz-flex-col;
+    @apply maz:flex-col;
 
     .m-button-group__button,
     :deep(.m-btn) {
-      @apply maz-rounded-none;
+      @apply maz:rounded-none;
 
       &:first-child {
-        @apply maz-rounded-t;
+        @apply maz:rounded-t;
       }
 
       &:last-child {
-        @apply maz-rounded-b;
+        @apply maz:rounded-b;
       }
 
       &:not(:last-child) {
-        @apply maz-border-b-0;
+        @apply maz:border-b-0;
       }
 
       &:not(:first-child) {
-        @apply -maz-mt-px;
+        @apply maz:-mt-px;
       }
 
       &:focus-visible,
       &:active,
       &.--active {
-        @apply maz-z-1;
+        @apply maz:z-1;
       }
     }
   }

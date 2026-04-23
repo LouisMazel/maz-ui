@@ -339,11 +339,11 @@ const borderStyle = computed(() => {
   if (!props.border)
     return undefined
   if (props.error)
-    return 'maz-border-destructive'
+    return 'maz:border-destructive'
   if (props.success)
-    return 'maz-border-success'
+    return 'maz:border-success'
   if (props.warning)
-    return 'maz-border-warning'
+    return 'maz:border-warning'
   return '--default-border'
 })
 
@@ -401,11 +401,11 @@ function emitInputEvent(event: Event) {
 
 const stateColor = computed(() => {
   if (props.error)
-    return '!maz-text-destructive-600'
+    return 'maz:text-destructive-600!'
   if (props.success)
-    return '!maz-text-success-600'
+    return 'maz:text-success-600!'
   if (props.warning)
-    return '!maz-text-warning-600'
+    return 'maz:text-warning-600!'
   return undefined
 })
 </script>
@@ -445,8 +445,8 @@ const stateColor = computed(() => {
           Typically used for icons, buttons, or text. Overrides the leftIcon prop when used
         -->
         <slot v-if="hasSlotContent(slots['left-icon']) || leftIcon" name="left-icon">
-          <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
-          <component :is="leftIcon" v-else-if="leftIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
+          <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
+          <component :is="leftIcon" v-else-if="leftIcon" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
         </slot>
       </div>
 
@@ -498,16 +498,16 @@ const stateColor = computed(() => {
           Note: For password inputs, the visibility toggle button will appear after this slot content
         -->
         <slot v-if="hasSlotContent(slots['right-icon']) || rightIcon" name="right-icon">
-          <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
-          <component :is="rightIcon" v-else-if="rightIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
+          <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
+          <component :is="rightIcon" v-else-if="rightIcon" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
         </slot>
 
         <MazBtn
           v-if="isPasswordType" color="transparent" tabindex="-1" size="mini"
           @click.stop="hasPasswordVisible = !hasPasswordVisible"
         >
-          <MazEyeSlash v-if="hasPasswordVisible" class="maz-text-xl maz-text-muted" />
-          <MazEye v-else class="maz-text-xl maz-text-muted" />
+          <MazEyeSlash v-if="hasPasswordVisible" class="maz:text-xl maz:text-muted" />
+          <MazEye v-else class="maz:text-xl maz:text-muted" />
         </MazBtn>
 
         <template v-if="loading">
@@ -526,10 +526,10 @@ const stateColor = computed(() => {
     <div
       v-if="assistiveText" class="m-input-bottom-text" :class="[
         {
-          'maz-text-destructive-600': error,
-          'maz-text-success-600': success,
-          'maz-text-warning-600': warning,
-          'maz-text-muted': !error && !success && !warning,
+          'maz:text-destructive-600': error,
+          'maz:text-success-600': success,
+          'maz:text-warning-600': warning,
+          'maz:text-muted': !error && !success && !warning,
         },
       ]"
     >
@@ -540,51 +540,51 @@ const stateColor = computed(() => {
 
 <style scoped>
 .m-input {
-  @apply maz-inline-flex maz-flex-col maz-align-top maz-items-start maz-text-foreground;
+  @apply maz:inline-flex maz:flex-col maz:align-top maz:items-start maz:text-foreground;
 
   &.--block {
-    @apply maz-w-full;
+    @apply maz:w-full;
   }
 
   &-top-label {
-    @apply maz-mb-2;
+    @apply maz:mb-2;
   }
 
   &-bottom-text {
-    @apply maz-mt-1 maz-text-sm;
+    @apply maz:mt-1 maz:text-sm;
   }
 
   &-wrapper {
-    @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden maz-bg-surface maz-transition-colors maz-duration-300 maz-size-full;
+    @apply maz:relative maz:z-1 maz:flex maz:flex-1 maz:overflow-hidden maz:bg-surface maz:transition-colors maz:duration-300 maz:size-full;
 
     &.--border {
-      @apply maz-border maz-border-solid;
+      @apply maz:border maz:border-solid;
     }
 
     &.--block {
-      @apply maz-w-full;
+      @apply maz:w-full;
     }
 
     &.--default-border {
-      @apply maz-border-divider dark:maz-border-divider-400;
+      @apply maz:border-divider maz:dark:border-divider-400;
     }
 
     &-input {
-      @apply maz-relative maz-flex maz-w-full maz-max-w-full maz-flex-1 maz-items-center;
+      @apply maz:relative maz:flex maz:w-full maz:max-w-full maz:flex-1 maz:items-center;
 
       &.--has-left-icon {
         .m-input-input {
-          @apply maz-ps-2;
+          @apply maz:ps-2;
         }
 
         .m-input-label {
-          @apply maz-start-2;
+          @apply maz:start-2;
         }
       }
 
       &.--has-right-icon {
         .m-input-input {
-          @apply maz-pe-2;
+          @apply maz:pe-2;
         }
       }
 
@@ -593,7 +593,7 @@ const stateColor = computed(() => {
 
         & .m-input-input,
         & .m-input-label {
-          @apply maz-text-xl;
+          @apply maz:text-xl;
         }
       }
 
@@ -602,7 +602,7 @@ const stateColor = computed(() => {
 
         & .m-input-input,
         & .m-input-label {
-          @apply maz-text-lg;
+          @apply maz:text-lg;
         }
       }
 
@@ -615,7 +615,7 @@ const stateColor = computed(() => {
 
         & .m-input-input,
         & .m-input-label {
-          @apply maz-text-sm;
+          @apply maz:text-sm;
         }
       }
 
@@ -624,7 +624,7 @@ const stateColor = computed(() => {
 
         & .m-input-input,
         & .m-input-label {
-          @apply maz-text-xs;
+          @apply maz:text-xs;
         }
       }
 
@@ -633,63 +633,63 @@ const stateColor = computed(() => {
 
         & .m-input-input,
         & .m-input-label {
-          @apply maz-text-xs;
+          @apply maz:text-xs;
         }
       }
     }
 
     &-right,
     &-left {
-      @apply maz-relative maz-z-1 maz-flex maz-space-x-1 maz-py-1 maz-flex-center;
+      @apply maz:relative maz:z-1 maz:flex maz:space-x-1 maz:py-1 maz:flex-center;
     }
 
     &-right {
-      @apply maz-pe-2;
+      @apply maz:pe-2;
     }
 
     &-left {
-      @apply maz-ps-2;
+      @apply maz:ps-2;
     }
 
     &.--rounded {
       &-sm {
-        @apply maz-rounded-sm;
+        @apply maz:rounded-xs;
       }
 
       &-md {
-        @apply maz-rounded-md;
+        @apply maz:rounded-md;
       }
 
       &-base {
-        @apply maz-rounded;
+        @apply maz:rounded;
       }
 
       &-lg {
-        @apply maz-rounded-lg;
+        @apply maz:rounded-lg;
       }
 
       &-xl {
-        @apply maz-rounded-xl;
+        @apply maz:rounded-xl;
       }
 
       &-full {
-        @apply maz-rounded-full;
+        @apply maz:rounded-full;
       }
     }
   }
 
   &-input {
-    @apply maz-m-0 maz-h-full maz-w-full maz-appearance-none maz-truncate maz-border-none maz-bg-transparent maz-py-0 maz-text-foreground maz-shadow-none maz-outline-none maz-px-4;
+    @apply maz:m-0 maz:h-full maz:w-full maz:appearance-none maz:truncate maz:border-none maz:bg-transparent maz:py-0 maz:text-foreground maz:shadow-none maz:outline-hidden maz:px-4;
 
     transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
     &::placeholder {
-      @apply maz-text-muted;
+      @apply maz:text-muted;
     }
   }
 
   &-label {
-    @apply maz-pointer-events-none maz-absolute maz-w-full maz-origin-top-left maz-items-center maz-overflow-hidden maz-truncate maz-whitespace-nowrap maz-text-start maz-leading-6 maz-start-4;
+    @apply maz:pointer-events-none maz:absolute maz:w-full maz:origin-top-left maz:items-center maz:overflow-hidden maz:truncate maz:whitespace-nowrap maz:text-start maz:leading-6 maz:start-4;
 
     width: calc(100% - 0.75rem);
     transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
@@ -707,87 +707,87 @@ const stateColor = computed(() => {
   &.--has-placeholder.--has-label .m-input-input,
   &.--has-label .m-input-input:not(:placeholder-shown),
   & .m-input-input:-webkit-autofill {
-    @apply maz-pt-4;
+    @apply maz:pt-4;
   }
 
   &:not(.--has-state) .m-input-wrapper {
-    @apply maz-text-muted;
+    @apply maz:text-muted;
   }
 
   &.--has-z-2 {
     & .m-input-wrapper {
-      @apply maz-z-2;
+      @apply maz:z-2;
     }
   }
 
   &.--is-readonly {
     & .m-input-input {
-      @apply maz-cursor-default;
+      @apply maz:cursor-default;
     }
   }
 
   & .m-input-wrapper {
-    @apply dark:maz-bg-surface-400;
+    @apply maz:dark:bg-surface-400;
   }
 
   &:has(input:disabled) {
     & .m-input-wrapper {
-      @apply maz-bg-surface-600 maz-text-muted dark:maz-bg-surface-300;
+      @apply maz:bg-surface-600 maz:text-muted maz:dark:bg-surface-300;
     }
 
     & .m-input-input {
-      @apply maz-cursor-not-allowed maz-text-muted;
+      @apply maz:cursor-not-allowed maz:text-muted;
     }
   }
 
   & .m-input-wrapper:focus-within,
   &.--border-active .m-input-wrapper {
-    @apply maz-z-3;
+    @apply maz:z-3;
   }
 
   &.--primary .m-input-wrapper:focus-within,
   &.--primary.--border-active .m-input-wrapper {
-    @apply maz-border-primary;
+    @apply maz:border-primary;
   }
 
   &.--secondary .m-input-wrapper:focus-within,
   &.--secondary.--border-active .m-input-wrapper {
-    @apply maz-border-secondary;
+    @apply maz:border-secondary;
   }
 
   &.--accent .m-input-wrapper:focus-within,
   &.--accent.--border-active .m-input-wrapper {
-    @apply maz-border-accent;
+    @apply maz:border-accent;
   }
 
   &.--info .m-input-wrapper:focus-within,
   &.--info.--border-active .m-input-wrapper {
-    @apply maz-border-info;
+    @apply maz:border-info;
   }
 
   &.--success .m-input-wrapper:focus-within,
   &.--success.--border-active .m-input-wrapper {
-    @apply maz-border-success;
+    @apply maz:border-success;
   }
 
   &.--warning .m-input-wrapper:focus-within,
   &.--warning.--border-active .m-input-wrapper {
-    @apply maz-border-warning;
+    @apply maz:border-warning;
   }
 
   &.--destructive .m-input-wrapper:focus-within,
   &.--destructive.--border-active .m-input-wrapper {
-    @apply maz-border-destructive;
+    @apply maz:border-destructive;
   }
 
   &.--contrast .m-input-wrapper:focus-within,
   &.--contrast.--border-active .m-input-wrapper {
-    @apply maz-border-contrast;
+    @apply maz:border-contrast;
   }
 
   &.--has-label {
     .m-input-label {
-      @apply maz-pe-3;
+      @apply maz:pe-3;
     }
   }
 }

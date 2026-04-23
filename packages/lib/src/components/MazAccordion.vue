@@ -90,20 +90,20 @@ function selectStep(index: number) {
 
 <style scoped>
   .m-accordion {
-  @apply maz-relative maz-inline-flex maz-flex-col maz-gap-4 maz-align-top;
+  @apply maz:relative maz:inline-flex maz:flex-col maz:gap-4 maz:align-top;
 
   &__spotlight {
-    @apply maz-w-full;
+    @apply maz:w-full;
   }
 
   &__header {
-    @apply maz-inline-flex maz-w-full maz-items-center maz-justify-between maz-gap-4 maz-p-4 maz-text-start maz-transition-colors maz-duration-300 maz-ease-in-out;
+    @apply maz:inline-flex maz:w-full maz:items-center maz:justify-between maz:gap-4 maz:p-4 maz:text-start maz:transition-colors maz:duration-300 maz:ease-in-out;
 
     .header-icon {
-      @apply maz-transition-transform maz-duration-300 maz-ease-in-out;
+      @apply maz:transition-transform maz:duration-300 maz:ease-in-out;
 
       &.--rotate {
-        /* @apply maz-rotate-45; */
+        /* @apply maz:rotate-45; */
 
         transform: rotate(135deg);
       }
@@ -111,7 +111,7 @@ function selectStep(index: number) {
   }
 
   &__content {
-    @apply maz-p-4;
+    @apply maz:p-4;
   }
 }
 </style>

@@ -240,14 +240,14 @@ const btnStyle = computed<CSSProperties>(() => {
 
 <style scoped>
 .m-btn {
-  @apply maz-relative maz-cursor-pointer maz-items-center maz-gap-2 maz-border maz-border-solid maz-border-transparent maz-bg-transparent maz-py-0.5 maz-text-center maz-align-top maz-text-foreground maz-no-underline maz-transition-all maz-duration-200 maz-ease-in-out maz-inline-flex maz-overflow-hidden;
+  @apply maz:relative maz:cursor-pointer maz:items-center maz:gap-2 maz:border maz:border-solid maz:border-transparent maz:bg-transparent maz:py-0.5 maz:text-center maz:align-top maz:text-foreground maz:no-underline maz:transition-all maz:duration-200 maz:ease-in-out maz:inline-flex maz:overflow-hidden;
 
   justify-content: var(--m-btn-justify, center);
   background-color: hsl(var(--m-btn-bg));
   color: hsl(var(--m-btn-fg));
 
   & span {
-    @apply maz-leading-none;
+    @apply maz:leading-none;
   }
 
   &:not(:disabled):hover {
@@ -260,7 +260,7 @@ const btnStyle = computed<CSSProperties>(() => {
   }
 
   &-loader-container {
-    @apply maz-absolute maz-inset-0 maz-flex maz-flex-center;
+    @apply maz:absolute maz:inset-0 maz:flex maz:flex-center;
 
     background-color: hsl(var(--m-btn-bg));
     color: hsl(var(--m-btn-fg));
@@ -268,7 +268,7 @@ const btnStyle = computed<CSSProperties>(() => {
 
   /* Outlined variant */
   &.--outlined {
-    @apply maz-bg-transparent maz-border-[hsl(var(--m-btn-bd-light))] dark:maz-border-[hsl(var(--m-btn-bd-dark))];
+    @apply maz:bg-transparent maz:border-[hsl(var(--m-btn-bd-light))] maz:dark:border-[hsl(var(--m-btn-bd-dark))];
 
     color: hsl(var(--m-btn-bg));
 
@@ -301,216 +301,216 @@ const btnStyle = computed<CSSProperties>(() => {
 
   /* Transparent: no theme color, uses surface for hover/active */
   &.--transparent {
-    @apply maz-bg-transparent maz-text-foreground;
+    @apply maz:bg-transparent maz:text-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-surface-600/50 dark:maz-bg-surface-400;
+      @apply maz:bg-surface-600/50 maz:dark:bg-surface-400;
     }
 
     &.--outlined {
-      @apply maz-border-divider;
+      @apply maz:border-divider;
 
       &:not(:disabled):hover {
-        @apply maz-bg-surface-600/50;
+        @apply maz:bg-surface-600/50;
       }
 
       &:not(:disabled):active,
       &.--active {
-        @apply maz-bg-surface-600;
+        @apply maz:bg-surface-600;
       }
     }
 
     &.--pastel {
       &:not(:disabled):hover {
-        @apply maz-bg-surface-600;
+        @apply maz:bg-surface-600;
       }
 
       &:not(:disabled):active,
       &.--active {
-        @apply maz-bg-surface-700;
+        @apply maz:bg-surface-700;
       }
     }
 
     .m-btn-loader-container {
-      @apply maz-bg-surface maz-text-foreground;
+      @apply maz:bg-surface maz:text-foreground;
     }
   }
 
   /* Surface (aka color="background") */
   &.--surface {
-    @apply maz-bg-surface maz-text-foreground;
+    @apply maz:bg-surface maz:text-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-surface-600 dark:maz-bg-surface-400;
+      @apply maz:bg-surface-600 maz:dark:bg-surface-400;
     }
 
     &:not(:disabled):active,
     &.--active {
-      @apply maz-bg-surface-700 dark:maz-bg-surface-300;
+      @apply maz:bg-surface-700 maz:dark:bg-surface-300;
     }
 
     &.--outlined {
-      @apply maz-bg-transparent maz-border-divider;
+      @apply maz:bg-transparent maz:border-divider;
 
       &:not(:disabled):hover {
-        @apply maz-bg-surface-600/50;
+        @apply maz:bg-surface-600/50;
       }
 
       &:not(:disabled):active,
       &.--active {
-        @apply maz-bg-surface-600;
+        @apply maz:bg-surface-600;
       }
     }
 
     &.--pastel {
-      @apply maz-bg-surface-600;
+      @apply maz:bg-surface-600;
 
       &:not(:disabled):hover {
-        @apply maz-bg-surface-700;
+        @apply maz:bg-surface-700;
       }
 
       &:not(:disabled):active,
       &.--active {
-        @apply maz-bg-surface-800;
+        @apply maz:bg-surface-800;
       }
     }
 
     .m-btn-loader-container {
-      @apply maz-text-foreground maz-bg-surface-600 dark:maz-bg-surface-400;
+      @apply maz:text-foreground maz:bg-surface-600 maz:dark:bg-surface-400;
     }
   }
 
   /* Rounded */
   &:not(.--rounded-none) {
-    @apply maz-rounded;
+    @apply maz:rounded;
 
     &.--rounded {
       &-sm {
-        @apply maz-rounded-sm;
+        @apply maz:rounded-xs;
       }
 
       &-md {
-        @apply maz-rounded-md;
+        @apply maz:rounded-md;
       }
 
       &-base {
-        @apply maz-rounded;
+        @apply maz:rounded;
       }
 
       &-lg {
-        @apply maz-rounded-lg;
+        @apply maz:rounded-lg;
       }
 
       &-xl {
-        @apply maz-rounded-xl;
+        @apply maz:rounded-xl;
       }
 
       &-full {
-        @apply maz-rounded-full;
+        @apply maz:rounded-full;
       }
     }
   }
 
   /* Sizes */
   &.--xl {
-    @apply maz-min-h-16 maz-px-8 maz-text-xl;
+    @apply maz:min-h-16 maz:px-8 maz:text-xl;
 
     &.--has-left-icon {
-      @apply maz-ps-6;
+      @apply maz:ps-6;
     }
 
     &.--has-right-icon {
-      @apply maz-pe-6;
+      @apply maz:pe-6;
     }
   }
 
   &.--lg {
-    @apply maz-min-h-14 maz-px-6;
+    @apply maz:min-h-14 maz:px-6;
 
     &.--has-left-icon {
-      @apply maz-ps-4;
+      @apply maz:ps-4;
     }
 
     &.--has-right-icon {
-      @apply maz-pe-4;
+      @apply maz:pe-4;
     }
   }
 
   &.--md {
-    @apply maz-min-h-12 maz-px-4;
+    @apply maz:min-h-12 maz:px-4;
 
     &.--has-left-icon {
-      @apply maz-ps-2;
+      @apply maz:ps-2;
     }
 
     &.--has-right-icon {
-      @apply maz-pe-2;
+      @apply maz:pe-2;
     }
   }
 
   &.--sm {
-    @apply maz-min-h-10 maz-px-3;
+    @apply maz:min-h-10 maz:px-3;
 
     &.--has-left-icon {
-      @apply maz-ps-2;
+      @apply maz:ps-2;
     }
 
     &.--has-right-icon {
-      @apply maz-pe-2;
+      @apply maz:pe-2;
     }
   }
 
   &.--xs {
-    @apply maz-min-h-8 maz-px-2 maz-text-sm;
+    @apply maz:min-h-8 maz:px-2 maz:text-sm;
   }
 
   &.--mini {
-    @apply maz-min-h-6 maz-px-1 maz-text-xs;
+    @apply maz:min-h-6 maz:px-1 maz:text-xs;
   }
 
   /* Fab */
   &.--fab {
-    @apply maz-flex maz-items-center maz-justify-center maz-rounded-full maz-p-1;
+    @apply maz:flex maz:items-center maz:justify-center maz:rounded-full maz:p-1;
 
     &.--xl {
-      @apply maz-w-16;
+      @apply maz:w-16;
     }
 
     &.--lg {
-      @apply maz-w-14;
+      @apply maz:w-14;
     }
 
     &.--md {
-      @apply maz-w-12;
+      @apply maz:w-12;
     }
 
     &.--sm {
-      @apply maz-w-10;
+      @apply maz:w-10;
     }
 
     &.--xs {
-      @apply maz-w-8;
+      @apply maz:w-8;
     }
 
     &.--mini {
-      @apply maz-w-6;
+      @apply maz:w-6;
     }
   }
 
   &.--block {
-    @apply maz-w-full;
+    @apply maz:w-full;
   }
 
   &:disabled:not(.--loading) {
-    @apply maz-cursor-not-allowed maz-bg-surface-600 dark:maz-bg-surface-400 maz-text-muted maz-border-surface-600 dark:maz-border-surface-400;
+    @apply maz:cursor-not-allowed maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-muted maz:border-surface-600 maz:dark:border-surface-400;
   }
 
   &.--loading {
-    @apply maz-cursor-wait;
+    @apply maz:cursor-wait;
   }
 
   &.--no-padding {
-    @apply maz-p-0;
+    @apply maz:p-0;
   }
 }
 </style>

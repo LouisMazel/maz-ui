@@ -321,7 +321,7 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
 
 <style scoped>
 .m-date-picker-time {
-  @apply maz-relative maz-flex;
+  @apply maz:relative maz:flex;
 
   max-height: 18.75rem;
 
@@ -330,19 +330,19 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
   }
 
   &.--has-date {
-    @apply maz-border-s maz-border-divider;
+    @apply maz:border-s maz:border-divider;
   }
 
   &::before {
     content: '';
     transform: translateY(-50%);
 
-    @apply maz-absolute maz-left-0 maz-end-0 maz-top-1/2
-        maz-mx-auto maz-h-9 maz-border-b maz-border-t maz-border-divider;
+    @apply maz:absolute maz:left-0 maz:end-0 maz:top-1/2
+        maz:mx-auto maz:h-9 maz:border-b maz:border-t maz:border-divider;
   }
 
   &__column {
-    @apply maz-flex maz-flex-col maz-overflow-y-auto maz-px-1;
+    @apply maz:flex maz:flex-col maz:overflow-y-auto maz:px-1;
 
     /* Hide scrollbar for webkit browsers (Chrome, Safari, Edge) */
     &::-webkit-scrollbar {
@@ -356,15 +356,15 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
     -ms-overflow-style: none;
 
     &__items {
-      @apply maz-flex maz-flex-col;
+      @apply maz:flex maz:flex-col;
 
       > button {
-        @apply maz-z-2 maz-flex-none;
+        @apply maz:z-2 maz:flex-none;
       }
     }
 
     &__spacer {
-      @apply maz-w-full maz-flex-none;
+      @apply maz:w-full maz:flex-none;
     }
   }
 }

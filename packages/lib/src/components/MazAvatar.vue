@@ -178,7 +178,7 @@ const hasInitial = computed(() => !src && caption)
         <MazLazyImg
           v-if="loading === 'intersecting'"
           v-bind="$attrs"
-          class="m-avatar__picture maz-w-full maz-max-w-full"
+          class="m-avatar__picture maz:w-full maz:max-w-full"
           :src
           :alt
           image-height-full
@@ -192,7 +192,7 @@ const hasInitial = computed(() => !src && caption)
         />
         <img
           v-else
-          class="m-avatar__picture maz-w-full maz-max-w-full"
+          class="m-avatar__picture maz:w-full maz:max-w-full"
           :src="src ?? fallbackSrc"
           :alt="alt"
           :loading
@@ -230,62 +230,62 @@ const hasInitial = computed(() => !src && caption)
 
 <style scoped>
   .m-avatar {
-  @apply maz-inline-flex maz-flex-col maz-gap-[0.5em] maz-align-top maz-flex-center;
-  @apply !maz-no-underline;
+  @apply maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top maz:flex-center;
+  @apply maz:no-underline!;
 
   &__caption {
-    @apply maz-w-full maz-truncate maz-text-center maz-font-medium maz-capitalize;
+    @apply maz:w-full maz:truncate maz:text-center maz:font-medium maz:capitalize;
   }
 
   &__initial {
-    @apply maz-text-[1.5em] maz-capitalize;
+    @apply maz:text-[1.5em] maz:capitalize;
   }
 
   &__wrapper {
-    @apply maz-relative maz-flex maz-h-[3em] maz-w-[3em] maz-flex-none maz-justify-center maz-overflow-hidden;
+    @apply maz:relative maz:flex maz:h-[3em] maz:w-[3em] maz:flex-none maz:justify-center maz:overflow-hidden;
 
     &:not(.--rounded-none) {
-      @apply maz-rounded;
+      @apply maz:rounded;
 
       &.--rounded {
-        @apply maz-rounded-full;
+        @apply maz:rounded-full;
 
         &-sm {
-          @apply maz-rounded-sm;
+          @apply maz:rounded-xs;
         }
 
         &-md {
-          @apply maz-rounded-md;
+          @apply maz:rounded-md;
         }
 
         &-base {
-          @apply maz-rounded;
+          @apply maz:rounded;
         }
 
         &-lg {
-          @apply maz-rounded-lg;
+          @apply maz:rounded-lg;
         }
 
         &-xl {
-          @apply maz-rounded-xl;
+          @apply maz:rounded-xl;
         }
 
         &-full {
-          @apply maz-rounded-full;
+          @apply maz:rounded-full;
         }
       }
     }
 
     &.--clickable {
       & .m-avatar__button {
-        @apply maz-absolute maz-inset-0 maz-flex maz-w-full
-            maz-cursor-pointer maz-border-none maz-bg-transparent
-            maz-opacity-0 maz-transition-all maz-duration-200 maz-flex-center;
+        @apply maz:absolute maz:inset-0 maz:flex maz:w-full
+            maz:cursor-pointer maz:border-none maz:bg-transparent
+            maz:opacity-0 maz:transition-all maz:duration-200 maz:flex-center;
 
         transform: scale(0);
 
         &__icon {
-          @apply maz-text-white;
+          @apply maz:text-white;
         }
       }
 
@@ -296,7 +296,7 @@ const hasInitial = computed(() => !src && caption)
         }
 
         & .m-avatar__button {
-          @apply maz-opacity-100;
+          @apply maz:opacity-100;
 
           transform: scale(1.05);
         }
@@ -304,70 +304,70 @@ const hasInitial = computed(() => !src && caption)
     }
 
     &.--bordered {
-      @apply maz-border maz-border-solid maz-border-divider;
+      @apply maz:border maz:border-solid maz:border-divider;
     }
 
     &.--rounded {
       &-sm {
-        @apply maz-rounded-sm;
+        @apply maz:rounded-xs;
 
         .m-avatar__button {
-          @apply maz-rounded-sm;
+          @apply maz:rounded-xs;
         }
       }
 
       &-md {
-        @apply maz-rounded-md;
+        @apply maz:rounded-md;
 
         .m-avatar__button {
-          @apply maz-rounded-md;
+          @apply maz:rounded-md;
         }
       }
 
       &-lg {
-        @apply maz-rounded-lg;
+        @apply maz:rounded-lg;
 
         .m-avatar__button {
-          @apply maz-rounded-lg;
+          @apply maz:rounded-lg;
         }
       }
 
       &-base {
-        @apply maz-rounded;
+        @apply maz:rounded;
 
         .m-avatar__button {
-          @apply maz-rounded;
+          @apply maz:rounded;
         }
       }
 
       &-xl {
-        @apply maz-rounded-xl;
+        @apply maz:rounded-xl;
 
         .m-avatar__button {
-          @apply maz-rounded-xl;
+          @apply maz:rounded-xl;
         }
       }
 
       &-full {
-        @apply maz-rounded-full;
+        @apply maz:rounded-full;
 
         .m-avatar__button {
-          @apply maz-rounded-full;
+          @apply maz:rounded-full;
         }
       }
     }
 
     &.--has-shadow {
-      @apply maz-shadow;
+      @apply maz:shadow-sm;
     }
 
     &.--has-initial {
-      @apply maz-items-center;
+      @apply maz:items-center;
     }
   }
 
   &.--has-link {
-    @apply maz-cursor-pointer;
+    @apply maz:cursor-pointer;
   }
 }
 </style>

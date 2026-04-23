@@ -126,44 +126,44 @@ defineExpose({
 
 <style scoped>
 .m-phone-input {
-  @apply maz-min-w-52 maz-flex-1;
+  @apply maz:min-w-52 maz:flex-1;
 
   &.--error,
   &.--focused {
-    @apply maz-z-1;
+    @apply maz:z-1;
   }
 }
 
 /** RESPONSIVE */
 .m-input-phone-number {
-  @apply maz-hidden;
+  @apply maz:hidden;
 
   &.--responsive .m-phone-input {
-    @apply -maz-mt-[var(--maz-border-width)] maz-flex-none mob-m:-maz-ms-[var(--maz-border-width)] mob-m:maz-mt-0 mob-m:maz-flex-auto;
+    @apply maz:-mt-[var(--maz-border-width)] maz:flex-none maz:mob-m:-ms-[var(--maz-border-width)] maz:mob-m:mt-0 maz:mob-m:flex-auto;
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {
-        @apply maz-rounded-t-none mob-m:maz-rounded-l-none mob-m:maz-rounded-tr;
+        @apply maz:rounded-t-none maz:mob-m:rounded-l-none maz:mob-m:rounded-tr;
       }
     }
   }
 
   &.--row .m-phone-input {
-    @apply -maz-ms-[var(--maz-border-width)] maz-flex-auto;
+    @apply maz:-ms-[var(--maz-border-width)] maz:flex-auto;
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {
-        @apply maz-rounded-l-none;
+        @apply maz:rounded-l-none;
       }
     }
   }
 
   &.--col .m-phone-input {
-    @apply -maz-mt-[var(--maz-border-width)] maz-ms-0 maz-flex-none;
+    @apply maz:-mt-[var(--maz-border-width)] maz:ms-0 maz:flex-none;
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {
-        @apply maz-rounded-t-none maz-rounded-bl;
+        @apply maz:rounded-t-none maz:rounded-bl;
       }
     }
   }

@@ -6,7 +6,7 @@ describe('MazInputPrice branch coverage', () => {
   describe('when mounted with default props', () => {
     it('should render', () => {
       const wrapper = mount(MazInputPrice)
-      expect(wrapper.find('.maz-input-price').exists()).toBe(true)
+      expect(wrapper.find('.maz\\:input-price').exists()).toBe(true)
       wrapper.unmount()
     })
   })

@@ -137,7 +137,7 @@ describe('MazInputCode branch coverage', () => {
       })
       const inputWrappers = wrapper.findAll('.input-wrapper')
       inputWrappers.forEach((w) => {
-        expect(w.classes()).toContain('!maz-border-destructive')
+        expect(w.classes()).toContain('maz:border-destructive!')
       })
     })
 
@@ -147,7 +147,7 @@ describe('MazInputCode branch coverage', () => {
       })
       const inputWrappers = wrapper.findAll('.input-wrapper')
       inputWrappers.forEach((w) => {
-        expect(w.classes()).toContain('!maz-border-success')
+        expect(w.classes()).toContain('maz:border-success!')
       })
     })
 
@@ -157,7 +157,7 @@ describe('MazInputCode branch coverage', () => {
       })
       const inputWrappers = wrapper.findAll('.input-wrapper')
       inputWrappers.forEach((w) => {
-        expect(w.classes()).toContain('!maz-border-warning')
+        expect(w.classes()).toContain('maz:border-warning!')
       })
     })
 
@@ -165,9 +165,9 @@ describe('MazInputCode branch coverage', () => {
       const wrapper = shallowMount(MazInputCode)
       const inputWrappers = wrapper.findAll('.input-wrapper')
       inputWrappers.forEach((w) => {
-        expect(w.classes()).not.toContain('!maz-border-destructive')
-        expect(w.classes()).not.toContain('!maz-border-success')
-        expect(w.classes()).not.toContain('!maz-border-warning')
+        expect(w.classes()).not.toContain('maz:border-destructive!')
+        expect(w.classes()).not.toContain('maz:border-success!')
+        expect(w.classes()).not.toContain('maz:border-warning!')
       })
     })
 
@@ -177,9 +177,9 @@ describe('MazInputCode branch coverage', () => {
       })
       const inputWrappers = wrapper.findAll('.input-wrapper')
       inputWrappers.forEach((w) => {
-        expect(w.classes()).toContain('!maz-border-destructive')
-        expect(w.classes()).not.toContain('!maz-border-success')
-        expect(w.classes()).not.toContain('!maz-border-warning')
+        expect(w.classes()).toContain('maz:border-destructive!')
+        expect(w.classes()).not.toContain('maz:border-success!')
+        expect(w.classes()).not.toContain('maz:border-warning!')
       })
     })
 
@@ -189,8 +189,8 @@ describe('MazInputCode branch coverage', () => {
       })
       const inputWrappers = wrapper.findAll('.input-wrapper')
       inputWrappers.forEach((w) => {
-        expect(w.classes()).toContain('!maz-border-success')
-        expect(w.classes()).not.toContain('!maz-border-warning')
+        expect(w.classes()).toContain('maz:border-success!')
+        expect(w.classes()).not.toContain('maz:border-warning!')
       })
     })
   })

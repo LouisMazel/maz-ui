@@ -64,7 +64,7 @@ function selectMonth(date: Dayjs) {
   <div class="maz-picker-month-switcher">
     <div class="maz-picker-month-switcher__header">
       <MazBtn size="xs" color="transparent" type="button" @click.stop="$emit('close', $event)">
-        <MazXMark class="maz-text-lg" />
+        <MazXMark class="maz:text-lg" />
       </MazBtn>
     </div>
     <div class="maz-picker-month-switcher__main" :class="{ '--has-double': double }">
@@ -87,21 +87,21 @@ function selectMonth(date: Dayjs) {
 
 <style scoped>
   .maz-picker-month-switcher {
-  @apply maz-absolute maz-inset-0 maz-z-1 maz-flex maz-flex-col maz-bg-surface;
+  @apply maz:absolute maz:inset-0 maz:z-1 maz:flex maz:flex-col maz:bg-surface;
 
   &__header {
-    @apply maz-flex maz-justify-end maz-border-b maz-border-divider maz-p-2;
+    @apply maz:flex maz:justify-end maz:border-b maz:border-divider maz:p-2;
   }
 
   &__main {
-    @apply maz-grid maz-flex-1 maz-grid-cols-2 maz-gap-1 maz-overflow-y-auto maz-p-2 maz-flex-center;
+    @apply maz:grid maz:flex-1 maz:grid-cols-2 maz:gap-1 maz:overflow-y-auto maz:p-2 maz:flex-center;
 
     &.--has-double {
-      @apply maz-grid-cols-3;
+      @apply maz:grid-cols-3;
     }
 
     & > button {
-      @apply maz-h-full !important;
+      @apply maz:h-full !important;
     }
   }
 }

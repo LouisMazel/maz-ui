@@ -20,10 +20,10 @@ const days = computed(() => getDaysOfWeek(props.locale, props.firstDayOfWeek))
 
 <style scoped>
   .maz-picker-calendar-days {
-  @apply maz-grid maz-grid-cols-7 maz-justify-between maz-gap-1 maz-text-center;
+  @apply maz:grid maz:grid-cols-7 maz:justify-between maz:gap-1 maz:text-center;
 
   & span {
-    @apply maz-text-xs maz-text-muted;
+    @apply maz:text-xs maz:text-muted;
   }
 }
 </style>

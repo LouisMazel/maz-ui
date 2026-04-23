@@ -23,7 +23,7 @@ function mountTabsBar(props: Record<string, unknown> = {}, provide?: ReturnType<
     },
     global: {
       provide: {
-        'maz-tabs': tabsProvide,
+        'maz:tabs': tabsProvide,
       },
     },
   })
@@ -433,7 +433,7 @@ describe('MazTabsBar branch coverage', () => {
         },
         global: {
           provide: {
-            'maz-tabs': createTabsProvide(1),
+            'maz:tabs': createTabsProvide(1),
           },
         },
         slots: {

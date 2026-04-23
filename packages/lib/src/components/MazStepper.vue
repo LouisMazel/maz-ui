@@ -198,7 +198,7 @@ function isLastStep(step: number): boolean {
                   <component
                     :is="getStepStateData(step).icon"
                     v-if="getStepStateData(step).icon"
-                    class="icon maz-text-xl"
+                    class="icon maz:text-xl"
                   />
                 </div>
                 <!--
@@ -288,119 +288,119 @@ function isLastStep(step: number): boolean {
 <style scoped>
   .m-stepper {
   &__right {
-    @apply maz-truncate maz-text-end maz-text-sm maz-text-primary;
+    @apply maz:truncate maz:text-end maz:text-sm maz:text-primary;
   }
 
   &__header {
-    @apply maz-flex maz-w-full maz-cursor-pointer maz-select-text maz-items-center
-        maz-justify-between maz-space-x-4 maz-rounded maz-px-4 maz-py-2 maz-text-start
-        maz-transition-colors maz-duration-200;
+    @apply maz:flex maz:w-full maz:cursor-pointer maz:select-text maz:items-center
+        maz:justify-between maz:space-x-4 maz:rounded maz:px-4 maz:py-2 maz:text-start
+        maz:transition-colors maz:duration-200;
 
     &__content {
-      @apply maz-flex maz-flex-none maz-flex-col maz-items-start;
+      @apply maz:flex maz:flex-none maz:flex-col maz:items-start;
     }
 
     &__point__wrapper {
-      @apply maz-flex maz-size-8 maz-flex-center;
+      @apply maz:flex maz:size-8 maz:flex-center;
     }
 
     &:not(:disabled) {
-      @apply hover:maz-bg-surface-600 hover:dark:maz-bg-surface-400;
+      @apply maz:hover:bg-surface-600 maz:hover:dark:bg-surface-400;
     }
 
     &:disabled {
-      @apply maz-cursor-not-allowed;
+      @apply maz:cursor-not-allowed;
     }
 
     &.--disabled {
-      @apply maz-text-gray-400 dark:maz-text-gray-500;
+      @apply maz:text-gray-400 maz:dark:text-gray-500;
     }
 
     &.--is-current-step {
-      @apply maz-cursor-default;
+      @apply maz:cursor-default;
     }
 
     &__wrapper {
-      @apply maz-flex maz-items-center maz-space-x-4;
+      @apply maz:flex maz:items-center maz:space-x-4;
     }
 
     &.--success {
       .m-stepper__count__circle {
-        @apply maz-scale-100 maz-bg-success;
+        @apply maz-scale-100 maz:bg-success;
       }
 
       .m-stepper__right {
-        @apply maz-text-success;
+        @apply maz:text-success;
       }
 
       svg {
-        @apply maz-text-success-foreground;
+        @apply maz:text-success-foreground;
       }
     }
 
     &.--warning {
       .m-stepper__count__circle {
-        @apply maz-scale-100 maz-bg-warning;
+        @apply maz-scale-100 maz:bg-warning;
       }
 
       .m-stepper__right {
-        @apply maz-text-warning;
+        @apply maz:text-warning;
       }
 
       svg {
-        @apply maz-text-warning-foreground;
+        @apply maz:text-warning-foreground;
       }
     }
 
     &.--error {
       .m-stepper__count__circle {
-        @apply maz-scale-100 maz-bg-destructive;
+        @apply maz-scale-100 maz:bg-destructive;
       }
 
       .m-stepper__right {
-        @apply maz-text-destructive;
+        @apply maz:text-destructive;
       }
 
       svg {
-        @apply maz-text-destructive-foreground;
+        @apply maz:text-destructive-foreground;
       }
     }
   }
 
   &__title {
-    @apply maz-text-lg;
+    @apply maz:text-lg;
   }
 
   &__subtitle {
-    @apply maz-mt-1 maz-text-sm maz-text-muted;
+    @apply maz:mt-1 maz:text-sm maz:text-muted;
   }
 
   &__count {
-    @apply maz-relative maz-flex maz-h-8 maz-w-8 maz-flex-none
-        maz-overflow-hidden maz-rounded-full maz-text-lg maz-flex-center;
+    @apply maz:relative maz:flex maz:h-8 maz:w-8 maz:flex-none
+        maz:overflow-hidden maz:rounded-full maz:text-lg maz:flex-center;
 
     background-color: var(--round-step-bg-color);
     color: var(--round-step-text-color);
 
     &__circle {
-      @apply maz-absolute maz-inset-0 maz-flex maz-scale-0 maz-rounded-full
-          maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center;
+      @apply maz:absolute maz:inset-0 maz:flex maz-scale-0 maz:rounded-full
+          maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center;
     }
 
     svg {
-      @apply maz-text-success-foreground;
+      @apply maz:text-success-foreground;
     }
   }
 
   &__content {
-    @apply maz-ms-[1.95rem] maz-border-s-2 maz-border-transparent maz-py-2 maz-ps-8;
+    @apply maz:ms-[1.95rem] maz:border-s-2 maz:border-transparent maz:py-2 maz:ps-8;
 
     &__wrapper {
-      @apply maz-py-2;
+      @apply maz:py-2;
     }
 
     &:not(.--no-border) {
-      @apply maz-border-divider;
+      @apply maz:border-divider;
     }
   }
 }

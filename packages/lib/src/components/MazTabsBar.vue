@@ -88,7 +88,7 @@ export type MazTabsBarItem
 
 const MazBadge = defineAsyncComponent(() => import('./MazBadge.vue'))
 
-const { currentTab, updateCurrentTab } = useInjectStrict<MazTabsProvide>('maz-tabs')
+const { currentTab, updateCurrentTab } = useInjectStrict<MazTabsProvide>('maz:tabs')
 
 function selectTab(tabIndex: number) {
   updateCurrentTab(tabIndex + 1)
@@ -183,7 +183,7 @@ function getTabStyle(index: number, disabled: boolean): StyleValue {
 onBeforeMount(() => {
   if (currentTab.value < 1 || currentTab.value > normalizedItems.value.length) {
     console.error(
-      `[maz-ui](MazTabsBar) The model-value should be between 1 and ${normalizedItems.value.length}`,
+      `[maz:ui](MazTabsBar) The model-value should be between 1 and ${normalizedItems.value.length}`,
     )
   }
 })
@@ -274,39 +274,39 @@ onMounted(() => {
 
 <style scoped>
 .m-tabs-bar {
-  @apply maz-relative maz-inline-flex maz-max-w-full maz-gap-1 maz-overflow-x-auto maz-rounded maz-p-2 maz-align-top maz-bg-surface;
+  @apply maz:relative maz:inline-flex maz:max-w-full maz:gap-1 maz:overflow-x-auto maz:rounded maz:p-2 maz:align-top maz:bg-surface;
 
   &.--elevation {
-    @apply maz-drop-shadow-md maz-shadow-elevation dark:maz-shadow-none;
+    @apply maz:drop-shadow-md maz:shadow-elevation maz:dark:shadow-none;
   }
 
   &.--block {
-    @apply maz-w-full;
+    @apply maz:w-full;
   }
 
   &.--bordered {
-    @apply maz-border maz-border-divider;
+    @apply maz:border maz:border-divider;
   }
 
   &__item {
-    @apply maz-relative maz-flex maz-flex-none
-        maz-items-center maz-gap-2 maz-rounded maz-px-3
-        maz-py-2 maz-text-center maz-font-medium maz-no-underline maz-transition maz-duration-200 maz-ease-in-out;
+    @apply maz:relative maz:flex maz:flex-none
+        maz:items-center maz:gap-2 maz:rounded maz:px-3
+        maz:py-2 maz:text-center maz:font-medium maz:no-underline maz:transition maz:duration-200 maz:ease-in-out;
 
     &:not(.--disabled) {
-      @apply maz-cursor-pointer hover:!maz-text-foreground;
+      @apply maz:cursor-pointer maz:hover:text-foreground!;
     }
 
     &.--disabled {
-      @apply maz-cursor-not-allowed maz-bg-surface-300 maz-text-gray-400 dark:maz-text-gray-500;
+      @apply maz:cursor-not-allowed maz:bg-surface-300 maz:text-gray-400 maz:dark:text-gray-500;
     }
   }
 
   &__indicator {
-    @apply maz-absolute maz-left-0 maz-rounded maz-bg-surface-600 dark:maz-bg-surface-400 maz-text-center;
+    @apply maz:absolute maz:left-0 maz:rounded maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-center;
 
     &.--animated {
-      @apply maz-transition-all maz-duration-300 maz-ease-in-out;
+      @apply maz:transition-all maz:duration-300 maz:ease-in-out;
     }
   }
 }

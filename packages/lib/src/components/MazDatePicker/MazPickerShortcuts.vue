@@ -65,7 +65,7 @@ watch(
 
 <style scoped>
 .maz-picker-shortcuts {
-  @apply maz-flex maz-flex-col maz-items-start maz-gap-1 maz-overflow-y-auto maz-border-e maz-border-divider maz-p-2;
+  @apply maz:flex maz:flex-col maz:items-start maz:gap-1 maz:overflow-y-auto maz:border-e maz:border-divider maz:p-2;
 
   &::-webkit-scrollbar {
     display: none;
@@ -76,11 +76,11 @@ watch(
   max-height: 18.75rem;
 
   & > button {
-    @apply maz-w-full maz-flex-none maz-truncate;
-    @apply maz-text-xs !important;
+    @apply maz:w-full maz:flex-none maz:truncate;
+    @apply maz:text-xs !important;
 
     &:not(.--is-selected) {
-      @apply maz-border maz-border-divider !important;
+      @apply maz:border maz:border-divider !important;
     }
   }
 }

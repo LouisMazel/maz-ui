@@ -131,7 +131,7 @@ watch(
 
 <template>
   <span ref="elementRef" class="m-animated-counter m-reset-css">
-    <span class="maz-sr-only">
+    <span class="maz:sr-only">
       <slot name="prefix">{{ prefix }}</slot>{{ count }}<slot name="suffix">{{ suffix }}</slot>
     </span>
 
@@ -142,6 +142,6 @@ watch(
 
 <style scoped>
 .m-animated-counter {
-  @apply maz-whitespace-nowrap maz-tabular-nums;
+  @apply maz:whitespace-nowrap maz:tabular-nums;
 }
 </style>

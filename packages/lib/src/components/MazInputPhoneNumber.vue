@@ -681,56 +681,56 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
 
 <style scoped>
 .m-input-phone-number {
-  @apply maz-relative maz-inline-flex maz-items-center maz-align-top;
+  @apply maz:relative maz:inline-flex maz:items-center maz:align-top;
 
   &.--block {
-    @apply maz-w-full;
+    @apply maz:w-full;
   }
 
   &.--col {
-    @apply maz-flex-col;
+    @apply maz:flex-col;
 
     .m-input-phone-number__country-select {
-      @apply maz-min-w-full;
+      @apply maz:min-w-full;
 
       &:deep(.m-select-country__select) {
-        @apply maz-min-w-full;
+        @apply maz:min-w-full;
 
         .m-input-wrapper {
-          @apply maz-rounded-b-none maz-rounded-tr;
+          @apply maz:rounded-b-none maz:rounded-tr;
         }
       }
     }
   }
 
   &.--row {
-    @apply maz-flex-row;
+    @apply maz:flex-row;
 
     .m-input-phone-number__country-select {
       &:deep(.m-select-country__select .m-input-wrapper) {
-        @apply maz-rounded-r-none maz-rounded-b-none;
+        @apply maz:rounded-r-none maz:rounded-b-none;
       }
     }
   }
 
   &.--responsive {
-    @apply maz-flex-col mob-l:maz-flex-row;
+    @apply maz:flex-col maz:mob-l:flex-row;
 
     .m-input-phone-number__country-select {
-      @apply maz-min-w-full mob-l:maz-min-w-[inherit];
+      @apply maz:min-w-full maz:mob-l:min-w-[inherit];
 
       :deep(.m-select-country__select) {
-        @apply maz-min-w-full mob-l:maz-min-w-[inherit];
+        @apply maz:min-w-full maz:mob-l:min-w-[inherit];
       }
 
       &:deep(.m-input-wrapper) {
-        @apply maz-rounded-b-none mob-l:maz-rounded-b mob-l:maz-rounded-r-none;
+        @apply maz:rounded-b-none maz:mob-l:rounded-b maz:mob-l:rounded-r-none;
       }
     }
   }
 
   &__country-list-code {
-    @apply maz-text-muted maz-min-w-[2rem] maz-text-center;
+    @apply maz:text-muted maz:min-w-[2rem] maz:text-center;
   }
 }
 </style>

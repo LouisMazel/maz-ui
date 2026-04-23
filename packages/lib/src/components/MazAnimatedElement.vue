@@ -99,7 +99,7 @@ onBeforeUnmount(() => {
   transform: translateZ(0);
 
   &.--invisible {
-    @apply maz-invisible;
+    @apply maz:invisible;
   }
 }
 

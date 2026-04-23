@@ -81,14 +81,14 @@ const calendarDateWithOffset = computed({
 
 <style scoped>
   .maz-picker-calendar-month {
-  @apply maz-w-full maz-overflow-hidden maz-py-2;
+  @apply maz:w-full maz:overflow-hidden maz:py-2;
 
   &.--has-padding {
-    @apply maz-px-2;
+    @apply maz:px-2;
   }
 
   &__days {
-    @apply maz-pb-2;
+    @apply maz:pb-2;
   }
 }
 </style>

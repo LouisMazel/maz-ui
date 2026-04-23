@@ -243,42 +243,42 @@ function updateQuery(value?: string) {
 
 <style scoped>
 .m-checklist {
-  @apply maz-flex maz-flex-col maz-gap-4;
+  @apply maz:flex maz:flex-col maz:gap-4;
 
   .search-label {
-    @apply maz-flex maz-items-center maz-justify-between maz-gap-4;
+    @apply maz:flex maz:items-center maz:justify-between maz:gap-4;
   }
 
   .title {
-    @apply maz-flex-none maz-truncate;
+    @apply maz:flex-none maz:truncate;
   }
 
   :deep(.card-content) {
-    @apply maz-flex maz-flex-col maz-gap-2 maz-overflow-y-auto maz-bg-surface maz-px-3 maz-py-2;
+    @apply maz:flex maz:flex-col maz:gap-2 maz:overflow-y-auto maz:bg-surface maz:px-3 maz:py-2;
   }
 
   .no-results {
-    @apply maz-flex maz-h-full maz-flex-center;
+    @apply maz:flex maz:h-full maz:flex-center;
   }
 
   .no-results-content {
-    @apply maz-flex maz-h-full maz-flex-col maz-gap-3 maz-flex-center maz-py-8;
+    @apply maz:flex maz:h-full maz:flex-col maz:gap-3 maz:flex-center maz:py-8;
   }
 
   .no-results-icon {
-    @apply maz-text-3xl maz-text-muted;
+    @apply maz:text-3xl maz:text-muted;
   }
 
   .no-results-text {
-    @apply maz-text-muted;
+    @apply maz:text-muted;
   }
 
   .m-checklist-item {
-    @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-4 maz-rounded maz-px-3 maz-py-2 maz-text-start hover:maz-bg-surface-600;
+    @apply maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-4 maz:rounded maz:px-3 maz:py-2 maz:text-start maz:hover:bg-surface-600;
   }
 
   .item-label {
-    @apply maz-cap-f;
+    @apply maz:cap-f;
   }
 }
 </style>

@@ -223,11 +223,11 @@ function decrement() {
 
 const stateColor = computed(() => {
   if (error)
-    return '!maz-text-destructive-600'
+    return 'maz:text-destructive-600!'
   if (success)
-    return '!maz-text-success-600'
+    return 'maz:text-success-600!'
   if (warning)
-    return '!maz-text-warning-600'
+    return 'maz:text-warning-600!'
   return undefined
 })
 </script>
@@ -294,14 +294,14 @@ const stateColor = computed(() => {
 
 <style scoped>
 .m-input-number {
-  @apply maz-inline-flex maz-flex-col maz-gap-2;
+  @apply maz:inline-flex maz:flex-col maz:gap-2;
 
   &__wrapper {
-    @apply maz-flex maz-items-center maz-align-top;
+    @apply maz:flex maz:items-center maz:align-top;
   }
 
   &.--block {
-    @apply maz-w-full;
+    @apply maz:w-full;
   }
 
   &__button {
@@ -312,44 +312,44 @@ const stateColor = computed(() => {
 
       &:first-child,
       &:last-child {
-        @apply maz-border maz-border-divider;
-        @apply maz-px-3 maz-py-0;
+        @apply maz:border maz:border-divider;
+        @apply maz:px-3 maz:py-0;
       }
 
       &:first-child {
-        @apply !maz-rounded-r-none;
+        @apply maz:rounded-r-none!;
 
         margin-right: calc(-1 * 2px);
       }
 
       &:last-child {
-        @apply !maz-rounded-l-none;
+        @apply maz:rounded-l-none!;
 
         margin-left: calc(-1 * 2px);
       }
     }
 
     &__icon {
-      @apply maz-text-base;
+      @apply maz:text-base;
     }
   }
 
   &__input {
     &:not(.--no-buttons) :deep(.m-input-wrapper) {
-      @apply maz-z-1 !maz-rounded-none;
+      @apply maz:z-1 maz:rounded-none!;
     }
 
     &.--text-center {
       &:deep(input) {
-        @apply maz-p-0 maz-text-center;
+        @apply maz:p-0 maz:text-center;
       }
 
       &:deep(.m-input-label) {
-        @apply !maz-text-center !maz-w-full !maz-p-0 !maz-start-0;
+        @apply maz:text-center! maz:w-full! maz:p-0! maz:start-0!;
       }
 
       &.--should-up:deep(.m-input-label) {
-        @apply !maz-w-[calc(125%)];
+        @apply maz:w-[calc!(125%)];
       }
     }
 

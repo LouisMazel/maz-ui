@@ -164,74 +164,74 @@ const currentIcon = computed(() => {
 
 <style scoped>
 .m-alert {
-  @apply maz-flex maz-items-start maz-gap-3 maz-p-4;
+  @apply maz:flex maz:items-start maz:gap-3 maz:p-4;
 
   &.--soft {
     background-color: hsl(var(--m-alert-color) / 10%);
 
-    @apply maz-text-[hsl(var(--m-alert-color))] dark:maz-text-[hsl(var(--m-alert-color-dark))];
+    @apply maz:text-[hsl(var(--m-alert-color))] maz:dark:text-[hsl(var(--m-alert-color-dark))];
 
     &.--bordered {
-      @apply maz-border;
+      @apply maz:border;
 
       border-color: hsl(var(--m-alert-color) / 30%);
     }
   }
 
   &.--solid {
-    @apply maz-bg-[hsl(var(--m-alert-bg))] maz-text-[hsl(var(--m-alert-fg))];
+    @apply maz:bg-[hsl(var(--m-alert-bg))] maz:text-[hsl(var(--m-alert-fg))];
 
     &.--bordered {
-      @apply maz-border maz-border-[hsl(var(--m-alert-border))];
+      @apply maz:border maz:border-[hsl(var(--m-alert-border))];
     }
   }
 
   &-icon {
-    @apply maz-flex maz-shrink-0 maz-items-center maz-justify-center;
+    @apply maz:flex maz:shrink-0 maz:items-center maz:justify-center;
   }
 
   &-body {
-    @apply maz-flex maz-flex-1 maz-flex-col maz-gap-1;
+    @apply maz:flex maz:flex-1 maz:flex-col maz:gap-1;
   }
 
   &-title {
-    @apply maz-m-0 maz-font-semibold maz-leading-tight;
+    @apply maz:m-0 maz:font-semibold maz:leading-tight;
   }
 
   &-content {
-    @apply maz-leading-relaxed;
+    @apply maz:leading-relaxed;
   }
 
   &.--rounded-none {
-    @apply maz-rounded-none;
+    @apply maz:rounded-none;
   }
 
   &.--rounded-sm {
-    @apply maz-rounded-sm;
+    @apply maz:rounded-xs;
   }
 
   &.--rounded-md {
-    @apply maz-rounded-md;
+    @apply maz:rounded-md;
   }
 
   &.--rounded-base {
-    @apply maz-rounded;
+    @apply maz:rounded;
   }
 
   &.--rounded-lg {
-    @apply maz-rounded-lg;
+    @apply maz:rounded-lg;
   }
 
   &.--rounded-xl {
-    @apply maz-rounded-xl;
+    @apply maz:rounded-xl;
   }
 
   &.--rounded-2xl {
-    @apply maz-rounded-2xl;
+    @apply maz:rounded-2xl;
   }
 
   &.--rounded-3xl {
-    @apply maz-rounded-3xl;
+    @apply maz:rounded-3xl;
   }
 }
 </style>

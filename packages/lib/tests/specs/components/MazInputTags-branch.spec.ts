@@ -163,7 +163,7 @@ describe('MazInputTags branch coverage', () => {
       const wrapper = mount(MazInputTags, {
         props: { error: true },
       })
-      expect(wrapper.find('.m-input-tags').classes()).toContain('maz-border-destructive')
+      expect(wrapper.find('.m-input-tags').classes()).toContain('maz:border-destructive')
       wrapper.unmount()
     })
   })
@@ -173,7 +173,7 @@ describe('MazInputTags branch coverage', () => {
       const wrapper = mount(MazInputTags, {
         props: { success: true },
       })
-      expect(wrapper.find('.m-input-tags').classes()).toContain('maz-border-success')
+      expect(wrapper.find('.m-input-tags').classes()).toContain('maz:border-success')
       wrapper.unmount()
     })
   })
@@ -183,7 +183,7 @@ describe('MazInputTags branch coverage', () => {
       const wrapper = mount(MazInputTags, {
         props: { warning: true },
       })
-      expect(wrapper.find('.m-input-tags').classes()).toContain('maz-border-warning')
+      expect(wrapper.find('.m-input-tags').classes()).toContain('maz:border-warning')
       wrapper.unmount()
     })
   })

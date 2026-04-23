@@ -118,10 +118,10 @@ const calendarDate = computed({
 
 <style scoped>
 .maz-picker-calendar {
-  @apply maz-relative maz-flex maz-w-full;
+  @apply maz:relative maz:flex maz:w-full;
 
   &__main {
-    @apply maz-flex maz-flex-1 maz-flex-col;
+    @apply maz:flex maz:flex-1 maz:flex-col;
 
     width: 16rem;
 
@@ -129,16 +129,16 @@ const calendarDate = computed({
       width: 34rem;
 
       & .maz-picker-calendar__months > :first-child {
-        @apply maz-border-e maz-border-divider;
+        @apply maz:border-e maz:border-divider;
       }
     }
   }
 
   &__months {
-    @apply maz-flex maz-w-full maz-flex-1;
+    @apply maz:flex maz:w-full maz:flex-1;
 
     &.--is-range {
-      @apply maz-px-2;
+      @apply maz:px-2;
     }
   }
 }

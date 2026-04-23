@@ -57,7 +57,7 @@ const emits = defineEmits<{
           color="transparent"
           @click="close"
         >
-          <MazXMark class="maz-text-lg" />
+          <MazXMark class="maz:text-lg" />
         </MazBtn>
       </div>
     </template>
@@ -67,22 +67,22 @@ const emits = defineEmits<{
 <style scoped>
 .m-bottom-sheet {
   &__container {
-    @apply maz-relative maz-bg-surface maz-text-foreground maz-drop-shadow-md maz-shadow-elevation maz-w-full maz-px-12 maz-rounded-t-2xl;
+    @apply maz:relative maz:bg-surface maz:text-foreground maz:drop-shadow-md maz:shadow-elevation maz:w-full maz:px-12 maz:rounded-t-2xl;
 
     &.--padding {
-      @apply maz-py-6;
+      @apply maz:py-6;
     }
 
     box-shadow: 0 -5px 20px hsl(0deg 0% 0% / 20%);
   }
 
   &__content-wrapper {
-    @apply maz-flex maz-flex-col maz-flex-center;
+    @apply maz:flex maz:flex-col maz:flex-center;
   }
 
   &__close {
-    @apply !maz-absolute;
-    @apply maz-end-2 maz-top-2;
+    @apply maz:absolute!;
+    @apply maz:end-2 maz:top-2;
   }
 }
 </style>

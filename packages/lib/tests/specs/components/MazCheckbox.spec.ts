@@ -440,46 +440,46 @@ describe('MazCheckbox extended branch coverage', () => {
   })
 
   describe('checkIconSize computed', () => {
-    it('returns maz-text-2xl for xl', () => {
+    it('returns maz:text-2xl for xl', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true, size: 'xl' },
       })
-      expect(wrapper.find('.check-icon').classes()).toContain('maz-text-2xl')
+      expect(wrapper.find('.check-icon').classes()).toContain('maz:text-2xl')
     })
 
-    it('returns maz-text-xl for lg', () => {
+    it('returns maz:text-xl for lg', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true, size: 'lg' },
       })
-      expect(wrapper.find('.check-icon').classes()).toContain('maz-text-xl')
+      expect(wrapper.find('.check-icon').classes()).toContain('maz:text-xl')
     })
 
-    it('returns maz-text-lg for md (default)', () => {
+    it('returns maz:text-lg for md (default)', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true },
       })
-      expect(wrapper.find('.check-icon').classes()).toContain('maz-text-lg')
+      expect(wrapper.find('.check-icon').classes()).toContain('maz:text-lg')
     })
 
-    it('returns maz-text-base for sm', () => {
+    it('returns maz:text-base for sm', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true, size: 'sm' },
       })
-      expect(wrapper.find('.check-icon').classes()).toContain('maz-text-base')
+      expect(wrapper.find('.check-icon').classes()).toContain('maz:text-base')
     })
 
-    it('returns maz-text-sm for xs', () => {
+    it('returns maz:text-sm for xs', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true, size: 'xs' },
       })
-      expect(wrapper.find('.check-icon').classes()).toContain('maz-text-sm')
+      expect(wrapper.find('.check-icon').classes()).toContain('maz:text-sm')
     })
 
-    it('returns maz-text-xs for mini', () => {
+    it('returns maz:text-xs for mini', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true, size: 'mini' },
       })
-      expect(wrapper.find('.check-icon').classes()).toContain('maz-text-xs')
+      expect(wrapper.find('.check-icon').classes()).toContain('maz:text-xs')
     })
   })
 

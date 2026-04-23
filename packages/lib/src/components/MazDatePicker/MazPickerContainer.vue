@@ -148,10 +148,10 @@ const currentCalendarDate = computed({
 
 <style scoped>
 .m-date-picker-container {
-  @apply maz-overflow-hidden maz-rounded maz-bg-surface dark:maz-border dark:maz-border-divider;
+  @apply maz:overflow-hidden maz:rounded maz:bg-surface maz:dark:border maz:dark:border-divider;
 
   &.--is-inline {
-    @apply maz-border maz-border-divider dark:maz-border-divider;
+    @apply maz:border maz:border-divider maz:dark:border-divider;
   }
 
   /* &.--has-date {
@@ -163,23 +163,23 @@ const currentCalendarDate = computed({
   }
 
   &__wrapper {
-    @apply maz-flex;
+    @apply maz:flex;
   }
 
   & :deep(button):is(:disabled) {
-    @apply !maz-bg-transparent !maz-text-gray-300 dark:!maz-text-gray-700 maz-border-none hover:!maz-bg-transparent;
+    @apply maz:bg-transparent! maz:text-gray-300! maz:dark:text-gray-700! maz:border-none maz:hover:bg-transparent!;
   }
 
   &:not(.--has-date) {
     .m-date-picker-container__time {
-      @apply maz-w-full;
+      @apply maz:w-full;
 
       &:deep(.m-date-picker-time__column__hour) {
-        @apply maz-w-1/2;
+        @apply maz:w-1/2;
       }
 
       &:deep(.m-date-picker-time__column__minute) {
-        @apply maz-w-1/2;
+        @apply maz:w-1/2;
       }
     }
   }

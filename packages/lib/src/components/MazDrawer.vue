@@ -101,7 +101,7 @@ const hasTitle = computed(() => {
           </h4>
           <div v-if="!hideCloseButton" class="m-drawer-header__close">
             <MazBtn size="sm" color="transparent" @click="close">
-              <MazXMark class="icon maz-text-lg" />
+              <MazXMark class="icon maz:text-lg" />
             </MazBtn>
           </div>
         </header>
@@ -115,47 +115,47 @@ const hasTitle = computed(() => {
 
 <style scoped>
 .m-drawer {
-  @apply maz-items-stretch;
+  @apply maz:items-stretch;
 
   .m-drawer-content-wrap {
-    @apply maz-overflow-y-auto maz-bg-surface maz-pointer-events-auto maz-flex maz-flex-col;
+    @apply maz:overflow-y-auto maz:bg-surface maz:pointer-events-auto maz:flex maz:flex-col;
 
     > .m-drawer-header {
-      @apply maz-z-1 maz-flex maz-h-16 maz-shrink-0 maz-items-center maz-border-b maz-border-divider maz-bg-surface maz-bg-clip-padding maz-ps-4 maz-pe-2 maz-py-3;
+      @apply maz:z-1 maz:flex maz:h-16 maz:shrink-0 maz:items-center maz:border-b maz:border-divider maz:bg-surface maz:bg-clip-padding maz:ps-4 maz:pe-2 maz:py-3;
 
       .m-drawer-header__title {
-        @apply maz-m-0 maz-text-xl maz-font-semibold;
+        @apply maz:m-0 maz:text-xl maz:font-semibold;
       }
 
       .m-drawer-header__close {
-        @apply maz-flex maz-justify-end;
+        @apply maz:flex maz:justify-end;
       }
 
       &.--justify-end {
-        @apply maz-justify-end;
+        @apply maz:justify-end;
       }
 
       &.--justify-between {
-        @apply maz-justify-between;
+        @apply maz:justify-between;
       }
     }
 
     > .m-drawer-body {
-      @apply maz-z-0 maz-min-h-0 maz-flex-1 maz-overflow-x-auto maz-bg-clip-padding;
+      @apply maz:z-0 maz:min-h-0 maz:flex-1 maz:overflow-x-auto maz:bg-clip-padding;
     }
   }
 
   .--left,
   .--right {
     &.m-drawer-content-wrap {
-      @apply maz-min-h-screen maz-w-full tab-s:maz-w-[var(--maz-drawer-size)];
+      @apply maz:min-h-screen maz:w-full maz:tab-s:w-[var(--maz-drawer-size)];
     }
   }
 
   .--top,
   .--bottom {
     &.m-drawer-content-wrap {
-      @apply maz-w-full maz-h-auto;
+      @apply maz:w-full maz:h-auto;
     }
   }
 }

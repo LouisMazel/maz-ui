@@ -120,7 +120,7 @@ describe('mazInputTags', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.classes()).toContain('maz-border-destructive')
+    expect(wrapper.classes()).toContain('maz:border-destructive')
   })
 
   it('applies success style when success prop is true', async () => {
@@ -133,7 +133,7 @@ describe('mazInputTags', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.classes()).toContain('maz-border-success')
+    expect(wrapper.classes()).toContain('maz:border-success')
   })
 
   it('applies warning style when warning prop is true', async () => {
@@ -146,6 +146,6 @@ describe('mazInputTags', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.classes()).toContain('maz-border-warning')
+    expect(wrapper.classes()).toContain('maz:border-warning')
   })
 })

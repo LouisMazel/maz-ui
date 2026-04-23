@@ -200,23 +200,23 @@ function onFocus(event: FocusEvent) {
 
 <style scoped>
   .m-radio {
-  @apply maz-relative maz-inline-flex maz-items-center maz-gap-2 maz-align-top maz-outline-none;
+  @apply maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden;
 
   > span {
-    @apply maz-relative maz-flex maz-rounded-full maz-border maz-border-divider dark:maz-border-divider-400 maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center;
+    @apply maz:relative maz:flex maz:rounded-full maz:border maz:border-divider maz:dark:border-divider-400 maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center;
 
     width: var(--radio-size);
     height: var(--radio-size);
 
     .round {
-      @apply maz-h-[50%] maz-w-[50%] maz-scale-0 maz-rounded-full maz-transition-transform maz-duration-300 maz-ease-in-out;
+      @apply maz:h-[50%] maz:w-[50%] maz-scale-0 maz:rounded-full maz:transition-transform maz:duration-300 maz:ease-in-out;
 
       background-color: var(--radio-selected-color);
     }
   }
 
   &:not(.--selected) > span {
-    @apply maz-bg-surface dark:maz-bg-surface-400;
+    @apply maz:bg-surface maz:dark:bg-surface-400;
   }
 
   &.--selected > span {
@@ -228,54 +228,54 @@ function onFocus(event: FocusEvent) {
   }
 
   &__text {
-    @apply maz-flex maz-flex-col maz-gap-0;
+    @apply maz:flex maz:flex-col maz:gap-0;
   }
 
   input {
-    @apply maz-hidden;
+    @apply maz:hidden;
   }
 
   &:has(input:disabled) {
-    @apply maz-cursor-not-allowed maz-text-muted;
+    @apply maz:cursor-not-allowed maz:text-muted;
 
     > span {
-      @apply maz-bg-surface-600 dark:maz-bg-surface-400;
+      @apply maz:bg-surface-600 maz:dark:bg-surface-400;
     }
 
     &.--selected {
       > span {
-        @apply maz-border-divider;
+        @apply maz:border-divider;
 
         .round {
-          @apply maz-bg-muted;
+          @apply maz:bg-muted;
         }
       }
     }
   }
 
   &__hint {
-    @apply maz-text-sm maz-text-muted;
+    @apply maz:text-sm maz:text-muted;
 
     &.--error {
-      @apply maz-text-destructive-600;
+      @apply maz:text-destructive-600;
     }
 
     &.--success {
-      @apply maz-text-success-600;
+      @apply maz:text-success-600;
     }
 
     &.--warning {
-      @apply maz-text-warning-600;
+      @apply maz:text-warning-600;
     }
   }
 
   &:not(:has(input:disabled)),
   &:not(.--selected) {
-    @apply maz-cursor-pointer;
+    @apply maz:cursor-pointer;
 
     &:hover > span,
     &:focus > span {
-      @apply maz-transition-all maz-duration-300 maz-ease-in-out;
+      @apply maz:transition-all maz:duration-300 maz:ease-in-out;
 
       box-shadow: 0 0 0 0.125rem var(--radio-box-shadow);
     }
@@ -285,7 +285,7 @@ function onFocus(event: FocusEvent) {
   &.--warning,
   &.--success {
     > span {
-      @apply maz-transition-all maz-duration-300 maz-ease-in-out;
+      @apply maz:transition-all maz:duration-300 maz:ease-in-out;
 
       box-shadow: 0 0 0 0.125rem var(--radio-box-shadow);
     }

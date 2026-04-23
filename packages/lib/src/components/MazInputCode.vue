@@ -218,11 +218,11 @@ function selectInputByIndex(index: number) {
 
 const borderColorState = computed(() => {
   if (props.error)
-    return '!maz-border-destructive'
+    return 'maz:border-destructive!'
   if (props.success)
-    return '!maz-border-success'
+    return 'maz:border-success!'
   if (props.warning)
-    return '!maz-border-warning'
+    return 'maz:border-warning!'
 
   return undefined
 })
@@ -274,66 +274,66 @@ const borderColorState = computed(() => {
 
 <style scoped>
   .m-input-code {
-  @apply maz-inline-flex maz-flex-col maz-gap-[0.5em] maz-align-top;
+  @apply maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top;
 
   &.--mini {
-    @apply maz-text-[0.625rem];
+    @apply maz:text-[0.625rem];
 
     line-height: 1rem;
   }
 
   &.--xs {
-    @apply maz-text-xs;
+    @apply maz:text-xs;
   }
 
   &.--sm {
-    @apply maz-text-sm;
+    @apply maz:text-sm;
   }
 
   &.--lg {
-    @apply maz-text-lg;
+    @apply maz:text-lg;
   }
 
   &.--xl {
-    @apply maz-text-xl;
+    @apply maz:text-xl;
   }
 
   &__wrapper {
-    @apply maz-inline-flex maz-gap-[1em];
+    @apply maz:inline-flex maz:gap-[1em];
   }
 
   &__hint {
-    @apply maz-text-sm maz-text-muted;
+    @apply maz:text-sm maz:text-muted;
 
     &.--error {
-      @apply maz-text-destructive-600;
+      @apply maz:text-destructive-600;
     }
 
     &.--success {
-      @apply maz-text-success-600;
+      @apply maz:text-success-600;
     }
 
     &.--warning {
-      @apply maz-text-warning-600;
+      @apply maz:text-warning-600;
     }
   }
 
   .input-wrapper {
-    @apply maz-relative maz-h-[4em] maz-w-[4em] maz-overflow-hidden maz-rounded maz-border maz-border-solid maz-border-divider dark:maz-border-divider-400 maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-surface-400;
+    @apply maz:relative maz:h-[4em] maz:w-[4em] maz:overflow-hidden maz:rounded maz:border maz:border-solid maz:border-divider maz:dark:border-divider-400 maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:bg-surface-400;
 
     &:focus-within {
       border-color: var(--input-border-color);
     }
 
     input {
-      @apply maz-h-full maz-w-full maz-bg-transparent maz-text-center maz-text-[1.5em] maz-outline-none;
+      @apply maz:h-full maz:w-full maz:bg-transparent maz:text-center maz:text-[1.5em] maz:outline-hidden;
     }
 
     &:has(input:disabled) {
-      @apply maz-bg-surface-600 dark:maz-bg-surface-300 maz-text-muted;
+      @apply maz:bg-surface-600 maz:dark:bg-surface-300 maz:text-muted;
 
       input {
-        @apply maz-cursor-not-allowed maz-text-muted;
+        @apply maz:cursor-not-allowed maz:text-muted;
       }
     }
   }

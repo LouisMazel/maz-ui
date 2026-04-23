@@ -133,7 +133,7 @@ function onFocus(index: number, event: FocusEvent) {
         v-for="(option, i) in options"
         :key="getOptionId(option, i)"
         :for="getOptionId(option, i)"
-        class="m-radio-buttons__items maz-group"
+        class="m-radio-buttons__items maz:group"
         :class="[
           `--size-${size}`,
           {
@@ -167,7 +167,7 @@ function onFocus(index: number, event: FocusEvent) {
           tabindex="-1"
           :name="name"
           :value="option.value"
-          class="maz-hidden"
+          class="maz:hidden"
           @change="selectOption(option)"
         >
         <div v-if="selector" class="m-radio-buttons__items__checkbox">
@@ -185,7 +185,7 @@ function onFocus(index: number, event: FocusEvent) {
             ]"
           >
             <Transition name="maz-radio-buttons-scale">
-              <MazCheck v-show="isSelected(option.value)" class="maz-size-full" />
+              <MazCheck v-show="isSelected(option.value)" class="maz:size-full" />
             </Transition>
           </span>
         </div>
@@ -213,100 +213,100 @@ function onFocus(index: number, event: FocusEvent) {
 
 <style scoped>
   .m-radio-buttons {
-  @apply maz-inline-flex maz-gap-1 maz-align-top maz-flex-col;
+  @apply maz:inline-flex maz:gap-1 maz:align-top maz:flex-col;
 
   &__wrapper {
-    @apply maz-inline-flex maz-gap-2;
+    @apply maz:inline-flex maz:gap-2;
 
     &.--wrap {
-      @apply maz-flex-wrap;
+      @apply maz:flex-wrap;
     }
 
     &.--row {
-      @apply maz-flex-row;
+      @apply maz:flex-row;
     }
 
     &.--col {
-      @apply maz-flex-col;
+      @apply maz:flex-col;
     }
   }
 
   &.--block {
-    @apply maz-w-full;
+    @apply maz:w-full;
   }
 
   &__items {
-    @apply maz-flex maz-cursor-pointer maz-gap-4 maz-rounded maz-border maz-border-divider
-        maz-bg-surface maz-px-4 maz-py-2 maz-font-medium maz-transition-colors maz-duration-300 maz-items-center;
+    @apply maz:flex maz:cursor-pointer maz:gap-4 maz:rounded maz:border maz:border-divider
+        maz:bg-surface maz:px-4 maz:py-2 maz:font-medium maz:transition-colors maz:duration-300 maz:items-center;
 
     &.--size-mini {
-      @apply maz-px-1 maz-min-h-6 maz-text-xs;
+      @apply maz:px-1 maz:min-h-6 maz:text-xs;
     }
 
     &.--size-xs {
-      @apply maz-px-2 maz-min-h-8 maz-text-xs;
+      @apply maz:px-2 maz:min-h-8 maz:text-xs;
     }
 
     &.--size-sm {
-      @apply maz-px-3 maz-min-h-10 maz-text-sm;
+      @apply maz:px-3 maz:min-h-10 maz:text-sm;
     }
 
     &.--size-md {
-      @apply maz-px-4 maz-min-h-12;
+      @apply maz:px-4 maz:min-h-12;
     }
 
     &.--size-lg {
-      @apply maz-px-5 maz-min-h-14 maz-text-lg;
+      @apply maz:px-5 maz:min-h-14 maz:text-lg;
     }
 
     &.--size-xl {
-      @apply maz-px-6 maz-min-h-16 maz-text-xl;
+      @apply maz:px-6 maz:min-h-16 maz:text-xl;
     }
 
     &.--elevation {
-      @apply maz-drop-shadow-md maz-shadow-elevation;
+      @apply maz:drop-shadow-md maz:shadow-elevation;
     }
 
     &__checkbox {
-      @apply maz-flex maz-flex-center;
+      @apply maz:flex maz:flex-center;
 
       span {
-        @apply maz-flex maz-h-6 maz-w-6 maz-flex-none maz-rounded-full maz-border maz-border-divider maz-p-0.5 maz-text-white maz-transition-colors maz-duration-300 maz-flex-center maz-bg-surface dark:maz-bg-surface-400;
+        @apply maz:flex maz:h-6 maz:w-6 maz:flex-none maz:rounded-full maz:border maz:border-divider maz:p-0.5 maz:text-white maz:transition-colors maz:duration-300 maz:flex-center maz:bg-surface maz:dark:bg-surface-400;
 
         transition: border-color 0s;
 
         &.--is-selected {
-          @apply maz-border-transparent;
+          @apply maz:border-transparent;
         }
 
         &:not(.--is-selected) {
-          @apply group-hover:maz-bg-surface;
+          @apply maz:group-hover:bg-surface;
         }
       }
     }
 
     &.--equal-size {
-      @apply maz-flex-1;
+      @apply maz:flex-1;
     }
 
     &:not(.--is-selected) {
-      @apply hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400;
+      @apply maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
     }
   }
 
   &__hint {
-    @apply maz-text-sm maz-text-muted;
+    @apply maz:text-sm maz:text-muted;
 
     &.--error {
-      @apply maz-text-destructive-600;
+      @apply maz:text-destructive-600;
     }
 
     &.--success {
-      @apply maz-text-success-600;
+      @apply maz:text-success-600;
     }
 
     &.--warning {
-      @apply maz-text-warning-600;
+      @apply maz:text-warning-600;
     }
   }
 }

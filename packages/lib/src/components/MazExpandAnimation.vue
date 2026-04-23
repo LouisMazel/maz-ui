@@ -79,10 +79,10 @@ onUnmounted(() => {
   grid-template-rows: 0fr;
   transition: grid-template-rows var(--expand-animation-duration) var(--expand-animation-timing-function);
 
-  @apply maz-max-w-full maz-overflow-x-auto;
+  @apply maz:max-w-full maz:overflow-x-auto;
 
   &__inner {
-    @apply maz-max-w-full maz-overflow-x-auto;
+    @apply maz:max-w-full maz:overflow-x-auto;
   }
 
   &__inner.--overflow-hidden {
