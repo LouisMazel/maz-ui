@@ -1,7 +1,7 @@
-@import "tailwindcss" prefix(maz);
-@import "maz-ui/src/css/index.css";
-@import "maz-ui/tailwindcss/theme.css";
-@import "maz-ui/tailwindcss/utilities.css";
+@import url('tailwindcss') prefix(maz);
+@import url('maz-ui/src/css/index.css');
+@import url('maz-ui/tailwindcss/theme.css');
+@import url('maz-ui/tailwindcss/utilities.css');
 
 @source "./../**/*.vue";
 @source "./../**/*.ts";

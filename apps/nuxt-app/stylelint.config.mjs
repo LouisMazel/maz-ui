@@ -11,7 +11,6 @@ export default {
   // https://stylelint.io/user-guide/configuration
   rules: {
     'at-rule-no-unknown': [true, { ignoreAtRules: ['theme', 'utility', 'source', 'custom-variant', 'variant', 'reference', 'apply', 'layer', 'tailwind'] }],
-    'scss/at-rule-no-unknown': [true, { ignoreAtRules: ['theme', 'utility', 'source', 'custom-variant', 'variant', 'reference', 'apply', 'layer', 'tailwind'] }],
     'at-rule-no-deprecated': [true, { ignoreAtRules: ['apply'] }],
   },
 
