@@ -1,15 +1,31 @@
 /*
  * Shadow bridge.
  *
- * The xs/sm/md/lg/xl scale is taken from Tailwind v3 parity. shadow-elevation
- * hooks into the theme elevation color so the drop-shadow tint follows the
- * active theme.
+ * --shadow-color flows from the theme (--color-elevation, which itself
+ * aliases --maz-shadow). --shadow-alpha-* are the opacity steps. Each
+ * --shadow-{xs,sm,md,lg,xl} composes them via color-mix() so the whole
+ * shadow scale reacts to the active preset — both the hue and the
+ * intensity can be tweaked without touching individual shadows.
+ *
+ * shadow-elevation is the solid theme-tinted shadow used for cards and
+ * popovers; no alpha softening applied.
  */
 @theme inline {
-  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 5%);
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 10%);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%);
-  --shadow-elevation: 0 10px 15px -3px var(--color-elevation);
+  --shadow-color: var(--color-elevation);
+  --shadow-alpha-soft: 5%;
+  --shadow-alpha-default: 10%;
+  --shadow-xs: 0 1px 2px 0 color-mix(in srgb, var(--shadow-color) var(--shadow-alpha-soft), transparent);
+  --shadow-sm:
+    0 1px 3px 0 color-mix(in srgb, var(--shadow-color) var(--shadow-alpha-default), transparent),
+    0 1px 2px -1px color-mix(in srgb, var(--shadow-color) var(--shadow-alpha-default), transparent);
+  --shadow-md:
+    0 4px 6px -1px color-mix(in srgb, var(--shadow-color) var(--shadow-alpha-default), transparent),
+    0 2px 4px -2px color-mix(in srgb, var(--shadow-color) var(--shadow-alpha-default), transparent);
+  --shadow-lg:
+    0 10px 15px -3px color-mix(in srgb, var(--shadow-color) var(--shadow-alpha-default), transparent),
+    0 4px 6px -4px color-mix(in srgb, var(--shadow-color) var(--shadow-alpha-default), transparent);
+  --shadow-xl:
+    0 20px 25px -5px color-mix(in srgb, var(--shadow-color) var(--shadow-alpha-default), transparent),
+    0 8px 10px -6px color-mix(in srgb, var(--shadow-color) var(--shadow-alpha-default), transparent);
+  --shadow-elevation: 0 10px 15px -3px var(--shadow-color);
 }
