@@ -100,10 +100,10 @@ const fullSrc = computed(() => {
 
 onMounted(() => {
   if ((icon && src) || (icon && name)) {
-    console.error('[maz:ui](MazIcon) you should provide "name" or "src" as prop')
+    console.error('[maz-ui](MazIcon) you should provide "name" or "src" as prop')
   }
   if (!icon && !name && !src) {
-    console.error('[maz:ui](MazIcon) you should provide "icon", "name" or "src" as prop')
+    console.error('[maz-ui](MazIcon) you should provide "icon", "name" or "src" as prop')
   }
 })
 
