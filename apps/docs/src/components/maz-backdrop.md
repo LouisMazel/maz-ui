@@ -53,6 +53,7 @@ const basicOpen = ref(false)
 </template>
 
 <style lang="css" scoped>
+@reference "../../.vitepress/theme/main.css";
 .demo-content {
   background: hsl(var(--maz-background));
   padding: 2rem;
@@ -230,6 +231,7 @@ These features work automatically - you don't need to do anything extra!
 </script>
 
 <style scoped>
+@reference "../../.vitepress/theme/main.css";
 .demo-content {
   background: hsl(var(--maz-background));
   padding: 2rem;

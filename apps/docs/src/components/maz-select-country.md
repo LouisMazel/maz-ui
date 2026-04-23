@@ -14,13 +14,13 @@ description: MazSelectCountry is a versatile Vue component for selecting countri
 The most common use case is selecting a country. The component automatically displays country names in the user's locale with their respective flags.
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-4 maz-flex-wrap">
+  <div class="maz:flex maz:gap-4 maz:flex-wrap">
     <MazSelectCountry
       v-model="selectedCountry"
       :codes="['FR', 'DE', 'IT', 'ES', 'GB', 'NL', 'BE', 'AT', 'CH', 'PT']"
       label="Select a country"
     />
-    <div class="maz-text-sm maz-text-muted">
+    <div class="maz:text-sm maz:text-muted">
       Selected: {{ selectedCountry || 'None' }}
     </div>
   </div>
@@ -85,7 +85,7 @@ const selectedLanguage = ref('en')
 ## Sizes and colors
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4">
+  <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4">
     <div class="maz-space-y-4">
       <h4 class="maz-font-semibold">Sizes</h4>
       <MazSelectCountry
@@ -200,7 +200,7 @@ You can prioritize certain countries to appear at the top of the list using the 
 Control which countries are displayed using `onlyCodes` to show only specific countries, or `ignoredCodes` to exclude certain ones.
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4">
+  <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4">
     <div>
       <h4 class="maz-font-semibold maz-mb-2">Only European countries</h4>
       <MazSelectCountry
@@ -247,7 +247,7 @@ Control which countries are displayed using `onlyCodes` to show only specific co
 Configure how country/language names are displayed using the `displayNamesOptions` prop, which leverages the browser's `Intl.DisplayNames` API.
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4">
+  <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4">
     <div>
       <h4 class="maz-font-semibold maz-mb-2">Short country names</h4>
       <MazSelectCountry
@@ -326,7 +326,7 @@ Hide country flags using the `hideFlags` prop for a cleaner text-only interface.
 Override the default locale to display country/language names in a specific language.
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4">
+  <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4">
     <div>
       <h4 class="maz-font-semibold maz-mb-2">Countries in French</h4>
       <MazSelectCountry
@@ -373,7 +373,7 @@ Override the default locale to display country/language names in a specific lang
 The component supports all the standard form states for better user experience.
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4">
+  <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4">
     <div class="maz-space-y-4">
       <MazSelectCountry
         v-model="successExample"

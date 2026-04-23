@@ -15,15 +15,15 @@ Propose your website by opening an [issue](https://github.com/LouisMazel/maz-ui/
 :::
 
 <div class="flex flex-col" style="display: flex; flex-direction: column; gap: 2rem">
-  <MazCard zoom v-for="({images, description, link, title, github }, i) in projects" :key="i" class="maz-w-full" elevation :gallery="{ images, height: 350 }">
-    <h1 class="maz-m-0" style="margin-bottom: 16px;">
+  <MazCard zoom v-for="({images, description, link, title, github }, i) in projects" :key="i" class="maz:w-full" elevation :gallery="{ images, height: 350 }">
+    <h1 class="maz:m-0" style="margin-bottom: 16px;">
       {{ title }}
     </h1>
-    <h5 class="maz-m-0">
+    <h5 class="maz:m-0">
       {{ description }}
     </h5>
     <template #footer>
-      <MazBtn v-if="github" color="black" :href="github" target="_blank" left-icon="github" class="maz-me-4">
+      <MazBtn v-if="github" color="black" :href="github" target="_blank" left-icon="github" class="maz:me-4">
         Github
       </MazBtn>
       <MazBtn :href="link" target="_blank" left-icon="arrow-top-right-on-square">

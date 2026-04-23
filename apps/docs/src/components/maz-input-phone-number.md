@@ -32,7 +32,7 @@ The simplest way to use MazInputPhoneNumber - just add it and it works!
     @data="results = $event"
   />
 
-  <div class="maz-mt-4 maz-text-sm">
+  <div class="maz:mt-4 maz:text-sm">
     <p><strong>Phone Number:</strong> {{ phoneNumber || 'Not entered yet' }}</p>
     <p><strong>Country:</strong> {{ countryCode || 'Not selected' }}</p>
     <p><strong>Is Valid:</strong> {{ results?.isValid ? '✅ Yes' : '❌ No' }}</p>
@@ -499,13 +499,13 @@ Replace the default flag emojis with your own design.
         <template #selector-flag="{ countryCode }">
           <div
             id="icon-flag-element"
-            class="maz-w-6 maz-h-6 maz-bg-gradient-to-r maz-from-blue-500 maz-to-green-500 maz-rounded-full maz-flex maz-items-center maz-justify-center maz-text-white maz-text-xs maz-font-bold"
+            class="maz-w-6 maz-h-6 maz-bg-linear-to-r maz-from-blue-500 maz-to-green-500 maz-rounded-full maz-flex maz-items-center maz-justify-center maz-text-white maz-text-xs maz-font-bold"
           >
             {{ countryCode?.charAt(0) }}
           </div>
         </template>
         <template #country-list-flag="{ countryCode }">
-          <div class="maz-w-6 maz-h-6 maz-bg-gradient-to-r maz-from-purple-500 maz-to-pink-500 maz-rounded maz-flex maz-items-center maz-justify-center maz-text-white maz-text-xs maz-font-bold maz-me-2">
+          <div class="maz-w-6 maz-h-6 maz-bg-linear-to-r maz-from-purple-500 maz-to-pink-500 maz-rounded maz-flex maz-items-center maz-justify-center maz-text-white maz-text-xs maz-font-bold maz-me-2">
             {{ countryCode?.charAt(0) }}
           </div>
         </template>
@@ -547,13 +547,14 @@ Replace the default flag emojis with your own design.
 </template>
 
 <style scoped>
+@reference "../../.vitepress/theme/main.css";
 .country-badge {
   @apply maz-bg-primary maz-text-primary-foreground maz-px-2 maz-py-1 maz-rounded maz-text-xs maz-font-semibold;
 }
 
 .custom-flag-icon,
 .custom-list-icon {
-  @apply maz-w-6 maz-h-6 maz-bg-gradient-to-r maz-from-blue-500 maz-to-green-500 maz-rounded-full maz-flex maz-items-center maz-justify-center maz-text-white maz-text-xs maz-font-bold;
+  @apply maz-w-6 maz-h-6 maz-bg-linear-to-r maz-from-blue-500 maz-to-green-500 maz-rounded-full maz-flex maz-items-center maz-justify-center maz-text-white maz-text-xs maz-font-bold;
 }
 
 .custom-list-icon {
@@ -770,7 +771,7 @@ Understanding what data the component provides.
     />
     <div v-if="phoneData" class="maz-bg-surface-400 maz-p-4 maz-rounded">
       <h4 class="maz-font-semibold maz-mb-3">📊 Phone Number Data</h4>
-      <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4 maz-text-sm">
+      <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4 maz-text-sm">
         <div>
           <strong>Valid:</strong> {{ phoneData?.isValid ? '✅' : '❌' }}
         </div>

@@ -421,6 +421,7 @@ async function preloadLanguage(locale) {
 </template>
 
 <style scoped>
+@reference "../../.vitepress/theme/main.css";
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -742,6 +743,7 @@ async function preloadLanguage(locale) {
 </template>
 
 <style scoped>
+@reference "../../.vitepress/theme/main.css";
 .loading-overlay {
   position: fixed;
   top: 0;

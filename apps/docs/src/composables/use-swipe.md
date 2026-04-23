@@ -83,6 +83,7 @@ onUnmounted(() => {
 </template>
 
 <style>
+@reference "../../.vitepress/theme/main.css";
 .swipe-container {
   border: 1px solid #e2e2e3;
   border-radius: 10px;
@@ -123,6 +124,7 @@ onUnmounted(() => {
 </script>
 
 <style>
+@reference "../../.vitepress/theme/main.css";
 .swipe-container {
   border: 1px solid #e2e2e3;
   border-radius: 10px;

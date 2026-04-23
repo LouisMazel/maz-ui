@@ -153,14 +153,14 @@ function formatColorName(colorName: string): string {
 
 <template>
   <div class="vp-raw theme-configurator">
-    <div class="maz-grid maz-min-h-[80vh] maz-grid-cols-1 maz-gap-4 lg:maz-grid-cols-12">
+    <div class="maz:grid maz:min-h-[80vh] maz:grid-cols-1 maz:gap-4 maz:lg:grid-cols-12">
       <!-- Editor Panel -->
-      <div class="maz-space-y-6 lg:maz-col-span-4 lg:maz-border-e lg:maz-pr-4">
-        <h2 class="maz-text-2xl maz-text-foreground">
+      <div class="maz:space-y-6 maz:lg:col-span-4 maz:lg:border-e maz:lg:pr-4">
+        <h2 class="maz:text-2xl maz:text-foreground">
           Editor
         </h2>
 
-        <div class="maz-flex maz-flex-col maz-gap-2 mob-l:maz-flex-row">
+        <div class="maz:flex maz:flex-col maz:gap-2 maz:mob-l:flex-row">
           <MazBtn
             size="md"
             block
@@ -206,7 +206,7 @@ function formatColorName(colorName: string): string {
         <!-- Foundation Settings -->
         <MazCard title="Foundation" block>
           <div
-            class="maz-flex maz-flex-col maz-gap-3"
+            class="maz:flex maz:flex-col maz:gap-3"
           >
             <template
               v-for="input in foundationInputs"
@@ -227,13 +227,13 @@ function formatColorName(colorName: string): string {
         <!-- Colors Settings -->
         <MazCard block>
           <template #title>
-            <div class="maz-flex maz-w-full maz-items-center maz-justify-between">
-              <h3 class="maz-text-base">
+            <div class="maz:flex maz:w-full maz:items-center maz:justify-between">
+              <h3 class="maz:text-base">
                 Colors
               </h3>
 
-              <div class="maz-flex maz-items-center maz-gap-2">
-                <label for="dark-mode-switch" class="maz-cursor-pointer maz-text-sm">
+              <div class="maz:flex maz:items-center maz:gap-2">
+                <label for="dark-mode-switch" class="maz:cursor-pointer maz:text-sm">
                   Edit dark colors
                 </label>
                 <MazSwitch
@@ -245,23 +245,23 @@ function formatColorName(colorName: string): string {
             </div>
           </template>
 
-          <div class="maz-space-y-6">
+          <div class="maz:space-y-6">
             <div
               v-for="category in colorCategories"
               :key="category.name"
-              class="maz-space-y-4"
+              class="maz:space-y-4"
             >
-              <h4 class="maz-border-border maz-border-b maz-pb-2 maz-text-sm maz-font-semibold maz-text-foreground">
+              <h4 class="maz:border-border maz:border-b maz:pb-2 maz:text-sm maz:font-semibold maz:text-foreground">
                 {{ category.name }}
               </h4>
 
-              <div class="maz-grid maz-grid-cols-2 maz-gap-4">
+              <div class="maz:grid maz:grid-cols-2 maz:gap-4">
                 <ColorPicker
                   v-for="colorKey in category.colors"
                   :key="`${editingMode}-${colorKey}`"
                   v-model="currentColors[colorKey]"
                   :label="formatColorName(colorKey)"
-                  class="maz-w-full"
+                  class="maz:w-full"
                 />
               </div>
             </div>
@@ -270,10 +270,10 @@ function formatColorName(colorName: string): string {
       </div>
 
       <!-- Preview Panel -->
-      <div class="lg:maz-col-span-8">
-        <div class="maz-sticky maz-top-4">
-          <div class="maz-mb-4 maz-flex maz-items-center maz-justify-between">
-            <h2 class="maz-text-2xl maz-text-foreground">
+      <div class="maz:lg:col-span-8">
+        <div class="maz:sticky maz:top-4">
+          <div class="maz:mb-4 maz:flex maz:items-center maz:justify-between">
+            <h2 class="maz:text-2xl maz:text-foreground">
               Preview
             </h2>
           </div>
@@ -281,7 +281,7 @@ function formatColorName(colorName: string): string {
           <MazTabs v-model="currentTab">
             <MazTabsBar
               :items="['Dashboard', 'Product', 'Authentication']"
-              class="maz-mb-4"
+              class="maz:mb-4"
             />
 
             <MazTabsContent>
@@ -290,7 +290,7 @@ function formatColorName(colorName: string): string {
                   bordered
                   :padding="false"
                   overflow-hidden
-                  class="maz-max-h-[70vh] maz-w-full maz-overflow-y-auto"
+                  class="maz:max-h-[70vh] maz:w-full maz:overflow-y-auto"
                 >
                   <DemoDashboardPage :delay="0" />
                 </MazCard>
@@ -301,7 +301,7 @@ function formatColorName(colorName: string): string {
                   bordered
                   :padding="false"
                   overflow-hidden
-                  class="maz-max-h-[70vh] maz-w-full maz-overflow-y-auto"
+                  class="maz:max-h-[70vh] maz:w-full maz:overflow-y-auto"
                 >
                   <DemoProductPage />
                 </MazCard>
@@ -312,7 +312,7 @@ function formatColorName(colorName: string): string {
                   bordered
                   :padding="false"
                   overflow-hidden
-                  class="maz-max-h-[70vh] maz-w-full maz-overflow-y-auto"
+                  class="maz:max-h-[70vh] maz:w-full maz:overflow-y-auto"
                 >
                   <DemoAuthPage />
                 </MazCard>
@@ -325,12 +325,12 @@ function formatColorName(colorName: string): string {
 
     <!-- Export Modal -->
     <MazDialog v-model="showExportModal" scrollable title="Export Theme">
-      <div class="maz-space-y-4">
-        <p class="maz-text-muted">
+      <div class="maz:space-y-4">
+        <p class="maz:text-muted">
           Copy the generated TypeScript code below to use your custom theme:
         </p>
 
-        <div class="maz-overflow-y-auto maz-rounded-md">
+        <div class="maz:overflow-y-auto maz:rounded-md">
           <div
             v-if="highlightedCode"
             class="shiki-wrapper"
@@ -338,15 +338,15 @@ function formatColorName(colorName: string): string {
           />
           <div
             v-else
-            class="maz-bg-contrast maz-p-4 dark:maz-bg-surface-300"
+            class="maz:bg-contrast maz:p-4 maz:dark:bg-surface-300"
           >
-            <pre class="maz-whitespace-pre-wrap maz-font-mono maz-text-xs maz-text-contrast-foreground dark:maz-text-foreground">{{ exportedCode }}</pre>
+            <pre class="maz:whitespace-pre-wrap maz:font-mono maz:text-xs maz:text-contrast-foreground maz:dark:text-foreground">{{ exportedCode }}</pre>
           </div>
         </div>
       </div>
 
       <template #footer>
-        <div class="maz-flex maz-gap-2">
+        <div class="maz:flex maz:gap-2">
           <MazBtn color="primary" @click="copyToClipboard(exportedCode)">
             Copy to Clipboard
           </MazBtn>
@@ -357,30 +357,32 @@ function formatColorName(colorName: string): string {
 </template>
 
 <style scoped>
+@reference "../.vitepress/theme/main.css";
 @media (max-width: 1024px) {
   .theme-configurator {
-    @apply maz-space-y-8;
+    @apply maz:space-y-8;
   }
 
-  .theme-configurator .maz-sticky {
-    @apply maz-static;
+  .theme-configurator .maz:sticky {
+    @apply maz:static;
   }
 }
 </style>
 
 <style>
+@reference "../.vitepress/theme/main.css";
 /* Shiki code highlighting styles */
 .shiki-wrapper {
-  @apply maz-rounded-md maz-overflow-hidden maz-bg-contrast dark:maz-bg-surface-600;
+  @apply maz:rounded-md maz:overflow-hidden maz:bg-contrast maz:dark:bg-surface-600;
 }
 
 .shiki-wrapper pre {
-  @apply maz-p-4 maz-m-0 maz-text-xs maz-overflow-x-auto;
+  @apply maz:p-4 maz:m-0 maz:text-xs maz:overflow-x-auto;
   font-family: 'Fira Code', 'Consolas', 'Monaco', monospace !important;
 }
 
 .shiki-wrapper code {
-  @apply maz-text-xs;
+  @apply maz:text-xs;
   font-family: 'Fira Code', 'Consolas', 'Monaco', monospace !important;
 }
 

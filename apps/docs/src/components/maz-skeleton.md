@@ -281,7 +281,7 @@ Create a list loading placeholder.
 
 <ComponentDemo>
   <div class="maz-flex maz-flex-col maz-gap-3 maz-w-full maz-max-w-sm">
-    <div v-for="i in 4" :key="i" class="maz-flex maz-gap-3 maz-items-center maz-p-2 maz-bg-surface-50 dark:maz-bg-surface-800 maz-rounded">
+    <div v-for="i in 4" :key="i" class="maz-flex maz-gap-3 maz-items-center maz-p-2 maz-bg-surface-50 maz-dark:bg-surface-800 maz-rounded">
       <MazSkeleton shape="square" size="2.5rem" rounded-size="md" />
       <div class="maz-flex maz-flex-col maz-gap-1 maz-flex-1">
         <MazSkeleton width="70%" height="0.75rem" />

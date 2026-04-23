@@ -84,7 +84,7 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
             v-for="color in colors"
             :key="color.name"
             class="maz-flex maz-flex-col maz-items-center maz-cursor-pointer maz-p-3 maz-rounded-lg maz-border-2 maz-transition-all"
-            :class="selectedOptions.color === color.name ? 'maz-border-primary maz-bg-primary/10' : 'maz-border-border hover:maz-border-primary/50'"
+            :class="selectedOptions.color === color.name ? 'maz-border-primary maz-bg-primary/10' : 'maz-border-border maz-hover:border-primary/50'"
             @click="selectedOptions.color = color.name"
           >
             <div

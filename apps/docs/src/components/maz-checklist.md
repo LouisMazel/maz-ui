@@ -34,11 +34,11 @@ lastUpdated: false
       size: 'sm'
     }"
     :items="languagesOptions"
-    class="maz-max-h-80"
+    class="maz:max-h-80"
   >
     <template #item="{ item }">
-      <div class="maz-flex maz-w-full maz-items-center maz-justify-between maz-gap-2">
-        <span class="maz-capitalize">{{ item.label }}</span>
+      <div class="maz:flex maz:w-full maz:items-center maz:justify-between maz:gap-2">
+        <span class="maz:capitalize">{{ item.label }}</span>
         <MazBadge color="theme" outlined>
           {{ item.value }}
         </MazBadge>
@@ -122,7 +122,7 @@ You can replace the default search function by providing a custom search functio
   >
     <template #item="{ item }">
       <div class="maz-flex maz-w-full maz-items-center maz-gap-4">
-        <div class="maz-flex maz-h-10 maz-w-10 maz-flex-none maz-items-center maz-justify-center maz-rounded-full maz-bg-gradient-to-br maz-from-primary-500 maz-to-secondary-500 maz-text-white maz-font-semibold maz-text-lg">
+        <div class="maz-flex maz-h-10 maz-w-10 maz-flex-none maz-items-center maz-justify-center maz-rounded-full maz-bg-linear-to-br maz-from-primary-500 maz-to-secondary-500 maz-text-white maz-font-semibold maz-text-lg">
           {{ item.initials }}
         </div>
         <div class="maz-flex maz-flex-1 maz-flex-col maz-gap-1">

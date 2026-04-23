@@ -17,9 +17,9 @@ description: Get country flag from flagcdn.com with a simple function call
 >
   <template #default="{ option, isSelected }">
     <div
-      class="maz-flex maz-items-center maz-gap-3"
+      class="maz:flex maz:items-center maz:gap-3"
     >
-      <img :src="option.flagSrc" class="maz-text-lg" :alt="`Flag of ${option.label}`" />
+      <img :src="option.flagSrc" class="maz:text-lg" :alt="`Flag of ${option.label}`" />
       <MazBadge
         pastel
         size="0.7rem"

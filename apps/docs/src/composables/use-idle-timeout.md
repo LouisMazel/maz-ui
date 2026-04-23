@@ -44,7 +44,7 @@ A plugin to know the amount of time a user has spent on your website
   <br />
   <br />
 
-  <p class="maz-text-warning">Wait 5 seconds without any actions to see the dialog popup</p>
+  <p class="maz:text-warning">Wait 5 seconds without any actions to see the dialog popup</p>
 
 <template #code>
 

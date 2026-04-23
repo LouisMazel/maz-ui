@@ -48,7 +48,7 @@ description: MazStepper is a standalone UI component customizable, reactive for 
     <MazInput v-model="address" label="Delivery address" />
     <br />
     <br />
-    <div class="maz-flex maz-gap-4">
+    <div class="maz:flex maz:gap-4">
       <MazBtn @click="previousStep" color="secondary">
         Previous
       </MazBtn>
@@ -68,7 +68,7 @@ description: MazStepper is a standalone UI component customizable, reactive for 
     <MazInput label="Credit card number" type="number" />
     <br />
     <br />
-    <div class="maz-flex maz-gap-4">
+    <div class="maz:flex maz:gap-4">
       <MazBtn @click="previousStep" color="secondary">
         Previous
       </MazBtn>

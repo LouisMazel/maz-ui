@@ -8,12 +8,8 @@ import {
   CSS_ID,
   mazUi,
 } from '@maz-ui/themes'
-import autoprefixer from 'autoprefixer'
-import postcssImport from 'postcss-import'
-import postcssNested from 'postcss-nested'
+import tailwindcssPostcss from '@tailwindcss/postcss'
 import postcssUrl from 'postcss-url'
-import tailwind from 'tailwindcss'
-import tailwindcssNesting from 'tailwindcss/nesting'
 import svgLoader from 'vite-svg-loader'
 import { defineConfig, postcssIsolateStyles } from 'vitepress'
 import { head, nav, sidebar } from './configs/index.mjs'
@@ -157,11 +153,7 @@ export default defineConfig<DefaultTheme.Config>({
       postcss: {
         plugins: [
           postcssUrl() as Plugin,
-          postcssNested(),
-          tailwindcssNesting() as Plugin,
-          postcssImport(),
-          autoprefixer(),
-          tailwind() as Plugin,
+          tailwindcssPostcss() as Plugin,
           postcssIsolateStyles({
             includeFiles: [/vp-doc\.css/],
           }),

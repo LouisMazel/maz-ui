@@ -131,6 +131,7 @@ const contributors = (await fetchContributors())?.filter(contributor => !ignored
 </template>
 
 <style lang="css" scoped>
+@reference "../main.css";
 .contributors {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15.625rem, 1fr));

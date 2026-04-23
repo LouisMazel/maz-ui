@@ -102,7 +102,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
       <p>
         Content
       </p>
-      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
         <MazBtn color="destructive" @click="close">
           Close
         </MazBtn>
@@ -120,7 +120,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
       <p>
         Content
       </p>
-      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
         <MazBtn color="destructive" @click="close">
           Close
         </MazBtn>
@@ -138,7 +138,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
       <p>
         Content
       </p>
-      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
         <MazBtn color="destructive" @click="close">
           Close
         </MazBtn>
@@ -156,7 +156,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
       <p>
         Content
       </p>
-      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
         <MazBtn color="destructive" @click="close">
           Close
         </MazBtn>

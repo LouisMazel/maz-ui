@@ -98,7 +98,7 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 <ComponentDemo title="Real-time theme control">
   <div class="demo-theme-controls">
     <div class="maz-space-y-4">
-      <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4">
+      <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4">
         <MazBtn color="primary">Primary Button</MazBtn>
         <MazBtn color="secondary">Secondary Button</MazBtn>
         <MazBtn color="success">Success Button</MazBtn>
@@ -180,7 +180,7 @@ const { presetName, updateTheme, colorMode, setColorMode } = useTheme()
 <template>
   <div class="demo-theme-controls">
     <div class="maz-space-y-4">
-      <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4">
+      <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4">
         <MazBtn color="primary">Primary Button</MazBtn>
         <MazBtn color="secondary">Secondary Button</MazBtn>
         <MazBtn color="success">Success Button</MazBtn>
@@ -709,7 +709,9 @@ const files = buildSeparateThemeFiles(preset)
 
 #### `createThemeStylesheet(css, options)`
 
-Creates a `<style>` tag with the provided CSS.
+Creates a `<style>
+@reference "../../.vitepress/theme/main.css";
+` tag with the provided CSS.
 
 ```typescript
 const styleTag = createThemeStylesheet(css, {
@@ -1265,11 +1267,12 @@ function resetTheme() {
 </script>
 
 <style scoped>
+@reference "../../.vitepress/theme/main.css";
 .demo-theme-controls {
-  @apply maz-w-full;
+  @apply maz:w-full;
 }
 
 .theme-controls {
-  @apply maz-border-t maz-border-divider maz-pt-4;
+  @apply maz:border-t maz:border-divider maz:pt-4;
 }
 </style>

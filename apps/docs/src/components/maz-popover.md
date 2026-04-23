@@ -10,16 +10,16 @@ description: MazPopover is a versatile Vue component for displaying content in o
 ## Basic usage
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-4 maz-flex-wrap">
+  <div class="maz:flex maz:gap-4 maz:flex-wrap">
     <MazPopover trigger="click">
       <template #trigger>
         <MazBtn>
           Click me
         </MazBtn>
       </template>
-      <div class="maz-p-4">
-        <h3 class="maz-text-lg maz-font-semibold maz-mb-2">Popover Content</h3>
-        <p class="maz-text-sm">This is the content inside the popover.</p>
+      <div class="maz:p-4">
+        <h3 class="maz:text-lg maz:font-semibold maz:mb-2">Popover Content</h3>
+        <p class="maz:text-sm">This is the content inside the popover.</p>
       </div>
     </MazPopover>
     <MazPopover trigger="hover">
@@ -28,8 +28,8 @@ description: MazPopover is a versatile Vue component for displaying content in o
           Hover me
         </MazBtn>
       </template>
-      <div class="maz-p-4">
-        <p class="maz-text-sm">This popover appears on hover!</p>
+      <div class="maz:p-4">
+        <p class="maz:text-sm">This popover appears on hover!</p>
       </div>
     </MazPopover>
     <MazPopover trigger="manual">
@@ -38,8 +38,8 @@ description: MazPopover is a versatile Vue component for displaying content in o
           Manual trigger
         </MazBtn>
       </template>
-      <div class="maz-p-4">
-        <p class="maz-text-sm">This popover appears manually!</p>
+      <div class="maz:p-4">
+        <p class="maz:text-sm">This popover appears manually!</p>
       </div>
     </MazPopover>
   </div>
@@ -118,10 +118,10 @@ This provides the best user experience across all devices without requiring manu
         <p class="maz-text-sm maz-mb-2">
           This combines adaptive behavior with keep-open-on-hover for menus.
         </p>
-        <button class="maz-block maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400 maz-rounded">
+        <button class="maz-block maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400 maz-rounded">
           Menu Item 1
         </button>
-        <button class="maz-block maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400 maz-rounded">
+        <button class="maz-block maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400 maz-rounded">
           Menu Item 2
         </button>
       </div>
@@ -161,10 +161,10 @@ This provides the best user experience across all devices without requiring manu
       <p class="maz-text-sm maz-mb-2">
         Perfect for dropdown menus that work on all devices
       </p>
-      <button class="maz-block maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400 maz-rounded">
+      <button class="maz-block maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400 maz-rounded">
         Menu Item 1
       </button>
-      <button class="maz-block maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400 maz-rounded">
+      <button class="maz-block maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400 maz-rounded">
         Menu Item 2
       </button>
     </div>
@@ -184,7 +184,7 @@ The position prop is used to position the popover relative to the trigger. The c
 :::
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-2 maz-gap-4 md:maz-grid-cols-4">
+  <div class="maz-grid maz-grid-cols-2 maz-gap-4 maz-md:grid-cols-4">
     <MazPopover trigger="hover" position="top">
       <template #trigger>
         <MazBtn block>
@@ -283,7 +283,7 @@ The position prop is used to position the popover relative to the trigger. The c
 ## Advanced positions
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-2 maz-gap-4 md:maz-grid-cols-3">
+  <div class="maz-grid maz-grid-cols-2 maz-gap-4 maz-md:grid-cols-3">
     <MazPopover position="top-start">
       <template #trigger>
         <MazBtn block size="sm">
@@ -705,7 +705,7 @@ A directive is available to more easily add a tooltip to an element, see [vToolt
       role="tooltip"
       trigger="hover"
       position="bottom"
-      panel-class="!maz-bg-gray-800 !maz-text-white !maz-border-gray-700"
+      panel-class="maz-bg-gray-800! maz-text-white! maz-border-gray-700!"
     >
       <template #trigger>
         <span class="maz-underline maz-cursor-help">
@@ -749,7 +749,7 @@ A directive is available to more easily add a tooltip to an element, see [vToolt
     role="tooltip"
     trigger="hover"
     position="bottom"
-    panel-class="!maz-bg-gray-800 !maz-text-white !maz-border-gray-700"
+    panel-class="maz-bg-gray-800! maz-text-white! maz-border-gray-700!"
   >
     <template #trigger>
       <span class="maz-underline maz-cursor-help">
@@ -861,7 +861,7 @@ const isOpen = ref(false)
         <button
           v-for="item in menuItems"
           :key="item.label"
-          class="maz-w-full maz-px-4 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400 maz-flex maz-items-center maz-gap-2"
+          class="maz-w-full maz-px-4 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400 maz-flex maz-items-center maz-gap-2"
           @click="handleMenuClick(item.action)"
         >
           <MazIcon :name="item.icon" class="maz-w-4 maz-h-4" />
@@ -874,14 +874,14 @@ const isOpen = ref(false)
         <MazBtn color="transparent" fab :icon="MazEllipsisVertical" />
       </template>
       <div class="maz-py-1 maz-min-w-32">
-        <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400">
+        <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400">
           Edit
         </button>
-        <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400">
+        <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400">
           Share
         </button>
         <hr class="maz-my-1 maz-border-divider">
-        <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400 maz-text-destructive">
+        <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400 maz-text-destructive">
           Delete
         </button>
       </div>
@@ -916,7 +916,7 @@ function handleMenuClick(action) {
       <button
         v-for="item in menuItems"
         :key="item.label"
-        class="maz-w-full maz-px-4 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400 maz-flex maz-items-center maz-gap-2"
+        class="maz-w-full maz-px-4 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400 maz-flex maz-items-center maz-gap-2"
         @click="handleMenuClick(item.action)"
       >
         <MazIcon :name="item.icon" class="maz-w-4 maz-h-4" />
@@ -932,14 +932,14 @@ function handleMenuClick(action) {
       </MazBtn>
     </template>
     <div class="maz-py-1 maz-min-w-32">
-      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400">
+      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400">
         Edit
       </button>
-      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400">
+      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400">
         Share
       </button>
       <hr class="maz-my-1 maz-border-divider">
-      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400 maz-text-destructive">
+      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400 maz-text-destructive">
         Delete
       </button>
     </div>
@@ -962,14 +962,14 @@ function handleMenuClick(action) {
       </MazBtn>
     </template>
     <div class="maz-py-1 maz-min-w-32">
-      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400">
+      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400">
         Edit
       </button>
-      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400">
+      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400">
         Share
       </button>
       <hr class="maz-my-1 maz-border-divider">
-      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400 maz-text-destructive">
+      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400 maz-text-destructive">
         Delete
       </button>
     </div>
@@ -986,14 +986,14 @@ function handleMenuClick(action) {
       </MazBtn>
     </template>
     <div class="maz-py-1 maz-min-w-32">
-      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400">
+      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400">
         Edit
       </button>
-      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400">
+      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400">
         Share
       </button>
       <hr class="maz-my-1 maz-border-divider">
-      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400 maz-text-destructive">
+      <button class="maz-w-full maz-px-3 maz-py-2 maz-text-start maz-text-sm maz-hover:bg-surface-600 maz-dark:hover:bg-surface-400 maz-text-destructive">
         Delete
       </button>
     </div>
@@ -1108,7 +1108,7 @@ function resetForm() {
 ## Configuration options
 
 <ComponentDemo>
-  <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4">
+  <div class="maz-grid maz-grid-cols-1 maz-md:grid-cols-2 maz-gap-4">
     <div>
       <h4 class="maz-font-semibold maz-mb-3">Persistent (no auto-close)</h4>
       <MazPopover persistent>
@@ -1143,7 +1143,7 @@ function resetForm() {
     <div>
       <h4 class="maz-font-semibold maz-mb-3">Custom styling</h4>
       <MazPopover
-        panel-class="maz-bg-gradient-to-r maz-from-purple-500 maz-to-pink-500 maz-text-white maz-border-none"
+        panel-class="maz-bg-linear-to-r maz-from-purple-500 maz-to-pink-500 maz-text-white maz-border-none"
         position="bottom"
       >
         <template #trigger>
@@ -1208,7 +1208,7 @@ function resetForm() {
 
   <!-- Custom styling -->
   <MazPopover
-    panel-class="maz-bg-gradient-to-r maz-from-purple-500 maz-to-pink-500 maz-text-white maz-border-none"
+    panel-class="maz-bg-linear-to-r maz-from-purple-500 maz-to-pink-500 maz-text-white maz-border-none"
     position="bottom"
   >
     <template #trigger>
@@ -1260,7 +1260,7 @@ function resetForm() {
         <p class="maz-text-sm">Check the console for events!</p>
       </div>
     </MazPopover>
-    <div class="maz-p-4 maz-border dark:maz-bg-surface-400 maz-rounded maz-text-sm">
+    <div class="maz-p-4 maz-border maz-dark:bg-surface-400 maz-rounded maz-text-sm">
       <h4 class="maz-font-semibold maz-mb-2">Event Log:</h4>
       <div v-if="events.length === 0" class="maz-text-muted">
         No events yet. Try opening the popover above.

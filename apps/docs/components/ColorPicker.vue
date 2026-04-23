@@ -133,11 +133,12 @@ watch(() => props.modelValue, () => {
 </template>
 
 <style scoped>
+@reference "../.vitepress/theme/main.css";
 .color-picker {
-  @apply maz-inline-flex maz-flex-col maz-gap-1;
+  @apply maz:inline-flex maz:flex-col maz:gap-1;
 
   label {
-    @apply maz-text-sm maz-font-medium maz-text-foreground maz-truncate;
+    @apply maz:text-sm maz:font-medium maz:text-foreground maz:truncate;
   }
 
   input[type='color'] {
@@ -146,7 +147,7 @@ watch(() => props.modelValue, () => {
     background: none;
     cursor: pointer;
 
-    @apply maz-h-10 maz-w-full maz-cursor-pointer maz-overflow-hidden maz-rounded maz-border maz-border-solid maz-border-divider disabled:maz-cursor-not-allowed disabled:maz-opacity-50;
+    @apply maz:h-10 maz:w-full maz:cursor-pointer maz:overflow-hidden maz:rounded maz:border maz:border-solid maz:border-divider maz:disabled:cursor-not-allowed maz:disabled:opacity-50;
 
     &::-webkit-color-swatch-wrapper {
       padding: 0;

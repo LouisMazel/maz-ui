@@ -66,7 +66,7 @@ const { setColorMode } = useTheme()
 ## Effect with multiple cards and with secondary color
 
 <ComponentDemo>
-  <div class="maz-grid maz-gap-4 maz-grid-cols-1 mob-l:maz-grid-cols-2 tab-l:maz-grid-cols-3">
+  <div class="maz-grid maz-gap-4 maz-grid-cols-1 maz-mob-l:grid-cols-2 maz-tab-l:grid-cols-3">
     <MazCardSpotlight v-for="competition of competitions" :key="competition.label" color="secondary">
       <div style="display: flex;">
         <MazAvatar
