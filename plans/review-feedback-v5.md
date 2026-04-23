@@ -95,7 +95,7 @@ Le gros du codemod sert la migration **interne** de maz-ui, pas les consommateur
 
 ## 3. `@maz-ui/eslint-config` — suppression à tort du support `eslint-plugin-tailwindcss`
 
-**État** : 🟨 decided, pending action — à restaurer
+**État** : ✅ done — restauré en peer dep optionnelle (commit `691bff488`)
 
 ### Constat
 
@@ -154,7 +154,7 @@ if (opts.tailwindcss) {
 
 ## 4. CI global — `test:unit:all`, `lint:all`, `typecheck:all`, build ne passent pas
 
-**État** : 🟥 open — blocker pour la release
+**État** : ✅ done — `pnpm healthcheck` passe exit 0. Codemod reçoit son `eslint.config.ts` (commit `766c8f8fa`), lint/typecheck/test/build tous verts.
 
 ### Constat (retour du mainteneur pendant la review)
 
@@ -186,7 +186,7 @@ Dans le PR body et mes récaps j'ai écrit "tests 7/7 verts", "all builds OK", e
 
 ## 5. `padded-container-vars.css` — breakpoints perdus dans la conversion `@screen` → `@media`
 
-**État** : 🟨 decided, pending action
+**État** : ✅ done — converti en `@variant mob-l` / `@variant lap-s` (commit `19c62df67`), avec déclaration locale `@theme` pour que le fichier reste self-contained hors bridge (commit `d48345b7c`)
 
 ### Constat
 
@@ -267,7 +267,7 @@ Ce fichier est importé dans `packages/lib/src/tailwindcss/tailwind.css` via le 
 
 ## 6. `theme-shadows.css` — valeurs arbitraires au lieu de tokens
 
-**État** : 🟨 decided, pending action
+**État** : ✅ done — tokenisé avec `--shadow-color`, `--shadow-alpha-*` (commit `1b51bdd8a`)
 
 ### Constat
 
@@ -335,7 +335,7 @@ Si on ne veut pas mettre un alpha sur `--shadow-elevation` (c'est un cas spécia
 
 ## 7. `theme-typography.css` — durations et easing hardcodés
 
-**État** : 🟨 decided, pending action
+**État** : ✅ done — `ThemeFoundation` étendu avec `duration-*` / `easing-*`, les 4 presets built-in fournissent des valeurs, fallback CSS `var(--maz-*, <default>)` pour presets custom (commit `a983b34db`)
 
 ### Constat
 
@@ -423,7 +423,7 @@ Question de scope : est-ce que le système de motion fait partie du design syste
 
 ## 8. `packages/lib/postcss.config.cjs` — probablement redondant avec `@tailwindcss/vite`
 
-**État** : 🟨 decided, pending action — à supprimer si validé par test
+**État** : ✅ done — supprimé après vérification byte-identique du dist (commit `30798413c`)
 
 ### Constat
 
@@ -549,7 +549,7 @@ Dans les deux scénarios on n'a **qu'UNE version du codemod** à maintenir.
 
 ## 10. `border` / `border-b` / … sans couleur — breaking change Tailwind v4 non compensé
 
-**État** : 🟥 open — blocker visuel, impacte 10+ composants
+**État** : ✅ done (audit terminé, fix ciblé sur MazContainer). Les autres composants qui utilisent `maz:border` sans couleur ont soit un `border-*` color posé par le template/variant, soit un `border-color` CSS explicite juste en dessous — le cascade fait le bon choix. Plus `reset.css` avec `.m-reset-css` qui restaure la v3 default border color partout où maz-ui en pose une. Commits `b10d5ec91` (reset) + `f2aa9a09c` (MazContainer).
 
 ### Le breaking change
 
@@ -645,7 +645,7 @@ Option **A** (base rule) — c'est ce que fait shadcn-ui et quasi tous les desig
 
 ## 11. `apps/nuxt-app` casse au runtime — `Error: IPC connection closed`
 
-**État** : 🟥 open — blocker, à diagnostiquer
+**État** : ✅ done — root cause : `@variant mob-l` hors scope dans `padded-container-vars.css` faisait crasher le worker vite-node en dev mode (le build passait parce qu'il résout dans un cascade unique). Fix via déclaration locale `@theme` pour les breakpoints concernés (commit `d48345b7c`). Aussi fixé : `@import url('tailwindcss') prefix(maz)` avalait la directive `prefix()`, bascule en bare-string (`766c8f8fa`).
 
 ### Erreur rapportée par le mainteneur
 
@@ -693,7 +693,7 @@ Lors du commit `7f6375956` j'ai vérifié `pnpm -C apps/nuxt-app exec nuxi build
 
 ## 12. `apps/vue-app` — majorité des styles des composants cassée
 
-**État** : 🟥 open — blocker, même catégorie de bug que #11
+**État** : ✅ done — deux causes identifiées : (a) `@screen tab-m/tab-s` survivants dans MazToast et MazDialog, fix + codemod étendu à `@screen → @variant` (commit `7cebed1f1`) ; (b) `@variant mob-l` out-of-scope en dev mode corrigé en même temps que #11 (commit `d48345b7c`).
 
 ### Constat du mainteneur
 
@@ -742,7 +742,7 @@ Les deux apps de démo sont cassées en dev. J'ai claim « build OK » dans mon 
 
 ## 13. Erreur de cadrage FONDAMENTALE — la doc présente Tailwind setup comme requis alors que c'est optionnel
 
-**État** : 🟥 open — bloquant pour la doc, refonte à faire
+**État** : ✅ done — `tailwind.md` réécrite en bonus page, section Tailwind retirée de `getting-started.md` / `vue.md` / `nuxt.md`, `migration-v5.md` focalisée sur maz-ui (commits `37938302d` et précédents).
 
 ### Ce que le mainteneur dit (à internaliser une bonne fois)
 
@@ -831,7 +831,7 @@ Cette entrée invalide une grosse partie de mon travail de Phase 9 et une partie
 
 ## 14. `migration-v5.md` — doit parler de maz-ui, PAS de Tailwind
 
-**État** : 🟥 open — à réécrire entièrement (cohérent avec #13)
+**État** : ✅ done — réécrite. Prérequis Node 20 + browsers, 1 changement requis (unwrap `hsl(var(--maz-X))`), sections Tailwind reléguées en "Advanced" pour les consommateurs qui ont leur propre setup v3.
 
 ### Ce que le mainteneur dit
 
@@ -908,7 +908,7 @@ Mes deux erreurs récurrentes ici :
 
 ## 15. `apps/docs` — migration incomplète, beaucoup de classes `maz-*` v3 restées telles quelles
 
-**État** : 🟥 open — blocker visuel sur la doc
+**État** : ✅ done — codemod lancé sur tout `apps/docs/src`, puis reverts ciblés des surtransformations (paths `./maz:ui-provider.md`, `@layer maz:ui-theme`, prose `maz:ui-specific`) (commit `37938302d`).
 
 ### Constat du mainteneur
 
@@ -975,7 +975,7 @@ Le codemod actuel scanne bêtement le texte via regex. Pour les `.md`, il FAUT u
 
 ## 16. `apps/docs` — styles postcss pas compilés (même cause que #12)
 
-**État** : 🟥 open — même pattern que #12
+**État** : ✅ done — résolu par les mêmes fixes que #12 (`@screen → @variant` + `@variant mob-l` déclaration locale). Build docs passe maintenant dans `pnpm healthcheck`.
 
 ### Constat du mainteneur
 
