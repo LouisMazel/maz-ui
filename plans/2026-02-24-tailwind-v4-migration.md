@@ -874,6 +874,8 @@ Vérifier que les 3 apps buildent correctement.
 
 ## Phase 6 : Nettoyage et exports
 
+**Statut** : ✅ done — tous les artefacts v3 supprimés, linters v4-ready, exports consommateur en place. Commits `fe5905095` (cleanup + postcss simplification), `975ee00f0` (linters), `cbedad205` (consumer exports), `6eae6e7e1` (hsl() cleanup global).
+
 ### 6.1 Exporter les fichiers CSS pour les consommateurs
 
 **Fichier** : `/packages/lib/package.json`
