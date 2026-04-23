@@ -1,0 +1,19 @@
+# v3 Bundle Size Baseline
+# Date: 2026-04-23T14:44:49Z
+# Version: 4.9.3
+# Branch: v5/tailwind-v4
+# Commit: 293882df0
+
+## CSS files (dist/css/)
+  main.css          raw:    13279 bytes  gzip:     2626 bytes
+  aos.css           raw:    19292 bytes  gzip:     1743 bytes
+
+## Dist totals
+  dist/css   :  44K
+  dist/      : 2.2M
+
+## File count
+  dist/ files: 434
+  .css files : 74
+  .js files  : 204
+  .d.ts files: 156
