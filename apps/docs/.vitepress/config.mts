@@ -1,4 +1,5 @@
 import type { Plugin } from 'postcss'
+import type { Plugin as VitePlugin } from 'vite'
 import type { DefaultTheme, HeadConfig, UserConfig } from 'vitepress'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -9,12 +10,35 @@ import {
   mazUi,
 } from '@maz-ui/themes'
 import tailwindcssPostcss from '@tailwindcss/postcss'
+import postcss from 'postcss'
+import postcssNested from 'postcss-nested'
 import postcssUrl from 'postcss-url'
 import svgLoader from 'vite-svg-loader'
 import { defineConfig, postcssIsolateStyles } from 'vitepress'
 import { head, nav, sidebar } from './configs/index.mjs'
 
 import { getOgImage } from './og-image'
+
+// Flatten postcss-nested `&-child` concatenation BEFORE @tailwindcss/vite
+// sees the CSS — its internal lightningcss engine only speaks native CSS
+// nesting, and leaves `&-sm`/`&-loader-container`/etc. as garbled selectors.
+// Needed because .vitepress/theme/index.ts imports `maz-ui/src/*` directly,
+// so raw SFC styles pass through this Vitepress pipeline.
+function PreNestedCss(): VitePlugin {
+  const processor = postcss([postcssNested()])
+  return {
+    name: 'maz-ui:pre-nested-css',
+    enforce: 'pre',
+    async transform(code, id) {
+      if (!/\.vue\?.*type=style/.test(id) && !id.endsWith('.css'))
+        return
+      if (!code.includes('&'))
+        return
+      const { css } = await processor.process(code, { from: id, to: id })
+      return { code: css, map: null }
+    },
+  }
+}
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -122,6 +146,7 @@ export default defineConfig<DefaultTheme.Config>({
       chunkSizeWarningLimit: 1000,
     },
     plugins: [
+      PreNestedCss(),
       svgLoader(),
       {
         name: 'redirect-plugin',

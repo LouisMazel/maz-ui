@@ -212,6 +212,7 @@
     "jsdom": "^29.0.2",
     "lightningcss": "^1.32.0",
     "nuxt": "^4.4.2",
+    "postcss-nested": "^7.0.2",
     "sass": "^1.99.0",
     "tailwindcss": "^4.2.1",
     "unplugin-auto-import": "^21.0.0",
