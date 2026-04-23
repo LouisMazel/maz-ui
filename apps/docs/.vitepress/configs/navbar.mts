@@ -42,6 +42,10 @@ export const nav = [
         link: '/guide/migration-v4',
       },
       {
+        text: 'Migration v4 to v5',
+        link: '/guide/migration-v5',
+      },
+      {
         text: 'Contributing',
         link: 'https://github.com/LouisMazel/maz-ui/blob/master/CONTRIBUTING.md',
       },

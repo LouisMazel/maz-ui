@@ -5,7 +5,6 @@ export const guide = {
   collapsed: true,
   items: [
     { text: 'Getting Started', link: '/guide/getting-started' },
-    { text: 'Browser Support', link: '/guide/browser-support' },
     { text: 'Vue', link: '/guide/vue' },
     { text: 'Nuxt', link: '/guide/nuxt' },
     { text: 'Theming', link: '/guide/themes' },
@@ -19,6 +18,7 @@ export const guide = {
     { text: 'Migration v4 to v5', link: '/guide/migration-v5' },
     { text: 'Migration v3 to v4', link: '/guide/migration-v4' },
     { text: 'Model Context Protocol (MCP)', link: '/guide/mcp' },
+    { text: 'Browser Support', link: '/guide/browser-support' },
     { text: 'CLI (v3)', link: '/guide/cli' },
   ],
 } satisfies DefaultTheme.SidebarItem
