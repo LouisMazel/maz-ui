@@ -371,6 +371,9 @@ importers:
       '@vue/test-utils':
         specifier: ^2.4.6
         version: 2.4.6
+      autoprefixer:
+        specifier: ^10.5.0
+        version: 10.5.0(postcss@8.5.10)
       jsdom:
         specifier: ^29.0.2
         version: 29.0.2
