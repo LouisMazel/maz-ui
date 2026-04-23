@@ -346,6 +346,8 @@ onMounted(() => {
 </template>
 
 <style>
+@reference "../../tailwindcss/tailwind.css";
+
 .m-toast-container {
   @apply maz:fixed maz:flex maz:flex-col maz:gap-2 maz:p-4;
 
@@ -378,6 +380,8 @@ onMounted(() => {
 </style>
 
 <style scoped>
+@reference "../../tailwindcss/tailwind.css";
+
 .m-toast {
   box-sizing: border-box;
 
