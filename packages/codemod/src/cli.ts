@@ -95,6 +95,7 @@ What \`tailwind-v4\` rewrites:
                         bg-linear-to-*, and the matching backdrop / drop-shadow
                         lines.
   - @apply important:   @apply X !important  → @apply X!
+  - directive rename:   @screen tab-m        → @variant tab-m
   - hsl() double-wrap:  hsl(var(--maz-X))    → var(--maz-X)
                         hsl(var(--maz-X)/0.5) → color-mix(in srgb, var(--maz-X) 0.5, transparent)
   - arbitrary values:   bg-[var(--maz-X)]    → bg-(--maz-X)

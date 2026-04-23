@@ -178,7 +178,7 @@ if (scrollable) {
 .m-dialog {
   @apply maz:flex maz:origin-center maz:flex-col maz:min-w-full maz:rounded maz:bg-surface maz:text-foreground maz:dark:border maz:dark:border-divider maz:tab-s:my-8 maz:max-w-full maz:touch-none;
 
-  @screen tab-s {
+  @variant tab-s {
     max-width: var(--max-width);
     min-width: var(--min-width);
   }

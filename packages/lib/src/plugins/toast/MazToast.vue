@@ -360,7 +360,7 @@ onMounted(() => {
   &.--center {
     @apply maz:w-full maz:tab-m:fixed maz:tab-m:left-2/4 maz:tab-m:w-auto;
 
-    @screen tab-m {
+    @variant tab-m {
       transform: translate(-50%, 0);
     }
   }
