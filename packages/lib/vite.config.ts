@@ -13,6 +13,7 @@ import SvgLoader from 'vite-svg-loader'
 import {
   ViteCompileStyles,
 } from './build'
+import { VitePreNestedCss } from './build/VitePreNestedCss'
 
 import pkg from './package.json'
 
@@ -45,6 +46,7 @@ export default defineConfig(({ mode }) => {
   const isProduction = mode === 'production'
   return {
     plugins: [
+      VitePreNestedCss(),
       Vue(),
       tailwindcss(),
       SvgLoader(),
