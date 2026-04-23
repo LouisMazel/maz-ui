@@ -1230,6 +1230,8 @@ Structure :
 
 ## Phase 9 : Documentation & communication
 
+**Statut** : 🟡 partial — pages de guide terminées (`tailwind.md`, `migration-v5.md`, `browser-support.md` + cross-refs dans getting-started/vue/nuxt). CHANGELOG, blog post et comms externes restent à traiter au moment du release (relizy les génère en partie).
+
 ### 9.1 Refonte page Installation
 
 **Fichier** : `/apps/docs/src/guide/installation.md` (ou équivalent)
