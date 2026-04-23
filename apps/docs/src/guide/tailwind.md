@@ -1,96 +1,72 @@
 ---
-title: Tailwind CSS integration
-description: Use maz-ui design tokens and utilities inside your own Tailwind v4 setup.
+title: Tailwind CSS integration (optional)
+description: Expose your active maz-ui theme tokens to your own Tailwind v4 setup
 ---
 
-# Tailwind CSS integration
+# {{ $frontmatter.title }}
 
-Since v5, **maz-ui is built on Tailwind CSS v4** with a CSS-first configuration. The entire design system — colors, spacing scales, shadows, radii, breakpoints, typography, z-index — is exposed as Tailwind theme tokens that you can reuse in your own application code.
+::: tip This page is optional
+Maz-UI works without Tailwind. You install the package, import `maz-ui/styles`, and components render with the preset you chose — nothing else is required.
 
-In your own `<template>` and `<style>` blocks, `bg-primary`, `text-foreground`, `rounded`, `shadow-elevation`, `md:flex` etc. all resolve to the same tokens maz-ui uses internally. When you switch preset or bascule dark mode at runtime, **your own styles update with it** — no rebuild required.
-
-::: tip Requirements
-- Node.js ≥ 20
-- Tailwind CSS ≥ 4.2
-- Your bundler's Tailwind plugin (`@tailwindcss/vite` or `@tailwindcss/postcss`)
-- Chromium 111+, Safari 16.4+, Firefox 128+ (v4 requires native CSS features)
+This page is for consumers who **already have a Tailwind v4 setup of their own** and want their own utilities (`bg-primary`, `rounded`, `md:flex-center`, `shadow-elevation`…) to pull colors, scales, and breakpoints from the **currently-active maz-ui theme**.
 :::
 
-## Quick start — full design system
+## What the bridge gives you
 
-The recommended setup. Your Tailwind instance adopts the maz-ui tokens entirely: `bg-primary`, `rounded-lg`, `mob-m:flex`, `shadow-elevation` etc. are all powered by maz-ui.
+You already configured a maz-ui theme via `@maz-ui/themes` — a built-in preset (`mazUi`, `ocean`, `pristine`, `obsidian`) or your own custom preset. That theme injects CSS variables (`--maz-primary`, `--maz-radius`, `--maz-font-family`, …) at runtime.
 
-### 1. Install the Tailwind Vite plugin
+The **Tailwind bridge** is a set of small CSS files that map those `--maz-*` variables to Tailwind theme tokens (`--color-primary`, `--radius`, `--font-sans`, …) so your own Tailwind utilities resolve to the active preset:
 
-::: code-group
-```bash [pnpm]
-pnpm add -D tailwindcss @tailwindcss/vite
-```
-```bash [npm]
-npm install -D tailwindcss @tailwindcss/vite
-```
-```bash [yarn]
-yarn add -D tailwindcss @tailwindcss/vite
-```
-:::
+- `class="bg-primary"` in your template → your active maz-ui primary color
+- `class="rounded-lg"` → `calc(var(--maz-radius) + 4px)`
+- `class="md:flex-center"` → responsive, sourced from maz-ui's breakpoint scale
+- Dark mode toggle via `@maz-ui/themes` → every utility reflows automatically, no rebuild
 
-### 2. Wire it into Vite
+## Prerequisites
 
-```ts
-// vite.config.ts
-import tailwindcss from '@tailwindcss/vite'
-import vue from '@vitejs/plugin-vue'
-import { defineConfig } from 'vite'
+- A working Tailwind v4 setup in your app (`tailwindcss@^4.2`, `@tailwindcss/vite` or `@tailwindcss/postcss`)
+- `maz-ui` and `@maz-ui/themes` installed and the theme plugin initialized
 
-export default defineConfig({
-  plugins: [
-    vue(),
-    tailwindcss(),
-  ],
-})
-```
+## Setup
 
-### 3. Create the Tailwind entry
+### 1. Import the bridge from your Tailwind entry
+
+Wherever you have `@import "tailwindcss"` today, add the bridge imports underneath:
 
 ```css
-/* src/tailwind.css */
+/* src/tailwind.css (or wherever your Tailwind entry lives) */
 @import "tailwindcss";
+
 @import "maz-ui/tailwindcss/theme.css";
 @import "maz-ui/tailwindcss/utilities.css";
 ```
 
-### 4. Import the entry once in your app
+That's it. Your Tailwind utilities now see every maz-ui theme token.
 
-```ts
-// main.ts
-import { createApp } from 'vue'
-import App from './App.vue'
-import './tailwind.css'
+### 2. (Optional) Cherry-pick instead of the full bridge
 
-// Bootstrap the maz-ui theme once so the --maz-* variables are injected
-import { installTheme } from '@maz-ui/themes'
-import mazUi from '@maz-ui/themes/presets/mazUi'
+`theme.css` is an aggregator. Each module can be imported individually if you only want a subset:
 
-const app = createApp(App)
-app.use(installTheme, { preset: mazUi })
-app.mount('#app')
-```
+- `maz-ui/tailwindcss/theme-colors.css` — semantic colors + 11-step scales + aliases (`surface`/`background`, `divider`/`border`, `elevation`/`shadow`)
+- `maz-ui/tailwindcss/theme-radius.css` — radius scale anchored on `--maz-radius`
+- `maz-ui/tailwindcss/theme-breakpoints.css` — `mob-s` … `lap-3xl` responsive variants (added alongside Tailwind's default `sm`/`md`/`lg`/`xl`/`2xl`, not replacing them)
+- `maz-ui/tailwindcss/theme-shadows.css` — shadow scale + the theme-bound `shadow-elevation`
+- `maz-ui/tailwindcss/theme-z-index.css` — named z-index scale
+- `maz-ui/tailwindcss/theme-typography.css` — font family, default border width, default transition
 
-That's it. In any component, `class="flex bg-primary text-primary-foreground p-4 rounded shadow-elevation"` works and follows the active preset.
+`utilities.css` is independent of the theme — it adds a handful of custom utilities (see below) that don't depend on any token.
 
-## Custom utilities
+## Available utilities from `utilities.css`
 
-Maz-ui ships a handful of opinionated utilities on top of Tailwind. Importing `maz-ui/tailwindcss/utilities.css` makes them available in `@apply` and in `class=""`:
+| Utility | Effect |
+| --- | --- |
+| `flex-center` | `align-items: center; justify-content: center` |
+| `cap-f` | capitalizes the first letter via `::first-letter` |
+| `padded-container` | full-width container with the theme's responsive horizontal padding |
+| `padded-container-no-p` | container aligned to the theme's `--maz-container-max-width`, no side padding |
+| `z-default-backdrop` | `z-index: 1050` — the stacking level used by MazDialog / MazToast |
 
-| Utility                    | Effect                                                                     |
-| -------------------------- | -------------------------------------------------------------------------- |
-| `flex-center`              | `align-items: center; justify-content: center`                              |
-| `cap-f`                    | `::first-letter { text-transform: capitalize }` on the element             |
-| `padded-container`         | `width: 100%; padding-inline: var(--maz-container-padding)` (responsive)   |
-| `padded-container-no-p`    | Full-width container aligned to the theme's max-width, no side padding     |
-| `z-default-backdrop`       | `z-index: 1050` — the stacking level used by MazDialog / MazToast          |
-
-Example:
+Use them like any Tailwind utility:
 
 ```vue
 <template>
@@ -100,121 +76,70 @@ Example:
 </template>
 ```
 
-## Available tokens
-
-Every token below is exposed as a Tailwind theme variable and generates its corresponding utility. Values come from `@maz-ui/themes` and react to the active preset.
+## Available theme tokens
 
 ### Colors
 
-Each of these colors has a base (`--color-X`) and an 11-step scale (`--color-X-50` … `--color-X-900`). The ones marked with *fg* also expose `--color-X-foreground` for accessible text-on-color:
+Each of these has a base (`--color-X`), a foreground (`--color-X-foreground`, only where marked), and an 11-step scale (`--color-X-50` … `--color-X-900`).
 
-- `primary` *fg* · `secondary` *fg* · `accent` *fg*
-- `destructive` *fg* · `success` *fg* · `warning` *fg* · `info` *fg* · `contrast` *fg*
-- `surface` (alias for `background`) · `foreground` · `divider` (alias for `border`)
-- `elevation` (alias for `shadow`) · `overlay` · `muted`
+| Token | Has fg | Notes |
+| --- | --- | --- |
+| `primary`, `secondary`, `accent` | ✅ | brand colors |
+| `destructive`, `success`, `warning`, `info`, `contrast` | ✅ | state / neutral |
+| `surface` | ❌ | alias of `background` |
+| `foreground` | ❌ | body text color |
+| `divider` | ❌ | alias of `border` |
+| `elevation` | ❌ | alias of `shadow` |
+| `overlay`, `muted` | ❌ | |
 
 Example: `bg-primary`, `text-primary-foreground`, `border-divider-300`, `shadow-elevation`.
 
-### Radius
+### Radius scale
 
-Based on `--maz-radius` (default `0.7rem`) so the whole scale moves when the theme radius is tweaked.
+Anchored on `--maz-radius`, so the whole scale moves when the theme radius changes.
 
-| Class         | Value                              |
-| ------------- | ---------------------------------- |
-| `rounded-xs`  | `calc(var(--maz-radius) - 8px)`    |
-| `rounded-sm`  | `calc(var(--maz-radius) - 4px)`    |
-| `rounded-md`, `rounded` | `var(--maz-radius)`   |
-| `rounded-lg`  | `calc(var(--maz-radius) + 4px)`    |
-| `rounded-xl`  | `calc(var(--maz-radius) + 8px)`    |
+| Class | Value |
+| --- | --- |
+| `rounded-xs` | `calc(var(--maz-radius) - 8px)` |
+| `rounded-sm` | `calc(var(--maz-radius) - 4px)` |
+| `rounded-md`, `rounded` | `var(--maz-radius)` |
+| `rounded-lg` | `calc(var(--maz-radius) + 4px)` |
+| `rounded-xl` | `calc(var(--maz-radius) + 8px)` |
 
-### Breakpoints
+### Responsive breakpoints
 
-Maz-ui adds a three-tier scale on top of the standard Tailwind breakpoints (`sm`, `md`, `lg`, `xl`, `2xl` still work).
+Added **on top** of Tailwind's default `sm`/`md`/`lg`/`xl`/`2xl` (you keep those too):
 
-| Class      | Min-width |
-| ---------- | --------- |
-| `mob-s:`   | 320px     |
-| `mob-m:`   | 425px     |
-| `mob-l:`   | 576px     |
-| `tab-s:`   | 640px     |
-| `tab-m:`   | 768px     |
-| `tab-l:`   | 992px     |
-| `lap-s:`   | 1024px    |
-| `lap-m:`   | 1280px    |
-| `lap-l:`   | 1366px    |
-| `lap-xl:`  | 1440px    |
-| `lap-2xl:` | 1680px    |
-| `lap-3xl:` | 1920px    |
+| Class | Min-width |
+| --- | --- |
+| `mob-s:` | 320px |
+| `mob-m:` | 425px |
+| `mob-l:` | 576px |
+| `tab-s:` | 640px |
+| `tab-m:` | 768px |
+| `tab-l:` | 992px |
+| `lap-s:` | 1024px |
+| `lap-m:` | 1280px |
+| `lap-l:` | 1366px |
+| `lap-xl:` | 1440px |
+| `lap-2xl:` | 1680px |
+| `lap-3xl:` | 1920px |
 
 ### Shadows
 
-`shadow-xs/sm/md/lg/xl` with standard scale, plus `shadow-elevation` which hooks into the theme's `--color-elevation` so the drop tint follows the active preset.
+Standard `shadow-xs` / `shadow-sm` / `shadow-md` / `shadow-lg` / `shadow-xl`, plus `shadow-elevation` which uses the theme's elevation color so the drop tint follows the active preset.
 
 ### Z-index
 
-`z-1`, `z-2`, `z-3`, `z-4`, `z-5`, `z-15`, `z-25`, `z-35`, `z-45`, `z-75`, `z-100`, `z-default-backdrop` (1050).
+`z-1`, `z-2`, … `z-5`, `z-15`, `z-25`, `z-35`, `z-45`, `z-75`, `z-100`, `z-default-backdrop` (1050).
 
 ### Typography & misc
 
-`font-sans` maps to `var(--maz-font-family)`, default border width to `var(--maz-border-width)`, default transition to 200ms cubic-bezier.
+`font-sans` → `var(--maz-font-family)`, default border width → `var(--maz-border-width)`, default transition → 200ms cubic-bezier.
 
-## Alternative scenarios
+## Using `@apply` inside Vue SFC `<style>` blocks
 
-### Scenario B — keep your own design system, pick a few tokens
-
-If you already have a design system and only want to reuse a handful of maz-ui tokens under your own names:
-
-```css
-@import "tailwindcss";
-
-@theme inline {
-  --color-brand: var(--maz-primary);
-  --color-brand-foreground: var(--maz-primary-foreground);
-  --radius-brand: var(--maz-radius);
-}
-```
-
-`bg-brand`, `rounded-brand` now exist without clashing with your palette. The `--maz-*` source variables are provided at runtime by `@maz-ui/themes` as long as you install it.
-
-### Scenario C — cherry-pick one module
-
-Every bridge file can be imported individually if you don't want the whole design system.
-
-```css
-@import "tailwindcss";
-@import "maz-ui/tailwindcss/theme-colors.css"; /* only colors */
-```
-
-The modules are:
-
-- `theme-colors.css` — color tokens + scales
-- `theme-radius.css` — radius scale anchored on `--maz-radius`
-- `theme-breakpoints.css` — `mob-*`, `tab-*`, `lap-*` (standard Tailwind breakpoints are preserved)
-- `theme-shadows.css` — shadow scale + `shadow-elevation`
-- `theme-z-index.css` — named z-index scale
-- `theme-typography.css` — font family, default border width, default transition
-
-## Nuxt
-
-With `@nuxtjs/tailwindcss` v6 not yet compatible with Tailwind v4, wire the plugin directly through Vite:
-
-```ts
-// nuxt.config.ts
-import tailwindcss from '@tailwindcss/vite'
-
-export default defineNuxtConfig({
-  css: ['~/css/main.css'],
-  vite: {
-    plugins: [tailwindcss()],
-  },
-})
-```
-
-Then create `~/css/main.css` with the same content as the Quick start.
-
-## Using `@apply` inside Vue `<style>` blocks
-
-Tailwind v4's Vite plugin processes each SFC's `<style>` block in isolation. For `@apply maz:flex` (or any Tailwind utility) to resolve, each block needs a `@reference` directive pointing at your Tailwind entry:
+Tailwind v4's Vite plugin processes each SFC `<style>` block in isolation. If your SFCs use `@apply`, each block must start with a `@reference` directive pointing at your Tailwind entry, so the plugin knows which theme config to apply:
 
 ```vue
 <style scoped>
@@ -226,11 +151,11 @@ Tailwind v4's Vite plugin processes each SFC's `<style>` block in isolation. For
 </style>
 ```
 
-This is a one-time setup per SFC that uses `@apply`. Maz-ui itself ships with `@reference` embedded in every component.
+One line per SFC. Maz-ui components already ship this internally.
 
-## Contract stability
+## Contract & stability
 
-The paths listed on this page are the **public API** of the Tailwind bridge. They're versioned with the library:
+The subpaths listed above are the **public API** of the Tailwind bridge. They are versioned with the library:
 
 - `maz-ui/tailwindcss/theme.css`
 - `maz-ui/tailwindcss/theme-colors.css`
@@ -241,10 +166,20 @@ The paths listed on this page are the **public API** of the Tailwind bridge. The
 - `maz-ui/tailwindcss/theme-typography.css`
 - `maz-ui/tailwindcss/utilities.css`
 
-The **token names** (e.g. `--color-primary`, `--radius`, `--breakpoint-mob-s`, `--shadow-elevation`, `--z-default-backdrop`) are part of the contract — they won't change without a major release. Values may evolve as the design system evolves, but minor versions won't break the class surface.
+Token **names** (e.g. `--color-primary`, `--radius`, `--breakpoint-mob-s`, `--shadow-elevation`) are part of the contract — they won't change without a major release. Token **values** may evolve alongside the design system in minors.
+
+## If you are migrating from Tailwind v3
+
+If your app was on Tailwind v3, run the official Tailwind upgrade tool before touching anything maz-ui-specific:
+
+```bash
+npx @tailwindcss/upgrade
+```
+
+It handles 95% of the v3 → v4 transition (utility renames, `@apply !important` syntax, `tailwind.config.js` → CSS-first). Then apply the maz-ui-specific changes from the [v4 → v5 migration guide](./migration-v5.md#advanced-you-had-your-own-tailwind-setup).
 
 ## See also
 
-- [Theming](/guide/themes) — customise or build your own preset
-- [MazUiProvider](/guide/maz-ui-provider) — runtime theme + translations bootstrap
-- [Migration v4 → v5](/guide/migration-v4) — upgrading from Tailwind v3
+- [Theming](./themes.md) — create a custom preset, switch themes at runtime
+- [Migration v4 → v5](./migration-v5.md) — library-level changes
+- [Browser Support](./browser-support.md) — exact minimum versions required by Tailwind v4
