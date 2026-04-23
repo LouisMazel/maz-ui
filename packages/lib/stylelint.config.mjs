@@ -19,6 +19,7 @@ export default {
     'selector-class-pattern': undefined,
     'no-descending-specificity': undefined,
     'function-no-unknown': [true, { ignoreFunctions: ['v-bind'] }],
+    'nesting-selector-no-missing-scoping-root': null,
   },
 
   overrides: [
