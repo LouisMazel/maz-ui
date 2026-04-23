@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   transformClassToken,
   transformCssFile,
+  transformFile,
   transformText,
   transformVueFile,
 } from './transform'
@@ -313,6 +314,60 @@ describe('transformCssFile', () => {
   @apply maz:hover:bg-primary maz:m-0!;
 }`
         expect(transformCssFile(input)).toBe(expected)
+      })
+    })
+  })
+})
+
+describe('transformFile', () => {
+  describe('Given a CSS file with @screen directives', () => {
+    describe('When transforming', () => {
+      it('renames @screen to @variant', () => {
+        const input = `.toast {
+  @screen tab-m {
+    transform: translate(-50%, 0);
+  }
+  @screen lap-s {
+    max-width: var(--max);
+  }
+}`
+        const expected = `.toast {
+  @variant tab-m {
+    transform: translate(-50%, 0);
+  }
+  @variant lap-s {
+    max-width: var(--max);
+  }
+}`
+        expect(transformFile('foo.css', input)).toBe(expected)
+      })
+    })
+  })
+
+  describe('Given a Vue SFC with @screen in a style block', () => {
+    describe('When transforming', () => {
+      it('renames @screen inside <style>', () => {
+        const input = `<template>
+  <div class="maz-flex" />
+</template>
+<style scoped>
+.thing {
+  @screen tab-s {
+    max-width: 400px;
+  }
+}
+</style>`
+        const expected = `<template>
+  <div class="maz:flex" />
+</template>
+<style scoped>
+.thing {
+  @variant tab-s {
+    max-width: 400px;
+  }
+}
+</style>`
+        expect(transformFile('foo.vue', input)).toBe(expected)
       })
     })
   })

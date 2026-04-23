@@ -108,6 +108,15 @@ export function transformApplyImportant(content: string): string {
   })
 }
 
+// --- @screen X → @variant X -----------------------------------------------
+// Tailwind v3's @screen directive is renamed to @variant in v4.
+
+const SCREEN_DIRECTIVE = /@screen(\s+[\w-]+)/g
+
+export function transformScreen(content: string): string {
+  return content.replace(SCREEN_DIRECTIVE, '@variant$1')
+}
+
 // --- Orchestration ---------------------------------------------------------
 
 export function transformFile(filename: string, content: string): string {
@@ -118,8 +127,10 @@ export function transformFile(filename: string, content: string): string {
 
   // 1. Rewrite @apply X !important before the prefix transform touches the
   //    tokens, so we don't leave a dangling "!important" keyword behind.
+  //    Also rename @screen X → @variant X (Tailwind v3 → v4).
   if (isVue || isCss) {
     out = transformApplyImportant(out)
+    out = transformScreen(out)
   }
 
   // 2. Rewrite Tailwind class tokens (maz-X → maz:X, renames, negatives, etc.).
