@@ -921,6 +921,8 @@ Les consommateurs qui utilisent leur propre Tailwind v4 pourront importer :
 
 ### 6.4 Intégration consommateur — API publique
 
+**Statut** : ✅ done — exports publics en place (`maz-ui/tailwindcss/theme.css`, `…/utilities.css`, et les 6 modules granulaires), les 3 apps internes utilisent ces paths publics, doc dédiée `apps/docs/src/guide/tailwind.md` + mentions dans getting-started / vue / nuxt. Commits `cbedad205`, `c829a2fe7`.
+
 **Contexte** : maz-ui est consommé par des projets tiers (et par les projets propres du mainteneur) qui utilisent leur propre instance de Tailwind v4 — sans le `prefix(maz)` interne à la lib. Ces consommateurs doivent pouvoir **réutiliser les design tokens de maz-ui** (couleurs, radius, breakpoints, shadows, z-index) directement dans leur propre code applicatif, pour que `bg-primary`, `rounded`, `shadow-elevation`, etc. résolvent vers les variables du thème maz-ui actif.
 
 Cette section définit le contrat public v5 pour cette intégration.
