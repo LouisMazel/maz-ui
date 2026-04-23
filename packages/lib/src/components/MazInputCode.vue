@@ -233,7 +233,7 @@ const borderColorState = computed(() => {
     class="m-input-code m-reset-css"
     :class="[size ? `--${size}` : undefined, props.class]"
     :disabled
-    :style="[style, { '--input-border-color': `hsl(var(--maz-${props.color}))` }]"
+    :style="[style, { '--input-border-color': `var(--maz-${props.color})` }]"
   >
     <div class="m-input-code__wrapper">
       <div v-for="item in codeLength" :key="item" class="input-wrapper" :class="borderColorState">

@@ -54,8 +54,8 @@ let rafId: number | null = null
 let isIntersecting = false
 let cachedRect: DOMRect | null = null
 
-const alphaColor = computed(() => `hsl(var(--maz-${color}) / 60%)`)
-const alphaColor20 = computed(() => `hsl(var(--maz-${color}) / 20%)`)
+const alphaColor = computed(() => `color-mix(in srgb, var(--maz-${color}) 60%, transparent)`)
+const alphaColor20 = computed(() => `color-mix(in srgb, var(--maz-${color}) 20%, transparent)`)
 
 function updateCachedRect() {
   if (containerElement.value) {

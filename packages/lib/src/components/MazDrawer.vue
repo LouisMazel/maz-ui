@@ -150,7 +150,7 @@ const hasTitle = computed(() => {
   .--left,
   .--right {
     &.m-drawer-content-wrap {
-      @apply maz:min-h-screen maz:w-full maz:tab-s:w-[var(--maz-drawer-size)];
+      @apply maz:min-h-screen maz:w-full maz:tab-s:w-(--maz-drawer-size);
     }
   }
 

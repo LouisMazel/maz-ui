@@ -58,8 +58,8 @@ You can also initialize the theme via the [`MazUiProvider`](./maz-ui-provider.md
 html {
   font-size: var(--maz-base-font-size);
   font-family: var(--maz-font-family);
-  background-color: hsl(var(--maz-background));
-  color: hsl(var(--maz-foreground));
+  background-color: var(--maz-background);
+  color: var(--maz-foreground);
 }
 ```
 

@@ -163,9 +163,9 @@ const gradientStyle = computed(() => {
   }
 
   const colors: string[] = [
-    `hsl(var(--maz-${gradientFrom}))`,
-    ...(gradientVia ? [`hsl(var(--maz-${gradientVia}))`] : []),
-    `hsl(var(--maz-${gradientTo}))`,
+    `var(--maz-${gradientFrom})`,
+    ...(gradientVia ? [`var(--maz-${gradientVia})`] : []),
+    `var(--maz-${gradientTo})`,
   ]
 
   return `linear-gradient(to right, ${colors.join(', ')})`

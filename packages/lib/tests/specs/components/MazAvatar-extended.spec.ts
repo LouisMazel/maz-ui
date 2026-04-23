@@ -348,7 +348,7 @@ describe('MazAvatar extended branch coverage', () => {
       })
       await vi.dynamicImportSettled()
       const button = wrapper.find('.m-avatar__button')
-      expect(button.attributes('style')).toContain('hsl(var(--maz-success) / 60%)')
+      expect(button.attributes('style')).toContain('color-mix(in srgb, var(--maz-success) 60%, transparent)')
     })
 
     it('applies buttonColor style on the button when no src (full opacity)', () => {
@@ -360,7 +360,7 @@ describe('MazAvatar extended branch coverage', () => {
         },
       })
       const button = wrapper.find('.m-avatar__button')
-      expect(button.attributes('style')).toContain('hsl(var(--maz-warning))')
+      expect(button.attributes('style')).toContain('var(--maz-warning)')
     })
 
     it('hides clickable icon when hideClickableIcon is true', () => {

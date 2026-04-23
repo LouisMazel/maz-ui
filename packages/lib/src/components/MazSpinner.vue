@@ -26,10 +26,10 @@ const spinnerStyle = computed<CSSProperties>(() => {
   if (!c || c === 'theme')
     return {}
   if (c === 'normal')
-    return { color: 'hsl(var(--maz-foreground))' }
+    return { color: 'var(--maz-foreground)' }
   if (c === 'transparent')
     return { color: 'white' }
-  return { color: `hsl(var(--maz-${c}))` }
+  return { color: `var(--maz-${c})` }
 })
 </script>
 

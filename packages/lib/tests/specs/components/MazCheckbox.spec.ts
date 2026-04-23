@@ -147,7 +147,7 @@ describe('MazCheckbox extended branch coverage', () => {
         props: { modelValue: true, color: 'contrast' },
       })
       const checkIcon = wrapper.find('.check-icon')
-      expect(checkIcon.attributes('style')).toContain('hsl(var(--maz-background))')
+      expect(checkIcon.attributes('style')).toContain('var(--maz-background)')
     })
 
     it('uses color-foreground for icon when color is primary', () => {
@@ -155,7 +155,7 @@ describe('MazCheckbox extended branch coverage', () => {
         props: { modelValue: true, color: 'primary' },
       })
       const checkIcon = wrapper.find('.check-icon')
-      expect(checkIcon.attributes('style')).toContain('hsl(var(--maz-primary-foreground))')
+      expect(checkIcon.attributes('style')).toContain('var(--maz-primary-foreground)')
     })
 
     it('uses color-foreground for icon when color is success', () => {
@@ -163,7 +163,7 @@ describe('MazCheckbox extended branch coverage', () => {
         props: { modelValue: true, color: 'success' },
       })
       const checkIcon = wrapper.find('.check-icon')
-      expect(checkIcon.attributes('style')).toContain('hsl(var(--maz-success-foreground))')
+      expect(checkIcon.attributes('style')).toContain('var(--maz-success-foreground)')
     })
   })
 
@@ -172,14 +172,14 @@ describe('MazCheckbox extended branch coverage', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true, color: 'contrast' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-contrast))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-contrast)')
     })
 
     it('uses specific color for checkbox background', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true, color: 'warning' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-warning))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-warning)')
     })
   })
 
@@ -188,42 +188,42 @@ describe('MazCheckbox extended branch coverage', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false, error: true },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-destructive))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-destructive)')
     })
 
     it('uses warning color for box shadow when warning is true', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false, warning: true },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-warning))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-warning)')
     })
 
     it('uses success color for box shadow when success is true', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false, success: true },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-success))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-success)')
     })
 
     it('uses muted color for box shadow when color is transparent', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false, color: 'transparent' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-muted))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-muted)')
     })
 
     it('uses muted color for box shadow when color is contrast', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false, color: 'contrast' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-muted))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-muted)')
     })
 
     it('uses color with opacity for box shadow for regular colors', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false, color: 'info' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-info) / 60%)')
+      expect(wrapper.attributes('style')).toContain('color-mix(in srgb, var(--maz-info) 60%, transparent)')
     })
   })
 

@@ -11,7 +11,7 @@ description: vClickOutside is a Vue directive to trigger a function when the use
 
 <ComponentDemo>
   <div
-    style="padding: 50px; background-color: hsl(var(--maz-background-300));"
+    style="padding: 50px; background-color: var(--maz-background-300);"
     class="maz:flex maz:flex-center maz:rounded"
   >
     <MazCard v-click-outside="clikedOutside">
@@ -21,7 +21,7 @@ description: vClickOutside is a Vue directive to trigger a function when the use
 
   <div
     v-if="hasClikedOutside"
-    style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-success)); color: black;"
+    style="padding: 16px; margin-top: 16px; background-color: var(--maz-success); color: black;"
     class="maz:flex maz:flex-center maz:rounded"
   >
     You clicked outside
@@ -44,7 +44,7 @@ function clikedOutside() {
 
 <template>
   <div
-    style="padding: 50px; background-color: hsl(var(--maz-background-300));"
+    style="padding: 50px; background-color: var(--maz-background-300);"
     class="flex flex-center rounded"
   >
     <MazCard v-click-outside="clikedOutside">
@@ -54,7 +54,7 @@ function clikedOutside() {
 
   <div
     v-if="hasClikedOutside"
-    style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-success)); color: black;"
+    style="padding: 16px; margin-top: 16px; background-color: var(--maz-success); color: black;"
     class="flex flex-center rounded"
   >
     You clicked outside
@@ -71,7 +71,7 @@ The directive can accept an options object to customize its behavior:
 
 <ComponentDemo>
   <div
-    style="padding: 50px; background-color: hsl(var(--maz-background-300));"
+    style="padding: 50px; background-color: var(--maz-background-300);"
     class="maz-flex maz-flex-center maz-rounded"
   >
     <MazCard v-click-outside="{ callback: clickedOutsideWithIgnore, ignore: ['.ignore-me'] }">
@@ -86,7 +86,7 @@ The directive can accept an options object to customize its behavior:
 
   <div
     v-if="hasClickedOutsideWithIgnore"
-    style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-warning)); color: black;"
+    style="padding: 16px; margin-top: 16px; background-color: var(--maz-warning); color: black;"
     class="maz-flex maz-flex-center maz-rounded"
   >
     You clicked outside (button clicks are ignored)
@@ -128,7 +128,7 @@ The directive can be configured to trigger only once:
 
 <ComponentDemo>
   <div
-    style="padding: 50px; background-color: hsl(var(--maz-background-300));"
+    style="padding: 50px; background-color: var(--maz-background-300);"
     class="maz-flex maz-flex-center maz-rounded"
   >
     <MazCard v-click-outside="{ callback: clickedOnce, once: true }">
@@ -138,7 +138,7 @@ The directive can be configured to trigger only once:
 
   <div
     v-if="hasClickedOnce"
-    style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-info)); color: white;"
+    style="padding: 16px; margin-top: 16px; background-color: var(--maz-info); color: white;"
     class="maz-flex maz-flex-center maz-rounded"
   >
     This will only show once!

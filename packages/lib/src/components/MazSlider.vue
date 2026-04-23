@@ -370,7 +370,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     @apply maz:relative maz:flex maz:items-center maz:justify-center maz:rounded-full;
 
     height: 0.5em;
-    background-color: hsl(var(--m-slider-color));
+    background-color: var(--m-slider-color);
   }
 
   &__divider {
@@ -410,7 +410,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
       @apply maz:border maz:shadow-lg maz:z-2;
 
       transform: scale(1.3);
-      border-color: hsl(var(--m-slider-color));
+      border-color: var(--m-slider-color);
     }
 
     &::before {

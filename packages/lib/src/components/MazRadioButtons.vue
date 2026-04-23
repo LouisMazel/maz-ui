@@ -147,9 +147,9 @@ function onFocus(index: number, event: FocusEvent) {
         :style="[
           isSelected(option.value)
             ? {
-              color: `hsl(var(--maz-${getColor(color)}-foreground))`,
-              backgroundColor: `hsl(var(--maz-${getColor(color)}))`,
-              borderColor: `hsl(var(--maz-${getColor(color)}))`,
+              color: `var(--maz-${getColor(color)}-foreground)`,
+              backgroundColor: `var(--maz-${getColor(color)})`,
+              borderColor: `var(--maz-${getColor(color)})`,
             }
             : {},
           option.style,
@@ -178,8 +178,8 @@ function onFocus(index: number, event: FocusEvent) {
             :style="[
               isSelected(option.value)
                 ? {
-                  backgroundColor: `hsl(var(--maz-${getColor(props.color)}-600))`,
-                  color: `hsl(var(--maz-${getColor(props.color)}-foreground))`,
+                  backgroundColor: `var(--maz-${getColor(props.color)}-600)`,
+                  color: `var(--maz-${getColor(props.color)}-foreground)`,
                 }
                 : {},
             ]"

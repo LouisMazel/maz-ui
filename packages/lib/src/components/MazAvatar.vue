@@ -170,8 +170,8 @@ const hasInitial = computed(() => !src && caption)
         `--rounded-${square ? 'none' : roundedSize}`,
       ]"
       :style="hasInitial ? {
-        backgroundColor: `hsl(var(--maz-${color}))`,
-        color: `hsl(var(--maz-${color}-foreground))`,
+        backgroundColor: `var(--maz-${color})`,
+        color: `var(--maz-${color}-foreground)`,
       } : undefined"
     >
       <template v-if="shouldDisplayImg">
@@ -210,8 +210,8 @@ const hasInitial = computed(() => !src && caption)
         class="m-avatar__button"
         :style="{
           backgroundColor: src
-            ? `hsl(var(--maz-${buttonColor}) / 60%)`
-            : `hsl(var(--maz-${buttonColor}))`,
+            ? `color-mix(in srgb, var(--maz-${buttonColor}) 60%, transparent)`
+            : `var(--maz-${buttonColor})`,
         }"
         @click="$emit('click', $event)"
       >

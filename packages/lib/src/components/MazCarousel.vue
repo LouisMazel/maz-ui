@@ -174,7 +174,7 @@ function setScrollState(event: Event) {
 
     /* Modern CSS for all browsers (fallback) */
     scrollbar-width: thin;
-    scrollbar-color: hsl(var(--maz-background-600)) transparent;
+    scrollbar-color: var(--maz-background-600) transparent;
 
     &__spacer {
       flex: 0 0 1px;
