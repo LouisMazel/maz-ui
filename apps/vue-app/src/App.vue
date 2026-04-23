@@ -4,6 +4,7 @@ import { mazUi } from '@maz-ui/themes/presets/mazUi'
 import fr from '@maz-ui/translations/locales/fr'
 import { MazUiProvider } from 'maz-ui/components'
 import { capitalize } from 'vue'
+
 import { routes } from './router/index'
 
 const { message, success, error, info, warning } = useToast()
