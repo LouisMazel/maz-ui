@@ -1144,6 +1144,8 @@ Inclure le delta (taille brute + gzippée) dans le CHANGELOG v5 et le blog post.
 
 ## Phase 8 : Migration guide & codemod utilisateur
 
+**Statut** : ✅ done — `@maz-ui/codemod` publishable (5.0.0-beta.0), guide `migration-v5.md` complet dans apps/docs. Commits `346692505` (guide), `879320f8c` (codemod + commitlint scope).
+
 **Contexte** : v5 est un breaking change majeur pour les utilisateurs de la lib (prefix `maz-` → `maz:`, utilities renommées, types modifiés, config CSS-first). Un mainteneur solo ne peut pas supporter la v4 en parallèle — donc le chemin de migration des utilisateurs doit être **automatisé et documenté avec rigueur**.
 
 ### 8.1 Codemod `@maz-ui/codemod`
