@@ -3,10 +3,12 @@
     &,
     & *,
     &::before,
-    &::after {
+    &::after,
+    &::backdrop,
+    &::file-selector-button {
       border-width: 0;
       border-style: solid;
-      border-color: currentcolor;
+      border-color: var(--color-divider, currentcolor);
       box-sizing: border-box;
     }
 
