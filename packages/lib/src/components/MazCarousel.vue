@@ -94,7 +94,7 @@ function setScrollState(event: Event) {
     <div v-if="hasHeader()" class="m-carousel__header" :class="{ '--has-title': hasTitle() }">
       <div v-if="hasTitle()">
         <slot name="title">
-          <h4 class="maz-text-xl maz-font-semibold">
+          <h4 class="maz:text-xl maz:font-semibold">
             {{ title }}
           </h4>
         </slot>
@@ -109,7 +109,7 @@ function setScrollState(event: Event) {
           @click="previous"
         >
           <slot name="previous-icon">
-            <MazChevronLeft class="maz-text-lg" />
+            <MazChevronLeft class="maz:text-lg" />
           </slot>
         </MazBtn>
         <MazBtn
@@ -121,7 +121,7 @@ function setScrollState(event: Event) {
           @click="next"
         >
           <slot name="next-icon">
-            <MazChevronRight class="maz-text-lg" />
+            <MazChevronRight class="maz:text-lg" />
           </slot>
         </MazBtn>
       </div>
@@ -136,23 +136,23 @@ function setScrollState(event: Event) {
 
 <style scoped>
   .m-carousel {
-  @apply maz-relative maz-flex maz-flex-col;
+  @apply maz:relative maz:flex maz:flex-col;
 
   &__header {
-    @apply maz-flex maz-items-center maz-justify-end;
+    @apply maz:flex maz:items-center maz:justify-end;
 
     &.--has-title {
-      @apply maz-justify-between;
+      @apply maz:justify-between;
     }
 
     &__actions {
-      @apply maz-flex maz-flex-1 maz-justify-end maz-space-x-2;
+      @apply maz:flex maz:flex-1 maz:justify-end maz:space-x-2;
     }
   }
 
   &__items {
-    @apply maz-z-1 maz-flex maz-flex-1 maz-items-center maz-justify-start
-        maz-space-x-5 maz-overflow-y-hidden maz-py-4 maz-ps-3;
+    @apply maz:z-1 maz:flex maz:flex-1 maz:items-center maz:justify-start
+        maz:space-x-5 maz:overflow-y-hidden maz:py-4 maz:ps-3;
 
     scroll-behavior: smooth;
 
@@ -165,7 +165,7 @@ function setScrollState(event: Event) {
     }
 
     &::-webkit-scrollbar-thumb {
-      @apply maz-bg-surface-600 dark:maz-bg-surface-400;
+      @apply maz:bg-surface-600 maz:dark:bg-surface-400;
 
       border-radius: 1000px;
     }
@@ -182,23 +182,23 @@ function setScrollState(event: Event) {
   }
 
   &__btn.--muted {
-    @apply maz-text-muted;
-    @apply maz-fill-current;
+    @apply maz:text-muted;
+    @apply maz:fill-current;
   }
 
   :not(.--hide-scrollbar) .m-carousel__items {
-    @apply maz-overflow-x-auto;
+    @apply maz:overflow-x-auto;
   }
 
   &.--hide-scrollbar .m-carousel__items {
-    @apply maz-overflow-x-hidden;
+    @apply maz:overflow-x-hidden;
   }
 
   &.--hide-scrollbar:hover .m-carousel__items,
   &.--hide-scrollbar:focus-within .m-carousel__items,
   &.--hide-scrollbar:active .m-carousel__items,
   &.--hide-scrollbar:focus .m-carousel__items {
-    @apply maz-overflow-x-auto;
+    @apply maz:overflow-x-auto;
   }
 }
 </style>

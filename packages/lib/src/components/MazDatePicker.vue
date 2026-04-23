@@ -438,16 +438,16 @@ const popoverRef = useTemplateRef('popover')
 
 onBeforeMount(() => {
   if (isRangeMode.value && hasTime.value) {
-    console.error(`[maz-ui](MazDatePicker) You can't use time picker with range picker`)
+    console.error(`[maz:ui](MazDatePicker) You can't use time picker with range picker`)
   }
   if (hasTime.value && !(props.format.includes('h') || props.format.includes('H'))) {
     console.error(
-      `[maz-ui](MazDatePicker) When you use the time picker, you must provided a format with time - Ex: "YYYY-MM-DD HH:mm"`,
+      `[maz:ui](MazDatePicker) When you use the time picker, you must provided a format with time - Ex: "YYYY-MM-DD HH:mm"`,
     )
   }
   if (props.format.includes('h') && !(props.format.includes('a') || props.format.includes('A'))) {
     console.error(
-      '[maz-ui](MazDatePicker) if you use the 12 format "h" or "hh", you must add "a" or "A" at the end of the format - Ex: "YYYY-MM-DD hh:mm a"',
+      '[maz:ui](MazDatePicker) if you use the 12 format "h" or "hh", you must add "a" or "A" at the end of the format - Ex: "YYYY-MM-DD hh:mm a"',
     )
   }
 })
@@ -717,11 +717,11 @@ watch(
           :color
         >
           <template #left-icon>
-            <MazCalendar v-if="hasDate" class="maz-text-xl" />
-            <MazClock v-else-if="hasTime" class="maz-text-xl" />
+            <MazCalendar v-if="hasDate" class="maz:text-xl" />
+            <MazClock v-else-if="hasTime" class="maz:text-xl" />
           </template>
           <template #right-icon>
-            <MazChevronDown class="m-date-picker__button__chevron maz-text-lg" />
+            <MazChevronDown class="m-date-picker__button__chevron maz:text-lg" />
           </template>
         </MazInput>
       </slot>
@@ -788,17 +788,17 @@ watch(
 
 <style scoped>
 .m-date-picker {
-  @apply maz-relative maz-inline-block;
+  @apply maz:relative maz:inline-block;
 
   &__input {
-    @apply maz-size-full;
+    @apply maz:size-full;
   }
 
   & .m-date-picker__button {
-    @apply maz-flex maz-h-full maz-cursor-not-allowed maz-bg-transparent maz-pe-1 maz-flex-center;
+    @apply maz:flex maz:h-full maz:cursor-not-allowed maz:bg-transparent maz:pe-1 maz:flex-center;
 
     &__chevron {
-      @apply maz-text-foreground maz-transition-transform maz-duration-200;
+      @apply maz:text-foreground maz:transition-transform maz:duration-200;
     }
   }
 
@@ -810,11 +810,11 @@ watch(
 
   &:not(.--is-disabled) {
     & .m-date-picker__button {
-      @apply maz-cursor-pointer;
+      @apply maz:cursor-pointer;
     }
 
     & .m-date-picker__input:deep(input) {
-      @apply maz-cursor-pointer !important;
+      @apply maz:cursor-pointer !important;
     }
   }
 }

@@ -1,4 +1,4 @@
-@layer maz-ui-reset {
+@layer maz:ui-reset {
   .m-reset-css {
     &,
     & *,

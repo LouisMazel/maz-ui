@@ -111,6 +111,43 @@ describe('transformClassToken', () => {
     })
   })
 
+  describe('Given an arbitrary value with nested function call', () => {
+    describe('When transforming', () => {
+      it('preserves parentheses inside brackets', () => {
+        expect(transformClassToken('maz-mt-[var(--maz-border-width)]'))
+          .toBe('maz:mt-[var(--maz-border-width)]')
+      })
+    })
+  })
+
+  describe('Given a negative-value class', () => {
+    describe('When transforming', () => {
+      it('keeps the leading dash after the maz: prefix', () => {
+        expect(transformClassToken('-maz-mt-4')).toBe('maz:-mt-4')
+        expect(transformClassToken('-maz-ms-[var(--maz-border-width)]'))
+          .toBe('maz:-ms-[var(--maz-border-width)]')
+      })
+    })
+  })
+
+  describe('Given a negative-value class with a variant', () => {
+    describe('When transforming', () => {
+      it('keeps variants first then negative sign', () => {
+        expect(transformClassToken('mob-m:-maz-ms-[var(--maz-border-width)]'))
+          .toBe('maz:mob-m:-ms-[var(--maz-border-width)]')
+      })
+    })
+  })
+
+  describe('Given a collapsed-double-hyphen negative class (v3 prefix + negative)', () => {
+    describe('When transforming', () => {
+      it('normalizes maz--X to the maz:-X form', () => {
+        expect(transformClassToken('maz--translate-y-1/2')).toBe('maz:-translate-y-1/2')
+        expect(transformClassToken('hover:maz--mt-4')).toBe('maz:hover:-mt-4')
+      })
+    })
+  })
+
   describe('Given a non-maz class', () => {
     describe('When transforming', () => {
       it('returns the token unchanged', () => {

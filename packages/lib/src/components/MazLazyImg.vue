@@ -116,35 +116,35 @@ const sources = computed(() => {
 
 <style scoped>
   .m-lazy-img-component {
-  @apply maz-relative maz-inline-flex maz-align-top maz-flex-center;
+  @apply maz:relative maz:inline-flex maz:align-top maz:flex-center;
 
   &.--block {
-    @apply maz-w-full;
+    @apply maz:w-full;
 
     img {
-      @apply maz-w-full;
+      @apply maz:w-full;
     }
   }
 
   &-loader {
-    @apply maz-absolute maz-inset-0 maz-hidden maz-flex-center;
+    @apply maz:absolute maz:inset-0 maz:hidden maz:flex-center;
   }
 
   &.--height-full img {
-    @apply maz-max-h-full maz-w-min maz-max-w-min !important;
+    @apply maz:max-h-full maz:w-min maz:max-w-min !important;
   }
 
   &.m-lazy-error:not(.m-lazy-fallback) {
-    @apply maz-bg-surface-600 dark:maz-bg-surface-400;
+    @apply maz:bg-surface-600 maz:dark:bg-surface-400;
 
     img {
-      @apply maz-h-1/2 maz-w-1/2;
+      @apply maz:h-1/2 maz:w-1/2;
     }
   }
 
   &.m-lazy-loading {
     & .m-lazy-img-component-loader {
-      @apply maz-flex;
+      @apply maz:flex;
     }
   }
 }

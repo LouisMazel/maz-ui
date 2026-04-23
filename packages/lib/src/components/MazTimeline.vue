@@ -477,136 +477,136 @@ const hasCheckIcon = computed(() => autoValidateSteps)
 
 <style scoped>
 .m-timeline {
-  @apply maz-flex maz-items-stretch;
+  @apply maz:flex maz:items-stretch;
 
   /* --- Horizontal layout --- */
   &.--horizontal {
-    @apply maz-flex-row maz-items-start;
+    @apply maz:flex-row maz:items-start;
 
     .m-timeline-item {
-      @apply maz-flex maz-flex-1 maz-items-start;
+      @apply maz:flex maz:flex-1 maz:items-start;
 
       &.--last {
-        @apply maz-flex-none;
+        @apply maz:flex-none;
       }
     }
 
     .m-timeline-step {
-      @apply maz-flex maz-flex-col maz-items-center maz-gap-2 maz-min-w-14;
+      @apply maz:flex maz:flex-col maz:items-center maz:gap-2 maz:min-w-14;
     }
 
     .m-timeline-content {
-      @apply maz-text-center;
+      @apply maz:text-center;
     }
 
     .m-timeline-connector {
-      @apply maz-flex maz-flex-1 maz-items-center maz-pt-[var(--m-timeline-indicator-half)];
+      @apply maz:flex maz:flex-1 maz:items-center maz:pt-[var(--m-timeline-indicator-half)];
     }
 
     .m-timeline-connector-track {
-      @apply maz-h-0.5 maz-w-full;
+      @apply maz:h-0.5 maz:w-full;
     }
 
     .m-timeline-connector-fill {
-      @apply maz-h-full maz-w-0;
+      @apply maz:h-full maz:w-0;
     }
 
     .m-timeline-connector.--completed .m-timeline-connector-fill {
-      @apply maz-w-full;
+      @apply maz:w-full;
     }
   }
 
   /* --- Vertical layout --- */
   &.--vertical {
-    @apply maz-flex-col;
+    @apply maz:flex-col;
 
     .m-timeline-item {
-      @apply maz-flex maz-flex-col;
+      @apply maz:flex maz:flex-col;
     }
 
     .m-timeline-step {
-      @apply maz-flex maz-flex-row maz-items-center maz-gap-3;
+      @apply maz:flex maz:flex-row maz:items-center maz:gap-3;
     }
 
     .m-timeline-content {
-      @apply maz-text-left;
+      @apply maz:text-left;
     }
 
     .m-timeline-connector {
-      @apply maz-flex maz-items-stretch maz-py-1 maz-pl-[var(--m-timeline-indicator-half)];
+      @apply maz:flex maz:items-stretch maz:py-1 maz:pl-[var(--m-timeline-indicator-half)];
     }
 
     .m-timeline-connector-track {
-      @apply maz-h-full maz-min-h-6 maz-w-0.5 maz-translate-x-px;
+      @apply maz:h-full maz:min-h-6 maz:w-0.5 maz:translate-x-px;
     }
 
     .m-timeline-connector-fill {
-      @apply maz-h-0 maz-w-full;
+      @apply maz:h-0 maz:w-full;
     }
 
     .m-timeline-connector.--completed .m-timeline-connector-fill {
-      @apply maz-h-full;
+      @apply maz:h-full;
     }
   }
 
   /* --- Step indicator (base) --- */
   .m-timeline-indicator {
-    @apply maz-flex maz-shrink-0 maz-items-center maz-justify-center;
+    @apply maz:flex maz:shrink-0 maz:items-center maz:justify-center;
 
     width: var(--m-timeline-indicator-size);
     height: var(--m-timeline-indicator-size);
 
-    @apply maz-bg-[hsl(var(--maz-muted)/30%)] maz-text-[hsl(var(--maz-muted))];
+    @apply maz:bg-[hsl(var(--maz-muted)/30%)] maz:text-[hsl(var(--maz-muted))];
   }
 
   /* --- Step states --- */
   .m-timeline-step {
     &.--active .m-timeline-indicator {
-      @apply maz-bg-[hsl(var(--m-timeline-bg))] maz-text-[hsl(var(--m-timeline-fg))];
+      @apply maz:bg-[hsl(var(--m-timeline-bg))] maz:text-[hsl(var(--m-timeline-fg))];
     }
 
     &.--completed .m-timeline-indicator {
-      @apply maz-bg-[hsl(var(--m-timeline-state-bg,var(--m-timeline-bg)))] maz-text-[hsl(var(--m-timeline-state-fg,var(--m-timeline-fg)))];
+      @apply maz:bg-[hsl(var(--m-timeline-state-bg,var(--m-timeline-bg)))] maz:text-[hsl(var(--m-timeline-state-fg,var(--m-timeline-fg)))];
     }
 
     &.--error .m-timeline-indicator {
-      @apply maz-bg-[hsl(var(--m-timeline-state-bg))] maz-text-[hsl(var(--m-timeline-state-fg))];
+      @apply maz:bg-[hsl(var(--m-timeline-state-bg))] maz:text-[hsl(var(--m-timeline-state-fg))];
     }
 
     &.--warning .m-timeline-indicator {
-      @apply maz-bg-[hsl(var(--m-timeline-state-bg))] maz-text-[hsl(var(--m-timeline-state-fg))];
+      @apply maz:bg-[hsl(var(--m-timeline-state-bg))] maz:text-[hsl(var(--m-timeline-state-fg))];
     }
 
     &.--disabled {
-      @apply maz-opacity-40 maz-pointer-events-none;
+      @apply maz:opacity-40 maz:pointer-events-none;
     }
   }
 
   /* --- Connector --- */
   .m-timeline-connector-track {
-    @apply maz-bg-[hsl(var(--maz-muted)/20%)];
+    @apply maz:bg-[hsl(var(--maz-muted)/20%)];
   }
 
   .m-timeline-connector-fill {
-    @apply maz-bg-[hsl(var(--m-timeline-bg))];
+    @apply maz:bg-[hsl(var(--m-timeline-bg))];
   }
 
   /* --- Content --- */
   .m-timeline-content {
-    @apply maz-flex maz-flex-col maz-gap-0.5;
+    @apply maz:flex maz:flex-col maz:gap-0.5;
   }
 
   .m-timeline-title {
-    @apply maz-m-0 maz-font-semibold maz-leading-tight maz-text-[hsl(var(--maz-foreground))];
+    @apply maz:m-0 maz:font-semibold maz:leading-tight maz:text-[hsl(var(--maz-foreground))];
   }
 
   .m-timeline-subtitle {
-    @apply maz-m-0 maz-leading-snug maz-text-[hsl(var(--maz-muted))];
+    @apply maz:m-0 maz:leading-snug maz:text-[hsl(var(--maz-muted))];
   }
 
   /* --- Step number --- */
   .m-timeline-step-number {
-    @apply maz-font-bold maz-leading-none;
+    @apply maz:font-bold maz:leading-none;
 
     font-size: var(--m-timeline-number-size);
   }
@@ -625,25 +625,25 @@ const hasCheckIcon = computed(() => autoValidateSteps)
 
   /* --- Clickable --- */
   &.--clickable .m-timeline-step:not(.--disabled) {
-    @apply maz-cursor-pointer;
+    @apply maz:cursor-pointer;
 
     &:hover .m-timeline-indicator {
-      @apply maz-ring-2 maz-ring-[hsl(var(--m-timeline-color)/30%)];
+      @apply maz:ring-2 maz:ring-[hsl(var(--m-timeline-color)/30%)];
     }
 
     &:focus-visible .m-timeline-indicator {
-      @apply maz-outline-none maz-ring-2 maz-ring-[hsl(var(--m-timeline-color))] maz-ring-offset-2;
+      @apply maz:outline-hidden maz:ring-2 maz:ring-[hsl(var(--m-timeline-color))] maz:ring-offset-2;
     }
   }
 
   /* --- Animations --- */
   &.--animated {
     .m-timeline-indicator {
-      @apply maz-transition-all maz-duration-300 maz-ease-in-out;
+      @apply maz:transition-all maz:duration-300 maz:ease-in-out;
     }
 
     .m-timeline-connector-fill {
-      @apply maz-transition-all maz-duration-500 maz-ease-in-out;
+      @apply maz:transition-all maz:duration-500 maz:ease-in-out;
     }
 
     .m-timeline-step.--active .m-timeline-indicator {
@@ -660,11 +660,11 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     --m-timeline-number-size: 0.5rem;
 
     .m-timeline-title {
-      @apply maz-text-[0.625rem];
+      @apply maz:text-[0.625rem];
     }
 
     .m-timeline-subtitle {
-      @apply maz-text-[0.5rem];
+      @apply maz:text-[0.5rem];
     }
   }
 
@@ -676,11 +676,11 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     --m-timeline-number-size: 0.625rem;
 
     .m-timeline-title {
-      @apply maz-text-xs;
+      @apply maz:text-xs;
     }
 
     .m-timeline-subtitle {
-      @apply maz-text-[0.625rem];
+      @apply maz:text-[0.625rem];
     }
   }
 
@@ -692,11 +692,11 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     --m-timeline-number-size: 0.625rem;
 
     .m-timeline-title {
-      @apply maz-text-xs;
+      @apply maz:text-xs;
     }
 
     .m-timeline-subtitle {
-      @apply maz-text-[0.65rem];
+      @apply maz:text-[0.65rem];
     }
   }
 
@@ -708,11 +708,11 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     --m-timeline-number-size: 0.75rem;
 
     .m-timeline-title {
-      @apply maz-text-sm;
+      @apply maz:text-sm;
     }
 
     .m-timeline-subtitle {
-      @apply maz-text-xs;
+      @apply maz:text-xs;
     }
   }
 
@@ -724,11 +724,11 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     --m-timeline-number-size: 0.875rem;
 
     .m-timeline-title {
-      @apply maz-text-base;
+      @apply maz:text-base;
     }
 
     .m-timeline-subtitle {
-      @apply maz-text-sm;
+      @apply maz:text-sm;
     }
   }
 
@@ -740,49 +740,49 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     --m-timeline-number-size: 1rem;
 
     .m-timeline-title {
-      @apply maz-text-lg;
+      @apply maz:text-lg;
     }
 
     .m-timeline-subtitle {
-      @apply maz-text-base;
+      @apply maz:text-base;
     }
   }
 
   /* --- Rounded sizes --- */
   &.--rounded-none .m-timeline-indicator {
-    @apply maz-rounded-none;
+    @apply maz:rounded-none;
   }
 
   &.--rounded-sm .m-timeline-indicator {
-    @apply maz-rounded-sm;
+    @apply maz:rounded-xs;
   }
 
   &.--rounded-md .m-timeline-indicator {
-    @apply maz-rounded-md;
+    @apply maz:rounded-md;
   }
 
   &.--rounded-base .m-timeline-indicator {
-    @apply maz-rounded;
+    @apply maz:rounded;
   }
 
   &.--rounded-lg .m-timeline-indicator {
-    @apply maz-rounded-lg;
+    @apply maz:rounded-lg;
   }
 
   &.--rounded-xl .m-timeline-indicator {
-    @apply maz-rounded-xl;
+    @apply maz:rounded-xl;
   }
 
   &.--rounded-2xl .m-timeline-indicator {
-    @apply maz-rounded-2xl;
+    @apply maz:rounded-2xl;
   }
 
   &.--rounded-3xl .m-timeline-indicator {
-    @apply maz-rounded-3xl;
+    @apply maz:rounded-3xl;
   }
 
   &.--rounded-full .m-timeline-indicator {
-    @apply maz-rounded-full;
+    @apply maz:rounded-full;
   }
 }
 
@@ -802,7 +802,7 @@ const hasCheckIcon = computed(() => autoValidateSteps)
 @media (prefers-reduced-motion: reduce) {
   .m-timeline.--animated .m-timeline-indicator,
   .m-timeline.--animated .m-timeline-connector-fill {
-    @apply !maz-transition-none;
+    @apply maz:transition-none!;
 
     animation: none !important;
   }

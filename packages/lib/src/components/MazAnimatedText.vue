@@ -183,7 +183,7 @@ const gradientStyle = computed(() => {
         >
           <span
             class="m-animated-text__word-inner"
-            :class="animatedWords[index] ? `maz-animate-slide-${direction}-blur` : 'maz-invisible'"
+            :class="animatedWords[index] ? `maz-animate-slide-${direction}-blur` : 'maz:invisible'"
             :style="{
               animationDuration: `${duration}ms`,
             }"
@@ -196,7 +196,7 @@ const gradientStyle = computed(() => {
         <span
           v-if="lastWord"
           class="m-animated-text__last-word"
-          :class="animatedWords[wordCount] ? `maz-animate-slide-${direction}-blur` : 'maz-invisible'"
+          :class="animatedWords[wordCount] ? `maz-animate-slide-${direction}-blur` : 'maz:invisible'"
           :style="{
             animationDuration: `${duration}ms`,
           }"
@@ -209,7 +209,7 @@ const gradientStyle = computed(() => {
     </template>
 
     <template v-else>
-      <component :is="tag" v-bind="$attrs" class="maz-invisible maz-inline-flex">
+      <component :is="tag" v-bind="$attrs" class="maz:invisible maz:inline-flex">
         {{ text }}
 
         <template v-if="lastWord">
@@ -223,41 +223,41 @@ const gradientStyle = computed(() => {
 <style scoped>
 .m-animated-text {
   &__root {
-    @apply maz-inline-flex maz-flex-wrap;
+    @apply maz:inline-flex maz:flex-wrap;
   }
 
   &__word {
-    @apply maz-inline-flex;
+    @apply maz:inline-flex;
   }
 
   &__word-inner {
-    @apply maz-inline-flex;
+    @apply maz:inline-flex;
 
     will-change: transform, opacity, filter;
     transform: translateZ(0);
   }
 
   &__last-word {
-    @apply maz-inline-flex;
+    @apply maz:inline-flex;
 
     will-change: transform, opacity, filter;
     transform: translateZ(0);
   }
 
   &__last-word-inner {
-    @apply maz-relative maz-inline-flex;
+    @apply maz:relative maz:inline-flex;
 
     &::before {
       content: '';
 
-      @apply maz-z-0 maz-absolute maz-inset-0 maz-size-full maz-opacity-40 dark:maz-opacity-50 maz-blur-lg;
+      @apply maz:z-0 maz:absolute maz:inset-0 maz:size-full maz:opacity-40 maz:dark:opacity-50 maz:blur-lg;
 
       background-image: var(--maz-gradient-style);
     }
   }
 
   &__last-word-inner-text {
-    @apply maz-relative;
+    @apply maz:relative;
   }
 }
 

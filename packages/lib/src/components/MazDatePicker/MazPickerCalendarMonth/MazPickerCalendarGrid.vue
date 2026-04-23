@@ -324,64 +324,64 @@ watch(
 
 <style scoped>
   .maz-picker-calendar-grid {
-  @apply maz-relative;
+  @apply maz:relative;
 
   transition: all 300ms ease-in-out;
 
   &__container {
-    @apply maz-relative maz-grid maz-grid-cols-7 maz-items-start maz-gap-y-1;
+    @apply maz:relative maz:grid maz:grid-cols-7 maz:items-start maz:gap-y-1;
 
     &:not(.--is-range) {
-      @apply maz-gap-x-1;
+      @apply maz:gap-x-1;
     }
 
     &.--is-range {
       button {
-        @apply maz-w-full;
+        @apply maz:w-full;
       }
     }
 
     & button {
-      @apply maz-h-8 maz-w-8 maz-cursor-pointer maz-rounded-full;
+      @apply maz:h-8 maz:w-8 maz:cursor-pointer maz:rounded-full;
 
       &:hover:not(.--is-selected, .--is-between, .--is-between-hoverred) {
         background-color: v-bind('hoverColor');
       }
 
       &.--is-first {
-        @apply !maz-rounded-r-none;
+        @apply maz:rounded-r-none!;
       }
 
       &.--is-last-hoverred,
       &.--is-last {
-        @apply !maz-rounded-l-none;
+        @apply maz:rounded-l-none!;
       }
 
       &.--is-between-hoverred {
-        @apply maz-bg-surface-600 dark:maz-bg-surface-400 !maz-rounded-none;
+        @apply maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-none!;
       }
 
       &.--is-between {
-        @apply maz-bg-surface-600 dark:maz-bg-surface-400 !maz-rounded-none maz-text-foreground;
+        @apply maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-none! maz:text-foreground;
 
         &:hover {
           color: v-bind('hoverTextColor');
         }
 
         &.--transparent {
-          @apply !maz-bg-gray-400;
+          @apply maz:bg-gray-400!;
         }
       }
 
       & span {
-        @apply maz-text-sm;
+        @apply maz:text-sm;
       }
 
       &:disabled {
-        @apply maz-cursor-not-allowed maz-border-transparent;
+        @apply maz:cursor-not-allowed maz:border-transparent;
 
         &.--is-selected {
-          @apply !maz-bg-surface-600 dark:maz-bg-surface-400 !maz-text-muted;
+          @apply maz:bg-surface-600! maz:dark:bg-surface-400 maz:text-muted!;
         }
       }
     }
@@ -393,7 +393,7 @@ watch(
 .maz-slidenext-enter-active,
 .maz-slideprev-leave-active,
 .maz-slideprev-enter-active {
-  @apply maz-absolute maz-left-0 maz-end-0 maz-top-0;
+  @apply maz:absolute maz:left-0 maz:end-0 maz:top-0;
 
   transition: transform 300ms ease-in-out;
 }

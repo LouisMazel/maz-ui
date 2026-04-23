@@ -51,7 +51,7 @@ function nextMonth() {
 <template>
   <div class="m-date-picker-calendar-switcher">
     <MazBtn size="xs" color="transparent" type="button" @click="previousMonth">
-      <MazChevronLeft class="maz-text-lg" />
+      <MazChevronLeft class="maz:text-lg" />
     </MazBtn>
     <MazBtn
       size="sm"
@@ -72,17 +72,17 @@ function nextMonth() {
       {{ yearLabel }}
     </MazBtn>
     <MazBtn size="xs" color="transparent" type="button" @click="nextMonth">
-      <MazChevronLeft class="maz-rotate-180 maz-text-lg" />
+      <MazChevronLeft class="maz:rotate-180 maz:text-lg" />
     </MazBtn>
   </div>
 </template>
 
 <style scoped>
   .m-date-picker-calendar-switcher {
-  @apply maz-flex maz-space-x-2 maz-border-b maz-border-divider maz-px-2 maz-py-1;
+  @apply maz:flex maz:space-x-2 maz:border-b maz:border-divider maz:px-2 maz:py-1;
 
   &__date {
-    @apply maz-flex-1 maz-truncate maz-text-center;
+    @apply maz:flex-1 maz:truncate maz:text-center;
   }
 }
 </style>

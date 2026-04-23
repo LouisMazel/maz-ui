@@ -100,25 +100,25 @@ function addTags(event: Event) {
 
 const borderStyle = computed(() => {
   if (props.error)
-    return 'maz-border-destructive'
+    return 'maz:border-destructive'
   if (props.success)
-    return 'maz-border-success'
+    return 'maz:border-success'
   if (props.warning)
-    return 'maz-border-warning'
+    return 'maz:border-warning'
 
   if (isFocused.value) {
     if (props.color === 'primary')
-      return 'maz-border-primary'
+      return 'maz:border-primary'
     if (props.color === 'secondary')
-      return 'maz-border-secondary'
+      return 'maz:border-secondary'
     if (props.color === 'info')
-      return 'maz-border-info'
+      return 'maz:border-info'
     if (props.color === 'destructive')
-      return 'maz-border-destructive'
+      return 'maz:border-destructive'
     if (props.color === 'success')
-      return 'maz-border-success'
+      return 'maz:border-success'
     if (props.color === 'warning')
-      return 'maz-border-warning'
+      return 'maz:border-warning'
   }
 
   return ''
@@ -210,7 +210,7 @@ const buttonSize = computed(() => {
       :color
       :block
       :size
-      input-classes="maz-w-full"
+      input-classes="maz:w-full"
       :border="false"
       class="m-input-tags__input"
       @keydown.enter="addTags"
@@ -222,46 +222,46 @@ const buttonSize = computed(() => {
 
 <style scoped>
 .m-input-tags {
-  @apply maz-relative maz-inline-flex maz-flex-wrap maz-gap-1
-      maz-overflow-hidden maz-rounded maz-border maz-bg-surface maz-px-[0.5em] maz-py-[0.25em] maz-align-top maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-surface-400 maz-border-divider dark:maz-border-divider-400;
+  @apply maz:relative maz:inline-flex maz:flex-wrap maz:gap-1
+      maz:overflow-hidden maz:rounded maz:border maz:bg-surface maz:px-[0.5em] maz:py-[0.25em] maz:align-top maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:bg-surface-400 maz:border-divider maz:dark:border-divider-400;
 
   &.--xl {
-    @apply maz-min-h-16;
+    @apply maz:min-h-16;
   }
 
   &.--lg {
-    @apply maz-min-h-14;
+    @apply maz:min-h-14;
   }
 
   &.--md {
-    @apply maz-min-h-12;
+    @apply maz:min-h-12;
   }
 
   &.--sm {
-    @apply maz-min-h-10;
+    @apply maz:min-h-10;
   }
 
   &.--xs {
-    @apply maz-min-h-8;
+    @apply maz:min-h-8;
   }
 
   &.--mini {
-    @apply maz-min-h-6;
+    @apply maz:min-h-6;
   }
 
   &.--block {
-    @apply maz-w-full;
+    @apply maz:w-full;
   }
 
   &__wrapper {
-    @apply maz-inline-flex maz-h-auto !maz-flex-none maz-flex-center;
+    @apply maz:inline-flex maz:h-auto maz:flex-none! maz:flex-center;
   }
 
   &__input {
-    @apply !maz-h-auto maz-flex-1;
+    @apply maz:h-auto! maz:flex-1;
 
     &:deep(.m-input-wrapper) {
-      @apply maz-border-none !maz-bg-transparent;
+      @apply maz:border-none maz:bg-transparent!;
 
       min-width: 7.5em;
     }

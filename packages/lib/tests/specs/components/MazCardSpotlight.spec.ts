@@ -63,8 +63,8 @@ describe('given mazCardSpotlight component', () => {
 
       await wrapper.vm.$nextTick()
 
-      expect(wrapper.classes()).toContain('maz-shadow-elevation')
-      expect(wrapper.classes()).toContain('maz-drop-shadow-md')
+      expect(wrapper.classes()).toContain('maz:shadow-elevation')
+      expect(wrapper.classes()).toContain('maz:drop-shadow-md')
     })
 
     it('does not apply elevation classes when elevation prop is false', async () => {
@@ -76,8 +76,8 @@ describe('given mazCardSpotlight component', () => {
 
       await wrapper.vm.$nextTick()
 
-      expect(wrapper.classes()).not.toContain('maz-shadow-elevation')
-      expect(wrapper.classes()).not.toContain('maz-drop-shadow-md')
+      expect(wrapper.classes()).not.toContain('maz:shadow-elevation')
+      expect(wrapper.classes()).not.toContain('maz:drop-shadow-md')
     })
 
     it('applies padding class to content when padding prop is true', async () => {
@@ -90,7 +90,7 @@ describe('given mazCardSpotlight component', () => {
       await wrapper.vm.$nextTick()
 
       const content = wrapper.find('.content')
-      expect(content.classes()).toContain('maz-p-4')
+      expect(content.classes()).toContain('maz:p-4')
     })
 
     it('does not apply padding class when padding prop is false', async () => {
@@ -103,7 +103,7 @@ describe('given mazCardSpotlight component', () => {
       await wrapper.vm.$nextTick()
 
       const content = wrapper.find('.content')
-      expect(content.classes()).not.toContain('maz-p-4')
+      expect(content.classes()).not.toContain('maz:p-4')
     })
 
     it('applies custom contentClass', async () => {

@@ -91,7 +91,7 @@ const badgeStyle = computed<CSSProperties>(() => {
 
 <style scoped>
 .m-badge {
-  @apply maz-inline-flex maz-items-center maz-justify-center maz-border maz-border-transparent maz-align-top maz-font-semibold;
+  @apply maz:inline-flex maz:items-center maz:justify-center maz:border maz:border-transparent maz:align-top maz:font-semibold;
 
   padding: 0.25em 0.5em;
   line-height: 1.4em;
@@ -100,33 +100,33 @@ const badgeStyle = computed<CSSProperties>(() => {
   border-color: hsl(var(--m-badge-bg));
 
   &.--nowrap {
-    @apply maz-whitespace-nowrap;
+    @apply maz:whitespace-nowrap;
   }
 
   &.--rounded {
     &-sm {
-      @apply maz-rounded-sm;
+      @apply maz:rounded-xs;
     }
 
     &-md {
-      @apply maz-rounded-md;
+      @apply maz:rounded-md;
     }
 
     &-lg {
-      @apply maz-rounded;
+      @apply maz:rounded;
     }
 
     &-xl {
-      @apply maz-rounded-xl;
+      @apply maz:rounded-xl;
     }
 
     &-full {
-      @apply maz-rounded-full;
+      @apply maz:rounded-full;
     }
   }
 
   &.--outlined {
-    @apply maz-bg-transparent;
+    @apply maz:bg-transparent;
 
     color: hsl(var(--m-badge-bg));
     border-color: hsl(var(--m-badge-bg));
@@ -139,19 +139,19 @@ const badgeStyle = computed<CSSProperties>(() => {
   }
 
   &.--surface {
-    @apply maz-border-surface maz-bg-surface maz-text-foreground;
+    @apply maz:border-surface maz:bg-surface maz:text-foreground;
 
     &.--outlined {
-      @apply maz-border-divider maz-bg-transparent;
+      @apply maz:border-divider maz:bg-transparent;
     }
 
     &.--pastel {
-      @apply maz-border-surface-600 maz-bg-surface-600;
+      @apply maz:border-surface-600 maz:bg-surface-600;
     }
   }
 
   &.--transparent {
-    @apply maz-border-transparent maz-bg-transparent;
+    @apply maz:border-transparent maz:bg-transparent;
   }
 }
 </style>

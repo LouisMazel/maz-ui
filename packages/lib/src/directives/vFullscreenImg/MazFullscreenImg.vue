@@ -186,7 +186,7 @@ function setZoomStyles() {
   const imgElement = ImgElement.value
 
   if (!imgElement) {
-    console.error('[maz-ui](vFullscreenImg) ImgElement is not defined')
+    console.error('[maz:ui](vFullscreenImg) ImgElement is not defined')
     return
   }
 
@@ -226,7 +226,7 @@ function runAnimation(frames: Keyframe[] | PropertyIndexedKeyframes) {
   })
 
   if (!animation) {
-    console.error('[maz-ui](vFullscreenImg) animation is not defined')
+    console.error('[maz:ui](vFullscreenImg) animation is not defined')
     animationState.running = false
     animationState.ended = true
     return
@@ -300,7 +300,7 @@ function setEndAnimationStyles() {
       }
 
   if (!ImgElement.value) {
-    console.error('[maz-ui](vFullscreenImg) ImgElement is not defined')
+    console.error('[maz:ui](vFullscreenImg) ImgElement is not defined')
     return
   }
 
@@ -324,7 +324,7 @@ function openFullscreen() {
   const openAnimation = runAnimation(frames)
 
   if (!openAnimation) {
-    console.error('[maz-ui](vFullscreenImg) open animation is not defined')
+    console.error('[maz:ui](vFullscreenImg) open animation is not defined')
     setEndAnimationStyles()
     return
   }
@@ -352,7 +352,7 @@ function closeFullscreen() {
   }
 
   if (!closeAnimation) {
-    console.error('[maz-ui](vFullscreenImg) close animation is not defined')
+    console.error('[maz:ui](vFullscreenImg) close animation is not defined')
     onFinish()
     return
   }
@@ -396,7 +396,7 @@ onBeforeUnmount(() => {
       class="m-fullscreen-btn --next"
       @click.stop="nextPreviousImage('next')"
     >
-      <MazChevronLeft class="maz-rotate-180" />
+      <MazChevronLeft class="maz:rotate-180" />
     </button>
     <button
       v-if="loadedOnce && hasMultipleInstances"
@@ -430,43 +430,43 @@ onBeforeUnmount(() => {
 
 <style>
   html.--m-fullscreen-open {
-  @apply maz-h-screen maz-overflow-hidden;
+  @apply maz:h-screen maz:overflow-hidden;
 }
 </style>
 
 <style scoped>
   .m-fullscreen-img {
-  @apply maz-fixed maz-inset-0 maz-z-default-backdrop maz-h-screen maz-w-screen maz-items-center maz-bg-overlay/5 maz-outline-none maz-backdrop-blur;
+  @apply maz:fixed maz:inset-0 maz:z-default-backdrop maz:h-screen maz:w-screen maz:items-center maz:bg-overlay/5 maz:outline-hidden maz:backdrop-blur;
 
   .m-fullscreen-img-scroller {
-    @apply maz-flex maz-h-screen maz-w-screen maz-overflow-auto maz-flex-center;
+    @apply maz:flex maz:h-screen maz:w-screen maz:overflow-auto maz:flex-center;
   }
 
   img {
-    @apply maz-z-2 maz-outline-none maz-cursor-zoom-in maz-object-center maz-object-contain;
+    @apply maz:z-2 maz:outline-hidden maz:cursor-zoom-in maz:object-center maz:object-contain;
 
     &.--is-zoomed {
-      @apply maz-cursor-zoom-out;
+      @apply maz:cursor-zoom-out;
     }
 
     &.--invisible {
-      @apply maz-invisible;
+      @apply maz:invisible;
     }
 
     &.--absolute {
-      @apply maz-absolute;
+      @apply maz:absolute;
     }
   }
 
   .m-fullscreen-img-loader {
-    @apply maz-absolute maz-text-2xl maz-z-15;
+    @apply maz:absolute maz:text-2xl maz:z-15;
   }
 
   .m-fullscreen-btn {
-    @apply maz-absolute maz-z-15 maz-flex maz-h-20 maz-w-[7%] maz-min-w-[5em] maz-cursor-pointer maz-p-4 maz-transition-colors maz-duration-200;
+    @apply maz:absolute maz:z-15 maz:flex maz:h-20 maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200;
 
     svg {
-      @apply maz-text-3xl maz-transition-transform maz-duration-300 maz-ease-in-out;
+      @apply maz:text-3xl maz:transition-transform maz:duration-300 maz:ease-in-out;
     }
 
     &:hover {
@@ -476,15 +476,15 @@ onBeforeUnmount(() => {
     }
 
     &.--close {
-      @apply maz-end-0 maz-top-0 maz-items-start maz-justify-end;
+      @apply maz:end-0 maz:top-0 maz:items-start maz:justify-end;
     }
 
     &.--previous {
-      @apply maz-left-0 maz-top-1/2 maz-h-screen maz--translate-y-1/2 maz-transform maz-items-center maz-justify-start;
+      @apply maz:left-0 maz:top-1/2 maz:h-screen maz:-translate-y-1/2 maz:transform maz:items-center maz:justify-start;
     }
 
     &.--next {
-      @apply maz-end-0 maz-top-1/2 maz-h-screen maz--translate-y-1/2 maz-transform maz-items-center maz-justify-end;
+      @apply maz:end-0 maz:top-1/2 maz:h-screen maz:-translate-y-1/2 maz:transform maz:items-center maz:justify-end;
     }
   }
 }

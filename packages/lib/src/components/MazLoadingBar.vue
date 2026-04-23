@@ -28,7 +28,7 @@ const colorCSSVariables = computed(() => ({
 
 <style scoped>
   .m-loading-bar {
-  @apply maz-relative maz-block maz-w-full maz-overflow-hidden;
+  @apply maz:relative maz:block maz:w-full maz:overflow-hidden;
 
   height: var(--loading-bar-height);
   background-color: var(--loading-bar-color);
@@ -40,7 +40,7 @@ const colorCSSVariables = computed(() => ({
     &::before {
       content: '';
 
-      @apply maz-absolute;
+      @apply maz:absolute;
 
       background-color: inherit;
       top: 0;
@@ -53,7 +53,7 @@ const colorCSSVariables = computed(() => ({
     &::after {
       content: '';
 
-      @apply maz-absolute;
+      @apply maz:absolute;
 
       background-color: inherit;
       top: 0;

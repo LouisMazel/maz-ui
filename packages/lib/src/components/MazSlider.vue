@@ -233,7 +233,7 @@ async function calcPos() {
     )
   }
   else {
-    console.warn('[maz-ui][MazSlider] ref component not found')
+    console.warn('[maz:ui][MazSlider] ref component not found')
   }
 }
 async function getCursorsValues() {
@@ -251,7 +251,7 @@ async function getCursorsValues() {
         )
   }
   else {
-    console.warn('[maz-ui][MazSlider] ref component not found')
+    console.warn('[maz:ui][MazSlider] ref component not found')
   }
 }
 function handleMousedown(_event: MouseEvent | TouchEvent | FocusEvent, i: number) {
@@ -285,7 +285,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
 
     if (!MazSlider.value)
 
-      return console.error('[maz-ui](MazSlider/handleMousemove) MazSlider not available')
+      return console.error('[maz:ui](MazSlider/handleMousemove) MazSlider not available')
 
     buttonPositions.value[activeCursor.value] = (() => {
       const movement = getPos(event, MazSlider.value).x
@@ -365,7 +365,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
   padding: 1em 1.5rem;
 
   &__bar {
-    @apply maz-relative maz-flex maz-items-center maz-justify-center maz-rounded-full;
+    @apply maz:relative maz:flex maz:items-center maz:justify-center maz:rounded-full;
 
     height: 0.5em;
     background-color: hsl(var(--m-slider-color));
@@ -392,20 +392,20 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     z-index: 1;
     user-select: none;
 
-    @apply maz-flex maz-items-center maz-justify-center maz-rounded-full maz-border maz-border-solid
-        maz-border-divider maz-bg-surface maz-shadow-md;
+    @apply maz:flex maz:items-center maz:justify-center maz:rounded-full maz:border maz:border-solid
+        maz:border-divider maz:bg-surface maz:shadow-md;
 
     padding: 0.25em 0.5em;
 
     & span {
-      @apply maz-flex maz-items-center maz-text-foreground;
+      @apply maz:flex maz:items-center maz:text-foreground;
 
       margin-left: 0.25em;
       margin-right: 0.25em;
     }
 
     &.active-cursor {
-      @apply maz-border maz-shadow-lg maz-z-2;
+      @apply maz:border maz:shadow-lg maz:z-2;
 
       transform: scale(1.3);
       border-color: hsl(var(--m-slider-color));
@@ -416,11 +416,11 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
       font-size: 0.8em;
       top: -1.5em;
 
-      @apply maz-absolute maz-font-medium maz-text-foreground;
+      @apply maz:absolute maz:font-medium maz:text-foreground;
     }
 
     &:hover {
-      @apply maz-bg-surface-200;
+      @apply maz:bg-surface-200;
     }
   }
 }

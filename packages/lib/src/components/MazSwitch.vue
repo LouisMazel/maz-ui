@@ -154,33 +154,33 @@ function onFocus(event: FocusEvent) {
 
 <style>
   .m-switch {
-  @apply maz-relative maz-inline-flex maz-cursor-pointer maz-items-center maz-gap-2 maz-align-top;
+  @apply maz:relative maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-2 maz:align-top;
 
   &:has(input:disabled) {
-    @apply maz-cursor-not-allowed;
+    @apply maz:cursor-not-allowed;
   }
 
   &__input {
-    @apply maz-absolute;
+    @apply maz:absolute;
 
     left: -9999px;
   }
 
   &__toggle {
-    @apply maz-h-6 maz-w-12 maz-relative;
+    @apply maz:h-6 maz:w-12 maz:relative;
 
     &::before {
       content: '';
       transition: all 200ms ease-in-out;
 
-      @apply maz-relative maz-left-0 maz-top-0.5 maz-block maz-h-6 maz-w-[3rem] maz-rounded-full;
-      @apply maz-bg-surface-600 dark:maz-bg-surface-400 maz-border maz-border-solid maz-border-divider;
+      @apply maz:relative maz:left-0 maz:top-0.5 maz:block maz:h-6 maz:w-[3rem] maz:rounded-full;
+      @apply maz:bg-surface-600 maz:dark:bg-surface-400 maz:border maz:border-solid maz:border-divider;
     }
 
     &::after {
       content: '';
 
-      @apply maz-absolute maz-left-0.5 maz-top-1 maz-block maz-h-5 maz-w-5 maz-rounded-full maz-bg-surface;
+      @apply maz:absolute maz:left-0.5 maz:top-1 maz:block maz:h-5 maz:w-5 maz:rounded-full maz:bg-surface;
 
       box-shadow: 0 0 4px 0 hsl(0deg 0% 0% / 20%);
       transition: all 200ms ease-in-out;
@@ -189,7 +189,7 @@ function onFocus(event: FocusEvent) {
 
   &__input:checked + .m-switch__toggle {
     &::after {
-      @apply maz-translate-x-6;
+      @apply maz:translate-x-6;
     }
 
     &::before {
@@ -200,11 +200,11 @@ function onFocus(event: FocusEvent) {
   &__input:disabled {
     + .m-switch__toggle {
       &::before {
-        @apply maz-bg-surface-600 dark:maz-bg-surface-400;
+        @apply maz:bg-surface-600 maz:dark:bg-surface-400;
       }
 
       &::after {
-        @apply maz-bg-surface-700 dark:maz-bg-surface-300;
+        @apply maz:bg-surface-700 maz:dark:bg-surface-300;
 
         box-shadow: none;
       }
@@ -212,22 +212,22 @@ function onFocus(event: FocusEvent) {
   }
 
   &__text {
-    @apply maz-flex maz-flex-col maz-gap-0;
+    @apply maz:flex maz:flex-col maz:gap-0;
   }
 
   &__hint {
-    @apply maz-text-sm maz-text-muted;
+    @apply maz:text-sm maz:text-muted;
 
     &.--error {
-      @apply maz-text-destructive-600;
+      @apply maz:text-destructive-600;
     }
 
     &.--success {
-      @apply maz-text-success-600;
+      @apply maz:text-success-600;
     }
 
     &.--warning {
-      @apply maz-text-warning-600;
+      @apply maz:text-warning-600;
     }
   }
 }

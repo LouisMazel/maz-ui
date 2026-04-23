@@ -196,58 +196,58 @@ const isButton = computed(() => component.value === 'button')
 
 <style scoped>
 .m-link {
-  @apply maz-inline-flex maz-cursor-pointer maz-items-center maz-gap-1 maz-transition-colors maz-duration-200 maz-ease-in-out maz-no-underline;
+  @apply maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-1 maz:transition-colors maz:duration-200 maz:ease-in-out maz:no-underline;
 
   &.--underline {
-    @apply maz-underline;
+    @apply maz:underline;
   }
 
   &.--underline-hover:not(:disabled) {
-    @apply hover:maz-underline;
+    @apply maz:hover:underline;
   }
 
   &.--primary:not(:disabled) {
-    @apply maz-text-primary hover:maz-text-primary-700;
+    @apply maz:text-primary maz:hover:text-primary-700;
   }
 
   &.--secondary:not(:disabled) {
-    @apply maz-text-secondary hover:maz-text-secondary-700;
+    @apply maz:text-secondary maz:hover:text-secondary-700;
   }
 
   &.--info:not(:disabled) {
-    @apply maz-text-info hover:maz-text-info-700;
+    @apply maz:text-info maz:hover:text-info-700;
   }
 
   &.--warning:not(:disabled) {
-    @apply maz-text-warning hover:maz-text-warning-700;
+    @apply maz:text-warning maz:hover:text-warning-700;
   }
 
   &.--destructive:not(:disabled) {
-    @apply maz-text-destructive hover:maz-text-destructive-700;
+    @apply maz:text-destructive maz:hover:text-destructive-700;
   }
 
   &.--success:not(:disabled) {
-    @apply maz-text-success hover:maz-text-success-700;
+    @apply maz:text-success maz:hover:text-success-700;
   }
 
   &.--accent:not(:disabled) {
-    @apply maz-text-accent hover:maz-text-accent-700;
+    @apply maz:text-accent maz:hover:text-accent-700;
   }
 
   &.--contrast:not(:disabled) {
-    @apply maz-text-foreground hover:maz-text-foreground-900 dark:hover:maz-text-foreground-100;
+    @apply maz:text-foreground maz:hover:text-foreground-900 maz:dark:hover:text-foreground-100;
   }
 
   &.--muted:not(:disabled) {
-    @apply maz-text-muted hover:maz-text-muted-700;
+    @apply maz:text-muted maz:hover:text-muted-700;
   }
 
   &.--surface:not(:disabled) {
-    @apply maz-text-surface hover:maz-text-surface-700;
+    @apply maz:text-surface maz:hover:text-surface-700;
   }
 
   &:disabled {
-    @apply maz-cursor-not-allowed maz-opacity-50 maz-text-muted;
+    @apply maz:cursor-not-allowed maz:opacity-50 maz:text-muted;
   }
 }
 </style>

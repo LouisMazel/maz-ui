@@ -207,10 +207,10 @@ onMounted(() => {
 
 <style scoped>
 .m-read-more {
-  @apply maz-w-full maz-flex maz-flex-col maz-gap-1;
+  @apply maz:w-full maz:flex maz:flex-col maz:gap-1;
 
   &__hidden {
-    @apply maz-absolute maz-overflow-hidden;
+    @apply maz:absolute maz:overflow-hidden;
 
     width: 1px;
     height: 1px;
@@ -218,7 +218,7 @@ onMounted(() => {
   }
 
   &__content--truncated {
-    @apply maz-relative;
+    @apply maz:relative;
   }
 }
 </style>

@@ -287,7 +287,7 @@ describe('components/MazDropdown.vue', () => {
         await wrapper.setProps({ size: 'xl' })
 
         const icon = wrapper.find('.m-dropdown__icon')
-        expect(icon.classes()).toContain('maz-text-lg')
+        expect(icon.classes()).toContain('maz:text-lg')
       })
     })
 
@@ -296,7 +296,7 @@ describe('components/MazDropdown.vue', () => {
         await wrapper.setProps({ size: 'mini' })
 
         const icon = wrapper.find('.m-dropdown__icon')
-        expect(icon.classes()).toContain('maz-text-sm')
+        expect(icon.classes()).toContain('maz:text-sm')
       })
     })
   })
@@ -311,7 +311,7 @@ describe('components/MazDropdown.vue', () => {
       })
 
       it('then has screen reader description', () => {
-        const srDescription = wrapper.find('.maz-sr-only')
+        const srDescription = wrapper.find('.maz\\:sr-only')
         expect(srDescription.exists()).toBe(true)
       })
     })

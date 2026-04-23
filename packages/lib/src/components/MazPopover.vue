@@ -591,7 +591,7 @@ function handleTrapFocus(event: KeyboardEvent) {
     return
 
   const firstElement = focusableElements[0] as HTMLElement
-  // eslint-disable-next-line e18e/prefer-array-at
+
   const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
 
   if (event.shiftKey) {
@@ -774,23 +774,23 @@ defineExpose({
 
 <style scoped>
 .m-popover {
-  @apply maz-inline-block;
+  @apply maz:inline-block;
 
   &.--disabled {
-    @apply maz-cursor-not-allowed;
+    @apply maz:cursor-not-allowed;
   }
 
   .m-popover-trigger {
-    @apply maz-inline-block maz-size-full;
+    @apply maz:inline-block maz:size-full;
   }
 
   &.--block {
-    @apply maz-w-full;
+    @apply maz:w-full;
   }
 }
 
 .m-popover-panel {
-  @apply maz-fixed maz-outline-none maz-z-default-backdrop maz-rounded maz-drop-shadow-md maz-shadow-elevation;
+  @apply maz:fixed maz:outline-hidden maz:z-default-backdrop maz:rounded maz:drop-shadow-md maz:shadow-elevation;
 
   will-change: transform, opacity;
   contain: layout style paint;
@@ -798,44 +798,44 @@ defineExpose({
 
   /* Background color */
   &.--surface {
-    @apply dark:maz-border dark:maz-border-divider maz-bg-surface;
+    @apply maz:dark:border maz:dark:border-divider maz:bg-surface;
   }
 
   /* Color variants */
   &.--primary {
-    @apply maz-border-primary-600 maz-bg-primary maz-text-primary-foreground;
+    @apply maz:border-primary-600 maz:bg-primary maz:text-primary-foreground;
   }
 
   &.--secondary {
-    @apply maz-border-secondary-600 maz-bg-secondary maz-text-secondary-foreground;
+    @apply maz:border-secondary-600 maz:bg-secondary maz:text-secondary-foreground;
   }
 
   &.--success {
-    @apply maz-border-success-600 maz-bg-success maz-text-success-foreground;
+    @apply maz:border-success-600 maz:bg-success maz:text-success-foreground;
   }
 
   &.--warning {
-    @apply maz-border-warning-600 maz-bg-warning maz-text-warning-foreground;
+    @apply maz:border-warning-600 maz:bg-warning maz:text-warning-foreground;
   }
 
   &.--destructive {
-    @apply maz-border-destructive-600 maz-bg-destructive maz-text-destructive-foreground;
+    @apply maz:border-destructive-600 maz:bg-destructive maz:text-destructive-foreground;
   }
 
   &.--info {
-    @apply maz-border-info-600 maz-bg-info maz-text-info-foreground;
+    @apply maz:border-info-600 maz:bg-info maz:text-info-foreground;
   }
 
   &.--accent {
-    @apply maz-border-accent-600 maz-bg-accent maz-text-accent-foreground;
+    @apply maz:border-accent-600 maz:bg-accent maz:text-accent-foreground;
   }
 
   &.--contrast {
-    @apply maz-border-contrast-600 maz-bg-contrast maz-text-contrast-foreground;
+    @apply maz:border-contrast-600 maz:bg-contrast maz:text-contrast-foreground;
   }
 
   &.--background {
-    @apply maz-bg-surface maz-text-foreground;
+    @apply maz:bg-surface maz:text-foreground;
   }
 }
 
@@ -865,7 +865,7 @@ defineExpose({
 .m-popover-panel.--position-bottom-end {
   &.maz-scale-fade-enter-from,
   &.maz-scale-fade-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scaleY(0.5);
     transform-origin: top center;
@@ -873,7 +873,7 @@ defineExpose({
 
   &.maz-scale-pop-enter-from,
   &.maz-scale-pop-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.2) translateY(-4px);
     transform-origin: top center;
@@ -886,7 +886,7 @@ defineExpose({
 .m-popover-panel.--position-top-end {
   &.maz-scale-fade-enter-from,
   &.maz-scale-fade-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scaleY(0.5);
     transform-origin: bottom center;
@@ -894,7 +894,7 @@ defineExpose({
 
   &.maz-scale-pop-enter-from,
   &.maz-scale-pop-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.2) translateY(4px);
     transform-origin: bottom center;
@@ -907,7 +907,7 @@ defineExpose({
 .m-popover-panel.--position-right-end {
   &.maz-scale-fade-enter-from,
   &.maz-scale-fade-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scaleX(0.5);
     transform-origin: left center;
@@ -915,7 +915,7 @@ defineExpose({
 
   &.maz-scale-pop-enter-from,
   &.maz-scale-pop-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.2) translateX(-4px);
     transform-origin: left center;
@@ -928,7 +928,7 @@ defineExpose({
 .m-popover-panel.--position-left-end {
   &.maz-scale-fade-enter-from,
   &.maz-scale-fade-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scaleX(0.5);
     transform-origin: right center;
@@ -936,7 +936,7 @@ defineExpose({
 
   &.maz-scale-pop-enter-from,
   &.maz-scale-pop-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.2) translateX(4px);
     transform-origin: right center;
@@ -947,7 +947,7 @@ defineExpose({
 .m-popover-panel:not([class*='--position-']) {
   &.maz-scale-pop-enter-from,
   &.maz-scale-pop-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.2);
     transform-origin: center;
@@ -955,7 +955,7 @@ defineExpose({
 
   &.maz-scale-fade-enter-from,
   &.maz-scale-fade-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.5) translateY(-4px);
     transform-origin: center;

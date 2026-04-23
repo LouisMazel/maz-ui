@@ -45,7 +45,7 @@ export interface MazInputPriceProps {
   success?: boolean
   /** Will display the input in warning state. */
   warning?: boolean
-  /** Options for the currency helper - [see](https://maz-ui.com/helpers/currency) */
+  /** Options for the currency helper - [see](https://maz:ui.com/helpers/currency) */
   currencyOptions?: Omit<FilterCurrencyOptions, 'currency'>
 }
 
@@ -127,7 +127,7 @@ function updateInternalValue(value?: string | number) {
 <template>
   <MazInput
     :model-value="displayPrice"
-    class="maz-input-price m-reset-css"
+    class="maz:input-price m-reset-css"
     :block
     :error
     :success

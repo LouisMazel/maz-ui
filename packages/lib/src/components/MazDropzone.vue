@@ -187,12 +187,12 @@ export type MazDropzoneProps = {
    */
   color?: MazColor
   /**
-   * MazBtn props [MazBtn props](/components/maz-btn#props)
+   * MazBtn props [MazBtn props](/components/maz:btn#props)
    * @default {}
    */
   removeFileBtnProps?: MazBtnProps
   /**
-   * MazSpinner props [MazSpinner props](/components/maz-spinner#props)
+   * MazSpinner props [MazSpinner props](/components/maz:spinner#props)
    * @default {}
    */
   spinnerProps?: MazSpinnerProps
@@ -874,14 +874,14 @@ defineExpose({
 
 <style scoped>
 .m-dropzone {
-  @apply maz-flex maz-w-full maz-flex-col maz-gap-2 maz-overflow-hidden maz-rounded maz-border maz-border-dashed maz-border-divider maz-p-6 maz-transition-colors maz-duration-200 maz-ease-in-out maz-flex-center maz-bg-surface hover:maz-bg-surface-600/50 dark:hover:maz-bg-surface-400/50 maz-cursor-pointer;
+  @apply maz:flex maz:w-full maz:flex-col maz:gap-2 maz:overflow-hidden maz:rounded maz:border maz:border-dashed maz:border-divider maz:p-6 maz:transition-colors maz:duration-200 maz:ease-in-out maz:flex-center maz:bg-surface maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400/50 maz:cursor-pointer;
 
   &--disabled {
-    @apply maz-cursor-not-allowed maz-opacity-50;
+    @apply maz:cursor-not-allowed maz:opacity-50;
   }
 
   &--is-over-drop-zone {
-    @apply maz-bg-primary-400/20 hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400;
+    @apply maz:bg-primary-400/20 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
 
     border-color: var(--active-color);
 
@@ -891,91 +891,91 @@ defineExpose({
   }
 
   &--is-over-error {
-    @apply maz-border-destructive maz-bg-destructive-50 hover:maz-bg-destructive-50;
+    @apply maz:border-destructive maz:bg-destructive-50 maz:hover:bg-destructive-50;
 
     .maz-dropzone__upload-icon {
-      @apply maz-text-destructive;
+      @apply maz:text-destructive;
     }
   }
 
   &__divider {
-    @apply maz-text-muted maz-text-sm;
+    @apply maz:text-muted maz:text-sm;
   }
 
   &__content {
-    @apply maz-flex maz-flex-col maz-gap-1 maz-flex-center;
+    @apply maz:flex maz:flex-col maz:gap-1 maz:flex-center;
   }
 
   &__files-container {
-    @apply maz-flex maz-flex-wrap maz-items-center maz-justify-center maz-gap-4;
+    @apply maz:flex maz:flex-wrap maz:items-center maz:justify-center maz:gap-4;
 
     position: relative;
   }
 
   &__file-item {
-    @apply maz-relative maz-flex maz-size-40 maz-cursor-auto maz-flex-col maz-items-center maz-overflow-hidden maz-rounded maz-bg-surface-600 dark:maz-bg-surface-400;
+    @apply maz:relative maz:flex maz:size-40 maz:cursor-auto maz:flex-col maz:items-center maz:overflow-hidden maz:rounded maz:bg-surface-600 maz:dark:bg-surface-400;
 
     transition: all 300ms ease-in-out;
   }
 
   &__thumbnail {
-    @apply maz-absolute maz-inset-0;
+    @apply maz:absolute maz:inset-0;
   }
 
   &__overlay {
-    @apply maz-absolute maz-inset-0 maz-backdrop-blur-[0.125rem] maz-bg-surface/40 maz-rounded;
+    @apply maz:absolute maz:inset-0 maz:backdrop-blur-[0.125rem] maz:bg-surface/40 maz:rounded;
   }
 
   &__icon-container {
-    @apply maz-z-2 maz-flex maz-flex-1 maz-p-2 maz-flex-center;
+    @apply maz:z-2 maz:flex maz:flex-1 maz:p-2 maz:flex-center;
   }
 
   &__spinner {
-    @apply maz-text-lg;
+    @apply maz:text-lg;
   }
 
   &__success-icon {
-    @apply maz-text-4xl maz-text-success;
+    @apply maz:text-4xl maz:text-success;
   }
 
   &__error-icon {
-    @apply maz-text-4xl maz-text-destructive;
+    @apply maz:text-4xl maz:text-destructive;
   }
 
   &__file-icon-wrapper {
-    @apply maz-p-1 maz-rounded maz-bg-surface maz-text-foreground;
+    @apply maz:p-1 maz:rounded maz:bg-surface maz:text-foreground;
   }
 
   &__description {
-    @apply maz-z-2 maz-flex maz-w-full maz-flex-col maz-gap-1 maz-truncate maz-p-2;
+    @apply maz:z-2 maz:flex maz:w-full maz:flex-col maz:gap-1 maz:truncate maz:p-2;
   }
 
   &__file-info {
-    @apply maz-flex maz-flex-col maz-gap-0.5 maz-text-center maz-text-sm maz-font-semibold;
+    @apply maz:flex maz:flex-col maz:gap-0.5 maz:text-center maz:text-sm maz:font-semibold;
   }
 
   &__file-name {
-    @apply maz-truncate;
+    @apply maz:truncate;
   }
 
   &__file-size {
-    @apply maz-truncate;
+    @apply maz:truncate;
   }
 
   &__upload-icon {
-    @apply maz-text-3xl;
+    @apply maz:text-3xl;
   }
 
   &__upload-text {
-    @apply maz-text-center;
+    @apply maz:text-center;
   }
 
   &__info-text {
-    @apply maz-mt-4 maz-text-center maz-text-sm maz-text-muted maz-max-w-full maz-flex maz-flex-col;
+    @apply maz:mt-4 maz:text-center maz:text-sm maz:text-muted maz:max-w-full maz:flex maz:flex-col;
   }
 
   &__file-input {
-    @apply maz-hidden;
+    @apply maz:hidden;
   }
 
   .icon-scale-enter-active,

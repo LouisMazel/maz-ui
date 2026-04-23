@@ -20,7 +20,7 @@ describe('mazTabsBar.vue', () => {
       props: { items },
       global: {
         provide: {
-          'maz-tabs': {
+          'maz:tabs': {
             currentTab: ref(1),
             updateCurrentTab: vi.fn(),
           },
@@ -47,7 +47,7 @@ describe('mazTabsBar.vue', () => {
       props: { items },
       global: {
         provide: {
-          'maz-tabs': {
+          'maz:tabs': {
             currentTab: ref(1),
             updateCurrentTab: vi.fn(),
           },
@@ -66,7 +66,7 @@ describe('mazTabsBar.vue', () => {
       props: { items },
       global: {
         provide: {
-          'maz-tabs': {
+          'maz:tabs': {
             currentTab,
             updateCurrentTab: (index: number) => (currentTab.value = index),
           },

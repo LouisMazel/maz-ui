@@ -750,7 +750,7 @@ defineExpose({
             inputmode="search"
             autocomplete="off"
             block
-            class="m-select-list__search-input maz-flex-none"
+            class="m-select-list__search-input maz:flex-none"
             :left-icon="MazMagnifyingGlass"
             @update:model-value="updateListPosition"
           />
@@ -760,7 +760,7 @@ defineExpose({
           -->
         <slot v-if="!optionList || optionList.length <= 0" name="no-results">
           <span class="m-select-list__no-results">
-            <MazNoSymbol class="maz-size-6 maz-text-foreground" />
+            <MazNoSymbol class="maz:size-6 maz:text-foreground" />
           </span>
         </slot>
 
@@ -780,7 +780,7 @@ defineExpose({
               v-else
               type="button"
               :tabindex="multiple ? -1 : 0"
-              class="m-select-list-item maz-custom maz-flex-none"
+              class="m-select-list-item maz-custom maz:flex-none"
               :class="[
                 {
                   '--is-selected': isSelectedOption(option),
@@ -827,57 +827,57 @@ defineExpose({
 
 <style scoped>
 .m-select {
-  @apply maz-relative maz-inline-flex maz-align-top;
+  @apply maz:relative maz:inline-flex maz:align-top;
 
   &.--disabled {
     .m-select-input {
-      @apply maz-cursor-not-allowed;
+      @apply maz:cursor-not-allowed;
     }
   }
 
   &-input {
-    @apply maz-size-full;
-    @apply maz-cursor-pointer;
+    @apply maz:size-full;
+    @apply maz:cursor-pointer;
 
     &__toggle-button {
-      @apply maz-flex maz-h-full maz-bg-transparent maz-ps-0 maz-flex-center;
+      @apply maz:flex maz:h-full maz:bg-transparent maz:ps-0 maz:flex-center;
     }
 
     &:deep(input) {
-      @apply maz-caret-transparent;
+      @apply maz:caret-transparent;
     }
   }
 
   &.--mini {
-    @apply maz-text-xs;
+    @apply maz:text-xs;
   }
 
   &.--xs {
-    @apply maz-text-xs;
+    @apply maz:text-xs;
   }
 
   &.--sm {
-    @apply maz-text-sm;
+    @apply maz:text-sm;
   }
 
   &.--md {
-    @apply maz-text-base;
+    @apply maz:text-base;
   }
 
   &.--lg {
-    @apply maz-text-lg;
+    @apply maz:text-lg;
   }
 
   &.--xl {
-    @apply maz-text-xl;
+    @apply maz:text-xl;
   }
 
   &:not(.--disabled):deep(.m-input-input) {
-    @apply maz-cursor-pointer;
+    @apply maz:cursor-pointer;
   }
 
   &-chevron {
-    @apply maz-text-[1.2em] maz-text-muted maz-transition-all maz-duration-300 maz-ease-out;
+    @apply maz:text-[1.2em] maz:text-muted maz:transition-all maz:duration-300 maz:ease-out;
   }
 
   &.--is-open {
@@ -887,53 +887,53 @@ defineExpose({
   }
 
   & button.maz-custom {
-    @apply maz-cursor-pointer maz-appearance-none maz-border-none;
+    @apply maz:cursor-pointer maz:appearance-none maz:border-none;
 
     &:disabled {
-      @apply maz-cursor-not-allowed;
+      @apply maz:cursor-not-allowed;
     }
   }
 }
 
 .m-select-list {
-  @apply maz-z-default-backdrop maz-flex maz-flex-col maz-gap-1 maz-overflow-hidden maz-rounded maz-bg-surface maz-drop-shadow-md maz-shadow-elevation;
+  @apply maz:z-default-backdrop maz:flex maz:flex-col maz:gap-1 maz:overflow-hidden maz:rounded maz:bg-surface maz:drop-shadow-md maz:shadow-elevation;
 
   &-optgroup {
-    @apply maz-flex-none maz-p-0.5 maz-text-start maz-text-[0.875em] maz-text-muted;
+    @apply maz:flex-none maz:p-0.5 maz:text-start maz:text-[0.875em] maz:text-muted;
   }
 
   &.--mini {
-    @apply maz-text-xs;
+    @apply maz:text-xs;
   }
 
   &.--xs {
-    @apply maz-text-xs;
+    @apply maz:text-xs;
   }
 
   &.--sm {
-    @apply maz-text-sm;
+    @apply maz:text-sm;
   }
 
   &.--md {
-    @apply maz-text-base;
+    @apply maz:text-base;
   }
 
   &.--lg {
-    @apply maz-text-lg;
+    @apply maz:text-lg;
   }
 
   &.--xl {
-    @apply maz-text-xl;
+    @apply maz:text-xl;
   }
 
   min-width: 3.5rem;
 
   &__search-wrapper {
-    @apply maz-px-2 maz-pt-2;
+    @apply maz:px-2 maz:pt-2;
   }
 
   &__scroll-wrapper {
-    @apply maz-flex maz-flex-1 maz-flex-col maz-gap-1 maz-overflow-auto maz-p-2;
+    @apply maz:flex maz:flex-1 maz:flex-col maz:gap-1 maz:overflow-auto maz:p-2;
 
     /* Custom scrollbar for webkit browsers (Chrome, Safari, Edge) */
     &::-webkit-scrollbar {
@@ -945,7 +945,7 @@ defineExpose({
     }
 
     &::-webkit-scrollbar-thumb {
-      @apply maz-bg-surface-600 dark:maz-bg-surface-400;
+      @apply maz:bg-surface-600 maz:dark:bg-surface-400;
 
       border-radius: 1000px;
     }
@@ -956,18 +956,18 @@ defineExpose({
   }
 
   &__no-results {
-    @apply maz-flex maz-p-4 maz-flex-center;
+    @apply maz:flex maz:p-4 maz:flex-center;
   }
 
   &-item {
-    @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-rounded maz-bg-transparent maz-px-3 maz-py-2 maz-text-start maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-surface-600 dark:focus-within:maz-bg-surface-400 hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400 maz-outline-none maz-border maz-border-solid maz-border-transparent;
+    @apply maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-3 maz:truncate maz:rounded maz:bg-transparent maz:px-3 maz:py-2 maz:text-start maz:transition-colors maz:duration-300 maz:ease-in-out maz:focus-within:bg-surface-600 maz:dark:focus-within:bg-surface-400 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:outline-hidden maz:border maz:border-solid maz:border-transparent;
 
     span {
-      @apply maz-truncate;
+      @apply maz:truncate;
     }
 
     &.--is-none-value {
-      @apply maz-text-muted;
+      @apply maz:text-muted;
     }
 
     &.--is-selected {
@@ -975,13 +975,13 @@ defineExpose({
       background-color: var(--selected-bg-color);
 
       &:focus {
-        @apply maz-outline-[var(--selected-text-color)];
+        @apply maz:outline-[var(--selected-text-color)];
 
         outline-width: var(--maz-border-width);
       }
 
       &.--transparent {
-        @apply maz-bg-surface;
+        @apply maz:bg-surface;
       }
     }
   }

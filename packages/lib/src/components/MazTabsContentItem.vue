@@ -8,7 +8,7 @@ const props = defineProps({
 })
 const transitionName = ref<string>('maz-tab-transition')
 
-const { currentTab } = useInjectStrict<MazTabsProvide>('maz-tabs')
+const { currentTab } = useInjectStrict<MazTabsProvide>('maz:tabs')
 
 watch(
   () => currentTab.value,
@@ -36,7 +36,7 @@ const isCurrentTab = computed(() => currentTab.value - 1 === itemTabNumber.value
 
 <style scoped>
   .m-tabs-content-item {
-  @apply maz-relative maz-top-0 maz-w-full;
+  @apply maz:relative maz:top-0 maz:w-full;
 
   flex: 1 0 auto;
   transition: all 500ms cubic-bezier(0.25, 0.8, 0.5, 1);

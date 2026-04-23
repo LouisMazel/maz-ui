@@ -152,6 +152,6 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .m-reading-progress-bar {
-  @apply maz-fixed maz-top-0 maz-z-default-backdrop maz-w-full;
+  @apply maz:fixed maz:top-0 maz:z-default-backdrop maz:w-full;
 }
 </style>

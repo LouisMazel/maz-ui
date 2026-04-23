@@ -174,7 +174,7 @@ if (scrollable) {
 
 <style scoped>
 .m-dialog {
-  @apply maz-flex maz-origin-center maz-flex-col maz-min-w-full maz-rounded maz-bg-surface maz-text-foreground dark:maz-border dark:maz-border-divider tab-s:maz-my-8 maz-max-w-full maz-touch-none;
+  @apply maz:flex maz:origin-center maz:flex-col maz:min-w-full maz:rounded maz:bg-surface maz:text-foreground maz:dark:border maz:dark:border-divider maz:tab-s:my-8 maz:max-w-full maz:touch-none;
 
   @screen tab-s {
     max-width: var(--max-width);
@@ -182,41 +182,41 @@ if (scrollable) {
   }
 
   &-header {
-    @apply maz-flex maz-items-baseline maz-justify-end maz-ps-6 maz-pe-2 maz-pt-2 maz-pb-4;
+    @apply maz:flex maz:items-baseline maz:justify-end maz:ps-6 maz:pe-2 maz:pt-2 maz:pb-4;
 
     &.--has-title {
-      @apply maz-justify-between;
+      @apply maz:justify-between;
     }
   }
 
   &-title {
-    @apply maz-my-0 maz-text-xl maz-font-semibold;
+    @apply maz:my-0 maz:text-xl maz:font-semibold;
   }
 
   &-footer {
-    @apply maz-flex maz-items-center maz-justify-end maz-px-6 maz-py-4;
+    @apply maz:flex maz:items-center maz:justify-end maz:px-6 maz:py-4;
   }
 
   &-content {
-    @apply maz-flex-1 maz-px-6;
+    @apply maz:flex-1 maz:px-6;
 
     &-icon {
       flex: 0 0 auto;
     }
 
     &.--bottom-padding {
-      @apply maz-pb-4;
+      @apply maz:pb-4;
     }
   }
 
   &.--scrollable {
-    @apply maz-max-h-[95vh] maz-my-0;
+    @apply maz:max-h-[95vh] maz:my-0;
 
     .m-dialog-content {
-      @apply maz-overflow-auto maz-border-t maz-border-divider maz-py-4;
+      @apply maz:overflow-auto maz:border-t maz:border-divider maz:py-4;
 
       &:not(.--bottom-padding) {
-        @apply maz-border-b;
+        @apply maz:border-b;
       }
     }
   }

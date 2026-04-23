@@ -166,73 +166,73 @@ watch(
 
 <style scoped>
   .m-date-picker-header {
-  @apply maz-z-1 maz-flex maz-justify-between maz-space-y-1 maz-p-2 maz-font-normal;
+  @apply maz:z-1 maz:flex maz:justify-between maz:space-y-1 maz:p-2 maz:font-normal;
 
   &__year-transition {
-    @apply maz-flex maz-h-5 maz-items-center maz-overflow-hidden maz-leading-3;
+    @apply maz:flex maz:h-5 maz:items-center maz:overflow-hidden maz:leading-3;
   }
 
   &__date-transition,
   &__time-transition {
-    @apply maz-flex maz-h-6 maz-items-center maz-overflow-hidden maz-leading-4;
+    @apply maz:flex maz:h-6 maz:items-center maz:overflow-hidden maz:leading-4;
   }
 
   &__time-transition {
-    @apply maz-flex maz-justify-end;
+    @apply maz:flex maz:justify-end;
 
     min-width: 5rem;
   }
 
   &__year-text {
-    @apply maz-text-sm;
+    @apply maz:text-sm;
   }
 
   &__time {
-    @apply maz-flex maz-items-end maz-justify-center;
+    @apply maz:flex maz:items-end maz:justify-center;
 
     &:not(.--has-date) {
-      @apply maz-w-full;
+      @apply maz:w-full;
 
       & .m-date-picker-header__time-transition {
-        @apply maz-w-full maz-flex-center;
+        @apply maz:w-full maz:flex-center;
       }
     }
   }
 
   &.--primary {
-    @apply maz-bg-primary maz-text-primary-foreground;
+    @apply maz:bg-primary maz:text-primary-foreground;
   }
 
   &.--secondary {
-    @apply maz-bg-secondary maz-text-secondary-foreground;
+    @apply maz:bg-secondary maz:text-secondary-foreground;
   }
 
   &.--info {
-    @apply maz-bg-info maz-text-info-foreground;
+    @apply maz:bg-info maz:text-info-foreground;
   }
 
   &.--success {
-    @apply maz-bg-success maz-text-success-foreground;
+    @apply maz:bg-success maz:text-success-foreground;
   }
 
   &.--warning {
-    @apply maz-bg-warning maz-text-warning-foreground;
+    @apply maz:bg-warning maz:text-warning-foreground;
   }
 
   &.--destructive {
-    @apply maz-bg-destructive maz-text-destructive-foreground;
+    @apply maz:bg-destructive maz:text-destructive-foreground;
   }
 
   &.--accent {
-    @apply maz-bg-accent maz-text-accent-foreground;
+    @apply maz:bg-accent maz:text-accent-foreground;
   }
 
   &.--contrast {
-    @apply maz-bg-contrast-500 dark:maz-bg-contrast-400 maz-text-foreground dark:maz-text-foreground;
+    @apply maz:bg-contrast-500 maz:dark:bg-contrast-400 maz:text-foreground maz:dark:text-foreground;
   }
 
   &.--transparent {
-    @apply maz-border-b maz-border-divider maz-text-foreground;
+    @apply maz:border-b maz:border-divider maz:text-foreground;
   }
 }
 </style>

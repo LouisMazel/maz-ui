@@ -3,7 +3,7 @@
  *
  * @utility is the v4 replacement for the v3 JS plugin's addUtilities(). These
  * utilities are internal to the library components (which reference them via
- * maz:flex-center, maz:padded-container, etc.) and are also exposed to
+ * maz:flex-center, maz-padded-container, etc.) and are also exposed to
  * consumers that import maz-ui/tailwindcss/utilities.css.
  *
  * cap-f::first-letter uses a pseudo-element so it cannot live inside @utility

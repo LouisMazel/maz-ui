@@ -122,76 +122,76 @@ const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 
 <style scoped>
 .m-container {
-  @apply maz-relative maz-inline-flex maz-flex-col;
+  @apply maz:relative maz:inline-flex maz:flex-col;
 
   &.--overflow-hidden {
-    @apply maz-overflow-hidden;
+    @apply maz:overflow-hidden;
   }
 
   &.--block {
-    @apply maz-w-full;
+    @apply maz:w-full;
   }
 
   &:not(.--transparent) {
-    @apply maz-bg-surface;
+    @apply maz:bg-surface;
   }
 
   &__header {
-    @apply maz-w-full maz-flex maz-items-center maz-justify-start maz-gap-2;
+    @apply maz:w-full maz:flex maz:items-center maz:justify-start maz:gap-2;
   }
 
   &__content {
-    @apply maz-w-full;
+    @apply maz:w-full;
   }
 
   &.--padding {
     & .m-container__content {
-      @apply maz-px-4 maz-py-3;
+      @apply maz:px-4 maz:py-3;
     }
 
     & .m-container__header {
-      @apply maz-px-4 maz-py-3;
+      @apply maz:px-4 maz:py-3;
     }
   }
 
   &.--elevation {
-    @apply maz-shadow-elevation maz-drop-shadow-md;
+    @apply maz:shadow-elevation maz:drop-shadow-md;
   }
 
   &.--bordered {
-    @apply maz-border;
+    @apply maz:border;
 
     & .m-container__header {
-      @apply maz-border-b;
+      @apply maz:border-b;
     }
   }
 
   &.--rounded-none {
-    @apply maz-rounded-none;
+    @apply maz:rounded-none;
   }
 
   &.--rounded-sm {
-    @apply maz-rounded-sm;
+    @apply maz:rounded-xs;
   }
 
   &.--rounded-md {
-    @apply maz-rounded-md;
+    @apply maz:rounded-md;
   }
 
   &.--rounded-base {
-    @apply maz-rounded;
+    @apply maz:rounded;
   }
 
   &.--rounded-lg {
-    @apply maz-rounded-lg;
+    @apply maz:rounded-lg;
   }
 
   &.--rounded-xl {
-    @apply maz-rounded-xl;
+    @apply maz:rounded-xl;
   }
 
   &.--rounded-full {
-    @apply maz-rounded-full;
+    @apply maz:rounded-full;
   }
 }
 </style>

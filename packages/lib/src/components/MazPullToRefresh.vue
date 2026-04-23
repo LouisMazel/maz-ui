@@ -238,7 +238,7 @@ onUnmounted(() => {
       </div>
       <div v-if="internalLoading" class="header-text">
         <slot name="pull-loading">
-          <div class="maz-flex maz-flex-col maz-flex-center">
+          <div class="maz:flex maz:flex-col maz:flex-center">
             <MazSpinner :color="spinnerColor" size="2.5em" />
           </div>
         </slot>
@@ -253,16 +253,16 @@ onUnmounted(() => {
   .m-pull-to-refresh {
   .loading-header,
   .loading-footer {
-    @apply maz-relative maz-flex maz-w-full maz-text-center maz-text-[0.8em] maz-flex-center;
+    @apply maz:relative maz:flex maz:w-full maz:text-center maz:text-[0.8em] maz:flex-center;
 
     .header-text {
-      @apply maz-absolute maz-flex maz-w-full maz-flex-center;
+      @apply maz:absolute maz:flex maz:w-full maz:flex-center;
     }
   }
 
   &:not(.--available) {
     .header-text {
-      @apply maz-bottom-2;
+      @apply maz:bottom-2;
     }
   }
 }

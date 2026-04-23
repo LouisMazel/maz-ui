@@ -1,4 +1,4 @@
-@layer maz-ui-animations {
+@layer maz:ui-animations {
   .maz-scale-enter-active,
   .maz-scale-leave-active {
     opacity: 1;

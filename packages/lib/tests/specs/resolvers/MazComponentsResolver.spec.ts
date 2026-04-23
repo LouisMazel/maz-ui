@@ -49,17 +49,17 @@ describe('given MazComponentsResolver', () => {
   })
 
   describe('when resolving component with kebab-case name', () => {
-    it('then it should resolve maz-btn to MazBtn', () => {
+    it('then it should resolve maz:btn to MazBtn', () => {
       const resolver = MazComponentsResolver()
-      const result = resolver.resolve('maz-btn')
+      const result = resolver.resolve('maz:btn')
 
       expect(result).toBeDefined()
       expect(result?.from).toBe('maz-ui/components/MazBtn')
     })
 
-    it('then it should resolve maz-input to MazInput', () => {
+    it('then it should resolve maz:input to MazInput', () => {
       const resolver = MazComponentsResolver()
-      const result = resolver.resolve('maz-input')
+      const result = resolver.resolve('maz:input')
 
       expect(result).toBeDefined()
       expect(result?.from).toBe('maz-ui/components/MazInput')
@@ -113,7 +113,7 @@ describe('given MazComponentsResolver', () => {
 
     it('then it should resolve kebab-case component names', () => {
       const resolver = MazComponentsResolver()
-      const result = resolver.resolve('maz-dialog')
+      const result = resolver.resolve('maz:dialog')
 
       expect(result).toBeDefined()
       expect(result?.from).toBe('maz-ui/components/MazDialog')
@@ -131,7 +131,7 @@ describe('given MazComponentsResolver', () => {
 
     it('then it should resolve kebab-case multi-word components', () => {
       const resolver = MazComponentsResolver()
-      const result = resolver.resolve('maz-input-number')
+      const result = resolver.resolve('maz:input-number')
 
       expect(result).toBeDefined()
       expect(result?.from).toBe('maz-ui/components/MazInputNumber')

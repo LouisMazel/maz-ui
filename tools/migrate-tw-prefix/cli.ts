@@ -2,7 +2,7 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { glob } from 'glob'
-import { transformCssFile, transformVueFile } from './transform'
+import { transformCssFile, transformText, transformVueFile } from './transform'
 
 interface CliOptions {
   dryRun: boolean
@@ -52,14 +52,26 @@ File types processed:
 
 function processFile(filePath: string, dryRun: boolean): boolean {
   const original = readFileSync(filePath, 'utf8')
-  const transformed = filePath.endsWith('.vue')
-    ? transformVueFile(original)
-    : transformCssFile(original)
+
+  let transformed: string
+  if (filePath.endsWith('.vue')) {
+    transformed = transformVueFile(original)
+  }
+  else if (filePath.endsWith('.css')) {
+    transformed = transformCssFile(original)
+  }
+  else {
+    transformed = transformText(original)
+  }
 
   if (transformed === original) return false
 
   if (!dryRun) writeFileSync(filePath, transformed, 'utf8')
   return true
+}
+
+function globExtensions(): string[] {
+  return ['**/*.vue', '**/*.css', '**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts']
 }
 
 async function run(): Promise<void> {
@@ -71,7 +83,7 @@ async function run(): Promise<void> {
 
   for (const root of roots) {
     const absoluteRoot = resolve(repoRoot, root)
-    const files = await glob(['**/*.vue', '**/*.css'], {
+    const files = await glob(globExtensions(), {
       cwd: absoluteRoot,
       absolute: true,
       ignore: ['**/node_modules/**', '**/dist/**'],

@@ -151,7 +151,7 @@ describe('given MazReadMore component', () => {
         },
       })
 
-      expect(wrapper.find('maz-link-stub').exists()).toBe(false)
+      expect(wrapper.find('maz:link-stub').exists()).toBe(false)
     })
   })
 
@@ -304,7 +304,7 @@ describe('given MazReadMore component', () => {
         },
       })
 
-      expect(wrapper.find('maz-link-stub').exists()).toBe(false)
+      expect(wrapper.find('maz:link-stub').exists()).toBe(false)
     })
   })
 

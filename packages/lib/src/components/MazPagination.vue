@@ -158,7 +158,7 @@ function setPageNumber(page: number) {
           :size="size"
           @click="setPageNumber(1)"
         >
-          <span class="maz-sr-only">
+          <span class="maz:sr-only">
             <!--
               @slot Accessible text for screen reader of the previous page button
                 @binding {number} page - first page number
@@ -179,7 +179,7 @@ function setPageNumber(page: number) {
           :size="size"
           @click="setPageNumber(previousPage)"
         >
-          <span class="maz-sr-only">
+          <span class="maz:sr-only">
             <!--
               @slot Accessible text for screen reader of the first page button
                 @binding {number} page - previous page number
@@ -211,7 +211,7 @@ function setPageNumber(page: number) {
             :class="{ active: page.isActive }"
             @click="page.isActive ? undefined : setPageNumber(page.number)"
           >
-            <span class="maz-sr-only">
+            <span class="maz:sr-only">
               <!--
                 @slot Accessible text for screen reader of the current page button
                   @binding {number} page - current page number
@@ -239,7 +239,7 @@ function setPageNumber(page: number) {
           :size="size"
           @click="setPageNumber(nextPage)"
         >
-          <span class="maz-sr-only">
+          <span class="maz:sr-only">
             <!--
               @slot Accessible text for screen reader of the next page button
                 @binding {number} page - next page number
@@ -248,7 +248,7 @@ function setPageNumber(page: number) {
               {{ t('pagination.screenReader.nextPage', { page: nextPage }) }}
             </slot>
           </span>
-          <MazChevronLeft class="-maz-rotate-180" />
+          <MazChevronLeft class="maz:-rotate-180" />
         </MazBtn>
       </li>
 
@@ -260,7 +260,7 @@ function setPageNumber(page: number) {
           :size="size"
           @click="setPageNumber(totalPages)"
         >
-          <span class="maz-sr-only">
+          <span class="maz:sr-only">
             <!--
               @slot Accessible text for screen reader of the last page button
                 @binding {number} page - last page number
@@ -269,7 +269,7 @@ function setPageNumber(page: number) {
               {{ t('pagination.screenReader.lastPage', { page: totalPages }) }}
             </slot>
           </span>
-          <MazChevronDoubleLeft class="-maz-rotate-180" />
+          <MazChevronDoubleLeft class="maz:-rotate-180" />
         </MazBtn>
       </li>
     </ul>
@@ -279,10 +279,10 @@ function setPageNumber(page: number) {
 <style scoped>
 .m-pagination {
   ul {
-    @apply !maz-m-0 maz-inline-flex !maz-list-none maz-items-center maz-gap-2 -maz-space-x-px !maz-p-0 maz-align-top maz-text-base;
+    @apply maz:m-0! maz:inline-flex maz:list-none! maz:items-center maz:gap-2 maz:-space-x-px maz:p-0! maz:align-top maz:text-base;
 
     li {
-      @apply maz-m-0;
+      @apply maz:m-0;
     }
   }
 }

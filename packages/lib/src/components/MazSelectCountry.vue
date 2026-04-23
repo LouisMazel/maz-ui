@@ -308,8 +308,8 @@ const flagUrl = computed(() => {
             :alt="modelValue"
             width="20"
             height="20"
-            class="maz-size-5 maz-rounded"
-            img-class="maz-size-5 maz-rounded"
+            class="maz:size-5 maz:rounded"
+            img-class="maz:size-5 maz:rounded"
           />
         </slot>
       </template>
@@ -340,17 +340,17 @@ const flagUrl = computed(() => {
                 :alt="`${option.name} flag`"
                 width="20"
                 height="20"
-                class="maz-size-5 maz-rounded"
-                img-class="maz-rounded maz-h-5 maz-w-5"
+                class="maz:size-5 maz:rounded"
+                img-class="maz:rounded maz:h-5 maz:w-5"
               />
               <span v-else class="m-select-country__select__item__list-flag">
                 {{ option.code }}
               </span>
             </slot>
           </span>
-          <div class="maz-flex maz-flex-1 maz-gap-2 maz-truncate" :class="{ 'maz-font-semibold': isSelected }">
+          <div class="maz:flex maz:flex-1 maz:gap-2 maz:truncate" :class="{ 'maz:font-semibold': isSelected }">
             <slot v-if="showCodeInList" name="country-list-code" :option="option" :is-selected="isSelected">
-              <span class="maz-text-muted">
+              <span class="maz:text-muted">
                 {{ option.code }}
               </span>
             </slot>
@@ -368,7 +368,7 @@ const flagUrl = computed(() => {
 
 <style scoped>
 .m-select-country {
-  @apply maz-relative maz-inline-flex;
+  @apply maz:relative maz:inline-flex;
 
   &__country-flag {
     position: absolute;
@@ -381,7 +381,7 @@ const flagUrl = computed(() => {
     top: 1.25rem;
     cursor: pointer;
 
-    @apply maz-flex maz-flex-center;
+    @apply maz:flex maz:flex-center;
 
     &.--should-have-bottom-flag {
       bottom: 2px;
@@ -390,18 +390,18 @@ const flagUrl = computed(() => {
 
   &__select {
     &:deep(.m-input-label) {
-      @apply !maz-p-0;
+      @apply maz:p-0!;
     }
 
     &__item {
-      @apply maz-w-full maz-text-sm maz-flex maz-items-center maz-gap-2 maz-truncate;
+      @apply maz:w-full maz:text-sm maz:flex maz:items-center maz:gap-2 maz:truncate;
 
       &__flag-container {
-        @apply maz-flex maz-flex-center;
+        @apply maz:flex maz:flex-center;
       }
 
       &__list-flag {
-        @apply maz-text-primary-foreground/80 maz-text-xs maz-size-5 maz-flex maz-flex-center maz-rounded-full maz-bg-primary-500 maz-leading-none;
+        @apply maz:text-primary-foreground/80 maz:text-xs maz:size-5 maz:flex maz:flex-center maz:rounded-full maz:bg-primary-500 maz:leading-none;
       }
     }
   }

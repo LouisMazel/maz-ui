@@ -175,7 +175,7 @@ describe('MazInput extended coverage', () => {
 
     it('should apply destructive border style when not focused', () => {
       const wrapper = getWrapper({ error: true })
-      expect(wrapper.find('.m-input-wrapper.maz-border-destructive').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.maz:border-destructive').exists()).toBe(true)
     })
   })
 
@@ -187,7 +187,7 @@ describe('MazInput extended coverage', () => {
 
     it('should apply success border style when not focused', () => {
       const wrapper = getWrapper({ success: true })
-      expect(wrapper.find('.m-input-wrapper.maz-border-success').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.maz:border-success').exists()).toBe(true)
     })
   })
 
@@ -199,7 +199,7 @@ describe('MazInput extended coverage', () => {
 
     it('should apply warning border style when not focused', () => {
       const wrapper = getWrapper({ warning: true })
-      expect(wrapper.find('.m-input-wrapper.maz-border-warning').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.maz:border-warning').exists()).toBe(true)
     })
   })
 
@@ -255,22 +255,22 @@ describe('MazInput extended coverage', () => {
 
     it('should apply destructive color to assistive text when error', () => {
       const wrapper = getWrapper({ assistiveText: 'Invalid', error: true })
-      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz-text-destructive-600')
+      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz:text-destructive-600')
     })
 
     it('should apply success color to assistive text when success', () => {
       const wrapper = getWrapper({ assistiveText: 'Valid', success: true })
-      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz-text-success-600')
+      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz:text-success-600')
     })
 
     it('should apply warning color to assistive text when warning', () => {
       const wrapper = getWrapper({ assistiveText: 'Caution', warning: true })
-      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz-text-warning-600')
+      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz:text-warning-600')
     })
 
     it('should apply muted color when no state', () => {
       const wrapper = getWrapper({ assistiveText: 'Help text' })
-      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz-text-muted')
+      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz:text-muted')
     })
   })
 
@@ -563,7 +563,7 @@ describe('MazInput extended coverage', () => {
       })
       expect(wrapper.find('.m-input.--has-state').exists()).toBe(true)
       expect(wrapper.find('.m-input-bottom-text').text()).toBe('Invalid email format')
-      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz-text-destructive-600')
+      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz:text-destructive-600')
     })
 
     it('should handle success with topLabel and block', () => {
@@ -627,21 +627,21 @@ describe('MazInput extended coverage', () => {
   describe('border style when error', () => {
     it('should apply the destructive state border', () => {
       const wrapper = getWrapper({ error: true, color: 'primary' })
-      expect(wrapper.find('.m-input-wrapper.maz-border-destructive').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.maz:border-destructive').exists()).toBe(true)
     })
   })
 
   describe('border style when success', () => {
     it('should apply the success state border', () => {
       const wrapper = getWrapper({ success: true, color: 'info' })
-      expect(wrapper.find('.m-input-wrapper.maz-border-success').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.maz:border-success').exists()).toBe(true)
     })
   })
 
   describe('border style when warning', () => {
     it('should apply the warning state border', () => {
       const wrapper = getWrapper({ warning: true, color: 'secondary' })
-      expect(wrapper.find('.m-input-wrapper.maz-border-warning').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.maz:border-warning').exists()).toBe(true)
     })
   })
 

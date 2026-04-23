@@ -100,10 +100,10 @@ const fullSrc = computed(() => {
 
 onMounted(() => {
   if ((icon && src) || (icon && name)) {
-    console.error('[maz-ui](MazIcon) you should provide "name" or "src" as prop')
+    console.error('[maz:ui](MazIcon) you should provide "name" or "src" as prop')
   }
   if (!icon && !name && !src) {
-    console.error('[maz-ui](MazIcon) you should provide "icon", "name" or "src" as prop')
+    console.error('[maz:ui](MazIcon) you should provide "icon", "name" or "src" as prop')
   }
 })
 
@@ -266,23 +266,23 @@ watchEffect(() => {
   height: 1em !important;
 
   &--xs {
-    @apply maz-text-base;
+    @apply maz:text-base;
   }
 
   &--sm {
-    @apply maz-text-xl;
+    @apply maz:text-xl;
   }
 
   &--md {
-    @apply maz-text-2xl;
+    @apply maz:text-2xl;
   }
 
   &--lg {
-    @apply maz-text-4xl;
+    @apply maz:text-4xl;
   }
 
   &--xl {
-    @apply maz-text-5xl;
+    @apply maz:text-5xl;
   }
 }
 </style>

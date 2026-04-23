@@ -255,22 +255,22 @@ onBeforeUnmount(() => observer?.disconnect())
 
 <style scoped>
 .m-circular-progress-bar {
-  @apply maz-relative maz-inline-flex maz-h-[1em] maz-w-[1em] maz-flex-center;
+  @apply maz:relative maz:inline-flex maz:h-[1em] maz:w-[1em] maz:flex-center;
 
   .outer {
-    @apply maz-flex maz-h-full maz-w-full maz-rounded-full maz-flex-center;
+    @apply maz:flex maz:h-full maz:w-full maz:rounded-full maz:flex-center;
   }
 
   .inner {
-    @apply maz-flex maz-h-[0.85em] maz-w-[0.85em] maz-rounded-full maz-flex-center;
+    @apply maz:flex maz:h-[0.85em] maz:w-[0.85em] maz:rounded-full maz:flex-center;
 
     :deep(> *) {
-      @apply maz-text-[0.25em];
+      @apply maz:text-[0.25em];
     }
   }
 
   svg {
-    @apply maz-absolute -maz-rotate-90;
+    @apply maz:absolute maz:-rotate-90;
 
     circle {
       will-change: stroke-dashoffset;

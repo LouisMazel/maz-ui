@@ -306,77 +306,77 @@ html.--backdrop-present.--has-scrollbar {
 
 <style scoped>
 .m-backdrop {
-  @apply maz-fixed maz-inset-0 maz-z-default-backdrop maz-bg-overlay/25 maz-backdrop-blur;
+  @apply maz:fixed maz:inset-0 maz:z-default-backdrop maz:bg-overlay/25 maz:backdrop-blur;
 
   transition-behavior: allow-discrete;
 
   &.--persistent {
     & .m-backdrop-content {
-      @apply maz-cursor-default;
+      @apply maz:cursor-default;
     }
   }
 
   &-container {
-    @apply maz-fixed maz-inset-0 maz-z-default-backdrop;
+    @apply maz:fixed maz:inset-0 maz:z-default-backdrop;
   }
 
   &-wrapper {
-    @apply maz-fixed maz-inset-0 maz-overflow-y-auto;
+    @apply maz:fixed maz:inset-0 maz:overflow-y-auto;
   }
 
   &-content {
-    @apply maz-flex maz-min-h-full tab-s:maz-items-center tab-s:maz-p-0 maz-items-end;
+    @apply maz:flex maz:min-h-full maz:tab-s:items-center maz:tab-s:p-0 maz:items-end;
 
     &.--padding {
-      @apply maz-p-4;
+      @apply maz:p-4;
     }
 
     &.--justify-center {
-      @apply maz-justify-center;
+      @apply maz:justify-center;
     }
 
     &.--justify-end {
-      @apply maz-justify-end;
+      @apply maz:justify-end;
     }
 
     &.--justify-start {
-      @apply maz-justify-start;
+      @apply maz:justify-start;
     }
 
     &.--justify-space-between {
-      @apply maz-justify-between;
+      @apply maz:justify-between;
     }
 
     &.--justify-space-around {
-      @apply maz-justify-around;
+      @apply maz:justify-around;
     }
 
     &.--align-center {
-      @apply maz-items-center;
+      @apply maz:items-center;
     }
 
     &.--align-end {
-      @apply maz-items-end;
+      @apply maz:items-end;
     }
 
     &.--align-start {
-      @apply maz-items-start;
+      @apply maz:items-start;
     }
 
     > * {
-      @apply maz-cursor-default;
+      @apply maz:cursor-default;
     }
   }
 
   &.--variant-bottom-sheet {
     .m-backdrop-content {
-      @apply maz-fixed maz-inset-0;
+      @apply maz:fixed maz:inset-0;
     }
   }
 
   &.--variant-drawer {
     .m-backdrop-content {
-      @apply maz-fixed maz-inset-0;
+      @apply maz:fixed maz:inset-0;
     }
   }
 

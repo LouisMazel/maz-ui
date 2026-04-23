@@ -55,7 +55,7 @@ const spinnerStyle = computed<CSSProperties>(() => {
 
 <style scoped>
 .m-spinner {
-  @apply maz-animate-spin maz-fill-current;
-  @apply maz-m-0 !important;
+  @apply maz-animate-spin maz:fill-current;
+  @apply maz:m-0 !important;
 }
 </style>

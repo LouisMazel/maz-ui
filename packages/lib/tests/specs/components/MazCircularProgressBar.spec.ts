@@ -32,7 +32,7 @@ describe('mazCircularProgressBar', () => {
 
   it('updates percentage and triggers animation', async () => {
     await wrapper.setProps({ suffix: '%' })
-    expect(wrapper.find('.maz-sr-only').text()).toContain('50%')
+    expect(wrapper.find('.maz\\:sr-only').text()).toContain('50%')
 
     await wrapper.setProps({ percentage: 75 })
 
@@ -47,20 +47,20 @@ describe('mazCircularProgressBar', () => {
       autoColor: true,
     })
 
-    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-destructive')
+    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz:destructive')
 
     await wrapper.setProps({
       percentage: 50,
       autoColor: true,
     })
 
-    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-warning')
+    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz:warning')
 
     await wrapper.setProps({
       percentage: 100,
       autoColor: true,
     })
 
-    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz-success')
+    expect(wrapper.find('svg stop').attributes('stop-color')).toContain('maz:success')
   })
 })

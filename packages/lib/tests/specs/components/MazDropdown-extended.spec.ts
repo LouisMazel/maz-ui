@@ -206,12 +206,12 @@ describe('MazDropdown extended coverage', () => {
 
   describe('when size is configured', () => {
     it.each([
-      { size: 'xl' as const, expected: 'maz-text-lg' },
-      { size: 'lg' as const, expected: 'maz-text-base' },
-      { size: 'md' as const, expected: 'maz-text-base' },
-      { size: 'sm' as const, expected: 'maz-text-base' },
-      { size: 'xs' as const, expected: 'maz-text-sm' },
-      { size: 'mini' as const, expected: 'maz-text-sm' },
+      { size: 'xl' as const, expected: 'maz:text-lg' },
+      { size: 'lg' as const, expected: 'maz:text-base' },
+      { size: 'md' as const, expected: 'maz:text-base' },
+      { size: 'sm' as const, expected: 'maz:text-base' },
+      { size: 'xs' as const, expected: 'maz:text-sm' },
+      { size: 'mini' as const, expected: 'maz:text-sm' },
     ])('should apply $expected class when size is $size', async ({ size, expected }) => {
       const wrapper = await getWrapper({ size })
       const icon = wrapper.find('.m-dropdown__icon')
@@ -333,7 +333,7 @@ describe('MazDropdown extended coverage', () => {
   describe('when screenReaderDescription is provided', () => {
     it('should render the screen reader description', async () => {
       const wrapper = await getWrapper({ screenReaderDescription: 'Toggle navigation menu' })
-      const srOnly = wrapper.find('.maz-sr-only')
+      const srOnly = wrapper.find('.maz\\:sr-only')
       expect(srOnly.text()).toContain('Toggle navigation menu')
     })
   })

@@ -214,18 +214,18 @@ const isOpen = defineModel({
 
 const iconClassSize = computed(() => {
   if (size === 'xl')
-    return 'maz-text-lg'
+    return 'maz:text-lg'
   if (size === 'lg')
-    return 'maz-text-base'
+    return 'maz:text-base'
   if (size === 'md')
-    return 'maz-text-base'
+    return 'maz:text-base'
   if (size === 'sm')
-    return 'maz-text-base'
+    return 'maz:text-base'
   if (size === 'xs')
-    return 'maz-text-sm'
+    return 'maz:text-sm'
   if (size === 'mini')
-    return 'maz-text-sm'
-  return 'maz-text-lg'
+    return 'maz:text-sm'
+  return 'maz:text-lg'
 })
 
 function setDropdown(value: boolean) {
@@ -365,7 +365,7 @@ watch(
         tabindex="-1"
         class="m-dropdown__wrapper"
       >
-        <span :id="`${instanceId}-labelspan`" class="maz-sr-only">
+        <span :id="`${instanceId}-labelspan`" class="maz:sr-only">
           <!--
             @slot description for screen readers (hidden from visual display)
             Provides accessibility information about the dropdown functionality
@@ -513,63 +513,63 @@ watch(
 
 <style scoped>
   .m-dropdown {
-  @apply maz-relative maz-inline-flex maz-flex-col maz-items-start maz-align-top;
+  @apply maz:relative maz:inline-flex maz:flex-col maz:items-start maz:align-top;
 
   &__wrapper {
-    @apply maz-outline-none focus:maz-bg-surface-600 dark:focus:maz-bg-surface-400 maz-rounded maz-size-full;
+    @apply maz:outline-hidden maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400 maz:rounded maz:size-full;
   }
 
   &__icon {
-    @apply maz-transition-transform maz-duration-200 maz-ease-in-out;
+    @apply maz:transition-transform maz:duration-200 maz:ease-in-out;
 
     &.--open {
-      @apply maz-rotate-180;
+      @apply maz:rotate-180;
     }
   }
 }
 
 .m-dropdown__menu {
-  @apply maz-flex maz-min-h-max maz-min-w-max maz-flex-col maz-gap-0.5 maz-overflow-auto maz-p-2;
+  @apply maz:flex maz:min-h-max maz:min-w-max maz:flex-col maz:gap-0.5 maz:overflow-auto maz:p-2;
 
   .menuitem {
-    @apply maz-outline-none maz-cursor-pointer maz-whitespace-nowrap maz-rounded maz-px-4 maz-py-2 maz-text-start
-     maz-transition-colors maz-duration-300 maz-ease-in-out focus:maz-bg-surface-600 dark:focus:maz-bg-surface-400 hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400;
+    @apply maz:outline-hidden maz:cursor-pointer maz:whitespace-nowrap maz:rounded maz:px-4 maz:py-2 maz:text-start
+     maz:transition-colors maz:duration-300 maz:ease-in-out maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
 
     &.menuitem__button {
       &:disabled {
-        @apply maz-cursor-not-allowed maz-opacity-50;
+        @apply maz:cursor-not-allowed maz:opacity-50;
       }
 
       &.--primary {
-        @apply maz-text-primary hover:maz-text-primary-600;
+        @apply maz:text-primary maz:hover:text-primary-600;
       }
 
       &.--secondary {
-        @apply maz-text-secondary hover:maz-text-secondary-600;
+        @apply maz:text-secondary maz:hover:text-secondary-600;
       }
 
       &.--info {
-        @apply maz-text-info hover:maz-text-info-600;
+        @apply maz:text-info maz:hover:text-info-600;
       }
 
       &.--warning {
-        @apply maz-text-warning-600 hover:maz-text-warning-600;
+        @apply maz:text-warning-600 maz:hover:text-warning-600;
       }
 
       &.--destructive {
-        @apply maz-text-destructive-600 hover:maz-text-destructive-600;
+        @apply maz:text-destructive-600 maz:hover:text-destructive-600;
       }
 
       &.--success {
-        @apply maz-text-success-600 hover:maz-text-success-600;
+        @apply maz:text-success-600 maz:hover:text-success-600;
       }
 
       &.--contrast {
-        @apply maz-text-contrast hover:maz-text-contrast-600;
+        @apply maz:text-contrast maz:hover:text-contrast-600;
       }
 
       &.--accent {
-        @apply maz-text-accent hover:maz-text-accent-600;
+        @apply maz:text-accent maz:hover:text-accent-600;
       }
     }
   }

@@ -102,44 +102,44 @@ const customStyles = computed(() => {
     role="status"
     aria-live="polite"
   >
-    <span class="maz-sr-only">{{ loadingTextValue }}</span>
+    <span class="maz:sr-only">{{ loadingTextValue }}</span>
   </div>
 </template>
 
 <style scoped>
 .m-skeleton {
-  @apply maz-relative maz-overflow-hidden maz-bg-gradient-to-r maz-from-surface-800/40 maz-via-surface-700/30 maz-to-surface-800/40 dark:maz-from-surface-700/30 dark:maz-via-surface-600/20 dark:maz-to-surface-700/30;
+  @apply maz:relative maz:overflow-hidden maz:bg-linear-to-r maz:from-surface-800/40 maz:via-surface-700/30 maz:to-surface-800/40 maz:dark:from-surface-700/30 maz:dark:via-surface-600/20 maz:dark:to-surface-700/30;
 
   background-size: 400% 100%;
 
   /* Modifiers */
   &--rounded-none {
-    @apply maz-rounded-none;
+    @apply maz:rounded-none;
   }
 
   &--rounded-sm {
-    @apply maz-rounded-sm;
+    @apply maz:rounded-xs;
   }
 
   &--rounded-md {
-    @apply maz-rounded-md;
+    @apply maz:rounded-md;
   }
 
   &--rounded-base {
-    @apply maz-rounded;
+    @apply maz:rounded;
   }
 
   &--rounded-lg {
-    @apply maz-rounded-lg;
+    @apply maz:rounded-lg;
   }
 
   &--rounded-xl {
-    @apply maz-rounded-xl;
+    @apply maz:rounded-xl;
   }
 
   &--rounded-full,
   &--circle {
-    @apply maz-rounded-full;
+    @apply maz:rounded-full;
   }
 
   /* Animation */

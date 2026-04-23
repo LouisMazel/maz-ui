@@ -136,17 +136,17 @@ const cssVars = computed<CSSProperties>(() => ({
 
 <style scoped>
 .m-ticker {
-  @apply maz-flex maz-flex-col maz-max-w-full maz-max-h-full;
+  @apply maz:flex maz:flex-col maz:max-w-full maz:max-h-full;
 
   &.--horizontal {
-    @apply maz-flex-row;
+    @apply maz:flex-row;
 
     & .m-ticker-wrapper {
-      @apply maz-flex maz-overflow-hidden;
+      @apply maz:flex maz:overflow-hidden;
     }
 
     & .m-ticker-content {
-      @apply maz-flex maz-shrink-0 maz-items-center;
+      @apply maz:flex maz:shrink-0 maz:items-center;
 
       animation: m-ticker-scroll-x var(--m-ticker-duration) var(--m-ticker-timing) infinite;
       padding-inline-end: var(--m-ticker-gap);
@@ -154,18 +154,18 @@ const cssVars = computed<CSSProperties>(() => ({
     }
 
     & .m-ticker-overlay {
-      @apply maz-top-0 maz-bottom-0;
+      @apply maz:top-0 maz:bottom-0;
 
       width: var(--m-ticker-overlay-size);
 
       &.--start {
-        @apply maz-left-0;
+        @apply maz:left-0;
 
         background: linear-gradient(to right, hsl(var(--maz-background)), transparent);
       }
 
       &.--end {
-        @apply maz-right-0;
+        @apply maz:right-0;
 
         background: linear-gradient(to left, hsl(var(--maz-background)), transparent);
       }
@@ -174,11 +174,11 @@ const cssVars = computed<CSSProperties>(() => ({
 
   &.--vertical {
     & .m-ticker-wrapper {
-      @apply maz-flex maz-flex-col maz-overflow-hidden;
+      @apply maz:flex maz:flex-col maz:overflow-hidden;
     }
 
     & .m-ticker-content {
-      @apply maz-shrink-0 maz-flex maz-flex-col;
+      @apply maz:shrink-0 maz:flex maz:flex-col;
 
       animation: m-ticker-scroll-y var(--m-ticker-duration) var(--m-ticker-timing) infinite;
       padding-block-end: var(--m-ticker-gap);
@@ -186,18 +186,18 @@ const cssVars = computed<CSSProperties>(() => ({
     }
 
     & .m-ticker-overlay {
-      @apply maz-left-0 maz-right-0;
+      @apply maz:left-0 maz:right-0;
 
       height: var(--m-ticker-overlay-size);
 
       &.--start {
-        @apply maz-top-0;
+        @apply maz:top-0;
 
         background: linear-gradient(to bottom, hsl(var(--maz-background)), transparent);
       }
 
       &.--end {
-        @apply maz-bottom-0;
+        @apply maz:bottom-0;
 
         background: linear-gradient(to top, hsl(var(--maz-background)), transparent);
       }
@@ -222,11 +222,11 @@ const cssVars = computed<CSSProperties>(() => ({
 }
 
 .m-ticker-wrapper {
-  @apply maz-relative;
+  @apply maz:relative;
 }
 
 .m-ticker-overlay {
-  @apply maz-pointer-events-none maz-absolute maz-z-10;
+  @apply maz:pointer-events-none maz:absolute maz:z-10;
 }
 
 @keyframes m-ticker-scroll-x {

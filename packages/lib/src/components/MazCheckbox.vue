@@ -130,22 +130,22 @@ const checkboxSize = computed(() => {
 const checkIconSize = computed(() => {
   switch (props.size) {
     case 'xl': {
-      return 'maz-text-2xl'
+      return 'maz:text-2xl'
     }
     case 'lg': {
-      return 'maz-text-xl'
+      return 'maz:text-xl'
     }
     case 'sm': {
-      return 'maz-text-base'
+      return 'maz:text-base'
     }
     case 'xs': {
-      return 'maz-text-sm'
+      return 'maz:text-sm'
     }
     case 'mini': {
-      return 'maz-text-xs'
+      return 'maz:text-xs'
     }
     default: {
-      return 'maz-text-lg'
+      return 'maz:text-lg'
     }
   }
 })
@@ -271,10 +271,10 @@ function onFocus(event: FocusEvent) {
 
 <style scoped>
 .m-checkbox {
-  @apply maz-relative maz-inline-flex maz-items-center maz-gap-2 maz-align-top maz-outline-none;
+  @apply maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden;
 
   .check-icon {
-    @apply maz-scale-0 maz-transition-transform maz-duration-300 maz-ease-in-out;
+    @apply maz-scale-0 maz:transition-transform maz:duration-300 maz:ease-in-out;
 
     :deep(path) {
       stroke-width: 2.5;
@@ -282,14 +282,14 @@ function onFocus(event: FocusEvent) {
   }
 
   > span {
-    @apply maz-relative maz-flex maz-rounded-md maz-border maz-border-divider dark:maz-border-divider-400 maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center;
+    @apply maz:relative maz:flex maz:rounded-md maz:border maz:border-divider maz:dark:border-divider-400 maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center;
   }
 
   input {
-    @apply maz-hidden;
+    @apply maz:hidden;
 
     &:not(:checked) ~ span {
-      @apply maz-bg-surface dark:maz-bg-surface-400;
+      @apply maz:bg-surface maz:dark:bg-surface-400;
     }
 
     &:checked ~ span {
@@ -302,57 +302,57 @@ function onFocus(event: FocusEvent) {
     }
 
     &:disabled ~ span {
-      @apply maz-bg-surface-600 dark:maz-bg-surface-300;
+      @apply maz:bg-surface-600 maz:dark:bg-surface-300;
     }
   }
 
   &:has(input:disabled) {
-    @apply maz-cursor-not-allowed maz-text-muted;
+    @apply maz:cursor-not-allowed maz:text-muted;
 
     svg {
-      @apply !maz-text-muted;
+      @apply maz:text-muted!;
     }
 
     input:checked ~ span {
-      @apply maz-border-divider;
+      @apply maz:border-divider;
 
       .check-icon {
-        @apply maz-text-muted;
+        @apply maz:text-muted;
       }
     }
   }
 
   &:not(:has(input:disabled)) {
-    @apply maz-cursor-pointer;
+    @apply maz:cursor-pointer;
 
     &:hover > span,
     &:focus > span,
     &.--error > span,
     &.--warning > span,
     &.--success > span {
-      @apply maz-transition-all maz-duration-300 maz-ease-in-out;
+      @apply maz:transition-all maz:duration-300 maz:ease-in-out;
 
       box-shadow: 0 0 0 0.125rem var(--checkbox-box-shadow-color);
     }
   }
 
   &__text {
-    @apply maz-flex maz-flex-col maz-gap-0;
+    @apply maz:flex maz:flex-col maz:gap-0;
   }
 
   &__hint {
-    @apply maz-text-sm maz-text-muted;
+    @apply maz:text-sm maz:text-muted;
 
     &.--error {
-      @apply maz-text-destructive-600;
+      @apply maz:text-destructive-600;
     }
 
     &.--success {
-      @apply maz-text-success-600;
+      @apply maz:text-success-600;
     }
 
     &.--warning {
-      @apply maz-text-warning-600;
+      @apply maz:text-warning-600;
     }
   }
 
@@ -360,7 +360,7 @@ function onFocus(event: FocusEvent) {
   &.--warning,
   &.--success {
     > span {
-      @apply maz-transition-all maz-duration-300 maz-ease-in-out;
+      @apply maz:transition-all maz:duration-300 maz:ease-in-out;
     }
   } */
 }
