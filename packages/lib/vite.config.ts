@@ -1,6 +1,7 @@
 import { extname, relative, resolve } from 'node:path'
 import { codecovVitePlugin } from '@codecov/vite-plugin'
 import { getExternalDependencies } from '@maz-ui/vite-config'
+import tailwindcss from '@tailwindcss/vite'
 import Vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
 import { defineConfig } from 'vite'
@@ -45,6 +46,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       Vue(),
+      tailwindcss(),
       SvgLoader(),
       libInjectCss(),
       dts({
