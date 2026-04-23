@@ -32,14 +32,12 @@
     }
   }
 
-  @media (width >= 576px) {
-    :root {
+  :root {
+    @variant mob-l {
       --maz-container-padding-value: var(--maz-container-padding-tablet);
     }
-  }
 
-  @media (width >= 1024px) {
-    :root {
+    @variant lap-s {
       --maz-container-padding-value: var(--maz-container-padding-desktop);
     }
   }
