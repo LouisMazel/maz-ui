@@ -17,7 +17,7 @@ head:
 - 🛠️ **TypeScript-first** - Full type safety out of the box
 - 🚀 **Performance** - Tree-shaking benefits and maximum optimization
 - 🎨 **Theming system** - Customizable themes and dark mode support (4 presets available) - [@maz-ui/themes](./themes.md)
-- 💨 **Tailwind CSS v4 bridge** - Use the full design system (colors, scales, radius, breakpoints, `flex-center`, `cap-f`, `padded-container` …) in your own Tailwind setup - [Tailwind integration](./tailwind.md)
+- 💨 **Optional Tailwind bridge** - Already have a Tailwind v4 setup? Expose your active maz-ui theme tokens (colors, radius, breakpoints, custom utilities) to your own Tailwind config - [Tailwind integration](./tailwind.md)
 - 🌐 **Internationalization** - Locale management and tree-shakable imports - [@maz-ui/translations](./translations.md)
 - 🎨 **Icon library** - Comprehensive collection of SVG icons designed for performance and flexibility (400+ icons) - [@maz-ui/icons](./icons.md)
 - 🧰 **Nuxt module** - Effortless Maz-UI integration with auto-imports - [@maz-ui/nuxt](./nuxt.md)

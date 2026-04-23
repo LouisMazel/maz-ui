@@ -58,41 +58,6 @@ export default defineNuxtConfig({
 
 That's it! 🎉 All components and composables are now auto-imported and ready to use.
 
-### Set up Tailwind CSS v4
-
-Maz-UI v5 is built on Tailwind CSS v4. `@nuxtjs/tailwindcss` (v6.x) does not yet support v4, so wire the Vite plugin directly and import the Maz-UI bridge from your own CSS entry.
-
-::: code-group
-```bash [pnpm]
-pnpm add -D tailwindcss @tailwindcss/vite
-```
-```bash [npm]
-npm install -D tailwindcss @tailwindcss/vite
-```
-:::
-
-```ts
-// nuxt.config.ts
-import tailwindcss from '@tailwindcss/vite'
-
-export default defineNuxtConfig({
-  modules: ['@maz-ui/nuxt'],
-  css: ['~/css/main.css'],
-  vite: {
-    plugins: [tailwindcss()],
-  },
-})
-```
-
-```css
-/* ~/css/main.css */
-@import "tailwindcss";
-@import "maz-ui/tailwindcss/theme.css";
-@import "maz-ui/tailwindcss/utilities.css";
-```
-
-Full documentation: [Tailwind CSS integration](./tailwind.md).
-
 ## Quick Start
 
 ### Instant Usage
