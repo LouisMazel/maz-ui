@@ -35,6 +35,47 @@ yarn add maz-ui @maz-ui/themes
 
 :::
 
+### Set up Tailwind CSS v4
+
+Since v5, Maz-UI is built on Tailwind v4 CSS-first. You need your own Tailwind entry that imports the Maz-UI bridge so that `bg-primary`, `rounded`, `shadow-elevation`, etc. are available in your app templates.
+
+Install the plugin:
+
+::: code-group
+```bash [pnpm]
+pnpm add -D tailwindcss @tailwindcss/vite
+```
+```bash [npm]
+npm install -D tailwindcss @tailwindcss/vite
+```
+:::
+
+Wire it through Vite:
+
+```ts
+// vite.config.ts
+import tailwindcss from '@tailwindcss/vite'
+import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [vue(), tailwindcss()],
+})
+```
+
+Create the entry:
+
+```css
+/* src/tailwind.css */
+@import "tailwindcss";
+@import "maz-ui/tailwindcss/theme.css";
+@import "maz-ui/tailwindcss/utilities.css";
+```
+
+Import it in `main.ts` **before** your own styles.
+
+Full documentation: [Tailwind CSS integration](./tailwind.md).
+
 ### Install plugin
 
 ```ts
