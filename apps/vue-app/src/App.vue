@@ -117,13 +117,13 @@ function showToast() {
       },
     }"
   >
-    <div class="maz-flex maz-h-full maz-flex-col">
-      <nav class="maz-flex maz-h-16 maz-flex-none maz-items-center maz-gap-4 maz-border-b maz-p-4 maz-padded-container">
+    <div class="maz:flex maz:h-full maz:flex-col">
+      <nav class="maz:flex maz:h-16 maz:flex-none maz:items-center maz:gap-4 maz:border-b maz:p-4 maz:padded-container">
         <MazLink v-for="route in routes" :key="route.path" :to="route.path" color="contrast">
           {{ capitalize(route.name) }}
         </MazLink>
 
-        <div class="maz-flex-1" />
+        <div class="maz:flex-1" />
         <ThemeSwitcher />
         <LangSwitcher />
         <MazBtn @click="showToast">
@@ -131,7 +131,7 @@ function showToast() {
         </MazBtn>
       </nav>
 
-      <main class="maz-flex-1 maz-overflow-y-auto maz-py-8 maz-padded-container">
+      <main class="maz:flex-1 maz:overflow-y-auto maz:py-8 maz:padded-container">
         <RouterView />
       </main>
     </div>

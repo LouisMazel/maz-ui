@@ -1,3 +1,5 @@
+@reference "../tailwind.css";
+
 html,
 body,
 #app {
@@ -7,5 +9,5 @@ body,
   font-size: var(--maz-base-font-size);
   font-family: var(--maz-font-family);
 
-  @apply maz-text-foreground maz-bg-surface maz-h-dvh;
+  @apply maz:text-foreground maz:bg-surface maz:h-dvh;
 }
