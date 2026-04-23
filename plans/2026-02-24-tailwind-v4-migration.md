@@ -808,6 +808,12 @@ Vérifier :
 
 ## Phase 5 : Apps — Migration
 
+**Statut** : ✅ done — les 3 apps buildent.
+
+- 5.1 `apps/vue-app` ✅ — commit `363b30154`, build 1.82s.
+- 5.2 `apps/docs` ✅ — commit `053ae478c`, build 43.16s. VitePress nettoyé (postcss chain simplifié, main.css réécrit en v4, `hsl(var(--x))` → `var(--x)` + `color-mix()` pour alpha).
+- 5.3 `apps/nuxt-app` ✅ — commit `7f6375956`, build <1s. `@nuxtjs/tailwindcss` retiré (v6 pas compat v4), remplacé par `@tailwindcss/vite`.
+
 ### 5.1 apps/vue-app
 
 **Fichier** : `/apps/vue-app/tailwind.config.ts` → **Supprimer**
