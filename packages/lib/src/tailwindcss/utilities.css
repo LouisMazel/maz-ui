@@ -1,0 +1,31 @@
+/*
+ * Maz-UI custom utilities.
+ *
+ * @utility is the v4 replacement for the v3 JS plugin's addUtilities(). These
+ * utilities are internal to the library components (which reference them via
+ * maz:flex-center, maz:padded-container, etc.) and are also exposed to
+ * consumers that import maz-ui/tailwindcss/utilities.css.
+ *
+ * cap-f::first-letter uses a pseudo-element so it cannot live inside @utility
+ * (the directive does not support pseudo-elements). It stays as a regular
+ * class declaration at the bottom of the file.
+ */
+
+@utility flex-center {
+  align-items: center;
+  justify-content: center;
+}
+
+@utility padded-container-no-p {
+  width: 100%;
+  padding-inline: calc(50% - var(--maz-container-max-width) / 2);
+}
+
+@utility padded-container {
+  width: 100%;
+  padding-inline: var(--maz-container-padding);
+}
+
+.cap-f::first-letter {
+  text-transform: capitalize;
+}

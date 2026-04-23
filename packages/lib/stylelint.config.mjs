@@ -12,9 +12,9 @@ export default {
   // add your custom config here
   // https://stylelint.io/user-guide/configuration
   rules: {
-    'at-rule-no-unknown': [true, { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each', 'for', 'use'] }],
+    'at-rule-no-unknown': [true, { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each', 'for', 'use', 'theme', 'utility', 'source', 'custom-variant', 'variant', 'reference', 'starting-style'] }],
     'at-rule-no-deprecated': [true, { ignoreAtRules: ['apply'] }],
-    'scss/at-rule-no-unknown': [true, { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each', 'for', 'use'] }],
+    'scss/at-rule-no-unknown': [true, { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each', 'for', 'use', 'theme', 'utility', 'source', 'custom-variant', 'variant', 'reference', 'starting-style'] }],
     'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['deep'] }],
     'selector-class-pattern': undefined,
     'no-descending-specificity': undefined,
