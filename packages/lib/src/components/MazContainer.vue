@@ -161,10 +161,10 @@ const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
   }
 
   &.--bordered {
-    @apply maz:border;
+    @apply maz:border maz:border-divider;
 
     & .m-container__header {
-      @apply maz:border-b;
+      @apply maz:border-b maz:border-divider;
     }
   }
 
