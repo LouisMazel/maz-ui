@@ -110,7 +110,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
             class="maz-relative maz-w-full"
             content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
           >
-            <!-- <DemoDashboardPage :delay="2000" class="maz-hidden tab-m:maz-block" /> -->
+            <DemoDashboardPage :delay="2000" class="maz-hidden tab-m:maz-block" />
             <div class="dark:maz-hidden">
               <MazLazyImg class="maz-block tab-m:!maz-hidden maz-w-full maz-min-h-40" src="/img/demo/dashboard-light.png" alt="Maz-UI" />
             </div>
@@ -127,7 +127,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
             class="maz-relative maz-w-full"
             content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
           >
-            <!-- <DemoProductPage class="maz-hidden tab-m:maz-block" /> -->
+            <DemoProductPage class="maz-hidden tab-m:maz-block" />
             <div class="dark:maz-hidden">
               <MazLazyImg class="maz-block tab-m:!maz-hidden maz-w-full maz-min-h-40" src="/img/demo/product-page-light.png" alt="Maz-UI" />
             </div>
@@ -144,7 +144,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
             class="maz-relative maz-w-full"
             content-class="maz-flex maz-flex-col maz-gap-2 maz-items-start"
           >
-            <!-- <DemoAuthPage class="maz-hidden tab-m:maz-flex" /> -->
+            <DemoAuthPage class="maz-hidden tab-m:maz-flex" />
             <div class="dark:maz-hidden">
               <MazLazyImg class="maz-block tab-m:!maz-hidden maz-w-full maz-min-h-40" src="/img/demo/auth-page-light.png" alt="Maz-UI" />
             </div>
