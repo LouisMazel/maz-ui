@@ -46,6 +46,8 @@
     "typecheck": "tsc --noEmit --skipLibCheck",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest watch",
+    "test:unit:coverage": "vitest run --coverage",
+
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix"
   },
