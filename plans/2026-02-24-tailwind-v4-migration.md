@@ -822,8 +822,8 @@ Vérifier :
 
 ```css
 @import 'tailwindcss' prefix(maz);
-@import 'maz-ui/src/tailwindcss/theme.css';
-@import 'maz-ui/src/tailwindcss/utilities.css';
+@import 'maz-ui/tailwindcss/theme.css';
+@import 'maz-ui/tailwindcss/utilities.css';
 
 /* Overrides app-specific si nécessaire */
 ```

@@ -49,8 +49,8 @@ onMounted(async () => {
 
 <script lang="ts" setup>
   import { onMounted } from 'vue'
-  import { sleep } from 'maz-ui/src/index'
-  import { useWait } from 'maz-ui/src/composables/useWait'
+  import { sleep } from 'maz-ui'
+  import { useWait } from 'maz-ui/composables/useWait'
 
   const wait = useWait()
 

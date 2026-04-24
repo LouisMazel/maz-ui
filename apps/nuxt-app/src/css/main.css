@@ -1,5 +1,5 @@
 @import 'tailwindcss' prefix(maz);
-@import 'maz-ui/src/css/index.css';
+@import 'maz-ui/css/index.css';
 @import 'maz-ui/tailwindcss/theme.css';
 @import 'maz-ui/tailwindcss/utilities.css';
 

@@ -300,7 +300,7 @@ By default, the textarea automatically expands as the user types. You can disabl
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { useToast } from 'maz-ui/src/composables/useToast'
+  import { useToast } from 'maz-ui/composables/useToast'
 
   const mainValue = ref()
   const value = ref()

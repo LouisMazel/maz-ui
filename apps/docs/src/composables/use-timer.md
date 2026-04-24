@@ -41,8 +41,8 @@ This composable can be used in Vue components to handle timeouts in a flexible a
 </div>
 
 <script lang="ts" setup>
-  import { useTimer } from 'maz-ui/src/composables/useTimer'
-  import { useToast } from 'maz-ui/src/composables/useToast'
+  import { useTimer } from 'maz-ui/composables/useTimer'
+  import { useToast } from 'maz-ui/composables/useToast'
 
   const toast = useToast()
 

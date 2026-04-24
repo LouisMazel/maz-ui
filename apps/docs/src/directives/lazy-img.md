@@ -163,7 +163,7 @@ export type vLazyImgBindingValue = string | vLazyImgBindingOptions
 ```
 
 <script lang="ts" setup>
-  import { vLazyImg, type vLazyImgBindingValue } from 'maz-ui/src/directives/vLazyImg'
+  import { vLazyImg, type vLazyImgBindingValue } from 'maz-ui/directives/vLazyImg'
   import { ref } from 'vue'
 
   const lazyBinding: vLazyImgBindingValue = {

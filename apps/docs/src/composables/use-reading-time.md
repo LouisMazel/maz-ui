@@ -105,7 +105,7 @@ Time to read this page: <strong>{{ durationSelector }} minutes</strong>
 
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue'
-  import { useReadingTime } from 'maz-ui/src/composables/useReadingTime'
+  import { useReadingTime } from 'maz-ui/composables/useReadingTime'
 
   const velocity = ref()
 

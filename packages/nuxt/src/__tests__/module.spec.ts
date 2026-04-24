@@ -183,12 +183,12 @@ describe('nuxt module', () => {
     describe('css', () => {
       it('should inject main CSS when injectMainCss is true', () => {
         const { nuxt } = callSetup({ css: { injectMainCss: true } })
-        expect(nuxt.options.css).toContain('maz-ui/dist/css/main.css')
+        expect(nuxt.options.css).toContain('maz-ui/styles')
       })
 
       it('should not inject main CSS when injectMainCss is false', () => {
         const { nuxt } = callSetup({ css: { injectMainCss: false } })
-        expect(nuxt.options.css).not.toContain('maz-ui/dist/css/main.css')
+        expect(nuxt.options.css).not.toContain('maz-ui/styles')
       })
     })
 

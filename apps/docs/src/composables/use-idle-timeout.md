@@ -139,8 +139,8 @@ onBeforeUnmount(() => {
 <script lang="ts" setup>
   import { onMounted, ref, onBeforeUnmount } from 'vue'
 
-  import { useIdleTimeout } from 'maz-ui/src/composables/useIdleTimeout'
-  import { useDialog } from 'maz-ui/src/composables/useDialog'
+  import { useIdleTimeout } from 'maz-ui/composables/useIdleTimeout'
+  import { useDialog } from 'maz-ui/composables/useDialog'
 
   const dialog = useDialog()
 

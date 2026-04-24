@@ -510,7 +510,7 @@ Available sizes: `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`
 <script lang="ts" setup>
   import { ref } from 'vue'
   import {competitions} from './competitions.ts'
-  import { vTooltip } from 'maz-ui/src/directives/vTooltip.ts'
+  import { vTooltip } from 'maz-ui/directives/vTooltip'
 
   const selectedIds = ref<string[]>(['0262672d-7c7a-4d30-866e-edb88b5a5336'])
   const searchQuery = ref<string>()

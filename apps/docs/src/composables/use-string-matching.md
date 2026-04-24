@@ -54,7 +54,7 @@ const { score, isMatching } = useStringMatching(string1, string2)
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { useStringMatching } from 'maz-ui/src/composables/useStringMatching'
+  import { useStringMatching } from 'maz-ui/composables/useStringMatching'
 
   const string1 = ref<string>('maz-ui')
   const string2 = ref<string>('méz-ui')

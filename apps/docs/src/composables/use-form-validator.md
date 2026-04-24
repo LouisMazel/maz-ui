@@ -1196,9 +1196,9 @@ const { value } = useFormField<string>('email', {
 
 <script lang="ts" setup>
 import { ref, useTemplateRef } from 'vue'
-import { useFormValidator } from 'maz-ui/src/composables/useFormValidator'
-import { useFormField } from 'maz-ui/src/composables/useFormField'
-import { useToast } from 'maz-ui/src/composables/useToast'
+import { useFormValidator } from 'maz-ui/composables/useFormValidator'
+import { useFormField } from 'maz-ui/composables/useFormField'
+import { useToast } from 'maz-ui/composables/useToast'
 import { sleep } from '@maz-ui/utils'
 import {
   string,

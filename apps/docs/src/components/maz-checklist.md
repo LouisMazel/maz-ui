@@ -301,7 +301,7 @@ You can replace the default search function by providing a custom search functio
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { useDisplayNames } from 'maz-ui/src/composables/useDisplayNames'
+  import { useDisplayNames } from 'maz-ui/composables/useDisplayNames'
 
   // First demo variables
   const query = ref()
