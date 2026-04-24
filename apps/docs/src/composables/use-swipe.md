@@ -97,7 +97,7 @@ onUnmounted(() => {
 ```
 
 <script lang="ts" setup>
-import { useSwipe } from 'maz-ui/src/composables/useSwipe'
+import { useSwipe } from 'maz-ui/composables/useSwipe'
 import { onMounted, onUnmounted, ref } from 'vue'
 
 const swipeContainer = ref<HTMLDivElement>()

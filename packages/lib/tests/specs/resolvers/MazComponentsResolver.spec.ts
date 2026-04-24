@@ -72,7 +72,7 @@ describe('given MazComponentsResolver', () => {
       const result = resolver.resolve('MazBtn')
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/src/components/MazBtn.vue')
+      expect(result?.from).toBe('maz-ui/components/MazBtn')
     })
   })
 

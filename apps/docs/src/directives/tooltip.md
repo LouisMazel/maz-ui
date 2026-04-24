@@ -475,6 +475,6 @@ type VTooltipBindingValue
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { vTooltip } from 'maz-ui/src/directives/vTooltip'
+  import { vTooltip } from 'maz-ui/directives/vTooltip'
   const open = ref(true)
 </script>

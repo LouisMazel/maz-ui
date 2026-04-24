@@ -99,7 +99,7 @@ describe('given MazModulesResolver', () => {
       const result = resolver('capitalize') as ResolverResult
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/src/index.ts')
+      expect(result?.from).toBe('maz-ui.ts')
       expect(result?.name).toBe('capitalize')
       expect(result?.as).toBe('Capitalize')
     })
@@ -109,7 +109,7 @@ describe('given MazModulesResolver', () => {
       const result = resolver('useBreakpoints') as ResolverResult
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/src/composables/index.ts')
+      expect(result?.from).toBe('maz-ui/composables.ts')
       expect(result?.name).toBe('useBreakpoints')
       expect(result?.as).toBe('useBreakpoints')
     })
@@ -143,7 +143,7 @@ describe('given MazModulesResolver', () => {
       const result = resolver('formatDate') as ResolverResult
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/src/index.ts')
+      expect(result?.from).toBe('maz-ui.ts')
       expect(result?.name).toBe('formatDate')
       expect(result?.as).toBe('customFormatDate')
     })
@@ -153,7 +153,7 @@ describe('given MazModulesResolver', () => {
       const result = resolver('useTimer') as ResolverResult
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/src/composables/index.ts')
+      expect(result?.from).toBe('maz-ui/composables.ts')
       expect(result?.name).toBe('useTimer')
       expect(result?.as).toBe('useCustomTimer')
     })

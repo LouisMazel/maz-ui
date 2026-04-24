@@ -553,7 +553,7 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
   import { MazCheck } from '@maz-ui/icons/MazCheck'
   import { MazHome } from '@maz-ui/icons/MazHome'
   import { MazCommandLine } from '@maz-ui/icons/MazCommandLine'
-  import MazSpinner from 'maz-ui/src/components/MazSpinner.vue'
+  import MazSpinner from 'maz-ui/components/MazSpinner'
 
   const colors = [
     'primary',

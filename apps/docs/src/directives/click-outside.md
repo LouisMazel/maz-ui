@@ -253,7 +253,7 @@ Please refer to the [Nuxt module documentation](./../guide/nuxt.md) for more inf
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { vClickOutside } from 'maz-ui/src/directives/vClickOutside'
+  import { vClickOutside } from 'maz-ui/directives/vClickOutside'
 
   const hasClikedOutside = ref(false)
   const hasClickedOutsideWithIgnore = ref(false)

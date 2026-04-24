@@ -217,7 +217,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     // CSS
 
     if (moduleOptions.css.injectMainCss) {
-      nuxt.options.css.unshift('maz-ui/dist/css/main.css')
+      nuxt.options.css.unshift('maz-ui/styles')
     }
 
     // Plugins

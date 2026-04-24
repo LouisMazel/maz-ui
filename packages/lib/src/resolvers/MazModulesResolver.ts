@@ -1,8 +1,8 @@
 import type { ResolverFunction } from 'unplugin-auto-import/types'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 
-type Modules = keyof typeof import('maz-ui/src/index.ts')
-type Composables = keyof typeof import('maz-ui/src/composables/index.ts')
+type Modules = keyof typeof import('maz-ui.ts')
+type Composables = keyof typeof import('maz-ui/composables.ts')
 
 const composablesMap: Record<Composables, true> = {
   useInjectStrict: true,
@@ -71,15 +71,13 @@ const modulesMap: Record<Modules, true> = {
 
 const useRegex = /^use/
 
-export function MazModulesResolver(options?: { devMode?: boolean, prefix?: string }): ResolverFunction {
+export function MazModulesResolver(options?: { prefix?: string }): ResolverFunction {
   return (name) => {
-    const { devMode = false, prefix = '' } = options || {}
-    const base = devMode ? 'maz-ui/src' : 'maz-ui'
-    const extension = devMode ? '/index.ts' : ''
+    const { prefix = '' } = options || {}
 
     if (modulesMap[name as keyof typeof modulesMap] === true) {
       return {
-        from: `${base}${extension}`,
+        from: 'maz-ui',
         name,
         as: `${prefix.toLowerCase()}${capitalize(name)}`,
       }
@@ -87,7 +85,7 @@ export function MazModulesResolver(options?: { devMode?: boolean, prefix?: strin
 
     if (composablesMap[name as keyof typeof composablesMap] === true) {
       return {
-        from: `${base}/composables${extension}`,
+        from: 'maz-ui/composables',
         name,
         as: `use${capitalize(prefix)}${name.replace(useRegex, '')}`,
       }

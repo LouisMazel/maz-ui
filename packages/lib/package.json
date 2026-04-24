@@ -115,6 +115,10 @@
       "module": "./dist/tailwindcss/index.js",
       "default": "./dist/tailwindcss/index.js"
     },
+    "./css/index.css": "./src/css/index.css",
+    "./css/reset.css": "./src/css/reset.css",
+    "./css/animation.css": "./src/css/animation.css",
+    "./css/padded-container-vars.css": "./src/css/padded-container-vars.css",
     "./tailwindcss/theme.css": "./src/tailwindcss/theme.css",
     "./tailwindcss/theme-colors.css": "./src/tailwindcss/theme-colors.css",
     "./tailwindcss/theme-radius.css": "./src/tailwindcss/theme-radius.css",
@@ -139,7 +143,7 @@
       "types": "./dist/css/aos.css.d.ts",
       "default": "./dist/css/aos.css"
     },
-    "./*": "./*"
+    "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
