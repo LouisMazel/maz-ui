@@ -22,25 +22,34 @@
   },
   "exports": {
     ".": {
+      "monorepo:dev": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "module": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./helpers": {
+      "monorepo:dev": "./src/helpers/index.ts",
       "types": "./dist/helpers/index.d.ts",
       "import": "./dist/helpers/index.js",
       "module": "./dist/helpers/index.js",
       "default": "./dist/helpers/index.js"
     },
     "./helpers/*": {
+      "monorepo:dev": "./src/helpers/*.ts",
       "types": "./dist/helpers/*.d.ts",
       "import": "./dist/helpers/*.js",
       "module": "./dist/helpers/*.js",
       "default": "./dist/helpers/*.js"
     },
-    "./ts-helpers": "./dist/ts-helpers/index.d.ts",
-    "./ts-helpers/*": "./dist/ts-helpers/*.d.ts"
+    "./ts-helpers": {
+      "monorepo:dev": "./src/ts-helpers/index.ts",
+      "types": "./dist/ts-helpers/index.d.ts"
+    },
+    "./ts-helpers/*": {
+      "monorepo:dev": "./src/ts-helpers/*.ts",
+      "types": "./dist/ts-helpers/*.d.ts"
+    }
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
