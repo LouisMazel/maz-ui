@@ -46,6 +46,11 @@ export default defineConfig(({ mode }) => {
   const isProduction = mode === 'production'
   return {
     plugins: [
+      // Pre-flatten postcss-nested `&-child` syntax in SFCs BEFORE
+      // @tailwindcss/vite intercepts. Required only for the lib's own
+      // build because @tailwindcss/vite hooks earlier than css.postcss
+      // and lightningcss can't parse `&-X` concatenation. Consumers do
+      // not need this plugin — they get the already-flattened dist.
       VitePreNestedCss(),
       Vue(),
       tailwindcss(),

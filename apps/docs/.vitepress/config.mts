@@ -1,7 +1,7 @@
 import type { Plugin } from 'postcss'
-import type { Plugin as VitePlugin } from 'vite'
 import type { DefaultTheme, HeadConfig, UserConfig } from 'vitepress'
 import { dirname, join } from 'node:path'
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
 import {
@@ -10,7 +10,6 @@ import {
   mazUi,
 } from '@maz-ui/themes'
 import tailwindcssPostcss from '@tailwindcss/postcss'
-import postcss from 'postcss'
 import postcssNested from 'postcss-nested'
 import postcssUrl from 'postcss-url'
 import svgLoader from 'vite-svg-loader'
@@ -19,26 +18,10 @@ import { head, nav, sidebar } from './configs/index.mjs'
 
 import { getOgImage } from './og-image'
 
-// Flatten postcss-nested `&-child` concatenation BEFORE @tailwindcss/vite
-// sees the CSS — its internal lightningcss engine only speaks native CSS
-// nesting, and leaves `&-sm`/`&-loader-container`/etc. as garbled selectors.
-// Needed because .vitepress/theme/index.ts imports `maz-ui/src/*` directly,
-// so raw SFC styles pass through this Vitepress pipeline.
-function PreNestedCss(): VitePlugin {
-  const processor = postcss([postcssNested()])
-  return {
-    name: 'maz-ui:pre-nested-css',
-    enforce: 'pre',
-    async transform(code, id) {
-      if (!/\.vue\?.*type=style/.test(id) && !id.endsWith('.css'))
-        return
-      if (!code.includes('&'))
-        return
-      const { css } = await processor.process(code, { from: id, to: id })
-      return { code: css, map: null }
-    },
-  }
-}
+// VitePress sets NODE_ENV=development for `vitepress dev` and =production
+// for `vitepress build`. Use that to toggle the `monorepo:dev` resolve
+// condition so dev loads maz-ui src/ with HMR and prod consumes the dist.
+const isDev = process.env.NODE_ENV !== 'production'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -137,6 +120,14 @@ export default defineConfig<DefaultTheme.Config>({
   } satisfies DefaultTheme.Config,
 
   vite: {
+    // Resolve `monorepo:dev` first when developing so we consume maz-ui's
+    // raw src/ (with HMR), and fall back to the published dist for prod
+    // builds. Same trick as accor-core-library.
+    resolve: {
+      conditions: isDev
+        ? ['monorepo:dev', 'import', 'browser', 'module', 'default', 'require']
+        : ['import', 'browser', 'module', 'default', 'require'],
+    },
     build: {
       rollupOptions: {
         external: ['node:child_process', 'colorette'],
@@ -146,7 +137,6 @@ export default defineConfig<DefaultTheme.Config>({
       chunkSizeWarningLimit: 1000,
     },
     plugins: [
-      PreNestedCss(),
       svgLoader(),
       {
         name: 'redirect-plugin',
@@ -178,6 +168,11 @@ export default defineConfig<DefaultTheme.Config>({
       postcss: {
         plugins: [
           postcssUrl() as Plugin,
+          // Flatten postcss-nested `&-child` syntax in dev only — it ships
+          // in raw maz-ui SFCs loaded via the `monorepo:dev` resolve
+          // condition. Prod consumes the already-flattened dist, so it's
+          // a no-op there.
+          ...(isDev ? [postcssNested() as Plugin] : []),
           tailwindcssPostcss() as Plugin,
           postcssIsolateStyles({
             includeFiles: [/vp-doc\.css/],

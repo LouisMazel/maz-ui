@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { ComponentPublicInstance } from 'vue'
+import MazDialog from 'maz-ui/components/MazDialog'
 import { useFormField, useFormValidator, useToast } from 'maz-ui/composables'
-import MazDialog from 'maz-ui/src/components/MazDialog.vue'
 import { boolean, email, nonEmpty, pipe, string } from 'valibot'
 import { ref } from 'vue'
 
