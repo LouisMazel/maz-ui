@@ -1,5 +1,5 @@
 import MazTabsBar from '@components/MazTabsBar.vue'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
 
@@ -453,7 +453,7 @@ describe('MazTabsBar branch coverage', () => {
   })
 
   describe('badge rendering', () => {
-    it('renders badge when item has badge property', () => {
+    it('renders badge when item has badge property', async () => {
       const wrapper = mountTabsBar({
         items: [
           { label: 'Tab 1', badge: { content: 5 } },
@@ -461,8 +461,12 @@ describe('MazTabsBar branch coverage', () => {
         ],
       })
 
-      // The badge component is async, but the item should still render
+      // MazBadge is a defineAsyncComponent — wait for its module to resolve
+      // so the default slot (showing badge.content) actually renders.
+      await flushPromises()
+
       expect(wrapper.findAll('.m-tabs-bar__item').length).toBe(2)
+      expect(wrapper.html()).toContain('5')
     })
 
     it('does not render badge for items without badge', () => {
