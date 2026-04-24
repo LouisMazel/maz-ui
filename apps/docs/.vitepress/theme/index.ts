@@ -19,9 +19,9 @@ import ComponentDemo from './components/ComponentDemo.vue'
 import Layout from './components/Layout.vue'
 
 import NpmBadge from './components/NpmBadge.vue'
-import 'maz-ui/aos-styles'
+import 'maz-ui/aos.css'
 
-import 'maz-ui/styles'
+import 'maz-ui/style.css'
 import './main.css'
 
 export default {

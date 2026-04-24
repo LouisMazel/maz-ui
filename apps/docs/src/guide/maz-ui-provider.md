@@ -26,7 +26,7 @@ The standard approach to initialize Maz-UI is the [`MazUi` plugin](./vue.md#inst
 import { MazUi } from 'maz-ui/plugins/maz-ui'
 import { mazUi } from '@maz-ui/themes/presets/mazUi'
 import { fr } from '@maz-ui/translations'
-import 'maz-ui/styles'
+import 'maz-ui/style.css'
 
 app.use(MazUi, {
   theme: {

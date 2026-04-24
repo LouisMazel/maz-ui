@@ -105,7 +105,7 @@ npm uninstall dropzone
 ```typescript
 // main.ts
 import { createApp } from 'vue'
-import 'maz-ui/css/main.css'
+import 'maz-ui/style.css'
 import App from './App.vue'
 
 createApp(App).mount('#app')
@@ -121,7 +121,7 @@ import { mazUi } from '@maz-ui/themes/presets'
 import { fr } from '@maz-ui/translations'
 
 // Import styles before your CSS
-import 'maz-ui/styles'
+import 'maz-ui/style.css'
 import './style.css'
 
 import App from './App.vue'

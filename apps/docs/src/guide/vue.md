@@ -43,7 +43,7 @@ import { MazUi } from 'maz-ui/plugins/maz-ui'
 import { mazUi } from '@maz-ui/themes'
 import { en } from '@maz-ui/translations/locales'
 
-import 'maz-ui/styles'
+import 'maz-ui/style.css'
 
 app.use(MazUi, {
   theme: {
@@ -74,7 +74,7 @@ import { fr } from '@maz-ui/translations/locales'
 // or import fr from '@maz-ui/translations/locales/fr'
 
 // Import Maz-UI styles before your own CSS
-import 'maz-ui/styles'
+import 'maz-ui/style.css'
 import './style.css'
 
 app.use(MazUi, {
