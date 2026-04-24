@@ -122,6 +122,7 @@
     "./tailwindcss/theme-shadows.css": "./src/tailwindcss/theme-shadows.css",
     "./tailwindcss/theme-z-index.css": "./src/tailwindcss/theme-z-index.css",
     "./tailwindcss/theme-typography.css": "./src/tailwindcss/theme-typography.css",
+    "./tailwindcss/theme-variants.css": "./src/tailwindcss/theme-variants.css",
     "./tailwindcss/utilities.css": "./src/tailwindcss/utilities.css",
     "./tailwindcss/*": {
       "types": "./dist/tailwindcss/*.d.ts",

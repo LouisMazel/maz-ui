@@ -1,0 +1,7 @@
+/*
+ * Wire Tailwind v4's `dark:` variant to the `.dark` class toggled by
+ * `@maz-ui/themes` (setupTheme defaults `darkClass` to `"dark"`). Without
+ * this declaration, v4 falls back to `@media (prefers-color-scheme: dark)`,
+ * which ignores the theme switcher entirely.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
