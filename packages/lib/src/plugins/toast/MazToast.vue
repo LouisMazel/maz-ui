@@ -439,54 +439,54 @@ onMounted(() => {
   &.--info {
     .m-toast__button {
       @apply maz:bg-info maz:text-info-foreground maz:border-info-600 maz:hover:bg-info-600
-        dark:maz:bg-info/10 dark:maz:text-info-400 dark:maz:border-info/20 maz:hover:dark:bg-info/20;
+        maz:dark:bg-info/10 maz:dark:text-info-400 maz:dark:border-info/20 maz:hover:dark:bg-info/20;
     }
 
     & .m-toast__close {
       @apply maz:bg-info maz:text-info-foreground maz:border-info-400 maz:hover:bg-info-600
-        dark:maz:bg-info/10 dark:maz:border-info/20 dark:maz:text-info-600 maz:hover:dark:bg-info/20;
+        maz:dark:bg-info/10 maz:dark:border-info/20 maz:dark:text-info-600 maz:hover:dark:bg-info/20;
     }
   }
 
   &.--success {
     .m-toast__button {
       @apply maz:bg-success maz:text-success-foreground maz:border-success-600 maz:hover:bg-success-600
-        dark:maz:bg-success/10 dark:maz:text-success-400 dark:maz:border-success/20 dark:maz:hover:bg-success/20;
+        maz:dark:bg-success/10 maz:dark:text-success-400 maz:dark:border-success/20 maz:dark:hover:bg-success/20;
     }
 
     & .m-toast__close {
       @apply maz:bg-success maz:text-success-foreground maz:border-success-600 maz:hover:bg-success-600
-        dark:maz:bg-success/10 dark:maz:border-success/20 dark:maz:text-success-600 dark:maz:hover:bg-success/20;
+        maz:dark:bg-success/10 maz:dark:border-success/20 maz:dark:text-success-600 maz:dark:hover:bg-success/20;
     }
   }
 
   &.--warning {
     .m-toast__button {
       @apply maz:bg-warning maz:text-warning-foreground maz:border-warning-600 maz:hover:bg-warning-600
-        dark:maz:bg-warning/10 dark:maz:text-warning-400 dark:maz:border-warning/20 dark:maz:hover:bg-warning/20;
+        maz:dark:bg-warning/10 maz:dark:text-warning-400 maz:dark:border-warning/20 maz:dark:hover:bg-warning/20;
     }
 
     & .m-toast__close {
       @apply maz:bg-warning maz:text-warning-foreground maz:border-warning-600 maz:hover:bg-warning-600
-        dark:maz:bg-warning/10 dark:maz:border-warning/20 dark:maz:text-warning-600 dark:maz:hover:bg-warning/20;
+        maz:dark:bg-warning/10 maz:dark:border-warning/20 maz:dark:text-warning-600 maz:dark:hover:bg-warning/20;
     }
   }
 
   &.--destructive {
     .m-toast__button {
       @apply maz:bg-destructive maz:text-destructive-foreground maz:border-destructive-600 maz:hover:bg-destructive-600
-        dark:maz:bg-destructive/10 dark:maz:text-destructive-400 dark:maz:border-destructive/20 dark:maz:hover:bg-destructive/20;
+        maz:dark:bg-destructive/10 maz:dark:text-destructive-400 maz:dark:border-destructive/20 maz:dark:hover:bg-destructive/20;
     }
 
     & .m-toast__close {
       @apply maz:bg-destructive maz:text-destructive-foreground maz:border-destructive-600 maz:hover:bg-destructive-600
-        dark:maz:bg-destructive/10 dark:maz:border-destructive/20 dark:maz:text-destructive-600 dark:maz:hover:bg-destructive/20;
+        maz:dark:bg-destructive/10 maz:dark:border-destructive/20 maz:dark:text-destructive-600 maz:dark:hover:bg-destructive/20;
     }
   }
 
   &.--contrast {
     .m-toast__button {
-      @apply maz:bg-contrast maz:text-contrast-foreground maz:border-contrast-600/20 maz:hover:bg-contrast-500 dark:maz:hover:bg-contrast/70;
+      @apply maz:bg-contrast maz:text-contrast-foreground maz:border-contrast-600/20 maz:hover:bg-contrast-500 maz:dark:hover:bg-contrast/70;
     }
 
     & .m-toast__close {
