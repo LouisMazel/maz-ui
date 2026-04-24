@@ -4,6 +4,10 @@
 
 @source "./../../src/**/*.{md,vue}";
 @source "./../components/**/*.vue";
+/* Dev: maz-ui is resolved to src/ via the `monorepo:dev` export condition,
+   so Tailwind has to scan those sources to generate the utilities used
+   inside library components (e.g. MazToast's `maz:dark:bg-destructive/10`). */
+@source "../../../../packages/lib/src/**/*.{vue,ts}";
 
 :root {
   /* --vp-layout-top-height: 3.9375rem; */
