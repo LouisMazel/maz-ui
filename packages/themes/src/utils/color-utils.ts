@@ -24,11 +24,10 @@ const LUMINOSITY_OFFSETS = {
   950: -37.5,
 } as const
 
+// Callers (`generateColorScale`) always bypass this function when
+// targetVariant === baseVariant, so the equality branch would be dead
+// code — keeping the function scoped to the two real branches.
 function calculateSaturationMultiplier(baseVariant: number, targetVariant: number, baseSaturation: number): number {
-  if (targetVariant === baseVariant) {
-    return 1
-  }
-
   const saturationFactor = Math.min(baseSaturation / 100, 1)
   const variantDiff = Math.abs(targetVariant - baseVariant)
 
