@@ -6,7 +6,7 @@ description: Expose your active maz-ui theme tokens to your own Tailwind v4 setu
 # {{ $frontmatter.title }}
 
 ::: tip This page is optional
-Maz-UI works without Tailwind. You install the package, import `maz-ui/styles`, and components render with the preset you chose — nothing else is required.
+Maz-UI works without Tailwind. You install the package, import `maz-ui/style.css`, and components render with the preset you chose — nothing else is required.
 
 This page is for consumers who **already have a Tailwind v4 setup of their own** and want their own utilities (`bg-primary`, `rounded`, `md:flex-center`, `shadow-elevation`…) to pull colors, scales, and breakpoints from the **currently-active maz-ui theme**.
 :::

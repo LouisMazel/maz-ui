@@ -115,10 +115,7 @@
       "module": "./dist/tailwindcss/index.js",
       "default": "./dist/tailwindcss/index.js"
     },
-    "./css/index.css": "./src/css/index.css",
-    "./css/reset.css": "./src/css/reset.css",
-    "./css/animation.css": "./src/css/animation.css",
-    "./css/padded-container-vars.css": "./src/css/padded-container-vars.css",
+    "./base.css": "./src/css/index.css",
     "./tailwindcss/theme.css": "./src/tailwindcss/theme.css",
     "./tailwindcss/theme-colors.css": "./src/tailwindcss/theme-colors.css",
     "./tailwindcss/theme-radius.css": "./src/tailwindcss/theme-radius.css",
@@ -133,14 +130,12 @@
       "module": "./dist/tailwindcss/*.js",
       "default": "./dist/tailwindcss/*.js"
     },
-    "./styles": {
+    "./style.css": {
       "monorepo:dev": "./src/tailwindcss/tailwind.css",
-      "types": "./dist/css/main.css.d.ts",
       "default": "./dist/css/main.css"
     },
-    "./aos-styles": {
+    "./aos.css": {
       "monorepo:dev": "./src/plugins/aos/scss/index.scss",
-      "types": "./dist/css/aos.css.d.ts",
       "default": "./dist/css/aos.css"
     },
     "./package.json": "./package.json"

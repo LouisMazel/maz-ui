@@ -23,7 +23,7 @@ import router from './router'
 import { AosPlugin, AosOptions } from 'maz-ui/plugins/aos'
 
 // ⚠️ import necessary CSS file ⚠️
-import 'maz-ui/aos-styles'
+import 'maz-ui/aos.css'
 
 const app = createApp(App)
 
@@ -240,7 +240,7 @@ Should be executed on client side
 
 ```ts
 export default defineNuxtConfig({
-  css: ['maz-ui/aos-styles'],
+  css: ['maz-ui/aos.css'],
 })
 ```
 

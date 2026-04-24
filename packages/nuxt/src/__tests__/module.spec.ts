@@ -183,12 +183,12 @@ describe('nuxt module', () => {
     describe('css', () => {
       it('should inject main CSS when injectMainCss is true', () => {
         const { nuxt } = callSetup({ css: { injectMainCss: true } })
-        expect(nuxt.options.css).toContain('maz-ui/styles')
+        expect(nuxt.options.css).toContain('maz-ui/style.css')
       })
 
       it('should not inject main CSS when injectMainCss is false', () => {
         const { nuxt } = callSetup({ css: { injectMainCss: false } })
-        expect(nuxt.options.css).not.toContain('maz-ui/styles')
+        expect(nuxt.options.css).not.toContain('maz-ui/style.css')
       })
     })
 
@@ -233,17 +233,17 @@ describe('nuxt module', () => {
 
       it('should inject AOS CSS by default when aos is enabled', () => {
         const { nuxt } = callSetup({ plugins: { aos: true } })
-        expect(nuxt.options.css).toContain('maz-ui/aos-styles')
+        expect(nuxt.options.css).toContain('maz-ui/aos.css')
       })
 
       it('should not inject AOS CSS when injectCss is false', () => {
         const { nuxt } = callSetup({ plugins: { aos: { injectCss: false } } })
-        expect(nuxt.options.css).not.toContain('maz-ui/aos-styles')
+        expect(nuxt.options.css).not.toContain('maz-ui/aos.css')
       })
 
       it('should inject AOS CSS when aos is object without injectCss', () => {
         const { nuxt } = callSetup({ plugins: { aos: { delay: 100 } } })
-        expect(nuxt.options.css).toContain('maz-ui/aos-styles')
+        expect(nuxt.options.css).toContain('maz-ui/aos.css')
       })
 
       it('should not add aos plugin when aos is disabled', () => {
