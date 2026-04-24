@@ -115,7 +115,6 @@
       "module": "./dist/tailwindcss/index.js",
       "default": "./dist/tailwindcss/index.js"
     },
-    "./base.css": "./src/css/index.css",
     "./tailwindcss/theme.css": "./src/tailwindcss/theme.css",
     "./tailwindcss/theme-colors.css": "./src/tailwindcss/theme-colors.css",
     "./tailwindcss/theme-radius.css": "./src/tailwindcss/theme-radius.css",

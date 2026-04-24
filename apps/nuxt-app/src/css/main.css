@@ -1,10 +1,19 @@
 @import 'tailwindcss' prefix(maz);
-@import 'maz-ui/base.css';
 @import 'maz-ui/tailwindcss/theme.css';
 @import 'maz-ui/tailwindcss/utilities.css';
 
 @source "./../**/*.vue";
 @source "./../**/*.ts";
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--maz-border);
+  }
+}
 
 /* stylelint-disable selector-id-pattern */
 html {

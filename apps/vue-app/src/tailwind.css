@@ -1,14 +1,26 @@
 /*
  * Vue-app Tailwind v4 entry.
  *
- * Uses the maz-ui design system (Scenario A from Phase 6.4): imports
- * maz-ui's base CSS + theme bridge + custom utilities, then adds @source
- * directives so Tailwind scans this app's own templates too.
+ * Assembled directly because SFCs using `@reference "../tailwind.css"`
+ * need the `@import 'tailwindcss'` and the bridge to be in this file —
+ * Tailwind v4's @reference does not resolve package subpath imports.
+ *
+ * The maz-ui base CSS (reset, animations, container) is loaded as a
+ * side-effect via `import 'maz-ui/style.css'` in `main.ts`.
  */
 @import 'tailwindcss' prefix(maz);
-@import 'maz-ui/base.css';
 @import 'maz-ui/tailwindcss/theme.css';
 @import 'maz-ui/tailwindcss/utilities.css';
 
 @source "./**/*.vue";
 @source "./**/*.ts";
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--maz-border);
+  }
+}

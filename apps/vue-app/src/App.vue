@@ -121,7 +121,7 @@ function showToast() {
     }"
   >
     <div class="maz:flex maz:h-full maz:flex-col">
-      <nav class="maz:flex maz:h-16 maz:flex-none maz:items-center maz:gap-4 maz:border-b maz:p-4 maz:padded-container">
+      <nav class="maz:flex maz:h-16 maz:flex-none maz:items-center maz:gap-4 maz:border-b maz:padded-container">
         <MazLink v-for="route in routes" :key="route.path" :to="route.path" color="contrast">
           {{ capitalize(route.name) }}
         </MazLink>
