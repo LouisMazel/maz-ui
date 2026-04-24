@@ -21,7 +21,6 @@
     "@maz-ui/translations": "workspace:*",
     "@tailwindcss/vite": "^4.2.1",
     "@tsconfig/node22": "^22.0.5",
-    "@vitejs/plugin-vue": "^6.0.6",
     "@vue/tsconfig": "^0.9.1",
     "maz-ui": "workspace:*",
     "npm-run-all2": "^8.0.4",
