@@ -3,6 +3,7 @@ import { AosPlugin, DialogPlugin, ToastPlugin, WaitPlugin } from 'maz-ui/plugins
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import 'maz-ui/style.css'
 import './tailwind.css'
 import './assets/main.css'
 
