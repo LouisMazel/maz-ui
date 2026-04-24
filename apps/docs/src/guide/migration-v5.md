@@ -89,49 +89,6 @@ Both resolve to the same compiled CSS they did in v4, only the subpath key chang
 rg "['\"]maz-ui/(styles|aos-styles)['\"]" src/
 ```
 
-### 3. No more deep imports into `maz-ui/src/…`
-
-v5 removes the `"./*": "./*"` wildcard from the package exports. You must now go through the **public** subpaths. If you were reaching into the sources, rewrite each import:
-
-| v4 (deep) | v5 (public) |
-| --- | --- |
-| `maz-ui/src/components/MazBtn.vue` | `maz-ui/components/MazBtn` |
-| `maz-ui/src/composables/useToast` | `maz-ui/composables/useToast` |
-| `maz-ui/src/composables/index` | `maz-ui/composables` |
-| `maz-ui/src/plugins/dialog` | `maz-ui/plugins/dialog` |
-| `maz-ui/src/directives/vTooltip` | `maz-ui/directives/vTooltip` |
-| `maz-ui/src/tailwindcss/theme.css` | `maz-ui/tailwindcss/theme.css` |
-| `maz-ui/src/index` | `maz-ui` |
-
-```bash
-# Find all deep imports you need to rewrite
-rg "['\"]maz-ui/src/" src/
-```
-
-### 4. Resolvers: the `devMode` flag is gone
-
-`MazComponentsResolver`, `MazDirectivesResolver` and `MazModulesResolver` no longer accept a `devMode` option. The flag existed to toggle between `maz-ui/src/…` (raw sources) and `maz-ui/…` (published build); with the deep imports removed, a single public form is enough.
-
-```ts
-// v4
-Components({
-  resolvers: [
-    MazComponentsResolver({ devMode: true }),
-    MazDirectivesResolver({ devMode: true }),
-  ],
-})
-
-// v5
-Components({
-  resolvers: [
-    MazComponentsResolver(),
-    MazDirectivesResolver(),
-  ],
-})
-```
-
-If you relied on `devMode` to point at the library's raw sources, just drop the flag — the resolvers now always emit the public subpaths and the bundler handles resolution from there.
-
 ## Informational changes (probably no action needed)
 
 ### Preset type: `HSL` → `CSSColor`
