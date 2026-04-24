@@ -72,7 +72,7 @@ describe('given MazDirectivesResolver', () => {
       const result = resolver.resolve('clickOutside')
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/directives.ts')
+      expect(result?.from).toBe('maz-ui/directives')
       expect(result?.as).toBe('vClickOutside')
       expect(result?.name).toBe('vclickOutside')
     })
@@ -106,7 +106,7 @@ describe('given MazDirectivesResolver', () => {
       const result = resolver.resolve('lazyImg')
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/directives.ts')
+      expect(result?.from).toBe('maz-ui/directives')
       expect(result?.as).toBe('vAppLazyImg')
       expect(result?.name).toBe('vlazyImg')
     })

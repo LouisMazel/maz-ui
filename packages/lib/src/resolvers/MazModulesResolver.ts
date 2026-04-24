@@ -1,8 +1,8 @@
 import type { ResolverFunction } from 'unplugin-auto-import/types'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 
-type Modules = keyof typeof import('maz-ui.ts')
-type Composables = keyof typeof import('maz-ui/composables.ts')
+type Modules = keyof typeof import('maz-ui')
+type Composables = keyof typeof import('maz-ui/composables')
 
 const composablesMap: Record<Composables, true> = {
   useInjectStrict: true,
