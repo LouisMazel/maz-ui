@@ -217,7 +217,6 @@
     "@tailwindcss/cli": "^4.2.1",
     "@tailwindcss/postcss": "^4.2.1",
     "@tailwindcss/vite": "^4.2.1",
-    "@vitejs/plugin-vue": "^6.0.6",
     "@vue/compiler-sfc": "^3.5.32",
     "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.5.0",
