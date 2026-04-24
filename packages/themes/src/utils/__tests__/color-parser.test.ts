@@ -100,6 +100,28 @@ describe('parseColor', () => {
     })
   })
 
+  describe('Given a 4-digit hex shorthand with alpha', () => {
+    describe('When parsing', () => {
+      it('drops the alpha channel and expands the rgb part', () => {
+        const result = parseColor('#f00f')
+        expect(result.h).toBeCloseTo(0, 1)
+        expect(result.s).toBeCloseTo(100, 1)
+        expect(result.l).toBeCloseTo(50, 1)
+      })
+    })
+  })
+
+  describe('Given an 8-digit hex with alpha', () => {
+    describe('When parsing', () => {
+      it('drops the alpha channel and keeps the 6-digit rgb', () => {
+        const result = parseColor('#ff0000ff')
+        expect(result.h).toBeCloseTo(0, 1)
+        expect(result.s).toBeCloseTo(100, 1)
+        expect(result.l).toBeCloseTo(50, 1)
+      })
+    })
+  })
+
   describe('Given an rgb() string with modern syntax', () => {
     describe('When parsing', () => {
       it('converts rgb(255 0 0) to red HSL', () => {
