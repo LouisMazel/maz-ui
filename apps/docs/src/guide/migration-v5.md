@@ -15,7 +15,9 @@ Maz-UI is maintained by a single developer. After the v5 stable release, **v4 wi
 
 1. Bump **Node to ≥ 20** and confirm your audience has modern browsers (see below).
 2. If your **custom CSS** uses `hsl(var(--maz-<color>))`, simplify to `var(--maz-<color>)`.
-3. That's it for most apps. Everything else is opt-in.
+3. Rename `import 'maz-ui/styles'` to `import 'maz-ui/style.css'` (and `maz-ui/aos-styles` → `maz-ui/aos.css`).
+4. If you imported anything via `maz-ui/src/...`, switch to the public subpath (e.g. `maz-ui/components/MazBtn`).
+5. That's it for most apps. Everything else is opt-in.
 
 ## Prerequisites
 
@@ -70,6 +72,65 @@ Quick search-and-fix:
 # Find the patterns to update
 rg "hsl\(\s*var\(--maz-" src/
 ```
+
+### 2. CSS subpath renames
+
+The two CSS entry points have been renamed to include their real file extension, so TypeScript treats them as plain side-effect CSS imports (no more `.d.ts` stubs required):
+
+| v4 | v5 |
+| --- | --- |
+| `import 'maz-ui/styles'` | `import 'maz-ui/style.css'` |
+| `import 'maz-ui/aos-styles'` | `import 'maz-ui/aos.css'` |
+
+Both resolve to the same compiled CSS they did in v4, only the subpath key changes.
+
+```bash
+# Find the patterns to update
+rg "['\"]maz-ui/(styles|aos-styles)['\"]" src/
+```
+
+### 3. No more deep imports into `maz-ui/src/…`
+
+v5 removes the `"./*": "./*"` wildcard from the package exports. You must now go through the **public** subpaths. If you were reaching into the sources, rewrite each import:
+
+| v4 (deep) | v5 (public) |
+| --- | --- |
+| `maz-ui/src/components/MazBtn.vue` | `maz-ui/components/MazBtn` |
+| `maz-ui/src/composables/useToast` | `maz-ui/composables/useToast` |
+| `maz-ui/src/composables/index` | `maz-ui/composables` |
+| `maz-ui/src/plugins/dialog` | `maz-ui/plugins/dialog` |
+| `maz-ui/src/directives/vTooltip` | `maz-ui/directives/vTooltip` |
+| `maz-ui/src/tailwindcss/theme.css` | `maz-ui/tailwindcss/theme.css` |
+| `maz-ui/src/index` | `maz-ui` |
+
+```bash
+# Find all deep imports you need to rewrite
+rg "['\"]maz-ui/src/" src/
+```
+
+### 4. Resolvers: the `devMode` flag is gone
+
+`MazComponentsResolver`, `MazDirectivesResolver` and `MazModulesResolver` no longer accept a `devMode` option. The flag existed to toggle between `maz-ui/src/…` (raw sources) and `maz-ui/…` (published build); with the deep imports removed, a single public form is enough.
+
+```ts
+// v4
+Components({
+  resolvers: [
+    MazComponentsResolver({ devMode: true }),
+    MazDirectivesResolver({ devMode: true }),
+  ],
+})
+
+// v5
+Components({
+  resolvers: [
+    MazComponentsResolver(),
+    MazDirectivesResolver(),
+  ],
+})
+```
+
+If you relied on `devMode` to point at the library's raw sources, just drop the flag — the resolvers now always emit the public subpaths and the bundler handles resolution from there.
 
 ## Informational changes (probably no action needed)
 
