@@ -32,72 +32,84 @@
   ],
   "exports": {
     ".": {
+      "monorepo:dev": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "module": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./components": {
+      "monorepo:dev": "./src/components/index.ts",
       "types": "./dist/components/index.d.ts",
       "import": "./dist/components/index.js",
       "module": "./dist/components/index.js",
       "default": "./dist/components/index.js"
     },
     "./components/*": {
+      "monorepo:dev": "./src/components/*.vue",
       "types": "./dist/components/*.vue.d.ts",
       "import": "./dist/components/*.js",
       "module": "./dist/components/*.js",
       "default": "./dist/components/*.js"
     },
     "./composables": {
+      "monorepo:dev": "./src/composables/index.ts",
       "types": "./dist/composables/index.d.ts",
       "import": "./dist/composables/index.js",
       "module": "./dist/composables/index.js",
       "default": "./dist/composables/index.js"
     },
     "./composables/*": {
+      "monorepo:dev": "./src/composables/*.ts",
       "types": "./dist/composables/*.d.ts",
       "import": "./dist/composables/*.js",
       "module": "./dist/composables/*.js",
       "default": "./dist/composables/*.js"
     },
     "./plugins": {
+      "monorepo:dev": "./src/plugins/index.ts",
       "types": "./dist/plugins/index.d.ts",
       "import": "./dist/plugins/index.js",
       "module": "./dist/plugins/index.js",
       "default": "./dist/plugins/index.js"
     },
     "./plugins/*": {
+      "monorepo:dev": "./src/plugins/*.ts",
       "types": "./dist/plugins/*.d.ts",
       "import": "./dist/plugins/*.js",
       "module": "./dist/plugins/*.js",
       "default": "./dist/plugins/*.js"
     },
     "./directives": {
+      "monorepo:dev": "./src/directives/index.ts",
       "types": "./dist/directives/index.d.ts",
       "import": "./dist/directives/index.js",
       "module": "./dist/directives/index.js",
       "default": "./dist/directives/index.js"
     },
     "./directives/*": {
+      "monorepo:dev": "./src/directives/*.ts",
       "types": "./dist/directives/*.d.ts",
       "import": "./dist/directives/*.js",
       "module": "./dist/directives/*.js",
       "default": "./dist/directives/*.js"
     },
     "./resolvers": {
+      "monorepo:dev": "./src/resolvers/index.ts",
       "types": "./dist/resolvers/index.d.ts",
       "import": "./dist/resolvers/index.js",
       "module": "./dist/resolvers/index.js",
       "default": "./dist/resolvers/index.js"
     },
     "./resolvers/*": {
+      "monorepo:dev": "./src/resolvers/*.ts",
       "types": "./dist/resolvers/*.d.ts",
       "import": "./dist/resolvers/*.js",
       "module": "./dist/resolvers/*.js",
       "default": "./dist/resolvers/*.js"
     },
     "./tailwindcss": {
+      "monorepo:dev": "./src/tailwindcss/index.ts",
       "types": "./dist/tailwindcss/index.d.ts",
       "import": "./dist/tailwindcss/index.js",
       "module": "./dist/tailwindcss/index.js",
@@ -118,10 +130,12 @@
       "default": "./dist/tailwindcss/*.js"
     },
     "./styles": {
+      "monorepo:dev": "./src/tailwindcss/tailwind.css",
       "types": "./dist/css/main.css.d.ts",
       "default": "./dist/css/main.css"
     },
     "./aos-styles": {
+      "monorepo:dev": "./src/plugins/aos/scss/index.scss",
       "types": "./dist/css/aos.css.d.ts",
       "default": "./dist/css/aos.css"
     },

@@ -20,6 +20,7 @@
     "@tailwindcss/postcss": "^4.2.1",
     "@tailwindcss/vite": "^4.2.1",
     "nuxt": "^4.4.2",
+    "postcss-nested": "^7.0.2",
     "tailwindcss": "^4.2.1",
     "vue-router": "^5.0.4"
   },
