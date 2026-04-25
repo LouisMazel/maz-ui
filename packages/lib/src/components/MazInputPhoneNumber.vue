@@ -314,6 +314,12 @@ export interface MazInputPhoneNumberProps {
    */
   orientation?: 'row' | 'col' | 'responsive'
   /**
+   * Base URL for country flag images. Defaults to flagcdn.com.
+   * Override this to serve flags from a local path for offline/hybrid apps.
+   * @example "/assets/flags"
+   */
+  flagsBaseUrl?: string
+  /**
    * Meta attributes of the country input
    * @type {Record<string, unknown>}
    * @default { autocomplete: 'off', name: 'country' }
@@ -605,6 +611,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
       :countries-list="customCountriesList"
       :list-position
       :hide-flags
+      :flags-base-url="flagsBaseUrl"
       :search
       :block
       :error="error || (validationError ? !!phoneNumber && !selectedCountry : false)"
