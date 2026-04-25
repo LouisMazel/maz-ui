@@ -145,13 +145,13 @@ function toggleCollapse() {
 
 <template>
   <div
-    class="m-card m-reset-css"
+    class="m-card m-reset-css maz:relative maz:inline-flex maz:max-h-full maz:flex-col maz:bg-surface maz:dark:border maz:dark:border-divider"
     :class="[
       {
         'm-card--linked': isLinked,
         'm-card--no-scale': !scale,
         'maz:shadow-elevation maz:drop-shadow-md': elevation,
-        '--block': block,
+        '--block maz:w-full': block,
         'maz:overflow-hidden': overflowHidden || !collapseOpenModel,
         'maz:rounded': radius,
         'maz:border': bordered,
@@ -161,10 +161,10 @@ function toggleCollapse() {
     <component
       :is="collapsible ? 'button' : 'div'"
       v-if="hasSlotContent(slots.title) || title || collapsible"
-      class="m-card__header maz:border-b maz:border-solid"
+      class="m-card__header maz:flex maz:items-center maz:px-4 maz:py-3 maz:transition-colors maz:duration-200 maz:border-b maz:border-solid"
       :class="[
         collapseOpenModel ? 'maz:rounded-t-md maz:border-divider' : 'maz:border-transparent',
-        { '--is-collapsible': collapsible },
+        { '--is-collapsible maz:hover:bg-surface-600': collapsible },
         { 'maz:justify-end': (!hasSlotContent(slots.title) || !title) && collapsible },
         { 'maz:justify-between': hasSlotContent(slots.title) || title },
       ]"
@@ -194,32 +194,36 @@ function toggleCollapse() {
     <component
       v-bind="wrapperData"
       :is="wrapperData.is"
-      class="m-card__wrapper"
-      :class="[`m-card__wrapper--${orientation}`, { 'm-card__link': isLinked }]"
+      class="m-card__wrapper maz:flex maz:flex-1"
+      :class="[
+        `m-card__wrapper--${orientation}`,
+        orientation === 'row' ? 'maz:flex-row' : orientation === 'row-reverse' ? 'maz:flex-row-reverse' : orientation === 'column' ? 'maz:flex-col' : 'maz:flex-col-reverse',
+        { 'm-card__link maz:cursor-pointer maz:no-underline': isLinked },
+      ]"
     >
-      <div v-if="galleryOptions.images" class="m-card__gallery__wrapper">
+      <div v-if="galleryOptions.images" class="m-card__gallery__wrapper maz:relative maz:flex maz:overflow-hidden">
         <MazGallery
           v-bind="{
             ...galleryOptions,
             zoom: !isLinked,
           }"
-          class="m-card__gallery"
+          class="m-card__gallery maz:flex-1 maz:bg-surface-600 maz:dark:bg-surface-600/40"
         />
       </div>
       <div class="maz:min-w-0 maz:flex-1">
         <component :is="collapsible ? MazExpandAnimation : 'div'" v-model="collapseOpenModel" class="maz:h-full">
           <div
             :class="[wrapperClass, { 'maz:p-4': padding }]"
-            class="m-card__content__wrapper"
+            class="m-card__content__wrapper maz:relative maz:max-w-full maz:h-full maz:flex maz:flex-col maz:gap-2"
           >
-            <div v-if="hasSlotContent(slots['content-title'])" class="m-card__title">
+            <div v-if="hasSlotContent(slots['content-title'])" class="m-card__title maz:text-foreground maz:text-xl">
               <!--
               @slot content-title - The title of the card
               @binding collapse-open - The collapse open state of the card
             -->
               <slot name="content-title" :collapse-open="collapseOpenModel" />
             </div>
-            <div v-if="hasSlotContent(slots['content-subtitle'])" class="m-card__subtitle">
+            <div v-if="hasSlotContent(slots['content-subtitle'])" class="m-card__subtitle maz:text-muted maz:text-lg">
               <!--
               @slot content-subtitle - The subtitle of the card
             -->
@@ -268,45 +272,11 @@ function toggleCollapse() {
 @reference "../tailwindcss/tailwind.css";
 
 .m-card {
-  @apply maz:relative maz:inline-flex maz:max-h-full maz:flex-col maz:bg-surface maz:dark:border maz:dark:border-divider;
-
-  &.--block {
-    @apply maz:w-full;
-  }
-
-  &__header {
-    @apply maz:flex maz:items-center maz:px-4 maz:py-3 maz:transition-colors maz:duration-200;
-
-    &.--is-collapsible {
-      @apply maz:hover:bg-surface-600;
-    }
-  }
-
   &__collapse-icon {
     @apply maz:rotate-0 maz:transition-transform maz:duration-200;
 
     &.--is-open {
       transform: rotate(180deg);
-    }
-  }
-
-  &__wrapper {
-    @apply maz:flex maz:flex-1;
-
-    &--row {
-      @apply maz:flex-row;
-    }
-
-    &--row-reverse {
-      @apply maz:flex-row-reverse;
-    }
-
-    &--column {
-      @apply maz:flex-col;
-    }
-
-    &--column-reverse {
-      @apply maz:flex-col-reverse;
     }
   }
 
@@ -319,36 +289,12 @@ function toggleCollapse() {
 
       transform: scale(1.02);
     }
-
-    & .m-card__wrapper {
-      @apply maz:cursor-pointer maz:no-underline;
-
-      &:hover {
-        @apply maz:no-underline;
-      }
-    }
   }
 
-  &__content__wrapper {
-    @apply maz:relative maz:max-w-full maz:h-full maz:flex maz:flex-col maz:gap-2;
-  }
-
-  &__title,
-  &__title > * {
-    @apply maz:text-foreground maz:text-xl;
-  }
-
-  &__subtitle,
+  &__title > *,
   &__subtitle > * {
-    @apply maz:text-muted maz:text-lg;
-  }
-
-  &__gallery {
-    @apply maz:flex-1 maz:bg-surface-600 maz:dark:bg-surface-600/40;
-  }
-
-  &__gallery__wrapper {
-    @apply maz:relative maz:flex maz:overflow-hidden;
+    color: inherit;
+    font-size: inherit;
   }
 
   &__actions {

@@ -55,8 +55,8 @@ function nextYears() {
 </script>
 
 <template>
-  <div class="maz-picker-year-switcher">
-    <div class="maz-picker-year-switcher__header">
+  <div class="maz-picker-year-switcher maz:absolute maz:inset-0 maz:z-1 maz:flex maz:flex-col maz:bg-surface">
+    <div class="maz-picker-year-switcher__header maz:flex maz:justify-between maz:space-x-2 maz:border-b maz:border-divider maz:p-2">
       <div class="maz:flex maz:space-x-2">
         <MazBtn size="xs" color="transparent" type="button" @click.stop="previousYears">
           <MazChevronLeft class="maz:text-lg" />
@@ -69,7 +69,7 @@ function nextYears() {
         <MazXMark class="maz:text-lg" />
       </MazBtn>
     </div>
-    <div class="maz-picker-year-switcher__main">
+    <div class="maz-picker-year-switcher__main maz:grid maz:flex-1 maz:grid-cols-3 maz:gap-2 maz:overflow-y-auto maz:p-2 maz:flex-center">
       <MazBtn
         v-for="year in years"
         :key="year.label"
@@ -86,19 +86,3 @@ function nextYears() {
     </div>
   </div>
 </template>
-
-<style scoped>
-@reference "../../tailwindcss/tailwind.css";
-
-.maz-picker-year-switcher {
-  @apply maz:absolute maz:inset-0 maz:z-1 maz:flex maz:flex-col maz:bg-surface;
-
-  &__header {
-    @apply maz:flex maz:justify-between maz:space-x-2 maz:border-b maz:border-divider maz:p-2;
-  }
-
-  &__main {
-    @apply maz:grid maz:flex-1 maz:grid-cols-3 maz:gap-2 maz:overflow-y-auto maz:p-2 maz:flex-center;
-  }
-}
-</style>

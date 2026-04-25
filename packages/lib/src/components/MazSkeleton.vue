@@ -62,6 +62,15 @@ const {
 
 const { t } = useTranslations()
 
+const ROUNDED_CLASS = {
+  none: '',
+  sm: 'maz:rounded-xs',
+  md: 'maz:rounded-md',
+  lg: 'maz:rounded-lg',
+  xl: 'maz:rounded-xl',
+  full: 'maz:rounded-full',
+} as const
+
 const ariaLabelValue = computed(() => ariaLabel || t('skeleton.ariaLabel'))
 const loadingTextValue = computed(() => loadingText || t('skeleton.loadingText'))
 
@@ -89,13 +98,11 @@ const customStyles = computed(() => {
 
 <template>
   <div
-    class="m-skeleton m-reset-css"
+    class="m-skeleton m-reset-css maz:relative maz:overflow-hidden maz:bg-linear-to-r maz:from-surface-800/40 maz:via-surface-700/30 maz:to-surface-800/40 maz:dark:from-surface-700/30 maz:dark:via-surface-600/20 maz:dark:to-surface-700/30"
     :class="[
       shape && `m-skeleton--${shape}`,
-      `m-skeleton--rounded-${roundedSize}`,
-      {
-        'm-skeleton--animated': animated,
-      },
+      shape === 'circle' ? 'maz:rounded-full' : ROUNDED_CLASS[roundedSize],
+      { 'm-skeleton--animated': animated },
     ]"
     :style="customStyles"
     :aria-label="ariaLabelValue"
@@ -110,41 +117,8 @@ const customStyles = computed(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-skeleton {
-  @apply maz:relative maz:overflow-hidden maz:bg-linear-to-r maz:from-surface-800/40 maz:via-surface-700/30 maz:to-surface-800/40 maz:dark:from-surface-700/30 maz:dark:via-surface-600/20 maz:dark:to-surface-700/30;
-
   background-size: 400% 100%;
 
-  /* Modifiers */
-  &--rounded-none {
-    @apply maz:rounded-none;
-  }
-
-  &--rounded-sm {
-    @apply maz:rounded-xs;
-  }
-
-  &--rounded-md {
-    @apply maz:rounded-md;
-  }
-
-  &--rounded-base {
-    @apply maz:rounded;
-  }
-
-  &--rounded-lg {
-    @apply maz:rounded-lg;
-  }
-
-  &--rounded-xl {
-    @apply maz:rounded-xl;
-  }
-
-  &--rounded-full,
-  &--circle {
-    @apply maz:rounded-full;
-  }
-
-  /* Animation */
   &--animated {
     animation: m-skeleton-shimmer 5s linear infinite;
   }

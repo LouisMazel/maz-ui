@@ -139,19 +139,19 @@ onMounted(() => {
 <template>
   <div
     ref="containerElement"
-    class="m-card-spotlight m-reset-css"
+    class="m-card-spotlight m-reset-css maz:relative maz:inline-flex maz:overflow-hidden maz:rounded"
     :class="{ 'maz:shadow-elevation maz:drop-shadow-md': elevation }"
     :style="{ 'backgroundColor': alphaColor20, '--inner-opacity': innerOpacity }"
   >
-    <div class="inner">
-      <div class="content" :class="[{ 'maz:p-4': padding }, contentClass]" :style="contentStyle">
+    <div class="inner maz:relative maz:h-auto maz:w-full maz:overflow-hidden">
+      <div class="content maz:relative maz:z-2 maz:h-full maz:w-full" :class="[{ 'maz:p-4': padding }, contentClass]" :style="contentStyle">
         <slot />
       </div>
     </div>
     <div
       v-show="blobVisible"
       ref="blobElement"
-      class="blob"
+      class="blob maz:absolute maz:left-0 maz:top-0 maz:z-0 maz:rounded-full maz:blur-2xl"
       :style="{ backgroundColor: alphaColor }"
     />
   </div>
@@ -161,14 +161,10 @@ onMounted(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-card-spotlight {
-  @apply maz:relative maz:inline-flex maz:overflow-hidden maz:rounded;
-
   padding: max(var(--maz-border-width), 1px);
   contain: layout style paint;
 
   .inner {
-    @apply maz:relative maz:h-auto maz:w-full maz:overflow-hidden;
-
     border-radius: calc(var(--maz-radius) - max(var(--maz-border-width), 1px));
 
     &::before {
@@ -180,13 +176,7 @@ onMounted(() => {
     }
   }
 
-  .content {
-    @apply maz:relative maz:z-2 maz:h-full maz:w-full;
-  }
-
   .blob {
-    @apply maz:absolute maz:left-0 maz:top-0 maz:z-0 maz:rounded-full maz:blur-2xl;
-
     width: 208px;
     height: 208px;
     will-change: transform;

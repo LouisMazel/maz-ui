@@ -311,20 +311,29 @@ function findNextEnabledStep(fromIndex: number, direction: 1 | -1): number | und
 }
 
 const hasCheckIcon = computed(() => autoValidateSteps)
+
+const ROUNDED_CLASS = {
+  'none': 'maz:rounded-none',
+  'sm': 'maz:rounded-xs',
+  'md': 'maz:rounded-md',
+  'lg': 'maz:rounded-lg',
+  'xl': 'maz:rounded-xl',
+  '2xl': 'maz:rounded-2xl',
+  '3xl': 'maz:rounded-3xl',
+  'full': 'maz:rounded-full',
+} as const
 </script>
 
 <template>
   <div
-    class="m-timeline m-reset-css"
+    class="m-timeline m-reset-css maz:flex maz:items-stretch"
     role="list"
     :aria-label="$attrs['aria-label'] as string ?? 'Timeline'"
     :style="colorStyles"
     :class="[
       `--${size}`,
-      `--rounded-${roundedSize}`,
+      isVertical ? '--vertical maz:flex-col' : '--horizontal maz:flex-row maz:items-start',
       {
-        '--vertical': isVertical,
-        '--horizontal': !isVertical,
         '--clickable': clickable,
         '--animated': animated,
       },
@@ -354,7 +363,7 @@ const hasCheckIcon = computed(() => autoValidateSteps)
         :style="getStateStyle(getStepState(step, index))"
         v-on="clickable ? { click: () => onStepClick(step, index), keydown: (e: KeyboardEvent) => onStepKeydown(e, step, index) } : {}"
       >
-        <div class="m-timeline-indicator" aria-hidden="true">
+        <div class="m-timeline-indicator maz:flex maz:shrink-0 maz:items-center maz:justify-center" :class="ROUNDED_CLASS[roundedSize]" aria-hidden="true">
           <!--
             @slot indicator - Custom content for the step indicator circle
             @binding {MazTimelineItem} step - The step data
@@ -479,12 +488,8 @@ const hasCheckIcon = computed(() => autoValidateSteps)
 @reference "../tailwindcss/tailwind.css";
 
 .m-timeline {
-  @apply maz:flex maz:items-stretch;
-
   /* --- Horizontal layout --- */
   &.--horizontal {
-    @apply maz:flex-row maz:items-start;
-
     .m-timeline-item {
       @apply maz:flex maz:flex-1 maz:items-start;
 
@@ -520,8 +525,6 @@ const hasCheckIcon = computed(() => autoValidateSteps)
 
   /* --- Vertical layout --- */
   &.--vertical {
-    @apply maz:flex-col;
-
     .m-timeline-item {
       @apply maz:flex maz:flex-col;
     }
@@ -553,8 +556,6 @@ const hasCheckIcon = computed(() => autoValidateSteps)
 
   /* --- Step indicator (base) --- */
   .m-timeline-indicator {
-    @apply maz:flex maz:shrink-0 maz:items-center maz:justify-center;
-
     width: var(--m-timeline-indicator-size);
     height: var(--m-timeline-indicator-size);
 
@@ -748,43 +749,6 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     .m-timeline-subtitle {
       @apply maz:text-base;
     }
-  }
-
-  /* --- Rounded sizes --- */
-  &.--rounded-none .m-timeline-indicator {
-    @apply maz:rounded-none;
-  }
-
-  &.--rounded-sm .m-timeline-indicator {
-    @apply maz:rounded-xs;
-  }
-
-  &.--rounded-md .m-timeline-indicator {
-    @apply maz:rounded-md;
-  }
-
-  &.--rounded-base .m-timeline-indicator {
-    @apply maz:rounded;
-  }
-
-  &.--rounded-lg .m-timeline-indicator {
-    @apply maz:rounded-lg;
-  }
-
-  &.--rounded-xl .m-timeline-indicator {
-    @apply maz:rounded-xl;
-  }
-
-  &.--rounded-2xl .m-timeline-indicator {
-    @apply maz:rounded-2xl;
-  }
-
-  &.--rounded-3xl .m-timeline-indicator {
-    @apply maz:rounded-3xl;
-  }
-
-  &.--rounded-full .m-timeline-indicator {
-    @apply maz:rounded-full;
   }
 }
 

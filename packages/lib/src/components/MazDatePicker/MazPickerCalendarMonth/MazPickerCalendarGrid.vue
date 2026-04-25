@@ -274,13 +274,13 @@ watch(
 </script>
 
 <template>
-  <div ref="MazDatePickerGrid" class="maz-picker-calendar-grid">
+  <div ref="MazDatePickerGrid" class="maz-picker-calendar-grid maz:relative">
     <TransitionGroup :name="transitionName">
       <div
         v-for="(dateArray, dateIndex) in [calendarDateArray]"
         :key="`${dateArray[dateIndex]}`"
-        class="maz-picker-calendar-grid__container"
-        :class="{ '--is-range': range }"
+        class="maz-picker-calendar-grid__container maz:relative maz:grid maz:grid-cols-7 maz:items-start maz:gap-y-1"
+        :class="{ '--is-range': range, 'maz:gap-x-1': !range }"
       >
         <div v-for="first in emptyDaysCount" :key="first" />
         <MazBtn
@@ -326,17 +326,9 @@ watch(
 @reference "../../../tailwindcss/tailwind.css";
 
 .maz-picker-calendar-grid {
-  @apply maz:relative;
-
   transition: all 300ms ease-in-out;
 
   &__container {
-    @apply maz:relative maz:grid maz:grid-cols-7 maz:items-start maz:gap-y-1;
-
-    &:not(.--is-range) {
-      @apply maz:gap-x-1;
-    }
-
     &.--is-range {
       button {
         @apply maz:w-full;

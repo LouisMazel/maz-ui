@@ -180,21 +180,23 @@ function isLastStep(step: number): boolean {
         :id="`header-step-${step}`"
         type="button"
         :disabled="isStepDisabled(step)"
-        class="m-stepper__header"
+        class="m-stepper__header maz:flex maz:w-full maz:cursor-pointer maz:select-text maz:items-center maz:justify-between maz:space-x-4 maz:rounded maz:px-4 maz:py-2 maz:text-start maz:transition-colors maz:duration-200"
         :class="[
           {
-            '--is-current-step': step === currentStep || allStepsOpened,
-            '--disabled': step !== currentStep && !allStepsOpened && isStepDisabled(step),
+            '--is-current-step maz:cursor-default': step === currentStep || allStepsOpened,
+            '--disabled maz:text-gray-400 maz:dark:text-gray-500': step !== currentStep && !allStepsOpened && isStepDisabled(step),
+            'maz:cursor-not-allowed': isStepDisabled(step),
+            'maz:hover:bg-surface-600 maz:hover:dark:bg-surface-400': !isStepDisabled(step),
           },
           `${getStepStateData(step).class}`,
         ]"
         @click="selectStep(step)"
       >
-        <div class="m-stepper__header__wrapper">
-          <div class="m-stepper__header__point__wrapper">
+        <div class="m-stepper__header__wrapper maz:flex maz:items-center maz:space-x-4">
+          <div class="m-stepper__header__point__wrapper maz:flex maz:size-8 maz:flex-center">
             <slot name="point" :step>
-              <span class="m-stepper__count --primary">
-                <div class="m-stepper__count__circle">
+              <span class="m-stepper__count --primary maz:relative maz:flex maz:h-8 maz:w-8 maz:flex-none maz:overflow-hidden maz:rounded-full maz:text-lg maz:flex-center">
+                <div class="m-stepper__count__circle maz:absolute maz:inset-0 maz:flex maz:scale-0 maz:rounded-full maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center">
                   <component
                     :is="getStepStateData(step).icon"
                     v-if="getStepStateData(step).icon"
@@ -220,7 +222,7 @@ function isLastStep(step: number): boolean {
             </slot>
           </div>
 
-          <div class="m-stepper__header__content">
+          <div class="m-stepper__header__content maz:flex maz:flex-none maz:flex-col maz:items-start">
             <span class="m-stepper__title">
               <!--
                 @slot title-${step} - Title of the step
@@ -229,7 +231,7 @@ function isLastStep(step: number): boolean {
                 <span v-if="getPropertyInStep('title', step)" v-html="getPropertyInStep('title', step)" />
               </slot>
             </span>
-            <span v-if="hasDataForStep('subtitle', step)" class="m-stepper__subtitle">
+            <span v-if="hasDataForStep('subtitle', step)" class="m-stepper__subtitle maz:mt-1 maz:text-sm maz:text-muted">
               <!--
                 @slot title-${step} - Subtitle of the step
               -->
@@ -240,7 +242,7 @@ function isLastStep(step: number): boolean {
           </div>
         </div>
 
-        <span v-if="hasDataForStep('titleInfo', step)" class="m-stepper__right">
+        <span v-if="hasDataForStep('titleInfo', step)" class="m-stepper__right maz:truncate maz:text-end maz:text-sm maz:text-primary">
           <!--
             @slot title-info-${step} - Info of the right of the step
           -->
@@ -251,16 +253,17 @@ function isLastStep(step: number): boolean {
       </button>
 
       <div
-        class="m-stepper__content"
+        class="m-stepper__content maz:ms-[1.95rem] maz:border-s-2 maz:border-transparent maz:py-2 maz:ps-8"
         :class="{
           '--no-border': isLastStep(step),
+          'maz:border-divider': !isLastStep(step),
         }"
       >
         <MazExpandAnimation
           :model-value="allStepsOpened || currentStep === step"
           :aria-labelledby="`header-step-${step}`"
         >
-          <div class="m-stepper__content__wrapper">
+          <div class="m-stepper__content__wrapper maz:py-2">
             <!-- @slot content-${step} - Content of the step
                 @binding {boolean} validated - If the step is validated
                 @binding {boolean} error - If the step has an error
@@ -289,43 +292,7 @@ function isLastStep(step: number): boolean {
 @reference "../tailwindcss/tailwind.css";
 
 .m-stepper {
-  &__right {
-    @apply maz:truncate maz:text-end maz:text-sm maz:text-primary;
-  }
-
   &__header {
-    @apply maz:flex maz:w-full maz:cursor-pointer maz:select-text maz:items-center
-        maz:justify-between maz:space-x-4 maz:rounded maz:px-4 maz:py-2 maz:text-start
-        maz:transition-colors maz:duration-200;
-
-    &__content {
-      @apply maz:flex maz:flex-none maz:flex-col maz:items-start;
-    }
-
-    &__point__wrapper {
-      @apply maz:flex maz:size-8 maz:flex-center;
-    }
-
-    &:not(:disabled) {
-      @apply maz:hover:bg-surface-600 maz:hover:dark:bg-surface-400;
-    }
-
-    &:disabled {
-      @apply maz:cursor-not-allowed;
-    }
-
-    &.--disabled {
-      @apply maz:text-gray-400 maz:dark:text-gray-500;
-    }
-
-    &.--is-current-step {
-      @apply maz:cursor-default;
-    }
-
-    &__wrapper {
-      @apply maz:flex maz:items-center maz:space-x-4;
-    }
-
     &.--success {
       .m-stepper__count__circle {
         @apply maz:scale-100 maz:bg-success;
@@ -373,36 +340,12 @@ function isLastStep(step: number): boolean {
     @apply maz:text-lg;
   }
 
-  &__subtitle {
-    @apply maz:mt-1 maz:text-sm maz:text-muted;
-  }
-
   &__count {
-    @apply maz:relative maz:flex maz:h-8 maz:w-8 maz:flex-none
-        maz:overflow-hidden maz:rounded-full maz:text-lg maz:flex-center;
-
     background-color: var(--round-step-bg-color);
     color: var(--round-step-text-color);
 
-    &__circle {
-      @apply maz:absolute maz:inset-0 maz:flex maz:scale-0 maz:rounded-full
-          maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center;
-    }
-
     svg {
       @apply maz:text-success-foreground;
-    }
-  }
-
-  &__content {
-    @apply maz:ms-[1.95rem] maz:border-s-2 maz:border-transparent maz:py-2 maz:ps-8;
-
-    &__wrapper {
-      @apply maz:py-2;
-    }
-
-    &:not(.--no-border) {
-      @apply maz:border-divider;
     }
   }
 }

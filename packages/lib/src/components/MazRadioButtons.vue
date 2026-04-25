@@ -126,9 +126,17 @@ function onFocus(index: number, event: FocusEvent) {
 
 <template>
   <div
-    class="m-radio-buttons m-reset-css"
+    class="m-radio-buttons m-reset-css maz:inline-flex maz:gap-1 maz:align-top maz:flex-col"
+    :class="{ 'maz:w-full': block }"
   >
-    <div class="m-radio-buttons__wrapper" :class="[`--${orientation}`, { '--wrap': wrap, '--block': block }]">
+    <div
+      class="m-radio-buttons__wrapper maz:inline-flex maz:gap-2"
+      :class="[
+        `--${orientation}`,
+        orientation === 'row' ? 'maz:flex-row' : 'maz:flex-col',
+        { '--wrap': wrap, 'maz:flex-wrap': wrap, '--block': block },
+      ]"
+    >
       <label
         v-for="(option, i) in options"
         :key="getOptionId(option, i)"
@@ -170,7 +178,7 @@ function onFocus(index: number, event: FocusEvent) {
           class="maz:hidden"
           @change="selectOption(option)"
         >
-        <div v-if="selector" class="m-radio-buttons__items__checkbox">
+        <div v-if="selector" class="m-radio-buttons__items__checkbox maz:flex maz:flex-center">
           <span
             :class="{
               '--is-selected': isSelected(option.value),
@@ -202,10 +210,11 @@ function onFocus(index: number, event: FocusEvent) {
     </div>
     <span
       v-if="hint"
-      class="m-radio-buttons__hint" :class="{
-        '--error': error,
-        '--success': success,
-        '--warning': warning,
+      class="m-radio-buttons__hint maz:text-sm" :class="{
+        'maz:text-destructive-600': error,
+        'maz:text-success-600': success,
+        'maz:text-warning-600': warning,
+        'maz:text-muted': !error && !success && !warning,
       }"
     >{{ hint }}</span>
   </div>
@@ -215,28 +224,6 @@ function onFocus(index: number, event: FocusEvent) {
 @reference "../tailwindcss/tailwind.css";
 
 .m-radio-buttons {
-  @apply maz:inline-flex maz:gap-1 maz:align-top maz:flex-col;
-
-  &__wrapper {
-    @apply maz:inline-flex maz:gap-2;
-
-    &.--wrap {
-      @apply maz:flex-wrap;
-    }
-
-    &.--row {
-      @apply maz:flex-row;
-    }
-
-    &.--col {
-      @apply maz:flex-col;
-    }
-  }
-
-  &.--block {
-    @apply maz:w-full;
-  }
-
   &__items {
     @apply maz:flex maz:cursor-pointer maz:gap-4 maz:rounded maz:border maz:border-divider
         maz:bg-surface maz:px-4 maz:py-2 maz:font-medium maz:transition-colors maz:duration-300 maz:items-center;
@@ -293,22 +280,6 @@ function onFocus(index: number, event: FocusEvent) {
 
     &:not(.--is-selected) {
       @apply maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
-    }
-  }
-
-  &__hint {
-    @apply maz:text-sm maz:text-muted;
-
-    &.--error {
-      @apply maz:text-destructive-600;
-    }
-
-    &.--success {
-      @apply maz:text-success-600;
-    }
-
-    &.--warning {
-      @apply maz:text-warning-600;
     }
   }
 }

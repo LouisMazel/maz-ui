@@ -139,19 +139,33 @@ const component = computed<Component | string>(() => {
 })
 
 const isButton = computed(() => component.value === 'button')
+
+const COLOR_CLASS = {
+  primary: 'maz:not-disabled:text-primary maz:not-disabled:hover:text-primary-700',
+  secondary: 'maz:not-disabled:text-secondary maz:not-disabled:hover:text-secondary-700',
+  info: 'maz:not-disabled:text-info maz:not-disabled:hover:text-info-700',
+  warning: 'maz:not-disabled:text-warning maz:not-disabled:hover:text-warning-700',
+  destructive: 'maz:not-disabled:text-destructive maz:not-disabled:hover:text-destructive-700',
+  success: 'maz:not-disabled:text-success maz:not-disabled:hover:text-success-700',
+  accent: 'maz:not-disabled:text-accent maz:not-disabled:hover:text-accent-700',
+  contrast: 'maz:not-disabled:text-foreground maz:not-disabled:hover:text-foreground-900 maz:not-disabled:dark:hover:text-foreground-100',
+  muted: 'maz:not-disabled:text-muted maz:not-disabled:hover:text-muted-700',
+  surface: 'maz:not-disabled:text-surface maz:not-disabled:hover:text-surface-700',
+  transparent: '',
+} as const
 </script>
 
 <template>
   <component
     :is="component"
     :id="instanceId"
-    class="m-link m-reset-css"
+    class="m-link m-reset-css maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-1 maz:transition-colors maz:duration-200 maz:ease-in-out maz:no-underline maz:disabled:cursor-not-allowed maz:disabled:opacity-50 maz:disabled:text-muted"
     :class="[
       {
-        '--underline': underline,
-        '--underline-hover': !underline && underlineHover,
+        'maz:underline': underline,
+        'maz:not-disabled:hover:underline': !underline && underlineHover,
       },
-      color !== 'inherit' && `--${getColor(color)}`,
+      color !== 'inherit' && COLOR_CLASS[getColor(color)],
       classProp,
     ]"
     :to
@@ -193,63 +207,3 @@ const isButton = computed(() => component.value === 'button')
     </slot>
   </component>
 </template>
-
-<style scoped>
-@reference "../tailwindcss/tailwind.css";
-
-.m-link {
-  @apply maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-1 maz:transition-colors maz:duration-200 maz:ease-in-out maz:no-underline;
-
-  &.--underline {
-    @apply maz:underline;
-  }
-
-  &.--underline-hover:not(:disabled) {
-    @apply maz:hover:underline;
-  }
-
-  &.--primary:not(:disabled) {
-    @apply maz:text-primary maz:hover:text-primary-700;
-  }
-
-  &.--secondary:not(:disabled) {
-    @apply maz:text-secondary maz:hover:text-secondary-700;
-  }
-
-  &.--info:not(:disabled) {
-    @apply maz:text-info maz:hover:text-info-700;
-  }
-
-  &.--warning:not(:disabled) {
-    @apply maz:text-warning maz:hover:text-warning-700;
-  }
-
-  &.--destructive:not(:disabled) {
-    @apply maz:text-destructive maz:hover:text-destructive-700;
-  }
-
-  &.--success:not(:disabled) {
-    @apply maz:text-success maz:hover:text-success-700;
-  }
-
-  &.--accent:not(:disabled) {
-    @apply maz:text-accent maz:hover:text-accent-700;
-  }
-
-  &.--contrast:not(:disabled) {
-    @apply maz:text-foreground maz:hover:text-foreground-900 maz:dark:hover:text-foreground-100;
-  }
-
-  &.--muted:not(:disabled) {
-    @apply maz:text-muted maz:hover:text-muted-700;
-  }
-
-  &.--surface:not(:disabled) {
-    @apply maz:text-surface maz:hover:text-surface-700;
-  }
-
-  &:disabled {
-    @apply maz:cursor-not-allowed maz:opacity-50 maz:text-muted;
-  }
-}
-</style>

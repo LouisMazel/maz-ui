@@ -228,8 +228,11 @@ function onFocus(event: FocusEvent) {
 <template>
   <label
     :for="instanceId"
-    class="m-checkbox m-reset-css"
-    :class="[{ '--error': error, '--warning': warning, '--success': success }, props.class]"
+    class="m-checkbox m-reset-css maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden"
+    :class="[
+      { '--error': error, '--warning': warning, '--success': success, 'maz:cursor-not-allowed maz:text-muted': disabled, 'maz:cursor-pointer': !disabled },
+      props.class,
+    ]"
     :style="[style, { '--checkbox-selected-color': checkboxSelectedColor, '--checkbox-box-shadow-color': checkboxBoxShadow }]"
     role="checkbox"
     :aria-checked="isChecked"
@@ -250,19 +253,20 @@ function onFocus(event: FocusEvent) {
       @change="emitValue(value ?? ($event?.target as HTMLInputElement)?.checked)"
     >
     <span :style="{ width: checkboxSize, height: checkboxSize }">
-      <MazCheck class="check-icon" :class="checkIconSize" :style="{ color: checkIconColor }" />
+      <MazCheck class="check-icon maz:transition-transform maz:duration-300 maz:ease-in-out" :class="[isChecked ? 'maz:scale-100' : 'maz:scale-0', checkIconSize]" :style="{ color: checkIconColor }" />
     </span>
-    <div v-if="label || hasSlotContent($slots.default) || hint" class="m-checkbox__text">
+    <div v-if="label || hasSlotContent($slots.default) || hint" class="m-checkbox__text maz:flex maz:flex-col maz:gap-0">
       <slot :value>
         {{ label }}
       </slot>
 
       <span
         v-if="hint"
-        class="m-checkbox__hint" :class="{
-          '--error': error,
-          '--success': success,
-          '--warning': warning,
+        class="m-checkbox__hint maz:text-sm" :class="{
+          'maz:text-destructive-600': error,
+          'maz:text-success-600': success,
+          'maz:text-warning-600': warning,
+          'maz:text-muted': !error && !success && !warning,
         }"
       >{{ hint }}</span>
     </div>
@@ -273,14 +277,8 @@ function onFocus(event: FocusEvent) {
 @reference "../tailwindcss/tailwind.css";
 
 .m-checkbox {
-  @apply maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden;
-
-  .check-icon {
-    @apply maz:scale-0 maz:transition-transform maz:duration-300 maz:ease-in-out;
-
-    :deep(path) {
-      stroke-width: 2.5;
-    }
+  .check-icon :deep(path) {
+    stroke-width: 2.5;
   }
 
   > span {
@@ -297,10 +295,6 @@ function onFocus(event: FocusEvent) {
     &:checked ~ span {
       border-color: var(--checkbox-selected-color);
       background-color: var(--checkbox-selected-color);
-
-      .check-icon {
-        @apply maz:scale-100;
-      }
     }
 
     &:disabled ~ span {
@@ -309,8 +303,6 @@ function onFocus(event: FocusEvent) {
   }
 
   &:has(input:disabled) {
-    @apply maz:cursor-not-allowed maz:text-muted;
-
     svg {
       @apply maz:text-muted!;
     }
@@ -325,45 +317,13 @@ function onFocus(event: FocusEvent) {
   }
 
   &:not(:has(input:disabled)) {
-    @apply maz:cursor-pointer;
-
     &:hover > span,
     &:focus > span,
     &.--error > span,
     &.--warning > span,
     &.--success > span {
-      @apply maz:transition-all maz:duration-300 maz:ease-in-out;
-
       box-shadow: 0 0 0 0.125rem var(--checkbox-box-shadow-color);
     }
   }
-
-  &__text {
-    @apply maz:flex maz:flex-col maz:gap-0;
-  }
-
-  &__hint {
-    @apply maz:text-sm maz:text-muted;
-
-    &.--error {
-      @apply maz:text-destructive-600;
-    }
-
-    &.--success {
-      @apply maz:text-success-600;
-    }
-
-    &.--warning {
-      @apply maz:text-warning-600;
-    }
-  }
-
-  /* &.--error,
-  &.--warning,
-  &.--success {
-    > span {
-      @apply maz:transition-all maz:duration-300 maz:ease-in-out;
-    }
-  } */
 }
 </style>

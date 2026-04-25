@@ -643,7 +643,7 @@ defineExpose({
     :id="`${instanceId}-popover`"
     ref="popover"
     v-model="isOpen"
-    class="m-select m-reset-css"
+    class="m-select m-reset-css maz:relative maz:inline-flex maz:align-top"
     :class="[
       {
         '--is-open': isOpen,
@@ -829,8 +829,6 @@ defineExpose({
 @reference "../tailwindcss/tailwind.css";
 
 .m-select {
-  @apply maz:relative maz:inline-flex maz:align-top;
-
   &.--disabled {
     .m-select-input {
       @apply maz:cursor-not-allowed;

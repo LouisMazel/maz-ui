@@ -167,10 +167,10 @@ function updateQuery(value?: string) {
 </script>
 
 <template>
-  <div class="m-checklist m-reset-css">
+  <div class="m-checklist m-reset-css maz:flex maz:flex-col maz:gap-4">
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
-    <label :for="search ? `${id}-query` : undefined" class="search-label">
-      <span v-if="hasSlotContent($slots.title) || title" class="title">
+    <label :for="search ? `${id}-query` : undefined" class="search-label maz:flex maz:items-center maz:justify-between maz:gap-4">
+      <span v-if="hasSlotContent($slots.title) || title" class="title maz:flex-none maz:truncate">
         <!-- @slot use this slot to customize the title -->
         <slot name="title">
           {{ title }}
@@ -197,13 +197,13 @@ function updateQuery(value?: string) {
       :padding="false"
       content-class="card-content"
     >
-      <div v-if="filteredItems?.length === 0" class="no-results">
+      <div v-if="filteredItems?.length === 0" class="no-results maz:flex maz:h-full maz:flex-center">
         <!-- @slot use this slot to customize the no results area -->
         <slot name="no-results">
-          <div class="no-results-content">
-            <MazNoSymbol class="no-results-icon" />
+          <div class="no-results-content maz:flex maz:h-full maz:flex-col maz:gap-3 maz:flex-center maz:py-8">
+            <MazNoSymbol class="no-results-icon maz:text-3xl maz:text-muted" />
 
-            <span class="no-results-text">
+            <span class="no-results-text maz:text-muted">
               <!-- @slot use this slot to customize the no results message -->
               <slot name="no-results-text"> {{ messages.noResultsFound }} </slot>
             </span>
@@ -215,7 +215,7 @@ function updateQuery(value?: string) {
         v-for="(item) of filteredItems"
         :key="item.value"
         :for="`${id}-checklist-item-${item.value}`"
-        class="m-checklist-item m-reset-css"
+        class="m-checklist-item m-reset-css maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-4 maz:rounded maz:px-3 maz:py-2 maz:text-start maz:hover:bg-surface-600"
       >
         <MazCheckbox
           :id="`${id}-checklist-item-${item.value}`"
@@ -232,7 +232,7 @@ function updateQuery(value?: string) {
           :item="item"
           name="item"
         >
-          <span class="item-label">
+          <span class="item-label maz:cap-f">
             {{ item.label }}
           </span>
         </slot>
@@ -244,43 +244,7 @@ function updateQuery(value?: string) {
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
 
-.m-checklist {
-  @apply maz:flex maz:flex-col maz:gap-4;
-
-  .search-label {
-    @apply maz:flex maz:items-center maz:justify-between maz:gap-4;
-  }
-
-  .title {
-    @apply maz:flex-none maz:truncate;
-  }
-
-  :deep(.card-content) {
-    @apply maz:flex maz:flex-col maz:gap-2 maz:overflow-y-auto maz:bg-surface maz:px-3 maz:py-2;
-  }
-
-  .no-results {
-    @apply maz:flex maz:h-full maz:flex-center;
-  }
-
-  .no-results-content {
-    @apply maz:flex maz:h-full maz:flex-col maz:gap-3 maz:flex-center maz:py-8;
-  }
-
-  .no-results-icon {
-    @apply maz:text-3xl maz:text-muted;
-  }
-
-  .no-results-text {
-    @apply maz:text-muted;
-  }
-
-  .m-checklist-item {
-    @apply maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-4 maz:rounded maz:px-3 maz:py-2 maz:text-start maz:hover:bg-surface-600;
-  }
-
-  .item-label {
-    @apply maz:cap-f;
-  }
+.m-checklist :deep(.card-content) {
+  @apply maz:flex maz:flex-col maz:gap-2 maz:overflow-y-auto maz:bg-surface maz:px-3 maz:py-2;
 }
 </style>

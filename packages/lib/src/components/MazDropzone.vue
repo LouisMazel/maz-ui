@@ -763,9 +763,9 @@ defineExpose({
     role="button"
     tabindex="0"
     :for="`input-file-uploader-${instanceId}`"
-    class="m-dropzone m-reset-css"
+    class="m-dropzone m-reset-css maz:flex maz:w-full maz:flex-col maz:gap-2 maz:overflow-hidden maz:rounded maz:border maz:border-dashed maz:border-divider maz:p-6 maz:transition-colors maz:duration-200 maz:ease-in-out maz:flex-center maz:bg-surface maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400/50 maz:cursor-pointer"
     :class="{
-      'm-dropzone--disabled': disabled,
+      'm-dropzone--disabled maz:cursor-not-allowed maz:opacity-50': disabled,
       'm-dropzone--is-over-drop-zone': isOverDropZone && !isOverError,
       'm-dropzone--is-over-error': isOverError,
     }"
@@ -876,12 +876,6 @@ defineExpose({
 @reference "../tailwindcss/tailwind.css";
 
 .m-dropzone {
-  @apply maz:flex maz:w-full maz:flex-col maz:gap-2 maz:overflow-hidden maz:rounded maz:border maz:border-dashed maz:border-divider maz:p-6 maz:transition-colors maz:duration-200 maz:ease-in-out maz:flex-center maz:bg-surface maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400/50 maz:cursor-pointer;
-
-  &--disabled {
-    @apply maz:cursor-not-allowed maz:opacity-50;
-  }
-
   &--is-over-drop-zone {
     @apply maz:bg-primary-400/20 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
 

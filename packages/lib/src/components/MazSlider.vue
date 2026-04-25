@@ -322,7 +322,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
   >
     <div
       ref="MazSlider"
-      class="m-slider__bar"
+      class="m-slider__bar maz:relative maz:flex maz:items-center maz:justify-center maz:rounded-full"
       role="slider"
       :aria-valuenow="modelValue?.toString()"
       :aria-valuemin="min"
@@ -340,7 +340,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
         :key="`cursor-${i}`"
         type="button"
         :data-label="getLabel(i)"
-        class="m-slider__btn"
+        class="m-slider__btn maz:flex maz:items-center maz:justify-center maz:rounded-full maz:border maz:border-solid maz:border-divider maz:bg-surface maz:shadow-md maz:hover:bg-surface-200"
         :class="{
           'active-cursor': i === activeCursor && cursorAnim,
         }"
@@ -352,7 +352,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
         @touchend.passive="blurCursor(i)"
         @keydown.passive="cursorKeyDown($event, i)"
       >
-        <span>
+        <span class="maz:flex maz:items-center maz:text-foreground">
           {{ tmpValues?.[i] }}
         </span>
       </button>
@@ -367,8 +367,6 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
   padding: 1em 1.5rem;
 
   &__bar {
-    @apply maz:relative maz:flex maz:items-center maz:justify-center maz:rounded-full;
-
     height: 0.5em;
     background-color: var(--m-slider-color);
   }
@@ -393,15 +391,9 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
       background-color 300ms ease-in-out;
     z-index: 1;
     user-select: none;
-
-    @apply maz:flex maz:items-center maz:justify-center maz:rounded-full maz:border maz:border-solid
-        maz:border-divider maz:bg-surface maz:shadow-md;
-
     padding: 0.25em 0.5em;
 
     & span {
-      @apply maz:flex maz:items-center maz:text-foreground;
-
       margin-left: 0.25em;
       margin-right: 0.25em;
     }
@@ -419,10 +411,6 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
       top: -1.5em;
 
       @apply maz:absolute maz:font-medium maz:text-foreground;
-    }
-
-    &:hover {
-      @apply maz:bg-surface-200;
     }
   }
 }

@@ -149,8 +149,8 @@ function onFocus(event: FocusEvent) {
 <template>
   <label
     :for="instanceId"
-    class="m-radio m-reset-css"
-    :class="[{ '--selected': isSelected, '--error': error, '--warning': warning, '--success': success }, props.class]"
+    class="m-radio m-reset-css maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden"
+    :class="[{ '--selected': isSelected, '--error': error, '--warning': warning, '--success': success, 'maz:cursor-not-allowed maz:text-muted': disabled, 'maz:cursor-pointer': !disabled }, props.class]"
     tabindex="0"
     role="radio"
     :style="[style, { '--radio-size': radioSize, '--radio-selected-color': radioSelectedColor, '--radio-box-shadow': radioBoxShadow }]"
@@ -169,6 +169,7 @@ function onFocus(event: FocusEvent) {
       :name
       type="radio"
       :checked="isSelected"
+      class="maz:hidden"
       @change="emitValue()"
     >
 
@@ -181,17 +182,18 @@ function onFocus(event: FocusEvent) {
         @binding {Boolean} is-selected - If the radio is selected
         @binding {string | number | boolean} value - The value of the radio
     -->
-    <div class="m-radio__text">
+    <div class="m-radio__text maz:flex maz:flex-col maz:gap-0">
       <slot :is-selected="isSelected" :value="value as T">
         {{ label }}
       </slot>
 
       <span
         v-if="hint"
-        class="m-radio__hint" :class="{
-          '--error': error,
-          '--success': success,
-          '--warning': warning,
+        class="m-radio__hint maz:text-sm" :class="{
+          'maz:text-destructive-600': error,
+          'maz:text-success-600': success,
+          'maz:text-warning-600': warning,
+          'maz:text-muted': !error && !success && !warning,
         }"
       >{{ hint }}</span>
     </div>
@@ -202,8 +204,6 @@ function onFocus(event: FocusEvent) {
 @reference "../tailwindcss/tailwind.css";
 
 .m-radio {
-  @apply maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden;
-
   > span {
     @apply maz:relative maz:flex maz:rounded-full maz:border maz:border-divider maz:dark:border-divider-400 maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center;
 
@@ -229,68 +229,31 @@ function onFocus(event: FocusEvent) {
     }
   }
 
-  &__text {
-    @apply maz:flex maz:flex-col maz:gap-0;
-  }
-
-  input {
-    @apply maz:hidden;
-  }
-
   &:has(input:disabled) {
-    @apply maz:cursor-not-allowed maz:text-muted;
-
     > span {
       @apply maz:bg-surface-600 maz:dark:bg-surface-400;
     }
 
-    &.--selected {
-      > span {
-        @apply maz:border-divider;
+    &.--selected > span {
+      @apply maz:border-divider;
 
-        .round {
-          @apply maz:bg-muted;
-        }
+      .round {
+        @apply maz:bg-muted;
       }
     }
   }
 
-  &__hint {
-    @apply maz:text-sm maz:text-muted;
-
-    &.--error {
-      @apply maz:text-destructive-600;
-    }
-
-    &.--success {
-      @apply maz:text-success-600;
-    }
-
-    &.--warning {
-      @apply maz:text-warning-600;
-    }
-  }
-
-  &:not(:has(input:disabled)),
-  &:not(.--selected) {
-    @apply maz:cursor-pointer;
-
+  &:not(:has(input:disabled), .--selected) {
     &:hover > span,
     &:focus > span {
-      @apply maz:transition-all maz:duration-300 maz:ease-in-out;
-
       box-shadow: 0 0 0 0.125rem var(--radio-box-shadow);
     }
   }
 
-  &.--error,
-  &.--warning,
-  &.--success {
-    > span {
-      @apply maz:transition-all maz:duration-300 maz:ease-in-out;
-
-      box-shadow: 0 0 0 0.125rem var(--radio-box-shadow);
-    }
+  &.--error > span,
+  &.--warning > span,
+  &.--success > span {
+    box-shadow: 0 0 0 0.125rem var(--radio-box-shadow);
   }
 }
 </style>

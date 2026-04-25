@@ -19,7 +19,7 @@ const colorCSSVariables = computed(() => ({
 
 <template>
   <div
-    class="m-loading-bar m-reset-css"
+    class="m-loading-bar m-reset-css maz:relative maz:block maz:w-full maz:overflow-hidden"
     :style="[{ '--loading-bar-height': height, '--loading-bar-color': colorCSSVariables.alpha, '--loading-bar-main-color': colorCSSVariables.main }]"
   >
     <div />
@@ -30,8 +30,6 @@ const colorCSSVariables = computed(() => ({
 @reference "../tailwindcss/tailwind.css";
 
 .m-loading-bar {
-  @apply maz:relative maz:block maz:w-full maz:overflow-hidden;
-
   height: var(--loading-bar-height);
   background-color: var(--loading-bar-color);
   overflow: hidden;

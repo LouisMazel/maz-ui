@@ -149,8 +149,8 @@ function setPageNumber(page: number) {
 
 <template>
   <nav class="m-pagination m-reset-css" role="navigation" :aria-label="t('pagination.navAriaLabel')">
-    <ul>
-      <li>
+    <ul class="maz:m-0! maz:inline-flex maz:list-none! maz:items-center maz:gap-2 maz:-space-x-px maz:p-0! maz:align-top maz:text-base">
+      <li class="maz:m-0">
         <MazBtn
           v-bind="buttonsPropsMerged"
           :disabled="modelValue === 1"
@@ -171,7 +171,7 @@ function setPageNumber(page: number) {
         </MazBtn>
       </li>
 
-      <li>
+      <li class="maz:m-0">
         <MazBtn
           v-bind="buttonsPropsMerged"
           :disabled="modelValue === 1"
@@ -196,6 +196,7 @@ function setPageNumber(page: number) {
         v-for="(page, i) in pages"
         :id="'number' in page ? `button-${i}-${page.number}` : `ellipsis-${i}`"
         :key="'number' in page ? `button-${i}-${page.number}` : `ellipsis-${i}`"
+        class="maz:m-0"
       >
         <template v-if="'number' in page">
           <MazBtn
@@ -231,7 +232,7 @@ function setPageNumber(page: number) {
         </template>
       </li>
 
-      <li>
+      <li class="maz:m-0">
         <MazBtn
           v-bind="buttonsPropsMerged"
           :disabled="modelValue === totalPages"
@@ -252,7 +253,7 @@ function setPageNumber(page: number) {
         </MazBtn>
       </li>
 
-      <li>
+      <li class="maz:m-0">
         <MazBtn
           v-bind="buttonsPropsMerged"
           :disabled="modelValue === totalPages"
@@ -275,17 +276,3 @@ function setPageNumber(page: number) {
     </ul>
   </nav>
 </template>
-
-<style scoped>
-@reference "../tailwindcss/tailwind.css";
-
-.m-pagination {
-  ul {
-    @apply maz:m-0! maz:inline-flex maz:list-none! maz:items-center maz:gap-2 maz:-space-x-px maz:p-0! maz:align-top maz:text-base;
-
-    li {
-      @apply maz:m-0;
-    }
-  }
-}
-</style>

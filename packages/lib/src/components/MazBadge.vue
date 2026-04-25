@@ -53,6 +53,15 @@ const {
 
 const resolvedColor = computed(() => getColor(color))
 
+const ROUNDED_CLASS = {
+  none: '',
+  sm: 'maz:rounded-xs',
+  md: 'maz:rounded-md',
+  lg: 'maz:rounded',
+  xl: 'maz:rounded-xl',
+  full: 'maz:rounded-full',
+} as const
+
 const badgeStyle = computed<CSSProperties>(() => {
   const c = resolvedColor.value
   const base: Record<string, string> = { fontSize: size }
@@ -76,11 +85,11 @@ const badgeStyle = computed<CSSProperties>(() => {
 
 <template>
   <span
-    class="m-badge m-reset-css"
+    class="m-badge m-reset-css maz:inline-flex maz:items-center maz:justify-center maz:border maz:border-transparent maz:align-top maz:font-semibold"
     :class="[
       `--${resolvedColor}`,
-      { '--outlined': outlined, '--pastel': pastel, '--nowrap': nowrap },
-      `--rounded-${roundedSize}`,
+      ROUNDED_CLASS[roundedSize],
+      { '--outlined': outlined, '--pastel': pastel, 'maz:whitespace-nowrap': nowrap },
     ]"
     :style="badgeStyle"
   >
@@ -93,39 +102,11 @@ const badgeStyle = computed<CSSProperties>(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-badge {
-  @apply maz:inline-flex maz:items-center maz:justify-center maz:border maz:border-transparent maz:align-top maz:font-semibold;
-
   padding: 0.25em 0.5em;
   line-height: 1.4em;
   background-color: var(--m-badge-bg);
   color: var(--m-badge-fg);
   border-color: var(--m-badge-bg);
-
-  &.--nowrap {
-    @apply maz:whitespace-nowrap;
-  }
-
-  &.--rounded {
-    &-sm {
-      @apply maz:rounded-xs;
-    }
-
-    &-md {
-      @apply maz:rounded-md;
-    }
-
-    &-lg {
-      @apply maz:rounded;
-    }
-
-    &-xl {
-      @apply maz:rounded-xl;
-    }
-
-    &-full {
-      @apply maz:rounded-full;
-    }
-  }
 
   &.--outlined {
     @apply maz:bg-transparent;
@@ -141,19 +122,21 @@ const badgeStyle = computed<CSSProperties>(() => {
   }
 
   &.--surface {
-    @apply maz:border-surface maz:bg-surface maz:text-foreground;
+    @apply maz:bg-surface maz:text-foreground;
+
+    border-color: var(--maz-surface);
 
     &.--outlined {
-      @apply maz:border-divider maz:bg-transparent;
+      @apply maz:bg-transparent maz:border-divider;
     }
 
     &.--pastel {
-      @apply maz:border-surface-600 maz:bg-surface-600;
+      @apply maz:bg-surface-600 maz:border-surface-600;
     }
   }
 
   &.--transparent {
-    @apply maz:border-transparent maz:bg-transparent;
+    @apply maz:bg-transparent maz:border-transparent;
   }
 }
 </style>

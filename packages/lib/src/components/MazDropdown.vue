@@ -363,7 +363,7 @@ watch(
       <div
         :id="instanceId"
         tabindex="-1"
-        class="m-dropdown__wrapper"
+        class="m-dropdown__wrapper maz:outline-hidden maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400 maz:rounded maz:size-full"
       >
         <span :id="`${instanceId}-labelspan`" class="maz:sr-only">
           <!--
@@ -428,7 +428,7 @@ watch(
         :id="`${instanceId}-menu`"
         role="menu"
         aria-label="Menu"
-        class="m-dropdown__menu"
+        class="m-dropdown__menu maz:flex maz:min-h-max maz:min-w-max maz:flex-col maz:gap-0.5 maz:overflow-auto maz:p-2"
         tabindex="-1"
         :class="menuPanelClass"
         :style="menuPanelStyle"
@@ -514,25 +514,15 @@ watch(
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
 
-.m-dropdown {
-  @apply maz:relative maz:inline-flex maz:flex-col maz:items-start maz:align-top;
+.m-dropdown__icon {
+  @apply maz:transition-transform maz:duration-200 maz:ease-in-out;
 
-  &__wrapper {
-    @apply maz:outline-hidden maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400 maz:rounded maz:size-full;
-  }
-
-  &__icon {
-    @apply maz:transition-transform maz:duration-200 maz:ease-in-out;
-
-    &.--open {
-      @apply maz:rotate-180;
-    }
+  &.--open {
+    @apply maz:rotate-180;
   }
 }
 
 .m-dropdown__menu {
-  @apply maz:flex maz:min-h-max maz:min-w-max maz:flex-col maz:gap-0.5 maz:overflow-auto maz:p-2;
-
   .menuitem {
     @apply maz:outline-hidden maz:cursor-pointer maz:whitespace-nowrap maz:rounded maz:px-4 maz:py-2 maz:text-start
      maz:transition-colors maz:duration-300 maz:ease-in-out maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;

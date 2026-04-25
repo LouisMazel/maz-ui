@@ -222,23 +222,26 @@ onMounted(() => {
 <template>
   <div
     ref="tabsBarRef"
-    class="m-tabs-bar m-reset-css"
+    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:gap-1 maz:overflow-x-auto maz:rounded maz:p-2 maz:align-top maz:bg-surface"
     :class="{
-      '--block': block,
-      '--elevation': elevation,
-      '--bordered': bordered,
+      'maz:w-full': block,
+      'maz:drop-shadow-md maz:shadow-elevation maz:dark:shadow-none': elevation,
+      'maz:border maz:border-divider': bordered,
     }"
   >
     <div
-      class="m-tabs-bar__indicator"
-      :class="{ '--animated': tabsBarHasScrollAnimation }"
+      class="m-tabs-bar__indicator maz:absolute maz:left-0 maz:rounded maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-center"
+      :class="{ 'maz:transition-all maz:duration-300 maz:ease-in-out': tabsBarHasScrollAnimation }"
       :style="[tabsIndicatorState]"
     />
     <template v-for="(item, index) in normalizedItems" :key="index">
       <button
         :ref="(mazBtn) => addElementToItemRefs({ mazBtn, index })"
-        :class="{ '--active': isActiveTab(index), '--disabled': item.disabled }"
-        class="m-tabs-bar__item"
+        :class="[
+          { '--active': isActiveTab(index), '--disabled': item.disabled },
+          item.disabled ? 'maz:cursor-not-allowed maz:bg-surface-300 maz:text-gray-400 maz:dark:text-gray-500' : 'maz:cursor-pointer maz:hover:text-foreground!',
+        ]"
+        class="m-tabs-bar__item maz:relative maz:flex maz:flex-none maz:items-center maz:gap-2 maz:rounded maz:px-3 maz:py-2 maz:text-center maz:font-medium maz:no-underline maz:transition maz:duration-200 maz:ease-in-out maz:bg-transparent"
         :disabled="item.disabled"
         :style="getTabStyle(index, item.disabled)"
         @click="item.disabled ? undefined : selectTab(index)"
@@ -271,45 +274,3 @@ onMounted(() => {
     </template>
   </div>
 </template>
-
-<style scoped>
-@reference "../tailwindcss/tailwind.css";
-
-.m-tabs-bar {
-  @apply maz:relative maz:inline-flex maz:max-w-full maz:gap-1 maz:overflow-x-auto maz:rounded maz:p-2 maz:align-top maz:bg-surface;
-
-  &.--elevation {
-    @apply maz:drop-shadow-md maz:shadow-elevation maz:dark:shadow-none;
-  }
-
-  &.--block {
-    @apply maz:w-full;
-  }
-
-  &.--bordered {
-    @apply maz:border maz:border-divider;
-  }
-
-  &__item {
-    @apply maz:relative maz:flex maz:flex-none
-        maz:items-center maz:gap-2 maz:rounded maz:px-3
-        maz:py-2 maz:text-center maz:font-medium maz:no-underline maz:transition maz:duration-200 maz:ease-in-out maz:bg-transparent;
-
-    &:not(.--disabled) {
-      @apply maz:cursor-pointer maz:hover:text-foreground!;
-    }
-
-    &.--disabled {
-      @apply maz:cursor-not-allowed maz:bg-surface-300 maz:text-gray-400 maz:dark:text-gray-500;
-    }
-  }
-
-  &__indicator {
-    @apply maz:absolute maz:left-0 maz:rounded maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-center;
-
-    &.--animated {
-      @apply maz:transition-all maz:duration-300 maz:ease-in-out;
-    }
-  }
-}
-</style>

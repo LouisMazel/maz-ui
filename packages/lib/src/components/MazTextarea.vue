@@ -175,10 +175,8 @@ const borderStyle = computed(() => {
     return 'maz:border-success'
   if (props.warning)
     return 'maz:border-warning'
-  return '--default-border'
+  return 'maz:border-divider maz:dark:border-divider-400'
 })
-
-const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
 
 let autofillCleanup: (() => void) | undefined
 
@@ -196,6 +194,15 @@ onBeforeUnmount(() => {
   autofillCleanup?.()
 })
 
+const ROUNDED_CLASS = {
+  none: '',
+  sm: 'maz:rounded-xs',
+  md: 'maz:rounded-md',
+  lg: 'maz:rounded-lg',
+  xl: 'maz:rounded-xl',
+  full: 'maz:rounded-full',
+} as const
+
 const stateLabelColor = computed(() => [
   {
     'maz:text-destructive-600': props.error,
@@ -206,25 +213,26 @@ const stateLabelColor = computed(() => [
 </script>
 
 <template>
-  <div class="m-textarea-wrapper m-reset-css" :class="props.class" :style>
+  <div class="m-textarea-wrapper m-reset-css maz:flex maz:flex-col maz:gap-2" :class="props.class" :style>
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label v-if="topLabel" :for="instanceId" class="m-textarea__top-label" :class="stateLabelColor">{{ topLabel }}</label>
     <label
-      class="m-textarea"
+      class="m-textarea maz:min-h-25 maz:relative maz:flex maz:flex-col maz:align-top maz:text-foreground"
       :for="instanceId"
       :class="[
         {
           '--is-disabled': disabled,
           '--has-label': hasLabelOrHint,
           '--background-transparent': transparent,
-          '--padding': padding,
-          '--border': border,
-          '--has-border-style': hasBorderStyle,
           '--has-placeholder': !!placeholder,
           '--autogrow': autogrow,
+          'maz:px-4 maz:py-3': padding,
+          'maz:border maz:border-solid': border && !disabled,
+          'maz:bg-surface maz:dark:bg-surface-400': !transparent && !disabled,
+          'maz:cursor-not-allowed maz:border-divider maz:dark:border-divider-400 maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-muted': disabled,
         },
         borderStyle,
-        roundedSize ? `--rounded-${roundedSize}` : '--rounded',
+        ROUNDED_CLASS[roundedSize],
         `--${color}`,
       ]"
       :style="[`--append-justify: ${appendJustify}`]"
@@ -269,7 +277,7 @@ const stateLabelColor = computed(() => [
           change,
         }"
       />
-      <div v-if="hasAppend" class="m-textarea__append">
+      <div v-if="hasAppend" class="m-textarea__append maz:inline-flex">
         <!-- @slot Append - Replace the append -->
         <slot name="append" />
       </div>
@@ -280,66 +288,14 @@ const stateLabelColor = computed(() => [
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
 
-.m-textarea-wrapper {
-  @apply maz:flex maz:flex-col maz:gap-2;
-}
-
 .m-textarea {
-  @apply maz:min-h-25 maz:relative maz:flex maz:flex-col maz:align-top maz:text-foreground;
-
   &.--has-placeholder.--has-label textarea,
   &.--has-label:has(textarea:not(:placeholder-shown)) textarea,
   &.--has-label:has(textarea:-webkit-autofill) textarea {
-    @apply maz:pt-3.5;
-  }
-
-  &:not(.--background-transparent, .--is-disabled) {
-    @apply maz:bg-surface maz:dark:bg-surface-400;
-  }
-
-  &.--border:not(.--is-disabled) {
-    @apply maz:border maz:border-solid;
-
-    &:not(.--has-border-style) {
-      @apply maz:border-divider maz:dark:border-divider-400;
-    }
-  }
-
-  &.--padding {
-    @apply maz:px-4 maz:py-3;
-  }
-
-  &.--rounded-sm {
-    @apply maz:rounded-xs;
-  }
-
-  &.--rounded-md {
-    @apply maz:rounded-md;
-  }
-
-  &.--rounded-base {
-    @apply maz:rounded;
-  }
-
-  &.--rounded-lg {
-    @apply maz:rounded-lg;
-  }
-
-  &.--rounded-xl {
-    @apply maz:rounded-xl;
-  }
-
-  &.--rounded-full {
-    @apply maz:rounded-full;
-  }
-
-  &.--rounded {
-    @apply maz:rounded;
+    padding-top: 0.875rem;
   }
 
   &__append {
-    @apply maz:inline-flex;
-
     justify-content: var(--append-justify);
   }
 
@@ -354,8 +310,6 @@ const stateLabelColor = computed(() => [
   }
 
   &.--is-disabled {
-    @apply maz:cursor-not-allowed maz:border-divider maz:dark:border-divider-400 maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-muted;
-
     & * {
       @apply maz:cursor-not-allowed maz:text-muted;
     }

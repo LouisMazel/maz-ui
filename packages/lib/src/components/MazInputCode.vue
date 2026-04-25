@@ -216,6 +216,15 @@ function selectInputByIndex(index: number) {
   input.select()
 }
 
+const SIZE_CLASS = {
+  mini: 'maz:text-[0.625rem]',
+  xs: 'maz:text-xs',
+  sm: 'maz:text-sm',
+  md: '',
+  lg: 'maz:text-lg',
+  xl: 'maz:text-xl',
+} as const
+
 const borderColorState = computed(() => {
   if (props.error)
     return 'maz:border-destructive!'
@@ -230,13 +239,13 @@ const borderColorState = computed(() => {
 
 <template>
   <fieldset
-    class="m-input-code m-reset-css"
-    :class="[size ? `--${size}` : undefined, props.class]"
+    class="m-input-code m-reset-css maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top"
+    :class="[size ? `--${size}` : undefined, SIZE_CLASS[size as keyof typeof SIZE_CLASS], props.class]"
     :disabled
     :style="[style, { '--input-border-color': `var(--maz-${props.color})` }]"
   >
-    <div class="m-input-code__wrapper">
-      <div v-for="item in codeLength" :key="item" class="input-wrapper" :class="borderColorState">
+    <div class="m-input-code__wrapper maz:inline-flex maz:gap-[1em]">
+      <div v-for="item in codeLength" :key="item" class="input-wrapper maz:relative maz:h-[4em] maz:w-[4em] maz:overflow-hidden maz:rounded maz:border maz:border-solid maz:border-divider maz:dark:border-divider-400 maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:bg-surface-400" :class="borderColorState">
         <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label -->
         <input
           :id="`m-input-code-${item}`"
@@ -263,10 +272,11 @@ const borderColorState = computed(() => {
       </div>
     </div>
     <span
-      class="m-input-code__hint" :class="{
-        '--error': error,
-        '--success': success,
-        '--warning': warning,
+      class="m-input-code__hint maz:text-sm" :class="{
+        'maz:text-destructive-600': error,
+        'maz:text-success-600': success,
+        'maz:text-warning-600': warning,
+        'maz:text-muted': !error && !success && !warning,
       }"
     >{{ hint }}</span>
   </fieldset>
@@ -276,53 +286,11 @@ const borderColorState = computed(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-input-code {
-  @apply maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top;
-
   &.--mini {
-    @apply maz:text-[0.625rem];
-
     line-height: 1rem;
   }
 
-  &.--xs {
-    @apply maz:text-xs;
-  }
-
-  &.--sm {
-    @apply maz:text-sm;
-  }
-
-  &.--lg {
-    @apply maz:text-lg;
-  }
-
-  &.--xl {
-    @apply maz:text-xl;
-  }
-
-  &__wrapper {
-    @apply maz:inline-flex maz:gap-[1em];
-  }
-
-  &__hint {
-    @apply maz:text-sm maz:text-muted;
-
-    &.--error {
-      @apply maz:text-destructive-600;
-    }
-
-    &.--success {
-      @apply maz:text-success-600;
-    }
-
-    &.--warning {
-      @apply maz:text-warning-600;
-    }
-  }
-
   .input-wrapper {
-    @apply maz:relative maz:h-[4em] maz:w-[4em] maz:overflow-hidden maz:rounded maz:border maz:border-solid maz:border-divider maz:dark:border-divider-400 maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:bg-surface-400;
-
     &:focus-within {
       border-color: var(--input-border-color);
     }

@@ -161,12 +161,16 @@ function shouldHaveRemainingLayer(index: number): boolean {
 <template>
   <div
     v-if="images.length > 0 || hasEmptyLayer"
-    class="m-gallery m-reset-css"
+    class="m-gallery m-reset-css maz:relative maz:overflow-hidden maz:flex"
     :style="[sizeStyle, {
       '--gallery-separator-color': separatorColor,
       '--gallery-background-color': backgroundColor,
     }]"
-    :class="{ '--radius': radius, '--has-background-color': !!backgroundColor }"
+    :class="{
+      '--radius': radius,
+      'maz:rounded': radius,
+      'maz:bg-[var(--gallery-background-color)]': !!backgroundColor,
+    }"
   >
     <section class="m-gallery__wrapper maz:flex maz:flex-1">
       <figure
@@ -198,14 +202,14 @@ function shouldHaveRemainingLayer(index: number): boolean {
             blurOnHover: false,
             scaleOnHover: scale,
           }"
-          class="m-gallery__remaining-layer"
+          class="m-gallery__remaining-layer maz:flex maz:bg-overlay/30 maz:flex-center maz:backdrop-blur-xs"
         >
-          <span>+{{ numberImagesRemaining }}</span>
+          <span class="maz:text-white maz:text-3xl">+{{ numberImagesRemaining }}</span>
         </div>
       </figure>
       <div
         v-if="hasEmptyLayer && images.length === 0"
-        class="m-gallery__empty-layer"
+        class="m-gallery__empty-layer maz:flex maz:w-full maz:bg-surface-600 maz:text-foreground maz:flex-center maz:dark:bg-surface-400"
         :class="{ 'maz:rounded-xl': radius }"
         :style="[sizeStyle]"
       >
@@ -216,7 +220,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
       v-for="(image, i) in imagesHidden"
       :key="i"
       v-fullscreen-img="{ src: image.src, disabled: !zoom }"
-      class="m-gallery__hidden"
+      class="m-gallery__hidden maz:hidden"
     />
   </div>
 </template>
@@ -225,20 +229,6 @@ function shouldHaveRemainingLayer(index: number): boolean {
 @reference "../tailwindcss/tailwind.css";
 
 .m-gallery {
-  @apply maz:relative maz:overflow-hidden maz:flex;
-
-  &.--has-background-color {
-    @apply maz:bg-[var(--gallery-background-color)];
-  }
-
-  &__hidden {
-    @apply maz:hidden;
-  }
-
-  &.--radius {
-    @apply maz:rounded;
-  }
-
   &__item {
     @apply maz:absolute maz:top-0 maz:m-0 maz:h-1/2 maz:w-full maz:overflow-hidden maz:border-s-2 maz:p-0;
 
@@ -331,16 +321,6 @@ function shouldHaveRemainingLayer(index: number): boolean {
   &__remaining-layer {
     position: absolute;
     inset: 0;
-
-    @apply maz:flex maz:bg-overlay/30 maz:flex-center maz:backdrop-blur-xs;
-
-    span {
-      @apply maz:text-white maz:text-3xl;
-    }
-  }
-
-  &__empty-layer {
-    @apply maz:flex maz:w-full maz:bg-surface-600 maz:text-foreground maz:flex-center maz:dark:bg-surface-400;
   }
 }
 </style>

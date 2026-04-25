@@ -106,8 +106,8 @@ function onFocus(event: FocusEvent) {
 <template>
   <label
     :for="instanceId"
-    class="m-switch m-reset-css"
-    :class="[{ '--is-disabled': disabled }, props.class]"
+    class="m-switch m-reset-css maz:relative maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-2 maz:align-top"
+    :class="[{ '--is-disabled': disabled, 'maz:cursor-not-allowed': disabled }, props.class]"
     role="switch"
     :style="[style, { '--switch-color': bgColorClassVar }]"
     :aria-checked="modelValue"
@@ -126,12 +126,12 @@ function onFocus(event: FocusEvent) {
       :checked="modelValue"
       :aria-label="label"
       :disabled="disabled"
-      class="m-switch__input"
+      class="m-switch__input maz:absolute"
       @change="emit"
     >
-    <span class="m-switch__toggle" />
+    <span class="m-switch__toggle maz:h-6 maz:w-12 maz:relative" />
 
-    <span v-if="hasSlotContent($slots.default) || label || hint" class="m-switch__text">
+    <span v-if="hasSlotContent($slots.default) || label || hint" class="m-switch__text maz:flex maz:flex-col maz:gap-0">
       <!--
         @slot The label of the switch
           @binding {Boolean} value - The value of the switch
@@ -142,10 +142,11 @@ function onFocus(event: FocusEvent) {
 
       <span
         v-if="hint"
-        class="m-switch__hint" :class="{
-          '--error': error,
-          '--success': success,
-          '--warning': warning,
+        class="m-switch__hint maz:text-sm" :class="{
+          'maz:text-destructive-600': error,
+          'maz:text-success-600': success,
+          'maz:text-warning-600': warning,
+          'maz:text-muted': !error && !success && !warning,
         }"
       >{{ hint }}</span>
     </span>
@@ -156,21 +157,11 @@ function onFocus(event: FocusEvent) {
 @reference "../tailwindcss/tailwind.css";
 
 .m-switch {
-  @apply maz:relative maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-2 maz:align-top;
-
-  &:has(input:disabled) {
-    @apply maz:cursor-not-allowed;
-  }
-
   &__input {
-    @apply maz:absolute;
-
     left: -9999px;
   }
 
   &__toggle {
-    @apply maz:h-6 maz:w-12 maz:relative;
-
     &::before {
       content: '';
       transition: all 200ms ease-in-out;
@@ -199,37 +190,15 @@ function onFocus(event: FocusEvent) {
     }
   }
 
-  &__input:disabled {
-    + .m-switch__toggle {
-      &::before {
-        @apply maz:bg-surface-600 maz:dark:bg-surface-400;
-      }
-
-      &::after {
-        @apply maz:bg-surface-700 maz:dark:bg-surface-300;
-
-        box-shadow: none;
-      }
-    }
-  }
-
-  &__text {
-    @apply maz:flex maz:flex-col maz:gap-0;
-  }
-
-  &__hint {
-    @apply maz:text-sm maz:text-muted;
-
-    &.--error {
-      @apply maz:text-destructive-600;
+  &__input:disabled + .m-switch__toggle {
+    &::before {
+      @apply maz:bg-surface-600 maz:dark:bg-surface-400;
     }
 
-    &.--success {
-      @apply maz:text-success-600;
-    }
+    &::after {
+      @apply maz:bg-surface-700 maz:dark:bg-surface-300;
 
-    &.--warning {
-      @apply maz:text-warning-600;
+      box-shadow: none;
     }
   }
 }

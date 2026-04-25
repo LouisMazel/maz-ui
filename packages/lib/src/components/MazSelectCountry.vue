@@ -259,7 +259,7 @@ const flagUrl = computed(() => {
 </script>
 
 <template>
-  <div class="m-select-country m-reset-css" :class="[className, { '--no-flags': hideFlags }]" :style="style">
+  <div class="m-select-country m-reset-css maz:relative maz:inline-flex" :class="[className, { '--no-flags': hideFlags }]" :style="style">
     <MazSelect
       :id="instanceId"
       :model-value="modelValue"
@@ -318,12 +318,12 @@ const flagUrl = computed(() => {
       </template>
       <template #default="{ option, isSelected }">
         <div
-          class="m-select-country__select__item"
+          class="m-select-country__select__item maz:w-full maz:text-sm maz:flex maz:items-center maz:gap-2 maz:truncate"
           :class="{
             'm-select-country__select__item--selected': isSelected,
           }"
         >
-          <span v-if="!hideFlags && typeof option.code === 'string'" class="m-select-country__select__item__flag-container">
+          <span v-if="!hideFlags && typeof option.code === 'string'" class="m-select-country__select__item__flag-container maz:flex maz:flex-center">
             <!--
               @slot Country list flag
                 @binding {{ code: string; name: string; }} option - country data
@@ -343,7 +343,7 @@ const flagUrl = computed(() => {
                 class="maz:size-5 maz:rounded"
                 img-class="maz:rounded maz:h-5 maz:w-5"
               />
-              <span v-else class="m-select-country__select__item__list-flag">
+              <span v-else class="m-select-country__select__item__list-flag maz:text-primary-foreground/80 maz:text-xs maz:size-5 maz:flex maz:flex-center maz:rounded-full maz:bg-primary-500 maz:leading-none">
                 {{ option.code }}
               </span>
             </slot>
@@ -370,8 +370,6 @@ const flagUrl = computed(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-select-country {
-  @apply maz:relative maz:inline-flex;
-
   &__country-flag {
     position: absolute;
     left: 0.813rem;
@@ -390,22 +388,8 @@ const flagUrl = computed(() => {
     }
   }
 
-  &__select {
-    &:deep(.m-input-label) {
-      @apply maz:p-0!;
-    }
-
-    &__item {
-      @apply maz:w-full maz:text-sm maz:flex maz:items-center maz:gap-2 maz:truncate;
-
-      &__flag-container {
-        @apply maz:flex maz:flex-center;
-      }
-
-      &__list-flag {
-        @apply maz:text-primary-foreground/80 maz:text-xs maz:size-5 maz:flex maz:flex-center maz:rounded-full maz:bg-primary-500 maz:leading-none;
-      }
-    }
+  &__select:deep(.m-input-label) {
+    @apply maz:p-0!;
   }
 }
 </style>
