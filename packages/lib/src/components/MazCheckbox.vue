@@ -284,7 +284,7 @@ function onFocus(event: FocusEvent) {
   }
 
   > span {
-    @apply maz:relative maz:flex maz:rounded-md maz:border maz:border-divider maz:dark:border-divider-400 maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center;
+    @apply maz:relative maz:flex maz:rounded-sm maz:border maz:border-divider maz:dark:border-divider-400 maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center;
   }
 
   input {
