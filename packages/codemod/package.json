@@ -41,13 +41,13 @@
     "node": ">=20.19.0"
   },
   "scripts": {
+    "postinstall": "nx build",
     "build": "unbuild",
     "dev": "unbuild --stub",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest watch",
     "test:unit:coverage": "vitest run --coverage",
-
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix"
   },

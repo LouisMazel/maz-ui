@@ -10,7 +10,7 @@ import { MazXCircle } from '@maz-ui/icons/lazy/MazXCircle'
 import { computed, defineAsyncComponent, useId, useSlots } from 'vue'
 
 export type MazAlertColor = Exclude<MazColor, 'transparent'>
-export type MazAlertRoundedSize = 'none' | 'sm' | 'md' | 'base' | 'lg' | 'xl' | '2xl' | '3xl'
+export type MazAlertRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
 export type MazAlertVariant = 'soft' | 'solid'
 
 export interface MazAlertProps {
@@ -48,8 +48,8 @@ export interface MazAlertProps {
   /**
    * Size of the rounded corners
    * @type {MazAlertRoundedSize}
-   * @values `'none' | 'sm' | 'md' | 'base' | 'lg' | 'xl' | '2xl' | '3xl'`
-   * @default 'base'
+   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'`
+   * @default 'md'
    */
   roundedSize?: MazAlertRoundedSize
   /**
@@ -73,7 +73,7 @@ const {
   hideIcon = false,
   color = 'info',
   iconSize = 'md',
-  roundedSize = 'base',
+  roundedSize = 'md',
   bordered = true,
   variant = 'soft',
 } = defineProps<MazAlertProps>()

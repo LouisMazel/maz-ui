@@ -54,9 +54,9 @@ function showToast() {
       strategy: 'hybrid',
       overrides: {
         foundation: {
-          'base-font-size': '16px',
-          'font-family': 'Helvetica Neue, sans-serif, system-ui, -apple-system, blinkmacsystemfont, \'Segoe UI\', roboto, oxygen, ubuntu, cantarell, \'Fira Sans\', \'Droid Sans\', \'Helvetica Neue\', sans-serif',
-          'radius': '0rem',
+          'base-font-size': '14px',
+          // 'font-family': 'Helvetica Neue, sans-serif, system-ui, -apple-system, blinkmacsystemfont, \'Segoe UI\', roboto, oxygen, ubuntu, cantarell, \'Fira Sans\', \'Droid Sans\', \'Helvetica Neue\', sans-serif',
+          // 'radius': '0rem',
           'border-width': '1px',
         },
         colors: {
@@ -121,7 +121,7 @@ function showToast() {
     }"
   >
     <div class="maz:flex maz:h-full maz:flex-col">
-      <nav class="maz:flex maz:h-16 maz:flex-none maz:items-center maz:gap-4 maz:border-b maz:padded-container">
+      <nav class="maz:sticky maz:top-0 maz:z-50 maz:flex maz:h-16 maz:flex-none maz:items-center maz:gap-4 maz:border-b maz:padded-container maz:bg-surface">
         <MazLink v-for="route in routes" :key="route.path" :to="route.path" color="contrast">
           {{ capitalize(route.name) }}
         </MazLink>

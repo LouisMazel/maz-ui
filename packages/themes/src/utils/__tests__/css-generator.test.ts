@@ -15,7 +15,7 @@ describe('cSS Generator', () => {
           onlyCritical: true,
         })
 
-        expect(css).toContain('@layer maz-ui-theme {\n')
+        expect(css).toContain('@layer theme {\n')
         expect(css).toContain(':root {')
         expect(css).toContain('--maz-accent:')
         expect(css).toContain('--maz-border-width:')
@@ -35,7 +35,7 @@ describe('cSS Generator', () => {
           onlyCritical: true,
         })
 
-        expect(css).toContain('@layer maz-ui-theme {\n')
+        expect(css).toContain('@layer theme {\n')
         expect(css).toContain('.dark {')
         expect(css).toContain('--maz-accent:')
         expect(css).toContain('--maz-border-width:')
@@ -67,7 +67,7 @@ describe('cSS Generator', () => {
           darkClass: 'dark',
         })
 
-        expect(css).toContain('@layer maz-ui-theme {\n')
+        expect(css).toContain('@layer theme {\n')
         expect(css).toContain(':root {')
         expect(css).toContain('--maz-primary-500:')
         expect(css).toContain('--maz-contrast-600:')
@@ -194,7 +194,7 @@ describe('cSS Generator', () => {
           criticalFoundation: ['radius'],
         })
 
-        expect(css).toContain('@layer maz-ui-theme')
+        expect(css).toContain('@layer theme')
       })
     })
   })

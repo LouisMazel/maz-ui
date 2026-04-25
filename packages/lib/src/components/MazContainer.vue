@@ -26,11 +26,11 @@ export interface MazContainerProps {
   bordered?: boolean
   /**
    * Size of the rounded
-   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'`
-   * @type {'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'}
-   * @default 'base'
+   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+   * @type {'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'}
+   * @default 'md'
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'
+  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /**
    * Remove background color
    * @default false
@@ -68,7 +68,7 @@ const {
   elevation = false,
   padding = true,
   bordered = true,
-  roundedSize = 'base',
+  roundedSize = 'md',
   title = undefined,
   transparent = false,
   overflowHidden = true,

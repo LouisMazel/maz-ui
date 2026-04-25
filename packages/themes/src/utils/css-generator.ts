@@ -75,7 +75,7 @@ export function generateCSS(
     darkClass = 'dark',
   } = options
 
-  let css = '@layer maz-ui-theme {\n'
+  let css = '@layer theme {\n'
 
   if (mode === 'light' || mode === 'both') {
     css += generateLightThemeVariables(preset, {

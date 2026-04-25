@@ -293,7 +293,7 @@ onMounted(() => {
   &__item {
     @apply maz:relative maz:flex maz:flex-none
         maz:items-center maz:gap-2 maz:rounded maz:px-3
-        maz:py-2 maz:text-center maz:font-medium maz:no-underline maz:transition maz:duration-200 maz:ease-in-out;
+        maz:py-2 maz:text-center maz:font-medium maz:no-underline maz:transition maz:duration-200 maz:ease-in-out maz:bg-transparent;
 
     &:not(.--disabled) {
       @apply maz:cursor-pointer maz:hover:text-foreground!;

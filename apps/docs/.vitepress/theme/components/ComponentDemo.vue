@@ -53,9 +53,10 @@ const showCode = ref(props.expanded)
 
 <style scoped>
 @reference "../main.css";
+
 .component-demo {
   :deep(.m-card__footer) {
-    @apply maz:p-0 maz:rounded-b;
+    @apply maz:p-0 maz:rounded-b-md;
   }
 
   :deep(a):not(.m-link, .m-btn) {

@@ -1,4 +1,4 @@
-@layer maz-ui-reset {
+@layer base {
   .m-reset-css {
     &,
     & *,
@@ -8,7 +8,7 @@
     &::file-selector-button {
       border-width: 0;
       border-style: solid;
-      border-color: var(--color-divider, currentcolor);
+      border-color: var(--maz-border, currentcolor);
       box-sizing: border-box;
     }
 

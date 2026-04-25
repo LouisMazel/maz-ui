@@ -39,6 +39,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
+    "codegen": "nx build",
     "build": "unbuild",
     "dev": "unbuild --stub",
     "typecheck": "tsc --noEmit --skipLibCheck",

@@ -231,10 +231,10 @@ export interface MazTableProps<T extends MazTableRow<T>> {
   /**
    * Size radius of the component's border
    * @type {string}
-   * @values none, sm, md, lg, xl, full, base
-   * @default base
+   * @values none, sm, md, lg, xl, full
+   * @default md
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'
+  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /**
    * Enable scrollable on table
    * @type {boolean}
@@ -282,7 +282,7 @@ const props = withDefaults(defineProps<MazTableProps<T>>(), {
   captionSide: 'bottom',
   divider: false,
   color: 'primary',
-  roundedSize: 'lg',
+  roundedSize: 'md',
   scrollable: false,
   paginateRows: true,
 })

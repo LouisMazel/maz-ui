@@ -21,7 +21,7 @@ const {
   color = 'primary',
   buttonColor = 'info',
   letterCount = undefined,
-  roundedSize = 'base',
+  roundedSize = 'md',
   fallbackSrc = undefined,
   loading = 'intersecting',
 } = defineProps<MazAvatarProps>()

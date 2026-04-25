@@ -32,11 +32,11 @@ export interface MazSkeletonProps {
   animated?: boolean
   /**
    * Controls the border radius
-   * @values none, sm, md, lg, xl, full, base
-   * @type {'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'}
-   * @default 'base'
+   * @values none, sm, md, lg, xl, full
+   * @type {'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'}
+   * @default 'md'
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'
+  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /**
    * Accessibility label
    * @default 'skeleton.ariaLabel' (translations)
@@ -53,7 +53,7 @@ const {
   shape = 'rectangle',
   size = '1rem',
   animated = true,
-  roundedSize = 'base',
+  roundedSize = 'md',
   ariaLabel,
   loadingText,
   width,

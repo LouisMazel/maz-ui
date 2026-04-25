@@ -17,7 +17,7 @@
 /* Dev: maz-ui is resolved to src/ via the `monorepo:dev` export condition,
    so Tailwind has to scan those sources to generate the utilities used
    inside library components (e.g. MazToast's `maz:dark:bg-destructive/10`). */
-@source "../../../packages/lib/src/**/*.{vue,ts}";
+@source "../../../packages/lib/src/**/*.{vue,ts,css,scss}";
 
 @layer base {
   *,
@@ -25,6 +25,6 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--maz-border);
+    border-color: var(--maz-border, currentcolor);
   }
 }

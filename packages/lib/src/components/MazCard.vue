@@ -154,7 +154,7 @@ function toggleCollapse() {
         '--block': block,
         'maz:overflow-hidden': overflowHidden || !collapseOpenModel,
         'maz:rounded': radius,
-        'maz:border maz:border-solid maz:border-divider': bordered,
+        'maz:border': bordered,
       },
     ]"
   >

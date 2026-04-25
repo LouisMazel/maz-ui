@@ -62,6 +62,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
+    "codegen": "nx build",
     "build": "vite build",
     "build:watch": "vite build --watch --mode development",
     "typecheck": "tsc --noEmit --skipLibCheck",

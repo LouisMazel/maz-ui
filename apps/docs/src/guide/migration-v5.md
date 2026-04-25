@@ -17,7 +17,8 @@ Maz-UI is maintained by a single developer. After the v5 stable release, **v4 wi
 2. If your **custom CSS** uses `hsl(var(--maz-<color>))`, simplify to `var(--maz-<color>)`.
 3. Rename `import 'maz-ui/styles'` to `import 'maz-ui/style.css'` (and `maz-ui/aos-styles` → `maz-ui/aos.css`).
 4. If you imported anything via `maz-ui/src/...`, switch to the public subpath (e.g. `maz-ui/components/MazBtn`).
-5. That's it for most apps. Everything else is opt-in.
+5. Replace any `roundedSize="base"` with `roundedSize="md"` (or drop the prop — the new default is visually identical).
+6. That's it for most apps. Everything else is opt-in.
 
 ## Prerequisites
 
@@ -87,6 +88,38 @@ Both resolve to the same compiled CSS they did in v4, only the subpath key chang
 ```bash
 # Find the patterns to update
 rg "['\"]maz-ui/(styles|aos-styles)['\"]" src/
+```
+
+### 3. `roundedSize="base"` removed
+
+The `'base'` value of the `roundedSize` prop has been removed across the affected components. The default radius is now `'md'` (which maps to the same visual radius v4 used for `'base'`).
+
+| Component | Old default | New default |
+| --- | --- | --- |
+| `MazAlert` | `'base'` | `'md'` |
+| `MazAvatar` | `'base'` | `'md'` |
+| `MazBtn` | `'base'` | `'md'` |
+| `MazContainer` | `'base'` | `'md'` |
+| `MazInput` | `'base'` | `'md'` |
+| `MazSkeleton` | `'base'` | `'md'` |
+| `MazTable` | `'lg'` | `'md'` |
+| `MazTextarea` | (none) | `'md'` |
+| `MazTimeline` | `'base'` | `'md'` |
+
+Search for explicit usages and replace them:
+
+```bash
+rg "rounded-?size\s*=\s*['\"]base['\"]" src/
+```
+
+```vue
+<!-- v4 -->
+<MazBtn rounded-size="base" />
+
+<!-- v5 -->
+<MazBtn rounded-size="md" />
+<!-- or just drop the prop, the new default is identical visually -->
+<MazBtn />
 ```
 
 ## Informational changes (probably no action needed)

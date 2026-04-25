@@ -1,6 +1,6 @@
 @import '../tailwindcss/theme-breakpoints.css';
 
-@layer maz-ui-utilities {
+@layer theme {
   :root {
     --maz-container-padding-mobile: 1rem;
     --maz-container-padding-tablet: 2rem;

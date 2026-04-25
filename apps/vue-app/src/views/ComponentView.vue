@@ -1509,7 +1509,7 @@ const checklistItems = [
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazContainer
       </h2>
-      <MazContainer class="maz:rounded maz:border maz:border-divider maz:p-4">
+      <MazContainer>
         <p>Content inside a MazContainer with max-width constraints.</p>
       </MazContainer>
     </section>

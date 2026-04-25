@@ -85,6 +85,7 @@
     "svg"
   ],
   "scripts": {
+    "codegen": "nx build",
     "build": "vite build",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "cross-env NODE_ENV=production eslint .",

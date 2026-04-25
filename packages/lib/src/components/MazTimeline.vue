@@ -7,7 +7,7 @@ import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useId,
 
 export type MazTimelineColor = Exclude<MazColor, 'transparent'>
 export type MazTimelineDirection = 'horizontal' | 'vertical' | 'auto'
-export type MazTimelineRoundedSize = 'none' | 'sm' | 'md' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | 'full'
+export type MazTimelineRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full'
 export type MazTimelineStepState = 'completed' | 'active' | 'error' | 'warning' | 'pending'
 
 export interface MazTimelineItem {
@@ -100,8 +100,8 @@ export interface MazTimelineProps {
   /**
    * Border radius of step indicators
    * @type {MazTimelineRoundedSize}
-   * @values `'none' | 'sm' | 'md' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | 'full'`
-   * @default 'full'
+   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full'`
+   * @default 'md'
    */
   roundedSize?: MazTimelineRoundedSize
 }
@@ -116,7 +116,7 @@ const {
   autoValidateSteps = true,
   clickable = false,
   animated = true,
-  roundedSize = 'base',
+  roundedSize = 'md',
   steps,
 } = defineProps<MazTimelineProps>()
 

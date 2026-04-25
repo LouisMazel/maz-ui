@@ -364,7 +364,7 @@ You can use either title, content, or both.
 
 <script lang="ts" setup>
   const colors = ['info', 'success', 'warning', 'destructive', 'primary', 'secondary', 'accent', 'contrast']
-  const roundedSizes = ['none', 'sm', 'md', 'base', 'lg', 'xl', '2xl', '3xl']
+  const roundedSizes = ['none', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']
 
   function capitalize(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1)

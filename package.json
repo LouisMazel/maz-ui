@@ -25,6 +25,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "clean": "make clean",
+    "postinstall": "nx run-many -t codegen",
     "prepare": "npx husky",
     "pre-commit": "lint-staged",
     "commit": "cz",

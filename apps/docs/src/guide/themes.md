@@ -790,7 +790,7 @@ The system automatically generates all necessary variables:
 ::: details View all generated CSS variables (with maz-ui preset)
 
 ```css
-@layer maz-ui-theme {
+@layer theme {
   :root {
     --maz-background: 0 0% 100%;
     --maz-foreground: 210 8% 14%;
@@ -848,7 +848,7 @@ The system automatically generates all necessary variables:
   }
 }
 
-@layer maz-ui-theme {
+@layer theme {
 
   :root {
     --maz-overlay: 0 0% 40%;

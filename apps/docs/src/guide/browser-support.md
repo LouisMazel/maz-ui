@@ -36,12 +36,6 @@ Used internally by Tailwind v4 to declare typed custom properties with default v
 
 [Browser support · caniuse](https://caniuse.com/?search=%40property) — supported everywhere since Chromium 111 / Safari 16.4 / Firefox 128.
 
-### Cascade layers (`@layer`)
-
-Used by Maz-UI to order its reset, theme and utilities against the app's own styles (`@layer maz-ui-reset, maz-ui-theme, maz-ui-animations, maz-ui-utilities`).
-
-[Browser support · caniuse](https://caniuse.com/css-cascade-layers) — supported everywhere since 2023 (Chromium 99, Safari 15.4, Firefox 97). Not a new v5 requirement, but listed for completeness.
-
 ### Native CSS nesting
 
 Used by Tailwind v4 internally and by Maz-UI utilities like `cap-f` (`&::first-letter`). v4 does not run a CSS-nesting preprocessor; the output relies on the browser parsing nested rules directly.
