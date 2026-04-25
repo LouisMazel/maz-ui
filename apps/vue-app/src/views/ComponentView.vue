@@ -92,6 +92,7 @@ const stepperSteps = [
 ]
 
 function makePlaceholder(color: string, label: string): string {
+  // eslint-disable-next-line sonarjs/no-nested-template-literals
   return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><rect fill="${color}" width="800" height="600"/><text x="400" y="300" text-anchor="middle" dominant-baseline="central" font-family="system-ui" font-size="32" fill="white">${label}</text></svg>`)}`
 }
 
@@ -116,7 +117,7 @@ const checklistItems = [
 
 <template>
   <div class="maz:flex maz:flex-col maz:gap-16 maz:p-8" style="max-width: 1400px; margin: 0 auto;">
-    ==================== MazBtn ====================
+    <!-- ==================== MazBtn ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazBtn
@@ -397,14 +398,6 @@ const checklistItems = [
       <div class="maz:flex maz:flex-wrap maz:gap-6 maz:mb-4">
         <MazSwitch v-for="c in colors" :key="c" v-model="switchValue" :color="c">
           {{ c }}
-        </MazSwitch>
-      </div>
-      <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
-        Sizes
-      </h3>
-      <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-6">
-        <MazSwitch v-for="s in sizes" :key="s" v-model="switchValue" :size="s">
-          {{ s }}
         </MazSwitch>
       </div>
     </section>
@@ -1288,7 +1281,7 @@ const checklistItems = [
     </section>
 
     <!-- ==================== MazReadingProgressBar ==================== -->
-    <section>
+    <!-- <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazReadingProgressBar
       </h2>
@@ -1296,7 +1289,7 @@ const checklistItems = [
         (Tracks page scroll progress - visible at the top of the viewport)
       </p>
       <MazReadingProgressBar />
-    </section>
+    </section> -->
 
     <!-- ==================== MazAnimatedCounter ==================== -->
     <section>
@@ -1522,14 +1515,14 @@ const checklistItems = [
     </section>
 
     <!-- ==================== MazBackdrop ==================== -->
-    <section>
+    <!-- <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazBackdrop
       </h2>
       <p class="maz:text-muted">
         (Used internally by Dialog, BottomSheet, Drawer)
       </p>
-    </section>
+    </section> -->
 
     <!-- ==================== MazChart ==================== -->
     <section>
