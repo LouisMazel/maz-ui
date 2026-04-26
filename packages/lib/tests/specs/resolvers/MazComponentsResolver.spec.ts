@@ -12,16 +12,6 @@ describe('given MazComponentsResolver', () => {
     })
   })
 
-  describe('when resolver is created with devMode option', () => {
-    it('then it should return a component resolver with devMode settings', () => {
-      const resolver = MazComponentsResolver({ devMode: true })
-
-      expect(resolver).toBeDefined()
-      expect(resolver.type).toBe('component')
-      expect(resolver.resolve).toBeDefined()
-    })
-  })
-
   describe('when resolving component with Maz prefix', () => {
     it('then it should resolve MazBtn component', () => {
       const resolver = MazComponentsResolver()
@@ -63,16 +53,6 @@ describe('given MazComponentsResolver', () => {
 
       expect(result).toBeDefined()
       expect(result?.from).toBe('maz-ui/components/MazInput')
-    })
-  })
-
-  describe('when resolving with devMode enabled', () => {
-    it('then it should resolve with src path and .vue extension', () => {
-      const resolver = MazComponentsResolver({ devMode: true })
-      const result = resolver.resolve('MazBtn')
-
-      expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/components/MazBtn')
     })
   })
 

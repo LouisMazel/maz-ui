@@ -13,7 +13,7 @@ describe('given MazModulesResolver', () => {
 
   describe('when resolver is created with devMode option', () => {
     it('then it should return a resolver function with devMode settings', () => {
-      const resolver = MazModulesResolver({ devMode: true })
+      const resolver = MazModulesResolver()
 
       expect(resolver).toBeDefined()
       expect(typeof resolver).toBe('function')
@@ -35,7 +35,7 @@ describe('given MazModulesResolver', () => {
       const result = resolver('capitalize') as ResolverResult
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui')
+      expect(result?.from).toBe('@maz-ui/utils')
       expect(result?.name).toBe('capitalize')
       expect(result?.as).toBe('Capitalize')
     })
@@ -45,7 +45,7 @@ describe('given MazModulesResolver', () => {
       const result = resolver('debounce') as ResolverResult
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui')
+      expect(result?.from).toBe('@maz-ui/utils')
       expect(result?.name).toBe('debounce')
       expect(result?.as).toBe('Debounce')
     })
@@ -55,7 +55,7 @@ describe('given MazModulesResolver', () => {
       const result = resolver('sleep') as ResolverResult
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui')
+      expect(result?.from).toBe('@maz-ui/utils')
       expect(result?.name).toBe('sleep')
       expect(result?.as).toBe('Sleep')
     })
@@ -99,7 +99,7 @@ describe('given MazModulesResolver', () => {
       const result = resolver('capitalize') as ResolverResult
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui')
+      expect(result?.from).toBe('@maz-ui/utils')
       expect(result?.name).toBe('capitalize')
       expect(result?.as).toBe('Capitalize')
     })
@@ -121,7 +121,7 @@ describe('given MazModulesResolver', () => {
       const result = resolver('capitalize') as ResolverResult
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui')
+      expect(result?.from).toBe('@maz-ui/utils')
       expect(result?.name).toBe('capitalize')
       expect(result?.as).toBe('myCapitalize')
     })
@@ -138,18 +138,8 @@ describe('given MazModulesResolver', () => {
   })
 
   describe('when resolving with combined options', () => {
-    it('then it should handle both devMode and prefix for utilities', () => {
-      const resolver = MazModulesResolver({ devMode: true, prefix: 'custom' })
-      const result = resolver('formatDate') as ResolverResult
-
-      expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui')
-      expect(result?.name).toBe('formatDate')
-      expect(result?.as).toBe('customFormatDate')
-    })
-
-    it('then it should handle both devMode and prefix for composables', () => {
-      const resolver = MazModulesResolver({ devMode: true, prefix: 'custom' })
+    it('then it should handle prefix for composables', () => {
+      const resolver = MazModulesResolver({ prefix: 'custom' })
       const result = resolver('useTimer') as ResolverResult
 
       expect(result).toBeDefined()
@@ -188,7 +178,7 @@ describe('given MazModulesResolver', () => {
       const result = resolver('IdleTimeout') as ResolverResult
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui')
+      expect(result?.from).toBe('@maz-ui/utils')
       expect(result?.name).toBe('IdleTimeout')
       expect(result?.as).toBe('IdleTimeout')
     })
@@ -198,7 +188,7 @@ describe('given MazModulesResolver', () => {
       const result = resolver('isClient') as ResolverResult
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui')
+      expect(result?.from).toBe('@maz-ui/utils')
       expect(result?.name).toBe('isClient')
       expect(result?.as).toBe('IsClient')
     })
@@ -208,7 +198,7 @@ describe('given MazModulesResolver', () => {
       const result = resolver('formatCurrency') as ResolverResult
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui')
+      expect(result?.from).toBe('@maz-ui/utils')
       expect(result?.name).toBe('formatCurrency')
       expect(result?.as).toBe('FormatCurrency')
     })
@@ -220,7 +210,7 @@ describe('given MazModulesResolver', () => {
       const result = resolver('capitalize') as ResolverResult
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui')
+      expect(result?.from).toBe('@maz-ui/utils')
       expect(result?.name).toBe('capitalize')
       expect(result?.as).toBe('Capitalize')
     })

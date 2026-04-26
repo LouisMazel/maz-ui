@@ -18,7 +18,7 @@ description: The module capitalize is a function that adds a capital letter to a
 
 ```vue
 <script lang="ts" setup>
-import { capitalize } from 'maz-ui'
+import { capitalize } from '@maz-ui/utils'
 import { computed, ref } from 'vue'
 
 const stringValue = ref('string value')
@@ -40,7 +40,7 @@ const stringFormatted = computed(() =>
 ```
 
 <script lang="ts" setup>
-  import { capitalize } from 'maz-ui'
+  import { capitalize } from '@maz-ui/utils'
   import { ref, computed } from 'vue'
 
   const stringValue = ref('string value')

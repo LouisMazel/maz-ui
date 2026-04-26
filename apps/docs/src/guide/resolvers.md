@@ -626,7 +626,7 @@ MazComponentsResolver({
 
 ```vue
 <script setup lang="ts">
-import { formatCurrency, debounce } from 'maz-ui'
+import { formatCurrency, debounce } from '@maz-ui/utils'
 import { MazBtn, MazCard, MazInput } from 'maz-ui/components'
 import { useTheme, useToast } from 'maz-ui/composables'
 import { vTooltip } from 'maz-ui/directives'

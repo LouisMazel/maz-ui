@@ -20,7 +20,7 @@ description: The module formatDate is a function that formats dates with the nat
 
 ```vue
 <script lang="ts" setup>
-import { formatDate } from 'maz-ui'
+import { formatDate } from '@maz-ui/utils'
 import { computed, ref } from 'vue'
 
 const dateValue = ref('2022-02-01')
@@ -56,7 +56,7 @@ const DEFAULT_OPTIONS: Intl.DateTimeFormatOptions = {
 ```
 
 <script lang="ts" setup>
-  import { formatDate } from 'maz-ui'
+  import { formatDate } from '@maz-ui/utils'
   import { ref, computed } from 'vue'
 
   const dateValue = ref('2022-02-01')

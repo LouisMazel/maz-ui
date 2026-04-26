@@ -1,7 +1,7 @@
 import type { ResolverFunction } from 'unplugin-auto-import/types'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 
-type Modules = keyof typeof import('./../index')
+type Modules = keyof typeof import('@maz-ui/utils')
 type Composables = keyof typeof import('./../composables/index')
 
 const composablesMap: Record<Composables, true> = {
@@ -77,7 +77,7 @@ export function MazModulesResolver(options?: { prefix?: string }): ResolverFunct
 
     if (modulesMap[name as keyof typeof modulesMap] === true) {
       return {
-        from: 'maz-ui',
+        from: '@maz-ui/utils',
         name,
         as: `${prefix.toLowerCase()}${capitalize(name)}`,
       }

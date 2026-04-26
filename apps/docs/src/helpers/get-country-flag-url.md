@@ -45,7 +45,7 @@ description: Get country flag from flagcdn.com with a simple function call
 </template>
 
 <script lang="ts" setup >
-  import { getCountryFlagUrl } from 'maz-ui'
+  import { getCountryFlagUrl } from '@maz-ui/utils'
 
   const flagSrc = getCountryFlagUrl('FR')
 </script>
@@ -76,7 +76,7 @@ description: Get country flag from flagcdn.com with a simple function call
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { getCountryFlagUrl } from 'maz-ui'
+  import { getCountryFlagUrl } from '@maz-ui/utils'
 
   const countryCode = ref('FR')
 
@@ -103,7 +103,7 @@ description: Get country flag from flagcdn.com with a simple function call
 
 <script lang="ts" setup>
   import { computed, ref, onMounted } from 'vue'
-  import { getCountryFlagUrl } from 'maz-ui'
+  import { getCountryFlagUrl } from '@maz-ui/utils'
   import { getCountries } from 'libphonenumber-js'
 
   const countryCode = ref('FR')

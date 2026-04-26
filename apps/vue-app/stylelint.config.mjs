@@ -5,7 +5,6 @@ export default {
   extends: [
     'stylelint-config-standard',
     'stylelint-config-recommended-vue',
-    'stylelint-config-tailwindcss',
   ],
 
   // add your custom config here

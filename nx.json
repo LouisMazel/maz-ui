@@ -42,7 +42,7 @@
       "outputs": []
     },
     "lint:fix": {
-      "cache": false
+      "cache": true
     },
     "typecheck": {
       "cache": true,

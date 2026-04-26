@@ -31,13 +31,6 @@
     "./dist/css/**"
   ],
   "exports": {
-    ".": {
-      "monorepo:dev": "./src/index.ts",
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "module": "./dist/index.js",
-      "default": "./dist/index.js"
-    },
     "./components": {
       "monorepo:dev": "./src/components/index.ts",
       "types": "./dist/components/index.d.ts",

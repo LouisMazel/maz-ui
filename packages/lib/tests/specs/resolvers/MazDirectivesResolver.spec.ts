@@ -12,16 +12,6 @@ describe('given MazDirectivesResolver', () => {
     })
   })
 
-  describe('when resolver is created with devMode option', () => {
-    it('then it should return a directive resolver with devMode settings', () => {
-      const resolver = MazDirectivesResolver({ devMode: true })
-
-      expect(resolver).toBeDefined()
-      expect(resolver.type).toBe('directive')
-      expect(resolver.resolve).toBeDefined()
-    })
-  })
-
   describe('when resolver is created with prefix option', () => {
     it('then it should return a directive resolver with prefix settings', () => {
       const resolver = MazDirectivesResolver({ prefix: 'my' })
@@ -66,18 +56,6 @@ describe('given MazDirectivesResolver', () => {
     })
   })
 
-  describe('when resolving with devMode enabled', () => {
-    it('then it should resolve with src path', () => {
-      const resolver = MazDirectivesResolver({ devMode: true })
-      const result = resolver.resolve('clickOutside')
-
-      expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/directives')
-      expect(result?.as).toBe('vClickOutside')
-      expect(result?.name).toBe('vclickOutside')
-    })
-  })
-
   describe('when resolving with custom prefix', () => {
     it('then it should apply custom prefix to directive name', () => {
       const resolver = MazDirectivesResolver({ prefix: 'my' })
@@ -101,8 +79,8 @@ describe('given MazDirectivesResolver', () => {
   })
 
   describe('when resolving with combined options', () => {
-    it('then it should handle both devMode and prefix', () => {
-      const resolver = MazDirectivesResolver({ devMode: true, prefix: 'app' })
+    it('then it should handle prefix', () => {
+      const resolver = MazDirectivesResolver({ prefix: 'app' })
       const result = resolver.resolve('lazyImg')
 
       expect(result).toBeDefined()

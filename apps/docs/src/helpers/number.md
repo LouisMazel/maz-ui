@@ -20,7 +20,7 @@ description: The module formatNumber is a function that formats numbers with the
 
 ```vue
 <script lang="ts" setup>
-import { formatNumber } from 'maz-ui'
+import { formatNumber } from '@maz-ui/utils'
 import { computed, ref } from 'vue'
 
 const numberValue = ref(69)
@@ -54,7 +54,7 @@ const DEFAULT_OPTIONS: Intl.NumberFormatOptions = {
 ```
 
 <script lang="ts" setup>
-  import { formatNumber } from 'maz-ui'
+  import { formatNumber } from '@maz-ui/utils'
   import { ref, computed } from 'vue'
 
   const numberValue = ref(69)

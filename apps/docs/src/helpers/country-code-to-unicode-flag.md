@@ -27,7 +27,7 @@ description: Convert country code in unicode flag
 </template>
 
 <script lang="ts" setup >
-  import { countryCodeToUnicodeFlag } from 'maz-ui'
+  import { countryCodeToUnicodeFlag } from '@maz-ui/utils'
 
   const unicodeFlag = countryCodeToUnicodeFlag('FR')
 </script>
@@ -81,7 +81,7 @@ description: Convert country code in unicode flag
 
 <script lang="ts" setup>
   import { computed, ref, onMounted } from 'vue'
-  import { countryCodeToUnicodeFlag } from 'maz-ui'
+  import { countryCodeToUnicodeFlag } from '@maz-ui/utils'
   import { getCountries } from 'libphonenumber-js'
 
   const unicodeFlag = countryCodeToUnicodeFlag('FR')
@@ -172,7 +172,7 @@ description: Convert country code in unicode flag
 
 <script lang="ts" setup>
   import { computed, ref, onMounted } from 'vue'
-  import { countryCodeToUnicodeFlag } from 'maz-ui'
+  import { countryCodeToUnicodeFlag } from '@maz-ui/utils'
   import { getCountries } from 'libphonenumber-js'
 
   const countryCode = ref('FR')

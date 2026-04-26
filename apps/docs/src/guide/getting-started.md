@@ -163,7 +163,7 @@ Maz-UI v4 is built with tree-shaking in mind. Import only what you need for opti
  */
 
 // ❌ Avoid importing everything
-import { formatCurrency, debounce } from 'maz-ui'
+import { formatCurrency, debounce } from '@maz-ui/utils'
 // ✅ Import from @maz-ui/utils
 import { formatCurrency, debounce } from '@maz-ui/utils'
 

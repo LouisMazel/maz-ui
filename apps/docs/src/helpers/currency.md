@@ -24,7 +24,7 @@ Enter only numbers
 
 ```vue
 <script lang="ts" setup>
-import { formatCurrency } from 'maz-ui'
+import { formatCurrency } from '@maz-ui/utils'
 import { computed, ref } from 'vue'
 
 const numberValue = ref(69)
@@ -46,7 +46,7 @@ const priceFormatted = computed(() =>
 ```
 
 <script lang="ts" setup>
-  import { formatCurrency } from 'maz-ui'
+  import { formatCurrency } from '@maz-ui/utils'
   import { ref, computed } from 'vue'
 
   const numberValue = ref(69)
