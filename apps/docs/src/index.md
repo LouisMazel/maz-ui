@@ -17,7 +17,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       <MazCardSpotlight color="secondary" content-class="maz:flex maz:flex-col maz:tab-m:flex-row maz:gap-4 maz:items-start maz:tab-m:items-center maz:w-full" class="maz:w-full" :inner-opacity="0.70">
         <img src="https://raw.githubusercontent.com/LouisMazel/relizy/refs/heads/main/resources/logo.svg" alt="Relizy logo" class="maz:h-14 maz:w-14 maz:shrink-0" />
         <div class="maz:flex-1 maz:flex maz:flex-col maz:gap-1 maz:items-start">
-          <MazBadge color="primary" class="maz:text-xs" size="0.7rem">
+          <MazBadge color="primary" class="maz:text-xs" size="xs">
             <MazSparkles class="maz:mr-1" /> New
           </MazBadge>
           <h3 class="maz:text-lg maz:font-semibold maz:m-0">Relizy.dev — Ship releases in one command</h3>

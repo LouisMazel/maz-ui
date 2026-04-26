@@ -128,7 +128,7 @@ You can replace the default search function by providing a custom search functio
         <div class="maz:flex maz:flex-1 maz:flex-col maz:gap-1">
           <div class="maz:flex maz:items-center maz:gap-2">
             <span class="maz:font-semibold maz:text-normal">{{ item.label }}</span>
-            <MazBadge :color="item.departmentColor" size="0.7em">
+            <MazBadge :color="item.departmentColor" size="xs">
               {{ item.department }}
             </MazBadge>
           </div>

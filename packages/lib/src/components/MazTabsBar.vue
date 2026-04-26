@@ -261,7 +261,7 @@ onMounted(() => {
           <MazBadge
             v-if="item.badge"
             v-bind="item.badge"
-            :size="item.badge.size ?? '0.7rem'"
+            :size="item.badge.size ?? 'xs'"
             class="m-tabs-bar__item__badge"
           >
             <!--

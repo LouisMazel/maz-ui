@@ -252,7 +252,7 @@ Use the `header` slot to fully customize the header, or use `title`, `icon-left`
     <template #header>
       <div class="maz:flex maz:items-center maz:justify-between maz:w-full maz:px-4 maz:py-3 maz:bg-primary maz:text-primary-foreground">
         <span class="maz:font-semibold">Custom Header</span>
-        <MazBadge size="0.8rem" color="white" class="maz:text-primary">
+        <MazBadge size="sm" color="white" class="maz:text-primary">
           New
         </MazBadge>
       </div>
@@ -268,7 +268,7 @@ Use the `header` slot to fully customize the header, or use `title`, `icon-left`
     <template #header>
       <div class="maz:flex maz:items-center maz:justify-between maz:w-full maz:px-4 maz:py-3 maz:bg-primary maz:text-primary-foreground">
         <span class="maz:font-semibold">Custom Header</span>
-        <MazBadge size="0.8rem" color="white" class="maz:text-primary">
+        <MazBadge size="sm" color="white" class="maz:text-primary">
           New
         </MazBadge>
       </div>

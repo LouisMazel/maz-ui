@@ -148,7 +148,7 @@ You can choose the name of this query parameter with the props `query-param` `@d
     <template #item="{ item, index, active }">
       {{ item.label }}
       <MazBadge
-        size="0.6rem"
+        size="mini"
         rounded-size="full"
         :color="active ? 'primary' : 'transparent'"
       >
@@ -164,7 +164,7 @@ You can choose the name of this query parameter with the props `query-param` `@d
     <template #item="{ item, index, active }">
       {{ item.label }}
 
-      <MazBadge size="0.6rem" rounded-size="full" :color="active ? 'primary' : 'transparent'"> {{ index }} </MazBadge>
+      <MazBadge size="mini" rounded-size="full" :color="active ? 'primary' : 'transparent'"> {{ index }} </MazBadge>
     </template>
   </MazTabsBar>
 </MazTabs>

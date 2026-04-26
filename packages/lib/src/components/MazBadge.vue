@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import type { MazColor } from './types'
+import type { MazColor, MazSize } from './types'
 import { computed } from 'vue'
 import { getColor } from './types'
 
 export type MazBadgeColor = MazColor | 'background'
 export type MazBadgeRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+export type MazBadgeSize = MazSize
 
 export interface MazBadgeProps {
   /**
@@ -15,10 +16,12 @@ export interface MazBadgeProps {
    */
   color?: MazBadgeColor
   /**
-   * Size of the badge
-   * @default 0.8em
+   * Size of the badge — drives font-size; padding, line-height and dimensions
+   * scale relative to it via `em` units.
+   * @values `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`
+   * @default md
    */
-  size?: string
+  size?: MazBadgeSize
   /**
    * Will not wrap the text
    * @default false
@@ -44,7 +47,7 @@ export interface MazBadgeProps {
 
 const {
   color = 'primary',
-  size = '0.8em',
+  size = 'md',
   nowrap = false,
   outlined = false,
   pastel = false,
@@ -62,17 +65,24 @@ const ROUNDED_CLASS = {
   full: 'maz:rounded-full',
 } as const
 
-const badgeStyle = computed<CSSProperties>(() => {
+const SIZE_CLASS = {
+  mini: 'maz:text-[0.625rem]',
+  xs: 'maz:text-[0.6875rem]',
+  sm: 'maz:text-xs',
+  md: 'maz:text-sm',
+  lg: 'maz:text-base',
+  xl: 'maz:text-lg',
+} as const satisfies Record<MazBadgeSize, string>
+
+const badgeStyle = computed<CSSProperties | undefined>(() => {
   const c = resolvedColor.value
-  const base: Record<string, string> = { fontSize: size }
   if (c === 'surface' || c === 'transparent')
-    return base
+    return undefined
 
   const pastelFg = c === 'contrast' ? 'contrast-foreground' : `${c}-700`
   const pastelShade = c === 'destructive' ? '200' : '50'
 
   return {
-    ...base,
     '--m-badge-bg': `var(--maz-${c})`,
     '--m-badge-fg': `var(--maz-${c}-foreground)`,
     ...(pastel && {
@@ -88,8 +98,10 @@ const badgeStyle = computed<CSSProperties>(() => {
     class="m-badge m-reset-css maz:inline-flex maz:items-center maz:justify-center maz:border maz:border-transparent maz:align-top maz:font-semibold"
     :class="[
       `--${resolvedColor}`,
+      `--${size}`,
       `--rounded-${roundedSize}`,
       ROUNDED_CLASS[roundedSize],
+      SIZE_CLASS[size],
       {
         '--outlined': outlined,
         '--pastel': pastel,

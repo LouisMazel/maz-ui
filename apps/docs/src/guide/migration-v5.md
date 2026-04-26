@@ -18,7 +18,8 @@ Maz-UI is maintained by a single developer. After the v5 stable release, **v4 wi
 3. Rename `import 'maz-ui/styles'` to `import 'maz-ui/style.css'` (and `maz-ui/aos-styles` → `maz-ui/aos.css`).
 4. If you imported anything via `maz-ui/src/...`, switch to the public subpath (e.g. `maz-ui/components/MazBtn`).
 5. Replace any `roundedSize="base"` with `roundedSize="md"` (or drop the prop — the new default is visually identical).
-6. That's it for most apps. Everything else is opt-in.
+6. Replace any **numeric `MazBadge` size** (`size="0.8rem"`, `size="1.2em"`, …) with one of the standardized keywords (`'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`).
+7. That's it for most apps. Everything else is opt-in.
 
 ## Prerequisites
 
@@ -122,7 +123,71 @@ rg "rounded-?size\s*=\s*['\"]base['\"]" src/
 <MazBtn />
 ```
 
+### 4. `MazBadge` `size` prop now uses `MazSize`
+
+`MazBadge`'s `size` prop used to accept any CSS length string (e.g. `"0.8rem"`, `"1.2em"`). It now follows the same `MazSize` contract as the rest of the library (`MazBtn`, `MazInput`, …): one of `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`. The default is `'md'`.
+
+Padding, line-height and dimensions still scale relative to the chosen font-size via `em` units, so a single keyword controls the whole footprint.
+
+```vue
+<!-- v4 -->
+<MazBadge size="0.8rem" />
+<MazBadge size="1.2em" />
+
+<!-- v5 -->
+<MazBadge size="sm" />
+<MazBadge size="md" />
+```
+
+Approximate mapping if you want to preserve your previous footprint:
+
+| v4 (font-size) | v5 |
+| --- | --- |
+| ≤ 0.65rem (~10px) | `'mini'` |
+| 0.7rem (~11px) | `'xs'` |
+| 0.75–0.8rem (12px) | `'sm'` |
+| 0.85–0.9rem (~14px) | `'md'` (default) |
+| 1rem (16px) | `'lg'` |
+| ≥ 1.125rem (18px) | `'xl'` |
+
+```bash
+# Find badges still using a numeric size
+rg "MazBadge[^/]*size=\"[0-9]" src/
+```
+
+If you really need a custom size, wrap or override via your own class — pass `size="md"` (or omit it) and apply a Tailwind text utility:
+
+```vue
+<MazBadge size="md" class="maz:text-[0.7rem]" />
+```
+
 ## Informational changes (probably no action needed)
+
+### Theme colors are now emitted as OKLCh
+
+`@maz-ui/themes` now ships its bundled presets (`mazUi`, `ocean`, `pristine`, `obsidian`) in `oklch()` form, and the dynamic color scale generator (`generateColorScale`, `adjustColorLightness`, `getContrastColor`) steps in OKLCh space and emits `oklch(L C H)` strings. The runtime CSS variables (`--maz-primary`, `--maz-primary-100`, …) therefore hold OKLCh colors.
+
+This is **transparent for consumers**:
+
+- Components keep working unchanged.
+- Custom CSS using `var(--maz-<color>)` keeps working — `oklch()` is a regular CSS color.
+- `color-mix(in srgb, var(--maz-primary) 50%, transparent)` still works; `color-mix(in oklab, …)` will give you slightly better blending if you care.
+- Custom presets written in `hsl()`, `rgb()`, `#hex` or the legacy `'210 100% 56%'` form still parse — they get converted to OKLCh on the fly.
+
+You only need to do something if you were:
+
+- **Reading the channel format** of a color from `--maz-*` in JS — the value used to be an `hsl(...)` string, it's now an `oklch(...)` string. Use `getComputedStyle(...).getPropertyValue(...)` and a CSS color parser if you need channels.
+- **Calling `adjustColorLightness`** directly — the `adjustment` parameter is now in OKLCh L units (`0..1`) instead of HSL L percentage (`0..100`). Divide your existing values by 100.
+
+```ts
+// v4: HSL L percentage
+adjustColorLightness('hsl(210 50% 40%)', 20)  // → 'hsl(210 50% 60%)'
+
+// v5: OKLCh L (0..1)
+adjustColorLightness('hsl(210 50% 40%)', 0.2) // → 'oklch(0.65 0.108 232.62)'
+```
+
+Why the switch: OKLCh is perceptually uniform, so generated scales (`primary-50` → `primary-950`) ramp consistently across hues — yellow-700 won't look muddy compared to blue-700 anymore. It also unlocks Display P3 colors when you author a vivid preset.
 
 ### Preset type: `HSL` → `CSSColor`
 
