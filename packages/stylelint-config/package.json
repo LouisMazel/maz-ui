@@ -1,0 +1,80 @@
+{
+  "name": "@maz-ui/stylelint-config",
+  "type": "module",
+  "version": "4.9.1",
+  "description": "Stylelint configuration for CSS, SCSS, Vue and Tailwind CSS projects",
+  "author": "Louis Mazel <me@loicmazuel.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouisMazel/maz-ui.git"
+  },
+  "bugs": "https://github.com/LouisMazel/maz-ui/issues",
+  "keywords": [
+    "stylelint",
+    "stylelint-config",
+    "css",
+    "scss",
+    "vue",
+    "tailwindcss",
+    "code-quality",
+    "maz-ui"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "codegen": "nx build",
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "typecheck": "tsc --noEmit --skipLibCheck && tsc --noEmit --skipLibCheck --project tsconfig.test.json",
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "lint:fix": "pnpm lint --fix",
+    "test:unit": "vitest run",
+    "test:unit:coverage": "vitest run --coverage",
+    "test:unit:watch": "vitest watch"
+  },
+  "peerDependencies": {
+    "stylelint": ">=16.0.0 <18.0.0"
+  },
+  "dependencies": {
+    "postcss-html": "^1.8.1",
+    "postcss-scss": "^4.0.9",
+    "stylelint-config-html": "^1.1.0",
+    "stylelint-config-recess-order": "^7.7.0",
+    "stylelint-config-recommended-scss": "^17.0.1",
+    "stylelint-config-recommended-vue": "^1.6.1",
+    "stylelint-config-standard": "^40.0.0",
+    "stylelint-scss": "^7.0.0",
+    "stylelint-use-logical-spec": "^5.0.1"
+  },
+  "devDependencies": {
+    "@maz-ui/eslint-config": "workspace:*",
+    "@vitest/coverage-v8": "^4.1.5",
+    "stylelint": "^17.8.0",
+    "unbuild": "^3.6.1",
+    "vitest": "^4.1.5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [
+      "eslint --fix"
+    ]
+  }
+}

@@ -36,6 +36,7 @@ export default <UserConfig> {
         '@maz-ui/icons',
         '@maz-ui/cli',
         '@maz-ui/eslint-config',
+        '@maz-ui/stylelint-config',
         '@maz-ui/themes',
         '@maz-ui/translations',
         '@maz-ui/utils',

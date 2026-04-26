@@ -1,33 +1,13 @@
-/** @type {import('stylelint').Config} */
-export default {
-  ignoreFiles: ['node_modules/**/*', '.DS_Store', 'dist/**/*', 'types/**/*', 'coverage/**/*'],
-  plugins: ['stylelint-scss'],
-  extends: [
-    'stylelint-config-standard',
-    'stylelint-config-standard-scss',
-    'stylelint-config-recommended-vue',
-  ],
+import { defineMazStylelintConfig } from '@maz-ui/stylelint-config'
 
-  // add your custom config here
-  // https://stylelint.io/user-guide/configuration
-  rules: {
-    'at-rule-no-unknown': [true, { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each', 'for', 'use', 'theme', 'utility', 'source', 'custom-variant', 'variant', 'reference', 'starting-style'] }],
-    'at-rule-no-deprecated': [true, { ignoreAtRules: ['apply'] }],
-    'scss/at-rule-no-unknown': [true, { ignoreAtRules: ['screen', 'layer', 'tailwind', 'each', 'for', 'use', 'theme', 'utility', 'source', 'custom-variant', 'variant', 'reference', 'starting-style'] }],
-    'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['deep'] }],
-    'selector-class-pattern': undefined,
-    'no-descending-specificity': undefined,
-    'function-no-unknown': [true, { ignoreFunctions: ['v-bind'] }],
-    'nesting-selector-no-missing-scoping-root': null,
-  },
-
-  overrides: [
-    {
-      files: [
-        '**/*.vue',
-        '**/*.html',
-      ],
-      customSyntax: 'postcss-html',
-    },
-  ],
-}
+export default defineMazStylelintConfig({
+  vue: true,
+  tailwind: true,
+  scss: true,
+  // Lib already ships fully-authored CSS — logical-property warnings and
+  // recess property ordering would be too noisy on the existing surface.
+  // Re-enable per-package when the codebase is ready for the diff.
+  logical: false,
+  order: false,
+  ignores: ['types/**/*', '.DS_Store'],
+})

@@ -5,6 +5,7 @@ import { createRequire } from 'node:module'
 import { components } from './components.mjs'
 import { composables } from './composables.mjs'
 import { directives } from './directives.mjs'
+import { ecosystem } from './ecosystem.mjs'
 import { guide } from './guide.mjs'
 import { plugins } from './plugins.mjs'
 import { utils } from './utils.mjs'
@@ -21,6 +22,7 @@ export const nav = [
     activeMatch: '/plugins',
     items: [plugins, composables, directives, utils],
   },
+  ecosystem,
   { text: 'Themes', link: '/theme-editor' },
   {
     text: `v${packageJson.version}`,

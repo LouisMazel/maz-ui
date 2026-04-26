@@ -208,6 +208,7 @@
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
     "@maz-ui/node": "workspace:*",
+    "@maz-ui/stylelint-config": "workspace:*",
     "@tailwindcss/cli": "^4.2.1",
     "@tailwindcss/postcss": "^4.2.1",
     "@tailwindcss/vite": "^4.2.1",

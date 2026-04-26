@@ -1,22 +1,6 @@
-/** @type {import('stylelint').Config} */
-export default {
-  ignoreFiles: ['node_modules/**/*', 'dist/**/*'],
+import { defineMazStylelintConfig } from '@maz-ui/stylelint-config'
 
-  extends: [
-    'stylelint-config-standard',
-    'stylelint-config-recommended-vue',
-  ],
-
-  // add your custom config here
-  // https://stylelint.io/user-guide/configuration
-  rules: {
-    'at-rule-no-deprecated': [true, { ignoreAtRules: ['apply'] }],
-  },
-
-  overrides: [
-    {
-      files: ['**/*.vue', '**/*.html'],
-      customSyntax: 'postcss-html',
-    },
-  ],
-}
+export default defineMazStylelintConfig({
+  logical: false,
+  order: false,
+})

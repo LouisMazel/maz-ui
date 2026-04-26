@@ -15,6 +15,7 @@
     "@maz-ui/nuxt": "workspace:*"
   },
   "devDependencies": {
+    "@maz-ui/stylelint-config": "workspace:*",
     "@nuxt/devtools": "^3.2.3",
     "@tailwindcss/postcss": "^4.2.1",
     "@tailwindcss/vite": "^4.2.1",
