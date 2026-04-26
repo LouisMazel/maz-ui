@@ -112,4 +112,31 @@ describe('given MazTabsContent component', () => {
       consoleSpy.mockRestore()
     })
   })
+
+  describe('when the debounce timer elapses after a tab change', () => {
+    it('then it should remove the overflow hidden class', async () => {
+      vi.useFakeTimers()
+
+      const currentTab = ref(1)
+      const wrapper = mount(MazTabsContent, {
+        global: {
+          provide: {
+            'maz:tabs': {
+              currentTab,
+            },
+          },
+        },
+      })
+
+      currentTab.value = 2
+      await wrapper.vm.$nextTick()
+
+      vi.advanceTimersByTime(800)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.classes()).not.toContain('maz:overflow-hidden')
+
+      vi.useRealTimers()
+    })
+  })
 })
