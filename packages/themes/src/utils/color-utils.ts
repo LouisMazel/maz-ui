@@ -1,5 +1,5 @@
 import type { ColorScale } from '../types'
-import { formatAsHSL, parseColor } from './color-parser'
+import { formatAsOklch, parseColor, parseColorAsOklch } from './color-parser'
 
 /**
  * @deprecated Prefer `parseColor` from `./color-parser` — it accepts any CSS color format
@@ -10,104 +10,91 @@ export function parseHSL(value: string): { h: number, s: number, l: number } {
   return parseColor(value)
 }
 
-const LUMINOSITY_OFFSETS = {
-  50: +37.5,
-  100: +30,
-  200: +22.5,
-  300: +15,
-  400: +7.5,
+/**
+ * Lightness offsets for each scale step, expressed in OKLch L units (0..1).
+ * Calibrated so a base at L≈0.55 (a typical mid-tone) produces a 50→950 scale
+ * spanning roughly 0.97 → 0.21 — the perceptual range that matches Tailwind's
+ * static palettes.
+ */
+const LIGHTNESS_OFFSETS = {
+  50: +0.42,
+  100: +0.35,
+  200: +0.26,
+  300: +0.17,
+  400: +0.08,
   500: 0,
-  600: -7.5,
-  700: -15,
-  800: -22.5,
-  900: -30,
-  950: -37.5,
+  600: -0.07,
+  700: -0.14,
+  800: -0.21,
+  900: -0.28,
+  950: -0.34,
 } as const
 
-// Callers (`generateColorScale`) always bypass this function when
-// targetVariant === baseVariant, so the equality branch would be dead
-// code — keeping the function scoped to the two real branches.
-function calculateSaturationMultiplier(baseVariant: number, targetVariant: number, baseSaturation: number): number {
-  const saturationFactor = Math.min(baseSaturation / 100, 1)
-  const variantDiff = Math.abs(targetVariant - baseVariant)
+function clamp(n: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, n))
+}
 
-  if (targetVariant < baseVariant) {
-    const reduction = (variantDiff / 500) * 0.25 * saturationFactor
-    return Math.max(0.3, 1 - reduction)
-  }
-  else {
-    const increase = (variantDiff / 400) * 0.15 * saturationFactor
-    return Math.min(1.3, 1 + increase)
-  }
+/**
+ * Smooth chroma falloff applied near L=0 and L=1 so very pale and very dark
+ * variants don't look unnaturally vivid (a vibrant color at L=0.97 should
+ * read as "tinted white", not as the same color).
+ */
+function chromaFalloff(targetL: number): number {
+  if (targetL >= 0.96)
+    return Math.max(0, 1 - (targetL - 0.96) * 12)
+  if (targetL <= 0.18)
+    return Math.max(0, targetL / 0.18)
+  return 1
 }
 
 /**
  * Generate an 11-step color scale from a base color.
  *
- * The base color can be given in any CSS color format (`hsl()`, `rgb()`, `oklch()`, `#hex`,
- * or the legacy raw `"H S% L%"`). Values are converted to HSL for scale computation and
- * emitted as complete `hsl()` strings.
+ * The base color may be given in any CSS color format (`hsl()`, `rgb()`, `oklch()`, `#hex`,
+ * or the legacy raw `"H S% L%"`). Stepping happens in OKLch space (perceptually uniform),
+ * and the output is emitted as `oklch(L C H)` strings.
  */
 export function generateColorScale(baseColor: string): ColorScale {
-  const { h, s, l } = parseColor(baseColor)
-
-  const baseVariant = 500
-  const baseLuminosity = l
-
-  const variants = Object.keys(LUMINOSITY_OFFSETS).map(Number) as (keyof typeof LUMINOSITY_OFFSETS)[]
+  const base = parseColorAsOklch(baseColor)
   const scale: Partial<ColorScale> = {}
 
-  variants.forEach((variant) => {
-    if (variant === baseVariant) {
-      scale[variant] = formatAsHSL({ h, s, l })
+  const variants = Object.keys(LIGHTNESS_OFFSETS).map(Number) as (keyof typeof LIGHTNESS_OFFSETS)[]
+  for (const variant of variants) {
+    if (variant === 500) {
+      scale[variant] = formatAsOklch(base)
+      continue
     }
-    else {
-      const isUnderBase = variant < baseVariant
-      const isOverBase = variant > baseVariant
 
-      const luminosityOffset = LUMINOSITY_OFFSETS[variant as keyof typeof LUMINOSITY_OFFSETS]
-      let targetLuminosity: number | undefined
+    const offset = LIGHTNESS_OFFSETS[variant]
+    const targetL = clamp(base.l + offset, 0, 1)
+    const targetC = base.c * chromaFalloff(targetL)
 
-      if (isUnderBase && l >= 100) {
-        targetLuminosity = baseLuminosity
-      }
-      else {
-        targetLuminosity = baseLuminosity + luminosityOffset
-      }
-
-      if (isOverBase && l <= 0) {
-        targetLuminosity = 0
-      }
-
-      targetLuminosity = Math.min(100, Math.max(0, targetLuminosity))
-
-      const saturationMultiplier = calculateSaturationMultiplier(baseVariant, variant, s)
-      const adjustedSaturation = Math.min(100, Math.max(5, s * saturationMultiplier))
-
-      scale[variant] = formatAsHSL({ h, s: adjustedSaturation, l: targetLuminosity })
-    }
-  })
+    scale[variant] = formatAsOklch({ l: targetL, c: targetC, h: base.h })
+  }
 
   return scale as ColorScale
 }
 
 /**
- * Return a black or white `hsl()` string suitable for text drawn on top of `baseColor`.
+ * Return a black or white `oklch()` string suitable for text drawn on top of `baseColor`.
  *
- * The base color may be any CSS color format.
+ * The threshold (L=0.62) is calibrated for OKLch lightness — perceptually equivalent
+ * to a mid-gray, so colors above that get black text, below it white text.
  */
 export function getContrastColor(baseColor: string): string {
-  const { l } = parseColor(baseColor)
-  return l > 50 ? 'hsl(0 0% 0%)' : 'hsl(0 0% 100%)'
+  const { l } = parseColorAsOklch(baseColor)
+  return l > 0.62 ? 'oklch(0 0 0)' : 'oklch(1 0 0)'
 }
 
 /**
- * Shift the lightness of a color by `adjustment` (in L% units), clamped to [0, 100].
+ * Shift the lightness of a color by `adjustment`. The adjustment is given in
+ * OKLch L units (0..1) — e.g. `0.1` to lighten by 10% perceptual luminance.
  *
- * The input can be in any CSS color format; the output is always a complete `hsl()` string.
+ * The input can be in any CSS color format; the output is always a complete
+ * `oklch()` string.
  */
 export function adjustColorLightness(baseColor: string, adjustment: number): string {
-  const { h, s, l } = parseColor(baseColor)
-  const newL = Math.max(0, Math.min(100, l + adjustment))
-  return formatAsHSL({ h, s, l: newL })
+  const { l, c, h } = parseColorAsOklch(baseColor)
+  const newL = clamp(l + adjustment, 0, 1)
+  return formatAsOklch({ l: newL, c, h })
 }

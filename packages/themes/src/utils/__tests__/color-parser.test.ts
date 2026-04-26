@@ -1,9 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import {
+  colorToHex,
   formatAsHSL,
+  formatAsOklch,
   isCompleteCSSColor,
   normalizeColor,
   parseColor,
+  parseColorAsOklch,
 } from '../color-parser'
 
 describe('parseColor', () => {
@@ -229,6 +232,114 @@ describe('isCompleteCSSColor', () => {
     describe('When testing', () => {
       it('returns false', () => {
         expect(isCompleteCSSColor('210 100% 56%')).toBe(false)
+      })
+    })
+  })
+})
+
+describe('parseColorAsOklch', () => {
+  describe('Given an oklch() string', () => {
+    describe('When parsing', () => {
+      it('extracts channels directly without sRGB roundtrip', () => {
+        const result = parseColorAsOklch('oklch(0.7 0.15 30)')
+        expect(result.l).toBeCloseTo(0.7, 4)
+        expect(result.c).toBeCloseTo(0.15, 4)
+        expect(result.h).toBeCloseTo(30, 2)
+      })
+
+      it('accepts percentage lightness', () => {
+        const result = parseColorAsOklch('oklch(70% 0.15 30)')
+        expect(result.l).toBeCloseTo(0.7, 4)
+      })
+    })
+  })
+
+  describe('Given an hsl() string', () => {
+    describe('When parsing', () => {
+      it('converts to OKLch via sRGB', () => {
+        const result = parseColorAsOklch('hsl(0 100% 50%)')
+        expect(result.l).toBeCloseTo(0.628, 2)
+        expect(result.c).toBeGreaterThan(0.2)
+      })
+
+      it('returns near-zero chroma for grayscale', () => {
+        const result = parseColorAsOklch('hsl(0 0% 50%)')
+        expect(result.c).toBeLessThan(0.001)
+      })
+
+      it('handles every hue sextant', () => {
+        for (const h of [30, 90, 150, 210, 270, 330]) {
+          const result = parseColorAsOklch(`hsl(${h} 100% 50%)`)
+          expect(result.c).toBeGreaterThan(0)
+        }
+      })
+    })
+  })
+
+  describe('Given a hex string', () => {
+    describe('When parsing', () => {
+      it('converts to OKLch via sRGB', () => {
+        const result = parseColorAsOklch('#ff0000')
+        expect(result.l).toBeCloseTo(0.628, 2)
+        expect(result.h).toBeCloseTo(29.23, 1)
+      })
+    })
+  })
+
+  describe('Given an empty string', () => {
+    describe('When parsing', () => {
+      it('throws a descriptive error', () => {
+        expect(() => parseColorAsOklch('')).toThrow()
+        expect(() => parseColorAsOklch('   ')).toThrow()
+      })
+    })
+  })
+})
+
+describe('formatAsOklch', () => {
+  describe('Given OKLch channels', () => {
+    describe('When formatting', () => {
+      it('wraps values in oklch() with space syntax', () => {
+        expect(formatAsOklch({ l: 0.7, c: 0.15, h: 30 })).toBe('oklch(0.7 0.15 30)')
+      })
+
+      it('rounds lightness and chroma to four decimal places, hue to two', () => {
+        expect(formatAsOklch({ l: 0.123456, c: 0.234567, h: 30.345 })).toBe('oklch(0.1235 0.2346 30.35)')
+      })
+
+      it('canonicalizes hue to 0 when chroma is 0', () => {
+        expect(formatAsOklch({ l: 0.5, c: 0, h: 270 })).toBe('oklch(0.5 0 0)')
+      })
+    })
+  })
+})
+
+describe('colorToHex', () => {
+  describe('Given any CSS color', () => {
+    describe('When converting', () => {
+      it('returns a 6-digit hex string', () => {
+        expect(colorToHex('hsl(0 100% 50%)')).toMatch(/^#[0-9a-f]{6}$/)
+      })
+
+      it('roundtrips pure red from hsl', () => {
+        expect(colorToHex('hsl(0 100% 50%)')).toBe('#ff0000')
+      })
+
+      it('roundtrips white', () => {
+        expect(colorToHex('hsl(0 0% 100%)')).toBe('#ffffff')
+      })
+
+      it('roundtrips black', () => {
+        expect(colorToHex('hsl(0 0% 0%)')).toBe('#000000')
+      })
+
+      it('converts oklch to hex', () => {
+        const hex = colorToHex('oklch(0.628 0.258 29.23)')
+        expect(hex).toMatch(/^#[0-9a-f]{6}$/)
+      })
+
+      it('roundtrips a hex through oklch back to the same hex', () => {
+        expect(colorToHex('#3366cc')).toBe('#3366cc')
       })
     })
   })

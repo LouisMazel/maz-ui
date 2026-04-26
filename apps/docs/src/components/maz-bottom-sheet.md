@@ -84,7 +84,7 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
             v-for="color in colors"
             :key="color.name"
             class="maz:flex maz:flex-col maz:items-center maz:cursor-pointer maz:p-3 maz:rounded-lg maz:border-2 maz:transition-all"
-            :class="selectedOptions.color === color.name ? 'maz:border-primary maz:bg-primary/10' : 'maz:border-border maz:hover:border-primary/50'"
+            :class="selectedOptions.color === color.name ? 'maz:border-primary maz:bg-primary/10' : 'maz:border-divider maz:hover:border-primary/50'"
             @click="selectedOptions.color = color.name"
           >
             <div
@@ -145,14 +145,14 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
         />
       </div>
       <div class="maz:flex maz:gap-4">
-        <div class="maz:flex maz:items-center maz:justify-between maz:p-4 maz:border maz:border-border maz:rounded-lg">
+        <div class="maz:flex maz:items-center maz:justify-between maz:p-4 maz:border maz:border-divider maz:rounded-lg">
           <div>
             <p class="maz:font-medium">Email Notifications</p>
             <p class="maz:text-sm maz:text-muted">Receive updates about your orders</p>
           </div>
           <MazSwitch v-model="userForm.notifications" />
         </div>
-        <div class="maz:flex maz:items-center maz:justify-between maz:p-4 maz:border maz:border-border maz:rounded-lg">
+        <div class="maz:flex maz:items-center maz:justify-between maz:p-4 maz:border maz:border-divider maz:rounded-lg">
           <div>
             <p class="maz:font-medium">Dark Mode</p>
             <p class="maz:text-sm maz:text-muted">Switch to dark theme</p>
@@ -242,7 +242,7 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
             v-for="color in colors"
             :key="color.name"
             class="maz:flex maz:cursor-pointer maz:flex-col maz:items-center maz:rounded-lg maz:border-2 maz:p-3"
-            :class="selectedOptions.color === color.name ? 'maz:border-primary' : 'maz:border-border'"
+            :class="selectedOptions.color === color.name ? 'maz:border-primary' : 'maz:border-divider'"
             @click="selectedOptions.color = color.name"
           >
             <div
@@ -302,14 +302,14 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
           :options="countries"
           placeholder="Select your country"
         />
-        <div class="maz:flex maz:items-center maz:justify-between maz:p-4 maz:border maz:border-border maz:rounded-lg">
+        <div class="maz:flex maz:items-center maz:justify-between maz:p-4 maz:border maz:border-divider maz:rounded-lg">
           <div>
             <p class="maz:font-medium">Email Notifications</p>
             <p class="maz:text-sm maz:text-muted">Receive updates about your orders</p>
           </div>
           <MazSwitch v-model="userForm.notifications" />
         </div>
-        <div class="maz:flex maz:items-center maz:justify-between maz:p-4 maz:border maz:border-border maz:rounded-lg">
+        <div class="maz:flex maz:items-center maz:justify-between maz:p-4 maz:border maz:border-divider maz:rounded-lg">
           <div>
             <p class="maz:font-medium">Dark Mode</p>
             <p class="maz:text-sm maz:text-muted">Switch to dark theme</p>

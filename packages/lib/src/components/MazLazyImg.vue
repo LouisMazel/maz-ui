@@ -76,6 +76,24 @@ export interface MazLazyImgProps {
 const sources = computed(() => {
   return typeof props.src === 'string' ? [{ srcset: props.src }] : props.src?.sources
 })
+
+function onIntersecting(el: Element) {
+  emits('intersecting', el)
+}
+
+function onLoading(el: Element) {
+  emits('loading', el)
+}
+
+function onLoaded(el: Element) {
+  emits('loaded', el)
+}
+
+function onError(el: Element) {
+  emits('error', el)
+}
+
+defineExpose({ onIntersecting, onLoading, onLoaded, onError })
 </script>
 
 <template>
@@ -85,10 +103,10 @@ const sources = computed(() => {
       observerOptions,
       fallbackSrc,
       observerOnce,
-      onIntersecting: (el) => emits('intersecting', el),
-      onLoading: (el) => emits('loading', el),
-      onLoaded: (el) => emits('loaded', el),
-      onError: (el) => emits('error', el),
+      onIntersecting,
+      onLoading,
+      onLoaded,
+      onError,
     }"
     class="m-lazy-img-component m-reset-css maz:relative maz:inline-flex maz:align-top maz:flex-center"
     :class="[

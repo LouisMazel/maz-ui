@@ -1,3 +1,4 @@
+export * from './color-parser'
 export * from './color-utils'
 export * from './cookie-storage'
 export * from './css-generator'

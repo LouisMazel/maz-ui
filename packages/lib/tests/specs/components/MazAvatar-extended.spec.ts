@@ -445,6 +445,41 @@ describe('MazAvatar extended branch coverage', () => {
       expect(img.exists()).toBe(true)
       expect(img.attributes('src')).toBe('https://example.com/fallback.jpg')
     })
+
+    it('swaps the img src to fallbackSrc on error and emits the error event', async () => {
+      const wrapper = mount(MazAvatar, {
+        props: {
+          src: 'https://example.com/photo.jpg',
+          fallbackSrc: 'https://example.com/fallback.jpg',
+          loading: 'eager',
+        },
+      })
+      await vi.dynamicImportSettled()
+
+      const img = wrapper.find('img').element as HTMLImageElement
+      img.src = 'https://example.com/photo.jpg'
+      await wrapper.find('img').trigger('error')
+
+      expect(wrapper.emitted('error')).toHaveLength(1)
+      expect(img.src).toBe('https://example.com/fallback.jpg')
+    })
+
+    it('does not loop when the fallback itself errors', async () => {
+      const wrapper = mount(MazAvatar, {
+        props: {
+          src: 'https://example.com/fallback.jpg',
+          fallbackSrc: 'https://example.com/fallback.jpg',
+          loading: 'eager',
+        },
+      })
+      await vi.dynamicImportSettled()
+
+      const img = wrapper.find('img').element as HTMLImageElement
+      const before = img.src
+      await wrapper.find('img').trigger('error')
+
+      expect(img.src).toBe(before)
+    })
   })
 
   describe('custom class and style props', () => {

@@ -251,7 +251,7 @@ function formatColorName(colorName: string): string {
               :key="category.name"
               class="maz:space-y-4"
             >
-              <h4 class="maz:border-border maz:border-b maz:pb-2 maz:text-sm maz:font-semibold maz:text-foreground">
+              <h4 class="maz:border-b maz:pb-2 maz:text-sm maz:font-semibold maz:text-foreground">
                 {{ category.name }}
               </h4>
 
