@@ -115,9 +115,9 @@ interface BuildContext {
  * @example
  * ```ts
  * // stylelint.config.mjs
- * import { defineMazStylelintConfig } from '@maz-ui/stylelint-config'
+ * import { defineConfig } from '@maz-ui/stylelint-config'
  *
- * export default defineMazStylelintConfig({
+ * export default defineConfig({
  *   tailwind: true,
  *   logical: true,
  *   rules: {
@@ -126,7 +126,7 @@ interface BuildContext {
  * })
  * ```
  */
-export function defineMazStylelintConfig(options: MazStylelintOptions = {}): StylelintConfig {
+export function defineConfig(options: MazStylelintOptions = {}): StylelintConfig {
   const resolved = resolveOptions(options)
 
   const ctx: BuildContext = {

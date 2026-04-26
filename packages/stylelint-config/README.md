@@ -21,9 +21,9 @@ pnpm add -D @maz-ui/stylelint-config stylelint
 
 ```js
 // stylelint.config.mjs
-import { defineMazStylelintConfig } from '@maz-ui/stylelint-config'
+import { defineConfig } from '@maz-ui/stylelint-config'
 
-export default defineMazStylelintConfig()
+export default defineConfig()
 ```
 
 Vue, Tailwind and SCSS are auto-detected from your `package.json`.
@@ -31,7 +31,7 @@ Vue, Tailwind and SCSS are auto-detected from your `package.json`.
 ## Options
 
 ```js
-defineMazStylelintConfig({
+defineConfig({
   vue: true, // auto-detected from `vue`/`nuxt` deps
   html: false,
   tailwind: true, // auto-detected from `tailwindcss` dep

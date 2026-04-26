@@ -1,6 +1,6 @@
-import { defineMazStylelintConfig } from '@maz-ui/stylelint-config'
+import { defineConfig } from '@maz-ui/stylelint-config'
 
-export default defineMazStylelintConfig({
+export default defineConfig({
   ignores: ['.DS_Store'],
   logical: false,
   order: false,

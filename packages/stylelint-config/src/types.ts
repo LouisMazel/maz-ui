@@ -86,7 +86,7 @@ export interface MazStylelintOptions {
    *
    * @example
    * ```ts
-   * defineMazStylelintConfig({
+   * defineConfig({
    *   rules: {
    *     'no-descending-specificity': null,
    *     'declaration-block-no-redundant-longhand-properties': [true, {
@@ -104,7 +104,7 @@ export interface MazStylelintOptions {
    *
    * @example
    * ```ts
-   * defineMazStylelintConfig({
+   * defineConfig({
    *   overrides: [
    *     { files: ['**\/*.legacy.css'], rules: { 'no-descending-specificity': null } },
    *   ],

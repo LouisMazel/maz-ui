@@ -20,9 +20,9 @@ The peer dependencies the preset relies on (`stylelint-config-standard`, `stylel
 Create `stylelint.config.mjs` at the root of your project:
 
 ```js
-import { defineMazStylelintConfig } from '@maz-ui/stylelint-config'
+import { defineConfig } from '@maz-ui/stylelint-config'
 
-export default defineMazStylelintConfig()
+export default defineConfig()
 ```
 
 Vue, Tailwind and SCSS are auto-detected from your `package.json`:
@@ -36,9 +36,9 @@ Vue, Tailwind and SCSS are auto-detected from your `package.json`:
 ## Configuration
 
 ```js
-import { defineMazStylelintConfig } from '@maz-ui/stylelint-config'
+import { defineConfig } from '@maz-ui/stylelint-config'
 
-export default defineMazStylelintConfig({
+export default defineConfig({
   // Each one is also auto-detected — set explicitly to opt in/out.
   vue: true,
   html: false,
@@ -102,7 +102,7 @@ If you ship a design system that has to work in both LTR and RTL locales (Arabic
 Disable it explicitly if your project doesn't need RTL support:
 
 ```js
-defineMazStylelintConfig({ logical: false })
+defineConfig({ logical: false })
 ```
 
 ## Tailwind CSS v4
@@ -172,9 +172,9 @@ If you used the historical maz-ui Stylelint setup, the migration boils down to:
 -    { files: ['**/*.vue', '**/*.html'], customSyntax: 'postcss-html' },
 -  ],
 -}
-+import { defineMazStylelintConfig } from '@maz-ui/stylelint-config'
++import { defineConfig } from '@maz-ui/stylelint-config'
 +
-+export default defineMazStylelintConfig({
++export default defineConfig({
 +  vue: true,
 +  scss: true,
 +  tailwind: true,

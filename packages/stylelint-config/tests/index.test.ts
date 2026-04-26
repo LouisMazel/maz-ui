@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import stylelint from 'stylelint'
 import {
   baseRules,
-  defineMazStylelintConfig,
+  defineConfig,
   GLOBAL_IGNORES,
   logicalRules,
   scssRules,
@@ -20,7 +20,7 @@ function loadFixture(name: string): string {
 
 interface RunOptions {
   fixture: string
-  config: ReturnType<typeof defineMazStylelintConfig>
+  config: ReturnType<typeof defineConfig>
   syntax?: 'css' | 'html' | 'scss'
 }
 
@@ -33,47 +33,47 @@ function runStylelint({ fixture, config, syntax = 'css' }: RunOptions): Promise<
   })
 }
 
-describe('defineMazStylelintConfig', () => {
+describe('defineConfig', () => {
   describe('default options', () => {
     it('extends stylelint-config-standard and recess-order', () => {
-      const config = defineMazStylelintConfig()
+      const config = defineConfig()
       expect(config.extends).toContain('stylelint-config-standard')
       expect(config.extends).toContain('stylelint-config-recess-order')
     })
 
     it('enables logical-properties rule by default', () => {
-      const config = defineMazStylelintConfig()
+      const config = defineConfig()
       expect(config.plugins).toContain('stylelint-use-logical-spec')
       expect(config.rules?.['liberty/use-logical-spec']).toEqual(['always'])
     })
 
     it('applies the baseRules opinions', () => {
-      const config = defineMazStylelintConfig()
+      const config = defineConfig()
       expect(config.rules?.['selector-class-pattern']).toBeNull()
       expect(config.rules?.['no-descending-specificity']).toBeNull()
     })
 
     it('uses GLOBAL_IGNORES merged with no user ignores', () => {
-      const config = defineMazStylelintConfig()
+      const config = defineConfig()
       expect(config.ignoreFiles).toEqual(GLOBAL_IGNORES)
     })
   })
 
   describe('option: order', () => {
     it('omits the recess-order extends when order is false', () => {
-      const config = defineMazStylelintConfig({ order: false })
+      const config = defineConfig({ order: false })
       expect(config.extends).not.toContain('stylelint-config-recess-order')
     })
 
     it('omits the recess-order extends when order is alphabetical (no built-in extends)', () => {
-      const config = defineMazStylelintConfig({ order: 'alphabetical' })
+      const config = defineConfig({ order: 'alphabetical' })
       expect(config.extends).not.toContain('stylelint-config-recess-order')
     })
   })
 
   describe('option: vue', () => {
     it('extends stylelint-config-recommended-vue and registers postcss-html for .vue files', () => {
-      const config = defineMazStylelintConfig({ vue: true })
+      const config = defineConfig({ vue: true })
       expect(config.extends).toContain('stylelint-config-recommended-vue')
       expect(config.overrides).toContainEqual(expect.objectContaining({
         files: expect.arrayContaining(['**/*.vue']),
@@ -82,14 +82,14 @@ describe('defineMazStylelintConfig', () => {
     })
 
     it('does not enable Vue when vue is explicitly false', () => {
-      const config = defineMazStylelintConfig({ vue: false })
+      const config = defineConfig({ vue: false })
       expect(config.extends).not.toContain('stylelint-config-recommended-vue')
     })
   })
 
   describe('option: html', () => {
     it('extends stylelint-config-html and registers postcss-html for .html files', () => {
-      const config = defineMazStylelintConfig({ html: true })
+      const config = defineConfig({ html: true })
       expect(config.extends).toContain('stylelint-config-html')
       const override = (config.overrides ?? []).find(o => Array.isArray(o.files) && o.files.includes('**/*.html'))
       expect(override).toBeDefined()
@@ -99,14 +99,14 @@ describe('defineMazStylelintConfig', () => {
 
   describe('option: tailwind', () => {
     it('whitelists Tailwind v4 at-rules', () => {
-      const config = defineMazStylelintConfig({ tailwind: true })
+      const config = defineConfig({ tailwind: true })
       const rule = config.rules?.['at-rule-no-unknown']
       expect(rule).toBeDefined()
       expect((rule as [boolean, { ignoreAtRules: string[] }])[1].ignoreAtRules).toEqual(expect.arrayContaining(['theme', 'apply', 'layer', 'variant', 'reference']))
     })
 
     it('forces import-notation to string (Tailwind prefix(...) modifier)', () => {
-      const config = defineMazStylelintConfig({ tailwind: true })
+      const config = defineConfig({ tailwind: true })
       expect(config.rules?.['import-notation']).toBe('string')
     })
 
@@ -117,7 +117,7 @@ describe('defineMazStylelintConfig', () => {
 
   describe('option: scss', () => {
     it('extends stylelint-config-recommended-scss and adds scss override', () => {
-      const config = defineMazStylelintConfig({ scss: true })
+      const config = defineConfig({ scss: true })
       expect(config.extends).toContain('stylelint-config-recommended-scss')
       expect(config.overrides).toContainEqual(expect.objectContaining({
         files: ['**/*.scss'],
@@ -126,7 +126,7 @@ describe('defineMazStylelintConfig', () => {
     })
 
     it('whitelists Tailwind at-rules through the scss/at-rule-no-unknown rule when both are enabled', () => {
-      const config = defineMazStylelintConfig({ scss: true, tailwind: true })
+      const config = defineConfig({ scss: true, tailwind: true })
       const rule = config.rules?.['scss/at-rule-no-unknown']
       expect(rule).toBeDefined()
       expect((rule as [boolean, { ignoreAtRules: string[] }])[1].ignoreAtRules.length).toBeGreaterThan(0)
@@ -135,7 +135,7 @@ describe('defineMazStylelintConfig', () => {
 
   describe('option: logical', () => {
     it('disables logical-properties rule when logical is false', () => {
-      const config = defineMazStylelintConfig({ logical: false })
+      const config = defineConfig({ logical: false })
       expect(config.plugins ?? []).not.toContain('stylelint-use-logical-spec')
       expect(config.rules?.['liberty/use-logical-spec']).toBeUndefined()
     })
@@ -143,20 +143,20 @@ describe('defineMazStylelintConfig', () => {
 
   describe('option: ignores', () => {
     it('merges with the default ignore list', () => {
-      const config = defineMazStylelintConfig({ ignores: ['custom/**'] })
+      const config = defineConfig({ ignores: ['custom/**'] })
       expect(config.ignoreFiles).toContain('custom/**')
       expect(config.ignoreFiles).toContain('**/node_modules/**')
     })
 
     it('replaces the default ignore list when ignoresOverride is set', () => {
-      const config = defineMazStylelintConfig({ ignoresOverride: ['only-this/**'] })
+      const config = defineConfig({ ignoresOverride: ['only-this/**'] })
       expect(config.ignoreFiles).toEqual(['only-this/**'])
     })
   })
 
   describe('option: rules and overrides (raw stylelint passthrough)', () => {
     it('merges custom rules on top of resolved rules', () => {
-      const config = defineMazStylelintConfig({
+      const config = defineConfig({
         rules: {
           'color-no-invalid-hex': null,
         },
@@ -165,7 +165,7 @@ describe('defineMazStylelintConfig', () => {
     })
 
     it('appends user overrides after the built-in ones', () => {
-      const config = defineMazStylelintConfig({
+      const config = defineConfig({
         vue: true,
         overrides: [{ files: ['**/legacy.css'], rules: { 'color-no-invalid-hex': null } }],
       })
@@ -176,7 +176,7 @@ describe('defineMazStylelintConfig', () => {
     })
 
     it('appends user plugins on top of built-in ones', () => {
-      const config = defineMazStylelintConfig({
+      const config = defineConfig({
         plugins: ['my-custom-plugin'],
       })
       expect(config.plugins).toContain('stylelint-use-logical-spec')
@@ -198,7 +198,7 @@ describe('defineMazStylelintConfig', () => {
 describe('integration with the stylelint runtime', () => {
   describe('when the config is valid CSS', () => {
     it('produces no warnings against the default config', async () => {
-      const config = defineMazStylelintConfig({ logical: false, order: false })
+      const config = defineConfig({ logical: false, order: false })
       const result = await runStylelint({ fixture: 'valid.css', config })
       expect(result.errored).toBe(false)
     })
@@ -206,7 +206,7 @@ describe('integration with the stylelint runtime', () => {
 
   describe('when the fixture uses physical properties and logical is on', () => {
     it('reports warnings on the physical declarations', async () => {
-      const config = defineMazStylelintConfig({ logical: true, order: false })
+      const config = defineConfig({ logical: true, order: false })
       const result = await runStylelint({ fixture: 'physical-properties.css', config })
       expect(result.errored).toBe(true)
       const messages = result.results.flatMap(r => r.warnings.map(w => w.text))
@@ -216,7 +216,7 @@ describe('integration with the stylelint runtime', () => {
 
   describe('when the fixture uses Tailwind directives and tailwind is off', () => {
     it('flags @theme/@apply/@layer as unknown at-rules', async () => {
-      const config = defineMazStylelintConfig({ logical: false, order: false, tailwind: false })
+      const config = defineConfig({ logical: false, order: false, tailwind: false })
       const result = await runStylelint({ fixture: 'tailwind.css', config })
       expect(result.errored).toBe(true)
     })
@@ -224,7 +224,7 @@ describe('integration with the stylelint runtime', () => {
 
   describe('when the fixture uses Tailwind directives and tailwind is on', () => {
     it('does not flag the Tailwind at-rules', async () => {
-      const config = defineMazStylelintConfig({ logical: false, order: false, tailwind: true })
+      const config = defineConfig({ logical: false, order: false, tailwind: true })
       const result = await runStylelint({ fixture: 'tailwind.css', config })
       const atRuleMessages = result.results.flatMap(r => r.warnings).filter(w => w.rule === 'at-rule-no-unknown')
       expect(atRuleMessages).toHaveLength(0)
@@ -233,7 +233,7 @@ describe('integration with the stylelint runtime', () => {
 
   describe('when the fixture has an invalid hex color', () => {
     it('reports a Stylelint warning', async () => {
-      const config = defineMazStylelintConfig({ logical: false, order: false })
+      const config = defineConfig({ logical: false, order: false })
       const result = await runStylelint({ fixture: 'invalid-color.css', config })
       expect(result.errored).toBe(true)
       const warnings = result.results.flatMap(r => r.warnings)
@@ -244,11 +244,11 @@ describe('integration with the stylelint runtime', () => {
 
 describe('snapshots of the resolved configuration', () => {
   it('matches the empty-options snapshot', () => {
-    expect(defineMazStylelintConfig()).toMatchSnapshot()
+    expect(defineConfig()).toMatchSnapshot()
   })
 
   it('matches the full-options snapshot', () => {
-    expect(defineMazStylelintConfig({
+    expect(defineConfig({
       vue: true,
       html: true,
       tailwind: true,
@@ -259,7 +259,7 @@ describe('snapshots of the resolved configuration', () => {
   })
 
   it('matches the minimal snapshot (everything off)', () => {
-    expect(defineMazStylelintConfig({
+    expect(defineConfig({
       vue: false,
       html: false,
       tailwind: false,
