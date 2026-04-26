@@ -55,4 +55,26 @@ describe('MazLink component', () => {
     expect(wrapper.attributes('to')).toBe('https://www.google.com')
     expect(wrapper.find('router-link-stub').exists()).toBe(true)
   })
+
+  it('does not apply a color class when color is inherit', () => {
+    const inheritWrapper = shallowMount(MazLink, {
+      props: { color: 'inherit' },
+      slots: { default: 'Link' },
+      global: { stubs: { RouterLink: true } },
+    })
+
+    expect(inheritWrapper.classes('--inherit')).toBe(true)
+    expect(inheritWrapper.classes()).not.toContain('maz:not-disabled:text-primary')
+  })
+
+  it('applies underline-hover modifier when underline is false', () => {
+    const hoverWrapper = shallowMount(MazLink, {
+      props: { underline: false, underlineHover: true },
+      slots: { default: 'Link' },
+      global: { stubs: { RouterLink: true } },
+    })
+
+    expect(hoverWrapper.classes('--underline-hover')).toBe(true)
+    expect(hoverWrapper.classes('--underline')).toBe(false)
+  })
 })

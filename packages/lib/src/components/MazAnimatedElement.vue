@@ -38,7 +38,7 @@ let animationFrameId: number | null = null
 function triggerAnimation() {
   animationFrameId = requestAnimationFrame(() => {
     if (element.value) {
-      element.value.classList.remove('--invisible')
+      element.value.classList.remove('maz:invisible')
       element.value.classList.add(animatedClass.value)
       isAnimated.value = true
     }
@@ -47,7 +47,7 @@ function triggerAnimation() {
 
 function resetAnimation() {
   if (element.value) {
-    element.value.classList.add('--invisible')
+    element.value.classList.add('maz:invisible')
     element.value.classList.remove(animatedClass.value)
     isAnimated.value = false
   }
@@ -85,7 +85,8 @@ onBeforeUnmount(() => {
 <template>
   <div
     ref="element"
-    class="m-animated-element m-reset-css --invisible" :style="{
+    class="m-animated-element m-reset-css maz:invisible"
+    :style="{
       animationDuration: `${duration}ms`,
     }"
   >
@@ -99,10 +100,6 @@ onBeforeUnmount(() => {
 .m-animated-element {
   will-change: transform, opacity, filter;
   transform: translateZ(0);
-
-  &.--invisible {
-    @apply maz:invisible;
-  }
 }
 
 @keyframes slide-up-blur {

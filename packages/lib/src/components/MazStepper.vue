@@ -253,9 +253,9 @@ function isLastStep(step: number): boolean {
       </button>
 
       <div
-        class="m-stepper__content maz:ms-[1.95rem] maz:border-s-2 maz:border-transparent maz:py-2 maz:ps-8"
+        class="m-stepper__content maz:ms-[1.95rem] maz:border-s maz:py-2 maz:ps-8"
         :class="{
-          '--no-border': isLastStep(step),
+          'maz:border-transparent': isLastStep(step),
           'maz:border-divider': !isLastStep(step),
         }"
       >

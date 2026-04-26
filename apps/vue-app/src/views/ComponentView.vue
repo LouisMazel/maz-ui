@@ -1247,7 +1247,7 @@ const checklistItems = [
         <MazLink href="#">
           Default link
         </MazLink>
-        <MazLink v-for="c in colors" :key="c" href="#" :color="c">
+        <MazLink v-for="c in [...colors, 'inherit' as const]" :key="c" href="#" :color="c">
           {{ c }} link
         </MazLink>
       </div>
@@ -1298,19 +1298,19 @@ const checklistItems = [
       </h2>
       <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-8">
         <div class="maz:text-center">
-          <MazAnimatedCounter :count="1234" suffix="+" class="maz:text-4xl maz:font-bold" />
+          <MazAnimatedCounter :count="1234" suffix="+" class="maz:text-4xl" />
           <p class="maz:text-sm maz:text-muted">
             Users
           </p>
         </div>
         <div class="maz:text-center">
-          <MazAnimatedCounter :count="99" suffix="%" prefix="~" class="maz:text-4xl maz:font-bold" />
+          <MazAnimatedCounter :count="99" suffix="%" prefix="~" class="maz:text-4xl" />
           <p class="maz:text-sm maz:text-muted">
             Uptime
           </p>
         </div>
         <div class="maz:text-center">
-          <MazAnimatedCounter :count="50" suffix="+" class="maz:text-4xl maz:font-bold" />
+          <MazAnimatedCounter :count="50" suffix="+" class="maz:text-4xl" />
           <p class="maz:text-sm maz:text-muted">
             Components
           </p>

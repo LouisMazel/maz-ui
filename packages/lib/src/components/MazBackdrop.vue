@@ -238,7 +238,7 @@ const ALIGN_CLASS = {
   center: 'maz:items-center',
   end: 'maz:items-end',
   start: 'maz:items-start',
-  none: '',
+  none: 'maz:items-end maz:tab-s:items-center',
 } as const
 
 defineExpose({
@@ -291,7 +291,7 @@ defineExpose({
           <div class="m-backdrop-wrapper maz:fixed maz:inset-0 maz:overflow-y-auto">
             <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events -->
             <div
-              class="m-backdrop-content maz:flex maz:min-h-full maz:tab-s:items-center maz:tab-s:p-0 maz:items-end"
+              class="m-backdrop-content maz:flex maz:min-h-full maz:tab-s:p-0"
               :class="[
                 backdropContentClass,
                 JUSTIFY_CLASS[justify],

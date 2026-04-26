@@ -181,10 +181,6 @@ if (scrollable) {
     min-width: var(--min-width);
   }
 
-  &-content-icon {
-    flex: 0 0 auto;
-  }
-
   &.--scrollable {
     .m-dialog-content {
       @apply maz:overflow-auto maz:border-t maz:border-divider maz:py-4;

@@ -38,7 +38,7 @@ describe('mazAnimatedElement', () => {
     const element = wrapper.element
     const intersectionCallback = mockIntersectionObserver.mock.calls[0][0]
 
-    expect(element.classList.contains('--invisible')).toBe(true)
+    expect(element.classList.contains('maz:invisible')).toBe(true)
 
     intersectionCallback([{
       target: element,
@@ -49,7 +49,7 @@ describe('mazAnimatedElement', () => {
     await new Promise(resolve => setTimeout(resolve, 50))
 
     expect(element.classList.contains('animate-slide-down-blur')).toBe(true)
-    expect(element.classList.contains('--invisible')).toBe(false)
+    expect(element.classList.contains('maz:invisible')).toBe(false)
   })
 
   it('applies custom duration and delay', () => {
@@ -67,7 +67,7 @@ describe('mazAnimatedElement', () => {
     const element = wrapper.element
     const intersectionCallback = mockIntersectionObserver.mock.calls[0][0]
 
-    expect(element.classList.contains('--invisible')).toBe(true)
+    expect(element.classList.contains('maz:invisible')).toBe(true)
 
     intersectionCallback([{
       target: element,
@@ -78,6 +78,6 @@ describe('mazAnimatedElement', () => {
     await new Promise(resolve => setTimeout(resolve, 50))
 
     expect(element.classList.contains('animate-slide-up-blur')).toBe(true)
-    expect(element.classList.contains('--invisible')).toBe(false)
+    expect(element.classList.contains('maz:invisible')).toBe(false)
   })
 })
