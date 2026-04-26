@@ -141,6 +141,7 @@ const currentIcon = computed(() => {
     :class="[
       ROUNDED_CLASS[roundedSize],
       `--${variant}`,
+      `--rounded-${roundedSize}`,
       {
         '--bordered': bordered,
         'maz:text-(--m-alert-color) maz:dark:text-(--m-alert-color-dark)': variant === 'soft',

@@ -7,7 +7,6 @@ import { MazArrowTopRightOnSquare } from '@maz-ui/icons/lazy/MazArrowTopRightOnS
 import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
-import { getColor } from './types'
 
 defineOptions({
   inheritAttrs: false,
@@ -140,7 +139,7 @@ const component = computed<Component | string>(() => {
 
 const isButton = computed(() => component.value === 'button')
 
-const COLOR_CLASS = {
+const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
   primary: 'maz:not-disabled:text-primary maz:not-disabled:hover:text-primary-700',
   secondary: 'maz:not-disabled:text-secondary maz:not-disabled:hover:text-secondary-700',
   info: 'maz:not-disabled:text-info maz:not-disabled:hover:text-info-700',
@@ -150,8 +149,9 @@ const COLOR_CLASS = {
   accent: 'maz:not-disabled:text-accent maz:not-disabled:hover:text-accent-700',
   contrast: 'maz:not-disabled:text-foreground maz:not-disabled:hover:text-foreground-900 maz:not-disabled:dark:hover:text-foreground-100',
   muted: 'maz:not-disabled:text-muted maz:not-disabled:hover:text-muted-700',
-  surface: 'maz:not-disabled:text-surface maz:not-disabled:hover:text-surface-700',
+  background: 'maz:not-disabled:text-surface maz:not-disabled:hover:text-surface-700',
   transparent: '',
+  inherit: '',
 } as const
 </script>
 
@@ -161,11 +161,14 @@ const COLOR_CLASS = {
     :id="instanceId"
     class="m-link m-reset-css maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-1 maz:transition-colors maz:duration-200 maz:ease-in-out maz:no-underline maz:disabled:cursor-not-allowed maz:disabled:opacity-50 maz:disabled:text-muted"
     :class="[
+      `--${color}`,
       {
+        '--underline': underline,
+        '--underline-hover': !underline && underlineHover,
         'maz:underline': underline,
         'maz:not-disabled:hover:underline': !underline && underlineHover,
       },
-      color !== 'inherit' && COLOR_CLASS[getColor(color)],
+      color !== 'inherit' && COLOR_CLASS[color],
       classProp,
     ]"
     :to

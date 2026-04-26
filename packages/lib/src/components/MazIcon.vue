@@ -239,7 +239,7 @@ const svgClasses = computed<string | undefined>(() => {
     return
   }
 
-  return SIZE_CLASS[size as PredefinedSize]
+  return `m-icon--${size} ${SIZE_CLASS[size as PredefinedSize]}`
 })
 
 watchEffect(() => {

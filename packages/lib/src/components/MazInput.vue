@@ -344,7 +344,7 @@ const borderStyle = computed(() => {
     return 'maz:border-success'
   if (props.warning)
     return 'maz:border-warning'
-  return 'maz:border-divider maz:dark:border-divider-400'
+  return '--default-border maz:border-divider maz:dark:border-divider-400'
 })
 
 const slots = useSlots()
@@ -455,6 +455,7 @@ const CHILD_TEXT_SIZE_CLASS = {
         inputClasses,
         borderStyle,
         ROUNDED_CLASS[roundedSize],
+        `--rounded-${roundedSize}`,
         { '--block': block, '--border': border, 'maz:w-full': block, 'maz:border maz:border-solid': border },
       ]"
     >

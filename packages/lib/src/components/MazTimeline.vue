@@ -332,6 +332,7 @@ const ROUNDED_CLASS = {
     :style="colorStyles"
     :class="[
       `--${size}`,
+      `--rounded-${roundedSize}`,
       isVertical ? '--vertical maz:flex-col' : '--horizontal maz:flex-row maz:items-start',
       {
         '--clickable': clickable,

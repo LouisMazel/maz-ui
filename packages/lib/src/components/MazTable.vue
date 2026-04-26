@@ -1002,38 +1002,6 @@ onBeforeMount(() => {
       }
     }
 
-    &.--rounded-base {
-      @apply maz:rounded;
-
-      table {
-        @apply maz:rounded;
-
-        thead tr:hover:first-child {
-          @apply maz:rounded-b;
-
-          th:first-child {
-            @apply maz:rounded-tl;
-          }
-
-          th:last-child {
-            @apply maz:rounded-tr;
-          }
-        }
-
-        tbody tr:hover:last-child {
-          @apply maz:rounded-b;
-
-          td:first-child {
-            @apply maz:rounded-bl;
-          }
-
-          td:last-child {
-            @apply maz:rounded-br;
-          }
-        }
-      }
-    }
-
     &.--rounded-xl {
       @apply maz:rounded-xl;
 

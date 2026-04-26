@@ -131,7 +131,7 @@ if (scrollable) {
           @binding {Function} close close function
       -->
       <slot name="header" :close>
-        <div class="m-dialog-header maz:flex maz:items-baseline maz:ps-6 maz:pe-2 maz:pt-2 maz:pb-4" :class="hasSlotContent(slots.title) || title ? 'maz:justify-between' : 'maz:justify-end'">
+        <div class="m-dialog-header maz:flex maz:items-baseline maz:ps-6 maz:pe-2 maz:pt-2 maz:pb-4" :class="[hasSlotContent(slots.title) || title ? '--has-title' : '', hasSlotContent(slots.title) || title ? 'maz:justify-between' : 'maz:justify-end']">
           <h2
             v-if="hasSlotContent(slots.title) || title"
             id="dialogTitle"

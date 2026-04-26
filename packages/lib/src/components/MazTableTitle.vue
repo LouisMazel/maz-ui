@@ -15,7 +15,7 @@ const SIZE_CLASS = {
 </script>
 
 <template>
-  <th class="m-table-title m-reset-css" :class="SIZE_CLASS[size as keyof typeof SIZE_CLASS]">
+  <th class="m-table-title m-reset-css" :class="[`--${size}`, SIZE_CLASS[size as keyof typeof SIZE_CLASS]]">
     <slot />
   </th>
 </template>

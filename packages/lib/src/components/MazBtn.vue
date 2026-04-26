@@ -216,6 +216,8 @@ const ICON_PADDING_CLASS = {
     class="m-btn m-reset-css maz:relative maz:cursor-pointer maz:items-center maz:gap-2 maz:border maz:border-solid maz:border-transparent maz:bg-transparent maz:py-0.5 maz:text-center maz:align-top maz:text-foreground maz:no-underline maz:transition-all maz:duration-200 maz:ease-in-out maz:inline-flex maz:overflow-hidden"
     :class="[
       `--${resolvedColor}`,
+      `--${size}`,
+      !fab && roundedSize ? `--rounded-${roundedSize}` : '',
       SIZE_CLASS[size],
       fab ? 'maz:rounded-full maz:flex maz:items-center maz:justify-center maz:p-1' : ROUNDED_CLASS[roundedSize],
       fab ? FAB_SIZE_CLASS[size] : '',
@@ -229,6 +231,8 @@ const ICON_PADDING_CLASS = {
         '--loading': loading,
         '--active': active,
         '--no-padding': !padding,
+        '--has-left-icon': !!leftIcon || hasSlotContent($slots['left-icon']),
+        '--has-right-icon': !!rightIcon || hasSlotContent($slots['right-icon']),
       },
     ]"
     :style="btnStyle"

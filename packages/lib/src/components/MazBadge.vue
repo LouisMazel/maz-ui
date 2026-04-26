@@ -88,8 +88,14 @@ const badgeStyle = computed<CSSProperties>(() => {
     class="m-badge m-reset-css maz:inline-flex maz:items-center maz:justify-center maz:border maz:border-transparent maz:align-top maz:font-semibold"
     :class="[
       `--${resolvedColor}`,
+      `--rounded-${roundedSize}`,
       ROUNDED_CLASS[roundedSize],
-      { '--outlined': outlined, '--pastel': pastel, 'maz:whitespace-nowrap': nowrap },
+      {
+        '--outlined': outlined,
+        '--pastel': pastel,
+        '--nowrap': nowrap,
+        'maz:whitespace-nowrap': nowrap,
+      },
     ]"
     :style="badgeStyle"
   >

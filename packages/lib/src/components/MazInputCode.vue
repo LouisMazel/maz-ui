@@ -273,6 +273,9 @@ const borderColorState = computed(() => {
     </div>
     <span
       class="m-input-code__hint maz:text-sm" :class="{
+        '--error': error,
+        '--success': success,
+        '--warning': warning,
         'maz:text-destructive-600': error,
         'maz:text-success-600': success,
         'maz:text-warning-600': warning,

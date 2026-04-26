@@ -178,7 +178,7 @@ const buttonSize = computed(() => {
 <template>
   <div
     class="m-input-tags m-reset-css maz:relative maz:inline-flex maz:flex-wrap maz:gap-1 maz:overflow-hidden maz:rounded maz:border maz:bg-surface maz:px-[0.5em] maz:py-[0.25em] maz:align-top maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:bg-surface-400 maz:border-divider maz:dark:border-divider-400"
-    :class="[borderStyle, `--${color}`, SIZE_CLASS[size], props.class, { 'maz:w-full': block }]"
+    :class="[borderStyle, `--${color}`, `--${size}`, SIZE_CLASS[size], props.class, { '--block': block, 'maz:w-full': block }]"
     :style
     @focus.capture="isFocused = true"
     @blur.capture="isFocused = false"

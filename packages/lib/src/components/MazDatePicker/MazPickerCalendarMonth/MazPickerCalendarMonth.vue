@@ -53,7 +53,7 @@ const calendarDateWithOffset = computed({
 </script>
 
 <template>
-  <div class="maz-picker-calendar-month maz:w-full maz:overflow-hidden maz:py-2" :class="{ 'maz:px-2': !range }">
+  <div class="maz-picker-calendar-month maz:w-full maz:overflow-hidden maz:py-2" :class="{ '--has-padding': !range, 'maz:px-2': !range }">
     <MazPickerCalendarDays
       :locale="locale"
       :first-day-of-week="firstDayOfWeek"

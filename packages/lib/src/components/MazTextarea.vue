@@ -175,7 +175,7 @@ const borderStyle = computed(() => {
     return 'maz:border-success'
   if (props.warning)
     return 'maz:border-warning'
-  return 'maz:border-divider maz:dark:border-divider-400'
+  return '--default-border maz:border-divider maz:dark:border-divider-400'
 })
 
 let autofillCleanup: (() => void) | undefined

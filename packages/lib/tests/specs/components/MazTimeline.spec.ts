@@ -61,10 +61,10 @@ describe('given MazTimeline component', () => {
       expect(wrapper.classes()).toContain('--md')
     })
 
-    it('then it applies --rounded-base class by default', () => {
+    it('then it applies --rounded-md class by default', () => {
       const wrapper = mountTimeline()
 
-      expect(wrapper.classes()).toContain('--rounded-base')
+      expect(wrapper.classes()).toContain('--rounded-md')
     })
 
     it('then it applies --animated class by default', () => {
@@ -206,7 +206,6 @@ describe('given MazTimeline component', () => {
       'none',
       'sm',
       'md',
-      'base',
       'lg',
       'xl',
       '2xl',

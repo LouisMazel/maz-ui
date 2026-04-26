@@ -67,7 +67,7 @@ function selectMonth(date: Dayjs) {
         <MazXMark class="maz:text-lg" />
       </MazBtn>
     </div>
-    <div class="maz-picker-month-switcher__main maz:grid maz:flex-1 maz:gap-1 maz:overflow-y-auto maz:p-2 maz:flex-center" :class="double ? 'maz:grid-cols-3' : 'maz:grid-cols-2'">
+    <div class="maz-picker-month-switcher__main maz:grid maz:flex-1 maz:gap-1 maz:overflow-y-auto maz:p-2 maz:flex-center" :class="[double ? '--has-double' : '', double ? 'maz:grid-cols-3' : 'maz:grid-cols-2']">
       <MazBtn
         v-for="month in months"
         :key="month.label"

@@ -190,6 +190,9 @@ function onFocus(event: FocusEvent) {
       <span
         v-if="hint"
         class="m-radio__hint maz:text-sm" :class="{
+          '--error': error,
+          '--success': success,
+          '--warning': warning,
           'maz:text-destructive-600': error,
           'maz:text-success-600': success,
           'maz:text-warning-600': warning,

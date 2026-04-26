@@ -101,6 +101,7 @@ const customStyles = computed(() => {
     class="m-skeleton m-reset-css maz:relative maz:overflow-hidden maz:bg-linear-to-r maz:from-surface-800/40 maz:via-surface-700/30 maz:to-surface-800/40 maz:dark:from-surface-700/30 maz:dark:via-surface-600/20 maz:dark:to-surface-700/30"
     :class="[
       shape && `m-skeleton--${shape}`,
+      `m-skeleton--rounded-${roundedSize}`,
       shape === 'circle' ? 'maz:rounded-full' : ROUNDED_CLASS[roundedSize],
       { 'm-skeleton--animated': animated },
     ]"

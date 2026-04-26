@@ -296,7 +296,9 @@ defineExpose({
                 backdropContentClass,
                 JUSTIFY_CLASS[justify],
                 ALIGN_CLASS[align],
-                { 'maz:p-4': contentPadding },
+                `--justify-${justify}`,
+                `--align-${align}`,
+                { '--padding': contentPadding, 'maz:p-4': contentPadding },
               ]"
               role="button"
               tabindex="-1"

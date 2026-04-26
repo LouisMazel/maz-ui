@@ -157,7 +157,7 @@ const ROUNDED_CLASS = {
     :style="[{ fontSize: size }, style]"
     class="m-avatar m-reset-css maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top maz:flex-center maz:no-underline!"
     :class="[
-      { 'maz:cursor-pointer': isLink },
+      { '--has-link': isLink, 'maz:cursor-pointer': isLink },
       className,
     ]"
     :href
@@ -169,8 +169,12 @@ const ROUNDED_CLASS = {
       :tabindex="clickable ? 0 : -1"
       :class="[
         ROUNDED_CLASS[square ? 'none' : roundedSize],
+        `--rounded-${square ? 'none' : roundedSize}`,
         {
           '--clickable': clickable,
+          '--has-shadow': !noElevation,
+          '--bordered': bordered,
+          '--has-initial': hasInitial,
           'maz:shadow-sm': !noElevation,
           'maz:border maz:border-solid maz:border-divider': bordered,
           'maz:items-center': hasInitial,

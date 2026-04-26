@@ -224,6 +224,9 @@ onMounted(() => {
     ref="tabsBarRef"
     class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:gap-1 maz:overflow-x-auto maz:rounded maz:p-2 maz:align-top maz:bg-surface"
     :class="{
+      '--block': block,
+      '--elevation': elevation,
+      '--bordered': bordered,
       'maz:w-full': block,
       'maz:drop-shadow-md maz:shadow-elevation maz:dark:shadow-none': elevation,
       'maz:border maz:border-divider': bordered,

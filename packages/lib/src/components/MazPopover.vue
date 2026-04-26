@@ -701,6 +701,8 @@ defineExpose({
       attrs.class,
       {
         '--open': isOpen,
+        '--disabled': disabled,
+        '--block': block,
         'maz:cursor-not-allowed': disabled,
         'maz:w-full': block,
       },

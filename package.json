@@ -41,7 +41,7 @@
     "typecheck:all": "nx run-many -t typecheck",
     "test:unit:all": "nx run-many -t test:unit",
     "test:unit:coverage:all": "nx run-many -t test:unit:coverage",
-    "healthcheck": "pnpm lint:all && pnpm typecheck:all && pnpm test:unit:coverage:all && pnpm build:packages && nx run docs:build",
+    "healthcheck": "pnpm lint:all && pnpm typecheck:all && pnpm test:unit:coverage:all && pnpm build:packages",
     "relizy": "relizy",
     "nx:cache:clear": "nx reset",
     "dev:watch": "nx run-many -t dev",

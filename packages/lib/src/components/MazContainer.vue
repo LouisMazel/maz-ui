@@ -95,11 +95,14 @@ const ROUNDED_CLASS = {
     class="m-container m-reset-css maz:relative maz:inline-flex maz:flex-col"
     :class="[
       ROUNDED_CLASS[roundedSize],
+      roundedSize && `--rounded-${roundedSize}`,
       {
         '--elevation': elevation,
         '--padding': padding,
         '--bordered': bordered,
         '--transparent': transparent,
+        '--overflow-hidden': overflowHidden,
+        '--block': block,
         'maz:overflow-hidden': overflowHidden,
         'maz:w-full': block,
         'maz:bg-surface': !transparent,
