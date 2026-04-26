@@ -154,7 +154,17 @@ if (scrollable) {
           />
         </div>
       </slot>
-      <div id="dialogDesc" ref="dialogContent" class="m-dialog-content maz:flex-1 maz:px-6" :class="{ '--bottom-padding': !hasFooter, 'maz:pb-4': !hasFooter }">
+      <div
+        id="dialogDesc"
+        ref="dialogContent"
+        class="m-dialog-content maz:flex-1 maz:px-6"
+        :class="{
+          '--bottom-padding': !hasFooter,
+          'maz:pb-4': !hasFooter,
+          'maz:overflow-auto maz:border-t maz:border-divider maz:py-4': scrollable,
+          'maz:border-b': scrollable && hasFooter,
+        }"
+      >
         <!--
             @slot Default content
               @binding {Function} close close function
@@ -179,16 +189,6 @@ if (scrollable) {
   @variant tab-s {
     max-width: var(--max-width);
     min-width: var(--min-width);
-  }
-
-  &.--scrollable {
-    .m-dialog-content {
-      @apply maz:overflow-auto maz:border-t maz:border-divider maz:py-4;
-
-      &:not(.--bottom-padding) {
-        @apply maz:border-b;
-      }
-    }
   }
 }
 </style>

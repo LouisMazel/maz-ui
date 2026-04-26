@@ -393,7 +393,7 @@ onBeforeUnmount(() => {
     <button
       v-if="loadedOnce && hasMultipleInstances"
       type="button"
-      class="m-fullscreen-btn maz:absolute maz:z-15 maz:flex maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200 maz:inset-e-0 maz:top-1/2 maz:h-screen maz:-translate-y-1/2 maz:transform maz:items-center maz:justify-end --next"
+      class="m-fullscreen-btn maz:absolute maz:z-15 maz:flex maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200 maz:inset-e-0 maz:top-1/2 maz:h-screen maz:bg-transparent maz:-translate-y-1/2 maz:transform maz:items-center maz:justify-end --next"
       @click.stop="nextPreviousImage('next')"
     >
       <MazChevronLeft class="maz:rotate-180" />
@@ -401,13 +401,13 @@ onBeforeUnmount(() => {
     <button
       v-if="loadedOnce && hasMultipleInstances"
       type="button"
-      class="m-fullscreen-btn maz:absolute maz:z-15 maz:flex maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200 maz:left-0 maz:top-1/2 maz:h-screen maz:-translate-y-1/2 maz:transform maz:items-center maz:justify-start --previous"
+      class="m-fullscreen-btn maz:absolute maz:z-15 maz:flex maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200 maz:left-0 maz:top-1/2 maz:h-screen maz:-translate-y-1/2 maz:bg-transparent maz:transform maz:items-center maz:justify-start --previous"
       @click.stop="nextPreviousImage('previous')"
     >
       <MazChevronLeft />
     </button>
 
-    <button type="button" class="m-fullscreen-btn maz:absolute maz:z-15 maz:flex maz:h-20 maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200 maz:inset-e-0 maz:top-0 maz:items-start maz:justify-end --close" @click="close">
+    <button type="button" class="m-fullscreen-btn maz:absolute maz:z-15 maz:flex maz:h-20 maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200 maz:inset-e-0 maz:bg-transparent maz:top-0 maz:items-start maz:justify-end --close" @click="close">
       <MazXMark />
     </button>
 

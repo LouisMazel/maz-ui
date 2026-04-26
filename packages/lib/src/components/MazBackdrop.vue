@@ -298,7 +298,12 @@ defineExpose({
                 ALIGN_CLASS[align],
                 `--justify-${justify}`,
                 `--align-${align}`,
-                { '--padding': contentPadding, 'maz:p-4': contentPadding },
+                {
+                  '--padding': contentPadding,
+                  'maz:p-4': contentPadding,
+                  'maz:cursor-default': persistent,
+                  'maz:fixed maz:inset-0': variant === 'bottom-sheet' || variant === 'drawer',
+                },
               ]"
               role="button"
               tabindex="-1"
@@ -335,23 +340,8 @@ html.--backdrop-present.--has-scrollbar {
 .m-backdrop {
   transition-behavior: allow-discrete;
 
-  &.--persistent {
-    & .m-backdrop-content {
-      @apply maz:cursor-default;
-    }
-  }
-
-  &-content {
-    > * {
-      @apply maz:cursor-default;
-    }
-  }
-
-  &.--variant-bottom-sheet,
-  &.--variant-drawer {
-    .m-backdrop-content {
-      @apply maz:fixed maz:inset-0;
-    }
+  &-content > * {
+    @apply maz:cursor-default;
   }
 
   /*

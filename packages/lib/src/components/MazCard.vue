@@ -187,7 +187,7 @@ function toggleCollapse() {
       >
         <MazChevronDown
           :class="{ '--is-open': collapseOpenModel }"
-          class="m-card__collapse-icon maz:text-xl"
+          class="m-card__collapse-icon maz:text-xl maz:rotate-0 maz:transition-transform maz:duration-200"
         />
       </MazBtn>
     </component>
@@ -259,7 +259,7 @@ function toggleCollapse() {
       -->
       <slot name="footer" />
     </div>
-    <div v-if="hasSlotContent(slots.actions) && galleryOptions.images" class="m-card__actions maz:flex maz:p-2">
+    <div v-if="hasSlotContent(slots.actions) && galleryOptions.images" class="m-card__actions maz:flex maz:p-2 maz:absolute maz:left-0 maz:top-0 maz:z-2">
       <!--
         @slot actions - The actions of the image gallery (only if gallery is displayed)
       -->
@@ -272,12 +272,8 @@ function toggleCollapse() {
 @reference "../tailwindcss/tailwind.css";
 
 .m-card {
-  &__collapse-icon {
-    @apply maz:rotate-0 maz:transition-transform maz:duration-200;
-
-    &.--is-open {
-      transform: rotate(180deg);
-    }
+  &__collapse-icon.--is-open {
+    transform: rotate(180deg);
   }
 
   &--linked {
@@ -297,12 +293,8 @@ function toggleCollapse() {
     font-size: inherit;
   }
 
-  &__actions {
-    @apply maz:absolute maz:left-0 maz:top-0 maz:z-2;
-
-    & > *:not(:last-child) {
-      @apply maz:me-2;
-    }
+  &__actions > *:not(:last-child) {
+    @apply maz:me-2;
   }
 }
 </style>
