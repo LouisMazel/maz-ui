@@ -103,35 +103,35 @@ describe('MazIcon extended branch coverage', () => {
       const wrapper = shallowMount(MazIcon, {
         props: { name: 'test', size: 'xs' },
       })
-      expect(wrapper.vm.svgClasses).toBe('m-icon--xs')
+      expect(wrapper.vm.svgClasses).toContain('m-icon--xs')
     })
 
     it('returns m-icon--sm for sm size', () => {
       const wrapper = shallowMount(MazIcon, {
         props: { name: 'test', size: 'sm' },
       })
-      expect(wrapper.vm.svgClasses).toBe('m-icon--sm')
+      expect(wrapper.vm.svgClasses).toContain('m-icon--sm')
     })
 
     it('returns m-icon--md for md size', () => {
       const wrapper = shallowMount(MazIcon, {
         props: { name: 'test', size: 'md' },
       })
-      expect(wrapper.vm.svgClasses).toBe('m-icon--md')
+      expect(wrapper.vm.svgClasses).toContain('m-icon--md')
     })
 
     it('returns m-icon--lg for lg size', () => {
       const wrapper = shallowMount(MazIcon, {
         props: { name: 'test', size: 'lg' },
       })
-      expect(wrapper.vm.svgClasses).toBe('m-icon--lg')
+      expect(wrapper.vm.svgClasses).toContain('m-icon--lg')
     })
 
     it('returns m-icon--xl for xl size', () => {
       const wrapper = shallowMount(MazIcon, {
         props: { name: 'test', size: 'xl' },
       })
-      expect(wrapper.vm.svgClasses).toBe('m-icon--xl')
+      expect(wrapper.vm.svgClasses).toContain('m-icon--xl')
     })
 
     it('returns undefined for custom size', () => {

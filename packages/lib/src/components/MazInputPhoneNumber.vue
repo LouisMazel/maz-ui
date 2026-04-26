@@ -588,8 +588,13 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
 <template>
   <div
     :id="instanceId"
-    class="m-input-phone-number m-reset-css"
-    :class="[props.class, { '--block': block }, orientation ? `--${orientation}` : undefined]"
+    class="m-input-phone-number m-reset-css maz:relative maz:inline-flex maz:items-center maz:align-top"
+    :class="[
+      props.class,
+      { 'maz:w-full': block },
+      orientation ? `--${orientation}` : undefined,
+      orientation === 'col' ? 'maz:flex-col' : orientation === 'row' ? 'maz:flex-row' : 'maz:flex-col maz:mob-l:flex-row',
+    ]"
     :style
   >
     <MazSelectCountry
@@ -648,7 +653,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
         />
       </template>
       <template #country-list-code="{ option }">
-        <span class="m-input-phone-number__country-list-code">
+        <span class="m-input-phone-number__country-list-code maz:text-muted maz:min-w-8 maz:text-center">
           +{{ option.dialCode }}
         </span>
       </template>
@@ -683,56 +688,32 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
 @reference "../tailwindcss/tailwind.css";
 
 .m-input-phone-number {
-  @apply maz:relative maz:inline-flex maz:items-center maz:align-top;
+  &.--col .m-input-phone-number__country-select {
+    @apply maz:min-w-full;
 
-  &.--block {
-    @apply maz:w-full;
-  }
-
-  &.--col {
-    @apply maz:flex-col;
-
-    .m-input-phone-number__country-select {
+    &:deep(.m-select-country__select) {
       @apply maz:min-w-full;
 
-      &:deep(.m-select-country__select) {
-        @apply maz:min-w-full;
-
-        .m-input-wrapper {
-          @apply maz:rounded-b-none maz:rounded-tr;
-        }
+      .m-input-wrapper {
+        @apply maz:rounded-b-none maz:rounded-tr;
       }
     }
   }
 
-  &.--row {
-    @apply maz:flex-row;
-
-    .m-input-phone-number__country-select {
-      &:deep(.m-select-country__select .m-input-wrapper) {
-        @apply maz:rounded-r-none maz:rounded-b-none;
-      }
-    }
+  &.--row .m-input-phone-number__country-select:deep(.m-select-country__select .m-input-wrapper) {
+    @apply maz:rounded-r-none maz:rounded-b-none;
   }
 
-  &.--responsive {
-    @apply maz:flex-col maz:mob-l:flex-row;
+  &.--responsive .m-input-phone-number__country-select {
+    @apply maz:min-w-full maz:mob-l:min-w-[inherit];
 
-    .m-input-phone-number__country-select {
+    :deep(.m-select-country__select) {
       @apply maz:min-w-full maz:mob-l:min-w-[inherit];
-
-      :deep(.m-select-country__select) {
-        @apply maz:min-w-full maz:mob-l:min-w-[inherit];
-      }
-
-      &:deep(.m-input-wrapper) {
-        @apply maz:rounded-b-none maz:mob-l:rounded-b-md maz:mob-l:rounded-r-none;
-      }
     }
-  }
 
-  &__country-list-code {
-    @apply maz:text-muted maz:min-w-8 maz:text-center;
+    &:deep(.m-input-wrapper) {
+      @apply maz:rounded-b-none maz:mob-l:rounded-b-md maz:mob-l:rounded-r-none;
+    }
   }
 }
 </style>

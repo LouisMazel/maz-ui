@@ -9,7 +9,7 @@
     "lint": "pnpm lint:js && pnpm lint:style",
     "lint:js": "cross-env NODE_ENV=production eslint --fix .",
     "lint:style": "stylelint --fix \"**/*.{vue,css,scss,postcss,pcss}\"",
-    "type-check": "nuxi typecheck"
+    "types:check": "nuxi typecheck"
   },
   "dependencies": {
     "@maz-ui/nuxt": "workspace:*"

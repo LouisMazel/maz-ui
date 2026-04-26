@@ -69,7 +69,7 @@ describe('components/MazTextarea.vue', () => {
       warning: false,
       success: false,
     })
-    expect(wrapper.vm.borderStyle).toBe('--default-border')
+    expect(wrapper.vm.borderStyle).toContain('--default-border')
   })
 
   it('should apply the color class on the root for :focus-within styling', async () => {

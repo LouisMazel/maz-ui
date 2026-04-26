@@ -49,7 +49,7 @@ function nextMonth() {
 </script>
 
 <template>
-  <div class="m-date-picker-calendar-switcher">
+  <div class="m-date-picker-calendar-switcher maz:flex maz:space-x-2 maz:border-b maz:border-divider maz:px-2 maz:py-1">
     <MazBtn size="xs" color="transparent" type="button" @click="previousMonth">
       <MazChevronLeft class="maz:text-lg" />
     </MazBtn>
@@ -57,7 +57,7 @@ function nextMonth() {
       size="sm"
       color="transparent"
       type="button"
-      class="m-date-picker-calendar-switcher__date"
+      class="m-date-picker-calendar-switcher__date maz:flex-1 maz:truncate maz:text-center"
       @click="$emit('open-month-switcher', $event)"
     >
       {{ monthLabel }}
@@ -66,7 +66,7 @@ function nextMonth() {
       size="sm"
       color="transparent"
       type="button"
-      class="m-date-picker-calendar-switcher__date"
+      class="m-date-picker-calendar-switcher__date maz:flex-1 maz:truncate maz:text-center"
       @click="$emit('open-year-switcher', $event)"
     >
       {{ yearLabel }}
@@ -76,15 +76,3 @@ function nextMonth() {
     </MazBtn>
   </div>
 </template>
-
-<style scoped>
-@reference "../../tailwindcss/tailwind.css";
-
-.m-date-picker-calendar-switcher {
-  @apply maz:flex maz:space-x-2 maz:border-b maz:border-divider maz:px-2 maz:py-1;
-
-  &__date {
-    @apply maz:flex-1 maz:truncate maz:text-center;
-  }
-}
-</style>

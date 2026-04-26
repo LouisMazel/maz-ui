@@ -90,8 +90,16 @@ const sources = computed(() => {
       onLoaded: (el) => emits('loaded', el),
       onError: (el) => emits('error', el),
     }"
-    class="m-lazy-img-component m-reset-css"
-    :class="[{ '--use-loader': !hideLoader, '--height-full': imageHeightFull, '--block': block }, props.class]"
+    class="m-lazy-img-component m-reset-css maz:relative maz:inline-flex maz:align-top maz:flex-center"
+    :class="[
+      {
+        '--use-loader': !hideLoader,
+        '--height-full': imageHeightFull,
+        '--block': block,
+        'maz:w-full': block,
+      },
+      props.class,
+    ]"
     :style
   >
     <source
@@ -107,7 +115,7 @@ const sources = computed(() => {
       :alt
       :class="imgClass"
     >
-    <div v-if="!hideLoader" class="m-lazy-img-component-loader">
+    <div v-if="!hideLoader" class="m-lazy-img-component-loader maz:absolute maz:inset-0 maz:hidden maz:flex-center">
       <MazSpinner size="2em" />
     </div>
     <slot />
@@ -118,18 +126,8 @@ const sources = computed(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-lazy-img-component {
-  @apply maz:relative maz:inline-flex maz:align-top maz:flex-center;
-
-  &.--block {
+  &.--block img {
     @apply maz:w-full;
-
-    img {
-      @apply maz:w-full;
-    }
-  }
-
-  &-loader {
-    @apply maz:absolute maz:inset-0 maz:hidden maz:flex-center;
   }
 
   &.--height-full img {

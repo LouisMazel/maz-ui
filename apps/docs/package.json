@@ -17,7 +17,7 @@
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
     "ftp-deploy": "node ./ftp-deploy.mjs",
-    "typecheck": "vue-tsc --noEmit --skipLibCheck"
+    "types:check": "vue-tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
     "@maz-ui/eslint-config": "workspace:*",

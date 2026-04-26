@@ -274,13 +274,16 @@ watch(
 </script>
 
 <template>
-  <div ref="MazDatePickerGrid" class="maz-picker-calendar-grid">
+  <div
+    ref="MazDatePickerGrid"
+    class="maz-picker-calendar-grid maz:relative maz:transition-all maz:duration-300 maz:ease-in-out"
+  >
     <TransitionGroup :name="transitionName">
       <div
         v-for="(dateArray, dateIndex) in [calendarDateArray]"
         :key="`${dateArray[dateIndex]}`"
-        class="maz-picker-calendar-grid__container"
-        :class="{ '--is-range': range }"
+        class="maz-picker-calendar-grid__container maz:relative maz:grid maz:grid-cols-7 maz:items-start maz:gap-y-1"
+        :class="{ '--is-range': range, 'maz:gap-x-1': !range }"
       >
         <div v-for="first in emptyDaysCount" :key="first" />
         <MazBtn
@@ -297,6 +300,7 @@ watch(
               || isDisabledWeekly(date)
               || isDisabledDate(date)
           "
+          class="maz:h-8 maz:w-8 maz:cursor-pointer maz:rounded-full"
           :class="{
             '--is-first': isFirstDay(date) && isSelectedOrBetween(date) === DaySelect.SELECTED,
             '--is-last': isLastDay(date) && isSelectedOrBetween(date) === DaySelect.SELECTED,
@@ -313,7 +317,7 @@ watch(
           @focus="range ? setHoverredDay(date) : undefined"
           @blur="range ? setHoverredDay() : undefined"
         >
-          <span>
+          <span class="maz:text-sm">
             {{ label }}
           </span>
         </MazBtn>
@@ -326,17 +330,7 @@ watch(
 @reference "../../../tailwindcss/tailwind.css";
 
 .maz-picker-calendar-grid {
-  @apply maz:relative;
-
-  transition: all 300ms ease-in-out;
-
   &__container {
-    @apply maz:relative maz:grid maz:grid-cols-7 maz:items-start maz:gap-y-1;
-
-    &:not(.--is-range) {
-      @apply maz:gap-x-1;
-    }
-
     &.--is-range {
       button {
         @apply maz:w-full;
@@ -344,8 +338,6 @@ watch(
     }
 
     & button {
-      @apply maz:h-8 maz:w-8 maz:cursor-pointer maz:rounded-full;
-
       &:hover:not(.--is-selected, .--is-between, .--is-between-hoverred) {
         background-color: v-bind('hoverColor');
       }
@@ -373,10 +365,6 @@ watch(
         &.--transparent {
           @apply maz:bg-gray-400!;
         }
-      }
-
-      & span {
-        @apply maz:text-sm;
       }
 
       &:disabled {

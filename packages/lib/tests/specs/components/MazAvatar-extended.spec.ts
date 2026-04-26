@@ -242,9 +242,9 @@ describe('MazAvatar extended branch coverage', () => {
   })
 
   describe('roundedSize prop', () => {
-    it('applies --rounded-base by default', () => {
+    it('applies --rounded-md by default', () => {
       const wrapper = mount(MazAvatar)
-      expect(wrapper.find('.m-avatar__wrapper').classes()).toContain('--rounded-base')
+      expect(wrapper.find('.m-avatar__wrapper').classes()).toContain('--rounded-md')
     })
 
     it('applies --rounded-none when square is true', () => {

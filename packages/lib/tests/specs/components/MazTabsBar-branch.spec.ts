@@ -463,7 +463,9 @@ describe('MazTabsBar branch coverage', () => {
 
       // MazBadge is a defineAsyncComponent — wait for its module to resolve
       // so the default slot (showing badge.content) actually renders.
+      await vi.dynamicImportSettled()
       await flushPromises()
+      await nextTick()
 
       expect(wrapper.findAll('.m-tabs-bar__item').length).toBe(2)
       expect(wrapper.html()).toContain('5')

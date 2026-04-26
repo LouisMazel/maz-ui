@@ -53,7 +53,7 @@ const calendarDate = computed({
 </script>
 
 <template>
-  <div class="maz-picker-calendar flex">
+  <div class="maz-picker-calendar maz:relative maz:flex maz:w-full">
     <MazPickerShortcuts
       v-if="hasShortcuts && shortcuts"
       v-model="currentValue"
@@ -64,7 +64,7 @@ const calendarDate = computed({
       :disabled="disabled"
     />
 
-    <div class="maz-picker-calendar__main" :class="{ '--has-double': double }">
+    <div class="maz-picker-calendar__main maz:flex maz:flex-1 maz:flex-col" :class="{ '--has-double': double }">
       <MazPickerCalendarSwitcher
         v-model:calendar-date="calendarDate"
         :locale="locale"
@@ -91,7 +91,7 @@ const calendarDate = computed({
           @close="yearSwitcherOpen = false"
         />
       </Transition>
-      <div class="maz-picker-calendar__months" :class="{ '--is-range': range }">
+      <div class="maz-picker-calendar__months maz:flex maz:w-full maz:flex-1" :class="{ '--is-range maz:px-2': range }">
         <MazPickerCalendarMonth
           v-for="month in months"
           :key="month"
@@ -120,11 +120,7 @@ const calendarDate = computed({
 @reference "../../tailwindcss/tailwind.css";
 
 .maz-picker-calendar {
-  @apply maz:relative maz:flex maz:w-full;
-
   &__main {
-    @apply maz:flex maz:flex-1 maz:flex-col;
-
     width: 16rem;
 
     &.--has-double {
@@ -133,14 +129,6 @@ const calendarDate = computed({
       & .maz-picker-calendar__months > :first-child {
         @apply maz:border-e maz:border-divider;
       }
-    }
-  }
-
-  &__months {
-    @apply maz:flex maz:w-full maz:flex-1;
-
-    &.--is-range {
-      @apply maz:px-2;
     }
   }
 }

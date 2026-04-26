@@ -696,13 +696,15 @@ defineExpose({
 <template>
   <div
     v-if="hasSlotContent($slots.trigger)"
-    class="m-popover m-reset-css"
+    class="m-popover m-reset-css maz:inline-block"
     :class="[
       attrs.class,
       {
         '--open': isOpen,
         '--disabled': disabled,
         '--block': block,
+        'maz:cursor-not-allowed': disabled,
+        'maz:w-full': block,
       },
     ]"
     :style="rootStyles"
@@ -711,7 +713,7 @@ defineExpose({
       :id="triggerId"
       ref="trigger"
       role="button"
-      class="m-popover-trigger"
+      class="m-popover-trigger maz:inline-block maz:size-full"
       :aria-expanded="role === 'dialog' || role === 'menu' ? isOpen : undefined"
       :aria-haspopup="role === 'dialog' ? 'dialog' : undefined"
       :aria-describedby="role === 'tooltip' && isOpen ? panelId : ariaDescribedby"
@@ -744,7 +746,7 @@ defineExpose({
         :aria-describedby="role === 'dialog' ? ariaDescribedby : undefined"
         :aria-modal="role === 'dialog' ? 'true' : undefined"
         :tabindex="role === 'dialog' ? '-1' : undefined"
-        class="m-popover-panel"
+        class="m-popover-panel maz:fixed maz:outline-hidden maz:z-default-backdrop maz:rounded maz:drop-shadow-md maz:shadow-elevation"
         :aria-live="announceChanges ? 'polite' : undefined"
         :class="panelClasses"
         :style="[
@@ -775,25 +777,7 @@ defineExpose({
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
 
-.m-popover {
-  @apply maz:inline-block;
-
-  &.--disabled {
-    @apply maz:cursor-not-allowed;
-  }
-
-  .m-popover-trigger {
-    @apply maz:inline-block maz:size-full;
-  }
-
-  &.--block {
-    @apply maz:w-full;
-  }
-}
-
 .m-popover-panel {
-  @apply maz:fixed maz:outline-hidden maz:z-default-backdrop maz:rounded maz:drop-shadow-md maz:shadow-elevation;
-
   will-change: transform, opacity;
   contain: layout style paint;
   backface-visibility: hidden;

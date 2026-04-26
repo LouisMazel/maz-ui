@@ -111,12 +111,11 @@ defineExpose({
     :name="name"
     :inputmode="inputmode"
     :autocomplete="autocomplete"
-    class="m-phone-input"
+    class="m-phone-input maz:min-w-52 maz:flex-1"
     :class="[
       {
         '--border-radius': hasRadius,
-        '--error': error || !results.isValid,
-        '--focused': inputFocused,
+        'maz:z-1': (error || !results.isValid) || inputFocused,
       },
     ]"
     @focus="inputFocused = true"
@@ -126,15 +125,6 @@ defineExpose({
 
 <style scoped>
 @reference "../../tailwindcss/tailwind.css";
-
-.m-phone-input {
-  @apply maz:min-w-52 maz:flex-1;
-
-  &.--error,
-  &.--focused {
-    @apply maz:z-1;
-  }
-}
 
 /** RESPONSIVE */
 .m-input-phone-number {

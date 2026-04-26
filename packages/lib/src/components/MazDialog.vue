@@ -119,11 +119,11 @@ if (scrollable) {
     @update:model-value="$emit('update:model-value', $event)"
   >
     <div
-      class="m-dialog"
+      class="m-dialog maz:flex maz:origin-center maz:flex-col maz:min-w-full maz:rounded maz:bg-surface maz:text-foreground maz:dark:border maz:dark:border-divider maz:tab-s:my-8 maz:max-w-full maz:touch-none"
       role="dialog"
       aria-modal="true"
       :style="[{ '--max-width': maxWidth, '--min-width': minWidth }]"
-      :class="{ '--scrollable': scrollable }"
+      :class="{ '--scrollable': scrollable, 'maz:max-h-[95vh] maz:my-0': scrollable }"
       v-bind="wrapperAttrs"
     >
       <!--
@@ -131,11 +131,11 @@ if (scrollable) {
           @binding {Function} close close function
       -->
       <slot name="header" :close>
-        <div class="m-dialog-header" :class="{ '--has-title': hasSlotContent(slots.title) || title }">
+        <div class="m-dialog-header maz:flex maz:items-baseline maz:ps-6 maz:pe-2 maz:pt-2 maz:pb-4" :class="[hasSlotContent(slots.title) || title ? '--has-title' : '', hasSlotContent(slots.title) || title ? 'maz:justify-between' : 'maz:justify-end']">
           <h2
             v-if="hasSlotContent(slots.title) || title"
             id="dialogTitle"
-            class="m-dialog-title"
+            class="m-dialog-title maz:my-0 maz:text-xl maz:font-semibold"
           >
             <!--
                 @slot Title slot in the header
@@ -154,14 +154,24 @@ if (scrollable) {
           />
         </div>
       </slot>
-      <div id="dialogDesc" ref="dialogContent" class="m-dialog-content" :class="{ '--bottom-padding': !hasFooter }">
+      <div
+        id="dialogDesc"
+        ref="dialogContent"
+        class="m-dialog-content maz:flex-1 maz:px-6"
+        :class="{
+          '--bottom-padding': !hasFooter,
+          'maz:pb-4': !hasFooter,
+          'maz:overflow-auto maz:border-t maz:border-divider maz:py-4': scrollable,
+          'maz:border-b': scrollable && hasFooter,
+        }"
+      >
         <!--
             @slot Default content
               @binding {Function} close close function
           -->
         <slot :close />
       </div>
-      <div v-if="hasFooter" class="m-dialog-footer">
+      <div v-if="hasFooter" class="m-dialog-footer maz:flex maz:items-center maz:justify-end maz:px-6 maz:py-4">
         <!--
             @slot Footer slot
               @binding {Function} close close function
@@ -176,51 +186,9 @@ if (scrollable) {
 @reference "../tailwindcss/tailwind.css";
 
 .m-dialog {
-  @apply maz:flex maz:origin-center maz:flex-col maz:min-w-full maz:rounded maz:bg-surface maz:text-foreground maz:dark:border maz:dark:border-divider maz:tab-s:my-8 maz:max-w-full maz:touch-none;
-
   @variant tab-s {
     max-width: var(--max-width);
     min-width: var(--min-width);
-  }
-
-  &-header {
-    @apply maz:flex maz:items-baseline maz:justify-end maz:ps-6 maz:pe-2 maz:pt-2 maz:pb-4;
-
-    &.--has-title {
-      @apply maz:justify-between;
-    }
-  }
-
-  &-title {
-    @apply maz:my-0 maz:text-xl maz:font-semibold;
-  }
-
-  &-footer {
-    @apply maz:flex maz:items-center maz:justify-end maz:px-6 maz:py-4;
-  }
-
-  &-content {
-    @apply maz:flex-1 maz:px-6;
-
-    &-icon {
-      flex: 0 0 auto;
-    }
-
-    &.--bottom-padding {
-      @apply maz:pb-4;
-    }
-  }
-
-  &.--scrollable {
-    @apply maz:max-h-[95vh] maz:my-0;
-
-    .m-dialog-content {
-      @apply maz:overflow-auto maz:border-t maz:border-divider maz:py-4;
-
-      &:not(.--bottom-padding) {
-        @apply maz:border-b;
-      }
-    }
   }
 }
 </style>

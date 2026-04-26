@@ -140,17 +140,24 @@ function handleImageError(event: Event) {
 }
 
 const hasInitial = computed(() => !src && caption)
+
+const ROUNDED_CLASS = {
+  none: 'maz:rounded-none',
+  sm: 'maz:rounded-xs',
+  md: 'maz:rounded-md',
+  lg: 'maz:rounded-lg',
+  xl: 'maz:rounded-xl',
+  full: 'maz:rounded-full',
+} as const
 </script>
 
 <template>
   <component
     :is="componentType"
     :style="[{ fontSize: size }, style]"
-    class="m-avatar m-reset-css"
+    class="m-avatar m-reset-css maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top maz:flex-center maz:no-underline!"
     :class="[
-      {
-        '--has-link': isLink,
-      },
+      { '--has-link': isLink, 'maz:cursor-pointer': isLink },
       className,
     ]"
     :href
@@ -158,16 +165,20 @@ const hasInitial = computed(() => !src && caption)
     :target="isLink ? target : undefined"
   >
     <div
-      class="m-avatar__wrapper"
+      class="m-avatar__wrapper maz:relative maz:flex maz:h-[3em] maz:w-[3em] maz:flex-none maz:justify-center maz:overflow-hidden"
       :tabindex="clickable ? 0 : -1"
       :class="[
+        ROUNDED_CLASS[square ? 'none' : roundedSize],
+        `--rounded-${square ? 'none' : roundedSize}`,
         {
+          '--clickable': clickable,
           '--has-shadow': !noElevation,
           '--bordered': bordered,
-          '--clickable': clickable,
           '--has-initial': hasInitial,
+          'maz:shadow-sm': !noElevation,
+          'maz:border maz:border-solid maz:border-divider': bordered,
+          'maz:items-center': hasInitial,
         },
-        `--rounded-${square ? 'none' : roundedSize}`,
       ]"
       :style="hasInitial ? {
         backgroundColor: `var(--maz-${color})`,
@@ -200,14 +211,15 @@ const hasInitial = computed(() => !src && caption)
         >
       </template>
       <slot v-if="caption && !src" name="round-text">
-        <span class="m-avatar__initial"> {{ getInitials(caption) }} </span>
+        <span class="m-avatar__initial maz:text-[1.5em] maz:capitalize"> {{ getInitials(caption) }} </span>
       </slot>
 
       <button
         v-if="clickable"
         type="button"
         tabindex="-1"
-        class="m-avatar__button"
+        class="m-avatar__button maz:absolute maz:inset-0 maz:flex maz:w-full maz:cursor-pointer maz:border-none maz:bg-transparent maz:opacity-0 maz:transition-all maz:duration-200 maz:flex-center"
+        :class="ROUNDED_CLASS[square ? 'none' : roundedSize]"
         :style="{
           backgroundColor: src
             ? `color-mix(in srgb, var(--maz-${buttonColor}) 60%, transparent)`
@@ -216,12 +228,12 @@ const hasInitial = computed(() => !src && caption)
         @click="$emit('click', $event)"
       >
         <slot v-if="!hideClickableIcon" name="icon">
-          <MazPencil class="m-avatar__button__icon" />
+          <MazPencil class="m-avatar__button__icon maz:text-white" />
         </slot>
       </button>
     </div>
     <slot name="caption">
-      <p v-if="showCaption && caption" class="m-avatar__caption">
+      <p v-if="showCaption && caption" class="m-avatar__caption maz:w-full maz:truncate maz:text-center maz:font-medium maz:capitalize">
         {{ caption }}
       </p>
     </slot>
@@ -231,145 +243,24 @@ const hasInitial = computed(() => !src && caption)
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
 
-.m-avatar {
-  @apply maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top maz:flex-center;
-  @apply maz:no-underline!;
-
-  &__caption {
-    @apply maz:w-full maz:truncate maz:text-center maz:font-medium maz:capitalize;
-  }
-
-  &__initial {
-    @apply maz:text-[1.5em] maz:capitalize;
-  }
-
-  &__wrapper {
-    @apply maz:relative maz:flex maz:h-[3em] maz:w-[3em] maz:flex-none maz:justify-center maz:overflow-hidden;
-
-    &:not(.--rounded-none) {
-      @apply maz:rounded;
-
-      &.--rounded {
-        @apply maz:rounded-full;
-
-        &-sm {
-          @apply maz:rounded-xs;
-        }
-
-        &-md {
-          @apply maz:rounded-md;
-        }
-
-        &-base {
-          @apply maz:rounded;
-        }
-
-        &-lg {
-          @apply maz:rounded-lg;
-        }
-
-        &-xl {
-          @apply maz:rounded-xl;
-        }
-
-        &-full {
-          @apply maz:rounded-full;
-        }
-      }
+.m-avatar__wrapper {
+  &.--clickable {
+    & .m-avatar__button {
+      transform: scale(0);
     }
 
-    &.--clickable {
+    &:hover,
+    &:focus {
+      & .m-avatar__picture {
+        filter: blur(1.5px);
+      }
+
       & .m-avatar__button {
-        @apply maz:absolute maz:inset-0 maz:flex maz:w-full
-            maz:cursor-pointer maz:border-none maz:bg-transparent
-            maz:opacity-0 maz:transition-all maz:duration-200 maz:flex-center;
+        @apply maz:opacity-100;
 
-        transform: scale(0);
-
-        &__icon {
-          @apply maz:text-white;
-        }
-      }
-
-      &:hover,
-      &:focus {
-        & .m-avatar__picture {
-          filter: blur(1.5px);
-        }
-
-        & .m-avatar__button {
-          @apply maz:opacity-100;
-
-          transform: scale(1.05);
-        }
+        transform: scale(1.05);
       }
     }
-
-    &.--bordered {
-      @apply maz:border maz:border-solid maz:border-divider;
-    }
-
-    &.--rounded {
-      &-sm {
-        @apply maz:rounded-xs;
-
-        .m-avatar__button {
-          @apply maz:rounded-xs;
-        }
-      }
-
-      &-md {
-        @apply maz:rounded-md;
-
-        .m-avatar__button {
-          @apply maz:rounded-md;
-        }
-      }
-
-      &-lg {
-        @apply maz:rounded-lg;
-
-        .m-avatar__button {
-          @apply maz:rounded-lg;
-        }
-      }
-
-      &-base {
-        @apply maz:rounded;
-
-        .m-avatar__button {
-          @apply maz:rounded;
-        }
-      }
-
-      &-xl {
-        @apply maz:rounded-xl;
-
-        .m-avatar__button {
-          @apply maz:rounded-xl;
-        }
-      }
-
-      &-full {
-        @apply maz:rounded-full;
-
-        .m-avatar__button {
-          @apply maz:rounded-full;
-        }
-      }
-    }
-
-    &.--has-shadow {
-      @apply maz:shadow-sm;
-    }
-
-    &.--has-initial {
-      @apply maz:items-center;
-    }
-  }
-
-  &.--has-link {
-    @apply maz:cursor-pointer;
   }
 }
 </style>

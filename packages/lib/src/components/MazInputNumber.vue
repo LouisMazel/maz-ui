@@ -234,14 +234,14 @@ const stateColor = computed(() => {
 
 <template>
   <div
-    class="m-input-number m-reset-css"
-    :class="[`m-input-number--${size}`, className, { '--block': block }]"
+    class="m-input-number m-reset-css maz:inline-flex maz:flex-col maz:gap-2"
+    :class="[`m-input-number--${size}`, className, { '--block': block, 'maz:w-full': block }]"
     :style="style"
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label v-if="topLabel" :for="instanceId" class="m-input-number__top-label" :class="stateColor">{{ topLabel }}</label>
 
-    <div class="m-input-number__wrapper">
+    <div class="m-input-number__wrapper maz:flex maz:items-center maz:align-top">
       <MazBtn
         v-if="!hideButtons"
         color="transparent"
@@ -250,7 +250,7 @@ const stateColor = computed(() => {
         :disabled="decrementDisabled || disabled"
         @click="decrement"
       >
-        <MazMinus class="m-input-number__button__icon" />
+        <MazMinus class="m-input-number__button__icon maz:text-base" />
       </MazBtn>
       <MazInput
         v-bind="{ ...$attrs, ...inputProps }"
@@ -286,7 +286,7 @@ const stateColor = computed(() => {
         :disabled="incrementDisabled || disabled"
         @click="increment"
       >
-        <MazPlus class="m-input-number__button__icon" />
+        <MazPlus class="m-input-number__button__icon maz:text-base" />
       </MazBtn>
     </div>
   </div>
@@ -296,16 +296,6 @@ const stateColor = computed(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-input-number {
-  @apply maz:inline-flex maz:flex-col maz:gap-2;
-
-  &__wrapper {
-    @apply maz:flex maz:items-center maz:align-top;
-  }
-
-  &.--block {
-    @apply maz:w-full;
-  }
-
   &__button {
     &.m-btn {
       &::before {
@@ -329,10 +319,6 @@ const stateColor = computed(() => {
 
         margin-left: calc(-1 * 2px);
       }
-    }
-
-    &__icon {
-      @apply maz:text-base;
     }
   }
 

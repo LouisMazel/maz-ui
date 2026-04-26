@@ -79,23 +79,41 @@ const {
 } = defineProps<MazContainerProps>()
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
+
+const ROUNDED_CLASS = {
+  none: '',
+  sm: 'maz:rounded-xs',
+  md: 'maz:rounded-md',
+  lg: 'maz:rounded-lg',
+  xl: 'maz:rounded-xl',
+  full: 'maz:rounded-full',
+} as const
 </script>
 
 <template>
   <div
-    class="m-container m-reset-css"
-    :class="[{
-      '--elevation': elevation,
-      '--padding': padding,
-      '--bordered': bordered,
-      '--transparent': transparent,
-      '--overflow-hidden': overflowHidden,
-      '--block': block,
-    }, roundedSize && `--rounded-${roundedSize}`]"
+    class="m-container m-reset-css maz:relative maz:inline-flex maz:flex-col"
+    :class="[
+      ROUNDED_CLASS[roundedSize],
+      roundedSize && `--rounded-${roundedSize}`,
+      {
+        '--elevation': elevation,
+        '--padding': padding,
+        '--bordered': bordered,
+        '--transparent': transparent,
+        '--overflow-hidden': overflowHidden,
+        '--block': block,
+        'maz:overflow-hidden': overflowHidden,
+        'maz:w-full': block,
+        'maz:bg-surface': !transparent,
+        'maz:shadow-elevation maz:drop-shadow-md': elevation,
+        'maz:border maz:border-divider': bordered,
+      },
+    ]"
   >
     <!-- @slot Replace the header -->
     <slot name="header">
-      <div v-if="title || hasSlotContent($slots.title)" class="m-container__header">
+      <div v-if="title || hasSlotContent($slots.title)" class="m-container__header maz:w-full maz:flex maz:items-center maz:justify-start maz:gap-2" :class="{ 'maz:px-4 maz:py-3': padding, 'maz:border-b maz:border-divider': bordered }">
         <!-- @slot icon left -->
         <slot name="icon-left">
           <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" :size="iconSize" />
@@ -113,87 +131,9 @@ const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
       </div>
     </slot>
 
-    <div class="m-container__content">
+    <div class="m-container__content maz:w-full" :class="{ 'maz:px-4 maz:py-3': padding }">
       <!-- @slot content of the container -->
       <slot />
     </div>
   </div>
 </template>
-
-<style scoped>
-@reference "../tailwindcss/tailwind.css";
-
-.m-container {
-  @apply maz:relative maz:inline-flex maz:flex-col;
-
-  &.--overflow-hidden {
-    @apply maz:overflow-hidden;
-  }
-
-  &.--block {
-    @apply maz:w-full;
-  }
-
-  &:not(.--transparent) {
-    @apply maz:bg-surface;
-  }
-
-  &__header {
-    @apply maz:w-full maz:flex maz:items-center maz:justify-start maz:gap-2;
-  }
-
-  &__content {
-    @apply maz:w-full;
-  }
-
-  &.--padding {
-    & .m-container__content {
-      @apply maz:px-4 maz:py-3;
-    }
-
-    & .m-container__header {
-      @apply maz:px-4 maz:py-3;
-    }
-  }
-
-  &.--elevation {
-    @apply maz:shadow-elevation maz:drop-shadow-md;
-  }
-
-  &.--bordered {
-    @apply maz:border maz:border-divider;
-
-    & .m-container__header {
-      @apply maz:border-b maz:border-divider;
-    }
-  }
-
-  &.--rounded-none {
-    @apply maz:rounded-none;
-  }
-
-  &.--rounded-sm {
-    @apply maz:rounded-xs;
-  }
-
-  &.--rounded-md {
-    @apply maz:rounded-md;
-  }
-
-  &.--rounded-base {
-    @apply maz:rounded;
-  }
-
-  &.--rounded-lg {
-    @apply maz:rounded-lg;
-  }
-
-  &.--rounded-xl {
-    @apply maz:rounded-xl;
-  }
-
-  &.--rounded-full {
-    @apply maz:rounded-full;
-  }
-}
-</style>

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import { glob } from 'glob'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, relative, resolve } from 'node:path'
 import process from 'node:process'
+import { glob } from 'glob'
 import { transformFile } from './transform'
 
 interface CliOptions {

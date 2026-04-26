@@ -605,20 +605,20 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="m-table m-reset-css" :class="{ '--has-header': hasHeader }">
-    <div v-if="hasHeader" class="m-table-header">
+  <div class="m-table m-reset-css maz:relative maz:max-w-full" :class="{ '--has-header': hasHeader }">
+    <div v-if="hasHeader" class="m-table-header maz:flex maz:max-w-full maz:items-center maz:justify-between maz:gap-2 maz:bg-surface maz:py-2">
       <div v-if="title || hasSlotContent(slots.title)" class="m-table-spacer">
         <!--
           @slot Replace the title of the table
         -->
         <slot name="title">
-          <span class="m-table-header-title">
+          <span class="m-table-header-title maz:font-semibold">
             {{ title }}
           </span>
         </slot>
       </div>
 
-      <div v-if="search" class="m-table-header-search">
+      <div v-if="search" class="m-table-header-search maz:flex maz:items-center maz:gap-2">
         <MazSelect
           v-if="!hideSearchBy"
           v-model="searchByKey"
@@ -641,8 +641,8 @@ onBeforeMount(() => {
       </div>
     </div>
     <div
-      class="m-table-wrapper" :class="[`--rounded-${roundedSize}`, {
-        '--scrollable': scrollable,
+      class="m-table-wrapper maz:border maz:border-solid maz:border-divider maz:overflow-hidden" :class="[`--rounded-${roundedSize}`, {
+        '--scrollable maz:overflow-auto': scrollable,
       }]"
     >
       <table
@@ -885,20 +885,6 @@ onBeforeMount(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-table {
-  @apply maz:relative maz:max-w-full;
-
-  &-header {
-    @apply maz:flex maz:max-w-full maz:items-center maz:justify-between maz:gap-2 maz:bg-surface maz:py-2;
-
-    &-search {
-      @apply maz:flex maz:items-center maz:gap-2;
-    }
-
-    &-title {
-      @apply maz:font-semibold;
-    }
-  }
-
   &-footer {
     @apply maz:flex maz:max-w-full maz:justify-between maz:gap-2 maz:bg-surface maz:p-2;
 
@@ -916,12 +902,6 @@ onBeforeMount(() => {
   }
 
   &-wrapper {
-    @apply maz:border maz:border-solid maz:border-divider maz:overflow-hidden;
-
-    &.--scrollable {
-      @apply maz:overflow-auto;
-    }
-
     &:not(.--rounded-none) {
       @apply maz:rounded-xl;
     }
@@ -1017,38 +997,6 @@ onBeforeMount(() => {
 
           td:last-child {
             @apply maz:rounded-br-lg;
-          }
-        }
-      }
-    }
-
-    &.--rounded-base {
-      @apply maz:rounded;
-
-      table {
-        @apply maz:rounded;
-
-        thead tr:hover:first-child {
-          @apply maz:rounded-b;
-
-          th:first-child {
-            @apply maz:rounded-tl;
-          }
-
-          th:last-child {
-            @apply maz:rounded-tr;
-          }
-        }
-
-        tbody tr:hover:last-child {
-          @apply maz:rounded-b;
-
-          td:first-child {
-            @apply maz:rounded-bl;
-          }
-
-          td:last-child {
-            @apply maz:rounded-br;
           }
         }
       }

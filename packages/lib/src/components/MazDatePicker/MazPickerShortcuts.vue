@@ -47,7 +47,7 @@ watch(
 </script>
 
 <template>
-  <div class="maz-picker-shortcuts">
+  <div class="maz-picker-shortcuts maz:flex maz:flex-col maz:items-start maz:gap-1 maz:overflow-y-auto maz:border-e maz:border-divider maz:p-2">
     <MazBtn
       v-for="{ identifier, label, value } in shortcuts"
       :key="identifier"
@@ -67,8 +67,6 @@ watch(
 @reference "../../tailwindcss/tailwind.css";
 
 .maz-picker-shortcuts {
-  @apply maz:flex maz:flex-col maz:items-start maz:gap-1 maz:overflow-y-auto maz:border-e maz:border-divider maz:p-2;
-
   &::-webkit-scrollbar {
     display: none;
   }

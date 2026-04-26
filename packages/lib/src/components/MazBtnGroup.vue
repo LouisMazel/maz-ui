@@ -74,8 +74,8 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 <template>
   <div
-    class="m-button-group"
-    :class="[`--${orientation}`]"
+    class="m-button-group maz:inline-flex"
+    :class="[`--${orientation}`, orientation === 'row' ? 'maz:flex-row' : 'maz:flex-col']"
     role="group"
   >
     <!-- Options-based rendering -->
@@ -109,11 +109,7 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 @reference "../tailwindcss/tailwind.css";
 
 .m-button-group {
-  @apply maz:inline-flex;
-
   &.--row {
-    @apply maz:flex-row;
-
     .m-button-group__button,
     :deep(.m-btn) {
       @apply maz:rounded-none;
@@ -132,8 +128,6 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
       &:not(:first-child) {
         @apply maz:-ml-px;
-
-        /* maz:border-l-[1px] maz:border-l-surface */
       }
 
       &:focus-visible,
@@ -145,8 +139,6 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
   }
 
   &.--col {
-    @apply maz:flex-col;
-
     .m-button-group__button,
     :deep(.m-btn) {
       @apply maz:rounded-none;

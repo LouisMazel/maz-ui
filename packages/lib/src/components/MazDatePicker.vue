@@ -671,7 +671,7 @@ watch(
     :id="`${instanceId}-popover`"
     ref="popover"
     v-model="hasPickerOpen"
-    class="m-date-picker m-reset-css"
+    class="m-date-picker m-reset-css maz:relative maz:inline-block"
     :style
     :offset="0"
     :class="[
@@ -710,7 +710,7 @@ watch(
           v-bind="{ ...inputProps, ...$attrs }"
           block
           autocomplete="off"
-          class="m-date-picker__input"
+          class="m-date-picker__input maz:size-full"
           :label
           :disabled
           :placeholder
@@ -790,12 +790,6 @@ watch(
 @reference "../tailwindcss/tailwind.css";
 
 .m-date-picker {
-  @apply maz:relative maz:inline-block;
-
-  &__input {
-    @apply maz:size-full;
-  }
-
   & .m-date-picker__button {
     @apply maz:flex maz:h-full maz:cursor-not-allowed maz:bg-transparent maz:pe-1 maz:flex-center;
 

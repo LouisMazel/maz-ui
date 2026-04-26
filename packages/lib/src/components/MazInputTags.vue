@@ -148,6 +148,15 @@ function removeTag(id: string) {
   emits('update:model-value', tagsArray)
 }
 
+const SIZE_CLASS = {
+  xl: 'maz:min-h-16',
+  lg: 'maz:min-h-14',
+  md: 'maz:min-h-12',
+  sm: 'maz:min-h-10',
+  xs: 'maz:min-h-8',
+  mini: 'maz:min-h-6',
+} as const
+
 const buttonSize = computed(() => {
   if (props.size === 'mini')
     return 'mini'
@@ -168,14 +177,14 @@ const buttonSize = computed(() => {
 
 <template>
   <div
-    class="m-input-tags m-reset-css"
-    :class="[borderStyle, `--${color}`, `--${size}`, props.class, { '--block': block }]"
+    class="m-input-tags m-reset-css maz:relative maz:inline-flex maz:flex-wrap maz:gap-1 maz:overflow-hidden maz:rounded maz:border maz:bg-surface maz:px-[0.5em] maz:py-[0.25em] maz:align-top maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:bg-surface-400 maz:border-divider maz:dark:border-divider-400"
+    :class="[borderStyle, `--${color}`, `--${size}`, SIZE_CLASS[size], props.class, { '--block': block, 'maz:w-full': block }]"
     :style
     @focus.capture="isFocused = true"
     @blur.capture="isFocused = false"
   >
     <TransitionGroup name="maz-tags">
-      <div v-for="({ tag, id }, i) in tags" :key="`tag-${i}`" class="m-input-tags__wrapper">
+      <div v-for="({ tag, id }, i) in tags" :key="`tag-${i}`" class="m-input-tags__wrapper maz:inline-flex maz:h-auto maz:flex-none! maz:flex-center">
         <MazBtn
           class="m-input-tags__tag"
           :disabled
@@ -212,7 +221,7 @@ const buttonSize = computed(() => {
       :size
       input-classes="maz:w-full"
       :border="false"
-      class="m-input-tags__input"
+      class="m-input-tags__input maz:h-auto! maz:flex-1"
       @keydown.enter="addTags"
       @keydown.delete="removeLastTag"
       @blur="addTagsOnBlur ? addTags($event) : undefined"
@@ -223,55 +232,16 @@ const buttonSize = computed(() => {
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
 
-.m-input-tags {
-  @apply maz:relative maz:inline-flex maz:flex-wrap maz:gap-1
-      maz:overflow-hidden maz:rounded maz:border maz:bg-surface maz:px-[0.5em] maz:py-[0.25em] maz:align-top maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:bg-surface-400 maz:border-divider maz:dark:border-divider-400;
+.m-input-tags__input {
+  &:deep(.m-input-wrapper) {
+    @apply maz:border-none maz:bg-transparent!;
 
-  &.--xl {
-    @apply maz:min-h-16;
+    min-width: 7.5em;
   }
 
-  &.--lg {
-    @apply maz:min-h-14;
-  }
-
-  &.--md {
-    @apply maz:min-h-12;
-  }
-
-  &.--sm {
-    @apply maz:min-h-10;
-  }
-
-  &.--xs {
-    @apply maz:min-h-8;
-  }
-
-  &.--mini {
-    @apply maz:min-h-6;
-  }
-
-  &.--block {
-    @apply maz:w-full;
-  }
-
-  &__wrapper {
-    @apply maz:inline-flex maz:h-auto maz:flex-none! maz:flex-center;
-  }
-
-  &__input {
-    @apply maz:h-auto! maz:flex-1;
-
-    &:deep(.m-input-wrapper) {
-      @apply maz:border-none maz:bg-transparent!;
-
-      min-width: 7.5em;
-    }
-
-    &:deep(input) {
-      padding-left: 0.4em;
-      padding-right: 0.4em;
-    }
+  &:deep(input) {
+    padding-left: 0.4em;
+    padding-right: 0.4em;
   }
 }
 </style>

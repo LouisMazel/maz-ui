@@ -82,10 +82,10 @@ const currentCalendarDate = computed({
 
 <template>
   <div
-    class="m-date-picker-container"
+    class="m-date-picker-container maz:overflow-hidden maz:rounded maz:bg-surface maz:dark:border maz:dark:border-divider"
     :class="{
       '--has-double': double,
-      '--is-inline': inline,
+      '--is-inline maz:border maz:border-divider': inline,
       '--has-date': hasDate,
     }"
   >
@@ -102,7 +102,7 @@ const currentCalendarDate = computed({
       class="m-date-picker-container__header"
     />
 
-    <div class="m-date-picker-container__wrapper">
+    <div class="m-date-picker-container__wrapper maz:flex">
       <MazPickerCalendar
         v-if="hasDate"
         v-model:calendar-date="currentCalendarDate"
@@ -150,22 +150,8 @@ const currentCalendarDate = computed({
 @reference "../../tailwindcss/tailwind.css";
 
 .m-date-picker-container {
-  @apply maz:overflow-hidden maz:rounded maz:bg-surface maz:dark:border maz:dark:border-divider;
-
-  &.--is-inline {
-    @apply maz:border maz:border-divider maz:dark:border-divider;
-  }
-
-  /* &.--has-date {
-    min-width: 16.875rem;
-  } */
-
   &.--has-double {
     min-width: 28.125rem;
-  }
-
-  &__wrapper {
-    @apply maz:flex;
   }
 
   & :deep(button):is(:disabled) {

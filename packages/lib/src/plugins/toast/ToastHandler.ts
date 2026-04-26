@@ -81,4 +81,8 @@ export class ToastHandler {
   warning(message: string, options?: Omit<ToastOptions, 'type'>) {
     return this.show(message, this.getLocalOptions({ ...options, type: 'warning' }))
   }
+
+  accent(message: string, options?: Omit<ToastOptions, 'type'>) {
+    return this.show(message, this.getLocalOptions({ ...options, type: 'accent' }))
+  }
 }

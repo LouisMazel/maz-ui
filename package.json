@@ -41,7 +41,7 @@
     "typecheck:all": "nx run-many -t typecheck",
     "test:unit:all": "nx run-many -t test:unit",
     "test:unit:coverage:all": "nx run-many -t test:unit:coverage",
-    "healthcheck": "pnpm lint:all && pnpm typecheck:all && pnpm test:unit:coverage:all && pnpm build:packages && nx run docs:build",
+    "health": "nx run-many -t lint:fix typecheck test:unit:coverage build --nxBail --parallel=100% -p '@maz-ui/*' maz-ui",
     "relizy": "relizy",
     "nx:cache:clear": "nx reset",
     "dev:watch": "nx run-many -t dev",

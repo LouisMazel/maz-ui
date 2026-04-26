@@ -137,14 +137,14 @@ watch(
 </script>
 
 <template>
-  <div class="m-date-picker-header" :class="[`--${color}`]">
+  <div class="m-date-picker-header maz:z-1 maz:flex maz:justify-between maz:space-y-1 maz:p-2 maz:font-normal" :class="[`--${color}`]">
     <div v-if="hasDate" class="m-date-picker-header__date">
-      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__year-transition">
-        <span v-for="(y, yi) in yearArray" :key="`${y}-${yi}`" class="m-date-picker-header__year-text">
+      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__year-transition maz:flex maz:h-5 maz:items-center maz:overflow-hidden maz:leading-3">
+        <span v-for="(y, yi) in yearArray" :key="`${y}-${yi}`" class="m-date-picker-header__year-text maz:text-sm">
           {{ y }}
         </span>
       </TransitionGroup>
-      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__date-transition">
+      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__date-transition maz:flex maz:h-6 maz:items-center maz:overflow-hidden maz:leading-4">
         <span
           v-for="(d, di) in dateStringArray"
           :key="`${d}-${di}`"
@@ -154,8 +154,8 @@ watch(
         </span>
       </TransitionGroup>
     </div>
-    <div v-if="timeArray" class="m-date-picker-header__time" :class="{ '--has-date': hasDate }">
-      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__time-transition">
+    <div v-if="timeArray" class="m-date-picker-header__time maz:flex maz:items-end maz:justify-center" :class="{ '--has-date': hasDate, 'maz:w-full': !hasDate }">
+      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__time-transition maz:flex maz:h-6 maz:items-center maz:overflow-hidden maz:leading-4 maz:justify-end">
         <span v-for="(t, ti) in timeArray" :key="`${t}-${ti}`" class="m-date-picker-header__time-text">
           {{ t }}
         </span>
@@ -168,37 +168,12 @@ watch(
 @reference "../../tailwindcss/tailwind.css";
 
 .m-date-picker-header {
-  @apply maz:z-1 maz:flex maz:justify-between maz:space-y-1 maz:p-2 maz:font-normal;
-
-  &__year-transition {
-    @apply maz:flex maz:h-5 maz:items-center maz:overflow-hidden maz:leading-3;
-  }
-
-  &__date-transition,
   &__time-transition {
-    @apply maz:flex maz:h-6 maz:items-center maz:overflow-hidden maz:leading-4;
-  }
-
-  &__time-transition {
-    @apply maz:flex maz:justify-end;
-
     min-width: 5rem;
   }
 
-  &__year-text {
-    @apply maz:text-sm;
-  }
-
-  &__time {
-    @apply maz:flex maz:items-end maz:justify-center;
-
-    &:not(.--has-date) {
-      @apply maz:w-full;
-
-      & .m-date-picker-header__time-transition {
-        @apply maz:w-full maz:flex-center;
-      }
-    }
+  &__time:not(.--has-date) .m-date-picker-header__time-transition {
+    @apply maz:w-full maz:flex-center;
   }
 
   &.--primary {

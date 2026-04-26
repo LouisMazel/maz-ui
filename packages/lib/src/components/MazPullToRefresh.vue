@@ -222,21 +222,21 @@ onUnmounted(() => {
   <div class="m-pull-to-refresh m-reset-css" :class="{ '--available': pull.available || pullHeight > 10 }">
     <div
       v-if="!isDisabled"
-      class="loading-header"
+      class="loading-header maz:relative maz:flex maz:w-full maz:text-center maz:text-[0.8em] maz:flex-center"
       :style="{ height: `${pullHeight}px` }"
       :class="headerClass"
     >
-      <div v-if="!pull.available" class="header-text">
+      <div v-if="!pull.available" class="header-text maz:absolute maz:flex maz:w-full maz:flex-center" :class="{ 'maz:bottom-2': !(pull.available || pullHeight > 10) }">
         <slot name="pull-before">
           <span>Pull to refresh</span>
         </slot>
       </div>
-      <div v-else-if="pull.available && !internalLoading" class="header-text">
+      <div v-else-if="pull.available && !internalLoading" class="header-text maz:absolute maz:flex maz:w-full maz:flex-center">
         <slot name="pull-ready">
           <span> Release to refresh </span>
         </slot>
       </div>
-      <div v-if="internalLoading" class="header-text">
+      <div v-if="internalLoading" class="header-text maz:absolute maz:flex maz:w-full maz:flex-center">
         <slot name="pull-loading">
           <div class="maz:flex maz:flex-col maz:flex-center">
             <MazSpinner :color="spinnerColor" size="2.5em" />
@@ -248,24 +248,3 @@ onUnmounted(() => {
     <slot />
   </div>
 </template>
-
-<style scoped>
-@reference "../tailwindcss/tailwind.css";
-
-.m-pull-to-refresh {
-  .loading-header,
-  .loading-footer {
-    @apply maz:relative maz:flex maz:w-full maz:text-center maz:text-[0.8em] maz:flex-center;
-
-    .header-text {
-      @apply maz:absolute maz:flex maz:w-full maz:flex-center;
-    }
-  }
-
-  &:not(.--available) {
-    .header-text {
-      @apply maz:bottom-2;
-    }
-  }
-}
-</style>

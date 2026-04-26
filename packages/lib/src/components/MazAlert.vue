@@ -97,6 +97,16 @@ const colorStyles = computed<CSSProperties>(() => ({
   '--m-alert-border': `var(--maz-${color}-600)`,
 }))
 
+const ROUNDED_CLASS = {
+  'none': '',
+  'sm': 'maz:rounded-xs',
+  'md': 'maz:rounded-md',
+  'lg': 'maz:rounded-lg',
+  'xl': 'maz:rounded-xl',
+  '2xl': 'maz:rounded-2xl',
+  '3xl': 'maz:rounded-3xl',
+} as const
+
 const currentIcon = computed(() => {
   if (hideIcon) {
     return undefined
@@ -123,18 +133,25 @@ const currentIcon = computed(() => {
 
 <template>
   <div
-    class="m-alert m-reset-css"
+    class="m-alert m-reset-css maz:flex maz:items-start maz:gap-3 maz:p-4"
     role="alert"
     :aria-labelledby="hasTitle ? headingId : undefined"
     :aria-describedby="hasContent ? contentId : undefined"
     :style="colorStyles"
     :class="[
-      `--rounded-${roundedSize}`,
+      ROUNDED_CLASS[roundedSize],
       `--${variant}`,
-      { '--bordered': bordered },
+      `--rounded-${roundedSize}`,
+      {
+        '--bordered': bordered,
+        'maz:text-(--m-alert-color) maz:dark:text-(--m-alert-color-dark)': variant === 'soft',
+        'maz:bg-(--m-alert-bg) maz:text-(--m-alert-fg)': variant === 'solid',
+        'maz:border': bordered,
+        'maz:border-(--m-alert-border)': bordered && variant === 'solid',
+      },
     ]"
   >
-    <div v-if="currentIcon" class="m-alert-icon" aria-hidden="true">
+    <div v-if="currentIcon" class="m-alert-icon maz:flex maz:shrink-0 maz:items-center maz:justify-center" aria-hidden="true">
       <MazIcon
         v-if="typeof currentIcon === 'string'"
         :name="currentIcon"
@@ -147,14 +164,14 @@ const currentIcon = computed(() => {
       />
     </div>
 
-    <div class="m-alert-body">
-      <p v-if="hasTitle" :id="headingId" class="m-alert-title">
+    <div class="m-alert-body maz:flex maz:flex-1 maz:flex-col maz:gap-1">
+      <p v-if="hasTitle" :id="headingId" class="m-alert-title maz:m-0 maz:font-semibold maz:leading-tight">
         <!-- @slot Title slot - overrides title prop -->
         <slot name="title">
           {{ title }}
         </slot>
       </p>
-      <div v-if="hasContent" :id="contentId" class="m-alert-content">
+      <div v-if="hasContent" :id="contentId" class="m-alert-content maz:leading-relaxed">
         <!-- @slot Default slot for alert content - overrides content prop -->
         <slot>{{ content }}</slot>
       </div>
@@ -166,74 +183,12 @@ const currentIcon = computed(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-alert {
-  @apply maz:flex maz:items-start maz:gap-3 maz:p-4;
-
   &.--soft {
     background-color: color-mix(in srgb, var(--m-alert-color) 10%, transparent);
 
-    @apply maz:text-(--m-alert-color) maz:dark:text-(--m-alert-color-dark);
-
     &.--bordered {
-      @apply maz:border;
-
       border-color: color-mix(in srgb, var(--m-alert-color) 30%, transparent);
     }
-  }
-
-  &.--solid {
-    @apply maz:bg-(--m-alert-bg) maz:text-(--m-alert-fg);
-
-    &.--bordered {
-      @apply maz:border maz:border-(--m-alert-border);
-    }
-  }
-
-  &-icon {
-    @apply maz:flex maz:shrink-0 maz:items-center maz:justify-center;
-  }
-
-  &-body {
-    @apply maz:flex maz:flex-1 maz:flex-col maz:gap-1;
-  }
-
-  &-title {
-    @apply maz:m-0 maz:font-semibold maz:leading-tight;
-  }
-
-  &-content {
-    @apply maz:leading-relaxed;
-  }
-
-  &.--rounded-none {
-    @apply maz:rounded-none;
-  }
-
-  &.--rounded-sm {
-    @apply maz:rounded-xs;
-  }
-
-  &.--rounded-md {
-    @apply maz:rounded-md;
-  }
-
-  &.--rounded-base {
-    @apply maz:rounded;
-  }
-
-  &.--rounded-lg {
-    @apply maz:rounded-lg;
-  }
-
-  &.--rounded-xl {
-    @apply maz:rounded-xl;
-  }
-
-  &.--rounded-2xl {
-    @apply maz:rounded-2xl;
-  }
-
-  &.--rounded-3xl {
-    @apply maz:rounded-3xl;
   }
 }
 </style>

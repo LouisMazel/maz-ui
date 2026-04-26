@@ -225,13 +225,21 @@ const svgStyle = computed<StyleValue | undefined>(() => {
   }
 })
 
+const SIZE_CLASS = {
+  xs: 'maz:text-base',
+  sm: 'maz:text-xl',
+  md: 'maz:text-2xl',
+  lg: 'maz:text-4xl',
+  xl: 'maz:text-5xl',
+} as const
+
 const svgClasses = computed<string | undefined>(() => {
   const isPredefinedSize = size && predefinedSizes.includes(size as PredefinedSize)
   if (!isPredefinedSize) {
     return
   }
 
-  return `m-icon--${size}`
+  return `m-icon--${size} ${SIZE_CLASS[size as PredefinedSize]}`
 })
 
 watchEffect(() => {
@@ -266,25 +274,5 @@ watchEffect(() => {
 .m-icon {
   width: 1em !important;
   height: 1em !important;
-
-  &--xs {
-    @apply maz:text-base;
-  }
-
-  &--sm {
-    @apply maz:text-xl;
-  }
-
-  &--md {
-    @apply maz:text-2xl;
-  }
-
-  &--lg {
-    @apply maz:text-4xl;
-  }
-
-  &--xl {
-    @apply maz:text-5xl;
-  }
 }
 </style>

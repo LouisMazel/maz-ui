@@ -344,7 +344,7 @@ const borderStyle = computed(() => {
     return 'maz:border-success'
   if (props.warning)
     return 'maz:border-warning'
-  return '--default-border'
+  return '--default-border maz:border-divider maz:dark:border-divider-400'
 })
 
 const slots = useSlots()
@@ -408,11 +408,29 @@ const stateColor = computed(() => {
     return 'maz:text-warning-600!'
   return undefined
 })
+
+const ROUNDED_CLASS = {
+  none: '',
+  sm: 'maz:rounded-xs',
+  md: 'maz:rounded-md',
+  lg: 'maz:rounded-lg',
+  xl: 'maz:rounded-xl',
+  full: 'maz:rounded-full',
+} as const
+
+const CHILD_TEXT_SIZE_CLASS = {
+  xl: 'maz:text-xl',
+  lg: 'maz:text-lg',
+  md: '',
+  sm: 'maz:text-sm',
+  xs: 'maz:text-xs',
+  mini: 'maz:text-xs',
+} as const
 </script>
 
 <template>
   <div
-    class="m-input m-reset-css" :class="[
+    class="m-input m-reset-css maz:inline-flex maz:flex-col maz:align-top maz:items-start maz:text-foreground" :class="[
       {
         '--border-active': borderActive,
         '--always-up': alwaysUp,
@@ -422,24 +440,26 @@ const stateColor = computed(() => {
         '--has-z-2': error || warning || success,
         '--has-state': error || warning || success,
         '--block': block,
+        'maz:w-full': block,
       },
       props.class,
       `--${color}`,
     ]" :style="[style, { '--maz-input-color': `var(--maz-${color}-100)` }]"
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
-    <label v-if="topLabel" :for="instanceId" class="m-input-top-label" :class="stateColor">{{ topLabel }}</label>
+    <label v-if="topLabel" :for="instanceId" class="m-input-top-label maz:mb-2" :class="stateColor">{{ topLabel }}</label>
 
     <div
-      class="m-input-wrapper"
+      class="m-input-wrapper maz:relative maz:z-1 maz:flex maz:flex-1 maz:overflow-hidden maz:bg-surface maz:transition-colors maz:duration-300 maz:size-full maz:dark:bg-surface-400"
       :class="[
         inputClasses,
         borderStyle,
+        ROUNDED_CLASS[roundedSize],
         `--rounded-${roundedSize}`,
-        { '--block': block, '--border': border },
+        { '--block': block, '--border': border, 'maz:w-full': block, 'maz:border maz:border-solid': border },
       ]"
     >
-      <div v-if="hasLeftPart()" class="m-input-wrapper-left">
+      <div v-if="hasLeftPart()" class="m-input-wrapper-left maz:relative maz:z-1 maz:flex maz:space-x-1 maz:py-1 maz:flex-center maz:ps-2">
         <!--
           @slot Custom content for the left side of the input field.
           Typically used for icons, buttons, or text. Overrides the leftIcon prop when used
@@ -451,7 +471,7 @@ const stateColor = computed(() => {
       </div>
 
       <div
-        class="m-input-wrapper-input"
+        class="m-input-wrapper-input maz:relative maz:flex maz:w-full maz:max-w-full maz:flex-1 maz:items-center"
         :class="[
           `--${size}`,
           { '--top-label': !!topLabel,
@@ -474,7 +494,8 @@ const stateColor = computed(() => {
           :disabled
           :readonly
           :required
-          class="m-input-input"
+          class="m-input-input maz:m-0 maz:h-full maz:w-full maz:appearance-none maz:truncate maz:border-none maz:bg-transparent maz:py-0 maz:text-foreground maz:shadow-none maz:outline-hidden maz:px-4"
+          :class="[CHILD_TEXT_SIZE_CLASS[size], { 'maz:ps-2': hasLeftPart(), 'maz:pe-2': hasRightPart() }]"
           v-on="{
             blur,
             focus,
@@ -485,13 +506,13 @@ const stateColor = computed(() => {
         >
 
         <span
-          v-if="label || hint" class="m-input-label" :class="stateColor"
+          v-if="label || hint" class="m-input-label maz:pointer-events-none maz:absolute maz:w-full maz:origin-top-left maz:items-center maz:overflow-hidden maz:truncate maz:whitespace-nowrap maz:text-start maz:leading-6 maz:start-4" :class="[stateColor, CHILD_TEXT_SIZE_CLASS[size], { 'maz:start-2': hasLeftPart(), 'maz:pe-3': hasLabel }]"
         >
           {{ hint || label }}
         </span>
       </div>
 
-      <div v-if="hasRightPart()" class="m-input-wrapper-right">
+      <div v-if="hasRightPart()" class="m-input-wrapper-right maz:relative maz:z-1 maz:flex maz:space-x-1 maz:py-1 maz:flex-center maz:pe-2">
         <!--
           @slot Custom content for the right side of the input field.
           Typically used for icons, buttons, or action elements. Overrides the rightIcon prop when used.
@@ -524,7 +545,7 @@ const stateColor = computed(() => {
     </div>
 
     <div
-      v-if="assistiveText" class="m-input-bottom-text" :class="[
+      v-if="assistiveText" class="m-input-bottom-text maz:mt-1 maz:text-sm" :class="[
         {
           'maz:text-destructive-600': error,
           'maz:text-success-600': success,
@@ -542,70 +563,14 @@ const stateColor = computed(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-input {
-  @apply maz:inline-flex maz:flex-col maz:align-top maz:items-start maz:text-foreground;
-
-  &.--block {
-    @apply maz:w-full;
-  }
-
-  &-top-label {
-    @apply maz:mb-2;
-  }
-
-  &-bottom-text {
-    @apply maz:mt-1 maz:text-sm;
-  }
-
   &-wrapper {
-    @apply maz:relative maz:z-1 maz:flex maz:flex-1 maz:overflow-hidden maz:bg-surface maz:transition-colors maz:duration-300 maz:size-full;
-
-    &.--border {
-      @apply maz:border maz:border-solid;
-    }
-
-    &.--block {
-      @apply maz:w-full;
-    }
-
-    &.--default-border {
-      @apply maz:border-divider maz:dark:border-divider-400;
-    }
-
     &-input {
-      @apply maz:relative maz:flex maz:w-full maz:max-w-full maz:flex-1 maz:items-center;
-
-      &.--has-left-icon {
-        .m-input-input {
-          @apply maz:ps-2;
-        }
-
-        .m-input-label {
-          @apply maz:start-2;
-        }
-      }
-
-      &.--has-right-icon {
-        .m-input-input {
-          @apply maz:pe-2;
-        }
-      }
-
       &.--xl {
         height: calc(4rem - (var(--maz-border-width) * 2));
-
-        & .m-input-input,
-        & .m-input-label {
-          @apply maz:text-xl;
-        }
       }
 
       &.--lg {
         height: calc(3.5rem - (var(--maz-border-width) * 2));
-
-        & .m-input-input,
-        & .m-input-label {
-          @apply maz:text-lg;
-        }
       }
 
       &.--md {
@@ -614,75 +579,19 @@ const stateColor = computed(() => {
 
       &.--sm {
         height: calc(2.5rem - (var(--maz-border-width) * 2));
-
-        & .m-input-input,
-        & .m-input-label {
-          @apply maz:text-sm;
-        }
       }
 
       &.--xs {
         height: calc(2rem - (var(--maz-border-width) * 2));
-
-        & .m-input-input,
-        & .m-input-label {
-          @apply maz:text-xs;
-        }
       }
 
       &.--mini {
         height: calc(1.5rem - (var(--maz-border-width) * 2));
-
-        & .m-input-input,
-        & .m-input-label {
-          @apply maz:text-xs;
-        }
-      }
-    }
-
-    &-right,
-    &-left {
-      @apply maz:relative maz:z-1 maz:flex maz:space-x-1 maz:py-1 maz:flex-center;
-    }
-
-    &-right {
-      @apply maz:pe-2;
-    }
-
-    &-left {
-      @apply maz:ps-2;
-    }
-
-    &.--rounded {
-      &-sm {
-        @apply maz:rounded-xs;
-      }
-
-      &-md {
-        @apply maz:rounded-md;
-      }
-
-      &-base {
-        @apply maz:rounded;
-      }
-
-      &-lg {
-        @apply maz:rounded-lg;
-      }
-
-      &-xl {
-        @apply maz:rounded-xl;
-      }
-
-      &-full {
-        @apply maz:rounded-full;
       }
     }
   }
 
   &-input {
-    @apply maz:m-0 maz:h-full maz:w-full maz:appearance-none maz:truncate maz:border-none maz:bg-transparent maz:py-0 maz:text-foreground maz:shadow-none maz:outline-hidden maz:px-4;
-
     transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
     &::placeholder {
@@ -691,8 +600,6 @@ const stateColor = computed(() => {
   }
 
   &-label {
-    @apply maz:pointer-events-none maz:absolute maz:w-full maz:origin-top-left maz:items-center maz:overflow-hidden maz:truncate maz:whitespace-nowrap maz:text-start maz:leading-6 maz:start-4;
-
     width: calc(100% - 0.75rem);
     transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
   }
@@ -785,12 +692,6 @@ const stateColor = computed(() => {
   &.--contrast .m-input-wrapper:focus-within,
   &.--contrast.--border-active .m-input-wrapper {
     @apply maz:border-contrast;
-  }
-
-  &.--has-label {
-    .m-input-label {
-      @apply maz:pe-3;
-    }
   }
 }
 </style>

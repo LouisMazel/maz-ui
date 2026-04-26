@@ -86,12 +86,12 @@ function setScrollState(event: Event) {
 
 <template>
   <div
-    class="m-carousel m-reset-css"
+    class="m-carousel m-reset-css maz:relative maz:flex maz:flex-col"
     :class="{
       '--hide-scrollbar': hideScrollbar,
     }"
   >
-    <div v-if="hasHeader()" class="m-carousel__header" :class="{ '--has-title': hasTitle() }">
+    <div v-if="hasHeader()" class="m-carousel__header maz:flex maz:items-center" :class="[hasTitle() ? '--has-title' : '', hasTitle() ? 'maz:justify-between' : 'maz:justify-end']">
       <div v-if="hasTitle()">
         <slot name="title">
           <h4 class="maz:text-xl maz:font-semibold">
@@ -99,7 +99,7 @@ function setScrollState(event: Event) {
           </h4>
         </slot>
       </div>
-      <div v-if="!hideScrollButtons" class="m-carousel__header__actions">
+      <div v-if="!hideScrollButtons" class="m-carousel__header__actions maz:flex maz:flex-1 maz:justify-end maz:space-x-2">
         <MazBtn
           color="transparent"
           class="m-carousel__btn"
@@ -126,7 +126,7 @@ function setScrollState(event: Event) {
         </MazBtn>
       </div>
     </div>
-    <div ref="MazCarouselItems" class="m-carousel__items" @scroll="setScrollState">
+    <div ref="MazCarouselItems" class="m-carousel__items maz:z-1 maz:flex maz:flex-1 maz:items-center maz:justify-start maz:space-x-5 maz:overflow-y-hidden maz:py-4 maz:ps-3" :class="hideScrollbar ? 'maz:overflow-x-hidden' : 'maz:overflow-x-auto'" @scroll="setScrollState">
       <!-- Insert your items -->
       <slot />
       <div class="m-carousel__items__spacer" />
@@ -138,25 +138,10 @@ function setScrollState(event: Event) {
 @reference "../tailwindcss/tailwind.css";
 
 .m-carousel {
-  @apply maz:relative maz:flex maz:flex-col;
-
-  &__header {
-    @apply maz:flex maz:items-center maz:justify-end;
-
-    &.--has-title {
-      @apply maz:justify-between;
-    }
-
-    &__actions {
-      @apply maz:flex maz:flex-1 maz:justify-end maz:space-x-2;
-    }
-  }
-
   &__items {
-    @apply maz:z-1 maz:flex maz:flex-1 maz:items-center maz:justify-start
-        maz:space-x-5 maz:overflow-y-hidden maz:py-4 maz:ps-3;
-
     scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--maz-background-600) transparent;
 
     &::-webkit-scrollbar {
       width: 0.1875rem;
@@ -172,10 +157,6 @@ function setScrollState(event: Event) {
       border-radius: 1000px;
     }
 
-    /* Modern CSS for all browsers (fallback) */
-    scrollbar-width: thin;
-    scrollbar-color: var(--maz-background-600) transparent;
-
     &__spacer {
       flex: 0 0 1px;
       width: 1px;
@@ -184,16 +165,7 @@ function setScrollState(event: Event) {
   }
 
   &__btn.--muted {
-    @apply maz:text-muted;
-    @apply maz:fill-current;
-  }
-
-  :not(.--hide-scrollbar) .m-carousel__items {
-    @apply maz:overflow-x-auto;
-  }
-
-  &.--hide-scrollbar .m-carousel__items {
-    @apply maz:overflow-x-hidden;
+    @apply maz:text-muted maz:fill-current;
   }
 
   &.--hide-scrollbar:hover .m-carousel__items,

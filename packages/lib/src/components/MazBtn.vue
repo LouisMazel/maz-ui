@@ -13,6 +13,7 @@ const {
   size = 'md',
   color = 'primary',
   type = 'button',
+  fab,
   icon,
   leftIcon,
   rightIcon,
@@ -170,21 +171,62 @@ const btnStyle = computed<CSSProperties>(() => {
     }),
   }
 })
+
+const SIZE_CLASS = {
+  xl: 'maz:min-h-16 maz:px-8 maz:text-xl',
+  lg: 'maz:min-h-14 maz:px-6',
+  md: 'maz:min-h-12 maz:px-4',
+  sm: 'maz:min-h-10 maz:px-3',
+  xs: 'maz:min-h-8 maz:px-2 maz:text-sm',
+  mini: 'maz:min-h-6 maz:px-1 maz:text-xs',
+} as const
+
+const ROUNDED_CLASS = {
+  none: '',
+  sm: 'maz:rounded-xs',
+  md: 'maz:rounded-md',
+  lg: 'maz:rounded-lg',
+  xl: 'maz:rounded-xl',
+  full: 'maz:rounded-full',
+} as const
+
+const FAB_SIZE_CLASS = {
+  xl: 'maz:w-16',
+  lg: 'maz:w-14',
+  md: 'maz:w-12',
+  sm: 'maz:w-10',
+  xs: 'maz:w-8',
+  mini: 'maz:w-6',
+} as const
+
+const ICON_PADDING_CLASS = {
+  xl: { left: 'maz:ps-6', right: 'maz:pe-6' },
+  lg: { left: 'maz:ps-4', right: 'maz:pe-4' },
+  md: { left: 'maz:ps-2', right: 'maz:pe-2' },
+  sm: { left: 'maz:ps-2', right: 'maz:pe-2' },
+  xs: { left: '', right: '' },
+  mini: { left: '', right: '' },
+} as const
 </script>
 
 <template>
   <component
     :is="component"
     :disabled="isDisabled"
-    class="m-btn m-reset-css"
+    class="m-btn m-reset-css maz:relative maz:cursor-pointer maz:items-center maz:gap-2 maz:border maz:border-solid maz:border-transparent maz:bg-transparent maz:py-0.5 maz:text-center maz:align-top maz:text-foreground maz:no-underline maz:transition-all maz:duration-200 maz:ease-in-out maz:inline-flex maz:overflow-hidden"
     :class="[
-      `--${size}`,
       `--${resolvedColor}`,
-      !fab && roundedSize && `--rounded-${roundedSize}`,
+      `--${size}`,
+      !fab && roundedSize ? `--rounded-${roundedSize}` : '',
+      SIZE_CLASS[size],
+      fab ? 'maz:rounded-full maz:flex maz:items-center maz:justify-center maz:p-1' : ROUNDED_CLASS[roundedSize],
+      fab ? FAB_SIZE_CLASS[size] : '',
+      (!!leftIcon || hasSlotContent($slots['left-icon'])) ? ICON_PADDING_CLASS[size].left : '',
+      (!!rightIcon || hasSlotContent($slots['right-icon'])) ? ICON_PADDING_CLASS[size].right : '',
       {
         '--outlined': outlined,
         '--pastel': pastel,
-        '--block': block,
+        '--block': block && !fab,
         '--fab': fab,
         '--loading': loading,
         '--active': active,
@@ -242,8 +284,6 @@ const btnStyle = computed<CSSProperties>(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-btn {
-  @apply maz:relative maz:cursor-pointer maz:items-center maz:gap-2 maz:border maz:border-solid maz:border-transparent maz:bg-transparent maz:py-0.5 maz:text-center maz:align-top maz:text-foreground maz:no-underline maz:transition-all maz:duration-200 maz:ease-in-out maz:inline-flex maz:overflow-hidden;
-
   justify-content: var(--m-btn-justify, center);
   background-color: var(--m-btn-bg);
   color: var(--m-btn-fg);
@@ -379,123 +419,6 @@ const btnStyle = computed<CSSProperties>(() => {
 
     .m-btn-loader-container {
       @apply maz:text-foreground maz:bg-surface-600 maz:dark:bg-surface-400;
-    }
-  }
-
-  /* Rounded */
-  &:not(.--rounded-none) {
-    @apply maz:rounded;
-
-    &.--rounded {
-      &-sm {
-        @apply maz:rounded-xs;
-      }
-
-      &-md {
-        @apply maz:rounded-md;
-      }
-
-      &-base {
-        @apply maz:rounded;
-      }
-
-      &-lg {
-        @apply maz:rounded-lg;
-      }
-
-      &-xl {
-        @apply maz:rounded-xl;
-      }
-
-      &-full {
-        @apply maz:rounded-full;
-      }
-    }
-  }
-
-  /* Sizes */
-  &.--xl {
-    @apply maz:min-h-16 maz:px-8 maz:text-xl;
-
-    &.--has-left-icon {
-      @apply maz:ps-6;
-    }
-
-    &.--has-right-icon {
-      @apply maz:pe-6;
-    }
-  }
-
-  &.--lg {
-    @apply maz:min-h-14 maz:px-6;
-
-    &.--has-left-icon {
-      @apply maz:ps-4;
-    }
-
-    &.--has-right-icon {
-      @apply maz:pe-4;
-    }
-  }
-
-  &.--md {
-    @apply maz:min-h-12 maz:px-4;
-
-    &.--has-left-icon {
-      @apply maz:ps-2;
-    }
-
-    &.--has-right-icon {
-      @apply maz:pe-2;
-    }
-  }
-
-  &.--sm {
-    @apply maz:min-h-10 maz:px-3;
-
-    &.--has-left-icon {
-      @apply maz:ps-2;
-    }
-
-    &.--has-right-icon {
-      @apply maz:pe-2;
-    }
-  }
-
-  &.--xs {
-    @apply maz:min-h-8 maz:px-2 maz:text-sm;
-  }
-
-  &.--mini {
-    @apply maz:min-h-6 maz:px-1 maz:text-xs;
-  }
-
-  /* Fab */
-  &.--fab {
-    @apply maz:flex maz:items-center maz:justify-center maz:rounded-full maz:p-1;
-
-    &.--xl {
-      @apply maz:w-16;
-    }
-
-    &.--lg {
-      @apply maz:w-14;
-    }
-
-    &.--md {
-      @apply maz:w-12;
-    }
-
-    &.--sm {
-      @apply maz:w-10;
-    }
-
-    &.--xs {
-      @apply maz:w-8;
-    }
-
-    &.--mini {
-      @apply maz:w-6;
     }
   }
 
