@@ -1,26 +1,18 @@
 import MazAnimatedCounter from '@components/MazAnimatedCounter.vue'
+import { IntersectionObserverMock } from '@tests/vitest-global.setup'
 import { shallowMount } from '@vue/test-utils'
 
-const mockObserve = vi.fn()
-const mockUnobserve = vi.fn()
-const mockDisconnect = vi.fn()
-
-const mockIntersectionObserver = vi.fn(() => {
-  return {
-    observe: mockObserve,
-    unobserve: mockUnobserve,
-    disconnect: mockDisconnect,
-  }
-})
-
-globalThis.IntersectionObserver = mockIntersectionObserver as unknown as typeof IntersectionObserver
+function getLastIntersectionCallback(): IntersectionObserverCallback {
+  const calls = vi.mocked(IntersectionObserver).mock.calls
+  return calls.at(-1)![0]
+}
 
 describe('mazAnimatedCounter', () => {
   beforeEach(() => {
-    mockIntersectionObserver.mockClear()
-    mockObserve.mockClear()
-    mockUnobserve.mockClear()
-    mockDisconnect.mockClear()
+    vi.mocked(IntersectionObserver).mockClear()
+    vi.mocked(IntersectionObserverMock.observe).mockClear()
+    vi.mocked(IntersectionObserverMock.unobserve).mockClear()
+    vi.mocked(IntersectionObserverMock.disconnect).mockClear()
   })
 
   it('renders initial count with prefix and suffix', () => {
@@ -103,15 +95,15 @@ describe('mazAnimatedCounter', () => {
     const wrapper = shallowMount(MazAnimatedCounter, {
       props: { count: 5, once: false },
     })
-    expect(mockIntersectionObserver).toHaveBeenCalled()
-    expect(mockObserve).toHaveBeenCalledWith(wrapper.find('.m-animated-counter').element)
+    expect(IntersectionObserver).toHaveBeenCalled()
+    expect(IntersectionObserverMock.observe).toHaveBeenCalledWith(wrapper.find('.m-animated-counter').element)
   })
 
   it('does not register an observer when once is true', () => {
     shallowMount(MazAnimatedCounter, {
       props: { count: 5, once: true },
     })
-    expect(mockIntersectionObserver).not.toHaveBeenCalled()
+    expect(IntersectionObserver).not.toHaveBeenCalled()
   })
 
   it('triggers the animation when the element scrolls into view (once=false)', async () => {
@@ -119,9 +111,12 @@ describe('mazAnimatedCounter', () => {
     const wrapper = shallowMount(MazAnimatedCounter, {
       props: { count: 50, once: false, duration: 100, delay: 0 },
     })
-    const intersectionCallback = mockIntersectionObserver.mock.calls[0][0]
+    const intersectionCallback = getLastIntersectionCallback()
 
-    intersectionCallback([{ target: wrapper.element, isIntersecting: true }])
+    intersectionCallback(
+      [{ target: wrapper.element, isIntersecting: true } as IntersectionObserverEntry],
+      IntersectionObserverMock as unknown as IntersectionObserver,
+    )
     await vi.advanceTimersByTimeAsync(0)
     for (let i = 0; i < 20; i++)
       await vi.advanceTimersByTimeAsync(20)
@@ -135,6 +130,6 @@ describe('mazAnimatedCounter', () => {
       props: { count: 5, once: false },
     })
     wrapper.unmount()
-    expect(mockDisconnect).toHaveBeenCalled()
+    expect(IntersectionObserverMock.disconnect).toHaveBeenCalled()
   })
 })
