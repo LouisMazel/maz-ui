@@ -2,11 +2,12 @@
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazColor, MazSize } from './types'
 import { MazEllipsisHorizontal } from '@maz-ui/icons/lazy/MazEllipsisHorizontal'
-import { MazChevronDoubleLeft } from '@maz-ui/icons/static/MazChevronDoubleLeft'
-import { MazChevronLeft } from '@maz-ui/icons/static/MazChevronLeft'
+import { MazChevronDoubleLeft } from '@maz-ui/icons/raw/MazChevronDoubleLeft'
+import { MazChevronLeft } from '@maz-ui/icons/raw/MazChevronLeft'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed } from 'vue'
 import MazBtn from './MazBtn.vue'
+import MazIcon from './MazIcon.vue'
 
 const {
   modelValue = 1,
@@ -167,7 +168,7 @@ function setPageNumber(page: number) {
               {{ t('pagination.screenReader.firstPage', { page: 1 }) }}
             </slot>
           </span>
-          <MazChevronDoubleLeft />
+          <MazIcon :icon="MazChevronDoubleLeft" />
         </MazBtn>
       </li>
 
@@ -188,7 +189,7 @@ function setPageNumber(page: number) {
               {{ t('pagination.screenReader.previousPage', { page: previousPage }) }}
             </slot>
           </span>
-          <MazChevronLeft />
+          <MazIcon :icon="MazChevronLeft" />
         </MazBtn>
       </li>
 
@@ -249,7 +250,7 @@ function setPageNumber(page: number) {
               {{ t('pagination.screenReader.nextPage', { page: nextPage }) }}
             </slot>
           </span>
-          <MazChevronLeft class="maz:-rotate-180" />
+          <MazIcon :icon="MazChevronLeft" class="maz:-rotate-180" />
         </MazBtn>
       </li>
 
@@ -270,7 +271,7 @@ function setPageNumber(page: number) {
               {{ t('pagination.screenReader.lastPage', { page: totalPages }) }}
             </slot>
           </span>
-          <MazChevronDoubleLeft class="maz:-rotate-180" />
+          <MazIcon :icon="MazChevronDoubleLeft" class="maz:-rotate-180" />
         </MazBtn>
       </li>
     </ul>

@@ -852,9 +852,9 @@ const isOpen = ref(false)
     <MazPopover position="bottom-start">
       <template #trigger>
         <MazBtn>
-          <MazIcon name="cog-6-tooth" class="maz:me-2" />
+          <MazIcon icon="/cog-6-tooth.svg" class="maz:me-2" />
           Settings
-          <MazIcon name="chevron-down" class="maz:ms-2" />
+          <MazIcon icon="/chevron-down.svg" class="maz:ms-2" />
         </MazBtn>
       </template>
       <div class="maz:py-1 maz:min-w-48">
@@ -864,7 +864,7 @@ const isOpen = ref(false)
           class="maz:w-full maz:px-4 maz:py-2 maz:text-start maz:text-sm maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:flex maz:items-center maz:gap-2"
           @click="handleMenuClick(item.action)"
         >
-          <MazIcon :name="item.icon" class="maz:w-4 maz:h-4" />
+          <MazIcon :icon="item.icon" class="maz:w-4 maz:h-4" />
           {{ item.label }}
         </button>
       </div>
@@ -907,9 +907,9 @@ function handleMenuClick(action) {
   <MazPopover position="bottom-start">
     <template #trigger>
       <MazBtn>
-        <MazIcon name="cog-6-tooth" class="maz:me-2" />
+        <MazIcon icon="/cog-6-tooth.svg" class="maz:me-2" />
         Settings
-        <MazIcon name="chevron-down" class="maz:ms-2" />
+        <MazIcon icon="/chevron-down.svg" class="maz:ms-2" />
       </MazBtn>
     </template>
     <div class="maz:py-1 maz:min-w-48">
@@ -919,7 +919,7 @@ function handleMenuClick(action) {
         class="maz:w-full maz:px-4 maz:py-2 maz:text-start maz:text-sm maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:flex maz:items-center maz:gap-2"
         @click="handleMenuClick(item.action)"
       >
-        <MazIcon :name="item.icon" class="maz:w-4 maz:h-4" />
+        <MazIcon :icon="item.icon" class="maz:w-4 maz:h-4" />
         {{ item.label }}
       </button>
     </div>
@@ -928,7 +928,7 @@ function handleMenuClick(action) {
   <MazPopover position="bottom-end">
     <template #trigger>
       <MazBtn color="transparent" size="sm">
-        <MazIcon name="ellipsis-vertical" />
+        <MazIcon icon="/ellipsis-vertical.svg" />
       </MazBtn>
     </template>
     <div class="maz:py-1 maz:min-w-32">
@@ -1011,7 +1011,7 @@ function handleMenuClick(action) {
     <MazPopover position="bottom-start" :close-on-click-outside="false" :close-on-escape="false">
       <template #trigger>
         <MazBtn block>
-          <MazIcon name="plus" class="maz:me-2" />
+          <MazIcon icon="/plus.svg" class="maz:me-2" />
           Add Item
         </MazBtn>
       </template>
@@ -1067,7 +1067,7 @@ function resetForm() {
   <MazPopover position="bottom-start" :close-on-click-outside="false">
     <template #trigger>
       <MazBtn block>
-        <MazIcon name="plus" class="maz:me-2" />
+        <MazIcon icon="/plus.svg" class="maz:me-2" />
         Add Item
       </MazBtn>
     </template>
@@ -1356,8 +1356,8 @@ MazPopover follows WAI-ARIA guidelines:
 <script setup>
 import { ref, reactive } from 'vue'
 import MazPopover from 'maz-ui/components/MazPopover'
-import { MazInformationCircle } from '@maz-ui/icons/MazInformationCircle'
-import { MazEllipsisVertical } from '@maz-ui/icons/MazEllipsisVertical'
+import { MazInformationCircle } from '@maz-ui/icons/raw/MazInformationCircle'
+import { MazEllipsisVertical } from '@maz-ui/icons/raw/MazEllipsisVertical'
 
 const isOpen = ref(false)
 const events = ref([])

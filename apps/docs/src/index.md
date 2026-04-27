@@ -59,16 +59,16 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         size="lg"
         href="/guide/getting-started"
         class="maz:w-full maz:mob-l:w-auto maz:font-semibold"
-        :left-icon="MazPlay"
+        :start-icon="MazPlay"
       >
         Get Started
       </MazBtn>
       <MazBtn v-if="typeof starCount === 'number'" href="https://github.com/LouisMazel/maz-ui" target="blank" outlined color="background" size="lg" class="maz:w-full maz:mob-l:w-auto">
-        <template #left-icon>
+        <template #start-icon>
           <MazGithub class="maz:text-3xl" />
         </template>
         <MazAnimatedCounter :delay="1250" :count="starCount" class="maz:text-xl maz:ps-2" />
-        <template #right-icon>
+        <template #end-icon>
           <MazStar class="maz:text-2xl" />
         </template>
       </MazBtn>
@@ -261,7 +261,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         </div>
         <h3 class="maz:text-base maz:font-semibold">@maz-ui/icons</h3>
         <p class="maz:dark:text-gray-300 maz:text-muted maz:text-sm">
-          860+ beautiful SVG icons ready for Vue. Multiple usage patterns: components, direct SVG files, or auto-import.
+          860+ beautiful SVG icons ready for Vue. Multiple usage patterns: components, direct SVG files, raw SVG strings or auto-import.
         </p>
         <div class="maz:flex-1"></div>
         <MazBtn color="background" outlined size="sm" block href="/guide/icons">Discover</MazBtn>
@@ -528,10 +528,10 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   import Contributors from './../.vitepress/theme/components/Contributors.vue'
   import { MazArrowTopRightOnSquare } from '@maz-ui/icons/MazArrowTopRightOnSquare'
   import { MazStar } from '@maz-ui/icons/MazStar'
-  import { MazPlay } from '@maz-ui/icons/MazPlay'
+  import { MazPlay } from '@maz-ui/icons/raw/MazPlay'
   import { MazGithub } from '@maz-ui/icons/MazGithub'
-  import { MazSun } from '@maz-ui/icons/MazSun'
-  import { MazMoon } from '@maz-ui/icons/MazMoon'
+  import { MazSun } from '@maz-ui/icons/raw/MazSun'
+  import { MazMoon } from '@maz-ui/icons/raw/MazMoon'
   import { MazSparkles } from '@maz-ui/icons/MazSparkles'
 
   import { ref, computed } from 'vue'

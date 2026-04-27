@@ -313,7 +313,7 @@ Customize the upload area using slots:
   <MazDropzone v-model="files" @error="onError">
     <template #no-files-area="{ handleFileInputClick }">
       <div class="maz:flex maz:flex-col maz:items-center maz:gap-4">
-        <MazIcon name="arrow-up-on-square" class="maz:text-4xl" />
+        <MazIcon icon="/arrow-up-on-square.svg" class="maz:text-4xl" />
         <p>Drop your files here or click to browse</p>
         <MazBtn @click="handleFileInputClick">
           Select Files
@@ -328,7 +328,7 @@ Customize the upload area using slots:
 <MazDropzone v-model="files" @error="onError">
   <template #no-files-area="{ handleFileInputClick }">
     <div class="maz:flex maz:flex-col maz:items-center maz:gap-4">
-      <MazIcon name="arrow-up-on-square" class="maz:text-4xl" />
+      <MazIcon icon="/arrow-up-on-square.svg" class="maz:text-4xl" />
       <p>Drop your files here or click to browse</p>
       <MazBtn @click="handleFileInputClick"> Select Files </MazBtn>
     </div>

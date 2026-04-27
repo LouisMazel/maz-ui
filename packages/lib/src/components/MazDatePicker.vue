@@ -7,7 +7,7 @@ import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor } from './types'
 import { MazCalendar } from '@maz-ui/icons/lazy/MazCalendar'
 import { MazClock } from '@maz-ui/icons/lazy/MazClock'
-import { MazChevronDown } from '@maz-ui/icons/static/MazChevronDown'
+import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 import dayjs from 'dayjs'
@@ -21,8 +21,8 @@ import {
   useTemplateRef,
   watch,
 } from 'vue'
-
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+
 import MazPickerContainer from './MazDatePicker/MazPickerContainer.vue'
 import {
   checkValueWithMinMaxDates,
@@ -35,6 +35,7 @@ import {
   isValueDisabledDate,
   isValueDisabledWeekly,
 } from './MazDatePicker/utils'
+import MazIcon from './MazIcon.vue'
 import MazPopover from './MazPopover.vue'
 
 defineOptions({
@@ -716,12 +717,12 @@ watch(
           :placeholder
           :color
         >
-          <template #left-icon>
+          <template #start-icon>
             <MazCalendar v-if="hasDate" class="maz:text-xl" />
             <MazClock v-else-if="hasTime" class="maz:text-xl" />
           </template>
-          <template #right-icon>
-            <MazChevronDown class="m-date-picker__button__chevron maz:text-lg" />
+          <template #end-icon>
+            <MazIcon :icon="MazChevronDown" class="m-date-picker__button__chevron maz:text-lg" />
           </template>
         </MazInput>
       </slot>

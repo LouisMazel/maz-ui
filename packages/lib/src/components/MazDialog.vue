@@ -6,7 +6,7 @@ import type {
 } from 'vue'
 import type { MazBackdropProps } from './MazBackdrop.vue'
 
-import { MazXMark } from '@maz-ui/icons/static/MazXMark'
+import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import {
   computed,
   defineAsyncComponent,

@@ -146,8 +146,8 @@ const inputValue = ref()
 <MazInput
   v-model="inputValue"
   label="label icons"
-  left-icon="banknotes"
-  right-icon="user"
+  start-icon="banknotes"
+  end-icon="user"
   autocomplete="off"
 />
 
@@ -155,12 +155,12 @@ const inputValue = ref()
 
 ::: details View code
 
-When you use the properties `right-icon`, `left-icon` or `icon` with the icon name (string), the component uses `<MazIcon name="..." />` component.
+When you use the properties `end-icon`, `start-icon` or `icon` with the icon name (string), the component uses `<MazIcon icon="..." />` component.
 
 Check out how [MazIcon](./maz-icon.md) works, see all available icons and download them to put them in your public folder.
 
 ```html
-<MazInput v-model="inputValue" label="label icons" left-icon="banknotes" right-icon="user" />
+<MazInput v-model="inputValue" label="label icons" start-icon="banknotes" end-icon="user" />
 ```
 
 :::
@@ -171,7 +171,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 
 ```html
 <MazInput v-model="inputValue" label="label icons">
-  <template #left-icon>
+  <template #start-icon>
     <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M2.25 18.75C7.71719 18.75 13.0136 19.4812 18.0468 20.8512C18.7738 21.0491 19.5 20.5086 19.5 19.7551V18.75M3.75 4.5V5.25C3.75 5.66421 3.41421 6 3 6H2.25M2.25 6V5.625C2.25 5.00368 2.75368 4.5 3.375 4.5H20.25M2.25 6V15M20.25 4.5V5.25C20.25 5.66421 20.5858 6 21 6H21.75M20.25 4.5H20.625C21.2463 4.5 21.75 5.00368 21.75 5.625V15.375C21.75 15.9963 21.2463 16.5 20.625 16.5H20.25M21.75 15H21C20.5858 15 20.25 15.3358 20.25 15.75V16.5M20.25 16.5H3.75M3.75 16.5H3.375C2.75368 16.5 2.25 15.9963 2.25 15.375V15M3.75 16.5V15.75C3.75 15.3358 3.41421 15 3 15H2.25M15 10.5C15 12.1569 13.6569 13.5 12 13.5C10.3431 13.5 9 12.1569 9 10.5C9 8.84315 10.3431 7.5 12 7.5C13.6569 7.5 15 8.84315 15 10.5ZM18 10.5H18.0075V10.5075H18V10.5ZM6 10.5H6.0075V10.5075H6V10.5Z"
@@ -182,7 +182,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
       />
     </svg>
   </template>
-  <template #right-icon>
+  <template #end-icon>
     <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M15.75 6C15.75 8.07107 14.071 9.75 12 9.75C9.9289 9.75 8.24996 8.07107 8.24996 6C8.24996 3.92893 9.9289 2.25 12 2.25C14.071 2.25 15.75 3.92893 15.75 6Z"
@@ -223,8 +223,38 @@ const inputValue = ref('value')
   <MazInput
     v-model="inputValue"
     label="label icons"
-    :left-icon="MazBanknotes"
-    :right-icon="MazUser"
+    :start-icon="MazBanknotes"
+    :end-icon="MazUser"
+  />
+</template>
+```
+
+:::
+
+### Pass a full `MazIconProps` object
+
+`startIcon` and `endIcon` also accept a full `MazIconProps` object — pass the same shape `<MazIcon>` accepts to override the size, set a `<title>` for screen readers, attach `svgAttributes`, etc.
+
+::: details View code
+
+```vue
+<script lang="ts" setup>
+import MazInput from 'maz-ui/components/MazInput'
+import { MazBanknotes } from '@maz-ui/icons/raw/MazBanknotes'
+import { ref } from 'vue'
+
+const inputValue = ref('value')
+</script>
+
+<template>
+  <MazInput
+    v-model="inputValue"
+    label="amount"
+    :start-icon="{
+      icon: MazBanknotes,
+      size: 'lg',
+      title: 'Amount in USD',
+    }"
   />
 </template>
 ```

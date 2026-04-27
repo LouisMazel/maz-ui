@@ -450,7 +450,7 @@ function saveUser() {
             size="sm"
             @click="refreshData"
           >
-            <MazIcon name="refresh" />
+            <MazIcon icon="/refresh.svg" />
           </MazBtn>
         </div>
       </template>

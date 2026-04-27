@@ -11,7 +11,7 @@ import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
 import { MazMagnifyingGlass } from '@maz-ui/icons/lazy/MazMagnifyingGlass'
 import { MazNoSymbol } from '@maz-ui/icons/lazy/MazNoSymbol'
-import { MazChevronDown } from '@maz-ui/icons/static/MazChevronDown'
+import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { debounceCallback } from '@maz-ui/utils/helpers/debounceCallback'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
@@ -27,6 +27,7 @@ import {
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useStringMatching } from '../composables/useStringMatching'
 import { hasSlotContent } from '../utils/hasSlotContent'
+import MazIcon from './MazIcon.vue'
 import MazInput from './MazInput.vue'
 import MazPopover from './MazPopover.vue'
 
@@ -688,27 +689,27 @@ defineExpose({
         @blur="emits('blur', $event)"
         @keydown="mainInputKeyboardHandler"
       >
-        <template v-if="hasSlotContent($slots['left-icon'])" #left-icon>
+        <template v-if="hasSlotContent($slots['start-icon'])" #start-icon>
           <!--
-          @slot Add a custom left icon
+          @slot Add a custom inline-start icon (left in LTR, right in RTL)
           @binding {boolean} is-open Current open state of the popover
           @binding {function} close Function to close the popover
           @binding {function} open Function to open the popover
           @binding {function} toggle Function to toggle the popover
         -->
-          <slot name="left-icon" :is-open="isOpen" :close="close" :open="openPicker" :toggle="togglePopover" />
+          <slot name="start-icon" :is-open="isOpen" :close="close" :open="openPicker" :toggle="togglePopover" />
         </template>
 
-        <template #right-icon>
+        <template #end-icon>
           <!--
-            @slot Add and replace a custom right icon
+            @slot Add and replace a custom inline-end icon (right in LTR, left in RTL)
             @binding {boolean} is-open Current open state of the popover
             @binding {function} close Function to close the popover
             @binding {function} open Function to open the popover
             @binding {function} toggle Function to toggle the popover
             @default MazChevronDown
           -->
-          <slot name="right-icon" :is-open="isOpen" :close="close" :open="openPicker" :toggle="togglePopover">
+          <slot name="end-icon" :is-open="isOpen" :close="close" :open="openPicker" :toggle="togglePopover">
             <button
               tabindex="-1"
               :disabled
@@ -716,7 +717,7 @@ defineExpose({
               class="m-select-input__toggle-button maz-custom"
               :aria-label="`${isOpen ? 'collapse' : 'expand'} list of options`"
             >
-              <MazChevronDown class="m-select-chevron" />
+              <MazIcon :icon="MazChevronDown" class="m-select-chevron" />
             </button>
           </slot>
         </template>
@@ -751,7 +752,7 @@ defineExpose({
             autocomplete="off"
             block
             class="m-select-list__search-input maz:flex-none"
-            :left-icon="MazMagnifyingGlass"
+            :start-icon="MazMagnifyingGlass"
             @update:model-value="updateListPosition"
           />
         </div>

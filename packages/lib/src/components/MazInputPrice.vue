@@ -133,7 +133,7 @@ function updateInternalValue(value?: string | number) {
     :success
     :warning
     :hint
-    :left-icon="noIcon ? undefined : MazBanknotes"
+    :start-icon="noIcon ? undefined : MazBanknotes"
     @focus="onFocus"
     @blur="onBlur"
     @input="onInput"

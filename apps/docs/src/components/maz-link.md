@@ -83,27 +83,27 @@ When you use the `to` prop, the component will be a `router-link` and will use t
 
 ## Icons
 
-You can add an icon on the left and right to the link text with the `left-icon` and `right-icon` props.
+You can add an icon on the left and right to the link text with the `start-icon` and `end-icon` props.
 
 For more information about the icons, please check the [MazBtn](./maz-btn.md#icons) page.
 
 <ComponentDemo>
-  <MazLink left-icon="home" :right-icon="MazCheck"> View product detail </MazLink>
+  <MazLink start-icon="home" :end-icon="MazCheck"> View product detail </MazLink>
 
 <template #code>
 
 ```vue
 <script lang="ts" setup>
-import { MazCheck } from '@maz-ui/icons/MazCheck'
-import { MazHome } from '@maz-ui/icons/MazHome'
+import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
+import { MazHome } from '@maz-ui/icons/raw/MazHome'
 </script>
 
 <template>
-  <MazLink left-icon="home" :right-icon="MazHome">
+  <MazLink start-icon="home" :end-icon="MazHome">
     View product detail
   </MazLink>
 
-  <MazLink left-icon="home" :right-icon="MazHome">
+  <MazLink start-icon="home" :end-icon="MazHome">
     View product detail
   </MazLink>
 </template>
@@ -111,6 +111,22 @@ import { MazHome } from '@maz-ui/icons/MazHome'
 
   </template>
 </ComponentDemo>
+
+`startIcon` and `endIcon` also accept a full `MazIconProps` object — pass the same shape `<MazIcon>` accepts to override the icon size, add a `<title>` for screen readers, etc.
+
+```vue
+<MazLink
+  href="/external"
+  :end-icon="{
+    icon: MazArrowRight,
+    size: 'lg',
+    title: 'Go to external page',
+    flipIconForRtl: true,
+  }"
+>
+  Read more
+</MazLink>
+```
 
 ## External icon (true by default)
 
@@ -155,8 +171,8 @@ If no `to` or `href` is provided, the component will be a `button` by default. Y
 </ComponentDemo>
 
 <script setup lang="ts">
-  import { MazCheck } from '@maz-ui/icons/MazCheck'
-  import { MazHome } from '@maz-ui/icons/MazHome'
+  import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
+  import { MazHome } from '@maz-ui/icons/raw/MazHome'
 </script>
 
 <!--@include: ./../../.vitepress/generated-docs/maz-link.doc.md-->

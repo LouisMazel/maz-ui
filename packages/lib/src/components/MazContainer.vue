@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import type { IconComponent } from '@maz-ui/icons'
+import type { MazIconLike } from '../composables/useMazIconProps'
 import type { MazIconProps } from './MazIcon.vue'
 import { defineAsyncComponent } from 'vue'
+import { useMazIconProps } from '../composables/useMazIconProps'
 import { hasSlotContent } from '../utils/hasSlotContent'
 
 export interface MazContainerProps {
@@ -42,15 +43,16 @@ export interface MazContainerProps {
    */
   overflowHidden?: boolean
   /**
-   * Add icon to the header on the left
-   * @type {IconComponent | string}
+   * Icon displayed on the inline-start edge of the header (left in LTR, right
+   * in RTL). Accepts a bare value (Vue component, raw SVG string, URL or
+   * `data:` URI) or a full `MazIconProps` object.
    */
-  leftIcon?: IconComponent | string
+  startIcon?: MazIconLike
   /**
-   * Add icon to the header on the right
-   * @type {IconComponent | string}
+   * Icon displayed on the inline-end edge of the header (right in LTR, left
+   * in RTL). Accepts a bare value or a full `MazIconProps` object.
    */
-  rightIcon?: IconComponent | string
+  endIcon?: MazIconLike
   /**
    * Size of the icon
    * @type {MazIconProps['size']}
@@ -73,12 +75,15 @@ const {
   transparent = false,
   overflowHidden = true,
   block = false,
-  leftIcon,
-  rightIcon,
+  startIcon,
+  endIcon,
   iconSize = 'md',
 } = defineProps<MazContainerProps>()
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
+
+const { iconProps: startIconProps } = useMazIconProps(() => startIcon, () => ({ size: iconSize }))
+const { iconProps: endIconProps } = useMazIconProps(() => endIcon, () => ({ size: iconSize }))
 
 const ROUNDED_CLASS = {
   none: '',
@@ -114,19 +119,17 @@ const ROUNDED_CLASS = {
     <!-- @slot Replace the header -->
     <slot name="header">
       <div v-if="title || hasSlotContent($slots.title)" class="m-container__header maz:w-full maz:flex maz:items-center maz:justify-start maz:gap-2" :class="{ 'maz:px-4 maz:py-3': padding, 'maz:border-b maz:border-divider': bordered }">
-        <!-- @slot icon left -->
-        <slot name="icon-left">
-          <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" :size="iconSize" />
-          <MazIcon v-else-if="leftIcon" :icon="leftIcon" :size="iconSize" />
+        <!-- @slot icon-start - inline-start edge of the header (left in LTR, right in RTL) -->
+        <slot name="icon-start">
+          <MazIcon v-if="startIconProps" v-bind="startIconProps" />
         </slot>
         <!-- @slot title -->
         <slot name="title">
           {{ title }}
         </slot>
-        <!-- @slot icon right -->
-        <slot name="icon-right">
-          <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" :size="iconSize" />
-          <MazIcon v-else-if="rightIcon" :icon="rightIcon" :size="iconSize" />
+        <!-- @slot icon-end - inline-end edge of the header (right in LTR, left in RTL) -->
+        <slot name="icon-end">
+          <MazIcon v-if="endIconProps" v-bind="endIconProps" />
         </slot>
       </div>
     </slot>

@@ -15,7 +15,7 @@ All icons follow a consistent naming pattern:
 <ComponentDemo>
   <div class="maz:flex maz:flex-col maz:gap-4">
     <div class="maz:flex maz:gap-2 maz:items-start">
-      <MazInput v-model="search" label="Search icon" @update:model-value="search = $event.trim()" :left-icon="SearchIcon" class="flex-1" :assistive-text="`${filteredIcons.length} icons found`" />
+      <MazInput v-model="search" label="Search icon" @update:model-value="search = $event.trim()" :start-icon="SearchIcon" class="flex-1" :assistive-text="`${filteredIcons.length} icons found`" />
     </div>
     <MazTabs v-model="currentTab">
       <MazTabsBar :items="tabs" />

@@ -194,6 +194,21 @@ You can provide an icon to replace the default chevron icon and disable the anim
 </template>
 ```
 
+`dropdownIcon` also accepts a full `MazIconProps` object — pass the same shape `<MazIcon>` accepts when you need to set a `<title>` for screen readers, override the size, or attach `svgAttributes`.
+
+```vue
+<MazDropdown
+  :items="items"
+  :dropdown-icon="{
+    icon: MazChevronUpDown,
+    size: 'lg',
+    title: 'Open menu',
+  }"
+>
+  Custom icon
+</MazDropdown>
+```
+
 ## Custom dropdown main button without chevron icon
 
 ::: tip
@@ -638,7 +653,7 @@ type MazDropdownMenuItem = {
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue'
   import { useToast } from 'maz-ui/composables/useToast'
-  import { MazChevronUpDown } from '@maz-ui/icons/MazChevronUpDown'
+  import { MazChevronUpDown } from '@maz-ui/icons/raw/MazChevronUpDown'
 
   const toast = useToast()
 

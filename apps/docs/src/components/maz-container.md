@@ -63,14 +63,14 @@ Add a header with a title using the `title` prop or the `title` slot.
 
 ## With icons
 
-Add icons to the header using `left-icon` and `right-icon` props.
+Add icons to the header using `start-icon` and `end-icon` props.
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-col maz:gap-4">
-    <MazContainer title="Settings" left-icon="cog-6-tooth">
+    <MazContainer title="Settings" start-icon="cog-6-tooth">
       Configure your application settings here.
     </MazContainer>
-    <MazContainer title="User Profile" left-icon="user" right-icon="pencil">
+    <MazContainer title="User Profile" start-icon="user" end-icon="pencil">
       View and edit your profile information.
     </MazContainer>
   </div>
@@ -79,11 +79,11 @@ Add icons to the header using `left-icon` and `right-icon` props.
 
 ```vue
 <template>
-  <MazContainer title="Settings" left-icon="cog-6-tooth">
+  <MazContainer title="Settings" start-icon="cog-6-tooth">
     Configure your application settings here.
   </MazContainer>
 
-  <MazContainer title="User Profile" left-icon="user" right-icon="pencil">
+  <MazContainer title="User Profile" start-icon="user" end-icon="pencil">
     View and edit your profile information.
   </MazContainer>
 </template>
@@ -91,6 +91,21 @@ Add icons to the header using `left-icon` and `right-icon` props.
 
   </template>
 </ComponentDemo>
+
+`startIcon` and `endIcon` also accept a full `MazIconProps` object — pass the same shape `<MazIcon>` accepts to override the icon size, add a `<title>` for screen readers, etc.
+
+```vue
+<MazContainer
+  title="Settings"
+  :start-icon="{
+    icon: MazCog6Tooth,
+    size: 'lg',
+    title: 'Open settings',
+  }"
+>
+  Configure your application settings here.
+</MazContainer>
+```
 
 ## Styling options
 
@@ -245,7 +260,7 @@ Use the `block` prop to make the container take full width.
 
 ## Custom header
 
-Use the `header` slot to fully customize the header, or use `title`, `icon-left`, and `icon-right` slots for more granular control.
+Use the `header` slot to fully customize the header, or use `title`, `icon-start`, and `icon-end` slots for more granular control.
 
 <ComponentDemo>
   <MazContainer>
@@ -286,7 +301,7 @@ Use the `header` slot to fully customize the header, or use `title`, `icon-left`
 <ComponentDemo>
   <MazContainer
     title="Dashboard Overview"
-    left-icon="chart-bar"
+    start-icon="chart-bar"
     elevation
     :bordered="false"
     rounded-size="xl"
@@ -314,7 +329,7 @@ Use the `header` slot to fully customize the header, or use `title`, `icon-left`
 <template>
   <MazContainer
     title="Dashboard Overview"
-    left-icon="chart-bar"
+    start-icon="chart-bar"
     elevation
     :bordered="false"
     rounded-size="xl"

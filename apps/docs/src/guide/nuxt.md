@@ -190,7 +190,7 @@ const general = {
   // Add prefix to all auto-imported composables
   autoImportPrefix: 'Maz', // only for composables, generates useMazToast, useMazTheme, etc.
 
-  // Default icon path for <MazIcon name="..." />
+  // Default icon path for <MazIcon icon="..." />
   defaultMazIconPath: '/icons',
 
   // Enable Nuxt DevTools integration

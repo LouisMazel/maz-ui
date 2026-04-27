@@ -16,7 +16,7 @@ type MazUiComposables = keyof typeof import('maz-ui/composables')
 
 type Composables = Omit<
   Record<MazUiComposables | 'useTheme' | 'useTranslations', true>,
-  'useAos' | 'useDialog' | 'useToast' | 'useWait'
+  'useAos' | 'useDialog' | 'useToast' | 'useWait' | 'useMazIconProps'
 >
 
 declare module '@nuxt/schema' {
@@ -112,7 +112,7 @@ const pluginComposables: Record<'useTheme' | 'useTranslations', true> = {
   useTranslations: true,
 }
 
-const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDialog' | 'useToast' | 'useWait'> = {
+const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDialog' | 'useToast' | 'useWait' | 'useMazIconProps'> = {
   useIdleTimeout: true,
   useReadingTime: true,
   useFormField: true,
