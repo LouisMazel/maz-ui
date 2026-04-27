@@ -371,9 +371,6 @@ importers:
       vue:
         specifier: '>=3.5.0 <4.0.0'
         version: 3.5.32(typescript@6.0.2)
-      vue-chartjs:
-        specifier: ^5.3.3
-        version: 5.3.3(chart.js@4.5.1)(vue@3.5.32(typescript@6.0.2))
     devDependencies:
       '@maz-ui/eslint-config':
         specifier: workspace:*
@@ -10561,12 +10558,6 @@ packages:
 
   vue-bundle-renderer@2.2.0:
     resolution: {integrity: sha512-sz/0WEdYH1KfaOm0XaBmRZOWgYTEvUDt6yPYaUzl4E52qzgWLlknaPPTTZmp6benaPTlQAI/hN1x3tAzZygycg==}
-
-  vue-chartjs@5.3.3:
-    resolution: {integrity: sha512-jqxtL8KZ6YJ5NTv6XzrzLS7osyegOi28UGNZW0h9OkDL7Sh1396ht4Dorh04aKrl2LiSalQ84WtqiG0RIJb0tA==}
-    peerDependencies:
-      chart.js: ^4.1.1
-      vue: ^3.0.0-0 || ^2.7.0
 
   vue-component-type-helpers@2.2.12:
     resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
@@ -21690,11 +21681,6 @@ snapshots:
   vue-bundle-renderer@2.2.0:
     dependencies:
       ufo: 1.6.3
-
-  vue-chartjs@5.3.3(chart.js@4.5.1)(vue@3.5.32(typescript@6.0.2)):
-    dependencies:
-      chart.js: 4.5.1
-      vue: 3.5.32(typescript@6.0.2)
 
   vue-component-type-helpers@2.2.12: {}
 
