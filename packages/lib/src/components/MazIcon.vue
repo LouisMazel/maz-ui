@@ -272,7 +272,7 @@ watchEffect(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-icon {
-  width: 1em !important;
-  height: 1em !important;
+  inline-size: 1em !important;
+  block-size: 1em !important;
 }
 </style>

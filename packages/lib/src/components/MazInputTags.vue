@@ -236,12 +236,11 @@ const buttonSize = computed(() => {
   &:deep(.m-input-wrapper) {
     @apply maz:border-none maz:bg-transparent!;
 
-    min-width: 7.5em;
+    min-inline-size: 7.5em;
   }
 
   &:deep(input) {
-    padding-left: 0.4em;
-    padding-right: 0.4em;
+    padding-inline: 0.4em;
   }
 }
 </style>

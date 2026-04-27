@@ -20,12 +20,12 @@
 }
 
 @utility padded-container-no-p {
-  width: 100%;
+  inline-size: 100%;
   padding-inline: calc(50% - var(--maz-container-max-width) / 2);
 }
 
 @utility padded-container {
-  width: 100%;
+  inline-size: 100%;
   padding-inline: var(--maz-container-padding);
 }
 

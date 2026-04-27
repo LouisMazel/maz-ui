@@ -54,6 +54,6 @@ onUnmounted(() => {
 <style>
 html.--maz-fullscreen-loader-present {
   overflow-y: hidden;
-  height: 100vh;
+  block-size: 100vh;
 }
 </style>

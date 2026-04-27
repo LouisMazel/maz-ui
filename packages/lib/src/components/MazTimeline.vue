@@ -557,8 +557,8 @@ const ROUNDED_CLASS = {
 
   /* --- Step indicator (base) --- */
   .m-timeline-indicator {
-    width: var(--m-timeline-indicator-size);
-    height: var(--m-timeline-indicator-size);
+    inline-size: var(--m-timeline-indicator-size);
+    block-size: var(--m-timeline-indicator-size);
 
     @apply maz:bg-(--maz-muted)/30 maz:text-(--maz-muted);
   }
@@ -617,14 +617,14 @@ const ROUNDED_CLASS = {
 
   /* --- Step icon --- */
   .m-timeline-step-icon {
-    width: var(--m-timeline-icon-size);
-    height: var(--m-timeline-icon-size);
+    inline-size: var(--m-timeline-icon-size);
+    block-size: var(--m-timeline-icon-size);
   }
 
   /* --- Check icon --- */
   .m-timeline-check-icon {
-    width: var(--m-timeline-icon-size);
-    height: var(--m-timeline-icon-size);
+    inline-size: var(--m-timeline-icon-size);
+    block-size: var(--m-timeline-icon-size);
   }
 
   /* --- Clickable --- */

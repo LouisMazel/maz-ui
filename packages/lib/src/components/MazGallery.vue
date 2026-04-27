@@ -235,40 +235,40 @@ function shouldHaveRemainingLayer(index: number): boolean {
     border-color: var(--gallery-separator-color);
 
     &--1 {
-      left: 0;
-      height: 100%;
+      inset-inline-start: 0;
+      block-size: 100%;
 
       &:not(:last-child) {
-        width: 50%;
+        inline-size: 50%;
       }
     }
 
     &--2 {
-      left: 50%;
-      width: 50%;
-      height: 50%;
+      inset-inline-start: 50%;
+      inline-size: 50%;
+      block-size: 50%;
 
       &:last-child {
-        height: 100%;
+        block-size: 100%;
       }
 
       &:nth-last-child(4) {
-        width: 25%;
+        inline-size: 25%;
       }
     }
 
     &--3 {
-      top: 50%;
-      left: 50%;
-      width: 25%;
+      inset-block-start: 50%;
+      inset-inline-start: 50%;
+      inline-size: 25%;
 
       &:last-child {
-        width: 50%;
+        inline-size: 50%;
       }
 
       &:nth-last-child(3) {
-        top: 0;
-        left: 75%;
+        inset-block-start: 0;
+        inset-inline-start: 75%;
       }
     }
 
@@ -276,13 +276,13 @@ function shouldHaveRemainingLayer(index: number): boolean {
       @apply maz:border-t-2;
 
       border-color: var(--gallery-separator-color);
-      top: 50%;
-      left: 50%;
-      width: 25%;
+      inset-block-start: 50%;
+      inset-inline-start: 50%;
+      inline-size: 25%;
 
       &:last-child {
-        left: 75%;
-        width: 25%;
+        inset-inline-start: 75%;
+        inline-size: 25%;
       }
     }
 
@@ -290,13 +290,13 @@ function shouldHaveRemainingLayer(index: number): boolean {
       @apply maz:border-t-2;
 
       border-color: var(--gallery-separator-color);
-      top: 50%;
-      left: 75%;
-      width: 25%;
+      inset-block-start: 50%;
+      inset-inline-start: 75%;
+      inline-size: 25%;
     }
 
     &:first-child {
-      border-left: 0;
+      border-inline-start: 0;
     }
 
     &--3:last-child,
@@ -309,9 +309,9 @@ function shouldHaveRemainingLayer(index: number): boolean {
     }
 
     &__image {
-      height: 100%;
-      max-width: 100%;
-      width: 100%;
+      block-size: 100%;
+      max-inline-size: 100%;
+      inline-size: 100%;
       background-position: center center;
       background-size: cover;
       background-repeat: no-repeat;

@@ -372,19 +372,19 @@ const flagUrl = computed(() => {
 .m-select-country {
   &__country-flag {
     position: absolute;
-    left: 0.813rem;
+    inset-inline-start: 0.813rem;
     z-index: 4;
     outline: none;
     border: none;
     padding: 0;
     margin: 0;
-    top: 1.25rem;
+    inset-block-start: 1.25rem;
     cursor: pointer;
 
     @apply maz:flex maz:flex-center;
 
     &.--should-have-bottom-flag {
-      bottom: 2px;
+      inset-block-end: 2px;
     }
   }
 

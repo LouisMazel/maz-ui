@@ -20,8 +20,5 @@ jobs:
       - name: Setup Node.js, pnpm and Nx cache
         uses: ./.github/actions/setup
 
-      - name: Build eslint config
-        run: pnpm exec nx run @maz-ui/eslint-config:build
-
       - name: Run linters
         run: pnpm lint:all

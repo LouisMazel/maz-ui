@@ -207,8 +207,8 @@ onMounted(() => {
 
 <style scoped>
 .m-read-more__hidden {
-  width: 1px;
-  height: 1px;
+  inline-size: 1px;
+  block-size: 1px;
   clip-path: inset(50%);
 }
 </style>

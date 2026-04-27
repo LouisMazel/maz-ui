@@ -926,7 +926,7 @@ defineExpose({
     @apply maz:text-xl;
   }
 
-  min-width: 3.5rem;
+  min-inline-size: 3.5rem;
 
   &__search-wrapper {
     @apply maz:px-2 maz:pt-2;
@@ -937,7 +937,7 @@ defineExpose({
 
     /* Custom scrollbar for webkit browsers (Chrome, Safari, Edge) */
     &::-webkit-scrollbar {
-      width: 0.1875rem;
+      inline-size: 0.1875rem;
     }
 
     &::-webkit-scrollbar-track {

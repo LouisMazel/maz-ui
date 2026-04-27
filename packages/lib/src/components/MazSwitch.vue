@@ -161,7 +161,7 @@ function onFocus(event: FocusEvent) {
 
 .m-switch {
   &__input {
-    left: -9999px;
+    inset-inline-start: -9999px;
   }
 
   &__toggle {

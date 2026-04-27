@@ -30,7 +30,7 @@ const colorCSSVariables = computed(() => ({
 @reference "../tailwindcss/tailwind.css";
 
 .m-loading-bar {
-  height: var(--loading-bar-height);
+  block-size: var(--loading-bar-height);
   background-color: var(--loading-bar-color);
   overflow: hidden;
 
@@ -43,10 +43,9 @@ const colorCSSVariables = computed(() => ({
       @apply maz:absolute;
 
       background-color: inherit;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      will-change: left, right;
+      inset-block: 0;
+      inset-inline-start: 0;
+      will-change: inset-inline-start, inset-inline-end;
       animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
     }
 
@@ -56,10 +55,9 @@ const colorCSSVariables = computed(() => ({
       @apply maz:absolute;
 
       background-color: inherit;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      will-change: left, right;
+      inset-block: 0;
+      inset-inline-start: 0;
+      will-change: inset-inline-start, inset-inline-end;
       animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
       animation-delay: 1.15s;
     }
@@ -68,35 +66,29 @@ const colorCSSVariables = computed(() => ({
 
 @keyframes indeterminate {
   0% {
-    left: -35%;
-    right: 100%;
+    inset-inline: -35% 100%;
   }
 
   60% {
-    left: 100%;
-    right: -90%;
+    inset-inline: 100% -90%;
   }
 
   100% {
-    left: 100%;
-    right: -90%;
+    inset-inline: 100% -90%;
   }
 }
 
 @keyframes indeterminate-short {
   0% {
-    left: -200%;
-    right: 100%;
+    inset-inline: -200% 100%;
   }
 
   60% {
-    left: 107%;
-    right: -8%;
+    inset-inline: 107% -8%;
   }
 
   100% {
-    left: 107%;
-    right: -8%;
+    inset-inline: 107% -8%;
   }
 }
 </style>

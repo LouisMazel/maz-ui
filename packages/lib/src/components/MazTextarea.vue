@@ -292,7 +292,7 @@ const stateLabelColor = computed(() => [
   &.--has-placeholder.--has-label textarea,
   &.--has-label:has(textarea:not(:placeholder-shown)) textarea,
   &.--has-label:has(textarea:-webkit-autofill) textarea {
-    padding-top: 0.875rem;
+    padding-block-start: 0.875rem;
   }
 
   &__append {

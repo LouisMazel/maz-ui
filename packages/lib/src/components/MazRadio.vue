@@ -210,8 +210,8 @@ function onFocus(event: FocusEvent) {
   > span {
     @apply maz:relative maz:flex maz:rounded-full maz:border maz:border-divider maz:dark:border-divider-400 maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center;
 
-    width: var(--radio-size);
-    height: var(--radio-size);
+    inline-size: var(--radio-size);
+    block-size: var(--radio-size);
 
     .round {
       @apply maz:h-[50%] maz:w-[50%] maz:scale-0 maz:rounded-full maz:transition-transform maz:duration-300 maz:ease-in-out;

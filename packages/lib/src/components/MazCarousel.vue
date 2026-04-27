@@ -144,7 +144,7 @@ function setScrollState(event: Event) {
     scrollbar-color: var(--maz-background-600) transparent;
 
     &::-webkit-scrollbar {
-      width: 0.1875rem;
+      inline-size: 0.1875rem;
     }
 
     &::-webkit-scrollbar-track {
@@ -159,8 +159,8 @@ function setScrollState(event: Event) {
 
     &__spacer {
       flex: 0 0 1px;
-      width: 1px;
-      height: 1px;
+      inline-size: 1px;
+      block-size: 1px;
     }
   }
 

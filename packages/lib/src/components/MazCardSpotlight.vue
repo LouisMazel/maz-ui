@@ -177,8 +177,8 @@ onMounted(() => {
   }
 
   .blob {
-    width: 208px;
-    height: 208px;
+    inline-size: 208px;
+    block-size: 208px;
     will-change: transform;
     transition: opacity 150ms ease-out;
   }

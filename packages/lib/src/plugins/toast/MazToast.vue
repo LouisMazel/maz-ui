@@ -412,8 +412,8 @@ onMounted(() => {
   }
 
   & .m-toast__progress-bar {
-    bottom: max(var(--maz-border-width), 1px);
-    height: max(var(--maz-border-width), 0.125rem);
+    inset-block-end: max(var(--maz-border-width), 1px);
+    block-size: max(var(--maz-border-width), 0.125rem);
   }
 }
 

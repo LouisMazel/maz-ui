@@ -311,13 +311,13 @@ const stateColor = computed(() => {
       &:first-child {
         @apply maz:rounded-r-none!;
 
-        margin-right: calc(-1 * 2px);
+        margin-inline-end: calc(-1 * 2px);
       }
 
       &:last-child {
         @apply maz:rounded-l-none!;
 
-        margin-left: calc(-1 * 2px);
+        margin-inline-start: calc(-1 * 2px);
       }
     }
   }

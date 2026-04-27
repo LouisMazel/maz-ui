@@ -323,10 +323,10 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
 @reference "../../tailwindcss/tailwind.css";
 
 .m-date-picker-time {
-  max-height: 18.75rem;
+  max-block-size: 18.75rem;
 
   &:not(.--has-date) {
-    max-height: 10rem;
+    max-block-size: 10rem;
   }
 
   &::before {

@@ -169,7 +169,7 @@ watch(
 
 .m-date-picker-header {
   &__time-transition {
-    min-width: 5rem;
+    min-inline-size: 5rem;
   }
 
   &__time:not(.--has-date) .m-date-picker-header__time-transition {

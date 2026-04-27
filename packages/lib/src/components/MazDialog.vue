@@ -187,8 +187,8 @@ if (scrollable) {
 
 .m-dialog {
   @variant tab-s {
-    max-width: var(--max-width);
-    min-width: var(--min-width);
+    max-inline-size: var(--max-width);
+    min-inline-size: var(--min-width);
   }
 }
 </style>

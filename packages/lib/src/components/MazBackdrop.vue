@@ -326,11 +326,11 @@ defineExpose({
 
 html.--backdrop-present {
   overflow-y: hidden;
-  height: 100vh !important;
+  block-size: 100vh !important;
 }
 
 html.--backdrop-present.--has-scrollbar {
-  padding-right: var(--scrollbar-width);
+  padding-inline-end: var(--scrollbar-width);
 }
 </style>
 

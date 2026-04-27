@@ -120,7 +120,8 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-badge {
-  padding: 0.25em 0.5em;
+  padding-block: 0.25em;
+  padding-inline: 0.5em;
   line-height: 1.4em;
   background-color: var(--m-badge-bg);
   color: var(--m-badge-fg);

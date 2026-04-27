@@ -73,7 +73,7 @@ watch(
 
   scrollbar-width: none;
   -ms-overflow-style: none;
-  max-height: 18.75rem;
+  max-block-size: 18.75rem;
 
   & > button {
     @apply maz:w-full maz:flex-none maz:truncate;

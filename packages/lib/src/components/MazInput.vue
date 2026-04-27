@@ -566,27 +566,27 @@ const CHILD_TEXT_SIZE_CLASS = {
   &-wrapper {
     &-input {
       &.--xl {
-        height: calc(4rem - (var(--maz-border-width) * 2));
+        block-size: calc(4rem - (var(--maz-border-width) * 2));
       }
 
       &.--lg {
-        height: calc(3.5rem - (var(--maz-border-width) * 2));
+        block-size: calc(3.5rem - (var(--maz-border-width) * 2));
       }
 
       &.--md {
-        height: calc(3rem - (var(--maz-border-width) * 2));
+        block-size: calc(3rem - (var(--maz-border-width) * 2));
       }
 
       &.--sm {
-        height: calc(2.5rem - (var(--maz-border-width) * 2));
+        block-size: calc(2.5rem - (var(--maz-border-width) * 2));
       }
 
       &.--xs {
-        height: calc(2rem - (var(--maz-border-width) * 2));
+        block-size: calc(2rem - (var(--maz-border-width) * 2));
       }
 
       &.--mini {
-        height: calc(1.5rem - (var(--maz-border-width) * 2));
+        block-size: calc(1.5rem - (var(--maz-border-width) * 2));
       }
     }
   }
@@ -600,7 +600,7 @@ const CHILD_TEXT_SIZE_CLASS = {
   }
 
   &-label {
-    width: calc(100% - 0.75rem);
+    inline-size: calc(100% - 0.75rem);
     transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
   }
 
@@ -608,7 +608,7 @@ const CHILD_TEXT_SIZE_CLASS = {
   &.--has-placeholder .m-input-label,
   & .m-input-input:not(:placeholder-shown) ~ .m-input-label,
   & .m-input-input:-webkit-autofill ~ .m-input-label {
-    width: calc(100% + 1.3rem);
+    inline-size: calc(100% + 1.3rem);
     transform: scale(0.8) translateY(-0.65em);
   }
 

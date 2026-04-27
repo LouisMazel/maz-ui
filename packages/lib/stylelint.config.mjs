@@ -7,7 +7,8 @@ export default defineConfig({
   // Lib already ships fully-authored CSS — logical-property warnings and
   // recess property ordering would be too noisy on the existing surface.
   // Re-enable per-package when the codebase is ready for the diff.
-  logical: false,
-  order: false,
+  logical: true,
+  order: true,
+  html: true,
   ignores: ['types/**/*', '.DS_Store'],
 })

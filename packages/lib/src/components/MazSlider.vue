@@ -364,17 +364,18 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
 @reference "../tailwindcss/tailwind.css";
 
 .m-slider {
-  padding: 1em 1.5rem;
+  padding-block: 1em;
+  padding-inline: 1.5rem;
 
   &__bar {
-    height: 0.5em;
+    block-size: 0.5em;
     background-color: var(--m-slider-color);
   }
 
   &__divider {
     position: absolute;
     border-radius: 2em;
-    height: 100%;
+    block-size: 100%;
   }
 
   &__btn {
@@ -386,16 +387,16 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     line-height: 1;
     transition:
       box-shadow 300ms ease-in-out,
-      width 300ms ease-in-out,
+      inline-size 300ms ease-in-out,
       transform 300ms ease-in-out,
       background-color 300ms ease-in-out;
     z-index: 1;
     user-select: none;
-    padding: 0.25em 0.5em;
+    padding-block: 0.25em;
+    padding-inline: 0.5em;
 
     & span {
-      margin-left: 0.25em;
-      margin-right: 0.25em;
+      margin-inline: 0.25em;
     }
 
     &.active-cursor {
@@ -408,7 +409,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     &::before {
       content: attr(data-label);
       font-size: 0.8em;
-      top: -1.5em;
+      inset-block-start: -1.5em;
 
       @apply maz:absolute maz:font-medium maz:text-foreground;
     }

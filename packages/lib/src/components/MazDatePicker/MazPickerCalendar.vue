@@ -121,10 +121,10 @@ const calendarDate = computed({
 
 .maz-picker-calendar {
   &__main {
-    width: 16rem;
+    inline-size: 16rem;
 
     &.--has-double {
-      width: 34rem;
+      inline-size: 34rem;
 
       & .maz-picker-calendar__months > :first-child {
         @apply maz:border-e maz:border-divider;

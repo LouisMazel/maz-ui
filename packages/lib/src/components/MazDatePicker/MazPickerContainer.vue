@@ -151,7 +151,7 @@ const currentCalendarDate = computed({
 
 .m-date-picker-container {
   &.--has-double {
-    min-width: 28.125rem;
+    min-inline-size: 28.125rem;
   }
 
   & :deep(button):is(:disabled) {

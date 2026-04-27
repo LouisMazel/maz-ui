@@ -146,7 +146,7 @@ const cssVars = computed<CSSProperties>(() => ({
     }
 
     & .m-ticker-overlay {
-      width: var(--m-ticker-overlay-size);
+      inline-size: var(--m-ticker-overlay-size);
 
       &.--start {
         background: linear-gradient(to right, var(--maz-background), transparent);
@@ -166,7 +166,7 @@ const cssVars = computed<CSSProperties>(() => ({
     }
 
     & .m-ticker-overlay {
-      height: var(--m-ticker-overlay-size);
+      block-size: var(--m-ticker-overlay-size);
 
       &.--start {
         background: linear-gradient(to bottom, var(--maz-background), transparent);
