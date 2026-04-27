@@ -635,10 +635,6 @@ const CHILD_TEXT_SIZE_CLASS = {
     }
   }
 
-  & .m-input-wrapper {
-    @apply maz:dark:bg-surface-400;
-  }
-
   &:has(input:disabled) {
     & .m-input-wrapper {
       @apply maz:bg-surface-600 maz:text-muted maz:dark:bg-surface-300;

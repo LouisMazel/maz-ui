@@ -58,6 +58,7 @@
     "@types/parse-path": "^7.1.0",
     "@vitejs/plugin-vue": "^6.0.6",
     "@vitest/coverage-v8": "^4.1.4",
+    "@vitest/ui": "^4.1.5",
     "@yoloship/action": "0.1.0-beta.4",
     "@yoloship/claude-sdk": "0.1.0-beta.4",
     "commitizen": "^4.3.1",

@@ -267,11 +267,11 @@ onBeforeUnmount(() => observer?.disconnect())
     animation: animate linear forwards var(--animation-duration);
     animation-delay: var(--delay);
   }
+}
 
-  @keyframes animate {
-    to {
-      stroke-dashoffset: var(--dashoffset);
-    }
+@keyframes animate {
+  to {
+    stroke-dashoffset: var(--dashoffset);
   }
 }
 </style>

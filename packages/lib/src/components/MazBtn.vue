@@ -292,10 +292,6 @@ const ICON_PADDING_CLASS = {
   background-color: var(--m-btn-bg);
   color: var(--m-btn-fg);
 
-  & span {
-    @apply maz:leading-none;
-  }
-
   &:not(:disabled):hover {
     background-color: var(--m-btn-bg-hover);
   }

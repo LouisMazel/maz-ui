@@ -180,8 +180,6 @@ const currentIcon = computed(() => {
 </template>
 
 <style scoped>
-@reference "../tailwindcss/tailwind.css";
-
 .m-alert {
   &.--soft {
     background-color: color-mix(in srgb, var(--m-alert-color) 10%, transparent);

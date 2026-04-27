@@ -15,29 +15,6 @@ import { computed, markRaw, toValue } from 'vue'
  */
 export type MazIconLike = MazIconValue | MazIconProps | undefined
 
-function isComponentIcon(value: unknown): value is IconComponent {
-  return typeof value === 'object' && value !== null
-    && ('render' in value || 'setup' in value || 'template' in value)
-}
-
-function isPlainIcon(value: unknown): value is MazIconValue {
-  return typeof value === 'string' || isComponentIcon(value)
-}
-
-function isPropsObject(value: unknown): value is MazIconProps {
-  return typeof value === 'object' && value !== null && 'icon' in value
-}
-
-function isValidIconLike(value: MazIconLike): boolean {
-  if (!value)
-    return false
-  if (isPlainIcon(value))
-    return true
-  if (isPropsObject(value))
-    return Boolean(value.icon) && (typeof value.icon === 'string' || isComponentIcon(value.icon))
-  return false
-}
-
 export interface UseMazIconPropsOptions {
   /**
    * When `true` (default), the resolved icon is treated as decorative and
@@ -50,6 +27,11 @@ export interface UseMazIconPropsOptions {
 
 export type ResolvedMazIconProps = MazIconProps & {
   'aria-hidden'?: boolean | 'true' | 'false'
+}
+
+function isComponent(v: unknown): v is IconComponent {
+  return typeof v === 'object' && v !== null
+    && ('render' in v || 'setup' in v || 'template' in v)
 }
 
 /**
@@ -76,38 +58,35 @@ export function useMazIconProps(
   defaultProps?: MaybeRefOrGetter<Partial<MazIconProps>>,
   options: UseMazIconPropsOptions = {},
 ) {
-  const { decorative = true } = options
+  const decorative = options.decorative !== false
 
   const iconProps = computed<ResolvedMazIconProps | undefined>(() => {
-    const icon = toValue(props)
-    const defaults = toValue(defaultProps) ?? {}
-
-    if (!isValidIconLike(icon))
+    const v = toValue(props)
+    if (!v)
       return undefined
 
-    const a11y = decorative ? { 'aria-hidden': true as const } : {}
+    let inner: MazIconValue
+    let extra: Partial<MazIconProps> | undefined
 
-    if (isPlainIcon(icon)) {
-      const value = isComponentIcon(icon) ? markRaw(icon) : icon
-      return {
-        ...a11y,
-        ...defaults,
-        icon: value,
-      }
+    if (typeof v === 'string') {
+      inner = v
+    }
+    else if (isComponent(v)) {
+      inner = markRaw(v)
+    }
+    else if ('icon' in v && v.icon && (typeof v.icon === 'string' || isComponent(v.icon))) {
+      inner = isComponent(v.icon) ? markRaw(v.icon) : v.icon
+      extra = v
+    }
+    else {
+      return undefined
     }
 
-    if (isPropsObject(icon)) {
-      const merged: ResolvedMazIconProps = {
-        ...a11y,
-        ...defaults,
-        ...icon,
-      }
-      if (merged.icon && isComponentIcon(merged.icon))
-        merged.icon = markRaw(merged.icon)
-      return merged
-    }
-
-    return undefined
+    const defaults = toValue(defaultProps)
+    const result = { ...defaults, ...extra, icon: inner } as ResolvedMazIconProps
+    if (decorative && result['aria-hidden'] === undefined)
+      result['aria-hidden'] = true
+    return result
   })
 
   return { iconProps }

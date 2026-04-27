@@ -90,8 +90,6 @@ function selectStep(index: number) {
 </template>
 
 <style scoped>
-@reference "../tailwindcss/tailwind.css";
-
 .m-accordion__header .header-icon.--rotate {
   transform: rotate(135deg);
 }

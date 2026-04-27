@@ -342,7 +342,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
         :data-label="getLabel(i)"
         class="m-slider__btn maz:flex maz:items-center maz:justify-center maz:rounded-full maz:border maz:border-solid maz:border-divider maz:bg-surface maz:shadow-md maz:hover:bg-surface-200"
         :class="{
-          'active-cursor': i === activeCursor && cursorAnim,
+          'active-cursor maz:border maz:shadow-lg maz:z-2': i === activeCursor && cursorAnim,
         }"
         :style="[buttonStyles[i]]"
         @mousedown.passive="handleMousedown($event, i)"
@@ -361,8 +361,6 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
 </template>
 
 <style scoped>
-@reference "../tailwindcss/tailwind.css";
-
 .m-slider {
   padding-block: 1em;
   padding-inline: 1.5rem;
@@ -400,18 +398,17 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     }
 
     &.active-cursor {
-      @apply maz:border maz:shadow-lg maz:z-2;
-
       transform: scale(1.3);
       border-color: var(--m-slider-color);
     }
 
     &::before {
       content: attr(data-label);
-      font-size: 0.8em;
+      position: absolute;
       inset-block-start: -1.5em;
-
-      @apply maz:absolute maz:font-medium maz:text-foreground;
+      font-size: 0.8em;
+      font-weight: 500;
+      color: var(--maz-foreground);
     }
   }
 }

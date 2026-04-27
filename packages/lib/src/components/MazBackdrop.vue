@@ -322,8 +322,6 @@ defineExpose({
 </template>
 
 <style>
-@reference "../tailwindcss/tailwind.css";
-
 html.--backdrop-present {
   overflow-y: hidden;
   block-size: 100vh !important;

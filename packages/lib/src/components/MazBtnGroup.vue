@@ -115,11 +115,11 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
       @apply maz:rounded-none;
 
       &:first-child {
-        @apply maz:rounded-l;
+        @apply maz:rounded-l-md;
       }
 
       &:last-child {
-        @apply maz:rounded-r;
+        @apply maz:rounded-r-md;
       }
 
       &:not(:last-child) {
@@ -144,11 +144,11 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
       @apply maz:rounded-none;
 
       &:first-child {
-        @apply maz:rounded-t;
+        @apply maz:rounded-t-md;
       }
 
       &:last-child {
-        @apply maz:rounded-b;
+        @apply maz:rounded-b-md;
       }
 
       &:not(:last-child) {

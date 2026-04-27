@@ -21,7 +21,8 @@ Maz-UI is maintained by a single developer. After the v5 stable release, **v4 wi
 6. Replace any **numeric `MazBadge` size** (`size="0.8rem"`, `size="1.2em"`, …) with one of the standardized keywords (`'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`).
 7. **`MazIcon` API simplified** — drop `name`, `path` and `src` props; use a single `icon` prop that accepts a Vue component, a URL/`data:` URI, or a raw SVG string.
 8. Rename **`leftIcon` / `rightIcon`** to **`startIcon` / `endIcon`** (and the matching slots / `--has-*-icon` classes) on `MazBtn`, `MazInput`, `MazLink`, `MazContainer`, `MazSelect`. Same idea for `MazCard`'s `footerAlign` and `MazDrawer`'s `variant` — `'left' | 'right'` becomes `'start' | 'end'`.
-9. That's it for most apps. Everything else is opt-in.
+9. **`MazChart`** drops `vue-chartjs` (lighter bundle, no eager registration of unused chart types). The `updateMode` prop now defaults to `'none'` — pass `update-mode="default"` if you want animated data updates.
+10. That's it for most apps. Everything else is opt-in.
 
 ## Prerequisites
 
@@ -263,7 +264,30 @@ rg "(left|right)-icon|(left|right)Icon|footer-align=\"(left|right)\"|variant=\"(
 
 Falling back to passing `undefined` (or just omitting the prop) opts the icon out, as before.
 
-### 8. `MazBadge` `size` prop now uses `MazSize`
+### 8. `MazChart` no longer depends on `vue-chartjs`
+
+`MazChart` v4 wrapped `vue-chartjs`, eagerly registered every Chart.js controller / element / scale at import time, and updated the chart with the default animation mode on every reactive change. v5 talks to `chart.js` directly, lazy-loads the engine on mount, and only registers the modules required by the chart `type` you requested.
+
+What this means for you:
+
+- The peer dependency on `vue-chartjs` is gone. If you were importing anything from it directly, switch to `chart.js`.
+- The `updateMode` prop now **defaults to `'none'`** (previously `'default'`). Subsequent data / options changes no longer animate by default — this is what makes large dashboards stop freezing on prop updates. The initial render still animates per the chart's `options`. Pass `update-mode="default"` to restore the v4 behavior.
+- The re-exported types (`MazChartData`, `MazChartType`, `MazChartUpdateMode`, `MazChartPlugin`, `MazChartDefaultDataPoint`) are unchanged — they now come from `chart.js` instead of `vue-chartjs` but are otherwise the same. The `ChartProps` link in the v4 docs (which pointed to `vue-chartjs/src/types.ts`) is replaced by the `MazChartProps` interface documented on the [MazChart page](../components/maz-chart.md).
+
+```vue
+<!-- v4 — animated update on every data change -->
+<MazChart :type :data :options />
+
+<!-- v5 — same call, but data updates skip animations by default -->
+<MazChart :type :data :options />
+
+<!-- v5 — restore v4 animated updates -->
+<MazChart :type :data :options update-mode="default" />
+```
+
+If you weren't using `vue-chartjs` directly and were happy with the default animation behavior on every update, you can ignore this — only add `update-mode="default"` where the animation matters.
+
+### 9. `MazBadge` `size` prop now uses `MazSize`
 
 `MazBadge`'s `size` prop used to accept any CSS length string (e.g. `"0.8rem"`, `"1.2em"`). It now follows the same `MazSize` contract as the rest of the library (`MazBtn`, `MazInput`, …): one of `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`. The default is `'md'`.
 

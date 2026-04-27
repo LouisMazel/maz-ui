@@ -1,6 +1,8 @@
 <script lang="ts">
 import type {
+  ChartComponentLike,
   ChartData,
+  Chart as ChartInstance,
   ChartOptions,
   ChartType,
   DefaultDataPoint,
@@ -41,72 +43,120 @@ export interface MazChartProps<T extends ChartType = ChartType, TData = DefaultD
    */
   datasetIdKey?: string
   /**
-   * Update mode
+   * Update mode used when `data` or `options` change after the initial
+   * render. Defaults to `'none'` to skip animations on updates (the
+   * initial render still animates per the chart's `options`).
    * @type UpdateMode
    * @values 'resize', 'reset', 'none', 'hide', 'show', 'default', 'active'
-   * @default 'default'
+   * @default 'none'
    */
   updateMode?: UpdateMode
 }
 </script>
 
 <script lang="ts" setup generic="T extends ChartType, TData = DefaultDataPoint<T>, TLabel = unknown">
-import {
-  ArcElement,
-  BarElement,
-  CategoryScale,
-  Chart,
-  Legend,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip,
-} from 'chart.js'
-import { defineAsyncComponent } from 'vue'
+import { markRaw, onBeforeUnmount, onMounted, shallowRef, useTemplateRef, watch } from 'vue'
 
 const {
   type,
   data,
-  options = {},
+  options,
   plugins,
   datasetIdKey,
-  updateMode,
+  updateMode = 'none',
 } = defineProps<MazChartProps<T, TData, TLabel>>()
 
-Chart.register(
-  CategoryScale,
-  LinearScale,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  ArcElement,
-  PointElement,
-  LineElement,
+const canvasRef = useTemplateRef<HTMLCanvasElement>('canvasRef')
+const chartInstance = shallowRef<ChartInstance | null>(null) as { value: ChartInstance | null }
+
+async function loadChartCtor() {
+  const cjs = await import('chart.js')
+  const {
+    Chart,
+    Title,
+    Tooltip,
+    Legend,
+    Filler,
+    BarController,
+    BarElement,
+    LineController,
+    LineElement,
+    PointElement,
+    PieController,
+    DoughnutController,
+    ArcElement,
+    RadarController,
+    PolarAreaController,
+    ScatterController,
+    BubbleController,
+    CategoryScale,
+    LinearScale,
+    RadialLinearScale,
+  } = cjs
+
+  const TYPE_MODULES: Record<ChartType, ReadonlyArray<ChartComponentLike>> = {
+    bar: [BarController, BarElement, CategoryScale, LinearScale],
+    line: [LineController, LineElement, PointElement, CategoryScale, LinearScale],
+    scatter: [ScatterController, LineElement, PointElement, LinearScale],
+    bubble: [BubbleController, PointElement, LinearScale],
+    pie: [PieController, ArcElement],
+    doughnut: [DoughnutController, ArcElement],
+    radar: [RadarController, LineElement, PointElement, RadialLinearScale],
+    polarArea: [PolarAreaController, ArcElement, RadialLinearScale],
+  }
+
+  Chart.register(Title, Tooltip, Legend, Filler, ...TYPE_MODULES[type])
+  return Chart
+}
+
+onMounted(async () => {
+  if (!canvasRef.value)
+    return
+
+  const Chart = await loadChartCtor()
+
+  if (!canvasRef.value)
+    return
+
+  chartInstance.value = markRaw(new Chart(canvasRef.value, {
+    type,
+    data,
+    options,
+    plugins,
+    ...(datasetIdKey ? { datasetIdKey } : {}),
+  } as ConstructorParameters<typeof Chart>[1])) as ChartInstance
+})
+
+watch(
+  () => data,
+  (next) => {
+    const chart = chartInstance.value
+    if (!chart)
+      return
+    chart.data = next as ChartInstance['data']
+    chart.update(updateMode)
+  },
+  { deep: true },
 )
 
-const component = defineAsyncComponent(async () => {
-  const { Bar, Bubble, Doughnut, Line, Pie, PolarArea, Radar, Scatter } = await import(
-    'vue-chartjs',
-  )
+watch(
+  () => options,
+  (next) => {
+    const chart = chartInstance.value
+    if (!chart)
+      return
+    chart.options = (next ?? {}) as ChartInstance['options']
+    chart.update(updateMode)
+  },
+  { deep: true },
+)
 
-  const components = {
-    bar: Bar,
-    line: Line,
-    scatter: Scatter,
-    bubble: Bubble,
-    pie: Pie,
-    doughnut: Doughnut,
-    polarArea: PolarArea,
-    radar: Radar,
-  } as const
-
-  return components[type]
+onBeforeUnmount(() => {
+  chartInstance.value?.destroy()
+  chartInstance.value = null
 })
 </script>
 
 <template>
-  <!-- @vue-expect-error -->
-  <component :is="component" class="m-chart m-reset-css" :data :options :plugins :dataset-id-key :update-mode />
+  <canvas ref="canvasRef" class="m-chart m-reset-css" />
 </template>

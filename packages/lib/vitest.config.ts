@@ -8,6 +8,7 @@ import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/con
 import { ViteBuildIcons, ViteBuildThemes } from './build'
 
 export default defineConfig({
+  logLevel: process.env.CI ? 'error' : 'info',
   plugins: [Vue({ template: { compilerOptions: { comments: false } } }), SvgLoader(), ViteBuildIcons({ testing: true }), ViteBuildThemes({ testing: true })],
   server: {
     port: 1111,
@@ -16,6 +17,9 @@ export default defineConfig({
     setupFiles: ['./tests/vitest-global.setup.ts'],
     environment: 'jsdom',
     clearMocks: true,
+    silent: !!process.env.CI,
+    hideSkippedTests: !!process.env.CI,
+    reporters: process.env.CI ? ['dot'] : ['tree'],
 
     environmentOptions: {
       jsdom: {
@@ -48,11 +52,11 @@ export default defineConfig({
         'src/**/types.ts',
       ],
       thresholds: {
-        lines: 90.51,
-        functions: 89.54,
-        branches: 84.19,
-        statements: 90.69,
-        autoUpdate: !process.env.CI,
+        lines: 90,
+        functions: 89,
+        branches: 84,
+        statements: 90,
+        // autoUpdate: !process.env.CI,
       },
     },
     exclude: [

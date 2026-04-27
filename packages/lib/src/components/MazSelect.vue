@@ -271,6 +271,15 @@ const optionListWrapperRef = useTemplateRef('optionListWrapper')
 const selectedTextColor = computed(() => `var(--maz-${color})`)
 const selectedBgColor = computed(() => `color-mix(in srgb, var(--maz-${color}-500) 0.1, transparent)`)
 
+const SIZE_TEXT_CLASS = {
+  mini: 'maz:text-xs',
+  xs: 'maz:text-xs',
+  sm: 'maz:text-sm',
+  md: 'maz:text-base',
+  lg: 'maz:text-lg',
+  xl: 'maz:text-xl',
+} as const
+
 const { t } = useTranslations()
 const messages = computed(() => ({
   searchPlaceholder: translations?.searchPlaceholder || t('select.searchPlaceholder'),
@@ -652,6 +661,7 @@ defineExpose({
       },
       classProp,
       `--${size}`,
+      SIZE_TEXT_CLASS[size],
     ]"
     :style
     trigger="click"
@@ -729,7 +739,7 @@ defineExpose({
         :id="`${instanceId}-option-list`"
         ref="optionListRef"
         class="m-select-list"
-        :class="`--${size}`"
+        :class="[`--${size}`, SIZE_TEXT_CLASS[size]]"
         :style="[{
           'maxHeight': `${maxListHeight}px`,
           'maxWidth': `${maxListWidth}px`,
@@ -849,30 +859,6 @@ defineExpose({
     }
   }
 
-  &.--mini {
-    @apply maz:text-xs;
-  }
-
-  &.--xs {
-    @apply maz:text-xs;
-  }
-
-  &.--sm {
-    @apply maz:text-sm;
-  }
-
-  &.--md {
-    @apply maz:text-base;
-  }
-
-  &.--lg {
-    @apply maz:text-lg;
-  }
-
-  &.--xl {
-    @apply maz:text-xl;
-  }
-
   &:not(.--disabled):deep(.m-input-input) {
     @apply maz:cursor-pointer;
   }
@@ -901,30 +887,6 @@ defineExpose({
 
   &-optgroup {
     @apply maz:flex-none maz:p-0.5 maz:text-start maz:text-[0.875em] maz:text-muted;
-  }
-
-  &.--mini {
-    @apply maz:text-xs;
-  }
-
-  &.--xs {
-    @apply maz:text-xs;
-  }
-
-  &.--sm {
-    @apply maz:text-sm;
-  }
-
-  &.--md {
-    @apply maz:text-base;
-  }
-
-  &.--lg {
-    @apply maz:text-lg;
-  }
-
-  &.--xl {
-    @apply maz:text-xl;
   }
 
   min-inline-size: 3.5rem;

@@ -695,7 +695,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
       @apply maz:min-w-full;
 
       .m-input-wrapper {
-        @apply maz:rounded-b-none maz:rounded-tr;
+        @apply maz:rounded-b-none maz:rounded-tr-md;
       }
     }
   }

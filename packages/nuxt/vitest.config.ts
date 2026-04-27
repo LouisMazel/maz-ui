@@ -17,10 +17,14 @@ const resolveAliases = {
 export default defineConfig({
   // @ts-expect-error -- tsconfig is omitted from Vite's OxcOptions type but supported by Rolldown; needed to prevent coverage query params from breaking tsconfig resolution in CI
   oxc: { tsconfig: false },
+  logLevel: process.env.CI ? 'error' : 'info',
   resolve: {
     alias: resolveAliases,
   },
   test: {
+    silent: !!process.env.CI,
+    hideSkippedTests: !!process.env.CI,
+    reporters: process.env.CI ? ['dot'] : ['tree'],
     globals: true,
     environment: 'node',
     projects: [

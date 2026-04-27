@@ -322,6 +322,24 @@ const ROUNDED_CLASS = {
   '3xl': 'maz:rounded-3xl',
   'full': 'maz:rounded-full',
 } as const
+
+const TITLE_SIZE_CLASS: Record<MazSize, string> = {
+  mini: 'maz:text-[0.625rem]',
+  xs: 'maz:text-xs',
+  sm: 'maz:text-xs',
+  md: 'maz:text-sm',
+  lg: 'maz:text-base',
+  xl: 'maz:text-lg',
+}
+
+const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
+  mini: 'maz:text-[0.5rem]',
+  xs: 'maz:text-[0.625rem]',
+  sm: 'maz:text-[0.65rem]',
+  md: 'maz:text-xs',
+  lg: 'maz:text-sm',
+  xl: 'maz:text-base',
+}
 </script>
 
 <template>
@@ -429,7 +447,7 @@ const ROUNDED_CLASS = {
             :is-active="isStepActive(step, index)"
             :is-completed="isStepCompleted(step, index)"
           >
-            <p v-if="step.title || slots.title" class="m-timeline-title">
+            <p v-if="step.title || slots.title" class="m-timeline-title" :class="TITLE_SIZE_CLASS[size]">
               <!--
                 @slot title - Custom title content
                 @binding {MazTimelineItem} step - The step data
@@ -440,7 +458,7 @@ const ROUNDED_CLASS = {
                 {{ step.title }}
               </slot>
             </p>
-            <p v-if="step.subtitle || slots.subtitle" class="m-timeline-subtitle">
+            <p v-if="step.subtitle || slots.subtitle" class="m-timeline-subtitle" :class="SUBTITLE_SIZE_CLASS[size]">
               <!--
                 @slot subtitle - Custom subtitle content
                 @binding {MazTimelineItem} step - The step data
@@ -560,7 +578,7 @@ const ROUNDED_CLASS = {
     inline-size: var(--m-timeline-indicator-size);
     block-size: var(--m-timeline-indicator-size);
 
-    @apply maz:bg-(--maz-muted)/30 maz:text-(--maz-muted);
+    @apply maz:bg-(--maz-muted)/30 maz:text-muted;
   }
 
   /* --- Step states --- */
@@ -570,7 +588,7 @@ const ROUNDED_CLASS = {
     }
 
     &.--completed .m-timeline-indicator {
-      @apply maz:bg-[var(--m-timeline-state-bg,var(--m-timeline-bg))] maz:text-[var(--m-timeline-state-fg,var(--m-timeline-fg))];
+      @apply maz:bg-(--m-timeline-state-bg,var(--m-timeline-bg)) maz:text-(--m-timeline-state-fg,var(--m-timeline-fg));
     }
 
     &.--error .m-timeline-indicator {
@@ -601,11 +619,11 @@ const ROUNDED_CLASS = {
   }
 
   .m-timeline-title {
-    @apply maz:m-0 maz:font-semibold maz:leading-tight maz:text-(--maz-foreground);
+    @apply maz:m-0 maz:font-semibold maz:leading-tight maz:text-foreground;
   }
 
   .m-timeline-subtitle {
-    @apply maz:m-0 maz:leading-snug maz:text-(--maz-muted);
+    @apply maz:m-0 maz:leading-snug maz:text-muted;
   }
 
   /* --- Step number --- */
@@ -662,14 +680,6 @@ const ROUNDED_CLASS = {
     --m-timeline-icon-size: 0.625rem;
     --m-timeline-font-size: 0.625rem;
     --m-timeline-number-size: 0.5rem;
-
-    .m-timeline-title {
-      @apply maz:text-[0.625rem];
-    }
-
-    .m-timeline-subtitle {
-      @apply maz:text-[0.5rem];
-    }
   }
 
   &.--xs {
@@ -678,14 +688,6 @@ const ROUNDED_CLASS = {
     --m-timeline-icon-size: 0.75rem;
     --m-timeline-font-size: 0.75rem;
     --m-timeline-number-size: 0.625rem;
-
-    .m-timeline-title {
-      @apply maz:text-xs;
-    }
-
-    .m-timeline-subtitle {
-      @apply maz:text-[0.625rem];
-    }
   }
 
   &.--sm {
@@ -694,14 +696,6 @@ const ROUNDED_CLASS = {
     --m-timeline-icon-size: 0.875rem;
     --m-timeline-font-size: 0.75rem;
     --m-timeline-number-size: 0.625rem;
-
-    .m-timeline-title {
-      @apply maz:text-xs;
-    }
-
-    .m-timeline-subtitle {
-      @apply maz:text-[0.65rem];
-    }
   }
 
   &.--md {
@@ -710,14 +704,6 @@ const ROUNDED_CLASS = {
     --m-timeline-icon-size: 1rem;
     --m-timeline-font-size: 0.875rem;
     --m-timeline-number-size: 0.75rem;
-
-    .m-timeline-title {
-      @apply maz:text-sm;
-    }
-
-    .m-timeline-subtitle {
-      @apply maz:text-xs;
-    }
   }
 
   &.--lg {
@@ -726,14 +712,6 @@ const ROUNDED_CLASS = {
     --m-timeline-icon-size: 1.25rem;
     --m-timeline-font-size: 1rem;
     --m-timeline-number-size: 0.875rem;
-
-    .m-timeline-title {
-      @apply maz:text-base;
-    }
-
-    .m-timeline-subtitle {
-      @apply maz:text-sm;
-    }
   }
 
   &.--xl {
@@ -742,14 +720,6 @@ const ROUNDED_CLASS = {
     --m-timeline-icon-size: 1.5rem;
     --m-timeline-font-size: 1.125rem;
     --m-timeline-number-size: 1rem;
-
-    .m-timeline-title {
-      @apply maz:text-lg;
-    }
-
-    .m-timeline-subtitle {
-      @apply maz:text-base;
-    }
   }
 }
 

@@ -123,6 +123,15 @@ function onFocus(index: number, event: FocusEvent) {
   inputRef.value?.[index]?.dispatchEvent(new Event('focus'))
   emits('focus', event)
 }
+
+const SIZE_CLASS: Record<MazSize, string> = {
+  mini: 'maz:px-1 maz:min-h-6 maz:text-xs',
+  xs: 'maz:px-2 maz:min-h-8 maz:text-xs',
+  sm: 'maz:px-3 maz:min-h-10 maz:text-sm',
+  md: 'maz:px-4 maz:min-h-12',
+  lg: 'maz:px-5 maz:min-h-14 maz:text-lg',
+  xl: 'maz:px-6 maz:min-h-16 maz:text-xl',
+}
 </script>
 
 <template>
@@ -142,12 +151,14 @@ function onFocus(index: number, event: FocusEvent) {
         v-for="(option, i) in options"
         :key="getOptionId(option, i)"
         :for="getOptionId(option, i)"
-        class="m-radio-buttons__items maz:group"
+        class="m-radio-buttons__items maz:group maz:flex maz:cursor-pointer maz:gap-4 maz:rounded maz:border maz:border-divider
+        maz:bg-surface maz:px-4 maz:py-2 maz:font-medium maz:transition-colors maz:duration-300 maz:items-center"
         :class="[
           `--size-${size}`,
+          SIZE_CLASS[size],
           {
             '--is-selected': isSelected(option.value),
-            '--elevation': elevation,
+            'maz:drop-shadow-md maz:shadow-elevation': elevation,
             '--equal-size': equalSize,
           },
           option.classes,
@@ -181,6 +192,7 @@ function onFocus(index: number, event: FocusEvent) {
         >
         <div v-if="selector" class="m-radio-buttons__items__checkbox maz:flex maz:flex-center">
           <span
+            class="maz:flex maz:h-6 maz:w-6 maz:flex-none maz:rounded-full maz:border maz:border-divider maz:p-0.5 maz:text-white maz:transition-colors maz:duration-300 maz:flex-center maz:bg-surface maz:dark:bg-surface-400"
             :class="{
               '--is-selected': isSelected(option.value),
             }"
@@ -229,43 +241,8 @@ function onFocus(index: number, event: FocusEvent) {
 
 .m-radio-buttons {
   &__items {
-    @apply maz:flex maz:cursor-pointer maz:gap-4 maz:rounded maz:border maz:border-divider
-        maz:bg-surface maz:px-4 maz:py-2 maz:font-medium maz:transition-colors maz:duration-300 maz:items-center;
-
-    &.--size-mini {
-      @apply maz:px-1 maz:min-h-6 maz:text-xs;
-    }
-
-    &.--size-xs {
-      @apply maz:px-2 maz:min-h-8 maz:text-xs;
-    }
-
-    &.--size-sm {
-      @apply maz:px-3 maz:min-h-10 maz:text-sm;
-    }
-
-    &.--size-md {
-      @apply maz:px-4 maz:min-h-12;
-    }
-
-    &.--size-lg {
-      @apply maz:px-5 maz:min-h-14 maz:text-lg;
-    }
-
-    &.--size-xl {
-      @apply maz:px-6 maz:min-h-16 maz:text-xl;
-    }
-
-    &.--elevation {
-      @apply maz:drop-shadow-md maz:shadow-elevation;
-    }
-
     &__checkbox {
-      @apply maz:flex maz:flex-center;
-
       span {
-        @apply maz:flex maz:h-6 maz:w-6 maz:flex-none maz:rounded-full maz:border maz:border-divider maz:p-0.5 maz:text-white maz:transition-colors maz:duration-300 maz:flex-center maz:bg-surface maz:dark:bg-surface-400;
-
         transition: border-color 0s;
 
         &.--is-selected {

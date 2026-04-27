@@ -334,11 +334,11 @@ const stateColor = computed(() => {
       }
 
       &:deep(.m-input-label) {
-        @apply maz:text-center! maz:w-full! maz:p-0! maz:start-0!;
+        @apply maz:text-center! maz:w-full! maz:p-0! maz:inset-s-0!;
       }
 
       &.--should-up:deep(.m-input-label) {
-        @apply maz:w-[calc!(125%)];
+        @apply maz:w-[calc(125%)]!;
       }
     }
 

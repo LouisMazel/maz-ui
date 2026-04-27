@@ -271,7 +271,7 @@ function formatColorName(colorName: string): string {
 
       <!-- Preview Panel -->
       <div class="maz:lg:col-span-8">
-        <div class="maz:sticky maz:top-4">
+        <div class="preview-wrapper maz:sticky maz:top-4">
           <div class="maz:mb-4 maz:flex maz:items-center maz:justify-between">
             <h2 class="maz:text-2xl maz:text-foreground">
               Preview
@@ -363,7 +363,7 @@ function formatColorName(colorName: string): string {
     @apply maz:space-y-8;
   }
 
-  .theme-configurator .maz:sticky {
+  .theme-configurator .preview-wrapper {
     @apply maz:static;
   }
 }

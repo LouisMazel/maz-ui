@@ -221,8 +221,6 @@ const gradientStyle = computed(() => {
 </template>
 
 <style scoped>
-@reference "../tailwindcss/tailwind.css";
-
 .m-animated-text {
   &__word-inner,
   &__last-word {
@@ -232,10 +230,18 @@ const gradientStyle = computed(() => {
 
   &__last-word-inner::before {
     content: '';
-
-    @apply maz:z-0 maz:absolute maz:inset-0 maz:size-full maz:opacity-40 maz:dark:opacity-50 maz:blur-lg;
-
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    z-index: 0;
+    opacity: 0.4;
     background-image: var(--maz-gradient-style);
+    filter: blur(16px);
+  }
+
+  :where(.dark, [data-theme='dark']) &__last-word-inner::before {
+    opacity: 0.5;
   }
 }
 

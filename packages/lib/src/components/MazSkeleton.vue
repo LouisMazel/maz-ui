@@ -115,8 +115,6 @@ const customStyles = computed(() => {
 </template>
 
 <style scoped>
-@reference "../tailwindcss/tailwind.css";
-
 .m-skeleton {
   background-size: 400% 100%;
 

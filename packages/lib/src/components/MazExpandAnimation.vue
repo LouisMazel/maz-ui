@@ -74,8 +74,6 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-@reference "../tailwindcss/tailwind.css";
-
 .m-expand-animation {
   display: grid;
   grid-template-rows: 0fr;
