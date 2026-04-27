@@ -231,9 +231,6 @@ function generateRawIconFiles(files: { file: string, name: string, path: string 
 
 /**
  * This file is generated automatically, do not manually modify it
- *
- * Raw SVG string — the lightest format. Inline directly in your template
- * via \`<MazIcon :icon="${componentName}" />\` (no fetch, no async component).
  */
 
 import _raw from '${relativePath}/${file}?raw'
