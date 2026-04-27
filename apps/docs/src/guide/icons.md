@@ -6,7 +6,7 @@ A comprehensive collection of **860 beautiful SVG icons** ready for use in your 
 
 - **860+ icons** - All icons are available [in the icon set page](./icon-set.md)
 - **Static & Lazy components** - Static (eagerly loaded) by default, lazy (async) when you need to optimize bundle size
-- **Multiple usage patterns** - Direct SVG files, Vue components, or auto-import
+- **Multiple usage patterns** - Direct SVG files, Vue components, raw SVG strings, or auto-import
 - **TypeScript support** - Full type definitions included
 - **Tree-shakeable** - Import only the icons you need
 - **Customizable** - Easy to style with CSS

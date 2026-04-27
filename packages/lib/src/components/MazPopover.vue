@@ -294,6 +294,10 @@ const transitionName = computed(() => {
 
   return transition
 })
+
+function onTransitionAfterLeave() {
+  emits('after-close-animation')
+}
 const positionRef = computed(() => {
   if (!positionReference) {
     return triggerRef.value
@@ -690,6 +694,7 @@ defineExpose({
    * @usage `mazPopoverInstance.value?.panelRef`
    */
   panelRef,
+  onTransitionAfterLeave,
 })
 </script>
 
@@ -734,7 +739,7 @@ defineExpose({
   </div>
 
   <Teleport :to="teleportTo">
-    <Transition :name="transitionName" appear @after-leave="emits('after-close-animation')">
+    <Transition :name="transitionName" appear @after-leave="onTransitionAfterLeave">
       <div
         v-if="isOpen"
         :id="panelId"

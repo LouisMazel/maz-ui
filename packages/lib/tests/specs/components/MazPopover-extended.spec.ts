@@ -79,6 +79,14 @@ describe('MazPopover extended coverage', () => {
       await wrapper.setProps({ modelValue: false })
       expect(wrapper.find('.m-popover-panel').exists()).toBe(false)
     })
+
+    it('emits after-close-animation when the leave transition finishes', () => {
+      const wrapper = getWrapper({ modelValue: true })
+
+      ;(wrapper.vm as unknown as { onTransitionAfterLeave: () => void }).onTransitionAfterLeave()
+
+      expect(wrapper.emitted('after-close-animation')).toBeTruthy()
+    })
   })
 
   describe('when position is configured', () => {

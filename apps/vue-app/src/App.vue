@@ -37,7 +37,7 @@ function showToast() {
       {
         text: 'Click me',
         color: 'warning',
-        rightIcon: MazTrash,
+        endIcon: MazTrash,
       },
     ],
   })

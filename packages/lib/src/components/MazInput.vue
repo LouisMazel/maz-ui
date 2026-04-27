@@ -507,7 +507,7 @@ const CHILD_TEXT_SIZE_CLASS = {
         >
 
         <span
-          v-if="label || hint" class="m-input-label maz:pointer-events-none maz:absolute maz:w-full maz:origin-top-left maz:items-center maz:overflow-hidden maz:truncate maz:whitespace-nowrap maz:text-start maz:leading-6 maz:start-4" :class="[stateColor, CHILD_TEXT_SIZE_CLASS[size], { 'maz:start-2': hasStartPart(), 'maz:pe-3': hasLabel }]"
+          v-if="label || hint" class="m-input-label maz:pointer-events-none maz:absolute maz:w-full maz:origin-top-left maz:items-center maz:overflow-hidden maz:truncate maz:whitespace-nowrap maz:text-start maz:leading-6 maz:inset-s-4" :class="[stateColor, CHILD_TEXT_SIZE_CLASS[size], { 'maz:inset-s-2': hasStartPart(), 'maz:pe-3': hasLabel }]"
         >
           {{ hint || label }}
         </span>
