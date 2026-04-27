@@ -2,6 +2,7 @@
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
+import MazIcon from './MazIcon.vue'
 
 type NonRecursiveClassValue = string | Record<string, any> | (string | false | null | undefined | Record<string, any>)[]
 
@@ -843,7 +844,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="firstPage"
           >
-            <MazChevronDoubleLeft class="maz:text-base" />
+            <MazIcon :icon="MazChevronDoubleLeft" class="maz:text-base" />
           </MazBtn>
 
           <MazBtn
@@ -853,7 +854,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="previousPage"
           >
-            <MazChevronLeft class="maz:text-base" />
+            <MazIcon :icon="MazChevronLeft" class="maz:text-base" />
           </MazBtn>
 
           <MazBtn
@@ -863,7 +864,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="nextPage"
           >
-            <MazChevronLeft class="maz:rotate-180 maz:text-base" />
+            <MazIcon :icon="MazChevronLeft" class="maz:rotate-180 maz:text-base" />
           </MazBtn>
 
           <MazBtn
@@ -873,7 +874,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="lastPage"
           >
-            <MazChevronDoubleLeft class="maz:rotate-180 maz:text-base" />
+            <MazIcon :icon="MazChevronDoubleLeft" class="maz:rotate-180 maz:text-base" />
           </MazBtn>
         </div>
       </div>

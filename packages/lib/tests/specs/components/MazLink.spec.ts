@@ -45,8 +45,8 @@ describe('MazLink component', () => {
     expect(wrapper.find('async-component-wrapper-stub').exists()).toBe(true)
     expect(wrapper.find('maz-icon-stub').exists()).toBe(true)
     const icons = wrapper.findAll('maz-icon-stub')
-    expect(icons.at(0)?.attributes('name')).toBe('home')
-    expect(icons.at(1)?.attributes('name')).toBe('check')
+    expect(icons.at(0)?.attributes('icon')).toBe('home')
+    expect(icons.at(1)?.attributes('icon')).toBe('check')
   })
 
   it('is router-link if to prop is set', async () => {

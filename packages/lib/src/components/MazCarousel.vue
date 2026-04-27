@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
-import { MazChevronLeft } from '@maz-ui/icons/static/MazChevronLeft'
-import { MazChevronRight } from '@maz-ui/icons/static/MazChevronRight'
+import { MazChevronLeft } from '@maz-ui/icons/raw/MazChevronLeft'
+import { MazChevronRight } from '@maz-ui/icons/raw/MazChevronRight'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, defineAsyncComponent, ref, useSlots } from 'vue'
+import MazIcon from './MazIcon.vue'
 
 const {
   hideScrollButtons = false,
@@ -109,7 +110,7 @@ function setScrollState(event: Event) {
           @click="previous"
         >
           <slot name="previous-icon">
-            <MazChevronLeft class="maz:text-lg" />
+            <MazIcon :icon="MazChevronLeft" class="maz:text-lg" />
           </slot>
         </MazBtn>
         <MazBtn
@@ -121,7 +122,7 @@ function setScrollState(event: Event) {
           @click="next"
         >
           <slot name="next-icon">
-            <MazChevronRight class="maz:text-lg" />
+            <MazIcon :icon="MazChevronRight" class="maz:text-lg" />
           </slot>
         </MazBtn>
       </div>

@@ -102,7 +102,7 @@ You can also import individual icons directly for optimal tree-shaking:
 
 ```ts
 // Static icon (individual file)
-import { MazCheck } from '@maz-ui/icons/MazCheck'
+import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
 
 // Lazy icon (individual file)
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'

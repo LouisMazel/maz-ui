@@ -135,7 +135,7 @@ You can replace the default search function by providing a custom search functio
           <span class="maz:text-muted maz:text-sm">{{ item.email }}</span>
         </div>
         <div class="maz:flex maz:flex-none maz:items-center maz:gap-1">
-          <MazIcon name="star" class="maz:text-warning-500" size="1rem" />
+          <MazIcon icon="/star.svg" class="maz:text-warning-500" size="1rem" />
           <span class="maz:text-sm maz:font-medium">{{ item.rating }}</span>
         </div>
       </div>
@@ -180,7 +180,7 @@ You can replace the default search function by providing a custom search functio
             <span class="text-muted text-sm">{{ item.email }}</span>
           </div>
           <div class="flex flex-none items-center gap-1">
-            <MazIcon name="star" class="text-warning-500" size="1rem" />
+            <MazIcon icon="/star.svg" class="text-warning-500" size="1rem" />
             <span class="text-sm font-medium">{{ item.rating }}</span>
           </div>
         </div>

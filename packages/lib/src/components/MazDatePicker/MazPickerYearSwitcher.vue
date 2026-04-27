@@ -2,13 +2,14 @@
 import type { Dayjs } from 'dayjs'
 import type { PropType } from 'vue'
 import type { MazColor } from '../types'
-import { MazChevronLeft } from '@maz-ui/icons/static/MazChevronLeft'
-import { MazXMark } from '@maz-ui/icons/static/MazXMark'
+import { MazChevronLeft } from '@maz-ui/icons/raw/MazChevronLeft'
+import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 import dayjs from 'dayjs'
-
 import { computed, ref } from 'vue'
+
 import MazBtn from '../MazBtn.vue'
+import MazIcon from '../MazIcon.vue'
 
 import { isSameDate } from './utils'
 
@@ -59,14 +60,14 @@ function nextYears() {
     <div class="maz-picker-year-switcher__header maz:flex maz:justify-between maz:space-x-2 maz:border-b maz:border-divider maz:p-2">
       <div class="maz:flex maz:space-x-2">
         <MazBtn size="xs" color="transparent" type="button" @click.stop="previousYears">
-          <MazChevronLeft class="maz:text-lg" />
+          <MazIcon :icon="MazChevronLeft" class="maz:text-lg" />
         </MazBtn>
         <MazBtn size="xs" color="transparent" type="button" @click.stop="nextYears">
-          <MazChevronLeft class="maz:rotate-180 maz:text-lg" />
+          <MazIcon :icon="MazChevronLeft" class="maz:rotate-180 maz:text-lg" />
         </MazBtn>
       </div>
       <MazBtn size="xs" color="transparent" type="button" @click.stop="$emit('close', $event)">
-        <MazXMark class="maz:text-lg" />
+        <MazIcon :icon="MazXMark" class="maz:text-lg" />
       </MazBtn>
     </div>
     <div class="maz-picker-year-switcher__main maz:grid maz:flex-1 maz:grid-cols-3 maz:gap-2 maz:overflow-y-auto maz:p-2 maz:flex-center">

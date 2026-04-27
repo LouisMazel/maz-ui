@@ -4,6 +4,7 @@ import { MazChevronLeft } from '@maz-ui/icons/lazy/MazChevronLeft'
 import { MazXMark } from '@maz-ui/icons/lazy/MazXMark'
 import { checkAvailability } from '@maz-ui/utils/helpers/checkAvailability'
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import MazIcon from '../../components/MazIcon.vue'
 
 import MazSpinner from '../../components/MazSpinner.vue'
 
@@ -396,7 +397,7 @@ onBeforeUnmount(() => {
       class="m-fullscreen-btn maz:absolute maz:z-15 maz:flex maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200 maz:inset-e-0 maz:top-1/2 maz:h-screen maz:bg-transparent maz:-translate-y-1/2 maz:transform maz:items-center maz:justify-end --next"
       @click.stop="nextPreviousImage('next')"
     >
-      <MazChevronLeft class="maz:rotate-180" />
+      <MazIcon :icon="MazChevronLeft" class="maz:rotate-180" />
     </button>
     <button
       v-if="loadedOnce && hasMultipleInstances"
@@ -404,11 +405,11 @@ onBeforeUnmount(() => {
       class="m-fullscreen-btn maz:absolute maz:z-15 maz:flex maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200 maz:left-0 maz:top-1/2 maz:h-screen maz:-translate-y-1/2 maz:bg-transparent maz:transform maz:items-center maz:justify-start --previous"
       @click.stop="nextPreviousImage('previous')"
     >
-      <MazChevronLeft />
+      <MazIcon :icon="MazChevronLeft" />
     </button>
 
     <button type="button" class="m-fullscreen-btn maz:absolute maz:z-15 maz:flex maz:h-20 maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200 maz:inset-e-0 maz:bg-transparent maz:top-0 maz:items-start maz:justify-end --close" @click="close">
-      <MazXMark />
+      <MazIcon :icon="MazXMark" />
     </button>
 
     <div class="m-fullscreen-img-scroller maz:flex maz:h-screen maz:w-screen maz:overflow-auto maz:flex-center">

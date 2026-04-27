@@ -297,8 +297,8 @@ Use the `leftIcon` or `rightIcon` properties to add icons to buttons.
 <script lang="ts" setup>
 import MazBtnGroup from 'maz-ui/components/MazBtnGroup'
 import type { MazButtonGroupOption } from 'maz-ui/components/MazBtnGroup'
-import { MazArrowLeft } from '@maz-ui/icons/MazArrowLeft'
-import { MazArrowRight } from '@maz-ui/icons/MazArrowRight'
+import { MazArrowLeft } from '@maz-ui/icons/raw/MazArrowLeft'
+import { MazArrowRight } from '@maz-ui/icons/raw/MazArrowRight'
 
 const items: MazButtonGroupOption[] = [
   { text: 'Previous', leftIcon: MazArrowLeft, active: true },
@@ -425,10 +425,10 @@ interface MazButtonGroupProps {
 
 <script lang="ts" setup>
 import type { MazButtonGroupOption } from 'maz-ui/components/MazBtnGroup'
-import { MazArrowLeft } from '@maz-ui/icons/MazArrowLeft'
-import { MazArrowRight } from '@maz-ui/icons/MazArrowRight'
-import { MazBars3 } from '@maz-ui/icons/MazBars3'
-import { MazSquares2x2 } from '@maz-ui/icons/MazSquares2x2'
+import { MazArrowLeft } from '@maz-ui/icons/raw/MazArrowLeft'
+import { MazArrowRight } from '@maz-ui/icons/raw/MazArrowRight'
+import { MazBars3 } from '@maz-ui/icons/raw/MazBars3'
+import { MazSquares2x2 } from '@maz-ui/icons/raw/MazSquares2x2'
 
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl'] as const
 const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive'] as const

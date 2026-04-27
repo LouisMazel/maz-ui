@@ -5,7 +5,7 @@ import type { RouteLocationRaw } from 'vue-router'
 import type { MazLinkProps } from './MazLink.vue'
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
-import { MazChevronDown } from '@maz-ui/icons/static/MazChevronDown'
+import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { computed, defineAsyncComponent, useTemplateRef, watch } from 'vue'
@@ -406,13 +406,8 @@ watch(
                 @default MazChevronDown icon with rotation animation
               -->
               <slot name="dropdown-icon" :is-open="isOpen" :toggle="toggle" :close="close" :open="open">
-                <MazIcon v-if="typeof dropdownIcon === 'string'" :name="dropdownIcon" :class="[{ '--open': isOpen && dropdownIconAnimation }, iconClassSize]" />
-                <component
-                  :is="dropdownIcon" v-else-if="dropdownIcon" :class="[{ '--open': isOpen && dropdownIconAnimation }, iconClassSize]"
-                  class="m-dropdown__icon"
-                />
-                <MazChevronDown
-                  v-else
+                <MazIcon
+                  :icon="dropdownIcon ?? MazChevronDown"
                   :class="[{ '--open': isOpen && dropdownIconAnimation }, iconClassSize]"
                   class="m-dropdown__icon"
                 />

@@ -94,8 +94,8 @@ For more information about the icons, please check the [MazBtn](./maz-btn.md#ico
 
 ```vue
 <script lang="ts" setup>
-import { MazCheck } from '@maz-ui/icons/MazCheck'
-import { MazHome } from '@maz-ui/icons/MazHome'
+import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
+import { MazHome } from '@maz-ui/icons/raw/MazHome'
 </script>
 
 <template>
@@ -155,8 +155,8 @@ If no `to` or `href` is provided, the component will be a `button` by default. Y
 </ComponentDemo>
 
 <script setup lang="ts">
-  import { MazCheck } from '@maz-ui/icons/MazCheck'
-  import { MazHome } from '@maz-ui/icons/MazHome'
+  import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
+  import { MazHome } from '@maz-ui/icons/raw/MazHome'
 </script>
 
 <!--@include: ./../../.vitepress/generated-docs/maz-link.doc.md-->

@@ -528,10 +528,10 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   import Contributors from './../.vitepress/theme/components/Contributors.vue'
   import { MazArrowTopRightOnSquare } from '@maz-ui/icons/MazArrowTopRightOnSquare'
   import { MazStar } from '@maz-ui/icons/MazStar'
-  import { MazPlay } from '@maz-ui/icons/MazPlay'
+  import { MazPlay } from '@maz-ui/icons/raw/MazPlay'
   import { MazGithub } from '@maz-ui/icons/MazGithub'
-  import { MazSun } from '@maz-ui/icons/MazSun'
-  import { MazMoon } from '@maz-ui/icons/MazMoon'
+  import { MazSun } from '@maz-ui/icons/raw/MazSun'
+  import { MazMoon } from '@maz-ui/icons/raw/MazMoon'
   import { MazSparkles } from '@maz-ui/icons/MazSparkles'
 
   import { ref, computed } from 'vue'

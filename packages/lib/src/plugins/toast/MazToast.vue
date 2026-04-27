@@ -8,6 +8,7 @@ import { MazInformationCircle } from '@maz-ui/icons/lazy/MazInformationCircle'
 import { MazLinkIcon } from '@maz-ui/icons/lazy/MazLinkIcon'
 import { MazXMark } from '@maz-ui/icons/lazy/MazXMark'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
+import MazIcon from '../../components/MazIcon.vue'
 import { useTimer } from '../../composables/useTimer'
 
 const {
@@ -385,7 +386,7 @@ onMounted(() => {
         :class="[TOAST_CLOSE_COLOR[type], CLOSE_POSITION_X[positionX]]"
         @click.stop="click($event)"
       >
-        <MazXMark class="m-toast__close-icon maz:cursor-pointer" />
+        <MazIcon :icon="MazXMark" class="m-toast__close-icon maz:cursor-pointer" />
       </button>
     </div>
   </Transition>

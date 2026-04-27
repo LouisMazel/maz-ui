@@ -187,8 +187,7 @@ const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
       @slot left-icon - The icon to display on the left of the text
     -->
     <slot name="left-icon">
-      <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" />
-      <component :is="leftIcon" v-else-if="leftIcon" />
+      <MazIcon v-if="leftIcon" :icon="leftIcon" />
     </slot>
     <!--
       @slot Text of the link
@@ -199,8 +198,7 @@ const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
       @slot right-icon - The icon to display on the left of the text
     -->
     <slot name="right-icon">
-      <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" />
-      <component :is="rightIcon" v-else-if="rightIcon" />
+      <MazIcon v-if="rightIcon" :icon="rightIcon" />
     </slot>
     <!--
       @slot external-icon - Replace the default external icon

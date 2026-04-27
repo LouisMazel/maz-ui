@@ -465,8 +465,7 @@ const CHILD_TEXT_SIZE_CLASS = {
           Typically used for icons, buttons, or text. Overrides the leftIcon prop when used
         -->
         <slot v-if="hasSlotContent(slots['left-icon']) || leftIcon" name="left-icon">
-          <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
-          <component :is="leftIcon" v-else-if="leftIcon" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
+          <MazIcon v-if="leftIcon" :icon="leftIcon" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
         </slot>
       </div>
 
@@ -519,8 +518,7 @@ const CHILD_TEXT_SIZE_CLASS = {
           Note: For password inputs, the visibility toggle button will appear after this slot content
         -->
         <slot v-if="hasSlotContent(slots['right-icon']) || rightIcon" name="right-icon">
-          <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
-          <component :is="rightIcon" v-else-if="rightIcon" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
+          <MazIcon v-if="rightIcon" :icon="rightIcon" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
         </slot>
 
         <MazBtn

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { MazXMark } from '@maz-ui/icons/static/MazXMark'
+import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import MazBackdrop from './MazBackdrop.vue'
 import MazBtn from './MazBtn.vue'
+import MazIcon from './MazIcon.vue'
 
 export interface MazBottomSheetProps {
   /** @model Modal's model value */
@@ -58,7 +59,7 @@ const emits = defineEmits<{
           color="transparent"
           @click="close"
         >
-          <MazXMark class="maz:text-lg" />
+          <MazIcon :icon="MazXMark" class="maz:text-lg" />
         </MazBtn>
       </div>
     </template>

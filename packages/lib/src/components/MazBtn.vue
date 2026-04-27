@@ -242,16 +242,14 @@ const ICON_PADDING_CLASS = {
       @slot left-icon - The icon to display on the left of the button
     -->
     <slot name="left-icon">
-      <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" :size="iconSize" />
-      <MazIcon v-else-if="leftIcon" :icon="leftIcon" :size="iconSize" />
+      <MazIcon v-if="leftIcon" :icon="leftIcon" :size="iconSize" />
     </slot>
 
     <!--
       @slot icon - The icon to display on the fab button
     -->
     <slot name="icon">
-      <MazIcon v-if="typeof icon === 'string'" :name="icon" :size="iconSize" />
-      <MazIcon v-else-if="icon" :icon="icon" :size="iconSize" />
+      <MazIcon v-if="icon" :icon="icon" :size="iconSize" />
     </slot>
 
     <!--
@@ -265,8 +263,7 @@ const ICON_PADDING_CLASS = {
       @slot right-icon - The icon to display on the right of the button
     -->
     <slot name="right-icon">
-      <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" :size="iconSize" />
-      <MazIcon v-else-if="rightIcon" :icon="rightIcon" :size="iconSize" />
+      <MazIcon v-if="rightIcon" :icon="rightIcon" :size="iconSize" />
     </slot>
 
     <div v-if="loading" class="m-btn-loader-container">

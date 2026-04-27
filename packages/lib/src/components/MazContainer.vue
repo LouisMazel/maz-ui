@@ -116,8 +116,7 @@ const ROUNDED_CLASS = {
       <div v-if="title || hasSlotContent($slots.title)" class="m-container__header maz:w-full maz:flex maz:items-center maz:justify-start maz:gap-2" :class="{ 'maz:px-4 maz:py-3': padding, 'maz:border-b maz:border-divider': bordered }">
         <!-- @slot icon left -->
         <slot name="icon-left">
-          <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" :size="iconSize" />
-          <MazIcon v-else-if="leftIcon" :icon="leftIcon" :size="iconSize" />
+          <MazIcon v-if="leftIcon" :icon="leftIcon" :size="iconSize" />
         </slot>
         <!-- @slot title -->
         <slot name="title">
@@ -125,8 +124,7 @@ const ROUNDED_CLASS = {
         </slot>
         <!-- @slot icon right -->
         <slot name="icon-right">
-          <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" :size="iconSize" />
-          <MazIcon v-else-if="rightIcon" :icon="rightIcon" :size="iconSize" />
+          <MazIcon v-if="rightIcon" :icon="rightIcon" :size="iconSize" />
         </slot>
       </div>
     </slot>

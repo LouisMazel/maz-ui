@@ -3,6 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
 import { ref } from 'vue'
+import MazIcon from './MazIcon.vue'
 import { getColor } from './types'
 
 export type MazRadioButtonsOption<T = string | number | boolean> = {
@@ -193,7 +194,7 @@ function onFocus(index: number, event: FocusEvent) {
             ]"
           >
             <Transition name="maz-radio-buttons-scale">
-              <MazCheck v-show="isSelected(option.value)" class="maz:size-full" />
+              <MazIcon v-show="isSelected(option.value)" :icon="MazCheck" class="maz:size-full" />
             </Transition>
           </span>
         </div>

@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { MazXMark } from '@maz-ui/icons/static/MazXMark'
-
+import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import { computed, defineAsyncComponent, useSlots } from 'vue'
+
 import MazBackdrop from './MazBackdrop.vue'
+import MazIcon from './MazIcon.vue'
 
 const props = withDefaults(defineProps<MazDrawerProps>(), {
   title: undefined,
@@ -110,7 +111,7 @@ const hasTitle = computed(() => {
           </h4>
           <div v-if="!hideCloseButton" class="m-drawer-header__close maz:flex maz:justify-end">
             <MazBtn size="sm" color="transparent" @click="close">
-              <MazXMark class="icon maz:text-lg" />
+              <MazIcon :icon="MazXMark" class="icon maz:text-lg" />
             </MazBtn>
           </div>
         </header>

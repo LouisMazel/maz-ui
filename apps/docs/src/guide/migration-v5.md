@@ -19,7 +19,8 @@ Maz-UI is maintained by a single developer. After the v5 stable release, **v4 wi
 4. If you imported anything via `maz-ui/src/...`, switch to the public subpath (e.g. `maz-ui/components/MazBtn`).
 5. Replace any `roundedSize="base"` with `roundedSize="md"` (or drop the prop — the new default is visually identical).
 6. Replace any **numeric `MazBadge` size** (`size="0.8rem"`, `size="1.2em"`, …) with one of the standardized keywords (`'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`).
-7. That's it for most apps. Everything else is opt-in.
+7. **`MazIcon` API simplified** — drop `name`, `path` and `src` props; use a single `icon` prop that accepts a Vue component, a URL/`data:` URI, or a raw SVG string.
+8. That's it for most apps. Everything else is opt-in.
 
 ## Prerequisites
 
@@ -123,7 +124,60 @@ rg "rounded-?size\s*=\s*['\"]base['\"]" src/
 <MazBtn />
 ```
 
-### 4. `MazBadge` `size` prop now uses `MazSize`
+### 4. `MazIcon` API simplified
+
+`MazIcon` v4 had four ways to specify an icon (`icon`, `src`, `path`+`name`, `name`). v5 collapses everything into a single `icon` prop that accepts:
+
+- A **Vue component** (lazy or static, from `@maz-ui/icons`)
+- A **URL** or `data:` URI to a `.svg` file
+- A **raw SVG string** (`'<svg>…</svg>'`)
+
+```vue
+<!-- v4 -->
+<MazIcon name="home" />
+<MazIcon name="home" path="/icons" />
+<MazIcon src="/assets/star.svg" />
+<MazIcon :icon="MazStar" />
+
+<!-- v5 -->
+<MazIcon icon="/home.svg" />            <!-- relative URL — `mazIconPath` is prepended in SSR -->
+<MazIcon icon="/icons/home.svg" />      <!-- absolute path -->
+<MazIcon icon="/assets/star.svg" />
+<MazIcon :icon="MazStar" />              <!-- unchanged -->
+```
+
+The `mazIconPath` `provide` (and Nuxt's `mazUi.general.defaultMazIconPath`) is still honored — it now acts as a **base URL prefix** for relative URL icons, mainly useful in SSR where `fetch('/icons/home.svg')` cannot resolve without a host.
+
+New props:
+
+- `fallback` — same shape as `icon`. Used when `icon` is missing or fails to load. Defaults to `MazQuestionMarkCircle`.
+- `svgAttributes` — extra attributes injected onto the rendered `<svg>`.
+- `flipIconForRtl` — mirror the icon horizontally when the document direction is RTL (useful for chevrons/arrows).
+
+Removed:
+
+- `loaded` and `unloaded` events (only `error` remains, useful for telemetry/fallback wiring).
+
+The `<MazIcon>` rendering also got a small a11y polish — it sets `aria-hidden="true"` by default and switches to `role="img"` (without `aria-hidden`) automatically when an `aria-label` is provided.
+
+### 5. New raw icon import path — `@maz-ui/icons/raw/*`
+
+Each bundled icon is now also exported as a **raw SVG string** under the `raw/` subpath. Pass it to `<MazIcon :icon="…" />` to inline the SVG without paying the cost of a Vue component or an async chunk.
+
+```vue
+<script setup>
+import MazIcon from 'maz-ui/components/MazIcon'
+import { MazStar } from '@maz-ui/icons/raw/MazStar'
+</script>
+
+<template>
+  <MazIcon :icon="MazStar" />
+</template>
+```
+
+The existing `static/` (eager Vue component) and `lazy/` (async Vue component) entries are still available — pick what fits the situation. See the [icon set guide](./icon-set.md) for the full decision matrix.
+
+### 6. `MazBadge` `size` prop now uses `MazSize`
 
 `MazBadge`'s `size` prop used to accept any CSS length string (e.g. `"0.8rem"`, `"1.2em"`). It now follows the same `MazSize` contract as the rest of the library (`MazBtn`, `MazInput`, …): one of `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`. The default is `'md'`.
 

@@ -54,13 +54,17 @@ describe('components/MazInput.vue', () => {
 
   describe('Given an icon component is passed as leftIcon and rightIcon props', () => {
     describe('When the component renders', () => {
-      it('Then it renders both component icons inside the wrapper', () => {
+      it('Then it routes both icons through MazIcon', async () => {
         const IconStub = { name: 'IconStub', template: '<svg class="icon-stub" />' }
 
         const iconWrapper = mount(MazInput, {
           props: { leftIcon: IconStub, rightIcon: IconStub },
         })
 
+        // MazIcon is loaded as defineAsyncComponent — wait for it to resolve.
+        await vi.dynamicImportSettled()
+
+        // Both icons go through the MazIcon wrapper now (no more dichotomy).
         expect(iconWrapper.findAll('.icon-stub').length).toBe(2)
       })
     })

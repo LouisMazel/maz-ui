@@ -26,6 +26,7 @@ const moduleEntries = Object.fromEntries(
   glob.sync([
     'src/lazy/*.ts',
     'src/static/*.ts',
+    'src/raw/*.ts',
   ], {
     ignore: ['**/*/index.ts'],
   })
@@ -61,6 +62,7 @@ export default defineConfig({
         'icon-list': resolver('./src/icon-list.ts'),
         'static/index': resolver('./src/static/index.ts'),
         'lazy/index': resolver('./src/lazy/index.ts'),
+        'raw/index': resolver('./src/raw/index.ts'),
       },
       formats: ['es'],
       fileName: (_, name) => `${name}.js`,

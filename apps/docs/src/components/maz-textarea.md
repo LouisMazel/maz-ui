@@ -78,7 +78,7 @@ You can use the `label` and `append` slots to customize the label and the append
     name="comment"
   >
     <template #label>
-      <MazIcon name="envelope" class="maz:text-xl" />
+      <MazIcon icon="/envelope.svg" class="maz:text-xl" />
       <span class="maz:ms-2">
         The custom label
       </span>
@@ -113,7 +113,7 @@ function sendMessage() {
     name="comment"
   >
     <template #label>
-      <MazIcon name="envelope" class="maz:text-xl" />
+      <MazIcon icon="/envelope.svg" class="maz:text-xl" />
       <span class="maz:ms-2">
         The custom label
       </span>

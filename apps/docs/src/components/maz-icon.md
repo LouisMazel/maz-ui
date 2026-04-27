@@ -1,6 +1,6 @@
 ---
 title: MazIcon
-description: MazIcon is a standalone component to load your svg files
+description: A flexible icon component that accepts Vue components, raw SVG strings, URLs and data URIs.
 ---
 
 # {{ $frontmatter.title }}
@@ -8,27 +8,35 @@ description: MazIcon is a standalone component to load your svg files
 {{ $frontmatter.description }}
 
 ::: tip
-  Download icons pack [here](#get-icons-pack)
+Download the bundled icons pack [here](#get-icons-pack), or use [`@maz-ui/icons`](../guide/icons.md) for the full set.
 :::
 
-## How to use?
+## How it works
 
-**2 ways to use this component:**
+Pass an `icon` prop in any of the supported formats — the component detects what it received and renders accordingly:
 
-- Use a component (like `MazStar` exported from `@maz-ui/icons`) with `icon` prop
-- Use a name (like `academic-cap`) with `name` prop or `src` prop (e.g: `src="/path/icon.svg"`)
+| Input | Example | Use it for |
+| --- | --- | --- |
+| **Vue component** | `import { MazStar } from '@maz-ui/icons/static/MazStar'` | Always-rendered icons that you also want available as a standalone component (`<MazStar />`). |
+| **Raw SVG string** | `import { MazStar } from '@maz-ui/icons/raw/MazStar'` | Always-rendered icons — the lightest format, no Vue component overhead. |
+| **URL or `data:` URI** | `'/icons/star.svg'`, `'data:image/svg+xml,…'` | SVGs hosted in your `public/` folder or external CDN. Fetched and cached on demand. |
 
-## Example
+```vue
+<script setup>
+import MazIcon from 'maz-ui/components/MazIcon'
+import { MazStar } from '@maz-ui/icons/raw/MazStar'
+</script>
 
-- Basically, this component will render your SVG from your project.
-- The component will fetch the SVG from the `public` folder and parse it to render it.
-- Place your SVG files in a public folder (default `/icons`, use `path` prop to change it)
+<template>
+  <MazIcon :icon="MazStar" />
+  <MazIcon icon="/icons/star.svg" />
+  <MazIcon icon="<svg viewBox='0 0 24 24'><path d='M0 0h24v24H0z'/></svg>" />
+</template>
+```
 
-## Icon Component
+## Examples
 
-`icon` is the icon component to render - e.g: `import { MazStar } from '@maz-ui/icons/MazStar'`
-
-Can be custom component from your stack - e.g: `import ComponentIcon from './path_to_your/ComponentIcon.vue'`
+### Raw SVG (recommended)
 
 <ComponentDemo>
 
@@ -38,7 +46,7 @@ Can be custom component from your stack - e.g: `import ComponentIcon from './pat
 
 ```vue
 <script lang="ts" setup>
-  import { MazStar } from '@maz-ui/icons/MazStar'
+  import { MazStar } from '@maz-ui/icons/raw/MazStar'
 </script>
 
 <template>
@@ -49,46 +57,55 @@ Can be custom component from your stack - e.g: `import ComponentIcon from './pat
   </template>
 </ComponentDemo>
 
-## Path + Name
+### URL (fetched at runtime)
 
-- `name` is the SVG file name without extension
-- `path` should be the folder where your svg files are stored in your public assets. Can be gloablly provided by using `mazIconPath` - [follow this documentation](#options)
+Place your SVG file in your `public/` folder, then point `icon` to its path. The component caches the fetched payload and shares it across instances.
 
 <ComponentDemo>
 
-  <MazIcon name="academic-cap" path="/icons" />
+  <MazIcon icon="/academic-cap.svg" />
 
   <template #code>
 
-```html
-<MazIcon name="academic-cap" path="/icons" />
+```vue
+<MazIcon icon="/academic-cap.svg" />
 ```
 
   </template>
 </ComponentDemo>
 
-## Src
-
-Provide the full src path to the icon
+### Vue component
 
 <ComponentDemo>
 
-  <MazIcon src="/icons/academic-cap.svg" />
+  <MazIcon :icon="icons.MazStar" />
 
   <template #code>
 
-```html
-<MazIcon src="/icons/academic-cap.svg" />
+```vue
+<script lang="ts" setup>
+  import { MazStar } from '@maz-ui/icons/static/MazStar'
+</script>
+
+<template>
+  <MazIcon :icon="MazStar" />
+</template>
 ```
 
   </template>
 </ComponentDemo>
+
+## Fallback
+
+When the URL fetch fails, an `error` event is emitted and `MazIcon` switches to the `fallback` prop (same shape as `icon`). If neither resolves, the bundled `MazQuestionMarkCircle` is rendered.
+
+```vue
+<MazIcon icon="/missing.svg" :fallback="MazStar" @error="onIconError" />
+```
 
 ## Sizing
 
-### Predefined sizes
-
-Can be `xs`, `sm`, `md`, `lg`, `xl`
+### Predefined sizes (`'xs' | 'sm' | 'md' | 'lg' | 'xl'`)
 
 <ComponentDemo>
   <div class="maz:flex maz:gap-2 maz:flex-wrap maz:items-center">
@@ -99,7 +116,7 @@ Can be `xs`, `sm`, `md`, `lg`, `xl`
 
 ```vue
 <script lang="ts" setup>
-  import { MazStar } from '@maz-ui/icons/MazStar'
+  import { MazStar } from '@maz-ui/icons/raw/MazStar'
 </script>
 
 <template>
@@ -110,11 +127,9 @@ Can be `xs`, `sm`, `md`, `lg`, `xl`
   </template>
 </ComponentDemo>
 
-### Custom size
+### Custom size (any CSS length)
 
-Can be any valid CSS size - e.g: `1em`, `1rem`, `10px`, `100%`, `10vw`, `10vh`
-
-Allowed units: `px`, `em`, `rem`, `%`, `vw`, `vh`, `cm`, `mm`, `in`, `pt`, `pc`, `ex`
+Allowed units: `px`, `em`, `rem`, `%`, `vw`, `vh`, `cm`, `mm`, `in`, `pt`, `pc`, `ex`.
 
 <ComponentDemo>
   <div class="maz:flex maz:gap-2 maz:flex-wrap maz:items-center">
@@ -128,46 +143,62 @@ Allowed units: `px`, `em`, `rem`, `%`, `vw`, `vh`, `cm`, `mm`, `in`, `pt`, `pc`,
   <template #code>
 
 ```vue
-<script lang="ts" setup>
-  import { MazStar } from '@maz-ui/icons/MazStar'
-</script>
-
-<template>
-  <MazIcon size="0.5em" :icon="icons.MazStar" />
-  <MazIcon size="1em" :icon="icons.MazStar" />
-  <MazIcon size="24px" :icon="icons.MazStar" />
-  <MazIcon size="4rem" :icon="icons.MazStar" />
-  <MazIcon size="8rem" :icon="icons.MazStar" />
-</template>
+<MazIcon size="0.5em" :icon="MazStar" />
+<MazIcon size="1em" :icon="MazStar" />
+<MazIcon size="24px" :icon="MazStar" />
+<MazIcon size="4rem" :icon="MazStar" />
+<MazIcon size="8rem" :icon="MazStar" />
 ```
 
   </template>
 </ComponentDemo>
 
-## Options
+## Accessibility
 
-### Set MazIcon path globally
+By default `MazIcon` is rendered as decorative (`aria-hidden="true"`, no `role`). Provide an `aria-label` (either on `<MazIcon>` or in `svgAttributes`) to expose it to assistive tech — `role="img"` is set automatically and `aria-hidden` is dropped.
 
-```typescript
-import { createApp } from 'vue'
-const app = createApp(App)
-
-app.provide('mazIconPath', '/your/custom/path')
+```vue
+<MazIcon :icon="MazStar" aria-label="Favorite" />
 ```
 
-## All icons
+## RTL flipping
 
-### Get Icons Pack
+Set `flip-icon-for-rtl` on directional icons (chevrons, arrows). The icon is mirrored horizontally when the document direction is `rtl` and rendered unchanged otherwise.
 
-This pack is the Heroicons icons set with some others from maz-ui
+```vue
+<MazIcon :icon="MazChevronRight" flip-icon-for-rtl />
+```
+
+## Custom SVG attributes
+
+Inject extra attributes onto the rendered `<svg>` (or onto the inlined raw SVG) via `svg-attributes`:
+
+```vue
+<MazIcon :icon="MazStar" :svg-attributes="{ 'data-testid': 'star', fill: 'currentColor' }" />
+```
+
+## SSR — base URL for relative URLs
+
+When you render `MazIcon icon="/icons/star.svg"` on the server, `fetch('/icons/star.svg')` cannot resolve without a host. Provide a base URL via Vue's `provide` to fix this:
+
+```ts
+import { createApp } from 'vue'
+
+const app = createApp(App)
+app.provide('mazIconPath', 'https://your-app.com')
+```
+
+In Nuxt, set `mazUi.general.defaultMazIconPath` in `nuxt.config` and `@maz-ui/nuxt` wires the provide for you.
+
+## All bundled icons
+
+This pack is the Heroicons set plus a few additions specific to maz-ui.
 
 <MazBtn download href="/icons/_icons.zip" right-icon="arrow-down-tray">
   Download pack
 </MazBtn>
 
-Source: [Hericons](https://heroicons.com/)
-
-You can also find icons in the [icon set page](./../guide/icon-set.md)
+Source: [Heroicons](https://heroicons.com/) — see also the [icon set page](./../guide/icon-set.md).
 
 <div class="flex items-start flex-wrap gap-05">
   <div v-for="({ component, name }, i) in iconsList" :key="i" class="flex flex-col flex-center maz:p-2 maz:rounded maz:border">

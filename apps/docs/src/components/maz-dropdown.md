@@ -638,7 +638,7 @@ type MazDropdownMenuItem = {
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue'
   import { useToast } from 'maz-ui/composables/useToast'
-  import { MazChevronUpDown } from '@maz-ui/icons/MazChevronUpDown'
+  import { MazChevronUpDown } from '@maz-ui/icons/raw/MazChevronUpDown'
 
   const toast = useToast()
 

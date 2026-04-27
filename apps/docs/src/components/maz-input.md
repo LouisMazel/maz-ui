@@ -155,7 +155,7 @@ const inputValue = ref()
 
 ::: details View code
 
-When you use the properties `right-icon`, `left-icon` or `icon` with the icon name (string), the component uses `<MazIcon name="..." />` component.
+When you use the properties `right-icon`, `left-icon` or `icon` with the icon name (string), the component uses `<MazIcon icon="..." />` component.
 
 Check out how [MazIcon](./maz-icon.md) works, see all available icons and download them to put them in your public folder.
 

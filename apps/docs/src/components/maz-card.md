@@ -59,10 +59,10 @@ description: MazCard is a standalone component to display some texts and images 
       color="destructive"
       class="maz:me-2"
     >
-      <MazIcon name="trash" class="maz:text-xl" />
+      <MazIcon icon="/trash.svg" class="maz:text-xl" />
     </MazBtn>
     <MazBtn color="background">
-      <MazIcon name="user-plus" class="maz:text-xl" />
+      <MazIcon icon="/user-plus.svg" class="maz:text-xl" />
     </MazBtn>
   </template>
 </MazCard>
@@ -96,13 +96,13 @@ description: MazCard is a standalone component to display some texts and images 
         color="destructive"
         class="maz:me-2"
       >
-        <MazIcon name="trash" />
+        <MazIcon icon="/trash.svg" />
       </MazBtn>
       <MazBtn
         size="md"
         color="contrast"
       >
-        <MazIcon name="user-plus" />
+        <MazIcon icon="/user-plus.svg" />
       </MazBtn>
     </template>
   </MazCard>

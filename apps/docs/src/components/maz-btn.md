@@ -392,7 +392,7 @@ By default, the justify is `center`
 
 ::: details View code
 
-When you use the properties `right-icon`, `left-icon` or `icon` with the icon name (string), the component uses `<MazIcon name="..." />` component.
+When you use the properties `right-icon`, `left-icon` or `icon` with the icon name (string), the component uses `<MazIcon icon="..." />` component.
 
 Check out how [MazIcon](./maz-icon.md) works, see all available icons and download them to put them in your public folder.
 
@@ -462,9 +462,9 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 <script lang="ts" setup>
 import MazBtn from 'maz-ui/components/MazBtn'
 
-import { MazCheck } from '@maz-ui/icons/MazCheck'
-import { MazHome } from '@maz-ui/icons/MazHome'
-import { MazCommandLine } from '@maz-ui/icons/MazCommandLine'
+import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
+import { MazHome } from '@maz-ui/icons/raw/MazHome'
+import { MazCommandLine } from '@maz-ui/icons/raw/MazCommandLine'
 </script>
 
 <template>
@@ -550,9 +550,9 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 
 <script setup lang="ts">
   import { computed } from 'vue'
-  import { MazCheck } from '@maz-ui/icons/MazCheck'
-  import { MazHome } from '@maz-ui/icons/MazHome'
-  import { MazCommandLine } from '@maz-ui/icons/MazCommandLine'
+  import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
+  import { MazHome } from '@maz-ui/icons/raw/MazHome'
+  import { MazCommandLine } from '@maz-ui/icons/raw/MazCommandLine'
   import MazSpinner from 'maz-ui/components/MazSpinner'
 
   const colors = [

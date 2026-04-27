@@ -64,6 +64,16 @@
       "types": "./dist/lazy/*.d.ts",
       "import": "./dist/lazy/*.js"
     },
+    "./raw": {
+      "monorepo:dev": "./src/raw/index.ts",
+      "types": "./dist/raw/index.d.ts",
+      "import": "./dist/raw/index.js"
+    },
+    "./raw/*": {
+      "monorepo:dev": "./src/raw/*.ts",
+      "types": "./dist/raw/*.d.ts",
+      "import": "./dist/raw/*.js"
+    },
     "./resolvers": {
       "monorepo:dev": "./src/resolvers.ts",
       "types": "./dist/resolvers.d.ts",

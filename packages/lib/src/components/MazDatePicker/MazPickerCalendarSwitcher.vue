@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import { MazChevronLeft } from '@maz-ui/icons/static/MazChevronLeft'
+import { MazChevronLeft } from '@maz-ui/icons/raw/MazChevronLeft'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
-
 import dayjs from 'dayjs'
+
 import { computed } from 'vue'
 import MazBtn from '../MazBtn.vue'
+import MazIcon from '../MazIcon.vue'
 
 const props = defineProps({
   calendarDate: { type: String, default: undefined },
@@ -51,7 +52,7 @@ function nextMonth() {
 <template>
   <div class="m-date-picker-calendar-switcher maz:flex maz:space-x-2 maz:border-b maz:border-divider maz:px-2 maz:py-1">
     <MazBtn size="xs" color="transparent" type="button" @click="previousMonth">
-      <MazChevronLeft class="maz:text-lg" />
+      <MazIcon :icon="MazChevronLeft" class="maz:text-lg" />
     </MazBtn>
     <MazBtn
       size="sm"
@@ -72,7 +73,7 @@ function nextMonth() {
       {{ yearLabel }}
     </MazBtn>
     <MazBtn size="xs" color="transparent" type="button" @click="nextMonth">
-      <MazChevronLeft class="maz:rotate-180 maz:text-lg" />
+      <MazIcon :icon="MazChevronLeft" class="maz:rotate-180 maz:text-lg" />
     </MazBtn>
   </div>
 </template>

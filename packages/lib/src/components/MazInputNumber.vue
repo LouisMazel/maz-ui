@@ -2,11 +2,12 @@
 import type { HTMLAttributes } from 'vue'
 import type { MazInputProps } from './MazInput.vue'
 import type { MazSize } from './types'
-import { MazMinus } from '@maz-ui/icons/static/MazMinus'
-import { MazPlus } from '@maz-ui/icons/static/MazPlus'
+import { MazMinus } from '@maz-ui/icons/raw/MazMinus'
+import { MazPlus } from '@maz-ui/icons/raw/MazPlus'
 import { throttle } from '@maz-ui/utils/helpers/throttle'
 import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables'
+import MazIcon from './MazIcon.vue'
 import MazInput from './MazInput.vue'
 
 defineOptions({
@@ -250,7 +251,7 @@ const stateColor = computed(() => {
         :disabled="decrementDisabled || disabled"
         @click="decrement"
       >
-        <MazMinus class="m-input-number__button__icon maz:text-base" />
+        <MazIcon :icon="MazMinus" class="m-input-number__button__icon maz:text-base" />
       </MazBtn>
       <MazInput
         v-bind="{ ...$attrs, ...inputProps }"
@@ -286,7 +287,7 @@ const stateColor = computed(() => {
         :disabled="incrementDisabled || disabled"
         @click="increment"
       >
-        <MazPlus class="m-input-number__button__icon maz:text-base" />
+        <MazIcon :icon="MazPlus" class="m-input-number__button__icon maz:text-base" />
       </MazBtn>
     </div>
   </div>

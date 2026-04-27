@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import type { ClassValue } from 'vue'
-import { MazPlus } from '@maz-ui/icons/static/MazPlus'
+import { MazPlus } from '@maz-ui/icons/raw/MazPlus'
 import { computed, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-
 import MazCardSpotlight from './MazCardSpotlight.vue'
+
 import MazExpandAnimation from './MazExpandAnimation.vue'
+import MazIcon from './MazIcon.vue'
 
 export interface MazAccordionProps {
   id?: string
@@ -70,7 +71,7 @@ function selectStep(index: number) {
         >
           <slot :name="`title-${step}`" :is-open="isStepOpen(step)" />
 
-          <MazPlus class="header-icon maz:transition-transform maz:duration-300 maz:ease-in-out" :class="{ '--rotate': isStepOpen(step) }" />
+          <MazIcon :icon="MazPlus" class="header-icon maz:transition-transform maz:duration-300 maz:ease-in-out" :class="{ '--rotate': isStepOpen(step) }" />
         </button>
 
         <MazExpandAnimation

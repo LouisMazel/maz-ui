@@ -11,7 +11,7 @@ import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
 import { MazMagnifyingGlass } from '@maz-ui/icons/lazy/MazMagnifyingGlass'
 import { MazNoSymbol } from '@maz-ui/icons/lazy/MazNoSymbol'
-import { MazChevronDown } from '@maz-ui/icons/static/MazChevronDown'
+import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { debounceCallback } from '@maz-ui/utils/helpers/debounceCallback'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
@@ -27,6 +27,7 @@ import {
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useStringMatching } from '../composables/useStringMatching'
 import { hasSlotContent } from '../utils/hasSlotContent'
+import MazIcon from './MazIcon.vue'
 import MazInput from './MazInput.vue'
 import MazPopover from './MazPopover.vue'
 
@@ -716,7 +717,7 @@ defineExpose({
               class="m-select-input__toggle-button maz-custom"
               :aria-label="`${isOpen ? 'collapse' : 'expand'} list of options`"
             >
-              <MazChevronDown class="m-select-chevron" />
+              <MazIcon :icon="MazChevronDown" class="m-select-chevron" />
             </button>
           </slot>
         </template>

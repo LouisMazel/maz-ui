@@ -6,6 +6,7 @@ import { MazChevronDown } from '@maz-ui/icons/lazy/MazChevronDown'
 import { computed, defineAsyncComponent, useSlots } from 'vue'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
+import MazIcon from './MazIcon.vue'
 
 const {
   gallery = undefined,
@@ -185,7 +186,8 @@ function toggleCollapse() {
         size="xs"
         @click.stop="toggleCollapse"
       >
-        <MazChevronDown
+        <MazIcon
+          :icon="MazChevronDown"
           :class="{ '--is-open': collapseOpenModel }"
           class="m-card__collapse-icon maz:text-xl maz:rotate-0 maz:transition-transform maz:duration-200"
         />
