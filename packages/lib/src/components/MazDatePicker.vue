@@ -717,11 +717,11 @@ watch(
           :placeholder
           :color
         >
-          <template #left-icon>
+          <template #start-icon>
             <MazCalendar v-if="hasDate" class="maz:text-xl" />
             <MazClock v-else-if="hasTime" class="maz:text-xl" />
           </template>
-          <template #right-icon>
+          <template #end-icon>
             <MazIcon :icon="MazChevronDown" class="m-date-picker__button__chevron maz:text-lg" />
           </template>
         </MazInput>

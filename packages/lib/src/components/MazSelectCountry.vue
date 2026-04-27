@@ -296,7 +296,7 @@ const flagUrl = computed(() => {
       :open
       @update:model-value="$emit('update:model-value', $event)"
     >
-      <template #left-icon>
+      <template #start-icon>
         <!--
           @slot Country selector flag
             @binding {String} country-code - current selected country code - Ex: `"FR"`

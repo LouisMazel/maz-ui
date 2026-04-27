@@ -1,10 +1,9 @@
 <script lang="ts" setup>
-import type { IconComponent } from '@maz-ui/icons'
 import type { CSSProperties } from 'vue'
-import type { MazIconProps } from './MazIcon.vue'
-
+import type { MazIconLike } from '../composables/useMazIconProps'
 import type { MazColor, MazSize } from './types'
 import { computed, defineAsyncComponent, useAttrs } from 'vue'
+import { useMazIconProps } from '../composables/useMazIconProps'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 import { getColor } from './types'
@@ -15,8 +14,8 @@ const {
   type = 'button',
   fab,
   icon,
-  leftIcon,
-  rightIcon,
+  startIcon,
+  endIcon,
   roundedSize = 'md',
   justify = 'center',
   pastel,
@@ -91,20 +90,22 @@ export interface MazBtnProps {
    */
   fab?: boolean
   /**
-   * The name of the icon to display or component, only with fab
-   * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
+   * The icon to display in the fab variant. Accepts a bare value (Vue
+   * component, raw SVG string, URL or `data:` URI) for the common case,
+   * or a full `MazIconProps` object for fine-grained control (size, title,
+   * svgAttributes, fallback, flipIconForRtl, …).
    */
-  icon?: string | IconComponent
+  icon?: MazIconLike
   /**
-   * The name of the icon or component to display on the left of the button
-   * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
+   * The icon to display on the inline-start edge (left in LTR, right in RTL).
+   * Accepts a bare value or a full `MazIconProps` object.
    */
-  leftIcon?: string | IconComponent
+  startIcon?: MazIconLike
   /**
-   * The name of the icon or component to display on the right of the button
-   * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
+   * The icon to display on the inline-end edge (right in LTR, left in RTL).
+   * Accepts a bare value or a full `MazIconProps` object.
    */
-  rightIcon?: string | IconComponent
+  endIcon?: MazIconLike
   /**
    * If true, the button will have no padding
    * @default true
@@ -136,8 +137,10 @@ const isDisabled = computed(
 )
 const btnType = computed(() => (component.value === 'button' ? type : undefined))
 
-const iconSize = computed<MazIconProps['size']>(() => {
-  const iconSizeMap: Record<NonNullable<MazBtnProps['size']>, MazIconProps['size']> = {
+type IconSize = NonNullable<import('./MazIcon.vue').MazIconProps['size']>
+
+const iconSize = computed<IconSize>(() => {
+  const iconSizeMap: Record<NonNullable<MazBtnProps['size']>, IconSize> = {
     xl: 'lg',
     lg: 'md',
     md: 'md',
@@ -148,6 +151,10 @@ const iconSize = computed<MazIconProps['size']>(() => {
 
   return iconSizeMap[size] || 'lg'
 })
+
+const { iconProps: startIconProps } = useMazIconProps(() => startIcon, () => ({ size: iconSize.value }))
+const { iconProps: endIconProps } = useMazIconProps(() => endIcon, () => ({ size: iconSize.value }))
+const { iconProps: fabIconProps } = useMazIconProps(() => icon, () => ({ size: iconSize.value }))
 
 const btnStyle = computed<CSSProperties>(() => {
   const c = resolvedColor.value
@@ -200,12 +207,12 @@ const FAB_SIZE_CLASS = {
 } as const
 
 const ICON_PADDING_CLASS = {
-  xl: { left: 'maz:ps-6', right: 'maz:pe-6' },
-  lg: { left: 'maz:ps-4', right: 'maz:pe-4' },
-  md: { left: 'maz:ps-2', right: 'maz:pe-2' },
-  sm: { left: 'maz:ps-2', right: 'maz:pe-2' },
-  xs: { left: '', right: '' },
-  mini: { left: '', right: '' },
+  xl: { start: 'maz:ps-6', end: 'maz:pe-6' },
+  lg: { start: 'maz:ps-4', end: 'maz:pe-4' },
+  md: { start: 'maz:ps-2', end: 'maz:pe-2' },
+  sm: { start: 'maz:ps-2', end: 'maz:pe-2' },
+  xs: { start: '', end: '' },
+  mini: { start: '', end: '' },
 } as const
 </script>
 
@@ -221,8 +228,8 @@ const ICON_PADDING_CLASS = {
       SIZE_CLASS[size],
       fab ? 'maz:rounded-full maz:flex maz:items-center maz:justify-center maz:p-1' : ROUNDED_CLASS[roundedSize],
       fab ? FAB_SIZE_CLASS[size] : '',
-      (!!leftIcon || hasSlotContent($slots['left-icon'])) ? ICON_PADDING_CLASS[size].left : '',
-      (!!rightIcon || hasSlotContent($slots['right-icon'])) ? ICON_PADDING_CLASS[size].right : '',
+      (!!startIcon || hasSlotContent($slots['start-icon'])) ? ICON_PADDING_CLASS[size].start : '',
+      (!!endIcon || hasSlotContent($slots['end-icon'])) ? ICON_PADDING_CLASS[size].end : '',
       {
         '--outlined': outlined,
         '--pastel': pastel,
@@ -231,25 +238,25 @@ const ICON_PADDING_CLASS = {
         '--loading': loading,
         '--active': active,
         '--no-padding': !padding,
-        '--has-left-icon': !!leftIcon || hasSlotContent($slots['left-icon']),
-        '--has-right-icon': !!rightIcon || hasSlotContent($slots['right-icon']),
+        '--has-start-icon': !!startIcon || hasSlotContent($slots['start-icon']),
+        '--has-end-icon': !!endIcon || hasSlotContent($slots['end-icon']),
       },
     ]"
     :style="btnStyle"
     :type="btnType"
   >
     <!--
-      @slot left-icon - The icon to display on the left of the button
+      @slot start-icon - The icon to display on the inline-start edge (left in LTR, right in RTL)
     -->
-    <slot name="left-icon">
-      <MazIcon v-if="leftIcon" :icon="leftIcon" :size="iconSize" />
+    <slot name="start-icon">
+      <MazIcon v-if="startIconProps" v-bind="startIconProps" />
     </slot>
 
     <!--
       @slot icon - The icon to display on the fab button
     -->
     <slot name="icon">
-      <MazIcon v-if="icon" :icon="icon" :size="iconSize" />
+      <MazIcon v-if="fabIconProps" v-bind="fabIconProps" />
     </slot>
 
     <!--
@@ -260,10 +267,10 @@ const ICON_PADDING_CLASS = {
     </slot>
 
     <!--
-      @slot right-icon - The icon to display on the right of the button
+      @slot end-icon - The icon to display on the inline-end edge (right in LTR, left in RTL)
     -->
-    <slot name="right-icon">
-      <MazIcon v-if="rightIcon" :icon="rightIcon" :size="iconSize" />
+    <slot name="end-icon">
+      <MazIcon v-if="endIconProps" v-bind="endIconProps" />
     </slot>
 
     <div v-if="loading" class="m-btn-loader-container">

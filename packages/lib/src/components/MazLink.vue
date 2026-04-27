@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import type { IconComponent } from '@maz-ui/icons'
 import type { Component, HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
+import type { MazIconLike } from '../composables/useMazIconProps'
 import type { MazColor } from './types'
 import { MazArrowTopRightOnSquare } from '@maz-ui/icons/lazy/MazArrowTopRightOnSquare'
 import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables'
+import { useMazIconProps } from '../composables/useMazIconProps'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 
 defineOptions({
@@ -24,9 +25,14 @@ const {
   autoExternal = true,
   underline = false,
   underlineHover = true,
+  startIcon,
+  endIcon,
 } = defineProps<MazLinkProps>()
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
+
+const { iconProps: startIconProps } = useMazIconProps(() => startIcon)
+const { iconProps: endIconProps } = useMazIconProps(() => endIcon)
 
 export interface MazLinkProps {
   /**
@@ -105,15 +111,16 @@ export interface MazLinkProps {
    */
   autoExternal?: boolean
   /**
-   * The name of the icon or component to display on the left of the text
-   * `@type` `{string | FunctionalComponent | ComponentPublicInstance | Component}`
+   * Icon displayed on the inline-start edge (left in LTR, right in RTL).
+   * Accepts a bare value (Vue component, raw SVG string, URL or `data:` URI)
+   * or a full `MazIconProps` object for fine-grained control.
    */
-  leftIcon?: string | IconComponent
+  startIcon?: MazIconLike
   /**
-   * The name of the icon or component to display on the right of the text
-   * `@type` `{string | FunctionalComponent | ComponentPublicInstance | Component}`
+   * Icon displayed on the inline-end edge (right in LTR, left in RTL).
+   * Accepts a bare value or a full `MazIconProps` object.
    */
-  rightIcon?: string | IconComponent
+  endIcon?: MazIconLike
   /**
    * The disabled state of the link if the component is a button
    * @default false
@@ -184,10 +191,10 @@ const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
     v-bind="$attrs"
   >
     <!--
-      @slot left-icon - The icon to display on the left of the text
+      @slot start-icon - The icon to display on the inline-start edge of the text (left in LTR, right in RTL)
     -->
-    <slot name="left-icon">
-      <MazIcon v-if="leftIcon" :icon="leftIcon" />
+    <slot name="start-icon">
+      <MazIcon v-if="startIconProps" v-bind="startIconProps" />
     </slot>
     <!--
       @slot Text of the link
@@ -195,10 +202,10 @@ const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
     <slot />
 
     <!--
-      @slot right-icon - The icon to display on the left of the text
+      @slot end-icon - The icon to display on the inline-end edge of the text (right in LTR, left in RTL)
     -->
-    <slot name="right-icon">
-      <MazIcon v-if="rightIcon" :icon="rightIcon" />
+    <slot name="end-icon">
+      <MazIcon v-if="endIconProps" v-bind="endIconProps" />
     </slot>
     <!--
       @slot external-icon - Replace the default external icon

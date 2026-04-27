@@ -183,7 +183,7 @@ function updateQuery(value?: string) {
         :model-value="internalQuery"
         v-bind="typeof search === 'object' ? search : {}"
         :color="typeof search === 'object' && search.color ? search.color : color"
-        :left-icon="typeof search === 'object' ? search.leftIcon ?? MazMagnifyingGlass : undefined"
+        :start-icon="typeof search === 'object' ? search.startIcon ?? MazMagnifyingGlass : undefined"
         :debounce="typeof search === 'object' ? search.debounce ?? 300 : undefined"
         :name="typeof search === 'object' ? search.name ?? 'search' : undefined"
         :placeholder="typeof search === 'object' && search.placeholder ? search.placeholder : messages.searchInput.placeholder"

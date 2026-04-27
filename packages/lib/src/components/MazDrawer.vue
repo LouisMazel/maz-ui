@@ -7,7 +7,7 @@ import MazIcon from './MazIcon.vue'
 
 const props = withDefaults(defineProps<MazDrawerProps>(), {
   title: undefined,
-  variant: 'right',
+  variant: 'end',
   backdropClass: undefined,
   size: '30rem',
   noClose: false,
@@ -31,10 +31,12 @@ export interface MazDrawerProps {
   /** The title of the drawer */
   title?: string
   /**
-   * The variant of the drawer
-   * @values 'right', 'top', 'left', 'bottom'
+   * The edge from which the drawer slides in.
+   * `start` (= left in LTR, right in RTL) and `end` (= right in LTR, left in RTL)
+   * follow the document direction; `top` and `bottom` are physical.
+   * @values 'start', 'end', 'top', 'bottom'
    */
-  variant?: 'right' | 'top' | 'left' | 'bottom'
+  variant?: 'start' | 'end' | 'top' | 'bottom'
   /** The size of the drawer */
   size?: string
   /** The class of the backdrop */
@@ -46,10 +48,10 @@ export interface MazDrawerProps {
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 const justify = computed(() => {
-  if (props.variant === 'left') {
+  if (props.variant === 'start') {
     return 'start'
   }
-  else if (props.variant === 'right') {
+  else if (props.variant === 'end') {
     return 'end'
   }
 
@@ -91,7 +93,7 @@ const hasTitle = computed(() => {
         class="m-drawer-content-wrap maz:overflow-y-auto maz:bg-surface maz:pointer-events-auto maz:flex maz:flex-col"
         :class="[
           `--${variant}`,
-          (variant === 'left' || variant === 'right') ? 'maz:min-h-screen maz:w-full maz:tab-s:w-(--maz-drawer-size)' : 'maz:w-full maz:h-auto',
+          (variant === 'start' || variant === 'end') ? 'maz:min-h-screen maz:w-full maz:tab-s:w-(--maz-drawer-size)' : 'maz:w-full maz:h-auto',
         ]"
         :style="{
           '--maz-drawer-size': size,

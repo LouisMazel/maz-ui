@@ -403,9 +403,9 @@ To access the link, simply click the card.
 
 ### Footer aligned on left
 
-Use the prop option `footer-align="left"`
+Use the prop option `footer-align="start"`
 
-<MazCard footer-align="left" class="vp-raw">
+<MazCard footer-align="start" class="vp-raw">
   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 
   <template #footer>
@@ -418,7 +418,7 @@ Use the prop option `footer-align="left"`
 ::: details View code
 
 ```html
-<MazCard footer-align="left">
+<MazCard footer-align="start">
   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 
   <template #footer>

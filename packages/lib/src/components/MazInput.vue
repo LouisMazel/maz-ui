@@ -1,6 +1,6 @@
 <script lang="ts" setup generic="T extends MazInputValue">
-import type { IconComponent } from '@maz-ui/icons'
 import type { HTMLAttributes, InputHTMLAttributes } from 'vue'
+import type { MazIconLike } from '../composables/useMazIconProps'
 import type { MazColor, MazSize } from './types'
 import { MazEye } from '@maz-ui/icons/lazy/MazEye'
 import { MazEyeSlash } from '@maz-ui/icons/lazy/MazEyeSlash'
@@ -14,6 +14,7 @@ import {
   useSlots,
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useMazIconProps } from '../composables/useMazIconProps'
 import { onAutofillSync } from '../utils/autofillSync'
 import { hasSlotContent } from '../utils/hasSlotContent'
 
@@ -171,19 +172,17 @@ export interface MazInputProps<T = MazInputValue> {
    */
   borderActive?: boolean
   /**
-   * Icon displayed on the left side of the input. Can be an icon name string or icon component
-   * @type {string | IconComponent}
-   * @example "user"
-   * @example UserIcon
+   * Icon displayed on the inline-start edge of the input (left in LTR, right
+   * in RTL). Accepts a bare value (Vue component, raw SVG string, URL or
+   * `data:` URI) or a full `MazIconProps` object for fine-grained control
+   * (size, title, svgAttributes, fallback, …).
    */
-  leftIcon?: string | IconComponent
+  startIcon?: MazIconLike
   /**
-   * Icon displayed on the right side of the input. Can be an icon name string or icon component
-   * @type {string | IconComponent}
-   * @example "search"
-   * @example SearchIcon
+   * Icon displayed on the inline-end edge of the input (right in LTR, left
+   * in RTL). Accepts a bare value or a full `MazIconProps` object.
    */
-  rightIcon?: string | IconComponent
+  endIcon?: MazIconLike
   /**
    * Controls the border radius of the input component
    * @values none, sm, md, lg, xl, full
@@ -245,8 +244,8 @@ const props = withDefaults(defineProps<MazInputProps<T>>(), {
   debounce: false,
   autoFocus: false,
   borderActive: false,
-  leftIcon: undefined,
-  rightIcon: undefined,
+  startIcon: undefined,
+  endIcon: undefined,
   roundedSize: 'md',
   loading: false,
 })
@@ -302,6 +301,9 @@ const emits = defineEmits<{
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
+
+const { iconProps: startIconProps } = useMazIconProps(() => props.startIcon)
+const { iconProps: endIconProps } = useMazIconProps(() => props.endIcon)
 
 const hasPasswordVisible = ref(false)
 const input = ref<HTMLInputElement | undefined>()
@@ -371,17 +373,17 @@ const hasLabel = computed(() => !!props.label || !!props.hint)
 
 const alwaysUp = computed(() => ['date', 'month', 'week'].includes(props.type))
 
-function hasRightPart(): boolean {
+function hasEndPart(): boolean {
   return (
-    hasSlotContent(slots['right-icon'])
+    hasSlotContent(slots['end-icon'])
     || isPasswordType.value
-    || !!props.rightIcon
+    || !!props.endIcon
     || props.loading
   )
 }
 
-function hasLeftPart(): boolean {
-  return hasSlotContent(slots['left-icon']) || !!props.leftIcon
+function hasStartPart(): boolean {
+  return hasSlotContent(slots['start-icon']) || !!props.startIcon
 }
 
 function focus(event: Event) {
@@ -459,13 +461,13 @@ const CHILD_TEXT_SIZE_CLASS = {
         { '--block': block, '--border': border, 'maz:w-full': block, 'maz:border maz:border-solid': border },
       ]"
     >
-      <div v-if="hasLeftPart()" class="m-input-wrapper-left maz:relative maz:z-1 maz:flex maz:space-x-1 maz:py-1 maz:flex-center maz:ps-2">
+      <div v-if="hasStartPart()" class="m-input-wrapper-start maz:relative maz:z-1 maz:flex maz:space-x-1 maz:py-1 maz:flex-center maz:ps-2">
         <!--
-          @slot Custom content for the left side of the input field.
-          Typically used for icons, buttons, or text. Overrides the leftIcon prop when used
+          @slot Custom content for the inline-start edge of the input field (left in LTR, right in RTL).
+          Typically used for icons, buttons, or text. Overrides the startIcon prop when used
         -->
-        <slot v-if="hasSlotContent(slots['left-icon']) || leftIcon" name="left-icon">
-          <MazIcon v-if="leftIcon" :icon="leftIcon" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
+        <slot v-if="hasSlotContent(slots['start-icon']) || startIcon" name="start-icon">
+          <MazIcon v-if="startIconProps" v-bind="startIconProps" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
         </slot>
       </div>
 
@@ -474,8 +476,8 @@ const CHILD_TEXT_SIZE_CLASS = {
         :class="[
           `--${size}`,
           { '--top-label': !!topLabel,
-            '--has-left-icon': hasLeftPart(),
-            '--has-right-icon': hasRightPart(),
+            '--has-start-icon': hasStartPart(),
+            '--has-end-icon': hasEndPart(),
           },
         ]"
       >
@@ -494,7 +496,7 @@ const CHILD_TEXT_SIZE_CLASS = {
           :readonly
           :required
           class="m-input-input maz:m-0 maz:h-full maz:w-full maz:appearance-none maz:truncate maz:border-none maz:bg-transparent maz:py-0 maz:text-foreground maz:shadow-none maz:outline-hidden maz:px-4"
-          :class="[CHILD_TEXT_SIZE_CLASS[size], { 'maz:ps-2': hasLeftPart(), 'maz:pe-2': hasRightPart() }]"
+          :class="[CHILD_TEXT_SIZE_CLASS[size], { 'maz:ps-2': hasStartPart(), 'maz:pe-2': hasEndPart() }]"
           v-on="{
             blur,
             focus,
@@ -505,20 +507,20 @@ const CHILD_TEXT_SIZE_CLASS = {
         >
 
         <span
-          v-if="label || hint" class="m-input-label maz:pointer-events-none maz:absolute maz:w-full maz:origin-top-left maz:items-center maz:overflow-hidden maz:truncate maz:whitespace-nowrap maz:text-start maz:leading-6 maz:start-4" :class="[stateColor, CHILD_TEXT_SIZE_CLASS[size], { 'maz:start-2': hasLeftPart(), 'maz:pe-3': hasLabel }]"
+          v-if="label || hint" class="m-input-label maz:pointer-events-none maz:absolute maz:w-full maz:origin-top-left maz:items-center maz:overflow-hidden maz:truncate maz:whitespace-nowrap maz:text-start maz:leading-6 maz:start-4" :class="[stateColor, CHILD_TEXT_SIZE_CLASS[size], { 'maz:start-2': hasStartPart(), 'maz:pe-3': hasLabel }]"
         >
           {{ hint || label }}
         </span>
       </div>
 
-      <div v-if="hasRightPart()" class="m-input-wrapper-right maz:relative maz:z-1 maz:flex maz:space-x-1 maz:py-1 maz:flex-center maz:pe-2">
+      <div v-if="hasEndPart()" class="m-input-wrapper-end maz:relative maz:z-1 maz:flex maz:space-x-1 maz:py-1 maz:flex-center maz:pe-2">
         <!--
-          @slot Custom content for the right side of the input field.
-          Typically used for icons, buttons, or action elements. Overrides the rightIcon prop when used.
+          @slot Custom content for the inline-end edge of the input field (right in LTR, left in RTL).
+          Typically used for icons, buttons, or action elements. Overrides the endIcon prop when used.
           Note: For password inputs, the visibility toggle button will appear after this slot content
         -->
-        <slot v-if="hasSlotContent(slots['right-icon']) || rightIcon" name="right-icon">
-          <MazIcon v-if="rightIcon" :icon="rightIcon" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
+        <slot v-if="hasSlotContent(slots['end-icon']) || endIcon" name="end-icon">
+          <MazIcon v-if="endIconProps" v-bind="endIconProps" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
         </slot>
 
         <MazBtn

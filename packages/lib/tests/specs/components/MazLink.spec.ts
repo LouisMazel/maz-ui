@@ -1,6 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import MazLink from '@components/MazLink.vue'
-import { shallowMount } from '@vue/test-utils'
+import { mount, shallowMount } from '@vue/test-utils'
 
 describe('MazLink component', () => {
   let wrapper: VueWrapper<InstanceType<typeof MazLink>>
@@ -12,8 +12,8 @@ describe('MazLink component', () => {
         ariaLabel: 'Link',
         target: '_blank',
         autoExternal: true,
-        rightIcon: 'check',
-        leftIcon: 'home',
+        endIcon: 'check',
+        startIcon: 'home',
         color: 'secondary',
         title: 'Title of the link',
         underline: true,
@@ -76,5 +76,23 @@ describe('MazLink component', () => {
 
     expect(hoverWrapper.classes('--underline-hover')).toBe(true)
     expect(hoverWrapper.classes('--underline')).toBe(false)
+  })
+
+  it('accepts a full MazIconProps object on startIcon', async () => {
+    const wrapper = mount(MazLink, {
+      props: {
+        startIcon: { icon: '/star.svg', size: 'lg', title: 'Star' },
+      },
+      slots: { default: 'Link' },
+      global: { stubs: { RouterLink: true } },
+    })
+
+    await vi.dynamicImportSettled()
+
+    const icon = wrapper.findComponent({ name: 'MazIcon' })
+    expect(icon.exists()).toBe(true)
+    expect(icon.props('icon')).toBe('/star.svg')
+    expect(icon.props('size')).toBe('lg')
+    expect(icon.props('title')).toBe('Star')
   })
 })

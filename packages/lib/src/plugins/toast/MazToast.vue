@@ -299,9 +299,9 @@ function onAnimationLeave() {
   }
 }
 
-function getButtonRightIcon(button: ToastButton) {
+function getButtonEndIcon(button: ToastButton) {
   if (!button.to && !button.href) {
-    return button.rightIcon
+    return button.endIcon
   }
 
   if (button.target === '_blank') {
@@ -363,7 +363,7 @@ onMounted(() => {
             onClick: undefined,
           }"
           :loading="isActionLoading || toastButton.loading"
-          :right-icon="getButtonRightIcon(toastButton)"
+          :end-icon="getButtonEndIcon(toastButton)"
           @click.stop="onButtonClick(toastButton, $event)"
         />
 

@@ -637,7 +637,7 @@ onBeforeMount(() => {
           :color
           :debounce="300"
           :placeholder="messages.searchInput.placeholder"
-          :left-icon="MazMagnifyingGlass"
+          :start-icon="MazMagnifyingGlass"
         />
       </div>
     </div>

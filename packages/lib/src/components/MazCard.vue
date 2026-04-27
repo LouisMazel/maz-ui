@@ -14,7 +14,7 @@ const {
   href = undefined,
   to = undefined,
   hrefTarget = '_self',
-  footerAlign = 'right',
+  footerAlign = 'end',
   elevation = false,
   radius = true,
   padding = true,
@@ -57,8 +57,8 @@ export interface MazCardProps {
   to?: RouterLinkProps['to']
   /** Target option of link: Muse be one of `_blank | _self | _parent | _top | framename` */
   hrefTarget?: '_blank' | '_self' | '_parent' | '_top' | string
-  /** Footer text alignment: `right | left` */
-  footerAlign?: 'right' | 'left'
+  /** Footer text alignment along the inline axis: `start | end` (`end` = right in LTR, left in RTL) */
+  footerAlign?: 'start' | 'end'
   /**
    * Images gallery props options (see `MazGallery` component)
    * @default `{ displayedCount: 3, remaining: false, zoom: !href && !to, width: 200, height: 150 }`
@@ -135,7 +135,7 @@ const wrapperData = computed(() => {
   }
 })
 const footerAlignClass = computed(() =>
-  footerAlign === 'right' ? 'maz:text-end' : 'maz:text-start',
+  footerAlign === 'end' ? 'maz:text-end' : 'maz:text-start',
 )
 
 function toggleCollapse() {

@@ -26,6 +26,7 @@ const composablesMap: Record<Composables, true> = {
   useMountComponent: true,
   useDropzone: true,
   useMutationObserver: true,
+  useMazIconProps: true,
 }
 
 const modulesMap: Record<Modules, true> = {

@@ -20,7 +20,8 @@ Maz-UI is maintained by a single developer. After the v5 stable release, **v4 wi
 5. Replace any `roundedSize="base"` with `roundedSize="md"` (or drop the prop — the new default is visually identical).
 6. Replace any **numeric `MazBadge` size** (`size="0.8rem"`, `size="1.2em"`, …) with one of the standardized keywords (`'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`).
 7. **`MazIcon` API simplified** — drop `name`, `path` and `src` props; use a single `icon` prop that accepts a Vue component, a URL/`data:` URI, or a raw SVG string.
-8. That's it for most apps. Everything else is opt-in.
+8. Rename **`leftIcon` / `rightIcon`** to **`startIcon` / `endIcon`** (and the matching slots / `--has-*-icon` classes) on `MazBtn`, `MazInput`, `MazLink`, `MazContainer`, `MazSelect`. Same idea for `MazCard`'s `footerAlign` and `MazDrawer`'s `variant` — `'left' | 'right'` becomes `'start' | 'end'`.
+9. That's it for most apps. Everything else is opt-in.
 
 ## Prerequisites
 
@@ -177,7 +178,92 @@ import { MazStar } from '@maz-ui/icons/raw/MazStar'
 
 The existing `static/` (eager Vue component) and `lazy/` (async Vue component) entries are still available — pick what fits the situation. See the [icon set guide](./icon-set.md) for the full decision matrix.
 
-### 6. `MazBadge` `size` prop now uses `MazSize`
+### 6. Logical direction props — `leftIcon`/`rightIcon` → `startIcon`/`endIcon`
+
+To make components RTL-correct out of the box, every prop / slot / class that names a *visual* edge has been renamed to a *logical* edge:
+
+- **`left` / `right`** describe a physical position; they don't flip when `dir="rtl"`.
+- **`start` / `end`** follow the inline direction — `start` is the side where reading begins (left in LTR, right in RTL).
+
+This is consistent with native CSS (`margin-inline-start`, `padding-inline-end`, `text-align: start`) and with how design systems like Radix UI and MUI handle direction.
+
+#### Components
+
+| Component | v4 | v5 |
+| --- | --- | --- |
+| `MazBtn` | `leftIcon` / `rightIcon` props, `#left-icon` / `#right-icon` slots | `startIcon` / `endIcon` props, `#start-icon` / `#end-icon` slots |
+| `MazInput` | `leftIcon` / `rightIcon` props, `#left-icon` / `#right-icon` slots | `startIcon` / `endIcon` props, `#start-icon` / `#end-icon` slots |
+| `MazLink` | `leftIcon` / `rightIcon` props, `#left-icon` / `#right-icon` slots | `startIcon` / `endIcon` props, `#start-icon` / `#end-icon` slots |
+| `MazContainer` | `leftIcon` / `rightIcon` props, `#icon-left` / `#icon-right` slots | `startIcon` / `endIcon` props, `#icon-start` / `#icon-end` slots |
+| `MazSelect` | `#left-icon` / `#right-icon` slots | `#start-icon` / `#end-icon` slots |
+| `MazCard` | `footerAlign: 'left' \| 'right'` | `footerAlign: 'start' \| 'end'` |
+| `MazDrawer` | `variant: 'left' \| 'right' \| 'top' \| 'bottom'` | `variant: 'start' \| 'end' \| 'top' \| 'bottom'` (`top` / `bottom` unchanged — physical) |
+
+`top` and `bottom` are intentionally kept (block-axis edges that don't flip in RTL).
+
+#### Internal CSS hooks
+
+If you target maz-ui's internal selectors from your own CSS, also rename:
+
+| v4 | v5 |
+| --- | --- |
+| `.--has-left-icon` / `.--has-right-icon` | `.--has-start-icon` / `.--has-end-icon` (on `MazBtn`, `MazInput`) |
+| `.m-input-wrapper-left` / `.m-input-wrapper-right` | `.m-input-wrapper-start` / `.m-input-wrapper-end` |
+| `drawer-anim-left` / `drawer-anim-right` transitions | `drawer-anim-start` / `drawer-anim-end` (auto-mirrored under `[dir="rtl"]`) |
+
+#### Migration
+
+```vue
+<!-- v4 -->
+<MazBtn left-icon="user" right-icon="arrow-right">Save</MazBtn>
+<MazInput :left-icon="MazSearch" />
+<MazContainer title="Settings" left-icon="cog-6-tooth" />
+<MazCard footer-align="right" />
+<MazDrawer variant="right" />
+
+<!-- v5 -->
+<MazBtn start-icon="user" end-icon="arrow-right">Save</MazBtn>
+<MazInput :start-icon="MazSearch" />
+<MazContainer title="Settings" start-icon="cog-6-tooth" />
+<MazCard footer-align="end" />
+<MazDrawer variant="end" />
+```
+
+```bash
+# Quick search to chase down the renames
+rg "(left|right)-icon|(left|right)Icon|footer-align=\"(left|right)\"|variant=\"(left|right)\"" src/
+```
+
+### 7. Icon-consuming components accept the full `MazIconProps` object
+
+`MazBtn`, `MazInput`, `MazLink`, `MazContainer` and `MazDropdown` all forward their `startIcon` / `endIcon` / `icon` / `dropdownIcon` to an internal `<MazIcon>`. In v5 these props now accept either:
+
+1. **A bare value** — Vue component, URL/`data:` URI, or raw SVG string (the same shape `MazIcon`'s `icon` prop accepts). This is the existing common case.
+2. **A full `MazIconProps` object** — `{ icon, size, title, svgAttributes, fallback, flipIconForRtl }`. Useful when you need to override the inherited size, set a `<title>` for screen readers, or pass per-icon SVG attributes.
+
+```vue
+<!-- v4 only accepted a bare value -->
+<MazBtn :left-icon="MazStar" />
+
+<!-- v5 — bare value still works -->
+<MazBtn :start-icon="MazStar" />
+<MazBtn start-icon="/icons/star.svg" />
+
+<!-- v5 — full props object for fine-grained control -->
+<MazBtn
+  size="sm"
+  :start-icon="{
+    icon: MazStar,
+    size: 'lg',           // override the size derived from `size='sm'`
+    title: 'Favorite',    // adds <title> for screen readers
+    flipIconForRtl: true,
+  }"
+/>
+```
+
+Falling back to passing `undefined` (or just omitting the prop) opts the icon out, as before.
+
+### 8. `MazBadge` `size` prop now uses `MazSize`
 
 `MazBadge`'s `size` prop used to accept any CSS length string (e.g. `"0.8rem"`, `"1.2em"`). It now follows the same `MazSize` contract as the rest of the library (`MazBtn`, `MazInput`, …): one of `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`. The default is `'md'`.
 

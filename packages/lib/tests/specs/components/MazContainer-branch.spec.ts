@@ -136,20 +136,20 @@ describe('MazContainer branch coverage', () => {
     })
   })
 
-  describe('when leftIcon is a string', () => {
+  describe('when startIcon is a string', () => {
     it('should render MazIcon with name', () => {
       const wrapper = mount(MazContainer, {
-        props: { title: 'Test', leftIcon: 'check' },
+        props: { title: 'Test', startIcon: 'check' },
       })
       expect(wrapper.find('.m-container__header').exists()).toBe(true)
       wrapper.unmount()
     })
   })
 
-  describe('when rightIcon is a string', () => {
+  describe('when endIcon is a string', () => {
     it('should render MazIcon with name', () => {
       const wrapper = mount(MazContainer, {
-        props: { title: 'Test', rightIcon: 'arrow-right' },
+        props: { title: 'Test', endIcon: 'arrow-right' },
       })
       expect(wrapper.find('.m-container__header').exists()).toBe(true)
       wrapper.unmount()
@@ -159,7 +159,7 @@ describe('MazContainer branch coverage', () => {
   describe('when iconSize is set', () => {
     it('should pass iconSize to MazIcon', () => {
       const wrapper = mount(MazContainer, {
-        props: { title: 'Test', leftIcon: 'check', iconSize: 'lg' },
+        props: { title: 'Test', startIcon: 'check', iconSize: 'lg' },
       })
       wrapper.unmount()
     })

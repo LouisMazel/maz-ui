@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { IconComponent } from '@maz-ui/icons'
 import type { HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
+import type { MazIconLike } from '../composables/useMazIconProps'
 import type { MazLinkProps } from './MazLink.vue'
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
@@ -10,6 +10,7 @@ import { useTranslations } from '@maz-ui/translations/composables/useTranslation
 import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { computed, defineAsyncComponent, useTemplateRef, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useMazIconProps } from '../composables/useMazIconProps'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import MazPopover from './MazPopover.vue'
 
@@ -33,6 +34,7 @@ const {
   disabled = false,
   transition = 'scale-pop',
   preferPosition = 'bottom-start',
+  dropdownIcon,
 } = defineProps<MazDropdownProps>()
 
 const emits = defineEmits<{
@@ -51,6 +53,8 @@ const emits = defineEmits<{
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazLink = defineAsyncComponent(() => import('./MazLink.vue'))
+
+const { iconProps: dropdownIconProps } = useMazIconProps(() => dropdownIcon ?? MazChevronDown)
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazDropdown',
@@ -179,12 +183,11 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue' | '
   block?: boolean
   /**
    * Icon to use instead of the default chevron for the dropdown indicator
-   * Can be either an icon name string or a Vue component
-   * @type {string | IconComponent}
-   * @example 'arrow-down'
-   * @example ArrowDownIcon (import { ArrowDownIcon } from '@maz-ui/icons')
+   * Custom icon to display in place of the default chevron. Accepts a bare
+   * value (Vue component, raw SVG string, URL or `data:` URI) or a full
+   * `MazIconProps` object.
    */
-  dropdownIcon?: string | IconComponent
+  dropdownIcon?: MazIconLike
   /**
    * Controls whether the dropdown icon rotates when the dropdown is opened
    * @type {boolean}
@@ -399,7 +402,7 @@ watch(
             <!-- @slot Text content of the trigger element -->
             <slot />
 
-            <template v-if="chevron || hasSlotContent($slots['dropdown-icon'])" #right-icon>
+            <template v-if="chevron || hasSlotContent($slots['dropdown-icon'])" #end-icon>
               <!--
                 @slot Dropdown indicator icon
                 @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
@@ -407,7 +410,8 @@ watch(
               -->
               <slot name="dropdown-icon" :is-open="isOpen" :toggle="toggle" :close="close" :open="open">
                 <MazIcon
-                  :icon="dropdownIcon ?? MazChevronDown"
+                  v-if="dropdownIconProps"
+                  v-bind="dropdownIconProps"
                   :class="[{ '--open': isOpen && dropdownIconAnimation }, iconClassSize]"
                   class="m-dropdown__icon"
                 />

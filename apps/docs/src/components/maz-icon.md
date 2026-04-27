@@ -190,11 +190,33 @@ app.provide('mazIconPath', 'https://your-app.com')
 
 In Nuxt, set `mazUi.general.defaultMazIconPath` in `nuxt.config` and `@maz-ui/nuxt` wires the provide for you.
 
+## Forwarding `MazIconProps` from a consumer
+
+Most icon-aware components in maz-ui (`MazBtn`, `MazInput`, `MazLink`, `MazContainer`, `MazDropdown`) accept a flexible icon prop on their `startIcon`, `endIcon`, `icon` or `dropdownIcon` slots. You can pass either a bare value (the same shape as `MazIcon`'s `icon` prop) or a full `MazIconProps` object when you need fine-grained control:
+
+```vue
+<!-- bare value — common case -->
+<MazBtn :start-icon="MazStar" />
+<MazBtn start-icon="/icons/star.svg" />
+
+<!-- full props object — override size, set a title, flip for RTL, etc. -->
+<MazBtn
+  :start-icon="{
+    icon: MazStar,
+    size: 'xl',
+    title: 'Favorite',
+    flipIconForRtl: true,
+  }"
+/>
+```
+
+The consuming component still derives sensible defaults (e.g. icon size from the button's `size` prop), and the values you set in the props object override those defaults.
+
 ## All bundled icons
 
 This pack is the Heroicons set plus a few additions specific to maz-ui.
 
-<MazBtn download href="/icons/_icons.zip" right-icon="arrow-down-tray">
+<MazBtn download href="/icons/_icons.zip" end-icon="arrow-down-tray">
   Download pack
 </MazBtn>
 

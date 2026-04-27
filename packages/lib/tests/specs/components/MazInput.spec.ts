@@ -52,20 +52,33 @@ describe('components/MazInput.vue', () => {
     expect(wrapper.classes()).toContain('--has-state')
   })
 
-  describe('Given an icon component is passed as leftIcon and rightIcon props', () => {
+  describe('Given an icon component is passed as startIcon and endIcon props', () => {
     describe('When the component renders', () => {
       it('Then it routes both icons through MazIcon', async () => {
         const IconStub = { name: 'IconStub', template: '<svg class="icon-stub" />' }
 
         const iconWrapper = mount(MazInput, {
-          props: { leftIcon: IconStub, rightIcon: IconStub },
+          props: { startIcon: IconStub, endIcon: IconStub },
         })
 
-        // MazIcon is loaded as defineAsyncComponent — wait for it to resolve.
         await vi.dynamicImportSettled()
 
-        // Both icons go through the MazIcon wrapper now (no more dichotomy).
         expect(iconWrapper.findAll('.icon-stub').length).toBe(2)
+      })
+
+      it('Then it accepts a full MazIconProps object and forwards size/title', async () => {
+        const wrapper = mount(MazInput, {
+          props: {
+            startIcon: { icon: '/star.svg', size: 'xl', title: 'Star' },
+          },
+        })
+        await vi.dynamicImportSettled()
+
+        const icon = wrapper.findComponent({ name: 'MazIcon' })
+        expect(icon.exists()).toBe(true)
+        expect(icon.props('icon')).toBe('/star.svg')
+        expect(icon.props('size')).toBe('xl')
+        expect(icon.props('title')).toBe('Star')
       })
     })
   })

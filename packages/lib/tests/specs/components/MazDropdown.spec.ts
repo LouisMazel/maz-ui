@@ -186,6 +186,16 @@ describe('components/MazDropdown.vue', () => {
         expect(mazIcon.exists()).toBe(true)
         expect(mazIcon.props('icon')).toBe(MazStar)
       })
+
+      it('then a full MazIconProps object is honored', async () => {
+        await wrapper.setProps({ dropdownIcon: { icon: '/star.svg', size: 'xl', title: 'Star' } })
+
+        const mazIcon = wrapper.findComponent({ name: 'MazIcon' })
+        expect(mazIcon.exists()).toBe(true)
+        expect(mazIcon.props('icon')).toBe('/star.svg')
+        expect(mazIcon.props('size')).toBe('xl')
+        expect(mazIcon.props('title')).toBe('Star')
+      })
     })
 
     describe('when dropdownIconAnimation is false', () => {

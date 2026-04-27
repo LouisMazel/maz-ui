@@ -59,16 +59,16 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         size="lg"
         href="/guide/getting-started"
         class="maz:w-full maz:mob-l:w-auto maz:font-semibold"
-        :left-icon="MazPlay"
+        :start-icon="MazPlay"
       >
         Get Started
       </MazBtn>
       <MazBtn v-if="typeof starCount === 'number'" href="https://github.com/LouisMazel/maz-ui" target="blank" outlined color="background" size="lg" class="maz:w-full maz:mob-l:w-auto">
-        <template #left-icon>
+        <template #start-icon>
           <MazGithub class="maz:text-3xl" />
         </template>
         <MazAnimatedCounter :delay="1250" :count="starCount" class="maz:text-xl maz:ps-2" />
-        <template #right-icon>
+        <template #end-icon>
           <MazStar class="maz:text-2xl" />
         </template>
       </MazBtn>

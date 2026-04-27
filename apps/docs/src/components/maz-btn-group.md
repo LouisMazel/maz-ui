@@ -278,7 +278,7 @@ const items: MazButtonGroupOption[] = [
 
 ## With icons
 
-Use the `leftIcon` or `rightIcon` properties to add icons to buttons.
+Use the `startIcon` or `endIcon` properties to add icons to buttons.
 
 <ComponentDemo>
   <MazBtnGroup :items="iconItems" />
@@ -301,8 +301,8 @@ import { MazArrowLeft } from '@maz-ui/icons/raw/MazArrowLeft'
 import { MazArrowRight } from '@maz-ui/icons/raw/MazArrowRight'
 
 const items: MazButtonGroupOption[] = [
-  { text: 'Previous', leftIcon: MazArrowLeft, active: true },
-  { text: 'Next', rightIcon: MazArrowRight },
+  { text: 'Previous', startIcon: MazArrowLeft, active: true },
+  { text: 'Next', endIcon: MazArrowRight },
 ]
 
 const iconOnlyItems: MazButtonGroupOption[] = [
@@ -457,8 +457,8 @@ const clickableItems: MazButtonGroupOption[] = [
 ]
 
 const iconItems: MazButtonGroupOption[] = [
-  { text: 'Previous', leftIcon: MazArrowLeft },
-  { text: 'Next', rightIcon: MazArrowRight },
+  { text: 'Previous', startIcon: MazArrowLeft },
+  { text: 'Next', endIcon: MazArrowRight },
 ]
 const iconOnlyItems: MazButtonGroupOption[] = [
   { icon: MazBars3, color: 'primary', active: true },

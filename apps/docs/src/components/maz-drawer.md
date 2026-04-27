@@ -65,7 +65,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   </template>
 </MazDrawer>
 
-<MazDrawer variant="left" v-model="isOpenedLeft">
+<MazDrawer variant="start" v-model="isOpenedLeft">
   <template #title> Drawer left </template>
   <template #default="{ close }">
     <div style="padding: 16px">
@@ -77,7 +77,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   </template>
 </MazDrawer>
 
-<MazDrawer variant="right" v-model="isOpenedRight">
+<MazDrawer variant="end" v-model="isOpenedRight">
   <template #title> Drawer right </template>
   <template #default="{ close }">
     <div style="padding: 16px">
@@ -129,7 +129,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   </template>
 </MazDrawer>
 
-<MazDrawer variant="left" v-model="isOpenedLeft">
+<MazDrawer variant="start" v-model="isOpenedLeft">
   <template #title>
     Drawer left
   </template>
@@ -147,7 +147,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   </template>
 </MazDrawer>
 
-<MazDrawer variant="right" v-model="isOpenedRight">
+<MazDrawer variant="end" v-model="isOpenedRight">
   <template #title>
     Drawer right
   </template>

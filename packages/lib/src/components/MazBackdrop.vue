@@ -427,8 +427,10 @@ html.--backdrop-present.--has-scrollbar {
     }
   }
 
-  &.drawer-anim-left-enter-active,
-  &.drawer-anim-left-leave-active {
+  &.drawer-anim-start-enter-active,
+  &.drawer-anim-start-leave-active,
+  &.drawer-anim-end-enter-active,
+  &.drawer-anim-end-leave-active {
     transition: opacity 250ms ease-in-out;
     transition-behavior: allow-discrete;
 
@@ -438,8 +440,8 @@ html.--backdrop-present.--has-scrollbar {
     }
   }
 
-  &.drawer-anim-left-enter-from,
-  &.drawer-anim-left-leave-to {
+  &.drawer-anim-start-enter-from,
+  &.drawer-anim-start-leave-to {
     opacity: 0;
 
     & .m-backdrop-content > * {
@@ -447,23 +449,28 @@ html.--backdrop-present.--has-scrollbar {
     }
   }
 
-  &.drawer-anim-right-enter-active,
-  &.drawer-anim-right-leave-active {
-    transition: opacity 250ms ease-in-out;
-    transition-behavior: allow-discrete;
-
-    & .m-backdrop-content > * {
-      transition: transform 250ms ease-in-out;
-      transition-behavior: allow-discrete;
-    }
-  }
-
-  &.drawer-anim-right-enter-from,
-  &.drawer-anim-right-leave-to {
+  &.drawer-anim-end-enter-from,
+  &.drawer-anim-end-leave-to {
     opacity: 0;
 
     & .m-backdrop-content > * {
       transform: translateX(100%);
+    }
+  }
+}
+
+[dir='rtl'] .m-backdrop {
+  &.drawer-anim-start-enter-from,
+  &.drawer-anim-start-leave-to {
+    & .m-backdrop-content > * {
+      transform: translateX(100%);
+    }
+  }
+
+  &.drawer-anim-end-enter-from,
+  &.drawer-anim-end-leave-to {
+    & .m-backdrop-content > * {
+      transform: translateX(-100%);
     }
   }
 
