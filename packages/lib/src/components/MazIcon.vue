@@ -76,6 +76,7 @@ export interface MazIconProps {
 
 const attrs = useAttrs()
 const rawSvgContent = ref<string>('')
+const hasFetchError = ref(false)
 
 /**
  * Base URL prefix injected by the consuming app for relative URL `icon`s.
@@ -89,7 +90,10 @@ const mazIconPath = inject<string | undefined>('mazIconPath', undefined)
 const componentIcon = computed<IconComponent | undefined>(() => {
   if (icon && !isStringIcon(icon))
     return markRaw(icon)
-  if (!icon && fallback && !isStringIcon(fallback))
+  // Use the component fallback when no icon was provided OR when the
+  // primary string icon failed to resolve.
+  const useFallback = !icon || (isStringIcon(icon) && hasFetchError.value)
+  if (useFallback && fallback && !isStringIcon(fallback))
     return markRaw(fallback)
   return undefined
 })
@@ -170,8 +174,14 @@ async function resolveStringIcon(value: string): Promise<void> {
     }
     catch (error) {
       const err = error instanceof Error ? error : new Error(String(error))
+      // Surface the failure by default — consumers can still wire `@error`
+      // for telemetry, but the warning makes the issue visible without it.
+      console.warn(err)
       emits('error', err)
-      // Fall through to the fallback if it is itself a string icon
+      hasFetchError.value = true
+      // If the fallback is itself a string icon, try it. If it also fails,
+      // the recursive call will set `hasFetchError` again — and the
+      // component fallback (if any) will take over via `componentIcon`.
       if (fallback && isStringIcon(fallback) && fallback !== value)
         await resolveStringIcon(fallback)
     }
@@ -179,8 +189,10 @@ async function resolveStringIcon(value: string): Promise<void> {
 }
 
 async function renderIcon(): Promise<void> {
+  hasFetchError.value = false
+
   // Component icons render via <component :is="…"> in the template — nothing to do here.
-  if (componentIcon.value)
+  if (icon && !isStringIcon(icon))
     return
 
   if (icon && isStringIcon(icon)) {
@@ -252,6 +264,7 @@ watch(
 @reference "../tailwindcss/tailwind.css";
 
 .m-icon {
+  &,
   &:deep(> svg) {
     @apply maz:size-[1em];
   }

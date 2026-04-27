@@ -66,6 +66,27 @@ describe('MazIcon', () => {
       expect(wrapper.html()).toContain('viewBox="0 0 24 24"')
     })
 
+    it('warns and renders the component fallback when a URL icon fails', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      globalThis.fetch = vi.fn().mockResolvedValue({ ok: false, status: 404 } as Response)
+
+      const wrapper = mount(MazIcon, {
+        props: {
+          icon: '/icons/missing.svg',
+          fallback: ComponentIcon as any,
+        },
+      })
+      await nextTick()
+      await new Promise(resolve => setTimeout(resolve, 0))
+      await nextTick()
+
+      expect(wrapper.emitted('error')).toBeDefined()
+      expect(warnSpy).toHaveBeenCalled()
+      expect(wrapper.find('[data-testid="component-icon"]').exists()).toBe(true)
+
+      warnSpy.mockRestore()
+    })
+
     it('emits "error" when fetch fails and falls back to a string fallback', async () => {
       let callCount = 0
       globalThis.fetch = vi.fn().mockImplementation(() => {
