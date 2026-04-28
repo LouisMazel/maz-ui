@@ -118,26 +118,22 @@ function injectThemeCSS(config: Required<MazUiNuxtThemeOptions>) {
 /* eslint-enable sonarjs/no-commented-code */
 
 async function resolvePreset(options: { preset?: ThemePreset | ThemePresetName } | undefined, persistPreset: boolean) {
-  // Custom preset object passed explicitly by the consumer always wins —
-  // it's app-controlled, never user-controlled. The cookie only beats a
-  // string preset name (which is treated as the default to load).
-  if (options?.preset && typeof options.preset !== 'string') {
-    return getPreset(options.preset)
-  }
-
   const savedName = persistPreset ? getSavedPresetName() : undefined
-  const presetToResolve = (savedName ?? options?.preset) as ThemePresetName | undefined
 
-  try {
-    return await getPreset(presetToResolve)
-  }
-  catch (error) {
-    if (!savedName) {
-      throw error
+  // Cookie wins (when present) — even over a preset object passed via options,
+  // since options.preset is the default the app boots with, while the cookie
+  // carries the user's last explicit choice.
+  if (savedName) {
+    try {
+      return await getPreset(savedName as ThemePresetName)
     }
-    clearSavedPresetName()
-    return getPreset(options?.preset)
+    catch {
+      clearSavedPresetName()
+      // fall through to the options-based resolution
+    }
   }
+
+  return getPreset(options?.preset)
 }
 
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {

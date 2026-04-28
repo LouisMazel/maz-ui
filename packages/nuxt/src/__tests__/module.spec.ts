@@ -421,6 +421,20 @@ describe('nuxt module', () => {
         )
       })
 
+      it('should not register useTheme when disabled', () => {
+        callSetup({ composables: { useTheme: false } })
+        expect(addImports).not.toHaveBeenCalledWith(
+          expect.objectContaining({ name: 'useTheme', from: '@maz-ui/themes' }),
+        )
+      })
+
+      it('should not register useTranslations when disabled', () => {
+        callSetup({ composables: { useTranslations: false } })
+        expect(addImports).not.toHaveBeenCalledWith(
+          expect.objectContaining({ name: 'useTranslations', from: '@maz-ui/translations' }),
+        )
+      })
+
       it('should apply autoImportPrefix to composable names', () => {
         callSetup({ general: { autoImportPrefix: 'Maz' } })
         expect(addImports).toHaveBeenCalledWith(

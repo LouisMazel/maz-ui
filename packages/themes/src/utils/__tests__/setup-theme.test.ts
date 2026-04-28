@@ -726,15 +726,48 @@ describe('setup-theme', () => {
       })
     })
 
-    describe('when options.preset is a custom preset object', () => {
-      it('then the cookie is bypassed entirely (object always wins)', () => {
-        vi.mocked(getSavedPresetName).mockReturnValue('ocean')
+    describe('when options.preset is a custom preset object and a saved name is in the cookie', () => {
+      it('then the cookie still wins — options.preset is only the default', async () => {
+        vi.mocked(getSavedPresetName).mockReturnValueOnce('ocean')
+        vi.mocked(getPreset).mockResolvedValueOnce({ ...mockPreset, name: 'ocean' })
+        const customPreset = { ...mockPreset, name: 'custom-app-theme' }
+
+        setupTheme({ preset: customPreset })
+
+        await nextTick()
+        await nextTick()
+
+        expect(getPreset).toHaveBeenCalledWith('ocean')
+        expect(saveResolvedPresetName).toHaveBeenCalledWith('ocean')
+      })
+    })
+
+    describe('when options.preset is a custom preset object and no saved cookie exists', () => {
+      it('then the object is finalized synchronously', () => {
+        vi.mocked(getSavedPresetName).mockReturnValue(null)
         const customPreset = { ...mockPreset, name: 'custom-app-theme' }
 
         const result = setupTheme({ preset: customPreset }) as SetupThemeReturn
 
         expect(result.themeState.value.preset?.name).toBe('custom-app-theme')
-        expect(getSavedPresetName).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('when the saved cookie fails to resolve and options.preset is a custom object', () => {
+      it('then it clears the cookie and finalizes with the object fallback', async () => {
+        vi.mocked(getSavedPresetName).mockReturnValueOnce('disappeared')
+        const customPreset = { ...mockPreset, name: 'custom-app-theme' }
+        vi.mocked(getPreset)
+          .mockRejectedValueOnce(new Error('not found'))
+          .mockResolvedValueOnce(customPreset)
+
+        setupTheme({ preset: customPreset })
+
+        await new Promise(resolve => setTimeout(resolve, 0))
+        await new Promise(resolve => setTimeout(resolve, 0))
+
+        expect(clearSavedPresetName).toHaveBeenCalledTimes(1)
+        expect(saveResolvedPresetName).toHaveBeenCalledWith('custom-app-theme')
       })
     })
 

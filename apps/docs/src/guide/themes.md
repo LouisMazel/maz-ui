@@ -99,7 +99,7 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 
 When `persistPreset` is enabled (default), `@maz-ui/themes` stores the resolved preset name in a `maz-preset` cookie (1-year TTL, `SameSite=Lax`) — exactly like `maz-color-mode` for the dark/light state. The cookie is:
 
-- **Read at boot** and used to resolve the active preset. The user's last choice wins over `options.preset`, which is treated as the *default* preset to fall back to. A custom preset **object** passed via `options.preset` is always honored as-is (app-controlled, bypasses the cookie).
+- **Read at boot** and used to resolve the active preset — even when `options.preset` is provided. `options.preset` (string name **or** preset object) is treated as the *default* the app boots with, while the cookie carries the user's last explicit choice. The cookie wins.
 - **Written** after every successful preset resolution and after every `useTheme().updateTheme()` call (idempotent — no write if the value already matches).
 - **Auto-cleared** when the saved name no longer resolves (e.g. typo, preset removed in a downgrade) — the runtime falls back to `options.preset` (or default) and clears the cookie silently.
 

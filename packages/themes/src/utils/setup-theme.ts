@@ -170,27 +170,49 @@ function finalizeTheme(
  * When no preset object is provided, the default preset is resolved asynchronously
  * in the background and the themeState is updated reactively (causes FOUC).
  */
+async function resolvePreset(
+  config: ResolvedConfig,
+  savedName: string | null,
+): Promise<ThemePreset | undefined> {
+  // Cookie wins (when present) — even over a preset object passed via options,
+  // since options.preset is treated as the default the app boots with, while
+  // the cookie carries the user's last explicit choice.
+  if (savedName) {
+    try {
+      return await getPreset(savedName as ThemePresetName)
+    }
+    catch {
+      clearSavedPresetName()
+      // fall through to options.preset fallback
+    }
+  }
+
+  try {
+    return await getPreset(config.preset)
+  }
+  catch (error) {
+    console.error('[@maz-ui/themes] Failed to resolve preset', error)
+    return undefined
+  }
+}
+
 export function setupTheme(options: MazUiThemeOptions): SetupThemeReturn {
   const config = resolveConfig(options)
   const themeState = createThemeState(options, config)
 
-  if ((config.preset && typeof config.preset !== 'string') || config.strategy === 'buildtime') {
+  // Buildtime never resolves a preset at runtime — short-circuit immediately.
+  if (config.strategy === 'buildtime') {
     return finalizeTheme(themeState, config.preset, config)
   }
 
   const savedName = config.persistPreset ? getSavedPresetName() : null
-  const presetToResolve = (savedName ?? config.preset) as ThemePresetName | undefined
 
-  getPreset(presetToResolve)
-    .catch((error) => {
-      if (savedName) {
-        clearSavedPresetName()
-        return getPreset(config.preset)
-      }
-      console.error('[@maz-ui/themes] Failed to resolve preset', error)
-      return undefined
-    })
-    .then(preset => finalizeTheme(themeState, preset, config))
+  // No saved cookie + a preset object → finalize synchronously, no FOUC.
+  if (!savedName && config.preset && typeof config.preset !== 'string') {
+    return finalizeTheme(themeState, config.preset, config)
+  }
+
+  resolvePreset(config, savedName).then(preset => finalizeTheme(themeState, preset, config))
 
   return { themeState: themeState as Ref<ThemeState>, cleanup: () => {} }
 }
