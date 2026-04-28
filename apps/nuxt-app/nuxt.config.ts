@@ -2,12 +2,12 @@ import process from 'node:process'
 import tailwindcss from '@tailwindcss/vite'
 import postcssNested from 'postcss-nested'
 import svgLoader from 'vite-svg-loader'
-import mazUiModule from './../../packages/nuxt/src/module'
+// import mazUiModule from './../../packages/nuxt/src/module'
 
 const isDev = process.env.NODE_ENV !== 'production'
 
 export default defineNuxtConfig({
-  modules: [mazUiModule],
+  modules: ['@maz-ui/nuxt'],
 
   devtools: { enabled: true },
 
@@ -56,7 +56,7 @@ export default defineNuxtConfig({
 
   mazUi: {
     theme: {
-      preset: 'nova',
+      preset: 'maz-ui',
       mode: 'both',
       colorMode: 'auto',
     },

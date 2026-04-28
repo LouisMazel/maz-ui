@@ -228,6 +228,28 @@ describe('theme plugin', () => {
     expect(mockGetPreset).toHaveBeenCalledWith('nova')
   })
 
+  it('should let the saved preset cookie override the default options.preset string', async () => {
+    const presetCookie: { value: string | null } = { value: 'nova' }
+    mockUseCookie.mockImplementation(((name: string) => {
+      return name === 'maz-preset' ? presetCookie : { value: undefined }
+    }) as any)
+    const context = createContext({ preset: 'maz-ui' })
+    await (themePlugin as (...args: any[]) => any)(context)
+    expect(mockGetPreset).toHaveBeenCalledWith('nova')
+  })
+
+  it('should bypass the cookie entirely when options.preset is a custom preset object', async () => {
+    const presetCookie: { value: string | null } = { value: 'nova' }
+    mockUseCookie.mockImplementation(((name: string) => {
+      return name === 'maz-preset' ? presetCookie : { value: undefined }
+    }) as any)
+    const customPreset = { name: 'custom-app-theme', colors: {} } as any
+    const context = createContext({ preset: customPreset })
+    await (themePlugin as (...args: any[]) => any)(context)
+    expect(mockGetPreset).toHaveBeenCalledWith(customPreset)
+    expect(mockGetPreset).not.toHaveBeenCalledWith('nova')
+  })
+
   it('should clear the cookie and fall back to the default when the saved preset cannot be resolved', async () => {
     const presetCookie: { value: string | null } = { value: 'unknown' }
     mockUseCookie.mockImplementation(((name: string) => {

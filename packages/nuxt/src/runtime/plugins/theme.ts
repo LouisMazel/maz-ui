@@ -118,7 +118,14 @@ function injectThemeCSS(config: Required<MazUiNuxtThemeOptions>) {
 /* eslint-enable sonarjs/no-commented-code */
 
 async function resolvePreset(options: { preset?: ThemePreset | ThemePresetName } | undefined, persistPreset: boolean) {
-  const savedName = (persistPreset && !options?.preset) ? getSavedPresetName() : undefined
+  // Custom preset object passed explicitly by the consumer always wins —
+  // it's app-controlled, never user-controlled. The cookie only beats a
+  // string preset name (which is treated as the default to load).
+  if (options?.preset && typeof options.preset !== 'string') {
+    return getPreset(options.preset)
+  }
+
+  const savedName = persistPreset ? getSavedPresetName() : undefined
   const presetToResolve = (savedName ?? options?.preset) as ThemePresetName | undefined
 
   try {

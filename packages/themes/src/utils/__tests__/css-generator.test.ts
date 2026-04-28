@@ -294,6 +294,28 @@ describe('cSS Generator', () => {
       })
     })
 
+    describe('when scales.shadow has a falsy entry', () => {
+      it('then the falsy shadow value is skipped without emitting a var', () => {
+        const presetWithEmptyShadow = {
+          ...mazUi,
+          scales: {
+            ...mazUi.scales,
+            shadow: { ...mazUi.scales.shadow, sm: '' },
+          },
+        }
+
+        const css = generateCSS(presetWithEmptyShadow as any, {
+          prefix: 'maz',
+          mode: 'light',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+        })
+
+        expect(css).not.toContain('--maz-shadow-style-sm:')
+        expect(css).toContain('--maz-shadow-style-md:')
+      })
+    })
+
     describe('when components.btn.font-weight is provided', () => {
       it('then it emits --maz-btn-font-weight on the light root', () => {
         const presetWithBtn = {

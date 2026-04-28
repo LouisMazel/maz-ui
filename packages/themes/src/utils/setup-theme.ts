@@ -178,7 +178,7 @@ export function setupTheme(options: MazUiThemeOptions): SetupThemeReturn {
     return finalizeTheme(themeState, config.preset, config)
   }
 
-  const savedName = (!options.preset && config.persistPreset) ? getSavedPresetName() : null
+  const savedName = config.persistPreset ? getSavedPresetName() : null
   const presetToResolve = (savedName ?? config.preset) as ThemePresetName | undefined
 
   getPreset(presetToResolve)

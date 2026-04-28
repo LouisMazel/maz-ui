@@ -504,9 +504,9 @@ Switching to one of the bundled presets does not require any code change beyond 
 
 `@maz-ui/themes` now persists the active preset name in a `maz-preset` cookie (1-year TTL, `SameSite=Lax`) — same shape as the existing `maz-color-mode` cookie:
 
-- The cookie is read at boot **only when** `options.preset` is omitted.
+- The cookie is read at boot and **takes priority over `options.preset`** when set: the user's last choice wins, `options.preset` acts as the default to fall back to. A custom preset **object** passed via `options.preset` always wins (app-controlled, bypasses the cookie).
 - It is written after every successful preset resolution and after every `useTheme().updateTheme()` call.
-- If the saved name no longer resolves, the cookie is cleared and the runtime falls back to the default.
+- If the saved name no longer resolves, the cookie is cleared and the runtime falls back to `options.preset` (or default).
 
 Persistence is enabled by default. To opt out (privacy, no end-user switching, …), set `persistPreset: false`:
 
