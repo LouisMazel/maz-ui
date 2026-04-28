@@ -116,7 +116,7 @@ const checklistItems = [
 </script>
 
 <template>
-  <div class="maz:flex maz:flex-col maz:gap-16 maz:p-8" style="max-width: 1400px; margin: 0 auto;">
+  <div class="maz:flex maz:flex-col maz:gap-16">
     <!-- ==================== MazBtn ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">

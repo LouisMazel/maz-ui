@@ -75,7 +75,7 @@ const { toggleDarkMode, isDark } = useTheme()
 </script>
 
 <template>
-  <div class="maz:bg-background p-8 maz:text-foreground">
+  <div class="maz:bg-surface p-8 maz:text-foreground">
     <!-- Components are auto-imported -->
     <MazBtn color="primary" @click="start">
       Start timer ({{ remainingTime }}ms)
@@ -222,13 +222,13 @@ const theme = {
       light: {
         primary: '220 100% 50%',
         secondary: '220 14% 96%',
-        background: '0 0% 100%',
+        surface: '0 0% 100%',
         foreground: '222 84% 5%',
       },
       dark: {
         primary: '220 100% 70%',
         secondary: '220 14% 4%',
-        background: '222 84% 5%',
+        surface: '222 84% 5%',
         foreground: '210 40% 98%',
       }
     },
@@ -410,7 +410,7 @@ export const customTheme = definePreset({
     light: {
       primary: '350 100% 50%', // Custom pink
       secondary: '350 14% 96%',
-      background: '0 0% 100%',
+      surface: '0 0% 100%',
       foreground: '222 84% 5%',
       muted: '210 40% 96%',
       accent: '210 40% 90%',
@@ -422,7 +422,7 @@ export const customTheme = definePreset({
     dark: {
       primary: '350 100% 70%',
       secondary: '350 14% 4%',
-      background: '222 84% 5%',
+      surface: '222 84% 5%',
       foreground: '210 40% 98%',
       muted: '217 33% 17%',
       accent: '217 33% 17%',

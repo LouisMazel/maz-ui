@@ -325,6 +325,119 @@ If you really need a custom size, wrap or override via your own class — pass `
 <MazBadge size="md" class="maz:text-[0.7rem]" />
 ```
 
+### 10. Theme preset rename — `background` → `surface`, `border` → `divider`
+
+Preset keys now use the same names that components and Tailwind utilities have used all along. There is no compatibility alias — rename the keys in your custom preset.
+
+```ts
+// v4
+{
+  colors: {
+    light: { background: '0 0% 100%', border: '220 13% 91%', /* ... */ },
+    dark:  { background: '235 16% 15%', border: '238 17% 25%', /* ... */ },
+  },
+}
+
+// v5
+{
+  colors: {
+    light: { surface: '0 0% 100%', divider: '220 13% 91%', /* ... */ },
+    dark:  { surface: '235 16% 15%', divider: '238 17% 25%', /* ... */ },
+  },
+}
+```
+
+The runtime CSS variables follow:
+
+| v4 | v5 |
+| --- | --- |
+| `--maz-background[-N]` | `--maz-surface[-N]` |
+| `--maz-border[-N]` | `--maz-divider[-N]` |
+
+Tailwind utilities `maz:bg-surface`, `maz:text-surface-700`, `maz:border-divider` are stable — they pointed at these renamed vars even in v4 and continue to work.
+
+```bash
+# Find leftovers
+rg "(--maz-background|--maz-border\b|colors\.(light|dark)\.(background|border))" src/
+```
+
+### 11. Theme preset: `foundation.radius` → `scales.radius.md`
+
+The single foundation radius is replaced by a full radius scale. Move your value to `scales.radius.md` and pick the rest of the scale (or spread the bundled defaults).
+
+```ts
+// v4
+{
+  foundation: {
+    'base-font-size': '14px',
+    'border-width': '1px',
+    'radius': '0.7rem',
+  },
+}
+
+// v5
+{
+  foundation: {
+    'base-font-size': '14px',
+    'border-width': '1px',
+  },
+  scales: {
+    spacing: '0.25rem',
+    radius: {
+      'xs': '0.125rem',
+      'sm': '0.25rem',
+      'md': '0.7rem',
+      'lg': '1rem',
+      'xl': '1.5rem',
+      '2xl': '2rem',
+      '3xl': '3rem',
+    },
+    shadow: { /* ... */ },
+  },
+}
+```
+
+The bridge maps every `--maz-radius-{key}` to its matching Tailwind `--radius-{key}`, so `maz:rounded-md`, `maz:rounded-lg`, etc. all move with your preset.
+
+### 12. New optional preset blocks: `scales` and `components`
+
+`@maz-ui/themes` now lets you drive the spacing / radius / shadow scales and a small set of per-component tokens:
+
+```ts
+{
+  scales: {
+    spacing: '0.25rem',
+    radius: { /* xs..3xl */ },
+    shadow: { sm, md, lg, xl, elevation },
+  },
+  components: {
+    btn: { 'font-weight': '500' },
+    container: { bg: { light: 'var(--maz-surface)', dark: 'var(--maz-surface)' } },
+    input: { bg: { light: 'var(--maz-surface)', dark: 'var(--maz-surface-400)' } },
+  },
+}
+```
+
+Both blocks are optional; the bundled presets ship with sensible defaults. New `foundation` keys also landed and are all optional: `font-mono`, `font-display`, `disabled-opacity`, `disabled-cursor`. See the [themes guide](./themes.md) for the full surface.
+
+### 13. `color="background"` → `color="surface"` on components
+
+The components that exposed `color="background"` in their public prop now use `color="surface"`. The visual result is identical — only the literal changes.
+
+| Component | v4 | v5 |
+| --- | --- | --- |
+| `MazBtn` | `color="background"` | `color="surface"` |
+| `MazBadge` | `color="background"` | `color="surface"` |
+| `MazLink` | `color="background"` | `color="surface"` |
+| `MazPopover` | `color="background"` (default) | `color="surface"` (default) |
+| `MazPagination` | `activeColor="background"` (default) | `activeColor="surface"` (default) |
+| `MazRadioButtons` | `color="background"` | `color="surface"` |
+
+```bash
+# Find prop usages to update
+rg "color\s*=\s*['\"]background['\"]" src/
+```
+
 ## Informational changes (probably no action needed)
 
 ### Theme colors are now emitted as OKLCh
@@ -393,7 +506,7 @@ If you DO have your own Tailwind v4 setup and want to expose maz-ui's theme toke
 You still have `hsl(var(--maz-<color>))` in your CSS. See the required change above.
 
 **A maz-ui component's border is a weird color.**
-Expected if you were overriding `--maz-border` with a non-color value. Confirm it's a valid CSS color in v5.
+Expected if you were overriding `--maz-divider` (renamed from `--maz-border` in v5) with a non-color value. Confirm it's a valid CSS color.
 
 **My custom preset's colors are ignored.**
 Check the preset's type — if you imported `HSL` explicitly, switch to `CSSColor` (or just remove the type annotation). Raw HSL strings still work at runtime.

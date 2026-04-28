@@ -47,9 +47,9 @@ const { toggleDarkMode, isDark } = useTheme()
 </script>
 
 <template>
-  <div class="maz-bg-background maz-text-foreground">
+  <div class="maz:bg-surface maz:text-foreground">
     <button
-      class="maz-bg-primary maz-text-primary-foreground maz-rounded-[var(--radius)]"
+      class="maz:bg-primary maz:text-primary-foreground maz:rounded-md"
       @click="toggleDarkMode"
     >
       Toggle Dark Mode

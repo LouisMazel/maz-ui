@@ -36,7 +36,7 @@ const originalTheme = preset.value
 const colorCategories = [
   {
     name: 'Base Colors',
-    colors: ['background', 'foreground', 'border', 'muted', 'overlay', 'shadow'] as const,
+    colors: ['surface', 'foreground', 'divider', 'muted', 'overlay', 'shadow'] as const,
   },
   {
     name: 'Colors',
