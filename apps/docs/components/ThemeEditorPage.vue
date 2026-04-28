@@ -104,9 +104,8 @@ export const customTheme: ThemePreset = ${JSON.stringify(themeData, null, 2)
     const escapedValue = value.replace(/'/g, '\\\'')
     return `: '${escapedValue}'`
   })
-  // Remove quotes from top-level keys and nested object keys
-  .replace(/^(\s*)"(name|foundation|colors)":/gm, '$1$2:')
-  .replace(/^(\s*)"(light|dark)":/gm, '$1$2:')}`
+  // Remove quotes from top-level keys and nested object keys (single-word keys only)
+  .replace(/^(\s*)"(name|foundation|scales|components|colors|spacing|radius|shadow|btn|container|input|bg|light|dark)":/gm, '$1$2:')}`
 
   exportedCode.value = themeCode
 
@@ -127,23 +126,72 @@ export const customTheme: ThemePreset = ${JSON.stringify(themeData, null, 2)
   showExportModal.value = true
 }
 
-const foundationInputs = computed(() => [
-  {
-    key: 'base-font-size',
-    label: 'Base Font Size',
-    placeholder: '14px',
+type FoundationKey = keyof NonNullable<ThemePreset['foundation']>
+
+interface FoundationInput {
+  key: FoundationKey
+  label: string
+  placeholder: string
+}
+
+const foundationInputs: readonly FoundationInput[] = [
+  { key: 'base-font-size', label: 'Base font size', placeholder: '14px' },
+  { key: 'border-width', label: 'Border width', placeholder: '0.0625rem' },
+  { key: 'font-family', label: 'Font family (sans)', placeholder: 'Manrope, sans-serif' },
+  { key: 'font-display', label: 'Font display', placeholder: 'Manrope, sans-serif' },
+  { key: 'font-mono', label: 'Font mono', placeholder: 'ui-monospace, SFMono-Regular, …' },
+  { key: 'duration-fast', label: 'Duration fast', placeholder: '100ms' },
+  { key: 'duration-normal', label: 'Duration normal', placeholder: '200ms' },
+  { key: 'duration-slow', label: 'Duration slow', placeholder: '300ms' },
+  { key: 'easing-out', label: 'Easing out', placeholder: 'cubic-bezier(0.4, 0, 0.2, 1)' },
+  { key: 'easing-in', label: 'Easing in', placeholder: 'cubic-bezier(0.4, 0, 1, 1)' },
+  { key: 'easing-in-out', label: 'Easing in-out', placeholder: 'cubic-bezier(0.4, 0, 0.2, 1)' },
+  { key: 'disabled-opacity', label: 'Disabled opacity', placeholder: '0.5' },
+  { key: 'disabled-cursor', label: 'Disabled cursor', placeholder: 'not-allowed' },
+] as const
+
+const radiusKeys = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'] as const
+const shadowKeys = ['sm', 'md', 'lg', 'xl', 'elevation'] as const
+
+const shadowPlaceholders: Record<typeof shadowKeys[number], string> = {
+  sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+  md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+  lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+  xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+  elevation: '0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 4px -1px rgb(0 0 0 / 0.06)',
+}
+
+function ensureComponents() {
+  if (!themeData.components) {
+    themeData.components = {}
+  }
+  return themeData.components
+}
+
+const btnFontWeight = computed({
+  get: () => themeData.components?.btn?.['font-weight'] ?? '',
+  set: (value: string) => {
+    const components = ensureComponents()
+    components.btn = { ...(components.btn ?? {}), 'font-weight': value }
   },
-  {
-    key: 'font-family',
-    label: 'Font Family',
-    placeholder: 'Manrope, sans-serif',
-  },
-  {
-    key: 'border-width',
-    label: 'Border Width',
-    placeholder: '0.0625rem',
-  },
-] as const)
+})
+
+function componentBgGetter(scope: 'container' | 'input', mode: 'light' | 'dark') {
+  return computed({
+    get: () => themeData.components?.[scope]?.bg?.[mode] ?? '',
+    set: (value: string) => {
+      const components = ensureComponents()
+      const slot = components[scope] ?? {}
+      slot.bg = { ...(slot.bg ?? {}), [mode]: value }
+      components[scope] = slot
+    },
+  })
+}
+
+const containerBgLight = componentBgGetter('container', 'light')
+const containerBgDark = componentBgGetter('container', 'dark')
+const inputBgLight = componentBgGetter('input', 'light')
+const inputBgDark = componentBgGetter('input', 'dark')
 
 const currentColors = computed(() => themeData.colors[editingMode.value])
 
@@ -183,7 +231,7 @@ function formatColorName(colorName: string): string {
           </MazBtn>
         </div>
 
-        <MazCard block title="Base preset">
+        <MazContainer block title="Base preset">
           <MazRadioButtons
             :model-value="presetName"
             size="sm"
@@ -205,39 +253,134 @@ function formatColorName(colorName: string): string {
               }]"
             @update:model-value="updateTheme($event)"
           />
-        </MazCard>
+        </MazContainer>
 
         <!-- Foundation Settings -->
-        <MazCard title="Foundation" block>
-          <div
-            class="maz:flex maz:flex-col maz:gap-3"
-          >
-            <template
+        <MazContainer title="Foundation" block>
+          <div class="maz:flex maz:flex-col maz:gap-3">
+            <MazInput
               v-for="input in foundationInputs"
               :key="input.key"
-            >
-              <MazInput
-                v-model="themeData.foundation[input.key as keyof typeof themeData.foundation]"
-                :label="input.label"
-                :placeholder="input.placeholder"
-                size="sm"
-                block
-                debounce
-              />
-            </template>
-            <MazInput
-              v-model="themeData.scales.radius.md"
-              label="Border Radius (md)"
-              placeholder="0.7rem"
+              v-model="themeData.foundation[input.key]"
+              :label="input.label"
+              :placeholder="input.placeholder"
               size="sm"
               block
               debounce
             />
           </div>
-        </MazCard>
+        </MazContainer>
+
+        <!-- Scales -->
+        <MazContainer title="Scales" block>
+          <div class="maz:flex maz:flex-col maz:gap-4">
+            <MazInput
+              v-model="themeData.scales.spacing"
+              label="Spacing (base unit)"
+              placeholder="0.25rem"
+              size="sm"
+              block
+              debounce
+            />
+
+            <div class="maz:flex maz:flex-col maz:gap-2">
+              <h4 class="maz:text-sm maz:font-semibold maz:text-foreground maz:m-0">
+                Radius
+              </h4>
+              <MazInput
+                v-for="key in radiusKeys"
+                :key="`radius-${key}`"
+                v-model="themeData.scales.radius[key]"
+                :label="`radius.${key}`"
+                size="sm"
+                block
+                debounce
+              />
+            </div>
+
+            <div class="maz:flex maz:flex-col maz:gap-2">
+              <h4 class="maz:text-sm maz:font-semibold maz:text-foreground maz:m-0">
+                Shadow
+              </h4>
+              <MazInput
+                v-for="key in shadowKeys"
+                :key="`shadow-${key}`"
+                v-model="themeData.scales.shadow[key]"
+                :label="`shadow.${key}`"
+                :placeholder="shadowPlaceholders[key]"
+                size="sm"
+                block
+                debounce
+              />
+            </div>
+          </div>
+        </MazContainer>
+
+        <!-- Components -->
+        <MazContainer title="Components" block>
+          <div class="maz:flex maz:flex-col maz:gap-4">
+            <div class="maz:flex maz:flex-col maz:gap-2">
+              <h4 class="maz:text-sm maz:font-semibold maz:text-foreground maz:m-0">
+                MazBtn
+              </h4>
+              <MazInput
+                v-model="btnFontWeight"
+                label="font-weight"
+                placeholder="500"
+                size="sm"
+                block
+                debounce
+              />
+            </div>
+
+            <div class="maz:flex maz:flex-col maz:gap-2">
+              <h4 class="maz:text-sm maz:font-semibold maz:text-foreground maz:m-0">
+                Container bg
+              </h4>
+              <MazInput
+                v-model="containerBgLight"
+                label="light"
+                placeholder="var(--maz-surface)"
+                size="sm"
+                block
+                debounce
+              />
+              <MazInput
+                v-model="containerBgDark"
+                label="dark"
+                placeholder="var(--maz-surface)"
+                size="sm"
+                block
+                debounce
+              />
+            </div>
+
+            <div class="maz:flex maz:flex-col maz:gap-2">
+              <h4 class="maz:text-sm maz:font-semibold maz:text-foreground maz:m-0">
+                Input bg
+              </h4>
+              <MazInput
+                v-model="inputBgLight"
+                label="light"
+                placeholder="var(--maz-surface)"
+                size="sm"
+                block
+                debounce
+              />
+              <MazInput
+                v-model="inputBgDark"
+                label="dark"
+                placeholder="var(--maz-surface-400)"
+                size="sm"
+                block
+                debounce
+              />
+            </div>
+          </div>
+        </MazContainer>
 
         <!-- Colors Settings -->
-        <MazCard block>
+        <MazContainer block>
           <template #title>
             <div class="maz:flex maz:w-full maz:items-center maz:justify-between">
               <h3 class="maz:text-base">
@@ -278,7 +421,7 @@ function formatColorName(colorName: string): string {
               </div>
             </div>
           </div>
-        </MazCard>
+        </MazContainer>
       </div>
 
       <!-- Preview Panel -->
@@ -298,36 +441,36 @@ function formatColorName(colorName: string): string {
 
             <MazTabsContent>
               <MazTabsContentItem :tab="1">
-                <MazCard
+                <MazContainer
                   bordered
                   :padding="false"
                   overflow-hidden
                   class="maz:max-h-[70vh] maz:w-full maz:overflow-y-auto"
                 >
                   <DemoDashboardPage :delay="0" />
-                </MazCard>
+                </MazContainer>
               </MazTabsContentItem>
 
               <MazTabsContentItem :tab="2">
-                <MazCard
+                <MazContainer
                   bordered
                   :padding="false"
                   overflow-hidden
                   class="maz:max-h-[70vh] maz:w-full maz:overflow-y-auto"
                 >
                   <DemoProductPage />
-                </MazCard>
+                </MazContainer>
               </MazTabsContentItem>
 
               <MazTabsContentItem :tab="3">
-                <MazCard
+                <MazContainer
                   bordered
                   :padding="false"
                   overflow-hidden
                   class="maz:max-h-[70vh] maz:w-full maz:overflow-y-auto"
                 >
                   <DemoAuthPage />
-                </MazCard>
+                </MazContainer>
               </MazTabsContentItem>
             </MazTabsContent>
           </MazTabs>
