@@ -1,8 +1,9 @@
 import type { Ref } from 'vue'
 import type { MazUiThemeOptions } from '../plugin'
-import type { ThemePreset, ThemeState } from '../types'
+import type { ThemePreset, ThemePresetName, ThemeState } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { ref, watch } from 'vue'
+import { clearSavedPresetName, getSavedPresetName, saveResolvedPresetName } from './cookie-storage'
 import { getColorMode, getSavedColorMode, getSystemColorMode, saveResolvedColorMode } from './get-color-mode'
 import { getPreset } from './get-preset'
 import { injectThemeCSS } from './inject-theme-css'
@@ -81,6 +82,7 @@ export const defaultOptions = {
   mode: 'both',
   darkClass: 'dark',
   colorMode: 'auto',
+  persistPreset: true,
 } satisfies Required<Omit<MazUiThemeOptions, 'preset'>> & Pick<MazUiThemeOptions, 'preset'>
 
 export interface SetupThemeReturn {
@@ -116,6 +118,7 @@ function createThemeState(options: MazUiThemeOptions, config: ResolvedConfig): T
     colorMode: config.colorMode,
     mode: config.mode,
     preset: undefined,
+    persistPreset: config.persistPreset,
     // @ts-expect-error _isDark is a private property
     isDark: options._isDark || isDark,
   })
@@ -136,6 +139,9 @@ function finalizeTheme(
 
   if (finalPreset) {
     themeState.value.preset = finalPreset
+    if (config.persistPreset) {
+      saveResolvedPresetName(finalPreset.name)
+    }
   }
 
   if (config.strategy === 'buildtime' || !finalPreset) {
@@ -172,7 +178,19 @@ export function setupTheme(options: MazUiThemeOptions): SetupThemeReturn {
     return finalizeTheme(themeState, config.preset, config)
   }
 
-  getPreset(config.preset).then(preset => finalizeTheme(themeState, preset, config))
+  const savedName = (!options.preset && config.persistPreset) ? getSavedPresetName() : null
+  const presetToResolve = (savedName ?? config.preset) as ThemePresetName | undefined
+
+  getPreset(presetToResolve)
+    .catch((error) => {
+      if (savedName) {
+        clearSavedPresetName()
+        return getPreset(config.preset)
+      }
+      console.error('[@maz-ui/themes] Failed to resolve preset', error)
+      return undefined
+    })
+    .then(preset => finalizeTheme(themeState, preset, config))
 
   return { themeState: themeState as Ref<ThemeState>, cleanup: () => {} }
 }

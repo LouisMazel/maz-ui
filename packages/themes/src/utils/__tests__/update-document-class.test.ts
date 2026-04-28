@@ -13,6 +13,7 @@ function createThemeState(overrides: Partial<ThemeState> = {}): ThemeState {
     strategy: 'hybrid',
     darkModeStrategy: 'class',
     darkClass: 'dark',
+    persistPreset: true,
     ...overrides,
   }
 }

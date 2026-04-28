@@ -16,6 +16,7 @@ const mockThemeState: ThemeState = {
   darkModeStrategy: 'class',
   mode: 'both',
   isDark: false,
+  persistPreset: true,
 }
 
 const mockRefThemeState = { value: mockThemeState }
@@ -68,6 +69,9 @@ vi.mock('../../utils/preset-merger', () => ({
 
 vi.mock('../../utils/cookie-storage', () => ({
   setCookie: vi.fn(),
+  saveResolvedPresetName: vi.fn(),
+  getSavedPresetName: vi.fn(() => null),
+  clearSavedPresetName: vi.fn(),
 }))
 
 vi.mock('@maz-ui/utils/helpers/isServer', () => ({
@@ -286,6 +290,20 @@ describe('useTheme', () => {
 
         expect(consoleSpy).toHaveBeenCalledWith('[@maz-ui/themes] No preset found - If you are using the buildtime strategy, you must provide a complete preset')
         consoleSpy.mockRestore()
+      })
+    })
+
+    describe('when persistPreset is false on the state', () => {
+      it('then updateTheme does not write the preset cookie', async () => {
+        const { saveResolvedPresetName } = await import('../../utils/cookie-storage')
+        vi.mocked(saveResolvedPresetName).mockClear()
+        vi.mocked(inject).mockReturnValue({ value: { ...mockThemeState, persistPreset: false } })
+        vi.mocked(mergePresets).mockReturnValue(mazUi)
+
+        const { updateTheme } = useTheme()
+        await updateTheme({ foundation: { 'border-width': '2px' } } as ThemePresetOverrides)
+
+        expect(saveResolvedPresetName).not.toHaveBeenCalled()
       })
     })
   })

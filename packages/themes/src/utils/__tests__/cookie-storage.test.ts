@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from '../cookie-storage'
+import { clearSavedPresetName, deleteCookie, getCookie, getSavedPresetName, saveResolvedPresetName, setCookie } from '../cookie-storage'
 
 function mockDocumentCookie(initialValue: string = '') {
   let cookieValue = initialValue
@@ -122,6 +122,96 @@ describe('cookie-storage', () => {
         setCookie('test-key', 'hello world')
 
         expect(document.cookie).toContain('test-key=hello%20world')
+      })
+    })
+  })
+
+  describe('given deleteCookie function', () => {
+    describe('when document is undefined', () => {
+      it('then it returns silently', () => {
+        vi.stubGlobal('document', undefined)
+
+        expect(() => deleteCookie('test-key')).not.toThrow()
+      })
+    })
+
+    describe('when document is available', () => {
+      it('then it writes a max-age=0 directive', () => {
+        mockDocumentCookie('')
+
+        deleteCookie('test-key')
+
+        expect(document.cookie).toContain('test-key=')
+      })
+    })
+  })
+
+  describe('given saveResolvedPresetName function', () => {
+    describe('when running on the server', () => {
+      it('then it does not touch document.cookie', () => {
+        vi.stubGlobal('document', undefined)
+
+        expect(() => saveResolvedPresetName('ocean')).not.toThrow()
+      })
+    })
+
+    describe('when called with a falsy name', () => {
+      it('then it is a no-op', () => {
+        mockDocumentCookie('')
+
+        saveResolvedPresetName('')
+
+        expect(document.cookie).toBe('')
+      })
+    })
+
+    describe('when the saved name already matches', () => {
+      it('then it skips the write', () => {
+        mockDocumentCookie('maz-preset=ocean')
+        const setSpy = vi.spyOn(document, 'cookie', 'set')
+
+        saveResolvedPresetName('ocean')
+
+        expect(setSpy).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('when the saved name differs', () => {
+      it('then it persists the new name', () => {
+        mockDocumentCookie('maz-preset=ocean')
+
+        saveResolvedPresetName('nova')
+
+        expect(document.cookie).toContain('maz-preset=nova')
+      })
+    })
+  })
+
+  describe('given getSavedPresetName function', () => {
+    describe('when no preset cookie exists', () => {
+      it('then it returns null', () => {
+        mockDocumentCookie('')
+
+        expect(getSavedPresetName()).toBeNull()
+      })
+    })
+
+    describe('when a preset cookie exists', () => {
+      it('then it returns the persisted name', () => {
+        mockDocumentCookie('maz-preset=nova')
+
+        expect(getSavedPresetName()).toBe('nova')
+      })
+    })
+  })
+
+  describe('given clearSavedPresetName function', () => {
+    describe('when called', () => {
+      it('then it deletes the maz-preset cookie', () => {
+        mockDocumentCookie('maz-preset=nova')
+
+        expect(() => clearSavedPresetName()).not.toThrow()
+        expect(document.cookie).toContain('maz-preset=')
       })
     })
   })

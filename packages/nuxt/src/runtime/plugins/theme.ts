@@ -1,4 +1,4 @@
-import type { ColorMode, CSSOptions, ThemeState } from '@maz-ui/themes'
+import type { ColorMode, CSSOptions, ThemePreset, ThemePresetName, ThemeState } from '@maz-ui/themes'
 import type { Ref } from 'vue'
 import type { MazUiNuxtThemeOptions } from './../../types'
 import { MazUiTheme } from '@maz-ui/themes/plugin'
@@ -13,6 +13,27 @@ function getSavedColorMode(): ColorMode | undefined {
   }
 
   return undefined
+}
+
+function getSavedPresetName(): string | undefined {
+  const presetCookie = useCookie<string | null>('maz-preset')
+  return presetCookie.value || undefined
+}
+
+function clearSavedPresetName(): void {
+  const presetCookie = useCookie<string | null>('maz-preset')
+  presetCookie.value = null
+}
+
+function saveResolvedPresetName(name: string): void {
+  const presetCookie = useCookie<string>('maz-preset', {
+    maxAge: 60 * 60 * 24 * 365,
+    sameSite: 'lax',
+    path: '/',
+  })
+  if (presetCookie.value !== name) {
+    presetCookie.value = name
+  }
 }
 
 function getSavedResolvedColorMode(): 'light' | 'dark' | undefined {
@@ -61,9 +82,9 @@ function getColorModeBlockingScript(config: Required<MazUiNuxtThemeOptions>): st
 function injectThemeCSS(config: Required<MazUiNuxtThemeOptions>) {
   const cssOptions = {
     mode: config.mode,
-    darkSelectorStrategy: config.darkModeStrategy ?? 'class',
+    darkSelectorStrategy: config.darkModeStrategy,
     prefix: 'maz',
-    darkClass: config.darkClass ?? 'dark',
+    darkClass: config.darkClass,
   } satisfies CSSOptions
 
   if (config.injectCriticalCSS && !config.injectAllCSSOnServer) {
@@ -96,13 +117,34 @@ function injectThemeCSS(config: Required<MazUiNuxtThemeOptions>) {
 // }
 /* eslint-enable sonarjs/no-commented-code */
 
+async function resolvePreset(options: { preset?: ThemePreset | ThemePresetName } | undefined, persistPreset: boolean) {
+  const savedName = (persistPreset && !options?.preset) ? getSavedPresetName() : undefined
+  const presetToResolve = (savedName ?? options?.preset) as ThemePresetName | undefined
+
+  try {
+    return await getPreset(presetToResolve)
+  }
+  catch (error) {
+    if (!savedName) {
+      throw error
+    }
+    clearSavedPresetName()
+    return getPreset(options?.preset)
+  }
+}
+
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const options = $config.public.mazUi.theme
+  const persistPreset = options?.persistPreset !== false
 
-  let preset = await getPreset(options?.preset)
+  let preset = await resolvePreset(options, persistPreset)
 
   if (options?.overrides) {
     preset = mergePresets(preset, options.overrides)
+  }
+
+  if (persistPreset) {
+    saveResolvedPresetName(preset.name)
   }
 
   const config = {
@@ -114,6 +156,7 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     injectCriticalCSS: true,
     injectFullCSS: true,
     overrides: {},
+    persistPreset: true,
     ...options,
     colorMode: getSavedColorMode() ?? options?.colorMode ?? 'auto',
     preset,

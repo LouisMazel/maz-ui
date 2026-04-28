@@ -4,7 +4,7 @@ import type { CSSOptions } from '../utils/css-generator'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, getCurrentInstance, inject, ref, watch } from 'vue'
 
-import { setCookie } from '../utils/cookie-storage'
+import { saveResolvedPresetName, setCookie } from '../utils/cookie-storage'
 import { CSS_ID, generateCSS, injectCSS } from '../utils/css-generator'
 import { getSystemColorMode, saveResolvedColorMode } from '../utils/get-color-mode'
 import { getPreset } from '../utils/get-preset'
@@ -40,6 +40,9 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
     : mergePresets(themeState.value.preset, _preset)
 
   themeState.value.preset = newPreset
+  if (themeState.value.persistPreset) {
+    saveResolvedPresetName(newPreset.name)
+  }
 
   if (themeState.value.strategy === 'runtime' || themeState.value.strategy === 'hybrid') {
     const cssOptions: CSSOptions = {

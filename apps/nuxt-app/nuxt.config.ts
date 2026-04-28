@@ -56,7 +56,7 @@ export default defineNuxtConfig({
 
   mazUi: {
     theme: {
-      preset: 'maz-ui',
+      preset: 'nova',
       mode: 'both',
       colorMode: 'auto',
     },

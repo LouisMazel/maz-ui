@@ -267,6 +267,16 @@ interface BaseThemeConfig {
    * @default 'both'
    */
   mode?: ThemeMode
+
+  /**
+   * Persist the active preset name in the `maz-preset` cookie so the
+   * user's last-used theme is restored across reloads. The value is
+   * read at boot only when `preset` is not provided, and is written
+   * after every successful preset resolution and `updateTheme()` call.
+   * Set to `false` to opt out of any cookie read or write.
+   * @default true
+   */
+  persistPreset?: boolean
 }
 
 export type ThemeConfig
@@ -329,4 +339,8 @@ export interface ThemeState {
    * @description The class added to the document root when dark mode is active
    */
   darkClass: string
+  /**
+   * Whether the active preset name is persisted in the `maz-preset` cookie.
+   */
+  persistPreset: boolean
 }

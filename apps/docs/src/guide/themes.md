@@ -39,11 +39,12 @@ const app = createApp(App)
 
 app.use(MazUi, {
   theme: {
-    preset: mazUi, // pristine | ocean | obsidian
+    preset: mazUi, // pristine | ocean | obsidian | nova
     strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
     darkModeStrategy: 'class', // 'class' | 'media' (only if mode is `both`)
     mode: 'both', // 'light' | 'dark' | 'both' (supported color modes)
     colorMode: 'auto', // 'auto' | 'light' | 'dark' (initial color mode, only if mode is 'both')
+    persistPreset: true, // remember the active preset name across reloads
   }
 })
 ```
@@ -92,6 +93,30 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 - `darkModeStrategy` (optional): The dark mode strategy to use, only if you use mode `both`
 - `mode` (optional): The supported color modes to use (light, dark, both)
 - `colorMode` (optional): The initial color mode to use (only if mode is 'both')
+- `persistPreset` (optional, default `true`): Persist the active preset name in the `maz-preset` cookie so it is restored on reload.
+
+### Preset persistence
+
+When `persistPreset` is enabled (default), `@maz-ui/themes` stores the resolved preset name in a `maz-preset` cookie (1-year TTL, `SameSite=Lax`) — exactly like `maz-color-mode` for the dark/light state. The cookie is:
+
+- **Read at boot** *only when* `options.preset` is not provided. If you hard-code `preset: 'ocean'`, the cookie is ignored on read but still written.
+- **Written** after every successful preset resolution and after every `useTheme().updateTheme()` call (idempotent — no write if the value already matches).
+- **Auto-cleared** when the saved name no longer resolves (e.g. typo, preset removed in a downgrade) — the runtime falls back to the default preset and clears the cookie silently.
+
+Custom preset names are stored exactly like bundled ones: `@maz-ui/themes` does not maintain a whitelist. Switch the option off to disable any cookie read/write:
+
+```typescript
+app.use(MazUi, {
+  theme: {
+    preset: mazUi,
+    persistPreset: false, // never write or read the maz-preset cookie
+  },
+})
+```
+
+Useful when:
+- You want zero theme-related cookies (privacy / regulatory).
+- The active preset is fully driven by the consumer app and no end-user switching is exposed.
 
 ## Interactive Demo
 

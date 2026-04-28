@@ -487,6 +487,38 @@ Most visual regressions were caught during the migration, but keep an eye on:
 - Shadows, radius and blur scales — Tailwind v4 shifted a few names (`shadow` → `shadow-sm`, `blur` → `blur-sm`, etc.). Maz-ui components have been updated internally; your own code is affected only if you used these classes directly.
 - `outline-none` → `outline-hidden` (same story).
 
+### `nova` preset added, bundled palettes refreshed
+
+Four bundled presets remain (`mazUi`, `pristine`, `ocean`, `obsidian`) plus a new `nova` startup / AI / creative preset (electric violet primary, cyan accent, hot coral secondary, Geist font stack). Each existing preset's palette has been retuned so the `secondary` / `accent` voices actually pop in `MazCardSpotlight`, secondary `MazBtn` variants and badges:
+
+| Preset | Identity |
+| --- | --- |
+| `pristine` | Sober Apple — near-black primary, system blue accent, system purple secondary, SF system font, Apple spring easing. |
+| `ocean` | Calm water — teal primary, deep navy secondary, sandy ochre accent. |
+| `obsidian` | Dark luxe — indigo primary, gold accent, fuchsia secondary, snappy expo easing. |
+| `nova` | Modern AI — electric violet primary, cyan accent, hot coral secondary. |
+
+Switching to one of the bundled presets does not require any code change beyond the preset name. If you depended on the previous (washed-out gray) `secondary` color in a custom theme, override it back via `colors.{light,dark}.secondary` in your preset.
+
+### Preset name persistence (new — opt-out, no breaking change)
+
+`@maz-ui/themes` now persists the active preset name in a `maz-preset` cookie (1-year TTL, `SameSite=Lax`) — same shape as the existing `maz-color-mode` cookie:
+
+- The cookie is read at boot **only when** `options.preset` is omitted.
+- It is written after every successful preset resolution and after every `useTheme().updateTheme()` call.
+- If the saved name no longer resolves, the cookie is cleared and the runtime falls back to the default.
+
+Persistence is enabled by default. To opt out (privacy, no end-user switching, …), set `persistPreset: false`:
+
+```ts
+app.use(MazUiTheme, {
+  preset: mazUi,
+  persistPreset: false,
+})
+```
+
+The same option is exposed in the Nuxt module config under `mazUi.theme.persistPreset`.
+
 ## What you can ignore
 
 Unless you had your own Tailwind v3 setup alongside maz-ui, none of the following apply to you:

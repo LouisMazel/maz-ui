@@ -33,8 +33,18 @@ vi.mock('../use-mutation-observer', () => ({
   useMutationObserver: vi.fn(() => ({ stop: vi.fn() })),
 }))
 
+vi.mock('../cookie-storage', () => ({
+  setCookie: vi.fn(),
+  getCookie: vi.fn(() => null),
+  deleteCookie: vi.fn(),
+  getSavedPresetName: vi.fn(() => null),
+  saveResolvedPresetName: vi.fn(),
+  clearSavedPresetName: vi.fn(),
+}))
+
 const { getColorMode, getSavedColorMode, getSystemColorMode, saveResolvedColorMode } = await import('../get-color-mode')
 const { getPreset } = await import('../get-preset')
+const { getSavedPresetName, saveResolvedPresetName, clearSavedPresetName } = await import('../cookie-storage')
 const { injectThemeCSS } = await import('../inject-theme-css')
 const { mergePresets } = await import('../preset-merger')
 const { updateDocumentClass } = await import('../update-document-class')
@@ -677,6 +687,90 @@ describe('setup-theme', () => {
         expect(result.themeState.value.darkClass).toBe('my-dark')
         expect(result.themeState.value.darkModeStrategy).toBe('media')
         expect(result.themeState.value.mode).toBe('both')
+      })
+    })
+
+    describe('when a preset object is finalized', () => {
+      it('then the resolved name is persisted via saveResolvedPresetName', () => {
+        setupTheme({ preset: mockPreset })
+
+        expect(saveResolvedPresetName).toHaveBeenCalledWith('test')
+      })
+    })
+
+    describe('when no preset is provided and a saved name is in the cookie', () => {
+      it('then it resolves the saved name instead of the default', async () => {
+        vi.mocked(getSavedPresetName).mockReturnValueOnce('ocean')
+        vi.mocked(getPreset).mockResolvedValueOnce({ ...mockPreset, name: 'ocean' })
+
+        setupTheme({})
+
+        await nextTick()
+        await nextTick()
+
+        expect(getPreset).toHaveBeenCalledWith('ocean')
+        expect(saveResolvedPresetName).toHaveBeenCalledWith('ocean')
+      })
+    })
+
+    describe('when the saved name no longer resolves', () => {
+      it('then it clears the cookie and falls back to the default preset', async () => {
+        vi.mocked(getSavedPresetName).mockReturnValueOnce('disappeared')
+        vi.mocked(getPreset)
+          .mockRejectedValueOnce(new Error('not found'))
+          .mockResolvedValueOnce(mockPreset)
+
+        setupTheme({})
+
+        await new Promise(resolve => setTimeout(resolve, 0))
+        await new Promise(resolve => setTimeout(resolve, 0))
+
+        expect(clearSavedPresetName).toHaveBeenCalledTimes(1)
+        expect(getPreset).toHaveBeenCalledTimes(2)
+        expect(saveResolvedPresetName).toHaveBeenCalledWith('test')
+      })
+    })
+
+    describe('when the preset resolution rejects without a saved name to retry', () => {
+      it('then it logs the error and skips finalization', async () => {
+        vi.mocked(getSavedPresetName).mockReturnValueOnce(null)
+        vi.mocked(getPreset).mockRejectedValueOnce(new Error('boom'))
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+        setupTheme({})
+
+        await new Promise(resolve => setTimeout(resolve, 0))
+        await new Promise(resolve => setTimeout(resolve, 0))
+
+        expect(consoleSpy).toHaveBeenCalledWith(
+          '[@maz-ui/themes] Failed to resolve preset',
+          expect.any(Error),
+        )
+        expect(clearSavedPresetName).not.toHaveBeenCalled()
+
+        consoleSpy.mockRestore()
+      })
+    })
+
+    describe('when persistPreset is false', () => {
+      it('then it does not write the cookie on finalize', () => {
+        setupTheme({ preset: mockPreset, persistPreset: false })
+
+        expect(saveResolvedPresetName).not.toHaveBeenCalled()
+      })
+
+      it('then it does not read the saved cookie at boot', async () => {
+        setupTheme({ persistPreset: false })
+
+        await new Promise(resolve => setTimeout(resolve, 0))
+
+        expect(getSavedPresetName).not.toHaveBeenCalled()
+      })
+
+      it('then themeState.persistPreset reflects the option', () => {
+        const result = setupTheme({ preset: mockPreset, persistPreset: false }) as SetupThemeReturn
+
+        expect(result.themeState.value.persistPreset).toBe(false)
       })
     })
   })

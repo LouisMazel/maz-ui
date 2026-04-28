@@ -124,7 +124,7 @@ export default defineNuxtConfig({
 
     // Theming System
     theme: {
-      preset: 'maz-ui', // 'maz-ui' | 'dark' | 'ocean' | custom object
+      preset: 'maz-ui', // 'maz-ui' | 'pristine' | 'ocean' | 'obsidian' | 'nova' | custom object
       strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
       darkModeStrategy: 'class', // 'class' | 'media' | 'auto'
       overrides: {
@@ -246,6 +246,10 @@ const theme = {
 
   // Dark mode handling
   darkModeStrategy: 'class', // 'class' | 'media' | 'auto'
+
+  // Persist the active preset name in the `maz-preset` cookie so the
+  // user's last-used theme is restored on reload. Default: true.
+  persistPreset: true,
 }
 ```
 

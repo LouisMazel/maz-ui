@@ -33,9 +33,15 @@ const app = createApp(App)
 app.use(MazUiTheme, {
   preset: mazUi,
   strategy: 'hybrid',
-  darkModeStrategy: 'class'
+  darkModeStrategy: 'class',
+  // remember the active preset name across reloads (default: true)
+  persistPreset: true,
 })
 ```
+
+### Preset persistence
+
+The active preset name is stored in a `maz-preset` cookie (1-year TTL, `SameSite=Lax`). It is read at boot only when no `preset` is passed in, written on every successful resolution and on every `useTheme().updateTheme()` call, and auto-cleared if the saved name no longer resolves. Set `persistPreset: false` to opt out — no cookie is read or written.
 
 ### 2. Usage in components
 
@@ -84,6 +90,12 @@ import { ocean } from '@maz-ui/themes/presets/ocean'
 import { obsidian } from '@maz-ui/themes/presets/obsidian'
 ```
 
+### Nova
+
+```typescript
+import { nova } from '@maz-ui/themes/presets/nova'
+```
+
 ## Creating custom presets
 
 ```typescript
@@ -93,18 +105,20 @@ const myPreset = definePreset({
   base: mazUi,
   overrides: {
     name: 'my-theme',
-    radius: '0.75rem',
+    scales: {
+      radius: { md: '0.75rem' },
+    },
     colors: {
       light: {
         primary: '220 100% 50%',
-        secondary: '210 40% 96%'
+        secondary: '210 40% 96%',
       },
       dark: {
         primary: '220 100% 70%',
-        secondary: '210 40% 15%'
-      }
-    }
-  }
+        secondary: '210 40% 15%',
+      },
+    },
+  },
 })
 ```
 

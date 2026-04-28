@@ -133,7 +133,9 @@ describe('theme plugin (server)', () => {
   })
 
   it('should use saved color mode from cookie on server', async () => {
-    mockUseCookie.mockReturnValue({ value: 'dark' })
+    mockUseCookie.mockImplementation(((name: string) => {
+      return { value: name === 'maz-color-mode' ? 'dark' : undefined }
+    }) as any)
     const context = createContext({ colorMode: 'auto', mode: 'both' })
     await (themePlugin as (...args: any[]) => any)(context)
     expect(mockInstall).toHaveBeenCalledWith(
