@@ -222,7 +222,7 @@ onMounted(() => {
 <template>
   <div
     ref="tabsBarRef"
-    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:gap-1 maz:overflow-x-auto maz:rounded-md maz:p-2 maz:align-top maz:bg-surface"
+    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:gap-1 maz:overflow-x-auto maz:rounded-md maz:p-2 maz:align-top maz:bg-container"
     :class="{
       '--block': block,
       '--elevation': elevation,

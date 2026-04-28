@@ -607,7 +607,7 @@ onBeforeMount(() => {
 
 <template>
   <div class="m-table m-reset-css maz:relative maz:max-w-full" :class="{ '--has-header': hasHeader }">
-    <div v-if="hasHeader" class="m-table-header maz:flex maz:max-w-full maz:items-center maz:justify-between maz:gap-2 maz:bg-surface maz:py-2">
+    <div v-if="hasHeader" class="m-table-header maz:flex maz:max-w-full maz:items-center maz:justify-between maz:gap-2 maz:bg-container maz:py-2">
       <div v-if="title || hasSlotContent(slots.title)" class="m-table-spacer">
         <!--
           @slot Replace the title of the table
@@ -887,7 +887,7 @@ onBeforeMount(() => {
 
 .m-table {
   &-footer {
-    @apply maz:flex maz:max-w-full maz:justify-between maz:gap-2 maz:bg-surface maz:p-2;
+    @apply maz:flex maz:max-w-full maz:justify-between maz:gap-2 maz:bg-container maz:p-2;
 
     &-pagination {
       @apply maz:flex maz:items-center maz:gap-4;
@@ -1047,7 +1047,7 @@ onBeforeMount(() => {
   }
 
   table {
-    @apply maz:table maz:w-full maz:border-collapse maz:bg-surface;
+    @apply maz:table maz:w-full maz:border-collapse maz:bg-container;
 
     table-layout: v-bind('tableLayout');
 

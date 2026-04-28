@@ -269,7 +269,7 @@ describe('cSS Generator', () => {
     })
 
     describe('when components.container.bg / input.bg are provided', () => {
-      it('then it emits --m-container-bg / --m-input-bg per mode', () => {
+      it('then it emits --maz-container-bg / --maz-input-bg per mode', () => {
         const presetWithComponents = {
           ...mazUi,
           components: {
@@ -287,18 +287,18 @@ describe('cSS Generator', () => {
 
         // Light block: matches the .light value.
         const lightBlock = css.split('.dark {')[0]
-        expect(lightBlock).toContain('--m-container-bg: oklch(0.9 0 0)')
-        expect(lightBlock).toContain('--m-input-bg: oklch(0.95 0 0)')
+        expect(lightBlock).toContain('--maz-container-bg: oklch(0.9 0 0)')
+        expect(lightBlock).toContain('--maz-input-bg: oklch(0.95 0 0)')
 
         // Dark block: matches the .dark value.
         const darkBlock = css.split('.dark {')[1]
-        expect(darkBlock).toContain('--m-container-bg: oklch(0.3 0 0)')
-        expect(darkBlock).toContain('--m-input-bg: oklch(0.25 0 0)')
+        expect(darkBlock).toContain('--maz-container-bg: oklch(0.3 0 0)')
+        expect(darkBlock).toContain('--maz-input-bg: oklch(0.25 0 0)')
       })
     })
 
     describe('when components.btn.font-weight is provided', () => {
-      it('then it emits --m-btn-font-weight on the light root', () => {
+      it('then it emits --maz-btn-font-weight on the light root', () => {
         const presetWithBtn = {
           ...mazUi,
           components: {
@@ -313,7 +313,7 @@ describe('cSS Generator', () => {
           darkClass: 'dark',
         })
 
-        expect(css).toContain('--m-btn-font-weight: 600')
+        expect(css).toContain('--maz-btn-font-weight: 600')
       })
     })
   })

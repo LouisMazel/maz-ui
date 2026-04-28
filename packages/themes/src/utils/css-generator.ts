@@ -309,22 +309,22 @@ function generateScaleVariables(scales: ThemePreset['scales'], prefix: string): 
 function generateComponentVariables(
   components: NonNullable<ThemePreset['components']>,
   mode: 'light' | 'dark',
-  _prefix: string,
+  prefix: string,
 ): string[] {
   const lines: string[] = []
 
   if (components.btn?.['font-weight']) {
-    lines.push(`  --m-btn-font-weight: ${components.btn['font-weight']};`)
+    lines.push(`  --${prefix}-btn-font-weight: ${components.btn['font-weight']};`)
   }
 
   const containerBg = components.container?.bg?.[mode]
   if (containerBg) {
-    lines.push(`  --m-container-bg: ${normalizeColor(containerBg)};`)
+    lines.push(`  --${prefix}-container-bg: ${normalizeColor(containerBg)};`)
   }
 
   const inputBg = components.input?.bg?.[mode]
   if (inputBg) {
-    lines.push(`  --m-input-bg: ${normalizeColor(inputBg)};`)
+    lines.push(`  --${prefix}-input-bg: ${normalizeColor(inputBg)};`)
   }
 
   return lines
