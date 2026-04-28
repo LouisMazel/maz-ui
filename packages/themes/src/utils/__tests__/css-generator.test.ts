@@ -170,11 +170,11 @@ describe('cSS Generator', () => {
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
           onlyCritical: true,
-          criticalFoundation: ['radius'],
+          criticalFoundation: ['border-width'],
         })
 
         expect(css).toContain('.dark {')
-        expect(css).toContain('--maz-radius:')
+        expect(css).toContain('--maz-border-width:')
       })
     })
 
@@ -191,10 +191,124 @@ describe('cSS Generator', () => {
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
           onlyCritical: true,
-          criticalFoundation: ['radius'],
+          criticalFoundation: ['border-width'],
         })
 
         expect(css).toContain('@layer theme')
+      })
+    })
+
+    describe('when full CSS is generated', () => {
+      it('then it emits the spacing scale', () => {
+        const css = generateCSS(mazUi, {
+          prefix: 'maz',
+          mode: 'light',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+        })
+
+        expect(css).toContain('--maz-spacing:')
+      })
+
+      it('then it emits the radius scale (xs..3xl)', () => {
+        const css = generateCSS(mazUi, {
+          prefix: 'maz',
+          mode: 'light',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+        })
+
+        for (const key of ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'])
+          expect(css).toContain(`--maz-radius-${key}:`)
+      })
+
+      it('then it emits the shadow style scale (with the maz-specific elevation key)', () => {
+        const css = generateCSS(mazUi, {
+          prefix: 'maz',
+          mode: 'light',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+        })
+
+        for (const key of ['sm', 'md', 'lg', 'xl', 'elevation'])
+          expect(css).toContain(`--maz-shadow-style-${key}:`)
+      })
+
+      it('then it emits the fontSize scale with paired line-height', () => {
+        const css = generateCSS(mazUi, {
+          prefix: 'maz',
+          mode: 'light',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+        })
+
+        for (const key of ['mini', 'xs', 'sm', 'md', 'lg', 'xl']) {
+          expect(css).toContain(`--maz-text-${key}:`)
+          expect(css).toContain(`--maz-text-${key}--line-height:`)
+        }
+      })
+
+      it('then it emits the renamed surface / divider color vars (no background / border anymore)', () => {
+        const css = generateCSS(mazUi, {
+          prefix: 'maz',
+          mode: 'both',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+        })
+
+        expect(css).toContain('--maz-surface:')
+        expect(css).toContain('--maz-divider:')
+        expect(css).not.toMatch(/--maz-background\b/)
+        expect(css).not.toMatch(/--maz-border:[^-]/)
+      })
+    })
+
+    describe('when components.container.bg / input.bg are provided', () => {
+      it('then it emits --m-container-bg / --m-input-bg per mode', () => {
+        const presetWithComponents = {
+          ...mazUi,
+          components: {
+            container: { bg: { light: 'oklch(0.9 0 0)', dark: 'oklch(0.3 0 0)' } },
+            input: { bg: { light: 'oklch(0.95 0 0)', dark: 'oklch(0.25 0 0)' } },
+          },
+        }
+
+        const css = generateCSS(presetWithComponents, {
+          prefix: 'maz',
+          mode: 'both',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+        })
+
+        // Light block: matches the .light value.
+        const lightBlock = css.split('.dark {')[0]
+        expect(lightBlock).toContain('--m-container-bg: oklch(0.9 0 0)')
+        expect(lightBlock).toContain('--m-input-bg: oklch(0.95 0 0)')
+
+        // Dark block: matches the .dark value.
+        const darkBlock = css.split('.dark {')[1]
+        expect(darkBlock).toContain('--m-container-bg: oklch(0.3 0 0)')
+        expect(darkBlock).toContain('--m-input-bg: oklch(0.25 0 0)')
+      })
+    })
+
+    describe('when components.btn.font-weight is provided', () => {
+      it('then it emits --m-btn-font-weight on the light root', () => {
+        const presetWithBtn = {
+          ...mazUi,
+          components: {
+            btn: { 'font-weight': '600' },
+          },
+        }
+
+        const css = generateCSS(presetWithBtn, {
+          prefix: 'maz',
+          mode: 'light',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+        })
+
+        expect(css).toContain('--m-btn-font-weight: 600')
       })
     })
   })

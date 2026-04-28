@@ -1,22 +1,49 @@
 import type { ThemePreset } from '../types'
+import {
+  DEFAULT_DISABLED_CURSOR,
+  DEFAULT_DISABLED_OPACITY,
+  DEFAULT_FONT_MONO,
+  DEFAULT_FONT_SIZE,
+  DEFAULT_SHADOW,
+  DEFAULT_SPACING,
+} from './_defaults'
+
+const FONT_FAMILY = `-apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
 
 export const pristine: ThemePreset = {
   name: 'pristine',
   foundation: {
     'base-font-size': '14px',
-    'radius': '0.6rem',
     'border-width': '1px',
-    'font-family': `-apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
+    'font-family': FONT_FAMILY,
+    'font-mono': DEFAULT_FONT_MONO,
+    'font-display': FONT_FAMILY,
     'duration-fast': '100ms',
     'duration-normal': '200ms',
     'duration-slow': '300ms',
     'easing-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
     'easing-in': 'cubic-bezier(0.4, 0, 1, 1)',
     'easing-in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
+    'disabled-opacity': DEFAULT_DISABLED_OPACITY,
+    'disabled-cursor': DEFAULT_DISABLED_CURSOR,
+  },
+  scales: {
+    spacing: DEFAULT_SPACING,
+    radius: {
+      'xs': '0.125rem',
+      'sm': '0.25rem',
+      'md': '0.6rem',
+      'lg': '0.875rem',
+      'xl': '1.25rem',
+      '2xl': '1.75rem',
+      '3xl': '2.5rem',
+    },
+    shadow: DEFAULT_SHADOW,
+    fontSize: DEFAULT_FONT_SIZE,
   },
   colors: {
     light: {
-      'background': 'oklch(0.9924 0 0)',
+      'surface': 'oklch(0.9924 0 0)',
       'foreground': 'oklch(0.2156 0 0)',
       'primary': 'oklch(0.2639 0.0102 264.38)',
       'primary-foreground': 'oklch(1 0 0)',
@@ -35,12 +62,12 @@ export const pristine: ThemePreset = {
       'warning-foreground': 'oklch(0.2156 0 0)',
       'info': 'oklch(0.6758 0.1453 238.46)',
       'info-foreground': 'oklch(1 0 0)',
-      'border': 'oklch(0.9365 0.0039 264.54)',
+      'divider': 'oklch(0.9365 0.0039 264.54)',
       'overlay': 'oklch(0.2156 0 0)',
       'shadow': 'oklch(0 0 0)',
     },
     dark: {
-      'background': 'oklch(0.2156 0 0)',
+      'surface': 'oklch(0.2156 0 0)',
       'foreground': 'oklch(0.9619 0 0)',
       'primary': 'oklch(0.9619 0 0)',
       'primary-foreground': 'oklch(0.2156 0 0)',
@@ -59,7 +86,7 @@ export const pristine: ThemePreset = {
       'warning-foreground': 'oklch(0.2156 0 0)',
       'info': 'oklch(0.7025 0.1364 236.02)',
       'info-foreground': 'oklch(1 0 0)',
-      'border': 'oklch(0.3008 0 0)',
+      'divider': 'oklch(0.3008 0 0)',
       'overlay': 'oklch(0.2156 0 0)',
       'shadow': 'oklch(0 0 0)',
     },

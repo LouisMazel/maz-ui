@@ -1,23 +1,49 @@
 import type { ThemePreset } from '../types'
+import {
+  DEFAULT_DISABLED_CURSOR,
+  DEFAULT_DISABLED_OPACITY,
+  DEFAULT_FONT_MONO,
+  DEFAULT_FONT_SIZE,
+  DEFAULT_SHADOW,
+  DEFAULT_SPACING,
+} from './_defaults'
+
+const FONT_FAMILY = `'Inter', system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
 
 export const obsidian: ThemePreset = {
   name: 'obsidian',
   foundation: {
     'base-font-size': '14px',
-    'radius': '0.6rem',
     'border-width': '1px',
-    'font-family': `'Inter', system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
+    'font-family': FONT_FAMILY,
+    'font-mono': DEFAULT_FONT_MONO,
+    'font-display': FONT_FAMILY,
     'duration-fast': '80ms',
     'duration-normal': '160ms',
     'duration-slow': '240ms',
     'easing-out': 'cubic-bezier(0.16, 1, 0.3, 1)',
     'easing-in': 'cubic-bezier(0.7, 0, 0.84, 0)',
     'easing-in-out': 'cubic-bezier(0.87, 0, 0.13, 1)',
+    'disabled-opacity': DEFAULT_DISABLED_OPACITY,
+    'disabled-cursor': DEFAULT_DISABLED_CURSOR,
+  },
+  scales: {
+    spacing: DEFAULT_SPACING,
+    radius: {
+      'xs': '0.125rem',
+      'sm': '0.25rem',
+      'md': '0.6rem',
+      'lg': '0.875rem',
+      'xl': '1.25rem',
+      '2xl': '1.75rem',
+      '3xl': '2.5rem',
+    },
+    shadow: DEFAULT_SHADOW,
+    fontSize: DEFAULT_FONT_SIZE,
   },
   colors: {
     light: {
-      // On reste très sobre même en light mode, légèrement warm
-      'background': 'oklch(0.9848 0 0)',
+      'surface': 'oklch(0.9848 0 0)',
       'foreground': 'oklch(0.2622 0.0133 264.31)',
       'primary': 'oklch(0.6048 0.2142 262.15)',
       'primary-foreground': 'oklch(1 0 0)',
@@ -26,7 +52,7 @@ export const obsidian: ThemePreset = {
       'secondary': 'oklch(0.9196 0.0064 264.53)',
       'secondary-foreground': 'oklch(0.2622 0.0133 264.31)',
       'muted': 'oklch(0.5856 0.0223 264.39)',
-      'accent': 'oklch(0.6551 0.2577 311.87)', // une touche violet Linear-esque
+      'accent': 'oklch(0.6551 0.2577 311.87)',
       'accent-foreground': 'oklch(1 0 0)',
       'destructive': 'oklch(0.6014 0.2084 26.15)',
       'destructive-foreground': 'oklch(1 0 0)',
@@ -36,12 +62,12 @@ export const obsidian: ThemePreset = {
       'warning-foreground': 'oklch(1 0 0)',
       'info': 'oklch(0.7282 0.159 238.93)',
       'info-foreground': 'oklch(1 0 0)',
-      'border': 'oklch(0.9196 0.0064 264.53)',
+      'divider': 'oklch(0.9196 0.0064 264.53)',
       'overlay': 'oklch(0.2622 0.0133 264.31)',
       'shadow': 'oklch(0.3138 0.0131 264.37)',
     },
     dark: {
-      'background': 'oklch(0.2104 0.0094 264.35)',
+      'surface': 'oklch(0.2104 0.0094 264.35)',
       'foreground': 'oklch(0.9619 0 0)',
       'primary': 'oklch(0.6941 0.1601 262.86)',
       'primary-foreground': 'oklch(0.2156 0 0)',
@@ -50,7 +76,7 @@ export const obsidian: ThemePreset = {
       'secondary': 'oklch(0.2922 0.0156 264.3)',
       'secondary-foreground': 'oklch(0.9619 0 0)',
       'muted': 'oklch(0.6731 0.0172 264.45)',
-      'accent': 'oklch(0.6551 0.2577 311.87)', // violet saturé (Linear)
+      'accent': 'oklch(0.6551 0.2577 311.87)',
       'accent-foreground': 'oklch(1 0 0)',
       'destructive': 'oklch(0.6295 0.1785 23.77)',
       'destructive-foreground': 'oklch(1 0 0)',
@@ -60,7 +86,7 @@ export const obsidian: ThemePreset = {
       'warning-foreground': 'oklch(1 0 0)',
       'info': 'oklch(0.7513 0.148 236.31)',
       'info-foreground': 'oklch(1 0 0)',
-      'border': 'oklch(0.3117 0.017 264.29)',
+      'divider': 'oklch(0.3117 0.017 264.29)',
       'overlay': 'oklch(0.2104 0.0094 264.35)',
       'shadow': 'oklch(0.1557 0.0039 264.46)',
     },

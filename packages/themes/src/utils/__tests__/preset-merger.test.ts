@@ -17,7 +17,7 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
+            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -48,7 +48,7 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
+            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -63,7 +63,7 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
+            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -76,7 +76,7 @@ describe('preset-merger', () => {
         expect(result.colors.light.destructive).toBe('11 11% 11%')
         expect(result.colors.dark.primary).toBe('12 12% 12%')
         expect(result.foundation['base-font-size']).toBe('16px')
-        expect(result.foundation.radius).toBe('4px')
+        // scale moved out of foundation
         expect(result.foundation['border-width']).toBe('1px')
         expect(result.foundation['font-family']).toBe('Arial')
       })
@@ -99,7 +99,7 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
+            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -127,7 +127,7 @@ describe('preset-merger', () => {
         expect(result.colors.dark.primary).toBe('12 12% 12%')
         expect(result.colors.dark.destructive).toBe('12 12% 12%')
         expect(result.foundation['base-font-size']).toBe('16px')
-        expect(result.foundation.radius).toBe('4px')
+        // scale moved out of foundation
         expect(result.foundation['border-width']).toBe('1px')
         expect(result.foundation['font-family']).toBe('Helvetica')
       })
@@ -147,7 +147,7 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
+            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -186,7 +186,7 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
+            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -196,7 +196,7 @@ describe('preset-merger', () => {
           name: 'override',
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
+            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -206,7 +206,7 @@ describe('preset-merger', () => {
 
         expect(result.name).toBe('override')
         expect(result.foundation['base-font-size']).toBe('16px')
-        expect(result.foundation.radius).toBe('4px')
+        // scale moved out of foundation
         expect(result.foundation['border-width']).toBe('1px')
         expect(result.foundation['font-family']).toBe('Arial')
       })
@@ -222,7 +222,7 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
+            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -240,7 +240,7 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
+            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -252,7 +252,7 @@ describe('preset-merger', () => {
         expect(result.colors.light.accent).toBe('22 22% 22%')
         expect(result.colors.dark.primary).toBe('12 12% 12%')
         expect(result.foundation['base-font-size']).toBe('16px')
-        expect(result.foundation.radius).toBe('4px')
+        // scale moved out of foundation
         expect(result.foundation['border-width']).toBe('1px')
         expect(result.foundation['font-family']).toBe('Arial')
       })

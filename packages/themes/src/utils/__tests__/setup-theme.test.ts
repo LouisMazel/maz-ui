@@ -46,7 +46,7 @@ const mockPreset: ThemePreset = {
   name: 'test',
   colors: {
     light: {
-      'background': '0 0% 100%',
+      'surface': '0 0% 100%',
       'foreground': '210 8% 14%',
       'primary': '210 100% 56%',
       'primary-foreground': '0 0% 100%',
@@ -66,11 +66,11 @@ const mockPreset: ThemePreset = {
       'warning-foreground': '210 8% 14%',
       'overlay': '0 0% 40%',
       'muted': '0 0% 54%',
-      'border': '220 13% 91%',
+      'divider': '220 13% 91%',
       'shadow': '240 6% 10%',
     },
     dark: {
-      'background': '235 16% 15%',
+      'surface': '235 16% 15%',
       'foreground': '0 0% 85%',
       'primary': '210 100% 56%',
       'primary-foreground': '0 0% 100%',
@@ -90,13 +90,39 @@ const mockPreset: ThemePreset = {
       'warning-foreground': '210 8% 14%',
       'overlay': '0 0% 15%',
       'muted': '255 0% 54%',
-      'border': '238 17% 25%',
+      'divider': '238 17% 25%',
       'shadow': '240 4% 16%',
     },
   },
   foundation: {
-    'radius': '0.5rem',
     'border-width': '1px',
+  },
+  scales: {
+    spacing: '0.25rem',
+    radius: {
+      'xs': '0.125rem',
+      'sm': '0.25rem',
+      'md': '0.5rem',
+      'lg': '0.75rem',
+      'xl': '1rem',
+      '2xl': '1.5rem',
+      '3xl': '2rem',
+    },
+    shadow: {
+      sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+      md: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+      lg: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
+      xl: '0 20px 25px -5px rgb(0 0 0 / 0.1)',
+      elevation: '0 4px 12px -2px rgb(0 0 0 / 0.08)',
+    },
+    fontSize: {
+      mini: ['0.625rem', '0.875rem'],
+      xs: ['0.75rem', '1rem'],
+      sm: ['0.875rem', '1.25rem'],
+      md: ['1rem', '1.5rem'],
+      lg: ['1.125rem', '1.75rem'],
+      xl: ['1.25rem', '1.75rem'],
+    },
   },
 }
 

@@ -1,22 +1,49 @@
 import type { ThemePreset } from '../types'
+import {
+  DEFAULT_DISABLED_CURSOR,
+  DEFAULT_DISABLED_OPACITY,
+  DEFAULT_FONT_MONO,
+  DEFAULT_FONT_SIZE,
+  DEFAULT_SHADOW,
+  DEFAULT_SPACING,
+} from './_defaults'
+
+const FONT_FAMILY = `'Poppins', 'Inter', system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
 
 export const ocean: ThemePreset = {
   name: 'ocean',
   foundation: {
     'base-font-size': '16px',
-    'radius': '1rem',
     'border-width': '0.125rem',
-    'font-family': `'Poppins', 'Inter', system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
+    'font-family': FONT_FAMILY,
+    'font-mono': DEFAULT_FONT_MONO,
+    'font-display': FONT_FAMILY,
     'duration-fast': '120ms',
     'duration-normal': '240ms',
     'duration-slow': '360ms',
     'easing-out': 'cubic-bezier(0.32, 0.72, 0, 1)',
     'easing-in': 'cubic-bezier(0.7, 0, 0.84, 0)',
     'easing-in-out': 'cubic-bezier(0.65, 0, 0.35, 1)',
+    'disabled-opacity': DEFAULT_DISABLED_OPACITY,
+    'disabled-cursor': DEFAULT_DISABLED_CURSOR,
+  },
+  scales: {
+    spacing: DEFAULT_SPACING,
+    radius: {
+      'xs': '0.25rem',
+      'sm': '0.5rem',
+      'md': '1rem',
+      'lg': '1.5rem',
+      'xl': '2rem',
+      '2xl': '3rem',
+      '3xl': '4rem',
+    },
+    shadow: DEFAULT_SHADOW,
+    fontSize: DEFAULT_FONT_SIZE,
   },
   colors: {
     light: {
-      'background': 'oklch(0.9852 0.0034 228.8)',
+      'surface': 'oklch(0.9852 0.0034 228.8)',
       'foreground': 'oklch(0.2342 0.0149 248.46)',
       'primary': 'oklch(0.6275 0.1044 224.88)',
       'primary-foreground': 'oklch(1 0 0)',
@@ -25,7 +52,7 @@ export const ocean: ThemePreset = {
       'secondary': 'oklch(0.9497 0.0151 196.9)',
       'secondary-foreground': 'oklch(0.2342 0.0149 248.46)',
       'muted': 'oklch(0.6459 0.0313 229.49)',
-      'accent': 'oklch(0.7812 0.0814 56.74)', // plus doux, légèrement pêche pastel
+      'accent': 'oklch(0.7812 0.0814 56.74)',
       'accent-foreground': 'oklch(0.2342 0.0149 248.46)',
       'destructive': 'oklch(0.5766 0.191 29.4)',
       'destructive-foreground': 'oklch(1 0 0)',
@@ -35,12 +62,12 @@ export const ocean: ThemePreset = {
       'warning-foreground': 'oklch(0.2342 0.0149 248.46)',
       'info': 'oklch(0.7085 0.1122 214.43)',
       'info-foreground': 'oklch(1 0 0)',
-      'border': 'oklch(0.8995 0.0204 196.8)',
+      'divider': 'oklch(0.8995 0.0204 196.8)',
       'overlay': 'oklch(0.2342 0.0149 248.46)',
       'shadow': 'oklch(0.381 0.0264 220.36)',
     },
     dark: {
-      'background': 'oklch(0.2127 0.0127 248.43)',
+      'surface': 'oklch(0.2127 0.0127 248.43)',
       'foreground': 'oklch(0.945 0.0087 197.01)',
       'primary': 'oklch(0.7702 0.1213 194.93)',
       'primary-foreground': 'oklch(0.2127 0.0127 248.43)',
@@ -59,7 +86,7 @@ export const ocean: ThemePreset = {
       'warning-foreground': 'oklch(0.2127 0.0127 248.43)',
       'info': 'oklch(0.7151 0.0936 212.67)',
       'info-foreground': 'oklch(1 0 0)',
-      'border': 'oklch(0.3755 0.0261 229.93)',
+      'divider': 'oklch(0.3755 0.0261 229.93)',
       'overlay': 'oklch(0.2127 0.0127 248.43)',
       'shadow': 'oklch(0.159 0.0034 219.69)',
     },

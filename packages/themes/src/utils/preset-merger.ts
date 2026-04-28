@@ -1,4 +1,4 @@
-import type { ThemeColors, ThemePreset, ThemePresetOverrides } from '../types'
+import type { ThemeColors, ThemeComponents, ThemePreset, ThemePresetOverrides, ThemeScales } from '../types'
 
 export function mergePresets(base: ThemePreset, overrides: ThemePresetOverrides): ThemePreset {
   return {
@@ -7,9 +7,38 @@ export function mergePresets(base: ThemePreset, overrides: ThemePresetOverrides)
       ...base.foundation,
       ...overrides.foundation,
     },
+    scales: mergeScales(base.scales, overrides.scales),
+    components: mergeComponents(base.components, overrides.components),
     colors: {
       light: mergeColors(base.colors.light, overrides.colors?.light),
       dark: mergeColors(base.colors.dark, overrides.colors?.dark),
+    },
+  }
+}
+
+function mergeScales(base: ThemeScales, overrides?: ThemePresetOverrides['scales']): ThemeScales {
+  if (!overrides)
+    return base
+
+  return {
+    spacing: overrides.spacing ?? base.spacing,
+    radius: { ...base.radius, ...overrides.radius },
+    shadow: { ...base.shadow, ...overrides.shadow },
+    fontSize: { ...base.fontSize, ...overrides.fontSize },
+  }
+}
+
+function mergeComponents(base?: ThemeComponents, overrides?: ThemeComponents): ThemeComponents | undefined {
+  if (!base && !overrides)
+    return undefined
+
+  return {
+    btn: { ...base?.btn, ...overrides?.btn },
+    container: {
+      bg: { ...base?.container?.bg, ...overrides?.container?.bg },
+    },
+    input: {
+      bg: { ...base?.input?.bg, ...overrides?.input?.bg },
     },
   }
 }
