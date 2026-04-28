@@ -218,7 +218,7 @@ function toggleCollapse() {
             :class="[wrapperClass, { 'maz:p-4': padding }]"
             class="m-card__content__wrapper maz:relative maz:max-w-full maz:h-full maz:flex maz:flex-col maz:gap-2"
           >
-            <div v-if="hasSlotContent(slots['content-title'])" class="m-card__title maz:text-foreground maz:text-xl">
+            <div v-if="hasSlotContent(slots['content-title'])" class="m-card__title maz:text-foreground maz:text-xl maz:font-display">
               <!--
               @slot content-title - The title of the card
               @binding collapse-open - The collapse open state of the card

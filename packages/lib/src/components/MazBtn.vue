@@ -291,6 +291,7 @@ const ICON_PADDING_CLASS = {
   justify-content: var(--m-btn-justify, center);
   background-color: var(--m-btn-bg);
   color: var(--m-btn-fg);
+  font-weight: var(--maz-btn-font-weight, 500);
 
   &:not(:disabled):hover {
     background-color: var(--m-btn-bg-hover);

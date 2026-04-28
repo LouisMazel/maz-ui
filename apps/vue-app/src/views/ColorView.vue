@@ -1,6 +1,6 @@
 <template>
   <div class="maz:flex maz:flex-col maz:gap-4 maz:padded-container">
-    <ColorScale color="background" />
+    <ColorScale color="surface" />
     <ColorScale color="primary" />
     <ColorScale color="secondary" />
     <ColorScale color="accent" />
@@ -11,7 +11,7 @@
     <ColorScale color="contrast" />
     <ColorScale color="foreground" />
     <ColorScale color="muted" />
-    <ColorScale color="border" />
+    <ColorScale color="divider" />
     <ColorScale color="overlay" />
     <ColorScale color="shadow" />
   </div>

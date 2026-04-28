@@ -106,7 +106,7 @@ const hasTitle = computed(() => {
             hasTitle ? 'maz:justify-between' : 'maz:justify-end',
           ]"
         >
-          <h4 class="m-drawer-header__title maz:m-0 maz:text-xl maz:font-semibold">
+          <h4 class="m-drawer-header__title maz:m-0 maz:text-xl maz:font-semibold maz:font-display">
             <slot name="title" :close="close">
               {{ title }}
             </slot>

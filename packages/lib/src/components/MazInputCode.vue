@@ -299,7 +299,7 @@ const borderColorState = computed(() => {
     }
 
     input {
-      @apply maz:h-full maz:w-full maz:bg-transparent maz:text-center maz:text-[1.5em] maz:outline-hidden;
+      @apply maz:h-full maz:w-full maz:bg-transparent maz:text-center maz:text-[1.5em] maz:outline-hidden maz:font-mono;
     }
 
     &:has(input:disabled) {

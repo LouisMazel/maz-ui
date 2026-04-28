@@ -135,7 +135,7 @@ if (scrollable) {
           <h2
             v-if="hasSlotContent(slots.title) || title"
             id="dialogTitle"
-            class="m-dialog-title maz:my-0 maz:text-xl maz:font-semibold"
+            class="m-dialog-title maz:my-0 maz:text-xl maz:font-semibold maz:font-display"
           >
             <!--
                 @slot Title slot in the header
