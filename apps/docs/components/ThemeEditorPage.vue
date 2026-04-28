@@ -22,14 +22,34 @@ const preset = computed(() => {
   return unref(currentPreset) ?? mazUi
 })
 
-const themeData = reactive<ThemePreset>({
-  name: preset.value.name,
-  foundation: { ...preset.value.foundation },
-  colors: {
-    light: { ...preset.value.colors.light },
-    dark: { ...preset.value.colors.dark },
-  },
-})
+function clonePreset(source: ThemePreset): ThemePreset {
+  return {
+    name: source.name,
+    foundation: { ...source.foundation },
+    scales: {
+      spacing: source.scales.spacing,
+      radius: { ...source.scales.radius },
+      shadow: { ...source.scales.shadow },
+    },
+    components: source.components
+      ? {
+          btn: source.components.btn ? { ...source.components.btn } : undefined,
+          container: source.components.container?.bg
+            ? { bg: { ...source.components.container.bg } }
+            : undefined,
+          input: source.components.input?.bg
+            ? { bg: { ...source.components.input.bg } }
+            : undefined,
+        }
+      : undefined,
+    colors: {
+      light: { ...source.colors.light },
+      dark: { ...source.colors.dark },
+    },
+  }
+}
+
+const themeData = reactive<ThemePreset>(clonePreset(preset.value))
 
 const originalTheme = preset.value
 
@@ -49,14 +69,7 @@ const isUpdatingFromPreset = ref(false)
 watchEffect(() => {
   if (!isUpdatingFromPreset.value && preset.value && preset.value.name !== themeData.name) {
     isUpdatingFromPreset.value = true
-    Object.assign(themeData, {
-      name: preset.value.name,
-      foundation: { ...preset.value.foundation },
-      colors: {
-        light: { ...preset.value.colors.light },
-        dark: { ...preset.value.colors.dark },
-      },
-    })
+    Object.assign(themeData, clonePreset(preset.value))
     isUpdatingFromPreset.value = false
   }
 })
@@ -118,28 +131,19 @@ const foundationInputs = computed(() => [
   {
     key: 'base-font-size',
     label: 'Base Font Size',
-    type: 'text',
     placeholder: '14px',
   },
   {
     key: 'font-family',
     label: 'Font Family',
-    type: 'text',
     placeholder: 'Manrope, sans-serif',
-  },
-  {
-    key: 'radius',
-    label: 'Border Radius',
-    type: 'text',
-    placeholder: '0.7rem',
   },
   {
     key: 'border-width',
     label: 'Border Width',
-    type: 'text',
     placeholder: '0.0625rem',
   },
-])
+] as const)
 
 const currentColors = computed(() => themeData.colors[editingMode.value])
 
@@ -221,6 +225,14 @@ function formatColorName(colorName: string): string {
                 debounce
               />
             </template>
+            <MazInput
+              v-model="themeData.scales.radius.md"
+              label="Border Radius (md)"
+              placeholder="0.7rem"
+              size="sm"
+              block
+              debounce
+            />
           </div>
         </MazCard>
 
