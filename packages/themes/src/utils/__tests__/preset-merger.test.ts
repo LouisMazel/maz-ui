@@ -212,7 +212,7 @@ describe('preset-merger', () => {
           colors: { light: {}, dark: {} },
           foundation: {},
           scales: {
-            radius: { md: '0.5rem' },
+            rounded: { md: '0.5rem' },
             shadow: { md: '0 1px 2px rgba(0,0,0,0.1)' },
           },
         } as unknown as ThemePreset
@@ -224,27 +224,27 @@ describe('preset-merger', () => {
     })
 
     describe('when overrides extend the scales block', () => {
-      it('then mergeScales merges radius and shadow', () => {
+      it('then mergeScales merges rounded and shadow', () => {
         const basePreset = {
           name: 'base',
           colors: { light: {}, dark: {} },
           foundation: {},
           scales: {
-            radius: { sm: '0.25rem', md: '0.5rem' },
+            rounded: { sm: '0.25rem', md: '0.5rem' },
             shadow: { sm: 'shadow-base-sm' },
           },
         } as unknown as ThemePreset
 
         const overrides: ThemePresetOverrides = {
           scales: {
-            radius: { md: '1rem' },
+            rounded: { md: '1rem' },
             shadow: { md: 'shadow-override-md' },
           },
         }
 
         const result = mergePresets(basePreset, overrides)
 
-        expect(result.scales.radius).toEqual({ sm: '0.25rem', md: '1rem' })
+        expect(result.scales.rounded).toEqual({ sm: '0.25rem', md: '1rem' })
         expect(result.scales.shadow).toEqual({
           sm: 'shadow-base-sm',
           md: 'shadow-override-md',
@@ -258,7 +258,7 @@ describe('preset-merger', () => {
           name: 'base',
           colors: { light: {}, dark: {} },
           foundation: {},
-          scales: { radius: {}, shadow: {} },
+          scales: { rounded: {}, shadow: {} },
         } as unknown as ThemePreset
 
         const result = mergePresets(basePreset, {})
@@ -273,7 +273,7 @@ describe('preset-merger', () => {
           name: 'base',
           colors: { light: {}, dark: {} },
           foundation: {},
-          scales: { radius: {}, shadow: {} },
+          scales: { rounded: {}, shadow: {} },
         } as unknown as ThemePreset
 
         const overrides: ThemePresetOverrides = {
@@ -298,7 +298,7 @@ describe('preset-merger', () => {
           name: 'base',
           colors: { light: {}, dark: {} },
           foundation: {},
-          scales: { radius: {}, shadow: {} },
+          scales: { rounded: {}, shadow: {} },
           components: {
             btn: { 'font-weight': '500' },
             container: { bg: { light: 'oklch(1 0 0)', dark: 'oklch(0.2 0 0)' } },

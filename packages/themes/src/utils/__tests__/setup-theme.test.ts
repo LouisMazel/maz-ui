@@ -106,10 +106,10 @@ const mockPreset: ThemePreset = {
   },
   foundation: {
     'border-width': '1px',
-    'spacing': '0.25rem',
+    'space': '0.25rem',
   },
   scales: {
-    radius: {
+    rounded: {
       'xs': '0.125rem',
       'sm': '0.25rem',
       'md': '0.5rem',
@@ -151,8 +151,8 @@ describe('setup-theme', () => {
 
   describe('given defaultOptions', () => {
     describe('when inspecting default values', () => {
-      it('then it has strategy set to hybrid', () => {
-        expect(defaultOptions.strategy).toBe('hybrid')
+      it('then it has strategy set to runtime', () => {
+        expect(defaultOptions.strategy).toBe('runtime')
       })
 
       it('then it has overrides set to empty object', () => {
@@ -165,14 +165,6 @@ describe('setup-theme', () => {
 
       it('then it has preset set to undefined', () => {
         expect(defaultOptions.preset).toBeUndefined()
-      })
-
-      it('then it has injectCriticalCSS set to true', () => {
-        expect(defaultOptions.injectCriticalCSS).toBe(true)
-      })
-
-      it('then it has injectFullCSS set to true', () => {
-        expect(defaultOptions.injectFullCSS).toBe(true)
       })
 
       it('then it has mode set to both', () => {
@@ -215,7 +207,7 @@ describe('setup-theme', () => {
         setupTheme({ preset: mockPreset })
 
         expect(injectThemeCSS).toHaveBeenCalledWith(mockPreset, expect.objectContaining({
-          strategy: 'hybrid',
+          strategy: 'runtime',
         }))
       })
     })

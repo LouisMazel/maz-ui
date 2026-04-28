@@ -274,7 +274,7 @@ describe('useTheme', () => {
         vi.mocked(mergePresets).mockReturnValue({ ...mazUi, name: 'merged' })
 
         const { updateTheme } = useTheme()
-        await updateTheme({ foundation: { radius: '1rem' } } as ThemePresetOverrides)
+        await updateTheme({ foundation: { space: '0.25rem' } } as ThemePresetOverrides)
 
         expect(injectCSS).not.toHaveBeenCalled()
       })
@@ -503,7 +503,7 @@ describe('useTheme', () => {
 
         vi.mocked(isServer).mockReturnValue(false)
 
-        await expect(updateTheme({ foundation: { radius: '1rem' } } as ThemePresetOverrides)).resolves.toBeUndefined()
+        await expect(updateTheme({ foundation: { space: '0.25rem' } } as ThemePresetOverrides)).resolves.toBeUndefined()
         expect(mergePresets).not.toHaveBeenCalled()
       })
     })
@@ -519,6 +519,16 @@ describe('useTheme', () => {
         colorMode.value = 'dark'
 
         expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'dark')
+      })
+    })
+
+    describe('when colorMode value is read', () => {
+      it('then the getter returns the active color mode from theme state', () => {
+        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+
+        const { colorMode } = useTheme()
+
+        expect(colorMode.value).toBe(mockRefThemeState.value.colorMode)
       })
     })
   })

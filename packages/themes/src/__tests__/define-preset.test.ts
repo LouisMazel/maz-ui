@@ -66,10 +66,10 @@ const mockPreset: ThemePreset = {
   },
   foundation: {
     'border-width': '1px',
-    'spacing': '0.25rem',
+    'space': '0.25rem',
   },
   scales: {
-    radius: {
+    rounded: {
       'xs': '0.125rem',
       'sm': '0.25rem',
       'md': '0.5rem',
@@ -121,7 +121,7 @@ describe('define-preset', () => {
     describe('when base is a string preset name (async path)', () => {
       it('then it calls getPreset with the preset name and returns a Promise', async () => {
         const overrides: ThemePresetOverrides = {
-          scales: { radius: { md: '1rem' } },
+          scales: { rounded: { md: '1rem' } },
         }
         const mergedResult = { ...mockPreset, name: 'merged-async' }
         vi.mocked(getPreset).mockResolvedValue(mockPreset)

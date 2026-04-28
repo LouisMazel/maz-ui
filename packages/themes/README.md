@@ -7,9 +7,9 @@ High-performance and typed theme system for Maz-UI.
 - 🎨 **HSL CSS Variables** - Uses HSL CSS variables for maximum flexibility
 - 🌓 **Automatic dark mode** - Native dark mode support with `prefers-color-scheme`
 - 🚀 **Automatic generation** - Automatically generates color variants (50-950)
-- ⚡ **Flexible strategies** - Runtime, build-time or hybrid
+- ⚡ **Flexible strategies** - Runtime injection or build-time generation
 - 🛡️ **Strict TypeScript** - Complete types for optimal DX
-- 🎯 **Zero FOUC** - Critical CSS injected inline
+- 🎯 **Zero FOUC** - Pass the preset object so the full CSS renders synchronously on first paint
 - 🔧 **Configurable presets** - Ready-to-use and customizable presets
 
 ## Installation
@@ -32,7 +32,7 @@ const app = createApp(App)
 
 app.use(MazUiTheme, {
   preset: mazUi,
-  strategy: 'hybrid',
+  strategy: 'runtime',
   darkModeStrategy: 'class',
   // remember the active preset name across reloads (default: true)
   persistPreset: true,
@@ -132,7 +132,7 @@ const {
   presetName, // ComputedRef<string>
   colorMode, // Ref<'light' | 'dark' | 'auto'>
   isDark, // ComputedRef<boolean>
-  strategy, // ComputedRef<'runtime' | 'build' | 'hybrid'>
+  strategy, // ComputedRef<'runtime' | 'buildtime'>
   updateTheme, // (preset: ThemePreset | ThemePresetName | ThemePresetOverrides) => void
   setColorMode, // (mode: 'light' | 'dark' | 'auto') => void
   toggleDarkMode, // () => void
@@ -141,17 +141,13 @@ const {
 
 ## Strategies
 
-### Runtime
+### Runtime (recommended)
 
-CSS generated and injected dynamically on the client side.
+The full theme CSS is generated and injected synchronously on first paint, on both client and server (via `useHead` in Nuxt). `updateTheme(...)` re-injects the new CSS at runtime.
 
-### Build
+### Buildtime
 
-CSS generated at build-time and included in the bundle.
-
-### Hybrid (recommended)
-
-Critical CSS injected inline, complete CSS loaded asynchronously.
+CSS generated at build-time and included in the bundle. Nothing is injected at runtime; you must include the generated CSS file yourself.
 
 ## Generated CSS variables
 
@@ -170,12 +166,11 @@ import { buildThemeCSS, generateThemeBundle } from '@maz-ui/themes'
 // CSS for a preset
 const css = buildThemeCSS({
   preset: myPreset,
-  darkModeStrategy: 'class',
-  critical: true
+  darkSelector: 'class',
 })
 
 // Bundle for multiple presets
 const bundle = generateThemeBundle([mazUi, darkPreset], {
-  darkModeStrategy: 'class'
+  darkSelector: 'class',
 })
 ```

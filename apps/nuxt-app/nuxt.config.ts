@@ -55,11 +55,11 @@ export default defineNuxtConfig({
   },
 
   mazUi: {
+    css: { injectCss: false },
     theme: {
       preset: 'maz-ui',
       mode: 'both',
       colorMode: 'auto',
-      injectAllCSSOnServer: false,
     },
     translations: {
       locale: 'fr',

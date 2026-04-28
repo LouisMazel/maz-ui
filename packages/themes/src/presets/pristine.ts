@@ -6,7 +6,7 @@ import {
   DEFAULT_DISABLED_OPACITY,
   DEFAULT_FONT_MONO,
   DEFAULT_INPUT_BG,
-  DEFAULT_SPACING,
+  DEFAULT_SPACE,
 } from './_defaults'
 
 /**
@@ -40,10 +40,10 @@ export const pristine: ThemePreset = {
     'easing-in-out': 'cubic-bezier(0.65, 0, 0.35, 1)',
     'disabled-opacity': DEFAULT_DISABLED_OPACITY,
     'disabled-cursor': DEFAULT_DISABLED_CURSOR,
-    'spacing': DEFAULT_SPACING,
+    'space': DEFAULT_SPACE,
   },
   scales: {
-    radius: {
+    rounded: {
       'xs': '0.25rem',
       'sm': '0.375rem',
       'md': '0.625rem',

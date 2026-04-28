@@ -73,12 +73,10 @@ function watchMutationClassOnHtmlElement(themeState: Ref<ThemeState>): () => voi
 }
 
 export const defaultOptions = {
-  strategy: 'hybrid',
+  strategy: 'runtime',
   overrides: {},
   darkModeStrategy: 'class',
   preset: undefined,
-  injectCriticalCSS: true,
-  injectFullCSS: true,
   mode: 'both',
   darkClass: 'dark',
   colorMode: 'auto',

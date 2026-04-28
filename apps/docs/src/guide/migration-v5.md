@@ -380,10 +380,10 @@ The single foundation radius is replaced by a full radius scale. Move your value
   foundation: {
     'base-font-size': '14px',
     'border-width': '1px',
-    'spacing': '0.25rem',
+    'space': '0.25rem',
   },
   scales: {
-    radius: {
+    rounded: {
       'xs': '0.125rem',
       'sm': '0.25rem',
       'md': '0.7rem',
@@ -397,19 +397,19 @@ The single foundation radius is replaced by a full radius scale. Move your value
 }
 ```
 
-The bridge maps every `--maz-radius-{key}` to its matching Tailwind `--radius-{key}`, so `maz:rounded-md`, `maz:rounded-lg`, etc. all move with your preset.
+The bridge maps every `--maz-rounded-{key}` to its matching Tailwind `--radius-{key}`, so `maz:rounded-md`, `maz:rounded-lg`, etc. all move with your preset.
 
 ### 12. New optional preset blocks: `scales` and `components`
 
-`@maz-ui/themes` now lets you drive the radius / shadow scales (and `spacing` via `foundation`) plus a small set of per-component tokens:
+`@maz-ui/themes` now lets you drive the rounded / shadow scales (and `space` via `foundation`) plus a small set of per-component tokens:
 
 ```ts
 {
   foundation: {
-    spacing: '0.25rem',
+    space: '0.25rem',
   },
   scales: {
-    radius: { /* xs..3xl */ },
+    rounded: { /* xs..3xl */ },
     shadow: { sm, md, lg, xl, elevation },
   },
   components: {
@@ -422,7 +422,44 @@ The bridge maps every `--maz-radius-{key}` to its matching Tailwind `--radius-{k
 
 Both blocks are optional; the bundled presets ship with sensible defaults. New `foundation` keys also landed and are all optional: `font-mono`, `font-display`, `disabled-opacity`, `disabled-cursor`. See the [themes guide](./themes.md) for the full surface.
 
-### 13. `color="background"` → `color="surface"` on components
+### 13. Theme strategy: `'hybrid'` removed, no more critical CSS
+
+The `@maz-ui/themes` rendering pipeline collapsed back to a single path: the full CSS is generated and injected synchronously on first paint. The two-stage critical-CSS / async-full-CSS dance is gone.
+
+What changed:
+
+- `Strategy` is now `'runtime' | 'buildtime'` — `'hybrid'` no longer exists. The runtime default is `'runtime'`.
+- `MazUiTheme` plugin options no longer accept `injectCriticalCSS` / `injectFullCSS`.
+- `@maz-ui/nuxt`'s `theme` config no longer accepts `injectAllCSSOnServer`.
+- `generateCSS` / `buildThemeCSS` / `buildSeparateThemeFiles` no longer accept `onlyCritical`, `criticalColors`, `criticalFoundation`, or `includeColorScales`. `buildSeparateThemeFiles` now returns `{ full, lightOnly, darkOnly }` only — no more `critical`.
+
+What you need to do:
+
+```diff
+ app.use(MazUiTheme, {
+   preset: mazUi,
+-  strategy: 'hybrid',
++  strategy: 'runtime',
+-  injectCriticalCSS: true,
+-  injectFullCSS: true,
+ })
+```
+
+```diff
+ export default defineNuxtConfig({
+   mazUi: {
+     theme: {
+-      strategy: 'hybrid',
++      strategy: 'runtime',
+-      injectAllCSSOnServer: true,
+     },
+   },
+ })
+```
+
+To keep first-paint clean, **pass the preset object** (not just a string name) so the full CSS is rendered before the first frame.
+
+### 14. `color="background"` → `color="surface"` on components
 
 The components that exposed `color="background"` in their public prop now use `color="surface"`. The visual result is identical — only the literal changes.
 

@@ -45,7 +45,7 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
     saveResolvedPresetName(newPreset.name)
   }
 
-  if (themeState.value.strategy === 'runtime' || themeState.value.strategy === 'hybrid') {
+  if (themeState.value.strategy === 'runtime') {
     const cssOptions: CSSOptions = {
       mode: themeState.value.mode,
       darkSelectorStrategy: themeState.value.darkModeStrategy,

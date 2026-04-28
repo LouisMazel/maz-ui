@@ -31,7 +31,7 @@ import 'maz-ui/style.css'
 app.use(MazUi, {
   theme: {
     preset: mazUi,
-    strategy: 'hybrid',
+    strategy: 'runtime',
   },
   translations: {
     locale: 'fr',
@@ -74,7 +74,7 @@ import { fr } from '@maz-ui/translations'
 
 <template>
   <MazUiProvider
-    :theme="{ preset: mazUi, strategy: 'hybrid' }"
+    :theme="{ preset: mazUi, strategy: 'runtime' }"
     :translations="{ locale: 'fr', messages: { fr } }"
   >
     <!-- All Maz-UI components inside this subtree work as expected -->
@@ -99,7 +99,7 @@ The entire Maz-UI setup is now code-split into the Dashboard chunk.
 interface ThemeOptions {
   preset: ThemePreset              // Required - Theme preset (mazUi, ocean, pristine, obsidian, or custom)
   overrides?: ThemePresetOverrides // Partial overrides for colors, foundation, etc.
-  strategy?: 'runtime' | 'buildtime' | 'hybrid' // CSS generation strategy (default: 'hybrid')
+  strategy?: 'runtime' | 'buildtime' // CSS generation strategy (default: 'runtime')
   darkModeStrategy?: 'class' | 'media'           // Dark mode handling (default: 'class')
   colorMode?: 'light' | 'dark' | 'auto'          // Initial color mode (default: 'auto')
   mode?: 'light' | 'dark' | 'both'               // Supported color modes (default: 'both')
@@ -208,7 +208,7 @@ const locale = ref('fr')
   <MazUiProvider
     :theme="{
       preset: mazUi,
-      strategy: 'hybrid',
+      strategy: 'runtime',
       colorMode: 'auto',
     }"
     :translations="{

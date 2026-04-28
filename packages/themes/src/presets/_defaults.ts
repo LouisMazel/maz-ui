@@ -2,10 +2,10 @@ import type { ThemeComponentBg, ThemeFoundation, ThemeScales } from '../types'
 
 /**
  * Defaults shared across the bundled presets. Each preset can spread these
- * and override the keys it cares about. `radius` is intentionally NOT shared
+ * and override the keys it cares about. `rounded` is intentionally NOT shared
  * — every preset declares its own scale anchored on its visual identity.
  */
-export const DEFAULT_SPACING: NonNullable<ThemeFoundation['spacing']> = '0.25rem'
+export const DEFAULT_SPACE: NonNullable<ThemeFoundation['space']> = '0.25rem'
 
 export const DEFAULT_SHADOW: ThemeScales['shadow'] = {
   sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',

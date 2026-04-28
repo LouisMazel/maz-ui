@@ -7,7 +7,7 @@ import {
   DEFAULT_FONT_MONO,
   DEFAULT_INPUT_BG,
   DEFAULT_SHADOW,
-  DEFAULT_SPACING,
+  DEFAULT_SPACE,
 } from './_defaults'
 
 /**
@@ -43,10 +43,10 @@ export const obsidian: ThemePreset = {
     'easing-in-out': 'cubic-bezier(0.87, 0, 0.13, 1)',
     'disabled-opacity': DEFAULT_DISABLED_OPACITY,
     'disabled-cursor': DEFAULT_DISABLED_CURSOR,
-    'spacing': DEFAULT_SPACING,
+    'space': DEFAULT_SPACE,
   },
   scales: {
-    radius: {
+    rounded: {
       'xs': '0.125rem',
       'sm': '0.25rem',
       'md': '0.5rem',

@@ -9,8 +9,6 @@ export interface BuildThemeOptions {
   darkSelector?: 'class' | 'media'
   /** CSS variables prefix */
   prefix?: string
-  /** Generate only critical CSS */
-  criticalOnly?: boolean
   /** Dark class name */
   darkClass?: string
 }
@@ -22,42 +20,25 @@ export function buildThemeCSS(options: BuildThemeOptions): string {
     darkSelector = 'class',
     prefix = 'maz',
     darkClass = 'dark',
-    criticalOnly = false,
   } = options
 
-  const cssOptions = {
+  return generateCSS(preset, {
     mode,
     darkSelectorStrategy: darkSelector,
     prefix,
     darkClass,
-  }
-
-  const criticalCSS = generateCSS(preset, { ...cssOptions, onlyCritical: true })
-
-  if (criticalOnly) {
-    return criticalCSS
-  }
-
-  const fullCSS = generateCSS(preset, cssOptions)
-
-  return `${criticalCSS}\n${fullCSS}`
+  })
 }
 
 export function generateThemeBundle(presets: ThemePreset[], options: {
-  /** Mode de thème à générer */
   mode?: 'light' | 'dark' | 'both'
-  /** Sélecteur pour le mode sombre */
   darkSelector?: 'class' | 'media'
-  /** Préfixe des variables CSS */
   prefix?: string
-  /** Générer seulement le CSS critique */
-  criticalOnly?: boolean
 } = {}): Record<string, string> {
   const {
     mode = 'both',
     darkSelector = 'class',
     prefix = 'maz',
-    criticalOnly = false,
   } = options
 
   return presets.reduce((bundle, preset) => {
@@ -66,7 +47,6 @@ export function generateThemeBundle(presets: ThemePreset[], options: {
       mode,
       darkSelector,
       prefix,
-      criticalOnly,
     })
     return bundle
   }, {} as Record<string, string>)
@@ -94,18 +74,12 @@ export function buildSeparateThemeFiles(preset: ThemePreset, options: {
   darkSelector?: 'class' | 'media'
   darkClass?: string
 } = {}): {
-  critical: string
   full: string
   lightOnly: string
   darkOnly: string
 } {
-  const { prefix = 'maz', darkSelector = 'class', darkClass = 'dark' } = options
-
-  const baseOptions = { prefix, darkSelectorStrategy: darkSelector, darkClass }
-
   return {
-    critical: generateCSS(preset, { ...baseOptions, mode: 'both', onlyCritical: true }),
-    full: generateCSS(preset, { ...baseOptions, mode: 'both' }),
+    full: buildThemeCSS({ preset, mode: 'both', ...options }),
     lightOnly: buildThemeCSS({ preset, mode: 'light', ...options }),
     darkOnly: buildThemeCSS({ preset, mode: 'dark', ...options }),
   }

@@ -7,7 +7,7 @@ import {
   DEFAULT_FONT_MONO,
   DEFAULT_INPUT_BG,
   DEFAULT_SHADOW,
-  DEFAULT_SPACING,
+  DEFAULT_SPACE,
 } from './_defaults'
 
 /**
@@ -48,10 +48,10 @@ export const nova: ThemePreset = {
     'easing-in-out': 'cubic-bezier(0.83, 0, 0.17, 1)',
     'disabled-opacity': DEFAULT_DISABLED_OPACITY,
     'disabled-cursor': DEFAULT_DISABLED_CURSOR,
-    'spacing': DEFAULT_SPACING,
+    'space': DEFAULT_SPACE,
   },
   scales: {
-    radius: {
+    rounded: {
       'xs': '0.25rem',
       'sm': '0.375rem',
       'md': '0.5rem',

@@ -53,7 +53,7 @@ describe('theme plugin', () => {
           mazUi: {
             theme: {
               preset: 'maz-ui',
-              strategy: 'hybrid',
+              strategy: 'runtime',
               darkModeStrategy: 'class',
               colorMode: 'auto',
               mode: 'both',
@@ -90,7 +90,7 @@ describe('theme plugin', () => {
     expect(mockInstall).toHaveBeenCalledWith(
       context.vueApp,
       expect.objectContaining({
-        strategy: 'hybrid',
+        strategy: 'runtime',
         darkClass: 'dark',
         darkModeStrategy: 'class',
       }),

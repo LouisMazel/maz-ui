@@ -33,7 +33,7 @@ export default {
     app.use(MazUiTheme, {
       preset: mazUi,
       darkModeStrategy: 'class',
-      strategy: 'hybrid',
+      strategy: 'runtime',
       persistPreset: true,
     })
     app.use(MazUiTranslations, {

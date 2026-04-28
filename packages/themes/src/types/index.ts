@@ -71,26 +71,28 @@ export interface ThemeFoundation {
   'disabled-cursor'?: string
   /**
    * Base spacing unit. Tailwind multiplies this for every `p-N`, `m-N`,
-   * `gap-N`, etc.
+   * `gap-N`, etc. Bridged into Tailwind's `--spacing` token.
    * @default '0.25rem'
    */
-  'spacing'?: SizeUnit
+  'space'?: SizeUnit
 }
 
 /**
- * Radius / shadow scales. Bridged into Tailwind v4 via `@theme inline` so the
+ * Rounded / shadow scales. Bridged into Tailwind v4 via `@theme inline` so the
  * consumer's own utilities benefit too (e.g. `rounded-md`, `shadow-lg`).
  *
- * Single-value design tokens (`spacing`, `base-font-size`, `border-width`, …)
+ * Single-value design tokens (`space`, `base-font-size`, `border-width`, …)
  * live on `foundation` instead — only true multi-step scales belong here.
  */
 export interface ThemeScales {
   /**
-   * Border-radius scale. Maps to Tailwind utilities `rounded-{key}`.
+   * Border-radius scale. Maps to Tailwind utilities `rounded-{key}` and is
+   * emitted as `--maz-rounded-{key}` (the name is decoupled from Tailwind's
+   * `--radius-*` to avoid prefix collisions in `prefix(maz)` setups).
    * `full` is intentionally not included — Tailwind keeps `rounded-full`
    * at 9999px regardless.
    */
-  radius: Record<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl', SizeUnit>
+  rounded: Record<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl', SizeUnit>
   /**
    * Box-shadow scale. Maps to Tailwind utilities `shadow-{key}`. `elevation`
    * is the maz-ui specific elevated-surface shadow used by MazCard,
@@ -158,11 +160,11 @@ export interface ThemePresetOverrides {
   foundation?: Partial<ThemeFoundation>
 
   /**
-   * Theme scales (radius, shadow)
+   * Theme scales (rounded, shadow)
    * @default undefined
    */
   scales?: {
-    radius?: Partial<ThemeScales['radius']>
+    rounded?: Partial<ThemeScales['rounded']>
     shadow?: Partial<ThemeScales['shadow']>
   }
 
@@ -195,7 +197,7 @@ export type ThemeMode = 'light' | 'dark' | 'both'
 
 export type DarkModeStrategy = 'class' | 'media'
 
-export type Strategy = 'runtime' | 'buildtime' | 'hybrid'
+export type Strategy = 'runtime' | 'buildtime'
 
 interface BaseThemeConfig {
   /**
@@ -223,10 +225,10 @@ interface BaseThemeConfig {
   /**
    * CSS generation strategy
    * @description
-   * - `runtime`: CSS generated (critical and full) injected immediately
-   * - `buildtime`: CSS generated at build time and included in bundle
-   * - `hybrid`: Critical CSS injected inline, full CSS loaded asynchronously (recommended)
-   * @default 'hybrid'
+   * - `runtime`: CSS generated and injected at runtime (recommended).
+   * - `buildtime`: CSS generated at build time and included in bundle —
+   *   nothing is injected at runtime.
+   * @default 'runtime'
    */
   strategy?: Strategy
 
@@ -323,7 +325,7 @@ export interface ThemeState {
   /**
    * CSS generation strategy
    * @description The strategy used to generate CSS
-   * @values 'runtime', 'buildtime', 'hybrid'
+   * @values 'runtime', 'buildtime'
    */
   strategy: Strategy
   /**

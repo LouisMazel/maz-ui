@@ -783,31 +783,30 @@ const checklistItems = [
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazTabs
       </h2>
-      <MazTabs v-model="tabValue" :items="[{ label: 'Overview' }, { label: 'Features' }, { label: 'Pricing' }]">
-        <template #tab-1>
-          <div class="maz:p-4">
+
+      <MazTabs v-model="tabValue">
+        <MazTabsBar v-model="tabValue" :items="[{ label: 'Overview' }, { label: 'Features' }, { label: 'Pricing' }]" />
+
+        <MazTabsContent>
+          <MazTabsContentItem :tab="1" class="maz-py-4">
             <h3 class="maz:text-lg maz:font-bold maz:mb-2">
               Overview
             </h3>
             <p>Welcome to the overview tab. This section provides a general introduction to the product and its key benefits.</p>
-          </div>
-        </template>
-        <template #tab-2>
-          <div class="maz:p-4">
+          </MazTabsContentItem>
+          <MazTabsContentItem :tab="2" class="maz-py-4">
             <h3 class="maz:text-lg maz:font-bold maz:mb-2">
               Features
             </h3>
             <p>Discover our powerful features: real-time collaboration, advanced analytics, and seamless integrations.</p>
-          </div>
-        </template>
-        <template #tab-3>
-          <div class="maz:p-4">
+          </MazTabsContentItem>
+          <MazTabsContentItem :tab="3" class="maz-py-4">
             <h3 class="maz:text-lg maz:font-bold maz:mb-2">
               Pricing
             </h3>
             <p>Flexible plans starting at $9/month. Free tier available for small teams.</p>
-          </div>
-        </template>
+          </MazTabsContentItem>
+        </MazTabsContent>
       </MazTabs>
     </section>
 

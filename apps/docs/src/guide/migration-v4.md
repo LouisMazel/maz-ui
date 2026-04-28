@@ -173,7 +173,7 @@ export default defineNuxtConfig({
     // New configuration API
     theme: {
       preset: 'maz-ui',
-      strategy: 'hybrid',
+      strategy: 'runtime',
       darkModeStrategy: 'class',
     },
     translations: {

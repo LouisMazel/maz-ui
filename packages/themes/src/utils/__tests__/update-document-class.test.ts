@@ -10,7 +10,7 @@ function createThemeState(overrides: Partial<ThemeState> = {}): ThemeState {
     colorMode: 'auto',
     isDark: false,
     mode: 'both',
-    strategy: 'hybrid',
+    strategy: 'runtime',
     darkModeStrategy: 'class',
     darkClass: 'dark',
     persistPreset: true,

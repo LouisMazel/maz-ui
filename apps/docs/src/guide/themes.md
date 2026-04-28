@@ -14,9 +14,9 @@ description: Modern and performant theme system for Maz-UI with TypeScript, HSL 
 - **Modern HSL CSS Variables** - Maximum flexibility with colors
 - **Smart Dark Mode** - Automatic support with `prefers-color-scheme`
 - **Automatic Generation** - Color scales (50-950) created automatically
-- **Performance Strategies** - Runtime, build-time or hybrid according to your needs
+- **Performance Strategies** - Runtime injection or build-time generation according to your needs
 - **Strict TypeScript** - Complete types for perfect DX
-- **Zero FOUC** - Critical CSS injected inline to avoid flashes
+- **Zero FOUC** - Pass the preset object up front; the full CSS is injected synchronously on first paint
 - **Flexible Presets** - Ready-to-use and customizable configurations
 
 ## Theme Editor
@@ -40,7 +40,7 @@ const app = createApp(App)
 app.use(MazUi, {
   theme: {
     preset: mazUi, // pristine | ocean | obsidian | nova
-    strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
+    strategy: 'runtime', // 'runtime' | 'buildtime'
     darkModeStrategy: 'class', // 'class' | 'media' (only if mode is `both`)
     mode: 'both', // 'light' | 'dark' | 'both' (supported color modes)
     colorMode: 'auto', // 'auto' | 'light' | 'dark' (initial color mode, only if mode is 'both')
@@ -322,33 +322,9 @@ import { nova } from '@maz-ui/themes/presets'
 
 ## Rendering Strategies
 
-### 🚀 Hybrid (Recommended)
+### ⚡ Runtime (Recommended)
 
-The hybrid strategy combines the best of both worlds:
-
-- **Critical CSS injected immediately** - Prevents FOUC (Flash of Unstyled Content)
-- **Full CSS loaded asynchronously** - Uses `requestIdleCallback` to avoid blocking the main thread
-- **Optimal performance** - Balance between display speed and interface fluidity
-
-The full CSS is injected via `requestIdleCallback` with a 100ms timeout, allowing the browser to prioritize critical tasks while ensuring fast loading of complete styling.
-
-```typescript
-import { mazUi } from '@maz-ui/themes/presets'
-
-app.use(MazUi, {
-  theme: {
-    preset: mazUi,
-    strategy: 'hybrid'
-  }
-})
-```
-
-### ⚡ Runtime
-
-CSS generated (critical and full) injected immediately.
-
-**⚠️ Potential risks:**
-- **Main thread blocking** - Immediate injection can impact performance
+CSS is generated and injected synchronously on first paint. Pass the preset object directly (`preset: mazUi`) so the full stylesheet is rendered before the first frame — no FOUC.
 
 ```typescript
 import { mazUi } from '@maz-ui/themes/presets'
@@ -415,7 +391,7 @@ const customTheme = await definePreset({
       'font-family': 'Inter, sans-serif'
     },
     scales: {
-      radius: { md: '1rem' }
+      rounded: { md: '1rem' }
     },
     colors: {
       light: {
@@ -469,7 +445,7 @@ const brandTheme = await definePreset({
       'font-family': 'Inter, sans-serif'
     },
     scales: {
-      radius: { md: '0.75rem' }
+      rounded: { md: '0.75rem' }
     },
     colors: {
       light: {
@@ -500,11 +476,11 @@ const denseTheme = definePreset({
     name: 'dense',
     foundation: {
       // Tighter spacing — every p-N / gap-N / m-N rescales
-      spacing: '0.2rem',
+      space: '0.2rem',
     },
     scales: {
       // Sharper corners on the whole radius scale
-      radius: {
+      rounded: {
         'xs': '0.0625rem',
         'sm': '0.125rem',
         'md': '0.375rem',
@@ -575,7 +551,7 @@ const {
   presetName, // ComputedRef<string>
   colorMode, // ComputedRef<'light' | 'dark' | 'auto'>
   isDark, // ComputedRef<boolean>
-  strategy, // ComputedRef<'runtime' | 'buildtime' | 'hybrid'>
+  strategy, // ComputedRef<'runtime' | 'buildtime'>
 
   // Actions
   updateTheme, // (preset: ThemePreset | ThemePresetOverrides) => void
@@ -659,19 +635,17 @@ const customPreset = definePreset({
 const fullCSS = buildThemeCSS({
   preset: customPreset,
   mode: 'both',
-  criticalOnly: false,
 })
 
 writeFileSync(join(_dirname, 'public/custom.css'), fullCSS)
 
 /**
- * Or generate theme in  separate CSS files
+ * Or generate per-mode CSS files
  */
-const { critical, full } = buildSeparateThemeFiles(customPreset, {
+const { full, lightOnly, darkOnly } = buildSeparateThemeFiles(customPreset, {
   darkSelector: 'class',
 })
 
-writeFileSync(join(_dirname, 'public/critical.css'), critical)
 writeFileSync(join(_dirname, 'public/custom-full.css'), full)
 
 /**
@@ -723,11 +697,10 @@ const customPreset = definePreset({
 const fullCSS = buildThemeCSS({
   preset: customPreset,
   mode: 'both',
-  criticalOnly: false,
 })
 
-// Or generate separate CSS files
-const { critical, full, lightOnly, darkOnly } = buildSeparateThemeFiles(customPreset, {
+// Or generate per-mode CSS files
+const { full, lightOnly, darkOnly } = buildSeparateThemeFiles(customPreset, {
   darkSelector: 'class',
 })
 
@@ -779,11 +752,7 @@ export default defineConfig({
 #### 2. Include in your HTML (Only for Vue users)
 
 ```html
-<!-- Critical CSS first -->
-<link rel="stylesheet" href="/themes/custom-critical.css">
-
-<!-- Full CSS deferred -->
-<link rel="stylesheet" href="/themes/custom-full.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="/themes/custom-full.css">
 ```
 
 ### Utility functions
@@ -797,7 +766,6 @@ const css = buildThemeCSS({
   preset: customPreset,
   mode: 'both', // 'light' | 'dark' | 'both'
   darkSelector: 'class', // 'class' | 'media'
-  criticalOnly: false, // true for critical CSS only
 })
 ```
 
@@ -819,7 +787,7 @@ Generates separate files for different use cases.
 
 ```typescript
 const files = buildSeparateThemeFiles(preset)
-// Result: { critical, full, lightOnly, darkOnly }
+// Result: { full, lightOnly, darkOnly }
 ```
 
 #### `createThemeStylesheet(css, options)`
@@ -865,7 +833,7 @@ The system automatically generates all necessary variables:
   --maz-foreground: 210 8% 14%;
 
   /* Design tokens */
-  --maz-radius-md: 0.7rem;
+  --maz-rounded-md: 0.7rem;
   --maz-border-width: 0.063rem;
   --maz-font-family: Manrope, sans-serif;
 }
@@ -928,7 +896,7 @@ The system automatically generates all necessary variables:
     --maz-muted: 0 0% 54%;
     --maz-shadow: 240 5.9% 10%;
     --maz-divider: 220 13.04% 90.98%;
-    --maz-radius-md: 0.7rem;
+    --maz-rounded-md: 0.7rem;
     --maz-font-family: Manrope, sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     --maz-base-font-size: 14px;
     --maz-border-width: 0.0625rem;
@@ -956,7 +924,7 @@ The system automatically generates all necessary variables:
     --maz-muted: 255 0% 54%;
     --maz-shadow: 240 3.7% 15.9%;
     --maz-divider: 238 17% 25%;
-    --maz-radius-md: 0.7rem;
+    --maz-rounded-md: 0.7rem;
     --maz-font-family: Manrope, sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     --maz-base-font-size: 14px;
     --maz-border-width: 0.0625rem;
