@@ -60,7 +60,7 @@ const ROUNDED_CLASS = {
   none: '',
   sm: 'maz:rounded-xs',
   md: 'maz:rounded-md',
-  lg: 'maz:rounded',
+  lg: 'maz:rounded-lg',
   xl: 'maz:rounded-xl',
   full: 'maz:rounded-full',
 } as const

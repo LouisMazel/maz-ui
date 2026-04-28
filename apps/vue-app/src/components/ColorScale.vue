@@ -55,7 +55,7 @@ const colorScale = computed(() => {
           </p>
         </div>
 
-        <div :style="{ backgroundColor: bgColor, color: textColor }" class="maz:h-20 maz:w-full maz:rounded" />
+        <div :style="{ backgroundColor: bgColor, color: textColor }" class="maz:h-20 maz:w-full maz:rounded-md" />
       </div>
     </div>
   </div>

@@ -12,7 +12,7 @@ description: vClickOutside is a Vue directive to trigger a function when the use
 <ComponentDemo>
   <div
     style="padding: 50px; background-color: var(--maz-background-300);"
-    class="maz:flex maz:flex-center maz:rounded"
+    class="maz:flex maz:flex-center maz:rounded-md"
   >
     <MazCard v-click-outside="clikedOutside">
       Click outside me
@@ -22,7 +22,7 @@ description: vClickOutside is a Vue directive to trigger a function when the use
   <div
     v-if="hasClikedOutside"
     style="padding: 16px; margin-top: 16px; background-color: var(--maz-success); color: black;"
-    class="maz:flex maz:flex-center maz:rounded"
+    class="maz:flex maz:flex-center maz:rounded-md"
   >
     You clicked outside
   </div>
@@ -72,7 +72,7 @@ The directive can accept an options object to customize its behavior:
 <ComponentDemo>
   <div
     style="padding: 50px; background-color: var(--maz-background-300);"
-    class="maz:flex maz:flex-center maz:rounded"
+    class="maz:flex maz:flex-center maz:rounded-md"
   >
     <MazCard v-click-outside="{ callback: clickedOutsideWithIgnore, ignore: ['.ignore-me'] }">
       <div class="maz:p-4">
@@ -87,7 +87,7 @@ The directive can accept an options object to customize its behavior:
   <div
     v-if="hasClickedOutsideWithIgnore"
     style="padding: 16px; margin-top: 16px; background-color: var(--maz-warning); color: black;"
-    class="maz:flex maz:flex-center maz:rounded"
+    class="maz:flex maz:flex-center maz:rounded-md"
   >
     You clicked outside (button clicks are ignored)
   </div>
@@ -129,7 +129,7 @@ The directive can be configured to trigger only once:
 <ComponentDemo>
   <div
     style="padding: 50px; background-color: var(--maz-background-300);"
-    class="maz:flex maz:flex-center maz:rounded"
+    class="maz:flex maz:flex-center maz:rounded-md"
   >
     <MazCard v-click-outside="{ callback: clickedOnce, once: true }">
       Click outside me (works only once)
@@ -139,7 +139,7 @@ The directive can be configured to trigger only once:
   <div
     v-if="hasClickedOnce"
     style="padding: 16px; margin-top: 16px; background-color: var(--maz-info); color: white;"
-    class="maz:flex maz:flex-center maz:rounded"
+    class="maz:flex maz:flex-center maz:rounded-md"
   >
     This will only show once!
   </div>

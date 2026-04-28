@@ -139,7 +139,7 @@ onMounted(() => {
 <template>
   <div
     ref="containerElement"
-    class="m-card-spotlight m-reset-css maz:relative maz:inline-flex maz:overflow-hidden maz:rounded"
+    class="m-card-spotlight m-reset-css maz:relative maz:inline-flex maz:overflow-hidden maz:rounded-md"
     :class="{ 'maz:shadow-elevation maz:drop-shadow-md': elevation }"
     :style="{ 'backgroundColor': alphaColor20, '--inner-opacity': innerOpacity }"
   >

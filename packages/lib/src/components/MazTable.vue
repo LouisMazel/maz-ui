@@ -1037,12 +1037,12 @@ onBeforeMount(() => {
   }
 
   &.--has-header {
-    @apply maz:rounded;
+    @apply maz:rounded-md;
   }
 
   &:not(.--has-header) {
     table {
-      @apply maz:rounded;
+      @apply maz:rounded-md;
     }
   }
 

@@ -180,7 +180,7 @@ function isLastStep(step: number): boolean {
         :id="`header-step-${step}`"
         type="button"
         :disabled="isStepDisabled(step)"
-        class="m-stepper__header maz:flex maz:w-full maz:cursor-pointer maz:select-text maz:items-center maz:justify-between maz:space-x-4 maz:rounded maz:px-4 maz:py-2 maz:text-start maz:transition-colors maz:duration-200"
+        class="m-stepper__header maz:flex maz:w-full maz:cursor-pointer maz:select-text maz:items-center maz:justify-between maz:space-x-4 maz:rounded-md maz:px-4 maz:py-2 maz:text-start maz:transition-colors maz:duration-200"
         :class="[
           {
             '--is-current-step maz:cursor-default': step === currentStep || allStepsOpened,

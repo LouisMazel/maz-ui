@@ -763,7 +763,7 @@ defineExpose({
     role="button"
     tabindex="0"
     :for="`input-file-uploader-${instanceId}`"
-    class="m-dropzone m-reset-css maz:flex maz:w-full maz:flex-col maz:gap-2 maz:overflow-hidden maz:rounded maz:border maz:border-dashed maz:border-divider maz:p-6 maz:transition-colors maz:duration-200 maz:ease-in-out maz:flex-center maz:bg-surface maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400/50 maz:cursor-pointer"
+    class="m-dropzone m-reset-css maz:flex maz:w-full maz:flex-col maz:gap-2 maz:overflow-hidden maz:rounded-md maz:border maz:border-dashed maz:border-divider maz:p-6 maz:transition-colors maz:duration-200 maz:ease-in-out maz:flex-center maz:bg-surface maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400/50 maz:cursor-pointer"
     :class="{
       'm-dropzone--disabled maz:cursor-not-allowed maz:opacity-50': disabled,
       'm-dropzone--is-over-drop-zone': isOverDropZone && !isOverError,
@@ -909,7 +909,7 @@ defineExpose({
   }
 
   &__file-item {
-    @apply maz:relative maz:flex maz:size-40 maz:cursor-auto maz:flex-col maz:items-center maz:overflow-hidden maz:rounded maz:bg-surface-600 maz:dark:bg-surface-400;
+    @apply maz:relative maz:flex maz:size-40 maz:cursor-auto maz:flex-col maz:items-center maz:overflow-hidden maz:rounded-md maz:bg-surface-600 maz:dark:bg-surface-400;
 
     transition: all 300ms ease-in-out;
   }
@@ -919,7 +919,7 @@ defineExpose({
   }
 
   &__overlay {
-    @apply maz:absolute maz:inset-0 maz:backdrop-blur-[0.125rem] maz:bg-surface/40 maz:rounded;
+    @apply maz:absolute maz:inset-0 maz:backdrop-blur-[0.125rem] maz:bg-surface/40 maz:rounded-md;
   }
 
   &__icon-container {
@@ -939,7 +939,7 @@ defineExpose({
   }
 
   &__file-icon-wrapper {
-    @apply maz:p-1 maz:rounded maz:bg-surface maz:text-foreground;
+    @apply maz:p-1 maz:rounded-md maz:bg-surface maz:text-foreground;
   }
 
   &__description {

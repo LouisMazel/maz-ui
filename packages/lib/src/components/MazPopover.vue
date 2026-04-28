@@ -751,7 +751,7 @@ defineExpose({
         :aria-describedby="role === 'dialog' ? ariaDescribedby : undefined"
         :aria-modal="role === 'dialog' ? 'true' : undefined"
         :tabindex="role === 'dialog' ? '-1' : undefined"
-        class="m-popover-panel maz:fixed maz:outline-hidden maz:z-default-backdrop maz:rounded maz:drop-shadow-md maz:shadow-elevation"
+        class="m-popover-panel maz:fixed maz:outline-hidden maz:z-default-backdrop maz:rounded-md maz:drop-shadow-md maz:shadow-elevation"
         :aria-live="announceChanges ? 'polite' : undefined"
         :class="panelClasses"
         :style="[

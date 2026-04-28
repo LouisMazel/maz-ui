@@ -82,7 +82,7 @@ const currentCalendarDate = computed({
 
 <template>
   <div
-    class="m-date-picker-container maz:overflow-hidden maz:rounded maz:bg-surface maz:dark:border maz:dark:border-divider"
+    class="m-date-picker-container maz:overflow-hidden maz:rounded-md maz:bg-surface maz:dark:border maz:dark:border-divider"
     :class="{
       '--has-double': double,
       '--is-inline maz:border maz:border-divider': inline,

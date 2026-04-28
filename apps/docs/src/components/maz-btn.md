@@ -314,7 +314,7 @@ By default, the justify is `center`
     Left Icon and Right Icon
   </h4>
 
-  <div class="maz:flex maz:gap-2 maz:rounded maz:flex-wrap maz:items-center">
+  <div class="maz:flex maz:gap-2 maz:rounded-md maz:flex-wrap maz:items-center">
     <MazBtn :start-icon="MazCheck" size="mini">
       start-icon
     </MazBtn>
@@ -339,7 +339,7 @@ By default, the justify is `center`
     Fab
   </h4>
 
-  <div class="maz:flex maz:gap-2 maz:rounded maz:flex-wrap maz:items-center">
+  <div class="maz:flex maz:gap-2 maz:rounded-md maz:flex-wrap maz:items-center">
     <MazBtn fab :icon="MazCommandLine" size="mini" />
     <MazBtn fab :icon="MazCommandLine" size="xs" />
     <MazBtn fab :icon="MazCommandLine" size="sm" />
@@ -352,7 +352,7 @@ By default, the justify is `center`
     Icon component
   </h4>
 
-  <div class="maz:flex maz:gap-2 maz:rounded maz:flex-wrap maz:items-center">
+  <div class="maz:flex maz:gap-2 maz:rounded-md maz:flex-wrap maz:items-center">
     <MazBtn :start-icon="MazSpinner" size="md" color="warning">
       icon component
     </MazBtn>

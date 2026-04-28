@@ -75,7 +75,7 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 <template>
   <div class="maz:bg-background maz:text-foreground">
     <button
-      class="maz:rounded maz:bg-primary maz:text-primary-foreground"
+      class="maz:rounded-md maz:bg-primary maz:text-primary-foreground"
       @click="toggleDarkMode"
     >
       {{ isDark ? '☀️' : '🌙' }} Toggle theme
@@ -360,7 +360,7 @@ app.use(MazUi, {
     Reset
   </MazBtn>
 
-  <div class="maz:mt-4 maz:p-4 maz:bg-primary/10 maz:rounded-[var(--maz-radius)]">
+  <div class="maz:mt-4 maz:p-4 maz:bg-primary/10 maz:rounded-md">
     <p v-if="presetName === 'custom-purple'" class="maz:text-primary maz:font-medium">
       Custom theme applied with purple colors!
     </p>

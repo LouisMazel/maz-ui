@@ -168,8 +168,8 @@ function shouldHaveRemainingLayer(index: number): boolean {
     }]"
     :class="{
       '--radius': radius,
-      'maz:rounded': radius,
-      'maz:bg-[var(--gallery-background-color)]': !!backgroundColor,
+      'maz:rounded-md': radius,
+      'maz:bg-(--gallery-background-color)': !!backgroundColor,
     }"
   >
     <section class="m-gallery__wrapper maz:flex maz:flex-1">

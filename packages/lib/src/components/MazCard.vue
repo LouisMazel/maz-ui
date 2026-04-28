@@ -154,7 +154,7 @@ function toggleCollapse() {
         'maz:shadow-elevation maz:drop-shadow-md': elevation,
         '--block maz:w-full': block,
         'maz:overflow-hidden': overflowHidden || !collapseOpenModel,
-        'maz:rounded': radius,
+        'maz:rounded-md': radius,
         'maz:border': bordered,
       },
     ]"

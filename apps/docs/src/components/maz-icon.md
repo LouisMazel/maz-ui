@@ -194,7 +194,7 @@ In Nuxt, set `mazUi.general.defaultMazIconPath` in `nuxt.config` and `@maz-ui/nu
 
 Most icon-aware components in maz-ui (`MazBtn`, `MazInput`, `MazLink`, `MazContainer`, `MazDropdown`) accept a flexible icon prop on their `startIcon`, `endIcon`, `icon` or `dropdownIcon` slots. You can pass either a bare value (the same shape as `MazIcon`'s `icon` prop) or a full `MazIconProps` object when you need fine-grained control:
 
-```vue
+```html
 <!-- bare value — common case -->
 <MazBtn :start-icon="MazStar" />
 <MazBtn start-icon="/icons/star.svg" />
@@ -223,7 +223,7 @@ This pack is the Heroicons set plus a few additions specific to maz-ui.
 Source: [Heroicons](https://heroicons.com/) — see also the [icon set page](./../guide/icon-set.md).
 
 <div class="flex items-start flex-wrap gap-05">
-  <div v-for="({ component, name }, i) in iconsList" :key="i" class="flex flex-col flex-center maz:p-2 maz:rounded maz:border">
+  <div v-for="({ component, name }, i) in iconsList" :key="i" class="flex flex-col flex-center maz:p-2 maz:rounded-md maz:border">
     <MazIcon :icon="component" size="lg" />
     <span style="font-size: 11px;">
       {{ name }}

@@ -66,7 +66,7 @@ watch(() => props.modelValue, () => {
     background: none;
     cursor: pointer;
 
-    @apply maz:h-10 maz:w-full maz:cursor-pointer maz:overflow-hidden maz:rounded maz:border maz:border-solid maz:border-divider maz:disabled:cursor-not-allowed maz:disabled:opacity-50;
+    @apply maz:h-10 maz:w-full maz:cursor-pointer maz:overflow-hidden maz:rounded-md maz:border maz:border-solid maz:border-divider maz:disabled:cursor-not-allowed maz:disabled:opacity-50;
 
     &::-webkit-color-swatch-wrapper {
       padding: 0;

@@ -847,7 +847,7 @@ const checklistItems = [
         Toggle expand
       </MazBtn>
       <MazExpandAnimation v-model="expandOpen">
-        <div class="maz:rounded maz:border maz:border-divider maz:p-4">
+        <div class="maz:rounded-md maz:border maz:border-divider maz:p-4">
           <p>This content is animated when toggled. The expand animation smoothly reveals and hides content with configurable duration and timing.</p>
           <p class="maz:mt-2">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

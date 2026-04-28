@@ -135,7 +135,7 @@ defineExpose({
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {
-        @apply maz:rounded-t-none maz:mob-m:rounded-l-none maz:mob-m:rounded-tr;
+        @apply maz:rounded-t-none maz:mob-m:rounded-l-none maz:mob-m:rounded-tr-md;
       }
     }
   }
@@ -155,7 +155,7 @@ defineExpose({
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {
-        @apply maz:rounded-t-none maz:rounded-bl;
+        @apply maz:rounded-t-none maz:rounded-bl-md;
       }
     }
   }

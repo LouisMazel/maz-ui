@@ -119,7 +119,7 @@ if (scrollable) {
     @update:model-value="$emit('update:model-value', $event)"
   >
     <div
-      class="m-dialog maz:flex maz:origin-center maz:flex-col maz:min-w-full maz:rounded maz:bg-surface maz:text-foreground maz:dark:border maz:dark:border-divider maz:tab-s:my-8 maz:max-w-full maz:touch-none"
+      class="m-dialog maz:flex maz:origin-center maz:flex-col maz:min-w-full maz:rounded-md maz:bg-surface maz:text-foreground maz:dark:border maz:dark:border-divider maz:tab-s:my-8 maz:max-w-full maz:touch-none"
       role="dialog"
       aria-modal="true"
       :style="[{ '--max-width': maxWidth, '--min-width': minWidth }]"

@@ -480,13 +480,13 @@ Replace the default flag emojis with your own design.
         <template #selector-flag="{ countryCode }">
           <span
             id="custom-flag-element"
-            class="maz:bg-primary maz:text-primary-foreground maz:px-2 maz:py-1 maz:rounded maz:text-xs maz:font-semibold"
+            class="maz:bg-primary maz:text-primary-foreground maz:px-2 maz:py-1 maz:rounded-md maz:text-xs maz:font-semibold"
           >
             {{ countryCode }}
           </span>
         </template>
         <template #country-list-flag="{ countryCode }">
-          <MazBadge size="sm" class="maz:me-2 maz:min-w-[2.5rem]">
+          <MazBadge size="sm" class="maz:me-2 maz:min-w-10">
             {{ countryCode }}
           </MazBadge>
         </template>
@@ -505,7 +505,7 @@ Replace the default flag emojis with your own design.
           </div>
         </template>
         <template #country-list-flag="{ countryCode }">
-          <div class="maz:w-6 maz:h-6 maz:bg-linear-to-r maz:from-purple-500 maz:to-pink-500 maz:rounded maz:flex maz:items-center maz:justify-center maz:text-white maz:text-xs maz:font-bold maz:me-2">
+          <div class="maz:w-6 maz:h-6 maz:bg-linear-to-r maz:from-purple-500 maz:to-pink-500 maz:rounded-md maz:flex maz:items-center maz:justify-center maz:text-white maz:text-xs maz:font-bold maz:me-2">
             {{ countryCode?.charAt(0) }}
           </div>
         </template>
@@ -549,7 +549,7 @@ Replace the default flag emojis with your own design.
 <style scoped>
 @reference "../../.vitepress/theme/main.css";
 .country-badge {
-  @apply maz:bg-primary maz:text-primary-foreground maz:px-2 maz:py-1 maz:rounded maz:text-xs maz:font-semibold;
+  @apply maz:bg-primary maz:text-primary-foreground maz:px-2 maz:py-1 maz:rounded-md maz:text-xs maz:font-semibold;
 }
 
 .custom-flag-icon,
@@ -769,7 +769,7 @@ Understanding what data the component provides.
       label="Enter a phone number to see data"
       @data="phoneData = $event"
     />
-    <div v-if="phoneData" class="maz:bg-surface-400 maz:p-4 maz:rounded">
+    <div v-if="phoneData" class="maz:bg-surface-400 maz:p-4 maz:rounded-md">
       <h4 class="maz:font-semibold maz:mb-3">📊 Phone Number Data</h4>
       <div class="maz:grid maz:grid-cols-1 maz:md:grid-cols-2 maz:gap-4 maz:text-sm">
         <div>

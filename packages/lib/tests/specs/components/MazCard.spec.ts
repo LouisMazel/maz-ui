@@ -86,7 +86,7 @@ describe('components/MazCard.vue', () => {
 
     expect(wrapper.classes()).toContain('maz:drop-shadow-md')
     expect(wrapper.classes()).toContain('maz:shadow-elevation')
-    expect(wrapper.classes()).toContain('maz:rounded')
+    expect(wrapper.classes()).toContain('maz:rounded-md')
     expect(wrapper.classes()).toContain('maz:border')
     expect(wrapper.classes()).toContain('m-card--linked')
     expect(wrapper.classes()).toContain('m-card--no-scale')

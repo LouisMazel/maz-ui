@@ -21,7 +21,7 @@ All icons follow a consistent naming pattern:
       <MazTabsBar :items="tabs" />
     </MazTabs>
     <div class="maz:grid maz:grid-cols-3 maz:gap-2">
-      <div v-for="icon in filteredIcons" :key="icon.name" class="maz:flex maz:flex-col maz:items-center maz:gap-3 maz:text-center maz:border maz:border-solid maz:border-divider maz:rounded maz:p-4 maz:truncate">
+      <div v-for="icon in filteredIcons" :key="icon.name" class="maz:flex maz:flex-col maz:items-center maz:gap-3 maz:text-center maz:border maz:border-solid maz:border-divider maz:rounded-md maz:p-4 maz:truncate">
         <component :is="icon.component" class="maz:size-8" />
         <span class="maz:text-xs maz:text-muted maz:truncate">{{ icon.name }}</span>
         <div class="maz:flex maz:flex-row maz:gap-2 maz:w-full">
