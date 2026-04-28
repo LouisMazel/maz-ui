@@ -146,7 +146,7 @@ function toggleCollapse() {
 
 <template>
   <div
-    class="m-card m-reset-css maz:relative maz:inline-flex maz:max-h-full maz:flex-col maz:bg-surface maz:dark:border maz:dark:border-divider"
+    class="m-card m-reset-css maz:relative maz:inline-flex maz:max-h-full maz:flex-col maz:bg-container maz:dark:border maz:dark:border-divider"
     :class="[
       {
         'm-card--linked': isLinked,

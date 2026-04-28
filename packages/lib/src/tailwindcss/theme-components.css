@@ -1,0 +1,13 @@
+/*
+ * Component-token bridge.
+ *
+ * Surfaces the `--m-container-bg` / `--m-input-bg` runtime tokens
+ * (emitted per mode by @maz-ui/themes) as full Tailwind color names,
+ * so `bg-container`, `bg-input`, and their `text-*` / `border-*`
+ * cousins resolve out of the box. Both fall back to `--maz-surface`
+ * when no preset declares `components.{container,input}.bg`.
+ */
+@theme inline {
+  --color-container: var(--m-container-bg, var(--maz-surface));
+  --color-input: var(--m-input-bg, var(--maz-surface));
+}

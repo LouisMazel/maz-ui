@@ -23,6 +23,7 @@ const OKLCH_PATTERN = /^oklch\(\s*(\d+\.\d+|\d+)(%?)\s+(\d+\.\d+|\d+)\s+(-?\d+\.
 
 const COMPLETE_COLOR_PATTERN = /^(?:hsla?|rgba?|oklch|oklab|lab|lch|color)\s*\(/i
 const HEX_COLOR_PATTERN = /^#(?:[0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i
+const CSS_VAR_PATTERN = /^var\(\s*--[\w-]+/i
 
 export function parseColor(value: string): HSLChannels {
   const trimmed = value.trim()
@@ -280,7 +281,11 @@ export function colorToHex(value: string): string {
 
 export function isCompleteCSSColor(value: string): boolean {
   const trimmed = value.trim()
-  return COMPLETE_COLOR_PATTERN.test(trimmed) || HEX_COLOR_PATTERN.test(trimmed)
+  return (
+    COMPLETE_COLOR_PATTERN.test(trimmed)
+    || HEX_COLOR_PATTERN.test(trimmed)
+    || CSS_VAR_PATTERN.test(trimmed)
+  )
 }
 
 export function normalizeColor(value: string): string {

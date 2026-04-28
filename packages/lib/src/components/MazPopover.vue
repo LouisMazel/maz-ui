@@ -789,7 +789,7 @@ defineExpose({
 
   /* Background color */
   &.--surface {
-    @apply maz:dark:border maz:dark:border-divider maz:bg-surface;
+    @apply maz:dark:border maz:dark:border-divider maz:bg-container;
   }
 
   /* Color variants */

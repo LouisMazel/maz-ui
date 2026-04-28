@@ -883,7 +883,7 @@ defineExpose({
 }
 
 .m-select-list {
-  @apply maz:z-default-backdrop maz:flex maz:flex-col maz:gap-1 maz:overflow-hidden maz:rounded-md maz:bg-surface maz:drop-shadow-md maz:shadow-elevation;
+  @apply maz:z-default-backdrop maz:flex maz:flex-col maz:gap-1 maz:overflow-hidden maz:rounded-md maz:bg-container maz:drop-shadow-md maz:shadow-elevation;
 
   &-optgroup {
     @apply maz:flex-none maz:p-0.5 maz:text-start maz:text-[0.875em] maz:text-muted;

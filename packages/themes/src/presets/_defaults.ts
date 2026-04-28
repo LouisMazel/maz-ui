@@ -1,4 +1,4 @@
-import type { ThemeScales } from '../types'
+import type { ThemeComponentBg, ThemeScales } from '../types'
 
 /**
  * Defaults for `scales.{spacing, shadow, fontSize}` shared across the four
@@ -33,3 +33,23 @@ export const DEFAULT_DISABLED_CURSOR = 'not-allowed'
  */
 export const DEFAULT_FONT_MONO
   = `ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace`
+
+/**
+ * Per-mode default bg for containers (cards, dialogs, popovers, dropdowns,
+ * drawers). Both modes resolve to the active `surface` color so the bg
+ * inherits any preset palette change automatically.
+ */
+export const DEFAULT_CONTAINER_BG: ThemeComponentBg = {
+  light: 'var(--maz-surface)',
+  dark: 'var(--maz-surface)',
+}
+
+/**
+ * Per-mode default bg for inputs. Light uses the bare `surface`; dark uses
+ * `surface-400` so inputs read as one tier above the page background — the
+ * same contrast pattern the v4 components shipped with.
+ */
+export const DEFAULT_INPUT_BG: ThemeComponentBg = {
+  light: 'var(--maz-surface)',
+  dark: 'var(--maz-surface-400)',
+}

@@ -499,6 +499,32 @@ describe('setup-theme', () => {
 
         expect(saveResolvedColorMode).toHaveBeenCalledWith('dark')
       })
+
+      it('then it ignores the change once colorMode flips away from auto', () => {
+        let changeHandler: (() => void) | undefined
+        vi.stubGlobal('matchMedia', vi.fn(() => ({
+          matches: true,
+          addEventListener: vi.fn((_event: string, handler: () => void) => {
+            changeHandler = handler
+          }),
+          removeEventListener: vi.fn(),
+        })))
+        vi.mocked(isServer).mockReturnValue(false)
+        vi.mocked(getSystemColorMode).mockReturnValue('dark')
+
+        const result = setupTheme({ preset: mockPreset, colorMode: 'auto', mode: 'both' }) as SetupThemeReturn
+
+        result.themeState.value.colorMode = 'light'
+        vi.mocked(updateDocumentClass).mockClear()
+        vi.mocked(saveResolvedColorMode).mockClear()
+
+        if (changeHandler) {
+          changeHandler()
+        }
+
+        expect(updateDocumentClass).not.toHaveBeenCalled()
+        expect(saveResolvedColorMode).not.toHaveBeenCalled()
+      })
     })
 
     describe('when mutation observer callback fires', () => {

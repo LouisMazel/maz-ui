@@ -1,5 +1,10 @@
+import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { mazUi } from '../../presets/mazUi'
 import { CSS_ID, generateCSS, injectCSS, removeCSS } from '../css-generator'
+
+vi.mock('@maz-ui/utils/helpers/isServer', () => ({
+  isServer: vi.fn(() => false),
+}))
 
 describe('cSS Generator', () => {
   describe('given generateCSS function', () => {
@@ -316,6 +321,18 @@ describe('cSS Generator', () => {
   describe('given injectCSS function', () => {
     afterEach(() => {
       document.querySelectorAll('style').forEach(el => el.remove())
+      vi.mocked(isServer).mockReturnValue(false)
+    })
+
+    describe('when running on the server', () => {
+      it('then it returns early without touching the DOM', () => {
+        vi.mocked(isServer).mockReturnValue(true)
+        const initialChildren = document.head.children.length
+
+        injectCSS(CSS_ID, ':root { --test: 1; }')
+
+        expect(document.head.children.length).toBe(initialChildren)
+      })
     })
 
     describe('when no style element exists', () => {
@@ -361,6 +378,21 @@ describe('cSS Generator', () => {
   describe('given removeCSS function', () => {
     afterEach(() => {
       document.querySelectorAll('style').forEach(el => el.remove())
+      vi.mocked(isServer).mockReturnValue(false)
+    })
+
+    describe('when running on the server', () => {
+      it('then it returns early without touching the DOM', () => {
+        const style = document.createElement('style')
+        style.id = CSS_ID
+        document.head.appendChild(style)
+
+        vi.mocked(isServer).mockReturnValue(true)
+
+        removeCSS(CSS_ID)
+
+        expect(document.querySelector(`#${CSS_ID}`)).not.toBeNull()
+      })
     })
 
     describe('when style element exists', () => {

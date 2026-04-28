@@ -252,6 +252,22 @@ describe('inject-theme-css', () => {
       })
     })
 
+    describe('when strategy is neither runtime nor hybrid', () => {
+      it('then it skips full-CSS injection without throwing', async () => {
+        const { injectCSS } = await import('../css-generator')
+
+        const preset = createMockPreset()
+        const config = createConfig({
+          strategy: 'buildtime',
+          injectCriticalCSS: false,
+          injectFullCSS: true,
+        })
+
+        expect(() => injectThemeCSS(preset, config)).not.toThrow()
+        expect(injectCSS).not.toHaveBeenCalled()
+      })
+    })
+
     describe('when CSS options reflect the config values', () => {
       it('then it passes the correct mode and darkModeStrategy', async () => {
         const { generateCSS } = await import('../css-generator')

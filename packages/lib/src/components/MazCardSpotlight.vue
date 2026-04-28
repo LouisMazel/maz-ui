@@ -170,7 +170,7 @@ onMounted(() => {
     &::before {
       content: '';
 
-      @apply maz:absolute maz:left-0 maz:top-0 maz:z-1 maz:h-full maz:w-full maz:bg-surface;
+      @apply maz:absolute maz:left-0 maz:top-0 maz:z-1 maz:h-full maz:w-full maz:bg-container;
 
       opacity: var(--inner-opacity);
     }

@@ -24,4 +24,20 @@ describe('given useMutationObserver composable', () => {
       expect(() => stop()).not.toThrow()
     })
   })
+
+  describe('when MutationObserver is not available on globalThis', () => {
+    it('then it returns a noop stop without throwing', () => {
+      const original = globalThis.MutationObserver
+      // @ts-expect-error - simulate an environment without MutationObserver
+      delete globalThis.MutationObserver
+
+      const target = document.createElement('div')
+      const result = useMutationObserver(target, vi.fn(), { attributes: true })
+
+      expect(result).toHaveProperty('stop')
+      expect(() => result.stop()).not.toThrow()
+
+      globalThis.MutationObserver = original
+    })
+  })
 })

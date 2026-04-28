@@ -1,9 +1,11 @@
 import type { ThemePreset } from '../types'
 import {
+  DEFAULT_CONTAINER_BG,
   DEFAULT_DISABLED_CURSOR,
   DEFAULT_DISABLED_OPACITY,
   DEFAULT_FONT_MONO,
   DEFAULT_FONT_SIZE,
+  DEFAULT_INPUT_BG,
   DEFAULT_SHADOW,
   DEFAULT_SPACING,
 } from './_defaults'
@@ -40,6 +42,10 @@ export const pristine: ThemePreset = {
     },
     shadow: DEFAULT_SHADOW,
     fontSize: DEFAULT_FONT_SIZE,
+  },
+  components: {
+    container: { bg: DEFAULT_CONTAINER_BG },
+    input: { bg: DEFAULT_INPUT_BG },
   },
   colors: {
     light: {

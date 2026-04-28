@@ -90,7 +90,7 @@ const hasTitle = computed(() => {
   >
     <template #default="{ close }">
       <div
-        class="m-drawer-content-wrap maz:overflow-y-auto maz:bg-surface maz:pointer-events-auto maz:flex maz:flex-col"
+        class="m-drawer-content-wrap maz:overflow-y-auto maz:bg-container maz:pointer-events-auto maz:flex maz:flex-col"
         :class="[
           `--${variant}`,
           (variant === 'start' || variant === 'end') ? 'maz:min-h-screen maz:w-full maz:tab-s:w-(--maz-drawer-size)' : 'maz:w-full maz:h-auto',
@@ -100,7 +100,7 @@ const hasTitle = computed(() => {
         }"
       >
         <header
-          class="m-drawer-header maz:z-1 maz:flex maz:h-16 maz:shrink-0 maz:items-center maz:border-b maz:border-divider maz:bg-surface maz:bg-clip-padding maz:ps-4 maz:pe-2 maz:py-3"
+          class="m-drawer-header maz:z-1 maz:flex maz:h-16 maz:shrink-0 maz:items-center maz:border-b maz:border-divider maz:bg-container maz:bg-clip-padding maz:ps-4 maz:pe-2 maz:py-3"
           :class="[
             hasTitle ? '--justify-between' : '--justify-end',
             hasTitle ? 'maz:justify-between' : 'maz:justify-end',

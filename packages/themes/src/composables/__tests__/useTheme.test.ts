@@ -169,6 +169,38 @@ describe('useTheme', () => {
         expect(result).toHaveProperty('presetName')
       })
     })
+
+    describe('when injected state is updated', () => {
+      it('then the watch callback runs without throwing for a valid newState', async () => {
+        const { watch } = await import('vue')
+        let watchCallback: ((newState: any) => void) | undefined
+        vi.mocked(watch).mockImplementation(((_source: any, cb: any) => {
+          watchCallback = cb
+          return vi.fn()
+        }) as unknown as typeof watch)
+
+        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+
+        useTheme()
+
+        expect(() => watchCallback?.({ ...mockRefThemeState.value, preset: { ...mazUi, name: 'rotated' } })).not.toThrow()
+      })
+
+      it('then the watch callback ignores a falsy newState', async () => {
+        const { watch } = await import('vue')
+        let watchCallback: ((newState: any) => void) | undefined
+        vi.mocked(watch).mockImplementation(((_source: any, cb: any) => {
+          watchCallback = cb
+          return vi.fn()
+        }) as unknown as typeof watch)
+
+        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+
+        useTheme()
+
+        expect(() => watchCallback?.(undefined)).not.toThrow()
+      })
+    })
   })
 
   describe('given updateTheme function', () => {
