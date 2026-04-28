@@ -293,16 +293,6 @@ function generateScaleVariables(scales: ThemePreset['scales'], prefix: string): 
       lines.push(`  --${prefix}-shadow-style-${key}: ${value};`)
   })
 
-  Object.entries(scales.fontSize ?? {}).forEach(([key, entry]) => {
-    if (Array.isArray(entry)) {
-      const [size, lineHeight] = entry
-      if (size)
-        lines.push(`  --${prefix}-text-${key}: ${size};`)
-      if (lineHeight)
-        lines.push(`  --${prefix}-text-${key}--line-height: ${lineHeight};`)
-    }
-  })
-
   return lines
 }
 

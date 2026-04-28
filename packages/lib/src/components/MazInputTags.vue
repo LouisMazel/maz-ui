@@ -192,8 +192,8 @@ const buttonSize = computed(() => {
           :color="tagsHoveredId === id || lastIdToDelete === id ? 'destructive' : color"
           :end-icon="tagsHoveredId === id || lastIdToDelete === id ? MazTrash : undefined"
           @click.stop="removeTag(id)"
-          @mouseenter="tagsHoveredId = id"
-          @focus="tagsHoveredId = id"
+          @mouseenter="tagsHoveredId = disabled ? undefined : id"
+          @focus="tagsHoveredId = disabled ? undefined : id"
           @mouseleave="tagsHoveredId = undefined"
           @blur="tagsHoveredId = undefined"
         >

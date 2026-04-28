@@ -16,12 +16,6 @@ export type SizeUnit = `${number}${'rem' | 'px' | 'em' | 'vw' | 'vh' | 'vmin' | 
 
 export type Duration = `${number}${'ms' | 's'}`
 
-/**
- * The component size keys shared with the lib's `MazSize`.
- * Duplicated here to keep `@maz-ui/themes` independent of the lib package.
- */
-export type ThemeSizeKey = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-
 export interface ThemeColors {
   'surface': CSSColor
   'foreground': CSSColor
@@ -78,9 +72,12 @@ export interface ThemeFoundation {
 }
 
 /**
- * Spacing / radius / shadow / typography scales. Bridged into Tailwind v4 via
+ * Spacing / radius / shadow scales. Bridged into Tailwind v4 via
  * `@theme inline` so the consumer's own utilities benefit too (e.g. `p-4`,
- * `rounded-md`, `shadow-lg`, `text-md`).
+ * `rounded-md`, `shadow-lg`).
+ *
+ * Typography is intentionally NOT part of the scale — `foundation.base-font-size`
+ * is the single knob that drives every relative `em` value in the lib.
  */
 export interface ThemeScales {
   /**
@@ -101,12 +98,6 @@ export interface ThemeScales {
    * MazContainer, MazPopover, etc.
    */
   shadow: Record<'sm' | 'md' | 'lg' | 'xl' | 'elevation', string>
-  /**
-   * Typography scale keyed on `MazSize`. Each entry is `[size, line-height]`.
-   * Drives both the global Tailwind `text-{key}` utilities and the
-   * per-component size mappings (MazBtn `size="md"`, MazInput `size="lg"`, …).
-   */
-  fontSize: Record<ThemeSizeKey, [size: SizeUnit, lineHeight: SizeUnit]>
 }
 
 /**
@@ -168,14 +159,13 @@ export interface ThemePresetOverrides {
   foundation?: Partial<ThemeFoundation>
 
   /**
-   * Theme scales (spacing, radius, shadow, fontSize)
+   * Theme scales (spacing, radius, shadow)
    * @default undefined
    */
   scales?: {
     spacing?: ThemeScales['spacing']
     radius?: Partial<ThemeScales['radius']>
     shadow?: Partial<ThemeScales['shadow']>
-    fontSize?: Partial<ThemeScales['fontSize']>
   }
 
   /**

@@ -215,7 +215,6 @@ describe('preset-merger', () => {
             spacing: '0.25rem',
             radius: { md: '0.5rem' },
             shadow: { md: '0 1px 2px rgba(0,0,0,0.1)' },
-            fontSize: { md: ['1rem', '1.5rem'] },
           },
         } as unknown as ThemePreset
 
@@ -235,7 +234,6 @@ describe('preset-merger', () => {
             spacing: '0.25rem',
             radius: { md: '0.5rem' },
             shadow: {},
-            fontSize: {},
           },
         } as unknown as ThemePreset
 
@@ -253,7 +251,7 @@ describe('preset-merger', () => {
     })
 
     describe('when overrides extend the scales block', () => {
-      it('then mergeScales merges radius/shadow/fontSize and overrides spacing', () => {
+      it('then mergeScales merges radius/shadow and overrides spacing', () => {
         const basePreset = {
           name: 'base',
           colors: { light: {}, dark: {} },
@@ -262,7 +260,6 @@ describe('preset-merger', () => {
             spacing: '0.25rem',
             radius: { sm: '0.25rem', md: '0.5rem' },
             shadow: { sm: 'shadow-base-sm' },
-            fontSize: { sm: ['0.875rem', '1.25rem'] },
           },
         } as unknown as ThemePreset
 
@@ -271,7 +268,6 @@ describe('preset-merger', () => {
             spacing: '0.5rem',
             radius: { md: '1rem' },
             shadow: { md: 'shadow-override-md' },
-            fontSize: { lg: ['1.125rem', '1.75rem'] },
           },
         }
 
@@ -282,10 +278,6 @@ describe('preset-merger', () => {
         expect(result.scales.shadow).toEqual({
           sm: 'shadow-base-sm',
           md: 'shadow-override-md',
-        })
-        expect(result.scales.fontSize).toEqual({
-          sm: ['0.875rem', '1.25rem'],
-          lg: ['1.125rem', '1.75rem'],
         })
       })
     })

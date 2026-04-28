@@ -5,7 +5,6 @@ import {
   DEFAULT_DISABLED_CURSOR,
   DEFAULT_DISABLED_OPACITY,
   DEFAULT_FONT_MONO,
-  DEFAULT_FONT_SIZE,
   DEFAULT_INPUT_BG,
   DEFAULT_SHADOW,
   DEFAULT_SPACING,
@@ -42,7 +41,6 @@ export const ocean: ThemePreset = {
       '3xl': '4rem',
     },
     shadow: DEFAULT_SHADOW,
-    fontSize: DEFAULT_FONT_SIZE,
   },
   components: {
     btn: { 'font-weight': DEFAULT_BTN_FONT_WEIGHT },

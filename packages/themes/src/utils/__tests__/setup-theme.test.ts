@@ -115,14 +115,6 @@ const mockPreset: ThemePreset = {
       xl: '0 20px 25px -5px rgb(0 0 0 / 0.1)',
       elevation: '0 4px 12px -2px rgb(0 0 0 / 0.08)',
     },
-    fontSize: {
-      mini: ['0.625rem', '0.875rem'],
-      xs: ['0.75rem', '1rem'],
-      sm: ['0.875rem', '1.25rem'],
-      md: ['1rem', '1.5rem'],
-      lg: ['1.125rem', '1.75rem'],
-      xl: ['1.25rem', '1.75rem'],
-    },
   },
 }
 

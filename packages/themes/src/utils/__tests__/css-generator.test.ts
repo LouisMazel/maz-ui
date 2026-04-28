@@ -239,7 +239,7 @@ describe('cSS Generator', () => {
           expect(css).toContain(`--maz-shadow-style-${key}:`)
       })
 
-      it('then it emits the fontSize scale with paired line-height', () => {
+      it('then it does not emit a fontSize scale (typography stays driven by base-font-size)', () => {
         const css = generateCSS(mazUi, {
           prefix: 'maz',
           mode: 'light',
@@ -247,10 +247,7 @@ describe('cSS Generator', () => {
           darkClass: 'dark',
         })
 
-        for (const key of ['mini', 'xs', 'sm', 'md', 'lg', 'xl']) {
-          expect(css).toContain(`--maz-text-${key}:`)
-          expect(css).toContain(`--maz-text-${key}--line-height:`)
-        }
+        expect(css).not.toMatch(/--maz-text-(?:mini|xs|sm|md|lg|xl):/)
       })
 
       it('then it emits the renamed surface / divider color vars (no background / border anymore)', () => {
