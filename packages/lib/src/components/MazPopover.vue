@@ -39,7 +39,7 @@ const {
   closeOnEscape = true,
   persistent = false,
   panelStyle,
-  color = 'background',
+  color = 'surface',
   overlayClass,
   panelClass,
   preferPosition,
@@ -216,10 +216,10 @@ export interface MazPopoverProps {
   ariaDescribedby?: string
   /**
    * Color variant of the popover
-   * @values primary, secondary, accent, info, success, warning, destructive, contrast, background
-   * @default background
+   * @values primary, secondary, accent, info, success, warning, destructive, contrast, surface
+   * @default surface
    */
-  color?: MazColor | 'background'
+  color?: MazColor | 'surface'
   /**
    * Trap focus inside the popover
    * @default true
@@ -823,10 +823,6 @@ defineExpose({
 
   &.--contrast {
     @apply maz:border-contrast-600 maz:bg-contrast maz:text-contrast-foreground;
-  }
-
-  &.--background {
-    @apply maz:bg-surface maz:text-foreground;
   }
 }
 

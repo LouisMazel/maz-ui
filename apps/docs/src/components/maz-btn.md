@@ -73,7 +73,7 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 <MazBtn color="destructive">destructive</MazBtn>
 <MazBtn color="contrast">contrast</MazBtn>
 <MazBtn color="accent">accent</MazBtn>
-<MazBtn color="background">background</MazBtn>
+<MazBtn color="surface">surface</MazBtn>
 <MazBtn color="transparent">transparent</MazBtn>
 ```
 
@@ -100,7 +100,7 @@ Transform the button into an outlined button with the attribute `outlined`
 <MazBtn color="destructive" outlined>destructive</MazBtn>
 <MazBtn color="contrast" outlined>contrast</MazBtn>
 <MazBtn color="accent" outlined>accent</MazBtn>
-<MazBtn color="background" outlined>background</MazBtn>
+<MazBtn color="surface" outlined>surface</MazBtn>
 <MazBtn color="transparent" outlined>transparent</MazBtn>
 ```
 
@@ -185,7 +185,7 @@ Better in light mode
 <MazBtn color="destructive" pastel>destructive</MazBtn>
 <MazBtn color="contrast" pastel>contrast</MazBtn>
 <MazBtn color="accent" pastel>accent</MazBtn>
-<MazBtn color="background" pastel>background</MazBtn>
+<MazBtn color="surface" pastel>surface</MazBtn>
 <MazBtn color="transparent" pastel>transparent</MazBtn>
 ```
 

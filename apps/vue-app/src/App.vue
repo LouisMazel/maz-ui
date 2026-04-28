@@ -61,8 +61,6 @@ function showToast() {
         },
         components: {
           btn: { 'font-weight': '600' },
-          container: { bg: { light: '#FF0000', dark: '#111111' } },
-          input: { bg: { light: '#FF0000', dark: '#111111' } },
         },
       },
     }"

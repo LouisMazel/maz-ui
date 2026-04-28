@@ -25,7 +25,7 @@ export interface MazRadioButtonsProps<T = string | number | boolean, Option exte
   /** The name of the radio group */
   name?: string
   /** The color of the selected radio buttons */
-  color?: MazColor | 'background'
+  color?: MazColor | 'surface'
   /** Add elevation to the radio buttons */
   elevation?: boolean
   /**

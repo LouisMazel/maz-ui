@@ -654,7 +654,7 @@ const checklistItems = [
         Footer alignment
       </h3>
       <div class="maz:grid maz:grid-cols-3 maz:gap-4">
-        <MazCard footer-align="left">
+        <MazCard footer-align="start">
           <template #content-title>
             Left footer
           </template>
@@ -674,7 +674,7 @@ const checklistItems = [
             </MazBtn>
           </template>
         </MazCard>
-        <MazCard footer-align="right">
+        <MazCard footer-align="end">
           <template #content-title>
             Right footer
           </template>

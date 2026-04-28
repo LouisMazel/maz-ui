@@ -335,7 +335,7 @@ watch(
     role="menu"
     :style="styleProp"
     :prefer-position
-    color="background"
+    color="surface"
     :position
     :transition
     :disabled

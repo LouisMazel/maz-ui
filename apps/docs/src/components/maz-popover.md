@@ -528,7 +528,7 @@ When you not specify a fallback position, the popover will fallback on the best 
 
 <ComponentDemo>
   <div class="maz:flex maz:gap-4 maz:flex-wrap">
-    <MazPopover color="background" trigger="hover">
+    <MazPopover color="surface" trigger="hover">
       <template #trigger>
         <MazBtn color="contrast">Background</MazBtn>
       </template>
@@ -606,7 +606,7 @@ When you not specify a fallback position, the popover will fallback on the best 
 
 ```vue
 <template>
-  <MazPopover color="background" trigger="hover">
+  <MazPopover color="surface" trigger="hover">
     <template #trigger>
       <MazBtn color="contrast">Background</MazBtn>
     </template>

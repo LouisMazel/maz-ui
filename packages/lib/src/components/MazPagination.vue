@@ -13,7 +13,7 @@ const {
   modelValue = 1,
   buttonProps,
   pageRange = 1,
-  activeColor = 'background',
+  activeColor = 'surface',
   totalPages,
   loading,
   size = 'md',
@@ -29,7 +29,7 @@ const emits = defineEmits<
 
 const DEFAULT_BUTTONS_PROPS: Partial<MazBtnProps> = {
   size: 'md',
-  color: 'background',
+  color: 'surface',
   outlined: true,
   fab: true,
 }
@@ -49,10 +49,10 @@ export interface MazPaginationProps {
   buttonProps?: Partial<MazBtnProps>
   /**
    * Color of the active button.
-   * @values 'contrast', 'primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent', 'background'
-   * @default 'contrast'
+   * @values 'contrast', 'primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent', 'surface'
+   * @default 'surface'
    */
-  activeColor?: MazColor | 'background'
+  activeColor?: MazColor | 'surface'
   /**
    * Size of the buttons.
    * @values 'mini', 'xs', 'sm', 'md', 'lg', 'xl'

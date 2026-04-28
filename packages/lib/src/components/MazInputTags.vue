@@ -190,7 +190,6 @@ const buttonSize = computed(() => {
           :disabled
           :size="buttonSize"
           :color="tagsHoveredId === id || lastIdToDelete === id ? 'destructive' : color"
-          :end-icon="tagsHoveredId === id || lastIdToDelete === id ? MazTrash : undefined"
           @click.stop="removeTag(id)"
           @mouseenter="tagsHoveredId = disabled ? undefined : id"
           @focus="tagsHoveredId = disabled ? undefined : id"
@@ -198,6 +197,12 @@ const buttonSize = computed(() => {
           @blur="tagsHoveredId = undefined"
         >
           {{ tag }}
+
+          <template #end-icon>
+            <Transition name="maz-scale">
+              <MazTrash v-if="tagsHoveredId === id || lastIdToDelete === id" />
+            </Transition>
+          </template>
         </MazBtn>
       </div>
     </TransitionGroup>

@@ -45,9 +45,9 @@ export interface MazBtnProps {
   size?: MazSize
   /**
    * The color of the button
-   * @values `'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'destructive' | 'transparent' | 'contrast' | 'accent' | 'background'`
+   * @values `'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'destructive' | 'transparent' | 'contrast' | 'accent' | 'surface'`
    */
-  color?: MazColor | 'background'
+  color?: MazColor | 'surface'
   /**
    * The type of the button
    * @values `'submit' | 'reset' | 'button'`
@@ -379,7 +379,7 @@ const ICON_PADDING_CLASS = {
     }
   }
 
-  /* Surface (aka color="background") */
+  /* Surface — color="surface" */
   &.--surface {
     @apply maz:bg-surface maz:text-foreground;
 

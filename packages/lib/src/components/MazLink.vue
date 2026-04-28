@@ -73,7 +73,7 @@ export interface MazLinkProps {
    * @default 'primary'
    * When 'none', the link will not have any color, so it will inherit the color of the parent
    */
-  color?: MazColor | 'muted' | 'background' | 'inherit'
+  color?: MazColor | 'muted' | 'surface' | 'inherit'
   /**
    * The target of the link
    * @default '_self'
@@ -156,7 +156,7 @@ const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
   accent: 'maz:not-disabled:text-accent maz:not-disabled:hover:text-accent-700',
   contrast: 'maz:not-disabled:text-foreground maz:not-disabled:hover:text-foreground-900 maz:not-disabled:dark:hover:text-foreground-100',
   muted: 'maz:not-disabled:text-muted maz:not-disabled:hover:text-muted-700',
-  background: 'maz:not-disabled:text-surface maz:not-disabled:hover:text-surface-700',
+  surface: 'maz:not-disabled:text-surface maz:not-disabled:hover:text-surface-700',
   transparent: '',
   inherit: '',
 } as const

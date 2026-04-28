@@ -4,14 +4,14 @@ import type { MazColor, MazSize } from './types'
 import { computed } from 'vue'
 import { getColor } from './types'
 
-export type MazBadgeColor = MazColor | 'background'
+export type MazBadgeColor = MazColor | 'surface'
 export type MazBadgeRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 export type MazBadgeSize = MazSize
 
 export interface MazBadgeProps {
   /**
    * Color of the badge
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'background'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'surface'`
    * @default primary
    */
   color?: MazBadgeColor
