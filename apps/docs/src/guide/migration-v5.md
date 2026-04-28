@@ -380,9 +380,9 @@ The single foundation radius is replaced by a full radius scale. Move your value
   foundation: {
     'base-font-size': '14px',
     'border-width': '1px',
+    'spacing': '0.25rem',
   },
   scales: {
-    spacing: '0.25rem',
     radius: {
       'xs': '0.125rem',
       'sm': '0.25rem',
@@ -401,12 +401,14 @@ The bridge maps every `--maz-radius-{key}` to its matching Tailwind `--radius-{k
 
 ### 12. New optional preset blocks: `scales` and `components`
 
-`@maz-ui/themes` now lets you drive the spacing / radius / shadow scales and a small set of per-component tokens:
+`@maz-ui/themes` now lets you drive the radius / shadow scales (and `spacing` via `foundation`) plus a small set of per-component tokens:
 
 ```ts
 {
-  scales: {
+  foundation: {
     spacing: '0.25rem',
+  },
+  scales: {
     radius: { /* xs..3xl */ },
     shadow: { sm, md, lg, xl, elevation },
   },

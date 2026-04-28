@@ -21,7 +21,6 @@ function mergeScales(base: ThemeScales, overrides?: ThemePresetOverrides['scales
     return base
 
   return {
-    spacing: overrides.spacing ?? base.spacing,
     radius: { ...base.radius, ...overrides.radius },
     shadow: { ...base.shadow, ...overrides.shadow },
   }

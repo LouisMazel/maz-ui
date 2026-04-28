@@ -498,9 +498,11 @@ const denseTheme = definePreset({
   base: 'maz-ui',
   overrides: {
     name: 'dense',
-    scales: {
+    foundation: {
       // Tighter spacing — every p-N / gap-N / m-N rescales
       spacing: '0.2rem',
+    },
+    scales: {
       // Sharper corners on the whole radius scale
       radius: {
         'xs': '0.0625rem',

@@ -48,9 +48,9 @@ export const nova: ThemePreset = {
     'easing-in-out': 'cubic-bezier(0.83, 0, 0.17, 1)',
     'disabled-opacity': DEFAULT_DISABLED_OPACITY,
     'disabled-cursor': DEFAULT_DISABLED_CURSOR,
+    'spacing': DEFAULT_SPACING,
   },
   scales: {
-    spacing: DEFAULT_SPACING,
     radius: {
       'xs': '0.25rem',
       'sm': '0.375rem',

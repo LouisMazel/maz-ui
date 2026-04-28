@@ -228,7 +228,7 @@ function generateVariablesBlock({
   foundation?: Partial<ThemeFoundation>
   prefix: string
   includeScales?: boolean
-  /** Emit mode-agnostic scales (spacing/radius/shadow/fontSize) — only on the light root block. */
+  /** Emit mode-agnostic scales (radius/shadow) — only on the light root block. */
   includeStaticScales?: boolean
   preset?: ThemePreset
   isDark?: boolean
@@ -278,10 +278,6 @@ function generateVariablesBlock({
 
 function generateScaleVariables(scales: ThemePreset['scales'], prefix: string): string[] {
   const lines: string[] = []
-
-  if (scales.spacing) {
-    lines.push(`  --${prefix}-spacing: ${scales.spacing};`)
-  }
 
   Object.entries(scales.radius ?? {}).forEach(([key, value]) => {
     if (value)

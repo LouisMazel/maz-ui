@@ -15,27 +15,6 @@ function getSavedColorMode(): ColorMode | undefined {
   return undefined
 }
 
-function getSavedPresetName(): string | undefined {
-  const presetCookie = useCookie<string | null>('maz-preset')
-  return presetCookie.value || undefined
-}
-
-function clearSavedPresetName(): void {
-  const presetCookie = useCookie<string | null>('maz-preset')
-  presetCookie.value = null
-}
-
-function saveResolvedPresetName(name: string): void {
-  const presetCookie = useCookie<string>('maz-preset', {
-    maxAge: 60 * 60 * 24 * 365,
-    sameSite: 'lax',
-    path: '/',
-  })
-  if (presetCookie.value !== name) {
-    presetCookie.value = name
-  }
-}
-
 function getSavedResolvedColorMode(): 'light' | 'dark' | undefined {
   const resolvedCookie = useCookie<'light' | 'dark'>('maz-resolved-color-mode')
   if (resolvedCookie.value && ['light', 'dark'].includes(resolvedCookie.value)) {
@@ -118,7 +97,8 @@ function injectThemeCSS(config: Required<MazUiNuxtThemeOptions>) {
 /* eslint-enable sonarjs/no-commented-code */
 
 async function resolvePreset(options: { preset?: ThemePreset | ThemePresetName } | undefined, persistPreset: boolean) {
-  const savedName = persistPreset ? getSavedPresetName() : undefined
+  const presetCookie = useCookie<string | null>('maz-preset')
+  const savedName = persistPreset ? presetCookie.value : undefined
   const presetObject = options?.preset && typeof options.preset !== 'string' ? options.preset : undefined
 
   // Skip the lookup when the cookie name matches the explicit preset object —
@@ -132,7 +112,7 @@ async function resolvePreset(options: { preset?: ThemePreset | ThemePresetName }
       return await getPreset(savedName as ThemePresetName)
     }
     catch {
-      clearSavedPresetName()
+      presetCookie.value = null
     }
   }
 
@@ -150,7 +130,14 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   }
 
   if (persistPreset) {
-    saveResolvedPresetName(preset.name)
+    const presetCookie = useCookie<string>('maz-preset', {
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: 'lax',
+      path: '/',
+    })
+    if (presetCookie.value !== preset.name) {
+      presetCookie.value = preset.name
+    }
   }
 
   const config = {

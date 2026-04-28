@@ -69,23 +69,22 @@ export interface ThemeFoundation {
    * @default 'not-allowed'
    */
   'disabled-cursor'?: string
-}
-
-/**
- * Spacing / radius / shadow scales. Bridged into Tailwind v4 via
- * `@theme inline` so the consumer's own utilities benefit too (e.g. `p-4`,
- * `rounded-md`, `shadow-lg`).
- *
- * Typography is intentionally NOT part of the scale — `foundation.base-font-size`
- * is the single knob that drives every relative `em` value in the lib.
- */
-export interface ThemeScales {
   /**
    * Base spacing unit. Tailwind multiplies this for every `p-N`, `m-N`,
    * `gap-N`, etc.
    * @default '0.25rem'
    */
-  spacing: SizeUnit
+  'spacing'?: SizeUnit
+}
+
+/**
+ * Radius / shadow scales. Bridged into Tailwind v4 via `@theme inline` so the
+ * consumer's own utilities benefit too (e.g. `rounded-md`, `shadow-lg`).
+ *
+ * Single-value design tokens (`spacing`, `base-font-size`, `border-width`, …)
+ * live on `foundation` instead — only true multi-step scales belong here.
+ */
+export interface ThemeScales {
   /**
    * Border-radius scale. Maps to Tailwind utilities `rounded-{key}`.
    * `full` is intentionally not included — Tailwind keeps `rounded-full`
@@ -159,11 +158,10 @@ export interface ThemePresetOverrides {
   foundation?: Partial<ThemeFoundation>
 
   /**
-   * Theme scales (spacing, radius, shadow)
+   * Theme scales (radius, shadow)
    * @default undefined
    */
   scales?: {
-    spacing?: ThemeScales['spacing']
     radius?: Partial<ThemeScales['radius']>
     shadow?: Partial<ThemeScales['shadow']>
   }

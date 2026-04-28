@@ -204,7 +204,7 @@ describe('cSS Generator', () => {
     })
 
     describe('when full CSS is generated', () => {
-      it('then it emits the spacing scale', () => {
+      it('then it emits the foundation spacing token', () => {
         const css = generateCSS(mazUi, {
           prefix: 'maz',
           mode: 'light',

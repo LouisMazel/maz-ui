@@ -21,6 +21,12 @@ function action() {
           Home
         </MazBtn>
         <MazBtn
+          :to="{ name: 'components' }"
+          color="transparent"
+        >
+          Components
+        </MazBtn>
+        <MazBtn
           :to="{ name: 'test-page' }"
           color="transparent"
         >

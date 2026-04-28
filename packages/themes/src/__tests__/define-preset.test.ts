@@ -66,9 +66,9 @@ const mockPreset: ThemePreset = {
   },
   foundation: {
     'border-width': '1px',
+    'spacing': '0.25rem',
   },
   scales: {
-    spacing: '0.25rem',
     radius: {
       'xs': '0.125rem',
       'sm': '0.25rem',

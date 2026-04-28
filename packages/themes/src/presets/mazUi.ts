@@ -28,9 +28,9 @@ export const mazUi: ThemePreset = {
     'easing-in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
     'disabled-opacity': DEFAULT_DISABLED_OPACITY,
     'disabled-cursor': DEFAULT_DISABLED_CURSOR,
+    'spacing': DEFAULT_SPACING,
   },
   scales: {
-    spacing: DEFAULT_SPACING,
     radius: {
       'xs': '0.125rem',
       'sm': '0.25rem',

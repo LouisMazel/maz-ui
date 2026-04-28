@@ -2,12 +2,12 @@ import process from 'node:process'
 import tailwindcss from '@tailwindcss/vite'
 import postcssNested from 'postcss-nested'
 import svgLoader from 'vite-svg-loader'
-// import mazUiModule from './../../packages/nuxt/src/module'
+import mazUiModule from './../../packages/nuxt/src/module'
 
 const isDev = process.env.NODE_ENV !== 'production'
 
 export default defineNuxtConfig({
-  modules: ['@maz-ui/nuxt'],
+  modules: [mazUiModule],
 
   devtools: { enabled: true },
 
@@ -41,8 +41,8 @@ export default defineNuxtConfig({
     // builds. Same trick as accor-core-library.
     resolve: {
       conditions: isDev
-        ? ['monorepo:dev', 'import', 'browser', 'module', 'default', 'require']
-        : ['import', 'browser', 'module', 'default', 'require'],
+        ? ['monorepo:dev', 'import', 'browser', 'module', 'default']
+        : ['import', 'browser', 'module', 'default'],
     },
     css: {
       postcss: {
@@ -59,6 +59,7 @@ export default defineNuxtConfig({
       preset: 'maz-ui',
       mode: 'both',
       colorMode: 'auto',
+      injectAllCSSOnServer: false,
     },
     translations: {
       locale: 'fr',
