@@ -765,7 +765,7 @@ defineExpose({
     :for="`input-file-uploader-${instanceId}`"
     class="m-dropzone m-reset-css maz:flex maz:w-full maz:flex-col maz:gap-2 maz:overflow-hidden maz:rounded-md maz:border maz:border-dashed maz:border-divider maz:p-6 maz:transition-colors maz:duration-200 maz:ease-in-out maz:flex-center maz:bg-input maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400/50 maz:cursor-pointer"
     :class="{
-      'm-dropzone--disabled maz:cursor-not-allowed maz:opacity-50': disabled,
+      'm-dropzone--disabled maz:disabled-state': disabled,
       'm-dropzone--is-over-drop-zone': isOverDropZone && !isOverError,
       'm-dropzone--is-over-error': isOverError,
     }"

@@ -427,7 +427,7 @@ const ICON_PADDING_CLASS = {
   }
 
   &:disabled:not(.--loading) {
-    @apply maz:cursor-not-allowed maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-muted maz:border-surface-600 maz:dark:border-surface-400;
+    @apply maz:disabled-cursor maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-muted maz:border-surface-600 maz:dark:border-surface-400;
   }
 
   &.--loading {

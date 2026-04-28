@@ -708,7 +708,7 @@ defineExpose({
         '--open': isOpen,
         '--disabled': disabled,
         '--block': block,
-        'maz:cursor-not-allowed': disabled,
+        'maz:disabled-cursor': disabled,
         'maz:w-full': block,
       },
     ]"

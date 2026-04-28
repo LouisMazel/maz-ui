@@ -166,7 +166,7 @@ const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
   <component
     :is="component"
     :id="instanceId"
-    class="m-link m-reset-css maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-1 maz:transition-colors maz:duration-200 maz:ease-in-out maz:no-underline maz:disabled:cursor-not-allowed maz:disabled:opacity-50 maz:disabled:text-muted"
+    class="m-link m-reset-css maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-1 maz:transition-colors maz:duration-200 maz:ease-in-out maz:no-underline maz:disabled:disabled-state maz:disabled:text-muted"
     :class="[
       `--${color}`,
       {

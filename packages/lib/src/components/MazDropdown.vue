@@ -528,7 +528,7 @@ watch(
 
     &.menuitem__button {
       &:disabled {
-        @apply maz:cursor-not-allowed maz:opacity-50;
+        @apply maz:disabled-state;
       }
 
       &.--primary {

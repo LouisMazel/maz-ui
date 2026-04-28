@@ -641,7 +641,7 @@ const CHILD_TEXT_SIZE_CLASS = {
     }
 
     & .m-input-input {
-      @apply maz:cursor-not-allowed maz:text-muted;
+      @apply maz:disabled-cursor maz:text-muted;
     }
   }
 

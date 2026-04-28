@@ -185,7 +185,7 @@ function isLastStep(step: number): boolean {
           {
             '--is-current-step maz:cursor-default': step === currentStep || allStepsOpened,
             '--disabled maz:text-gray-400 maz:dark:text-gray-500': step !== currentStep && !allStepsOpened && isStepDisabled(step),
-            'maz:cursor-not-allowed': isStepDisabled(step),
+            'maz:disabled-cursor': isStepDisabled(step),
             'maz:hover:bg-surface-600 maz:hover:dark:bg-surface-400': !isStepDisabled(step),
           },
           `${getStepStateData(step).class}`,

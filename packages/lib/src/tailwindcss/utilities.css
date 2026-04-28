@@ -34,3 +34,16 @@
     text-transform: capitalize;
   }
 }
+
+@utility disabled-cursor {
+  cursor: var(--maz-disabled-cursor);
+}
+
+@utility disabled-opacity {
+  opacity: var(--maz-disabled-opacity);
+}
+
+@utility disabled-state {
+  cursor: var(--maz-disabled-cursor);
+  opacity: var(--maz-disabled-opacity);
+}

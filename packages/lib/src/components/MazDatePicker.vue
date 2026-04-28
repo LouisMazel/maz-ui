@@ -792,7 +792,7 @@ watch(
 
 .m-date-picker {
   & .m-date-picker__button {
-    @apply maz:flex maz:h-full maz:cursor-not-allowed maz:bg-transparent maz:pe-1 maz:flex-center;
+    @apply maz:flex maz:h-full maz:disabled-cursor maz:bg-transparent maz:pe-1 maz:flex-center;
 
     &__chevron {
       @apply maz:text-foreground maz:transition-transform maz:duration-200;

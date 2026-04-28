@@ -842,7 +842,7 @@ defineExpose({
 .m-select {
   &.--disabled {
     .m-select-input {
-      @apply maz:cursor-not-allowed;
+      @apply maz:disabled-cursor;
     }
   }
 
@@ -877,7 +877,7 @@ defineExpose({
     @apply maz:cursor-pointer maz:appearance-none maz:border-none;
 
     &:disabled {
-      @apply maz:cursor-not-allowed;
+      @apply maz:disabled-cursor;
     }
   }
 }
