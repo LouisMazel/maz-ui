@@ -88,7 +88,7 @@ You can add an icon on the left and right to the link text with the `start-icon`
 For more information about the icons, please check the [MazBtn](./maz-btn.md#icons) page.
 
 <ComponentDemo>
-  <MazLink start-icon="home" :end-icon="MazCheck"> View product detail </MazLink>
+  <MazLink start-icon="/home.svg" :end-icon="MazCheck"> View product detail </MazLink>
 
 <template #code>
 
@@ -99,11 +99,11 @@ import { MazHome } from '@maz-ui/icons/raw/MazHome'
 </script>
 
 <template>
-  <MazLink start-icon="home" :end-icon="MazHome">
+  <MazLink start-icon="/home.svg" :end-icon="MazHome">
     View product detail
   </MazLink>
 
-  <MazLink start-icon="home" :end-icon="MazHome">
+  <MazLink start-icon="/home.svg" :end-icon="MazHome">
     View product detail
   </MazLink>
 </template>

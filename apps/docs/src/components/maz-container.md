@@ -67,10 +67,10 @@ Add icons to the header using `start-icon` and `end-icon` props.
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-col maz:gap-4">
-    <MazContainer title="Settings" start-icon="cog-6-tooth">
+    <MazContainer title="Settings" start-icon="/cog-6-tooth.svg">
       Configure your application settings here.
     </MazContainer>
-    <MazContainer title="User Profile" start-icon="user" end-icon="pencil">
+    <MazContainer title="User Profile" start-icon="/user.svg" end-icon="/pencil.svg">
       View and edit your profile information.
     </MazContainer>
   </div>
@@ -79,11 +79,11 @@ Add icons to the header using `start-icon` and `end-icon` props.
 
 ```vue
 <template>
-  <MazContainer title="Settings" start-icon="cog-6-tooth">
+  <MazContainer title="Settings" start-icon="/cog-6-tooth.svg">
     Configure your application settings here.
   </MazContainer>
 
-  <MazContainer title="User Profile" start-icon="user" end-icon="pencil">
+  <MazContainer title="User Profile" start-icon="/user.svg" end-icon="/pencil.svg">
     View and edit your profile information.
   </MazContainer>
 </template>

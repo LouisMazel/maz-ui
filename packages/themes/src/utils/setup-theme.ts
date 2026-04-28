@@ -170,49 +170,52 @@ function finalizeTheme(
  * When no preset object is provided, the default preset is resolved asynchronously
  * in the background and the themeState is updated reactively (causes FOUC).
  */
-async function resolvePreset(
-  config: ResolvedConfig,
-  savedName: string | null,
-): Promise<ThemePreset | undefined> {
-  // Cookie wins (when present) — even over a preset object passed via options,
-  // since options.preset is treated as the default the app boots with, while
-  // the cookie carries the user's last explicit choice.
-  if (savedName) {
-    try {
-      return await getPreset(savedName as ThemePresetName)
-    }
-    catch {
-      clearSavedPresetName()
-      // fall through to options.preset fallback
-    }
-  }
-
-  try {
-    return await getPreset(config.preset)
-  }
-  catch (error) {
-    console.error('[@maz-ui/themes] Failed to resolve preset', error)
-    return undefined
-  }
+function swapPreset(themeState: ThemeStateRef, preset: ThemePreset, config: ResolvedConfig): void {
+  // Caller guarantees `persistPreset` is on and `strategy !== 'buildtime'`.
+  const final = Object.keys(config.overrides).length > 0
+    ? mergePresets(preset, config.overrides)
+    : preset
+  themeState.value.preset = final
+  saveResolvedPresetName(final.name)
+  injectThemeCSS(final, config)
 }
 
 export function setupTheme(options: MazUiThemeOptions): SetupThemeReturn {
   const config = resolveConfig(options)
   const themeState = createThemeState(options, config)
-
-  // Buildtime never resolves a preset at runtime — short-circuit immediately.
-  if (config.strategy === 'buildtime') {
-    return finalizeTheme(themeState, config.preset, config)
-  }
-
   const savedName = config.persistPreset ? getSavedPresetName() : null
+  const presetObject = config.preset && typeof config.preset !== 'string' ? config.preset : null
 
-  // No saved cookie + a preset object → finalize synchronously, no FOUC.
-  if (!savedName && config.preset && typeof config.preset !== 'string') {
-    return finalizeTheme(themeState, config.preset, config)
+  // Fast path — no FOUC: a preset object renders synchronously. Buildtime
+  // also takes this path (CSS is pre-built, no runtime injection anyway).
+  if (presetObject || config.strategy === 'buildtime') {
+    const setup = finalizeTheme(themeState, presetObject ?? config.preset, config)
+
+    // Cookie asked for a different bundled preset → load it post-mount and
+    // swap. No FOUC at first paint, just a quick transition for users that
+    // had explicitly switched to another preset.
+    if (savedName && config.strategy !== 'buildtime' && (!presetObject || savedName !== presetObject.name)) {
+      getPreset(savedName as ThemePresetName)
+        .then(preset => swapPreset(themeState, preset, config))
+        .catch(() => clearSavedPresetName())
+    }
+    return setup
   }
 
-  resolvePreset(config, savedName).then(preset => finalizeTheme(themeState, preset, config))
+  // No object preset → async resolution (cookie wins, fallback to options).
+  const resolve = savedName
+    ? getPreset(savedName as ThemePresetName).catch(() => {
+        clearSavedPresetName()
+        return getPreset(config.preset)
+      })
+    : getPreset(config.preset)
+
+  resolve
+    .catch((error) => {
+      console.error('[@maz-ui/themes] Failed to resolve preset', error)
+      return undefined
+    })
+    .then(preset => finalizeTheme(themeState, preset, config))
 
   return { themeState: themeState as Ref<ThemeState>, cleanup: () => {} }
 }

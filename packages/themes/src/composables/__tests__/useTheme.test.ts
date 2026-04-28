@@ -87,6 +87,8 @@ describe('useTheme', () => {
           remove: vi.fn(),
         },
       },
+      head: { appendChild: vi.fn() },
+      createElement: vi.fn(() => ({ remove: vi.fn(), textContent: '' })),
       cookie: '',
     })
 

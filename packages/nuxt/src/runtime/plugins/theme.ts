@@ -119,17 +119,20 @@ function injectThemeCSS(config: Required<MazUiNuxtThemeOptions>) {
 
 async function resolvePreset(options: { preset?: ThemePreset | ThemePresetName } | undefined, persistPreset: boolean) {
   const savedName = persistPreset ? getSavedPresetName() : undefined
+  const presetObject = options?.preset && typeof options.preset !== 'string' ? options.preset : undefined
 
-  // Cookie wins (when present) — even over a preset object passed via options,
-  // since options.preset is the default the app boots with, while the cookie
-  // carries the user's last explicit choice.
+  // Skip the lookup when the cookie name matches the explicit preset object —
+  // the object IS the resolution, no need to (re)load a bundled module.
+  if (savedName && presetObject && savedName === presetObject.name) {
+    return presetObject
+  }
+
   if (savedName) {
     try {
       return await getPreset(savedName as ThemePresetName)
     }
     catch {
       clearSavedPresetName()
-      // fall through to the options-based resolution
     }
   }
 

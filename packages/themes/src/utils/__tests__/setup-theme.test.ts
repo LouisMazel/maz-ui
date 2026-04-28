@@ -705,8 +705,8 @@ describe('setup-theme', () => {
 
         setupTheme({})
 
-        await nextTick()
-        await nextTick()
+        await new Promise(resolve => setTimeout(resolve, 0))
+        await new Promise(resolve => setTimeout(resolve, 0))
 
         expect(getPreset).toHaveBeenCalledWith('ocean')
         expect(saveResolvedPresetName).toHaveBeenCalledWith('ocean')
@@ -718,27 +718,77 @@ describe('setup-theme', () => {
 
         setupTheme({ preset: 'maz-ui' as unknown as ThemePreset })
 
-        await nextTick()
-        await nextTick()
+        await new Promise(resolve => setTimeout(resolve, 0))
+        await new Promise(resolve => setTimeout(resolve, 0))
 
         expect(getPreset).toHaveBeenCalledWith('ocean')
         expect(saveResolvedPresetName).toHaveBeenCalledWith('ocean')
       })
     })
 
-    describe('when options.preset is a custom preset object and a saved name is in the cookie', () => {
-      it('then the cookie still wins — options.preset is only the default', async () => {
+    describe('when options.preset is a custom preset object and a saved name differs', () => {
+      it('then the object renders synchronously then the cookie preset swaps in async', async () => {
         vi.mocked(getSavedPresetName).mockReturnValueOnce('ocean')
-        vi.mocked(getPreset).mockResolvedValueOnce({ ...mockPreset, name: 'ocean' })
+        const oceanPreset = { ...mockPreset, name: 'ocean' }
+        vi.mocked(getPreset).mockResolvedValueOnce(oceanPreset)
         const customPreset = { ...mockPreset, name: 'custom-app-theme' }
 
-        setupTheme({ preset: customPreset })
+        const result = setupTheme({ preset: customPreset }) as SetupThemeReturn
 
-        await nextTick()
-        await nextTick()
+        // Sync: object rendered immediately (no FOUC).
+        expect(result.themeState.value.preset?.name).toBe('custom-app-theme')
 
+        await new Promise(resolve => setTimeout(resolve, 0))
+        await new Promise(resolve => setTimeout(resolve, 0))
+
+        // Then the cookie preset swaps in.
         expect(getPreset).toHaveBeenCalledWith('ocean')
         expect(saveResolvedPresetName).toHaveBeenCalledWith('ocean')
+      })
+    })
+
+    describe('when the cookie swaps with overrides set', () => {
+      it('then mergePresets is applied to the swapped preset', async () => {
+        vi.mocked(getSavedPresetName).mockReturnValueOnce('ocean')
+        const oceanPreset = { ...mockPreset, name: 'ocean' }
+        vi.mocked(getPreset).mockResolvedValueOnce(oceanPreset)
+        vi.mocked(mergePresets).mockReturnValueOnce({ ...oceanPreset, name: 'ocean-merged' })
+        const customPreset = { ...mockPreset, name: 'custom-app-theme' }
+
+        setupTheme({ preset: customPreset, overrides: { foundation: {} as never } })
+
+        await new Promise(resolve => setTimeout(resolve, 0))
+        await new Promise(resolve => setTimeout(resolve, 0))
+
+        expect(mergePresets).toHaveBeenCalledWith(oceanPreset, { foundation: {} })
+      })
+    })
+
+    describe('when options.preset is an object and the saved cookie fails to resolve', () => {
+      it('then the cookie is cleared and the object stays', async () => {
+        vi.mocked(getSavedPresetName).mockReturnValueOnce('disappeared')
+        vi.mocked(getPreset).mockRejectedValueOnce(new Error('not found'))
+        const customPreset = { ...mockPreset, name: 'custom-app-theme' }
+
+        const result = setupTheme({ preset: customPreset }) as SetupThemeReturn
+
+        await new Promise(resolve => setTimeout(resolve, 0))
+        await new Promise(resolve => setTimeout(resolve, 0))
+
+        expect(clearSavedPresetName).toHaveBeenCalled()
+        expect(result.themeState.value.preset?.name).toBe('custom-app-theme')
+      })
+    })
+
+    describe('when options.preset is a custom preset object whose name matches the cookie', () => {
+      it('then the object is finalized sync without a getPreset round-trip', () => {
+        vi.mocked(getSavedPresetName).mockReturnValueOnce('custom-app-theme')
+        const customPreset = { ...mockPreset, name: 'custom-app-theme' }
+
+        const result = setupTheme({ preset: customPreset }) as SetupThemeReturn
+
+        expect(result.themeState.value.preset?.name).toBe('custom-app-theme')
+        expect(getPreset).not.toHaveBeenCalled()
       })
     })
 
@@ -754,20 +804,19 @@ describe('setup-theme', () => {
     })
 
     describe('when the saved cookie fails to resolve and options.preset is a custom object', () => {
-      it('then it clears the cookie and finalizes with the object fallback', async () => {
+      it('then the object stays and the stale cookie is cleared', async () => {
         vi.mocked(getSavedPresetName).mockReturnValueOnce('disappeared')
         const customPreset = { ...mockPreset, name: 'custom-app-theme' }
-        vi.mocked(getPreset)
-          .mockRejectedValueOnce(new Error('not found'))
-          .mockResolvedValueOnce(customPreset)
+        vi.mocked(getPreset).mockRejectedValueOnce(new Error('not found'))
 
-        setupTheme({ preset: customPreset })
+        const result = setupTheme({ preset: customPreset }) as SetupThemeReturn
 
         await new Promise(resolve => setTimeout(resolve, 0))
         await new Promise(resolve => setTimeout(resolve, 0))
 
         expect(clearSavedPresetName).toHaveBeenCalledTimes(1)
-        expect(saveResolvedPresetName).toHaveBeenCalledWith('custom-app-theme')
+        // Object preset stays — no swap happened.
+        expect(result.themeState.value.preset?.name).toBe('custom-app-theme')
       })
     })
 

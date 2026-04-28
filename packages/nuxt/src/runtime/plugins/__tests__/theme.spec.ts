@@ -306,6 +306,18 @@ describe('theme plugin', () => {
     )
   })
 
+  it('should skip the lookup when the cookie name matches the options preset object', async () => {
+    const presetCookie: { value: string | null } = { value: 'custom-app-theme' }
+    mockUseCookie.mockImplementation(((name: string) => {
+      return name === 'maz-preset' ? presetCookie : { value: undefined }
+    }) as any)
+    const customPreset = { name: 'custom-app-theme', colors: {} } as any
+    const context = createContext({ preset: customPreset })
+    await (themePlugin as (...args: any[]) => any)(context)
+    // No getPreset call: object IS the preset.
+    expect(mockGetPreset).not.toHaveBeenCalled()
+  })
+
   it('should skip cookie read and write when persistPreset is false', async () => {
     const presetCookie: { value: string | null } = { value: 'nova' }
     mockUseCookie.mockImplementation(((name: string) => {
