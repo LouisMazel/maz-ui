@@ -452,7 +452,7 @@ const CHILD_TEXT_SIZE_CLASS = {
     <label v-if="topLabel" :for="instanceId" class="m-input-top-label maz:mb-2" :class="stateColor">{{ topLabel }}</label>
 
     <div
-      class="m-input-wrapper maz:relative maz:z-1 maz:flex maz:flex-1 maz:overflow-hidden maz:bg-surface maz:transition-colors maz:duration-300 maz:size-full maz:dark:bg-surface-400"
+      class="m-input-wrapper maz:relative maz:z-1 maz:flex maz:flex-1 maz:overflow-hidden maz:bg-input maz:transition-colors maz:duration-300 maz:size-full"
       :class="[
         inputClasses,
         borderStyle,

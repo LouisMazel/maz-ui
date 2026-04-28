@@ -228,7 +228,7 @@ const stateLabelColor = computed(() => [
           '--autogrow': autogrow,
           'maz:px-4 maz:py-3': padding,
           'maz:border maz:border-solid': border && !disabled,
-          'maz:bg-surface maz:dark:bg-surface-400': !transparent && !disabled,
+          'maz:bg-input': !transparent && !disabled,
           'maz:cursor-not-allowed maz:border-divider maz:dark:border-divider-400 maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-muted': disabled,
         },
         borderStyle,
