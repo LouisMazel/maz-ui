@@ -1,5 +1,6 @@
 import type { ThemePreset } from '../types'
 import {
+  DEFAULT_BTN_FONT_WEIGHT,
   DEFAULT_CONTAINER_BG,
   DEFAULT_DISABLED_CURSOR,
   DEFAULT_DISABLED_OPACITY,
@@ -44,6 +45,7 @@ export const ocean: ThemePreset = {
     fontSize: DEFAULT_FONT_SIZE,
   },
   components: {
+    btn: { 'font-weight': DEFAULT_BTN_FONT_WEIGHT },
     container: { bg: DEFAULT_CONTAINER_BG },
     input: { bg: DEFAULT_INPUT_BG },
   },

@@ -53,3 +53,10 @@ export const DEFAULT_INPUT_BG: ThemeComponentBg = {
   light: 'var(--maz-surface)',
   dark: 'var(--maz-surface-400)',
 }
+
+/**
+ * Default font weight used by `MazBtn` — medium (500). Presets can
+ * override via `components.btn.font-weight` to bias the button text
+ * heavier or lighter for their visual identity.
+ */
+export const DEFAULT_BTN_FONT_WEIGHT = '500'
