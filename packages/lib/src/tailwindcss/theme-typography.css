@@ -1,13 +1,29 @@
 /*
- * Typography, border width and motion tokens — all sourced from @maz-ui/themes.
+ * Typography, border-width and motion bridge — all sourced from @maz-ui/themes.
  *
- * Consumers overriding --maz-* at runtime get reflowed Tailwind utilities:
- *   font-sans / default-border-width / *-duration-* / *-easing-* / default-transition-*
- *
- * Fallbacks apply when a custom preset does not declare motion tokens.
+ * - `--font-{sans,mono,display}` come from `foundation.font-{family,mono,display}`.
+ * - `--text-*` and their paired `--text-*--line-height` come from `scales.fontSize`.
+ *   Tailwind's default scale is overridden so consumers can retune the
+ *   whole text scale by editing a single preset block.
+ * - `--default-border-width`, motion durations and easings keep their
+ *   existing fallbacks for presets that don't declare them.
  */
 @theme inline {
   --font-sans: var(--maz-font-family);
+  --font-mono: var(--maz-font-mono);
+  --font-display: var(--maz-font-display);
+  --text-mini: var(--maz-text-mini);
+  --text-mini--line-height: var(--maz-text-mini--line-height);
+  --text-xs: var(--maz-text-xs);
+  --text-xs--line-height: var(--maz-text-xs--line-height);
+  --text-sm: var(--maz-text-sm);
+  --text-sm--line-height: var(--maz-text-sm--line-height);
+  --text-md: var(--maz-text-md);
+  --text-md--line-height: var(--maz-text-md--line-height);
+  --text-lg: var(--maz-text-lg);
+  --text-lg--line-height: var(--maz-text-lg--line-height);
+  --text-xl: var(--maz-text-xl);
+  --text-xl--line-height: var(--maz-text-xl--line-height);
   --default-border-width: var(--maz-border-width);
   --duration-fast: var(--maz-duration-fast, 100ms);
   --duration-normal: var(--maz-duration-normal, 200ms);

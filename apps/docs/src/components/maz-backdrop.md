@@ -54,9 +54,9 @@ const basicOpen = ref(false)
 
 <style lang="css" scoped>
 .demo-content {
-  background: var(--maz-background);
+  background: var(--maz-surface);
   padding: 2rem;
-  border-radius: var(--maz-radius);
+  border-radius: var(--maz-radius-md);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   text-align: center;
@@ -231,9 +231,9 @@ These features work automatically - you don't need to do anything extra!
 
 <style scoped>
 .demo-content {
-  background: var(--maz-background);
+  background: var(--maz-surface);
   padding: 2rem;
-  border-radius: var(--maz-radius);
+  border-radius: var(--maz-radius-md);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   text-align: center;

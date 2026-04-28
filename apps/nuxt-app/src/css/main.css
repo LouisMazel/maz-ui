@@ -16,7 +16,7 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--maz-border, currentcolor);
+    border-color: var(--maz-divider, currentcolor);
   }
 }
 
@@ -24,7 +24,7 @@
 html {
   font-size: var(--maz-base-font-size);
   font-family: var(--maz-font-family);
-  background-color: var(--maz-background);
+  background-color: var(--maz-surface);
   color: var(--maz-foreground);
 
   @apply maz:min-h-screen maz:h-screen maz:overflow-y-auto;

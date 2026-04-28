@@ -3,13 +3,10 @@
  *
  * Uses @theme inline so the runtime values injected by @maz-ui/themes
  * (--maz-*) flow directly into the Tailwind utilities (bg-primary,
- * text-foreground, etc.). The mapping preserves the v4 semantic aliases:
+ * text-foreground, etc.). The keys match their --maz-* source 1:1, with
+ * one logical alias kept for the shadow color:
  *
- *   surface    → background
- *   divider    → border
  *   elevation  → shadow
- *
- * The remaining names match their --maz-* source 1:1.
  */
 @theme inline {
   /* primary */
@@ -124,18 +121,18 @@
   --color-contrast-800: var(--maz-contrast-800);
   --color-contrast-900: var(--maz-contrast-900);
 
-  /* surface (alias of background) */
-  --color-surface: var(--maz-background);
-  --color-surface-50: var(--maz-background-50);
-  --color-surface-100: var(--maz-background-100);
-  --color-surface-200: var(--maz-background-200);
-  --color-surface-300: var(--maz-background-300);
-  --color-surface-400: var(--maz-background-400);
-  --color-surface-500: var(--maz-background-500);
-  --color-surface-600: var(--maz-background-600);
-  --color-surface-700: var(--maz-background-700);
-  --color-surface-800: var(--maz-background-800);
-  --color-surface-900: var(--maz-background-900);
+  /* surface */
+  --color-surface: var(--maz-surface);
+  --color-surface-50: var(--maz-surface-50);
+  --color-surface-100: var(--maz-surface-100);
+  --color-surface-200: var(--maz-surface-200);
+  --color-surface-300: var(--maz-surface-300);
+  --color-surface-400: var(--maz-surface-400);
+  --color-surface-500: var(--maz-surface-500);
+  --color-surface-600: var(--maz-surface-600);
+  --color-surface-700: var(--maz-surface-700);
+  --color-surface-800: var(--maz-surface-800);
+  --color-surface-900: var(--maz-surface-900);
 
   /* foreground */
   --color-foreground: var(--maz-foreground);
@@ -150,18 +147,18 @@
   --color-foreground-800: var(--maz-foreground-800);
   --color-foreground-900: var(--maz-foreground-900);
 
-  /* divider (alias of border) */
-  --color-divider: var(--maz-border);
-  --color-divider-50: var(--maz-border-50);
-  --color-divider-100: var(--maz-border-100);
-  --color-divider-200: var(--maz-border-200);
-  --color-divider-300: var(--maz-border-300);
-  --color-divider-400: var(--maz-border-400);
-  --color-divider-500: var(--maz-border-500);
-  --color-divider-600: var(--maz-border-600);
-  --color-divider-700: var(--maz-border-700);
-  --color-divider-800: var(--maz-border-800);
-  --color-divider-900: var(--maz-border-900);
+  /* divider */
+  --color-divider: var(--maz-divider);
+  --color-divider-50: var(--maz-divider-50);
+  --color-divider-100: var(--maz-divider-100);
+  --color-divider-200: var(--maz-divider-200);
+  --color-divider-300: var(--maz-divider-300);
+  --color-divider-400: var(--maz-divider-400);
+  --color-divider-500: var(--maz-divider-500);
+  --color-divider-600: var(--maz-divider-600);
+  --color-divider-700: var(--maz-divider-700);
+  --color-divider-800: var(--maz-divider-800);
+  --color-divider-900: var(--maz-divider-900);
 
   /* elevation (alias of shadow) */
   --color-elevation: var(--maz-shadow);

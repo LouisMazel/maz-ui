@@ -153,7 +153,7 @@ const checkIconSize = computed(() => {
 
 const checkIconColor = computed(() => {
   if (props.color === 'contrast') {
-    return 'var(--maz-background)'
+    return 'var(--maz-surface)'
   }
 
   return `var(--maz-${props.color}-foreground)`

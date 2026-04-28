@@ -11,7 +11,7 @@ description: vClickOutside is a Vue directive to trigger a function when the use
 
 <ComponentDemo>
   <div
-    style="padding: 50px; background-color: var(--maz-background-300);"
+    style="padding: 50px; background-color: var(--maz-surface-300);"
     class="maz:flex maz:flex-center maz:rounded-md"
   >
     <MazCard v-click-outside="clikedOutside">
@@ -44,7 +44,7 @@ function clikedOutside() {
 
 <template>
   <div
-    style="padding: 50px; background-color: var(--maz-background-300);"
+    style="padding: 50px; background-color: var(--maz-surface-300);"
     class="flex flex-center rounded"
   >
     <MazCard v-click-outside="clikedOutside">
@@ -71,7 +71,7 @@ The directive can accept an options object to customize its behavior:
 
 <ComponentDemo>
   <div
-    style="padding: 50px; background-color: var(--maz-background-300);"
+    style="padding: 50px; background-color: var(--maz-surface-300);"
     class="maz:flex maz:flex-center maz:rounded-md"
   >
     <MazCard v-click-outside="{ callback: clickedOutsideWithIgnore, ignore: ['.ignore-me'] }">
@@ -128,7 +128,7 @@ The directive can be configured to trigger only once:
 
 <ComponentDemo>
   <div
-    style="padding: 50px; background-color: var(--maz-background-300);"
+    style="padding: 50px; background-color: var(--maz-surface-300);"
     class="maz:flex maz:flex-center maz:rounded-md"
   >
     <MazCard v-click-outside="{ callback: clickedOnce, once: true }">

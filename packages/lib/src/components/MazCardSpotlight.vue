@@ -165,7 +165,7 @@ onMounted(() => {
   contain: layout style paint;
 
   .inner {
-    border-radius: calc(var(--maz-radius) - max(var(--maz-border-width), 1px));
+    border-radius: calc(var(--maz-radius-md) - max(var(--maz-border-width), 1px));
 
     &::before {
       content: '';

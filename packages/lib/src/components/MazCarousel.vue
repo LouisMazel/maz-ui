@@ -142,7 +142,7 @@ function setScrollState(event: Event) {
   &__items {
     scroll-behavior: smooth;
     scrollbar-width: thin;
-    scrollbar-color: var(--maz-background-600) transparent;
+    scrollbar-color: var(--maz-surface-600) transparent;
 
     &::-webkit-scrollbar {
       inline-size: 0.1875rem;

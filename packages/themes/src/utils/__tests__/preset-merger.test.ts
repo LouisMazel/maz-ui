@@ -17,7 +17,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -48,7 +47,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -63,7 +61,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -99,7 +96,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -147,7 +143,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -186,7 +181,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -196,7 +190,6 @@ describe('preset-merger', () => {
           name: 'override',
           foundation: {
             'base-font-size': '16px',
-            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -222,7 +215,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -240,7 +232,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            // 'radius' moved to scales
             'border-width': '1px',
             'font-family': 'Arial',
           },

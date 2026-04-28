@@ -25,6 +25,6 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--maz-border, currentcolor);
+    border-color: var(--maz-divider, currentcolor);
   }
 }

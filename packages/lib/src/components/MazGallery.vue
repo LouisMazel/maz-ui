@@ -78,15 +78,15 @@ export interface MazGalleryProps {
    */
   scale?: boolean
   /**
-   * Choose color of borders between images - Should be a CSS color or CSS variable - Ex: `#000` or `var(--maz-background-300)`
+   * Choose color of borders between images - Should be a CSS color or CSS variable - Ex: `#000` or `var(--maz-surface-300)`
    * @type string
    * @default 'transparent'
    */
   separatorColor?: string
   /**
-   * Choose background color of the gallery - Should be a CSS color or CSS variable - Ex: `#000` or `var(--maz-background-300)`
+   * Choose background color of the gallery - Should be a CSS color or CSS variable - Ex: `#000` or `var(--maz-surface-300)`
    * @type string
-   * @default 'var(--maz-background-300)'
+   * @default 'var(--maz-surface-300)'
    */
   backgroundColor?: string
 }

@@ -12,7 +12,7 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--maz-border, currentcolor);
+    border-color: var(--maz-divider, currentcolor);
   }
 }
 
@@ -20,10 +20,10 @@
   /* --vp-layout-top-height: 3.9375rem; */
   /* --vp-nav-logo-height: 42px; */
   --vp-font-family-base: var(--maz-font-family);
-  --vp-c-bg: var(--maz-background);
+  --vp-c-bg: var(--maz-surface);
   --vp-c-brand: var(--maz-primary);
   --vp-c-brand-1: var(--maz-primary);
-  --vp-c-gutter: var(--maz-background-600);
+  --vp-c-gutter: var(--maz-surface-600);
   --vp-c-brand-light: var(--maz-primary-400);
   --vp-c-brand-lighter: var(--maz-primary-300);
   --vp-c-brand-dark: var(--maz-primary-600);
@@ -63,14 +63,14 @@ html {
 
 html.dark {
   --vp-c-bg-elv: hsl(235deg 16% 12%);
-  --vp-c-bg-elv-mute: var(--maz-background);
-  --vp-c-gutter: var(--maz-border);
+  --vp-c-bg-elv-mute: var(--maz-surface);
+  --vp-c-gutter: var(--maz-divider);
   /* Attention --vp-c-bg-soft est aussi le background du docsearch (algolia) */
-  --vp-c-bg-soft: var(--maz-background-500);
-  --vp-code-block-bg: var(--maz-background-600);
-  --vp-code-tab-divider: var(--maz-background-300);
-  --vp-code-tab-hover-text-color: var(--maz-background-foreground);
-  --vp-code-block-color: var(--maz-background-foreground);
+  --vp-c-bg-soft: var(--maz-surface-500);
+  --vp-code-block-bg: var(--maz-surface-600);
+  --vp-code-tab-divider: var(--maz-surface-300);
+  --vp-code-tab-hover-text-color: var(--maz-foreground);
+  --vp-code-block-color: var(--maz-foreground);
 }
 
 .vp-doc blockquote > p:not(:where(.vp-raw, .vp-raw *)) {
