@@ -222,7 +222,7 @@ onMounted(() => {
 <template>
   <div
     ref="tabsBarRef"
-    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:gap-1 maz:overflow-x-auto maz:rounded maz:p-2 maz:align-top maz:bg-surface"
+    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:gap-1 maz:overflow-x-auto maz:rounded-md maz:p-2 maz:align-top maz:bg-container"
     :class="{
       '--block': block,
       '--elevation': elevation,
@@ -233,7 +233,7 @@ onMounted(() => {
     }"
   >
     <div
-      class="m-tabs-bar__indicator maz:absolute maz:left-0 maz:rounded maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-center"
+      class="m-tabs-bar__indicator maz:absolute maz:left-0 maz:rounded-md maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-center"
       :class="{ 'maz:transition-all maz:duration-300 maz:ease-in-out': tabsBarHasScrollAnimation }"
       :style="[tabsIndicatorState]"
     />
@@ -242,9 +242,9 @@ onMounted(() => {
         :ref="(mazBtn) => addElementToItemRefs({ mazBtn, index })"
         :class="[
           { '--active': isActiveTab(index), '--disabled': item.disabled },
-          item.disabled ? 'maz:cursor-not-allowed maz:bg-surface-300 maz:text-gray-400 maz:dark:text-gray-500' : 'maz:cursor-pointer maz:hover:text-foreground!',
+          item.disabled ? 'maz:disabled-cursor maz:bg-surface-300 maz:text-gray-400 maz:dark:text-gray-500' : 'maz:cursor-pointer maz:hover:text-foreground!',
         ]"
-        class="m-tabs-bar__item maz:relative maz:flex maz:flex-none maz:items-center maz:gap-2 maz:rounded maz:px-3 maz:py-2 maz:text-center maz:font-medium maz:no-underline maz:transition maz:duration-200 maz:ease-in-out maz:bg-transparent"
+        class="m-tabs-bar__item maz:relative maz:flex maz:flex-none maz:items-center maz:gap-2 maz:rounded-md maz:px-3 maz:py-2 maz:text-center maz:font-medium maz:no-underline maz:transition maz:duration-200 maz:ease-in-out maz:bg-transparent"
         :disabled="item.disabled"
         :style="getTabStyle(index, item.disabled)"
         @click="item.disabled ? undefined : selectTab(index)"

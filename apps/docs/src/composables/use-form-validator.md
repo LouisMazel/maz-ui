@@ -157,11 +157,11 @@ Each field in `fieldsStates` contains:
       />
       <MazBtn type="submit">Submit</MazBtn>
     </form>
-    <div class="maz:rounded">
+    <div class="maz:rounded-md">
       <p class="maz:font-semibold maz:mb-2">Form State:</p>
-      <pre class="maz:text-xs maz:bg-surface-600/70 maz:dark:bg-surface-600/60 maz:p-2 maz:rounded">{{ JSON.stringify({ isValid: stateValid, isDirty: stateDirty, isSubmitted: stateSubmitted, isSubmitting: stateSubmitting }, null, 2) }}</pre>
+      <pre class="maz:text-xs maz:bg-surface-600/70 maz:dark:bg-surface-600/60 maz:p-2 maz:rounded-md">{{ JSON.stringify({ isValid: stateValid, isDirty: stateDirty, isSubmitted: stateSubmitted, isSubmitting: stateSubmitting }, null, 2) }}</pre>
       <p class="maz:font-semibold maz:mb-2 maz:mt-4">Fields States:</p>
-      <pre class="maz:text-xs maz:bg-surface-600/70 maz:dark:bg-surface-600/60 maz:p-2 maz:rounded">{{ JSON.stringify(stateFields, null, 2) }}</pre>
+      <pre class="maz:text-xs maz:bg-surface-600/70 maz:dark:bg-surface-600/60 maz:p-2 maz:rounded-md">{{ JSON.stringify(stateFields, null, 2) }}</pre>
     </div>
   </div>
 

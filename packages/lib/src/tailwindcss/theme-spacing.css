@@ -1,0 +1,10 @@
+/*
+ * Spacing bridge.
+ *
+ * `--spacing` is the base step Tailwind v4 uses to derive every spacing
+ * utility (p-1, gap-2, w-4, …). Routing it through `--maz-spacing`
+ * lets a preset rescale the entire spacing system from one token.
+ */
+@theme inline {
+  --spacing: var(--maz-spacing);
+}

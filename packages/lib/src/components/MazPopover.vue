@@ -39,7 +39,7 @@ const {
   closeOnEscape = true,
   persistent = false,
   panelStyle,
-  color = 'background',
+  color = 'surface',
   overlayClass,
   panelClass,
   preferPosition,
@@ -216,10 +216,10 @@ export interface MazPopoverProps {
   ariaDescribedby?: string
   /**
    * Color variant of the popover
-   * @values primary, secondary, accent, info, success, warning, destructive, contrast, background
-   * @default background
+   * @values primary, secondary, accent, info, success, warning, destructive, contrast, surface
+   * @default surface
    */
-  color?: MazColor | 'background'
+  color?: MazColor | 'surface'
   /**
    * Trap focus inside the popover
    * @default true
@@ -708,7 +708,7 @@ defineExpose({
         '--open': isOpen,
         '--disabled': disabled,
         '--block': block,
-        'maz:cursor-not-allowed': disabled,
+        'maz:disabled-cursor': disabled,
         'maz:w-full': block,
       },
     ]"
@@ -751,7 +751,7 @@ defineExpose({
         :aria-describedby="role === 'dialog' ? ariaDescribedby : undefined"
         :aria-modal="role === 'dialog' ? 'true' : undefined"
         :tabindex="role === 'dialog' ? '-1' : undefined"
-        class="m-popover-panel maz:fixed maz:outline-hidden maz:z-default-backdrop maz:rounded maz:drop-shadow-md maz:shadow-elevation"
+        class="m-popover-panel maz:fixed maz:outline-hidden maz:z-default-backdrop maz:rounded-md maz:drop-shadow-md maz:shadow-elevation"
         :aria-live="announceChanges ? 'polite' : undefined"
         :class="panelClasses"
         :style="[
@@ -789,7 +789,7 @@ defineExpose({
 
   /* Background color */
   &.--surface {
-    @apply maz:dark:border maz:dark:border-divider maz:bg-surface;
+    @apply maz:dark:border maz:dark:border-divider maz:bg-container;
   }
 
   /* Color variants */
@@ -823,10 +823,6 @@ defineExpose({
 
   &.--contrast {
     @apply maz:border-contrast-600 maz:bg-contrast maz:text-contrast-foreground;
-  }
-
-  &.--background {
-    @apply maz:bg-surface maz:text-foreground;
   }
 }
 

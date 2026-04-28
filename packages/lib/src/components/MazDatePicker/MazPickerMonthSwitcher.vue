@@ -62,7 +62,7 @@ function selectMonth(date: Dayjs) {
 </script>
 
 <template>
-  <div class="maz-picker-month-switcher maz:absolute maz:inset-0 maz:z-1 maz:flex maz:flex-col maz:bg-surface">
+  <div class="maz-picker-month-switcher maz:absolute maz:inset-0 maz:z-1 maz:flex maz:flex-col maz:bg-container">
     <div class="maz-picker-month-switcher__header maz:flex maz:justify-end maz:border-b maz:border-divider maz:p-2">
       <MazBtn size="xs" color="transparent" type="button" @click.stop="$emit('close', $event)">
         <MazIcon :icon="MazXMark" class="maz:text-lg" />

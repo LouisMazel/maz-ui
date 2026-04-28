@@ -58,7 +58,7 @@ You can also initialize the theme via the [`MazUiProvider`](./maz-ui-provider.md
 html {
   font-size: var(--maz-base-font-size);
   font-family: var(--maz-font-family);
-  background-color: var(--maz-background);
+  background-color: var(--maz-surface);
   color: var(--maz-foreground);
 }
 ```
@@ -73,9 +73,9 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 </script>
 
 <template>
-  <div class="maz:bg-background maz:text-foreground">
+  <div class="maz:bg-surface maz:text-foreground">
     <button
-      class="maz:rounded maz:bg-primary maz:text-primary-foreground"
+      class="maz:rounded-md maz:bg-primary maz:text-primary-foreground"
       @click="toggleDarkMode"
     >
       {{ isDark ? '☀️' : '🌙' }} Toggle theme
@@ -287,6 +287,14 @@ A dark and elegant theme with a focus on readability and minimalism.
 import { obsidian } from '@maz-ui/themes/presets'
 ```
 
+### Nova
+
+A modern startup / AI / creative preset — electric violet primary, hot coral secondary, cyan accent. Tight 0.5rem `md` radius, Geist + Inter font stack, snappy ease-out spring. Built for product / AI surfaces (think Linear, Vercel, OpenAI energy) where the UI itself should feel alive.
+
+```typescript
+import { nova } from '@maz-ui/themes/presets'
+```
+
 ## Rendering Strategies
 
 ### 🚀 Hybrid (Recommended)
@@ -360,7 +368,7 @@ app.use(MazUi, {
     Reset
   </MazBtn>
 
-  <div class="maz:mt-4 maz:p-4 maz:bg-primary/10 maz:rounded-[var(--maz-radius)]">
+  <div class="maz:mt-4 maz:p-4 maz:bg-primary/10 maz:rounded-md">
     <p v-if="presetName === 'custom-purple'" class="maz:text-primary maz:font-medium">
       Custom theme applied with purple colors!
     </p>
@@ -379,8 +387,10 @@ const customTheme = await definePreset({
   overrides: {
     name: 'custom-purple',
     foundation: {
-      radius: '1rem'
       'font-family': 'Inter, sans-serif'
+    },
+    scales: {
+      radius: { md: '1rem' }
     },
     colors: {
       light: {
@@ -430,27 +440,105 @@ const brandTheme = await definePreset({
   overrides: {
     name: 'brand',
     foundation: {
-      'radius': '0.75rem',
       'border-width': '2px',
       'font-family': 'Inter, sans-serif'
+    },
+    scales: {
+      radius: { md: '0.75rem' }
     },
     colors: {
       light: {
         primary: '210 100% 50%',
         secondary: '210 40% 96%',
-        background: '210 20% 98%',
+        surface: '210 20% 98%',
         accent: '280 100% 70%'
       },
       dark: {
         primary: '210 100% 60%',
         secondary: '210 40% 15%',
-        background: '210 20% 8%',
+        surface: '210 20% 8%',
         accent: '280 100% 80%'
       }
     }
   }
 })
 ```
+
+### Customizing scales
+
+Each `ThemeScales` entry maps to a Tailwind utility — override the keys you care about and the rest stays untouched:
+
+```typescript
+const denseTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    name: 'dense',
+    scales: {
+      // Tighter spacing — every p-N / gap-N / m-N rescales
+      spacing: '0.2rem',
+      // Sharper corners on the whole radius scale
+      radius: {
+        'xs': '0.0625rem',
+        'sm': '0.125rem',
+        'md': '0.375rem',
+        'lg': '0.5rem',
+        'xl': '0.75rem',
+        '2xl': '1rem',
+        '3xl': '1.5rem',
+      },
+      // Custom elevated-surface shadow
+      shadow: {
+        elevation: '0 8px 24px rgba(0, 0, 0, 0.15)',
+      },
+    },
+  },
+})
+```
+
+Foundation gets new optional keys for fonts and disabled-state behaviour:
+
+```typescript
+const codeTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    foundation: {
+      'font-mono': '"JetBrains Mono", ui-monospace, SFMono-Regular, monospace',
+      'font-display': '"Cal Sans", Manrope, sans-serif',
+      'disabled-opacity': '0.4',
+      'disabled-cursor': 'wait',
+    },
+  },
+})
+```
+
+### Per-component overrides
+
+`components` is a small, validated set of per-component knobs. Every entry is per-mode where appropriate so light and dark can drift independently:
+
+```typescript
+const surfaceTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    name: 'cool-surfaces',
+    components: {
+      btn: {
+        // Bias every button text heavier
+        'font-weight': '600',
+      },
+      container: {
+        // Cards / dialogs / popovers / drawers — light = page surface, dark = a tier above
+        bg: { light: 'var(--maz-surface)', dark: 'var(--maz-surface-300)' },
+      },
+      input: {
+        // All form-control surfaces
+        bg: { light: 'var(--maz-surface-100)', dark: 'var(--maz-surface-400)' },
+      },
+    },
+  },
+})
+```
+
+Components consume these via `maz:bg-container` / `maz:bg-input` Tailwind utilities, so a single override propagates everywhere — no per-component class hunt.
 
 ## useTheme Composable API
 
@@ -746,11 +834,11 @@ The system automatically generates all necessary variables:
   --maz-primary: 210 100% 56%;
   --maz-primary-foreground: 0 0% 100%;
   --maz-secondary: 164 76% 46%;
-  --maz-background: 0 0% 100%;
+  --maz-surface: 0 0% 100%;
   --maz-foreground: 210 8% 14%;
 
   /* Design tokens */
-  --maz-radius: 0.7rem;
+  --maz-radius-md: 0.7rem;
   --maz-border-width: 0.063rem;
   --maz-font-family: Manrope, sans-serif;
 }
@@ -773,7 +861,7 @@ The system automatically generates all necessary variables:
 
 ```css
 .dark {
-  --maz-background: 235 16% 15%;
+  --maz-surface: 235 16% 15%;
   --maz-foreground: 0 0% 85%;
   /* Variables automatically adapted */
 }
@@ -781,7 +869,7 @@ The system automatically generates all necessary variables:
 /* Or with media query */
 @media (prefers-color-scheme: dark) {
   :root {
-    --maz-background: 235 16% 15%;
+    --maz-surface: 235 16% 15%;
     --maz-foreground: 0 0% 85%;
   }
 }
@@ -792,7 +880,7 @@ The system automatically generates all necessary variables:
 ```css
 @layer theme {
   :root {
-    --maz-background: 0 0% 100%;
+    --maz-surface: 0 0% 100%;
     --maz-foreground: 210 8% 14%;
     --maz-primary: 210 100% 56%;
     --maz-primary-foreground: 0 0% 100%;
@@ -812,15 +900,15 @@ The system automatically generates all necessary variables:
     --maz-contrast-foreground: 255 0% 95%;
     --maz-muted: 0 0% 54%;
     --maz-shadow: 240 5.9% 10%;
-    --maz-border: 220 13.04% 90.98%;
-    --maz-radius: 0.7rem;
+    --maz-divider: 220 13.04% 90.98%;
+    --maz-radius-md: 0.7rem;
     --maz-font-family: Manrope, sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     --maz-base-font-size: 14px;
     --maz-border-width: 0.0625rem;
   }
 
   .dark {
-    --maz-background: 235 16% 15%;
+    --maz-surface: 235 16% 15%;
     --maz-foreground: 0 0% 85%;
     --maz-primary: 210 100% 56%;
     --maz-primary-foreground: 0 0% 100%;
@@ -840,8 +928,8 @@ The system automatically generates all necessary variables:
     --maz-contrast-foreground: 210 8% 14%;
     --maz-muted: 255 0% 54%;
     --maz-shadow: 240 3.7% 15.9%;
-    --maz-border: 238 17% 25%;
-    --maz-radius: 0.7rem;
+    --maz-divider: 238 17% 25%;
+    --maz-radius-md: 0.7rem;
     --maz-font-family: Manrope, sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     --maz-base-font-size: 14px;
     --maz-border-width: 0.0625rem;
@@ -940,17 +1028,17 @@ The system automatically generates all necessary variables:
     --maz-contrast-800: 235 16.3% 0%;
     --maz-contrast-900: 235 16.4% 0%;
     --maz-contrast-950: 235 16.4% 0%;
-    --maz-background-50: 0 5% 100%;
-    --maz-background-100: 0 5% 100%;
-    --maz-background-200: 0 5% 100%;
-    --maz-background-300: 0 5% 100%;
-    --maz-background-400: 0 5% 100%;
-    --maz-background-500: 0 0% 100%;
-    --maz-background-600: 0 5% 92.5%;
-    --maz-background-700: 0 5% 85%;
-    --maz-background-800: 0 5% 77.5%;
-    --maz-background-900: 0 5% 70%;
-    --maz-background-950: 0 5% 62.5%;
+    --maz-surface-50: 0 5% 100%;
+    --maz-surface-100: 0 5% 100%;
+    --maz-surface-200: 0 5% 100%;
+    --maz-surface-300: 0 5% 100%;
+    --maz-surface-400: 0 5% 100%;
+    --maz-surface-500: 0 0% 100%;
+    --maz-surface-600: 0 5% 92.5%;
+    --maz-surface-700: 0 5% 85%;
+    --maz-surface-800: 0 5% 77.5%;
+    --maz-surface-900: 0 5% 70%;
+    --maz-surface-950: 0 5% 62.5%;
     --maz-foreground-50: 210 7.9% 51.5%;
     --maz-foreground-100: 210 7.9% 44%;
     --maz-foreground-200: 210 7.9% 36.5%;
@@ -962,17 +1050,17 @@ The system automatically generates all necessary variables:
     --maz-foreground-800: 210 8.1% 0%;
     --maz-foreground-900: 210 8.1% 0%;
     --maz-foreground-950: 210 8.1% 0%;
-    --maz-border-50: 220 12.7% 100%;
-    --maz-border-100: 220 12.7% 100%;
-    --maz-border-200: 220 12.8% 100%;
-    --maz-border-300: 220 12.9% 100%;
-    --maz-border-400: 220 13% 98.5%;
-    --maz-border-500: 220 13% 91%;
-    --maz-border-600: 220 13.1% 83.5%;
-    --maz-border-700: 220 13.2% 76%;
-    --maz-border-800: 220 13.2% 68.5%;
-    --maz-border-900: 220 13.3% 61%;
-    --maz-border-950: 220 13.3% 53.5%;
+    --maz-divider-50: 220 12.7% 100%;
+    --maz-divider-100: 220 12.7% 100%;
+    --maz-divider-200: 220 12.8% 100%;
+    --maz-divider-300: 220 12.9% 100%;
+    --maz-divider-400: 220 13% 98.5%;
+    --maz-divider-500: 220 13% 91%;
+    --maz-divider-600: 220 13.1% 83.5%;
+    --maz-divider-700: 220 13.2% 76%;
+    --maz-divider-800: 220 13.2% 68.5%;
+    --maz-divider-900: 220 13.3% 61%;
+    --maz-divider-950: 220 13.3% 53.5%;
     --maz-muted-50: 0 5% 91.5%;
     --maz-muted-100: 0 5% 84%;
     --maz-muted-200: 0 5% 76.5%;
@@ -1098,17 +1186,17 @@ The system automatically generates all necessary variables:
     --maz-contrast-800: 0 5% 77.5%;
     --maz-contrast-900: 0 5% 70%;
     --maz-contrast-950: 0 5% 62.5%;
-    --maz-background-50: 235 15.4% 52.5%;
-    --maz-background-100: 235 15.5% 45%;
-    --maz-background-200: 235 15.6% 37.5%;
-    --maz-background-300: 235 15.7% 30%;
-    --maz-background-400: 235 15.9% 22.5%;
-    --maz-background-500: 235 16% 15%;
-    --maz-background-600: 235 16.1% 7.5%;
-    --maz-background-700: 235 16.2% 0%;
-    --maz-background-800: 235 16.3% 0%;
-    --maz-background-900: 235 16.4% 0%;
-    --maz-background-950: 235 16.4% 0%;
+    --maz-surface-50: 235 15.4% 52.5%;
+    --maz-surface-100: 235 15.5% 45%;
+    --maz-surface-200: 235 15.6% 37.5%;
+    --maz-surface-300: 235 15.7% 30%;
+    --maz-surface-400: 235 15.9% 22.5%;
+    --maz-surface-500: 235 16% 15%;
+    --maz-surface-600: 235 16.1% 7.5%;
+    --maz-surface-700: 235 16.2% 0%;
+    --maz-surface-800: 235 16.3% 0%;
+    --maz-surface-900: 235 16.4% 0%;
+    --maz-surface-950: 235 16.4% 0%;
     --maz-foreground-50: 0 5% 100%;
     --maz-foreground-100: 0 5% 100%;
     --maz-foreground-200: 0 5% 100%;
@@ -1120,17 +1208,17 @@ The system automatically generates all necessary variables:
     --maz-foreground-800: 0 5% 62.5%;
     --maz-foreground-900: 0 5% 55%;
     --maz-foreground-950: 0 5% 47.5%;
-    --maz-border-50: 238 16.3% 62.5%;
-    --maz-border-100: 238 16.4% 55%;
-    --maz-border-200: 238 16.6% 47.5%;
-    --maz-border-300: 238 16.7% 40%;
-    --maz-border-400: 238 16.9% 32.5%;
-    --maz-border-500: 238 17% 25%;
-    --maz-border-600: 238 17.1% 17.5%;
-    --maz-border-700: 238 17.2% 10%;
-    --maz-border-800: 238 17.3% 2.5%;
-    --maz-border-900: 238 17.4% 0%;
-    --maz-border-950: 238 17.5% 0%;
+    --maz-divider-50: 238 16.3% 62.5%;
+    --maz-divider-100: 238 16.4% 55%;
+    --maz-divider-200: 238 16.6% 47.5%;
+    --maz-divider-300: 238 16.7% 40%;
+    --maz-divider-400: 238 16.9% 32.5%;
+    --maz-divider-500: 238 17% 25%;
+    --maz-divider-600: 238 17.1% 17.5%;
+    --maz-divider-700: 238 17.2% 10%;
+    --maz-divider-800: 238 17.3% 2.5%;
+    --maz-divider-900: 238 17.4% 0%;
+    --maz-divider-950: 238 17.5% 0%;
     --maz-muted-50: 255 5% 91.5%;
     --maz-muted-100: 255 5% 84%;
     --maz-muted-200: 255 5% 76.5%;

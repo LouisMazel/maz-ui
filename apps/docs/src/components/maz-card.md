@@ -61,7 +61,7 @@ description: MazCard is a standalone component to display some texts and images 
     >
       <MazIcon icon="/trash.svg" class="maz:text-xl" />
     </MazBtn>
-    <MazBtn color="background">
+    <MazBtn color="surface">
       <MazIcon icon="/user-plus.svg" class="maz:text-xl" />
     </MazBtn>
   </template>

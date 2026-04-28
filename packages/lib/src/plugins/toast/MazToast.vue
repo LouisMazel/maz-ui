@@ -343,7 +343,7 @@ onMounted(() => {
       <!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
       <button
         role="alert"
-        class="m-toast__button maz:relative maz:flex maz:w-full maz:items-center maz:gap-2 maz:self-center maz:rounded maz:ps-2 maz:pe-2 maz:shadow-md maz:transition maz:duration-300 maz:ease-in-out maz:overflow-hidden maz:border maz:backdrop-blur-xl"
+        class="m-toast__button maz:relative maz:flex maz:w-full maz:items-center maz:gap-2 maz:self-center maz:rounded-md maz:ps-2 maz:pe-2 maz:shadow-md maz:transition maz:duration-300 maz:ease-in-out maz:overflow-hidden maz:border maz:backdrop-blur-xl"
         :class="[TOAST_BUTTON_COLOR[type], BUTTON_POSITION_X[positionX]]"
         @mouseover="toggleTimer(true)"
         @mouseleave="toggleTimer(false)"

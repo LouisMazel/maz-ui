@@ -116,7 +116,7 @@ const checklistItems = [
 </script>
 
 <template>
-  <div class="maz:flex maz:flex-col maz:gap-16 maz:p-8" style="max-width: 1400px; margin: 0 auto;">
+  <div class="maz:flex maz:flex-col maz:gap-16">
     <!-- ==================== MazBtn ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
@@ -654,7 +654,7 @@ const checklistItems = [
         Footer alignment
       </h3>
       <div class="maz:grid maz:grid-cols-3 maz:gap-4">
-        <MazCard footer-align="left">
+        <MazCard footer-align="start">
           <template #content-title>
             Left footer
           </template>
@@ -674,7 +674,7 @@ const checklistItems = [
             </MazBtn>
           </template>
         </MazCard>
-        <MazCard footer-align="right">
+        <MazCard footer-align="end">
           <template #content-title>
             Right footer
           </template>
@@ -847,7 +847,7 @@ const checklistItems = [
         Toggle expand
       </MazBtn>
       <MazExpandAnimation v-model="expandOpen">
-        <div class="maz:rounded maz:border maz:border-divider maz:p-4">
+        <div class="maz:rounded-md maz:border maz:border-divider maz:p-4">
           <p>This content is animated when toggled. The expand animation smoothly reveals and hides content with configurable duration and timing.</p>
           <p class="maz:mt-2">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

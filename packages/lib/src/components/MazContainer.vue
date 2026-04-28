@@ -110,7 +110,7 @@ const ROUNDED_CLASS = {
         '--block': block,
         'maz:overflow-hidden': overflowHidden,
         'maz:w-full': block,
-        'maz:bg-surface': !transparent,
+        'maz:bg-container': !transparent,
         'maz:shadow-elevation maz:drop-shadow-md': elevation,
         'maz:border maz:border-divider': bordered,
       },

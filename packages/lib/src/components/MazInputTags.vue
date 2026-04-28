@@ -177,7 +177,7 @@ const buttonSize = computed(() => {
 
 <template>
   <div
-    class="m-input-tags m-reset-css maz:relative maz:inline-flex maz:flex-wrap maz:gap-1 maz:overflow-hidden maz:rounded maz:border maz:bg-surface maz:px-[0.5em] maz:py-[0.25em] maz:align-top maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:bg-surface-400 maz:border-divider maz:dark:border-divider-400"
+    class="m-input-tags m-reset-css maz:relative maz:inline-flex maz:flex-wrap maz:gap-1 maz:overflow-hidden maz:rounded-md maz:border maz:bg-input maz:px-[0.5em] maz:py-[0.25em] maz:align-top maz:transition-colors maz:duration-200 maz:ease-in-out maz:border-divider maz:dark:border-divider-400"
     :class="[borderStyle, `--${color}`, `--${size}`, SIZE_CLASS[size], props.class, { '--block': block, 'maz:w-full': block }]"
     :style
     @focus.capture="isFocused = true"
@@ -190,14 +190,19 @@ const buttonSize = computed(() => {
           :disabled
           :size="buttonSize"
           :color="tagsHoveredId === id || lastIdToDelete === id ? 'destructive' : color"
-          :end-icon="tagsHoveredId === id || lastIdToDelete === id ? MazTrash : undefined"
           @click.stop="removeTag(id)"
-          @mouseenter="tagsHoveredId = id"
-          @focus="tagsHoveredId = id"
+          @mouseenter="tagsHoveredId = disabled ? undefined : id"
+          @focus="tagsHoveredId = disabled ? undefined : id"
           @mouseleave="tagsHoveredId = undefined"
           @blur="tagsHoveredId = undefined"
         >
           {{ tag }}
+
+          <template #end-icon>
+            <Transition name="maz-scale">
+              <MazTrash v-if="tagsHoveredId === id || lastIdToDelete === id" />
+            </Transition>
+          </template>
         </MazBtn>
       </div>
     </TransitionGroup>

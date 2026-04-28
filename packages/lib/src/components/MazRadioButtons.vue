@@ -25,7 +25,7 @@ export interface MazRadioButtonsProps<T = string | number | boolean, Option exte
   /** The name of the radio group */
   name?: string
   /** The color of the selected radio buttons */
-  color?: MazColor | 'background'
+  color?: MazColor | 'surface'
   /** Add elevation to the radio buttons */
   elevation?: boolean
   /**
@@ -151,8 +151,8 @@ const SIZE_CLASS: Record<MazSize, string> = {
         v-for="(option, i) in options"
         :key="getOptionId(option, i)"
         :for="getOptionId(option, i)"
-        class="m-radio-buttons__items maz:group maz:flex maz:cursor-pointer maz:gap-4 maz:rounded maz:border maz:border-divider
-        maz:bg-surface maz:px-4 maz:py-2 maz:font-medium maz:transition-colors maz:duration-300 maz:items-center"
+        class="m-radio-buttons__items maz:group maz:flex maz:cursor-pointer maz:gap-4 maz:rounded-md maz:border maz:border-divider
+        maz:bg-input maz:px-4 maz:py-2 maz:font-medium maz:transition-colors maz:duration-300 maz:items-center"
         :class="[
           `--size-${size}`,
           SIZE_CLASS[size],
@@ -192,7 +192,7 @@ const SIZE_CLASS: Record<MazSize, string> = {
         >
         <div v-if="selector" class="m-radio-buttons__items__checkbox maz:flex maz:flex-center">
           <span
-            class="maz:flex maz:h-6 maz:w-6 maz:flex-none maz:rounded-full maz:border maz:border-divider maz:p-0.5 maz:text-white maz:transition-colors maz:duration-300 maz:flex-center maz:bg-surface maz:dark:bg-surface-400"
+            class="maz:flex maz:h-6 maz:w-6 maz:flex-none maz:rounded-full maz:border maz:border-divider maz:p-0.5 maz:text-white maz:transition-colors maz:duration-300 maz:flex-center maz:bg-input"
             :class="{
               '--is-selected': isSelected(option.value),
             }"

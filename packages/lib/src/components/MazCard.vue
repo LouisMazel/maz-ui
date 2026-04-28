@@ -146,7 +146,7 @@ function toggleCollapse() {
 
 <template>
   <div
-    class="m-card m-reset-css maz:relative maz:inline-flex maz:max-h-full maz:flex-col maz:bg-surface maz:dark:border maz:dark:border-divider"
+    class="m-card m-reset-css maz:relative maz:inline-flex maz:max-h-full maz:flex-col maz:bg-container maz:dark:border maz:dark:border-divider"
     :class="[
       {
         'm-card--linked': isLinked,
@@ -154,7 +154,7 @@ function toggleCollapse() {
         'maz:shadow-elevation maz:drop-shadow-md': elevation,
         '--block maz:w-full': block,
         'maz:overflow-hidden': overflowHidden || !collapseOpenModel,
-        'maz:rounded': radius,
+        'maz:rounded-md': radius,
         'maz:border': bordered,
       },
     ]"
@@ -166,7 +166,7 @@ function toggleCollapse() {
       :class="[
         collapseOpenModel ? 'maz:rounded-t-md maz:border-divider' : 'maz:border-transparent',
         { '--is-collapsible maz:hover:bg-surface-600': collapsible },
-        { 'maz:justify-end': (!hasSlotContent(slots.title) || !title) && collapsible },
+        { 'maz:justify-end': !hasSlotContent(slots.title) && !title && collapsible },
         { 'maz:justify-between': hasSlotContent(slots.title) || title },
       ]"
       tabindex="-1"
@@ -218,7 +218,7 @@ function toggleCollapse() {
             :class="[wrapperClass, { 'maz:p-4': padding }]"
             class="m-card__content__wrapper maz:relative maz:max-w-full maz:h-full maz:flex maz:flex-col maz:gap-2"
           >
-            <div v-if="hasSlotContent(slots['content-title'])" class="m-card__title maz:text-foreground maz:text-xl">
+            <div v-if="hasSlotContent(slots['content-title'])" class="m-card__title maz:text-foreground maz:text-xl maz:font-display">
               <!--
               @slot content-title - The title of the card
               @binding collapse-open - The collapse open state of the card

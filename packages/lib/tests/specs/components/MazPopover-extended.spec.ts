@@ -230,7 +230,7 @@ describe('MazPopover extended coverage', () => {
     })
 
     it('should apply --surface class for background color', () => {
-      const wrapper = getWrapper({ modelValue: true, color: 'background' })
+      const wrapper = getWrapper({ modelValue: true, color: 'surface' })
       const panel = wrapper.find('.m-popover-panel')
       expect(panel.classes()).toContain('--surface')
     })

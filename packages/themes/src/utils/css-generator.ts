@@ -23,7 +23,7 @@ export interface CSSOptions {
 }
 
 const DEFAULT_CRITICAL_COLORS: (keyof ThemeColors)[] = [
-  'background',
+  'surface',
   'foreground',
   'primary',
   'primary-foreground',
@@ -43,17 +43,18 @@ const DEFAULT_CRITICAL_COLORS: (keyof ThemeColors)[] = [
   'contrast-foreground',
   'muted',
   'shadow',
-  'border',
+  'divider',
 ] as const
 
 const DEFAULT_CRITICAL_FOUNDATION: (keyof ThemeFoundation)[] = [
-  'radius',
   'font-family',
+  'font-mono',
+  'font-display',
   'base-font-size',
   'border-width',
 ] as const
 
-const scaleColors = ['primary', 'secondary', 'accent', 'destructive', 'success', 'warning', 'info', 'contrast', 'background', 'foreground', 'border', 'muted', 'overlay', 'shadow'] as const
+const scaleColors = ['primary', 'secondary', 'accent', 'destructive', 'success', 'warning', 'info', 'contrast', 'surface', 'foreground', 'divider', 'muted', 'overlay', 'shadow'] as const
 
 export function generateCSS(
   preset: ThemePreset,
@@ -131,7 +132,9 @@ function generateLightThemeVariables(
     foundation: lightFoundation,
     prefix,
     includeScales: !onlyCritical && includeColorScales,
+    includeStaticScales: !onlyCritical,
     preset: !onlyCritical ? preset : undefined,
+    mode: 'light',
   })
 }
 
@@ -163,8 +166,10 @@ function generateDarkThemeVariables(
     foundation: darkFoundation,
     prefix,
     includeScales: !onlyCritical && includeColorScales,
+    includeStaticScales: false,
     preset: !onlyCritical ? preset : undefined,
     isDark: true,
+    mode: 'dark',
   })
 }
 
@@ -212,8 +217,10 @@ function generateVariablesBlock({
   foundation,
   prefix,
   includeScales = false,
+  includeStaticScales = false,
   preset,
   isDark = false,
+  mode = 'light',
 }: {
   selector: string
   mediaQuery?: string
@@ -221,8 +228,12 @@ function generateVariablesBlock({
   foundation?: Partial<ThemeFoundation>
   prefix: string
   includeScales?: boolean
+  /** Emit mode-agnostic scales (spacing/radius/shadow/fontSize) — only on the light root block. */
+  includeStaticScales?: boolean
   preset?: ThemePreset
   isDark?: boolean
+  /** Current mode being emitted — used to pick the right `components.{container,input}.bg` value. */
+  mode?: 'light' | 'dark'
 }): string {
   const variables: string[] = []
 
@@ -242,6 +253,14 @@ function generateVariablesBlock({
     })
   }
 
+  if (includeStaticScales && preset?.scales) {
+    variables.push(...generateScaleVariables(preset.scales, prefix))
+  }
+
+  if (preset?.components) {
+    variables.push(...generateComponentVariables(preset.components, mode, prefix))
+  }
+
   if (includeScales && preset) {
     const sourceColors = isDark ? preset.colors.dark : preset.colors.light
     const colorScales = generateAllColorScales(sourceColors, prefix)
@@ -255,6 +274,50 @@ function generateVariablesBlock({
   }
 
   return `\n  ${selector} {\n${content}\n  }\n`
+}
+
+function generateScaleVariables(scales: ThemePreset['scales'], prefix: string): string[] {
+  const lines: string[] = []
+
+  if (scales.spacing) {
+    lines.push(`  --${prefix}-spacing: ${scales.spacing};`)
+  }
+
+  Object.entries(scales.radius ?? {}).forEach(([key, value]) => {
+    if (value)
+      lines.push(`  --${prefix}-radius-${key}: ${value};`)
+  })
+
+  Object.entries(scales.shadow ?? {}).forEach(([key, value]) => {
+    if (value)
+      lines.push(`  --${prefix}-shadow-style-${key}: ${value};`)
+  })
+
+  return lines
+}
+
+function generateComponentVariables(
+  components: NonNullable<ThemePreset['components']>,
+  mode: 'light' | 'dark',
+  prefix: string,
+): string[] {
+  const lines: string[] = []
+
+  if (components.btn?.['font-weight']) {
+    lines.push(`  --${prefix}-btn-font-weight: ${components.btn['font-weight']};`)
+  }
+
+  const containerBg = components.container?.bg?.[mode]
+  if (containerBg) {
+    lines.push(`  --${prefix}-container-bg: ${normalizeColor(containerBg)};`)
+  }
+
+  const inputBg = components.input?.bg?.[mode]
+  if (inputBg) {
+    lines.push(`  --${prefix}-input-bg: ${normalizeColor(inputBg)};`)
+  }
+
+  return lines
 }
 
 function generateAllColorScales(colors: ThemeColors, prefix: string): string[] {

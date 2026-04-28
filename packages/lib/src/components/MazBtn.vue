@@ -45,9 +45,9 @@ export interface MazBtnProps {
   size?: MazSize
   /**
    * The color of the button
-   * @values `'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'destructive' | 'transparent' | 'contrast' | 'accent' | 'background'`
+   * @values `'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'destructive' | 'transparent' | 'contrast' | 'accent' | 'surface'`
    */
-  color?: MazColor | 'background'
+  color?: MazColor | 'surface'
   /**
    * The type of the button
    * @values `'submit' | 'reset' | 'button'`
@@ -291,6 +291,7 @@ const ICON_PADDING_CLASS = {
   justify-content: var(--m-btn-justify, center);
   background-color: var(--m-btn-bg);
   color: var(--m-btn-fg);
+  font-weight: var(--maz-btn-font-weight, 500);
 
   &:not(:disabled):hover {
     background-color: var(--m-btn-bg-hover);
@@ -378,7 +379,7 @@ const ICON_PADDING_CLASS = {
     }
   }
 
-  /* Surface (aka color="background") */
+  /* Surface — color="surface" */
   &.--surface {
     @apply maz:bg-surface maz:text-foreground;
 
@@ -427,7 +428,7 @@ const ICON_PADDING_CLASS = {
   }
 
   &:disabled:not(.--loading) {
-    @apply maz:cursor-not-allowed maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-muted maz:border-surface-600 maz:dark:border-surface-400;
+    @apply maz:disabled-cursor maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-muted maz:border-surface-600 maz:dark:border-surface-400;
   }
 
   &.--loading {

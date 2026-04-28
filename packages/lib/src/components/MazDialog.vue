@@ -119,7 +119,7 @@ if (scrollable) {
     @update:model-value="$emit('update:model-value', $event)"
   >
     <div
-      class="m-dialog maz:flex maz:origin-center maz:flex-col maz:min-w-full maz:rounded maz:bg-surface maz:text-foreground maz:dark:border maz:dark:border-divider maz:tab-s:my-8 maz:max-w-full maz:touch-none"
+      class="m-dialog maz:flex maz:origin-center maz:flex-col maz:min-w-full maz:rounded-md maz:bg-container maz:text-foreground maz:dark:border maz:dark:border-divider maz:tab-s:my-8 maz:max-w-full maz:touch-none"
       role="dialog"
       aria-modal="true"
       :style="[{ '--max-width': maxWidth, '--min-width': minWidth }]"
@@ -135,7 +135,7 @@ if (scrollable) {
           <h2
             v-if="hasSlotContent(slots.title) || title"
             id="dialogTitle"
-            class="m-dialog-title maz:my-0 maz:text-xl maz:font-semibold"
+            class="m-dialog-title maz:my-0 maz:text-xl maz:font-semibold maz:font-display"
           >
             <!--
                 @slot Title slot in the header

@@ -1,11 +1,24 @@
 import type { ThemePreset } from '../types'
+import {
+  DEFAULT_BTN_FONT_WEIGHT,
+  DEFAULT_CONTAINER_BG,
+  DEFAULT_DISABLED_CURSOR,
+  DEFAULT_DISABLED_OPACITY,
+  DEFAULT_FONT_MONO,
+  DEFAULT_INPUT_BG,
+  DEFAULT_SHADOW,
+  DEFAULT_SPACING,
+} from './_defaults'
+
+const FONT_FAMILY = `Manrope, sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
 
 export const mazUi: ThemePreset = {
   name: 'maz-ui',
   foundation: {
     'base-font-size': '14px',
-    'font-family': `Manrope, sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
-    'radius': '0.7rem',
+    'font-family': FONT_FAMILY,
+    'font-mono': DEFAULT_FONT_MONO,
+    'font-display': FONT_FAMILY,
     'border-width': '1px',
     'duration-fast': '100ms',
     'duration-normal': '200ms',
@@ -13,10 +26,30 @@ export const mazUi: ThemePreset = {
     'easing-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
     'easing-in': 'cubic-bezier(0.4, 0, 1, 1)',
     'easing-in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
+    'disabled-opacity': DEFAULT_DISABLED_OPACITY,
+    'disabled-cursor': DEFAULT_DISABLED_CURSOR,
+  },
+  scales: {
+    spacing: DEFAULT_SPACING,
+    radius: {
+      'xs': '0.125rem',
+      'sm': '0.25rem',
+      'md': '0.7rem',
+      'lg': '1rem',
+      'xl': '1.5rem',
+      '2xl': '2rem',
+      '3xl': '3rem',
+    },
+    shadow: DEFAULT_SHADOW,
+  },
+  components: {
+    btn: { 'font-weight': DEFAULT_BTN_FONT_WEIGHT },
+    container: { bg: DEFAULT_CONTAINER_BG },
+    input: { bg: DEFAULT_INPUT_BG },
   },
   colors: {
     light: {
-      'background': 'oklch(1 0 0)',
+      'surface': 'oklch(1 0 0)',
       'foreground': 'oklch(0.2573 0.0068 248.09)',
       'primary': 'oklch(0.6495 0.1913 253.63)',
       'primary-foreground': 'oklch(1 0 0)',
@@ -34,13 +67,13 @@ export const mazUi: ThemePreset = {
       'info-foreground': 'oklch(1 0 0)',
       'contrast': 'oklch(0.2524 0.0212 280.69)',
       'contrast-foreground': 'oklch(0.9619 0 0)',
-      'border': 'oklch(0.9276 0.0058 264.53)',
+      'divider': 'oklch(0.9276 0.0058 264.53)',
       'overlay': 'oklch(0.5103 0 0)',
       'muted': 'oklch(0.6324 0 0)',
       'shadow': 'oklch(0.2103 0.0059 285.88)',
     },
     dark: {
-      'background': 'oklch(0.2524 0.0212 280.69)',
+      'surface': 'oklch(0.2524 0.0212 280.69)',
       'foreground': 'oklch(0.8845 0 0)',
       'primary': 'oklch(0.6495 0.1913 253.63)',
       'primary-foreground': 'oklch(1 0 0)',
@@ -59,7 +92,7 @@ export const mazUi: ThemePreset = {
       'contrast': 'oklch(1 0 0)',
       'contrast-foreground': 'oklch(0.2573 0.0068 248.09)',
       'muted': 'oklch(0.6324 0 0)',
-      'border': 'oklch(0.3399 0.0366 282.73)',
+      'divider': 'oklch(0.3399 0.0366 282.73)',
       'overlay': 'oklch(0.2697 0 0)',
       'shadow': 'oklch(0.2741 0.0055 286.03)',
     },

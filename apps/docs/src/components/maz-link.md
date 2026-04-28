@@ -43,7 +43,7 @@ import MazLink from 'maz-ui/components/MazLink'
     <MazLink color="destructive"> View product detail (destructive) </MazLink>
     <MazLink color="accent"> View product detail (accent) </MazLink>
     <MazLink color="contrast"> View product detail (contrast) </MazLink>
-    <MazLink color="background"> View product detail (background) </MazLink>
+    <MazLink color="surface"> View product detail (surface) </MazLink>
     <MazLink color="muted"> View product detail (muted) </MazLink>
   </div>
 
@@ -58,7 +58,7 @@ import MazLink from 'maz-ui/components/MazLink'
 <MazLink color="destructive"> View product detail (destructive) </MazLink>
 <MazLink color="accent"> View product detail (accent) </MazLink>
 <MazLink color="contrast"> View product detail (contrast) </MazLink>
-<MazLink color="background"> View product detail (background) </MazLink>
+<MazLink color="surface"> View product detail (surface) </MazLink>
 <MazLink color="muted"> View product detail (muted) </MazLink>
 ```
 

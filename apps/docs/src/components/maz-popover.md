@@ -118,10 +118,10 @@ This provides the best user experience across all devices without requiring manu
         <p class="maz:text-sm maz:mb-2">
           This combines adaptive behavior with keep-open-on-hover for menus.
         </p>
-        <button class="maz:block maz:w-full maz:px-3 maz:py-2 maz:text-start maz:text-sm maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:rounded">
+        <button class="maz:block maz:w-full maz:px-3 maz:py-2 maz:text-start maz:text-sm maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:rounded-md">
           Menu Item 1
         </button>
-        <button class="maz:block maz:w-full maz:px-3 maz:py-2 maz:text-start maz:text-sm maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:rounded">
+        <button class="maz:block maz:w-full maz:px-3 maz:py-2 maz:text-start maz:text-sm maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:rounded-md">
           Menu Item 2
         </button>
       </div>
@@ -161,10 +161,10 @@ This provides the best user experience across all devices without requiring manu
       <p class="maz:text-sm maz:mb-2">
         Perfect for dropdown menus that work on all devices
       </p>
-      <button class="maz:block maz:w-full maz:px-3 maz:py-2 maz:text-start maz:text-sm maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:rounded">
+      <button class="maz:block maz:w-full maz:px-3 maz:py-2 maz:text-start maz:text-sm maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:rounded-md">
         Menu Item 1
       </button>
-      <button class="maz:block maz:w-full maz:px-3 maz:py-2 maz:text-start maz:text-sm maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:rounded">
+      <button class="maz:block maz:w-full maz:px-3 maz:py-2 maz:text-start maz:text-sm maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:rounded-md">
         Menu Item 2
       </button>
     </div>
@@ -528,7 +528,7 @@ When you not specify a fallback position, the popover will fallback on the best 
 
 <ComponentDemo>
   <div class="maz:flex maz:gap-4 maz:flex-wrap">
-    <MazPopover color="background" trigger="hover">
+    <MazPopover color="surface" trigger="hover">
       <template #trigger>
         <MazBtn color="contrast">Background</MazBtn>
       </template>
@@ -606,7 +606,7 @@ When you not specify a fallback position, the popover will fallback on the best 
 
 ```vue
 <template>
-  <MazPopover color="background" trigger="hover">
+  <MazPopover color="surface" trigger="hover">
     <template #trigger>
       <MazBtn color="contrast">Background</MazBtn>
     </template>
@@ -1260,7 +1260,7 @@ function resetForm() {
         <p class="maz:text-sm">Check the console for events!</p>
       </div>
     </MazPopover>
-    <div class="maz:p-4 maz:border maz:dark:bg-surface-400 maz:rounded maz:text-sm">
+    <div class="maz:p-4 maz:border maz:dark:bg-surface-400 maz:rounded-md maz:text-sm">
       <h4 class="maz:font-semibold maz:mb-2">Event Log:</h4>
       <div v-if="events.length === 0" class="maz:text-muted">
         No events yet. Try opening the popover above.

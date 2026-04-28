@@ -153,7 +153,7 @@ const checkIconSize = computed(() => {
 
 const checkIconColor = computed(() => {
   if (props.color === 'contrast') {
-    return 'var(--maz-background)'
+    return 'var(--maz-surface)'
   }
 
   return `var(--maz-${props.color}-foreground)`
@@ -231,7 +231,7 @@ function onFocus(event: FocusEvent) {
     :for="instanceId"
     class="m-checkbox m-reset-css maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden"
     :class="[
-      { '--error': error, '--warning': warning, '--success': success, 'maz:cursor-not-allowed maz:text-muted': disabled, 'maz:cursor-pointer': !disabled },
+      { '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-pointer': !disabled },
       props.class,
     ]"
     :style="[style, { '--checkbox-selected-color': checkboxSelectedColor, '--checkbox-box-shadow-color': checkboxBoxShadow }]"
@@ -293,7 +293,7 @@ function onFocus(event: FocusEvent) {
     @apply maz:hidden;
 
     &:not(:checked) ~ span {
-      @apply maz:bg-surface maz:dark:bg-surface-400;
+      @apply maz:bg-input;
     }
 
     &:checked ~ span {

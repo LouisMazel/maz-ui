@@ -842,7 +842,7 @@ defineExpose({
 .m-select {
   &.--disabled {
     .m-select-input {
-      @apply maz:cursor-not-allowed;
+      @apply maz:disabled-cursor;
     }
   }
 
@@ -877,13 +877,13 @@ defineExpose({
     @apply maz:cursor-pointer maz:appearance-none maz:border-none;
 
     &:disabled {
-      @apply maz:cursor-not-allowed;
+      @apply maz:disabled-cursor;
     }
   }
 }
 
 .m-select-list {
-  @apply maz:z-default-backdrop maz:flex maz:flex-col maz:gap-1 maz:overflow-hidden maz:rounded maz:bg-surface maz:drop-shadow-md maz:shadow-elevation;
+  @apply maz:z-default-backdrop maz:flex maz:flex-col maz:gap-1 maz:overflow-hidden maz:rounded-md maz:bg-container maz:drop-shadow-md maz:shadow-elevation;
 
   &-optgroup {
     @apply maz:flex-none maz:p-0.5 maz:text-start maz:text-[0.875em] maz:text-muted;
@@ -915,7 +915,7 @@ defineExpose({
 
     /* Modern CSS for all browsers (fallback) */
     scrollbar-width: thin;
-    scrollbar-color: var(--maz-background-600) transparent;
+    scrollbar-color: var(--maz-surface-600) transparent;
   }
 
   &__no-results {
@@ -923,7 +923,7 @@ defineExpose({
   }
 
   &-item {
-    @apply maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-3 maz:truncate maz:rounded maz:bg-transparent maz:px-3 maz:py-2 maz:text-start maz:transition-colors maz:duration-300 maz:ease-in-out maz:focus-within:bg-surface-600 maz:dark:focus-within:bg-surface-400 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:outline-hidden maz:border maz:border-solid maz:border-transparent;
+    @apply maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-3 maz:truncate maz:rounded-md maz:bg-transparent maz:px-3 maz:py-2 maz:text-start maz:transition-colors maz:duration-300 maz:ease-in-out maz:focus-within:bg-surface-600 maz:dark:focus-within:bg-surface-400 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:outline-hidden maz:border maz:border-solid maz:border-transparent;
 
     span {
       @apply maz:truncate;

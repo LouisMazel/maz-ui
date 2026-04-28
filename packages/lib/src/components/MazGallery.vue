@@ -78,15 +78,15 @@ export interface MazGalleryProps {
    */
   scale?: boolean
   /**
-   * Choose color of borders between images - Should be a CSS color or CSS variable - Ex: `#000` or `var(--maz-background-300)`
+   * Choose color of borders between images - Should be a CSS color or CSS variable - Ex: `#000` or `var(--maz-surface-300)`
    * @type string
    * @default 'transparent'
    */
   separatorColor?: string
   /**
-   * Choose background color of the gallery - Should be a CSS color or CSS variable - Ex: `#000` or `var(--maz-background-300)`
+   * Choose background color of the gallery - Should be a CSS color or CSS variable - Ex: `#000` or `var(--maz-surface-300)`
    * @type string
-   * @default 'var(--maz-background-300)'
+   * @default 'var(--maz-surface-300)'
    */
   backgroundColor?: string
 }
@@ -168,8 +168,8 @@ function shouldHaveRemainingLayer(index: number): boolean {
     }]"
     :class="{
       '--radius': radius,
-      'maz:rounded': radius,
-      'maz:bg-[var(--gallery-background-color)]': !!backgroundColor,
+      'maz:rounded-md': radius,
+      'maz:bg-(--gallery-background-color)': !!backgroundColor,
     }"
   >
     <section class="m-gallery__wrapper maz:flex maz:flex-1">

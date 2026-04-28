@@ -150,7 +150,7 @@ function onFocus(event: FocusEvent) {
   <label
     :for="instanceId"
     class="m-radio m-reset-css maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden"
-    :class="[{ '--selected': isSelected, '--error': error, '--warning': warning, '--success': success, 'maz:cursor-not-allowed maz:text-muted': disabled, 'maz:cursor-pointer': !disabled }, props.class]"
+    :class="[{ '--selected': isSelected, '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-pointer': !disabled }, props.class]"
     tabindex="0"
     role="radio"
     :style="[style, { '--radio-size': radioSize, '--radio-selected-color': radioSelectedColor, '--radio-box-shadow': radioBoxShadow }]"
@@ -221,7 +221,7 @@ function onFocus(event: FocusEvent) {
   }
 
   &:not(.--selected) > span {
-    @apply maz:bg-surface maz:dark:bg-surface-400;
+    @apply maz:bg-input;
   }
 
   &.--selected > span {

@@ -368,7 +368,7 @@ watch(
       }
 
       &:disabled {
-        @apply maz:cursor-not-allowed maz:border-transparent;
+        @apply maz:disabled-cursor maz:border-transparent;
 
         &.--is-selected {
           @apply maz:bg-surface-600! maz:dark:bg-surface-400 maz:text-muted!;

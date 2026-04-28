@@ -228,8 +228,8 @@ const stateLabelColor = computed(() => [
           '--autogrow': autogrow,
           'maz:px-4 maz:py-3': padding,
           'maz:border maz:border-solid': border && !disabled,
-          'maz:bg-surface maz:dark:bg-surface-400': !transparent && !disabled,
-          'maz:cursor-not-allowed maz:border-divider maz:dark:border-divider-400 maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-muted': disabled,
+          'maz:bg-input': !transparent && !disabled,
+          'maz:disabled-cursor maz:border-divider maz:dark:border-divider-400 maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-muted': disabled,
         },
         borderStyle,
         ROUNDED_CLASS[roundedSize],
@@ -311,7 +311,7 @@ const stateLabelColor = computed(() => [
 
   &.--is-disabled {
     & * {
-      @apply maz:cursor-not-allowed maz:text-muted;
+      @apply maz:disabled-cursor maz:text-muted;
     }
 
     & > label {

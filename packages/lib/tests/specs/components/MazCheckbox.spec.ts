@@ -147,7 +147,7 @@ describe('MazCheckbox extended branch coverage', () => {
         props: { modelValue: true, color: 'contrast' },
       })
       const checkIcon = wrapper.find('.check-icon')
-      expect(checkIcon.attributes('style')).toContain('var(--maz-background)')
+      expect(checkIcon.attributes('style')).toContain('var(--maz-surface)')
     })
 
     it('uses color-foreground for icon when color is primary', () => {

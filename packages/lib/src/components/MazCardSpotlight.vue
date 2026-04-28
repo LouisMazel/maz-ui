@@ -139,7 +139,7 @@ onMounted(() => {
 <template>
   <div
     ref="containerElement"
-    class="m-card-spotlight m-reset-css maz:relative maz:inline-flex maz:overflow-hidden maz:rounded"
+    class="m-card-spotlight m-reset-css maz:relative maz:inline-flex maz:overflow-hidden maz:rounded-md"
     :class="{ 'maz:shadow-elevation maz:drop-shadow-md': elevation }"
     :style="{ 'backgroundColor': alphaColor20, '--inner-opacity': innerOpacity }"
   >
@@ -165,12 +165,12 @@ onMounted(() => {
   contain: layout style paint;
 
   .inner {
-    border-radius: calc(var(--maz-radius) - max(var(--maz-border-width), 1px));
+    border-radius: calc(var(--maz-radius-md) - max(var(--maz-border-width), 1px));
 
     &::before {
       content: '';
 
-      @apply maz:absolute maz:left-0 maz:top-0 maz:z-1 maz:h-full maz:w-full maz:bg-surface;
+      @apply maz:absolute maz:left-0 maz:top-0 maz:z-1 maz:h-full maz:w-full maz:bg-container;
 
       opacity: var(--inner-opacity);
     }

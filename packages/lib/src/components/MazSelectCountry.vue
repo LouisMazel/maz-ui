@@ -308,8 +308,8 @@ const flagUrl = computed(() => {
             :alt="modelValue"
             width="20"
             height="20"
-            class="maz:size-5 maz:rounded"
-            img-class="maz:size-5 maz:rounded"
+            class="maz:size-5 maz:rounded-md"
+            img-class="maz:size-5 maz:rounded-md"
           />
         </slot>
       </template>
@@ -340,8 +340,8 @@ const flagUrl = computed(() => {
                 :alt="`${option.name} flag`"
                 width="20"
                 height="20"
-                class="maz:size-5 maz:rounded"
-                img-class="maz:rounded maz:h-5 maz:w-5"
+                class="maz:size-5 maz:rounded-md"
+                img-class="maz:rounded-md maz:h-5 maz:w-5"
               />
               <span v-else class="m-select-country__select__item__list-flag maz:text-primary-foreground/80 maz:text-xs maz:size-5 maz:flex maz:flex-center maz:rounded-full maz:bg-primary-500 maz:leading-none">
                 {{ option.code }}

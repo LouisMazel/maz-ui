@@ -12,7 +12,7 @@ description: The module formatDate is a function that formats dates with the nat
 <MazInput v-model="dateValue" type="date" />
 
 <div
-  style="padding: 16px; margin-top: 16px; background-color: var(--maz-background-300);"
+  style="padding: 16px; margin-top: 16px; background-color: var(--maz-surface-300);"
   class="flex flex-center rounded gap-05"
 >
   formatted value: <strong>{{ dateFormatted }}</strong>
@@ -34,7 +34,7 @@ const dateFormatted = computed(() =>
   <MazInput v-model="dateValue" type="date" />
 
   <div
-    style="padding: 16px; margin-top: 16px; background-color: var(--maz-background-300);"
+    style="padding: 16px; margin-top: 16px; background-color: var(--maz-surface-300);"
   >
     {{ dateFormatted }}
   </div>

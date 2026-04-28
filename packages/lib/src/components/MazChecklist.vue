@@ -215,7 +215,7 @@ function updateQuery(value?: string) {
         v-for="(item) of filteredItems"
         :key="item.value"
         :for="`${id}-checklist-item-${item.value}`"
-        class="m-checklist-item m-reset-css maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-4 maz:rounded maz:px-3 maz:py-2 maz:text-start maz:hover:bg-surface-600"
+        class="m-checklist-item m-reset-css maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-4 maz:rounded-md maz:px-3 maz:py-2 maz:text-start maz:hover:bg-surface-600"
       >
         <MazCheckbox
           :id="`${id}-checklist-item-${item.value}`"

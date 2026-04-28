@@ -197,7 +197,7 @@ You can use html in all properties
       { title: 'Title 2', subtitle: 'Subtitle 2', titleInfo: 'Info 2', content: 'Content 2' },
   ]">
   <template #point="{ step }">
-    <div class="maz:bg-red-500 maz:p-1 maz:size-8 maz:rounded maz:flex maz:flex-center">{{ step }}</div>
+    <div class="maz:bg-red-500 maz:p-1 maz:size-8 maz:rounded-md maz:flex maz:flex-center">{{ step }}</div>
   </template>
 </MazStepper>
 

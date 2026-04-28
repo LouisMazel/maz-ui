@@ -245,7 +245,7 @@ const borderColorState = computed(() => {
     :style="[style, { '--input-border-color': `var(--maz-${props.color})` }]"
   >
     <div class="m-input-code__wrapper maz:inline-flex maz:gap-[1em]">
-      <div v-for="item in codeLength" :key="item" class="input-wrapper maz:relative maz:h-[4em] maz:w-[4em] maz:overflow-hidden maz:rounded maz:border maz:border-solid maz:border-divider maz:dark:border-divider-400 maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:bg-surface-400" :class="borderColorState">
+      <div v-for="item in codeLength" :key="item" class="input-wrapper maz:relative maz:h-[4em] maz:w-[4em] maz:overflow-hidden maz:rounded-md maz:border maz:border-solid maz:border-divider maz:dark:border-divider-400 maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:bg-surface-400" :class="borderColorState">
         <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label -->
         <input
           :id="`m-input-code-${item}`"
@@ -299,14 +299,14 @@ const borderColorState = computed(() => {
     }
 
     input {
-      @apply maz:h-full maz:w-full maz:bg-transparent maz:text-center maz:text-[1.5em] maz:outline-hidden;
+      @apply maz:h-full maz:w-full maz:bg-transparent maz:text-center maz:text-[1.5em] maz:outline-hidden maz:font-mono;
     }
 
     &:has(input:disabled) {
       @apply maz:bg-surface-600 maz:dark:bg-surface-300 maz:text-muted;
 
       input {
-        @apply maz:cursor-not-allowed maz:text-muted;
+        @apply maz:disabled-cursor maz:text-muted;
       }
     }
   }

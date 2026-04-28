@@ -245,7 +245,7 @@ Browse [GitHub discussions](https://github.com/LouisMazel/maz-ui/discussions) or
 <style scoped>
 @reference "../../.vitepress/theme/main.css";
 .hero-section {
-  @apply maz:rounded maz:p-8 maz:my-12 maz:from-primary-400 maz:to-secondary-700 maz:bg-linear-to-br;
+  @apply maz:rounded-md maz:p-8 maz:my-12 maz:from-primary-400 maz:to-secondary-700 maz:bg-linear-to-br;
 }
 
 .features-grid {

@@ -447,7 +447,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
             :is-active="isStepActive(step, index)"
             :is-completed="isStepCompleted(step, index)"
           >
-            <p v-if="step.title || slots.title" class="m-timeline-title" :class="TITLE_SIZE_CLASS[size]">
+            <p v-if="step.title || slots.title" class="m-timeline-title maz:font-display" :class="TITLE_SIZE_CLASS[size]">
               <!--
                 @slot title - Custom title content
                 @binding {MazTimelineItem} step - The step data

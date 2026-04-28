@@ -17,7 +17,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -48,7 +47,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -63,7 +61,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -76,7 +73,7 @@ describe('preset-merger', () => {
         expect(result.colors.light.destructive).toBe('11 11% 11%')
         expect(result.colors.dark.primary).toBe('12 12% 12%')
         expect(result.foundation['base-font-size']).toBe('16px')
-        expect(result.foundation.radius).toBe('4px')
+        // scale moved out of foundation
         expect(result.foundation['border-width']).toBe('1px')
         expect(result.foundation['font-family']).toBe('Arial')
       })
@@ -99,7 +96,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -127,7 +123,7 @@ describe('preset-merger', () => {
         expect(result.colors.dark.primary).toBe('12 12% 12%')
         expect(result.colors.dark.destructive).toBe('12 12% 12%')
         expect(result.foundation['base-font-size']).toBe('16px')
-        expect(result.foundation.radius).toBe('4px')
+        // scale moved out of foundation
         expect(result.foundation['border-width']).toBe('1px')
         expect(result.foundation['font-family']).toBe('Helvetica')
       })
@@ -147,7 +143,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -186,7 +181,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -196,7 +190,6 @@ describe('preset-merger', () => {
           name: 'override',
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -206,9 +199,161 @@ describe('preset-merger', () => {
 
         expect(result.name).toBe('override')
         expect(result.foundation['base-font-size']).toBe('16px')
-        expect(result.foundation.radius).toBe('4px')
+        // scale moved out of foundation
         expect(result.foundation['border-width']).toBe('1px')
         expect(result.foundation['font-family']).toBe('Arial')
+      })
+    })
+
+    describe('when overrides omit the scales block', () => {
+      it('then mergeScales returns the base scales untouched', () => {
+        const basePreset = {
+          name: 'base',
+          colors: { light: {}, dark: {} },
+          foundation: {},
+          scales: {
+            spacing: '0.25rem',
+            radius: { md: '0.5rem' },
+            shadow: { md: '0 1px 2px rgba(0,0,0,0.1)' },
+          },
+        } as unknown as ThemePreset
+
+        const result = mergePresets(basePreset, {})
+
+        expect(result.scales).toBe(basePreset.scales)
+      })
+    })
+
+    describe('when overrides extend the scales block but omit spacing', () => {
+      it('then mergeScales falls back to the base spacing value', () => {
+        const basePreset = {
+          name: 'base',
+          colors: { light: {}, dark: {} },
+          foundation: {},
+          scales: {
+            spacing: '0.25rem',
+            radius: { md: '0.5rem' },
+            shadow: {},
+          },
+        } as unknown as ThemePreset
+
+        const overrides: ThemePresetOverrides = {
+          scales: {
+            radius: { md: '1rem' },
+          },
+        }
+
+        const result = mergePresets(basePreset, overrides)
+
+        expect(result.scales.spacing).toBe('0.25rem')
+        expect(result.scales.radius?.md).toBe('1rem')
+      })
+    })
+
+    describe('when overrides extend the scales block', () => {
+      it('then mergeScales merges radius/shadow and overrides spacing', () => {
+        const basePreset = {
+          name: 'base',
+          colors: { light: {}, dark: {} },
+          foundation: {},
+          scales: {
+            spacing: '0.25rem',
+            radius: { sm: '0.25rem', md: '0.5rem' },
+            shadow: { sm: 'shadow-base-sm' },
+          },
+        } as unknown as ThemePreset
+
+        const overrides: ThemePresetOverrides = {
+          scales: {
+            spacing: '0.5rem',
+            radius: { md: '1rem' },
+            shadow: { md: 'shadow-override-md' },
+          },
+        }
+
+        const result = mergePresets(basePreset, overrides)
+
+        expect(result.scales.spacing).toBe('0.5rem')
+        expect(result.scales.radius).toEqual({ sm: '0.25rem', md: '1rem' })
+        expect(result.scales.shadow).toEqual({
+          sm: 'shadow-base-sm',
+          md: 'shadow-override-md',
+        })
+      })
+    })
+
+    describe('when neither base nor overrides declare components', () => {
+      it('then mergeComponents returns undefined', () => {
+        const basePreset = {
+          name: 'base',
+          colors: { light: {}, dark: {} },
+          foundation: {},
+          scales: { spacing: '0.25rem' },
+        } as unknown as ThemePreset
+
+        const result = mergePresets(basePreset, {})
+
+        expect(result.components).toBeUndefined()
+      })
+    })
+
+    describe('when only overrides declare components', () => {
+      it('then mergeComponents adopts the overrides shape', () => {
+        const basePreset = {
+          name: 'base',
+          colors: { light: {}, dark: {} },
+          foundation: {},
+          scales: { spacing: '0.25rem' },
+        } as unknown as ThemePreset
+
+        const overrides: ThemePresetOverrides = {
+          components: {
+            btn: { 'font-weight': '700' },
+            container: { bg: { light: 'oklch(0.9 0 0)', dark: 'oklch(0.3 0 0)' } },
+            input: { bg: { light: 'oklch(0.95 0 0)', dark: 'oklch(0.25 0 0)' } },
+          },
+        }
+
+        const result = mergePresets(basePreset, overrides)
+
+        expect(result.components?.btn).toEqual({ 'font-weight': '700' })
+        expect(result.components?.container?.bg?.light).toBe('oklch(0.9 0 0)')
+        expect(result.components?.input?.bg?.dark).toBe('oklch(0.25 0 0)')
+      })
+    })
+
+    describe('when both base and overrides declare components', () => {
+      it('then mergeComponents merges per-mode bg values', () => {
+        const basePreset = {
+          name: 'base',
+          colors: { light: {}, dark: {} },
+          foundation: {},
+          scales: { spacing: '0.25rem' },
+          components: {
+            btn: { 'font-weight': '500' },
+            container: { bg: { light: 'oklch(1 0 0)', dark: 'oklch(0.2 0 0)' } },
+            input: { bg: { light: 'oklch(0.95 0 0)' } },
+          },
+        } as unknown as ThemePreset
+
+        const overrides: ThemePresetOverrides = {
+          components: {
+            container: { bg: { dark: 'oklch(0.4 0 0)' } },
+            input: { bg: { dark: 'oklch(0.3 0 0)' } },
+          },
+        }
+
+        const result = mergePresets(basePreset, overrides)
+
+        expect(result.components?.btn).toEqual({ 'font-weight': '500' })
+        expect(result.components?.container?.bg).toEqual({
+          light: 'oklch(1 0 0)',
+          dark: 'oklch(0.4 0 0)',
+        })
+        expect(result.components?.input?.bg).toEqual({
+          light: 'oklch(0.95 0 0)',
+          dark: 'oklch(0.3 0 0)',
+        })
       })
     })
 
@@ -222,7 +367,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -240,7 +384,6 @@ describe('preset-merger', () => {
           },
           foundation: {
             'base-font-size': '16px',
-            'radius': '4px',
             'border-width': '1px',
             'font-family': 'Arial',
           },
@@ -252,7 +395,7 @@ describe('preset-merger', () => {
         expect(result.colors.light.accent).toBe('22 22% 22%')
         expect(result.colors.dark.primary).toBe('12 12% 12%')
         expect(result.foundation['base-font-size']).toBe('16px')
-        expect(result.foundation.radius).toBe('4px')
+        // scale moved out of foundation
         expect(result.foundation['border-width']).toBe('1px')
         expect(result.foundation['font-family']).toBe('Arial')
       })

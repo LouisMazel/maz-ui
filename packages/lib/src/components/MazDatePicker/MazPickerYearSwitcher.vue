@@ -56,7 +56,7 @@ function nextYears() {
 </script>
 
 <template>
-  <div class="maz-picker-year-switcher maz:absolute maz:inset-0 maz:z-1 maz:flex maz:flex-col maz:bg-surface">
+  <div class="maz-picker-year-switcher maz:absolute maz:inset-0 maz:z-1 maz:flex maz:flex-col maz:bg-container">
     <div class="maz-picker-year-switcher__header maz:flex maz:justify-between maz:space-x-2 maz:border-b maz:border-divider maz:p-2">
       <div class="maz:flex maz:space-x-2">
         <MazBtn size="xs" color="transparent" type="button" @click.stop="previousYears">

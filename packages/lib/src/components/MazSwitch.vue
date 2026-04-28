@@ -107,7 +107,7 @@ function onFocus(event: FocusEvent) {
   <label
     :for="instanceId"
     class="m-switch m-reset-css maz:relative maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-2 maz:align-top"
-    :class="[{ '--is-disabled': disabled, 'maz:cursor-not-allowed': disabled }, props.class]"
+    :class="[{ '--is-disabled': disabled, 'maz:disabled-cursor': disabled }, props.class]"
     role="switch"
     :style="[style, { '--switch-color': bgColorClassVar }]"
     :aria-checked="modelValue"

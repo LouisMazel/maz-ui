@@ -335,7 +335,7 @@ watch(
     role="menu"
     :style="styleProp"
     :prefer-position
-    color="background"
+    color="surface"
     :position
     :transition
     :disabled
@@ -366,7 +366,7 @@ watch(
       <div
         :id="instanceId"
         tabindex="-1"
-        class="m-dropdown__wrapper maz:outline-hidden maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400 maz:rounded maz:size-full"
+        class="m-dropdown__wrapper maz:outline-hidden maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400 maz:rounded-md maz:size-full"
       >
         <span :id="`${instanceId}-labelspan`" class="maz:sr-only">
           <!--
@@ -523,12 +523,12 @@ watch(
 
 .m-dropdown__menu {
   .menuitem {
-    @apply maz:outline-hidden maz:cursor-pointer maz:whitespace-nowrap maz:rounded maz:px-4 maz:py-2 maz:text-start
+    @apply maz:outline-hidden maz:cursor-pointer maz:whitespace-nowrap maz:rounded-md maz:px-4 maz:py-2 maz:text-start
      maz:transition-colors maz:duration-300 maz:ease-in-out maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
 
     &.menuitem__button {
       &:disabled {
-        @apply maz:cursor-not-allowed maz:opacity-50;
+        @apply maz:disabled-state;
       }
 
       &.--primary {

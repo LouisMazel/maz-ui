@@ -1,13 +1,17 @@
 /*
- * Typography, border width and motion tokens — all sourced from @maz-ui/themes.
+ * Typography, border-width and motion bridge — all sourced from @maz-ui/themes.
  *
- * Consumers overriding --maz-* at runtime get reflowed Tailwind utilities:
- *   font-sans / default-border-width / *-duration-* / *-easing-* / default-transition-*
- *
- * Fallbacks apply when a custom preset does not declare motion tokens.
+ * - `--font-{sans,mono,display}` come from `foundation.font-{family,mono,display}`.
+ * - The text scale is intentionally NOT remapped here. Tailwind v4 ships
+ *   `text-xs..text-xl` already; the lib drives sizes off the `base-font-size`
+ *   foundation token plus relative `em` values inside each component.
+ * - `--default-border-width`, motion durations and easings keep their
+ *   existing fallbacks for presets that don't declare them.
  */
 @theme inline {
   --font-sans: var(--maz-font-family);
+  --font-mono: var(--maz-font-mono);
+  --font-display: var(--maz-font-display);
   --default-border-width: var(--maz-border-width);
   --duration-fast: var(--maz-duration-fast, 100ms);
   --duration-normal: var(--maz-duration-normal, 200ms);
