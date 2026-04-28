@@ -287,6 +287,14 @@ A dark and elegant theme with a focus on readability and minimalism.
 import { obsidian } from '@maz-ui/themes/presets'
 ```
 
+### Nova
+
+A modern startup / AI / creative preset — electric violet primary, hot coral secondary, cyan accent. Tight 0.5rem `md` radius, Geist + Inter font stack, snappy ease-out spring. Built for product / AI surfaces (think Linear, Vercel, OpenAI energy) where the UI itself should feel alive.
+
+```typescript
+import { nova } from '@maz-ui/themes/presets'
+```
+
 ## Rendering Strategies
 
 ### 🚀 Hybrid (Recommended)

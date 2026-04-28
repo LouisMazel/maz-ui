@@ -10,6 +10,22 @@ import {
   DEFAULT_SPACING,
 } from './_defaults'
 
+/**
+ * Ocean preset — calm, fluid, water-inspired.
+ *
+ * Identity:
+ * - `primary` is a teal-blue (the wave) — confident but cool.
+ * - `secondary` drops to a deep navy (the ocean floor) so it reads as a
+ *   contrasting second voice, not a pale washed sibling of primary.
+ * - `accent` is a warm sandy ochre — the sunset on the water, a true
+ *   complementary to the blues.
+ * - Larger radii (md = 1rem) and a heavier border (0.125rem) feel
+ *   buoyant; soft Apple-style spring easing keeps motion fluid.
+ *
+ * Distinct from `pristine` (sober monochrome + system blue accent +
+ * system purple secondary) and `obsidian` (dark luxe indigo + gold +
+ * fuchsia).
+ */
 const FONT_FAMILY = `'Poppins', 'Inter', system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
 
 export const ocean: ThemePreset = {
@@ -49,52 +65,52 @@ export const ocean: ThemePreset = {
   },
   colors: {
     light: {
-      'surface': 'oklch(0.9852 0.0034 228.8)',
-      'foreground': 'oklch(0.2342 0.0149 248.46)',
-      'primary': 'oklch(0.6275 0.1044 224.88)',
+      'surface': 'oklch(0.985 0.005 215)',
+      'foreground': 'oklch(0.22 0.025 235)',
+      'primary': 'oklch(0.58 0.13 220)',
       'primary-foreground': 'oklch(1 0 0)',
-      'contrast': 'oklch(0.2342 0.0149 248.46)',
-      'contrast-foreground': 'oklch(0.9852 0.0034 228.8)',
-      'secondary': 'oklch(0.9497 0.0151 196.9)',
-      'secondary-foreground': 'oklch(0.2342 0.0149 248.46)',
-      'muted': 'oklch(0.6459 0.0313 229.49)',
-      'accent': 'oklch(0.7812 0.0814 56.74)',
-      'accent-foreground': 'oklch(0.2342 0.0149 248.46)',
-      'destructive': 'oklch(0.5766 0.191 29.4)',
-      'destructive-foreground': 'oklch(1 0 0)',
-      'success': 'oklch(0.5926 0.103 167.06)',
+      'secondary': 'oklch(0.42 0.13 252)',
+      'secondary-foreground': 'oklch(1 0 0)',
+      'accent': 'oklch(0.76 0.13 50)',
+      'accent-foreground': 'oklch(0.22 0.025 235)',
+      'success': 'oklch(0.625 0.13 170)',
       'success-foreground': 'oklch(1 0 0)',
-      'warning': 'oklch(0.719 0.1186 72.98)',
-      'warning-foreground': 'oklch(0.2342 0.0149 248.46)',
-      'info': 'oklch(0.7085 0.1122 214.43)',
+      'warning': 'oklch(0.745 0.135 75)',
+      'warning-foreground': 'oklch(0.22 0.025 235)',
+      'destructive': 'oklch(0.58 0.2 25)',
+      'destructive-foreground': 'oklch(1 0 0)',
+      'info': 'oklch(0.72 0.11 215)',
       'info-foreground': 'oklch(1 0 0)',
-      'divider': 'oklch(0.8995 0.0204 196.8)',
-      'overlay': 'oklch(0.2342 0.0149 248.46)',
-      'shadow': 'oklch(0.381 0.0264 220.36)',
+      'contrast': 'oklch(0.22 0.025 235)',
+      'contrast-foreground': 'oklch(0.985 0.005 215)',
+      'muted': 'oklch(0.62 0.03 225)',
+      'divider': 'oklch(0.89 0.02 200)',
+      'overlay': 'oklch(0.22 0.025 235)',
+      'shadow': 'oklch(0.35 0.04 225)',
     },
     dark: {
-      'surface': 'oklch(0.2127 0.0127 248.43)',
-      'foreground': 'oklch(0.945 0.0087 197.01)',
-      'primary': 'oklch(0.7702 0.1213 194.93)',
-      'primary-foreground': 'oklch(0.2127 0.0127 248.43)',
-      'contrast': 'oklch(0.945 0.0087 197.01)',
-      'contrast-foreground': 'oklch(0.2127 0.0127 248.43)',
-      'secondary': 'oklch(0.3073 0.029 230.57)',
-      'secondary-foreground': 'oklch(0.945 0.0087 197.01)',
-      'muted': 'oklch(0.6854 0.0185 229.13)',
-      'accent': 'oklch(0.7405 0.0802 56.66)',
-      'accent-foreground': 'oklch(0.2127 0.0127 248.43)',
-      'destructive': 'oklch(0.6056 0.1621 28.04)',
-      'destructive-foreground': 'oklch(1 0 0)',
-      'success': 'oklch(0.6028 0.0992 167.75)',
+      'surface': 'oklch(0.2 0.02 240)',
+      'foreground': 'oklch(0.945 0.01 200)',
+      'primary': 'oklch(0.73 0.12 198)',
+      'primary-foreground': 'oklch(0.2 0.02 240)',
+      'secondary': 'oklch(0.6 0.16 252)',
+      'secondary-foreground': 'oklch(1 0 0)',
+      'accent': 'oklch(0.78 0.12 55)',
+      'accent-foreground': 'oklch(0.2 0.02 240)',
+      'success': 'oklch(0.64 0.115 170)',
       'success-foreground': 'oklch(1 0 0)',
-      'warning': 'oklch(0.7114 0.1106 73.56)',
-      'warning-foreground': 'oklch(0.2127 0.0127 248.43)',
-      'info': 'oklch(0.7151 0.0936 212.67)',
+      'warning': 'oklch(0.75 0.13 75)',
+      'warning-foreground': 'oklch(0.2 0.02 240)',
+      'destructive': 'oklch(0.65 0.18 25)',
+      'destructive-foreground': 'oklch(1 0 0)',
+      'info': 'oklch(0.74 0.11 215)',
       'info-foreground': 'oklch(1 0 0)',
-      'divider': 'oklch(0.3755 0.0261 229.93)',
-      'overlay': 'oklch(0.2127 0.0127 248.43)',
-      'shadow': 'oklch(0.159 0.0034 219.69)',
+      'contrast': 'oklch(0.945 0.01 200)',
+      'contrast-foreground': 'oklch(0.2 0.02 240)',
+      'muted': 'oklch(0.68 0.02 230)',
+      'divider': 'oklch(0.355 0.025 232)',
+      'overlay': 'oklch(0.2 0.02 240)',
+      'shadow': 'oklch(0.15 0.005 220)',
     },
   },
 }

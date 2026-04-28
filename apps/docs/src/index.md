@@ -84,19 +84,24 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           <MazRadioButtons
             :model-value="presetName"
             size="sm"
-            :options="[{
-              label: 'Pristine',
-              value: 'pristine'
-            }, {
-              label: 'Ocean',
-              value: 'ocean'
-            }, {
-              label: 'Obsidian',
-              value: 'obsidian'
-            }, {
-              label: 'Maz-UI',
-              value: 'maz-ui'
-            }]"
+            :options="[
+              {
+                label: 'Pristine',
+                value: 'pristine'
+              }, {
+                label: 'Ocean',
+                value: 'ocean'
+              }, {
+                label: 'Obsidian',
+                value: 'obsidian'
+              }, {
+                label: 'Nova',
+                value: 'nova'
+              }, {
+                label: 'Maz-UI',
+                value: 'maz-ui'
+              }
+            ]"
             @update:model-value="changePreset"
           />
         </div>

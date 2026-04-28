@@ -615,7 +615,7 @@ const CHILD_TEXT_SIZE_CLASS = {
   &.--always-up .m-input-input,
   &.--has-placeholder.--has-label .m-input-input,
   &.--has-label .m-input-input:not(:placeholder-shown),
-  & .m-input-input:-webkit-autofill {
+  &.--has-label .m-input-input:-webkit-autofill {
     @apply maz:pt-4;
   }
 

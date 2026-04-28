@@ -250,13 +250,17 @@ function formatColorName(colorName: string): string {
               }, {
                 label: 'Obsidian',
                 value: 'obsidian',
-              }]"
+              }, {
+                label: 'Nova',
+                value: 'nova',
+              },
+            ]"
             @update:model-value="updateTheme($event)"
           />
         </MazContainer>
 
         <!-- Foundation Settings -->
-        <MazContainer title="Foundation" block>
+        <MazCard collapsible title="Foundation" block>
           <div class="maz:flex maz:flex-col maz:gap-3">
             <MazInput
               v-for="input in foundationInputs"
@@ -269,10 +273,10 @@ function formatColorName(colorName: string): string {
               debounce
             />
           </div>
-        </MazContainer>
+        </MazCard>
 
         <!-- Scales -->
-        <MazContainer title="Scales" block>
+        <MazCard collapsible title="Scales" block>
           <div class="maz:flex maz:flex-col maz:gap-4">
             <MazInput
               v-model="themeData.scales.spacing"
@@ -314,10 +318,10 @@ function formatColorName(colorName: string): string {
               />
             </div>
           </div>
-        </MazContainer>
+        </MazCard>
 
         <!-- Components -->
-        <MazContainer title="Components" block>
+        <MazCard collapsible title="Components" block>
           <div class="maz:flex maz:flex-col maz:gap-4">
             <div class="maz:flex maz:flex-col maz:gap-2">
               <h4 class="maz:text-sm maz:font-semibold maz:text-foreground maz:m-0">
@@ -377,10 +381,10 @@ function formatColorName(colorName: string): string {
               />
             </div>
           </div>
-        </MazContainer>
+        </MazCard>
 
         <!-- Colors Settings -->
-        <MazContainer block>
+        <MazCard collapsible block>
           <template #title>
             <div class="maz:flex maz:w-full maz:items-center maz:justify-between">
               <h3 class="maz:text-base">
@@ -421,7 +425,7 @@ function formatColorName(colorName: string): string {
               </div>
             </div>
           </div>
-        </MazContainer>
+        </MazCard>
       </div>
 
       <!-- Preview Panel -->

@@ -166,7 +166,7 @@ function toggleCollapse() {
       :class="[
         collapseOpenModel ? 'maz:rounded-t-md maz:border-divider' : 'maz:border-transparent',
         { '--is-collapsible maz:hover:bg-surface-600': collapsible },
-        { 'maz:justify-end': (!hasSlotContent(slots.title) || !title) && collapsible },
+        { 'maz:justify-end': !hasSlotContent(slots.title) && !title && collapsible },
         { 'maz:justify-between': hasSlotContent(slots.title) || title },
       ]"
       tabindex="-1"

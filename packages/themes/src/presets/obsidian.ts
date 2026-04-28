@@ -10,6 +10,21 @@ import {
   DEFAULT_SPACING,
 } from './_defaults'
 
+/**
+ * Obsidian preset — dark luxe / cinematic.
+ *
+ * Identity:
+ * - `primary` is a deep indigo-violet (the obsidian stone) — confident
+ *   and rich, not just dark.
+ * - `accent` is a warm gold — luxe contrast, plays well on both modes.
+ * - `secondary` is a vivid fuchsia / magenta — third voice with serious
+ *   pop, used for highlights, badges, secondary CTAs.
+ * - Tighter, premium radii (md = 0.5rem) and a snappy expo easing
+ *   give the theme a clean, technical edge.
+ *
+ * Distinct from `pristine` (sober monochrome + system blue + system
+ * purple) and `ocean` (teal + navy + sand).
+ */
 const FONT_FAMILY = `'Inter', system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
 
 export const obsidian: ThemePreset = {
@@ -34,11 +49,11 @@ export const obsidian: ThemePreset = {
     radius: {
       'xs': '0.125rem',
       'sm': '0.25rem',
-      'md': '0.6rem',
-      'lg': '0.875rem',
-      'xl': '1.25rem',
-      '2xl': '1.75rem',
-      '3xl': '2.5rem',
+      'md': '0.5rem',
+      'lg': '0.75rem',
+      'xl': '1rem',
+      '2xl': '1.5rem',
+      '3xl': '2rem',
     },
     shadow: DEFAULT_SHADOW,
   },
@@ -49,52 +64,52 @@ export const obsidian: ThemePreset = {
   },
   colors: {
     light: {
-      'surface': 'oklch(0.9848 0 0)',
-      'foreground': 'oklch(0.2622 0.0133 264.31)',
-      'primary': 'oklch(0.6048 0.2142 262.15)',
+      'surface': 'oklch(0.985 0.005 280)',
+      'foreground': 'oklch(0.245 0.012 280)',
+      'primary': 'oklch(0.55 0.205 275)',
       'primary-foreground': 'oklch(1 0 0)',
-      'contrast': 'oklch(0.2622 0.0133 264.31)',
-      'contrast-foreground': 'oklch(1 0 0)',
-      'secondary': 'oklch(0.9196 0.0064 264.53)',
-      'secondary-foreground': 'oklch(0.2622 0.0133 264.31)',
-      'muted': 'oklch(0.5856 0.0223 264.39)',
-      'accent': 'oklch(0.6551 0.2577 311.87)',
-      'accent-foreground': 'oklch(1 0 0)',
-      'destructive': 'oklch(0.6014 0.2084 26.15)',
-      'destructive-foreground': 'oklch(1 0 0)',
-      'success': 'oklch(0.6403 0.1218 165.58)',
+      'secondary': 'oklch(0.6 0.235 0)',
+      'secondary-foreground': 'oklch(1 0 0)',
+      'accent': 'oklch(0.77 0.155 78)',
+      'accent-foreground': 'oklch(0.245 0.012 280)',
+      'success': 'oklch(0.66 0.14 162)',
       'success-foreground': 'oklch(1 0 0)',
-      'warning': 'oklch(0.8016 0.1705 73.27)',
-      'warning-foreground': 'oklch(1 0 0)',
-      'info': 'oklch(0.7282 0.159 238.93)',
+      'warning': 'oklch(0.795 0.165 76)',
+      'warning-foreground': 'oklch(0.245 0.012 280)',
+      'destructive': 'oklch(0.605 0.215 22)',
+      'destructive-foreground': 'oklch(1 0 0)',
+      'info': 'oklch(0.72 0.13 230)',
       'info-foreground': 'oklch(1 0 0)',
-      'divider': 'oklch(0.9196 0.0064 264.53)',
-      'overlay': 'oklch(0.2622 0.0133 264.31)',
-      'shadow': 'oklch(0.3138 0.0131 264.37)',
+      'contrast': 'oklch(0.245 0.012 280)',
+      'contrast-foreground': 'oklch(1 0 0)',
+      'muted': 'oklch(0.585 0.022 280)',
+      'divider': 'oklch(0.918 0.01 280)',
+      'overlay': 'oklch(0.245 0.012 280)',
+      'shadow': 'oklch(0.27 0.018 280)',
     },
     dark: {
-      'surface': 'oklch(0.2104 0.0094 264.35)',
-      'foreground': 'oklch(0.9619 0 0)',
-      'primary': 'oklch(0.6941 0.1601 262.86)',
-      'primary-foreground': 'oklch(0.2156 0 0)',
-      'contrast': 'oklch(1 0 0)',
-      'contrast-foreground': 'oklch(0.2104 0.0094 264.35)',
-      'secondary': 'oklch(0.2922 0.0156 264.3)',
-      'secondary-foreground': 'oklch(0.9619 0 0)',
-      'muted': 'oklch(0.6731 0.0172 264.45)',
-      'accent': 'oklch(0.6551 0.2577 311.87)',
-      'accent-foreground': 'oklch(1 0 0)',
-      'destructive': 'oklch(0.6295 0.1785 23.77)',
+      'surface': 'oklch(0.2 0.012 280)',
+      'foreground': 'oklch(0.965 0.003 280)',
+      'primary': 'oklch(0.69 0.175 275)',
+      'primary-foreground': 'oklch(0.2 0.012 280)',
+      'secondary': 'oklch(0.7 0.21 0)',
+      'secondary-foreground': 'oklch(1 0 0)',
+      'accent': 'oklch(0.815 0.155 78)',
+      'accent-foreground': 'oklch(0.2 0.012 280)',
+      'success': 'oklch(0.755 0.15 162)',
+      'success-foreground': 'oklch(0.2 0.012 280)',
+      'warning': 'oklch(0.815 0.165 76)',
+      'warning-foreground': 'oklch(0.2 0.012 280)',
+      'destructive': 'oklch(0.64 0.18 22)',
       'destructive-foreground': 'oklch(1 0 0)',
-      'success': 'oklch(0.7551 0.1452 165.37)',
-      'success-foreground': 'oklch(1 0 0)',
-      'warning': 'oklch(0.8175 0.1667 76.8)',
-      'warning-foreground': 'oklch(1 0 0)',
-      'info': 'oklch(0.7513 0.148 236.31)',
-      'info-foreground': 'oklch(1 0 0)',
-      'divider': 'oklch(0.3117 0.017 264.29)',
-      'overlay': 'oklch(0.2104 0.0094 264.35)',
-      'shadow': 'oklch(0.1557 0.0039 264.46)',
+      'info': 'oklch(0.745 0.14 230)',
+      'info-foreground': 'oklch(0.2 0.012 280)',
+      'contrast': 'oklch(1 0 0)',
+      'contrast-foreground': 'oklch(0.2 0.012 280)',
+      'muted': 'oklch(0.665 0.018 280)',
+      'divider': 'oklch(0.31 0.02 280)',
+      'overlay': 'oklch(0.2 0.012 280)',
+      'shadow': 'oklch(0.14 0.005 280)',
     },
   },
 }

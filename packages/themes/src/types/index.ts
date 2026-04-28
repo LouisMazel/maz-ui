@@ -189,7 +189,7 @@ export interface ThemePreset {
   components?: ThemeComponents
 }
 
-export type ThemePresetName = 'mazUi' | 'ocean' | 'pristine' | 'obsidian' | 'maz-ui'
+export type ThemePresetName = 'mazUi' | 'ocean' | 'pristine' | 'obsidian' | 'nova' | 'maz-ui'
 
 export type ColorMode = 'light' | 'dark' | 'auto'
 
