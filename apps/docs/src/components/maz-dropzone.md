@@ -92,7 +92,7 @@ function handleError({ code, files }) {
   />
 
   <br />
-  <div class="maz-text-center">
+  <div class="maz:text-center">
     <MazBtn @click="dropzone?.uploadFiles()" :loading="dropzone?.isUploading">
       Upload Files
     </MazBtn>
@@ -312,8 +312,8 @@ Customize the upload area using slots:
 <ComponentDemo>
   <MazDropzone v-model="files" @error="onError">
     <template #no-files-area="{ handleFileInputClick }">
-      <div class="maz-flex maz-flex-col maz-items-center maz-gap-4">
-        <MazIcon name="arrow-up-on-square" class="maz-text-4xl" />
+      <div class="maz:flex maz:flex-col maz:items-center maz:gap-4">
+        <MazIcon icon="/arrow-up-on-square.svg" class="maz:text-4xl" />
         <p>Drop your files here or click to browse</p>
         <MazBtn @click="handleFileInputClick">
           Select Files
@@ -327,8 +327,8 @@ Customize the upload area using slots:
 ```html
 <MazDropzone v-model="files" @error="onError">
   <template #no-files-area="{ handleFileInputClick }">
-    <div class="maz-flex maz-flex-col maz-items-center maz-gap-4">
-      <MazIcon name="arrow-up-on-square" class="maz-text-4xl" />
+    <div class="maz:flex maz:flex-col maz:items-center maz:gap-4">
+      <MazIcon icon="/arrow-up-on-square.svg" class="maz:text-4xl" />
       <p>Drop your files here or click to browse</p>
       <MazBtn @click="handleFileInputClick"> Select Files </MazBtn>
     </div>
@@ -455,7 +455,7 @@ Customize the upload request using `uploadUrl`, `requestOptions` and `transformB
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useToast } from 'maz-ui/src/composables/useToast'
+import { useToast } from 'maz-ui/composables/useToast'
 
 const files = ref<File[]>([])
 const dropzone = ref<InstanceType<typeof MazDropzone>>()

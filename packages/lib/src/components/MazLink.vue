@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { IconComponent } from '@maz-ui/icons'
 import type { Component, HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
+import type { MazIconLike } from '../composables/useMazIconProps'
 import type { MazColor } from './types'
 import { MazArrowTopRightOnSquare } from '@maz-ui/icons/lazy/MazArrowTopRightOnSquare'
 import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables'
+import { useMazIconProps } from '../composables/useMazIconProps'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
-import { getColor } from './types'
 
 defineOptions({
   inheritAttrs: false,
@@ -25,9 +25,14 @@ const {
   autoExternal = true,
   underline = false,
   underlineHover = true,
+  startIcon,
+  endIcon,
 } = defineProps<MazLinkProps>()
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
+
+const { iconProps: startIconProps } = useMazIconProps(() => startIcon)
+const { iconProps: endIconProps } = useMazIconProps(() => endIcon)
 
 export interface MazLinkProps {
   /**
@@ -68,7 +73,7 @@ export interface MazLinkProps {
    * @default 'primary'
    * When 'none', the link will not have any color, so it will inherit the color of the parent
    */
-  color?: MazColor | 'muted' | 'background' | 'inherit'
+  color?: MazColor | 'muted' | 'surface' | 'inherit'
   /**
    * The target of the link
    * @default '_self'
@@ -106,15 +111,16 @@ export interface MazLinkProps {
    */
   autoExternal?: boolean
   /**
-   * The name of the icon or component to display on the left of the text
-   * `@type` `{string | FunctionalComponent | ComponentPublicInstance | Component}`
+   * Icon displayed on the inline-start edge (left in LTR, right in RTL).
+   * Accepts a bare value (Vue component, raw SVG string, URL or `data:` URI)
+   * or a full `MazIconProps` object for fine-grained control.
    */
-  leftIcon?: string | IconComponent
+  startIcon?: MazIconLike
   /**
-   * The name of the icon or component to display on the right of the text
-   * `@type` `{string | FunctionalComponent | ComponentPublicInstance | Component}`
+   * Icon displayed on the inline-end edge (right in LTR, left in RTL).
+   * Accepts a bare value or a full `MazIconProps` object.
    */
-  rightIcon?: string | IconComponent
+  endIcon?: MazIconLike
   /**
    * The disabled state of the link if the component is a button
    * @default false
@@ -139,19 +145,37 @@ const component = computed<Component | string>(() => {
 })
 
 const isButton = computed(() => component.value === 'button')
+
+const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
+  primary: 'maz:not-disabled:text-primary maz:not-disabled:hover:text-primary-700',
+  secondary: 'maz:not-disabled:text-secondary maz:not-disabled:hover:text-secondary-700',
+  info: 'maz:not-disabled:text-info maz:not-disabled:hover:text-info-700',
+  warning: 'maz:not-disabled:text-warning maz:not-disabled:hover:text-warning-700',
+  destructive: 'maz:not-disabled:text-destructive maz:not-disabled:hover:text-destructive-700',
+  success: 'maz:not-disabled:text-success maz:not-disabled:hover:text-success-700',
+  accent: 'maz:not-disabled:text-accent maz:not-disabled:hover:text-accent-700',
+  contrast: 'maz:not-disabled:text-foreground maz:not-disabled:hover:text-foreground-900 maz:not-disabled:dark:hover:text-foreground-100',
+  muted: 'maz:not-disabled:text-muted maz:not-disabled:hover:text-muted-700',
+  surface: 'maz:not-disabled:text-surface maz:not-disabled:hover:text-surface-700',
+  transparent: '',
+  inherit: '',
+} as const
 </script>
 
 <template>
   <component
     :is="component"
     :id="instanceId"
-    class="m-link m-reset-css"
+    class="m-link m-reset-css maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-1 maz:transition-colors maz:duration-200 maz:ease-in-out maz:no-underline maz:disabled:disabled-state maz:disabled:text-muted"
     :class="[
+      `--${color}`,
       {
         '--underline': underline,
         '--underline-hover': !underline && underlineHover,
+        'maz:underline': underline,
+        'maz:not-disabled:hover:underline': !underline && underlineHover,
       },
-      color !== 'inherit' && `--${getColor(color)}`,
+      color !== 'inherit' && COLOR_CLASS[color],
       classProp,
     ]"
     :to
@@ -167,11 +191,10 @@ const isButton = computed(() => component.value === 'button')
     v-bind="$attrs"
   >
     <!--
-      @slot left-icon - The icon to display on the left of the text
+      @slot start-icon - The icon to display on the inline-start edge of the text (left in LTR, right in RTL)
     -->
-    <slot name="left-icon">
-      <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" />
-      <component :is="leftIcon" v-else-if="leftIcon" />
+    <slot name="start-icon">
+      <MazIcon v-if="startIconProps" v-bind="startIconProps" />
     </slot>
     <!--
       @slot Text of the link
@@ -179,11 +202,10 @@ const isButton = computed(() => component.value === 'button')
     <slot />
 
     <!--
-      @slot right-icon - The icon to display on the left of the text
+      @slot end-icon - The icon to display on the inline-end edge of the text (right in LTR, left in RTL)
     -->
-    <slot name="right-icon">
-      <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" />
-      <component :is="rightIcon" v-else-if="rightIcon" />
+    <slot name="end-icon">
+      <MazIcon v-if="endIconProps" v-bind="endIconProps" />
     </slot>
     <!--
       @slot external-icon - Replace the default external icon
@@ -193,61 +215,3 @@ const isButton = computed(() => component.value === 'button')
     </slot>
   </component>
 </template>
-
-<style scoped>
-.m-link {
-  @apply maz-inline-flex maz-cursor-pointer maz-items-center maz-gap-1 maz-transition-colors maz-duration-200 maz-ease-in-out maz-no-underline;
-
-  &.--underline {
-    @apply maz-underline;
-  }
-
-  &.--underline-hover:not(:disabled) {
-    @apply hover:maz-underline;
-  }
-
-  &.--primary:not(:disabled) {
-    @apply maz-text-primary hover:maz-text-primary-700;
-  }
-
-  &.--secondary:not(:disabled) {
-    @apply maz-text-secondary hover:maz-text-secondary-700;
-  }
-
-  &.--info:not(:disabled) {
-    @apply maz-text-info hover:maz-text-info-700;
-  }
-
-  &.--warning:not(:disabled) {
-    @apply maz-text-warning hover:maz-text-warning-700;
-  }
-
-  &.--destructive:not(:disabled) {
-    @apply maz-text-destructive hover:maz-text-destructive-700;
-  }
-
-  &.--success:not(:disabled) {
-    @apply maz-text-success hover:maz-text-success-700;
-  }
-
-  &.--accent:not(:disabled) {
-    @apply maz-text-accent hover:maz-text-accent-700;
-  }
-
-  &.--contrast:not(:disabled) {
-    @apply maz-text-foreground hover:maz-text-foreground-900 dark:hover:maz-text-foreground-100;
-  }
-
-  &.--muted:not(:disabled) {
-    @apply maz-text-muted hover:maz-text-muted-700;
-  }
-
-  &.--surface:not(:disabled) {
-    @apply maz-text-surface hover:maz-text-surface-700;
-  }
-
-  &:disabled {
-    @apply maz-cursor-not-allowed maz-opacity-50 maz-text-muted;
-  }
-}
-</style>

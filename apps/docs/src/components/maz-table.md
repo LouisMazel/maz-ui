@@ -114,7 +114,7 @@ You can also provide all your data, the table is auto-generated and you can use 
 ---
 
 <ComponentDemo>
-<div class="maz-bg-surface-600/50 dark:maz-bg-surface-400 maz-rounded maz-p-2">
+<div class="maz:bg-surface-600/50 maz:dark:bg-surface-400 maz:rounded-md maz:p-2">
 
 v-model="{{selectedIds ?? 'undefined'}}"
 
@@ -146,15 +146,15 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
     { label:'Name', key: 'name' },
     { label: 'Code', key: 'code', align: 'center'  },
     { label: 'Type', key: 'type' },
-    { label: 'Area', key: 'areaName', align: 'center', classes: 'maz-font-bold' },
+    { label: 'Area', key: 'areaName', align: 'center', classes: 'maz:font-bold' },
   ]"
   :rows="competitions"
 >
   <template #cell-index="{ value }">
-    <span class="maz-text-base">{{value}}</span>
+    <span class="maz:text-base">{{value}}</span>
   </template>
   <template #cell-name="{ row, value }">
-    <div class="maz-flex maz-items-center maz-gap-2">
+    <div class="maz:flex maz:items-center maz:gap-2">
       <MazAvatar :src="row.logoUrl" size="0.5rem"></MazAvatar>
       <span>{{value}}</span>
     </div>
@@ -164,7 +164,7 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
   </template>
 
   <template #actions>
-    <MazBtn v-tooltip="{ text: 'Delete', color: 'destructive' }" fab size="xs" color="destructive" icon="trash" />
+    <MazBtn v-tooltip="{ text: 'Delete', color: 'destructive' }" fab size="xs" color="destructive" icon="/trash.svg" />
   </template>
 </MazTable>
 
@@ -191,15 +191,15 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
         { label:'Name', key: 'name' },
         { label: 'Code', key: 'code', align: 'center'  },
         { label: 'Type', key: 'type' },
-        { label: 'Area', key: 'areaName', align: 'center', classes: 'maz-font-bold' },
+        { label: 'Area', key: 'areaName', align: 'center', classes: 'maz:font-bold' },
       ]"
       :rows="competitions"
     >
       <template #cell-index="{ value }">
-        <span class="maz-text-base">{{value}}</span>
+        <span class="maz:text-base">{{value}}</span>
       </template>
       <template #cell-name="{ row, value }">
-        <div class="maz-flex maz-items-center maz-gap-2">
+        <div class="maz:flex maz:items-center maz:gap-2">
           <MazAvatar :src="row.logoUrl" size="0.5rem"></MazAvatar>
           <span>{{value}}</span>
         </div>
@@ -209,7 +209,7 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
       </template>
 
       <template #actions>
-        <MazBtn fab size="xs" color="destructive" icon="trash" />
+        <MazBtn fab size="xs" color="destructive" icon="/trash.svg" />
       </template>
     </MazTable>
   </template>
@@ -510,7 +510,7 @@ Available sizes: `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`
 <script lang="ts" setup>
   import { ref } from 'vue'
   import {competitions} from './competitions.ts'
-  import { vTooltip } from 'maz-ui/src/directives/vTooltip.ts'
+  import { vTooltip } from 'maz-ui/directives/vTooltip'
 
   const selectedIds = ref<string[]>(['0262672d-7c7a-4d30-866e-edb88b5a5336'])
   const searchQuery = ref<string>()

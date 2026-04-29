@@ -7,7 +7,7 @@
     "dev": "vite",
     "preview": "vite preview",
     "build:only": "vite build",
-    "type-check": "vue-tsc --build",
+    "types:check": "vue-tsc --build",
     "lint:eslint": "eslint . --fix",
     "vue-app:lint": "run-s lint:*"
   },
@@ -17,14 +17,17 @@
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
     "@maz-ui/icons": "workspace:*",
+    "@maz-ui/stylelint-config": "workspace:*",
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
+    "@tailwindcss/vite": "^4.2.1",
     "@tsconfig/node22": "^22.0.5",
-    "@vitejs/plugin-vue": "^6.0.6",
     "@vue/tsconfig": "^0.9.1",
     "maz-ui": "workspace:*",
     "npm-run-all2": "^8.0.4",
+    "postcss-nested": "^7.0.2",
     "rollup-plugin-visualizer": "^7.0.1",
+    "tailwindcss": "^4.2.1",
     "vite-plugin-vue-devtools": "^8.1.1"
   }
 }

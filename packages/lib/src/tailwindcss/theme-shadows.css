@@ -1,0 +1,20 @@
+/*
+ * Shadow bridge.
+ *
+ * The shadow scale (sm..xl + elevation) is driven by @maz-ui/themes
+ * presets via `scales.shadow`. Each preset emits full shadow strings as
+ * `--maz-shadow-style-{sm,md,lg,xl,elevation}`; the bridge wires them
+ * into the matching Tailwind utilities.
+ *
+ * `xs` is intentionally not part of the runtime scale — it stays as a
+ * lightweight color-mixed variant on top of `--color-elevation` so
+ * `shadow-xs` still tints with the theme shadow color.
+ */
+@theme inline {
+  --shadow-xs: 0 1px 2px 0 color-mix(in srgb, var(--color-elevation) 5%, transparent);
+  --shadow-sm: var(--maz-shadow-style-sm);
+  --shadow-md: var(--maz-shadow-style-md);
+  --shadow-lg: var(--maz-shadow-style-lg);
+  --shadow-xl: var(--maz-shadow-style-xl);
+  --shadow-elevation: var(--maz-shadow-style-elevation);
+}

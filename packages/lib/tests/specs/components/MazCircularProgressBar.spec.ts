@@ -32,7 +32,7 @@ describe('mazCircularProgressBar', () => {
 
   it('updates percentage and triggers animation', async () => {
     await wrapper.setProps({ suffix: '%' })
-    expect(wrapper.find('.maz-sr-only').text()).toContain('50%')
+    expect(wrapper.find('.maz\\:sr-only').text()).toContain('50%')
 
     await wrapper.setProps({ percentage: 75 })
 

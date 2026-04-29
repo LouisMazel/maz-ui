@@ -1,36 +1,151 @@
+/**
+ * @deprecated Use {@link CSSColor}. The raw HSL form is still accepted at runtime
+ * (auto-wrapped in `hsl()`), but prefer a complete CSS color value in new code.
+ */
 export type HSL = `${number} ${number}% ${number}%`
+
+/**
+ * Any valid CSS color value. Accepts complete forms (`hsl(210 100% 56%)`,
+ * `oklch(0.7 0.15 30)`, `rgb(255 0 0)`, `#ff0000`) and the legacy raw form
+ * `"210 100% 56%"` for backwards compatibility with v4 presets.
+ */
+// eslint-disable-next-line sonarjs/redundant-type-aliases -- Semantic alias used throughout the public ThemeColors contract; kept for documentation even though it widens to string.
+export type CSSColor = string
+
 export type SizeUnit = `${number}${'rem' | 'px' | 'em' | 'vw' | 'vh' | 'vmin' | 'vmax' | '%'}`
 
+export type Duration = `${number}${'ms' | 's'}`
+
 export interface ThemeColors {
-  'background': HSL
-  'foreground': HSL
-  'primary': HSL
-  'primary-foreground': HSL
-  'secondary': HSL
-  'secondary-foreground': HSL
-  'accent': HSL
-  'accent-foreground': HSL
-  'info': HSL
-  'info-foreground': HSL
-  'contrast': HSL
-  'contrast-foreground': HSL
-  'destructive': HSL
-  'destructive-foreground': HSL
-  'success': HSL
-  'success-foreground': HSL
-  'warning': HSL
-  'warning-foreground': HSL
-  'overlay': HSL
-  'muted': HSL
-  'border': HSL
-  'shadow': HSL
+  'surface': CSSColor
+  'foreground': CSSColor
+  'primary': CSSColor
+  'primary-foreground': CSSColor
+  'secondary': CSSColor
+  'secondary-foreground': CSSColor
+  'accent': CSSColor
+  'accent-foreground': CSSColor
+  'info': CSSColor
+  'info-foreground': CSSColor
+  'contrast': CSSColor
+  'contrast-foreground': CSSColor
+  'destructive': CSSColor
+  'destructive-foreground': CSSColor
+  'success': CSSColor
+  'success-foreground': CSSColor
+  'warning': CSSColor
+  'warning-foreground': CSSColor
+  'overlay': CSSColor
+  'muted': CSSColor
+  'divider': CSSColor
+  'shadow': CSSColor
 }
 
 export interface ThemeFoundation {
   'base-font-size'?: SizeUnit
-  'radius': SizeUnit
   'border-width': SizeUnit
+  /** Body / sans font stack. */
   'font-family'?: string
+  /**
+   * Monospace font stack. Used by `MazInputCode`, `<code>`, `<kbd>`.
+   * Bridged into Tailwind's `--font-mono` token. Named `font-mono-stack`
+   * (not `font-mono`) to avoid the `prefix(maz)` self-cycle.
+   */
+  'font-mono-stack'?: string
+  /**
+   * Display / heading font stack. Defaults to the same value as `font-family`
+   * — no behavioural change unless the consumer overrides it. Bridged into
+   * Tailwind's `--font-display`. Named `font-display-stack` to avoid the
+   * `prefix(maz)` self-cycle.
+   */
+  'font-display-stack'?: string
+  /**
+   * Transition durations. Bridged into Tailwind's `--duration-fast`,
+   * `--duration-normal`, `--duration-slow`. Named `motion-*` (not
+   * `duration-*`) to avoid the `prefix(maz)` self-cycle.
+   */
+  'motion-fast'?: Duration
+  'motion-normal'?: Duration
+  'motion-slow'?: Duration
+  'easing-out'?: string
+  'easing-in'?: string
+  'easing-in-out'?: string
+  /**
+   * Opacity applied to disabled interactive elements (buttons, inputs, etc.).
+   * @default '0.5'
+   */
+  'disabled-opacity'?: string
+  /**
+   * Cursor applied to disabled interactive elements.
+   * @default 'not-allowed'
+   */
+  'disabled-cursor'?: string
+  /**
+   * Base spacing unit. Tailwind multiplies this for every `p-N`, `m-N`,
+   * `gap-N`, etc. Bridged into Tailwind's `--spacing` token.
+   * @default '0.25rem'
+   */
+  'space'?: SizeUnit
+}
+
+/**
+ * Rounded / shadow scales. Bridged into Tailwind v4 via `@theme inline` so the
+ * consumer's own utilities benefit too (e.g. `rounded-md`, `shadow-lg`).
+ *
+ * Single-value design tokens (`space`, `base-font-size`, `border-width`, …)
+ * live on `foundation` instead — only true multi-step scales belong here.
+ */
+export interface ThemeScales {
+  /**
+   * Border-radius scale. Maps to Tailwind utilities `rounded-{key}` and is
+   * emitted as `--maz-rounded-{key}` (the name is decoupled from Tailwind's
+   * `--radius-*` to avoid prefix collisions in `prefix(maz)` setups).
+   * `full` is intentionally not included — Tailwind keeps `rounded-full`
+   * at 9999px regardless.
+   */
+  rounded: Record<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl', SizeUnit>
+  /**
+   * Box-shadow scale. Maps to Tailwind utilities `shadow-{key}`. `elevation`
+   * is the maz-ui specific elevated-surface shadow used by MazCard,
+   * MazContainer, MazPopover, etc.
+   */
+  shadow: Record<'sm' | 'md' | 'lg' | 'xl' | 'elevation', string>
+}
+
+/**
+ * Optional, per-mode background overrides for "container" surfaces — defaults
+ * to `var(--maz-surface)` light, `var(--maz-surface-400)` dark.
+ */
+export interface ThemeComponentBg {
+  light?: CSSColor
+  dark?: CSSColor
+}
+
+/**
+ * Per-component theme overrides. Every entry is optional; omit a key and the
+ * component falls back to its existing surface tokens (= zero behaviour change).
+ */
+export interface ThemeComponents {
+  btn?: {
+    /**
+     * Font-weight applied on `.m-btn`. Defaults to `'500'` (medium).
+     */
+    'font-weight'?: string
+  }
+  /**
+   * Background of "container" surfaces (Card, Container, Dialog, Popover,
+   * Dropdown menu panel, Drawer, BottomSheet, …).
+   */
+  container?: {
+    bg?: ThemeComponentBg
+  }
+  /**
+   * Background of input controls (Input, Textarea, Select, Checkbox, Radio,
+   * Switch, InputCode, InputTags, DatePicker trigger, Dropzone surface, …).
+   */
+  input?: {
+    bg?: ThemeComponentBg
+  }
 }
 
 export interface ThemePresetOverrides {
@@ -54,6 +169,21 @@ export interface ThemePresetOverrides {
    * @default undefined
    */
   foundation?: Partial<ThemeFoundation>
+
+  /**
+   * Theme scales (rounded, shadow)
+   * @default undefined
+   */
+  scales?: {
+    rounded?: Partial<ThemeScales['rounded']>
+    shadow?: Partial<ThemeScales['shadow']>
+  }
+
+  /**
+   * Theme component-level overrides
+   * @default undefined
+   */
+  components?: ThemeComponents
 }
 
 export interface ThemePreset {
@@ -66,9 +196,11 @@ export interface ThemePreset {
     dark: ThemeColors
   }
   foundation: ThemeFoundation
+  scales: ThemeScales
+  components?: ThemeComponents
 }
 
-export type ThemePresetName = 'mazUi' | 'ocean' | 'pristine' | 'obsidian' | 'maz-ui'
+export type ThemePresetName = 'mazUi' | 'ocean' | 'pristine' | 'obsidian' | 'nova' | 'maz-ui'
 
 export type ColorMode = 'light' | 'dark' | 'auto'
 
@@ -76,7 +208,7 @@ export type ThemeMode = 'light' | 'dark' | 'both'
 
 export type DarkModeStrategy = 'class' | 'media'
 
-export type Strategy = 'runtime' | 'buildtime' | 'hybrid'
+export type Strategy = 'runtime' | 'buildtime'
 
 interface BaseThemeConfig {
   /**
@@ -104,10 +236,10 @@ interface BaseThemeConfig {
   /**
    * CSS generation strategy
    * @description
-   * - `runtime`: CSS generated (critical and full) injected immediately
-   * - `buildtime`: CSS generated at build time and included in bundle
-   * - `hybrid`: Critical CSS injected inline, full CSS loaded asynchronously (recommended)
-   * @default 'hybrid'
+   * - `runtime`: CSS generated and injected at runtime (recommended).
+   * - `buildtime`: CSS generated at build time and included in bundle —
+   *   nothing is injected at runtime.
+   * @default 'runtime'
    */
   strategy?: Strategy
 
@@ -146,6 +278,16 @@ interface BaseThemeConfig {
    * @default 'both'
    */
   mode?: ThemeMode
+
+  /**
+   * Persist the active preset name in the `maz-preset` cookie so the
+   * user's last-used theme is restored across reloads. The value is
+   * read at boot only when `preset` is not provided, and is written
+   * after every successful preset resolution and `updateTheme()` call.
+   * Set to `false` to opt out of any cookie read or write.
+   * @default true
+   */
+  persistPreset?: boolean
 }
 
 export type ThemeConfig
@@ -194,7 +336,7 @@ export interface ThemeState {
   /**
    * CSS generation strategy
    * @description The strategy used to generate CSS
-   * @values 'runtime', 'buildtime', 'hybrid'
+   * @values 'runtime', 'buildtime'
    */
   strategy: Strategy
   /**
@@ -208,4 +350,8 @@ export interface ThemeState {
    * @description The class added to the document root when dark mode is active
    */
   darkClass: string
+  /**
+   * Whether the active preset name is persisted in the `maz-preset` cookie.
+   */
+  persistPreset: boolean
 }

@@ -34,9 +34,10 @@ export interface MazTextareaProps<T extends string | undefined | null> {
   color?: MazColor
   /**
    * Size radius of the component's border
-   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'`
+   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+   * @default 'md'
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'
+  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /**
    * If the textarea has a padding
    * @default true
@@ -102,6 +103,7 @@ const props = withDefaults(defineProps<MazTextareaProps<T>>(), {
   border: true,
   autogrow: true,
   appendJustify: 'end',
+  roundedSize: 'md',
   topLabel: undefined,
 })
 
@@ -168,15 +170,13 @@ const hasAppend = computed(() => !!slots.append)
 
 const borderStyle = computed(() => {
   if (props.error)
-    return 'maz-border-destructive'
+    return 'maz:border-destructive'
   if (props.success)
-    return 'maz-border-success'
+    return 'maz:border-success'
   if (props.warning)
-    return 'maz-border-warning'
-  return '--default-border'
+    return 'maz:border-warning'
+  return '--default-border maz:border-divider maz:dark:border-divider-400'
 })
-
-const hasBorderStyle = computed(() => borderStyle.value !== '--default-border')
 
 let autofillCleanup: (() => void) | undefined
 
@@ -194,35 +194,45 @@ onBeforeUnmount(() => {
   autofillCleanup?.()
 })
 
+const ROUNDED_CLASS = {
+  none: '',
+  sm: 'maz:rounded-xs',
+  md: 'maz:rounded-md',
+  lg: 'maz:rounded-lg',
+  xl: 'maz:rounded-xl',
+  full: 'maz:rounded-full',
+} as const
+
 const stateLabelColor = computed(() => [
   {
-    'maz-text-destructive-600': props.error,
-    'maz-text-success-600': props.success,
-    'maz-text-warning-600': props.warning,
+    'maz:text-destructive-600': props.error,
+    'maz:text-success-600': props.success,
+    'maz:text-warning-600': props.warning,
   },
 ])
 </script>
 
 <template>
-  <div class="m-textarea-wrapper m-reset-css" :class="props.class" :style>
+  <div class="m-textarea-wrapper m-reset-css maz:flex maz:flex-col maz:gap-2" :class="props.class" :style>
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label v-if="topLabel" :for="instanceId" class="m-textarea__top-label" :class="stateLabelColor">{{ topLabel }}</label>
     <label
-      class="m-textarea"
+      class="m-textarea maz:min-h-25 maz:relative maz:flex maz:flex-col maz:align-top maz:text-foreground"
       :for="instanceId"
       :class="[
         {
           '--is-disabled': disabled,
           '--has-label': hasLabelOrHint,
           '--background-transparent': transparent,
-          '--padding': padding,
-          '--border': border,
-          '--has-border-style': hasBorderStyle,
           '--has-placeholder': !!placeholder,
           '--autogrow': autogrow,
+          'maz:px-4 maz:py-3': padding,
+          'maz:border maz:border-solid': border && !disabled,
+          'maz:bg-input': !transparent && !disabled,
+          'maz:disabled-cursor maz:border-divider maz:dark:border-divider-400 maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-muted': disabled,
         },
         borderStyle,
-        roundedSize ? `--rounded-${roundedSize}` : '--rounded',
+        ROUNDED_CLASS[roundedSize],
         `--${color}`,
       ]"
       :style="[`--append-justify: ${appendJustify}`]"
@@ -267,7 +277,7 @@ const stateLabelColor = computed(() => [
           change,
         }"
       />
-      <div v-if="hasAppend" class="m-textarea__append">
+      <div v-if="hasAppend" class="m-textarea__append maz:inline-flex">
         <!-- @slot Append - Replace the append -->
         <slot name="append" />
       </div>
@@ -276,100 +286,48 @@ const stateLabelColor = computed(() => [
 </template>
 
 <style scoped>
-.m-textarea-wrapper {
-  @apply maz-flex maz-flex-col maz-gap-2;
-}
+@reference "../tailwindcss/tailwind.css";
 
 .m-textarea {
-  @apply maz-min-h-[6.25rem] maz-relative maz-flex maz-flex-col maz-align-top maz-text-foreground;
-
   &.--has-placeholder.--has-label textarea,
   &.--has-label:has(textarea:not(:placeholder-shown)) textarea,
   &.--has-label:has(textarea:-webkit-autofill) textarea {
-    @apply maz-pt-3.5;
-  }
-
-  &:not(.--background-transparent, .--is-disabled) {
-    @apply maz-bg-surface dark:maz-bg-surface-400;
-  }
-
-  &.--border:not(.--is-disabled) {
-    @apply maz-border maz-border-solid;
-
-    &:not(.--has-border-style) {
-      @apply maz-border-divider dark:maz-border-divider-400;
-    }
-  }
-
-  &.--padding {
-    @apply maz-px-4 maz-py-3;
-  }
-
-  &.--rounded-sm {
-    @apply maz-rounded-sm;
-  }
-
-  &.--rounded-md {
-    @apply maz-rounded-md;
-  }
-
-  &.--rounded-base {
-    @apply maz-rounded;
-  }
-
-  &.--rounded-lg {
-    @apply maz-rounded-lg;
-  }
-
-  &.--rounded-xl {
-    @apply maz-rounded-xl;
-  }
-
-  &.--rounded-full {
-    @apply maz-rounded-full;
-  }
-
-  &.--rounded {
-    @apply maz-rounded;
+    padding-block-start: 0.875rem;
   }
 
   &__append {
-    @apply maz-inline-flex;
-
     justify-content: var(--append-justify);
   }
 
   textarea {
-    @apply maz-w-full maz-outline-none maz-bg-transparent;
+    @apply maz:w-full maz:outline-hidden maz:bg-transparent;
 
     transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
     &.--has-append {
-      @apply maz-pb-4;
+      @apply maz:pb-4;
     }
   }
 
   &.--is-disabled {
-    @apply maz-cursor-not-allowed maz-border-divider dark:maz-border-divider-400 maz-bg-surface-600 dark:maz-bg-surface-400 maz-text-muted;
-
     & * {
-      @apply maz-cursor-not-allowed maz-text-muted;
+      @apply maz:disabled-cursor maz:text-muted;
     }
 
     & > label {
-      @apply maz-text-gray-300 dark:maz-text-gray-600;
+      @apply maz:text-gray-300 maz:dark:text-gray-600;
     }
   }
 
   &__label {
-    @apply maz-pointer-events-none maz-absolute maz-block maz-w-max maz-origin-top-left maz-truncate;
-    @apply maz-left-4 maz-top-3 maz-leading-6;
-    @apply maz-flex maz-flex-center;
+    @apply maz:pointer-events-none maz:absolute maz:block maz:w-max maz:origin-top-left maz:truncate;
+    @apply maz:left-4 maz:top-3 maz:leading-6;
+    @apply maz:flex maz:flex-center;
 
     transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
     &:not(.--has-state) {
-      @apply maz-text-muted;
+      @apply maz:text-muted;
     }
   }
 
@@ -380,46 +338,46 @@ const stateLabelColor = computed(() => [
   }
 
   &.--primary:focus-within {
-    @apply maz-border-primary;
+    @apply maz:border-primary;
   }
 
   &.--secondary:focus-within {
-    @apply maz-border-secondary;
+    @apply maz:border-secondary;
   }
 
   &.--accent:focus-within {
-    @apply maz-border-accent;
+    @apply maz:border-accent;
   }
 
   &.--info:focus-within {
-    @apply maz-border-info;
+    @apply maz:border-info;
   }
 
   &.--success:focus-within {
-    @apply maz-border-success;
+    @apply maz:border-success;
   }
 
   &.--warning:focus-within {
-    @apply maz-border-warning;
+    @apply maz:border-warning;
   }
 
   &.--destructive:focus-within {
-    @apply maz-border-destructive;
+    @apply maz:border-destructive;
   }
 
   &.--contrast:focus-within {
-    @apply maz-border-contrast;
+    @apply maz:border-contrast;
   }
 
   &.--autogrow textarea {
-    @apply maz-resize-none;
+    @apply maz:resize-none;
 
     field-sizing: content;
     min-block-size: 3lh;
   }
 
   &:not(.--autogrow) textarea {
-    @apply maz-resize-y;
+    @apply maz:resize-y;
   }
 }
 </style>

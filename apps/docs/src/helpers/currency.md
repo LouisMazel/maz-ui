@@ -16,7 +16,7 @@ Enter only numbers
 <MazInput v-model="numberValue" type="number" />
 
 <div
-  style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-background-300));"
+  style="padding: 16px; margin-top: 16px; background-color: var(--maz-surface-300);"
   class="flex flex-center rounded gap-05"
 >
   formatted value: <strong>{{ priceFormatted }}</strong>
@@ -24,7 +24,7 @@ Enter only numbers
 
 ```vue
 <script lang="ts" setup>
-import { formatCurrency } from 'maz-ui'
+import { formatCurrency } from '@maz-ui/utils'
 import { computed, ref } from 'vue'
 
 const numberValue = ref(69)
@@ -38,7 +38,7 @@ const priceFormatted = computed(() =>
   <MazInput v-model="numberValue" type="number" />
 
   <div
-    style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-background-300));"
+    style="padding: 16px; margin-top: 16px; background-color: var(--maz-surface-300);"
   >
     {{ priceFormatted }}
   </div>
@@ -46,7 +46,7 @@ const priceFormatted = computed(() =>
 ```
 
 <script lang="ts" setup>
-  import { formatCurrency } from 'maz-ui'
+  import { formatCurrency } from '@maz-ui/utils'
   import { ref, computed } from 'vue'
 
   const numberValue = ref(69)

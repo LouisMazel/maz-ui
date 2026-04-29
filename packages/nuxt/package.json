@@ -44,6 +44,7 @@
     "dist"
   ],
   "scripts": {
+    "codegen": "nx dev",
     "prepack": "nuxt-module-build build",
     "build": "pnpm dev && nuxt-module-build build",
     "dev": "nuxt-module-build build --stub && nuxt-module-build prepare",

@@ -1,5 +1,10 @@
 /**
- * Tailwind CSS ESLint rules configuration
+ * Tailwind CSS ESLint rules configuration.
+ *
+ * These rules only activate when the user opts in via
+ * `defineMazEslintConfig({ tailwindcss: true })` AND is on ESLint 9 +
+ * Tailwind v3. The plugin itself does not yet support ESLint 10+ or
+ * Tailwind v4 (upstream — uses the removed context.getSourceCode API).
  */
 export const tailwindcssRules = {
   // Allow custom class names (useful for component libraries)

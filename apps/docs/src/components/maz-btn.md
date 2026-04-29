@@ -73,7 +73,7 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 <MazBtn color="destructive">destructive</MazBtn>
 <MazBtn color="contrast">contrast</MazBtn>
 <MazBtn color="accent">accent</MazBtn>
-<MazBtn color="background">background</MazBtn>
+<MazBtn color="surface">surface</MazBtn>
 <MazBtn color="transparent">transparent</MazBtn>
 ```
 
@@ -100,7 +100,7 @@ Transform the button into an outlined button with the attribute `outlined`
 <MazBtn color="destructive" outlined>destructive</MazBtn>
 <MazBtn color="contrast" outlined>contrast</MazBtn>
 <MazBtn color="accent" outlined>accent</MazBtn>
-<MazBtn color="background" outlined>background</MazBtn>
+<MazBtn color="surface" outlined>surface</MazBtn>
 <MazBtn color="transparent" outlined>transparent</MazBtn>
 ```
 
@@ -114,16 +114,16 @@ The loading state is available with the attribute `loading`
 <ComponentDemo>
   <div class="flex items-start gap-05 flex-wrap">
     <div v-for="color of colors"
-        :key="color" class="maz-flex maz-flex-col maz-flex-center">
+        :key="color" class="maz:flex maz:flex-col maz:flex-center">
       <MazBtn
         loading
         :color="color"
-        left-icon="user"
-        right-icon="user"
+        start-icon="user"
+        end-icon="user"
       >
         {{ color }}
       </MazBtn>
-      <span class="maz-text-muted maz-text-xs"> {{ color }} </span>
+      <span class="maz:text-muted maz:text-xs"> {{ color }} </span>
     </div>
   </div>
 
@@ -170,7 +170,7 @@ Better in light mode
 
 <ComponentDemo>
 
-  <div class="flex items-start gap-05 rounded maz-p-3 flex-wrap">
+  <div class="flex items-start gap-05 rounded maz:p-3 flex-wrap">
     <MazBtn v-for="color of colors" :color="color" pastel>{{ color }}</MazBtn>
   </div>
 
@@ -185,7 +185,7 @@ Better in light mode
 <MazBtn color="destructive" pastel>destructive</MazBtn>
 <MazBtn color="contrast" pastel>contrast</MazBtn>
 <MazBtn color="accent" pastel>accent</MazBtn>
-<MazBtn color="background" pastel>background</MazBtn>
+<MazBtn color="surface" pastel>surface</MazBtn>
 <MazBtn color="transparent" pastel>transparent</MazBtn>
 ```
 
@@ -198,7 +198,7 @@ Choose the size of the rounded with the attribute `rounded-size` and value `none
 
 <ComponentDemo>
 
-  <div class="flex items-start gap-05 rounded maz-p-3 flex-wrap">
+  <div class="flex items-start gap-05 rounded maz:p-3 flex-wrap">
     <MazBtn v-for="size of ['none', 'sm', 'md', 'lg', 'xl', 'full']" :rounded-size="size">{{ size }}</MazBtn>
   </div>
 
@@ -221,26 +221,26 @@ Choose the size of the rounded with the attribute `rounded-size` and value `none
 The button can be a fab button with the attribute `fab`
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-5 maz-items-center">
-    <MazBtn fab icon="sun" size="mini" />
-    <MazBtn fab icon="sun" size="xs" />
-    <MazBtn fab icon="sun" size="sm" />
+  <div class="maz:flex maz:gap-5 maz:items-center">
+    <MazBtn fab icon="/sun.svg" size="mini" />
+    <MazBtn fab icon="/sun.svg" size="xs" />
+    <MazBtn fab icon="/sun.svg" size="sm" />
     <MazBtn fab>
       fab
     </MazBtn>
-    <MazBtn fab icon="sun" size="lg" />
-    <MazBtn fab icon="sun" size="xl" />
+    <MazBtn fab icon="/sun.svg" size="lg" />
+    <MazBtn fab icon="/sun.svg" size="xl" />
   </div>
 
 <template #code>
 
 ```html
-<MazBtn fab icon="sun" size="mini" />
-<MazBtn fab icon="sun" size="xs" />
-<MazBtn fab icon="sun" size="sm" />
+<MazBtn fab icon="/sun.svg" size="mini" />
+<MazBtn fab icon="/sun.svg" size="xs" />
+<MazBtn fab icon="/sun.svg" size="sm" />
 <MazBtn fab> fab </MazBtn>
-<MazBtn fab icon="sun" size="lg" />
-<MazBtn fab icon="sun" size="xl" />
+<MazBtn fab icon="/sun.svg" size="lg" />
+<MazBtn fab icon="/sun.svg" size="xl" />
 ```
 
   </template>
@@ -269,24 +269,24 @@ This property is used to align the content of the button.
 By default, the justify is `center`
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-2">
-    <MazBtn block justify="center" icon="users" right-icon="sun" size="md">center</MazBtn>
-    <MazBtn block justify="start" icon="users" right-icon="sun" size="md">start</MazBtn>
-    <MazBtn block justify="end" icon="users" right-icon="sun" size="md">end</MazBtn>
-    <MazBtn block justify="space-between" icon="users" right-icon="sun" size="md">between</MazBtn>
-    <MazBtn block justify="space-around" icon="users" right-icon="sun" size="md">around</MazBtn>
-    <MazBtn block justify="space-evenly" icon="users" right-icon="sun" size="md">evenly</MazBtn>
+  <div class="maz:flex maz:flex-col maz:gap-2">
+    <MazBtn block justify="center" icon="/users.svg" end-icon="/sun.svg" size="md">center</MazBtn>
+    <MazBtn block justify="start" icon="/users.svg" end-icon="/sun.svg" size="md">start</MazBtn>
+    <MazBtn block justify="end" icon="/users.svg" end-icon="/sun.svg" size="md">end</MazBtn>
+    <MazBtn block justify="space-between" icon="/users.svg" end-icon="/sun.svg" size="md">between</MazBtn>
+    <MazBtn block justify="space-around" icon="/users.svg" end-icon="/sun.svg" size="md">around</MazBtn>
+    <MazBtn block justify="space-evenly" icon="/users.svg" end-icon="/sun.svg" size="md">evenly</MazBtn>
   </div>
 
 <template #code>
 
 ```html
-<MazBtn block justify="center" icon="users" right-icon="sun" size="md">center</MazBtn>
-<MazBtn block justify="start" icon="users" right-icon="sun" size="md">start</MazBtn>
-<MazBtn block justify="end" icon="users" right-icon="sun" size="md">end</MazBtn>
-<MazBtn block justify="space-between" icon="users" right-icon="sun" size="md">between</MazBtn>
-<MazBtn block justify="space-around" icon="users" right-icon="sun" size="md">around</MazBtn>
-<MazBtn block justify="space-evenly" icon="users" right-icon="sun" size="md">evenly</MazBtn>
+<MazBtn block justify="center" icon="/users.svg" end-icon="/sun.svg" size="md">center</MazBtn>
+<MazBtn block justify="start" icon="/users.svg" end-icon="/sun.svg" size="md">start</MazBtn>
+<MazBtn block justify="end" icon="/users.svg" end-icon="/sun.svg" size="md">end</MazBtn>
+<MazBtn block justify="space-between" icon="/users.svg" end-icon="/sun.svg" size="md">between</MazBtn>
+<MazBtn block justify="space-around" icon="/users.svg" end-icon="/sun.svg" size="md">around</MazBtn>
+<MazBtn block justify="space-evenly" icon="/users.svg" end-icon="/sun.svg" size="md">evenly</MazBtn>
 ```
 
   </template>
@@ -310,36 +310,36 @@ By default, the justify is `center`
 ## Icons
 
 <ComponentDemo>
-  <h4 class="maz-mb-2 maz-font-semibold maz-text-lg">
-    Left Icon and Right Icon
+  <h4 class="maz:mb-2 maz:font-semibold maz:text-lg">
+    Start Icon and End Icon
   </h4>
 
-  <div class="maz-flex maz-gap-2 maz-rounded maz-flex-wrap maz-items-center">
-    <MazBtn :left-icon="MazCheck" size="mini">
-      left-icon
+  <div class="maz:flex maz:gap-2 maz:rounded-md maz:flex-wrap maz:items-center">
+    <MazBtn :start-icon="MazCheck" size="mini">
+      start-icon
     </MazBtn>
-    <MazBtn :left-icon="MazCheck" size="xs">
-      left-icon
+    <MazBtn :start-icon="MazCheck" size="xs">
+      start-icon
     </MazBtn>
-    <MazBtn :left-icon="MazCheck" size="sm">
-      left-icon
+    <MazBtn :start-icon="MazCheck" size="sm">
+      start-icon
     </MazBtn>
-    <MazBtn :right-icon="MazCheck" size="md">
-      left-icon
+    <MazBtn :end-icon="MazCheck" size="md">
+      end-icon
     </MazBtn>
-    <MazBtn :right-icon="MazCheck" size="lg">
-      left-icon
+    <MazBtn :end-icon="MazCheck" size="lg">
+      end-icon
     </MazBtn>
-    <MazBtn :right-icon="MazCheck" size="xl">
-      left-icon
+    <MazBtn :end-icon="MazCheck" size="xl">
+      end-icon
     </MazBtn>
   </div>
 
-  <h4 class="maz-my-2 maz-font-semibold maz-text-lg">
+  <h4 class="maz:my-2 maz:font-semibold maz:text-lg">
     Fab
   </h4>
 
-  <div class="maz-flex maz-gap-2 maz-rounded maz-flex-wrap maz-items-center">
+  <div class="maz:flex maz:gap-2 maz:rounded-md maz:flex-wrap maz:items-center">
     <MazBtn fab :icon="MazCommandLine" size="mini" />
     <MazBtn fab :icon="MazCommandLine" size="xs" />
     <MazBtn fab :icon="MazCommandLine" size="sm" />
@@ -348,12 +348,12 @@ By default, the justify is `center`
     <MazBtn fab :icon="MazCommandLine" size="xl" />
   </div>
 
-  <h4 class="maz-my-2 maz-font-semibold maz-text-lg">
+  <h4 class="maz:my-2 maz:font-semibold maz:text-lg">
     Icon component
   </h4>
 
-  <div class="maz-flex maz-gap-2 maz-rounded maz-flex-wrap maz-items-center">
-    <MazBtn :left-icon="MazSpinner" size="md" color="warning">
+  <div class="maz:flex maz:gap-2 maz:rounded-md maz:flex-wrap maz:items-center">
+    <MazBtn :start-icon="MazSpinner" size="md" color="warning">
       icon component
     </MazBtn>
   </div>
@@ -361,26 +361,26 @@ By default, the justify is `center`
 <template #code>
 
 ```html
-<MazBtn :left-icon="MazCheck" size="mini">
-  left-icon
+<MazBtn :start-icon="MazCheck" size="mini">
+  start-icon
 </MazBtn>
-<MazBtn :left-icon="MazCheck" size="xs">
-  left-icon
+<MazBtn :start-icon="MazCheck" size="xs">
+  start-icon
 </MazBtn>
-<MazBtn :left-icon="MazCheck" size="sm">
-  left-icon
+<MazBtn :start-icon="MazCheck" size="sm">
+  start-icon
 </MazBtn>
-<MazBtn :left-icon="MazCheck" size="md">
-  left-icon
+<MazBtn :start-icon="MazCheck" size="md">
+  start-icon
 </MazBtn>
-<MazBtn :left-icon="MazCheck" size="lg">
-  left-icon
+<MazBtn :start-icon="MazCheck" size="lg">
+  start-icon
 </MazBtn>
-<MazBtn :left-icon="MazCheck" size="xl">
-  left-icon
+<MazBtn :start-icon="MazCheck" size="xl">
+  start-icon
 </MazBtn>
 <MazBtn fab :icon="MazCommandLine" size="lg" />
-<MazBtn :left-icon="MazSpinner" size="sm" color="warning">
+<MazBtn :start-icon="MazSpinner" size="sm" color="warning">
   icon component
 </MazBtn>
 ```
@@ -388,18 +388,18 @@ By default, the justify is `center`
   </template>
 </ComponentDemo>
 
-### Use icon name
+### Use icon path
 
 ::: details View code
 
-When you use the properties `right-icon`, `left-icon` or `icon` with the icon name (string), the component uses `<MazIcon name="..." />` component.
+When you use the properties `end-icon`, `start-icon` or `icon` with the icon path, the component uses `<MazIcon icon="..." />` component.
 
 Check out how [MazIcon](./maz-icon.md) works, see all available icons and download them to put them in your public folder.
 
 ```html
-<MazBtn left-icon="check" size="sm"> left-icon </MazBtn>
-<MazBtn right-icon="home"> right-icon </MazBtn>
-<MazBtn icon="command-line" fab size="lg" />
+<MazBtn start-icon="/check.svg" size="sm"> start-icon </MazBtn>
+<MazBtn end-icon="/home.svg"> end-icon </MazBtn>
+<MazBtn icon="/command-line.svg" fab size="lg" />
 ```
 
 :::
@@ -410,7 +410,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 
 ```html
 <MazBtn size="sm">
-  <template #left-icon>
+  <template #start-icon>
     <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M4.5 12.75L10.5 18.75L19.5 5.25"
@@ -421,10 +421,10 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
       />
     </svg>
   </template>
-  left-icon
+  start-icon
 </MazBtn>
 <MazBtn>
-  <template #right-icon>
+  <template #end-icon>
     <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M2.25 12L11.2045 3.04549C11.6438 2.60615 12.3562 2.60615 12.7955 3.04549L21.75 12M4.5 9.75V19.875C4.5 20.4963 5.00368 21 5.625 21H9.75V16.125C9.75 15.5037 10.2537 15 10.875 15H13.125C13.7463 15 14.25 15.5037 14.25 16.125V21H18.375C18.9963 21 19.5 20.4963 19.5 19.875V9.75M8.25 21H16.5"
@@ -435,7 +435,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
       />
     </svg>
   </template>
-  right-icon
+  end-icon
 </MazBtn>
 <MazBtn fab size="lg">
   <template #icon>
@@ -462,17 +462,17 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 <script lang="ts" setup>
 import MazBtn from 'maz-ui/components/MazBtn'
 
-import { MazCheck } from '@maz-ui/icons/MazCheck'
-import { MazHome } from '@maz-ui/icons/MazHome'
-import { MazCommandLine } from '@maz-ui/icons/MazCommandLine'
+import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
+import { MazHome } from '@maz-ui/icons/raw/MazHome'
+import { MazCommandLine } from '@maz-ui/icons/raw/MazCommandLine'
 </script>
 
 <template>
-  <MazBtn :left-icon="MazCheck" size="sm">
-    left-icon
+  <MazBtn :start-icon="MazCheck" size="sm">
+    start-icon
   </MazBtn>
-  <MazBtn :right-icon="MazHome">
-    right-icon
+  <MazBtn :end-icon="MazHome">
+    end-icon
   </MazBtn>
   <MazBtn fab :icon="MazCommandLine" size="lg" />
 </template>
@@ -494,11 +494,11 @@ import MazCommandLine from '@maz-ui/icons/svg/command-line.svg?component'
 </script>
 
 <template>
-  <MazBtn :left-icon="MazCheck" size="sm">
-    left-icon
+  <MazBtn :start-icon="MazCheck" size="sm">
+    start-icon
   </MazBtn>
-  <MazBtn :right-icon="MazHome">
-    right-icon
+  <MazBtn :end-icon="MazHome">
+    end-icon
   </MazBtn>
   <MazBtn fab :icon="MazCommandLine" size="lg" />
 </template>
@@ -516,8 +516,41 @@ import { MazBtn, MazSpinner } from 'maz-ui/components'
 </script>
 
 <template>
-  <MazBtn :left-icon="MazSpinner" size="sm" color="info">
-    left-icon
+  <MazBtn :start-icon="MazSpinner" size="sm" color="info">
+    start-icon
+  </MazBtn>
+</template>
+```
+
+:::
+
+### Pass a full `MazIconProps` object
+
+`startIcon`, `endIcon` and `icon` accept either a bare value (Vue component, URL, raw SVG string) **or** a full `MazIconProps` object. The latter is useful when you want to override the auto-derived size, set a `<title>` for screen readers, flip a directional icon for RTL, or attach extra SVG attributes.
+
+::: details View code
+
+```vue
+<script lang="ts" setup>
+import MazBtn from 'maz-ui/components/MazBtn'
+import { MazStar } from '@maz-ui/icons/raw/MazStar'
+</script>
+
+<template>
+  <!-- The button picks an icon size from its own size — `sm` defaults to a small icon. -->
+  <MazBtn size="sm" :start-icon="MazStar">favorite</MazBtn>
+
+  <!-- Pass an object to override per-icon. -->
+  <MazBtn
+    size="sm"
+    :start-icon="{
+      icon: MazStar,
+      size: 'xl',
+      title: 'Favorite',
+      flipIconForRtl: true,
+    }"
+  >
+    favorite
   </MazBtn>
 </template>
 ```
@@ -550,10 +583,10 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
 
 <script setup lang="ts">
   import { computed } from 'vue'
-  import { MazCheck } from '@maz-ui/icons/MazCheck'
-  import { MazHome } from '@maz-ui/icons/MazHome'
-  import { MazCommandLine } from '@maz-ui/icons/MazCommandLine'
-  import MazSpinner from 'maz-ui/src/components/MazSpinner.vue'
+  import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
+  import { MazHome } from '@maz-ui/icons/raw/MazHome'
+  import { MazCommandLine } from '@maz-ui/icons/raw/MazCommandLine'
+  import MazSpinner from 'maz-ui/components/MazSpinner'
 
   const colors = [
     'primary',

@@ -1,3 +1,4 @@
+import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { noTransition } from '../no-transition'
 
 vi.mock('@maz-ui/utils/helpers/isServer', () => ({
@@ -7,6 +8,7 @@ vi.mock('@maz-ui/utils/helpers/isServer', () => ({
 describe('no-transition', () => {
   beforeEach(() => {
     vi.useFakeTimers()
+    vi.mocked(isServer).mockReturnValue(false)
   })
 
   afterEach(() => {
@@ -18,8 +20,7 @@ describe('no-transition', () => {
 
   describe('given noTransition function', () => {
     describe('when running on the server', () => {
-      it('then it calls the callback without DOM manipulation', async () => {
-        const { isServer } = await import('@maz-ui/utils/helpers/isServer')
+      it('then it calls the callback without DOM manipulation', () => {
         vi.mocked(isServer).mockReturnValue(true)
 
         const fn = vi.fn()
@@ -33,10 +34,7 @@ describe('no-transition', () => {
     })
 
     describe('when running on the client', () => {
-      it('then it appends a style element to the head', async () => {
-        const { isServer } = await import('@maz-ui/utils')
-        vi.mocked(isServer).mockReturnValue(false)
-
+      it('then it appends a style element to the head', () => {
         noTransition(() => {})
 
         const styles = document.head.querySelectorAll('style')
@@ -45,19 +43,13 @@ describe('no-transition', () => {
         expect(styles[0].textContent).toContain('transition-property')
       })
 
-      it('then it adds the no-transitions class to documentElement', async () => {
-        const { isServer } = await import('@maz-ui/utils')
-        vi.mocked(isServer).mockReturnValue(false)
-
+      it('then it adds the no-transitions class to documentElement', () => {
         noTransition(() => {})
 
         expect(document.documentElement.classList.contains('no-transitions')).toBe(true)
       })
 
-      it('then it calls the callback', async () => {
-        const { isServer } = await import('@maz-ui/utils')
-        vi.mocked(isServer).mockReturnValue(false)
-
+      it('then it calls the callback', () => {
         const fn = vi.fn()
 
         noTransition(fn)
@@ -65,10 +57,7 @@ describe('no-transition', () => {
         expect(fn).toHaveBeenCalledOnce()
       })
 
-      it('then it removes the class and style after 500ms', async () => {
-        const { isServer } = await import('@maz-ui/utils')
-        vi.mocked(isServer).mockReturnValue(false)
-
+      it('then it removes the class and style after 500ms', () => {
         noTransition(() => {})
 
         expect(document.documentElement.classList.contains('no-transitions')).toBe(true)
@@ -82,10 +71,7 @@ describe('no-transition', () => {
         expect(document.head.querySelectorAll('style').length).toBe(0)
       })
 
-      it('then the class is still present before 500ms elapses', async () => {
-        const { isServer } = await import('@maz-ui/utils')
-        vi.mocked(isServer).mockReturnValue(false)
-
+      it('then the class is still present before 500ms elapses', () => {
         noTransition(() => {})
 
         vi.advanceTimersByTime(250)

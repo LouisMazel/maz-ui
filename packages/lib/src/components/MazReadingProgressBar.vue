@@ -69,7 +69,7 @@ export interface MazReadingProgressBarProps {
 }
 
 const barColor = computed<string>(() => {
-  return `hsl(var(--maz-${props.color}))`
+  return `var(--maz-${props.color})`
 })
 
 const progressBarWidth = ref<string>()
@@ -137,7 +137,7 @@ onBeforeUnmount(() => {
 
 <template>
   <Teleport :to="teleportSelector">
-    <div class="m-reading-progress-bar m-reset-css" v-bind="$attrs">
+    <div class="m-reading-progress-bar m-reset-css maz:fixed maz:top-0 maz:z-default-backdrop maz:w-full" v-bind="$attrs">
       <div
         :class="barClass"
         :style="{
@@ -149,9 +149,3 @@ onBeforeUnmount(() => {
     </div>
   </Teleport>
 </template>
-
-<style scoped>
-.m-reading-progress-bar {
-  @apply maz-fixed maz-top-0 maz-z-default-backdrop maz-w-full;
-}
-</style>

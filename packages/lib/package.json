@@ -31,93 +31,108 @@
     "./dist/css/**"
   ],
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "module": "./dist/index.js",
-      "default": "./dist/index.js"
-    },
     "./components": {
+      "monorepo:dev": "./src/components/index.ts",
       "types": "./dist/components/index.d.ts",
       "import": "./dist/components/index.js",
       "module": "./dist/components/index.js",
       "default": "./dist/components/index.js"
     },
     "./components/*": {
+      "monorepo:dev": "./src/components/*.vue",
       "types": "./dist/components/*.vue.d.ts",
       "import": "./dist/components/*.js",
       "module": "./dist/components/*.js",
       "default": "./dist/components/*.js"
     },
     "./composables": {
+      "monorepo:dev": "./src/composables/index.ts",
       "types": "./dist/composables/index.d.ts",
       "import": "./dist/composables/index.js",
       "module": "./dist/composables/index.js",
       "default": "./dist/composables/index.js"
     },
     "./composables/*": {
+      "monorepo:dev": "./src/composables/*.ts",
       "types": "./dist/composables/*.d.ts",
       "import": "./dist/composables/*.js",
       "module": "./dist/composables/*.js",
       "default": "./dist/composables/*.js"
     },
     "./plugins": {
+      "monorepo:dev": "./src/plugins/index.ts",
       "types": "./dist/plugins/index.d.ts",
       "import": "./dist/plugins/index.js",
       "module": "./dist/plugins/index.js",
       "default": "./dist/plugins/index.js"
     },
     "./plugins/*": {
+      "monorepo:dev": "./src/plugins/*.ts",
       "types": "./dist/plugins/*.d.ts",
       "import": "./dist/plugins/*.js",
       "module": "./dist/plugins/*.js",
       "default": "./dist/plugins/*.js"
     },
     "./directives": {
+      "monorepo:dev": "./src/directives/index.ts",
       "types": "./dist/directives/index.d.ts",
       "import": "./dist/directives/index.js",
       "module": "./dist/directives/index.js",
       "default": "./dist/directives/index.js"
     },
     "./directives/*": {
+      "monorepo:dev": "./src/directives/*.ts",
       "types": "./dist/directives/*.d.ts",
       "import": "./dist/directives/*.js",
       "module": "./dist/directives/*.js",
       "default": "./dist/directives/*.js"
     },
     "./resolvers": {
+      "monorepo:dev": "./src/resolvers/index.ts",
       "types": "./dist/resolvers/index.d.ts",
       "import": "./dist/resolvers/index.js",
       "module": "./dist/resolvers/index.js",
       "default": "./dist/resolvers/index.js"
     },
     "./resolvers/*": {
+      "monorepo:dev": "./src/resolvers/*.ts",
       "types": "./dist/resolvers/*.d.ts",
       "import": "./dist/resolvers/*.js",
       "module": "./dist/resolvers/*.js",
       "default": "./dist/resolvers/*.js"
     },
     "./tailwindcss": {
+      "monorepo:dev": "./src/tailwindcss/index.ts",
       "types": "./dist/tailwindcss/index.d.ts",
       "import": "./dist/tailwindcss/index.js",
       "module": "./dist/tailwindcss/index.js",
       "default": "./dist/tailwindcss/index.js"
     },
+    "./tailwindcss/theme.css": "./src/tailwindcss/theme.css",
+    "./tailwindcss/theme-colors.css": "./src/tailwindcss/theme-colors.css",
+    "./tailwindcss/theme-radius.css": "./src/tailwindcss/theme-radius.css",
+    "./tailwindcss/theme-breakpoints.css": "./src/tailwindcss/theme-breakpoints.css",
+    "./tailwindcss/theme-shadows.css": "./src/tailwindcss/theme-shadows.css",
+    "./tailwindcss/theme-z-index.css": "./src/tailwindcss/theme-z-index.css",
+    "./tailwindcss/theme-typography.css": "./src/tailwindcss/theme-typography.css",
+    "./tailwindcss/theme-variants.css": "./src/tailwindcss/theme-variants.css",
+    "./tailwindcss/utilities.css": "./src/tailwindcss/utilities.css",
+    "./tailwindcss/tailwind.css": "./src/tailwindcss/tailwind.css",
     "./tailwindcss/*": {
       "types": "./dist/tailwindcss/*.d.ts",
       "import": "./dist/tailwindcss/*.js",
       "module": "./dist/tailwindcss/*.js",
       "default": "./dist/tailwindcss/*.js"
     },
-    "./styles": {
-      "types": "./dist/css/main.css.d.ts",
+    "./style.css": {
+      "monorepo:dev": "./src/tailwindcss/tailwind.css",
       "default": "./dist/css/main.css"
     },
-    "./aos-styles": {
-      "types": "./dist/css/aos.css.d.ts",
+    "./aos.css": {
+      "monorepo:dev": "./src/plugins/aos/scss/index.scss",
       "default": "./dist/css/aos.css"
     },
-    "./*": "./*"
+    "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -132,6 +147,7 @@
     "README.md",
     "bin",
     "dist",
+    "src/tailwindcss",
     "svg",
     "tailwindcss"
   ],
@@ -187,21 +203,24 @@
     "chart.js": "^4.5.1",
     "dayjs": "^1.11.20",
     "libphonenumber-js": "^1.12.41",
-    "valibot": "^1.3.1",
-    "vue-chartjs": "^5.3.3"
+    "valibot": "^1.3.1"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
     "@maz-ui/node": "workspace:*",
-    "@vitejs/plugin-vue": "^6.0.6",
+    "@maz-ui/stylelint-config": "workspace:*",
+    "@tailwindcss/cli": "^4.2.1",
+    "@tailwindcss/postcss": "^4.2.1",
+    "@tailwindcss/vite": "^4.2.1",
     "@vue/compiler-sfc": "^3.5.32",
     "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.5.0",
     "jsdom": "^29.0.2",
     "lightningcss": "^1.32.0",
     "nuxt": "^4.4.2",
+    "postcss-nested": "^7.0.2",
     "sass": "^1.99.0",
-    "tailwindcss": "^3.4.16",
+    "tailwindcss": "^4.2.1",
     "unplugin-auto-import": "^21.0.0",
     "unplugin-vue-components": "^32.0.0",
     "vue-router": "^5.0.4"

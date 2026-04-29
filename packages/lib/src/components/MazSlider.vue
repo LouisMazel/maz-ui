@@ -322,7 +322,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
   >
     <div
       ref="MazSlider"
-      class="m-slider__bar"
+      class="m-slider__bar maz:relative maz:flex maz:items-center maz:justify-center maz:rounded-full"
       role="slider"
       :aria-valuenow="modelValue?.toString()"
       :aria-valuemin="min"
@@ -340,9 +340,9 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
         :key="`cursor-${i}`"
         type="button"
         :data-label="getLabel(i)"
-        class="m-slider__btn"
+        class="m-slider__btn maz:flex maz:items-center maz:justify-center maz:rounded-full maz:border maz:border-solid maz:border-divider maz:bg-surface maz:shadow-md maz:hover:bg-surface-200"
         :class="{
-          'active-cursor': i === activeCursor && cursorAnim,
+          'active-cursor maz:border maz:shadow-lg maz:z-2': i === activeCursor && cursorAnim,
         }"
         :style="[buttonStyles[i]]"
         @mousedown.passive="handleMousedown($event, i)"
@@ -352,7 +352,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
         @touchend.passive="blurCursor(i)"
         @keydown.passive="cursorKeyDown($event, i)"
       >
-        <span>
+        <span class="maz:flex maz:items-center maz:text-foreground">
           {{ tmpValues?.[i] }}
         </span>
       </button>
@@ -361,20 +361,19 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
 </template>
 
 <style scoped>
-  .m-slider {
-  padding: 1em 1.5rem;
+.m-slider {
+  padding-block: 1em;
+  padding-inline: 1.5rem;
 
   &__bar {
-    @apply maz-relative maz-flex maz-items-center maz-justify-center maz-rounded-full;
-
-    height: 0.5em;
-    background-color: hsl(var(--m-slider-color));
+    block-size: 0.5em;
+    background-color: var(--m-slider-color);
   }
 
   &__divider {
     position: absolute;
     border-radius: 2em;
-    height: 100%;
+    block-size: 100%;
   }
 
   &__btn {
@@ -386,41 +385,30 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     line-height: 1;
     transition:
       box-shadow 300ms ease-in-out,
-      width 300ms ease-in-out,
+      inline-size 300ms ease-in-out,
       transform 300ms ease-in-out,
       background-color 300ms ease-in-out;
     z-index: 1;
     user-select: none;
-
-    @apply maz-flex maz-items-center maz-justify-center maz-rounded-full maz-border maz-border-solid
-        maz-border-divider maz-bg-surface maz-shadow-md;
-
-    padding: 0.25em 0.5em;
+    padding-block: 0.25em;
+    padding-inline: 0.5em;
 
     & span {
-      @apply maz-flex maz-items-center maz-text-foreground;
-
-      margin-left: 0.25em;
-      margin-right: 0.25em;
+      margin-inline: 0.25em;
     }
 
     &.active-cursor {
-      @apply maz-border maz-shadow-lg maz-z-2;
-
       transform: scale(1.3);
-      border-color: hsl(var(--m-slider-color));
+      border-color: var(--m-slider-color);
     }
 
     &::before {
       content: attr(data-label);
+      position: absolute;
+      inset-block-start: -1.5em;
       font-size: 0.8em;
-      top: -1.5em;
-
-      @apply maz-absolute maz-font-medium maz-text-foreground;
-    }
-
-    &:hover {
-      @apply maz-bg-surface-200;
+      font-weight: 500;
+      color: var(--maz-foreground);
     }
   }
 }

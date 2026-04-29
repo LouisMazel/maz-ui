@@ -105,21 +105,21 @@ const radioSize = computed(() => {
   }
 })
 
-const radioSelectedColor = computed(() => `hsl(var(--maz-${props.color}))`)
+const radioSelectedColor = computed(() => `var(--maz-${props.color})`)
 const radioBoxShadow = computed(() => {
   if (props.error && !isFocused.value) {
-    return `hsl(var(--maz-destructive))`
+    return `var(--maz-destructive)`
   }
   else if (props.warning && !isFocused.value) {
-    return `hsl(var(--maz-warning))`
+    return `var(--maz-warning)`
   }
   else if (props.success && !isFocused.value) {
-    return `hsl(var(--maz-success))`
+    return `var(--maz-success)`
   }
 
   return ['transparent', 'contrast'].includes(props.color)
-    ? `hsl(var(--maz-muted))`
-    : `hsl(var(--maz-${props.color}) / 60%)`
+    ? `var(--maz-muted)`
+    : `color-mix(in srgb, var(--maz-${props.color}) 60%, transparent)`
 })
 
 function keyboardHandler(event: KeyboardEvent) {
@@ -149,8 +149,8 @@ function onFocus(event: FocusEvent) {
 <template>
   <label
     :for="instanceId"
-    class="m-radio m-reset-css"
-    :class="[{ '--selected': isSelected, '--error': error, '--warning': warning, '--success': success }, props.class]"
+    class="m-radio m-reset-css maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden"
+    :class="[{ '--selected': isSelected, '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-pointer': !disabled }, props.class]"
     tabindex="0"
     role="radio"
     :style="[style, { '--radio-size': radioSize, '--radio-selected-color': radioSelectedColor, '--radio-box-shadow': radioBoxShadow }]"
@@ -169,6 +169,7 @@ function onFocus(event: FocusEvent) {
       :name
       type="radio"
       :checked="isSelected"
+      class="maz:hidden"
       @change="emitValue()"
     >
 
@@ -181,17 +182,21 @@ function onFocus(event: FocusEvent) {
         @binding {Boolean} is-selected - If the radio is selected
         @binding {string | number | boolean} value - The value of the radio
     -->
-    <div class="m-radio__text">
+    <div class="m-radio__text maz:flex maz:flex-col maz:gap-0">
       <slot :is-selected="isSelected" :value="value as T">
         {{ label }}
       </slot>
 
       <span
         v-if="hint"
-        class="m-radio__hint" :class="{
+        class="m-radio__hint maz:text-sm" :class="{
           '--error': error,
           '--success': success,
           '--warning': warning,
+          'maz:text-destructive-600': error,
+          'maz:text-success-600': success,
+          'maz:text-warning-600': warning,
+          'maz:text-muted': !error && !success && !warning,
         }"
       >{{ hint }}</span>
     </div>
@@ -199,96 +204,59 @@ function onFocus(event: FocusEvent) {
 </template>
 
 <style scoped>
-  .m-radio {
-  @apply maz-relative maz-inline-flex maz-items-center maz-gap-2 maz-align-top maz-outline-none;
+@reference "../tailwindcss/tailwind.css";
 
+.m-radio {
   > span {
-    @apply maz-relative maz-flex maz-rounded-full maz-border maz-border-divider dark:maz-border-divider-400 maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center;
+    @apply maz:relative maz:flex maz:rounded-full maz:border maz:border-divider maz:dark:border-divider-400 maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center;
 
-    width: var(--radio-size);
-    height: var(--radio-size);
+    inline-size: var(--radio-size);
+    block-size: var(--radio-size);
 
     .round {
-      @apply maz-h-[50%] maz-w-[50%] maz-scale-0 maz-rounded-full maz-transition-transform maz-duration-300 maz-ease-in-out;
+      @apply maz:h-[50%] maz:w-[50%] maz:scale-0 maz:rounded-full maz:transition-transform maz:duration-300 maz:ease-in-out;
 
       background-color: var(--radio-selected-color);
     }
   }
 
   &:not(.--selected) > span {
-    @apply maz-bg-surface dark:maz-bg-surface-400;
+    @apply maz:bg-input;
   }
 
   &.--selected > span {
     border-color: var(--radio-selected-color);
 
     .round {
-      @apply maz-scale-100;
+      @apply maz:scale-100;
     }
-  }
-
-  &__text {
-    @apply maz-flex maz-flex-col maz-gap-0;
-  }
-
-  input {
-    @apply maz-hidden;
   }
 
   &:has(input:disabled) {
-    @apply maz-cursor-not-allowed maz-text-muted;
-
     > span {
-      @apply maz-bg-surface-600 dark:maz-bg-surface-400;
+      @apply maz:bg-surface-600 maz:dark:bg-surface-400;
     }
 
-    &.--selected {
-      > span {
-        @apply maz-border-divider;
+    &.--selected > span {
+      @apply maz:border-divider;
 
-        .round {
-          @apply maz-bg-muted;
-        }
+      .round {
+        @apply maz:bg-muted;
       }
     }
   }
 
-  &__hint {
-    @apply maz-text-sm maz-text-muted;
-
-    &.--error {
-      @apply maz-text-destructive-600;
-    }
-
-    &.--success {
-      @apply maz-text-success-600;
-    }
-
-    &.--warning {
-      @apply maz-text-warning-600;
-    }
-  }
-
-  &:not(:has(input:disabled)),
-  &:not(.--selected) {
-    @apply maz-cursor-pointer;
-
+  &:not(:has(input:disabled), .--selected) {
     &:hover > span,
     &:focus > span {
-      @apply maz-transition-all maz-duration-300 maz-ease-in-out;
-
       box-shadow: 0 0 0 0.125rem var(--radio-box-shadow);
     }
   }
 
-  &.--error,
-  &.--warning,
-  &.--success {
-    > span {
-      @apply maz-transition-all maz-duration-300 maz-ease-in-out;
-
-      box-shadow: 0 0 0 0.125rem var(--radio-box-shadow);
-    }
+  &.--error > span,
+  &.--warning > span,
+  &.--success > span {
+    box-shadow: 0 0 0 0.125rem var(--radio-box-shadow);
   }
 }
 </style>

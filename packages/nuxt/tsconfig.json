@@ -9,8 +9,12 @@
     "../node/**/*",
     "../themes/**/*",
     "../translations/**/*",
+    "../codemod/**/*",
     "../mcp/**/*",
     "../icons/**/*",
+    "../eslint-config/**/*",
+    "../stylelint-config/**/*",
+    "../maz-cli/**/*",
     "../../apps/**/*"
   ]
 }

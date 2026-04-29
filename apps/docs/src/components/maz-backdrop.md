@@ -54,9 +54,9 @@ const basicOpen = ref(false)
 
 <style lang="css" scoped>
 .demo-content {
-  background: hsl(var(--maz-background));
+  background: var(--maz-surface);
   padding: 2rem;
-  border-radius: var(--maz-radius);
+  border-radius: var(--maz-rounded-md);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   text-align: center;
@@ -68,7 +68,7 @@ const basicOpen = ref(false)
 
 .demo-content p {
   margin-bottom: 1.5rem;
-  color: hsl(var(--maz-muted));
+  color: var(--maz-muted);
 }
 </style>
 ```
@@ -115,7 +115,7 @@ A persistent backdrop cannot be closed by clicking outside or pressing Escape. P
 You can control where your content appears using `justify` and `align` props. It's like choosing where to place a sticker on your screen!
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-wrap maz-gap-2">
+  <div class="maz:flex maz:flex-wrap maz:gap-2">
     <MazBtn @click="topLeftOpen = true">Top Left</MazBtn>
     <MazBtn @click="centerOpen = true">Center</MazBtn>
     <MazBtn @click="bottomRightOpen = true">Bottom Right</MazBtn>
@@ -231,9 +231,9 @@ These features work automatically - you don't need to do anything extra!
 
 <style scoped>
 .demo-content {
-  background: hsl(var(--maz-background));
+  background: var(--maz-surface);
   padding: 2rem;
-  border-radius: var(--maz-radius);
+  border-radius: var(--maz-rounded-md);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   text-align: center;
@@ -245,6 +245,6 @@ These features work automatically - you don't need to do anything extra!
 
 .demo-content p {
   margin-bottom: 1.5rem;
-  color: hsl(var(--maz-muted));
+  color: var(--maz-muted);
 }
 </style>

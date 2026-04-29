@@ -3,15 +3,6 @@ import type { MazUiTranslationsOptions } from '@maz-ui/translations'
 import type { VFullscreenImgOptions, VLazyImgOptions, VTooltipOptions } from 'maz-ui/directives'
 import type { AosOptions, DialogOptions, ToastOptions } from 'maz-ui/plugins'
 
-export interface MazUiNuxtThemeOptions extends MazUiThemeOptions {
-  /**
-   * Inject full CSS on server-side
-   * @description Inject full CSS on server-side to prevent FOUC on client-side
-   * @default true
-   */
-  injectAllCSSOnServer?: boolean
-}
-
 export interface MazUiNuxtOptions {
   /**
    * General configuration
@@ -46,13 +37,13 @@ export interface MazUiNuxtOptions {
    * @description If false, the theme system will be completely disabled
    * @default {
    *   preset: 'maz-ui',
-   *   strategy: 'hybrid',
+   *   strategy: 'runtime',
    *   darkModeStrategy: 'class',
    *   prefix: 'maz',
    *   colorMode: 'auto',
    * }
    */
-  theme?: Omit<MazUiNuxtThemeOptions, 'preset'> & {
+  theme?: Omit<MazUiThemeOptions, 'preset'> & {
     /**
      * @default 'maz-ui'
      */
@@ -77,7 +68,7 @@ export interface MazUiNuxtOptions {
      * @description Automatically injects Maz-UI base styles
      * @default true
      */
-    injectMainCss?: boolean
+    injectCss?: boolean
   }
 
   /**

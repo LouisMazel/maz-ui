@@ -54,7 +54,7 @@ describe('theme plugin (server)', () => {
           mazUi: {
             theme: {
               preset: 'maz-ui',
-              strategy: 'hybrid',
+              strategy: 'runtime',
               darkModeStrategy: 'class',
               colorMode: 'auto',
               mode: 'both',
@@ -66,10 +66,10 @@ describe('theme plugin (server)', () => {
     }
   }
 
-  it('should call injectThemeCSS on server', async () => {
-    const context = createContext({ injectCriticalCSS: true, injectAllCSSOnServer: false })
+  it('should inject the full CSS into useHead on server', async () => {
+    const context = createContext()
     await (themePlugin as (...args: any[]) => any)(context)
-    expect(mockGenerateCSS).toHaveBeenCalled()
+    expect(mockGenerateCSS).toHaveBeenCalledTimes(1)
     expect(mockUseHead).toHaveBeenCalledWith(
       expect.objectContaining({
         style: expect.arrayContaining([
@@ -79,27 +79,10 @@ describe('theme plugin (server)', () => {
     )
   })
 
-  it('should inject critical CSS when injectCriticalCSS is true and injectAllCSSOnServer is false', async () => {
-    const context = createContext({
-      injectCriticalCSS: true,
-      injectAllCSSOnServer: false,
-    })
+  it('should skip CSS injection when strategy is buildtime', async () => {
+    const context = createContext({ strategy: 'buildtime' })
     await (themePlugin as (...args: any[]) => any)(context)
-    expect(mockGenerateCSS).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.objectContaining({ onlyCritical: true }),
-    )
-  })
-
-  it('should inject full CSS when injectAllCSSOnServer is true', async () => {
-    const context = createContext({
-      injectAllCSSOnServer: true,
-    })
-    await (themePlugin as (...args: any[]) => any)(context)
-    expect(mockGenerateCSS).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.not.objectContaining({ onlyCritical: true }),
-    )
+    expect(mockGenerateCSS).not.toHaveBeenCalled()
   })
 
   it('should detect dark mode from sec-ch-prefers-color-scheme header', async () => {
@@ -133,7 +116,9 @@ describe('theme plugin (server)', () => {
   })
 
   it('should use saved color mode from cookie on server', async () => {
-    mockUseCookie.mockReturnValue({ value: 'dark' })
+    mockUseCookie.mockImplementation(((name: string) => {
+      return { value: name === 'maz-color-mode' ? 'dark' : undefined }
+    }) as any)
     const context = createContext({ colorMode: 'auto', mode: 'both' })
     await (themePlugin as (...args: any[]) => any)(context)
     expect(mockInstall).toHaveBeenCalledWith(

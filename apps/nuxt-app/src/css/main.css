@@ -1,10 +1,24 @@
+@import 'maz-ui/tailwindcss/tailwind.css';
+
+@source "./../**/*.{vue,ts,css,scss}";
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--maz-divider, currentcolor);
+  }
+}
+
 /* stylelint-disable selector-id-pattern */
 html {
   font-size: var(--maz-base-font-size);
   font-family: var(--maz-font-family);
-  background-color: hsl(var(--maz-background));
-  color: hsl(var(--maz-foreground));
+  background-color: var(--maz-surface);
+  color: var(--maz-foreground);
 
-  @apply maz-min-h-screen maz-h-screen maz-overflow-y-auto;
+  @apply maz:min-h-screen maz:h-screen maz:overflow-y-auto;
 }
 /* stylelint-enable selector-id-pattern */

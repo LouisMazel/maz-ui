@@ -13,12 +13,169 @@ Maz-UI utilise Tailwind CSS v3.4.16 avec un système de theming basé sur des va
 - **Variables CSS** : valeurs complètes dans les custom properties
 - **Opacité** : gérée nativement par Tailwind v4 via `color-mix()`
 - **Prefix** : `maz-` (v3) → `maz:` (v4) — changement interne uniquement
+- **Mainteneur solo, pas de support v4 parallèle** — après stable v5, v4 n'est plus maintenue (ni security fixes, ni backports).
+
+---
+
+## Méthodologie d'exécution
+
+Cette section gouverne **comment** le plan est exécuté. Les règles ci-dessous sont des garde-fous pour garantir la qualité d'un major release porté par un mainteneur solo.
+
+### Règle 1 — Une phase = une session focused
+
+Pas de fragmentation arbitraire. Si une phase est trop grosse pour tenir en une session (ex: Phase 3 rename + fixes, Phase 7 tests complets), elle est découpée en sous-sessions cohérentes (une sous-phase par session). Jamais l'inverse : deux phases dans une session.
+
+### Règle 2 — Pause obligatoire avant chaque phase : choisir la technique
+
+Avant d'attaquer une phase, s'arrêter et répondre explicitement à **"quelle est la bonne technique ici ?"**. Documenter le choix dans un commentaire de commit ou un message à l'utilisateur avant de coder.
+
+Matrice de décision :
+
+| Nature de la phase                                         | Technique                                                    |
+| ---------------------------------------------------------- | ------------------------------------------------------------ |
+| **Design-heavy** (nouvelle API, architecture, choix)       | Interactif avec le mainteneur. Brainstorm → alignement → code. Skill `superpowers:brainstorming`. |
+| **Bug / comportement inattendu**                           | Investigation d'abord. Skill `superpowers:systematic-debugging`. |
+| **TDD applicable** (pure function, transform, parser)      | Tests écrits AVANT l'implémentation. Skill `superpowers:test-driven-development`. |
+| **Mécanique + validation claire** (rename, scaffolding)    | **Subagent-driven parallèle**. Skill `superpowers:subagent-driven-development`. |
+| **Exploration codebase > 3 recherches**                    | Agent `Explore` en subagent (protège le contexte principal). |
+| **Review critique à un gate**                              | Agent `superpowers:code-reviewer`.                           |
+| **Doc multi-pages indépendantes**                          | Subagent-driven parallèle (une page = un subagent).          |
+
+### Règle 3 — Subagent-driven pour tout ce qui est parallélisable et mécanique
+
+Identifier, dans chaque phase, les sous-tâches **indépendantes** (pas de shared state, pas d'ordre imposé) et les dispatcher en parallèle via des subagents. Gain massif sur :
+
+- **Phase 3** — fichiers Vue à fixer après le rename script (bug au cas par cas) : un subagent par composant problématique.
+- **Phase 7.7** — scaffolding Playwright : un subagent par composant.
+- **Phase 8.1** — fixtures codemod avant/après : un subagent par transform.
+- **Phase 9.1–9.3** — rédaction des pages doc indépendantes (installation, theming, browser-support) : un subagent par page.
+- **Phase 6.4.1** — éclatement de `theme.css` en modules : un subagent par module si la structure est clarifiée.
+
+À chaque fois, les subagents s'exécutent dans le même message (parallélisation réelle), avec un brief explicite par subagent (pas de prompt terse).
+
+### Règle 4 — Discipline de session
+
+**Début de session**, dans cet ordre :
+1. Lire `plans/2026-02-24-tailwind-v4-migration.md` (source de vérité).
+2. Lire `MEMORY.md` + mémoires projet pertinentes.
+3. `git log --oneline v5/tailwind-v4 ^master` (ce qui a été fait).
+4. Identifier la prochaine phase/sous-phase (marqueur `⏭ next` dans le plan).
+
+**Fin de session**, dans cet ordre :
+1. Commit scopé `feat(v5-phase-N): description précise`.
+2. Plan mis à jour avec marqueurs : `✅ done` / `🚧 in progress` / `⏭ next`.
+3. Mémoire ajoutée si décision non triviale prise (ex: choix d'approximation OKLCH, décision sur `postcss-replace`).
+
+### Règle 5 — Gates de qualité non négociables entre phases
+
+Avant de démarrer une nouvelle phase :
+
+1. `pnpm healthcheck` vert.
+2. Code review via l'agent `superpowers:code-reviewer` sur les changements de la phase qui se termine.
+3. Canary publié et testé par le mainteneur sur au moins un projet externe (détection précoce de régression).
+4. Validation explicite du mainteneur sur les points de décision listés dans la phase.
+
+Pas de "on verra plus tard" qui accumule de la dette.
+
+### Règle 6 — Escalade au mainteneur sur les décisions structurantes
+
+Points où l'exécution s'arrête et le mainteneur décide :
+
+- **Fin Phase 1** — approximation de conversion OKLCH → HSL : précision acceptable ou exiger une conversion colorimétrique exacte ?
+- **Fin Phase 2** — validation des noms de tokens exposés au consommateur (contrat public, impossible à changer sans breaking).
+- **Fin Phase 4** — décision finale sur `postcss-replace` (supprimer ou garder), avec mesure CSS compilée à l'appui.
+- **Fin Phase 8** — review des breaking changes du codemod avant publish npm.
+
+Ces escalades sont listées dans la phase correspondante.
+
+---
+
+## Phase -1 : Baselines de mesure (prérequis)
+
+**Statut** : 🟡 partiellement fait — quick baselines ✅, Playwright ⏭ reporté à la prochaine session
+
+**Contexte** : cette phase est **exécutée avant toute modification du code source**. Elle capture l'état "avant" pour pouvoir mesurer objectivement l'impact de la migration v4 sur la taille du bundle, le temps de build et le rendu visuel. Ces mesures seront publiées dans le CHANGELOG v5 et le blog post (Phases 9.4 et 9.5).
+
+**Lieu d'exécution** : worktree `../maz-ui-v5` sur branche `v5/tailwind-v4`, **sans aucun changement de code applicatif** par rapport à `develop`. Tout commit qui modifie du code doit venir après cette phase.
+
+### -1.1 Setup worktree ✅
+
+- `git worktree add ../maz-ui-v5 -b v5/tailwind-v4` depuis `develop` (inclut fixes v4.9.3 — identique à `master` au moment de la migration).
+- `pnpm install` dans le worktree (postinstall `nuxi prepare` de `apps/nuxt-app` échoue car `@maz-ui/utils/dist/*` pas encore built au moment du postinstall — non bloquant, se résout après `pnpm build:packages`).
+- `pnpm test:unit:all` comme sanity check : **2835 tests passed / 0 failed** sur 7 projets (23s). Baseline verte confirmée.
+
+### -1.2 Bundle size baseline ✅
+
+```bash
+cd packages/lib && pnpm build
+wc -c dist/css/main.css                        # taille brute
+gzip -c dist/css/main.css | wc -c              # taille gzippée
+du -sh dist/                                   # total dist
+```
+
+Sauvegarder dans `tools/baselines/v3-bundle.txt` avec date et version exacte.
+
+**Résultat (2026-04-23, commit 293882df0, v4.9.3)** :
+
+- `main.css` : **13 279 B raw / 2 626 B gzip**
+- `aos.css` : 19 292 B raw / 1 743 B gzip
+- Total `dist/` : 2.2 MB (434 fichiers : 74 CSS, 204 JS, 156 .d.ts)
+
+### -1.3 Build time baseline ✅
+
+3 runs moyennés, cache NX clear entre chaque pour reproductibilité :
+
+```bash
+for i in 1 2 3; do
+  pnpm nx:cache:clear
+  rm -rf packages/lib/dist
+  /usr/bin/time -p pnpm -C packages/lib build 2>&1 | grep real
+done
+```
+
+Sauvegarder dans `tools/baselines/v3-buildtime.txt`.
+
+**Résultat (Apple M1 Pro)** : 9.16s / 8.73s / 8.59s → **moyenne 8.83s** (écart-type ~0.3s).
+
+### -1.4 Screenshots visuels Playwright ⏭ reporté à la prochaine session
+
+**Technique** : subagent-driven (une tâche par composant en parallèle) — Règle 3 du plan.
+
+Setup minimal Playwright dans `apps/vue-app/tests/visual/`, une page de test par composant cible :
+
+- MazBtn (variants, sizes, disabled, loading)
+- MazInput, MazSelect, MazCheckbox, MazRadio, MazSwitch
+- MazCard, MazAvatar, MazBadge
+- MazDialog, MazDropdown, MazPopover, MazTooltip
+- MazTabs, MazTable
+- MazPicker, MazDatePicker
+
+Chaque composant : screenshot light + dark + chaque couleur principale (primary, secondary, destructive).
+
+Baselines stockées dans `apps/vue-app/tests/visual/__screenshots__/v3/` et committées sur la branche `v5/tailwind-v4` pour référence pendant les phases suivantes.
+
+**Raison du report** : setup Playwright (install browsers, config Vue test harness, écrire un fixture par composant, validation visuelle par le mainteneur) = ampleur d'une session dédiée. Doit impérativement être fait AVANT Phase 0 pour que la baseline soit capturée sur du code non modifié.
+
+**Handoff vers prochaine session** : technique = subagent-driven (un subagent par composant), voir Règle 3.
+
+### -1.5 Vérification Phase -1
+
+- `pnpm healthcheck` vert (ou documenté comme "pré-existant" si échec non lié à v5).
+- `tools/baselines/v3-bundle.txt` et `tools/baselines/v3-buildtime.txt` présents et lisibles.
+- Screenshots Playwright v3 committés, au moins 15 composants × 2 modes = ~30 images minimum.
+- **Commit** : `chore(v5): capture v3 baselines before migration`.
+
+### -1.6 Escalade mainteneur
+
+Aucune décision à valider à ce stade — mesures et setup seulement.
 
 ---
 
 ## Phase 0 : Préparation des dépendances
 
-### 0.1 Mettre à jour les dépendances
+**Statut** : ✅ done (commits `21042bceb`, `dc5bd60d4`)
+
+### 0.1 Mettre à jour les dépendances ✅
 
 **Fichier** : `/packages/lib/package.json`
 
@@ -44,7 +201,9 @@ Maz-UI utilise Tailwind CSS v3.4.16 avec un système de theming basé sur des va
 
 - Mettre à jour les dépendances tailwind de la même façon
 
-### 0.2 Script de rename des classes
+**Note d'exécution** : en plus des retraits listés (autoprefixer, postcss-import, postcss-nested), `packages/lib/postcss.config.cjs` a été simplifié immédiatement pour remplacer `tailwindcss` par `@tailwindcss/postcss` et retirer les plugins v3 incompatibles (`tailwindcss/nesting`, `postcss-nested`, `postcss-import`, `autoprefixer`). Sans ce fix, les tests cassaient à cause du loader PostCSS de Vite. Le nettoyage final (retrait de `postcss-url` et `postcss-replace`) reste prévu en Phase 4.1.
+
+### 0.2 Script de rename des classes ✅
 
 Créer un script Node.js temporaire (`tools/migrate-tw-prefix.ts`) pour automatiser le renommage des classes dans les composants. Le script doit gérer :
 
@@ -71,9 +230,13 @@ Créer un script Node.js temporaire (`tools/migrate-tw-prefix.ts`) pour automati
 
 Le script opère sur tous les fichiers `.vue` dans `packages/lib/src/` et sur les fichiers CSS dans `packages/lib/src/css/`.
 
+**Implémentation livrée** : `tools/migrate-tw-prefix/` (transform.ts + cli.ts + transform.test.ts). 22 tests TDD green sur fixtures Gherkin. Dry-run validé : 79/83 fichiers à modifier, spot-check manuel OK sur MazDialog, MazCard, MazAvatar (variants, `:class` bindings, arbitrary values, important modifier). L'exécution réelle aura lieu en Phase 3.
+
 ---
 
 ## Phase 1 : @maz-ui/themes — Système de couleurs
+
+**Statut** : ✅ done — tous les sous-objectifs livrés et tests verts (233 tests themes). Escalade mainteneur sur précision OKLCH : approximation standard (matrice OKLab → linéaire sRGB → sRGB → HSL) suffisante pour la génération d'échelles, à valider visuellement en Phase 7.5 avec un preset oklch custom si besoin.
 
 ### 1.1 Types — Accepter tous les formats CSS
 
@@ -222,6 +385,8 @@ Tous les tests doivent passer. Les presets génèrent des variables CSS avec des
 ---
 
 ## Phase 2 : Tailwind CSS — Configuration CSS-first
+
+**Statut** : 🟡 mostly done — bridge + utilities + entry + padded-container migrés et compile OK via `@tailwindcss/cli`. Snapshot tests (2.6) reportés à une session dédiée (subagent-driven après Phase 3 quand les utilities réelles seront générées).
 
 ### 2.1 Nouveau fichier de thème CSS pour Tailwind
 
@@ -436,7 +601,26 @@ Remplacer les directives `@screen` par des `@media` :
 }
 ```
 
-### 2.6 Vérification Phase 2
+### 2.6 Snapshot tests du bridge & des presets
+
+**Objectif** : verrouiller le comportement du bridge (mapping `--color-*` → `var(--maz-*)`) et des sorties CSS des 4 presets, pour détecter toute régression silencieuse lors de modifications futures.
+
+**Nouveau fichier** : `/packages/lib/src/tailwindcss/__tests__/bridge.test.ts`
+
+Pour chaque preset (`mazUi`, `ocean`, `pristine`, `obsidian`) :
+
+1. Compiler un fichier CSS minimal qui `@import "tailwindcss"` + bridge + un petit template avec `bg-primary`, `text-foreground`, `rounded`, `shadow-elevation`, `md:bg-secondary`, `dark:bg-surface-50`.
+2. Snapshot du CSS compilé → vérifier que :
+   - `.bg-primary` contient `var(--maz-primary)` (et non une valeur hardcodée).
+   - Les utilities conservent bien le prefix `maz:` en contexte lib.
+   - Les variants (`dark:`, `md:`, `hover:`) fonctionnent.
+3. Bootstrapper chaque preset avec `setupTheme()` en JSDOM et vérifier que `--maz-primary` est injecté avec la bonne valeur `hsl()`.
+
+**Nouveau fichier** : `/packages/themes/src/__tests__/preset-output.snap.test.ts`
+
+Snapshot complet du CSS injecté par chaque preset (y compris dark mode et scales). Une modification de valeur d'un preset devient un diff review explicite.
+
+### 2.7 Vérification Phase 2
 
 Vérifier que le fichier CSS d'entrée est syntaxiquement correct avec :
 
@@ -444,9 +628,18 @@ Vérifier que le fichier CSS d'entrée est syntaxiquement correct avec :
 npx @tailwindcss/cli -i packages/lib/src/tailwindcss/tailwind.css -o /tmp/test-output.css
 ```
 
+Lancer les snapshot tests :
+
+```bash
+cd packages/lib && pnpm test:unit -- bridge
+cd packages/themes && pnpm test:unit -- preset-output
+```
+
 ---
 
 ## Phase 3 : Composants — Rename des classes
+
+**Statut** : ✅ done — codemod appliqué, classes transformées, tous les tests passent (2835/2835). 106 classes custom BEM/Vue Transition/JS handler state ont été correctement isolées du rename Tailwind. Commits `3c28865ba`, `ee450333c`, `8e30b2ee9`, `34c48e5f7`.
 
 ### 3.1 Exécuter le script de rename
 
@@ -501,6 +694,8 @@ grep -r "maz-flex\|maz-bg-\|maz-text-\|maz-border\|maz-rounded\|maz-p-\|maz-m-" 
 ---
 
 ## Phase 4 : Build system
+
+**Statut** : ✅ done — `pnpm -C packages/lib build` passe en 10.12s. `@tailwindcss/cli` utilisé pour main.css, `@tailwindcss/vite` pour résolution `@apply` dans les `<style>` blocks, `@reference` directive ajoutée dans chaque SFC (71 fichiers). Utilitaires bare (blur, backdrop-blur, drop-shadow) renommés au passage. Validation officielle : passe `npx @tailwindcss/upgrade` qui apporte quelques améliorations idiomatiques (`[var(--x)]` → `(--x)`, `w-[3rem]` → `w-12`, `end-0` → `inset-e-0`).
 
 ### 4.1 PostCSS config
 
@@ -583,7 +778,20 @@ En v3, la config `content.transform.vue` supprimait les `<style>` blocks pour é
 
 Si la duplication persiste, une alternative est de créer un script de pre-processing qui strip les `<style>` blocks avant de passer au CLI, similaire au transform v3. Cependant, tester d'abord sans cette optimisation.
 
-### 4.5 Vérification Phase 4
+### 4.5 Tests SSR et performance build
+
+**SSR / hydratation** : `@maz-ui/themes` doit injecter les `--maz-*` aussi bien côté serveur (Nuxt, SSR Vue) que côté client, sans flash de thème incorrect (FOUT/FOUC) à l'hydratation.
+
+- Ajouter un test dans `apps/nuxt-app` qui rend une page SSR, vérifie que le CSS inline contient les `--maz-*` attendues au server render, et qu'il n'y a pas de mismatch client/serveur.
+- Documenter la stratégie d'injection SSR dans le README de `@maz-ui/themes`.
+
+**Performance build** : Tailwind v4 annonce un build 5-10× plus rapide. À mesurer et documenter pour l'annonce de release.
+
+- Baseline v4.9.3 (v3) : `time pnpm -C packages/lib build` → noter les temps (build complet, rebuild incremental).
+- Après migration v5 : même mesure.
+- Documenter le delta dans le CHANGELOG v5 et dans le blog post.
+
+### 4.6 Vérification Phase 4
 
 ```bash
 cd packages/lib && pnpm build
@@ -594,10 +802,17 @@ Vérifier :
 1. `dist/css/main.css` est généré et contient les utilities avec le prefix `maz:`
 2. Les CSS per-component dans `dist/` ont les `@apply` correctement résolus
 3. Pas de duplication excessive
+4. Temps de build mesuré et comparé à la baseline v3
 
 ---
 
 ## Phase 5 : Apps — Migration
+
+**Statut** : ✅ done — les 3 apps buildent.
+
+- 5.1 `apps/vue-app` ✅ — commit `363b30154`, build 1.82s.
+- 5.2 `apps/docs` ✅ — commit `053ae478c`, build 43.16s. VitePress nettoyé (postcss chain simplifié, main.css réécrit en v4, `hsl(var(--x))` → `var(--x)` + `color-mix()` pour alpha).
+- 5.3 `apps/nuxt-app` ✅ — commit `7f6375956`, build <1s. `@nuxtjs/tailwindcss` retiré (v6 pas compat v4), remplacé par `@tailwindcss/vite`.
 
 ### 5.1 apps/vue-app
 
@@ -607,8 +822,8 @@ Vérifier :
 
 ```css
 @import 'tailwindcss' prefix(maz);
-@import 'maz-ui/src/tailwindcss/theme.css';
-@import 'maz-ui/src/tailwindcss/utilities.css';
+@import 'maz-ui/tailwindcss/theme.css';
+@import 'maz-ui/tailwindcss/utilities.css';
 
 /* Overrides app-specific si nécessaire */
 ```
@@ -659,6 +874,8 @@ Vérifier que les 3 apps buildent correctement.
 
 ## Phase 6 : Nettoyage et exports
 
+**Statut** : ✅ done — tous les artefacts v3 supprimés, linters v4-ready, exports consommateur en place. Commits `fe5905095` (cleanup + postcss simplification), `975ee00f0` (linters), `cbedad205` (consumer exports), `6eae6e7e1` (hsl() cleanup global).
+
 ### 6.1 Exporter les fichiers CSS pour les consommateurs
 
 **Fichier** : `/packages/lib/package.json`
@@ -704,9 +921,144 @@ Les consommateurs qui utilisent leur propre Tailwind v4 pourront importer :
 
 - Mettre à jour `stylelint-config-tailwindcss` vers une version compatible v4
 
+### 6.4 Intégration consommateur — API publique
+
+**Statut** : ✅ done — exports publics en place (`maz-ui/tailwindcss/theme.css`, `…/utilities.css`, et les 6 modules granulaires), les 3 apps internes utilisent ces paths publics, doc dédiée `apps/docs/src/guide/tailwind.md` + mentions dans getting-started / vue / nuxt. Commits `cbedad205`, `c829a2fe7`.
+
+**Contexte** : maz-ui est consommé par des projets tiers (et par les projets propres du mainteneur) qui utilisent leur propre instance de Tailwind v4 — sans le `prefix(maz)` interne à la lib. Ces consommateurs doivent pouvoir **réutiliser les design tokens de maz-ui** (couleurs, radius, breakpoints, shadows, z-index) directement dans leur propre code applicatif, pour que `bg-primary`, `rounded`, `shadow-elevation`, etc. résolvent vers les variables du thème maz-ui actif.
+
+Cette section définit le contrat public v5 pour cette intégration.
+
+#### 6.4.1 Fichiers CSS granulaires
+
+Éclater `theme.css` en modules thématiques pour permettre l'intégration partielle. Le fichier agrégat `theme.css` se contente d'importer les modules.
+
+**Nouveaux fichiers** :
+
+- `/packages/lib/src/tailwindcss/theme-colors.css` — tokens couleur (primary, secondary, accent, destructive, success, warning, info, contrast, surface, foreground, divider, elevation, overlay, muted + scales)
+- `/packages/lib/src/tailwindcss/theme-radius.css` — `--radius-*`
+- `/packages/lib/src/tailwindcss/theme-breakpoints.css` — `--breakpoint-*`
+- `/packages/lib/src/tailwindcss/theme-shadows.css` — `--shadow-*`
+- `/packages/lib/src/tailwindcss/theme-z-index.css` — `--z-*`
+- `/packages/lib/src/tailwindcss/theme-typography.css` — `--font-*`, `--default-transition-*`, `--default-border-width`
+
+**Fichier agrégat** : `/packages/lib/src/tailwindcss/theme.css`
+
+```css
+@import "./theme-colors.css";
+@import "./theme-radius.css";
+@import "./theme-breakpoints.css";
+@import "./theme-shadows.css";
+@import "./theme-z-index.css";
+@import "./theme-typography.css";
+```
+
+#### 6.4.2 Exports enrichis
+
+**Fichier** : `/packages/lib/package.json`
+
+Remplacer les deux exports de la Phase 6.1 par :
+
+```json
+{
+  "exports": {
+    "./tailwindcss/theme.css": "./src/tailwindcss/theme.css",
+    "./tailwindcss/theme-colors.css": "./src/tailwindcss/theme-colors.css",
+    "./tailwindcss/theme-radius.css": "./src/tailwindcss/theme-radius.css",
+    "./tailwindcss/theme-breakpoints.css": "./src/tailwindcss/theme-breakpoints.css",
+    "./tailwindcss/theme-shadows.css": "./src/tailwindcss/theme-shadows.css",
+    "./tailwindcss/theme-z-index.css": "./src/tailwindcss/theme-z-index.css",
+    "./tailwindcss/theme-typography.css": "./src/tailwindcss/theme-typography.css",
+    "./tailwindcss/utilities.css": "./src/tailwindcss/utilities.css"
+  }
+}
+```
+
+#### 6.4.3 Scénarios d'intégration documentés
+
+Prérequis commun à tous les scénarios : le consommateur bootstrappe `@maz-ui/themes` pour que les variables `--maz-*` soient injectées dans le DOM.
+
+```ts
+// main.ts — identique pour tous les scénarios
+import { setupTheme } from "@maz-ui/themes";
+import mazUiPreset from "@maz-ui/themes/presets/mazUi";
+
+setupTheme(mazUiPreset);
+```
+
+Le bridge Tailwind (`theme.css` et ses modules) est **preset-agnostic** : il référence `var(--maz-primary)`, pas la valeur. Le changement de preset, de dark/light ou de thème à chaud via `setupTheme()` se reflète automatiquement dans les utilities Tailwind du consommateur — aucune recompilation CSS.
+
+Trois scénarios à documenter dans la doc (`apps/docs`), section **Installation → Integrating with your Tailwind**.
+
+**Scénario A — Design system complet** (recommandé par défaut)
+
+Le consommateur adopte intégralement le design system maz-ui. Ses propres `bg-primary`, `rounded`, `shadow-elevation`, `md:…`, etc., utilisent les tokens maz-ui.
+
+```css
+@import "tailwindcss";
+@import "maz-ui/tailwindcss/theme.css";
+@import "maz-ui/tailwindcss/utilities.css";
+```
+
+**Scénario B — Tokens aliasés** (cohabitation avec un design system existant)
+
+Le consommateur garde son propre design system mais réutilise certains tokens maz-ui sous ses propres noms :
+
+```css
+@import "tailwindcss";
+
+@theme inline {
+  --color-brand: var(--maz-primary);
+  --color-brand-foreground: var(--maz-primary-foreground);
+  --radius-brand: var(--maz-radius);
+}
+```
+
+Le consommateur utilise `bg-brand`, `rounded-brand` sans conflit avec ses propres tokens. Les variables `--maz-*` sont disponibles grâce au bootstrap de `@maz-ui/themes`.
+
+**Scénario C — Intégration partielle** (cherry-pick)
+
+Le consommateur ne veut que les couleurs de maz-ui et garde ses propres radius, breakpoints, shadows :
+
+```css
+@import "tailwindcss";
+@import "maz-ui/tailwindcss/theme-colors.css";
+```
+
+#### 6.4.4 Contrat de stabilité (API publique)
+
+À documenter explicitement dans le CHANGELOG v5 et dans la doc :
+
+1. **Chemins d'import** : les chemins `maz-ui/tailwindcss/*` et `@maz-ui/themes/presets/*` sont versionnés avec la lib. Un renommage ou un déplacement constitue un breaking change (major release).
+2. **Noms de tokens** : les noms des CSS variables exposées (`--color-primary`, `--color-surface-*`, `--radius-*`, `--shadow-elevation`, `--breakpoint-mob-s`, etc.) sont le contrat public. Les renommer est un breaking change.
+3. **Valeurs** : les valeurs peuvent évoluer entre minors (c'est le design system qui évolue), les noms non.
+4. **Breakpoints** : les breakpoints non-standard (`mob-s`, `mob-m`, `mob-l`, `tab-s`, `tab-m`, `tab-l`, `lap-s`, …) s'**ajoutent** aux breakpoints par défaut de Tailwind v4 (`sm`, `md`, `lg`, `xl`, `2xl`) — le `theme-breakpoints.css` ne fait pas `--breakpoint-*: initial`. Les consommateurs conservent les breakpoints standards.
+5. **Couleurs** : le `theme-colors.css` **écrase** `--color-primary`, `--color-secondary`, etc. dans l'instance Tailwind du consommateur. C'est voulu — c'est le design system qui prend le dessus. Pour éviter ce comportement, utiliser le Scénario B.
+
+#### 6.4.5 Vérification Phase 6.4
+
+Créer un projet de test minimal `tools/integration-test-consumer/` avec :
+
+1. Un `package.json` déclarant `maz-ui` et `@maz-ui/themes` en dépendance locale (workspace).
+2. Un `src/styles.css` qui teste chacun des trois scénarios dans des fichiers séparés.
+3. Un build Vite qui compile chaque scénario et valide :
+   - Le CSS final contient bien `var(--maz-primary)` dans les utilities `bg-primary`.
+   - Les breakpoints standards (`sm:`, `md:`, `lg:`) fonctionnent toujours en scénario A.
+   - Les alias `bg-brand` résolvent vers `var(--maz-primary)` en scénario B.
+
+Ce test sert aussi de documentation exécutable et de régression pour les futures versions.
+
 ---
 
 ## Phase 7 : Vérification complète
+
+**Statut** : 🟡 mostly done — typecheck, lint, build, CSS inspection et métriques bundle/build faits. Phases 7.5 (inspection visuelle manuelle) et 7.7 (tests Playwright) reportées à des sessions dédiées.
+- Typecheck ✅ (correctif `tailwindcss/types/config` retiré)
+- Lint ✅ (nuxt stylelint config nettoyé)
+- Build ✅ (3 apps + lib)
+- Tests ✅ (2835 + 26 codemod + 233 themes)
+- CSS inspection ✅ (prefix propre, color-mix pour alpha, pas de leak)
+- Bundle size + build time capturés dans `tools/baselines/SUMMARY.md` : main.css +35KB raw mais dist total +5%, build +45% sur cold NX cache (trade-off per-SFC @tailwindcss/vite)
 
 ### 7.1 Tests unitaires
 
@@ -754,6 +1106,232 @@ grep "maz:" packages/lib/dist/css/main.css | head -5
 # Vérifier les couleurs CSS
 grep "color-mix" packages/lib/dist/css/main.css | head -5
 ```
+
+### 7.7 Tests visuels automatisés
+
+Un refactor qui touche toutes les classes de tous les composants DOIT avoir un filet visuel. Options à évaluer :
+
+**Option A — Playwright + snapshots** (recommandé, interne) :
+
+- Créer une suite `apps/vue-app/tests/visual/` avec une page par composant.
+- `@playwright/test` en mode screenshot avec baseline sur `master` (v4) → compare après migration.
+- Inclure : default, dark mode, chaque preset, hover/focus states.
+- Lancer sur CI dans un container linux pour déterminisme des rendus.
+
+**Option B — Chromatic** (externe, payant mais moins d'effort) :
+
+- Setup Storybook minimal qui importe les composants maz-ui.
+- Chromatic publie les baselines et gère les diffs.
+
+Décision : **Option A** (pas de dépendance tierce, mainteneur solo). Scope minimal pour v5 : couvrir les 15-20 composants les plus utilisés (Btn, Input, Select, Checkbox, Radio, Dialog, Card, Avatar, Badge, Tabs, Tooltip, Popover, Dropdown, Picker, Table). Les autres seront couverts incrémentalement.
+
+### 7.8 Mesure du bundle CSS avant/après
+
+**Baseline v3** (avant démarrage de la migration) :
+
+```bash
+git checkout master
+cd packages/lib && pnpm build
+wc -c dist/css/main.css
+wc -c dist/css/main.css | gzip -c | wc -c
+```
+
+**Après migration v4** : mêmes commandes, comparer.
+
+Inclure le delta (taille brute + gzippée) dans le CHANGELOG v5 et le blog post. Si la taille augmente significativement (contre la promesse v4), investiguer le `@apply` unresolved ou la duplication.
+
+---
+
+## Phase 8 : Migration guide & codemod utilisateur
+
+**Statut** : ✅ done — `@maz-ui/codemod` publishable (5.0.0-beta.0), guide `migration-v5.md` complet dans apps/docs. Commits `346692505` (guide), `879320f8c` (codemod + commitlint scope).
+
+**Contexte** : v5 est un breaking change majeur pour les utilisateurs de la lib (prefix `maz-` → `maz:`, utilities renommées, types modifiés, config CSS-first). Un mainteneur solo ne peut pas supporter la v4 en parallèle — donc le chemin de migration des utilisateurs doit être **automatisé et documenté avec rigueur**.
+
+### 8.1 Codemod `@maz-ui/codemod`
+
+Publier un package npm dédié qui réutilise et étend le script interne de Phase 0.2.
+
+**Nouveau package** : `/packages/codemod/`
+
+```
+packages/codemod/
+├── package.json          # publié en npm, exécutable via npx
+├── src/
+│   ├── index.ts          # CLI entry
+│   ├── transforms/
+│   │   ├── tailwind-prefix.ts      # maz- → maz:
+│   │   ├── tailwind-renames.ts     # rounded-sm → rounded-xs, etc.
+│   │   ├── tailwind-important.ts   # !maz-x → maz:x!
+│   │   └── theme-types.ts          # HSL → CSSColor dans ts
+│   └── utils/
+│       └── file-walker.ts
+└── README.md
+```
+
+**CLI** :
+
+```bash
+npx @maz-ui/codemod tailwind-v4 ./src
+npx @maz-ui/codemod tailwind-v4 ./src --dry-run
+npx @maz-ui/codemod tailwind-v4 ./src --extensions=vue,tsx,jsx,html
+```
+
+**Garanties** :
+
+- Supporte Vue SFC, React JSX/TSX, Svelte, Astro, HTML plain.
+- Mode `--dry-run` pour prévisualiser les changements.
+- Gère les classes dynamiques dans les `:class` bindings (best effort, flag les cas ambigus).
+- Préserve la mise en forme (indentation, guillemets) — utiliser un parser AST (ex: `@babel/parser` pour JSX, `@vue/compiler-sfc` pour Vue).
+- Tests unitaires : un fichier fixture avant/après par type de transformation.
+
+### 8.2 Guide de migration dans la doc
+
+**Nouveau fichier** : `/apps/docs/src/guide/migration/v4-to-v5.md`
+
+Structure :
+
+1. **TL;DR** — commande npx codemod + ce qui reste à faire manuellement.
+2. **Prérequis** — Node >= X, Tailwind v4 côté app, navigateurs supportés.
+3. **Étape 1 : exécuter le codemod** — transforme automatiquement les classes.
+4. **Étape 2 : migrer la config Tailwind** — supprimer `tailwind.config.ts`, passer au CSS-first (avec snippet copy-paste).
+5. **Étape 3 : migrer les types TypeScript** — `HSL` → `CSSColor`, format des presets.
+6. **Étape 4 : valider** — checklist visuelle, commandes de test.
+7. **Tableau des breaking changes** — exhaustif, référence rapide.
+8. **Troubleshooting** — classes non détectées, CSS dupliqué, dark mode cassé, SSR qui flash.
+9. **FAQ**.
+
+### 8.3 Tableau exhaustif des breaking changes
+
+À inclure dans le guide de migration ET dans le CHANGELOG v5.
+
+| Catégorie   | v4                                 | v5                                    | Auto via codemod |
+| ----------- | ---------------------------------- | ------------------------------------- | ---------------- |
+| Prefix      | `maz-flex`                         | `maz:flex`                            | ✅               |
+| Important   | `!maz-m-0`                         | `maz:m-0!`                            | ✅               |
+| Utilities   | `maz-rounded-sm`                   | `maz:rounded-xs`                      | ✅               |
+| Utilities   | `maz-outline-none`                 | `maz:outline-hidden`                  | ✅               |
+| Utilities   | `maz-backdrop-blur-sm`             | `maz:backdrop-blur-xs`                | ✅               |
+| Utilities   | `maz-bg-gradient-to-r`             | `maz:bg-linear-to-r`                  | ✅               |
+| Utilities   | `maz-shadow` (bare)                | `maz:shadow-sm`                       | ✅               |
+| Types       | `HSL`                              | `CSSColor` (alias de `string`)        | ✅               |
+| Presets     | `'210 100% 56%'`                   | `'hsl(210 100% 56%)'` / `'#...'`      | ⚠️ manuel        |
+| Config      | `tailwind.config.ts` côté app      | `@import "tailwindcss"` dans CSS      | ❌ manuel        |
+| API         | `defineMazTailwindConfig()`        | Deprecated, remplacé par CSS-first    | ❌ manuel        |
+| Navigateurs | —                                  | Chrome 111+, Safari 16.4+, Firefox 128+ | —             |
+
+### 8.4 Vérification Phase 8
+
+- Tester le codemod sur `apps/vue-app` encore en v4 (dans une branche éphémère) — il doit tout transformer sans casser le build.
+- Tester sur un projet externe de l'utilisateur (test first-party).
+- Relire le guide avec un œil "je découvre la lib" et traquer les implicites.
+
+---
+
+## Phase 9 : Documentation & communication
+
+**Statut** : 🟡 partial — pages de guide terminées (`tailwind.md`, `migration-v5.md`, `browser-support.md` + cross-refs dans getting-started/vue/nuxt). CHANGELOG, blog post et comms externes restent à traiter au moment du release (relizy les génère en partie).
+
+### 9.1 Refonte page Installation
+
+**Fichier** : `/apps/docs/src/guide/installation.md` (ou équivalent)
+
+- Snippet d'install complet avec Tailwind v4 CSS-first.
+- Section dédiée "Intégration avec votre propre Tailwind" → reprend les 3 scénarios de Phase 6.4.3.
+- Onglets framework : Vue, Nuxt, Vite, Astro.
+
+### 9.2 Guide de theming mis à jour
+
+**Fichier** : `/apps/docs/src/guide/theming.md`
+
+- Expliquer le nouveau type `CSSColor` et les formats acceptés (`hsl()`, `oklch()`, `rgb()`, `#hex`).
+- Marquer le format legacy `'210 100% 56%'` comme deprecated (mais toujours accepté, auto-wrappé).
+- Exemples de presets custom avec chaque format.
+- Flux de bascule de preset à chaud (code JS + résultat visuel).
+
+### 9.3 Nouvelle page Browser support
+
+**Nouveau fichier** : `/apps/docs/src/guide/browser-support.md`
+
+- Minimums : Chrome 111+, Safari 16.4+, Firefox 128+.
+- Explication : Tailwind v4 utilise `@property`, `color-mix()`, cascade layers natives.
+- Comment vérifier : lien vers caniuse pour chaque feature.
+- Pas de polyfill prévu.
+
+### 9.4 CHANGELOG v5
+
+**Fichier** : `CHANGELOG.md`
+
+Structure :
+
+- `## 5.0.0 — YYYY-MM-DD`
+- `### BREAKING CHANGES` — liste exhaustive avec lien vers le guide de migration.
+- `### Features` — Tailwind v4, theming multi-format, scénarios d'intégration consommateur.
+- `### Performance` — temps de build (delta vs v3), taille bundle CSS (delta vs v3).
+- `### Internal` — refactos non visibles.
+- `### Migration` — lien proéminent vers `guide/migration/v4-to-v5.md` et commande codemod.
+
+### 9.5 Blog post de release
+
+**Nouveau fichier** : `/apps/docs/src/blog/maz-ui-v5.md`
+
+Structure narrative :
+
+1. Pourquoi Tailwind v4 pour maz-ui.
+2. Ce qui change pour vous (pitch court, focus utilisateur).
+3. La nouveauté killer : intégrer les tokens du design system dans votre propre Tailwind en 3 lignes.
+4. Gains mesurés (build speed, bundle size).
+5. Comment migrer (1 commande + guide).
+6. Roadmap post-v5 et remerciements.
+
+### 9.6 Communication externe
+
+- GitHub Release avec le contenu du CHANGELOG + lien blog post.
+- Pin d'une issue GitHub "v5 feedback" pour centraliser les retours.
+- Post sur les réseaux (X, Bluesky, Reddit r/vuejs si pertinent).
+- Mention dans les newsletters communautaires (Vue.js News, This Week in Vue).
+
+---
+
+## Phase 10 : Release strategy
+
+**Contrainte** : mainteneur solo, pas de support parallèle de la v4 après la sortie stable de la v5 (pas de security fixes ni backports). Les canary/alpha/beta sont donc d'autant plus critiques pour capter les bugs avant stable.
+
+### 10.1 Canary — dès que la lib build
+
+- Tag npm : `canary`.
+- Publication automatique à chaque merge sur la branche `v5` (via GitHub Action).
+- Usage : `pnpm add maz-ui@canary`.
+- Pas de guarantee de stabilité, changes à chaque commit.
+
+### 10.2 Alpha — Phases 0 à 6 terminées
+
+- Tag npm : `alpha`.
+- API publique gelée (bridge Tailwind + exports).
+- Annonce dans un issue GitHub "v5 alpha: feedback welcome".
+
+### 10.3 Beta — Phases 7 à 9 terminées
+
+- Tag npm : `beta`.
+- Doc complète en ligne, codemod publié.
+- QA communautaire : migration test sur des projets tiers volontaires.
+
+### 10.4 RC — bugs remontés en beta corrigés
+
+- Tag npm : `rc`.
+- Freeze total, uniquement des fixes critiques entre RC et stable.
+
+### 10.5 Stable
+
+- Tag npm : `latest`.
+- Blog post publié, GitHub Release, communication externe.
+- Issue "v5 feedback" épinglée.
+
+### 10.6 Dépréciation v4
+
+- Readme et npm : ajouter une bannière v4 "no longer maintained, please upgrade to v5 — migration guide: ...".
+- Dernière version v4 : ajouter une note `deprecate` via `npm deprecate`.
+- Pas de security fixes annoncés pour la v4. À documenter explicitement dans le CHANGELOG v5 et dans la deprecation notice.
 
 ---
 
@@ -812,15 +1390,69 @@ grep "color-mix" packages/lib/dist/css/main.css | head -5
 | `apps/nuxt-app/tailwind.config.ts` | Supprimer ou adapter    |
 | `apps/nuxt-app/nuxt.config.ts`     | Adapter Tailwind module |
 
-### Nettoyage (Phase 6)
+### Nettoyage et intégration consommateur (Phase 6)
 
-| Fichier                                                   | Action                          |
-| --------------------------------------------------------- | ------------------------------- |
-| `packages/lib/src/tailwindcss/variables/design-tokens.ts` | Supprimer                       |
-| `packages/lib/src/tailwindcss/variables/utilities.ts`     | Supprimer                       |
-| `packages/lib/src/tailwindcss/variables/z-indexes.ts`     | Supprimer                       |
-| `packages/lib/src/tailwindcss/utils/colors.ts`            | Nettoyer exports                |
-| `package.json` (root)                                     | Supprimer deps PostCSS inutiles |
+| Fichier                                                      | Action                                         |
+| ------------------------------------------------------------ | ---------------------------------------------- |
+| `packages/lib/src/tailwindcss/variables/design-tokens.ts`    | Supprimer                                      |
+| `packages/lib/src/tailwindcss/variables/utilities.ts`        | Supprimer                                      |
+| `packages/lib/src/tailwindcss/variables/z-indexes.ts`        | Supprimer                                      |
+| `packages/lib/src/tailwindcss/utils/colors.ts`               | Nettoyer exports                               |
+| `package.json` (root)                                        | Supprimer deps PostCSS inutiles                |
+| `packages/lib/src/tailwindcss/theme-colors.css`              | **NOUVEAU** — module couleurs (6.4)            |
+| `packages/lib/src/tailwindcss/theme-radius.css`              | **NOUVEAU** — module radius (6.4)              |
+| `packages/lib/src/tailwindcss/theme-breakpoints.css`         | **NOUVEAU** — module breakpoints (6.4)         |
+| `packages/lib/src/tailwindcss/theme-shadows.css`             | **NOUVEAU** — module shadows (6.4)             |
+| `packages/lib/src/tailwindcss/theme-z-index.css`             | **NOUVEAU** — module z-index (6.4)             |
+| `packages/lib/src/tailwindcss/theme-typography.css`          | **NOUVEAU** — module typography (6.4)          |
+| `packages/lib/src/tailwindcss/theme.css`                     | Devenir agrégateur `@import` des modules (6.4) |
+| `packages/lib/package.json`                                  | Exports granulaires (6.4.2)                    |
+| `tools/integration-test-consumer/`                           | **NOUVEAU** — test des 3 scénarios (6.4.5)     |
+| `apps/docs/` — section Installation                          | **NOUVEAU** — doc des 3 scénarios (6.4.3)      |
+
+### Tests du bridge et visuels (Phases 2, 4, 7)
+
+| Fichier                                                          | Action                                                |
+| ---------------------------------------------------------------- | ----------------------------------------------------- |
+| `packages/lib/src/tailwindcss/__tests__/bridge.test.ts`          | **NOUVEAU** — snapshot bridge + 4 presets (2.6)       |
+| `packages/themes/src/__tests__/preset-output.snap.test.ts`       | **NOUVEAU** — snapshot CSS par preset (2.6)           |
+| `apps/nuxt-app/tests/ssr/theme-injection.test.ts`                | **NOUVEAU** — test SSR `--maz-*` (4.5)                |
+| `apps/vue-app/tests/visual/`                                     | **NOUVEAU** — suite Playwright screenshots (7.7)      |
+| `playwright.config.ts` (workspace)                               | **NOUVEAU** — config visual tests (7.7)               |
+| Script CI — baseline bundle size + build time                    | **NOUVEAU** — mesure avant/après (4.5, 7.8)           |
+
+### Codemod et migration utilisateur (Phase 8)
+
+| Fichier                                                | Action                                             |
+| ------------------------------------------------------ | -------------------------------------------------- |
+| `packages/codemod/`                                    | **NOUVEAU package** — `@maz-ui/codemod` publié     |
+| `packages/codemod/src/transforms/tailwind-prefix.ts`   | **NOUVEAU** — transforme `maz-x` → `maz:x`         |
+| `packages/codemod/src/transforms/tailwind-renames.ts`  | **NOUVEAU** — utilities renommées v4               |
+| `packages/codemod/src/transforms/tailwind-important.ts`| **NOUVEAU** — `!maz-x` → `maz:x!`                  |
+| `packages/codemod/src/transforms/theme-types.ts`       | **NOUVEAU** — type HSL → CSSColor                  |
+| `packages/codemod/__tests__/fixtures/`                 | **NOUVEAU** — fixtures avant/après                 |
+| `apps/docs/src/guide/migration/v4-to-v5.md`            | **NOUVEAU** — guide complet                        |
+
+### Documentation & communication (Phase 9)
+
+| Fichier                                        | Action                                          |
+| ---------------------------------------------- | ----------------------------------------------- |
+| `apps/docs/src/guide/installation.md`          | Refonte complète (9.1)                          |
+| `apps/docs/src/guide/theming.md`               | Mise à jour — nouveaux formats couleur (9.2)    |
+| `apps/docs/src/guide/browser-support.md`       | **NOUVEAU** — minimums navigateurs (9.3)        |
+| `CHANGELOG.md`                                 | Entrée `5.0.0` complète (9.4)                   |
+| `apps/docs/src/blog/maz-ui-v5.md`              | **NOUVEAU** — blog post release (9.5)           |
+| GitHub Release, issue feedback, réseaux        | Communication externe (9.6)                     |
+
+### Release strategy (Phase 10)
+
+| Artefact                                    | Action                                            |
+| ------------------------------------------- | ------------------------------------------------- |
+| `.github/workflows/release-canary.yml`      | **NOUVEAU** — publish auto `canary` tag           |
+| `.github/workflows/release-prerelease.yml`  | **NOUVEAU** — publish `alpha`/`beta`/`rc`         |
+| `package.json` root — scripts release       | Adapter `version:*` et `publish:*` par tag        |
+| `npm deprecate` sur `maz-ui@4.x`            | Après sortie stable v5 (10.6)                     |
+| README bannière v4                          | Ajouter notice "no longer maintained" (10.6)      |
 
 ---
 

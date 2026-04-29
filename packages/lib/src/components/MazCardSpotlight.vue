@@ -54,8 +54,8 @@ let rafId: number | null = null
 let isIntersecting = false
 let cachedRect: DOMRect | null = null
 
-const alphaColor = computed(() => `hsl(var(--maz-${color}) / 60%)`)
-const alphaColor20 = computed(() => `hsl(var(--maz-${color}) / 20%)`)
+const alphaColor = computed(() => `color-mix(in srgb, var(--maz-${color}) 60%, transparent)`)
+const alphaColor20 = computed(() => `color-mix(in srgb, var(--maz-${color}) 20%, transparent)`)
 
 function updateCachedRect() {
   if (containerElement.value) {
@@ -139,54 +139,46 @@ onMounted(() => {
 <template>
   <div
     ref="containerElement"
-    class="m-card-spotlight m-reset-css"
-    :class="{ 'maz-shadow-elevation maz-drop-shadow-md': elevation }"
+    class="m-card-spotlight m-reset-css maz:relative maz:inline-flex maz:overflow-hidden maz:rounded-md"
+    :class="{ 'maz:shadow-elevation maz:drop-shadow-md': elevation }"
     :style="{ 'backgroundColor': alphaColor20, '--inner-opacity': innerOpacity }"
   >
-    <div class="inner">
-      <div class="content" :class="[{ 'maz-p-4': padding }, contentClass]" :style="contentStyle">
+    <div class="inner maz:relative maz:h-auto maz:w-full maz:overflow-hidden">
+      <div class="content maz:relative maz:z-2 maz:h-full maz:w-full" :class="[{ 'maz:p-4': padding }, contentClass]" :style="contentStyle">
         <slot />
       </div>
     </div>
     <div
       v-show="blobVisible"
       ref="blobElement"
-      class="blob"
+      class="blob maz:absolute maz:left-0 maz:top-0 maz:z-0 maz:rounded-full maz:blur-2xl"
       :style="{ backgroundColor: alphaColor }"
     />
   </div>
 </template>
 
 <style scoped>
-  .m-card-spotlight {
-  @apply maz-relative maz-inline-flex maz-overflow-hidden maz-rounded;
+@reference "../tailwindcss/tailwind.css";
 
+.m-card-spotlight {
   padding: max(var(--maz-border-width), 1px);
   contain: layout style paint;
 
   .inner {
-    @apply maz-relative maz-h-auto maz-w-full maz-overflow-hidden;
-
-    border-radius: calc(var(--maz-radius) - max(var(--maz-border-width), 1px));
+    border-radius: calc(var(--maz-rounded-md) - max(var(--maz-border-width), 1px));
 
     &::before {
       content: '';
 
-      @apply maz-absolute maz-left-0 maz-top-0 maz-z-1 maz-h-full maz-w-full maz-bg-surface;
+      @apply maz:absolute maz:left-0 maz:top-0 maz:z-1 maz:h-full maz:w-full maz:bg-container;
 
       opacity: var(--inner-opacity);
     }
   }
 
-  .content {
-    @apply maz-relative maz-z-2 maz-h-full maz-w-full;
-  }
-
   .blob {
-    @apply maz-absolute maz-left-0 maz-top-0 maz-z-[0] maz-rounded-full maz-blur-2xl;
-
-    width: 208px;
-    height: 208px;
+    inline-size: 208px;
+    block-size: 208px;
     will-change: transform;
     transition: opacity 150ms ease-out;
   }

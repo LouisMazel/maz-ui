@@ -7,7 +7,7 @@ import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor } from './types'
 import { MazCalendar } from '@maz-ui/icons/lazy/MazCalendar'
 import { MazClock } from '@maz-ui/icons/lazy/MazClock'
-import { MazChevronDown } from '@maz-ui/icons/static/MazChevronDown'
+import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 import dayjs from 'dayjs'
@@ -21,8 +21,8 @@ import {
   useTemplateRef,
   watch,
 } from 'vue'
-
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+
 import MazPickerContainer from './MazDatePicker/MazPickerContainer.vue'
 import {
   checkValueWithMinMaxDates,
@@ -35,6 +35,7 @@ import {
   isValueDisabledDate,
   isValueDisabledWeekly,
 } from './MazDatePicker/utils'
+import MazIcon from './MazIcon.vue'
 import MazPopover from './MazPopover.vue'
 
 defineOptions({
@@ -671,7 +672,7 @@ watch(
     :id="`${instanceId}-popover`"
     ref="popover"
     v-model="hasPickerOpen"
-    class="m-date-picker m-reset-css"
+    class="m-date-picker m-reset-css maz:relative maz:inline-block"
     :style
     :offset="0"
     :class="[
@@ -710,18 +711,18 @@ watch(
           v-bind="{ ...inputProps, ...$attrs }"
           block
           autocomplete="off"
-          class="m-date-picker__input"
+          class="m-date-picker__input maz:size-full"
           :label
           :disabled
           :placeholder
           :color
         >
-          <template #left-icon>
-            <MazCalendar v-if="hasDate" class="maz-text-xl" />
-            <MazClock v-else-if="hasTime" class="maz-text-xl" />
+          <template #start-icon>
+            <MazCalendar v-if="hasDate" class="maz:text-xl" />
+            <MazClock v-else-if="hasTime" class="maz:text-xl" />
           </template>
-          <template #right-icon>
-            <MazChevronDown class="m-date-picker__button__chevron maz-text-lg" />
+          <template #end-icon>
+            <MazIcon :icon="MazChevronDown" class="m-date-picker__button__chevron maz:text-lg" />
           </template>
         </MazInput>
       </slot>
@@ -787,18 +788,14 @@ watch(
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-date-picker {
-  @apply maz-relative maz-inline-block;
-
-  &__input {
-    @apply maz-size-full;
-  }
-
   & .m-date-picker__button {
-    @apply maz-flex maz-h-full maz-cursor-not-allowed maz-bg-transparent maz-pe-1 maz-flex-center;
+    @apply maz:flex maz:h-full maz:disabled-cursor maz:bg-transparent maz:pe-1 maz:flex-center;
 
     &__chevron {
-      @apply maz-text-foreground maz-transition-transform maz-duration-200;
+      @apply maz:text-foreground maz:transition-transform maz:duration-200;
     }
   }
 
@@ -810,11 +807,11 @@ watch(
 
   &:not(.--is-disabled) {
     & .m-date-picker__button {
-      @apply maz-cursor-pointer;
+      @apply maz:cursor-pointer;
     }
 
     & .m-date-picker__input:deep(input) {
-      @apply maz-cursor-pointer !important;
+      @apply maz:cursor-pointer!;
     }
   }
 }

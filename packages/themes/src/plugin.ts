@@ -3,23 +3,7 @@ import type { ThemeConfig, ThemeState } from './types'
 import { injectThemeState } from './utils'
 import { setupTheme } from './utils/setup-theme'
 
-export interface MazUiThemeOptions extends Omit<ThemeConfig, 'prefix'> {
-  /**
-   * Inject critical CSS
-   * @description Inject critical CSS to prevent FOUC
-   * @default true
-   * @private
-   */
-  injectCriticalCSS?: boolean
-
-  /**
-   * Inject full CSS
-   * @description Inject full CSS to ensure all styles are loaded
-   * @default true
-   * @private
-   */
-  injectFullCSS?: boolean
-}
+export type MazUiThemeOptions = Omit<ThemeConfig, 'prefix'>
 
 /**
  * @example
@@ -29,7 +13,7 @@ export interface MazUiThemeOptions extends Omit<ThemeConfig, 'prefix'> {
  *
  * app.use(MazUiTheme, {
  *   preset: mazUi,
- *   strategy: 'hybrid',
+ *   strategy: 'runtime',
  *   darkMode: 'class',
  * })
  * ```

@@ -1,6 +1,6 @@
 # @maz-ui/icons
 
-A comprehensive collection of **860+ SVG icons** as Vue components for your Vue.js applications.
+A comprehensive collection of **860+ SVG icons** for your Vue / Nuxt apps. Each icon ships in three flavors — pick the one that fits the situation.
 
 ## Installation
 
@@ -8,36 +8,69 @@ A comprehensive collection of **860+ SVG icons** as Vue components for your Vue.
 pnpm add @maz-ui/icons
 ```
 
-## Usage
+## Three formats — pick what you need
 
-### Static Icons (default — eagerly loaded)
+### `raw/` — raw SVG string (lightest, recommended for inline icons)
 
-```ts
-import { MazCheck, MazHeart } from '@maz-ui/icons'
-```
-
-### Lazy Icons (async loaded via `defineAsyncComponent`)
+The icon is a `string` containing the pre-processed SVG markup (`width`/`height` set to `1em`, fills replaced by `currentColor`). Use it via `<MazIcon :icon="MazStar" />` — no Vue component overhead, no async chunk, no fetch. This is the cheapest format at runtime and the default recommendation for icons that are always rendered.
 
 ```ts
-// With Lazy prefix from main entry
-import { LazyMazCheck, LazyMazHeart } from '@maz-ui/icons'
-
-// Or from the lazy sub-path (no prefix)
-import { MazCheck } from '@maz-ui/icons/lazy'
+import { MazStar } from '@maz-ui/icons/raw/MazStar'
+import MazIcon from 'maz-ui/components/MazIcon'
 ```
 
-### Sub-path Imports
+```vue
+<template>
+  <MazIcon :icon="MazStar" class="maz:text-warning" />
+</template>
+```
 
-For fine-grained bundle control, import individual icons directly:
+### `static/` — eagerly-loaded Vue component
+
+A small Vue component that renders the SVG directly. Use this when you need a real component to drop into a template (`<MazStar />`) and the icon is always rendered. Pays the Vue component overhead per icon but lets you skip the `<MazIcon>` wrapper.
 
 ```ts
-// lazy
-import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
-// static
-import { MazCheck } from '@maz-ui/icons/MazCheck'
+import { MazStar } from '@maz-ui/icons/MazStar' // legacy path
+// Or use the static path
+import { MazStar } from '@maz-ui/icons/static/MazStar'
 ```
 
-### Auto-import with Resolver
+```vue
+<template>
+  <MazStar class="maz:text-warning" />
+</template>
+```
+
+### `lazy/` — async Vue component (`defineAsyncComponent`)
+
+A Vue component whose SVG payload is split into its own chunk and only loaded on demand. Use this for icons that appear conditionally (in a tooltip, behind a `v-if`, in a modal that opens on click, …) so you don't ship the SVG bytes upfront.
+
+```ts
+import { MazStar } from '@maz-ui/icons/lazy/MazStar'
+```
+
+```vue
+<template>
+  <MazStar v-if="isOpen" />
+</template>
+```
+
+You can also import lazy icons from the main entry with the `Lazy` prefix:
+
+```ts
+import { LazyMazStar } from '@maz-ui/icons'
+```
+
+## When to use which?
+
+| Situation                                                            | Format                                                         | Why                                                                  |
+| -------------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Inline always-rendered icon (e.g. button icon, list bullet)          | `raw/` via `MazIcon`                                           | Smallest runtime cost — just inserts a string                        |
+| You need a drop-in component (`<MazStar />` directly in templates)   | `static/`                                                      | Standard Vue component, no wrapper                                   |
+| Icon hidden behind `v-if` / opened in a dialog / shown after a click | `lazy/`                                                        | Icon code is split out and only fetched on demand                    |
+| Dynamic icon name resolved at runtime                                | `static/` (or pass a URL/raw string to `<MazIcon icon="…" />`) | The component handles strings, URLs and Vue components transparently |
+
+## Auto-import with resolver
 
 ```ts
 import { MazIconsResolver } from '@maz-ui/icons/resolvers'
@@ -52,7 +85,7 @@ export default defineConfig({
 })
 ```
 
-The resolver supports both `MazXxx` (static) and `LazyMazXxx` (lazy) components.
+The resolver wires up both `MazXxx` (static) and `LazyMazXxx` (lazy) component imports. Raw entries are not auto-imported — they're values, not components, so import them explicitly.
 
 ## Documentation
 

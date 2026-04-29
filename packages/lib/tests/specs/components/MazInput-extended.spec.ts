@@ -44,9 +44,9 @@ describe('MazInput extended coverage', () => {
       expect(wrapper.find('.m-input-wrapper.--border').exists()).toBe(true)
     })
 
-    it('should have rounded-base by default', () => {
+    it('should have rounded-md by default', () => {
       const wrapper = getWrapper()
-      expect(wrapper.find('.m-input-wrapper.--rounded-base').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.--rounded-md').exists()).toBe(true)
     })
   })
 
@@ -117,7 +117,7 @@ describe('MazInput extended coverage', () => {
     it('should show password toggle button', async () => {
       const wrapper = getWrapper({ type: 'password' })
       await vi.dynamicImportSettled()
-      expect(wrapper.find('.m-input-wrapper-right').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper-end').exists()).toBe(true)
       const btn = wrapper.findComponent({ name: 'MazBtn' })
       expect(btn.exists()).toBe(true)
     })
@@ -175,7 +175,7 @@ describe('MazInput extended coverage', () => {
 
     it('should apply destructive border style when not focused', () => {
       const wrapper = getWrapper({ error: true })
-      expect(wrapper.find('.m-input-wrapper.maz-border-destructive').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.maz\\:border-destructive').exists()).toBe(true)
     })
   })
 
@@ -187,7 +187,7 @@ describe('MazInput extended coverage', () => {
 
     it('should apply success border style when not focused', () => {
       const wrapper = getWrapper({ success: true })
-      expect(wrapper.find('.m-input-wrapper.maz-border-success').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.maz\\:border-success').exists()).toBe(true)
     })
   })
 
@@ -199,7 +199,7 @@ describe('MazInput extended coverage', () => {
 
     it('should apply warning border style when not focused', () => {
       const wrapper = getWrapper({ warning: true })
-      expect(wrapper.find('.m-input-wrapper.maz-border-warning').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.maz\\:border-warning').exists()).toBe(true)
     })
   })
 
@@ -255,22 +255,22 @@ describe('MazInput extended coverage', () => {
 
     it('should apply destructive color to assistive text when error', () => {
       const wrapper = getWrapper({ assistiveText: 'Invalid', error: true })
-      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz-text-destructive-600')
+      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz:text-destructive-600')
     })
 
     it('should apply success color to assistive text when success', () => {
       const wrapper = getWrapper({ assistiveText: 'Valid', success: true })
-      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz-text-success-600')
+      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz:text-success-600')
     })
 
     it('should apply warning color to assistive text when warning', () => {
       const wrapper = getWrapper({ assistiveText: 'Caution', warning: true })
-      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz-text-warning-600')
+      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz:text-warning-600')
     })
 
     it('should apply muted color when no state', () => {
       const wrapper = getWrapper({ assistiveText: 'Help text' })
-      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz-text-muted')
+      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz:text-muted')
     })
   })
 
@@ -286,31 +286,31 @@ describe('MazInput extended coverage', () => {
     })
   })
 
-  describe('when leftIcon prop is provided', () => {
-    it('should render the left part with string icon', async () => {
-      const wrapper = getWrapper({ leftIcon: 'search' })
+  describe('when startIcon prop is provided', () => {
+    it('should render the start part with string icon', async () => {
+      const wrapper = getWrapper({ startIcon: 'search' })
       await vi.dynamicImportSettled()
-      expect(wrapper.find('.m-input-wrapper-left').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper-start').exists()).toBe(true)
     })
 
-    it('should apply --has-left-icon class', async () => {
-      const wrapper = getWrapper({ leftIcon: 'user' })
+    it('should apply --has-start-icon class', async () => {
+      const wrapper = getWrapper({ startIcon: 'user' })
       await vi.dynamicImportSettled()
-      expect(wrapper.find('.m-input-wrapper-input.--has-left-icon').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper-input.--has-start-icon').exists()).toBe(true)
     })
   })
 
-  describe('when rightIcon prop is provided', () => {
-    it('should render the right part with string icon', async () => {
-      const wrapper = getWrapper({ rightIcon: 'check' })
+  describe('when endIcon prop is provided', () => {
+    it('should render the end part with string icon', async () => {
+      const wrapper = getWrapper({ endIcon: 'check' })
       await vi.dynamicImportSettled()
-      expect(wrapper.find('.m-input-wrapper-right').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper-end').exists()).toBe(true)
     })
 
-    it('should apply --has-right-icon class', async () => {
-      const wrapper = getWrapper({ rightIcon: 'check' })
+    it('should apply --has-end-icon class', async () => {
+      const wrapper = getWrapper({ endIcon: 'check' })
       await vi.dynamicImportSettled()
-      expect(wrapper.find('.m-input-wrapper-input.--has-right-icon').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper-input.--has-end-icon').exists()).toBe(true)
     })
   })
 
@@ -419,7 +419,7 @@ describe('MazInput extended coverage', () => {
     it('should show the loading spinner', async () => {
       const wrapper = getWrapper({ loading: true })
       await vi.dynamicImportSettled()
-      expect(wrapper.find('.m-input-wrapper-right').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper-end').exists()).toBe(true)
     })
   })
 
@@ -530,19 +530,19 @@ describe('MazInput extended coverage', () => {
     })
   })
 
-  describe('when left-icon slot is provided', () => {
-    it('should render custom left icon content', () => {
-      const wrapper = getWrapper({}, { 'left-icon': '<span class="custom-left">L</span>' })
-      expect(wrapper.find('.custom-left').exists()).toBe(true)
-      expect(wrapper.find('.m-input-wrapper-left').exists()).toBe(true)
+  describe('when start-icon slot is provided', () => {
+    it('should render custom start icon content', () => {
+      const wrapper = getWrapper({}, { 'start-icon': '<span class="custom-start">L</span>' })
+      expect(wrapper.find('.custom-start').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper-start').exists()).toBe(true)
     })
   })
 
-  describe('when right-icon slot is provided', () => {
-    it('should render custom right icon content', () => {
-      const wrapper = getWrapper({}, { 'right-icon': '<span class="custom-right">R</span>' })
-      expect(wrapper.find('.custom-right').exists()).toBe(true)
-      expect(wrapper.find('.m-input-wrapper-right').exists()).toBe(true)
+  describe('when end-icon slot is provided', () => {
+    it('should render custom end icon content', () => {
+      const wrapper = getWrapper({}, { 'end-icon': '<span class="custom-end">R</span>' })
+      expect(wrapper.find('.custom-end').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper-end').exists()).toBe(true)
     })
   })
 
@@ -563,7 +563,7 @@ describe('MazInput extended coverage', () => {
       })
       expect(wrapper.find('.m-input.--has-state').exists()).toBe(true)
       expect(wrapper.find('.m-input-bottom-text').text()).toBe('Invalid email format')
-      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz-text-destructive-600')
+      expect(wrapper.find('.m-input-bottom-text').classes()).toContain('maz:text-destructive-600')
     })
 
     it('should handle success with topLabel and block', () => {
@@ -577,10 +577,10 @@ describe('MazInput extended coverage', () => {
       expect(wrapper.find('.m-input-top-label').text()).toBe('User Info')
     })
 
-    it('should handle password with rightIcon', async () => {
-      const wrapper = getWrapper({ type: 'password', rightIcon: 'lock' })
+    it('should handle password with endIcon', async () => {
+      const wrapper = getWrapper({ type: 'password', endIcon: 'lock' })
       await vi.dynamicImportSettled()
-      expect(wrapper.find('.m-input-wrapper-right').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper-end').exists()).toBe(true)
     })
 
     it('should handle disabled with error state', () => {
@@ -627,21 +627,21 @@ describe('MazInput extended coverage', () => {
   describe('border style when error', () => {
     it('should apply the destructive state border', () => {
       const wrapper = getWrapper({ error: true, color: 'primary' })
-      expect(wrapper.find('.m-input-wrapper.maz-border-destructive').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.maz\\:border-destructive').exists()).toBe(true)
     })
   })
 
   describe('border style when success', () => {
     it('should apply the success state border', () => {
       const wrapper = getWrapper({ success: true, color: 'info' })
-      expect(wrapper.find('.m-input-wrapper.maz-border-success').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.maz\\:border-success').exists()).toBe(true)
     })
   })
 
   describe('border style when warning', () => {
     it('should apply the warning state border', () => {
       const wrapper = getWrapper({ warning: true, color: 'secondary' })
-      expect(wrapper.find('.m-input-wrapper.maz-border-warning').exists()).toBe(true)
+      expect(wrapper.find('.m-input-wrapper.maz\\:border-warning').exists()).toBe(true)
     })
   })
 

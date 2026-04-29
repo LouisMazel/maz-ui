@@ -188,10 +188,10 @@ type Size = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import { useToast } from 'maz-ui/src/composables/useToast'
+  import { useToast } from 'maz-ui/composables/useToast'
   import MazDialogConfirm, {
     useMazDialogConfirm, type MazDialogConfirmButton, type MazDialogConfirmData
-  } from 'maz-ui/src/components/MazDialogConfirm.vue'
+  } from 'maz-ui/components/MazDialogConfirm'
 
   const { showDialogAndWaitChoice, data } = useMazDialogConfirm()
   const confirmDialog = ref(false)

@@ -25,34 +25,42 @@
   },
   "exports": {
     ".": {
+      "monorepo:dev": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
     "./plugin": {
+      "monorepo:dev": "./src/plugin.ts",
       "types": "./dist/plugin.d.ts",
       "import": "./dist/plugin.js"
     },
     "./utils": {
+      "monorepo:dev": "./src/utils/index.ts",
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js"
     },
     "./utils/*": {
+      "monorepo:dev": "./src/utils/*.ts",
       "types": "./dist/utils/*.d.ts",
       "import": "./dist/utils/*.js"
     },
     "./locales": {
+      "monorepo:dev": "./src/locales/index.ts",
       "types": "./dist/locales/index.d.ts",
       "import": "./dist/locales/index.js"
     },
     "./locales/*": {
+      "monorepo:dev": "./src/locales/*.ts",
       "types": "./dist/locales/*.d.ts",
       "import": "./dist/locales/*.js"
     },
     "./composables": {
+      "monorepo:dev": "./src/composables/useTranslations.ts",
       "types": "./dist/composables/useTranslations.d.ts",
       "import": "./dist/composables/useTranslations.js"
     },
     "./composables/*": {
+      "monorepo:dev": "./src/composables/*.ts",
       "types": "./dist/composables/*.d.ts",
       "import": "./dist/composables/*.js"
     }

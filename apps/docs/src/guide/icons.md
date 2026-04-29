@@ -6,7 +6,7 @@ A comprehensive collection of **860 beautiful SVG icons** ready for use in your 
 
 - **860+ icons** - All icons are available [in the icon set page](./icon-set.md)
 - **Static & Lazy components** - Static (eagerly loaded) by default, lazy (async) when you need to optimize bundle size
-- **Multiple usage patterns** - Direct SVG files, Vue components, or auto-import
+- **Multiple usage patterns** - Direct SVG files, Vue components, raw SVG strings, or auto-import
 - **TypeScript support** - Full type definitions included
 - **Tree-shakeable** - Import only the icons you need
 - **Customizable** - Easy to style with CSS
@@ -102,7 +102,7 @@ You can also import individual icons directly for optimal tree-shaking:
 
 ```ts
 // Static icon (individual file)
-import { MazCheck } from '@maz-ui/icons/MazCheck'
+import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
 
 // Lazy icon (individual file)
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
@@ -167,6 +167,7 @@ export default defineConfig({
 </template>
 
 <style scoped>
+@reference "../../.vitepress/theme/main.css";
 .nav-icon {
   @apply w-6 h-6 text-gray-600 hover:text-blue-500 transition-colors cursor-pointer;
 }

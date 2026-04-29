@@ -53,11 +53,11 @@ const calendarDateWithOffset = computed({
 </script>
 
 <template>
-  <div class="maz-picker-calendar-month" :class="{ '--has-padding': !range }">
+  <div class="maz-picker-calendar-month maz:w-full maz:overflow-hidden maz:py-2" :class="{ '--has-padding': !range, 'maz:px-2': !range }">
     <MazPickerCalendarDays
       :locale="locale"
       :first-day-of-week="firstDayOfWeek"
-      class="maz-picker-calendar-month__days"
+      class="maz-picker-calendar-month__days maz:pb-2"
     />
 
     <MazPickerCalendarGrid
@@ -78,17 +78,3 @@ const calendarDateWithOffset = computed({
     />
   </div>
 </template>
-
-<style scoped>
-  .maz-picker-calendar-month {
-  @apply maz-w-full maz-overflow-hidden maz-py-2;
-
-  &.--has-padding {
-    @apply maz-px-2;
-  }
-
-  &__days {
-    @apply maz-pb-2;
-  }
-}
-</style>

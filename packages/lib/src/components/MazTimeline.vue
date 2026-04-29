@@ -7,7 +7,7 @@ import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useId,
 
 export type MazTimelineColor = Exclude<MazColor, 'transparent'>
 export type MazTimelineDirection = 'horizontal' | 'vertical' | 'auto'
-export type MazTimelineRoundedSize = 'none' | 'sm' | 'md' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | 'full'
+export type MazTimelineRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full'
 export type MazTimelineStepState = 'completed' | 'active' | 'error' | 'warning' | 'pending'
 
 export interface MazTimelineItem {
@@ -100,8 +100,8 @@ export interface MazTimelineProps {
   /**
    * Border radius of step indicators
    * @type {MazTimelineRoundedSize}
-   * @values `'none' | 'sm' | 'md' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | 'full'`
-   * @default 'full'
+   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full'`
+   * @default 'md'
    */
   roundedSize?: MazTimelineRoundedSize
 }
@@ -116,7 +116,7 @@ const {
   autoValidateSteps = true,
   clickable = false,
   animated = true,
-  roundedSize = 'base',
+  roundedSize = 'md',
   steps,
 } = defineProps<MazTimelineProps>()
 
@@ -311,20 +311,48 @@ function findNextEnabledStep(fromIndex: number, direction: 1 | -1): number | und
 }
 
 const hasCheckIcon = computed(() => autoValidateSteps)
+
+const ROUNDED_CLASS = {
+  'none': 'maz:rounded-none',
+  'sm': 'maz:rounded-xs',
+  'md': 'maz:rounded-md',
+  'lg': 'maz:rounded-lg',
+  'xl': 'maz:rounded-xl',
+  '2xl': 'maz:rounded-2xl',
+  '3xl': 'maz:rounded-3xl',
+  'full': 'maz:rounded-full',
+} as const
+
+const TITLE_SIZE_CLASS: Record<MazSize, string> = {
+  mini: 'maz:text-[0.625rem]',
+  xs: 'maz:text-xs',
+  sm: 'maz:text-xs',
+  md: 'maz:text-sm',
+  lg: 'maz:text-base',
+  xl: 'maz:text-lg',
+}
+
+const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
+  mini: 'maz:text-[0.5rem]',
+  xs: 'maz:text-[0.625rem]',
+  sm: 'maz:text-[0.65rem]',
+  md: 'maz:text-xs',
+  lg: 'maz:text-sm',
+  xl: 'maz:text-base',
+}
 </script>
 
 <template>
   <div
-    class="m-timeline m-reset-css"
+    class="m-timeline m-reset-css maz:flex maz:items-stretch"
     role="list"
     :aria-label="$attrs['aria-label'] as string ?? 'Timeline'"
     :style="colorStyles"
     :class="[
       `--${size}`,
       `--rounded-${roundedSize}`,
+      isVertical ? '--vertical maz:flex-col' : '--horizontal maz:flex-row maz:items-start',
       {
-        '--vertical': isVertical,
-        '--horizontal': !isVertical,
         '--clickable': clickable,
         '--animated': animated,
       },
@@ -354,7 +382,7 @@ const hasCheckIcon = computed(() => autoValidateSteps)
         :style="getStateStyle(getStepState(step, index))"
         v-on="clickable ? { click: () => onStepClick(step, index), keydown: (e: KeyboardEvent) => onStepKeydown(e, step, index) } : {}"
       >
-        <div class="m-timeline-indicator" aria-hidden="true">
+        <div class="m-timeline-indicator maz:flex maz:shrink-0 maz:items-center maz:justify-center" :class="ROUNDED_CLASS[roundedSize]" aria-hidden="true">
           <!--
             @slot indicator - Custom content for the step indicator circle
             @binding {MazTimelineItem} step - The step data
@@ -419,7 +447,7 @@ const hasCheckIcon = computed(() => autoValidateSteps)
             :is-active="isStepActive(step, index)"
             :is-completed="isStepCompleted(step, index)"
           >
-            <p v-if="step.title || slots.title" class="m-timeline-title">
+            <p v-if="step.title || slots.title" class="m-timeline-title maz:font-display" :class="TITLE_SIZE_CLASS[size]">
               <!--
                 @slot title - Custom title content
                 @binding {MazTimelineItem} step - The step data
@@ -430,7 +458,7 @@ const hasCheckIcon = computed(() => autoValidateSteps)
                 {{ step.title }}
               </slot>
             </p>
-            <p v-if="step.subtitle || slots.subtitle" class="m-timeline-subtitle">
+            <p v-if="step.subtitle || slots.subtitle" class="m-timeline-subtitle" :class="SUBTITLE_SIZE_CLASS[size]">
               <!--
                 @slot subtitle - Custom subtitle content
                 @binding {MazTimelineItem} step - The step data
@@ -476,174 +504,168 @@ const hasCheckIcon = computed(() => autoValidateSteps)
 </template>
 
 <style scoped>
-.m-timeline {
-  @apply maz-flex maz-items-stretch;
+@reference "../tailwindcss/tailwind.css";
 
+.m-timeline {
   /* --- Horizontal layout --- */
   &.--horizontal {
-    @apply maz-flex-row maz-items-start;
-
     .m-timeline-item {
-      @apply maz-flex maz-flex-1 maz-items-start;
+      @apply maz:flex maz:flex-1 maz:items-start;
 
       &.--last {
-        @apply maz-flex-none;
+        @apply maz:flex-none;
       }
     }
 
     .m-timeline-step {
-      @apply maz-flex maz-flex-col maz-items-center maz-gap-2 maz-min-w-14;
+      @apply maz:flex maz:flex-col maz:items-center maz:gap-2 maz:min-w-14;
     }
 
     .m-timeline-content {
-      @apply maz-text-center;
+      @apply maz:text-center;
     }
 
     .m-timeline-connector {
-      @apply maz-flex maz-flex-1 maz-items-center maz-pt-[var(--m-timeline-indicator-half)];
+      @apply maz:flex maz:flex-1 maz:items-center maz:pt-(--m-timeline-indicator-half);
     }
 
     .m-timeline-connector-track {
-      @apply maz-h-0.5 maz-w-full;
+      @apply maz:h-0.5 maz:w-full;
     }
 
     .m-timeline-connector-fill {
-      @apply maz-h-full maz-w-0;
+      @apply maz:h-full maz:w-0;
     }
 
     .m-timeline-connector.--completed .m-timeline-connector-fill {
-      @apply maz-w-full;
+      @apply maz:w-full;
     }
   }
 
   /* --- Vertical layout --- */
   &.--vertical {
-    @apply maz-flex-col;
-
     .m-timeline-item {
-      @apply maz-flex maz-flex-col;
+      @apply maz:flex maz:flex-col;
     }
 
     .m-timeline-step {
-      @apply maz-flex maz-flex-row maz-items-center maz-gap-3;
+      @apply maz:flex maz:flex-row maz:items-center maz:gap-3;
     }
 
     .m-timeline-content {
-      @apply maz-text-left;
+      @apply maz:text-left;
     }
 
     .m-timeline-connector {
-      @apply maz-flex maz-items-stretch maz-py-1 maz-pl-[var(--m-timeline-indicator-half)];
+      @apply maz:flex maz:items-stretch maz:py-1 maz:pl-(--m-timeline-indicator-half);
     }
 
     .m-timeline-connector-track {
-      @apply maz-h-full maz-min-h-6 maz-w-0.5 maz-translate-x-px;
+      @apply maz:h-full maz:min-h-6 maz:w-0.5 maz:translate-x-px;
     }
 
     .m-timeline-connector-fill {
-      @apply maz-h-0 maz-w-full;
+      @apply maz:h-0 maz:w-full;
     }
 
     .m-timeline-connector.--completed .m-timeline-connector-fill {
-      @apply maz-h-full;
+      @apply maz:h-full;
     }
   }
 
   /* --- Step indicator (base) --- */
   .m-timeline-indicator {
-    @apply maz-flex maz-shrink-0 maz-items-center maz-justify-center;
+    inline-size: var(--m-timeline-indicator-size);
+    block-size: var(--m-timeline-indicator-size);
 
-    width: var(--m-timeline-indicator-size);
-    height: var(--m-timeline-indicator-size);
-
-    @apply maz-bg-[hsl(var(--maz-muted)/30%)] maz-text-[hsl(var(--maz-muted))];
+    @apply maz:bg-(--maz-muted)/30 maz:text-muted;
   }
 
   /* --- Step states --- */
   .m-timeline-step {
     &.--active .m-timeline-indicator {
-      @apply maz-bg-[hsl(var(--m-timeline-bg))] maz-text-[hsl(var(--m-timeline-fg))];
+      @apply maz:bg-(--m-timeline-bg) maz:text-(--m-timeline-fg);
     }
 
     &.--completed .m-timeline-indicator {
-      @apply maz-bg-[hsl(var(--m-timeline-state-bg,var(--m-timeline-bg)))] maz-text-[hsl(var(--m-timeline-state-fg,var(--m-timeline-fg)))];
+      @apply maz:bg-(--m-timeline-state-bg,var(--m-timeline-bg)) maz:text-(--m-timeline-state-fg,var(--m-timeline-fg));
     }
 
     &.--error .m-timeline-indicator {
-      @apply maz-bg-[hsl(var(--m-timeline-state-bg))] maz-text-[hsl(var(--m-timeline-state-fg))];
+      @apply maz:bg-(--m-timeline-state-bg) maz:text-(--m-timeline-state-fg);
     }
 
     &.--warning .m-timeline-indicator {
-      @apply maz-bg-[hsl(var(--m-timeline-state-bg))] maz-text-[hsl(var(--m-timeline-state-fg))];
+      @apply maz:bg-(--m-timeline-state-bg) maz:text-(--m-timeline-state-fg);
     }
 
     &.--disabled {
-      @apply maz-opacity-40 maz-pointer-events-none;
+      @apply maz:opacity-40 maz:pointer-events-none;
     }
   }
 
   /* --- Connector --- */
   .m-timeline-connector-track {
-    @apply maz-bg-[hsl(var(--maz-muted)/20%)];
+    @apply maz:bg-(--maz-muted)/20;
   }
 
   .m-timeline-connector-fill {
-    @apply maz-bg-[hsl(var(--m-timeline-bg))];
+    @apply maz:bg-(--m-timeline-bg);
   }
 
   /* --- Content --- */
   .m-timeline-content {
-    @apply maz-flex maz-flex-col maz-gap-0.5;
+    @apply maz:flex maz:flex-col maz:gap-0.5;
   }
 
   .m-timeline-title {
-    @apply maz-m-0 maz-font-semibold maz-leading-tight maz-text-[hsl(var(--maz-foreground))];
+    @apply maz:m-0 maz:font-semibold maz:leading-tight maz:text-foreground;
   }
 
   .m-timeline-subtitle {
-    @apply maz-m-0 maz-leading-snug maz-text-[hsl(var(--maz-muted))];
+    @apply maz:m-0 maz:leading-snug maz:text-muted;
   }
 
   /* --- Step number --- */
   .m-timeline-step-number {
-    @apply maz-font-bold maz-leading-none;
+    @apply maz:font-bold maz:leading-none;
 
     font-size: var(--m-timeline-number-size);
   }
 
   /* --- Step icon --- */
   .m-timeline-step-icon {
-    width: var(--m-timeline-icon-size);
-    height: var(--m-timeline-icon-size);
+    inline-size: var(--m-timeline-icon-size);
+    block-size: var(--m-timeline-icon-size);
   }
 
   /* --- Check icon --- */
   .m-timeline-check-icon {
-    width: var(--m-timeline-icon-size);
-    height: var(--m-timeline-icon-size);
+    inline-size: var(--m-timeline-icon-size);
+    block-size: var(--m-timeline-icon-size);
   }
 
   /* --- Clickable --- */
   &.--clickable .m-timeline-step:not(.--disabled) {
-    @apply maz-cursor-pointer;
+    @apply maz:cursor-pointer;
 
     &:hover .m-timeline-indicator {
-      @apply maz-ring-2 maz-ring-[hsl(var(--m-timeline-color)/30%)];
+      @apply maz:ring-2 maz:ring-(--m-timeline-color)/30;
     }
 
     &:focus-visible .m-timeline-indicator {
-      @apply maz-outline-none maz-ring-2 maz-ring-[hsl(var(--m-timeline-color))] maz-ring-offset-2;
+      @apply maz:outline-hidden maz:ring-2 maz:ring-(--m-timeline-color) maz:ring-offset-2;
     }
   }
 
   /* --- Animations --- */
   &.--animated {
     .m-timeline-indicator {
-      @apply maz-transition-all maz-duration-300 maz-ease-in-out;
+      @apply maz:transition-all maz:duration-300 maz:ease-in-out;
     }
 
     .m-timeline-connector-fill {
-      @apply maz-transition-all maz-duration-500 maz-ease-in-out;
+      @apply maz:transition-all maz:duration-500 maz:ease-in-out;
     }
 
     .m-timeline-step.--active .m-timeline-indicator {
@@ -658,14 +680,6 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     --m-timeline-icon-size: 0.625rem;
     --m-timeline-font-size: 0.625rem;
     --m-timeline-number-size: 0.5rem;
-
-    .m-timeline-title {
-      @apply maz-text-[0.625rem];
-    }
-
-    .m-timeline-subtitle {
-      @apply maz-text-[0.5rem];
-    }
   }
 
   &.--xs {
@@ -674,14 +688,6 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     --m-timeline-icon-size: 0.75rem;
     --m-timeline-font-size: 0.75rem;
     --m-timeline-number-size: 0.625rem;
-
-    .m-timeline-title {
-      @apply maz-text-xs;
-    }
-
-    .m-timeline-subtitle {
-      @apply maz-text-[0.625rem];
-    }
   }
 
   &.--sm {
@@ -690,14 +696,6 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     --m-timeline-icon-size: 0.875rem;
     --m-timeline-font-size: 0.75rem;
     --m-timeline-number-size: 0.625rem;
-
-    .m-timeline-title {
-      @apply maz-text-xs;
-    }
-
-    .m-timeline-subtitle {
-      @apply maz-text-[0.65rem];
-    }
   }
 
   &.--md {
@@ -706,14 +704,6 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     --m-timeline-icon-size: 1rem;
     --m-timeline-font-size: 0.875rem;
     --m-timeline-number-size: 0.75rem;
-
-    .m-timeline-title {
-      @apply maz-text-sm;
-    }
-
-    .m-timeline-subtitle {
-      @apply maz-text-xs;
-    }
   }
 
   &.--lg {
@@ -722,14 +712,6 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     --m-timeline-icon-size: 1.25rem;
     --m-timeline-font-size: 1rem;
     --m-timeline-number-size: 0.875rem;
-
-    .m-timeline-title {
-      @apply maz-text-base;
-    }
-
-    .m-timeline-subtitle {
-      @apply maz-text-sm;
-    }
   }
 
   &.--xl {
@@ -738,51 +720,6 @@ const hasCheckIcon = computed(() => autoValidateSteps)
     --m-timeline-icon-size: 1.5rem;
     --m-timeline-font-size: 1.125rem;
     --m-timeline-number-size: 1rem;
-
-    .m-timeline-title {
-      @apply maz-text-lg;
-    }
-
-    .m-timeline-subtitle {
-      @apply maz-text-base;
-    }
-  }
-
-  /* --- Rounded sizes --- */
-  &.--rounded-none .m-timeline-indicator {
-    @apply maz-rounded-none;
-  }
-
-  &.--rounded-sm .m-timeline-indicator {
-    @apply maz-rounded-sm;
-  }
-
-  &.--rounded-md .m-timeline-indicator {
-    @apply maz-rounded-md;
-  }
-
-  &.--rounded-base .m-timeline-indicator {
-    @apply maz-rounded;
-  }
-
-  &.--rounded-lg .m-timeline-indicator {
-    @apply maz-rounded-lg;
-  }
-
-  &.--rounded-xl .m-timeline-indicator {
-    @apply maz-rounded-xl;
-  }
-
-  &.--rounded-2xl .m-timeline-indicator {
-    @apply maz-rounded-2xl;
-  }
-
-  &.--rounded-3xl .m-timeline-indicator {
-    @apply maz-rounded-3xl;
-  }
-
-  &.--rounded-full .m-timeline-indicator {
-    @apply maz-rounded-full;
   }
 }
 
@@ -790,11 +727,11 @@ const hasCheckIcon = computed(() => autoValidateSteps)
 @keyframes m-timeline-pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 0 hsl(var(--m-timeline-bg) / 40%);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--m-timeline-bg) 40%, transparent);
   }
 
   50% {
-    box-shadow: 0 0 0 6px hsl(var(--m-timeline-bg) / 0%);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--m-timeline-bg) 0%, transparent);
   }
 }
 
@@ -802,7 +739,7 @@ const hasCheckIcon = computed(() => autoValidateSteps)
 @media (prefers-reduced-motion: reduce) {
   .m-timeline.--animated .m-timeline-indicator,
   .m-timeline.--animated .m-timeline-connector-fill {
-    @apply !maz-transition-none;
+    @apply maz:transition-none!;
 
     animation: none !important;
   }

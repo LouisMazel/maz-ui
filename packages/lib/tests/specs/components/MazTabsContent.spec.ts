@@ -8,7 +8,7 @@ describe('given MazTabsContent component', () => {
       const wrapper = mount(MazTabsContent, {
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab: ref(1),
             },
           },
@@ -17,7 +17,7 @@ describe('given MazTabsContent component', () => {
 
       expect(wrapper.classes()).toContain('m-tabs-content')
       expect(wrapper.classes()).toContain('m-reset-css')
-      expect(wrapper.classes()).toContain('maz-relative')
+      expect(wrapper.classes()).toContain('maz:relative')
     })
   })
 
@@ -27,20 +27,20 @@ describe('given MazTabsContent component', () => {
       const wrapper = mount(MazTabsContent, {
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab,
             },
           },
         },
       })
 
-      expect(wrapper.classes()).toContain('maz-overflow-hidden')
+      expect(wrapper.classes()).toContain('maz:overflow-hidden')
 
       // Change tab
       currentTab.value = 2
       await wrapper.vm.$nextTick()
 
-      expect(wrapper.classes()).toContain('maz-overflow-hidden')
+      expect(wrapper.classes()).toContain('maz:overflow-hidden')
     })
   })
 
@@ -49,14 +49,14 @@ describe('given MazTabsContent component', () => {
       const wrapper = mount(MazTabsContent, {
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab: ref(1),
             },
           },
         },
       })
 
-      expect(wrapper.classes()).toContain('maz-overflow-hidden')
+      expect(wrapper.classes()).toContain('maz:overflow-hidden')
     })
   })
 
@@ -68,7 +68,7 @@ describe('given MazTabsContent component', () => {
         },
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab: ref(1),
             },
           },
@@ -87,7 +87,7 @@ describe('given MazTabsContent component', () => {
         },
         global: {
           provide: {
-            'maz-tabs': {
+            'maz:tabs': {
               currentTab: ref(1),
             },
           },
@@ -110,6 +110,33 @@ describe('given MazTabsContent component', () => {
       }).toThrow()
 
       consoleSpy.mockRestore()
+    })
+  })
+
+  describe('when the debounce timer elapses after a tab change', () => {
+    it('then it should remove the overflow hidden class', async () => {
+      vi.useFakeTimers()
+
+      const currentTab = ref(1)
+      const wrapper = mount(MazTabsContent, {
+        global: {
+          provide: {
+            'maz:tabs': {
+              currentTab,
+            },
+          },
+        },
+      })
+
+      currentTab.value = 2
+      await wrapper.vm.$nextTick()
+
+      vi.advanceTimersByTime(800)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.classes()).not.toContain('maz:overflow-hidden')
+
+      vi.useRealTimers()
     })
   })
 })

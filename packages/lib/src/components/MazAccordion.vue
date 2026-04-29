@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import type { ClassValue } from 'vue'
-import { MazPlus } from '@maz-ui/icons/static/MazPlus'
+import { MazPlus } from '@maz-ui/icons/raw/MazPlus'
 import { computed, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-
 import MazCardSpotlight from './MazCardSpotlight.vue'
+
 import MazExpandAnimation from './MazExpandAnimation.vue'
+import MazIcon from './MazIcon.vue'
 
 export interface MazAccordionProps {
   id?: string
@@ -58,19 +59,19 @@ function selectStep(index: number) {
 </script>
 
 <template>
-  <div class="m-accordion m-reset-css" role="presentation">
+  <div class="m-accordion m-reset-css maz:relative maz:inline-flex maz:flex-col maz:gap-4 maz:align-top" role="presentation">
     <template v-for="step in stepCount" :key="step">
-      <MazCardSpotlight class="m-accordion__spotlight" :padding="false">
+      <MazCardSpotlight class="m-accordion__spotlight maz:w-full" :padding="false">
         <button
           :id="`step-${step}-${instanceId}`"
-          class="m-accordion__header"
+          class="m-accordion__header maz:inline-flex maz:w-full maz:items-center maz:justify-between maz:gap-4 maz:p-4 maz:text-start maz:transition-colors maz:duration-300 maz:ease-in-out"
           :aria-controls="`step-${step}-${instanceId}`"
           :aria-expanded="isStepOpen(step)"
           @click="selectStep(step)"
         >
           <slot :name="`title-${step}`" :is-open="isStepOpen(step)" />
 
-          <MazPlus class="header-icon" :class="{ '--rotate': isStepOpen(step) }" />
+          <MazIcon :icon="MazPlus" class="header-icon maz:transition-transform maz:duration-300 maz:ease-in-out" :class="{ '--rotate': isStepOpen(step) }" />
         </button>
 
         <MazExpandAnimation
@@ -78,7 +79,7 @@ function selectStep(index: number) {
           :model-value="isStepOpen(step)"
           :aria-labelledby="`step-${step}-${instanceId}`"
         >
-          <div class="m-accordion__content" :class="contentClass">
+          <div class="m-accordion__content maz:p-4" :class="contentClass">
             <slot name="content" :is-open="isStepOpen(step)" />
             <slot :name="`content-${step}`" :is-open="isStepOpen(step)" />
           </div>
@@ -89,29 +90,7 @@ function selectStep(index: number) {
 </template>
 
 <style scoped>
-  .m-accordion {
-  @apply maz-relative maz-inline-flex maz-flex-col maz-gap-4 maz-align-top;
-
-  &__spotlight {
-    @apply maz-w-full;
-  }
-
-  &__header {
-    @apply maz-inline-flex maz-w-full maz-items-center maz-justify-between maz-gap-4 maz-p-4 maz-text-start maz-transition-colors maz-duration-300 maz-ease-in-out;
-
-    .header-icon {
-      @apply maz-transition-transform maz-duration-300 maz-ease-in-out;
-
-      &.--rotate {
-        /* @apply maz-rotate-45; */
-
-        transform: rotate(135deg);
-      }
-    }
-  }
-
-  &__content {
-    @apply maz-p-4;
-  }
+.m-accordion__header .header-icon.--rotate {
+  transform: rotate(135deg);
 }
 </style>

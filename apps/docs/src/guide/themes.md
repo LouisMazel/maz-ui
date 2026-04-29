@@ -14,9 +14,9 @@ description: Modern and performant theme system for Maz-UI with TypeScript, HSL 
 - **Modern HSL CSS Variables** - Maximum flexibility with colors
 - **Smart Dark Mode** - Automatic support with `prefers-color-scheme`
 - **Automatic Generation** - Color scales (50-950) created automatically
-- **Performance Strategies** - Runtime, build-time or hybrid according to your needs
+- **Performance Strategies** - Runtime injection or build-time generation according to your needs
 - **Strict TypeScript** - Complete types for perfect DX
-- **Zero FOUC** - Critical CSS injected inline to avoid flashes
+- **Zero FOUC** - Pass the preset object up front; the full CSS is injected synchronously on first paint
 - **Flexible Presets** - Ready-to-use and customizable configurations
 
 ## Theme Editor
@@ -39,11 +39,12 @@ const app = createApp(App)
 
 app.use(MazUi, {
   theme: {
-    preset: mazUi, // pristine | ocean | obsidian
-    strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
+    preset: mazUi, // pristine | ocean | obsidian | nova
+    strategy: 'runtime', // 'runtime' | 'buildtime'
     darkModeStrategy: 'class', // 'class' | 'media' (only if mode is `both`)
     mode: 'both', // 'light' | 'dark' | 'both' (supported color modes)
     colorMode: 'auto', // 'auto' | 'light' | 'dark' (initial color mode, only if mode is 'both')
+    persistPreset: true, // remember the active preset name across reloads
   }
 })
 ```
@@ -58,8 +59,8 @@ You can also initialize the theme via the [`MazUiProvider`](./maz-ui-provider.md
 html {
   font-size: var(--maz-base-font-size);
   font-family: var(--maz-font-family);
-  background-color: hsl(var(--maz-background));
-  color: hsl(var(--maz-foreground));
+  background-color: var(--maz-surface);
+  color: var(--maz-foreground);
 }
 ```
 
@@ -73,9 +74,9 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 </script>
 
 <template>
-  <div class="maz-bg-background maz-text-foreground">
+  <div class="maz:bg-surface maz:text-foreground">
     <button
-      class="maz-rounded maz-bg-primary maz-text-primary-foreground"
+      class="maz:rounded-md maz:bg-primary maz:text-primary-foreground"
       @click="toggleDarkMode"
     >
       {{ isDark ? '☀️' : '🌙' }} Toggle theme
@@ -92,22 +93,46 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 - `darkModeStrategy` (optional): The dark mode strategy to use, only if you use mode `both`
 - `mode` (optional): The supported color modes to use (light, dark, both)
 - `colorMode` (optional): The initial color mode to use (only if mode is 'both')
+- `persistPreset` (optional, default `true`): Persist the active preset name in the `maz-preset` cookie so it is restored on reload.
+
+### Preset persistence
+
+When `persistPreset` is enabled (default), `@maz-ui/themes` stores the resolved preset name in a `maz-preset` cookie (1-year TTL, `SameSite=Lax`) — exactly like `maz-color-mode` for the dark/light state. The cookie is:
+
+- **Read at boot** and used to resolve the active preset — even when `options.preset` is provided. `options.preset` (string name **or** preset object) is treated as the *default* the app boots with, while the cookie carries the user's last explicit choice. The cookie wins.
+- **Written** after every successful preset resolution and after every `useTheme().updateTheme()` call (idempotent — no write if the value already matches).
+- **Auto-cleared** when the saved name no longer resolves (e.g. typo, preset removed in a downgrade) — the runtime falls back to `options.preset` (or default) and clears the cookie silently.
+
+Custom preset names are stored exactly like bundled ones: `@maz-ui/themes` does not maintain a whitelist. Switch the option off to disable any cookie read/write:
+
+```typescript
+app.use(MazUi, {
+  theme: {
+    preset: mazUi,
+    persistPreset: false, // never write or read the maz-preset cookie
+  },
+})
+```
+
+Useful when:
+- You want zero theme-related cookies (privacy / regulatory).
+- The active preset is fully driven by the consumer app and no end-user switching is exposed.
 
 ## Interactive Demo
 
 <ComponentDemo title="Real-time theme control">
   <div class="demo-theme-controls">
-    <div class="maz-space-y-4">
-      <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4">
+    <div class="maz:space-y-4">
+      <div class="maz:grid maz:grid-cols-1 maz:md:grid-cols-2 maz:gap-4">
         <MazBtn color="primary">Primary Button</MazBtn>
         <MazBtn color="secondary">Secondary Button</MazBtn>
         <MazBtn color="success">Success Button</MazBtn>
         <MazBtn color="warning">Warning Button</MazBtn>
       </div>
-      <div class="theme-controls maz-space-y-4">
-        <div class="maz-flex maz-flex-col maz-gap-4">
-          <label class="maz-text-sm maz-font-medium">Color Mode: {{ colorMode }}</label>
-          <div class="maz-flex maz-gap-2">
+      <div class="theme-controls maz:space-y-4">
+        <div class="maz:flex maz:flex-col maz:gap-4">
+          <label class="maz:text-sm maz:font-medium">Color Mode: {{ colorMode }}</label>
+          <div class="maz:flex maz:gap-2">
             <MazBtn
               size="sm"
               :color="colorMode === 'light' ? 'primary' : 'contrast'"
@@ -131,9 +156,9 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
             </MazBtn>
           </div>
         </div>
-        <div class="maz-space-y-2">
-          <label class="maz-text-sm maz-font-medium">Preset:</label>
-          <div class="maz-flex maz-gap-2">
+        <div class="maz:space-y-2">
+          <label class="maz:text-sm maz:font-medium">Preset:</label>
+          <div class="maz:flex maz:gap-2">
             <MazBtn
               size="sm"
               :color="presetName === 'maz-ui' ? 'primary' : 'contrast'"
@@ -179,16 +204,16 @@ const { presetName, updateTheme, colorMode, setColorMode } = useTheme()
 
 <template>
   <div class="demo-theme-controls">
-    <div class="maz-space-y-4">
-      <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4">
+    <div class="maz:space-y-4">
+      <div class="maz:grid maz:grid-cols-1 maz:md:grid-cols-2 maz:gap-4">
         <MazBtn color="primary">Primary Button</MazBtn>
         <MazBtn color="secondary">Secondary Button</MazBtn>
         <MazBtn color="success">Success Button</MazBtn>
         <MazBtn color="warning">Warning Button</MazBtn>
       </div>
-      <div class="theme-controls maz-space-y-4">
-        <div class="maz-flex maz-items-center maz-gap-4">
-          <label class="maz-text-sm maz-font-medium">Mode:</label>
+      <div class="theme-controls maz:space-y-4">
+        <div class="maz:flex maz:items-center maz:gap-4">
+          <label class="maz:text-sm maz:font-medium">Mode:</label>
           <MazBtn
             size="sm"
             :color="colorMode === 'light' ? 'primary' : 'secondary'"
@@ -211,9 +236,9 @@ const { presetName, updateTheme, colorMode, setColorMode } = useTheme()
             🔄 Auto
           </MazBtn>
         </div>
-        <div class="maz-space-y-2">
-          <label class="maz-text-sm maz-font-medium">Preset:</label>
-          <div class="maz-flex maz-gap-2">
+        <div class="maz:space-y-2">
+          <label class="maz:text-sm maz:font-medium">Preset:</label>
+          <div class="maz:flex maz:gap-2">
             <MazBtn
               size="sm"
               :color="presetName === 'maz-ui' ? 'primary' : 'secondary'"
@@ -287,35 +312,19 @@ A dark and elegant theme with a focus on readability and minimalism.
 import { obsidian } from '@maz-ui/themes/presets'
 ```
 
-## Rendering Strategies
+### Nova
 
-### 🚀 Hybrid (Recommended)
-
-The hybrid strategy combines the best of both worlds:
-
-- **Critical CSS injected immediately** - Prevents FOUC (Flash of Unstyled Content)
-- **Full CSS loaded asynchronously** - Uses `requestIdleCallback` to avoid blocking the main thread
-- **Optimal performance** - Balance between display speed and interface fluidity
-
-The full CSS is injected via `requestIdleCallback` with a 100ms timeout, allowing the browser to prioritize critical tasks while ensuring fast loading of complete styling.
+A modern startup / AI / creative preset — electric violet primary, hot coral secondary, cyan accent. Tight 0.5rem `md` radius, Geist + Inter font stack, snappy ease-out spring. Built for product / AI surfaces (think Linear, Vercel, OpenAI energy) where the UI itself should feel alive.
 
 ```typescript
-import { mazUi } from '@maz-ui/themes/presets'
-
-app.use(MazUi, {
-  theme: {
-    preset: mazUi,
-    strategy: 'hybrid'
-  }
-})
+import { nova } from '@maz-ui/themes/presets'
 ```
 
-### ⚡ Runtime
+## Rendering Strategies
 
-CSS generated (critical and full) injected immediately.
+### ⚡ Runtime (Recommended)
 
-**⚠️ Potential risks:**
-- **Main thread blocking** - Immediate injection can impact performance
+CSS is generated and injected synchronously on first paint. Pass the preset object directly (`preset: mazUi`) so the full stylesheet is rendered before the first frame — no FOUC.
 
 ```typescript
 import { mazUi } from '@maz-ui/themes/presets'
@@ -356,15 +365,15 @@ app.use(MazUi, {
   <MazBtn @click="applyCustomTheme" color="info">
     Apply Custom Theme
   </MazBtn>
-  <MazBtn @click="resetTheme" color="secondary" class="maz-ms-2">
+  <MazBtn @click="resetTheme" color="secondary" class="maz:ms-2">
     Reset
   </MazBtn>
 
-  <div class="maz-mt-4 maz-p-4 maz-bg-primary/10 maz-rounded-[var(--maz-radius)]">
-    <p v-if="presetName === 'custom-purple'" class="maz-text-primary maz-font-medium">
+  <div class="maz:mt-4 maz:p-4 maz:bg-primary/10 maz:rounded-md">
+    <p v-if="presetName === 'custom-purple'" class="maz:text-primary maz:font-medium">
       Custom theme applied with purple colors!
     </p>
-    <p v-else class="maz-text-primary maz-font-medium">
+    <p v-else class="maz:text-primary maz:font-medium">
       Default theme
     </p>
   </div>
@@ -379,8 +388,10 @@ const customTheme = await definePreset({
   overrides: {
     name: 'custom-purple',
     foundation: {
-      radius: '1rem'
       'font-family': 'Inter, sans-serif'
+    },
+    scales: {
+      rounded: { md: '1rem' }
     },
     colors: {
       light: {
@@ -430,27 +441,107 @@ const brandTheme = await definePreset({
   overrides: {
     name: 'brand',
     foundation: {
-      'radius': '0.75rem',
       'border-width': '2px',
       'font-family': 'Inter, sans-serif'
+    },
+    scales: {
+      rounded: { md: '0.75rem' }
     },
     colors: {
       light: {
         primary: '210 100% 50%',
         secondary: '210 40% 96%',
-        background: '210 20% 98%',
+        surface: '210 20% 98%',
         accent: '280 100% 70%'
       },
       dark: {
         primary: '210 100% 60%',
         secondary: '210 40% 15%',
-        background: '210 20% 8%',
+        surface: '210 20% 8%',
         accent: '280 100% 80%'
       }
     }
   }
 })
 ```
+
+### Customizing scales
+
+Each `ThemeScales` entry maps to a Tailwind utility — override the keys you care about and the rest stays untouched:
+
+```typescript
+const denseTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    name: 'dense',
+    foundation: {
+      // Tighter spacing — every p-N / gap-N / m-N rescales
+      space: '0.2rem',
+    },
+    scales: {
+      // Sharper corners on the whole radius scale
+      rounded: {
+        'xs': '0.0625rem',
+        'sm': '0.125rem',
+        'md': '0.375rem',
+        'lg': '0.5rem',
+        'xl': '0.75rem',
+        '2xl': '1rem',
+        '3xl': '1.5rem',
+      },
+      // Custom elevated-surface shadow
+      shadow: {
+        elevation: '0 8px 24px rgba(0, 0, 0, 0.15)',
+      },
+    },
+  },
+})
+```
+
+Foundation gets new optional keys for fonts and disabled-state behaviour:
+
+```typescript
+const codeTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    foundation: {
+      'font-mono-stack': '"JetBrains Mono", ui-monospace, SFMono-Regular, monospace',
+      'font-display-stack': '"Cal Sans", Manrope, sans-serif',
+      'disabled-opacity': '0.4',
+      'disabled-cursor': 'wait',
+    },
+  },
+})
+```
+
+### Per-component overrides
+
+`components` is a small, validated set of per-component knobs. Every entry is per-mode where appropriate so light and dark can drift independently:
+
+```typescript
+const surfaceTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    name: 'cool-surfaces',
+    components: {
+      btn: {
+        // Bias every button text heavier
+        'font-weight': '600',
+      },
+      container: {
+        // Cards / dialogs / popovers / drawers — light = page surface, dark = a tier above
+        bg: { light: 'var(--maz-surface)', dark: 'var(--maz-surface-300)' },
+      },
+      input: {
+        // All form-control surfaces
+        bg: { light: 'var(--maz-surface-100)', dark: 'var(--maz-surface-400)' },
+      },
+    },
+  },
+})
+```
+
+Components consume these via `maz:bg-container` / `maz:bg-input` Tailwind utilities, so a single override propagates everywhere — no per-component class hunt.
 
 ## useTheme Composable API
 
@@ -460,7 +551,7 @@ const {
   presetName, // ComputedRef<string>
   colorMode, // ComputedRef<'light' | 'dark' | 'auto'>
   isDark, // ComputedRef<boolean>
-  strategy, // ComputedRef<'runtime' | 'buildtime' | 'hybrid'>
+  strategy, // ComputedRef<'runtime' | 'buildtime'>
 
   // Actions
   updateTheme, // (preset: ThemePreset | ThemePresetOverrides) => void
@@ -544,19 +635,17 @@ const customPreset = definePreset({
 const fullCSS = buildThemeCSS({
   preset: customPreset,
   mode: 'both',
-  criticalOnly: false,
 })
 
 writeFileSync(join(_dirname, 'public/custom.css'), fullCSS)
 
 /**
- * Or generate theme in  separate CSS files
+ * Or generate per-mode CSS files
  */
-const { critical, full } = buildSeparateThemeFiles(customPreset, {
+const { full, lightOnly, darkOnly } = buildSeparateThemeFiles(customPreset, {
   darkSelector: 'class',
 })
 
-writeFileSync(join(_dirname, 'public/critical.css'), critical)
 writeFileSync(join(_dirname, 'public/custom-full.css'), full)
 
 /**
@@ -608,11 +697,10 @@ const customPreset = definePreset({
 const fullCSS = buildThemeCSS({
   preset: customPreset,
   mode: 'both',
-  criticalOnly: false,
 })
 
-// Or generate separate CSS files
-const { critical, full, lightOnly, darkOnly } = buildSeparateThemeFiles(customPreset, {
+// Or generate per-mode CSS files
+const { full, lightOnly, darkOnly } = buildSeparateThemeFiles(customPreset, {
   darkSelector: 'class',
 })
 
@@ -664,11 +752,7 @@ export default defineConfig({
 #### 2. Include in your HTML (Only for Vue users)
 
 ```html
-<!-- Critical CSS first -->
-<link rel="stylesheet" href="/themes/custom-critical.css">
-
-<!-- Full CSS deferred -->
-<link rel="stylesheet" href="/themes/custom-full.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="/themes/custom-full.css">
 ```
 
 ### Utility functions
@@ -682,7 +766,6 @@ const css = buildThemeCSS({
   preset: customPreset,
   mode: 'both', // 'light' | 'dark' | 'both'
   darkSelector: 'class', // 'class' | 'media'
-  criticalOnly: false, // true for critical CSS only
 })
 ```
 
@@ -704,12 +787,14 @@ Generates separate files for different use cases.
 
 ```typescript
 const files = buildSeparateThemeFiles(preset)
-// Result: { critical, full, lightOnly, darkOnly }
+// Result: { full, lightOnly, darkOnly }
 ```
 
 #### `createThemeStylesheet(css, options)`
 
-Creates a `<style>` tag with the provided CSS.
+Creates a `<style>
+@reference "../../.vitepress/theme/main.css";
+` tag with the provided CSS.
 
 ```typescript
 const styleTag = createThemeStylesheet(css, {
@@ -732,38 +817,107 @@ const styleTag = createThemeStylesheet(css, {
 - Projects with multiple predefined themes
 - Applications requiring fine control over CSS loading
 
-## Generated CSS Variables
+## Token Reference
 
-The system automatically generates all necessary variables:
+Every preset emits the same set of CSS variables on `:root` (and a `.dark` block when `mode: 'both'`). Use these names directly in your own CSS — `var(--maz-primary)`, `calc(var(--maz-space) * 4)`, etc.
 
-### Base Variables
+### Foundation
+
+Single-value design tokens. Set via `foundation.<key>` on the preset.
+
+| Preset key | CSS variable | Default | Notes |
+| --- | --- | --- | --- |
+| `base-font-size` | `--maz-base-font-size` | `14px` | Anchors `rem` for the whole app. Apply on `html { font-size: var(--maz-base-font-size) }`. |
+| `border-width` | `--maz-border-width` | `1px` | Default border for components and the global `*::before/::after` reset. |
+| `space` | `--maz-space` | `0.25rem` | Base step for every Tailwind spacing utility (`maz:p-1`, `maz:gap-2`, …). |
+| `font-family` | `--maz-font-family` | preset-specific | Sans / body font stack. Bridged to Tailwind `--font-sans`. |
+| `font-mono-stack` | `--maz-font-mono-stack` | `ui-monospace, …` | Monospace stack — `MazInputCode`, `<code>`, `<kbd>`. Bridged to `--font-mono`. |
+| `font-display-stack` | `--maz-font-display-stack` | same as `font-family` | Display / heading stack. Bridged to `--font-display`. |
+| `motion-fast` | `--maz-motion-fast` | `100ms` | Bridged to Tailwind `--duration-fast`. |
+| `motion-normal` | `--maz-motion-normal` | `200ms` | Default transition duration (`--default-transition-duration`). |
+| `motion-slow` | `--maz-motion-slow` | `300ms` | Bridged to `--duration-slow`. |
+| `easing-out` | `--maz-easing-out` | `cubic-bezier(0.4, 0, 0.2, 1)` | Default easing (`--ease-out`, also `--default-transition-timing-function`). |
+| `easing-in` | `--maz-easing-in` | `cubic-bezier(0.4, 0, 1, 1)` | Bridged to `--ease-in`. |
+| `easing-in-out` | `--maz-easing-in-out` | `cubic-bezier(0.4, 0, 0.2, 1)` | Bridged to `--ease-in-out`. |
+| `disabled-opacity` | `--maz-disabled-opacity` | `0.5` | Applied to disabled buttons / inputs. |
+| `disabled-cursor` | `--maz-disabled-cursor` | `not-allowed` | Cursor for disabled interactive elements. |
+
+> **Why `font-mono-stack` / `font-display-stack` / `motion-*`?** Under Tailwind v4 `prefix(maz)`, the bridge LHS gets prefixed (`--font-mono` → `--maz-font-mono`), so a same-named source token would self-cycle. The `-stack` and `motion-` suffixes break the collision.
+
+### Colors
+
+Defined per mode under `colors.light` / `colors.dark`. Each base color also gets an automatic 50–950 scale.
+
+| Preset key | CSS variable (base) | Auto scale | Notes |
+| --- | --- | --- | --- |
+| `surface` | `--maz-surface` | `--maz-surface-50..900` | Page / container background. |
+| `foreground` | `--maz-foreground` | `--maz-foreground-50..900` | Default text color. |
+| `primary` | `--maz-primary` | `--maz-primary-50..900` | Brand color. |
+| `primary-foreground` | `--maz-primary-foreground` | — | Text on `bg-primary`. |
+| `secondary` | `--maz-secondary` | `--maz-secondary-50..900` | |
+| `secondary-foreground` | `--maz-secondary-foreground` | — | |
+| `accent` | `--maz-accent` | `--maz-accent-50..900` | |
+| `accent-foreground` | `--maz-accent-foreground` | — | |
+| `info` | `--maz-info` | `--maz-info-50..900` | Status — informational. |
+| `info-foreground` | `--maz-info-foreground` | — | |
+| `success` | `--maz-success` | `--maz-success-50..900` | Status — success. |
+| `success-foreground` | `--maz-success-foreground` | — | |
+| `warning` | `--maz-warning` | `--maz-warning-50..900` | Status — warning. |
+| `warning-foreground` | `--maz-warning-foreground` | — | |
+| `destructive` | `--maz-destructive` | `--maz-destructive-50..900` | Status — error / danger. |
+| `destructive-foreground` | `--maz-destructive-foreground` | — | |
+| `contrast` | `--maz-contrast` | `--maz-contrast-50..900` | High-contrast accent (light = near-black, dark = near-white). |
+| `contrast-foreground` | `--maz-contrast-foreground` | — | |
+| `divider` | `--maz-divider` | `--maz-divider-50..900` | Default border / separator color. |
+| `muted` | `--maz-muted` | `--maz-muted-50..900` | Muted / secondary text. |
+| `overlay` | `--maz-overlay` | `--maz-overlay-50..900` | Backdrop / dialog scrim. |
+| `shadow` | `--maz-shadow` | `--maz-shadow-50..900` | Tint used by Tailwind `shadow-*` utilities (via `--color-elevation`). |
+
+### Scales
+
+Multi-step scales under `scales.<key>`.
+
+| Preset key | CSS variables | Tailwind utility |
+| --- | --- | --- |
+| `rounded.xs..3xl` | `--maz-rounded-xs..3xl` | `maz:rounded-{key}` (bridged to `--radius-{key}`) |
+| `shadow.{sm, md, lg, xl, elevation}` | `--maz-shadow-style-{key}` | `maz:shadow-{key}` (bridged to `--shadow-{key}`) |
+
+> Same naming-collision avoidance as foundation: `rounded.*` (instead of `radius.*`) and `shadow-style-*` (instead of plain `shadow-*`) keep the bridge cycle-free under `prefix(maz)`.
+
+### Components
+
+Per-component knobs under `components.<key>`. All optional — omit to fall back to the surface tokens.
+
+| Preset key | CSS variable | Notes |
+| --- | --- | --- |
+| `btn.font-weight` | `--maz-btn-font-weight` | Font-weight on `.m-btn`. Defaults to `'500'`. |
+| `container.bg.light` / `.dark` | `--maz-container-bg` (per mode) | Background of `Card`, `Container`, `Dialog`, `Popover`, `Drawer`, … Defaults to `var(--maz-surface)`. Bridged to `--color-container`. |
+| `input.bg.light` / `.dark` | `--maz-input-bg` (per mode) | Background of `Input`, `Textarea`, `Select`, `Checkbox`, … Defaults to `var(--maz-surface)` light, `var(--maz-surface-400)` dark. Bridged to `--color-input`. |
+
+### Sample output
 
 ```css
 :root {
   /* Main colors */
-  --maz-primary: 210 100% 56%;
-  --maz-primary-foreground: 0 0% 100%;
-  --maz-secondary: 164 76% 46%;
-  --maz-background: 0 0% 100%;
-  --maz-foreground: 210 8% 14%;
+  --maz-primary: oklch(0.6495 0.1913 253.63);
+  --maz-primary-foreground: oklch(1 0 0);
+  --maz-surface: oklch(1 0 0);
+  --maz-foreground: oklch(0.2573 0.0068 248.09);
 
-  /* Design tokens */
-  --maz-radius: 0.7rem;
-  --maz-border-width: 0.063rem;
-  --maz-font-family: Manrope, sans-serif;
-}
-```
+  /* Foundation */
+  --maz-base-font-size: 14px;
+  --maz-border-width: 1px;
+  --maz-space: 0.25rem;
+  --maz-font-family: Manrope, sans-serif, …;
+  --maz-motion-normal: 200ms;
 
-### Automatic Color Scales
+  /* Scales */
+  --maz-rounded-md: 0.7rem;
+  --maz-shadow-style-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), …;
 
-```css
-:root {
-  /* Primary scale generated automatically */
-  --maz-primary-50: 210 100% 95%;
-  --maz-primary-100: 210 100% 87%;
-  --maz-primary-200: 210 100% 79%;
-  /* ... up to 900 */
-  --maz-primary-900: 210 79% 17%;
+  /* Auto-generated 50–950 scale */
+  --maz-primary-500: oklch(…);
+  /* ... */
 }
 ```
 
@@ -771,7 +925,7 @@ The system automatically generates all necessary variables:
 
 ```css
 .dark {
-  --maz-background: 235 16% 15%;
+  --maz-surface: 235 16% 15%;
   --maz-foreground: 0 0% 85%;
   /* Variables automatically adapted */
 }
@@ -779,394 +933,12 @@ The system automatically generates all necessary variables:
 /* Or with media query */
 @media (prefers-color-scheme: dark) {
   :root {
-    --maz-background: 235 16% 15%;
+    --maz-surface: 235 16% 15%;
     --maz-foreground: 0 0% 85%;
   }
 }
 ```
 
-::: details View all generated CSS variables (with maz-ui preset)
-
-```css
-@layer maz-ui-theme {
-  :root {
-    --maz-background: 0 0% 100%;
-    --maz-foreground: 210 8% 14%;
-    --maz-primary: 210 100% 56%;
-    --maz-primary-foreground: 0 0% 100%;
-    --maz-secondary: 272 99% 54%;
-    --maz-secondary-foreground: 0 0% 100%;
-    --maz-accent: 164 76% 46%;
-    --maz-accent-foreground: 0 0% 100%;
-    --maz-destructive: 356.95 95.91% 57.73%;
-    --maz-destructive-foreground: 0 0% 100%;
-    --maz-success: 80 61% 50%;
-    --maz-success-foreground: 210 8% 14%;
-    --maz-warning: 40 97% 59%;
-    --maz-warning-foreground: 210 8% 14%;
-    --maz-info: 188 78% 41%;
-    --maz-info-foreground: 0 0% 100%;
-    --maz-contrast: 235 16% 15%;
-    --maz-contrast-foreground: 255 0% 95%;
-    --maz-muted: 0 0% 54%;
-    --maz-shadow: 240 5.9% 10%;
-    --maz-border: 220 13.04% 90.98%;
-    --maz-radius: 0.7rem;
-    --maz-font-family: Manrope, sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    --maz-base-font-size: 14px;
-    --maz-border-width: 0.0625rem;
-  }
-
-  .dark {
-    --maz-background: 235 16% 15%;
-    --maz-foreground: 0 0% 85%;
-    --maz-primary: 210 100% 56%;
-    --maz-primary-foreground: 0 0% 100%;
-    --maz-secondary: 272 99% 54%;
-    --maz-secondary-foreground: 0 0% 100%;
-    --maz-accent: 164 76% 46%;
-    --maz-accent-foreground: 0 0% 100%;
-    --maz-destructive: 1 100% 71%;
-    --maz-destructive-foreground: 0 0% 100%;
-    --maz-success: 80 61% 50%;
-    --maz-success-foreground: 210 8% 14%;
-    --maz-warning: 40 97% 59%;
-    --maz-warning-foreground: 210 8% 14%;
-    --maz-info: 188 78% 41%;
-    --maz-info-foreground: 0 0% 100%;
-    --maz-contrast: 0 0% 100%;
-    --maz-contrast-foreground: 210 8% 14%;
-    --maz-muted: 255 0% 54%;
-    --maz-shadow: 240 3.7% 15.9%;
-    --maz-border: 238 17% 25%;
-    --maz-radius: 0.7rem;
-    --maz-font-family: Manrope, sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    --maz-base-font-size: 14px;
-    --maz-border-width: 0.0625rem;
-  }
-}
-
-@layer maz-ui-theme {
-
-  :root {
-    --maz-overlay: 0 0% 40%;
-    --maz-primary-50: 210 77.5% 93.5%;
-    --maz-primary-100: 210 80% 86%;
-    --maz-primary-200: 210 85% 78.5%;
-    --maz-primary-300: 210 90% 71%;
-    --maz-primary-400: 210 95% 63.5%;
-    --maz-primary-500: 210 100% 56%;
-    --maz-primary-600: 210 100% 48.5%;
-    --maz-primary-700: 210 100% 41%;
-    --maz-primary-800: 210 100% 33.5%;
-    --maz-primary-900: 210 100% 26%;
-    --maz-primary-950: 210 100% 18.5%;
-    --maz-secondary-50: 272 76.9% 91.5%;
-    --maz-secondary-100: 272 79.4% 84%;
-    --maz-secondary-200: 272 84.3% 76.5%;
-    --maz-secondary-300: 272 89.2% 69%;
-    --maz-secondary-400: 272 94.1% 61.5%;
-    --maz-secondary-500: 272 99% 54%;
-    --maz-secondary-600: 272 100% 46.5%;
-    --maz-secondary-700: 272 100% 39%;
-    --maz-secondary-800: 272 100% 31.5%;
-    --maz-secondary-900: 272 100% 24%;
-    --maz-secondary-950: 272 100% 16.5%;
-    --maz-accent-50: 164 63% 83.5%;
-    --maz-accent-100: 164 64.4% 76%;
-    --maz-accent-200: 164 67.3% 68.5%;
-    --maz-accent-300: 164 70.2% 61%;
-    --maz-accent-400: 164 73.1% 53.5%;
-    --maz-accent-500: 164 76% 46%;
-    --maz-accent-600: 164 78.2% 38.5%;
-    --maz-accent-700: 164 80.3% 31%;
-    --maz-accent-800: 164 82.5% 23.5%;
-    --maz-accent-900: 164 84.7% 16%;
-    --maz-accent-950: 164 85.7% 8.5%;
-    --maz-destructive-50: 357 75.2% 95.2%;
-    --maz-destructive-100: 357 77.5% 87.7%;
-    --maz-destructive-200: 357 82.1% 80.2%;
-    --maz-destructive-300: 357 86.7% 72.7%;
-    --maz-destructive-400: 357 91.3% 65.2%;
-    --maz-destructive-500: 357 95.9% 57.7%;
-    --maz-destructive-600: 357 99.4% 50.2%;
-    --maz-destructive-700: 357 100% 42.7%;
-    --maz-destructive-800: 357 100% 35.2%;
-    --maz-destructive-900: 357 100% 27.7%;
-    --maz-destructive-950: 357 100% 20.2%;
-    --maz-success-50: 80 52.6% 87.5%;
-    --maz-success-100: 80 53.6% 80%;
-    --maz-success-200: 80 55.4% 72.5%;
-    --maz-success-300: 80 57.3% 65%;
-    --maz-success-400: 80 59.1% 57.5%;
-    --maz-success-500: 80 61% 50%;
-    --maz-success-600: 80 62.4% 42.5%;
-    --maz-success-700: 80 63.8% 35%;
-    --maz-success-800: 80 65.2% 27.5%;
-    --maz-success-900: 80 66.6% 20%;
-    --maz-success-950: 80 67.3% 12.5%;
-    --maz-warning-50: 40 75.8% 96.5%;
-    --maz-warning-100: 40 78.2% 89%;
-    --maz-warning-200: 40 82.9% 81.5%;
-    --maz-warning-300: 40 87.6% 74%;
-    --maz-warning-400: 40 92.3% 66.5%;
-    --maz-warning-500: 40 97% 59%;
-    --maz-warning-600: 40 100% 51.5%;
-    --maz-warning-700: 40 100% 44%;
-    --maz-warning-800: 40 100% 36.5%;
-    --maz-warning-900: 40 100% 29%;
-    --maz-warning-950: 40 100% 21.5%;
-    --maz-info-50: 188 64.3% 78.5%;
-    --maz-info-100: 188 65.8% 71%;
-    --maz-info-200: 188 68.9% 63.5%;
-    --maz-info-300: 188 71.9% 56%;
-    --maz-info-400: 188 75% 48.5%;
-    --maz-info-500: 188 78% 41%;
-    --maz-info-600: 188 80.3% 33.5%;
-    --maz-info-700: 188 82.6% 26%;
-    --maz-info-800: 188 84.8% 18.5%;
-    --maz-info-900: 188 87.1% 11%;
-    --maz-info-950: 188 88.3% 3.5%;
-    --maz-contrast-50: 235 15.4% 52.5%;
-    --maz-contrast-100: 235 15.5% 45%;
-    --maz-contrast-200: 235 15.6% 37.5%;
-    --maz-contrast-300: 235 15.7% 30%;
-    --maz-contrast-400: 235 15.9% 22.5%;
-    --maz-contrast-500: 235 16% 15%;
-    --maz-contrast-600: 235 16.1% 7.5%;
-    --maz-contrast-700: 235 16.2% 0%;
-    --maz-contrast-800: 235 16.3% 0%;
-    --maz-contrast-900: 235 16.4% 0%;
-    --maz-contrast-950: 235 16.4% 0%;
-    --maz-background-50: 0 5% 100%;
-    --maz-background-100: 0 5% 100%;
-    --maz-background-200: 0 5% 100%;
-    --maz-background-300: 0 5% 100%;
-    --maz-background-400: 0 5% 100%;
-    --maz-background-500: 0 0% 100%;
-    --maz-background-600: 0 5% 92.5%;
-    --maz-background-700: 0 5% 85%;
-    --maz-background-800: 0 5% 77.5%;
-    --maz-background-900: 0 5% 70%;
-    --maz-background-950: 0 5% 62.5%;
-    --maz-foreground-50: 210 7.9% 51.5%;
-    --maz-foreground-100: 210 7.9% 44%;
-    --maz-foreground-200: 210 7.9% 36.5%;
-    --maz-foreground-300: 210 7.9% 29%;
-    --maz-foreground-400: 210 8% 21.5%;
-    --maz-foreground-500: 210 8% 14%;
-    --maz-foreground-600: 210 8% 6.5%;
-    --maz-foreground-700: 210 8% 0%;
-    --maz-foreground-800: 210 8.1% 0%;
-    --maz-foreground-900: 210 8.1% 0%;
-    --maz-foreground-950: 210 8.1% 0%;
-    --maz-border-50: 220 12.7% 100%;
-    --maz-border-100: 220 12.7% 100%;
-    --maz-border-200: 220 12.8% 100%;
-    --maz-border-300: 220 12.9% 100%;
-    --maz-border-400: 220 13% 98.5%;
-    --maz-border-500: 220 13% 91%;
-    --maz-border-600: 220 13.1% 83.5%;
-    --maz-border-700: 220 13.2% 76%;
-    --maz-border-800: 220 13.2% 68.5%;
-    --maz-border-900: 220 13.3% 61%;
-    --maz-border-950: 220 13.3% 53.5%;
-    --maz-muted-50: 0 5% 91.5%;
-    --maz-muted-100: 0 5% 84%;
-    --maz-muted-200: 0 5% 76.5%;
-    --maz-muted-300: 0 5% 69%;
-    --maz-muted-400: 0 5% 61.5%;
-    --maz-muted-500: 0 0% 54%;
-    --maz-muted-600: 0 5% 46.5%;
-    --maz-muted-700: 0 5% 39%;
-    --maz-muted-800: 0 5% 31.5%;
-    --maz-muted-900: 0 5% 24%;
-    --maz-muted-950: 0 5% 16.5%;
-    --maz-overlay-50: 0 5% 77.5%;
-    --maz-overlay-100: 0 5% 70%;
-    --maz-overlay-200: 0 5% 62.5%;
-    --maz-overlay-300: 0 5% 55%;
-    --maz-overlay-400: 0 5% 47.5%;
-    --maz-overlay-500: 0 0% 40%;
-    --maz-overlay-600: 0 5% 32.5%;
-    --maz-overlay-700: 0 5% 25%;
-    --maz-overlay-800: 0 5% 17.5%;
-    --maz-overlay-900: 0 5% 10%;
-    --maz-overlay-950: 0 5% 2.5%;
-    --maz-shadow-50: 240 5.8% 47.5%;
-    --maz-shadow-100: 240 5.8% 40%;
-    --maz-shadow-200: 240 5.8% 32.5%;
-    --maz-shadow-300: 240 5.9% 25%;
-    --maz-shadow-400: 240 5.9% 17.5%;
-    --maz-shadow-500: 240 5.9% 10%;
-    --maz-shadow-600: 240 5.9% 2.5%;
-    --maz-shadow-700: 240 5.9% 0%;
-    --maz-shadow-800: 240 5.9% 0%;
-    --maz-shadow-900: 240 6% 0%;
-    --maz-shadow-950: 240 6% 0%;
-  }
-
-  .dark {
-    --maz-overlay: 0 0% 15%;
-    --maz-primary-50: 210 77.5% 93.5%;
-    --maz-primary-100: 210 80% 86%;
-    --maz-primary-200: 210 85% 78.5%;
-    --maz-primary-300: 210 90% 71%;
-    --maz-primary-400: 210 95% 63.5%;
-    --maz-primary-500: 210 100% 56%;
-    --maz-primary-600: 210 100% 48.5%;
-    --maz-primary-700: 210 100% 41%;
-    --maz-primary-800: 210 100% 33.5%;
-    --maz-primary-900: 210 100% 26%;
-    --maz-primary-950: 210 100% 18.5%;
-    --maz-secondary-50: 272 76.9% 91.5%;
-    --maz-secondary-100: 272 79.4% 84%;
-    --maz-secondary-200: 272 84.3% 76.5%;
-    --maz-secondary-300: 272 89.2% 69%;
-    --maz-secondary-400: 272 94.1% 61.5%;
-    --maz-secondary-500: 272 99% 54%;
-    --maz-secondary-600: 272 100% 46.5%;
-    --maz-secondary-700: 272 100% 39%;
-    --maz-secondary-800: 272 100% 31.5%;
-    --maz-secondary-900: 272 100% 24%;
-    --maz-secondary-950: 272 100% 16.5%;
-    --maz-accent-50: 164 63% 83.5%;
-    --maz-accent-100: 164 64.4% 76%;
-    --maz-accent-200: 164 67.3% 68.5%;
-    --maz-accent-300: 164 70.2% 61%;
-    --maz-accent-400: 164 73.1% 53.5%;
-    --maz-accent-500: 164 76% 46%;
-    --maz-accent-600: 164 78.2% 38.5%;
-    --maz-accent-700: 164 80.3% 31%;
-    --maz-accent-800: 164 82.5% 23.5%;
-    --maz-accent-900: 164 84.7% 16%;
-    --maz-accent-950: 164 85.7% 8.5%;
-    --maz-destructive-50: 1 77.5% 100%;
-    --maz-destructive-100: 1 80% 100%;
-    --maz-destructive-200: 1 85% 93.5%;
-    --maz-destructive-300: 1 90% 86%;
-    --maz-destructive-400: 1 95% 78.5%;
-    --maz-destructive-500: 1 100% 71%;
-    --maz-destructive-600: 1 100% 63.5%;
-    --maz-destructive-700: 1 100% 56%;
-    --maz-destructive-800: 1 100% 48.5%;
-    --maz-destructive-900: 1 100% 41%;
-    --maz-destructive-950: 1 100% 33.5%;
-    --maz-success-50: 80 52.6% 87.5%;
-    --maz-success-100: 80 53.6% 80%;
-    --maz-success-200: 80 55.4% 72.5%;
-    --maz-success-300: 80 57.3% 65%;
-    --maz-success-400: 80 59.1% 57.5%;
-    --maz-success-500: 80 61% 50%;
-    --maz-success-600: 80 62.4% 42.5%;
-    --maz-success-700: 80 63.8% 35%;
-    --maz-success-800: 80 65.2% 27.5%;
-    --maz-success-900: 80 66.6% 20%;
-    --maz-success-950: 80 67.3% 12.5%;
-    --maz-warning-50: 40 75.8% 96.5%;
-    --maz-warning-100: 40 78.2% 89%;
-    --maz-warning-200: 40 82.9% 81.5%;
-    --maz-warning-300: 40 87.6% 74%;
-    --maz-warning-400: 40 92.3% 66.5%;
-    --maz-warning-500: 40 97% 59%;
-    --maz-warning-600: 40 100% 51.5%;
-    --maz-warning-700: 40 100% 44%;
-    --maz-warning-800: 40 100% 36.5%;
-    --maz-warning-900: 40 100% 29%;
-    --maz-warning-950: 40 100% 21.5%;
-    --maz-info-50: 188 64.3% 78.5%;
-    --maz-info-100: 188 65.8% 71%;
-    --maz-info-200: 188 68.9% 63.5%;
-    --maz-info-300: 188 71.9% 56%;
-    --maz-info-400: 188 75% 48.5%;
-    --maz-info-500: 188 78% 41%;
-    --maz-info-600: 188 80.3% 33.5%;
-    --maz-info-700: 188 82.6% 26%;
-    --maz-info-800: 188 84.8% 18.5%;
-    --maz-info-900: 188 87.1% 11%;
-    --maz-info-950: 188 88.3% 3.5%;
-    --maz-contrast-50: 0 5% 100%;
-    --maz-contrast-100: 0 5% 100%;
-    --maz-contrast-200: 0 5% 100%;
-    --maz-contrast-300: 0 5% 100%;
-    --maz-contrast-400: 0 5% 100%;
-    --maz-contrast-500: 0 0% 100%;
-    --maz-contrast-600: 0 5% 92.5%;
-    --maz-contrast-700: 0 5% 85%;
-    --maz-contrast-800: 0 5% 77.5%;
-    --maz-contrast-900: 0 5% 70%;
-    --maz-contrast-950: 0 5% 62.5%;
-    --maz-background-50: 235 15.4% 52.5%;
-    --maz-background-100: 235 15.5% 45%;
-    --maz-background-200: 235 15.6% 37.5%;
-    --maz-background-300: 235 15.7% 30%;
-    --maz-background-400: 235 15.9% 22.5%;
-    --maz-background-500: 235 16% 15%;
-    --maz-background-600: 235 16.1% 7.5%;
-    --maz-background-700: 235 16.2% 0%;
-    --maz-background-800: 235 16.3% 0%;
-    --maz-background-900: 235 16.4% 0%;
-    --maz-background-950: 235 16.4% 0%;
-    --maz-foreground-50: 0 5% 100%;
-    --maz-foreground-100: 0 5% 100%;
-    --maz-foreground-200: 0 5% 100%;
-    --maz-foreground-300: 0 5% 100%;
-    --maz-foreground-400: 0 5% 92.5%;
-    --maz-foreground-500: 0 0% 85%;
-    --maz-foreground-600: 0 5% 77.5%;
-    --maz-foreground-700: 0 5% 70%;
-    --maz-foreground-800: 0 5% 62.5%;
-    --maz-foreground-900: 0 5% 55%;
-    --maz-foreground-950: 0 5% 47.5%;
-    --maz-border-50: 238 16.3% 62.5%;
-    --maz-border-100: 238 16.4% 55%;
-    --maz-border-200: 238 16.6% 47.5%;
-    --maz-border-300: 238 16.7% 40%;
-    --maz-border-400: 238 16.9% 32.5%;
-    --maz-border-500: 238 17% 25%;
-    --maz-border-600: 238 17.1% 17.5%;
-    --maz-border-700: 238 17.2% 10%;
-    --maz-border-800: 238 17.3% 2.5%;
-    --maz-border-900: 238 17.4% 0%;
-    --maz-border-950: 238 17.5% 0%;
-    --maz-muted-50: 255 5% 91.5%;
-    --maz-muted-100: 255 5% 84%;
-    --maz-muted-200: 255 5% 76.5%;
-    --maz-muted-300: 255 5% 69%;
-    --maz-muted-400: 255 5% 61.5%;
-    --maz-muted-500: 255 0% 54%;
-    --maz-muted-600: 255 5% 46.5%;
-    --maz-muted-700: 255 5% 39%;
-    --maz-muted-800: 255 5% 31.5%;
-    --maz-muted-900: 255 5% 24%;
-    --maz-muted-950: 255 5% 16.5%;
-    --maz-overlay-50: 0 5% 52.5%;
-    --maz-overlay-100: 0 5% 45%;
-    --maz-overlay-200: 0 5% 37.5%;
-    --maz-overlay-300: 0 5% 30%;
-    --maz-overlay-400: 0 5% 22.5%;
-    --maz-overlay-500: 0 0% 15%;
-    --maz-overlay-600: 0 5% 7.5%;
-    --maz-overlay-700: 0 5% 0%;
-    --maz-overlay-800: 0 5% 0%;
-    --maz-overlay-900: 0 5% 0%;
-    --maz-overlay-950: 0 5% 0%;
-    --maz-shadow-50: 240 5% 53.4%;
-    --maz-shadow-100: 240 5% 45.9%;
-    --maz-shadow-200: 240 5% 38.4%;
-    --maz-shadow-300: 240 5% 30.9%;
-    --maz-shadow-400: 240 5% 23.4%;
-    --maz-shadow-500: 240 3.7% 15.9%;
-    --maz-shadow-600: 240 5% 8.4%;
-    --maz-shadow-700: 240 5% 0.9%;
-    --maz-shadow-800: 240 5% 0%;
-    --maz-shadow-900: 240 5% 0%;
-    --maz-shadow-950: 240 5% 0%;
-  }
-}
-```
-
-:::
 
 ## Usage with Nuxt
 
@@ -1265,11 +1037,12 @@ function resetTheme() {
 </script>
 
 <style scoped>
+@reference "../../.vitepress/theme/main.css";
 .demo-theme-controls {
-  @apply maz-w-full;
+  @apply maz:w-full;
 }
 
 .theme-controls {
-  @apply maz-border-t maz-border-divider maz-pt-4;
+  @apply maz:border-t maz:border-divider maz:pt-4;
 }
 </style>

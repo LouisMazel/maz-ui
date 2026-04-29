@@ -2,17 +2,18 @@
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazColor, MazSize } from './types'
 import { MazEllipsisHorizontal } from '@maz-ui/icons/lazy/MazEllipsisHorizontal'
-import { MazChevronDoubleLeft } from '@maz-ui/icons/static/MazChevronDoubleLeft'
-import { MazChevronLeft } from '@maz-ui/icons/static/MazChevronLeft'
+import { MazChevronDoubleLeft } from '@maz-ui/icons/raw/MazChevronDoubleLeft'
+import { MazChevronLeft } from '@maz-ui/icons/raw/MazChevronLeft'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed } from 'vue'
 import MazBtn from './MazBtn.vue'
+import MazIcon from './MazIcon.vue'
 
 const {
   modelValue = 1,
   buttonProps,
   pageRange = 1,
-  activeColor = 'background',
+  activeColor = 'surface',
   totalPages,
   loading,
   size = 'md',
@@ -28,7 +29,7 @@ const emits = defineEmits<
 
 const DEFAULT_BUTTONS_PROPS: Partial<MazBtnProps> = {
   size: 'md',
-  color: 'background',
+  color: 'surface',
   outlined: true,
   fab: true,
 }
@@ -48,10 +49,10 @@ export interface MazPaginationProps {
   buttonProps?: Partial<MazBtnProps>
   /**
    * Color of the active button.
-   * @values 'contrast', 'primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent', 'background'
-   * @default 'contrast'
+   * @values 'contrast', 'primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent', 'surface'
+   * @default 'surface'
    */
-  activeColor?: MazColor | 'background'
+  activeColor?: MazColor | 'surface'
   /**
    * Size of the buttons.
    * @values 'mini', 'xs', 'sm', 'md', 'lg', 'xl'
@@ -149,8 +150,8 @@ function setPageNumber(page: number) {
 
 <template>
   <nav class="m-pagination m-reset-css" role="navigation" :aria-label="t('pagination.navAriaLabel')">
-    <ul>
-      <li>
+    <ul class="maz:m-0! maz:inline-flex maz:list-none! maz:items-center maz:gap-2 maz:-space-x-px maz:p-0! maz:align-top maz:text-base">
+      <li class="maz:m-0">
         <MazBtn
           v-bind="buttonsPropsMerged"
           :disabled="modelValue === 1"
@@ -158,7 +159,7 @@ function setPageNumber(page: number) {
           :size="size"
           @click="setPageNumber(1)"
         >
-          <span class="maz-sr-only">
+          <span class="maz:sr-only">
             <!--
               @slot Accessible text for screen reader of the previous page button
                 @binding {number} page - first page number
@@ -167,11 +168,11 @@ function setPageNumber(page: number) {
               {{ t('pagination.screenReader.firstPage', { page: 1 }) }}
             </slot>
           </span>
-          <MazChevronDoubleLeft />
+          <MazIcon :icon="MazChevronDoubleLeft" />
         </MazBtn>
       </li>
 
-      <li>
+      <li class="maz:m-0">
         <MazBtn
           v-bind="buttonsPropsMerged"
           :disabled="modelValue === 1"
@@ -179,7 +180,7 @@ function setPageNumber(page: number) {
           :size="size"
           @click="setPageNumber(previousPage)"
         >
-          <span class="maz-sr-only">
+          <span class="maz:sr-only">
             <!--
               @slot Accessible text for screen reader of the first page button
                 @binding {number} page - previous page number
@@ -188,7 +189,7 @@ function setPageNumber(page: number) {
               {{ t('pagination.screenReader.previousPage', { page: previousPage }) }}
             </slot>
           </span>
-          <MazChevronLeft />
+          <MazIcon :icon="MazChevronLeft" />
         </MazBtn>
       </li>
 
@@ -196,6 +197,7 @@ function setPageNumber(page: number) {
         v-for="(page, i) in pages"
         :id="'number' in page ? `button-${i}-${page.number}` : `ellipsis-${i}`"
         :key="'number' in page ? `button-${i}-${page.number}` : `ellipsis-${i}`"
+        class="maz:m-0"
       >
         <template v-if="'number' in page">
           <MazBtn
@@ -211,7 +213,7 @@ function setPageNumber(page: number) {
             :class="{ active: page.isActive }"
             @click="page.isActive ? undefined : setPageNumber(page.number)"
           >
-            <span class="maz-sr-only">
+            <span class="maz:sr-only">
               <!--
                 @slot Accessible text for screen reader of the current page button
                   @binding {number} page - current page number
@@ -231,7 +233,7 @@ function setPageNumber(page: number) {
         </template>
       </li>
 
-      <li>
+      <li class="maz:m-0">
         <MazBtn
           v-bind="buttonsPropsMerged"
           :disabled="modelValue === totalPages"
@@ -239,7 +241,7 @@ function setPageNumber(page: number) {
           :size="size"
           @click="setPageNumber(nextPage)"
         >
-          <span class="maz-sr-only">
+          <span class="maz:sr-only">
             <!--
               @slot Accessible text for screen reader of the next page button
                 @binding {number} page - next page number
@@ -248,11 +250,11 @@ function setPageNumber(page: number) {
               {{ t('pagination.screenReader.nextPage', { page: nextPage }) }}
             </slot>
           </span>
-          <MazChevronLeft class="-maz-rotate-180" />
+          <MazIcon :icon="MazChevronLeft" class="maz:-rotate-180" />
         </MazBtn>
       </li>
 
-      <li>
+      <li class="maz:m-0">
         <MazBtn
           v-bind="buttonsPropsMerged"
           :disabled="modelValue === totalPages"
@@ -260,7 +262,7 @@ function setPageNumber(page: number) {
           :size="size"
           @click="setPageNumber(totalPages)"
         >
-          <span class="maz-sr-only">
+          <span class="maz:sr-only">
             <!--
               @slot Accessible text for screen reader of the last page button
                 @binding {number} page - last page number
@@ -269,21 +271,9 @@ function setPageNumber(page: number) {
               {{ t('pagination.screenReader.lastPage', { page: totalPages }) }}
             </slot>
           </span>
-          <MazChevronDoubleLeft class="-maz-rotate-180" />
+          <MazIcon :icon="MazChevronDoubleLeft" class="maz:-rotate-180" />
         </MazBtn>
       </li>
     </ul>
   </nav>
 </template>
-
-<style scoped>
-.m-pagination {
-  ul {
-    @apply !maz-m-0 maz-inline-flex !maz-list-none maz-items-center maz-gap-2 -maz-space-x-px !maz-p-0 maz-align-top maz-text-base;
-
-    li {
-      @apply maz-m-0;
-    }
-  }
-}
-</style>

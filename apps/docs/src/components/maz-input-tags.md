@@ -43,7 +43,7 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
 ## Sizing
 
-<div class="maz-flex maz-flex-col maz-gap-2">
+<div class="maz:flex maz:flex-col maz:gap-2">
   <MazInputTags
     v-for="size in sizes"
     :key="size"
@@ -65,7 +65,7 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 </script>
 
 <template>
-  <div class="maz-flex maz-flex-col maz-gap-2">
+  <div class="maz:flex maz:flex-col maz:gap-2">
     <MazInputTags
       v-for="size in sizes"
       :key="size"

@@ -17,6 +17,7 @@ head:
 - 🛠️ **TypeScript-first** - Full type safety out of the box
 - 🚀 **Performance** - Tree-shaking benefits and maximum optimization
 - 🎨 **Theming system** - Customizable themes and dark mode support (4 presets available) - [@maz-ui/themes](./themes.md)
+- 💨 **Optional Tailwind bridge** - Already have a Tailwind v4 setup? Expose your active maz-ui theme tokens (colors, radius, breakpoints, custom utilities) to your own Tailwind config - [Tailwind integration](./tailwind.md)
 - 🌐 **Internationalization** - Locale management and tree-shakable imports - [@maz-ui/translations](./translations.md)
 - 🎨 **Icon library** - Comprehensive collection of SVG icons designed for performance and flexibility (400+ icons) - [@maz-ui/icons](./icons.md)
 - 🧰 **Nuxt module** - Effortless Maz-UI integration with auto-imports - [@maz-ui/nuxt](./nuxt.md)
@@ -28,10 +29,10 @@ head:
 
 Start by choosing your framework:
 
-<div class="maz-flex maz-gap-4 maz-w-full maz-flex-col tab-m:maz-flex-row vp-raw">
+<div class="maz:flex maz:gap-4 maz:w-full maz:flex-col maz:tab-m:flex-row vp-raw">
   <MazCard
     href="/guide/vue"
-    class="maz-flex-1"
+    class="maz:flex-1"
     :gallery="{
       images: ['https://positivethinking.tech/wp-content/uploads/2021/01/Logo-Vuejs.png'],
       height: 200,
@@ -51,7 +52,7 @@ Start by choosing your framework:
   </MazCard>
   <MazCard
     href="/guide/nuxt"
-    class="maz-flex-1"
+    class="maz:flex-1"
     content-title="Nuxt Users Guide"
     :gallery="{
       images: ['https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8mpeku6brwkfmrsumu3h.png'],
@@ -162,7 +163,7 @@ Maz-UI v4 is built with tree-shaking in mind. Import only what you need for opti
  */
 
 // ❌ Avoid importing everything
-import { formatCurrency, debounce } from 'maz-ui'
+import { formatCurrency, debounce } from '@maz-ui/utils'
 // ✅ Import from @maz-ui/utils
 import { formatCurrency, debounce } from '@maz-ui/utils'
 
@@ -242,8 +243,9 @@ Browse [GitHub discussions](https://github.com/LouisMazel/maz-ui/discussions) or
 </div>
 
 <style scoped>
+@reference "../../.vitepress/theme/main.css";
 .hero-section {
-  @apply maz-rounded maz-p-8 maz-my-12 maz-from-primary-400 maz-to-secondary-700 maz-bg-gradient-to-br;
+  @apply maz:rounded-md maz:p-8 maz:my-12 maz:from-primary-400 maz:to-secondary-700 maz:bg-linear-to-br;
 }
 
 .features-grid {

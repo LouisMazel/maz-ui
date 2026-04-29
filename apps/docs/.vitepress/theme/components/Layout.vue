@@ -7,7 +7,7 @@ import DefaultTheme from 'vitepress/theme'
     <DefaultTheme.Layout>
       <!-- <template #layout-top>
         <div class="banner">
-          <span class="maz-text-white">
+          <span class="maz:text-white">
             You are currently browsing the v4 documentation -
           </span>
           <MazLink href="https://v3.maz-ui.com" color="inherit" underline class="dark">
@@ -20,7 +20,8 @@ import DefaultTheme from 'vitepress/theme'
 </template>
 
 <style scoped>
+@reference "../main.css";
 /* .banner {
-  @apply maz-bg-primary-600/90 maz-fixed maz-inset-x-0 maz-top-0 maz-flex maz-flex-wrap maz-flex-center maz-justify-center maz-gap-2 maz-p-2 maz-z-default-backdrop maz-text-white maz-text-center maz-backdrop-blur-lg maz-text-sm;
+  @apply maz:bg-primary-600/90 maz:fixed maz:inset-x-0 maz:top-0 maz:flex maz:flex-wrap maz:flex-center maz:justify-center maz:gap-2 maz:p-2 maz:z-default-backdrop maz:text-white maz:text-center maz:backdrop-blur-lg maz:text-sm;
 } */
 </style>

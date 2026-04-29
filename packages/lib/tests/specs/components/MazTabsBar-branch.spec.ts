@@ -1,5 +1,5 @@
 import MazTabsBar from '@components/MazTabsBar.vue'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
 
@@ -23,7 +23,7 @@ function mountTabsBar(props: Record<string, unknown> = {}, provide?: ReturnType<
     },
     global: {
       provide: {
-        'maz-tabs': tabsProvide,
+        'maz:tabs': tabsProvide,
       },
     },
   })
@@ -269,14 +269,14 @@ describe('MazTabsBar branch coverage', () => {
       const wrapper = mountTabsBar({}, createTabsProvide(1))
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
-      expect(tabButtons[0].attributes('style')).toContain('color: hsl(var(--maz-foreground))')
+      expect(tabButtons[0].attributes('style')).toContain('color: var(--maz-foreground)')
     })
 
     it('returns muted color for inactive tab', () => {
       const wrapper = mountTabsBar({}, createTabsProvide(1))
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
-      expect(tabButtons[1].attributes('style')).toContain('color: hsl(var(--maz-muted))')
+      expect(tabButtons[1].attributes('style')).toContain('color: var(--maz-muted)')
     })
 
     it('returns empty style for disabled tab', () => {
@@ -287,8 +287,8 @@ describe('MazTabsBar branch coverage', () => {
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
       // Disabled tab should not have color style set
       const disabledStyle = tabButtons[1].attributes('style') || ''
-      expect(disabledStyle).not.toContain('color: hsl(var(--maz-foreground))')
-      expect(disabledStyle).not.toContain('color: hsl(var(--maz-muted))')
+      expect(disabledStyle).not.toContain('color: var(--maz-foreground)')
+      expect(disabledStyle).not.toContain('color: var(--maz-muted)')
     })
   })
 
@@ -433,7 +433,7 @@ describe('MazTabsBar branch coverage', () => {
         },
         global: {
           provide: {
-            'maz-tabs': createTabsProvide(1),
+            'maz:tabs': createTabsProvide(1),
           },
         },
         slots: {
@@ -453,7 +453,7 @@ describe('MazTabsBar branch coverage', () => {
   })
 
   describe('badge rendering', () => {
-    it('renders badge when item has badge property', () => {
+    it('renders badge when item has badge property', async () => {
       const wrapper = mountTabsBar({
         items: [
           { label: 'Tab 1', badge: { content: 5 } },
@@ -461,8 +461,14 @@ describe('MazTabsBar branch coverage', () => {
         ],
       })
 
-      // The badge component is async, but the item should still render
+      // MazBadge is a defineAsyncComponent — wait for its module to resolve
+      // so the default slot (showing badge.content) actually renders.
+      await vi.dynamicImportSettled()
+      await flushPromises()
+      await nextTick()
+
       expect(wrapper.findAll('.m-tabs-bar__item').length).toBe(2)
+      expect(wrapper.html()).toContain('5')
     })
 
     it('does not render badge for items without badge', () => {

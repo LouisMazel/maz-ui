@@ -137,14 +137,14 @@ watch(
 </script>
 
 <template>
-  <div class="m-date-picker-header" :class="[`--${color}`]">
+  <div class="m-date-picker-header maz:z-1 maz:flex maz:justify-between maz:space-y-1 maz:p-2 maz:font-normal" :class="[`--${color}`]">
     <div v-if="hasDate" class="m-date-picker-header__date">
-      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__year-transition">
-        <span v-for="(y, yi) in yearArray" :key="`${y}-${yi}`" class="m-date-picker-header__year-text">
+      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__year-transition maz:flex maz:h-5 maz:items-center maz:overflow-hidden maz:leading-3">
+        <span v-for="(y, yi) in yearArray" :key="`${y}-${yi}`" class="m-date-picker-header__year-text maz:text-sm">
           {{ y }}
         </span>
       </TransitionGroup>
-      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__date-transition">
+      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__date-transition maz:flex maz:h-6 maz:items-center maz:overflow-hidden maz:leading-4">
         <span
           v-for="(d, di) in dateStringArray"
           :key="`${d}-${di}`"
@@ -154,8 +154,8 @@ watch(
         </span>
       </TransitionGroup>
     </div>
-    <div v-if="timeArray" class="m-date-picker-header__time" :class="{ '--has-date': hasDate }">
-      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__time-transition">
+    <div v-if="timeArray" class="m-date-picker-header__time maz:flex maz:items-end maz:justify-center" :class="{ '--has-date': hasDate, 'maz:w-full': !hasDate }">
+      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__time-transition maz:flex maz:h-6 maz:items-center maz:overflow-hidden maz:leading-4 maz:justify-end">
         <span v-for="(t, ti) in timeArray" :key="`${t}-${ti}`" class="m-date-picker-header__time-text">
           {{ t }}
         </span>
@@ -165,74 +165,51 @@ watch(
 </template>
 
 <style scoped>
-  .m-date-picker-header {
-  @apply maz-z-1 maz-flex maz-justify-between maz-space-y-1 maz-p-2 maz-font-normal;
+@reference "../../tailwindcss/tailwind.css";
 
-  &__year-transition {
-    @apply maz-flex maz-h-5 maz-items-center maz-overflow-hidden maz-leading-3;
-  }
-
-  &__date-transition,
+.m-date-picker-header {
   &__time-transition {
-    @apply maz-flex maz-h-6 maz-items-center maz-overflow-hidden maz-leading-4;
+    min-inline-size: 5rem;
   }
 
-  &__time-transition {
-    @apply maz-flex maz-justify-end;
-
-    min-width: 5rem;
-  }
-
-  &__year-text {
-    @apply maz-text-sm;
-  }
-
-  &__time {
-    @apply maz-flex maz-items-end maz-justify-center;
-
-    &:not(.--has-date) {
-      @apply maz-w-full;
-
-      & .m-date-picker-header__time-transition {
-        @apply maz-w-full maz-flex-center;
-      }
-    }
+  &__time:not(.--has-date) .m-date-picker-header__time-transition {
+    @apply maz:w-full maz:flex-center;
   }
 
   &.--primary {
-    @apply maz-bg-primary maz-text-primary-foreground;
+    @apply maz:bg-primary maz:text-primary-foreground;
   }
 
   &.--secondary {
-    @apply maz-bg-secondary maz-text-secondary-foreground;
+    @apply maz:bg-secondary maz:text-secondary-foreground;
   }
 
   &.--info {
-    @apply maz-bg-info maz-text-info-foreground;
+    @apply maz:bg-info maz:text-info-foreground;
   }
 
   &.--success {
-    @apply maz-bg-success maz-text-success-foreground;
+    @apply maz:bg-success maz:text-success-foreground;
   }
 
   &.--warning {
-    @apply maz-bg-warning maz-text-warning-foreground;
+    @apply maz:bg-warning maz:text-warning-foreground;
   }
 
   &.--destructive {
-    @apply maz-bg-destructive maz-text-destructive-foreground;
+    @apply maz:bg-destructive maz:text-destructive-foreground;
   }
 
   &.--accent {
-    @apply maz-bg-accent maz-text-accent-foreground;
+    @apply maz:bg-accent maz:text-accent-foreground;
   }
 
   &.--contrast {
-    @apply maz-bg-contrast-500 dark:maz-bg-contrast-400 maz-text-foreground dark:maz-text-foreground;
+    @apply maz:bg-contrast-500 maz:dark:bg-contrast-400 maz:text-foreground maz:dark:text-foreground;
   }
 
   &.--transparent {
-    @apply maz-border-b maz-border-divider maz-text-foreground;
+    @apply maz:border-b maz:border-divider maz:text-foreground;
   }
 }
 </style>

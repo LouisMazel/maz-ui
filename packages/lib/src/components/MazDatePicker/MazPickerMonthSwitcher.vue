@@ -2,14 +2,15 @@
 import type { Dayjs } from 'dayjs'
 import type { PropType } from 'vue'
 import type { MazColor } from '../types'
-import { MazXMark } from '@maz-ui/icons/static/MazXMark'
+import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 import dayjs from 'dayjs'
-
 import { computed } from 'vue'
 
 import MazBtn from '../MazBtn.vue'
+
+import MazIcon from '../MazIcon.vue'
 import { isSameDate } from './utils'
 
 const props = defineProps({
@@ -61,13 +62,13 @@ function selectMonth(date: Dayjs) {
 </script>
 
 <template>
-  <div class="maz-picker-month-switcher">
-    <div class="maz-picker-month-switcher__header">
+  <div class="maz-picker-month-switcher maz:absolute maz:inset-0 maz:z-1 maz:flex maz:flex-col maz:bg-container">
+    <div class="maz-picker-month-switcher__header maz:flex maz:justify-end maz:border-b maz:border-divider maz:p-2">
       <MazBtn size="xs" color="transparent" type="button" @click.stop="$emit('close', $event)">
-        <MazXMark class="maz-text-lg" />
+        <MazIcon :icon="MazXMark" class="maz:text-lg" />
       </MazBtn>
     </div>
-    <div class="maz-picker-month-switcher__main" :class="{ '--has-double': double }">
+    <div class="maz-picker-month-switcher__main maz:grid maz:flex-1 maz:gap-1 maz:overflow-y-auto maz:p-2 maz:flex-center" :class="[double ? '--has-double' : '', double ? 'maz:grid-cols-3' : 'maz:grid-cols-2']">
       <MazBtn
         v-for="month in months"
         :key="month.label"
@@ -86,23 +87,9 @@ function selectMonth(date: Dayjs) {
 </template>
 
 <style scoped>
-  .maz-picker-month-switcher {
-  @apply maz-absolute maz-inset-0 maz-z-1 maz-flex maz-flex-col maz-bg-surface;
+@reference "../../tailwindcss/tailwind.css";
 
-  &__header {
-    @apply maz-flex maz-justify-end maz-border-b maz-border-divider maz-p-2;
-  }
-
-  &__main {
-    @apply maz-grid maz-flex-1 maz-grid-cols-2 maz-gap-1 maz-overflow-y-auto maz-p-2 maz-flex-center;
-
-    &.--has-double {
-      @apply maz-grid-cols-3;
-    }
-
-    & > button {
-      @apply maz-h-full !important;
-    }
-  }
+.maz-picker-month-switcher__main > button {
+  @apply maz:h-full!;
 }
 </style>

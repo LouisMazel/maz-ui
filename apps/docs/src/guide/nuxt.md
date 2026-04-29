@@ -20,7 +20,7 @@ Check out the documentation of [@maz-ui/mcp](./mcp.md)
 - **Zero Configuration** - Works out of the box with sensible defaults
 - **Advanced Theming** - Built-in dark mode, custom themes, and CSS variables
 - **Auto-Import Everything** - Components, composables, and directives automatically available
-- **Performance Optimized** - Tree-shaking, lazy loading, and hybrid CSS strategies
+- **Performance Optimized** - Tree-shaking, lazy loading, and SSR-friendly CSS injection
 - **Developer Experience** - TypeScript support, DevTools integration, and IntelliSense
 - **Production Ready** - SSR/SSG support with client-side hydration
 
@@ -75,7 +75,7 @@ const { toggleDarkMode, isDark } = useTheme()
 </script>
 
 <template>
-  <div class="maz-bg-background p-8 maz-text-foreground">
+  <div class="maz:bg-surface p-8 maz:text-foreground">
     <!-- Components are auto-imported -->
     <MazBtn color="primary" @click="start">
       Start timer ({{ remainingTime }}ms)
@@ -119,13 +119,13 @@ export default defineNuxtConfig({
 
     // CSS & Styling
     css: {
-      injectMainCss: true, // Auto-inject Maz-UI styles
+      injectCss: true, // Auto-inject Maz-UI styles
     },
 
     // Theming System
     theme: {
-      preset: 'maz-ui', // 'maz-ui' | 'dark' | 'ocean' | custom object
-      strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
+      preset: 'maz-ui', // 'maz-ui' | 'pristine' | 'ocean' | 'obsidian' | 'nova' | custom object
+      strategy: 'runtime', // 'runtime' | 'buildtime'
       darkModeStrategy: 'class', // 'class' | 'media' | 'auto'
       overrides: {
         colors: {
@@ -190,7 +190,7 @@ const general = {
   // Add prefix to all auto-imported composables
   autoImportPrefix: 'Maz', // only for composables, generates useMazToast, useMazTheme, etc.
 
-  // Default icon path for <MazIcon name="..." />
+  // Default icon path for <MazIcon icon="..." />
   defaultMazIconPath: '/icons',
 
   // Enable Nuxt DevTools integration
@@ -203,7 +203,7 @@ const general = {
 ```ts
 const css = {
   // Auto-inject Maz-UI base styles
-  injectMainCss: true,
+  injectCss: true,
 }
 ```
 
@@ -222,13 +222,13 @@ const theme = {
       light: {
         primary: '220 100% 50%',
         secondary: '220 14% 96%',
-        background: '0 0% 100%',
+        surface: '0 0% 100%',
         foreground: '222 84% 5%',
       },
       dark: {
         primary: '220 100% 70%',
         secondary: '220 14% 4%',
-        background: '222 84% 5%',
+        surface: '222 84% 5%',
         foreground: '210 40% 98%',
       }
     },
@@ -242,46 +242,32 @@ const theme = {
   colorMode: 'auto', // 'light' | 'dark' | 'auto'
 
   // CSS generation strategy
-  strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid' (recommended)
+  strategy: 'runtime', // 'runtime' (recommended) | 'buildtime'
 
   // Dark mode handling
   darkModeStrategy: 'class', // 'class' | 'media' | 'auto'
+
+  // Persist the active preset name in the `maz-preset` cookie so the
+  // user's last-used theme is restored on reload. Default: true.
+  persistPreset: true,
 }
 ```
 
 ## Theme Strategies Explained
 
-### Hybrid (Recommended)
+### Runtime (Recommended)
 
-The hybrid strategy combines optimal performance with zero FOUC (Flash of Unstyled Content):
+The full theme CSS is generated and injected synchronously on first paint:
 
-- **Critical CSS injected immediately** - Essential theme variables are inlined on server side to prevent visual flash (on client side if SSR is not enabled)
-- **Full CSS loaded asynchronously** - Complete theme CSS is injected on client side using `requestIdleCallback` with 100ms timeout, avoiding main thread blocking
-- **SSR-optimized** - When SSR is enabled, critical CSS is inlined during server rendering for instant theming
-
-```ts
-export default defineNuxtConfig({
-  mazUi: {
-    theme: {
-      strategy: 'hybrid' // Recommended for most use cases
-    }
-  }
-})
-```
-
-### Runtime
-
-Immediate CSS injection strategy:
-
-- **Critical CSS on server side** - Essential theme variables are injected during SSR
-- **Full CSS on client side** - Complete theme CSS is injected immediately on client-side hydration
-- **⚠️ Performance impact** - Immediate injection can block the main thread during hydration
+- **No FOUC** - The full stylesheet is rendered in the document head before the first paint
+- **SSR-friendly** - On Nuxt SSR, the CSS is inlined via `useHead` during server rendering and re-used on the client
+- **Dynamic** - `useTheme().updateTheme(...)` re-injects the new CSS on the fly
 
 ```ts
 export default defineNuxtConfig({
   mazUi: {
     theme: {
-      strategy: 'runtime' // Use when you need immediate full styling
+      strategy: 'runtime' // Recommended for most use cases
     }
   }
 })
@@ -305,12 +291,6 @@ export default defineNuxtConfig({
   }
 })
 ```
-
-::: info SSR Behavior
-The behavior of `hybrid` and `runtime` strategies depends on your Nuxt SSR configuration:
-- **With SSR**: Critical CSS is injected during server rendering, full CSS handled on client
-- **SPA mode**: All CSS injection happens on client-side as described in the [themes documentation](/guide/themes#rendering-strategies)
-:::
 
 ### Components
 
@@ -403,14 +383,17 @@ export const customTheme = definePreset({
   foundation: {
     'base-font-size': '14px',
     'font-family': `Manrope, sans-serif, system-ui, -apple-system`,
-    'radius': '0.7rem',
+    'space': '0.25rem',
     'border-width': '0.0625rem',
+  },
+  scales: {
+    rounded: { md: '0.7rem' },
   },
   colors: {
     light: {
       primary: '350 100% 50%', // Custom pink
       secondary: '350 14% 96%',
-      background: '0 0% 100%',
+      surface: '0 0% 100%',
       foreground: '222 84% 5%',
       muted: '210 40% 96%',
       accent: '210 40% 90%',
@@ -422,7 +405,7 @@ export const customTheme = definePreset({
     dark: {
       primary: '350 100% 70%',
       secondary: '350 14% 4%',
-      background: '222 84% 5%',
+      surface: '222 84% 5%',
       foreground: '210 40% 98%',
       muted: '217 33% 17%',
       accent: '217 33% 17%',
@@ -439,7 +422,7 @@ export default defineNuxtConfig({
   mazUi: {
     theme: {
       preset: customTheme,
-      strategy: 'hybrid',
+      strategy: 'runtime',
     }
   }
 })

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { GenericInstanceType } from '@maz-ui/utils/ts-helpers/GenericInstanceType'
 import type { MazDatePickerPartialRangeValue, MazInput, MazRadioButtons, MazTextarea } from 'maz-ui/components'
-// import { useFormField, useFormValidator } from 'maz-ui/src/composables/index.js'
+// import { useFormField, useFormValidator } from 'maz-ui/composables.js'
 import { array, boolean, literal, maxValue, minLength, minValue, nonEmpty, number as numberAction, object, pipe, string } from 'valibot'
 
 const schema = ref({
@@ -86,10 +86,10 @@ const onSubmit = handleSubmit((formData) => {
 
 <template>
   <form
-    class="maz-flex maz-flex-col maz-gap-4"
+    class="maz:flex maz:flex-col maz:gap-4"
     @submit="onSubmit"
   >
-    model: <pre class="maz-text-xs">{{ model }}</pre>
+    model: <pre class="maz:text-xs">{{ model }}</pre>
 
     <MazInput
       id="name"

@@ -43,7 +43,7 @@ import { MazUi } from 'maz-ui/plugins/maz-ui'
 import { mazUi } from '@maz-ui/themes'
 import { en } from '@maz-ui/translations/locales'
 
-import 'maz-ui/styles'
+import 'maz-ui/style.css'
 
 app.use(MazUi, {
   theme: {
@@ -74,7 +74,7 @@ import { fr } from '@maz-ui/translations/locales'
 // or import fr from '@maz-ui/translations/locales/fr'
 
 // Import Maz-UI styles before your own CSS
-import 'maz-ui/styles'
+import 'maz-ui/style.css'
 import './style.css'
 
 app.use(MazUi, {
@@ -84,15 +84,18 @@ app.use(MazUi, {
    * @see https://maz-ui.com/guide/themes
    */
   theme: {
-    preset: mazUi, // 'ocean' | 'pristine' | 'obsidian'
+    preset: mazUi, // 'ocean' | 'pristine' | 'obsidian' | 'nova'
     overrides: {
       foundation: {
-        'radius': '0.7rem',
+        'space': '0.25rem',
         'border-width': '0.0625rem',
+      },
+      scales: {
+        rounded: { md: '0.7rem' },
       },
       colors: {
         light: {
-          primary: '220 100% 50%',
+          primary: 'oklch(0.65 0.19 254)',
         }
       }
     }

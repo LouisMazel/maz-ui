@@ -39,7 +39,7 @@ const {
   closeOnEscape = true,
   persistent = false,
   panelStyle,
-  color = 'background',
+  color = 'surface',
   overlayClass,
   panelClass,
   preferPosition,
@@ -216,10 +216,10 @@ export interface MazPopoverProps {
   ariaDescribedby?: string
   /**
    * Color variant of the popover
-   * @values primary, secondary, accent, info, success, warning, destructive, contrast, background
-   * @default background
+   * @values primary, secondary, accent, info, success, warning, destructive, contrast, surface
+   * @default surface
    */
-  color?: MazColor | 'background'
+  color?: MazColor | 'surface'
   /**
    * Trap focus inside the popover
    * @default true
@@ -294,6 +294,10 @@ const transitionName = computed(() => {
 
   return transition
 })
+
+function onTransitionAfterLeave() {
+  emits('after-close-animation')
+}
 const positionRef = computed(() => {
   if (!positionReference) {
     return triggerRef.value
@@ -591,7 +595,7 @@ function handleTrapFocus(event: KeyboardEvent) {
     return
 
   const firstElement = focusableElements[0] as HTMLElement
-  // eslint-disable-next-line e18e/prefer-array-at
+
   const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
 
   if (event.shiftKey) {
@@ -690,19 +694,22 @@ defineExpose({
    * @usage `mazPopoverInstance.value?.panelRef`
    */
   panelRef,
+  onTransitionAfterLeave,
 })
 </script>
 
 <template>
   <div
     v-if="hasSlotContent($slots.trigger)"
-    class="m-popover m-reset-css"
+    class="m-popover m-reset-css maz:inline-block"
     :class="[
       attrs.class,
       {
         '--open': isOpen,
         '--disabled': disabled,
         '--block': block,
+        'maz:disabled-cursor': disabled,
+        'maz:w-full': block,
       },
     ]"
     :style="rootStyles"
@@ -711,7 +718,7 @@ defineExpose({
       :id="triggerId"
       ref="trigger"
       role="button"
-      class="m-popover-trigger"
+      class="m-popover-trigger maz:inline-block maz:size-full"
       :aria-expanded="role === 'dialog' || role === 'menu' ? isOpen : undefined"
       :aria-haspopup="role === 'dialog' ? 'dialog' : undefined"
       :aria-describedby="role === 'tooltip' && isOpen ? panelId : ariaDescribedby"
@@ -732,7 +739,7 @@ defineExpose({
   </div>
 
   <Teleport :to="teleportTo">
-    <Transition :name="transitionName" appear @after-leave="emits('after-close-animation')">
+    <Transition :name="transitionName" appear @after-leave="onTransitionAfterLeave">
       <div
         v-if="isOpen"
         :id="panelId"
@@ -744,7 +751,7 @@ defineExpose({
         :aria-describedby="role === 'dialog' ? ariaDescribedby : undefined"
         :aria-modal="role === 'dialog' ? 'true' : undefined"
         :tabindex="role === 'dialog' ? '-1' : undefined"
-        class="m-popover-panel"
+        class="m-popover-panel maz:fixed maz:outline-hidden maz:z-default-backdrop maz:rounded-md maz:drop-shadow-md maz:shadow-elevation"
         :aria-live="announceChanges ? 'polite' : undefined"
         :class="panelClasses"
         :style="[
@@ -773,69 +780,49 @@ defineExpose({
 </template>
 
 <style scoped>
-.m-popover {
-  @apply maz-inline-block;
-
-  &.--disabled {
-    @apply maz-cursor-not-allowed;
-  }
-
-  .m-popover-trigger {
-    @apply maz-inline-block maz-size-full;
-  }
-
-  &.--block {
-    @apply maz-w-full;
-  }
-}
+@reference "../tailwindcss/tailwind.css";
 
 .m-popover-panel {
-  @apply maz-fixed maz-outline-none maz-z-default-backdrop maz-rounded maz-drop-shadow-md maz-shadow-elevation;
-
   will-change: transform, opacity;
   contain: layout style paint;
   backface-visibility: hidden;
 
   /* Background color */
   &.--surface {
-    @apply dark:maz-border dark:maz-border-divider maz-bg-surface;
+    @apply maz:dark:border maz:dark:border-divider maz:bg-container;
   }
 
   /* Color variants */
   &.--primary {
-    @apply maz-border-primary-600 maz-bg-primary maz-text-primary-foreground;
+    @apply maz:border-primary-600 maz:bg-primary maz:text-primary-foreground;
   }
 
   &.--secondary {
-    @apply maz-border-secondary-600 maz-bg-secondary maz-text-secondary-foreground;
+    @apply maz:border-secondary-600 maz:bg-secondary maz:text-secondary-foreground;
   }
 
   &.--success {
-    @apply maz-border-success-600 maz-bg-success maz-text-success-foreground;
+    @apply maz:border-success-600 maz:bg-success maz:text-success-foreground;
   }
 
   &.--warning {
-    @apply maz-border-warning-600 maz-bg-warning maz-text-warning-foreground;
+    @apply maz:border-warning-600 maz:bg-warning maz:text-warning-foreground;
   }
 
   &.--destructive {
-    @apply maz-border-destructive-600 maz-bg-destructive maz-text-destructive-foreground;
+    @apply maz:border-destructive-600 maz:bg-destructive maz:text-destructive-foreground;
   }
 
   &.--info {
-    @apply maz-border-info-600 maz-bg-info maz-text-info-foreground;
+    @apply maz:border-info-600 maz:bg-info maz:text-info-foreground;
   }
 
   &.--accent {
-    @apply maz-border-accent-600 maz-bg-accent maz-text-accent-foreground;
+    @apply maz:border-accent-600 maz:bg-accent maz:text-accent-foreground;
   }
 
   &.--contrast {
-    @apply maz-border-contrast-600 maz-bg-contrast maz-text-contrast-foreground;
-  }
-
-  &.--background {
-    @apply maz-bg-surface maz-text-foreground;
+    @apply maz:border-contrast-600 maz:bg-contrast maz:text-contrast-foreground;
   }
 }
 
@@ -865,7 +852,7 @@ defineExpose({
 .m-popover-panel.--position-bottom-end {
   &.maz-scale-fade-enter-from,
   &.maz-scale-fade-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scaleY(0.5);
     transform-origin: top center;
@@ -873,7 +860,7 @@ defineExpose({
 
   &.maz-scale-pop-enter-from,
   &.maz-scale-pop-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.2) translateY(-4px);
     transform-origin: top center;
@@ -886,7 +873,7 @@ defineExpose({
 .m-popover-panel.--position-top-end {
   &.maz-scale-fade-enter-from,
   &.maz-scale-fade-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scaleY(0.5);
     transform-origin: bottom center;
@@ -894,7 +881,7 @@ defineExpose({
 
   &.maz-scale-pop-enter-from,
   &.maz-scale-pop-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.2) translateY(4px);
     transform-origin: bottom center;
@@ -907,7 +894,7 @@ defineExpose({
 .m-popover-panel.--position-right-end {
   &.maz-scale-fade-enter-from,
   &.maz-scale-fade-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scaleX(0.5);
     transform-origin: left center;
@@ -915,7 +902,7 @@ defineExpose({
 
   &.maz-scale-pop-enter-from,
   &.maz-scale-pop-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.2) translateX(-4px);
     transform-origin: left center;
@@ -928,7 +915,7 @@ defineExpose({
 .m-popover-panel.--position-left-end {
   &.maz-scale-fade-enter-from,
   &.maz-scale-fade-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scaleX(0.5);
     transform-origin: right center;
@@ -936,7 +923,7 @@ defineExpose({
 
   &.maz-scale-pop-enter-from,
   &.maz-scale-pop-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.2) translateX(4px);
     transform-origin: right center;
@@ -947,7 +934,7 @@ defineExpose({
 .m-popover-panel:not([class*='--position-']) {
   &.maz-scale-pop-enter-from,
   &.maz-scale-pop-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.2);
     transform-origin: center;
@@ -955,7 +942,7 @@ defineExpose({
 
   &.maz-scale-fade-enter-from,
   &.maz-scale-fade-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.5) translateY(-4px);
     transform-origin: center;

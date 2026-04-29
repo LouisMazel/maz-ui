@@ -9,7 +9,7 @@ description: MazSwitch is a standalone component that replaces the standard html
 
 <!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
-<div class="maz-flex maz-flex-col maz-gap-3">
+<div class="maz:flex maz:flex-col maz:gap-3">
   <MazSwitch
     v-for="color in colors"
     v-model="switchValue"

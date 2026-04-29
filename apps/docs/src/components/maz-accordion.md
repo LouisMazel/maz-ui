@@ -11,7 +11,7 @@ description: MazAccordion is a standalone component that allows you to create an
 
 ## Basic usage
 
-<MazAccordion class="maz-w-full">
+<MazAccordion class="maz:w-full">
   <template #title-1>
     Title 1
   </template>

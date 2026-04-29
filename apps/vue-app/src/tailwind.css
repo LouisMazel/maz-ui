@@ -1,0 +1,25 @@
+/*
+ * Vue-app Tailwind v4 entry.
+ *
+ * Assembled directly because SFCs using `@reference "../tailwind.css"`
+ * need the `@import 'tailwindcss'` and the bridge to be in this file —
+ * Tailwind v4's @reference does not resolve package subpath imports.
+ *
+ * The maz-ui base CSS (reset, animations, container) is loaded as a
+ * side-effect via `import 'maz-ui/style.css'` in `main.ts`.
+ */
+@import 'maz-ui/tailwindcss/tailwind.css';
+
+@source "./**/*.vue";
+@source "./**/*.ts";
+@source "../../../packages/lib/src/**/*.{vue,ts,css,scss}";
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--maz-divider, currentcolor);
+  }
+}

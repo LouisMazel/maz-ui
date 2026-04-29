@@ -1,12 +1,13 @@
 <script lang="ts" setup>
-import { MazXMark } from '@maz-ui/icons/static/MazXMark'
-
+import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import { computed, defineAsyncComponent, useSlots } from 'vue'
+
 import MazBackdrop from './MazBackdrop.vue'
+import MazIcon from './MazIcon.vue'
 
 const props = withDefaults(defineProps<MazDrawerProps>(), {
   title: undefined,
-  variant: 'right',
+  variant: 'end',
   backdropClass: undefined,
   size: '30rem',
   noClose: false,
@@ -30,10 +31,12 @@ export interface MazDrawerProps {
   /** The title of the drawer */
   title?: string
   /**
-   * The variant of the drawer
-   * @values 'right', 'top', 'left', 'bottom'
+   * The edge from which the drawer slides in.
+   * `start` (= left in LTR, right in RTL) and `end` (= right in LTR, left in RTL)
+   * follow the document direction; `top` and `bottom` are physical.
+   * @values 'start', 'end', 'top', 'bottom'
    */
-  variant?: 'right' | 'top' | 'left' | 'bottom'
+  variant?: 'start' | 'end' | 'top' | 'bottom'
   /** The size of the drawer */
   size?: string
   /** The class of the backdrop */
@@ -45,10 +48,10 @@ export interface MazDrawerProps {
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 const justify = computed(() => {
-  if (props.variant === 'left') {
+  if (props.variant === 'start') {
     return 'start'
   }
-  else if (props.variant === 'right') {
+  else if (props.variant === 'end') {
     return 'end'
   }
 
@@ -87,76 +90,37 @@ const hasTitle = computed(() => {
   >
     <template #default="{ close }">
       <div
-        class="m-drawer-content-wrap"
-        :class="[`--${variant}`]"
+        class="m-drawer-content-wrap maz:overflow-y-auto maz:bg-container maz:pointer-events-auto maz:flex maz:flex-col"
+        :class="[
+          `--${variant}`,
+          (variant === 'start' || variant === 'end') ? 'maz:min-h-screen maz:w-full maz:tab-s:w-(--maz-drawer-size)' : 'maz:w-full maz:h-auto',
+        ]"
         :style="{
           '--maz-drawer-size': size,
         }"
       >
-        <header class="m-drawer-header" :class="[hasTitle ? '--justify-between' : '--justify-end']">
-          <h4 class="m-drawer-header__title">
+        <header
+          class="m-drawer-header maz:z-1 maz:flex maz:h-16 maz:shrink-0 maz:items-center maz:border-b maz:border-divider maz:bg-container maz:bg-clip-padding maz:ps-4 maz:pe-2 maz:py-3"
+          :class="[
+            hasTitle ? '--justify-between' : '--justify-end',
+            hasTitle ? 'maz:justify-between' : 'maz:justify-end',
+          ]"
+        >
+          <h4 class="m-drawer-header__title maz:m-0 maz:text-xl maz:font-semibold maz:font-display">
             <slot name="title" :close="close">
               {{ title }}
             </slot>
           </h4>
-          <div v-if="!hideCloseButton" class="m-drawer-header__close">
+          <div v-if="!hideCloseButton" class="m-drawer-header__close maz:flex maz:justify-end">
             <MazBtn size="sm" color="transparent" @click="close">
-              <MazXMark class="icon maz-text-lg" />
+              <MazIcon :icon="MazXMark" class="icon maz:text-lg" />
             </MazBtn>
           </div>
         </header>
-        <div class="m-drawer-body">
+        <div class="m-drawer-body maz:z-0 maz:min-h-0 maz:flex-1 maz:overflow-x-auto maz:bg-clip-padding">
           <slot :close="close" />
         </div>
       </div>
     </template>
   </MazBackdrop>
 </template>
-
-<style scoped>
-.m-drawer {
-  @apply maz-items-stretch;
-
-  .m-drawer-content-wrap {
-    @apply maz-overflow-y-auto maz-bg-surface maz-pointer-events-auto maz-flex maz-flex-col;
-
-    > .m-drawer-header {
-      @apply maz-z-1 maz-flex maz-h-16 maz-shrink-0 maz-items-center maz-border-b maz-border-divider maz-bg-surface maz-bg-clip-padding maz-ps-4 maz-pe-2 maz-py-3;
-
-      .m-drawer-header__title {
-        @apply maz-m-0 maz-text-xl maz-font-semibold;
-      }
-
-      .m-drawer-header__close {
-        @apply maz-flex maz-justify-end;
-      }
-
-      &.--justify-end {
-        @apply maz-justify-end;
-      }
-
-      &.--justify-between {
-        @apply maz-justify-between;
-      }
-    }
-
-    > .m-drawer-body {
-      @apply maz-z-0 maz-min-h-0 maz-flex-1 maz-overflow-x-auto maz-bg-clip-padding;
-    }
-  }
-
-  .--left,
-  .--right {
-    &.m-drawer-content-wrap {
-      @apply maz-min-h-screen maz-w-full tab-s:maz-w-[var(--maz-drawer-size)];
-    }
-  }
-
-  .--top,
-  .--bottom {
-    &.m-drawer-content-wrap {
-      @apply maz-w-full maz-h-auto;
-    }
-  }
-}
-</style>

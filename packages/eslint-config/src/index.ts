@@ -6,7 +6,6 @@ import { join } from 'node:path'
 import antfu from '@antfu/eslint-config'
 import { configs as sonarConfigs } from 'eslint-plugin-sonarjs'
 
-import tailwind from 'eslint-plugin-tailwindcss'
 import vueA11y from 'eslint-plugin-vuejs-accessibility'
 import { baseRules } from './configs/base'
 import { GLOBAL_IGNORES } from './configs/global'
@@ -46,6 +45,17 @@ function getEslintMajorVersion(): number {
   }
   catch {
     return 0
+  }
+}
+
+function tryLoadTailwindPlugin(): any | null {
+  try {
+    const _require = createRequire(import.meta.url)
+    const mod = _require('eslint-plugin-tailwindcss')
+    return mod?.default ?? mod
+  }
+  catch {
+    return null
   }
 }
 
@@ -136,17 +146,27 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
   }
 
   if (opts.tailwindcss) {
-    // eslint-plugin-tailwindcss uses the removed `context.getSourceCode()` API and is incompatible with ESLint 10+
-    // @see https://github.com/francoismassart/eslint-plugin-tailwindcss/issues
-    if (getEslintMajorVersion() >= 10) {
+    // eslint-plugin-tailwindcss v3 only supports Tailwind v3 and uses the
+    // removed `context.getSourceCode()` API from ESLint 10+. We load and
+    // activate it only when BOTH conditions are met; on ESLint 10+ or when
+    // the plugin isn't installed we surface a clear warning but keep the
+    // rest of the config working.
+    const eslintMajor = getEslintMajorVersion()
+    if (eslintMajor >= 10) {
       console.warn('[maz-eslint-config] eslint-plugin-tailwindcss is not compatible with ESLint 10+ (uses removed context.getSourceCode API). Tailwind CSS rules are disabled.')
     }
     else {
-      // @ts-expect-error - tailwind.configs['flat/recommended'] is not typed correctly
-      additionalConfigs.push(...tailwind.configs['flat/recommended'])
-      additionalConfigs.push({
-        rules: tailwindcssRules,
-      })
+      const tailwindPlugin = tryLoadTailwindPlugin()
+      if (!tailwindPlugin) {
+        console.warn('[maz-eslint-config] opts.tailwindcss is true but eslint-plugin-tailwindcss is not installed. Add it to your devDependencies to enable the Tailwind CSS lint rules.')
+      }
+      else {
+        const tailwindConfigs = tailwindPlugin.configs?.['flat/recommended']
+        if (Array.isArray(tailwindConfigs)) {
+          additionalConfigs.push(...tailwindConfigs)
+        }
+        additionalConfigs.push({ rules: tailwindcssRules })
+      }
     }
   }
 

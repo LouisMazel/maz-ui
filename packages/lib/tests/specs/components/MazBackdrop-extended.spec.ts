@@ -458,4 +458,89 @@ describe('MazBackdrop extended branch coverage', () => {
       expect(typeof wrapper.vm.onKeyPress).toBe('function')
     })
   })
+
+  describe('focus trap', () => {
+    function dispatchTab(shiftKey = false) {
+      const event = new KeyboardEvent('keydown', { key: 'Tab', shiftKey, bubbles: true, cancelable: true })
+      document.dispatchEvent(event)
+      return event
+    }
+
+    function makeButton(label: string) {
+      const button = document.createElement('button')
+      button.textContent = label
+      return button
+    }
+
+    it('cycles to first focusable when Tab is pressed on the last one', async () => {
+      const wrapper = mount(MazBackdrop, {
+        props: { modelValue: true },
+        attachTo: document.body,
+      })
+      await nextTick()
+
+      const content = document.querySelector('.m-backdrop-content') as HTMLElement
+      const first = makeButton('first')
+      const last = makeButton('last')
+      content.append(first, last)
+
+      last.focus()
+      const event = dispatchTab(false)
+
+      expect(document.activeElement).toBe(first)
+      expect(event.defaultPrevented).toBe(true)
+
+      wrapper.unmount()
+    })
+
+    it('cycles to last focusable when Shift+Tab is pressed on the first one', async () => {
+      const wrapper = mount(MazBackdrop, {
+        props: { modelValue: true },
+        attachTo: document.body,
+      })
+      await nextTick()
+
+      const content = document.querySelector('.m-backdrop-content') as HTMLElement
+      const first = makeButton('first')
+      const last = makeButton('last')
+      content.append(first, last)
+
+      first.focus()
+      const event = dispatchTab(true)
+
+      expect(document.activeElement).toBe(last)
+      expect(event.defaultPrevented).toBe(true)
+
+      wrapper.unmount()
+    })
+
+    it('does nothing when Tab is pressed and no focusable elements are present', async () => {
+      const wrapper = mount(MazBackdrop, {
+        props: { modelValue: true },
+        attachTo: document.body,
+      })
+      await nextTick()
+
+      const event = dispatchTab(false)
+
+      expect(event.defaultPrevented).toBe(false)
+
+      wrapper.unmount()
+    })
+
+    it('ignores non-Tab key events', async () => {
+      const wrapper = mount(MazBackdrop, {
+        props: { modelValue: true },
+        attachTo: document.body,
+      })
+      await nextTick()
+
+      const event = new KeyboardEvent('keydown', { key: 'a', bubbles: true, cancelable: true })
+      document.dispatchEvent(event)
+
+      expect(event.defaultPrevented).toBe(false)
+
+      wrapper.unmount()
+    })
+  })
 })

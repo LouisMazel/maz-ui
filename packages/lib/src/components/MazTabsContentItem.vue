@@ -8,7 +8,7 @@ const props = defineProps({
 })
 const transitionName = ref<string>('maz-tab-transition')
 
-const { currentTab } = useInjectStrict<MazTabsProvide>('maz-tabs')
+const { currentTab } = useInjectStrict<MazTabsProvide>('maz:tabs')
 
 watch(
   () => currentTab.value,
@@ -28,16 +28,16 @@ const isCurrentTab = computed(() => currentTab.value - 1 === itemTabNumber.value
 
 <template>
   <Transition :name="transitionName">
-    <div v-if="isCurrentTab" class="m-tabs-content-item m-reset-css">
+    <div v-if="isCurrentTab" class="m-tabs-content-item m-reset-css maz:relative maz:top-0 maz:w-full">
       <slot />
     </div>
   </Transition>
 </template>
 
 <style scoped>
-  .m-tabs-content-item {
-  @apply maz-relative maz-top-0 maz-w-full;
+@reference "../tailwindcss/tailwind.css";
 
+.m-tabs-content-item {
   flex: 1 0 auto;
   transition: all 500ms cubic-bezier(0.25, 0.8, 0.5, 1);
 }

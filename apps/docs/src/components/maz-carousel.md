@@ -36,12 +36,12 @@ head:
       style="min-width: 250px;"
     >
       <template #content-title>
-        <h4 class="maz-m-0">
+        <h4 class="maz:m-0">
           Doggo
         </h4>
       </template>
       <template #content-body>
-        <p class="maz-text-muted" style="margin-bottom: 0;">
+        <p class="maz:text-muted" style="margin-bottom: 0;">
           It's a beautifull doggo, no ?
         </p>
       </template>
@@ -69,12 +69,12 @@ import MazCard from 'maz-ui/components/MazCard'
       style="min-width: 250px;"
     >
       <template #title>
-        <h4 class="maz-m-0">
+        <h4 class="maz:m-0">
           Doggo
         </h4>
       </template>
       <template #content-body>
-        <p class="maz-text-muted" style="margin-bottom: 0;">
+        <p class="maz:text-muted" style="margin-bottom: 0;">
           It's a beautifull doggo, no ?
         </p>
       </template>
@@ -95,7 +95,7 @@ This options will display the component without scrollbar only when the componen
 <ComponentDemo>
   <MazCarousel hide-scrollbar>
     <template #title>
-      <h4 class="maz-text-2xl maz-font-bold">Carousel</h4>
+      <h4 class="maz:text-2xl maz:font-bold">Carousel</h4>
     </template>
     <MazCard
       v-for="(item, i) in Array(8)"
@@ -108,12 +108,12 @@ This options will display the component without scrollbar only when the componen
       style="min-width: 250px;"
     >
       <template #content-title>
-        <h4 class="maz-m-0">
+        <h4 class="maz:m-0">
           Doggo
         </h4>
       </template>
       <template #content-body>
-        <p class="maz-text-muted" style="margin-bottom: 0;">
+        <p class="maz:text-muted" style="margin-bottom: 0;">
           It's a beautifull doggo, no ?
         </p>
       </template>
@@ -131,7 +131,7 @@ import MazCard from 'maz-ui/components/MazCard'
 <template>
   <MazCarousel hide-scrollbar>
     <template #title>
-      <h4 class="maz-text-2xl maz-font-bold">Carousel</h4>
+      <h4 class="maz:text-2xl maz:font-bold">Carousel</h4>
     </template>
     <MazCard
       v-for="(item, i) in Array(8)"
@@ -144,12 +144,12 @@ import MazCard from 'maz-ui/components/MazCard'
       style="min-width: 250px;"
     >
       <template #content-title>
-        <h4 class="maz-m-0">
+        <h4 class="maz:m-0">
           Doggo
         </h4>
       </template>
       <template #content-body>
-        <p class="maz-text-muted" style="margin-bottom: 0;">
+        <p class="maz:text-muted" style="margin-bottom: 0;">
           It's a beautifull doggo, no ?
         </p>
       </template>
@@ -178,12 +178,12 @@ This options will display the component without scroll buttons
       style="min-width: 250px;"
     >
       <template #content-title>
-        <h4 class="maz-m-0">
+        <h4 class="maz:m-0">
           Doggo
         </h4>
       </template>
       <template #content-body>
-        <p class="maz-text-muted" style="margin-bottom: 0;">
+        <p class="maz:text-muted" style="margin-bottom: 0;">
           It's a beautifull doggo, no ?
         </p>
       </template>
@@ -211,12 +211,12 @@ import MazCard from 'maz-ui/components/MazCard'
       style="min-width: 250px;"
     >
       <template #content-title>
-        <h4 class="maz-m-0">
+        <h4 class="maz:m-0">
           Doggo
         </h4>
       </template>
       <template #content-body>
-        <p class="maz-text-muted" style="margin-bottom: 0;">
+        <p class="maz:text-muted" style="margin-bottom: 0;">
           It's a beautifull doggo, no ?
         </p>
       </template>

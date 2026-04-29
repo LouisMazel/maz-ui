@@ -194,6 +194,21 @@ You can provide an icon to replace the default chevron icon and disable the anim
 </template>
 ```
 
+`dropdownIcon` also accepts a full `MazIconProps` object — pass the same shape `<MazIcon>` accepts when you need to set a `<title>` for screen readers, override the size, or attach `svgAttributes`.
+
+```vue
+<MazDropdown
+  :items="items"
+  :dropdown-icon="{
+    icon: MazChevronUpDown,
+    size: 'lg',
+    title: 'Open menu',
+  }"
+>
+  Custom icon
+</MazDropdown>
+```
+
 ## Custom dropdown main button without chevron icon
 
 ::: tip
@@ -205,7 +220,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
   fab
   pastel
   :chevron="false"
-  icon="bars-3"
+  icon="/bars-3.svg"
   size="xl"
   :items="[
     { label: 'Action', onClick: () => toast.success('CLICKED') },
@@ -221,7 +236,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
   fab
   pastel
   :chevron="false"
-  icon="bars-3"
+  icon="/bars-3.svg"
   size="xl"
   :items="[
     { label: 'Action', onClick: () => toast.success('CLICKED') },
@@ -242,7 +257,7 @@ You can provide a template to replace the default dropdown panel
   Customized dropdown
 
   <template #dropdown>
-    <div class="maz-grid maz-grid-cols-3 maz-gap-2">
+    <div class="maz:grid maz:grid-cols-3 maz:gap-2">
       <MazBtn color="transparent"> Item </MazBtn>
       <MazBtn color="transparent"> Item </MazBtn>
       <MazBtn color="transparent"> Item </MazBtn>
@@ -266,7 +281,7 @@ You can provide a template to replace the default dropdown panel
   Customized dropdown panel
 
   <template #dropdown>
-    <div class="maz-grid maz-grid-cols-3 maz-gap-2">
+    <div class="maz:grid maz:grid-cols-3 maz:gap-2">
       <MazBtn color="transparent"> Item </MazBtn>
       <MazBtn color="transparent"> Item </MazBtn>
       <MazBtn color="transparent"> Item </MazBtn>
@@ -302,7 +317,7 @@ You can provide a template to replace menuitem labels to add more elements in ea
   </template>
 
   <template #menuitem-label="{ item }">
-    <div class="maz-flex maz-items-center maz-gap-3">
+    <div class="maz:flex maz:items-center maz:gap-3">
       <MazAvatar :src="item.additionnalData" size="0.8rem" />
       <span>
         {{ item.label }}
@@ -326,7 +341,7 @@ You can provide a template to replace menuitem labels to add more elements in ea
   </template>
 
   <template #menuitem-label="{ item }">
-    <div class="maz-flex maz-items-center maz-gap-2">
+    <div class="maz:flex maz:items-center maz:gap-2">
       <MazAvatar :src="item.additionnalData" />
       <span>
         {{ item.label }}
@@ -346,7 +361,7 @@ You can provide an HTML element or a component to replace the default button
 Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab key
 :::
 
-<div class="maz-flex maz-gap-4">
+<div class="maz:flex maz:gap-4">
   <MazDropdown
     :items="[
       {
@@ -399,7 +414,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
     ]"
   >
     <template #element="{ isOpen }">
-      <button class="maz-border maz-border-solid maz-border-divider-400 maz-p-2 hover:maz-bg-surface-600 dark:maz-bg-surface-400" tabindex="-1">
+      <button class="maz:border maz:border-solid maz:border-divider-400 maz:p-2 maz:hover:bg-surface-600 maz:dark:bg-surface-400" tabindex="-1">
         HTMLButtonElement: isOpen {{ isOpen }}
       </button>
     </template>
@@ -461,7 +476,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
   ]"
 >
   <template #element="{ isOpen }">
-    <button class="maz-border maz-border-solid maz-border-divider-400 maz-p-2 hover:maz-bg-surface-400" tabindex="-1">
+    <button class="maz:border maz:border-solid maz:border-divider-400 maz:p-2 maz:hover:bg-surface-400" tabindex="-1">
       HTMLButtonElement: isOpen {{ isOpen }}
     </button>
   </template>
@@ -519,7 +534,7 @@ isOpen: {{ isOpen }}
 
 ## Position
 
-<div class="maz-flex maz-gap-3 maz-flex-wrap">
+<div class="maz:flex maz:gap-3 maz:flex-wrap">
   <MazDropdown
     color="contrast"
     :items="[
@@ -637,8 +652,8 @@ type MazDropdownMenuItem = {
 
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue'
-  import { useToast } from 'maz-ui/src/composables/useToast'
-  import { MazChevronUpDown } from '@maz-ui/icons/MazChevronUpDown'
+  import { useToast } from 'maz-ui/composables/useToast'
+  import { MazChevronUpDown } from '@maz-ui/icons/raw/MazChevronUpDown'
 
   const toast = useToast()
 

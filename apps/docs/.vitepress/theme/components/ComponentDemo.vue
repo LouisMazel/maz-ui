@@ -17,7 +17,7 @@ const showCode = ref(props.expanded)
 <template>
   <MazCard class="component-demo" block footer-align="left">
     <template v-if="$slots.title || title" #title>
-      <h3 class="vp-raw maz-text-lg maz-font-semibold">
+      <h3 class="vp-raw maz:text-lg maz:font-semibold">
         <slot name="title">
           {{ title }}
         </slot>
@@ -33,17 +33,17 @@ const showCode = ref(props.expanded)
     </template>
 
     <template v-if="$slots.code" #footer>
-      <button class="vp-raw maz-flex maz-w-full maz-items-center maz-justify-between maz-bg-surface maz-p-3 maz-transition-all maz-duration-300 hover:maz-bg-surface-400" @click="showCode = !showCode">
-        <span class="maz-flex maz-items-center maz-gap-2 maz-text-primary">
+      <button class="vp-raw maz:flex maz:w-full maz:items-center maz:justify-between maz:bg-surface maz:p-3 maz:transition-all maz:duration-300 maz:hover:bg-surface-400" @click="showCode = !showCode">
+        <span class="maz:flex maz:items-center maz:gap-2 maz:text-primary">
           <MazCodeBracket />
           View code
         </span>
 
-        <MazChevronUp :class="{ '-maz-rotate-180': !showCode }" class="maz-transition-all maz-duration-300" />
+        <MazChevronUp :class="{ 'maz:-rotate-180': !showCode }" class="maz:transition-all maz:duration-300" />
       </button>
 
       <MazExpandAnimation v-model="showCode">
-        <div class="code-wrapper maz-flex maz-flex-col maz-gap-4">
+        <div class="code-wrapper maz:flex maz:flex-col maz:gap-4">
           <slot name="code" />
         </div>
       </MazExpandAnimation>
@@ -52,30 +52,32 @@ const showCode = ref(props.expanded)
 </template>
 
 <style scoped>
-  .component-demo {
+@reference "../main.css";
+
+.component-demo {
   :deep(.m-card__footer) {
-    @apply maz-p-0 maz-rounded-b;
+    @apply maz:p-0 maz:rounded-b-md;
   }
 
   :deep(a):not(.m-link, .m-btn) {
-    @apply maz-text-primary maz-underline;
+    @apply maz:text-primary maz:underline;
   }
 
   :deep(.custom-block) {
-    @apply maz-my-0;
+    @apply maz:my-0;
   }
 
   .content {
     &:deep(div[class*='language']) {
-      @apply mob-l:maz-rounded;
+      @apply maz:mob-l:rounded;
     }
   }
 
   :deep(div[class*='language']) {
-    @apply maz-rounded-none !-maz-mx-4 mob-l:!maz-mx-0 maz-my-0;
+    @apply maz:rounded-none maz:-mx-4! maz:mob-l:mx-0! maz:my-0;
 
     code {
-      @apply maz-px-4;
+      @apply maz:px-4;
     }
   }
 }

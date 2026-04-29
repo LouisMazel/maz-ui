@@ -2,6 +2,7 @@
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
+import MazIcon from './MazIcon.vue'
 
 type NonRecursiveClassValue = string | Record<string, any> | (string | false | null | undefined | Record<string, any>)[]
 
@@ -231,10 +232,10 @@ export interface MazTableProps<T extends MazTableRow<T>> {
   /**
    * Size radius of the component's border
    * @type {string}
-   * @values none, sm, md, lg, xl, full, base
-   * @default base
+   * @values none, sm, md, lg, xl, full
+   * @default md
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'
+  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /**
    * Enable scrollable on table
    * @type {boolean}
@@ -250,7 +251,7 @@ export interface MazTableProvide {
   backgroundOdd: Ref<boolean>
 }
 
-export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz-table')
+export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz:table')
 </script>
 
 <script lang="ts" setup generic="T extends MazTableRow<T>">
@@ -282,7 +283,7 @@ const props = withDefaults(defineProps<MazTableProps<T>>(), {
   captionSide: 'bottom',
   divider: false,
   color: 'primary',
-  roundedSize: 'lg',
+  roundedSize: 'md',
   scrollable: false,
   paginateRows: true,
 })
@@ -605,20 +606,20 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="m-table m-reset-css" :class="{ '--has-header': hasHeader }">
-    <div v-if="hasHeader" class="m-table-header">
+  <div class="m-table m-reset-css maz:relative maz:max-w-full" :class="{ '--has-header': hasHeader }">
+    <div v-if="hasHeader" class="m-table-header maz:flex maz:max-w-full maz:items-center maz:justify-between maz:gap-2 maz:bg-container maz:py-2">
       <div v-if="title || hasSlotContent(slots.title)" class="m-table-spacer">
         <!--
           @slot Replace the title of the table
         -->
         <slot name="title">
-          <span class="m-table-header-title">
+          <span class="m-table-header-title maz:font-semibold">
             {{ title }}
           </span>
         </slot>
       </div>
 
-      <div v-if="search" class="m-table-header-search">
+      <div v-if="search" class="m-table-header-search maz:flex maz:items-center maz:gap-2">
         <MazSelect
           v-if="!hideSearchBy"
           v-model="searchByKey"
@@ -636,13 +637,13 @@ onBeforeMount(() => {
           :color
           :debounce="300"
           :placeholder="messages.searchInput.placeholder"
-          :left-icon="MazMagnifyingGlass"
+          :start-icon="MazMagnifyingGlass"
         />
       </div>
     </div>
     <div
-      class="m-table-wrapper" :class="[`--rounded-${roundedSize}`, {
-        '--scrollable': scrollable,
+      class="m-table-wrapper maz:border maz:border-solid maz:border-divider maz:overflow-hidden" :class="[`--rounded-${roundedSize}`, {
+        '--scrollable maz:overflow-auto': scrollable,
       }]"
     >
       <table
@@ -681,7 +682,7 @@ onBeforeMount(() => {
                 :colspan="header.colspan"
                 :headers="header.thHeaders"
                 :style="{ width: header.width, textAlign: header.align }"
-                class="maz-group"
+                class="maz:group"
                 :class="[
                   { '--hidden': header.hidden, '--sortable': header.sortable ?? sortable },
                   header.classes,
@@ -689,7 +690,7 @@ onBeforeMount(() => {
                 ]"
                 @click="(header.sortable ?? sortable) && sortColumn(columnIndex)"
               >
-                <span :class="{ 'maz-sr-only': header.srOnly }">
+                <span :class="{ 'maz:sr-only': header.srOnly }">
                   <!--
                   @slot Replace column header
                     @binding {Object} header - Header data
@@ -707,7 +708,7 @@ onBeforeMount(() => {
 
                     <div v-if="header.sortable ?? sortable" class="m-table-sort-icon-wrapper">
                       <MazArrowUp
-                        class="m-table-sort-icon maz-hidden group-hover:maz-block"
+                        class="m-table-sort-icon maz:hidden maz:group-hover:block"
                         :class="{
                           '--sorted': columnIndex === sortedColumnIndex,
                           '--up': sortType === 'DESC',
@@ -730,7 +731,7 @@ onBeforeMount(() => {
           </slot>
         </thead>
 
-        <MazLoadingBar v-if="loading" :color class="!maz-absolute" />
+        <MazLoadingBar v-if="loading" :color class="maz:absolute!" />
 
         <tbody :class="{ '--divider': hasDivider }">
           <slot>
@@ -797,7 +798,7 @@ onBeforeMount(() => {
                     @slot Replace the no results element
                   -->
                   <slot name="no-results">
-                    <p class="maz-text-center maz-text-muted">
+                    <p class="maz:text-center maz:text-muted">
                       <!--
                         @slot no-results-text - replace no results test only
                       -->
@@ -819,7 +820,7 @@ onBeforeMount(() => {
 
       <div v-if="pagination" class="m-table-footer-pagination">
         <div class="m-table-footer-pagination-items-per-page">
-          <span class="maz-hidden maz-text-sm tab-s:maz-block"> {{ messages.pagination.rowsPerPage }} </span>
+          <span class="maz:hidden maz:text-sm maz:tab-s:block"> {{ messages.pagination.rowsPerPage }} </span>
           <MazSelect
             v-model="pageSizeModel"
             :options="pageSizeOptions"
@@ -831,7 +832,7 @@ onBeforeMount(() => {
           />
         </div>
 
-        <span v-if="totalPagesInternal" class="maz-whitespace-nowrap maz-text-sm">
+        <span v-if="totalPagesInternal" class="maz:whitespace-nowrap maz:text-sm">
           {{ rowsFromTo.from }} - {{ rowsFromTo.to }} {{ messages.pagination.of }} {{ totalItemsInternal }}
         </span>
 
@@ -843,7 +844,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="firstPage"
           >
-            <MazChevronDoubleLeft class="maz-text-base" />
+            <MazIcon :icon="MazChevronDoubleLeft" class="maz:text-base" />
           </MazBtn>
 
           <MazBtn
@@ -853,7 +854,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="previousPage"
           >
-            <MazChevronLeft class="maz-text-base" />
+            <MazIcon :icon="MazChevronLeft" class="maz:text-base" />
           </MazBtn>
 
           <MazBtn
@@ -863,7 +864,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="nextPage"
           >
-            <MazChevronLeft class="maz-rotate-180 maz-text-base" />
+            <MazIcon :icon="MazChevronLeft" class="maz:rotate-180 maz:text-base" />
           </MazBtn>
 
           <MazBtn
@@ -873,7 +874,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="lastPage"
           >
-            <MazChevronDoubleLeft class="maz-rotate-180 maz-text-base" />
+            <MazIcon :icon="MazChevronDoubleLeft" class="maz:rotate-180 maz:text-base" />
           </MazBtn>
         </div>
       </div>
@@ -882,203 +883,153 @@ onBeforeMount(() => {
 </template>
 
 <style scoped>
-  .m-table {
-  @apply maz-relative maz-max-w-full;
+@reference "../tailwindcss/tailwind.css";
 
-  &-header {
-    @apply maz-flex maz-max-w-full maz-items-center maz-justify-between maz-gap-2 maz-bg-surface maz-py-2;
-
-    &-search {
-      @apply maz-flex maz-items-center maz-gap-2;
-    }
-
-    &-title {
-      @apply maz-font-semibold;
-    }
-  }
-
+.m-table {
   &-footer {
-    @apply maz-flex maz-max-w-full maz-justify-between maz-gap-2 maz-bg-surface maz-p-2;
+    @apply maz:flex maz:max-w-full maz:justify-between maz:gap-2 maz:bg-container maz:p-2;
 
     &-pagination {
-      @apply maz-flex maz-items-center maz-gap-4;
+      @apply maz:flex maz:items-center maz:gap-4;
 
       &-buttons {
-        @apply maz-flex maz-items-center maz-gap-1;
+        @apply maz:flex maz:items-center maz:gap-1;
       }
 
       &-items-per-page {
-        @apply maz-flex maz-items-center maz-gap-1;
+        @apply maz:flex maz:items-center maz:gap-1;
       }
     }
   }
 
   &-wrapper {
-    @apply maz-border maz-border-solid maz-border-divider maz-overflow-hidden;
-
-    &.--scrollable {
-      @apply maz-overflow-auto;
-    }
-
     &:not(.--rounded-none) {
-      @apply maz-rounded-xl;
+      @apply maz:rounded-xl;
     }
 
     &.--rounded-sm {
-      @apply maz-rounded-sm;
+      @apply maz:rounded-xs;
 
       table {
-        @apply maz-rounded-sm;
+        @apply maz:rounded-xs;
 
         thead tr:hover:first-child {
-          @apply maz-rounded-b-sm;
+          @apply maz:rounded-b-sm;
 
           th:first-child {
-            @apply maz-rounded-tl-sm;
+            @apply maz:rounded-tl-sm;
           }
 
           th:last-child {
-            @apply maz-rounded-tr-sm;
+            @apply maz:rounded-tr-sm;
           }
         }
 
         tbody tr:hover:last-child {
-          @apply maz-rounded-b-sm;
+          @apply maz:rounded-b-sm;
 
           td:first-child {
-            @apply maz-rounded-bl-sm;
+            @apply maz:rounded-bl-sm;
           }
 
           td:last-child {
-            @apply maz-rounded-br-sm;
+            @apply maz:rounded-br-sm;
           }
         }
       }
     }
 
     &.--rounded-md {
-      @apply maz-rounded-md;
+      @apply maz:rounded-md;
 
       table {
-        @apply maz-rounded-md;
+        @apply maz:rounded-md;
 
         thead tr:hover:first-child {
-          @apply maz-rounded-b-md;
+          @apply maz:rounded-b-md;
 
           th:first-child {
-            @apply maz-rounded-tl-md;
+            @apply maz:rounded-tl-md;
           }
 
           th:last-child {
-            @apply maz-rounded-tr-md;
+            @apply maz:rounded-tr-md;
           }
         }
 
         tbody tr:hover:last-child {
-          @apply maz-rounded-b-md;
+          @apply maz:rounded-b-md;
 
           td:first-child {
-            @apply maz-rounded-bl-md;
+            @apply maz:rounded-bl-md;
           }
 
           td:last-child {
-            @apply maz-rounded-br-md;
+            @apply maz:rounded-br-md;
           }
         }
       }
     }
 
     &.--rounded-lg {
-      @apply maz-rounded-lg;
+      @apply maz:rounded-lg;
 
       table {
-        @apply maz-rounded-lg;
+        @apply maz:rounded-lg;
 
         thead tr:hover:first-child {
-          @apply maz-rounded-b-lg;
+          @apply maz:rounded-b-lg;
 
           th:first-child {
-            @apply maz-rounded-tl-lg;
+            @apply maz:rounded-tl-lg;
           }
 
           th:last-child {
-            @apply maz-rounded-tr-lg;
+            @apply maz:rounded-tr-lg;
           }
         }
 
         tbody tr:hover:last-child {
-          @apply maz-rounded-b-lg;
+          @apply maz:rounded-b-lg;
 
           td:first-child {
-            @apply maz-rounded-bl-lg;
+            @apply maz:rounded-bl-lg;
           }
 
           td:last-child {
-            @apply maz-rounded-br-lg;
-          }
-        }
-      }
-    }
-
-    &.--rounded-base {
-      @apply maz-rounded;
-
-      table {
-        @apply maz-rounded;
-
-        thead tr:hover:first-child {
-          @apply maz-rounded-b;
-
-          th:first-child {
-            @apply maz-rounded-tl;
-          }
-
-          th:last-child {
-            @apply maz-rounded-tr;
-          }
-        }
-
-        tbody tr:hover:last-child {
-          @apply maz-rounded-b;
-
-          td:first-child {
-            @apply maz-rounded-bl;
-          }
-
-          td:last-child {
-            @apply maz-rounded-br;
+            @apply maz:rounded-br-lg;
           }
         }
       }
     }
 
     &.--rounded-xl {
-      @apply maz-rounded-xl;
+      @apply maz:rounded-xl;
 
       table {
-        @apply maz-rounded-xl;
+        @apply maz:rounded-xl;
 
         thead tr:hover:first-child {
-          @apply maz-rounded-b-xl;
+          @apply maz:rounded-b-xl;
 
           th:first-child {
-            @apply maz-rounded-tl-xl;
+            @apply maz:rounded-tl-xl;
           }
 
           th:last-child {
-            @apply maz-rounded-tr-xl;
+            @apply maz:rounded-tr-xl;
           }
         }
 
         tbody tr:hover:last-child {
-          @apply maz-rounded-b-xl;
+          @apply maz:rounded-b-xl;
 
           td:first-child {
-            @apply maz-rounded-bl-xl;
+            @apply maz:rounded-bl-xl;
           }
 
           td:last-child {
-            @apply maz-rounded-br-xl;
+            @apply maz:rounded-br-xl;
           }
         }
       }
@@ -1086,95 +1037,95 @@ onBeforeMount(() => {
   }
 
   &.--has-header {
-    @apply maz-rounded;
+    @apply maz:rounded-md;
   }
 
   &:not(.--has-header) {
     table {
-      @apply maz-rounded;
+      @apply maz:rounded-md;
     }
   }
 
   table {
-    @apply maz-table maz-w-full maz-border-collapse maz-bg-surface;
+    @apply maz:table maz:w-full maz:border-collapse maz:bg-container;
 
     table-layout: v-bind('tableLayout');
 
     &.--has-layout {
-      @apply maz-w-full;
+      @apply maz:w-full;
     }
 
     &.--elevation {
-      @apply maz-drop-shadow-md maz-shadow-elevation;
+      @apply maz:drop-shadow-md maz:shadow-elevation;
     }
 
     & .m-table-select-column {
-      @apply maz-w-[2.9rem];
+      @apply maz:w-[2.9rem];
     }
 
     caption {
-      @apply maz-p-3;
+      @apply maz:p-3;
 
       caption-side: v-bind('captionSide');
     }
 
     thead {
-      @apply maz-break-all maz-border-b maz-border-divider;
+      @apply maz:break-all maz:border-b maz:border-divider;
 
       th {
-        @apply maz-gap-2 maz-break-all maz-font-normal maz-text-muted maz-tracking-tight;
+        @apply maz:gap-2 maz:break-all maz:font-normal maz:text-muted maz:tracking-tight;
 
         &.--hidden {
-          @apply maz-hidden;
+          @apply maz:hidden;
         }
 
         &.--sortable {
-          @apply maz-cursor-pointer hover:maz-bg-surface-600/50 dark:hover:maz-bg-surface-400;
+          @apply maz:cursor-pointer maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400;
         }
 
         &.--xl {
-          @apply maz-px-5 maz-py-5 maz-text-lg;
+          @apply maz:px-5 maz:py-5 maz:text-lg;
         }
 
         &.--lg {
-          @apply maz-px-4 maz-py-4 maz-text-base;
+          @apply maz:px-4 maz:py-4 maz:text-base;
         }
 
         &.--md {
-          @apply maz-px-3 maz-py-3 maz-text-sm;
+          @apply maz:px-3 maz:py-3 maz:text-sm;
         }
 
         &.--sm {
-          @apply maz-px-2 maz-py-2 maz-text-xs;
+          @apply maz:px-2 maz:py-2 maz:text-xs;
         }
 
         &.--xs {
-          @apply maz-px-1 maz-py-1 maz-text-xs;
+          @apply maz:px-1 maz:py-1 maz:text-xs;
         }
 
         &.--mini {
-          @apply maz-px-0.5 maz-py-0.5 maz-text-xs;
+          @apply maz:px-0.5 maz:py-0.5 maz:text-xs;
         }
 
         span {
-          @apply maz-inline-flex maz-items-center maz-gap-1;
+          @apply maz:inline-flex maz:items-center maz:gap-1;
 
           .m-table-sort-icon-wrapper {
-            @apply maz-h-4 maz-w-4;
+            @apply maz:h-4 maz:w-4;
           }
 
           .m-table-sort-icon {
-            @apply maz-text-muted maz-transition-transform maz-duration-300 maz-ease-out;
+            @apply maz:text-muted maz:transition-transform maz:duration-300 maz:ease-out;
 
             &.--sorted {
-              @apply maz-block maz-text-foreground;
+              @apply maz:block maz:text-foreground;
 
               &.--up {
-                @apply maz-rotate-0;
+                @apply maz:rotate-0;
               }
 
               &.--down {
-                @apply maz-rotate-180;
+                @apply maz:rotate-180;
               }
             }
           }
@@ -1184,7 +1135,7 @@ onBeforeMount(() => {
 
     tbody {
       &.--divider {
-        @apply maz-divide-y maz-divide-divider;
+        @apply maz:divide-y maz:divide-divider;
       }
     }
   }

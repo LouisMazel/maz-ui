@@ -225,6 +225,22 @@ watch(
   },
 )
 
+const JUSTIFY_CLASS = {
+  'center': 'maz:justify-center',
+  'end': 'maz:justify-end',
+  'start': 'maz:justify-start',
+  'space-between': 'maz:justify-between',
+  'space-around': 'maz:justify-around',
+  'none': '',
+} as const
+
+const ALIGN_CLASS = {
+  center: 'maz:items-center',
+  end: 'maz:items-end',
+  start: 'maz:items-start',
+  none: 'maz:items-end maz:tab-s:items-center',
+} as const
+
 defineExpose({
   /**
    * Animation leave event
@@ -265,18 +281,30 @@ defineExpose({
     >
       <div
         v-if="present"
-        class="m-backdrop --present m-reset-css"
+        class="m-backdrop --present m-reset-css maz:fixed maz:inset-0 maz:z-default-backdrop maz:bg-overlay/25 maz:backdrop-blur-sm"
         v-bind="$attrs"
         :class="[backdropClass, variant && `--variant-${variant}`, { '--persistent': persistent }]"
         :aria-labelledby="ariaLabelledby"
         :aria-describedby="ariaDescribedby"
       >
-        <div role="dialog" class="m-backdrop-container" aria-modal="true">
-          <div class="m-backdrop-wrapper">
+        <div role="dialog" class="m-backdrop-container maz:fixed maz:inset-0 maz:z-default-backdrop" aria-modal="true">
+          <div class="m-backdrop-wrapper maz:fixed maz:inset-0 maz:overflow-y-auto">
             <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events -->
             <div
-              class="m-backdrop-content"
-              :class="[backdropContentClass, `--justify-${justify}`, `--align-${align}`, { '--padding': contentPadding }]"
+              class="m-backdrop-content maz:flex maz:min-h-full maz:tab-s:p-0"
+              :class="[
+                backdropContentClass,
+                JUSTIFY_CLASS[justify],
+                ALIGN_CLASS[align],
+                `--justify-${justify}`,
+                `--align-${align}`,
+                {
+                  '--padding': contentPadding,
+                  'maz:p-4': contentPadding,
+                  'maz:cursor-default': persistent,
+                  'maz:fixed maz:inset-0': variant === 'bottom-sheet' || variant === 'drawer',
+                },
+              ]"
               role="button"
               tabindex="-1"
               @pointerdown.self="close"
@@ -296,88 +324,22 @@ defineExpose({
 <style>
 html.--backdrop-present {
   overflow-y: hidden;
-  height: 100vh !important;
+  block-size: 100vh !important;
 }
 
 html.--backdrop-present.--has-scrollbar {
-  padding-right: var(--scrollbar-width);
+  padding-inline-end: var(--scrollbar-width);
 }
 </style>
 
 <style scoped>
-.m-backdrop {
-  @apply maz-fixed maz-inset-0 maz-z-default-backdrop maz-bg-overlay/25 maz-backdrop-blur;
+@reference "../tailwindcss/tailwind.css";
 
+.m-backdrop {
   transition-behavior: allow-discrete;
 
-  &.--persistent {
-    & .m-backdrop-content {
-      @apply maz-cursor-default;
-    }
-  }
-
-  &-container {
-    @apply maz-fixed maz-inset-0 maz-z-default-backdrop;
-  }
-
-  &-wrapper {
-    @apply maz-fixed maz-inset-0 maz-overflow-y-auto;
-  }
-
-  &-content {
-    @apply maz-flex maz-min-h-full tab-s:maz-items-center tab-s:maz-p-0 maz-items-end;
-
-    &.--padding {
-      @apply maz-p-4;
-    }
-
-    &.--justify-center {
-      @apply maz-justify-center;
-    }
-
-    &.--justify-end {
-      @apply maz-justify-end;
-    }
-
-    &.--justify-start {
-      @apply maz-justify-start;
-    }
-
-    &.--justify-space-between {
-      @apply maz-justify-between;
-    }
-
-    &.--justify-space-around {
-      @apply maz-justify-around;
-    }
-
-    &.--align-center {
-      @apply maz-items-center;
-    }
-
-    &.--align-end {
-      @apply maz-items-end;
-    }
-
-    &.--align-start {
-      @apply maz-items-start;
-    }
-
-    > * {
-      @apply maz-cursor-default;
-    }
-  }
-
-  &.--variant-bottom-sheet {
-    .m-backdrop-content {
-      @apply maz-fixed maz-inset-0;
-    }
-  }
-
-  &.--variant-drawer {
-    .m-backdrop-content {
-      @apply maz-fixed maz-inset-0;
-    }
+  &-content > * {
+    @apply maz:cursor-default;
   }
 
   /*
@@ -463,8 +425,10 @@ html.--backdrop-present.--has-scrollbar {
     }
   }
 
-  &.drawer-anim-left-enter-active,
-  &.drawer-anim-left-leave-active {
+  &.drawer-anim-start-enter-active,
+  &.drawer-anim-start-leave-active,
+  &.drawer-anim-end-enter-active,
+  &.drawer-anim-end-leave-active {
     transition: opacity 250ms ease-in-out;
     transition-behavior: allow-discrete;
 
@@ -474,8 +438,8 @@ html.--backdrop-present.--has-scrollbar {
     }
   }
 
-  &.drawer-anim-left-enter-from,
-  &.drawer-anim-left-leave-to {
+  &.drawer-anim-start-enter-from,
+  &.drawer-anim-start-leave-to {
     opacity: 0;
 
     & .m-backdrop-content > * {
@@ -483,23 +447,28 @@ html.--backdrop-present.--has-scrollbar {
     }
   }
 
-  &.drawer-anim-right-enter-active,
-  &.drawer-anim-right-leave-active {
-    transition: opacity 250ms ease-in-out;
-    transition-behavior: allow-discrete;
-
-    & .m-backdrop-content > * {
-      transition: transform 250ms ease-in-out;
-      transition-behavior: allow-discrete;
-    }
-  }
-
-  &.drawer-anim-right-enter-from,
-  &.drawer-anim-right-leave-to {
+  &.drawer-anim-end-enter-from,
+  &.drawer-anim-end-leave-to {
     opacity: 0;
 
     & .m-backdrop-content > * {
       transform: translateX(100%);
+    }
+  }
+}
+
+[dir='rtl'] .m-backdrop {
+  &.drawer-anim-start-enter-from,
+  &.drawer-anim-start-leave-to {
+    & .m-backdrop-content > * {
+      transform: translateX(100%);
+    }
+  }
+
+  &.drawer-anim-end-enter-from,
+  &.drawer-anim-end-leave-to {
+    & .m-backdrop-content > * {
+      transform: translateX(-100%);
     }
   }
 

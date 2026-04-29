@@ -12,6 +12,7 @@
   "include": [
     ".vitepress/**/*",
     "src/**/*",
+    "components/**/*",
     "types"
   ],
   "exclude": [

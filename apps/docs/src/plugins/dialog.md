@@ -98,7 +98,7 @@ async function openDialog() {
 The buttons property allows you to display custom buttons in the dialog and replace the default confirm and cancel buttons. You can use all props of [`MazBtn`](./../components/maz-btn.md#props) component. Each button can have a custom action to execute when clicked.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-wrap maz-gap-2">
+  <div class="maz:flex maz:flex-wrap maz:gap-2">
     <MazBtn color="contrast" @click="openDialogActions">
       Show dialog with custom buttons
     </MazBtn>
@@ -162,7 +162,7 @@ function openDialogActions() {
 The buttons property allows you to display custom buttons in the dialog and replace the default confirm and cancel buttons. Each button can have a custom response to return when clicked. The type property allows you to define the type of the button. The response property allows you to define the response of the promise when the button is clicked.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-wrap maz-gap-2">
+  <div class="maz:flex maz:flex-wrap maz:gap-2">
     <MazBtn color="contrast" @click="openDialogResponse">
       Show dialog with custom response
     </MazBtn>
@@ -224,7 +224,7 @@ async function openDialogResponse() {
 You can close the dialog programmatically by calling the close method returned by the open method.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-wrap maz-gap-2">
+  <div class="maz:flex maz:flex-wrap maz:gap-2">
     <MazBtn color="contrast" @click="openAndCloseDialog">
       Open and close dialog
     </MazBtn>
@@ -313,7 +313,7 @@ type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue'>> & {
 ```
 
 <script lang="ts" setup>
-  import { useDialog, useToast } from 'maz-ui/src/composables/index'
+  import { useDialog, useToast } from 'maz-ui/composables'
 
   const dialog = useDialog()
   const toast = useToast()

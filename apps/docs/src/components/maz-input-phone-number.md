@@ -32,7 +32,7 @@ The simplest way to use MazInputPhoneNumber - just add it and it works!
     @data="results = $event"
   />
 
-  <div class="maz-mt-4 maz-text-sm">
+  <div class="maz:mt-4 maz:text-sm">
     <p><strong>Phone Number:</strong> {{ phoneNumber || 'Not entered yet' }}</p>
     <p><strong>Country:</strong> {{ countryCode || 'Not selected' }}</p>
     <p><strong>Is Valid:</strong> {{ results?.isValid ? '✅ Yes' : '❌ No' }}</p>
@@ -68,10 +68,10 @@ const results = ref<MazInputPhoneNumberData>()
 Control which countries appear in the dropdown and their order.
 
 <ComponentDemo>
-  <div class="maz-space-y-4">
+  <div class="maz:space-y-4">
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Preferred Countries</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Show your most common countries first</p>
+      <h4 class="maz:font-semibold maz:mb-2">Preferred Countries</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Show your most common countries first</p>
       <MazInputPhoneNumber
         v-model="phone1"
         :preferred-countries="['US', 'FR', 'GB', 'DE', 'CA']"
@@ -79,8 +79,8 @@ Control which countries appear in the dropdown and their order.
       />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Only Specific Countries</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Limit to certain countries only</p>
+      <h4 class="maz:font-semibold maz:mb-2">Only Specific Countries</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Limit to certain countries only</p>
       <MazInputPhoneNumber
         v-model="phone2"
         :only-countries="['US', 'FR', 'GB', 'DE', 'IT', 'ES']"
@@ -88,8 +88,8 @@ Control which countries appear in the dropdown and their order.
       />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Ignore Countries</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Remove unwanted countries</p>
+      <h4 class="maz:font-semibold maz:mb-2">Ignore Countries</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Remove unwanted countries</p>
       <MazInputPhoneNumber
         v-model="phone3"
         :ignored-countries="['AF', 'AL', 'DZ']"
@@ -133,20 +133,20 @@ Control which countries appear in the dropdown and their order.
 Choose how the country selector and phone input are arranged.
 
 <ComponentDemo>
-  <div class="maz-space-y-6">
+  <div class="maz:space-y-6">
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Responsive (Default)</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Stacks on mobile, side-by-side on desktop</p>
+      <h4 class="maz:font-semibold maz:mb-2">Responsive (Default)</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Stacks on mobile, side-by-side on desktop</p>
       <MazInputPhoneNumber orientation="responsive" />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Always Row</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Side-by-side on all screen sizes</p>
+      <h4 class="maz:font-semibold maz:mb-2">Always Row</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Side-by-side on all screen sizes</p>
       <MazInputPhoneNumber orientation="row" />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Always Column</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Stacked on all screen sizes</p>
+      <h4 class="maz:font-semibold maz:mb-2">Always Column</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Stacked on all screen sizes</p>
       <MazInputPhoneNumber orientation="col" />
     </div>
   </div>
@@ -174,10 +174,10 @@ Choose how the country selector and phone input are arranged.
 Customize what information is shown to users.
 
 <ComponentDemo>
-  <div class="maz-space-y-6">
+  <div class="maz:space-y-6">
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Show Country Names</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Display country names instead of calling codes</p>
+      <h4 class="maz:font-semibold maz:mb-2">Show Country Names</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Display country names instead of calling codes</p>
       <MazInputPhoneNumber
         display-country-name
         :translations="{
@@ -186,20 +186,20 @@ Customize what information is shown to users.
       />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Show Calling Codes in List</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Help users see the dialing codes</p>
+      <h4 class="maz:font-semibold maz:mb-2">Show Calling Codes in List</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Help users see the dialing codes</p>
       <MazInputPhoneNumber show-code-in-list />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Hide Phone Examples</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">
+      <h4 class="maz:font-semibold maz:mb-2">Hide Phone Examples</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">
         Remove the example phone number hints (visible when the phone input is focused)
       </p>
       <MazInputPhoneNumber :example="false" />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Hide Country Flags</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Text-only country selection</p>
+      <h4 class="maz:font-semibold maz:mb-2">Hide Country Flags</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Text-only country selection</p>
       <MazInputPhoneNumber hide-flags />
     </div>
   </div>
@@ -233,20 +233,20 @@ Customize what information is shown to users.
 Let the component automatically detect the user's country.
 
 <ComponentDemo>
-  <div class="maz-space-y-6">
+  <div class="maz:space-y-6">
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Browser Locale Detection</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Uses browser language settings (enabled by default)</p>
+      <h4 class="maz:font-semibold maz:mb-2">Browser Locale Detection</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Uses browser language settings (enabled by default)</p>
       <MazInputPhoneNumber :use-browser-locale="true" />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">IP-based Detection</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Fetches country from user's IP address</p>
+      <h4 class="maz:font-semibold maz:mb-2">IP-based Detection</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Fetches country from user's IP address</p>
       <MazInputPhoneNumber fetch-country />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Manual Default Country</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Set a specific default country</p>
+      <h4 class="maz:font-semibold maz:mb-2">Manual Default Country</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Set a specific default country</p>
       <MazInputPhoneNumber
         :use-browser-locale="false"
         country-code="JP"
@@ -280,10 +280,10 @@ Let the component automatically detect the user's country.
 Control how phone numbers are automatically formatted as users type.
 
 <ComponentDemo>
-  <div class="maz-space-y-6">
+  <div class="maz:space-y-6">
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Format on Blur (Default)</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Shows raw input while typing, formats when field loses focus</p>
+      <h4 class="maz:font-semibold maz:mb-2">Format on Blur (Default)</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Shows raw input while typing, formats when field loses focus</p>
       <MazInputPhoneNumber
         auto-format="blur"
         country-code="US"
@@ -295,8 +295,8 @@ Control how phone numbers are automatically formatted as users type.
       />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Format While Typing</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Real-time formatting as you type</p>
+      <h4 class="maz:font-semibold maz:mb-2">Format While Typing</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Real-time formatting as you type</p>
       <MazInputPhoneNumber
         auto-format="typing"
         country-code="FR"
@@ -308,8 +308,8 @@ Control how phone numbers are automatically formatted as users type.
       />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Disable Formatting</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">For countries with multiple valid lengths or custom formatting</p>
+      <h4 class="maz:font-semibold maz:mb-2">Disable Formatting</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">For countries with multiple valid lengths or custom formatting</p>
       <MazInputPhoneNumber
         auto-format="disabled"
         country-code="AI"
@@ -348,23 +348,23 @@ Control how phone numbers are automatically formatted as users type.
 Control the visual validation feedback and success/error indicators.
 
 <ComponentDemo>
-  <div class="maz-space-y-6">
+  <div class="maz:space-y-6">
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Hide Validation UI</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">No visual success/error indicators</p>
+      <h4 class="maz:font-semibold maz:mb-2">Hide Validation UI</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">No visual success/error indicators</p>
       <MazInputPhoneNumber
         :validation-success="false"
         :validation-error="false"
       />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Force Success State</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Always show success styling</p>
+      <h4 class="maz:font-semibold maz:mb-2">Force Success State</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Always show success styling</p>
       <MazInputPhoneNumber success />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Force Error State</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Always show error styling</p>
+      <h4 class="maz:font-semibold maz:mb-2">Force Error State</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Always show error styling</p>
       <MazInputPhoneNumber error />
     </div>
   </div>
@@ -395,10 +395,10 @@ Control the visual validation feedback and success/error indicators.
 Make the component speak your users' language.
 
 <ComponentDemo>
-  <div class="maz-space-y-6">
+  <div class="maz:space-y-6">
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Custom Labels</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Translate all text in the interface</p>
+      <h4 class="maz:font-semibold maz:mb-2">Custom Labels</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Translate all text in the interface</p>
       <MazInputPhoneNumber
         :translations="{
           countrySelect: {
@@ -414,13 +414,13 @@ Make the component speak your users' language.
       />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Country Names in French</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Change the language of country names</p>
+      <h4 class="maz:font-semibold maz:mb-2">Country Names in French</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Change the language of country names</p>
       <MazInputPhoneNumber country-locale="fr-FR" />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Custom Country Names</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Override specific country names</p>
+      <h4 class="maz:font-semibold maz:mb-2">Custom Country Names</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Override specific country names</p>
       <MazInputPhoneNumber
         :custom-countries-list="{
           US: 'United States of America',
@@ -472,40 +472,40 @@ Make the component speak your users' language.
 Replace the default flag emojis with your own design.
 
 <ComponentDemo>
-  <div class="maz-space-y-6">
+  <div class="maz:space-y-6">
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Country Code Badges</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Show country codes instead of flags</p>
+      <h4 class="maz:font-semibold maz:mb-2">Country Code Badges</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Show country codes instead of flags</p>
       <MazInputPhoneNumber>
         <template #selector-flag="{ countryCode }">
           <span
             id="custom-flag-element"
-            class="maz-bg-primary maz-text-primary-foreground maz-px-2 maz-py-1 maz-rounded maz-text-xs maz-font-semibold"
+            class="maz:bg-primary maz:text-primary-foreground maz:px-2 maz:py-1 maz:rounded-md maz:text-xs maz:font-semibold"
           >
             {{ countryCode }}
           </span>
         </template>
         <template #country-list-flag="{ countryCode }">
-          <MazBadge size="sm" class="maz-me-2 maz-min-w-[2.5rem]">
+          <MazBadge size="sm" class="maz:me-2 maz:min-w-10">
             {{ countryCode }}
           </MazBadge>
         </template>
       </MazInputPhoneNumber>
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Custom Icons</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Use your own flag icons or designs</p>
+      <h4 class="maz:font-semibold maz:mb-2">Custom Icons</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Use your own flag icons or designs</p>
       <MazInputPhoneNumber>
         <template #selector-flag="{ countryCode }">
           <div
             id="icon-flag-element"
-            class="maz-w-6 maz-h-6 maz-bg-gradient-to-r maz-from-blue-500 maz-to-green-500 maz-rounded-full maz-flex maz-items-center maz-justify-center maz-text-white maz-text-xs maz-font-bold"
+            class="maz:w-6 maz:h-6 maz:bg-linear-to-r maz:from-blue-500 maz:to-green-500 maz:rounded-full maz:flex maz:items-center maz:justify-center maz:text-white maz:text-xs maz:font-bold"
           >
             {{ countryCode?.charAt(0) }}
           </div>
         </template>
         <template #country-list-flag="{ countryCode }">
-          <div class="maz-w-6 maz-h-6 maz-bg-gradient-to-r maz-from-purple-500 maz-to-pink-500 maz-rounded maz-flex maz-items-center maz-justify-center maz-text-white maz-text-xs maz-font-bold maz-me-2">
+          <div class="maz:w-6 maz:h-6 maz:bg-linear-to-r maz:from-purple-500 maz:to-pink-500 maz:rounded-md maz:flex maz:items-center maz:justify-center maz:text-white maz:text-xs maz:font-bold maz:me-2">
             {{ countryCode?.charAt(0) }}
           </div>
         </template>
@@ -525,7 +525,7 @@ Replace the default flag emojis with your own design.
       </span>
     </template>
     <template #country-list-flag="{ countryCode }">
-      <MazBadge size="sm" class="maz-me-2">
+      <MazBadge size="sm" class="maz:me-2">
         {{ countryCode }}
       </MazBadge>
     </template>
@@ -547,17 +547,18 @@ Replace the default flag emojis with your own design.
 </template>
 
 <style scoped>
+@reference "../../.vitepress/theme/main.css";
 .country-badge {
-  @apply maz-bg-primary maz-text-primary-foreground maz-px-2 maz-py-1 maz-rounded maz-text-xs maz-font-semibold;
+  @apply maz:bg-primary maz:text-primary-foreground maz:px-2 maz:py-1 maz:rounded-md maz:text-xs maz:font-semibold;
 }
 
 .custom-flag-icon,
 .custom-list-icon {
-  @apply maz-w-6 maz-h-6 maz-bg-gradient-to-r maz-from-blue-500 maz-to-green-500 maz-rounded-full maz-flex maz-items-center maz-justify-center maz-text-white maz-text-xs maz-font-bold;
+  @apply maz:w-6 maz:h-6 maz:bg-linear-to-r maz:from-blue-500 maz:to-green-500 maz:rounded-full maz:flex maz:items-center maz:justify-center maz:text-white maz:text-xs maz:font-bold;
 }
 
 .custom-list-icon {
-  @apply maz-me-2;
+  @apply maz:me-2;
 }
 </style>
 ```
@@ -574,10 +575,10 @@ Replace the default flag emojis with your own design.
 Fine-tune the component for specific use cases.
 
 <ComponentDemo>
-  <div class="maz-space-y-6">
+  <div class="maz:space-y-6">
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Phone-only Mode</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Hide country selector, pre-select country</p>
+      <h4 class="maz:font-semibold maz:mb-2">Phone-only Mode</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Hide country selector, pre-select country</p>
       <MazInputPhoneNumber
         hide-country-select
         country-code="US"
@@ -589,21 +590,21 @@ Fine-tune the component for specific use cases.
       />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Custom Search Sensitivity</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Adjust how strict country search is (0 = fuzzy, 1 = exact)</p>
+      <h4 class="maz:font-semibold maz:mb-2">Custom Search Sensitivity</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Adjust how strict country search is (0 = fuzzy, 1 = exact)</p>
       <MazInputPhoneNumber
         :search-threshold="0.3"
         placeholder="Try searching 'unite' for United States"
       />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Disable Search</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Remove search functionality from country list</p>
+      <h4 class="maz:font-semibold maz:mb-2">Disable Search</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Remove search functionality from country list</p>
       <MazInputPhoneNumber :search="false" />
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">Different Dropdown Position</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">Control where the country list appears</p>
+      <h4 class="maz:font-semibold maz:mb-2">Different Dropdown Position</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">Control where the country list appears</p>
       <MazInputPhoneNumber list-position="top-start" />
     </div>
   </div>
@@ -642,11 +643,11 @@ Fine-tune the component for specific use cases.
 See how to use the component in common scenarios.
 
 <ComponentDemo>
-  <div class="maz-space-y-8">
+  <div class="maz:space-y-8">
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">🏢 Business Form</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-4">Perfect for customer registration</p>
-      <div class="maz-max-w-md maz-grid maz-grid-cols-1 maz-gap-4">
+      <h4 class="maz:font-semibold maz:mb-2">🏢 Business Form</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-4">Perfect for customer registration</p>
+      <div class="maz:max-w-md maz:grid maz:grid-cols-1 maz:gap-4">
         <MazInput label="Full Name" placeholder="John Doe" />
         <MazInput label="Email" type="email" placeholder="john@example.com" />
         <MazInputPhoneNumber
@@ -663,9 +664,9 @@ See how to use the component in common scenarios.
       </div>
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">🌍 Global Support</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-4">Multi-language international form</p>
-      <div class="maz-max-w-md">
+      <h4 class="maz:font-semibold maz:mb-2">🌍 Global Support</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-4">Multi-language international form</p>
+      <div class="maz:max-w-md">
         <MazInputPhoneNumber
           v-model="globalPhone"
           country-locale="es-ES"
@@ -683,9 +684,9 @@ See how to use the component in common scenarios.
       </div>
     </div>
     <div>
-      <h4 class="maz-font-semibold maz-mb-2">📱 Mobile-first Design</h4>
-      <p class="maz-text-sm maz-text-muted maz-mb-4">Optimized for mobile apps</p>
-      <div class="maz-max-w-xs">
+      <h4 class="maz:font-semibold maz:mb-2">📱 Mobile-first Design</h4>
+      <p class="maz:text-sm maz:text-muted maz:mb-4">Optimized for mobile apps</p>
+      <div class="maz:max-w-xs">
         <MazInputPhoneNumber
           v-model="mobilePhone"
           orientation="col"
@@ -761,16 +762,16 @@ const mobilePhone = ref()
 Understanding what data the component provides.
 
 <ComponentDemo>
-  <div class="maz-space-y-4">
+  <div class="maz:space-y-4">
     <MazInputPhoneNumber
       v-model="dataPhone"
       v-model:country-code="dataCountry"
       label="Enter a phone number to see data"
       @data="phoneData = $event"
     />
-    <div v-if="phoneData" class="maz-bg-surface-400 maz-p-4 maz-rounded">
-      <h4 class="maz-font-semibold maz-mb-3">📊 Phone Number Data</h4>
-      <div class="maz-grid maz-grid-cols-1 md:maz-grid-cols-2 maz-gap-4 maz-text-sm">
+    <div v-if="phoneData" class="maz:bg-surface-400 maz:p-4 maz:rounded-md">
+      <h4 class="maz:font-semibold maz:mb-3">📊 Phone Number Data</h4>
+      <div class="maz:grid maz:grid-cols-1 maz:md:grid-cols-2 maz:gap-4 maz:text-sm">
         <div>
           <strong>Valid:</strong> {{ phoneData?.isValid ? '✅' : '❌' }}
         </div>

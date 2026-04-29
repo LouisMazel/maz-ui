@@ -111,12 +111,11 @@ defineExpose({
     :name="name"
     :inputmode="inputmode"
     :autocomplete="autocomplete"
-    class="m-phone-input"
+    class="m-phone-input maz:min-w-52 maz:flex-1"
     :class="[
       {
         '--border-radius': hasRadius,
-        '--error': error || !results.isValid,
-        '--focused': inputFocused,
+        'maz:z-1': (error || !results.isValid) || inputFocused,
       },
     ]"
     @focus="inputFocused = true"
@@ -125,45 +124,38 @@ defineExpose({
 </template>
 
 <style scoped>
-.m-phone-input {
-  @apply maz-min-w-52 maz-flex-1;
-
-  &.--error,
-  &.--focused {
-    @apply maz-z-1;
-  }
-}
+@reference "../../tailwindcss/tailwind.css";
 
 /** RESPONSIVE */
 .m-input-phone-number {
-  @apply maz-hidden;
+  @apply maz:hidden;
 
   &.--responsive .m-phone-input {
-    @apply -maz-mt-[var(--maz-border-width)] maz-flex-none mob-m:-maz-ms-[var(--maz-border-width)] mob-m:maz-mt-0 mob-m:maz-flex-auto;
+    @apply maz:-mt-(--maz-border-width) maz:flex-none maz:mob-m:-ms-(--maz-border-width) maz:mob-m:mt-0 maz:mob-m:flex-auto;
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {
-        @apply maz-rounded-t-none mob-m:maz-rounded-l-none mob-m:maz-rounded-tr;
+        @apply maz:rounded-t-none maz:mob-m:rounded-l-none maz:mob-m:rounded-tr-md;
       }
     }
   }
 
   &.--row .m-phone-input {
-    @apply -maz-ms-[var(--maz-border-width)] maz-flex-auto;
+    @apply maz:-ms-(--maz-border-width) maz:flex-auto;
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {
-        @apply maz-rounded-l-none;
+        @apply maz:rounded-l-none;
       }
     }
   }
 
   &.--col .m-phone-input {
-    @apply -maz-mt-[var(--maz-border-width)] maz-ms-0 maz-flex-none;
+    @apply maz:-mt-(--maz-border-width) maz:ms-0 maz:flex-none;
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {
-        @apply maz-rounded-t-none maz-rounded-bl;
+        @apply maz:rounded-t-none maz:rounded-bl-md;
       }
     }
   }

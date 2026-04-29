@@ -12,15 +12,15 @@ description: The module formatNumber is a function that formats numbers with the
 <MazInput v-model="numberValue" type="number" />
 
 <div
-  style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-background-300));"
-  class="maz-flex maz-flex-center maz-rounded maz-gap-0.5"
+  style="padding: 16px; margin-top: 16px; background-color: var(--maz-surface-300);"
+  class="maz:flex maz:flex-center maz:rounded-md maz:gap-0.5"
 >
   formatted value: <strong>{{ numberFormatted }}</strong>
 </div>
 
 ```vue
 <script lang="ts" setup>
-import { formatNumber } from 'maz-ui'
+import { formatNumber } from '@maz-ui/utils'
 import { computed, ref } from 'vue'
 
 const numberValue = ref(69)
@@ -34,7 +34,7 @@ const numberFormatted = computed(() =>
   <MazInput v-model="numberValue" type="number" />
 
   <div
-    style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-background-300));"
+    style="padding: 16px; margin-top: 16px; background-color: var(--maz-surface-300);"
   >
     {{ numberFormatted }}
   </div>
@@ -54,7 +54,7 @@ const DEFAULT_OPTIONS: Intl.NumberFormatOptions = {
 ```
 
 <script lang="ts" setup>
-  import { formatNumber } from 'maz-ui'
+  import { formatNumber } from '@maz-ui/utils'
   import { ref, computed } from 'vue'
 
   const numberValue = ref(69)

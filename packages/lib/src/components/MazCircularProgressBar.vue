@@ -172,7 +172,7 @@ onBeforeUnmount(() => observer?.disconnect())
 
 <template>
   <div
-    class="m-circular-progress-bar m-reset-css"
+    class="m-circular-progress-bar m-reset-css maz:relative maz:inline-flex maz:h-[1em] maz:w-[1em] maz:flex-center"
     :style="[
       {
         '--animation-duration': animationDuration,
@@ -184,8 +184,8 @@ onBeforeUnmount(() => observer?.disconnect())
       },
     ]"
   >
-    <div class="outer">
-      <div class="inner">
+    <div class="outer maz:flex maz:h-full maz:w-full maz:rounded-full maz:flex-center">
+      <div class="inner maz:flex maz:h-[0.85em] maz:w-[0.85em] maz:rounded-full maz:flex-center">
         <span v-if="slots.default">
           <!-- @slot Default slot - Replace the percaentage value -->
           <slot />
@@ -217,6 +217,7 @@ onBeforeUnmount(() => observer?.disconnect())
       xmlns="http://www.w3.org/2000/svg"
       height="1em"
       width="1em"
+      class="maz:absolute maz:-rotate-90"
       :class="{
         animate: isVisible,
       }"
@@ -227,13 +228,13 @@ onBeforeUnmount(() => observer?.disconnect())
           <stop
             offset="0%"
             :stop-color="
-              currentColor ? `hsl(var(--maz-${currentColor}-400))` : `hsl(var(--maz-primary))`
+              currentColor ? `var(--maz-${currentColor}-400)` : `var(--maz-primary)`
             "
           />
           <stop
             offset="100%"
             :stop-color="
-              currentColor ? `hsl(var(--maz-${currentColor}-700))` : `hsl(var(--maz-secondary))`
+              currentColor ? `var(--maz-${currentColor}-700)` : `var(--maz-secondary)`
             "
           />
         </linearGradient>
@@ -254,35 +255,23 @@ onBeforeUnmount(() => observer?.disconnect())
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-circular-progress-bar {
-  @apply maz-relative maz-inline-flex maz-h-[1em] maz-w-[1em] maz-flex-center;
-
-  .outer {
-    @apply maz-flex maz-h-full maz-w-full maz-rounded-full maz-flex-center;
+  .inner :deep(> *) {
+    @apply maz:text-[0.25em];
   }
 
-  .inner {
-    @apply maz-flex maz-h-[0.85em] maz-w-[0.85em] maz-rounded-full maz-flex-center;
-
-    :deep(> *) {
-      @apply maz-text-[0.25em];
-    }
+  svg circle {
+    will-change: stroke-dashoffset;
+    animation: animate linear forwards var(--animation-duration);
+    animation-delay: var(--delay);
   }
+}
 
-  svg {
-    @apply maz-absolute -maz-rotate-90;
-
-    circle {
-      will-change: stroke-dashoffset;
-      animation: animate linear forwards var(--animation-duration);
-      animation-delay: var(--delay);
-    }
-  }
-
-  @keyframes animate {
-    to {
-      stroke-dashoffset: var(--dashoffset);
-    }
+@keyframes animate {
+  to {
+    stroke-dashoffset: var(--dashoffset);
   }
 }
 </style>

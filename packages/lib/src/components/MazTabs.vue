@@ -38,7 +38,7 @@ export interface MazTabsProvide {
   updateCurrentTab: (index: number) => number
 }
 
-provide<MazTabsProvide>('maz-tabs', {
+provide<MazTabsProvide>('maz:tabs', {
   currentTab,
   updateCurrentTab,
 })

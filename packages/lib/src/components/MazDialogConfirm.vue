@@ -223,7 +223,7 @@ function buttonClick(currentModal: MazDialogConfirmState, button: MazDialogConfi
         :reject="(reason?: unknown) => reject(currentModal, reason)"
         name="footer-button"
       >
-        <div class="maz-flex maz-items-center maz-gap-2">
+        <div class="maz:flex maz:items-center maz:gap-2">
           <template v-if="currentButtons">
             <MazBtn
               v-for="(button, i) in currentButtons"

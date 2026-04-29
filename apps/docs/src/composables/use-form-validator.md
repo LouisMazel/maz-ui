@@ -26,7 +26,7 @@ description: Vue composables for form validation with Valibot - useFormValidator
 Here's the simplest form you can create with `useFormValidator`:
 
 <ComponentDemo>
-  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitQuickStart">
+  <form class="maz:flex maz:flex-col maz:gap-4" @submit="onSubmitQuickStart">
     <MazInput
       v-model="quickStartModel.email"
       label="Email"
@@ -138,8 +138,8 @@ Each field in `fieldsStates` contains:
 | `validating` | `boolean` | Async validation is in progress |
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
-    <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitState">
+  <div class="maz:flex maz:flex-col maz:gap-4">
+    <form class="maz:flex maz:flex-col maz:gap-4" @submit="onSubmitState">
       <MazInput
         v-model="stateModel.name"
         label="Name (min 3 characters)"
@@ -157,11 +157,11 @@ Each field in `fieldsStates` contains:
       />
       <MazBtn type="submit">Submit</MazBtn>
     </form>
-    <div class="maz-rounded">
-      <p class="maz-font-semibold maz-mb-2">Form State:</p>
-      <pre class="maz-text-xs maz-bg-surface-600/70 dark:maz-bg-surface-600/60 maz-p-2 maz-rounded">{{ JSON.stringify({ isValid: stateValid, isDirty: stateDirty, isSubmitted: stateSubmitted, isSubmitting: stateSubmitting }, null, 2) }}</pre>
-      <p class="maz-font-semibold maz-mb-2 maz-mt-4">Fields States:</p>
-      <pre class="maz-text-xs maz-bg-surface-600/70 dark:maz-bg-surface-600/60 maz-p-2 maz-rounded">{{ JSON.stringify(stateFields, null, 2) }}</pre>
+    <div class="maz:rounded-md">
+      <p class="maz:font-semibold maz:mb-2">Form State:</p>
+      <pre class="maz:text-xs maz:bg-surface-600/70 maz:dark:bg-surface-600/60 maz:p-2 maz:rounded-md">{{ JSON.stringify({ isValid: stateValid, isDirty: stateDirty, isSubmitted: stateSubmitted, isSubmitting: stateSubmitting }, null, 2) }}</pre>
+      <p class="maz:font-semibold maz:mb-2 maz:mt-4">Fields States:</p>
+      <pre class="maz:text-xs maz:bg-surface-600/70 maz:dark:bg-surface-600/60 maz:p-2 maz:rounded-md">{{ JSON.stringify(stateFields, null, 2) }}</pre>
     </div>
   </div>
 
@@ -229,10 +229,10 @@ For `eager`, `blur`, and `progressive` modes, you must use `useFormField` with t
 The default mode. Validates when field values change. Errors only appear if the field is not empty.
 
 <ComponentDemo>
-  <div class="maz-mb-4">
-    <p class="maz-text-sm maz-text-muted">Type in the field and clear it - notice the error appears only when there's content.</p>
+  <div class="maz:mb-4">
+    <p class="maz:text-sm maz:text-muted">Type in the field and clear it - notice the error appears only when there's content.</p>
   </div>
-  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitLazy">
+  <form class="maz:flex maz:flex-col maz:gap-4" @submit="onSubmitLazy">
     <MazInput
       v-model="lazyModel.name"
       label="Name (min 3 characters)"
@@ -287,10 +287,10 @@ const onSubmit = handleSubmit((data) => {
 Validates all fields immediately when the form is created and on every change. Errors are always displayed.
 
 <ComponentDemo>
-  <div class="maz-mb-4">
-    <p class="maz-text-sm maz-text-muted">Notice all fields show errors immediately, even before any interaction.</p>
+  <div class="maz:mb-4">
+    <p class="maz:text-sm maz:text-muted">Notice all fields show errors immediately, even before any interaction.</p>
   </div>
-  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitAggressive">
+  <form class="maz:flex maz:flex-col maz:gap-4" @submit="onSubmitAggressive">
     <MazInput
       v-model="aggressiveModel.name"
       label="Name (min 3 characters)"
@@ -342,10 +342,10 @@ Requires `useFormField` with `ref` option or `validationEvents`.
 :::
 
 <ComponentDemo>
-  <div class="maz-mb-4">
-    <p class="maz-text-sm maz-text-muted">Type something, then click outside the field (blur) to see validation. After that, errors update as you type.</p>
+  <div class="maz:mb-4">
+    <p class="maz:text-sm maz:text-muted">Type something, then click outside the field (blur) to see validation. After that, errors update as you type.</p>
   </div>
-  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitEager">
+  <form class="maz:flex maz:flex-col maz:gap-4" @submit="onSubmitEager">
     <MazInput
       ref="eagerNameRef"
       v-model="eagerName"
@@ -446,10 +446,10 @@ Requires `useFormField` with `ref` option or `validationEvents`.
 Validates only when the field loses focus. Errors are only shown after blur.
 
 <ComponentDemo>
-  <div class="maz-mb-4">
-    <p class="maz-text-sm maz-text-muted">Type in the field, then click outside. Errors only appear after blur, and don't update while typing.</p>
+  <div class="maz:mb-4">
+    <p class="maz:text-sm maz:text-muted">Type in the field, then click outside. Errors only appear after blur, and don't update while typing.</p>
   </div>
-  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitBlur">
+  <form class="maz:flex maz:flex-col maz:gap-4" @submit="onSubmitBlur">
     <MazInput
       ref="blurNameRef"
       v-model="blurName"
@@ -517,10 +517,10 @@ Requires `useFormField` with `ref` option or `validationEvents`.
 The most user-friendly mode. Validates silently in the background. Shows errors only on blur if the field is invalid. Once valid, it stays valid until it becomes invalid again.
 
 <ComponentDemo>
-  <div class="maz-mb-4">
-    <p class="maz-text-sm maz-text-muted">Start typing - the field becomes valid (green) as soon as validation passes. Errors only show after blur.</p>
+  <div class="maz:mb-4">
+    <p class="maz:text-sm maz:text-muted">Start typing - the field becomes valid (green) as soon as validation passes. Errors only show after blur.</p>
   </div>
-  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitProgressive">
+  <form class="maz:flex maz:flex-col maz:gap-4" @submit="onSubmitProgressive">
     <MazInput
       ref="progressiveNameRef"
       v-model="progressiveName"
@@ -709,10 +709,10 @@ const { value: email } = useFormField<string>('email', {
 Use Valibot's `pipeAsync` and `checkAsync` for async validations like checking username availability:
 
 <ComponentDemo>
-  <div class="maz-mb-4">
-    <p class="maz-text-sm maz-text-muted">Try typing "taken" - the async validator will reject it after a 2-second delay.</p>
+  <div class="maz:mb-4">
+    <p class="maz:text-sm maz:text-muted">Try typing "taken" - the async validator will reject it after a 2-second delay.</p>
   </div>
-  <form class="maz-flex maz-gap-4" @submit="onSubmitAsync">
+  <form class="maz:flex maz:gap-4" @submit="onSubmitAsync">
     <MazInput
       ref="asyncUsernameRef"
       v-model="asyncUsername"
@@ -721,7 +721,7 @@ Use Valibot's `pipeAsync` and `checkAsync` for async validations like checking u
       :error="asyncUsernameHasError"
       :success="asyncUsernameValid"
       :loading="asyncUsernameValidating"
-      class="maz-flex-1"
+      class="maz:flex-1"
     />
     <MazBtn type="submit" :loading="asyncSubmitting">Submit</MazBtn>
   </form>
@@ -789,10 +789,10 @@ For expensive validations (like API calls), use throttling or debouncing to limi
 | `throttledFields` | Runs at most once per interval | 1000ms | Rate-limited APIs |
 
 <ComponentDemo>
-  <div class="maz-mb-4">
-    <p class="maz-text-sm maz-text-muted">Name has 500ms debounce, Age has 1000ms throttle. Watch the console to see validation timing.</p>
+  <div class="maz:mb-4">
+    <p class="maz:text-sm maz:text-muted">Name has 500ms debounce, Age has 1000ms throttle. Watch the console to see validation timing.</p>
   </div>
-  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitDebounced">
+  <form class="maz:flex maz:flex-col maz:gap-4" @submit="onSubmitDebounced">
     <MazInput
       v-model="debouncedModel.name"
       label="Name (debounced 500ms)"
@@ -842,7 +842,7 @@ const { model, errorMessages, fieldsStates, isSubmitting, handleSubmit } = useFo
 Use `resetForm()` to reset the form to its initial state, or set `resetOnSuccess` to automatically reset after successful submission.
 
 <ComponentDemo>
-  <form class="maz-flex maz-flex-col maz-gap-4" @submit="onSubmitReset">
+  <form class="maz:flex maz:flex-col maz:gap-4" @submit="onSubmitReset">
     <MazInput
       v-model="resetModel.name"
       label="Name"
@@ -858,7 +858,7 @@ Use `resetForm()` to reset the form to its initial state, or set `resetOnSuccess
       :error="resetStates.age.error"
       :success="resetStates.age.valid"
     />
-    <div class="maz-flex maz-gap-2">
+    <div class="maz:flex maz:gap-2">
       <MazBtn type="submit" :loading="resetSubmitting">Submit</MazBtn>
       <MazBtn type="button" color="destructive" @click="resetFormFn">Reset</MazBtn>
     </div>
@@ -1196,9 +1196,9 @@ const { value } = useFormField<string>('email', {
 
 <script lang="ts" setup>
 import { ref, useTemplateRef } from 'vue'
-import { useFormValidator } from 'maz-ui/src/composables/useFormValidator'
-import { useFormField } from 'maz-ui/src/composables/useFormField'
-import { useToast } from 'maz-ui/src/composables/useToast'
+import { useFormValidator } from 'maz-ui/composables/useFormValidator'
+import { useFormField } from 'maz-ui/composables/useFormField'
+import { useToast } from 'maz-ui/composables/useToast'
 import { sleep } from '@maz-ui/utils'
 import {
   string,

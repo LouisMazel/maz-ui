@@ -1,6 +1,6 @@
 <script lang="ts" setup generic="T extends MazInputValue">
-import type { IconComponent } from '@maz-ui/icons'
 import type { HTMLAttributes, InputHTMLAttributes } from 'vue'
+import type { MazIconLike } from '../composables/useMazIconProps'
 import type { MazColor, MazSize } from './types'
 import { MazEye } from '@maz-ui/icons/lazy/MazEye'
 import { MazEyeSlash } from '@maz-ui/icons/lazy/MazEyeSlash'
@@ -14,6 +14,7 @@ import {
   useSlots,
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useMazIconProps } from '../composables/useMazIconProps'
 import { onAutofillSync } from '../utils/autofillSync'
 import { hasSlotContent } from '../utils/hasSlotContent'
 
@@ -171,27 +172,25 @@ export interface MazInputProps<T = MazInputValue> {
    */
   borderActive?: boolean
   /**
-   * Icon displayed on the left side of the input. Can be an icon name string or icon component
-   * @type {string | IconComponent}
-   * @example "user"
-   * @example UserIcon
+   * Icon displayed on the inline-start edge of the input (left in LTR, right
+   * in RTL). Accepts a bare value (Vue component, raw SVG string, URL or
+   * `data:` URI) or a full `MazIconProps` object for fine-grained control
+   * (size, title, svgAttributes, fallback, …).
    */
-  leftIcon?: string | IconComponent
+  startIcon?: MazIconLike
   /**
-   * Icon displayed on the right side of the input. Can be an icon name string or icon component
-   * @type {string | IconComponent}
-   * @example "search"
-   * @example SearchIcon
+   * Icon displayed on the inline-end edge of the input (right in LTR, left
+   * in RTL). Accepts a bare value or a full `MazIconProps` object.
    */
-  rightIcon?: string | IconComponent
+  endIcon?: MazIconLike
   /**
    * Controls the border radius of the input component
    * @values none, sm, md, lg, xl, full
-   * @type {'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'}
-   * @default 'base'
+   * @type {'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'}
+   * @default 'md'
    * @example "lg"
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'
+  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /**
    * Makes the input expand to the full width of its container
    * @type {boolean}
@@ -245,9 +244,9 @@ const props = withDefaults(defineProps<MazInputProps<T>>(), {
   debounce: false,
   autoFocus: false,
   borderActive: false,
-  leftIcon: undefined,
-  rightIcon: undefined,
-  roundedSize: 'base',
+  startIcon: undefined,
+  endIcon: undefined,
+  roundedSize: 'md',
   loading: false,
 })
 
@@ -303,6 +302,9 @@ const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
+const { iconProps: startIconProps } = useMazIconProps(() => props.startIcon)
+const { iconProps: endIconProps } = useMazIconProps(() => props.endIcon)
+
 const hasPasswordVisible = ref(false)
 const input = ref<HTMLInputElement | undefined>()
 
@@ -339,12 +341,12 @@ const borderStyle = computed(() => {
   if (!props.border)
     return undefined
   if (props.error)
-    return 'maz-border-destructive'
+    return 'maz:border-destructive'
   if (props.success)
-    return 'maz-border-success'
+    return 'maz:border-success'
   if (props.warning)
-    return 'maz-border-warning'
-  return '--default-border'
+    return 'maz:border-warning'
+  return '--default-border maz:border-divider maz:dark:border-divider-400'
 })
 
 const slots = useSlots()
@@ -371,17 +373,17 @@ const hasLabel = computed(() => !!props.label || !!props.hint)
 
 const alwaysUp = computed(() => ['date', 'month', 'week'].includes(props.type))
 
-function hasRightPart(): boolean {
+function hasEndPart(): boolean {
   return (
-    hasSlotContent(slots['right-icon'])
+    hasSlotContent(slots['end-icon'])
     || isPasswordType.value
-    || !!props.rightIcon
+    || !!props.endIcon
     || props.loading
   )
 }
 
-function hasLeftPart(): boolean {
-  return hasSlotContent(slots['left-icon']) || !!props.leftIcon
+function hasStartPart(): boolean {
+  return hasSlotContent(slots['start-icon']) || !!props.startIcon
 }
 
 function focus(event: Event) {
@@ -401,18 +403,36 @@ function emitInputEvent(event: Event) {
 
 const stateColor = computed(() => {
   if (props.error)
-    return '!maz-text-destructive-600'
+    return 'maz:text-destructive-600!'
   if (props.success)
-    return '!maz-text-success-600'
+    return 'maz:text-success-600!'
   if (props.warning)
-    return '!maz-text-warning-600'
+    return 'maz:text-warning-600!'
   return undefined
 })
+
+const ROUNDED_CLASS = {
+  none: '',
+  sm: 'maz:rounded-xs',
+  md: 'maz:rounded-md',
+  lg: 'maz:rounded-lg',
+  xl: 'maz:rounded-xl',
+  full: 'maz:rounded-full',
+} as const
+
+const CHILD_TEXT_SIZE_CLASS = {
+  xl: 'maz:text-xl',
+  lg: 'maz:text-lg',
+  md: '',
+  sm: 'maz:text-sm',
+  xs: 'maz:text-xs',
+  mini: 'maz:text-xs',
+} as const
 </script>
 
 <template>
   <div
-    class="m-input m-reset-css" :class="[
+    class="m-input m-reset-css maz:inline-flex maz:flex-col maz:align-top maz:items-start maz:text-foreground" :class="[
       {
         '--border-active': borderActive,
         '--always-up': alwaysUp,
@@ -422,41 +442,42 @@ const stateColor = computed(() => {
         '--has-z-2': error || warning || success,
         '--has-state': error || warning || success,
         '--block': block,
+        'maz:w-full': block,
       },
       props.class,
       `--${color}`,
-    ]" :style="[style, { '--maz-input-color': `hsl(var(--maz-${color}-100))` }]"
+    ]" :style="[style, { '--maz-input-color': `var(--maz-${color}-100)` }]"
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
-    <label v-if="topLabel" :for="instanceId" class="m-input-top-label" :class="stateColor">{{ topLabel }}</label>
+    <label v-if="topLabel" :for="instanceId" class="m-input-top-label maz:mb-2" :class="stateColor">{{ topLabel }}</label>
 
     <div
-      class="m-input-wrapper"
+      class="m-input-wrapper maz:relative maz:z-1 maz:flex maz:flex-1 maz:overflow-hidden maz:bg-input maz:transition-colors maz:duration-300 maz:size-full"
       :class="[
         inputClasses,
         borderStyle,
+        ROUNDED_CLASS[roundedSize],
         `--rounded-${roundedSize}`,
-        { '--block': block, '--border': border },
+        { '--block': block, '--border': border, 'maz:w-full': block, 'maz:border maz:border-solid': border },
       ]"
     >
-      <div v-if="hasLeftPart()" class="m-input-wrapper-left">
+      <div v-if="hasStartPart()" class="m-input-wrapper-start maz:relative maz:z-1 maz:flex maz:space-x-1 maz:py-1 maz:flex-center maz:ps-2">
         <!--
-          @slot Custom content for the left side of the input field.
-          Typically used for icons, buttons, or text. Overrides the leftIcon prop when used
+          @slot Custom content for the inline-start edge of the input field (left in LTR, right in RTL).
+          Typically used for icons, buttons, or text. Overrides the startIcon prop when used
         -->
-        <slot v-if="hasSlotContent(slots['left-icon']) || leftIcon" name="left-icon">
-          <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
-          <component :is="leftIcon" v-else-if="leftIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
+        <slot v-if="hasSlotContent(slots['start-icon']) || startIcon" name="start-icon">
+          <MazIcon v-if="startIconProps" v-bind="startIconProps" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
         </slot>
       </div>
 
       <div
-        class="m-input-wrapper-input"
+        class="m-input-wrapper-input maz:relative maz:flex maz:w-full maz:max-w-full maz:flex-1 maz:items-center"
         :class="[
           `--${size}`,
           { '--top-label': !!topLabel,
-            '--has-left-icon': hasLeftPart(),
-            '--has-right-icon': hasRightPart(),
+            '--has-start-icon': hasStartPart(),
+            '--has-end-icon': hasEndPart(),
           },
         ]"
       >
@@ -474,7 +495,8 @@ const stateColor = computed(() => {
           :disabled
           :readonly
           :required
-          class="m-input-input"
+          class="m-input-input maz:m-0 maz:h-full maz:w-full maz:appearance-none maz:truncate maz:border-none maz:bg-transparent maz:py-0 maz:text-foreground maz:shadow-none maz:outline-hidden maz:px-4"
+          :class="[CHILD_TEXT_SIZE_CLASS[size], { 'maz:ps-2': hasStartPart(), 'maz:pe-2': hasEndPart() }]"
           v-on="{
             blur,
             focus,
@@ -485,29 +507,28 @@ const stateColor = computed(() => {
         >
 
         <span
-          v-if="label || hint" class="m-input-label" :class="stateColor"
+          v-if="label || hint" class="m-input-label maz:pointer-events-none maz:absolute maz:w-full maz:origin-top-left maz:items-center maz:overflow-hidden maz:truncate maz:whitespace-nowrap maz:text-start maz:leading-6 maz:inset-s-4" :class="[stateColor, CHILD_TEXT_SIZE_CLASS[size], { 'maz:inset-s-2': hasStartPart(), 'maz:pe-3': hasLabel }]"
         >
           {{ hint || label }}
         </span>
       </div>
 
-      <div v-if="hasRightPart()" class="m-input-wrapper-right">
+      <div v-if="hasEndPart()" class="m-input-wrapper-end maz:relative maz:z-1 maz:flex maz:space-x-1 maz:py-1 maz:flex-center maz:pe-2">
         <!--
-          @slot Custom content for the right side of the input field.
-          Typically used for icons, buttons, or action elements. Overrides the rightIcon prop when used.
+          @slot Custom content for the inline-end edge of the input field (right in LTR, left in RTL).
+          Typically used for icons, buttons, or action elements. Overrides the endIcon prop when used.
           Note: For password inputs, the visibility toggle button will appear after this slot content
         -->
-        <slot v-if="hasSlotContent(slots['right-icon']) || rightIcon" name="right-icon">
-          <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
-          <component :is="rightIcon" v-else-if="rightIcon" class="maz-text-xl" :class="stateColor || 'maz-text-muted'" />
+        <slot v-if="hasSlotContent(slots['end-icon']) || endIcon" name="end-icon">
+          <MazIcon v-if="endIconProps" v-bind="endIconProps" class="maz:text-xl" :class="stateColor || 'maz:text-muted'" />
         </slot>
 
         <MazBtn
           v-if="isPasswordType" color="transparent" tabindex="-1" size="mini"
           @click.stop="hasPasswordVisible = !hasPasswordVisible"
         >
-          <MazEyeSlash v-if="hasPasswordVisible" class="maz-text-xl maz-text-muted" />
-          <MazEye v-else class="maz-text-xl maz-text-muted" />
+          <MazEyeSlash v-if="hasPasswordVisible" class="maz:text-xl maz:text-muted" />
+          <MazEye v-else class="maz:text-xl maz:text-muted" />
         </MazBtn>
 
         <template v-if="loading">
@@ -524,12 +545,12 @@ const stateColor = computed(() => {
     </div>
 
     <div
-      v-if="assistiveText" class="m-input-bottom-text" :class="[
+      v-if="assistiveText" class="m-input-bottom-text maz:mt-1 maz:text-sm" :class="[
         {
-          'maz-text-destructive-600': error,
-          'maz-text-success-600': success,
-          'maz-text-warning-600': warning,
-          'maz-text-muted': !error && !success && !warning,
+          'maz:text-destructive-600': error,
+          'maz:text-success-600': success,
+          'maz:text-warning-600': warning,
+          'maz:text-muted': !error && !success && !warning,
         },
       ]"
     >
@@ -539,159 +560,47 @@ const stateColor = computed(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-input {
-  @apply maz-inline-flex maz-flex-col maz-align-top maz-items-start maz-text-foreground;
-
-  &.--block {
-    @apply maz-w-full;
-  }
-
-  &-top-label {
-    @apply maz-mb-2;
-  }
-
-  &-bottom-text {
-    @apply maz-mt-1 maz-text-sm;
-  }
-
   &-wrapper {
-    @apply maz-relative maz-z-1 maz-flex maz-flex-1 maz-overflow-hidden maz-bg-surface maz-transition-colors maz-duration-300 maz-size-full;
-
-    &.--border {
-      @apply maz-border maz-border-solid;
-    }
-
-    &.--block {
-      @apply maz-w-full;
-    }
-
-    &.--default-border {
-      @apply maz-border-divider dark:maz-border-divider-400;
-    }
-
     &-input {
-      @apply maz-relative maz-flex maz-w-full maz-max-w-full maz-flex-1 maz-items-center;
-
-      &.--has-left-icon {
-        .m-input-input {
-          @apply maz-ps-2;
-        }
-
-        .m-input-label {
-          @apply maz-start-2;
-        }
-      }
-
-      &.--has-right-icon {
-        .m-input-input {
-          @apply maz-pe-2;
-        }
-      }
-
       &.--xl {
-        height: calc(4rem - (var(--maz-border-width) * 2));
-
-        & .m-input-input,
-        & .m-input-label {
-          @apply maz-text-xl;
-        }
+        block-size: calc(4rem - (var(--maz-border-width) * 2));
       }
 
       &.--lg {
-        height: calc(3.5rem - (var(--maz-border-width) * 2));
-
-        & .m-input-input,
-        & .m-input-label {
-          @apply maz-text-lg;
-        }
+        block-size: calc(3.5rem - (var(--maz-border-width) * 2));
       }
 
       &.--md {
-        height: calc(3rem - (var(--maz-border-width) * 2));
+        block-size: calc(3rem - (var(--maz-border-width) * 2));
       }
 
       &.--sm {
-        height: calc(2.5rem - (var(--maz-border-width) * 2));
-
-        & .m-input-input,
-        & .m-input-label {
-          @apply maz-text-sm;
-        }
+        block-size: calc(2.5rem - (var(--maz-border-width) * 2));
       }
 
       &.--xs {
-        height: calc(2rem - (var(--maz-border-width) * 2));
-
-        & .m-input-input,
-        & .m-input-label {
-          @apply maz-text-xs;
-        }
+        block-size: calc(2rem - (var(--maz-border-width) * 2));
       }
 
       &.--mini {
-        height: calc(1.5rem - (var(--maz-border-width) * 2));
-
-        & .m-input-input,
-        & .m-input-label {
-          @apply maz-text-xs;
-        }
-      }
-    }
-
-    &-right,
-    &-left {
-      @apply maz-relative maz-z-1 maz-flex maz-space-x-1 maz-py-1 maz-flex-center;
-    }
-
-    &-right {
-      @apply maz-pe-2;
-    }
-
-    &-left {
-      @apply maz-ps-2;
-    }
-
-    &.--rounded {
-      &-sm {
-        @apply maz-rounded-sm;
-      }
-
-      &-md {
-        @apply maz-rounded-md;
-      }
-
-      &-base {
-        @apply maz-rounded;
-      }
-
-      &-lg {
-        @apply maz-rounded-lg;
-      }
-
-      &-xl {
-        @apply maz-rounded-xl;
-      }
-
-      &-full {
-        @apply maz-rounded-full;
+        block-size: calc(1.5rem - (var(--maz-border-width) * 2));
       }
     }
   }
 
   &-input {
-    @apply maz-m-0 maz-h-full maz-w-full maz-appearance-none maz-truncate maz-border-none maz-bg-transparent maz-py-0 maz-text-foreground maz-shadow-none maz-outline-none maz-px-4;
-
     transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
     &::placeholder {
-      @apply maz-text-muted;
+      @apply maz:text-muted;
     }
   }
 
   &-label {
-    @apply maz-pointer-events-none maz-absolute maz-w-full maz-origin-top-left maz-items-center maz-overflow-hidden maz-truncate maz-whitespace-nowrap maz-text-start maz-leading-6 maz-start-4;
-
-    width: calc(100% - 0.75rem);
+    inline-size: calc(100% - 0.75rem);
     transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
   }
 
@@ -699,96 +608,86 @@ const stateColor = computed(() => {
   &.--has-placeholder .m-input-label,
   & .m-input-input:not(:placeholder-shown) ~ .m-input-label,
   & .m-input-input:-webkit-autofill ~ .m-input-label {
-    width: calc(100% + 1.3rem);
+    inline-size: calc(100% + 1.3rem);
     transform: scale(0.8) translateY(-0.65em);
   }
 
   &.--always-up .m-input-input,
   &.--has-placeholder.--has-label .m-input-input,
   &.--has-label .m-input-input:not(:placeholder-shown),
-  & .m-input-input:-webkit-autofill {
-    @apply maz-pt-4;
+  &.--has-label .m-input-input:-webkit-autofill {
+    @apply maz:pt-4;
   }
 
   &:not(.--has-state) .m-input-wrapper {
-    @apply maz-text-muted;
+    @apply maz:text-muted;
   }
 
   &.--has-z-2 {
     & .m-input-wrapper {
-      @apply maz-z-2;
+      @apply maz:z-2;
     }
   }
 
   &.--is-readonly {
     & .m-input-input {
-      @apply maz-cursor-default;
+      @apply maz:cursor-default;
     }
-  }
-
-  & .m-input-wrapper {
-    @apply dark:maz-bg-surface-400;
   }
 
   &:has(input:disabled) {
     & .m-input-wrapper {
-      @apply maz-bg-surface-600 maz-text-muted dark:maz-bg-surface-300;
+      @apply maz:bg-surface-600 maz:text-muted maz:dark:bg-surface-300;
     }
 
     & .m-input-input {
-      @apply maz-cursor-not-allowed maz-text-muted;
+      @apply maz:disabled-cursor maz:text-muted;
     }
   }
 
   & .m-input-wrapper:focus-within,
   &.--border-active .m-input-wrapper {
-    @apply maz-z-3;
+    @apply maz:z-3;
   }
 
   &.--primary .m-input-wrapper:focus-within,
   &.--primary.--border-active .m-input-wrapper {
-    @apply maz-border-primary;
+    @apply maz:border-primary;
   }
 
   &.--secondary .m-input-wrapper:focus-within,
   &.--secondary.--border-active .m-input-wrapper {
-    @apply maz-border-secondary;
+    @apply maz:border-secondary;
   }
 
   &.--accent .m-input-wrapper:focus-within,
   &.--accent.--border-active .m-input-wrapper {
-    @apply maz-border-accent;
+    @apply maz:border-accent;
   }
 
   &.--info .m-input-wrapper:focus-within,
   &.--info.--border-active .m-input-wrapper {
-    @apply maz-border-info;
+    @apply maz:border-info;
   }
 
   &.--success .m-input-wrapper:focus-within,
   &.--success.--border-active .m-input-wrapper {
-    @apply maz-border-success;
+    @apply maz:border-success;
   }
 
   &.--warning .m-input-wrapper:focus-within,
   &.--warning.--border-active .m-input-wrapper {
-    @apply maz-border-warning;
+    @apply maz:border-warning;
   }
 
   &.--destructive .m-input-wrapper:focus-within,
   &.--destructive.--border-active .m-input-wrapper {
-    @apply maz-border-destructive;
+    @apply maz:border-destructive;
   }
 
   &.--contrast .m-input-wrapper:focus-within,
   &.--contrast.--border-active .m-input-wrapper {
-    @apply maz-border-contrast;
-  }
-
-  &.--has-label {
-    .m-input-label {
-      @apply maz-pe-3;
-    }
+    @apply maz:border-contrast;
   }
 }
 </style>

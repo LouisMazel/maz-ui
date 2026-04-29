@@ -1,0 +1,201 @@
+/*
+ * Color bridge for Tailwind v4.
+ *
+ * Uses @theme inline so the runtime values injected by @maz-ui/themes
+ * (--maz-*) flow directly into the Tailwind utilities (bg-primary,
+ * text-foreground, etc.). The keys match their --maz-* source 1:1, with
+ * one logical alias kept for the shadow color:
+ *
+ *   elevation  → shadow
+ */
+@theme inline {
+  /* primary */
+  --color-primary: var(--maz-primary);
+  --color-primary-foreground: var(--maz-primary-foreground);
+  --color-primary-50: var(--maz-primary-50);
+  --color-primary-100: var(--maz-primary-100);
+  --color-primary-200: var(--maz-primary-200);
+  --color-primary-300: var(--maz-primary-300);
+  --color-primary-400: var(--maz-primary-400);
+  --color-primary-500: var(--maz-primary-500);
+  --color-primary-600: var(--maz-primary-600);
+  --color-primary-700: var(--maz-primary-700);
+  --color-primary-800: var(--maz-primary-800);
+  --color-primary-900: var(--maz-primary-900);
+
+  /* secondary */
+  --color-secondary: var(--maz-secondary);
+  --color-secondary-foreground: var(--maz-secondary-foreground);
+  --color-secondary-50: var(--maz-secondary-50);
+  --color-secondary-100: var(--maz-secondary-100);
+  --color-secondary-200: var(--maz-secondary-200);
+  --color-secondary-300: var(--maz-secondary-300);
+  --color-secondary-400: var(--maz-secondary-400);
+  --color-secondary-500: var(--maz-secondary-500);
+  --color-secondary-600: var(--maz-secondary-600);
+  --color-secondary-700: var(--maz-secondary-700);
+  --color-secondary-800: var(--maz-secondary-800);
+  --color-secondary-900: var(--maz-secondary-900);
+
+  /* accent */
+  --color-accent: var(--maz-accent);
+  --color-accent-foreground: var(--maz-accent-foreground);
+  --color-accent-50: var(--maz-accent-50);
+  --color-accent-100: var(--maz-accent-100);
+  --color-accent-200: var(--maz-accent-200);
+  --color-accent-300: var(--maz-accent-300);
+  --color-accent-400: var(--maz-accent-400);
+  --color-accent-500: var(--maz-accent-500);
+  --color-accent-600: var(--maz-accent-600);
+  --color-accent-700: var(--maz-accent-700);
+  --color-accent-800: var(--maz-accent-800);
+  --color-accent-900: var(--maz-accent-900);
+
+  /* destructive */
+  --color-destructive: var(--maz-destructive);
+  --color-destructive-foreground: var(--maz-destructive-foreground);
+  --color-destructive-50: var(--maz-destructive-50);
+  --color-destructive-100: var(--maz-destructive-100);
+  --color-destructive-200: var(--maz-destructive-200);
+  --color-destructive-300: var(--maz-destructive-300);
+  --color-destructive-400: var(--maz-destructive-400);
+  --color-destructive-500: var(--maz-destructive-500);
+  --color-destructive-600: var(--maz-destructive-600);
+  --color-destructive-700: var(--maz-destructive-700);
+  --color-destructive-800: var(--maz-destructive-800);
+  --color-destructive-900: var(--maz-destructive-900);
+
+  /* success */
+  --color-success: var(--maz-success);
+  --color-success-foreground: var(--maz-success-foreground);
+  --color-success-50: var(--maz-success-50);
+  --color-success-100: var(--maz-success-100);
+  --color-success-200: var(--maz-success-200);
+  --color-success-300: var(--maz-success-300);
+  --color-success-400: var(--maz-success-400);
+  --color-success-500: var(--maz-success-500);
+  --color-success-600: var(--maz-success-600);
+  --color-success-700: var(--maz-success-700);
+  --color-success-800: var(--maz-success-800);
+  --color-success-900: var(--maz-success-900);
+
+  /* warning */
+  --color-warning: var(--maz-warning);
+  --color-warning-foreground: var(--maz-warning-foreground);
+  --color-warning-50: var(--maz-warning-50);
+  --color-warning-100: var(--maz-warning-100);
+  --color-warning-200: var(--maz-warning-200);
+  --color-warning-300: var(--maz-warning-300);
+  --color-warning-400: var(--maz-warning-400);
+  --color-warning-500: var(--maz-warning-500);
+  --color-warning-600: var(--maz-warning-600);
+  --color-warning-700: var(--maz-warning-700);
+  --color-warning-800: var(--maz-warning-800);
+  --color-warning-900: var(--maz-warning-900);
+
+  /* info */
+  --color-info: var(--maz-info);
+  --color-info-foreground: var(--maz-info-foreground);
+  --color-info-50: var(--maz-info-50);
+  --color-info-100: var(--maz-info-100);
+  --color-info-200: var(--maz-info-200);
+  --color-info-300: var(--maz-info-300);
+  --color-info-400: var(--maz-info-400);
+  --color-info-500: var(--maz-info-500);
+  --color-info-600: var(--maz-info-600);
+  --color-info-700: var(--maz-info-700);
+  --color-info-800: var(--maz-info-800);
+  --color-info-900: var(--maz-info-900);
+
+  /* contrast */
+  --color-contrast: var(--maz-contrast);
+  --color-contrast-foreground: var(--maz-contrast-foreground);
+  --color-contrast-50: var(--maz-contrast-50);
+  --color-contrast-100: var(--maz-contrast-100);
+  --color-contrast-200: var(--maz-contrast-200);
+  --color-contrast-300: var(--maz-contrast-300);
+  --color-contrast-400: var(--maz-contrast-400);
+  --color-contrast-500: var(--maz-contrast-500);
+  --color-contrast-600: var(--maz-contrast-600);
+  --color-contrast-700: var(--maz-contrast-700);
+  --color-contrast-800: var(--maz-contrast-800);
+  --color-contrast-900: var(--maz-contrast-900);
+
+  /* surface */
+  --color-surface: var(--maz-surface);
+  --color-surface-50: var(--maz-surface-50);
+  --color-surface-100: var(--maz-surface-100);
+  --color-surface-200: var(--maz-surface-200);
+  --color-surface-300: var(--maz-surface-300);
+  --color-surface-400: var(--maz-surface-400);
+  --color-surface-500: var(--maz-surface-500);
+  --color-surface-600: var(--maz-surface-600);
+  --color-surface-700: var(--maz-surface-700);
+  --color-surface-800: var(--maz-surface-800);
+  --color-surface-900: var(--maz-surface-900);
+
+  /* foreground */
+  --color-foreground: var(--maz-foreground);
+  --color-foreground-50: var(--maz-foreground-50);
+  --color-foreground-100: var(--maz-foreground-100);
+  --color-foreground-200: var(--maz-foreground-200);
+  --color-foreground-300: var(--maz-foreground-300);
+  --color-foreground-400: var(--maz-foreground-400);
+  --color-foreground-500: var(--maz-foreground-500);
+  --color-foreground-600: var(--maz-foreground-600);
+  --color-foreground-700: var(--maz-foreground-700);
+  --color-foreground-800: var(--maz-foreground-800);
+  --color-foreground-900: var(--maz-foreground-900);
+
+  /* divider */
+  --color-divider: var(--maz-divider);
+  --color-divider-50: var(--maz-divider-50);
+  --color-divider-100: var(--maz-divider-100);
+  --color-divider-200: var(--maz-divider-200);
+  --color-divider-300: var(--maz-divider-300);
+  --color-divider-400: var(--maz-divider-400);
+  --color-divider-500: var(--maz-divider-500);
+  --color-divider-600: var(--maz-divider-600);
+  --color-divider-700: var(--maz-divider-700);
+  --color-divider-800: var(--maz-divider-800);
+  --color-divider-900: var(--maz-divider-900);
+
+  /* elevation (alias of shadow) */
+  --color-elevation: var(--maz-shadow);
+  --color-elevation-50: var(--maz-shadow-50);
+  --color-elevation-100: var(--maz-shadow-100);
+  --color-elevation-200: var(--maz-shadow-200);
+  --color-elevation-300: var(--maz-shadow-300);
+  --color-elevation-400: var(--maz-shadow-400);
+  --color-elevation-500: var(--maz-shadow-500);
+  --color-elevation-600: var(--maz-shadow-600);
+  --color-elevation-700: var(--maz-shadow-700);
+  --color-elevation-800: var(--maz-shadow-800);
+  --color-elevation-900: var(--maz-shadow-900);
+
+  /* overlay */
+  --color-overlay: var(--maz-overlay);
+  --color-overlay-50: var(--maz-overlay-50);
+  --color-overlay-100: var(--maz-overlay-100);
+  --color-overlay-200: var(--maz-overlay-200);
+  --color-overlay-300: var(--maz-overlay-300);
+  --color-overlay-400: var(--maz-overlay-400);
+  --color-overlay-500: var(--maz-overlay-500);
+  --color-overlay-600: var(--maz-overlay-600);
+  --color-overlay-700: var(--maz-overlay-700);
+  --color-overlay-800: var(--maz-overlay-800);
+  --color-overlay-900: var(--maz-overlay-900);
+
+  /* muted */
+  --color-muted: var(--maz-muted);
+  --color-muted-50: var(--maz-muted-50);
+  --color-muted-100: var(--maz-muted-100);
+  --color-muted-200: var(--maz-muted-200);
+  --color-muted-300: var(--maz-muted-300);
+  --color-muted-400: var(--maz-muted-400);
+  --color-muted-500: var(--maz-muted-500);
+  --color-muted-600: var(--maz-muted-600);
+  --color-muted-700: var(--maz-muted-700);
+  --color-muted-800: var(--maz-muted-800);
+  --color-muted-900: var(--maz-muted-900);
+}

@@ -11,8 +11,8 @@ description: vClickOutside is a Vue directive to trigger a function when the use
 
 <ComponentDemo>
   <div
-    style="padding: 50px; background-color: hsl(var(--maz-background-300));"
-    class="maz-flex maz-flex-center maz-rounded"
+    style="padding: 50px; background-color: var(--maz-surface-300);"
+    class="maz:flex maz:flex-center maz:rounded-md"
   >
     <MazCard v-click-outside="clikedOutside">
       Click outside me
@@ -21,8 +21,8 @@ description: vClickOutside is a Vue directive to trigger a function when the use
 
   <div
     v-if="hasClikedOutside"
-    style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-success)); color: black;"
-    class="maz-flex maz-flex-center maz-rounded"
+    style="padding: 16px; margin-top: 16px; background-color: var(--maz-success); color: black;"
+    class="maz:flex maz:flex-center maz:rounded-md"
   >
     You clicked outside
   </div>
@@ -44,7 +44,7 @@ function clikedOutside() {
 
 <template>
   <div
-    style="padding: 50px; background-color: hsl(var(--maz-background-300));"
+    style="padding: 50px; background-color: var(--maz-surface-300);"
     class="flex flex-center rounded"
   >
     <MazCard v-click-outside="clikedOutside">
@@ -54,7 +54,7 @@ function clikedOutside() {
 
   <div
     v-if="hasClikedOutside"
-    style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-success)); color: black;"
+    style="padding: 16px; margin-top: 16px; background-color: var(--maz-success); color: black;"
     class="flex flex-center rounded"
   >
     You clicked outside
@@ -71,13 +71,13 @@ The directive can accept an options object to customize its behavior:
 
 <ComponentDemo>
   <div
-    style="padding: 50px; background-color: hsl(var(--maz-background-300));"
-    class="maz-flex maz-flex-center maz-rounded"
+    style="padding: 50px; background-color: var(--maz-surface-300);"
+    class="maz:flex maz:flex-center maz:rounded-md"
   >
     <MazCard v-click-outside="{ callback: clickedOutsideWithIgnore, ignore: ['.ignore-me'] }">
-      <div class="maz-p-4">
+      <div class="maz:p-4">
         <p>Click outside me (but not on the button below)</p>
-        <MazBtn class="ignore-me maz-mt-2" color="secondary">
+        <MazBtn class="ignore-me maz:mt-2" color="secondary">
           This button is ignored
         </MazBtn>
       </div>
@@ -86,8 +86,8 @@ The directive can accept an options object to customize its behavior:
 
   <div
     v-if="hasClickedOutsideWithIgnore"
-    style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-warning)); color: black;"
-    class="maz-flex maz-flex-center maz-rounded"
+    style="padding: 16px; margin-top: 16px; background-color: var(--maz-warning); color: black;"
+    class="maz:flex maz:flex-center maz:rounded-md"
   >
     You clicked outside (button clicks are ignored)
   </div>
@@ -128,8 +128,8 @@ The directive can be configured to trigger only once:
 
 <ComponentDemo>
   <div
-    style="padding: 50px; background-color: hsl(var(--maz-background-300));"
-    class="maz-flex maz-flex-center maz-rounded"
+    style="padding: 50px; background-color: var(--maz-surface-300);"
+    class="maz:flex maz:flex-center maz:rounded-md"
   >
     <MazCard v-click-outside="{ callback: clickedOnce, once: true }">
       Click outside me (works only once)
@@ -138,8 +138,8 @@ The directive can be configured to trigger only once:
 
   <div
     v-if="hasClickedOnce"
-    style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-info)); color: white;"
-    class="maz-flex maz-flex-center maz-rounded"
+    style="padding: 16px; margin-top: 16px; background-color: var(--maz-info); color: white;"
+    class="maz:flex maz:flex-center maz:rounded-md"
   >
     This will only show once!
   </div>
@@ -253,7 +253,7 @@ Please refer to the [Nuxt module documentation](./../guide/nuxt.md) for more inf
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { vClickOutside } from 'maz-ui/src/directives/vClickOutside'
+  import { vClickOutside } from 'maz-ui/directives/vClickOutside'
 
   const hasClikedOutside = ref(false)
   const hasClickedOutsideWithIgnore = ref(false)

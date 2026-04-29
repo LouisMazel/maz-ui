@@ -73,7 +73,7 @@ import { mazUi } from '@maz-ui/themes/presets'
 import { fr } from '@maz-ui/translations'
 import { MazUi } from 'maz-ui/plugins/maz-ui'
 // main.ts
-import 'maz-ui/styles'
+import 'maz-ui/style.css'
 
 const app = createApp(App)
 
