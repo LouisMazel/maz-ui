@@ -53,8 +53,8 @@ export default defineConfig(({ mode }) => {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
       conditions: isDev
-        ? ['monorepo:dev', 'import', 'browser', 'module', 'default', 'require']
-        : ['import', 'browser', 'module', 'default', 'require'],
+        ? ['monorepo:dev', 'import', 'browser', 'module', 'default']
+        : ['import', 'browser', 'module', 'default'],
     },
     css: {
       postcss: {

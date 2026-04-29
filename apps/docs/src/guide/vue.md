@@ -84,15 +84,18 @@ app.use(MazUi, {
    * @see https://maz-ui.com/guide/themes
    */
   theme: {
-    preset: mazUi, // 'ocean' | 'pristine' | 'obsidian'
+    preset: mazUi, // 'ocean' | 'pristine' | 'obsidian' | 'nova'
     overrides: {
       foundation: {
-        'radius': '0.7rem',
+        'space': '0.25rem',
         'border-width': '0.0625rem',
+      },
+      scales: {
+        rounded: { md: '0.7rem' },
       },
       colors: {
         light: {
-          primary: '220 100% 50%',
+          primary: 'oklch(0.65 0.19 254)',
         }
       }
     }

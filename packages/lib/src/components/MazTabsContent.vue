@@ -6,7 +6,7 @@ import { useInjectStrict } from '../composables/useInjectStrict'
 
 const hideOverflow = ref(false)
 
-const { currentTab } = useInjectStrict<MazTabsProvide>('maz:tabs')
+const { currentTab } = useInjectStrict<MazTabsProvide>('maz-tabs')
 
 const allowOverFlow = debounce(() => {
   hideOverflow.value = false

@@ -108,9 +108,9 @@ defineExpose({
     :size
     :success
     block
-    :name="name"
-    :inputmode="inputmode"
-    :autocomplete="autocomplete"
+    :name
+    :inputmode
+    :autocomplete
     class="m-phone-input maz:min-w-52 maz:flex-1"
     :class="[
       {
@@ -131,11 +131,11 @@ defineExpose({
   @apply maz:hidden;
 
   &.--responsive .m-phone-input {
-    @apply maz:-mt-(--maz-border-width) maz:flex-none maz:mob-m:-ms-(--maz-border-width) maz:mob-m:mt-0 maz:mob-m:flex-auto;
+    @apply maz:-mt-(--maz-border-width) maz:flex-none maz:mob-l:-ms-(--maz-border-width) maz:mob-l:mt-0 maz:mob-l:flex-auto;
 
     &.--border-radius {
       &:deep(.m-input-wrapper) {
-        @apply maz:rounded-t-none maz:mob-m:rounded-l-none maz:mob-m:rounded-tr-md;
+        @apply maz:rounded-t-none maz:mob-l:rounded-l-none maz:mob-l:rounded-tr-md;
       }
     }
   }

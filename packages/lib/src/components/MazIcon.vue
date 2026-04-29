@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { IconComponent } from '@maz-ui/icons'
 import type { CSSProperties } from 'vue'
+import type { MazSizeUnit } from './types'
 import { MazQuestionMarkCircle } from '@maz-ui/icons/lazy/MazQuestionMarkCircle'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, inject, markRaw, onServerPrefetch, ref, useAttrs, watch } from 'vue'
@@ -22,23 +23,9 @@ const emits = defineEmits<{
 
 const predefinedSizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const
 
-type SizeUnit
-  = | `${number}px`
-    | `${number}em`
-    | `${number}rem`
-    | `${number}%`
-    | `${number}vw`
-    | `${number}vh`
-    | `${number}cm`
-    | `${number}mm`
-    | `${number}in`
-    | `${number}pt`
-    | `${number}pc`
-    | `${number}ex`
-
 type PredefinedSize = typeof predefinedSizes[number]
 
-export type MazIconSize = SizeUnit | PredefinedSize
+export type MazIconSize = MazSizeUnit | PredefinedSize
 export type MazIconValue = string | IconComponent
 
 export interface MazIconProps {

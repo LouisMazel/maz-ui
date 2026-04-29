@@ -1,8 +1,7 @@
 <script setup lang="ts">
+import type { MazSizeUnit } from './types'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed } from 'vue'
-
-type SizeUnit = `${number}rem` | `${number}px` | `${number}em` | `${number}vh` | `${number}vw` | `${number}%`
 
 export interface MazSkeletonProps {
   /**
@@ -16,15 +15,15 @@ export interface MazSkeletonProps {
    * Size with units (ex: '2rem', '40px', '3em')
    * @default '1rem'
    */
-  size?: SizeUnit
+  size?: MazSizeUnit
   /**
    * Custom width
    */
-  width?: SizeUnit
+  width?: MazSizeUnit
   /**
    * Custom height
    */
-  height?: SizeUnit
+  height?: MazSizeUnit
   /**
    * Disable animation
    * @default true

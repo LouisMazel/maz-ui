@@ -111,7 +111,7 @@ const price = ref(100)
             class="maz:flex-1"
           />
 
-          <MazBtn color="contrast" outlined class="maz:flex-1" right-icon="shopping-cart">
+          <MazBtn color="contrast" outlined class="maz:flex-1" right-icon="/shopping-cart.svg">
             Make an offer
           </MazBtn>
         </div>
@@ -125,7 +125,7 @@ const price = ref(100)
             class="maz:flex-1"
           />
 
-          <MazBtn color="contrast" class="maz:flex-1" right-icon="shopping-cart">
+          <MazBtn color="contrast" class="maz:flex-1" right-icon="/shopping-cart.svg">
             Add to Cart
           </MazBtn>
         </div>

@@ -251,7 +251,7 @@ export interface MazTableProvide {
   backgroundOdd: Ref<boolean>
 }
 
-export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz:table')
+export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz-table')
 </script>
 
 <script lang="ts" setup generic="T extends MazTableRow<T>">
@@ -607,7 +607,7 @@ onBeforeMount(() => {
 
 <template>
   <div class="m-table m-reset-css maz:relative maz:max-w-full" :class="{ '--has-header': hasHeader }">
-    <div v-if="hasHeader" class="m-table-header maz:flex maz:max-w-full maz:items-center maz:justify-between maz:gap-2 maz:bg-container maz:py-2">
+    <div v-if="hasHeader" class="m-table-header maz:flex maz:max-w-full maz:items-start maz:mob-l:items-center maz:justify-between maz:gap-2 maz:bg-container maz:py-2 maz:flex-col maz:mob-l:flex-row">
       <div v-if="title || hasSlotContent(slots.title)" class="m-table-spacer">
         <!--
           @slot Replace the title of the table
@@ -625,7 +625,7 @@ onBeforeMount(() => {
           v-model="searchByKey"
           :rounded-size
           :color
-          :style="{ width: '8rem' }"
+          :style="{ maxWidth: '12rem' }"
           :placeholder="messages.searchByInput.placeholder"
           :size="inputSize ?? size"
           :options="searchByOptions"
@@ -649,6 +649,7 @@ onBeforeMount(() => {
       <table
         :class="[{ '--elevation': elevation, '--has-layout': tableLayout }, tableClass]"
         :style="tableStyle"
+        class="maz:table maz:w-full maz:border-collapse maz:bg-container"
       >
         <caption v-if="caption || hasSlotContent(slots.caption)">
           <!--
@@ -815,11 +816,9 @@ onBeforeMount(() => {
       </table>
     </div>
 
-    <div v-if="hasFooter" class="m-table-footer">
-      <div class="m-table-spacer" />
-
-      <div v-if="pagination" class="m-table-footer-pagination">
-        <div class="m-table-footer-pagination-items-per-page">
+    <div v-if="hasFooter" class="m-table-footer maz:flex maz:max-w-full maz:justify-end maz:gap-2 maz:bg-container maz:py-2">
+      <div v-if="pagination" class="m-table-footer-pagination maz:flex maz:items-center maz:gap-4">
+        <div class="m-table-footer-pagination-items-per-page maz:flex maz:items-center maz:gap-1">
           <span class="maz:hidden maz:text-sm maz:tab-s:block"> {{ messages.pagination.rowsPerPage }} </span>
           <MazSelect
             v-model="pageSizeModel"
@@ -828,7 +827,7 @@ onBeforeMount(() => {
             :size="inputSize ?? size"
             :color="color"
             list-position="top"
-            :style="{ width: '5rem' }"
+            :style="{ maxWidth: '6rem' }"
           />
         </div>
 
@@ -836,7 +835,7 @@ onBeforeMount(() => {
           {{ rowsFromTo.from }} - {{ rowsFromTo.to }} {{ messages.pagination.of }} {{ totalItemsInternal }}
         </span>
 
-        <div class="m-table-footer-pagination-buttons">
+        <div class="m-table-footer-pagination-buttons maz:flex maz:items-center maz:gap-1">
           <MazBtn
             :disabled="currentPageModel === 1"
             :size="inputSize ?? size"
@@ -886,22 +885,6 @@ onBeforeMount(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-table {
-  &-footer {
-    @apply maz:flex maz:max-w-full maz:justify-between maz:gap-2 maz:bg-container maz:p-2;
-
-    &-pagination {
-      @apply maz:flex maz:items-center maz:gap-4;
-
-      &-buttons {
-        @apply maz:flex maz:items-center maz:gap-1;
-      }
-
-      &-items-per-page {
-        @apply maz:flex maz:items-center maz:gap-1;
-      }
-    }
-  }
-
   &-wrapper {
     &:not(.--rounded-none) {
       @apply maz:rounded-xl;
@@ -1047,8 +1030,6 @@ onBeforeMount(() => {
   }
 
   table {
-    @apply maz:table maz:w-full maz:border-collapse maz:bg-container;
-
     table-layout: v-bind('tableLayout');
 
     &.--has-layout {

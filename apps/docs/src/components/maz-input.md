@@ -146,8 +146,8 @@ const inputValue = ref()
 <MazInput
   v-model="inputValue"
   label="label icons"
-  start-icon="banknotes"
-  end-icon="user"
+  start-icon="/banknotes.svg"
+  end-icon="/user.svg"
   autocomplete="off"
 />
 
@@ -160,7 +160,7 @@ When you use the properties `end-icon`, `start-icon` or `icon` with the icon nam
 Check out how [MazIcon](./maz-icon.md) works, see all available icons and download them to put them in your public folder.
 
 ```html
-<MazInput v-model="inputValue" label="label icons" start-icon="banknotes" end-icon="user" />
+<MazInput v-model="inputValue" label="label icons" start-icon="/banknotes.svg" end-icon="/user.svg" />
 ```
 
 :::

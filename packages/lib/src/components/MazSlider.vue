@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { CSSProperties } from 'vue'
+import type { CSSProperties, StyleValue } from 'vue'
 import type { MazColor } from './types'
 import { debounce } from '@maz-ui/utils/helpers/debounce'
 
@@ -90,10 +90,10 @@ const wrapperStyle = computed(() => {
     paddingTop: labels ? `2.5em` : `1em`,
   }
 })
-const sliderStyle = computed<CSSProperties>(() => {
+const sliderStyle = computed<StyleValue>(() => {
   if (color === 'transparent')
     return {}
-  return { '--m-slider-color': `var(--maz-${color})` } as CSSProperties
+  return { '--m-slider-color': `var(--maz-${color})` }
 })
 const hasMultipleValues = computed(() => Array.isArray(modelValue))
 

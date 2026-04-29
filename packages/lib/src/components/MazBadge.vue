@@ -80,13 +80,12 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
     return undefined
 
   const pastelFg = c === 'contrast' ? 'contrast-foreground' : `${c}-700`
-  const pastelShade = c === 'destructive' ? '200' : '50'
 
   return {
     '--m-badge-bg': `var(--maz-${c})`,
     '--m-badge-fg': `var(--maz-${c}-foreground)`,
     ...(pastel && {
-      '--m-badge-pastel-bg': `var(--maz-${c}-${pastelShade})`,
+      '--m-badge-pastel-bg': `color-mix(in srgb, var(--maz-${c}-500) 20%, transparent)`,
       '--m-badge-pastel-fg': `var(--maz-${pastelFg})`,
     }),
   }
@@ -137,7 +136,7 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
   &.--pastel {
     background-color: var(--m-badge-pastel-bg);
     color: var(--m-badge-pastel-fg);
-    border-color: var(--m-badge-pastel-bg);
+    border-color: transparent;
   }
 
   &.--surface {

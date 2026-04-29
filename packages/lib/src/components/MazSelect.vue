@@ -20,6 +20,7 @@ import {
   computed,
   defineAsyncComponent,
   nextTick,
+  onBeforeUnmount,
   ref,
   useTemplateRef,
   watch,
@@ -269,7 +270,7 @@ const optionListElement = useTemplateRef('optionListRef')
 const optionListWrapperRef = useTemplateRef('optionListWrapper')
 
 const selectedTextColor = computed(() => `var(--maz-${color})`)
-const selectedBgColor = computed(() => `color-mix(in srgb, var(--maz-${color}-500) 0.1, transparent)`)
+const selectedBgColor = computed(() => `color-mix(in srgb, var(--maz-${color}-500) 10%, transparent)`)
 
 const SIZE_TEXT_CLASS = {
   mini: 'maz:text-xs',
@@ -630,6 +631,10 @@ watch(
   { immediate: true },
 )
 
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', keydownHandler)
+})
+
 defineExpose({
   /**
    * Open the select
@@ -937,10 +942,8 @@ defineExpose({
       color: var(--selected-text-color);
       background-color: var(--selected-bg-color);
 
-      &:focus {
-        @apply maz:outline-[var(--selected-text-color)];
-
-        outline-width: var(--maz-border-width);
+      &:focus-within {
+        @apply maz:outline-offset-2! maz:outline-solid maz:outline-(--selected-text-color)!;
       }
 
       &.--transparent {

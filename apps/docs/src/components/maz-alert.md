@@ -252,7 +252,7 @@ Hide the default icon with `hide-icon`.
 Provide a custom icon using the `icon` prop.
 
 <ComponentDemo>
-  <MazAlert color="primary" title="Custom icon" content="This alert uses a custom icon." icon="bell" />
+  <MazAlert color="primary" title="Custom icon" content="This alert uses a custom icon." icon="/bell.svg" />
 
   <template #code>
 
@@ -262,7 +262,7 @@ Provide a custom icon using the `icon` prop.
     color="primary"
     title="Custom icon"
     content="This alert uses a custom icon."
-    icon="bell"
+    icon="/bell.svg"
   />
 </template>
 ```

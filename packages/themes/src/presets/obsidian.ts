@@ -7,7 +7,7 @@ import {
   DEFAULT_FONT_MONO,
   DEFAULT_INPUT_BG,
   DEFAULT_SHADOW,
-  DEFAULT_SPACING,
+  DEFAULT_SPACE,
 } from './_defaults'
 
 /**
@@ -33,20 +33,20 @@ export const obsidian: ThemePreset = {
     'base-font-size': '14px',
     'border-width': '1px',
     'font-family': FONT_FAMILY,
-    'font-mono': DEFAULT_FONT_MONO,
-    'font-display': FONT_FAMILY,
-    'duration-fast': '80ms',
-    'duration-normal': '160ms',
-    'duration-slow': '240ms',
+    'font-mono-stack': DEFAULT_FONT_MONO,
+    'font-display-stack': FONT_FAMILY,
+    'motion-fast': '80ms',
+    'motion-normal': '160ms',
+    'motion-slow': '240ms',
     'easing-out': 'cubic-bezier(0.16, 1, 0.3, 1)',
     'easing-in': 'cubic-bezier(0.7, 0, 0.84, 0)',
     'easing-in-out': 'cubic-bezier(0.87, 0, 0.13, 1)',
     'disabled-opacity': DEFAULT_DISABLED_OPACITY,
     'disabled-cursor': DEFAULT_DISABLED_CURSOR,
+    'space': DEFAULT_SPACE,
   },
   scales: {
-    spacing: DEFAULT_SPACING,
-    radius: {
+    rounded: {
       'xs': '0.125rem',
       'sm': '0.25rem',
       'md': '0.5rem',

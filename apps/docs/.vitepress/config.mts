@@ -4,11 +4,6 @@ import { dirname, join } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
-import {
-  buildSeparateThemeFiles,
-  CSS_ID,
-  mazUi,
-} from '@maz-ui/themes'
 import tailwindcssPostcss from '@tailwindcss/postcss'
 import postcssNested from 'postcss-nested'
 import postcssUrl from 'postcss-url'
@@ -24,13 +19,6 @@ import { getOgImage } from './og-image'
 const isDev = process.env.NODE_ENV !== 'production'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
-
-// Generate complete CSS
-const {
-  full,
-} = buildSeparateThemeFiles(mazUi, {
-  darkSelector: 'class',
-})
 
 function pascalCaseToKebabCase(value: string): string {
   return value.replaceAll(/([\da-z])([A-Z])/g, '$1-$2').toLowerCase()
@@ -85,7 +73,7 @@ export default defineConfig<DefaultTheme.Config>({
 
   head: [
     ...head,
-    ['style', { id: CSS_ID, type: 'text/css' }, full],
+    // ['style', { id: CSS_ID, type: 'text/css' }, full],
   ] satisfies HeadConfig[],
 
   themeConfig: {

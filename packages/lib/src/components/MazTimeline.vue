@@ -530,7 +530,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
     }
 
     .m-timeline-connector-track {
-      @apply maz:h-0.5 maz:w-full;
+      @apply maz:h-(--maz-border-width) maz:w-full;
     }
 
     .m-timeline-connector-fill {
@@ -561,7 +561,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
     }
 
     .m-timeline-connector-track {
-      @apply maz:h-full maz:min-h-6 maz:w-0.5 maz:translate-x-px;
+      @apply maz:h-full maz:min-h-6 maz:w-(--maz-border-width) maz:translate-x-px;
     }
 
     .m-timeline-connector-fill {
@@ -676,7 +676,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
   /* --- Sizes --- */
   &.--mini {
     --m-timeline-indicator-size: 1.25rem;
-    --m-timeline-indicator-half: 0.625rem;
+    --m-timeline-indicator-half: calc(0.625rem - var(--maz-border-width));
     --m-timeline-icon-size: 0.625rem;
     --m-timeline-font-size: 0.625rem;
     --m-timeline-number-size: 0.5rem;
@@ -684,7 +684,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
 
   &.--xs {
     --m-timeline-indicator-size: 1.5rem;
-    --m-timeline-indicator-half: 0.75rem;
+    --m-timeline-indicator-half: calc(0.75rem - var(--maz-border-width));
     --m-timeline-icon-size: 0.75rem;
     --m-timeline-font-size: 0.75rem;
     --m-timeline-number-size: 0.625rem;
@@ -692,7 +692,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
 
   &.--sm {
     --m-timeline-indicator-size: 1.75rem;
-    --m-timeline-indicator-half: 0.875rem;
+    --m-timeline-indicator-half: calc(0.875rem - var(--maz-border-width));
     --m-timeline-icon-size: 0.875rem;
     --m-timeline-font-size: 0.75rem;
     --m-timeline-number-size: 0.625rem;
@@ -700,7 +700,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
 
   &.--md {
     --m-timeline-indicator-size: 2rem;
-    --m-timeline-indicator-half: 1rem;
+    --m-timeline-indicator-half: calc(1rem - var(--maz-border-width));
     --m-timeline-icon-size: 1rem;
     --m-timeline-font-size: 0.875rem;
     --m-timeline-number-size: 0.75rem;
@@ -708,7 +708,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
 
   &.--lg {
     --m-timeline-indicator-size: 2.5rem;
-    --m-timeline-indicator-half: 1.25rem;
+    --m-timeline-indicator-half: calc(1.25rem - var(--maz-border-width));
     --m-timeline-icon-size: 1.25rem;
     --m-timeline-font-size: 1rem;
     --m-timeline-number-size: 0.875rem;
@@ -716,7 +716,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
 
   &.--xl {
     --m-timeline-indicator-size: 3rem;
-    --m-timeline-indicator-half: 1.5rem;
+    --m-timeline-indicator-half: calc(1.5rem - var(--maz-border-width));
     --m-timeline-icon-size: 1.5rem;
     --m-timeline-font-size: 1.125rem;
     --m-timeline-number-size: 1rem;

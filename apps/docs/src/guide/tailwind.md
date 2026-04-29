@@ -13,13 +13,13 @@ This page is for consumers who **already have a Tailwind v4 setup of their own**
 
 ## What the bridge gives you
 
-You already configured a maz-ui theme via `@maz-ui/themes` — a built-in preset (`mazUi`, `ocean`, `pristine`, `obsidian`) or your own custom preset. That theme injects CSS variables (`--maz-primary`, `--maz-radius-md`, `--maz-spacing`, `--maz-font-family`, …) at runtime.
+You already configured a maz-ui theme via `@maz-ui/themes` — a built-in preset (`mazUi`, `ocean`, `pristine`, `obsidian`, `nova`) or your own custom preset. That theme injects CSS variables (`--maz-primary`, `--maz-rounded-md`, `--maz-space`, `--maz-font-family`, …) at runtime.
 
 The **Tailwind bridge** is a set of small CSS files that map those `--maz-*` variables to Tailwind theme tokens (`--color-primary`, `--radius-md`, `--font-sans`, `--spacing`, …) so your own Tailwind utilities resolve to the active preset:
 
 - `class="bg-primary"` in your template → your active maz-ui primary color
-- `class="rounded-lg"` → `var(--maz-radius-lg)`
-- `class="p-4"` → `calc(var(--maz-spacing) * 4)` (the spacing scale tracks the active preset)
+- `class="rounded-lg"` → `var(--maz-rounded-lg)`
+- `class="p-4"` → `calc(var(--maz-space) * 4)` (the spacing scale tracks the active preset)
 - `class="md:flex-center"` → responsive, sourced from maz-ui's breakpoint scale
 - Dark mode toggle via `@maz-ui/themes` → every utility reflows automatically, no rebuild
 
@@ -100,21 +100,23 @@ Example: `bg-primary`, `text-primary-foreground`, `border-divider-300`, `shadow-
 
 ### Spacing
 
-`--spacing` is sourced from `--maz-spacing` (default `0.25rem`), so every Tailwind spacing utility (`p-1`, `gap-2`, `w-4`, …) rescales when the preset changes.
+`--spacing` is sourced from `--maz-space` (default `0.25rem`, set via `foundation.space`), so every Tailwind spacing utility (`p-1`, `gap-2`, `w-4`, …) rescales when the preset changes.
 
-### Radius scale
+> The runtime variable is `--maz-space` (not `--maz-spacing`) on purpose: under Tailwind's `prefix(maz)`, `--spacing` is rewritten to `--maz-spacing`, so a same-named source would self-cycle. Same reasoning for `--maz-rounded-*` below.
 
-Each entry is its own preset key (`scales.radius.xs..3xl`), so the whole scale is consumer-controllable.
+### Rounded scale
+
+Each entry is its own preset key (`scales.rounded.xs..3xl`), so the whole scale is consumer-controllable.
 
 | Class | Value |
 | --- | --- |
-| `rounded-xs` | `var(--maz-radius-xs)` |
-| `rounded-sm` | `var(--maz-radius-sm)` |
-| `rounded-md`, `rounded` | `var(--maz-radius-md)` |
-| `rounded-lg` | `var(--maz-radius-lg)` |
-| `rounded-xl` | `var(--maz-radius-xl)` |
-| `rounded-2xl` | `var(--maz-radius-2xl)` |
-| `rounded-3xl` | `var(--maz-radius-3xl)` |
+| `rounded-xs` | `var(--maz-rounded-xs)` |
+| `rounded-sm` | `var(--maz-rounded-sm)` |
+| `rounded-md`, `rounded` | `var(--maz-rounded-md)` |
+| `rounded-lg` | `var(--maz-rounded-lg)` |
+| `rounded-xl` | `var(--maz-rounded-xl)` |
+| `rounded-2xl` | `var(--maz-rounded-2xl)` |
+| `rounded-3xl` | `var(--maz-rounded-3xl)` |
 
 ### Responsive breakpoints
 
@@ -145,7 +147,7 @@ Standard `shadow-xs` / `shadow-sm` / `shadow-md` / `shadow-lg` / `shadow-xl`, pl
 
 ### Typography & misc
 
-`font-sans` → `var(--maz-font-family)`, `font-mono` → `var(--maz-font-mono)`, `font-display` → `var(--maz-font-display)` (defaults to the same stack as `font-sans` until a preset declares a different one). Default border width → `var(--maz-border-width)`, default transition → 200ms cubic-bezier.
+`font-sans` → `var(--maz-font-family)`, `font-mono` → `var(--maz-font-mono-stack)`, `font-display` → `var(--maz-font-display-stack)` (defaults to the same stack as `font-sans` until a preset declares a different one). Default border width → `var(--maz-border-width)`, default transition → 200ms cubic-bezier (`var(--maz-motion-normal)`).
 
 ## Using `@apply` inside Vue SFC `<style>` blocks
 

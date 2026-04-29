@@ -5,16 +5,19 @@
  * preset picks its own anchor and step values, so `rounded-md`,
  * `rounded-xl`, etc. all move with the active theme.
  *
- * The bare `--radius` token aliases `--maz-radius-md` so utilities like
- * `rounded` (without suffix) keep a stable mapping.
+ * The bare `--radius` token aliases `--maz-rounded-md` so utilities like
+ * `rounded` (without suffix) keep a stable mapping. The runtime variables
+ * are named `--maz-rounded-*` (not `--maz-radius-*`) on purpose: under
+ * Tailwind's `prefix(maz)`, the LHS `--radius-*` is rewritten to
+ * `--maz-radius-*`, so a `var(--maz-radius-*)` reference would self-cycle.
  */
 @theme inline {
-  --radius-xs: var(--maz-radius-xs);
-  --radius-sm: var(--maz-radius-sm);
-  --radius-md: var(--maz-radius-md);
-  --radius-lg: var(--maz-radius-lg);
-  --radius-xl: var(--maz-radius-xl);
-  --radius-2xl: var(--maz-radius-2xl);
-  --radius-3xl: var(--maz-radius-3xl);
-  --radius: var(--maz-radius-md);
+  --radius-xs: var(--maz-rounded-xs);
+  --radius-sm: var(--maz-rounded-sm);
+  --radius-md: var(--maz-rounded-md);
+  --radius-lg: var(--maz-rounded-lg);
+  --radius-xl: var(--maz-rounded-xl);
+  --radius-2xl: var(--maz-rounded-2xl);
+  --radius-3xl: var(--maz-rounded-3xl);
+  --radius: var(--maz-rounded-md);
 }

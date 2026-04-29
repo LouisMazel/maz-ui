@@ -95,7 +95,7 @@ const onSubmit = handleSubmit(() => {
               :error="!!errorMessages.email"
               :hint="errorMessages.email"
               placeholder="john.doe@example.com"
-              left-icon="envelope"
+              left-icon="/envelope.svg"
               block
             />
 
@@ -109,7 +109,7 @@ const onSubmit = handleSubmit(() => {
               autocomplete="off"
               :error="!!errorMessages.password"
               :hint="errorMessages.password"
-              left-icon="lock-closed"
+              left-icon="/lock-closed.svg"
               block
             />
 

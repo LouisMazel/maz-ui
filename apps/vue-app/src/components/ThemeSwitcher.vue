@@ -38,6 +38,7 @@ const { colorMode, updateTheme, presetName, isDark } = useTheme()
             { label: 'Ocean', value: 'ocean' },
             { label: 'Obsidian', value: 'obsidian' },
             { label: 'Pristine', value: 'pristine' },
+            { label: 'Nova', value: 'nova' },
           ]"
           @update:model-value="updateTheme($event)"
         />

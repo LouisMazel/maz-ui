@@ -1,10 +1,7 @@
 <script lang="ts" setup>
-import { sleep } from '@maz-ui/utils/helpers/sleep'
-import { string } from 'valibot'
+import { minLength, pipe, string } from 'valibot'
 
 const toast = useToast()
-const wait = useWait()
-useWindowSize()
 
 toast.message('Votre mot de passe a été mis à jour', {
   position: 'bottom-left',
@@ -24,30 +21,34 @@ toast.error('Votre mot de passe a été mis à jour', {
   position: 'bottom-right',
 })
 
-onMounted(async () => {
-  wait.start('APP_LOADING')
-  await sleep(500)
-  wait.stop('APP_LOADING')
-})
-
-const { model } = useFormValidator({
+const { model, handleSubmit, errorMessages, hasError, isValid } = useFormValidator({
   schema: {
-    name: string(),
-    select: string(),
+    username: pipe(string(), minLength(3)),
+    password: pipe(string(), minLength(3)),
+    select: pipe(string(), minLength(1)),
   },
   options: {
     mode: 'progressive',
   },
 })
 
+const username = useTemplateRef('username')
+const password = useTemplateRef('password')
 const select = useTemplateRef('select')
-const input = useTemplateRef('input')
 
-useFormField('name', {
-  ref: input,
+useFormField('username', {
+  ref: username,
+})
+useFormField('password', {
+  ref: password,
 })
 useFormField('select', {
   ref: select,
+})
+
+const onSubmit = handleSubmit((value) => {
+  // eslint-disable-next-line no-console
+  console.log('submit', value)
 })
 </script>
 
@@ -56,46 +57,48 @@ useFormField('select', {
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
-      <MazBtn v-tooltip="{ text: 'Coucou' }">
-        Coucou
-      </MazBtn>
+      <form class="maz:flex maz:flex-col maz:gap-2" @submit.prevent="onSubmit">
+        {{ { isValid, hasError } }}
+        <MazAlert v-if="hasError" variant="soft" color="destructive">
+          {{ errorMessages }}
+        </MazAlert>
+        <MazInput
+          ref="username"
+          v-model="model.username"
+          placeholder="Name"
+          autocomplete="username"
+          :error="!!errorMessages.username"
+          :assistive-text="errorMessages.username"
+          name="username"
+        />
 
-      <MazInput
-        ref="input"
-        v-model="model.name"
-        label="Name"
-      />
+        <MazInput
+          ref="password"
+          v-model="model.password"
+          placeholder="Password"
+          autocomplete="current-password"
+          :error="!!errorMessages.password"
+          :assistive-text="errorMessages.password"
+          name="password"
+          type="password"
+        />
 
-      <MazSelect
-        ref="select"
-        v-model="model.select"
-        :options="['1', '2', '3']"
-        placeholder="Select"
-        color="secondary"
-        search
-      />
+        <MazSelect
+          ref="select"
+          v-model="model.select"
+          :options="['1', '2', '3']"
+          placeholder="Select"
+          :error="!!errorMessages.select"
+          :assistive-text="errorMessages.select"
+          color="secondary"
+          search
+        />
 
-      <MazPopover>
-        <template #trigger>
-          <MazBtn color="secondary">
-            Hello
-          </MazBtn>
-        </template>
-
-        <template #default>
-          <div class="maz:p-4">
-            Hello
-          </div>
-        </template>
-      </MazPopover>
+        <MazBtn type="submit">
+          Submit
+        </MazBtn>
+      </form>
       <!-- End Developping Area -->
     </div>
-
-    <MazFullscreenLoader
-      v-if="wait.isLoading('APP_LOADING')"
-      color="secondary"
-    >
-      Loading...
-    </MazFullscreenLoader>
   </div>
 </template>

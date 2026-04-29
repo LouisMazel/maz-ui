@@ -97,7 +97,7 @@ What \`tailwind-v4\` rewrites:
   - @apply important:   @apply X !important  → @apply X!
   - directive rename:   @screen tab-m        → @variant tab-m
   - hsl() double-wrap:  hsl(var(--maz-X))    → var(--maz-X)
-                        hsl(var(--maz-X)/0.5) → color-mix(in srgb, var(--maz-X) 0.5, transparent)
+                        hsl(var(--maz-X)/0.5) → color-mix(in srgb, var(--maz-X) 50%, transparent)
   - arbitrary values:   bg-[var(--maz-X)]    → bg-(--maz-X)
 
 See https://maz-ui.com/guide/migration-v5 for the full guide.

@@ -432,7 +432,7 @@ const CHILD_TEXT_SIZE_CLASS = {
 
 <template>
   <div
-    class="m-input m-reset-css maz:inline-flex maz:flex-col maz:align-top maz:items-start maz:text-foreground" :class="[
+    class="m-input m-reset-css maz:inline-flex maz:flex-col maz:align-top maz:items-start maz:text-foreground maz:h-fit" :class="[
       {
         '--border-active': borderActive,
         '--always-up': alwaysUp,
@@ -496,7 +496,7 @@ const CHILD_TEXT_SIZE_CLASS = {
           :readonly
           :required
           class="m-input-input maz:m-0 maz:h-full maz:w-full maz:appearance-none maz:truncate maz:border-none maz:bg-transparent maz:py-0 maz:text-foreground maz:shadow-none maz:outline-hidden maz:px-4"
-          :class="[CHILD_TEXT_SIZE_CLASS[size], { 'maz:ps-2': hasStartPart(), 'maz:pe-2': hasEndPart() }]"
+          :class="[CHILD_TEXT_SIZE_CLASS[size], { 'maz:ps-2!': hasStartPart(), 'maz:pe-2!': hasEndPart() }]"
           v-on="{
             blur,
             focus,
@@ -507,7 +507,7 @@ const CHILD_TEXT_SIZE_CLASS = {
         >
 
         <span
-          v-if="label || hint" class="m-input-label maz:pointer-events-none maz:absolute maz:w-full maz:origin-top-left maz:items-center maz:overflow-hidden maz:truncate maz:whitespace-nowrap maz:text-start maz:leading-6 maz:inset-s-4" :class="[stateColor, CHILD_TEXT_SIZE_CLASS[size], { 'maz:inset-s-2': hasStartPart(), 'maz:pe-3': hasLabel }]"
+          v-if="label || hint" class="m-input-label maz:pointer-events-none maz:absolute maz:w-full maz:origin-top-left maz:items-center maz:overflow-hidden maz:truncate maz:whitespace-nowrap maz:text-start maz:leading-6 maz:inset-s-4" :class="[stateColor, CHILD_TEXT_SIZE_CLASS[size], { 'maz:inset-s-2!': hasStartPart(), 'maz:pe-3!': hasLabel }]"
         >
           {{ hint || label }}
         </span>
@@ -563,31 +563,29 @@ const CHILD_TEXT_SIZE_CLASS = {
 @reference "../tailwindcss/tailwind.css";
 
 .m-input {
-  &-wrapper {
-    &-input {
-      &.--xl {
-        block-size: calc(4rem - (var(--maz-border-width) * 2));
-      }
+  &-wrapper-input {
+    &.--xl {
+      block-size: calc(4rem - (var(--maz-border-width) * 2));
+    }
 
-      &.--lg {
-        block-size: calc(3.5rem - (var(--maz-border-width) * 2));
-      }
+    &.--lg {
+      block-size: calc(3.5rem - (var(--maz-border-width) * 2));
+    }
 
-      &.--md {
-        block-size: calc(3rem - (var(--maz-border-width) * 2));
-      }
+    &.--md {
+      block-size: calc(3rem - (var(--maz-border-width) * 2));
+    }
 
-      &.--sm {
-        block-size: calc(2.5rem - (var(--maz-border-width) * 2));
-      }
+    &.--sm {
+      block-size: calc(2.5rem - (var(--maz-border-width) * 2));
+    }
 
-      &.--xs {
-        block-size: calc(2rem - (var(--maz-border-width) * 2));
-      }
+    &.--xs {
+      block-size: calc(2rem - (var(--maz-border-width) * 2));
+    }
 
-      &.--mini {
-        block-size: calc(1.5rem - (var(--maz-border-width) * 2));
-      }
+    &.--mini {
+      block-size: calc(1.5rem - (var(--maz-border-width) * 2));
     }
   }
 
@@ -600,7 +598,6 @@ const CHILD_TEXT_SIZE_CLASS = {
   }
 
   &-label {
-    inline-size: calc(100% - 0.75rem);
     transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
   }
 
@@ -608,8 +605,9 @@ const CHILD_TEXT_SIZE_CLASS = {
   &.--has-placeholder .m-input-label,
   & .m-input-input:not(:placeholder-shown) ~ .m-input-label,
   & .m-input-input:-webkit-autofill ~ .m-input-label {
-    inline-size: calc(100% + 1.3rem);
-    transform: scale(0.8) translateY(-0.65em);
+    @apply maz:text-xs;
+
+    transform: translateY(-1em);
   }
 
   &.--always-up .m-input-input,

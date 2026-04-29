@@ -222,25 +222,25 @@ The button can be a fab button with the attribute `fab`
 
 <ComponentDemo>
   <div class="maz:flex maz:gap-5 maz:items-center">
-    <MazBtn fab icon="sun" size="mini" />
-    <MazBtn fab icon="sun" size="xs" />
-    <MazBtn fab icon="sun" size="sm" />
+    <MazBtn fab icon="/sun.svg" size="mini" />
+    <MazBtn fab icon="/sun.svg" size="xs" />
+    <MazBtn fab icon="/sun.svg" size="sm" />
     <MazBtn fab>
       fab
     </MazBtn>
-    <MazBtn fab icon="sun" size="lg" />
-    <MazBtn fab icon="sun" size="xl" />
+    <MazBtn fab icon="/sun.svg" size="lg" />
+    <MazBtn fab icon="/sun.svg" size="xl" />
   </div>
 
 <template #code>
 
 ```html
-<MazBtn fab icon="sun" size="mini" />
-<MazBtn fab icon="sun" size="xs" />
-<MazBtn fab icon="sun" size="sm" />
+<MazBtn fab icon="/sun.svg" size="mini" />
+<MazBtn fab icon="/sun.svg" size="xs" />
+<MazBtn fab icon="/sun.svg" size="sm" />
 <MazBtn fab> fab </MazBtn>
-<MazBtn fab icon="sun" size="lg" />
-<MazBtn fab icon="sun" size="xl" />
+<MazBtn fab icon="/sun.svg" size="lg" />
+<MazBtn fab icon="/sun.svg" size="xl" />
 ```
 
   </template>
@@ -270,23 +270,23 @@ By default, the justify is `center`
 
 <ComponentDemo>
   <div class="maz:flex maz:flex-col maz:gap-2">
-    <MazBtn block justify="center" icon="users" end-icon="sun" size="md">center</MazBtn>
-    <MazBtn block justify="start" icon="users" end-icon="sun" size="md">start</MazBtn>
-    <MazBtn block justify="end" icon="users" end-icon="sun" size="md">end</MazBtn>
-    <MazBtn block justify="space-between" icon="users" end-icon="sun" size="md">between</MazBtn>
-    <MazBtn block justify="space-around" icon="users" end-icon="sun" size="md">around</MazBtn>
-    <MazBtn block justify="space-evenly" icon="users" end-icon="sun" size="md">evenly</MazBtn>
+    <MazBtn block justify="center" icon="/users.svg" end-icon="/sun.svg" size="md">center</MazBtn>
+    <MazBtn block justify="start" icon="/users.svg" end-icon="/sun.svg" size="md">start</MazBtn>
+    <MazBtn block justify="end" icon="/users.svg" end-icon="/sun.svg" size="md">end</MazBtn>
+    <MazBtn block justify="space-between" icon="/users.svg" end-icon="/sun.svg" size="md">between</MazBtn>
+    <MazBtn block justify="space-around" icon="/users.svg" end-icon="/sun.svg" size="md">around</MazBtn>
+    <MazBtn block justify="space-evenly" icon="/users.svg" end-icon="/sun.svg" size="md">evenly</MazBtn>
   </div>
 
 <template #code>
 
 ```html
-<MazBtn block justify="center" icon="users" end-icon="sun" size="md">center</MazBtn>
-<MazBtn block justify="start" icon="users" end-icon="sun" size="md">start</MazBtn>
-<MazBtn block justify="end" icon="users" end-icon="sun" size="md">end</MazBtn>
-<MazBtn block justify="space-between" icon="users" end-icon="sun" size="md">between</MazBtn>
-<MazBtn block justify="space-around" icon="users" end-icon="sun" size="md">around</MazBtn>
-<MazBtn block justify="space-evenly" icon="users" end-icon="sun" size="md">evenly</MazBtn>
+<MazBtn block justify="center" icon="/users.svg" end-icon="/sun.svg" size="md">center</MazBtn>
+<MazBtn block justify="start" icon="/users.svg" end-icon="/sun.svg" size="md">start</MazBtn>
+<MazBtn block justify="end" icon="/users.svg" end-icon="/sun.svg" size="md">end</MazBtn>
+<MazBtn block justify="space-between" icon="/users.svg" end-icon="/sun.svg" size="md">between</MazBtn>
+<MazBtn block justify="space-around" icon="/users.svg" end-icon="/sun.svg" size="md">around</MazBtn>
+<MazBtn block justify="space-evenly" icon="/users.svg" end-icon="/sun.svg" size="md">evenly</MazBtn>
 ```
 
   </template>
@@ -311,7 +311,7 @@ By default, the justify is `center`
 
 <ComponentDemo>
   <h4 class="maz:mb-2 maz:font-semibold maz:text-lg">
-    Left Icon and Right Icon
+    Start Icon and End Icon
   </h4>
 
   <div class="maz:flex maz:gap-2 maz:rounded-md maz:flex-wrap maz:items-center">
@@ -325,13 +325,13 @@ By default, the justify is `center`
       start-icon
     </MazBtn>
     <MazBtn :end-icon="MazCheck" size="md">
-      start-icon
+      end-icon
     </MazBtn>
     <MazBtn :end-icon="MazCheck" size="lg">
-      start-icon
+      end-icon
     </MazBtn>
     <MazBtn :end-icon="MazCheck" size="xl">
-      start-icon
+      end-icon
     </MazBtn>
   </div>
 
@@ -388,18 +388,18 @@ By default, the justify is `center`
   </template>
 </ComponentDemo>
 
-### Use icon name
+### Use icon path
 
 ::: details View code
 
-When you use the properties `end-icon`, `start-icon` or `icon` with the icon name (string), the component uses `<MazIcon icon="..." />` component.
+When you use the properties `end-icon`, `start-icon` or `icon` with the icon path, the component uses `<MazIcon icon="..." />` component.
 
 Check out how [MazIcon](./maz-icon.md) works, see all available icons and download them to put them in your public folder.
 
 ```html
-<MazBtn start-icon="check" size="sm"> start-icon </MazBtn>
-<MazBtn end-icon="home"> end-icon </MazBtn>
-<MazBtn icon="command-line" fab size="lg" />
+<MazBtn start-icon="/check.svg" size="sm"> start-icon </MazBtn>
+<MazBtn end-icon="/home.svg"> end-icon </MazBtn>
+<MazBtn icon="/command-line.svg" fab size="lg" />
 ```
 
 :::

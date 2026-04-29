@@ -216,7 +216,7 @@ The consuming component still derives sensible defaults (e.g. icon size from the
 
 This pack is the Heroicons set plus a few additions specific to maz-ui.
 
-<MazBtn download href="/icons/_icons.zip" end-icon="arrow-down-tray">
+<MazBtn download href="/icons/_icons.zip" end-icon="/arrow-down-tray.svg">
   Download pack
 </MazBtn>
 

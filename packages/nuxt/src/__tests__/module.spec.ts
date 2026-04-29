@@ -65,14 +65,14 @@ describe('nuxt module', () => {
 
     it('should have correct css defaults', () => {
       expect(config.defaults.css).toEqual({
-        injectMainCss: true,
+        injectCss: true,
       })
     })
 
     it('should have correct theme defaults', () => {
       expect(config.defaults.theme).toEqual({
         preset: 'maz-ui',
-        strategy: 'hybrid',
+        strategy: 'runtime',
         darkModeStrategy: 'class',
         colorMode: 'auto',
         mode: 'both',
@@ -181,13 +181,13 @@ describe('nuxt module', () => {
     })
 
     describe('css', () => {
-      it('should inject main CSS when injectMainCss is true', () => {
-        const { nuxt } = callSetup({ css: { injectMainCss: true } })
+      it('should inject main CSS when injectCss is true', () => {
+        const { nuxt } = callSetup({ css: { injectCss: true } })
         expect(nuxt.options.css).toContain('maz-ui/style.css')
       })
 
-      it('should not inject main CSS when injectMainCss is false', () => {
-        const { nuxt } = callSetup({ css: { injectMainCss: false } })
+      it('should not inject main CSS when injectCss is false', () => {
+        const { nuxt } = callSetup({ css: { injectCss: false } })
         expect(nuxt.options.css).not.toContain('maz-ui/style.css')
       })
     })
@@ -418,6 +418,20 @@ describe('nuxt module', () => {
             from: '@maz-ui/translations',
             as: 'useTranslations',
           }),
+        )
+      })
+
+      it('should not register useTheme when disabled', () => {
+        callSetup({ composables: { useTheme: false } })
+        expect(addImports).not.toHaveBeenCalledWith(
+          expect.objectContaining({ name: 'useTheme', from: '@maz-ui/themes' }),
+        )
+      })
+
+      it('should not register useTranslations when disabled', () => {
+        callSetup({ composables: { useTranslations: false } })
+        expect(addImports).not.toHaveBeenCalledWith(
+          expect.objectContaining({ name: 'useTranslations', from: '@maz-ui/translations' }),
         )
       })
 

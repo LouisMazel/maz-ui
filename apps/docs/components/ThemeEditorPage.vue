@@ -27,8 +27,7 @@ function clonePreset(source: ThemePreset): ThemePreset {
     name: source.name,
     foundation: { ...source.foundation },
     scales: {
-      spacing: source.scales.spacing,
-      radius: { ...source.scales.radius },
+      rounded: { ...source.scales.rounded },
       shadow: { ...source.scales.shadow },
     },
     components: source.components
@@ -105,7 +104,7 @@ export const customTheme: ThemePreset = ${JSON.stringify(themeData, null, 2)
     return `: '${escapedValue}'`
   })
   // Remove quotes from top-level keys and nested object keys (single-word keys only)
-  .replace(/^(\s*)"(name|foundation|scales|components|colors|spacing|radius|shadow|btn|container|input|bg|light|dark)":/gm, '$1$2:')}`
+  .replace(/^(\s*)"(name|foundation|scales|components|colors|space|rounded|shadow|btn|container|input|bg|light|dark)":/gm, '$1$2:')}`
 
   exportedCode.value = themeCode
 
@@ -137,12 +136,13 @@ interface FoundationInput {
 const foundationInputs: readonly FoundationInput[] = [
   { key: 'base-font-size', label: 'Base font size', placeholder: '14px' },
   { key: 'border-width', label: 'Border width', placeholder: '0.0625rem' },
+  { key: 'space', label: 'Space (base unit)', placeholder: '0.25rem' },
   { key: 'font-family', label: 'Font family (sans)', placeholder: 'Manrope, sans-serif' },
-  { key: 'font-display', label: 'Font display', placeholder: 'Manrope, sans-serif' },
-  { key: 'font-mono', label: 'Font mono', placeholder: 'ui-monospace, SFMono-Regular, …' },
-  { key: 'duration-fast', label: 'Duration fast', placeholder: '100ms' },
-  { key: 'duration-normal', label: 'Duration normal', placeholder: '200ms' },
-  { key: 'duration-slow', label: 'Duration slow', placeholder: '300ms' },
+  { key: 'font-display-stack', label: 'Font display', placeholder: 'Manrope, sans-serif' },
+  { key: 'font-mono-stack', label: 'Font mono', placeholder: 'ui-monospace, SFMono-Regular, …' },
+  { key: 'motion-fast', label: 'Motion fast', placeholder: '100ms' },
+  { key: 'motion-normal', label: 'Motion normal', placeholder: '200ms' },
+  { key: 'motion-slow', label: 'Motion slow', placeholder: '300ms' },
   { key: 'easing-out', label: 'Easing out', placeholder: 'cubic-bezier(0.4, 0, 0.2, 1)' },
   { key: 'easing-in', label: 'Easing in', placeholder: 'cubic-bezier(0.4, 0, 1, 1)' },
   { key: 'easing-in-out', label: 'Easing in-out', placeholder: 'cubic-bezier(0.4, 0, 0.2, 1)' },
@@ -150,7 +150,7 @@ const foundationInputs: readonly FoundationInput[] = [
   { key: 'disabled-cursor', label: 'Disabled cursor', placeholder: 'not-allowed' },
 ] as const
 
-const radiusKeys = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'] as const
+const roundedKeys = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'] as const
 const shadowKeys = ['sm', 'md', 'lg', 'xl', 'elevation'] as const
 
 const shadowPlaceholders: Record<typeof shadowKeys[number], string> = {
@@ -278,24 +278,15 @@ function formatColorName(colorName: string): string {
         <!-- Scales -->
         <MazCard collapsible title="Scales" block>
           <div class="maz:flex maz:flex-col maz:gap-4">
-            <MazInput
-              v-model="themeData.scales.spacing"
-              label="Spacing (base unit)"
-              placeholder="0.25rem"
-              size="sm"
-              block
-              debounce
-            />
-
             <div class="maz:flex maz:flex-col maz:gap-2">
               <h4 class="maz:text-sm maz:font-semibold maz:text-foreground maz:m-0">
-                Radius
+                Rounded
               </h4>
               <MazInput
-                v-for="key in radiusKeys"
-                :key="`radius-${key}`"
-                v-model="themeData.scales.radius[key]"
-                :label="`radius.${key}`"
+                v-for="key in roundedKeys"
+                :key="`rounded-${key}`"
+                v-model="themeData.scales.rounded[key]"
+                :label="`rounded.${key}`"
                 size="sm"
                 block
                 debounce

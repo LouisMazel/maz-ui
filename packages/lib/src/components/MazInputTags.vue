@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
-import { MazTrash } from '@maz-ui/icons/lazy/MazTrash'
+import { MazTrash } from '@maz-ui/icons/raw/MazTrash'
 import { truthyFilter } from '@maz-ui/utils/helpers/truthyFilter'
 import { computed, ref } from 'vue'
 import MazBtn from './MazBtn.vue'
@@ -190,6 +190,7 @@ const buttonSize = computed(() => {
           :disabled
           :size="buttonSize"
           :color="tagsHoveredId === id || lastIdToDelete === id ? 'destructive' : color"
+          :end-icon="tagsHoveredId === id || lastIdToDelete === id ? MazTrash : undefined"
           @click.stop="removeTag(id)"
           @mouseenter="tagsHoveredId = disabled ? undefined : id"
           @focus="tagsHoveredId = disabled ? undefined : id"
@@ -197,12 +198,6 @@ const buttonSize = computed(() => {
           @blur="tagsHoveredId = undefined"
         >
           {{ tag }}
-
-          <template #end-icon>
-            <Transition name="maz-scale">
-              <MazTrash v-if="tagsHoveredId === id || lastIdToDelete === id" />
-            </Transition>
-          </template>
         </MazBtn>
       </div>
     </TransitionGroup>
@@ -242,6 +237,10 @@ const buttonSize = computed(() => {
     @apply maz:border-none maz:bg-transparent!;
 
     min-inline-size: 7.5em;
+  }
+
+  &:deep(.m-input-label) {
+    @apply maz:inset-s-2!;
   }
 
   &:deep(input) {

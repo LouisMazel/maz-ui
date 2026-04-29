@@ -1,15 +1,7 @@
-<script setup lang="ts">
-import { sleep } from '@maz-ui/utils/helpers/sleep'
-
-function action() {
-  return sleep(2000)
-}
-</script>
-
 <template>
-  <MazPullToRefresh :on-click="action">
+  <div>
     <header>
-      <NuxtLink :to="{ name: 'index' }">
+      <NuxtLink :to="{ name: 'index' }" class="maz:font-mono">
         MazUi
       </NuxtLink>
 
@@ -19,6 +11,12 @@ function action() {
           color="transparent"
         >
           Home
+        </MazBtn>
+        <MazBtn
+          :to="{ name: 'components' }"
+          color="transparent"
+        >
+          Components
         </MazBtn>
         <MazBtn
           :to="{ name: 'test-page' }"
@@ -36,14 +34,14 @@ function action() {
         <slot />
       </div>
     </main>
-  </MazPullToRefresh>
+  </div>
 </template>
 
 <style scoped>
 @reference "../css/main.css";
 
 header {
-  @apply maz:flex maz:w-full maz:flex-wrap maz:items-center maz:justify-between maz:border-b maz:border-divider maz:px-2 maz:py-4 maz:padded-container;
+  @apply maz:flex maz:w-full maz:flex-wrap maz:items-center maz:justify-between maz:border-b maz:border-divider maz:py-4 maz:padded-container maz:sticky maz:top-0 maz:z-50 maz:bg-surface;
 
   nav {
     @apply maz:flex maz:gap-1;

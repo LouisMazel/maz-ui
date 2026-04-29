@@ -153,12 +153,6 @@ const currentIcon = computed(() => {
   >
     <div v-if="currentIcon" class="m-alert-icon maz:flex maz:shrink-0 maz:items-center maz:justify-center" aria-hidden="true">
       <MazIcon
-        v-if="typeof currentIcon === 'string'"
-        :name="currentIcon"
-        :size="iconSize"
-      />
-      <MazIcon
-        v-else
         :icon="currentIcon"
         :size="iconSize"
       />

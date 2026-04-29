@@ -28,10 +28,6 @@ const { isSubmitting, handleSubmit, model, fieldsStates } = useFormValidator({
   schema,
   defaultValues: {
     age: 33,
-    date: {
-      start: '2025-01-01',
-      end: '2025-01-01',
-    },
   },
   model: ref({}),
   options: {
@@ -97,7 +93,7 @@ const onSubmit = handleSubmit((formData) => {
       v-model="name"
       top-label="Enter your name"
       :assistive-text="nameErrorMessage"
-      placeholder="John Doe"
+      label="John Doe"
       :error="!!nameErrorMessage"
       :success="fieldsStates?.name.valid"
       :class="{ 'has-error-form': !!nameErrorMessage }"
@@ -137,8 +133,9 @@ const onSubmit = handleSubmit((formData) => {
       ref="numberRef"
       v-model="number"
       label="Enter a number"
+
       :error="!!numberError"
-      :text-center="false"
+      :text-center="true"
       :hint="numberError"
       :success="isValidNumber"
     />
@@ -235,6 +232,9 @@ const onSubmit = handleSubmit((formData) => {
       v-model="date"
       :hint="dateError"
       color="contrast"
+      label="Date"
+      range
+      double
       :error="!!dateError"
       :success="isValidDate"
       picker-position="top"

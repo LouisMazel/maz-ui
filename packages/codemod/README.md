@@ -27,7 +27,7 @@ The CLI scans the given paths for `.vue`, `.ts`/`.tsx`/`.mts`/`.cts`, and `.css`
 - **Negative values**: `-maz-mt-4` → `maz:-mt-4`, plus the collapsed `maz--translate-y-1/2` → `maz:-translate-y-1/2`
 - **`@apply X !important`** (CSS) → `@apply X!` per token
 - **Utility renames** (official Tailwind v4): `rounded-sm` → `rounded-xs`, `outline-none` → `outline-hidden`, `shadow` → `shadow-sm`, `shadow-sm` → `shadow-xs`, `drop-shadow` → `drop-shadow-sm`, `drop-shadow-sm` → `drop-shadow-xs`, `blur` → `blur-sm`, `blur-sm` → `blur-xs`, `backdrop-blur` → `backdrop-blur-sm`, `backdrop-blur-sm` → `backdrop-blur-xs`, `ring` → `ring-3`, every `bg-gradient-to-*` → `bg-linear-to-*`
-- **`hsl(var(--X))` double-wrap elimination**: in Maz-UI v5 the `--maz-*` variables are already `hsl(…)`, so the wrapper has to go. `hsl(var(--X) / 0.5)` becomes `color-mix(in srgb, var(--X) 0.5, transparent)`.
+- **`hsl(var(--X))` double-wrap elimination**: in Maz-UI v5 the `--maz-*` variables are already `hsl(…)`, so the wrapper has to go. `hsl(var(--X) / 0.5)` becomes `color-mix(in srgb, var(--X) 50%, transparent)`.
 - **Tailwind arbitrary values**: `maz:bg-[var(--maz-X)]` → `maz:bg-(--maz-X)`, and the `[hsl(var(--X))]` variants collapse to the v4 paren shorthand.
 
 ## What it does NOT do
@@ -57,7 +57,7 @@ import {
 
 transformClassToken('dark:!maz-m-0')                      // 'maz:dark:m-0!'
 transformHslVar('border: 1px solid hsl(var(--maz-primary) / 0.5)')
-//  -> 'border: 1px solid color-mix(in srgb, var(--maz-primary) 0.5, transparent)'
+//  -> 'border: 1px solid color-mix(in srgb, var(--maz-primary) 50%, transparent)'
 ```
 
 ## License

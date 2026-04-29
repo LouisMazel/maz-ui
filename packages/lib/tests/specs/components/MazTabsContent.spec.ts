@@ -8,7 +8,7 @@ describe('given MazTabsContent component', () => {
       const wrapper = mount(MazTabsContent, {
         global: {
           provide: {
-            'maz:tabs': {
+            'maz-tabs': {
               currentTab: ref(1),
             },
           },
@@ -27,7 +27,7 @@ describe('given MazTabsContent component', () => {
       const wrapper = mount(MazTabsContent, {
         global: {
           provide: {
-            'maz:tabs': {
+            'maz-tabs': {
               currentTab,
             },
           },
@@ -49,7 +49,7 @@ describe('given MazTabsContent component', () => {
       const wrapper = mount(MazTabsContent, {
         global: {
           provide: {
-            'maz:tabs': {
+            'maz-tabs': {
               currentTab: ref(1),
             },
           },
@@ -68,7 +68,7 @@ describe('given MazTabsContent component', () => {
         },
         global: {
           provide: {
-            'maz:tabs': {
+            'maz-tabs': {
               currentTab: ref(1),
             },
           },
@@ -87,7 +87,7 @@ describe('given MazTabsContent component', () => {
         },
         global: {
           provide: {
-            'maz:tabs': {
+            'maz-tabs': {
               currentTab: ref(1),
             },
           },
@@ -121,7 +121,7 @@ describe('given MazTabsContent component', () => {
       const wrapper = mount(MazTabsContent, {
         global: {
           provide: {
-            'maz:tabs': {
+            'maz-tabs': {
               currentTab,
             },
           },

@@ -7,7 +7,9 @@ import { MazUser } from '@maz-ui/icons/lazy/MazUser'
 import { ref } from 'vue'
 
 const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast'] as const
+const btnColors = [...colors, 'surface', 'transparent'] as const
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl'] as const
+const sizeUnits = ['10px', '20px', '30px', '2rem', '3em', '15vw'] as const
 const roundedSizes = ['none', 'sm', 'md', 'lg', 'xl', 'full'] as const
 
 const switchValue = ref(true)
@@ -96,13 +98,13 @@ function makePlaceholder(color: string, label: string): string {
   return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><rect fill="${color}" width="800" height="600"/><text x="400" y="300" text-anchor="middle" dominant-baseline="central" font-family="system-ui" font-size="32" fill="white">${label}</text></svg>`)}`
 }
 
-const galleryImages: MazGalleryImage[] = [
+const galleryImages = [
   { src: makePlaceholder('#6366f1', 'Image 1'), alt: 'Placeholder 1' },
   { src: makePlaceholder('#8b5cf6', 'Image 2'), alt: 'Placeholder 2' },
   { src: makePlaceholder('#0ea5e9', 'Image 3'), alt: 'Placeholder 3' },
   { src: makePlaceholder('#10b981', 'Image 4'), alt: 'Placeholder 4' },
   { src: makePlaceholder('#f59e0b', 'Image 5'), alt: 'Placeholder 5' },
-]
+] satisfies MazGalleryImage[]
 
 const avatarPlaceholder = makePlaceholder('#6366f1', 'JD')
 
@@ -117,7 +119,6 @@ const checklistItems = [
 
 <template>
   <div class="maz:flex maz:flex-col maz:gap-16">
-    <!-- ==================== MazBtn ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazBtn
@@ -127,7 +128,7 @@ const checklistItems = [
         Colors
       </h3>
       <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mb-4">
-        <MazBtn v-for="c in colors" :key="c" :color="c">
+        <MazBtn v-for="c in btnColors" :key="c" :color="c">
           {{ c }}
         </MazBtn>
       </div>
@@ -145,7 +146,7 @@ const checklistItems = [
         Outlined
       </h3>
       <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mb-4">
-        <MazBtn v-for="c in colors" :key="c" :color="c" outlined>
+        <MazBtn v-for="c in btnColors" :key="c" :color="c" outlined>
           {{ c }}
         </MazBtn>
       </div>
@@ -154,7 +155,7 @@ const checklistItems = [
         Pastel
       </h3>
       <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mb-4">
-        <MazBtn v-for="c in colors" :key="c" :color="c" pastel>
+        <MazBtn v-for="c in btnColors" :key="c" :color="c" pastel>
           {{ c }}
         </MazBtn>
       </div>
@@ -193,7 +194,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazBtnGroup ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazBtnGroup
@@ -218,7 +218,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazInput ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazInput
@@ -247,6 +246,9 @@ const checklistItems = [
       <div class="maz:grid maz:grid-cols-3 maz:gap-4 maz:mb-4">
         <MazInput v-for="s in sizes" :key="s" v-model="inputValue" :label="s" :size="s" />
       </div>
+      <div class="maz:grid maz:grid-cols-3 maz:gap-4 maz:mb-4">
+        <MazInput v-for="s in sizes" :key="s" v-model="inputValue" :placeholder="s" :size="s" />
+      </div>
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
         Rounded sizes
       </h3>
@@ -255,7 +257,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazTextarea ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazTextarea
@@ -268,7 +269,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazInputNumber ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazInputNumber
@@ -281,7 +281,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazInputPrice ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazInputPrice
@@ -293,7 +292,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazInputTags ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazInputTags
@@ -306,7 +304,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazInputCode ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazInputCode
@@ -317,19 +314,20 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazInputPhoneNumber ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazInputPhoneNumber
       </h2>
-      <div class="maz:grid maz:grid-cols-2 maz:gap-4">
+      <div class="maz:flex maz:flex-col maz:gap-4">
         <MazInputPhoneNumber label="Phone number" />
+        <MazInputPhoneNumber label="Phone number (responsive)" orientation="responsive" />
+        <MazInputPhoneNumber label="Phone number (row)" orientation="row" />
+        <MazInputPhoneNumber label="Phone number (col)" orientation="col" />
         <MazInputPhoneNumber v-model="phoneValue" label="Phone number" />
         <MazInputPhoneNumber v-model="phoneValue" label="Error" error />
       </div>
     </section>
 
-    <!-- ==================== MazSelect ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazSelect
@@ -350,7 +348,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazSelectCountry ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazSelectCountry
@@ -361,12 +358,11 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazDatePicker ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4 maz:mt-20">
         MazDatePicker
       </h2>
-      <MazDatePicker v-model="dateValue" label="Date picker" :open="true" picker-position="top" />
+      <MazDatePicker v-model="dateValue" label="Date picker" picker-position="top" />
 
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2 maz:mt-4">
         Inline
@@ -376,7 +372,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazSwitch ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazSwitch
@@ -402,7 +397,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazCheckbox ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazCheckbox
@@ -436,7 +430,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazRadio ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazRadio
@@ -462,7 +455,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazRadioButtons ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazRadioButtons
@@ -496,7 +488,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazSlider ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazSlider
@@ -509,7 +500,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazDropzone ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazDropzone
@@ -520,7 +510,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazChecklist ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazChecklist
@@ -533,7 +522,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazCard ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazCard
@@ -631,7 +619,7 @@ const checklistItems = [
       <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
         Collapsible & Linked
       </h3>
-      <div class="maz:grid maz:grid-cols-2 maz:gap-4 maz:mb-6" title="Card Title">
+      <div class="maz:grid maz:grid-cols-2 maz:gap-4 maz:mb-6">
         <MazCard collapsible collapse-open>
           <template #content-title>
             Collapsible Card
@@ -640,7 +628,7 @@ const checklistItems = [
             <p>This card can be collapsed by clicking the header. Try it!</p>
           </template>
         </MazCard>
-        <MazCard href="https://maz-ui.com" href-target="_blank">
+        <MazCard href="https://maz-ui.com" collapsible href-target="_blank" title="Linked Card">
           <template #content-title>
             Linked Card
           </template>
@@ -687,14 +675,13 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazCardSpotlight ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazCardSpotlight
       </h2>
       <div class="maz:grid maz:grid-cols-3 maz:gap-4">
         <MazCardSpotlight v-for="c in colors.slice(0, 6)" :key="c" :color="c">
-          <h3 class="maz:text-lg maz:font-bold maz:mb-2">
+          <h3 class="maz:text-lg maz:font-semibold maz:mb-2">
             {{ c }}
           </h3>
           <p class="maz:text-sm maz:text-muted">
@@ -704,13 +691,12 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazAvatar ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazAvatar
       </h2>
       <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-4 maz:mb-4">
-        <MazAvatar v-for="s in sizes" :key="s" :src="avatarPlaceholder" :size="s" />
+        <MazAvatar v-for="s in sizeUnits" :key="s" :src="avatarPlaceholder" :size="s" />
       </div>
       <div class="maz:flex maz:flex-wrap maz:items-center maz:gap-4 maz:mb-4">
         <MazAvatar v-for="r in roundedSizes" :key="r" :src="avatarPlaceholder" :rounded-size="r" />
@@ -723,7 +709,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazBadge ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazBadge
@@ -755,7 +740,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazAlert ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazAlert
@@ -778,12 +762,10 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazTabs ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazTabs
       </h2>
-
       <MazTabs v-model="tabValue">
         <MazTabsBar v-model="tabValue" :items="[{ label: 'Overview' }, { label: 'Features' }, { label: 'Pricing' }]" />
 
@@ -810,7 +792,6 @@ const checklistItems = [
       </MazTabs>
     </section>
 
-    <!-- ==================== MazAccordion ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazAccordion
@@ -837,7 +818,6 @@ const checklistItems = [
       </MazAccordion>
     </section>
 
-    <!-- ==================== MazExpandAnimation ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazExpandAnimation
@@ -855,7 +835,6 @@ const checklistItems = [
       </MazExpandAnimation>
     </section>
 
-    <!-- ==================== MazStepper ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazStepper
@@ -945,7 +924,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazTimeline ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazTimeline
@@ -982,7 +960,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazDialog ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazDialog
@@ -1003,7 +980,6 @@ const checklistItems = [
       </MazDialog>
     </section>
 
-    <!-- ==================== MazBottomSheet ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazBottomSheet
@@ -1021,7 +997,6 @@ const checklistItems = [
       </MazBottomSheet>
     </section>
 
-    <!-- ==================== MazDrawer ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazDrawer
@@ -1036,7 +1011,6 @@ const checklistItems = [
       </MazDrawer>
     </section>
 
-    <!-- ==================== MazPopover ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazPopover
@@ -1103,7 +1077,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazDropdown ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazDropdown
@@ -1118,7 +1091,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazTable ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazTable
@@ -1126,7 +1098,6 @@ const checklistItems = [
       <MazTable sortable search background-even pagination :headers="tableHeaders" :rows="tableRows" title="Team Members" />
     </section>
 
-    <!-- ==================== MazPagination ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazPagination
@@ -1137,7 +1108,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazGallery ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazGallery
@@ -1145,7 +1115,6 @@ const checklistItems = [
       <MazGallery :images="galleryImages" :height="250" />
     </section>
 
-    <!-- ==================== MazCarousel ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazCarousel
@@ -1154,7 +1123,7 @@ const checklistItems = [
         <template #title>
           Featured Items
         </template>
-        <MazCard v-for="i in 5" :key="i" :gallery="{ images: [galleryImages[i - 1]], height: 150 }" style="min-width: 280px;">
+        <MazCard v-for="i in 5" :key="i" :gallery="{ images: [galleryImages.at(i - 1) as MazGalleryImage], height: 150 }" style="min-width: 280px;">
           <template #content-title>
             Card {{ i }}
           </template>
@@ -1165,7 +1134,6 @@ const checklistItems = [
       </MazCarousel>
     </section>
 
-    <!-- ==================== MazLazyImg ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazLazyImg
@@ -1175,7 +1143,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazSpinner ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazSpinner
@@ -1188,7 +1155,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazFullscreenLoader ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazFullscreenLoader
@@ -1198,7 +1164,6 @@ const checklistItems = [
       </p>
     </section>
 
-    <!-- ==================== MazLoadingBar ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazLoadingBar
@@ -1206,7 +1171,6 @@ const checklistItems = [
       <MazLoadingBar />
     </section>
 
-    <!-- ==================== MazSkeleton ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazSkeleton
@@ -1225,7 +1189,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazIcon ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazIcon
@@ -1237,7 +1200,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazLink ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazLink
@@ -1252,7 +1214,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazReadMore ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazReadMore
@@ -1266,7 +1227,6 @@ const checklistItems = [
       </MazReadMore>
     </section>
 
-    <!-- ==================== MazCircularProgressBar ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazCircularProgressBar
@@ -1279,8 +1239,7 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazReadingProgressBar ==================== -->
-    <!-- <section>
+    <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazReadingProgressBar
       </h2>
@@ -1288,9 +1247,8 @@ const checklistItems = [
         (Tracks page scroll progress - visible at the top of the viewport)
       </p>
       <MazReadingProgressBar />
-    </section> -->
+    </section>
 
-    <!-- ==================== MazAnimatedCounter ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazAnimatedCounter
@@ -1317,7 +1275,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazAnimatedText ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazAnimatedText
@@ -1325,7 +1282,6 @@ const checklistItems = [
       <MazAnimatedText text="Build beautiful interfaces" last-word="with Maz UI" class="maz:text-3xl maz:font-bold" />
     </section>
 
-    <!-- ==================== MazAnimatedElement ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazAnimatedElement
@@ -1362,7 +1318,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazTicker ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazTicker
@@ -1503,7 +1458,6 @@ const checklistItems = [
       </div>
     </section>
 
-    <!-- ==================== MazContainer ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazContainer
@@ -1513,17 +1467,15 @@ const checklistItems = [
       </MazContainer>
     </section>
 
-    <!-- ==================== MazBackdrop ==================== -->
-    <!-- <section>
+    <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazBackdrop
       </h2>
       <p class="maz:text-muted">
         (Used internally by Dialog, BottomSheet, Drawer)
       </p>
-    </section> -->
+    </section>
 
-    <!-- ==================== MazChart ==================== -->
     <section>
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazChart

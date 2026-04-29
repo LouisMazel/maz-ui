@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { MazColor } from './types'
+import type { MazColor, MazSizeUnit } from './types'
 import { MazPencil } from '@maz-ui/icons/lazy/MazPencil'
 import { computed, defineAsyncComponent } from 'vue'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
@@ -59,7 +59,7 @@ export interface MazAvatarProps {
   /** The target of the link */
   target?: string
   /** The size of the avatar */
-  size?: string
+  size?: MazSizeUnit
   /** Add a border to the avatar */
   bordered?: boolean
   /** Make the avatar clickable */

@@ -46,16 +46,27 @@ export interface ThemeFoundation {
   'border-width': SizeUnit
   /** Body / sans font stack. */
   'font-family'?: string
-  /** Monospace font stack. Used by `MazInputCode`, `<code>`, `<kbd>`. */
-  'font-mono'?: string
+  /**
+   * Monospace font stack. Used by `MazInputCode`, `<code>`, `<kbd>`.
+   * Bridged into Tailwind's `--font-mono` token. Named `font-mono-stack`
+   * (not `font-mono`) to avoid the `prefix(maz)` self-cycle.
+   */
+  'font-mono-stack'?: string
   /**
    * Display / heading font stack. Defaults to the same value as `font-family`
-   * — no behavioural change unless the consumer overrides it.
+   * — no behavioural change unless the consumer overrides it. Bridged into
+   * Tailwind's `--font-display`. Named `font-display-stack` to avoid the
+   * `prefix(maz)` self-cycle.
    */
-  'font-display'?: string
-  'duration-fast'?: Duration
-  'duration-normal'?: Duration
-  'duration-slow'?: Duration
+  'font-display-stack'?: string
+  /**
+   * Transition durations. Bridged into Tailwind's `--duration-fast`,
+   * `--duration-normal`, `--duration-slow`. Named `motion-*` (not
+   * `duration-*`) to avoid the `prefix(maz)` self-cycle.
+   */
+  'motion-fast'?: Duration
+  'motion-normal'?: Duration
+  'motion-slow'?: Duration
   'easing-out'?: string
   'easing-in'?: string
   'easing-in-out'?: string
@@ -69,29 +80,30 @@ export interface ThemeFoundation {
    * @default 'not-allowed'
    */
   'disabled-cursor'?: string
+  /**
+   * Base spacing unit. Tailwind multiplies this for every `p-N`, `m-N`,
+   * `gap-N`, etc. Bridged into Tailwind's `--spacing` token.
+   * @default '0.25rem'
+   */
+  'space'?: SizeUnit
 }
 
 /**
- * Spacing / radius / shadow scales. Bridged into Tailwind v4 via
- * `@theme inline` so the consumer's own utilities benefit too (e.g. `p-4`,
- * `rounded-md`, `shadow-lg`).
+ * Rounded / shadow scales. Bridged into Tailwind v4 via `@theme inline` so the
+ * consumer's own utilities benefit too (e.g. `rounded-md`, `shadow-lg`).
  *
- * Typography is intentionally NOT part of the scale — `foundation.base-font-size`
- * is the single knob that drives every relative `em` value in the lib.
+ * Single-value design tokens (`space`, `base-font-size`, `border-width`, …)
+ * live on `foundation` instead — only true multi-step scales belong here.
  */
 export interface ThemeScales {
   /**
-   * Base spacing unit. Tailwind multiplies this for every `p-N`, `m-N`,
-   * `gap-N`, etc.
-   * @default '0.25rem'
-   */
-  spacing: SizeUnit
-  /**
-   * Border-radius scale. Maps to Tailwind utilities `rounded-{key}`.
+   * Border-radius scale. Maps to Tailwind utilities `rounded-{key}` and is
+   * emitted as `--maz-rounded-{key}` (the name is decoupled from Tailwind's
+   * `--radius-*` to avoid prefix collisions in `prefix(maz)` setups).
    * `full` is intentionally not included — Tailwind keeps `rounded-full`
    * at 9999px regardless.
    */
-  radius: Record<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl', SizeUnit>
+  rounded: Record<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl', SizeUnit>
   /**
    * Box-shadow scale. Maps to Tailwind utilities `shadow-{key}`. `elevation`
    * is the maz-ui specific elevated-surface shadow used by MazCard,
@@ -159,12 +171,11 @@ export interface ThemePresetOverrides {
   foundation?: Partial<ThemeFoundation>
 
   /**
-   * Theme scales (spacing, radius, shadow)
+   * Theme scales (rounded, shadow)
    * @default undefined
    */
   scales?: {
-    spacing?: ThemeScales['spacing']
-    radius?: Partial<ThemeScales['radius']>
+    rounded?: Partial<ThemeScales['rounded']>
     shadow?: Partial<ThemeScales['shadow']>
   }
 
@@ -197,7 +208,7 @@ export type ThemeMode = 'light' | 'dark' | 'both'
 
 export type DarkModeStrategy = 'class' | 'media'
 
-export type Strategy = 'runtime' | 'buildtime' | 'hybrid'
+export type Strategy = 'runtime' | 'buildtime'
 
 interface BaseThemeConfig {
   /**
@@ -225,10 +236,10 @@ interface BaseThemeConfig {
   /**
    * CSS generation strategy
    * @description
-   * - `runtime`: CSS generated (critical and full) injected immediately
-   * - `buildtime`: CSS generated at build time and included in bundle
-   * - `hybrid`: Critical CSS injected inline, full CSS loaded asynchronously (recommended)
-   * @default 'hybrid'
+   * - `runtime`: CSS generated and injected at runtime (recommended).
+   * - `buildtime`: CSS generated at build time and included in bundle —
+   *   nothing is injected at runtime.
+   * @default 'runtime'
    */
   strategy?: Strategy
 
@@ -267,6 +278,16 @@ interface BaseThemeConfig {
    * @default 'both'
    */
   mode?: ThemeMode
+
+  /**
+   * Persist the active preset name in the `maz-preset` cookie so the
+   * user's last-used theme is restored across reloads. The value is
+   * read at boot only when `preset` is not provided, and is written
+   * after every successful preset resolution and `updateTheme()` call.
+   * Set to `false` to opt out of any cookie read or write.
+   * @default true
+   */
+  persistPreset?: boolean
 }
 
 export type ThemeConfig
@@ -315,7 +336,7 @@ export interface ThemeState {
   /**
    * CSS generation strategy
    * @description The strategy used to generate CSS
-   * @values 'runtime', 'buildtime', 'hybrid'
+   * @values 'runtime', 'buildtime'
    */
   strategy: Strategy
   /**
@@ -329,4 +350,8 @@ export interface ThemeState {
    * @description The class added to the document root when dark mode is active
    */
   darkClass: string
+  /**
+   * Whether the active preset name is persisted in the `maz-preset` cookie.
+   */
+  persistPreset: boolean
 }

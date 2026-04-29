@@ -16,6 +16,7 @@ const mockThemeState: ThemeState = {
   darkModeStrategy: 'class',
   mode: 'both',
   isDark: false,
+  persistPreset: true,
 }
 
 const mockRefThemeState = { value: mockThemeState }
@@ -68,6 +69,9 @@ vi.mock('../../utils/preset-merger', () => ({
 
 vi.mock('../../utils/cookie-storage', () => ({
   setCookie: vi.fn(),
+  saveResolvedPresetName: vi.fn(),
+  getSavedPresetName: vi.fn(() => null),
+  clearSavedPresetName: vi.fn(),
 }))
 
 vi.mock('@maz-ui/utils/helpers/isServer', () => ({
@@ -83,6 +87,8 @@ describe('useTheme', () => {
           remove: vi.fn(),
         },
       },
+      head: { appendChild: vi.fn() },
+      createElement: vi.fn(() => ({ remove: vi.fn(), textContent: '' })),
       cookie: '',
     })
 
@@ -268,7 +274,7 @@ describe('useTheme', () => {
         vi.mocked(mergePresets).mockReturnValue({ ...mazUi, name: 'merged' })
 
         const { updateTheme } = useTheme()
-        await updateTheme({ foundation: { radius: '1rem' } } as ThemePresetOverrides)
+        await updateTheme({ foundation: { space: '0.25rem' } } as ThemePresetOverrides)
 
         expect(injectCSS).not.toHaveBeenCalled()
       })
@@ -286,6 +292,20 @@ describe('useTheme', () => {
 
         expect(consoleSpy).toHaveBeenCalledWith('[@maz-ui/themes] No preset found - If you are using the buildtime strategy, you must provide a complete preset')
         consoleSpy.mockRestore()
+      })
+    })
+
+    describe('when persistPreset is false on the state', () => {
+      it('then updateTheme does not write the preset cookie', async () => {
+        const { saveResolvedPresetName } = await import('../../utils/cookie-storage')
+        vi.mocked(saveResolvedPresetName).mockClear()
+        vi.mocked(inject).mockReturnValue({ value: { ...mockThemeState, persistPreset: false } })
+        vi.mocked(mergePresets).mockReturnValue(mazUi)
+
+        const { updateTheme } = useTheme()
+        await updateTheme({ foundation: { 'border-width': '2px' } } as ThemePresetOverrides)
+
+        expect(saveResolvedPresetName).not.toHaveBeenCalled()
       })
     })
   })
@@ -483,7 +503,7 @@ describe('useTheme', () => {
 
         vi.mocked(isServer).mockReturnValue(false)
 
-        await expect(updateTheme({ foundation: { radius: '1rem' } } as ThemePresetOverrides)).resolves.toBeUndefined()
+        await expect(updateTheme({ foundation: { space: '0.25rem' } } as ThemePresetOverrides)).resolves.toBeUndefined()
         expect(mergePresets).not.toHaveBeenCalled()
       })
     })
@@ -499,6 +519,16 @@ describe('useTheme', () => {
         colorMode.value = 'dark'
 
         expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'dark')
+      })
+    })
+
+    describe('when colorMode value is read', () => {
+      it('then the getter returns the active color mode from theme state', () => {
+        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+
+        const { colorMode } = useTheme()
+
+        expect(colorMode.value).toBe(mockRefThemeState.value.colorMode)
       })
     })
   })

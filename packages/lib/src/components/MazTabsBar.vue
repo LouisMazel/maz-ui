@@ -88,7 +88,7 @@ export type MazTabsBarItem
 
 const MazBadge = defineAsyncComponent(() => import('./MazBadge.vue'))
 
-const { currentTab, updateCurrentTab } = useInjectStrict<MazTabsProvide>('maz:tabs')
+const { currentTab, updateCurrentTab } = useInjectStrict<MazTabsProvide>('maz-tabs')
 
 function selectTab(tabIndex: number) {
   updateCurrentTab(tabIndex + 1)

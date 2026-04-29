@@ -51,7 +51,7 @@ function showToast() {
       darkClass: 'dark',
       darkModeStrategy: 'class',
       mode: 'both',
-      strategy: 'hybrid',
+      strategy: 'runtime',
       overrides: {
         foundation: {
           'base-font-size': '14px',

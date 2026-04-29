@@ -592,7 +592,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
     :class="[
       props.class,
       { 'maz:w-full': block },
-      orientation ? `--${orientation}` : undefined,
+      orientation && `--${orientation}`,
       orientation === 'col' ? 'maz:flex-col' : orientation === 'row' ? 'maz:flex-row' : 'maz:flex-col maz:mob-l:flex-row',
     ]"
     :style
@@ -701,7 +701,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
   }
 
   &.--row .m-input-phone-number__country-select:deep(.m-select-country__select .m-input-wrapper) {
-    @apply maz:rounded-r-none maz:rounded-b-none;
+    @apply maz:rounded-r-none;
   }
 
   &.--responsive .m-input-phone-number__country-select {
@@ -712,7 +712,8 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
     }
 
     &:deep(.m-input-wrapper) {
-      @apply maz:rounded-b-none maz:mob-l:rounded-b-md maz:mob-l:rounded-r-none;
+      @apply maz:rounded-bl-none maz:rounded-br-none
+        maz:mob-l:rounded-bl-md maz:mob-l:rounded-tr-none;
     }
   }
 }

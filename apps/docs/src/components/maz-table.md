@@ -164,7 +164,7 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
   </template>
 
   <template #actions>
-    <MazBtn v-tooltip="{ text: 'Delete', color: 'destructive' }" fab size="xs" color="destructive" icon="trash" />
+    <MazBtn v-tooltip="{ text: 'Delete', color: 'destructive' }" fab size="xs" color="destructive" icon="/trash.svg" />
   </template>
 </MazTable>
 
@@ -209,7 +209,7 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
       </template>
 
       <template #actions>
-        <MazBtn fab size="xs" color="destructive" icon="trash" />
+        <MazBtn fab size="xs" color="destructive" icon="/trash.svg" />
       </template>
     </MazTable>
   </template>

@@ -139,11 +139,11 @@ const defaults = {
     devtools: true,
   },
   css: {
-    injectMainCss: true,
+    injectCss: true,
   },
   theme: {
     preset: 'maz-ui',
-    strategy: 'hybrid',
+    strategy: 'runtime',
     darkModeStrategy: 'class',
     colorMode: 'auto',
     mode: 'both',
@@ -216,7 +216,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     // CSS
 
-    if (moduleOptions.css.injectMainCss) {
+    if (moduleOptions.css.injectCss) {
       nuxt.options.css.unshift('maz-ui/style.css')
     }
 

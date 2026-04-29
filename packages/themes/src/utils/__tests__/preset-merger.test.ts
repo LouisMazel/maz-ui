@@ -212,8 +212,7 @@ describe('preset-merger', () => {
           colors: { light: {}, dark: {} },
           foundation: {},
           scales: {
-            spacing: '0.25rem',
-            radius: { md: '0.5rem' },
+            rounded: { md: '0.5rem' },
             shadow: { md: '0 1px 2px rgba(0,0,0,0.1)' },
           },
         } as unknown as ThemePreset
@@ -224,57 +223,28 @@ describe('preset-merger', () => {
       })
     })
 
-    describe('when overrides extend the scales block but omit spacing', () => {
-      it('then mergeScales falls back to the base spacing value', () => {
-        const basePreset = {
-          name: 'base',
-          colors: { light: {}, dark: {} },
-          foundation: {},
-          scales: {
-            spacing: '0.25rem',
-            radius: { md: '0.5rem' },
-            shadow: {},
-          },
-        } as unknown as ThemePreset
-
-        const overrides: ThemePresetOverrides = {
-          scales: {
-            radius: { md: '1rem' },
-          },
-        }
-
-        const result = mergePresets(basePreset, overrides)
-
-        expect(result.scales.spacing).toBe('0.25rem')
-        expect(result.scales.radius?.md).toBe('1rem')
-      })
-    })
-
     describe('when overrides extend the scales block', () => {
-      it('then mergeScales merges radius/shadow and overrides spacing', () => {
+      it('then mergeScales merges rounded and shadow', () => {
         const basePreset = {
           name: 'base',
           colors: { light: {}, dark: {} },
           foundation: {},
           scales: {
-            spacing: '0.25rem',
-            radius: { sm: '0.25rem', md: '0.5rem' },
+            rounded: { sm: '0.25rem', md: '0.5rem' },
             shadow: { sm: 'shadow-base-sm' },
           },
         } as unknown as ThemePreset
 
         const overrides: ThemePresetOverrides = {
           scales: {
-            spacing: '0.5rem',
-            radius: { md: '1rem' },
+            rounded: { md: '1rem' },
             shadow: { md: 'shadow-override-md' },
           },
         }
 
         const result = mergePresets(basePreset, overrides)
 
-        expect(result.scales.spacing).toBe('0.5rem')
-        expect(result.scales.radius).toEqual({ sm: '0.25rem', md: '1rem' })
+        expect(result.scales.rounded).toEqual({ sm: '0.25rem', md: '1rem' })
         expect(result.scales.shadow).toEqual({
           sm: 'shadow-base-sm',
           md: 'shadow-override-md',
@@ -288,7 +258,7 @@ describe('preset-merger', () => {
           name: 'base',
           colors: { light: {}, dark: {} },
           foundation: {},
-          scales: { spacing: '0.25rem' },
+          scales: { rounded: {}, shadow: {} },
         } as unknown as ThemePreset
 
         const result = mergePresets(basePreset, {})
@@ -303,7 +273,7 @@ describe('preset-merger', () => {
           name: 'base',
           colors: { light: {}, dark: {} },
           foundation: {},
-          scales: { spacing: '0.25rem' },
+          scales: { rounded: {}, shadow: {} },
         } as unknown as ThemePreset
 
         const overrides: ThemePresetOverrides = {
@@ -328,7 +298,7 @@ describe('preset-merger', () => {
           name: 'base',
           colors: { light: {}, dark: {} },
           foundation: {},
-          scales: { spacing: '0.25rem' },
+          scales: { rounded: {}, shadow: {} },
           components: {
             btn: { 'font-weight': '500' },
             container: { bg: { light: 'oklch(1 0 0)', dark: 'oklch(0.2 0 0)' } },

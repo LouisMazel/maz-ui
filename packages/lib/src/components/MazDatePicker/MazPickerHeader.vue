@@ -205,7 +205,7 @@ watch(
   }
 
   &.--contrast {
-    @apply maz:bg-contrast-500 maz:dark:bg-contrast-400 maz:text-foreground maz:dark:text-foreground;
+    @apply maz:bg-contrast maz:text-contrast-foreground;
   }
 
   &.--transparent {

@@ -4,7 +4,11 @@ import postcssNested from 'postcss-nested'
 import svgLoader from 'vite-svg-loader'
 import mazUiModule from './../../packages/nuxt/src/module'
 
-const isDev = process.env.NODE_ENV !== 'production'
+const enableLocalMonorepoDev = false
+const isDev = enableLocalMonorepoDev && process.env.NODE_ENV !== 'production'
+
+// eslint-disable-next-line no-console
+console.log({ isDev, enableLocalMonorepoDev })
 
 export default defineNuxtConfig({
   modules: [mazUiModule],
@@ -41,8 +45,14 @@ export default defineNuxtConfig({
     // builds. Same trick as accor-core-library.
     resolve: {
       conditions: isDev
-        ? ['monorepo:dev', 'import', 'browser', 'module', 'default', 'require']
-        : ['import', 'browser', 'module', 'default', 'require'],
+        ? [
+            'monorepo:dev',
+            'import',
+            'browser',
+            'module',
+            'default',
+          ]
+        : ['import', 'browser', 'module', 'default'],
     },
     css: {
       postcss: {
@@ -55,6 +65,7 @@ export default defineNuxtConfig({
   },
 
   mazUi: {
+    css: { injectCss: !isDev },
     theme: {
       preset: 'maz-ui',
       mode: 'both',

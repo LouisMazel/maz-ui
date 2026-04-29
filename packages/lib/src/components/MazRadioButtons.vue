@@ -152,7 +152,7 @@ const SIZE_CLASS: Record<MazSize, string> = {
         :key="getOptionId(option, i)"
         :for="getOptionId(option, i)"
         class="m-radio-buttons__items maz:group maz:flex maz:cursor-pointer maz:gap-4 maz:rounded-md maz:border maz:border-divider
-        maz:bg-input maz:px-4 maz:py-2 maz:font-medium maz:transition-colors maz:duration-300 maz:items-center"
+        maz:bg-surface maz:px-4 maz:py-2 maz:font-medium maz:transition-colors maz:duration-300 maz:items-center"
         :class="[
           `--size-${size}`,
           SIZE_CLASS[size],

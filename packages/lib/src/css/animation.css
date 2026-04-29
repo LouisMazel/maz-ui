@@ -148,45 +148,6 @@
     opacity: 0;
   }
 
-  /**
-  * Tabs Transisiton
-  */
-  .maz-tab-transition {
-    &-enter-from {
-      transform: translate(100%, 0);
-    }
-
-    &-leave,
-    &-leave-active {
-      position: absolute !important;
-      inset-block-start: 0;
-    }
-
-    &-leave-to {
-      position: absolute !important;
-      transform: translate(-100%, 0);
-    }
-  }
-
-  .maz-tab-reverse-transition {
-    &-enter-from {
-      transform: translate(-100%, 0);
-    }
-
-    &-leave,
-    &-leave-active {
-      position: absolute !important;
-      inset-block-start: 0;
-    }
-
-    &-leave,
-    &-leave-to {
-      inset-block-start: 0;
-      position: absolute !important;
-      transform: translate(100%, 0);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
     * {
       animation: none !important;

@@ -44,7 +44,6 @@ const DEFAULT_GALLERY_OPTIONS: MazGalleryProps = {
   height: 150,
 }
 
-const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const MazGallery = defineAsyncComponent(() => import('./MazGallery.vue'))
 const MazExpandAnimation = defineAsyncComponent(() => import('./MazExpandAnimation.vue'))
 
@@ -129,9 +128,8 @@ const wrapperData = computed(() => {
 
   return {
     is: componentType,
-    ...(href && { href }),
-    ...(to && { to }),
-    target: hrefTarget,
+    ...(href && { href, target: hrefTarget }),
+    ...(to && { to, target: hrefTarget }),
   }
 })
 const footerAlignClass = computed(() =>
@@ -165,7 +163,7 @@ function toggleCollapse() {
       class="m-card__header maz:flex maz:items-center maz:px-4 maz:py-3 maz:transition-colors maz:duration-200 maz:border-b maz:border-solid"
       :class="[
         collapseOpenModel ? 'maz:rounded-t-md maz:border-divider' : 'maz:border-transparent',
-        { '--is-collapsible maz:hover:bg-surface-600': collapsible },
+        { '--is-collapsible maz:hover:bg-surface-600 maz:cursor-pointer': collapsible },
         { 'maz:justify-end': !hasSlotContent(slots.title) && !title && collapsible },
         { 'maz:justify-between': hasSlotContent(slots.title) || title },
       ]"
@@ -179,19 +177,16 @@ function toggleCollapse() {
         {{ title }}
       </slot>
 
-      <MazBtn
+      <div
         v-if="collapsible"
-        color="transparent"
         class="maz:ms-2 maz:text-sm"
-        size="xs"
-        @click.stop="toggleCollapse"
       >
         <MazIcon
           :icon="MazChevronDown"
           :class="{ '--is-open': collapseOpenModel }"
           class="m-card__collapse-icon maz:text-xl maz:rotate-0 maz:transition-transform maz:duration-200"
         />
-      </MazBtn>
+      </div>
     </component>
     <component
       v-bind="wrapperData"
