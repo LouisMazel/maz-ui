@@ -19,7 +19,7 @@ export const DEFAULT_DISABLED_OPACITY = '0.5'
 export const DEFAULT_DISABLED_CURSOR = 'not-allowed'
 
 /**
- * Default mono stack — used when a preset doesn't override `font-mono`.
+ * Default mono stack — used when a preset doesn't override `font-mono-stack`.
  */
 export const DEFAULT_FONT_MONO
   = `ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace`

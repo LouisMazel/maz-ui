@@ -46,16 +46,27 @@ export interface ThemeFoundation {
   'border-width': SizeUnit
   /** Body / sans font stack. */
   'font-family'?: string
-  /** Monospace font stack. Used by `MazInputCode`, `<code>`, `<kbd>`. */
-  'font-mono'?: string
+  /**
+   * Monospace font stack. Used by `MazInputCode`, `<code>`, `<kbd>`.
+   * Bridged into Tailwind's `--font-mono` token. Named `font-mono-stack`
+   * (not `font-mono`) to avoid the `prefix(maz)` self-cycle.
+   */
+  'font-mono-stack'?: string
   /**
    * Display / heading font stack. Defaults to the same value as `font-family`
-   * — no behavioural change unless the consumer overrides it.
+   * — no behavioural change unless the consumer overrides it. Bridged into
+   * Tailwind's `--font-display`. Named `font-display-stack` to avoid the
+   * `prefix(maz)` self-cycle.
    */
-  'font-display'?: string
-  'duration-fast'?: Duration
-  'duration-normal'?: Duration
-  'duration-slow'?: Duration
+  'font-display-stack'?: string
+  /**
+   * Transition durations. Bridged into Tailwind's `--duration-fast`,
+   * `--duration-normal`, `--duration-slow`. Named `motion-*` (not
+   * `duration-*`) to avoid the `prefix(maz)` self-cycle.
+   */
+  'motion-fast'?: Duration
+  'motion-normal'?: Duration
+  'motion-slow'?: Duration
   'easing-out'?: string
   'easing-in'?: string
   'easing-in-out'?: string

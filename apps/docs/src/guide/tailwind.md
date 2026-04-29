@@ -13,7 +13,7 @@ This page is for consumers who **already have a Tailwind v4 setup of their own**
 
 ## What the bridge gives you
 
-You already configured a maz-ui theme via `@maz-ui/themes` — a built-in preset (`mazUi`, `ocean`, `pristine`, `obsidian`) or your own custom preset. That theme injects CSS variables (`--maz-primary`, `--maz-radius-md`, `--maz-spacing`, `--maz-font-family`, …) at runtime.
+You already configured a maz-ui theme via `@maz-ui/themes` — a built-in preset (`mazUi`, `ocean`, `pristine`, `obsidian`, `nova`) or your own custom preset. That theme injects CSS variables (`--maz-primary`, `--maz-rounded-md`, `--maz-space`, `--maz-font-family`, …) at runtime.
 
 The **Tailwind bridge** is a set of small CSS files that map those `--maz-*` variables to Tailwind theme tokens (`--color-primary`, `--radius-md`, `--font-sans`, `--spacing`, …) so your own Tailwind utilities resolve to the active preset:
 
@@ -147,7 +147,7 @@ Standard `shadow-xs` / `shadow-sm` / `shadow-md` / `shadow-lg` / `shadow-xl`, pl
 
 ### Typography & misc
 
-`font-sans` → `var(--maz-font-family)`, `font-mono` → `var(--maz-font-mono)`, `font-display` → `var(--maz-font-display)` (defaults to the same stack as `font-sans` until a preset declares a different one). Default border width → `var(--maz-border-width)`, default transition → 200ms cubic-bezier.
+`font-sans` → `var(--maz-font-family)`, `font-mono` → `var(--maz-font-mono-stack)`, `font-display` → `var(--maz-font-display-stack)` (defaults to the same stack as `font-sans` until a preset declares a different one). Default border width → `var(--maz-border-width)`, default transition → 200ms cubic-bezier (`var(--maz-motion-normal)`).
 
 ## Using `@apply` inside Vue SFC `<style>` blocks
 

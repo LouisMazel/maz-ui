@@ -9,7 +9,7 @@ function action() {
 <template>
   <MazPullToRefresh :on-click="action">
     <header>
-      <NuxtLink :to="{ name: 'index' }">
+      <NuxtLink :to="{ name: 'index' }" class="maz:font-mono">
         MazUi
       </NuxtLink>
 

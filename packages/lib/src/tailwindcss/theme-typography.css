@@ -1,21 +1,28 @@
 /*
  * Typography, border-width and motion bridge — all sourced from @maz-ui/themes.
  *
- * - `--font-{sans,mono,display}` come from `foundation.font-{family,mono,display}`.
+ * - `--font-{sans,mono,display}` come from
+ *   `foundation.{font-family,font-mono-stack,font-display-stack}`.
  * - The text scale is intentionally NOT remapped here. Tailwind v4 ships
  *   `text-xs..text-xl` already; the lib drives sizes off the `base-font-size`
  *   foundation token plus relative `em` values inside each component.
  * - `--default-border-width`, motion durations and easings keep their
  *   existing fallbacks for presets that don't declare them.
+ *
+ * The runtime variables for mono / display stacks and durations are named
+ * with non-Tailwind suffixes (`--maz-font-mono-stack`, `--maz-motion-fast`,
+ * …) on purpose: under Tailwind's `prefix(maz)`, the LHS gets prefixed
+ * (`--font-mono` → `--maz-font-mono`), so a same-named source would
+ * self-cycle and silently drop the preset value.
  */
 @theme inline {
   --font-sans: var(--maz-font-family);
-  --font-mono: var(--maz-font-mono);
-  --font-display: var(--maz-font-display);
+  --font-mono: var(--maz-font-mono-stack);
+  --font-display: var(--maz-font-display-stack);
   --default-border-width: var(--maz-border-width);
-  --duration-fast: var(--maz-duration-fast, 100ms);
-  --duration-normal: var(--maz-duration-normal, 200ms);
-  --duration-slow: var(--maz-duration-slow, 300ms);
+  --duration-fast: var(--maz-motion-fast, 100ms);
+  --duration-normal: var(--maz-motion-normal, 200ms);
+  --duration-slow: var(--maz-motion-slow, 300ms);
   --default-transition-duration: var(--duration-normal);
   --ease-out: var(--maz-easing-out, cubic-bezier(0.4, 0, 0.2, 1));
   --ease-in: var(--maz-easing-in, cubic-bezier(0.4, 0, 1, 1));

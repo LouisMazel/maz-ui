@@ -383,8 +383,11 @@ export const customTheme = definePreset({
   foundation: {
     'base-font-size': '14px',
     'font-family': `Manrope, sans-serif, system-ui, -apple-system`,
-    'radius': '0.7rem',
+    'space': '0.25rem',
     'border-width': '0.0625rem',
+  },
+  scales: {
+    rounded: { md: '0.7rem' },
   },
   colors: {
     light: {
