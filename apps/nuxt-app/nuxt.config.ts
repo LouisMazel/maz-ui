@@ -41,8 +41,8 @@ export default defineNuxtConfig({
     // builds. Same trick as accor-core-library.
     resolve: {
       conditions: isDev
-        ? ['monorepo:dev', 'import', 'browser', 'module', 'default', 'require']
-        : ['import', 'browser', 'module', 'default', 'require'],
+        ? ['monorepo:dev', 'import', 'browser', 'module', 'default']
+        : ['import', 'browser', 'module', 'default'],
     },
     css: {
       postcss: {
@@ -55,6 +55,7 @@ export default defineNuxtConfig({
   },
 
   mazUi: {
+    css: { injectCss: false },
     theme: {
       preset: 'maz-ui',
       mode: 'both',

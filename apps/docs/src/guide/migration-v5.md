@@ -380,10 +380,10 @@ The single foundation radius is replaced by a full radius scale. Move your value
   foundation: {
     'base-font-size': '14px',
     'border-width': '1px',
+    'space': '0.25rem',
   },
   scales: {
-    spacing: '0.25rem',
-    radius: {
+    rounded: {
       'xs': '0.125rem',
       'sm': '0.25rem',
       'md': '0.7rem',
@@ -397,17 +397,19 @@ The single foundation radius is replaced by a full radius scale. Move your value
 }
 ```
 
-The bridge maps every `--maz-radius-{key}` to its matching Tailwind `--radius-{key}`, so `maz:rounded-md`, `maz:rounded-lg`, etc. all move with your preset.
+The bridge maps every `--maz-rounded-{key}` to its matching Tailwind `--radius-{key}`, so `maz:rounded-md`, `maz:rounded-lg`, etc. all move with your preset.
 
 ### 12. New optional preset blocks: `scales` and `components`
 
-`@maz-ui/themes` now lets you drive the spacing / radius / shadow scales and a small set of per-component tokens:
+`@maz-ui/themes` now lets you drive the rounded / shadow scales (and `space` via `foundation`) plus a small set of per-component tokens:
 
 ```ts
 {
+  foundation: {
+    space: '0.25rem',
+  },
   scales: {
-    spacing: '0.25rem',
-    radius: { /* xs..3xl */ },
+    rounded: { /* xs..3xl */ },
     shadow: { sm, md, lg, xl, elevation },
   },
   components: {
@@ -420,7 +422,44 @@ The bridge maps every `--maz-radius-{key}` to its matching Tailwind `--radius-{k
 
 Both blocks are optional; the bundled presets ship with sensible defaults. New `foundation` keys also landed and are all optional: `font-mono`, `font-display`, `disabled-opacity`, `disabled-cursor`. See the [themes guide](./themes.md) for the full surface.
 
-### 13. `color="background"` → `color="surface"` on components
+### 13. Theme strategy: `'hybrid'` removed, no more critical CSS
+
+The `@maz-ui/themes` rendering pipeline collapsed back to a single path: the full CSS is generated and injected synchronously on first paint. The two-stage critical-CSS / async-full-CSS dance is gone.
+
+What changed:
+
+- `Strategy` is now `'runtime' | 'buildtime'` — `'hybrid'` no longer exists. The runtime default is `'runtime'`.
+- `MazUiTheme` plugin options no longer accept `injectCriticalCSS` / `injectFullCSS`.
+- `@maz-ui/nuxt`'s `theme` config no longer accepts `injectAllCSSOnServer`.
+- `generateCSS` / `buildThemeCSS` / `buildSeparateThemeFiles` no longer accept `onlyCritical`, `criticalColors`, `criticalFoundation`, or `includeColorScales`. `buildSeparateThemeFiles` now returns `{ full, lightOnly, darkOnly }` only — no more `critical`.
+
+What you need to do:
+
+```diff
+ app.use(MazUiTheme, {
+   preset: mazUi,
+-  strategy: 'hybrid',
++  strategy: 'runtime',
+-  injectCriticalCSS: true,
+-  injectFullCSS: true,
+ })
+```
+
+```diff
+ export default defineNuxtConfig({
+   mazUi: {
+     theme: {
+-      strategy: 'hybrid',
++      strategy: 'runtime',
+-      injectAllCSSOnServer: true,
+     },
+   },
+ })
+```
+
+To keep first-paint clean, **pass the preset object** (not just a string name) so the full CSS is rendered before the first frame.
+
+### 14. `color="background"` → `color="surface"` on components
 
 The components that exposed `color="background"` in their public prop now use `color="surface"`. The visual result is identical — only the literal changes.
 
@@ -486,6 +525,38 @@ Most visual regressions were caught during the migration, but keep an eye on:
 
 - Shadows, radius and blur scales — Tailwind v4 shifted a few names (`shadow` → `shadow-sm`, `blur` → `blur-sm`, etc.). Maz-ui components have been updated internally; your own code is affected only if you used these classes directly.
 - `outline-none` → `outline-hidden` (same story).
+
+### `nova` preset added, bundled palettes refreshed
+
+Four bundled presets remain (`mazUi`, `pristine`, `ocean`, `obsidian`) plus a new `nova` startup / AI / creative preset (electric violet primary, cyan accent, hot coral secondary, Geist font stack). Each existing preset's palette has been retuned so the `secondary` / `accent` voices actually pop in `MazCardSpotlight`, secondary `MazBtn` variants and badges:
+
+| Preset | Identity |
+| --- | --- |
+| `pristine` | Sober Apple — near-black primary, system blue accent, system purple secondary, SF system font, Apple spring easing. |
+| `ocean` | Calm water — teal primary, deep navy secondary, sandy ochre accent. |
+| `obsidian` | Dark luxe — indigo primary, gold accent, fuchsia secondary, snappy expo easing. |
+| `nova` | Modern AI — electric violet primary, cyan accent, hot coral secondary. |
+
+Switching to one of the bundled presets does not require any code change beyond the preset name. If you depended on the previous (washed-out gray) `secondary` color in a custom theme, override it back via `colors.{light,dark}.secondary` in your preset.
+
+### Preset name persistence (new — opt-out, no breaking change)
+
+`@maz-ui/themes` now persists the active preset name in a `maz-preset` cookie (1-year TTL, `SameSite=Lax`) — same shape as the existing `maz-color-mode` cookie:
+
+- The cookie is read at boot and **takes priority over `options.preset`** — even when `options.preset` is a preset object. `options.preset` (string or object) is the default the app boots with; the cookie carries the user's last explicit choice and wins.
+- It is written after every successful preset resolution and after every `useTheme().updateTheme()` call.
+- If the saved name no longer resolves, the cookie is cleared and the runtime falls back to `options.preset` (or default).
+
+Persistence is enabled by default. To opt out (privacy, no end-user switching, …), set `persistPreset: false`:
+
+```ts
+app.use(MazUiTheme, {
+  preset: mazUi,
+  persistPreset: false,
+})
+```
+
+The same option is exposed in the Nuxt module config under `mazUi.theme.persistPreset`.
 
 ## What you can ignore
 

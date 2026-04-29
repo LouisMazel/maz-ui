@@ -167,7 +167,7 @@ export default defineNuxtConfig({
     // Theme System
     theme: {
       preset: 'ocean', // Choose: 'mazUi', 'ocean', 'pristine', 'obsidian'
-      strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
+      strategy: 'runtime', // 'runtime' | 'buildtime'
       darkModeStrategy: 'class', // 'class' | 'media' | 'auto'
     },
 

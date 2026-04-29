@@ -7,7 +7,7 @@ import {
   DEFAULT_FONT_MONO,
   DEFAULT_INPUT_BG,
   DEFAULT_SHADOW,
-  DEFAULT_SPACING,
+  DEFAULT_SPACE,
 } from './_defaults'
 
 const FONT_FAMILY = `Manrope, sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`
@@ -17,21 +17,21 @@ export const mazUi: ThemePreset = {
   foundation: {
     'base-font-size': '14px',
     'font-family': FONT_FAMILY,
-    'font-mono': DEFAULT_FONT_MONO,
-    'font-display': FONT_FAMILY,
+    'font-mono-stack': DEFAULT_FONT_MONO,
+    'font-display-stack': FONT_FAMILY,
     'border-width': '1px',
-    'duration-fast': '100ms',
-    'duration-normal': '200ms',
-    'duration-slow': '300ms',
+    'motion-fast': '100ms',
+    'motion-normal': '200ms',
+    'motion-slow': '300ms',
     'easing-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
     'easing-in': 'cubic-bezier(0.4, 0, 1, 1)',
     'easing-in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
     'disabled-opacity': DEFAULT_DISABLED_OPACITY,
     'disabled-cursor': DEFAULT_DISABLED_CURSOR,
+    'space': DEFAULT_SPACE,
   },
   scales: {
-    spacing: DEFAULT_SPACING,
-    radius: {
+    rounded: {
       'xs': '0.125rem',
       'sm': '0.25rem',
       'md': '0.7rem',

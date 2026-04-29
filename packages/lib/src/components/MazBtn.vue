@@ -170,10 +170,10 @@ const btnStyle = computed<CSSProperties>(() => {
     '--m-btn-fg': `var(--maz-${c}-foreground)`,
     '--m-btn-bg-hover': `var(--maz-${c}-600)`,
     '--m-btn-bg-active': `var(--maz-${c}-700)`,
-    '--m-btn-bd-light': `var(--maz-${c}-200)`,
+    '--m-btn-bd-light': `var(--maz-${c}-400)`,
     '--m-btn-bd-dark': `var(--maz-${c}-700)`,
     ...(pastel && {
-      '--m-btn-pastel-bg': `var(--maz-${c}-50)`,
+      '--m-btn-pastel-bg': `color-mix(in srgb, var(--maz-${c}-500) 20%, transparent)`,
       '--m-btn-pastel-fg': `var(--maz-${pastelFg})`,
     }),
   }

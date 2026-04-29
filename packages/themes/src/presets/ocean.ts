@@ -7,7 +7,7 @@ import {
   DEFAULT_FONT_MONO,
   DEFAULT_INPUT_BG,
   DEFAULT_SHADOW,
-  DEFAULT_SPACING,
+  DEFAULT_SPACE,
 } from './_defaults'
 
 /**
@@ -34,20 +34,20 @@ export const ocean: ThemePreset = {
     'base-font-size': '16px',
     'border-width': '0.125rem',
     'font-family': FONT_FAMILY,
-    'font-mono': DEFAULT_FONT_MONO,
-    'font-display': FONT_FAMILY,
-    'duration-fast': '120ms',
-    'duration-normal': '240ms',
-    'duration-slow': '360ms',
+    'font-mono-stack': DEFAULT_FONT_MONO,
+    'font-display-stack': FONT_FAMILY,
+    'motion-fast': '120ms',
+    'motion-normal': '240ms',
+    'motion-slow': '360ms',
     'easing-out': 'cubic-bezier(0.32, 0.72, 0, 1)',
     'easing-in': 'cubic-bezier(0.7, 0, 0.84, 0)',
     'easing-in-out': 'cubic-bezier(0.65, 0, 0.35, 1)',
     'disabled-opacity': DEFAULT_DISABLED_OPACITY,
     'disabled-cursor': DEFAULT_DISABLED_CURSOR,
+    'space': DEFAULT_SPACE,
   },
   scales: {
-    spacing: DEFAULT_SPACING,
-    radius: {
+    rounded: {
       'xs': '0.25rem',
       'sm': '0.5rem',
       'md': '1rem',

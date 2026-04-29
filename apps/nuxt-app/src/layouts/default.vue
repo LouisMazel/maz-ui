@@ -9,7 +9,7 @@ function action() {
 <template>
   <MazPullToRefresh :on-click="action">
     <header>
-      <NuxtLink :to="{ name: 'index' }">
+      <NuxtLink :to="{ name: 'index' }" class="maz:font-mono">
         MazUi
       </NuxtLink>
 
@@ -19,6 +19,12 @@ function action() {
           color="transparent"
         >
           Home
+        </MazBtn>
+        <MazBtn
+          :to="{ name: 'components' }"
+          color="transparent"
+        >
+          Components
         </MazBtn>
         <MazBtn
           :to="{ name: 'test-page' }"

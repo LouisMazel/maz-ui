@@ -56,7 +56,10 @@ useFormField('select', {
     <div>
       <!-- Start Developping Area - You should not commit anything here to keep this place clean for all others -->
 
-      <MazBtn v-tooltip="{ text: 'Coucou' }">
+      <MazBtn
+        v-tooltip="{ text: 'Coucou' }"
+        color="contrast"
+      >
         Coucou
       </MazBtn>
 

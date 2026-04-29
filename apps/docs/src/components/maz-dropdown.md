@@ -220,7 +220,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
   fab
   pastel
   :chevron="false"
-  icon="bars-3"
+  icon="/bars-3.svg"
   size="xl"
   :items="[
     { label: 'Action', onClick: () => toast.success('CLICKED') },
@@ -236,7 +236,7 @@ You can provide an icon to replace the default chevron icon and disable the anim
   fab
   pastel
   :chevron="false"
-  icon="bars-3"
+  icon="/bars-3.svg"
   size="xl"
   :items="[
     { label: 'Action', onClick: () => toast.success('CLICKED') },

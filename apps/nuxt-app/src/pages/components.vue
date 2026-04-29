@@ -96,13 +96,13 @@ function makePlaceholder(color: string, label: string): string {
   return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><rect fill="${color}" width="800" height="600"/><text x="400" y="300" text-anchor="middle" dominant-baseline="central" font-family="system-ui" font-size="32" fill="white">${label}</text></svg>`)}`
 }
 
-const galleryImages: MazGalleryImage[] = [
+const galleryImages = [
   { src: makePlaceholder('#6366f1', 'Image 1'), alt: 'Placeholder 1' },
   { src: makePlaceholder('#8b5cf6', 'Image 2'), alt: 'Placeholder 2' },
   { src: makePlaceholder('#0ea5e9', 'Image 3'), alt: 'Placeholder 3' },
   { src: makePlaceholder('#10b981', 'Image 4'), alt: 'Placeholder 4' },
   { src: makePlaceholder('#f59e0b', 'Image 5'), alt: 'Placeholder 5' },
-]
+] satisfies MazGalleryImage[]
 
 const avatarPlaceholder = makePlaceholder('#6366f1', 'JD')
 
@@ -783,7 +783,6 @@ const checklistItems = [
       <h2 class="maz:text-2xl maz:font-bold maz:mb-4">
         MazTabs
       </h2>
-
       <MazTabs v-model="tabValue">
         <MazTabsBar v-model="tabValue" :items="[{ label: 'Overview' }, { label: 'Features' }, { label: 'Pricing' }]" />
 
@@ -1154,7 +1153,7 @@ const checklistItems = [
         <template #title>
           Featured Items
         </template>
-        <MazCard v-for="i in 5" :key="i" :gallery="{ images: [galleryImages[i - 1]], height: 150 }" style="min-width: 280px;">
+        <MazCard v-for="i in 5" :key="i" :gallery="{ images: [galleryImages.at(i - 1) as MazGalleryImage], height: 150 }" style="min-width: 280px;">
           <template #content-title>
             Card {{ i }}
           </template>

@@ -6,7 +6,7 @@ import {
   DEFAULT_DISABLED_OPACITY,
   DEFAULT_FONT_MONO,
   DEFAULT_INPUT_BG,
-  DEFAULT_SPACING,
+  DEFAULT_SPACE,
 } from './_defaults'
 
 /**
@@ -30,20 +30,20 @@ export const pristine: ThemePreset = {
     'base-font-size': '14px',
     'border-width': '1px',
     'font-family': FONT_FAMILY,
-    'font-mono': DEFAULT_FONT_MONO,
-    'font-display': FONT_DISPLAY,
-    'duration-fast': '120ms',
-    'duration-normal': '220ms',
-    'duration-slow': '380ms',
+    'font-mono-stack': DEFAULT_FONT_MONO,
+    'font-display-stack': FONT_DISPLAY,
+    'motion-fast': '120ms',
+    'motion-normal': '220ms',
+    'motion-slow': '380ms',
     'easing-out': 'cubic-bezier(0.32, 0.72, 0, 1)',
     'easing-in': 'cubic-bezier(0.5, 0, 0.75, 0)',
     'easing-in-out': 'cubic-bezier(0.65, 0, 0.35, 1)',
     'disabled-opacity': DEFAULT_DISABLED_OPACITY,
     'disabled-cursor': DEFAULT_DISABLED_CURSOR,
+    'space': DEFAULT_SPACE,
   },
   scales: {
-    spacing: DEFAULT_SPACING,
-    radius: {
+    rounded: {
       'xs': '0.25rem',
       'sm': '0.375rem',
       'md': '0.625rem',

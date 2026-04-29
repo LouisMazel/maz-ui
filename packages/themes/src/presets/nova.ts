@@ -7,7 +7,7 @@ import {
   DEFAULT_FONT_MONO,
   DEFAULT_INPUT_BG,
   DEFAULT_SHADOW,
-  DEFAULT_SPACING,
+  DEFAULT_SPACE,
 } from './_defaults'
 
 /**
@@ -38,20 +38,20 @@ export const nova: ThemePreset = {
     'base-font-size': '14px',
     'border-width': '1px',
     'font-family': FONT_FAMILY,
-    'font-mono': FONT_MONO,
-    'font-display': FONT_DISPLAY,
-    'duration-fast': '100ms',
-    'duration-normal': '180ms',
-    'duration-slow': '280ms',
+    'font-mono-stack': FONT_MONO,
+    'font-display-stack': FONT_DISPLAY,
+    'motion-fast': '100ms',
+    'motion-normal': '180ms',
+    'motion-slow': '280ms',
     'easing-out': 'cubic-bezier(0.22, 1, 0.36, 1)',
     'easing-in': 'cubic-bezier(0.55, 0, 0.85, 0)',
     'easing-in-out': 'cubic-bezier(0.83, 0, 0.17, 1)',
     'disabled-opacity': DEFAULT_DISABLED_OPACITY,
     'disabled-cursor': DEFAULT_DISABLED_CURSOR,
+    'space': DEFAULT_SPACE,
   },
   scales: {
-    spacing: DEFAULT_SPACING,
-    radius: {
+    rounded: {
       'xs': '0.25rem',
       'sm': '0.375rem',
       'md': '0.5rem',
