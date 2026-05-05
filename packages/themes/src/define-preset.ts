@@ -7,7 +7,6 @@ import { mergePresets } from './utils/preset-merger'
  *
  * @example
  * ```ts
- * // Utilisation asynchrone avec une base string
  * const customTheme = await definePreset({
  *   base: 'mazUi',
  *   overrides: {
@@ -17,20 +16,18 @@ import { mergePresets } from './utils/preset-merger'
  *   }
  * })
  *
- * // Utilisation synchrone avec un objet preset
  * import { mazUi } from './presets/mazUi'
  * const customTheme = definePreset({
  *   base: mazUi,
  *   overrides: {
- *     foundation: { radius: '1rem' }
+ *     foundation: { 'base-font-size': '1rem' }
  *   }
  * })
  *
- * // Utilisation asynchrone sans base (utilise 'maz-ui' par défaut)
  * const customTheme = await definePreset({
  *   overrides: {
  *     colors: {
- *       dark: { background: '0 0% 5%' }
+ *       dark: { surface: '0 0% 5%' }
  *     }
  *   }
  * })

@@ -23,7 +23,7 @@ const mockPreset: ThemePreset = {
   name: 'test',
   colors: {
     light: {
-      'background': '0 0% 100%',
+      'surface': '0 0% 100%',
       'foreground': '0 0% 0%',
       'primary': '220 90% 56%',
       'primary-foreground': '0 0% 100%',
@@ -43,11 +43,11 @@ const mockPreset: ThemePreset = {
       'warning-foreground': '0 0% 100%',
       'overlay': '0 0% 0%',
       'muted': '220 14% 96%',
-      'border': '220 13% 91%',
+      'divider': '220 13% 91%',
       'shadow': '0 0% 0%',
     },
     dark: {
-      'background': '224 71% 4%',
+      'surface': '224 71% 4%',
       'foreground': '210 20% 98%',
       'primary': '220 90% 56%',
       'primary-foreground': '0 0% 100%',
@@ -67,13 +67,31 @@ const mockPreset: ThemePreset = {
       'warning-foreground': '0 0% 100%',
       'overlay': '0 0% 0%',
       'muted': '215 28% 17%',
-      'border': '215 28% 17%',
+      'divider': '215 28% 17%',
       'shadow': '0 0% 0%',
     },
   },
   foundation: {
-    'radius': '0.5rem',
+    'space': '0.5rem',
     'border-width': '1px',
+  },
+  scales: {
+    rounded: {
+      'xs': '0.125rem',
+      'sm': '0.25rem',
+      'md': '0.5rem',
+      'lg': '1rem',
+      'xl': '2rem',
+      '2xl': '4rem',
+      '3xl': '8rem',
+    },
+    shadow: {
+      elevation: '0 0px 0px 0 rgb(0 0 0 / 0.05)',
+      sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+      md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+      lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+      xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+    },
   },
 }
 
@@ -95,8 +113,9 @@ const defaultTranslations = { locale: 'en', messages: { en: {} } }
 
 function createDefaultThemeState(): ThemeState {
   return {
-    strategy: 'hybrid',
+    strategy: 'runtime',
     darkClass: 'dark',
+    persistPreset: true,
     darkModeStrategy: 'class',
     colorMode: 'auto',
     mode: 'both',
@@ -150,7 +169,7 @@ describe('given MazUiProvider component', () => {
       const consumer = wrapper.find('[data-testid="theme-consumer"]')
       const parsed = JSON.parse(consumer.text())
       expect(parsed.colorMode).toBe('auto')
-      expect(parsed.strategy).toBe('hybrid')
+      expect(parsed.strategy).toBe('runtime')
       expect(parsed.isDark).toBe(false)
     })
 
@@ -199,7 +218,7 @@ describe('given MazUiProvider component', () => {
     it('provides theme state immediately from setupTheme result', () => {
       const wrapper = mount(MazUiProvider, {
         props: {
-          theme: { colorMode: 'auto', strategy: 'hybrid', preset: mockPreset },
+          theme: { colorMode: 'auto', strategy: 'runtime', preset: mockPreset },
           translations: defaultTranslations,
         },
         slots: {
@@ -210,7 +229,7 @@ describe('given MazUiProvider component', () => {
       const consumer = wrapper.find('[data-testid="theme-consumer"]')
       const parsed = JSON.parse(consumer.text())
       expect(parsed.colorMode).toBe('auto')
-      expect(parsed.strategy).toBe('hybrid')
+      expect(parsed.strategy).toBe('runtime')
     })
 
     it('reflects setupTheme result in theme state', () => {
@@ -329,6 +348,7 @@ describe('given MazUiProvider component', () => {
         colorMode: 'dark',
         mode: 'dark',
         preset: undefined,
+        persistPreset: true,
         isDark: true,
       })
 
@@ -347,7 +367,7 @@ describe('given MazUiProvider component', () => {
       const consumer = wrapper.find('[data-testid="theme-consumer"]')
       const parsed = JSON.parse(consumer.text())
       expect(parsed.colorMode).toBe('auto')
-      expect(parsed.strategy).toBe('hybrid')
+      expect(parsed.strategy).toBe('runtime')
       expect(parsed.isDark).toBe(false)
     })
   })

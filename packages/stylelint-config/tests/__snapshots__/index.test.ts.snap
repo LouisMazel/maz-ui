@@ -1,0 +1,292 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`snapshots of the resolved configuration > matches the empty-options snapshot 1`] = `
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-recess-order",
+  ],
+  "ignoreFiles": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/output/**",
+    "**/.output/**",
+    "**/coverage/**",
+    "**/temp/**",
+    "**/.temp/**",
+    "**/tmp/**",
+    "**/.tmp/**",
+    "**/.history/**",
+    "**/.vitepress/cache/**",
+    "**/.nuxt/**",
+    "**/.next/**",
+    "**/.svelte-kit/**",
+    "**/.vercel/**",
+    "**/.cache/**",
+    "**/*.min.css",
+    "**/*.min.scss",
+  ],
+  "overrides": undefined,
+  "plugins": [
+    "stylelint-use-logical-spec",
+  ],
+  "rules": {
+    "custom-property-pattern": [
+      "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:--[a-z0-9-]+)?$",
+      {
+        "message": "Custom properties should be kebab-case (e.g. --my-token, --my-block--variant).",
+      },
+    ],
+    "declaration-block-no-redundant-longhand-properties": [
+      true,
+      {
+        "ignoreShorthands": [
+          "grid-template",
+          "inset",
+        ],
+      },
+    ],
+    "function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": [
+          "v-bind",
+          "light-dark",
+        ],
+      },
+    ],
+    "liberty/use-logical-spec": [
+      "always",
+    ],
+    "nesting-selector-no-missing-scoping-root": null,
+    "no-descending-specificity": null,
+    "selector-class-pattern": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": [
+          "deep",
+          "global",
+          "slotted",
+          "where",
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`snapshots of the resolved configuration > matches the full-options snapshot 1`] = `
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-recess-order",
+    "stylelint-config-recommended-scss",
+    "stylelint-config-recommended-vue",
+    "stylelint-config-html",
+  ],
+  "ignoreFiles": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/output/**",
+    "**/.output/**",
+    "**/coverage/**",
+    "**/temp/**",
+    "**/.temp/**",
+    "**/tmp/**",
+    "**/.tmp/**",
+    "**/.history/**",
+    "**/.vitepress/cache/**",
+    "**/.nuxt/**",
+    "**/.next/**",
+    "**/.svelte-kit/**",
+    "**/.vercel/**",
+    "**/.cache/**",
+    "**/*.min.css",
+    "**/*.min.scss",
+  ],
+  "overrides": [
+    {
+      "customSyntax": "postcss-scss",
+      "files": [
+        "**/*.scss",
+      ],
+    },
+    {
+      "customSyntax": "postcss-html",
+      "files": [
+        "**/*.vue",
+        "**/*.html",
+      ],
+    },
+  ],
+  "plugins": [
+    "stylelint-use-logical-spec",
+  ],
+  "rules": {
+    "at-rule-no-deprecated": [
+      true,
+      {
+        "ignoreAtRules": [
+          "apply",
+        ],
+      },
+    ],
+    "at-rule-no-unknown": null,
+    "custom-property-pattern": [
+      "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:--[a-z0-9-]+)?$",
+      {
+        "message": "Custom properties should be kebab-case (e.g. --my-token, --my-block--variant).",
+      },
+    ],
+    "declaration-block-no-redundant-longhand-properties": [
+      true,
+      {
+        "ignoreShorthands": [
+          "grid-template",
+          "inset",
+        ],
+      },
+    ],
+    "function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": [
+          "v-bind",
+          "light-dark",
+        ],
+      },
+    ],
+    "import-notation": "string",
+    "liberty/use-logical-spec": [
+      "always",
+    ],
+    "nesting-selector-no-missing-scoping-root": null,
+    "no-descending-specificity": null,
+    "scss/at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": [
+          "use",
+          "forward",
+          "mixin",
+          "include",
+          "function",
+          "return",
+          "if",
+          "else",
+          "each",
+          "for",
+          "while",
+          "extend",
+          "at-root",
+          "debug",
+          "warn",
+          "error",
+          "content",
+          "theme",
+          "utility",
+          "source",
+          "variant",
+          "custom-variant",
+          "reference",
+          "apply",
+          "layer",
+          "screen",
+          "starting-style",
+          "tailwind",
+          "config",
+          "plugin",
+          "responsive",
+        ],
+      },
+    ],
+    "scss/at-use-no-unnamespaced": null,
+    "selector-class-pattern": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": [
+          "deep",
+          "global",
+          "slotted",
+          "where",
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`snapshots of the resolved configuration > matches the minimal snapshot (everything off) 1`] = `
+{
+  "extends": [
+    "stylelint-config-standard",
+  ],
+  "ignoreFiles": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/output/**",
+    "**/.output/**",
+    "**/coverage/**",
+    "**/temp/**",
+    "**/.temp/**",
+    "**/tmp/**",
+    "**/.tmp/**",
+    "**/.history/**",
+    "**/.vitepress/cache/**",
+    "**/.nuxt/**",
+    "**/.next/**",
+    "**/.svelte-kit/**",
+    "**/.vercel/**",
+    "**/.cache/**",
+    "**/*.min.css",
+    "**/*.min.scss",
+  ],
+  "overrides": undefined,
+  "plugins": undefined,
+  "rules": {
+    "custom-property-pattern": [
+      "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:--[a-z0-9-]+)?$",
+      {
+        "message": "Custom properties should be kebab-case (e.g. --my-token, --my-block--variant).",
+      },
+    ],
+    "declaration-block-no-redundant-longhand-properties": [
+      true,
+      {
+        "ignoreShorthands": [
+          "grid-template",
+          "inset",
+        ],
+      },
+    ],
+    "function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": [
+          "v-bind",
+          "light-dark",
+        ],
+      },
+    ],
+    "nesting-selector-no-missing-scoping-root": null,
+    "no-descending-specificity": null,
+    "selector-class-pattern": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": [
+          "deep",
+          "global",
+          "slotted",
+          "where",
+        ],
+      },
+    ],
+  },
+}
+`;

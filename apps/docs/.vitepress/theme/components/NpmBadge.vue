@@ -38,6 +38,7 @@ const badgeImg = computed(
 </template>
 
 <style scoped>
+@reference "../main.css";
 .npm-badge {
   margin-right: 0.5rem;
   display: block;

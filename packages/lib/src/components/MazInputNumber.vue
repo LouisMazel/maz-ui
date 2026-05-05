@@ -2,11 +2,12 @@
 import type { HTMLAttributes } from 'vue'
 import type { MazInputProps } from './MazInput.vue'
 import type { MazSize } from './types'
-import { MazMinus } from '@maz-ui/icons/static/MazMinus'
-import { MazPlus } from '@maz-ui/icons/static/MazPlus'
+import { MazMinus } from '@maz-ui/icons/raw/MazMinus'
+import { MazPlus } from '@maz-ui/icons/raw/MazPlus'
 import { throttle } from '@maz-ui/utils/helpers/throttle'
 import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables'
+import MazIcon from './MazIcon.vue'
 import MazInput from './MazInput.vue'
 
 defineOptions({
@@ -223,25 +224,25 @@ function decrement() {
 
 const stateColor = computed(() => {
   if (error)
-    return '!maz-text-destructive-600'
+    return 'maz:text-destructive-600!'
   if (success)
-    return '!maz-text-success-600'
+    return 'maz:text-success-600!'
   if (warning)
-    return '!maz-text-warning-600'
+    return 'maz:text-warning-600!'
   return undefined
 })
 </script>
 
 <template>
   <div
-    class="m-input-number m-reset-css"
-    :class="[`m-input-number--${size}`, className, { '--block': block }]"
+    class="m-input-number m-reset-css maz:inline-flex maz:flex-col maz:gap-2"
+    :class="[`m-input-number--${size}`, className, { '--block': block, 'maz:w-full': block }]"
     :style="style"
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label v-if="topLabel" :for="instanceId" class="m-input-number__top-label" :class="stateColor">{{ topLabel }}</label>
 
-    <div class="m-input-number__wrapper">
+    <div class="m-input-number__wrapper maz:flex maz:items-center maz:align-top">
       <MazBtn
         v-if="!hideButtons"
         color="transparent"
@@ -250,7 +251,7 @@ const stateColor = computed(() => {
         :disabled="decrementDisabled || disabled"
         @click="decrement"
       >
-        <MazMinus class="m-input-number__button__icon" />
+        <MazIcon :icon="MazMinus" class="m-input-number__button__icon maz:text-base" />
       </MazBtn>
       <MazInput
         v-bind="{ ...$attrs, ...inputProps }"
@@ -286,24 +287,16 @@ const stateColor = computed(() => {
         :disabled="incrementDisabled || disabled"
         @click="increment"
       >
-        <MazPlus class="m-input-number__button__icon" />
+        <MazIcon :icon="MazPlus" class="m-input-number__button__icon maz:text-base" />
       </MazBtn>
     </div>
   </div>
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-input-number {
-  @apply maz-inline-flex maz-flex-col maz-gap-2;
-
-  &__wrapper {
-    @apply maz-flex maz-items-center maz-align-top;
-  }
-
-  &.--block {
-    @apply maz-w-full;
-  }
-
   &__button {
     &.m-btn {
       &::before {
@@ -312,44 +305,40 @@ const stateColor = computed(() => {
 
       &:first-child,
       &:last-child {
-        @apply maz-border maz-border-divider;
-        @apply maz-px-3 maz-py-0;
+        @apply maz:border maz:border-divider;
+        @apply maz:px-3 maz:py-0;
       }
 
       &:first-child {
-        @apply !maz-rounded-r-none;
+        @apply maz:rounded-r-none!;
 
-        margin-right: calc(-1 * 2px);
+        margin-inline-end: calc(-1 * 2px);
       }
 
       &:last-child {
-        @apply !maz-rounded-l-none;
+        @apply maz:rounded-l-none!;
 
-        margin-left: calc(-1 * 2px);
+        margin-inline-start: calc(-1 * 2px);
       }
-    }
-
-    &__icon {
-      @apply maz-text-base;
     }
   }
 
   &__input {
     &:not(.--no-buttons) :deep(.m-input-wrapper) {
-      @apply maz-z-1 !maz-rounded-none;
+      @apply maz:z-1 maz:rounded-none!;
     }
 
     &.--text-center {
       &:deep(input) {
-        @apply maz-p-0 maz-text-center;
+        @apply maz:p-0 maz:text-center;
       }
 
       &:deep(.m-input-label) {
-        @apply !maz-text-center !maz-w-full !maz-p-0 !maz-start-0;
+        @apply maz:text-center! maz:w-full! maz:p-0! maz:inset-s-0!;
       }
 
       &.--should-up:deep(.m-input-label) {
-        @apply !maz-w-[calc(125%)];
+        @apply maz:w-[calc(125%)]!;
       }
     }
 

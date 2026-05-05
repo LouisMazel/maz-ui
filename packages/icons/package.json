@@ -35,34 +35,52 @@
   },
   "exports": {
     ".": {
+      "monorepo:dev": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
     "./*": {
+      "monorepo:dev": "./src/static/*.ts",
       "types": "./dist/static/*.d.ts",
       "import": "./dist/static/*.js"
     },
     "./static": {
+      "monorepo:dev": "./src/static/index.ts",
       "types": "./dist/static/index.d.ts",
       "import": "./dist/static/index.js"
     },
     "./static/*": {
+      "monorepo:dev": "./src/static/*.ts",
       "types": "./dist/static/*.d.ts",
       "import": "./dist/static/*.js"
     },
     "./lazy": {
+      "monorepo:dev": "./src/lazy/index.ts",
       "types": "./dist/lazy/index.d.ts",
       "import": "./dist/lazy/index.js"
     },
     "./lazy/*": {
+      "monorepo:dev": "./src/lazy/*.ts",
       "types": "./dist/lazy/*.d.ts",
       "import": "./dist/lazy/*.js"
     },
+    "./raw": {
+      "monorepo:dev": "./src/raw/index.ts",
+      "types": "./dist/raw/index.d.ts",
+      "import": "./dist/raw/index.js"
+    },
+    "./raw/*": {
+      "monorepo:dev": "./src/raw/*.ts",
+      "types": "./dist/raw/*.d.ts",
+      "import": "./dist/raw/*.js"
+    },
     "./resolvers": {
+      "monorepo:dev": "./src/resolvers.ts",
       "types": "./dist/resolvers.d.ts",
       "import": "./dist/resolvers.js"
     },
     "./icon-list": {
+      "monorepo:dev": "./src/icon-list.ts",
       "types": "./dist/icon-list.d.ts",
       "import": "./dist/icon-list.js"
     },
@@ -77,6 +95,7 @@
     "svg"
   ],
   "scripts": {
+    "codegen": "nx build",
     "build": "vite build",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "cross-env NODE_ENV=production eslint .",
@@ -97,7 +116,6 @@
   "devDependencies": {
     "@maz-ui/node": "workspace:*",
     "@maz-ui/utils": "workspace:*",
-    "@vitejs/plugin-vue": "^6.0.6",
     "unbuild": "^3.6.1",
     "unplugin-vue-components": "^32.0.0"
   },

@@ -1,5 +1,5 @@
 import MazContainer from '@components/MazContainer.vue'
-import { shallowMount } from '@vue/test-utils'
+import { mount, shallowMount } from '@vue/test-utils'
 
 describe('components/MazContainer.vue', () => {
   it('renders with default props', () => {
@@ -36,5 +36,23 @@ describe('components/MazContainer.vue', () => {
     expect(wrapper.classes()).toContain('--padding')
     expect(wrapper.classes()).toContain('--bordered')
     expect(wrapper.classes()).toContain('--rounded-full')
+  })
+
+  it('forwards a full MazIconProps object on startIcon and endIcon', async () => {
+    const wrapper = mount(MazContainer, {
+      props: {
+        title: 'Header',
+        startIcon: { icon: '/start.svg', size: 'lg' },
+        endIcon: { icon: '/end.svg', size: 'lg', title: 'End' },
+      },
+    })
+
+    await vi.dynamicImportSettled()
+
+    const icons = wrapper.findAllComponents({ name: 'MazIcon' })
+    expect(icons).toHaveLength(2)
+    expect(icons[0].props('icon')).toBe('/start.svg')
+    expect(icons[1].props('icon')).toBe('/end.svg')
+    expect(icons[1].props('title')).toBe('End')
   })
 })

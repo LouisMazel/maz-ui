@@ -1,6 +1,5 @@
-import type { ColorMode, CSSOptions, ThemeState } from '@maz-ui/themes'
+import type { ColorMode, CSSOptions, MazUiThemeOptions, ThemePreset, ThemePresetName, ThemeState } from '@maz-ui/themes'
 import type { Ref } from 'vue'
-import type { MazUiNuxtThemeOptions } from './../../types'
 import { MazUiTheme } from '@maz-ui/themes/plugin'
 import { CSS_ID, generateCSS, getPreset, mergePresets } from '@maz-ui/themes/utils'
 import { getSystemColorMode } from '@maz-ui/themes/utils/get-color-mode'
@@ -51,73 +50,87 @@ function getInitialColorMode() {
   return 'auto'
 }
 
-function getColorModeBlockingScript(config: Required<MazUiNuxtThemeOptions>): string {
+function getColorModeBlockingScript(config: Required<MazUiThemeOptions>): string {
   const darkClass = config.darkClass
   const cookieMaxAge = 60 * 60 * 24 * 365
 
   return `(function(){try{var d=document.documentElement,m='${config.mode}',dc='${darkClass}';if(m==='light')return;var c=(document.cookie.match(/maz-color-mode=([^;]+)/)||[])[1];if(c==='light')return;if(c==='dark'||m==='dark'){d.classList.add(dc);return}var r=(document.cookie.match(/maz-resolved-color-mode=([^;]+)/)||[])[1];if(r==='light')return;if(r==='dark'){d.classList.add(dc);return}if(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches){d.classList.add(dc);document.cookie='maz-resolved-color-mode=dark;path=/;max-age=${cookieMaxAge};SameSite=Lax'}else{document.cookie='maz-resolved-color-mode=light;path=/;max-age=${cookieMaxAge};SameSite=Lax'}}catch(e){}})()`
 }
 
-function injectThemeCSS(config: Required<MazUiNuxtThemeOptions>) {
-  const cssOptions = {
+function injectThemeCSS(config: Required<MazUiThemeOptions>) {
+  if (config.strategy === 'buildtime')
+    return
+
+  const css = generateCSS(config.preset, {
     mode: config.mode,
-    darkSelectorStrategy: config.darkModeStrategy ?? 'class',
+    darkSelectorStrategy: config.darkModeStrategy,
     prefix: 'maz',
-    darkClass: config.darkClass ?? 'dark',
-  } satisfies CSSOptions
+    darkClass: config.darkClass,
+  } satisfies CSSOptions)
 
-  if (config.injectCriticalCSS && !config.injectAllCSSOnServer) {
-    const criticalCSS = generateCSS(config.preset, {
-      ...cssOptions,
-      onlyCritical: true,
-    })
-
-    useHead({
-      style: [{ innerHTML: criticalCSS, id: CSS_ID }],
-    })
-  }
-
-  if (config.injectAllCSSOnServer) {
-    const fullCSS = generateCSS(config.preset, cssOptions)
-
-    useHead({
-      style: [{ innerHTML: fullCSS, id: CSS_ID }],
-    })
-  }
+  useHead({
+    style: [{
+      innerHTML: css,
+      id: CSS_ID,
+    }],
+  })
 }
 
-/* eslint-disable sonarjs/no-commented-code */
-// function getInjectCSSStates(config: Required<MazUiNuxtThemeOptions>) {
-//   const isCSSAlreadyInjected = import.meta.client && !!document.getElementById(CSS_ID)
+async function resolvePreset(options: { preset?: ThemePreset | ThemePresetName } | undefined, persistPreset: boolean) {
+  const presetCookie = useCookie<string | null>('maz-preset')
+  const savedName = persistPreset ? presetCookie.value : undefined
+  const presetObject = options?.preset && typeof options.preset !== 'string' ? options.preset : undefined
 
-//   return {
-//     shouldInjectCSSOnClient: config.injectAllCSSOnServer === false && !isCSSAlreadyInjected,
-//   }
-// }
-/* eslint-enable sonarjs/no-commented-code */
+  // Skip the lookup when the cookie name matches the explicit preset object —
+  // the object IS the resolution, no need to (re)load a bundled module.
+  if (savedName && presetObject && savedName === presetObject.name) {
+    return presetObject
+  }
+
+  if (savedName) {
+    try {
+      return await getPreset(savedName as ThemePresetName)
+    }
+    catch {
+      presetCookie.value = null
+    }
+  }
+
+  return getPreset(options?.preset)
+}
 
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const options = $config.public.mazUi.theme
+  const persistPreset = options?.persistPreset !== false
 
-  let preset = await getPreset(options?.preset)
+  let preset = await resolvePreset(options, persistPreset)
 
   if (options?.overrides) {
     preset = mergePresets(preset, options.overrides)
   }
 
+  if (persistPreset) {
+    const presetCookie = useCookie<string>('maz-preset', {
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: 'lax',
+      path: '/',
+    })
+    if (presetCookie.value !== preset.name) {
+      presetCookie.value = preset.name
+    }
+  }
+
   const config = {
-    strategy: 'hybrid',
+    strategy: 'runtime',
     darkClass: 'dark',
     darkModeStrategy: 'class',
     mode: 'both',
-    injectAllCSSOnServer: false,
-    injectCriticalCSS: true,
-    injectFullCSS: true,
     overrides: {},
+    persistPreset: true,
     ...options,
     colorMode: getSavedColorMode() ?? options?.colorMode ?? 'auto',
     preset,
-  } satisfies Required<MazUiNuxtThemeOptions>
+  } satisfies Required<MazUiThemeOptions>
 
   const isDark = config.colorMode === 'auto' && config.mode === 'both'
     ? getInitialColorMode() === 'dark'
@@ -142,15 +155,11 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     }
   }
 
-  // const { shouldInjectCSSOnClient } = getInjectCSSStates(config)
-
   MazUiTheme.install?.(vueApp, {
     ...config,
     colorMode: getSavedColorMode() ?? config.colorMode,
     // @ts-expect-error _isDark is a private property
     _isDark: isDark,
-    // injectFullCSS: !config.injectAllCSSOnServer || shouldInjectCSSOnClient,
-    // injectCriticalCSS: shouldInjectCSSOnClient,
   })
 })
 

@@ -16,7 +16,7 @@ type MazUiComposables = keyof typeof import('maz-ui/composables')
 
 type Composables = Omit<
   Record<MazUiComposables | 'useTheme' | 'useTranslations', true>,
-  'useAos' | 'useDialog' | 'useToast' | 'useWait'
+  'useAos' | 'useDialog' | 'useToast' | 'useWait' | 'useMazIconProps'
 >
 
 declare module '@nuxt/schema' {
@@ -112,7 +112,7 @@ const pluginComposables: Record<'useTheme' | 'useTranslations', true> = {
   useTranslations: true,
 }
 
-const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDialog' | 'useToast' | 'useWait'> = {
+const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDialog' | 'useToast' | 'useWait' | 'useMazIconProps'> = {
   useIdleTimeout: true,
   useReadingTime: true,
   useFormField: true,
@@ -139,11 +139,11 @@ const defaults = {
     devtools: true,
   },
   css: {
-    injectMainCss: true,
+    injectCss: true,
   },
   theme: {
     preset: 'maz-ui',
-    strategy: 'hybrid',
+    strategy: 'runtime',
     darkModeStrategy: 'class',
     colorMode: 'auto',
     mode: 'both',
@@ -216,8 +216,8 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     // CSS
 
-    if (moduleOptions.css.injectMainCss) {
-      nuxt.options.css.unshift('maz-ui/dist/css/main.css')
+    if (moduleOptions.css.injectCss) {
+      nuxt.options.css.unshift('maz-ui/style.css')
     }
 
     // Plugins
@@ -257,7 +257,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
           : true
 
       if (injectAosCSS) {
-        nuxt.options.css = ['maz-ui/aos-styles', ...nuxt.options.css]
+        nuxt.options.css = ['maz-ui/aos.css', ...nuxt.options.css]
       }
     }
 

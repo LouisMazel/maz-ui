@@ -78,15 +78,15 @@ export interface MazGalleryProps {
    */
   scale?: boolean
   /**
-   * Choose color of borders between images - Should be a CSS color or CSS variable - Ex: `#000` or `hsl(var(--maz-background-300))`
+   * Choose color of borders between images - Should be a CSS color or CSS variable - Ex: `#000` or `var(--maz-surface-300)`
    * @type string
    * @default 'transparent'
    */
   separatorColor?: string
   /**
-   * Choose background color of the gallery - Should be a CSS color or CSS variable - Ex: `#000` or `hsl(var(--maz-background-300))`
+   * Choose background color of the gallery - Should be a CSS color or CSS variable - Ex: `#000` or `var(--maz-surface-300)`
    * @type string
-   * @default 'hsl(var(--maz-background-300))'
+   * @default 'var(--maz-surface-300)'
    */
   backgroundColor?: string
 }
@@ -161,18 +161,22 @@ function shouldHaveRemainingLayer(index: number): boolean {
 <template>
   <div
     v-if="images.length > 0 || hasEmptyLayer"
-    class="m-gallery m-reset-css"
+    class="m-gallery m-reset-css maz:relative maz:overflow-hidden maz:flex"
     :style="[sizeStyle, {
       '--gallery-separator-color': separatorColor,
       '--gallery-background-color': backgroundColor,
     }]"
-    :class="{ '--radius': radius, '--has-background-color': !!backgroundColor }"
+    :class="{
+      '--radius': radius,
+      'maz:rounded-md': radius,
+      'maz:bg-(--gallery-background-color)': !!backgroundColor,
+    }"
   >
-    <section class="m-gallery__wrapper maz-flex maz-flex-1">
+    <section class="m-gallery__wrapper maz:flex maz:flex-1">
       <figure
         v-for="(image, i) in imagesShown"
         :key="i"
-        class="m-gallery__item !maz-my-0 maz-flex maz-flex-center"
+        class="m-gallery__item maz:my-0! maz:flex maz:flex-center"
         :class="[`m-gallery__item--${i + 1}`]"
       >
         <img
@@ -184,7 +188,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
             blurOnHover: blur,
             scaleOnHover: scale,
           }"
-          class="m-gallery__item__image maz-flex-1"
+          class="m-gallery__item__image maz:flex-1"
           src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
           :alt="image.alt"
           loading="lazy"
@@ -198,128 +202,116 @@ function shouldHaveRemainingLayer(index: number): boolean {
             blurOnHover: false,
             scaleOnHover: scale,
           }"
-          class="m-gallery__remaining-layer"
+          class="m-gallery__remaining-layer maz:flex maz:bg-overlay/30 maz:flex-center maz:backdrop-blur-xs"
         >
-          <span>+{{ numberImagesRemaining }}</span>
+          <span class="maz:text-white maz:text-3xl">+{{ numberImagesRemaining }}</span>
         </div>
       </figure>
       <div
         v-if="hasEmptyLayer && images.length === 0"
-        class="m-gallery__empty-layer"
-        :class="{ 'maz-rounded-xl': radius }"
+        class="m-gallery__empty-layer maz:flex maz:w-full maz:bg-surface-600 maz:text-foreground maz:flex-center maz:dark:bg-surface-400"
+        :class="{ 'maz:rounded-xl': radius }"
         :style="[sizeStyle]"
       >
-        <MazNoImage class="maz-size-8" />
+        <MazNoImage class="maz:size-8" />
       </div>
     </section>
     <div
       v-for="(image, i) in imagesHidden"
       :key="i"
       v-fullscreen-img="{ src: image.src, disabled: !zoom }"
-      class="m-gallery__hidden"
+      class="m-gallery__hidden maz:hidden"
     />
   </div>
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-gallery {
-  @apply maz-relative maz-overflow-hidden maz-flex;
-
-  &.--has-background-color {
-    @apply maz-bg-[var(--gallery-background-color)];
-  }
-
-  &__hidden {
-    @apply maz-hidden;
-  }
-
-  &.--radius {
-    @apply maz-rounded;
-  }
-
   &__item {
-    @apply maz-absolute maz-top-0 maz-m-0 maz-h-1/2 maz-w-full maz-overflow-hidden maz-border-s-2 maz-p-0;
+    @apply maz:absolute maz:top-0 maz:m-0 maz:h-1/2 maz:w-full maz:overflow-hidden maz:border-s-2 maz:p-0;
 
     border-color: var(--gallery-separator-color);
 
     &--1 {
-      left: 0;
-      height: 100%;
+      inset-inline-start: 0;
+      block-size: 100%;
 
       &:not(:last-child) {
-        width: 50%;
+        inline-size: 50%;
       }
     }
 
     &--2 {
-      left: 50%;
-      width: 50%;
-      height: 50%;
+      inset-inline-start: 50%;
+      inline-size: 50%;
+      block-size: 50%;
 
       &:last-child {
-        height: 100%;
+        block-size: 100%;
       }
 
       &:nth-last-child(4) {
-        width: 25%;
+        inline-size: 25%;
       }
     }
 
     &--3 {
-      top: 50%;
-      left: 50%;
-      width: 25%;
+      inset-block-start: 50%;
+      inset-inline-start: 50%;
+      inline-size: 25%;
 
       &:last-child {
-        width: 50%;
+        inline-size: 50%;
       }
 
       &:nth-last-child(3) {
-        top: 0;
-        left: 75%;
+        inset-block-start: 0;
+        inset-inline-start: 75%;
       }
     }
 
     &--4 {
-      @apply maz-border-t-2;
+      @apply maz:border-t-2;
 
       border-color: var(--gallery-separator-color);
-      top: 50%;
-      left: 50%;
-      width: 25%;
+      inset-block-start: 50%;
+      inset-inline-start: 50%;
+      inline-size: 25%;
 
       &:last-child {
-        left: 75%;
-        width: 25%;
+        inset-inline-start: 75%;
+        inline-size: 25%;
       }
     }
 
     &--5 {
-      @apply maz-border-t-2;
+      @apply maz:border-t-2;
 
       border-color: var(--gallery-separator-color);
-      top: 50%;
-      left: 75%;
-      width: 25%;
+      inset-block-start: 50%;
+      inset-inline-start: 75%;
+      inline-size: 25%;
     }
 
     &:first-child {
-      border-left: 0;
+      border-inline-start: 0;
     }
 
     &--3:last-child,
     &--3:nth-last-child(2),
     &--4:last-child,
     &--5 {
-      @apply maz-border-t-2;
+      @apply maz:border-t-2;
 
       border-color: var(--gallery-separator-color);
     }
 
     &__image {
-      height: 100%;
-      max-width: 100%;
-      width: 100%;
+      block-size: 100%;
+      max-inline-size: 100%;
+      inline-size: 100%;
       background-position: center center;
       background-size: cover;
       background-repeat: no-repeat;
@@ -329,16 +321,6 @@ function shouldHaveRemainingLayer(index: number): boolean {
   &__remaining-layer {
     position: absolute;
     inset: 0;
-
-    @apply maz-flex maz-bg-overlay/30 maz-flex-center maz-backdrop-blur-sm;
-
-    span {
-      @apply maz-text-white maz-text-3xl;
-    }
-  }
-
-  &__empty-layer {
-    @apply maz-flex maz-w-full maz-bg-surface-600 maz-text-foreground maz-flex-center dark:maz-bg-surface-400;
   }
 }
 </style>

@@ -4,6 +4,7 @@ import { MazChevronLeft } from '@maz-ui/icons/lazy/MazChevronLeft'
 import { MazXMark } from '@maz-ui/icons/lazy/MazXMark'
 import { checkAvailability } from '@maz-ui/utils/helpers/checkAvailability'
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import MazIcon from '../../components/MazIcon.vue'
 
 import MazSpinner from '../../components/MazSpinner.vue'
 
@@ -385,7 +386,7 @@ onBeforeUnmount(() => {
   <div
     ref="FullscreenImgElement"
     role="button"
-    class="m-fullscreen-img m-reset-css"
+    class="m-fullscreen-img m-reset-css maz:fixed maz:inset-0 maz:z-default-backdrop maz:h-screen maz:w-screen maz:items-center maz:bg-overlay/5 maz:outline-hidden maz:backdrop-blur-sm"
     tabindex="0"
     @click.stop="close"
     @keypress.esc.prevent="close"
@@ -393,25 +394,25 @@ onBeforeUnmount(() => {
     <button
       v-if="loadedOnce && hasMultipleInstances"
       type="button"
-      class="m-fullscreen-btn --next"
+      class="m-fullscreen-btn maz:absolute maz:z-15 maz:flex maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200 maz:inset-e-0 maz:top-1/2 maz:h-screen maz:bg-transparent maz:-translate-y-1/2 maz:transform maz:items-center maz:justify-end --next"
       @click.stop="nextPreviousImage('next')"
     >
-      <MazChevronLeft class="maz-rotate-180" />
+      <MazIcon :icon="MazChevronLeft" class="maz:rotate-180" />
     </button>
     <button
       v-if="loadedOnce && hasMultipleInstances"
       type="button"
-      class="m-fullscreen-btn --previous"
+      class="m-fullscreen-btn maz:absolute maz:z-15 maz:flex maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200 maz:left-0 maz:top-1/2 maz:h-screen maz:-translate-y-1/2 maz:bg-transparent maz:transform maz:items-center maz:justify-start --previous"
       @click.stop="nextPreviousImage('previous')"
     >
-      <MazChevronLeft />
+      <MazIcon :icon="MazChevronLeft" />
     </button>
 
-    <button type="button" class="m-fullscreen-btn --close" @click="close">
-      <MazXMark />
+    <button type="button" class="m-fullscreen-btn maz:absolute maz:z-15 maz:flex maz:h-20 maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200 maz:inset-e-0 maz:bg-transparent maz:top-0 maz:items-start maz:justify-end --close" @click="close">
+      <MazIcon :icon="MazXMark" />
     </button>
 
-    <div class="m-fullscreen-img-scroller">
+    <div class="m-fullscreen-img-scroller maz:flex maz:h-screen maz:w-screen maz:overflow-auto maz:flex-center">
       <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions, vuejs-accessibility/click-events-have-key-events -->
       <img
         ref="ImgElement"
@@ -423,68 +424,46 @@ onBeforeUnmount(() => {
         @click.stop="zoom && toggleZoom()"
       >
 
-      <MazSpinner v-show="showLoader" class="m-fullscreen-img-loader" />
+      <MazSpinner v-show="showLoader" class="m-fullscreen-img-loader maz:absolute maz:text-2xl maz:z-15" />
     </div>
   </div>
 </template>
 
 <style>
-  html.--m-fullscreen-open {
-  @apply maz-h-screen maz-overflow-hidden;
+@reference "../../tailwindcss/tailwind.css";
+
+html.--m-fullscreen-open {
+  @apply maz:h-screen maz:overflow-hidden;
 }
 </style>
 
 <style scoped>
-  .m-fullscreen-img {
-  @apply maz-fixed maz-inset-0 maz-z-default-backdrop maz-h-screen maz-w-screen maz-items-center maz-bg-overlay/5 maz-outline-none maz-backdrop-blur;
+@reference "../../tailwindcss/tailwind.css";
 
-  .m-fullscreen-img-scroller {
-    @apply maz-flex maz-h-screen maz-w-screen maz-overflow-auto maz-flex-center;
-  }
-
+.m-fullscreen-img {
   img {
-    @apply maz-z-2 maz-outline-none maz-cursor-zoom-in maz-object-center maz-object-contain;
+    @apply maz:z-2 maz:outline-hidden maz:cursor-zoom-in maz:object-center maz:object-contain;
 
     &.--is-zoomed {
-      @apply maz-cursor-zoom-out;
+      @apply maz:cursor-zoom-out;
     }
 
     &.--invisible {
-      @apply maz-invisible;
+      @apply maz:invisible;
     }
 
     &.--absolute {
-      @apply maz-absolute;
+      @apply maz:absolute;
     }
-  }
-
-  .m-fullscreen-img-loader {
-    @apply maz-absolute maz-text-2xl maz-z-15;
   }
 
   .m-fullscreen-btn {
-    @apply maz-absolute maz-z-15 maz-flex maz-h-20 maz-w-[7%] maz-min-w-[5em] maz-cursor-pointer maz-p-4 maz-transition-colors maz-duration-200;
-
     svg {
-      @apply maz-text-3xl maz-transition-transform maz-duration-300 maz-ease-in-out;
+      @apply maz:text-3xl maz:transition-transform maz:duration-300 maz:ease-in-out;
     }
 
-    &:hover {
-      svg {
-        @apply maz-scale-150;
-      }
-    }
-
-    &.--close {
-      @apply maz-end-0 maz-top-0 maz-items-start maz-justify-end;
-    }
-
-    &.--previous {
-      @apply maz-left-0 maz-top-1/2 maz-h-screen maz--translate-y-1/2 maz-transform maz-items-center maz-justify-start;
-    }
-
-    &.--next {
-      @apply maz-end-0 maz-top-1/2 maz-h-screen maz--translate-y-1/2 maz-transform maz-items-center maz-justify-end;
+    &:hover svg {
+      @apply maz:scale-150;
     }
   }
 }

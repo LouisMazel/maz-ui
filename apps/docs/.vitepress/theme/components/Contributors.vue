@@ -131,6 +131,7 @@ const contributors = (await fetchContributors())?.filter(contributor => !ignored
 </template>
 
 <style lang="css" scoped>
+@reference "../main.css";
 .contributors {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15.625rem, 1fr));
@@ -164,15 +165,15 @@ const contributors = (await fetchContributors())?.filter(contributor => !ignored
     overflow-wrap: break-word;
 
     &.--creator {
-      color: hsl(var(--maz-primary));
+      color: var(--maz-primary);
     }
 
     &.--maintainer {
-      color: hsl(var(--maz-secondary));
+      color: var(--maz-secondary);
     }
 
     &.--contributor {
-      color: hsl(var(--maz-info));
+      color: var(--maz-info);
     }
   }
 
@@ -207,7 +208,7 @@ const contributors = (await fetchContributors())?.filter(contributor => !ignored
       }
 
       &:hover {
-        color: hsl(var(--maz-primary));
+        color: var(--maz-primary);
       }
     }
   }

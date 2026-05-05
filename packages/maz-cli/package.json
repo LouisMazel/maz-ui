@@ -31,6 +31,7 @@
     "dist"
   ],
   "scripts": {
+    "codegen": "nx build",
     "commit": "cz",
     "lint": "cross-env NODE_ENV=production eslint src",
     "lint:fix": "pnpm lint --fix",
