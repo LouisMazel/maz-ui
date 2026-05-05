@@ -11,18 +11,79 @@ Maz-UI v5 is a major release. For **most consumers** the migration is short — 
 Maz-UI is maintained by a single developer. After the v5 stable release, **v4 will no longer receive any support** — no security fixes, no backports. Please plan your upgrade.
 :::
 
-## TL;DR
+## Run the upgrade tool
+
+A first pass that does the mechanical work for you:
+
+```bash
+# Preview
+npx @maz-ui/upgrade ./ --dry-run
+
+# Apply
+npx @maz-ui/upgrade ./
+```
+
+It rewrites: CSS subpath imports (`maz-ui/styles` → `maz-ui/style.css`), `left-icon`/`right-icon` → `start-icon`/`end-icon` (props, slots, `--has-*-icon` classes), `footer-align`/`variant` direction values, `color="background"` / `active-color="background"` → `surface`, `rounded-size="base"` → `md`, `--maz-background` / `--maz-border` CSS vars → `--maz-surface` / `--maz-divider`, `hsl(var(--maz-X))` collapse, Nuxt `injectMainCss` → `injectCss`, theme `strategy: 'hybrid'` → `'runtime'`, drops the removed theme options (`injectCriticalCSS`, `injectFullCSS`, `injectAllCSSOnServer`), and renames `colors.{light,dark}.background` → `surface` / `.border` → `divider` inside custom presets.
+
+What it can't decide for you: the `MazIcon` API simplification (section 4), `MazBadge` numeric size mapping (section 9), `foundation.radius` → `scales.rounded.md` reshape (section 11) and `MazChart` `update-mode` defaults (section 8). Those are best handled with the MCP server below.
+
+See the full list of transforms in the [`@maz-ui/upgrade` README](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade).
+
+## Migrate with the Maz-UI MCP server
+
+You don't have to scroll through this page by hand. The official **[`@maz-ui/mcp`](./mcp.md)** server exposes this guide (and every other Maz-UI doc — components, composables, plugins, helpers) to your AI assistant via the Model Context Protocol. Once it's wired up, the assistant can search the migration guide, pull the exact section it needs, and patch your codebase with full context on what changed in v5.
+
+### One-time setup
+
+```bash
+# Claude Code
+claude mcp add maz-ui npx @maz-ui/mcp --scope project
+```
+
+For Cursor, Windsurf, VS Code Copilot, Cline and Claude Desktop, see the [MCP guide](./mcp.md#ai-assistant-configuration). Then restart your assistant.
+
+### A migration flow that works
+
+1. **Pin the guide.** Open the assistant in your project root and prime it:
+
+   > Use the `maz-ui` MCP server. Fetch the v5 migration guide (`get_doc` on guide `migration-v5`) and read it in full before touching any code.
+
+2. **Let it scan your codebase against the checklist.** Once it has the guide loaded:
+
+   > Walk the migration checklist top to bottom. For each numbered item, search my codebase, list every match, and tell me which ones need a change. Do not modify anything yet.
+
+3. **Apply the easy ones in batch.** The mechanical renames are safe to automate:
+
+   > Apply the codemod for sections 2, 3, 6 and 14 (CSS subpath, `rounded-size="base"`, `left-icon`/`right-icon`, Nuxt `injectMainCss`). Show me a diff before saving.
+
+4. **Discuss the judgment calls.** For sections that have more than a rename — `MazIcon` API, `MazChart` `update-mode`, theme preset reshape — let the assistant ask before rewriting:
+
+   > For sections 4, 8 and 10–12, do not patch automatically. Tell me which of my call sites are affected and propose options.
+
+5. **Verify.** After patches:
+
+   > Run my typecheck and unit tests, then re-read sections you applied and confirm I haven't missed anything.
+
+### Useful prompts
+
+- *"Search the Maz-UI docs for `useToast` and tell me if my call sites still match the v5 signature."*
+- *"My custom theme preset still defines `colors.light.background`. Look up the v5 preset shape from the MCP and rewrite my preset."*
+- *"I see `hsl(var(--maz-primary))` in my CSS. Apply the v5 fix everywhere with the alpha cases handled via `color-mix`."*
+- *"Compare my `MazIcon` usages against the v5 API and split the codemod into a deterministic part (URL/Vue component) and a part you want me to confirm."*
+
+The MCP server is read-only — it ships docs, not code edits — so the assistant still has to write the patches against your repo with whatever tooling it has. But it removes the "did I miss a section?" risk: the guide and the rest of the v5 docs are always one tool call away.
+
+## Migration checklist
 
 1. Bump **Node to ≥ 20** and confirm your audience has modern browsers (see below).
 2. If your **custom CSS** uses `hsl(var(--maz-<color>))`, simplify to `var(--maz-<color>)`.
 3. Rename `import 'maz-ui/styles'` to `import 'maz-ui/style.css'` (and `maz-ui/aos-styles` → `maz-ui/aos.css`).
-4. If you imported anything via `maz-ui/src/...`, switch to the public subpath (e.g. `maz-ui/components/MazBtn`).
-5. Replace any `roundedSize="base"` with `roundedSize="md"` (or drop the prop — the new default is visually identical).
-6. Replace any **numeric `MazBadge` size** (`size="0.8rem"`, `size="1.2em"`, …) with one of the standardized keywords (`'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`).
-7. **`MazIcon` API simplified** — drop `name`, `path` and `src` props; use a single `icon` prop that accepts a Vue component, a URL/`data:` URI, or a raw SVG string.
-8. Rename **`leftIcon` / `rightIcon`** to **`startIcon` / `endIcon`** (and the matching slots / `--has-*-icon` classes) on `MazBtn`, `MazInput`, `MazLink`, `MazContainer`, `MazSelect`. Same idea for `MazCard`'s `footerAlign` and `MazDrawer`'s `variant` — `'left' | 'right'` becomes `'start' | 'end'`.
-9. **`MazChart`** drops `vue-chartjs` (lighter bundle, no eager registration of unused chart types). The `updateMode` prop now defaults to `'none'` — pass `update-mode="default"` if you want animated data updates.
-10. That's it for most apps. Everything else is opt-in.
+4. Replace any `rounded-size="base"` with `rounded-size="md"` (or drop the prop — the new default is visually identical).
+5. Replace any **numeric `MazBadge` size** (`size="0.8rem"`, `size="1.2em"`, …) with one of the standardized keywords (`'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`).
+6. **`MazIcon` API simplified** — drop `name`, `path` and `src` props; use a single `icon` prop that accepts a Vue component, a URL/`data:` URI, or a raw SVG string.
+7. Rename **`left-icon` / `right-icon`** to **`start-icon` / `end-icon`** (and the matching slots / `--has-*-icon` classes) on `MazBtn`, `MazInput`, `MazLink`, `MazContainer`, `MazSelect`. Same idea for `MazCard`'s `footer-align` and `MazDrawer`'s `variant` — `'left' | 'right'` becomes `'start' | 'end'`.
+8. **`MazChart`** drops `vue-chartjs` (lighter bundle, no eager registration of unused chart types). The `update-mode` prop now defaults to `'none'` — pass `update-mode="default"` if you want animated data updates.
+9. That's it for most apps. Everything else is opt-in.
 
 ## Prerequisites
 
@@ -94,9 +155,9 @@ Both resolve to the same compiled CSS they did in v4, only the subpath key chang
 rg "['\"]maz-ui/(styles|aos-styles)['\"]" src/
 ```
 
-### 3. `roundedSize="base"` removed
+### 3. `rounded-size="base"` removed
 
-The `'base'` value of the `roundedSize` prop has been removed across the affected components. The default radius is now `'md'` (which maps to the same visual radius v4 used for `'base'`).
+The `'base'` value of the `rounded-size` prop has been removed across the affected components. The default radius is now `'md'` (which maps to the same visual radius v4 used for `'base'`).
 
 | Component | Old default | New default |
 | --- | --- | --- |
@@ -153,8 +214,8 @@ The `mazIconPath` `provide` (and Nuxt's `mazUi.general.defaultMazIconPath`) is s
 New props:
 
 - `fallback` — same shape as `icon`. Used when `icon` is missing or fails to load. Defaults to `MazQuestionMarkCircle`.
-- `svgAttributes` — extra attributes injected onto the rendered `<svg>`.
-- `flipIconForRtl` — mirror the icon horizontally when the document direction is RTL (useful for chevrons/arrows).
+- `svg-attributes` — extra attributes injected onto the rendered `<svg>`.
+- `flip-icon-for-rtl` — mirror the icon horizontally when the document direction is RTL (useful for chevrons/arrows).
 
 Removed:
 
@@ -179,7 +240,7 @@ import { MazStar } from '@maz-ui/icons/raw/MazStar'
 
 The existing `static/` (eager Vue component) and `lazy/` (async Vue component) entries are still available — pick what fits the situation. See the [icon set guide](./icon-set.md) for the full decision matrix.
 
-### 6. Logical direction props — `leftIcon`/`rightIcon` → `startIcon`/`endIcon`
+### 6. Logical direction props — `left-icon`/`right-icon` → `start-icon`/`end-icon`
 
 To make components RTL-correct out of the box, every prop / slot / class that names a *visual* edge has been renamed to a *logical* edge:
 
@@ -192,12 +253,12 @@ This is consistent with native CSS (`margin-inline-start`, `padding-inline-end`,
 
 | Component | v4 | v5 |
 | --- | --- | --- |
-| `MazBtn` | `leftIcon` / `rightIcon` props, `#left-icon` / `#right-icon` slots | `startIcon` / `endIcon` props, `#start-icon` / `#end-icon` slots |
-| `MazInput` | `leftIcon` / `rightIcon` props, `#left-icon` / `#right-icon` slots | `startIcon` / `endIcon` props, `#start-icon` / `#end-icon` slots |
-| `MazLink` | `leftIcon` / `rightIcon` props, `#left-icon` / `#right-icon` slots | `startIcon` / `endIcon` props, `#start-icon` / `#end-icon` slots |
-| `MazContainer` | `leftIcon` / `rightIcon` props, `#icon-left` / `#icon-right` slots | `startIcon` / `endIcon` props, `#icon-start` / `#icon-end` slots |
+| `MazBtn` | `left-icon` / `right-icon` props, `#left-icon` / `#right-icon` slots | `start-icon` / `end-icon` props, `#start-icon` / `#end-icon` slots |
+| `MazInput` | `left-icon` / `right-icon` props, `#left-icon` / `#right-icon` slots | `start-icon` / `end-icon` props, `#start-icon` / `#end-icon` slots |
+| `MazLink` | `left-icon` / `right-icon` props, `#left-icon` / `#right-icon` slots | `start-icon` / `end-icon` props, `#start-icon` / `#end-icon` slots |
+| `MazContainer` | `left-icon` / `right-icon` props, `#icon-left` / `#icon-right` slots | `start-icon` / `end-icon` props, `#icon-start` / `#icon-end` slots |
 | `MazSelect` | `#left-icon` / `#right-icon` slots | `#start-icon` / `#end-icon` slots |
-| `MazCard` | `footerAlign: 'left' \| 'right'` | `footerAlign: 'start' \| 'end'` |
+| `MazCard` | `footer-align: 'left' \| 'right'` | `footer-align: 'start' \| 'end'` |
 | `MazDrawer` | `variant: 'left' \| 'right' \| 'top' \| 'bottom'` | `variant: 'start' \| 'end' \| 'top' \| 'bottom'` (`top` / `bottom` unchanged — physical) |
 
 `top` and `bottom` are intentionally kept (block-axis edges that don't flip in RTL).
@@ -237,7 +298,7 @@ rg "(left|right)-icon|(left|right)Icon|footer-align=\"(left|right)\"|variant=\"(
 
 ### 7. Icon-consuming components accept the full `MazIconProps` object
 
-`MazBtn`, `MazInput`, `MazLink`, `MazContainer` and `MazDropdown` all forward their `startIcon` / `endIcon` / `icon` / `dropdownIcon` to an internal `<MazIcon>`. In v5 these props now accept either:
+`MazBtn`, `MazInput`, `MazLink`, `MazContainer` and `MazDropdown` all forward their `start-icon` / `end-icon` / `icon` / `dropdown-icon` to an internal `<MazIcon>`. In v5 these props now accept either:
 
 1. **A bare value** — Vue component, URL/`data:` URI, or raw SVG string (the same shape `MazIcon`'s `icon` prop accepts). This is the existing common case.
 2. **A full `MazIconProps` object** — `{ icon, size, title, svgAttributes, fallback, flipIconForRtl }`. Useful when you need to override the inherited size, set a `<title>` for screen readers, or pass per-icon SVG attributes.
@@ -271,7 +332,7 @@ Falling back to passing `undefined` (or just omitting the prop) opts the icon ou
 What this means for you:
 
 - The peer dependency on `vue-chartjs` is gone. If you were importing anything from it directly, switch to `chart.js`.
-- The `updateMode` prop now **defaults to `'none'`** (previously `'default'`). Subsequent data / options changes no longer animate by default — this is what makes large dashboards stop freezing on prop updates. The initial render still animates per the chart's `options`. Pass `update-mode="default"` to restore the v4 behavior.
+- The `update-mode` prop now **defaults to `'none'`** (previously `'default'`). Subsequent data / options changes no longer animate by default — this is what makes large dashboards stop freezing on prop updates. The initial render still animates per the chart's `options`. Pass `update-mode="default"` to restore the v4 behavior.
 - The re-exported types (`MazChartData`, `MazChartType`, `MazChartUpdateMode`, `MazChartPlugin`, `MazChartDefaultDataPoint`) are unchanged — they now come from `chart.js` instead of `vue-chartjs` but are otherwise the same. The `ChartProps` link in the v4 docs (which pointed to `vue-chartjs/src/types.ts`) is replaced by the `MazChartProps` interface documented on the [MazChart page](../components/maz-chart.md).
 
 ```vue
@@ -361,9 +422,9 @@ Tailwind utilities `maz:bg-surface`, `maz:text-surface-700`, `maz:border-divider
 rg "(--maz-background|--maz-border\b|colors\.(light|dark)\.(background|border))" src/
 ```
 
-### 11. Theme preset: `foundation.radius` → `scales.radius.md`
+### 11. Theme preset: `foundation.radius` → `scales.rounded.md`
 
-The single foundation radius is replaced by a full radius scale. Move your value to `scales.radius.md` and pick the rest of the scale (or spread the bundled defaults).
+The single foundation radius is replaced by a full radius scale. Move your value to `scales.rounded.md` and pick the rest of the scale (or spread the bundled defaults).
 
 ```ts
 // v4
@@ -459,7 +520,22 @@ What you need to do:
 
 To keep first-paint clean, **pass the preset object** (not just a string name) so the full CSS is rendered before the first frame.
 
-### 14. `color="background"` → `color="surface"` on components
+### 14. Nuxt module: `mazUi.css.injectMainCss` → `mazUi.css.injectCss`
+
+The Nuxt module config key that toggles the global maz-ui stylesheet has been renamed. The old name is **silently ignored** — your app would build but ship without the maz-ui CSS — so update it.
+
+```diff
+ export default defineNuxtConfig({
+   mazUi: {
+     css: {
+-      injectMainCss: true,
++      injectCss: true,
+     },
+   },
+ })
+```
+
+### 15. `color="background"` → `color="surface"` on components
 
 The components that exposed `color="background"` in their public prop now use `color="surface"`. The visual result is identical — only the literal changes.
 
@@ -469,7 +545,7 @@ The components that exposed `color="background"` in their public prop now use `c
 | `MazBadge` | `color="background"` | `color="surface"` |
 | `MazLink` | `color="background"` | `color="surface"` |
 | `MazPopover` | `color="background"` (default) | `color="surface"` (default) |
-| `MazPagination` | `activeColor="background"` (default) | `activeColor="surface"` (default) |
+| `MazPagination` | `active-color="background"` (default) | `active-color="surface"` (default) |
 | `MazRadioButtons` | `color="background"` | `color="surface"` |
 
 ```bash
@@ -557,19 +633,6 @@ app.use(MazUiTheme, {
 ```
 
 The same option is exposed in the Nuxt module config under `mazUi.theme.persistPreset`.
-
-## What you can ignore
-
-Unless you had your own Tailwind v3 setup alongside maz-ui, none of the following apply to you:
-
-- Tailwind CSS config migration (CSS-first)
-- Class prefix changes (`maz-flex` → `maz:flex`) — these are internal to maz-ui's compiled CSS
-- `@apply X !important` → `@apply X!` syntax
-- Utility renames en masse
-- `defineMazTailwindConfig` removal
-- CSS variable shorthand (`bg-[var(--x)]` → `bg-(--x)`)
-
-If you DO have your own Tailwind v4 setup and want to expose maz-ui's theme tokens to your own utilities, read the [Tailwind integration](./tailwind.md) page. That's where all the Tailwind-specific migration lives.
 
 ## Troubleshooting
 

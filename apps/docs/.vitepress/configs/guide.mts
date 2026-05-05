@@ -16,9 +16,7 @@ export const guide = {
       { text: 'Icon Set - 860+ icons', link: '/guide/icon-set' },
     ] },
     { text: 'Migration v4 to v5', link: '/guide/migration-v5' },
-    { text: 'Migration v3 to v4', link: '/guide/migration-v4' },
     { text: 'Model Context Protocol (MCP)', link: '/guide/mcp' },
     { text: 'Browser Support', link: '/guide/browser-support' },
-    { text: 'CLI (v3)', link: '/guide/cli' },
   ],
 } satisfies DefaultTheme.SidebarItem
