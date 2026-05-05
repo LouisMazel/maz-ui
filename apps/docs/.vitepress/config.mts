@@ -59,27 +59,6 @@ export default defineConfig<DefaultTheme.Config>({
     },
   },
 
-  sitemap: {
-    hostname: 'https://maz-ui.com/',
-    transformItems: (items) => {
-      // add new items or modify/filter existing items
-      const modifyItems: typeof items = []
-
-      for (const item of items) {
-        if (item.url.includes('404')) {
-          continue
-        }
-        modifyItems.push({
-          ...item,
-          changefreq: 'daily',
-          priority: 1,
-        })
-      }
-
-      return modifyItems
-    },
-  },
-
   head: [
     ...head,
     ['style', { id: CSS_ID, type: 'text/css' }, full],
