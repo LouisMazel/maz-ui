@@ -14,21 +14,23 @@ context.
 
 ## Table of contents
 
-- [Quick start](#quick-start)
-- [Usage](#usage)
-- [Options](#options)
-- [What it scans](#what-it-scans)
-- [How it ignores files](#how-it-ignores-files)
-- [Transform groups](#transform-groups)
-  - [`imports`](#imports)
-  - [`props`](#props)
-  - [`css`](#css)
-  - [`config`](#config)
-- [Output](#output)
-- [Exit codes](#exit-codes)
-- [What it does NOT do](#what-it-does-not-do)
-- [Programmatic API](#programmatic-api)
-- [License](#license)
+- [@maz-ui/upgrade](#maz-uiupgrade)
+  - [Table of contents](#table-of-contents)
+  - [Quick start](#quick-start)
+  - [Usage](#usage)
+  - [Options](#options)
+  - [What it scans](#what-it-scans)
+  - [How it ignores files](#how-it-ignores-files)
+  - [Transform groups](#transform-groups)
+    - [`imports`](#imports)
+    - [`props`](#props)
+    - [`css`](#css)
+    - [`config`](#config)
+  - [Output](#output)
+  - [Exit codes](#exit-codes)
+  - [What it does NOT do](#what-it-does-not-do)
+  - [Programmatic API](#programmatic-api)
+  - [License](#license)
 
 ## Quick start
 
