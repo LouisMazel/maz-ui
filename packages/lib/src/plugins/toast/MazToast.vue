@@ -8,6 +8,7 @@ import { MazInformationCircle } from '@maz-ui/icons/lazy/MazInformationCircle'
 import { MazLinkIcon } from '@maz-ui/icons/lazy/MazLinkIcon'
 import { MazXMark } from '@maz-ui/icons/lazy/MazXMark'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
+import MazIcon from '../../components/MazIcon.vue'
 import { useTimer } from '../../composables/useTimer'
 
 const {
@@ -107,8 +108,49 @@ const transitionName = computed(() => {
 const isActive = ref(false)
 const queueTimer = ref<ReturnType<typeof setTimeout>>()
 
-const containerClassName = `m-toast-container m-reset-css --${positionY.value} --${positionX.value}`
-const selectorContainerClass = `.${containerClassName.replaceAll(' ', '.')}`
+const CONTAINER_POSITION_Y = {
+  top: 'maz:top-0 maz:flex',
+  bottom: 'maz:bottom-0 maz:flex maz:flex-col-reverse',
+} as const
+
+const CONTAINER_POSITION_X = {
+  left: 'maz:left-0 maz:w-full maz:tab-m:w-auto',
+  right: 'maz:inset-e-0 maz:w-full maz:tab-m:w-auto',
+  center: 'maz:w-full maz:tab-m:fixed maz:tab-m:left-2/4 maz:tab-m:w-auto',
+} as const
+
+const TOAST_BUTTON_COLOR: Record<NonNullable<ToastOptions['type']>, string> = {
+  info: 'maz:bg-info maz:text-info-foreground maz:border-info-600 maz:hover:bg-info-600 maz:dark:bg-info/10 maz:dark:text-info-400 maz:dark:border-info/20 maz:hover:dark:bg-info/20',
+  success: 'maz:bg-success maz:text-success-foreground maz:border-success-600 maz:hover:bg-success-600 maz:dark:bg-success/10 maz:dark:text-success-400 maz:dark:border-success/20 maz:dark:hover:bg-success/20',
+  warning: 'maz:bg-warning maz:text-warning-foreground maz:border-warning-600 maz:hover:bg-warning-600 maz:dark:bg-warning/10 maz:dark:text-warning-400 maz:dark:border-warning/20 maz:dark:hover:bg-warning/20',
+  destructive: 'maz:bg-destructive maz:text-destructive-foreground maz:border-destructive-600 maz:hover:bg-destructive-600 maz:dark:bg-destructive/10 maz:dark:text-destructive-400 maz:dark:border-destructive/20 maz:dark:hover:bg-destructive/20',
+  contrast: 'maz:bg-contrast maz:text-contrast-foreground maz:border-contrast-600/20 maz:hover:bg-contrast-500 maz:dark:hover:bg-contrast/70',
+  accent: 'maz:bg-accent maz:text-accent-foreground maz:border-accent-600 maz:hover:bg-accent-600 maz:dark:bg-accent/10 maz:dark:text-accent-400 maz:dark:border-accent/20 maz:dark:hover:bg-accent/20',
+} as const
+
+const TOAST_CLOSE_COLOR: Record<NonNullable<ToastOptions['type']>, string> = {
+  info: 'maz:bg-info maz:text-info-foreground maz:border-info-400 maz:hover:bg-info-600 maz:dark:bg-info/10 maz:dark:border-info/20 maz:dark:text-info-600 maz:hover:dark:bg-info/20',
+  success: 'maz:bg-success maz:text-success-foreground maz:border-success-600 maz:hover:bg-success-600 maz:dark:bg-success/10 maz:dark:border-success/20 maz:dark:text-success-600 maz:dark:hover:bg-success/20',
+  warning: 'maz:bg-warning maz:text-warning-foreground maz:border-warning-600 maz:hover:bg-warning-600 maz:dark:bg-warning/10 maz:dark:border-warning/20 maz:dark:text-warning-600 maz:dark:hover:bg-warning/20',
+  destructive: 'maz:bg-destructive maz:text-destructive-foreground maz:border-destructive-600 maz:hover:bg-destructive-600 maz:dark:bg-destructive/10 maz:dark:border-destructive/20 maz:dark:text-destructive-600 maz:dark:hover:bg-destructive/20',
+  contrast: 'maz:bg-contrast maz:text-contrast-foreground maz:border-contrast-600/20 maz:hover:bg-contrast/70',
+  accent: 'maz:bg-accent maz:text-accent-foreground maz:border-accent-600 maz:hover:bg-accent-600 maz:dark:bg-accent/10 maz:dark:text-accent-400 maz:dark:border-accent/20 maz:dark:hover:bg-accent/20',
+} as const
+
+const CLOSE_POSITION_X = {
+  left: 'maz:-inset-e-2',
+  right: 'maz:-left-2',
+  center: 'maz:-left-2',
+} as const
+
+const BUTTON_POSITION_X = {
+  left: 'maz:tab-m:w-88',
+  right: 'maz:tab-m:w-88',
+  center: 'maz:tab-m:w-88 maz:tab-m:justify-center',
+} as const
+
+const containerClassName = `m-toast-container m-reset-css --${positionY.value} --${positionX.value} maz:fixed maz:flex maz:flex-col maz:gap-2 maz:p-4 ${CONTAINER_POSITION_Y[positionY.value]} ${CONTAINER_POSITION_X[positionX.value]}`
+const selectorContainerClass = `.m-toast-container.--${positionY.value}.--${positionX.value}`
 
 const timer = useTimer({
   callback: closeToast,
@@ -168,19 +210,19 @@ const progressBarWidth = ref<string>('100%')
 function getProgressBarColor() {
   switch (type) {
     case 'destructive': {
-      return 'maz-bg-destructive-800'
+      return 'maz:bg-destructive-800'
     }
     case 'info': {
-      return 'maz-bg-info-800'
+      return 'maz:bg-info-800'
     }
     case 'success': {
-      return 'maz-bg-success-800'
+      return 'maz:bg-success-800'
     }
     case 'warning': {
-      return 'maz-bg-warning-800'
+      return 'maz:bg-warning-800'
     }
     default: {
-      return 'maz-bg-contrast-foreground'
+      return 'maz:bg-contrast-foreground'
     }
   }
 }
@@ -257,9 +299,9 @@ function onAnimationLeave() {
   }
 }
 
-function getButtonRightIcon(button: ToastButton) {
+function getButtonEndIcon(button: ToastButton) {
   if (!button.to && !button.href) {
-    return button.rightIcon
+    return button.endIcon
   }
 
   if (button.target === '_blank') {
@@ -291,7 +333,7 @@ onMounted(() => {
     @after-enter="onAnimationEnter"
   >
     <div
-      v-show="isActive" ref="Toast" class="m-toast m-reset-css" :class="[
+      v-show="isActive" ref="Toast" class="m-toast m-reset-css maz:relative maz:z-10" :class="[
         `--${type}`,
         `--${positionY}`,
         `--${positionX}`,
@@ -301,16 +343,17 @@ onMounted(() => {
       <!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
       <button
         role="alert"
-        class="m-toast__button"
+        class="m-toast__button maz:relative maz:flex maz:w-full maz:items-center maz:gap-2 maz:self-center maz:rounded-md maz:ps-2 maz:pe-2 maz:shadow-md maz:transition maz:duration-300 maz:ease-in-out maz:overflow-hidden maz:border maz:backdrop-blur-xl"
+        :class="[TOAST_BUTTON_COLOR[type], BUTTON_POSITION_X[positionX]]"
         @mouseover="toggleTimer(true)"
         @mouseleave="toggleTimer(false)"
         @touchstart.passive="toggleTimer(true)"
         @touchend.passive="toggleTimer(false)"
         @click.stop="click($event)"
       >
-        <component :is="iconComponent" v-if="iconComponent" class="maz-text-2xl" />
+        <component :is="iconComponent" v-if="iconComponent" class="maz:text-2xl" />
 
-        <div class="m-toast__message" v-text="html ? undefined : message" v-html="html ? message : undefined" />
+        <div class="m-toast__message maz:m-0 maz:text-start maz:font-medium maz:flex-1 maz:py-3" v-text="html ? undefined : message" v-html="html ? message : undefined" />
 
         <MazBtn
           v-for="(toastButton, index) in internalButtons"
@@ -320,26 +363,30 @@ onMounted(() => {
             onClick: undefined,
           }"
           :loading="isActionLoading || toastButton.loading"
-          :right-icon="getButtonRightIcon(toastButton)"
+          :end-icon="getButtonEndIcon(toastButton)"
           @click.stop="onButtonClick(toastButton, $event)"
         />
 
         <div
           v-if="typeof timeout === 'number' && timeout > 0 && !persistent"
-          class="m-toast__progress-bar"
+          class="m-toast__progress-bar maz:absolute maz:inset-x-0"
         >
           <div
             :style="{
               width: progressBarWidth,
             }"
-            class="m-toast__progress-bar-inner"
+            class="m-toast__progress-bar-inner maz:h-full maz:transition-all maz:duration-200 maz:ease-linear"
             :class="getProgressBarColor()"
           />
         </div>
       </button>
       <!-- eslint-enable vuejs-accessibility/mouse-events-have-key-events -->
-      <button class="m-toast__close" @click.stop="click($event)">
-        <MazXMark class="m-toast__close-icon" />
+      <button
+        class="m-toast__close maz:flex maz:rounded-full maz:p-0.5 maz:flex-center maz:absolute maz:border maz:-top-2 maz:backdrop-blur-xl"
+        :class="[TOAST_CLOSE_COLOR[type], CLOSE_POSITION_X[positionX]]"
+        @click.stop="click($event)"
+      >
+        <MazIcon :icon="MazXMark" class="m-toast__close-icon maz:cursor-pointer" />
       </button>
     </div>
   </Transition>
@@ -347,32 +394,12 @@ onMounted(() => {
 
 <style>
 .m-toast-container {
-  @apply maz-fixed maz-flex maz-flex-col maz-gap-2 maz-p-4;
-
   z-index: 1051;
 
-  &.--top {
-    @apply maz-top-0 maz-flex;
-  }
-
   &.--center {
-    @apply maz-w-full tab-m:maz-fixed tab-m:maz-left-2/4 tab-m:maz-w-auto;
-
-    @screen tab-m {
+    @media (width >= 768px) {
       transform: translate(-50%, 0);
     }
-  }
-
-  &.--bottom {
-    @apply maz-bottom-0 maz-flex maz-flex-col-reverse;
-  }
-
-  &.--right {
-    @apply maz-end-0 maz-w-full tab-m:maz-w-auto;
-  }
-
-  &.--left {
-    @apply maz-left-0 maz-w-full tab-m:maz-w-auto;
   }
 }
 </style>
@@ -385,120 +412,9 @@ onMounted(() => {
     box-sizing: border-box;
   }
 
-  @apply maz-relative maz-z-10;
-
-  &.--left {
-    & .m-toast__close {
-      @apply -maz-end-2;
-    }
-  }
-
-  &.--right {
-    & .m-toast__close {
-      @apply -maz-left-2;
-    }
-  }
-
-  &.--center {
-    & .m-toast__close {
-      @apply -maz-left-2;
-    }
-
-    & .m-toast__button {
-      @apply tab-m:maz-w-[22rem] tab-m:maz-justify-center;
-    }
-  }
-
-  &.--left,
-  &.--right {
-    & .m-toast__button {
-      @apply tab-m:maz-w-[22rem];
-    }
-  }
-
-  &__message {
-    @apply maz-m-0 maz-text-start maz-font-medium maz-flex-1 maz-py-3;
-  }
-
-  &__button {
-    @apply maz-relative maz-flex maz-w-full maz-items-center maz-gap-2 maz-self-center maz-rounded maz-ps-2 maz-pe-2 maz-shadow-md maz-transition maz-duration-300 maz-ease-in-out maz-overflow-hidden maz-border maz-backdrop-blur-xl;
-  }
-
-  &__close {
-    @apply maz-flex maz-rounded-full maz-p-0.5 maz-flex-center maz-absolute maz-border -maz-top-2 maz-backdrop-blur-xl;
-
-    &__close-icon {
-      @apply maz-cursor-pointer;
-    }
-  }
-
-  &.--info {
-    .m-toast__button {
-      @apply maz-bg-info maz-text-info-foreground maz-border-info-600 hover:maz-bg-info-600
-        dark:maz-bg-info/10 dark:maz-text-info-400 dark:maz-border-info/20 hover:dark:maz-bg-info/20;
-    }
-
-    & .m-toast__close {
-      @apply maz-bg-info maz-text-info-foreground maz-border-info-400 hover:maz-bg-info-600
-        dark:maz-bg-info/10 dark:maz-border-info/20 dark:maz-text-info-600 hover:dark:maz-bg-info/20;
-    }
-  }
-
-  &.--success {
-    .m-toast__button {
-      @apply maz-bg-success maz-text-success-foreground maz-border-success-600 hover:maz-bg-success-600
-        dark:maz-bg-success/10 dark:maz-text-success-400 dark:maz-border-success/20 dark:hover:maz-bg-success/20;
-    }
-
-    & .m-toast__close {
-      @apply maz-bg-success maz-text-success-foreground maz-border-success-600 hover:maz-bg-success-600
-        dark:maz-bg-success/10 dark:maz-border-success/20 dark:maz-text-success-600 dark:hover:maz-bg-success/20;
-    }
-  }
-
-  &.--warning {
-    .m-toast__button {
-      @apply maz-bg-warning maz-text-warning-foreground maz-border-warning-600 hover:maz-bg-warning-600
-        dark:maz-bg-warning/10 dark:maz-text-warning-400 dark:maz-border-warning/20 dark:hover:maz-bg-warning/20;
-    }
-
-    & .m-toast__close {
-      @apply maz-bg-warning maz-text-warning-foreground maz-border-warning-600 hover:maz-bg-warning-600
-        dark:maz-bg-warning/10 dark:maz-border-warning/20 dark:maz-text-warning-600 dark:hover:maz-bg-warning/20;
-    }
-  }
-
-  &.--destructive {
-    .m-toast__button {
-      @apply maz-bg-destructive maz-text-destructive-foreground maz-border-destructive-600 hover:maz-bg-destructive-600
-        dark:maz-bg-destructive/10 dark:maz-text-destructive-400 dark:maz-border-destructive/20 dark:hover:maz-bg-destructive/20;
-    }
-
-    & .m-toast__close {
-      @apply maz-bg-destructive maz-text-destructive-foreground maz-border-destructive-600 hover:maz-bg-destructive-600
-        dark:maz-bg-destructive/10 dark:maz-border-destructive/20 dark:maz-text-destructive-600 dark:hover:maz-bg-destructive/20;
-    }
-  }
-
-  &.--contrast {
-    .m-toast__button {
-      @apply maz-bg-contrast maz-text-contrast-foreground maz-border-contrast-600/20 hover:maz-bg-contrast-500 dark:hover:maz-bg-contrast/70;
-    }
-
-    & .m-toast__close {
-      @apply maz-bg-contrast maz-text-contrast-foreground maz-border-contrast-600/20 hover:maz-bg-contrast/70;
-    }
-  }
-
   & .m-toast__progress-bar {
-    @apply maz-absolute maz-inset-x-0;
-
-    bottom: max(var(--maz-border-width), 1px);
-    height: max(var(--maz-border-width), 0.125rem);
-
-    & .m-toast__progress-bar-inner {
-      @apply maz-h-full maz-transition-all maz-duration-200 maz-ease-linear;
-    }
+    inset-block-end: max(var(--maz-border-width), 1px);
+    block-size: max(var(--maz-border-width), 0.125rem);
   }
 }
 

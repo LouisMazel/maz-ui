@@ -5,8 +5,8 @@ A comprehensive collection of **860 beautiful SVG icons** ready for use in your 
 ## Features
 
 - **860+ icons** - All icons are available [in the icon set page](./icon-set.md)
-- **Static & Lazy components** - Static (eagerly loaded) by default, lazy (async) when you need to optimize bundle size
-- **Multiple usage patterns** - Direct SVG files, Vue components, or auto-import
+- **Three component variants** - `static` (eager Vue component, default), `lazy` (async Vue component), and `raw` ✨ **(new in v5)** raw SVG strings for inlining without a Vue component or async chunk
+- **Multiple usage patterns** - Vue components, raw SVG strings, direct SVG files, or auto-import
 - **TypeScript support** - Full type definitions included
 - **Tree-shakeable** - Import only the icons you need
 - **Customizable** - Easy to style with CSS
@@ -101,14 +101,40 @@ import { MazUser } from '@maz-ui/icons/lazy/MazUser'
 You can also import individual icons directly for optimal tree-shaking:
 
 ```ts
-// Static icon (individual file)
-import { MazCheck } from '@maz-ui/icons/MazCheck'
+// Static Vue component (individual file)
+import { MazCheck } from '@maz-ui/icons/static/MazCheck'
 
-// Lazy icon (individual file)
+// Lazy Vue component (individual file)
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
+
+// Raw SVG string (individual file) — new in v5
+import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
 ```
 
 :::
+
+#### Raw SVG strings (new in v5)
+
+Each icon is also exported as a **raw SVG string** under the `raw/` subpath. Pass it to `<MazIcon :icon="…" />` to inline the SVG without paying the cost of a Vue component or an async chunk — useful for icons rendered hundreds of times on a page (lists, tables) or for one-off `innerHTML` use.
+
+```vue
+<script setup lang="ts">
+import MazIcon from 'maz-ui/components/MazIcon'
+import { MazStar } from '@maz-ui/icons/raw/MazStar'
+</script>
+
+<template>
+  <MazIcon :icon="MazStar" />
+</template>
+```
+
+**When to use which variant:**
+
+| Variant | Bundle cost | Use case |
+| --- | --- | --- |
+| `static` | Vue component, eager | Default. Few icons per page, simplest path. |
+| `lazy` | Vue component, async chunk | Many icons but most off-screen at first paint. |
+| `raw` | Inline SVG string | Same icon repeated many times in a list/table; or you want zero component overhead. |
 
 **Benefits:**
 
@@ -167,6 +193,7 @@ export default defineConfig({
 </template>
 
 <style scoped>
+@reference "../../.vitepress/theme/main.css";
 .nav-icon {
   @apply w-6 h-6 text-gray-600 hover:text-blue-500 transition-colors cursor-pointer;
 }

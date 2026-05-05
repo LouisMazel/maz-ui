@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
-import { MazChevronLeft } from '@maz-ui/icons/static/MazChevronLeft'
-import { MazChevronRight } from '@maz-ui/icons/static/MazChevronRight'
+import { MazChevronLeft } from '@maz-ui/icons/raw/MazChevronLeft'
+import { MazChevronRight } from '@maz-ui/icons/raw/MazChevronRight'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, defineAsyncComponent, ref, useSlots } from 'vue'
+import MazIcon from './MazIcon.vue'
 
 const {
   hideScrollButtons = false,
@@ -86,20 +87,20 @@ function setScrollState(event: Event) {
 
 <template>
   <div
-    class="m-carousel m-reset-css"
+    class="m-carousel m-reset-css maz:relative maz:flex maz:flex-col"
     :class="{
       '--hide-scrollbar': hideScrollbar,
     }"
   >
-    <div v-if="hasHeader()" class="m-carousel__header" :class="{ '--has-title': hasTitle() }">
+    <div v-if="hasHeader()" class="m-carousel__header maz:flex maz:items-center" :class="[hasTitle() ? '--has-title' : '', hasTitle() ? 'maz:justify-between' : 'maz:justify-end']">
       <div v-if="hasTitle()">
         <slot name="title">
-          <h4 class="maz-text-xl maz-font-semibold">
+          <h4 class="maz:text-xl maz:font-semibold">
             {{ title }}
           </h4>
         </slot>
       </div>
-      <div v-if="!hideScrollButtons" class="m-carousel__header__actions">
+      <div v-if="!hideScrollButtons" class="m-carousel__header__actions maz:flex maz:flex-1 maz:justify-end maz:space-x-2">
         <MazBtn
           color="transparent"
           class="m-carousel__btn"
@@ -109,7 +110,7 @@ function setScrollState(event: Event) {
           @click="previous"
         >
           <slot name="previous-icon">
-            <MazChevronLeft class="maz-text-lg" />
+            <MazIcon :icon="MazChevronLeft" class="maz:text-lg" />
           </slot>
         </MazBtn>
         <MazBtn
@@ -121,12 +122,12 @@ function setScrollState(event: Event) {
           @click="next"
         >
           <slot name="next-icon">
-            <MazChevronRight class="maz-text-lg" />
+            <MazIcon :icon="MazChevronRight" class="maz:text-lg" />
           </slot>
         </MazBtn>
       </div>
     </div>
-    <div ref="MazCarouselItems" class="m-carousel__items" @scroll="setScrollState">
+    <div ref="MazCarouselItems" class="m-carousel__items maz:z-1 maz:flex maz:flex-1 maz:items-center maz:justify-start maz:space-x-5 maz:overflow-y-hidden maz:py-4 maz:ps-3" :class="hideScrollbar ? 'maz:overflow-x-hidden' : 'maz:overflow-x-auto'" @scroll="setScrollState">
       <!-- Insert your items -->
       <slot />
       <div class="m-carousel__items__spacer" />
@@ -135,29 +136,16 @@ function setScrollState(event: Event) {
 </template>
 
 <style scoped>
-  .m-carousel {
-  @apply maz-relative maz-flex maz-flex-col;
+@reference "../tailwindcss/tailwind.css";
 
-  &__header {
-    @apply maz-flex maz-items-center maz-justify-end;
-
-    &.--has-title {
-      @apply maz-justify-between;
-    }
-
-    &__actions {
-      @apply maz-flex maz-flex-1 maz-justify-end maz-space-x-2;
-    }
-  }
-
+.m-carousel {
   &__items {
-    @apply maz-z-1 maz-flex maz-flex-1 maz-items-center maz-justify-start
-        maz-space-x-5 maz-overflow-y-hidden maz-py-4 maz-ps-3;
-
     scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--maz-surface-600) transparent;
 
     &::-webkit-scrollbar {
-      width: 0.1875rem;
+      inline-size: 0.1875rem;
     }
 
     &::-webkit-scrollbar-track {
@@ -165,40 +153,27 @@ function setScrollState(event: Event) {
     }
 
     &::-webkit-scrollbar-thumb {
-      @apply maz-bg-surface-600 dark:maz-bg-surface-400;
+      @apply maz:bg-surface-600 maz:dark:bg-surface-400;
 
       border-radius: 1000px;
     }
 
-    /* Modern CSS for all browsers (fallback) */
-    scrollbar-width: thin;
-    scrollbar-color: hsl(var(--maz-background-600)) transparent;
-
     &__spacer {
       flex: 0 0 1px;
-      width: 1px;
-      height: 1px;
+      inline-size: 1px;
+      block-size: 1px;
     }
   }
 
   &__btn.--muted {
-    @apply maz-text-muted;
-    @apply maz-fill-current;
-  }
-
-  :not(.--hide-scrollbar) .m-carousel__items {
-    @apply maz-overflow-x-auto;
-  }
-
-  &.--hide-scrollbar .m-carousel__items {
-    @apply maz-overflow-x-hidden;
+    @apply maz:text-muted maz:fill-current;
   }
 
   &.--hide-scrollbar:hover .m-carousel__items,
   &.--hide-scrollbar:focus-within .m-carousel__items,
   &.--hide-scrollbar:active .m-carousel__items,
   &.--hide-scrollbar:focus .m-carousel__items {
-    @apply maz-overflow-x-auto;
+    @apply maz:overflow-x-auto;
   }
 }
 </style>

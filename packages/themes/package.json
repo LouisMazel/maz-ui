@@ -24,42 +24,52 @@
   },
   "exports": {
     ".": {
+      "monorepo:dev": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
     "./presets": {
+      "monorepo:dev": "./src/presets/index.ts",
       "types": "./dist/presets/index.d.ts",
       "import": "./dist/presets/index.js"
     },
     "./presets/*": {
+      "monorepo:dev": "./src/presets/*.ts",
       "types": "./dist/presets/*.d.ts",
       "import": "./dist/presets/*.js"
     },
     "./composables": {
+      "monorepo:dev": "./src/composables/index.ts",
       "types": "./dist/composables/index.d.ts",
       "import": "./dist/composables/index.js"
     },
     "./composables/*": {
+      "monorepo:dev": "./src/composables/*.ts",
       "types": "./dist/composables/*.d.ts",
       "import": "./dist/composables/*.js"
     },
     "./utils": {
+      "monorepo:dev": "./src/utils/index.ts",
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js"
     },
     "./utils/*": {
+      "monorepo:dev": "./src/utils/*.ts",
       "types": "./dist/utils/*.d.ts",
       "import": "./dist/utils/*.js"
     },
     "./build": {
+      "monorepo:dev": "./src/build/index.ts",
       "types": "./dist/build/index.d.ts",
       "import": "./dist/build/index.js"
     },
     "./build/*": {
+      "monorepo:dev": "./src/build/*.ts",
       "types": "./dist/build/*.d.ts",
       "import": "./dist/build/*.js"
     },
     "./plugin": {
+      "monorepo:dev": "./src/plugin.ts",
       "types": "./dist/plugin.d.ts",
       "import": "./dist/plugin.js"
     }

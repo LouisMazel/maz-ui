@@ -74,8 +74,8 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 <template>
   <div
-    class="m-button-group"
-    :class="[`--${orientation}`]"
+    class="m-button-group maz:inline-flex"
+    :class="[`--${orientation}`, orientation === 'row' ? 'maz:flex-row' : 'maz:flex-col']"
     role="group"
   >
     <!-- Options-based rendering -->
@@ -106,69 +106,63 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-button-group {
-  @apply maz-inline-flex;
-
   &.--row {
-    @apply maz-flex-row;
-
     .m-button-group__button,
     :deep(.m-btn) {
-      @apply maz-rounded-none;
+      @apply maz:rounded-none;
 
       &:first-child {
-        @apply maz-rounded-l;
+        @apply maz:rounded-l-md;
       }
 
       &:last-child {
-        @apply maz-rounded-r;
+        @apply maz:rounded-r-md;
       }
 
       &:not(:last-child) {
-        @apply maz-border-r-0;
+        @apply maz:border-r-0;
       }
 
       &:not(:first-child) {
-        @apply -maz-ml-px;
-
-        /* maz-border-l-[1px] maz-border-l-surface */
+        @apply maz:-ml-px;
       }
 
       &:focus-visible,
       &:active,
       &.--active {
-        @apply maz-z-1;
+        @apply maz:z-1;
       }
     }
   }
 
   &.--col {
-    @apply maz-flex-col;
-
     .m-button-group__button,
     :deep(.m-btn) {
-      @apply maz-rounded-none;
+      @apply maz:rounded-none;
 
       &:first-child {
-        @apply maz-rounded-t;
+        @apply maz:rounded-t-md;
       }
 
       &:last-child {
-        @apply maz-rounded-b;
+        @apply maz:rounded-b-md;
       }
 
       &:not(:last-child) {
-        @apply maz-border-b-0;
+        @apply maz:border-b-0;
       }
 
       &:not(:first-child) {
-        @apply -maz-mt-px;
+        @apply maz:-mt-px;
       }
 
       &:focus-visible,
       &:active,
       &.--active {
-        @apply maz-z-1;
+        @apply maz:z-1;
       }
     }
   }

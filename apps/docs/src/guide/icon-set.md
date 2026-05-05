@@ -13,21 +13,21 @@ All icons follow a consistent naming pattern:
 ## Find your icon
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
-    <div class="maz-flex maz-gap-2 maz-items-start">
-      <MazInput v-model="search" label="Search icon" @update:model-value="search = $event.trim()" :left-icon="SearchIcon" class="flex-1" :assistive-text="`${filteredIcons.length} icons found`" />
+  <div class="maz:flex maz:flex-col maz:gap-4">
+    <div class="maz:flex maz:gap-2 maz:items-start">
+      <MazInput v-model="search" label="Search icon" @update:model-value="search = $event.trim()" :start-icon="SearchIcon" class="flex-1" :assistive-text="`${filteredIcons.length} icons found`" />
     </div>
     <MazTabs v-model="currentTab">
       <MazTabsBar :items="tabs" />
     </MazTabs>
-    <div class="maz-grid maz-grid-cols-3 maz-gap-2">
-      <div v-for="icon in filteredIcons" :key="icon.name" class="maz-flex maz-flex-col maz-items-center maz-gap-3 maz-text-center maz-border maz-border-solid maz-border-divider maz-rounded maz-p-4 maz-truncate">
-        <component :is="icon.component" class="maz-size-8" />
-        <span class="maz-text-xs maz-text-muted maz-truncate">{{ icon.name }}</span>
-        <div class="maz-flex maz-flex-row maz-gap-2 maz-w-full">
-          <MazBtn v-tooltip="{ text: 'Copy Name', panelClass: 'maz-text-xs' }" class="maz-flex-1" size="xs" color="background" outlined @click="copyIcon(icon.name)" :icon="ClipboardDocumentIcon" />
-          <MazBtn v-tooltip="{ text: 'Copy Static Import', panelClass: 'maz-text-xs' }" class="maz-flex-1" size="xs" color="background" outlined @click="copyStaticImport(icon.name)" :icon="ClipboardDocumentListIcon" />
-          <MazBtn v-tooltip="{ text: 'Copy Lazy Import', panelClass: 'maz-text-xs' }" class="maz-flex-1" size="xs" color="background" outlined @click="copyLazyImport(icon.name)" :icon="ClipboardDocumentListIcon" />
+    <div class="maz:grid maz:grid-cols-3 maz:gap-2">
+      <div v-for="icon in filteredIcons" :key="icon.name" class="maz:flex maz:flex-col maz:items-center maz:gap-3 maz:text-center maz:border maz:border-solid maz:border-divider maz:rounded-md maz:p-4 maz:truncate">
+        <component :is="icon.component" class="maz:size-8" />
+        <span class="maz:text-xs maz:text-muted maz:truncate">{{ icon.name }}</span>
+        <div class="maz:flex maz:flex-row maz:gap-2 maz:w-full">
+          <MazBtn v-tooltip="{ text: 'Copy Name', panelClass: 'maz:text-xs' }" class="maz:flex-1" size="xs" color="surface" outlined @click="copyIcon(icon.name)" :icon="ClipboardDocumentIcon" />
+          <MazBtn v-tooltip="{ text: 'Copy Static Import', panelClass: 'maz:text-xs' }" class="maz:flex-1" size="xs" color="surface" outlined @click="copyStaticImport(icon.name)" :icon="ClipboardDocumentListIcon" />
+          <MazBtn v-tooltip="{ text: 'Copy Lazy Import', panelClass: 'maz:text-xs' }" class="maz:flex-1" size="xs" color="surface" outlined @click="copyLazyImport(icon.name)" :icon="ClipboardDocumentListIcon" />
         </div>
       </div>
     </div>

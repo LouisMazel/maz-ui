@@ -1,10 +1,11 @@
 <script lang="ts" setup generic="T extends boolean | (string | number)[]">
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
-import { MazCheck } from '@maz-ui/icons/static/MazCheck'
+import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
 import { computed, ref } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { hasSlotContent } from '../utils/hasSlotContent'
+import MazIcon from './MazIcon.vue'
 
 export type MazCheckboxValue = string | number | boolean
 
@@ -130,54 +131,54 @@ const checkboxSize = computed(() => {
 const checkIconSize = computed(() => {
   switch (props.size) {
     case 'xl': {
-      return 'maz-text-2xl'
+      return 'maz:text-2xl'
     }
     case 'lg': {
-      return 'maz-text-xl'
+      return 'maz:text-xl'
     }
     case 'sm': {
-      return 'maz-text-base'
+      return 'maz:text-base'
     }
     case 'xs': {
-      return 'maz-text-sm'
+      return 'maz:text-sm'
     }
     case 'mini': {
-      return 'maz-text-xs'
+      return 'maz:text-xs'
     }
     default: {
-      return 'maz-text-lg'
+      return 'maz:text-lg'
     }
   }
 })
 
 const checkIconColor = computed(() => {
   if (props.color === 'contrast') {
-    return 'hsl(var(--maz-background))'
+    return 'var(--maz-surface)'
   }
 
-  return `hsl(var(--maz-${props.color}-foreground))`
+  return `var(--maz-${props.color}-foreground)`
 })
 const checkboxSelectedColor = computed(() => {
   if (props.color === 'contrast') {
-    return 'hsl(var(--maz-contrast))'
+    return 'var(--maz-contrast)'
   }
 
-  return `hsl(var(--maz-${props.color}))`
+  return `var(--maz-${props.color})`
 })
 const checkboxBoxShadow = computed(() => {
   if (props.error && !isFocused.value) {
-    return `hsl(var(--maz-destructive))`
+    return `var(--maz-destructive)`
   }
   else if (props.warning && !isFocused.value) {
-    return `hsl(var(--maz-warning))`
+    return `var(--maz-warning)`
   }
   else if (props.success && !isFocused.value) {
-    return `hsl(var(--maz-success))`
+    return `var(--maz-success)`
   }
 
   return ['transparent', 'contrast'].includes(props.color)
-    ? `hsl(var(--maz-muted))`
-    : `hsl(var(--maz-${props.color}) / 60%)`
+    ? `var(--maz-muted)`
+    : `color-mix(in srgb, var(--maz-${props.color}) 60%, transparent)`
 })
 
 function keyboardHandler(event: KeyboardEvent) {
@@ -228,8 +229,11 @@ function onFocus(event: FocusEvent) {
 <template>
   <label
     :for="instanceId"
-    class="m-checkbox m-reset-css"
-    :class="[{ '--error': error, '--warning': warning, '--success': success }, props.class]"
+    class="m-checkbox m-reset-css maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden"
+    :class="[
+      { '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-pointer': !disabled },
+      props.class,
+    ]"
     :style="[style, { '--checkbox-selected-color': checkboxSelectedColor, '--checkbox-box-shadow-color': checkboxBoxShadow }]"
     role="checkbox"
     :aria-checked="isChecked"
@@ -250,19 +254,23 @@ function onFocus(event: FocusEvent) {
       @change="emitValue(value ?? ($event?.target as HTMLInputElement)?.checked)"
     >
     <span :style="{ width: checkboxSize, height: checkboxSize }">
-      <MazCheck class="check-icon" :class="checkIconSize" :style="{ color: checkIconColor }" />
+      <MazIcon :icon="MazCheck" class="check-icon maz:transition-transform maz:duration-300 maz:ease-in-out" :class="[isChecked ? 'maz:scale-100' : 'maz:scale-0', checkIconSize]" :style="{ color: checkIconColor }" />
     </span>
-    <div v-if="label || hasSlotContent($slots.default) || hint" class="m-checkbox__text">
+    <div v-if="label || hasSlotContent($slots.default) || hint" class="m-checkbox__text maz:flex maz:flex-col maz:gap-0">
       <slot :value>
         {{ label }}
       </slot>
 
       <span
         v-if="hint"
-        class="m-checkbox__hint" :class="{
+        class="m-checkbox__hint maz:text-sm" :class="{
           '--error': error,
           '--success': success,
           '--warning': warning,
+          'maz:text-destructive-600': error,
+          'maz:text-success-600': success,
+          'maz:text-warning-600': warning,
+          'maz:text-muted': !error && !success && !warning,
         }"
       >{{ hint }}</span>
     </div>
@@ -270,98 +278,56 @@ function onFocus(event: FocusEvent) {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-checkbox {
-  @apply maz-relative maz-inline-flex maz-items-center maz-gap-2 maz-align-top maz-outline-none;
-
-  .check-icon {
-    @apply maz-scale-0 maz-transition-transform maz-duration-300 maz-ease-in-out;
-
-    :deep(path) {
-      stroke-width: 2.5;
-    }
+  .check-icon :deep(path) {
+    stroke-width: 2.5;
   }
 
   > span {
-    @apply maz-relative maz-flex maz-rounded-md maz-border maz-border-divider dark:maz-border-divider-400 maz-transition-all maz-duration-300 maz-ease-in-out maz-flex-center;
+    @apply maz:relative maz:flex maz:rounded-sm maz:border maz:border-divider maz:dark:border-divider-400 maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center;
   }
 
   input {
-    @apply maz-hidden;
+    @apply maz:hidden;
 
     &:not(:checked) ~ span {
-      @apply maz-bg-surface dark:maz-bg-surface-400;
+      @apply maz:bg-input;
     }
 
     &:checked ~ span {
       border-color: var(--checkbox-selected-color);
       background-color: var(--checkbox-selected-color);
-
-      .check-icon {
-        @apply maz-scale-100;
-      }
     }
 
     &:disabled ~ span {
-      @apply maz-bg-surface-600 dark:maz-bg-surface-300;
+      @apply maz:bg-surface-600 maz:dark:bg-surface-300;
     }
   }
 
   &:has(input:disabled) {
-    @apply maz-cursor-not-allowed maz-text-muted;
-
     svg {
-      @apply !maz-text-muted;
+      @apply maz:text-muted!;
     }
 
     input:checked ~ span {
-      @apply maz-border-divider;
+      @apply maz:border-divider;
 
       .check-icon {
-        @apply maz-text-muted;
+        @apply maz:text-muted;
       }
     }
   }
 
   &:not(:has(input:disabled)) {
-    @apply maz-cursor-pointer;
-
     &:hover > span,
     &:focus > span,
     &.--error > span,
     &.--warning > span,
     &.--success > span {
-      @apply maz-transition-all maz-duration-300 maz-ease-in-out;
-
       box-shadow: 0 0 0 0.125rem var(--checkbox-box-shadow-color);
     }
   }
-
-  &__text {
-    @apply maz-flex maz-flex-col maz-gap-0;
-  }
-
-  &__hint {
-    @apply maz-text-sm maz-text-muted;
-
-    &.--error {
-      @apply maz-text-destructive-600;
-    }
-
-    &.--success {
-      @apply maz-text-success-600;
-    }
-
-    &.--warning {
-      @apply maz-text-warning-600;
-    }
-  }
-
-  /* &.--error,
-  &.--warning,
-  &.--success {
-    > span {
-      @apply maz-transition-all maz-duration-300 maz-ease-in-out;
-    }
-  } */
 }
 </style>

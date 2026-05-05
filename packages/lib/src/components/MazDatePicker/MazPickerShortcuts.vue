@@ -47,7 +47,7 @@ watch(
 </script>
 
 <template>
-  <div class="maz-picker-shortcuts">
+  <div class="maz-picker-shortcuts maz:flex maz:flex-col maz:items-start maz:gap-1 maz:overflow-y-auto maz:border-e maz:border-divider maz:p-2">
     <MazBtn
       v-for="{ identifier, label, value } in shortcuts"
       :key="identifier"
@@ -64,23 +64,23 @@ watch(
 </template>
 
 <style scoped>
-.maz-picker-shortcuts {
-  @apply maz-flex maz-flex-col maz-items-start maz-gap-1 maz-overflow-y-auto maz-border-e maz-border-divider maz-p-2;
+@reference "../../tailwindcss/tailwind.css";
 
+.maz-picker-shortcuts {
   &::-webkit-scrollbar {
     display: none;
   }
 
   scrollbar-width: none;
   -ms-overflow-style: none;
-  max-height: 18.75rem;
+  max-block-size: 18.75rem;
 
   & > button {
-    @apply maz-w-full maz-flex-none maz-truncate;
-    @apply maz-text-xs !important;
+    @apply maz:w-full maz:flex-none maz:truncate;
+    @apply maz:text-xs!;
 
     &:not(.--is-selected) {
-      @apply maz-border maz-border-divider !important;
+      @apply maz:border! maz:border-divider!;
     }
   }
 }

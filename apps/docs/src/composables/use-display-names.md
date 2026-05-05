@@ -31,7 +31,7 @@ Depending on your environment (client or node server) and the browser you are us
 To see `useDisplayNames` in action, you can try out the following demo. This demo showcases how to use the composable to fetch and display localized language names dynamically based on user input.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4 maz-items-start">
+  <div class="maz:flex maz:flex-col maz:gap-4 maz:items-start">
     <MazSelect
       v-model="selectedLocale"
       label="Select a locale"
@@ -164,7 +164,7 @@ function getAllDisplayNames(options: {
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
-import { useDisplayNames } from 'maz-ui/src/composables/useDisplayNames.js'
+import { useDisplayNames } from 'maz-ui/composables/useDisplayNames'
 
 const selectedLocale = ref('en-US')
 const code = ref('fr-FR')

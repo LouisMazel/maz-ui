@@ -22,12 +22,12 @@ export interface MazUiOptions {
  * ```ts
  * import { MazUi } from 'maz-ui/plugins/maz-ui'
  * import { mazUi as mazUiPreset } from '@maz-ui/themes/presets/mazUi'
- * import 'maz-ui/styles'
+ * import 'maz-ui/style.css'
  *
  * app.use(MazUi, {
  *   theme: {
  *     preset: mazUiPreset,
- *     strategy: 'hybrid',
+ *     strategy: 'runtime',
  *     darkMode: 'class',
  *   },
  *   translations: {
