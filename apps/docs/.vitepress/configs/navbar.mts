@@ -32,20 +32,28 @@ export const nav = [
         link: '/changelog',
       },
       {
-        text: 'v4 announcement',
-        link: '/blog/v4',
+        text: 'v5 announcement',
+        link: '/blog/v5',
       },
       {
-        text: 'v3 documentation',
-        link: 'https://v3.maz-ui.com',
+        text: 'Migration v4 to v5',
+        link: '/guide/migration-v5',
+      },
+      {
+        text: 'v4 documentation',
+        link: 'https://v4.maz-ui.com',
+      },
+      {
+        text: 'v4 announcement',
+        link: '/blog/v4',
       },
       {
         text: 'Migration v3 to v4',
         link: '/guide/migration-v4',
       },
       {
-        text: 'Migration v4 to v5',
-        link: '/guide/migration-v5',
+        text: 'v3 documentation',
+        link: 'https://v3.maz-ui.com',
       },
       {
         text: 'Contributing',

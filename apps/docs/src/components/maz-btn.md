@@ -563,7 +563,7 @@ import { MazStar } from '@maz-ui/icons/raw/MazStar'
 When `href` attribute is provided, the component automatically becomes a `<a href="..." />`
 :::
 
-<MazBtn href="https://www.google.com" target="_blank">Is Button Link</MazBtn>
+<MazBtn class="vp-raw" href="https://www.google.com" target="_blank">Is Button Link</MazBtn>
 
 ```html
 <MazBtn href="https://www.google.com" target="_blank"> Is Button Link </MazBtn>
@@ -575,7 +575,7 @@ When `href` attribute is provided, the component automatically becomes a `<a hre
 When `to` attribute is provided, the component automatically becomes a `<RouterLink to="..." />`
 :::
 
-<MazBtn :to="{ path: '/made-with-maz-ui.html' }">Is Router Link</MazBtn>
+<MazBtn class="vp-raw" :to="{ path: '/made-with-maz-ui.html' }">Is Router Link</MazBtn>
 
 ```html
 <MazBtn :to="{ path: '/made-with-maz-ui.html' }"> Is RouterLink </MazBtn>

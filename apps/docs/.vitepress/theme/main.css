@@ -20,7 +20,7 @@
 }
 
 :root {
-  /* --vp-layout-top-height: 3.9375rem; */
+  --vp-layout-top-height: 2.2rem;
   /* --vp-nav-logo-height: 42px; */
   --vp-font-family-base: var(--maz-font-family);
   --vp-c-bg: var(--maz-surface);
