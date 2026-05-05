@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
+  hasFoundationRadius,
+  hasMazUiRootImport,
   transformConfig,
   transformCssVars,
   transformDeps,
@@ -34,6 +36,161 @@ describe('transformImports', () => {
         expect(transformImports(`import { MazBtn } from 'maz-ui/components'`))
           .toBe(`import { MazBtn } from 'maz-ui/components'`)
         expect(transformImports(`import 'tailwindcss/styles'`)).toBe(`import 'tailwindcss/styles'`)
+      })
+    })
+  })
+
+  describe('Given a static named import from "maz-ui"', () => {
+    describe('When transforming', () => {
+      it('rewrites the source to "@maz-ui/utils"', () => {
+        expect(transformImports(`import { sleep } from 'maz-ui'`))
+          .toBe(`import { sleep } from '@maz-ui/utils'`)
+        expect(transformImports(`import { sleep } from "maz-ui"`))
+          .toBe(`import { sleep } from "@maz-ui/utils"`)
+      })
+    })
+  })
+
+  describe('Given a type-only re-export from "maz-ui"', () => {
+    describe('When transforming', () => {
+      it('rewrites the source to "@maz-ui/utils"', () => {
+        expect(transformImports(`export type { DeepPartial } from 'maz-ui'`))
+          .toBe(`export type { DeepPartial } from '@maz-ui/utils'`)
+      })
+    })
+  })
+
+  describe('Given a dynamic import("maz-ui")', () => {
+    describe('When transforming', () => {
+      it('rewrites the specifier to "@maz-ui/utils"', () => {
+        expect(transformImports(`const m = await import('maz-ui')`))
+          .toBe(`const m = await import('@maz-ui/utils')`)
+      })
+    })
+  })
+
+  describe('Given a require("maz-ui") call', () => {
+    describe('When transforming', () => {
+      it('rewrites the specifier to "@maz-ui/utils"', () => {
+        expect(transformImports(`const m = require('maz-ui')`))
+          .toBe(`const m = require('@maz-ui/utils')`)
+      })
+    })
+  })
+
+  describe('Given a subpath specifier', () => {
+    describe('When transforming', () => {
+      it('leaves it unchanged', () => {
+        expect(transformImports(`import { MazBtn } from 'maz-ui/components'`))
+          .toBe(`import { MazBtn } from 'maz-ui/components'`)
+        expect(transformImports(`import 'maz-ui/style.css'`))
+          .toBe(`import 'maz-ui/style.css'`)
+        expect(transformImports(`import { useToast } from 'maz-ui/composables'`))
+          .toBe(`import { useToast } from 'maz-ui/composables'`)
+      })
+    })
+  })
+
+  describe('Given a bare side-effect import "maz-ui"', () => {
+    describe('When transforming', () => {
+      it('leaves it unchanged', () => {
+        expect(transformImports(`import 'maz-ui'`)).toBe(`import 'maz-ui'`)
+      })
+    })
+  })
+
+  describe('Given a "maz-ui" string literal outside of an import context', () => {
+    describe('When transforming', () => {
+      it('leaves it unchanged', () => {
+        expect(transformImports(`const name = 'maz-ui'`))
+          .toBe(`const name = 'maz-ui'`)
+        expect(transformImports(`const cfg = { from: 'maz-ui' }`))
+          .toBe(`const cfg = { from: 'maz-ui' }`)
+      })
+    })
+  })
+})
+
+describe('hasMazUiRootImport', () => {
+  describe('Given content with `from \'maz-ui\'`', () => {
+    describe('When checked', () => {
+      it('returns true', () => {
+        expect(hasMazUiRootImport(`import { sleep } from 'maz-ui'`)).toBe(true)
+        expect(hasMazUiRootImport(`export * from "maz-ui"`)).toBe(true)
+      })
+    })
+  })
+
+  describe('Given content with a dynamic import or require of "maz-ui"', () => {
+    describe('When checked', () => {
+      it('returns true', () => {
+        expect(hasMazUiRootImport(`await import('maz-ui')`)).toBe(true)
+        expect(hasMazUiRootImport(`const m = require('maz-ui')`)).toBe(true)
+      })
+    })
+  })
+
+  describe('Given only subpath specifiers', () => {
+    describe('When checked', () => {
+      it('returns false', () => {
+        expect(hasMazUiRootImport(`import { MazBtn } from 'maz-ui/components'`)).toBe(false)
+        expect(hasMazUiRootImport(`import 'maz-ui/style.css'`)).toBe(false)
+      })
+    })
+  })
+
+  describe('Given an unrelated string literal', () => {
+    describe('When checked', () => {
+      it('returns false', () => {
+        expect(hasMazUiRootImport(`const x = 'maz-ui'`)).toBe(false)
+        expect(hasMazUiRootImport(`const cfg = { from: 'maz-ui' }`)).toBe(false)
+      })
+    })
+  })
+})
+
+describe('hasFoundationRadius', () => {
+  describe('Given a preset with radius inside foundation', () => {
+    describe('When checked', () => {
+      it('returns true', () => {
+        const content = `export const preset = { foundation: { radius: '0.5rem', 'border-width': '1px' } }`
+        expect(hasFoundationRadius(content)).toBe(true)
+      })
+    })
+  })
+
+  describe('Given a quoted radius key inside foundation', () => {
+    describe('When checked', () => {
+      it('returns true', () => {
+        const content = `foundation: { 'radius': '0.5rem' }`
+        expect(hasFoundationRadius(content)).toBe(true)
+      })
+    })
+  })
+
+  describe('Given a preset without radius in foundation', () => {
+    describe('When checked', () => {
+      it('returns false', () => {
+        const content = `foundation: { 'base-font-size': '14px', 'border-width': '1px' }`
+        expect(hasFoundationRadius(content)).toBe(false)
+      })
+    })
+  })
+
+  describe('Given a radius key outside any foundation block', () => {
+    describe('When checked', () => {
+      it('returns false', () => {
+        const content = `const chartCfg = { radius: 4 }`
+        expect(hasFoundationRadius(content)).toBe(false)
+      })
+    })
+  })
+
+  describe('Given an unrelated key with the substring "radius"', () => {
+    describe('When checked', () => {
+      it('returns false', () => {
+        const content = `foundation: { 'border-radius-fallback': '0.5rem' }`
+        expect(hasFoundationRadius(content)).toBe(false)
       })
     })
   })
@@ -442,6 +599,74 @@ describe('transformDeps', () => {
       })
     })
   })
+
+  describe('Given addUtils=true and a package.json with maz-ui but no @maz-ui/utils', () => {
+    describe('When transforming', () => {
+      it('adds @maz-ui/utils next to maz-ui in the same field', () => {
+        const input = JSON.stringify({
+          dependencies: { 'maz-ui': '^4.9.3' },
+        }, null, 2)
+        const out = JSON.parse(transformDeps(input, { addUtils: true }))
+        expect(out.dependencies).toStrictEqual({
+          'maz-ui': '^5.0.0',
+          '@maz-ui/utils': '^5.0.0',
+        })
+      })
+    })
+  })
+
+  describe('Given addUtils=true and only a scoped @maz-ui/* dep', () => {
+    describe('When transforming', () => {
+      it('adds @maz-ui/utils to the same field as the scoped dep', () => {
+        const input = JSON.stringify({
+          devDependencies: { '@maz-ui/icons': '^4.9.3' },
+        }, null, 2)
+        const out = JSON.parse(transformDeps(input, { addUtils: true }))
+        expect(out.devDependencies).toStrictEqual({
+          '@maz-ui/icons': '^5.0.0',
+          '@maz-ui/utils': '^5.0.0',
+        })
+      })
+    })
+  })
+
+  describe('Given addUtils=true and @maz-ui/utils already declared', () => {
+    describe('When transforming', () => {
+      it('leaves the existing entry untouched', () => {
+        const input = JSON.stringify({
+          dependencies: { 'maz-ui': '^4.9.3', '@maz-ui/utils': '^4.5.0' },
+        }, null, 2)
+        const out = JSON.parse(transformDeps(input, { addUtils: true }))
+        expect(out.dependencies).toStrictEqual({
+          'maz-ui': '^5.0.0',
+          '@maz-ui/utils': '^5.0.0',
+        })
+      })
+    })
+  })
+
+  describe('Given addUtils=true but no maz-ui or @maz-ui/* dep', () => {
+    describe('When transforming', () => {
+      it('does not add @maz-ui/utils', () => {
+        const input = JSON.stringify({
+          dependencies: { vue: '^3.5.0' },
+        }, null, 2)
+        expect(transformDeps(input, { addUtils: true })).toBe(input)
+      })
+    })
+  })
+
+  describe('Given addUtils=false (default)', () => {
+    describe('When transforming a package.json with maz-ui only', () => {
+      it('does not add @maz-ui/utils', () => {
+        const input = JSON.stringify({
+          dependencies: { 'maz-ui': '^4.9.3' },
+        }, null, 2)
+        const out = JSON.parse(transformDeps(input))
+        expect(out.dependencies).toStrictEqual({ 'maz-ui': '^5.0.0' })
+      })
+    })
+  })
 })
 
 describe('transformFile', () => {
@@ -544,6 +769,19 @@ export default {
       it('skips the deps transform when filtered out', () => {
         const input = JSON.stringify({ dependencies: { 'maz-ui': '^4.9.3' } }, null, 2)
         expect(transformFile('package.json', input, { groups: ['imports'] })).toBe(input)
+      })
+    })
+  })
+
+  describe('Given a package.json with addUtilsDep=true', () => {
+    describe('When transforming', () => {
+      it('bumps maz-ui and adds @maz-ui/utils', () => {
+        const input = JSON.stringify({ dependencies: { 'maz-ui': '^4.9.3' } }, null, 2)
+        const out = JSON.parse(transformFile('package.json', input, { addUtilsDep: true }))
+        expect(out.dependencies).toStrictEqual({
+          'maz-ui': '^5.0.0',
+          '@maz-ui/utils': '^5.0.0',
+        })
       })
     })
   })

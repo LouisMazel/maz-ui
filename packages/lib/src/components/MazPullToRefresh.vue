@@ -222,7 +222,7 @@ onUnmounted(() => {
   <div class="m-pull-to-refresh m-reset-css" :class="{ '--available': pull.available || pullHeight > 10 }">
     <div
       v-if="!isDisabled"
-      class="loading-header maz:relative maz:flex maz:w-full maz:text-center maz:text-[0.8em] maz:flex-center"
+      class="loading-header maz:relative maz:flex maz:w-full maz:flex-center maz:text-center maz:text-[0.8em]"
       :style="{ height: `${pullHeight}px` }"
       :class="headerClass"
     >

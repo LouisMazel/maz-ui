@@ -90,23 +90,23 @@ const hasTitle = computed(() => {
   >
     <template #default="{ close }">
       <div
-        class="m-drawer-content-wrap maz:overflow-y-auto maz:bg-container maz:pointer-events-auto maz:flex maz:flex-col"
+        class="m-drawer-content-wrap maz:pointer-events-auto maz:flex maz:flex-col maz:overflow-y-auto maz:bg-container"
         :class="[
           `--${variant}`,
-          (variant === 'start' || variant === 'end') ? 'maz:min-h-screen maz:w-full maz:tab-s:w-(--maz-drawer-size)' : 'maz:w-full maz:h-auto',
+          (variant === 'start' || variant === 'end') ? 'maz:min-h-screen maz:w-full maz:tab-s:w-(--maz-drawer-size)' : 'maz:h-auto maz:w-full',
         ]"
         :style="{
           '--maz-drawer-size': size,
         }"
       >
         <header
-          class="m-drawer-header maz:z-1 maz:flex maz:h-16 maz:shrink-0 maz:items-center maz:border-b maz:border-divider maz:bg-container maz:bg-clip-padding maz:ps-4 maz:pe-2 maz:py-3"
+          class="m-drawer-header maz:z-1 maz:flex maz:h-16 maz:shrink-0 maz:items-center maz:border-b maz:border-divider maz:bg-container maz:bg-clip-padding maz:py-3 maz:ps-4 maz:pe-2"
           :class="[
             hasTitle ? '--justify-between' : '--justify-end',
             hasTitle ? 'maz:justify-between' : 'maz:justify-end',
           ]"
         >
-          <h4 class="m-drawer-header__title maz:m-0 maz:text-xl maz:font-semibold maz:font-display">
+          <h4 class="m-drawer-header__title maz:m-0 maz:font-display maz:text-xl maz:font-semibold">
             <slot name="title" :close="close">
               {{ title }}
             </slot>

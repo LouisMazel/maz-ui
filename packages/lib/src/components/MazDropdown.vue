@@ -366,7 +366,7 @@ watch(
       <div
         :id="instanceId"
         tabindex="-1"
-        class="m-dropdown__wrapper maz:outline-hidden maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400 maz:rounded-md maz:size-full"
+        class="m-dropdown__wrapper maz:size-full maz:rounded-md maz:outline-hidden maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400"
       >
         <span :id="`${instanceId}-labelspan`" class="maz:sr-only">
           <!--

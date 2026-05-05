@@ -71,7 +71,7 @@ const SIZE_CLASS = {
   sm: 'maz:text-xs',
   md: 'maz:text-sm',
   lg: 'maz:text-base',
-  xl: 'maz:text-lg',
+  xl: 'maz:text-xl',
 } as const satisfies Record<MazBadgeSize, string>
 
 const badgeStyle = computed<CSSProperties | undefined>(() => {
@@ -94,7 +94,7 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
 
 <template>
   <span
-    class="m-badge m-reset-css maz:inline-flex maz:items-center maz:justify-center maz:border maz:border-transparent maz:align-top maz:font-semibold"
+    class="m-badge m-reset-css maz:inline-flex maz:flex-center maz:border maz:border-transparent maz:align-top maz:font-semibold"
     :class="[
       `--${resolvedColor}`,
       `--${size}`,

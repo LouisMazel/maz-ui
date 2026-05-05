@@ -70,7 +70,7 @@ function nextYears() {
         <MazIcon :icon="MazXMark" class="maz:text-lg" />
       </MazBtn>
     </div>
-    <div class="maz-picker-year-switcher__main maz:grid maz:flex-1 maz:grid-cols-3 maz:gap-2 maz:overflow-y-auto maz:p-2 maz:flex-center">
+    <div class="maz-picker-year-switcher__main maz:grid maz:flex-1 maz:grid-cols-3 maz:flex-center maz:gap-2 maz:overflow-y-auto maz:p-2">
       <MazBtn
         v-for="year in years"
         :key="year.label"

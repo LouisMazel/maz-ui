@@ -607,7 +607,7 @@ onBeforeMount(() => {
 
 <template>
   <div class="m-table m-reset-css maz:relative maz:max-w-full" :class="{ '--has-header': hasHeader }">
-    <div v-if="hasHeader" class="m-table-header maz:flex maz:max-w-full maz:items-start maz:mob-l:items-center maz:justify-between maz:gap-2 maz:bg-container maz:py-2 maz:flex-col maz:mob-l:flex-row">
+    <div v-if="hasHeader" class="m-table-header maz:flex maz:max-w-full maz:flex-col maz:items-start maz:justify-between maz:gap-2 maz:bg-container maz:py-2 maz:mob-l:flex-row maz:mob-l:items-center">
       <div v-if="title || hasSlotContent(slots.title)" class="m-table-spacer">
         <!--
           @slot Replace the title of the table
@@ -642,7 +642,7 @@ onBeforeMount(() => {
       </div>
     </div>
     <div
-      class="m-table-wrapper maz:border maz:border-solid maz:border-divider maz:overflow-hidden" :class="[`--rounded-${roundedSize}`, {
+      class="m-table-wrapper maz:overflow-hidden maz:border maz:border-solid maz:border-divider" :class="[`--rounded-${roundedSize}`, {
         '--scrollable maz:overflow-auto': scrollable,
       }]"
     >
@@ -831,7 +831,7 @@ onBeforeMount(() => {
           />
         </div>
 
-        <span v-if="totalPagesInternal" class="maz:whitespace-nowrap maz:text-sm">
+        <span v-if="totalPagesInternal" class="maz:text-sm maz:whitespace-nowrap">
           {{ rowsFromTo.from }} - {{ rowsFromTo.to }} {{ messages.pagination.of }} {{ totalItemsInternal }}
         </span>
 

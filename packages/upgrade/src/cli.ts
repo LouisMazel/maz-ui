@@ -6,7 +6,7 @@ import { dirname, resolve } from 'node:path'
 import process from 'node:process'
 import { logger } from '@maz-ui/node'
 import { globby } from 'globby'
-import { ALL_GROUPS, transformFile } from './transform'
+import { ALL_GROUPS, hasFoundationRadius, hasMazUiRootImport, transformFile } from './transform'
 
 const DEFAULT_IGNORES = [
   '**/node_modules/**',
@@ -113,7 +113,10 @@ Options:
   -v, --version        Print the upgrade tool version.
 
 Transform groups:
-  imports   maz-ui/styles → maz-ui/style.css, maz-ui/aos-styles → maz-ui/aos.css
+  imports   maz-ui/styles → maz-ui/style.css, maz-ui/aos-styles → maz-ui/aos.css,
+            from 'maz-ui' → from '@maz-ui/utils' (root re-export removed in v5).
+            When this rewrite fires and the deps group runs, @maz-ui/utils is
+            also added to package.json next to maz-ui.
   props     left-icon/right-icon → start-icon/end-icon (props, slots,
             #icon-left/#icon-right, --has-*-icon classes), footer-align,
             variant, color="background", active-color, rounded-size="base"
@@ -195,13 +198,34 @@ function maybeInstallDeps(opts: CliOptions, depsChanged: boolean, cwd: string): 
   }
 }
 
-async function run(): Promise<void> {
-  const opts = parseArgs(process.argv)
-  const cwd = process.cwd()
+const PACKAGE_JSON_RE = /(?:^|[\\/])package\.json$/
 
+interface PassResult {
+  scanned: number
+  changed: number
+  needsUtilsDep: boolean
+  radiusFiles: string[]
+}
+
+function applyTransform(file: string, opts: CliOptions, addUtilsDep: boolean): { before: string, after: string } {
+  const before = readFileSync(file, 'utf8')
+  const after = transformFile(file, before, { groups: opts.groups, addUtilsDep })
+  return { before, after }
+}
+
+function reportAndWrite(file: string, after: string, opts: CliOptions, cwd: string): void {
+  const shown = file.replace(`${cwd}/`, '')
+  logger.log(`${opts.dryRun ? '[dry-run] would update' : 'updated'}: ${shown}`)
+  if (!opts.dryRun)
+    writeFileSync(file, after, 'utf8')
+}
+
+async function processSourceFiles(opts: CliOptions, cwd: string, packageJsonFiles: string[]): Promise<PassResult> {
+  const importsEnabled = opts.groups.includes('imports')
   let scanned = 0
   let changed = 0
-  let depsChanged = false
+  let needsUtilsDep = false
+  const radiusFiles: string[] = []
 
   for (const root of opts.roots) {
     const absoluteRoot = resolve(cwd, root)
@@ -222,31 +246,74 @@ async function run(): Promise<void> {
     )
 
     for (const file of files) {
+      if (PACKAGE_JSON_RE.test(file)) {
+        packageJsonFiles.push(file)
+        continue
+      }
+
       scanned += 1
-      const before = readFileSync(file, 'utf8')
-      const after = transformFile(file, before, { groups: opts.groups })
+      const { before, after } = applyTransform(file, opts, false)
+
+      if (importsEnabled && hasMazUiRootImport(before))
+        needsUtilsDep = true
+
+      if (hasFoundationRadius(before))
+        radiusFiles.push(file)
 
       if (after === before)
         continue
       changed += 1
-
-      if (file.endsWith('package.json'))
-        depsChanged = true
-
-      const shown = file.replace(`${cwd}/`, '')
-      logger.log(`${opts.dryRun ? '[dry-run] would update' : 'updated'}: ${shown}`)
-
-      if (!opts.dryRun) {
-        writeFileSync(file, after, 'utf8')
-      }
+      reportAndWrite(file, after, opts, cwd)
     }
   }
+
+  return { scanned, changed, needsUtilsDep, radiusFiles }
+}
+
+function processPackageJsonFiles(files: string[], opts: CliOptions, cwd: string, needsUtilsDep: boolean): { scanned: number, changed: number, depsChanged: boolean } {
+  let scanned = 0
+  let changed = 0
+  let depsChanged = false
+
+  for (const file of files) {
+    scanned += 1
+    const { before, after } = applyTransform(file, opts, needsUtilsDep)
+
+    if (after === before)
+      continue
+    changed += 1
+    depsChanged = true
+    reportAndWrite(file, after, opts, cwd)
+  }
+
+  return { scanned, changed, depsChanged }
+}
+
+async function run(): Promise<void> {
+  const opts = parseArgs(process.argv)
+  const cwd = process.cwd()
+
+  const packageJsonFiles: string[] = []
+  const sources = await processSourceFiles(opts, cwd, packageJsonFiles)
+  const pkgs = processPackageJsonFiles(packageJsonFiles, opts, cwd, sources.needsUtilsDep)
+
+  const scanned = sources.scanned + pkgs.scanned
+  const changed = sources.changed + pkgs.changed
+  const depsChanged = pkgs.depsChanged
 
   const prefix = opts.dryRun ? 'would update' : 'updated'
   logger.log(`\nScanned ${scanned} files, ${prefix} ${changed}.`)
   logger.log(`Groups applied: ${opts.groups.join(', ')}`)
 
   maybeInstallDeps(opts, depsChanged, cwd)
+
+  if (sources.radiusFiles.length > 0) {
+    const cwdPrefix = `${cwd}/`
+    logger.log(`\n⚠ foundation.radius detected in ${sources.radiusFiles.length} file(s) — manual migration required:`)
+    for (const file of sources.radiusFiles)
+      logger.log(`   - ${file.replace(cwdPrefix, '')}`)
+    logger.log(`  → Move the value to scales.rounded.md (other rounded keys are now derived from it via calc).`)
+  }
 
   logger.log(`\nNext: see https://maz-ui.com/guide/migration-v5 for the manual steps`)
   logger.log(`(foundation.radius → scales.rounded.md, MazIcon API, MazBadge sizes, MazChart update-mode).`)

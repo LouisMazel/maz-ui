@@ -432,7 +432,7 @@ const CHILD_TEXT_SIZE_CLASS = {
 
 <template>
   <div
-    class="m-input m-reset-css maz:inline-flex maz:flex-col maz:align-top maz:items-start maz:text-foreground maz:h-fit" :class="[
+    class="m-input m-reset-css maz:inline-flex maz:h-fit maz:flex-col maz:items-start maz:align-top maz:text-foreground" :class="[
       {
         '--border-active': borderActive,
         '--always-up': alwaysUp,
@@ -452,7 +452,7 @@ const CHILD_TEXT_SIZE_CLASS = {
     <label v-if="topLabel" :for="instanceId" class="m-input-top-label maz:mb-2" :class="stateColor">{{ topLabel }}</label>
 
     <div
-      class="m-input-wrapper maz:relative maz:z-1 maz:flex maz:flex-1 maz:overflow-hidden maz:bg-input maz:transition-colors maz:duration-300 maz:size-full"
+      class="m-input-wrapper maz:relative maz:z-1 maz:flex maz:size-full maz:flex-1 maz:overflow-hidden maz:bg-input maz:transition-colors maz:duration-300"
       :class="[
         inputClasses,
         borderStyle,
@@ -461,7 +461,7 @@ const CHILD_TEXT_SIZE_CLASS = {
         { '--block': block, '--border': border, 'maz:w-full': block, 'maz:border maz:border-solid': border },
       ]"
     >
-      <div v-if="hasStartPart()" class="m-input-wrapper-start maz:relative maz:z-1 maz:flex maz:space-x-1 maz:py-1 maz:flex-center maz:ps-2">
+      <div v-if="hasStartPart()" class="m-input-wrapper-start maz:relative maz:z-1 maz:flex maz:flex-center maz:space-x-1 maz:py-1 maz:ps-2">
         <!--
           @slot Custom content for the inline-start edge of the input field (left in LTR, right in RTL).
           Typically used for icons, buttons, or text. Overrides the startIcon prop when used
@@ -495,7 +495,7 @@ const CHILD_TEXT_SIZE_CLASS = {
           :disabled
           :readonly
           :required
-          class="m-input-input maz:m-0 maz:h-full maz:w-full maz:appearance-none maz:truncate maz:border-none maz:bg-transparent maz:py-0 maz:text-foreground maz:shadow-none maz:outline-hidden maz:px-4"
+          class="m-input-input maz:m-0 maz:size-full maz:appearance-none maz:truncate maz:border-none maz:bg-transparent maz:px-4 maz:py-0 maz:text-foreground maz:shadow-none maz:outline-hidden"
           :class="[CHILD_TEXT_SIZE_CLASS[size], { 'maz:ps-2!': hasStartPart(), 'maz:pe-2!': hasEndPart() }]"
           v-on="{
             blur,
@@ -507,13 +507,13 @@ const CHILD_TEXT_SIZE_CLASS = {
         >
 
         <span
-          v-if="label || hint" class="m-input-label maz:pointer-events-none maz:absolute maz:w-full maz:origin-top-left maz:items-center maz:overflow-hidden maz:truncate maz:whitespace-nowrap maz:text-start maz:leading-6 maz:inset-s-4" :class="[stateColor, CHILD_TEXT_SIZE_CLASS[size], { 'maz:inset-s-2!': hasStartPart(), 'maz:pe-3!': hasLabel }]"
+          v-if="label || hint" class="m-input-label maz:pointer-events-none maz:absolute maz:inset-s-4 maz:w-full maz:origin-top-left maz:items-center maz:truncate maz:overflow-hidden maz:text-start maz:leading-6 maz:whitespace-nowrap" :class="[stateColor, CHILD_TEXT_SIZE_CLASS[size], { 'maz:inset-s-2!': hasStartPart(), 'maz:pe-3!': hasLabel }]"
         >
           {{ hint || label }}
         </span>
       </div>
 
-      <div v-if="hasEndPart()" class="m-input-wrapper-end maz:relative maz:z-1 maz:flex maz:space-x-1 maz:py-1 maz:flex-center maz:pe-2">
+      <div v-if="hasEndPart()" class="m-input-wrapper-end maz:relative maz:z-1 maz:flex maz:flex-center maz:space-x-1 maz:py-1 maz:pe-2">
         <!--
           @slot Custom content for the inline-end edge of the input field (right in LTR, left in RTL).
           Typically used for icons, buttons, or action elements. Overrides the endIcon prop when used.

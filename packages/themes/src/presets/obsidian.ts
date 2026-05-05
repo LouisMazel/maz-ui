@@ -46,15 +46,7 @@ export const obsidian: ThemePreset = {
     'space': DEFAULT_SPACE,
   },
   scales: {
-    rounded: {
-      'xs': '0.125rem',
-      'sm': '0.25rem',
-      'md': '0.5rem',
-      'lg': '0.75rem',
-      'xl': '1rem',
-      '2xl': '1.5rem',
-      '3xl': '2rem',
-    },
+    rounded: { md: '0.5rem' },
     shadow: DEFAULT_SHADOW,
   },
   components: {

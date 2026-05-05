@@ -151,7 +151,7 @@ const currentIcon = computed(() => {
       },
     ]"
   >
-    <div v-if="currentIcon" class="m-alert-icon maz:flex maz:shrink-0 maz:items-center maz:justify-center" aria-hidden="true">
+    <div v-if="currentIcon" class="m-alert-icon maz:flex maz:shrink-0 maz:flex-center" aria-hidden="true">
       <MazIcon
         :icon="currentIcon"
         :size="iconSize"
@@ -159,7 +159,7 @@ const currentIcon = computed(() => {
     </div>
 
     <div class="m-alert-body maz:flex maz:flex-1 maz:flex-col maz:gap-1">
-      <p v-if="hasTitle" :id="headingId" class="m-alert-title maz:m-0 maz:font-semibold maz:leading-tight maz:font-display">
+      <p v-if="hasTitle" :id="headingId" class="m-alert-title maz:m-0 maz:font-display maz:leading-tight maz:font-semibold">
         <!-- @slot Title slot - overrides title prop -->
         <slot name="title">
           {{ title }}

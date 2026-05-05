@@ -22,7 +22,7 @@ describe('given MazBadge component', () => {
 
   describe('when rendered with different colors', () => {
     it.each(
-      ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'background'] as MazBadgeColor[],
+      ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'surface'] as MazBadgeColor[],
     )('then it applies the %s color classes', (color) => {
       const wrapper = mount(MazBadge, {
         props: { color },
@@ -79,7 +79,7 @@ describe('given MazBadge component', () => {
       ['sm', 'maz:text-xs'],
       ['md', 'maz:text-sm'],
       ['lg', 'maz:text-base'],
-      ['xl', 'maz:text-lg'],
+      ['xl', 'maz:text-xl'],
     ] as Array<[MazBadgeSize, string]>)('then it applies the --%s modifier and the matching text class', (size, textClass) => {
       const wrapper = mount(MazBadge, {
         props: { size },

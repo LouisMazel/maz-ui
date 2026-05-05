@@ -155,7 +155,7 @@ watch(
       </TransitionGroup>
     </div>
     <div v-if="timeArray" class="m-date-picker-header__time maz:flex maz:items-end maz:justify-center" :class="{ '--has-date': hasDate, 'maz:w-full': !hasDate }">
-      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__time-transition maz:flex maz:h-6 maz:items-center maz:overflow-hidden maz:leading-4 maz:justify-end">
+      <TransitionGroup :name="transitionName" tag="div" class="m-date-picker-header__time-transition maz:flex maz:h-6 maz:items-center maz:justify-end maz:overflow-hidden maz:leading-4">
         <span v-for="(t, ti) in timeArray" :key="`${t}-${ti}`" class="m-date-picker-header__time-text">
           {{ t }}
         </span>

@@ -161,7 +161,7 @@ function shouldHaveRemainingLayer(index: number): boolean {
 <template>
   <div
     v-if="images.length > 0 || hasEmptyLayer"
-    class="m-gallery m-reset-css maz:relative maz:overflow-hidden maz:flex"
+    class="m-gallery m-reset-css maz:relative maz:flex maz:overflow-hidden"
     :style="[sizeStyle, {
       '--gallery-separator-color': separatorColor,
       '--gallery-background-color': backgroundColor,
@@ -202,14 +202,14 @@ function shouldHaveRemainingLayer(index: number): boolean {
             blurOnHover: false,
             scaleOnHover: scale,
           }"
-          class="m-gallery__remaining-layer maz:flex maz:bg-overlay/30 maz:flex-center maz:backdrop-blur-xs"
+          class="m-gallery__remaining-layer maz:flex maz:flex-center maz:bg-overlay/30 maz:backdrop-blur-xs"
         >
-          <span class="maz:text-white maz:text-3xl">+{{ numberImagesRemaining }}</span>
+          <span class="maz:text-3xl maz:text-white">+{{ numberImagesRemaining }}</span>
         </div>
       </figure>
       <div
         v-if="hasEmptyLayer && images.length === 0"
-        class="m-gallery__empty-layer maz:flex maz:w-full maz:bg-surface-600 maz:text-foreground maz:flex-center maz:dark:bg-surface-400"
+        class="m-gallery__empty-layer maz:flex maz:w-full maz:flex-center maz:bg-surface-600 maz:text-foreground maz:dark:bg-surface-400"
         :class="{ 'maz:rounded-xl': radius }"
         :style="[sizeStyle]"
       >

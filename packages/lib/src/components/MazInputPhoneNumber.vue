@@ -653,7 +653,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
         />
       </template>
       <template #country-list-code="{ option }">
-        <span class="m-input-phone-number__country-list-code maz:text-muted maz:min-w-8 maz:text-center">
+        <span class="m-input-phone-number__country-list-code maz:min-w-8 maz:text-center maz:text-muted">
           +{{ option.dialCode }}
         </span>
       </template>

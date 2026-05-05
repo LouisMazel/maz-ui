@@ -43,15 +43,7 @@ export const pristine: ThemePreset = {
     'space': DEFAULT_SPACE,
   },
   scales: {
-    rounded: {
-      'xs': '0.25rem',
-      'sm': '0.375rem',
-      'md': '0.625rem',
-      'lg': '0.875rem',
-      'xl': '1.25rem',
-      '2xl': '1.75rem',
-      '3xl': '2.5rem',
-    },
+    rounded: { md: '0.625rem' },
     shadow: {
       sm: '0 1px 2px 0 rgb(0 0 0 / 0.04)',
       md: '0 2px 6px -1px rgb(0 0 0 / 0.06), 0 1px 3px -1px rgb(0 0 0 / 0.04)',
