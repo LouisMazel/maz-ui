@@ -322,7 +322,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
   >
     <div
       ref="MazSlider"
-      class="m-slider__bar maz:relative maz:flex maz:items-center maz:justify-center maz:rounded-full"
+      class="m-slider__bar maz:relative maz:flex maz:flex-center maz:rounded-full"
       role="slider"
       :aria-valuenow="modelValue?.toString()"
       :aria-valuemin="min"
@@ -340,9 +340,9 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
         :key="`cursor-${i}`"
         type="button"
         :data-label="getLabel(i)"
-        class="m-slider__btn maz:flex maz:items-center maz:justify-center maz:rounded-full maz:border maz:border-solid maz:border-divider maz:bg-surface maz:shadow-md maz:hover:bg-surface-200"
+        class="m-slider__btn maz:flex maz:flex-center maz:rounded-full maz:border maz:border-solid maz:border-divider maz:bg-surface maz:shadow-md maz:hover:bg-surface-200"
         :class="{
-          'active-cursor maz:border maz:shadow-lg maz:z-2': i === activeCursor && cursorAnim,
+          'active-cursor maz:z-2 maz:border maz:shadow-lg': i === activeCursor && cursorAnim,
         }"
         :style="[buttonStyles[i]]"
         @mousedown.passive="handleMousedown($event, i)"

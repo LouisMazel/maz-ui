@@ -58,7 +58,7 @@ describe('given MazPopover component', () => {
 
   describe('when rendered with different colors', () => {
     it.each(
-      ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'background'] as MazColor[],
+      ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'surface'] as MazColor[],
     )('then it should apply the correct color classes', (color) => {
       const wrapper = mount(MazPopover, {
         props: {

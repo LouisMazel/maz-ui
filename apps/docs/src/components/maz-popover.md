@@ -1356,7 +1356,7 @@ MazPopover follows WAI-ARIA guidelines:
 <script setup>
 import { ref, reactive } from 'vue'
 import MazPopover from 'maz-ui/components/MazPopover'
-import { MazInformationCircle } from '@maz-ui/icons/raw/MazInformationCircle'
+import { MazInformationCircle } from '@maz-ui/icons/static/MazInformationCircle'
 import { MazEllipsisVertical } from '@maz-ui/icons/raw/MazEllipsisVertical'
 
 const isOpen = ref(false)

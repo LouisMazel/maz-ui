@@ -200,7 +200,7 @@ function updateQuery(value?: string) {
       <div v-if="filteredItems?.length === 0" class="no-results maz:flex maz:h-full maz:flex-center">
         <!-- @slot use this slot to customize the no results area -->
         <slot name="no-results">
-          <div class="no-results-content maz:flex maz:h-full maz:flex-col maz:gap-3 maz:flex-center maz:py-8">
+          <div class="no-results-content maz:flex maz:h-full maz:flex-col maz:flex-center maz:gap-3 maz:py-8">
             <MazNoSymbol class="no-results-icon maz:text-3xl maz:text-muted" />
 
             <span class="no-results-text maz:text-muted">

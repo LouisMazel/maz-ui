@@ -217,7 +217,7 @@ const stateLabelColor = computed(() => [
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label v-if="topLabel" :for="instanceId" class="m-textarea__top-label" :class="stateLabelColor">{{ topLabel }}</label>
     <label
-      class="m-textarea maz:min-h-25 maz:relative maz:flex maz:flex-col maz:align-top maz:text-foreground"
+      class="m-textarea maz:relative maz:flex maz:min-h-25 maz:flex-col maz:align-top maz:text-foreground"
       :for="instanceId"
       :class="[
         {
@@ -229,7 +229,7 @@ const stateLabelColor = computed(() => [
           'maz:px-4 maz:py-3': padding,
           'maz:border maz:border-solid': border && !disabled,
           'maz:bg-input': !transparent && !disabled,
-          'maz:disabled-cursor maz:border-divider maz:dark:border-divider-400 maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-muted': disabled,
+          'maz:disabled-cursor maz:border-divider maz:bg-surface-600 maz:text-muted maz:dark:border-divider-400 maz:dark:bg-surface-400': disabled,
         },
         borderStyle,
         ROUNDED_CLASS[roundedSize],

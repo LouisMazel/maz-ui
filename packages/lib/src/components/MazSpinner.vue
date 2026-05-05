@@ -43,7 +43,7 @@ const spinnerStyle = computed<CSSProperties>(() => {
     y="0px"
     viewBox="0 0 50 50"
     xml:space="preserve"
-    class="m-spinner m-reset-css maz:animate-spin maz:fill-current maz:m-0!"
+    class="m-spinner m-reset-css maz:m-0! maz:animate-spin maz:fill-current"
     :class="`m-spinner--${color}`"
     :style="spinnerStyle"
   >

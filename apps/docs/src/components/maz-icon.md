@@ -8,7 +8,7 @@ description: A flexible icon component that accepts Vue components, raw SVG stri
 {{ $frontmatter.description }}
 
 ::: tip
-Download the bundled icons pack [here](#get-icons-pack), or use [`@maz-ui/icons`](../guide/icons.md) for the full set.
+Download the bundled [icons pack](#all-bundled-icons) or use [`@maz-ui/icons`](../guide/icons.md) for the full set.
 :::
 
 ## How it works

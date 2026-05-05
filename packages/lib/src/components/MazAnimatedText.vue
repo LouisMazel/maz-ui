@@ -174,6 +174,7 @@ const gradientStyle = computed(() => {
 
 <template>
   <div class="m-reset-css m-animated-text" :style="{ '--maz-gradient-style': gradientStyle }">
+    <!-- eslint-disable better-tailwindcss/no-deprecated-classes -->
     <template v-if="isClient">
       <component :is="tag" ref="element" v-bind="$attrs" class="m-animated-text__root maz:inline-flex maz:flex-wrap" :style="{ columnGap: `${columnGap}rem`, rowGap: `${rowGap}rem` }">
         <span

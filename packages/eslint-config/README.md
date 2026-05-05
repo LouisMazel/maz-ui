@@ -1,15 +1,16 @@
 # @maz-ui/eslint-config
 
-Reusable ESLint configuration for JavaScript/TypeScript projects.
+Reusable ESLint configuration for JavaScript/TypeScript projects, built on top of [`@antfu/eslint-config`](https://github.com/antfu/eslint-config).
 
 ## Features
 
-- 🚀 **Based on @antfu/eslint-config** - Modern and performant configuration
-- 🛡️ **Strict TypeScript** - Full TypeScript support
-- 🎨 **Tailwind CSS** - Rules for Tailwind CSS (with Tailwind CSS plugin)
-- 🔍 **SonarJS** - Code quality with SonarJS (with SonarJS plugin)
-- ⚙️ **Configurable** - Flexible and extensible options
-- 📦 **Production ready** - Optimized for production environments
+- 🚀 **Based on @antfu/eslint-config** — modern, performant, flat-config first
+- 🛡️ **TypeScript-first** — strict mode, sensible defaults
+- 🎨 **Tailwind CSS v3 + v4** — via [`eslint-plugin-better-tailwindcss`](https://github.com/schoero/eslint-plugin-better-tailwindcss) (compat ESLint 7→10, both Tailwind versions)
+- 🔍 **SonarJS** — code quality / cognitive complexity
+- ♿ **Vue accessibility** — opt-in `eslint-plugin-vuejs-accessibility`
+- 📐 **Formatters** — Prettier-style formatting via `eslint-plugin-format`
+- ⚙️ **Configurable** — pick presets, add per-file rules, custom ignore globs
 
 ## Installation
 
@@ -26,139 +27,119 @@ import { defineConfig } from '@maz-ui/eslint-config'
 export default defineConfig()
 ```
 
-## Custom configuration
+Vue / Nuxt are auto-detected from your `package.json`.
+
+## Configuration
 
 ```js
 // eslint.config.js
 import { defineConfig } from '@maz-ui/eslint-config'
 
 export default defineConfig({
-  // Environment (affects console rules)
-  env: 'production', // 'development' | 'production'
+  env: 'production', // 'development' | 'production' — affects no-console / no-debugger severity
 
-  // Enable/disable plugins
+  // Antfu options (forwarded as-is)
   typescript: true,
-  tailwindcss: true,
-  sonarjs: true,
   formatters: true,
+  unicorn: true,
 
-  // Files to ignore
+  // Maz-UI options
+  sonarjs: true,
+  vueAccessibility: false,
+  tailwindcss: 'recommended', // see "Tailwind support" below
+
+  // Extra ignore globs (merged with defaults)
   ignores: ['custom-dist/**'],
 
   // Custom rules
   rules: {
     'no-console': 'error',
-    'prefer-const': 'warn'
-  }
+  },
+
+  // 'silent' | 'default' | 'debug' | 'verbose' — see "Logging" below.
+  logLevel: 'default',
 })
 ```
 
-## Available options
+## Logging
 
-```typescript
-interface MazESLintOptions {
-  typescript?: boolean // TypeScript support (default: true)
-  tailwindcss?: boolean // Tailwind CSS rules (default: true)
-  sonarjs?: boolean // SonarJS rules (default: true)
-  formatters?: boolean // Formatters support (default: true)
-  env?: 'development' | 'production' // Environment (default: 'development')
-  ignores?: string[] // Files to ignore
-  rules?: Record<string, any> // Custom ESLint rules
-}
-```
+The preset prints a titled box summarizing what it resolved (typescript, vue, tailwindcss preset, sonarjs, …). Powered by `@maz-ui/node`'s consola-based logger.
 
-## Advanced usage
+| Value                       | What you see                                       |
+| --------------------------- | -------------------------------------------------- |
+| `'silent'`                  | Nothing.                                           |
+| `'default'` _(TTY default)_ | Titled box of resolved feature toggles.            |
+| `'debug'`                   | Above + each plugin / preset / overrides addition. |
+| `'verbose'`                 | Above + final block count and ignore-glob count.   |
 
-### Selective rule imports
+The default is **`'default'` in interactive terminals, `'silent'` otherwise** (CI, pipes, JSON / SARIF formatters). This avoids polluting machine-readable ESLint output. Override by passing `logLevel` explicitly.
+
+## Tailwind support
+
+Powered by [`eslint-plugin-better-tailwindcss`](https://github.com/schoero/eslint-plugin-better-tailwindcss) — compatible with ESLint 7→10 and Tailwind v3 + v4.
+
+| Value                   | Behavior                                                                |
+| ----------------------- | ----------------------------------------------------------------------- |
+| `false` _(default)_     | Disabled.                                                               |
+| `true`                  | Same as `'recommended'` with default settings.                          |
+| `'recommended'`         | Stylistic + correctness rules.                                          |
+| `'stylistic'`           | Formatting rules only (class order, line wrapping, …).                  |
+| `'correctness'`         | Validation rules only (`no-unknown-classes`, `no-conflicting-classes`). |
+| `MazTailwindcssOptions` | Pick a preset and pass plugin settings.                                 |
 
 ```js
-import { baseRules, sonarjsRules, tailwindcssRules } from '@maz-ui/eslint-config'
+defineConfig({
+  tailwindcss: {
+    preset: 'recommended',
+    // Tailwind v4: path to the CSS that does `@import "tailwindcss" prefix(maz)`
+    entryPoint: 'src/main.css',
+    // Tailwind v3 instead:
+    // tailwindConfig: 'tailwind.config.ts',
+    detectComponentClasses: true,
+  },
+})
+```
+
+> [!IMPORTANT]
+> The plugin's `no-unknown-classes` rule needs to know about your Tailwind setup (prefix, custom utilities, theme tokens). Without `entryPoint` (v4) or `tailwindConfig` (v3), it falls back to the default Tailwind config and will flood with false positives in projects that customize either. **Pass the path explicitly** if your Tailwind setup is non-standard.
+
+## Advanced
+
+### Compose your own config
+
+```js
+import {
+  baseRules,
+  sonarjsRules,
+  tailwindcssConfigs,
+  vueRules,
+} from '@maz-ui/eslint-config'
 
 export default [
   {
     rules: {
-      ...baseRules,
+      ...baseRules(true), // production = true
       ...sonarjsRules,
-      // Your custom rules
-    }
-  }
+      ...vueRules,
+    },
+  },
+  ...tailwindcssConfigs('stylistic', { entryPoint: 'src/main.css' }),
 ]
 ```
 
-### Example for Vue project
+### Vue project
 
 ```js
-// eslint.config.js
-import { defineConfig } from '@maz-ui/eslint-config'
-
-export default defineConfig({
-  env: 'production',
+defineConfig({
+  vue: true, // auto-detected if `vue` / `nuxt` is in deps
+  tailwindcss: 'recommended',
   rules: {
     'vue/custom-event-name-casing': ['error', 'kebab-case'],
-    'vue/no-undef-components': ['error', {
-      ignorePatterns: ['RouterView', 'RouterLink']
-    }]
-  }
+  },
 })
 ```
-
-## Included rules
-
-### Base (JavaScript/TypeScript)
-
-- Console management by environment
-- Code quality rules
-- Optimized TypeScript support
-
-### SonarJS
-
-- Limited cognitive complexity
-- Duplicate code detection
-- Security best practices
-
-### Tailwind CSS
-
-- Consistent class ordering
-- Contradictory class detection
-- Valid Tailwind syntax
 
 ## Compatibility
 
-- **ESLint** ^9.0.0
-- **Node.js** >=18.0.0
-- **TypeScript** ^5.0.0
-
-## Usage examples
-
-### Simple JavaScript project
-
-```js
-export default defineConfig({
-  typescript: false,
-  tailwindcss: false
-})
-```
-
-### Project with Tailwind
-
-```js
-export default defineConfig({
-  tailwindcss: true,
-  rules: {
-    'tailwindcss/classnames-order': 'error'
-  }
-})
-```
-
-### Production project
-
-```js
-export default defineConfig({
-  env: 'production',
-  sonarjs: true,
-  rules: {
-    'no-console': 'error',
-    'no-debugger': 'error'
-  }
-})
-```
+- **ESLint** `^9.0.0 || ^10.0.0`
+- **Node.js** `>=20.19.0`

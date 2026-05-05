@@ -109,6 +109,44 @@ describe('cSS Generator', () => {
           expect(css).toContain(`--maz-rounded-${key}:`)
       })
 
+      it('then it emits the literal md value and a calc fallback for the other rounded keys', () => {
+        const css = generateCSS(mazUi, {
+          prefix: 'maz',
+          mode: 'light',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+        })
+
+        expect(css).toContain('--maz-rounded-md: 0.7rem;')
+        expect(css).toContain('--maz-rounded-xs: calc(var(--maz-rounded-md) * 0.25);')
+        expect(css).toContain('--maz-rounded-sm: calc(var(--maz-rounded-md) * 0.5);')
+        expect(css).toContain('--maz-rounded-lg: calc(var(--maz-rounded-md) * 1.5);')
+        expect(css).toContain('--maz-rounded-xl: calc(var(--maz-rounded-md) * 2);')
+        expect(css).toContain('--maz-rounded-2xl: calc(var(--maz-rounded-md) * 3);')
+        expect(css).toContain('--maz-rounded-3xl: calc(var(--maz-rounded-md) * 4);')
+      })
+
+      it('then a literal value on a non-md key wins over the calc fallback', () => {
+        const customPreset = {
+          ...mazUi,
+          scales: {
+            ...mazUi.scales,
+            rounded: { md: '1rem' as const, xs: '0.1rem' as const },
+          },
+        }
+        const css = generateCSS(customPreset, {
+          prefix: 'maz',
+          mode: 'light',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+        })
+
+        expect(css).toContain('--maz-rounded-md: 1rem;')
+        expect(css).toContain('--maz-rounded-xs: 0.1rem;')
+        expect(css).not.toContain('--maz-rounded-xs: calc(')
+        expect(css).toContain('--maz-rounded-sm: calc(var(--maz-rounded-md) * 0.5);')
+      })
+
       it('then it emits the shadow style scale (with the maz-specific elevation key)', () => {
         const css = generateCSS(mazUi, {
           prefix: 'maz',

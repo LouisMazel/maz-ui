@@ -129,7 +129,7 @@ function onFocus(event: FocusEvent) {
       class="m-switch__input maz:absolute"
       @change="emit"
     >
-    <span class="m-switch__toggle maz:h-6 maz:w-12 maz:relative" />
+    <span class="m-switch__toggle maz:relative maz:h-6 maz:w-12" />
 
     <span v-if="hasSlotContent($slots.default) || label || hint" class="m-switch__text maz:flex maz:flex-col maz:gap-0">
       <!--

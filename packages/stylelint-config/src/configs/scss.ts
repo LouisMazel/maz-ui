@@ -5,7 +5,7 @@ import { TAILWIND_AT_RULES } from './tailwind'
  * Native SCSS at-rules that should never be flagged by `at-rule-no-unknown`
  * even when authored inside a plain CSS file (e.g. before SCSS is parsed).
  */
-const SCSS_AT_RULES: string[] = [
+const SCSS_AT_RULES = [
   'use',
   'forward',
   'mixin',
@@ -23,14 +23,14 @@ const SCSS_AT_RULES: string[] = [
   'warn',
   'error',
   'content',
-]
+] as const
 
 /**
  * Rules applied when SCSS support is enabled. Mirrors the at-rule whitelist
  * so projects that use SCSS *and* Tailwind don't get false positives from
  * `scss/at-rule-no-unknown`.
  */
-export function scssRules(includeTailwind: boolean): StylelintRules {
+export function scssRules(includeTailwind: boolean | string): StylelintRules {
   return {
     'scss/at-rule-no-unknown': [true, {
       ignoreAtRules: [

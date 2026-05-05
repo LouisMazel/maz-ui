@@ -144,14 +144,14 @@ onMounted(() => {
     :style="{ 'backgroundColor': alphaColor20, '--inner-opacity': innerOpacity }"
   >
     <div class="inner maz:relative maz:h-auto maz:w-full maz:overflow-hidden">
-      <div class="content maz:relative maz:z-2 maz:h-full maz:w-full" :class="[{ 'maz:p-4': padding }, contentClass]" :style="contentStyle">
+      <div class="content maz:relative maz:z-2 maz:size-full" :class="[{ 'maz:p-4': padding }, contentClass]" :style="contentStyle">
         <slot />
       </div>
     </div>
     <div
       v-show="blobVisible"
       ref="blobElement"
-      class="blob maz:absolute maz:left-0 maz:top-0 maz:z-0 maz:rounded-full maz:blur-2xl"
+      class="blob maz:absolute maz:top-0 maz:left-0 maz:z-0 maz:rounded-full maz:blur-2xl"
       :style="{ backgroundColor: alphaColor }"
     />
   </div>

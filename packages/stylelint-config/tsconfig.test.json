@@ -1,12 +1,12 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.lib.json",
   "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.test.tsbuildinfo",
     "types": ["node", "vitest/globals"]
   },
-  "include": [
-    "src/**/*",
-    "tests/**/*",
-    "vitest.config.ts"
-  ],
-  "exclude": []
+  "exclude": [
+    "eslint.config.ts",
+    "node_modules"
+  ]
 }

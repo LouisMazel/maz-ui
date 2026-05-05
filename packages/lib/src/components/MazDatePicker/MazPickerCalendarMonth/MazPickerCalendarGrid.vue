@@ -300,7 +300,7 @@ watch(
               || isDisabledWeekly(date)
               || isDisabledDate(date)
           "
-          class="maz:h-8 maz:w-8 maz:cursor-pointer maz:rounded-full"
+          class="maz:size-8 maz:cursor-pointer maz:rounded-full"
           :class="{
             '--is-first': isFirstDay(date) && isSelectedOrBetween(date) === DaySelect.SELECTED,
             '--is-last': isLastDay(date) && isSelectedOrBetween(date) === DaySelect.SELECTED,

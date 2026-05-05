@@ -95,6 +95,14 @@ export interface ThemeFoundation {
  * Single-value design tokens (`space`, `base-font-size`, `border-width`, …)
  * live on `foundation` instead — only true multi-step scales belong here.
  */
+/**
+ * Rounded scale keys. `md` is the anchor — every preset must declare it.
+ * The other keys can be left undefined and the CSS generator will emit
+ * a `calc(var(--maz-rounded-md) * <ratio>)` fallback so the whole scale
+ * tracks `md` automatically.
+ */
+export type RoundedScaleKey = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
+
 export interface ThemeScales {
   /**
    * Border-radius scale. Maps to Tailwind utilities `rounded-{key}` and is
@@ -102,8 +110,12 @@ export interface ThemeScales {
    * `--radius-*` to avoid prefix collisions in `prefix(maz)` setups).
    * `full` is intentionally not included — Tailwind keeps `rounded-full`
    * at 9999px regardless.
+   *
+   * Only `md` is required; missing keys are computed at CSS-generation time
+   * as `calc(var(--maz-rounded-md) * <DEFAULT_ROUNDED_RATIOS[key]>)`. Set
+   * any other key to override that key's fallback with a literal value.
    */
-  rounded: Record<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl', SizeUnit>
+  rounded: { md: SizeUnit } & Partial<Record<Exclude<RoundedScaleKey, 'md'>, SizeUnit>>
   /**
    * Box-shadow scale. Maps to Tailwind utilities `shadow-{key}`. `elevation`
    * is the maz-ui specific elevated-surface shadow used by MazCard,

@@ -160,10 +160,10 @@ function toggleCollapse() {
     <component
       :is="collapsible ? 'button' : 'div'"
       v-if="hasSlotContent(slots.title) || title || collapsible"
-      class="m-card__header maz:flex maz:items-center maz:px-4 maz:py-3 maz:transition-colors maz:duration-200 maz:border-b maz:border-solid"
+      class="m-card__header maz:flex maz:items-center maz:border-b maz:border-solid maz:px-4 maz:py-3 maz:transition-colors maz:duration-200"
       :class="[
         collapseOpenModel ? 'maz:rounded-t-md maz:border-divider' : 'maz:border-transparent',
-        { '--is-collapsible maz:hover:bg-surface-600 maz:cursor-pointer': collapsible },
+        { '--is-collapsible maz:cursor-pointer maz:hover:bg-surface-600': collapsible },
         { 'maz:justify-end': !hasSlotContent(slots.title) && !title && collapsible },
         { 'maz:justify-between': hasSlotContent(slots.title) || title },
       ]"
@@ -184,7 +184,7 @@ function toggleCollapse() {
         <MazIcon
           :icon="MazChevronDown"
           :class="{ '--is-open': collapseOpenModel }"
-          class="m-card__collapse-icon maz:text-xl maz:rotate-0 maz:transition-transform maz:duration-200"
+          class="m-card__collapse-icon maz:rotate-0 maz:text-xl maz:transition-transform maz:duration-200"
         />
       </div>
     </component>
@@ -211,16 +211,16 @@ function toggleCollapse() {
         <component :is="collapsible ? MazExpandAnimation : 'div'" v-model="collapseOpenModel" class="maz:h-full">
           <div
             :class="[wrapperClass, { 'maz:p-4': padding }]"
-            class="m-card__content__wrapper maz:relative maz:max-w-full maz:h-full maz:flex maz:flex-col maz:gap-2"
+            class="m-card__content__wrapper maz:relative maz:flex maz:h-full maz:max-w-full maz:flex-col maz:gap-2"
           >
-            <div v-if="hasSlotContent(slots['content-title'])" class="m-card__title maz:text-foreground maz:text-xl maz:font-display">
+            <div v-if="hasSlotContent(slots['content-title'])" class="m-card__title maz:font-display maz:text-xl maz:text-foreground">
               <!--
               @slot content-title - The title of the card
               @binding collapse-open - The collapse open state of the card
             -->
               <slot name="content-title" :collapse-open="collapseOpenModel" />
             </div>
-            <div v-if="hasSlotContent(slots['content-subtitle'])" class="m-card__subtitle maz:text-muted maz:text-lg">
+            <div v-if="hasSlotContent(slots['content-subtitle'])" class="m-card__subtitle maz:text-lg maz:text-muted">
               <!--
               @slot content-subtitle - The subtitle of the card
             -->
@@ -256,7 +256,7 @@ function toggleCollapse() {
       -->
       <slot name="footer" />
     </div>
-    <div v-if="hasSlotContent(slots.actions) && galleryOptions.images" class="m-card__actions maz:flex maz:p-2 maz:absolute maz:left-0 maz:top-0 maz:z-2">
+    <div v-if="hasSlotContent(slots.actions) && galleryOptions.images" class="m-card__actions maz:absolute maz:top-0 maz:left-0 maz:z-2 maz:flex maz:p-2">
       <!--
         @slot actions - The actions of the image gallery (only if gallery is displayed)
       -->

@@ -1,22 +1,49 @@
+import type { Linter } from 'eslint'
+import type { MazTailwindcssOptions, TailwindcssPreset } from '../types'
+import betterTailwindcss from 'eslint-plugin-better-tailwindcss'
+
+const TAILWINDCSS_FILES = ['**/*.{js,jsx,cjs,mjs,ts,mts,cts,tsx,vue,html,svelte,astro,astrojs,css,scss}']
+
 /**
- * Tailwind CSS ESLint rules configuration.
- *
- * These rules only activate when the user opts in via
- * `defineMazEslintConfig({ tailwindcss: true })` AND is on ESLint 9 +
- * Tailwind v3. The plugin itself does not yet support ESLint 10+ or
- * Tailwind v4 (upstream — uses the removed context.getSourceCode API).
+ * Files where Tailwind classes commonly live. Exposed for users who want to
+ * compose their own config.
  */
-export const tailwindcssRules = {
-  // Allow custom class names (useful for component libraries)
-  'tailwindcss/no-custom-classname': 'off',
+export const TAILWINDCSS_DEFAULT_FILES = TAILWINDCSS_FILES
 
-  // Enforce consistent class ordering
-  'tailwindcss/classnames-order': 'warn',
+/**
+ * Build the flat-config block(s) that wire up
+ * `eslint-plugin-better-tailwindcss`. The plugin already ships preset
+ * objects with `plugins` + `rules`; we spread them and add `files` plus
+ * `settings['better-tailwindcss']` so the user's options reach the plugin.
+ */
+export function tailwindcssConfigs(
+  preset: TailwindcssPreset,
+  settings: MazTailwindcssOptions,
+): Linter.Config[] {
+  const presetConfig = betterTailwindcss.configs[preset]
 
-  // Prevent contradicting classes
-  'tailwindcss/no-contradicting-classname': 'error',
+  const tailwindSettings: Record<string, unknown> = {}
+  if (settings.entryPoint)
+    tailwindSettings.entryPoint = settings.entryPoint
+  if (settings.tailwindConfig)
+    tailwindSettings.tailwindConfig = settings.tailwindConfig
+  if (settings.detectComponentClasses !== undefined)
+    tailwindSettings.detectComponentClasses = settings.detectComponentClasses
+  if (settings.cwd)
+    tailwindSettings.cwd = settings.cwd
+  if (settings.tsconfig)
+    tailwindSettings.tsconfig = settings.tsconfig
 
-  // Enforce valid Tailwind syntax
-  'tailwindcss/enforces-negative-arbitrary-values': 'error',
-  'tailwindcss/enforces-shorthand': 'warn',
-} as const
+  return [{
+    ...presetConfig,
+    files: TAILWINDCSS_FILES,
+    settings: {
+      'better-tailwindcss': tailwindSettings,
+    },
+    rules: {
+      ...presetConfig.rules,
+      'better-tailwindcss/no-unknown-classes': 'off',
+      'better-tailwindcss/enforce-consistent-line-wrapping': 'off',
+    },
+  }]
+}

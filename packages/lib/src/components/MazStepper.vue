@@ -180,7 +180,7 @@ function isLastStep(step: number): boolean {
         :id="`header-step-${step}`"
         type="button"
         :disabled="isStepDisabled(step)"
-        class="m-stepper__header maz:flex maz:w-full maz:cursor-pointer maz:select-text maz:items-center maz:justify-between maz:space-x-4 maz:rounded-md maz:px-4 maz:py-2 maz:text-start maz:transition-colors maz:duration-200"
+        class="m-stepper__header maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:justify-between maz:space-x-4 maz:rounded-md maz:px-4 maz:py-2 maz:text-start maz:transition-colors maz:duration-200 maz:select-text"
         :class="[
           {
             '--is-current-step maz:cursor-default': step === currentStep || allStepsOpened,
@@ -195,8 +195,8 @@ function isLastStep(step: number): boolean {
         <div class="m-stepper__header__wrapper maz:flex maz:items-center maz:space-x-4">
           <div class="m-stepper__header__point__wrapper maz:flex maz:size-8 maz:flex-center">
             <slot name="point" :step>
-              <span class="m-stepper__count --primary maz:relative maz:flex maz:h-8 maz:w-8 maz:flex-none maz:overflow-hidden maz:rounded-full maz:text-lg maz:flex-center">
-                <div class="m-stepper__count__circle maz:absolute maz:inset-0 maz:flex maz:scale-0 maz:rounded-full maz:transition-all maz:duration-300 maz:ease-in-out maz:flex-center">
+              <span class="m-stepper__count --primary maz:relative maz:flex maz:size-8 maz:flex-none maz:flex-center maz:overflow-hidden maz:rounded-full maz:text-lg">
+                <div class="m-stepper__count__circle maz:absolute maz:inset-0 maz:flex maz:scale-0 maz:flex-center maz:rounded-full maz:transition-all maz:duration-300 maz:ease-in-out">
                   <component
                     :is="getStepStateData(step).icon"
                     v-if="getStepStateData(step).icon"

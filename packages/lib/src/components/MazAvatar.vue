@@ -155,7 +155,7 @@ const ROUNDED_CLASS = {
   <component
     :is="componentType"
     :style="[{ fontSize: size }, style]"
-    class="m-avatar m-reset-css maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top maz:flex-center maz:no-underline!"
+    class="m-avatar m-reset-css maz:inline-flex maz:flex-col maz:flex-center maz:gap-[0.5em] maz:align-top maz:no-underline!"
     :class="[
       { '--has-link': isLink, 'maz:cursor-pointer': isLink },
       className,
@@ -165,7 +165,7 @@ const ROUNDED_CLASS = {
     :target="isLink ? target : undefined"
   >
     <div
-      class="m-avatar__wrapper maz:relative maz:flex maz:h-[3em] maz:w-[3em] maz:flex-none maz:justify-center maz:overflow-hidden"
+      class="m-avatar__wrapper maz:relative maz:flex maz:size-[3em] maz:flex-none maz:justify-center maz:overflow-hidden"
       :tabindex="clickable ? 0 : -1"
       :class="[
         ROUNDED_CLASS[square ? 'none' : roundedSize],
@@ -218,7 +218,7 @@ const ROUNDED_CLASS = {
         v-if="clickable"
         type="button"
         tabindex="-1"
-        class="m-avatar__button maz:absolute maz:inset-0 maz:flex maz:w-full maz:cursor-pointer maz:border-none maz:bg-transparent maz:opacity-0 maz:transition-all maz:duration-200 maz:flex-center"
+        class="m-avatar__button maz:absolute maz:inset-0 maz:flex maz:w-full maz:cursor-pointer maz:flex-center maz:border-none maz:bg-transparent maz:opacity-0 maz:transition-all maz:duration-200"
         :class="ROUNDED_CLASS[square ? 'none' : roundedSize]"
         :style="{
           backgroundColor: src

@@ -1,4 +1,5 @@
 import type { Config } from 'stylelint'
+import type { LogLevel } from './configs/logger'
 
 export type StylelintConfig = Config
 export type StylelintRules = Config['rules']
@@ -9,8 +10,9 @@ export type StylelintOverride = NonNullable<Config['overrides']>[number]
  *
  * - `'recess'`: Recess-based ordering (`stylelint-config-recess-order`).
  *   Pragmatic, widely adopted, groups related properties together.
- * - `'alphabetical'`: Strict A→Z ordering. Easy mental model, slightly worse
- *   diffs than recess.
+ * - `'alphabetical'`: Strict A→Z ordering via `stylelint-order`'s
+ *   `order/properties-alphabetical-order` rule. Easy mental model, slightly
+ *   worse diffs than recess.
  * - `false`: Disable ordering rules entirely.
  */
 export type StylelintOrderStrategy = 'recess' | 'alphabetical' | false
@@ -36,13 +38,23 @@ export interface MazStylelintOptions {
   /**
    * Enable Tailwind CSS support — whitelists the v4 at-rules
    * (`@apply`, `@reference`, `@variant`, `@theme`, `@layer`, `@utility`,
-   * `@source`, `@custom-variant`, `@tailwind`, `@screen`, `@starting-style`)
-   * and relaxes patterns that conflict with Tailwind's prefixed classes.
+   * `@source`, `@custom-variant`, `@tailwind`, `@screen`, `@starting-style`),
+   * relaxes patterns that conflict with Tailwind's prefixed classes, and
+   * loads `stylelint-plugin-tailwindcss` with the requested policy.
    *
-   * Auto-detected from `tailwindcss` in the consuming `package.json` unless
-   * explicitly set.
+   * Accepts:
+   * - `true` or auto-detected (`tailwindcss` in `package.json`): equivalent to
+   *   `'minimal'`.
+   * - `'minimal'`: validation-only — flags typo'd utilities in `@apply`
+   *   (`no-invalid-apply`) and invalid `theme(...)` paths
+   *   (`no-invalid-theme-function`). No opinion on authoring style.
+   * - `'recommended'`: the plugin's recommended preset — also bans atomic
+   *   classes in authored CSS, `@apply`, and arbitrary values.
+   * - `'strict'`: recommended plus architecture-level checks (no `theme()`,
+   *   `@screen`, `@tailwind`, `@import`, `@layer`).
+   * - `false`: disable Tailwind support entirely.
    */
-  tailwind?: boolean
+  tailwind?: boolean | 'minimal' | 'recommended' | 'strict'
 
   /**
    * Enable SCSS support — extends `stylelint-config-recommended-scss` and
@@ -117,4 +129,35 @@ export interface MazStylelintOptions {
    * Additional plugins merged on top of the resolved configuration.
    */
   plugins?: NonNullable<Config['plugins']>
+
+  /**
+   * Additional shareable configs to extend, appended after the built-in
+   * extends so user configs win the cascade (e.g. `stylelint-config-clean-order`
+   * to replace recess ordering, or `stylelint-config-tailwindcss` for the
+   * official Tailwind plugin rules).
+   *
+   * @example
+   * ```ts
+   * defineConfig({
+   *   order: false,
+   *   extends: ['stylelint-config-clean-order'],
+   * })
+   * ```
+   */
+  extends?: string[]
+
+  /**
+   * Verbosity of the logs emitted while resolving the config. Defaults to
+   * `'default'` so the resolved configuration box is shown when the preset
+   * loads. Set to `'silent'` to hide it, or `'debug'` / `'verbose'` to dig
+   * deeper.
+   *
+   * - `'silent'`: nothing is printed.
+   * - `'default'` *(default)*: a titled box summarizing the resolved support
+   *   (auto-detection results, chosen Tailwind policy, …).
+   * - `'debug'`: also logs each plugin / extends / overrides addition.
+   * - `'verbose'`: also logs the final shape (extends list, rule count,
+   *   ignore globs).
+   */
+  logLevel?: LogLevel
 }

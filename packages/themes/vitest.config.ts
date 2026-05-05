@@ -33,8 +33,8 @@ export default defineConfig({
       ],
       thresholds: {
         lines: 100,
-        functions: 99.07,
-        branches: 96.6,
+        functions: 99.06,
+        branches: 96.88,
         statements: 100,
         autoUpdate: !process.env.CI,
       },

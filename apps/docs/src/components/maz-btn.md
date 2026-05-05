@@ -141,7 +141,7 @@ const colors = [
   'contrast',
   'accent',
   'transparent',
-  'background',
+  'surface',
 ]
 </script>
 
@@ -597,7 +597,7 @@ When `to` attribute is provided, the component automatically becomes a `<RouterL
     'warning',
     'destructive',
     'contrast',
-    'background',
+    'surface',
     'transparent',
   ]
 
