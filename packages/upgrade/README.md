@@ -26,6 +26,8 @@ context.
     - [`props`](#props)
     - [`css`](#css)
     - [`config`](#config)
+    - [`deps`](#deps)
+  - [Dependency install](#dependency-install)
   - [Output](#output)
   - [Exit codes](#exit-codes)
   - [What it does NOT do](#what-it-does-not-do)
@@ -66,13 +68,14 @@ npx @maz-ui/upgrade [options] <path...>
 
 ## Options
 
-| Flag              | Description                                                                                                                                    |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `-n`, `--dry-run` | Print every file that would change without writing it back. Use this first.                                                                    |
-| `--only=<groups>` | Comma-separated list of transform groups to run. See [Transform groups](#transform-groups). Default: `imports,props,css,config` (all of them). |
-| `--no-gitignore`  | Do not respect the project's `.gitignore`. The built-in safe list of build / dependency directories still applies.                             |
-| `-h`, `--help`    | Print the help screen and exit.                                                                                                                |
-| `-v`, `--version` | Print the upgrade tool version and exit.                                                                                                       |
+| Flag              | Description                                                                                                                                           |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `-n`, `--dry-run` | Print every file that would change without writing it back. Use this first.                                                                           |
+| `--only=<groups>` | Comma-separated list of transform groups to run. See [Transform groups](#transform-groups). Default: `imports,props,css,config,deps` (all of them).   |
+| `--no-gitignore`  | Do not respect the project's `.gitignore`. The built-in safe list of build / dependency directories still applies.                                    |
+| `--no-install`    | Do not run the package manager after rewriting `package.json` files. By default the CLI runs `<pm> install` once at least one `package.json` changed. |
+| `-h`, `--help`    | Print the help screen and exit.                                                                                                                       |
+| `-v`, `--version` | Print the upgrade tool version and exit.                                                                                                              |
 
 Examples:
 
@@ -96,6 +99,7 @@ provided paths:
 - **CSS:** `.css`
 - **TypeScript:** `.ts`, `.tsx`, `.cts`, `.mts`
 - **JavaScript:** `.js`, `.jsx`, `.cjs`, `.mjs`
+- **Manifest:** every `package.json` (root + nested in monorepo workspaces)
 
 That covers component templates, scoped/global styles, plus `nuxt.config.ts`,
 `main.ts` / `main.js`, custom theme preset files, plugin registration files,
@@ -119,7 +123,7 @@ outside both lists, add them to a local `.gitignore` (or to a sibling
 
 ## Transform groups
 
-By default all four groups run. Use `--only=<a,b,...>` to scope the run.
+By default all five groups run. Use `--only=<a,b,...>` to scope the run.
 Each group is independent and idempotent: re-running the tool on
 already-migrated code is a no-op.
 
@@ -187,6 +191,47 @@ The preset color rename is scoped to `light: { … }` / `dark: { … }`
 blocks, so unrelated CSS-in-JS / JSX style props elsewhere are left
 alone.
 
+### `deps`
+
+Dependency version bumps in every `package.json` the walk picks up
+(root + nested workspaces). Bumps `maz-ui` and every `@maz-ui/*`
+entry across `dependencies`, `devDependencies` and `peerDependencies`
+to `^5.0.0`. Existing JSON indentation and trailing newline are
+preserved; non-maz-ui dependencies are never touched.
+
+| What                                                                         | Behaviour             |
+| ---------------------------------------------------------------------------- | --------------------- |
+| `maz-ui`, `@maz-ui/*` semver ranges (`^4.x`, `~4.x`, `4.x`, `4.0.0`, …)      | Rewritten to `^5.0.0` |
+| `workspace:*`, `link:…`, `file:…`, `portal:…`, `npm:…`, `http(s):…`, `git+…` | Left untouched        |
+| Dist tags (`latest`, `next`, `beta`, `alpha`, `canary`)                      | Left untouched        |
+| Anything else (`vue`, `chart.js`, your own packages, …)                      | Left untouched        |
+
+`vue-chartjs` is **not** removed automatically, even though `MazChart`
+no longer depends on it — keep it if you use it directly elsewhere,
+remove it manually otherwise.
+
+## Dependency install
+
+Once the rewrite is done, if at least one `package.json` changed and
+the `deps` group ran, the CLI:
+
+1. Detects your package manager from the lockfile in `cwd`:
+   `bun.lockb`/`bun.lock` → **bun**, `pnpm-lock.yaml` → **pnpm**,
+   `yarn.lock` → **yarn**, `package-lock.json` → **npm**, otherwise
+   defaults to **npm**.
+2. Runs `<pm> install` with inherited stdio so you see the install
+   progress live. The CLI exits with the install's exit code if it
+   fails.
+
+Pass `--no-install` to skip step 2 — the CLI then prints the command
+you should run manually:
+
+```text
+package.json files updated. Run `pnpm install` to apply.
+```
+
+`--dry-run` always skips the install regardless of `--no-install`.
+
 ## Output
 
 For each file that the tool changes, you get one line on stdout:
@@ -203,7 +248,11 @@ At the end of the run you get a summary:
 
 ```text
 Scanned 142 files, updated 27.
-Groups applied: imports, props, css, config
+Groups applied: imports, props, css, config, deps
+
+Detected package manager: pnpm. Running `pnpm install`…
+
+[ … pnpm install output … ]
 
 Next: see https://maz-ui.com/guide/migration-v5 for the manual steps
 (foundation.radius → scales.rounded.md, MazIcon API, MazBadge sizes, MazChart update-mode).
@@ -211,9 +260,12 @@ Next: see https://maz-ui.com/guide/migration-v5 for the manual steps
 
 ## Exit codes
 
-- `0` — completed successfully (zero or more files updated).
+- `0` — completed successfully (zero or more files updated; install
+  step, if any, succeeded).
 - `1` — argument error (unknown option or unknown group), no path
   provided, or unhandled error during the walk.
+- Any other code propagated from the package manager when the install
+  step fails (CLI exits with that exact status).
 
 ## What it does NOT do
 
@@ -231,7 +283,8 @@ context:
   `scales.rounded.md` needs to move the value to a new sibling block,
   which is too structural for a safe regex. The simpler color key renames
   (`background` → `surface`, `border` → `divider`) are handled by the
-  `config` group.
+  `config` group, and the `package.json` version bump by the `deps`
+  group.
 - **`MazChart` `update-mode` default** — switched from `'default'` to
   `'none'` in v5; deciding whether to restore the v4 animation is up to
   you.
@@ -251,6 +304,7 @@ import {
   ALL_GROUPS,
   transformConfig,
   transformCssVars,
+  transformDeps,
   transformFile,
   transformHslVar,
   transformImports,
@@ -276,13 +330,16 @@ transformPresetColors(`light: { background: '0 0% 100%', border: '220 13% 91%' }
 transformConfig(`{ css: { injectMainCss: true } }`)
 // → `{ css: { injectCss: true } }`
 
+transformDeps(`{ "dependencies": { "maz-ui": "^4.9.3" } }`)
+// → `{ "dependencies": { "maz-ui": "^5.0.0" } }`
+
 // Compose at the file level (extension-aware orchestration):
 transformFile('nuxt.config.ts', source, { groups: ['imports', 'config'] })
 // Pass no options to apply ALL_GROUPS.
 transformFile('app.vue', source)
 ```
 
-`ALL_GROUPS` is exported as `readonly TransformGroup[]` (`['imports', 'props', 'css', 'config']`) so you can derive your own subsets.
+`ALL_GROUPS` is exported as `readonly TransformGroup[]` (`['imports', 'props', 'css', 'config', 'deps']`) so you can derive your own subsets.
 
 ## License
 

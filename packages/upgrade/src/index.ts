@@ -6,6 +6,7 @@ export {
   ALL_GROUPS,
   transformConfig,
   transformCssVars,
+  transformDeps,
   transformFile,
   transformHslVar,
   transformImports,

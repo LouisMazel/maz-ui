@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   transformConfig,
   transformCssVars,
+  transformDeps,
   transformFile,
   transformHslVar,
   transformImports,
@@ -337,6 +338,112 @@ describe('transformPresetColors', () => {
   })
 })
 
+describe('transformDeps', () => {
+  describe('Given a package.json with maz-ui v4 entries', () => {
+    describe('When transforming', () => {
+      it('bumps maz-ui and every @maz-ui/* dep to ^5.0.0', () => {
+        const input = JSON.stringify({
+          name: 'my-app',
+          dependencies: {
+            'maz-ui': '^4.9.3',
+            '@maz-ui/icons': '^4.9.3',
+            '@maz-ui/themes': '~4.9.0',
+          },
+          devDependencies: {
+            '@maz-ui/nuxt': '4.5.0',
+          },
+          peerDependencies: {
+            '@maz-ui/utils': '4.x',
+          },
+        }, null, 2)
+
+        const out = JSON.parse(transformDeps(input))
+        expect(out.dependencies).toStrictEqual({
+          'maz-ui': '^5.0.0',
+          '@maz-ui/icons': '^5.0.0',
+          '@maz-ui/themes': '^5.0.0',
+        })
+        expect(out.devDependencies).toStrictEqual({ '@maz-ui/nuxt': '^5.0.0' })
+        expect(out.peerDependencies).toStrictEqual({ '@maz-ui/utils': '^5.0.0' })
+      })
+    })
+  })
+
+  describe('Given unrelated dependencies', () => {
+    describe('When transforming', () => {
+      it('leaves them untouched', () => {
+        const input = JSON.stringify({
+          dependencies: {
+            'vue': '^3.5.0',
+            'vue-chartjs': '^5.3.0',
+            'maz-ui': '^4.9.3',
+          },
+        }, null, 2)
+        const out = JSON.parse(transformDeps(input))
+        expect(out.dependencies.vue).toBe('^3.5.0')
+        expect(out.dependencies['vue-chartjs']).toBe('^5.3.0')
+        expect(out.dependencies['maz-ui']).toBe('^5.0.0')
+      })
+    })
+  })
+
+  describe('Given workspace, link, file, npm, url and dist-tag specs', () => {
+    describe('When transforming', () => {
+      it('leaves protected specs untouched', () => {
+        const input = JSON.stringify({
+          dependencies: {
+            'maz-ui': 'workspace:*',
+            '@maz-ui/icons': 'link:../icons',
+            '@maz-ui/themes': 'file:./vendor/themes',
+            '@maz-ui/utils': 'latest',
+            '@maz-ui/nuxt': 'next',
+            '@maz-ui/translations': 'https://example.com/maz.tgz',
+          },
+        }, null, 2)
+        const out = JSON.parse(transformDeps(input))
+        expect(out.dependencies).toStrictEqual({
+          'maz-ui': 'workspace:*',
+          '@maz-ui/icons': 'link:../icons',
+          '@maz-ui/themes': 'file:./vendor/themes',
+          '@maz-ui/utils': 'latest',
+          '@maz-ui/nuxt': 'next',
+          '@maz-ui/translations': 'https://example.com/maz.tgz',
+        })
+      })
+    })
+  })
+
+  describe('Given a package.json with no maz-ui deps', () => {
+    describe('When transforming', () => {
+      it('returns the input unchanged byte-for-byte', () => {
+        const input = JSON.stringify({
+          name: 'my-app',
+          dependencies: { vue: '^3.5.0' },
+        }, null, 2)
+        expect(transformDeps(input)).toBe(input)
+      })
+    })
+  })
+
+  describe('Given an indented input with a trailing newline', () => {
+    describe('When transforming', () => {
+      it('preserves the indent and the trailing newline', () => {
+        const input = `{\n    "dependencies": {\n        "maz-ui": "^4.9.3"\n    }\n}\n`
+        const out = transformDeps(input)
+        expect(out).toBe(`{\n    "dependencies": {\n        "maz-ui": "^5.0.0"\n    }\n}\n`)
+      })
+    })
+  })
+
+  describe('Given malformed JSON', () => {
+    describe('When transforming', () => {
+      it('returns the input unchanged', () => {
+        expect(transformDeps('{ not json')).toBe('{ not json')
+      })
+    })
+  })
+})
+
 describe('transformFile', () => {
   describe('Given a Vue SFC with multiple v4 patterns', () => {
     describe('When transforming', () => {
@@ -416,6 +523,27 @@ export default {
   },
 }`
         expect(transformFile('nuxt.config.ts', input)).toBe(expected)
+      })
+    })
+  })
+
+  describe('Given a package.json file', () => {
+    describe('When transforming with the deps group', () => {
+      it('bumps the maz-ui deps to ^5.0.0', () => {
+        const input = JSON.stringify({ dependencies: { 'maz-ui': '^4.9.3' } }, null, 2)
+        const out = JSON.parse(transformFile('package.json', input))
+        expect(out.dependencies['maz-ui']).toBe('^5.0.0')
+      })
+
+      it('targets nested package.json paths too', () => {
+        const input = JSON.stringify({ dependencies: { 'maz-ui': '^4.9.3' } }, null, 2)
+        const out = JSON.parse(transformFile('apps/web/package.json', input))
+        expect(out.dependencies['maz-ui']).toBe('^5.0.0')
+      })
+
+      it('skips the deps transform when filtered out', () => {
+        const input = JSON.stringify({ dependencies: { 'maz-ui': '^4.9.3' } }, null, 2)
+        expect(transformFile('package.json', input, { groups: ['imports'] })).toBe(input)
       })
     })
   })

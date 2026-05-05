@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import type { TransformGroup } from './transform'
-import { readFileSync, writeFileSync } from 'node:fs'
+import { spawnSync } from 'node:child_process'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import process from 'node:process'
 import { logger } from '@maz-ui/node'
@@ -22,17 +23,21 @@ const DEFAULT_IGNORES = [
   '**/.netlify/**',
 ]
 
+type PackageManager = 'pnpm' | 'yarn' | 'bun' | 'npm'
+
 interface CliOptions {
   dryRun: boolean
   groups: readonly TransformGroup[]
   roots: string[]
   gitignore: boolean
+  install: boolean
 }
 
 function parseArgs(argv: string[]): CliOptions {
   const roots: string[] = []
   let dryRun = false
   let gitignore = true
+  let install = true
   let groups: readonly TransformGroup[] = ALL_GROUPS
 
   for (let i = 2; i < argv.length; i++) {
@@ -42,6 +47,9 @@ function parseArgs(argv: string[]): CliOptions {
     }
     else if (arg === '--no-gitignore') {
       gitignore = false
+    }
+    else if (arg === '--no-install') {
+      install = false
     }
     else if (arg === '--help' || arg === '-h') {
       printHelp()
@@ -72,7 +80,7 @@ function parseArgs(argv: string[]): CliOptions {
     process.exit(1)
   }
 
-  return { dryRun, groups, roots, gitignore }
+  return { dryRun, groups, roots, gitignore, install }
 }
 
 function parseGroups(value: string): readonly TransformGroup[] {
@@ -98,6 +106,9 @@ Options:
                        Default: ${ALL_GROUPS.join(',')}.
   --no-gitignore       Do not respect .gitignore (scan everything except the
                        built-in safe list of build / dependency directories).
+  --no-install         Do not run the package manager after rewriting
+                       package.json files. Default: install runs after a
+                       successful rewrite.
   -h, --help           Show this help.
   -v, --version        Print the upgrade tool version.
 
@@ -112,12 +123,20 @@ Transform groups:
             removes dropped theme options (injectCriticalCSS, injectFullCSS,
             injectAllCSSOnServer), preset colors.{light,dark}.background → surface
             and .border → divider
+  deps      Bumps every maz-ui / @maz-ui/* entry in package.json
+            (dependencies, devDependencies, peerDependencies) to ^5.0.0.
+            Workspace, link, file and url specs are left untouched.
 
-Scans the given paths for .vue, .css, .ts/.tsx/.cts/.mts and
-.js/.jsx/.cjs/.mjs files. By default it respects your .gitignore
-(plus a built-in safe list of node_modules, dist, build, .nuxt,
-.output, .next, .svelte-kit, .turbo, .cache, coverage, .vercel,
-.netlify). Pass --no-gitignore to skip the .gitignore step.
+Scans the given paths for .vue, .css, .ts/.tsx/.cts/.mts,
+.js/.jsx/.cjs/.mjs and package.json files. By default it respects
+your .gitignore (plus a built-in safe list of node_modules, dist,
+build, .nuxt, .output, .next, .svelte-kit, .turbo, .cache, coverage,
+.vercel, .netlify). Pass --no-gitignore to skip the .gitignore step.
+
+After rewriting, if at least one package.json changed and the deps
+group ran, the CLI detects your package manager (pnpm / yarn / bun /
+npm — based on the lockfile in cwd) and runs <pm> install. Pass
+--no-install to skip that step.
 
 What it does NOT do (handle by hand or with the @maz-ui/mcp server):
   - Reshape foundation.radius into scales.rounded.md (move + key restructure).
@@ -136,12 +155,53 @@ function printVersion(): void {
   logger.log(pkg.version)
 }
 
+function detectPackageManager(cwd: string): PackageManager {
+  if (existsSync(resolve(cwd, 'bun.lockb')) || existsSync(resolve(cwd, 'bun.lock')))
+    return 'bun'
+  if (existsSync(resolve(cwd, 'pnpm-lock.yaml')))
+    return 'pnpm'
+  if (existsSync(resolve(cwd, 'yarn.lock')))
+    return 'yarn'
+  if (existsSync(resolve(cwd, 'package-lock.json')))
+    return 'npm'
+  return 'npm'
+}
+
+function runInstall(pm: PackageManager, cwd: string): number {
+  const result = spawnSync(pm, ['install'], {
+    cwd,
+    stdio: 'inherit',
+    shell: process.platform === 'win32',
+  })
+  return result.status ?? 1
+}
+
+function maybeInstallDeps(opts: CliOptions, depsChanged: boolean, cwd: string): void {
+  if (!depsChanged || opts.dryRun)
+    return
+
+  const pm = detectPackageManager(cwd)
+
+  if (!opts.install || !opts.groups.includes('deps')) {
+    logger.log(`\npackage.json files updated. Run \`${pm} install\` to apply.`)
+    return
+  }
+
+  logger.log(`\nDetected package manager: ${pm}. Running \`${pm} install\`…\n`)
+  const code = runInstall(pm, cwd)
+  if (code !== 0) {
+    logger.error(`\n\`${pm} install\` exited with code ${code}.`)
+    process.exit(code)
+  }
+}
+
 async function run(): Promise<void> {
   const opts = parseArgs(process.argv)
   const cwd = process.cwd()
 
   let scanned = 0
   let changed = 0
+  let depsChanged = false
 
   for (const root of opts.roots) {
     const absoluteRoot = resolve(cwd, root)
@@ -151,6 +211,7 @@ async function run(): Promise<void> {
         '**/*.css',
         '**/*.{js,mjs,cjs,jsx}',
         '**/*.{ts,mts,cts,tsx}',
+        '**/package.json',
       ],
       {
         cwd: absoluteRoot,
@@ -169,6 +230,9 @@ async function run(): Promise<void> {
         continue
       changed += 1
 
+      if (file.endsWith('package.json'))
+        depsChanged = true
+
       const shown = file.replace(`${cwd}/`, '')
       logger.log(`${opts.dryRun ? '[dry-run] would update' : 'updated'}: ${shown}`)
 
@@ -181,6 +245,9 @@ async function run(): Promise<void> {
   const prefix = opts.dryRun ? 'would update' : 'updated'
   logger.log(`\nScanned ${scanned} files, ${prefix} ${changed}.`)
   logger.log(`Groups applied: ${opts.groups.join(', ')}`)
+
+  maybeInstallDeps(opts, depsChanged, cwd)
+
   logger.log(`\nNext: see https://maz-ui.com/guide/migration-v5 for the manual steps`)
   logger.log(`(foundation.radius → scales.rounded.md, MazIcon API, MazBadge sizes, MazChart update-mode).`)
 }

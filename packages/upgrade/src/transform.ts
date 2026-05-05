@@ -113,11 +113,73 @@ export function transformPresetColors(content: string): string {
   })
 }
 
+// --- 6. Dependency version bumps in package.json ---------------------------
+// Bumps every `maz-ui` and `@maz-ui/*` entry in `dependencies`,
+// `devDependencies` and `peerDependencies` to the v5 target range. Workspace,
+// link, file, npm-tag and url specs are left untouched. Indentation and the
+// trailing newline of the original file are preserved.
+
+const MAZ_UI_PKG = /^(?:maz-ui|@maz-ui\/.+)$/
+const TARGET_VERSION = '^5.0.0'
+const PROTECTED_PREFIX = /^(?:workspace|link|file|portal|npm|http|https|git\+|github):/
+
+function shouldBump(name: string, range: string): boolean {
+  if (!MAZ_UI_PKG.test(name))
+    return false
+  if (PROTECTED_PREFIX.test(range))
+    return false
+  if (['latest', 'next', 'beta', 'alpha', 'canary', '*'].includes(range))
+    return false
+  return range !== TARGET_VERSION
+}
+
+function detectIndent(content: string): string | number {
+  const match = content.match(/\n([ \t]+)"/)
+  return match ? match[1] : 2
+}
+
+const DEP_FIELDS = ['dependencies', 'devDependencies', 'peerDependencies'] as const
+
+export function transformDeps(content: string): string {
+  let pkg: Record<string, unknown>
+  try {
+    pkg = JSON.parse(content)
+  }
+  catch {
+    return content
+  }
+  if (!pkg || typeof pkg !== 'object' || Array.isArray(pkg))
+    return content
+
+  let changed = false
+  for (const field of DEP_FIELDS) {
+    const deps = pkg[field]
+    if (!deps || typeof deps !== 'object' || Array.isArray(deps))
+      continue
+    const map = deps as Record<string, unknown>
+    for (const [name, range] of Object.entries(map)) {
+      if (typeof range !== 'string')
+        continue
+      if (shouldBump(name, range)) {
+        map[name] = TARGET_VERSION
+        changed = true
+      }
+    }
+  }
+
+  if (!changed)
+    return content
+
+  const indent = detectIndent(content)
+  const trailingNewline = content.endsWith('\n') ? '\n' : ''
+  return JSON.stringify(pkg, null, indent) + trailingNewline
+}
+
 // --- Orchestration ---------------------------------------------------------
 
-export type TransformGroup = 'imports' | 'props' | 'css' | 'config'
+export type TransformGroup = 'imports' | 'props' | 'css' | 'config' | 'deps'
 
-export const ALL_GROUPS: readonly TransformGroup[] = ['imports', 'props', 'css', 'config']
+export const ALL_GROUPS: readonly TransformGroup[] = ['imports', 'props', 'css', 'config', 'deps']
 
 export interface TransformOptions {
   groups?: readonly TransformGroup[]
@@ -130,6 +192,7 @@ export function transformFile(filename: string, content: string, options: Transf
   const isVue = filename.endsWith('.vue')
   const isCss = filename.endsWith('.css')
   const isJs = /\.[cm]?[jt]sx?$/.test(filename)
+  const isPackageJson = /(?:^|[\\/])package\.json$/.test(filename)
 
   let out = content
 
@@ -150,6 +213,9 @@ export function transformFile(filename: string, content: string, options: Transf
     out = transformConfig(out)
     out = transformPresetColors(out)
   }
+
+  if (enabled('deps') && isPackageJson)
+    out = transformDeps(out)
 
   return out
 }
