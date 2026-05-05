@@ -19,7 +19,7 @@ type Composables = Omit<
   'useAos' | 'useDialog' | 'useToast' | 'useWait' | 'useMazIconProps'
 >
 
-declare module '@nuxt/schema' {
+declare module 'nuxt/schema' {
   interface NuxtConfig {
     mazUi?: MazUiNuxtOptions
   }
