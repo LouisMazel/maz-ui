@@ -47,7 +47,7 @@ See all the options props [here](#props-event-slots)
     clickable
   >
     <template #icon>
-      <MazIcon name="eye" style="color: white;" size="2rem" />
+      <MazIcon icon="/eye.svg" style="color: white;" size="2rem" />
     </template>
   </MazAvatar>
 
@@ -90,7 +90,7 @@ function clicked() { console.log('clicked') }
     no-size
   >
     <template #icon>
-      <MazIcon name="eye" />
+      <MazIcon icon="/eye.svg" />
     </template>
   </MazAvatar>
   <MazAvatar

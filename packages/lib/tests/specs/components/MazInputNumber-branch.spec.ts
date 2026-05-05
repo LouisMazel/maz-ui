@@ -194,7 +194,7 @@ describe('MazInputNumber branch coverage', () => {
         props: { topLabel: 'Label', error: true },
       })
       const label = wrapper.find('.m-input-number__top-label')
-      expect(label.classes()).toContain('!maz-text-destructive-600')
+      expect(label.classes()).toContain('maz:text-destructive-600!')
       wrapper.unmount()
     })
 
@@ -203,7 +203,7 @@ describe('MazInputNumber branch coverage', () => {
         props: { topLabel: 'Label', success: true },
       })
       const label = wrapper.find('.m-input-number__top-label')
-      expect(label.classes()).toContain('!maz-text-success-600')
+      expect(label.classes()).toContain('maz:text-success-600!')
       wrapper.unmount()
     })
 
@@ -212,7 +212,7 @@ describe('MazInputNumber branch coverage', () => {
         props: { topLabel: 'Label', warning: true },
       })
       const label = wrapper.find('.m-input-number__top-label')
-      expect(label.classes()).toContain('!maz-text-warning-600')
+      expect(label.classes()).toContain('maz:text-warning-600!')
       wrapper.unmount()
     })
 
@@ -221,9 +221,9 @@ describe('MazInputNumber branch coverage', () => {
         props: { topLabel: 'Label' },
       })
       const label = wrapper.find('.m-input-number__top-label')
-      expect(label.classes()).not.toContain('!maz-text-destructive-600')
-      expect(label.classes()).not.toContain('!maz-text-success-600')
-      expect(label.classes()).not.toContain('!maz-text-warning-600')
+      expect(label.classes()).not.toContain('maz:text-destructive-600!')
+      expect(label.classes()).not.toContain('maz:text-success-600!')
+      expect(label.classes()).not.toContain('maz:text-warning-600!')
       wrapper.unmount()
     })
   })

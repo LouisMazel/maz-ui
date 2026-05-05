@@ -183,9 +183,9 @@ Import the icons you need from the package:
 
 ```vue
 <script setup>
-import { MazArrowTopRightOnSquare } from '@maz-ui/icons/MazArrowTopRightOnSquare'
-import { MazCheckCircle } from '@maz-ui/icons/MazCheckCircle'
-import { MazXMark } from '@maz-ui/icons/MazXMark'
+import { MazArrowTopRightOnSquare } from '@maz-ui/icons/raw/MazArrowTopRightOnSquare'
+import { MazCheckCircle } from '@maz-ui/icons/raw/MazCheckCircle'
+import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 </script>
 
 <template>

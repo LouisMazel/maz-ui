@@ -8,14 +8,12 @@ const vRegex = /^v/
  * @author @louismazel
  * @link https://maz-ui.com
  */
-export function MazDirectivesResolver(options?: { devMode?: boolean, prefix?: string }): ComponentResolver {
+export function MazDirectivesResolver(options?: { prefix?: string }): ComponentResolver {
   return {
     type: 'directive',
     resolve: (name: string) => {
-      const { devMode = false, prefix = '' } = options || {}
-      const base = devMode ? 'maz-ui/src/directives/index.ts' : 'maz-ui/directives'
-
-      return { from: base, as: `v${capitalize(prefix)}${capitalize(name.replace(vRegex, ''))}`, name: `v${name}` }
+      const { prefix = '' } = options || {}
+      return { from: 'maz-ui/directives', as: `v${capitalize(prefix)}${capitalize(name.replace(vRegex, ''))}`, name: `v${name}` }
     },
   }
 }

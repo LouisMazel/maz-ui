@@ -24,6 +24,16 @@ import {
 import { setFieldValidationState } from './useFormValidator/validation'
 import { useFreezeValue } from './useFreezeValue'
 
+function resolveBindElement(node: unknown): HTMLElement | null {
+  if (node instanceof HTMLElement) {
+    return node
+  }
+  if (node instanceof CharacterData && node.nextElementSibling instanceof HTMLElement) {
+    return node.nextElementSibling
+  }
+  return null
+}
+
 export function useFormField<
   FieldType,
   Model extends BaseFormPayload = BaseFormPayload,
@@ -118,15 +128,15 @@ export function useFormField<
     }
 
     onMounted(() => {
-      const element = finalOpts.ref?.value
-      const elementToBind = element instanceof HTMLElement ? element : element?.$el as unknown
+      const refValue = finalOpts.ref?.value
+      const candidate = refValue instanceof HTMLElement
+        ? refValue
+        : (refValue as { $el?: unknown } | null | undefined)?.$el
 
-      if (elementToBind instanceof HTMLElement) {
+      const elementToBind = resolveBindElement(candidate)
+
+      if (elementToBind) {
         handleInteractiveElements(elementToBind)
-        return
-      }
-      else if (elementToBind instanceof Text && elementToBind.nextElementSibling instanceof HTMLElement) {
-        handleInteractiveElements(elementToBind.nextElementSibling)
         return
       }
 

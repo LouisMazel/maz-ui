@@ -1,6 +1,7 @@
 import { extname, relative, resolve } from 'node:path'
 import { codecovVitePlugin } from '@codecov/vite-plugin'
 import { getExternalDependencies } from '@maz-ui/vite-config'
+import tailwindcss from '@tailwindcss/vite'
 import Vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
 import { defineConfig } from 'vite'
@@ -12,6 +13,7 @@ import SvgLoader from 'vite-svg-loader'
 import {
   ViteCompileStyles,
 } from './build'
+import { VitePreNestedCss } from './build/VitePreNestedCss'
 
 import pkg from './package.json'
 
@@ -44,7 +46,14 @@ export default defineConfig(({ mode }) => {
   const isProduction = mode === 'production'
   return {
     plugins: [
+      // Pre-flatten postcss-nested `&-child` syntax in SFCs BEFORE
+      // @tailwindcss/vite intercepts. Required only for the lib's own
+      // build because @tailwindcss/vite hooks earlier than css.postcss
+      // and lightningcss can't parse `&-X` concatenation. Consumers do
+      // not need this plugin — they get the already-flattened dist.
+      VitePreNestedCss(),
       Vue(),
+      tailwindcss(),
       SvgLoader(),
       libInjectCss(),
       dts({
@@ -74,7 +83,6 @@ export default defineConfig(({ mode }) => {
           'directives/index': resolver('src/directives/index.ts'),
           'resolvers/index': resolver('src/resolvers/index.ts'),
           'tailwindcss/index': resolver('src/tailwindcss/index.ts'),
-          'index': resolver('src/index.ts'),
         },
         formats: ['es'],
         fileName: (_, name) => `${name}.js`,

@@ -1,15 +1,16 @@
 <script lang="ts" setup>
-import type { IconComponent } from '@maz-ui/icons'
 import type { HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
+import type { MazIconLike } from '../composables/useMazIconProps'
 import type { MazLinkProps } from './MazLink.vue'
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
-import { MazChevronDown } from '@maz-ui/icons/static/MazChevronDown'
+import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { computed, defineAsyncComponent, useTemplateRef, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { useMazIconProps } from '../composables/useMazIconProps'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import MazPopover from './MazPopover.vue'
 
@@ -33,6 +34,7 @@ const {
   disabled = false,
   transition = 'scale-pop',
   preferPosition = 'bottom-start',
+  dropdownIcon,
 } = defineProps<MazDropdownProps>()
 
 const emits = defineEmits<{
@@ -51,6 +53,8 @@ const emits = defineEmits<{
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazLink = defineAsyncComponent(() => import('./MazLink.vue'))
+
+const { iconProps: dropdownIconProps } = useMazIconProps(() => dropdownIcon ?? MazChevronDown)
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazDropdown',
@@ -179,12 +183,11 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue' | '
   block?: boolean
   /**
    * Icon to use instead of the default chevron for the dropdown indicator
-   * Can be either an icon name string or a Vue component
-   * @type {string | IconComponent}
-   * @example 'arrow-down'
-   * @example ArrowDownIcon (import { ArrowDownIcon } from '@maz-ui/icons')
+   * Custom icon to display in place of the default chevron. Accepts a bare
+   * value (Vue component, raw SVG string, URL or `data:` URI) or a full
+   * `MazIconProps` object.
    */
-  dropdownIcon?: string | IconComponent
+  dropdownIcon?: MazIconLike
   /**
    * Controls whether the dropdown icon rotates when the dropdown is opened
    * @type {boolean}
@@ -214,18 +217,18 @@ const isOpen = defineModel({
 
 const iconClassSize = computed(() => {
   if (size === 'xl')
-    return 'maz-text-lg'
+    return 'maz:text-lg'
   if (size === 'lg')
-    return 'maz-text-base'
+    return 'maz:text-base'
   if (size === 'md')
-    return 'maz-text-base'
+    return 'maz:text-base'
   if (size === 'sm')
-    return 'maz-text-base'
+    return 'maz:text-base'
   if (size === 'xs')
-    return 'maz-text-sm'
+    return 'maz:text-sm'
   if (size === 'mini')
-    return 'maz-text-sm'
-  return 'maz-text-lg'
+    return 'maz:text-sm'
+  return 'maz:text-lg'
 })
 
 function setDropdown(value: boolean) {
@@ -332,7 +335,7 @@ watch(
     role="menu"
     :style="styleProp"
     :prefer-position
-    color="background"
+    color="surface"
     :position
     :transition
     :disabled
@@ -363,9 +366,9 @@ watch(
       <div
         :id="instanceId"
         tabindex="-1"
-        class="m-dropdown__wrapper"
+        class="m-dropdown__wrapper maz:outline-hidden maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400 maz:rounded-md maz:size-full"
       >
-        <span :id="`${instanceId}-labelspan`" class="maz-sr-only">
+        <span :id="`${instanceId}-labelspan`" class="maz:sr-only">
           <!--
             @slot description for screen readers (hidden from visual display)
             Provides accessibility information about the dropdown functionality
@@ -399,20 +402,16 @@ watch(
             <!-- @slot Text content of the trigger element -->
             <slot />
 
-            <template v-if="chevron || hasSlotContent($slots['dropdown-icon'])" #right-icon>
+            <template v-if="chevron || hasSlotContent($slots['dropdown-icon'])" #end-icon>
               <!--
                 @slot Dropdown indicator icon
                 @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
                 @default MazChevronDown icon with rotation animation
               -->
               <slot name="dropdown-icon" :is-open="isOpen" :toggle="toggle" :close="close" :open="open">
-                <MazIcon v-if="typeof dropdownIcon === 'string'" :name="dropdownIcon" :class="[{ '--open': isOpen && dropdownIconAnimation }, iconClassSize]" />
-                <component
-                  :is="dropdownIcon" v-else-if="dropdownIcon" :class="[{ '--open': isOpen && dropdownIconAnimation }, iconClassSize]"
-                  class="m-dropdown__icon"
-                />
-                <MazChevronDown
-                  v-else
+                <MazIcon
+                  v-if="dropdownIconProps"
+                  v-bind="dropdownIconProps"
                   :class="[{ '--open': isOpen && dropdownIconAnimation }, iconClassSize]"
                   class="m-dropdown__icon"
                 />
@@ -428,7 +427,7 @@ watch(
         :id="`${instanceId}-menu`"
         role="menu"
         aria-label="Menu"
-        class="m-dropdown__menu"
+        class="m-dropdown__menu maz:flex maz:min-h-max maz:min-w-max maz:flex-col maz:gap-0.5 maz:overflow-auto maz:p-2"
         tabindex="-1"
         :class="menuPanelClass"
         :style="menuPanelStyle"
@@ -512,64 +511,56 @@ watch(
 </template>
 
 <style scoped>
-  .m-dropdown {
-  @apply maz-relative maz-inline-flex maz-flex-col maz-items-start maz-align-top;
+@reference "../tailwindcss/tailwind.css";
 
-  &__wrapper {
-    @apply maz-outline-none focus:maz-bg-surface-600 dark:focus:maz-bg-surface-400 maz-rounded maz-size-full;
-  }
+.m-dropdown__icon {
+  @apply maz:transition-transform maz:duration-200 maz:ease-in-out;
 
-  &__icon {
-    @apply maz-transition-transform maz-duration-200 maz-ease-in-out;
-
-    &.--open {
-      @apply maz-rotate-180;
-    }
+  &.--open {
+    @apply maz:rotate-180;
   }
 }
 
 .m-dropdown__menu {
-  @apply maz-flex maz-min-h-max maz-min-w-max maz-flex-col maz-gap-0.5 maz-overflow-auto maz-p-2;
-
   .menuitem {
-    @apply maz-outline-none maz-cursor-pointer maz-whitespace-nowrap maz-rounded maz-px-4 maz-py-2 maz-text-start
-     maz-transition-colors maz-duration-300 maz-ease-in-out focus:maz-bg-surface-600 dark:focus:maz-bg-surface-400 hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400;
+    @apply maz:outline-hidden maz:cursor-pointer maz:whitespace-nowrap maz:rounded-md maz:px-4 maz:py-2 maz:text-start
+     maz:transition-colors maz:duration-300 maz:ease-in-out maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
 
     &.menuitem__button {
       &:disabled {
-        @apply maz-cursor-not-allowed maz-opacity-50;
+        @apply maz:disabled-state;
       }
 
       &.--primary {
-        @apply maz-text-primary hover:maz-text-primary-600;
+        @apply maz:text-primary maz:hover:text-primary-600;
       }
 
       &.--secondary {
-        @apply maz-text-secondary hover:maz-text-secondary-600;
+        @apply maz:text-secondary maz:hover:text-secondary-600;
       }
 
       &.--info {
-        @apply maz-text-info hover:maz-text-info-600;
+        @apply maz:text-info maz:hover:text-info-600;
       }
 
       &.--warning {
-        @apply maz-text-warning-600 hover:maz-text-warning-600;
+        @apply maz:text-warning-600 maz:hover:text-warning-600;
       }
 
       &.--destructive {
-        @apply maz-text-destructive-600 hover:maz-text-destructive-600;
+        @apply maz:text-destructive-600 maz:hover:text-destructive-600;
       }
 
       &.--success {
-        @apply maz-text-success-600 hover:maz-text-success-600;
+        @apply maz:text-success-600 maz:hover:text-success-600;
       }
 
       &.--contrast {
-        @apply maz-text-contrast hover:maz-text-contrast-600;
+        @apply maz:text-contrast maz:hover:text-contrast-600;
       }
 
       &.--accent {
-        @apply maz-text-accent hover:maz-text-accent-600;
+        @apply maz:text-accent maz:hover:text-accent-600;
       }
     }
   }

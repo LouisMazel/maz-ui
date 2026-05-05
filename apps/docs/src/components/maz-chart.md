@@ -11,9 +11,13 @@ description: MazChart is a standalone component which generates graphics & chart
 
 Follow the [Chart.JS](https://www.chartjs.org/docs/latest/) documentation to create your own chart.
 
-You can also check the documentation and [examples of vue-chartjs](https://vue-chartjs.org/examples/)
-
 You can use all the plugins of Chart.JS. Follow the examples below.
+
+::: tip Performance
+`MazChart` lazy-loads `chart.js` on mount and registers only the controllers, elements and scales needed for the chart `type` you requested. A `<MazChart type="pie">` won't pull `BarController`, `LineElement` or any other unused module. The chart instance is also held outside Vue's reactivity (`shallowRef` + `markRaw`) — this avoids accidental deep proxying of the underlying chart and the freezes that can come with it on large datasets.
+
+When `data` or `options` change after the initial render, `chart.update()` is called with `'none'` by default so updates don't animate. Pass `update-mode="default"` (or any other Chart.js update mode) to opt back into animations.
+:::
 
 ## Bar chart
 
@@ -318,6 +322,21 @@ const lineChart = {
 
 ## Types
 
-### ChartProps
+`MazChartProps` is generic over the chart type, the data point shape and the label type — it mirrors the same generic signature as `Chart.js` itself:
 
-Follow this link to see the type definitions: [vue-chartjs/src/types.ts](https://github.com/apertureless/vue-chartjs/blob/main/src/types.ts#L12)
+```ts
+interface MazChartProps<
+  T extends ChartType = ChartType,
+  TData = DefaultDataPoint<T>,
+  TLabel = unknown,
+> {
+  type: T
+  data: ChartData<T, TData, TLabel>
+  options?: ChartOptions<T>
+  plugins?: Plugin[]
+  datasetIdKey?: string
+  updateMode?: UpdateMode
+}
+```
+
+For the underlying types, see [chart.js types](https://www.chartjs.org/docs/latest/api/).

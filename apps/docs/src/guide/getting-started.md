@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-description: Build Vue and Nuxt applications faster with Maz-UI v4 - The modern, modular component library
+description: Build Vue and Nuxt applications faster with Maz-UI v5 - The modern, modular component library
 head:
   - - meta
     - name: keywords
@@ -16,24 +16,29 @@ head:
 - 🌱 **Tree-shaking** - Import only what you need
 - 🛠️ **TypeScript-first** - Full type safety out of the box
 - 🚀 **Performance** - Tree-shaking benefits and maximum optimization
-- 🎨 **Theming system** - Customizable themes and dark mode support (4 presets available) - [@maz-ui/themes](./themes.md)
+- 🎨 **Theming system** - Customizable themes and dark mode support (5 presets available) - [@maz-ui/themes](./themes.md)
+- 💨 **Optional Tailwind bridge** - Already have a Tailwind v4 setup? Expose your active maz-ui theme tokens (colors, radius, breakpoints, custom utilities) to your own Tailwind config - [Tailwind integration](./tailwind.md)
 - 🌐 **Internationalization** - Locale management and tree-shakable imports - [@maz-ui/translations](./translations.md)
-- 🎨 **Icon library** - Comprehensive collection of SVG icons designed for performance and flexibility (400+ icons) - [@maz-ui/icons](./icons.md)
+- 🎨 **Icon library** - Comprehensive collection of SVG icons designed for performance and flexibility (860+ icons) - [@maz-ui/icons](./icons.md)
 - 🧰 **Nuxt module** - Effortless Maz-UI integration with auto-imports - [@maz-ui/nuxt](./nuxt.md)
-- 🤖 **MCP** - Connect your IA agents to the documentation - [@maz-ui/mcp](./mcp.md)
+- 🤖 **MCP** - Connect your AI agents to the documentation - [@maz-ui/mcp](./mcp.md)
 
+:::
+
+::: tip Migrating from v4?
+Run `npx @maz-ui/upgrade ./` to handle the mechanical part of the migration (CSS subpath imports, prop renames, CSS var renames, Nuxt config keys, custom preset color keys, and `package.json` version bumps). See the [v5 migration guide](./migration-v5.md) for the rest.
 :::
 
 ## Guides
 
 Start by choosing your framework:
 
-<div class="maz-flex maz-gap-4 maz-w-full maz-flex-col tab-m:maz-flex-row vp-raw">
+<div class="maz:flex maz:gap-4 maz:w-full maz:flex-col maz:tab-m:flex-row vp-raw">
   <MazCard
     href="/guide/vue"
-    class="maz-flex-1"
+    class="maz:flex-1"
     :gallery="{
-      images: ['https://positivethinking.tech/wp-content/uploads/2021/01/Logo-Vuejs.png'],
+      images: ['/vue.png'],
       height: 200,
       width: '100%',
     }"
@@ -51,10 +56,10 @@ Start by choosing your framework:
   </MazCard>
   <MazCard
     href="/guide/nuxt"
-    class="maz-flex-1"
+    class="maz:flex-1"
     content-title="Nuxt Users Guide"
     :gallery="{
-      images: ['https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8mpeku6brwkfmrsumu3h.png'],
+      images: ['/nuxt.png'],
       height: 200,
       width: '100%',
     }"
@@ -80,7 +85,7 @@ Extend Maz-UI with our specialized companion packages:
 
 **Advanced Theming System**
 
-Modern theme system with HSL variables, dark mode support, and flexible strategies.
+Modern theme system with OKLCh color scales, runtime preset switching, and dark mode support.
 
 ```bash
 npm install @maz-ui/themes
@@ -88,9 +93,10 @@ npm install @maz-ui/themes
 
 **Features:**
 
-- 🎨 HSL CSS custom properties
-- 🌓 Smart dark mode detection
-- ⚡ Multiple rendering strategies
+- 🎨 OKLCh color system with perceptually uniform 11-step scales
+- 🌓 Smart dark mode detection and class/media/auto strategies
+- ⚡ `runtime` and `buildtime` rendering strategies
+- 🍪 Active preset persisted across reloads (opt-out)
 - 🛡️ Full TypeScript support
 
 [→ View Theme Documentation](./themes.md)
@@ -154,7 +160,7 @@ npm install @maz-ui/icons
 
 ### Tree-Shaking Benefits
 
-Maz-UI v4 is built with tree-shaking in mind. Import only what you need for optimal bundle sizes:
+Maz-UI v5 is built with tree-shaking in mind. Import only what you need for optimal bundle sizes:
 
 ```typescript
 /**
@@ -162,7 +168,7 @@ Maz-UI v4 is built with tree-shaking in mind. Import only what you need for opti
  */
 
 // ❌ Avoid importing everything
-import { formatCurrency, debounce } from 'maz-ui'
+import { formatCurrency, debounce } from '@maz-ui/utils'
 // ✅ Import from @maz-ui/utils
 import { formatCurrency, debounce } from '@maz-ui/utils'
 
@@ -242,8 +248,9 @@ Browse [GitHub discussions](https://github.com/LouisMazel/maz-ui/discussions) or
 </div>
 
 <style scoped>
+@reference "../../.vitepress/theme/main.css";
 .hero-section {
-  @apply maz-rounded maz-p-8 maz-my-12 maz-from-primary-400 maz-to-secondary-700 maz-bg-gradient-to-br;
+  @apply maz:rounded-md maz:p-8 maz:my-12 maz:from-primary-400 maz:to-secondary-700 maz:bg-linear-to-br;
 }
 
 .features-grid {

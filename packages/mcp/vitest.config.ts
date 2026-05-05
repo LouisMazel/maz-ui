@@ -3,8 +3,12 @@
 import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
 
 export default defineConfig({
+  logLevel: process.env.CI ? 'error' : 'info',
   plugins: [],
   test: {
+    silent: !!process.env.CI,
+    hideSkippedTests: !!process.env.CI,
+    reporters: process.env.CI ? ['dot'] : ['tree'],
     environment: 'node',
     env: {
       TZ: 'UTC',

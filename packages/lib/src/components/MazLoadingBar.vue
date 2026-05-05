@@ -12,14 +12,14 @@ export interface MazLoadingBarProps {
 const props = withDefaults(defineProps<MazLoadingBarProps>(), { color: 'primary', height: '0.125rem' })
 
 const colorCSSVariables = computed(() => ({
-  alpha: `hsl(var(--maz-${props.color}) / 20%)`,
-  main: `hsl(var(--maz-${props.color}))`,
+  alpha: `color-mix(in srgb, var(--maz-${props.color}) 20%, transparent)`,
+  main: `var(--maz-${props.color})`,
 }))
 </script>
 
 <template>
   <div
-    class="m-loading-bar m-reset-css"
+    class="m-loading-bar m-reset-css maz:relative maz:block maz:w-full maz:overflow-hidden"
     :style="[{ '--loading-bar-height': height, '--loading-bar-color': colorCSSVariables.alpha, '--loading-bar-main-color': colorCSSVariables.main }]"
   >
     <div />
@@ -27,10 +27,10 @@ const colorCSSVariables = computed(() => ({
 </template>
 
 <style scoped>
-  .m-loading-bar {
-  @apply maz-relative maz-block maz-w-full maz-overflow-hidden;
+@reference "../tailwindcss/tailwind.css";
 
-  height: var(--loading-bar-height);
+.m-loading-bar {
+  block-size: var(--loading-bar-height);
   background-color: var(--loading-bar-color);
   overflow: hidden;
 
@@ -40,26 +40,24 @@ const colorCSSVariables = computed(() => ({
     &::before {
       content: '';
 
-      @apply maz-absolute;
+      @apply maz:absolute;
 
       background-color: inherit;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      will-change: left, right;
+      inset-block: 0;
+      inset-inline-start: 0;
+      will-change: inset-inline-start, inset-inline-end;
       animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
     }
 
     &::after {
       content: '';
 
-      @apply maz-absolute;
+      @apply maz:absolute;
 
       background-color: inherit;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      will-change: left, right;
+      inset-block: 0;
+      inset-inline-start: 0;
+      will-change: inset-inline-start, inset-inline-end;
       animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
       animation-delay: 1.15s;
     }
@@ -68,35 +66,29 @@ const colorCSSVariables = computed(() => ({
 
 @keyframes indeterminate {
   0% {
-    left: -35%;
-    right: 100%;
+    inset-inline: -35% 100%;
   }
 
   60% {
-    left: 100%;
-    right: -90%;
+    inset-inline: 100% -90%;
   }
 
   100% {
-    left: 100%;
-    right: -90%;
+    inset-inline: 100% -90%;
   }
 }
 
 @keyframes indeterminate-short {
   0% {
-    left: -200%;
-    right: 100%;
+    inset-inline: -200% 100%;
   }
 
   60% {
-    left: 107%;
-    right: -8%;
+    inset-inline: 107% -8%;
   }
 
   100% {
-    left: 107%;
-    right: -8%;
+    inset-inline: 107% -8%;
   }
 }
 </style>

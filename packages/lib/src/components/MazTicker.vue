@@ -89,13 +89,14 @@ const cssVars = computed<CSSProperties>(() => ({
 
 <template>
   <div
-    class="m-ticker m-reset-css"
+    class="m-ticker m-reset-css maz:flex maz:max-w-full maz:max-h-full"
     role="region"
     aria-roledescription="ticker"
     aria-label="Scrolling content"
     :style="cssVars"
     :class="[
       `--${orientation}`,
+      orientation === 'horizontal' ? 'maz:flex-row' : 'maz:flex-col',
       {
         '--reverse': reverse,
         '--paused': paused,
@@ -107,8 +108,8 @@ const cssVars = computed<CSSProperties>(() => ({
     <!-- @slot Static content before the scrolling area -->
     <slot name="before" />
 
-    <div class="m-ticker-wrapper">
-      <div v-if="overlay || hasSlotContent($slots['overlay-start'])" class="m-ticker-overlay --start">
+    <div class="m-ticker-wrapper maz:relative maz:flex maz:overflow-hidden" :class="orientation === 'vertical' ? 'maz:flex-col' : ''">
+      <div v-if="overlay || hasSlotContent($slots['overlay-start'])" class="m-ticker-overlay maz:pointer-events-none maz:absolute maz:z-10 --start" :class="orientation === 'horizontal' ? 'maz:top-0 maz:bottom-0 maz:left-0' : 'maz:left-0 maz:right-0 maz:top-0'">
         <!-- @slot Custom overlay for the start edge (left in horizontal, top in vertical). Replaces default gradient. -->
         <slot name="overlay-start" />
       </div>
@@ -116,14 +117,15 @@ const cssVars = computed<CSSProperties>(() => ({
       <div
         v-for="i in repeat"
         :key="i"
-        class="m-ticker-content"
+        class="m-ticker-content maz:flex maz:shrink-0"
+        :class="orientation === 'horizontal' ? 'maz:items-center' : 'maz:flex-col'"
         :aria-hidden="i > 1 ? 'true' : undefined"
       >
         <!-- @slot Content to scroll (repeated for seamless animation) -->
         <slot />
       </div>
 
-      <div v-if="overlay || hasSlotContent($slots['overlay-end'])" class="m-ticker-overlay --end">
+      <div v-if="overlay || hasSlotContent($slots['overlay-end'])" class="m-ticker-overlay maz:pointer-events-none maz:absolute maz:z-10 --end" :class="orientation === 'horizontal' ? 'maz:top-0 maz:bottom-0 maz:right-0' : 'maz:left-0 maz:right-0 maz:bottom-0'">
         <!-- @slot Custom overlay for the end edge (right in horizontal, bottom in vertical). Replaces default gradient. -->
         <slot name="overlay-end" />
       </div>
@@ -136,70 +138,42 @@ const cssVars = computed<CSSProperties>(() => ({
 
 <style scoped>
 .m-ticker {
-  @apply maz-flex maz-flex-col maz-max-w-full maz-max-h-full;
-
   &.--horizontal {
-    @apply maz-flex-row;
-
-    & .m-ticker-wrapper {
-      @apply maz-flex maz-overflow-hidden;
-    }
-
     & .m-ticker-content {
-      @apply maz-flex maz-shrink-0 maz-items-center;
-
       animation: m-ticker-scroll-x var(--m-ticker-duration) var(--m-ticker-timing) infinite;
       padding-inline-end: var(--m-ticker-gap);
       gap: var(--m-ticker-gap);
     }
 
     & .m-ticker-overlay {
-      @apply maz-top-0 maz-bottom-0;
-
-      width: var(--m-ticker-overlay-size);
+      inline-size: var(--m-ticker-overlay-size);
 
       &.--start {
-        @apply maz-left-0;
-
-        background: linear-gradient(to right, hsl(var(--maz-background)), transparent);
+        background: linear-gradient(to right, var(--maz-surface), transparent);
       }
 
       &.--end {
-        @apply maz-right-0;
-
-        background: linear-gradient(to left, hsl(var(--maz-background)), transparent);
+        background: linear-gradient(to left, var(--maz-surface), transparent);
       }
     }
   }
 
   &.--vertical {
-    & .m-ticker-wrapper {
-      @apply maz-flex maz-flex-col maz-overflow-hidden;
-    }
-
     & .m-ticker-content {
-      @apply maz-shrink-0 maz-flex maz-flex-col;
-
       animation: m-ticker-scroll-y var(--m-ticker-duration) var(--m-ticker-timing) infinite;
       padding-block-end: var(--m-ticker-gap);
       gap: var(--m-ticker-gap);
     }
 
     & .m-ticker-overlay {
-      @apply maz-left-0 maz-right-0;
-
-      height: var(--m-ticker-overlay-size);
+      block-size: var(--m-ticker-overlay-size);
 
       &.--start {
-        @apply maz-top-0;
-
-        background: linear-gradient(to bottom, hsl(var(--maz-background)), transparent);
+        background: linear-gradient(to bottom, var(--maz-surface), transparent);
       }
 
       &.--end {
-        @apply maz-bottom-0;
-
-        background: linear-gradient(to top, hsl(var(--maz-background)), transparent);
+        background: linear-gradient(to top, var(--maz-surface), transparent);
       }
     }
   }
@@ -219,14 +193,6 @@ const cssVars = computed<CSSProperties>(() => ({
   &.--pause-on-focus .m-ticker-wrapper:focus-within .m-ticker-content {
     animation-play-state: paused;
   }
-}
-
-.m-ticker-wrapper {
-  @apply maz-relative;
-}
-
-.m-ticker-overlay {
-  @apply maz-pointer-events-none maz-absolute maz-z-10;
 }
 
 @keyframes m-ticker-scroll-x {

@@ -17,18 +17,18 @@ description: Get country flag from flagcdn.com with a simple function call
 >
   <template #default="{ option, isSelected }">
     <div
-      class="maz-flex maz-items-center maz-gap-3"
+      class="maz:flex maz:items-center maz:gap-3"
     >
-      <img :src="option.flagSrc" class="maz-text-lg" :alt="`Flag of ${option.label}`" />
+      <img :src="option.flagSrc" class="maz:text-lg" :alt="`Flag of ${option.label}`" />
       <MazBadge
         pastel
         size="0.7rem"
-        class="maz-w-9"
-        :class="{ 'maz-text-muted': !isSelected }"
+        class="maz:w-9"
+        :class="{ 'maz:text-muted': !isSelected }"
       >
         {{ option.value }}
       </MazBadge>
-      <span :class="{ 'maz-font-semibold': isSelected }">
+      <span :class="{ 'maz:font-semibold': isSelected }">
         {{ option.label }}
       </span>
     </div>
@@ -45,7 +45,7 @@ description: Get country flag from flagcdn.com with a simple function call
 </template>
 
 <script lang="ts" setup >
-  import { getCountryFlagUrl } from 'maz-ui'
+  import { getCountryFlagUrl } from '@maz-ui/utils'
 
   const flagSrc = getCountryFlagUrl('FR')
 </script>
@@ -53,7 +53,7 @@ description: Get country flag from flagcdn.com with a simple function call
 
 ## Sizing
 
-<div class="maz-gap-2 maz-flex maz-flex-wrap maz-items-center">
+<div class="maz:gap-2 maz:flex maz:flex-wrap maz:items-center">
   <img
     v-for="{ src, size, countryCode } in sizedFlags"
     :key="src"
@@ -76,7 +76,7 @@ description: Get country flag from flagcdn.com with a simple function call
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { getCountryFlagUrl } from 'maz-ui'
+  import { getCountryFlagUrl } from '@maz-ui/utils'
 
   const countryCode = ref('FR')
 
@@ -103,7 +103,7 @@ description: Get country flag from flagcdn.com with a simple function call
 
 <script lang="ts" setup>
   import { computed, ref, onMounted } from 'vue'
-  import { getCountryFlagUrl } from 'maz-ui'
+  import { getCountryFlagUrl } from '@maz-ui/utils'
   import { getCountries } from 'libphonenumber-js'
 
   const countryCode = ref('FR')

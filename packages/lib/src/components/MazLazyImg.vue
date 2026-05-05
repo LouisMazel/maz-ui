@@ -76,6 +76,24 @@ export interface MazLazyImgProps {
 const sources = computed(() => {
   return typeof props.src === 'string' ? [{ srcset: props.src }] : props.src?.sources
 })
+
+function onIntersecting(el: Element) {
+  emits('intersecting', el)
+}
+
+function onLoading(el: Element) {
+  emits('loading', el)
+}
+
+function onLoaded(el: Element) {
+  emits('loaded', el)
+}
+
+function onError(el: Element) {
+  emits('error', el)
+}
+
+defineExpose({ onIntersecting, onLoading, onLoaded, onError })
 </script>
 
 <template>
@@ -85,13 +103,21 @@ const sources = computed(() => {
       observerOptions,
       fallbackSrc,
       observerOnce,
-      onIntersecting: (el) => emits('intersecting', el),
-      onLoading: (el) => emits('loading', el),
-      onLoaded: (el) => emits('loaded', el),
-      onError: (el) => emits('error', el),
+      onIntersecting,
+      onLoading,
+      onLoaded,
+      onError,
     }"
-    class="m-lazy-img-component m-reset-css"
-    :class="[{ '--use-loader': !hideLoader, '--height-full': imageHeightFull, '--block': block }, props.class]"
+    class="m-lazy-img-component m-reset-css maz:relative maz:inline-flex maz:align-top maz:flex-center"
+    :class="[
+      {
+        '--use-loader': !hideLoader,
+        '--height-full': imageHeightFull,
+        '--block': block,
+        'maz:w-full': block,
+      },
+      props.class,
+    ]"
     :style
   >
     <source
@@ -107,7 +133,7 @@ const sources = computed(() => {
       :alt
       :class="imgClass"
     >
-    <div v-if="!hideLoader" class="m-lazy-img-component-loader">
+    <div v-if="!hideLoader" class="m-lazy-img-component-loader maz:absolute maz:inset-0 maz:hidden maz:flex-center">
       <MazSpinner size="2em" />
     </div>
     <slot />
@@ -115,36 +141,28 @@ const sources = computed(() => {
 </template>
 
 <style scoped>
-  .m-lazy-img-component {
-  @apply maz-relative maz-inline-flex maz-align-top maz-flex-center;
+@reference "../tailwindcss/tailwind.css";
 
-  &.--block {
-    @apply maz-w-full;
-
-    img {
-      @apply maz-w-full;
-    }
-  }
-
-  &-loader {
-    @apply maz-absolute maz-inset-0 maz-hidden maz-flex-center;
+.m-lazy-img-component {
+  &.--block img {
+    @apply maz:w-full;
   }
 
   &.--height-full img {
-    @apply maz-max-h-full maz-w-min maz-max-w-min !important;
+    @apply maz:max-h-full! maz:w-min! maz:max-w-min!;
   }
 
   &.m-lazy-error:not(.m-lazy-fallback) {
-    @apply maz-bg-surface-600 dark:maz-bg-surface-400;
+    @apply maz:bg-surface-600 maz:dark:bg-surface-400;
 
     img {
-      @apply maz-h-1/2 maz-w-1/2;
+      @apply maz:h-1/2 maz:w-1/2;
     }
   }
 
   &.m-lazy-loading {
     & .m-lazy-img-component-loader {
-      @apply maz-flex;
+      @apply maz:flex;
     }
   }
 }

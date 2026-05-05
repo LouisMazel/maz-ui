@@ -163,9 +163,9 @@ const gradientStyle = computed(() => {
   }
 
   const colors: string[] = [
-    `hsl(var(--maz-${gradientFrom}))`,
-    ...(gradientVia ? [`hsl(var(--maz-${gradientVia}))`] : []),
-    `hsl(var(--maz-${gradientTo}))`,
+    `var(--maz-${gradientFrom})`,
+    ...(gradientVia ? [`var(--maz-${gradientVia})`] : []),
+    `var(--maz-${gradientTo})`,
   ]
 
   return `linear-gradient(to right, ${colors.join(', ')})`
@@ -175,15 +175,15 @@ const gradientStyle = computed(() => {
 <template>
   <div class="m-reset-css m-animated-text" :style="{ '--maz-gradient-style': gradientStyle }">
     <template v-if="isClient">
-      <component :is="tag" ref="element" v-bind="$attrs" class="m-animated-text__root" :style="{ columnGap: `${columnGap}rem`, rowGap: `${rowGap}rem` }">
+      <component :is="tag" ref="element" v-bind="$attrs" class="m-animated-text__root maz:inline-flex maz:flex-wrap" :style="{ columnGap: `${columnGap}rem`, rowGap: `${rowGap}rem` }">
         <span
           v-for="(word, index) in words"
           :key="word + index"
-          class="m-animated-text__word"
+          class="m-animated-text__word maz:inline-flex"
         >
           <span
-            class="m-animated-text__word-inner"
-            :class="animatedWords[index] ? `maz-animate-slide-${direction}-blur` : 'maz-invisible'"
+            class="m-animated-text__word-inner maz:inline-flex"
+            :class="animatedWords[index] ? `maz-animate-slide-${direction}-blur` : 'maz:invisible'"
             :style="{
               animationDuration: `${duration}ms`,
             }"
@@ -195,21 +195,21 @@ const gradientStyle = computed(() => {
 
         <span
           v-if="lastWord"
-          class="m-animated-text__last-word"
-          :class="animatedWords[wordCount] ? `maz-animate-slide-${direction}-blur` : 'maz-invisible'"
+          class="m-animated-text__last-word maz:inline-flex"
+          :class="animatedWords[wordCount] ? `maz-animate-slide-${direction}-blur` : 'maz:invisible'"
           :style="{
             animationDuration: `${duration}ms`,
           }"
         >
-          <span class="m-animated-text__last-word-inner">
-            <span class="m-animated-text__last-word-inner-text">{{ lastWord }}</span>
+          <span class="m-animated-text__last-word-inner maz:relative maz:inline-flex">
+            <span class="m-animated-text__last-word-inner-text maz:relative">{{ lastWord }}</span>
           </span>
         </span>
       </component>
     </template>
 
     <template v-else>
-      <component :is="tag" v-bind="$attrs" class="maz-invisible maz-inline-flex">
+      <component :is="tag" v-bind="$attrs" class="maz:invisible maz:inline-flex">
         {{ text }}
 
         <template v-if="lastWord">
@@ -222,42 +222,26 @@ const gradientStyle = computed(() => {
 
 <style scoped>
 .m-animated-text {
-  &__root {
-    @apply maz-inline-flex maz-flex-wrap;
-  }
-
-  &__word {
-    @apply maz-inline-flex;
-  }
-
-  &__word-inner {
-    @apply maz-inline-flex;
-
-    will-change: transform, opacity, filter;
-    transform: translateZ(0);
-  }
-
+  &__word-inner,
   &__last-word {
-    @apply maz-inline-flex;
-
     will-change: transform, opacity, filter;
     transform: translateZ(0);
   }
 
-  &__last-word-inner {
-    @apply maz-relative maz-inline-flex;
-
-    &::before {
-      content: '';
-
-      @apply maz-z-0 maz-absolute maz-inset-0 maz-size-full maz-opacity-40 dark:maz-opacity-50 maz-blur-lg;
-
-      background-image: var(--maz-gradient-style);
-    }
+  &__last-word-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    z-index: 0;
+    opacity: 0.4;
+    background-image: var(--maz-gradient-style);
+    filter: blur(16px);
   }
 
-  &__last-word-inner-text {
-    @apply maz-relative;
+  :where(.dark, [data-theme='dark']) &__last-word-inner::before {
+    opacity: 0.5;
   }
 }
 

@@ -14,19 +14,15 @@ const mazRegexKebabCase = /^(maz-[a-z])/
  * @author @louismazel
  * @link https://maz-ui.com
  */
-export function MazComponentsResolver(options?: { devMode?: boolean }): ComponentResolver {
+export function MazComponentsResolver(): ComponentResolver {
   return {
     type: 'component',
     resolve: (name: string) => {
-      const { devMode = false } = options || {}
-      const base = devMode ? 'maz-ui/src/components' : 'maz-ui/components'
-      const extension = devMode ? '.vue' : ''
-
       if (mazRegexPascalCase.test(name) && !iconList.includes(name as IconName)) {
-        return { from: `${base}/${name}${extension}` }
+        return { from: `maz-ui/components/${name}` }
       }
       else if (mazRegexKebabCase.test(name)) {
-        return { from: `${base}/${pascalCase(name)}` }
+        return { from: `maz-ui/components/${pascalCase(name)}` }
       }
     },
   }

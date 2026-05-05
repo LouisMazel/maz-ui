@@ -1,12 +1,12 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`mazInputCode > should match with the snapshot 1`] = `
-"<fieldset data-v-3b9c7fe2="" class="m-input-code m-reset-css --md" style="--input-border-color: hsl(var(--maz-primary));">
-  <div data-v-3b9c7fe2="" class="m-input-code__wrapper">
-    <div data-v-3b9c7fe2="" class="input-wrapper"><input data-v-3b9c7fe2="" id="m-input-code-1" type="text" name="m-input-code-1" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill"></div>
-    <div data-v-3b9c7fe2="" class="input-wrapper"><input data-v-3b9c7fe2="" id="m-input-code-2" type="text" name="m-input-code-2" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill"></div>
-    <div data-v-3b9c7fe2="" class="input-wrapper"><input data-v-3b9c7fe2="" id="m-input-code-3" type="text" name="m-input-code-3" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill"></div>
-    <div data-v-3b9c7fe2="" class="input-wrapper"><input data-v-3b9c7fe2="" id="m-input-code-4" type="text" name="m-input-code-4" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill"></div>
-  </div><span data-v-3b9c7fe2="" class="m-input-code__hint"></span>
+"<fieldset data-v-3b9c7fe2="" class="m-input-code m-reset-css maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top --md" style="--input-border-color: var(--maz-primary);">
+  <div data-v-3b9c7fe2="" class="m-input-code__wrapper maz:inline-flex maz:gap-[1em]">
+    <div data-v-3b9c7fe2="" class="input-wrapper maz:relative maz:h-[4em] maz:w-[4em] maz:overflow-hidden maz:rounded-md maz:border maz:border-solid maz:border-divider maz:dark:border-divider-400 maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:bg-surface-400"><input data-v-3b9c7fe2="" id="m-input-code-1" type="text" name="m-input-code-1" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill"></div>
+    <div data-v-3b9c7fe2="" class="input-wrapper maz:relative maz:h-[4em] maz:w-[4em] maz:overflow-hidden maz:rounded-md maz:border maz:border-solid maz:border-divider maz:dark:border-divider-400 maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:bg-surface-400"><input data-v-3b9c7fe2="" id="m-input-code-2" type="text" name="m-input-code-2" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill"></div>
+    <div data-v-3b9c7fe2="" class="input-wrapper maz:relative maz:h-[4em] maz:w-[4em] maz:overflow-hidden maz:rounded-md maz:border maz:border-solid maz:border-divider maz:dark:border-divider-400 maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:bg-surface-400"><input data-v-3b9c7fe2="" id="m-input-code-3" type="text" name="m-input-code-3" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill"></div>
+    <div data-v-3b9c7fe2="" class="input-wrapper maz:relative maz:h-[4em] maz:w-[4em] maz:overflow-hidden maz:rounded-md maz:border maz:border-solid maz:border-divider maz:dark:border-divider-400 maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:bg-surface-400"><input data-v-3b9c7fe2="" id="m-input-code-4" type="text" name="m-input-code-4" minlength="1" maxlength="1" inputmode="numeric" pattern="[0-9]{1}" autocomplete="do-not-autofill"></div>
+  </div><span data-v-3b9c7fe2="" class="m-input-code__hint maz:text-sm maz:text-muted"></span>
 </fieldset>"
 `;

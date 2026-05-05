@@ -1,0 +1,22 @@
+/*
+ * Breakpoint bridge.
+ *
+ * Maz-UI uses a three-tier scale (mob-*, tab-*, lap-*) in addition to the
+ * Tailwind defaults (sm, md, lg, xl, 2xl). These are additive — the plain
+ * @theme form here adds them to the :root token list without clearing any
+ * default breakpoint.
+ */
+@theme {
+  --breakpoint-mob-s: 320px;
+  --breakpoint-mob-m: 425px;
+  --breakpoint-mob-l: 576px;
+  --breakpoint-tab-s: 640px;
+  --breakpoint-tab-m: 768px;
+  --breakpoint-tab-l: 992px;
+  --breakpoint-lap-s: 1024px;
+  --breakpoint-lap-m: 1280px;
+  --breakpoint-lap-l: 1366px;
+  --breakpoint-lap-xl: 1440px;
+  --breakpoint-lap-2xl: 1680px;
+  --breakpoint-lap-3xl: 1920px;
+}
