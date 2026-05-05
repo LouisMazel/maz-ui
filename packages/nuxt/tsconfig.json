@@ -9,7 +9,7 @@
     "../node/**/*",
     "../themes/**/*",
     "../translations/**/*",
-    "../codemod/**/*",
+    "../upgrade/**/*",
     "../mcp/**/*",
     "../icons/**/*",
     "../eslint-config/**/*",

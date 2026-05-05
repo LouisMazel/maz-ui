@@ -199,7 +199,7 @@ ignore:
   - '**/types/**'
   - '**/index.ts'
   - 'packages/lib/src/tailwindcss/**'
-  - 'packages/codemod/**'
+  - 'packages/upgrade/**'
 
 # Component management (for monorepo)
 component_management:
