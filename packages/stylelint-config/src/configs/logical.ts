@@ -8,7 +8,7 @@ import type { StylelintConfig, StylelintRules } from '../types'
  *
  * @see https://github.com/Jordan-Hall/stylelint-use-logical-spec
  */
-export const LOGICAL_PLUGIN: StylelintConfig['plugins'] = ['stylelint-use-logical-spec']
+export const LOGICAL_PLUGIN = ['stylelint-use-logical-spec'] satisfies StylelintConfig['plugins']
 
 /**
  * Flag every physical property/value that has a logical equivalent.

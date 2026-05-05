@@ -40,7 +40,7 @@ const emits = defineEmits<{
   >
     <template #default="{ close }">
       <div
-        class="m-bottom-sheet__container maz:relative maz:bg-container maz:text-foreground maz:drop-shadow-md maz:shadow-elevation maz:w-full maz:px-12 maz:rounded-t-lg"
+        class="m-bottom-sheet__container maz:relative maz:w-full maz:rounded-t-lg maz:bg-container maz:px-12 maz:text-foreground maz:shadow-elevation maz:drop-shadow-md"
         :class="{
           '--padding': padding,
           'maz:py-6': padding,

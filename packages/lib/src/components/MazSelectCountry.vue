@@ -318,7 +318,7 @@ const flagUrl = computed(() => {
       </template>
       <template #default="{ option, isSelected }">
         <div
-          class="m-select-country__select__item maz:w-full maz:text-sm maz:flex maz:items-center maz:gap-2 maz:truncate"
+          class="m-select-country__select__item maz:flex maz:w-full maz:items-center maz:gap-2 maz:truncate maz:text-sm"
           :class="{
             'm-select-country__select__item--selected': isSelected,
           }"
@@ -343,7 +343,7 @@ const flagUrl = computed(() => {
                 class="maz:size-5 maz:rounded-md"
                 img-class="maz:rounded-md maz:h-5 maz:w-5"
               />
-              <span v-else class="m-select-country__select__item__list-flag maz:text-primary-foreground/80 maz:text-xs maz:size-5 maz:flex maz:flex-center maz:rounded-full maz:bg-primary-500 maz:leading-none">
+              <span v-else class="m-select-country__select__item__list-flag maz:flex maz:size-5 maz:flex-center maz:rounded-full maz:bg-primary-500 maz:text-xs maz:leading-none maz:text-primary-foreground/80">
                 {{ option.code }}
               </span>
             </slot>

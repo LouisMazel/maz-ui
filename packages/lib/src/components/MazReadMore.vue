@@ -152,7 +152,7 @@ onMounted(() => {
 <template>
   <div
     :id="instanceId"
-    class="m-read-more m-reset-css maz:w-full maz:flex maz:flex-col maz:gap-1"
+    class="m-read-more m-reset-css maz:flex maz:w-full maz:flex-col maz:gap-1"
   >
     <!-- Hidden element to measure slot content -->
     <div

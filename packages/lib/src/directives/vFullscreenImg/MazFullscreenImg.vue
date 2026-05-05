@@ -394,7 +394,7 @@ onBeforeUnmount(() => {
     <button
       v-if="loadedOnce && hasMultipleInstances"
       type="button"
-      class="m-fullscreen-btn maz:absolute maz:z-15 maz:flex maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200 maz:inset-e-0 maz:top-1/2 maz:h-screen maz:bg-transparent maz:-translate-y-1/2 maz:transform maz:items-center maz:justify-end --next"
+      class="m-fullscreen-btn --next maz:absolute maz:inset-e-0 maz:top-1/2 maz:z-15 maz:flex maz:h-screen maz:w-[7%] maz:min-w-[5em] maz:-translate-y-1/2 maz:transform maz:cursor-pointer maz:items-center maz:justify-end maz:bg-transparent maz:p-4 maz:transition-colors maz:duration-200"
       @click.stop="nextPreviousImage('next')"
     >
       <MazIcon :icon="MazChevronLeft" class="maz:rotate-180" />
@@ -402,17 +402,17 @@ onBeforeUnmount(() => {
     <button
       v-if="loadedOnce && hasMultipleInstances"
       type="button"
-      class="m-fullscreen-btn maz:absolute maz:z-15 maz:flex maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200 maz:left-0 maz:top-1/2 maz:h-screen maz:-translate-y-1/2 maz:bg-transparent maz:transform maz:items-center maz:justify-start --previous"
+      class="m-fullscreen-btn --previous maz:absolute maz:top-1/2 maz:left-0 maz:z-15 maz:flex maz:h-screen maz:w-[7%] maz:min-w-[5em] maz:-translate-y-1/2 maz:transform maz:cursor-pointer maz:items-center maz:justify-start maz:bg-transparent maz:p-4 maz:transition-colors maz:duration-200"
       @click.stop="nextPreviousImage('previous')"
     >
       <MazIcon :icon="MazChevronLeft" />
     </button>
 
-    <button type="button" class="m-fullscreen-btn maz:absolute maz:z-15 maz:flex maz:h-20 maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:p-4 maz:transition-colors maz:duration-200 maz:inset-e-0 maz:bg-transparent maz:top-0 maz:items-start maz:justify-end --close" @click="close">
+    <button type="button" class="m-fullscreen-btn --close maz:absolute maz:inset-e-0 maz:top-0 maz:z-15 maz:flex maz:h-20 maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:items-start maz:justify-end maz:bg-transparent maz:p-4 maz:transition-colors maz:duration-200" @click="close">
       <MazIcon :icon="MazXMark" />
     </button>
 
-    <div class="m-fullscreen-img-scroller maz:flex maz:h-screen maz:w-screen maz:overflow-auto maz:flex-center">
+    <div class="m-fullscreen-img-scroller maz:flex maz:h-screen maz:w-screen maz:flex-center maz:overflow-auto">
       <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions, vuejs-accessibility/click-events-have-key-events -->
       <img
         ref="ImgElement"
@@ -424,7 +424,7 @@ onBeforeUnmount(() => {
         @click.stop="zoom && toggleZoom()"
       >
 
-      <MazSpinner v-show="showLoader" class="m-fullscreen-img-loader maz:absolute maz:text-2xl maz:z-15" />
+      <MazSpinner v-show="showLoader" class="m-fullscreen-img-loader maz:absolute maz:z-15 maz:text-2xl" />
     </div>
   </div>
 </template>

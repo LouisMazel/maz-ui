@@ -31,15 +31,7 @@ export const mazUi: ThemePreset = {
     'space': DEFAULT_SPACE,
   },
   scales: {
-    rounded: {
-      'xs': '0.125rem',
-      'sm': '0.25rem',
-      'md': '0.7rem',
-      'lg': '1rem',
-      'xl': '1.5rem',
-      '2xl': '2rem',
-      '3xl': '3rem',
-    },
+    rounded: { md: '0.7rem' },
     shadow: DEFAULT_SHADOW,
   },
   components: {

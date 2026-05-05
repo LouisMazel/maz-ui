@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { color = 'background' } = defineProps<{
+const { color = 'surface' } = defineProps<{
   color?: string
 }>()
 

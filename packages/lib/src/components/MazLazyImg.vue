@@ -108,7 +108,7 @@ defineExpose({ onIntersecting, onLoading, onLoaded, onError })
       onLoaded,
       onError,
     }"
-    class="m-lazy-img-component m-reset-css maz:relative maz:inline-flex maz:align-top maz:flex-center"
+    class="m-lazy-img-component m-reset-css maz:relative maz:inline-flex maz:flex-center maz:align-top"
     :class="[
       {
         '--use-loader': !hideLoader,

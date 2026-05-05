@@ -1,20 +1,7 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "rootDir": ".",
-    "types": ["node", "vitest/globals"],
-    "strict": true,
-    "noFallthroughCasesInSwitch": true,
-    "outDir": "dist",
-    "sourceMap": true
-  },
-  "include": [
-    "src/**/*",
-    "build.config.ts"
+  "references": [
+    { "path": "./tsconfig.lib.json" },
+    { "path": "./tsconfig.test.json" }
   ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "tests"
-  ]
+  "files": []
 }

@@ -1,11 +1,28 @@
-import type { ThemeComponentBg, ThemeFoundation, ThemeScales } from '../types'
+import type { RoundedScaleKey, ThemeComponentBg, ThemeFoundation, ThemeScales } from '../types'
 
 /**
  * Defaults shared across the bundled presets. Each preset can spread these
- * and override the keys it cares about. `rounded` is intentionally NOT shared
- * — every preset declares its own scale anchored on its visual identity.
+ * and override the keys it cares about. The bundled presets only declare
+ * `scales.rounded.md` — the other rounded keys are filled at CSS-generation
+ * time via `calc(var(--maz-rounded-md) * DEFAULT_ROUNDED_RATIOS[key])`. A
+ * preset (or user override) may still set any rounded key to a literal value
+ * to opt out of the calc fallback for that key.
  */
 export const DEFAULT_SPACE: NonNullable<ThemeFoundation['space']> = '0.25rem'
+
+/**
+ * Multipliers used to derive the rounded scale from `md` when a key is not
+ * explicitly set. Anchored on `md = 1` (implicit). Picked to match the
+ * scale shared by `nova`, `obsidian` and `ocean`.
+ */
+export const DEFAULT_ROUNDED_RATIOS: Record<Exclude<RoundedScaleKey, 'md'>, number> = {
+  'xs': 0.25,
+  'sm': 0.5,
+  'lg': 1.5,
+  'xl': 2,
+  '2xl': 3,
+  '3xl': 4,
+}
 
 export const DEFAULT_SHADOW: ThemeScales['shadow'] = {
   sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',

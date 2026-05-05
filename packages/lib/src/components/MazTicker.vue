@@ -89,7 +89,7 @@ const cssVars = computed<CSSProperties>(() => ({
 
 <template>
   <div
-    class="m-ticker m-reset-css maz:flex maz:max-w-full maz:max-h-full"
+    class="m-ticker m-reset-css maz:flex maz:max-h-full maz:max-w-full"
     role="region"
     aria-roledescription="ticker"
     aria-label="Scrolling content"
@@ -109,7 +109,7 @@ const cssVars = computed<CSSProperties>(() => ({
     <slot name="before" />
 
     <div class="m-ticker-wrapper maz:relative maz:flex maz:overflow-hidden" :class="orientation === 'vertical' ? 'maz:flex-col' : ''">
-      <div v-if="overlay || hasSlotContent($slots['overlay-start'])" class="m-ticker-overlay maz:pointer-events-none maz:absolute maz:z-10 --start" :class="orientation === 'horizontal' ? 'maz:top-0 maz:bottom-0 maz:left-0' : 'maz:left-0 maz:right-0 maz:top-0'">
+      <div v-if="overlay || hasSlotContent($slots['overlay-start'])" class="m-ticker-overlay --start maz:pointer-events-none maz:absolute maz:z-10" :class="orientation === 'horizontal' ? 'maz:inset-y-0 maz:left-0' : 'maz:inset-x-0 maz:top-0'">
         <!-- @slot Custom overlay for the start edge (left in horizontal, top in vertical). Replaces default gradient. -->
         <slot name="overlay-start" />
       </div>
@@ -125,7 +125,7 @@ const cssVars = computed<CSSProperties>(() => ({
         <slot />
       </div>
 
-      <div v-if="overlay || hasSlotContent($slots['overlay-end'])" class="m-ticker-overlay maz:pointer-events-none maz:absolute maz:z-10 --end" :class="orientation === 'horizontal' ? 'maz:top-0 maz:bottom-0 maz:right-0' : 'maz:left-0 maz:right-0 maz:bottom-0'">
+      <div v-if="overlay || hasSlotContent($slots['overlay-end'])" class="m-ticker-overlay --end maz:pointer-events-none maz:absolute maz:z-10" :class="orientation === 'horizontal' ? 'maz:inset-y-0 maz:right-0' : 'maz:inset-x-0 maz:bottom-0'">
         <!-- @slot Custom overlay for the end edge (right in horizontal, bottom in vertical). Replaces default gradient. -->
         <slot name="overlay-end" />
       </div>

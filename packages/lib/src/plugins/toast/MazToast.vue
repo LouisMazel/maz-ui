@@ -343,7 +343,7 @@ onMounted(() => {
       <!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
       <button
         role="alert"
-        class="m-toast__button maz:relative maz:flex maz:w-full maz:items-center maz:gap-2 maz:self-center maz:rounded-md maz:ps-2 maz:pe-2 maz:shadow-md maz:transition maz:duration-300 maz:ease-in-out maz:overflow-hidden maz:border maz:backdrop-blur-xl"
+        class="m-toast__button maz:relative maz:flex maz:w-full maz:items-center maz:gap-2 maz:self-center maz:overflow-hidden maz:rounded-md maz:border maz:ps-2 maz:pe-2 maz:shadow-md maz:backdrop-blur-xl maz:transition maz:duration-300 maz:ease-in-out"
         :class="[TOAST_BUTTON_COLOR[type], BUTTON_POSITION_X[positionX]]"
         @mouseover="toggleTimer(true)"
         @mouseleave="toggleTimer(false)"
@@ -353,7 +353,7 @@ onMounted(() => {
       >
         <component :is="iconComponent" v-if="iconComponent" class="maz:text-2xl" />
 
-        <div class="m-toast__message maz:m-0 maz:text-start maz:font-medium maz:flex-1 maz:py-3" v-text="html ? undefined : message" v-html="html ? message : undefined" />
+        <div class="m-toast__message maz:m-0 maz:flex-1 maz:py-3 maz:text-start maz:font-medium" v-text="html ? undefined : message" v-html="html ? message : undefined" />
 
         <MazBtn
           v-for="(toastButton, index) in internalButtons"
@@ -382,7 +382,7 @@ onMounted(() => {
       </button>
       <!-- eslint-enable vuejs-accessibility/mouse-events-have-key-events -->
       <button
-        class="m-toast__close maz:flex maz:rounded-full maz:p-0.5 maz:flex-center maz:absolute maz:border maz:-top-2 maz:backdrop-blur-xl"
+        class="m-toast__close maz:absolute maz:-top-2 maz:flex maz:flex-center maz:rounded-full maz:border maz:p-0.5 maz:backdrop-blur-xl"
         :class="[TOAST_CLOSE_COLOR[type], CLOSE_POSITION_X[positionX]]"
         @click.stop="click($event)"
       >

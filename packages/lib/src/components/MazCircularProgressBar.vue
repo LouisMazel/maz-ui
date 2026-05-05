@@ -172,7 +172,7 @@ onBeforeUnmount(() => observer?.disconnect())
 
 <template>
   <div
-    class="m-circular-progress-bar m-reset-css maz:relative maz:inline-flex maz:h-[1em] maz:w-[1em] maz:flex-center"
+    class="m-circular-progress-bar m-reset-css maz:relative maz:inline-flex maz:size-[1em] maz:flex-center"
     :style="[
       {
         '--animation-duration': animationDuration,
@@ -184,8 +184,8 @@ onBeforeUnmount(() => observer?.disconnect())
       },
     ]"
   >
-    <div class="outer maz:flex maz:h-full maz:w-full maz:rounded-full maz:flex-center">
-      <div class="inner maz:flex maz:h-[0.85em] maz:w-[0.85em] maz:rounded-full maz:flex-center">
+    <div class="outer maz:flex maz:size-full maz:flex-center maz:rounded-full">
+      <div class="inner maz:flex maz:size-[0.85em] maz:flex-center maz:rounded-full">
         <span v-if="slots.default">
           <!-- @slot Default slot - Replace the percaentage value -->
           <slot />

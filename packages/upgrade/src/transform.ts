@@ -6,11 +6,21 @@
 
 // --- 1. Import path renames ------------------------------------------------
 // `maz-ui/styles` → `maz-ui/style.css`, `maz-ui/aos-styles` → `maz-ui/aos.css`.
+// `from 'maz-ui'` / `import('maz-ui')` / `require('maz-ui')` → `'@maz-ui/utils'`.
+// The root re-export of `@maz-ui/utils` was removed in v5; subpaths
+// (`maz-ui/components`, `maz-ui/style.css`, …) are left untouched.
 
 const IMPORT_PATH = /(['"])maz-ui\/(styles|aos-styles)\1/g
+const ROOT_IMPORT_SPECIFIER = /(\bfrom\s+|\bimport\s*\(\s*|\brequire\s*\(\s*)(['"])maz-ui\2/g
 
 export function transformImports(content: string): string {
-  return content.replace(IMPORT_PATH, (_, q, sub) => `${q}maz-ui/${sub === 'styles' ? 'style.css' : 'aos.css'}${q}`)
+  return content
+    .replace(IMPORT_PATH, (_, q, sub) => `${q}maz-ui/${sub === 'styles' ? 'style.css' : 'aos.css'}${q}`)
+    .replace(ROOT_IMPORT_SPECIFIER, (_, prefix, quote) => `${prefix}${quote}@maz-ui/utils${quote}`)
+}
+
+export function hasMazUiRootImport(content: string): boolean {
+  return /(?:\bfrom\s+|\bimport\s*\(\s*|\brequire\s*\(\s*)(['"])maz-ui\1/.test(content)
 }
 
 // --- 2. Component prop / slot renames --------------------------------------
@@ -113,6 +123,25 @@ export function transformPresetColors(content: string): string {
   })
 }
 
+// --- 5b. Detection-only: foundation.radius -------------------------------
+// Detect `foundation: { … radius: … }` in TS/JS sources. The migration moves
+// the value to `scales.rounded.md`, but the rewrite is structural (key moved
+// across blocks) and unsafe to do via regex. The CLI surfaces a warning at
+// the end of the run so the user can move the value by hand. Scoped to a
+// brace-balanced `foundation` block to avoid false positives on unrelated
+// `radius` keys (e.g. CSS-in-JS, chart configs, …).
+
+const FOUNDATION_BLOCK = /\bfoundation\s*:\s*\{([^{}]*)\}/g
+const RADIUS_KEY_INSIDE = /(?:^|[\s,{])(['"]?)radius\1\s*:/
+
+export function hasFoundationRadius(content: string): boolean {
+  for (const match of content.matchAll(FOUNDATION_BLOCK)) {
+    if (RADIUS_KEY_INSIDE.test(match[1]))
+      return true
+  }
+  return false
+}
+
 // --- 6. Dependency version bumps in package.json ---------------------------
 // Bumps every `maz-ui` and `@maz-ui/*` entry in `dependencies`,
 // `devDependencies` and `peerDependencies` to the v5 target range. Workspace,
@@ -121,6 +150,7 @@ export function transformPresetColors(content: string): string {
 
 const MAZ_UI_PKG = /^(?:maz-ui|@maz-ui\/.+)$/
 const TARGET_VERSION = '^5.0.0'
+const UTILS_PKG = '@maz-ui/utils'
 const PROTECTED_PREFIX = /^(?:workspace|link|file|portal|npm|http|https|git\+|github):/
 
 function shouldBump(name: string, range: string): boolean {
@@ -139,8 +169,38 @@ function detectIndent(content: string): string | number {
 }
 
 const DEP_FIELDS = ['dependencies', 'devDependencies', 'peerDependencies'] as const
+type DepField = typeof DEP_FIELDS[number]
 
-export function transformDeps(content: string): string {
+function getDepMap(pkg: Record<string, unknown>, field: DepField): Record<string, unknown> | undefined {
+  const deps = pkg[field]
+  if (!deps || typeof deps !== 'object' || Array.isArray(deps))
+    return undefined
+  return deps as Record<string, unknown>
+}
+
+function packageHasUtils(pkg: Record<string, unknown>): boolean {
+  return DEP_FIELDS.some((field) => {
+    const map = getDepMap(pkg, field)
+    return !!map && UTILS_PKG in map
+  })
+}
+
+function findMazUiHostField(pkg: Record<string, unknown>): DepField | undefined {
+  for (const field of DEP_FIELDS) {
+    const map = getDepMap(pkg, field)
+    if (!map)
+      continue
+    if (Object.keys(map).some(k => k === 'maz-ui' || k.startsWith('@maz-ui/')))
+      return field
+  }
+  return undefined
+}
+
+export interface TransformDepsOptions {
+  addUtils?: boolean
+}
+
+export function transformDeps(content: string, options: TransformDepsOptions = {}): string {
   let pkg: Record<string, unknown>
   try {
     pkg = JSON.parse(content)
@@ -153,10 +213,9 @@ export function transformDeps(content: string): string {
 
   let changed = false
   for (const field of DEP_FIELDS) {
-    const deps = pkg[field]
-    if (!deps || typeof deps !== 'object' || Array.isArray(deps))
+    const map = getDepMap(pkg, field)
+    if (!map)
       continue
-    const map = deps as Record<string, unknown>
     for (const [name, range] of Object.entries(map)) {
       if (typeof range !== 'string')
         continue
@@ -164,6 +223,15 @@ export function transformDeps(content: string): string {
         map[name] = TARGET_VERSION
         changed = true
       }
+    }
+  }
+
+  if (options.addUtils && !packageHasUtils(pkg)) {
+    const host = findMazUiHostField(pkg)
+    if (host) {
+      const map = getDepMap(pkg, host)!
+      map[UTILS_PKG] = TARGET_VERSION
+      changed = true
     }
   }
 
@@ -183,6 +251,7 @@ export const ALL_GROUPS: readonly TransformGroup[] = ['imports', 'props', 'css',
 
 export interface TransformOptions {
   groups?: readonly TransformGroup[]
+  addUtilsDep?: boolean
 }
 
 export function transformFile(filename: string, content: string, options: TransformOptions = {}): string {
@@ -215,7 +284,7 @@ export function transformFile(filename: string, content: string, options: Transf
   }
 
   if (enabled('deps') && isPackageJson)
-    out = transformDeps(out)
+    out = transformDeps(out, { addUtils: options.addUtilsDep })
 
   return out
 }

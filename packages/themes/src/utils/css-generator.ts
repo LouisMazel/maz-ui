@@ -1,5 +1,6 @@
-import type { DarkModeStrategy, ThemeColors, ThemeFoundation, ThemeMode, ThemePreset } from '../types'
+import type { DarkModeStrategy, RoundedScaleKey, ThemeColors, ThemeFoundation, ThemeMode, ThemePreset } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
+import { DEFAULT_ROUNDED_RATIOS } from '../presets/_defaults'
 import { normalizeColor } from './color-parser'
 import { generateColorScale } from './color-utils'
 
@@ -126,13 +127,21 @@ function generateVariablesBlock({
   return `\n  ${selector} {\n${content}\n  }\n`
 }
 
+const ROUNDED_KEYS: readonly RoundedScaleKey[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']
+
 function generateScaleVariables(scales: ThemePreset['scales'], prefix: string): string[] {
   const lines: string[] = []
 
-  Object.entries(scales.rounded ?? {}).forEach(([key, value]) => {
-    if (value)
+  for (const key of ROUNDED_KEYS) {
+    const value = scales.rounded?.[key]
+    if (value) {
       lines.push(`  --${prefix}-rounded-${key}: ${value};`)
-  })
+    }
+    else if (key !== 'md') {
+      const ratio = DEFAULT_ROUNDED_RATIOS[key]
+      lines.push(`  --${prefix}-rounded-${key}: calc(var(--${prefix}-rounded-md) * ${ratio});`)
+    }
+  }
 
   Object.entries(scales.shadow ?? {}).forEach(([key, value]) => {
     if (value)

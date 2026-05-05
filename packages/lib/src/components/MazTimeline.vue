@@ -382,7 +382,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
         :style="getStateStyle(getStepState(step, index))"
         v-on="clickable ? { click: () => onStepClick(step, index), keydown: (e: KeyboardEvent) => onStepKeydown(e, step, index) } : {}"
       >
-        <div class="m-timeline-indicator maz:flex maz:shrink-0 maz:items-center maz:justify-center" :class="ROUNDED_CLASS[roundedSize]" aria-hidden="true">
+        <div class="m-timeline-indicator maz:flex maz:shrink-0 maz:flex-center" :class="ROUNDED_CLASS[roundedSize]" aria-hidden="true">
           <!--
             @slot indicator - Custom content for the step indicator circle
             @binding {MazTimelineItem} step - The step data

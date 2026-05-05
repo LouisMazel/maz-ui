@@ -39,7 +39,7 @@ onUnmounted(() => {
 <template>
   <Teleport :to="teleportSelector">
     <div
-      class="m-fullscreen-loader m-reset-css maz:fixed maz:inset-0 maz:z-default-backdrop maz:flex maz:flex-col maz:gap-2 maz:bg-overlay/5 maz:text-center maz:backdrop-blur-sm maz:flex-center"
+      class="m-fullscreen-loader m-reset-css maz:fixed maz:inset-0 maz:z-default-backdrop maz:flex maz:flex-col maz:flex-center maz:gap-2 maz:bg-overlay/5 maz:text-center maz:backdrop-blur-sm"
       v-bind="$attrs"
     >
       <MazSpinner :color="color" :size="size" />

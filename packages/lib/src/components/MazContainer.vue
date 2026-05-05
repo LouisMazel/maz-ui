@@ -118,7 +118,7 @@ const ROUNDED_CLASS = {
   >
     <!-- @slot Replace the header -->
     <slot name="header">
-      <div v-if="title || hasSlotContent($slots.title)" class="m-container__header maz:w-full maz:flex maz:items-center maz:justify-start maz:gap-2" :class="{ 'maz:px-4 maz:py-3': padding, 'maz:border-b maz:border-divider': bordered }">
+      <div v-if="title || hasSlotContent($slots.title)" class="m-container__header maz:flex maz:w-full maz:items-center maz:justify-start maz:gap-2" :class="{ 'maz:px-4 maz:py-3': padding, 'maz:border-b maz:border-divider': bordered }">
         <!-- @slot icon-start - inline-start edge of the header (left in LTR, right in RTL) -->
         <slot name="icon-start">
           <MazIcon v-if="startIconProps" v-bind="startIconProps" />
