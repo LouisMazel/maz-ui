@@ -5,11 +5,7 @@ export default defineConfig(
     formatters: true,
     typescript: true,
     sonarjs: true,
-    ignores: ['README.md', 'LICENSE', 'dist'],
-    rules: {
-      // CLI output is the tool's interface, not accidental debug logging.
-      'no-console': 'off',
-    },
+    ignores: ['LICENSE', 'dist'],
   },
   {
     // Codemod regexes are intentionally complex (they parse Tailwind token
@@ -20,8 +16,6 @@ export default defineConfig(
       'sonarjs/slow-regex': 'off',
       'sonarjs/regex-complexity': 'off',
       'regexp/no-super-linear-backtracking': 'off',
-      'regexp/no-misleading-capturing-group': 'off',
-      'regexp/no-useless-non-capturing-group': 'off',
     },
   },
 )

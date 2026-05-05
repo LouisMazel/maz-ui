@@ -1,8 +1,8 @@
 {
-  "name": "@maz-ui/codemod",
+  "name": "@maz-ui/upgrade",
   "type": "module",
   "version": "5.0.0-beta.0",
-  "description": "Automated source rewrites for migrating a project from Maz-UI v4 (Tailwind v3) to v5 (Tailwind v4).",
+  "description": "Automated source rewrites for migrating a project from Maz-UI v4 to v5.",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
   "repository": {
@@ -12,10 +12,9 @@
   "bugs": "https://github.com/LouisMazel/maz-ui/issues",
   "keywords": [
     "maz-ui",
-    "codemod",
+    "upgrade",
     "migration",
-    "tailwindcss",
-    "tailwind-v4"
+    "v5"
   ],
   "sideEffects": false,
   "publishConfig": {
@@ -30,7 +29,7 @@
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "bin": {
-    "maz-ui-codemod": "./dist/cli.mjs"
+    "maz-ui-upgrade": "./dist/cli.mjs"
   },
   "files": [
     "LICENSE",
@@ -52,7 +51,8 @@
     "lint:fix": "pnpm lint --fix"
   },
   "dependencies": {
-    "glob": "^13.0.6"
+    "@maz-ui/node": "workspace:*",
+    "globby": "^16.2.0"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
