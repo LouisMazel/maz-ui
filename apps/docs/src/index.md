@@ -13,23 +13,26 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
 
 <section class="vp-raw maz:pt-8">
   <MazAnimatedElement :delay="0" class="maz:w-full">
-    <a href="https://relizy.dev" target="_blank" rel="noopener" class="maz:block maz:no-underline">
-      <MazCardSpotlight color="secondary" content-class="maz:flex maz:flex-col maz:tab-m:flex-row maz:gap-4 maz:items-start maz:tab-m:items-center maz:w-full" class="maz:w-full" :inner-opacity="0.70">
-        <img src="https://raw.githubusercontent.com/LouisMazel/relizy/refs/heads/main/resources/logo.svg" alt="Relizy logo" class="maz:h-14 maz:w-14 maz:shrink-0" />
-        <div class="maz:flex-1 maz:flex maz:flex-col maz:gap-1 maz:items-start">
-          <MazBadge color="primary" class="maz:text-xs" size="xs">
-            <MazSparkles class="maz:mr-1" /> New
-          </MazBadge>
-          <h3 class="maz:text-lg maz:font-semibold maz:m-0">Relizy.dev — Ship releases in one command</h3>
-          <p class="maz:dark:text-gray-300 maz:text-muted maz:text-sm maz:m-0">
-            Automate versioning, changelogs, Git tagging & publishing to npm, GitHub & GitLab — built for monorepos and single packages.
-          </p>
-        </div>
-        <MazBtn href="https://relizy.dev" color="secondary" size="sm" class="maz:w-full maz:tab-m:w-auto maz:shrink-0" target="_blank" :right-icon="MazArrowTopRightOnSquare">
-          Discover Relizy
+    <MazCardSpotlight color="primary" content-class="maz:flex maz:flex-col maz:tab-m:flex-row maz:gap-4 maz:items-start maz:tab-m:items-center maz:w-full" class="maz:w-full" :inner-opacity="0.70">
+      <MazIcon icon="/logo.svg" size="4rem" />
+      <div class="maz:flex-1 maz:flex maz:flex-col maz:gap-1 maz:items-start">
+        <MazBadge color="primary" class="maz:text-xs" size="xs">
+          <MazSparkles class="maz:mr-1" /> v5 released
+        </MazBadge>
+        <h3 class="maz:text-lg maz:font-semibold maz:m-0">Maz-UI v5 — Theming, perfected</h3>
+        <p class="maz:dark:text-gray-300 maz:text-muted maz:text-sm maz:m-0">
+          OKLCh color system, RTL-correct components, lighter chart, simpler icon API — and a one-shot CLI to handle the migration.
+        </p>
+      </div>
+      <div class="maz:flex maz:flex-col maz:mob-l:flex-row maz:gap-2 maz:w-full maz:tab-m:w-auto maz:shrink-0">
+        <MazBtn href="/guide/migration-v5" color="primary" size="sm" class="maz:w-full maz:mob-l:w-auto">
+          Migrate to v5
         </MazBtn>
-      </MazCardSpotlight>
-    </a>
+        <MazBtn href="/blog/v5" color="secondary" size="sm" class="maz:w-full maz:mob-l:w-auto">
+          Read announcement
+        </MazBtn>
+      </div>
+    </MazCardSpotlight>
   </MazAnimatedElement>
 </section>
 
@@ -160,6 +163,28 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         </MazTabsContentItem>
       </MazTabsContent>
     </MazTabs>
+  </MazAnimatedElement>
+</section>
+
+<section class="vp-raw maz:mb-12">
+  <MazAnimatedElement :delay="0" class="maz:w-full">
+    <a href="https://relizy.dev" target="_blank" rel="noopener" class="maz:block maz:no-underline">
+      <MazCardSpotlight color="secondary" content-class="maz:flex maz:flex-col maz:tab-m:flex-row maz:gap-4 maz:items-start maz:tab-m:items-center maz:w-full" class="maz:w-full" :inner-opacity="0.70">
+        <img src="https://raw.githubusercontent.com/LouisMazel/relizy/refs/heads/main/resources/logo.svg" alt="Relizy logo" class="maz:h-14 maz:w-14 maz:shrink-0" />
+        <div class="maz:flex-1 maz:flex maz:flex-col maz:gap-1 maz:items-start">
+          <MazBadge color="primary" class="maz:text-xs" size="xs">
+            <MazSparkles class="maz:mr-1" /> New
+          </MazBadge>
+          <h3 class="maz:text-lg maz:font-semibold maz:m-0">Relizy.dev — Ship releases in one command</h3>
+          <p class="maz:dark:text-gray-300 maz:text-muted maz:text-sm maz:m-0">
+            Automate versioning, changelogs, Git tagging & publishing to npm, GitHub & GitLab — built for monorepos and single packages.
+          </p>
+        </div>
+        <MazBtn href="https://relizy.dev" color="secondary" size="sm" class="maz:w-full maz:tab-m:w-auto maz:shrink-0" target="_blank" :right-icon="MazArrowTopRightOnSquare">
+          Discover Relizy
+        </MazBtn>
+      </MazCardSpotlight>
+    </a>
   </MazAnimatedElement>
 </section>
 
