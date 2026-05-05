@@ -676,9 +676,9 @@ describe('given MazPickerCalendarGrid component', () => {
         props: defaultProps,
       })
 
-      // Move to next month
       await wrapper.setProps({ calendarDate: '2024-02-15' })
-      // The transition group should update
+      await new Promise(resolve => setTimeout(resolve, 450))
+
       expect(wrapper.find('.maz-picker-calendar-grid').exists()).toBe(true)
     })
 
@@ -691,6 +691,8 @@ describe('given MazPickerCalendarGrid component', () => {
       })
 
       await wrapper.setProps({ calendarDate: '2024-02-15' })
+      await new Promise(resolve => setTimeout(resolve, 450))
+
       expect(wrapper.find('.maz-picker-calendar-grid').exists()).toBe(true)
     })
   })

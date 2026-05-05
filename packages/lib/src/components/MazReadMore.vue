@@ -152,13 +152,13 @@ onMounted(() => {
 <template>
   <div
     :id="instanceId"
-    class="m-read-more m-reset-css"
+    class="m-read-more m-reset-css maz:w-full maz:flex maz:flex-col maz:gap-1"
   >
     <!-- Hidden element to measure slot content -->
     <div
       v-if="hasSlot && maxChars"
       ref="hiddenSlotRef"
-      class="m-read-more__hidden"
+      class="m-read-more__hidden maz:absolute maz:overflow-hidden"
       aria-hidden="true"
     >
       <slot />
@@ -169,7 +169,7 @@ onMounted(() => {
       ref="contentRef"
       class="m-read-more__content"
       :class="{
-        'm-read-more__content--truncated': !isExpanded,
+        'm-read-more__content--truncated maz:relative': !isExpanded,
       }"
       :style="truncateStyle"
       role="region"
@@ -206,19 +206,9 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.m-read-more {
-  @apply maz-w-full maz-flex maz-flex-col maz-gap-1;
-
-  &__hidden {
-    @apply maz-absolute maz-overflow-hidden;
-
-    width: 1px;
-    height: 1px;
-    clip-path: inset(50%);
-  }
-
-  &__content--truncated {
-    @apply maz-relative;
-  }
+.m-read-more__hidden {
+  inline-size: 1px;
+  block-size: 1px;
+  clip-path: inset(50%);
 }
 </style>

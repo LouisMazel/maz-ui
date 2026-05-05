@@ -4,14 +4,14 @@ import { mount } from '@vue/test-utils'
 
 describe('given MazAlert component', () => {
   describe('when rendered with default props', () => {
-    it('then it renders with info color, bordered, and base rounded', () => {
+    it('then it renders with info color, bordered, and md rounded', () => {
       const wrapper = mount(MazAlert, {
         props: {
           title: 'Alert title',
         },
       })
 
-      expect(wrapper.classes()).toContain('--rounded-base')
+      expect(wrapper.classes()).toContain('--rounded-md')
       expect(wrapper.classes()).toContain('--bordered')
       expect(wrapper.attributes('role')).toBe('alert')
     })
@@ -182,7 +182,6 @@ describe('given MazAlert component', () => {
       'none',
       'sm',
       'md',
-      'base',
       'lg',
       'xl',
       '2xl',

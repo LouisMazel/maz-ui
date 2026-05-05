@@ -97,7 +97,7 @@ describe('given MazRadioButtons component', () => {
 
       const optionElements = wrapper.findAll('.m-radio-buttons__items')
       optionElements.forEach((option) => {
-        expect(option.classes()).toContain('--elevation')
+        expect(option.classes()).toContain('maz:shadow-elevation', 'maz:drop-shadow-md')
       })
     })
   })

@@ -292,15 +292,15 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
 </script>
 
 <template>
-  <div ref="MazDatePickerTime" class="m-date-picker-time" :class="{ '--has-date': hasDate }">
+  <div ref="MazDatePickerTime" class="m-date-picker-time maz:relative maz:flex" :class="{ '--has-date maz:border-s maz:border-divider': hasDate }">
     <div
       v-for="({ values, identifier }, i) in columns"
       :key="i"
-      class="m-date-picker-time__column"
+      class="m-date-picker-time__column maz:flex maz:flex-col maz:overflow-y-auto maz:px-1"
       :class="[`m-date-picker-time__column__${identifier}`]"
     >
-      <div :style="{ height: `${spacerHeight}px` }" class="m-date-picker-time__column__spacer" />
-      <div class="m-date-picker-time__column__items">
+      <div :style="{ height: `${spacerHeight}px` }" class="m-date-picker-time__column__spacer maz:w-full maz:flex-none" />
+      <div class="m-date-picker-time__column__items maz:flex maz:flex-col">
         <MazBtn
           v-for="({ value, label, isDisabled }, unitIndex) in values"
           :key="unitIndex"
@@ -314,57 +314,38 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
           {{ label }}
         </MazBtn>
       </div>
-      <div :style="{ height: `${spacerHeight}px` }" class="m-date-picker-time__column__spacer" />
+      <div :style="{ height: `${spacerHeight}px` }" class="m-date-picker-time__column__spacer maz:w-full maz:flex-none" />
     </div>
   </div>
 </template>
 
 <style scoped>
-.m-date-picker-time {
-  @apply maz-relative maz-flex;
+@reference "../../tailwindcss/tailwind.css";
 
-  max-height: 18.75rem;
+.m-date-picker-time {
+  max-block-size: 18.75rem;
 
   &:not(.--has-date) {
-    max-height: 10rem;
-  }
-
-  &.--has-date {
-    @apply maz-border-s maz-border-divider;
+    max-block-size: 10rem;
   }
 
   &::before {
     content: '';
     transform: translateY(-50%);
 
-    @apply maz-absolute maz-left-0 maz-end-0 maz-top-1/2
-        maz-mx-auto maz-h-9 maz-border-b maz-border-t maz-border-divider;
+    @apply maz:absolute maz:left-0 maz:inset-e-0 maz:top-1/2 maz:mx-auto maz:h-9 maz:border-b maz:border-t maz:border-divider;
   }
 
   &__column {
-    @apply maz-flex maz-flex-col maz-overflow-y-auto maz-px-1;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 
-    /* Hide scrollbar for webkit browsers (Chrome, Safari, Edge) */
     &::-webkit-scrollbar {
       display: none;
     }
 
-    /* Hide scrollbar for Firefox */
-    scrollbar-width: none;
-
-    /* Hide scrollbar for IE and Edge legacy */
-    -ms-overflow-style: none;
-
-    &__items {
-      @apply maz-flex maz-flex-col;
-
-      > button {
-        @apply maz-z-2 maz-flex-none;
-      }
-    }
-
-    &__spacer {
-      @apply maz-w-full maz-flex-none;
+    &__items > button {
+      @apply maz:z-2 maz:flex-none;
     }
   }
 }

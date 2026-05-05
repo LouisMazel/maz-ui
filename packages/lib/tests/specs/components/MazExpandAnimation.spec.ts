@@ -1,5 +1,6 @@
 import MazExpandAnimation from '@components/MazExpandAnimation.vue'
-import { shallowMount } from '@vue/test-utils'
+import { mount, shallowMount } from '@vue/test-utils'
+import { nextTick } from 'vue'
 
 describe('mazExpandAnimation', () => {
   it('renders with default props', () => {
@@ -77,5 +78,52 @@ describe('mazExpandAnimation', () => {
     })
 
     expect(wrapper2.find('.m-expand-animation__inner').classes('--overflow-hidden')).toBe(true)
+  })
+
+  it('applies the duration and timing-function CSS variables from props', () => {
+    const wrapper = shallowMount(MazExpandAnimation, {
+      props: {
+        duration: '500ms',
+        timingFunction: 'ease-out',
+      },
+    })
+
+    const style = wrapper.attributes('style')
+    expect(style).toContain('--expand-animation-duration: 500ms')
+    expect(style).toContain('--expand-animation-timing-function: ease-out')
+  })
+
+  it('toggles overflow on transitionstart and transitionend events', async () => {
+    const wrapper = mount(MazExpandAnimation, {
+      attachTo: document.body,
+      props: { modelValue: true },
+      slots: { default: '<div>x</div>' },
+    })
+    await nextTick()
+
+    const root = wrapper.find('.m-expand-animation').element
+    const inner = wrapper.find('.m-expand-animation__inner')
+
+    expect(inner.classes('--overflow-hidden')).toBe(false)
+
+    await wrapper.setProps({ modelValue: false })
+    root.dispatchEvent(new Event('transitionstart'))
+    await nextTick()
+    expect(inner.classes('--overflow-hidden')).toBe(true)
+
+    await wrapper.setProps({ modelValue: true })
+    root.dispatchEvent(new Event('transitionend'))
+    await nextTick()
+    expect(inner.classes('--overflow-hidden')).toBe(false)
+
+    wrapper.unmount()
+  })
+
+  it('unmounts cleanly after transition listeners were attached', () => {
+    const wrapper = mount(MazExpandAnimation, {
+      attachTo: document.body,
+      props: { modelValue: false },
+    })
+    expect(() => wrapper.unmount()).not.toThrow()
   })
 })

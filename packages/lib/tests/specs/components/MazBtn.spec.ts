@@ -1,7 +1,7 @@
 import MazBtn from '@components/MazBtn.vue'
 import MazIcon from '@components/MazIcon.vue'
 import MazSpinner from '@components/MazSpinner.vue'
-import { shallowMount } from '@vue/test-utils'
+import { mount, shallowMount } from '@vue/test-utils'
 
 describe('mazBtn.vue', () => {
   it('renders correctly with default props', () => {
@@ -41,9 +41,9 @@ describe('mazBtn.vue', () => {
     expect(wrapper.findComponent(MazIcon).exists()).toBe(true)
   })
 
-  it('renders with a left icon when leftIcon prop is provided', async () => {
+  it('renders with a start icon when startIcon prop is provided', async () => {
     const wrapper = shallowMount(MazBtn, {
-      props: { leftIcon: 'arrow-left' },
+      props: { startIcon: 'arrow-left' },
     })
 
     await vi.dynamicImportSettled()
@@ -51,14 +51,42 @@ describe('mazBtn.vue', () => {
     expect(wrapper.findComponent(MazIcon).exists()).toBe(true)
   })
 
-  it('renders with a right icon when rightIcon prop is provided', async () => {
+  it('renders with an end icon when endIcon prop is provided', async () => {
     const wrapper = shallowMount(MazBtn, {
-      props: { rightIcon: 'arrow-right' },
+      props: { endIcon: 'arrow-right' },
     })
 
     await vi.dynamicImportSettled()
 
     expect(wrapper.findComponent(MazIcon).exists()).toBe(true)
+  })
+
+  it('forwards a full MazIconProps object on startIcon', async () => {
+    const wrapper = mount(MazBtn, {
+      props: {
+        startIcon: { icon: '/star.svg', size: 'xl', title: 'Star' },
+      },
+    })
+    await vi.dynamicImportSettled()
+
+    const icon = wrapper.findComponent(MazIcon)
+    expect(icon.exists()).toBe(true)
+    expect(icon.props('icon')).toBe('/star.svg')
+    expect(icon.props('title')).toBe('Star')
+    expect(icon.props('size')).toBe('xl')
+  })
+
+  it('lets the MazIconProps form override the button-derived size default', async () => {
+    const wrapper = mount(MazBtn, {
+      props: {
+        size: 'sm',
+        endIcon: { icon: '/x.svg', size: 'lg' },
+      },
+    })
+    await vi.dynamicImportSettled()
+
+    const icon = wrapper.findComponent(MazIcon)
+    expect(icon.props('size')).toBe('lg')
   })
 
   it('renders with a loader when loading prop is true', () => {
@@ -91,10 +119,10 @@ describe('mazBtn.vue', () => {
     expect(wrapper.html()).toContain('<span>Click me</span>')
   })
 
-  it('renders left icon slot content', async () => {
+  it('renders start icon slot content', async () => {
     const wrapper = shallowMount(MazBtn, {
       slots: {
-        'left-icon': '<svg name="arrow-left" />',
+        'start-icon': '<svg name="arrow-left" />',
       },
     })
 
@@ -103,10 +131,10 @@ describe('mazBtn.vue', () => {
     expect(wrapper.html()).toContain('<svg name="arrow-left"></svg>')
   })
 
-  it('renders right icon slot content', () => {
+  it('renders end icon slot content', () => {
     const wrapper = shallowMount(MazBtn, {
       slots: {
-        'right-icon': '<svg name="arrow-right" />',
+        'end-icon': '<svg name="arrow-right" />',
       },
     })
 

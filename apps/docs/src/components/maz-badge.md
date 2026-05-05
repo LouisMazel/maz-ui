@@ -138,46 +138,26 @@ const colors = [
 
 ### Size
 
+The `size` prop accepts one of the standardized `MazSize` values (`'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`). The default is `'md'`. Padding, line-height and dimensions all scale relative to the chosen font-size, so a single keyword controls the whole badge footprint.
+
 <br />
 
 <div class="flex space-between gap-05 items-center flex-wrap">
-  <MazBadge size="0.8rem">
-    0.8rem
-  </MazBadge>
-  <MazBadge size="1.2rem">
-    1.2rem
-  </MazBadge>
-  <MazBadge size="1.6rem">
-    1.6rem
-  </MazBadge>
-  <MazBadge size="2rem">
-    2rem
-  </MazBadge>
-  <MazBadge size="2.4rem">
-    2.4rem
+  <MazBadge v-for="size in sizes" :key="size" :size="size">
+    {{ size }}
   </MazBadge>
 </div>
 
 ```vue
 <script lang="ts" setup>
 import MazBadge from 'maz-ui/components/MazBadge'
+
+const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 </script>
 
 <template>
-  <MazBadge size="0.8rem">
-    0.8rem
-  </MazBadge>
-  <MazBadge size="1.2rem">
-    1.2rem
-  </MazBadge>
-  <MazBadge size="1.6rem">
-    1.6rem
-  </MazBadge>
-  <MazBadge size="2rem">
-    2rem
-  </MazBadge>
-  <MazBadge size="2.4rem">
-    2.4rem
+  <MazBadge v-for="size in sizes" :key="size" :size="size">
+    {{ size }}
   </MazBadge>
 </template>
 ```
@@ -187,7 +167,7 @@ import MazBadge from 'maz-ui/components/MazBadge'
 <br />
 
 <div class="flex space-between gap-05 items-center flex-wrap">
-  <MazBadge v-for="size in roundedSize" :key="size" :rounded-size="size" size="1.2rem">
+  <MazBadge v-for="size in roundedSize" :key="size" :rounded-size="size">
     {{ size }}
   </MazBadge>
 </div>
@@ -200,7 +180,7 @@ const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
 </script>
 
 <template>
-  <MazBadge v-for="size in roundedSize" :key="size" :rounded-size="size" size="1.2rem">
+  <MazBadge v-for="size in roundedSize" :key="size" :rounded-size="size">
     {{ size }}
   </MazBadge>
 </template>
@@ -219,6 +199,8 @@ const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
     'background',
     'transparent',
   ]
+
+  const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
 
   const roundedSize = ['none', 'sm', 'md', 'lg', 'xl', 'full']
 </script>

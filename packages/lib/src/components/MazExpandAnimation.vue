@@ -54,14 +54,14 @@ onUnmounted(() => {
 <template>
   <div
     ref="expandAnimationRef"
-    class="m-expand-animation m-reset-css"
+    class="m-expand-animation m-reset-css maz:max-w-full maz:overflow-x-auto"
     :class="{ 'm-expand-animation--expanded': isOpen }"
     :aria-hidden="!isOpen"
     role="region"
     :style="[{ '--expand-animation-duration': duration, '--expand-animation-timing-function': timingFunction }]"
   >
     <div
-      class="m-expand-animation__inner"
+      class="m-expand-animation__inner maz:max-w-full maz:overflow-x-auto"
       v-bind="$attrs"
       :class="{
         '--overflow-hidden': hasOverflowHidden,
@@ -74,16 +74,10 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-  .m-expand-animation {
+.m-expand-animation {
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows var(--expand-animation-duration) var(--expand-animation-timing-function);
-
-  @apply maz-max-w-full maz-overflow-x-auto;
-
-  &__inner {
-    @apply maz-max-w-full maz-overflow-x-auto;
-  }
 
   &__inner.--overflow-hidden {
     overflow: hidden;

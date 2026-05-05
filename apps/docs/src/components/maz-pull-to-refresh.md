@@ -28,8 +28,8 @@ async function pullToRefreshAction() {
 
 <template>
   <MazPullToRefresh
-    header-class="maz-bg-bg-dark maz-text-foreground-light"
-    class="maz-flex maz-min-h-screen maz-w-full maz-flex-col"
+    header-class="maz:bg-bg-dark maz:text-foreground-light"
+    class="maz:flex maz:min-h-screen maz:w-full maz:flex-col"
     :action="pullToRefreshAction"
     spinner-color="contrast"
     standalone-mode

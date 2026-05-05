@@ -1,33 +1,24 @@
 import type { Plugin } from 'postcss'
 import type { DefaultTheme, HeadConfig, UserConfig } from 'vitepress'
 import { dirname, join } from 'node:path'
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
-import {
-  buildSeparateThemeFiles,
-  CSS_ID,
-  mazUi,
-} from '@maz-ui/themes'
-import autoprefixer from 'autoprefixer'
-import postcssImport from 'postcss-import'
+import tailwindcssPostcss from '@tailwindcss/postcss'
 import postcssNested from 'postcss-nested'
 import postcssUrl from 'postcss-url'
-import tailwind from 'tailwindcss'
-import tailwindcssNesting from 'tailwindcss/nesting'
 import svgLoader from 'vite-svg-loader'
 import { defineConfig, postcssIsolateStyles } from 'vitepress'
 import { head, nav, sidebar } from './configs/index.mjs'
 
 import { getOgImage } from './og-image'
 
-const _dirname = dirname(fileURLToPath(import.meta.url))
+// VitePress sets NODE_ENV=development for `vitepress dev` and =production
+// for `vitepress build`. Use that to toggle the `monorepo:dev` resolve
+// condition so dev loads maz-ui src/ with HMR and prod consumes the dist.
+const isDev = process.env.NODE_ENV !== 'production'
 
-// Generate complete CSS
-const {
-  full,
-} = buildSeparateThemeFiles(mazUi, {
-  darkSelector: 'class',
-})
+const _dirname = dirname(fileURLToPath(import.meta.url))
 
 function pascalCaseToKebabCase(value: string): string {
   return value.replaceAll(/([\da-z])([A-Z])/g, '$1-$2').toLowerCase()
@@ -82,7 +73,7 @@ export default defineConfig<DefaultTheme.Config>({
 
   head: [
     ...head,
-    ['style', { id: CSS_ID, type: 'text/css' }, full],
+    // ['style', { id: CSS_ID, type: 'text/css' }, full],
   ] satisfies HeadConfig[],
 
   themeConfig: {
@@ -117,6 +108,14 @@ export default defineConfig<DefaultTheme.Config>({
   } satisfies DefaultTheme.Config,
 
   vite: {
+    // Resolve `monorepo:dev` first when developing so we consume maz-ui's
+    // raw src/ (with HMR), and fall back to the published dist for prod
+    // builds. Same trick as accor-core-library.
+    resolve: {
+      conditions: isDev
+        ? ['monorepo:dev', 'import', 'browser', 'module', 'default', 'require']
+        : ['import', 'browser', 'module', 'default', 'require'],
+    },
     build: {
       rollupOptions: {
         external: ['node:child_process', 'colorette'],
@@ -157,11 +156,12 @@ export default defineConfig<DefaultTheme.Config>({
       postcss: {
         plugins: [
           postcssUrl() as Plugin,
-          postcssNested(),
-          tailwindcssNesting() as Plugin,
-          postcssImport(),
-          autoprefixer(),
-          tailwind() as Plugin,
+          // Flatten postcss-nested `&-child` syntax in dev only — it ships
+          // in raw maz-ui SFCs loaded via the `monorepo:dev` resolve
+          // condition. Prod consumes the already-flattened dist, so it's
+          // a no-op there.
+          ...(isDev ? [postcssNested() as Plugin] : []),
+          tailwindcssPostcss() as Plugin,
           postcssIsolateStyles({
             includeFiles: [/vp-doc\.css/],
           }),

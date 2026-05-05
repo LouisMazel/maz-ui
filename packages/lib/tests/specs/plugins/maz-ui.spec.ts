@@ -64,7 +64,7 @@ describe('given MazUi plugin', () => {
     it('then it should install theme plugin with provided options', () => {
       const themeOptions = {
         preset: {} as any,
-        strategy: 'hybrid' as const,
+        strategy: 'runtime' as const,
         darkMode: 'class' as const,
       }
 
@@ -102,7 +102,7 @@ describe('given MazUi plugin', () => {
     it('then it should install both plugins with their respective options', () => {
       const themeOptions = {
         preset: {} as any,
-        strategy: 'hybrid' as const,
+        strategy: 'runtime' as const,
         darkMode: 'class' as const,
       }
 

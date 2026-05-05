@@ -29,7 +29,7 @@ const code = ref()
 
 ## Size
 
-<div class="maz-flex maz-flex-col maz-gap-2">
+<div class="maz:flex maz:flex-col maz:gap-2">
   <MazInputCode v-model="code" size="mini" />
   <MazInputCode v-model="code" size="xs" />
   <MazInputCode v-model="code" size="sm" />

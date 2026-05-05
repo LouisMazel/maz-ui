@@ -34,11 +34,11 @@ lastUpdated: false
       size: 'sm'
     }"
     :items="languagesOptions"
-    class="maz-max-h-80"
+    class="maz:max-h-80"
   >
     <template #item="{ item }">
-      <div class="maz-flex maz-w-full maz-items-center maz-justify-between maz-gap-2">
-        <span class="maz-capitalize">{{ item.label }}</span>
+      <div class="maz:flex maz:w-full maz:items-center maz:justify-between maz:gap-2">
+        <span class="maz:capitalize">{{ item.label }}</span>
         <MazBadge color="theme" outlined>
           {{ item.value }}
         </MazBadge>
@@ -66,11 +66,11 @@ lastUpdated: false
         size: 'sm'
       }"
       :items="languagesOptions"
-      class="maz-h-80"
+      class="maz:h-80"
     >
       <template #item="{ item }">
-        <div class="maz-flex maz-w-full maz-items-center maz-justify-between maz-gap-2">
-          <span class="maz-capitalize">{{ item.label }}</span>
+        <div class="maz:flex maz:w-full maz:items-center maz:justify-between maz:gap-2">
+          <span class="maz:capitalize">{{ item.label }}</span>
           <MazBadge color="theme" outlined>
             {{ item.value }}
           </MazBadge>
@@ -118,25 +118,25 @@ You can replace the default search function by providing a custom search functio
     :search-function="customEmployeeSearch"
     color="success"
     elevation
-    class="maz-max-h-96"
+    class="maz:max-h-96"
   >
     <template #item="{ item }">
-      <div class="maz-flex maz-w-full maz-items-center maz-gap-4">
-        <div class="maz-flex maz-h-10 maz-w-10 maz-flex-none maz-items-center maz-justify-center maz-rounded-full maz-bg-gradient-to-br maz-from-primary-500 maz-to-secondary-500 maz-text-white maz-font-semibold maz-text-lg">
+      <div class="maz:flex maz:w-full maz:items-center maz:gap-4">
+        <div class="maz:flex maz:h-10 maz:w-10 maz:flex-none maz:items-center maz:justify-center maz:rounded-full maz:bg-linear-to-br maz:from-primary-500 maz:to-secondary-500 maz:text-white maz:font-semibold maz:text-lg">
           {{ item.initials }}
         </div>
-        <div class="maz-flex maz-flex-1 maz-flex-col maz-gap-1">
-          <div class="maz-flex maz-items-center maz-gap-2">
-            <span class="maz-font-semibold maz-text-normal">{{ item.label }}</span>
-            <MazBadge :color="item.departmentColor" size="0.7em">
+        <div class="maz:flex maz:flex-1 maz:flex-col maz:gap-1">
+          <div class="maz:flex maz:items-center maz:gap-2">
+            <span class="maz:font-semibold maz:text-normal">{{ item.label }}</span>
+            <MazBadge :color="item.departmentColor" size="xs">
               {{ item.department }}
             </MazBadge>
           </div>
-          <span class="maz-text-muted maz-text-sm">{{ item.email }}</span>
+          <span class="maz:text-muted maz:text-sm">{{ item.email }}</span>
         </div>
-        <div class="maz-flex maz-flex-none maz-items-center maz-gap-1">
-          <MazIcon name="star" class="maz-text-warning-500" size="1rem" />
-          <span class="maz-text-sm maz-font-medium">{{ item.rating }}</span>
+        <div class="maz:flex maz:flex-none maz:items-center maz:gap-1">
+          <MazIcon icon="/star.svg" class="maz:text-warning-500" size="1rem" />
+          <span class="maz:text-sm maz:font-medium">{{ item.rating }}</span>
         </div>
       </div>
     </template>
@@ -180,7 +180,7 @@ You can replace the default search function by providing a custom search functio
             <span class="text-muted text-sm">{{ item.email }}</span>
           </div>
           <div class="flex flex-none items-center gap-1">
-            <MazIcon name="star" class="text-warning-500" size="1rem" />
+            <MazIcon icon="/star.svg" class="text-warning-500" size="1rem" />
             <span class="text-sm font-medium">{{ item.rating }}</span>
           </div>
         </div>
@@ -301,7 +301,7 @@ You can replace the default search function by providing a custom search functio
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { useDisplayNames } from 'maz-ui/src/composables/useDisplayNames'
+  import { useDisplayNames } from 'maz-ui/composables/useDisplayNames'
 
   // First demo variables
   const query = ref()

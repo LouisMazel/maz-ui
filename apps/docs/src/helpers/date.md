@@ -12,7 +12,7 @@ description: The module formatDate is a function that formats dates with the nat
 <MazInput v-model="dateValue" type="date" />
 
 <div
-  style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-background-300));"
+  style="padding: 16px; margin-top: 16px; background-color: var(--maz-surface-300);"
   class="flex flex-center rounded gap-05"
 >
   formatted value: <strong>{{ dateFormatted }}</strong>
@@ -20,7 +20,7 @@ description: The module formatDate is a function that formats dates with the nat
 
 ```vue
 <script lang="ts" setup>
-import { formatDate } from 'maz-ui'
+import { formatDate } from '@maz-ui/utils'
 import { computed, ref } from 'vue'
 
 const dateValue = ref('2022-02-01')
@@ -34,7 +34,7 @@ const dateFormatted = computed(() =>
   <MazInput v-model="dateValue" type="date" />
 
   <div
-    style="padding: 16px; margin-top: 16px; background-color: hsl(var(--maz-background-300));"
+    style="padding: 16px; margin-top: 16px; background-color: var(--maz-surface-300);"
   >
     {{ dateFormatted }}
   </div>
@@ -56,7 +56,7 @@ const DEFAULT_OPTIONS: Intl.DateTimeFormatOptions = {
 ```
 
 <script lang="ts" setup>
-  import { formatDate } from 'maz-ui'
+  import { formatDate } from '@maz-ui/utils'
   import { ref, computed } from 'vue'
 
   const dateValue = ref('2022-02-01')

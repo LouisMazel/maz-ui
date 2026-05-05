@@ -21,8 +21,8 @@ function generateColorScale(color: string) {
   const rootStyles = getComputedStyle(document.documentElement)
 
   return variants.map(variant => ({
-    bgColor: `hsl(var(--maz-${color}-${variant}))`,
-    textColor: `hsl(var(--maz-${color}-foreground, #FF0000))`,
+    bgColor: `var(--maz-${color}-${variant})`,
+    textColor: `var(--maz-${color}-foreground, #FF0000)`,
     color,
     key: variant,
     cssVarValue: rootStyles.getPropertyValue(`--maz-${color}-${variant}`),
@@ -35,27 +35,27 @@ const colorScale = computed(() => {
 </script>
 
 <template>
-  <div class="maz-flex maz-w-full maz-flex-col maz-gap-2">
-    <p class="maz-text-lg maz-font-semibold maz-cap-f">
+  <div class="maz:flex maz:w-full maz:flex-col maz:gap-2">
+    <p class="maz:text-lg maz:font-semibold maz:cap-f">
       {{ color }}
     </p>
 
-    <div class="maz-flex maz-w-full maz-gap-2">
+    <div class="maz:flex maz:w-full maz:gap-2">
       <div
         v-for="({ key, bgColor, textColor, cssVarValue }) in colorScale"
-        :key="key" class="maz-flex maz-min-h-20 maz-flex-1 maz-flex-col maz-gap-2"
+        :key="key" class="maz:flex maz:min-h-20 maz:flex-1 maz:flex-col maz:gap-2"
       >
         <div>
           <p>
             {{ key }}
           </p>
 
-          <p class="maz-text-muted-foreground maz-text-sm">
+          <p class="maz:text-muted-foreground maz:text-sm">
             {{ cssVarValue }}
           </p>
         </div>
 
-        <div :style="{ backgroundColor: bgColor, color: textColor }" class="maz-h-20 maz-w-full maz-rounded" />
+        <div :style="{ backgroundColor: bgColor, color: textColor }" class="maz:h-20 maz:w-full maz:rounded-md" />
       </div>
     </div>
   </div>

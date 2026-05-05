@@ -259,7 +259,7 @@ const flagUrl = computed(() => {
 </script>
 
 <template>
-  <div class="m-select-country m-reset-css" :class="[className, { '--no-flags': hideFlags }]" :style="style">
+  <div class="m-select-country m-reset-css maz:relative maz:inline-flex" :class="[className, { '--no-flags': hideFlags }]" :style="style">
     <MazSelect
       :id="instanceId"
       :model-value="modelValue"
@@ -296,7 +296,7 @@ const flagUrl = computed(() => {
       :open
       @update:model-value="$emit('update:model-value', $event)"
     >
-      <template #left-icon>
+      <template #start-icon>
         <!--
           @slot Country selector flag
             @binding {String} country-code - current selected country code - Ex: `"FR"`
@@ -308,8 +308,8 @@ const flagUrl = computed(() => {
             :alt="modelValue"
             width="20"
             height="20"
-            class="maz-size-5 maz-rounded"
-            img-class="maz-size-5 maz-rounded"
+            class="maz:size-5 maz:rounded-md"
+            img-class="maz:size-5 maz:rounded-md"
           />
         </slot>
       </template>
@@ -318,12 +318,12 @@ const flagUrl = computed(() => {
       </template>
       <template #default="{ option, isSelected }">
         <div
-          class="m-select-country__select__item"
+          class="m-select-country__select__item maz:w-full maz:text-sm maz:flex maz:items-center maz:gap-2 maz:truncate"
           :class="{
             'm-select-country__select__item--selected': isSelected,
           }"
         >
-          <span v-if="!hideFlags && typeof option.code === 'string'" class="m-select-country__select__item__flag-container">
+          <span v-if="!hideFlags && typeof option.code === 'string'" class="m-select-country__select__item__flag-container maz:flex maz:flex-center">
             <!--
               @slot Country list flag
                 @binding {{ code: string; name: string; }} option - country data
@@ -340,17 +340,17 @@ const flagUrl = computed(() => {
                 :alt="`${option.name} flag`"
                 width="20"
                 height="20"
-                class="maz-size-5 maz-rounded"
-                img-class="maz-rounded maz-h-5 maz-w-5"
+                class="maz:size-5 maz:rounded-md"
+                img-class="maz:rounded-md maz:h-5 maz:w-5"
               />
-              <span v-else class="m-select-country__select__item__list-flag">
+              <span v-else class="m-select-country__select__item__list-flag maz:text-primary-foreground/80 maz:text-xs maz:size-5 maz:flex maz:flex-center maz:rounded-full maz:bg-primary-500 maz:leading-none">
                 {{ option.code }}
               </span>
             </slot>
           </span>
-          <div class="maz-flex maz-flex-1 maz-gap-2 maz-truncate" :class="{ 'maz-font-semibold': isSelected }">
+          <div class="maz:flex maz:flex-1 maz:gap-2 maz:truncate" :class="{ 'maz:font-semibold': isSelected }">
             <slot v-if="showCodeInList" name="country-list-code" :option="option" :is-selected="isSelected">
-              <span class="maz-text-muted">
+              <span class="maz:text-muted">
                 {{ option.code }}
               </span>
             </slot>
@@ -367,43 +367,29 @@ const flagUrl = computed(() => {
 </template>
 
 <style scoped>
-.m-select-country {
-  @apply maz-relative maz-inline-flex;
+@reference "../tailwindcss/tailwind.css";
 
+.m-select-country {
   &__country-flag {
     position: absolute;
-    left: 0.813rem;
+    inset-inline-start: 0.813rem;
     z-index: 4;
     outline: none;
     border: none;
     padding: 0;
     margin: 0;
-    top: 1.25rem;
+    inset-block-start: 1.25rem;
     cursor: pointer;
 
-    @apply maz-flex maz-flex-center;
+    @apply maz:flex maz:flex-center;
 
     &.--should-have-bottom-flag {
-      bottom: 2px;
+      inset-block-end: 2px;
     }
   }
 
-  &__select {
-    &:deep(.m-input-label) {
-      @apply !maz-p-0;
-    }
-
-    &__item {
-      @apply maz-w-full maz-text-sm maz-flex maz-items-center maz-gap-2 maz-truncate;
-
-      &__flag-container {
-        @apply maz-flex maz-flex-center;
-      }
-
-      &__list-flag {
-        @apply maz-text-primary-foreground/80 maz-text-xs maz-size-5 maz-flex maz-flex-center maz-rounded-full maz-bg-primary-500 maz-leading-none;
-      }
-    }
+  &__select:deep(.m-input-label) {
+    @apply maz:p-0!;
   }
 }
 </style>
