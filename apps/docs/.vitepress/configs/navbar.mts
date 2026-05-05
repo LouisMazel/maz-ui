@@ -5,6 +5,7 @@ import { createRequire } from 'node:module'
 import { components } from './components.mjs'
 import { composables } from './composables.mjs'
 import { directives } from './directives.mjs'
+import { ecosystem } from './ecosystem.mjs'
 import { guide } from './guide.mjs'
 import { plugins } from './plugins.mjs'
 import { utils } from './utils.mjs'
@@ -21,6 +22,7 @@ export const nav = [
     activeMatch: '/plugins',
     items: [plugins, composables, directives, utils],
   },
+  ecosystem,
   { text: 'Themes', link: '/theme-editor' },
   {
     text: `v${packageJson.version}`,
@@ -30,16 +32,28 @@ export const nav = [
         link: '/changelog',
       },
       {
+        text: 'v5 announcement',
+        link: '/blog/v5',
+      },
+      {
+        text: 'Migration v4 to v5',
+        link: '/guide/migration-v5',
+      },
+      {
+        text: 'v4 documentation',
+        link: 'https://v4.maz-ui.com',
+      },
+      {
         text: 'v4 announcement',
         link: '/blog/v4',
       },
       {
-        text: 'v3 documentation',
-        link: 'https://v3.maz-ui.com',
-      },
-      {
         text: 'Migration v3 to v4',
         link: '/guide/migration-v4',
+      },
+      {
+        text: 'v3 documentation',
+        link: 'https://v3.maz-ui.com',
       },
       {
         text: 'Contributing',

@@ -9,12 +9,12 @@
       "default": "./src/index.js"
     }
   },
-  "devDependencies": {
-    "@maz-ui/eslint-config": "workspace:*"
-  },
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "files": [
     "src/index.js"
-  ]
+  ],
+  "devDependencies": {
+    "@maz-ui/eslint-config": "workspace:*"
+  }
 }

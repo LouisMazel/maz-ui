@@ -1,5 +1,9 @@
-import type { ThemeConfig } from 'tailwindcss/types/config'
-
+/**
+ * Named breakpoint scale used by maz-ui. These values mirror the CSS
+ * `--breakpoint-*` tokens declared in `../theme-breakpoints.css`. Kept in TS
+ * because `useBreakpoints` and the `MazAnimation` composable read them at
+ * runtime via `getNumericScreensFromTailwind`.
+ */
 export const screens = {
   'mob-s': '320px',
   'mob-m': '425px',
@@ -13,7 +17,9 @@ export const screens = {
   'lap-xl': '1440px', // 2xl
   'lap-2xl': '1680px',
   'lap-3xl': '1920px',
-} satisfies ThemeConfig['screens']
+} as const
+
+export type Breakpoint = keyof typeof screens
 
 export function getNumericScreensFromTailwind<
   T extends Record<string, string> | Record<string, number>,

@@ -172,6 +172,9 @@ describe('given LazyImg handler', () => {
 
       mockElement.dispatchEvent(new ErrorEvent('error'))
 
+      await vi.runAllTimersAsync()
+      await Promise.resolve()
+
       expect(mockElement.classList.contains(DEFAULT_OPTIONS.errorClass)).toBe(true)
     })
   })

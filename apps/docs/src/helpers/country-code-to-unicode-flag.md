@@ -27,7 +27,7 @@ description: Convert country code in unicode flag
 </template>
 
 <script lang="ts" setup >
-  import { countryCodeToUnicodeFlag } from 'maz-ui'
+  import { countryCodeToUnicodeFlag } from '@maz-ui/utils'
 
   const unicodeFlag = countryCodeToUnicodeFlag('FR')
 </script>
@@ -35,18 +35,18 @@ description: Convert country code in unicode flag
 
 ## Example
 
-<div class="maz-gap-2 maz-flex maz-flex-wrap maz-items-center">
-  <span class="maz-text-xs">{{ flag }}</span>
-  <span class="maz-text-sm">{{ flag }}</span>
-  <span class="maz-text-base">{{ flag }}</span>
-  <span class="maz-text-lg">{{ flag }}</span>
-  <span class="maz-text-xl">{{ flag }}</span>
-  <span class="maz-text-2xl">{{ flag }}</span>
-  <span class="maz-text-3xl">{{ flag }}</span>
-  <span class="maz-text-4xl">{{ flag }}</span>
-  <span class="maz-text-5xl">{{ flag }}</span>
-  <span class="maz-text-6xl">{{ flag }}</span>
-  <span class="maz-text-7xl">{{ flag }}</span>
+<div class="maz:gap-2 maz:flex maz:flex-wrap maz:items-center">
+  <span class="maz:text-xs">{{ flag }}</span>
+  <span class="maz:text-sm">{{ flag }}</span>
+  <span class="maz:text-base">{{ flag }}</span>
+  <span class="maz:text-lg">{{ flag }}</span>
+  <span class="maz:text-xl">{{ flag }}</span>
+  <span class="maz:text-2xl">{{ flag }}</span>
+  <span class="maz:text-3xl">{{ flag }}</span>
+  <span class="maz:text-4xl">{{ flag }}</span>
+  <span class="maz:text-5xl">{{ flag }}</span>
+  <span class="maz:text-6xl">{{ flag }}</span>
+  <span class="maz:text-7xl">{{ flag }}</span>
 </div>
 
 <MazSelect
@@ -59,20 +59,20 @@ description: Convert country code in unicode flag
 >
   <template #default="{ option, isSelected }">
     <div
-      class="maz-flex maz-items-center maz-gap-3"
+      class="maz:flex maz:items-center maz:gap-3"
     >
-      <span class="maz-text-lg">
+      <span class="maz:text-lg">
         {{ option.unicodeFlag }}
       </span>
       <MazBadge
         pastel
         size="0.7rem"
-        class="maz-w-9"
-        :class="{ 'maz-text-muted': !isSelected }"
+        class="maz:w-9"
+        :class="{ 'maz:text-muted': !isSelected }"
       >
         {{ option.value }}
       </MazBadge>
-      <span :class="{ 'maz-font-semibold': isSelected }">
+      <span :class="{ 'maz:font-semibold': isSelected }">
         {{ option.label }}
       </span>
     </div>
@@ -81,7 +81,7 @@ description: Convert country code in unicode flag
 
 <script lang="ts" setup>
   import { computed, ref, onMounted } from 'vue'
-  import { countryCodeToUnicodeFlag } from 'maz-ui'
+  import { countryCodeToUnicodeFlag } from '@maz-ui/utils'
   import { getCountries } from 'libphonenumber-js'
 
   const unicodeFlag = countryCodeToUnicodeFlag('FR')
@@ -125,18 +125,18 @@ description: Convert country code in unicode flag
 ```vue
 
 <template>
-  <div class="maz-gap-2 maz-flex maz-flex-wrap maz-items-center">
-    <span class="maz-text-xs">{{ flag }}</span>
-    <span class="maz-text-sm">{{ flag }}</span>
-    <span class="maz-text-base">{{ flag }}</span>
-    <span class="maz-text-lg">{{ flag }}</span>
-    <span class="maz-text-xl">{{ flag }}</span>
-    <span class="maz-text-2xl">{{ flag }}</span>
-    <span class="maz-text-3xl">{{ flag }}</span>
-    <span class="maz-text-4xl">{{ flag }}</span>
-    <span class="maz-text-5xl">{{ flag }}</span>
-    <span class="maz-text-6xl">{{ flag }}</span>
-    <span class="maz-text-7xl">{{ flag }}</span>
+  <div class="maz:gap-2 maz:flex maz:flex-wrap maz:items-center">
+    <span class="maz:text-xs">{{ flag }}</span>
+    <span class="maz:text-sm">{{ flag }}</span>
+    <span class="maz:text-base">{{ flag }}</span>
+    <span class="maz:text-lg">{{ flag }}</span>
+    <span class="maz:text-xl">{{ flag }}</span>
+    <span class="maz:text-2xl">{{ flag }}</span>
+    <span class="maz:text-3xl">{{ flag }}</span>
+    <span class="maz:text-4xl">{{ flag }}</span>
+    <span class="maz:text-5xl">{{ flag }}</span>
+    <span class="maz:text-6xl">{{ flag }}</span>
+    <span class="maz:text-7xl">{{ flag }}</span>
   </div>
 
   <MazSelect
@@ -149,20 +149,20 @@ description: Convert country code in unicode flag
   >
     <template #default="{ option, isSelected }">
       <div
-        class="maz-flex maz-items-center maz-gap-3"
+        class="maz:flex maz:items-center maz:gap-3"
       >
-        <span class="maz-text-lg">
+        <span class="maz:text-lg">
           {{ option.unicodeFlag }}
         </span>
         <MazBadge
           pastel
           size="0.7rem"
-          class="maz-w-9"
-          :class="{ 'maz-text-muted': !isSelected }"
+          class="maz:w-9"
+          :class="{ 'maz:text-muted': !isSelected }"
         >
           {{ option.value }}
         </MazBadge>
-        <span :class="{ 'maz-font-semibold': isSelected }">
+        <span :class="{ 'maz:font-semibold': isSelected }">
           {{ option.label }}
         </span>
       </div>
@@ -172,7 +172,7 @@ description: Convert country code in unicode flag
 
 <script lang="ts" setup>
   import { computed, ref, onMounted } from 'vue'
-  import { countryCodeToUnicodeFlag } from 'maz-ui'
+  import { countryCodeToUnicodeFlag } from '@maz-ui/utils'
   import { getCountries } from 'libphonenumber-js'
 
   const countryCode = ref('FR')

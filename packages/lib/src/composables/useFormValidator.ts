@@ -310,6 +310,7 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
     isSubmitted,
     isValid,
     errors,
+    hasError: computed(() => Object.values(errorMessages.value).some(Boolean)),
     model: payload,
     fieldsStates,
     validateForm: internalValidateForm,

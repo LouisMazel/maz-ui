@@ -22,10 +22,10 @@ describe('given MazSkeleton component', () => {
       expect(wrapper.classes()).toContain('m-skeleton--animated')
     })
 
-    it('then it has base rounded size by default', () => {
+    it('then it has md rounded size by default', () => {
       const wrapper = shallowMount(MazSkeleton)
 
-      expect(wrapper.classes()).toContain('m-skeleton--rounded-base')
+      expect(wrapper.classes()).toContain('m-skeleton--rounded-md')
     })
 
     it('then it has the correct accessibility attributes', () => {
@@ -138,7 +138,7 @@ describe('given MazSkeleton component', () => {
         props: { loadingText: 'Please wait...' },
       })
 
-      expect(wrapper.find('.maz-sr-only').text()).toBe('Please wait...')
+      expect(wrapper.find('.maz\\:sr-only').text()).toBe('Please wait...')
     })
   })
 
@@ -182,10 +182,10 @@ describe('given MazSkeleton component', () => {
   })
 
   describe('when screen reader element is present', () => {
-    it('then it has maz-sr-only class for accessibility', () => {
+    it('then it has maz:sr-only class for accessibility', () => {
       const wrapper = mount(MazSkeleton)
 
-      expect(wrapper.find('.maz-sr-only').exists()).toBe(true)
+      expect(wrapper.find('.maz\\:sr-only').exists()).toBe(true)
     })
   })
 })

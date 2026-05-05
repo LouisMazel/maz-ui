@@ -26,10 +26,10 @@ const spinnerStyle = computed<CSSProperties>(() => {
   if (!c || c === 'theme')
     return {}
   if (c === 'normal')
-    return { color: 'hsl(var(--maz-foreground))' }
+    return { color: 'var(--maz-foreground)' }
   if (c === 'transparent')
     return { color: 'white' }
-  return { color: `hsl(var(--maz-${c}))` }
+  return { color: `var(--maz-${c})` }
 })
 </script>
 
@@ -43,7 +43,7 @@ const spinnerStyle = computed<CSSProperties>(() => {
     y="0px"
     viewBox="0 0 50 50"
     xml:space="preserve"
-    class="m-spinner m-reset-css"
+    class="m-spinner m-reset-css maz:animate-spin maz:fill-current maz:m-0!"
     :class="`m-spinner--${color}`"
     :style="spinnerStyle"
   >
@@ -52,10 +52,3 @@ const spinnerStyle = computed<CSSProperties>(() => {
     />
   </svg>
 </template>
-
-<style scoped>
-.m-spinner {
-  @apply maz-animate-spin maz-fill-current;
-  @apply maz-m-0 !important;
-}
-</style>

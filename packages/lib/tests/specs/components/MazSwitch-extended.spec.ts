@@ -71,49 +71,49 @@ describe('MazSwitch extended branch coverage', () => {
       const wrapper = mount(MazSwitch, {
         props: { modelValue: false },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-primary))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-primary)')
     })
 
     it('applies success color', () => {
       const wrapper = mount(MazSwitch, {
         props: { modelValue: false, color: 'success' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-success))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-success)')
     })
 
     it('applies warning color', () => {
       const wrapper = mount(MazSwitch, {
         props: { modelValue: false, color: 'warning' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-warning))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-warning)')
     })
 
     it('applies destructive color', () => {
       const wrapper = mount(MazSwitch, {
         props: { modelValue: false, color: 'destructive' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-destructive))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-destructive)')
     })
 
     it('applies info color', () => {
       const wrapper = mount(MazSwitch, {
         props: { modelValue: false, color: 'info' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-info))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-info)')
     })
 
     it('applies secondary color', () => {
       const wrapper = mount(MazSwitch, {
         props: { modelValue: false, color: 'secondary' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-secondary))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-secondary)')
     })
 
     it('applies contrast color', () => {
       const wrapper = mount(MazSwitch, {
         props: { modelValue: false, color: 'contrast' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-contrast))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-contrast)')
     })
   })
 

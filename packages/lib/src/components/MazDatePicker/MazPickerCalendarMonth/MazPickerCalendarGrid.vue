@@ -44,8 +44,8 @@ const transitionName = ref<'maz-slidenext' | 'maz-slideprev'>('maz-slidenext')
 
 const calendarDateArray = computed<string[]>(() => [props.calendarDate])
 
-const hoverColor = computed(() => `hsl(var(--maz-${props.color}) / 20%)`)
-const hoverTextColor = computed(() => `hsl(var(--maz-${props.color}-foreground))`)
+const hoverColor = computed(() => `color-mix(in srgb, var(--maz-${props.color}) 20%, transparent)`)
+const hoverTextColor = computed(() => `var(--maz-${props.color}-foreground)`)
 
 const modelValue = computed({
   get: () => props.modelValue,
@@ -274,13 +274,16 @@ watch(
 </script>
 
 <template>
-  <div ref="MazDatePickerGrid" class="maz-picker-calendar-grid">
+  <div
+    ref="MazDatePickerGrid"
+    class="maz-picker-calendar-grid maz:relative maz:transition-all maz:duration-300 maz:ease-in-out"
+  >
     <TransitionGroup :name="transitionName">
       <div
         v-for="(dateArray, dateIndex) in [calendarDateArray]"
         :key="`${dateArray[dateIndex]}`"
-        class="maz-picker-calendar-grid__container"
-        :class="{ '--is-range': range }"
+        class="maz-picker-calendar-grid__container maz:relative maz:grid maz:grid-cols-7 maz:items-start maz:gap-y-1"
+        :class="{ '--is-range': range, 'maz:gap-x-1': !range }"
       >
         <div v-for="first in emptyDaysCount" :key="first" />
         <MazBtn
@@ -297,6 +300,7 @@ watch(
               || isDisabledWeekly(date)
               || isDisabledDate(date)
           "
+          class="maz:h-8 maz:w-8 maz:cursor-pointer maz:rounded-full"
           :class="{
             '--is-first': isFirstDay(date) && isSelectedOrBetween(date) === DaySelect.SELECTED,
             '--is-last': isLastDay(date) && isSelectedOrBetween(date) === DaySelect.SELECTED,
@@ -313,7 +317,7 @@ watch(
           @focus="range ? setHoverredDay(date) : undefined"
           @blur="range ? setHoverredDay() : undefined"
         >
-          <span>
+          <span class="maz:text-sm">
             {{ label }}
           </span>
         </MazBtn>
@@ -323,65 +327,51 @@ watch(
 </template>
 
 <style scoped>
-  .maz-picker-calendar-grid {
-  @apply maz-relative;
+@reference "../../../tailwindcss/tailwind.css";
 
-  transition: all 300ms ease-in-out;
-
+.maz-picker-calendar-grid {
   &__container {
-    @apply maz-relative maz-grid maz-grid-cols-7 maz-items-start maz-gap-y-1;
-
-    &:not(.--is-range) {
-      @apply maz-gap-x-1;
-    }
-
     &.--is-range {
       button {
-        @apply maz-w-full;
+        @apply maz:w-full;
       }
     }
 
     & button {
-      @apply maz-h-8 maz-w-8 maz-cursor-pointer maz-rounded-full;
-
       &:hover:not(.--is-selected, .--is-between, .--is-between-hoverred) {
         background-color: v-bind('hoverColor');
       }
 
       &.--is-first {
-        @apply !maz-rounded-r-none;
+        @apply maz:rounded-r-none!;
       }
 
       &.--is-last-hoverred,
       &.--is-last {
-        @apply !maz-rounded-l-none;
+        @apply maz:rounded-l-none!;
       }
 
       &.--is-between-hoverred {
-        @apply maz-bg-surface-600 dark:maz-bg-surface-400 !maz-rounded-none;
+        @apply maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-none!;
       }
 
       &.--is-between {
-        @apply maz-bg-surface-600 dark:maz-bg-surface-400 !maz-rounded-none maz-text-foreground;
+        @apply maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-none! maz:text-foreground;
 
         &:hover {
           color: v-bind('hoverTextColor');
         }
 
         &.--transparent {
-          @apply !maz-bg-gray-400;
+          @apply maz:bg-gray-400!;
         }
       }
 
-      & span {
-        @apply maz-text-sm;
-      }
-
       &:disabled {
-        @apply maz-cursor-not-allowed maz-border-transparent;
+        @apply maz:disabled-cursor maz:border-transparent;
 
         &.--is-selected {
-          @apply !maz-bg-surface-600 dark:maz-bg-surface-400 !maz-text-muted;
+          @apply maz:bg-surface-600! maz:dark:bg-surface-400 maz:text-muted!;
         }
       }
     }
@@ -393,7 +383,7 @@ watch(
 .maz-slidenext-enter-active,
 .maz-slideprev-leave-active,
 .maz-slideprev-enter-active {
-  @apply maz-absolute maz-left-0 maz-end-0 maz-top-0;
+  @apply maz:absolute maz:left-0 maz:inset-e-0 maz:top-0;
 
   transition: transform 300ms ease-in-out;
 }

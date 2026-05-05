@@ -11,12 +11,12 @@ describe('given MazDrawer component', () => {
 
       expect(wrapper.findComponent({ name: 'MazBackdrop' }).exists()).toBe(true)
       expect(wrapper.findComponent({ name: 'MazBackdrop' }).props('variant')).toBe('drawer')
-      expect(wrapper.findComponent({ name: 'MazBackdrop' }).props('transitionName')).toBe('drawer-anim-right')
+      expect(wrapper.findComponent({ name: 'MazBackdrop' }).props('transitionName')).toBe('drawer-anim-end')
     })
   })
 
   describe('when rendered with different variants', () => {
-    it.each(['right', 'top', 'left', 'bottom'] as MazDrawerProps['variant'][])('then it should apply the correct variant %s classes', (variant) => {
+    it.each(['end', 'top', 'start', 'bottom'] as MazDrawerProps['variant'][])('then it should apply the correct variant %s classes', (variant) => {
       const wrapper = mount(MazDrawer, {
         props: { variant, modelValue: true },
       })
@@ -100,10 +100,10 @@ describe('given MazDrawer component', () => {
     })
   })
 
-  describe('when rendered with left variant', () => {
+  describe('when rendered with start variant', () => {
     it('then it should set justify to start', () => {
       const wrapper = mount(MazDrawer, {
-        props: { variant: 'left', modelValue: true },
+        props: { variant: 'start', modelValue: true },
       })
 
       const backdrop = wrapper.findComponent({ name: 'MazBackdrop' })
@@ -111,10 +111,10 @@ describe('given MazDrawer component', () => {
     })
   })
 
-  describe('when rendered with right variant', () => {
+  describe('when rendered with end variant', () => {
     it('then it should set justify to end', () => {
       const wrapper = mount(MazDrawer, {
-        props: { variant: 'right', modelValue: true },
+        props: { variant: 'end', modelValue: true },
       })
 
       const backdrop = wrapper.findComponent({ name: 'MazBackdrop' })

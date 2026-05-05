@@ -56,7 +56,7 @@ import { vZoomImg } from 'maz-ui/directives'
 </MazCard>
 
 <script lang="ts" setup>
-  import { vZoomImg } from 'maz-ui/src/directives/vZoomImg'
+  import { vZoomImg } from 'maz-ui/directives/vZoomImg'
 
   const zoomImgBinding: vZoomImgBinding = {
     src: 'https://placedog.net/1200/800',

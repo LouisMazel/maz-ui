@@ -82,10 +82,10 @@ const currentCalendarDate = computed({
 
 <template>
   <div
-    class="m-date-picker-container"
+    class="m-date-picker-container maz:overflow-hidden maz:rounded-md maz:bg-container maz:dark:border maz:dark:border-divider"
     :class="{
       '--has-double': double,
-      '--is-inline': inline,
+      '--is-inline maz:border maz:border-divider': inline,
       '--has-date': hasDate,
     }"
   >
@@ -102,7 +102,7 @@ const currentCalendarDate = computed({
       class="m-date-picker-container__header"
     />
 
-    <div class="m-date-picker-container__wrapper">
+    <div class="m-date-picker-container__wrapper maz:flex">
       <MazPickerCalendar
         v-if="hasDate"
         v-model:calendar-date="currentCalendarDate"
@@ -147,39 +147,27 @@ const currentCalendarDate = computed({
 </template>
 
 <style scoped>
+@reference "../../tailwindcss/tailwind.css";
+
 .m-date-picker-container {
-  @apply maz-overflow-hidden maz-rounded maz-bg-surface dark:maz-border dark:maz-border-divider;
-
-  &.--is-inline {
-    @apply maz-border maz-border-divider dark:maz-border-divider;
-  }
-
-  /* &.--has-date {
-    min-width: 16.875rem;
-  } */
-
   &.--has-double {
-    min-width: 28.125rem;
-  }
-
-  &__wrapper {
-    @apply maz-flex;
+    min-inline-size: 28.125rem;
   }
 
   & :deep(button):is(:disabled) {
-    @apply !maz-bg-transparent !maz-text-gray-300 dark:!maz-text-gray-700 maz-border-none hover:!maz-bg-transparent;
+    @apply maz:bg-transparent! maz:text-gray-300! maz:dark:text-gray-700! maz:border-none maz:hover:bg-transparent!;
   }
 
   &:not(.--has-date) {
     .m-date-picker-container__time {
-      @apply maz-w-full;
+      @apply maz:w-full;
 
       &:deep(.m-date-picker-time__column__hour) {
-        @apply maz-w-1/2;
+        @apply maz:w-1/2;
       }
 
       &:deep(.m-date-picker-time__column__minute) {
-        @apply maz-w-1/2;
+        @apply maz:w-1/2;
       }
     }
   }

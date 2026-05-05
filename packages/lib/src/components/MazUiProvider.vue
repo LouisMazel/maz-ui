@@ -31,18 +31,14 @@ const providedThemeState = ref<ThemeState>()
 provide('mazThemeState', providedThemeState)
 
 let themeCleanup: (() => void) | undefined
-let stopThemeSync: (() => void) | undefined
 
 function initTheme(options: MazUiThemeOptions & { preset: ThemePreset }) {
   themeCleanup?.()
-  stopThemeSync?.()
 
   const { themeState, cleanup } = setupTheme(options)
+  // Share the underlying ThemeState object so mutations routed through
+  // useTheme remain observable by setup-theme's internal watchers.
   providedThemeState.value = themeState.value
-
-  stopThemeSync = watch(themeState, (newState) => {
-    providedThemeState.value = { ...newState }
-  }, { deep: true })
 
   themeCleanup = cleanup
 }
@@ -61,7 +57,6 @@ watch(() => translations, (newTranslationsOptions) => {
 
 onUnmounted(() => {
   themeCleanup?.()
-  stopThemeSync?.()
 })
 </script>
 
