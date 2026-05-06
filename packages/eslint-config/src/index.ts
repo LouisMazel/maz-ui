@@ -14,7 +14,7 @@ import { markdown } from './configs/markdown'
 import { sonarjsRules, sonarjsTestRules } from './configs/sonarjs'
 import { tailwindcssConfigs } from './configs/tailwindcss'
 import { testRules } from './configs/test'
-import { vueRules } from './configs/vue'
+import { vueRules, vueSfcOnlyRules } from './configs/vue'
 
 const TAG = '[@maz-ui/eslint-config]'
 
@@ -174,7 +174,11 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
       files: ['**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue}'],
       rules: vueRules,
     })
-    log.debug(`${TAG} Vue: applied vueRules to JS/TS/Vue files`)
+    additionalConfigs.push({
+      files: ['**/*.vue'],
+      rules: vueSfcOnlyRules,
+    })
+    log.debug(`${TAG} Vue: applied vueRules to JS/TS/Vue files + SFC-only overrides to *.vue`)
   }
 
   if (resolved.sonarjs) {
@@ -268,6 +272,6 @@ export { baseRules } from './configs/base'
 
 export { sonarjsRules, sonarjsTestRules } from './configs/sonarjs'
 export { TAILWINDCSS_DEFAULT_FILES, tailwindcssConfigs } from './configs/tailwindcss'
-export { vueRules } from './configs/vue'
+export { vueRules, vueSfcOnlyRules } from './configs/vue'
 // Export types
 export type { MazESLintConfig, MazESLintOptions, MazTailwindcssOptions, TailwindcssPreset } from './types'
