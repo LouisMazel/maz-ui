@@ -47,7 +47,7 @@ export function ViteCompileStyles(): Plugin {
         }
 
         await execPromise(
-          'npx @tailwindcss/cli -i ./src/tailwindcss/tailwind.css -o dist/css/main.css --minify',
+          'npx @tailwindcss/cli -i ./src/tailwindcss/dist-entry.css -o dist/css/main.css --minify',
         )
 
         logger.success('[CompileStyles] ✅ tailwind css compiled')
