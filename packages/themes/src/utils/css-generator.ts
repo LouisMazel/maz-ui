@@ -13,6 +13,8 @@ export interface CSSOptions {
   prefix?: string
   /** Dark class name */
   darkClass: string
+  /** Whether to generate color scales */
+  scaleColorVariables: boolean
 }
 
 const scaleColors = ['primary', 'secondary', 'accent', 'destructive', 'success', 'warning', 'info', 'contrast', 'surface', 'foreground', 'divider', 'muted', 'overlay', 'shadow'] as const
@@ -23,6 +25,7 @@ export function generateCSS(
     mode: 'both',
     darkSelectorStrategy: 'class',
     darkClass: 'dark',
+    scaleColorVariables: true,
   },
 ): string {
   const {
@@ -30,6 +33,7 @@ export function generateCSS(
     darkSelectorStrategy,
     prefix = 'maz',
     darkClass = 'dark',
+    scaleColorVariables = true,
   } = options
 
   let css = '@layer theme {\n'
@@ -45,6 +49,7 @@ export function generateCSS(
       prefix,
       preset,
       mode: 'light',
+      scaleColorVariables,
     })
   }
 
@@ -58,6 +63,7 @@ export function generateCSS(
       preset,
       isDark: true,
       mode: 'dark',
+      scaleColorVariables,
     })
   }
 
@@ -74,6 +80,7 @@ function generateVariablesBlock({
   prefix,
   preset,
   isDark = false,
+  scaleColorVariables = true,
   mode = 'light',
 }: {
   selector: string
@@ -83,6 +90,7 @@ function generateVariablesBlock({
   prefix: string
   preset?: ThemePreset
   isDark?: boolean
+  scaleColorVariables: boolean
   /** Current mode being emitted — used to pick the right `components.{container,input}.bg` value. */
   mode?: 'light' | 'dark'
 }): string {
@@ -113,7 +121,7 @@ function generateVariablesBlock({
     variables.push(...generateComponentVariables(preset.components, mode, prefix))
   }
 
-  if (preset) {
+  if (preset && scaleColorVariables) {
     const sourceColors = isDark ? preset.colors.dark : preset.colors.light
     variables.push(...generateAllColorScales(sourceColors, prefix))
   }

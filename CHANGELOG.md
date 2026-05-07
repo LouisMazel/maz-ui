@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.4 (2026-05-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.3...v5.0.0-beta.4)
+
+### 🚀 Features
+
+- **maz-ui:** Inputs - top label and assistive text ([51c9f6f25](https://github.com/LouisMazel/maz-ui/commit/51c9f6f25))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.3 (2026-05-06)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.2...v5.0.0-beta.3)
