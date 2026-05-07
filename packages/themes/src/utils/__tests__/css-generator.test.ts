@@ -15,6 +15,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).toContain('@layer theme {\n')
@@ -33,6 +34,7 @@ describe('cSS Generator', () => {
           mode: 'dark',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).toContain('@layer theme {\n')
@@ -50,10 +52,51 @@ describe('cSS Generator', () => {
           mode: 'both',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).toContain(':root {')
         expect(css).toContain('.dark {')
+      })
+
+      it('then it does not include unneeded variables', () => {
+        const css = generateCSS(mazUi, {
+          prefix: 'maz',
+          mode: 'both',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+          scaleColorVariables: false,
+        })
+
+        expect(css).toContain('--maz-primary: oklch(0.6495 0.1913 253.63);')
+        expect(css).not.toContain('--maz-primary-100: #ebebeb')
+      })
+
+      it('then it returns hex values when scaleColorVariables is false', () => {
+        const css = generateCSS(
+          {
+            ...mazUi,
+            colors: {
+              ...mazUi.colors,
+              light: {
+                ...mazUi.colors.light,
+                primary: '#ff00ff',
+              },
+              dark: { ...mazUi.colors.dark, primary: '#00ffff' },
+            },
+          },
+          {
+            prefix: 'maz',
+            mode: 'both',
+            darkSelectorStrategy: 'class',
+            darkClass: 'dark',
+            scaleColorVariables: false,
+          },
+        )
+
+        expect(css).toContain('--maz-primary: #ff00ff;')
+        expect(css).toContain('--maz-primary: #00ffff')
+        expect(css).not.toContain('--maz-primary-100')
       })
     })
 
@@ -64,6 +107,7 @@ describe('cSS Generator', () => {
           mode: 'dark',
           darkSelectorStrategy: 'media',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).toContain('@media (prefers-color-scheme: dark)')
@@ -78,6 +122,7 @@ describe('cSS Generator', () => {
           mode: 'both',
           darkSelectorStrategy: 'media',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).toContain(':root {')
@@ -92,6 +137,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).toContain('--maz-space:')
@@ -103,6 +149,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         for (const key of ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'])
@@ -115,6 +162,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).toContain('--maz-rounded-md: 0.7rem;')
@@ -139,6 +187,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).toContain('--maz-rounded-md: 1rem;')
@@ -153,6 +202,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         for (const key of ['sm', 'md', 'lg', 'xl', 'elevation'])
@@ -165,6 +215,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).not.toMatch(/--maz-text-(?:mini|xs|sm|md|lg|xl):/)
@@ -176,6 +227,7 @@ describe('cSS Generator', () => {
           mode: 'both',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).toContain('--maz-surface:')
@@ -200,6 +252,7 @@ describe('cSS Generator', () => {
           mode: 'both',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         const lightBlock = css.split('.dark {')[0]
@@ -227,6 +280,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).not.toContain('--maz-shadow-style-sm:')
@@ -248,6 +302,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).toContain('--maz-btn-font-weight: 600')
@@ -266,6 +321,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).toContain('@layer theme')
@@ -288,6 +344,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).not.toMatch(/--maz-accent:\s/)
@@ -307,6 +364,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).not.toContain('--maz-border-width:')
@@ -326,6 +384,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).not.toMatch(/--maz-rounded-/)
@@ -345,6 +404,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).toContain('--maz-btn-font-weight: 700')
@@ -367,6 +427,7 @@ describe('cSS Generator', () => {
           mode: 'both',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         const lightBlock = css.split('.dark {')[0]
@@ -392,6 +453,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).not.toMatch(/--maz-muted-500:/)
@@ -528,6 +590,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).toContain('--maz-primary-500:')
@@ -542,6 +605,7 @@ describe('cSS Generator', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
+          scaleColorVariables: true,
         })
 
         expect(css).toMatch(/--maz-shadow:/)

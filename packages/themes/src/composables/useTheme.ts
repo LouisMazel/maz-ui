@@ -50,6 +50,7 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
       mode: themeState.value.mode,
       darkSelectorStrategy: themeState.value.darkModeStrategy,
       prefix: 'maz',
+      scaleColorVariables: true,
       darkClass: themeState.value.darkClass,
     }
 
