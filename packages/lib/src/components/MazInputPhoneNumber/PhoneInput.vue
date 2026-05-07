@@ -21,7 +21,7 @@ type PhoneInputProps = Omit<MazInputProps, 'modelValue'> & {
   autoFormat: 'blur' | 'typing' | 'disabled' | false
 }
 
-const { placeholder, label, example, locales, autoFormat, name, inputmode, autocomplete } = defineProps<PhoneInputProps>()
+const { placeholder, label, example, locales, autoFormat, name, inputmode, autocomplete, warning, hint, class: className, style: styleAttributes } = defineProps<PhoneInputProps>()
 
 const { getPhoneNumberExample, getAsYouTypeFormat, loadExamples } = useLibphonenumber()
 const { sanitizePhoneNumber } = useMazInputPhoneNumber()
@@ -105,6 +105,8 @@ defineExpose({
     :disabled
     :color
     :error
+    :warning
+    :hint
     :size
     :success
     block
@@ -113,11 +115,13 @@ defineExpose({
     :autocomplete
     class="m-phone-input maz:min-w-52 maz:flex-1"
     :class="[
+      className,
       {
         '--border-radius': hasRadius,
         'maz:z-1': (error || !results.isValid) || inputFocused,
       },
     ]"
+    :style="styleAttributes"
     @focus="inputFocused = true"
     @blur="inputFocused = false"
   />
@@ -130,7 +134,7 @@ defineExpose({
 .m-input-phone-number {
   @apply maz:hidden;
 
-  &.--responsive .m-phone-input {
+  & .--responsive .m-phone-input {
     @apply maz:-mt-(--maz-border-width) maz:flex-none maz:mob-l:-ms-(--maz-border-width) maz:mob-l:mt-0 maz:mob-l:flex-auto;
 
     &.--border-radius {
@@ -140,7 +144,7 @@ defineExpose({
     }
   }
 
-  &.--row .m-phone-input {
+  & .--row .m-phone-input {
     @apply maz:-ms-(--maz-border-width) maz:flex-auto;
 
     &.--border-radius {
@@ -150,7 +154,7 @@ defineExpose({
     }
   }
 
-  &.--col .m-phone-input {
+  & .--col .m-phone-input {
     @apply maz:-mt-(--maz-border-width) maz:ms-0 maz:flex-none;
 
     &.--border-radius {

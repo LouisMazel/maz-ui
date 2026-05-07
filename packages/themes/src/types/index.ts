@@ -156,7 +156,11 @@ export interface ThemeComponents {
    * Switch, InputCode, InputTags, DatePicker trigger, Dropzone surface, …).
    */
   input?: {
-    bg?: ThemeComponentBg
+    'bg'?: ThemeComponentBg
+    /**
+     * Font-weight applied on `.m-input`'s top-label when `top-label` prop is set. Defaults to '600'.
+     */
+    'top-label-font-weight'?: string
   }
 }
 

@@ -172,6 +172,11 @@ function generateComponentVariables(
     lines.push(`  --${prefix}-input-bg: ${normalizeColor(inputBg)};`)
   }
 
+  const inputTopLabelFontWeight = components.input?.['top-label-font-weight']
+  if (inputTopLabelFontWeight) {
+    lines.push(`  --${prefix}-input-top-label-font-weight: ${inputTopLabelFontWeight};`)
+  }
+
   return lines
 }
 
