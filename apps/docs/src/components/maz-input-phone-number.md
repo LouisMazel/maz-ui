@@ -68,34 +68,28 @@ const results = ref<MazInputPhoneNumberData>()
 Control which countries appear in the dropdown and their order.
 
 <ComponentDemo>
-  <div class="maz:space-y-4">
-    <div>
-      <h4 class="maz:font-semibold maz:mb-2">Preferred Countries</h4>
-      <p class="maz:text-sm maz:text-muted maz:mb-2">Show your most common countries first</p>
-      <MazInputPhoneNumber
-        v-model="phone1"
-        :preferred-countries="['US', 'FR', 'GB', 'DE', 'CA']"
-        placeholder="Common countries appear first"
-      />
-    </div>
-    <div>
-      <h4 class="maz:font-semibold maz:mb-2">Only Specific Countries</h4>
-      <p class="maz:text-sm maz:text-muted maz:mb-2">Limit to certain countries only</p>
-      <MazInputPhoneNumber
-        v-model="phone2"
-        :only-countries="['US', 'FR', 'GB', 'DE', 'IT', 'ES']"
-        placeholder="Only European + North American countries"
-      />
-    </div>
-    <div>
-      <h4 class="maz:font-semibold maz:mb-2">Ignore Countries</h4>
-      <p class="maz:text-sm maz:text-muted maz:mb-2">Remove unwanted countries</p>
-      <MazInputPhoneNumber
-        v-model="phone3"
-        :ignored-countries="['AF', 'AL', 'DZ']"
-        placeholder="Some countries are hidden"
-      />
-    </div>
+  <div class="maz:flex maz:flex-col maz:gap-4">
+    <MazInputPhoneNumber
+      top-label="Preferred Countries"
+      assistive-text="Show your most common countries first"
+      v-model="phone1"
+      :preferred-countries="['US', 'FR', 'GB', 'DE', 'CA']"
+      placeholder="Common countries appear first"
+    />
+    <MazInputPhoneNumber
+      top-label="Only Specific Countries"
+      assistive-text="Limit to certain countries only"
+      v-model="phone2"
+      :only-countries="['US', 'FR', 'GB', 'DE', 'IT', 'ES']"
+      placeholder="Only European + North American countries"
+    />
+    <MazInputPhoneNumber
+      top-label="Ignore Countries"
+      assistive-text="Remove unwanted countries"
+      v-model="phone3"
+      :ignored-countries="['AF', 'AL', 'DZ']"
+      placeholder="Some countries are hidden"
+    />
   </div>
 
 <template #code>
@@ -133,22 +127,22 @@ Control which countries appear in the dropdown and their order.
 Choose how the country selector and phone input are arranged.
 
 <ComponentDemo>
-  <div class="maz:space-y-6">
-    <div>
-      <h4 class="maz:font-semibold maz:mb-2">Responsive (Default)</h4>
-      <p class="maz:text-sm maz:text-muted maz:mb-2">Stacks on mobile, side-by-side on desktop</p>
-      <MazInputPhoneNumber orientation="responsive" />
-    </div>
-    <div>
-      <h4 class="maz:font-semibold maz:mb-2">Always Row</h4>
-      <p class="maz:text-sm maz:text-muted maz:mb-2">Side-by-side on all screen sizes</p>
-      <MazInputPhoneNumber orientation="row" />
-    </div>
-    <div>
-      <h4 class="maz:font-semibold maz:mb-2">Always Column</h4>
-      <p class="maz:text-sm maz:text-muted maz:mb-2">Stacked on all screen sizes</p>
-      <MazInputPhoneNumber orientation="col" />
-    </div>
+  <div class="maz:flex maz:flex-col maz:gap-6">
+    <MazInputPhoneNumber
+      top-label="Responsive"
+      assistive-text="Stacks on mobile, side-by-side on desktop"
+      orientation="responsive"
+    />
+    <MazInputPhoneNumber
+      top-label="Always Row"
+      assistive-text="Side-by-side on all screen sizes"
+      orientation="row"
+    />
+    <MazInputPhoneNumber
+      top-label="Always Column"
+      assistive-text="Stacked on all screen sizes"
+      orientation="col"
+    />
   </div>
 
 <template #code>
@@ -156,13 +150,25 @@ Choose how the country selector and phone input are arranged.
 ```vue
 <template>
   <!-- Responsive layout (default) -->
-  <MazInputPhoneNumber orientation="responsive" />
+  <MazInputPhoneNumber
+    top-label="Responsive"
+    assistive-text="Stacks on mobile, side-by-side on desktop"
+    orientation="responsive"
+  />
 
   <!-- Always side-by-side -->
-  <MazInputPhoneNumber orientation="row" />
+  <MazInputPhoneNumber
+    top-label="Always Row"
+    assistive-text="Side-by-side on all screen sizes"
+    orientation="row"
+  />
 
   <!-- Always stacked -->
-  <MazInputPhoneNumber orientation="col" />
+  <MazInputPhoneNumber
+    top-label="Always Column"
+    assistive-text="Stacked on all screen sizes"
+    orientation="col"
+  />
 </template>
 ```
 
@@ -174,34 +180,30 @@ Choose how the country selector and phone input are arranged.
 Customize what information is shown to users.
 
 <ComponentDemo>
-  <div class="maz:space-y-6">
-    <div>
-      <h4 class="maz:font-semibold maz:mb-2">Show Country Names</h4>
-      <p class="maz:text-sm maz:text-muted maz:mb-2">Display country names instead of calling codes</p>
-      <MazInputPhoneNumber
-        display-country-name
-        :translations="{
-          countrySelect: { placeholder: 'Choose country' }
-        }"
-      />
-    </div>
-    <div>
-      <h4 class="maz:font-semibold maz:mb-2">Show Calling Codes in List</h4>
-      <p class="maz:text-sm maz:text-muted maz:mb-2">Help users see the dialing codes</p>
-      <MazInputPhoneNumber show-code-in-list />
-    </div>
-    <div>
-      <h4 class="maz:font-semibold maz:mb-2">Hide Phone Examples</h4>
-      <p class="maz:text-sm maz:text-muted maz:mb-2">
-        Remove the example phone number hints (visible when the phone input is focused)
-      </p>
-      <MazInputPhoneNumber :example="false" />
-    </div>
-    <div>
-      <h4 class="maz:font-semibold maz:mb-2">Hide Country Flags</h4>
-      <p class="maz:text-sm maz:text-muted maz:mb-2">Text-only country selection</p>
-      <MazInputPhoneNumber hide-flags />
-    </div>
+  <div class="maz:flex maz:flex-col maz:gap-4">
+    <MazInputPhoneNumber
+      top-label="Show Country Names"
+      assistive-text="Display country names instead of calling codes"
+      display-country-name
+      :translations="{
+        countrySelect: { placeholder: 'Choose country' }
+      }"
+    />
+    <MazInputPhoneNumber
+      top-label="Show Calling Codes in List"
+      assistive-text="Help users see the dialing codes"
+      show-code-in-list
+    />
+    <MazInputPhoneNumber
+      top-label="Hide Phone Examples"
+      assistive-text="Remove the example phone number hints (visible when the phone input is focused)"
+      :example="false"
+    />
+    <MazInputPhoneNumber
+      top-label="Hide Country Flags"
+      assistive-text="Text-only country selection"
+      hide-flags
+    />
   </div>
 
 <template #code>
@@ -762,34 +764,35 @@ const mobilePhone = ref()
 Understanding what data the component provides.
 
 <ComponentDemo>
-  <div class="maz:space-y-4">
-    <MazInputPhoneNumber
-      v-model="dataPhone"
-      v-model:country-code="dataCountry"
-      label="Enter a phone number to see data"
-      @data="phoneData = $event"
-    />
-    <div v-if="phoneData" class="maz:bg-surface-400 maz:p-4 maz:rounded-md">
-      <h4 class="maz:font-semibold maz:mb-3">📊 Phone Number Data</h4>
-      <div class="maz:grid maz:grid-cols-1 maz:md:grid-cols-2 maz:gap-4 maz:text-sm">
-        <div>
-          <strong>Valid:</strong> {{ phoneData?.isValid ? '✅' : '❌' }}
-        </div>
-        <div>
-          <strong>Country:</strong> {{ phoneData?.countryCode || 'None' }}
-        </div>
-        <div>
-          <strong>National Format:</strong> {{ phoneData?.formatNational || 'None' }}
-        </div>
-        <div>
-          <strong>International:</strong> {{ phoneData?.formatInternational || 'None' }}
-        </div>
-        <div>
-          <strong>E164 Format:</strong> {{ phoneData?.e164 || 'None' }}
-        </div>
-        <div>
-          <strong>Phone Type:</strong> {{ phoneData?.type || 'Unknown' }}
-        </div>
+  <MazInputPhoneNumber
+    v-model="dataPhone"
+    v-model:country-code="dataCountry"
+    top-label="Your phone number"
+    placeholder="Enter a phone number to see data"
+    assistive-text="Enter your phone number in international format (e.g. +33612345678)"
+    @data="phoneData = $event"
+  />
+
+  <div v-if="phoneData" class="maz:bg-surface-400 maz:pt-8 maz:rounded-md">
+    <h4 class="maz:font-semibold maz:mb-3">📊 Phone Number Data</h4>
+    <div class="maz:grid maz:grid-cols-1 maz:md:grid-cols-2 maz:gap-4 maz:text-sm">
+      <div>
+        <strong>Valid:</strong> {{ phoneData?.isValid ? '✅' : '❌' }}
+      </div>
+      <div>
+        <strong>Country:</strong> {{ phoneData?.countryCode || 'None' }}
+      </div>
+      <div>
+        <strong>National Format:</strong> {{ phoneData?.formatNational || 'None' }}
+      </div>
+      <div>
+        <strong>International:</strong> {{ phoneData?.formatInternational || 'None' }}
+      </div>
+      <div>
+        <strong>E164 Format:</strong> {{ phoneData?.e164 || 'None' }}
+      </div>
+      <div>
+        <strong>Phone Type:</strong> {{ phoneData?.type || 'Unknown' }}
       </div>
     </div>
   </div>

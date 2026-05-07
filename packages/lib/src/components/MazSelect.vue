@@ -943,7 +943,8 @@ defineExpose({
       background-color: var(--selected-bg-color);
 
       &:focus-within {
-        @apply maz:outline-offset-2! maz:outline-solid maz:outline-(--selected-text-color)!;
+        outline: var(--selected-text-color) solid var(--maz-border-width);
+        outline-offset: 2px;
       }
 
       &.--transparent {

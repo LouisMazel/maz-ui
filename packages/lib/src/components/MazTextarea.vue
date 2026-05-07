@@ -69,6 +69,12 @@ export interface MazTextareaProps<T extends string | undefined | null> {
    * @default undefined
    */
   topLabel?: string
+  /**
+   * Helper text displayed below the input to provide additional context or validation feedback
+   * @type {string}
+   * @example "Must contain at least 8 characters"
+   */
+  assistiveText?: string
 }
 </script>
 
@@ -215,7 +221,15 @@ const stateLabelColor = computed(() => [
 <template>
   <div class="m-textarea-wrapper m-reset-css maz:flex maz:flex-col maz:gap-2" :class="props.class" :style>
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
-    <label v-if="topLabel" :for="instanceId" class="m-textarea__top-label" :class="stateLabelColor">{{ topLabel }}</label>
+    <label
+      v-if="topLabel"
+      :for="instanceId"
+      class="m-textarea__top-label"
+      :style="{ fontWeight: 'var(--maz-input-top-label-font-weight, 600)' }"
+      :class="stateLabelColor"
+    >
+      {{ topLabel }}
+    </label>
     <label
       class="m-textarea maz:relative maz:flex maz:min-h-25 maz:flex-col maz:align-top maz:text-foreground"
       :for="instanceId"
@@ -282,6 +296,19 @@ const stateLabelColor = computed(() => [
         <slot name="append" />
       </div>
     </label>
+
+    <div
+      v-if="assistiveText" class="m-textarea__bottom-text maz:-mt-1 maz:text-sm" :class="[
+        {
+          'maz:text-destructive-600': error,
+          'maz:text-success-600': success,
+          'maz:text-warning-600': warning,
+          'maz:text-muted': !error && !success && !warning,
+        },
+      ]"
+    >
+      {{ assistiveText }}
+    </div>
   </div>
 </template>
 

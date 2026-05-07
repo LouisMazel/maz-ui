@@ -449,7 +449,15 @@ const CHILD_TEXT_SIZE_CLASS = {
     ]" :style="[style, { '--maz-input-color': `var(--maz-${color}-100)` }]"
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
-    <label v-if="topLabel" :for="instanceId" class="m-input-top-label maz:mb-2" :class="stateColor">{{ topLabel }}</label>
+    <label
+      v-if="topLabel"
+      :for="instanceId"
+      class="m-input-top-label maz:mb-2"
+      :style="{ fontWeight: 'var(--maz-input-top-label-font-weight, 600)' }"
+      :class="stateColor"
+    >
+      {{ topLabel }}
+    </label>
 
     <div
       class="m-input-wrapper maz:relative maz:z-1 maz:flex maz:size-full maz:flex-1 maz:overflow-hidden maz:bg-input maz:transition-colors maz:duration-300"
