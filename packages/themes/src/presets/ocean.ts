@@ -6,6 +6,7 @@ import {
   DEFAULT_DISABLED_OPACITY,
   DEFAULT_FONT_MONO,
   DEFAULT_INPUT_BG,
+  DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT,
   DEFAULT_SHADOW,
   DEFAULT_SPACE,
 } from './_defaults'
@@ -53,7 +54,7 @@ export const ocean: ThemePreset = {
   components: {
     btn: { 'font-weight': DEFAULT_BTN_FONT_WEIGHT },
     container: { bg: DEFAULT_CONTAINER_BG },
-    input: { bg: DEFAULT_INPUT_BG },
+    input: { 'bg': DEFAULT_INPUT_BG, 'top-label-font-weight': DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT },
   },
   colors: {
     light: {

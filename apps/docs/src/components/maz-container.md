@@ -301,7 +301,7 @@ Use the `header` slot to fully customize the header, or use `title`, `icon-start
 <ComponentDemo>
   <MazContainer
     title="Dashboard Overview"
-    start-icon="chart-bar"
+    start-icon="/chart-bar.svg"
     elevation
     :bordered="false"
     rounded-size="xl"
@@ -329,7 +329,7 @@ Use the `header` slot to fully customize the header, or use `title`, `icon-start
 <template>
   <MazContainer
     title="Dashboard Overview"
-    start-icon="chart-bar"
+    start-icon="/chart-bar.svg"
     elevation
     :bordered="false"
     rounded-size="xl"

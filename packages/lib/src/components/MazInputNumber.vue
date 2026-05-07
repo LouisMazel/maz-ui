@@ -240,7 +240,15 @@ const stateColor = computed(() => {
     :style="style"
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
-    <label v-if="topLabel" :for="instanceId" class="m-input-number__top-label" :class="stateColor">{{ topLabel }}</label>
+    <label
+      v-if="topLabel"
+      :for="instanceId"
+      class="m-input-number__top-label"
+      :style="{ fontWeight: 'var(--maz-input-top-label-font-weight, 600)' }"
+      :class="stateColor"
+    >
+      {{ topLabel }}
+    </label>
 
     <div class="m-input-number__wrapper maz:flex maz:items-center maz:align-top">
       <MazBtn

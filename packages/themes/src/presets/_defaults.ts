@@ -62,6 +62,13 @@ export const DEFAULT_INPUT_BG: ThemeComponentBg = {
 }
 
 /**
+ * Default font-weight used by the top-label in `.m-input` when the
+ * `top-label` prop is set. The value is '600' by default, allowing
+ * presets to easily increase or decrease it when needed.
+ */
+export const DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT = '600'
+
+/**
  * Default font weight used by `MazBtn` — medium (500). Presets can
  * override via `components.btn.font-weight` to bias the button text
  * heavier or lighter for their visual identity.

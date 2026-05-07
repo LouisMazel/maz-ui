@@ -68,6 +68,32 @@ You can use the `top-label` attribute to display a top label above the textarea.
   </template>
 </ComponentDemo>
 
+## With assistive text
+
+You can use the `assistive-text` attribute to display a assistive text below the textarea.
+
+<ComponentDemo>
+  <MazTextarea
+    v-model="value"
+    top-label="Your message"
+    placeholder="Type your message..."
+    assistive-text="This is an assistive text"
+  />
+
+<template #code>
+
+```html
+<MazTextarea
+  v-model="value"
+  top-label="Your message"
+  placeholder="Type your message..."
+  assistive-text="This is an assistive text"
+/>
+```
+
+  </template>
+</ComponentDemo>
+
 ## With label and append slots
 
 You can use the `label` and `append` slots to customize the label and the append element.
@@ -84,7 +110,7 @@ You can use the `label` and `append` slots to customize the label and the append
       </span>
     </template>
     <template #append>
-      <MazBtn icon="paper-airplane" size="sm" @click="sendMessage" />
+      <MazBtn icon="/paper-airplane.svg" size="sm" @click="sendMessage" />
     </template>
   </MazTextarea>
 
