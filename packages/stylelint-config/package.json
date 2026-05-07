@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/stylelint-config",
   "type": "module",
-  "version": "5.0.0-beta.3",
+  "version": "5.0.0-beta.4",
   "description": "Stylelint configuration for CSS, SCSS, Vue and Tailwind CSS projects",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",

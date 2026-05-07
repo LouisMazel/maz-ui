@@ -11,6 +11,8 @@ export interface BuildThemeOptions {
   prefix?: string
   /** Dark class name */
   darkClass?: string
+  /** Whether to generate color scales */
+  scaleColorVariables?: boolean
 }
 
 export function buildThemeCSS(options: BuildThemeOptions): string {
@@ -20,6 +22,7 @@ export function buildThemeCSS(options: BuildThemeOptions): string {
     darkSelector = 'class',
     prefix = 'maz',
     darkClass = 'dark',
+    scaleColorVariables = true,
   } = options
 
   return generateCSS(preset, {
@@ -27,6 +30,7 @@ export function buildThemeCSS(options: BuildThemeOptions): string {
     darkSelectorStrategy: darkSelector,
     prefix,
     darkClass,
+    scaleColorVariables,
   })
 }
 
@@ -34,11 +38,13 @@ export function generateThemeBundle(presets: ThemePreset[], options: {
   mode?: 'light' | 'dark' | 'both'
   darkSelector?: 'class' | 'media'
   prefix?: string
+  scaleColorVariables?: boolean
 } = {}): Record<string, string> {
   const {
     mode = 'both',
     darkSelector = 'class',
     prefix = 'maz',
+    scaleColorVariables = true,
   } = options
 
   return presets.reduce((bundle, preset) => {
@@ -47,6 +53,7 @@ export function generateThemeBundle(presets: ThemePreset[], options: {
       mode,
       darkSelector,
       prefix,
+      scaleColorVariables,
     })
     return bundle
   }, {} as Record<string, string>)
@@ -73,6 +80,7 @@ export function buildSeparateThemeFiles(preset: ThemePreset, options: {
   prefix?: string
   darkSelector?: 'class' | 'media'
   darkClass?: string
+  scaleColorVariables?: boolean
 } = {}): {
   full: string
   lightOnly: string
