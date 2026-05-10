@@ -93,4 +93,12 @@ export default {
     ariaLabel: 'コンテンツの読み込み中',
     loadingText: '読み込み中...',
   },
+  codeHighlight: {
+    copyToClipboard: 'クリップボードにコピー',
+    copiedToClipboard: 'クリップボードにコピーされました',
+  },
+  windowMockup: {
+    copyUrlToClipboard: 'URLをクリップボードにコピー',
+    urlCopiedToClipboard: 'URLがクリップボードにコピーされました',
+  },
 } satisfies MazUiTranslationsNestedSchema

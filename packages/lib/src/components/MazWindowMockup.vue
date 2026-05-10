@@ -1,11 +1,19 @@
 <script lang="ts" setup>
-import type { CSSProperties } from 'vue'
-import { computed, defineAsyncComponent, useSlots } from 'vue'
-import { hasSlotContent } from '../utils/hasSlotContent'
+import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
+import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
+import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
+import { MazLinkIcon } from '@maz-ui/icons/lazy/MazLinkIcon'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
+import { computed, defineAsyncComponent, onUnmounted, ref } from 'vue'
+import { vTooltip } from '../directives/vTooltip'
 
 export type MazWindowMockupVariant = 'browser' | 'terminal' | 'editor'
 
 export interface MazWindowMockupProps {
+  /**
+   * Stable id used to scope the empty-state SVG pattern. Auto-generated if not provided.
+   */
+  id?: string
   /**
    * Window style variant
    * @values 'browser' | 'terminal' | 'editor'
@@ -40,10 +48,29 @@ export interface MazWindowMockupProps {
    */
   language?: string
   /**
-   * Whether to show the terminal prompt prefix (terminal variant only)
-   * @default true
+   * Label displayed inside the empty-state placeholder when no code and no slot content are provided.
    */
-  showPrompt?: boolean
+  label?: string
+  /**
+   * Whether to hide the terminal prompt prefix (no-op on non-terminal variants)
+   * @default false
+   */
+  hidePrompt?: boolean
+  /**
+   * Prefix to display before the code in the terminal (terminal variant only)
+   * @default '$'
+   */
+  prompt?: string
+  /**
+   * Hide the copy-to-clipboard button next to the URL bar (browser variant only).
+   * @default false
+   */
+  hideUrlCopy?: boolean
+  /**
+   * Custom translations for the component. Override either key independently.
+   * @type {Partial<MazUiTranslationsNestedSchema['windowMockup']>}
+   */
+  translations?: DeepPartial<MazUiTranslationsNestedSchema['windowMockup']>
 }
 
 const {
@@ -54,137 +81,123 @@ const {
   minHeight,
   code,
   language,
-  showPrompt = true,
+  label,
+  hidePrompt = false,
+  prompt = '$',
+  hideUrlCopy = false,
+  translations,
 } = defineProps<MazWindowMockupProps>()
+
+const { t } = useTranslations()
+
+const copyUrlLabel = computed(() => translations?.copyUrlToClipboard ?? t('windowMockup.copyUrlToClipboard'))
+const urlCopiedLabel = computed(() => translations?.urlCopiedToClipboard ?? t('windowMockup.urlCopiedToClipboard'))
+
+const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 const MazCodeHighlight = defineAsyncComponent(() => import('./MazCodeHighlight.vue'))
 
-const slots = useSlots()
+const hasPrompt = computed(() => variant === 'terminal' && !hidePrompt)
 
-const contentStyle = computed<CSSProperties>(() => ({
-  ...(minHeight && { minHeight }),
-}))
+const codeWithPrompt = computed(() => {
+  if (hasPrompt.value && code) {
+    return `${prompt} ${code}`
+  }
 
-const hasPrompt = computed(() => variant === 'terminal' && showPrompt)
-const hasCode = computed(() => !!code)
-const hasSlot = computed(() => hasSlotContent(slots.default))
+  return code
+})
+
+const urlCopied = ref(false)
+let urlCopyResetTimer: ReturnType<typeof setTimeout> | undefined
+
+async function copyUrl() {
+  if (!url || typeof navigator === 'undefined' || !navigator.clipboard)
+    return
+  try {
+    await navigator.clipboard.writeText(url)
+    urlCopied.value = true
+    clearTimeout(urlCopyResetTimer)
+    urlCopyResetTimer = setTimeout(() => {
+      urlCopied.value = false
+    }, 1500)
+  }
+  catch {}
+}
+
+onUnmounted(() => {
+  clearTimeout(urlCopyResetTimer)
+})
 </script>
 
 <template>
   <div
-    class="m-window-mockup m-reset-css"
+    class="m-window-mockup m-reset-css maz:relative maz:inline-flex maz:w-full maz:flex-col maz:overflow-hidden maz:rounded-md maz:border maz:bg-surface"
     :class="`--${variant}`"
   >
     <!-- Title bar -->
-    <div class="m-window-mockup__titlebar">
-      <div class="m-window-mockup__lights" aria-hidden="true">
-        <span class="m-window-mockup__light --red" />
-        <span class="m-window-mockup__light --orange" />
-        <span class="m-window-mockup__light --green" />
+    <div class="m-window-mockup__titlebar border-b maz:flex maz:items-center maz:gap-3 maz:bg-surface-600 maz:px-4 maz:py-3" :class="{ 'maz:justify-center': variant === 'terminal' }">
+      <div class="m-window-mockup__lights maz:flex maz:shrink-0 maz:items-center maz:gap-1.5" aria-hidden="true" :class="{ 'maz:absolute maz:left-4': variant === 'terminal' }">
+        <span class="m-window-mockup__light maz:block maz:size-3 maz:rounded-full maz:bg-[#FF5F57]" />
+        <span class="m-window-mockup__light maz:block maz:size-3 maz:rounded-full maz:bg-[#febc2e]" />
+        <span class="m-window-mockup__light maz:block maz:size-3 maz:rounded-full maz:bg-[#28C840]" />
       </div>
 
-      <!-- Browser: address bar -->
-      <div v-if="variant === 'browser'" class="m-window-mockup__url-bar">
-        {{ url }}
+      <!-- Browser: address bar + url copy button -->
+      <div v-if="variant === 'browser'" class="m-window-mockup__url-group maz:mx-auto maz:flex maz:max-w-[60%] maz:flex-1 maz:items-center maz:gap-2">
+        <div class="m-window-mockup__url-bar maz:flex-1 maz:truncate maz:rounded-md maz:border-b maz:bg-surface maz:px-3 maz:py-1 maz:text-center maz:text-sm maz:text-muted">
+          {{ url }}
+        </div>
+        <MazBtn
+          v-if="!hideUrlCopy"
+          v-tooltip="{
+            text: urlCopied ? urlCopiedLabel : copyUrlLabel,
+            color: 'surface',
+          }"
+          size="xs"
+          color="transparent"
+          outlined
+          class="m-window-mockup__url-copy-btn"
+          :aria-label="urlCopied ? urlCopiedLabel : copyUrlLabel"
+          :icon="urlCopied ? MazCheck : MazLinkIcon"
+          @click="copyUrl"
+        />
       </div>
 
       <!-- Editor: filename tab -->
-      <div v-else-if="variant === 'editor'" class="m-window-mockup__tab">
+      <div v-else-if="variant === 'editor'" class="m-window-mockup__tab maz:-mb-3 maz:self-end maz:rounded-t-md maz:border-x maz:border-t maz:bg-surface maz:px-4 maz:py-1 maz:text-sm maz:text-foreground">
         {{ filename }}
       </div>
 
       <!-- Terminal: title -->
-      <div v-else-if="variant === 'terminal'" class="m-window-mockup__title-label">
+      <div v-else-if="variant === 'terminal'" class="m-window-mockup__title-label maz:flex-1 maz:text-center maz:text-sm maz:text-muted">
         {{ title }}
       </div>
     </div>
 
     <!-- Content area -->
-    <div class="m-window-mockup__content" :style="contentStyle">
+    <div
+      class="m-window-mockup__content maz:flex maz:min-h-0 maz:flex-1 maz:flex-col maz:overflow-auto"
+      :style="minHeight ? { minHeight } : undefined"
+    >
       <!--
         @slot prompt - Replace the terminal prompt prefix (terminal variant only)
       -->
-      <div v-if="hasPrompt" class="m-window-mockup__prompt">
-        <slot name="prompt">
-          <span>$</span>
-        </slot>
-      </div>
-
-      <MazCodeHighlight v-if="hasCode" :code="code" :language="language" class="maz-w-full" />
+      <MazCodeHighlight v-if="code !== undefined" :code="codeWithPrompt" :copy-value="code" :language :rounded="false" class="maz:w-full" />
 
       <!--
-        @slot default - Free content (image, interface, etc.) shown when code prop is not set
+        @slot default - Free content (image, interface, etc.) shown when code prop is not set.
+        Falls back to a grid placeholder when neither code nor slot content are provided.
       -->
-      <slot v-else-if="hasSlot" />
+      <slot v-else>
+        <div class="m-window-mockup__placeholder maz:relative maz:flex maz:flex-1 maz:flex-center maz:overflow-hidden maz:p-4">
+          <span
+            v-if="label"
+            class="m-window-mockup__placeholder-label maz:font-mono maz:text-sm maz:text-muted"
+          >
+            {{ label }}
+          </span>
+        </div>
+      </slot>
     </div>
   </div>
 </template>
-
-<style scoped>
-.m-window-mockup {
-  @apply maz-relative maz-inline-flex maz-flex-col maz-overflow-hidden maz-rounded-lg maz-border maz-border-solid maz-border-divider maz-bg-surface maz-w-full;
-
-  &__titlebar {
-    @apply maz-flex maz-items-center maz-gap-3 maz-bg-surface-600 maz-px-4 maz-py-3;
-
-    border-bottom: 1px solid hsl(var(--maz-border));
-  }
-
-  &__lights {
-    @apply maz-flex maz-shrink-0 maz-items-center maz-gap-1.5;
-  }
-
-  &__light {
-    @apply maz-block maz-size-3 maz-rounded-full;
-
-    &.--red {
-      background-color: #ff5f57;
-    }
-
-    &.--orange {
-      background-color: #febc2e;
-    }
-
-    &.--green {
-      background-color: #28c840;
-    }
-  }
-
-  &__url-bar {
-    @apply maz-flex-1 maz-truncate maz-rounded maz-bg-surface maz-px-3 maz-py-1 maz-text-center maz-text-sm maz-text-muted;
-
-    border: 1px solid hsl(var(--maz-border));
-    max-width: 60%;
-    margin: 0 auto;
-  }
-
-  &__tab {
-    @apply maz-rounded-t maz-bg-surface maz-px-4 maz-py-1 maz-text-sm maz-text-foreground;
-
-    border: 1px solid hsl(var(--maz-border));
-    border-bottom: none;
-  }
-
-  &__title-label {
-    @apply maz-flex-1 maz-text-center maz-text-sm maz-text-muted;
-  }
-
-  &__content {
-    @apply maz-flex maz-min-h-0 maz-flex-1 maz-flex-col maz-overflow-auto;
-  }
-
-  &__prompt {
-    @apply maz-shrink-0 maz-px-4 maz-pt-3 maz-font-mono maz-text-sm maz-text-foreground;
-  }
-
-  &.--terminal {
-    .m-window-mockup__titlebar {
-      @apply maz-justify-center;
-    }
-
-    .m-window-mockup__lights {
-      @apply maz-absolute maz-left-4;
-    }
-  }
-}
-</style>

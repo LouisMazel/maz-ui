@@ -179,4 +179,24 @@ export default {
     ariaLabel: 'Loading content',
     loadingText: 'Loading...',
   },
+  /**
+   * This is the translation for the code highlight component.
+   * The keys are:
+   * - copyToClipboard: Label/tooltip for the copy button (default state).
+   * - copiedToClipboard: Label/tooltip for the copy button after a successful copy.
+   */
+  codeHighlight: {
+    copyToClipboard: 'Copy to clipboard',
+    copiedToClipboard: 'Copied to clipboard',
+  },
+  /**
+   * This is the translation for the window mockup component.
+   * The keys are:
+   * - copyUrlToClipboard: Label/tooltip for the URL copy button (default state).
+   * - urlCopiedToClipboard: Label/tooltip for the URL copy button after a successful copy.
+   */
+  windowMockup: {
+    copyUrlToClipboard: 'Copy URL to clipboard',
+    urlCopiedToClipboard: 'URL copied to clipboard',
+  },
 }

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
+import type { MazSizeUnit } from './types'
 import { computed } from 'vue'
 import { hasSlotContent } from '../utils/hasSlotContent'
 
@@ -57,7 +58,7 @@ export interface MazTickerProps {
    * Size of the gradient overlay zones (CSS value)
    * @default '33%'
    */
-  overlaySize?: string
+  overlaySize?: MazSizeUnit
   /**
    * CSS animation timing function
    * @default 'linear'

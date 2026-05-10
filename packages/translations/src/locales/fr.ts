@@ -93,4 +93,12 @@ export default {
     ariaLabel: 'Contenu en chargement',
     loadingText: 'Chargement...',
   },
+  codeHighlight: {
+    copyToClipboard: 'Copier dans le presse-papiers',
+    copiedToClipboard: 'Copié dans le presse-papiers',
+  },
+  windowMockup: {
+    copyUrlToClipboard: 'Copier l\'URL dans le presse-papiers',
+    urlCopiedToClipboard: 'URL copiée dans le presse-papiers',
+  },
 } satisfies MazUiTranslationsNestedSchema

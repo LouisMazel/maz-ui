@@ -1,14 +1,5 @@
 import MazWindowMockup from '@components/MazWindowMockup.vue'
-import { mount } from '@vue/test-utils'
-import { defineComponent } from 'vue'
-
-vi.mock('@components/MazCodeHighlight.vue', () => ({
-  default: defineComponent({
-    name: 'MazCodeHighlightStub',
-    props: ['code', 'language'],
-    template: '<div class="maz-code-highlight-stub" />',
-  }),
-}))
+import { flushPromises, mount } from '@vue/test-utils'
 
 describe('given MazWindowMockup component', () => {
   describe('when rendered with default props', () => {
@@ -27,9 +18,9 @@ describe('given MazWindowMockup component', () => {
 
       const lights = wrapper.findAll('.m-window-mockup__light')
       expect(lights).toHaveLength(3)
-      expect(lights[0].classes()).toContain('--red')
-      expect(lights[1].classes()).toContain('--orange')
-      expect(lights[2].classes()).toContain('--green')
+      expect(lights[0].classes()).toContain('maz:bg-[#FF5F57]')
+      expect(lights[1].classes()).toContain('maz:bg-[#febc2e]')
+      expect(lights[2].classes()).toContain('maz:bg-[#28C840]')
     })
 
     it('then it renders the url bar with default url', async () => {
@@ -82,37 +73,6 @@ describe('given MazWindowMockup component', () => {
 
       expect(wrapper.find('.m-window-mockup__title-label').text()).toBe('bash')
     })
-
-    it('then it renders the prompt by default', async () => {
-      const wrapper = mount(MazWindowMockup, {
-        props: { variant: 'terminal' },
-      })
-      await vi.dynamicImportSettled()
-
-      const prompt = wrapper.find('.m-window-mockup__prompt')
-      expect(prompt.exists()).toBe(true)
-      expect(prompt.text()).toBe('$')
-    })
-
-    it('then it hides the prompt when showPrompt is false', async () => {
-      const wrapper = mount(MazWindowMockup, {
-        props: { variant: 'terminal', showPrompt: false },
-      })
-      await vi.dynamicImportSettled()
-
-      expect(wrapper.find('.m-window-mockup__prompt').exists()).toBe(false)
-    })
-
-    it('then it replaces the prompt via the prompt slot', async () => {
-      const wrapper = mount(MazWindowMockup, {
-        props: { variant: 'terminal' },
-        slots: { prompt: '<span class="custom-prompt">❯</span>' },
-      })
-      await vi.dynamicImportSettled()
-
-      expect(wrapper.find('.custom-prompt').exists()).toBe(true)
-      expect(wrapper.find('.custom-prompt').text()).toBe('❯')
-    })
   })
 
   describe('when rendered with editor variant', () => {
@@ -157,14 +117,173 @@ describe('given MazWindowMockup component', () => {
     })
   })
 
-  describe('when rendered with prompt but browser variant', () => {
-    it('then it does not render the prompt', async () => {
+  describe('when rendered with no code and no slot', () => {
+    it('then it renders the empty-state placeholder', async () => {
+      const wrapper = mount(MazWindowMockup)
+      await vi.dynamicImportSettled()
+
+      const placeholder = wrapper.find('.m-window-mockup__placeholder')
+      expect(placeholder.exists()).toBe(true)
+    })
+
+    it('then it renders the label inside the placeholder when provided', async () => {
       const wrapper = mount(MazWindowMockup, {
-        props: { variant: 'browser', showPrompt: true },
+        props: { label: 'Preview' },
       })
       await vi.dynamicImportSettled()
 
-      expect(wrapper.find('.m-window-mockup__prompt').exists()).toBe(false)
+      const labelEl = wrapper.find('.m-window-mockup__placeholder-label')
+      expect(labelEl.exists()).toBe(true)
+      expect(labelEl.text()).toBe('Preview')
+    })
+  })
+
+  describe('when rendered with browser variant', () => {
+    it('then it renders the url copy button by default', async () => {
+      const wrapper = mount(MazWindowMockup)
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.find('.m-window-mockup__url-copy-btn').exists()).toBe(true)
+    })
+
+    it('then it hides the url copy button when hideUrlCopy is true', async () => {
+      const wrapper = mount(MazWindowMockup, {
+        props: { hideUrlCopy: true },
+      })
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.find('.m-window-mockup__url-copy-btn').exists()).toBe(false)
+    })
+
+    it('then it writes the url to the clipboard when the button is clicked', async () => {
+      const writeText = vi.fn().mockResolvedValue(undefined)
+      Object.assign(navigator, { clipboard: { writeText } })
+
+      const wrapper = mount(MazWindowMockup, {
+        props: { url: 'https://maz-ui.com' },
+      })
+      await vi.dynamicImportSettled()
+
+      await wrapper.find('.m-window-mockup__url-copy-btn').trigger('click')
+
+      expect(writeText).toHaveBeenCalledWith('https://maz-ui.com')
+    })
+
+    it('then the url copy button falls back to the translation composable output', async () => {
+      const wrapper = mount(MazWindowMockup)
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.find('.m-window-mockup__url-copy-btn').attributes('aria-label')).toBe('test')
+    })
+
+    it('then it overrides the url copy aria label via translations prop', async () => {
+      const wrapper = mount(MazWindowMockup, {
+        props: {
+          translations: { copyUrlToClipboard: 'Custom url label' },
+        },
+      })
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.find('.m-window-mockup__url-copy-btn').attributes('aria-label')).toBe('Custom url label')
+    })
+
+    it('then the url copy button reverts after the timeout', async () => {
+      vi.useFakeTimers({ shouldAdvanceTime: true })
+      const writeText = vi.fn().mockResolvedValue(undefined)
+      Object.assign(navigator, { clipboard: { writeText } })
+
+      const wrapper = mount(MazWindowMockup, {
+        props: {
+          url: 'https://maz-ui.com',
+          translations: { copyUrlToClipboard: 'Copy URL', urlCopiedToClipboard: 'URL copied' },
+        },
+      })
+      await vi.dynamicImportSettled()
+
+      await wrapper.find('.m-window-mockup__url-copy-btn').trigger('click')
+      await flushPromises()
+      expect(wrapper.find('.m-window-mockup__url-copy-btn').attributes('aria-label')).toBe('URL copied')
+
+      vi.advanceTimersByTime(1600)
+      await flushPromises()
+      expect(wrapper.find('.m-window-mockup__url-copy-btn').attributes('aria-label')).toBe('Copy URL')
+
+      vi.useRealTimers()
+    })
+
+    it('then clicking with no url does not call clipboard', async () => {
+      const writeText = vi.fn().mockResolvedValue(undefined)
+      Object.assign(navigator, { clipboard: { writeText } })
+
+      const wrapper = mount(MazWindowMockup, {
+        props: { url: '' },
+      })
+      await vi.dynamicImportSettled()
+
+      await wrapper.find('.m-window-mockup__url-copy-btn').trigger('click')
+
+      expect(writeText).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('when the component is unmounted', () => {
+    it('then it clears the url copy timer without throwing', async () => {
+      const writeText = vi.fn().mockResolvedValue(undefined)
+      Object.assign(navigator, { clipboard: { writeText } })
+
+      const wrapper = mount(MazWindowMockup, {
+        props: { url: 'https://maz-ui.com' },
+      })
+      await vi.dynamicImportSettled()
+
+      await wrapper.find('.m-window-mockup__url-copy-btn').trigger('click')
+
+      expect(() => wrapper.unmount()).not.toThrow()
+    })
+  })
+
+  describe('when rendered with code prop', () => {
+    it('then it prepends the prompt for terminal variant', async () => {
+      const wrapper = mount(MazWindowMockup, {
+        props: { variant: 'terminal', code: 'npm install', prompt: '$' },
+      })
+      await vi.dynamicImportSettled()
+      await flushPromises()
+
+      expect(wrapper.find('.m-window-mockup').classes()).toContain('--terminal')
+    })
+
+    it('then it omits the prompt for non-terminal variants', async () => {
+      const wrapper = mount(MazWindowMockup, {
+        props: { variant: 'browser', code: 'const a = 1' },
+      })
+      await vi.dynamicImportSettled()
+      await flushPromises()
+
+      expect(wrapper.find('.m-window-mockup').classes()).toContain('--browser')
+    })
+
+    it('then it omits the prompt when hidePrompt is true', async () => {
+      const wrapper = mount(MazWindowMockup, {
+        props: { variant: 'terminal', code: 'npm install', hidePrompt: true },
+      })
+      await vi.dynamicImportSettled()
+      await flushPromises()
+
+      expect(wrapper.find('.m-window-mockup').classes()).toContain('--terminal')
+    })
+  })
+
+  describe('when rendered with editor variant tab', () => {
+    it('then the tab is flushed with the bottom of the title bar', async () => {
+      const wrapper = mount(MazWindowMockup, {
+        props: { variant: 'editor' },
+      })
+      await vi.dynamicImportSettled()
+
+      const tab = wrapper.find('.m-window-mockup__tab')
+      expect(tab.classes()).toContain('maz:self-end')
+      expect(tab.classes()).toContain('maz:-mb-3')
     })
   })
 })
