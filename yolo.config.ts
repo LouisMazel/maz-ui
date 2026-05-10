@@ -9,4 +9,10 @@ export default defineConfig({
   rtkEnabled: false,
   autoSkills: true,
   logLevel: 'default',
+  apiUrl: process.env.YOLO_API_URL,
+  apiKey: process.env.YOLO_API_KEY,
+  claudeCodeOauthToken: process.env.CLAUDE_CODE_OAUTH_TOKEN,
+  agentGuidelinesEnabled: true,
+  gitToken: process.env.GITHUB_TOKEN,
+  worktree: true,
 })
