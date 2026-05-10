@@ -145,7 +145,7 @@ async function setIndicatorAndScroll() {
     activeTab.offsetLeft - scrollOffset < tabsBar.scrollLeft
     || activeTab.offsetLeft + activeTab.offsetWidth > tabsBar.scrollLeft + tabsBar.clientWidth
   ) {
-    const tabBarPaddingLeft = globalThis.getComputedStyle(tabsBar, 'padding-left').paddingLeft
+    const tabBarPaddingLeft = globalThis.getComputedStyle(tabsBar).paddingLeft
     const tabsBarPaddingOffset = Number(tabBarPaddingLeft.slice(0, -2))
 
     tabsBar.scrollTo({
