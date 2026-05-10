@@ -140,5 +140,7 @@ export { default as MazTimeline } from './MazTimeline.vue'
 export type { MazTimelineColor, MazTimelineDirection, MazTimelineItem, MazTimelineProps, MazTimelineRoundedSize, MazTimelineStepState } from './MazTimeline.vue'
 export { default as MazUiProvider } from './MazUiProvider.vue'
 export type { MazUiProviderProps, MazUiProviderTranslations } from './MazUiProvider.vue'
+export { default as MazWindowMockup } from './MazWindowMockup.vue'
+export type { MazWindowMockupProps, MazWindowMockupVariant } from './MazWindowMockup.vue'
 
 export type { MazColor, MazSize } from './types'
