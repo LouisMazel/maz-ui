@@ -17,11 +17,11 @@
   "devDependencies": {
     "@maz-ui/stylelint-config": "workspace:*",
     "@nuxt/devtools": "^3.2.3",
-    "@tailwindcss/postcss": "^4.2.1",
-    "@tailwindcss/vite": "^4.2.1",
+    "@tailwindcss/postcss": "^4.3.0",
+    "@tailwindcss/vite": "^4.3.0",
     "nuxt": "^4.4.4",
     "postcss-nested": "^7.0.2",
-    "tailwindcss": "^4.2.1",
+    "tailwindcss": "^4.3.0",
     "vue-router": "^5.0.6"
   },
   "lint-staged": {
