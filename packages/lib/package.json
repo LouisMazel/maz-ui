@@ -203,7 +203,8 @@
     "chart.js": "^4.5.1",
     "dayjs": "^1.11.20",
     "libphonenumber-js": "^1.13.0",
-    "valibot": "^1.4.0"
+    "valibot": "^1.4.0",
+    "shiki": "^3.0.0"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
