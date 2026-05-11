@@ -362,12 +362,85 @@ describe('useTheme', () => {
 
   describe('given toggleDarkMode function', () => {
     describe('when called', () => {
-      it('then it calls setColorMode', () => {
+      it('then it calls setColorMode', async () => {
         vi.mocked(inject).mockReturnValue(mockRefThemeState)
 
         const { toggleDarkMode } = useTheme()
 
-        toggleDarkMode()
+        await toggleDarkMode()
+
+        expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'dark')
+      })
+    })
+
+    describe('when called with animate: true', () => {
+      it('then it wraps the toggle in a View Transition', async () => {
+        const startViewTransition = vi.fn((cb: () => void) => {
+          cb()
+          return { finished: Promise.resolve() }
+        })
+
+        vi.stubGlobal('document', {
+          startViewTransition,
+          documentElement: { classList: { add: vi.fn(), remove: vi.fn() } },
+          head: { appendChild: vi.fn() },
+          createElement: vi.fn(() => ({ remove: vi.fn(), textContent: '' })),
+          cookie: '',
+        })
+
+        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+
+        const { toggleDarkMode } = useTheme()
+
+        await toggleDarkMode({ animate: true })
+
+        expect(startViewTransition).toHaveBeenCalledOnce()
+        expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'dark')
+      })
+    })
+  })
+
+  describe('given setColorMode with animate option', () => {
+    describe('when animate is true and startViewTransition is supported', () => {
+      it('then it lazy-loads view-transition and wraps the apply in a View Transition', async () => {
+        const startViewTransition = vi.fn((cb: () => void) => {
+          cb()
+          return { finished: Promise.resolve() }
+        })
+
+        vi.stubGlobal('document', {
+          startViewTransition,
+          documentElement: { classList: { add: vi.fn(), remove: vi.fn() } },
+          head: { appendChild: vi.fn() },
+          createElement: vi.fn(() => ({ remove: vi.fn(), textContent: '' })),
+          cookie: '',
+        })
+
+        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+
+        const { setColorMode } = useTheme()
+
+        await setColorMode('dark', { animate: true })
+
+        expect(startViewTransition).toHaveBeenCalledOnce()
+        expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'dark')
+      })
+    })
+
+    describe('when animate is true and startViewTransition is unsupported', () => {
+      it('then it falls back to applying the change synchronously', async () => {
+        vi.stubGlobal('document', {
+          documentElement: { classList: { add: vi.fn(), remove: vi.fn() } },
+          head: { appendChild: vi.fn() },
+          createElement: vi.fn(() => ({ remove: vi.fn(), textContent: '' })),
+          cookie: '',
+        })
+
+        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+
+        const { setColorMode } = useTheme()
+
+        await setColorMode('dark', { animate: true })
 
         expect(setCookie).toHaveBeenCalledWith('maz-color-mode', 'dark')
       })

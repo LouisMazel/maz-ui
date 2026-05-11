@@ -16,7 +16,9 @@ const themeState = ref<ThemeState>()
 
 const colorMode = computed<ColorMode>({
   get: () => themeState.value?.colorMode as ColorMode,
-  set: mode => setColorMode(mode),
+  set: (mode) => {
+    void setColorMode(mode)
+  },
 })
 
 const isDark = computed(() => themeState.value?.isDark || false)
@@ -66,21 +68,29 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
   }
 }
 
-function setColorMode(colorMode: ColorMode) {
+async function setColorMode(colorMode: ColorMode, options: { animate?: boolean } = {}): Promise<void> {
   if (!themeState.value)
     return
 
-  themeState.value.colorMode = colorMode
+  const apply = () => {
+    themeState.value!.colorMode = colorMode
+    setCookie('maz-color-mode', colorMode)
+    if (colorMode === 'auto') {
+      saveResolvedColorMode(getSystemColorMode() === 'dark' ? 'dark' : 'light')
+    }
+  }
 
-  setCookie('maz-color-mode', colorMode)
-
-  if (colorMode === 'auto') {
-    saveResolvedColorMode(getSystemColorMode() === 'dark' ? 'dark' : 'light')
+  if (options.animate) {
+    const { runViewTransition } = await import('../utils/view-transition')
+    await runViewTransition(apply)
+  }
+  else {
+    apply()
   }
 }
 
-function toggleDarkMode() {
-  setColorMode(isDark.value ? 'light' : 'dark')
+function toggleDarkMode(options: { animate?: boolean } = {}): Promise<void> {
+  return setColorMode(isDark.value ? 'light' : 'dark', options)
 }
 
 let stopInjectedWatch: (() => void) | undefined
@@ -165,11 +175,15 @@ export function useTheme() {
      * Set the color mode
      * @description Set the color mode - Can be 'auto', 'dark' or 'light'
      * @param colorMode The new color mode
+     * @param options.animate When `true`, wrap the change in a View Transition for a smooth full-page animation. Lazy-imports the helper so unused code stays out of the boot bundle.
+     * @returns A `Promise<void>` that resolves once the change (and optional transition) is applied. Callers may ignore the return.
      */
     setColorMode,
     /**
      * Toggle the dark mode
      * @description Toggle the dark mode
+     * @param options.animate When `true`, wrap the toggle in a View Transition.
+     * @returns A `Promise<void>` that resolves once the change (and optional transition) is applied.
      */
     toggleDarkMode,
     /**
