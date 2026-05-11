@@ -6,12 +6,19 @@ export function updateDocumentClass(colorMode: ColorMode, state?: ThemeState): v
     return
   }
 
-  noTransition(() => {
+  const apply = () => {
     const html = document.documentElement
     html.classList.remove(state.darkClass, state.lightClass)
     if (colorMode === 'dark')
       html.classList.add(state.darkClass)
     else if (colorMode === 'light')
       html.classList.add(state.lightClass)
-  })
+  }
+
+  if (state.colorTransition === false) {
+    noTransition(apply)
+  }
+  else {
+    apply()
+  }
 }
