@@ -44,7 +44,10 @@
     "dev": "unbuild --stub",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "cross-env NODE_ENV=production eslint .",
-    "lint:fix": "pnpm lint --fix"
+    "lint:fix": "pnpm lint --fix",
+    "test:unit": "vitest run",
+    "test:unit:coverage": "vitest run --coverage",
+    "test:unit:watch": "vitest watch"
   },
   "peerDependencies": {
     "eslint": ">=9.0.0 <11.0.0"
