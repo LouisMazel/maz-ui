@@ -1,7 +1,7 @@
 import type { ColorMode, CSSOptions, MazUiThemeOptions, ThemePreset, ThemePresetName, ThemeState } from '@maz-ui/themes'
 import type { Ref } from 'vue'
 import { MazUiTheme } from '@maz-ui/themes/plugin'
-import { CSS_ID, generateCSS, getPreset, mergePresets } from '@maz-ui/themes/utils'
+import { CSS_ID, generateCSS, getPreset, mergePresets, resolveColorSchemeContent } from '@maz-ui/themes/utils'
 import { getSystemColorMode } from '@maz-ui/themes/utils/get-color-mode'
 import { defineNuxtPlugin, useCookie, useHead, useRequestHeaders } from 'nuxt/app'
 
@@ -124,6 +124,8 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const config = {
     strategy: 'runtime',
     darkClass: 'dark',
+    lightClass: 'light',
+    colorTransition: true,
     darkModeStrategy: 'class',
     mode: 'both',
     overrides: {},
@@ -147,6 +149,14 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
 
   if (import.meta.server) {
     injectThemeCSS(config)
+
+    useHead({
+      meta: [{
+        name: 'color-scheme',
+        content: resolveColorSchemeContent(config.mode, config.colorMode),
+        id: 'maz-color-scheme',
+      }],
+    })
 
     if (config.colorMode === 'auto' && config.mode === 'both' && config.darkModeStrategy === 'class') {
       useHead({

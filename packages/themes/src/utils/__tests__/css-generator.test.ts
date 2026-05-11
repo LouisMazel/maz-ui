@@ -474,6 +474,23 @@ describe('given generateCSS function', () => {
         expect(css).not.toContain('--maz-input-bg:')
       })
     })
+
+    describe('when the preset has no components block at all', () => {
+      const preset = { ...mazUi, components: undefined as any }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+        scaleColorVariables: false,
+      })
+
+      it('then no component vars are emitted', () => {
+        expect(css).not.toContain('--maz-btn-font-weight')
+        expect(css).not.toContain('--maz-container-bg:')
+        expect(css).not.toContain('--maz-input-bg:')
+      })
+    })
   })
 
   describe('given legacy HSL color input', () => {

@@ -41,6 +41,27 @@ describe('given runViewTransition', () => {
     })
   })
 
+  describe('when the transition.finished promise rejects', () => {
+    beforeEach(() => {
+      vi.stubGlobal('document', {
+        startViewTransition: vi.fn((cb: () => void) => {
+          cb()
+          return { finished: Promise.reject(new Error('aborted')) }
+        }),
+      })
+    })
+
+    afterEach(() => {
+      vi.unstubAllGlobals()
+    })
+
+    it('then it swallows the rejection silently', async () => {
+      const callback = vi.fn()
+      await expect(runViewTransition(callback)).resolves.toBeUndefined()
+      expect(callback).toHaveBeenCalledOnce()
+    })
+  })
+
   describe('when document is undefined (SSR)', () => {
     beforeEach(() => {
       vi.stubGlobal('document', undefined)
