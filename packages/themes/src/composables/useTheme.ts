@@ -16,9 +16,12 @@ const themeState = ref<ThemeState>()
 
 const colorMode = computed<ColorMode>({
   get: () => themeState.value?.colorMode as ColorMode,
-  set: (mode) => {
-    void setColorMode(mode)
-  },
+  /**
+   * Setter fires `setColorMode(mode)` synchronously (Promise<void> is discarded).
+   * If you need to await the change (e.g., when `colorTransition` is enabled), call
+   * `setColorMode(mode)` directly to receive the Promise.
+   */
+  set: mode => void setColorMode(mode),
 })
 
 const isDark = computed(() => themeState.value?.isDark || false)
