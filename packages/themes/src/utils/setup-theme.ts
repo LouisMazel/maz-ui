@@ -3,6 +3,7 @@ import type { MazUiThemeOptions } from '../plugin'
 import type { Duration, ThemePreset, ThemePresetName, ThemeState } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { ref, watch } from 'vue'
+import { injectColorSchemeMeta, resolveColorSchemeContent } from './color-scheme-meta'
 import { clearSavedPresetName, getSavedPresetName, saveResolvedPresetName } from './cookie-storage'
 import { getColorMode, getSavedColorMode, getSystemColorMode, saveResolvedColorMode } from './get-color-mode'
 import { getPreset } from './get-preset'
@@ -36,6 +37,7 @@ function watchColorSchemeFromMedia(themeState: Ref<ThemeState>): () => void {
   const stopWatch = watch(() => themeState.value.colorMode, (colorMode) => {
     const resolvedIsDark = colorMode === 'auto' ? getSystemColorMode() === 'dark' : colorMode === 'dark'
     updateDocumentClass(colorMode, themeState.value)
+    injectColorSchemeMeta(resolveColorSchemeContent(themeState.value.mode, colorMode))
     if (colorMode === 'auto') {
       saveResolvedColorMode(resolvedIsDark ? 'dark' : 'light')
     }
@@ -208,6 +210,7 @@ function swapPreset(themeState: ThemeStateRef, preset: ThemePreset, config: Reso
 export function setupTheme(options: MazUiThemeOptions): SetupThemeReturn {
   const config = resolveConfig(options)
   const themeState = createThemeState(options, config)
+  injectColorSchemeMeta(resolveColorSchemeContent(themeState.value.mode, themeState.value.colorMode))
   const savedName = config.persistPreset ? getSavedPresetName() : null
   const presetObject = config.preset && typeof config.preset !== 'string' ? config.preset : null
 

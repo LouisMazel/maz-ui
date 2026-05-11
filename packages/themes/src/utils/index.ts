@@ -1,4 +1,5 @@
 export * from './color-parser'
+export * from './color-scheme-meta'
 export * from './cookie-storage'
 export * from './css-generator'
 export * from './get-preset'
