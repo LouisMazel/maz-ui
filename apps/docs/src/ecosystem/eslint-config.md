@@ -114,6 +114,8 @@ defineConfig({
     detectComponentClasses: true,
     // Monorepo: directory used to resolve `tailwindcss` and the config file.
     cwd: 'apps/web',
+    // Custom `maz/tailwind-no-arbitrary-px` rule — see "Custom rules" below.
+    noArbitraryPx: true,
   },
 })
 ```
@@ -135,12 +137,98 @@ defineConfig({
 
 The plugin recognizes the most common class-name utilities out of the box (`clsx`, `cn`, `tw-merge`, `cva`, `tv`, …); see the [plugin docs](https://github.com/schoero/eslint-plugin-better-tailwindcss) for the full list and how to register your own.
 
+## Custom rules
+
+`@maz-ui/eslint-config` ships its own ESLint plugin under the **`maz/*`** namespace. Rules are grouped by category — `maz/tailwind-*` today, with room for `maz/js-*` and others as they get added.
+
+### `maz/tailwind-no-arbitrary-px`
+
+Forbids `px` units inside Tailwind arbitrary value classes (`w-[16px]`, `m-[-16px]`, `[gap:24px]`, …) and **autofixes** them to `rem` (or `em`) using your project's root font-size. Whitespace inside brackets (e.g. `[up to 100px]`) is left alone, so plain prose is never rewritten by accident.
+
+::: info Registered only when `tailwindcss` is enabled
+The `maz` plugin and the `maz/tailwind-*` rules are only added to the flat-config when `tailwindcss` is set to anything other than `false`. With `tailwindcss: false` *(default)*, neither the plugin nor the rule appear in the resolved config — keeping the preset zero-cost for non-Tailwind projects. To use the rule without opting into the full Tailwind preset, register `mazPlugin` manually (see [Use the plugin directly](#use-the-plugin-directly)).
+:::
+
+When `tailwindcss` is on, the rule is enabled with defaults. You can tune it two ways:
+
+**Standard ESLint override** *(idiomatic, max control)*
+
+```ts
+defineConfig({
+  tailwindcss: 'recommended',
+  rules: {
+    'maz/tailwind-no-arbitrary-px': ['error', { baseFontSize: 10, unit: 'em' }],
+  },
+})
+```
+
+User `rules` overrides are applied in a *trailing* flat-config block, so they win over the defaults wired in by `tailwindcssConfigs`.
+
+**Ergonomic shortcut** *(set defaults via `tailwindcss.noArbitraryPx`)*
+
+```ts
+defineConfig({
+  tailwindcss: {
+    preset: 'recommended',
+    noArbitraryPx: {
+      baseFontSize: 16, // default — divide px by this to get rem
+      unit: 'rem', // default — output unit ('rem' | 'em')
+      severity: 'error', // default — 'off' | 'warn' | 'error'
+    },
+  },
+})
+```
+
+| `noArbitraryPx` value              | Behavior                                            |
+| ---------------------------------- | --------------------------------------------------- |
+| `true` *(default)*                 | Enabled with defaults (`baseFontSize: 16`, `rem`).  |
+| `false`                            | Disabled.                                           |
+| `{ baseFontSize, unit, severity }` | Override any subset of the defaults.                |
+
+If both are set, the standard `rules` override wins (it's the last block applied).
+
+What the autofix does (with `baseFontSize: 16`):
+
+| Before                  | After                    |
+| ----------------------- | ------------------------ |
+| `w-[16px]`              | `w-[1rem]`               |
+| `m-[-16px]`             | `m-[-1rem]`              |
+| `tracking-[.5px]`       | `tracking-[0.03125rem]`  |
+| `p-[16px_8px]`          | `p-[1rem_0.5rem]`        |
+| `[gap:24px]`            | `[gap:1.5rem]`           |
+| `w-[calc(100%-16px)]`   | `w-[calc(100%-1rem)]`    |
+| `md:hover:w-[16px]`     | `md:hover:w-[1rem]`      |
+
+The rule fires on:
+
+- JSX `className` strings and template literals
+- Vue SFC static `class="…"` attributes (via `vue-eslint-parser`)
+- Vue dynamic `:class` bindings, including string literals inside arrays / objects
+- Function-call arguments and tagged template literals (`clsx`, `cn`, `cva`, `tw`, …)
+
+### Use the plugin directly
+
+If you don't want the full Tailwind preset (or just prefer wiring rules yourself), import `mazPlugin` and register it in your own flat-config block. This is also the way to use `maz/tailwind-*` rules **without** enabling `tailwindcss` in `defineConfig`:
+
+```ts
+import { mazPlugin } from '@maz-ui/eslint-config'
+
+export default [{
+  files: ['**/*.{ts,tsx,vue}'],
+  plugins: { maz: mazPlugin },
+  rules: {
+    'maz/tailwind-no-arbitrary-px': ['error', { baseFontSize: 16, unit: 'rem' }],
+  },
+}]
+```
+
 ## What it includes
 
 - **Antfu base** — TypeScript-aware rules, Stylistic formatting, modern import order.
 - **SonarJS** — code quality and complexity heuristics, with a relaxed set for `*.spec.ts` / `*.test.ts`.
 - **Vue rules** (when Vue/Nuxt is detected) — block-tag order, naming conventions, template a11y.
 - **Tailwind plugin** (opt-in) — class ordering, duplicate / deprecated / unknown / conflicting class detection — see [Tailwind support](#tailwind-support).
+- **`maz/*` custom rules** — namespaced ESLint plugin shipped with the preset; see [Custom rules](#custom-rules).
 - **Markdown** — prose linting baseline.
 - **vueAccessibility** (opt-in) — `eslint-plugin-vuejs-accessibility` rules with the AudioWorklet globals fix.
 
@@ -151,6 +239,7 @@ The plugin recognizes the most common class-name utilities out of the box (`clsx
 ```ts
 import {
   baseRules,
+  mazPlugin,
   sonarjsRules,
   tailwindcssConfigs,
   vueRules,
@@ -158,14 +247,19 @@ import {
 
 export default [
   {
+    plugins: { maz: mazPlugin },
     rules: {
       ...baseRules(true), // production = true → no-console: 'error'
       ...sonarjsRules,
       ...vueRules,
+      'maz/tailwind-no-arbitrary-px': 'error',
     },
   },
   // Drop in just the Tailwind block, with whatever preset and settings you want.
-  ...tailwindcssConfigs('stylistic', { entryPoint: 'src/main.css' }),
+  ...tailwindcssConfigs('stylistic', {
+    entryPoint: 'src/main.css',
+    noArbitraryPx: { unit: 'em' },
+  }),
 ]
 ```
 
