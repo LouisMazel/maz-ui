@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import type { MazUiThemeOptions } from '../plugin'
-import type { ThemePreset, ThemePresetName, ThemeState } from '../types'
+import type { Duration, ThemePreset, ThemePresetName, ThemeState } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { ref, watch } from 'vue'
 import { clearSavedPresetName, getSavedPresetName, saveResolvedPresetName } from './cookie-storage'
@@ -79,9 +79,29 @@ export const defaultOptions = {
   preset: undefined,
   mode: 'both',
   darkClass: 'dark',
+  lightClass: 'light',
   colorMode: 'auto',
   persistPreset: true,
+  colorTransition: true,
 } satisfies Required<Omit<MazUiThemeOptions, 'preset'>> & Pick<MazUiThemeOptions, 'preset'>
+
+function resolveColorTransition(
+  raw: MazUiThemeOptions['colorTransition'],
+  preset?: ThemePreset,
+): false | { duration: Duration, easing: string } {
+  if (raw === false)
+    return false
+  const defaults = {
+    duration: (preset?.foundation?.['motion-normal'] ?? '200ms') as Duration,
+    easing: preset?.foundation?.['easing-in-out'] ?? 'cubic-bezier(0.4, 0, 0.2, 1)',
+  }
+  if (raw === true || raw === undefined)
+    return defaults
+  return {
+    duration: raw.duration ?? defaults.duration,
+    easing: raw.easing ?? defaults.easing,
+  }
+}
 
 export interface SetupThemeReturn {
   themeState: Ref<ThemeState>
@@ -112,11 +132,13 @@ function createThemeState(options: MazUiThemeOptions, config: ResolvedConfig): T
   const themeState: ThemeStateRef = ref({
     strategy: config.strategy,
     darkClass: config.darkClass,
+    lightClass: config.lightClass,
     darkModeStrategy: config.darkModeStrategy,
     colorMode: config.colorMode,
     mode: config.mode,
     preset: undefined,
     persistPreset: config.persistPreset,
+    colorTransition: resolveColorTransition(config.colorTransition, undefined),
     // @ts-expect-error _isDark is a private property
     isDark: options._isDark || isDark,
   })
@@ -140,6 +162,10 @@ function finalizeTheme(
     if (config.persistPreset) {
       saveResolvedPresetName(finalPreset.name)
     }
+  }
+
+  if (finalPreset) {
+    themeState.value.colorTransition = resolveColorTransition(config.colorTransition, finalPreset)
   }
 
   if (config.strategy === 'buildtime' || !finalPreset) {

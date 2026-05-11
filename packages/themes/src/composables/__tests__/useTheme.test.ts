@@ -12,11 +12,13 @@ const mockThemeState: ThemeState = {
   preset: mazUi,
   colorMode: 'light',
   darkClass: 'dark',
+  lightClass: 'light',
   strategy: 'runtime',
   darkModeStrategy: 'class',
   mode: 'both',
   isDark: false,
   persistPreset: true,
+  colorTransition: false,
 }
 
 const mockRefThemeState = { value: mockThemeState }

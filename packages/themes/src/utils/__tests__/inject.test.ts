@@ -20,7 +20,9 @@ function createMockThemeState(): Ref<ThemeState> {
     strategy: 'runtime',
     darkModeStrategy: 'class',
     darkClass: 'dark',
+    lightClass: 'light',
     persistPreset: true,
+    colorTransition: false,
   }) as Ref<ThemeState>
 }
 

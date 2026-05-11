@@ -178,6 +178,14 @@ describe('setup-theme', () => {
       it('then it has colorMode set to auto', () => {
         expect(defaultOptions.colorMode).toBe('auto')
       })
+
+      it('then it has lightClass set to light', () => {
+        expect(defaultOptions.lightClass).toBe('light')
+      })
+
+      it('then it has colorTransition set to true', () => {
+        expect(defaultOptions.colorTransition).toBe(true)
+      })
     })
   })
 
