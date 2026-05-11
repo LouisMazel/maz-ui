@@ -126,11 +126,14 @@ export default defineNuxtConfig({
     theme: {
       preset: 'maz-ui', // 'maz-ui' | 'pristine' | 'ocean' | 'obsidian' | 'nova' | custom object
       strategy: 'runtime', // 'runtime' | 'buildtime'
-      darkModeStrategy: 'class', // 'class' | 'media' | 'auto'
+      darkModeStrategy: 'class', // 'class' | 'media'
+      darkClass: 'dark', // class on <html> when colorMode === 'dark' (default: 'dark')
+      lightClass: 'light', // class on <html> when colorMode === 'light' (default: 'light')
+      colorTransition: true, // smooth dark/light transition (default: true)
       overrides: {
         colors: {
-          light: { primary: '220 100% 50%' },
-          dark: { primary: '220 100% 70%' }
+          light: { primary: 'oklch(0.65 0.19 254)' },
+          dark: { primary: 'oklch(0.72 0.18 254)' }
         }
       },
       mode: 'both', // 'light' | 'dark' | 'both'
@@ -220,16 +223,16 @@ const theme = {
   overrides: {
     colors: {
       light: {
-        primary: '220 100% 50%',
-        secondary: '220 14% 96%',
-        surface: '0 0% 100%',
-        foreground: '222 84% 5%',
+        primary: 'oklch(0.6 0.18 254)',
+        secondary: 'oklch(0.96 0.01 254)',
+        surface: 'oklch(1 0 0)',
+        foreground: 'oklch(0.16 0.02 254)',
       },
       dark: {
-        primary: '220 100% 70%',
-        secondary: '220 14% 4%',
-        surface: '222 84% 5%',
-        foreground: '210 40% 98%',
+        primary: 'oklch(0.72 0.18 254)',
+        secondary: 'oklch(0.22 0.02 254)',
+        surface: 'oklch(0.16 0.02 254)',
+        foreground: 'oklch(0.96 0.005 254)',
       }
     },
     // Override other theme properties...
@@ -245,7 +248,18 @@ const theme = {
   strategy: 'runtime', // 'runtime' (recommended) | 'buildtime'
 
   // Dark mode handling
-  darkModeStrategy: 'class', // 'class' | 'media' | 'auto'
+  darkModeStrategy: 'class', // 'class' | 'media'
+
+  // Class added to <html> when colorMode === 'dark' (default: 'dark')
+  darkClass: 'dark',
+
+  // Class added to <html> when colorMode === 'light' (default: 'light')
+  // Mirror of darkClass — used to force `color-scheme: only light`.
+  lightClass: 'light',
+
+  // Smooth color transition on dark/light toggle. Default: true.
+  // Can also be `false` for instant switch or `{ duration, easing }` for custom values.
+  colorTransition: true,
 
   // Persist the active preset name in the `maz-preset` cookie so the
   // user's last-used theme is restored on reload. Default: true.
@@ -379,41 +393,39 @@ import { definePreset } from '@maz-ui/themes'
 
 export const customTheme = definePreset({
   base: 'maz-ui',
-  name: 'custom',
-  foundation: {
-    'base-font-size': '14px',
-    'font-family': `Manrope, sans-serif, system-ui, -apple-system`,
-    'space': '0.25rem',
-    'border-width': '0.0625rem',
-  },
-  scales: {
-    rounded: { md: '0.7rem' },
-  },
-  colors: {
-    light: {
-      primary: '350 100% 50%', // Custom pink
-      secondary: '350 14% 96%',
-      surface: '0 0% 100%',
-      foreground: '222 84% 5%',
-      muted: '210 40% 96%',
-      accent: '210 40% 90%',
-      destructive: '0 84% 60%',
-      border: '214 32% 91%',
-      input: '214 32% 91%',
-      ring: '350 100% 50%',
+  overrides: {
+    name: 'custom',
+    foundation: {
+      'base-font-size': '14px',
+      'font-family': `Manrope, sans-serif, system-ui, -apple-system`,
+      'space': '0.25rem',
+      'border-width': '0.0625rem',
     },
-    dark: {
-      primary: '350 100% 70%',
-      secondary: '350 14% 4%',
-      surface: '222 84% 5%',
-      foreground: '210 40% 98%',
-      muted: '217 33% 17%',
-      accent: '217 33% 17%',
-      destructive: '0 62% 30%',
-      border: '217 33% 17%',
-      input: '217 33% 17%',
-      ring: '350 100% 70%',
-    }
+    scales: {
+      rounded: { md: '0.7rem' },
+    },
+    colors: {
+      light: {
+        primary: 'oklch(0.65 0.27 5)', // Custom pink
+        secondary: 'oklch(0.96 0.01 5)',
+        surface: 'oklch(1 0 0)',
+        foreground: 'oklch(0.16 0.02 254)',
+        muted: 'oklch(0.6 0.01 254)',
+        accent: 'oklch(0.7 0.05 5)',
+        destructive: 'oklch(0.6 0.22 27)',
+        divider: 'oklch(0.92 0.005 254)',
+      },
+      dark: {
+        primary: 'oklch(0.75 0.22 5)',
+        secondary: 'oklch(0.24 0.02 5)',
+        surface: 'oklch(0.16 0.02 254)',
+        foreground: 'oklch(0.96 0.005 254)',
+        muted: 'oklch(0.6 0.01 254)',
+        accent: 'oklch(0.3 0.04 5)',
+        destructive: 'oklch(0.55 0.2 27)',
+        divider: 'oklch(0.3 0.01 254)',
+      }
+    },
   },
 })
 

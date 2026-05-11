@@ -1,6 +1,6 @@
 ---
 title: Theming
-description: Modern and performant theme system for Maz-UI with TypeScript, HSL CSS variables and flexible strategies.
+description: Modern and performant theme system for Maz-UI built on native CSS features (`light-dark()`, `color-scheme`, `color-mix(in oklch)`) for v5.
 ---
 
 # {{ $frontmatter.title }}
@@ -11,9 +11,12 @@ description: Modern and performant theme system for Maz-UI with TypeScript, HSL 
 
 ## Features
 
-- **Modern HSL CSS Variables** - Maximum flexibility with colors
-- **Smart Dark Mode** - Automatic support with `prefers-color-scheme`
-- **Automatic Generation** - Color scales (50-950) created automatically
+- **Native `light-dark()` + `color-scheme`** - Modern CSS theming with zero JS overhead for the light/dark switch
+- **Native widget theming** - `color-scheme` makes scrollbars, native `<select>`, date pickers and autofill follow the active mode automatically
+- **Smooth color transitions** - Animated dark/light toggle via `@property` + CSS `transition` (opt-out via `colorTransition: false`)
+- **Animated theme switch** - Optional full-page View Transitions via `setColorMode(..., { animate: true })`
+- **Anti-FART** - `<meta name="color-scheme">` injected at boot to prevent any Flash of inAccurate coloR Theme (no setup needed)
+- **Automatic color scales** - `--maz-X-50` through `--maz-X-950` derived via `color-mix(in oklch, …)` — perceptually uniform, chroma-stable
 - **Performance Strategies** - Runtime injection or build-time generation according to your needs
 - **Strict TypeScript** - Complete types for perfect DX
 - **Zero FOUC** - Pass the preset object up front; the full CSS is injected synchronously on first paint
@@ -44,6 +47,13 @@ app.use(MazUi, {
     darkModeStrategy: 'class', // 'class' | 'media' (only if mode is `both`)
     mode: 'both', // 'light' | 'dark' | 'both' (supported color modes)
     colorMode: 'auto', // 'auto' | 'light' | 'dark' (initial color mode, only if mode is 'both')
+    // Class added to <html> when dark mode is forced (default: 'dark')
+    darkClass: 'dark',
+    // Class added to <html> when light mode is forced (default: 'light')
+    lightClass: 'light',
+    // Smooth color transition on dark/light toggle (default: true).
+    // `false` = instant switch, object = custom duration/easing.
+    colorTransition: true,
     persistPreset: true, // remember the active preset name across reloads
   }
 })
@@ -89,10 +99,13 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 
 - `preset`: The theme preset to use
 - `overrides` (optional): Override specific parts of the theme
-- `strategy` (optional): The rendering strategy to use
-- `darkModeStrategy` (optional): The dark mode strategy to use, only if you use mode `both`
-- `mode` (optional): The supported color modes to use (light, dark, both)
-- `colorMode` (optional): The initial color mode to use (only if mode is 'both')
+- `strategy` (optional, default `'runtime'`): The rendering strategy to use — `'runtime' | 'buildtime'`
+- `darkModeStrategy` (optional, default `'class'`): The dark mode strategy — `'class' | 'media'`, only if you use mode `both`
+- `mode` (optional, default `'both'`): The supported color modes — `'light' | 'dark' | 'both'`
+- `colorMode` (optional, default `'auto'`): The initial color mode — `'light' | 'dark' | 'auto'` (only if mode is `'both'`)
+- `darkClass` (optional, default `'dark'`): Class added to `<html>` when `colorMode === 'dark'`
+- `lightClass` (optional, default `'light'`): Class added to `<html>` when `colorMode === 'light'` — mirror of `darkClass`
+- `colorTransition` (optional, default `true`): Animate color CSS variables on dark/light toggle. `false` = instant, `{ duration, easing }` = custom
 - `persistPreset` (optional, default `true`): Persist the active preset name in the `maz-preset` cookie so it is restored on reload.
 
 ### Preset persistence
@@ -117,6 +130,72 @@ app.use(MazUi, {
 Useful when:
 - You want zero theme-related cookies (privacy / regulatory).
 - The active preset is fully driven by the consumer app and no end-user switching is exposed.
+
+## Color modes and class toggling
+
+`darkClass` and `lightClass` interact with `darkModeStrategy` to control how `<html>` is decorated when the user picks an explicit mode.
+
+### `darkModeStrategy: 'class'` (default)
+
+- `setColorMode('dark')` adds `darkClass` (default `.dark`) to `<html>` → `color-scheme: only dark`.
+- `setColorMode('light')` adds `lightClass` (default `.light`) to `<html>` → `color-scheme: only light`.
+- `setColorMode('auto')` removes both classes → `color-scheme: light dark` lets the browser follow the system `prefers-color-scheme`.
+
+Forcing both classes on the root ensures native widgets (scrollbars, native `<select>`, date pickers, autofill backgrounds, …) match the explicit user choice rather than the OS preference.
+
+### `darkModeStrategy: 'media'`
+
+- No class is ever added to `<html>`.
+- The browser always follows `prefers-color-scheme` via `color-scheme: light dark`.
+- `setColorMode()` still updates the persisted cookie but does **not** force a visual override.
+
+## Smooth color transitions
+
+The `colorTransition` option animates color CSS variables when toggling dark/light, so the switch feels fluid instead of snapping instantly.
+
+```ts
+// Default — animate with the preset's `motion-normal` duration and `easing-in-out`
+app.use(MazUi, { theme: { preset: mazUi } })
+
+// Disable — instant switch (legacy v4 behaviour)
+app.use(MazUi, { theme: { preset: mazUi, colorTransition: false } })
+
+// Custom duration / easing
+app.use(MazUi, {
+  theme: {
+    preset: mazUi,
+    colorTransition: { duration: '250ms', easing: 'cubic-bezier(0.4, 0, 0.2, 1)' },
+  },
+})
+```
+
+::: info Browser support
+`colorTransition` relies on `@property` (Baseline 2024 — Firefox shipped support in 128). Browsers without `@property` fall through to an instant swap with no error, no animation.
+:::
+
+## Animated theme switch
+
+For a full-page animated swap (rather than per-variable color tweens), pass `{ animate: true }` to `setColorMode` or `toggleDarkMode`:
+
+```vue
+<script setup>
+import { useTheme } from '@maz-ui/themes'
+
+const { toggleDarkMode, setColorMode } = useTheme()
+
+async function onToggle() {
+  await toggleDarkMode({ animate: true })
+}
+
+async function forceDark() {
+  await setColorMode('dark', { animate: true })
+}
+</script>
+```
+
+- Wraps the switch in `document.startViewTransition()` so the browser captures a snapshot of the page before/after and crossfades between them.
+- The View Transition glue is **lazy-imported** — when `animate` is not used, it stays out of the boot bundle.
+- **Graceful degradation:** in browsers that don't support the API, the change is applied immediately with no animation (no error thrown).
 
 ## Interactive Demo
 
@@ -395,14 +474,14 @@ const customTheme = await definePreset({
     },
     colors: {
       light: {
-        primary: '280 100% 60%',
-        secondary: '300 50% 90%',
-        accent: '260 100% 70%'
+        primary: 'oklch(0.62 0.24 305)',
+        secondary: 'oklch(0.94 0.04 320)',
+        accent: 'oklch(0.7 0.22 290)'
       },
       dark: {
-        primary: '280 100% 70%',
-        secondary: '300 30% 20%',
-        accent: '260 100% 80%'
+        primary: 'oklch(0.72 0.22 305)',
+        secondary: 'oklch(0.28 0.06 320)',
+        accent: 'oklch(0.78 0.2 290)'
       }
     }
   },
@@ -449,16 +528,16 @@ const brandTheme = await definePreset({
     },
     colors: {
       light: {
-        primary: '210 100% 50%',
-        secondary: '210 40% 96%',
-        surface: '210 20% 98%',
-        accent: '280 100% 70%'
+        primary: 'oklch(0.6 0.18 254)',
+        secondary: 'oklch(0.96 0.01 254)',
+        surface: 'oklch(0.99 0.005 254)',
+        accent: 'oklch(0.7 0.22 305)'
       },
       dark: {
-        primary: '210 100% 60%',
-        secondary: '210 40% 15%',
-        surface: '210 20% 8%',
-        accent: '280 100% 80%'
+        primary: 'oklch(0.7 0.18 254)',
+        secondary: 'oklch(0.22 0.03 254)',
+        surface: 'oklch(0.18 0.02 254)',
+        accent: 'oklch(0.78 0.2 305)'
       }
     }
   }
@@ -548,17 +627,31 @@ Components consume these via `maz:bg-container` / `maz:bg-input` Tailwind utilit
 ```typescript
 const {
   // Reactive state
+  preset, // ComputedRef<ThemePreset>
   presetName, // ComputedRef<string>
-  colorMode, // ComputedRef<'light' | 'dark' | 'auto'>
+  colorMode, // Ref<'light' | 'dark' | 'auto'> — also accepts assignment (computed setter)
   isDark, // ComputedRef<boolean>
   strategy, // ComputedRef<'runtime' | 'buildtime'>
+  mode, // ComputedRef<'light' | 'dark' | 'both'>
+  darkModeStrategy, // ComputedRef<'class' | 'media'>
 
   // Actions
-  updateTheme, // (preset: ThemePreset | ThemePresetOverrides) => void
-  setColorMode, // (mode: 'light' | 'dark' | 'auto') => void
-  toggleDarkMode // () => void
+  updateTheme, // (preset: ThemePreset | ThemePresetName | ThemePresetOverrides) => Promise<void>
+  setColorMode, // (mode: 'light' | 'dark' | 'auto', options?: { animate?: boolean }) => Promise<void>
+  toggleDarkMode, // (options?: { animate?: boolean }) => Promise<void>
 } = useTheme()
+
+// Set the color mode imperatively
+await setColorMode('dark')
+
+// Or assign to `colorMode` — it's a computed with a setter
+colorMode.value = 'dark'
+
+// Animated full-page switch via View Transitions
+await toggleDarkMode({ animate: true })
 ```
+
+`setColorMode` and `toggleDarkMode` are **async** (`Promise<void>`). The promise resolves once the change — and the optional View Transition — has been applied. Callers can ignore the return value when no transition is needed.
 
 ### Advanced Usage Examples
 
@@ -623,8 +716,8 @@ const customPreset = definePreset({
   overrides: {
     name: 'custom',
     colors: {
-      light: { primary: '221.2 83.2% 53.3%' },
-      dark: { primary: '217.2 91.2% 59.8%' },
+      light: { primary: 'oklch(0.6 0.18 254)' },
+      dark: { primary: 'oklch(0.7 0.18 254)' },
     },
   },
 })
@@ -687,8 +780,8 @@ const customPreset = definePreset({
   overrides: {
     name: 'custom',
     colors: {
-      light: { primary: '221.2 83.2% 53.3%' },
-      dark: { primary: '217.2 91.2% 59.8%' },
+      light: { primary: 'oklch(0.6 0.18 254)' },
+      dark: { primary: 'oklch(0.7 0.18 254)' },
     },
   },
 })
@@ -729,8 +822,8 @@ const customPreset = definePreset({
   overrides: {
     name: 'custom',
     colors: {
-      light: { primary: '221.2 83.2% 53.3%' },
-      dark: { primary: '217.2 91.2% 59.8%' },
+      light: { primary: 'oklch(0.6 0.18 254)' },
+      dark: { primary: 'oklch(0.7 0.18 254)' },
     },
   },
 })
@@ -819,7 +912,7 @@ const styleTag = createThemeStylesheet(css, {
 
 ## Token Reference
 
-Every preset emits the same set of CSS variables on `:root` (and a `.dark` block when `mode: 'both'`). Use these names directly in your own CSS — `var(--maz-primary)`, `calc(var(--maz-space) * 4)`, etc.
+Every preset emits the same set of CSS variables on `:root`. With `mode: 'both'`, each base color is a single `light-dark(L, D)` declaration that the browser resolves to the active scheme. Use these names directly in your own CSS — `var(--maz-primary)`, `calc(var(--maz-space) * 4)`, etc.
 
 ### Foundation
 
@@ -896,13 +989,22 @@ Per-component knobs under `components.<key>`. All optional — omit to fall back
 
 ### Sample output
 
+Each base color is emitted as a `light-dark()` value; scales `--maz-X-50` through `--maz-X-950` are derived via `color-mix(in oklch, …)` so they automatically follow base color overrides at runtime.
+
 ```css
 :root {
-  /* Main colors */
-  --maz-primary: oklch(0.6495 0.1913 253.63);
-  --maz-primary-foreground: oklch(1 0 0);
-  --maz-surface: oklch(1 0 0);
-  --maz-foreground: oklch(0.2573 0.0068 248.09);
+  color-scheme: light dark;
+
+  /* Base colors — one declaration each, resolved by the browser */
+  --maz-primary: light-dark(oklch(0.65 0.19 254), oklch(0.72 0.18 254));
+  --maz-primary-foreground: light-dark(oklch(1 0 0), oklch(0.16 0.01 254));
+  --maz-surface: light-dark(oklch(1 0 0), oklch(0.18 0.01 254));
+  --maz-foreground: light-dark(oklch(0.26 0.01 254), oklch(0.96 0.005 254));
+
+  /* Auto-generated 50–950 scale — derived from the base via color-mix */
+  --maz-primary-500: color-mix(in oklch, var(--maz-primary), transparent 0%);
+  --maz-primary-600: color-mix(in oklch, var(--maz-primary), black 10%);
+  /* ... */
 
   /* Foundation */
   --maz-base-font-size: 14px;
@@ -914,30 +1016,14 @@ Per-component knobs under `components.<key>`. All optional — omit to fall back
   /* Scales */
   --maz-rounded-md: 0.7rem;
   --maz-shadow-style-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), …;
-
-  /* Auto-generated 50–950 scale */
-  --maz-primary-500: oklch(…);
-  /* ... */
 }
+
+/* With darkModeStrategy: 'class' — explicit user choice overrides the system */
+.dark  { color-scheme: only dark; }
+.light { color-scheme: only light; }
 ```
 
-### Dark Mode
-
-```css
-.dark {
-  --maz-surface: 235 16% 15%;
-  --maz-foreground: 0 0% 85%;
-  /* Variables automatically adapted */
-}
-
-/* Or with media query */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --maz-surface: 235 16% 15%;
-    --maz-foreground: 0 0% 85%;
-  }
-}
-```
+For deeper detail on the generated CSS contract, see the [`@maz-ui/themes` README](https://github.com/LouisMazel/maz-ui/tree/master/packages/themes#generated-css-variables).
 
 
 ## Usage with Nuxt
@@ -965,20 +1051,21 @@ export default defineConfig({
 ```typescript [After (@maz-ui/themes)]
 // main.ts
 import { definePreset, mazUi } from '@maz-ui/themes'
+import { MazUiTheme } from '@maz-ui/themes/plugin'
 
 const myTheme = definePreset({
   base: mazUi,
   overrides: {
     colors: {
       light: {
-        primary: '210 100% 56%',
-        secondary: '164 76% 46%'
+        primary: 'oklch(0.65 0.19 254)',
+        secondary: 'oklch(0.72 0.16 168)'
       }
     }
   }
 })
 
-app.use(MazThemePlugin, { preset: myTheme })
+app.use(MazUiTheme, { preset: myTheme })
 ```
 
 :::
@@ -1007,14 +1094,14 @@ const customPreset = await definePreset({
     name: 'custom-purple',
     colors: {
       light: {
-        'primary': '280 100% 60%',
-        'secondary': '300 50% 90%',
-        'accent': '260 100% 70%'
+        'primary': 'oklch(0.62 0.24 305)',
+        'secondary': 'oklch(0.94 0.04 320)',
+        'accent': 'oklch(0.7 0.22 290)'
       },
       dark: {
-        'primary': '280 100% 70%',
-        'secondary': '300 30% 20%',
-        'accent': '260 100% 80%'
+        'primary': 'oklch(0.72 0.22 305)',
+        'secondary': 'oklch(0.28 0.06 320)',
+        'accent': 'oklch(0.78 0.2 290)'
       }
     }
   }

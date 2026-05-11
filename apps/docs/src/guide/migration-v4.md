@@ -41,6 +41,10 @@ v4.0.0 isn't just an update, it's a **complete rebuild** that transforms Maz-UI 
 - **Dynamic CSS Variables**: Automatic CSS variable generation
 - **Intelligent dark mode**: Configurable strategies for dark mode based on system preferences and user choice stored in cookies
 
+::: tip Theming further evolved in v5
+The theme system has been rewritten on top of native `light-dark()` + `color-scheme` + `color-mix(in oklch)` in v5. If you are upgrading past v4, see the dedicated [v5 migration guide](./migration-v5.md#theming-native-css-rewrite-new-non-breaking-by-default) for the full theming changes (new `lightClass`, `colorTransition`, `Promise<void>` returns, removed JS helpers).
+:::
+
 #### Complete Internationalization
 
 - **9 supported languages by default**: EN, FR, DE, ES, IT, PT, JA, ZH-CN
@@ -688,12 +692,12 @@ app.use(MazUi, {
 <script setup>
 import { useTheme } from 'maz-ui/composables'
 
-const { isDark, toggleDarkMode, setTheme } = useTheme()
+const { isDark, toggleDarkMode, updateTheme } = useTheme()
 
 // Change theme
-setTheme('ocean')
+updateTheme('ocean')
 
-// Toggle dark mode
+// Toggle dark mode (v5: returns Promise<void>, optional { animate } param)
 toggleDarkMode()
 </script>
 
