@@ -2,12 +2,13 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import themePlugin from '../theme'
 
-const { mockInstall, mockGetPreset, mockMergePresets, mockGenerateCSS, mockResolveColorSchemeContent, mockGetSystemColorMode, mockUseCookie, mockUseHead, mockUseRequestHeaders } = vi.hoisted(() => ({
+const { mockInstall, mockGetPreset, mockMergePresets, mockGenerateCSS, mockResolveColorSchemeContent, mockResolveColorTransition, mockGetSystemColorMode, mockUseCookie, mockUseHead, mockUseRequestHeaders } = vi.hoisted(() => ({
   mockInstall: vi.fn(),
   mockGetPreset: vi.fn(() => Promise.resolve({ colors: {} })),
   mockMergePresets: vi.fn((_a: any, _b: any) => ({ colors: {}, merged: true })),
   mockGenerateCSS: vi.fn(() => '.maz { color: red }'),
   mockResolveColorSchemeContent: vi.fn(() => 'light dark'),
+  mockResolveColorTransition: vi.fn(() => ({ duration: '200ms', easing: 'ease-in-out' })),
   mockGetSystemColorMode: vi.fn(() => 'light'),
   mockUseCookie: vi.fn(() => ({ value: undefined as string | undefined })),
   mockUseHead: vi.fn(),
@@ -24,6 +25,7 @@ vi.mock('@maz-ui/themes/utils', () => ({
   getPreset: mockGetPreset,
   mergePresets: mockMergePresets,
   resolveColorSchemeContent: mockResolveColorSchemeContent,
+  resolveColorTransition: mockResolveColorTransition,
 }))
 
 vi.mock('@maz-ui/themes/utils/get-color-mode', () => ({
@@ -142,6 +144,39 @@ describe('theme plugin (server)', () => {
       expect.objectContaining({
         darkSelectorStrategy: 'media',
         darkClass: 'custom-dark',
+      }),
+    )
+  })
+
+  it('should forward lightClass and resolved colorTransition to generateCSS on server', async () => {
+    mockResolveColorTransition.mockReturnValueOnce({ duration: '300ms', easing: 'linear' })
+    const context = createContext({
+      lightClass: 'custom-light',
+      colorTransition: { duration: '300ms', easing: 'linear' },
+    })
+    await (themePlugin as (...args: any[]) => any)(context)
+    expect(mockResolveColorTransition).toHaveBeenCalledWith(
+      { duration: '300ms', easing: 'linear' },
+      expect.anything(),
+    )
+    expect(mockGenerateCSS).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        lightClass: 'custom-light',
+        colorTransition: { duration: '300ms', easing: 'linear' },
+      }),
+    )
+  })
+
+  it('should forward default lightClass and colorTransition to generateCSS on server', async () => {
+    mockResolveColorTransition.mockReturnValueOnce({ duration: '200ms', easing: 'ease-in-out' })
+    const context = createContext()
+    await (themePlugin as (...args: any[]) => any)(context)
+    expect(mockGenerateCSS).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        lightClass: 'light',
+        colorTransition: { duration: '200ms', easing: 'ease-in-out' },
       }),
     )
   })
