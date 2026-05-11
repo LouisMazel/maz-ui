@@ -53,7 +53,7 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
 
   if (themeState.value.strategy === 'runtime') {
     themeState.value.colorTransition = resolveColorTransition(
-      themeState.value.colorTransition,
+      themeState.value._rawColorTransition,
       newPreset,
     )
     const cssOptions: CSSOptions = {

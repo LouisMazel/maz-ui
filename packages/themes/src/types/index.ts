@@ -407,6 +407,10 @@ export interface ThemeState {
    */
   colorTransition: false | { duration: Duration, easing: string }
   /**
+   * @internal
+   */
+  _rawColorTransition?: boolean | { duration?: Duration, easing?: string }
+  /**
    * Whether the active preset name is persisted in the `maz-preset` cookie.
    */
   persistPreset: boolean

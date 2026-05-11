@@ -141,6 +141,7 @@ function createThemeState(options: MazUiThemeOptions, config: ResolvedConfig): T
     preset: undefined,
     persistPreset: config.persistPreset,
     colorTransition: resolveColorTransition(config.colorTransition, undefined),
+    _rawColorTransition: config.colorTransition,
     // @ts-expect-error _isDark is a private property
     isDark: options._isDark || isDark,
   })
@@ -167,7 +168,7 @@ function finalizeTheme(
   }
 
   if (finalPreset) {
-    themeState.value.colorTransition = resolveColorTransition(config.colorTransition, finalPreset)
+    themeState.value.colorTransition = resolveColorTransition(themeState.value._rawColorTransition, finalPreset)
   }
 
   if (config.strategy === 'buildtime' || !finalPreset) {
@@ -202,7 +203,7 @@ function swapPreset(themeState: ThemeStateRef, preset: ThemePreset, config: Reso
     ? mergePresets(preset, config.overrides)
     : preset
   themeState.value.preset = final
-  themeState.value.colorTransition = resolveColorTransition(config.colorTransition, final)
+  themeState.value.colorTransition = resolveColorTransition(themeState.value._rawColorTransition, final)
   saveResolvedPresetName(final.name)
   injectThemeCSS(final, config, themeState.value.colorTransition)
 }

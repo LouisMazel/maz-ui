@@ -15,6 +15,7 @@ function createThemeState(overrides: Partial<ThemeState> = {}): ThemeState {
     darkClass: 'dark',
     lightClass: 'light',
     colorTransition: false,
+    _rawColorTransition: false,
     persistPreset: true,
     ...overrides,
   }
