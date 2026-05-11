@@ -72,6 +72,22 @@ describe('given generateCSS function', () => {
     })
   })
 
+  describe('when generating with colorTransition enabled', () => {
+    const css = generateCSS(mazUi, {
+      prefix: 'maz',
+      mode: 'both',
+      darkSelectorStrategy: 'class',
+      darkClass: 'dark',
+      lightClass: 'light',
+      scaleColorVariables: true,
+      colorTransition: { duration: '200ms', easing: 'ease-in-out' },
+    })
+
+    it('then matches the snapshot with @property blocks and transition declaration', () => {
+      expect(css).toMatchSnapshot()
+    })
+  })
+
   describe('when generating with mode=both and darkSelectorStrategy=media', () => {
     const css = generateCSS(mazUi, {
       prefix: 'maz',
