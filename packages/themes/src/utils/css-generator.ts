@@ -27,14 +27,17 @@ export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
   const prefix = options.prefix ?? 'maz'
   const lightClass = options.lightClass ?? 'light'
   const colorTransition = options.colorTransition ?? false
+  const transition = isValidTransition(colorTransition) ? colorTransition : false
 
-  const lines: string[] = ['@layer theme {']
+  const lines: string[] = []
 
-  if (colorTransition) {
-    lines.push(emitPropertyBlock(preset, prefix))
+  if (transition) {
+    lines.push(emitPropertyBlock(preset, prefix, options.mode))
   }
 
-  lines.push(emitRootBlock(preset, prefix, options, colorTransition))
+  lines.push('@layer theme {')
+
+  lines.push(emitRootBlock(preset, prefix, options, transition))
 
   if (options.darkSelectorStrategy === 'class' && options.mode === 'both') {
     lines.push(`  .${options.darkClass} { color-scheme: only dark; }`)
@@ -43,6 +46,16 @@ export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
 
   lines.push('}')
   return lines.join('\n')
+}
+
+function isValidTransition(
+  t: false | { duration: Duration, easing: string },
+): t is { duration: Duration, easing: string } {
+  return t !== false
+    && typeof t.duration === 'string'
+    && t.duration.length > 0
+    && typeof t.easing === 'string'
+    && t.easing.length > 0
 }
 
 function emitRootBlock(
@@ -64,7 +77,7 @@ function emitRootBlock(
   }
 
   if (colorTransition) {
-    lines.push(emitTransition(preset, prefix, colorTransition))
+    lines.push(emitTransition(preset, prefix, colorTransition, options.mode))
   }
 
   lines.push('  }')
@@ -204,18 +217,33 @@ function emitComponents(preset: ThemePreset, prefix: string, mode: ThemeMode): s
   return lines
 }
 
-function emitPropertyBlock(preset: ThemePreset, prefix: string): string {
+function isColorEmitted(
+  colors: { light: ThemeColors, dark: ThemeColors },
+  key: keyof ThemeColors,
+  mode: ThemeMode,
+): boolean {
+  if (mode === 'dark')
+    return Boolean(colors.dark[key] ?? colors.light[key])
+  return Boolean(colors.light[key])
+}
+
+function emitPropertyBlock(preset: ThemePreset, prefix: string, mode: ThemeMode): string {
   const colorKeys = Object.keys(preset.colors.light) as Array<keyof ThemeColors>
-  const blocks = colorKeys.map((key) => {
-    const initial = normalizeColor(preset.colors.light[key] ?? 'oklch(0 0 0)')
-    return [
-      `  @property --${prefix}-${key} {`,
-      `    syntax: '<color>';`,
-      `    inherits: true;`,
-      `    initial-value: ${initial};`,
-      `  }`,
-    ].join('\n')
-  })
+  const blocks = colorKeys
+    .filter(key => isColorEmitted(preset.colors, key, mode))
+    .map((key) => {
+      const value = mode === 'dark'
+        ? preset.colors.dark[key] ?? preset.colors.light[key] ?? 'oklch(0 0 0)'
+        : preset.colors.light[key] ?? preset.colors.dark[key] ?? 'oklch(0 0 0)'
+      const initial = normalizeColor(value)
+      return [
+        `@property --${prefix}-${key} {`,
+        `  syntax: '<color>';`,
+        `  inherits: true;`,
+        `  initial-value: ${initial};`,
+        `}`,
+      ].join('\n')
+    })
   return blocks.join('\n')
 }
 
@@ -223,9 +251,12 @@ function emitTransition(
   preset: ThemePreset,
   prefix: string,
   conf: { duration: Duration, easing: string },
+  mode: ThemeMode,
 ): string {
   const colorKeys = Object.keys(preset.colors.light) as Array<keyof ThemeColors>
-  const segments = colorKeys.map(k => `--${prefix}-${k} ${conf.duration} ${conf.easing}`)
+  const segments = colorKeys
+    .filter(key => isColorEmitted(preset.colors, key, mode))
+    .map(k => `--${prefix}-${k} ${conf.duration} ${conf.easing}`)
   return `    transition: ${segments.join(', ')};`
 }
 
