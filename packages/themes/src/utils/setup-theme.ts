@@ -200,6 +200,7 @@ function swapPreset(themeState: ThemeStateRef, preset: ThemePreset, config: Reso
     ? mergePresets(preset, config.overrides)
     : preset
   themeState.value.preset = final
+  themeState.value.colorTransition = resolveColorTransition(config.colorTransition, final)
   saveResolvedPresetName(final.name)
   injectThemeCSS(final, config)
 }
