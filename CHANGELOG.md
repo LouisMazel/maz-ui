@@ -1,5 +1,35 @@
 # Change Log
 
+## v5.0.0-beta.6 (2026-05-11)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.5...v5.0.0-beta.6)
+
+### 🚀 Features
+
+- **@maz-ui/eslint-config:** Add maz/tailwind-no-arbitrary-px rule and maz plugin ([2b52d922](https://github.com/LouisMazel/maz-ui/commit/2b52d922))
+
+  Ships a new ESLint plugin under the `maz/*` namespace, starting with `maz/tailwind-no-arbitrary-px` which forbids `px` units inside Tailwind arbitrary value classes (`w-[16px]`, `[gap:24px]`, …) and autofixes them to `rem` (or `em`).
+  The plugin and rule are registered automatically when `tailwindcss` is enabled in `defineConfig`. Configure via the `tailwindcss.noArbitraryPx` shortcut or via a standard ESLint `rules` override:
+
+  ```ts
+  defineConfig({
+    tailwindcss: {
+      preset: 'recommended',
+      noArbitraryPx: { baseFontSize: 16, unit: 'rem', severity: 'error' },
+    },
+  })
+  ```
+
+  `mazPlugin` is also exported for users who want to wire the rule manually without enabling the full Tailwind preset.
+
+### 📦 Build
+
+- Upgrade dependencies ([69a1869b](https://github.com/LouisMazel/maz-ui/commit/69a1869b))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.5 (2026-05-07)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.4...v5.0.0-beta.5)
