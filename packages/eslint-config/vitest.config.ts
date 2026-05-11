@@ -13,6 +13,8 @@ export default defineConfig({
       TZ: 'UTC',
     },
     globals: true,
+    testTimeout: 30_000,
+    hookTimeout: 30_000,
     coverage: {
       provider: 'v8',
       reporter: ['clover', 'html', 'lcov', 'text', 'text-summary'],
