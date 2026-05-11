@@ -1,207 +1,232 @@
-import type { DarkModeStrategy, RoundedScaleKey, ThemeColors, ThemeFoundation, ThemeMode, ThemePreset } from '../types'
+import type { Duration, RoundedScaleKey, ThemeColors, ThemeFoundation, ThemeMode, ThemePreset } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { DEFAULT_ROUNDED_RATIOS } from '../presets/_defaults'
 import { normalizeColor } from './color-parser'
-import { generateColorScale } from './color-utils'
+import { SCALE_MIX_PERCENTAGES, SCALED_COLOR_NAMES } from './scale-mix-percentages'
 
 export interface CSSOptions {
   /** Theme mode to generate */
   mode: ThemeMode
-  /** Dark mode selector: 'class' (.dark) | 'media' (@media) */
-  darkSelectorStrategy: DarkModeStrategy
+  /** Dark mode selector: 'class' (.dark/.light) | 'media' (system pref only) */
+  darkSelectorStrategy: 'class' | 'media'
   /** CSS variables prefix */
   prefix?: string
   /** Dark class name */
   darkClass: string
-  /** Whether to generate color scales */
+  /** Light class name (default 'light') */
+  lightClass?: string
+  /** Whether to emit color-mix scales (--X-50..950) */
   scaleColorVariables: boolean
-}
-
-const scaleColors = ['primary', 'secondary', 'accent', 'destructive', 'success', 'warning', 'info', 'contrast', 'surface', 'foreground', 'divider', 'muted', 'overlay', 'shadow'] as const
-
-export function generateCSS(
-  preset: ThemePreset,
-  options: CSSOptions = {
-    mode: 'both',
-    darkSelectorStrategy: 'class',
-    darkClass: 'dark',
-    scaleColorVariables: true,
-  },
-): string {
-  const {
-    mode,
-    darkSelectorStrategy,
-    prefix = 'maz',
-    darkClass = 'dark',
-    scaleColorVariables = true,
-  } = options
-
-  let css = '@layer theme {\n'
-
-  const rootSelector = ':root'
-  const darkClassSelector = `.${darkClass}`
-
-  if (mode === 'light' || mode === 'both') {
-    css += generateVariablesBlock({
-      selector: rootSelector,
-      colors: preset.colors.light,
-      foundation: preset.foundation,
-      prefix,
-      preset,
-      mode: 'light',
-      scaleColorVariables,
-    })
-  }
-
-  if (mode === 'dark' || mode === 'both') {
-    css += generateVariablesBlock({
-      selector: darkSelectorStrategy === 'media' ? rootSelector : darkClassSelector,
-      mediaQuery: darkSelectorStrategy === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
-      colors: preset.colors.dark,
-      foundation: mode === 'dark' ? preset.foundation : undefined,
-      prefix,
-      preset,
-      isDark: true,
-      mode: 'dark',
-      scaleColorVariables,
-    })
-  }
-
-  css += '}\n'
-
-  return css
-}
-
-function generateVariablesBlock({
-  selector,
-  mediaQuery,
-  colors,
-  foundation,
-  prefix,
-  preset,
-  isDark = false,
-  scaleColorVariables = true,
-  mode = 'light',
-}: {
-  selector: string
-  mediaQuery?: string
-  colors?: Partial<ThemeColors>
-  foundation?: Partial<ThemeFoundation>
-  prefix: string
-  preset?: ThemePreset
-  isDark?: boolean
-  scaleColorVariables: boolean
-  /** Current mode being emitted — used to pick the right `components.{container,input}.bg` value. */
-  mode?: 'light' | 'dark'
-}): string {
-  const variables: string[] = []
-
-  if (colors) {
-    Object.entries(colors).forEach(([key, value]) => {
-      if (value) {
-        variables.push(`  --${prefix}-${key}: ${normalizeColor(value)};`)
-      }
-    })
-  }
-
-  if (foundation) {
-    Object.entries(foundation).forEach(([key, value]) => {
-      if (value) {
-        variables.push(`  --${prefix}-${key}: ${value};`)
-      }
-    })
-  }
-
-  // Static scales (radius / shadow) live on the light root block only.
-  if (!isDark && preset?.scales) {
-    variables.push(...generateScaleVariables(preset.scales, prefix))
-  }
-
-  if (preset?.components) {
-    variables.push(...generateComponentVariables(preset.components, mode, prefix))
-  }
-
-  if (preset && scaleColorVariables) {
-    const sourceColors = isDark ? preset.colors.dark : preset.colors.light
-    variables.push(...generateAllColorScales(sourceColors, prefix))
-  }
-
-  const content = variables.join('\n')
-
-  if (mediaQuery) {
-    return `\n  ${mediaQuery} {\n    ${selector} {\n${content.replace(/^/gm, '  ')}\n    }\n  }\n`
-  }
-
-  return `\n  ${selector} {\n${content}\n  }\n`
+  /** When truthy, emit @property registrations + transition on color vars. Default false. */
+  colorTransition?: false | { duration: Duration, easing: string }
 }
 
 const ROUNDED_KEYS: readonly RoundedScaleKey[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']
 
-function generateScaleVariables(scales: ThemePreset['scales'], prefix: string): string[] {
-  const lines: string[] = []
+export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
+  const prefix = options.prefix ?? 'maz'
+  const lightClass = options.lightClass ?? 'light'
+  const colorTransition = options.colorTransition ?? false
 
-  for (const key of ROUNDED_KEYS) {
-    const value = scales.rounded?.[key]
-    if (value) {
-      lines.push(`  --${prefix}-rounded-${key}: ${value};`)
-    }
-    else if (key !== 'md') {
-      const ratio = DEFAULT_ROUNDED_RATIOS[key]
-      lines.push(`  --${prefix}-rounded-${key}: calc(var(--${prefix}-rounded-md) * ${ratio});`)
-    }
+  const lines: string[] = ['@layer theme {']
+
+  if (colorTransition) {
+    lines.push(emitPropertyBlock(preset, prefix))
   }
 
-  Object.entries(scales.shadow ?? {}).forEach(([key, value]) => {
-    if (value)
-      lines.push(`  --${prefix}-shadow-style-${key}: ${value};`)
-  })
+  lines.push(emitRootBlock(preset, prefix, options, colorTransition))
 
-  return lines
+  if (options.darkSelectorStrategy === 'class' && options.mode === 'both') {
+    lines.push(`  .${options.darkClass} { color-scheme: only dark; }`)
+    lines.push(`  .${lightClass} { color-scheme: only light; }`)
+  }
+
+  lines.push('}')
+  return lines.join('\n')
 }
 
-function generateComponentVariables(
-  components: NonNullable<ThemePreset['components']>,
-  mode: 'light' | 'dark',
+function emitRootBlock(
+  preset: ThemePreset,
+  prefix: string,
+  options: CSSOptions,
+  colorTransition: false | { duration: Duration, easing: string },
+): string {
+  const lines: string[] = ['  :root {']
+  lines.push(`    color-scheme: ${resolveColorScheme(options.mode)};`)
+
+  lines.push(...emitFoundation(preset.foundation, prefix))
+  lines.push(...emitScales(preset.scales, prefix))
+  lines.push(...emitComponents(preset, prefix, options.mode))
+  lines.push(...emitColorVariables(preset.colors, options.mode, prefix))
+
+  if (options.scaleColorVariables) {
+    lines.push(...emitColorScales(preset.colors, options.mode, prefix))
+  }
+
+  if (colorTransition) {
+    lines.push(emitTransition(preset, prefix, colorTransition))
+  }
+
+  lines.push('  }')
+  return lines.join('\n')
+}
+
+function resolveColorScheme(mode: ThemeMode): string {
+  if (mode === 'light')
+    return 'only light'
+  if (mode === 'dark')
+    return 'only dark'
+  return 'light dark'
+}
+
+function emitColorVariables(
+  colors: { light: ThemeColors, dark: ThemeColors },
+  mode: ThemeMode,
   prefix: string,
 ): string[] {
   const lines: string[] = []
+  const entries = Object.entries(colors.light) as Array<[keyof ThemeColors, string]>
+
+  for (const [key, lightValue] of entries) {
+    if (!lightValue)
+      continue
+    if (mode === 'light') {
+      lines.push(`    --${prefix}-${key}: ${normalizeColor(lightValue)};`)
+    }
+    else if (mode === 'dark') {
+      const darkValue = colors.dark[key] ?? lightValue
+      lines.push(`    --${prefix}-${key}: ${normalizeColor(darkValue)};`)
+    }
+    else {
+      const darkValue = colors.dark[key] ?? lightValue
+      lines.push(`    --${prefix}-${key}: light-dark(${normalizeColor(lightValue)}, ${normalizeColor(darkValue)});`)
+    }
+  }
+  return lines
+}
+
+function emitColorScales(
+  colors: { light: ThemeColors, dark: ThemeColors },
+  mode: ThemeMode,
+  prefix: string,
+): string[] {
+  const lines: string[] = []
+  const source = mode === 'dark' ? colors.dark : colors.light
+
+  for (const name of SCALED_COLOR_NAMES) {
+    if (!source[name])
+      continue
+    for (const [stepStr, conf] of Object.entries(SCALE_MIX_PERCENTAGES)) {
+      const step = Number(stepStr)
+      if (conf.mixWith === null) {
+        lines.push(`    --${prefix}-${name}-${step}: var(--${prefix}-${name});`)
+      }
+      else {
+        lines.push(`    --${prefix}-${name}-${step}: color-mix(in oklch, var(--${prefix}-${name}), ${conf.mixWith} ${conf.percent}%);`)
+      }
+    }
+  }
+  return lines
+}
+
+function emitFoundation(foundation: Partial<ThemeFoundation> | undefined, prefix: string): string[] {
+  if (!foundation)
+    return []
+  const lines: string[] = []
+  for (const [key, value] of Object.entries(foundation)) {
+    if (value)
+      lines.push(`    --${prefix}-${key}: ${value};`)
+  }
+  return lines
+}
+
+function emitScales(scales: ThemePreset['scales'] | undefined, prefix: string): string[] {
+  if (!scales)
+    return []
+  const lines: string[] = []
+  for (const key of ROUNDED_KEYS) {
+    const value = scales.rounded?.[key]
+    if (value) {
+      lines.push(`    --${prefix}-rounded-${key}: ${value};`)
+    }
+    else if (key !== 'md') {
+      const ratio = DEFAULT_ROUNDED_RATIOS[key]
+      lines.push(`    --${prefix}-rounded-${key}: calc(var(--${prefix}-rounded-md) * ${ratio});`)
+    }
+  }
+  for (const [key, value] of Object.entries(scales.shadow ?? {})) {
+    if (value)
+      lines.push(`    --${prefix}-shadow-style-${key}: ${value};`)
+  }
+  return lines
+}
+
+/**
+ * Emit per-component bg vars. When mode is 'both', wrap the values in `light-dark()`
+ * so the bg switches with `color-scheme`. When mode is 'light' or 'dark', emit only
+ * the corresponding side. Container/input bg fall back to the other mode if their
+ * own mode value is missing.
+ */
+function emitComponents(preset: ThemePreset, prefix: string, mode: ThemeMode): string[] {
+  const lines: string[] = []
+  const components = preset.components
+  if (!components)
+    return lines
 
   if (components.btn?.['font-weight']) {
-    lines.push(`  --${prefix}-btn-font-weight: ${components.btn['font-weight']};`)
+    lines.push(`    --${prefix}-btn-font-weight: ${components.btn['font-weight']};`)
   }
 
-  const containerBg = components.container?.bg?.[mode]
-  if (containerBg) {
-    lines.push(`  --${prefix}-container-bg: ${normalizeColor(containerBg)};`)
+  const emitBg = (componentKey: 'container' | 'input', cssKey: string) => {
+    const bg = components[componentKey]?.bg
+    if (!bg)
+      return
+    if (mode === 'light' && bg.light) {
+      lines.push(`    --${prefix}-${cssKey}: ${normalizeColor(bg.light)};`)
+    }
+    else if (mode === 'dark' && bg.dark) {
+      lines.push(`    --${prefix}-${cssKey}: ${normalizeColor(bg.dark)};`)
+    }
+    else if (mode === 'both' && (bg.light || bg.dark)) {
+      const light = bg.light ?? bg.dark ?? ''
+      const dark = bg.dark ?? bg.light ?? ''
+      lines.push(`    --${prefix}-${cssKey}: light-dark(${normalizeColor(light)}, ${normalizeColor(dark)});`)
+    }
   }
+  emitBg('container', 'container-bg')
+  emitBg('input', 'input-bg')
 
-  const inputBg = components.input?.bg?.[mode]
-  if (inputBg) {
-    lines.push(`  --${prefix}-input-bg: ${normalizeColor(inputBg)};`)
-  }
-
-  const inputTopLabelFontWeight = components.input?.['top-label-font-weight']
-  if (inputTopLabelFontWeight) {
-    lines.push(`  --${prefix}-input-top-label-font-weight: ${inputTopLabelFontWeight};`)
+  const inputTopLabelFw = components.input?.['top-label-font-weight']
+  if (inputTopLabelFw) {
+    lines.push(`    --${prefix}-input-top-label-font-weight: ${inputTopLabelFw};`)
   }
 
   return lines
 }
 
-function generateAllColorScales(colors: ThemeColors, prefix: string): string[] {
-  const colorScales: string[] = []
-
-  scaleColors.forEach((colorName) => {
-    const baseColor = colors[colorName]
-    if (baseColor) {
-      const scale = generateColorScale(baseColor)
-      Object.entries(scale).forEach(([scaleKey, scaleValue]) => {
-        colorScales.push(`  --${prefix}-${colorName}-${scaleKey}: ${scaleValue};`)
-      })
-    }
+function emitPropertyBlock(preset: ThemePreset, prefix: string): string {
+  const colorKeys = Object.keys(preset.colors.light) as Array<keyof ThemeColors>
+  const blocks = colorKeys.map((key) => {
+    const initial = normalizeColor(preset.colors.light[key] ?? 'oklch(0 0 0)')
+    return [
+      `  @property --${prefix}-${key} {`,
+      `    syntax: '<color>';`,
+      `    inherits: true;`,
+      `    initial-value: ${initial};`,
+      `  }`,
+    ].join('\n')
   })
+  return blocks.join('\n')
+}
 
-  return colorScales
+function emitTransition(
+  preset: ThemePreset,
+  prefix: string,
+  conf: { duration: Duration, easing: string },
+): string {
+  const colorKeys = Object.keys(preset.colors.light) as Array<keyof ThemeColors>
+  const segments = colorKeys.map(k => `--${prefix}-${k} ${conf.duration} ${conf.easing}`)
+  return `    transition: ${segments.join(', ')};`
 }
 
 export const CSS_ID = 'maz-theme-css'
@@ -225,19 +250,16 @@ export function injectCSS(id = CSS_ID, css: string): void {
     return
   }
 
-  // Drop duplicates, keep only the last and update its content.
   const lastElement = styleElements.at(-1)
   for (let i = 0; i < styleElements.length - 1; i++) {
     styleElements[i].remove()
   }
-  if (lastElement) {
+  if (lastElement)
     lastElement.textContent = css
-  }
 }
 
 export function removeCSS(id = CSS_ID): void {
   if (isServer())
     return
-
   document.querySelectorAll<HTMLStyleElement>(`#${id}`).forEach(el => el.remove())
 }
