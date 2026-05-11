@@ -83,6 +83,8 @@ describe('update-document-class', () => {
         updateDocumentClass('dark', state)
 
         expect(noTransition).not.toHaveBeenCalled()
+        expect(document.documentElement.classList.contains('dark')).toBe(false)
+        expect(document.documentElement.classList.contains('light')).toBe(false)
       })
     })
 
