@@ -254,17 +254,23 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
   log.verbose(`${TAG} Final config block count: ${additionalConfigs.length + userConfigs.length + 1} (additional: ${additionalConfigs.length}, user: ${userConfigs.length}, +markdown)`)
   log.verbose(`${TAG} Ignore globs: ${opts.ignores.length}`)
 
+  // User rule overrides go in a *trailing* block so they win over any
+  // additionalConfigs (vue/sonarjs/tailwindcss/…) that also set the same
+  // rule. Without this, an override like
+  // `rules: { 'maz/tailwind-no-arbitrary-px': ['error', { baseFontSize: 10 }] }`
+  // would be silently shadowed by `tailwindcssConfigs`.
+  const userRulesBlock: MazESLintUserConfig | undefined = opts.rules && Object.keys(opts.rules).length > 0
+    ? { rules: opts.rules }
+    : undefined
+
   return antfu({
     formatters: opts.formatters,
     ...opts,
-    rules: {
-      ...baseRules(env === 'production'),
-      ...opts.rules,
-    },
+    rules: baseRules(env === 'production'),
     ignores: (() => {
       return opts.ignores
     }) as any,
-  }, ...additionalConfigs, ...userConfigs, markdown) as MazESLintConfig
+  }, ...additionalConfigs, ...userConfigs, ...(userRulesBlock ? [userRulesBlock] : []), markdown) as MazESLintConfig
 }
 
 // Export individual configs for advanced usage
@@ -273,5 +279,8 @@ export { baseRules } from './configs/base'
 export { sonarjsRules, sonarjsTestRules } from './configs/sonarjs'
 export { TAILWINDCSS_DEFAULT_FILES, tailwindcssConfigs } from './configs/tailwindcss'
 export { vueRules, vueSfcOnlyRules } from './configs/vue'
+// Custom rules / plugin
+export { mazPlugin } from './plugin'
+export { rules as mazRules } from './rules'
 // Export types
 export type { MazESLintConfig, MazESLintOptions, MazTailwindcssOptions, TailwindcssPreset } from './types'

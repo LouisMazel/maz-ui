@@ -52,6 +52,38 @@ export interface MazTailwindcssOptions {
    * Tailwind config.
    */
   tsconfig?: string
+
+  /**
+   * Configure the `maz/tailwind-no-arbitrary-px` rule (forbids `px`
+   * values inside Tailwind arbitrary value classes such as `w-[16px]`).
+   *
+   * - `false`: disable the rule.
+   * - `true` *(default)*: enable with defaults (`baseFontSize: 16`,
+   *   `unit: 'rem'`).
+   * - Object: enable with custom options.
+   */
+  noArbitraryPx?: boolean | {
+    /**
+     * Root font size, in pixels, used to convert `Npx` to `rem`/`em`.
+     *
+     * @default 16
+     */
+    baseFontSize?: number
+
+    /**
+     * Output unit for the autofix.
+     *
+     * @default 'rem'
+     */
+    unit?: 'rem' | 'em'
+
+    /**
+     * ESLint severity for the rule.
+     *
+     * @default 'error'
+     */
+    severity?: 'off' | 'warn' | 'error'
+  }
 }
 
 export interface MazESLintOptions extends OptionsConfig {
