@@ -214,9 +214,11 @@ describe('setup-theme', () => {
       it('then it calls injectThemeCSS with the preset', () => {
         setupTheme({ preset: mockPreset })
 
-        expect(injectThemeCSS).toHaveBeenCalledWith(mockPreset, expect.objectContaining({
-          strategy: 'runtime',
-        }))
+        expect(injectThemeCSS).toHaveBeenCalledWith(
+          mockPreset,
+          expect.objectContaining({ strategy: 'runtime' }),
+          expect.anything(),
+        )
       })
     })
 

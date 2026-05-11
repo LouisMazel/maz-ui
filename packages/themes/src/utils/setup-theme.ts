@@ -85,7 +85,7 @@ export const defaultOptions = {
   colorTransition: true,
 } satisfies Required<Omit<MazUiThemeOptions, 'preset'>> & Pick<MazUiThemeOptions, 'preset'>
 
-function resolveColorTransition(
+export function resolveColorTransition(
   raw: MazUiThemeOptions['colorTransition'],
   preset?: ThemePreset,
 ): false | { duration: Duration, easing: string } {
@@ -172,7 +172,7 @@ function finalizeTheme(
     return { themeState: themeState as Ref<ThemeState>, cleanup: () => {} }
   }
 
-  injectThemeCSS(finalPreset, config)
+  injectThemeCSS(finalPreset, config, themeState.value.colorTransition)
 
   const cleanupColorScheme = watchColorSchemeFromMedia(themeState)
   const cleanupMutation = watchMutationClassOnHtmlElement(themeState)
@@ -202,7 +202,7 @@ function swapPreset(themeState: ThemeStateRef, preset: ThemePreset, config: Reso
   themeState.value.preset = final
   themeState.value.colorTransition = resolveColorTransition(config.colorTransition, final)
   saveResolvedPresetName(final.name)
-  injectThemeCSS(final, config)
+  injectThemeCSS(final, config, themeState.value.colorTransition)
 }
 
 export function setupTheme(options: MazUiThemeOptions): SetupThemeReturn {

@@ -32,11 +32,13 @@ function createConfig(overrides: Partial<FullConfig> = {}): FullConfig {
     preset: createMockPreset(),
     strategy: 'runtime',
     darkClass: 'dark',
+    lightClass: 'light',
     darkModeStrategy: 'class',
     colorMode: 'auto',
     mode: 'both',
     overrides: {},
     persistPreset: true,
+    colorTransition: true,
     ...overrides,
   } as FullConfig
 }
@@ -56,7 +58,7 @@ describe('inject-theme-css', () => {
         const { generateCSS, injectCSS } = await import('../css-generator')
         vi.stubGlobal('document', undefined)
 
-        injectThemeCSS(createMockPreset(), createConfig())
+        injectThemeCSS(createMockPreset(), createConfig(), false)
 
         expect(generateCSS).not.toHaveBeenCalled()
         expect(injectCSS).not.toHaveBeenCalled()
@@ -68,7 +70,7 @@ describe('inject-theme-css', () => {
         const { generateCSS, injectCSS } = await import('../css-generator')
         const preset = createMockPreset()
 
-        injectThemeCSS(preset, createConfig({ strategy: 'runtime' }))
+        injectThemeCSS(preset, createConfig({ strategy: 'runtime' }), false)
 
         expect(generateCSS).toHaveBeenCalledTimes(1)
         expect(generateCSS).toHaveBeenCalledWith(preset, expect.objectContaining({
@@ -85,7 +87,7 @@ describe('inject-theme-css', () => {
       it('then it skips the runtime injection', async () => {
         const { generateCSS, injectCSS } = await import('../css-generator')
 
-        injectThemeCSS(createMockPreset(), createConfig({ strategy: 'buildtime' }))
+        injectThemeCSS(createMockPreset(), createConfig({ strategy: 'buildtime' }), false)
 
         expect(generateCSS).not.toHaveBeenCalled()
         expect(injectCSS).not.toHaveBeenCalled()
@@ -93,22 +95,40 @@ describe('inject-theme-css', () => {
     })
 
     describe('when CSS options reflect the config values', () => {
-      it('then it forwards mode, darkSelectorStrategy and darkClass', async () => {
+      it('then it forwards mode, darkSelectorStrategy, darkClass, lightClass and colorTransition', async () => {
         const { generateCSS } = await import('../css-generator')
         const preset = createMockPreset()
+        const transition = { duration: '200ms' as const, easing: 'ease' }
 
         injectThemeCSS(preset, createConfig({
           mode: 'dark',
           darkModeStrategy: 'media',
           darkClass: 'night-mode',
-        }))
+          lightClass: 'day-mode',
+        }), transition)
 
         expect(generateCSS).toHaveBeenCalledWith(preset, {
           mode: 'dark',
           darkSelectorStrategy: 'media',
           darkClass: 'night-mode',
+          lightClass: 'day-mode',
           scaleColorVariables: true,
+          colorTransition: transition,
         })
+      })
+    })
+
+    describe('when a resolvedTransition is provided', () => {
+      it('then it forwards it as colorTransition to generateCSS', async () => {
+        const { generateCSS } = await import('../css-generator')
+        const preset = createMockPreset()
+        const transition = { duration: '300ms' as const, easing: 'ease' }
+
+        injectThemeCSS(preset, createConfig(), transition)
+
+        expect(generateCSS).toHaveBeenCalledWith(preset, expect.objectContaining({
+          colorTransition: transition,
+        }))
       })
     })
   })

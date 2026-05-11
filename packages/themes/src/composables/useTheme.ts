@@ -10,6 +10,7 @@ import { CSS_ID, generateCSS, injectCSS } from '../utils/css-generator'
 import { getSystemColorMode, saveResolvedColorMode } from '../utils/get-color-mode'
 import { getPreset } from '../utils/get-preset'
 import { mergePresets } from '../utils/preset-merger'
+import { resolveColorTransition } from '../utils/setup-theme'
 
 const themeState = ref<ThemeState>()
 
@@ -46,12 +47,18 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
   }
 
   if (themeState.value.strategy === 'runtime') {
+    themeState.value.colorTransition = resolveColorTransition(
+      themeState.value.colorTransition,
+      newPreset,
+    )
     const cssOptions: CSSOptions = {
       mode: themeState.value.mode,
       darkSelectorStrategy: themeState.value.darkModeStrategy,
       prefix: 'maz',
       scaleColorVariables: true,
       darkClass: themeState.value.darkClass,
+      lightClass: themeState.value.lightClass,
+      colorTransition: themeState.value.colorTransition,
     }
 
     const fullCSS = generateCSS(newPreset, cssOptions)
