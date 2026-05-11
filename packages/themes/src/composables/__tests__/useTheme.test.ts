@@ -4,7 +4,7 @@ import { mazUi } from '../../presets'
 import { mergePresets } from '../../utils'
 import { setCookie } from '../../utils/cookie-storage'
 import { generateCSS, injectCSS } from '../../utils/css-generator'
-import { saveResolvedColorMode } from '../../utils/get-color-mode'
+import { getSystemColorMode, saveResolvedColorMode } from '../../utils/get-color-mode'
 import { getPreset } from '../../utils/get-preset'
 import { useTheme } from '../useTheme'
 
@@ -356,6 +356,17 @@ describe('useTheme', () => {
         setColorMode('auto')
 
         expect(saveResolvedColorMode).toHaveBeenCalledWith('light')
+      })
+
+      it('then it saves resolved color mode as dark when system prefers dark', () => {
+        vi.mocked(getSystemColorMode).mockReturnValueOnce('dark')
+        vi.mocked(inject).mockReturnValue(mockRefThemeState)
+
+        const { setColorMode } = useTheme()
+
+        setColorMode('auto')
+
+        expect(saveResolvedColorMode).toHaveBeenCalledWith('dark')
       })
     })
   })

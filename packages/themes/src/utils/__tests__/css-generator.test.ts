@@ -679,6 +679,29 @@ describe('given generateCSS function', () => {
     })
   })
 
+  describe('given colorTransition truthy and mode=dark with missing dark color', () => {
+    const preset = {
+      ...mazUi,
+      colors: {
+        ...mazUi.colors,
+        light: { ...mazUi.colors.light, primary: 'oklch(0.5 0.2 100)' },
+        dark: { ...mazUi.colors.dark, primary: undefined as any },
+      },
+    }
+    const css = generateCSS(preset, {
+      prefix: 'maz',
+      mode: 'dark',
+      darkSelectorStrategy: 'class',
+      darkClass: 'dark',
+      scaleColorVariables: false,
+      colorTransition: { duration: '200ms', easing: 'ease' },
+    })
+
+    it('then @property --maz-primary initial-value falls back to the light color', () => {
+      expect(css).toMatch(/@property --maz-primary \{[^}]*initial-value: oklch\(0\.5 0\.2 100\);/)
+    })
+  })
+
   describe('given colorTransition truthy and a falsy color', () => {
     const preset = {
       ...mazUi,
