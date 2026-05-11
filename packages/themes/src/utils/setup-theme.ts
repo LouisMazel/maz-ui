@@ -23,7 +23,7 @@ function watchColorSchemeFromMedia(themeState: Ref<ThemeState>): () => void {
     const updateFromMedia = () => {
       if (themeState.value.colorMode === 'auto') {
         const newColorMode = mediaQuery.matches ? 'dark' : 'light'
-        updateDocumentClass(newColorMode === 'dark', themeState.value)
+        updateDocumentClass(newColorMode, themeState.value)
         themeState.value.isDark = newColorMode === 'dark'
         saveResolvedColorMode(newColorMode)
       }
@@ -35,7 +35,7 @@ function watchColorSchemeFromMedia(themeState: Ref<ThemeState>): () => void {
 
   const stopWatch = watch(() => themeState.value.colorMode, (colorMode) => {
     const resolvedIsDark = colorMode === 'auto' ? getSystemColorMode() === 'dark' : colorMode === 'dark'
-    updateDocumentClass(resolvedIsDark, themeState.value)
+    updateDocumentClass(colorMode, themeState.value)
     if (colorMode === 'auto') {
       saveResolvedColorMode(resolvedIsDark ? 'dark' : 'light')
     }
@@ -121,7 +121,7 @@ function createThemeState(options: MazUiThemeOptions, config: ResolvedConfig): T
     isDark: options._isDark || isDark,
   })
 
-  updateDocumentClass(themeState.value.isDark, themeState.value)
+  updateDocumentClass(themeState.value.colorMode, themeState.value)
 
   return themeState
 }
