@@ -203,7 +203,14 @@ function emitComponents(preset: ThemePreset, prefix: string, mode: ThemeMode): s
     else if (mode === 'both' && (bg.light || bg.dark)) {
       const light = bg.light ?? bg.dark ?? ''
       const dark = bg.dark ?? bg.light ?? ''
-      lines.push(`    --${prefix}-${cssKey}: light-dark(${normalizeColor(light)}, ${normalizeColor(dark)});`)
+      const normalizedLight = normalizeColor(light)
+      const normalizedDark = normalizeColor(dark)
+      if (normalizedLight === normalizedDark) {
+        lines.push(`    --${prefix}-${cssKey}: ${normalizedLight};`)
+      }
+      else {
+        lines.push(`    --${prefix}-${cssKey}: light-dark(${normalizedLight}, ${normalizedDark});`)
+      }
     }
   }
   emitBg('container', 'container-bg')

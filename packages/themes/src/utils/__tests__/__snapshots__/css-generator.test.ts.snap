@@ -141,7 +141,7 @@ exports[`given generateCSS function > when generating with colorTransition enabl
     --maz-shadow-style-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     --maz-shadow-style-elevation: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 4px -1px rgb(0 0 0 / 0.06);
     --maz-btn-font-weight: 500;
-    --maz-container-bg: light-dark(var(--maz-surface), var(--maz-surface));
+    --maz-container-bg: var(--maz-surface);
     --maz-input-bg: light-dark(var(--maz-surface), var(--maz-surface-400));
     --maz-input-top-label-font-weight: 600;
     --maz-surface: light-dark(oklch(1 0 0), oklch(0.2524 0.0212 280.69));
@@ -358,7 +358,7 @@ exports[`given generateCSS function > when generating with mode=both and darkSel
     --maz-shadow-style-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     --maz-shadow-style-elevation: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 4px -1px rgb(0 0 0 / 0.06);
     --maz-btn-font-weight: 500;
-    --maz-container-bg: light-dark(var(--maz-surface), var(--maz-surface));
+    --maz-container-bg: var(--maz-surface);
     --maz-input-bg: light-dark(var(--maz-surface), var(--maz-surface-400));
     --maz-input-top-label-font-weight: 600;
     --maz-surface: light-dark(oklch(1 0 0), oklch(0.2524 0.0212 280.69));

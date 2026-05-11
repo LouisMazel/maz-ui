@@ -459,6 +459,29 @@ describe('given generateCSS function', () => {
       })
     })
 
+    describe('when components.container.bg.light equals bg.dark and mode=both', () => {
+      const preset = {
+        ...mazUi,
+        components: {
+          container: { bg: { light: 'var(--maz-surface)', dark: 'var(--maz-surface)' } },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+        lightClass: 'light',
+        scaleColorVariables: false,
+        colorTransition: false,
+      })
+
+      it('then it emits the value directly without light-dark wrapping', () => {
+        expect(css).toContain('--maz-container-bg: var(--maz-surface);')
+        expect(css).not.toMatch(/--maz-container-bg: light-dark\(/)
+      })
+    })
+
     describe('when components.btn.font-weight is provided', () => {
       const preset = { ...mazUi, components: { btn: { 'font-weight': '600' } } }
       const css = generateCSS(preset, {
