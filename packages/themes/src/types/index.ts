@@ -222,6 +222,15 @@ export type ColorMode = 'light' | 'dark' | 'auto'
 
 export type ThemeMode = 'light' | 'dark' | 'both'
 
+/**
+ * Dark mode strategy.
+ *
+ * - `'class'`: A `.dark` or `.light` class on `<html>` forces `color-scheme: only dark|only light`.
+ *   `setColorMode()` adds/removes the class. With no class, `color-scheme: light dark` lets the
+ *   browser follow the system preference.
+ * - `'media'`: Only `color-scheme: light dark` on `:root`. The browser follows `prefers-color-scheme`.
+ *   `setColorMode()` updates the cookie but does NOT toggle any class — system preference always wins.
+ */
 export type DarkModeStrategy = 'class' | 'media'
 
 export type Strategy = 'runtime' | 'buildtime'
@@ -265,6 +274,27 @@ interface BaseThemeConfig {
    * @default 'dark'
    */
   darkClass?: string
+
+  /**
+   * Light mode class
+   * @description Class added to the document root when light mode is explicitly forced.
+   * Mirror of `darkClass` — used when `colorMode === 'light'` to force `color-scheme: only light`,
+   * which prevents the browser from switching to dark via system preference.
+   * @default 'light'
+   */
+  lightClass?: string
+
+  /**
+   * Smooth color transition on dark/light toggle.
+   * @description When enabled, color CSS custom properties are registered via `@property`
+   * and a `transition` is applied so the switch animates smoothly. When `false`, the switch
+   * is instantaneous (legacy behaviour).
+   * - `true` → transition with preset `motion-normal` duration and `easing-in-out`
+   * - `false` → instantaneous
+   * - object → custom duration/easing
+   * @default true
+   */
+  colorTransition?: boolean | { duration?: Duration, easing?: string }
 
   /**
    * Dark mode handling
@@ -366,6 +396,16 @@ export interface ThemeState {
    * @description The class added to the document root when dark mode is active
    */
   darkClass: string
+  /**
+   * Light class
+   * @description The class added to the document root when light mode is explicitly forced.
+   */
+  lightClass: string
+  /**
+   * Color transition config (resolved)
+   * @description Resolved transition config — `false` if disabled, `{ duration, easing }` otherwise.
+   */
+  colorTransition: false | { duration: Duration, easing: string }
   /**
    * Whether the active preset name is persisted in the `maz-preset` cookie.
    */
