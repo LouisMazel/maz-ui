@@ -37,7 +37,7 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
   const _preset = typeof preset === 'string' ? await getPreset(preset) : preset
 
   if (!_preset || !themeState.value.preset) {
-    console.error('[@maz-ui/themes] No preset found - If you are using the buildtime strategy, you must provide a complete preset')
+    console.error('[@maz-ui/themes] No preset found — with buildtime strategy you must pass a full preset')
     return
   }
 
@@ -135,7 +135,7 @@ export function useTheme() {
     }
   }
   catch {
-    throw new Error('[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin, or wrap your components in a MazUiProvider, before using useTheme composable')
+    throw new Error('[@maz-ui/themes] useTheme requires the MazUi/MazUiTheme plugin or a MazUiProvider wrapper')
   }
 
   return {

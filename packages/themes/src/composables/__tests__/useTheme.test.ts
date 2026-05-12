@@ -117,7 +117,7 @@ describe('useTheme', () => {
         vi.mocked(getCurrentInstance).mockReturnValue(null)
 
         expect(() => useTheme()).toThrowError(
-          '[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin, or wrap your components in a MazUiProvider, before using useTheme composable',
+          '[@maz-ui/themes] useTheme requires the MazUi/MazUiTheme plugin or a MazUiProvider wrapper',
         )
       })
     })
@@ -291,7 +291,7 @@ describe('useTheme', () => {
 
         await updateTheme('maz-ui')
 
-        expect(consoleSpy).toHaveBeenCalledWith('[@maz-ui/themes] No preset found - If you are using the buildtime strategy, you must provide a complete preset')
+        expect(consoleSpy).toHaveBeenCalledWith('[@maz-ui/themes] No preset found — with buildtime strategy you must pass a full preset')
         consoleSpy.mockRestore()
       })
     })
@@ -517,7 +517,7 @@ describe('useTheme', () => {
         vi.mocked(getCurrentInstance).mockReturnValue(null)
 
         expect(() => useTheme()).toThrowError(
-          '[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin, or wrap your components in a MazUiProvider, before using useTheme composable',
+          '[@maz-ui/themes] useTheme requires the MazUi/MazUiTheme plugin or a MazUiProvider wrapper',
         )
       })
     })
@@ -538,7 +538,7 @@ describe('useTheme', () => {
         } as never)
 
         expect(() => useTheme()).toThrowError(
-          '[@maz-ui/themes] You must install the MazUi or MazUiTheme plugin, or wrap your components in a MazUiProvider, before using useTheme composable',
+          '[@maz-ui/themes] useTheme requires the MazUi/MazUiTheme plugin or a MazUiProvider wrapper',
         )
       })
     })
