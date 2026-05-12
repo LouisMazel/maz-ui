@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.8 (2026-05-12)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.7...v5.0.0-beta.8)
+
+### 🩹 Fixes
+
+- Add default condition to exports for CJS resolver fallback ([5f6c6f683](https://github.com/LouisMazel/maz-ui/commit/5f6c6f683))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.7 (2026-05-12)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.6...v5.0.0-beta.7)
