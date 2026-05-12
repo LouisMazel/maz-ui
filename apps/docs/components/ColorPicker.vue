@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CSSColor } from '@maz-ui/themes'
-import { colorToHex, formatAsOklch, parseColorAsOklch } from '@maz-ui/themes/utils/color-parser'
+import { colorToHex, formatAsOklch, parseColorAsOklch } from '@maz-ui/themes/utils/color-conversions'
 import { computed, ref, watch } from 'vue'
 
 interface Props {
