@@ -10,8 +10,7 @@ description: The module capitalize is a function that adds a capital letter to a
 <MazInput v-model="stringValue" />
 
 <div
-  style="padding: 16px; margin-top: 16px; background-color: var(--maz-surface-300);"
-  class="flex flex-center rounded gap-05"
+  class="maz:flex maz:flex-center maz:rounded-md maz:gap-0.5 maz:p-4 maz:mt-16 maz:bg-surface-300"
 >
   formatted value: <strong>{{ stringFormatted }}</strong>
 </div>
@@ -32,7 +31,7 @@ const stringFormatted = computed(() =>
   <MazInput v-model="stringValue" />
 
   <div
-    style="padding: 16px; margin-top: 16px; background-color: var(--maz-surface-300);"
+    class="flex flex-center rounded-md gap-0.5 p-4 mt-16 bg-surface-300"
   >
     {{ stringFormatted }}
   </div>

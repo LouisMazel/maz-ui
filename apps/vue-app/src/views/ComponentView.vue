@@ -312,7 +312,7 @@ const checklistItems = [
         MazInputCode
       </h2>
       <div class="maz:flex maz:flex-col maz:gap-4">
-        <MazInputCode v-model="codeValue" :code-length="4" size="sm" />
+        <MazInputCode v-model="codeValue" :code-length="4" size="sm" disabled />
         <MazInputCode v-model="codeValue" :code-length="6" />
       </div>
     </section>

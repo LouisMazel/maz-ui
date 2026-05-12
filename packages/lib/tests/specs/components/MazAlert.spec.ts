@@ -24,9 +24,8 @@ describe('given MazAlert component', () => {
       })
 
       const style = wrapper.attributes('style')
-      expect(style).toContain('--m-alert-color: var(--maz-info-700)')
-      expect(style).toContain('--m-alert-color-dark: var(--maz-info-400)')
       expect(style).toContain('--m-alert-bg: var(--maz-info)')
+      expect(style).toContain('--m-alert-fg: var(--maz-info-foreground)')
     })
 
     it('then it applies soft variant by default', () => {
@@ -56,11 +55,8 @@ describe('given MazAlert component', () => {
       })
 
       const style = wrapper.attributes('style')
-      expect(style).toContain(`--m-alert-color: var(--maz-${color}-700)`)
-      expect(style).toContain(`--m-alert-color-dark: var(--maz-${color}-400)`)
       expect(style).toContain(`--m-alert-bg: var(--maz-${color})`)
       expect(style).toContain(`--m-alert-fg: var(--maz-${color}-foreground)`)
-      expect(style).toContain(`--m-alert-border: var(--maz-${color}-600)`)
     })
   })
 

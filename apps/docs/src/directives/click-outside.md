@@ -11,8 +11,7 @@ description: vClickOutside is a Vue directive to trigger a function when the use
 
 <ComponentDemo>
   <div
-    style="padding: 50px; background-color: var(--maz-surface-300);"
-    class="maz:flex maz:flex-center maz:rounded-md"
+    class="maz:flex maz:flex-center maz:rounded-md maz:p-12 maz:bg-surface-300"
   >
     <MazCard v-click-outside="clikedOutside">
       Click outside me
@@ -21,8 +20,7 @@ description: vClickOutside is a Vue directive to trigger a function when the use
 
   <div
     v-if="hasClikedOutside"
-    style="padding: 16px; margin-top: 16px; background-color: var(--maz-success); color: black;"
-    class="maz:flex maz:flex-center maz:rounded-md"
+    class="maz:flex maz:flex-center maz:rounded-md maz:bg-sucess maz:text-success-foreground maz:p-4 maz:mt-4"
   >
     You clicked outside
   </div>
@@ -44,8 +42,7 @@ function clikedOutside() {
 
 <template>
   <div
-    style="padding: 50px; background-color: var(--maz-surface-300);"
-    class="flex flex-center rounded"
+    class="maz:flex maz:flex-center maz:rounded-md maz:p-12 maz:bg-surface-300"
   >
     <MazCard v-click-outside="clikedOutside">
       Click outside me
@@ -54,8 +51,7 @@ function clikedOutside() {
 
   <div
     v-if="hasClikedOutside"
-    style="padding: 16px; margin-top: 16px; background-color: var(--maz-success); color: black;"
-    class="flex flex-center rounded"
+    class="maz:flex maz:flex-center maz:rounded-md maz:bg-sucess maz:text-success-foreground maz:p-4 maz:mt-4"
   >
     You clicked outside
   </div>
@@ -71,8 +67,7 @@ The directive can accept an options object to customize its behavior:
 
 <ComponentDemo>
   <div
-    style="padding: 50px; background-color: var(--maz-surface-300);"
-    class="maz:flex maz:flex-center maz:rounded-md"
+    class="maz:flex maz:flex-center maz:rounded-md maz:p-12 maz:bg-surface-300"
   >
     <MazCard v-click-outside="{ callback: clickedOutsideWithIgnore, ignore: ['.ignore-me'] }">
       <div class="maz:p-4">
@@ -86,8 +81,7 @@ The directive can accept an options object to customize its behavior:
 
   <div
     v-if="hasClickedOutsideWithIgnore"
-    style="padding: 16px; margin-top: 16px; background-color: var(--maz-warning); color: black;"
-    class="maz:flex maz:flex-center maz:rounded-md"
+    class="maz:flex maz:flex-center maz:rounded-md maz:bg-sucess maz:text-success-foreground maz:p-4 maz:mt-4"
   >
     You clicked outside (button clicks are ignored)
   </div>
@@ -128,8 +122,7 @@ The directive can be configured to trigger only once:
 
 <ComponentDemo>
   <div
-    style="padding: 50px; background-color: var(--maz-surface-300);"
-    class="maz:flex maz:flex-center maz:rounded-md"
+    class="maz:flex maz:flex-center maz:rounded-md maz:p-12 maz:bg-surface-300"
   >
     <MazCard v-click-outside="{ callback: clickedOnce, once: true }">
       Click outside me (works only once)

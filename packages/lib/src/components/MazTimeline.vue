@@ -217,8 +217,6 @@ function isConnectorActive(index: number): boolean {
 }
 
 const colorStyles = computed<CSSProperties>(() => ({
-  '--m-timeline-color': `var(--maz-${color}-700)`,
-  '--m-timeline-color-dark': `var(--maz-${color}-400)`,
   '--m-timeline-bg': `var(--maz-${color})`,
   '--m-timeline-fg': `var(--maz-${color}-foreground)`,
 }))
@@ -237,8 +235,6 @@ function getStateStyle(state: MazTimelineStepState): CSSProperties | undefined {
     return undefined
   }
   return {
-    '--m-timeline-state-color': `var(--maz-${mappedColor}-700)`,
-    '--m-timeline-state-color-dark': `var(--maz-${mappedColor}-400)`,
     '--m-timeline-state-bg': `var(--maz-${mappedColor})`,
     '--m-timeline-state-fg': `var(--maz-${mappedColor}-foreground)`,
   }
@@ -507,6 +503,15 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
 @reference "../tailwindcss/tailwind.css";
 
 .m-timeline {
+  /* State color variants derived from --m-timeline-bg / --m-timeline-state-bg
+   * via OKLCh lightness offsets (mirrors SCALE_OFFSETS: -700 and -400 steps). */
+  --m-timeline-color: oklch(from var(--m-timeline-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
+  --m-timeline-color-dark: oklch(from var(--m-timeline-bg) clamp(0, calc(l + 0.06), 1) c h); /* ↔ scale -400 */
+  --m-timeline-state-color: oklch(from var(--m-timeline-state-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
+  --m-timeline-state-color-dark: oklch(
+    from var(--m-timeline-state-bg) clamp(0, calc(l + 0.06), 1) c h
+  ); /* ↔ scale -400 */
+
   /* --- Horizontal layout --- */
   &.--horizontal {
     .m-timeline-item {

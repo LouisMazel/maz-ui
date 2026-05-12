@@ -365,7 +365,7 @@ function formatColorName(colorName: string): string {
               <MazInput
                 v-model="inputBgDark"
                 label="dark"
-                placeholder="var(--maz-surface-400)"
+                placeholder="var(--maz-color-surface-400)"
                 size="sm"
                 block
                 debounce

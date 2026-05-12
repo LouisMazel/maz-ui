@@ -162,19 +162,12 @@ const btnStyle = computed<CSSProperties>(() => {
   if (c === 'transparent' || c === 'surface')
     return base
 
-  const pastelFg = c === 'contrast' ? 'contrast-foreground' : `${c}-700`
-
   return {
     ...base,
     '--m-btn-bg': `var(--maz-${c})`,
     '--m-btn-fg': `var(--maz-${c}-foreground)`,
-    '--m-btn-bg-hover': `var(--maz-${c}-600)`,
-    '--m-btn-bg-active': `var(--maz-${c}-700)`,
-    '--m-btn-bd-light': `var(--maz-${c}-400)`,
-    '--m-btn-bd-dark': `var(--maz-${c}-700)`,
-    ...(pastel && {
-      '--m-btn-pastel-bg': `color-mix(in srgb, var(--maz-${c}-500) 20%, transparent)`,
-      '--m-btn-pastel-fg': `var(--maz-${pastelFg})`,
+    ...(pastel && c === 'contrast' && {
+      '--m-btn-pastel-fg': `var(--maz-contrast-foreground)`,
     }),
   }
 })
@@ -288,6 +281,15 @@ const ICON_PADDING_CLASS = {
 @reference "../tailwindcss/tailwind.css";
 
 .m-btn {
+  /* State variants derived from --m-btn-bg via OKLCh lightness offsets
+   * (matches the SCALE_OFFSETS table: -600, -700, -400 steps). */
+  --m-btn-bg-hover: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.05), 1) c h); /* ↔ scale -600 */
+  --m-btn-bg-active: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
+  --m-btn-bd-light: oklch(from var(--m-btn-bg) clamp(0, calc(l + 0.06), 1) c h); /* ↔ scale -400 */
+  --m-btn-bd-dark: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
+  --m-btn-pastel-bg: color-mix(in srgb, var(--m-btn-bg) 20%, transparent);
+  --m-btn-pastel-fg: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
+
   justify-content: var(--m-btn-justify, center);
   background-color: var(--m-btn-bg);
   color: var(--m-btn-fg);
