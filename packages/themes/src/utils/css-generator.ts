@@ -14,57 +14,9 @@ export interface CSSOptions {
   darkClass: string
   /** Light class name (default 'light') */
   lightClass?: string
-  /** Whether to emit derived scales (--X-50..950) */
-  scaleColorVariables: boolean
 }
 
 const ROUNDED_KEYS: readonly RoundedScaleKey[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']
-
-/**
- * Palette steps 50..950 expressed as OKLCh offsets relative to the base color.
- *
- * `l` is added to the base lightness (clamped to [0, 1]); `c` multiplies the
- * base chroma. Step 500 (`null`) aliases the base directly. The lightness
- * offsets match Tailwind v4's perceptual spread, and the chroma multiplier
- * tapers chroma near the extremes — extremes use less chroma to avoid garish
- * near-white / near-black tones — so derived shades stay vibrant rather than
- * washed-out as `color-mix(..., white|black N%)` would produce.
- */
-export const SCALE_OFFSETS = {
-  50: { l: 0.40, c: 0.1 },
-  100: { l: 0.32, c: 0.35 },
-  200: { l: 0.22, c: 0.7 },
-  300: { l: 0.13, c: 1 },
-  400: { l: 0.06, c: 1 },
-  500: null,
-  600: { l: -0.05, c: 1 },
-  700: { l: -0.10, c: 1 },
-  800: { l: -0.16, c: 0.9 },
-  900: { l: -0.22, c: 0.7 },
-  950: { l: -0.30, c: 0.5 },
-} as const satisfies Record<number, { l: number, c: number } | null>
-
-export type ScaleStep = keyof typeof SCALE_OFFSETS
-
-/** Color names that receive a 50..950 scale. Foreground variants are NOT scaled. */
-export const SCALED_COLOR_NAMES = [
-  'primary',
-  'secondary',
-  'accent',
-  'destructive',
-  'success',
-  'warning',
-  'info',
-  'contrast',
-  'surface',
-  'foreground',
-  'divider',
-  'muted',
-  'overlay',
-  'shadow',
-] as const
-
-export type ScaledColorName = (typeof SCALED_COLOR_NAMES)[number]
 
 export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
   const prefix = options.prefix ?? 'maz'
@@ -79,9 +31,6 @@ export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
   appendScales(lines, preset.scales, prefix)
   appendComponents(lines, preset, prefix, mode)
   appendColorVariables(lines, preset.colors, mode, prefix)
-  if (options.scaleColorVariables) {
-    appendColorScales(lines, preset.colors, mode, prefix)
-  }
 
   lines.push('  }')
 
@@ -110,30 +59,6 @@ function appendColorVariables(
     else {
       const value = mode === 'dark' ? (colors.dark[key] ?? lightValue) : lightValue
       lines.push(`    --${prefix}-${key}: ${normalizeColor(value)};`)
-    }
-  }
-}
-
-function appendColorScales(
-  lines: string[],
-  colors: { light: ThemeColors, dark: ThemeColors },
-  mode: ThemeMode,
-  prefix: string,
-): void {
-  const source = mode === 'dark' ? colors.dark : colors.light
-  for (const name of SCALED_COLOR_NAMES) {
-    if (!source[name])
-      continue
-    const base = `var(--${prefix}-${name})`
-    for (const [stepStr, off] of Object.entries(SCALE_OFFSETS)) {
-      const v = `--${prefix}-${name}-${stepStr}`
-      if (off === null) {
-        lines.push(`    ${v}: ${base};`)
-        continue
-      }
-      const lExpr = `clamp(0, calc(l ${off.l >= 0 ? '+' : '-'} ${Math.abs(off.l)}), 1)`
-      const cExpr = off.c === 1 ? 'c' : `calc(c * ${off.c})`
-      lines.push(`    ${v}: oklch(from ${base} ${lExpr} ${cExpr} h);`)
     }
   }
 }

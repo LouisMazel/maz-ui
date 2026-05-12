@@ -126,7 +126,8 @@ export interface ThemeScales {
 
 /**
  * Optional, per-mode background overrides for "container" surfaces — defaults
- * to `var(--maz-surface)` light, `var(--maz-surface-400)` dark.
+ * to `var(--maz-surface)` light, and a relative-color-syntax tint derived
+ * from `--maz-surface` (one OKLCh lightness tier above) for dark.
  */
 export interface ThemeComponentBg {
   light?: CSSColor

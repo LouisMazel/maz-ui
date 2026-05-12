@@ -90,11 +90,8 @@ const hasTitle = computed(() => !!title || !!slots.title)
 const hasContent = computed(() => !!content || !!slots.default)
 
 const colorStyles = computed<CSSProperties>(() => ({
-  '--m-alert-color': `var(--maz-${color}-700)`,
-  '--m-alert-color-dark': `var(--maz-${color}-400)`,
   '--m-alert-bg': `var(--maz-${color})`,
   '--m-alert-fg': `var(--maz-${color}-foreground)`,
-  '--m-alert-border': `var(--maz-${color}-600)`,
 }))
 
 const ROUNDED_CLASS = {
@@ -175,6 +172,11 @@ const currentIcon = computed(() => {
 
 <style scoped>
 .m-alert {
+  /* State variants derived from --m-alert-bg via OKLCh lightness offsets. */
+  --m-alert-color: oklch(from var(--m-alert-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
+  --m-alert-color-dark: oklch(from var(--m-alert-bg) clamp(0, calc(l + 0.06), 1) c h); /* ↔ scale -400 */
+  --m-alert-border: oklch(from var(--m-alert-bg) clamp(0, calc(l - 0.05), 1) c h); /* ↔ scale -600 */
+
   &.--soft {
     background-color: color-mix(in srgb, var(--m-alert-color) 10%, transparent);
 

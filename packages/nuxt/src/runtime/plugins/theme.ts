@@ -67,7 +67,6 @@ function injectThemeCSS(config: Required<MazUiThemeOptions>) {
     prefix: 'maz',
     darkClass: config.darkClass,
     lightClass: config.lightClass,
-    scaleColorVariables: true,
   } satisfies CSSOptions)
 
   useHead({

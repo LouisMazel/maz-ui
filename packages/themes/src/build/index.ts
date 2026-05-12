@@ -12,8 +12,6 @@ interface SharedOptions {
   darkClass?: string
   /** Light class name (default 'light') */
   lightClass?: string
-  /** Whether to generate color scales */
-  scaleColorVariables?: boolean
 }
 
 export interface BuildThemeOptions extends SharedOptions {
@@ -27,7 +25,6 @@ export function buildThemeCSS({
   prefix = 'maz',
   darkClass = 'dark',
   lightClass = 'light',
-  scaleColorVariables = true,
 }: BuildThemeOptions): string {
   return generateCSS(preset, {
     mode,
@@ -35,7 +32,6 @@ export function buildThemeCSS({
     prefix,
     darkClass,
     lightClass,
-    scaleColorVariables,
   })
 }
 

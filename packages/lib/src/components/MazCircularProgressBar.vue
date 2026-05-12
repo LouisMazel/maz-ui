@@ -125,6 +125,18 @@ const adjustedPercentage = computed<number>(() => {
 const currentColor = computed<MazColor | undefined>(() =>
   autoColor ? getStatusColor(adjustedPercentage.value) : color,
 )
+
+/* Gradient stops derived via OKLCh offsets (mirrors SCALE_OFFSETS: -400, -700). */
+const gradientStart = computed(() =>
+  currentColor.value
+    ? `oklch(from var(--maz-${currentColor.value}) clamp(0, calc(l + 0.06), 1) c h)`
+    : `var(--maz-primary)`,
+)
+const gradientEnd = computed(() =>
+  currentColor.value
+    ? `oklch(from var(--maz-${currentColor.value}) clamp(0, calc(l - 0.1), 1) c h)`
+    : `var(--maz-secondary)`,
+)
 function getStatusColor(percent: number) {
   if (percent < dangerPercentage || percent > 100)
     return 'destructive'
@@ -227,15 +239,11 @@ onBeforeUnmount(() => observer?.disconnect())
         <linearGradient :id="`${id}-gradient`" x1="0" x2="0" y1="1" y2="0">
           <stop
             offset="0%"
-            :stop-color="
-              currentColor ? `var(--maz-${currentColor}-400)` : `var(--maz-primary)`
-            "
+            :stop-color="gradientStart"
           />
           <stop
             offset="100%"
-            :stop-color="
-              currentColor ? `var(--maz-${currentColor}-700)` : `var(--maz-secondary)`
-            "
+            :stop-color="gradientEnd"
           />
         </linearGradient>
       </defs>

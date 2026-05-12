@@ -11,6 +11,10 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
 #     alt: Logo of Maz-UI
 ---
 
+<h1 class="maz:text-red-500 maz:font-mono">
+  COUCOU
+</h1>
+
 <section class="vp-raw maz:pt-8">
   <MazAnimatedElement :delay="0" class="maz:w-full">
     <MazCardSpotlight color="primary" content-class="maz:flex maz:flex-col maz:tab-m:flex-row maz:gap-4 maz:items-start maz:tab-m:items-center maz:w-full" class="maz:w-full" :inner-opacity="0.70">

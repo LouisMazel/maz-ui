@@ -580,7 +580,7 @@ const surfaceTheme = definePreset({
       },
       container: {
         // Cards / dialogs / popovers / drawers — light = page surface, dark = a tier above
-        bg: { light: 'var(--maz-surface)', dark: 'var(--maz-surface-300)' },
+        bg: { light: 'var(--maz-surface)', dark: 'var(--maz-color-surface-300)' },
       },
       input: {
         // All form-control surfaces

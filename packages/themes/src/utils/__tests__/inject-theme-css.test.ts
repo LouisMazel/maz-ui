@@ -76,7 +76,6 @@ describe('inject-theme-css', () => {
           mode: 'both',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
-          scaleColorVariables: true,
         }))
         expect(injectCSS).toHaveBeenCalledWith('maz-theme-css', 'generated-css')
       })
@@ -110,7 +109,6 @@ describe('inject-theme-css', () => {
           darkSelectorStrategy: 'media',
           darkClass: 'night-mode',
           lightClass: 'day-mode',
-          scaleColorVariables: true,
         })
       })
     })

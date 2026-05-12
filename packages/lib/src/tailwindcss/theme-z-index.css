@@ -4,7 +4,7 @@
  * The z-default-backdrop token matches the value used by MazDialog and MazToast
  * for their stacking context.
  */
-@theme {
+@theme inline {
   --z-1: 1;
   --z-2: 2;
   --z-3: 3;

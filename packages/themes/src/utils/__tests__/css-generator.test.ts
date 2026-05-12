@@ -1,6 +1,6 @@
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { mazUi } from '../../presets/mazUi'
-import { CSS_ID, generateCSS, injectCSS, removeCSS, SCALE_OFFSETS, SCALED_COLOR_NAMES } from '../css-generator'
+import { CSS_ID, generateCSS, injectCSS, removeCSS } from '../css-generator'
 
 vi.mock('@maz-ui/utils/helpers/isServer', () => ({
   isServer: vi.fn(() => false),
@@ -14,7 +14,6 @@ describe('given generateCSS function', () => {
       darkSelectorStrategy: 'class',
       darkClass: 'dark',
       lightClass: 'light',
-      scaleColorVariables: true,
     })
 
     it('then wraps the output in @layer theme', () => {
@@ -46,27 +45,17 @@ describe('given generateCSS function', () => {
       expect(css).toContain('.light { color-scheme: only light; }')
     })
 
-    it('then aliases palette step 500 directly to var(--maz-X)', () => {
-      expect(css).toContain('--maz-primary-500: var(--maz-primary)')
-      expect(css).not.toMatch(/--maz-primary-500: oklch\(from/)
+    it('then never emits per-step scale palette vars', () => {
+      expect(css).not.toMatch(/--maz-primary-\d+:/)
+      expect(css).not.toMatch(/--maz-surface-\d+:/)
+      expect(css).not.toMatch(/--maz-foreground-\d+:/)
     })
 
-    it('then emits oklch(from var(--maz-X) ...) for tints below 500', () => {
-      expect(css).toContain('--maz-primary-50: oklch(from var(--maz-primary) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h)')
-      expect(css).toContain('--maz-primary-100: oklch(from var(--maz-primary) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h)')
-      expect(css).toContain('--maz-primary-300: oklch(from var(--maz-primary) clamp(0, calc(l + 0.13), 1) c h)')
-      expect(css).toContain('--maz-primary-400: oklch(from var(--maz-primary) clamp(0, calc(l + 0.06), 1) c h)')
-    })
-
-    it('then emits oklch(from var(--maz-X) ...) for shades above 500', () => {
-      expect(css).toContain('--maz-primary-600: oklch(from var(--maz-primary) clamp(0, calc(l - 0.05), 1) c h)')
-      expect(css).toContain('--maz-primary-700: oklch(from var(--maz-primary) clamp(0, calc(l - 0.1), 1) c h)')
-      expect(css).toContain('--maz-primary-900: oklch(from var(--maz-primary) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h)')
-      expect(css).toContain('--maz-primary-950: oklch(from var(--maz-primary) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h)')
-    })
-
-    it('then emits the contrast-600 scale entry', () => {
-      expect(css).toContain('--maz-contrast-600:')
+    it('then never emits per-step scale palette derivations on color tokens', () => {
+      // Per-step palette derivation lives in Tailwind's @theme block, not in the
+      // runtime CSS. Component-level defaults (e.g. input-bg dark) MAY still use
+      // relative color syntax — that's intentional and out of scope here.
+      expect(css).not.toMatch(/--maz-(?:primary|secondary|accent|destructive|success|warning|info|contrast|surface|foreground|divider|muted|overlay|shadow)-\d+:\s*oklch\(from /)
     })
 
     it('then matches the snapshot', () => {
@@ -81,7 +70,6 @@ describe('given generateCSS function', () => {
       darkSelectorStrategy: 'media',
       darkClass: 'dark',
       lightClass: 'light',
-      scaleColorVariables: true,
     })
 
     it('then still emits color-scheme: light dark on :root', () => {
@@ -109,7 +97,6 @@ describe('given generateCSS function', () => {
       darkSelectorStrategy: 'class',
       darkClass: 'dark',
       lightClass: 'light',
-      scaleColorVariables: true,
     })
 
     it('then emits color-scheme: only light on :root', () => {
@@ -143,7 +130,6 @@ describe('given generateCSS function', () => {
       darkSelectorStrategy: 'class',
       darkClass: 'dark',
       lightClass: 'light',
-      scaleColorVariables: true,
     })
 
     it('then emits color-scheme: only dark on :root', () => {
@@ -176,7 +162,6 @@ describe('given generateCSS function', () => {
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: true,
       })
 
       it('then emits the space token', () => {
@@ -202,7 +187,6 @@ describe('given generateCSS function', () => {
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: true,
       })
 
       it('then no foundation vars are emitted', () => {
@@ -219,7 +203,6 @@ describe('given generateCSS function', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
-          scaleColorVariables: true,
         },
       )
 
@@ -237,7 +220,6 @@ describe('given generateCSS function', () => {
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: true,
       })
 
       it('then the md anchor is emitted as a literal value', () => {
@@ -262,7 +244,6 @@ describe('given generateCSS function', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
-          scaleColorVariables: true,
         },
       )
 
@@ -274,13 +255,33 @@ describe('given generateCSS function', () => {
       })
     })
 
+    describe('when the rounded.md anchor itself is missing from the preset', () => {
+      const css = generateCSS(
+        { ...mazUi, scales: { ...mazUi.scales, rounded: {} as any } },
+        {
+          prefix: 'maz',
+          mode: 'light',
+          darkSelectorStrategy: 'class',
+          darkClass: 'dark',
+        },
+      )
+
+      it('then no --maz-rounded-md declaration is emitted (no implicit calc, no literal)', () => {
+        expect(css).not.toMatch(/--maz-rounded-md:/)
+      })
+
+      it('then the other rounded keys still emit their calc fallback off md', () => {
+        expect(css).toContain('--maz-rounded-xs: calc(var(--maz-rounded-md) * 0.25);')
+        expect(css).toContain('--maz-rounded-sm: calc(var(--maz-rounded-md) * 0.5);')
+      })
+    })
+
     describe('when the preset has no scales block', () => {
       const css = generateCSS({ ...mazUi, scales: undefined as any }, {
         prefix: 'maz',
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: true,
       })
 
       it('then no rounded or shadow style vars are emitted', () => {
@@ -297,7 +298,6 @@ describe('given generateCSS function', () => {
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: true,
       })
 
       it('then sm/md/lg/xl/elevation shadow-style vars are emitted', () => {
@@ -315,7 +315,6 @@ describe('given generateCSS function', () => {
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
-          scaleColorVariables: true,
         },
       )
 
@@ -333,7 +332,6 @@ describe('given generateCSS function', () => {
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: true,
       })
 
       it('then no fontSize scale is emitted', () => {
@@ -349,7 +347,6 @@ describe('given generateCSS function', () => {
         mode: 'both',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: true,
       })
 
       it('then --maz-surface and --maz-divider are emitted', () => {
@@ -382,7 +379,6 @@ describe('given generateCSS function', () => {
         mode: 'both',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then --maz-container-bg is wrapped in light-dark()', () => {
@@ -407,7 +403,6 @@ describe('given generateCSS function', () => {
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then --maz-container-bg uses only the light value', () => {
@@ -433,7 +428,6 @@ describe('given generateCSS function', () => {
         mode: 'dark',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then --maz-container-bg uses only the dark value', () => {
@@ -457,7 +451,6 @@ describe('given generateCSS function', () => {
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then no container-bg variable is emitted', () => {
@@ -477,7 +470,6 @@ describe('given generateCSS function', () => {
         mode: 'dark',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then no container-bg variable is emitted', () => {
@@ -498,7 +490,6 @@ describe('given generateCSS function', () => {
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
         lightClass: 'light',
-        scaleColorVariables: false,
       })
 
       it('then it emits the value directly without light-dark wrapping', () => {
@@ -518,7 +509,6 @@ describe('given generateCSS function', () => {
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
         lightClass: 'light',
-        scaleColorVariables: false,
       })
 
       it('then no container-bg variable is emitted', () => {
@@ -533,7 +523,6 @@ describe('given generateCSS function', () => {
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then --maz-btn-font-weight is emitted', () => {
@@ -548,7 +537,6 @@ describe('given generateCSS function', () => {
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then only the available component vars are emitted', () => {
@@ -565,7 +553,6 @@ describe('given generateCSS function', () => {
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then no component vars are emitted', () => {
@@ -582,7 +569,6 @@ describe('given generateCSS function', () => {
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then it defaults the prefix to "maz"', () => {
@@ -605,7 +591,6 @@ describe('given generateCSS function', () => {
         mode: 'dark',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then it falls back to the light value', () => {
@@ -626,7 +611,6 @@ describe('given generateCSS function', () => {
         mode: 'both',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then light-dark falls back to the light value on the dark side', () => {
@@ -646,7 +630,6 @@ describe('given generateCSS function', () => {
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then no shadow-style vars are emitted', () => {
@@ -668,7 +651,6 @@ describe('given generateCSS function', () => {
         mode: 'both',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then the short-circuit emits the light value directly (light === dark via fallback)', () => {
@@ -688,7 +670,6 @@ describe('given generateCSS function', () => {
         mode: 'both',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then the short-circuit emits the dark value directly (light === dark via fallback)', () => {
@@ -711,7 +692,6 @@ describe('given generateCSS function', () => {
         mode: 'both',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then the falsy key is skipped (no --maz-primary line)', () => {
@@ -734,7 +714,6 @@ describe('given generateCSS function', () => {
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then the raw HSL is wrapped in hsl()', () => {
@@ -758,64 +737,10 @@ describe('given generateCSS function', () => {
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then the hex value is emitted as-is', () => {
         expect(css).toContain('--maz-primary: #ff00ff;')
-      })
-    })
-  })
-
-  describe('given scaleColorVariables: false', () => {
-    describe('when generating CSS', () => {
-      const css = generateCSS(mazUi, {
-        prefix: 'maz',
-        mode: 'both',
-        darkSelectorStrategy: 'class',
-        darkClass: 'dark',
-        scaleColorVariables: false,
-      })
-
-      it('then no per-step palette vars are emitted', () => {
-        expect(css).not.toContain('--maz-primary-100')
-        expect(css).not.toContain('--maz-primary-500')
-        expect(css).not.toContain('--maz-primary-900')
-      })
-
-      it('then no color-mix declarations are emitted', () => {
-        expect(css).not.toContain('color-mix(in oklch')
-      })
-
-      it('then the base color vars are still emitted', () => {
-        expect(css).toMatch(/--maz-primary: light-dark\(/)
-      })
-    })
-  })
-
-  describe('given a missing scaled color base', () => {
-    describe('when one entry of colors.light is falsy', () => {
-      const preset = {
-        ...mazUi,
-        colors: {
-          ...mazUi.colors,
-          light: { ...mazUi.colors.light, muted: '' as any },
-        },
-      }
-      const css = generateCSS(preset, {
-        prefix: 'maz',
-        mode: 'light',
-        darkSelectorStrategy: 'class',
-        darkClass: 'dark',
-        scaleColorVariables: true,
-      })
-
-      it('then no per-step scale vars are emitted for the missing color', () => {
-        expect(css).not.toMatch(/--maz-muted-500:/)
-      })
-
-      it('then other scaled colors still have their per-step vars', () => {
-        expect(css).toContain('--maz-primary-500:')
       })
     })
   })
@@ -834,7 +759,6 @@ describe('given generateCSS function', () => {
         mode: 'light',
         darkSelectorStrategy: 'class',
         darkClass: 'dark',
-        scaleColorVariables: false,
       })
 
       it('then the falsy color is skipped and other colors are emitted', () => {
@@ -850,7 +774,6 @@ describe('given generateCSS function', () => {
       mode: 'both',
       darkSelectorStrategy: 'class',
       darkClass: 'dark',
-      scaleColorVariables: false,
     })
 
     it('then no @property blocks are emitted', () => {
@@ -969,54 +892,6 @@ describe('given removeCSS function', () => {
       removeCSS(CSS_ID)
 
       expect(document.querySelectorAll(`#${CSS_ID}`).length).toBe(0)
-    })
-  })
-})
-
-describe('given the scale offsets table', () => {
-  describe('when accessing palette steps', () => {
-    it('exposes 11 steps from 50 to 950', () => {
-      const keys = Object.keys(SCALE_OFFSETS).map(Number)
-      expect(keys.sort((a, b) => a - b)).toEqual([50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950])
-    })
-
-    it('uses positive lightness offsets below 500 and negative above', () => {
-      expect(SCALE_OFFSETS[50]?.l).toBeGreaterThan(0)
-      expect(SCALE_OFFSETS[400]?.l).toBeGreaterThan(0)
-      expect(SCALE_OFFSETS[600]?.l).toBeLessThan(0)
-      expect(SCALE_OFFSETS[950]?.l).toBeLessThan(0)
-    })
-
-    it('uses identity (null) for step 500', () => {
-      expect(SCALE_OFFSETS[500]).toBeNull()
-    })
-
-    it('tapers chroma at the extremes to avoid washed-out shades', () => {
-      expect(SCALE_OFFSETS[50]?.c).toBeLessThan(0.5)
-      expect(SCALE_OFFSETS[950]?.c).toBeLessThanOrEqual(0.5)
-      expect(SCALE_OFFSETS[400]?.c).toBe(1)
-      expect(SCALE_OFFSETS[600]?.c).toBe(1)
-    })
-  })
-
-  describe('when accessing the scaled color names list', () => {
-    it('lists every color name that should receive a 50-950 scale', () => {
-      expect(SCALED_COLOR_NAMES).toEqual([
-        'primary',
-        'secondary',
-        'accent',
-        'destructive',
-        'success',
-        'warning',
-        'info',
-        'contrast',
-        'surface',
-        'foreground',
-        'divider',
-        'muted',
-        'overlay',
-        'shadow',
-      ])
     })
   })
 })

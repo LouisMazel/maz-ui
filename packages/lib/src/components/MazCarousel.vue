@@ -140,9 +140,7 @@ function setScrollState(event: Event) {
 
 .m-carousel {
   &__items {
-    scroll-behavior: smooth;
-    scrollbar-width: thin;
-    scrollbar-color: var(--maz-surface-600) transparent;
+    @apply maz:scroll-smooth maz:scrollbar-thin maz:scrollbar-thumb-surface-600 maz:scrollbar-track-transparent;
 
     &::-webkit-scrollbar {
       inline-size: 0.1875rem;
