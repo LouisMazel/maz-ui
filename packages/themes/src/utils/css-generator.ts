@@ -31,17 +31,17 @@ const ROUNDED_KEYS: readonly RoundedScaleKey[] = ['xs', 'sm', 'md', 'lg', 'xl', 
  * washed-out as `color-mix(..., white|black N%)` would produce.
  */
 export const SCALE_OFFSETS = {
-  50: { l: 0.42, c: 0.1 },
-  100: { l: 0.35, c: 0.3 },
-  200: { l: 0.26, c: 0.6 },
-  300: { l: 0.17, c: 0.85 },
-  400: { l: 0.08, c: 1 },
+  50: { l: 0.40, c: 0.1 },
+  100: { l: 0.32, c: 0.35 },
+  200: { l: 0.22, c: 0.7 },
+  300: { l: 0.13, c: 1 },
+  400: { l: 0.06, c: 1 },
   500: null,
-  600: { l: -0.07, c: 1 },
-  700: { l: -0.14, c: 1 },
-  800: { l: -0.21, c: 0.85 },
-  900: { l: -0.28, c: 0.65 },
-  950: { l: -0.34, c: 0.45 },
+  600: { l: -0.05, c: 1 },
+  700: { l: -0.10, c: 1 },
+  800: { l: -0.16, c: 0.9 },
+  900: { l: -0.22, c: 0.7 },
+  950: { l: -0.30, c: 0.5 },
 } as const satisfies Record<number, { l: number, c: number } | null>
 
 export type ScaleStep = keyof typeof SCALE_OFFSETS
