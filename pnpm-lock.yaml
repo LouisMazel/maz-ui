@@ -42,13 +42,8 @@ importers:
         specifier: ^4.1.5
         version: 4.1.5(vitest@4.1.5)
       '@yoloship/action':
-<<<<<<< HEAD
         specifier: 0.2.0-beta.7
         version: 0.2.0-beta.7(magicast@0.5.2)
-=======
-        specifier: 0.2.0-beta.1
-        version: 0.2.0-beta.1(magicast@0.5.2)
->>>>>>> bf6d7197f (chore: upgrade yolo deps)
       '@yoloship/claude-sdk':
         specifier: 0.2.0-beta.5
         version: 0.2.0-beta.5(libphonenumber-js@1.13.0)
@@ -5489,13 +5484,8 @@ packages:
   '@yarnpkg/lockfile@1.1.0':
     resolution: {integrity: sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==}
 
-<<<<<<< HEAD
   '@yoloship/action@0.2.0-beta.7':
     resolution: {integrity: sha512-neHj/jzYDM3UsrllDM2Z8U3zVNR3CZnx2ezKX8loVSKt7SNfDGrqPa5j6uJWOLSrWNfPOm5DqnsXMMJymq7m7A==}
-=======
-  '@yoloship/action@0.2.0-beta.1':
-    resolution: {integrity: sha512-uem7lbt5g+j0Z6Cc+OLbFK2Acdud2jGwIhQZlOQK+8wMJbb6rkJAULNNK5h+u/AVAJ3/J7K+h/KHUXFJb8uakg==}
->>>>>>> bf6d7197f (chore: upgrade yolo deps)
     hasBin: true
 
   '@yoloship/claude-sdk@0.2.0-beta.5':
@@ -15873,11 +15863,7 @@ snapshots:
 
   '@yarnpkg/lockfile@1.1.0': {}
 
-<<<<<<< HEAD
   '@yoloship/action@0.2.0-beta.7(magicast@0.5.2)':
-=======
-  '@yoloship/action@0.2.0-beta.1(magicast@0.5.2)':
->>>>>>> bf6d7197f (chore: upgrade yolo deps)
     dependencies:
       '@clack/prompts': 1.5.1
       '@maz-ui/node': 5.0.0-beta.11
