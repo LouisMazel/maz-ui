@@ -2,7 +2,6 @@ import type { RoundedScaleKey, ThemeColors, ThemeFoundation, ThemeMode, ThemePre
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { DEFAULT_ROUNDED_RATIOS } from '../presets/_defaults'
 import { normalizeColor } from './color-parser'
-import { SCALE_MIX_PERCENTAGES, SCALED_COLOR_NAMES } from './scale-mix-percentages'
 
 export interface CSSOptions {
   /** Theme mode to generate */
@@ -21,17 +20,66 @@ export interface CSSOptions {
 
 const ROUNDED_KEYS: readonly RoundedScaleKey[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']
 
+/**
+ * Palette steps 50..950 expressed as `color-mix` against white (tints) or black
+ * (shades). Step 500 emits the base color directly. Aligned with Tailwind v4.
+ */
+export const SCALE_MIX_PERCENTAGES = {
+  50: { mixWith: 'white', percent: 95 },
+  100: { mixWith: 'white', percent: 85 },
+  200: { mixWith: 'white', percent: 70 },
+  300: { mixWith: 'white', percent: 50 },
+  400: { mixWith: 'white', percent: 25 },
+  500: { mixWith: null },
+  600: { mixWith: 'black', percent: 15 },
+  700: { mixWith: 'black', percent: 30 },
+  800: { mixWith: 'black', percent: 45 },
+  900: { mixWith: 'black', percent: 60 },
+  950: { mixWith: 'black', percent: 75 },
+} as const satisfies Record<number, { mixWith: 'white' | 'black' | null, percent?: number }>
+
+export type ScaleStep = keyof typeof SCALE_MIX_PERCENTAGES
+
+/** Color names that receive a 50..950 scale. Foreground variants are NOT scaled. */
+export const SCALED_COLOR_NAMES = [
+  'primary',
+  'secondary',
+  'accent',
+  'destructive',
+  'success',
+  'warning',
+  'info',
+  'contrast',
+  'surface',
+  'foreground',
+  'divider',
+  'muted',
+  'overlay',
+  'shadow',
+] as const
+
+export type ScaledColorName = (typeof SCALED_COLOR_NAMES)[number]
+
 export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
   const prefix = options.prefix ?? 'maz'
   const lightClass = options.lightClass ?? 'light'
+  const { mode } = options
 
-  const lines: string[] = []
+  const lines: string[] = ['@layer theme {', '  :root {']
+  const colorScheme = mode === 'both' ? 'light dark' : `only ${mode}`
+  lines.push(`    color-scheme: ${colorScheme};`)
 
-  lines.push('@layer theme {')
+  appendFoundation(lines, preset.foundation, prefix)
+  appendScales(lines, preset.scales, prefix)
+  appendComponents(lines, preset, prefix, mode)
+  appendColorVariables(lines, preset.colors, mode, prefix)
+  if (options.scaleColorVariables) {
+    appendColorScales(lines, preset.colors, mode, prefix)
+  }
 
-  lines.push(emitRootBlock(preset, prefix, options))
+  lines.push('  }')
 
-  if (options.darkSelectorStrategy === 'class' && options.mode === 'both') {
+  if (options.darkSelectorStrategy === 'class' && mode === 'both') {
     lines.push(`  .${options.darkClass} { color-scheme: only dark; }`)
     lines.push(`  .${lightClass} { color-scheme: only light; }`)
   }
@@ -40,128 +88,81 @@ export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
   return lines.join('\n')
 }
 
-function emitRootBlock(
-  preset: ThemePreset,
-  prefix: string,
-  options: CSSOptions,
-): string {
-  const lines: string[] = ['  :root {']
-  lines.push(`    color-scheme: ${resolveColorScheme(options.mode)};`)
-
-  lines.push(...emitFoundation(preset.foundation, prefix))
-  lines.push(...emitScales(preset.scales, prefix))
-  lines.push(...emitComponents(preset, prefix, options.mode))
-  lines.push(...emitColorVariables(preset.colors, options.mode, prefix))
-
-  if (options.scaleColorVariables) {
-    lines.push(...emitColorScales(preset.colors, options.mode, prefix))
-  }
-
-  lines.push('  }')
-  return lines.join('\n')
-}
-
-function resolveColorScheme(mode: ThemeMode): string {
-  if (mode === 'light')
-    return 'only light'
-  if (mode === 'dark')
-    return 'only dark'
-  return 'light dark'
-}
-
-function emitColorVariables(
+function appendColorVariables(
+  lines: string[],
   colors: { light: ThemeColors, dark: ThemeColors },
   mode: ThemeMode,
   prefix: string,
-): string[] {
-  const lines: string[] = []
-  const entries = Object.entries(colors.light) as Array<[keyof ThemeColors, string]>
-
-  for (const [key, lightValue] of entries) {
+): void {
+  for (const [key, lightValue] of Object.entries(colors.light) as Array<[keyof ThemeColors, string]>) {
     if (!lightValue)
       continue
-    if (mode === 'light') {
-      lines.push(`    --${prefix}-${key}: ${normalizeColor(lightValue)};`)
-    }
-    else if (mode === 'dark') {
-      const darkValue = colors.dark[key] ?? lightValue
-      lines.push(`    --${prefix}-${key}: ${normalizeColor(darkValue)};`)
+    if (mode === 'both') {
+      const dark = colors.dark[key] ?? lightValue
+      lines.push(`    --${prefix}-${key}: light-dark(${normalizeColor(lightValue)}, ${normalizeColor(dark)});`)
     }
     else {
-      const darkValue = colors.dark[key] ?? lightValue
-      lines.push(`    --${prefix}-${key}: light-dark(${normalizeColor(lightValue)}, ${normalizeColor(darkValue)});`)
+      const value = mode === 'dark' ? (colors.dark[key] ?? lightValue) : lightValue
+      lines.push(`    --${prefix}-${key}: ${normalizeColor(value)};`)
     }
   }
-  return lines
 }
 
-function emitColorScales(
+function appendColorScales(
+  lines: string[],
   colors: { light: ThemeColors, dark: ThemeColors },
   mode: ThemeMode,
   prefix: string,
-): string[] {
-  const lines: string[] = []
+): void {
   const source = mode === 'dark' ? colors.dark : colors.light
-
   for (const name of SCALED_COLOR_NAMES) {
     if (!source[name])
       continue
     for (const [stepStr, conf] of Object.entries(SCALE_MIX_PERCENTAGES)) {
-      const step = Number(stepStr)
-      if (conf.mixWith === null) {
-        lines.push(`    --${prefix}-${name}-${step}: var(--${prefix}-${name});`)
-      }
-      else {
-        lines.push(`    --${prefix}-${name}-${step}: color-mix(in oklch, var(--${prefix}-${name}), ${conf.mixWith} ${conf.percent}%);`)
-      }
+      const v = `--${prefix}-${name}-${stepStr}`
+      const base = `var(--${prefix}-${name})`
+      lines.push(conf.mixWith === null
+        ? `    ${v}: ${base};`
+        : `    ${v}: color-mix(in oklch, ${base}, ${conf.mixWith} ${conf.percent}%);`)
     }
   }
-  return lines
 }
 
-function emitFoundation(foundation: Partial<ThemeFoundation> | undefined, prefix: string): string[] {
+function appendFoundation(lines: string[], foundation: Partial<ThemeFoundation> | undefined, prefix: string): void {
   if (!foundation)
-    return []
-  const lines: string[] = []
+    return
   for (const [key, value] of Object.entries(foundation)) {
     if (value)
       lines.push(`    --${prefix}-${key}: ${value};`)
   }
-  return lines
 }
 
-function emitScales(scales: ThemePreset['scales'] | undefined, prefix: string): string[] {
+function appendScales(lines: string[], scales: ThemePreset['scales'] | undefined, prefix: string): void {
   if (!scales)
-    return []
-  const lines: string[] = []
+    return
   for (const key of ROUNDED_KEYS) {
     const value = scales.rounded?.[key]
     if (value) {
       lines.push(`    --${prefix}-rounded-${key}: ${value};`)
     }
     else if (key !== 'md') {
-      const ratio = DEFAULT_ROUNDED_RATIOS[key]
-      lines.push(`    --${prefix}-rounded-${key}: calc(var(--${prefix}-rounded-md) * ${ratio});`)
+      lines.push(`    --${prefix}-rounded-${key}: calc(var(--${prefix}-rounded-md) * ${DEFAULT_ROUNDED_RATIOS[key]});`)
     }
   }
   for (const [key, value] of Object.entries(scales.shadow ?? {})) {
     if (value)
       lines.push(`    --${prefix}-shadow-style-${key}: ${value};`)
   }
-  return lines
 }
 
 /**
- * Emit per-component bg vars. When mode is 'both', wrap the values in `light-dark()`
- * so the bg switches with `color-scheme`. When mode is 'light' or 'dark', emit only
- * the corresponding side. Container/input bg fall back to the other mode if their
- * own mode value is missing.
+ * Emit per-component bg vars. In `both` mode, values are wrapped in `light-dark()`
+ * so they switch with `color-scheme`. Otherwise the matching side is emitted.
  */
-function emitComponents(preset: ThemePreset, prefix: string, mode: ThemeMode): string[] {
-  const lines: string[] = []
+function appendComponents(lines: string[], preset: ThemePreset, prefix: string, mode: ThemeMode): void {
   const components = preset.components
   if (!components)
-    return lines
+    return
 
   if (components.btn?.['font-weight']) {
     lines.push(`    --${prefix}-btn-font-weight: ${components.btn['font-weight']};`)
@@ -171,23 +172,14 @@ function emitComponents(preset: ThemePreset, prefix: string, mode: ThemeMode): s
     const bg = components[componentKey]?.bg
     if (!bg)
       return
-    if (mode === 'light' && bg.light) {
-      lines.push(`    --${prefix}-${cssKey}: ${normalizeColor(bg.light)};`)
+    if (mode === 'both' && (bg.light || bg.dark)) {
+      const light = normalizeColor(bg.light ?? bg.dark ?? '')
+      const dark = normalizeColor(bg.dark ?? bg.light ?? '')
+      const value = light === dark ? light : `light-dark(${light}, ${dark})`
+      lines.push(`    --${prefix}-${cssKey}: ${value};`)
     }
-    else if (mode === 'dark' && bg.dark) {
-      lines.push(`    --${prefix}-${cssKey}: ${normalizeColor(bg.dark)};`)
-    }
-    else if (mode === 'both' && (bg.light || bg.dark)) {
-      const light = bg.light ?? bg.dark ?? ''
-      const dark = bg.dark ?? bg.light ?? ''
-      const normalizedLight = normalizeColor(light)
-      const normalizedDark = normalizeColor(dark)
-      if (normalizedLight === normalizedDark) {
-        lines.push(`    --${prefix}-${cssKey}: ${normalizedLight};`)
-      }
-      else {
-        lines.push(`    --${prefix}-${cssKey}: light-dark(${normalizedLight}, ${normalizedDark});`)
-      }
+    else if (mode !== 'both' && bg[mode]) {
+      lines.push(`    --${prefix}-${cssKey}: ${normalizeColor(bg[mode]!)};`)
     }
   }
   emitBg('container', 'container-bg')
@@ -197,8 +189,6 @@ function emitComponents(preset: ThemePreset, prefix: string, mode: ThemeMode): s
   if (inputTopLabelFw) {
     lines.push(`    --${prefix}-input-top-label-font-weight: ${inputTopLabelFw};`)
   }
-
-  return lines
 }
 
 export const CSS_ID = 'maz-theme-css'
