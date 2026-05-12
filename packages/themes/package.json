@@ -26,52 +26,62 @@
     ".": {
       "monorepo:dev": "./src/index.ts",
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./presets": {
       "monorepo:dev": "./src/presets/index.ts",
       "types": "./dist/presets/index.d.ts",
-      "import": "./dist/presets/index.js"
+      "import": "./dist/presets/index.js",
+      "default": "./dist/presets/index.js"
     },
     "./presets/*": {
       "monorepo:dev": "./src/presets/*.ts",
       "types": "./dist/presets/*.d.ts",
-      "import": "./dist/presets/*.js"
+      "import": "./dist/presets/*.js",
+      "default": "./dist/presets/*.js"
     },
     "./composables": {
       "monorepo:dev": "./src/composables/index.ts",
       "types": "./dist/composables/index.d.ts",
-      "import": "./dist/composables/index.js"
+      "import": "./dist/composables/index.js",
+      "default": "./dist/composables/index.js"
     },
     "./composables/*": {
       "monorepo:dev": "./src/composables/*.ts",
       "types": "./dist/composables/*.d.ts",
-      "import": "./dist/composables/*.js"
+      "import": "./dist/composables/*.js",
+      "default": "./dist/composables/*.js"
     },
     "./utils": {
       "monorepo:dev": "./src/utils/index.ts",
       "types": "./dist/utils/index.d.ts",
-      "import": "./dist/utils/index.js"
+      "import": "./dist/utils/index.js",
+      "default": "./dist/utils/index.js"
     },
     "./utils/*": {
       "monorepo:dev": "./src/utils/*.ts",
       "types": "./dist/utils/*.d.ts",
-      "import": "./dist/utils/*.js"
+      "import": "./dist/utils/*.js",
+      "default": "./dist/utils/*.js"
     },
     "./build": {
       "monorepo:dev": "./src/build/index.ts",
       "types": "./dist/build/index.d.ts",
-      "import": "./dist/build/index.js"
+      "import": "./dist/build/index.js",
+      "default": "./dist/build/index.js"
     },
     "./build/*": {
       "monorepo:dev": "./src/build/*.ts",
       "types": "./dist/build/*.d.ts",
-      "import": "./dist/build/*.js"
+      "import": "./dist/build/*.js",
+      "default": "./dist/build/*.js"
     },
     "./plugin": {
       "monorepo:dev": "./src/plugin.ts",
       "types": "./dist/plugin.d.ts",
-      "import": "./dist/plugin.js"
+      "import": "./dist/plugin.js",
+      "default": "./dist/plugin.js"
     }
   },
   "main": "./dist/index.js",
