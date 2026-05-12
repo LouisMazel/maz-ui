@@ -270,7 +270,7 @@ const optionListElement = useTemplateRef('optionListRef')
 const optionListWrapperRef = useTemplateRef('optionListWrapper')
 
 const selectedTextColor = computed(() => `var(--maz-${color})`)
-const selectedBgColor = computed(() => `color-mix(in srgb, var(--maz-${color}-500) 10%, transparent)`)
+const selectedBgColor = computed(() => `color-mix(in srgb, var(--maz-${color}) 10%, transparent)`)
 
 const SIZE_TEXT_CLASS = {
   mini: 'maz:text-xs',
@@ -919,8 +919,7 @@ defineExpose({
     }
 
     /* Modern CSS for all browsers (fallback) */
-    scrollbar-width: thin;
-    scrollbar-color: var(--maz-surface-600) transparent;
+    @apply maz:scrollbar-thin maz:scrollbar-track-transparent maz:scrollbar-thumb-surface-600;
   }
 
   &__no-results {

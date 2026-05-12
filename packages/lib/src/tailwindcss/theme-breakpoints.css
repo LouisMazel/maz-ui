@@ -6,7 +6,7 @@
  * @theme form here adds them to the :root token list without clearing any
  * default breakpoint.
  */
-@theme {
+@theme inline {
   --breakpoint-mob-s: 320px;
   --breakpoint-mob-m: 425px;
   --breakpoint-mob-l: 576px;

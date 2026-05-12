@@ -32,6 +32,7 @@ function createConfig(overrides: Partial<FullConfig> = {}): FullConfig {
     preset: createMockPreset(),
     strategy: 'runtime',
     darkClass: 'dark',
+    lightClass: 'light',
     darkModeStrategy: 'class',
     colorMode: 'auto',
     mode: 'both',
@@ -75,7 +76,6 @@ describe('inject-theme-css', () => {
           mode: 'both',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
-          scaleColorVariables: true,
         }))
         expect(injectCSS).toHaveBeenCalledWith('maz-theme-css', 'generated-css')
       })
@@ -93,7 +93,7 @@ describe('inject-theme-css', () => {
     })
 
     describe('when CSS options reflect the config values', () => {
-      it('then it forwards mode, darkSelectorStrategy and darkClass', async () => {
+      it('then it forwards mode, darkSelectorStrategy, darkClass, lightClass', async () => {
         const { generateCSS } = await import('../css-generator')
         const preset = createMockPreset()
 
@@ -101,13 +101,14 @@ describe('inject-theme-css', () => {
           mode: 'dark',
           darkModeStrategy: 'media',
           darkClass: 'night-mode',
+          lightClass: 'day-mode',
         }))
 
         expect(generateCSS).toHaveBeenCalledWith(preset, {
           mode: 'dark',
           darkSelectorStrategy: 'media',
           darkClass: 'night-mode',
-          scaleColorVariables: true,
+          lightClass: 'day-mode',
         })
       })
     })

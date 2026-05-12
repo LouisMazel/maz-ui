@@ -13,6 +13,6 @@ export function injectThemeCSS(
     mode: config.mode,
     darkSelectorStrategy: config.darkModeStrategy,
     darkClass: config.darkClass,
-    scaleColorVariables: true,
+    lightClass: config.lightClass,
   }))
 }

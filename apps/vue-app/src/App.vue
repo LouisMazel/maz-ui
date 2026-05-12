@@ -50,6 +50,8 @@ function showToast() {
       colorMode: 'auto',
       darkClass: 'dark',
       darkModeStrategy: 'class',
+      lightClass: 'light',
+      persistPreset: true,
       mode: 'both',
       strategy: 'runtime',
       overrides: {

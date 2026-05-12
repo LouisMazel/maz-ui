@@ -1,207 +1,132 @@
-import type { DarkModeStrategy, RoundedScaleKey, ThemeColors, ThemeFoundation, ThemeMode, ThemePreset } from '../types'
+import type { RoundedScaleKey, ThemeColors, ThemeFoundation, ThemeMode, ThemePreset } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { DEFAULT_ROUNDED_RATIOS } from '../presets/_defaults'
 import { normalizeColor } from './color-parser'
-import { generateColorScale } from './color-utils'
 
 export interface CSSOptions {
   /** Theme mode to generate */
   mode: ThemeMode
-  /** Dark mode selector: 'class' (.dark) | 'media' (@media) */
-  darkSelectorStrategy: DarkModeStrategy
+  /** Dark mode selector: 'class' (.dark/.light) | 'media' (system pref only) */
+  darkSelectorStrategy: 'class' | 'media'
   /** CSS variables prefix */
   prefix?: string
   /** Dark class name */
   darkClass: string
-  /** Whether to generate color scales */
-  scaleColorVariables: boolean
-}
-
-const scaleColors = ['primary', 'secondary', 'accent', 'destructive', 'success', 'warning', 'info', 'contrast', 'surface', 'foreground', 'divider', 'muted', 'overlay', 'shadow'] as const
-
-export function generateCSS(
-  preset: ThemePreset,
-  options: CSSOptions = {
-    mode: 'both',
-    darkSelectorStrategy: 'class',
-    darkClass: 'dark',
-    scaleColorVariables: true,
-  },
-): string {
-  const {
-    mode,
-    darkSelectorStrategy,
-    prefix = 'maz',
-    darkClass = 'dark',
-    scaleColorVariables = true,
-  } = options
-
-  let css = '@layer theme {\n'
-
-  const rootSelector = ':root'
-  const darkClassSelector = `.${darkClass}`
-
-  if (mode === 'light' || mode === 'both') {
-    css += generateVariablesBlock({
-      selector: rootSelector,
-      colors: preset.colors.light,
-      foundation: preset.foundation,
-      prefix,
-      preset,
-      mode: 'light',
-      scaleColorVariables,
-    })
-  }
-
-  if (mode === 'dark' || mode === 'both') {
-    css += generateVariablesBlock({
-      selector: darkSelectorStrategy === 'media' ? rootSelector : darkClassSelector,
-      mediaQuery: darkSelectorStrategy === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
-      colors: preset.colors.dark,
-      foundation: mode === 'dark' ? preset.foundation : undefined,
-      prefix,
-      preset,
-      isDark: true,
-      mode: 'dark',
-      scaleColorVariables,
-    })
-  }
-
-  css += '}\n'
-
-  return css
-}
-
-function generateVariablesBlock({
-  selector,
-  mediaQuery,
-  colors,
-  foundation,
-  prefix,
-  preset,
-  isDark = false,
-  scaleColorVariables = true,
-  mode = 'light',
-}: {
-  selector: string
-  mediaQuery?: string
-  colors?: Partial<ThemeColors>
-  foundation?: Partial<ThemeFoundation>
-  prefix: string
-  preset?: ThemePreset
-  isDark?: boolean
-  scaleColorVariables: boolean
-  /** Current mode being emitted — used to pick the right `components.{container,input}.bg` value. */
-  mode?: 'light' | 'dark'
-}): string {
-  const variables: string[] = []
-
-  if (colors) {
-    Object.entries(colors).forEach(([key, value]) => {
-      if (value) {
-        variables.push(`  --${prefix}-${key}: ${normalizeColor(value)};`)
-      }
-    })
-  }
-
-  if (foundation) {
-    Object.entries(foundation).forEach(([key, value]) => {
-      if (value) {
-        variables.push(`  --${prefix}-${key}: ${value};`)
-      }
-    })
-  }
-
-  // Static scales (radius / shadow) live on the light root block only.
-  if (!isDark && preset?.scales) {
-    variables.push(...generateScaleVariables(preset.scales, prefix))
-  }
-
-  if (preset?.components) {
-    variables.push(...generateComponentVariables(preset.components, mode, prefix))
-  }
-
-  if (preset && scaleColorVariables) {
-    const sourceColors = isDark ? preset.colors.dark : preset.colors.light
-    variables.push(...generateAllColorScales(sourceColors, prefix))
-  }
-
-  const content = variables.join('\n')
-
-  if (mediaQuery) {
-    return `\n  ${mediaQuery} {\n    ${selector} {\n${content.replace(/^/gm, '  ')}\n    }\n  }\n`
-  }
-
-  return `\n  ${selector} {\n${content}\n  }\n`
+  /** Light class name (default 'light') */
+  lightClass?: string
 }
 
 const ROUNDED_KEYS: readonly RoundedScaleKey[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']
 
-function generateScaleVariables(scales: ThemePreset['scales'], prefix: string): string[] {
-  const lines: string[] = []
+export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
+  const prefix = options.prefix ?? 'maz'
+  const lightClass = options.lightClass ?? 'light'
+  const { mode } = options
 
+  const lines: string[] = ['@layer theme {', '  :root {']
+  const colorScheme = mode === 'both' ? 'light dark' : `only ${mode}`
+  lines.push(`    color-scheme: ${colorScheme};`)
+
+  appendFoundation(lines, preset.foundation, prefix)
+  appendScales(lines, preset.scales, prefix)
+  appendComponents(lines, preset, prefix, mode)
+  appendColorVariables(lines, preset.colors, mode, prefix)
+
+  lines.push('  }')
+
+  if (options.darkSelectorStrategy === 'class' && mode === 'both') {
+    lines.push(`  .${options.darkClass} { color-scheme: only dark; }`)
+    lines.push(`  .${lightClass} { color-scheme: only light; }`)
+  }
+
+  lines.push('}')
+  return lines.join('\n')
+}
+
+function appendColorVariables(
+  lines: string[],
+  colors: { light: ThemeColors, dark: ThemeColors },
+  mode: ThemeMode,
+  prefix: string,
+): void {
+  for (const [key, lightValue] of Object.entries(colors.light) as Array<[keyof ThemeColors, string]>) {
+    if (!lightValue)
+      continue
+    if (mode === 'both') {
+      const dark = colors.dark[key] ?? lightValue
+      lines.push(`    --${prefix}-${key}: light-dark(${normalizeColor(lightValue)}, ${normalizeColor(dark)});`)
+    }
+    else {
+      const value = mode === 'dark' ? (colors.dark[key] ?? lightValue) : lightValue
+      lines.push(`    --${prefix}-${key}: ${normalizeColor(value)};`)
+    }
+  }
+}
+
+function appendFoundation(lines: string[], foundation: Partial<ThemeFoundation> | undefined, prefix: string): void {
+  if (!foundation)
+    return
+  for (const [key, value] of Object.entries(foundation)) {
+    if (value)
+      lines.push(`    --${prefix}-${key}: ${value};`)
+  }
+}
+
+function appendScales(lines: string[], scales: ThemePreset['scales'] | undefined, prefix: string): void {
+  if (!scales)
+    return
   for (const key of ROUNDED_KEYS) {
     const value = scales.rounded?.[key]
     if (value) {
-      lines.push(`  --${prefix}-rounded-${key}: ${value};`)
+      lines.push(`    --${prefix}-rounded-${key}: ${value};`)
     }
     else if (key !== 'md') {
-      const ratio = DEFAULT_ROUNDED_RATIOS[key]
-      lines.push(`  --${prefix}-rounded-${key}: calc(var(--${prefix}-rounded-md) * ${ratio});`)
+      lines.push(`    --${prefix}-rounded-${key}: calc(var(--${prefix}-rounded-md) * ${DEFAULT_ROUNDED_RATIOS[key]});`)
     }
   }
-
-  Object.entries(scales.shadow ?? {}).forEach(([key, value]) => {
+  for (const [key, value] of Object.entries(scales.shadow ?? {})) {
     if (value)
-      lines.push(`  --${prefix}-shadow-style-${key}: ${value};`)
-  })
-
-  return lines
+      lines.push(`    --${prefix}-shadow-style-${key}: ${value};`)
+  }
 }
 
-function generateComponentVariables(
-  components: NonNullable<ThemePreset['components']>,
-  mode: 'light' | 'dark',
-  prefix: string,
-): string[] {
-  const lines: string[] = []
+/**
+ * Emit per-component bg vars. In `both` mode, values are wrapped in `light-dark()`
+ * so they switch with `color-scheme`. Otherwise the matching side is emitted.
+ */
+function appendComponents(lines: string[], preset: ThemePreset, prefix: string, mode: ThemeMode): void {
+  const components = preset.components
+  if (!components)
+    return
 
   if (components.btn?.['font-weight']) {
-    lines.push(`  --${prefix}-btn-font-weight: ${components.btn['font-weight']};`)
+    lines.push(`    --${prefix}-btn-font-weight: ${components.btn['font-weight']};`)
   }
 
-  const containerBg = components.container?.bg?.[mode]
-  if (containerBg) {
-    lines.push(`  --${prefix}-container-bg: ${normalizeColor(containerBg)};`)
-  }
-
-  const inputBg = components.input?.bg?.[mode]
-  if (inputBg) {
-    lines.push(`  --${prefix}-input-bg: ${normalizeColor(inputBg)};`)
-  }
-
-  const inputTopLabelFontWeight = components.input?.['top-label-font-weight']
-  if (inputTopLabelFontWeight) {
-    lines.push(`  --${prefix}-input-top-label-font-weight: ${inputTopLabelFontWeight};`)
-  }
-
-  return lines
-}
-
-function generateAllColorScales(colors: ThemeColors, prefix: string): string[] {
-  const colorScales: string[] = []
-
-  scaleColors.forEach((colorName) => {
-    const baseColor = colors[colorName]
-    if (baseColor) {
-      const scale = generateColorScale(baseColor)
-      Object.entries(scale).forEach(([scaleKey, scaleValue]) => {
-        colorScales.push(`  --${prefix}-${colorName}-${scaleKey}: ${scaleValue};`)
-      })
+  const emitBg = (componentKey: 'container' | 'input', cssKey: string) => {
+    const bg = components[componentKey]?.bg
+    if (!bg)
+      return
+    if (mode === 'both') {
+      const fallback = bg.light ?? bg.dark
+      if (!fallback)
+        return
+      const light = normalizeColor(bg.light ?? fallback)
+      const dark = normalizeColor(bg.dark ?? fallback)
+      const value = light === dark ? light : `light-dark(${light}, ${dark})`
+      lines.push(`    --${prefix}-${cssKey}: ${value};`)
     }
-  })
+    else if (bg[mode]) {
+      lines.push(`    --${prefix}-${cssKey}: ${normalizeColor(bg[mode]!)};`)
+    }
+  }
+  emitBg('container', 'container-bg')
+  emitBg('input', 'input-bg')
 
-  return colorScales
+  const inputTopLabelFw = components.input?.['top-label-font-weight']
+  if (inputTopLabelFw) {
+    lines.push(`    --${prefix}-input-top-label-font-weight: ${inputTopLabelFw};`)
+  }
 }
 
 export const CSS_ID = 'maz-theme-css'
@@ -210,34 +135,23 @@ export function injectCSS(id = CSS_ID, css: string): void {
   if (isServer())
     return
 
-  const styleElements = [...document.querySelectorAll<HTMLStyleElement>(`#${id}`)]
-
-  if (styleElements.length === 0) {
-    const element = document.createElement('style')
-    element.id = id
-    element.textContent = css
-    document.head.appendChild(element)
-    return
-  }
-
-  if (styleElements.length === 1) {
-    styleElements[0].textContent = css
-    return
-  }
-
-  // Drop duplicates, keep only the last and update its content.
-  const lastElement = styleElements.at(-1)
+  const styleElements = document.querySelectorAll<HTMLStyleElement>(`#${id}`)
+  // Keep the last element (most recent), drop the rest, then update its content.
+  // If none exist, create a fresh <style>.
+  let target = styleElements[styleElements.length - 1] as HTMLStyleElement | undefined
   for (let i = 0; i < styleElements.length - 1; i++) {
     styleElements[i].remove()
   }
-  if (lastElement) {
-    lastElement.textContent = css
+  if (!target) {
+    target = document.createElement('style')
+    target.id = id
+    document.head.appendChild(target)
   }
+  target.textContent = css
 }
 
 export function removeCSS(id = CSS_ID): void {
   if (isServer())
     return
-
   document.querySelectorAll<HTMLStyleElement>(`#${id}`).forEach(el => el.remove())
 }
