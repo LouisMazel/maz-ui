@@ -27,7 +27,7 @@ const composablesMap: Record<Composables, true> = {
   useDropzone: true,
   useMutationObserver: true,
   useMazIconProps: true,
-  useMazSidebar: true,
+  useSidebar: true,
 }
 
 const modulesMap: Record<Modules, true> = {

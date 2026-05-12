@@ -1,18 +1,25 @@
-<script lang="ts" setup>
-import type { Component } from 'vue'
-import { MazChevronDown } from '@maz-ui/icons/lazy/MazChevronDown'
-import { ref, useId } from 'vue'
-import { useInjectStrict } from '../composables/useInjectStrict'
-import { mazSidebarKey } from './MazSidebar.vue'
+<script lang="ts">
+import type { MazIconLike } from '../composables/useMazIconProps'
 
 export interface MazSidebarMenuSubProps {
   /** Label for the sub-menu trigger button */
   label?: string
-  /** Icon component or SVG string */
-  icon?: Component | string
+  /**
+   * Icon to display before the label. Accepts a bare icon value (Vue component, raw SVG string, URL)
+   * or a full `MazIconProps` object for fine-grained control.
+   */
+  icon?: MazIconLike
   /** Whether the sub-menu is open by default */
   defaultOpen?: boolean
 }
+</script>
+
+<script lang="ts" setup>
+import { MazChevronDown } from '@maz-ui/icons/lazy/MazChevronDown'
+import { computed, defineAsyncComponent, ref, useId } from 'vue'
+import { useInjectStrict } from '../composables/useInjectStrict'
+import { useMazIconProps } from '../composables/useMazIconProps'
+import { mazSidebarKey } from './MazSidebar.vue'
 
 const props = withDefaults(defineProps<MazSidebarMenuSubProps>(), {
   label: undefined,
@@ -20,46 +27,64 @@ const props = withDefaults(defineProps<MazSidebarMenuSubProps>(), {
   defaultOpen: false,
 })
 
-useInjectStrict(mazSidebarKey, undefined, '[maz-ui](MazSidebarMenuSub) Must be used inside MazSidebar')
+const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
+const MazExpandAnimation = defineAsyncComponent(() => import('./MazExpandAnimation.vue'))
+
+const sidebar = useInjectStrict(
+  mazSidebarKey,
+  undefined,
+  '[maz-ui](MazSidebarMenuSub) Must be used inside MazSidebar',
+)
+
+const isIconCollapsed = computed(
+  () => sidebar.collapsible.value === 'icon' && sidebar.state.value === 'collapsed',
+)
 
 const isOpen = ref(props.defaultOpen)
-
 const subMenuId = `maz-sidebar-sub-${useId()}`
+
+const { iconProps } = useMazIconProps(() => props.icon, () => ({ size: '1.25rem' }))
 
 function toggle() {
   isOpen.value = !isOpen.value
 }
 
 function onKeyDown(event: KeyboardEvent) {
-  if (event.key === 'ArrowRight') {
+  if (event.key === 'ArrowRight')
     isOpen.value = true
-  }
-  else if (event.key === 'ArrowLeft') {
+  else if (event.key === 'ArrowLeft')
     isOpen.value = false
-  }
 }
 </script>
 
 <template>
-  <div class="m-sidebar-menu-sub">
+  <div class="m-sidebar-menu-sub m-reset-css">
     <button
       type="button"
-      class="m-sidebar-menu-sub__trigger"
+      class="m-sidebar-menu-sub__trigger focus-visible:maz:outline-2 focus-visible:maz:outline-offset-2 focus-visible:maz:outline-primary motion-reduce:maz:transition-none maz:relative maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-2 maz:rounded-md maz:bg-transparent maz:px-[min(calc((var(--maz-sidebar-icon-width,3rem)-1.25rem)/2),calc((100%-1.25rem)/2))] maz:py-2 maz:font-medium maz:text-foreground maz:transition-colors maz:duration-150 maz:ease-in-out maz:hover:bg-surface-600 maz:dark:hover:bg-surface-800/20"
       :aria-expanded="isOpen"
       :aria-controls="subMenuId"
+      :aria-label="label"
       @click="toggle"
       @keydown="onKeyDown"
     >
-      <span v-if="icon || $slots.icon" class="m-sidebar-menu-sub__icon maz:shrink-0">
+      <span class="m-sidebar-menu-sub__icon maz:flex maz:shrink-0 maz:flex-center">
         <slot name="icon">
-          <component :is="icon" v-if="icon" class="maz:size-5" />
+          <MazIcon v-if="iconProps" v-bind="iconProps" />
         </slot>
       </span>
-      <span class="m-sidebar-menu-sub__label maz:flex-1 maz:truncate maz:text-start">
+
+      <span
+        class="m-sidebar-menu-sub__label motion-reduce:maz:transition-none maz:flex-1 maz:truncate maz:text-start maz:transition-opacity maz:duration-150"
+        :class="isIconCollapsed ? 'maz:opacity-0' : 'maz:opacity-100'"
+        :aria-hidden="isIconCollapsed || undefined"
+      >
         <slot name="label">{{ label }}</slot>
       </span>
+
       <span
-        class="m-sidebar-menu-sub__chevron maz:shrink-0 maz:transition-transform"
+        v-if="!isIconCollapsed"
+        class="m-sidebar-menu-sub__chevron motion-reduce:maz:transition-none maz:shrink-0 maz:transition-transform maz:duration-200"
         :class="{ 'maz:rotate-180': isOpen }"
         aria-hidden="true"
       >
@@ -69,71 +94,14 @@ function onKeyDown(event: KeyboardEvent) {
       </span>
     </button>
 
-    <Transition name="m-sidebar-sub-anim">
+    <MazExpandAnimation :model-value="isOpen && !isIconCollapsed" duration="200ms">
       <ul
-        v-if="isOpen"
         :id="subMenuId"
         class="m-sidebar-menu-sub__list maz:m-0 maz:flex maz:list-none maz:flex-col maz:gap-1 maz:p-0 maz:ps-3"
         role="menu"
       >
         <slot />
       </ul>
-    </Transition>
+    </MazExpandAnimation>
   </div>
 </template>
-
-<style scoped>
-.m-sidebar-menu-sub {
-  &__trigger {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    inline-size: 100%;
-    padding-block: 0.5rem;
-    padding-inline: 0.75rem;
-    border-radius: 0.375rem;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    background: transparent;
-    color: inherit;
-    transition: background-color 150ms ease-in-out;
-
-    &:hover {
-      background-color: var(--maz-color-bg-lighter, rgb(0 0 0 / 5%));
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--maz-color-primary, #3b82f6);
-      outline-offset: 2px;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      transition: none;
-    }
-  }
-
-  &__list {
-    overflow: hidden;
-  }
-}
-
-.m-sidebar-sub-anim-enter-active,
-.m-sidebar-sub-anim-leave-active {
-  transition:
-    max-block-size 200ms ease-in-out,
-    opacity 200ms ease-in-out;
-  max-block-size: 500px;
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
-}
-
-.m-sidebar-sub-anim-enter-from,
-.m-sidebar-sub-anim-leave-to {
-  max-block-size: 0;
-  opacity: 0;
-}
-</style>

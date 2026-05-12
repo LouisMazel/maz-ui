@@ -1,72 +1,31 @@
-<script lang="ts" setup>
-import { useMazSidebar } from '../composables/useMazSidebar'
-
+<script lang="ts">
 export interface MazSidebarTriggerProps {
   /** Additional CSS class */
   class?: string
 }
+</script>
+
+<script lang="ts" setup>
+import { MazChevronUpDown } from '@maz-ui/icons/raw/MazChevronUpDown'
+import { useSidebar } from '../composables/useSidebar'
+import MazIcon from './MazIcon.vue'
 
 defineProps<MazSidebarTriggerProps>()
 
-const sidebar = useMazSidebar()
+const sidebar = useSidebar()
 </script>
 
 <template>
   <button
     type="button"
-    class="m-sidebar-trigger"
+    class="m-sidebar-trigger m-reset-css focus-visible:maz:outline-2 focus-visible:maz:outline-offset-2 focus-visible:maz:outline-primary motion-reduce:maz:transition-none maz:inline-flex maz:cursor-pointer maz:flex-center maz:rounded-md maz:bg-transparent maz:p-2 maz:text-foreground maz:transition-colors maz:duration-150 maz:ease-in-out maz:hover:bg-surface-600 maz:dark:hover:bg-surface-800/20"
     :aria-expanded="sidebar.open.value"
     :aria-controls="sidebar.id.value"
     :aria-label="sidebar.open.value ? 'Close sidebar' : 'Open sidebar'"
     @click="sidebar.toggle()"
   >
     <slot>
-      <span class="m-sidebar-trigger__icon" aria-hidden="true">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <line x1="3" y1="6" x2="21" y2="6" />
-          <line x1="3" y1="12" x2="21" y2="12" />
-          <line x1="3" y1="18" x2="21" y2="18" />
-        </svg>
-      </span>
+      <MazIcon :icon="MazChevronUpDown" size="1.5rem" class="maz:rotate-90" aria-hidden="true" />
     </slot>
   </button>
 </template>
-
-<style scoped>
-.m-sidebar-trigger {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  border-radius: 0.375rem;
-  border: none;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-  transition: background-color 150ms ease-in-out;
-
-  &:hover {
-    background-color: var(--maz-color-bg-lighter, rgb(0 0 0 / 5%));
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--maz-color-primary, #3b82f6);
-    outline-offset: 2px;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
-}
-</style>

@@ -1,31 +1,46 @@
-<script lang="ts" setup>
-import type { Component } from 'vue'
-import { computed, getCurrentInstance } from 'vue'
-import { useInjectStrict } from '../composables/useInjectStrict'
-import { resolveLinkComponent } from '../utils/resolveLinkComponent'
-import MazBadge from './MazBadge.vue'
-import { mazSidebarKey } from './MazSidebar.vue'
+<script lang="ts">
+import type { MazIconLike } from '../composables/useMazIconProps'
+import type { MazBadgeProps } from './MazBadge.vue'
+import { hasSlotContent } from '../utils/hasSlotContent'
+
+export type MazSidebarMenuButtonBadge = string | number | (MazBadgeProps & { text?: string | number })
 
 export interface MazSidebarMenuButtonProps {
   /** Route for router-link navigation */
   to?: string | Record<string, unknown>
   /** URL for anchor navigation */
   href?: string
-  /** Icon component or SVG string */
-  icon?: Component | string
+  /**
+   * Icon to display before the label. Accepts a bare icon value (Vue component, raw SVG string, URL)
+   * or a full `MazIconProps` object for fine-grained control (size, title, fallback, …).
+   */
+  icon?: MazIconLike
   /** Label text */
   label?: string
-  /** Badge content */
-  badge?: string | number
-  /** Tooltip text (auto-shown when sidebar is icon-collapsed if not provided, falls back to label) */
+  /**
+   * Badge content. Pass a `string`/`number` for a simple primary badge, or a full
+   * `MazBadgeProps` object (with optional `text`) to customise color, size, outlined, …
+   */
+  badge?: MazSidebarMenuButtonBadge
+  /** Tooltip text. When provided, shows a tooltip on hover via the `v-tooltip` directive. */
   tooltip?: string
-  /** Whether the item is active (highlights with aria-current="page") */
+  /** Whether the item is active (highlights with `aria-current="page"`) */
   active?: boolean
   /** Whether the item is disabled */
   disabled?: boolean
   /** Size of the button */
   size?: 'sm' | 'md' | 'lg'
 }
+</script>
+
+<script lang="ts" setup>
+import type { Component } from 'vue'
+import { computed, defineAsyncComponent, getCurrentInstance } from 'vue'
+import { useInjectStrict } from '../composables/useInjectStrict'
+import { useMazIconProps } from '../composables/useMazIconProps'
+import { vTooltip } from '../directives/vTooltip'
+import { resolveLinkComponent } from '../utils/resolveLinkComponent'
+import { mazSidebarKey } from './MazSidebar.vue'
 
 const props = withDefaults(defineProps<MazSidebarMenuButtonProps>(), {
   to: undefined,
@@ -39,22 +54,22 @@ const props = withDefaults(defineProps<MazSidebarMenuButtonProps>(), {
   size: 'md',
 })
 
-const emit = defineEmits<{
+defineEmits<{
   click: [event: MouseEvent]
 }>()
 
-const sidebar = useInjectStrict(mazSidebarKey, undefined, '[maz-ui](MazSidebarMenuButton) Must be used inside MazSidebar')
+const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
+const MazBadge = defineAsyncComponent(() => import('./MazBadge.vue'))
+
+const sidebar = useInjectStrict(
+  mazSidebarKey,
+  undefined,
+  '[maz-ui](MazSidebarMenuButton) Must be used inside MazSidebar',
+)
 
 const isIconCollapsed = computed(
   () => sidebar.collapsible.value === 'icon' && sidebar.state.value === 'collapsed',
 )
-
-const resolvedTooltip = computed(() => {
-  if (isIconCollapsed.value) {
-    return props.tooltip ?? props.label
-  }
-  return props.tooltip
-})
 
 const tag = computed<Component | string>(() => {
   if (props.to)
@@ -69,120 +84,96 @@ const linkProps = computed(() => {
     return { to: props.to }
   if (props.href)
     return { href: props.href }
-  return { type: 'button' }
+  return { type: 'button' as const }
 })
 
-const SIZE_CLASSES: Record<string, string> = {
-  sm: 'maz:text-sm maz:py-1',
+const { iconProps } = useMazIconProps(() => props.icon, () => ({ size: '1.25rem' }))
+
+const badgeText = computed(() => {
+  const b = props.badge
+  if (b === undefined || b === null)
+    return undefined
+  if (typeof b === 'string' || typeof b === 'number')
+    return b
+  return b.text
+})
+
+const badgeBindings = computed<Partial<MazBadgeProps>>(() => {
+  const b = props.badge
+  if (b === undefined || b === null || typeof b === 'string' || typeof b === 'number')
+    return { size: 'sm', roundedSize: 'full' }
+  const { text: _text, ...rest } = b
+  return { size: 'sm', roundedSize: 'full', ...rest }
+})
+
+const tooltipBinding = computed(() => {
+  if (!props.tooltip) {
+    return { text: ' ', trigger: 'manual' as const }
+  }
+  const position: 'right' | 'left' = sidebar.side.value === 'start' ? 'right' : 'left'
+  return {
+    text: props.tooltip,
+    position,
+    trigger: 'hover' as const,
+  }
+})
+
+const SIZE_CLASS = {
+  sm: 'maz:text-sm maz:py-1.5',
   md: 'maz:text-base maz:py-2',
   lg: 'maz:text-lg maz:py-2.5',
-}
+} as const
 
-const sizeClass = computed(() => SIZE_CLASSES[props.size])
-
-// Auto-detect active route via RouterLink when "to" is provided
 const routerActiveClass = computed(() => {
   const instance = getCurrentInstance()
   const hasRouter = !!instance?.appContext.config.globalProperties.$router
   return hasRouter && props.to ? 'router-link-active' : ''
 })
+
+const isActive = computed(() => props.active === true)
 </script>
 
 <template>
   <component
     :is="tag"
-    class="m-sidebar-menu-btn"
+    v-tooltip="tooltipBinding"
+    class="m-sidebar-menu-btn m-reset-css focus-visible:maz:outline-2 focus-visible:maz:outline-offset-2 focus-visible:maz:outline-primary motion-reduce:maz:transition-none maz:relative maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-2 maz:rounded-md maz:bg-transparent maz:px-[min(calc((var(--maz-sidebar-icon-width,3rem)-1.25rem)/2),calc((100%-1.25rem)/2))] maz:font-medium maz:text-foreground maz:no-underline maz:transition-colors maz:duration-150 maz:ease-in-out maz:hover:not-disabled:bg-surface-600 maz:disabled:cursor-not-allowed maz:disabled:opacity-50 maz:dark:hover:not-disabled:bg-surface-800/20"
     :class="[
-      sizeClass,
+      SIZE_CLASS[size],
+      isActive && 'maz:bg-primary/10 maz:font-semibold maz:text-primary',
+      routerActiveClass,
       {
-        '--active': active,
+        '--active': isActive,
         '--disabled': disabled,
         '--icon-collapsed': isIconCollapsed,
-        [routerActiveClass]: !!routerActiveClass,
       },
     ]"
-    :title="resolvedTooltip"
-    :aria-current="active ? 'page' : undefined"
+    :aria-label="label"
+    :aria-current="isActive ? 'page' : undefined"
     :aria-disabled="disabled || undefined"
     :disabled="tag === 'button' && disabled ? true : undefined"
     v-bind="linkProps"
-    @click="!disabled && emit('click', $event)"
+    @click="!disabled && $emit('click', $event)"
   >
-    <!-- Icon slot or prop -->
-    <span v-if="icon || $slots.icon" class="m-sidebar-menu-btn__icon maz:shrink-0">
+    <span v-if="iconProps || hasSlotContent($slots.icon)" class="m-sidebar-menu-btn__icon maz:flex maz:shrink-0 maz:flex-center">
       <slot name="icon">
-        <component :is="icon" v-if="icon" class="maz:size-5" />
+        <MazIcon v-if="iconProps" v-bind="iconProps" />
       </slot>
     </span>
 
-    <!-- Label -->
     <span
-      v-if="label || $slots.default"
-      class="m-sidebar-menu-btn__label maz:flex-1 maz:truncate"
-      :class="{ 'maz:sr-only': isIconCollapsed }"
+      class="m-sidebar-menu-btn__label motion-reduce:maz:transition-none maz:flex-1 maz:truncate maz:text-start maz:transition-opacity maz:duration-150"
+      :class="isIconCollapsed ? 'maz:opacity-0' : 'maz:opacity-100'"
+      :aria-hidden="isIconCollapsed || undefined"
     >
       <slot>{{ label }}</slot>
     </span>
 
-    <!-- Badge -->
-    <MazBadge
-      v-if="badge !== undefined && !isIconCollapsed"
-      class="m-sidebar-menu-btn__badge maz:ml-auto maz:shrink-0 maz:rounded-full maz:bg-primary maz:px-2 maz:py-0.5 maz:text-xs maz:font-semibold maz:text-primary-foreground"
+    <span
+      v-if="!isIconCollapsed && badgeText !== undefined"
+      class="m-sidebar-menu-btn__badge maz:ml-auto maz:shrink-0"
     >
-      {{ badge }}
-    </MazBadge>
+      <MazBadge v-bind="badgeBindings">{{ badgeText }}</MazBadge>
+    </span>
   </component>
 </template>
-
-<style scoped>
-.m-sidebar-menu-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  inline-size: 100%;
-  border-radius: 0.375rem;
-  padding-inline: 0.75rem;
-  font-weight: 500;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  color: inherit;
-  text-decoration: none;
-  transition:
-    background-color 150ms ease-in-out,
-    color 150ms ease-in-out;
-  outline: none;
-  text-align: start;
-
-  &:hover:not(.--disabled) {
-    background-color: var(--maz-color-bg-lighter, rgb(0 0 0 / 5%));
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--maz-color-primary, #3b82f6);
-    outline-offset: 2px;
-  }
-
-  &.--active,
-  &.router-link-active {
-    background-color: var(--maz-color-primary-alpha, rgb(59 130 246 / 10%));
-    color: var(--maz-color-primary, #3b82f6);
-    font-weight: 600;
-  }
-
-  &.--disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-
-  &.--icon-collapsed {
-    justify-content: center;
-    padding-inline: 0;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
-}
-</style>

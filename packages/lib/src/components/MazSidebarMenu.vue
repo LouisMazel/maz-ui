@@ -6,7 +6,7 @@ useInjectStrict(mazSidebarKey, undefined, '[maz-ui](MazSidebarMenu) Must be used
 </script>
 
 <template>
-  <ul class="m-sidebar-menu maz:m-0 maz:flex maz:list-none maz:flex-col maz:gap-1 maz:p-0" role="menu">
+  <ul class="m-sidebar-menu m-reset-css maz:m-0 maz:flex maz:list-none maz:flex-col maz:gap-1 maz:p-0" role="menu">
     <slot />
   </ul>
 </template>

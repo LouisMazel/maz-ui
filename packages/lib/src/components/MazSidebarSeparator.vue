@@ -6,5 +6,5 @@ useInjectStrict(mazSidebarKey, undefined, '[maz-ui](MazSidebarSeparator) Must be
 </script>
 
 <template>
-  <hr class="m-sidebar-separator maz:my-2 maz:border-0 maz:border-t maz:border-divider">
+  <hr class="m-sidebar-separator m-reset-css maz:my-2 maz:border-0 maz:border-t maz:border-divider">
 </template>

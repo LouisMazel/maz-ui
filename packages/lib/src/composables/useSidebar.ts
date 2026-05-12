@@ -8,11 +8,11 @@ import { useInjectStrict } from './useInjectStrict'
  *
  * @returns {MazSidebarContext} Sidebar context with open state, toggle, setOpen, etc.
  */
-export function useMazSidebar(): MazSidebarContext {
+export function useSidebar(): MazSidebarContext {
   return useInjectStrict<MazSidebarContext>(
     mazSidebarKey,
     undefined,
-    '[maz-ui](useMazSidebar) No MazSidebar parent found. useMazSidebar must be used inside a MazSidebar component.',
+    '[maz-ui](useSidebar) No MazSidebar parent found. useSidebar must be used inside a MazSidebar component.',
   )
 }
 

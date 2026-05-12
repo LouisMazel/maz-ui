@@ -6,7 +6,7 @@ useInjectStrict(mazSidebarKey, undefined, '[maz-ui](MazSidebarHeader) Must be us
 </script>
 
 <template>
-  <header class="m-sidebar-header maz:shrink-0 maz:border-b maz:border-divider">
+  <header class="m-sidebar-header m-reset-css maz:shrink-0 maz:border-b maz:border-divider">
     <slot />
   </header>
 </template>
