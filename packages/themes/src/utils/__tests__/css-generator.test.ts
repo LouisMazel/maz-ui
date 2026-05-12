@@ -532,6 +532,150 @@ describe('given generateCSS function', () => {
     })
   })
 
+  describe('given no prefix is provided', () => {
+    describe('when generateCSS is called without options.prefix', () => {
+      const css = generateCSS(mazUi, {
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+        scaleColorVariables: false,
+      })
+
+      it('then it defaults the prefix to "maz"', () => {
+        expect(css).toContain('--maz-primary:')
+      })
+    })
+  })
+
+  describe('given a preset where dark side has a missing color and mode=dark', () => {
+    describe('when --maz-key is emitted in dark mode and dark color is undefined', () => {
+      const preset = {
+        ...mazUi,
+        colors: {
+          ...mazUi.colors,
+          dark: { ...mazUi.colors.dark, primary: undefined as any },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'dark',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+        scaleColorVariables: false,
+      })
+
+      it('then it falls back to the light value', () => {
+        expect(css).toContain(`--maz-primary: ${mazUi.colors.light.primary};`)
+      })
+    })
+
+    describe('when --maz-key is emitted in mode=both and dark color is undefined', () => {
+      const preset = {
+        ...mazUi,
+        colors: {
+          ...mazUi.colors,
+          dark: { ...mazUi.colors.dark, accent: undefined as any },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+        scaleColorVariables: false,
+      })
+
+      it('then light-dark falls back to the light value on the dark side', () => {
+        expect(css).toContain(`--maz-accent: light-dark(${mazUi.colors.light.accent}, ${mazUi.colors.light.accent});`)
+      })
+    })
+  })
+
+  describe('given a preset with no shadow scales', () => {
+    describe('when scales has no shadow block', () => {
+      const preset = {
+        ...mazUi,
+        scales: { rounded: mazUi.scales.rounded } as any,
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+        scaleColorVariables: false,
+      })
+
+      it('then no shadow-style vars are emitted', () => {
+        expect(css).not.toMatch(/--maz-shadow-style-/)
+      })
+    })
+  })
+
+  describe('given a preset with only one side of component bg defined', () => {
+    describe('when mode=both and container.bg.light is set but bg.dark is missing', () => {
+      const preset = {
+        ...mazUi,
+        components: {
+          container: { bg: { light: 'oklch(0.9 0 0)' } },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+        scaleColorVariables: false,
+      })
+
+      it('then the short-circuit emits the light value directly (light === dark via fallback)', () => {
+        expect(css).toContain('--maz-container-bg: oklch(0.9 0 0);')
+      })
+    })
+
+    describe('when mode=both and container.bg.dark is set but bg.light is missing', () => {
+      const preset = {
+        ...mazUi,
+        components: {
+          container: { bg: { dark: 'oklch(0.3 0 0)' } },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+        scaleColorVariables: false,
+      })
+
+      it('then the short-circuit emits the dark value directly (light === dark via fallback)', () => {
+        expect(css).toContain('--maz-container-bg: oklch(0.3 0 0);')
+      })
+    })
+  })
+
+  describe('given a preset with a falsy color value on the light side', () => {
+    describe('when a key is explicitly set to undefined', () => {
+      const preset = {
+        ...mazUi,
+        colors: {
+          ...mazUi.colors,
+          light: { ...mazUi.colors.light, primary: undefined as any },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+        scaleColorVariables: false,
+      })
+
+      it('then the falsy key is skipped (no --maz-primary line)', () => {
+        expect(css).not.toMatch(/--maz-primary:\s/)
+      })
+    })
+  })
+
   describe('given legacy HSL color input', () => {
     describe('when a raw HSL channel string is provided', () => {
       const preset = {

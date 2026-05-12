@@ -89,6 +89,12 @@ describe('parseColor', () => {
         const result = parseColor('#FF0000')
         expect(result.h).toBeCloseTo(0, 1)
       })
+
+      it('wraps hue past 360 when red dominates and green is below blue', () => {
+        const result = parseColor('#ff3366')
+        expect(result.h).toBeGreaterThan(300)
+        expect(result.h).toBeLessThan(360)
+      })
     })
   })
 

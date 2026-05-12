@@ -235,6 +235,12 @@ describe('setup-theme', () => {
         const result = resolveColorTransition({ duration: '500ms' }, mockPreset)
         expect(result).toEqual({ duration: '500ms', easing: 'cubic-bezier(0.4, 0, 0.2, 1)' })
       })
+
+      it('then it falls back to the default duration when only easing is provided', async () => {
+        const { resolveColorTransition } = await import('../setup-theme')
+        const result = resolveColorTransition({ easing: 'linear' }, mockPreset)
+        expect(result).toEqual({ duration: '200ms', easing: 'linear' })
+      })
     })
   })
 
@@ -288,6 +294,14 @@ describe('setup-theme', () => {
         setupTheme({})
 
         expect(getPreset).toHaveBeenCalled()
+      })
+
+      it('then calling the noop cleanup does not throw', () => {
+        vi.mocked(getPreset).mockResolvedValue(mockPreset)
+
+        const result = setupTheme({}) as SetupThemeReturn
+
+        expect(() => result.cleanup()).not.toThrow()
       })
 
       it('then themeState preset is undefined initially and set after resolution', async () => {
@@ -578,6 +592,30 @@ describe('setup-theme', () => {
         expect(updateDocumentClass).not.toHaveBeenCalled()
         expect(saveResolvedColorMode).not.toHaveBeenCalled()
       })
+
+      it('then it resolves to light when mediaQuery.matches is false', () => {
+        let changeHandler: (() => void) | undefined
+        vi.stubGlobal('matchMedia', vi.fn(() => ({
+          matches: false,
+          addEventListener: vi.fn((_event: string, handler: () => void) => {
+            changeHandler = handler
+          }),
+          removeEventListener: vi.fn(),
+        })))
+        vi.mocked(isServer).mockReturnValue(false)
+        vi.mocked(getSystemColorMode).mockReturnValue('light')
+
+        const result = setupTheme({ preset: mockPreset, colorMode: 'auto', mode: 'both' }) as SetupThemeReturn
+
+        vi.mocked(saveResolvedColorMode).mockClear()
+
+        if (changeHandler) {
+          changeHandler()
+        }
+
+        expect(saveResolvedColorMode).toHaveBeenCalledWith('light')
+        expect(result.themeState.value.isDark).toBe(false)
+      })
     })
 
     describe('when mutation observer callback fires', () => {
@@ -692,6 +730,22 @@ describe('setup-theme', () => {
         await nextTick()
 
         expect(saveResolvedColorMode).toHaveBeenCalledWith('dark')
+      })
+
+      it('then it saves "light" when the resolved system color mode is light', async () => {
+        vi.mocked(isServer).mockReturnValue(false)
+        vi.mocked(getSystemColorMode).mockReturnValue('light')
+
+        const result = setupTheme({ preset: mockPreset, colorMode: 'auto', mode: 'both' }) as SetupThemeReturn
+
+        vi.mocked(saveResolvedColorMode).mockClear()
+
+        result.themeState.value.colorMode = 'dark'
+        await nextTick()
+        result.themeState.value.colorMode = 'auto'
+        await nextTick()
+
+        expect(saveResolvedColorMode).toHaveBeenCalledWith('light')
       })
     })
 

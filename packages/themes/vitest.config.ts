@@ -33,17 +33,19 @@ export default defineConfig({
       ],
       thresholds: {
         lines: 100,
-        functions: 99.12,
-        // The branch threshold (down from 97.21) reflects branches that are
-        // unreachable through unit tests with the current vue mock strategy:
-        // - useTheme.ts:93 isDark.value ? 'light' : 'dark' true-branch — the
-        //   module-local computed is eagerly evaluated at import time with an
-        //   undefined themeState, so toggleDarkMode always sees isDark=false.
-        // - css-generator.ts emitPropertyBlock fallback to 'oklch(0 0 0)' —
-        //   isColorEmitted gates the loop so the fallback is unreachable.
-        // - color-parser.ts rgb-to-hsl branch for max===R with gNorm<bNorm —
-        //   exercised only by integration with hex inputs we don't ship.
-        branches: 95.53,
+        functions: 100,
+        // Branches restored above the original 97.21 baseline. The remaining
+        // uncovered branches in css-generator.ts are genuinely defensive and
+        // unreachable in practice:
+        // - emitPropertyBlock `?? 'oklch(0 0 0)'` fallback — `isColorEmitted`
+        //   gates the loop so the fallback is unreachable.
+        // - emitComponents `bg.light ?? bg.dark ?? ''` final `?? ''` —
+        //   guarded by the parent `(bg.light || bg.dark)` check.
+        // - injectCSS `if (lastElement)` after `at(-1)` on an array known to
+        //   have length >= 2.
+        // - emitScales `else if (key !== 'md')` false-branch — `md` is
+        //   required by the type, so `key === 'md' && !value` is unreachable.
+        branches: 98.13,
         statements: 100,
         autoUpdate: !process.env.CI,
       },
