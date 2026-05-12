@@ -93,8 +93,9 @@ npm install @maz-ui/themes
 
 **Features:**
 
-- 🎨 OKLCh color system with perceptually uniform 11-step scales
-- 🌓 Smart dark mode detection and class/media/auto strategies
+- 🎨 Native `light-dark()` + `color-scheme` + OKLCh scales via relative color syntax
+- 🌓 Smart dark mode — `class` or `media` strategies, with smooth transitions on toggle
+- ✨ Optional animated theme switch via View Transitions (`setColorMode(..., { animate: true })`)
 - ⚡ `runtime` and `buildtime` rendering strategies
 - 🍪 Active preset persisted across reloads (opt-out)
 - 🛡️ Full TypeScript support

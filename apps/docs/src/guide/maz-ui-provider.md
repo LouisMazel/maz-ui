@@ -97,12 +97,15 @@ The entire Maz-UI setup is now code-split into the Dashboard chunk.
 
 ```typescript
 interface ThemeOptions {
-  preset: ThemePreset              // Required - Theme preset (mazUi, ocean, pristine, obsidian, or custom)
-  overrides?: ThemePresetOverrides // Partial overrides for colors, foundation, etc.
-  strategy?: 'runtime' | 'buildtime' // CSS generation strategy (default: 'runtime')
+  preset: ThemePreset                            // Required - Theme preset (mazUi, ocean, pristine, obsidian, nova, or custom)
+  overrides?: ThemePresetOverrides               // Partial overrides for colors, foundation, etc.
+  strategy?: 'runtime' | 'buildtime'             // CSS generation strategy (default: 'runtime')
   darkModeStrategy?: 'class' | 'media'           // Dark mode handling (default: 'class')
   colorMode?: 'light' | 'dark' | 'auto'          // Initial color mode (default: 'auto')
   mode?: 'light' | 'dark' | 'both'               // Supported color modes (default: 'both')
+  darkClass?: string                             // Class on <html> when colorMode === 'dark' (default: 'dark')
+  lightClass?: string                            // Class on <html> when colorMode === 'light' (default: 'light')
+  persistPreset?: boolean                        // Persist active preset in cookie (default: true)
 }
 ```
 

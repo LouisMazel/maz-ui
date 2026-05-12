@@ -47,6 +47,10 @@ Each one comes with `bg-X`, `text-X`, `border-X`, an 11-step scale (`bg-X-50` �
 <div class="bg-success-100 text-success-700">Saved!</div>
 ```
 
+::: info Alpha utilities and scales in v5
+`bg-primary/60`, `text-primary/40`, `border-primary/50` and the rest of Tailwind's alpha syntax continue to work unchanged. In v5 the 50–950 scales are derived in CSS via OKLCh relative color syntax and the base colors are resolved through `light-dark()`, but this is invisible at the utility level — your Tailwind classes don't change.
+:::
+
 ### Neutral & surface colors
 
 These don't have a foreground variant — they're typically used for backgrounds, text, borders or overlays directly. Each one still ships an 11-step scale.

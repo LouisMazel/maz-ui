@@ -199,7 +199,7 @@ const SIZE_CLASS: Record<MazSize, string> = {
             :style="[
               isSelected(option.value)
                 ? {
-                  backgroundColor: `var(--maz-${getColor(props.color)}-600)`,
+                  backgroundColor: `oklch(from var(--maz-${getColor(props.color)}) clamp(0, calc(l - 0.05), 1) c h)`,
                   color: `var(--maz-${getColor(props.color)}-foreground)`,
                 }
                 : {},

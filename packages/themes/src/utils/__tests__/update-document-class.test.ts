@@ -13,6 +13,7 @@ function createThemeState(overrides: Partial<ThemeState> = {}): ThemeState {
     strategy: 'runtime',
     darkModeStrategy: 'class',
     darkClass: 'dark',
+    lightClass: 'light',
     persistPreset: true,
     ...overrides,
   }
@@ -21,7 +22,7 @@ function createThemeState(overrides: Partial<ThemeState> = {}): ThemeState {
 describe('update-document-class', () => {
   afterEach(() => {
     vi.clearAllMocks()
-    document.documentElement.classList.remove('dark', 'custom-dark')
+    document.documentElement.classList.remove('dark', 'light', 'custom-dark', 'custom-light')
   })
 
   describe('given updateDocumentClass function', () => {
@@ -35,7 +36,7 @@ describe('update-document-class', () => {
         vi.stubGlobal('document', undefined)
 
         const state = createThemeState()
-        updateDocumentClass(true, state)
+        updateDocumentClass('dark', state)
 
         expect(noTransition).not.toHaveBeenCalled()
       })
@@ -45,7 +46,7 @@ describe('update-document-class', () => {
       it('then it returns early without modifications', async () => {
         const { noTransition } = await import('../no-transition')
 
-        updateDocumentClass(true, undefined)
+        updateDocumentClass('dark', undefined)
 
         expect(noTransition).not.toHaveBeenCalled()
       })
@@ -56,7 +57,7 @@ describe('update-document-class', () => {
         const { noTransition } = await import('../no-transition')
         const state = createThemeState({ darkModeStrategy: 'media' })
 
-        updateDocumentClass(true, state)
+        updateDocumentClass('dark', state)
 
         expect(noTransition).not.toHaveBeenCalled()
       })
@@ -67,54 +68,103 @@ describe('update-document-class', () => {
         const { noTransition } = await import('../no-transition')
         const state = createThemeState({ mode: 'light' })
 
-        updateDocumentClass(true, state)
+        updateDocumentClass('dark', state)
 
         expect(noTransition).not.toHaveBeenCalled()
       })
     })
 
-    describe('when isDark is true and state is valid', () => {
+    describe('when mode is dark', () => {
+      it('then it returns early without modifications', async () => {
+        const { noTransition } = await import('../no-transition')
+        const state = createThemeState({ mode: 'dark' })
+
+        updateDocumentClass('dark', state)
+
+        expect(noTransition).not.toHaveBeenCalled()
+        expect(document.documentElement.classList.contains('dark')).toBe(false)
+        expect(document.documentElement.classList.contains('light')).toBe(false)
+      })
+    })
+
+    describe('when colorMode is dark and state is valid', () => {
       it('then it adds the dark class to documentElement', async () => {
         const { noTransition } = await import('../no-transition')
         const state = createThemeState()
 
-        updateDocumentClass(true, state)
+        updateDocumentClass('dark', state)
 
         expect(noTransition).toHaveBeenCalledOnce()
         expect(document.documentElement.classList.contains('dark')).toBe(true)
+        expect(document.documentElement.classList.contains('light')).toBe(false)
       })
     })
 
-    describe('when isDark is false and state is valid', () => {
-      it('then it removes the dark class from documentElement', async () => {
+    describe('when colorMode is light and state is valid', () => {
+      it('then it adds the light class and removes the dark class', async () => {
         const { noTransition } = await import('../no-transition')
         document.documentElement.classList.add('dark')
         const state = createThemeState()
 
-        updateDocumentClass(false, state)
+        updateDocumentClass('light', state)
 
         expect(noTransition).toHaveBeenCalledOnce()
+        expect(document.documentElement.classList.contains('light')).toBe(true)
         expect(document.documentElement.classList.contains('dark')).toBe(false)
       })
     })
 
+    describe('when colorMode is auto and state is valid', () => {
+      it('then it removes both dark and light classes', async () => {
+        const { noTransition } = await import('../no-transition')
+        document.documentElement.classList.add('dark', 'light')
+        const state = createThemeState()
+
+        updateDocumentClass('auto', state)
+
+        expect(noTransition).toHaveBeenCalledOnce()
+        expect(document.documentElement.classList.contains('dark')).toBe(false)
+        expect(document.documentElement.classList.contains('light')).toBe(false)
+      })
+    })
+
     describe('when a custom darkClass is configured', () => {
-      it('then it adds the custom class when isDark is true', () => {
+      it('then it adds the custom dark class when colorMode is dark', () => {
         const state = createThemeState({ darkClass: 'custom-dark' })
 
-        updateDocumentClass(true, state)
+        updateDocumentClass('dark', state)
 
         expect(document.documentElement.classList.contains('custom-dark')).toBe(true)
         expect(document.documentElement.classList.contains('dark')).toBe(false)
       })
 
-      it('then it removes the custom class when isDark is false', () => {
+      it('then it removes the custom dark class when colorMode is light', () => {
         document.documentElement.classList.add('custom-dark')
         const state = createThemeState({ darkClass: 'custom-dark' })
 
-        updateDocumentClass(false, state)
+        updateDocumentClass('light', state)
 
         expect(document.documentElement.classList.contains('custom-dark')).toBe(false)
+      })
+    })
+
+    describe('when a custom lightClass is configured', () => {
+      it('then it adds the custom light class when colorMode is light', () => {
+        const state = createThemeState({ lightClass: 'custom-light' })
+
+        updateDocumentClass('light', state)
+
+        expect(document.documentElement.classList.contains('custom-light')).toBe(true)
+        expect(document.documentElement.classList.contains('light')).toBe(false)
+      })
+
+      it('then it removes the custom light class when colorMode is auto', () => {
+        document.documentElement.classList.add('custom-light')
+        const state = createThemeState({ lightClass: 'custom-light' })
+
+        updateDocumentClass('auto', state)
+
+        expect(document.documentElement.classList.contains('custom-light')).toBe(false)
       })
     })
 
@@ -123,19 +173,7 @@ describe('update-document-class', () => {
         const { noTransition } = await import('../no-transition')
         const state = createThemeState({ mode: 'both', darkModeStrategy: 'class' })
 
-        updateDocumentClass(true, state)
-
-        expect(noTransition).toHaveBeenCalledOnce()
-        expect(document.documentElement.classList.contains('dark')).toBe(true)
-      })
-    })
-
-    describe('when mode is dark and darkModeStrategy is class', () => {
-      it('then it proceeds with class manipulation', async () => {
-        const { noTransition } = await import('../no-transition')
-        const state = createThemeState({ mode: 'dark', darkModeStrategy: 'class' })
-
-        updateDocumentClass(true, state)
+        updateDocumentClass('dark', state)
 
         expect(noTransition).toHaveBeenCalledOnce()
         expect(document.documentElement.classList.contains('dark')).toBe(true)

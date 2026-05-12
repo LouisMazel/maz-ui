@@ -7,11 +7,13 @@ describe('given ZoomImgHandler', () => {
   beforeEach(() => {
     el = document.createElement('img')
     document.body.innerHTML = ''
+    document.head.querySelectorAll('#MazPreviewStyle').forEach(node => node.remove())
   })
 
   afterEach(() => {
     vi.restoreAllMocks()
     document.body.innerHTML = ''
+    document.head.querySelectorAll('#MazPreviewStyle').forEach(node => node.remove())
   })
 
   describe('when creating with string value', () => {
@@ -255,6 +257,110 @@ describe('given ZoomImgHandler', () => {
 
       const arrowEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft' })
       document.dispatchEvent(arrowEvent)
+    })
+  })
+
+  describe('when the preview image loads with a single instance', () => {
+    it('then it appends only a close button to the wrapper', () => {
+      vi.useFakeTimers()
+      const binding: VZoomImgBinding = {
+        value: { src: 'https://example.com/img.jpg', alt: 'Solo' },
+      } as any
+      const handler = new ZoomImgHandler(binding)
+      document.body.appendChild(el)
+      handler.create(el)
+      vi.advanceTimersByTime(10)
+
+      el.dispatchEvent(new Event('click'))
+
+      const internalImg = (handler as unknown as { img: HTMLImageElement }).img
+      internalImg.dispatchEvent(new Event('load'))
+
+      const wrapper = document.querySelector('.maz-zoom-img__wrapper') as HTMLDivElement
+      const closeButton = wrapper.querySelector('.maz-zoom-btn--close')
+      const previousButton = wrapper.querySelector('.maz-zoom-btn--previous')
+      const nextButton = wrapper.querySelector('.maz-zoom-btn--next')
+
+      expect(closeButton).not.toBeNull()
+      expect(previousButton).toBeNull()
+      expect(nextButton).toBeNull()
+      expect(wrapper.style.minWidth).toBe('200px')
+      vi.useRealTimers()
+    })
+  })
+
+  describe('when the preview image loads with multiple instances', () => {
+    it('then it appends previous, next and close buttons that drive navigation', () => {
+      vi.useFakeTimers()
+      const otherEl = document.createElement('img')
+      otherEl.classList.add('maz-zoom-img-instance')
+      otherEl.setAttribute('data-zoom-src', 'https://example.com/other.jpg')
+      otherEl.setAttribute('data-zoom-alt', 'Other')
+      document.body.appendChild(otherEl)
+
+      const binding: VZoomImgBinding = {
+        value: { src: 'https://example.com/img.jpg', alt: 'First' },
+      } as any
+      const handler = new ZoomImgHandler(binding)
+      document.body.appendChild(el)
+      handler.create(el)
+      vi.advanceTimersByTime(10)
+
+      el.classList.add('maz-is-open')
+      el.dispatchEvent(new Event('click'))
+
+      const internalImg = (handler as unknown as { img: HTMLImageElement }).img
+      internalImg.dispatchEvent(new Event('load'))
+
+      const previousButton = document.querySelector('.maz-zoom-btn--previous') as HTMLButtonElement
+      const nextButton = document.querySelector('.maz-zoom-btn--next') as HTMLButtonElement
+      const closeButton = document.querySelector('.maz-zoom-btn--close') as HTMLButtonElement
+
+      expect(previousButton).not.toBeNull()
+      expect(nextButton).not.toBeNull()
+      expect(closeButton).not.toBeNull()
+
+      nextButton.dispatchEvent(new Event('click'))
+
+      expect(otherEl.classList.contains('maz-is-open')).toBe(true)
+      expect(el.classList.contains('maz-is-open')).toBe(false)
+      expect(internalImg.getAttribute('src')).toBe('https://example.com/other.jpg')
+      expect(internalImg.getAttribute('alt')).toBe('Other')
+
+      previousButton.dispatchEvent(new Event('click'))
+
+      expect(el.classList.contains('maz-is-open')).toBe(true)
+      expect(otherEl.classList.contains('maz-is-open')).toBe(false)
+      vi.useRealTimers()
+    })
+  })
+
+  describe('when the close button is clicked', () => {
+    it('then it removes the preview container after the animation timeout', () => {
+      vi.useFakeTimers()
+
+      const binding: VZoomImgBinding = {
+        value: { src: 'https://example.com/img.jpg' },
+      } as any
+      const handler = new ZoomImgHandler(binding)
+      document.body.appendChild(el)
+      handler.create(el)
+      vi.advanceTimersByTime(10)
+
+      el.dispatchEvent(new Event('click'))
+
+      const internalImg = (handler as unknown as { img: HTMLImageElement }).img
+      internalImg.dispatchEvent(new Event('load'))
+
+      const closeButton = document.querySelector('.maz-zoom-btn--close') as HTMLButtonElement
+      closeButton.dispatchEvent(new Event('click'))
+
+      vi.advanceTimersByTime(400)
+
+      expect(document.querySelector('#MazImgPreviewFullsize')).toBeNull()
+      expect(document.querySelector('#MazPreviewStyle')).toBeNull()
+
+      vi.useRealTimers()
     })
   })
 })

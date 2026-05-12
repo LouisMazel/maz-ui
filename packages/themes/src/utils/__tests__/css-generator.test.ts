@@ -6,166 +6,227 @@ vi.mock('@maz-ui/utils/helpers/isServer', () => ({
   isServer: vi.fn(() => false),
 }))
 
-describe('cSS Generator', () => {
-  describe('given generateCSS function', () => {
-    describe('when generating light mode CSS', () => {
-      it('then it generates a layered :root block with the full token set', () => {
-        const css = generateCSS(mazUi, {
-          prefix: 'maz',
-          mode: 'light',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        expect(css).toContain('@layer theme {\n')
-        expect(css).toContain(':root {')
-        expect(css).toContain('--maz-primary:')
-        expect(css).toContain('--maz-border-width:')
-        expect(css).toContain('--maz-primary-500:')
-        expect(css).toContain('--maz-contrast-600:')
-      })
+describe('given generateCSS function', () => {
+  describe('when generating with mode=both and darkSelectorStrategy=class', () => {
+    const css = generateCSS(mazUi, {
+      prefix: 'maz',
+      mode: 'both',
+      darkSelectorStrategy: 'class',
+      darkClass: 'dark',
+      lightClass: 'light',
     })
 
-    describe('when generating dark mode CSS', () => {
-      it('then it generates a layered .dark block with foundation and color scales', () => {
-        const css = generateCSS(mazUi, {
-          prefix: 'maz',
-          mode: 'dark',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        expect(css).toContain('@layer theme {\n')
-        expect(css).toContain('.dark {')
-        expect(css).toContain('--maz-primary:')
-        expect(css).toContain('--maz-border-width:')
-        expect(css).toContain('--maz-primary-500:')
-      })
+    it('then wraps the output in @layer theme', () => {
+      expect(css).toMatch(/^@layer theme \{/)
+      expect(css.trim().endsWith('}')).toBe(true)
     })
 
-    describe('when generating both light and dark modes', () => {
-      it('then it generates :root and .dark blocks', () => {
-        const css = generateCSS(mazUi, {
-          prefix: 'maz',
-          mode: 'both',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        expect(css).toContain(':root {')
-        expect(css).toContain('.dark {')
-      })
-
-      it('then it does not include unneeded variables', () => {
-        const css = generateCSS(mazUi, {
-          prefix: 'maz',
-          mode: 'both',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: false,
-        })
-
-        expect(css).toContain('--maz-primary: oklch(0.6495 0.1913 253.63);')
-        expect(css).not.toContain('--maz-primary-100: #ebebeb')
-      })
-
-      it('then it returns hex values when scaleColorVariables is false', () => {
-        const css = generateCSS(
-          {
-            ...mazUi,
-            colors: {
-              ...mazUi.colors,
-              light: {
-                ...mazUi.colors.light,
-                primary: '#ff00ff',
-              },
-              dark: { ...mazUi.colors.dark, primary: '#00ffff' },
-            },
-          },
-          {
-            prefix: 'maz',
-            mode: 'both',
-            darkSelectorStrategy: 'class',
-            darkClass: 'dark',
-            scaleColorVariables: false,
-          },
-        )
-
-        expect(css).toContain('--maz-primary: #ff00ff;')
-        expect(css).toContain('--maz-primary: #00ffff')
-        expect(css).not.toContain('--maz-primary-100')
-      })
+    it('then emits color-scheme: light dark on :root', () => {
+      expect(css).toContain('color-scheme: light dark')
     })
 
-    describe('when generating dark mode with media query strategy', () => {
-      it('then it wraps dark variables in @media prefers-color-scheme', () => {
-        const css = generateCSS(mazUi, {
-          prefix: 'maz',
-          mode: 'dark',
-          darkSelectorStrategy: 'media',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        expect(css).toContain('@media (prefers-color-scheme: dark)')
-        expect(css).toContain(':root {')
-      })
+    it('then emits a single :root block', () => {
+      const rootMatches = css.match(/:root\s*\{/g) ?? []
+      expect(rootMatches.length).toBe(1)
     })
 
-    describe('when generating both modes with media query strategy', () => {
-      it('then it generates both light root and media query dark', () => {
-        const css = generateCSS(mazUi, {
-          prefix: 'maz',
-          mode: 'both',
-          darkSelectorStrategy: 'media',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        expect(css).toContain(':root {')
-        expect(css).toContain('@media (prefers-color-scheme: dark)')
-      })
+    it('then emits each base color as light-dark()', () => {
+      expect(css).toMatch(/--maz-primary: light-dark\(/)
+      expect(css).toMatch(/--maz-surface: light-dark\(/)
+      expect(css).toMatch(/--maz-foreground: light-dark\(/)
     })
 
-    describe('when full CSS is generated', () => {
-      it('then it emits the foundation space token', () => {
-        const css = generateCSS(mazUi, {
-          prefix: 'maz',
-          mode: 'light',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
+    it('then never emits @media prefers-color-scheme dark', () => {
+      expect(css).not.toContain('@media (prefers-color-scheme: dark)')
+    })
 
+    it('then emits .dark and .light overrides forcing color-scheme', () => {
+      expect(css).toContain('.dark { color-scheme: only dark; }')
+      expect(css).toContain('.light { color-scheme: only light; }')
+    })
+
+    it('then never emits per-step scale palette vars', () => {
+      expect(css).not.toMatch(/--maz-primary-\d+:/)
+      expect(css).not.toMatch(/--maz-surface-\d+:/)
+      expect(css).not.toMatch(/--maz-foreground-\d+:/)
+    })
+
+    it('then never emits per-step scale palette derivations on color tokens', () => {
+      // Per-step palette derivation lives in Tailwind's @theme block, not in the
+      // runtime CSS. Component-level defaults (e.g. input-bg dark) MAY still use
+      // relative color syntax — that's intentional and out of scope here.
+      expect(css).not.toMatch(/--maz-(?:primary|secondary|accent|destructive|success|warning|info|contrast|surface|foreground|divider|muted|overlay|shadow)-\d+:\s*oklch\(from /)
+    })
+
+    it('then matches the snapshot', () => {
+      expect(css).toMatchSnapshot()
+    })
+  })
+
+  describe('when generating with mode=both and darkSelectorStrategy=media', () => {
+    const css = generateCSS(mazUi, {
+      prefix: 'maz',
+      mode: 'both',
+      darkSelectorStrategy: 'media',
+      darkClass: 'dark',
+      lightClass: 'light',
+    })
+
+    it('then still emits color-scheme: light dark on :root', () => {
+      expect(css).toContain('color-scheme: light dark')
+    })
+
+    it('then never emits .dark or .light overrides', () => {
+      expect(css).not.toContain('.dark { color-scheme:')
+      expect(css).not.toContain('.light { color-scheme:')
+    })
+
+    it('then never emits @media prefers-color-scheme dark', () => {
+      expect(css).not.toContain('@media (prefers-color-scheme: dark)')
+    })
+
+    it('then wraps base colors in light-dark()', () => {
+      expect(css).toMatch(/--maz-primary: light-dark\(/)
+    })
+  })
+
+  describe('when generating with mode=light only', () => {
+    const css = generateCSS(mazUi, {
+      prefix: 'maz',
+      mode: 'light',
+      darkSelectorStrategy: 'class',
+      darkClass: 'dark',
+      lightClass: 'light',
+    })
+
+    it('then emits color-scheme: only light on :root', () => {
+      expect(css).toContain('color-scheme: only light')
+    })
+
+    it('then never wraps colors in light-dark()', () => {
+      expect(css).not.toContain('light-dark(')
+    })
+
+    it('then never emits .dark or .light overrides', () => {
+      expect(css).not.toContain('.dark { color-scheme:')
+      expect(css).not.toContain('.light { color-scheme:')
+    })
+
+    it('then emits the light color value directly', () => {
+      expect(css).toContain('--maz-primary: oklch(0.6495 0.1913 253.63);')
+    })
+
+    it('then emits the rounded scale (xs..3xl)', () => {
+      for (const key of ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']) {
+        expect(css).toContain(`--maz-rounded-${key}:`)
+      }
+    })
+  })
+
+  describe('when generating with mode=dark only', () => {
+    const css = generateCSS(mazUi, {
+      prefix: 'maz',
+      mode: 'dark',
+      darkSelectorStrategy: 'class',
+      darkClass: 'dark',
+      lightClass: 'light',
+    })
+
+    it('then emits color-scheme: only dark on :root', () => {
+      expect(css).toContain('color-scheme: only dark')
+    })
+
+    it('then never wraps colors in light-dark()', () => {
+      expect(css).not.toContain('light-dark(')
+    })
+
+    it('then emits the dark color value directly', () => {
+      expect(css).toContain('--maz-surface: oklch(0.2524 0.0212 280.69);')
+    })
+
+    it('then emits a single :root block', () => {
+      const rootMatches = css.match(/:root\s*\{/g) ?? []
+      expect(rootMatches.length).toBe(1)
+    })
+
+    it('then never emits .dark or .light overrides', () => {
+      expect(css).not.toContain('.dark { color-scheme:')
+      expect(css).not.toContain('.light { color-scheme:')
+    })
+  })
+
+  describe('given foundation tokens', () => {
+    describe('when generating CSS with the default preset', () => {
+      const css = generateCSS(mazUi, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then emits the space token', () => {
         expect(css).toContain('--maz-space:')
       })
 
-      it('then it emits the rounded scale (xs..3xl)', () => {
-        const css = generateCSS(mazUi, {
-          prefix: 'maz',
-          mode: 'light',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        for (const key of ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'])
-          expect(css).toContain(`--maz-rounded-${key}:`)
+      it('then emits the base-font-size token', () => {
+        expect(css).toContain('--maz-base-font-size:')
       })
 
-      it('then it emits the literal md value and a calc fallback for the other rounded keys', () => {
-        const css = generateCSS(mazUi, {
+      it('then emits the border-width token', () => {
+        expect(css).toContain('--maz-border-width:')
+      })
+
+      it('then emits the font-family token', () => {
+        expect(css).toContain('--maz-font-family:')
+      })
+    })
+
+    describe('when foundation is undefined', () => {
+      const css = generateCSS({ ...mazUi, foundation: undefined as any }, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then no foundation vars are emitted', () => {
+        expect(css).not.toContain('--maz-border-width:')
+        expect(css).not.toContain('--maz-base-font-size:')
+      })
+    })
+
+    describe('when a foundation entry is falsy', () => {
+      const css = generateCSS(
+        { ...mazUi, foundation: { ...mazUi.foundation, 'border-width': '' as any } },
+        {
           prefix: 'maz',
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
-          scaleColorVariables: true,
-        })
+        },
+      )
 
+      it('then the falsy token is skipped', () => {
+        expect(css).not.toContain('--maz-border-width:')
+        expect(css).toContain('--maz-base-font-size:')
+      })
+    })
+  })
+
+  describe('given the rounded scale', () => {
+    describe('when only md is set in the preset', () => {
+      const css = generateCSS(mazUi, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then the md anchor is emitted as a literal value', () => {
         expect(css).toContain('--maz-rounded-md: 0.7rem;')
+      })
+
+      it('then other keys fall back to calc(var(--maz-rounded-md) * ratio)', () => {
         expect(css).toContain('--maz-rounded-xs: calc(var(--maz-rounded-md) * 0.25);')
         expect(css).toContain('--maz-rounded-sm: calc(var(--maz-rounded-md) * 0.5);')
         expect(css).toContain('--maz-rounded-lg: calc(var(--maz-rounded-md) * 1.5);')
@@ -173,443 +234,664 @@ describe('cSS Generator', () => {
         expect(css).toContain('--maz-rounded-2xl: calc(var(--maz-rounded-md) * 3);')
         expect(css).toContain('--maz-rounded-3xl: calc(var(--maz-rounded-md) * 4);')
       })
+    })
 
-      it('then a literal value on a non-md key wins over the calc fallback', () => {
-        const customPreset = {
-          ...mazUi,
-          scales: {
-            ...mazUi.scales,
-            rounded: { md: '1rem' as const, xs: '0.1rem' as const },
-          },
-        }
-        const css = generateCSS(customPreset, {
+    describe('when a literal value is set on a non-md key', () => {
+      const css = generateCSS(
+        { ...mazUi, scales: { ...mazUi.scales, rounded: { md: '1rem' as const, xs: '0.1rem' as const } } },
+        {
           prefix: 'maz',
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
-          scaleColorVariables: true,
-        })
+        },
+      )
 
+      it('then the literal value wins over the calc fallback', () => {
         expect(css).toContain('--maz-rounded-md: 1rem;')
         expect(css).toContain('--maz-rounded-xs: 0.1rem;')
         expect(css).not.toContain('--maz-rounded-xs: calc(')
         expect(css).toContain('--maz-rounded-sm: calc(var(--maz-rounded-md) * 0.5);')
       })
+    })
 
-      it('then it emits the shadow style scale (with the maz-specific elevation key)', () => {
-        const css = generateCSS(mazUi, {
+    describe('when the rounded.md anchor itself is missing from the preset', () => {
+      const css = generateCSS(
+        { ...mazUi, scales: { ...mazUi.scales, rounded: {} as any } },
+        {
           prefix: 'maz',
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
-          scaleColorVariables: true,
-        })
+        },
+      )
 
-        for (const key of ['sm', 'md', 'lg', 'xl', 'elevation'])
-          expect(css).toContain(`--maz-shadow-style-${key}:`)
+      it('then no --maz-rounded-md declaration is emitted (no implicit calc, no literal)', () => {
+        expect(css).not.toMatch(/--maz-rounded-md:/)
       })
 
-      it('then it does not emit a fontSize scale (typography stays driven by base-font-size)', () => {
-        const css = generateCSS(mazUi, {
-          prefix: 'maz',
-          mode: 'light',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        expect(css).not.toMatch(/--maz-text-(?:mini|xs|sm|md|lg|xl):/)
-      })
-
-      it('then it emits the renamed surface / divider color vars (no background / border anymore)', () => {
-        const css = generateCSS(mazUi, {
-          prefix: 'maz',
-          mode: 'both',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        expect(css).toContain('--maz-surface:')
-        expect(css).toContain('--maz-divider:')
-        expect(css).not.toMatch(/--maz-background\b/)
-        expect(css).not.toMatch(/--maz-border:[^-]/)
+      it('then the other rounded keys still emit their calc fallback off md', () => {
+        expect(css).toContain('--maz-rounded-xs: calc(var(--maz-rounded-md) * 0.25);')
+        expect(css).toContain('--maz-rounded-sm: calc(var(--maz-rounded-md) * 0.5);')
       })
     })
 
-    describe('when components.container.bg / input.bg are provided', () => {
-      it('then it emits --maz-container-bg / --maz-input-bg per mode', () => {
-        const presetWithComponents = {
-          ...mazUi,
-          components: {
-            container: { bg: { light: 'oklch(0.9 0 0)', dark: 'oklch(0.3 0 0)' } },
-            input: { bg: { light: 'oklch(0.95 0 0)', dark: 'oklch(0.25 0 0)' } },
-          },
-        }
-
-        const css = generateCSS(presetWithComponents, {
-          prefix: 'maz',
-          mode: 'both',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        const lightBlock = css.split('.dark {')[0]
-        expect(lightBlock).toContain('--maz-container-bg: oklch(0.9 0 0)')
-        expect(lightBlock).toContain('--maz-input-bg: oklch(0.95 0 0)')
-
-        const darkBlock = css.split('.dark {')[1]
-        expect(darkBlock).toContain('--maz-container-bg: oklch(0.3 0 0)')
-        expect(darkBlock).toContain('--maz-input-bg: oklch(0.25 0 0)')
+    describe('when the preset has no scales block', () => {
+      const css = generateCSS({ ...mazUi, scales: undefined as any }, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
       })
-    })
 
-    describe('when scales.shadow has a falsy entry', () => {
-      it('then the falsy shadow value is skipped without emitting a var', () => {
-        const presetWithEmptyShadow = {
-          ...mazUi,
-          scales: {
-            ...mazUi.scales,
-            shadow: { ...mazUi.scales.shadow, sm: '' },
-          },
-        }
-
-        const css = generateCSS(presetWithEmptyShadow as any, {
-          prefix: 'maz',
-          mode: 'light',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        expect(css).not.toContain('--maz-shadow-style-sm:')
-        expect(css).toContain('--maz-shadow-style-md:')
-      })
-    })
-
-    describe('when components.btn.font-weight is provided', () => {
-      it('then it emits --maz-btn-font-weight on the light root', () => {
-        const presetWithBtn = {
-          ...mazUi,
-          components: {
-            btn: { 'font-weight': '600' },
-          },
-        }
-
-        const css = generateCSS(presetWithBtn, {
-          prefix: 'maz',
-          mode: 'light',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        expect(css).toContain('--maz-btn-font-weight: 600')
-      })
-    })
-
-    describe('when preset has no foundation', () => {
-      it('then it generates CSS without foundation variables', () => {
-        const presetWithoutFoundation = {
-          ...mazUi,
-          foundation: undefined as any,
-        }
-
-        const css = generateCSS(presetWithoutFoundation, {
-          prefix: 'maz',
-          mode: 'light',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        expect(css).toContain('@layer theme')
-        expect(css).not.toContain('--maz-border-width:')
-      })
-    })
-
-    describe('when colors entries contain falsy values', () => {
-      it('then it skips falsy colors and emits the truthy ones', () => {
-        const presetWithFalsyColor = {
-          ...mazUi,
-          colors: {
-            ...mazUi.colors,
-            light: { ...mazUi.colors.light, accent: '' as any },
-          },
-        }
-
-        const css = generateCSS(presetWithFalsyColor, {
-          prefix: 'maz',
-          mode: 'light',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        expect(css).not.toMatch(/--maz-accent:\s/)
-        expect(css).toContain('--maz-primary:')
-      })
-    })
-
-    describe('when foundation entries contain falsy values', () => {
-      it('then it skips falsy foundation tokens and emits the truthy ones', () => {
-        const presetWithFalsyFoundation = {
-          ...mazUi,
-          foundation: { ...mazUi.foundation, 'border-width': '' as any },
-        }
-
-        const css = generateCSS(presetWithFalsyFoundation, {
-          prefix: 'maz',
-          mode: 'light',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        expect(css).not.toContain('--maz-border-width:')
-        expect(css).toContain('--maz-base-font-size:')
-      })
-    })
-
-    describe('when preset has no scales block', () => {
       it('then no rounded or shadow style vars are emitted', () => {
-        const presetWithoutScales = {
-          ...mazUi,
-          scales: undefined as any,
-        }
-
-        const css = generateCSS(presetWithoutScales, {
-          prefix: 'maz',
-          mode: 'light',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
         expect(css).not.toMatch(/--maz-rounded-/)
         expect(css).not.toMatch(/--maz-shadow-style-/)
       })
     })
+  })
 
-    describe('when components is provided without container or input bg', () => {
-      it('then it only emits the available component vars', () => {
-        const presetWithBtnOnly = {
-          ...mazUi,
-          components: { btn: { 'font-weight': '700' } },
+  describe('given the shadow scale', () => {
+    describe('when the preset ships the default shadow values', () => {
+      const css = generateCSS(mazUi, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then sm/md/lg/xl/elevation shadow-style vars are emitted', () => {
+        for (const key of ['sm', 'md', 'lg', 'xl', 'elevation']) {
+          expect(css).toContain(`--maz-shadow-style-${key}:`)
         }
+      })
+    })
 
-        const css = generateCSS(presetWithBtnOnly, {
+    describe('when a shadow entry is empty', () => {
+      const css = generateCSS(
+        { ...mazUi, scales: { ...mazUi.scales, shadow: { ...mazUi.scales.shadow, sm: '' } } } as any,
+        {
           prefix: 'maz',
           mode: 'light',
           darkSelectorStrategy: 'class',
           darkClass: 'dark',
-          scaleColorVariables: true,
-        })
+        },
+      )
 
+      it('then the empty shadow is skipped', () => {
+        expect(css).not.toContain('--maz-shadow-style-sm:')
+        expect(css).toContain('--maz-shadow-style-md:')
+      })
+    })
+  })
+
+  describe('given typography', () => {
+    describe('when generating CSS', () => {
+      const css = generateCSS(mazUi, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then no fontSize scale is emitted', () => {
+        expect(css).not.toMatch(/--maz-text-(?:mini|xs|sm|md|lg|xl):/)
+      })
+    })
+  })
+
+  describe('given renamed color tokens', () => {
+    describe('when generating CSS', () => {
+      const css = generateCSS(mazUi, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then --maz-surface and --maz-divider are emitted', () => {
+        expect(css).toContain('--maz-surface:')
+        expect(css).toContain('--maz-divider:')
+      })
+
+      it('then --maz-background is never emitted', () => {
+        expect(css).not.toMatch(/--maz-background\b/)
+      })
+
+      it('then --maz-border: (the color) is never emitted, only --maz-border-width:', () => {
+        expect(css).not.toMatch(/--maz-border:[^-]/)
+        expect(css).toContain('--maz-border-width:')
+      })
+    })
+  })
+
+  describe('given per-component bg vars', () => {
+    describe('when components.container.bg and components.input.bg are set and mode=both', () => {
+      const preset = {
+        ...mazUi,
+        components: {
+          container: { bg: { light: 'oklch(0.9 0 0)', dark: 'oklch(0.3 0 0)' } },
+          input: { bg: { light: 'oklch(0.95 0 0)', dark: 'oklch(0.25 0 0)' } },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then --maz-container-bg is wrapped in light-dark()', () => {
+        expect(css).toContain('--maz-container-bg: light-dark(oklch(0.9 0 0), oklch(0.3 0 0));')
+      })
+
+      it('then --maz-input-bg is wrapped in light-dark()', () => {
+        expect(css).toContain('--maz-input-bg: light-dark(oklch(0.95 0 0), oklch(0.25 0 0));')
+      })
+    })
+
+    describe('when mode=light only and component bg is set per-mode', () => {
+      const preset = {
+        ...mazUi,
+        components: {
+          container: { bg: { light: 'oklch(0.9 0 0)', dark: 'oklch(0.3 0 0)' } },
+          input: { bg: { light: 'oklch(0.95 0 0)', dark: 'oklch(0.25 0 0)' } },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then --maz-container-bg uses only the light value', () => {
+        expect(css).toContain('--maz-container-bg: oklch(0.9 0 0);')
+        expect(css).not.toContain('light-dark(')
+      })
+
+      it('then --maz-input-bg uses only the light value', () => {
+        expect(css).toContain('--maz-input-bg: oklch(0.95 0 0);')
+      })
+    })
+
+    describe('when mode=dark only and component bg is set per-mode', () => {
+      const preset = {
+        ...mazUi,
+        components: {
+          container: { bg: { light: 'oklch(0.9 0 0)', dark: 'oklch(0.3 0 0)' } },
+          input: { bg: { light: 'oklch(0.95 0 0)', dark: 'oklch(0.25 0 0)' } },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'dark',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then --maz-container-bg uses only the dark value', () => {
+        expect(css).toContain('--maz-container-bg: oklch(0.3 0 0);')
+      })
+
+      it('then --maz-input-bg uses only the dark value', () => {
+        expect(css).toContain('--maz-input-bg: oklch(0.25 0 0);')
+      })
+    })
+
+    describe('when mode=light only and component bg has only the dark side', () => {
+      const preset = {
+        ...mazUi,
+        components: {
+          container: { bg: { dark: 'oklch(0.3 0 0)' } as any },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then no container-bg variable is emitted', () => {
+        expect(css).not.toContain('--maz-container-bg:')
+      })
+    })
+
+    describe('when mode=dark only and component bg has only the light side', () => {
+      const preset = {
+        ...mazUi,
+        components: {
+          container: { bg: { light: 'oklch(0.9 0 0)' } as any },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'dark',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then no container-bg variable is emitted', () => {
+        expect(css).not.toContain('--maz-container-bg:')
+      })
+    })
+
+    describe('when components.container.bg.light equals bg.dark and mode=both', () => {
+      const preset = {
+        ...mazUi,
+        components: {
+          container: { bg: { light: 'var(--maz-surface)', dark: 'var(--maz-surface)' } },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+        lightClass: 'light',
+      })
+
+      it('then it emits the value directly without light-dark wrapping', () => {
+        expect(css).toContain('--maz-container-bg: var(--maz-surface);')
+        expect(css).not.toMatch(/--maz-container-bg: light-dark\(/)
+      })
+    })
+
+    describe('when components.container.bg has neither light nor dark and mode=both', () => {
+      const preset = {
+        ...mazUi,
+        components: { container: { bg: {} as any } },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+        lightClass: 'light',
+      })
+
+      it('then no container-bg variable is emitted', () => {
+        expect(css).not.toContain('--maz-container-bg:')
+      })
+    })
+
+    describe('when components.btn.font-weight is provided', () => {
+      const preset = { ...mazUi, components: { btn: { 'font-weight': '600' } } }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then --maz-btn-font-weight is emitted', () => {
+        expect(css).toContain('--maz-btn-font-weight: 600')
+      })
+    })
+
+    describe('when components is provided without container or input bg', () => {
+      const preset = { ...mazUi, components: { btn: { 'font-weight': '700' } } }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then only the available component vars are emitted', () => {
         expect(css).toContain('--maz-btn-font-weight: 700')
         expect(css).not.toContain('--maz-container-bg:')
         expect(css).not.toContain('--maz-input-bg:')
       })
     })
 
-    describe('when components.container.bg is missing the active mode', () => {
-      it('then it does not emit the container var for that mode', () => {
-        const presetLightOnlyContainer = {
-          ...mazUi,
-          components: {
-            container: { bg: { light: 'oklch(0.9 0 0)' } },
-          },
-        }
-
-        const css = generateCSS(presetLightOnlyContainer, {
-          prefix: 'maz',
-          mode: 'both',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        const lightBlock = css.split('.dark {')[0]
-        const darkBlock = css.split('.dark {')[1]
-
-        expect(lightBlock).toContain('--maz-container-bg: oklch(0.9 0 0)')
-        expect(darkBlock).not.toContain('--maz-container-bg:')
+    describe('when the preset has no components block at all', () => {
+      const preset = { ...mazUi, components: undefined as any }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
       })
-    })
 
-    describe('when a scaleColor base is missing', () => {
-      it('then no per-step scale vars are emitted for the missing color', () => {
-        const presetMissingMuted = {
-          ...mazUi,
-          colors: {
-            ...mazUi.colors,
-            light: { ...mazUi.colors.light, muted: '' as any },
-          },
-        }
-
-        const css = generateCSS(presetMissingMuted, {
-          prefix: 'maz',
-          mode: 'light',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        expect(css).not.toMatch(/--maz-muted-500:/)
-        expect(css).toContain('--maz-primary-500:')
-      })
-    })
-
-    describe('when generateCSS is called without options', () => {
-      it('then it falls back to default options', () => {
-        const css = generateCSS(mazUi)
-
-        expect(css).toContain('@layer theme {\n')
-        expect(css).toContain(':root {')
-        expect(css).toContain('.dark {')
+      it('then no component vars are emitted', () => {
+        expect(css).not.toContain('--maz-btn-font-weight')
+        expect(css).not.toContain('--maz-container-bg:')
+        expect(css).not.toContain('--maz-input-bg:')
       })
     })
   })
 
-  describe('given injectCSS function', () => {
-    afterEach(() => {
-      document.querySelectorAll('style').forEach(el => el.remove())
-      vi.mocked(isServer).mockReturnValue(false)
-    })
-
-    describe('when running on the server', () => {
-      it('then it returns early without touching the DOM', () => {
-        vi.mocked(isServer).mockReturnValue(true)
-        const initialChildren = document.head.children.length
-
-        injectCSS(CSS_ID, ':root { --test: 1; }')
-
-        expect(document.head.children.length).toBe(initialChildren)
+  describe('given no prefix is provided', () => {
+    describe('when generateCSS is called without options.prefix', () => {
+      const css = generateCSS(mazUi, {
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
       })
-    })
 
-    describe('when no style element exists', () => {
-      it('then it creates a new style element and injects CSS', () => {
-        injectCSS(CSS_ID, ':root { --test: 1; }')
-
-        const el = document.querySelector(`#${CSS_ID}`)
-        expect(el).not.toBeNull()
-        expect(el?.textContent).toBe(':root { --test: 1; }')
-      })
-    })
-
-    describe('when a single style element already exists', () => {
-      it('then it updates the existing element content', () => {
-        const style = document.createElement('style')
-        style.id = CSS_ID
-        style.textContent = 'old-css'
-        document.head.appendChild(style)
-
-        injectCSS(CSS_ID, 'new-css')
-
-        expect(style.textContent).toBe('new-css')
-      })
-    })
-
-    describe('when multiple style elements with the same id exist', () => {
-      it('then it removes duplicates and keeps the last one', () => {
-        for (let i = 0; i < 3; i++) {
-          const style = document.createElement('style')
-          style.id = CSS_ID
-          document.head.appendChild(style)
-        }
-
-        injectCSS(CSS_ID, 'final-css')
-
-        const elements = document.querySelectorAll(`#${CSS_ID}`)
-        expect(elements.length).toBe(1)
-        expect(elements[0].textContent).toBe('final-css')
+      it('then it defaults the prefix to "maz"', () => {
+        expect(css).toContain('--maz-primary:')
       })
     })
   })
 
-  describe('given removeCSS function', () => {
-    afterEach(() => {
-      document.querySelectorAll('style').forEach(el => el.remove())
-      vi.mocked(isServer).mockReturnValue(false)
-    })
+  describe('given a preset where dark side has a missing color and mode=dark', () => {
+    describe('when --maz-key is emitted in dark mode and dark color is undefined', () => {
+      const preset = {
+        ...mazUi,
+        colors: {
+          ...mazUi.colors,
+          dark: { ...mazUi.colors.dark, primary: undefined as any },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'dark',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
 
-    describe('when running on the server', () => {
-      it('then it returns early without touching the DOM', () => {
-        const style = document.createElement('style')
-        style.id = CSS_ID
-        document.head.appendChild(style)
-
-        vi.mocked(isServer).mockReturnValue(true)
-
-        removeCSS(CSS_ID)
-
-        expect(document.querySelector(`#${CSS_ID}`)).not.toBeNull()
+      it('then it falls back to the light value', () => {
+        expect(css).toContain(`--maz-primary: ${mazUi.colors.light.primary};`)
       })
     })
 
-    describe('when style element exists', () => {
-      it('then it removes the style element', () => {
-        const style = document.createElement('style')
-        style.id = CSS_ID
-        document.head.appendChild(style)
-
-        removeCSS(CSS_ID)
-
-        expect(document.querySelector(`#${CSS_ID}`)).toBeNull()
+    describe('when --maz-key is emitted in mode=both and dark color is undefined', () => {
+      const preset = {
+        ...mazUi,
+        colors: {
+          ...mazUi.colors,
+          dark: { ...mazUi.colors.dark, accent: undefined as any },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
       })
-    })
 
-    describe('when no style element exists', () => {
-      it('then it does nothing', () => {
-        expect(() => removeCSS(CSS_ID)).not.toThrow()
-      })
-    })
-
-    describe('when multiple style elements exist', () => {
-      it('then it removes all of them', () => {
-        for (let i = 0; i < 3; i++) {
-          const style = document.createElement('style')
-          style.id = CSS_ID
-          document.head.appendChild(style)
-        }
-
-        removeCSS(CSS_ID)
-
-        expect(document.querySelectorAll(`#${CSS_ID}`).length).toBe(0)
+      it('then light-dark falls back to the light value on the dark side', () => {
+        expect(css).toContain(`--maz-accent: light-dark(${mazUi.colors.light.accent}, ${mazUi.colors.light.accent});`)
       })
     })
   })
 
-  describe('given variable formatting', () => {
-    describe('when formatting base variables', () => {
-      it('then it formats base variables correctly', () => {
-        const css = generateCSS(mazUi, {
-          prefix: 'maz',
-          mode: 'light',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
+  describe('given a preset with no shadow scales', () => {
+    describe('when scales has no shadow block', () => {
+      const preset = {
+        ...mazUi,
+        scales: { rounded: mazUi.scales.rounded } as any,
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
 
-        expect(css).toContain('--maz-primary-500:')
-        expect(css).toContain('--maz-contrast-600:')
+      it('then no shadow-style vars are emitted', () => {
+        expect(css).not.toMatch(/--maz-shadow-style-/)
+      })
+    })
+  })
+
+  describe('given a preset with only one side of component bg defined', () => {
+    describe('when mode=both and container.bg.light is set but bg.dark is missing', () => {
+      const preset = {
+        ...mazUi,
+        components: {
+          container: { bg: { light: 'oklch(0.9 0 0)' } },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then the short-circuit emits the light value directly (light === dark via fallback)', () => {
+        expect(css).toContain('--maz-container-bg: oklch(0.9 0 0);')
       })
     })
 
-    describe('when formatting shadow variables', () => {
-      it('then it emits the shadow color variable', () => {
-        const css = generateCSS(mazUi, {
-          prefix: 'maz',
-          mode: 'light',
-          darkSelectorStrategy: 'class',
-          darkClass: 'dark',
-          scaleColorVariables: true,
-        })
-
-        expect(css).toMatch(/--maz-shadow:/)
+    describe('when mode=both and container.bg.dark is set but bg.light is missing', () => {
+      const preset = {
+        ...mazUi,
+        components: {
+          container: { bg: { dark: 'oklch(0.3 0 0)' } },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
       })
+
+      it('then the short-circuit emits the dark value directly (light === dark via fallback)', () => {
+        expect(css).toContain('--maz-container-bg: oklch(0.3 0 0);')
+      })
+    })
+  })
+
+  describe('given a preset with a falsy color value on the light side', () => {
+    describe('when a key is explicitly set to undefined', () => {
+      const preset = {
+        ...mazUi,
+        colors: {
+          ...mazUi.colors,
+          light: { ...mazUi.colors.light, primary: undefined as any },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then the falsy key is skipped (no --maz-primary line)', () => {
+        expect(css).not.toMatch(/--maz-primary:\s/)
+      })
+    })
+  })
+
+  describe('given legacy HSL color input', () => {
+    describe('when a raw HSL channel string is provided', () => {
+      const preset = {
+        ...mazUi,
+        colors: {
+          ...mazUi.colors,
+          light: { ...mazUi.colors.light, primary: '210 100% 50%' as any },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then the raw HSL is wrapped in hsl()', () => {
+        expect(css).toContain('--maz-primary: hsl(210 100% 50%);')
+      })
+    })
+  })
+
+  describe('given hex color input', () => {
+    describe('when a hex color is provided', () => {
+      const preset = {
+        ...mazUi,
+        colors: {
+          ...mazUi.colors,
+          light: { ...mazUi.colors.light, primary: '#ff00ff' },
+          dark: { ...mazUi.colors.dark, primary: '#00ffff' },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then the hex value is emitted as-is', () => {
+        expect(css).toContain('--maz-primary: #ff00ff;')
+      })
+    })
+  })
+
+  describe('given a falsy base color', () => {
+    describe('when one color entry is empty', () => {
+      const preset = {
+        ...mazUi,
+        colors: {
+          ...mazUi.colors,
+          light: { ...mazUi.colors.light, accent: '' as any },
+        },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then the falsy color is skipped and other colors are emitted', () => {
+        expect(css).not.toMatch(/--maz-accent:\s/)
+        expect(css).toContain('--maz-primary:')
+      })
+    })
+  })
+
+  describe('given no @property blocks ever emitted', () => {
+    const css = generateCSS(mazUi, {
+      prefix: 'maz',
+      mode: 'both',
+      darkSelectorStrategy: 'class',
+      darkClass: 'dark',
+    })
+
+    it('then no @property blocks are emitted', () => {
+      expect(css).not.toContain('@property --maz-')
+    })
+
+    it('then no transition rule is emitted', () => {
+      expect(css).not.toMatch(/transition:\s*--maz-/)
+    })
+  })
+})
+
+describe('given injectCSS function', () => {
+  afterEach(() => {
+    document.querySelectorAll('style').forEach(el => el.remove())
+    vi.mocked(isServer).mockReturnValue(false)
+  })
+
+  describe('when running on the server', () => {
+    it('then it returns early without touching the DOM', () => {
+      vi.mocked(isServer).mockReturnValue(true)
+      const initialChildren = document.head.children.length
+
+      injectCSS(CSS_ID, ':root { --test: 1; }')
+
+      expect(document.head.children.length).toBe(initialChildren)
+    })
+  })
+
+  describe('when no style element exists', () => {
+    it('then it creates a new style element and injects CSS', () => {
+      injectCSS(CSS_ID, ':root { --test: 1; }')
+
+      const el = document.querySelector(`#${CSS_ID}`)
+      expect(el).not.toBeNull()
+      expect(el?.textContent).toBe(':root { --test: 1; }')
+    })
+  })
+
+  describe('when a single style element already exists', () => {
+    it('then it updates the existing element content', () => {
+      const style = document.createElement('style')
+      style.id = CSS_ID
+      style.textContent = 'old-css'
+      document.head.appendChild(style)
+
+      injectCSS(CSS_ID, 'new-css')
+
+      expect(style.textContent).toBe('new-css')
+    })
+  })
+
+  describe('when multiple style elements with the same id exist', () => {
+    it('then it removes duplicates and keeps the last one', () => {
+      for (let i = 0; i < 3; i++) {
+        const style = document.createElement('style')
+        style.id = CSS_ID
+        document.head.appendChild(style)
+      }
+
+      injectCSS(CSS_ID, 'final-css')
+
+      const elements = document.querySelectorAll(`#${CSS_ID}`)
+      expect(elements.length).toBe(1)
+      expect(elements[0].textContent).toBe('final-css')
+    })
+  })
+})
+
+describe('given removeCSS function', () => {
+  afterEach(() => {
+    document.querySelectorAll('style').forEach(el => el.remove())
+    vi.mocked(isServer).mockReturnValue(false)
+  })
+
+  describe('when running on the server', () => {
+    it('then it returns early without touching the DOM', () => {
+      const style = document.createElement('style')
+      style.id = CSS_ID
+      document.head.appendChild(style)
+
+      vi.mocked(isServer).mockReturnValue(true)
+
+      removeCSS(CSS_ID)
+
+      expect(document.querySelector(`#${CSS_ID}`)).not.toBeNull()
+    })
+  })
+
+  describe('when style element exists', () => {
+    it('then it removes the style element', () => {
+      const style = document.createElement('style')
+      style.id = CSS_ID
+      document.head.appendChild(style)
+
+      removeCSS(CSS_ID)
+
+      expect(document.querySelector(`#${CSS_ID}`)).toBeNull()
+    })
+  })
+
+  describe('when no style element exists', () => {
+    it('then it does nothing', () => {
+      expect(() => removeCSS(CSS_ID)).not.toThrow()
+    })
+  })
+
+  describe('when multiple style elements exist', () => {
+    it('then it removes all of them', () => {
+      for (let i = 0; i < 3; i++) {
+        const style = document.createElement('style')
+        style.id = CSS_ID
+        document.head.appendChild(style)
+      }
+
+      removeCSS(CSS_ID)
+
+      expect(document.querySelectorAll(`#${CSS_ID}`).length).toBe(0)
     })
   })
 })

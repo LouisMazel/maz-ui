@@ -446,7 +446,7 @@ const CHILD_TEXT_SIZE_CLASS = {
       },
       props.class,
       `--${color}`,
-    ]" :style="[style, { '--maz-input-color': `var(--maz-${color}-100)` }]"
+    ]" :style="[style, { '--m-input-tint-bg': `var(--maz-${color})` }]"
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label
@@ -571,6 +571,10 @@ const CHILD_TEXT_SIZE_CLASS = {
 @reference "../tailwindcss/tailwind.css";
 
 .m-input {
+  /* Tint variant derived from --m-input-tint-bg via OKLCh lightness offset
+   * (mirrors SCALE_OFFSETS step -100). */
+  --maz-input-color: oklch(from var(--m-input-tint-bg) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h); /* ↔ scale -100 */
+
   &-wrapper-input {
     &.--xl {
       block-size: calc(4rem - (var(--maz-border-width) * 2));

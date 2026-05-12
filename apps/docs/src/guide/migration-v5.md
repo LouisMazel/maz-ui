@@ -23,7 +23,7 @@ npx @maz-ui/upgrade ./ --dry-run
 npx @maz-ui/upgrade ./
 ```
 
-It rewrites: CSS subpath imports (`maz-ui/styles` → `maz-ui/style.css`), `left-icon`/`right-icon` → `start-icon`/`end-icon` (props, slots, `--has-*-icon` classes), `footer-align`/`variant` direction values, `color="background"` / `active-color="background"` → `surface`, `rounded-size="base"` → `md`, `--maz-background` / `--maz-border` CSS vars → `--maz-surface` / `--maz-divider`, `hsl(var(--maz-X))` collapse, Nuxt `injectMainCss` → `injectCss`, theme `strategy: 'hybrid'` → `'runtime'`, drops the removed theme options (`injectCriticalCSS`, `injectFullCSS`, `injectAllCSSOnServer`), and renames `colors.{light,dark}.background` → `surface` / `.border` → `divider` inside custom presets. It also bumps every `maz-ui` and `@maz-ui/*` entry in your `package.json` files to `^5.0.0` and runs the right `<pm> install` for you (detected from your lockfile — pnpm, yarn, bun, npm). Pass `--no-install` if you want to skip the install step.
+It handles the mechanical part of the migration (CSS subpath imports, prop renames, CSS var renames, Nuxt config keys, custom preset color keys, and `package.json` version bumps)
 
 What it can't decide for you: the `MazIcon` API simplification (section 4), `MazBadge` numeric size mapping (section 9), `foundation.radius` → `scales.rounded.md` reshape (section 11) and `MazChart` `update-mode` defaults (section 8). Those are best handled with the MCP server below.
 
@@ -557,7 +557,7 @@ rg "color\s*=\s*['\"]background['\"]" src/
 
 ### Theme colors are now emitted as OKLCh
 
-`@maz-ui/themes` now ships its bundled presets (`mazUi`, `ocean`, `pristine`, `obsidian`) in `oklch()` form, and the dynamic color scale generator (`generateColorScale`, `adjustColorLightness`, `getContrastColor`) steps in OKLCh space and emits `oklch(L C H)` strings. The runtime CSS variables (`--maz-primary`, `--maz-primary-100`, …) therefore hold OKLCh colors.
+`@maz-ui/themes` now ships its bundled presets (`mazUi`, `ocean`, `pristine`, `obsidian`, `nova`) in `oklch()` form, and the runtime CSS variables (`--maz-primary`, `--maz-primary-100`, …) therefore hold OKLCh colors. The 50–950 scale is derived in CSS via OKLCh relative color syntax — `oklch(from var(--maz-X) clamp(0, calc(l ± offset), 1) calc(c * mult) h)` — perceptually uniform, chroma-preserving, and live-reactive to base color overrides.
 
 This is **transparent for consumers**:
 
@@ -568,16 +568,8 @@ This is **transparent for consumers**:
 
 You only need to do something if you were:
 
-- **Reading the channel format** of a color from `--maz-*` in JS — the value used to be an `hsl(...)` string, it's now an `oklch(...)` string. Use `getComputedStyle(...).getPropertyValue(...)` and a CSS color parser if you need channels.
-- **Calling `adjustColorLightness`** directly — the `adjustment` parameter is now in OKLCh L units (`0..1`) instead of HSL L percentage (`0..100`). Divide your existing values by 100.
-
-```ts
-// v4: HSL L percentage
-adjustColorLightness('hsl(210 50% 40%)', 20)  // → 'hsl(210 50% 60%)'
-
-// v5: OKLCh L (0..1)
-adjustColorLightness('hsl(210 50% 40%)', 0.2) // → 'oklch(0.65 0.108 232.62)'
-```
+- **Reading the channel format** of a color from `--maz-*` in JS — the value used to be an `hsl(...)` string, it's now an `oklch(...)` string (and at runtime the base may resolve through `light-dark()`). Use `getComputedStyle(...).getPropertyValue(...)` and a CSS color parser if you need channels.
+- **Calling the legacy JS palette helpers** (`generateColorScale`, `adjustColorLightness`, `getContrastColor`, `parseHSL`) — these exports were removed in v5. See [BREAKING — removed exports](#breaking-removed-exports) for replacements.
 
 Why the switch: OKLCh is perceptually uniform, so generated scales (`primary-50` → `primary-950`) ramp consistently across hues — yellow-700 won't look muddy compared to blue-700 anymore. It also unlocks Display P3 colors when you author a vivid preset.
 
@@ -614,6 +606,69 @@ Four bundled presets remain (`mazUi`, `pristine`, `ocean`, `obsidian`) plus a ne
 | `nova` | Modern AI — electric violet primary, cyan accent, hot coral secondary. |
 
 Switching to one of the bundled presets does not require any code change beyond the preset name. If you depended on the previous (washed-out gray) `secondary` color in a custom theme, override it back via `colors.{light,dark}.secondary` in your preset.
+
+### Theming: native CSS rewrite (new — non-breaking by default)
+
+The `@maz-ui/themes` CSS pipeline was rewritten to lean on native CSS instead of JS:
+
+- Base colors are now emitted as a single `--maz-X: light-dark(L, D)` declaration. The browser resolves it for you.
+- Color scales `--maz-X-50` through `--maz-X-950` are derived via OKLCh relative color syntax at runtime, so any override on the base color cascades through the whole scale automatically (and preserves its chroma).
+- `:root` declares `color-scheme: light dark` so native widgets (scrollbars, native `<select>`, date pickers, autofill) follow the active mode out of the box.
+- A `<meta name="color-scheme">` tag is **automatically injected** at boot (Vue + Nuxt SSR). No user action — prevents the Flash of inAccurate coloR Theme.
+
+Consumer-visible CSS surface is unchanged: `var(--maz-primary)`, `--maz-primary-500`, Tailwind utilities `bg-primary/60`, `bg-primary-500`, etc. all keep working.
+
+#### `lightClass` (new — optional, default `'light'`)
+
+Mirror of `darkClass`. When `colorMode === 'light'` and `darkModeStrategy === 'class'`, this class is added to `<html>` to force `color-scheme: only light`. Default `'light'` — set to `false`/custom string if it clashes with an existing class in your app:
+
+```ts
+app.use(MazUi, {
+  theme: {
+    preset: mazUi,
+    darkClass: 'dark',
+    lightClass: 'light', // new
+  },
+})
+```
+
+Non-breaking: if you never explicitly forced light, nothing changes.
+
+#### `setColorMode` / `toggleDarkMode` now return `Promise<void>`
+
+Both functions are now async to support the optional `{ animate: true }` parameter (View Transitions). Existing callers that ignored the return value keep working — `await` is only required when you need to chain.
+
+```ts
+const { setColorMode, toggleDarkMode } = useTheme()
+
+// Existing v4 call — still works, return value ignored
+setColorMode('dark')
+toggleDarkMode()
+
+// v5 — await to chain after the change is applied
+await setColorMode('dark')
+
+// v5 — animated full-page switch via document.startViewTransition()
+await toggleDarkMode({ animate: true })
+await setColorMode('dark', { animate: true })
+```
+
+The View Transitions glue is lazy-imported — when `animate` is not used, it stays out of your boot bundle. Browsers that don't support the API apply the change immediately with no animation.
+
+#### BREAKING — removed exports
+
+The JS-based palette generator is gone. The following helpers used to be exported from `@maz-ui/themes` and **no longer exist** in v5:
+
+| Removed export | Replacement |
+| --- | --- |
+| `generateColorScale(base, mode)` | The scale is now generated in CSS via `oklch(from var(--maz-X) clamp(0, calc(l ± offset), 1) calc(c * mult) h)`. Read the live value from `--maz-X-{50..950}`, or replicate the formula inline. |
+| `parseHSL(value)` | Use a CSS color parser or `parseColorAsOklch` from `@maz-ui/themes/utils/color-conversions`. |
+| `adjustColorLightness(color, amount)` | Inline with `oklch(from <color> calc(l + N) c h)` to shift lightness while preserving chroma and hue. |
+| `getContrastColor(color)` | Use the preset's `*-foreground` token, which is what components consume internally. |
+
+`colorToHex`, `parseColorAsOklch` and `formatAsOklch` are **preserved**, now exported from `@maz-ui/themes/utils/color-conversions`.
+
+If you were importing any of the removed helpers from `@maz-ui/themes`, replace them before upgrading.
 
 ### Preset name persistence (new — opt-out, no breaking change)
 

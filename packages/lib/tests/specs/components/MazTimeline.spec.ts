@@ -176,8 +176,6 @@ describe('given MazTimeline component', () => {
       const wrapper = mountTimeline()
 
       const style = wrapper.attributes('style')
-      expect(style).toContain('--m-timeline-color: var(--maz-primary-700)')
-      expect(style).toContain('--m-timeline-color-dark: var(--maz-primary-400)')
       expect(style).toContain('--m-timeline-bg: var(--maz-primary)')
       expect(style).toContain('--m-timeline-fg: var(--maz-primary-foreground)')
     })
@@ -186,8 +184,6 @@ describe('given MazTimeline component', () => {
       const wrapper = mountTimeline({ color: 'success' })
 
       const style = wrapper.attributes('style')
-      expect(style).toContain('--m-timeline-color: var(--maz-success-700)')
-      expect(style).toContain('--m-timeline-color-dark: var(--maz-success-400)')
       expect(style).toContain('--m-timeline-bg: var(--maz-success)')
       expect(style).toContain('--m-timeline-fg: var(--maz-success-foreground)')
     })

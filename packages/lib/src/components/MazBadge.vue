@@ -79,14 +79,11 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
   if (c === 'surface' || c === 'transparent')
     return undefined
 
-  const pastelFg = c === 'contrast' ? 'contrast-foreground' : `${c}-700`
-
   return {
     '--m-badge-bg': `var(--maz-${c})`,
     '--m-badge-fg': `var(--maz-${c}-foreground)`,
-    ...(pastel && {
-      '--m-badge-pastel-bg': `color-mix(in srgb, var(--maz-${c}-500) 20%, transparent)`,
-      '--m-badge-pastel-fg': `var(--maz-${pastelFg})`,
+    ...(pastel && c === 'contrast' && {
+      '--m-badge-pastel-fg': `var(--maz-contrast-foreground)`,
     }),
   }
 })
@@ -119,6 +116,11 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-badge {
+  /* Pastel variant derived from --m-badge-bg (color-mix for tint,
+   * OKLCh offset for foreground — mirrors SCALE_OFFSETS step -700). */
+  --m-badge-pastel-bg: color-mix(in srgb, var(--m-badge-bg) 20%, transparent);
+  --m-badge-pastel-fg: oklch(from var(--m-badge-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
+
   padding-block: 0.25em;
   padding-inline: 0.5em;
   line-height: 1.4em;

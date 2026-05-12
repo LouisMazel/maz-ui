@@ -52,13 +52,14 @@ export const DEFAULT_CONTAINER_BG: ThemeComponentBg = {
 }
 
 /**
- * Per-mode default bg for inputs. Light uses the bare `surface`; dark uses
- * `surface-400` so inputs read as one tier above the page background — the
- * same contrast pattern the v4 components shipped with.
+ * Per-mode default bg for inputs. Light uses the bare `surface`; dark
+ * derives one tier above the page background via relative OKLCh syntax
+ * (mirrors SCALE_OFFSETS step -400: l+0.06) — same contrast pattern the
+ * v4 components shipped with. Self-contained, no Tailwind dependency.
  */
 export const DEFAULT_INPUT_BG: ThemeComponentBg = {
   light: 'var(--maz-surface)',
-  dark: 'var(--maz-surface-400)',
+  dark: 'oklch(from var(--maz-surface) clamp(0, calc(l + 0.06), 1) c h)',
 }
 
 /**

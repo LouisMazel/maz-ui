@@ -2,11 +2,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import themePlugin from '../theme'
 
-const { mockInstall, mockGetPreset, mockMergePresets, mockGenerateCSS, mockGetSystemColorMode, mockUseCookie, mockUseHead, mockUseRequestHeaders } = vi.hoisted(() => ({
+const { mockInstall, mockGetPreset, mockMergePresets, mockGenerateCSS, mockResolveColorSchemeContent, mockGetSystemColorMode, mockUseCookie, mockUseHead, mockUseRequestHeaders } = vi.hoisted(() => ({
   mockInstall: vi.fn(),
   mockGetPreset: vi.fn(() => Promise.resolve({ colors: {} })),
   mockMergePresets: vi.fn((_a: any, _b: any) => ({ colors: {}, merged: true })),
   mockGenerateCSS: vi.fn(() => '.maz { color: red }'),
+  mockResolveColorSchemeContent: vi.fn(() => 'light dark'),
   mockGetSystemColorMode: vi.fn(() => 'light'),
   mockUseCookie: vi.fn(() => ({ value: undefined as string | undefined })),
   mockUseHead: vi.fn(),
@@ -22,6 +23,7 @@ vi.mock('@maz-ui/themes/utils', () => ({
   generateCSS: mockGenerateCSS,
   getPreset: mockGetPreset,
   mergePresets: mockMergePresets,
+  resolveColorSchemeContent: mockResolveColorSchemeContent,
 }))
 
 vi.mock('@maz-ui/themes/utils/get-color-mode', () => ({
