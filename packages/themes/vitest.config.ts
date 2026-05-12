@@ -42,7 +42,7 @@ export default defineConfig({
         //   have length >= 2.
         // - emitScales `else if (key !== 'md')` false-branch — `md` is
         //   required by the type, so `key === 'md' && !value` is unreachable.
-        branches: 98.7,
+        branches: 98.92,
         statements: 100,
         autoUpdate: !process.env.CI,
       },
