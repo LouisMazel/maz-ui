@@ -279,7 +279,7 @@ function formatColorName(colorName: string): string {
         <MazCard collapsible title="Scales" block>
           <div class="maz:flex maz:flex-col maz:gap-4">
             <div class="maz:flex maz:flex-col maz:gap-2">
-              <h4 class="maz:text-sm maz:font-semibold maz:text-foreground maz:m-0">
+              <h4 class="maz:m-0 maz:text-sm maz:font-semibold maz:text-foreground">
                 Rounded
               </h4>
               <MazInput
@@ -294,7 +294,7 @@ function formatColorName(colorName: string): string {
             </div>
 
             <div class="maz:flex maz:flex-col maz:gap-2">
-              <h4 class="maz:text-sm maz:font-semibold maz:text-foreground maz:m-0">
+              <h4 class="maz:m-0 maz:text-sm maz:font-semibold maz:text-foreground">
                 Shadow
               </h4>
               <MazInput
@@ -315,7 +315,7 @@ function formatColorName(colorName: string): string {
         <MazCard collapsible title="Components" block>
           <div class="maz:flex maz:flex-col maz:gap-4">
             <div class="maz:flex maz:flex-col maz:gap-2">
-              <h4 class="maz:text-sm maz:font-semibold maz:text-foreground maz:m-0">
+              <h4 class="maz:m-0 maz:text-sm maz:font-semibold maz:text-foreground">
                 MazBtn
               </h4>
               <MazInput
@@ -329,7 +329,7 @@ function formatColorName(colorName: string): string {
             </div>
 
             <div class="maz:flex maz:flex-col maz:gap-2">
-              <h4 class="maz:text-sm maz:font-semibold maz:text-foreground maz:m-0">
+              <h4 class="maz:m-0 maz:text-sm maz:font-semibold maz:text-foreground">
                 Container bg
               </h4>
               <MazInput
@@ -351,7 +351,7 @@ function formatColorName(colorName: string): string {
             </div>
 
             <div class="maz:flex maz:flex-col maz:gap-2">
-              <h4 class="maz:text-sm maz:font-semibold maz:text-foreground maz:m-0">
+              <h4 class="maz:m-0 maz:text-sm maz:font-semibold maz:text-foreground">
                 Input bg
               </h4>
               <MazInput
@@ -490,7 +490,7 @@ function formatColorName(colorName: string): string {
             v-else
             class="maz:bg-contrast maz:p-4 maz:dark:bg-surface-300"
           >
-            <pre class="maz:whitespace-pre-wrap maz:font-mono maz:text-xs maz:text-contrast-foreground maz:dark:text-foreground">{{ exportedCode }}</pre>
+            <pre class="maz:font-mono maz:text-xs maz:whitespace-pre-wrap maz:text-contrast-foreground maz:dark:text-foreground">{{ exportedCode }}</pre>
           </div>
         </div>
       </div>

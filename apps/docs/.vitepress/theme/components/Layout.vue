@@ -23,6 +23,6 @@ import DefaultTheme from 'vitepress/theme'
 @reference "../main.css";
 
 .banner {
-  @apply maz:bg-secondary-600/90 maz:fixed maz:inset-x-0 maz:top-0 maz:flex maz:flex-wrap maz:flex-center maz:justify-center maz:gap-2 maz:p-2 maz:z-default-backdrop maz:text-white maz:text-center maz:backdrop-blur-lg maz:text-sm;
+  @apply maz:bg-secondary-600/90 maz:fixed maz:inset-x-0 maz:top-0 maz:flex maz:flex-wrap maz:flex-center maz:justify-center maz:gap-2 maz:p-2 maz:z-1000 maz:text-white maz:text-center maz:backdrop-blur-lg maz:text-sm;
 }
 </style>
