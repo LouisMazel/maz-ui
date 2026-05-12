@@ -15,4 +15,8 @@ export default defineConfig({
   agentGuidelinesEnabled: true,
   gitToken: process.env.GITHUB_TOKEN,
   worktree: true,
+  greffierEnabled: false,
+  language: 'fr',
+  provider: 'anthropic',
+  baseBranch: 'develop',
 })
