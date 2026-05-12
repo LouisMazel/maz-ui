@@ -182,65 +182,6 @@ describe('setup-theme', () => {
       it('then it has lightClass set to light', () => {
         expect(defaultOptions.lightClass).toBe('light')
       })
-
-      it('then it has colorTransition set to true', () => {
-        expect(defaultOptions.colorTransition).toBe(true)
-      })
-    })
-  })
-
-  describe('given resolveColorTransition function', () => {
-    describe('when raw is false', () => {
-      it('then it returns false', async () => {
-        const { resolveColorTransition } = await import('../setup-theme')
-        expect(resolveColorTransition(false)).toBe(false)
-      })
-    })
-
-    describe('when raw is true and preset provides motion tokens', () => {
-      it('then it returns the preset motion-normal duration and easing-in-out', async () => {
-        const { resolveColorTransition } = await import('../setup-theme')
-        const preset: ThemePreset = {
-          ...mockPreset,
-          foundation: {
-            ...mockPreset.foundation,
-            'motion-normal': '350ms',
-            'easing-in-out': 'cubic-bezier(0.5, 0, 0.5, 1)',
-          },
-        } as ThemePreset
-        const result = resolveColorTransition(true, preset)
-        expect(result).toEqual({ duration: '350ms', easing: 'cubic-bezier(0.5, 0, 0.5, 1)' })
-      })
-    })
-
-    describe('when raw is undefined and no preset is provided', () => {
-      it('then it returns the hardcoded defaults', async () => {
-        const { resolveColorTransition } = await import('../setup-theme')
-        const result = resolveColorTransition(undefined)
-        expect(result).toEqual({ duration: '200ms', easing: 'cubic-bezier(0.4, 0, 0.2, 1)' })
-      })
-    })
-
-    describe('when raw is an object with duration and easing', () => {
-      it('then it returns the explicit values', async () => {
-        const { resolveColorTransition } = await import('../setup-theme')
-        const result = resolveColorTransition({ duration: '500ms', easing: 'linear' }, mockPreset)
-        expect(result).toEqual({ duration: '500ms', easing: 'linear' })
-      })
-    })
-
-    describe('when raw is a partial object', () => {
-      it('then it falls back to defaults for the missing fields', async () => {
-        const { resolveColorTransition } = await import('../setup-theme')
-        const result = resolveColorTransition({ duration: '500ms' }, mockPreset)
-        expect(result).toEqual({ duration: '500ms', easing: 'cubic-bezier(0.4, 0, 0.2, 1)' })
-      })
-
-      it('then it falls back to the default duration when only easing is provided', async () => {
-        const { resolveColorTransition } = await import('../setup-theme')
-        const result = resolveColorTransition({ easing: 'linear' }, mockPreset)
-        expect(result).toEqual({ duration: '200ms', easing: 'linear' })
-      })
     })
   })
 
@@ -272,7 +213,6 @@ describe('setup-theme', () => {
         expect(injectThemeCSS).toHaveBeenCalledWith(
           mockPreset,
           expect.objectContaining({ strategy: 'runtime' }),
-          expect.anything(),
         )
       })
     })

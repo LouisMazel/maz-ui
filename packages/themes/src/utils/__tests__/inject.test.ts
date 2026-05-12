@@ -22,8 +22,6 @@ function createMockThemeState(): Ref<ThemeState> {
     darkClass: 'dark',
     lightClass: 'light',
     persistPreset: true,
-    colorTransition: false,
-    _rawColorTransition: false,
   }) as Ref<ThemeState>
 }
 

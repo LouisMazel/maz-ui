@@ -1,4 +1,4 @@
-import type { Duration, ThemePreset } from '../types'
+import type { ThemePreset } from '../types'
 import { generateCSS } from '../utils/css-generator'
 
 export interface BuildThemeOptions {
@@ -15,8 +15,6 @@ export interface BuildThemeOptions {
   lightClass?: string
   /** Whether to generate color scales */
   scaleColorVariables?: boolean
-  /** Smooth color transition config. `false` (default) → instantaneous. */
-  colorTransition?: false | { duration: Duration, easing: string }
 }
 
 export function buildThemeCSS(options: BuildThemeOptions): string {
@@ -28,7 +26,6 @@ export function buildThemeCSS(options: BuildThemeOptions): string {
     darkClass = 'dark',
     lightClass = 'light',
     scaleColorVariables = true,
-    colorTransition = false,
   } = options
 
   return generateCSS(preset, {
@@ -38,7 +35,6 @@ export function buildThemeCSS(options: BuildThemeOptions): string {
     darkClass,
     lightClass,
     scaleColorVariables,
-    colorTransition,
   })
 }
 
@@ -49,7 +45,6 @@ export function generateThemeBundle(presets: ThemePreset[], options: {
   darkClass?: string
   lightClass?: string
   scaleColorVariables?: boolean
-  colorTransition?: false | { duration: Duration, easing: string }
 } = {}): Record<string, string> {
   const {
     mode = 'both',
@@ -58,7 +53,6 @@ export function generateThemeBundle(presets: ThemePreset[], options: {
     darkClass = 'dark',
     lightClass = 'light',
     scaleColorVariables = true,
-    colorTransition = false,
   } = options
 
   return presets.reduce((bundle, preset) => {
@@ -70,7 +64,6 @@ export function generateThemeBundle(presets: ThemePreset[], options: {
       darkClass,
       lightClass,
       scaleColorVariables,
-      colorTransition,
     })
     return bundle
   }, {} as Record<string, string>)
@@ -99,7 +92,6 @@ export function buildSeparateThemeFiles(preset: ThemePreset, options: {
   darkClass?: string
   lightClass?: string
   scaleColorVariables?: boolean
-  colorTransition?: false | { duration: Duration, easing: string }
 } = {}): {
   full: string
   lightOnly: string

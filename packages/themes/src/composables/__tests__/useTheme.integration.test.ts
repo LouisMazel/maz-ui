@@ -89,8 +89,6 @@ describe('useTheme integration with real vue reactivity', () => {
           mode: 'both',
           isDark: false,
           persistPreset: false,
-          colorTransition: false,
-          _rawColorTransition: false,
         }
 
         await runWithTheme(state, async ({ toggleDarkMode }, reactiveState) => {

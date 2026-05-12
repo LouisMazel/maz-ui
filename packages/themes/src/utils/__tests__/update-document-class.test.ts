@@ -14,8 +14,6 @@ function createThemeState(overrides: Partial<ThemeState> = {}): ThemeState {
     darkModeStrategy: 'class',
     darkClass: 'dark',
     lightClass: 'light',
-    colorTransition: false,
-    _rawColorTransition: false,
     persistPreset: true,
     ...overrides,
   }
@@ -174,30 +172,6 @@ describe('update-document-class', () => {
       it('then it proceeds with class manipulation', async () => {
         const { noTransition } = await import('../no-transition')
         const state = createThemeState({ mode: 'both', darkModeStrategy: 'class' })
-
-        updateDocumentClass('dark', state)
-
-        expect(noTransition).toHaveBeenCalledOnce()
-        expect(document.documentElement.classList.contains('dark')).toBe(true)
-      })
-    })
-
-    describe('when colorTransition is enabled (object)', () => {
-      it('then it skips the noTransition wrap so the CSS transition plays', async () => {
-        const { noTransition } = await import('../no-transition')
-        const state = createThemeState({ colorTransition: { duration: '200ms', easing: 'ease-in-out' } })
-
-        updateDocumentClass('dark', state)
-
-        expect(noTransition).not.toHaveBeenCalled()
-        expect(document.documentElement.classList.contains('dark')).toBe(true)
-      })
-    })
-
-    describe('when colorTransition is false', () => {
-      it('then it wraps in noTransition for an instant switch', async () => {
-        const { noTransition } = await import('../no-transition')
-        const state = createThemeState({ colorTransition: false })
 
         updateDocumentClass('dark', state)
 

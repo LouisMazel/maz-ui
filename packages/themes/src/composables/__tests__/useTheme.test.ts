@@ -18,8 +18,6 @@ const mockThemeState: ThemeState = {
   mode: 'both',
   isDark: false,
   persistPreset: true,
-  colorTransition: false,
-  _rawColorTransition: false,
 }
 
 const mockRefThemeState = { value: mockThemeState }

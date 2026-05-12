@@ -72,22 +72,6 @@ describe('given generateCSS function', () => {
     })
   })
 
-  describe('when generating with colorTransition enabled', () => {
-    const css = generateCSS(mazUi, {
-      prefix: 'maz',
-      mode: 'both',
-      darkSelectorStrategy: 'class',
-      darkClass: 'dark',
-      lightClass: 'light',
-      scaleColorVariables: true,
-      colorTransition: { duration: '200ms', easing: 'ease-in-out' },
-    })
-
-    it('then matches the snapshot with @property blocks and transition declaration', () => {
-      expect(css).toMatchSnapshot()
-    })
-  })
-
   describe('when generating with mode=both and darkSelectorStrategy=media', () => {
     const css = generateCSS(mazUi, {
       prefix: 'maz',
@@ -473,7 +457,6 @@ describe('given generateCSS function', () => {
         darkClass: 'dark',
         lightClass: 'light',
         scaleColorVariables: false,
-        colorTransition: false,
       })
 
       it('then it emits the value directly without light-dark wrapping', () => {
@@ -800,149 +783,13 @@ describe('given generateCSS function', () => {
     })
   })
 
-  describe('given colorTransition truthy', () => {
+  describe('given no @property blocks ever emitted', () => {
     const css = generateCSS(mazUi, {
       prefix: 'maz',
       mode: 'both',
       darkSelectorStrategy: 'class',
       darkClass: 'dark',
       scaleColorVariables: false,
-      colorTransition: { duration: '200ms', easing: 'cubic-bezier(0.4, 0, 0.2, 1)' },
-    })
-
-    it('then @property registrations are emitted for color vars', () => {
-      expect(css).toContain('@property --maz-primary {')
-      expect(css).toContain(`syntax: '<color>';`)
-      expect(css).toContain('inherits: true;')
-      expect(css).toContain('initial-value:')
-    })
-
-    it('then a transition rule is emitted in :root', () => {
-      expect(css).toMatch(/transition: --maz-[a-z-]+ 200ms cubic-bezier\(0\.4, 0, 0\.2, 1\)/)
-    })
-  })
-
-  describe('given colorTransition truthy and mode=dark', () => {
-    const preset = {
-      ...mazUi,
-      colors: {
-        ...mazUi.colors,
-        light: { ...mazUi.colors.light, primary: 'oklch(0.5 0.2 100)' },
-        dark: { ...mazUi.colors.dark, primary: 'oklch(0.3 0.1 200)' },
-      },
-    }
-    const css = generateCSS(preset, {
-      prefix: 'maz',
-      mode: 'dark',
-      darkSelectorStrategy: 'class',
-      darkClass: 'dark',
-      scaleColorVariables: false,
-      colorTransition: { duration: '200ms', easing: 'ease' },
-    })
-
-    it('then @property --maz-primary initial-value matches the dark color', () => {
-      expect(css).toMatch(/@property --maz-primary \{[^}]*initial-value: oklch\(0\.3 0\.1 200\);/)
-      expect(css).not.toMatch(/@property --maz-primary \{[^}]*initial-value: oklch\(0\.5 0\.2 100\);/)
-    })
-  })
-
-  describe('given colorTransition truthy and mode=dark with missing dark color', () => {
-    const preset = {
-      ...mazUi,
-      colors: {
-        ...mazUi.colors,
-        light: { ...mazUi.colors.light, primary: 'oklch(0.5 0.2 100)' },
-        dark: { ...mazUi.colors.dark, primary: undefined as any },
-      },
-    }
-    const css = generateCSS(preset, {
-      prefix: 'maz',
-      mode: 'dark',
-      darkSelectorStrategy: 'class',
-      darkClass: 'dark',
-      scaleColorVariables: false,
-      colorTransition: { duration: '200ms', easing: 'ease' },
-    })
-
-    it('then @property --maz-primary initial-value falls back to the light color', () => {
-      expect(css).toMatch(/@property --maz-primary \{[^}]*initial-value: oklch\(0\.5 0\.2 100\);/)
-    })
-  })
-
-  describe('given colorTransition truthy and a falsy color', () => {
-    const preset = {
-      ...mazUi,
-      colors: {
-        ...mazUi.colors,
-        light: { ...mazUi.colors.light, accent: '' as any },
-      },
-    }
-    const css = generateCSS(preset, {
-      prefix: 'maz',
-      mode: 'light',
-      darkSelectorStrategy: 'class',
-      darkClass: 'dark',
-      scaleColorVariables: false,
-      colorTransition: { duration: '200ms', easing: 'ease' },
-    })
-
-    it('then the transition declaration does not reference the skipped variable', () => {
-      const transitionLine = css.split('\n').find(l => l.trim().startsWith('transition:')) ?? ''
-      expect(transitionLine).not.toContain('--maz-accent ')
-      expect(transitionLine).toContain('--maz-primary ')
-    })
-
-    it('then no @property block is emitted for the skipped variable', () => {
-      expect(css).not.toContain('@property --maz-accent {')
-      expect(css).toContain('@property --maz-primary {')
-    })
-  })
-
-  describe('given colorTransition with empty duration', () => {
-    const css = generateCSS(mazUi, {
-      prefix: 'maz',
-      mode: 'both',
-      darkSelectorStrategy: 'class',
-      darkClass: 'dark',
-      scaleColorVariables: false,
-      colorTransition: { duration: '' as any, easing: 'ease' },
-    })
-
-    it('then no @property blocks are emitted', () => {
-      expect(css).not.toContain('@property --maz-')
-    })
-
-    it('then no transition declaration is emitted', () => {
-      expect(css).not.toMatch(/transition:\s*--maz-/)
-    })
-  })
-
-  describe('given colorTransition truthy and @layer hoisting', () => {
-    const css = generateCSS(mazUi, {
-      prefix: 'maz',
-      mode: 'both',
-      darkSelectorStrategy: 'class',
-      darkClass: 'dark',
-      scaleColorVariables: false,
-      colorTransition: { duration: '200ms', easing: 'ease' },
-    })
-
-    it('then @property blocks appear before @layer theme', () => {
-      const propertyIndex = css.indexOf('@property --maz-')
-      const layerIndex = css.indexOf('@layer theme {')
-      expect(propertyIndex).toBeGreaterThanOrEqual(0)
-      expect(layerIndex).toBeGreaterThan(propertyIndex)
-    })
-  })
-
-  describe('given colorTransition: false', () => {
-    const css = generateCSS(mazUi, {
-      prefix: 'maz',
-      mode: 'both',
-      darkSelectorStrategy: 'class',
-      darkClass: 'dark',
-      scaleColorVariables: false,
-      colorTransition: false,
     })
 
     it('then no @property blocks are emitted', () => {

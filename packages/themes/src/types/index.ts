@@ -285,18 +285,6 @@ interface BaseThemeConfig {
   lightClass?: string
 
   /**
-   * Smooth color transition on dark/light toggle.
-   * @description When enabled, color CSS custom properties are registered via `@property`
-   * and a `transition` is applied so the switch animates smoothly. When `false`, the switch
-   * is instantaneous (legacy behaviour).
-   * - `true` → transition with preset `motion-normal` duration and `easing-in-out`
-   * - `false` → instantaneous
-   * - object → custom duration/easing
-   * @default true
-   */
-  colorTransition?: boolean | { duration?: Duration, easing?: string }
-
-  /**
    * Dark mode handling
    * @description
    * - `class`: Dark mode activated with `.dark` class
@@ -401,15 +389,6 @@ export interface ThemeState {
    * @description The class added to the document root when light mode is explicitly forced.
    */
   lightClass: string
-  /**
-   * Color transition config (resolved)
-   * @description Resolved transition config — `false` if disabled, `{ duration, easing }` otherwise.
-   */
-  colorTransition: false | { duration: Duration, easing: string }
-  /**
-   * @internal
-   */
-  _rawColorTransition?: boolean | { duration?: Duration, easing?: string }
   /**
    * Whether the active preset name is persisted in the `maz-preset` cookie.
    */

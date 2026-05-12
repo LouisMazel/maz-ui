@@ -10,7 +10,6 @@ import { CSS_ID, generateCSS, injectCSS } from '../utils/css-generator'
 import { getSystemColorMode, saveResolvedColorMode } from '../utils/get-color-mode'
 import { getPreset } from '../utils/get-preset'
 import { mergePresets } from '../utils/preset-merger'
-import { resolveColorTransition } from '../utils/setup-theme'
 
 const themeState = ref<ThemeState>()
 
@@ -18,7 +17,7 @@ const colorMode = computed<ColorMode>({
   get: () => themeState.value?.colorMode as ColorMode,
   /**
    * Setter fires `setColorMode(mode)` synchronously (Promise<void> is discarded).
-   * If you need to await the change (e.g., when `colorTransition` is enabled), call
+   * If you need to await the change (e.g., when `animate: true` is used), call
    * `setColorMode(mode)` directly to receive the Promise.
    */
   set: mode => void setColorMode(mode),
@@ -52,10 +51,6 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
   }
 
   if (themeState.value.strategy === 'runtime') {
-    themeState.value.colorTransition = resolveColorTransition(
-      themeState.value._rawColorTransition,
-      newPreset,
-    )
     const cssOptions: CSSOptions = {
       mode: themeState.value.mode,
       darkSelectorStrategy: themeState.value.darkModeStrategy,
@@ -63,7 +58,6 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
       scaleColorVariables: true,
       darkClass: themeState.value.darkClass,
       lightClass: themeState.value.lightClass,
-      colorTransition: themeState.value.colorTransition,
     }
 
     const fullCSS = generateCSS(newPreset, cssOptions)

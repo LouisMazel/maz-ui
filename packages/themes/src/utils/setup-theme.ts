@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import type { MazUiThemeOptions } from '../plugin'
-import type { Duration, ThemePreset, ThemePresetName, ThemeState } from '../types'
+import type { ThemePreset, ThemePresetName, ThemeState } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { ref, watch } from 'vue'
 import { injectColorSchemeMeta, resolveColorSchemeContent } from './color-scheme-meta'
@@ -84,26 +84,7 @@ export const defaultOptions = {
   lightClass: 'light',
   colorMode: 'auto',
   persistPreset: true,
-  colorTransition: true,
 } satisfies Required<Omit<MazUiThemeOptions, 'preset'>> & Pick<MazUiThemeOptions, 'preset'>
-
-export function resolveColorTransition(
-  raw: MazUiThemeOptions['colorTransition'],
-  preset?: ThemePreset,
-): false | { duration: Duration, easing: string } {
-  if (raw === false)
-    return false
-  const defaults = {
-    duration: (preset?.foundation?.['motion-normal'] ?? '200ms') as Duration,
-    easing: preset?.foundation?.['easing-in-out'] ?? 'cubic-bezier(0.4, 0, 0.2, 1)',
-  }
-  if (raw === true || raw === undefined)
-    return defaults
-  return {
-    duration: raw.duration ?? defaults.duration,
-    easing: raw.easing ?? defaults.easing,
-  }
-}
 
 export interface SetupThemeReturn {
   themeState: Ref<ThemeState>
@@ -140,8 +121,6 @@ function createThemeState(options: MazUiThemeOptions, config: ResolvedConfig): T
     mode: config.mode,
     preset: undefined,
     persistPreset: config.persistPreset,
-    colorTransition: resolveColorTransition(config.colorTransition, undefined),
-    _rawColorTransition: config.colorTransition,
     // @ts-expect-error _isDark is a private property
     isDark: options._isDark || isDark,
   })
@@ -167,15 +146,11 @@ function finalizeTheme(
     }
   }
 
-  if (finalPreset) {
-    themeState.value.colorTransition = resolveColorTransition(themeState.value._rawColorTransition, finalPreset)
-  }
-
   if (config.strategy === 'buildtime' || !finalPreset) {
     return { themeState: themeState as Ref<ThemeState>, cleanup: () => {} }
   }
 
-  injectThemeCSS(finalPreset, config, themeState.value.colorTransition)
+  injectThemeCSS(finalPreset, config)
 
   const cleanupColorScheme = watchColorSchemeFromMedia(themeState)
   const cleanupMutation = watchMutationClassOnHtmlElement(themeState)
@@ -203,9 +178,8 @@ function swapPreset(themeState: ThemeStateRef, preset: ThemePreset, config: Reso
     ? mergePresets(preset, config.overrides)
     : preset
   themeState.value.preset = final
-  themeState.value.colorTransition = resolveColorTransition(themeState.value._rawColorTransition, final)
   saveResolvedPresetName(final.name)
-  injectThemeCSS(final, config, themeState.value.colorTransition)
+  injectThemeCSS(final, config)
 }
 
 export function setupTheme(options: MazUiThemeOptions): SetupThemeReturn {

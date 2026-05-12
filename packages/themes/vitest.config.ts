@@ -34,18 +34,15 @@ export default defineConfig({
       thresholds: {
         lines: 100,
         functions: 100,
-        // Branches restored above the original 97.21 baseline. The remaining
-        // uncovered branches in css-generator.ts are genuinely defensive and
-        // unreachable in practice:
-        // - emitPropertyBlock `?? 'oklch(0 0 0)'` fallback — `isColorEmitted`
-        //   gates the loop so the fallback is unreachable.
+        // Remaining uncovered branches in css-generator.ts are genuinely
+        // defensive and unreachable in practice:
         // - emitComponents `bg.light ?? bg.dark ?? ''` final `?? ''` —
         //   guarded by the parent `(bg.light || bg.dark)` check.
         // - injectCSS `if (lastElement)` after `at(-1)` on an array known to
         //   have length >= 2.
         // - emitScales `else if (key !== 'md')` false-branch — `md` is
         //   required by the type, so `key === 'md' && !value` is unreachable.
-        branches: 98.13,
+        branches: 98.7,
         statements: 100,
         autoUpdate: !process.env.CI,
       },
