@@ -78,8 +78,8 @@ importers:
         specifier: ^10.1.3
         version: 10.1.3(postcss@8.5.14)
       relizy:
-        specifier: 1.4.3
-        version: 1.4.3(@types/node@25.6.2)(@yoloship/claude-sdk@0.1.0)(magicast@0.5.2)(twitter-api-v2@1.29.0)
+        specifier: 1.4.5
+        version: 1.4.5(@types/node@25.6.2)(@yoloship/claude-sdk@0.1.0)(magicast@0.5.2)(twitter-api-v2@1.29.0)
       stylelint:
         specifier: ^17.11.0
         version: 17.11.0(typescript@5.9.3)
@@ -9364,8 +9364,8 @@ packages:
     resolution: {integrity: sha512-NZQZdC5wOE/H3UT28fVGL+ikOZcEzfMGk/c3iN9UGxzWHMa1op7274oyiUVrAG4B2EuFhus8SvkaYnhvW92p9Q==}
     hasBin: true
 
-  relizy@1.4.3:
-    resolution: {integrity: sha512-BEQhDZWg11eo+ly4HpZL3d5lM8nKRT10ZQnTFTR2Uum09Nz8nPLxiMp+4LFul6nBk+7P402KP40J/LJ6D/aWuQ==}
+  relizy@1.4.5:
+    resolution: {integrity: sha512-E3545AXDcbY1+P6FoHREXj2lRilr4XsqoMyToFsFxlJzerxZyHCsfJx3zr0XXvF0WCX8+CNwZgP0MImnE0QSYA==}
     engines: {node: '>=20.0.0'}
     hasBin: true
     peerDependencies:
@@ -20444,7 +20444,7 @@ snapshots:
     dependencies:
       jsesc: 3.1.0
 
-  relizy@1.4.3(@types/node@25.6.2)(@yoloship/claude-sdk@0.1.0)(magicast@0.5.2)(twitter-api-v2@1.29.0):
+  relizy@1.4.5(@types/node@25.6.2)(@yoloship/claude-sdk@0.1.0)(magicast@0.5.2)(twitter-api-v2@1.29.0):
     dependencies:
       '@inquirer/prompts': 8.4.2(@types/node@25.6.2)
       '@maz-ui/node': 4.6.1
