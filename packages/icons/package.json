@@ -37,52 +37,62 @@
     ".": {
       "monorepo:dev": "./src/index.ts",
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./*": {
       "monorepo:dev": "./src/static/*.ts",
       "types": "./dist/static/*.d.ts",
-      "import": "./dist/static/*.js"
+      "import": "./dist/static/*.js",
+      "default": "./dist/static/*.js"
     },
     "./static": {
       "monorepo:dev": "./src/static/index.ts",
       "types": "./dist/static/index.d.ts",
-      "import": "./dist/static/index.js"
+      "import": "./dist/static/index.js",
+      "default": "./dist/static/index.js"
     },
     "./static/*": {
       "monorepo:dev": "./src/static/*.ts",
       "types": "./dist/static/*.d.ts",
-      "import": "./dist/static/*.js"
+      "import": "./dist/static/*.js",
+      "default": "./dist/static/*.js"
     },
     "./lazy": {
       "monorepo:dev": "./src/lazy/index.ts",
       "types": "./dist/lazy/index.d.ts",
-      "import": "./dist/lazy/index.js"
+      "import": "./dist/lazy/index.js",
+      "default": "./dist/lazy/index.js"
     },
     "./lazy/*": {
       "monorepo:dev": "./src/lazy/*.ts",
       "types": "./dist/lazy/*.d.ts",
-      "import": "./dist/lazy/*.js"
+      "import": "./dist/lazy/*.js",
+      "default": "./dist/lazy/*.js"
     },
     "./raw": {
       "monorepo:dev": "./src/raw/index.ts",
       "types": "./dist/raw/index.d.ts",
-      "import": "./dist/raw/index.js"
+      "import": "./dist/raw/index.js",
+      "default": "./dist/raw/index.js"
     },
     "./raw/*": {
       "monorepo:dev": "./src/raw/*.ts",
       "types": "./dist/raw/*.d.ts",
-      "import": "./dist/raw/*.js"
+      "import": "./dist/raw/*.js",
+      "default": "./dist/raw/*.js"
     },
     "./resolvers": {
       "monorepo:dev": "./src/resolvers.ts",
       "types": "./dist/resolvers.d.ts",
-      "import": "./dist/resolvers.js"
+      "import": "./dist/resolvers.js",
+      "default": "./dist/resolvers.js"
     },
     "./icon-list": {
       "monorepo:dev": "./src/icon-list.ts",
       "types": "./dist/icon-list.d.ts",
-      "import": "./dist/icon-list.js"
+      "import": "./dist/icon-list.js",
+      "default": "./dist/icon-list.js"
     },
     "./svg/*": "./svg/*"
   },
