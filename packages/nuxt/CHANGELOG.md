@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.7 (2026-05-12)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.6...v5.0.0-beta.7)
+
+### 🚀 Features
+
+- **@maz-ui/themes:** Modernize CSS generator with light-dark, color-scheme, color-mix ([#1572](https://github.com/LouisMazel/maz-ui/pull/1572))
+
+### ❤️ Contributors
+
+- Mazel (Loïc Mazuel) ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.6 (2026-05-11)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.5...v5.0.0-beta.6)
