@@ -48,7 +48,7 @@ Each one comes with `bg-X`, `text-X`, `border-X`, an 11-step scale (`bg-X-50` �
 ```
 
 ::: info Alpha utilities and scales in v5
-`bg-primary/60`, `text-primary/40`, `border-primary/50` and the rest of Tailwind's alpha syntax continue to work unchanged. In v5 the 50–950 scales are derived in CSS via `color-mix(in oklch, …)` and the base colors are resolved through `light-dark()`, but this is invisible at the utility level — your Tailwind classes don't change.
+`bg-primary/60`, `text-primary/40`, `border-primary/50` and the rest of Tailwind's alpha syntax continue to work unchanged. In v5 the 50–950 scales are derived in CSS via OKLCh relative color syntax and the base colors are resolved through `light-dark()`, but this is invisible at the utility level — your Tailwind classes don't change.
 :::
 
 ### Neutral & surface colors

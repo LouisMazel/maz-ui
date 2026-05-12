@@ -21,24 +21,30 @@ export interface CSSOptions {
 const ROUNDED_KEYS: readonly RoundedScaleKey[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']
 
 /**
- * Palette steps 50..950 expressed as `color-mix` against white (tints) or black
- * (shades). Step 500 emits the base color directly. Aligned with Tailwind v4.
+ * Palette steps 50..950 expressed as OKLCh offsets relative to the base color.
+ *
+ * `l` is added to the base lightness (clamped to [0, 1]); `c` multiplies the
+ * base chroma. Step 500 (`null`) aliases the base directly. The lightness
+ * offsets match Tailwind v4's perceptual spread, and the chroma multiplier
+ * tapers chroma near the extremes — extremes use less chroma to avoid garish
+ * near-white / near-black tones — so derived shades stay vibrant rather than
+ * washed-out as `color-mix(..., white|black N%)` would produce.
  */
-export const SCALE_MIX_PERCENTAGES = {
-  50: { mixWith: 'white', percent: 95 },
-  100: { mixWith: 'white', percent: 85 },
-  200: { mixWith: 'white', percent: 70 },
-  300: { mixWith: 'white', percent: 50 },
-  400: { mixWith: 'white', percent: 25 },
-  500: { mixWith: null },
-  600: { mixWith: 'black', percent: 15 },
-  700: { mixWith: 'black', percent: 30 },
-  800: { mixWith: 'black', percent: 45 },
-  900: { mixWith: 'black', percent: 60 },
-  950: { mixWith: 'black', percent: 75 },
-} as const satisfies Record<number, { mixWith: 'white' | 'black' | null, percent?: number }>
+export const SCALE_OFFSETS = {
+  50: { l: 0.42, c: 0.1 },
+  100: { l: 0.35, c: 0.3 },
+  200: { l: 0.26, c: 0.6 },
+  300: { l: 0.17, c: 0.85 },
+  400: { l: 0.08, c: 1 },
+  500: null,
+  600: { l: -0.07, c: 1 },
+  700: { l: -0.14, c: 1 },
+  800: { l: -0.21, c: 0.85 },
+  900: { l: -0.28, c: 0.65 },
+  950: { l: -0.34, c: 0.45 },
+} as const satisfies Record<number, { l: number, c: number } | null>
 
-export type ScaleStep = keyof typeof SCALE_MIX_PERCENTAGES
+export type ScaleStep = keyof typeof SCALE_OFFSETS
 
 /** Color names that receive a 50..950 scale. Foreground variants are NOT scaled. */
 export const SCALED_COLOR_NAMES = [
@@ -118,12 +124,16 @@ function appendColorScales(
   for (const name of SCALED_COLOR_NAMES) {
     if (!source[name])
       continue
-    for (const [stepStr, conf] of Object.entries(SCALE_MIX_PERCENTAGES)) {
+    const base = `var(--${prefix}-${name})`
+    for (const [stepStr, off] of Object.entries(SCALE_OFFSETS)) {
       const v = `--${prefix}-${name}-${stepStr}`
-      const base = `var(--${prefix}-${name})`
-      lines.push(conf.mixWith === null
-        ? `    ${v}: ${base};`
-        : `    ${v}: color-mix(in oklch, ${base}, ${conf.mixWith} ${conf.percent}%);`)
+      if (off === null) {
+        lines.push(`    ${v}: ${base};`)
+        continue
+      }
+      const lExpr = `clamp(0, calc(l ${off.l >= 0 ? '+' : '-'} ${Math.abs(off.l)}), 1)`
+      const cExpr = off.c === 1 ? 'c' : `calc(c * ${off.c})`
+      lines.push(`    ${v}: oklch(from ${base} ${lExpr} ${cExpr} h);`)
     }
   }
 }

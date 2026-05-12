@@ -8,7 +8,7 @@ High-performance and typed theme system for Maz-UI.
 - 🌓 **Native dark mode** - `color-scheme` makes native form controls, scrollbars, and built-in widgets adapt automatically
 - ✨ **View Transitions** - Optional full-page animated theme switch via `document.startViewTransition()`
 - 🛡️ **Anti-FART** - `<meta name="color-scheme">` injected at boot to prevent any Flash of inAccurate coloR Theme
-- 🚀 **Automatic generation** - Automatically generates color variants (50-950) via `color-mix(in oklch, …)`
+- 🚀 **Automatic generation** - Automatically generates color variants (50-950) via OKLCh relative color syntax
 - ⚡ **Flexible strategies** - Runtime injection or build-time generation
 - 🛡️ **Strict TypeScript** - Complete types for optimal DX
 - 🎯 **Zero FOUC** - Pass the preset object so the full CSS renders synchronously on first paint
@@ -199,7 +199,7 @@ CSS generated at build-time and included in the bundle. Nothing is injected at r
 The generator produces a modern, native CSS contract:
 
 - **Base colors** are emitted as `light-dark(L, D)` when `mode: 'both'` — a single declaration that the browser resolves to the active scheme. Example: `--maz-primary: light-dark(oklch(0.6 0.2 250), oklch(0.7 0.2 250));`.
-- **Scale palettes** `--maz-X-50` through `--maz-X-950` are derived from the base via `color-mix(in oklch, var(--maz-X), white|black N%)`. The `in oklch` interpolation keeps the scale perceptually uniform and chroma-stable.
+- **Scale palettes** `--maz-X-50` through `--maz-X-950` are derived from the base via OKLCh relative color syntax — `oklch(from var(--maz-X) clamp(0, calc(l ± offset), 1) calc(c * mult) h)`. Lightness offsets follow Tailwind v4's perceptual spread; chroma is preserved (and tapered near extremes) so derived shades stay vibrant rather than washed-out.
 - **Color scheme** is declared on `:root` as `color-scheme: light dark`. With `darkModeStrategy: 'class'`, the generator also emits `.dark { color-scheme: only dark; }` and `.light { color-scheme: only light; }` so an explicit user choice overrides the system preference (and native widgets follow).
 - **Design tokens** — `--maz-rounded-*`, `--maz-shadow-*`, `--maz-font-family`, motion durations, easings, etc. — are bridged into Tailwind v4 via `@theme inline`.
 

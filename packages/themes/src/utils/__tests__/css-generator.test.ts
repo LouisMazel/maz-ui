@@ -1,6 +1,6 @@
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { mazUi } from '../../presets/mazUi'
-import { CSS_ID, generateCSS, injectCSS, removeCSS, SCALE_MIX_PERCENTAGES, SCALED_COLOR_NAMES } from '../css-generator'
+import { CSS_ID, generateCSS, injectCSS, removeCSS, SCALE_OFFSETS, SCALED_COLOR_NAMES } from '../css-generator'
 
 vi.mock('@maz-ui/utils/helpers/isServer', () => ({
   isServer: vi.fn(() => false),
@@ -48,19 +48,19 @@ describe('given generateCSS function', () => {
 
     it('then aliases palette step 500 directly to var(--maz-X)', () => {
       expect(css).toContain('--maz-primary-500: var(--maz-primary)')
-      expect(css).not.toMatch(/--maz-primary-500: color-mix/)
+      expect(css).not.toMatch(/--maz-primary-500: oklch\(from/)
     })
 
-    it('then emits color-mix(in oklch) for tints below 500', () => {
-      expect(css).toContain('--maz-primary-50: color-mix(in oklch, var(--maz-primary), white 95%)')
-      expect(css).toContain('--maz-primary-100: color-mix(in oklch, var(--maz-primary), white 85%)')
-      expect(css).toContain('--maz-primary-400: color-mix(in oklch, var(--maz-primary), white 25%)')
+    it('then emits oklch(from var(--maz-X) ...) for tints below 500', () => {
+      expect(css).toContain('--maz-primary-50: oklch(from var(--maz-primary) clamp(0, calc(l + 0.42), 1) calc(c * 0.1) h)')
+      expect(css).toContain('--maz-primary-100: oklch(from var(--maz-primary) clamp(0, calc(l + 0.35), 1) calc(c * 0.3) h)')
+      expect(css).toContain('--maz-primary-400: oklch(from var(--maz-primary) clamp(0, calc(l + 0.08), 1) c h)')
     })
 
-    it('then emits color-mix(in oklch) for shades above 500', () => {
-      expect(css).toContain('--maz-primary-600: color-mix(in oklch, var(--maz-primary), black 15%)')
-      expect(css).toContain('--maz-primary-900: color-mix(in oklch, var(--maz-primary), black 60%)')
-      expect(css).toContain('--maz-primary-950: color-mix(in oklch, var(--maz-primary), black 75%)')
+    it('then emits oklch(from var(--maz-X) ...) for shades above 500', () => {
+      expect(css).toContain('--maz-primary-600: oklch(from var(--maz-primary) clamp(0, calc(l - 0.07), 1) c h)')
+      expect(css).toContain('--maz-primary-900: oklch(from var(--maz-primary) clamp(0, calc(l - 0.28), 1) calc(c * 0.65) h)')
+      expect(css).toContain('--maz-primary-950: oklch(from var(--maz-primary) clamp(0, calc(l - 0.34), 1) calc(c * 0.45) h)')
     })
 
     it('then emits the contrast-600 scale entry', () => {
@@ -952,22 +952,29 @@ describe('given removeCSS function', () => {
   })
 })
 
-describe('given the scale mix percentages table', () => {
+describe('given the scale offsets table', () => {
   describe('when accessing palette steps', () => {
     it('exposes 11 steps from 50 to 950', () => {
-      const keys = Object.keys(SCALE_MIX_PERCENTAGES).map(Number)
+      const keys = Object.keys(SCALE_OFFSETS).map(Number)
       expect(keys.sort((a, b) => a - b)).toEqual([50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950])
     })
 
-    it('uses white mixing below 500 and black mixing above', () => {
-      expect(SCALE_MIX_PERCENTAGES[50]).toMatchObject({ mixWith: 'white' })
-      expect(SCALE_MIX_PERCENTAGES[400]).toMatchObject({ mixWith: 'white' })
-      expect(SCALE_MIX_PERCENTAGES[600]).toMatchObject({ mixWith: 'black' })
-      expect(SCALE_MIX_PERCENTAGES[950]).toMatchObject({ mixWith: 'black' })
+    it('uses positive lightness offsets below 500 and negative above', () => {
+      expect(SCALE_OFFSETS[50]).toMatchObject({ l: 0.42 })
+      expect(SCALE_OFFSETS[400]).toMatchObject({ l: 0.08 })
+      expect(SCALE_OFFSETS[600]).toMatchObject({ l: -0.07 })
+      expect(SCALE_OFFSETS[950]).toMatchObject({ l: -0.34 })
     })
 
-    it('uses identity for step 500', () => {
-      expect(SCALE_MIX_PERCENTAGES[500]).toEqual({ mixWith: null })
+    it('uses identity (null) for step 500', () => {
+      expect(SCALE_OFFSETS[500]).toBeNull()
+    })
+
+    it('tapers chroma at the extremes to avoid washed-out shades', () => {
+      expect(SCALE_OFFSETS[50]?.c).toBeLessThan(0.5)
+      expect(SCALE_OFFSETS[950]?.c).toBeLessThan(0.5)
+      expect(SCALE_OFFSETS[400]?.c).toBe(1)
+      expect(SCALE_OFFSETS[600]?.c).toBe(1)
     })
   })
 

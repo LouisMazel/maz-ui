@@ -557,7 +557,7 @@ rg "color\s*=\s*['\"]background['\"]" src/
 
 ### Theme colors are now emitted as OKLCh
 
-`@maz-ui/themes` now ships its bundled presets (`mazUi`, `ocean`, `pristine`, `obsidian`, `nova`) in `oklch()` form, and the runtime CSS variables (`--maz-primary`, `--maz-primary-100`, …) therefore hold OKLCh colors. The 50–950 scale is derived in CSS via `color-mix(in oklch, var(--maz-X), white|black N%)` — perceptually uniform, chroma-stable, and live-reactive to base color overrides.
+`@maz-ui/themes` now ships its bundled presets (`mazUi`, `ocean`, `pristine`, `obsidian`, `nova`) in `oklch()` form, and the runtime CSS variables (`--maz-primary`, `--maz-primary-100`, …) therefore hold OKLCh colors. The 50–950 scale is derived in CSS via OKLCh relative color syntax — `oklch(from var(--maz-X) clamp(0, calc(l ± offset), 1) calc(c * mult) h)` — perceptually uniform, chroma-preserving, and live-reactive to base color overrides.
 
 This is **transparent for consumers**:
 
@@ -612,7 +612,7 @@ Switching to one of the bundled presets does not require any code change beyond 
 The `@maz-ui/themes` CSS pipeline was rewritten to lean on native CSS instead of JS:
 
 - Base colors are now emitted as a single `--maz-X: light-dark(L, D)` declaration. The browser resolves it for you.
-- Color scales `--maz-X-50` through `--maz-X-950` are derived via `color-mix(in oklch, …)` at runtime, so any override on the base color cascades through the whole scale automatically.
+- Color scales `--maz-X-50` through `--maz-X-950` are derived via OKLCh relative color syntax at runtime, so any override on the base color cascades through the whole scale automatically (and preserves its chroma).
 - `:root` declares `color-scheme: light dark` so native widgets (scrollbars, native `<select>`, date pickers, autofill) follow the active mode out of the box.
 - A `<meta name="color-scheme">` tag is **automatically injected** at boot (Vue + Nuxt SSR). No user action — prevents the Flash of inAccurate coloR Theme.
 
@@ -661,12 +661,12 @@ The JS-based palette generator is gone. The following helpers used to be exporte
 
 | Removed export | Replacement |
 | --- | --- |
-| `generateColorScale(base, mode)` | The scale is now generated in CSS via `color-mix(in oklch, var(--maz-X), white/black N%)`. Read the live value from `--maz-X-{50..950}`, or compute the same blend yourself with `color-mix()`. |
-| `parseHSL(value)` | Use a CSS color parser or `parseColorAsOklch` from `@maz-ui/themes/utils/color-parser`. |
-| `adjustColorLightness(color, amount)` | Inline with `color-mix(in oklch, <color>, white N%)` (lighten) or `color-mix(in oklch, <color>, black N%)` (darken). |
+| `generateColorScale(base, mode)` | The scale is now generated in CSS via `oklch(from var(--maz-X) clamp(0, calc(l ± offset), 1) calc(c * mult) h)`. Read the live value from `--maz-X-{50..950}`, or replicate the formula inline. |
+| `parseHSL(value)` | Use a CSS color parser or `parseColorAsOklch` from `@maz-ui/themes/utils/color-conversions`. |
+| `adjustColorLightness(color, amount)` | Inline with `oklch(from <color> calc(l + N) c h)` to shift lightness while preserving chroma and hue. |
 | `getContrastColor(color)` | Use the preset's `*-foreground` token, which is what components consume internally. |
 
-`colorToHex`, `parseColorAsOklch` and `formatAsOklch` from `@maz-ui/themes/utils/color-parser` are **preserved**.
+`colorToHex`, `parseColorAsOklch` and `formatAsOklch` are **preserved**, now exported from `@maz-ui/themes/utils/color-conversions`.
 
 If you were importing any of the removed helpers from `@maz-ui/themes`, replace them before upgrading.
 

@@ -15,7 +15,7 @@ description: Modern and performant theme system for Maz-UI built on native CSS f
 - **Native widget theming** - `color-scheme` makes scrollbars, native `<select>`, date pickers and autofill follow the active mode automatically
 - **Animated theme switch** - Optional full-page View Transitions via `setColorMode(..., { animate: true })`
 - **Anti-FART** - `<meta name="color-scheme">` injected at boot to prevent any Flash of inAccurate coloR Theme (no setup needed)
-- **Automatic color scales** - `--maz-X-50` through `--maz-X-950` derived via `color-mix(in oklch, …)` — perceptually uniform, chroma-stable
+- **Automatic color scales** - `--maz-X-50` through `--maz-X-950` derived via OKLCh relative color syntax — perceptually uniform and chroma-preserving
 - **Performance Strategies** - Runtime injection or build-time generation according to your needs
 - **Strict TypeScript** - Complete types for perfect DX
 - **Zero FOUC** - Pass the preset object up front; the full CSS is injected synchronously on first paint
@@ -960,7 +960,7 @@ Per-component knobs under `components.<key>`. All optional — omit to fall back
 
 ### Sample output
 
-Each base color is emitted as a `light-dark()` value; scales `--maz-X-50` through `--maz-X-950` are derived via `color-mix(in oklch, …)` so they automatically follow base color overrides at runtime.
+Each base color is emitted as a `light-dark()` value; scales `--maz-X-50` through `--maz-X-950` are derived via OKLCh relative color syntax so they automatically follow base color overrides at runtime, preserving chroma at every step.
 
 ```css
 :root {
@@ -972,9 +972,9 @@ Each base color is emitted as a `light-dark()` value; scales `--maz-X-50` throug
   --maz-surface: light-dark(oklch(1 0 0), oklch(0.18 0.01 254));
   --maz-foreground: light-dark(oklch(0.26 0.01 254), oklch(0.96 0.005 254));
 
-  /* Auto-generated 50–950 scale — derived from the base via color-mix */
-  --maz-primary-500: color-mix(in oklch, var(--maz-primary), transparent 0%);
-  --maz-primary-600: color-mix(in oklch, var(--maz-primary), black 10%);
+  /* Auto-generated 50–950 scale — derived via relative color syntax */
+  --maz-primary-500: var(--maz-primary);
+  --maz-primary-600: oklch(from var(--maz-primary) clamp(0, calc(l - 0.07), 1) c h);
   /* ... */
 
   /* Foundation */
