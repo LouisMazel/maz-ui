@@ -634,25 +634,6 @@ app.use(MazUi, {
 
 Non-breaking: if you never explicitly forced light, nothing changes.
 
-#### `colorTransition` (new — optional, default `true`)
-
-Animates color CSS variables when switching dark/light:
-
-- `true` → animate with the preset's `motion-normal` duration and `easing-in-out` (default).
-- `false` → instantaneous switch (v4 behaviour).
-- `{ duration, easing }` → custom values.
-
-```ts
-app.use(MazUi, {
-  theme: {
-    preset: mazUi,
-    colorTransition: { duration: '250ms', easing: 'ease-in-out' },
-  },
-})
-```
-
-The transition relies on `@property` (Baseline 2024 — Firefox 128+). Browsers without `@property` fall through to an instant swap with no error.
-
 #### `setColorMode` / `toggleDarkMode` now return `Promise<void>`
 
 Both functions are now async to support the optional `{ animate: true }` parameter (View Transitions). Existing callers that ignored the return value keep working — `await` is only required when you need to chain.

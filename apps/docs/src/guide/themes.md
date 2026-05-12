@@ -13,7 +13,6 @@ description: Modern and performant theme system for Maz-UI built on native CSS f
 
 - **Native `light-dark()` + `color-scheme`** - Modern CSS theming with zero JS overhead for the light/dark switch
 - **Native widget theming** - `color-scheme` makes scrollbars, native `<select>`, date pickers and autofill follow the active mode automatically
-- **Smooth color transitions** - Animated dark/light toggle via `@property` + CSS `transition` (opt-out via `colorTransition: false`)
 - **Animated theme switch** - Optional full-page View Transitions via `setColorMode(..., { animate: true })`
 - **Anti-FART** - `<meta name="color-scheme">` injected at boot to prevent any Flash of inAccurate coloR Theme (no setup needed)
 - **Automatic color scales** - `--maz-X-50` through `--maz-X-950` derived via `color-mix(in oklch, …)` — perceptually uniform, chroma-stable
@@ -51,9 +50,6 @@ app.use(MazUi, {
     darkClass: 'dark',
     // Class added to <html> when light mode is forced (default: 'light')
     lightClass: 'light',
-    // Smooth color transition on dark/light toggle (default: true).
-    // `false` = instant switch, object = custom duration/easing.
-    colorTransition: true,
     persistPreset: true, // remember the active preset name across reloads
   }
 })
@@ -105,7 +101,6 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 - `colorMode` (optional, default `'auto'`): The initial color mode — `'light' | 'dark' | 'auto'` (only if mode is `'both'`)
 - `darkClass` (optional, default `'dark'`): Class added to `<html>` when `colorMode === 'dark'`
 - `lightClass` (optional, default `'light'`): Class added to `<html>` when `colorMode === 'light'` — mirror of `darkClass`
-- `colorTransition` (optional, default `true`): Animate color CSS variables on dark/light toggle. `false` = instant, `{ duration, easing }` = custom
 - `persistPreset` (optional, default `true`): Persist the active preset name in the `maz-preset` cookie so it is restored on reload.
 
 ### Preset persistence
@@ -148,30 +143,6 @@ Forcing both classes on the root ensures native widgets (scrollbars, native `<se
 - No class is ever added to `<html>`.
 - The browser always follows `prefers-color-scheme` via `color-scheme: light dark`.
 - `setColorMode()` still updates the persisted cookie but does **not** force a visual override.
-
-## Smooth color transitions
-
-The `colorTransition` option animates color CSS variables when toggling dark/light, so the switch feels fluid instead of snapping instantly.
-
-```ts
-// Default — animate with the preset's `motion-normal` duration and `easing-in-out`
-app.use(MazUi, { theme: { preset: mazUi } })
-
-// Disable — instant switch (legacy v4 behaviour)
-app.use(MazUi, { theme: { preset: mazUi, colorTransition: false } })
-
-// Custom duration / easing
-app.use(MazUi, {
-  theme: {
-    preset: mazUi,
-    colorTransition: { duration: '250ms', easing: 'cubic-bezier(0.4, 0, 0.2, 1)' },
-  },
-})
-```
-
-::: info Browser support
-`colorTransition` relies on `@property` (Baseline 2024 — Firefox shipped support in 128). Browsers without `@property` fall through to an instant swap with no error, no animation.
-:::
 
 ## Animated theme switch
 

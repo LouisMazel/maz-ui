@@ -42,7 +42,7 @@ v4.0.0 isn't just an update, it's a **complete rebuild** that transforms Maz-UI 
 - **Intelligent dark mode**: Configurable strategies for dark mode based on system preferences and user choice stored in cookies
 
 ::: tip Theming further evolved in v5
-The theme system has been rewritten on top of native `light-dark()` + `color-scheme` + `color-mix(in oklch)` in v5. If you are upgrading past v4, see the dedicated [v5 migration guide](./migration-v5.md#theming-native-css-rewrite-new-non-breaking-by-default) for the full theming changes (new `lightClass`, `colorTransition`, `Promise<void>` returns, removed JS helpers).
+The theme system has been rewritten on top of native `light-dark()` + `color-scheme` + `color-mix(in oklch)` in v5. If you are upgrading past v4, see the dedicated [v5 migration guide](./migration-v5.md#theming-native-css-rewrite-new-non-breaking-by-default) for the full theming changes (new `lightClass`, `Promise<void>` returns, removed JS helpers).
 :::
 
 #### Complete Internationalization

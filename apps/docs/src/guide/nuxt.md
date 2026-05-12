@@ -129,7 +129,6 @@ export default defineNuxtConfig({
       darkModeStrategy: 'class', // 'class' | 'media'
       darkClass: 'dark', // class on <html> when colorMode === 'dark' (default: 'dark')
       lightClass: 'light', // class on <html> when colorMode === 'light' (default: 'light')
-      colorTransition: true, // smooth dark/light transition (default: true)
       overrides: {
         colors: {
           light: { primary: 'oklch(0.65 0.19 254)' },
@@ -256,10 +255,6 @@ const theme = {
   // Class added to <html> when colorMode === 'light' (default: 'light')
   // Mirror of darkClass — used to force `color-scheme: only light`.
   lightClass: 'light',
-
-  // Smooth color transition on dark/light toggle. Default: true.
-  // Can also be `false` for instant switch or `{ duration, easing }` for custom values.
-  colorTransition: true,
 
   // Persist the active preset name in the `maz-preset` cookie so the
   // user's last-used theme is restored on reload. Default: true.

@@ -105,7 +105,6 @@ interface ThemeOptions {
   mode?: 'light' | 'dark' | 'both'               // Supported color modes (default: 'both')
   darkClass?: string                             // Class on <html> when colorMode === 'dark' (default: 'dark')
   lightClass?: string                            // Class on <html> when colorMode === 'light' (default: 'light')
-  colorTransition?: boolean | { duration?: string, easing?: string } // Smooth dark/light transition (default: true)
   persistPreset?: boolean                        // Persist active preset in cookie (default: true)
 }
 ```

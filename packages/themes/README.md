@@ -6,7 +6,6 @@ High-performance and typed theme system for Maz-UI.
 
 - 🎨 **Native `light-dark()` + `color-scheme`** - Modern CSS theming with zero JS overhead for the light/dark switch
 - 🌓 **Native dark mode** - `color-scheme` makes native form controls, scrollbars, and built-in widgets adapt automatically
-- 🌈 **Smooth color transitions** - Animated dark/light toggle via `@property` + CSS `transition` (opt-out)
 - ✨ **View Transitions** - Optional full-page animated theme switch via `document.startViewTransition()`
 - 🛡️ **Anti-FART** - `<meta name="color-scheme">` injected at boot to prevent any Flash of inAccurate coloR Theme
 - 🚀 **Automatic generation** - Automatically generates color variants (50-950) via `color-mix(in oklch, …)`
@@ -41,9 +40,6 @@ app.use(MazUiTheme, {
   darkClass: 'dark',
   // Class added to <html> when light mode is forced (default: 'light')
   lightClass: 'light',
-  // Smooth color transition on dark/light toggle (default: true)
-  // Can also be `false` for instant switch or `{ duration, easing }` for custom values
-  colorTransition: { duration: '300ms', easing: 'ease-in-out' },
   // remember the active preset name across reloads (default: true)
   persistPreset: true,
 })
@@ -91,28 +87,6 @@ Forcing both classes (light/dark) on the root ensures the browser-native widgets
 - No class is ever added to `<html>`.
 - The browser always follows `prefers-color-scheme` via `color-scheme: light dark`.
 - `setColorMode()` still updates the persisted cookie but does **not** force a visual override — system preference always wins.
-
-## Color transitions
-
-The `colorTransition` option animates color CSS variables when toggling dark/light.
-
-```ts
-// Default — animate with preset `motion-normal` + `easing-in-out`
-app.use(MazUiTheme, { preset: mazUi })
-
-// Disable — instant switch (legacy v4 behaviour)
-app.use(MazUiTheme, { preset: mazUi, colorTransition: false })
-
-// Custom duration/easing
-app.use(MazUiTheme, {
-  preset: mazUi,
-  colorTransition: { duration: '250ms', easing: 'cubic-bezier(0.4, 0, 0.2, 1)' },
-})
-```
-
-**How it works:** the generator emits an `@property --maz-X { syntax: '<color>'; … }` declaration for every color variable above `@layer theme`, then applies a `transition: <vars> <duration> <easing>` rule on `:root`. The `@property` registration is what makes CSS interpolate colors instead of swapping them instantly.
-
-**Caveat:** `@property` is Baseline 2024 — Firefox shipped support in 128 (July 2024). Browsers without `@property` simply fall through to an instant swap (no error, just no animation).
 
 ## Animated theme switch (View Transitions)
 
@@ -228,7 +202,6 @@ The generator produces a modern, native CSS contract:
 - **Scale palettes** `--maz-X-50` through `--maz-X-950` are derived from the base via `color-mix(in oklch, var(--maz-X), white|black N%)`. The `in oklch` interpolation keeps the scale perceptually uniform and chroma-stable.
 - **Color scheme** is declared on `:root` as `color-scheme: light dark`. With `darkModeStrategy: 'class'`, the generator also emits `.dark { color-scheme: only dark; }` and `.light { color-scheme: only light; }` so an explicit user choice overrides the system preference (and native widgets follow).
 - **Design tokens** — `--maz-rounded-*`, `--maz-shadow-*`, `--maz-font-family`, motion durations, easings, etc. — are bridged into Tailwind v4 via `@theme inline`.
-- **`@property` declarations** for every color variable are emitted above `@layer theme` when `colorTransition` is enabled, alongside a single `transition:` rule on `:root` that animates them.
 
 ## Build-time
 
