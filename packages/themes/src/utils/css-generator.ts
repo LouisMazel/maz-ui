@@ -14,7 +14,7 @@ export interface CSSOptions {
   darkClass: string
   /** Light class name (default 'light') */
   lightClass?: string
-  /** Whether to emit color-mix scales (--X-50..950) */
+  /** Whether to emit derived scales (--X-50..950) */
   scaleColorVariables: boolean
 }
 
@@ -182,13 +182,16 @@ function appendComponents(lines: string[], preset: ThemePreset, prefix: string, 
     const bg = components[componentKey]?.bg
     if (!bg)
       return
-    if (mode === 'both' && (bg.light || bg.dark)) {
-      const light = normalizeColor(bg.light ?? bg.dark ?? '')
-      const dark = normalizeColor(bg.dark ?? bg.light ?? '')
+    if (mode === 'both') {
+      const fallback = bg.light ?? bg.dark
+      if (!fallback)
+        return
+      const light = normalizeColor(bg.light ?? fallback)
+      const dark = normalizeColor(bg.dark ?? fallback)
       const value = light === dark ? light : `light-dark(${light}, ${dark})`
       lines.push(`    --${prefix}-${cssKey}: ${value};`)
     }
-    else if (mode !== 'both' && bg[mode]) {
+    else if (bg[mode]) {
       lines.push(`    --${prefix}-${cssKey}: ${normalizeColor(bg[mode]!)};`)
     }
   }
@@ -207,27 +210,19 @@ export function injectCSS(id = CSS_ID, css: string): void {
   if (isServer())
     return
 
-  const styleElements = [...document.querySelectorAll<HTMLStyleElement>(`#${id}`)]
-
-  if (styleElements.length === 0) {
-    const element = document.createElement('style')
-    element.id = id
-    element.textContent = css
-    document.head.appendChild(element)
-    return
-  }
-
-  if (styleElements.length === 1) {
-    styleElements[0].textContent = css
-    return
-  }
-
-  const lastElement = styleElements.at(-1)
+  const styleElements = document.querySelectorAll<HTMLStyleElement>(`#${id}`)
+  // Keep the last element (most recent), drop the rest, then update its content.
+  // If none exist, create a fresh <style>.
+  let target = styleElements[styleElements.length - 1] as HTMLStyleElement | undefined
   for (let i = 0; i < styleElements.length - 1; i++) {
     styleElements[i].remove()
   }
-  if (lastElement)
-    lastElement.textContent = css
+  if (!target) {
+    target = document.createElement('style')
+    target.id = id
+    document.head.appendChild(target)
+  }
+  target.textContent = css
 }
 
 export function removeCSS(id = CSS_ID): void {

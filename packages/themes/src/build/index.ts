@@ -1,8 +1,7 @@
 import type { ThemePreset } from '../types'
 import { generateCSS } from '../utils/css-generator'
 
-export interface BuildThemeOptions {
-  preset: ThemePreset
+interface SharedOptions {
   /** Theme mode to generate */
   mode?: 'light' | 'dark' | 'both'
   /** Dark mode selector: 'class' (.dark) | 'media' (@media) */
@@ -17,17 +16,19 @@ export interface BuildThemeOptions {
   scaleColorVariables?: boolean
 }
 
-export function buildThemeCSS(options: BuildThemeOptions): string {
-  const {
-    preset,
-    mode = 'both',
-    darkSelector = 'class',
-    prefix = 'maz',
-    darkClass = 'dark',
-    lightClass = 'light',
-    scaleColorVariables = true,
-  } = options
+export interface BuildThemeOptions extends SharedOptions {
+  preset: ThemePreset
+}
 
+export function buildThemeCSS({
+  preset,
+  mode = 'both',
+  darkSelector = 'class',
+  prefix = 'maz',
+  darkClass = 'dark',
+  lightClass = 'light',
+  scaleColorVariables = true,
+}: BuildThemeOptions): string {
   return generateCSS(preset, {
     mode,
     darkSelectorStrategy: darkSelector,
@@ -38,61 +39,20 @@ export function buildThemeCSS(options: BuildThemeOptions): string {
   })
 }
 
-export function generateThemeBundle(presets: ThemePreset[], options: {
-  mode?: 'light' | 'dark' | 'both'
-  darkSelector?: 'class' | 'media'
-  prefix?: string
-  darkClass?: string
-  lightClass?: string
-  scaleColorVariables?: boolean
-} = {}): Record<string, string> {
-  const {
-    mode = 'both',
-    darkSelector = 'class',
-    prefix = 'maz',
-    darkClass = 'dark',
-    lightClass = 'light',
-    scaleColorVariables = true,
-  } = options
-
+export function generateThemeBundle(presets: ThemePreset[], options: SharedOptions = {}): Record<string, string> {
   return presets.reduce((bundle, preset) => {
-    bundle[preset.name] = buildThemeCSS({
-      preset,
-      mode,
-      darkSelector,
-      prefix,
-      darkClass,
-      lightClass,
-      scaleColorVariables,
-    })
+    bundle[preset.name] = buildThemeCSS({ preset, ...options })
     return bundle
   }, {} as Record<string, string>)
 }
 
-export function createThemeStylesheet(css: string, options: {
-  id?: string
-  media?: string
-} = {}): string {
+export function createThemeStylesheet(css: string, options: { id?: string, media?: string } = {}): string {
   const { id = 'maz-theme', media } = options
-
-  let styleTag = `<style id="${id}"`
-
-  if (media) {
-    styleTag += ` media="${media}"`
-  }
-
-  styleTag += `>\n${css}\n</style>`
-
-  return styleTag
+  const mediaAttr = media ? ` media="${media}"` : ''
+  return `<style id="${id}"${mediaAttr}>\n${css}\n</style>`
 }
 
-export function buildSeparateThemeFiles(preset: ThemePreset, options: {
-  prefix?: string
-  darkSelector?: 'class' | 'media'
-  darkClass?: string
-  lightClass?: string
-  scaleColorVariables?: boolean
-} = {}): {
+export function buildSeparateThemeFiles(preset: ThemePreset, options: Omit<SharedOptions, 'mode'> = {}): {
   full: string
   lightOnly: string
   darkOnly: string

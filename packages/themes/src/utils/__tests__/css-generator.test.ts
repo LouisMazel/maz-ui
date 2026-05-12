@@ -505,6 +505,25 @@ describe('given generateCSS function', () => {
       })
     })
 
+    describe('when components.container.bg has neither light nor dark and mode=both', () => {
+      const preset = {
+        ...mazUi,
+        components: { container: { bg: {} as any } },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+        lightClass: 'light',
+        scaleColorVariables: false,
+      })
+
+      it('then no container-bg variable is emitted', () => {
+        expect(css).not.toContain('--maz-container-bg:')
+      })
+    })
+
     describe('when components.btn.font-weight is provided', () => {
       const preset = { ...mazUi, components: { btn: { 'font-weight': '600' } } }
       const css = generateCSS(preset, {
