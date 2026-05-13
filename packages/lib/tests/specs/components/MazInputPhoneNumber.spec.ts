@@ -249,4 +249,25 @@ describe('components/MazInputPhoneNumber.vue', () => {
     await wrapper.vm.$nextTick()
     expect(wrapper.emitted('country-code')).toBeTruthy()
   })
+
+  it('should pass localFlags=false to MazSelectCountry by default', async () => {
+    const wrapper = await getWrapper({
+      props: {
+        modelValue: '+33612345678',
+      },
+    })
+    const countrySelect = wrapper.findComponent(MazSelectCountry) as any
+    expect(countrySelect.props('localFlags')).toBe(false)
+  })
+
+  it('should propagate localFlags=true to MazSelectCountry', async () => {
+    const wrapper = await getWrapper({
+      props: {
+        modelValue: '+33612345678',
+        localFlags: true,
+      },
+    })
+    const countrySelect = wrapper.findComponent(MazSelectCountry) as any
+    expect(countrySelect.props('localFlags')).toBe(true)
+  })
 })

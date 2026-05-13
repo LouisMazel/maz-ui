@@ -4,6 +4,14 @@ import { describe, expect, it, vi } from 'vitest'
 import MazLazyImg from '@/components/MazLazyImg.vue'
 import MazSelectCountry from '@/components/MazSelectCountry.vue'
 
+vi.mock('@maz-ui/icons', () => ({
+  LazyMazFlagFR: { template: '<svg data-testid="flag-fr" />' },
+  LazyMazFlagUS: { template: '<svg data-testid="flag-us" />' },
+  LazyMazFlagDE: { template: '<svg data-testid="flag-de" />' },
+  LazyMazFlagAF: { template: '<svg data-testid="flag-af" />' },
+  // GB-ENG and similar sub-national codes intentionally omitted — they have no local asset
+}))
+
 vi.mock('@maz-ui/translations', () => ({
   useTranslations: () => ({
     t: (key: string) => key,
@@ -681,5 +689,89 @@ describe('mazSelectCountry', () => {
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.attributes('data-test')).toBe('country-select')
+  })
+
+  describe('localFlags prop', () => {
+    it('defaults localFlags to false', async () => {
+      const wrapper = await getWrapper()
+      expect(wrapper.props('localFlags')).toBe(false)
+    })
+
+    it('does not render MazLazyImg for selector flag when localFlags is true and model value is set', async () => {
+      const wrapper = await getWrapper({
+        props: {
+          modelValue: 'FR',
+          localFlags: true,
+        },
+        shallow: false,
+      })
+      await vi.dynamicImportSettled()
+      const mazLazyImg = wrapper.findComponent(MazLazyImg)
+      expect(mazLazyImg.exists()).toBe(false)
+    })
+
+    it('renders local flag component for selector when localFlags is true and component exists', async () => {
+      const wrapper = await getWrapper({
+        props: {
+          modelValue: 'FR',
+          localFlags: true,
+        },
+        shallow: false,
+      })
+      await vi.dynamicImportSettled()
+      expect(wrapper.html()).toContain('flag-fr')
+    })
+
+    it('renders colored badge for selector when localFlags is true and no local component exists', async () => {
+      const wrapper = await getWrapper({
+        props: {
+          modelValue: 'GB-ENG',
+          localFlags: true,
+        },
+        shallow: false,
+      })
+      await vi.dynamicImportSettled()
+      const badge = wrapper.find('.m-select-country__select__item__list-flag')
+      expect(badge.exists()).toBe(true)
+    })
+
+    it('renders CDN flag via MazLazyImg when localFlags is false (default)', async () => {
+      const wrapper = await getWrapper({
+        props: {
+          modelValue: 'FR',
+          localFlags: false,
+        },
+        shallow: false,
+      })
+      await vi.dynamicImportSettled()
+      const mazLazyImg = wrapper.findComponent(MazLazyImg)
+      expect(mazLazyImg.exists()).toBe(true)
+    })
+
+    it('renders local flag components in list when localFlags is true', async () => {
+      const wrapper = await getWrapper({
+        props: {
+          localFlags: true,
+          open: true,
+        },
+        shallow: false,
+      })
+      await vi.dynamicImportSettled()
+      expect(wrapper.html()).toContain('flag-fr')
+    })
+
+    it('renders colored badge in list when localFlags is true and no local component exists', async () => {
+      const wrapper = await getWrapper({
+        props: {
+          localFlags: true,
+          open: true,
+          options: [{ code: 'GB-ENG', name: 'England' }],
+        },
+        shallow: false,
+      })
+      await vi.dynamicImportSettled()
+      const badge = wrapper.find('.m-select-country__select__item__list-flag')
+      expect(badge.exists()).toBe(true)
+    })
   })
 })

@@ -321,6 +321,36 @@ Hide country flags using the `hideFlags` prop for a cleaner text-only interface.
 </template>
 </ComponentDemo>
 
+## Local flags (offline / hybrid apps)
+
+Use the `localFlags` prop to render flags from bundled SVG assets (`@maz-ui/icons`) instead of the CDN. This is useful for hybrid apps (Capacitor, Cordova) that may run without a network connection.
+
+When a country code has no bundled SVG asset (e.g. `gb-eng`, `gb-sct`, sub-national codes), a colored badge is shown as fallback — no request to `flagcdn.com` is ever made.
+
+<ComponentDemo>
+  <MazSelectCountry
+    v-model="localFlagsExample"
+    label="Country (local flags)"
+    local-flags
+    placeholder="Select a country"
+  />
+
+<template #code>
+
+```vue
+<template>
+  <!-- Flags are served from bundled SVG assets — no CDN request -->
+  <MazSelectCountry
+    v-model="selectedCountry"
+    label="Country (local flags)"
+    local-flags
+  />
+</template>
+```
+
+</template>
+</ComponentDemo>
+
 ## Custom locale
 
 Override the default locale to display country/language names in a specific language.
