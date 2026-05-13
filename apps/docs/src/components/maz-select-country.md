@@ -637,6 +637,7 @@ const colorExample2 = ref()
 const colorExample3 = ref()
 
 // Other examples
+const localFlagsExample = ref()
 const preferredExample = ref()
 const europeExample = ref()
 const excludeExample = ref()

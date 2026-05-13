@@ -4,13 +4,19 @@ import { describe, expect, it, vi } from 'vitest'
 import MazLazyImg from '@/components/MazLazyImg.vue'
 import MazSelectCountry from '@/components/MazSelectCountry.vue'
 
-vi.mock('@maz-ui/icons', () => ({
-  LazyMazFlagFR: { template: '<svg data-testid="flag-fr" />' },
-  LazyMazFlagUS: { template: '<svg data-testid="flag-us" />' },
-  LazyMazFlagDE: { template: '<svg data-testid="flag-de" />' },
-  LazyMazFlagAF: { template: '<svg data-testid="flag-af" />' },
-  // GB-ENG and similar sub-national codes intentionally omitted — they have no local asset
+vi.mock('@maz-ui/icons/lazy/MazFlagFR', () => ({
+  MazFlagFR: { template: '<svg data-testid="flag-fr" />' },
 }))
+vi.mock('@maz-ui/icons/lazy/MazFlagUS', () => ({
+  MazFlagUS: { template: '<svg data-testid="flag-us" />' },
+}))
+vi.mock('@maz-ui/icons/lazy/MazFlagDE', () => ({
+  MazFlagDE: { template: '<svg data-testid="flag-de" />' },
+}))
+vi.mock('@maz-ui/icons/lazy/MazFlagAF', () => ({
+  MazFlagAF: { template: '<svg data-testid="flag-af" />' },
+}))
+// MazFlagGBENG intentionally not mocked — module not found triggers fallback badge
 
 vi.mock('@maz-ui/translations', () => ({
   useTranslations: () => ({

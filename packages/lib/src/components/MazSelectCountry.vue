@@ -6,11 +6,10 @@ import type { CodesType, DisplayNameCode, DisplayNamesOptions } from '../composa
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazSelectProps } from './MazSelect.vue'
 import type { MazColor, MazSize } from './types'
-import * as MazIcons from '@maz-ui/icons'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { getBrowserLocale } from '@maz-ui/utils/helpers/getBrowserLocale'
 import { getCountryFlagUrl } from '@maz-ui/utils/helpers/getCountryFlagUrl'
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, shallowReactive } from 'vue'
 import { useDisplayNames } from '../composables/useDisplayNames'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import MazSelect from './MazSelect.vue'
@@ -265,10 +264,23 @@ const flagUrl = computed(() => {
   return getFlagUrl(modelValue)
 })
 
-function getLocalFlagComponent(code: string) {
-  const key = `LazyMazFlag${code.toUpperCase().replace('-', '')}`
-  const icons = MazIcons as Record<string, unknown>
-  return Object.hasOwn(icons, key) ? icons[key] : null
+const flagCache = shallowReactive<Record<string, object | null>>({})
+
+function getLocalFlagComponent(code: string): object | null {
+  const componentName = `MazFlag${code.toUpperCase().replaceAll('-', '')}`
+
+  if (componentName in flagCache) {
+    return flagCache[componentName]
+  }
+
+  flagCache[componentName] = null
+  void import(`@maz-ui/icons/lazy/${componentName}`)
+    .then((mod: Record<string, unknown>) => {
+      flagCache[componentName] = (mod[componentName] as object) ?? null
+    })
+    .catch(() => {})
+
+  return null
 }
 </script>
 
