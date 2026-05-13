@@ -1,5 +1,85 @@
 # Change Log
 
+## v5.0.0-beta.9 (2026-05-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.8...v5.0.0-beta.9)
+
+### 🚀 Features
+
+- **maz-ui:** Add MazSidebar component system ([#1574](https://github.com/LouisMazel/maz-ui/pull/1574))
+  - feat(maz-ui): add MazSidebar component with sub-components and composable
+    Implements a fully accessible, composable sidebar system for dashboard,
+    admin, and SaaS applications. State is shared via provide/inject from
+    the root MazSidebar component.
+    Components added:
+  * MazSidebar: root container (push/overlay modes, offcanvas/icon/none collapsible)
+  * MazSidebarHeader, MazSidebarContent, MazSidebarFooter: layout zones
+  * MazSidebarGroup: grouping with optional label (sr-only in icon mode)
+  * MazSidebarSeparator: visual HR divider
+  * MazSidebarMenu / MazSidebarMenuItem: ul/li with ARIA roles
+  * MazSidebarMenuButton: link/button with icon, label, badge, tooltip auto-show
+  * MazSidebarMenuSub: collapsible sub-menu with ArrowRight/ArrowLeft keyboard support
+  * MazSidebarTrigger: toggle button with aria-expanded and aria-controls
+    Composable added:
+  * useMazSidebar: typed inject for open state, toggle, setOpen, state
+    Closes #1573
+  - refactor(maz-ui): polish MazSidebar to align with project conventions
+  * Rename `useMazSidebar` composable to `useSidebar` (kept Maz-prefixed types)
+  * Drop all scoped CSS in favour of Tailwind utilities and add `m-reset-css` on every sub-component root so theming and tree-shaking work as expected
+  * MazSidebarMenuButton: `icon` accepts `MazIconLike`, `badge` accepts `MazBadgeProps`, tooltip via `v-tooltip` directive
+  * MazSidebarMenuSub: smooth grid-rows expand/collapse via `MazExpandAnimation`, accepts `MazIconLike` icon
+  * MazSidebarTrigger: replace inline SVG with `MazIcon` + `MazBars3`
+  * Overlay mode delegated to `MazBackdrop` (reuses scroll-lock, focus trap, escape, click-outside)
+  * Fix offcanvas-collapsed border leak and the icon-centering jump during collapse via `min(calc((var(--maz-sidebar-icon-width)-1.25rem)/2), calc((100%-1.25rem)/2))` — icons stay centred regardless of any padding applied to `MazSidebarContent`
+  * Split the monolithic spec into one file per component (11 specs, 121 tests)
+  * Doc: replace inline `style` with Tailwind classes and document the new prop shapes
+  * Wire MazSidebar components and `useSidebar` into the Nuxt module auto-imports
+
+- **maz-ui:** Add MazCodeHighlight and MazWindowMockup components ([#1569](https://github.com/LouisMazel/maz-ui/pull/1569))
+  - feat(maz-ui): add MazCodeHighlight component with shiki syntax highlighting
+  * Add MazCodeHighlight component with code/language/theme props
+  * Support default slot text extraction as fallback for code prop
+  * Auto-detect dark/light mode via MutationObserver on html element
+  * Lazy-load shiki via dynamic import to keep bundle lean
+  * Add shiki ^3.0.0 to lib dependencies
+  * Export from components/index.ts
+  - feat(maz-ui): add MazWindowMockup component with browser/terminal/editor variants
+  * Three macOS-style traffic light buttons in all variant title bars
+  * Browser variant: address bar with url prop (default 'localhost')
+  * Editor variant: filename tab with filename prop (default 'index.vue')
+  * Terminal variant: centered title with title prop (default 'zsh'), $ prompt
+  * showPrompt prop and #prompt slot for terminal prompt customization
+  * minHeight prop for CSS-based content area height control
+  * code + language props trigger integrated MazCodeHighlight rendering
+  * Default slot for free content when code prop is not set
+  * Dark/light mode compatible via maz-ui CSS vars
+  * Export from components/index.ts
+  - feat(@maz-ui/nuxt): register MazCodeHighlight and MazWindowMockup in Nuxt module
+    Add MazCodeHighlight and MazWindowMockup to COMPONENT_NAMES in the Nuxt module
+    for auto-import support. MazComponentsResolver already resolves all Maz-prefixed
+    components via regex pattern.
+  - test(maz-ui): add unit tests for MazCodeHighlight and MazWindowMockup
+  * MazCodeHighlight: tests for code prop, slot fallback, language prop,
+    theme prop, empty state, and shiki error fallback
+  * MazWindowMockup: tests for all three variants (browser/terminal/editor),
+    url/filename/title props, showPrompt prop, prompt slot, default slot
+  * MazCodeHighlight stubbed in MazWindowMockup tests to avoid async teardown issues
+  - docs(maz-ui): add documentation pages for MazCodeHighlight and MazWindowMockup
+  * Add maz-code-highlight.md with basic usage, slot fallback, language,
+    and custom theme examples
+  * Add maz-window-mockup.md with browser, terminal (with custom prompt),
+    and editor variant examples
+  * Add both to the sidebar under a new 'Display' section in components.mts
+
+### 📦 Build
+
+- Upgrade relizy ([a334bf17c](https://github.com/LouisMazel/maz-ui/commit/a334bf17c))
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.8 (2026-05-12)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.7...v5.0.0-beta.8)
