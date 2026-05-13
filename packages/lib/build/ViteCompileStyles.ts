@@ -36,6 +36,8 @@ export async function compileScss() {
   writeFileSync(AOS_SCSS_OUTPUT, cssPrefixed.css)
 }
 
+const CSS_DTS_STUB = 'export {}\n'
+
 export function ViteCompileStyles(): Plugin {
   return {
     name: 'vite-compile-styles',
@@ -55,6 +57,13 @@ export function ViteCompileStyles(): Plugin {
         await compileScss()
 
         logger.success('[CompileStyles] ✅ scss compiled')
+
+        // Write .d.ts stubs for CSS dist files so TypeScript 6+ (TS2882)
+        // can resolve type declarations for side-effect CSS imports.
+        writeFileSync(resolve(cssDir, 'main.d.ts'), CSS_DTS_STUB)
+        writeFileSync(resolve(cssDir, 'aos.d.ts'), CSS_DTS_STUB)
+
+        logger.success('[CompileStyles] ✅ css .d.ts stubs written')
       }
       catch (error) {
         logger.error('[CompileStyles] 🔴 error while compiling styles', error)
