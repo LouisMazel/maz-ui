@@ -50,6 +50,7 @@ export const components = {
         { text: 'Link', link: '/components/maz-link' },
         { text: 'PullToRefresh', link: '/components/maz-pull-to-refresh' },
         { text: 'ReadingProgressBar', link: '/components/maz-reading-progress-bar' },
+        { text: 'Sidebar', link: '/components/maz-sidebar' },
       ],
     },
     {

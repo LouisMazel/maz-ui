@@ -68,7 +68,7 @@ const onSubmit = handleSubmit(() => {
 
 <template>
   <div class="vp-raw maz:flex">
-    <div class="maz:hidden maz:flex-1 maz:flex-col maz:gap-2 maz:bg-contrast maz:p-6 maz:flex-center maz:tab-m:flex">
+    <div class="maz:hidden maz:flex-1 maz:flex-col maz:flex-center maz:gap-2 maz:bg-contrast maz:p-6 maz:tab-m:flex">
       <MazIcon :icon="MazLogo" size="6rem" style="width: auto;" />
 
       <p class="maz:text-center maz:text-sm maz:text-contrast-foreground">

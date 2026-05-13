@@ -37,7 +37,7 @@ type ComponentNames = keyof typeof import('maz-ui/components')
 
 const COMPONENT_NAMES: Omit<
   Record<ComponentNames, true>,
-  'useMazDialogConfirm'
+  'useMazDialogConfirm' | 'mazSidebarKey'
 > = {
   MazAccordion: true,
   MazAlert: true,
@@ -90,6 +90,17 @@ const COMPONENT_NAMES: Omit<
   MazSpinner: true,
   MazStepper: true,
   MazSwitch: true,
+  MazSidebar: true,
+  MazSidebarMenu: true,
+  MazSidebarMenuItem: true,
+  MazSidebarMenuSub: true,
+  MazSidebarFooter: true,
+  MazSidebarHeader: true,
+  MazSidebarContent: true,
+  MazSidebarGroup: true,
+  MazSidebarMenuButton: true,
+  MazSidebarSeparator: true,
+  MazSidebarTrigger: true,
   MazTable: true,
   MazTableCell: true,
   MazTableRow: true,
@@ -130,6 +141,7 @@ const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDial
   useMountComponent: true,
   useSwipe: true,
   useMutationObserver: true,
+  useSidebar: true,
 }
 
 const defaults = {
