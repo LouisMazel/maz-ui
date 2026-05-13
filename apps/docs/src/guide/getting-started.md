@@ -165,15 +165,6 @@ Maz-UI v5 is built with tree-shaking in mind. Import only what you need for opti
 
 ```typescript
 /**
- * Utilities
- */
-
-// ❌ Avoid importing everything
-import { formatCurrency, debounce } from '@maz-ui/utils'
-// ✅ Import from @maz-ui/utils
-import { formatCurrency, debounce } from '@maz-ui/utils'
-
-/**
  * Components
  */
 
@@ -216,6 +207,16 @@ import { vClickOutside } from 'maz-ui/directives/vClickOutside'
 import { MazUi } from 'maz-ui/plugins'
 // ✅✅ Direct plugin import (most optimized)
 import { MazUi } from 'maz-ui/plugins/maz-ui'
+
+/**
+ * Utilities
+ */
+
+// ❌ Avoid importing everything
+import { formatCurrency, debounce } from '@maz-ui/utils'
+// ✅ Import from @maz-ui/utils
+import { debounce } from '@maz-ui/utils/helpers/debounce'
+import { formatCurrency } from '@maz-ui/utils/helpers/formatCurrency'
 ```
 
 ::: tip Maximum Optimization

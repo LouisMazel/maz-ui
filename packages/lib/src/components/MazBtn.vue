@@ -213,7 +213,7 @@ const ICON_PADDING_CLASS = {
   <component
     :is="component"
     :disabled="isDisabled"
-    class="m-btn m-reset-css maz:relative maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-2 maz:overflow-hidden maz:border maz:border-solid maz:border-transparent maz:bg-transparent maz:py-0.5 maz:text-center maz:align-top maz:text-foreground maz:no-underline maz:transition-all maz:duration-200 maz:ease-in-out"
+    class="m-btn m-reset-css maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-2 maz:overflow-hidden maz:border maz:border-solid maz:border-transparent maz:bg-transparent maz:py-0.5 maz:text-center maz:align-top maz:text-foreground maz:no-underline maz:transition-all maz:duration-200 maz:ease-in-out"
     :class="[
       `--${resolvedColor}`,
       `--${size}`,

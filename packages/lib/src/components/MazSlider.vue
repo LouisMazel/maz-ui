@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CSSProperties, StyleValue } from 'vue'
-import type { MazColor } from './types'
+import type { MazColor, MazSizeUnit } from './types'
 import { debounce } from '@maz-ui/utils/helpers/debounce'
 
 import {
@@ -26,7 +26,7 @@ export interface MazSliderProps {
   /** step value for slider increments */
   step?: number
   /** height size of slider bar */
-  size?: string
+  size?: MazSizeUnit
   /** remove div in different colors */
   divider?: boolean
   /** become a logarithmic slider (exponential) */

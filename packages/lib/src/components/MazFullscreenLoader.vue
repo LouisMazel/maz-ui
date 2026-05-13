@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { MazColor } from './types'
+import type { MazColor, MazSizeUnit } from './types'
 import { onMounted, onUnmounted } from 'vue'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import MazSpinner from './MazSpinner.vue'
@@ -14,7 +14,7 @@ export interface MazFullscreenLoaderProps {
   /** The color of the spinner */
   color?: MazColor
   /** The size of the spinner */
-  size?: string
+  size?: MazSizeUnit
   /** The selector to teleport the loader */
   teleportSelector?: string
 }
