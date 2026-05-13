@@ -58,6 +58,7 @@ const COMPONENT_NAMES: Omit<
   MazChecklist: true,
   MazContainer: true,
   MazCircularProgressBar: true,
+  MazCodeHighlight: true,
   MazDialog: true,
   MazDialogConfirm: true,
   MazDrawer: true,
@@ -113,6 +114,7 @@ const COMPONENT_NAMES: Omit<
   MazTimeline: true,
   MazTextarea: true,
   MazUiProvider: true,
+  MazWindowMockup: true,
   MazPopover: true,
 }
 

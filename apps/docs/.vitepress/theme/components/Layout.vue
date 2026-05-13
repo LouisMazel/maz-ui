@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
+import ThemeSwitcher from './ThemeSwitcher.vue'
 </script>
 
 <template>
@@ -14,6 +15,10 @@ import DefaultTheme from 'vitepress/theme'
             View v4 documentation
           </MazLink>
         </div>
+      </template>
+
+      <template #nav-bar-content-after>
+        <ThemeSwitcher class="maz:ms-2" />
       </template>
     </DefaultTheme.Layout>
   </Suspense>

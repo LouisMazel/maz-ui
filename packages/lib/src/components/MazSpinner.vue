@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import type { MazColor } from './types'
+import type { MazColor, MazSizeUnit } from './types'
 import { computed } from 'vue'
 
 export interface MazSpinnerProps {
@@ -8,7 +8,7 @@ export interface MazSpinnerProps {
    * The size of the spinner
    * @default 2em
    */
-  size?: string
+  size?: MazSizeUnit
   /**
    * The color of the spinner
    * @default theme

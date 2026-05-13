@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { SVGAttributes } from 'vue'
-import type { MazColor } from './types'
+import type { MazColor, MazSizeUnit } from './types'
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
@@ -14,7 +14,7 @@ export interface MazCircularProgressBarProps {
    * The size of the progress bar
    * @default '10em' (equal 80px for a font-size of 16px)
    */
-  size?: string
+  size?: MazSizeUnit
   /**
    * Duration of the animation in milliseconds
    * @default 1000

@@ -43,7 +43,7 @@ const isIconCollapsed = computed(
 const isOpen = ref(props.defaultOpen)
 const subMenuId = `maz-sidebar-sub-${useId()}`
 
-const { iconProps } = useMazIconProps(() => props.icon, () => ({ size: '1.25rem' }))
+const { iconProps } = useMazIconProps(() => props.icon, () => ({ size: 'sm' as const }))
 
 function toggle() {
   isOpen.value = !isOpen.value

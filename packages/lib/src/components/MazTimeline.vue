@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import type { IconComponent } from '@maz-ui/icons'
 import type { CSSProperties, HTMLAttributes } from 'vue'
 
+import type { MazIconLike } from '../composables'
 import type { MazColor, MazSize } from './types'
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useId, useSlots, watch } from 'vue'
+import { useMazIconProps } from '../composables'
 
 export type MazTimelineColor = Exclude<MazColor, 'transparent'>
 export type MazTimelineDirection = 'horizontal' | 'vertical' | 'auto'
@@ -21,9 +22,9 @@ export interface MazTimelineItem {
   subtitle?: string
   /**
    * Icon for the step indicator - can be a component or icon name string
-   * @type {IconComponent | string}
+   * Accepts a bare value or a full `MazIconProps` object.
    */
-  icon?: IconComponent | string
+  icon?: MazIconLike
   /**
    * State of the step
    * @type {MazTimelineStepState}
@@ -145,6 +146,10 @@ const instanceId = useId()
 // --- Responsive direction ---
 const isVertical = ref(false)
 let mediaQuery: MediaQueryList | undefined
+
+function getStepIconProps(icon?: MazIconLike) {
+  return useMazIconProps(() => icon, () => ({ size: 'md' })).iconProps.value
+}
 
 function cleanupMediaQuery() {
   if (mediaQuery) {
@@ -409,16 +414,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
               </svg>
             </template>
             <template v-else-if="step.icon">
-              <MazIcon
-                v-if="typeof step.icon === 'string'"
-                :name="step.icon"
-                class="m-timeline-step-icon"
-              />
-              <MazIcon
-                v-else
-                :icon="step.icon"
-                class="m-timeline-step-icon"
-              />
+              <MazIcon v-bind="getStepIconProps(step.icon)" class="m-timeline-step-icon" />
             </template>
             <span v-else-if="showStepNumbers" class="m-timeline-step-number">
               {{ index + 1 }}
@@ -566,15 +562,15 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
     }
 
     .m-timeline-connector-track {
-      @apply maz:h-full maz:min-h-6 maz:w-(--maz-border-width) maz:translate-x-px;
+      @apply maz:relative maz:min-h-6 maz:w-(--maz-border-width) maz:translate-x-px;
     }
 
     .m-timeline-connector-fill {
-      @apply maz:h-0 maz:w-full;
+      @apply maz:absolute maz:inset-0 maz:h-full maz:w-full maz:origin-top maz:scale-y-0;
     }
 
     .m-timeline-connector.--completed .m-timeline-connector-fill {
-      @apply maz:h-full;
+      @apply maz:scale-y-100;
     }
   }
 
@@ -590,10 +586,12 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
   .m-timeline-step {
     &.--active .m-timeline-indicator {
       @apply maz:bg-(--m-timeline-bg) maz:text-(--m-timeline-fg);
+      @apply maz:dark:border maz:dark:border-solid maz:dark:border-(--m-timeline-bg) maz:dark:bg-(--m-timeline-bg)/20 maz:dark:text-(--m-timeline-bg);
     }
 
     &.--completed .m-timeline-indicator {
-      @apply maz:bg-(--m-timeline-state-bg,var(--m-timeline-bg)) maz:text-(--m-timeline-state-fg,var(--m-timeline-fg));
+      @apply maz:bg-(--m-timeline-state-bg) maz:text-(--m-timeline-state-fg);
+      @apply maz:dark:border maz:dark:border-solid maz:dark:border-(--m-timeline-state-bg) maz:dark:bg-(--m-timeline-state-bg)/20 maz:dark:text-(--m-timeline-state-bg);
     }
 
     &.--error .m-timeline-indicator {
@@ -616,6 +614,10 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
 
   .m-timeline-connector-fill {
     @apply maz:bg-(--m-timeline-bg);
+  }
+
+  .m-timeline-connector.--completed .m-timeline-connector-fill {
+    @apply maz:bg-success;
   }
 
   /* --- Content --- */
@@ -732,7 +734,7 @@ const SUBTITLE_SIZE_CLASS: Record<MazSize, string> = {
 @keyframes m-timeline-pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--m-timeline-bg) 40%, transparent);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--m-timeline-bg) 90%, transparent);
   }
 
   50% {

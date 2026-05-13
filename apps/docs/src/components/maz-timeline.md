@@ -9,6 +9,21 @@ description: MazTimeline is a step/progress timeline component for Vue 3 with su
 
 <!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
+---
+
+Control the current step:
+
+<MazRadioButtons
+  :model-value="currentStep"
+  size="sm"
+  :options="[
+    { label: 'None', value: -1 },
+    ...steps.map((step, index) => ({ label: index, value: index })),
+    { label: 'All Completed', value: 99 },
+  ]"
+  @update:model-value="currentStep = $event"
+/>
+
 ## Basic usage
 
 <ComponentDemo>
@@ -292,6 +307,40 @@ Customize the indicator border radius with the `rounded-size` prop.
   </template>
 </ComponentDemo>
 
+## Custom Icons
+
+<ComponentDemo>
+  <MazTimeline :model-value="0" :steps="iconsSteps" direction="horizontal" size="lg" />
+
+  <template #code>
+
+```vue
+<template>
+  <MazTimeline
+    v-model="currentStep"
+    :steps="steps"
+    size="lg"
+  />
+</template>
+
+<script lang="ts" setup>
+  import { MazCommandLine } from '@maz-ui/icons/MazCommandLine'
+  import { MazClipboardDocumentList } from '@maz-ui/icons/MazClipboardDocumentList'
+  import { MazClipboardDocumentCheck } from '@maz-ui/icons/MazClipboardDocumentCheck'
+  import { MazComputerDesktop } from '@maz-ui/icons/MazComputerDesktop'
+
+  const iconsSteps = [
+    { title: 'PO', subtitle: 'Writing PRD', icon: MazClipboardDocumentList },
+    { title: 'Dev', subtitle: 'Building Code', icon: MazCommandLine },
+    { title: 'Tech Lead', subtitle: 'Review Code', icon: MazComputerDesktop },
+    { title: 'QA', subtitle: 'Testing', icon: MazClipboardDocumentCheck },
+  ]
+</script>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Custom slots
 
 MazTimeline provides scoped slots for full customization.
@@ -378,6 +427,10 @@ MazTimeline provides scoped slots for full customization.
 
 <script lang="ts" setup>
   import { ref } from 'vue'
+  import { MazComputerDesktop } from '@maz-ui/icons/MazComputerDesktop'
+  import { MazCommandLine } from '@maz-ui/icons/MazCommandLine'
+  import { MazClipboardDocumentList } from '@maz-ui/icons/MazClipboardDocumentList'
+  import { MazClipboardDocumentCheck } from '@maz-ui/icons/MazClipboardDocumentCheck'
 
   const currentStep = ref(1)
   const clickableStep = ref(0)
@@ -408,6 +461,13 @@ MazTimeline provides scoped slots for full customization.
     { title: 'Profile', subtitle: 'Set up your profile' },
     { title: 'Settings', subtitle: 'Locked', disabled: true },
     { title: 'Complete', subtitle: 'All done!' },
+  ]
+
+  const iconsSteps = [
+    { title: 'PO', subtitle: 'Writing PRD', icon: MazClipboardDocumentList },
+    { title: 'Dev', subtitle: 'Building Code', icon: MazCommandLine },
+    { title: 'Tech Lead', subtitle: 'Review Code', icon: MazComputerDesktop },
+    { title: 'QA', subtitle: 'Testing', icon: MazClipboardDocumentCheck },
   ]
 
   const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive']
