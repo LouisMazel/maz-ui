@@ -135,3 +135,7 @@ html.dark {
 .rounded {
   border-radius: 0.5rem;
 }
+
+.docs-new-badge {
+  @apply maz:text-primary-foreground maz:bg-primary maz:rounded-md maz:cursor-pointer maz:text-[0.625rem] maz:px-1 maz:py-0.5 maz:uppercase maz:ms-0.5 maz:align-middle;
+}

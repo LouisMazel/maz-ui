@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { MazIconLike } from '../composables/useMazIconProps'
 import type { MazBadgeProps } from './MazBadge.vue'
+import { vTooltip } from '../directives/vTooltip'
 import { hasSlotContent } from '../utils/hasSlotContent'
 
 export type MazSidebarMenuButtonBadge = string | number | (MazBadgeProps & { text?: string | number })
@@ -38,21 +39,10 @@ import type { Component } from 'vue'
 import { computed, defineAsyncComponent, getCurrentInstance } from 'vue'
 import { useInjectStrict } from '../composables/useInjectStrict'
 import { useMazIconProps } from '../composables/useMazIconProps'
-import { vTooltip } from '../directives/vTooltip'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 import { mazSidebarKey } from './MazSidebar.vue'
 
-const props = withDefaults(defineProps<MazSidebarMenuButtonProps>(), {
-  to: undefined,
-  href: undefined,
-  icon: undefined,
-  label: undefined,
-  badge: undefined,
-  tooltip: undefined,
-  active: undefined,
-  disabled: false,
-  size: 'md',
-})
+const { to, href, icon, badge, tooltip, active, size = 'md' } = defineProps<MazSidebarMenuButtonProps>()
 
 defineEmits<{
   click: [event: MouseEvent]
@@ -72,25 +62,25 @@ const isIconCollapsed = computed(
 )
 
 const tag = computed<Component | string>(() => {
-  if (props.to)
+  if (to)
     return resolveLinkComponent()
-  if (props.href)
+  if (href)
     return 'a'
   return 'button'
 })
 
 const linkProps = computed(() => {
-  if (props.to)
-    return { to: props.to }
-  if (props.href)
-    return { href: props.href }
+  if (to)
+    return { to }
+  if (href)
+    return { href }
   return { type: 'button' as const }
 })
 
-const { iconProps } = useMazIconProps(() => props.icon, () => ({ size: '1.25rem' }))
+const { iconProps } = useMazIconProps(() => icon, () => ({ size: 'sm' as const }))
 
 const badgeText = computed(() => {
-  const b = props.badge
+  const b = badge
   if (b === undefined || b === null)
     return undefined
   if (typeof b === 'string' || typeof b === 'number')
@@ -99,7 +89,7 @@ const badgeText = computed(() => {
 })
 
 const badgeBindings = computed<Partial<MazBadgeProps>>(() => {
-  const b = props.badge
+  const b = badge
   if (b === undefined || b === null || typeof b === 'string' || typeof b === 'number')
     return { size: 'sm', roundedSize: 'full' }
   const { text: _text, ...rest } = b
@@ -107,12 +97,12 @@ const badgeBindings = computed<Partial<MazBadgeProps>>(() => {
 })
 
 const tooltipBinding = computed(() => {
-  if (!props.tooltip) {
+  if (!tooltip) {
     return { text: ' ', trigger: 'manual' as const }
   }
   const position: 'right' | 'left' = sidebar.side.value === 'start' ? 'right' : 'left'
   return {
-    text: props.tooltip,
+    text: tooltip,
     position,
     trigger: 'hover' as const,
   }
@@ -127,10 +117,10 @@ const SIZE_CLASS = {
 const routerActiveClass = computed(() => {
   const instance = getCurrentInstance()
   const hasRouter = !!instance?.appContext.config.globalProperties.$router
-  return hasRouter && props.to ? 'router-link-active' : ''
+  return hasRouter && to ? 'router-link-active' : ''
 })
 
-const isActive = computed(() => props.active === true)
+const isActive = computed(() => active === true)
 </script>
 
 <template>

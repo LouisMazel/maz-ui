@@ -93,4 +93,12 @@ export default {
     ariaLabel: 'Inhalt wird geladen',
     loadingText: 'Laden...',
   },
+  codeHighlight: {
+    copyToClipboard: 'In Zwischenablage kopieren',
+    copiedToClipboard: 'In Zwischenablage kopiert',
+  },
+  windowMockup: {
+    copyUrlToClipboard: 'URL in Zwischenablage kopieren',
+    urlCopiedToClipboard: 'URL in Zwischenablage kopiert',
+  },
 } satisfies MazUiTranslationsNestedSchema

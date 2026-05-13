@@ -93,4 +93,12 @@ export default {
     ariaLabel: '内容加载中',
     loadingText: '加载中...',
   },
+  codeHighlight: {
+    copyToClipboard: '复制到剪贴板',
+    copiedToClipboard: '已复制到剪贴板',
+  },
+  windowMockup: {
+    copyUrlToClipboard: '复制 URL 到剪贴板',
+    urlCopiedToClipboard: 'URL 已复制到剪贴板',
+  },
 } satisfies MazUiTranslationsNestedSchema

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
+import type { MazSizeUnit } from './types'
 import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
-import { computed, defineAsyncComponent, useSlots } from 'vue'
 
+import { computed, defineAsyncComponent, useSlots } from 'vue'
 import MazBackdrop from './MazBackdrop.vue'
 import MazIcon from './MazIcon.vue'
 
@@ -38,7 +39,7 @@ export interface MazDrawerProps {
    */
   variant?: 'start' | 'end' | 'top' | 'bottom'
   /** The size of the drawer */
-  size?: string
+  size?: MazSizeUnit
   /** The class of the backdrop */
   backdropClass?: string
   /** Disable the close button */
