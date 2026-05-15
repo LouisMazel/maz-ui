@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.10 (2026-05-15)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.9...v5.0.0-beta.10)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazBtn - fix loading layout ([b7846572a](https://github.com/LouisMazel/maz-ui/commit/b7846572a))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.9 (2026-05-13)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.8...v5.0.0-beta.9)
