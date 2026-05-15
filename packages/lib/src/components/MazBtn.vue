@@ -224,6 +224,7 @@ const ICON_PADDING_CLASS = {
       (!!startIcon || hasSlotContent($slots['start-icon'])) ? ICON_PADDING_CLASS[size].start : '',
       (!!endIcon || hasSlotContent($slots['end-icon'])) ? ICON_PADDING_CLASS[size].end : '',
       {
+        'maz:relative': loading,
         '--outlined': outlined,
         '--pastel': pastel,
         '--block': block && !fab,
