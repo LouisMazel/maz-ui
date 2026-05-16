@@ -48,6 +48,7 @@ export default defineConfig({
     access: 'public',
     safetyCheck: true,
     token: process.env.NPM_TOKEN,
+    buildCmd: process.env.CI ? undefined : 'pnpm build:packages',
   },
 
   release: {

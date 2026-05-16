@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs/esm'
 import type { MazColor } from '../types'
 import type { MazDatePickerShortcut, MazDatePickerValue } from './types'
 import { computed, defineAsyncComponent, ref } from 'vue'

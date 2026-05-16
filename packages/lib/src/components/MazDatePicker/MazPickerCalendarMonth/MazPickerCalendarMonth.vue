@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs/esm'
 import type { PropType } from 'vue'
 import type { MazColor } from '../../types'
 import type { MazDatePickerValue } from '../types'
-import dayjs from 'dayjs'
+import dayjs from 'dayjs/esm'
 import { computed } from 'vue'
 
 import MazPickerCalendarDays from './MazPickerCalendarDays.vue'
