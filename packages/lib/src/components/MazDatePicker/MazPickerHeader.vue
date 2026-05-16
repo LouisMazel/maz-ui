@@ -4,7 +4,7 @@ import type { MazDatePickerValue } from './types'
 import type { DateTimeFormatOptions } from './utils'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
-import dayjs from 'dayjs'
+import dayjs from 'dayjs/esm'
 import { computed, ref, watch } from 'vue'
 
 const {

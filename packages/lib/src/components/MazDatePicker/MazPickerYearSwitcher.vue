@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import type { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs/esm'
 import type { PropType } from 'vue'
 import type { MazColor } from '../types'
 import { MazChevronLeft } from '@maz-ui/icons/raw/MazChevronLeft'
 import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
-import dayjs from 'dayjs'
+import dayjs from 'dayjs/esm'
 import { computed, ref } from 'vue'
 
 import MazBtn from '../MazBtn.vue'

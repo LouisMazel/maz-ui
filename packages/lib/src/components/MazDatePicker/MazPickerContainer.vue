@@ -3,7 +3,7 @@ import type { MazColor } from '../types'
 import type { MazDatePickerShortcut, MazDatePickerValue } from './types'
 import type { DateTimeFormatOptions } from './utils'
 
-import dayjs from 'dayjs'
+import dayjs from 'dayjs/esm'
 import { computed, defineAsyncComponent, ref } from 'vue'
 
 const {
