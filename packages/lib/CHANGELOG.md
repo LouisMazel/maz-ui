@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.12 (2026-05-16)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.11...v5.0.0-beta.12)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDatePicker - use dayjs ESM instead of CJS ([299d06662](https://github.com/LouisMazel/maz-ui/commit/299d06662))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.11 (2026-05-15)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.10...v5.0.0-beta.11)
