@@ -10,9 +10,9 @@ import { MazClock } from '@maz-ui/icons/lazy/MazClock'
 import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
-import dayjs from 'dayjs'
-import customParseFormat from 'dayjs/plugin/customParseFormat'
-import isBetween from 'dayjs/plugin/isBetween'
+import dayjs from 'dayjs/esm'
+import customParseFormat from 'dayjs/esm/plugin/customParseFormat'
+import isBetween from 'dayjs/esm/plugin/isBetween'
 import {
   computed,
   defineAsyncComponent,

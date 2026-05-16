@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import type { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs/esm'
 import type { PropType } from 'vue'
 import type { MazColor } from '../../types'
 import type { MazDatePickerValue } from '../types'
 import { debounce } from '@maz-ui/utils/helpers/debounce'
-import dayjs from 'dayjs'
+import dayjs from 'dayjs/esm'
 import { computed, ref, watch } from 'vue'
 import MazBtn from '../../MazBtn.vue'
 
