@@ -124,6 +124,9 @@ export default defineConfig<DefaultTheme.Config>({
       minify: 'esbuild',
       chunkSizeWarningLimit: 1000,
     },
+    ssr: {
+      noExternal: ['dayjs'],
+    },
     plugins: [
       svgLoader(),
       {
