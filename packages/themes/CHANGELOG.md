@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.16 (2026-05-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.15...v5.0.0-beta.16)
+
+### 🚀 Features
+
+- **maz-ui:** MazSidebar - close/open persistent on SSR ([6839d8276](https://github.com/LouisMazel/maz-ui/commit/6839d8276))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.11 (2026-05-15)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.10...v5.0.0-beta.11)
