@@ -1,5 +1,19 @@
 # Change Log
 
+## v5.0.0-beta.15 (2026-05-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.14...v5.0.0-beta.15)
+
+### 🚀 Features
+
+- **maz-ui:** MazSidebar - close/open persistent ([#1581](https://github.com/LouisMazel/maz-ui/pull/1581))
+  - feat(maz-ui): MazSidebar - close/open persistent
+  - test(maz-ui): improve coverage for MazSidebar persistence and MazCheckbox keyboard handler
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.14 (2026-05-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.13...v5.0.0-beta.14)
