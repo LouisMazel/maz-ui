@@ -83,6 +83,63 @@ describe('given MazSidebarMenuButton component', () => {
     })
   })
 
+  describe('when no tooltip prop is provided', () => {
+    it('then the button mounts without error', () => {
+      const wrapper = mountWithSidebar({ label: 'Home' })
+      expect(wrapper.find('.m-sidebar-menu-btn').exists()).toBe(true)
+    })
+  })
+
+  describe('when tooltipMode is "always" and sidebar is expanded', () => {
+    it('then the button mounts without error', () => {
+      const wrapper = mountWithSidebar(
+        { label: 'Home', tooltip: 'Go home', tooltipMode: 'always' },
+        { open: true, collapsible: 'icon' },
+      )
+      expect(wrapper.find('.m-sidebar-menu-btn').exists()).toBe(true)
+    })
+  })
+
+  describe('when tooltipMode is "closed" and sidebar is expanded', () => {
+    it('then the button mounts without error', () => {
+      const wrapper = mountWithSidebar(
+        { label: 'Home', tooltip: 'Go home', tooltipMode: 'closed' },
+        { open: true, collapsible: 'icon' },
+      )
+      expect(wrapper.find('.m-sidebar-menu-btn').exists()).toBe(true)
+    })
+  })
+
+  describe('when tooltipMode is "closed" and sidebar is collapsed', () => {
+    it('then the button mounts without error', () => {
+      const wrapper = mountWithSidebar(
+        { label: 'Home', tooltip: 'Go home', tooltipMode: 'closed' },
+        { open: false, collapsible: 'icon' },
+      )
+      expect(wrapper.find('.m-sidebar-menu-btn').exists()).toBe(true)
+    })
+  })
+
+  describe('when button tooltipMode overrides sidebar tooltipMode', () => {
+    it('then the button mounts without error', () => {
+      const wrapper = mountWithSidebar(
+        { label: 'Home', tooltip: 'Go home', tooltipMode: 'always' },
+        { open: true, tooltipMode: 'closed', collapsible: 'icon' },
+      )
+      expect(wrapper.find('.m-sidebar-menu-btn').exists()).toBe(true)
+    })
+  })
+
+  describe('when sidebar tooltipMode is used as fallback', () => {
+    it('then the button mounts without error', () => {
+      const wrapper = mountWithSidebar(
+        { label: 'Home', tooltip: 'Go home' },
+        { open: false, tooltipMode: 'closed', collapsible: 'icon' },
+      )
+      expect(wrapper.find('.m-sidebar-menu-btn').exists()).toBe(true)
+    })
+  })
+
   describe('when a label prop is provided', () => {
     it('then the label text is displayed', () => {
       const wrapper = mountWithSidebar({ label: 'Dashboard' })
