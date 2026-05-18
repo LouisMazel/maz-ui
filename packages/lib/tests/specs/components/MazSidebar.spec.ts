@@ -181,6 +181,14 @@ describe('given MazSidebar component', () => {
     })
   })
 
+  describe('when rendered in overlay mode with side end', () => {
+    it('then it mounts without error', async () => {
+      const wrapper = mount(MazSidebar, { props: { open: true, mode: 'overlay', side: 'end' } })
+      await vi.dynamicImportSettled()
+      expect(wrapper.find('aside.--push').exists()).toBe(false)
+    })
+  })
+
   describe('when a descendant calls useSidebar()', () => {
     it('then the context exposes mode, side, collapsible, state and open', () => {
       const captured: Record<string, unknown> = {}
@@ -239,6 +247,13 @@ describe('given MazSidebar component', () => {
       const wrapper = mount(MazSidebar, { props: { open: true } })
       await wrapper.vm.$nextTick()
       expect(wrapper.emitted('update:open')).toEqual([[false]])
+    })
+
+    it('then the persisted value is applied during setup, before mount', () => {
+      document.cookie = 'maz-sidebar-open=false; path=/'
+      const wrapper = mount(MazSidebar, { props: { open: true } })
+      expect(wrapper.find('aside').classes()).toContain('--collapsed')
+      expect(wrapper.find('aside').classes()).not.toContain('--expanded')
     })
 
     it('then a missing cookie keeps the prop default', async () => {

@@ -68,8 +68,17 @@ export interface MazSidebarProps {
 
 <script lang="ts" setup>
 import { getCookie, setCookie } from '@maz-ui/themes/utils/cookie-storage'
-import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue'
+import { isServer } from '@maz-ui/utils/helpers/isServer'
+import { computed, defineAsyncComponent, onMounted, provide, ref, useSSRContext, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+
+interface MazSidebarSSRContext {
+  event?: {
+    node?: { req?: { headers?: { cookie?: string } } }
+    headers?: { get?: (name: string) => string | null }
+  }
+  req?: { headers?: { cookie?: string } }
+}
 
 const {
   id,
@@ -91,7 +100,31 @@ const emit = defineEmits<{
 
 const MazBackdrop = defineAsyncComponent(() => import('./MazBackdrop.vue'))
 
-const internalOpen = ref(open)
+function readPersistedOpen(): boolean | null {
+  if (!persist)
+    return null
+
+  let cookieHeader: string | undefined
+  if (isServer()) {
+    try {
+      const ctx = useSSRContext<MazSidebarSSRContext>()
+      cookieHeader
+        = ctx?.event?.node?.req?.headers?.cookie
+          ?? ctx?.event?.headers?.get?.('cookie')
+          ?? ctx?.req?.headers?.cookie
+          ?? undefined
+    }
+    catch {
+      // No SSR context available — fall through to client-side read on hydration
+    }
+  }
+
+  const raw = getCookie(persistKey, cookieHeader)
+  return raw === null ? null : raw === 'true'
+}
+
+const persistedInitial = readPersistedOpen()
+const internalOpen = ref(persistedInitial ?? open)
 
 watch(
   () => open,
@@ -114,14 +147,8 @@ function setOpen(value: boolean) {
 }
 
 onMounted(() => {
-  if (!persist)
-    return
-  const raw = getCookie(persistKey)
-  if (raw === null)
-    return
-  const persisted = raw === 'true'
-  if (persisted !== internalOpen.value)
-    setOpen(persisted)
+  if (persistedInitial !== null && persistedInitial !== open)
+    emit('update:open', persistedInitial)
 })
 
 watch(internalOpen, (value) => {
