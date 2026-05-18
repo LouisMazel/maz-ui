@@ -5,14 +5,15 @@ import { formatCurrency } from '@maz-ui/utils/helpers/formatCurrency'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import MazInput from './MazInput.vue'
 
-const props = withDefaults(defineProps<MazInputPriceProps>(), {
-  modelValue: undefined,
-  currency: 'EUR',
-  locale: 'fr-FR',
-  min: Number.NEGATIVE_INFINITY,
-  max: Number.POSITIVE_INFINITY,
-  noIcon: false,
-})
+const {
+  modelValue,
+  currency = 'EUR',
+  locale = 'fr-FR',
+  min = Number.NEGATIVE_INFINITY,
+  max = Number.POSITIVE_INFINITY,
+  noIcon = false,
+  currencyOptions,
+} = defineProps<MazInputPriceProps>()
 
 const emits = defineEmits<{
   'update:model-value': [value: number | undefined]
@@ -49,19 +50,19 @@ export interface MazInputPriceProps {
   currencyOptions?: Omit<FilterCurrencyOptions, 'currency'>
 }
 
-const internalValue = ref<number | undefined>(getAdjustedPrice(props.modelValue))
-watch(() => props.modelValue, updateInternalValue)
+const internalValue = ref<number | undefined>(getAdjustedPrice(modelValue))
+watch(() => modelValue, updateInternalValue)
 
 const isActive = ref(false)
 const valueString = computed<string | undefined>(() => {
-  return props.modelValue?.toString()
+  return modelValue?.toString()
 })
 const valueNumber = computed<number | undefined>(() => {
-  return props.modelValue
+  return modelValue
 })
 
 const priceFormatted = computed(() =>
-  typeof valueNumber.value === 'number' ? formatCurrency(valueNumber.value, props.locale, { ...props.currencyOptions, currency: props.currency }) : undefined,
+  typeof valueNumber.value === 'number' ? formatCurrency(valueNumber.value, locale, { ...currencyOptions, currency }) : undefined,
 )
 
 const isLetterRegex = /[^\d.]/g
@@ -77,10 +78,10 @@ function getAdjustedPrice(value?: string | number) {
 
   if (typeof newValue !== 'number' || Number.isNaN(newValue))
     newValue = undefined
-  if (newValue && newValue < props.min)
-    newValue = props.min
-  if (newValue && newValue > props.max)
-    newValue = props.max
+  if (newValue && newValue < min)
+    newValue = min
+  if (newValue && newValue > max)
+    newValue = max
 
   return newValue
 }
@@ -88,7 +89,7 @@ function getAdjustedPrice(value?: string | number) {
 const displayPrice = computed(() => {
   if (isActive.value)
     return valueString.value
-  if (typeof props.modelValue === 'number')
+  if (typeof modelValue === 'number')
     return priceFormatted.value
 
   return undefined
@@ -103,7 +104,7 @@ async function emitValues(newValue?: string | number) {
 }
 
 onMounted(() => {
-  emitValues(props.modelValue)
+  emitValues(modelValue)
 })
 
 function onBlur(event: Event) {

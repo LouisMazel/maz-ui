@@ -57,18 +57,23 @@ export interface MazRadioButtonsProps<T = string | number | boolean, Option exte
   size?: MazSize
 }
 
-const props = withDefaults(defineProps<MazRadioButtonsProps<T, Option>>(), {
-  modelValue: undefined,
-  name: 'MazButtonsRadio',
-  color: 'primary',
-  elevation: false,
-  orientation: 'row',
-  wrap: true,
-  equalSize: false,
-  selector: false,
-  block: false,
-  size: 'md',
-})
+const {
+  modelValue,
+  options,
+  name = 'MazButtonsRadio',
+  color = 'primary',
+  elevation = false,
+  orientation = 'row',
+  wrap = true,
+  equalSize = false,
+  selector = false,
+  block = false,
+  error,
+  success,
+  warning,
+  hint,
+  size = 'md',
+} = defineProps<MazRadioButtonsProps<T, Option>>()
 
 const emits = defineEmits<{
   /**
@@ -99,7 +104,7 @@ function selectOption(option: Option) {
 }
 
 function isSelected(value: Option['value']) {
-  return props.modelValue === value
+  return modelValue === value
 }
 
 function keyboardHandler(event: KeyboardEvent, option: Option) {
@@ -110,7 +115,7 @@ function keyboardHandler(event: KeyboardEvent, option: Option) {
 }
 
 function getOptionId(option: Option, i: number) {
-  return `option-${i}-${option.value.toString()}-${props.name}`
+  return `option-${i}-${option.value.toString()}-${name}`
 }
 
 const inputRef = ref<HTMLInputElement[]>()
@@ -199,8 +204,8 @@ const SIZE_CLASS: Record<MazSize, string> = {
             :style="[
               isSelected(option.value)
                 ? {
-                  backgroundColor: `oklch(from var(--maz-${getColor(props.color)}) clamp(0, calc(l - 0.05), 1) c h)`,
-                  color: `var(--maz-${getColor(props.color)}-foreground)`,
+                  backgroundColor: `oklch(from var(--maz-${getColor(color)}) clamp(0, calc(l - 0.05), 1) c h)`,
+                  color: `var(--maz-${getColor(color)}-foreground)`,
                 }
                 : {},
             ]"

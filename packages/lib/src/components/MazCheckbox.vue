@@ -44,22 +44,19 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(
-  defineProps<MazCheckboxProps<T>>(),
-  {
-    style: undefined,
-    class: undefined,
-    modelValue: undefined,
-    label: undefined,
-    id: undefined,
-    color: 'primary',
-    value: undefined,
-    name: 'm-checkbox',
-    size: 'md',
-    disabled: false,
-    tabindex: 0,
-  },
-)
+const {
+  class: classProp,
+  modelValue,
+  id,
+  color = 'primary',
+  value,
+  name = 'm-checkbox',
+  size = 'md',
+  disabled,
+  error,
+  success,
+  warning,
+} = defineProps<MazCheckboxProps<T>>()
 
 const emits = defineEmits<{
   /**
@@ -86,26 +83,26 @@ const emits = defineEmits<{
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazCheckbox',
-  providedId: props.id,
+  providedId: id,
 })
 
 const inputRef = ref<HTMLInputElement>()
 const isFocused = ref(false)
 
 const isChecked = computed(() => {
-  if (typeof props.value !== 'boolean' && Array.isArray(props.modelValue)) {
-    return props.modelValue.includes(props.value as never)
+  if (typeof value !== 'boolean' && Array.isArray(modelValue)) {
+    return modelValue.includes(value as never)
   }
 
-  else if (typeof props.modelValue === 'boolean') {
-    return props.modelValue
+  else if (typeof modelValue === 'boolean') {
+    return modelValue
   }
 
   return false
 })
 
 const checkboxSize = computed(() => {
-  switch (props.size) {
+  switch (size) {
     case 'xl': {
       return '2rem'
     }
@@ -129,7 +126,7 @@ const checkboxSize = computed(() => {
 })
 
 const checkIconSize = computed(() => {
-  switch (props.size) {
+  switch (size) {
     case 'xl': {
       return 'maz:text-2xl'
     }
@@ -152,58 +149,58 @@ const checkIconSize = computed(() => {
 })
 
 const checkIconColor = computed(() => {
-  if (props.color === 'contrast') {
+  if (color === 'contrast') {
     return 'var(--maz-surface)'
   }
 
-  return `var(--maz-${props.color}-foreground)`
+  return `var(--maz-${color}-foreground)`
 })
 const checkboxSelectedColor = computed(() => {
-  if (props.color === 'contrast') {
+  if (color === 'contrast') {
     return 'var(--maz-contrast)'
   }
 
-  return `var(--maz-${props.color})`
+  return `var(--maz-${color})`
 })
 const checkboxBoxShadow = computed(() => {
-  if (props.error && !isFocused.value) {
+  if (error && !isFocused.value) {
     return `var(--maz-destructive)`
   }
-  else if (props.warning && !isFocused.value) {
+  else if (warning && !isFocused.value) {
     return `var(--maz-warning)`
   }
-  else if (props.success && !isFocused.value) {
+  else if (success && !isFocused.value) {
     return `var(--maz-success)`
   }
 
-  return ['transparent', 'contrast'].includes(props.color)
+  return ['transparent', 'contrast'].includes(color)
     ? `var(--maz-muted)`
-    : `color-mix(in srgb, var(--maz-${props.color}) 60%, transparent)`
+    : `color-mix(in srgb, var(--maz-${color}) 60%, transparent)`
 })
 
 function keyboardHandler(event: KeyboardEvent) {
   if (['Space'].includes(event.code)) {
     event.preventDefault()
-    emitValue(props.value ?? !props.modelValue)
+    emitValue(value ?? !modelValue)
   }
 }
 
-function getNewValue(value: boolean | string | number) {
+function getNewValue(newValue: boolean | string | number) {
   if (
-    typeof value === 'boolean'
-    && (typeof props.modelValue === 'boolean'
-      || props.modelValue === undefined
-      || props.modelValue === null)
+    typeof newValue === 'boolean'
+    && (typeof modelValue === 'boolean'
+      || modelValue === undefined
+      || modelValue === null)
   ) {
-    return !props.modelValue
+    return !modelValue
   }
-  else if (Array.isArray(props.modelValue) && typeof value !== 'boolean') {
-    return props.modelValue.includes(value)
-      ? props.modelValue.filter(v => v !== value)
-      : [...props.modelValue, value]
+  else if (Array.isArray(modelValue) && typeof newValue !== 'boolean') {
+    return modelValue.includes(newValue)
+      ? modelValue.filter(v => v !== newValue)
+      : [...modelValue, newValue]
   }
   else {
-    return [value]
+    return [newValue]
   }
 }
 
@@ -232,7 +229,7 @@ function onFocus(event: FocusEvent) {
     class="m-checkbox m-reset-css maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden"
     :class="[
       { '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-pointer': !disabled },
-      props.class,
+      classProp,
     ]"
     :style="[style, { '--checkbox-selected-color': checkboxSelectedColor, '--checkbox-box-shadow-color': checkboxBoxShadow }]"
     role="checkbox"

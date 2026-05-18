@@ -47,26 +47,42 @@ export interface MazSidebarProps {
    * - `closed`: tooltip only shows on hover when the sidebar is collapsed
    *
    * Individual buttons can override this via their own `tooltipMode` prop.
-   * @default 'always'
+   * @default 'closed'
    */
   tooltipMode?: MazSidebarTooltipMode
+  /**
+   * Persist the open/collapsed state in a cookie so it survives reloads.
+   * Restoration happens on client mount (SSR-safe). For zero-flash SSR, read
+   * the cookie server-side and forward it via `v-model:open`.
+   * @default true
+   */
+  persist?: boolean
+  /**
+   * Cookie key used when `persist` is enabled. Set a unique key per sidebar
+   * instance if you mount several sidebars on the same site.
+   * @default 'maz-sidebar-open'
+   */
+  persistKey?: string
 }
 </script>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, provide, ref, watch } from 'vue'
+import { getCookie, setCookie } from '@maz-ui/themes/utils/cookie-storage'
+import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
-const props = withDefaults(defineProps<MazSidebarProps>(), {
-  id: undefined,
-  open: true,
-  side: 'start',
-  collapsible: 'offcanvas',
-  mode: 'push',
-  width: '16rem',
-  iconWidth: '3rem',
-  tooltipMode: 'closed',
-})
+const {
+  id,
+  open = true,
+  side = 'start',
+  collapsible = 'offcanvas',
+  mode = 'push',
+  width = '16rem',
+  iconWidth = '3rem',
+  tooltipMode = 'closed',
+  persist = true,
+  persistKey = 'maz-sidebar-open',
+} = defineProps<MazSidebarProps>()
 
 const emit = defineEmits<{
   /** Emitted when open state changes */
@@ -75,10 +91,10 @@ const emit = defineEmits<{
 
 const MazBackdrop = defineAsyncComponent(() => import('./MazBackdrop.vue'))
 
-const internalOpen = ref(props.open)
+const internalOpen = ref(open)
 
 watch(
-  () => props.open,
+  () => open,
   (v) => {
     internalOpen.value = v
   },
@@ -97,38 +113,54 @@ function setOpen(value: boolean) {
   emit('update:open', value)
 }
 
+onMounted(() => {
+  if (!persist)
+    return
+  const raw = getCookie(persistKey)
+  if (raw === null)
+    return
+  const persisted = raw === 'true'
+  if (persisted !== internalOpen.value)
+    setOpen(persisted)
+})
+
+watch(internalOpen, (value) => {
+  if (persist)
+    setCookie(persistKey, String(value))
+})
+
 const uniqueId = useInstanceUniqId({
   componentName: 'MazSidebar',
-  providedId: props.id,
+  providedId: id,
 })
 
 provide(mazSidebarKey, {
   id: uniqueId,
   open: internalOpen,
   state,
-  side: computed(() => props.side),
-  collapsible: computed(() => props.collapsible),
-  mode: computed(() => props.mode),
-  tooltipMode: computed(() => props.tooltipMode),
+  side: computed(() => side),
+  collapsible: computed(() => collapsible),
+  mode: computed(() => mode),
+  tooltipMode: computed(() => tooltipMode),
   toggle,
   setOpen,
 })
 
 const sidebarStyle = computed(() => ({
-  '--maz-sidebar-width': props.width,
-  '--maz-sidebar-icon-width': props.iconWidth,
+  '--maz-sidebar-width': width,
+  '--maz-sidebar-icon-width': iconWidth,
 }))
 
 const isOffcanvasCollapsed = computed(
-  () => props.collapsible === 'offcanvas' && state.value === 'collapsed',
+  () => collapsible === 'offcanvas' && state.value === 'collapsed',
 )
 
 const isIconCollapsed = computed(
-  () => props.collapsible === 'icon' && state.value === 'collapsed',
+  () => collapsible === 'icon' && state.value === 'collapsed',
 )
 
 const pushWidthClass = computed(() => {
-  if (props.collapsible === 'none')
+  if (collapsible === 'none')
     return 'maz:w-(--maz-sidebar-width)'
   if (isOffcanvasCollapsed.value)
     return 'maz:w-0'
@@ -138,7 +170,7 @@ const pushWidthClass = computed(() => {
 })
 
 const borderClass = computed(() =>
-  props.side === 'start'
+  side === 'start'
     ? 'maz:border-e maz:border-divider'
     : 'maz:border-s maz:border-divider',
 )

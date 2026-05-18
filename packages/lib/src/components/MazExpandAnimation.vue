@@ -18,10 +18,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-withDefaults(defineProps<MazExpandAnimationProps>(), {
-  duration: '300ms',
-  timingFunction: 'ease-in-out',
-})
+const { duration = '300ms', timingFunction = 'ease-in-out' } = defineProps<MazExpandAnimationProps>()
 
 const isOpen = defineModel<boolean>()
 const hasOverflowHidden = ref(!isOpen.value)

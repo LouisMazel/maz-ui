@@ -42,35 +42,44 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MazDatePickerProps>(), {
-  format: 'YYYY-MM-DD',
-  open: false,
-  inputDateFormat: () => ({ dateStyle: 'medium', timeStyle: 'short' }),
-  hideHeader: false,
-  disabled: false,
-  firstDayOfWeek: 0,
-  autoClose: false,
-  double: false,
-  inline: false,
-  color: 'primary',
-  pickerPosition: 'auto',
-  pickerPreferPosition: 'bottom-start',
-  pickerFallbackPosition: 'top-start',
-  time: false,
-  onlyTime: false,
-  minuteInterval: 5,
-  useBrowserLocale: true,
-  fetchLocal: true,
-  shortcuts: true,
-  minDate: undefined,
-  maxDate: undefined,
-  minMaxAuto: true,
-  disabledWeekly: () => [],
-  disabledDates: () => [],
-  disabledHours: () => [],
-  transition: 'scale-fade',
-  range: false,
-})
+const {
+  id,
+  style: styleProp,
+  class: classProp,
+  inputProps,
+  modelValue,
+  format = 'YYYY-MM-DD',
+  label,
+  placeholder,
+  inputDateFormat = { dateStyle: 'medium', timeStyle: 'short' },
+  inputDateTransformer,
+  locale: localeProp,
+  hideHeader = false,
+  disabled = false,
+  firstDayOfWeek = 0,
+  autoClose = false,
+  customElementSelector,
+  double = false,
+  inline = false,
+  color = 'primary',
+  pickerPosition = 'auto',
+  pickerPreferPosition = 'bottom-start',
+  pickerFallbackPosition = 'top-start',
+  time = false,
+  onlyTime = false,
+  minuteInterval = 5,
+  shortcuts = true,
+  shortcut,
+  minDate,
+  maxDate,
+  minMaxAuto = true,
+  disabledWeekly = [],
+  disabledDates = [],
+  disabledHours = [],
+  block,
+  range = false,
+  transition = 'scale-fade',
+} = defineProps<MazDatePickerProps>()
 
 const emits = defineEmits<{
   /**
@@ -359,7 +368,7 @@ export interface MazDatePickerProps {
 
 const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
 
-const instanceId = useInstanceUniqId({ componentName: 'MazDatePicker', providedId: props.id })
+const instanceId = useInstanceUniqId({ componentName: 'MazDatePicker', providedId: id })
 
 function isRangeModelValue(value: unknown): value is MazDatePickerPartialRangeValue {
   return typeof value === 'object' && value !== null
@@ -367,29 +376,29 @@ function isRangeModelValue(value: unknown): value is MazDatePickerPartialRangeVa
 
 const currentValue = computed<MazDatePickerValue>({
   get: () => {
-    const isRangeMode = isRangeModelValue(props.modelValue) || props.range
+    const isRangeMode = isRangeModelValue(modelValue) || range
 
     if (isRangeMode) {
       return {
-        start: isRangeModelValue(props.modelValue) && props.modelValue.start
-          ? dayjs(props.modelValue.start, props.format).format()
+        start: isRangeModelValue(modelValue) && modelValue.start
+          ? dayjs(modelValue.start, format).format()
           : undefined,
-        end: isRangeModelValue(props.modelValue) && props.modelValue.end
-          ? dayjs(props.modelValue.end, props.format).format()
+        end: isRangeModelValue(modelValue) && modelValue.end
+          ? dayjs(modelValue.end, format).format()
           : undefined,
       }
     }
 
-    return typeof props.modelValue === 'string' && props.modelValue
-      ? dayjs(props.modelValue, props.format).format()
+    return typeof modelValue === 'string' && modelValue
+      ? dayjs(modelValue, format).format()
       : undefined
   },
   set: (value) => {
-    if (props.disabled) {
+    if (disabled) {
       return
     }
 
-    const emittedValue = props.range && !isRangeValue(value)
+    const emittedValue = range && !isRangeValue(value)
       ? {
           start: value,
           end: undefined,
@@ -398,25 +407,25 @@ const currentValue = computed<MazDatePickerValue>({
 
     emitValue(emittedValue)
 
-    const isRangeMode = isRangeModelValue(value) || props.range
+    const isRangeMode = isRangeModelValue(value) || range
 
-    if (props.autoClose && (!isRangeMode || (isRangeMode && isRangeModelValue(value) && value.end))) {
+    if (autoClose && (!isRangeMode || (isRangeMode && isRangeModelValue(value) && value.end))) {
       closeCalendar()
     }
   },
 })
-const hasTime = computed(() => props.time || props.onlyTime)
-const hasDouble = computed(() => props.double && !props.onlyTime)
-const hasDate = computed(() => !props.onlyTime)
-const isRangeMode = computed(() => isRangeModelValue(currentValue.value) || props.range)
+const hasTime = computed(() => time || onlyTime)
+const hasDouble = computed(() => double && !onlyTime)
+const hasDate = computed(() => !onlyTime)
+const isRangeMode = computed(() => isRangeModelValue(currentValue.value) || range)
 
 const internalShortcuts = computed(() => {
-  if (!isRangeMode.value || props.shortcuts === false) {
+  if (!isRangeMode.value || shortcuts === false) {
     return false
   }
 
-  if (props.shortcuts && Array.isArray(props.shortcuts)) {
-    return props.shortcuts
+  if (shortcuts && Array.isArray(shortcuts)) {
+    return shortcuts
   }
 
   return getDefaultsShortcuts({
@@ -431,7 +440,7 @@ const internalShortcuts = computed(() => {
 })
 
 const localeModel = defineModel<string>('locale', { default: undefined })
-localeModel.value = props.locale ?? locale.value
+localeModel.value = localeProp ?? locale.value
 
 const containerUniqueId = computed(() => `MazDatePickerContainer-${instanceId.value}`)
 
@@ -441,12 +450,12 @@ onBeforeMount(() => {
   if (isRangeMode.value && hasTime.value) {
     console.error(`[maz-ui](MazDatePicker) You can't use time picker with range picker`)
   }
-  if (hasTime.value && !(props.format.includes('h') || props.format.includes('H'))) {
+  if (hasTime.value && !(format.includes('h') || format.includes('H'))) {
     console.error(
       `[maz-ui](MazDatePicker) When you use the time picker, you must provided a format with time - Ex: "YYYY-MM-DD HH:mm"`,
     )
   }
-  if (props.format.includes('h') && !(props.format.includes('a') || props.format.includes('A'))) {
+  if (format.includes('h') && !(format.includes('a') || format.includes('A'))) {
     console.error(
       '[maz-ui](MazDatePicker) if you use the 12 format "h" or "hh", you must add "a" or "A" at the end of the format - Ex: "YYYY-MM-DD hh:mm a"',
     )
@@ -461,11 +470,11 @@ onBeforeMount(() => {
 function getCalendarDate(value: MazDatePickerValue): string {
   const baseDate = (isRangeModelValue(value) ? value.start : value) ?? dayjs().format()
 
-  if (props.minDate && dayjs(baseDate).isBefore(props.minDate)) {
-    return props.minDate
+  if (minDate && dayjs(baseDate).isBefore(minDate)) {
+    return minDate
   }
-  else if (props.maxDate && dayjs(baseDate).isAfter(props.maxDate)) {
-    return props.minDate ?? props.maxDate
+  else if (maxDate && dayjs(baseDate).isAfter(maxDate)) {
+    return minDate ?? maxDate
   }
   else {
     return baseDate
@@ -475,13 +484,13 @@ function getCalendarDate(value: MazDatePickerValue): string {
 const calendarDate = ref(getCalendarDate(currentValue.value))
 
 const isHour12 = computed(
-  () => props.format.includes('a') || props.format.includes('A') || props.format.includes('h'),
+  () => format.includes('a') || format.includes('A') || format.includes('h'),
 )
 
 const formatterOptions = computed<DateTimeFormatOptions>(() => ({
-  ...props.inputDateFormat,
-  timeStyle: hasTime.value ? props.inputDateFormat.timeStyle ?? 'short' : undefined,
-  hour12: hasTime.value ? props.inputDateFormat.hour12 ?? isHour12.value : undefined,
+  ...inputDateFormat,
+  timeStyle: hasTime.value ? inputDateFormat.timeStyle ?? 'short' : undefined,
+  hour12: hasTime.value ? inputDateFormat.hour12 ?? isHour12.value : undefined,
 } satisfies DateTimeFormatOptions))
 
 const inputValue = computed(() => {
@@ -490,7 +499,7 @@ const inputValue = computed(() => {
 
   let formattedDate: string | undefined
 
-  if (props.onlyTime && typeof currentValue.value === 'string' && currentValue.value) {
+  if (onlyTime && typeof currentValue.value === 'string' && currentValue.value) {
     formattedDate = currentValue.value
       ? formatDate(dayjs(currentValue.value).format(), localeModel.value, {
           timeStyle: formatterOptions.value.timeStyle,
@@ -513,7 +522,7 @@ const inputValue = computed(() => {
     })
   }
 
-  return props.inputDateTransformer && formattedDate ? props.inputDateTransformer({ formattedDate, value: props.modelValue, locale: localeModel.value }) : formattedDate
+  return inputDateTransformer && formattedDate ? inputDateTransformer({ formattedDate, value: modelValue, locale: localeModel.value }) : formattedDate
 })
 
 const hasPickerOpen = defineModel('open', { default: false })
@@ -525,17 +534,17 @@ function closeCalendar() {
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 function checkMinMaxValues(value: MazDatePickerValue) {
-  if (!props.minDate && !props.maxDate) {
+  if (!minDate && !maxDate) {
     return
   }
 
   if (!isRangeMode.value && ((typeof value === 'string' && value) || !value)) {
     const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
       value,
-      minDate: props.minDate,
-      maxDate: props.maxDate,
-      format: props.format,
-      minMaxAuto: props.minMaxAuto,
+      minDate,
+      maxDate,
+      format,
+      minMaxAuto,
     })
 
     if (newValue) {
@@ -553,10 +562,10 @@ function checkMinMaxValues(value: MazDatePickerValue) {
     if (value.start) {
       const { newValue, newCurrentDate } = checkValueWithMinMaxDates({
         value: value.start,
-        minDate: props.minDate,
-        maxDate: props.maxDate,
-        format: props.format,
-        minMaxAuto: props.minMaxAuto,
+        minDate,
+        maxDate,
+        format,
+        minMaxAuto,
       })
 
       if (newValue)
@@ -569,10 +578,10 @@ function checkMinMaxValues(value: MazDatePickerValue) {
     if (value.end) {
       const { newValue } = checkValueWithMinMaxDates({
         value: value.end,
-        minDate: props.minDate,
-        maxDate: props.maxDate,
-        format: props.format,
-        minMaxAuto: props.minMaxAuto,
+        minDate,
+        maxDate,
+        format,
+        minMaxAuto,
       })
 
       if (newValue)
@@ -594,7 +603,7 @@ function setCalendarDate(value: string) {
 
 function emitValue(value: MazDatePickerValue) {
   if (isRangeMode.value && (isRangeModelValue(value) || value === undefined)) {
-    const newValue = getRangeISODate(value, props.format) ?? { start: undefined, end: undefined }
+    const newValue = getRangeISODate(value, format) ?? { start: undefined, end: undefined }
     emits('update:model-value', newValue)
 
     if (newValue.start) {
@@ -602,12 +611,12 @@ function emitValue(value: MazDatePickerValue) {
     }
   }
   else if ((typeof value === 'string' && value) || value === undefined) {
-    emits('update:model-value', getISODate(value, props.format))
+    emits('update:model-value', getISODate(value, format))
   }
 }
 // model value watcher
 watch(
-  () => [currentValue.value, props.minDate, props.maxDate],
+  () => [currentValue.value, minDate, maxDate],
   (values, oldValues) => {
     const value = values[0] as MazDatePickerValue
     const oldValue = oldValues?.[0] as MazDatePickerValue
@@ -632,7 +641,7 @@ watch(
 
 // Disable weekly watcher
 watch(
-  () => [currentValue.value, props.disabledWeekly, props.disabledDates],
+  () => [currentValue.value, disabledWeekly, disabledDates],
   (values) => {
     const value = values[0] as MazDatePickerValue
     const disabledWeekly = values[1] as number[]
@@ -673,7 +682,7 @@ watch(
     ref="popover"
     v-model="hasPickerOpen"
     class="m-date-picker m-reset-css maz:relative maz:inline-block"
-    :style
+    :style="styleProp"
     :offset="0"
     :class="[
       `m-date-picker--${color}`,
@@ -681,7 +690,7 @@ watch(
         '--is-open': hasPickerOpen,
         '--is-disabled': disabled,
       },
-      props.class,
+      classProp,
     ]"
     trigger="click"
     :transition

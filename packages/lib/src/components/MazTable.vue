@@ -269,24 +269,49 @@ import {
   onBeforeMount,
   provide,
   ref,
-  toRefs,
+  toRef,
   useSlots,
   watch,
 } from 'vue'
 import { hasSlotContent } from '../utils/hasSlotContent'
 
-const props = withDefaults(defineProps<MazTableProps<T>>(), {
-  size: 'md',
-  headersAlign: 'left',
-  page: 1,
-  pageSize: 20,
-  captionSide: 'bottom',
-  divider: false,
-  color: 'primary',
-  roundedSize: 'md',
-  scrollable: false,
-  paginateRows: true,
-})
+const {
+  tableClass,
+  tableStyle,
+  modelValue,
+  size = 'md',
+  inputSize,
+  title,
+  headers,
+  sortable,
+  headersAlign = 'left',
+  rows,
+  hoverable,
+  search,
+  hideSearchInRow,
+  hideSearchBy,
+  searchQuery,
+  backgroundOdd,
+  backgroundEven,
+  elevation,
+  divider = false,
+  caption,
+  captionSide = 'bottom',
+  pagination,
+  page = 1,
+  pageSize = 20,
+  totalPages,
+  paginateRows = true,
+  totalItems,
+  loading,
+  selectable,
+  selectedKey,
+  tableLayout,
+  color = 'primary',
+  translations,
+  roundedSize = 'md',
+  scrollable = false,
+} = defineProps<MazTableProps<T>>()
 
 const emits = defineEmits<{
   /**
@@ -323,43 +348,41 @@ const MazTableTitle = defineAsyncComponent(() => import('./MazTableTitle.vue'))
 const { t } = useTranslations()
 /* eslint-disable complexity */
 const messages = computed(() => ({
-  noResults: props.translations?.noResults ?? t('table.noResults'),
-  actionColumnTitle: props.translations?.actionColumnTitle ?? t('table.actionColumnTitle'),
+  noResults: translations?.noResults ?? t('table.noResults'),
+  actionColumnTitle: translations?.actionColumnTitle ?? t('table.actionColumnTitle'),
   searchByInput: {
-    all: props.translations?.searchByInput?.all ?? t('table.searchByInput.all'),
-    placeholder: props.translations?.searchByInput?.placeholder ?? t('table.searchByInput.placeholder'),
+    all: translations?.searchByInput?.all ?? t('table.searchByInput.all'),
+    placeholder: translations?.searchByInput?.placeholder ?? t('table.searchByInput.placeholder'),
   },
   searchInput: {
-    placeholder: props.translations?.searchInput?.placeholder ?? t('table.searchInput.placeholder'),
+    placeholder: translations?.searchInput?.placeholder ?? t('table.searchInput.placeholder'),
   },
   pagination: {
-    all: props.translations?.pagination?.all ?? t('table.pagination.all'),
-    rowsPerPage: props.translations?.pagination?.rowsPerPage ?? t('table.pagination.rowsPerPage'),
-    of: props.translations?.pagination?.of ?? t('table.pagination.of'),
+    all: translations?.pagination?.all ?? t('table.pagination.all'),
+    rowsPerPage: translations?.pagination?.rowsPerPage ?? t('table.pagination.rowsPerPage'),
+    of: translations?.pagination?.of ?? t('table.pagination.of'),
   },
 } satisfies MazUiTranslationsNestedSchema['table']))
 /* eslint-enable complexity */
 
 const hasDivider = computed<boolean>(
-  () => props.divider && !props.backgroundEven && !props.backgroundOdd,
+  () => divider && !backgroundEven && !backgroundOdd,
 )
 
-const { size, hoverable, backgroundEven, backgroundOdd } = toRefs(props)
-
 provide(mazTableKey, {
-  size,
-  hoverable,
-  backgroundEven,
-  backgroundOdd,
+  size: toRef(() => size),
+  hoverable: toRef(() => hoverable),
+  backgroundEven: toRef(() => backgroundEven),
+  backgroundOdd: toRef(() => backgroundOdd),
 })
 
 const rowsNormalized = ref<T[]>(getNormalizedRows())
 
-const isSelectable = computed<boolean>(() => props.selectable || !!props.selectedKey)
+const isSelectable = computed<boolean>(() => selectable || !!selectedKey)
 
-const currentPage = ref(props.page)
+const currentPage = ref(page)
 watch(
-  () => props.page,
+  () => page,
   (value) => {
     currentPage.value = value
   },
@@ -381,9 +404,9 @@ const pageSizeOptions = computed<MazSelectOption[]>(() => [
   { label: 100, value: 100 },
   { label: 200, value: 200 },
 ])
-const pageSizeModelInternal = ref(props.pageSize)
+const pageSizeModelInternal = ref(pageSize)
 watch(
-  () => props.pageSize,
+  () => pageSize,
   (value) => {
     pageSizeModelInternal.value = value
   },
@@ -397,8 +420,8 @@ const pageSizeModel = computed({
 })
 
 const totalPagesInternal = computed(() => {
-  if (props.totalPages) {
-    return props.totalPages
+  if (totalPages) {
+    return totalPages
   }
 
   return (pageSizeModel.value === Number.POSITIVE_INFINITY || !totalItemsInternal.value)
@@ -406,12 +429,12 @@ const totalPagesInternal = computed(() => {
     : Math.ceil(totalItemsInternal.value / pageSizeModel.value)
 })
 
-const totalItemsInternal = computed(() => props.totalItems ?? props.rows?.length)
+const totalItemsInternal = computed(() => totalItems ?? rows?.length)
 
 const rowsOfPage = computed(() => {
   if (
-    !props.pagination
-    || !props.paginateRows
+    !pagination
+    || !paginateRows
     || pageSizeModel.value === Number.POSITIVE_INFINITY
   ) {
     return rowsNormalized.value
@@ -445,7 +468,7 @@ function nextPage() {
 }
 
 watch(
-  () => [props.rows, props.modelValue],
+  () => [rows, modelValue],
   () => {
     rowsNormalized.value = getNormalizedRows()
   },
@@ -454,7 +477,7 @@ watch(
 const sortedColumnIndex = ref<number>()
 const sortType = ref<'ASC' | 'DESC'>()
 
-const headersNormalized = computed<MazTableHeadersNormalized[]>(() => (getNormalizedHeaders(props.headers)))
+const headersNormalized = computed<MazTableHeadersNormalized[]>(() => (getNormalizedHeaders(headers)))
 
 const searchByKey = ref<string>()
 const searchByOptions = computed<MazSelectOption[]>(() => {
@@ -465,9 +488,9 @@ const searchByOptions = computed<MazSelectOption[]>(() => {
   return [{ label: messages.value.searchByInput.all, value: null }, ...headerOptions]
 })
 
-const searchQueryModelInternal = ref(props.searchQuery)
+const searchQueryModelInternal = ref(searchQuery)
 watch(
-  () => props.searchQuery,
+  () => searchQuery,
   (value) => {
     searchQueryModelInternal.value = value
   },
@@ -501,7 +524,7 @@ function getSortedRows(rows: T[]) {
 }
 
 function getFilteredRows(rows: T[]) {
-  if (props.hideSearchInRow || typeof searchQueryModel.value !== 'string')
+  if (hideSearchInRow || typeof searchQueryModel.value !== 'string')
     return rowsOfPage.value
 
   const query = searchQueryModel.value.toLowerCase()
@@ -529,23 +552,23 @@ const rowsFiltered = computed<T[]>(() => {
 
 const slots = useSlots()
 
-const hasHeader = computed<boolean>((): boolean => props.search || !!props.title || !!slots.title)
-const hasFooter = computed<boolean>(() => props.pagination)
+const hasHeader = computed<boolean>((): boolean => !!(search || title || slots.title))
+const hasFooter = computed<boolean>(() => !!pagination)
 
 function getNormalizedHeaders(headers?: MazTableHeader[]): MazTableHeadersNormalized[] {
   return (
     headers?.map(header =>
       typeof header === 'string'
-        ? { label: header, align: props.headersAlign }
-        : { align: props.headersAlign, thHeaders: header.headers, ...header },
+        ? { label: header, align: headersAlign }
+        : { align: headersAlign, thHeaders: header.headers, ...header },
     ) ?? []
   )
 }
 
 function getNormalizedRows(): T[] {
   return (
-    props.rows?.map(row => ({
-      selected: props.modelValue?.includes(props.selectedKey ? row[props.selectedKey] : row),
+    rows?.map(row => ({
+      selected: modelValue?.includes(selectedKey ? row[selectedKey] : row),
       ...row,
     })) ?? []
   )
@@ -593,7 +616,7 @@ function emitValues(selectedRows?: (T | string | number | boolean)[]) {
 function getSelectedRows(): (T | string | number | boolean)[] {
   return rowsNormalized.value
     .filter(row => row.selected)
-    .map(row => (props.selectedKey ? row[props.selectedKey] : row))
+    .map(row => (selectedKey ? row[selectedKey] : row))
 }
 
 onBeforeMount(() => {
