@@ -1,16 +1,7 @@
-<script lang="ts">
-export interface MazSidebarTriggerProps {
-  /** Additional CSS class */
-  class?: string
-}
-</script>
-
 <script lang="ts" setup>
 import { MazChevronUpDown } from '@maz-ui/icons/raw/MazChevronUpDown'
 import { useSidebar } from '../composables/useSidebar'
 import MazIcon from './MazIcon.vue'
-
-defineProps<MazSidebarTriggerProps>()
 
 const sidebar = useSidebar()
 </script>

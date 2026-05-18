@@ -36,7 +36,7 @@ The following features are planned for a future release and are **not yet availa
 | `MazSidebarMenuSub` | Collapsible sub-menu |
 | `MazSidebarTrigger` | Toggle button (must be a descendant of `MazSidebar`) |
 
-## 1. Basic usage
+## Basic usage
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[25rem] maz:flex">
@@ -94,7 +94,7 @@ const isOpen = ref(true)
   </template>
 </ComponentDemo>
 
-## 2. Groups & dividers
+## Groups & dividers
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[25rem] maz:flex">
@@ -156,7 +156,7 @@ const isOpen = ref(true)
   </template>
 </ComponentDemo>
 
-## 3. Sub-menus
+## Sub-menus
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[25rem] maz:flex">
@@ -213,7 +213,7 @@ const isOpen = ref(true)
   </template>
 </ComponentDemo>
 
-## 4. Icon mode with tooltips
+## Icon mode with tooltips
 
 When `collapsible="icon"` and the sidebar is collapsed, labels fade out and only the icons stay visible. To help users identify items in collapsed state, provide a `tooltip` prop on each `MazSidebarMenuButton`: it uses the `v-tooltip` directive and is always shown on hover.
 
@@ -269,7 +269,7 @@ const isOpen = ref(true)
   </template>
 </ComponentDemo>
 
-## 5. Offcanvas mode
+## Offcanvas mode
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[20rem] maz:flex">
@@ -302,7 +302,7 @@ const isOpen = ref(true)
   </template>
 </ComponentDemo>
 
-## 6. Overlay vs push mode
+## Overlay vs push mode
 
 In `mode="push"` (default), the sidebar is part of the document flow and pushes the main content.
 In `mode="overlay"`, the sidebar floats over the content with a backdrop, escape key support and focus trapping.
@@ -341,7 +341,7 @@ In `mode="overlay"`, the sidebar floats over the content with a backdrop, escape
   </template>
 </ComponentDemo>
 
-## 7. Side end (right)
+## Side end (right)
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[20rem] maz:flex">
@@ -371,7 +371,7 @@ In `mode="overlay"`, the sidebar floats over the content with a backdrop, escape
   </template>
 </ComponentDemo>
 
-## 8. Badges
+## Badges
 
 `badge` accepts a `string`, a `number`, or a full `MazBadgeProps` object (with an optional `text`) to fine-tune color, size, outlined, etc.
 
@@ -421,7 +421,7 @@ In `mode="overlay"`, the sidebar floats over the content with a backdrop, escape
   </template>
 </ComponentDemo>
 
-## 9. User menu in footer
+## User menu in footer
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[22rem] maz:flex">
@@ -466,7 +466,7 @@ In `mode="overlay"`, the sidebar floats over the content with a backdrop, escape
   </template>
 </ComponentDemo>
 
-## 10. Mobile (static rendering)
+## Mobile (static rendering)
 
 ::: info
 Automatic mobile drawer (drawer auto under a breakpoint with backdrop) is a **deferred v1.1 feature**. For now, control the sidebar visibility programmatically based on viewport.
@@ -498,7 +498,7 @@ watch(isMobile, (mobile) => {
 </template>
 ```
 
-## 11. Programmatic control (v-model + composable)
+## Programmatic control (v-model + composable)
 
 Use `v-model:open` for two-way binding, or `useSidebar()` inside any descendant component.
 
@@ -530,7 +530,7 @@ const sidebar = useSidebar()
 </template>
 ```
 
-## 12. With router (vue-router / NuxtLink)
+## With router (vue-router / NuxtLink)
 
 `MazSidebarMenuButton` uses `resolveLinkComponent()` internally — it detects `RouterLink` (vue-router) or a provided `NuxtLink`. Pass the `to` prop for router navigation, `href` for plain anchor links.
 
@@ -545,40 +545,6 @@ const sidebar = useSidebar()
 <!-- Mark as active manually (useful when router is not available) -->
 <MazSidebarMenuButton label="Dashboard" :active="$route.name === 'dashboard'" />
 ```
-
-## MazSidebar Props
-
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `id` | `string` | auto-generated | Unique identifier for the sidebar |
-| `v-model:open` | `boolean` | `true` | Controls the open/closed state |
-| `side` | `'start' \| 'end'` | `'start'` | Which side the sidebar appears on |
-| `collapsible` | `'offcanvas' \| 'icon' \| 'none'` | `'offcanvas'` | How the sidebar collapses |
-| `mode` | `'push' \| 'overlay'` | `'push'` | Whether content is pushed or overlaid |
-| `width` | `string` | `'16rem'` | Width when expanded |
-| `iconWidth` | `string` | `'3rem'` | Width in icon-collapsed mode |
-
-## MazSidebarMenuButton Props
-
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `to` | `string \| object` | — | Router-link target |
-| `href` | `string` | — | Anchor href |
-| `icon` | `MazIconLike` | — | Icon — value or full `MazIconProps` object |
-| `label` | `string` | — | Text label |
-| `badge` | `string \| number \| MazBadgeProps & { text? }` | — | Badge — value or full `MazBadgeProps` object |
-| `tooltip` | `string` | — | Tooltip text — shown on hover via `v-tooltip` |
-| `active` | `boolean` | — | Force active state (`aria-current="page"`) |
-| `disabled` | `boolean` | `false` | Disable the button |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Button size |
-
-## MazSidebarMenuSub Props
-
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `label` | `string` | — | Label for the trigger button |
-| `icon` | `MazIconLike` | — | Icon — value or full `MazIconProps` object |
-| `defaultOpen` | `boolean` | `false` | Open the sub-menu by default |
 
 ## CSS Variables
 
@@ -602,6 +568,22 @@ Customize the sidebar width using these CSS custom properties (also settable via
 - In `mode="overlay"`, pressing `Escape` closes the sidebar and focus is restored to the trigger element
 - In `mode="overlay"`, `Tab`/`Shift+Tab` are trapped within the sidebar
 - All transitions respect `prefers-reduced-motion`
+
+## MazSidebar
+
+<!--@include: ./../../.vitepress/generated-docs/maz-sidebar.doc.md-->
+
+## MazSidebarMenuButton
+
+<!--@include: ./../../.vitepress/generated-docs/maz-sidebar-menu-button.doc.md-->
+
+## MazSidebarMenuSub
+
+<!--@include: ./../../.vitepress/generated-docs/maz-sidebar-menu-sub.doc.md-->
+
+## MazSidebarGroup
+
+<!--@include: ./../../.vitepress/generated-docs/maz-sidebar-group.doc.md-->
 
 <script setup>
 import { ref } from 'vue'
