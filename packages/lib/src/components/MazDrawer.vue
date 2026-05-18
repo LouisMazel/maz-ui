@@ -6,13 +6,13 @@ import { computed, defineAsyncComponent, useSlots } from 'vue'
 import MazBackdrop from './MazBackdrop.vue'
 import MazIcon from './MazIcon.vue'
 
-const props = withDefaults(defineProps<MazDrawerProps>(), {
-  title: undefined,
-  variant: 'end',
-  backdropClass: undefined,
-  size: '30rem',
-  noClose: false,
-})
+const {
+  title,
+  variant = 'end',
+  backdropClass,
+  size = '30rem',
+  hideCloseButton,
+} = defineProps<MazDrawerProps>()
 
 defineEmits<{
   /** emitted before drawer is close */
@@ -49,10 +49,10 @@ export interface MazDrawerProps {
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 
 const justify = computed(() => {
-  if (props.variant === 'start') {
+  if (variant === 'start') {
     return 'start'
   }
-  else if (props.variant === 'end') {
+  else if (variant === 'end') {
     return 'end'
   }
 
@@ -60,10 +60,10 @@ const justify = computed(() => {
 })
 
 const align = computed(() => {
-  if (props.variant === 'top') {
+  if (variant === 'top') {
     return 'start'
   }
-  else if (props.variant === 'bottom') {
+  else if (variant === 'bottom') {
     return 'end'
   }
 
@@ -73,7 +73,7 @@ const align = computed(() => {
 const slots = useSlots()
 
 const hasTitle = computed(() => {
-  return !!(props.title || slots.title)
+  return !!(title || slots.title)
 })
 </script>
 

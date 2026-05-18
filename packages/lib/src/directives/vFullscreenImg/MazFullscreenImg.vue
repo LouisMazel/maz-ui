@@ -8,18 +8,19 @@ import MazIcon from '../../components/MazIcon.vue'
 
 import MazSpinner from '../../components/MazSpinner.vue'
 
-const props = withDefaults(defineProps<MazFullscreenImgProps>(), {
-  zoom: true,
-  offset: undefined,
-  destroy: undefined,
-  alt: undefined,
-  animation: () => ({
+const {
+  zoom = true,
+  offset,
+  destroy,
+  alt,
+  animation = {
     duration: 300,
     easing: 'ease-in-out',
-  }),
-  clickedElementBounds: undefined,
-  openInstanceClass: 'm-fullscreen-img-instance',
-})
+  },
+  openInstanceClass = 'm-fullscreen-img-instance',
+  clickedElement,
+  src,
+} = defineProps<MazFullscreenImgProps>()
 
 const emits = defineEmits(['close', 'previous', 'next', 'before-close'])
 
@@ -53,12 +54,12 @@ const animationState = reactive({
   ended: false,
 })
 
-const currentClickedElement = ref(props.clickedElement)
-const currentClickedElementBounds = computed(() => props.clickedElement.getBoundingClientRect())
+const currentClickedElement = ref(clickedElement)
+const currentClickedElementBounds = computed(() => clickedElement.getBoundingClientRect())
 const isLandscapeImage = ref()
 
-const currentSrc = ref(props.src)
-const currentAlt = ref<string | null | undefined>(props.alt)
+const currentSrc = ref(src)
+const currentAlt = ref<string | null | undefined>(alt)
 
 const FullscreenImgElement = ref<HTMLDivElement>()
 const ImgElement = ref<HTMLImageElement>()
@@ -132,21 +133,21 @@ function getNewInstanceIndex(allInstances: HTMLElement[], newInstanceIndex: numb
 }
 
 function useNextInstance(currentInstance: HTMLElement, nextInstance: HTMLElement) {
-  currentInstance.classList.remove(props.openInstanceClass)
-  nextInstance.classList.add(props.openInstanceClass)
+  currentInstance.classList.remove(openInstanceClass)
+  nextInstance.classList.add(openInstanceClass)
 
-  const src: string | null = nextInstance.getAttribute('data-src')
-  const alt: string | null = nextInstance.getAttribute('data-alt')
+  const nextSrc: string | null = nextInstance.getAttribute('data-src')
+  const nextAlt: string | null = nextInstance.getAttribute('data-alt')
 
-  currentAlt.value = alt
-  currentSrc.value = src ?? currentSrc.value
+  currentAlt.value = nextAlt
+  currentSrc.value = nextSrc ?? currentSrc.value
 }
 
 function nextPreviousImage(which: 'next' | 'previous'): void {
   hideImage.value = true
 
   const currentInstance: HTMLElement | null = document.querySelector(
-    `.m-fullscreen-img-instance.${props.openInstanceClass}`,
+    `.m-fullscreen-img-instance.${openInstanceClass}`,
   )
 
   if (currentInstance) {
@@ -221,22 +222,22 @@ function runAnimation(frames: Keyframe[] | PropertyIndexedKeyframes) {
   animationState.running = true
   hideImage.value = false
 
-  const animation = ImgElement.value?.animate(frames, {
-    duration: props.animation.duration,
-    easing: props.animation.easing,
+  const result = ImgElement.value?.animate(frames, {
+    duration: animation.duration,
+    easing: animation.easing,
   })
 
-  if (!animation) {
+  if (!result) {
     console.error('[maz-ui](vFullscreenImg) animation is not defined')
     animationState.running = false
     animationState.ended = true
     return
   }
 
-  return animation
+  return result
 }
 
-function getPositionsOfClikedElement(offset = props.offset ?? 0) {
+function getPositionsOfClikedElement(offsetArg = offset ?? 0) {
   const width = currentClickedElement.value.clientWidth || 1
   const height = currentClickedElement.value.clientHeight || 1
 
@@ -244,8 +245,8 @@ function getPositionsOfClikedElement(offset = props.offset ?? 0) {
   const windowHeight = window.innerHeight
 
   const scale = Math.min(
-    (windowWidth - 2 * offset) / width,
-    (windowHeight - 2 * offset) / height,
+    (windowWidth - 2 * offsetArg) / width,
+    (windowHeight - 2 * offsetArg) / height,
   )
 
   const centerX = (windowWidth - width * scale) / 2
@@ -347,7 +348,7 @@ function closeFullscreen() {
   function onFinish() {
     emits('close')
     FullscreenImgElement.value?.remove()
-    props.destroy?.()
+    destroy?.()
     animationState.running = false
     animationState.ended = true
   }

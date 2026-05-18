@@ -370,6 +370,16 @@ describe('MazCheckbox extended branch coverage', () => {
       await wrapper.find('label').trigger('keydown', { code: 'Enter' })
       expect(wrapper.emitted('update:model-value')).toBeFalsy()
     })
+
+    it('emits the prop value on Space keydown when provided', async () => {
+      const wrapper = mount(MazCheckbox, {
+        props: { modelValue: [], value: 'a' },
+      })
+      await wrapper.find('label').trigger('keydown', { code: 'Space' })
+      const emitted = wrapper.emitted('update:model-value')
+      expect(emitted).toBeTruthy()
+      expect(emitted?.[0]).toEqual([['a']])
+    })
   })
 
   describe('focus and blur events', () => {

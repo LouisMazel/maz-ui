@@ -35,19 +35,18 @@ export interface MazRadioProps<T = string | number | boolean> {
   hint?: string
 }
 
-const props = withDefaults(
-  defineProps<MazRadioProps<T>>(),
-  {
-    style: undefined,
-    class: undefined,
-    id: undefined,
-    modelValue: undefined,
-    label: undefined,
-    color: 'primary',
-    size: 'md',
-    disabled: false,
-  },
-)
+const {
+  class: classProp,
+  id,
+  modelValue,
+  value,
+  color = 'primary',
+  size = 'md',
+  disabled = false,
+  error,
+  success,
+  warning,
+} = defineProps<MazRadioProps<T>>()
 
 const emits = defineEmits<{
   /**
@@ -74,16 +73,16 @@ const emits = defineEmits<{
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazRadio',
-  providedId: props.id,
+  providedId: id,
 })
 
 const inputRef = ref<HTMLInputElement>()
 const isFocused = ref(false)
 
-const isSelected = computed(() => props.modelValue === props.value)
+const isSelected = computed(() => modelValue === value)
 
 const radioSize = computed(() => {
-  switch (props.size) {
+  switch (size) {
     case 'xl': {
       return '2.25rem'
     }
@@ -105,21 +104,21 @@ const radioSize = computed(() => {
   }
 })
 
-const radioSelectedColor = computed(() => `var(--maz-${props.color})`)
+const radioSelectedColor = computed(() => `var(--maz-${color})`)
 const radioBoxShadow = computed(() => {
-  if (props.error && !isFocused.value) {
+  if (error && !isFocused.value) {
     return `var(--maz-destructive)`
   }
-  else if (props.warning && !isFocused.value) {
+  else if (warning && !isFocused.value) {
     return `var(--maz-warning)`
   }
-  else if (props.success && !isFocused.value) {
+  else if (success && !isFocused.value) {
     return `var(--maz-success)`
   }
 
-  return ['transparent', 'contrast'].includes(props.color)
+  return ['transparent', 'contrast'].includes(color)
     ? `var(--maz-muted)`
-    : `color-mix(in srgb, var(--maz-${props.color}) 60%, transparent)`
+    : `color-mix(in srgb, var(--maz-${color}) 60%, transparent)`
 })
 
 function keyboardHandler(event: KeyboardEvent) {
@@ -130,8 +129,8 @@ function keyboardHandler(event: KeyboardEvent) {
 }
 
 function emitValue() {
-  emits('update:model-value', props.value)
-  emits('change', props.value)
+  emits('update:model-value', value)
+  emits('change', value)
 }
 
 function onBlur(event: FocusEvent) {
@@ -150,7 +149,7 @@ function onFocus(event: FocusEvent) {
   <label
     :for="instanceId"
     class="m-radio m-reset-css maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden"
-    :class="[{ '--selected': isSelected, '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-pointer': !disabled }, props.class]"
+    :class="[{ '--selected': isSelected, '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-pointer': !disabled }, classProp]"
     tabindex="0"
     role="radio"
     :style="[style, { '--radio-size': radioSize, '--radio-selected-color': radioSelectedColor, '--radio-box-shadow': radioBoxShadow }]"

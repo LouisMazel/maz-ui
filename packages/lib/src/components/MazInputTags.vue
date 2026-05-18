@@ -11,20 +11,17 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MazInputTagsProps>(), {
-  style: undefined,
-  class: undefined,
-  modelValue: undefined,
-  placeholder: undefined,
-  label: undefined,
-  disabled: false,
-  error: false,
-  success: false,
-  warning: false,
-  size: 'md',
-  color: 'primary',
-  addTagsOnBlur: true,
-})
+const {
+  class: classProp,
+  modelValue,
+  disabled = false,
+  error = false,
+  success = false,
+  warning = false,
+  size = 'md',
+  color = 'primary',
+  addTagsOnBlur = true,
+} = defineProps<MazInputTagsProps>()
 
 const emits = defineEmits<{
   'update:model-value': [value?: (string | number)[]]
@@ -68,7 +65,7 @@ const lastIdToDelete = ref<string>()
 const currentDeleteTimeout = ref<NodeJS.Timeout>()
 
 const tags = computed(() =>
-  props.modelValue?.map((tag: string | number) => {
+  modelValue?.map((tag: string | number) => {
     return {
       tag,
       // eslint-disable-next-line sonarjs/pseudo-random
@@ -88,36 +85,36 @@ function addTags(event: Event) {
       .filter(truthyFilter)
 
     const newValues = values.filter(
-      value => !props.modelValue?.filter(truthyFilter)?.includes(value),
+      value => !modelValue?.filter(truthyFilter)?.includes(value),
     )
     emits(
       'update:model-value',
-      props.modelValue ? [...props.modelValue, ...newValues] : [...newValues],
+      modelValue ? [...modelValue, ...newValues] : [...newValues],
     )
     inputValue.value = undefined
   }
 }
 
 const borderStyle = computed(() => {
-  if (props.error)
+  if (error)
     return 'maz:border-destructive'
-  if (props.success)
+  if (success)
     return 'maz:border-success'
-  if (props.warning)
+  if (warning)
     return 'maz:border-warning'
 
   if (isFocused.value) {
-    if (props.color === 'primary')
+    if (color === 'primary')
       return 'maz:border-primary'
-    if (props.color === 'secondary')
+    if (color === 'secondary')
       return 'maz:border-secondary'
-    if (props.color === 'info')
+    if (color === 'info')
       return 'maz:border-info'
-    if (props.color === 'destructive')
+    if (color === 'destructive')
       return 'maz:border-destructive'
-    if (props.color === 'success')
+    if (color === 'success')
       return 'maz:border-success'
-    if (props.color === 'warning')
+    if (color === 'warning')
       return 'maz:border-warning'
   }
 
@@ -158,27 +155,27 @@ const SIZE_CLASS = {
 } as const
 
 const buttonSize = computed(() => {
-  if (props.size === 'mini')
+  if (size === 'mini')
     return 'mini'
-  if (props.size === 'xs')
+  if (size === 'xs')
     return 'mini'
-  if (props.size === 'sm')
+  if (size === 'sm')
     return 'xs'
-  if (props.size === 'md')
+  if (size === 'md')
     return 'sm'
-  if (props.size === 'lg')
+  if (size === 'lg')
     return 'md'
-  if (props.size === 'xl')
+  if (size === 'xl')
     return 'lg'
 
-  return props.size
+  return size
 })
 </script>
 
 <template>
   <div
     class="m-input-tags m-reset-css maz:relative maz:inline-flex maz:flex-wrap maz:gap-1 maz:overflow-hidden maz:rounded-md maz:border maz:border-divider maz:bg-input maz:px-[0.5em] maz:py-[0.25em] maz:align-top maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:border-divider-400"
-    :class="[borderStyle, `--${color}`, `--${size}`, SIZE_CLASS[size], props.class, { '--block': block, 'maz:w-full': block }]"
+    :class="[borderStyle, `--${color}`, `--${size}`, SIZE_CLASS[size], classProp, { '--block': block, 'maz:w-full': block }]"
     :style
     @focus.capture="isFocused = true"
     @blur.capture="isFocused = false"

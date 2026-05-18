@@ -400,6 +400,29 @@ The `offset` (in px) option allows you to adjust the position of the tooltip rel
   </template>
 </ComponentDemo>
 
+## Conditionally disable
+
+Pass `false`, `null` or `undefined` as the binding value to silently disable the tooltip — no popover instance is created, no listeners are attached, and no warning is logged. This is the recommended way to skip the tooltip on the fly without conditionally rendering two different elements:
+
+```vue
+<script lang="ts" setup>
+import { vTooltip } from 'maz-ui/directives'
+import { computed, ref } from 'vue'
+
+const label = ref<string>('')
+const tooltipBinding = computed(() => label.value ? { text: label.value } : false)
+</script>
+
+<template>
+  <!-- When label is empty the directive becomes a no-op -->
+  <MazBtn v-tooltip="tooltipBinding">
+    Hover me
+  </MazBtn>
+</template>
+```
+
+If the binding switches back to a valid value later, the tooltip mounts as expected. Toggling the value off again destroys the existing popover instance.
+
 ## Global install
 
 ### Vue
