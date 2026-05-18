@@ -67,7 +67,7 @@ export interface MazSidebarProps {
 </script>
 
 <script lang="ts" setup>
-import { getCookie, setCookie } from '@maz-ui/themes/utils/cookie-storage'
+import { getCookie, setCookie } from '@maz-ui/utils/helpers/cookie'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, defineAsyncComponent, onMounted, provide, ref, useSSRContext, watch } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'

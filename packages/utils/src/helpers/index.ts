@@ -1,6 +1,7 @@
 export * from './camelCase'
 export * from './capitalize'
 export * from './checkAvailability'
+export * from './cookie'
 export * from './countryCodeToUnicodeFlag'
 export * from './debounce'
 export * from './debounceCallback'
