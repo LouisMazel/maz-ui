@@ -1,11 +1,12 @@
 import type { Ref } from 'vue'
 import type { ColorMode, ThemePreset, ThemePresetName, ThemePresetOverrides, ThemeState } from '../types'
 import type { CSSOptions } from '../utils/css-generator'
+import { setCookie } from '@maz-ui/utils/helpers/cookie'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, getCurrentInstance, inject, ref, watch } from 'vue'
 
 import { noTransition } from '../utils'
-import { saveResolvedPresetName, setCookie } from '../utils/cookie-storage'
+import { saveResolvedPresetName } from '../utils/cookie-storage'
 import { CSS_ID, generateCSS, injectCSS } from '../utils/css-generator'
 import { getSystemColorMode, saveResolvedColorMode } from '../utils/get-color-mode'
 import { getPreset } from '../utils/get-preset'

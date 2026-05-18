@@ -1,8 +1,8 @@
 import type { ThemePresetOverrides, ThemeState } from '../../types'
+import { setCookie } from '@maz-ui/utils/helpers/cookie'
 import { getCurrentInstance, inject } from 'vue'
 import { mazUi } from '../../presets'
 import { mergePresets } from '../../utils'
-import { setCookie } from '../../utils/cookie-storage'
 import { generateCSS, injectCSS } from '../../utils/css-generator'
 import { getSystemColorMode, saveResolvedColorMode } from '../../utils/get-color-mode'
 import { getPreset } from '../../utils/get-preset'
@@ -69,10 +69,15 @@ vi.mock('../../utils/preset-merger', () => ({
 }))
 
 vi.mock('../../utils/cookie-storage', () => ({
-  setCookie: vi.fn(),
   saveResolvedPresetName: vi.fn(),
   getSavedPresetName: vi.fn(() => null),
   clearSavedPresetName: vi.fn(),
+}))
+
+vi.mock('@maz-ui/utils/helpers/cookie', () => ({
+  setCookie: vi.fn(),
+  getCookie: vi.fn(),
+  deleteCookie: vi.fn(),
 }))
 
 vi.mock('@maz-ui/utils/helpers/isServer', () => ({
