@@ -577,14 +577,15 @@ The sidebar persists its open/collapsed state in a cookie (`maz-sidebar-open`) s
 
 ### How it works
 
-- **On client mount**: the cookie is read; if present, the value is applied and `update:open` is emitted so your `v-model` stays in sync.
+- **In setup (server + client)**: the cookie is read and used to initialize the open state. On the server, the value is taken from the request `Cookie` header via Vue's `useSSRContext()`; on the client it comes from `document.cookie`.
+- **On client mount**: `update:open` is emitted if the persisted value differs from the `:open` prop, so your parent `v-model` stays in sync.
 - **On state change**: every transition between expanded/collapsed writes the new value to the cookie (1-year expiry, `SameSite=Lax`).
 
 ### SSR considerations
 
-The cookie can only be read in the browser, so on the very first server-rendered HTML the sidebar uses the value passed via `:open` (or its default). The persisted value is then applied on client mount.
+Persistence is **SSR-native** — the server reads the request cookie and renders the sidebar in its persisted state immediately, so there is no expand → collapse flash on hydration. This works out of the box in Nuxt and any Vue 3 SSR runtime that exposes the request headers through `useSSRContext()`.
 
-For **zero-flash SSR**, read the cookie server-side and feed it to `:open` yourself. With Nuxt:
+If you prefer to manage the state yourself (e.g. to share it with other parts of your app), disable persistence and feed the cookie via your own ref:
 
 ```html
 <script setup>
@@ -598,7 +599,7 @@ const sidebarOpen = useCookie<boolean>('maz-sidebar-open', { default: () => true
 </template>
 ```
 
-In this setup, `useCookie` handles SSR hydration, and `:persist="false"` prevents the sidebar from also writing the cookie (you control it via `useCookie`).
+`:persist="false"` prevents the sidebar from also writing the cookie, leaving full control to your `useCookie` ref.
 
 ## With router (vue-router / NuxtLink)
 

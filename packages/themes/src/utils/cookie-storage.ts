@@ -2,11 +2,25 @@ import { isServer } from '@maz-ui/utils/helpers/isServer'
 
 const PRESET_COOKIE = 'maz-preset'
 
-export function getCookie(key: string): string | null {
-  if (isServer())
+/**
+ * Read a cookie by key.
+ *
+ * - On the client, the cookie is read from `document.cookie`.
+ * - On the server, pass the raw `Cookie` request header via `cookieHeader`
+ *   (e.g. from `useSSRContext().event.node.req.headers.cookie` in Nuxt) to
+ *   resolve the value during SSR. Without it, the function returns `null`.
+ */
+export function getCookie(key: string, cookieHeader?: string): string | null {
+  const source = isServer()
+    ? cookieHeader
+    : typeof document !== 'undefined'
+      ? document.cookie
+      : undefined
+
+  if (!source)
     return null
 
-  const cookies = document.cookie.split(';')
+  const cookies = source.split(';')
   const cookie = cookies.find(c => c.trim().startsWith(`${key}=`))
 
   return cookie ? decodeURIComponent(cookie.split('=')[1]) : null

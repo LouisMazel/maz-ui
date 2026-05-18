@@ -94,6 +94,26 @@ describe('cookie-storage', () => {
         expect(result).toBe('hello world')
       })
     })
+
+    describe('when a cookieHeader is provided on the server', () => {
+      it('then it parses the value from the header', () => {
+        vi.stubGlobal('window', undefined)
+
+        const result = getCookie('test-key', 'other=value; test-key=hello; flag=1')
+
+        expect(result).toBe('hello')
+      })
+    })
+
+    describe('when running on the server without a cookieHeader', () => {
+      it('then it returns null', () => {
+        vi.stubGlobal('window', undefined)
+
+        const result = getCookie('test-key')
+
+        expect(result).toBeNull()
+      })
+    })
   })
 
   describe('given setCookie function', () => {
