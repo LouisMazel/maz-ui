@@ -17,10 +17,15 @@ vi.mock('../../utils/get-color-mode', () => ({
 }))
 
 vi.mock('../../utils/cookie-storage', () => ({
-  setCookie: vi.fn(),
   saveResolvedPresetName: vi.fn(),
   getSavedPresetName: vi.fn(() => null),
   clearSavedPresetName: vi.fn(),
+}))
+
+vi.mock('@maz-ui/utils/helpers/cookie', () => ({
+  setCookie: vi.fn(),
+  getCookie: vi.fn(),
+  deleteCookie: vi.fn(),
 }))
 
 vi.mock('@maz-ui/utils/helpers/isServer', () => ({

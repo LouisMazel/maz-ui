@@ -1,4 +1,4 @@
-import { clearSavedPresetName, getCookie, getSavedPresetName, saveResolvedPresetName, setCookie } from '../cookie-storage'
+import { clearSavedPresetName, getSavedPresetName, saveResolvedPresetName } from '../cookie-storage'
 
 function mockDocumentCookie(initialValue: string = '') {
   let cookieValue = initialValue
@@ -42,108 +42,6 @@ describe('cookie-storage', () => {
 
   afterEach(() => {
     vi.unstubAllGlobals()
-  })
-
-  describe('given getCookie function', () => {
-    describe('when cookie exists', () => {
-      it('then it returns cookie value', () => {
-        mockDocumentCookie('test-key=test-value; other-key=other-value')
-
-        const result = getCookie('test-key')
-
-        expect(result).toBe('test-value')
-      })
-    })
-
-    describe('when cookie does not exist', () => {
-      it('then it returns null', () => {
-        mockDocumentCookie('other-key=other-value')
-
-        const result = getCookie('test-key')
-
-        expect(result).toBeNull()
-      })
-    })
-
-    describe('when no cookies exist', () => {
-      it('then it returns null', () => {
-        mockDocumentCookie('')
-
-        const result = getCookie('test-key')
-
-        expect(result).toBeNull()
-      })
-    })
-
-    describe('when document is undefined', () => {
-      it('then it returns null', () => {
-        vi.stubGlobal('document', undefined)
-
-        const result = getCookie('test-key')
-
-        expect(result).toBeNull()
-      })
-    })
-
-    describe('when cookie value is encoded', () => {
-      it('then it decodes the value', () => {
-        mockDocumentCookie('test-key=hello%20world')
-
-        const result = getCookie('test-key')
-
-        expect(result).toBe('hello world')
-      })
-    })
-
-    describe('when a cookieHeader is provided on the server', () => {
-      it('then it parses the value from the header', () => {
-        vi.stubGlobal('window', undefined)
-
-        const result = getCookie('test-key', 'other=value; test-key=hello; flag=1')
-
-        expect(result).toBe('hello')
-      })
-    })
-
-    describe('when running on the server without a cookieHeader', () => {
-      it('then it returns null', () => {
-        vi.stubGlobal('window', undefined)
-
-        const result = getCookie('test-key')
-
-        expect(result).toBeNull()
-      })
-    })
-  })
-
-  describe('given setCookie function', () => {
-    describe('when setting a cookie', () => {
-      it('then it sets cookie with correct format', () => {
-        mockDocumentCookie('')
-
-        setCookie('test-key', 'test-value')
-
-        expect(document.cookie).toContain('test-key=test-value')
-      })
-    })
-
-    describe('when document is undefined', () => {
-      it('then it handles gracefully', () => {
-        vi.stubGlobal('document', undefined)
-
-        expect(() => setCookie('test-key', 'test-value')).not.toThrow()
-      })
-    })
-
-    describe('when setting a cookie with special characters', () => {
-      it('then it encodes the value', () => {
-        mockDocumentCookie('')
-
-        setCookie('test-key', 'hello world')
-
-        expect(document.cookie).toContain('test-key=hello%20world')
-      })
-    })
   })
 
   describe('given saveResolvedPresetName function', () => {
