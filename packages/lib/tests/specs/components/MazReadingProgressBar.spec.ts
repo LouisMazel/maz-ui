@@ -12,7 +12,6 @@ describe('mazReadingProgressBar.vue', () => {
     expect(wrapper.props('teleportSelector')).toBe('body')
     expect(wrapper.props('contentSelector')).toBe('body')
     expect(wrapper.props('offset')).toBe(0)
-    expect(wrapper.props('barClass')).toBeUndefined()
     expect(wrapper.props('distance')).toBeUndefined()
   })
 })

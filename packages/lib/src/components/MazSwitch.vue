@@ -10,15 +10,20 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MazSwitchProps>(), {
-  style: undefined,
-  class: undefined,
-  modelValue: false,
-  id: undefined,
-  disabled: false,
-  name: undefined,
-  color: 'primary',
-})
+const {
+  style,
+  class: classProp,
+  modelValue = false,
+  id,
+  disabled,
+  name,
+  color = 'primary',
+  label,
+  error,
+  success,
+  warning,
+  hint,
+} = defineProps<MazSwitchProps>()
 
 const emits = defineEmits<{
   /**
@@ -72,16 +77,16 @@ export interface MazSwitchProps {
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazSwitch',
-  providedId: props.id,
+  providedId: id,
 })
 
 const bgColorClassVar = computed(() => {
-  return `var(--maz-${props.color})`
+  return `var(--maz-${color})`
 })
 
 function emit() {
-  emits('update:model-value', !props.modelValue)
-  emits('change', !props.modelValue)
+  emits('update:model-value', !modelValue)
+  emits('change', !modelValue)
 }
 
 const inputRef = ref<HTMLInputElement>()
@@ -107,7 +112,7 @@ function onFocus(event: FocusEvent) {
   <label
     :for="instanceId"
     class="m-switch m-reset-css maz:relative maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-2 maz:align-top"
-    :class="[{ '--is-disabled': disabled, 'maz:disabled-cursor': disabled }, props.class]"
+    :class="[{ '--is-disabled': disabled, 'maz:disabled-cursor': disabled }, classProp]"
     role="switch"
     :style="[style, { '--switch-color': bgColorClassVar }]"
     :aria-checked="modelValue"

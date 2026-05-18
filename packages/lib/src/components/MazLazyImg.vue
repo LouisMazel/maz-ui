@@ -20,15 +20,11 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MazLazyImgProps>(), {
-  style: undefined,
-  class: undefined,
-  src: undefined,
-  alt: undefined,
-  observerOptions: undefined,
-  fallbackSrc: undefined,
-  observerOnce: true,
-})
+const {
+  class: classProp,
+  src,
+  observerOnce = true,
+} = defineProps<MazLazyImgProps>()
 
 const emits = defineEmits<{
   /** Emitted when the image is intersecting */
@@ -74,7 +70,7 @@ export interface MazLazyImgProps {
 }
 
 const sources = computed(() => {
-  return typeof props.src === 'string' ? [{ srcset: props.src }] : props.src?.sources
+  return typeof src === 'string' ? [{ srcset: src }] : src?.sources
 })
 
 function onIntersecting(el: Element) {
@@ -116,7 +112,7 @@ defineExpose({ onIntersecting, onLoading, onLoaded, onError })
         '--block': block,
         'maz:w-full': block,
       },
-      props.class,
+      classProp,
     ]"
     :style
   >

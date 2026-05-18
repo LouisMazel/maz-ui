@@ -9,11 +9,11 @@ export interface MazLoadingBarProps {
   height?: string
 }
 
-const props = withDefaults(defineProps<MazLoadingBarProps>(), { color: 'primary', height: '0.125rem' })
+const { color = 'primary' } = defineProps<MazLoadingBarProps>()
 
 const colorCSSVariables = computed(() => ({
-  alpha: `color-mix(in srgb, var(--maz-${props.color}) 20%, transparent)`,
-  main: `var(--maz-${props.color})`,
+  alpha: `color-mix(in srgb, var(--maz-${color}) 20%, transparent)`,
+  main: `var(--maz-${color})`,
 }))
 </script>
 

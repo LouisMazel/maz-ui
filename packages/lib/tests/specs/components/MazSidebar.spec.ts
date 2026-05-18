@@ -225,4 +225,51 @@ describe('given MazSidebar component', () => {
       expect(wrapper.emitted('update:open')).toEqual([[false]])
     })
   })
+
+  describe('when persist is enabled (default)', () => {
+    it('then state changes are written to the maz-sidebar-open cookie', async () => {
+      const wrapper = mount(MazSidebar, { props: { open: true } })
+      ;(wrapper.vm as unknown as { setOpen: (v: boolean) => void }).setOpen(false)
+      await wrapper.vm.$nextTick()
+      expect(document.cookie).toContain('maz-sidebar-open=false')
+    })
+
+    it('then a persisted false value overrides the prop default on mount', async () => {
+      document.cookie = 'maz-sidebar-open=false; path=/'
+      const wrapper = mount(MazSidebar, { props: { open: true } })
+      await wrapper.vm.$nextTick()
+      expect(wrapper.emitted('update:open')).toEqual([[false]])
+    })
+
+    it('then a missing cookie keeps the prop default', async () => {
+      const wrapper = mount(MazSidebar, { props: { open: true } })
+      await wrapper.vm.$nextTick()
+      expect(wrapper.emitted('update:open')).toBeUndefined()
+    })
+  })
+
+  describe('when persist is disabled', () => {
+    it('then no cookie is written when state changes', async () => {
+      const wrapper = mount(MazSidebar, { props: { open: true, persist: false } })
+      ;(wrapper.vm as unknown as { setOpen: (v: boolean) => void }).setOpen(false)
+      await wrapper.vm.$nextTick()
+      expect(document.cookie).not.toContain('maz-sidebar-open')
+    })
+
+    it('then an existing cookie does not override the prop on mount', async () => {
+      document.cookie = 'maz-sidebar-open=false; path=/'
+      const wrapper = mount(MazSidebar, { props: { open: true, persist: false } })
+      await wrapper.vm.$nextTick()
+      expect(wrapper.emitted('update:open')).toBeUndefined()
+    })
+  })
+
+  describe('when a custom persistKey is provided', () => {
+    it('then the custom cookie name is used', async () => {
+      const wrapper = mount(MazSidebar, { props: { open: true, persistKey: 'my-sidebar' } })
+      ;(wrapper.vm as unknown as { setOpen: (v: boolean) => void }).setOpen(false)
+      await wrapper.vm.$nextTick()
+      expect(document.cookie).toContain('my-sidebar=false')
+    })
+  })
 })

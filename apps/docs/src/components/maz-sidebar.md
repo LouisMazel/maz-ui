@@ -215,7 +215,37 @@ const isOpen = ref(true)
 
 ## Icon mode with tooltips
 
-When `collapsible="icon"` and the sidebar is collapsed, labels fade out and only the icons stay visible. To help users identify items in collapsed state, provide a `tooltip` prop on each `MazSidebarMenuButton`: it uses the `v-tooltip` directive and is always shown on hover.
+When `collapsible="icon"` and the sidebar is collapsed, labels fade out and only the icons stay visible. To help users identify items in collapsed state, provide a `tooltip` prop on each `MazSidebarMenuButton`: it uses the `v-tooltip` directive and is only shown on hover when the sidebar is collapsed by default.
+
+### Controlling when the tooltip appears
+
+Both `MazSidebar` and `MazSidebarMenuButton` accept a `tooltip-mode` prop:
+
+- `closed` (default on the sidebar) — tooltip only shows on hover when the sidebar is collapsed
+- `always` — tooltip shows on hover regardless of the sidebar state
+
+Set it on the sidebar to apply to every descendant button, or override per-button:
+
+```html
+<!-- Every button: tooltip visible only when collapsed -->
+<MazSidebar tooltip-mode="closed">
+  <MazSidebarMenuButton :icon="MazHome" label="Dashboard" tooltip="Go to Dashboard" />
+</MazSidebar>
+
+<!-- This button overrides: tooltip always shown -->
+<MazSidebar tooltip-mode="closed">
+  <MazSidebarMenuButton
+    :icon="MazCog6Tooth"
+    label="Settings"
+    tooltip="Open Settings"
+    tooltip-mode="always"
+  />
+</MazSidebar>
+```
+
+::: tip Performance
+When no `tooltip` prop is provided on a button, the `v-tooltip` directive is not attached at all — no listeners, no popover instance.
+:::
 
 <ComponentDemo>
   <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[25rem] maz:flex">
@@ -529,6 +559,46 @@ const sidebar = useSidebar()
   </MazSidebar>
 </template>
 ```
+
+## Persistent open state
+
+The sidebar persists its open/collapsed state in a cookie (`maz-sidebar-open`) so it survives page reloads. This is **enabled by default**.
+
+```html
+<!-- Default: persistence enabled, cookie name "maz-sidebar-open" -->
+<MazSidebar v-model:open="isOpen" />
+
+<!-- Disable persistence -->
+<MazSidebar v-model:open="isOpen" :persist="false" />
+
+<!-- Custom cookie key (useful when multiple sidebars coexist) -->
+<MazSidebar v-model:open="isOpen" persist-key="admin-sidebar-open" />
+```
+
+### How it works
+
+- **On client mount**: the cookie is read; if present, the value is applied and `update:open` is emitted so your `v-model` stays in sync.
+- **On state change**: every transition between expanded/collapsed writes the new value to the cookie (1-year expiry, `SameSite=Lax`).
+
+### SSR considerations
+
+The cookie can only be read in the browser, so on the very first server-rendered HTML the sidebar uses the value passed via `:open` (or its default). The persisted value is then applied on client mount.
+
+For **zero-flash SSR**, read the cookie server-side and feed it to `:open` yourself. With Nuxt:
+
+```html
+<script setup>
+const sidebarOpen = useCookie<boolean>('maz-sidebar-open', { default: () => true })
+</script>
+
+<template>
+  <MazSidebar v-model:open="sidebarOpen" :persist="false">
+    <!-- ... -->
+  </MazSidebar>
+</template>
+```
+
+In this setup, `useCookie` handles SSR hydration, and `:persist="false"` prevents the sidebar from also writing the cookie (you control it via `useCookie`).
 
 ## With router (vue-router / NuxtLink)
 
