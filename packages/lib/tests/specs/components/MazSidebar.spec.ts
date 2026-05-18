@@ -246,6 +246,20 @@ describe('given MazSidebar component', () => {
       await wrapper.vm.$nextTick()
       expect(wrapper.emitted('update:open')).toBeUndefined()
     })
+
+    it('then a cookie value matching the prop does not emit on mount', async () => {
+      document.cookie = 'maz-sidebar-open=true; path=/'
+      const wrapper = mount(MazSidebar, { props: { open: true } })
+      await wrapper.vm.$nextTick()
+      expect(wrapper.emitted('update:open')).toBeUndefined()
+    })
+  })
+
+  describe('when rendered with side end', () => {
+    it('then the border class is on the inline-start side', () => {
+      const wrapper = mount(MazSidebar, { props: { open: true, side: 'end' } })
+      expect(wrapper.find('aside').classes()).toContain('maz:border-s')
+    })
   })
 
   describe('when persist is disabled', () => {
