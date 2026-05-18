@@ -1,5 +1,18 @@
 # Change Log
 
+## v5.0.0-beta.13 (2026-05-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.12...v5.0.0-beta.13)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDatePicker tests - align dayjs imports with ESM ([e07a7bd15](https://github.com/LouisMazel/maz-ui/commit/e07a7bd15))
+- **maz-ui:** MazTable - scrollable behaviour ([6a45701be](https://github.com/LouisMazel/maz-ui/commit/6a45701be))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.12 (2026-05-16)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.11...v5.0.0-beta.12)
