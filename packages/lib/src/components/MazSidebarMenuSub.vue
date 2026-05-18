@@ -21,11 +21,7 @@ import { useInjectStrict } from '../composables/useInjectStrict'
 import { useMazIconProps } from '../composables/useMazIconProps'
 import { mazSidebarKey } from './MazSidebar.vue'
 
-const props = withDefaults(defineProps<MazSidebarMenuSubProps>(), {
-  label: undefined,
-  icon: undefined,
-  defaultOpen: false,
-})
+const { icon, defaultOpen = false } = defineProps<MazSidebarMenuSubProps>()
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazExpandAnimation = defineAsyncComponent(() => import('./MazExpandAnimation.vue'))
@@ -40,10 +36,10 @@ const isIconCollapsed = computed(
   () => sidebar.collapsible.value === 'icon' && sidebar.state.value === 'collapsed',
 )
 
-const isOpen = ref(props.defaultOpen)
+const isOpen = ref(defaultOpen)
 const subMenuId = `maz-sidebar-sub-${useId()}`
 
-const { iconProps } = useMazIconProps(() => props.icon, () => ({ size: 'sm' as const }))
+const { iconProps } = useMazIconProps(() => icon, () => ({ size: 'sm' as const }))
 
 function toggle() {
   isOpen.value = !isOpen.value

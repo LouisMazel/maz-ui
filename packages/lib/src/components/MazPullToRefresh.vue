@@ -5,16 +5,16 @@ import { isStandaloneMode } from '@maz-ui/utils/helpers/isStandaloneMode'
 
 import { computed, defineAsyncComponent, onUnmounted, ref, watch } from 'vue'
 
-const props = withDefaults(defineProps<MazPullToRefreshProps>(), {
-  distance: 100,
-  offset: 0,
-  onClick: undefined,
-  containerSelector: undefined,
-  headerClass: undefined,
-  spinnerColor: 'contrast',
-  disabled: false,
-  standaloneMode: false,
-})
+const {
+  distance: distanceProp = 100,
+  offset = 0,
+  onClick,
+  containerSelector,
+  headerClass,
+  spinnerColor = 'contrast',
+  disabled = false,
+  standaloneMode = false,
+} = defineProps<MazPullToRefreshProps>()
 
 const emits = defineEmits(['loaded', 'start', 'error', 'finish', 'response'])
 
@@ -33,9 +33,9 @@ export interface MazPullToRefreshProps {
 
 const isDisabled = computed(
   () =>
-    props.disabled
-    || props.onClick === undefined
-    || (props.standaloneMode && isClient() && !isStandaloneMode()),
+    disabled
+    || onClick === undefined
+    || (standaloneMode && isClient() && !isStandaloneMode()),
 )
 
 const margin = ref({
@@ -64,8 +64,8 @@ const container = computed<HTMLElement | undefined>(() => {
     return
   }
 
-  const element = props.containerSelector
-    ? (document.querySelector(props.containerSelector) as HTMLElement)
+  const element = containerSelector
+    ? (document.querySelector(containerSelector) as HTMLElement)
     : document.body
 
   if (!element) {
@@ -79,7 +79,7 @@ const pullHeight = computed(() => {
   if ((pull.value.state !== 'move' && pull.value.state !== 'end') || isDisabled.value) {
     return 0
   }
-  return pull.value.distance > props.distance ? props.distance : pull.value.distance
+  return pull.value.distance > distanceProp ? distanceProp : pull.value.distance
 })
 
 function updateView(container: HTMLElement) {
@@ -87,7 +87,7 @@ function updateView(container: HTMLElement) {
 
   margin.value = {
     top,
-    bottom: window.innerHeight - (height + top + props.offset),
+    bottom: window.innerHeight - (height + top + offset),
   }
 }
 
@@ -129,7 +129,7 @@ function handleTouchMove(event: TouchEvent) {
   const distance = pull.value.to - pull.value.from
 
   pull.value.distance = distance > 0 ? distance : 0
-  pull.value.available = pull.value.distance >= props.distance
+  pull.value.available = pull.value.distance >= distanceProp
   pull.value.state = 'move'
 
   // setTimeout(() => {
@@ -142,7 +142,7 @@ function handleTouchEnd() {
     return
   }
 
-  if (pullHeight.value === props.distance && pull.value.state === 'move' && window.scrollY <= 0) {
+  if (pullHeight.value === distanceProp && pull.value.state === 'move' && window.scrollY <= 0) {
     runAction()
   }
   else {
@@ -164,7 +164,7 @@ async function runAction() {
   try {
     setLoading(true)
     emits('start')
-    const response = await props.onClick?.()
+    const response = await onClick?.()
     emits('loaded')
     emits('response', response)
   }

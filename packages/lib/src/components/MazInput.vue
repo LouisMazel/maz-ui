@@ -222,33 +222,39 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MazInputProps<T>>(), {
-  style: undefined,
-  class: undefined,
-  modelValue: undefined,
-  placeholder: undefined,
-  label: undefined,
-  id: undefined,
-  color: 'primary',
-  type: 'text',
-  required: false,
-  disabled: false,
-  error: false,
-  success: false,
-  warning: false,
-  hint: undefined,
-  inputClasses: undefined,
-  border: true,
-  inputmode: 'text',
-  size: 'md',
-  debounce: false,
-  autoFocus: false,
-  borderActive: false,
-  startIcon: undefined,
-  endIcon: undefined,
-  roundedSize: 'md',
-  loading: false,
-})
+const {
+  style: styleProp,
+  class: classProp,
+  modelValue,
+  placeholder,
+  label,
+  topLabel,
+  assistiveText,
+  id,
+  color = 'primary',
+  type = 'text',
+  required = false,
+  disabled = false,
+  readonly,
+  error = false,
+  success = false,
+  warning = false,
+  hint,
+  inputClasses,
+  border = true,
+  inputmode = 'text',
+  size = 'md',
+  debounce = false,
+  autoFocus = false,
+  borderActive = false,
+  startIcon,
+  endIcon,
+  roundedSize = 'md',
+  block,
+  name,
+  autocomplete,
+  loading = false,
+} = defineProps<MazInputProps<T>>()
 
 const emits = defineEmits<{
   /**
@@ -302,27 +308,27 @@ const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
-const { iconProps: startIconProps } = useMazIconProps(() => props.startIcon)
-const { iconProps: endIconProps } = useMazIconProps(() => props.endIcon)
+const { iconProps: startIconProps } = useMazIconProps(() => startIcon)
+const { iconProps: endIconProps } = useMazIconProps(() => endIcon)
 
 const hasPasswordVisible = ref(false)
 const input = ref<HTMLInputElement | undefined>()
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazInput',
-  providedId: props.id,
+  providedId: id,
 })
 
 let autofillCleanup: (() => void) | undefined
 
 onMounted(() => {
-  if (props.autoFocus) {
+  if (autoFocus) {
     input.value?.focus()
   }
 
   if (input.value) {
     autofillCleanup = onAutofillSync(input.value, (value) => {
-      if (value !== props.modelValue) {
+      if (value !== modelValue) {
         emits('update:model-value', value as T)
       }
     })
@@ -333,18 +339,18 @@ onBeforeUnmount(() => {
   autofillCleanup?.()
 })
 
-const isPasswordType = computed(() => props.type === 'password')
+const isPasswordType = computed(() => type === 'password')
 
-const inputType = computed(() => (hasPasswordVisible.value ? 'text' : props.type))
+const inputType = computed(() => (hasPasswordVisible.value ? 'text' : type))
 
 const borderStyle = computed(() => {
-  if (!props.border)
+  if (!border)
     return undefined
-  if (props.error)
+  if (error)
     return 'maz:border-destructive'
-  if (props.success)
+  if (success)
     return 'maz:border-success'
-  if (props.warning)
+  if (warning)
     return 'maz:border-warning'
   return '--default-border maz:border-divider maz:dark:border-divider-400'
 })
@@ -355,35 +361,35 @@ const debounceEmitValue = debounceFn(
   (value?: T) => {
     emits('update:model-value', value)
   },
-  typeof props.debounce === 'number' ? props.debounce : 500,
+  typeof debounce === 'number' ? debounce : 500,
 )
 
 function emitValue(value?: T) {
-  if (props.debounce)
+  if (debounce)
     return debounceEmitValue(value)
   emits('update:model-value', value)
 }
 
 const model = computed({
-  get: () => props.modelValue,
+  get: () => modelValue,
   set: (value?: T) => emitValue(value),
 })
 
-const hasLabel = computed(() => !!props.label || !!props.hint)
+const hasLabel = computed(() => !!label || !!hint)
 
-const alwaysUp = computed(() => ['date', 'month', 'week'].includes(props.type))
+const alwaysUp = computed(() => ['date', 'month', 'week'].includes(type))
 
 function hasEndPart(): boolean {
   return (
     hasSlotContent(slots['end-icon'])
     || isPasswordType.value
-    || !!props.endIcon
-    || props.loading
+    || !!endIcon
+    || loading
   )
 }
 
 function hasStartPart(): boolean {
-  return hasSlotContent(slots['start-icon']) || !!props.startIcon
+  return hasSlotContent(slots['start-icon']) || !!startIcon
 }
 
 function focus(event: Event) {
@@ -402,11 +408,11 @@ function emitInputEvent(event: Event) {
 }
 
 const stateColor = computed(() => {
-  if (props.error)
+  if (error)
     return 'maz:text-destructive-600!'
-  if (props.success)
+  if (success)
     return 'maz:text-success-600!'
-  if (props.warning)
+  if (warning)
     return 'maz:text-warning-600!'
   return undefined
 })
@@ -444,9 +450,9 @@ const CHILD_TEXT_SIZE_CLASS = {
         '--block': block,
         'maz:w-full': block,
       },
-      props.class,
+      classProp,
       `--${color}`,
-    ]" :style="[style, { '--m-input-tint-bg': `var(--maz-${color})` }]"
+    ]" :style="[styleProp, { '--m-input-tint-bg': `var(--maz-${color})` }]"
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label

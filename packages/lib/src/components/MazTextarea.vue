@@ -88,30 +88,27 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MazTextareaProps<T>>(), {
-  style: undefined,
-  class: undefined,
-  modelValue: undefined,
-  id: undefined,
-  name: 'MazTextarea',
-  label: undefined,
-  placeholder: undefined,
-  required: false,
-  disabled: false,
-  readonly: false,
-  error: false,
-  success: false,
-  warning: false,
-  hint: undefined,
-  color: 'primary',
-  padding: true,
-  transparent: false,
-  border: true,
-  autogrow: true,
-  appendJustify: 'end',
-  roundedSize: 'md',
-  topLabel: undefined,
-})
+const {
+  class: classProp,
+  modelValue,
+  id,
+  name = 'MazTextarea',
+  label,
+  required = false,
+  disabled = false,
+  readonly = false,
+  error = false,
+  success = false,
+  warning = false,
+  hint,
+  color = 'primary',
+  padding = true,
+  transparent = false,
+  border = true,
+  autogrow = true,
+  appendJustify = 'end',
+  roundedSize = 'md',
+} = defineProps<MazTextareaProps<T>>()
 
 const emits = defineEmits<{
   /**
@@ -143,13 +140,13 @@ const emits = defineEmits<{
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazTextarea',
-  providedId: props.id,
+  providedId: id,
 })
 
 const textarea = ref<HTMLTextAreaElement | undefined>()
 
 const inputValue = computed({
-  get: () => props.modelValue,
+  get: () => modelValue,
   set: (value) => {
     emits('update:model-value', value)
     emits('input', value)
@@ -170,16 +167,16 @@ function change(event: Event) {
 
 const slots = useSlots()
 
-const hasLabelOrHint = computed(() => props.label || props.hint || !!slots.label)
+const hasLabelOrHint = computed(() => label || hint || !!slots.label)
 
 const hasAppend = computed(() => !!slots.append)
 
 const borderStyle = computed(() => {
-  if (props.error)
+  if (error)
     return 'maz:border-destructive'
-  if (props.success)
+  if (success)
     return 'maz:border-success'
-  if (props.warning)
+  if (warning)
     return 'maz:border-warning'
   return '--default-border maz:border-divider maz:dark:border-divider-400'
 })
@@ -189,7 +186,7 @@ let autofillCleanup: (() => void) | undefined
 onMounted(() => {
   if (textarea.value) {
     autofillCleanup = onAutofillSync(textarea.value, (value) => {
-      if (value !== props.modelValue) {
+      if (value !== modelValue) {
         emits('update:model-value', value as T)
       }
     })
@@ -211,15 +208,15 @@ const ROUNDED_CLASS = {
 
 const stateLabelColor = computed(() => [
   {
-    'maz:text-destructive-600': props.error,
-    'maz:text-success-600': props.success,
-    'maz:text-warning-600': props.warning,
+    'maz:text-destructive-600': error,
+    'maz:text-success-600': success,
+    'maz:text-warning-600': warning,
   },
 ])
 </script>
 
 <template>
-  <div class="m-textarea-wrapper m-reset-css maz:flex maz:flex-col maz:gap-2" :class="props.class" :style>
+  <div class="m-textarea-wrapper m-reset-css maz:flex maz:flex-col maz:gap-2" :class="classProp" :style>
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label
       v-if="topLabel"
