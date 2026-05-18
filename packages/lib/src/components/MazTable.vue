@@ -642,8 +642,9 @@ onBeforeMount(() => {
       </div>
     </div>
     <div
-      class="m-table-wrapper maz:overflow-hidden maz:border maz:border-solid maz:border-divider" :class="[`--rounded-${roundedSize}`, {
+      class="m-table-wrapper maz:border maz:border-solid maz:border-divider" :class="[`--rounded-${roundedSize}`, {
         '--scrollable maz:overflow-auto': scrollable,
+        'maz:overflow-hidden': !scrollable,
       }]"
     >
       <table
