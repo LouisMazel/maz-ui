@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.17 (2026-05-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.16...v5.0.0-beta.17)
+
+### 🚀 Features
+
+- Move cookie utils from themes to utils ([352083972](https://github.com/LouisMazel/maz-ui/commit/352083972))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.11 (2026-05-15)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.10...v5.0.0-beta.11)
