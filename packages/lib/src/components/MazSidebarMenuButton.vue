@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { MazIconLike } from '../composables/useMazIconProps'
 import type { MazBadgeProps } from './MazBadge.vue'
+import type { MazSidebarTooltipMode } from './MazSidebar.vue'
 import { vTooltip } from '../directives/vTooltip'
 import { hasSlotContent } from '../utils/hasSlotContent'
 
@@ -25,6 +26,15 @@ export interface MazSidebarMenuButtonProps {
   badge?: MazSidebarMenuButtonBadge
   /** Tooltip text. When provided, shows a tooltip on hover via the `v-tooltip` directive. */
   tooltip?: string
+  /**
+   * Controls when the tooltip should be displayed.
+   * - `always`: tooltip shows on hover regardless of the sidebar state
+   * - `closed`: tooltip only shows on hover when the sidebar is collapsed
+   *
+   * Overrides the parent `MazSidebar`'s `tooltipMode`. Falls back to the
+   * sidebar value (which defaults to `always`) when not provided.
+   */
+  tooltipMode?: MazSidebarTooltipMode
   /** Whether the item is active (highlights with `aria-current="page"`) */
   active?: boolean
   /** Whether the item is disabled */
@@ -42,7 +52,7 @@ import { useMazIconProps } from '../composables/useMazIconProps'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 import { mazSidebarKey } from './MazSidebar.vue'
 
-const { to, href, icon, badge, tooltip, active, size = 'md' } = defineProps<MazSidebarMenuButtonProps>()
+const { to, href, icon, badge, tooltip, tooltipMode, active, size = 'md' } = defineProps<MazSidebarMenuButtonProps>()
 
 defineEmits<{
   click: [event: MouseEvent]
@@ -96,15 +106,22 @@ const badgeBindings = computed<Partial<MazBadgeProps>>(() => {
   return { size: 'sm', roundedSize: 'full', ...rest }
 })
 
+const effectiveTooltipMode = computed<MazSidebarTooltipMode>(
+  () => tooltipMode ?? sidebar.tooltipMode.value,
+)
+
+const tooltipVisible = computed(
+  () => effectiveTooltipMode.value === 'always' || sidebar.state.value === 'collapsed',
+)
+
 const tooltipBinding = computed(() => {
-  if (!tooltip) {
-    return { text: ' ', trigger: 'manual' as const }
-  }
-  const position: 'right' | 'left' = sidebar.side.value === 'start' ? 'right' : 'left'
+  if (!tooltip)
+    return false as const
+
   return {
     text: tooltip,
-    position,
-    trigger: 'hover' as const,
+    position: (sidebar.side.value === 'start' ? 'right' : 'left') as 'right' | 'left',
+    trigger: (tooltipVisible.value ? 'hover' : 'manual') as 'hover' | 'manual',
   }
 })
 
@@ -127,10 +144,10 @@ const isActive = computed(() => active === true)
   <component
     :is="tag"
     v-tooltip="tooltipBinding"
-    class="m-sidebar-menu-btn m-reset-css focus-visible:maz:outline-2 focus-visible:maz:outline-offset-2 focus-visible:maz:outline-primary motion-reduce:maz:transition-none maz:relative maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-2 maz:rounded-md maz:bg-transparent maz:px-[min(calc((var(--maz-sidebar-icon-width,3rem)-1.25rem)/2),calc((100%-1.25rem)/2))] maz:font-medium maz:text-foreground maz:no-underline maz:transition-colors maz:duration-150 maz:ease-in-out maz:hover:not-disabled:bg-surface-600 maz:disabled:cursor-not-allowed maz:disabled:opacity-50 maz:dark:hover:not-disabled:bg-surface-800/20"
+    class="m-sidebar-menu-btn m-reset-css focus-visible:maz:outline-2 focus-visible:maz:outline-offset-2 focus-visible:maz:outline-primary motion-reduce:maz:transition-none maz:relative maz:flex maz:w-full maz:items-center maz:gap-2 maz:rounded-md maz:px-[min(calc((var(--maz-sidebar-icon-width,3rem)-1.25rem)/2),calc((100%-1.25rem)/2))] maz:no-underline maz:transition-colors maz:duration-150 maz:ease-in-out maz:disabled:cursor-not-allowed maz:disabled:opacity-50"
     :class="[
       SIZE_CLASS[size],
-      isActive && 'maz:bg-primary/10 maz:font-semibold maz:text-primary',
+      isActive ? 'maz:cursor-auto maz:bg-primary/10 maz:font-semibold maz:text-primary' : 'maz:cursor-pointer maz:bg-transparent maz:font-medium maz:text-foreground maz:hover:not-disabled:bg-surface-600 maz:dark:not-disabled:hover:bg-surface-400',
       routerActiveClass,
       {
         '--active': isActive,

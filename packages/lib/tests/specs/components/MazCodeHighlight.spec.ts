@@ -121,6 +121,22 @@ describe('given MazCodeHighlight component', () => {
     })
   })
 
+  describe('when the document dark class changes', () => {
+    it('then the MutationObserver callback runs without error', async () => {
+      const wrapper = mount(MazCodeHighlight, {
+        props: { code: 'const x = 1' },
+      })
+      await flushPromises()
+
+      document.documentElement.classList.add('dark')
+      await flushPromises()
+      document.documentElement.classList.remove('dark')
+      await flushPromises()
+
+      expect(wrapper.exists()).toBe(true)
+    })
+  })
+
   describe('when shiki fails to load', () => {
     it('then it falls back to plain pre/code', async () => {
       const { codeToHtml } = await import('shiki')

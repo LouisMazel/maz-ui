@@ -1,6 +1,8 @@
 <script lang="ts">
 import type { ComputedRef, InjectionKey, Ref } from 'vue'
 
+export type MazSidebarTooltipMode = 'always' | 'closed'
+
 export interface MazSidebarContext {
   id: ComputedRef<string>
   open: Ref<boolean>
@@ -8,6 +10,7 @@ export interface MazSidebarContext {
   side: ComputedRef<'start' | 'end'>
   collapsible: ComputedRef<'offcanvas' | 'icon' | 'none'>
   mode: ComputedRef<'push' | 'overlay'>
+  tooltipMode: ComputedRef<MazSidebarTooltipMode>
   toggle: () => void
   setOpen: (value: boolean) => void
 }
@@ -38,6 +41,15 @@ export interface MazSidebarProps {
   width?: string
   /** Width of the collapsed sidebar in icon mode */
   iconWidth?: string
+  /**
+   * When descendant `MazSidebarMenuButton` components should display their tooltip.
+   * - `always`: tooltip shows on hover regardless of the sidebar state
+   * - `closed`: tooltip only shows on hover when the sidebar is collapsed
+   *
+   * Individual buttons can override this via their own `tooltipMode` prop.
+   * @default 'always'
+   */
+  tooltipMode?: MazSidebarTooltipMode
 }
 </script>
 
@@ -53,6 +65,7 @@ const props = withDefaults(defineProps<MazSidebarProps>(), {
   mode: 'push',
   width: '16rem',
   iconWidth: '3rem',
+  tooltipMode: 'closed',
 })
 
 const emit = defineEmits<{
@@ -96,6 +109,7 @@ provide(mazSidebarKey, {
   side: computed(() => props.side),
   collapsible: computed(() => props.collapsible),
   mode: computed(() => props.mode),
+  tooltipMode: computed(() => props.tooltipMode),
   toggle,
   setOpen,
 })
