@@ -18,6 +18,7 @@ import { h, watch } from 'vue'
 import ComponentDemo from './components/ComponentDemo.vue'
 import Layout from './components/Layout.vue'
 import NpmBadge from './components/NpmBadge.vue'
+import UtilsCatalogue from './components/UtilsCatalogue.vue'
 import './main.css'
 
 export default {
@@ -63,6 +64,7 @@ export default {
 
     app.component('NpmBadge', NpmBadge)
     app.component('ComponentDemo', ComponentDemo)
+    app.component('UtilsCatalogue', UtilsCatalogue)
 
     Object.entries(components).forEach(([componentName, component]) => {
       app.component(componentName, component)

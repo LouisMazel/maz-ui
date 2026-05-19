@@ -8,7 +8,6 @@ import { directives } from './directives.mjs'
 import { ecosystem } from './ecosystem.mjs'
 import { guide } from './guide.mjs'
 import { plugins } from './plugins.mjs'
-import { utils } from './utils.mjs'
 
 const require = createRequire(import.meta.url)
 
@@ -20,7 +19,7 @@ export const nav = [
   {
     text: 'Modules',
     activeMatch: '/plugins',
-    items: [plugins, composables, directives, utils],
+    items: [plugins, composables, directives],
   },
   ecosystem,
   { text: 'Themes', link: '/theme-editor' },

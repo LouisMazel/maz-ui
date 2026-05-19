@@ -14,7 +14,7 @@ import { DocumentationService } from './DocumentationService'
 import { UnifiedSearchService } from './UnifiedSearchService'
 
 interface DocumentationIndex {
-  type: 'component' | 'guide' | 'composable' | 'directive' | 'plugin' | 'helper'
+  type: 'component' | 'guide' | 'composable' | 'directive' | 'plugin' | 'util' | 'node'
   name: string
   displayName: string
   description: string
@@ -24,7 +24,7 @@ interface DocumentationIndex {
 
 /**
  * MCP server for Maz-UI documentation
- * Provides robust access to Vue.js components, guides, composables, directives, plugins, and helper utilities
+ * Provides robust access to Vue.js components, guides, composables, directives, plugins, utils and node utilities
  * with fuzzy search, comprehensive indexing, and intelligent fallbacks
  */
 export class MazUiMcpServer {
@@ -191,26 +191,49 @@ export class MazUiMcpServer {
       })
     }
 
-    // Index helpers
-    const helpers = this.documentationService.getAllHelpers()
-    for (const helper of helpers) {
-      const helperType = this.getHelperType(helper)
+    // Index utils (from @maz-ui/utils package)
+    const utils = this.documentationService.getAllUtils()
+    for (const util of utils) {
+      const utilType = this.getUtilType(util)
       const tags = [
-        'helper',
+        'util',
         'utility',
         'function',
-        helper,
-        helperType,
-        ...this.generateSearchTags(helper),
+        'maz-ui-utils',
+        util,
+        utilType,
+        ...this.generateSearchTags(util),
       ]
 
       index.push({
-        type: 'helper',
-        name: helper,
-        displayName: `${helper} Helper`,
-        description: `Utility helper: ${helper} - ${helperType} utility functions for data processing and manipulation`,
+        type: 'util',
+        name: util,
+        displayName: `${util} Util`,
+        description: `Utility from @maz-ui/utils: ${util} - ${utilType} utility for data processing and manipulation`,
         tags,
-        uri: `helper://${helper}`,
+        uri: `util://${util}`,
+      })
+    }
+
+    // Index node utilities (from @maz-ui/node package)
+    const nodeItems = this.documentationService.getAllNode()
+    for (const nodeItem of nodeItems) {
+      const tags = [
+        'node',
+        'server',
+        'cli',
+        'maz-ui-node',
+        nodeItem,
+        ...this.generateSearchTags(nodeItem),
+      ]
+
+      index.push({
+        type: 'node',
+        name: nodeItem,
+        displayName: `${nodeItem} Node Utility`,
+        description: `Node.js utility from @maz-ui/node: ${nodeItem} - server-side helper for scripts, CLI and SSR runtimes`,
+        tags,
+        uri: `node://${nodeItem}`,
       })
     }
 
@@ -294,10 +317,10 @@ export class MazUiMcpServer {
   }
 
   /**
-   * Determine helper type for better categorization
+   * Determine util type for better categorization
    */
-  private getHelperType(helperName: string): string {
-    const lowerName = helperName.toLowerCase()
+  private getUtilType(utilName: string): string {
+    const lowerName = utilName.toLowerCase()
 
     if (lowerName.includes('string') || lowerName.includes('text'))
       return 'string'
@@ -444,10 +467,11 @@ export class MazUiMcpServer {
       composable: 'Composables',
       directive: 'Directives',
       plugin: 'Plugins',
-      helper: 'Helpers',
+      util: 'Utils',
+      node: 'Node Utilities',
     }
 
-    const typeOrder = ['component', 'guide', 'composable', 'directive', 'plugin', 'helper']
+    const typeOrder = ['component', 'guide', 'composable', 'directive', 'plugin', 'util', 'node']
 
     let result = `# Maz-UI Documentation (${filteredIndex.length} items)\n\n`
 
@@ -536,7 +560,8 @@ export class MazUiMcpServer {
       composable: name => this.documentationService.getComposableDocumentation(name),
       directive: name => this.documentationService.getDirectiveDocumentation(name),
       plugin: name => this.documentationService.getPluginDocumentation(name),
-      helper: name => this.documentationService.getHelperDocumentation(name),
+      util: name => this.documentationService.getUtilDocumentation(name),
+      node: name => this.documentationService.getNodeDocumentation(name),
     }
 
     const getContent = contentMethods[doc.type]
@@ -588,7 +613,7 @@ export class MazUiMcpServer {
             content = this.documentationService.getOverview()
             if (!content) {
               const diagnostics = this.documentationService.getDiagnostics()
-              content = `# Maz-UI Vue.js Component Library\n\n## Quick Stats\n- **${diagnostics.components.total} Components** - Ready-to-use Vue components\n- **${diagnostics.composables.total} Composables** - Vue 3 reactive utilities\n- **${diagnostics.directives.total} Directives** - DOM helpers\n- **${diagnostics.plugins.total} Plugins** - App-wide services\n- **${diagnostics.helpers.total} Helpers** - Utility functions\n- **${diagnostics.guides.total} Guides** - Documentation\n\n## Getting Started\nUse the MCP tools to explore components and features:\n- \`list\` - See everything available\n- \`search\` - Find specific features\n- \`get_doc\` - Get detailed documentation`
+              content = `# Maz-UI Vue.js Component Library\n\n## Quick Stats\n- **${diagnostics.components.total} Components** - Ready-to-use Vue components\n- **${diagnostics.composables.total} Composables** - Vue 3 reactive utilities\n- **${diagnostics.directives.total} Directives** - DOM helpers\n- **${diagnostics.plugins.total} Plugins** - App-wide services\n- **${diagnostics.utils.total} Utils** - Utility functions from @maz-ui/utils\n- **${diagnostics.node.total} Node Utilities** - Server-side helpers from @maz-ui/node\n- **${diagnostics.guides.total} Guides** - Documentation\n\n## Getting Started\nUse the MCP tools to explore components and features:\n- \`list\` - See everything available\n- \`search\` - Find specific features\n- \`get_doc\` - Get detailed documentation`
             }
             break
           case 'component':
@@ -606,11 +631,14 @@ export class MazUiMcpServer {
           case 'plugin':
             content = this.documentationService.getPluginDocumentation(name!)
             break
-          case 'helper':
-            content = this.documentationService.getHelperDocumentation(name!)
+          case 'util':
+            content = this.documentationService.getUtilDocumentation(name!)
+            break
+          case 'node':
+            content = this.documentationService.getNodeDocumentation(name!)
             break
           default:
-            throw new Error(`Unknown resource type: ${type}. Valid types: overview, component, guide, composable, directive, plugin, helper`)
+            throw new Error(`Unknown resource type: ${type}. Valid types: overview, component, guide, composable, directive, plugin, util, node`)
         }
 
         if (!content) {
@@ -645,7 +673,7 @@ export class MazUiMcpServer {
                 },
                 category: {
                   type: 'string',
-                  enum: ['component', 'guide', 'composable', 'directive', 'plugin', 'helper'],
+                  enum: ['component', 'guide', 'composable', 'directive', 'plugin', 'util', 'node'],
                   description: 'Optional filter to restrict results to a specific documentation category',
                 },
                 maxResults: {
@@ -671,7 +699,7 @@ export class MazUiMcpServer {
                 },
                 type: {
                   type: 'string',
-                  enum: ['auto', 'component', 'guide', 'composable', 'directive', 'plugin', 'helper'],
+                  enum: ['auto', 'component', 'guide', 'composable', 'directive', 'plugin', 'util', 'node'],
                   description: 'Type hint to improve search accuracy (optional). Use "auto" to search all types.',
                   default: 'auto',
                 },
@@ -681,13 +709,13 @@ export class MazUiMcpServer {
           },
           {
             name: 'list',
-            description: 'Browse all available Maz-UI documentation grouped by category. Returns a structured list with counters per category and for each item: name, displayName, description. Use this tool to discover what components, composables, directives, plugins, helpers, and guides are available. Examples: list all docs, list only components, list composables.',
+            description: 'Browse all available Maz-UI documentation grouped by category. Returns a structured list with counters per category and for each item: name, displayName, description. Use this tool to discover what components, composables, directives, plugins, utils, node utilities and guides are available. Examples: list all docs, list only components, list composables.',
             inputSchema: {
               type: 'object',
               properties: {
                 category: {
                   type: 'string',
-                  enum: ['all', 'component', 'guide', 'composable', 'directive', 'plugin', 'helper'],
+                  enum: ['all', 'component', 'guide', 'composable', 'directive', 'plugin', 'util', 'node'],
                   description: 'Filter by documentation category. Use "all" or omit to see everything.',
                   default: 'all',
                 },
