@@ -152,6 +152,10 @@ export default defineConfig<DefaultTheme.Config>({
             res.writeHead(301, { Location: '/components/maz-dialog-confirm' })
             res.end()
           })
+          server.middlewares.use('/helpers', (req, res) => {
+            res.writeHead(301, { Location: `/utils${req.url ?? '/'}` })
+            res.end()
+          })
         },
       },
     ],

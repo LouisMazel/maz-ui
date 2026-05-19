@@ -5,6 +5,7 @@ export const ecosystem = {
   text: 'Ecosystem',
   collapsed: true,
   items: [
+    { text: '@maz-ui/utils', link: '/utils/' },
     { text: '@maz-ui/nuxt', link: '/guide/nuxt' },
     { text: '@maz-ui/translations', link: '/guide/translations' },
     { text: '@maz-ui/themes', link: '/guide/themes' },

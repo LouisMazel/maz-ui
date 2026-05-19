@@ -7,12 +7,14 @@ import { guide } from './guide.mjs'
 import { plugins } from './plugins.mjs'
 import { utils } from './utils.mjs'
 
-export const sidebar = [
-  guide,
-  components,
-  plugins,
-  composables,
-  directives,
-  utils,
-  ecosystem,
-] satisfies DefaultTheme.SidebarItem[]
+export const sidebar: DefaultTheme.Sidebar = {
+  '/utils/': [utils],
+  '/': [
+    guide,
+    components,
+    plugins,
+    composables,
+    directives,
+    ecosystem,
+  ],
+}
