@@ -21,12 +21,18 @@
   },
   "dependencies": {
     "@maz-ui/eslint-config": "workspace:*",
+    "@maz-ui/icons": "workspace:*",
+    "@maz-ui/node": "workspace:*",
+    "@maz-ui/themes": "workspace:*",
+    "@maz-ui/translations": "workspace:*",
     "@maz-ui/utils": "workspace:*",
     "chart.js": "^4.5.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dayjs": "^1.11.20",
     "libphonenumber-js": "^1.13.2",
     "maz-ui": "workspace:*",
+    "shiki": "^4.1.0",
+    "valibot": "^1.4.0",
     "vitepress-plugin-google-analytics": "^1.0.2"
   },
   "devDependencies": {
