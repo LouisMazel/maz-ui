@@ -95,6 +95,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
+    "codegen": "nx build",
     "build": "vite build",
     "build:watch": "vite build --watch --mode development",
     "typecheck": "vue-tsc --noEmit",
@@ -112,6 +113,9 @@
   },
   "dependencies": {
     "@maz-ui/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@maz-ui/vite-config": "workspace:*"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

@@ -4,6 +4,7 @@ import type { MazStylelintOptions, StylelintConfig, StylelintOverride } from './
 import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { baseRules } from './configs/base'
 import { GLOBAL_IGNORES } from './configs/global'
 import { createLogger } from './configs/logger'
@@ -35,10 +36,16 @@ const TAG = '[@maz-ui/stylelint-config]'
 const internalRequire = createRequire(import.meta.url)
 function resolveInternal(name: string): string {
   try {
-    return internalRequire.resolve(name)
+    const resolved = import.meta.resolve(name)
+    return resolved.startsWith('file:') ? fileURLToPath(resolved) : resolved
   }
   catch {
-    return name
+    try {
+      return internalRequire.resolve(name)
+    }
+    catch {
+      return name
+    }
   }
 }
 

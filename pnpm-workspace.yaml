@@ -1,3 +1,22 @@
+minimumReleaseAgeExclude:
+  - '@shikijs/core@4.1.0'
+  - '@shikijs/engine-javascript@4.1.0'
+  - '@shikijs/engine-oniguruma@4.1.0'
+  - '@shikijs/langs@4.1.0'
+  - '@shikijs/primitive@4.1.0'
+  - '@shikijs/themes@4.1.0'
+  - '@shikijs/types@4.1.0'
+  - '@types/node@25.9.0'
+  - '@vue/language-core@3.3.0'
+  - npm-run-all2@9.0.0
+  - postcss@8.5.15
+  - shiki@4.1.0
+  - tsx@4.22.3
+  - unplugin-dts@1.0.1
+  - vite-plugin-dts@5.0.1
+  - vue-tsc@3.3.0
+  - '@yoloship/action@0.2.0-beta.7'
+  - '@yoloship/claude-sdk@0.2.0-beta.5'
 shellEmulator: true
 
 # eslint-disable-next-line pnpm/yaml-enforce-settings
@@ -15,3 +34,11 @@ onlyBuiltDependencies:
   - unrs-resolver
   - esbuild
   - vue-demi
+
+allowBuilds:
+  '@parcel/watcher': true
+  '@swc/core': true
+  esbuild: true
+  nx: true
+  sharp: false
+  vue-demi: true
