@@ -206,13 +206,14 @@
     "@maz-ui/utils": "workspace:*",
     "chart.js": "^4.5.1",
     "dayjs": "^1.11.20",
-    "libphonenumber-js": "^1.13.0",
+    "libphonenumber-js": "^1.13.2",
     "valibot": "^1.4.0"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
     "@maz-ui/node": "workspace:*",
     "@maz-ui/stylelint-config": "workspace:*",
+    "@maz-ui/vite-config": "workspace:*",
     "@tailwindcss/cli": "^4.3.0",
     "@tailwindcss/postcss": "^4.3.0",
     "@tailwindcss/vite": "^4.3.0",
@@ -220,14 +221,14 @@
     "autoprefixer": "^10.5.0",
     "jsdom": "^29.1.1",
     "lightningcss": "^1.32.0",
-    "nuxt": "^4.4.4",
+    "nuxt": "^4.4.6",
     "postcss-nested": "^7.0.2",
     "sass": "^1.99.0",
-    "shiki": "^4.0.2",
+    "shiki": "^4.1.0",
     "tailwindcss": "^4.3.0",
     "unplugin-auto-import": "^21.0.0",
     "unplugin-vue-components": "^32.0.0",
-    "vue-router": "^5.0.6"
+    "vue-router": "^5.0.7"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix",
