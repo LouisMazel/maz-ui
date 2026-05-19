@@ -487,6 +487,9 @@ importers:
       '@swc/core':
         specifier: 1.15.33
         version: 1.15.33
+      maz-ui:
+        specifier: workspace:*
+        version: link:../lib
       prettier:
         specifier: ^3.8.3
         version: 3.8.3

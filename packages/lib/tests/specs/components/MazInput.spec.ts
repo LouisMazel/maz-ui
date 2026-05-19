@@ -133,6 +133,50 @@ describe('components/MazInput.vue', () => {
     })
   })
 
+  describe('Given the SSR DOM holds an autofilled value before hydration', () => {
+    describe('When the component mounts with a matching id', () => {
+      it('Then it emits update:model-value with the captured value', () => {
+        const ssrInput = document.createElement('input')
+        ssrInput.id = 'ssr-input'
+        ssrInput.value = 'autofilled@example.com'
+        document.body.appendChild(ssrInput)
+
+        try {
+          const wrapper = mount(MazInput, {
+            props: { id: 'ssr-input', modelValue: '' },
+          })
+
+          expect(wrapper.emitted('update:model-value')?.[0]).toEqual(['autofilled@example.com'])
+          wrapper.unmount()
+        }
+        finally {
+          ssrInput.remove()
+        }
+      })
+    })
+
+    describe('When the captured value matches the current modelValue', () => {
+      it('Then it does not emit update:model-value', () => {
+        const ssrInput = document.createElement('input')
+        ssrInput.id = 'ssr-input-match'
+        ssrInput.value = 'same'
+        document.body.appendChild(ssrInput)
+
+        try {
+          const wrapper = mount(MazInput, {
+            props: { id: 'ssr-input-match', modelValue: 'same' },
+          })
+
+          expect(wrapper.emitted('update:model-value')).toBeUndefined()
+          wrapper.unmount()
+        }
+        finally {
+          ssrInput.remove()
+        }
+      })
+    })
+  })
+
   describe('Given the component has a registered autofill listener', () => {
     describe('When the component is unmounted', () => {
       it('Then subsequent autofill animations do not emit update:model-value', () => {
