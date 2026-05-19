@@ -15,7 +15,7 @@ import {
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useMazIconProps } from '../composables/useMazIconProps'
-import { onAutofillSync } from '../utils/autofillSync'
+import { onAutofillSync, readInitialAutofillValue } from '../utils/autofillSync'
 import { hasSlotContent } from '../utils/hasSlotContent'
 
 export type MazInputValue = string | number | null | undefined | boolean
@@ -319,6 +319,8 @@ const instanceId = useInstanceUniqId({
   providedId: id,
 })
 
+const initialAutofillValue = readInitialAutofillValue(instanceId.value)
+
 let autofillCleanup: (() => void) | undefined
 
 onMounted(() => {
@@ -327,6 +329,12 @@ onMounted(() => {
   }
 
   if (input.value) {
+    if (initialAutofillValue && input.value.value !== initialAutofillValue) {
+      input.value.value = initialAutofillValue
+      if (initialAutofillValue !== modelValue)
+        emits('update:model-value', initialAutofillValue as T)
+    }
+
     autofillCleanup = onAutofillSync(input.value, (value) => {
       if (value !== modelValue) {
         emits('update:model-value', value as T)

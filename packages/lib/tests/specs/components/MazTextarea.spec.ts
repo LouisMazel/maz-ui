@@ -221,6 +221,50 @@ describe('components/MazTextarea.vue', () => {
     })
   })
 
+  describe('Given the SSR DOM holds an autofilled value before hydration', () => {
+    describe('When the component mounts with a matching id', () => {
+      it('Then it emits update:model-value with the captured value', () => {
+        const ssrTextarea = document.createElement('textarea')
+        ssrTextarea.id = 'ssr-textarea'
+        ssrTextarea.value = 'autofilled address'
+        document.body.appendChild(ssrTextarea)
+
+        try {
+          const ssrWrapper = shallowMount(MazTextarea, {
+            props: { id: 'ssr-textarea', modelValue: '' },
+          })
+
+          expect(ssrWrapper.emitted('update:model-value')?.[0]).toEqual(['autofilled address'])
+          ssrWrapper.unmount()
+        }
+        finally {
+          ssrTextarea.remove()
+        }
+      })
+    })
+
+    describe('When the captured value matches the current modelValue', () => {
+      it('Then it does not emit update:model-value', () => {
+        const ssrTextarea = document.createElement('textarea')
+        ssrTextarea.id = 'ssr-textarea-match'
+        ssrTextarea.value = 'same'
+        document.body.appendChild(ssrTextarea)
+
+        try {
+          const ssrWrapper = shallowMount(MazTextarea, {
+            props: { id: 'ssr-textarea-match', modelValue: 'same' },
+          })
+
+          expect(ssrWrapper.emitted('update:model-value')).toBeUndefined()
+          ssrWrapper.unmount()
+        }
+        finally {
+          ssrTextarea.remove()
+        }
+      })
+    })
+  })
+
   describe('Given the textarea has a registered autofill listener', () => {
     describe('When the component is unmounted', () => {
       it('Then subsequent autofill animations do not emit update:model-value', () => {
