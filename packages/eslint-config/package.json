@@ -51,10 +51,10 @@
     "test:unit:watch": "vitest watch"
   },
   "peerDependencies": {
-    "eslint": ">=9.0.0 <11.0.0"
+    "eslint": "^9.10.0 || ^10.0.0"
   },
   "dependencies": {
-    "@antfu/eslint-config": "^8.2.0",
+    "@antfu/eslint-config": "^9.0.0",
     "consola": "^3.4.2",
     "eslint-plugin-better-tailwindcss": "^4.5.0",
     "eslint-plugin-format": "^2.0.1",

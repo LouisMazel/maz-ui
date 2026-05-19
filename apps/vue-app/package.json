@@ -12,6 +12,8 @@
     "vue-app:lint": "run-s lint:*"
   },
   "dependencies": {
+    "unplugin-auto-import": "^21.0.0",
+    "unplugin-vue-components": "^32.0.0",
     "vue-router": "^5.0.7"
   },
   "devDependencies": {
