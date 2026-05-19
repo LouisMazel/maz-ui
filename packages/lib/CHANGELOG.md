@@ -1,5 +1,25 @@
 # Change Log
 
+## v5.0.0-beta.18 (2026-05-19)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.17...v5.0.0-beta.18)
+
+### 🚀 Features
+
+- **docs:** Ecosystem documentations ([#1582](https://github.com/LouisMazel/maz-ui/pull/1582))
+
+### 📦 Build
+
+- Upgrade dependencies ([#1583](https://github.com/LouisMazel/maz-ui/pull/1583))
+  - build: upgrade dependencies
+  - build: update pnpm-workspace.yaml
+  - chore: add eslint-config dep to root package.json
+  - build: upgrade major dependencies (#1584)
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.17 (2026-05-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.16...v5.0.0-beta.17)
