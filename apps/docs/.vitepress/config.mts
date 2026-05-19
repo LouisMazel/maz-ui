@@ -1,5 +1,6 @@
 import type { Plugin } from 'postcss'
 import type { DefaultTheme, HeadConfig, UserConfig } from 'vitepress'
+import { writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
@@ -17,6 +18,7 @@ import { getOgImage } from './og-image'
 // for `vitepress build`. Use that to toggle the `monorepo:dev` resolve
 // condition so dev loads maz-ui src/ with HMR and prod consumes the dist.
 const isDev = process.env.NODE_ENV !== 'production'
+const isNextEnv = process.env.DEPLOY_ENV === 'next'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -50,25 +52,33 @@ export default defineConfig<DefaultTheme.Config>({
     },
   },
 
-  sitemap: {
-    hostname: 'https://maz-ui.com/',
-    transformItems: (items) => {
-      // add new items or modify/filter existing items
-      const modifyItems: typeof items = []
+  sitemap: isNextEnv
+    ? undefined
+    : {
+        hostname: 'https://maz-ui.com/',
+        transformItems: (items) => {
+          // add new items or modify/filter existing items
+          const modifyItems: typeof items = []
 
-      for (const item of items) {
-        if (item.url.includes('404')) {
-          continue
-        }
-        modifyItems.push({
-          ...item,
-          changefreq: 'daily',
-          priority: 1,
-        })
-      }
+          for (const item of items) {
+            if (item.url.includes('404')) {
+              continue
+            }
+            modifyItems.push({
+              ...item,
+              changefreq: 'daily',
+              priority: 1,
+            })
+          }
 
-      return modifyItems
-    },
+          return modifyItems
+        },
+      },
+
+  async buildEnd(siteConfig) {
+    if (isNextEnv) {
+      await writeFile(join(siteConfig.outDir, 'robots.txt'), 'User-agent: *\nDisallow: /\n')
+    }
   },
 
   head: [
