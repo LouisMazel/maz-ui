@@ -38,8 +38,18 @@
     "lint": {
       "cache": true,
       "dependsOn": [
-        { "projects": ["@maz-ui/eslint-config"], "target": "build" },
-        { "projects": ["@maz-ui/stylelint-config"], "target": "build" }
+        {
+          "projects": [
+            "@maz-ui/eslint-config"
+          ],
+          "target": "build"
+        },
+        {
+          "projects": [
+            "@maz-ui/stylelint-config"
+          ],
+          "target": "build"
+        }
       ],
       "inputs": [
         "default"
@@ -49,11 +59,32 @@
     "lint:fix": {
       "cache": true,
       "dependsOn": [
-        { "projects": ["@maz-ui/eslint-config"], "target": "build" },
-        { "projects": ["@maz-ui/stylelint-config"], "target": "build" }
+        {
+          "projects": [
+            "@maz-ui/eslint-config"
+          ],
+          "target": "build"
+        },
+        {
+          "projects": [
+            "@maz-ui/stylelint-config"
+          ],
+          "target": "build"
+        }
       ]
     },
     "typecheck": {
+      "cache": true,
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "default",
+        "^default"
+      ],
+      "outputs": []
+    },
+    "types:check": {
       "cache": true,
       "dependsOn": [
         "^build"
