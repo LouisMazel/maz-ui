@@ -54,7 +54,7 @@
     "@commitlint/cz-commitlint": "^21.0.0",
     "@maz-ui/node": "workspace:*",
     "@nx/js": "^22.7.1",
-    "@types/node": "^25.6.2",
+    "@types/node": "^25.9.0",
     "@types/parse-path": "^7.1.0",
     "@vitejs/plugin-vue": "^6.0.6",
     "@vitest/coverage-v8": "^4.1.4",
