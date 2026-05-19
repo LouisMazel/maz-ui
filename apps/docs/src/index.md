@@ -219,7 +219,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
         This library is written in Typescript, so all types and declarations are directly available.
       </p>
     </MazCardSpotlight>
-    <a href="/guide/themes" class="maz:flex">
+    <a href="/ecosystem/themes" class="maz:flex">
       <MazCardSpotlight class="maz:w-full" content-class="maz:flex maz:flex-col maz:gap-2 maz:items-start">
         <span class="maz:py-1 maz:px-2 maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-md maz:text-2xl">
           💄
@@ -229,7 +229,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           Created with TailwindCSS | Optimized CSS file sizes | Complies with all CSS best practices | Use your theme easily.
         </p>
         <div class="maz:flex-1"></div>
-        <MazBtn color="surface" outlined size="sm" block href="/guide/themes">Discover</MazBtn>
+        <MazBtn color="surface" outlined size="sm" block href="/ecosystem/themes">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
     <a href="/guide/dark-mode" class="maz:flex">
@@ -265,7 +265,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
   <h2 class="maz:text-2xl maz:font-bold maz:mb-8">Ecosystem</h2>
 
   <div class="maz:grid maz:grid-cols-1 maz:tab-m:grid-cols-2 maz:gap-4">
-    <a href="/guide/nuxt" class="maz:flex">
+    <a href="/ecosystem/nuxt" class="maz:flex">
       <MazCardSpotlight class="maz:w-full" color="accent" content-class="maz:flex maz:flex-col maz:gap-2 maz:items-start">
         <div class="maz:flex maz:items-start maz:gap-2 maz:justify-between maz:w-full">
           <span class="maz:py-1 maz:px-2 maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-md maz:text-2xl">
@@ -278,10 +278,10 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           Official Nuxt module with auto-imports, optimized builds, and seamless SSR support. Zero configuration required.
         </p>
         <div class="maz:flex-1"></div>
-        <MazBtn color="surface" outlined size="sm" block href="/guide/nuxt">Discover</MazBtn>
+        <MazBtn color="surface" outlined size="sm" block href="/ecosystem/nuxt">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
-    <a href="/guide/icons" class="maz:flex">
+    <a href="/ecosystem/icons/" class="maz:flex">
       <MazCardSpotlight class="maz:w-full" color="accent" content-class="maz:flex maz:flex-col maz:gap-2 maz:items-start">
         <div class="maz:flex maz:items-start maz:gap-2 maz:justify-between maz:w-full">
           <span class="maz:py-1 maz:px-2 maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-md maz:text-2xl">
@@ -294,10 +294,10 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           860+ beautiful SVG icons ready for Vue. Multiple usage patterns: components, direct SVG files, raw SVG strings or auto-import.
         </p>
         <div class="maz:flex-1"></div>
-        <MazBtn color="surface" outlined size="sm" block href="/guide/icons">Discover</MazBtn>
+        <MazBtn color="surface" outlined size="sm" block href="/ecosystem/icons/">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
-    <a href="/guide/translations" class="maz:flex">
+    <a href="/ecosystem/translations" class="maz:flex">
       <MazCardSpotlight class="maz:w-full" color="accent" content-class="maz:flex maz:flex-col maz:gap-2 maz:items-start">
         <div class="maz:flex maz:items-start maz:gap-2 maz:justify-between maz:w-full">
           <span class="maz:py-1 maz:px-2 maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-md maz:text-2xl">
@@ -310,10 +310,10 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           Simple internationalization system for Maz-UI components. Translate your interface into any language with ease.
         </p>
         <div class="maz:flex-1"></div>
-        <MazBtn color="surface" outlined size="sm" block href="/guide/translations">Discover</MazBtn>
+        <MazBtn color="surface" outlined size="sm" block href="/ecosystem/translations">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
-    <a href="/guide/themes" class="maz:flex">
+    <a href="/ecosystem/themes" class="maz:flex">
       <MazCardSpotlight class="maz:w-full" color="accent" content-class="maz:flex maz:flex-col maz:gap-2 maz:items-start">
         <div class="maz:flex maz:items-start maz:gap-2 maz:justify-between maz:w-full">
           <span class="maz:py-1 maz:px-2 maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-md maz:text-2xl">
@@ -326,10 +326,10 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           Pre-built theme collections and design tokens for rapid UI development. Ready-to-use color schemes and styles.
         </p>
         <div class="maz:flex-1"></div>
-        <MazBtn color="surface" outlined size="sm" block href="/guide/themes">Discover</MazBtn>
+        <MazBtn color="surface" outlined size="sm" block href="/ecosystem/themes">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
-     <a href="/guide/mcp" class="maz:flex">
+     <a href="/ecosystem/mcp" class="maz:flex">
       <MazCardSpotlight class="maz:w-full" color="accent" content-class="maz:flex maz:flex-col maz:gap-2 maz:items-start">
         <div class="maz:flex maz:items-start maz:gap-2 maz:justify-between maz:w-full">
           <span class="maz:py-1 maz:px-2 maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-md maz:text-2xl">
@@ -342,7 +342,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
           Provides a Model Context Protocol (MCP) server that exposes Maz-UI documentation to AI agents. This server enables AI agents to generate code and assist developers in using Maz-UI.
         </p>
         <div class="maz:flex-1"></div>
-        <MazBtn color="surface" outlined size="sm" block href="/guide/mcp">Discover</MazBtn>
+        <MazBtn color="surface" outlined size="sm" block href="/ecosystem/mcp">Discover</MazBtn>
       </MazCardSpotlight>
     </a>
   </div>

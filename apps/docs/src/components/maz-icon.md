@@ -8,7 +8,7 @@ description: A flexible icon component that accepts Vue components, raw SVG stri
 {{ $frontmatter.description }}
 
 ::: tip
-Download the bundled [icons pack](#all-bundled-icons) or use [`@maz-ui/icons`](../guide/icons.md) for the full set.
+Download the bundled [icons pack](#all-bundled-icons) or use [`@maz-ui/icons`](../ecosystem/icons/.md) for the full set.
 :::
 
 ## How it works
@@ -220,7 +220,7 @@ This pack is the Heroicons set plus a few additions specific to maz-ui.
   Download pack
 </MazBtn>
 
-Source: [Heroicons](https://heroicons.com/) — see also the [icon set page](./../guide/icon-set.md).
+Source: [Heroicons](https://heroicons.com/) — see also the [icon set page](./../ecosystem/icons/icon-set.md).
 
 <div class="flex items-start flex-wrap gap-05">
   <div v-for="({ component, name }, i) in iconsList" :key="i" class="flex flex-col flex-center maz:p-2 maz:rounded-md maz:border">

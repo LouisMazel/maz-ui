@@ -72,6 +72,14 @@
     "test:unit:watch": "vitest watch",
     "test:unit:coverage": "vitest run --coverage"
   },
+  "peerDependencies": {
+    "libphonenumber-js": ">= 1 < 2"
+  },
+  "peerDependenciesMeta": {
+    "libphonenumber-js": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "libphonenumber-js": "^1.13.0"
   },

@@ -55,7 +55,7 @@ Start by choosing your framework:
     </template>
   </MazCard>
   <MazCard
-    href="/guide/nuxt"
+    href="/ecosystem/nuxt"
     class="maz:flex-1"
     content-title="Nuxt Users Guide"
     :gallery="{
@@ -70,7 +70,7 @@ Start by choosing your framework:
       </h3>
     </template>
     <template #footer>
-      <MazBtn color="contrast" href="/guide/nuxt">
+      <MazBtn color="contrast" href="/ecosystem/nuxt">
         Nuxt guide
       </MazBtn>
     </template>

@@ -13,7 +13,7 @@ Performance has also been significantly improved thanks to optimal tree-shaking,
 
 ::: tip Connected to Maz-UI MCP
 
-Follow the [MCP](/guide/mcp) guide to connect your AI assistant to Maz-UI's documentation for a smooth migration process.
+Follow the [MCP](/ecosystem/mcp) guide to connect your AI assistant to Maz-UI's documentation for a smooth migration process.
 
 :::
 
@@ -708,7 +708,7 @@ toggleDarkMode()
 </template>
 ```
 
-**📖 Complete documentation:** [Theme Guide](/guide/themes)
+**📖 Complete documentation:** [Theme Guide](/ecosystem/themes)
 
 ## Translation System
 
@@ -748,7 +748,7 @@ setLocale('fr')
 </template>
 ```
 
-**📖 Complete documentation:** [Translation Guide](/guide/translations)
+**📖 Complete documentation:** [Translation Guide](/ecosystem/translations)
 
 ## Common Errors and Solutions
 
@@ -905,10 +905,10 @@ app.use(MazUi)
 ## Additional Resources
 
 - **[Official v4 Documentation](https://maz-ui.com)** - Complete documentation
-- **[Theme Guide](/guide/themes)** - Advanced theme system
-- **[Translation Guide](/guide/translations)** - Internationalization
+- **[Theme Guide](/ecosystem/themes)** - Advanced theme system
+- **[Translation Guide](/ecosystem/translations)** - Internationalization
 - **[Vue Installation Guide](/guide/vue)** - Vue setup
-- **[Nuxt Installation Guide](/guide/nuxt)** - Nuxt setup
+- **[Nuxt Installation Guide](/ecosystem/nuxt)** - Nuxt setup
 - **[Resolvers Guide](/guide/resolvers)** - Smart auto-imports
 - **[Complete Changelog](https://github.com/LouisMazel/maz-ui/blob/master/CHANGELOG.md)** - All changes
 

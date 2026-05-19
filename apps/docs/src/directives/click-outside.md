@@ -242,7 +242,7 @@ app.mount('#app')
 
 ### Nuxt
 
-Please refer to the [Nuxt module documentation](./../guide/nuxt.md) for more information.
+Please refer to the [Nuxt module documentation](./../ecosystem/nuxt.md) for more information.
 
 <script lang="ts" setup>
   import { ref } from 'vue'
