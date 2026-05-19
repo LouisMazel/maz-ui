@@ -56,10 +56,10 @@
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
-    "@types/node": "^25.6.2",
+    "@types/node": "^25.9.0",
     "typescript": "^5.9.3",
     "unbuild": "^3.6.1",
-    "vitest": "4.1.5"
+    "vitest": "4.1.6"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

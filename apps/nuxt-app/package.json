@@ -19,10 +19,10 @@
     "@nuxt/devtools": "^3.2.3",
     "@tailwindcss/postcss": "^4.3.0",
     "@tailwindcss/vite": "^4.3.0",
-    "nuxt": "^4.4.4",
+    "nuxt": "^4.4.6",
     "postcss-nested": "^7.0.2",
     "tailwindcss": "^4.3.0",
-    "vue-router": "^5.0.6"
+    "vue-router": "^5.0.7"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix",
