@@ -27,7 +27,7 @@
     "typecheck": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
-    "@clack/prompts": "^1.3.0",
+    "@clack/prompts": "^1.4.0",
     "@maz-ui/node": "workspace:*",
     "@maz-ui/utils": "workspace:*",
     "commander": "^14.0.3",
@@ -35,7 +35,9 @@
     "vue-docgen-cli": "^4.79.0"
   },
   "devDependencies": {
-    "tsx": "^4.21.0"
+    "@maz-ui/eslint-config": "workspace:*",
+    "tsx": "^4.22.3",
+    "unbuild": "^3.6.1"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

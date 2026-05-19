@@ -101,6 +101,7 @@
     "@maz-ui/utils": "workspace:*"
   },
   "devDependencies": {
+    "@maz-ui/vite-config": "workspace:*",
     "unbuild": "^3.6.1"
   },
   "lint-staged": {

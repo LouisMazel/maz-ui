@@ -12,7 +12,7 @@
     "vue-app:lint": "run-s lint:*"
   },
   "dependencies": {
-    "vue-router": "^5.0.6"
+    "vue-router": "^5.0.7"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
@@ -24,7 +24,7 @@
     "@tsconfig/node22": "^22.0.5",
     "@vue/tsconfig": "^0.9.1",
     "maz-ui": "workspace:*",
-    "npm-run-all2": "^8.0.4",
+    "npm-run-all2": "^9.0.0",
     "postcss-nested": "^7.0.2",
     "rollup-plugin-visualizer": "^7.0.1",
     "tailwindcss": "^4.3.0",
