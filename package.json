@@ -52,6 +52,7 @@
     "@commitlint/cli": "21.0.1",
     "@commitlint/config-conventional": "^21.0.1",
     "@commitlint/cz-commitlint": "^21.0.1",
+    "@maz-ui/eslint-config": "workspace:*",
     "@maz-ui/node": "workspace:*",
     "@nx/js": "^22.7.2",
     "@types/node": "^25.9.0",

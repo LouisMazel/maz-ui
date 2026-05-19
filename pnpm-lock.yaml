@@ -20,6 +20,9 @@ importers:
       '@commitlint/cz-commitlint':
         specifier: ^21.0.1
         version: 21.0.1(@types/node@25.9.0)(commitizen@4.3.1(@types/node@25.9.0)(typescript@5.9.3))(inquirer@8.2.5)(typescript@5.9.3)
+      '@maz-ui/eslint-config':
+        specifier: workspace:*
+        version: link:packages/eslint-config
       '@maz-ui/node':
         specifier: workspace:*
         version: link:packages/node
