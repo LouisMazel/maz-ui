@@ -237,10 +237,10 @@ function showSuccess() {
 
 **Most used available formatters and utilities:**
 
-| Category       | Utilities/Formatters                                                                                          |
-| -------------- | ------------------------------------------------------------------------------------------------------------- |
-| **Formatters** | [`formatCurrency`](./../utils/currency.md), [`formatDate`](./../utils/date.md), [`sleep`](./../utils/sleep.md) |
-| **Utilities**  | [`debounce`](./../utils/debounce.md), [`throttle`](./../utils/throttle.md), [`isEqual`](./../utils/is-equal.md) |
+| Category       | Utilities/Formatters                                                                                                                         |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Formatters** | [`formatCurrency`](./../ecosystem/utils/currency.md), [`formatDate`](./../ecosystem/utils/date.md), [`sleep`](./../ecosystem/utils/sleep.md) |
+| **Utilities**  | [`debounce`](./../ecosystem/utils/debounce.md), [`throttle`](./../ecosystem/utils/throttle.md), [`isEqual`](./../ecosystem/utils/is-equal.md) |
 
 ## Advanced Configuration
 

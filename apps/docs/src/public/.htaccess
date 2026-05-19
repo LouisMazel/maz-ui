@@ -1,7 +1,10 @@
 RewriteEngine on
 
-# Legacy URLs: /helpers/* moved to /utils/*
-RewriteRule ^helpers/(.*)$ /utils/$1 [R=301,L]
+# Legacy URLs: /helpers/* (original) → /ecosystem/utils/*
+RewriteRule ^helpers/(.*)$ /ecosystem/utils/$1 [R=301,L]
+
+# Short-lived /utils/* path → /ecosystem/utils/*
+RewriteRule ^utils/(.*)$ /ecosystem/utils/$1 [R=301,L]
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.html -f

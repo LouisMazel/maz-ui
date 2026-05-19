@@ -153,7 +153,11 @@ export default defineConfig<DefaultTheme.Config>({
             res.end()
           })
           server.middlewares.use('/helpers', (req, res) => {
-            res.writeHead(301, { Location: `/utils${req.url ?? '/'}` })
+            res.writeHead(301, { Location: `/ecosystem/utils${req.url ?? '/'}` })
+            res.end()
+          })
+          server.middlewares.use('/utils', (req, res) => {
+            res.writeHead(301, { Location: `/ecosystem/utils${req.url ?? '/'}` })
             res.end()
           })
         },
