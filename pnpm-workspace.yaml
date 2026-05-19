@@ -1,4 +1,5 @@
 shellEmulator: true
+
 # eslint-disable-next-line pnpm/yaml-enforce-settings
 trustPolicy: warn-downgrade
 
@@ -12,4 +13,5 @@ onlyBuiltDependencies:
   - '@swc/core'
   - nx
   - unrs-resolver
+  - esbuild
   - vue-demi
