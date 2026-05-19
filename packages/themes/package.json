@@ -5,7 +5,7 @@
   "description": "Theme system for Maz-UI with TypeScript support and CSS variables",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
-  "homepage": "https://maz-ui.com/guide/themes",
+  "homepage": "https://maz-ui.com/ecosystem/themes",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui.git"

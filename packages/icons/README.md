@@ -89,7 +89,7 @@ The resolver wires up both `MazXxx` (static) and `LazyMazXxx` (lazy) component i
 
 ## Documentation
 
-Full documentation: [https://maz-ui.com/guide/icons](https://maz-ui.com/guide/icons)
+Full documentation: [https://maz-ui.com/ecosystem/icons](https://maz-ui.com/ecosystem/icons)
 
 ## License
 
