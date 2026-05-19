@@ -5,7 +5,7 @@
   "description": "Icons set in SVG and Vue components",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
-  "homepage": "https://maz-ui.com/guide/icons",
+  "homepage": "https://maz-ui.com/ecosystem/icons",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui.git"

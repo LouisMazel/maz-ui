@@ -8,7 +8,7 @@ from your todo list, then walk through the rest of the
 need a human eye (theme `foundation.radius` reshape, `MazIcon` API,
 `MazBadge` numeric sizes, `MazChart` `update-mode`).
 
-The companion [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) server lets your
+The companion [`@maz-ui/mcp`](https://maz-ui.com/ecosystem/mcp) server lets your
 AI assistant read the migration guide and apply the manual steps with full
 context.
 
@@ -270,7 +270,7 @@ Next: see https://maz-ui.com/guide/migration-v5 for the manual steps
 ## What it does NOT do
 
 Some changes need a human (or your AI assistant via the
-[`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) server) — see the
+[`@maz-ui/mcp`](https://maz-ui.com/ecosystem/mcp) server) — see the
 [migration guide](https://maz-ui.com/guide/migration-v5) for the full
 context:
 
