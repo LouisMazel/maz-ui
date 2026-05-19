@@ -62,7 +62,7 @@
     "eslint-plugin-vuejs-accessibility": "^2.5.0"
   },
   "devDependencies": {
-    "eslint": "^10.3.0",
+    "eslint": "^10.4.0",
     "unbuild": "^3.6.1"
   },
   "lint-staged": {
