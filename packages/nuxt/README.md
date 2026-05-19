@@ -264,7 +264,7 @@ This module is built specifically for Nuxt with perfect SSR and SSG support:
 
 ## Learn More
 
-- **[Full Documentation](https://maz-ui.com/guide/nuxt)**
+- **[Full Documentation](https://maz-ui.com/ecosystem/nuxt)**
 - **[Report Issues](https://github.com/LouisMazel/maz-ui/issues)**
 - **[Discussions](https://github.com/LouisMazel/maz-ui/discussions)**
 

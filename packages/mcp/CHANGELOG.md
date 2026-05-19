@@ -1,5 +1,17 @@
 # Changelog
 
+## v5.0.0-beta.19 (2026-05-19)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.18...v5.0.0-beta.19)
+
+### 🩹 Fixes
+
+- **maz-ui:** Inputs - auto-fill with SSR ([da00bc2da](https://github.com/LouisMazel/maz-ui/commit/da00bc2da))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.18 (2026-05-19)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.17...v5.0.0-beta.18)

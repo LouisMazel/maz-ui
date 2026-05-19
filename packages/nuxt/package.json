@@ -1,11 +1,11 @@
 {
   "name": "@maz-ui/nuxt",
   "type": "module",
-  "version": "5.0.0-beta.18",
+  "version": "5.0.0-beta.19",
   "description": "Nuxt module for Maz-UI",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
-  "homepage": "https://maz-ui.com/guide/nuxt",
+  "homepage": "https://maz-ui.com/ecosystem/nuxt",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LouisMazel/maz-ui.git"

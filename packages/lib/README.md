@@ -110,7 +110,7 @@ The Nuxt module automatically:
 - Includes required styles
 - Provides TypeScript support out of the box
 
-[See options and more in the documentation](https://maz-ui.com/guide/nuxt)
+[See options and more in the documentation](https://maz-ui.com/ecosystem/nuxt)
 
 ```ts
 // nuxt.config.ts
@@ -153,7 +153,7 @@ The CLI will automatically:
 - Create dark mode variables
 - Output a ready-to-use CSS file
 
-To know how configure the CLI, check [theming options](https://maz-ui.com/guide/themes) in our documentation.
+To know how configure the CLI, check [theming options](https://maz-ui.com/ecosystem/themes) in our documentation.
 
 ## 🧰 What's included?
 
@@ -169,7 +169,7 @@ Maz UI provides a comprehensive set of beautiful icons (300+) ready-to-use for V
 
 ### Documentation
 
-Please refer to [](https://maz-ui.com/guide/icons)
+Please refer to [icons documentation](https://maz-ui.com/ecosystem/icons)
 
 ### Installation
 
