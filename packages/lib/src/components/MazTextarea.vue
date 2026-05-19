@@ -82,7 +82,7 @@ export interface MazTextareaProps<T extends string | undefined | null> {
 import type { HTMLAttributes } from 'vue'
 import { computed, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { onAutofillSync } from '../utils/autofillSync'
+import { onAutofillSync, readInitialAutofillValue } from '../utils/autofillSync'
 
 defineOptions({
   inheritAttrs: false,
@@ -143,6 +143,8 @@ const instanceId = useInstanceUniqId({
   providedId: id,
 })
 
+const initialAutofillValue = readInitialAutofillValue(instanceId.value)
+
 const textarea = ref<HTMLTextAreaElement | undefined>()
 
 const inputValue = computed({
@@ -185,6 +187,12 @@ let autofillCleanup: (() => void) | undefined
 
 onMounted(() => {
   if (textarea.value) {
+    if (initialAutofillValue && textarea.value.value !== initialAutofillValue) {
+      textarea.value.value = initialAutofillValue
+      if (initialAutofillValue !== modelValue)
+        emits('update:model-value', initialAutofillValue as T)
+    }
+
     autofillCleanup = onAutofillSync(textarea.value, (value) => {
       if (value !== modelValue) {
         emits('update:model-value', value as T)
