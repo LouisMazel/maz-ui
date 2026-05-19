@@ -12,7 +12,7 @@ head:
 Supercharge your Vue development with Maz-UI's intelligent auto-import resolvers. Never write import statements again while maintaining perfect tree-shaking and TypeScript support.
 
 ::: tip Vue Only Feature
-Auto-import resolvers are designed for Vue projects using build tools like Vite or Webpack. For Nuxt users, everything is already integrated in the [@maz-ui/nuxt module](/guide/nuxt).
+Auto-import resolvers are designed for Vue projects using build tools like Vite or Webpack. For Nuxt users, everything is already integrated in the [@maz-ui/nuxt module](/ecosystem/nuxt).
 :::
 
 ## Why Use Auto-Import Resolvers?
@@ -229,7 +229,7 @@ function showSuccess() {
 
 | Category             | Composables                               |
 | -------------------- | --------------------------------------------------- |
-| **UI Management**    | [`useToast`](./../composables/use-toast.md), [`useDialog`](./../composables/use-dialog.md), [`useTheme`](./../guide/themes.md#usetheme-composable-api), [`useWait`](./../composables/use-wait.md)      |
+| **UI Management**    | [`useToast`](./../composables/use-toast.md), [`useDialog`](./../composables/use-dialog.md), [`useTheme`](./../ecosystem/themes.md#usetheme-composable-api), [`useWait`](./../composables/use-wait.md)      |
 | **Responsive**       | [`useBreakpoints`](./../composables/use-breakpoints.md), [`useWindowSize`](./../composables/use-window-size.md)                   |
 | **User Interaction** | [`useUserVisibility`](./../composables/use-user-visibility.md), [`useIdleTimeout`](./../composables/use-idle-timeout.md), [`useSwipe`](./../composables/use-swipe.md)   |
 | **Form Handling**    | [`useFormValidator`](./../composables/use-form-validator.md)                  |
@@ -670,7 +670,7 @@ const toast = useToast()
 
 - [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components) - The underlying auto-import system
 - [unplugin-auto-import](https://github.com/antfu/unplugin-auto-import) - Auto-import for composables and utilities
-- [Nuxt Module](/guide/nuxt) - All auto-imports included out of the box
+- [Nuxt Module](/ecosystem/nuxt) - All auto-imports included out of the box
 
 ---
 

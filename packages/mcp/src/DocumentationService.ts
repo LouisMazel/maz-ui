@@ -1,13 +1,13 @@
 import type { DocumentMetadata } from './MetadataExtractor'
 
-import { existsSync, readdirSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { MetadataExtractor } from './MetadataExtractor'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
 
-export type DocumentType = 'component' | 'guide' | 'composable' | 'directive' | 'plugin' | 'helper'
+export type DocumentType = 'component' | 'guide' | 'composable' | 'directive' | 'plugin' | 'util' | 'node'
 
 export interface Document {
   name: string
@@ -39,7 +39,11 @@ export interface DocumentationDiagnostics {
     total: number
     list: string[]
   }
-  helpers: {
+  utils: {
+    total: number
+    list: string[]
+  }
+  node: {
     total: number
     list: string[]
   }
@@ -51,7 +55,10 @@ export interface DocumentationDiagnostics {
     composablesDir: string
     directivesDir: string
     pluginsDir: string
-    helpersDir: string
+    ecosystemDir: string
+    utilsDir: string
+    nodeDir: string
+    iconsDir: string
   }
 }
 
@@ -63,7 +70,11 @@ export class DocumentationService {
   private readonly composablesDir: string
   private readonly directivesDir: string
   private readonly pluginsDir: string
-  private readonly helpersDir: string
+  private readonly ecosystemDir: string
+  private readonly utilsDir: string
+  private readonly utilsTypesDir: string
+  private readonly nodeDir: string
+  private readonly iconsDir: string
   private readonly metadataExtractor = new MetadataExtractor()
 
   constructor() {
@@ -78,7 +89,11 @@ export class DocumentationService {
     this.composablesDir = join(this.docsRoot, 'composables')
     this.directivesDir = join(this.docsRoot, 'directives')
     this.pluginsDir = join(this.docsRoot, 'plugins')
-    this.helpersDir = join(this.docsRoot, 'helpers')
+    this.ecosystemDir = join(this.docsRoot, 'ecosystem')
+    this.utilsDir = join(this.ecosystemDir, 'utils')
+    this.utilsTypesDir = join(this.utilsDir, 'types')
+    this.nodeDir = join(this.ecosystemDir, 'node')
+    this.iconsDir = join(this.ecosystemDir, 'icons')
   }
 
   private pascalToKebabCase(pascalName: string): string {
@@ -100,14 +115,21 @@ export class DocumentationService {
     }
   }
 
-  private listMarkdownFiles(dirPath: string): string[] {
+  private listMarkdownFiles(dirPath: string, options: { keepIndex?: boolean } = {}): string[] {
     try {
       if (!existsSync(dirPath)) {
         return []
       }
-      const files = readdirSync(dirPath)
-      return files
-        .filter(file => file.endsWith('.md') && file !== 'index.md')
+      const entries = readdirSync(dirPath)
+      return entries
+        .filter((entry) => {
+          if (!entry.endsWith('.md'))
+            return false
+          if (!options.keepIndex && entry === 'index.md')
+            return false
+          const fullPath = join(dirPath, entry)
+          return statSync(fullPath).isFile()
+        })
         .map(file => file.replace('.md', ''))
         .sort()
     }
@@ -119,7 +141,6 @@ export class DocumentationService {
   // ========== COMPONENTS ==========
 
   getComponentDocumentation(componentName: string): string {
-    // Accepte MazBtn ou maz-btn, normalise en kebab-case
     const kebabName = componentName.startsWith('Maz')
       ? this.pascalToKebabCase(componentName)
       : componentName
@@ -160,14 +181,48 @@ export class DocumentationService {
   }
 
   // ========== GUIDES ==========
+  // Aggregates: guide/*.md + ecosystem/*.md (standalone) + ecosystem/icons/*.md (index.md → 'icons')
 
   getGuideDocumentation(guideName: string): string {
-    const guidePath = join(this.guidesDir, `${guideName}.md`)
-    return this.readMarkdownFile(guidePath)
+    const candidates = [
+      join(this.guidesDir, `${guideName}.md`),
+      join(this.ecosystemDir, `${guideName}.md`),
+      join(this.iconsDir, `${guideName}.md`),
+    ]
+
+    if (guideName === 'icons') {
+      candidates.push(join(this.iconsDir, 'index.md'))
+    }
+
+    for (const path of candidates) {
+      const content = this.readMarkdownFile(path)
+      if (content)
+        return content
+    }
+
+    return ''
   }
 
   getAllGuides(): string[] {
-    return this.listMarkdownFiles(this.guidesDir)
+    const guides = new Set<string>()
+
+    for (const name of this.listMarkdownFiles(this.guidesDir)) {
+      guides.add(name)
+    }
+
+    for (const name of this.listMarkdownFiles(this.ecosystemDir)) {
+      guides.add(name)
+    }
+
+    for (const name of this.listMarkdownFiles(this.iconsDir)) {
+      guides.add(name)
+    }
+
+    if (existsSync(join(this.iconsDir, 'index.md'))) {
+      guides.add('icons')
+    }
+
+    return Array.from(guides).sort()
   }
 
   // ========== COMPOSABLES ==========
@@ -203,15 +258,41 @@ export class DocumentationService {
     return this.listMarkdownFiles(this.pluginsDir)
   }
 
-  // ========== HELPERS ==========
+  // ========== UTILS ==========
+  // Aggregates: ecosystem/utils/*.md + ecosystem/utils/types/*.md
 
-  getHelperDocumentation(helperName: string): string {
-    const helperPath = join(this.helpersDir, `${helperName}.md`)
-    return this.readMarkdownFile(helperPath)
+  getUtilDocumentation(utilName: string): string {
+    const candidates = [
+      join(this.utilsDir, `${utilName}.md`),
+      join(this.utilsTypesDir, `${utilName}.md`),
+    ]
+
+    for (const path of candidates) {
+      const content = this.readMarkdownFile(path)
+      if (content)
+        return content
+    }
+
+    return ''
   }
 
-  getAllHelpers(): string[] {
-    return this.listMarkdownFiles(this.helpersDir)
+  getAllUtils(): string[] {
+    const utils = new Set<string>([
+      ...this.listMarkdownFiles(this.utilsDir),
+      ...this.listMarkdownFiles(this.utilsTypesDir),
+    ])
+    return Array.from(utils).sort()
+  }
+
+  // ========== NODE ==========
+
+  getNodeDocumentation(nodeName: string): string {
+    const nodePath = join(this.nodeDir, `${nodeName}.md`)
+    return this.readMarkdownFile(nodePath)
+  }
+
+  getAllNode(): string[] {
+    return this.listMarkdownFiles(this.nodeDir)
   }
 
   // ========== UNIFIED LOADING ==========
@@ -231,7 +312,8 @@ export class DocumentationService {
       { type: 'composable', names: this.getAllComposables(), getContent: name => this.getComposableDocumentation(name) },
       { type: 'directive', names: this.getAllDirectives(), getContent: name => this.getDirectiveDocumentation(name) },
       { type: 'plugin', names: this.getAllPlugins(), getContent: name => this.getPluginDocumentation(name) },
-      { type: 'helper', names: this.getAllHelpers(), getContent: name => this.getHelperDocumentation(name) },
+      { type: 'util', names: this.getAllUtils(), getContent: name => this.getUtilDocumentation(name) },
+      { type: 'node', names: this.getAllNode(), getContent: name => this.getNodeDocumentation(name) },
     ]
 
     for (const category of categories) {
@@ -266,45 +348,21 @@ export class DocumentationService {
     const searchTerm = query.toLowerCase()
     const results: string[] = []
 
-    const components = this.getAllComponents()
-    for (const component of components) {
-      if (component.toLowerCase().includes(searchTerm)) {
-        results.push(`component:${component}`)
-      }
-    }
+    const buckets: Array<{ type: DocumentType, names: string[] }> = [
+      { type: 'component', names: this.getAllComponents() },
+      { type: 'guide', names: this.getAllGuides() },
+      { type: 'composable', names: this.getAllComposables() },
+      { type: 'directive', names: this.getAllDirectives() },
+      { type: 'plugin', names: this.getAllPlugins() },
+      { type: 'util', names: this.getAllUtils() },
+      { type: 'node', names: this.getAllNode() },
+    ]
 
-    const guides = this.getAllGuides()
-    for (const guide of guides) {
-      if (guide.toLowerCase().includes(searchTerm)) {
-        results.push(`guide:${guide}`)
-      }
-    }
-
-    const composables = this.getAllComposables()
-    for (const composable of composables) {
-      if (composable.toLowerCase().includes(searchTerm)) {
-        results.push(`composable:${composable}`)
-      }
-    }
-
-    const directives = this.getAllDirectives()
-    for (const directive of directives) {
-      if (directive.toLowerCase().includes(searchTerm)) {
-        results.push(`directive:${directive}`)
-      }
-    }
-
-    const plugins = this.getAllPlugins()
-    for (const plugin of plugins) {
-      if (plugin.toLowerCase().includes(searchTerm)) {
-        results.push(`plugin:${plugin}`)
-      }
-    }
-
-    const helpers = this.getAllHelpers()
-    for (const helper of helpers) {
-      if (helper.toLowerCase().includes(searchTerm)) {
-        results.push(`helper:${helper}`)
+    for (const { type, names } of buckets) {
+      for (const name of names) {
+        if (name.toLowerCase().includes(searchTerm)) {
+          results.push(`${type}:${name}`)
+        }
       }
     }
 
@@ -312,13 +370,14 @@ export class DocumentationService {
   }
 
   getDiagnostics(): DocumentationDiagnostics {
-    const [components, guides, composables, directives, plugins, helpers] = [
+    const [components, guides, composables, directives, plugins, utils, nodeItems] = [
       this.getAllComponents(),
       this.getAllGuides(),
       this.getAllComposables(),
       this.getAllDirectives(),
       this.getAllPlugins(),
-      this.getAllHelpers(),
+      this.getAllUtils(),
+      this.getAllNode(),
     ]
 
     let withManualDoc = 0
@@ -360,9 +419,13 @@ export class DocumentationService {
         total: plugins.length,
         list: plugins,
       },
-      helpers: {
-        total: helpers.length,
-        list: helpers,
+      utils: {
+        total: utils.length,
+        list: utils,
+      },
+      node: {
+        total: nodeItems.length,
+        list: nodeItems,
       },
       paths: {
         docsRoot: this.docsRoot,
@@ -372,7 +435,10 @@ export class DocumentationService {
         composablesDir: this.composablesDir,
         directivesDir: this.directivesDir,
         pluginsDir: this.pluginsDir,
-        helpersDir: this.helpersDir,
+        ecosystemDir: this.ecosystemDir,
+        utilsDir: this.utilsDir,
+        nodeDir: this.nodeDir,
+        iconsDir: this.iconsDir,
       },
     }
   }

@@ -1,11 +1,11 @@
 ---
 title: Theming
-description: Modern and performant theme system for Maz-UI built on native CSS features (`light-dark()`, `color-scheme`, `color-mix(in oklch)`) for v5.
+description: Modern and performant theme system for Maz-UI built on native CSS features (light-dark(), color-scheme, color-mix(in oklch)) for v5.
 ---
 
 # {{ $frontmatter.title }}
 
-{{ $frontmatter.description }}
+Modern and performant theme system for Maz-UI built on native CSS features (`light-dark()`, `color-scheme`, `color-mix(in oklch)`) for v5.
 
 <NpmBadge package="@maz-ui/themes"></NpmBadge>
 
@@ -56,7 +56,7 @@ app.use(MazUi, {
 ```
 
 ::: tip Alternative: MazUiProvider
-You can also initialize the theme via the [`MazUiProvider`](./maz-ui-provider.md) component for lazy-loaded pages or subtree-scoped themes.
+You can also initialize the theme via the [`MazUiProvider`](../guide/maz-ui-provider.md) component for lazy-loaded pages or subtree-scoped themes.
 :::
 
 ### 2. Setup your CSS to support theme foundation and dark mode
@@ -999,7 +999,7 @@ For deeper detail on the generated CSS contract, see the [`@maz-ui/themes` READM
 
 ## Usage with Nuxt
 
-For Nuxt users, check the [dedicated Nuxt documentation](/guide/nuxt) which covers installation and framework-specific configuration.
+For Nuxt users, check the [dedicated Nuxt documentation](/ecosystem/nuxt) which covers installation and framework-specific configuration.
 
 ## Migration from Legacy System
 

@@ -73,7 +73,7 @@ app.use(MazUi, {
 ```
 
 ::: tip Alternative: MazUiProvider
-You can also provide translations via the [`MazUiProvider`](./maz-ui-provider.md) component for lazy-loaded pages or subtree-scoped configurations.
+You can also provide translations via the [`MazUiProvider`](../guide/maz-ui-provider.md) component for lazy-loaded pages or subtree-scoped configurations.
 :::
 
 ## How it works

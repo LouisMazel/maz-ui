@@ -160,6 +160,30 @@ export default defineConfig<DefaultTheme.Config>({
             res.writeHead(301, { Location: `/ecosystem/utils${req.url ?? '/'}` })
             res.end()
           })
+          server.middlewares.use('/guide/icon-set', (_req, res) => {
+            res.writeHead(301, { Location: '/ecosystem/icons/icon-set' })
+            res.end()
+          })
+          server.middlewares.use('/guide/icons', (_req, res) => {
+            res.writeHead(301, { Location: '/ecosystem/icons/' })
+            res.end()
+          })
+          server.middlewares.use('/guide/themes', (_req, res) => {
+            res.writeHead(301, { Location: '/ecosystem/themes' })
+            res.end()
+          })
+          server.middlewares.use('/guide/nuxt', (_req, res) => {
+            res.writeHead(301, { Location: '/ecosystem/nuxt' })
+            res.end()
+          })
+          server.middlewares.use('/guide/translations', (_req, res) => {
+            res.writeHead(301, { Location: '/ecosystem/translations' })
+            res.end()
+          })
+          server.middlewares.use('/guide/mcp', (_req, res) => {
+            res.writeHead(301, { Location: '/ecosystem/mcp' })
+            res.end()
+          })
         },
       },
     ],

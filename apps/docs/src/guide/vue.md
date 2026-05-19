@@ -81,7 +81,7 @@ app.use(MazUi, {
   /**
    * Theme configuration (optional if you are using the default theme)
    * More information in dedicated documentation
-   * @see https://maz-ui.com/guide/themes
+   * @see https://maz-ui.com/ecosystem/themes
    */
   theme: {
     preset: mazUi, // 'ocean' | 'pristine' | 'obsidian' | 'nova'
@@ -103,7 +103,7 @@ app.use(MazUi, {
   /**
    * Translations configuration (optional if you are using english)
    * More information in dedicated documentation
-   * @see https://maz-ui.com/guide/translations
+   * @see https://maz-ui.com/ecosystem/translations
    */
   translations: {
     locale: 'fr',
@@ -143,11 +143,11 @@ function handleClick() {
 
 ## Theming
 
-More information in the [theme documentation](/guide/themes).
+More information in the [theme documentation](/ecosystem/themes).
 
 ## Translations
 
-More information in the [translations documentation](/guide/translations).
+More information in the [translations documentation](/ecosystem/translations).
 
 ## Plugins
 

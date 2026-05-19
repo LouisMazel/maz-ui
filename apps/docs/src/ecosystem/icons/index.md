@@ -151,7 +151,7 @@ Never worry about imports again with automatic component resolution.
 
 ::: warning Troubleshooting
 
-If your are already using [`MazComponentsResolver`](./resolvers.md#mazcomponentsresolver), you should place `MazIconsResolver` before `MazComponentsResolver` in the `resolvers` array.
+If your are already using [`MazComponentsResolver`](../../guide/resolvers.md#mazcomponentsresolver), you should place `MazIconsResolver` before `MazComponentsResolver` in the `resolvers` array.
 
 :::
 

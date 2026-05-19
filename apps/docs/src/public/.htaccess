@@ -1,10 +1,21 @@
 RewriteEngine on
 
 # Legacy URLs: /helpers/* (original) → /ecosystem/utils/*
+RewriteRule ^helpers/?$ /ecosystem/utils/ [R=301,L]
 RewriteRule ^helpers/(.*)$ /ecosystem/utils/$1 [R=301,L]
 
 # Short-lived /utils/* path → /ecosystem/utils/*
+RewriteRule ^utils/?$ /ecosystem/utils/ [R=301,L]
 RewriteRule ^utils/(.*)$ /ecosystem/utils/$1 [R=301,L]
+
+# Ecosystem packages moved out of /guide/ → /ecosystem/
+# Both bare and .html forms are redirected (Google may have indexed either).
+RewriteRule ^guide/icon-set(\.html)?/?$ /ecosystem/icons/icon-set [R=301,L]
+RewriteRule ^guide/icons(\.html)?/?$ /ecosystem/icons/ [R=301,L]
+RewriteRule ^guide/themes(\.html)?/?$ /ecosystem/themes [R=301,L]
+RewriteRule ^guide/nuxt(\.html)?/?$ /ecosystem/nuxt [R=301,L]
+RewriteRule ^guide/translations(\.html)?/?$ /ecosystem/translations [R=301,L]
+RewriteRule ^guide/mcp(\.html)?/?$ /ecosystem/mcp [R=301,L]
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.html -f

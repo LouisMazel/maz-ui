@@ -65,6 +65,9 @@ const modulesMap: Record<Modules, true> = {
   snakeCase: true,
   upperFirst: true,
   formatJson: true,
+  fetchLocaleIp: true,
+  formatPhoneNumber: true,
+  getBrowserLocale: true,
 }
 
 /**
