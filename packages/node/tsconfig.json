@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "esnext",
     "lib": ["es2024", "ESNext.Array", "ESNext.Collection", "ESNext.Iterator"],
