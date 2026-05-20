@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.21 (2026-05-20)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.20...v5.0.0-beta.21)
+
+### 🚀 Features
+
+- **maz-ui:** MazSidebar - add 'hover' collapsible mode ([#1586](https://github.com/LouisMazel/maz-ui/pull/1586))
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.20 (2026-05-20)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.19...v5.0.0-beta.20)
