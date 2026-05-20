@@ -299,6 +299,51 @@ const isOpen = ref(true)
   </template>
 </ComponentDemo>
 
+## Hover mode
+
+`collapsible="hover"` displays the sidebar in icon-only mode and **automatically expands it when the mouse enters the sidebar (or any descendant) and collapses it when the mouse leaves**. Keyboard focus also expands the sidebar, so users navigating with `Tab` see the full labels.
+
+::: tip
+This is a **purely visual** state. The `v-model:open` value is not updated and the persistence cookie is not written when the sidebar expands or collapses through hover. Use this mode when you want the rail-style sidebar of `collapsible="icon"` without exposing a toggle.
+:::
+
+<ComponentDemo>
+  <div class="maz:border maz:border-divider maz:overflow-hidden maz:rounded-md maz:h-[22rem] maz:flex">
+    <MazSidebar collapsible="hover" class="maz:h-full">
+      <MazSidebarContent>
+        <MazSidebarMenu>
+          <MazSidebarMenuItem>
+            <MazSidebarMenuButton :icon="MazHome" label="Dashboard" :active="true" />
+          </MazSidebarMenuItem>
+          <MazSidebarMenuItem>
+            <MazSidebarMenuButton :icon="MazCog6Tooth" label="Settings" />
+          </MazSidebarMenuItem>
+        </MazSidebarMenu>
+      </MazSidebarContent>
+    </MazSidebar>
+    <main class="maz:flex-1 maz:p-4">Move your cursor over the sidebar to expand it.</main>
+  </div>
+
+<template #code>
+
+```html
+<MazSidebar collapsible="hover">
+  <MazSidebarContent>
+    <MazSidebarMenu>
+      <MazSidebarMenuItem>
+        <MazSidebarMenuButton :icon="MazHome" label="Dashboard" />
+      </MazSidebarMenuItem>
+      <MazSidebarMenuItem>
+        <MazSidebarMenuButton :icon="MazCog6Tooth" label="Settings" />
+      </MazSidebarMenuItem>
+    </MazSidebarMenu>
+  </MazSidebarContent>
+</MazSidebar>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Offcanvas mode
 
 <ComponentDemo>

@@ -141,6 +141,24 @@ describe('given MazSidebarMenuSub component', () => {
     })
   })
 
+  describe('when sidebar collapsible is "hover" and not hovered', () => {
+    it('then the label has opacity-0', () => {
+      const wrapper = mountWithSidebar(
+        '<MazSidebarMenuSub label="Sub" />',
+        { collapsible: 'hover', persist: false },
+      )
+      expect(wrapper.find('.m-sidebar-menu-sub__label').classes()).toContain('maz:opacity-0')
+    })
+
+    it('then the chevron is not rendered', () => {
+      const wrapper = mountWithSidebar(
+        '<MazSidebarMenuSub label="Sub" />',
+        { collapsible: 'hover', persist: false },
+      )
+      expect(wrapper.find('.m-sidebar-menu-sub__chevron').exists()).toBe(false)
+    })
+  })
+
   describe('when the component renders', () => {
     it('then the root has m-reset-css class', () => {
       const wrapper = mountWithSidebar('<MazSidebarMenuSub label="Sub" />')

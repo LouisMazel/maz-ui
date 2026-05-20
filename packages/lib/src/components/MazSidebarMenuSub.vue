@@ -33,7 +33,8 @@ const sidebar = useInjectStrict(
 )
 
 const isIconCollapsed = computed(
-  () => sidebar.collapsible.value === 'icon' && sidebar.state.value === 'collapsed',
+  () => (sidebar.collapsible.value === 'icon' || sidebar.collapsible.value === 'hover')
+    && sidebar.state.value === 'collapsed',
 )
 
 const isOpen = ref(defaultOpen)
