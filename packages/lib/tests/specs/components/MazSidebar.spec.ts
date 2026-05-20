@@ -396,4 +396,30 @@ describe('given MazSidebar component', () => {
       })
     })
   })
+
+  describe('when collapsible is not "hover" and hover/focus events fire on the sidebar', () => {
+    it('then mouseenter does not change the visual state', async () => {
+      const wrapper = mount(MazSidebar, { props: { open: true, collapsible: 'icon', persist: false } })
+      await wrapper.find('aside').trigger('mouseenter')
+      expect(wrapper.find('aside').classes()).toContain('--expanded')
+    })
+
+    it('then mouseleave does not change the visual state', async () => {
+      const wrapper = mount(MazSidebar, { props: { open: true, collapsible: 'icon', persist: false } })
+      await wrapper.find('aside').trigger('mouseleave')
+      expect(wrapper.find('aside').classes()).toContain('--expanded')
+    })
+
+    it('then focusin does not change the visual state', async () => {
+      const wrapper = mount(MazSidebar, { props: { open: false, collapsible: 'icon', persist: false } })
+      await wrapper.find('aside').trigger('focusin')
+      expect(wrapper.find('aside').classes()).toContain('--collapsed')
+    })
+
+    it('then focusout does not change the visual state', async () => {
+      const wrapper = mount(MazSidebar, { props: { open: false, collapsible: 'icon', persist: false } })
+      await wrapper.find('aside').trigger('focusout')
+      expect(wrapper.find('aside').classes()).toContain('--collapsed')
+    })
+  })
 })

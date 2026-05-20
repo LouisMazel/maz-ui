@@ -252,6 +252,43 @@ describe('given MazSidebarMenuButton component', () => {
     })
   })
 
+  describe('when sidebar collapsible is "hover" and not hovered', () => {
+    it('then the label has opacity-0 class', () => {
+      const wrapper = mountWithSidebar(
+        { label: 'Dashboard', icon: 'i' },
+        { collapsible: 'hover', persist: false },
+      )
+      expect(wrapper.find('.m-sidebar-menu-btn__label').classes()).toContain('maz:opacity-0')
+    })
+
+    it('then the button has --icon-collapsed modifier class', () => {
+      const wrapper = mountWithSidebar(
+        { label: 'X' },
+        { collapsible: 'hover', persist: false },
+      )
+      expect(wrapper.find('.m-sidebar-menu-btn').classes()).toContain('--icon-collapsed')
+    })
+
+    it('then the badge is not rendered', () => {
+      const wrapper = mountWithSidebar(
+        { label: 'Inbox', badge: 5 },
+        { collapsible: 'hover', persist: false },
+      )
+      expect(wrapper.find('.m-sidebar-menu-btn__badge').exists()).toBe(false)
+    })
+  })
+
+  describe('when sidebar collapsible is "hover" and the sidebar is hovered', () => {
+    it('then the label becomes visible (opacity-100)', async () => {
+      const wrapper = mountWithSidebar(
+        { label: 'Dashboard' },
+        { collapsible: 'hover', persist: false },
+      )
+      await wrapper.find('aside').trigger('mouseenter')
+      expect(wrapper.find('.m-sidebar-menu-btn__label').classes()).toContain('maz:opacity-100')
+    })
+  })
+
   describe('when clicked and not disabled', () => {
     it('then a click event is emitted', async () => {
       const wrapper = mountWithSidebar({ label: 'Click' })

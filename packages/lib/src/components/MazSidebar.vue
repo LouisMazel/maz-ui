@@ -163,9 +163,9 @@ function onSidebarFocusIn() {
 function onSidebarFocusOut(event: FocusEvent) {
   if (collapsible !== 'hover')
     return
-  const currentTarget = event.currentTarget as HTMLElement | null
+  const currentTarget = event.currentTarget as HTMLElement
   const nextTarget = event.relatedTarget as Node | null
-  if (!currentTarget || !nextTarget || !currentTarget.contains(nextTarget))
+  if (!nextTarget || !currentTarget.contains(nextTarget))
     isFocusInside.value = false
 }
 
