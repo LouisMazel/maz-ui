@@ -113,30 +113,36 @@ describe('theme plugin', () => {
     )
   })
 
-  it('should add dark class to html when colorMode is dark and strategy is class', async () => {
+  it('does not register htmlAttrs class via useHead on client when colorMode is dark', async () => {
     const context = createContext({ colorMode: 'dark', darkModeStrategy: 'class' })
     await (themePlugin as (...args: any[]) => any)(context)
-    expect(mockUseHead).toHaveBeenCalledWith({
-      htmlAttrs: { class: 'dark' },
-    })
+    const htmlAttrsCalls = mockUseHead.mock.calls.filter(
+      ([arg]) => arg.htmlAttrs?.class !== undefined,
+    )
+    expect(htmlAttrsCalls).toHaveLength(0)
   })
 
-  it('should not add dark class when colorMode is light', async () => {
+  it('does not register htmlAttrs class via useHead on client when colorMode is light', async () => {
     const context = createContext({ colorMode: 'light' })
     await (themePlugin as (...args: any[]) => any)(context)
-    const darkClassCalls = mockUseHead.mock.calls.filter(
-      ([arg]) => arg.htmlAttrs?.class === 'dark',
+    const htmlAttrsCalls = mockUseHead.mock.calls.filter(
+      ([arg]) => arg.htmlAttrs?.class !== undefined,
     )
-    expect(darkClassCalls).toHaveLength(0)
+    expect(htmlAttrsCalls).toHaveLength(0)
   })
 
-  it('should detect dark mode from system when colorMode is auto on client', async () => {
+  it('detects dark mode from system when colorMode is auto on client and forwards isDark to install', async () => {
     mockGetSystemColorMode.mockReturnValue('dark')
     const context = createContext({ colorMode: 'auto', mode: 'both' })
     await (themePlugin as (...args: any[]) => any)(context)
-    expect(mockUseHead).toHaveBeenCalledWith({
-      htmlAttrs: { class: 'dark' },
-    })
+    expect(mockInstall).toHaveBeenCalledWith(
+      context.vueApp,
+      expect.objectContaining({ _isDark: true }),
+    )
+    const htmlAttrsCalls = mockUseHead.mock.calls.filter(
+      ([arg]) => arg.htmlAttrs?.class !== undefined,
+    )
+    expect(htmlAttrsCalls).toHaveLength(0)
   })
 
   it('should set isDark true when mode is dark', async () => {
@@ -169,7 +175,7 @@ describe('theme plugin', () => {
     )
   })
 
-  it('should use resolved color mode cookie when color mode cookie is auto', async () => {
+  it('uses resolved color mode cookie when color mode cookie is auto and forwards isDark to install', async () => {
     mockUseCookie.mockImplementation(((name: string) => {
       if (name === 'maz-color-mode') {
         return { value: 'auto' }
@@ -181,9 +187,10 @@ describe('theme plugin', () => {
     }) as any)
     const context = createContext({ colorMode: 'auto', mode: 'both' })
     await (themePlugin as (...args: any[]) => any)(context)
-    expect(mockUseHead).toHaveBeenCalledWith({
-      htmlAttrs: { class: 'dark' },
-    })
+    expect(mockInstall).toHaveBeenCalledWith(
+      context.vueApp,
+      expect.objectContaining({ _isDark: true }),
+    )
   })
 
   it('should ignore invalid resolved color mode cookie values', async () => {
@@ -331,5 +338,36 @@ describe('theme plugin', () => {
     expect(presetCookie.value).toBe('nova')
     // The cookie value was NOT used as preset name to resolve.
     expect(mockGetPreset).not.toHaveBeenCalledWith('nova')
+  })
+
+  describe('Given the plugin boots on the client with darkModeStrategy class', () => {
+    describe.each([
+      { label: 'colorMode dark', themeOptions: { colorMode: 'dark', mode: 'both' } },
+      { label: 'colorMode auto with system dark', themeOptions: { colorMode: 'auto', mode: 'both' }, systemColorMode: 'dark' as const },
+      { label: 'colorMode auto with resolved cookie dark', themeOptions: { colorMode: 'auto', mode: 'both' }, resolvedCookie: 'dark' as const },
+      { label: 'mode dark', themeOptions: { colorMode: 'light', mode: 'dark' } },
+    ])('When isDark resolves to true via $label', ({ themeOptions, systemColorMode, resolvedCookie }) => {
+      it('Then no htmlAttrs entry is registered via useHead so navigation cannot re-apply the boot class', async () => {
+        if (systemColorMode) {
+          mockGetSystemColorMode.mockReturnValue(systemColorMode)
+        }
+        if (resolvedCookie) {
+          mockUseCookie.mockImplementation(((name: string) => {
+            if (name === 'maz-resolved-color-mode') {
+              return { value: resolvedCookie }
+            }
+            return { value: undefined }
+          }) as any)
+        }
+
+        const context = createContext(themeOptions)
+        await (themePlugin as (...args: any[]) => any)(context)
+
+        const htmlAttrsCalls = mockUseHead.mock.calls.filter(
+          ([arg]) => arg.htmlAttrs !== undefined,
+        )
+        expect(htmlAttrsCalls).toHaveLength(0)
+      })
+    })
   })
 })
