@@ -301,4 +301,125 @@ describe('given MazSidebar component', () => {
       expect(document.cookie).toContain('my-sidebar=false')
     })
   })
+
+  describe('when collapsible is "hover"', () => {
+    beforeEach(() => {
+      document.cookie = 'maz-sidebar-open=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+    })
+
+    it('then it applies --collapsible-hover class', () => {
+      const wrapper = mount(MazSidebar, { props: { collapsible: 'hover', persist: false } })
+      expect(wrapper.find('aside').classes()).toContain('--collapsible-hover')
+    })
+
+    it('then it starts in the collapsed state regardless of the open prop', () => {
+      const wrapper = mount(MazSidebar, { props: { open: true, collapsible: 'hover', persist: false } })
+      expect(wrapper.find('aside').classes()).toContain('--collapsed')
+      expect(wrapper.find('aside').classes()).toContain('maz:w-(--maz-sidebar-icon-width)')
+    })
+
+    describe('when the mouse enters the sidebar', () => {
+      it('then the sidebar transitions to the expanded state', async () => {
+        const wrapper = mount(MazSidebar, { props: { collapsible: 'hover', persist: false } })
+        await wrapper.find('aside').trigger('mouseenter')
+        expect(wrapper.find('aside').classes()).toContain('--expanded')
+        expect(wrapper.find('aside').classes()).toContain('maz:w-(--maz-sidebar-width)')
+      })
+
+      it('then update:open is not emitted', async () => {
+        const wrapper = mount(MazSidebar, { props: { collapsible: 'hover', persist: false } })
+        await wrapper.find('aside').trigger('mouseenter')
+        expect(wrapper.emitted('update:open')).toBeUndefined()
+      })
+
+      it('then the persistence cookie is not written', async () => {
+        const wrapper = mount(MazSidebar, { props: { collapsible: 'hover' } })
+        await wrapper.find('aside').trigger('mouseenter')
+        expect(document.cookie).not.toContain('maz-sidebar-open')
+      })
+    })
+
+    describe('when the mouse leaves the sidebar', () => {
+      it('then the sidebar transitions back to the collapsed state', async () => {
+        const wrapper = mount(MazSidebar, { props: { collapsible: 'hover', persist: false } })
+        await wrapper.find('aside').trigger('mouseenter')
+        await wrapper.find('aside').trigger('mouseleave')
+        expect(wrapper.find('aside').classes()).toContain('--collapsed')
+      })
+    })
+
+    describe('when focus enters and leaves the sidebar', () => {
+      it('then focus inside expands the sidebar', async () => {
+        const wrapper = mount(MazSidebar, { props: { collapsible: 'hover', persist: false } })
+        await wrapper.find('aside').trigger('focusin')
+        expect(wrapper.find('aside').classes()).toContain('--expanded')
+      })
+
+      it('then focus moving outside the sidebar collapses it again', async () => {
+        const wrapper = mount(MazSidebar, {
+          props: { collapsible: 'hover', persist: false },
+          attachTo: document.body,
+        })
+        await wrapper.find('aside').trigger('focusin')
+        await wrapper.find('aside').trigger('focusout', { relatedTarget: document.body })
+        expect(wrapper.find('aside').classes()).toContain('--collapsed')
+        wrapper.unmount()
+      })
+
+      it('then focus moving to a descendant keeps the sidebar expanded', async () => {
+        const wrapper = mount(MazSidebar, {
+          props: { collapsible: 'hover', persist: false },
+          slots: { default: '<button id="inner">inner</button>' },
+        })
+        const inner = wrapper.find('#inner').element
+        await wrapper.find('aside').trigger('focusin')
+        await wrapper.find('aside').trigger('focusout', { relatedTarget: inner })
+        expect(wrapper.find('aside').classes()).toContain('--expanded')
+      })
+    })
+
+    describe('when both mouse and focus are inside, then mouse leaves', () => {
+      it('then the sidebar stays expanded because focus remains', async () => {
+        const wrapper = mount(MazSidebar, { props: { collapsible: 'hover', persist: false } })
+        await wrapper.find('aside').trigger('focusin')
+        await wrapper.find('aside').trigger('mouseenter')
+        await wrapper.find('aside').trigger('mouseleave')
+        expect(wrapper.find('aside').classes()).toContain('--expanded')
+      })
+    })
+
+    describe('when the v-model open prop changes externally', () => {
+      it('then the visual state is unaffected and stays collapsed', async () => {
+        const wrapper = mount(MazSidebar, { props: { open: false, collapsible: 'hover', persist: false } })
+        await wrapper.setProps({ open: true })
+        expect(wrapper.find('aside').classes()).toContain('--collapsed')
+      })
+    })
+  })
+
+  describe('when collapsible is not "hover" and hover/focus events fire on the sidebar', () => {
+    it('then mouseenter does not change the visual state', async () => {
+      const wrapper = mount(MazSidebar, { props: { open: true, collapsible: 'icon', persist: false } })
+      await wrapper.find('aside').trigger('mouseenter')
+      expect(wrapper.find('aside').classes()).toContain('--expanded')
+    })
+
+    it('then mouseleave does not change the visual state', async () => {
+      const wrapper = mount(MazSidebar, { props: { open: true, collapsible: 'icon', persist: false } })
+      await wrapper.find('aside').trigger('mouseleave')
+      expect(wrapper.find('aside').classes()).toContain('--expanded')
+    })
+
+    it('then focusin does not change the visual state', async () => {
+      const wrapper = mount(MazSidebar, { props: { open: false, collapsible: 'icon', persist: false } })
+      await wrapper.find('aside').trigger('focusin')
+      expect(wrapper.find('aside').classes()).toContain('--collapsed')
+    })
+
+    it('then focusout does not change the visual state', async () => {
+      const wrapper = mount(MazSidebar, { props: { open: false, collapsible: 'icon', persist: false } })
+      await wrapper.find('aside').trigger('focusout')
+      expect(wrapper.find('aside').classes()).toContain('--collapsed')
+    })
+  })
 })
