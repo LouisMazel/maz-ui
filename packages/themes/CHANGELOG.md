@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.20 (2026-05-20)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.19...v5.0.0-beta.20)
+
+### 🩹 Fixes
+
+- **@maz-ui/themes:** Auto color-scheme issue ([58faa8e0e](https://github.com/LouisMazel/maz-ui/commit/58faa8e0e))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.18 (2026-05-19)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.17...v5.0.0-beta.18)
