@@ -8,7 +8,7 @@ export interface MazSidebarContext {
   open: Ref<boolean>
   state: ComputedRef<'expanded' | 'collapsed'>
   side: ComputedRef<'start' | 'end'>
-  collapsible: ComputedRef<'offcanvas' | 'icon' | 'none'>
+  collapsible: ComputedRef<'offcanvas' | 'icon' | 'hover' | 'none'>
   mode: ComputedRef<'push' | 'overlay'>
   tooltipMode: ComputedRef<MazSidebarTooltipMode>
   toggle: () => void
@@ -28,9 +28,11 @@ export interface MazSidebarProps {
    * How the sidebar collapses
    * - offcanvas: completely hidden
    * - icon: only icons visible
+   * - hover: only icons visible by default, expands on mouse hover or keyboard focus
+   *   (transient visual state — does not update `v-model:open` nor the persistence cookie)
    * - none: always fully visible
    */
-  collapsible?: 'offcanvas' | 'icon' | 'none'
+  collapsible?: 'offcanvas' | 'icon' | 'hover' | 'none'
   /**
    * How the sidebar affects layout
    * - push: sidebar is in document flow
@@ -133,9 +135,39 @@ watch(
   },
 )
 
-const state = computed<'expanded' | 'collapsed'>(() =>
-  internalOpen.value ? 'expanded' : 'collapsed',
-)
+const isMouseInside = ref(false)
+const isFocusInside = ref(false)
+const isHoverExpanded = computed(() => isMouseInside.value || isFocusInside.value)
+
+const state = computed<'expanded' | 'collapsed'>(() => {
+  if (collapsible === 'hover')
+    return isHoverExpanded.value ? 'expanded' : 'collapsed'
+  return internalOpen.value ? 'expanded' : 'collapsed'
+})
+
+function onSidebarMouseEnter() {
+  if (collapsible === 'hover')
+    isMouseInside.value = true
+}
+
+function onSidebarMouseLeave() {
+  if (collapsible === 'hover')
+    isMouseInside.value = false
+}
+
+function onSidebarFocusIn() {
+  if (collapsible === 'hover')
+    isFocusInside.value = true
+}
+
+function onSidebarFocusOut(event: FocusEvent) {
+  if (collapsible !== 'hover')
+    return
+  const currentTarget = event.currentTarget as HTMLElement | null
+  const nextTarget = event.relatedTarget as Node | null
+  if (!currentTarget || !nextTarget || !currentTarget.contains(nextTarget))
+    isFocusInside.value = false
+}
 
 function toggle() {
   setOpen(!internalOpen.value)
@@ -186,12 +218,16 @@ const isIconCollapsed = computed(
   () => collapsible === 'icon' && state.value === 'collapsed',
 )
 
+const isHoverCollapsed = computed(
+  () => collapsible === 'hover' && state.value === 'collapsed',
+)
+
 const pushWidthClass = computed(() => {
   if (collapsible === 'none')
     return 'maz:w-(--maz-sidebar-width)'
   if (isOffcanvasCollapsed.value)
     return 'maz:w-0'
-  if (isIconCollapsed.value)
+  if (isIconCollapsed.value || isHoverCollapsed.value)
     return 'maz:w-(--maz-sidebar-icon-width)'
   return 'maz:w-(--maz-sidebar-width)'
 })
@@ -207,6 +243,7 @@ defineExpose({ toggle, setOpen })
 
 <template>
   <!-- Push mode: sidebar in document flow -->
+  <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
   <aside
     v-if="mode === 'push'"
     :id="uniqueId"
@@ -220,6 +257,10 @@ defineExpose({ toggle, setOpen })
     ]"
     :style="sidebarStyle"
     aria-label="Sidebar"
+    @mouseenter="onSidebarMouseEnter"
+    @mouseleave="onSidebarMouseLeave"
+    @focusin="onSidebarFocusIn"
+    @focusout="onSidebarFocusOut"
   >
     <slot />
   </aside>
