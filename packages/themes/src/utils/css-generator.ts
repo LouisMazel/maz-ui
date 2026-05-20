@@ -24,7 +24,13 @@ export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
   const { mode } = options
 
   const lines: string[] = ['@layer theme {', '  :root {']
-  const colorScheme = mode === 'both' ? 'light dark' : `only ${mode}`
+  // In 'class' strategy the .dark/.light selectors are the source of truth.
+  // Defaulting :root to 'light' makes "no class" resolve to light (matches what
+  // a host like VitePress or Tailwind `darkMode: 'class'` expects), instead of
+  // following the system pref via `light-dark()` and desyncing from the host.
+  const colorScheme = mode !== 'both'
+    ? `only ${mode}`
+    : options.darkSelectorStrategy === 'class' ? 'light' : 'light dark'
   lines.push(`    color-scheme: ${colorScheme};`)
 
   appendFoundation(lines, preset.foundation, prefix)
