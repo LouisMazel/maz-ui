@@ -1,4 +1,5 @@
 import type { ColorMode, ThemeState } from '../types'
+import { getSystemColorMode } from './get-color-mode'
 import { noTransition } from './no-transition'
 
 export function updateDocumentClass(colorMode: ColorMode, state?: ThemeState): void {
@@ -6,12 +7,12 @@ export function updateDocumentClass(colorMode: ColorMode, state?: ThemeState): v
     return
   }
 
+  const resolved = colorMode === 'auto' ? getSystemColorMode() : colorMode
+  const classToAdd = resolved === 'dark' ? state.darkClass : state.lightClass
+
   noTransition(() => {
     const html = document.documentElement
     html.classList.remove(state.darkClass, state.lightClass)
-    if (colorMode === 'dark')
-      html.classList.add(state.darkClass)
-    else if (colorMode === 'light')
-      html.classList.add(state.lightClass)
+    html.classList.add(classToAdd)
   })
 }

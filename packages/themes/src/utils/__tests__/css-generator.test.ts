@@ -21,8 +21,9 @@ describe('given generateCSS function', () => {
       expect(css.trim().endsWith('}')).toBe(true)
     })
 
-    it('then emits color-scheme: light dark on :root', () => {
-      expect(css).toContain('color-scheme: light dark')
+    it('then emits color-scheme: light on :root so the class is the source of truth', () => {
+      expect(css).toContain('color-scheme: light;')
+      expect(css).not.toContain('color-scheme: light dark')
     })
 
     it('then emits a single :root block', () => {

@@ -5,6 +5,12 @@ vi.mock('../no-transition', () => ({
   noTransition: vi.fn((fn: () => void) => fn()),
 }))
 
+vi.mock('../get-color-mode', () => ({
+  getSystemColorMode: vi.fn(() => 'light'),
+}))
+
+const { getSystemColorMode } = await import('../get-color-mode')
+
 function createThemeState(overrides: Partial<ThemeState> = {}): ThemeState {
   return {
     colorMode: 'auto',
@@ -114,16 +120,32 @@ describe('update-document-class', () => {
       })
     })
 
-    describe('when colorMode is auto and state is valid', () => {
-      it('then it removes both dark and light classes', async () => {
+    describe('when colorMode is auto and system prefers light', () => {
+      it('then it adds the light class and removes the dark class', async () => {
         const { noTransition } = await import('../no-transition')
-        document.documentElement.classList.add('dark', 'light')
+        vi.mocked(getSystemColorMode).mockReturnValue('light')
+        document.documentElement.classList.add('dark')
         const state = createThemeState()
 
         updateDocumentClass('auto', state)
 
         expect(noTransition).toHaveBeenCalledOnce()
+        expect(document.documentElement.classList.contains('light')).toBe(true)
         expect(document.documentElement.classList.contains('dark')).toBe(false)
+      })
+    })
+
+    describe('when colorMode is auto and system prefers dark', () => {
+      it('then it adds the dark class and removes the light class', async () => {
+        const { noTransition } = await import('../no-transition')
+        vi.mocked(getSystemColorMode).mockReturnValue('dark')
+        document.documentElement.classList.add('light')
+        const state = createThemeState()
+
+        updateDocumentClass('auto', state)
+
+        expect(noTransition).toHaveBeenCalledOnce()
+        expect(document.documentElement.classList.contains('dark')).toBe(true)
         expect(document.documentElement.classList.contains('light')).toBe(false)
       })
     })
@@ -158,13 +180,25 @@ describe('update-document-class', () => {
         expect(document.documentElement.classList.contains('light')).toBe(false)
       })
 
-      it('then it removes the custom light class when colorMode is auto', () => {
+      it('then it keeps the custom light class when colorMode is auto and system prefers light', () => {
+        vi.mocked(getSystemColorMode).mockReturnValue('light')
+        document.documentElement.classList.add('custom-light')
+        const state = createThemeState({ lightClass: 'custom-light' })
+
+        updateDocumentClass('auto', state)
+
+        expect(document.documentElement.classList.contains('custom-light')).toBe(true)
+      })
+
+      it('then it removes the custom light class when colorMode is auto and system prefers dark', () => {
+        vi.mocked(getSystemColorMode).mockReturnValue('dark')
         document.documentElement.classList.add('custom-light')
         const state = createThemeState({ lightClass: 'custom-light' })
 
         updateDocumentClass('auto', state)
 
         expect(document.documentElement.classList.contains('custom-light')).toBe(false)
+        expect(document.documentElement.classList.contains('dark')).toBe(true)
       })
     })
 

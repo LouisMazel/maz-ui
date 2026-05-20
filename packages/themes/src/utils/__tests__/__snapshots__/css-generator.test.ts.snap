@@ -3,7 +3,7 @@
 exports[`given generateCSS function > when generating with mode=both and darkSelectorStrategy=class > then matches the snapshot 1`] = `
 "@layer theme {
   :root {
-    color-scheme: light dark;
+    color-scheme: light;
     --maz-base-font-size: 14px;
     --maz-font-family: Manrope, sans-serif, system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen, ubuntu, cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     --maz-font-mono-stack: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
