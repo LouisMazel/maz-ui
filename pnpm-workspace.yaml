@@ -15,8 +15,7 @@ minimumReleaseAgeExclude:
   - unplugin-dts@1.0.1
   - vite-plugin-dts@5.0.1
   - vue-tsc@3.3.0
-  - '@yoloship/action@0.2.0-beta.7'
-  - '@yoloship/claude-sdk@0.2.0-beta.5'
+  - '@yoloship/*'
 shellEmulator: true
 
 # eslint-disable-next-line pnpm/yaml-enforce-settings
