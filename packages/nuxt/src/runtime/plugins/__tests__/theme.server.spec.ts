@@ -244,4 +244,38 @@ describe('theme plugin (server)', () => {
       htmlAttrs: { class: 'dark' },
     })
   })
+
+  describe('Given the plugin renders on the server', () => {
+    describe('When colorMode is dark and darkModeStrategy is class', () => {
+      it('Then it bakes the dark class into the SSR html via useHead', async () => {
+        const context = createContext({ colorMode: 'dark', darkModeStrategy: 'class' })
+        await (themePlugin as (...args: any[]) => any)(context)
+        expect(mockUseHead).toHaveBeenCalledWith({
+          htmlAttrs: { class: 'dark' },
+        })
+      })
+    })
+
+    describe('When colorMode is light', () => {
+      it('Then no htmlAttrs class entry is registered', async () => {
+        const context = createContext({ colorMode: 'light' })
+        await (themePlugin as (...args: any[]) => any)(context)
+        const htmlAttrsCalls = mockUseHead.mock.calls.filter(
+          ([arg]: any[]) => arg.htmlAttrs?.class !== undefined,
+        )
+        expect(htmlAttrsCalls).toHaveLength(0)
+      })
+    })
+
+    describe('When isDark is true but darkModeStrategy is media', () => {
+      it('Then no htmlAttrs class entry is registered', async () => {
+        const context = createContext({ colorMode: 'dark', darkModeStrategy: 'media' })
+        await (themePlugin as (...args: any[]) => any)(context)
+        const htmlAttrsCalls = mockUseHead.mock.calls.filter(
+          ([arg]: any[]) => arg.htmlAttrs?.class !== undefined,
+        )
+        expect(htmlAttrsCalls).toHaveLength(0)
+      })
+    })
+  })
 })

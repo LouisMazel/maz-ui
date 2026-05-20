@@ -138,15 +138,15 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     ? getInitialColorMode() === 'dark'
     : config.colorMode === 'dark' || config.mode === 'dark'
 
-  if (isDark && config.darkModeStrategy === 'class') {
-    useHead({
-      htmlAttrs: {
-        class: config.darkClass,
-      },
-    })
-  }
-
   if (import.meta.server) {
+    if (isDark && config.darkModeStrategy === 'class') {
+      useHead({
+        htmlAttrs: {
+          class: config.darkClass,
+        },
+      })
+    }
+
     injectThemeCSS(config)
 
     useHead({
