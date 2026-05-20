@@ -18,21 +18,16 @@ function watchColorSchemeFromMedia(themeState: Ref<ThemeState>): () => void {
   if (isServer())
     return noop
 
-  let mediaCleanup: (() => void) | undefined
-
-  if (themeState.value?.colorMode === 'auto') {
-    const mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)')
-    const onChange = () => {
-      if (themeState.value.colorMode !== 'auto')
-        return
-      const next = mediaQuery.matches ? 'dark' : 'light'
-      updateDocumentClass(next, themeState.value)
-      themeState.value.isDark = next === 'dark'
-      saveResolvedColorMode(next)
-    }
-    mediaQuery.addEventListener('change', onChange)
-    mediaCleanup = () => mediaQuery.removeEventListener('change', onChange)
+  const mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)')
+  const onChange = () => {
+    if (themeState.value.colorMode !== 'auto')
+      return
+    const next = mediaQuery.matches ? 'dark' : 'light'
+    updateDocumentClass('auto', themeState.value)
+    themeState.value.isDark = next === 'dark'
+    saveResolvedColorMode(next)
   }
+  mediaQuery.addEventListener('change', onChange)
 
   const stopWatch = watch(() => themeState.value.colorMode, (colorMode) => {
     const isDark = colorMode === 'auto' ? getSystemColorMode() === 'dark' : colorMode === 'dark'
@@ -43,7 +38,7 @@ function watchColorSchemeFromMedia(themeState: Ref<ThemeState>): () => void {
   })
 
   return () => {
-    mediaCleanup?.()
+    mediaQuery.removeEventListener('change', onChange)
     stopWatch()
   }
 }
@@ -117,7 +112,19 @@ function createThemeState(options: MazUiThemeOptions, config: ResolvedConfig): T
     isDark: options._isDark || isDark,
   })
 
-  updateDocumentClass(themeState.value.colorMode, themeState.value)
+  // Hybrid: only impose the class at init when no host (VitePress, Nuxt blocking
+  // script, Tailwind toggle…) has already set one. If a theme class is present,
+  // respect it — host stays in charge. The mutation observer keeps isDark in sync.
+  if (!isServer() && config.darkModeStrategy === 'class' && config.mode === 'both') {
+    const html = document.documentElement
+    const hasExistingThemeClass = html.classList.contains(config.darkClass) || html.classList.contains(config.lightClass)
+    if (!hasExistingThemeClass) {
+      updateDocumentClass(themeState.value.colorMode, themeState.value)
+    }
+  }
+  else {
+    updateDocumentClass(themeState.value.colorMode, themeState.value)
+  }
   return themeState
 }
 

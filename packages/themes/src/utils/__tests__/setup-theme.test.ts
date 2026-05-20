@@ -424,7 +424,7 @@ describe('setup-theme', () => {
     })
 
     describe('when running on client with non-auto colorMode', () => {
-      it('then it does not attach a matchMedia change listener', () => {
+      it('then it still attaches a matchMedia change listener so later switches to auto react to system changes', () => {
         const addEventListenerMock = vi.fn()
         vi.stubGlobal('matchMedia', vi.fn(() => ({
           matches: false,
@@ -437,7 +437,33 @@ describe('setup-theme', () => {
 
         setupTheme({ preset: mockPreset, colorMode: 'dark' })
 
-        expect(addEventListenerMock).not.toHaveBeenCalled()
+        expect(addEventListenerMock).toHaveBeenCalledWith('change', expect.any(Function))
+      })
+
+      it('then the listener does nothing while colorMode is not auto', () => {
+        let changeHandler: (() => void) | undefined
+        vi.stubGlobal('matchMedia', vi.fn(() => ({
+          matches: true,
+          addEventListener: vi.fn((_event: string, handler: () => void) => {
+            changeHandler = handler
+          }),
+          removeEventListener: vi.fn(),
+        })))
+        vi.mocked(isServer).mockReturnValue(false)
+        vi.mocked(getColorMode).mockReturnValue('dark')
+        vi.mocked(getSavedColorMode).mockReturnValue(undefined)
+
+        setupTheme({ preset: mockPreset, colorMode: 'dark' })
+
+        vi.mocked(updateDocumentClass).mockClear()
+        vi.mocked(saveResolvedColorMode).mockClear()
+
+        if (changeHandler) {
+          changeHandler()
+        }
+
+        expect(updateDocumentClass).not.toHaveBeenCalled()
+        expect(saveResolvedColorMode).not.toHaveBeenCalled()
       })
     })
 
@@ -463,7 +489,7 @@ describe('setup-theme', () => {
     })
 
     describe('when matchMedia change event fires with auto colorMode', () => {
-      it('then it updates isDark based on media query match', () => {
+      it('then it re-applies the resolved class so maz-ui follows the system pref', () => {
         let changeHandler: (() => void) | undefined
         vi.stubGlobal('matchMedia', vi.fn(() => ({
           matches: true,
@@ -476,12 +502,13 @@ describe('setup-theme', () => {
         vi.mocked(getSystemColorMode).mockReturnValue('dark')
 
         setupTheme({ preset: mockPreset, colorMode: 'auto', mode: 'both' })
+        vi.mocked(updateDocumentClass).mockClear()
 
         if (changeHandler) {
           changeHandler()
         }
 
-        expect(updateDocumentClass).toHaveBeenCalled()
+        expect(updateDocumentClass).toHaveBeenCalledWith('auto', expect.any(Object))
       })
 
       it('then it saves the resolved color mode', () => {
