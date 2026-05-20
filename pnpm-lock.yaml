@@ -42,11 +42,11 @@ importers:
         specifier: ^4.1.6
         version: 4.1.6(vitest@4.1.6)
       '@yoloship/action':
-        specifier: 0.2.0-beta.1
-        version: 0.2.0-beta.1(magicast@0.5.3)
+        specifier: 0.2.0-beta.4
+        version: 0.2.0-beta.4(magicast@0.5.3)
       '@yoloship/claude-sdk':
-        specifier: 0.2.0-beta.0
-        version: 0.2.0-beta.0
+        specifier: 0.2.0-beta.2
+        version: 0.2.0-beta.2(libphonenumber-js@1.13.2)
       commitizen:
         specifier: ^4.3.1
         version: 4.3.1(@types/node@25.9.0)(typescript@5.9.3)
@@ -79,7 +79,7 @@ importers:
         version: 10.1.3(postcss@8.5.15)
       relizy:
         specifier: 1.4.5
-        version: 1.4.5(@types/node@25.9.0)(@yoloship/claude-sdk@0.2.0-beta.0)(magicast@0.5.3)(twitter-api-v2@1.29.0)
+        version: 1.4.5(@types/node@25.9.0)(@yoloship/claude-sdk@0.2.0-beta.2(libphonenumber-js@1.13.2))(magicast@0.5.3)(twitter-api-v2@1.29.0)
       semver:
         specifier: ^7.8.0
         version: 7.8.0
@@ -2678,17 +2678,22 @@ packages:
     resolution: {integrity: sha512-0iKI1R7WPbk0BRfLLYE6Hkkwsg3W/nDpOx4lEPtixHVI+G86UDle8TEwsf5DZ+Hcf1IkcjlHGRWBlRvMfF9rig==}
     engines: {node: '>=18.0.0'}
 
-  '@maz-ui/node@5.0.0-beta.8':
-    resolution: {integrity: sha512-ztphFxpT6d/KGzCeiAOEsVwLICfu0frv0o4BBl7QSB2I8bsrubfk8ymNbBVvh3EIPGHFz5tbHWuIOIiBupey0g==}
+  '@maz-ui/node@5.0.0-beta.11':
+    resolution: {integrity: sha512-pSNmfaifNeDGQJMm9qruyZe/k13xNZc/dqKCYPPkySLcV6hKOq2Yjzxwn9ibNJqqkGeX1dVOG3Wej+dIMpfH8Q==}
     engines: {node: '>=18.0.0'}
 
   '@maz-ui/utils@4.7.6':
     resolution: {integrity: sha512-H74uvxSzJyQbXSFbEurhXbAkHIMIeuMnTGfjXRrrCocQaBz1Cftf6yVehISnJZw1vfdqiFYjry5oOSNNqToSvg==}
     engines: {node: '>=18.0.0'}
 
-  '@maz-ui/utils@5.0.0-beta.6':
-    resolution: {integrity: sha512-uk1F+b1rQuHJF2i8g+f56Zso/RPBzRrywVgOt+s+2leexrDszLBnZJeAfGgZNssXhICUg8DXvBlrp8iAqrgq4Q==}
+  '@maz-ui/utils@5.0.0-beta.18':
+    resolution: {integrity: sha512-h+cj/Bd88UYwiDr5+fVGpLiR02YZq4SrIgpElTypN/TcWCYUC3hnSlxaHYdK+mnhIxlEvB+W3ac55izbsCAnOg==}
     engines: {node: '>=18.0.0'}
+    peerDependencies:
+      libphonenumber-js: '>= 1 < 2'
+    peerDependenciesMeta:
+      libphonenumber-js:
+        optional: true
 
   '@mcp-ui/client@6.1.1':
     resolution: {integrity: sha512-kN5io7ouEpVfOTloEEGrnuWio3ZzYOVgTk4o8ULleACdKEw7VgOTozPl9aj9qVl/UBh7rXlvKH0JbBm6Tw52LQ==}
@@ -5097,12 +5102,12 @@ packages:
   '@yarnpkg/lockfile@1.1.0':
     resolution: {integrity: sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==}
 
-  '@yoloship/action@0.2.0-beta.1':
-    resolution: {integrity: sha512-uem7lbt5g+j0Z6Cc+OLbFK2Acdud2jGwIhQZlOQK+8wMJbb6rkJAULNNK5h+u/AVAJ3/J7K+h/KHUXFJb8uakg==}
+  '@yoloship/action@0.2.0-beta.4':
+    resolution: {integrity: sha512-0oZ8PyBYyI7UoxXCSMRorz85zJo6tYdoJznoi8r31X2kJk4EEGj/6oWxo60CBRf0zuN78d2jj+qjf1JlG3MmXg==}
     hasBin: true
 
-  '@yoloship/claude-sdk@0.2.0-beta.0':
-    resolution: {integrity: sha512-6S/ZfS+DsumBBemgtpsc+VMdiuzZL1QcgBtokFRVOBT72uLcSCLw5yCqc44T24/u/FmictMhHnVoMyEPuBEiFw==}
+  '@yoloship/claude-sdk@0.2.0-beta.2':
+    resolution: {integrity: sha512-nBJ/BKzTghCxOZDFGG5Lji1lAcgt1++tx4ly+ivUSut8VntEKzUYGFoNISUKNqLTVE1K11vUv+CZB6vE961a+g==}
     engines: {node: '>=20'}
     peerDependencies:
       '@anthropic-ai/claude-code': '>=2.1.101'
@@ -12600,7 +12605,7 @@ snapshots:
       consola: 3.4.2
       figlet: 1.11.0
 
-  '@maz-ui/node@5.0.0-beta.8':
+  '@maz-ui/node@5.0.0-beta.11':
     dependencies:
       colorette: 2.0.20
       consola: 3.4.2
@@ -12608,7 +12613,9 @@ snapshots:
 
   '@maz-ui/utils@4.7.6': {}
 
-  '@maz-ui/utils@5.0.0-beta.6': {}
+  '@maz-ui/utils@5.0.0-beta.18(libphonenumber-js@1.13.2)':
+    optionalDependencies:
+      libphonenumber-js: 1.13.2
 
   '@mcp-ui/client@6.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -15177,22 +15184,24 @@ snapshots:
 
   '@yarnpkg/lockfile@1.1.0': {}
 
-  '@yoloship/action@0.2.0-beta.1(magicast@0.5.3)':
+  '@yoloship/action@0.2.0-beta.4(magicast@0.5.3)':
     dependencies:
       '@clack/prompts': 1.4.0
-      '@maz-ui/node': 5.0.0-beta.8
+      '@maz-ui/node': 5.0.0-beta.11
       c12: 3.3.4(magicast@0.5.3)
       citty: 0.2.2
     transitivePeerDependencies:
       - magicast
 
-  '@yoloship/claude-sdk@0.2.0-beta.0':
+  '@yoloship/claude-sdk@0.2.0-beta.2(libphonenumber-js@1.13.2)':
     dependencies:
-      '@maz-ui/node': 5.0.0-beta.8
-      '@maz-ui/utils': 5.0.0-beta.6
+      '@maz-ui/node': 5.0.0-beta.11
+      '@maz-ui/utils': 5.0.0-beta.18(libphonenumber-js@1.13.2)
       package-manager-detector: 1.6.0
       semver: 7.8.0
       zod: 4.4.3
+    transitivePeerDependencies:
+      - libphonenumber-js
 
   '@zkochan/js-yaml@0.0.7':
     dependencies:
@@ -19940,7 +19949,7 @@ snapshots:
     dependencies:
       jsesc: 3.1.0
 
-  relizy@1.4.5(@types/node@25.9.0)(@yoloship/claude-sdk@0.2.0-beta.0)(magicast@0.5.3)(twitter-api-v2@1.29.0):
+  relizy@1.4.5(@types/node@25.9.0)(@yoloship/claude-sdk@0.2.0-beta.2(libphonenumber-js@1.13.2))(magicast@0.5.3)(twitter-api-v2@1.29.0):
     dependencies:
       '@inquirer/prompts': 8.4.3(@types/node@25.9.0)
       '@maz-ui/node': 4.6.1
@@ -19954,7 +19963,7 @@ snapshots:
       node-fetch-native: 1.6.7
       semver: 7.8.0
     optionalDependencies:
-      '@yoloship/claude-sdk': 0.2.0-beta.0
+      '@yoloship/claude-sdk': 0.2.0-beta.2(libphonenumber-js@1.13.2)
       twitter-api-v2: 1.29.0
     transitivePeerDependencies:
       - '@types/node'
