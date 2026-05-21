@@ -230,6 +230,29 @@ Customize what information is shown to users.
 </template>
 </ComponentDemo>
 
+## Local flags (offline / hybrid apps)
+
+Use the `localFlags` prop to serve country flags from bundled SVG assets instead of the CDN. This is the recommended approach for hybrid apps (Capacitor, Cordova) that may run without a network connection.
+
+<ComponentDemo>
+  <MazInputPhoneNumber
+    local-flags
+    top-label="Phone (local flags)"
+    assistive-text="Flags loaded from bundled SVG assets — works offline"
+  />
+
+<template #code>
+
+```vue
+<template>
+  <!-- No CDN request for flags — suitable for offline / hybrid apps -->
+  <MazInputPhoneNumber local-flags />
+</template>
+```
+
+</template>
+</ComponentDemo>
+
 ## Smart Country Detection
 
 Let the component automatically detect the user's country.

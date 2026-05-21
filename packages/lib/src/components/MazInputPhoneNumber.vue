@@ -61,6 +61,7 @@ const {
   countryLocale = undefined,
   customCountriesList = undefined,
   hideFlags = false,
+  localFlags = false,
   id = undefined,
   translations = undefined,
   countryCode = undefined,
@@ -235,6 +236,12 @@ export interface MazInputPhoneNumberProps {
    * @default false
    */
   hideFlags?: boolean
+  /**
+   * Use local SVG flag assets from @maz-ui/icons instead of the CDN.
+   * Useful for offline / hybrid apps (Capacitor, Cordova).
+   * @default false
+   */
+  localFlags?: boolean
   /**
    * Make the input disabled
    * @default false
@@ -690,6 +697,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
         :countries-list="customCountriesList"
         :list-position
         :hide-flags
+        :local-flags
         :search
         :block
         :error="error || (validationError ? !!phoneNumber && !selectedCountry : false)"

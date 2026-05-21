@@ -9,7 +9,7 @@ import type { MazColor, MazSize } from './types'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { getBrowserLocale } from '@maz-ui/utils/helpers/getBrowserLocale'
 import { getCountryFlagUrl } from '@maz-ui/utils/helpers/getCountryFlagUrl'
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, shallowReactive } from 'vue'
 import { useDisplayNames } from '../composables/useDisplayNames'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import MazSelect from './MazSelect.vue'
@@ -66,6 +66,12 @@ export interface MazSelectCountryProps<Option extends { name: string, code: Disp
    * Hide flags
    */
   hideFlags?: boolean
+  /**
+   * Use local SVG flag assets from @maz-ui/icons instead of the CDN.
+   * Useful for offline / hybrid apps (Capacitor, Cordova).
+   * @default false
+   */
+  localFlags?: boolean
   /**
    * Display search input in options list
    * @type {boolean}
@@ -173,6 +179,7 @@ const {
   searchThreshold,
   placeholder,
   hideFlags,
+  localFlags = false,
   itemHeight,
   maxListWidth = 250,
   minListWidth = 200,
@@ -256,6 +263,25 @@ const flagUrl = computed(() => {
 
   return getFlagUrl(modelValue)
 })
+
+const flagCache = shallowReactive<Record<string, object | null>>({})
+
+function getLocalFlagComponent(code: string): object | null {
+  const componentName = `MazFlag${code.toUpperCase().replaceAll('-', '')}`
+
+  if (componentName in flagCache) {
+    return flagCache[componentName]
+  }
+
+  flagCache[componentName] = null
+  void import(`@maz-ui/icons/lazy/${componentName}`)
+    .then((mod: Record<string, unknown>) => {
+      flagCache[componentName] = (mod[componentName] as object) ?? null
+    })
+    .catch(() => {})
+
+  return null
+}
 </script>
 
 <template>
@@ -302,15 +328,28 @@ const flagUrl = computed(() => {
             @binding {String} country-code - current selected country code - Ex: `"FR"`
         -->
         <slot name="selector-flag" :country-code="modelValue">
-          <MazLazyImg
-            v-if="flagUrl && !hideFlags"
-            :src="flagUrl"
-            :alt="modelValue"
-            width="20"
-            height="20"
-            class="maz:size-5 maz:rounded-md"
-            img-class="maz:size-5 maz:rounded-md"
-          />
+          <template v-if="modelValue && !hideFlags">
+            <component
+              :is="getLocalFlagComponent(modelValue)"
+              v-if="localFlags && getLocalFlagComponent(modelValue)"
+              class="maz:size-5 maz:rounded-md"
+            />
+            <span
+              v-else-if="localFlags"
+              class="m-select-country__select__item__list-flag maz:flex maz:size-5 maz:flex-center maz:rounded-full maz:bg-primary-500 maz:text-xs maz:leading-none maz:text-primary-foreground/80"
+            >
+              {{ modelValue.slice(0, 2) }}
+            </span>
+            <MazLazyImg
+              v-else-if="flagUrl"
+              :src="flagUrl"
+              :alt="modelValue"
+              width="20"
+              height="20"
+              class="maz:size-5 maz:rounded-md"
+              img-class="maz:size-5 maz:rounded-md"
+            />
+          </template>
         </slot>
       </template>
       <template #no-results>
@@ -334,18 +373,33 @@ const flagUrl = computed(() => {
               :option="option"
               :is-selected="isSelected"
             >
-              <MazLazyImg
-                v-if="option.code && getFlagUrl(option.code)"
-                :src="getFlagUrl(option.code)"
-                :alt="`${option.name} flag`"
-                width="20"
-                height="20"
-                class="maz:size-5 maz:rounded-md"
-                img-class="maz:rounded-md maz:h-5 maz:w-5"
-              />
-              <span v-else class="m-select-country__select__item__list-flag maz:flex maz:size-5 maz:flex-center maz:rounded-full maz:bg-primary-500 maz:text-xs maz:leading-none maz:text-primary-foreground/80">
-                {{ option.code }}
-              </span>
+              <template v-if="localFlags">
+                <component
+                  :is="getLocalFlagComponent(option.code)"
+                  v-if="getLocalFlagComponent(option.code)"
+                  class="maz:size-5 maz:rounded-md"
+                />
+                <span
+                  v-else
+                  class="m-select-country__select__item__list-flag maz:flex maz:size-5 maz:flex-center maz:rounded-full maz:bg-primary-500 maz:text-xs maz:leading-none maz:text-primary-foreground/80"
+                >
+                  {{ option.code }}
+                </span>
+              </template>
+              <template v-else>
+                <MazLazyImg
+                  v-if="option.code && getFlagUrl(option.code)"
+                  :src="getFlagUrl(option.code)"
+                  :alt="`${option.name} flag`"
+                  width="20"
+                  height="20"
+                  class="maz:size-5 maz:rounded-md"
+                  img-class="maz:rounded-md maz:h-5 maz:w-5"
+                />
+                <span v-else class="m-select-country__select__item__list-flag maz:flex maz:size-5 maz:flex-center maz:rounded-full maz:bg-primary-500 maz:text-xs maz:leading-none maz:text-primary-foreground/80">
+                  {{ option.code }}
+                </span>
+              </template>
             </slot>
           </span>
           <div class="maz:flex maz:flex-1 maz:gap-2 maz:truncate" :class="{ 'maz:font-semibold': isSelected }">
