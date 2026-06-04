@@ -1,5 +1,52 @@
 # Change Log
 
+## v5.0.0-beta.22 (2026-06-04)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.21...v5.0.0-beta.22)
+
+### 🚀 Features
+
+- **@maz-ui/themes:** MazDialog - configurable max/min-width via preset ([#1594](https://github.com/LouisMazel/maz-ui/pull/1594))
+
+  `MazDialog` width is now driven by the active theme preset, while staying
+  overridable per instance through the existing `max-width` / `min-width` props.
+
+  ## What changed
+  - New `components.dialog` knobs on the preset contract (`max-width` /
+    `min-width`), emitted by the CSS generator as `--maz-dialog-max-width` /
+    `--maz-dialog-min-width`.
+  - `MazDialog` now reads those vars with a sensible fallback:
+    `var(--maz-dialog-max-width, 38rem)` / `var(--maz-dialog-min-width, 32rem)`.
+  - All bundled presets ship the defaults. Values are in `rem`, so `ocean`
+    (16px base) uses scaled rem (`33.25rem` / `28rem`) to keep the same rendered
+    pixel width as the 14px presets (≈532px / ≈448px).
+  - `mergePresets` now merges `components.dialog` (and stops dropping
+    `input.top-label-font-weight`), so `definePreset` overrides are preserved.
+
+  ## Usage
+
+  ```ts
+  import { definePreset } from '@maz-ui/themes'
+  // Global default for every dialog, via the preset
+  const theme = definePreset({
+    base: 'maz-ui',
+    overrides: {
+      components: {
+        dialog: { 'max-width': '48rem', 'min-width': '36rem' },
+      },
+    },
+  })
+  ```
+
+  ```vue
+  <!-- Per-instance override still wins over the preset -->
+  <MazDialog v-model="open" max-width="50rem" min-width="40rem" />
+  ```
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.20 (2026-05-20)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.19...v5.0.0-beta.20)
