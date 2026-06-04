@@ -31,6 +31,8 @@ exports[`given generateCSS function > when generating with mode=both and darkSel
     --maz-shadow-style-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     --maz-shadow-style-elevation: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 4px -1px rgb(0 0 0 / 0.06);
     --maz-btn-font-weight: 500;
+    --maz-dialog-max-width: 38rem;
+    --maz-dialog-min-width: 32rem;
     --maz-container-bg: var(--maz-surface);
     --maz-input-bg: light-dark(var(--maz-surface), oklch(from var(--maz-surface) clamp(0, calc(l + 0.06), 1) c h));
     --maz-input-top-label-font-weight: 600;

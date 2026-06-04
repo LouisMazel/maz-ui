@@ -163,6 +163,25 @@ export interface ThemeComponents {
      */
     'top-label-font-weight'?: string
   }
+  /**
+   * Dialog sizing on tablet and up (`MazDialog`). Both values map to
+   * `--maz-dialog-max-width` / `--maz-dialog-min-width` and are consumed by
+   * the component through `var(--maz-dialog-max-width, 38rem)` /
+   * `var(--maz-dialog-min-width, 32rem)`. The `max-width` / `min-width` props
+   * on `MazDialog` still override the preset per instance.
+   */
+  dialog?: {
+    /**
+     * Max-width of the dialog. Defaults to `'38rem'` (anchored on a 14px
+     * `base-font-size`).
+     */
+    'max-width'?: SizeUnit
+    /**
+     * Min-width of the dialog. Defaults to `'32rem'` (anchored on a 14px
+     * `base-font-size`).
+     */
+    'min-width'?: SizeUnit
+  }
 }
 
 export interface ThemePresetOverrides {

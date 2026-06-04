@@ -593,6 +593,27 @@ const surfaceTheme = definePreset({
 
 Components consume these via `maz:bg-container` / `maz:bg-input` Tailwind utilities, so a single override propagates everywhere — no per-component class hunt.
 
+### Dialog sizing
+
+`components.dialog` controls the width of [`MazDialog`](./../components/maz-dialog.md) on tablet and up. The two keys are emitted as `--maz-dialog-max-width` / `--maz-dialog-min-width` and consumed by the component through `var(--maz-dialog-max-width, 38rem)` / `var(--maz-dialog-min-width, 32rem)`:
+
+```typescript
+const wideDialogTheme = definePreset({
+  base: 'maz-ui',
+  overrides: {
+    name: 'wide-dialogs',
+    components: {
+      dialog: {
+        'max-width': '48rem',
+        'min-width': '36rem',
+      },
+    },
+  },
+})
+```
+
+Both values are in `rem`, so they scale with the preset's `base-font-size`. Bundled presets anchored on `14px` use `38rem` / `32rem`; `ocean` (`16px`) ships scaled rem values (`33.25rem` / `28rem`) to keep the same rendered pixel width. The `max-width` / `min-width` props on `MazDialog` still override the preset per instance.
+
 ## useTheme Composable API
 
 ```typescript
@@ -957,6 +978,8 @@ Per-component knobs under `components.<key>`. All optional — omit to fall back
 | `btn.font-weight` | `--maz-btn-font-weight` | Font-weight on `.m-btn`. Defaults to `'500'`. |
 | `container.bg.light` / `.dark` | `--maz-container-bg` (per mode) | Background of `Card`, `Container`, `Dialog`, `Popover`, `Drawer`, … Defaults to `var(--maz-surface)`. Bridged to `--color-container`. |
 | `input.bg.light` / `.dark` | `--maz-input-bg` (per mode) | Background of `Input`, `Textarea`, `Select`, `Checkbox`, … Defaults to `var(--maz-surface)` light, `var(--maz-surface-400)` dark. Bridged to `--color-input`. |
+| `dialog.max-width` | `--maz-dialog-max-width` | Max-width of `MazDialog` on tablet and up. Defaults to `38rem` (`33.25rem` on `ocean`). Overridable via the `max-width` prop. |
+| `dialog.min-width` | `--maz-dialog-min-width` | Min-width of `MazDialog` on tablet and up. Defaults to `32rem` (`28rem` on `ocean`). Overridable via the `min-width` prop. |
 
 ### Sample output
 
