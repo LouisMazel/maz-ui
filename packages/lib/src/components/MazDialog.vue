@@ -26,8 +26,8 @@ defineOptions({
 
 const {
   modelValue,
-  maxWidth = '100%',
-  minWidth = '32rem',
+  maxWidth = 'var(--maz-dialog-max-width, 38rem)',
+  minWidth = 'var(--maz-dialog-min-width, 32rem)',
   scrollable,
   closeOnEscape = true,
   ...backdropProps
@@ -51,9 +51,15 @@ export interface DialogProps {
   title?: string
   /** Remove the close button in header */
   hideCloseButton?: boolean
-  /** Modal's max-width */
+  /**
+   * Modal's max-width.
+   * @default Theme preset `components.dialog.max-width` via `var(--maz-dialog-max-width, 38rem)`
+   */
   maxWidth?: string
-  /** Modal's min-width */
+  /**
+   * Modal's min-width.
+   * @default Theme preset `components.dialog.min-width` via `var(--maz-dialog-min-width, 32rem)`
+   */
   minWidth?: string
   /**  Modal's content becomes scrollable - warning: a overflow is applied */
   scrollable?: boolean

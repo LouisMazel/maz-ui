@@ -55,6 +55,8 @@ export const ocean: ThemePreset = {
     btn: { 'font-weight': DEFAULT_BTN_FONT_WEIGHT },
     container: { bg: DEFAULT_CONTAINER_BG },
     input: { 'bg': DEFAULT_INPUT_BG, 'top-label-font-weight': DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT },
+    // rem scaled ×14/16 (16px base) to match the 14px presets' pixel width
+    dialog: { 'max-width': '33.25rem', 'min-width': '28rem' },
   },
   colors: {
     light: {

@@ -36,8 +36,11 @@ function mergeComponents(base?: ThemeComponents, overrides?: ThemeComponents): T
       bg: { ...base?.container?.bg, ...overrides?.container?.bg },
     },
     input: {
+      ...base?.input,
+      ...overrides?.input,
       bg: { ...base?.input?.bg, ...overrides?.input?.bg },
     },
+    dialog: { ...base?.dialog, ...overrides?.dialog },
   }
 }
 

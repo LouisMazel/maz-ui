@@ -327,6 +327,61 @@ describe('preset-merger', () => {
       })
     })
 
+    describe('when base declares dialog sizing and overrides change one side', () => {
+      it('then mergeComponents merges dialog and preserves the untouched side', () => {
+        const basePreset = {
+          name: 'base',
+          colors: { light: {}, dark: {} },
+          foundation: {},
+          scales: { rounded: {}, shadow: {} },
+          components: {
+            dialog: { 'max-width': '38rem', 'min-width': '32rem' },
+          },
+        } as unknown as ThemePreset
+
+        const overrides: ThemePresetOverrides = {
+          components: {
+            dialog: { 'max-width': '50rem' },
+          },
+        }
+
+        const result = mergePresets(basePreset, overrides)
+
+        expect(result.components?.dialog).toEqual({
+          'max-width': '50rem',
+          'min-width': '32rem',
+        })
+      })
+    })
+
+    describe('when base declares input top-label-font-weight and overrides change bg', () => {
+      it('then mergeComponents preserves the base top-label-font-weight', () => {
+        const basePreset = {
+          name: 'base',
+          colors: { light: {}, dark: {} },
+          foundation: {},
+          scales: { rounded: {}, shadow: {} },
+          components: {
+            input: { 'bg': { light: 'oklch(1 0 0)' }, 'top-label-font-weight': '600' },
+          },
+        } as unknown as ThemePreset
+
+        const overrides: ThemePresetOverrides = {
+          components: {
+            input: { bg: { dark: 'oklch(0.3 0 0)' } },
+          },
+        }
+
+        const result = mergePresets(basePreset, overrides)
+
+        expect(result.components?.input?.['top-label-font-weight']).toBe('600')
+        expect(result.components?.input?.bg).toEqual({
+          light: 'oklch(1 0 0)',
+          dark: 'oklch(0.3 0 0)',
+        })
+      })
+    })
+
     describe('when adding new properties from overrides', () => {
       it('then it adds new properties from overrides', () => {
         const basePreset = {

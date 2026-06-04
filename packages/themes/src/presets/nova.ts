@@ -2,6 +2,8 @@ import type { ThemePreset } from '../types'
 import {
   DEFAULT_BTN_FONT_WEIGHT,
   DEFAULT_CONTAINER_BG,
+  DEFAULT_DIALOG_MAX_WIDTH,
+  DEFAULT_DIALOG_MIN_WIDTH,
   DEFAULT_DISABLED_CURSOR,
   DEFAULT_DISABLED_OPACITY,
   DEFAULT_FONT_MONO,
@@ -59,6 +61,7 @@ export const nova: ThemePreset = {
     btn: { 'font-weight': DEFAULT_BTN_FONT_WEIGHT },
     container: { bg: DEFAULT_CONTAINER_BG },
     input: { 'bg': DEFAULT_INPUT_BG, 'top-label-font-weight': DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT },
+    dialog: { 'max-width': DEFAULT_DIALOG_MAX_WIDTH, 'min-width': DEFAULT_DIALOG_MIN_WIDTH },
   },
   colors: {
     light: {
