@@ -227,7 +227,7 @@
     "shiki": "^4.1.0",
     "tailwindcss": "^4.3.0",
     "unplugin-auto-import": "^21.0.0",
-    "unplugin-vue-components": "^32.0.0",
+    "unplugin-vue-components": "^32.1.0",
     "vue-router": "^5.0.7"
   },
   "lint-staged": {
