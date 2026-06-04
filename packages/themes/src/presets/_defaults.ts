@@ -1,4 +1,4 @@
-import type { RoundedScaleKey, ThemeComponentBg, ThemeFoundation, ThemeScales } from '../types'
+import type { RoundedScaleKey, ThemeComponentBg, ThemeComponents, ThemeFoundation, ThemeScales } from '../types'
 
 /**
  * Defaults shared across the bundled presets. Each preset can spread these
@@ -75,3 +75,15 @@ export const DEFAULT_INPUT_TOP_LABEL_FONT_WEIGHT = '600'
  * heavier or lighter for their visual identity.
  */
 export const DEFAULT_BTN_FONT_WEIGHT = '500'
+
+/**
+ * Default `max-width` / `min-width` for `MazDialog` on tablet and up.
+ * Anchored on a 14px `base-font-size` (38rem ≈ 532px, 32rem ≈ 448px).
+ * Presets with a different `base-font-size` (e.g. ocean at 16px) should
+ * scale these in rem to keep the rendered pixel width consistent.
+ * Consumed by the component via `var(--maz-dialog-max-width, 38rem)` /
+ * `var(--maz-dialog-min-width, 32rem)`, and still overridable per-instance
+ * through the `max-width` / `min-width` props.
+ */
+export const DEFAULT_DIALOG_MAX_WIDTH: NonNullable<ThemeComponents['dialog']>['max-width'] = '38rem'
+export const DEFAULT_DIALOG_MIN_WIDTH: NonNullable<ThemeComponents['dialog']>['min-width'] = '32rem'

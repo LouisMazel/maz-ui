@@ -153,12 +153,12 @@ describe('MazDialog extended coverage', () => {
   })
 
   describe('when using default maxWidth and minWidth', () => {
-    it('should set default CSS variables', () => {
+    it('should fall back to the theme preset CSS variables', () => {
       const wrapper = getWrapper({ modelValue: true })
       const dialog = wrapper.find('.m-dialog')
       const style = dialog.attributes('style')
-      expect(style).toContain('--max-width: 100%')
-      expect(style).toContain('--min-width: 32rem')
+      expect(style).toContain('--max-width: var(--maz-dialog-max-width, 38rem)')
+      expect(style).toContain('--min-width: var(--maz-dialog-min-width, 32rem)')
     })
   })
 
