@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.22 (2026-06-04)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.21...v5.0.0-beta.22)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Color mode reverts to dark on client navigation ([#1587](https://github.com/LouisMazel/maz-ui/pull/1587))
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.21 (2026-05-20)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.20...v5.0.0-beta.21)
