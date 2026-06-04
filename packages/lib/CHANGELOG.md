@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.23 (2026-06-04)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.22...v5.0.0-beta.23)
+
+### 💅 Refactors
+
+- **maz-ui:** MazSwitch - cursor color to be more visible when not active ([66f0a16fd](https://github.com/LouisMazel/maz-ui/commit/66f0a16fd))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.22 (2026-06-04)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.21...v5.0.0-beta.22)
