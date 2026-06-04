@@ -22,7 +22,7 @@
     "nuxt": "^4.4.6",
     "postcss-nested": "^7.0.2",
     "tailwindcss": "^4.3.0",
-    "vue-router": "^5.0.7"
+    "vue-router": "^5.1.0"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix",
