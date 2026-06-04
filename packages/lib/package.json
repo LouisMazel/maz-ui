@@ -223,7 +223,7 @@
     "lightningcss": "^1.32.0",
     "nuxt": "^4.4.6",
     "postcss-nested": "^7.0.2",
-    "sass": "^1.99.0",
+    "sass": "^1.100.0",
     "shiki": "^4.1.0",
     "tailwindcss": "^4.3.0",
     "unplugin-auto-import": "^21.0.0",
