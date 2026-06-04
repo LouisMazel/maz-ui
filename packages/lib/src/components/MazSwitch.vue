@@ -181,7 +181,7 @@ function onFocus(event: FocusEvent) {
     &::after {
       content: '';
 
-      @apply maz:absolute maz:left-0.5 maz:top-1 maz:block maz:h-5 maz:w-5 maz:rounded-full maz:bg-surface;
+      @apply maz:absolute maz:left-0.5 maz:top-1 maz:block maz:h-5 maz:w-5 maz:rounded-full maz:bg-input;
 
       box-shadow: 0 0 4px 0 hsl(0deg 0% 0% / 20%);
       transition: all 200ms ease-in-out;

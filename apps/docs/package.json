@@ -16,6 +16,7 @@
     "serve": "vitepress serve",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
+    "ftp-deploy:dev": "cross-env DEPLOY_ENV=next node ./ftp-deploy.mjs",
     "ftp-deploy": "node ./ftp-deploy.mjs",
     "types:check": "vue-tsc --noEmit --skipLibCheck"
   },
