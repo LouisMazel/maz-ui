@@ -109,6 +109,13 @@ function appendComponents(lines: string[], preset: ThemePreset, prefix: string, 
     lines.push(`    --${prefix}-btn-font-weight: ${components.btn['font-weight']};`)
   }
 
+  if (components.dialog?.['max-width']) {
+    lines.push(`    --${prefix}-dialog-max-width: ${components.dialog['max-width']};`)
+  }
+  if (components.dialog?.['min-width']) {
+    lines.push(`    --${prefix}-dialog-min-width: ${components.dialog['min-width']};`)
+  }
+
   const emitBg = (componentKey: 'container' | 'input', cssKey: string) => {
     const bg = components[componentKey]?.bg
     if (!bg)

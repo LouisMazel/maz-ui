@@ -531,6 +531,64 @@ describe('given generateCSS function', () => {
       })
     })
 
+    describe('when components.dialog max-width and min-width are provided', () => {
+      const preset = {
+        ...mazUi,
+        components: { dialog: { 'max-width': '40rem', 'min-width': '30rem' } as any },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'both',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then --maz-dialog-max-width is emitted', () => {
+        expect(css).toContain('--maz-dialog-max-width: 40rem;')
+      })
+
+      it('then --maz-dialog-min-width is emitted', () => {
+        expect(css).toContain('--maz-dialog-min-width: 30rem;')
+      })
+
+      it('then the dialog vars are not wrapped per-mode', () => {
+        expect(css).not.toContain('--maz-dialog-max-width: light-dark(')
+      })
+    })
+
+    describe('when components.dialog has only max-width', () => {
+      const preset = {
+        ...mazUi,
+        components: { dialog: { 'max-width': '50rem' } as any },
+      }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then only --maz-dialog-max-width is emitted', () => {
+        expect(css).toContain('--maz-dialog-max-width: 50rem;')
+        expect(css).not.toContain('--maz-dialog-min-width:')
+      })
+    })
+
+    describe('when components is provided without dialog sizing', () => {
+      const preset = { ...mazUi, components: { btn: { 'font-weight': '500' } } }
+      const css = generateCSS(preset, {
+        prefix: 'maz',
+        mode: 'light',
+        darkSelectorStrategy: 'class',
+        darkClass: 'dark',
+      })
+
+      it('then no dialog vars are emitted', () => {
+        expect(css).not.toContain('--maz-dialog-max-width:')
+        expect(css).not.toContain('--maz-dialog-min-width:')
+      })
+    })
+
     describe('when components is provided without container or input bg', () => {
       const preset = { ...mazUi, components: { btn: { 'font-weight': '700' } } }
       const css = generateCSS(preset, {
