@@ -1,6 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import MazTextarea from '@components/MazTextarea.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { shallowMount } from '@vue/test-utils'
 
 describe('components/MazTextarea.vue', () => {
@@ -331,6 +332,48 @@ describe('components/MazTextarea.vue', () => {
       })
       const topLabel = warningWrapper.find('.m-textarea__top-label')
       expect(topLabel.classes()).toContain('maz:text-warning-600')
+    })
+  })
+
+  describe('Given a global config provides defaults for MazTextarea', () => {
+    describe('When the component mounts without a roundedSize prop', () => {
+      it('Then it applies the per-component global roundedSize', () => {
+        const config = { MazTextarea: { roundedSize: 'full' as const } }
+
+        const globalWrapper = shallowMount(MazTextarea, {
+          props: { modelValue: 'text' },
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(globalWrapper.find('.m-textarea').classes()).toContain('maz:rounded-full')
+      })
+    })
+
+    describe('When the roundedSize comes from defaults.global', () => {
+      it('Then it applies the global roundedSize', () => {
+        const config = { global: { roundedSize: 'lg' as const } }
+
+        const globalWrapper = shallowMount(MazTextarea, {
+          props: { modelValue: 'text' },
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(globalWrapper.find('.m-textarea').classes()).toContain('maz:rounded-lg')
+      })
+    })
+
+    describe('When an instance roundedSize is passed alongside the global config', () => {
+      it('Then the instance prop wins over the global default', () => {
+        const config = { MazTextarea: { roundedSize: 'full' as const } }
+
+        const globalWrapper = shallowMount(MazTextarea, {
+          props: { modelValue: 'text', roundedSize: 'sm' as const },
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(globalWrapper.find('.m-textarea').classes()).toContain('maz:rounded-xs')
+        expect(globalWrapper.find('.m-textarea').classes()).not.toContain('maz:rounded-full')
+      })
     })
   })
 })

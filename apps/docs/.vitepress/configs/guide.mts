@@ -1,4 +1,5 @@
 import type { DefaultTheme } from 'vitepress'
+import { withNewBadge } from './badges.mjs'
 
 export const guide = {
   text: 'Guide',
@@ -10,6 +11,7 @@ export const guide = {
     { text: 'Theming', link: '/ecosystem/themes' },
     { text: 'Tailwind CSS', link: '/guide/tailwind' },
     { text: 'Translations (i18n)', link: '/ecosystem/translations' },
+    { text: withNewBadge('Global component defaults'), link: '/guide/global-defaults' },
     { text: 'MazUiProvider', link: '/guide/maz-ui-provider' },
     { text: 'Resolvers (auto-imports)', link: '/guide/resolvers' },
     { text: 'Icons', link: '/ecosystem/icons/', collapsed: true, items: [

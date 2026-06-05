@@ -3,6 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
 import { MazCheck } from '@maz-ui/icons/raw/MazCheck'
 import { computed, ref } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import MazIcon from './MazIcon.vue'
@@ -51,7 +52,6 @@ const {
   color = 'primary',
   value,
   name = 'm-checkbox',
-  size = 'md',
   disabled,
   error,
   success,
@@ -81,6 +81,8 @@ const emits = defineEmits<{
   'focus': [value: FocusEvent]
 }>()
 
+const { size } = useGlobalConfig<{ size: MazSize }>('MazCheckbox', { size: 'md' })
+
 const instanceId = useInstanceUniqId({
   componentName: 'MazCheckbox',
   providedId: id,
@@ -102,7 +104,7 @@ const isChecked = computed(() => {
 })
 
 const checkboxSize = computed(() => {
-  switch (size) {
+  switch (size.value) {
     case 'xl': {
       return '2rem'
     }
@@ -126,7 +128,7 @@ const checkboxSize = computed(() => {
 })
 
 const checkIconSize = computed(() => {
-  switch (size) {
+  switch (size.value) {
     case 'xl': {
       return 'maz:text-2xl'
     }

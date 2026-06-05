@@ -152,6 +152,13 @@ export default defineNuxtConfig({
       autoImport: true, // All components globally available
     },
 
+    // Global component defaults (priority: instance prop > defaults[Component] > defaults.global > library default)
+    defaults: {
+      global: { roundedSize: 'lg' }, // cross-cutting (roundedSize, size)
+      MazBtn: { roundedSize: 'full' }, // per-component, wins over global
+      MazCard: { bordered: false, elevation: true },
+    },
+
     // Plugins (not enabled by default)
     plugins: {
       aos: true,
@@ -261,6 +268,26 @@ const theme = {
   persistPreset: true,
 }
 ```
+
+### Global Component Defaults
+
+Set default prop values once for every component. Resolution priority, per prop: instance prop > `defaults[Component]` > `defaults.global` > library default. A global default never overrides a prop set on the instance.
+
+```ts
+const defaults = {
+  // Cross-cutting tokens applied to every component that exposes them
+  global: {
+    roundedSize: 'lg', // 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+    size: 'sm', // 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  },
+  // Per-component defaults, strongly typed as Partial<ComponentNameProps>, win over `global`
+  MazBtn: { roundedSize: 'full' },
+  MazCard: { bordered: false, elevation: true },
+  MazContainer: { bordered: false },
+}
+```
+
+See the [Global component defaults guide](/guide/global-defaults) for the full list of globalizable props.
 
 ## Theme Strategies Explained
 

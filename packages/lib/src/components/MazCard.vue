@@ -4,6 +4,7 @@ import type { RouterLinkProps } from 'vue-router'
 import type { MazGalleryProps } from './MazGallery.vue'
 import { MazChevronDown } from '@maz-ui/icons/lazy/MazChevronDown'
 import { computed, defineAsyncComponent, useSlots } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 import MazIcon from './MazIcon.vue'
@@ -15,14 +16,9 @@ const {
   to = undefined,
   hrefTarget = '_self',
   footerAlign = 'end',
-  elevation = false,
-  radius = true,
-  padding = true,
-  scale = true,
   wrapperClass = undefined,
   title = undefined,
   collapsible = false,
-  bordered = true,
   collapseOpen = false,
 } = defineProps<MazCardProps>()
 
@@ -33,6 +29,22 @@ defineEmits<{
    */
   'update:collapseOpen': [boolean]
 }>()
+
+const { elevation, radius, padding, scale, bordered, overflowHidden } = useGlobalConfig<{
+  elevation: boolean
+  radius: boolean
+  padding: boolean
+  scale: boolean
+  bordered: boolean
+  overflowHidden: boolean
+}>('MazCard', {
+  elevation: false,
+  radius: true,
+  padding: true,
+  scale: true,
+  bordered: true,
+  overflowHidden: false,
+})
 
 const isLinked = computed(() => !!href || !!to)
 
@@ -109,7 +121,7 @@ const galleryWidthComputed = computed(() => (haveSomeContent.value ? gallery?.wi
 const galleryOptions = computed(() => {
   return {
     ...DEFAULT_GALLERY_OPTIONS,
-    radius,
+    radius: radius.value,
     width: isColumnVariant.value ? false : galleryWidthComputed.value,
     height: !isColumnVariant.value && haveSomeContent.value ? false : galleryHeightComputed.value,
     ...gallery,

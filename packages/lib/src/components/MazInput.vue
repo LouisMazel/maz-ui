@@ -1,7 +1,7 @@
 <script lang="ts" setup generic="T extends MazInputValue">
 import type { HTMLAttributes, InputHTMLAttributes } from 'vue'
 import type { MazIconLike } from '../composables/useMazIconProps'
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazRoundedSize, MazSize } from './types'
 import { MazEye } from '@maz-ui/icons/lazy/MazEye'
 import { MazEyeSlash } from '@maz-ui/icons/lazy/MazEyeSlash'
 import { debounce as debounceFn } from '@maz-ui/utils/helpers/debounce'
@@ -13,6 +13,7 @@ import {
   ref,
   useSlots,
 } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useMazIconProps } from '../composables/useMazIconProps'
 import { onAutofillSync, readInitialAutofillValue } from '../utils/autofillSync'
@@ -186,11 +187,11 @@ export interface MazInputProps<T = MazInputValue> {
   /**
    * Controls the border radius of the input component
    * @values none, sm, md, lg, xl, full
-   * @type {'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'}
+   * @type {MazRoundedSize}
    * @default 'md'
    * @example "lg"
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  roundedSize?: MazRoundedSize
   /**
    * Makes the input expand to the full width of its container
    * @type {boolean}
@@ -243,13 +244,11 @@ const {
   inputClasses,
   border = true,
   inputmode = 'text',
-  size = 'md',
   debounce = false,
   autoFocus = false,
   borderActive = false,
   startIcon,
   endIcon,
-  roundedSize = 'md',
   block,
   name,
   autocomplete,
@@ -303,6 +302,8 @@ const emits = defineEmits<{
    */
   'input': [event: Event]
 }>()
+
+const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazInput', { size: 'md', roundedSize: 'md' })
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))

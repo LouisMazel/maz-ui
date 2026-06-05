@@ -8,6 +8,7 @@ import { MazExclamationCircle } from '@maz-ui/icons/lazy/MazExclamationCircle'
 import { MazInformationCircle } from '@maz-ui/icons/lazy/MazInformationCircle'
 import { MazXCircle } from '@maz-ui/icons/lazy/MazXCircle'
 import { computed, defineAsyncComponent, useId, useSlots } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 
 export type MazAlertColor = Exclude<MazColor, 'transparent'>
 export type MazAlertRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
@@ -73,10 +74,11 @@ const {
   hideIcon = false,
   color = 'info',
   iconSize = 'md',
-  roundedSize = 'md',
   bordered = true,
   variant = 'soft',
 } = defineProps<MazAlertProps>()
+
+const { roundedSize } = useGlobalConfig<{ roundedSize: MazAlertRoundedSize }>('MazAlert', { roundedSize: 'md' })
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 

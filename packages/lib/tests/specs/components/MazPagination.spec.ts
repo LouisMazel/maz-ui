@@ -1,4 +1,6 @@
+import MazBtn from '@components/MazBtn.vue'
 import MazPagination from '@components/MazPagination.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount } from '@vue/test-utils'
 
 describe('mazPagination.vue', () => {
@@ -112,4 +114,39 @@ describe('mazPagination.vue', () => {
   })
 
   // Add more test cases as needed
+})
+
+describe('given a MazUi global default for size', () => {
+  describe('when no size prop is passed', () => {
+    it('then the buttons receive the global size', () => {
+      const wrapper = mount(MazPagination, {
+        props: { totalPages: 10 },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'xl' } } } },
+      })
+
+      expect(wrapper.findComponent(MazBtn).props('size')).toBe('xl')
+    })
+  })
+
+  describe('when a component-scoped default differs from the global default', () => {
+    it('then the buttons receive the component-scoped size', () => {
+      const wrapper = mount(MazPagination, {
+        props: { totalPages: 10 },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazPagination: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.findComponent(MazBtn).props('size')).toBe('lg')
+    })
+  })
+
+  describe('when a size prop is passed', () => {
+    it('then the instance prop wins over every configured default', () => {
+      const wrapper = mount(MazPagination, {
+        props: { totalPages: 10, size: 'sm' },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazPagination: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.findComponent(MazBtn).props('size')).toBe('sm')
+    })
+  })
 })

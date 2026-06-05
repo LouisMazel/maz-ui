@@ -1,22 +1,21 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
 import type { MazIconLike } from '../composables/useMazIconProps'
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazRoundedSize, MazSize } from './types'
 import { computed, defineAsyncComponent, useAttrs } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useMazIconProps } from '../composables/useMazIconProps'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 import { getColor } from './types'
 
 const {
-  size = 'md',
   color = 'primary',
   type = 'button',
   fab,
   icon,
   startIcon,
   endIcon,
-  roundedSize = 'md',
   justify = 'center',
   pastel,
   outlined,
@@ -26,6 +25,11 @@ const {
   padding = true,
   active,
 } = defineProps<MazBtnProps>()
+
+const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazBtn', {
+  size: 'md',
+  roundedSize: 'md',
+})
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
@@ -58,7 +62,7 @@ export interface MazBtnProps {
    * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
    * @default 'md'
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  roundedSize?: MazRoundedSize
   /**
    * If true, the button have the "border" style
    * @default false
@@ -149,7 +153,7 @@ const iconSize = computed<IconSize>(() => {
     mini: '1em',
   }
 
-  return iconSizeMap[size] || 'lg'
+  return iconSizeMap[size.value] || 'lg'
 })
 
 const { iconProps: startIconProps } = useMazIconProps(() => startIcon, () => ({ size: iconSize.value }))

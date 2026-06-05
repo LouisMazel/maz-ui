@@ -1,7 +1,9 @@
 import type { MazDropdownProps } from '@components/MazDropdown.vue'
 import type { GenericInstanceType } from '@maz-ui/utils/ts-helpers/GenericInstanceType'
 import type { VueWrapper } from '@vue/test-utils'
+import MazBtn from '@components/MazBtn.vue'
 import MazDropdown from '@components/MazDropdown.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { MazStar } from '@maz-ui/icons'
 import { mount } from '@vue/test-utils'
 import { markRaw } from 'vue'
@@ -297,18 +299,18 @@ describe('components/MazDropdown.vue', () => {
   describe('given dropdown with different sizes', () => {
     describe('when size is xl', () => {
       it('then icon has large text class', async () => {
-        await wrapper.setProps({ size: 'xl' })
+        const localWrapper = await getWrapper({ props: { size: 'xl' } })
 
-        const icon = wrapper.find('.m-dropdown__icon')
+        const icon = localWrapper.find('.m-dropdown__icon')
         expect(icon.classes()).toContain('maz:text-lg')
       })
     })
 
     describe('when size is mini', () => {
       it('then icon has small text class', async () => {
-        await wrapper.setProps({ size: 'mini' })
+        const localWrapper = await getWrapper({ props: { size: 'mini' } })
 
-        const icon = wrapper.find('.m-dropdown__icon')
+        const icon = localWrapper.find('.m-dropdown__icon')
         expect(icon.classes()).toContain('maz:text-sm')
       })
     })
@@ -336,6 +338,42 @@ describe('components/MazDropdown.vue', () => {
         const dropdownWrapper = wrapper.find('[aria-expanded]')
         expect(dropdownWrapper.attributes('aria-expanded')).toBe('true')
       })
+    })
+  })
+})
+
+describe('given a MazUi global default for MazDropdown size', () => {
+  describe('when no size prop is passed', () => {
+    it('then the trigger button receives the configured size', async () => {
+      const localWrapper = mount(MazDropdown, {
+        props: { items },
+        slots: { default: 'Menu' },
+        global: {
+          stubs: { teleport: true, MazLink: true },
+          provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazDropdown: { size: 'lg' } } },
+        },
+      })
+
+      await vi.dynamicImportSettled()
+
+      expect(localWrapper.findComponent(MazBtn).props('size')).toBe('lg')
+    })
+  })
+
+  describe('when a size prop is passed', () => {
+    it('then the instance prop wins over the configured default', async () => {
+      const localWrapper = mount(MazDropdown, {
+        props: { items, size: 'xs' },
+        slots: { default: 'Menu' },
+        global: {
+          stubs: { teleport: true, MazLink: true },
+          provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazDropdown: { size: 'lg' } } },
+        },
+      })
+
+      await vi.dynamicImportSettled()
+
+      expect(localWrapper.findComponent(MazBtn).props('size')).toBe('xs')
     })
   })
 })

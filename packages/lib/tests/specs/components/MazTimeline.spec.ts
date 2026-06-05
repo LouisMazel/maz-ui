@@ -1,5 +1,6 @@
 import type { MazTimelineRoundedSize } from '@components/MazTimeline.vue'
 import MazTimeline from '@components/MazTimeline.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount } from '@vue/test-utils'
 
 const defaultSteps = [
@@ -759,6 +760,52 @@ describe('given MazTimeline component', () => {
 
       expect(focusSpy1).not.toHaveBeenCalled()
       expect(focusSpy2).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('given a global config provides defaults for MazTimeline', () => {
+    describe('when the component mounts without size or roundedSize props', () => {
+      it('then it applies the per-component global size and roundedSize', () => {
+        const config = { MazTimeline: { size: 'xl' as const, roundedSize: 'full' as const } }
+
+        const wrapper = mount(MazTimeline, {
+          props: { steps: defaultSteps, direction: 'horizontal' as const },
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(wrapper.classes()).toContain('--xl')
+        expect(wrapper.classes()).toContain('--rounded-full')
+      })
+    })
+
+    describe('when the defaults come from defaults.global', () => {
+      it('then it applies the global size and roundedSize', () => {
+        const config = { global: { size: 'lg' as const, roundedSize: '2xl' as const } }
+
+        const wrapper = mount(MazTimeline, {
+          props: { steps: defaultSteps, direction: 'horizontal' as const },
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(wrapper.classes()).toContain('--lg')
+        expect(wrapper.classes()).toContain('--rounded-2xl')
+      })
+    })
+
+    describe('when instance props are passed alongside the global config', () => {
+      it('then the instance props win over the global defaults', () => {
+        const config = { MazTimeline: { size: 'xl' as const, roundedSize: 'full' as const } }
+
+        const wrapper = mount(MazTimeline, {
+          props: { steps: defaultSteps, direction: 'horizontal' as const, size: 'sm' as const, roundedSize: 'none' as const },
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(wrapper.classes()).toContain('--sm')
+        expect(wrapper.classes()).toContain('--rounded-none')
+        expect(wrapper.classes()).not.toContain('--xl')
+        expect(wrapper.classes()).not.toContain('--rounded-full')
+      })
     })
   })
 })

@@ -1,4 +1,5 @@
 import MazSkeleton from '@components/MazSkeleton.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount, shallowMount } from '@vue/test-utils'
 
 describe('given MazSkeleton component', () => {
@@ -186,6 +187,42 @@ describe('given MazSkeleton component', () => {
       const wrapper = mount(MazSkeleton)
 
       expect(wrapper.find('.maz\\:sr-only').exists()).toBe(true)
+    })
+  })
+})
+
+function mountSkeletonWithGlobalConfig(config: unknown, props: Record<string, unknown> = {}) {
+  return shallowMount(MazSkeleton, {
+    props,
+    global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+  })
+}
+
+describe('given a MazUi global default for roundedSize', () => {
+  describe('when no roundedSize prop is passed', () => {
+    it('then it applies the global default rounded class', () => {
+      const wrapper = mountSkeletonWithGlobalConfig({ global: { roundedSize: 'full' } })
+
+      expect(wrapper.classes()).toContain('m-skeleton--rounded-full')
+      expect(wrapper.classes()).toContain('maz:rounded-full')
+    })
+  })
+
+  describe('when a roundedSize prop is passed', () => {
+    it('then the instance prop wins over the global default', () => {
+      const wrapper = mountSkeletonWithGlobalConfig({ global: { roundedSize: 'full' } }, { roundedSize: 'sm' })
+
+      expect(wrapper.classes()).toContain('m-skeleton--rounded-sm')
+      expect(wrapper.classes()).not.toContain('m-skeleton--rounded-full')
+    })
+  })
+
+  describe('when a component-scoped default differs from the global default', () => {
+    it('then the component-scoped default wins over the global default', () => {
+      const wrapper = mountSkeletonWithGlobalConfig({ global: { roundedSize: 'full' }, MazSkeleton: { roundedSize: 'sm' } })
+
+      expect(wrapper.classes()).toContain('m-skeleton--rounded-sm')
+      expect(wrapper.classes()).not.toContain('m-skeleton--rounded-full')
     })
   })
 })

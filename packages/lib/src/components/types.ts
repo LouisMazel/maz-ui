@@ -4,6 +4,8 @@ export type MazColor = (typeof colors)[number]
 
 export type MazSize = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
+export type MazRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+
 export type MazSizeUnit = `${number}${'rem' | 'px' | 'em' | 'vw' | 'vh' | 'vmin' | 'vmax' | '%' | 'ch' | 'cm' | 'mm' | 'in' | 'ex' | 'pc' | 'pt'}`
 
 /**

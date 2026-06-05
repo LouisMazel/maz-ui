@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { MazSizeUnit } from './types'
+import type { MazRoundedSize, MazSizeUnit } from './types'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 
 export interface MazSkeletonProps {
   /**
@@ -35,7 +36,7 @@ export interface MazSkeletonProps {
    * @type {'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'}
    * @default 'md'
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  roundedSize?: MazRoundedSize
   /**
    * Accessibility label
    * @default 'skeleton.ariaLabel' (translations)
@@ -52,12 +53,13 @@ const {
   shape = 'rectangle',
   size = '1rem',
   animated = true,
-  roundedSize = 'md',
   ariaLabel,
   loadingText,
   width,
   height,
 } = defineProps<MazSkeletonProps>()
+
+const { roundedSize } = useGlobalConfig<{ roundedSize: MazRoundedSize }>('MazSkeleton', { roundedSize: 'md' })
 
 const { t } = useTranslations()
 

@@ -7,6 +7,7 @@ import { MazPlus } from '@maz-ui/icons/raw/MazPlus'
 import { throttle } from '@maz-ui/utils/helpers/throttle'
 import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import MazIcon from './MazIcon.vue'
 import MazInput from './MazInput.vue'
 
@@ -23,7 +24,6 @@ const {
   max = Number.POSITIVE_INFINITY,
   min = Number.NEGATIVE_INFINITY,
   step = 1,
-  size = 'md',
   textCenter = true,
   inputmode = 'numeric',
   topLabel = undefined,
@@ -59,6 +59,8 @@ const emits = defineEmits<{
    */
   'change': [value: Event]
 }>()
+
+const { size } = useGlobalConfig<{ size: MazSize }>('MazInputNumber', { size: 'md' })
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazInput',

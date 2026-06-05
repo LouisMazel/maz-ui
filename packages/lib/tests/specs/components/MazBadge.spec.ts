@@ -1,5 +1,6 @@
 import type { MazBadgeColor, MazBadgeRoundedSize, MazBadgeSize } from '@components/MazBadge.vue'
 import MazBadge from '@components/MazBadge.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount } from '@vue/test-utils'
 import { getColor } from '@/components/types'
 
@@ -121,6 +122,52 @@ describe('given MazBadge component', () => {
       })
 
       expect(wrapper.html()).toContain('<span>Custom HTML</span>')
+    })
+  })
+})
+
+function mountBadgeWithGlobalConfig(config: unknown, props: Record<string, unknown> = {}) {
+  return mount(MazBadge, {
+    props,
+    global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+  })
+}
+
+describe('given a MazUi global default for size', () => {
+  describe('when no size prop is passed', () => {
+    it('then it applies the global default size class', () => {
+      const wrapper = mountBadgeWithGlobalConfig({ global: { size: 'xl' } })
+
+      expect(wrapper.classes()).toContain('--xl')
+      expect(wrapper.classes()).toContain('maz:text-xl')
+    })
+  })
+
+  describe('when a size prop is passed', () => {
+    it('then the instance prop wins over the global default', () => {
+      const wrapper = mountBadgeWithGlobalConfig({ global: { size: 'xl' } }, { size: 'sm' })
+
+      expect(wrapper.classes()).toContain('--sm')
+      expect(wrapper.classes()).not.toContain('--xl')
+    })
+  })
+})
+
+describe('given a MazUi global default for roundedSize', () => {
+  describe('when no roundedSize prop is passed', () => {
+    it('then it applies the global default rounded class', () => {
+      const wrapper = mountBadgeWithGlobalConfig({ global: { roundedSize: 'full' } })
+
+      expect(wrapper.classes()).toContain('maz:rounded-full')
+    })
+  })
+
+  describe('when a component-scoped default differs from the global default', () => {
+    it('then the component-scoped default wins over the global default', () => {
+      const wrapper = mountBadgeWithGlobalConfig({ global: { roundedSize: 'full' }, MazBadge: { roundedSize: 'sm' } })
+
+      expect(wrapper.classes()).toContain('maz:rounded-xs')
+      expect(wrapper.classes()).not.toContain('maz:rounded-full')
     })
   })
 })

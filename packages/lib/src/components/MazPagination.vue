@@ -6,6 +6,7 @@ import { MazChevronDoubleLeft } from '@maz-ui/icons/raw/MazChevronDoubleLeft'
 import { MazChevronLeft } from '@maz-ui/icons/raw/MazChevronLeft'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import MazBtn from './MazBtn.vue'
 import MazIcon from './MazIcon.vue'
 
@@ -16,7 +17,6 @@ const {
   activeColor = 'surface',
   totalPages,
   loading,
-  size = 'md',
 } = defineProps<MazPaginationProps>()
 
 const emits = defineEmits<
@@ -77,6 +77,8 @@ export interface MazPaginationProps {
 }
 
 const { t } = useTranslations()
+
+const { size } = useGlobalConfig<{ size: MazSize }>('MazPagination', { size: 'md' })
 
 const buttonsPropsMerged = computed<MazBtnProps>(() => ({
   ...DEFAULT_BUTTONS_PROPS,

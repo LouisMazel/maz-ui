@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { MazColor } from './types'
+import type { MazColor, MazRoundedSize } from './types'
 
 export interface MazTextareaProps<T extends string | undefined | null> {
   /** Style attribut of the component root element */
@@ -34,10 +34,10 @@ export interface MazTextareaProps<T extends string | undefined | null> {
   color?: MazColor
   /**
    * Size radius of the component's border
-   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+   * @type {MazRoundedSize}
    * @default 'md'
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  roundedSize?: MazRoundedSize
   /**
    * If the textarea has a padding
    * @default true
@@ -81,6 +81,7 @@ export interface MazTextareaProps<T extends string | undefined | null> {
 <script lang="ts" setup generic="T extends string | undefined | null">
 import type { HTMLAttributes } from 'vue'
 import { computed, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { onAutofillSync, readInitialAutofillValue } from '../utils/autofillSync'
 
@@ -107,7 +108,6 @@ const {
   border = true,
   autogrow = true,
   appendJustify = 'end',
-  roundedSize = 'md',
 } = defineProps<MazTextareaProps<T>>()
 
 const emits = defineEmits<{
@@ -137,6 +137,8 @@ const emits = defineEmits<{
    */
   (event: 'change', value: Event): void
 }>()
+
+const { roundedSize } = useGlobalConfig<{ roundedSize: MazRoundedSize }>('MazTextarea', { roundedSize: 'md' })
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazTextarea',
