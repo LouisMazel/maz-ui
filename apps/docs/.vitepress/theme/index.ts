@@ -1,10 +1,9 @@
 import type { Theme } from 'vitepress'
 
-import { MazUiTheme } from '@maz-ui/themes/plugin'
 import { mazUi } from '@maz-ui/themes/presets/mazUi'
 import en from '@maz-ui/translations/locales/en'
-import { MazUiTranslations } from '@maz-ui/translations/plugin'
 import * as components from 'maz-ui/components'
+import { MazUi } from 'maz-ui/plugins'
 import { AosPlugin } from 'maz-ui/plugins/aos'
 import { DialogPlugin } from 'maz-ui/plugins/dialog'
 
@@ -29,18 +28,26 @@ export default {
     })
   },
   enhanceApp({ app, router: { route } }) {
-    app.use(MazUiTheme, {
-      preset: mazUi,
-      darkModeStrategy: 'class',
-      strategy: 'runtime',
-      persistPreset: true,
-    })
-    app.use(MazUiTranslations, {
-      locale: 'en',
-      fallbackLocale: 'fr',
-      preloadFallback: false,
-      messages: {
-        en,
+    app.use(MazUi, {
+      defaults: {
+        global: {
+          // roundedSize: 'xl',
+          // size: 'sm'
+        },
+      },
+      theme: {
+        preset: mazUi,
+        darkModeStrategy: 'class',
+        strategy: 'runtime',
+        persistPreset: true,
+      },
+      translations: {
+        locale: 'en',
+        fallbackLocale: 'fr',
+        preloadFallback: false,
+        messages: {
+          en,
+        },
       },
     })
 
