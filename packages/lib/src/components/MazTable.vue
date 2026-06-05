@@ -631,7 +631,7 @@ onBeforeMount(() => {
 
 <template>
   <div class="m-table m-reset-css maz:relative maz:max-w-full" :class="{ '--has-header': hasHeader }">
-    <div v-if="hasHeader" class="m-table-header maz:flex maz:max-w-full maz:flex-col maz:items-start maz:justify-between maz:gap-2 maz:bg-container maz:py-2 maz:mob-l:flex-row maz:mob-l:items-center">
+    <div v-if="hasHeader" class="m-table-header maz:flex maz:max-w-full maz:flex-col maz:items-start maz:justify-between maz:gap-2 maz:py-2 maz:mob-l:flex-row maz:mob-l:items-center">
       <div v-if="title || hasSlotContent(slots.title)" class="m-table-spacer">
         <!--
           @slot Replace the title of the table
@@ -841,7 +841,7 @@ onBeforeMount(() => {
       </table>
     </div>
 
-    <div v-if="hasFooter" class="m-table-footer maz:flex maz:max-w-full maz:justify-end maz:gap-2 maz:bg-container maz:py-2">
+    <div v-if="hasFooter" class="m-table-footer maz:flex maz:max-w-full maz:justify-end maz:gap-2 maz:py-2">
       <div v-if="pagination" class="m-table-footer-pagination maz:flex maz:items-center maz:gap-4">
         <div class="m-table-footer-pagination-items-per-page maz:flex maz:items-center maz:gap-1">
           <span class="maz:hidden maz:text-sm maz:tab-s:block"> {{ messages.pagination.rowsPerPage }} </span>

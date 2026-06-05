@@ -60,6 +60,7 @@ describe('Given DocumentationService instance', () => {
         'cli',
         'eslint-config',
         'getting-started',
+        'global-defaults',
         'icon-set',
         'icons',
         'maz-ui-provider',
@@ -270,7 +271,7 @@ describe('Given DocumentationService instance', () => {
       expect(result).toHaveProperty('paths')
 
       expect(result.components.total).toBeGreaterThanOrEqual(56)
-      expect(result.guides.total).toBe(17)
+      expect(result.guides.total).toBe(18)
       expect(result.composables.total).toBe(14)
       expect(result.directives.total).toBe(5)
       expect(result.plugins.total).toBe(4)
