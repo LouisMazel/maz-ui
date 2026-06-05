@@ -3,12 +3,11 @@ name: Yoloship
 on:
   workflow_dispatch:
     inputs:
-      issue_number:
-        description: Issue number to process
-        required: true
-        type: number
+      run_id:
+        description: Pre-created YoloShip run id (set by the dashboard trigger)
+        required: false
   issues:
-    types: [labeled]
+    types: [opened, labeled]
 
 jobs:
   run-agent:
@@ -26,26 +25,9 @@ jobs:
       - name: Setup Node.js, pnpm and caches
         uses: ./.github/actions/setup
 
-      - name: Fetch issue and validate labels
-        if: github.event_name == 'workflow_dispatch'
-        id: issue
-        env:
-          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        run: |
-          set -euo pipefail
-          gh api repos/${{ github.repository }}/issues/${{ inputs.issue_number }} > /tmp/issue.json
-          echo "Issue fetched:" && jq '{title: .title, labels: [.labels[].name], state: .state}' /tmp/issue.json
-          LABELS=$(jq -r '[.labels[].name] | join(",")' /tmp/issue.json)
-          if [[ ! "$LABELS" =~ agent: ]]; then
-            echo "::error::Issue #${{ inputs.issue_number }} has no agent label (found: $LABELS)"
-            exit 1
-          fi
-          jq --slurpfile issue /tmp/issue.json '. + {issue: $issue[0]}' "$GITHUB_EVENT_PATH" > /tmp/event.json
-          echo "event_path=/tmp/event.json" >> "$GITHUB_OUTPUT"
-
       - name: Run Yolo Ship CLI
         env:
-          GITHUB_EVENT_PATH: ${{ steps.issue.outputs.event_path || env.GITHUB_EVENT_PATH }}
+          YOLO_RUN_ID: ${{ github.event.inputs.run_id }}
           YOLO_API_KEY: ${{ secrets.YOLO_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           GIT_TOKEN: ${{ secrets.RELEASE_TOKEN }}
