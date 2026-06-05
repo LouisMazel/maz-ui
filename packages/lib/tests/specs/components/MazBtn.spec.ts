@@ -1,6 +1,7 @@
 import MazBtn from '@components/MazBtn.vue'
 import MazIcon from '@components/MazIcon.vue'
 import MazSpinner from '@components/MazSpinner.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount, shallowMount } from '@vue/test-utils'
 
 describe('mazBtn.vue', () => {
@@ -172,5 +173,44 @@ describe('mazBtn.vue', () => {
     await vi.dynamicImportSettled()
 
     expect(wrapper.html()).toContain('<svg name="check"></svg>')
+  })
+})
+
+function mountWithGlobalConfig(config: unknown, props: Record<string, unknown> = {}) {
+  return mount(MazBtn, {
+    props,
+    global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+  })
+}
+
+describe('given a MazUi global default for roundedSize', () => {
+  describe('when no roundedSize prop is passed', () => {
+    it('then it applies the global default rounded class', () => {
+      const wrapper = mountWithGlobalConfig({ global: { roundedSize: 'full' } })
+      expect(wrapper.classes()).toContain('maz:rounded-full')
+    })
+  })
+
+  describe('when a roundedSize prop is passed', () => {
+    it('then the instance prop wins over the global default', () => {
+      const wrapper = mountWithGlobalConfig({ global: { roundedSize: 'full' } }, { roundedSize: 'none' })
+      expect(wrapper.classes()).not.toContain('maz:rounded-full')
+    })
+  })
+})
+
+describe('given a component-scoped default that differs from the global default', () => {
+  describe('when no size prop is passed', () => {
+    it('then the component-scoped default wins over the global default', () => {
+      const wrapper = mountWithGlobalConfig({ global: { size: 'mini' }, MazBtn: { size: 'xl' } })
+      expect(wrapper.classes()).toContain('--xl')
+    })
+  })
+
+  describe('when a size prop is passed', () => {
+    it('then the instance prop wins over every configured default', () => {
+      const wrapper = mountWithGlobalConfig({ global: { size: 'mini' }, MazBtn: { size: 'xl' } }, { size: 'lg' })
+      expect(wrapper.classes()).toContain('--lg')
+    })
   })
 })
