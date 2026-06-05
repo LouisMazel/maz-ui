@@ -6,7 +6,7 @@ Tu es un ingénieur senior sur **maz-ui**. Tu prends en charge une tâche de bou
 
 Description de la tâche : `$ARGUMENTS`
 
-Si `$ARGUMENTS` est vide ou trop flou pour en déduire un objectif clair (< 5 mots utiles), arrête-toi et demande une description plus précise via `ask-human`.
+Si `$ARGUMENTS` est vide ou trop flou pour en déduire un objectif clair (< 5 mots utiles), arrête-toi et demande une description plus précise.
 
 ---
 
@@ -28,7 +28,7 @@ Si une de ces conditions est vraie → tu **dois** interviewer l'utilisateur ava
 
 - Si dispo, invoque la skill `grill-me` pour structurer l'interview. C'est l'outil par défaut.
 - Si la demande nécessite d'explorer plusieurs **directions créatives** (vs choix techniques) → `superpowers:brainstorming`
-- Pour chaque question posée pendant l'exécution autonome : utilise `ask-human` afin que la question remonte proprement
+- Pour chaque question posée pendant l'exécution autonome
 - Pose **toutes** les questions critiques en un bloc au début (pas une par une au compte-gouttes)
 - Pour chaque question, propose ta recommandation + le tradeoff principal
 
@@ -37,7 +37,7 @@ Si une de ces conditions est vraie → tu **dois** interviewer l'utilisateur ava
 - **Pas d'hypothèses silencieuses** sur les choix non évidents
 - **Reformule** ta compréhension du besoin une fois les réponses obtenues, et fais confirmer avant de coder
 - Si l'utilisateur ne répond pas ou que les réponses restent ambiguës → **STOP**, ne pas inventer
-- Si pendant l'implémentation une nouvelle ambiguïté émerge → re-pose la question via `ask-human`, ne devine pas
+- Si pendant l'implémentation une nouvelle ambiguïté émerge → re-pose la question, ne devine pas
 
 ### Détermination du nom de branche
 
@@ -47,7 +47,7 @@ Si une de ces conditions est vraie → tu **dois** interviewer l'utilisateur ava
 - Un **slug** kebab-case court et descriptif (≤ 50 chars)
 - Format final : `<type>/<slug>` (ex : `feat/maz-sidebar-hover-mode`, `fix/themes-auto-color-scheme`)
 
-Si le type ou le slug ne sont pas évidents → demande à l'utilisateur via `ask-human` avant de créer le worktree.
+Si le type ou le slug ne sont pas évidents → demande à l'utilisateur avant de créer le worktree.
 
 ---
 
@@ -249,7 +249,7 @@ Avant de marquer le travail comme prêt à commit : invoque **`superpowers:verif
 
 ## 9. Commit & push
 
-**N'exécute cette étape que si l'utilisateur a confirmé.** Pas de commit automatique sans demande explicite.
+Dans le cadre de cette commande, tu es **explicitement autorisé** à committer, push et créer la PR sans reconfirmation : c'est le contrat de `/execute-task`. Fais **plusieurs commits atomiques** tout au long de l'implémentation (un par tâche / groupe logique du plan), pas un seul commit final monolithique.
 
 Convention CommitLint enforced (`.commitlintrc.ts`) :
 
@@ -277,7 +277,7 @@ git push -u origin <type>/<slug>
 
 ## 10. Création de la PR
 
-**Comme pour le commit : seulement si l'utilisateur l'a demandé.**
+La création de la PR fait partie du flux de cette commande : crée-la sans reconfirmation une fois le health vert et le push effectué.
 
 Via `gh pr create` :
 
@@ -325,7 +325,7 @@ git worktree remove ../maz-ui-<slug>
 - Si une étape échoue, fixer la root cause, pas bypass
 - Ne JAMAIS push sur `master` ou `develop` directement
 - Ne JAMAIS commit de secrets, `.env`, credentials
-- Ne JAMAIS commit ni créer de PR sans demande explicite de l'utilisateur
+- Commits atomiques, push et création de PR sont autorisés dans le cadre de cette commande (pas de reconfirmation nécessaire). En dehors de `/execute-task`, attendre une demande explicite.
 - Si une question reste sans réponse de l'utilisateur → STOP plutôt que d'inventer
 - Si la tâche s'avère trop grosse pour un seul PR pendant l'implémentation → poser la question à l'utilisateur (split ou continuer)
 
