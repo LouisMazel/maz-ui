@@ -3,6 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
 import { ref } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import MazIcon from './MazIcon.vue'
 import { getColor } from './types'
 
@@ -72,7 +73,6 @@ const {
   success,
   warning,
   hint,
-  size = 'md',
 } = defineProps<MazRadioButtonsProps<T, Option>>()
 
 const emits = defineEmits<{
@@ -97,6 +97,8 @@ const emits = defineEmits<{
    */
   'focus': [value: FocusEvent]
 }>()
+
+const { size } = useGlobalConfig<{ size: MazSize }>('MazRadioButtons', { size: 'md' })
 
 function selectOption(option: Option) {
   emits('update:model-value', option.value)

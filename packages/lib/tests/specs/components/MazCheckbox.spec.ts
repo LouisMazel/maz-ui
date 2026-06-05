@@ -1,4 +1,5 @@
 import MazCheckbox from '@components/MazCheckbox.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
@@ -506,6 +507,30 @@ describe('MazCheckbox extended branch coverage', () => {
         props: { modelValue: false, style: { marginTop: '10px' } },
       })
       expect(wrapper.attributes('style')).toContain('margin-top: 10px')
+    })
+  })
+})
+
+describe('given a MazUi global default for MazCheckbox size', () => {
+  describe('when no size prop is passed', () => {
+    it('then the configured size drives the checkbox dimensions', () => {
+      const wrapper = mount(MazCheckbox, {
+        props: { modelValue: false },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazCheckbox: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.find('label > span').attributes('style')).toContain('width: 1.75rem')
+    })
+  })
+
+  describe('when a size prop is passed', () => {
+    it('then the instance prop wins over the configured default', () => {
+      const wrapper = mount(MazCheckbox, {
+        props: { modelValue: false, size: 'mini' },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazCheckbox: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.find('label > span').attributes('style')).toContain('width: 0.75rem')
     })
   })
 })

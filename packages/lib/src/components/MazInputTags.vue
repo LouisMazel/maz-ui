@@ -4,6 +4,7 @@ import type { MazColor, MazSize } from './types'
 import { MazTrash } from '@maz-ui/icons/raw/MazTrash'
 import { truthyFilter } from '@maz-ui/utils/helpers/truthyFilter'
 import { computed, ref } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import MazBtn from './MazBtn.vue'
 import MazInput from './MazInput.vue'
 
@@ -18,7 +19,6 @@ const {
   error = false,
   success = false,
   warning = false,
-  size = 'md',
   color = 'primary',
   addTagsOnBlur = true,
 } = defineProps<MazInputTagsProps>()
@@ -26,6 +26,8 @@ const {
 const emits = defineEmits<{
   'update:model-value': [value?: (string | number)[]]
 }>()
+
+const { size } = useGlobalConfig<{ size: MazSize }>('MazInputTags', { size: 'md' })
 
 export interface MazInputTagsProps {
   /** Style attribut of the component root element */
@@ -155,20 +157,20 @@ const SIZE_CLASS = {
 } as const
 
 const buttonSize = computed(() => {
-  if (size === 'mini')
+  if (size.value === 'mini')
     return 'mini'
-  if (size === 'xs')
+  if (size.value === 'xs')
     return 'mini'
-  if (size === 'sm')
+  if (size.value === 'sm')
     return 'xs'
-  if (size === 'md')
+  if (size.value === 'md')
     return 'sm'
-  if (size === 'lg')
+  if (size.value === 'lg')
     return 'md'
-  if (size === 'xl')
+  if (size.value === 'xl')
     return 'lg'
 
-  return size
+  return size.value
 })
 </script>
 

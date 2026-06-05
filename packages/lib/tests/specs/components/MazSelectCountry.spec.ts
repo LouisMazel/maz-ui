@@ -1,4 +1,5 @@
 import type { MazSelectCountryProps } from '@/components/MazSelectCountry.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount, shallowMount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import MazLazyImg from '@/components/MazLazyImg.vue'
@@ -681,5 +682,38 @@ describe('mazSelectCountry', () => {
     })
     const mazSelect = wrapper.findComponent({ name: 'MazSelect' })
     expect(mazSelect.attributes('data-test')).toBe('country-select')
+  })
+})
+
+describe('given a MazUi global default for size', () => {
+  describe('when no size prop is passed', () => {
+    it('then the select receives the global size', () => {
+      const wrapper = shallowMount(MazSelectCountry, {
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'xl' } } } },
+      })
+
+      expect(wrapper.findComponent({ name: 'MazSelect' }).props('size')).toBe('xl')
+    })
+  })
+
+  describe('when a component-scoped default differs from the global default', () => {
+    it('then the select receives the component-scoped size', () => {
+      const wrapper = shallowMount(MazSelectCountry, {
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazSelectCountry: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.findComponent({ name: 'MazSelect' }).props('size')).toBe('lg')
+    })
+  })
+
+  describe('when a size prop is passed', () => {
+    it('then the instance prop wins over every configured default', () => {
+      const wrapper = shallowMount(MazSelectCountry, {
+        props: { size: 'sm' },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazSelectCountry: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.findComponent({ name: 'MazSelect' }).props('size')).toBe('sm')
+    })
   })
 })

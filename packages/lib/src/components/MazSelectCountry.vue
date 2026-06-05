@@ -11,6 +11,7 @@ import { getBrowserLocale } from '@maz-ui/utils/helpers/getBrowserLocale'
 import { getCountryFlagUrl } from '@maz-ui/utils/helpers/getCountryFlagUrl'
 import { computed, defineAsyncComponent } from 'vue'
 import { useDisplayNames } from '../composables/useDisplayNames'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import MazSelect from './MazSelect.vue'
 
@@ -156,7 +157,6 @@ const {
   options,
   class: className,
   locale: componentLocale,
-  size = 'md',
   color = 'primary',
   label,
   hint,
@@ -197,6 +197,8 @@ defineEmits<{
    */
   'update:model-value': [value?: Option['code']]
 }>()
+
+const { size } = useGlobalConfig<{ size: MazSize }>('MazSelectCountry', { size: 'md' })
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazSelectCountry',
