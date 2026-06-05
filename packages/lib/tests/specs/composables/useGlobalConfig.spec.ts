@@ -35,6 +35,13 @@ describe('given no provided config', () => {
       expect(api.roundedSize.value).toBe('full')
     })
   })
+
+  describe('when the instance prop is passed in kebab-case', () => {
+    it('then it is detected as provided and resolves to the instance prop', () => {
+      const api = mountComp({ global: { roundedSize: 'sm' } }, { 'rounded-size': 'full' })
+      expect(api.roundedSize.value).toBe('full')
+    })
+  })
 })
 
 describe('given a global config and a component config', () => {

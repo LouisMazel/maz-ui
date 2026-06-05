@@ -1,4 +1,4 @@
-import type { ComponentInternalInstance, ComputedRef, InjectionKey } from 'vue'
+import type { ComputedRef, InjectionKey } from 'vue'
 import type { MazAlertProps } from '../components/MazAlert.vue'
 import type { MazAvatarProps } from '../components/MazAvatar.vue'
 import type { MazBadgeProps } from '../components/MazBadge.vue'
@@ -76,22 +76,16 @@ export type MazComponentName = Exclude<keyof MazUiDefaultsOptions, 'global'>
 export const GLOBAL_CONFIG_INJECTION_KEY: InjectionKey<MazUiDefaultsOptions> = Symbol('mazGlobalConfig')
 
 /**
- * Whether the prop `key` was explicitly passed to the current instance.
- *
- * Reads the raw vnode props (what the parent provided) rather than the resolved
- * prop value, because Vue casts an absent boolean prop to `false` - making the
- * value alone unable to distinguish "not passed" from "passed false".
+ * Whether the prop `key` (or its kebab-case form) was explicitly passed to the
+ * instance, read from the raw vnode props rather than the resolved value:
+ * Vue casts an absent boolean prop to `false`, so the value alone cannot tell
+ * "not passed" from "passed false". Evaluated once at setup, not per render.
  */
-function isPropProvided(instance: ComponentInternalInstance | null, key: string): boolean {
-  const raw = instance?.vnode.props
+function isPropProvided(raw: Record<string, unknown> | null | undefined, key: string): boolean {
   if (!raw)
     return false
 
-  if (Object.hasOwn(raw, key))
-    return true
-
-  const kebab = key.replace(/\B([A-Z])/g, '-$1').toLowerCase()
-  return Object.hasOwn(raw, kebab)
+  return Object.hasOwn(raw, key) || Object.hasOwn(raw, key.replace(/\B([A-Z])/g, '-$1').toLowerCase())
 }
 
 /**
@@ -104,6 +98,10 @@ function isPropProvided(instance: ComponentInternalInstance | null, key: string)
  * NOT destructured (the returned computed refs replace them). A global default
  * never wins over a prop set on the instance.
  *
+ * Whether a prop was passed and which default applies are both invariant at
+ * runtime, so they are resolved once at setup. The returned computed only stays
+ * reactive to the instance prop value when that prop was actually passed.
+ *
  * @param componentName the component key in `MazUiDefaultsOptions`
  * @param fallbacks the library hardcoded default for each globalizable prop
  * @returns one `ComputedRef` per prop. Templates auto-unwrap them; script reads need `.value`.
@@ -113,25 +111,25 @@ export function useGlobalConfig<T extends Record<string, unknown>>(
   fallbacks: T,
 ): { [K in keyof T]: ComputedRef<T[K]> } {
   const instance = getCurrentInstance()
+  const props = instance?.props as Record<string, unknown> | undefined
+  const vnodeProps = instance?.vnode.props
+
   const config = inject(GLOBAL_CONFIG_INJECTION_KEY, undefined)
+  const componentConfig = config?.[componentName] as Record<string, unknown> | undefined
+  const globalConfig = config?.global as Record<string, unknown> | undefined
 
   const result = {} as { [K in keyof T]: ComputedRef<T[K]> }
 
   for (const key of Object.keys(fallbacks) as (keyof T)[]) {
-    result[key] = computed<T[keyof T]>(() => {
-      if (isPropProvided(instance, key as string))
-        return (instance!.props as Record<string, unknown>)[key as string] as T[keyof T]
+    const name = key as string
 
-      const perComponent = (config?.[componentName] as Record<string, unknown> | undefined)?.[key as string]
-      if (perComponent !== undefined)
-        return perComponent as T[keyof T]
+    if (isPropProvided(vnodeProps, name)) {
+      result[key] = computed(() => props![name] as T[keyof T]) as { [K in keyof T]: ComputedRef<T[K]> }[typeof key]
+      continue
+    }
 
-      const global = (config?.global as Record<string, unknown> | undefined)?.[key as string]
-      if (global !== undefined)
-        return global as T[keyof T]
-
-      return fallbacks[key]
-    }) as { [K in keyof T]: ComputedRef<T[K]> }[typeof key]
+    const resolved = (componentConfig?.[name] ?? globalConfig?.[name] ?? fallbacks[key]) as T[keyof T]
+    result[key] = computed(() => resolved) as { [K in keyof T]: ComputedRef<T[K]> }[typeof key]
   }
 
   return result
