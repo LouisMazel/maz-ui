@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { MazIconLike } from '../composables/useMazIconProps'
 import type { MazIconProps } from './MazIcon.vue'
+import type { MazRoundedSize } from './types'
 import { defineAsyncComponent } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useMazIconProps } from '../composables/useMazIconProps'
 import { hasSlotContent } from '../utils/hasSlotContent'
 
@@ -31,7 +33,7 @@ export interface MazContainerProps {
    * @type {'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'}
    * @default 'md'
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  roundedSize?: MazRoundedSize
   /**
    * Remove background color
    * @default false
@@ -67,18 +69,28 @@ export interface MazContainerProps {
 }
 
 const {
-  elevation = false,
-  padding = true,
-  bordered = true,
-  roundedSize = 'md',
   title = undefined,
-  transparent = false,
-  overflowHidden = true,
   block = false,
   startIcon,
   endIcon,
   iconSize = 'md',
 } = defineProps<MazContainerProps>()
+
+const { elevation, padding, bordered, roundedSize, transparent, overflowHidden } = useGlobalConfig<{
+  elevation: boolean
+  padding: boolean
+  bordered: boolean
+  roundedSize: MazRoundedSize
+  transparent: boolean
+  overflowHidden: boolean
+}>('MazContainer', {
+  elevation: false,
+  padding: true,
+  bordered: true,
+  roundedSize: 'md',
+  transparent: false,
+  overflowHidden: true,
+})
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 
