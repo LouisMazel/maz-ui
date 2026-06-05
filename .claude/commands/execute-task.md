@@ -307,16 +307,16 @@ Via `gh pr create` :
 
 ## 11. Cleanup du worktree
 
-Une fois la PR créée et confirmée :
+**TOUJOURS supprimer le worktree à la fin du flux, automatiquement et sans demander confirmation**, dès lors que la branche est poussée (le travail est sauvegardé sur le remote, donc la suppression du worktree local est sans risque). C'est une étape obligatoire de fin de commande, pas optionnelle.
 
 ```bash
 cd <repo-principal>
-git worktree remove ../maz-ui-<slug>
+git worktree remove ../maz-ui-<slug>   # ajouter --force si des artefacts ignorés (dist/, etc.) bloquent
 ```
 
-- Si des changements non commités traînent dans le worktree → **demander confirmation** avant `--force`
-- Si push a échoué → **NE PAS cleanup**, garder le worktree
-- Sur erreur en cours de run (steps 4-9) → cleanup le worktree mais garde la branche en local
+- Si push a échoué → **NE PAS cleanup**, garder le worktree (le seul cas où on ne supprime pas).
+- Sur erreur en cours de run (steps 4-9) avant le push → supprimer le worktree mais garder la branche en local.
+- Les artefacts de build ignorés (dist/, node_modules) ne doivent pas empêcher la suppression : utiliser `--force` si nécessaire.
 
 ---
 
