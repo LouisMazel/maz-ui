@@ -1,5 +1,6 @@
 import type { MazAlertColor, MazAlertRoundedSize } from '@components/MazAlert.vue'
 import MazAlert from '@components/MazAlert.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount } from '@vue/test-utils'
 
 describe('given MazAlert component', () => {
@@ -266,6 +267,41 @@ describe('given MazAlert component', () => {
       expect(wrapper.classes()).toContain('--bordered')
       expect(wrapper.classes()).toContain('--solid')
       expect(wrapper.attributes('style')).toContain('--m-alert-bg: var(--maz-success)')
+    })
+  })
+})
+
+function mountWithGlobalConfig(config: unknown, props: Record<string, unknown> = {}) {
+  return mount(MazAlert, {
+    props,
+    global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+  })
+}
+
+describe('given a MazUi global default for roundedSize', () => {
+  describe('when no roundedSize prop is passed', () => {
+    it('then it applies the global default rounded class', () => {
+      const wrapper = mountWithGlobalConfig({ global: { roundedSize: '3xl' } }, { title: 'Test' })
+
+      expect(wrapper.classes()).toContain('maz:rounded-3xl')
+    })
+  })
+
+  describe('when a roundedSize prop is passed', () => {
+    it('then the instance prop wins over the global default', () => {
+      const wrapper = mountWithGlobalConfig({ global: { roundedSize: '3xl' } }, { roundedSize: 'sm', title: 'Test' })
+
+      expect(wrapper.classes()).toContain('maz:rounded-xs')
+      expect(wrapper.classes()).not.toContain('maz:rounded-3xl')
+    })
+  })
+
+  describe('when a component-scoped default differs from the global default', () => {
+    it('then the component-scoped default wins over the global default', () => {
+      const wrapper = mountWithGlobalConfig({ global: { roundedSize: '3xl' }, MazAlert: { roundedSize: 'sm' } }, { title: 'Test' })
+
+      expect(wrapper.classes()).toContain('maz:rounded-xs')
+      expect(wrapper.classes()).not.toContain('maz:rounded-3xl')
     })
   })
 })

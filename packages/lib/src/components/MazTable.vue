@@ -231,11 +231,11 @@ export interface MazTableProps<T extends MazTableRow<T>> {
   translations?: DeepPartial<MazUiTranslationsNestedSchema['table']>
   /**
    * Size radius of the component's border
-   * @type {string}
+   * @type {MazRoundedSize}
    * @values none, sm, md, lg, xl, full
    * @default md
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  roundedSize?: MazRoundedSize
   /**
    * Enable scrollable on table
    * @type {boolean}
@@ -257,7 +257,7 @@ export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz-table')
 <script lang="ts" setup generic="T extends MazTableRow<T>">
 import type { HTMLAttributes, InjectionKey, Ref, ThHTMLAttributes } from 'vue'
 import type { MazSelectOption } from './MazSelect.vue'
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazRoundedSize, MazSize } from './types'
 import { MazArrowUp } from '@maz-ui/icons/lazy/MazArrowUp'
 import { MazChevronDoubleLeft } from '@maz-ui/icons/lazy/MazChevronDoubleLeft'
 import { MazChevronLeft } from '@maz-ui/icons/lazy/MazChevronLeft'
@@ -273,13 +273,13 @@ import {
   useSlots,
   watch,
 } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { hasSlotContent } from '../utils/hasSlotContent'
 
 const {
   tableClass,
   tableStyle,
   modelValue,
-  size = 'md',
   inputSize,
   title,
   headers,
@@ -309,7 +309,6 @@ const {
   tableLayout,
   color = 'primary',
   translations,
-  roundedSize = 'md',
   scrollable = false,
 } = defineProps<MazTableProps<T>>()
 
@@ -335,6 +334,8 @@ const emits = defineEmits<{
    */
   (event: 'update:page-size', pageSize: number): void
 }>()
+
+const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazTable', { size: 'md', roundedSize: 'md' })
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
@@ -370,7 +371,7 @@ const hasDivider = computed<boolean>(
 )
 
 provide(mazTableKey, {
-  size: toRef(() => size),
+  size: toRef(() => size.value),
   hoverable: toRef(() => hoverable),
   backgroundEven: toRef(() => backgroundEven),
   backgroundOdd: toRef(() => backgroundOdd),
