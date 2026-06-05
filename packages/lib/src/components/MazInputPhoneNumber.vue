@@ -16,6 +16,7 @@ import {
   ref,
   watch,
 } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import PhoneInput from './MazInputPhoneNumber/PhoneInput.vue'
 import { useLibphonenumber } from './MazInputPhoneNumber/useLibphonenumber'
@@ -30,7 +31,6 @@ defineOptions({
 const {
   listPosition = 'bottom-start',
   color = 'primary',
-  size = 'md',
   placeholder = undefined,
   class: className,
   autoFormat = 'blur',
@@ -372,6 +372,8 @@ const instanceId = useInstanceUniqId({
   componentName: 'MazInputPhoneNumber',
   providedId: id,
 })
+
+const { size } = useGlobalConfig<{ size: MazSize }>('MazInputPhoneNumber', { size: 'md' })
 
 /** Models */
 

@@ -2,6 +2,7 @@
 import type { CSSProperties } from 'vue'
 import type { MazColor, MazSize } from './types'
 import { computed } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { getColor } from './types'
 
 export type MazBadgeColor = MazColor | 'surface'
@@ -47,12 +48,12 @@ export interface MazBadgeProps {
 
 const {
   color = 'primary',
-  size = 'md',
   nowrap = false,
   outlined = false,
   pastel = false,
-  roundedSize = 'md',
 } = defineProps<MazBadgeProps>()
+
+const { size, roundedSize } = useGlobalConfig<{ size: MazBadgeSize, roundedSize: MazBadgeRoundedSize }>('MazBadge', { size: 'md', roundedSize: 'md' })
 
 const resolvedColor = computed(() => getColor(color))
 

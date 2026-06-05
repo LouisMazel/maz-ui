@@ -5,6 +5,7 @@ import type { MazIconLike } from '../composables'
 import type { MazColor, MazSize } from './types'
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useId, useSlots, watch } from 'vue'
 import { useMazIconProps } from '../composables'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 
 export type MazTimelineColor = Exclude<MazColor, 'transparent'>
 export type MazTimelineDirection = 'horizontal' | 'vertical' | 'auto'
@@ -112,12 +113,10 @@ const {
   direction = 'auto',
   breakpoint = '768px',
   color = 'primary',
-  size = 'md',
   showStepNumbers = true,
   autoValidateSteps = true,
   clickable = false,
   animated = true,
-  roundedSize = 'md',
   steps,
 } = defineProps<MazTimelineProps>()
 
@@ -137,6 +136,8 @@ const emit = defineEmits<{
    */
   'click-step': [payload: { step: MazTimelineItem, index: number }]
 }>()
+
+const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazTimelineRoundedSize }>('MazTimeline', { size: 'md', roundedSize: 'md' })
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 

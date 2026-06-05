@@ -1,6 +1,7 @@
 import type { MazSize } from '@components/types'
 import MazBtn from '@components/MazBtn.vue'
 import MazInputTags from '@components/MazInputTags.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount } from '@vue/test-utils'
 
 describe('mazInputTags', () => {
@@ -147,5 +148,49 @@ describe('mazInputTags', () => {
     await wrapper.vm.$nextTick()
 
     expect(wrapper.classes()).toContain('maz:border-warning')
+  })
+})
+
+describe('given a MazUi global default for size', () => {
+  describe('when no size prop is passed', () => {
+    it('then the input receives the global size', () => {
+      const wrapper = mount(MazInputTags, {
+        props: { modelValue: ['a'] },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'xl' } } } },
+      })
+
+      expect(wrapper.findComponent({ name: 'MazInput' }).props('size')).toBe('xl')
+    })
+
+    it('then the tag button receives the mapped button size', () => {
+      const wrapper = mount(MazInputTags, {
+        props: { modelValue: ['a'] },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'xl' } } } },
+      })
+
+      expect(wrapper.findComponent(MazBtn).props('size')).toBe('lg')
+    })
+  })
+
+  describe('when a component-scoped default differs from the global default', () => {
+    it('then the input receives the component-scoped size', () => {
+      const wrapper = mount(MazInputTags, {
+        props: { modelValue: ['a'] },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazInputTags: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.findComponent({ name: 'MazInput' }).props('size')).toBe('lg')
+    })
+  })
+
+  describe('when a size prop is passed', () => {
+    it('then the instance prop wins over every configured default', () => {
+      const wrapper = mount(MazInputTags, {
+        props: { modelValue: ['a'], size: 'sm' },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazInputTags: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.findComponent({ name: 'MazInput' }).props('size')).toBe('sm')
+    })
   })
 })

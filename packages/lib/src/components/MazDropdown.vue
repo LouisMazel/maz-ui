@@ -9,6 +9,7 @@ import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { computed, defineAsyncComponent, useTemplateRef, watch } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useMazIconProps } from '../composables/useMazIconProps'
 import { hasSlotContent } from '../utils/hasSlotContent'
@@ -28,7 +29,6 @@ const {
   position = 'auto',
   screenReaderDescription,
   dropdownIconAnimation = true,
-  size = 'md',
   closeOnClick = false,
   chevron = true,
   disabled = false,
@@ -49,6 +49,8 @@ const emits = defineEmits<{
    */
   'update:model-value': [value: boolean]
 }>()
+
+const { size } = useGlobalConfig<{ size: MazSize }>('MazDropdown', { size: 'md' })
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
@@ -216,17 +218,17 @@ const isOpen = defineModel({
 })
 
 const iconClassSize = computed(() => {
-  if (size === 'xl')
+  if (size.value === 'xl')
     return 'maz:text-lg'
-  if (size === 'lg')
+  if (size.value === 'lg')
     return 'maz:text-base'
-  if (size === 'md')
+  if (size.value === 'md')
     return 'maz:text-base'
-  if (size === 'sm')
+  if (size.value === 'sm')
     return 'maz:text-base'
-  if (size === 'xs')
+  if (size.value === 'xs')
     return 'maz:text-sm'
-  if (size === 'mini')
+  if (size.value === 'mini')
     return 'maz:text-sm'
   return 'maz:text-lg'
 })

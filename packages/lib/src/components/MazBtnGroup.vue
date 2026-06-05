@@ -3,6 +3,7 @@ import type { RouteLocationRaw } from 'vue-router'
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazColor, MazSize } from './types'
 import { defineAsyncComponent } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 
 export interface MazButtonGroupOption extends Omit<MazBtnProps, 'block' | 'fab'> {
   /** Click handler for the button */
@@ -65,9 +66,13 @@ export interface MazButtonGroupProps {
 const {
   items,
   orientation = 'row',
-  size = 'md',
   color = 'primary',
 } = defineProps<MazButtonGroupProps>()
+
+const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazBtnProps['roundedSize'] }>('MazBtnGroup', {
+  size: 'md',
+  roundedSize: 'md',
+})
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 </script>
@@ -84,6 +89,7 @@ const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
       :key="index"
       v-bind="item"
       :size="item.size ?? size"
+      :rounded-size="item.roundedSize ?? roundedSize"
       :color="item.color ?? color"
       class="m-button-group__button"
       @click="item.onClick"

@@ -1,5 +1,6 @@
 import type { MazUiThemeOptions, ThemePreset, ThemePresetName } from '@maz-ui/themes'
 import type { MazUiTranslationsOptions } from '@maz-ui/translations'
+import type { MazUiDefaultsOptions } from 'maz-ui/composables/useGlobalConfig'
 import type { VFullscreenImgOptions, VLazyImgOptions, VTooltipOptions } from 'maz-ui/directives'
 import type { AosOptions, DialogOptions, ToastOptions } from 'maz-ui/plugins'
 
@@ -58,6 +59,20 @@ export interface MazUiNuxtOptions {
    * }
    */
   translations?: MazUiTranslationsOptions
+
+  /**
+   * Global default prop values for components
+   * @description Set default prop values once for every component, with the priority:
+   * instance prop > `defaults[Component]` > `defaults.global` > library default.
+   * A global default never wins over a prop set on the component instance.
+   * @default {}
+   * @example {
+   *   global: { roundedSize: 'lg' },
+   *   MazBtn: { roundedSize: 'full' },
+   *   MazCard: { bordered: false, elevation: true },
+   * }
+   */
+  defaults?: MazUiDefaultsOptions
 
   /**
    * CSS and styles configuration

@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { MazColor, MazSizeUnit } from './types'
+import type { MazColor, MazRoundedSize, MazSizeUnit } from './types'
 import { MazPencil } from '@maz-ui/icons/lazy/MazPencil'
 import { computed, defineAsyncComponent } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 
 defineOptions({
@@ -21,7 +22,6 @@ const {
   color = 'primary',
   buttonColor = 'info',
   letterCount = undefined,
-  roundedSize = 'md',
   fallbackSrc = undefined,
   loading = 'intersecting',
 } = defineProps<MazAvatarProps>()
@@ -38,6 +38,8 @@ const emits = defineEmits<{
   /** Emitted when the image is in error */
   (name: 'error', el: Element): void
 }>()
+
+const { roundedSize } = useGlobalConfig<{ roundedSize: MazRoundedSize }>('MazAvatar', { roundedSize: 'md' })
 
 const MazLazyImg = defineAsyncComponent(() => import('./MazLazyImg.vue'))
 
@@ -87,7 +89,7 @@ export interface MazAvatarProps {
    * Size of the rounded
    * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  roundedSize?: MazRoundedSize
   /** The fallback src to replace the src on loading error */
   fallbackSrc?: string
   /**

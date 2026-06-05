@@ -162,6 +162,7 @@ To know how configure the CLI, check [theming options](https://maz-ui.com/ecosys
 - 🎣 [Composables](https://maz-ui.com/composables/use-form-validator) - Reusable composition functions
 - 📏 [Directives](https://maz-ui.com/directives/fullscreen-img) - Useful Vue directives
 - 🛠️ [Helpers](https://maz-ui.com/helpers/currency) - Useful utilities for common tasks
+- ⚙️ [Global component defaults](https://maz-ui.com/guide/global-defaults) - Set default prop values (rounded size, borders, density…) once via the `MazUi` plugin
 
 ## Icons
 

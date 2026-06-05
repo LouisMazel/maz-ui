@@ -214,6 +214,20 @@ describe('nuxt module', () => {
         )
       })
 
+      it('should add defaults plugin when defaults are set', () => {
+        callSetup({ defaults: { global: { roundedSize: 'lg' } } })
+        expect(addPlugin).toHaveBeenCalledWith(
+          expect.stringContaining('runtime/plugins/defaults'),
+        )
+      })
+
+      it('should not add defaults plugin when defaults are empty', () => {
+        callSetup({ defaults: {} })
+        expect(addPlugin).not.toHaveBeenCalledWith(
+          expect.stringContaining('runtime/plugins/defaults'),
+        )
+      })
+
       it('should add aos plugin when aos is enabled', () => {
         callSetup({ plugins: { aos: true } })
         expect(addPlugin).toHaveBeenCalledWith(

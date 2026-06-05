@@ -25,6 +25,7 @@ import {
   useTemplateRef,
   watch,
 } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useStringMatching } from '../composables/useStringMatching'
 import { hasSlotContent } from '../utils/hasSlotContent'
@@ -203,7 +204,6 @@ const {
   maxListWidth = undefined,
   minListWidth = undefined,
   minListHeight = undefined,
-  size = 'md',
   color = 'primary',
   transition = 'scale-fade',
   searchThreshold = 0.75,
@@ -287,6 +287,8 @@ const messages = computed(() => ({
 } satisfies MazUiTranslationsNestedSchema['select']))
 
 const isOpen = defineModel('open', { default: false })
+
+const { size } = useGlobalConfig<{ size: MazSize }>('MazSelect', { size: 'md' })
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazSelect',

@@ -182,6 +182,13 @@ export default defineNuxtConfig({
       autoImport: true, // Auto-import all components globally
     },
 
+    // Global component defaults (instance prop > defaults[Component] > defaults.global > library default)
+    defaults: {
+      global: { roundedSize: 'lg' }, // cross-cutting (roundedSize, size)
+      MazBtn: { roundedSize: 'full' }, // per-component, wins over global
+      MazCard: { bordered: false, elevation: true },
+    },
+
     // Composables (customize what you need)
     composables: {
       useTheme: true,

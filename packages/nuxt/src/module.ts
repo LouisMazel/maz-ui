@@ -167,6 +167,7 @@ const defaults = {
     fallbackLocale: 'en',
     preloadFallback: true,
   },
+  defaults: {},
   components: {
     autoImport: true,
   },
@@ -239,6 +240,10 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     addPlugin(resolve(_dirname, './runtime/plugins/theme'))
     addPlugin(resolve(_dirname, './runtime/plugins/translations'))
     addPlugin(resolve(_dirname, './runtime/plugins/maz-link-component'))
+
+    if (Object.keys(moduleOptions.defaults).length > 0) {
+      addPlugin(resolve(_dirname, './runtime/plugins/defaults'))
+    }
 
     // Components
 

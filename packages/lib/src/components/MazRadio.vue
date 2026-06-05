@@ -2,6 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
 import { computed, ref } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
 export interface MazRadioProps<T = string | number | boolean> {
@@ -41,7 +42,6 @@ const {
   modelValue,
   value,
   color = 'primary',
-  size = 'md',
   disabled = false,
   error,
   success,
@@ -71,6 +71,8 @@ const emits = defineEmits<{
   'focus': [value: FocusEvent]
 }>()
 
+const { size } = useGlobalConfig<{ size: MazSize }>('MazRadio', { size: 'md' })
+
 const instanceId = useInstanceUniqId({
   componentName: 'MazRadio',
   providedId: id,
@@ -82,7 +84,7 @@ const isFocused = ref(false)
 const isSelected = computed(() => modelValue === value)
 
 const radioSize = computed(() => {
-  switch (size) {
+  switch (size.value) {
     case 'xl': {
       return '2.25rem'
     }
