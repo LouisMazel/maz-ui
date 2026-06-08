@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
-    "@modelcontextprotocol/inspector": "^0.21.2",
+    "@modelcontextprotocol/inspector": "^0.22.0",
     "@swc/core": "1.15.33",
     "maz-ui": "workspace:*",
     "prettier": "^3.8.3",
