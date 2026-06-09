@@ -20,6 +20,7 @@ export const components = {
         { text: 'InputPrice', link: '/components/maz-input-price' },
         { text: 'InputTags', link: '/components/maz-input-tags' },
         { text: 'InputPhoneNumber', link: '/components/maz-input-phone-number' },
+        { text: withNewBadge('MarkdownEditor'), link: '/components/maz-markdown-editor' },
         { text: 'Radio', link: '/components/maz-radio' },
         { text: 'RadioButtons', link: '/components/maz-radio-buttons' },
         { text: 'Select (multiple)', link: '/components/maz-select' },
