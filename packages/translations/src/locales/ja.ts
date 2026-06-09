@@ -101,4 +101,16 @@ export default {
     copyUrlToClipboard: 'URLをクリップボードにコピー',
     urlCopiedToClipboard: 'URLがクリップボードにコピーされました',
   },
+  markdownEditor: {
+    write: '編集',
+    preview: 'プレビュー',
+    emptyPreview: 'プレビューする内容がありません',
+    toolbar: {
+      bold: '太字',
+      italic: '斜体',
+      list: '箇条書き',
+      link: 'リンク',
+      code: 'コード',
+    },
+  },
 } satisfies MazUiTranslationsNestedSchema

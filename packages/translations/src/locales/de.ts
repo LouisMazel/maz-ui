@@ -101,4 +101,16 @@ export default {
     copyUrlToClipboard: 'URL in Zwischenablage kopieren',
     urlCopiedToClipboard: 'URL in Zwischenablage kopiert',
   },
+  markdownEditor: {
+    write: 'Schreiben',
+    preview: 'Vorschau',
+    emptyPreview: 'Nichts zur Vorschau',
+    toolbar: {
+      bold: 'Fett',
+      italic: 'Kursiv',
+      list: 'Aufzählung',
+      link: 'Link',
+      code: 'Code',
+    },
+  },
 } satisfies MazUiTranslationsNestedSchema

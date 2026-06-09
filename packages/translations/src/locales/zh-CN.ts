@@ -101,4 +101,16 @@ export default {
     copyUrlToClipboard: '复制 URL 到剪贴板',
     urlCopiedToClipboard: 'URL 已复制到剪贴板',
   },
+  markdownEditor: {
+    write: '编辑',
+    preview: '预览',
+    emptyPreview: '没有可预览的内容',
+    toolbar: {
+      bold: '加粗',
+      italic: '斜体',
+      list: '无序列表',
+      link: '链接',
+      code: '代码',
+    },
+  },
 } satisfies MazUiTranslationsNestedSchema

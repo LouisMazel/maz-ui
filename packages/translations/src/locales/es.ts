@@ -101,4 +101,16 @@ export default {
     copyUrlToClipboard: 'Copiar URL al portapapeles',
     urlCopiedToClipboard: 'URL copiada al portapapeles',
   },
+  markdownEditor: {
+    write: 'Escribir',
+    preview: 'Vista previa',
+    emptyPreview: 'Nada que previsualizar',
+    toolbar: {
+      bold: 'Negrita',
+      italic: 'Cursiva',
+      list: 'Lista con viñetas',
+      link: 'Enlace',
+      code: 'Código',
+    },
+  },
 } satisfies MazUiTranslationsNestedSchema

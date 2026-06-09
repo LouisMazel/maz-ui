@@ -199,4 +199,24 @@ export default {
     copyUrlToClipboard: 'Copy URL to clipboard',
     urlCopiedToClipboard: 'URL copied to clipboard',
   },
+  /**
+   * This is the translation for the markdown editor component.
+   * The keys are:
+   * - write: Label for the write/edit tab.
+   * - preview: Label for the preview tab.
+   * - emptyPreview: Text shown in the preview tab when there is nothing to render.
+   * - toolbar.bold/italic/list/link/code: Accessible labels for the formatting toolbar buttons.
+   */
+  markdownEditor: {
+    write: 'Write',
+    preview: 'Preview',
+    emptyPreview: 'Nothing to preview',
+    toolbar: {
+      bold: 'Bold',
+      italic: 'Italic',
+      list: 'Bulleted list',
+      link: 'Link',
+      code: 'Code',
+    },
+  },
 }

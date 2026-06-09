@@ -101,4 +101,16 @@ export default {
     copyUrlToClipboard: 'Copier l\'URL dans le presse-papiers',
     urlCopiedToClipboard: 'URL copiée dans le presse-papiers',
   },
+  markdownEditor: {
+    write: 'Écrire',
+    preview: 'Aperçu',
+    emptyPreview: 'Rien à prévisualiser',
+    toolbar: {
+      bold: 'Gras',
+      italic: 'Italique',
+      list: 'Liste à puces',
+      link: 'Lien',
+      code: 'Code',
+    },
+  },
 } satisfies MazUiTranslationsNestedSchema
