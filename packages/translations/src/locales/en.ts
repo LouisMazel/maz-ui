@@ -202,21 +202,35 @@ export default {
   /**
    * This is the translation for the markdown editor component.
    * The keys are:
-   * - write: Label for the write/edit tab.
-   * - preview: Label for the preview tab.
-   * - emptyPreview: Text shown in the preview tab when there is nothing to render.
-   * - toolbar.bold/italic/list/link/code: Accessible labels for the formatting toolbar buttons.
+   * - write/preview/split: Labels for the editor mode tabs.
+   * - emptyPreview: Text shown in the preview pane when there is nothing to render.
+   * - toolbar.*: Accessible labels for the formatting toolbar buttons.
+   * - headings.h1/h2/h3: Labels for the heading dropdown options.
    */
   markdownEditor: {
     write: 'Write',
     preview: 'Preview',
+    split: 'Split',
     emptyPreview: 'Nothing to preview',
     toolbar: {
+      heading: 'Heading',
       bold: 'Bold',
       italic: 'Italic',
-      list: 'Bulleted list',
+      strikethrough: 'Strikethrough',
+      quote: 'Quote',
+      code: 'Inline code',
+      codeBlock: 'Code block',
       link: 'Link',
-      code: 'Code',
+      image: 'Image',
+      bulletList: 'Bulleted list',
+      orderedList: 'Numbered list',
+      checkList: 'Task list',
+      table: 'Table',
+    },
+    headings: {
+      h1: 'Heading 1',
+      h2: 'Heading 2',
+      h3: 'Heading 3',
     },
   },
 }
