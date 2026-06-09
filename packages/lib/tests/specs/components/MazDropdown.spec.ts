@@ -254,23 +254,24 @@ describe('components/MazDropdown.vue', () => {
 
   describe('given dropdown with different item types', () => {
     describe('when item has href', () => {
-      it('then MazLink is rendered', async () => {
+      it('then an anchor is rendered with the href', async () => {
         const wrapper = await getWrapper({ props: { items: [{ label: 'Profile', href: '/profile' }] } })
 
         await wrapper.find('[role="button"]').trigger('click')
 
-        const profileItem = wrapper.findComponent({ name: 'MazLink' })
+        const profileItem = wrapper.find('.menuitem')
+        expect(profileItem.element.tagName).toBe('A')
         expect(profileItem.attributes('href')).toBe('/profile')
       })
     })
 
     describe('when item has to property', () => {
-      it('then router-link is rendered', async () => {
+      it('then a router-link is rendered', async () => {
         const wrapper = await getWrapper({ props: { items: [{ label: 'About', to: '/about' }] } })
 
         await wrapper.find('[role="button"]').trigger('click')
 
-        const aboutItem = wrapper.findComponent({ name: 'MazLink' })
+        const aboutItem = wrapper.find('.menuitem')
         expect(aboutItem.attributes('to')).toBe('/about')
       })
     })
@@ -290,7 +291,7 @@ describe('components/MazDropdown.vue', () => {
 
         await wrapper.find('[role="button"]').trigger('click')
 
-        const externalItem = wrapper.findComponent({ name: 'MazLink' })
+        const externalItem = wrapper.find('.menuitem')
         expect(externalItem.attributes('target')).toBe('_blank')
       })
     })

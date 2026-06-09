@@ -77,6 +77,7 @@ const COMPONENT_NAMES: Omit<
   MazLazyImg: true,
   MazLink: true,
   MazLoadingBar: true,
+  MazMarkdownEditor: true,
   MazPagination: true,
   MazDatePicker: true,
   MazPullToRefresh: true,

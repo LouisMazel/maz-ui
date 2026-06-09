@@ -9,25 +9,23 @@ interface Props {
   disabled?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  disabled: false,
-})
+const { modelValue, disabled = false } = defineProps<Props>()
 
 const emit = defineEmits<{
-  'update:modelValue': [value: CSSColor]
+  'update:model-value': [value: CSSColor]
 }>()
 
 const colorInput = ref<HTMLInputElement>()
 
-const hexValue = computed(() => colorToHex(props.modelValue))
+const hexValue = computed(() => colorToHex(modelValue))
 
 function handleColorChange(event: Event) {
   const target = event.target as HTMLInputElement
   const oklch = formatAsOklch(parseColorAsOklch(target.value))
-  emit('update:modelValue', oklch)
+  emit('update:model-value', oklch)
 }
 
-watch(() => props.modelValue, () => {
+watch(() => modelValue, () => {
   if (colorInput.value) {
     colorInput.value.value = hexValue.value
   }

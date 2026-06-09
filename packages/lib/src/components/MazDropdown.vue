@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazIconLike } from '../composables/useMazIconProps'
-import type { MazLinkProps } from './MazLink.vue'
+import type { MazBtnProps } from './MazBtn.vue'
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
 import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
@@ -54,7 +54,6 @@ const { size } = useGlobalConfig<{ size: MazSize }>('MazDropdown', { size: 'md' 
 
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
-const MazLink = defineAsyncComponent(() => import('./MazLink.vue'))
 
 const { iconProps: dropdownIconProps } = useMazIconProps(() => dropdownIcon ?? MazChevronDown)
 
@@ -71,18 +70,18 @@ type MazDropdownItemBase = Record<string, unknown> & {
   color?: MazColor
 }
 
-type MazDropdownLinkItem = MazDropdownItemBase & MazLinkProps & {
+type MazDropdownLinkItem = MazDropdownItemBase & MazBtnProps & {
   target?: string
   href?: string
   to?: RouteLocationRaw
 }
 
-type MazDropdownActionItem = MazDropdownItemBase & {
+type MazDropdownActionItem = MazDropdownItemBase & MazBtnProps & {
   onClick?: () => unknown
 }
 
 export type MazDropdownMenuItem
-  = | (MazDropdownLinkItem & { action?: never })
+  = | (MazDropdownLinkItem & { onClick?: never })
     | (MazDropdownActionItem & { href?: never, to?: never, target?: never })
 
 export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue' | 'role'> {
@@ -455,19 +454,21 @@ watch(
               @binding {() => void} toggle - Function to toggle the dropdown
             -->
             <slot name="menuitem" :item="item" :open="open" :close="close" :is-open="isOpen" :toggle="toggle">
-              <template v-if="isLinkItem(item)">
-                <MazLink
-                  :target="item.href ? item.target ?? '_self' : undefined"
-                  :to="item.to"
-                  :href="item.href"
-                  :color="item.color ?? 'contrast'"
-                  v-bind="item"
-                  :underline-only-hover="item.underlineOnlyHover ?? false"
-                  class="menuitem"
-                  :class="[item.class]"
-                  @click.stop="closeDropdown"
-                >
-                  <!--
+              <MazBtn
+                v-bind="{ ...item, onClick: undefined, label: undefined }"
+                :target="isLinkItem(item) ? item.target ?? '_self' : undefined"
+                :to="isLinkItem(item) ? item.to : undefined"
+                :href="isLinkItem(item) ? item.href : undefined"
+                class="menuitem"
+                :class="[item.class, isLinkItem(item) ? 'menuitem__link' : 'menuitem__button']"
+                :justify="item.justify ?? 'start'"
+                :color="item.color ?? 'transparent'"
+                :size="item.size ?? size"
+                :disabled="item.disabled ?? false"
+                @click.stop="runAction(item, $event)"
+                @keypress.enter.stop.prevent="runAction(item, $event)"
+              >
+                <!--
                     @slot Label content for menu item
                     @binding {MenuItem} item - Individual menu item object containing label and other properties
                     @binding {() => void} close - Function to close the dropdown
@@ -476,34 +477,10 @@ watch(
                     @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
                     @binding {() => void} toggle - Function to toggle the dropdown
                   -->
-                  <slot name="menuitem-label" :item="item" :open="open" :close="close" :is-open="isOpen" :toggle="toggle">
-                    {{ item.label }}
-                  </slot>
-                </MazLink>
-              </template>
-              <template v-else>
-                <button
-                  type="button"
-                  v-bind="{ ...item, onClick: undefined }"
-                  class="menuitem menuitem__button"
-                  :class="[item.class, item.color ? `--${item.color}` : '']"
-                  @click.stop="runAction(item, $event)"
-                  @keypress.enter.stop.prevent="runAction(item, $event)"
-                >
-                  <!--
-                    @slot Label content for menu item
-                    @binding {MenuItem} item - Individual menu item object containing label and other properties
-                    @binding {() => void} close - Function to close the dropdown
-                    @binding {() => void} open - Function to open the dropdown
-                    @binding {() => void} toggle - Function to toggle the dropdown
-                    @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
-                    @binding {() => void} toggle - Function to toggle the dropdown
-                  -->
-                  <slot name="menuitem-label" :item="item" :open="open" :close="close" :is-open="isOpen" :toggle="toggle">
-                    {{ item.label }}
-                  </slot>
-                </button>
-              </template>
+                <slot name="menuitem-label" :item="item" :open="open" :close="close" :is-open="isOpen" :toggle="toggle">
+                  {{ item.label }}
+                </slot>
+              </MazBtn>
             </slot>
           </template>
         </slot>
@@ -525,46 +502,7 @@ watch(
 
 .m-dropdown__menu {
   .menuitem {
-    @apply maz:outline-hidden maz:cursor-pointer maz:whitespace-nowrap maz:rounded-md maz:px-4 maz:py-2 maz:text-start
-     maz:transition-colors maz:duration-300 maz:ease-in-out maz:focus:bg-surface-600 maz:dark:focus:bg-surface-400 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
-
-    &.menuitem__button {
-      &:disabled {
-        @apply maz:disabled-state;
-      }
-
-      &.--primary {
-        @apply maz:text-primary maz:hover:text-primary-600;
-      }
-
-      &.--secondary {
-        @apply maz:text-secondary maz:hover:text-secondary-600;
-      }
-
-      &.--info {
-        @apply maz:text-info maz:hover:text-info-600;
-      }
-
-      &.--warning {
-        @apply maz:text-warning-600 maz:hover:text-warning-600;
-      }
-
-      &.--destructive {
-        @apply maz:text-destructive-600 maz:hover:text-destructive-600;
-      }
-
-      &.--success {
-        @apply maz:text-success-600 maz:hover:text-success-600;
-      }
-
-      &.--contrast {
-        @apply maz:text-contrast maz:hover:text-contrast-600;
-      }
-
-      &.--accent {
-        @apply maz:text-accent maz:hover:text-accent-600;
-      }
-    }
+    @apply maz:text-start maz:cursor-pointer maz:whitespace-nowrap maz:outline-hidden;
   }
 }
 </style>
