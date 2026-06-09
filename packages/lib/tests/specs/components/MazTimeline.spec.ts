@@ -227,7 +227,7 @@ describe('given MazTimeline component', () => {
 
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('click')
 
-      expect(wrapper.emitted('update:modelValue')).toEqual([[1]])
+      expect(wrapper.emitted('update:model-value')).toEqual([[1]])
     })
 
     it('then it emits click-step with step data and index on click', async () => {
@@ -245,7 +245,7 @@ describe('given MazTimeline component', () => {
 
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('click')
 
-      expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+      expect(wrapper.emitted('update:model-value')).toBeUndefined()
       expect(wrapper.emitted('click-step')).toBeUndefined()
     })
 
@@ -261,7 +261,7 @@ describe('given MazTimeline component', () => {
 
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('click')
 
-      expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+      expect(wrapper.emitted('update:model-value')).toBeUndefined()
       expect(wrapper.emitted('click-step')).toBeUndefined()
     })
   })
@@ -372,7 +372,7 @@ describe('given MazTimeline component', () => {
 
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('keydown', { key: 'Enter' })
 
-      expect(wrapper.emitted('update:modelValue')).toEqual([[1]])
+      expect(wrapper.emitted('update:model-value')).toEqual([[1]])
       expect(wrapper.emitted('click-step')).toEqual([[{ step: defaultSteps[1], index: 1 }]])
     })
 
@@ -381,7 +381,7 @@ describe('given MazTimeline component', () => {
 
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('keydown', { key: ' ' })
 
-      expect(wrapper.emitted('update:modelValue')).toEqual([[1]])
+      expect(wrapper.emitted('update:model-value')).toEqual([[1]])
       expect(wrapper.emitted('click-step')).toEqual([[{ step: defaultSteps[1], index: 1 }]])
     })
 
@@ -426,7 +426,7 @@ describe('given MazTimeline component', () => {
 
       await stepElements[0]!.trigger('keydown', { key: 'ArrowLeft' })
 
-      expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+      expect(wrapper.emitted('update:model-value')).toBeUndefined()
     })
 
     it('then arrow navigation does nothing for unrelated keys', async () => {
@@ -435,7 +435,7 @@ describe('given MazTimeline component', () => {
 
       await stepElements[0]!.trigger('keydown', { key: 'Tab' })
 
-      expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+      expect(wrapper.emitted('update:model-value')).toBeUndefined()
     })
   })
 
@@ -735,7 +735,7 @@ describe('given MazTimeline component', () => {
 
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('keydown', { key: 'Enter' })
 
-      expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+      expect(wrapper.emitted('update:model-value')).toBeUndefined()
     })
   })
 

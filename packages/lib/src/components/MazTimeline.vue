@@ -129,7 +129,7 @@ const emit = defineEmits<{
    * Emitted when the active step changes
    * @param value - The new active step index
    */
-  'update:modelValue': [value: number]
+  'update:model-value': [value: number]
   /**
    * Emitted when a clickable step is clicked
    * @param payload - The step data and its index
@@ -264,7 +264,7 @@ function onStepClick(step: MazTimelineItem, index: number) {
   if (!clickable || step.disabled) {
     return
   }
-  emit('update:modelValue', index)
+  emit('update:model-value', index)
   emit('click-step', { step, index })
 }
 
