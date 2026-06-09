@@ -1,11 +1,14 @@
 <script lang="ts" setup>
+import type { ButtonHTMLAttributes } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { MazBtnProps } from './MazBtn.vue'
 import type { MazColor, MazSize } from './types'
 import { defineAsyncComponent } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig'
 
-export interface MazButtonGroupOption extends Omit<MazBtnProps, 'block' | 'fab'> {
+type MazButtonGroupOptionBase = Omit<MazBtnProps, 'block' | 'fab'> & ButtonHTMLAttributes
+
+export interface MazButtonGroupOption extends MazButtonGroupOptionBase {
   /** Click handler for the button */
   onClick?: () => void
   /** The href for anchor links */

@@ -265,7 +265,7 @@ describe('MazDropdown extended coverage', () => {
       })
       await wrapper.find('[role="button"]').trigger('click')
 
-      const link = wrapper.findComponent({ name: 'MazLink' })
+      const link = wrapper.find('.menuitem')
       expect(link.attributes('target')).toBe('_blank')
     })
   })
@@ -277,7 +277,7 @@ describe('MazDropdown extended coverage', () => {
       })
       await wrapper.find('[role="button"]').trigger('click')
 
-      const link = wrapper.findComponent({ name: 'MazLink' })
+      const link = wrapper.find('.menuitem')
       expect(link.attributes('target')).toBe('_self')
     })
   })

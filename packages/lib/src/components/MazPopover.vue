@@ -161,12 +161,14 @@ export interface MazPopoverProps {
   hoverDelay?: number
   /**
    * CSS transition name for animations
-   * @default popover
+   * @default 'scale-pop'
+   * @values 'scale-pop' | 'scale-fade' | string
+   * @description 'scale-pop' | 'scale-fade' for default transitions. 'scale-pop' is a pop effect, 'scale-fade' is a fade effect.
    */
   transition?: 'scale-pop' | 'scale-fade' | string
   /**
    * Teleport target selector
-   * @default body
+   * @default 'body'
    */
   teleportTo?: string
   /**
