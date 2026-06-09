@@ -1,6 +1,6 @@
 ---
 title: MazMarkdownEditor
-description: MazMarkdownEditor is a GitHub-style markdown editor with Write/Preview tabs, an optional formatting toolbar, and a sanitized preview. It shares the same states, labels and theming as MazTextarea, is SSR-friendly, and supports custom renderers.
+description: MazMarkdownEditor is a GitHub-style markdown editor with Write/Preview/Split tabs, a configurable formatting toolbar, optional line numbers, and a sanitized preview. It shares the same states, labels and theming as MazTextarea, is SSR-friendly, and supports custom renderers.
 ---
 
 # {{ $frontmatter.title }}
@@ -36,7 +36,7 @@ If they are not installed, the preview falls back to a safe, escaped plain-text 
 The component exposes a `v-model` bound to the raw markdown string and two tabs: **Write** (textarea) and **Preview** (rendered, sanitized HTML).
 
 <ComponentDemo>
-  <MazMarkdownEditor v-model="basic" />
+  <MazMarkdownEditor v-model="basic" placeholder="markdown goes here" />
 
   <template #code>
 
@@ -58,7 +58,7 @@ The component exposes a `v-model` bound to the raw markdown string and two tabs:
 
 ## Toolbar
 
-The formatting toolbar (bold, italic, bulleted list, link, inline code) is opt-in. Enable it with the `toolbar` prop. Buttons act on the current textarea selection.
+The formatting toolbar is opt-in. Set `toolbar` to `true` to display the full toolbar. Buttons act on the current textarea selection and preserve the native undo/redo history (`Cmd/Ctrl + Z`).
 
 <ComponentDemo>
   <MazMarkdownEditor v-model="withToolbar" toolbar />
@@ -81,6 +81,88 @@ The formatting toolbar (bold, italic, bulleted list, link, inline code) is opt-i
   </template>
 </ComponentDemo>
 
+### Available actions
+
+The full toolbar exposes the following action keys:
+
+| Key | Result |
+| --- | --- |
+| `heading` | Heading dropdown (`#`, `##`, `###`) |
+| `bold` | `**bold**` |
+| `italic` | `_italic_` |
+| `strikethrough` | `~~strikethrough~~` |
+| `quote` | `> quote` |
+| `code` | `` `inline code` `` |
+| `codeBlock` | fenced ` ``` ` code block |
+| `link` | `[text](url)` |
+| `image` | `![alt](url)` |
+| `bulletList` | `- item` |
+| `orderedList` | `1. item` |
+| `checkList` | `- [ ] task` |
+| `table` | markdown table skeleton |
+
+### Configure the toolbar
+
+Pass an **ordered array of action keys** to display only a subset (and control their order):
+
+<ComponentDemo>
+  <MazMarkdownEditor v-model="withToolbarConfig" :toolbar="['heading', 'bold', 'italic', 'link', 'codeBlock']" />
+
+  <template #code>
+
+```vue
+<template>
+  <MazMarkdownEditor
+    v-model="content"
+    :toolbar="['heading', 'bold', 'italic', 'link', 'codeBlock']"
+  />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Keyboard shortcuts
+
+Classic markdown shortcuts are enabled by default and work whenever the textarea is focused. They preserve the native undo/redo history. The toolbar buttons also display their shortcut in the tooltip. Use `mod` for `Cmd` on macOS and `Ctrl` elsewhere.
+
+| Shortcut | Action |
+| --- | --- |
+| `mod + B` | Bold |
+| `mod + I` | Italic |
+| `mod + Shift + X` | Strikethrough |
+| `mod + K` | Link |
+| `mod + E` | Inline code |
+| `mod + Shift + E` | Code block |
+| `mod + Shift + .` | Quote |
+| `mod + Shift + 8` | Bulleted list |
+| `mod + Shift + 7` | Numbered list |
+| `mod + Shift + L` | Task list |
+| `mod + Alt + 1/2/3` | Heading 1/2/3 |
+
+Disable them with `:shortcuts="false"`:
+
+```vue
+<template>
+  <MazMarkdownEditor v-model="content" toolbar :shortcuts="false" />
+</template>
+```
+
+::: tip
+Image and table insertions have no default shortcut (to avoid clashing with browser shortcuts). Use the toolbar buttons or the `toolbar` slot helpers for those.
+:::
+
+## List continuation
+
+Pressing <kbd>Enter</kbd> inside a list automatically inserts the next marker, just like a desktop markdown editor:
+
+- Bulleted lists (`-`, `*`, `+`) repeat the marker.
+- Numbered lists increment the index (`1.` → `2.`).
+- Task lists insert a fresh unchecked box (`- [ ] `).
+- Indentation is preserved.
+
+Pressing <kbd>Enter</kbd> again on an empty item removes the marker and exits the list. This works out of the box, no configuration required.
+
 ## Label & assistive text
 
 Like `MazTextarea`, the editor supports a static `top-label` (or `label`), the `required` asterisk and an `assistive-text` displayed below the editor.
@@ -89,6 +171,7 @@ Like `MazTextarea`, the editor supports a static `top-label` (or `label`), the `
   <MazMarkdownEditor
     v-model="withLabel"
     top-label="Description"
+    placeholder="Markdown goes here"
     assistive-text="Markdown is supported"
     required
   />
@@ -127,6 +210,49 @@ Use `error`, `success`, `warning`, `disabled` and `readonly` to reflect validati
   <MazMarkdownEditor v-model="content" error assistive-text="This field has an error" />
   <MazMarkdownEditor v-model="content" success assistive-text="Looks good!" />
   <MazMarkdownEditor v-model="content" disabled />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Split mode
+
+A third tab displays the editor and the preview side by side. Switch to it from the toolbar tabs, or control it with `v-model:mode` (`'write' | 'preview' | 'split'`). On small screens the two panes stack vertically.
+
+<ComponentDemo>
+  <MazMarkdownEditor v-model="splitContent" mode="split" />
+
+  <template #code>
+
+```vue
+<template>
+  <MazMarkdownEditor v-model="content" mode="split" />
+</template>
+
+<script lang="ts" setup>
+  import { ref } from 'vue'
+  import MazMarkdownEditor from 'maz-ui/components/MazMarkdownEditor'
+
+  const content = ref('# Split view\n\nType on the left, see the **preview** on the right.')
+</script>
+```
+
+  </template>
+</ComponentDemo>
+
+## Line numbers
+
+Enable the `line-numbers` prop to display a gutter on the left of the editor. Numbers reflect logical lines and stay in sync with the textarea scroll.
+
+<ComponentDemo>
+  <MazMarkdownEditor v-model="lineNumbersContent" line-numbers />
+
+  <template #code>
+
+```vue
+<template>
+  <MazMarkdownEditor v-model="content" line-numbers />
 </template>
 ```
 
@@ -175,7 +301,7 @@ By default, the rendered HTML is sanitized with DOMPurify to prevent XSS. Disabl
 
 ## Controlled mode
 
-The active tab is available through `v-model:mode` (`'write' | 'preview'`).
+The active tab is available through `v-model:mode` (`'write' | 'preview' | 'split'`).
 
 ```vue
 <template>
@@ -188,7 +314,7 @@ The active tab is available through `v-model:mode` (`'write' | 'preview'`).
   import MazMarkdownEditor from 'maz-ui/components/MazMarkdownEditor'
 
   const content = ref('')
-  const mode = ref<'write' | 'preview'>('write')
+  const mode = ref<'write' | 'preview' | 'split'>('write')
 </script>
 ```
 
@@ -225,6 +351,9 @@ For app-wide translations, set up the [maz-ui translations plugin](/translations
 
   const basic = ref('# Hello maz-ui\n\nThis is **markdown** with a [link](https://maz-ui.com).')
   const withToolbar = ref('Select some text and click **Bold**.')
+  const withToolbarConfig = ref('Only a few buttons here.')
+  const splitContent = ref('# Split view\n\nType on the left, see the **preview** on the right.')
+  const lineNumbersContent = ref('Line one\nLine two\nLine three')
   const withLabel = ref('')
   const stateError = ref('Invalid content')
   const stateSuccess = ref('Valid content')
