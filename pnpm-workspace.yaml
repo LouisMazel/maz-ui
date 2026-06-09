@@ -16,6 +16,7 @@ minimumReleaseAgeExclude:
   - vite-plugin-dts@5.0.1
   - vue-tsc@3.3.0
   - '@yoloship/*'
+  - relizy@1.4.7
 shellEmulator: true
 
 # eslint-disable-next-line pnpm/yaml-enforce-settings
