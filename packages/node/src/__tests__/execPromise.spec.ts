@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { execPromise } from '../execPromise'
 
 describe('given execPromise function', () => {
@@ -292,6 +293,60 @@ describe('given execPromise function', () => {
       it('then resolves normally', async () => {
         const result = await execPromise('echo "fast"', { timeout: 5000, noSuccess: true })
         expect(result.stdout.trim()).toBe('fast')
+      })
+    })
+  })
+
+  describe('given env option', () => {
+    describe('when env is provided', () => {
+      it('then merges it with process.env', async () => {
+        process.env.EXEC_PROMISE_EXISTING = 'from-process'
+        const result = await execPromise('echo "$EXEC_PROMISE_EXISTING-$EXEC_PROMISE_NEW"', {
+          env: { EXEC_PROMISE_NEW: 'from-option' },
+          noSuccess: true,
+        })
+        delete process.env.EXEC_PROMISE_EXISTING
+        expect(result.stdout.trim()).toBe('from-process-from-option')
+      })
+    })
+  })
+
+  describe('given maxBuffer option', () => {
+    describe('when the output exceeds maxBuffer', () => {
+      it('then rejects', async () => {
+        await expect(
+          execPromise('seq 1 1000', { maxBuffer: 100, noError: true }),
+        ).rejects.toThrow()
+      })
+    })
+  })
+
+  describe('given signal option', () => {
+    describe('when the signal is aborted', () => {
+      it('then rejects', async () => {
+        const controller = new AbortController()
+        const promise = execPromise('sleep 2', { signal: controller.signal, noError: true })
+        controller.abort()
+        await expect(promise).rejects.toThrow()
+      })
+    })
+  })
+
+  describe('given shell option', () => {
+    describe('when a custom shell is provided', () => {
+      it('then runs the command with it', async () => {
+        const result = await execPromise('echo shell-ok', { shell: '/bin/bash', noSuccess: true })
+        expect(result.stdout.trim()).toBe('shell-ok')
+      })
+    })
+  })
+
+  describe('given killSignal option', () => {
+    describe('when the command times out with a custom kill signal', () => {
+      it('then rejects', async () => {
+        await expect(
+          execPromise('sleep 2', { timeout: 50, killSignal: 'SIGKILL', noError: true }),
+        ).rejects.toThrow()
       })
     })
   })
