@@ -15,6 +15,11 @@ packages:
   - tools/*
   - .
 
+# Pin 3.3.2: 3.3.3+ regress on multiple same-event handlers (vuejs/language-tools#6096)
+overrides:
+  '@vue/language-core': 3.3.2
+  vue-tsc: 3.3.2
+
 onlyBuiltDependencies:
   - '@swc/core'
   - nx
