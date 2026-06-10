@@ -49,9 +49,14 @@ export interface MazBtnProps {
   size?: MazSize
   /**
    * The color of the button
-   * @values `'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'destructive' | 'transparent' | 'contrast' | 'accent' | 'surface'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'transparent' | 'surface'`
    */
   color?: MazColor | 'surface'
+  /**
+   * The text color of the button
+   * @values `primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'transparent' | 'muted'`
+   */
+  textColor?: MazColor | 'muted'
   /**
    * The type of the button
    * @values `'submit' | 'reset' | 'button'`
@@ -176,7 +181,20 @@ const btnStyle = computed<CSSProperties>(() => {
   }
 })
 
-const SIZE_CLASS = {
+const TEXT_COLOR: Record<NonNullable<MazBtnProps['textColor']>, string> = {
+  primary: 'maz:text-primary!',
+  secondary: 'maz:text-secondary!',
+  accent: 'maz:text-accent!',
+  info: 'maz:text-info!',
+  success: 'maz:text-success!',
+  warning: 'maz:text-warning!',
+  destructive: 'maz:text-destructive!',
+  contrast: 'maz:text-contrast!',
+  transparent: 'maz:text-transparent!',
+  muted: 'maz:text-muted!',
+} as const
+
+const SIZE_CLASS: Record<NonNullable<MazBtnProps['size']>, string> = {
   xl: 'maz:min-h-16 maz:px-8 maz:text-xl',
   lg: 'maz:min-h-14 maz:px-6',
   md: 'maz:min-h-12 maz:px-4',
@@ -185,7 +203,7 @@ const SIZE_CLASS = {
   mini: 'maz:min-h-6 maz:px-1 maz:text-xs',
 } as const
 
-const ROUNDED_CLASS = {
+const ROUNDED_CLASS: Record<NonNullable<MazBtnProps['roundedSize']>, string> = {
   none: '',
   sm: 'maz:rounded-xs',
   md: 'maz:rounded-md',
@@ -194,7 +212,7 @@ const ROUNDED_CLASS = {
   full: 'maz:rounded-full',
 } as const
 
-const FAB_SIZE_CLASS = {
+const FAB_SIZE_CLASS: Record<NonNullable<MazBtnProps['size']>, string> = {
   xl: 'maz:w-16',
   lg: 'maz:w-14',
   md: 'maz:w-12',
@@ -203,7 +221,7 @@ const FAB_SIZE_CLASS = {
   mini: 'maz:w-6',
 } as const
 
-const ICON_PADDING_CLASS = {
+const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: string, end: string }> = {
   xl: { start: 'maz:ps-6', end: 'maz:pe-6' },
   lg: { start: 'maz:ps-4', end: 'maz:pe-4' },
   md: { start: 'maz:ps-2', end: 'maz:pe-2' },
@@ -221,6 +239,7 @@ const ICON_PADDING_CLASS = {
     :class="[
       `--${resolvedColor}`,
       `--${size}`,
+      textColor && `${TEXT_COLOR[textColor]}`,
       !fab && roundedSize ? `--rounded-${roundedSize}` : '',
       SIZE_CLASS[size],
       fab ? 'maz:flex maz:flex-center maz:rounded-full maz:p-1' : ROUNDED_CLASS[roundedSize],
@@ -299,6 +318,8 @@ const ICON_PADDING_CLASS = {
   background-color: var(--m-btn-bg);
   color: var(--m-btn-fg);
   font-weight: var(--maz-btn-font-weight, 500);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 
   &:not(:disabled):hover {
     background-color: var(--m-btn-bg-hover);
@@ -307,6 +328,10 @@ const ICON_PADDING_CLASS = {
   &:not(:disabled):active,
   &.--active {
     background-color: var(--m-btn-bg-active);
+  }
+
+  &:focus-visible {
+    outline-color: var(--m-btn-bg, var(--maz-primary));
   }
 
   &-loader-container {
