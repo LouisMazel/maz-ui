@@ -264,6 +264,38 @@ describe('given execPromise function', () => {
     })
   })
 
+  describe('given timeout option', () => {
+    describe('when the command exceeds the timeout', () => {
+      it('then rejects', async () => {
+        await expect(
+          execPromise('sleep 2', { timeout: 50, noError: true }),
+        ).rejects.toThrow()
+      })
+
+      it('then logs a timeout message with the duration', async () => {
+        const logger = {
+          log: vi.fn(),
+          error: vi.fn(),
+          info: vi.fn(),
+          warn: vi.fn(),
+          debug: vi.fn(),
+        }
+        await expect(execPromise('sleep 2', { timeout: 50, logger })).rejects.toThrow()
+        expect(logger.error).toHaveBeenCalledWith(
+          expect.stringContaining('timed out after 50ms'),
+          expect.anything(),
+        )
+      })
+    })
+
+    describe('when the command finishes before the timeout', () => {
+      it('then resolves normally', async () => {
+        const result = await execPromise('echo "fast"', { timeout: 5000, noSuccess: true })
+        expect(result.stdout.trim()).toBe('fast')
+      })
+    })
+  })
+
   describe('given debug logging', () => {
     describe('when command produces both stdout and stderr', () => {
       it('then logs debug messages for both outputs', async () => {
