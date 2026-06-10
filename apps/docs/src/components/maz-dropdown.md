@@ -16,10 +16,12 @@ description: MazDropdown is a standalone dropdown menu component and versatile d
 <ComponentDemo>
   <MazDropdown
     :items="[
+      { label: 'Louis Mazel', textColor: 'muted' },
       { label: 'Action', onClick: () => toast.success('CLICKED') },
       { label: 'Link (href)', href: 'https://www.google.com', target: '_blank', color: 'secondary' },
       { label: 'Router Link', to: { name: 'index' }, color: 'destructive' },
     ]"
+    items-size="sm"
   >
     Dropdown Menu
   </MazDropdown>
@@ -82,6 +84,7 @@ This provides the best user experience across all devices without requiring manu
 ## Open dropdown only on click
 
 <MazDropdown
+  :model-value="true"
   :items="[
     { label: 'Action', onClick: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
@@ -220,8 +223,9 @@ You can provide an icon to replace the default chevron icon and disable the anim
   fab
   pastel
   :chevron="false"
-  icon="/bars-3.svg"
+  :icon="MazBars3"
   size="xl"
+  items-size="sm"
   :items="[
     { label: 'Action', onClick: () => toast.success('CLICKED') },
     { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
@@ -230,22 +234,33 @@ You can provide an icon to replace the default chevron icon and disable the anim
   :close-on-click="false"
 />
 
-```html{2-7}
-<MazDropdown
-  color="primary"
-  fab
-  pastel
-  :chevron="false"
-  icon="/bars-3.svg"
-  size="xl"
-  :items="[
-    { label: 'Action', onClick: () => toast.success('CLICKED') },
-    { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
-    { label: 'Router Link', to: { name: 'index' } },
-  ]"
-  :close-on-click="false"
-/>
+::: details View code
+
+```vue{7-13}
+<script lang="ts" setup>
+  import { MazBars3 } from '@maz-ui/icons/raw/MazBars3'
+</script>
+
+<template>
+  <MazDropdown
+    color="primary"
+    fab
+    pastel
+    :chevron="false"
+    :icon="MazBars3"
+    items-size="sm"
+    size="xl"
+    :items="[
+      { label: 'Action', onClick: () => toast.success('CLICKED') },
+      { label: 'Link (href)', href: 'https://www.google.com', target: '_blank' },
+      { label: 'Router Link', to: { name: 'index' } },
+    ]"
+    :close-on-click="false"
+  />
+</template>
 ```
+
+:::
 
 ## Custom slots
 
@@ -654,6 +669,7 @@ type MazDropdownMenuItem = {
   import { ref, onMounted } from 'vue'
   import { useToast } from 'maz-ui/composables/useToast'
   import { MazChevronUpDown } from '@maz-ui/icons/raw/MazChevronUpDown'
+  import { MazBars3 } from '@maz-ui/icons/raw/MazBars3'
 
   const toast = useToast()
 

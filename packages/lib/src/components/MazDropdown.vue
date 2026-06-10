@@ -115,6 +115,13 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue' | '
    */
   items?: MazDropdownMenuItem[]
   /**
+   * Size of the dropdown menu items
+   * @type {MazSize}
+   * @values 'mini', 'xs', 'sm', 'md', 'lg', 'xl'
+   * @default undefined
+   */
+  itemsSize?: MazSize
+  /**
    * Unique identifier for the dropdown component
    * @type {string}
    */
@@ -243,6 +250,10 @@ function isLinkItem(item: MazDropdownMenuItem): item is MazDropdownLinkItem {
   return 'href' in item || 'to' in item
 }
 
+function hasLinkOrAction(item: MazDropdownMenuItem): boolean {
+  return isLinkItem(item) || 'onClick' in item
+}
+
 async function runAction(item: MazDropdownActionItem, event: Event) {
   emits('menuitem-clicked', event)
 
@@ -279,7 +290,9 @@ function arrowHandler(event: KeyboardEvent) {
     return
 
   const currentElement = document.activeElement as HTMLElement
-  const itemsElements = document.querySelectorAll<HTMLElement>(`#${instanceId.value}-menu .menuitem`)
+  const itemsElements = Array.from(document.querySelectorAll<HTMLElement>(`#${instanceId.value}-menu .menuitem`)).filter(
+    el => el.getAttribute('tabindex') !== '-1',
+  )
   const currentIndex = [...itemsElements].indexOf(currentElement)
 
   if (currentIndex === -1) {
@@ -428,7 +441,7 @@ watch(
         :id="`${instanceId}-menu`"
         role="menu"
         aria-label="Menu"
-        class="m-dropdown__menu maz:flex maz:min-h-max maz:min-w-max maz:flex-col maz:gap-0.5 maz:overflow-auto maz:p-2"
+        class="m-dropdown__menu maz:flex maz:min-h-max maz:min-w-max maz:flex-col maz:gap-1 maz:overflow-auto maz:p-2"
         tabindex="-1"
         :class="menuPanelClass"
         :style="menuPanelStyle"
@@ -436,13 +449,20 @@ watch(
         <!--
           @slot Dropdown menu panel content
           @binding {MazDropdownMenuItem[]} items - Array of menu items passed via the items prop
+          @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
           @binding {() => void} close - Function to close the dropdown
           @binding {() => void} open - Function to open the dropdown
           @binding {() => void} toggle - Function to toggle the dropdown
-          @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
-          @binding {() => void} toggle - Function to toggle the dropdown
         -->
         <slot name="dropdown" :items="items" :open="open" :close="close" :is-open="isOpen" :toggle="toggle">
+          <!--
+            @slot Prepend to the list of menu items
+            @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
+            @binding {() => void} close - Function to close the dropdown
+            @binding {() => void} open - Function to open the dropdown
+            @binding {() => void} toggle - Function to toggle the dropdown
+          -->
+          <slot name="prepend-menu" :is-open="isOpen" :open="open" :close="close" :toggle="toggle" />
           <template v-for="(item, index) in items" :key="index">
             <!--
               @slot Menu item component
@@ -460,11 +480,12 @@ watch(
                 :to="isLinkItem(item) ? item.to : undefined"
                 :href="isLinkItem(item) ? item.href : undefined"
                 class="menuitem"
-                :class="[item.class, isLinkItem(item) ? 'menuitem__link' : 'menuitem__button']"
+                :class="[{ 'menuitem--hoverable': hasLinkOrAction(item) }, item.class, isLinkItem(item) ? 'menuitem__link' : 'menuitem__button', `menuitem--${item.color}`]"
                 :justify="item.justify ?? 'start'"
                 :color="item.color ?? 'transparent'"
-                :size="item.size ?? size"
+                :size="itemsSize ?? item.size ?? size"
                 :disabled="item.disabled ?? false"
+                :tabindex="hasLinkOrAction(item) ? 0 : -1"
                 @click.stop="runAction(item, $event)"
                 @keypress.enter.stop.prevent="runAction(item, $event)"
               >
@@ -483,6 +504,14 @@ watch(
               </MazBtn>
             </slot>
           </template>
+          <!--
+            @slot Append to the list of menu items
+            @binding {boolean} is-open - Current state of the dropdown (true when open, false when closed)
+            @binding {() => void} close - Function to close the dropdown
+            @binding {() => void} open - Function to open the dropdown
+            @binding {() => void} toggle - Function to toggle the dropdown
+          -->
+          <slot name="append-menu" :is-open="isOpen" :open="open" :close="close" :toggle="toggle" />
         </slot>
       </div>
     </template>
@@ -502,7 +531,15 @@ watch(
 
 .m-dropdown__menu {
   .menuitem {
-    @apply maz:text-start maz:cursor-pointer maz:whitespace-nowrap maz:outline-hidden;
+    @apply maz:text-start maz:whitespace-nowrap;
+
+    &:not(.menuitem--hoverable) {
+      @apply maz:cursor-default;
+
+      &:hover {
+        @apply maz:bg-transparent;
+      }
+    }
   }
 }
 </style>
