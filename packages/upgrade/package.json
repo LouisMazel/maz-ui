@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/upgrade",
   "type": "module",
-  "version": "5.0.0-beta.25",
+  "version": "5.0.0-beta.26",
   "description": "Automated source rewrites for migrating a project from Maz-UI v4 to v5.",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
