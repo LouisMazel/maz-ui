@@ -820,6 +820,7 @@ defineExpose({
                 v-if="item.isHeading"
                 :items="headingItems"
                 trigger="adaptive"
+                close-on-click
                 transition="scale-pop"
                 size="xs"
               >
