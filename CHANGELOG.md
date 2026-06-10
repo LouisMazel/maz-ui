@@ -9,8 +9,7 @@
 - **@maz-ui/node:** ExecPromise - add timeout option ([db545d0a2](https://github.com/LouisMazel/maz-ui/commit/db545d0a2))
 
   Pass a `timeout` (in milliseconds) to abort a command once it exceeds the given
-  duration: the process is killed and the promise rejects with a `timed out after
-<ms>ms` error. No timeout is applied by default.
+  duration: the process is killed and the promise rejects with a `timed out after <ms>ms` error. No timeout is applied by default.
 
 - **@maz-ui/node:** ExecPromise - support env, maxBuffer, killSignal, shell and signal options ([5867a6876](https://github.com/LouisMazel/maz-ui/commit/5867a6876))
 
