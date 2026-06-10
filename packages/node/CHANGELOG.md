@@ -1,5 +1,42 @@
 # Changelog
 
+## v5.0.0-beta.26 (2026-06-10)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.25...v5.0.0-beta.26)
+
+### 🚀 Features
+
+- **@maz-ui/node:** ExecPromise - add timeout option ([db545d0a2](https://github.com/LouisMazel/maz-ui/commit/db545d0a2))
+
+  Pass a `timeout` (in milliseconds) to abort a command once it exceeds the given
+  duration: the process is killed and the promise rejects with a `timed out after
+<ms>ms` error. No timeout is applied by default.
+
+- **@maz-ui/node:** ExecPromise - support env, maxBuffer, killSignal, shell and signal options ([5867a6876](https://github.com/LouisMazel/maz-ui/commit/5867a6876))
+
+  New options forwarded to the command:
+  - `env`: extra environment variables, merged on top of `process.env`
+  - `maxBuffer`: max bytes on stdout/stderr before the command is killed (default 1 MiB)
+  - `killSignal`: signal used to kill the command on timeout/abort (default SIGTERM)
+  - `shell`: shell used to run the command
+  - `signal`: an `AbortSignal` to cancel the command
+    The options type is now exported as `ExecPromiseOptions`.
+
+### 🩹 Fixes
+
+- **@maz-ui/node:** ExecPromise - redact secrets in command logs and errors ([903cbc080](https://github.com/LouisMazel/maz-ui/commit/903cbc080))
+
+  Secrets (npm auth tokens, --token/--password flags, provider tokens like
+  npm*/ghp*, JWTs, basic-auth URLs) are now masked in execPromise logs and in
+  the rejected error, instead of being printed in clear. Long tokens keep their
+  first and last 4 characters visible (e.g. `npm_***J1iF`) so the right
+  credential stays recognizable.
+  The `redactSecrets` and `redactError` helpers are also exported for reuse.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.25 (2026-06-09)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.24...v5.0.0-beta.25)
