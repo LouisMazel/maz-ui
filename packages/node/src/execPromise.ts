@@ -22,6 +22,7 @@ export async function execPromise(
     noError = false,
     logLevel,
     cwd,
+    timeout,
   }: {
     logger?: CustomLogger
     packageName?: string
@@ -43,6 +44,11 @@ export async function execPromise(
     noError?: boolean
     logLevel?: LogLevel
     cwd?: string
+    /**
+     * Maximum time in milliseconds the command is allowed to run before it is
+     * killed and the promise rejects. No timeout by default.
+     */
+    timeout?: number
   } = {},
 ): Promise<{ stdout: string, stderr: string }> {
   if (logLevel) {
@@ -56,7 +62,7 @@ export async function execPromise(
 
   return await new Promise((resolve, reject) => {
     // eslint-disable-next-line sonarjs/os-command
-    exec(command, { cwd }, (error, stdout, stderr) => {
+    exec(command, { cwd, timeout }, (error, stdout, stderr) => {
       if (stdout) {
         internalLogger.debug(`${safeCommand} - stdout output:`, redactSecrets(stdout))
       }
@@ -76,7 +82,8 @@ export async function execPromise(
       if (error) {
         const safeError = redactError(error)
         if (!noError) {
-          internalLogger.error(`${packageNameStr}${safeCommand} failed`, safeError)
+          const reason = error.killed && timeout ? `timed out after ${timeout}ms` : 'failed'
+          internalLogger.error(`${packageNameStr}${safeCommand} ${reason}`, safeError)
         }
         reject(safeError)
       }
