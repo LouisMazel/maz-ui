@@ -1,5 +1,22 @@
 # Change Log
 
+## v5.0.0-beta.27 (2026-06-10)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.26...v5.0.0-beta.27)
+
+### 🚀 Features
+
+- **maz-ui:** MazBtn - now you can choose the color of the button text label ([20d0699ee](https://github.com/LouisMazel/maz-ui/commit/20d0699ee))
+- **maz-ui:** MazDropdown - add prepend and append slots, items-size ([10f87686a](https://github.com/LouisMazel/maz-ui/commit/10f87686a))
+
+### 💅 Refactors
+
+- **maz-ui:** MazMarkdownEditor - auto close heading dropdown on click ([f6ed82d36](https://github.com/LouisMazel/maz-ui/commit/f6ed82d36))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.26 (2026-06-10)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.25...v5.0.0-beta.26)
