@@ -228,6 +228,42 @@ describe('given execPromise function', () => {
     })
   })
 
+  describe('given a command containing a secret', () => {
+    describe('when the command fails', () => {
+      it('then masks the secret in the error log', async () => {
+        const logger = {
+          log: vi.fn(),
+          error: vi.fn(),
+          info: vi.fn(),
+          warn: vi.fn(),
+          debug: vi.fn(),
+        }
+        await expect(
+          execPromise('nonexistent_command_xyz --token=supersecret123456', { logger }),
+        ).rejects.toThrow()
+        expect(logger.error).toHaveBeenCalledWith(
+          expect.stringContaining('--token=supe***3456'),
+          expect.anything(),
+        )
+        expect(logger.error).not.toHaveBeenCalledWith(
+          expect.stringContaining('supersecret123456'),
+          expect.anything(),
+        )
+      })
+    })
+
+    describe('when the command fails and the error is caught', () => {
+      it('then the rejected error no longer carries the secret', async () => {
+        await expect(
+          execPromise('nonexistent_command_xyz --token=supersecret123456', { noError: true }),
+        ).rejects.toThrow('--token=supe***3456')
+        await expect(
+          execPromise('nonexistent_command_xyz --token=supersecret123456', { noError: true }),
+        ).rejects.not.toThrow('supersecret123456')
+      })
+    })
+  })
+
   describe('given debug logging', () => {
     describe('when command produces both stdout and stderr', () => {
       it('then logs debug messages for both outputs', async () => {
