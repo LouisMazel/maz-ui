@@ -22,7 +22,7 @@ export default defineConfig({
     provider: 'claude-code',
     providers: {
       'claude-code': {
-        oauthToken: process.env.CLAUDE_CODE_OAUTH_TOKEN,
+        oauthToken: process.env.YOLO_PROVIDER_API_KEY,
       },
     },
     providerRelease: { enabled: true },

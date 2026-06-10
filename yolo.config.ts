@@ -11,7 +11,7 @@ export default defineConfig({
   logLevel: 'default',
   apiUrl: process.env.YOLO_API_URL,
   apiKey: process.env.YOLO_API_KEY,
-  claudeCodeOauthToken: process.env.CLAUDE_CODE_OAUTH_TOKEN,
+  providerApiKey: process.env.YOLO_PROVIDER_API_KEY,
   agentGuidelinesEnabled: true,
   gitToken: process.env.GITHUB_TOKEN,
   worktree: true,
