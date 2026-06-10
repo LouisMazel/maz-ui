@@ -68,21 +68,14 @@ type MazDropdownItemBase = Record<string, unknown> & {
   label: string
   class?: unknown
   color?: MazColor
+  onClick?: () => unknown
 }
 
-type MazDropdownLinkItem = MazDropdownItemBase & MazBtnProps & {
+export type MazDropdownMenuItem = MazDropdownItemBase & MazBtnProps & {
   target?: string
   href?: string
   to?: RouteLocationRaw
 }
-
-type MazDropdownActionItem = MazDropdownItemBase & MazBtnProps & {
-  onClick?: () => unknown
-}
-
-export type MazDropdownMenuItem
-  = | (MazDropdownLinkItem & { onClick?: never })
-    | (MazDropdownActionItem & { href?: never, to?: never, target?: never })
 
 export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue' | 'role'> {
   /**
@@ -246,7 +239,7 @@ function setDropdown(value: boolean) {
   isOpen.value = value
 }
 
-function isLinkItem(item: MazDropdownMenuItem): item is MazDropdownLinkItem {
+function isLinkItem(item: MazDropdownMenuItem): item is (MazDropdownMenuItem & { href?: string, to?: RouteLocationRaw, target?: string }) {
   return 'href' in item || 'to' in item
 }
 
@@ -254,7 +247,7 @@ function hasLinkOrAction(item: MazDropdownMenuItem): boolean {
   return isLinkItem(item) || 'onClick' in item
 }
 
-async function runAction(item: MazDropdownActionItem, event: Event) {
+async function runAction(item: MazDropdownMenuItem, event: Event) {
   emits('menuitem-clicked', event)
 
   await item.onClick?.()
