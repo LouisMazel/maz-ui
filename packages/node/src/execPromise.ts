@@ -1,6 +1,7 @@
 import type { LogLevel } from './logger.js'
 import { exec } from 'node:child_process'
 import { logger as defaultLogger } from './logger.js'
+import { redactError, redactSecrets } from './redactSecrets.js'
 
 interface CustomLogger {
   log: (message: string, ...args: any[]) => void
@@ -51,34 +52,37 @@ export async function execPromise(
   const internalLogger = logger ?? defaultLogger
   const packageNameStr = packageName ? `[${packageName}]: ` : ''
 
+  const safeCommand = redactSecrets(command)
+
   return await new Promise((resolve, reject) => {
     // eslint-disable-next-line sonarjs/os-command
     exec(command, { cwd }, (error, stdout, stderr) => {
       if (stdout) {
-        internalLogger.debug(`${command} - stdout output:`, stdout)
+        internalLogger.debug(`${safeCommand} - stdout output:`, redactSecrets(stdout))
       }
 
       if (stderr) {
-        internalLogger.debug(`${command} - stderr output:`, stderr)
+        internalLogger.debug(`${safeCommand} - stderr output:`, redactSecrets(stderr))
       }
 
       if (stdout && !noStdout) {
-        internalLogger.log(`${packageNameStr}stdout -`, stdout.trim())
+        internalLogger.log(`${packageNameStr}stdout -`, redactSecrets(stdout.trim()))
       }
 
       if (stderr && !noStderr) {
-        internalLogger.log(`${packageNameStr}stderr -`, stderr.trim())
+        internalLogger.log(`${packageNameStr}stderr -`, redactSecrets(stderr.trim()))
       }
 
       if (error) {
+        const safeError = redactError(error)
         if (!noError) {
-          internalLogger.error(`${packageNameStr}${command} failed`, error)
+          internalLogger.error(`${packageNameStr}${safeCommand} failed`, safeError)
         }
-        reject(error)
+        reject(safeError)
       }
       else {
         if (!noSuccess) {
-          internalLogger.info(`${packageNameStr}${command} - Success!`)
+          internalLogger.info(`${packageNameStr}${safeCommand} - Success!`)
         }
         resolve({ stdout, stderr })
       }
