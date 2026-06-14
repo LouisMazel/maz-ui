@@ -156,6 +156,14 @@ ambiguous (`variant=`, `color="background"`) are rewritten **only inside
 | `active-color="background"`                                       | `active-color="surface"`                                    |
 | `rounded-size="base"`                                             | `rounded-size="md"`                                         |
 | `.--has-left-icon` / `.--has-right-icon` (CSS selectors)          | `.--has-start-icon` / `.--has-end-icon`                     |
+| `<MazAvatar size="2rem">` (static CSS unit)                       | `<MazAvatar size="6rem">` (value ×3, render preserved)      |
+
+The `MazAvatar` rewrite targets only `<MazAvatar>` / `<maz-avatar>` opening
+tags. v5 fixed the avatar size scale (a CSS-unit `size` no longer renders 3x
+too large), so the numeric value is multiplied by 3 to keep the exact same
+render. Every CSS unit is supported. `MazSize` keywords (`mini`..`xl`) and
+bound `:size="…"` expressions are left untouched - the latter is reported as
+a warning at the end of the run.
 
 ### `css`
 

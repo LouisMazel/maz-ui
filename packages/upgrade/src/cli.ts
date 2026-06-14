@@ -6,7 +6,7 @@ import { dirname, resolve } from 'node:path'
 import process from 'node:process'
 import { logger } from '@maz-ui/node'
 import { globby } from 'globby'
-import { ALL_GROUPS, hasFoundationRadius, hasMazUiRootImport, transformFile } from './transform'
+import { ALL_GROUPS, hasFoundationRadius, hasMazAvatarBoundSize, hasMazUiRootImport, transformFile } from './transform'
 
 const DEFAULT_IGNORES = [
   '**/node_modules/**',
@@ -119,7 +119,8 @@ Transform groups:
             also added to package.json next to maz-ui.
   props     left-icon/right-icon → start-icon/end-icon (props, slots,
             #icon-left/#icon-right, --has-*-icon classes), footer-align,
-            variant, color="background", active-color, rounded-size="base"
+            variant, color="background", active-color, rounded-size="base",
+            MazAvatar static size unit x3 (scale fix, render preserved)
   css       --maz-background → --maz-surface, --maz-border → --maz-divider,
             hsl(var(--maz-X)) collapse (incl. alpha → color-mix)
   config    Nuxt injectMainCss → injectCss, theme strategy 'hybrid' → 'runtime',
@@ -205,6 +206,7 @@ interface PassResult {
   changed: number
   needsUtilsDep: boolean
   radiusFiles: string[]
+  avatarSizeFiles: string[]
 }
 
 function applyTransform(file: string, opts: CliOptions, addUtilsDep: boolean): { before: string, after: string } {
@@ -226,6 +228,7 @@ async function processSourceFiles(opts: CliOptions, cwd: string, packageJsonFile
   let changed = 0
   let needsUtilsDep = false
   const radiusFiles: string[] = []
+  const avatarSizeFiles: string[] = []
 
   for (const root of opts.roots) {
     const absoluteRoot = resolve(cwd, root)
@@ -260,6 +263,9 @@ async function processSourceFiles(opts: CliOptions, cwd: string, packageJsonFile
       if (hasFoundationRadius(before))
         radiusFiles.push(file)
 
+      if (hasMazAvatarBoundSize(before))
+        avatarSizeFiles.push(file)
+
       if (after === before)
         continue
       changed += 1
@@ -267,7 +273,7 @@ async function processSourceFiles(opts: CliOptions, cwd: string, packageJsonFile
     }
   }
 
-  return { scanned, changed, needsUtilsDep, radiusFiles }
+  return { scanned, changed, needsUtilsDep, radiusFiles, avatarSizeFiles }
 }
 
 function processPackageJsonFiles(files: string[], opts: CliOptions, cwd: string, needsUtilsDep: boolean): { scanned: number, changed: number, depsChanged: boolean } {
@@ -313,6 +319,14 @@ async function run(): Promise<void> {
     for (const file of sources.radiusFiles)
       logger.log(`   - ${file.replace(cwdPrefix, '')}`)
     logger.log(`  → Move the value to scales.rounded.md (other rounded keys are now derived from it via calc).`)
+  }
+
+  if (sources.avatarSizeFiles.length > 0) {
+    const cwdPrefix = `${cwd}/`
+    logger.log(`\n⚠ MazAvatar bound :size detected in ${sources.avatarSizeFiles.length} file(s) - manual check required:`)
+    for (const file of sources.avatarSizeFiles)
+      logger.log(`   - ${file.replace(cwdPrefix, '')}`)
+    logger.log(`  → The size scale was fixed (no more x3). Multiply the CSS unit value by 3 to keep the same render, or use a MazSize keyword. Static size="<unit>" values were already rewritten.`)
   }
 
   logger.log(`\nNext: see https://maz-ui.com/guide/migration-v5 for the manual steps`)

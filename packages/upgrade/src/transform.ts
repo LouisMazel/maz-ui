@@ -60,7 +60,47 @@ export function transformProps(content: string): string {
     .replace(VARIANT_LR, (_, p, dir, s) => `${p}${flipDirection(dir)}${s}`)
     .replace(COLOR_BG, (_, p, s) => `${p}surface${s}`))
 
+  out = transformAvatarSize(out)
+
   return out
+}
+
+// --- 2b. MazAvatar size scale (x3) -----------------------------------------
+// v5 fixed the MazAvatar size ratio: a CSS-unit `size` used to render the
+// avatar 3x larger than the value passed (the wrapper is `3em` of
+// `font-size: size`). v5 honors the value 1:1. To preserve the previous
+// rendered size, a static unit `size` value is multiplied by 3.
+//
+// The unit is matched generically (`<number><letters|%>`), so every CSS unit
+// is supported. Keyword sizes (`mini`..`xl`) and `calc(...)` never start with a
+// digit, so they are left untouched. Bound `:size` expressions are left alone
+// too (surfaced as a warning by the CLI). Scoped to `<MazAvatar>` open tags so
+// the `size` prop of every other component is never touched.
+
+const MAZ_AVATAR_OPEN_TAG = /<(?:MazAvatar|maz-avatar)\b[^>]*>/g
+const AVATAR_SIZE_UNIT = /(?<![:\w-])(size\s*=\s*(["']))(\d*\.?\d+)([a-z%]+)\2/gi
+
+function tripleLength(value: string): string {
+  return String(Number.parseFloat((Number.parseFloat(value) * 3).toFixed(4)))
+}
+
+export function transformAvatarSize(content: string): string {
+  return content.replace(MAZ_AVATAR_OPEN_TAG, tag =>
+    tag.replace(AVATAR_SIZE_UNIT, (_, prefix, quote, num, unit) => `${prefix}${tripleLength(num)}${unit}${quote}`))
+}
+
+// Detection-only: a bound `:size` / `v-bind:size` on a MazAvatar tag cannot be
+// rewritten safely (the value is an expression). The CLI surfaces a warning so
+// the user multiplies the unit value by 3 (or switches to a keyword) by hand.
+
+const AVATAR_BOUND_SIZE = /(?:^|\s)(?::|v-bind:)size\s*=/
+
+export function hasMazAvatarBoundSize(content: string): boolean {
+  for (const match of content.matchAll(MAZ_AVATAR_OPEN_TAG)) {
+    if (AVATAR_BOUND_SIZE.test(match[0]))
+      return true
+  }
+  return false
 }
 
 // --- 3. CSS variable + hsl(var(...)) collapse ------------------------------

@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import {
   hasFoundationRadius,
+  hasMazAvatarBoundSize,
   hasMazUiRootImport,
+  transformAvatarSize,
   transformConfig,
   transformCssVars,
   transformDeps,
@@ -310,6 +312,121 @@ describe('transformProps', () => {
           .toBe(`.--has-start-icon { padding-left: 0.5rem; }`)
         expect(transformProps(`.--has-right-icon { padding-right: 0.5rem; }`))
           .toBe(`.--has-end-icon { padding-right: 0.5rem; }`)
+      })
+    })
+  })
+
+  describe('Given a MazAvatar with a static unit size', () => {
+    describe('When transforming', () => {
+      it('multiplies a rem value by 3', () => {
+        expect(transformProps(`<MazAvatar size="2rem" />`))
+          .toBe(`<MazAvatar size="6rem" />`)
+      })
+
+      it('multiplies a px value by 3', () => {
+        expect(transformProps(`<MazAvatar size="20px" />`))
+          .toBe(`<MazAvatar size="60px" />`)
+      })
+
+      it('multiplies a decimal value by 3', () => {
+        expect(transformProps(`<MazAvatar size="1.5rem" />`))
+          .toBe(`<MazAvatar size="4.5rem" />`)
+      })
+
+      it('preserves single quotes', () => {
+        expect(transformProps(`<MazAvatar size='2em' />`))
+          .toBe(`<MazAvatar size='6em' />`)
+      })
+
+      it('supports the kebab-case tag', () => {
+        expect(transformProps(`<maz-avatar size="2rem" />`))
+          .toBe(`<maz-avatar size="6rem" />`)
+      })
+    })
+  })
+
+  describe('Given a MazAvatar with a modern CSS unit', () => {
+    describe('When transforming', () => {
+      it('multiplies any alphabetic unit by 3', () => {
+        expect(transformAvatarSize(`<MazAvatar size="2dvh" />`))
+          .toBe(`<MazAvatar size="6dvh" />`)
+        expect(transformAvatarSize(`<MazAvatar size="3cqw" />`))
+          .toBe(`<MazAvatar size="9cqw" />`)
+        expect(transformAvatarSize(`<MazAvatar size="4svmin" />`))
+          .toBe(`<MazAvatar size="12svmin" />`)
+      })
+    })
+  })
+
+  describe('Given a MazAvatar with a MazSize keyword', () => {
+    describe('When transforming', () => {
+      it('leaves the keyword untouched', () => {
+        expect(transformAvatarSize(`<MazAvatar size="md" />`))
+          .toBe(`<MazAvatar size="md" />`)
+      })
+    })
+  })
+
+  describe('Given a MazAvatar with a bound size expression', () => {
+    describe('When transforming', () => {
+      it('leaves the dynamic value untouched', () => {
+        expect(transformAvatarSize(`<MazAvatar :size="avatarSize" />`))
+          .toBe(`<MazAvatar :size="avatarSize" />`)
+      })
+    })
+  })
+
+  describe('Given a size prop on a non-MazAvatar component', () => {
+    describe('When transforming', () => {
+      it('leaves the value untouched', () => {
+        expect(transformAvatarSize(`<MazBadge size="2rem" />`))
+          .toBe(`<MazBadge size="2rem" />`)
+      })
+    })
+  })
+})
+
+describe('transformAvatarSize', () => {
+  describe('Given a MazAvatar spanning multiple lines', () => {
+    describe('When transforming', () => {
+      it('multiplies the unit size by 3', () => {
+        expect(transformAvatarSize(`<MazAvatar\n  caption="Louis Mazel"\n  size="2rem"\n/>`))
+          .toBe(`<MazAvatar\n  caption="Louis Mazel"\n  size="6rem"\n/>`)
+      })
+    })
+  })
+
+  describe('Given a calc() size value', () => {
+    describe('When transforming', () => {
+      it('leaves it untouched', () => {
+        expect(transformAvatarSize(`<MazAvatar size="calc(2rem + 4px)" />`))
+          .toBe(`<MazAvatar size="calc(2rem + 4px)" />`)
+      })
+    })
+  })
+})
+
+describe('hasMazAvatarBoundSize', () => {
+  describe('Given a MazAvatar with a bound :size', () => {
+    describe('When detecting', () => {
+      it('returns true', () => {
+        expect(hasMazAvatarBoundSize(`<MazAvatar :size="avatarSize" />`)).toBe(true)
+      })
+    })
+  })
+
+  describe('Given a MazAvatar with a static size', () => {
+    describe('When detecting', () => {
+      it('returns false', () => {
+        expect(hasMazAvatarBoundSize(`<MazAvatar size="2rem" />`)).toBe(false)
+      })
+    })
+  })
+
+  describe('Given a bound :size on a non-MazAvatar component', () => {
+    describe('When detecting', () => {
+      it('returns false', () => {
+        expect(hasMazAvatarBoundSize(`<MazBadge :size="badgeSize" />`)).toBe(false)
       })
     })
   })
