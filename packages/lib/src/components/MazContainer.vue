@@ -66,6 +66,11 @@ export interface MazContainerProps {
    * @default false
    */
   block?: boolean
+  /**
+   * Additional class to add to the content wrapper
+   * @default undefined
+   */
+  contentClass?: string
 }
 
 const {
@@ -146,7 +151,7 @@ const ROUNDED_CLASS = {
       </div>
     </slot>
 
-    <div class="m-container__content maz:w-full" :class="{ 'maz:px-4 maz:py-3': padding }">
+    <div class="m-container__content maz:w-full" :class="[{ 'maz:px-4 maz:py-3': padding }, contentClass]">
       <!-- @slot content of the container -->
       <slot />
     </div>
