@@ -15,7 +15,7 @@ const showCode = ref(props.expanded)
 </script>
 
 <template>
-  <MazCard class="component-demo" block footer-align="left">
+  <MazCard class="component-demo" block footer-align="start">
     <template v-if="$slots.title || title" #title>
       <h3 class="vp-raw maz:text-lg maz:font-semibold">
         <slot name="title">

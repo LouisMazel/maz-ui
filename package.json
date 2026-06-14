@@ -47,7 +47,8 @@
     "relizy": "relizy",
     "nx:cache:clear": "nx reset",
     "dev:watch": "nx run-many -t dev",
-    "yolo": "yolo"
+    "yolo": "yolo",
+    "maz:upgrade": "node ./packages/upgrade/dist/cli.mjs"
   },
   "devDependencies": {
     "@codecov/vite-plugin": "^2.0.1",
