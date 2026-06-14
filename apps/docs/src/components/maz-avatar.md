@@ -108,6 +108,35 @@ function clicked() { console.log('clicked') }
 </template>
 ```
 
+## Initials from caption
+
+When no `src` is provided, `MazAvatar` displays initials generated from the `caption`. The `letter-count` prop (default `2`) controls how many letters are displayed:
+
+- **Single word**: the first `letter-count` characters of the word are used.
+- **Multiple words**: the first letter of each of the first `letter-count` words is used.
+
+Initials are always uppercased.
+
+<div class="flex gap-05 items-center flex-wrap">
+  <MazAvatar caption="admin" size="3rem" />
+  <MazAvatar caption="admin" :letter-count="3" size="3rem" />
+  <MazAvatar caption="Louis Mazel" size="3rem" />
+  <MazAvatar caption="Jean Claude Dus" :letter-count="3" size="3rem" />
+</div>
+
+```vue
+<template>
+  <!-- "AD" -->
+  <MazAvatar caption="admin" />
+  <!-- "ADM" -->
+  <MazAvatar caption="admin" :letter-count="3" />
+  <!-- "LM" -->
+  <MazAvatar caption="Louis Mazel" />
+  <!-- "JCD" -->
+  <MazAvatar caption="Jean Claude Dus" :letter-count="3" />
+</template>
+```
+
 ## On Error
 
 <MazAvatar @error="error" />

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { MazColor, MazRoundedSize, MazSizeUnit } from './types'
+import type { MazColor, MazRoundedSize, MazSize, MazSizeUnit } from './types'
 import { MazPencil } from '@maz-ui/icons/lazy/MazPencil'
 import { computed, defineAsyncComponent } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig'
@@ -21,7 +21,7 @@ const {
   class: className,
   color = 'primary',
   buttonColor = 'info',
-  letterCount = undefined,
+  letterCount = 2,
   fallbackSrc = undefined,
   loading = 'intersecting',
 } = defineProps<MazAvatarProps>()
@@ -60,8 +60,11 @@ export interface MazAvatarProps {
   alt?: string
   /** The target of the link */
   target?: string
-  /** The size of the avatar */
-  size?: MazSizeUnit
+  /**
+   * The size of the avatar - a keyword from `MazSize` or any CSS size unit
+   * @values `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'` or a CSS unit like `'2rem'`, `'48px'`
+   */
+  size?: MazSize | MazSizeUnit
   /** Add a border to the avatar */
   bordered?: boolean
   /** Make the avatar clickable */
@@ -83,7 +86,12 @@ export interface MazAvatarProps {
   buttonColor?: MazColor
   /** Remove the icon on hover when component is clickable */
   hideClickableIcon?: boolean
-  /** Number of letters to display in the round text */
+  /**
+   * Number of letters to display in the round text initials.
+   * - For a single-word caption, the first `letterCount` characters are used (`'admin'` + `3` -> `'ADM'`).
+   * - For a multi-word caption, the first letter of the first `letterCount` words is used (`'Louis Mazel'` -> `'LM'`).
+   * @default 2
+   */
   letterCount?: number
   /**
    * Size of the rounded
@@ -114,14 +122,14 @@ const componentType = computed(() => {
 })
 const isLink = computed(() => !!to || !!href)
 
-function getInitials(name: string, lettersCount = letterCount) {
-  const words = name.split(' ')
+function getInitials(name: string, count = letterCount) {
+  const words = name.trim().split(/\s+/).filter(Boolean)
 
-  const initials = words.map(word => word[0])
+  const letters = words.length > 1
+    ? words.map(word => word[0]).join('')
+    : (words[0] ?? '')
 
-  const letters = initials.join('')
-
-  return letters.slice(0, lettersCount)
+  return letters.slice(0, count).toUpperCase()
 }
 
 const shouldDisplayImg = computed(() => src || (!src && !caption))
@@ -151,12 +159,32 @@ const ROUNDED_CLASS = {
   xl: 'maz:rounded-xl',
   full: 'maz:rounded-full',
 } as const
+
+const SIZE_MAP: Record<MazSize, string> = {
+  mini: '1.5rem',
+  xs: '2rem',
+  sm: '2.5rem',
+  md: '3rem',
+  lg: '3.5rem',
+  xl: '4rem',
+}
+
+const WRAPPER_EM_SCALE = 3
+
+const fontSize = computed(() => {
+  if (!size)
+    return undefined
+
+  const resolved = (SIZE_MAP as Record<string, string>)[size] ?? size
+
+  return `calc(${resolved} / ${WRAPPER_EM_SCALE})`
+})
 </script>
 
 <template>
   <component
     :is="componentType"
-    :style="[{ fontSize: size }, style]"
+    :style="[{ fontSize }, style]"
     class="m-avatar m-reset-css maz:inline-flex maz:flex-col maz:flex-center maz:gap-[0.5em] maz:align-top maz:no-underline!"
     :class="[
       { '--has-link': isLink, 'maz:cursor-pointer': isLink },
@@ -212,8 +240,11 @@ const ROUNDED_CLASS = {
           @error="handleImageError"
         >
       </template>
+      <!--
+        @slot round-text - Replace the initials displayed when a caption is set and no image source is provided
+      -->
       <slot v-if="caption && !src" name="round-text">
-        <span class="m-avatar__initial maz:text-[1.5em] maz:capitalize"> {{ getInitials(caption) }} </span>
+        <span class="m-avatar__initial maz:text-[1.5em] maz:uppercase"> {{ getInitials(caption) }} </span>
       </slot>
 
       <button
@@ -229,11 +260,17 @@ const ROUNDED_CLASS = {
         }"
         @click="$emit('click', $event)"
       >
+        <!--
+          @slot icon - The icon displayed on the clickable button overlay (shown on hover/focus)
+        -->
         <slot v-if="!hideClickableIcon" name="icon">
           <MazPencil class="m-avatar__button__icon maz:text-white" />
         </slot>
       </button>
     </div>
+    <!--
+      @slot caption - Replace the caption displayed below the avatar (requires `showCaption`)
+    -->
     <slot name="caption">
       <p v-if="showCaption && caption" class="m-avatar__caption maz:w-full maz:truncate maz:text-center maz:font-medium maz:capitalize">
         {{ caption }}
