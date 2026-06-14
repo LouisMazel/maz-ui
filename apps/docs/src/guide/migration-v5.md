@@ -23,7 +23,7 @@ npx @maz-ui/upgrade ./ --dry-run
 npx @maz-ui/upgrade ./
 ```
 
-It handles the mechanical part of the migration (CSS subpath imports, prop renames, CSS var renames, Nuxt config keys, custom preset color keys, and `package.json` version bumps)
+It handles the mechanical part of the migration (CSS subpath imports, prop renames, CSS var renames, the `MazAvatar` size scale fix, Nuxt config keys, custom preset color keys, and `package.json` version bumps)
 
 What it can't decide for you: the `MazIcon` API simplification (section 4), `MazBadge` numeric size mapping (section 9), `foundation.radius` → `scales.rounded.md` reshape (section 11) and `MazChart` `update-mode` defaults (section 8). Those are best handled with the MCP server below.
 
@@ -83,7 +83,8 @@ The MCP server is read-only — it ships docs, not code edits — so the assista
 6. **`MazIcon` API simplified** — drop `name`, `path` and `src` props; use a single `icon` prop that accepts a Vue component, a URL/`data:` URI, or a raw SVG string.
 7. Rename **`left-icon` / `right-icon`** to **`start-icon` / `end-icon`** (and the matching slots / `--has-*-icon` classes) on `MazBtn`, `MazInput`, `MazLink`, `MazContainer`, `MazSelect`. Same idea for `MazCard`'s `footer-align` and `MazDrawer`'s `variant` — `'left' | 'right'` becomes `'start' | 'end'`.
 8. **`MazChart`** drops `vue-chartjs` (lighter bundle, no eager registration of unused chart types). The `update-mode` prop now defaults to `'none'` — pass `update-mode="default"` if you want animated data updates.
-9. That's it for most apps. Everything else is opt-in.
+9. **`MazAvatar` size scale fixed.** A CSS-unit `size` now renders at its real value (`size="2rem"` is a 32px avatar, it was ~96px before). Multiply your unit values by 3 to keep the same render, or switch to a `MazSize` keyword (`'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`). The upgrade tool does the ×3 rewrite for you on static values.
+10. That's it for most apps. Everything else is opt-in.
 
 ## Prerequisites
 
@@ -551,6 +552,49 @@ The components that exposed `color="background"` in their public prop now use `c
 ```bash
 # Find prop usages to update
 rg "color\s*=\s*['\"]background['\"]" src/
+```
+
+### 16. `MazAvatar` size scale fixed + `MazSize` keywords
+
+`MazAvatar`'s `size` prop now accepts the standard `MazSize` keywords on top of CSS units, and a long-standing scale bug is fixed.
+
+**The scale bug:** the avatar wrapper is sized at `3em` of a root `font-size: size`, so a CSS-unit `size` rendered the avatar **3x larger** than the value you passed. `size="2rem"` produced a ~96px avatar instead of 32px. In v5 the value is honored 1:1 - `size="2rem"` is a 32px avatar.
+
+**New `MazSize` keywords** (aligned with `MazBtn`, `MazInput`, ...):
+
+| Keyword | Rendered size |
+| --- | --- |
+| `mini` | 24px |
+| `xs` | 32px |
+| `sm` | 40px |
+| `md` | 48px (matches the old default) |
+| `lg` | 56px |
+| `xl` | 64px |
+
+```vue
+<!-- v5 - keyword sizes -->
+<MazAvatar size="sm" />
+<MazAvatar size="lg" />
+```
+
+Custom CSS units still work - you just need to triple the value to keep the exact rendering you had in v4:
+
+```vue
+<!-- v4 - rendered ~96px -->
+<MazAvatar size="2rem" />
+
+<!-- v5 - same ~96px render -->
+<MazAvatar size="6rem" />
+<!-- or adopt the corrected scale / a keyword -->
+<MazAvatar size="2rem" />
+<MazAvatar size="xl" />
+```
+
+The upgrade tool rewrites static `size="<unit>"` values on `<MazAvatar>` automatically (every CSS unit is supported). Bound expressions (`:size="…"`) can't be rewritten safely - they are left untouched and listed at the end of the run so you can check them by hand.
+
+```bash
+# Find avatars still passing a size you may want to review
+rg "<MazAvatar[^>]*\bsize=" src/
 ```
 
 ## Informational changes (probably no action needed)
