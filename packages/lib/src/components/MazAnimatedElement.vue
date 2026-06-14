@@ -53,7 +53,19 @@ function resetAnimation() {
   }
 }
 
+const prefersReducedMotion = typeof globalThis.window !== 'undefined'
+  && typeof globalThis.matchMedia === 'function'
+  && globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 onMounted(() => {
+  // Accessibilité : si l'utilisateur préfère réduire les animations, on affiche
+  // immédiatement le contenu sans jouer l'animation (et sans observer).
+  if (prefersReducedMotion) {
+    element.value?.classList.remove('maz:invisible')
+    isAnimated.value = true
+    return
+  }
+
   observer = new IntersectionObserver(([entry]) => {
     if (entry.isIntersecting && !isAnimated.value) {
       nextTick(() => {
