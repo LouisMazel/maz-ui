@@ -1,5 +1,19 @@
 # Changelog
 
+## v5.0.0-beta.29 (2026-06-14)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.28...v5.0.0-beta.29)
+
+### 🚀 Features
+
+- **@maz-ui/upgrade:** MazAvatar - auto-multiply static size units by 3 ([6763fb255](https://github.com/LouisMazel/maz-ui/commit/6763fb255))
+
+  The upgrade tool now rewrites `MazAvatar` static `size` values to match the v5 scale fix: a CSS-unit `size` no longer renders 3x too large, so the codemod multiplies the value by 3 to preserve the exact render (`size="2rem"` becomes `size="6rem"`). Every CSS unit is supported. `MazSize` keywords are left as-is, and bound `:size` expressions are reported as a warning for manual review.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.28 (2026-06-10)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.27...v5.0.0-beta.28)

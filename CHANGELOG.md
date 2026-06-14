@@ -1,5 +1,44 @@
 # Change Log
 
+## v5.0.0-beta.29 (2026-06-14)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.28...v5.0.0-beta.29)
+
+### 🚀 Features
+
+- **maz-ui:** MazAvatar - support size keywords, fix size scale and rework initials ([19f403e30](https://github.com/LouisMazel/maz-ui/commit/19f403e30))
+
+  The `size` prop now accepts `MazSize` keywords in addition to CSS units: `mini` (24px), `xs` (32px), `sm` (40px), `md` (48px), `lg` (56px), `xl` (64px).
+  CSS unit sizes now render at their real value: `size="2rem"` produces a 32px avatar (it was 3x too large before).
+  Caption initials are now clearer:
+  - single word: the first `letter-count` characters (`admin` with `letter-count="3"` gives `ADM`)
+  - multiple words: the first letter of the first `letter-count` words (`Louis Mazel` gives `LM`)
+    `letter-count` now defaults to `2` and initials are always uppercased.
+
+- **maz-ui:** MazAnimatedElement - respect prefers-reduced-motion ([cefd1a98f](https://github.com/LouisMazel/maz-ui/commit/cefd1a98f))
+
+  When `prefers-reduced-motion: reduce` is set, the element is now shown immediately without playing the intersection animation.
+
+- **maz-ui:** MazContainer - add contentClass prop ([c648fb6a2](https://github.com/LouisMazel/maz-ui/commit/c648fb6a2))
+
+  New `content-class` prop to pass custom classes to the inner content wrapper.
+
+- **@maz-ui/upgrade:** MazAvatar - auto-multiply static size units by 3 ([6763fb255](https://github.com/LouisMazel/maz-ui/commit/6763fb255))
+
+  The upgrade tool now rewrites `MazAvatar` static `size` values to match the v5 scale fix: a CSS-unit `size` no longer renders 3x too large, so the codemod multiplies the value by 3 to preserve the exact render (`size="2rem"` becomes `size="6rem"`). Every CSS unit is supported. `MazSize` keywords are left as-is, and bound `:size` expressions are reported as a warning for manual review.
+
+### 📖 Documentation
+
+- **docs:** Document MazAvatar size scale change in v5 migration guide ([4755722ca](https://github.com/LouisMazel/maz-ui/commit/4755722ca))
+
+### 🧪 Tests
+
+- **maz-ui:** Adjust coverage thresholds ([81b05d30b](https://github.com/LouisMazel/maz-ui/commit/81b05d30b))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.28 (2026-06-10)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.27...v5.0.0-beta.28)
