@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.31 (2026-06-15)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.30...v5.0.0-beta.31)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazAvatar & MazLazyImg - image-height-full apply height 100 to img element ([a7ec6106e](https://github.com/LouisMazel/maz-ui/commit/a7ec6106e))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.30 (2026-06-15)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.29...v5.0.0-beta.30)
