@@ -6,8 +6,9 @@ import type {
   FormSchema,
 } from './useFormValidator/types'
 
+import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { isEqual } from '@maz-ui/utils/helpers/isEqual'
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, onUnmounted, unref, watch } from 'vue'
 import {
   addEventToInteractiveElements,
   findInteractiveElements,
@@ -100,7 +101,7 @@ export function useFormField<
 
   const validationEvents = computed(() =>
     getValidationEvents<Model, ModelKey, FieldState<Model, ModelKey, Model[ModelKey]>>({
-      hasRef: !!finalOpts.ref?.value,
+      hasRef: !!unref(finalOpts.ref),
       onBlur,
       fieldState: fieldState.value,
     }),
@@ -109,14 +110,18 @@ export function useFormField<
   if (finalOpts.ref && fieldMode && hasModeIncludes(['eager', 'blur', 'progressive'], fieldMode)) {
     let interactiveElements: HTMLElement[] = []
 
-    const handleInteractiveElements = (element: HTMLElement) => {
-      // Clean up previous listeners
+    const cleanupInteractiveElements = () => {
       if (interactiveElements.length > 0) {
         removeEventFromInteractiveElements({
           interactiveElements,
           onBlur,
         })
+        interactiveElements = []
       }
+    }
+
+    const handleInteractiveElements = (element: HTMLElement) => {
+      cleanupInteractiveElements()
 
       interactiveElements = findInteractiveElements(element)
 
@@ -127,40 +132,42 @@ export function useFormField<
       })
     }
 
-    onMounted(() => {
-      const refValue = finalOpts.ref?.value
-      const candidate = refValue instanceof HTMLElement
-        ? refValue
-        : (refValue as { $el?: unknown } | null | undefined)?.$el
+    watch(
+      () => unref(finalOpts.ref),
+      (refValue) => {
+        if (!isClient()) {
+          return
+        }
 
-      const elementToBind = resolveBindElement(candidate)
+        const candidate = refValue instanceof HTMLElement
+          ? refValue
+          : (refValue as { $el?: unknown } | null | undefined)?.$el
 
-      if (elementToBind) {
-        handleInteractiveElements(elementToBind)
-        return
-      }
+        const elementToBind = resolveBindElement(candidate)
 
-      console.warn(`[maz-ui](useFormField) No element found for ref in field '${String(name)}'. Make sure the ref is properly bound to an HTMLElement or Vue component (form identifier: ${String(formOptions.identifier)})`)
-    })
+        if (elementToBind) {
+          handleInteractiveElements(elementToBind)
+        }
+        else {
+          cleanupInteractiveElements()
+        }
+      },
+      { immediate: true, flush: 'post' },
+    )
 
-    onUnmounted(() => {
-      removeEventFromInteractiveElements({
-        interactiveElements,
-        onBlur,
-      })
-    })
+    onUnmounted(cleanupInteractiveElements)
   }
 
   return {
-    hasError: computed(() => fieldState.value.error),
-    errors: computed(() => fieldState.value.errors),
+    hasError: computed(() => fieldState.value?.error ?? false),
+    errors: computed(() => fieldState.value?.errors ?? []),
     errorMessage: computed(() => errorMessages.value[name]),
-    isValid: computed(() => fieldState.value.valid),
-    isDirty: computed(() => fieldState.value.dirty),
-    isBlurred: computed(() => fieldState.value.blurred),
-    isValidated: computed(() => fieldState.value.validated),
-    isValidating: computed(() => fieldState.value.validating),
-    mode: computed(() => fieldState.value.mode),
+    isValid: computed(() => fieldState.value?.valid ?? false),
+    isDirty: computed(() => fieldState.value?.dirty ?? false),
+    isBlurred: computed(() => fieldState.value?.blurred ?? false),
+    isValidated: computed(() => fieldState.value?.validated ?? false),
+    isValidating: computed(() => fieldState.value?.validating ?? false),
+    mode: computed(() => fieldState.value?.mode),
     value: computed({
       get: (): FieldType => payload.value[name] as FieldType,
       set: (value: FieldType) => (payload.value[name] = value as Model[ModelKey]),
