@@ -66,7 +66,7 @@
     "@yoloship/claude-sdk": "0.2.0-beta.5",
     "commitizen": "^4.3.1",
     "cross-env": "^10.1.0",
-    "eslint": "^10.4.0",
+    "eslint": "^10.5.0",
     "glob": "^13.0.6",
     "husky": "^9.1.7",
     "lint-staged": "17.0.7",
