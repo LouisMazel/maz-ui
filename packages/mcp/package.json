@@ -57,15 +57,15 @@
     "test:unit:coverage": "pnpm generate:docs && vitest run --coverage"
   },
   "dependencies": {
-    "@maz-ui/node": "workspace:*",
     "@maz-ui/utils": "workspace:*",
-    "@modelcontextprotocol/sdk": "^1.29.0"
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "maz-ui": "workspace:*"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
+    "@maz-ui/node": "workspace:*",
     "@modelcontextprotocol/inspector": "^0.21.2",
     "@swc/core": "1.15.40",
-    "maz-ui": "workspace:*",
     "prettier": "^3.8.4",
     "ts-node-maintained": "^10.9.5",
     "tsx": "^4.22.3",

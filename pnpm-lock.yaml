@@ -478,28 +478,28 @@ importers:
 
   packages/mcp:
     dependencies:
-      '@maz-ui/node':
-        specifier: workspace:*
-        version: link:../node
       '@maz-ui/utils':
         specifier: workspace:*
         version: link:../utils
       '@modelcontextprotocol/sdk':
         specifier: ^1.29.0
         version: 1.29.0(zod@4.4.3)
+      maz-ui:
+        specifier: workspace:*
+        version: link:../lib
     devDependencies:
       '@maz-ui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@maz-ui/node':
+        specifier: workspace:*
+        version: link:../node
       '@modelcontextprotocol/inspector':
         specifier: ^0.21.2
         version: 0.21.2(@swc/core@1.15.40)(@types/node@25.9.2)(@types/react@19.2.17)(typescript@5.9.3)
       '@swc/core':
         specifier: 1.15.40
         version: 1.15.40
-      maz-ui:
-        specifier: workspace:*
-        version: link:../lib
       prettier:
         specifier: ^3.8.4
         version: 3.8.4
