@@ -151,7 +151,7 @@ Each field in `fieldsStates` contains:
         v-model="stateModel.age"
         label="Age (18-100)"
         type="number"
-        :hint="stateErrors.age"s
+        :hint="stateErrors.age"
         :error="!!stateErrors.age"
         :success="stateFields.age.valid"
       />
@@ -365,7 +365,7 @@ Requires `useFormField` with `ref` option or `validationEvents`.
       :success="eagerEmailValid"
       :class="{ 'has-error-eager': eagerEmailHasError }"
     />
-    <MazBtn type="submit" :loading="eagerSubmitting">Submit</MazBtn>
+    <MazBtn type="submit" :loading="eagerSubmitting" :disabled="!eagerIsValid">Submit</MazBtn>
   </form>
 
   <template #code>
@@ -381,7 +381,7 @@ const schema = {
   email: pipe(string(), nonEmpty('Required'), email('Invalid email')),
 }
 
-const { isSubmitting, handleSubmit } = useFormValidator({
+const { isSubmitting, handleSubmit, isValid } = useFormValidator({
   schema,
   options: {
     mode: 'eager',
@@ -430,6 +430,8 @@ const {
       :error="emailHasError"
       :success="emailValid"
     />
+
+    <MazBtn type="submit" :loading="isSubmitting" :disabled="!isValid">Submit</MazBtn>
   </form>
 </template>
 ```
@@ -614,6 +616,8 @@ const { value: name, hasError, errorMessage, isValid } = useFormField<string>('n
 
 Pass a template ref to `useFormField`. It will automatically detect interactive elements and attach blur listeners.
 
+The `ref` option is **reactive**: if the field is rendered conditionally (e.g. with `v-if`), the blur listeners are attached automatically as soon as the element appears in the DOM, and removed when it is unmounted. You don't need to handle anything special.
+
 ```vue
 <script setup>
 import { useFormField } from 'maz-ui/composables'
@@ -633,6 +637,41 @@ const { value, errorMessage, hasError } = useFormField<string>('email', {
     :error="hasError"
   />
 </template>
+```
+
+Because it is reactive, the same code works even when the input is wrapped in a `v-if`:
+
+```vue
+<script setup>
+import { useFormField } from 'maz-ui/composables'
+import { useTemplateRef, ref } from 'vue'
+
+const isVisible = ref(false)
+
+const { value, errorMessage, hasError } = useFormField<string>('email', {
+  ref: useTemplateRef('emailRef'),
+  formIdentifier: 'my-form',
+})
+</script>
+
+<template>
+  <MazInput
+    v-if="isVisible"
+    ref="emailRef"
+    v-model="value"
+    :hint="errorMessage"
+    :error="hasError"
+  />
+</template>
+```
+
+You can also pass a raw `HTMLElement` directly. In that case it won't be reactive, so the element must already exist in the DOM:
+
+```ts
+const { value } = useFormField<string>('email', {
+  ref: document.querySelector('input'),
+  formIdentifier: 'my-form',
+})
 ```
 
 #### Option 2: Using `validationEvents`
@@ -1074,7 +1113,7 @@ useFormField<FieldType>(
   options?: {
     defaultValue?: FieldType,                         // Default value for this field
     mode?: 'lazy' | 'aggressive' | 'eager' | 'blur' | 'progressive', // Override form mode
-    ref?: Ref<HTMLElement | ComponentInstance>,       // Template ref for blur detection
+    ref?: Ref<HTMLElement | ComponentInstance> | HTMLElement, // Reactive template ref (v-if friendly) or raw element
     formIdentifier?: string | symbol,                 // Must match useFormValidator's identifier
   }
 )
@@ -1113,7 +1152,7 @@ interface FormValidatorOptions<Model> {
 interface FormFieldOptions<FieldType> {
   defaultValue?: FieldType
   mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'
-  ref?: Ref<HTMLElement | ComponentInstance>
+  ref?: Ref<HTMLElement | ComponentInstance> | HTMLElement
   formIdentifier?: string | symbol
 }
 
@@ -1166,14 +1205,13 @@ const { value, validationEvents } = useFormField<string>('name')
 // Then: v-bind="validationEvents" on your input
 ```
 
-### Element Not Found Warning
+### Conditionally Rendered Fields (`v-if`)
 
-**Problem**: `No element found for ref in field 'name'`
+The `ref` option is reactive, so a field wrapped in `v-if` works out of the box: blur listeners are attached as soon as the element is rendered and removed when it is unmounted.
 
-**Solutions**:
-1. Ensure the ref is bound to an HTML element or Vue component
-2. Make sure the component has a `$el` property
-3. For custom components, add `data-interactive` attribute
+If blur validation still doesn't trigger:
+1. Ensure the `ref` is bound to an HTML element or a Vue component exposing `$el`
+2. For custom components, add the `data-interactive` attribute
 
 ### Mismatched Form Identifiers
 
@@ -1310,6 +1348,7 @@ const eagerSchema = {
 const {
   isSubmitting: eagerSubmitting,
   handleSubmit: handleEager,
+  isValid: eagerIsValid,
 } = useFormValidator({
   schema: eagerSchema,
   options: { mode: 'eager', scrollToError: '.has-error-eager', identifier: 'form-eager' },
