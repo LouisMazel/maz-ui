@@ -222,7 +222,7 @@ const fontSize = computed(() => {
           class="m-avatar__picture maz:w-full maz:max-w-full"
           :src
           :alt
-          image-height-full
+          :image-height-full
           :hide-loader
           :fallback-src
           @click="clickable ? $emit('click', $event) : null"
@@ -233,7 +233,8 @@ const fontSize = computed(() => {
         />
         <img
           v-else
-          class="m-avatar__picture maz:w-full maz:max-w-full"
+          class="m-avatar__picture"
+          :class="[imageHeightFull ? 'maz:h-max-full maz:h-full maz:w-min maz:max-w-min' : 'maz:w-full maz:max-w-full']"
           :src="src ?? fallbackSrc"
           :alt="alt"
           :loading

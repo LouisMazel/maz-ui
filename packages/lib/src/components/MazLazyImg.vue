@@ -145,7 +145,7 @@ defineExpose({ onIntersecting, onLoading, onLoaded, onError })
   }
 
   &.--height-full img {
-    @apply maz:max-h-full! maz:w-min! maz:max-w-min!;
+    @apply maz:max-h-full! maz:h-full! maz:w-min! maz:max-w-min!;
   }
 
   &.m-lazy-error:not(.m-lazy-fallback) {
