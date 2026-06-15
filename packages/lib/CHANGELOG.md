@@ -1,5 +1,25 @@
 # Change Log
 
+## v5.0.0-beta.30 (2026-06-15)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.29...v5.0.0-beta.30)
+
+### 🚀 Features
+
+- **maz-ui:** UseFormField - make ref option reactive and accept raw HTMLElement ([3ae99b940](https://github.com/LouisMazel/maz-ui/commit/3ae99b940))
+
+  The `ref` option of `useFormField` is now reactive: a field rendered with `v-if` attaches its blur listeners automatically once it appears in the DOM, and removes them when unmounted. You can also pass a raw `HTMLElement` (e.g. `document.querySelector('input')`) in addition to a `Ref` or template ref.
+
+### 🩹 Fixes
+
+- **maz-ui:** UseFormValidator - revalidate eager fields on input after blur ([2145239cb](https://github.com/LouisMazel/maz-ui/commit/2145239cb))
+
+  In `eager` mode, editing a field after it had been blurred now revalidates it on every change, so the field state and the form `isValid` stay in sync. The `scrollToError` returned by `useFormValidator` now also accepts an optional selector and respects the configured `scrollToError` option.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.29 (2026-06-14)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.28...v5.0.0-beta.29)
