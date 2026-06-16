@@ -81,7 +81,7 @@
     "tsx": "^4.21.0",
     "twitter-api-v2": "^1.29.0",
     "typescript": "^5.9.3",
-    "vite": "^8.0.9",
+    "vite": "^8.0.16",
     "vite-plugin-dts": "^4.5.4",
     "vite-plugin-lib-inject-css": "^2.2.2",
     "vite-svg-loader": "^5.1.1",
