@@ -48,4 +48,25 @@ describe('mazTabs.vue', () => {
     expect(result).toBe(2)
     expect(provided!.currentTab.value).toBe(2)
   })
+
+  it('forwards size, roundedSize and color through the provide', () => {
+    let provided: { size: { value?: string }, roundedSize: { value?: string }, color: { value?: string } } | undefined
+
+    mount(MazTabs, {
+      props: { size: 'sm', roundedSize: 'lg', color: 'primary' },
+      slots: {
+        default: {
+          inject: { tabs: { from: 'maz-tabs' } },
+          created() {
+            provided = (this as unknown as { tabs: typeof provided }).tabs
+          },
+          template: '<div />',
+        },
+      },
+    })
+
+    expect(provided!.size.value).toBe('sm')
+    expect(provided!.roundedSize.value).toBe('lg')
+    expect(provided!.color.value).toBe('primary')
+  })
 })

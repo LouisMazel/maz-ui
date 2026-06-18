@@ -20,6 +20,7 @@ import type { MazSelectProps } from '../components/MazSelect.vue'
 import type { MazSelectCountryProps } from '../components/MazSelectCountry.vue'
 import type { MazSkeletonProps } from '../components/MazSkeleton.vue'
 import type { MazTableProps } from '../components/MazTable.vue'
+import type { MazTabsBarProps } from '../components/MazTabsBar.vue'
 import type { MazTextareaProps } from '../components/MazTextarea.vue'
 import type { MazTimelineProps } from '../components/MazTimeline.vue'
 import type { MazRoundedSize, MazSize } from '../components/types'
@@ -69,6 +70,7 @@ export interface MazUiDefaultsOptions {
   MazSelectCountry?: Partial<MazSelectCountryProps>
   MazSkeleton?: Partial<MazSkeletonProps>
   MazTable?: Partial<MazTableProps<any>>
+  MazTabsBar?: Partial<MazTabsBarProps<any>>
   MazTextarea?: Partial<MazTextareaProps<string>>
   MazTimeline?: Partial<MazTimelineProps>
 }
