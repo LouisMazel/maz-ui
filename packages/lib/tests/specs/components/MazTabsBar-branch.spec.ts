@@ -251,16 +251,16 @@ describe('MazTabsBar branch coverage', () => {
       const wrapper = mountTabsBar({}, createTabsProvide(1))
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
-      expect(tabButtons[0].classes()).toContain('--active')
-      expect(tabButtons[1].classes()).not.toContain('--active')
+      expect(tabButtons[0].classes()).toContain('--is-active')
+      expect(tabButtons[1].classes()).not.toContain('--is-active')
     })
 
     it('returns true for second tab when currentTab is 2', () => {
       const wrapper = mountTabsBar({}, createTabsProvide(2))
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
-      expect(tabButtons[0].classes()).not.toContain('--active')
-      expect(tabButtons[1].classes()).toContain('--active')
+      expect(tabButtons[0].classes()).not.toContain('--is-active')
+      expect(tabButtons[1].classes()).toContain('--is-active')
     })
   })
 
@@ -411,7 +411,7 @@ describe('MazTabsBar branch coverage', () => {
       await nextTick()
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
-      expect(tabButtons[1].classes()).toContain('--active')
+      expect(tabButtons[1].classes()).toContain('--is-active')
     })
   })
 

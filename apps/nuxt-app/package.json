@@ -12,7 +12,11 @@
     "types:check": "nuxi typecheck"
   },
   "dependencies": {
-    "@maz-ui/nuxt": "workspace:*"
+    "@maz-ui/icons": "workspace:*",
+    "@maz-ui/nuxt": "workspace:*",
+    "@maz-ui/utils": "workspace:*",
+    "maz-ui": "workspace:*",
+    "valibot": "^1.4.1"
   },
   "devDependencies": {
     "@maz-ui/stylelint-config": "workspace:*",
