@@ -202,9 +202,21 @@ importers:
 
   apps/nuxt-app:
     dependencies:
+      '@maz-ui/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
       '@maz-ui/nuxt':
         specifier: workspace:*
         version: link:../../packages/nuxt
+      '@maz-ui/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
+      maz-ui:
+        specifier: workspace:*
+        version: link:../../packages/lib
+      valibot:
+        specifier: ^1.4.1
+        version: 1.4.1(typescript@5.9.3)
     devDependencies:
       '@maz-ui/stylelint-config':
         specifier: workspace:*
