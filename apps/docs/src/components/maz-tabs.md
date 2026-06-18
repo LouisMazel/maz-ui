@@ -235,6 +235,14 @@ The active tab is highlighted by the indicator. Use the `color` prop (`MazColor`
 
 `MazTabsBar` can be used on its own, without `MazTabs`, as an independent switcher with its own `v-model`.
 
+::: tip Nested inside a `MazTabs`
+If your page is already wrapped by a `MazTabs`, a nested `MazTabsBar` would otherwise be linked to that parent (clicking a tab would change the page). Add the `standalone` prop to make it fully independent (it then ignores the parent's selection, size, rounded-size and color):
+
+```vue
+<MazTabsBar v-model="selected" :items="items" standalone />
+```
+:::
+
 The model returns the `1`-based index of the selected tab, unless the items provide a `value` (`string | number`), in which case that value is returned. The model type is inferred from the items passed: declare the items `as const` (or with literal `value`s) to get a strict union type for the model and the `@update:model-value` event.
 
 <MazTabsBar v-model="standaloneModel" :items="standaloneItems" color="secondary" rounded-size="full" />

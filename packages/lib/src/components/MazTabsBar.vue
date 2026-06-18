@@ -41,6 +41,14 @@ export interface MazTabsBarProps<Item extends MazTabsBarItem = MazTabsBarItem> {
    */
   color?: MazColor
   /**
+   * Force the standalone mode: the tabs bar ignores any surrounding `MazTabs`
+   * (selection, size, rounded-size and color are no longer inherited) and is
+   * driven only by its own `v-model`. Useful for a nested switcher inside a
+   * page already wrapped by `MazTabs`.
+   * @default false
+   */
+  standalone?: boolean
+  /**
    * Will add a query param to the url to keep the selected tab on page refresh
    * @default false
    */
@@ -134,6 +142,7 @@ const {
   items,
   modelValue,
   color,
+  standalone = false,
   persistent = false,
   queryParam = 'tab',
   autoScroll = true,
@@ -154,6 +163,8 @@ const MazBadge = defineAsyncComponent(() => import('./MazBadge.vue'))
 
 const injectedTabs = inject<MazTabsProvide | undefined>('maz-tabs', undefined)
 
+const tabsContext = computed(() => (standalone ? undefined : injectedTabs))
+
 const instance = getCurrentInstance()
 const globalConfig = inject(GLOBAL_CONFIG_INJECTION_KEY, undefined)
 
@@ -169,7 +180,7 @@ const resolvedSize = computed<MazSize>(() => {
   if (wasPropProvided('size')) {
     return (instance!.props as { size?: MazSize }).size as MazSize
   }
-  return injectedTabs?.size?.value
+  return tabsContext.value?.size?.value
     ?? globalConfig?.MazTabsBar?.size
     ?? globalConfig?.global?.size
     ?? 'md'
@@ -179,13 +190,13 @@ const resolvedRoundedSize = computed<MazRoundedSize>(() => {
   if (wasPropProvided('roundedSize')) {
     return (instance!.props as { roundedSize?: MazRoundedSize }).roundedSize as MazRoundedSize
   }
-  return injectedTabs?.roundedSize?.value
+  return tabsContext.value?.roundedSize?.value
     ?? globalConfig?.MazTabsBar?.roundedSize
     ?? globalConfig?.global?.roundedSize
     ?? 'md'
 })
 
-const resolvedColor = computed<MazColor | undefined>(() => color ?? injectedTabs?.color?.value)
+const resolvedColor = computed<MazColor | undefined>(() => color ?? tabsContext.value?.color?.value)
 
 const ROUNDED_CLASS: Record<MazRoundedSize, string> = {
   none: '',
@@ -227,8 +238,8 @@ const normalizedItems = computed(() =>
 )
 
 const currentTab = computed<number>(() => {
-  if (injectedTabs) {
-    return injectedTabs.currentTab.value
+  if (tabsContext.value) {
+    return tabsContext.value.currentTab.value
   }
 
   if (modelValue === undefined) {
@@ -246,8 +257,8 @@ const currentTab = computed<number>(() => {
 })
 
 function setActiveTab(oneBasedIndex: number) {
-  if (injectedTabs) {
-    injectedTabs.updateCurrentTab(oneBasedIndex)
+  if (tabsContext.value) {
+    tabsContext.value.updateCurrentTab(oneBasedIndex)
     return
   }
 

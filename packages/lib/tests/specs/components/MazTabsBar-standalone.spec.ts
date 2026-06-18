@@ -206,6 +206,31 @@ describe('given MazTabsBar inside MazTabs providing size and roundedSize', () =>
       expect(wrapper.find('.m-tabs-bar__item').classes()).toContain('--lg')
     })
 
+    it('ignores the MazTabs context when standalone is set', async () => {
+      const updateCurrentTab = vi.fn()
+      const wrapper = mount(MazTabsBar, {
+        props: { items: ['Tab 1', 'Tab 2', 'Tab 3'], standalone: true },
+        global: {
+          provide: {
+            'maz-tabs': {
+              currentTab: ref(1),
+              updateCurrentTab,
+              size: ref('xs'),
+              roundedSize: ref('xl'),
+              color: ref('primary'),
+            },
+          },
+        },
+      })
+
+      await wrapper.findAll('.m-tabs-bar__item')[1].trigger('click')
+
+      expect(updateCurrentTab).not.toHaveBeenCalled()
+      expect(wrapper.emitted('update:model-value')?.[0]).toEqual([2])
+      expect(wrapper.find('.m-tabs-bar__item').classes()).not.toContain('--xs')
+      expect(wrapper.find('.m-tabs-bar__indicator').classes()).toContain('maz:bg-surface-600')
+    })
+
     it('uses the injected color for the indicator', () => {
       const wrapper = mount(MazTabsBar, {
         props: { items: ['Tab 1', 'Tab 2'] },
