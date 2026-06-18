@@ -1,5 +1,27 @@
 # Change Log
 
+## v5.0.0-beta.32 (2026-06-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.31...v5.0.0-beta.32)
+
+### 🚀 Features
+
+- **maz-ui:** MazTabsBar - standalone usage, size, rounded-size and active color ([f0a3b95dd](https://github.com/LouisMazel/maz-ui/commit/f0a3b95dd))
+
+  `MazTabsBar` can now be used on its own, without `MazTabs`, as a standalone switcher with its own `v-model`. The model returns the selected tab index (1-based), or the item `value` when you provide one - declare your items `as const` to get a strict union type for the model and the `@update:model-value` event.
+  Each tab is now rendered as a `MazBtn`, so you can set the `size` (`mini` to `xl`) and the `rounded-size` (`none` to `full`) of the bar, and pick the active tab `color`. These props work on `MazTabsBar`, on `MazTabs` (which forwards them to the bar), or globally via the `defaults` config. Each item also accepts `MazBtn` props (icons, `outlined`, `pastel`, etc.).
+  Badges are still supported, and there is no breaking change.
+
+### 🩹 Fixes
+
+- **maz-ui:** MazLazyImg - do not stretch the error image when image-height-full is set ([789baa247](https://github.com/LouisMazel/maz-ui/commit/789baa247))
+
+  When `image-height-full` is set, the error placeholder image is no longer forced to full height.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.31 (2026-06-15)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.30...v5.0.0-beta.31)
