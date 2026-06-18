@@ -1,5 +1,19 @@
 # Change Log
 
+## v5.0.0-beta.33 (2026-06-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.32...v5.0.0-beta.33)
+
+### 🚀 Features
+
+- **maz-ui:** MazTabsBar - add standalone prop to detach from a parent MazTabs ([e09eb4589](https://github.com/LouisMazel/maz-ui/commit/e09eb4589))
+
+  Add a `standalone` prop to `MazTabsBar`. When set, the tabs bar ignores any surrounding `MazTabs` - its selection, `size`, `rounded-size` and `color` are no longer inherited - and is driven only by its own `v-model`. Use it for an independent switcher nested inside a page already wrapped by `MazTabs` (e.g. `<MazTabsBar v-model="selected" :items="items" standalone />`).
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.32 (2026-06-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.31...v5.0.0-beta.32)
