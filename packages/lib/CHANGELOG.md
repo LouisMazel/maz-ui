@@ -1,5 +1,19 @@
 # Change Log
 
+## v5.0.0-beta.35 (2026-06-20)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.34...v5.0.0-beta.35)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDropdown - enable dismiss behaviors by default ([404a5d0bd](https://github.com/LouisMazel/maz-ui/commit/404a5d0bd))
+
+  The dropdown now closes on outside click and on `Escape`, and traps focus while open, without needing to set `close-on-click-outside`, `close-on-escape` or `trap-focus` explicitly.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.34 (2026-06-20)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.33...v5.0.0-beta.34)
