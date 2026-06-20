@@ -18,6 +18,9 @@ export default defineConfig(({ mode }) => {
   const isDev = mode === 'development'
 
   return {
+    server: {
+      host: true,
+    },
     plugins: [
       vue(),
       tailwindcss(),
