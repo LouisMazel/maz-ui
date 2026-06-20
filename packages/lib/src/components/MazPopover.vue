@@ -482,8 +482,9 @@ function setOpen(value: boolean) {
       // posee sur le panel teleporte, peu fiable sur mobile). En capture + pointerdown
       // pour couvrir souris + tactile sur tous les elements. Ajoute APRES l'ouverture
       // pour ne pas capter l'interaction qui vient d'ouvrir.
-      if (isClient())
+      if (isClient()) {
         document.addEventListener('pointerdown', onDocumentPointerDown, true)
+      }
     })
   }
   else {
