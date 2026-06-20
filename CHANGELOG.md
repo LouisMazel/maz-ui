@@ -1,5 +1,21 @@
 # Change Log
 
+## v5.0.0-beta.34 (2026-06-20)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.33...v5.0.0-beta.34)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPopover - dismiss reliably on outside click and touch ([ef9ec9793](https://github.com/LouisMazel/maz-ui/commit/ef9ec9793))
+
+  The popover now closes correctly on an outside click or tap, including on touch and mobile devices.
+
+- **docs:** Increase top layout height on small screens ([2c8782170](https://github.com/LouisMazel/maz-ui/commit/2c8782170))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.33 (2026-06-18)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.32...v5.0.0-beta.33)
