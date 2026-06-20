@@ -15,7 +15,6 @@ import {
   watch,
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { vClickOutside } from '../directives/vClickOutside'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import { getColor } from './types'
 
@@ -337,7 +336,6 @@ const isOpen = defineModel({ default: false })
 let openTimeout: NodeJS.Timeout | null = null
 let closeTimeout: NodeJS.Timeout | null = null
 let initialFocusElement: HTMLElement | null = null
-let ignoreNextClickOutside = false
 
 const panelId = computed(() => `${triggerId.value}-panel`)
 
@@ -424,6 +422,7 @@ function cleanup() {
 
   if (isClient()) {
     document.removeEventListener('keydown', onKeydown)
+    document.removeEventListener('pointerdown', onDocumentPointerDown, true)
   }
 }
 
@@ -432,11 +431,6 @@ function open() {
     return
 
   clearCloseTimeout()
-
-  // Only ignore next click outside for click triggers to prevent immediate close
-  if (effectiveTrigger.value === 'click') {
-    ignoreNextClickOutside = true
-  }
 
   if (delay > 0) {
     openTimeout = setTimeout(() => {
@@ -477,7 +471,6 @@ function toggle() {
 
 function setOpen(value: boolean) {
   isOpen.value = value
-  ignoreNextClickOutside = false
   if (value) {
     emits('open')
     emits('toggle', value)
@@ -485,11 +478,20 @@ function setOpen(value: boolean) {
     nextTick(() => {
       update()
       setupFocusTrap()
+      // Dismiss au clic/tap exterieur gere imperativement (et non via une directive
+      // posee sur le panel teleporte, peu fiable sur mobile). En capture + pointerdown
+      // pour couvrir souris + tactile sur tous les elements. Ajoute APRES l'ouverture
+      // pour ne pas capter l'interaction qui vient d'ouvrir.
+      if (isClient())
+        document.addEventListener('pointerdown', onDocumentPointerDown, true)
     })
   }
   else {
     emits('toggle', value)
     emits('close')
+
+    if (isClient())
+      document.removeEventListener('pointerdown', onDocumentPointerDown, true)
 
     if (trapFocus) {
       restoreFocus()
@@ -614,21 +616,19 @@ function handleTrapFocus(event: KeyboardEvent) {
   }
 }
 
-function onClickOutside(event: Event) {
-  if (effectiveTrigger.value === 'manual')
+function onDocumentPointerDown(event: PointerEvent) {
+  if (effectiveTrigger.value === 'manual' || !closeOnClickOutside || persistent)
     return
 
-  if (ignoreNextClickOutside) {
-    ignoreNextClickOutside = false
+  const target = event.target as Node | null
+  if (!target)
     return
-  }
 
-  if (closeOnClickOutside && !persistent) {
-    if (triggerRef.value && triggerRef.value.contains(event.target as Node)) {
-      return
-    }
-    close()
-  }
+  // Clic/tap a l'interieur du panel ou du trigger -> on ne ferme pas.
+  if (panelRef.value?.contains(target) || triggerRef.value?.contains(target))
+    return
+
+  close()
 }
 
 watch(isOpen, (value, oldValue) => {
@@ -746,7 +746,6 @@ defineExpose({
         v-if="isOpen"
         :id="panelId"
         ref="panel"
-        v-click-outside="onClickOutside"
         :role
         :aria-label="ariaLabel"
         :aria-labelledby="role === 'dialog' ? ariaLabelledby || triggerId : undefined"
