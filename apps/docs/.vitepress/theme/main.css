@@ -19,7 +19,7 @@
 }
 
 :root {
-  --vp-layout-top-height: 2.2rem;
+  --vp-layout-top-height: 4.2rem;
   /* --vp-nav-logo-height: 42px; */
   --vp-font-family-base: var(--maz-font-family);
   --vp-c-bg: var(--maz-surface);
@@ -50,6 +50,12 @@
   --vp-code-tab-divider: var(--maz-color-contrast-200);
   --vp-code-block-color: var(--maz-contrast-foreground);
   /* --vp-code-tab-bg: var(--maz-color-contrast-600); */
+}
+
+@media (min-width: 440px) {
+  :root {
+    --vp-layout-top-height: 2.2rem;
+  }
 }
 
 html {
