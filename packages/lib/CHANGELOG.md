@@ -1,5 +1,29 @@
 # Change Log
 
+## v5.0.0-beta.36 (2026-06-21)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.35...v5.0.0-beta.36)
+
+### 💅 Refactors
+
+- **maz-ui:** ⚠️ MazPullToRefresh - rename onClick prop to onRefresh ([b41bb1637](https://github.com/LouisMazel/maz-ui/commit/b41bb1637))
+
+  The `onClick` prop is renamed to `onRefresh` to reflect what it actually does: the callback runs when the refresh is triggered on release, not on a click.
+  Update your usage from `:on-click="..."` to `:on-refresh="..."`.
+  BREAKING CHANGE: the `onClick` prop of `MazPullToRefresh` is renamed to `onRefresh`.
+
+#### ⚠️ Breaking Changes
+
+- **maz-ui:** ⚠️ MazPullToRefresh - rename onClick prop to onRefresh ([b41bb1637](https://github.com/LouisMazel/maz-ui/commit/b41bb1637))
+
+  The `onClick` prop is renamed to `onRefresh` to reflect what it actually does: the callback runs when the refresh is triggered on release, not on a click.
+  Update your usage from `:on-click="..."` to `:on-refresh="..."`.
+  BREAKING CHANGE: the `onClick` prop of `MazPullToRefresh` is renamed to `onRefresh`.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.35 (2026-06-20)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.34...v5.0.0-beta.35)

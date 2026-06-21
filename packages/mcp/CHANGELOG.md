@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.0.0-beta.36 (2026-06-21)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.35...v5.0.0-beta.36)
+
+No relevant changes since last release
+
 ## v5.0.0-beta.35 (2026-06-20)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.34...v5.0.0-beta.35)
