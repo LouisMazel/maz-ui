@@ -30,7 +30,7 @@ async function pullToRefreshAction() {
   <MazPullToRefresh
     header-class="maz:bg-bg-dark maz:text-foreground-light"
     class="maz:flex maz:min-h-screen maz:w-full maz:flex-col"
-    :action="pullToRefreshAction"
+    :on-refresh="pullToRefreshAction"
     spinner-color="contrast"
     standalone-mode
     :disabled="false"
