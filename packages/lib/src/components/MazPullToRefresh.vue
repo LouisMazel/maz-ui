@@ -8,7 +8,7 @@ import { computed, defineAsyncComponent, onUnmounted, ref, watch } from 'vue'
 const {
   distance: distanceProp = 100,
   offset = 0,
-  onClick,
+  onRefresh,
   containerSelector,
   headerClass,
   spinnerColor = 'contrast',
@@ -23,7 +23,7 @@ const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 export interface MazPullToRefreshProps {
   distance?: number
   offset?: number
-  onClick?: () => unknown
+  onRefresh?: () => unknown
   containerSelector?: string
   headerClass?: string
   spinnerColor?: MazColor
@@ -34,7 +34,7 @@ export interface MazPullToRefreshProps {
 const isDisabled = computed(
   () =>
     disabled
-    || onClick === undefined
+    || onRefresh === undefined
     || (standaloneMode && isClient() && !isStandaloneMode()),
 )
 
@@ -164,7 +164,7 @@ async function runAction() {
   try {
     setLoading(true)
     emits('start')
-    const response = await onClick?.()
+    const response = await onRefresh?.()
     emits('loaded')
     emits('response', response)
   }
