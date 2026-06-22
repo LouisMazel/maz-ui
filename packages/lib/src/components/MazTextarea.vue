@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { MazColor, MazRoundedSize } from './types'
+import type { MazColor, MazRoundedSize, MazSize } from './types'
 
 export interface MazTextareaProps<T extends string | undefined | null> {
   /** Style attribut of the component root element */
@@ -39,6 +39,14 @@ export interface MazTextareaProps<T extends string | undefined | null> {
    */
   roundedSize?: MazRoundedSize
   /**
+   * Controls the padding (height) and text size of the textarea, mirroring MazInput sizes.
+   * Combined with `minRows`, e.g. `size="md" :min-rows="1"` matches a regular input height.
+   * @values mini, xs, sm, md, lg, xl
+   * @type {MazSize}
+   * @default 'md'
+   */
+  size?: MazSize
+  /**
    * If the textarea has a padding
    * @default true
    */
@@ -58,6 +66,12 @@ export interface MazTextareaProps<T extends string | undefined | null> {
    * @default true
    */
   autogrow?: boolean
+  /**
+   * Minimum number of rows displayed by the textarea (initial/minimum height).
+   * With autogrow enabled, the textarea still grows beyond this with its content.
+   * @default 3
+   */
+  minRows?: number
   /**
    * The alignment of the append slot
    * @values `'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'`
@@ -107,6 +121,7 @@ const {
   transparent = false,
   border = true,
   autogrow = true,
+  minRows = 3,
   appendJustify = 'end',
 } = defineProps<MazTextareaProps<T>>()
 
@@ -138,7 +153,7 @@ const emits = defineEmits<{
   (event: 'change', value: Event): void
 }>()
 
-const { roundedSize } = useGlobalConfig<{ roundedSize: MazRoundedSize }>('MazTextarea', { roundedSize: 'md' })
+const { roundedSize, size } = useGlobalConfig<{ roundedSize: MazRoundedSize, size: MazSize }>('MazTextarea', { roundedSize: 'md', size: 'md' })
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazTextarea',
@@ -216,6 +231,35 @@ const ROUNDED_CLASS = {
   full: 'maz:rounded-full',
 } as const
 
+const SIZE_TEXT_CLASS = {
+  xl: 'maz:text-xl',
+  lg: 'maz:text-lg',
+  md: '',
+  sm: 'maz:text-sm',
+  xs: 'maz:text-xs',
+  mini: 'maz:text-xs',
+} as const
+
+const SIZE_CONFIG = {
+  xl: { height: '4rem', lineHeight: '1.75rem', paddingInline: '1.25rem' },
+  lg: { height: '3.5rem', lineHeight: '1.75rem', paddingInline: '1rem' },
+  md: { height: '3rem', lineHeight: '1.5rem', paddingInline: '1rem' },
+  sm: { height: '2.5rem', lineHeight: '1.25rem', paddingInline: '0.75rem' },
+  xs: { height: '2rem', lineHeight: '1rem', paddingInline: '0.625rem' },
+  mini: { height: '1.5rem', lineHeight: '1rem', paddingInline: '0.5rem' },
+} as const
+
+const sizeTextClass = computed(() => SIZE_TEXT_CLASS[size.value])
+
+const sizeVars = computed(() => {
+  const config = SIZE_CONFIG[size.value]
+  return {
+    '--mt-height': config.height,
+    '--mt-line-height': config.lineHeight,
+    '--mt-padding-inline': config.paddingInline,
+  }
+})
+
 const stateLabelColor = computed(() => [
   {
     'maz:text-destructive-600': error,
@@ -238,7 +282,7 @@ const stateLabelColor = computed(() => [
       {{ topLabel }}
     </label>
     <label
-      class="m-textarea maz:relative maz:flex maz:min-h-25 maz:flex-col maz:align-top maz:text-foreground"
+      class="m-textarea maz:relative maz:flex maz:flex-col maz:align-top maz:text-foreground"
       :for="instanceId"
       :class="[
         {
@@ -247,16 +291,17 @@ const stateLabelColor = computed(() => [
           '--background-transparent': transparent,
           '--has-placeholder': !!placeholder,
           '--autogrow': autogrow,
-          'maz:px-4 maz:py-3': padding,
+          '--padding': padding,
           'maz:border maz:border-solid': border && !disabled,
           'maz:bg-input': !transparent && !disabled,
           'maz:disabled-cursor maz:border-divider maz:bg-surface-600 maz:text-muted maz:dark:border-divider-400 maz:dark:bg-surface-400': disabled,
         },
+        sizeTextClass,
         borderStyle,
         ROUNDED_CLASS[roundedSize],
         `--${color}`,
       ]"
-      :style="[`--append-justify: ${appendJustify}`]"
+      :style="[`--append-justify: ${appendJustify}`, `--maz-textarea-min-rows: ${minRows}`, sizeVars]"
     >
       <!-- eslint-disable vuejs-accessibility/label-has-for -->
       <label
@@ -288,6 +333,7 @@ const stateLabelColor = computed(() => [
         v-model="inputValue"
         :placeholder="placeholder || ' '"
         :name
+        :rows="minRows"
         :disabled
         :readonly
         :required
@@ -323,10 +369,19 @@ const stateLabelColor = computed(() => [
 @reference "../tailwindcss/tailwind.css";
 
 .m-textarea {
+  --mt-padding-block: calc(
+    (var(--mt-height, 3rem) - var(--mt-line-height, 1.5rem) - (var(--maz-border-width) * 2)) / 2
+  );
+
+  &.--padding {
+    padding-inline: var(--mt-padding-inline, 1rem);
+    padding-block: var(--mt-padding-block);
+  }
+
   &.--has-placeholder.--has-label textarea,
   &.--has-label:has(textarea:not(:placeholder-shown)) textarea,
   &.--has-label:has(textarea:-webkit-autofill) textarea {
-    padding-block-start: 0.875rem;
+    padding-block-start: calc(var(--mt-line-height, 1.5rem) * 0.6);
   }
 
   &__append {
@@ -336,6 +391,7 @@ const stateLabelColor = computed(() => [
   textarea {
     @apply maz:w-full maz:outline-hidden maz:bg-transparent;
 
+    line-height: var(--mt-line-height, 1.5rem);
     transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
     &.--has-append {
@@ -355,9 +411,11 @@ const stateLabelColor = computed(() => [
 
   &__label {
     @apply maz:pointer-events-none maz:absolute maz:block maz:w-max maz:origin-top-left maz:truncate;
-    @apply maz:left-4 maz:top-3 maz:leading-6;
     @apply maz:flex maz:flex-center;
 
+    inset-inline-start: var(--mt-padding-inline, 1rem);
+    inset-block-start: var(--mt-padding-block);
+    line-height: var(--mt-line-height, 1.5rem);
     transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
     &:not(.--has-state) {
@@ -368,7 +426,7 @@ const stateLabelColor = computed(() => [
   &.--has-placeholder .m-textarea__label,
   &:has(textarea:not(:placeholder-shown)) .m-textarea__label,
   &:has(textarea:-webkit-autofill) .m-textarea__label {
-    transform: scale(0.8) translateY(-0.65rem);
+    transform: scale(0.8) translateY(calc(-1 * var(--mt-padding-block)));
   }
 
   &.--primary:focus-within {
@@ -407,7 +465,7 @@ const stateLabelColor = computed(() => [
     @apply maz:resize-none;
 
     field-sizing: content;
-    min-block-size: 3lh;
+    min-block-size: calc(var(--maz-textarea-min-rows, 3) * 1lh);
   }
 
   &:not(.--autogrow) textarea {

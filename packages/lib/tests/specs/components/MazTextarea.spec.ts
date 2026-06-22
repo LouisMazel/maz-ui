@@ -110,6 +110,119 @@ describe('components/MazTextarea.vue', () => {
     })
   })
 
+  describe('minRows prop', () => {
+    it('should bind rows to 3 by default', () => {
+      const defaultWrapper = shallowMount(MazTextarea, {
+        props: { modelValue: 'text' },
+      })
+      expect(defaultWrapper.find('textarea').attributes('rows')).toBe('3')
+    })
+
+    it('should expose the default min-rows custom property as 3', () => {
+      const defaultWrapper = shallowMount(MazTextarea, {
+        props: { modelValue: 'text' },
+      })
+      expect(defaultWrapper.find('.m-textarea').attributes('style')).toContain('--maz-textarea-min-rows: 3')
+    })
+
+    it('should bind rows to the provided minRows value', () => {
+      const compactWrapper = shallowMount(MazTextarea, {
+        props: { modelValue: 'text', minRows: 1 },
+      })
+      expect(compactWrapper.find('textarea').attributes('rows')).toBe('1')
+    })
+
+    it('should expose the provided minRows as a custom property', () => {
+      const compactWrapper = shallowMount(MazTextarea, {
+        props: { modelValue: 'text', minRows: 1 },
+      })
+      expect(compactWrapper.find('.m-textarea').attributes('style')).toContain('--maz-textarea-min-rows: 1')
+    })
+  })
+
+  describe('size prop', () => {
+    it('should not apply a text size class by default (md)', () => {
+      const defaultWrapper = shallowMount(MazTextarea, {
+        props: { modelValue: 'text' },
+      })
+      const classes = defaultWrapper.find('.m-textarea').classes()
+      expect(classes).not.toContain('maz:text-sm')
+      expect(classes).not.toContain('maz:text-xs')
+      expect(classes).not.toContain('maz:text-lg')
+      expect(classes).not.toContain('maz:text-xl')
+    })
+
+    it('should expose the md size custom properties by default', () => {
+      const defaultWrapper = shallowMount(MazTextarea, {
+        props: { modelValue: 'text' },
+      })
+      const style = defaultWrapper.find('.m-textarea').attributes('style')
+      expect(style).toContain('--mt-height: 3rem')
+      expect(style).toContain('--mt-line-height: 1.5rem')
+      expect(style).toContain('--mt-padding-inline: 1rem')
+    })
+
+    it('should apply the text size class matching the size prop', () => {
+      const smWrapper = shallowMount(MazTextarea, {
+        props: { modelValue: 'text', size: 'sm' },
+      })
+      expect(smWrapper.find('.m-textarea').classes()).toContain('maz:text-sm')
+    })
+
+    it('should expose the custom properties matching the size prop', () => {
+      const xlWrapper = shallowMount(MazTextarea, {
+        props: { modelValue: 'text', size: 'xl' },
+      })
+      const style = xlWrapper.find('.m-textarea').attributes('style')
+      expect(style).toContain('--mt-height: 4rem')
+      expect(style).toContain('--mt-line-height: 1.75rem')
+      expect(style).toContain('--mt-padding-inline: 1.25rem')
+    })
+
+    it('should apply the --padding class when padding is enabled', () => {
+      const defaultWrapper = shallowMount(MazTextarea, {
+        props: { modelValue: 'text' },
+      })
+      expect(defaultWrapper.find('.m-textarea').classes()).toContain('--padding')
+    })
+
+    it('should not apply the --padding class when padding is disabled', () => {
+      const noPaddingWrapper = shallowMount(MazTextarea, {
+        props: { modelValue: 'text', padding: false },
+      })
+      expect(noPaddingWrapper.find('.m-textarea').classes()).not.toContain('--padding')
+    })
+  })
+
+  describe('Given a global config provides a default size for MazTextarea', () => {
+    describe('When the component mounts without a size prop', () => {
+      it('Then it applies the per-component global size', () => {
+        const config = { MazTextarea: { size: 'sm' as const } }
+
+        const globalWrapper = shallowMount(MazTextarea, {
+          props: { modelValue: 'text' },
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(globalWrapper.find('.m-textarea').classes()).toContain('maz:text-sm')
+      })
+    })
+
+    describe('When an instance size is passed alongside the global config', () => {
+      it('Then the instance prop wins over the global default', () => {
+        const config = { MazTextarea: { size: 'sm' as const } }
+
+        const globalWrapper = shallowMount(MazTextarea, {
+          props: { modelValue: 'text', size: 'xl' as const },
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(globalWrapper.find('.m-textarea').classes()).toContain('maz:text-xl')
+        expect(globalWrapper.find('.m-textarea').classes()).not.toContain('maz:text-sm')
+      })
+    })
+  })
+
   describe('Given an append slot is provided', () => {
     describe('When the component renders', () => {
       it('Then it displays the append content below the textarea', () => {
