@@ -1,5 +1,19 @@
 # Change Log
 
+## v5.0.0-beta.39 (2026-06-22)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.38...v5.0.0-beta.39)
+
+### 🩹 Fixes
+
+- **@maz-ui/eslint-config:** Raise synckit timeout to avoid tailwind lint crash under load ([1aa967b45](https://github.com/LouisMazel/maz-ui/commit/1aa967b45))
+
+  Prevents ESLint from crashing with `Atomics.wait() failed: timed-out` when `eslint-plugin-better-tailwindcss` resolves Tailwind in its worker under heavy parallel load. The worker timeout now defaults to 120s and can still be overridden with the `SYNCKIT_TIMEOUT` environment variable.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.28 (2026-06-10)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.27...v5.0.0-beta.28)

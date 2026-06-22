@@ -1,5 +1,47 @@
 # Change Log
 
+## v5.0.0-beta.39 (2026-06-22)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.38...v5.0.0-beta.39)
+
+### 🚀 Features
+
+- **maz-ui:** UseDrag - add pointer drag gesture composable ([dfbf71c01](https://github.com/LouisMazel/maz-ui/commit/dfbf71c01))
+
+  Adds the `useDrag` composable to track a pointer drag gesture (touch, mouse and pen) in real time. It exposes the live `isDragging`, `offsetX`, `offsetY`, `distance` and `direction`, plus `onStart` / `onMove` / `onEnd` callbacks, with axis locking, a distance threshold and pointer-type filtering.
+
+  ```ts
+  const handle = ref()
+  const { offsetY, isDragging } = useDrag(handle, {
+    axis: 'y',
+    onEnd: ({ offsetY }) => {
+      if (offsetY > 120)
+        close()
+    },
+  })
+  ```
+
+- **maz-ui:** MazBottomSheet - add max-width, header, footer, slots and swipe-to-close ([e663c47eb](https://github.com/LouisMazel/maz-ui/commit/e663c47eb))
+
+  `MazBottomSheet` now supports a `max-width` (constrained and centered on desktop, full-width on mobile), a real header with an optional `icon`, a `title` and a close button, and a `footer`. The `header`, `icon`, `title` and `footer` parts are all replaceable through slots.
+
+  ```vue
+  <MazBottomSheet v-model="open" title="Title" icon="/bell.svg" max-width="40rem">
+    Your content
+    <template #footer="{ close }">
+      <MazBtn @click="close">Confirm</MazBtn>
+    </template>
+  </MazBottomSheet>
+  ```
+
+- **maz-ui:** MazTextarea - add size and minRows props ([c7092dca0](https://github.com/LouisMazel/maz-ui/commit/c7092dca0))
+
+  `MazTextarea` gains a `size` prop (`mini`, `xs`, `sm`, `md`, `lg`, `xl`, mirroring MazInput sizes) that controls the padding and text size, and a `minRows` prop to set the initial/minimum height. Combine them, e.g. `size="md" :min-rows="1"`, to match a regular input height.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.38 (2026-06-22)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.37...v5.0.0-beta.38)

@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.39 (2026-06-22)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.38...v5.0.0-beta.39)
+
+### 🚀 Features
+
+- **@maz-ui/nuxt:** Register useDrag composable for auto-import ([073c0e9b8](https://github.com/LouisMazel/maz-ui/commit/073c0e9b8))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.38 (2026-06-22)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.37...v5.0.0-beta.38)

@@ -1,5 +1,20 @@
 # Change Log
 
+## v5.0.0-beta.39 (2026-06-22)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.38...v5.0.0-beta.39)
+
+### 💅 Refactors
+
+- **@maz-ui/utils:** Swipe - rework on pointer events ([d6141e464](https://github.com/LouisMazel/maz-ui/commit/d6141e464))
+
+  `useSwipe` and the `Swipe` helper now rely on Pointer Events, so swipes are detected with touch, mouse and pen. A new `pointerTypes` option lets you restrict the allowed input types (e.g. `['touch']`).
+  The `preventDefaultOnTouchMove` option is renamed to `preventDefaultOnMove`, and the directional callbacks (`onLeft`, `onRight`, `onUp`, `onDown`) now receive a `PointerEvent` instead of a `TouchEvent`.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.28 (2026-06-10)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.27...v5.0.0-beta.28)
