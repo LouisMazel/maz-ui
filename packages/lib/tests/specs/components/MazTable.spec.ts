@@ -450,4 +450,65 @@ describe('given MazTable component', () => {
       })
     })
   })
+
+  describe('when animatedRows is enabled', () => {
+    const baseProps = {
+      animatedRows: true,
+      rowKey: 'id',
+      divider: true,
+      headers: [
+        { label: 'Id', key: 'id' },
+        { label: 'Firstname', key: 'firstname' },
+      ],
+      rows: [
+        { id: 1, firstname: 'John' },
+        { id: 2, firstname: 'Jane' },
+        { id: 3, firstname: 'Alice' },
+      ],
+    }
+
+    it('renders every row inside a tbody container', async () => {
+      const wrapper = mount(MazTable, { props: baseProps as any })
+
+      await vi.dynamicImportSettled()
+
+      const tbody = wrapper.find('tbody')
+      expect(tbody.exists()).toBe(true)
+      // The dynamic container keeps the divider class binding.
+      expect(tbody.classes()).toContain('--divider')
+      expect(wrapper.findAll('tbody tr')).toHaveLength(3)
+    })
+
+    it('reflects the new order when rows are reordered (stable rowKey path)', async () => {
+      const wrapper = mount(MazTable, {
+        props: {
+          animatedRows: true,
+          rowKey: 'id',
+          headers: [{ label: 'Id', key: 'id' }],
+          rows: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        } as any,
+      })
+
+      await vi.dynamicImportSettled()
+      expect(wrapper.findAll('tbody tr td').map(td => td.text())).toStrictEqual(['1', '2', '3'])
+
+      await wrapper.setProps({ rows: [{ id: 3 }, { id: 1 }, { id: 2 }] })
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.findAll('tbody tr td').map(td => td.text())).toStrictEqual(['3', '1', '2'])
+    })
+
+    it('still renders when no rowKey is provided (falls back to index)', async () => {
+      const wrapper = mount(MazTable, {
+        props: {
+          animatedRows: true,
+          headers: [{ label: 'Id', key: 'id' }],
+          rows: [{ id: 1 }, { id: 2 }],
+        } as any,
+      })
+
+      await vi.dynamicImportSettled()
+      expect(wrapper.findAll('tbody tr')).toHaveLength(2)
+    })
+  })
 })
