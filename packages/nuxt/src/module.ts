@@ -128,6 +128,7 @@ const pluginComposables: Record<'useTheme' | 'useTranslations', true> = {
 
 const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDialog' | 'useToast' | 'useWait' | 'useMazIconProps'> = {
   useIdleTimeout: true,
+  useDrag: true,
   useReadingTime: true,
   useFormField: true,
   useWindowSize: true,
