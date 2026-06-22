@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.38 (2026-06-22)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.37...v5.0.0-beta.38)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazBtn - can disable overflow-hidden and fix fab applied classes ([5c79a1035](https://github.com/LouisMazel/maz-ui/commit/5c79a1035))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.37 (2026-06-22)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.36...v5.0.0-beta.37)
