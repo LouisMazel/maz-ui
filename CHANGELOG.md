@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.37 (2026-06-22)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.36...v5.0.0-beta.37)
+
+### 🚀 Features
+
+- **maz-ui:** MazTable - add min-width to header items and animated rows ([00ff7f483](https://github.com/LouisMazel/maz-ui/commit/00ff7f483))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.36 (2026-06-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.35...v5.0.0-beta.36)
