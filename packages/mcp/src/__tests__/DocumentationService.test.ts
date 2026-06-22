@@ -107,6 +107,7 @@ describe('Given DocumentationService instance', () => {
         'use-breakpoints',
         'use-dialog',
         'use-display-names',
+        'use-drag',
         'use-form-validator',
         'use-idle-timeout',
         'use-reading-time',
@@ -272,7 +273,7 @@ describe('Given DocumentationService instance', () => {
 
       expect(result.components.total).toBeGreaterThanOrEqual(56)
       expect(result.guides.total).toBe(18)
-      expect(result.composables.total).toBe(14)
+      expect(result.composables.total).toBe(15)
       expect(result.directives.total).toBe(5)
       expect(result.plugins.total).toBe(4)
       expect(result.utils.total).toBe(41)
