@@ -14,6 +14,7 @@ export interface MazTableHeadersEnriched {
   srOnly?: boolean
   width?: string
   maxWidth?: string
+  minWidth?: string
   classes?: NonRecursiveClassValue
   scope?: ThHTMLAttributes['scope']
   align?: ThHTMLAttributes['align']
@@ -242,6 +243,20 @@ export interface MazTableProps<T extends MazTableRow<T>> {
    * @default false
    */
   scrollable?: boolean
+  /**
+   * Field name used as a stable key for each row (e.g. an id). Gives every row a
+   * stable identity so reordering is tracked correctly - required for `animatedRows`
+   * to look right. Falls back to the row index when not provided.
+   * @type {string}
+   */
+  rowKey?: string
+  /**
+   * Animate row reordering with a FLIP transition (rows slide to their new position).
+   * Provide a stable `rowKey` for meaningful results. Respects `prefers-reduced-motion`.
+   * @type {boolean}
+   * @default false
+   */
+  animatedRows?: boolean
 }
 
 export interface MazTableProvide {
@@ -270,6 +285,7 @@ import {
   provide,
   ref,
   toRef,
+  TransitionGroup,
   useSlots,
   watch,
 } from 'vue'
@@ -310,6 +326,8 @@ const {
   color = 'primary',
   translations,
   scrollable = false,
+  rowKey,
+  animatedRows = false,
 } = defineProps<MazTableProps<T>>()
 
 const emits = defineEmits<{
@@ -575,6 +593,10 @@ function getNormalizedRows(): T[] {
   )
 }
 
+function getRowKey(row: T, index: number): string | number {
+  return rowKey && row[rowKey] != null ? row[rowKey] : index
+}
+
 function sortColumn(columnIndex: number) {
   if (columnIndex === sortedColumnIndex.value) {
     const sortTypeValue = sortType.value === 'DESC' ? 'ASC' : undefined
@@ -707,7 +729,7 @@ onBeforeMount(() => {
                 :rowspan="header.rowspan"
                 :colspan="header.colspan"
                 :headers="header.thHeaders"
-                :style="{ width: header.width, textAlign: header.align }"
+                :style="{ width: header.width, textAlign: header.align, maxWidth: header.maxWidth, minWidth: header.minWidth }"
                 class="maz:group"
                 :class="[
                   { '--hidden': header.hidden, '--sortable': header.sortable ?? sortable },
@@ -759,12 +781,16 @@ onBeforeMount(() => {
 
         <MazLoadingBar v-if="loading" :color class="maz:absolute!" />
 
-        <tbody :class="{ '--divider': hasDivider }">
+        <component
+          :is="animatedRows ? TransitionGroup : 'tbody'"
+          v-bind="animatedRows ? { tag: 'tbody', name: 'm-table-row', moveClass: 'm-table-row-move' } : {}"
+          :class="{ '--divider': hasDivider }"
+        >
           <slot>
             <template v-if="rowsFiltered.length > 0">
               <MazTableRowComponent
                 v-for="(row, rowIndex) in rowsFiltered"
-                :key="rowIndex"
+                :key="getRowKey(row, rowIndex)"
                 :class="row.classes"
                 @click="row.action && row.action(row)"
               >
@@ -837,7 +863,7 @@ onBeforeMount(() => {
               </MazTableRowComponent>
             </template>
           </slot>
-        </tbody>
+        </component>
       </table>
     </div>
 
@@ -1144,6 +1170,19 @@ onBeforeMount(() => {
         @apply maz:divide-y maz:divide-divider;
       }
     }
+  }
+}
+
+/* Reordering animation (FLIP) when `animatedRows` is enabled. The class is set by
+   TransitionGroup on the child row element, hence `:deep`. Disabled when the user
+   prefers reduced motion. */
+:deep(.m-table-row-move) {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :deep(.m-table-row-move) {
+    transition: none;
   }
 }
 </style>
