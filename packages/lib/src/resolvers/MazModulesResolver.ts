@@ -23,6 +23,7 @@ const composablesMap: Record<Composables, true> = {
   useDisplayNames: true,
   useFreezeValue: true,
   useDialog: true,
+  useDrag: true,
   useMountComponent: true,
   useDropzone: true,
   useMutationObserver: true,
