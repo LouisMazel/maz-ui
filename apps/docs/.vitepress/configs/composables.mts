@@ -1,4 +1,5 @@
 import type { DefaultTheme } from 'vitepress'
+import { withNewBadge } from './badges.mjs'
 
 export const composables = {
   text: 'Composables',
@@ -7,6 +8,7 @@ export const composables = {
     { text: 'useAos', link: '/composables/use-aos' },
     { text: 'useBreakpoints', link: '/composables/use-breakpoints' },
     { text: 'useDialog', link: '/composables/use-dialog' },
+    { text: withNewBadge('useDrag'), link: '/composables/use-drag' },
     { text: 'useFormValidator', link: '/composables/use-form-validator' },
     { text: 'useIdleTimeout', link: '/composables/use-idle-timeout' },
     { text: 'useDisplayNames', link: '/composables/use-display-names' },
