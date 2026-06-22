@@ -24,6 +24,7 @@ const {
   block,
   padding = true,
   active,
+  overflowHidden = true,
 } = defineProps<MazBtnProps>()
 
 const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazBtn', {
@@ -129,6 +130,11 @@ export interface MazBtnProps {
    * @default false
    */
   active?: boolean
+  /**
+   * If true, the button will have an overflow-hidden style
+   * @default false
+   */
+  overflowHidden?: boolean
 }
 
 const component = computed(() => {
@@ -235,19 +241,20 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
   <component
     :is="component"
     :disabled="isDisabled"
-    class="m-btn m-reset-css maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-2 maz:overflow-hidden maz:border maz:border-solid maz:border-transparent maz:bg-transparent maz:py-0.5 maz:text-center maz:align-top maz:text-foreground maz:no-underline maz:transition-all maz:duration-200 maz:ease-in-out"
+    class="m-btn m-reset-css maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-2 maz:border maz:border-solid maz:border-transparent maz:bg-transparent maz:py-0.5 maz:text-center maz:align-top maz:text-foreground maz:no-underline maz:transition-all maz:duration-200 maz:ease-in-out"
     :class="[
       `--${resolvedColor}`,
       `--${size}`,
       textColor && `${TEXT_COLOR[textColor]}`,
       !fab && roundedSize ? `--rounded-${roundedSize}` : '',
-      SIZE_CLASS[size],
+      !fab && SIZE_CLASS[size],
       fab ? 'maz:flex maz:flex-center maz:rounded-full maz:p-1' : ROUNDED_CLASS[roundedSize],
       fab ? FAB_SIZE_CLASS[size] : '',
       (!!startIcon || hasSlotContent($slots['start-icon'])) ? ICON_PADDING_CLASS[size].start : '',
       (!!endIcon || hasSlotContent($slots['end-icon'])) ? ICON_PADDING_CLASS[size].end : '',
       {
         'maz:relative': loading,
+        'maz:overflow-hidden': overflowHidden,
         '--outlined': outlined,
         '--pastel': pastel,
         '--block': block && !fab,
