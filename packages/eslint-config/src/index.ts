@@ -16,6 +16,13 @@ import { tailwindcssConfigs } from './configs/tailwindcss'
 import { testRules } from './configs/test'
 import { vueRules, vueSfcOnlyRules } from './configs/vue'
 
+// `eslint-plugin-better-tailwindcss` resolves Tailwind inside a synckit worker
+// guarded by a hard 30s timeout. Under heavy parallel load (nx running lint +
+// vue-tsc + vitest on the same cores) the worker gets CPU-starved past 30s and
+// crashes the whole lint with "Atomics.wait() failed: timed-out". Give it a much
+// larger ceiling unless the caller already pinned SYNCKIT_TIMEOUT.
+process.env.SYNCKIT_TIMEOUT ??= '120000'
+
 const TAG = '[@maz-ui/eslint-config]'
 
 /**
