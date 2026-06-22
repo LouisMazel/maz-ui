@@ -303,6 +303,64 @@ By default, the textarea automatically expands as the user types. You can disabl
   </template>
 </ComponentDemo>
 
+## Minimum rows (compact / input-like)
+
+Use the `min-rows` prop to control the initial (minimum) height of the textarea. It defaults to `3` lines. Set it to `1` to make the textarea start at the height of a regular input while keeping the autogrow behavior: it grows line by line as the user types.
+
+<ComponentDemo>
+  <MazTextarea
+    v-model="value"
+    name="comment"
+    :min-rows="1"
+    rounded-size="xl"
+    placeholder="Send your message"
+  />
+
+<template #code>
+
+```vue
+<template>
+  <MazTextarea
+    v-model="value"
+    name="comment"
+    :min-rows="1"
+    rounded-size="xl"
+    placeholder="Send your message"
+  />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Sizes
+
+The `size` prop controls the padding (height) and text size of the textarea, mirroring the `MazInput` sizes (`mini`, `xs`, `sm`, `md`, `lg`, `xl`). Combined with `:min-rows="1"`, a given size matches the height of a `MazInput` of the same size, while keeping the autogrow behavior.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-4">
+    <MazTextarea v-model="value" name="comment" size="xs" :min-rows="1" placeholder="Size xs" />
+    <MazTextarea v-model="value" name="comment" size="sm" :min-rows="1" placeholder="Size sm" />
+    <MazTextarea v-model="value" name="comment" size="md" :min-rows="1" placeholder="Size md" />
+    <MazTextarea v-model="value" name="comment" size="lg" :min-rows="1" placeholder="Size lg" />
+    <MazTextarea v-model="value" name="comment" size="xl" :min-rows="1" placeholder="Size xl" />
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <MazTextarea v-model="value" name="comment" size="xs" :min-rows="1" placeholder="Size xs" />
+  <MazTextarea v-model="value" name="comment" size="sm" :min-rows="1" placeholder="Size sm" />
+  <MazTextarea v-model="value" name="comment" size="md" :min-rows="1" placeholder="Size md" />
+  <MazTextarea v-model="value" name="comment" size="lg" :min-rows="1" placeholder="Size lg" />
+  <MazTextarea v-model="value" name="comment" size="xl" :min-rows="1" placeholder="Size xl" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Disabled
 
 <ComponentDemo>
