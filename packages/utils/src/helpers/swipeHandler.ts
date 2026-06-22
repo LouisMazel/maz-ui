@@ -7,7 +7,7 @@ export interface SwipeValues {
   yDiff: number | undefined
 }
 
-export type SwipeEventCallback = (event: TouchEvent) => void
+export type SwipeEventCallback = (event: PointerEvent) => void
 export type SwipeValuesCallback = (values: SwipeValues) => void
 
 /**
@@ -50,23 +50,29 @@ export interface SwipeOptions {
    */
   threshold?: number
   /**
-   * Whether to prevent the default behavior of touchmove event.
+   * Whether to prevent the default behavior of the pointer move event (the move listener
+   * becomes non-passive when enabled).
    * @default false
    */
-  preventDefaultOnTouchMove?: boolean
+  preventDefaultOnMove?: boolean
   /**
    * Whether to prevent the default behavior of mousewheel event.
    * @default false
    */
   preventDefaultOnMouseWheel?: boolean
   /**
-   * Whether to trigger the swipe event immediately on touchstart/mousedown.
+   * Pointer types that can trigger the swipe.
+   * @default ['mouse', 'touch', 'pen']
+   */
+  pointerTypes?: ('mouse' | 'touch' | 'pen')[]
+  /**
+   * Whether to start listening immediately on instantiation.
    * @default false
    */
   immediate?: boolean
   /**
-   * Whether to trigger the swipe event on touchend/mouseup.
-   * If set to true, the swipe event will be triggered only when the user lifts their finger/mouse.
+   * Whether to trigger the swipe event on pointer up.
+   * If set to true, the swipe event will be triggered only when the user lifts their finger/pointer.
    * @default false
    */
   triggerOnEnd?: boolean
@@ -75,7 +81,7 @@ export interface SwipeOptions {
 type DefaultSwipeOptions = Required<
   Pick<
     SwipeOptions,
-    | 'preventDefaultOnTouchMove'
+    | 'preventDefaultOnMove'
     | 'preventDefaultOnMouseWheel'
     | 'threshold'
     | 'immediate'
@@ -86,7 +92,7 @@ type DefaultSwipeOptions = Required<
 type SwipeOptionsWithDefaults = SwipeOptions & DefaultSwipeOptions
 
 const defaultOptions: DefaultSwipeOptions = {
-  preventDefaultOnTouchMove: false,
+  preventDefaultOnMove: false,
   preventDefaultOnMouseWheel: false,
   threshold: 50,
   immediate: false,
@@ -103,9 +109,11 @@ export class Swipe {
   public xDiff: number | undefined
   public yDiff: number | undefined
 
-  private readonly onToucheStartCallback: (event: TouchEvent) => void
-  private readonly onToucheMoveCallback: (event: TouchEvent) => void
-  private readonly onToucheEndCallback: (event: TouchEvent) => void
+  private pointerDown = false
+
+  private readonly onPointerDownCallback: (event: PointerEvent) => void
+  private readonly onPointerMoveCallback: (event: PointerEvent) => void
+  private readonly onPointerUpCallback: (event: PointerEvent) => void
   private readonly onMouseWheelCallback: (event: Event) => void
 
   public readonly start: (element?: typeof this.options.element) => void
@@ -116,9 +124,9 @@ export class Swipe {
   constructor(readonly inputOption: SwipeOptions) {
     this.options = { ...defaultOptions, ...inputOption }
 
-    this.onToucheStartCallback = this.toucheStartHandler.bind(this)
-    this.onToucheMoveCallback = this.handleTouchMove.bind(this)
-    this.onToucheEndCallback = this.handleTouchEnd.bind(this)
+    this.onPointerDownCallback = this.handlePointerDown.bind(this)
+    this.onPointerMoveCallback = this.handlePointerMove.bind(this)
+    this.onPointerUpCallback = this.handlePointerUp.bind(this)
     this.onMouseWheelCallback = this.handleMouseWheel.bind(this)
     this.start = this.startListening.bind(this)
     this.stop = this.stopListening.bind(this)
@@ -135,20 +143,21 @@ export class Swipe {
   private startListening() {
     this.setElement(this.options.element)
 
-    this.element?.addEventListener('touchstart', this.onToucheStartCallback, { passive: true })
-    this.element?.addEventListener('touchmove', this.onToucheMoveCallback, { passive: true })
-    if (this.options.triggerOnEnd) {
-      this.element?.addEventListener('touchend', this.onToucheEndCallback, { passive: true })
-    }
+    this.element?.addEventListener('pointerdown', this.onPointerDownCallback, { passive: true })
+    this.element?.addEventListener('pointermove', this.onPointerMoveCallback, { passive: !this.options.preventDefaultOnMove })
+    this.element?.addEventListener('pointerup', this.onPointerUpCallback, { passive: true })
+    this.element?.addEventListener('pointercancel', this.onPointerUpCallback, { passive: true })
+
     if (this.options.preventDefaultOnMouseWheel) {
       this.element?.addEventListener('mousewheel', this.onMouseWheelCallback, { passive: false })
     }
   }
 
   private stopListening() {
-    this.element?.removeEventListener('touchstart', this.onToucheStartCallback)
-    this.element?.removeEventListener('touchmove', this.onToucheMoveCallback)
-    this.element?.removeEventListener('touchend', this.onToucheEndCallback)
+    this.element?.removeEventListener('pointerdown', this.onPointerDownCallback)
+    this.element?.removeEventListener('pointermove', this.onPointerMoveCallback)
+    this.element?.removeEventListener('pointerup', this.onPointerUpCallback)
+    this.element?.removeEventListener('pointercancel', this.onPointerUpCallback)
 
     if (this.options.preventDefaultOnMouseWheel) {
       this.element?.removeEventListener('mousewheel', this.onMouseWheelCallback)
@@ -176,13 +185,23 @@ export class Swipe {
     }
   }
 
+  private isPointerAllowed(event: PointerEvent) {
+    const type = event.pointerType as NonNullable<SwipeOptions['pointerTypes']>[number] | undefined
+    return !this.options.pointerTypes || !type || this.options.pointerTypes.includes(type)
+  }
+
   private handleMouseWheel(event: Event) {
     event.preventDefault()
   }
 
-  private toucheStartHandler(event: TouchEvent) {
-    this.xStart = event.touches[0].clientX
-    this.yStart = event.touches[0].clientY
+  private handlePointerDown(event: PointerEvent) {
+    if (!this.isPointerAllowed(event)) {
+      return
+    }
+
+    this.pointerDown = true
+    this.xStart = event.clientX
+    this.yStart = event.clientY
     this.emitValuesChanged()
   }
 
@@ -197,15 +216,19 @@ export class Swipe {
     })
   }
 
-  private handleTouchMove(event: TouchEvent) {
-    if (this.options.preventDefaultOnTouchMove && event.cancelable) {
+  private handlePointerMove(event: PointerEvent) {
+    if (!this.pointerDown) {
+      return
+    }
+
+    if (this.options.preventDefaultOnMove && event.cancelable) {
       event.preventDefault()
     }
 
-    this.xEnd = event.touches[0].clientX
-    this.yEnd = event.touches[0].clientY
+    this.xEnd = event.clientX
+    this.yEnd = event.clientY
 
-    if (!this.xStart || !this.yStart)
+    if (this.xStart === undefined || this.yStart === undefined)
       return
 
     this.xDiff = this.xStart - this.xEnd
@@ -218,12 +241,16 @@ export class Swipe {
     }
   }
 
-  private handleTouchEnd(event: TouchEvent) {
-    this.runCallbacks(event)
-    this.emitValuesChanged()
+  private handlePointerUp(event: PointerEvent) {
+    if (this.options.triggerOnEnd) {
+      this.runCallbacks(event)
+      this.emitValuesChanged()
+    }
+
+    this.pointerDown = false
   }
 
-  private runCallbacks(event: TouchEvent) {
+  private runCallbacks(event: PointerEvent) {
     if (typeof this.xDiff !== 'number' || typeof this.yDiff !== 'number') {
       return
     }
