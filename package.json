@@ -43,7 +43,7 @@
     "typecheck:all": "nx run-many -t typecheck",
     "test:unit:all": "nx run-many -t test:unit",
     "test:unit:coverage:all": "nx run-many -t test:unit:coverage",
-    "health": "nx run-many -t lint:fix typecheck test:unit:coverage build --parallel=100% -p '@maz-ui/*' maz-ui",
+    "health": "nx run-many -t lint:fix typecheck test:unit:coverage build -p '@maz-ui/*' maz-ui",
     "relizy": "relizy",
     "nx:cache:clear": "nx reset",
     "dev:watch": "nx run-many -t dev",
