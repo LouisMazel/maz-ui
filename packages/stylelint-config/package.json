@@ -71,7 +71,7 @@
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
     "@vitest/coverage-v8": "^4.1.6",
-    "stylelint": "^17.13.0",
+    "stylelint": "^17.14.0",
     "unbuild": "^3.6.1",
     "vitest": "^4.1.8"
   },
