@@ -137,16 +137,15 @@ const shouldDisplayImg = computed(() => src || (!src && !caption))
 function handleImageError(event: Event) {
   emits('error', event.target as Element)
 
-  if (fallbackSrc && event.target instanceof HTMLImageElement) {
-    const currentSrc = new URL(event.target.src)
-    const fallbackSource = new URL(fallbackSrc)
+  if (!fallbackSrc || !(event.target instanceof HTMLImageElement))
+    return
 
-    if (currentSrc.href === fallbackSource.href) {
-      return
-    }
+  const resolvedFallback = new URL(fallbackSrc, globalThis.location.href).href
 
-    event.target.src = fallbackSource.href
-  }
+  if (event.target.src === resolvedFallback)
+    return
+
+  event.target.src = resolvedFallback
 }
 
 const hasInitial = computed(() => !src && caption)
@@ -234,10 +233,11 @@ const fontSize = computed(() => {
         <img
           v-else
           class="m-avatar__picture"
-          :class="[imageHeightFull ? 'maz:h-max-full maz:h-full maz:w-min maz:max-w-min' : 'maz:w-full maz:max-w-full']"
+          :class="[imageHeightFull ? 'maz:h-full maz:max-h-full maz:w-auto maz:max-w-none' : 'maz:w-full maz:max-w-full']"
           :src="src ?? fallbackSrc"
           :alt="alt"
           :loading
+          decoding="async"
           @error="handleImageError"
         >
       </template>

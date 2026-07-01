@@ -648,6 +648,24 @@ describe('MazAvatar extended branch coverage', () => {
 
       expect(img.src).toBe(before)
     })
+
+    it('resolves a relative fallbackSrc without throwing on error', async () => {
+      const wrapper = mount(MazAvatar, {
+        props: {
+          src: 'https://example.com/photo.jpg',
+          fallbackSrc: '/images/fallback.png',
+          loading: 'eager',
+        },
+      })
+      await vi.dynamicImportSettled()
+
+      const img = wrapper.find('img').element as HTMLImageElement
+      img.src = 'https://example.com/photo.jpg'
+      await wrapper.find('img').trigger('error')
+
+      expect(wrapper.emitted('error')).toHaveLength(1)
+      expect(img.src).toBe(new URL('/images/fallback.png', globalThis.location.href).href)
+    })
   })
 
   describe('custom class and style props', () => {

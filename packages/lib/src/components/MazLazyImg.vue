@@ -126,6 +126,7 @@ defineExpose({ onIntersecting, onLoading, onLoaded, onError })
       v-bind="$attrs"
       src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
       loading="lazy"
+      decoding="async"
       :alt
       :class="imgClass"
     >
@@ -145,7 +146,7 @@ defineExpose({ onIntersecting, onLoading, onLoaded, onError })
   }
 
   &.--height-full:not(.m-lazy-error) img {
-    @apply maz:max-h-full! maz:h-full! maz:w-min! maz:max-w-min!;
+    @apply maz:max-h-full! maz:h-full! maz:w-auto! maz:max-w-none!;
   }
 
   &.m-lazy-error:not(.m-lazy-fallback) {

@@ -25,21 +25,21 @@
   --vp-c-bg: var(--maz-surface);
   --vp-c-brand: var(--maz-primary);
   --vp-c-brand-1: var(--maz-primary);
-  --vp-c-gutter: var(--maz-color-surface-600);
-  --vp-c-brand-light: var(--maz-color-primary-400);
-  --vp-c-brand-lighter: var(--maz-color-primary-300);
-  --vp-c-brand-dark: var(--maz-color-primary-600);
-  --vp-c-brand-darker: var(--maz-color-primary-700);
+  --vp-c-gutter: var(--maz-surface-600);
+  --vp-c-brand-light: var(--maz-primary-400);
+  --vp-c-brand-lighter: var(--maz-primary-300);
+  --vp-c-brand-dark: var(--maz-primary-600);
+  --vp-c-brand-darker: var(--maz-primary-700);
   --vp-home-hero-name-color: var(--maz-primary);
   --vp-button-brand-bg: var(--maz-primary);
-  --vp-button-brand-border: var(--maz-color-primary-600);
+  --vp-button-brand-border: var(--maz-primary-600);
   --vp-button-brand-text: var(--maz-primary-foreground);
-  --vp-button-brand-hover-border: var(--maz-color-primary-700);
+  --vp-button-brand-hover-border: var(--maz-primary-700);
   --vp-button-brand-hover-text: var(--maz-primary-foreground);
-  --vp-button-brand-hover-bg: var(--maz-color-primary-600);
-  --vp-button-brand-active-border: var(--maz-color-primary-700);
+  --vp-button-brand-hover-bg: var(--maz-primary-600);
+  --vp-button-brand-active-border: var(--maz-primary-700);
   --vp-button-brand-active-text: var(--maz-primary-foreground);
-  --vp-button-brand-active-bg: var(--maz-color-primary-600);
+  --vp-button-brand-active-bg: var(--maz-primary-600);
 
   --vp-code-font-size: calc(var(--maz-base-font-size) - 2px);
 
@@ -47,9 +47,9 @@
   --vp-code-tab-text-color: var(--maz-muted);
   --vp-code-tab-hover-text-color: var(--maz-contrast-foreground);
   --vp-code-tab-active-text-color: var(--maz-primary);
-  --vp-code-tab-divider: var(--maz-color-contrast-200);
+  --vp-code-tab-divider: var(--maz-contrast-200);
   --vp-code-block-color: var(--maz-contrast-foreground);
-  /* --vp-code-tab-bg: var(--maz-color-contrast-600); */
+  /* --vp-code-tab-bg: var(--maz-contrast-600); */
 }
 
 @media (min-width: 440px) {
@@ -75,8 +75,8 @@ html.dark {
   --vp-c-gutter: var(--maz-divider);
   /* Attention --vp-c-bg-soft est aussi le background du docsearch (algolia) */
   --vp-c-bg-soft: var(--maz-surface);
-  --vp-code-block-bg: var(--maz-color-surface-600);
-  --vp-code-tab-divider: var(--maz-color-surface-300);
+  --vp-code-block-bg: var(--maz-surface-600);
+  --vp-code-tab-divider: var(--maz-surface-300);
   --vp-code-tab-hover-text-color: var(--maz-foreground);
   --vp-code-block-color: var(--maz-foreground);
 }
