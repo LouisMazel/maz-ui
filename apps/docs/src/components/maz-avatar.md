@@ -15,7 +15,7 @@ This component uses [vLazyImg](./../directives/lazy-img.md) directive
 
 ## Basic usage
 
-<MazAvatar :lazy="false" src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80" />
+<MazAvatar src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80" />
 
 ```vue
 <script lang="ts" setup>
@@ -87,7 +87,6 @@ function clicked() { console.log('clicked') }
     target="_blank"
     rounded-size="none"
     clickable
-    no-size
   >
     <template #icon>
       <MazIcon icon="/eye.svg" />
@@ -139,10 +138,12 @@ Initials are always uppercased.
 
 ## On Error
 
-<MazAvatar @error="error" />
+When no `src` (and no `caption`) is provided, or when the image fails to load, `MazAvatar` displays the default `no-image` placeholder.
+
+<MazAvatar @error="error" src="https://broken-link-image-src.example" />
 
 ```html
-<MazAvatar @error="error" />
+<MazAvatar @error="error" src="https://broken-link-image-src.example" />
 ```
 
 ## Fallback image loaded on error
@@ -198,6 +199,24 @@ These modes are native use an `HTMLImageElement` with the `loading` attribute. (
 />
 <MazAvatar loading="lazy" src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123" />
 <MazAvatar loading="eager" src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123" />
+```
+
+## Image height full
+
+By default the image fills the avatar **width** (`width: 100%`). Enable `image-height-full` to make the image fill the **height** instead: it keeps its aspect ratio, fills 100% of the height and overflows/crops horizontally. This is ideal for wide images or SVGs (like flags) that must cover the whole avatar.
+
+<div class="flex gap-05 items-center flex-wrap">
+  <MazAvatar class="vp-raw" size="4rem" src="https://placedog.net/300/200?id=7" />
+  <MazAvatar class="vp-raw" size="4rem" image-height-full src="https://placedog.net/300/200?id=7" />
+</div>
+
+```vue
+<template>
+  <!-- default: width 100% -->
+  <MazAvatar src="https://placedog.net/300/200" />
+  <!-- height 100%, cropped on the sides -->
+  <MazAvatar image-height-full src="https://placedog.net/300/200" />
+</template>
 ```
 
 <script lang="ts" setup>
