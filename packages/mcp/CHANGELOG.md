@@ -1,5 +1,17 @@
 # Changelog
 
+## v5.0.0-beta.40 (2026-07-01)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.39...v5.0.0-beta.40)
+
+### 🧪 Tests
+
+- **@maz-ui/mcp:** Include useDrag in documentation service expectations ([ed937a813](https://github.com/LouisMazel/maz-ui/commit/ed937a813))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.39 (2026-06-22)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.38...v5.0.0-beta.39)

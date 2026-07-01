@@ -1,5 +1,22 @@
 # Change Log
 
+## v5.0.0-beta.40 (2026-07-01)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.39...v5.0.0-beta.40)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazAvatar & MazLazyImg - image-height-full on safari browser ([538763d0b](https://github.com/LouisMazel/maz-ui/commit/538763d0b))
+- **maz-ui:** VLazyImg - share observers, prevent leak and add disabled option ([b1d491e8b](https://github.com/LouisMazel/maz-ui/commit/b1d491e8b))
+
+  The lazy image loader now shares a single pooled `IntersectionObserver` across every image and releases them on unmount, so pages rendering many `MazAvatar` or `MazLazyImg` no longer leak observers.
+  New `disabled` option to load an image immediately, bypassing lazy loading:
+  `v-lazy-img="{ src: '/photo.jpg', disabled: true }"`
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.39 (2026-06-22)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.38...v5.0.0-beta.39)
