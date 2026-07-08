@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.41 (2026-07-08)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.40...v5.0.0-beta.41)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPullToRefresh - ssr mismatch ([2c32c129c](https://github.com/LouisMazel/maz-ui/commit/2c32c129c))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.40 (2026-07-01)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.39...v5.0.0-beta.40)

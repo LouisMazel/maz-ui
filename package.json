@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "5.0.0-beta.40",
+  "version": "5.0.0-beta.41",
   "private": true,
   "packageManager": "pnpm@11.5.2",
   "description": "A standalone components library for Vue.Js & Nuxt.Js",
