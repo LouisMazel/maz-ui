@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import type { MazColor } from './types'
-import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { isStandaloneMode } from '@maz-ui/utils/helpers/isStandaloneMode'
 
-import { computed, defineAsyncComponent, onUnmounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue'
 
 const {
   distance: distanceProp = 100,
@@ -31,11 +30,16 @@ export interface MazPullToRefreshProps {
   standaloneMode?: boolean
 }
 
+const mounted = ref(false)
+onMounted(() => {
+  mounted.value = true
+})
+
 const isDisabled = computed(
   () =>
     disabled
     || onRefresh === undefined
-    || (standaloneMode && isClient() && !isStandaloneMode()),
+    || (standaloneMode && mounted.value && !isStandaloneMode()),
 )
 
 const margin = ref({
