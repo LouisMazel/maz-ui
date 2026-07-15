@@ -32,7 +32,7 @@
     "dayjs": "^1.11.20",
     "libphonenumber-js": "^1.13.6",
     "maz-ui": "workspace:*",
-    "shiki": "^4.1.0",
+    "shiki": "^4.3.1",
     "valibot": "^1.4.0",
     "vitepress-plugin-google-analytics": "^1.0.2"
   },
