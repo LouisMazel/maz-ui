@@ -58,7 +58,7 @@
     "@maz-ui/eslint-config": "workspace:*",
     "@maz-ui/node": "workspace:*",
     "@nx/js": "^22.7.2",
-    "@types/node": "^25.9.2",
+    "@types/node": "^26.1.1",
     "@vitejs/plugin-vue": "^6.0.7",
     "@vitest/coverage-v8": "^4.1.6",
     "@vitest/ui": "^4.1.6",
