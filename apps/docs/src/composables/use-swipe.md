@@ -12,11 +12,19 @@ description: useSwipe is a Vue composable that simplifies the management of "swi
 `useSwipe` allows you to detect and react to swiping movements on an HTML element. It provides you with various information about the swipe movement, such as the direction, distance, start, and end coordinates.
 You can use this information to implement specific interactions in your application, such as scrolling a carousel, opening a side menu, etc.
 
+It is built on top of [Pointer Events](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events), so it works with **touch, mouse and pen** out of the box.
+
+::: tip
+For a real-time drag gesture (follow the pointer, snap back, drag-to-dismiss…) rather than discrete directional detection, use [useDrag](./use-drag.md).
+:::
+
 ## Key Features
 
 - Detects swipes in all 4 directions (left, right, up, down)
+- Works with touch, mouse and pen (Pointer Events)
 - Provides key information about the swipe movement (start/end coordinates, horizontal/vertical distance)
 - Allows you to configure callbacks for each swipe direction
+- Restrict the gesture to specific pointer types
 - Possibility to customize the swipe detection threshold
 - Automatically handles the addition and removal of event listeners
 - Can be used with any HTML element
@@ -26,8 +34,8 @@ You can use this information to implement specific interactions in your applicat
 <div ref="swipeContainer" class="swipe-container">
   <p>
     Swipe in any direction<br>
-    <span class="maz-text-xs maz-text-muted">
-      (You should use a real device or a mobile simulator to test the swipe functionality)
+    <span class="maz:text-xs maz:text-muted">
+      (works with touch, mouse and pen)
     </span>
     <br><br>
     Last swipe direction: {{lastSwipeDirection || 'None'}}
@@ -73,8 +81,8 @@ onUnmounted(() => {
   <div ref="swipeContainer" class="swipe-container">
     <p>
       Swipe in any direction<br>
-      <span class="maz-text-sm maz-text-muted">
-        (You should use a real device or a mobile simulator to test the swipe functionality)
+      <span class="maz:text-sm maz:text-muted">
+        (works with touch, mouse and pen)
       </span>
       <br><br>
       Last swipe direction: {{ lastSwipeDirection || 'None' }}
@@ -97,7 +105,7 @@ onUnmounted(() => {
 ```
 
 <script lang="ts" setup>
-import { useSwipe } from 'maz-ui/src/composables/useSwipe'
+import { useSwipe } from 'maz-ui/composables/useSwipe'
 import { onMounted, onUnmounted, ref } from 'vue'
 
 const swipeContainer = ref<HTMLDivElement>()
@@ -153,35 +161,41 @@ interface UseSwipeOptions {
    */
   element: HTMLElement | string | Ref<HTMLElement>
   /** Callback executed when a left swipe is detected. */
-  onLeft?: (event: TouchEvent) => void
+  onLeft?: (event: PointerEvent) => void
   /** Callback executed when a right swipe is detected. */
-  onRight?: (event: TouchEvent) => void
+  onRight?: (event: PointerEvent) => void
   /** Callback executed when an up swipe is detected. */
-  onUp?: (event: TouchEvent) => void
+  onUp?: (event: PointerEvent) => void
   /** Callback executed when a down swipe is detected. */
-  onDown?: (event: TouchEvent) => void
+  onDown?: (event: PointerEvent) => void
   /**
    * The minimum distance the swipe must travel to be considered valid.
    * @default 50
    */
   threshold?: number
   /**
-   * Whether to prevent the default behavior of the touchmove event.
+   * Pointer types that can trigger the swipe.
+   * @default ['mouse', 'touch', 'pen']
+   */
+  pointerTypes?: ('mouse' | 'touch' | 'pen')[]
+  /**
+   * Whether to prevent the default behavior of the pointer move event
+   * (the move listener becomes non-passive when enabled).
    * @default false
    */
-  preventDefaultOnTouchMove?: boolean
+  preventDefaultOnMove?: boolean
   /**
    * Whether to prevent the default behavior of the mousewheel event.
    * @default false
    */
   preventDefaultOnMouseWheel?: boolean
   /**
-   * Whether to trigger the swipe event immediately on touchstart/mousedown.
+   * Whether to start listening immediately on instantiation.
    * @default false
    */
   immediate?: boolean
   /**
-   * Whether to trigger the swipe event only on touchend/mouseup.
+   * Whether to trigger the swipe event only on pointer up.
    * @default false
    */
   triggerOnEnd?: boolean
@@ -220,4 +234,5 @@ interface UseSwipeReturn {
 - If you use the composable in a Vue component, make sure to call it in the `setup()` and clean up the event listeners in the `onUnmounted()`.
 - The composable automatically handles the addition and removal of event listeners based on the provided options.
 - You can customize the swipe detection threshold by modifying the `threshold` option.
-- If you want to prevent the default behavior of touchmove or mousewheel events, you can set the `preventDefaultOnTouchMove` and `preventDefaultOnMouseWheel` options, respectively.
+- If you want to prevent the default behavior of pointer move or mousewheel events, you can set the `preventDefaultOnMove` and `preventDefaultOnMouseWheel` options, respectively.
+- Use the `pointerTypes` option to restrict the gesture to specific input types (e.g. `['touch']` for touch-only).

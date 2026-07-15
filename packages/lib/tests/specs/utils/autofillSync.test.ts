@@ -1,4 +1,4 @@
-import { onAutofillSync } from '@/utils/autofillSync'
+import { onAutofillSync, readInitialAutofillValue } from '@/utils/autofillSync'
 
 const ANIMATION_NAME = 'maz-autofill-start'
 const STYLE_ELEMENT_ID = 'maz-autofill-sync'
@@ -105,6 +105,98 @@ describe('Given autofillSync util', () => {
       )
 
       expect(onSync).toHaveBeenCalledWith('10 Downing Street')
+    })
+  })
+
+  describe('Given readInitialAutofillValue is called', () => {
+    describe('When an input element exists in the document with a value', () => {
+      it('Then it returns that value', () => {
+        const input = document.createElement('input')
+        input.id = 'initial-input'
+        input.value = 'prefilled@example.com'
+        document.body.appendChild(input)
+
+        try {
+          expect(readInitialAutofillValue('initial-input')).toBe('prefilled@example.com')
+        }
+        finally {
+          input.remove()
+        }
+      })
+    })
+
+    describe('When a textarea element exists in the document with a value', () => {
+      it('Then it returns that value', () => {
+        const textarea = document.createElement('textarea')
+        textarea.id = 'initial-textarea'
+        textarea.value = '10 Downing Street'
+        document.body.appendChild(textarea)
+
+        try {
+          expect(readInitialAutofillValue('initial-textarea')).toBe('10 Downing Street')
+        }
+        finally {
+          textarea.remove()
+        }
+      })
+    })
+
+    describe('When the element exists with an empty value', () => {
+      it('Then it returns undefined', () => {
+        const input = document.createElement('input')
+        input.id = 'empty-input'
+        document.body.appendChild(input)
+
+        try {
+          expect(readInitialAutofillValue('empty-input')).toBeUndefined()
+        }
+        finally {
+          input.remove()
+        }
+      })
+    })
+
+    describe('When no element matches the id', () => {
+      it('Then it returns undefined', () => {
+        expect(readInitialAutofillValue('non-existent-id')).toBeUndefined()
+      })
+    })
+
+    describe('When the matching element is not an input or textarea', () => {
+      it('Then it returns undefined', () => {
+        const div = document.createElement('div')
+        div.id = 'not-a-field'
+        document.body.appendChild(div)
+
+        try {
+          expect(readInitialAutofillValue('not-a-field')).toBeUndefined()
+        }
+        finally {
+          div.remove()
+        }
+      })
+    })
+
+    describe('When the document global is not defined', () => {
+      it('Then it returns undefined', () => {
+        const originalDocument = globalThis.document
+        Object.defineProperty(globalThis, 'document', {
+          value: undefined,
+          configurable: true,
+          writable: true,
+        })
+
+        try {
+          expect(readInitialAutofillValue('any-id')).toBeUndefined()
+        }
+        finally {
+          Object.defineProperty(globalThis, 'document', {
+            value: originalDocument,
+            configurable: true,
+            writable: true,
+          })
+        }
+      })
     })
   })
 

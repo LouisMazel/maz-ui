@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import type { MazColor } from './types'
+import type { MazColor, MazRoundedSize, MazSize, MazSizeUnit } from './types'
 import { MazPencil } from '@maz-ui/icons/lazy/MazPencil'
 import { computed, defineAsyncComponent } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 
 defineOptions({
@@ -20,8 +21,7 @@ const {
   class: className,
   color = 'primary',
   buttonColor = 'info',
-  letterCount = undefined,
-  roundedSize = 'base',
+  letterCount = 2,
   fallbackSrc = undefined,
   loading = 'intersecting',
 } = defineProps<MazAvatarProps>()
@@ -38,6 +38,8 @@ const emits = defineEmits<{
   /** Emitted when the image is in error */
   (name: 'error', el: Element): void
 }>()
+
+const { roundedSize } = useGlobalConfig<{ roundedSize: MazRoundedSize }>('MazAvatar', { roundedSize: 'md' })
 
 const MazLazyImg = defineAsyncComponent(() => import('./MazLazyImg.vue'))
 
@@ -58,8 +60,11 @@ export interface MazAvatarProps {
   alt?: string
   /** The target of the link */
   target?: string
-  /** The size of the avatar */
-  size?: string
+  /**
+   * The size of the avatar - a keyword from `MazSize` or any CSS size unit
+   * @values `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'` or a CSS unit like `'2rem'`, `'48px'`
+   */
+  size?: MazSize | MazSizeUnit
   /** Add a border to the avatar */
   bordered?: boolean
   /** Make the avatar clickable */
@@ -81,13 +86,18 @@ export interface MazAvatarProps {
   buttonColor?: MazColor
   /** Remove the icon on hover when component is clickable */
   hideClickableIcon?: boolean
-  /** Number of letters to display in the round text */
+  /**
+   * Number of letters to display in the round text initials.
+   * - For a single-word caption, the first `letterCount` characters are used (`'admin'` + `3` -> `'ADM'`).
+   * - For a multi-word caption, the first letter of the first `letterCount` words is used (`'Louis Mazel'` -> `'LM'`).
+   * @default 2
+   */
   letterCount?: number
   /**
    * Size of the rounded
    * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  roundedSize?: MazRoundedSize
   /** The fallback src to replace the src on loading error */
   fallbackSrc?: string
   /**
@@ -112,14 +122,14 @@ const componentType = computed(() => {
 })
 const isLink = computed(() => !!to || !!href)
 
-function getInitials(name: string, lettersCount = letterCount) {
-  const words = name.split(' ')
+function getInitials(name: string, count = letterCount) {
+  const words = name.trim().split(/\s+/).filter(Boolean)
 
-  const initials = words.map(word => word[0])
+  const letters = words.length > 1
+    ? words.map(word => word[0]).join('')
+    : (words[0] ?? '')
 
-  const letters = initials.join('')
-
-  return letters.slice(0, lettersCount)
+  return letters.slice(0, count).toUpperCase()
 }
 
 const shouldDisplayImg = computed(() => src || (!src && !caption))
@@ -127,30 +137,56 @@ const shouldDisplayImg = computed(() => src || (!src && !caption))
 function handleImageError(event: Event) {
   emits('error', event.target as Element)
 
-  if (fallbackSrc && event.target instanceof HTMLImageElement) {
-    const currentSrc = new URL(event.target.src)
-    const fallbackSource = new URL(fallbackSrc)
+  if (!fallbackSrc || !(event.target instanceof HTMLImageElement))
+    return
 
-    if (currentSrc.href === fallbackSource.href) {
-      return
-    }
+  const resolvedFallback = new URL(fallbackSrc, globalThis.location.href).href
 
-    event.target.src = fallbackSource.href
-  }
+  if (event.target.src === resolvedFallback)
+    return
+
+  event.target.src = resolvedFallback
 }
 
 const hasInitial = computed(() => !src && caption)
+
+const ROUNDED_CLASS = {
+  none: 'maz:rounded-none',
+  sm: 'maz:rounded-xs',
+  md: 'maz:rounded-md',
+  lg: 'maz:rounded-lg',
+  xl: 'maz:rounded-xl',
+  full: 'maz:rounded-full',
+} as const
+
+const SIZE_MAP: Record<MazSize, string> = {
+  mini: '1.5rem',
+  xs: '2rem',
+  sm: '2.5rem',
+  md: '3rem',
+  lg: '3.5rem',
+  xl: '4rem',
+}
+
+const WRAPPER_EM_SCALE = 3
+
+const fontSize = computed(() => {
+  if (!size)
+    return undefined
+
+  const resolved = (SIZE_MAP as Record<string, string>)[size] ?? size
+
+  return `calc(${resolved} / ${WRAPPER_EM_SCALE})`
+})
 </script>
 
 <template>
   <component
     :is="componentType"
-    :style="[{ fontSize: size }, style]"
-    class="m-avatar m-reset-css"
+    :style="[{ fontSize }, style]"
+    class="m-avatar m-reset-css maz:inline-flex maz:flex-col maz:flex-center maz:gap-[0.5em] maz:align-top maz:no-underline!"
     :class="[
-      {
-        '--has-link': isLink,
-      },
+      { '--has-link': isLink, 'maz:cursor-pointer': isLink },
       className,
     ]"
     :href
@@ -158,30 +194,34 @@ const hasInitial = computed(() => !src && caption)
     :target="isLink ? target : undefined"
   >
     <div
-      class="m-avatar__wrapper"
+      class="m-avatar__wrapper maz:relative maz:flex maz:size-[3em] maz:flex-none maz:justify-center maz:overflow-hidden"
       :tabindex="clickable ? 0 : -1"
       :class="[
+        ROUNDED_CLASS[square ? 'none' : roundedSize],
+        `--rounded-${square ? 'none' : roundedSize}`,
         {
+          '--clickable': clickable,
           '--has-shadow': !noElevation,
           '--bordered': bordered,
-          '--clickable': clickable,
           '--has-initial': hasInitial,
+          'maz:shadow-sm': !noElevation,
+          'maz:border maz:border-solid maz:border-divider': bordered,
+          'maz:items-center': hasInitial,
         },
-        `--rounded-${square ? 'none' : roundedSize}`,
       ]"
       :style="hasInitial ? {
-        backgroundColor: `hsl(var(--maz-${color}))`,
-        color: `hsl(var(--maz-${color}-foreground))`,
+        backgroundColor: `var(--maz-${color})`,
+        color: `var(--maz-${color}-foreground)`,
       } : undefined"
     >
       <template v-if="shouldDisplayImg">
         <MazLazyImg
           v-if="loading === 'intersecting'"
           v-bind="$attrs"
-          class="m-avatar__picture maz-w-full maz-max-w-full"
+          class="m-avatar__picture maz:w-full maz:max-w-full"
           :src
           :alt
-          image-height-full
+          :image-height-full
           :hide-loader
           :fallback-src
           @click="clickable ? $emit('click', $event) : null"
@@ -192,36 +232,48 @@ const hasInitial = computed(() => !src && caption)
         />
         <img
           v-else
-          class="m-avatar__picture maz-w-full maz-max-w-full"
+          class="m-avatar__picture"
+          :class="[imageHeightFull ? 'maz:h-full maz:max-h-full maz:w-auto maz:max-w-none' : 'maz:w-full maz:max-w-full']"
           :src="src ?? fallbackSrc"
           :alt="alt"
           :loading
+          decoding="async"
           @error="handleImageError"
         >
       </template>
+      <!--
+        @slot round-text - Replace the initials displayed when a caption is set and no image source is provided
+      -->
       <slot v-if="caption && !src" name="round-text">
-        <span class="m-avatar__initial"> {{ getInitials(caption) }} </span>
+        <span class="m-avatar__initial maz:text-[1.5em] maz:uppercase"> {{ getInitials(caption) }} </span>
       </slot>
 
       <button
         v-if="clickable"
         type="button"
         tabindex="-1"
-        class="m-avatar__button"
+        class="m-avatar__button maz:absolute maz:inset-0 maz:flex maz:w-full maz:cursor-pointer maz:flex-center maz:border-none maz:bg-transparent maz:opacity-0 maz:transition-all maz:duration-200"
+        :class="ROUNDED_CLASS[square ? 'none' : roundedSize]"
         :style="{
           backgroundColor: src
-            ? `hsl(var(--maz-${buttonColor}) / 60%)`
-            : `hsl(var(--maz-${buttonColor}))`,
+            ? `color-mix(in srgb, var(--maz-${buttonColor}) 60%, transparent)`
+            : `var(--maz-${buttonColor})`,
         }"
         @click="$emit('click', $event)"
       >
+        <!--
+          @slot icon - The icon displayed on the clickable button overlay (shown on hover/focus)
+        -->
         <slot v-if="!hideClickableIcon" name="icon">
-          <MazPencil class="m-avatar__button__icon" />
+          <MazPencil class="m-avatar__button__icon maz:text-white" />
         </slot>
       </button>
     </div>
+    <!--
+      @slot caption - Replace the caption displayed below the avatar (requires `showCaption`)
+    -->
     <slot name="caption">
-      <p v-if="showCaption && caption" class="m-avatar__caption">
+      <p v-if="showCaption && caption" class="m-avatar__caption maz:w-full maz:truncate maz:text-center maz:font-medium maz:capitalize">
         {{ caption }}
       </p>
     </slot>
@@ -229,145 +281,26 @@ const hasInitial = computed(() => !src && caption)
 </template>
 
 <style scoped>
-  .m-avatar {
-  @apply maz-inline-flex maz-flex-col maz-gap-[0.5em] maz-align-top maz-flex-center;
-  @apply !maz-no-underline;
+@reference "../tailwindcss/tailwind.css";
 
-  &__caption {
-    @apply maz-w-full maz-truncate maz-text-center maz-font-medium maz-capitalize;
-  }
-
-  &__initial {
-    @apply maz-text-[1.5em] maz-capitalize;
-  }
-
-  &__wrapper {
-    @apply maz-relative maz-flex maz-h-[3em] maz-w-[3em] maz-flex-none maz-justify-center maz-overflow-hidden;
-
-    &:not(.--rounded-none) {
-      @apply maz-rounded;
-
-      &.--rounded {
-        @apply maz-rounded-full;
-
-        &-sm {
-          @apply maz-rounded-sm;
-        }
-
-        &-md {
-          @apply maz-rounded-md;
-        }
-
-        &-base {
-          @apply maz-rounded;
-        }
-
-        &-lg {
-          @apply maz-rounded-lg;
-        }
-
-        &-xl {
-          @apply maz-rounded-xl;
-        }
-
-        &-full {
-          @apply maz-rounded-full;
-        }
-      }
+.m-avatar__wrapper {
+  &.--clickable {
+    & .m-avatar__button {
+      transform: scale(0);
     }
 
-    &.--clickable {
+    &:hover,
+    &:focus {
+      & .m-avatar__picture {
+        filter: blur(1.5px);
+      }
+
       & .m-avatar__button {
-        @apply maz-absolute maz-inset-0 maz-flex maz-w-full
-            maz-cursor-pointer maz-border-none maz-bg-transparent
-            maz-opacity-0 maz-transition-all maz-duration-200 maz-flex-center;
+        @apply maz:opacity-100;
 
-        transform: scale(0);
-
-        &__icon {
-          @apply maz-text-white;
-        }
-      }
-
-      &:hover,
-      &:focus {
-        & .m-avatar__picture {
-          filter: blur(1.5px);
-        }
-
-        & .m-avatar__button {
-          @apply maz-opacity-100;
-
-          transform: scale(1.05);
-        }
+        transform: scale(1.05);
       }
     }
-
-    &.--bordered {
-      @apply maz-border maz-border-solid maz-border-divider;
-    }
-
-    &.--rounded {
-      &-sm {
-        @apply maz-rounded-sm;
-
-        .m-avatar__button {
-          @apply maz-rounded-sm;
-        }
-      }
-
-      &-md {
-        @apply maz-rounded-md;
-
-        .m-avatar__button {
-          @apply maz-rounded-md;
-        }
-      }
-
-      &-lg {
-        @apply maz-rounded-lg;
-
-        .m-avatar__button {
-          @apply maz-rounded-lg;
-        }
-      }
-
-      &-base {
-        @apply maz-rounded;
-
-        .m-avatar__button {
-          @apply maz-rounded;
-        }
-      }
-
-      &-xl {
-        @apply maz-rounded-xl;
-
-        .m-avatar__button {
-          @apply maz-rounded-xl;
-        }
-      }
-
-      &-full {
-        @apply maz-rounded-full;
-
-        .m-avatar__button {
-          @apply maz-rounded-full;
-        }
-      }
-    }
-
-    &.--has-shadow {
-      @apply maz-shadow;
-    }
-
-    &.--has-initial {
-      @apply maz-items-center;
-    }
-  }
-
-  &.--has-link {
-    @apply maz-cursor-pointer;
   }
 }
 </style>

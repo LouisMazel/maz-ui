@@ -74,13 +74,13 @@ import MazBtn from 'maz-ui/components/MazBtn'
 Use the `orientation` prop to arrange buttons horizontally (`row`) or vertically (`col`).
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-8 maz-flex-wrap">
+  <div class="maz:flex maz:gap-8 maz:flex-wrap">
     <div>
-      <p class="maz-mb-2 maz-text-muted">Row (default)</p>
+      <p class="maz:mb-2 maz:text-muted">Row (default)</p>
       <MazBtnGroup :items="basicItems" orientation="row" />
     </div>
     <div>
-      <p class="maz-mb-2 maz-text-muted">Column</p>
+      <p class="maz:mb-2 maz:text-muted">Column</p>
       <MazBtnGroup :items="basicItems" orientation="col" />
     </div>
   </div>
@@ -102,7 +102,7 @@ Use the `orientation` prop to arrange buttons horizontally (`row`) or vertically
 Use the `size` prop to apply a size to all buttons in the group.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4 maz-items-start">
+  <div class="maz:flex maz:flex-col maz:gap-4 maz:items-start">
     <MazBtnGroup v-for="size in sizes" :key="size" :items="basicItems" :size="size" />
   </div>
 
@@ -127,7 +127,7 @@ Use the `size` prop to apply a size to all buttons in the group.
 Use the `color` prop to apply a color to all buttons in the group.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4 maz-items-start">
+  <div class="maz:flex maz:flex-col maz:gap-4 maz:items-start">
     <MazBtnGroup v-for="color in colors" :key="color" :items="basicItems" :color="color" />
   </div>
 
@@ -214,7 +214,7 @@ const items: MazButtonGroupOption[] = [
 <br />
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4 maz-items-start">
+  <div class="maz:flex maz:flex-col maz:gap-4 maz:items-start">
     <MazBtnGroup>
       <MazBtn outlined>Edit</MazBtn>
       <MazBtn outlined>Save</MazBtn>
@@ -278,7 +278,7 @@ const items: MazButtonGroupOption[] = [
 
 ## With icons
 
-Use the `leftIcon` or `rightIcon` properties to add icons to buttons.
+Use the `startIcon` or `endIcon` properties to add icons to buttons.
 
 <ComponentDemo>
   <MazBtnGroup :items="iconItems" />
@@ -297,12 +297,12 @@ Use the `leftIcon` or `rightIcon` properties to add icons to buttons.
 <script lang="ts" setup>
 import MazBtnGroup from 'maz-ui/components/MazBtnGroup'
 import type { MazButtonGroupOption } from 'maz-ui/components/MazBtnGroup'
-import { MazArrowLeft } from '@maz-ui/icons/MazArrowLeft'
-import { MazArrowRight } from '@maz-ui/icons/MazArrowRight'
+import { MazArrowLeft } from '@maz-ui/icons/raw/MazArrowLeft'
+import { MazArrowRight } from '@maz-ui/icons/raw/MazArrowRight'
 
 const items: MazButtonGroupOption[] = [
-  { text: 'Previous', leftIcon: MazArrowLeft, active: true },
-  { text: 'Next', rightIcon: MazArrowRight },
+  { text: 'Previous', startIcon: MazArrowLeft, active: true },
+  { text: 'Next', endIcon: MazArrowRight },
 ]
 
 const iconOnlyItems: MazButtonGroupOption[] = [
@@ -425,10 +425,10 @@ interface MazButtonGroupProps {
 
 <script lang="ts" setup>
 import type { MazButtonGroupOption } from 'maz-ui/components/MazBtnGroup'
-import { MazArrowLeft } from '@maz-ui/icons/MazArrowLeft'
-import { MazArrowRight } from '@maz-ui/icons/MazArrowRight'
-import { MazBars3 } from '@maz-ui/icons/MazBars3'
-import { MazSquares2x2 } from '@maz-ui/icons/MazSquares2x2'
+import { MazArrowLeft } from '@maz-ui/icons/raw/MazArrowLeft'
+import { MazArrowRight } from '@maz-ui/icons/raw/MazArrowRight'
+import { MazBars3 } from '@maz-ui/icons/raw/MazBars3'
+import { MazSquares2x2 } from '@maz-ui/icons/raw/MazSquares2x2'
 
 const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl'] as const
 const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive'] as const
@@ -457,8 +457,8 @@ const clickableItems: MazButtonGroupOption[] = [
 ]
 
 const iconItems: MazButtonGroupOption[] = [
-  { text: 'Previous', leftIcon: MazArrowLeft },
-  { text: 'Next', rightIcon: MazArrowRight },
+  { text: 'Previous', startIcon: MazArrowLeft },
+  { text: 'Next', endIcon: MazArrowRight },
 ]
 const iconOnlyItems: MazButtonGroupOption[] = [
   { icon: MazBars3, color: 'primary', active: true },

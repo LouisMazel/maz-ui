@@ -93,4 +93,38 @@ export default {
     ariaLabel: 'Conteúdo em carregamento',
     loadingText: 'Carregando...',
   },
+  codeHighlight: {
+    copyToClipboard: 'Copiar para a área de transferência',
+    copiedToClipboard: 'Copiado para a área de transferência',
+  },
+  windowMockup: {
+    copyUrlToClipboard: 'Copiar URL para a área de transferência',
+    urlCopiedToClipboard: 'URL copiada para a área de transferência',
+  },
+  markdownEditor: {
+    write: 'Escrever',
+    preview: 'Pré-visualizar',
+    split: 'Dividido',
+    emptyPreview: 'Nada para pré-visualizar',
+    toolbar: {
+      heading: 'Título',
+      bold: 'Negrito',
+      italic: 'Itálico',
+      strikethrough: 'Tachado',
+      quote: 'Citação',
+      code: 'Código em linha',
+      codeBlock: 'Bloco de código',
+      link: 'Link',
+      image: 'Imagem',
+      bulletList: 'Lista com marcadores',
+      orderedList: 'Lista numerada',
+      checkList: 'Lista de tarefas',
+      table: 'Tabela',
+    },
+    headings: {
+      h1: 'Título 1',
+      h2: 'Título 2',
+      h3: 'Título 3',
+    },
+  },
 } satisfies MazUiTranslationsNestedSchema

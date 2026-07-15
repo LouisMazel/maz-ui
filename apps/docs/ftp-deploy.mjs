@@ -41,14 +41,15 @@ function loadEnvFile(envFileName = '.env') {
  */
 async function deployToHostinger() {
   const env = loadEnvFile()
-  console.warn('🚚 Deploy started')
+  const isNextEnv = process.env.DEPLOY_ENV === 'next'
+  console.warn(`🚚 Deploy started${isNextEnv ? ' (next environment)' : ''}`)
 
   await deploy({
     'server': process.env.HOSTINGER_FTP_SERVER || process.env.FTP_SERVER || env.FTP_SERVER,
     'username': process.env.HOSTINGER_FTP_USERNAME || process.env.FTP_USERNAME || env.FTP_USERNAME,
     'password': process.env.HOSTINGER_FTP_PASSWORD || process.env.FTP_PASSWORD || env.FTP_PASSWORD,
     'local-dir': join(resolve(_dirname, './.vitepress/dist/'), '/'),
-    // 'server-dir': '/public_html/',
+    ...(isNextEnv ? { 'server-dir': '/next/' } : {}),
     'exclude': [...excludeDefaults, '.env', '.git/**', 'node_modules/**'],
     'timeout': 1000000,
   })

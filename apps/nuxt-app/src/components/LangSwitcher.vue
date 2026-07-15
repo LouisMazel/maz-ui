@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { MazDropdownProps } from 'maz-ui/components'
-import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 
 const { locale, setLocale } = useTranslations()
 

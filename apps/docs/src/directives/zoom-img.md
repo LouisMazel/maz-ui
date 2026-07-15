@@ -56,7 +56,7 @@ import { vZoomImg } from 'maz-ui/directives'
 </MazCard>
 
 <script lang="ts" setup>
-  import { vZoomImg } from 'maz-ui/src/directives/vZoomImg'
+  import { vZoomImg } from 'maz-ui/directives/vZoomImg'
 
   const zoomImgBinding: vZoomImgBinding = {
     src: 'https://placedog.net/1200/800',
@@ -107,7 +107,7 @@ app.mount('#app')
 
 ### Nuxt
 
-Please refer to the [Nuxt module documentation](./../guide/nuxt.md) for more information.
+Please refer to the [Nuxt module documentation](./../ecosystem/nuxt.md) for more information.
 
 ## Types
 

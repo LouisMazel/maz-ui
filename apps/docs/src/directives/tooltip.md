@@ -11,11 +11,11 @@ description: vTooltip is a Vue directive to display a text when the user hovers 
 ## Basic usage
 
 <ComponentDemo>
-  <p class="maz-mb-4">
+  <p class="maz:mb-4">
     Hover the buttons
   </p>
   <div
-    class="maz-flex maz-gap-3 maz-flex-wrap"
+    class="maz:flex maz:gap-3 maz:flex-wrap"
   >
     <MazBtn v-tooltip="'This is a top tooltip'">
       Top
@@ -60,11 +60,11 @@ import { vTooltip } from 'maz-ui/directives'
 ## Colors
 
 <ComponentDemo>
-  <p class="maz-mb-4">
+  <p class="maz:mb-4">
     Hover the buttons
   </p>
   <div
-    class="maz-flex maz-gap-3 maz-flex-wrap"
+    class="maz:flex maz:gap-3 maz:flex-wrap"
   >
     <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'primary' }">
       Primary
@@ -90,7 +90,7 @@ import { vTooltip } from 'maz-ui/directives'
     <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'contrast' }" color="contrast">
       Contrast
     </MazBtn>
-    <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'background' }" color="background">
+    <MazBtn v-tooltip="{ text: 'Tooltip text', color: 'surface' }" color="surface">
       Background
     </MazBtn>
   </div>
@@ -130,7 +130,7 @@ import { vTooltip } from 'maz-ui/directives'
   Contrast
 </MazBtn>
 
-<MazBtn v-tooltip="{ text: 'Tooltip text', color: 'default' }" color="background">
+<MazBtn v-tooltip="{ text: 'Tooltip text', color: 'default' }" color="surface">
   Background
 </MazBtn>
 ```
@@ -144,7 +144,7 @@ You can change the position of the tooltip by passing a `position` option or usi
 
 <ComponentDemo>
   <div
-    class="maz-flex maz-gap-3 maz-flex-wrap"
+    class="maz:flex maz:gap-3 maz:flex-wrap"
   >
     <MazBtn v-tooltip.bottom="{ text: 'Tooltip text' }">
       Bottom
@@ -230,7 +230,7 @@ You can also use HTML content in the tooltip by passing a string to the `html` o
 
 <ComponentDemo>
   <div
-    class="maz-flex maz-gap-3 maz-flex-wrap"
+    class="maz:flex maz:gap-3 maz:flex-wrap"
   >
     <MazBtn v-tooltip="{ html: '<strong>Tooltip</strong> text <br> with <br> line breaks' }">
       HTML
@@ -254,9 +254,9 @@ You can customize the tooltip by passing a `panelClass` or `panelStyle` option.
 
 <ComponentDemo>
   <div
-    class="maz-flex maz-gap-3 maz-flex-wrap"
+    class="maz:flex maz:gap-3 maz:flex-wrap"
   >
-    <MazBtn v-tooltip="{ text: 'Custom panel class', panelClass: '!maz-text-red-500' }">
+    <MazBtn v-tooltip="{ text: 'Custom panel class', panelClass: 'maz:text-red-500!' }">
       panelClass
     </MazBtn>
     <MazBtn v-tooltip="{ text: 'Custom panel style', panelStyle: 'background-color: red; color: white;' }">
@@ -267,7 +267,7 @@ You can customize the tooltip by passing a `panelClass` or `panelStyle` option.
 <template #code>
 
 ```html
-<MazBtn v-tooltip="{ text: 'Custom panel class', panelClass: '!maz-text-red-500' }">
+<MazBtn v-tooltip="{ text: 'Custom panel class', panelClass: 'maz:text-red-500!' }">
   panelClass
 </MazBtn>
 <MazBtn v-tooltip="{ text: 'Custom panel style', panelStyle: 'background-color: red; color: white;' }">
@@ -288,7 +288,7 @@ The `adaptive` trigger will use the `click` trigger on touch devices (mobile and
 
 <ComponentDemo>
   <div
-    class="maz-flex maz-gap-3 maz-flex-wrap"
+    class="maz:flex maz:gap-3 maz:flex-wrap"
   >
     <MazBtn v-tooltip="{ text: 'Tooltip text', trigger: 'click' }">
       Click
@@ -326,7 +326,7 @@ The `offset` (in px) option allows you to adjust the position of the tooltip rel
 
 <ComponentDemo>
   <div
-    class="maz-flex maz-gap-3 maz-flex-wrap"
+    class="maz:flex maz:gap-3 maz:flex-wrap"
   >
     <MazBtn v-tooltip="{ text: 'Tooltip text', offset: 0 }">
       0
@@ -368,7 +368,7 @@ The `offset` (in px) option allows you to adjust the position of the tooltip rel
 ## Open programmatically
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-3 maz-flex-wrap">
+  <div class="maz:flex maz:gap-3 maz:flex-wrap">
     <MazBtn v-tooltip.top="{ text: 'Tooltip text', open: open }">
       Primary
     </MazBtn>
@@ -400,6 +400,29 @@ The `offset` (in px) option allows you to adjust the position of the tooltip rel
   </template>
 </ComponentDemo>
 
+## Conditionally disable
+
+Pass `false`, `null` or `undefined` as the binding value to silently disable the tooltip — no popover instance is created, no listeners are attached, and no warning is logged. This is the recommended way to skip the tooltip on the fly without conditionally rendering two different elements:
+
+```vue
+<script lang="ts" setup>
+import { vTooltip } from 'maz-ui/directives'
+import { computed, ref } from 'vue'
+
+const label = ref<string>('')
+const tooltipBinding = computed(() => label.value ? { text: label.value } : false)
+</script>
+
+<template>
+  <!-- When label is empty the directive becomes a no-op -->
+  <MazBtn v-tooltip="tooltipBinding">
+    Hover me
+  </MazBtn>
+</template>
+```
+
+If the binding switches back to a valid value later, the tooltip mounts as expected. Toggling the value off again destroys the existing popover instance.
+
 ## Global install
 
 ### Vue
@@ -421,7 +444,7 @@ app.mount('#app')
 
 ### Nuxt
 
-Please refer to the [Nuxt module documentation](./../guide/nuxt.md) for more information.
+Please refer to the [Nuxt module documentation](./../ecosystem/nuxt.md) for more information.
 
 ## Types
 
@@ -475,6 +498,6 @@ type VTooltipBindingValue
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { vTooltip } from 'maz-ui/src/directives/vTooltip'
+  import { vTooltip } from 'maz-ui/directives/vTooltip'
   const open = ref(true)
 </script>

@@ -58,13 +58,13 @@ coverage:
         paths:
           - packages/mcp/
 
-      icons:
-        target: 70%
-        threshold: 1%
-        flags:
-          - icons
-        paths:
-          - packages/icons/
+      # icons:
+      #   target: 70%
+      #   threshold: 1%
+      #   flags:
+      #     - icons
+      #   paths:
+      #     - packages/icons/
 
       translations:
         target: 90%
@@ -98,13 +98,21 @@ coverage:
         paths:
           - packages/themes/
 
-      maz-cli:
+      eslint-config:
         target: 70%
         threshold: 1%
         flags:
-          - maz-cli
+          - eslint-config
         paths:
-          - packages/maz-cli/
+          - packages/eslint-config/
+
+      stylelint-config:
+        target: 70%
+        threshold: 1%
+        flags:
+          - stylelint-config
+        paths:
+          - packages/stylelint-config/
 
     # Patch-level coverage (new code in PR)
     patch:
@@ -181,6 +189,16 @@ flags:
       - packages/maz-cli/
     carryforward: false
 
+  eslint-config:
+    paths:
+      - packages/eslint-config/
+    carryforward: false
+
+  stylelint-config:
+    paths:
+      - packages/stylelint-config/
+    carryforward: false
+
 # Ignore paths
 ignore:
   - '**/*.test.ts'
@@ -199,6 +217,7 @@ ignore:
   - '**/types/**'
   - '**/index.ts'
   - 'packages/lib/src/tailwindcss/**'
+  - 'packages/upgrade/**'
 
 # Component management (for monorepo)
 component_management:
@@ -242,8 +261,3 @@ component_management:
       name: Themes Package
       paths:
         - packages/themes/**
-
-    - component_id: maz-cli
-      name: Maz CLI
-      paths:
-        - packages/maz-cli/**

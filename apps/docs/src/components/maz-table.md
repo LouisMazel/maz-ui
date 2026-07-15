@@ -19,6 +19,7 @@ description: MazTable is designed to be a reusable data table with advanced feat
 4. Row Selection (prop `select-value="key"`): There is a dedicated column for selection with a checkbox for each row. Users can individually or collectively select/deselect rows.
 5. Customizable Page Size: Users can choose the number of items to display per page using a dropdown list.
 6. Loading Indicator (prop `loading`): A loading indicator (MazLoadingBar) is displayed when data is being loaded.
+7. Animated rows (props `animated-rows` + `row-key`): rows slide to their new position when the order changes (FLIP animation). Respects `prefers-reduced-motion`.
 
 ## Available models
 
@@ -114,7 +115,7 @@ You can also provide all your data, the table is auto-generated and you can use 
 ---
 
 <ComponentDemo>
-<div class="maz-bg-surface-600/50 dark:maz-bg-surface-400 maz-rounded maz-p-2">
+<div class="maz:bg-surface-600/50 maz:dark:bg-surface-400 maz:rounded-md maz:p-2">
 
 v-model="{{selectedIds ?? 'undefined'}}"
 
@@ -146,15 +147,15 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
     { label:'Name', key: 'name' },
     { label: 'Code', key: 'code', align: 'center'  },
     { label: 'Type', key: 'type' },
-    { label: 'Area', key: 'areaName', align: 'center', classes: 'maz-font-bold' },
+    { label: 'Area', key: 'areaName', align: 'center', classes: 'maz:font-bold' },
   ]"
   :rows="competitions"
 >
   <template #cell-index="{ value }">
-    <span class="maz-text-base">{{value}}</span>
+    <span class="maz:text-base">{{value}}</span>
   </template>
   <template #cell-name="{ row, value }">
-    <div class="maz-flex maz-items-center maz-gap-2">
+    <div class="maz:flex maz:items-center maz:gap-2">
       <MazAvatar :src="row.logoUrl" size="0.5rem"></MazAvatar>
       <span>{{value}}</span>
     </div>
@@ -164,7 +165,7 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
   </template>
 
   <template #actions>
-    <MazBtn v-tooltip="{ text: 'Delete', color: 'destructive' }" fab size="xs" color="destructive" icon="trash" />
+    <MazBtn v-tooltip="{ text: 'Delete', color: 'destructive' }" fab size="xs" color="destructive" icon="/trash.svg" />
   </template>
 </MazTable>
 
@@ -191,15 +192,15 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
         { label:'Name', key: 'name' },
         { label: 'Code', key: 'code', align: 'center'  },
         { label: 'Type', key: 'type' },
-        { label: 'Area', key: 'areaName', align: 'center', classes: 'maz-font-bold' },
+        { label: 'Area', key: 'areaName', align: 'center', classes: 'maz:font-bold' },
       ]"
       :rows="competitions"
     >
       <template #cell-index="{ value }">
-        <span class="maz-text-base">{{value}}</span>
+        <span class="maz:text-base">{{value}}</span>
       </template>
       <template #cell-name="{ row, value }">
-        <div class="maz-flex maz-items-center maz-gap-2">
+        <div class="maz:flex maz:items-center maz:gap-2">
           <MazAvatar :src="row.logoUrl" size="0.5rem"></MazAvatar>
           <span>{{value}}</span>
         </div>
@@ -209,7 +210,7 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
       </template>
 
       <template #actions>
-        <MazBtn fab size="xs" color="destructive" icon="trash" />
+        <MazBtn fab size="xs" color="destructive" icon="/trash.svg" />
       </template>
     </MazTable>
   </template>
@@ -369,6 +370,67 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
 
 </ComponentDemo>
 
+## Animated rows
+
+Enable `animated-rows` to make rows slide to their new position when the order changes (FLIP animation) - perfect for live leaderboards or sortable lists. Provide a stable `row-key` (a field uniquely identifying each row) so every row keeps its identity across reorders. The animation is automatically disabled when the user prefers reduced motion.
+
+<ComponentDemo>
+  <MazBtn class="vp-raw" size="sm" @click="shuffleRows">Shuffle</MazBtn>
+  <br />
+  <br />
+  <MazTable
+    class="vp-raw"
+    size="sm"
+    animated-rows
+    row-key="id"
+    :headers="[
+      { label: '#', key: 'id', align: 'center', width: '3rem' },
+      { label: 'Name', key: 'name' },
+      { label: 'Score', key: 'score', align: 'center' },
+    ]"
+    :rows="players"
+  />
+
+  <template #code>
+
+  ```vue
+  <template>
+    <MazBtn @click="shuffleRows">
+      Shuffle
+    </MazBtn>
+    <MazTable
+      animated-rows
+      row-key="id"
+      :headers="[
+        { label: '#', key: 'id', align: 'center', width: '3rem' },
+        { label: 'Name', key: 'name' },
+        { label: 'Score', key: 'score', align: 'center' },
+      ]"
+      :rows="players"
+    />
+  </template>
+
+  <script lang="ts" setup>
+    import { MazTable } from 'maz-ui/components'
+    import { ref } from 'vue'
+
+    const players = ref([
+      { id: 1, name: 'John', score: 12 },
+      { id: 2, name: 'Jane', score: 24 },
+      { id: 3, name: 'Alice', score: 8 },
+      { id: 4, name: 'Bob', score: 31 },
+    ])
+
+    function shuffleRows() {
+      players.value = [...players.value].sort(() => Math.random() - 0.5)
+    }
+  </script>
+  ```
+
+  </template>
+
+</ComponentDemo>
+
 ## Loading
 
 Enable the loading state with the prop `loading`
@@ -510,12 +572,23 @@ Available sizes: `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`
 <script lang="ts" setup>
   import { ref } from 'vue'
   import {competitions} from './competitions.ts'
-  import { vTooltip } from 'maz-ui/src/directives/vTooltip.ts'
+  import { vTooltip } from 'maz-ui/directives/vTooltip'
 
   const selectedIds = ref<string[]>(['0262672d-7c7a-4d30-866e-edb88b5a5336'])
   const searchQuery = ref<string>()
   const pageSize = ref<number>(10)
   const page = ref<number>(1)
+
+  const players = ref([
+    { id: 1, name: 'John', score: 12 },
+    { id: 2, name: 'Jane', score: 24 },
+    { id: 3, name: 'Alice', score: 8 },
+    { id: 4, name: 'Bob', score: 31 },
+  ])
+
+  function shuffleRows() {
+    players.value = [...players.value].sort(() => Math.random() - 0.5)
+  }
 </script>
 
 ## Types
@@ -545,6 +618,7 @@ export interface MazTableHeadersEnriched {
   srOnly?: boolean
   width?: string
   maxWidth?: string
+  minWidth?: string
   classes?: ThHTMLAttributes['class']
   scope?: ThHTMLAttributes['scope']
   align?: ThHTMLAttributes['align']

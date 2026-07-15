@@ -22,7 +22,8 @@ const mockDocumentationService = {
   getAllComposables: vi.fn(),
   getAllDirectives: vi.fn(),
   getAllPlugins: vi.fn(),
-  getAllHelpers: vi.fn(),
+  getAllUtils: vi.fn(),
+  getAllNode: vi.fn(),
   getAllDocuments: vi.fn(),
   getOverview: vi.fn(),
   getComponentDocumentation: vi.fn(),
@@ -30,7 +31,8 @@ const mockDocumentationService = {
   getComposableDocumentation: vi.fn(),
   getDirectiveDocumentation: vi.fn(),
   getPluginDocumentation: vi.fn(),
-  getHelperDocumentation: vi.fn(),
+  getUtilDocumentation: vi.fn(),
+  getNodeDocumentation: vi.fn(),
   searchDocumentation: vi.fn(),
   getDiagnostics: vi.fn(),
 }
@@ -76,7 +78,7 @@ describe('Given MazUiMcpServer instance', () => {
     mockDocumentationService.getAllComposables.mockReturnValue(['use-toast', 'useThemeHandler'])
     mockDocumentationService.getAllDirectives.mockReturnValue(['tooltip', 'zoom-img'])
     mockDocumentationService.getAllPlugins.mockReturnValue(['toast', 'aos'])
-    mockDocumentationService.getAllHelpers.mockReturnValue([
+    mockDocumentationService.getAllUtils.mockReturnValue([
       'currency',
       'date',
       'capitalize',
@@ -84,6 +86,7 @@ describe('Given MazUiMcpServer instance', () => {
       'formatNumber',
       'colorUtils',
     ])
+    mockDocumentationService.getAllNode.mockReturnValue(['logger', 'exec-promise'])
     mockDocumentationService.getOverview.mockReturnValue('# Maz-UI Overview')
     mockDocumentationService.getAllDocuments.mockReturnValue([])
 
@@ -167,7 +170,8 @@ describe('Given MazUiMcpServer instance', () => {
       expect(uris.some((u: string) => u.startsWith('composable://'))).toBe(true)
       expect(uris.some((u: string) => u.startsWith('directive://'))).toBe(true)
       expect(uris.some((u: string) => u.startsWith('plugin://'))).toBe(true)
-      expect(uris.some((u: string) => u.startsWith('helper://'))).toBe(true)
+      expect(uris.some((u: string) => u.startsWith('util://'))).toBe(true)
+      expect(uris.some((u: string) => u.startsWith('node://'))).toBe(true)
     })
   })
 
@@ -202,12 +206,15 @@ describe('Given MazUiMcpServer instance', () => {
         composables: { total: 5 },
         directives: { total: 3 },
         plugins: { total: 2 },
-        helpers: { total: 8 },
+        utils: { total: 8 },
+        node: { total: 2 },
         guides: { total: 4 },
       })
 
       const result = resourceReadHandler({ params: { uri: 'overview://' } })
       expect(result.contents[0].text).toContain('10 Components')
+      expect(result.contents[0].text).toContain('8 Utils')
+      expect(result.contents[0].text).toContain('2 Node Utilities')
     })
 
     it('Then reads guide documentation', () => {
@@ -234,10 +241,16 @@ describe('Given MazUiMcpServer instance', () => {
       expect(result.contents[0].text).toBe('# Toast Plugin')
     })
 
-    it('Then reads helper documentation', () => {
-      mockDocumentationService.getHelperDocumentation.mockReturnValue('# Currency Helper')
-      const result = resourceReadHandler({ params: { uri: 'helper://currency' } })
-      expect(result.contents[0].text).toBe('# Currency Helper')
+    it('Then reads util documentation', () => {
+      mockDocumentationService.getUtilDocumentation.mockReturnValue('# Currency Util')
+      const result = resourceReadHandler({ params: { uri: 'util://currency' } })
+      expect(result.contents[0].text).toBe('# Currency Util')
+    })
+
+    it('Then reads node documentation', () => {
+      mockDocumentationService.getNodeDocumentation.mockReturnValue('# Logger Node Utility')
+      const result = resourceReadHandler({ params: { uri: 'node://logger' } })
+      expect(result.contents[0].text).toBe('# Logger Node Utility')
     })
 
     it('Then throws error for unknown resource type', () => {
@@ -299,7 +312,8 @@ describe('Given MazUiMcpServer instance', () => {
         'composable',
         'directive',
         'plugin',
-        'helper',
+        'util',
+        'node',
       ])
     })
   })
@@ -445,14 +459,24 @@ describe('Given MazUiMcpServer instance', () => {
       expect(result.content[0].text).toBe('# Toast Plugin')
     })
 
-    it('Then retrieves helper documentation', () => {
-      mockDocumentationService.getHelperDocumentation.mockReturnValue('# Currency Helper')
+    it('Then retrieves util documentation', () => {
+      mockDocumentationService.getUtilDocumentation.mockReturnValue('# Currency Util')
 
       const result = callToolHandler({
         params: { name: 'get_doc', arguments: { name: 'currency' } },
       })
 
-      expect(result.content[0].text).toBe('# Currency Helper')
+      expect(result.content[0].text).toBe('# Currency Util')
+    })
+
+    it('Then retrieves node documentation', () => {
+      mockDocumentationService.getNodeDocumentation.mockReturnValue('# Logger Node Utility')
+
+      const result = callToolHandler({
+        params: { name: 'get_doc', arguments: { name: 'logger' } },
+      })
+
+      expect(result.content[0].text).toBe('# Logger Node Utility')
     })
 
     it('Then filters by type hint', () => {
@@ -525,7 +549,8 @@ describe('Given MazUiMcpServer instance', () => {
       expect(text).toContain('## Composables (2)')
       expect(text).toContain('## Directives (2)')
       expect(text).toContain('## Plugins (2)')
-      expect(text).toContain('## Helpers (6)')
+      expect(text).toContain('## Utils (6)')
+      expect(text).toContain('## Node Utilities (2)')
     })
 
     it('Then filters by single category', () => {
@@ -536,7 +561,8 @@ describe('Given MazUiMcpServer instance', () => {
       const text = result.content[0].text
       expect(text).toContain('## Guides (3)')
       expect(text).not.toContain('## Components')
-      expect(text).not.toContain('## Helpers')
+      expect(text).not.toContain('## Utils')
+      expect(text).not.toContain('## Node Utilities')
     })
 
     it('Then returns items with name, displayName, and description', () => {

@@ -39,21 +39,20 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MazInputCodeProps<T>>(), {
-  style: undefined,
-  class: undefined,
-  modelValue: undefined,
-  codeLength: 4,
-  type: 'text',
-  acceptAlpha: false,
-  required: false,
-  disabled: false,
-  error: false,
-  success: false,
-  warning: false,
-  size: 'md',
-  color: 'primary',
-})
+const {
+  class: classProp,
+  modelValue,
+  codeLength = 4,
+  type = 'text',
+  acceptAlpha = false,
+  required = false,
+  disabled = false,
+  error = false,
+  success = false,
+  warning = false,
+  size = 'md',
+  color = 'primary',
+} = defineProps<MazInputCodeProps<T>>()
 
 const emits = defineEmits<{
   /**
@@ -71,7 +70,7 @@ const inputList = ref<HTMLInputElement[]>([])
 const localMap = ref<Map<number, string | undefined>>(new Map())
 
 watch(
-  () => props.modelValue,
+  () => modelValue,
   (value, oldValue) => {
     if (value !== oldValue) {
       localMap.value = getMapValues()
@@ -86,16 +85,16 @@ const inputValues = computed({
     const emittedValue = getEmittedValue(value)
     emits('update:model-value', emittedValue as T)
 
-    if (emittedValue?.toString().length === props.codeLength) {
+    if (emittedValue?.toString().length === codeLength) {
       emits('completed')
     }
   },
 })
 
-function getMapValues(value = props.modelValue) {
+function getMapValues(value = modelValue) {
   const map = new Map<number, string | undefined>()
 
-  for (const item of Array.from({ length: props.codeLength }, (_, i) => i)) {
+  for (const item of Array.from({ length: codeLength }, (_, i) => i)) {
     if (value === undefined) {
       map.set(item + 1, undefined)
     }
@@ -122,7 +121,7 @@ function handleNewValue(event: Event, item: number) {
 function getEmittedValue(map: ReturnType<typeof getMapValues>) {
   const stringValue = [...map.values()].join('')
 
-  if (props.type === 'text') {
+  if (type === 'text') {
     return stringValue
   }
 
@@ -135,7 +134,7 @@ const isLetterOrNumberRegex = /^[\w.]$/
 const isNumberRegex = /\d+/g
 
 function getValueSanitized(value: string) {
-  return (props.acceptAlpha ? value.match(isLetterOrNumberRegex) : value.match(isNumberRegex))?.toString()
+  return (acceptAlpha ? value.match(isLetterOrNumberRegex) : value.match(isNumberRegex))?.toString()
 }
 
 function handleKeydown(event: KeyboardEvent, inputIndex: number) {
@@ -165,7 +164,7 @@ function setValueOnPaste(event: ClipboardEvent) {
     return
   }
 
-  const indexInputsFromPastePlace = Array.from({ length: props.codeLength }, (_, i) => ({
+  const indexInputsFromPastePlace = Array.from({ length: codeLength }, (_, i) => ({
     index: i + 1,
     value: ([...pasteData.toString()][i] ?? undefined) as string | undefined,
   }))
@@ -180,8 +179,8 @@ function setValueOnPaste(event: ClipboardEvent) {
   setTimeout(() => {
     const lastInputWithoutValueIndex = getLastInputWithoutValueIndex()
     const lastIndex
-      = lastInputWithoutValueIndex >= props.codeLength
-        ? props.codeLength - 1
+      = lastInputWithoutValueIndex >= codeLength
+        ? codeLength - 1
         : lastInputWithoutValueIndex
     focusAndSelectInputByIndex(lastIndex, false)
   }, 0)
@@ -195,7 +194,7 @@ function focusAndSelectInputByIndex(index: number, selectValue = true) {
   setTimeout(() => {
     const input = inputList.value[index]
 
-    if (index + 1 > props.codeLength || !input) {
+    if (index + 1 > codeLength || !input) {
       return
     }
 
@@ -209,20 +208,29 @@ function focusAndSelectInputByIndex(index: number, selectValue = true) {
 function selectInputByIndex(index: number) {
   const input = inputList.value[index]
 
-  if (index + 1 > props.codeLength || !input) {
+  if (index + 1 > codeLength || !input) {
     return
   }
 
   input.select()
 }
 
+const SIZE_CLASS = {
+  mini: 'maz:text-[0.625rem]',
+  xs: 'maz:text-xs',
+  sm: 'maz:text-sm',
+  md: '',
+  lg: 'maz:text-lg',
+  xl: 'maz:text-xl',
+} as const
+
 const borderColorState = computed(() => {
-  if (props.error)
-    return '!maz-border-destructive'
-  if (props.success)
-    return '!maz-border-success'
-  if (props.warning)
-    return '!maz-border-warning'
+  if (error)
+    return 'maz:border-destructive!'
+  if (success)
+    return 'maz:border-success!'
+  if (warning)
+    return 'maz:border-warning!'
 
   return undefined
 })
@@ -230,13 +238,13 @@ const borderColorState = computed(() => {
 
 <template>
   <fieldset
-    class="m-input-code m-reset-css"
-    :class="[size ? `--${size}` : undefined, props.class]"
+    class="m-input-code m-reset-css maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top"
+    :class="[size ? `--${size}` : undefined, SIZE_CLASS[size as keyof typeof SIZE_CLASS], classProp]"
     :disabled
-    :style="[style, { '--input-border-color': `hsl(var(--maz-${props.color}))` }]"
+    :style="[style, { '--input-border-color': `var(--maz-${color})` }]"
   >
-    <div class="m-input-code__wrapper">
-      <div v-for="item in codeLength" :key="item" class="input-wrapper" :class="borderColorState">
+    <div class="m-input-code__wrapper maz:inline-flex maz:gap-[1em]">
+      <div v-for="item in codeLength" :key="item" class="input-wrapper maz:relative maz:size-[4em] maz:overflow-hidden maz:rounded-md maz:border maz:border-solid maz:border-divider maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:border-divider-400 maz:dark:bg-input" :class="borderColorState">
         <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label -->
         <input
           :id="`m-input-code-${item}`"
@@ -263,77 +271,41 @@ const borderColorState = computed(() => {
       </div>
     </div>
     <span
-      class="m-input-code__hint" :class="{
+      class="m-input-code__hint maz:text-sm" :class="{
         '--error': error,
         '--success': success,
         '--warning': warning,
+        'maz:text-destructive-600': error,
+        'maz:text-success-600': success,
+        'maz:text-warning-600': warning,
+        'maz:text-muted': !error && !success && !warning,
       }"
     >{{ hint }}</span>
   </fieldset>
 </template>
 
 <style scoped>
-  .m-input-code {
-  @apply maz-inline-flex maz-flex-col maz-gap-[0.5em] maz-align-top;
+@reference "../tailwindcss/tailwind.css";
 
+.m-input-code {
   &.--mini {
-    @apply maz-text-[0.625rem];
-
     line-height: 1rem;
   }
 
-  &.--xs {
-    @apply maz-text-xs;
-  }
-
-  &.--sm {
-    @apply maz-text-sm;
-  }
-
-  &.--lg {
-    @apply maz-text-lg;
-  }
-
-  &.--xl {
-    @apply maz-text-xl;
-  }
-
-  &__wrapper {
-    @apply maz-inline-flex maz-gap-[1em];
-  }
-
-  &__hint {
-    @apply maz-text-sm maz-text-muted;
-
-    &.--error {
-      @apply maz-text-destructive-600;
-    }
-
-    &.--success {
-      @apply maz-text-success-600;
-    }
-
-    &.--warning {
-      @apply maz-text-warning-600;
-    }
-  }
-
   .input-wrapper {
-    @apply maz-relative maz-h-[4em] maz-w-[4em] maz-overflow-hidden maz-rounded maz-border maz-border-solid maz-border-divider dark:maz-border-divider-400 maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-surface-400;
-
     &:focus-within {
       border-color: var(--input-border-color);
     }
 
     input {
-      @apply maz-h-full maz-w-full maz-bg-transparent maz-text-center maz-text-[1.5em] maz-outline-none;
+      @apply maz:h-full maz:w-full maz:bg-transparent maz:text-center maz:text-[1.5em] maz:outline-hidden maz:font-mono;
     }
 
     &:has(input:disabled) {
-      @apply maz-bg-surface-600 dark:maz-bg-surface-300 maz-text-muted;
+      @apply maz:bg-surface-600 maz:dark:bg-surface-300 maz:text-muted;
 
       input {
-        @apply maz-cursor-not-allowed maz-text-muted;
+        @apply maz:disabled-cursor maz:text-muted;
       }
     }
   }

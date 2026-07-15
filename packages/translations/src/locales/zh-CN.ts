@@ -93,4 +93,38 @@ export default {
     ariaLabel: '内容加载中',
     loadingText: '加载中...',
   },
+  codeHighlight: {
+    copyToClipboard: '复制到剪贴板',
+    copiedToClipboard: '已复制到剪贴板',
+  },
+  windowMockup: {
+    copyUrlToClipboard: '复制 URL 到剪贴板',
+    urlCopiedToClipboard: 'URL 已复制到剪贴板',
+  },
+  markdownEditor: {
+    write: '编辑',
+    preview: '预览',
+    split: '分屏',
+    emptyPreview: '没有可预览的内容',
+    toolbar: {
+      heading: '标题',
+      bold: '加粗',
+      italic: '斜体',
+      strikethrough: '删除线',
+      quote: '引用',
+      code: '行内代码',
+      codeBlock: '代码块',
+      link: '链接',
+      image: '图片',
+      bulletList: '无序列表',
+      orderedList: '有序列表',
+      checkList: '任务列表',
+      table: '表格',
+    },
+    headings: {
+      h1: '标题 1',
+      h2: '标题 2',
+      h3: '标题 3',
+    },
+  },
 } satisfies MazUiTranslationsNestedSchema

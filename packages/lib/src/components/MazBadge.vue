@@ -1,24 +1,28 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import type { MazColor } from './types'
+import type { MazColor, MazSize } from './types'
 import { computed } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { getColor } from './types'
 
-export type MazBadgeColor = MazColor | 'background'
+export type MazBadgeColor = MazColor | 'surface'
 export type MazBadgeRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+export type MazBadgeSize = MazSize
 
 export interface MazBadgeProps {
   /**
    * Color of the badge
-   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'background'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'surface'`
    * @default primary
    */
   color?: MazBadgeColor
   /**
-   * Size of the badge
-   * @default 0.8em
+   * Size of the badge — drives font-size; padding, line-height and dimensions
+   * scale relative to it via `em` units.
+   * @values `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`
+   * @default md
    */
-  size?: string
+  size?: MazBadgeSize
   /**
    * Will not wrap the text
    * @default false
@@ -44,31 +48,43 @@ export interface MazBadgeProps {
 
 const {
   color = 'primary',
-  size = '0.8em',
   nowrap = false,
   outlined = false,
   pastel = false,
-  roundedSize = 'md',
 } = defineProps<MazBadgeProps>()
+
+const { size, roundedSize } = useGlobalConfig<{ size: MazBadgeSize, roundedSize: MazBadgeRoundedSize }>('MazBadge', { size: 'md', roundedSize: 'md' })
 
 const resolvedColor = computed(() => getColor(color))
 
-const badgeStyle = computed<CSSProperties>(() => {
-  const c = resolvedColor.value
-  const base: Record<string, string> = { fontSize: size }
-  if (c === 'surface' || c === 'transparent')
-    return base
+const ROUNDED_CLASS = {
+  none: '',
+  sm: 'maz:rounded-xs',
+  md: 'maz:rounded-md',
+  lg: 'maz:rounded-lg',
+  xl: 'maz:rounded-xl',
+  full: 'maz:rounded-full',
+} as const
 
-  const pastelFg = c === 'contrast' ? 'contrast-foreground' : `${c}-700`
-  const pastelShade = c === 'destructive' ? '200' : '50'
+const SIZE_CLASS = {
+  mini: 'maz:text-[0.625rem]',
+  xs: 'maz:text-[0.6875rem]',
+  sm: 'maz:text-xs',
+  md: 'maz:text-sm',
+  lg: 'maz:text-base',
+  xl: 'maz:text-xl',
+} as const satisfies Record<MazBadgeSize, string>
+
+const badgeStyle = computed<CSSProperties | undefined>(() => {
+  const c = resolvedColor.value
+  if (c === 'surface' || c === 'transparent')
+    return undefined
 
   return {
-    ...base,
     '--m-badge-bg': `var(--maz-${c})`,
     '--m-badge-fg': `var(--maz-${c}-foreground)`,
-    ...(pastel && {
-      '--m-badge-pastel-bg': `var(--maz-${c}-${pastelShade})`,
-      '--m-badge-pastel-fg': `var(--maz-${pastelFg})`,
+    ...(pastel && c === 'contrast' && {
+      '--m-badge-pastel-fg': `var(--maz-contrast-foreground)`,
     }),
   }
 })
@@ -76,11 +92,19 @@ const badgeStyle = computed<CSSProperties>(() => {
 
 <template>
   <span
-    class="m-badge m-reset-css"
+    class="m-badge m-reset-css maz:inline-flex maz:flex-center maz:border maz:border-transparent maz:align-top maz:font-semibold"
     :class="[
       `--${resolvedColor}`,
-      { '--outlined': outlined, '--pastel': pastel, '--nowrap': nowrap },
+      `--${size}`,
       `--rounded-${roundedSize}`,
+      ROUNDED_CLASS[roundedSize],
+      SIZE_CLASS[size],
+      {
+        '--outlined': outlined,
+        '--pastel': pastel,
+        '--nowrap': nowrap,
+        'maz:whitespace-nowrap': nowrap,
+      },
     ]"
     :style="badgeStyle"
   >
@@ -90,68 +114,50 @@ const badgeStyle = computed<CSSProperties>(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-badge {
-  @apply maz-inline-flex maz-items-center maz-justify-center maz-border maz-border-transparent maz-align-top maz-font-semibold;
+  /* Pastel variant derived from --m-badge-bg (color-mix for tint,
+   * OKLCh offset for foreground — mirrors SCALE_OFFSETS step -700). */
+  --m-badge-pastel-bg: color-mix(in srgb, var(--m-badge-bg) 20%, transparent);
+  --m-badge-pastel-fg: oklch(from var(--m-badge-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
 
-  padding: 0.25em 0.5em;
+  padding-block: 0.25em;
+  padding-inline: 0.5em;
   line-height: 1.4em;
-  background-color: hsl(var(--m-badge-bg));
-  color: hsl(var(--m-badge-fg));
-  border-color: hsl(var(--m-badge-bg));
-
-  &.--nowrap {
-    @apply maz-whitespace-nowrap;
-  }
-
-  &.--rounded {
-    &-sm {
-      @apply maz-rounded-sm;
-    }
-
-    &-md {
-      @apply maz-rounded-md;
-    }
-
-    &-lg {
-      @apply maz-rounded;
-    }
-
-    &-xl {
-      @apply maz-rounded-xl;
-    }
-
-    &-full {
-      @apply maz-rounded-full;
-    }
-  }
+  background-color: var(--m-badge-bg);
+  color: var(--m-badge-fg);
+  border-color: var(--m-badge-bg);
 
   &.--outlined {
-    @apply maz-bg-transparent;
+    @apply maz:bg-transparent;
 
-    color: hsl(var(--m-badge-bg));
-    border-color: hsl(var(--m-badge-bg));
+    color: var(--m-badge-bg);
+    border-color: var(--m-badge-bg);
   }
 
   &.--pastel {
-    background-color: hsl(var(--m-badge-pastel-bg));
-    color: hsl(var(--m-badge-pastel-fg));
-    border-color: hsl(var(--m-badge-pastel-bg));
+    background-color: var(--m-badge-pastel-bg);
+    color: var(--m-badge-pastel-fg);
+    border-color: transparent;
   }
 
   &.--surface {
-    @apply maz-border-surface maz-bg-surface maz-text-foreground;
+    @apply maz:bg-surface maz:text-foreground;
+
+    border-color: var(--maz-surface);
 
     &.--outlined {
-      @apply maz-border-divider maz-bg-transparent;
+      @apply maz:bg-transparent maz:border-divider;
     }
 
     &.--pastel {
-      @apply maz-border-surface-600 maz-bg-surface-600;
+      @apply maz:bg-surface-600 maz:border-surface-600;
     }
   }
 
   &.--transparent {
-    @apply maz-border-transparent maz-bg-transparent;
+    @apply maz:bg-transparent maz:border-transparent;
   }
 }
 </style>

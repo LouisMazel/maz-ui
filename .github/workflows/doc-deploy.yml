@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - develop
     paths:
       - 'apps/docs/**'
       - 'packages/lib/**'
@@ -19,12 +20,10 @@ jobs:
       - name: Setup Node.js, pnpm and Nx cache
         uses: ./.github/actions/setup
 
-      - name: Build packages
-        run: pnpm build:packages
-
       - name: Build docs
         env:
           VITE_GITHUB_TOKEN: ${{ secrets.GH_TOKEN_STARS }}
+          DEPLOY_ENV: ${{ github.ref == 'refs/heads/develop' && 'next' || 'production' }}
         run: pnpm exec nx run docs:build
 
       - name: Deploy to Hostinger
@@ -32,4 +31,5 @@ jobs:
           FTP_SERVER: ${{ secrets.HOSTINGER_FTP_SERVER }}
           FTP_USERNAME: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          DEPLOY_ENV: ${{ github.ref == 'refs/heads/develop' && 'next' || 'production' }}
         run: pnpm -F docs ftp-deploy

@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/eslint-config",
   "type": "module",
-  "version": "4.9.1",
+  "version": "5.0.0-beta.39",
   "description": "ESLint configuration for JavaScript/TypeScript projects",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -25,7 +25,8 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
     }
   },
   "main": "./dist/index.mjs",
@@ -39,26 +40,32 @@
     "node": ">=20.19.0"
   },
   "scripts": {
+    "codegen": "nx build",
     "build": "unbuild",
     "dev": "unbuild --stub",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "cross-env NODE_ENV=production eslint .",
-    "lint:fix": "pnpm lint --fix"
+    "lint:fix": "pnpm lint --fix",
+    "test:unit": "vitest run",
+    "test:unit:coverage": "vitest run --coverage",
+    "test:unit:watch": "vitest watch"
   },
   "peerDependencies": {
-    "eslint": ">=9.0.0 <11.0.0"
+    "eslint": "^9.10.0 || ^10.0.0"
   },
   "dependencies": {
-    "@antfu/eslint-config": "^8.2.0",
+    "@antfu/eslint-config": "^9.0.0",
+    "consola": "^3.4.2",
+    "eslint-plugin-better-tailwindcss": "^4.5.0",
     "eslint-plugin-format": "^2.0.1",
     "eslint-plugin-sonarjs": "^4.0.3",
-    "eslint-plugin-tailwindcss": "^3.18.3",
     "eslint-plugin-vuejs-accessibility": "^2.5.0"
   },
   "devDependencies": {
-    "@types/eslint-plugin-tailwindcss": "^3.17.0",
-    "eslint": "^10.2.1",
-    "unbuild": "^3.6.1"
+    "@typescript-eslint/rule-tester": "^8.61.0",
+    "eslint": "^10.4.0",
+    "unbuild": "^3.6.1",
+    "vue-eslint-parser": "^10.4.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [

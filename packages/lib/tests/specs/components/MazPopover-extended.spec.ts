@@ -79,6 +79,14 @@ describe('MazPopover extended coverage', () => {
       await wrapper.setProps({ modelValue: false })
       expect(wrapper.find('.m-popover-panel').exists()).toBe(false)
     })
+
+    it('emits after-close-animation when the leave transition finishes', () => {
+      const wrapper = getWrapper({ modelValue: true })
+
+      ;(wrapper.vm as unknown as { onTransitionAfterLeave: () => void }).onTransitionAfterLeave()
+
+      expect(wrapper.emitted('after-close-animation')).toBeTruthy()
+    })
   })
 
   describe('when position is configured', () => {
@@ -222,7 +230,7 @@ describe('MazPopover extended coverage', () => {
     })
 
     it('should apply --surface class for background color', () => {
-      const wrapper = getWrapper({ modelValue: true, color: 'background' })
+      const wrapper = getWrapper({ modelValue: true, color: 'surface' })
       const panel = wrapper.find('.m-popover-panel')
       expect(panel.classes()).toContain('--surface')
     })
@@ -512,6 +520,110 @@ describe('MazPopover extended coverage', () => {
       await wrapper.vm.$nextTick()
       expect(wrapper.find('.m-popover-panel').exists()).toBe(false)
       vi.useRealTimers()
+    })
+  })
+
+  describe('when dismissing via outside pointerdown', () => {
+    function mountAttached(props: Partial<MazPopoverProps> = {}) {
+      return mount(MazPopover, {
+        attachTo: document.body,
+        props: { trigger: 'click', ...props },
+        slots: {
+          trigger: '<button class="test-trigger">Trigger</button>',
+          default: '<div class="test-content">Popover Content</div>',
+        },
+      })
+    }
+
+    function pointerDownOn(el: Element) {
+      el.dispatchEvent(new Event('pointerdown', { bubbles: true }))
+    }
+
+    async function openAndSettle(wrapper: ReturnType<typeof mountAttached>) {
+      await wrapper.find('.m-popover-trigger').trigger('click')
+      await wrapper.vm.$nextTick()
+      await wrapper.vm.$nextTick()
+      expect(wrapper.find('.m-popover-panel').exists()).toBe(true)
+    }
+
+    it('closes on pointerdown outside the panel and trigger', async () => {
+      const wrapper = mountAttached()
+      await openAndSettle(wrapper)
+
+      const outside = document.createElement('div')
+      document.body.appendChild(outside)
+      pointerDownOn(outside)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.find('.m-popover-panel').exists()).toBe(false)
+      outside.remove()
+      wrapper.unmount()
+    })
+
+    it('stays open on pointerdown inside the panel', async () => {
+      const wrapper = mountAttached()
+      await openAndSettle(wrapper)
+
+      pointerDownOn(wrapper.find('.m-popover-panel').element)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.find('.m-popover-panel').exists()).toBe(true)
+      wrapper.unmount()
+    })
+
+    it('stays open on pointerdown on the trigger', async () => {
+      const wrapper = mountAttached()
+      await openAndSettle(wrapper)
+
+      pointerDownOn(wrapper.find('.m-popover-trigger').element)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.find('.m-popover-panel').exists()).toBe(true)
+      wrapper.unmount()
+    })
+
+    it('stays open when persistent', async () => {
+      const wrapper = mountAttached({ persistent: true })
+      await openAndSettle(wrapper)
+
+      const outside = document.createElement('div')
+      document.body.appendChild(outside)
+      pointerDownOn(outside)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.find('.m-popover-panel').exists()).toBe(true)
+      outside.remove()
+      wrapper.unmount()
+    })
+
+    it('stays open when closeOnClickOutside is false', async () => {
+      const wrapper = mountAttached({ closeOnClickOutside: false })
+      await openAndSettle(wrapper)
+
+      const outside = document.createElement('div')
+      document.body.appendChild(outside)
+      pointerDownOn(outside)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.find('.m-popover-panel').exists()).toBe(true)
+      outside.remove()
+      wrapper.unmount()
+    })
+
+    it('stays open with manual trigger', async () => {
+      const wrapper = mountAttached({ trigger: 'manual', modelValue: true })
+      await wrapper.vm.$nextTick()
+      await wrapper.vm.$nextTick()
+      expect(wrapper.find('.m-popover-panel').exists()).toBe(true)
+
+      const outside = document.createElement('div')
+      document.body.appendChild(outside)
+      pointerDownOn(outside)
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.find('.m-popover-panel').exists()).toBe(true)
+      outside.remove()
+      wrapper.unmount()
     })
   })
 })

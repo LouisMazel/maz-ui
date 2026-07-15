@@ -2,11 +2,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import themePlugin from '../theme'
 
-const { mockInstall, mockGetPreset, mockMergePresets, mockGenerateCSS, mockGetSystemColorMode, mockUseCookie, mockUseHead, mockUseRequestHeaders } = vi.hoisted(() => ({
+const { mockInstall, mockGetPreset, mockMergePresets, mockGenerateCSS, mockResolveColorSchemeContent, mockGetSystemColorMode, mockUseCookie, mockUseHead, mockUseRequestHeaders } = vi.hoisted(() => ({
   mockInstall: vi.fn(),
   mockGetPreset: vi.fn(() => Promise.resolve({ colors: {} })),
   mockMergePresets: vi.fn((_a: any, _b: any) => ({ colors: {}, merged: true })),
   mockGenerateCSS: vi.fn(() => '.maz { color: red }'),
+  mockResolveColorSchemeContent: vi.fn(() => 'light dark'),
   mockGetSystemColorMode: vi.fn(() => 'light'),
   mockUseCookie: vi.fn(() => ({ value: undefined as string | undefined })),
   mockUseHead: vi.fn(),
@@ -22,6 +23,7 @@ vi.mock('@maz-ui/themes/utils', () => ({
   generateCSS: mockGenerateCSS,
   getPreset: mockGetPreset,
   mergePresets: mockMergePresets,
+  resolveColorSchemeContent: mockResolveColorSchemeContent,
 }))
 
 vi.mock('@maz-ui/themes/utils/get-color-mode', () => ({
@@ -54,7 +56,7 @@ describe('theme plugin (server)', () => {
           mazUi: {
             theme: {
               preset: 'maz-ui',
-              strategy: 'hybrid',
+              strategy: 'runtime',
               darkModeStrategy: 'class',
               colorMode: 'auto',
               mode: 'both',
@@ -66,10 +68,10 @@ describe('theme plugin (server)', () => {
     }
   }
 
-  it('should call injectThemeCSS on server', async () => {
-    const context = createContext({ injectCriticalCSS: true, injectAllCSSOnServer: false })
+  it('should inject the full CSS into useHead on server', async () => {
+    const context = createContext()
     await (themePlugin as (...args: any[]) => any)(context)
-    expect(mockGenerateCSS).toHaveBeenCalled()
+    expect(mockGenerateCSS).toHaveBeenCalledTimes(1)
     expect(mockUseHead).toHaveBeenCalledWith(
       expect.objectContaining({
         style: expect.arrayContaining([
@@ -79,27 +81,10 @@ describe('theme plugin (server)', () => {
     )
   })
 
-  it('should inject critical CSS when injectCriticalCSS is true and injectAllCSSOnServer is false', async () => {
-    const context = createContext({
-      injectCriticalCSS: true,
-      injectAllCSSOnServer: false,
-    })
+  it('should skip CSS injection when strategy is buildtime', async () => {
+    const context = createContext({ strategy: 'buildtime' })
     await (themePlugin as (...args: any[]) => any)(context)
-    expect(mockGenerateCSS).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.objectContaining({ onlyCritical: true }),
-    )
-  })
-
-  it('should inject full CSS when injectAllCSSOnServer is true', async () => {
-    const context = createContext({
-      injectAllCSSOnServer: true,
-    })
-    await (themePlugin as (...args: any[]) => any)(context)
-    expect(mockGenerateCSS).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.not.objectContaining({ onlyCritical: true }),
-    )
+    expect(mockGenerateCSS).not.toHaveBeenCalled()
   })
 
   it('should detect dark mode from sec-ch-prefers-color-scheme header', async () => {
@@ -133,7 +118,9 @@ describe('theme plugin (server)', () => {
   })
 
   it('should use saved color mode from cookie on server', async () => {
-    mockUseCookie.mockReturnValue({ value: 'dark' })
+    mockUseCookie.mockImplementation(((name: string) => {
+      return { value: name === 'maz-color-mode' ? 'dark' : undefined }
+    }) as any)
     const context = createContext({ colorMode: 'auto', mode: 'both' })
     await (themePlugin as (...args: any[]) => any)(context)
     expect(mockInstall).toHaveBeenCalledWith(
@@ -155,6 +142,30 @@ describe('theme plugin (server)', () => {
       expect.objectContaining({
         darkSelectorStrategy: 'media',
         darkClass: 'custom-dark',
+      }),
+    )
+  })
+
+  it('should forward lightClass to generateCSS on server', async () => {
+    const context = createContext({
+      lightClass: 'custom-light',
+    })
+    await (themePlugin as (...args: any[]) => any)(context)
+    expect(mockGenerateCSS).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        lightClass: 'custom-light',
+      }),
+    )
+  })
+
+  it('should forward default lightClass to generateCSS on server', async () => {
+    const context = createContext()
+    await (themePlugin as (...args: any[]) => any)(context)
+    expect(mockGenerateCSS).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        lightClass: 'light',
       }),
     )
   })
@@ -207,6 +218,19 @@ describe('theme plugin (server)', () => {
     expect(scriptCall![0].script[0].innerHTML).toContain('my-dark')
   })
 
+  it('should inject color-scheme meta tag on server', async () => {
+    mockResolveColorSchemeContent.mockReturnValueOnce('light dark')
+    const context = createContext({ colorMode: 'auto', mode: 'both' })
+    await (themePlugin as (...args: any[]) => any)(context)
+    expect(mockResolveColorSchemeContent).toHaveBeenCalledWith('both', 'auto')
+    const metaCall = mockUseHead.mock.calls.find(
+      ([arg]: any[]) => arg.meta?.[0]?.name === 'color-scheme',
+    )
+    expect(metaCall).toBeDefined()
+    expect(metaCall![0].meta[0].content).toBe('light dark')
+    expect(metaCall![0].meta[0].id).toBe('maz-color-scheme')
+  })
+
   it('should use resolved color mode cookie on server', async () => {
     mockUseCookie.mockImplementation(((name: string) => {
       if (name === 'maz-resolved-color-mode') {
@@ -218,6 +242,40 @@ describe('theme plugin (server)', () => {
     await (themePlugin as (...args: any[]) => any)(context)
     expect(mockUseHead).toHaveBeenCalledWith({
       htmlAttrs: { class: 'dark' },
+    })
+  })
+
+  describe('Given the plugin renders on the server', () => {
+    describe('When colorMode is dark and darkModeStrategy is class', () => {
+      it('Then it bakes the dark class into the SSR html via useHead', async () => {
+        const context = createContext({ colorMode: 'dark', darkModeStrategy: 'class' })
+        await (themePlugin as (...args: any[]) => any)(context)
+        expect(mockUseHead).toHaveBeenCalledWith({
+          htmlAttrs: { class: 'dark' },
+        })
+      })
+    })
+
+    describe('When colorMode is light', () => {
+      it('Then no htmlAttrs class entry is registered', async () => {
+        const context = createContext({ colorMode: 'light' })
+        await (themePlugin as (...args: any[]) => any)(context)
+        const htmlAttrsCalls = mockUseHead.mock.calls.filter(
+          ([arg]: any[]) => arg.htmlAttrs?.class !== undefined,
+        )
+        expect(htmlAttrsCalls).toHaveLength(0)
+      })
+    })
+
+    describe('When isDark is true but darkModeStrategy is media', () => {
+      it('Then no htmlAttrs class entry is registered', async () => {
+        const context = createContext({ colorMode: 'dark', darkModeStrategy: 'media' })
+        await (themePlugin as (...args: any[]) => any)(context)
+        const htmlAttrsCalls = mockUseHead.mock.calls.filter(
+          ([arg]: any[]) => arg.htmlAttrs?.class !== undefined,
+        )
+        expect(htmlAttrsCalls).toHaveLength(0)
+      })
     })
   })
 })

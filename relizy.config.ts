@@ -22,7 +22,7 @@ export default defineConfig({
     provider: 'claude-code',
     providers: {
       'claude-code': {
-        oauthToken: process.env.CLAUDE_CODE_OAUTH_TOKEN,
+        oauthToken: process.env.YOLO_PROVIDER_API_KEY,
       },
     },
     providerRelease: { enabled: true },
@@ -48,6 +48,7 @@ export default defineConfig({
     access: 'public',
     safetyCheck: true,
     token: process.env.NPM_TOKEN,
+    buildCmd: process.env.CI ? undefined : 'pnpm build:packages',
   },
 
   release: {

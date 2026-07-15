@@ -1,4 +1,5 @@
 import MazCheckbox from '@components/MazCheckbox.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
@@ -147,7 +148,7 @@ describe('MazCheckbox extended branch coverage', () => {
         props: { modelValue: true, color: 'contrast' },
       })
       const checkIcon = wrapper.find('.check-icon')
-      expect(checkIcon.attributes('style')).toContain('hsl(var(--maz-background))')
+      expect(checkIcon.attributes('style')).toContain('var(--maz-surface)')
     })
 
     it('uses color-foreground for icon when color is primary', () => {
@@ -155,7 +156,7 @@ describe('MazCheckbox extended branch coverage', () => {
         props: { modelValue: true, color: 'primary' },
       })
       const checkIcon = wrapper.find('.check-icon')
-      expect(checkIcon.attributes('style')).toContain('hsl(var(--maz-primary-foreground))')
+      expect(checkIcon.attributes('style')).toContain('var(--maz-primary-foreground)')
     })
 
     it('uses color-foreground for icon when color is success', () => {
@@ -163,7 +164,7 @@ describe('MazCheckbox extended branch coverage', () => {
         props: { modelValue: true, color: 'success' },
       })
       const checkIcon = wrapper.find('.check-icon')
-      expect(checkIcon.attributes('style')).toContain('hsl(var(--maz-success-foreground))')
+      expect(checkIcon.attributes('style')).toContain('var(--maz-success-foreground)')
     })
   })
 
@@ -172,14 +173,14 @@ describe('MazCheckbox extended branch coverage', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true, color: 'contrast' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-contrast))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-contrast)')
     })
 
     it('uses specific color for checkbox background', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true, color: 'warning' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-warning))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-warning)')
     })
   })
 
@@ -188,42 +189,42 @@ describe('MazCheckbox extended branch coverage', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false, error: true },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-destructive))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-destructive)')
     })
 
     it('uses warning color for box shadow when warning is true', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false, warning: true },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-warning))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-warning)')
     })
 
     it('uses success color for box shadow when success is true', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false, success: true },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-success))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-success)')
     })
 
     it('uses muted color for box shadow when color is transparent', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false, color: 'transparent' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-muted))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-muted)')
     })
 
     it('uses muted color for box shadow when color is contrast', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false, color: 'contrast' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-muted))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-muted)')
     })
 
     it('uses color with opacity for box shadow for regular colors', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false, color: 'info' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-info) / 60%)')
+      expect(wrapper.attributes('style')).toContain('color-mix(in srgb, var(--maz-info) 60%, transparent)')
     })
   })
 
@@ -370,6 +371,16 @@ describe('MazCheckbox extended branch coverage', () => {
       await wrapper.find('label').trigger('keydown', { code: 'Enter' })
       expect(wrapper.emitted('update:model-value')).toBeFalsy()
     })
+
+    it('emits the prop value on Space keydown when provided', async () => {
+      const wrapper = mount(MazCheckbox, {
+        props: { modelValue: [], value: 'a' },
+      })
+      await wrapper.find('label').trigger('keydown', { code: 'Space' })
+      const emitted = wrapper.emitted('update:model-value')
+      expect(emitted).toBeTruthy()
+      expect(emitted?.[0]).toEqual([['a']])
+    })
   })
 
   describe('focus and blur events', () => {
@@ -440,46 +451,46 @@ describe('MazCheckbox extended branch coverage', () => {
   })
 
   describe('checkIconSize computed', () => {
-    it('returns maz-text-2xl for xl', () => {
+    it('returns maz:text-2xl for xl', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true, size: 'xl' },
       })
-      expect(wrapper.find('.check-icon').classes()).toContain('maz-text-2xl')
+      expect(wrapper.find('.check-icon').classes()).toContain('maz:text-2xl')
     })
 
-    it('returns maz-text-xl for lg', () => {
+    it('returns maz:text-xl for lg', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true, size: 'lg' },
       })
-      expect(wrapper.find('.check-icon').classes()).toContain('maz-text-xl')
+      expect(wrapper.find('.check-icon').classes()).toContain('maz:text-xl')
     })
 
-    it('returns maz-text-lg for md (default)', () => {
+    it('returns maz:text-lg for md (default)', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true },
       })
-      expect(wrapper.find('.check-icon').classes()).toContain('maz-text-lg')
+      expect(wrapper.find('.check-icon').classes()).toContain('maz:text-lg')
     })
 
-    it('returns maz-text-base for sm', () => {
+    it('returns maz:text-base for sm', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true, size: 'sm' },
       })
-      expect(wrapper.find('.check-icon').classes()).toContain('maz-text-base')
+      expect(wrapper.find('.check-icon').classes()).toContain('maz:text-base')
     })
 
-    it('returns maz-text-sm for xs', () => {
+    it('returns maz:text-sm for xs', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true, size: 'xs' },
       })
-      expect(wrapper.find('.check-icon').classes()).toContain('maz-text-sm')
+      expect(wrapper.find('.check-icon').classes()).toContain('maz:text-sm')
     })
 
-    it('returns maz-text-xs for mini', () => {
+    it('returns maz:text-xs for mini', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: true, size: 'mini' },
       })
-      expect(wrapper.find('.check-icon').classes()).toContain('maz-text-xs')
+      expect(wrapper.find('.check-icon').classes()).toContain('maz:text-xs')
     })
   })
 
@@ -496,6 +507,30 @@ describe('MazCheckbox extended branch coverage', () => {
         props: { modelValue: false, style: { marginTop: '10px' } },
       })
       expect(wrapper.attributes('style')).toContain('margin-top: 10px')
+    })
+  })
+})
+
+describe('given a MazUi global default for MazCheckbox size', () => {
+  describe('when no size prop is passed', () => {
+    it('then the configured size drives the checkbox dimensions', () => {
+      const wrapper = mount(MazCheckbox, {
+        props: { modelValue: false },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazCheckbox: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.find('label > span').attributes('style')).toContain('width: 1.75rem')
+    })
+  })
+
+  describe('when a size prop is passed', () => {
+    it('then the instance prop wins over the configured default', () => {
+      const wrapper = mount(MazCheckbox, {
+        props: { modelValue: false, size: 'mini' },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazCheckbox: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.find('label > span').attributes('style')).toContain('width: 0.75rem')
     })
   })
 })

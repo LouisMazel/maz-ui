@@ -1,4 +1,5 @@
 import MazInput from '@components/MazInput.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount, shallowMount } from '@vue/test-utils'
 
 const AUTOFILL_ANIMATION = 'maz-autofill-start'
@@ -52,16 +53,33 @@ describe('components/MazInput.vue', () => {
     expect(wrapper.classes()).toContain('--has-state')
   })
 
-  describe('Given an icon component is passed as leftIcon and rightIcon props', () => {
+  describe('Given an icon component is passed as startIcon and endIcon props', () => {
     describe('When the component renders', () => {
-      it('Then it renders both component icons inside the wrapper', () => {
+      it('Then it routes both icons through MazIcon', async () => {
         const IconStub = { name: 'IconStub', template: '<svg class="icon-stub" />' }
 
         const iconWrapper = mount(MazInput, {
-          props: { leftIcon: IconStub, rightIcon: IconStub },
+          props: { startIcon: IconStub, endIcon: IconStub },
         })
 
+        await vi.dynamicImportSettled()
+
         expect(iconWrapper.findAll('.icon-stub').length).toBe(2)
+      })
+
+      it('Then it accepts a full MazIconProps object and forwards size/title', async () => {
+        const wrapper = mount(MazInput, {
+          props: {
+            startIcon: { icon: '/star.svg', size: 'xl', title: 'Star' },
+          },
+        })
+        await vi.dynamicImportSettled()
+
+        const icon = wrapper.findComponent({ name: 'MazIcon' })
+        expect(icon.exists()).toBe(true)
+        expect(icon.props('icon')).toBe('/star.svg')
+        expect(icon.props('size')).toBe('xl')
+        expect(icon.props('title')).toBe('Star')
       })
     })
   })
@@ -116,6 +134,50 @@ describe('components/MazInput.vue', () => {
     })
   })
 
+  describe('Given the SSR DOM holds an autofilled value before hydration', () => {
+    describe('When the component mounts with a matching id', () => {
+      it('Then it emits update:model-value with the captured value', () => {
+        const ssrInput = document.createElement('input')
+        ssrInput.id = 'ssr-input'
+        ssrInput.value = 'autofilled@example.com'
+        document.body.appendChild(ssrInput)
+
+        try {
+          const wrapper = mount(MazInput, {
+            props: { id: 'ssr-input', modelValue: '' },
+          })
+
+          expect(wrapper.emitted('update:model-value')?.[0]).toEqual(['autofilled@example.com'])
+          wrapper.unmount()
+        }
+        finally {
+          ssrInput.remove()
+        }
+      })
+    })
+
+    describe('When the captured value matches the current modelValue', () => {
+      it('Then it does not emit update:model-value', () => {
+        const ssrInput = document.createElement('input')
+        ssrInput.id = 'ssr-input-match'
+        ssrInput.value = 'same'
+        document.body.appendChild(ssrInput)
+
+        try {
+          const wrapper = mount(MazInput, {
+            props: { id: 'ssr-input-match', modelValue: 'same' },
+          })
+
+          expect(wrapper.emitted('update:model-value')).toBeUndefined()
+          wrapper.unmount()
+        }
+        finally {
+          ssrInput.remove()
+        }
+      })
+    })
+  })
+
   describe('Given the component has a registered autofill listener', () => {
     describe('When the component is unmounted', () => {
       it('Then subsequent autofill animations do not emit update:model-value', () => {
@@ -131,6 +193,46 @@ describe('components/MazInput.vue', () => {
         )
 
         expect(wrapper.emitted('update:model-value')).toBeUndefined()
+      })
+    })
+  })
+
+  describe('Given a global config provides defaults for MazInput', () => {
+    describe('When the component mounts without size or roundedSize props', () => {
+      it('Then it applies the global roundedSize and size', () => {
+        const config = { MazInput: { roundedSize: 'full' as const, size: 'xl' as const } }
+
+        const wrapper = mount(MazInput, {
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(wrapper.find('.m-input-wrapper').classes()).toContain('maz:rounded-full')
+        expect(wrapper.find('.m-input-wrapper-input').classes()).toContain('--xl')
+      })
+    })
+
+    describe('When the global default applies via defaults.global', () => {
+      it('Then it applies the global roundedSize', () => {
+        const config = { global: { roundedSize: 'lg' as const } }
+
+        const wrapper = mount(MazInput, {
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(wrapper.find('.m-input-wrapper').classes()).toContain('maz:rounded-lg')
+      })
+    })
+
+    describe('When an instance prop is passed alongside the global config', () => {
+      it('Then the instance prop wins over the global default', () => {
+        const config = { MazInput: { roundedSize: 'full' as const } }
+
+        const wrapper = mount(MazInput, {
+          props: { roundedSize: 'none' as const },
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(wrapper.find('.m-input-wrapper').classes()).not.toContain('maz:rounded-full')
       })
     })
   })

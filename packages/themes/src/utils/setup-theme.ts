@@ -1,8 +1,10 @@
 import type { Ref } from 'vue'
 import type { MazUiThemeOptions } from '../plugin'
-import type { ThemePreset, ThemeState } from '../types'
+import type { ThemePreset, ThemePresetName, ThemeState } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { ref, watch } from 'vue'
+import { injectColorSchemeMeta, resolveColorSchemeContent } from './color-scheme-meta'
+import { clearSavedPresetName, getSavedPresetName, saveResolvedPresetName } from './cookie-storage'
 import { getColorMode, getSavedColorMode, getSystemColorMode, saveResolvedColorMode } from './get-color-mode'
 import { getPreset } from './get-preset'
 import { injectThemeCSS } from './inject-theme-css'
@@ -10,77 +12,66 @@ import { mergePresets } from './preset-merger'
 import { updateDocumentClass } from './update-document-class'
 import { useMutationObserver } from './use-mutation-observer'
 
+function noop() {}
+
 function watchColorSchemeFromMedia(themeState: Ref<ThemeState>): () => void {
   if (isServer())
-    return () => {}
+    return noop
 
-  let mediaCleanup: (() => void) | undefined
-
-  if (themeState.value && themeState.value.colorMode === 'auto') {
-    const mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)')
-
-    const updateFromMedia = () => {
-      if (themeState.value.colorMode === 'auto') {
-        const newColorMode = mediaQuery.matches ? 'dark' : 'light'
-        updateDocumentClass(newColorMode === 'dark', themeState.value)
-        themeState.value.isDark = newColorMode === 'dark'
-        saveResolvedColorMode(newColorMode)
-      }
-    }
-
-    mediaQuery.addEventListener('change', updateFromMedia)
-    mediaCleanup = () => mediaQuery.removeEventListener('change', updateFromMedia)
+  const mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)')
+  const onChange = () => {
+    if (themeState.value.colorMode !== 'auto')
+      return
+    const next = mediaQuery.matches ? 'dark' : 'light'
+    updateDocumentClass('auto', themeState.value)
+    themeState.value.isDark = next === 'dark'
+    saveResolvedColorMode(next)
   }
+  mediaQuery.addEventListener('change', onChange)
 
   const stopWatch = watch(() => themeState.value.colorMode, (colorMode) => {
-    const resolvedIsDark = colorMode === 'auto' ? getSystemColorMode() === 'dark' : colorMode === 'dark'
-    updateDocumentClass(resolvedIsDark, themeState.value)
-    if (colorMode === 'auto') {
-      saveResolvedColorMode(resolvedIsDark ? 'dark' : 'light')
-    }
+    const isDark = colorMode === 'auto' ? getSystemColorMode() === 'dark' : colorMode === 'dark'
+    updateDocumentClass(colorMode, themeState.value)
+    injectColorSchemeMeta(resolveColorSchemeContent(themeState.value.mode, colorMode))
+    if (colorMode === 'auto')
+      saveResolvedColorMode(isDark ? 'dark' : 'light')
   })
 
   return () => {
-    mediaCleanup?.()
+    mediaQuery.removeEventListener('change', onChange)
     stopWatch()
   }
 }
 
 function watchMutationClassOnHtmlElement(themeState: Ref<ThemeState>): () => void {
   if (isServer())
-    return () => {}
+    return noop
 
-  const { stop } = useMutationObserver(
+  return useMutationObserver(
     document.documentElement,
     () => {
       if (isServer() || !themeState.value)
         return
-
-      const activeColorMode = document.documentElement.classList.contains(themeState.value.darkClass) ? 'dark' : 'light'
-      themeState.value.isDark = activeColorMode === 'dark'
-
-      if (themeState.value.colorMode !== activeColorMode && themeState.value.colorMode !== 'auto') {
-        themeState.value.colorMode = activeColorMode
+      const active = document.documentElement.classList.contains(themeState.value.darkClass) ? 'dark' : 'light'
+      themeState.value.isDark = active === 'dark'
+      if (themeState.value.colorMode !== active && themeState.value.colorMode !== 'auto') {
+        themeState.value.colorMode = active
       }
     },
-    {
-      attributes: true,
-    },
-  )
-
-  return stop
+    { attributes: true },
+  ).stop
 }
 
 export const defaultOptions = {
-  strategy: 'hybrid',
+  strategy: 'runtime',
   overrides: {},
   darkModeStrategy: 'class',
   preset: undefined,
-  injectCriticalCSS: true,
-  injectFullCSS: true,
   mode: 'both',
   darkClass: 'dark',
+  lightClass: 'light',
   colorMode: 'auto',
+  persistPreset: true,
 } satisfies Required<Omit<MazUiThemeOptions, 'preset'>> & Pick<MazUiThemeOptions, 'preset'>
 
 export interface SetupThemeReturn {
@@ -89,7 +80,6 @@ export interface SetupThemeReturn {
 }
 
 type ResolvedConfig = Required<Omit<MazUiThemeOptions, 'preset'>> & Pick<MazUiThemeOptions, 'preset'>
-
 type ThemeStateRef = Ref<Required<Omit<ThemeState, 'preset'>> & Pick<ThemeState, 'preset'>>
 
 function resolveConfig(options: MazUiThemeOptions): ResolvedConfig {
@@ -112,16 +102,29 @@ function createThemeState(options: MazUiThemeOptions, config: ResolvedConfig): T
   const themeState: ThemeStateRef = ref({
     strategy: config.strategy,
     darkClass: config.darkClass,
+    lightClass: config.lightClass,
     darkModeStrategy: config.darkModeStrategy,
     colorMode: config.colorMode,
     mode: config.mode,
     preset: undefined,
+    persistPreset: config.persistPreset,
     // @ts-expect-error _isDark is a private property
     isDark: options._isDark || isDark,
   })
 
-  updateDocumentClass(themeState.value.isDark, themeState.value)
-
+  // Hybrid: only impose the class at init when no host (VitePress, Nuxt blocking
+  // script, Tailwind toggle…) has already set one. If a theme class is present,
+  // respect it — host stays in charge. The mutation observer keeps isDark in sync.
+  if (!isServer() && config.darkModeStrategy === 'class' && config.mode === 'both') {
+    const html = document.documentElement
+    const hasExistingThemeClass = html.classList.contains(config.darkClass) || html.classList.contains(config.lightClass)
+    if (!hasExistingThemeClass) {
+      updateDocumentClass(themeState.value.colorMode, themeState.value)
+    }
+  }
+  else {
+    updateDocumentClass(themeState.value.colorMode, themeState.value)
+  }
   return themeState
 }
 
@@ -130,49 +133,86 @@ function finalizeTheme(
   preset: ThemePreset | undefined,
   config: ResolvedConfig,
 ): SetupThemeReturn {
-  const finalPreset = Object.keys(config.overrides).length > 0 && preset
+  const finalPreset = preset && Object.keys(config.overrides).length > 0
     ? mergePresets(preset, config.overrides)
     : preset
 
   if (finalPreset) {
     themeState.value.preset = finalPreset
+    if (config.persistPreset)
+      saveResolvedPresetName(finalPreset.name)
   }
 
   if (config.strategy === 'buildtime' || !finalPreset) {
-    return { themeState: themeState as Ref<ThemeState>, cleanup: () => {} }
+    return { themeState: themeState as Ref<ThemeState>, cleanup: noop }
   }
 
   injectThemeCSS(finalPreset, config)
 
-  const cleanupColorScheme = watchColorSchemeFromMedia(themeState)
-  const cleanupMutation = watchMutationClassOnHtmlElement(themeState)
+  const stopMedia = watchColorSchemeFromMedia(themeState)
+  const stopMutation = watchMutationClassOnHtmlElement(themeState)
 
   return {
     themeState: themeState as Ref<ThemeState>,
     cleanup: () => {
-      cleanupColorScheme()
-      cleanupMutation()
+      stopMedia()
+      stopMutation()
     },
   }
 }
 
+function swapPreset(themeState: ThemeStateRef, preset: ThemePreset, config: ResolvedConfig): void {
+  // Caller guarantees `persistPreset` is on and `strategy !== 'buildtime'`.
+  const final = Object.keys(config.overrides).length > 0
+    ? mergePresets(preset, config.overrides)
+    : preset
+  themeState.value.preset = final
+  saveResolvedPresetName(final.name)
+  injectThemeCSS(final, config)
+}
+
 /**
  * Sets up the theme state, CSS injection, and watchers without binding to a Vue app.
- * The caller is responsible for calling `app.provide()` and setting `app.config.globalProperties`.
+ * Caller is responsible for `app.provide()` and `app.config.globalProperties`.
  *
  * Always returns synchronously with a populated themeState ref.
- * When no preset object is provided, the default preset is resolved asynchronously
- * in the background and the themeState is updated reactively (causes FOUC).
+ * Without a preset object, the default preset resolves asynchronously and
+ * themeState updates reactively (causes FOUC).
  */
 export function setupTheme(options: MazUiThemeOptions): SetupThemeReturn {
   const config = resolveConfig(options)
   const themeState = createThemeState(options, config)
+  injectColorSchemeMeta(resolveColorSchemeContent(themeState.value.mode, themeState.value.colorMode))
+  const savedName = config.persistPreset ? getSavedPresetName() : null
+  const presetObject = config.preset && typeof config.preset !== 'string' ? config.preset : null
 
-  if ((config.preset && typeof config.preset !== 'string') || config.strategy === 'buildtime') {
-    return finalizeTheme(themeState, config.preset, config)
+  // Fast path — no FOUC. Buildtime also flows here (CSS is pre-built).
+  if (presetObject || config.strategy === 'buildtime') {
+    const setup = finalizeTheme(themeState, presetObject ?? config.preset, config)
+
+    // Cookie asked for a different bundled preset → load and swap post-mount.
+    if (savedName && config.strategy !== 'buildtime' && (!presetObject || savedName !== presetObject.name)) {
+      getPreset(savedName as ThemePresetName)
+        .then(preset => swapPreset(themeState, preset, config))
+        .catch(() => clearSavedPresetName())
+    }
+    return setup
   }
 
-  getPreset(config.preset).then(preset => finalizeTheme(themeState, preset, config))
+  // No object preset → async resolution (cookie wins, fallback to options).
+  const resolve = savedName
+    ? getPreset(savedName as ThemePresetName).catch(() => {
+        clearSavedPresetName()
+        return getPreset(config.preset)
+      })
+    : getPreset(config.preset)
 
-  return { themeState: themeState as Ref<ThemeState>, cleanup: () => {} }
+  resolve
+    .catch((error) => {
+      console.error('[@maz-ui/themes] Failed to resolve preset', error)
+      return undefined
+    })
+    .then(preset => finalizeTheme(themeState, preset, config))
+
+  return { themeState: themeState as Ref<ThemeState>, cleanup: noop }
 }

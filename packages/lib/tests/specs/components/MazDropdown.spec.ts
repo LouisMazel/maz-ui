@@ -1,7 +1,9 @@
 import type { MazDropdownProps } from '@components/MazDropdown.vue'
 import type { GenericInstanceType } from '@maz-ui/utils/ts-helpers/GenericInstanceType'
 import type { VueWrapper } from '@vue/test-utils'
+import MazBtn from '@components/MazBtn.vue'
 import MazDropdown from '@components/MazDropdown.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { MazStar } from '@maz-ui/icons'
 import { mount } from '@vue/test-utils'
 import { markRaw } from 'vue'
@@ -181,7 +183,20 @@ describe('components/MazDropdown.vue', () => {
       it('then custom icon is rendered', async () => {
         await wrapper.setProps({ dropdownIcon: markRaw(MazStar) })
 
-        expect(wrapper.findComponent(MazStar).exists()).toBe(true)
+        // The custom icon is forwarded to <MazIcon> as the icon prop.
+        const mazIcon = wrapper.findComponent({ name: 'MazIcon' })
+        expect(mazIcon.exists()).toBe(true)
+        expect(mazIcon.props('icon')).toBe(MazStar)
+      })
+
+      it('then a full MazIconProps object is honored', async () => {
+        await wrapper.setProps({ dropdownIcon: { icon: '/star.svg', size: 'xl', title: 'Star' } })
+
+        const mazIcon = wrapper.findComponent({ name: 'MazIcon' })
+        expect(mazIcon.exists()).toBe(true)
+        expect(mazIcon.props('icon')).toBe('/star.svg')
+        expect(mazIcon.props('size')).toBe('xl')
+        expect(mazIcon.props('title')).toBe('Star')
       })
     })
 
@@ -239,23 +254,24 @@ describe('components/MazDropdown.vue', () => {
 
   describe('given dropdown with different item types', () => {
     describe('when item has href', () => {
-      it('then MazLink is rendered', async () => {
+      it('then an anchor is rendered with the href', async () => {
         const wrapper = await getWrapper({ props: { items: [{ label: 'Profile', href: '/profile' }] } })
 
         await wrapper.find('[role="button"]').trigger('click')
 
-        const profileItem = wrapper.findComponent({ name: 'MazLink' })
+        const profileItem = wrapper.find('.menuitem')
+        expect(profileItem.element.tagName).toBe('A')
         expect(profileItem.attributes('href')).toBe('/profile')
       })
     })
 
     describe('when item has to property', () => {
-      it('then router-link is rendered', async () => {
+      it('then a router-link is rendered', async () => {
         const wrapper = await getWrapper({ props: { items: [{ label: 'About', to: '/about' }] } })
 
         await wrapper.find('[role="button"]').trigger('click')
 
-        const aboutItem = wrapper.findComponent({ name: 'MazLink' })
+        const aboutItem = wrapper.find('.menuitem')
         expect(aboutItem.attributes('to')).toBe('/about')
       })
     })
@@ -275,7 +291,7 @@ describe('components/MazDropdown.vue', () => {
 
         await wrapper.find('[role="button"]').trigger('click')
 
-        const externalItem = wrapper.findComponent({ name: 'MazLink' })
+        const externalItem = wrapper.find('.menuitem')
         expect(externalItem.attributes('target')).toBe('_blank')
       })
     })
@@ -284,19 +300,19 @@ describe('components/MazDropdown.vue', () => {
   describe('given dropdown with different sizes', () => {
     describe('when size is xl', () => {
       it('then icon has large text class', async () => {
-        await wrapper.setProps({ size: 'xl' })
+        const localWrapper = await getWrapper({ props: { size: 'xl' } })
 
-        const icon = wrapper.find('.m-dropdown__icon')
-        expect(icon.classes()).toContain('maz-text-lg')
+        const icon = localWrapper.find('.m-dropdown__icon')
+        expect(icon.classes()).toContain('maz:text-lg')
       })
     })
 
     describe('when size is mini', () => {
       it('then icon has small text class', async () => {
-        await wrapper.setProps({ size: 'mini' })
+        const localWrapper = await getWrapper({ props: { size: 'mini' } })
 
-        const icon = wrapper.find('.m-dropdown__icon')
-        expect(icon.classes()).toContain('maz-text-sm')
+        const icon = localWrapper.find('.m-dropdown__icon')
+        expect(icon.classes()).toContain('maz:text-sm')
       })
     })
   })
@@ -311,7 +327,7 @@ describe('components/MazDropdown.vue', () => {
       })
 
       it('then has screen reader description', () => {
-        const srDescription = wrapper.find('.maz-sr-only')
+        const srDescription = wrapper.find('.maz\\:sr-only')
         expect(srDescription.exists()).toBe(true)
       })
     })
@@ -323,6 +339,42 @@ describe('components/MazDropdown.vue', () => {
         const dropdownWrapper = wrapper.find('[aria-expanded]')
         expect(dropdownWrapper.attributes('aria-expanded')).toBe('true')
       })
+    })
+  })
+})
+
+describe('given a MazUi global default for MazDropdown size', () => {
+  describe('when no size prop is passed', () => {
+    it('then the trigger button receives the configured size', async () => {
+      const localWrapper = mount(MazDropdown, {
+        props: { items },
+        slots: { default: 'Menu' },
+        global: {
+          stubs: { teleport: true, MazLink: true },
+          provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazDropdown: { size: 'lg' } } },
+        },
+      })
+
+      await vi.dynamicImportSettled()
+
+      expect(localWrapper.findComponent(MazBtn).props('size')).toBe('lg')
+    })
+  })
+
+  describe('when a size prop is passed', () => {
+    it('then the instance prop wins over the configured default', async () => {
+      const localWrapper = mount(MazDropdown, {
+        props: { items, size: 'xs' },
+        slots: { default: 'Menu' },
+        global: {
+          stubs: { teleport: true, MazLink: true },
+          provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazDropdown: { size: 'lg' } } },
+        },
+      })
+
+      await vi.dynamicImportSettled()
+
+      expect(localWrapper.findComponent(MazBtn).props('size')).toBe('xs')
     })
   })
 })

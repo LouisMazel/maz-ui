@@ -78,6 +78,89 @@ describe('given vTooltip directive', () => {
     })
   })
 
+  describe('when binding value is false', () => {
+    it('then no tooltip panel is created', () => {
+      wrapper = mount({
+        template: `<div v-tooltip="false">Content</div>`,
+        directives: {
+          tooltip: vTooltip,
+        },
+      })
+
+      expect(wrapper.find('.m-tooltip-panel').exists()).toBe(false)
+    })
+  })
+
+  describe('when binding value is null', () => {
+    it('then no tooltip panel is created', () => {
+      wrapper = mount({
+        template: `<div v-tooltip="null">Content</div>`,
+        directives: {
+          tooltip: vTooltip,
+        },
+      })
+
+      expect(wrapper.find('.m-tooltip-panel').exists()).toBe(false)
+    })
+  })
+
+  describe('when binding value is undefined', () => {
+    it('then no tooltip panel is created', () => {
+      wrapper = mount({
+        template: `<div v-tooltip="undefined">Content</div>`,
+        directives: {
+          tooltip: vTooltip,
+        },
+      })
+
+      expect(wrapper.find('.m-tooltip-panel').exists()).toBe(false)
+    })
+  })
+
+  describe('when binding value changes from truthy to false', () => {
+    it('then the existing tooltip is destroyed', async () => {
+      const binding = ref<string | false>('Tooltip text')
+      wrapper = mount({
+        template: `<div v-tooltip="binding">Content</div>`,
+        directives: {
+          tooltip: vTooltip,
+        },
+        setup() {
+          return { binding }
+        },
+      })
+
+      expect(wrapper.exists()).toBe(true)
+
+      binding.value = false
+      await wrapper.vm.$nextTick()
+
+      expect(document.querySelectorAll('.m-tooltip-panel').length).toBe(0)
+    })
+  })
+
+  describe('when binding value changes from false to truthy', () => {
+    it('then a tooltip is mounted', async () => {
+      const binding = ref<string | false>(false)
+      wrapper = mount({
+        template: `<div v-tooltip="binding">Content</div>`,
+        directives: {
+          tooltip: vTooltip,
+        },
+        setup() {
+          return { binding }
+        },
+      })
+
+      expect(wrapper.find('.m-tooltip-panel').exists()).toBe(false)
+
+      binding.value = 'Tooltip text'
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.exists()).toBe(true)
+    })
+  })
+
   describe('when using tooltip with position modifiers', () => {
     it('then it should render with different positions', async () => {
       wrapper = mount({

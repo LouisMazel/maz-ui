@@ -1,0 +1,233 @@
+/*
+ * Color bridge for Tailwind v4.
+ *
+ * Each base color is wired to its runtime token (--maz-X) and the 50..950
+ * scale steps are derived inline via OKLCh relative color syntax. The
+ * lightness and chroma offsets mirror the SCALE_OFFSETS table that used to
+ * live in @maz-ui/themes' css-generator: scale derivation now happens at
+ * Tailwind compile time, not at runtime, and unused steps are tree-shaken
+ * out of the final stylesheet.
+ *
+ * With prefix(maz), these become --maz-color-X-N at :root.
+ *
+ * One logical alias is preserved: elevation → shadow.
+ */
+@theme {
+  /* primary */
+  --color-primary: var(--maz-primary);
+  --color-primary-foreground: var(--maz-primary-foreground);
+  --color-primary-50: oklch(from var(--maz-primary) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-primary-100: oklch(from var(--maz-primary) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-primary-200: oklch(from var(--maz-primary) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-primary-300: oklch(from var(--maz-primary) clamp(0, calc(l + 0.13), 1) c h);
+  --color-primary-400: oklch(from var(--maz-primary) clamp(0, calc(l + 0.06), 1) c h);
+  --color-primary-500: var(--maz-primary);
+  --color-primary-600: oklch(from var(--maz-primary) clamp(0, calc(l - 0.05), 1) c h);
+  --color-primary-700: oklch(from var(--maz-primary) clamp(0, calc(l - 0.1), 1) c h);
+  --color-primary-800: oklch(from var(--maz-primary) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-primary-900: oklch(from var(--maz-primary) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-primary-950: oklch(from var(--maz-primary) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+
+  /* secondary */
+  --color-secondary: var(--maz-secondary);
+  --color-secondary-foreground: var(--maz-secondary-foreground);
+  --color-secondary-50: oklch(from var(--maz-secondary) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-secondary-100: oklch(from var(--maz-secondary) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-secondary-200: oklch(from var(--maz-secondary) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-secondary-300: oklch(from var(--maz-secondary) clamp(0, calc(l + 0.13), 1) c h);
+  --color-secondary-400: oklch(from var(--maz-secondary) clamp(0, calc(l + 0.06), 1) c h);
+  --color-secondary-500: var(--maz-secondary);
+  --color-secondary-600: oklch(from var(--maz-secondary) clamp(0, calc(l - 0.05), 1) c h);
+  --color-secondary-700: oklch(from var(--maz-secondary) clamp(0, calc(l - 0.1), 1) c h);
+  --color-secondary-800: oklch(from var(--maz-secondary) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-secondary-900: oklch(from var(--maz-secondary) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-secondary-950: oklch(from var(--maz-secondary) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+
+  /* accent */
+  --color-accent: var(--maz-accent);
+  --color-accent-foreground: var(--maz-accent-foreground);
+  --color-accent-50: oklch(from var(--maz-accent) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-accent-100: oklch(from var(--maz-accent) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-accent-200: oklch(from var(--maz-accent) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-accent-300: oklch(from var(--maz-accent) clamp(0, calc(l + 0.13), 1) c h);
+  --color-accent-400: oklch(from var(--maz-accent) clamp(0, calc(l + 0.06), 1) c h);
+  --color-accent-500: var(--maz-accent);
+  --color-accent-600: oklch(from var(--maz-accent) clamp(0, calc(l - 0.05), 1) c h);
+  --color-accent-700: oklch(from var(--maz-accent) clamp(0, calc(l - 0.1), 1) c h);
+  --color-accent-800: oklch(from var(--maz-accent) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-accent-900: oklch(from var(--maz-accent) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-accent-950: oklch(from var(--maz-accent) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+
+  /* destructive */
+  --color-destructive: var(--maz-destructive);
+  --color-destructive-foreground: var(--maz-destructive-foreground);
+  --color-destructive-50: oklch(from var(--maz-destructive) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-destructive-100: oklch(from var(--maz-destructive) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-destructive-200: oklch(from var(--maz-destructive) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-destructive-300: oklch(from var(--maz-destructive) clamp(0, calc(l + 0.13), 1) c h);
+  --color-destructive-400: oklch(from var(--maz-destructive) clamp(0, calc(l + 0.06), 1) c h);
+  --color-destructive-500: var(--maz-destructive);
+  --color-destructive-600: oklch(from var(--maz-destructive) clamp(0, calc(l - 0.05), 1) c h);
+  --color-destructive-700: oklch(from var(--maz-destructive) clamp(0, calc(l - 0.1), 1) c h);
+  --color-destructive-800: oklch(from var(--maz-destructive) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-destructive-900: oklch(from var(--maz-destructive) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-destructive-950: oklch(from var(--maz-destructive) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+
+  /* success */
+  --color-success: var(--maz-success);
+  --color-success-foreground: var(--maz-success-foreground);
+  --color-success-50: oklch(from var(--maz-success) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-success-100: oklch(from var(--maz-success) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-success-200: oklch(from var(--maz-success) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-success-300: oklch(from var(--maz-success) clamp(0, calc(l + 0.13), 1) c h);
+  --color-success-400: oklch(from var(--maz-success) clamp(0, calc(l + 0.06), 1) c h);
+  --color-success-500: var(--maz-success);
+  --color-success-600: oklch(from var(--maz-success) clamp(0, calc(l - 0.05), 1) c h);
+  --color-success-700: oklch(from var(--maz-success) clamp(0, calc(l - 0.1), 1) c h);
+  --color-success-800: oklch(from var(--maz-success) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-success-900: oklch(from var(--maz-success) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-success-950: oklch(from var(--maz-success) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+
+  /* warning */
+  --color-warning: var(--maz-warning);
+  --color-warning-foreground: var(--maz-warning-foreground);
+  --color-warning-50: oklch(from var(--maz-warning) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-warning-100: oklch(from var(--maz-warning) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-warning-200: oklch(from var(--maz-warning) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-warning-300: oklch(from var(--maz-warning) clamp(0, calc(l + 0.13), 1) c h);
+  --color-warning-400: oklch(from var(--maz-warning) clamp(0, calc(l + 0.06), 1) c h);
+  --color-warning-500: var(--maz-warning);
+  --color-warning-600: oklch(from var(--maz-warning) clamp(0, calc(l - 0.05), 1) c h);
+  --color-warning-700: oklch(from var(--maz-warning) clamp(0, calc(l - 0.1), 1) c h);
+  --color-warning-800: oklch(from var(--maz-warning) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-warning-900: oklch(from var(--maz-warning) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-warning-950: oklch(from var(--maz-warning) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+
+  /* info */
+  --color-info: var(--maz-info);
+  --color-info-foreground: var(--maz-info-foreground);
+  --color-info-50: oklch(from var(--maz-info) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-info-100: oklch(from var(--maz-info) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-info-200: oklch(from var(--maz-info) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-info-300: oklch(from var(--maz-info) clamp(0, calc(l + 0.13), 1) c h);
+  --color-info-400: oklch(from var(--maz-info) clamp(0, calc(l + 0.06), 1) c h);
+  --color-info-500: var(--maz-info);
+  --color-info-600: oklch(from var(--maz-info) clamp(0, calc(l - 0.05), 1) c h);
+  --color-info-700: oklch(from var(--maz-info) clamp(0, calc(l - 0.1), 1) c h);
+  --color-info-800: oklch(from var(--maz-info) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-info-900: oklch(from var(--maz-info) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-info-950: oklch(from var(--maz-info) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+
+  /* contrast */
+  --color-contrast: var(--maz-contrast);
+  --color-contrast-foreground: var(--maz-contrast-foreground);
+  --color-contrast-50: oklch(from var(--maz-contrast) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-contrast-100: oklch(from var(--maz-contrast) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-contrast-200: oklch(from var(--maz-contrast) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-contrast-300: oklch(from var(--maz-contrast) clamp(0, calc(l + 0.13), 1) c h);
+  --color-contrast-400: oklch(from var(--maz-contrast) clamp(0, calc(l + 0.06), 1) c h);
+  --color-contrast-500: var(--maz-contrast);
+  --color-contrast-600: oklch(from var(--maz-contrast) clamp(0, calc(l - 0.05), 1) c h);
+  --color-contrast-700: oklch(from var(--maz-contrast) clamp(0, calc(l - 0.1), 1) c h);
+  --color-contrast-800: oklch(from var(--maz-contrast) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-contrast-900: oklch(from var(--maz-contrast) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-contrast-950: oklch(from var(--maz-contrast) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+
+  /* surface */
+  --color-surface: var(--maz-surface);
+  --color-surface-50: oklch(from var(--maz-surface) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-surface-100: oklch(from var(--maz-surface) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-surface-200: oklch(from var(--maz-surface) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-surface-300: oklch(from var(--maz-surface) clamp(0, calc(l + 0.13), 1) c h);
+  --color-surface-400: oklch(from var(--maz-surface) clamp(0, calc(l + 0.06), 1) c h);
+  --color-surface-500: var(--maz-surface);
+  --color-surface-600: oklch(from var(--maz-surface) clamp(0, calc(l - 0.05), 1) c h);
+  --color-surface-700: oklch(from var(--maz-surface) clamp(0, calc(l - 0.1), 1) c h);
+  --color-surface-800: oklch(from var(--maz-surface) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-surface-900: oklch(from var(--maz-surface) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-surface-950: oklch(from var(--maz-surface) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+
+  /* foreground */
+  --color-foreground: var(--maz-foreground);
+  --color-foreground-50: oklch(from var(--maz-foreground) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-foreground-100: oklch(from var(--maz-foreground) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-foreground-200: oklch(from var(--maz-foreground) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-foreground-300: oklch(from var(--maz-foreground) clamp(0, calc(l + 0.13), 1) c h);
+  --color-foreground-400: oklch(from var(--maz-foreground) clamp(0, calc(l + 0.06), 1) c h);
+  --color-foreground-500: var(--maz-foreground);
+  --color-foreground-600: oklch(from var(--maz-foreground) clamp(0, calc(l - 0.05), 1) c h);
+  --color-foreground-700: oklch(from var(--maz-foreground) clamp(0, calc(l - 0.1), 1) c h);
+  --color-foreground-800: oklch(from var(--maz-foreground) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-foreground-900: oklch(from var(--maz-foreground) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-foreground-950: oklch(from var(--maz-foreground) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+
+  /* divider */
+  --color-divider: var(--maz-divider);
+  --color-divider-50: oklch(from var(--maz-divider) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-divider-100: oklch(from var(--maz-divider) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-divider-200: oklch(from var(--maz-divider) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-divider-300: oklch(from var(--maz-divider) clamp(0, calc(l + 0.13), 1) c h);
+  --color-divider-400: oklch(from var(--maz-divider) clamp(0, calc(l + 0.06), 1) c h);
+  --color-divider-500: var(--maz-divider);
+  --color-divider-600: oklch(from var(--maz-divider) clamp(0, calc(l - 0.05), 1) c h);
+  --color-divider-700: oklch(from var(--maz-divider) clamp(0, calc(l - 0.1), 1) c h);
+  --color-divider-800: oklch(from var(--maz-divider) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-divider-900: oklch(from var(--maz-divider) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-divider-950: oklch(from var(--maz-divider) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+
+  /* shadow */
+  --color-shadow: var(--maz-shadow);
+  --color-shadow-50: oklch(from var(--maz-shadow) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-shadow-100: oklch(from var(--maz-shadow) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-shadow-200: oklch(from var(--maz-shadow) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-shadow-300: oklch(from var(--maz-shadow) clamp(0, calc(l + 0.13), 1) c h);
+  --color-shadow-400: oklch(from var(--maz-shadow) clamp(0, calc(l + 0.06), 1) c h);
+  --color-shadow-500: var(--maz-shadow);
+  --color-shadow-600: oklch(from var(--maz-shadow) clamp(0, calc(l - 0.05), 1) c h);
+  --color-shadow-700: oklch(from var(--maz-shadow) clamp(0, calc(l - 0.1), 1) c h);
+  --color-shadow-800: oklch(from var(--maz-shadow) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-shadow-900: oklch(from var(--maz-shadow) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-shadow-950: oklch(from var(--maz-shadow) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+
+  /* elevation (alias of shadow) */
+  --color-elevation: var(--maz-shadow);
+  --color-elevation-50: oklch(from var(--maz-shadow) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-elevation-100: oklch(from var(--maz-shadow) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-elevation-200: oklch(from var(--maz-shadow) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-elevation-300: oklch(from var(--maz-shadow) clamp(0, calc(l + 0.13), 1) c h);
+  --color-elevation-400: oklch(from var(--maz-shadow) clamp(0, calc(l + 0.06), 1) c h);
+  --color-elevation-500: var(--maz-shadow);
+  --color-elevation-600: oklch(from var(--maz-shadow) clamp(0, calc(l - 0.05), 1) c h);
+  --color-elevation-700: oklch(from var(--maz-shadow) clamp(0, calc(l - 0.1), 1) c h);
+  --color-elevation-800: oklch(from var(--maz-shadow) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-elevation-900: oklch(from var(--maz-shadow) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-elevation-950: oklch(from var(--maz-shadow) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+
+  /* overlay */
+  --color-overlay: var(--maz-overlay);
+  --color-overlay-50: oklch(from var(--maz-overlay) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-overlay-100: oklch(from var(--maz-overlay) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-overlay-200: oklch(from var(--maz-overlay) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-overlay-300: oklch(from var(--maz-overlay) clamp(0, calc(l + 0.13), 1) c h);
+  --color-overlay-400: oklch(from var(--maz-overlay) clamp(0, calc(l + 0.06), 1) c h);
+  --color-overlay-500: var(--maz-overlay);
+  --color-overlay-600: oklch(from var(--maz-overlay) clamp(0, calc(l - 0.05), 1) c h);
+  --color-overlay-700: oklch(from var(--maz-overlay) clamp(0, calc(l - 0.1), 1) c h);
+  --color-overlay-800: oklch(from var(--maz-overlay) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-overlay-900: oklch(from var(--maz-overlay) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-overlay-950: oklch(from var(--maz-overlay) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+
+  /* muted */
+  --color-muted: var(--maz-muted);
+  --color-muted-50: oklch(from var(--maz-muted) clamp(0, calc(l + 0.4), 1) calc(c * 0.1) h);
+  --color-muted-100: oklch(from var(--maz-muted) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h);
+  --color-muted-200: oklch(from var(--maz-muted) clamp(0, calc(l + 0.22), 1) calc(c * 0.7) h);
+  --color-muted-300: oklch(from var(--maz-muted) clamp(0, calc(l + 0.13), 1) c h);
+  --color-muted-400: oklch(from var(--maz-muted) clamp(0, calc(l + 0.06), 1) c h);
+  --color-muted-500: var(--maz-muted);
+  --color-muted-600: oklch(from var(--maz-muted) clamp(0, calc(l - 0.05), 1) c h);
+  --color-muted-700: oklch(from var(--maz-muted) clamp(0, calc(l - 0.1), 1) c h);
+  --color-muted-800: oklch(from var(--maz-muted) clamp(0, calc(l - 0.16), 1) calc(c * 0.9) h);
+  --color-muted-900: oklch(from var(--maz-muted) clamp(0, calc(l - 0.22), 1) calc(c * 0.7) h);
+  --color-muted-950: oklch(from var(--maz-muted) clamp(0, calc(l - 0.3), 1) calc(c * 0.5) h);
+}

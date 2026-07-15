@@ -56,19 +56,37 @@ describe('Given DocumentationService instance', () => {
       const result = service.getAllGuides()
 
       expect(result).toEqual([
+        'browser-support',
         'cli',
+        'eslint-config',
         'getting-started',
+        'global-defaults',
         'icon-set',
         'icons',
         'maz-ui-provider',
         'mcp',
         'migration-v4',
+        'migration-v5',
         'nuxt',
         'resolvers',
+        'stylelint-config',
+        'tailwind',
         'themes',
         'translations',
         'vue',
       ])
+    })
+
+    it('Then it resolves the ecosystem icons index as the icons guide', () => {
+      const result = service.getGuideDocumentation('icons')
+
+      expect(result).toContain('@maz-ui/icons')
+    })
+
+    it('Then it resolves ecosystem package guides', () => {
+      const result = service.getGuideDocumentation('themes')
+
+      expect(result).toContain('title:')
     })
   })
 
@@ -89,6 +107,7 @@ describe('Given DocumentationService instance', () => {
         'use-breakpoints',
         'use-dialog',
         'use-display-names',
+        'use-drag',
         'use-form-validator',
         'use-idle-timeout',
         'use-reading-time',
@@ -135,19 +154,83 @@ describe('Given DocumentationService instance', () => {
     })
   })
 
-  describe('When getting helper documentation', () => {
-    it('Then it handles helper files', () => {
-      const result = service.getHelperDocumentation('currency')
+  describe('When getting util documentation', () => {
+    it('Then it handles util files from ecosystem/utils', () => {
+      const result = service.getUtilDocumentation('currency')
 
       expect(result).toContain('title: formatCurrency')
     })
+
+    it('Then it handles util type files from ecosystem/utils/types', () => {
+      const result = service.getUtilDocumentation('deep-partial')
+
+      expect(result).toContain('title: DeepPartial')
+    })
   })
 
-  describe('When getting all helpers', () => {
-    it('Then it lists all helper files', () => {
-      const result = service.getAllHelpers()
+  describe('When getting all utils', () => {
+    it('Then it lists all util files including types', () => {
+      const result = service.getAllUtils()
 
-      expect(result).toEqual(expect.arrayContaining(['camel-case', 'capitalize', 'check-availability', 'country-code-to-unicode-flag', 'currency', 'date', 'debounce', 'debounce-callback', 'debounce-id', 'get-country-flag-url', 'is-client', 'is-equal', 'is-standalone-mode', 'normalize-string', 'number', 'pascal-case', 'script-loader', 'sleep', 'throttle', 'throttle-id', 'kebab-case', 'snake-case']))
+      expect(result).toEqual(expect.arrayContaining([
+        'camel-case',
+        'capitalize',
+        'check-availability',
+        'cookie',
+        'country-code-to-unicode-flag',
+        'currency',
+        'date',
+        'debounce',
+        'debounce-callback',
+        'debounce-id',
+        'deep-key-of',
+        'deep-partial',
+        'deep-required',
+        'fetch-locale-ip',
+        'flatten-object-keys',
+        'format-json',
+        'format-phone-number',
+        'generic-instance-type',
+        'get-browser-locale',
+        'get-country-flag-url',
+        'get-error-message',
+        'idle-timeout',
+        'infer-maybe-ref',
+        'is-client',
+        'is-equal',
+        'is-server',
+        'is-standalone-mode',
+        'kebab-case',
+        'normalize-string',
+        'number',
+        'pascal-case',
+        'script-loader',
+        'sleep',
+        'snake-case',
+        'swipe-handler',
+        'textarea-autogrow',
+        'throttle',
+        'throttle-id',
+        'truthy-filter',
+        'upper-first',
+        'user-visibility',
+      ]))
+    })
+  })
+
+  describe('When getting node documentation', () => {
+    it('Then it handles node files from ecosystem/node', () => {
+      const result = service.getNodeDocumentation('logger')
+
+      expect(result).toContain('@maz-ui/node')
+    })
+  })
+
+  describe('When getting all node utilities', () => {
+    it('Then it lists all node files', () => {
+      const result = service.getAllNode()
+
+      expect(result).toEqual(['exec-promise', 'logger', 'print-banner'])
     })
   })
 
@@ -184,15 +267,17 @@ describe('Given DocumentationService instance', () => {
       expect(result).toHaveProperty('composables')
       expect(result).toHaveProperty('directives')
       expect(result).toHaveProperty('plugins')
-      expect(result).toHaveProperty('helpers')
+      expect(result).toHaveProperty('utils')
+      expect(result).toHaveProperty('node')
       expect(result).toHaveProperty('paths')
 
       expect(result.components.total).toBeGreaterThanOrEqual(56)
-      expect(result.guides.total).toBe(12)
-      expect(result.composables.total).toBe(14)
+      expect(result.guides.total).toBe(18)
+      expect(result.composables.total).toBe(15)
       expect(result.directives.total).toBe(5)
       expect(result.plugins.total).toBe(4)
-      expect(result.helpers.total).toBe(22)
+      expect(result.utils.total).toBe(41)
+      expect(result.node.total).toBe(3)
     })
   })
 
@@ -211,7 +296,8 @@ describe('Given DocumentationService instance', () => {
       expect(types).toContain('composable')
       expect(types).toContain('directive')
       expect(types).toContain('plugin')
-      expect(types).toContain('helper')
+      expect(types).toContain('util')
+      expect(types).toContain('node')
     })
 
     it('Then each document has the correct structure', () => {
@@ -253,7 +339,8 @@ describe('Given DocumentationService instance', () => {
         + diagnostics.composables.total
         + diagnostics.directives.total
         + diagnostics.plugins.total
-        + diagnostics.helpers.total
+        + diagnostics.utils.total
+        + diagnostics.node.total
 
       expect(documents.length).toBeGreaterThanOrEqual(expectedMin)
     })

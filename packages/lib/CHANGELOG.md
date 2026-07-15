@@ -1,5 +1,1978 @@
 # Change Log
 
+## v5.0.0-beta.42 (2026-07-15)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.41...v5.0.0-beta.42)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazBtn - fab button size ([b686b8abb](https://github.com/LouisMazel/maz-ui/commit/b686b8abb))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.41 (2026-07-08)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.40...v5.0.0-beta.41)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPullToRefresh - ssr mismatch ([2c32c129c](https://github.com/LouisMazel/maz-ui/commit/2c32c129c))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.40 (2026-07-01)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.39...v5.0.0-beta.40)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazAvatar & MazLazyImg - image-height-full on safari browser ([538763d0b](https://github.com/LouisMazel/maz-ui/commit/538763d0b))
+- **maz-ui:** VLazyImg - share observers, prevent leak and add disabled option ([b1d491e8b](https://github.com/LouisMazel/maz-ui/commit/b1d491e8b))
+
+  The lazy image loader now shares a single pooled `IntersectionObserver` across every image and releases them on unmount, so pages rendering many `MazAvatar` or `MazLazyImg` no longer leak observers.
+  New `disabled` option to load an image immediately, bypassing lazy loading:
+  `v-lazy-img="{ src: '/photo.jpg', disabled: true }"`
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.39 (2026-06-22)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.38...v5.0.0-beta.39)
+
+### 🚀 Features
+
+- **maz-ui:** UseDrag - add pointer drag gesture composable ([dfbf71c01](https://github.com/LouisMazel/maz-ui/commit/dfbf71c01))
+
+  Adds the `useDrag` composable to track a pointer drag gesture (touch, mouse and pen) in real time. It exposes the live `isDragging`, `offsetX`, `offsetY`, `distance` and `direction`, plus `onStart` / `onMove` / `onEnd` callbacks, with axis locking, a distance threshold and pointer-type filtering.
+
+  ```ts
+  const handle = ref()
+  const { offsetY, isDragging } = useDrag(handle, {
+    axis: 'y',
+    onEnd: ({ offsetY }) => {
+      if (offsetY > 120)
+        close()
+    },
+  })
+  ```
+
+- **maz-ui:** MazBottomSheet - add max-width, header, footer, slots and swipe-to-close ([e663c47eb](https://github.com/LouisMazel/maz-ui/commit/e663c47eb))
+
+  `MazBottomSheet` now supports a `max-width` (constrained and centered on desktop, full-width on mobile), a real header with an optional `icon`, a `title` and a close button, and a `footer`. The `header`, `icon`, `title` and `footer` parts are all replaceable through slots.
+
+  ```vue
+  <MazBottomSheet v-model="open" title="Title" icon="/bell.svg" max-width="40rem">
+    Your content
+    <template #footer="{ close }">
+      <MazBtn @click="close">Confirm</MazBtn>
+    </template>
+  </MazBottomSheet>
+  ```
+
+- **maz-ui:** MazTextarea - add size and minRows props ([c7092dca0](https://github.com/LouisMazel/maz-ui/commit/c7092dca0))
+
+  `MazTextarea` gains a `size` prop (`mini`, `xs`, `sm`, `md`, `lg`, `xl`, mirroring MazInput sizes) that controls the padding and text size, and a `minRows` prop to set the initial/minimum height. Combine them, e.g. `size="md" :min-rows="1"`, to match a regular input height.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.38 (2026-06-22)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.37...v5.0.0-beta.38)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazBtn - can disable overflow-hidden and fix fab applied classes ([5c79a1035](https://github.com/LouisMazel/maz-ui/commit/5c79a1035))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.37 (2026-06-22)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.36...v5.0.0-beta.37)
+
+### 🚀 Features
+
+- **maz-ui:** MazTable - add min-width to header items and animated rows ([00ff7f483](https://github.com/LouisMazel/maz-ui/commit/00ff7f483))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.36 (2026-06-21)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.35...v5.0.0-beta.36)
+
+### 💅 Refactors
+
+- **maz-ui:** ⚠️ MazPullToRefresh - rename onClick prop to onRefresh ([b41bb1637](https://github.com/LouisMazel/maz-ui/commit/b41bb1637))
+
+  The `onClick` prop is renamed to `onRefresh` to reflect what it actually does: the callback runs when the refresh is triggered on release, not on a click.
+  Update your usage from `:on-click="..."` to `:on-refresh="..."`.
+  BREAKING CHANGE: the `onClick` prop of `MazPullToRefresh` is renamed to `onRefresh`.
+
+#### ⚠️ Breaking Changes
+
+- **maz-ui:** ⚠️ MazPullToRefresh - rename onClick prop to onRefresh ([b41bb1637](https://github.com/LouisMazel/maz-ui/commit/b41bb1637))
+
+  The `onClick` prop is renamed to `onRefresh` to reflect what it actually does: the callback runs when the refresh is triggered on release, not on a click.
+  Update your usage from `:on-click="..."` to `:on-refresh="..."`.
+  BREAKING CHANGE: the `onClick` prop of `MazPullToRefresh` is renamed to `onRefresh`.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.35 (2026-06-20)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.34...v5.0.0-beta.35)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDropdown - enable dismiss behaviors by default ([404a5d0bd](https://github.com/LouisMazel/maz-ui/commit/404a5d0bd))
+
+  The dropdown now closes on outside click and on `Escape`, and traps focus while open, without needing to set `close-on-click-outside`, `close-on-escape` or `trap-focus` explicitly.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.34 (2026-06-20)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.33...v5.0.0-beta.34)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazPopover - dismiss reliably on outside click and touch ([ef9ec9793](https://github.com/LouisMazel/maz-ui/commit/ef9ec9793))
+
+  The popover now closes correctly on an outside click or tap, including on touch and mobile devices.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.33 (2026-06-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.32...v5.0.0-beta.33)
+
+### 🚀 Features
+
+- **maz-ui:** MazTabsBar - add standalone prop to detach from a parent MazTabs ([e09eb4589](https://github.com/LouisMazel/maz-ui/commit/e09eb4589))
+
+  Add a `standalone` prop to `MazTabsBar`. When set, the tabs bar ignores any surrounding `MazTabs` - its selection, `size`, `rounded-size` and `color` are no longer inherited - and is driven only by its own `v-model`. Use it for an independent switcher nested inside a page already wrapped by `MazTabs` (e.g. `<MazTabsBar v-model="selected" :items="items" standalone />`).
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.32 (2026-06-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.31...v5.0.0-beta.32)
+
+### 🚀 Features
+
+- **maz-ui:** MazTabsBar - standalone usage, size, rounded-size and active color ([f0a3b95dd](https://github.com/LouisMazel/maz-ui/commit/f0a3b95dd))
+
+  `MazTabsBar` can now be used on its own, without `MazTabs`, as a standalone switcher with its own `v-model`. The model returns the selected tab index (1-based), or the item `value` when you provide one - declare your items `as const` to get a strict union type for the model and the `@update:model-value` event.
+  Each tab is now rendered as a `MazBtn`, so you can set the `size` (`mini` to `xl`) and the `rounded-size` (`none` to `full`) of the bar, and pick the active tab `color`. These props work on `MazTabsBar`, on `MazTabs` (which forwards them to the bar), or globally via the `defaults` config. Each item also accepts `MazBtn` props (icons, `outlined`, `pastel`, etc.).
+  Badges are still supported, and there is no breaking change.
+
+### 🩹 Fixes
+
+- **maz-ui:** MazLazyImg - do not stretch the error image when image-height-full is set ([789baa247](https://github.com/LouisMazel/maz-ui/commit/789baa247))
+
+  When `image-height-full` is set, the error placeholder image is no longer forced to full height.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.31 (2026-06-15)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.30...v5.0.0-beta.31)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazAvatar & MazLazyImg - image-height-full apply height 100 to img element ([a7ec6106e](https://github.com/LouisMazel/maz-ui/commit/a7ec6106e))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.30 (2026-06-15)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.29...v5.0.0-beta.30)
+
+### 🚀 Features
+
+- **maz-ui:** UseFormField - make ref option reactive and accept raw HTMLElement ([3ae99b940](https://github.com/LouisMazel/maz-ui/commit/3ae99b940))
+
+  The `ref` option of `useFormField` is now reactive: a field rendered with `v-if` attaches its blur listeners automatically once it appears in the DOM, and removes them when unmounted. You can also pass a raw `HTMLElement` (e.g. `document.querySelector('input')`) in addition to a `Ref` or template ref.
+
+### 🩹 Fixes
+
+- **maz-ui:** UseFormValidator - revalidate eager fields on input after blur ([2145239cb](https://github.com/LouisMazel/maz-ui/commit/2145239cb))
+
+  In `eager` mode, editing a field after it had been blurred now revalidates it on every change, so the field state and the form `isValid` stay in sync. The `scrollToError` returned by `useFormValidator` now also accepts an optional selector and respects the configured `scrollToError` option.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.29 (2026-06-14)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.28...v5.0.0-beta.29)
+
+### 🚀 Features
+
+- **maz-ui:** MazAvatar - support size keywords, fix size scale and rework initials ([19f403e30](https://github.com/LouisMazel/maz-ui/commit/19f403e30))
+
+  The `size` prop now accepts `MazSize` keywords in addition to CSS units: `mini` (24px), `xs` (32px), `sm` (40px), `md` (48px), `lg` (56px), `xl` (64px).
+  CSS unit sizes now render at their real value: `size="2rem"` produces a 32px avatar (it was 3x too large before).
+  Caption initials are now clearer:
+  - single word: the first `letter-count` characters (`admin` with `letter-count="3"` gives `ADM`)
+  - multiple words: the first letter of the first `letter-count` words (`Louis Mazel` gives `LM`)
+    `letter-count` now defaults to `2` and initials are always uppercased.
+
+- **maz-ui:** MazAnimatedElement - respect prefers-reduced-motion ([cefd1a98f](https://github.com/LouisMazel/maz-ui/commit/cefd1a98f))
+
+  When `prefers-reduced-motion: reduce` is set, the element is now shown immediately without playing the intersection animation.
+
+- **maz-ui:** MazContainer - add contentClass prop ([c648fb6a2](https://github.com/LouisMazel/maz-ui/commit/c648fb6a2))
+
+  New `content-class` prop to pass custom classes to the inner content wrapper.
+
+### 🧪 Tests
+
+- **maz-ui:** Adjust coverage thresholds ([81b05d30b](https://github.com/LouisMazel/maz-ui/commit/81b05d30b))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.28 (2026-06-10)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.27...v5.0.0-beta.28)
+
+### 💅 Refactors
+
+- **maz-ui:** MazDropdown - linked item can have a click action ([6edaf2f97](https://github.com/LouisMazel/maz-ui/commit/6edaf2f97))
+
+### 📦 Build
+
+- **deps:** Upgrade dependencies ([82851e195](https://github.com/LouisMazel/maz-ui/commit/82851e195))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.27 (2026-06-10)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.26...v5.0.0-beta.27)
+
+### 🚀 Features
+
+- **maz-ui:** MazBtn - now you can choose the color of the button text label ([20d0699ee](https://github.com/LouisMazel/maz-ui/commit/20d0699ee))
+- **maz-ui:** MazDropdown - add prepend and append slots, items-size ([10f87686a](https://github.com/LouisMazel/maz-ui/commit/10f87686a))
+
+### 💅 Refactors
+
+- **maz-ui:** MazMarkdownEditor - auto close heading dropdown on click ([f6ed82d36](https://github.com/LouisMazel/maz-ui/commit/f6ed82d36))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.26 (2026-06-10)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.25...v5.0.0-beta.26)
+
+No relevant changes since last release
+
+## v5.0.0-beta.25 (2026-06-09)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.24...v5.0.0-beta.25)
+
+### 🚀 Features
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([76af016e0](https://github.com/LouisMazel/maz-ui/commit/76af016e0))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([ab834af76](https://github.com/LouisMazel/maz-ui/commit/ab834af76))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+- **maz-ui:** Inputs - top label and assistive text ([9e659112a](https://github.com/LouisMazel/maz-ui/commit/9e659112a))
+- **@maz-ui/themes:** Modernize CSS generator with light-dark, color-scheme, color-mix ([#1572](https://github.com/LouisMazel/maz-ui/pull/1572))
+- **maz-ui:** Add MazSidebar component system ([#1574](https://github.com/LouisMazel/maz-ui/pull/1574))
+  - feat(maz-ui): add MazSidebar component with sub-components and composable
+    Implements a fully accessible, composable sidebar system for dashboard,
+    admin, and SaaS applications. State is shared via provide/inject from
+    the root MazSidebar component.
+    Components added:
+  * MazSidebar: root container (push/overlay modes, offcanvas/icon/none collapsible)
+  * MazSidebarHeader, MazSidebarContent, MazSidebarFooter: layout zones
+  * MazSidebarGroup: grouping with optional label (sr-only in icon mode)
+  * MazSidebarSeparator: visual HR divider
+  * MazSidebarMenu / MazSidebarMenuItem: ul/li with ARIA roles
+  * MazSidebarMenuButton: link/button with icon, label, badge, tooltip auto-show
+  * MazSidebarMenuSub: collapsible sub-menu with ArrowRight/ArrowLeft keyboard support
+  * MazSidebarTrigger: toggle button with aria-expanded and aria-controls
+    Composable added:
+  * useMazSidebar: typed inject for open state, toggle, setOpen, state
+    Closes #1573
+  - refactor(maz-ui): polish MazSidebar to align with project conventions
+  * Rename `useMazSidebar` composable to `useSidebar` (kept Maz-prefixed types)
+  * Drop all scoped CSS in favour of Tailwind utilities and add `m-reset-css` on every sub-component root so theming and tree-shaking work as expected
+  * MazSidebarMenuButton: `icon` accepts `MazIconLike`, `badge` accepts `MazBadgeProps`, tooltip via `v-tooltip` directive
+  * MazSidebarMenuSub: smooth grid-rows expand/collapse via `MazExpandAnimation`, accepts `MazIconLike` icon
+  * MazSidebarTrigger: replace inline SVG with `MazIcon` + `MazBars3`
+  * Overlay mode delegated to `MazBackdrop` (reuses scroll-lock, focus trap, escape, click-outside)
+  * Fix offcanvas-collapsed border leak and the icon-centering jump during collapse via `min(calc((var(--maz-sidebar-icon-width)-1.25rem)/2), calc((100%-1.25rem)/2))` — icons stay centred regardless of any padding applied to `MazSidebarContent`
+  * Split the monolithic spec into one file per component (11 specs, 121 tests)
+  * Doc: replace inline `style` with Tailwind classes and document the new prop shapes
+  * Wire MazSidebar components and `useSidebar` into the Nuxt module auto-imports
+
+- **maz-ui:** Add MazCodeHighlight and MazWindowMockup components ([#1569](https://github.com/LouisMazel/maz-ui/pull/1569))
+  - feat(maz-ui): add MazCodeHighlight component with shiki syntax highlighting
+  * Add MazCodeHighlight component with code/language/theme props
+  * Support default slot text extraction as fallback for code prop
+  * Auto-detect dark/light mode via MutationObserver on html element
+  * Lazy-load shiki via dynamic import to keep bundle lean
+  * Add shiki ^3.0.0 to lib dependencies
+  * Export from components/index.ts
+  - feat(maz-ui): add MazWindowMockup component with browser/terminal/editor variants
+  * Three macOS-style traffic light buttons in all variant title bars
+  * Browser variant: address bar with url prop (default 'localhost')
+  * Editor variant: filename tab with filename prop (default 'index.vue')
+  * Terminal variant: centered title with title prop (default 'zsh'), $ prompt
+  * showPrompt prop and #prompt slot for terminal prompt customization
+  * minHeight prop for CSS-based content area height control
+  * code + language props trigger integrated MazCodeHighlight rendering
+  * Default slot for free content when code prop is not set
+  * Dark/light mode compatible via maz-ui CSS vars
+  * Export from components/index.ts
+  - feat(@maz-ui/nuxt): register MazCodeHighlight and MazWindowMockup in Nuxt module
+    Add MazCodeHighlight and MazWindowMockup to COMPONENT_NAMES in the Nuxt module
+    for auto-import support. MazComponentsResolver already resolves all Maz-prefixed
+    components via regex pattern.
+  - test(maz-ui): add unit tests for MazCodeHighlight and MazWindowMockup
+  * MazCodeHighlight: tests for code prop, slot fallback, language prop,
+    theme prop, empty state, and shiki error fallback
+  * MazWindowMockup: tests for all three variants (browser/terminal/editor),
+    url/filename/title props, showPrompt prop, prompt slot, default slot
+  * MazCodeHighlight stubbed in MazWindowMockup tests to avoid async teardown issues
+  - docs(maz-ui): add documentation pages for MazCodeHighlight and MazWindowMockup
+  * Add maz-code-highlight.md with basic usage, slot fallback, language,
+    and custom theme examples
+  * Add maz-window-mockup.md with browser, terminal (with custom prompt),
+    and editor variant examples
+  * Add both to the sidebar under a new 'Display' section in components.mts
+
+- **maz-ui:** Improve MazSidebar ([da1e2627d](https://github.com/LouisMazel/maz-ui/commit/da1e2627d))
+- **maz-ui:** MazSidebar - close/open persistent ([#1581](https://github.com/LouisMazel/maz-ui/pull/1581))
+  - feat(maz-ui): MazSidebar - close/open persistent
+  - test(maz-ui): improve coverage for MazSidebar persistence and MazCheckbox keyboard handler
+
+- **maz-ui:** MazSidebar - close/open persistent on SSR ([2cdfe37df](https://github.com/LouisMazel/maz-ui/commit/2cdfe37df))
+- Move cookie utils from themes to utils ([4f711709d](https://github.com/LouisMazel/maz-ui/commit/4f711709d))
+- **docs:** Ecosystem documentations ([#1582](https://github.com/LouisMazel/maz-ui/pull/1582))
+- **maz-ui:** MazSidebar - add 'hover' collapsible mode ([#1586](https://github.com/LouisMazel/maz-ui/pull/1586))
+- **@maz-ui/themes:** MazDialog - configurable max/min-width via preset ([#1594](https://github.com/LouisMazel/maz-ui/pull/1594))
+
+  `MazDialog` width is now driven by the active theme preset, while staying
+  overridable per instance through the existing `max-width` / `min-width` props.
+
+  ## What changed
+  - New `components.dialog` knobs on the preset contract (`max-width` /
+    `min-width`), emitted by the CSS generator as `--maz-dialog-max-width` /
+    `--maz-dialog-min-width`.
+  - `MazDialog` now reads those vars with a sensible fallback:
+    `var(--maz-dialog-max-width, 38rem)` / `var(--maz-dialog-min-width, 32rem)`.
+  - All bundled presets ship the defaults. Values are in `rem`, so `ocean`
+    (16px base) uses scaled rem (`33.25rem` / `28rem`) to keep the same rendered
+    pixel width as the 14px presets (≈532px / ≈448px).
+  - `mergePresets` now merges `components.dialog` (and stops dropping
+    `input.top-label-font-weight`), so `definePreset` overrides are preserved.
+
+  ## Usage
+
+  ```ts
+  import { definePreset } from '@maz-ui/themes'
+  // Global default for every dialog, via the preset
+  const theme = definePreset({
+    base: 'maz-ui',
+    overrides: {
+      components: {
+        dialog: { 'max-width': '48rem', 'min-width': '36rem' },
+      },
+    },
+  })
+  ```
+
+  ```vue
+  <!-- Per-instance override still wins over the preset -->
+  <MazDialog v-model="open" max-width="50rem" min-width="40rem" />
+  ```
+
+- **maz-ui:** Global component default props via MazUi plugin & Nuxt module ([#1596](https://github.com/LouisMazel/maz-ui/pull/1596))
+  - refactor(maz-ui): add shared MazRoundedSize type
+  - feat(maz-ui): add useGlobalConfig composable for global component defaults
+  - feat(maz-ui): accept global component defaults in MazUi plugin
+  - feat(maz-ui): MazBtn support global default props (size, roundedSize)
+  - feat(maz-ui): MazContainer & MazCard support global default props
+  - feat(maz-ui): support global default props on display components
+  - feat(maz-ui): support global default props on form components
+  - feat(@maz-ui/nuxt): support global component defaults
+  - docs: document global component defaults
+  - perf(maz-ui): resolve global component defaults once at setup
+  - chore(docs): wire docs app to MazUi plugin with global defaults
+  - test(@maz-ui/nuxt): cover global defaults plugin registration
+  - test(@maz-ui/mcp): account for the global-defaults guide
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([b7dc0cea9](https://github.com/LouisMazel/maz-ui/commit/b7dc0cea9))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([3b4b37ac5](https://github.com/LouisMazel/maz-ui/commit/3b4b37ac5))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+- **maz-ui:** Inputs - top label and assistive text ([d8e6401a8](https://github.com/LouisMazel/maz-ui/commit/d8e6401a8))
+- **@maz-ui/themes:** Modernize CSS generator with light-dark, color-scheme, color-mix ([#1572](https://github.com/LouisMazel/maz-ui/pull/1572))
+- **maz-ui:** Add MazSidebar component system ([#1574](https://github.com/LouisMazel/maz-ui/pull/1574))
+  - feat(maz-ui): add MazSidebar component with sub-components and composable
+    Implements a fully accessible, composable sidebar system for dashboard,
+    admin, and SaaS applications. State is shared via provide/inject from
+    the root MazSidebar component.
+    Components added:
+  * MazSidebar: root container (push/overlay modes, offcanvas/icon/none collapsible)
+  * MazSidebarHeader, MazSidebarContent, MazSidebarFooter: layout zones
+  * MazSidebarGroup: grouping with optional label (sr-only in icon mode)
+  * MazSidebarSeparator: visual HR divider
+  * MazSidebarMenu / MazSidebarMenuItem: ul/li with ARIA roles
+  * MazSidebarMenuButton: link/button with icon, label, badge, tooltip auto-show
+  * MazSidebarMenuSub: collapsible sub-menu with ArrowRight/ArrowLeft keyboard support
+  * MazSidebarTrigger: toggle button with aria-expanded and aria-controls
+    Composable added:
+  * useMazSidebar: typed inject for open state, toggle, setOpen, state
+    Closes #1573
+  - refactor(maz-ui): polish MazSidebar to align with project conventions
+  * Rename `useMazSidebar` composable to `useSidebar` (kept Maz-prefixed types)
+  * Drop all scoped CSS in favour of Tailwind utilities and add `m-reset-css` on every sub-component root so theming and tree-shaking work as expected
+  * MazSidebarMenuButton: `icon` accepts `MazIconLike`, `badge` accepts `MazBadgeProps`, tooltip via `v-tooltip` directive
+  * MazSidebarMenuSub: smooth grid-rows expand/collapse via `MazExpandAnimation`, accepts `MazIconLike` icon
+  * MazSidebarTrigger: replace inline SVG with `MazIcon` + `MazBars3`
+  * Overlay mode delegated to `MazBackdrop` (reuses scroll-lock, focus trap, escape, click-outside)
+  * Fix offcanvas-collapsed border leak and the icon-centering jump during collapse via `min(calc((var(--maz-sidebar-icon-width)-1.25rem)/2), calc((100%-1.25rem)/2))` — icons stay centred regardless of any padding applied to `MazSidebarContent`
+  * Split the monolithic spec into one file per component (11 specs, 121 tests)
+  * Doc: replace inline `style` with Tailwind classes and document the new prop shapes
+  * Wire MazSidebar components and `useSidebar` into the Nuxt module auto-imports
+
+- **maz-ui:** Add MazCodeHighlight and MazWindowMockup components ([#1569](https://github.com/LouisMazel/maz-ui/pull/1569))
+  - feat(maz-ui): add MazCodeHighlight component with shiki syntax highlighting
+  * Add MazCodeHighlight component with code/language/theme props
+  * Support default slot text extraction as fallback for code prop
+  * Auto-detect dark/light mode via MutationObserver on html element
+  * Lazy-load shiki via dynamic import to keep bundle lean
+  * Add shiki ^3.0.0 to lib dependencies
+  * Export from components/index.ts
+  - feat(maz-ui): add MazWindowMockup component with browser/terminal/editor variants
+  * Three macOS-style traffic light buttons in all variant title bars
+  * Browser variant: address bar with url prop (default 'localhost')
+  * Editor variant: filename tab with filename prop (default 'index.vue')
+  * Terminal variant: centered title with title prop (default 'zsh'), $ prompt
+  * showPrompt prop and #prompt slot for terminal prompt customization
+  * minHeight prop for CSS-based content area height control
+  * code + language props trigger integrated MazCodeHighlight rendering
+  * Default slot for free content when code prop is not set
+  * Dark/light mode compatible via maz-ui CSS vars
+  * Export from components/index.ts
+  - feat(@maz-ui/nuxt): register MazCodeHighlight and MazWindowMockup in Nuxt module
+    Add MazCodeHighlight and MazWindowMockup to COMPONENT_NAMES in the Nuxt module
+    for auto-import support. MazComponentsResolver already resolves all Maz-prefixed
+    components via regex pattern.
+  - test(maz-ui): add unit tests for MazCodeHighlight and MazWindowMockup
+  * MazCodeHighlight: tests for code prop, slot fallback, language prop,
+    theme prop, empty state, and shiki error fallback
+  * MazWindowMockup: tests for all three variants (browser/terminal/editor),
+    url/filename/title props, showPrompt prop, prompt slot, default slot
+  * MazCodeHighlight stubbed in MazWindowMockup tests to avoid async teardown issues
+  - docs(maz-ui): add documentation pages for MazCodeHighlight and MazWindowMockup
+  * Add maz-code-highlight.md with basic usage, slot fallback, language,
+    and custom theme examples
+  * Add maz-window-mockup.md with browser, terminal (with custom prompt),
+    and editor variant examples
+  * Add both to the sidebar under a new 'Display' section in components.mts
+
+- **maz-ui:** Improve MazSidebar ([d7e88ece5](https://github.com/LouisMazel/maz-ui/commit/d7e88ece5))
+- **maz-ui:** MazSidebar - close/open persistent ([#1581](https://github.com/LouisMazel/maz-ui/pull/1581))
+  - feat(maz-ui): MazSidebar - close/open persistent
+  - test(maz-ui): improve coverage for MazSidebar persistence and MazCheckbox keyboard handler
+
+- **maz-ui:** MazSidebar - close/open persistent on SSR ([cde8b9312](https://github.com/LouisMazel/maz-ui/commit/cde8b9312))
+- Move cookie utils from themes to utils ([62766a6ee](https://github.com/LouisMazel/maz-ui/commit/62766a6ee))
+- **docs:** Ecosystem documentations ([#1582](https://github.com/LouisMazel/maz-ui/pull/1582))
+- **maz-ui:** MazSidebar - add 'hover' collapsible mode ([#1586](https://github.com/LouisMazel/maz-ui/pull/1586))
+- **@maz-ui/themes:** MazDialog - configurable max/min-width via preset ([#1594](https://github.com/LouisMazel/maz-ui/pull/1594))
+
+  `MazDialog` width is now driven by the active theme preset, while staying
+  overridable per instance through the existing `max-width` / `min-width` props.
+
+  ## What changed
+  - New `components.dialog` knobs on the preset contract (`max-width` /
+    `min-width`), emitted by the CSS generator as `--maz-dialog-max-width` /
+    `--maz-dialog-min-width`.
+  - `MazDialog` now reads those vars with a sensible fallback:
+    `var(--maz-dialog-max-width, 38rem)` / `var(--maz-dialog-min-width, 32rem)`.
+  - All bundled presets ship the defaults. Values are in `rem`, so `ocean`
+    (16px base) uses scaled rem (`33.25rem` / `28rem`) to keep the same rendered
+    pixel width as the 14px presets (≈532px / ≈448px).
+  - `mergePresets` now merges `components.dialog` (and stops dropping
+    `input.top-label-font-weight`), so `definePreset` overrides are preserved.
+
+  ## Usage
+
+  ```ts
+  import { definePreset } from '@maz-ui/themes'
+  // Global default for every dialog, via the preset
+  const theme = definePreset({
+    base: 'maz-ui',
+    overrides: {
+      components: {
+        dialog: { 'max-width': '48rem', 'min-width': '36rem' },
+      },
+    },
+  })
+  ```
+
+  ```vue
+  <!-- Per-instance override still wins over the preset -->
+  <MazDialog v-model="open" max-width="50rem" min-width="40rem" />
+  ```
+
+- **maz-ui:** Global component default props via MazUi plugin & Nuxt module ([#1596](https://github.com/LouisMazel/maz-ui/pull/1596))
+  - refactor(maz-ui): add shared MazRoundedSize type
+  - feat(maz-ui): add useGlobalConfig composable for global component defaults
+  - feat(maz-ui): accept global component defaults in MazUi plugin
+  - feat(maz-ui): MazBtn support global default props (size, roundedSize)
+  - feat(maz-ui): MazContainer & MazCard support global default props
+  - feat(maz-ui): support global default props on display components
+  - feat(maz-ui): support global default props on form components
+  - feat(@maz-ui/nuxt): support global component defaults
+  - docs: document global component defaults
+  - perf(maz-ui): resolve global component defaults once at setup
+  - chore(docs): wire docs app to MazUi plugin with global defaults
+  - test(@maz-ui/nuxt): cover global defaults plugin registration
+  - test(@maz-ui/mcp): account for the global-defaults guide
+
+- **maz-ui:** MazMarkdownEditor - markdown editor ([#1602](https://github.com/LouisMazel/maz-ui/pull/1602))
+
+### 🩹 Fixes
+
+- **maz-ui:** MazBtn - fix loading layout ([79f0b8e9c](https://github.com/LouisMazel/maz-ui/commit/79f0b8e9c))
+- **maz-ui:** MazDatePicker - use dayjs ESM instead of CJS ([62de448c4](https://github.com/LouisMazel/maz-ui/commit/62de448c4))
+- **maz-ui:** MazDatePicker tests - align dayjs imports with ESM ([e1927a9a6](https://github.com/LouisMazel/maz-ui/commit/e1927a9a6))
+- **maz-ui:** MazTable - scrollable behaviour ([5a7f3977b](https://github.com/LouisMazel/maz-ui/commit/5a7f3977b))
+- **maz-ui:** Inputs - auto-fill with SSR ([9da60f52b](https://github.com/LouisMazel/maz-ui/commit/9da60f52b))
+- **maz-ui:** MazBtn - fix loading layout ([b7c715a00](https://github.com/LouisMazel/maz-ui/commit/b7c715a00))
+- **maz-ui:** MazDatePicker - use dayjs ESM instead of CJS ([9557f0eab](https://github.com/LouisMazel/maz-ui/commit/9557f0eab))
+- **maz-ui:** MazDatePicker tests - align dayjs imports with ESM ([26bc6b083](https://github.com/LouisMazel/maz-ui/commit/26bc6b083))
+- **maz-ui:** MazTable - scrollable behaviour ([bfb42aeba](https://github.com/LouisMazel/maz-ui/commit/bfb42aeba))
+- **maz-ui:** Inputs - auto-fill with SSR ([9d0795031](https://github.com/LouisMazel/maz-ui/commit/9d0795031))
+
+### 💅 Refactors
+
+- **maz-ui:** MazSwitch - cursor color to be more visible when not active ([beb332941](https://github.com/LouisMazel/maz-ui/commit/beb332941))
+- **maz-ui:** MazSwitch - cursor color to be more visible when not active ([bd8d4ea7d](https://github.com/LouisMazel/maz-ui/commit/bd8d4ea7d))
+
+### 📦 Build
+
+- Upgrade dependencies ([42df1a9f4](https://github.com/LouisMazel/maz-ui/commit/42df1a9f4))
+- Upgrade dependencies ([#1583](https://github.com/LouisMazel/maz-ui/pull/1583))
+  - build: upgrade dependencies
+  - build: update pnpm-workspace.yaml
+  - chore: add eslint-config dep to root package.json
+  - build: upgrade major dependencies (#1584)
+
+- Upgrade dependencies ([8ad3dd67f](https://github.com/LouisMazel/maz-ui/commit/8ad3dd67f))
+- Upgrade dependencies ([#1583](https://github.com/LouisMazel/maz-ui/pull/1583))
+  - build: upgrade dependencies
+  - build: update pnpm-workspace.yaml
+  - chore: add eslint-config dep to root package.json
+  - build: upgrade major dependencies (#1584)
+
+#### ⚠️ Breaking Changes
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([76af016e0](https://github.com/LouisMazel/maz-ui/commit/76af016e0))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([ab834af76](https://github.com/LouisMazel/maz-ui/commit/ab834af76))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([b7dc0cea9](https://github.com/LouisMazel/maz-ui/commit/b7dc0cea9))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([3b4b37ac5](https://github.com/LouisMazel/maz-ui/commit/3b4b37ac5))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+- Mazel (Loïc Mazuel) ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.24 (2026-06-05)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.23...v5.0.0-beta.24)
+
+### 🚀 Features
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([61883c03c](https://github.com/LouisMazel/maz-ui/commit/61883c03c))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([78659718a](https://github.com/LouisMazel/maz-ui/commit/78659718a))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+- **maz-ui:** Inputs - top label and assistive text ([51c9f6f25](https://github.com/LouisMazel/maz-ui/commit/51c9f6f25))
+- **@maz-ui/themes:** Modernize CSS generator with light-dark, color-scheme, color-mix ([#1572](https://github.com/LouisMazel/maz-ui/pull/1572))
+- **maz-ui:** Add MazSidebar component system ([#1574](https://github.com/LouisMazel/maz-ui/pull/1574))
+  - feat(maz-ui): add MazSidebar component with sub-components and composable
+    Implements a fully accessible, composable sidebar system for dashboard,
+    admin, and SaaS applications. State is shared via provide/inject from
+    the root MazSidebar component.
+    Components added:
+  * MazSidebar: root container (push/overlay modes, offcanvas/icon/none collapsible)
+  * MazSidebarHeader, MazSidebarContent, MazSidebarFooter: layout zones
+  * MazSidebarGroup: grouping with optional label (sr-only in icon mode)
+  * MazSidebarSeparator: visual HR divider
+  * MazSidebarMenu / MazSidebarMenuItem: ul/li with ARIA roles
+  * MazSidebarMenuButton: link/button with icon, label, badge, tooltip auto-show
+  * MazSidebarMenuSub: collapsible sub-menu with ArrowRight/ArrowLeft keyboard support
+  * MazSidebarTrigger: toggle button with aria-expanded and aria-controls
+    Composable added:
+  * useMazSidebar: typed inject for open state, toggle, setOpen, state
+    Closes #1573
+  - refactor(maz-ui): polish MazSidebar to align with project conventions
+  * Rename `useMazSidebar` composable to `useSidebar` (kept Maz-prefixed types)
+  * Drop all scoped CSS in favour of Tailwind utilities and add `m-reset-css` on every sub-component root so theming and tree-shaking work as expected
+  * MazSidebarMenuButton: `icon` accepts `MazIconLike`, `badge` accepts `MazBadgeProps`, tooltip via `v-tooltip` directive
+  * MazSidebarMenuSub: smooth grid-rows expand/collapse via `MazExpandAnimation`, accepts `MazIconLike` icon
+  * MazSidebarTrigger: replace inline SVG with `MazIcon` + `MazBars3`
+  * Overlay mode delegated to `MazBackdrop` (reuses scroll-lock, focus trap, escape, click-outside)
+  * Fix offcanvas-collapsed border leak and the icon-centering jump during collapse via `min(calc((var(--maz-sidebar-icon-width)-1.25rem)/2), calc((100%-1.25rem)/2))` — icons stay centred regardless of any padding applied to `MazSidebarContent`
+  * Split the monolithic spec into one file per component (11 specs, 121 tests)
+  * Doc: replace inline `style` with Tailwind classes and document the new prop shapes
+  * Wire MazSidebar components and `useSidebar` into the Nuxt module auto-imports
+
+- **maz-ui:** Add MazCodeHighlight and MazWindowMockup components ([#1569](https://github.com/LouisMazel/maz-ui/pull/1569))
+  - feat(maz-ui): add MazCodeHighlight component with shiki syntax highlighting
+  * Add MazCodeHighlight component with code/language/theme props
+  * Support default slot text extraction as fallback for code prop
+  * Auto-detect dark/light mode via MutationObserver on html element
+  * Lazy-load shiki via dynamic import to keep bundle lean
+  * Add shiki ^3.0.0 to lib dependencies
+  * Export from components/index.ts
+  - feat(maz-ui): add MazWindowMockup component with browser/terminal/editor variants
+  * Three macOS-style traffic light buttons in all variant title bars
+  * Browser variant: address bar with url prop (default 'localhost')
+  * Editor variant: filename tab with filename prop (default 'index.vue')
+  * Terminal variant: centered title with title prop (default 'zsh'), $ prompt
+  * showPrompt prop and #prompt slot for terminal prompt customization
+  * minHeight prop for CSS-based content area height control
+  * code + language props trigger integrated MazCodeHighlight rendering
+  * Default slot for free content when code prop is not set
+  * Dark/light mode compatible via maz-ui CSS vars
+  * Export from components/index.ts
+  - feat(@maz-ui/nuxt): register MazCodeHighlight and MazWindowMockup in Nuxt module
+    Add MazCodeHighlight and MazWindowMockup to COMPONENT_NAMES in the Nuxt module
+    for auto-import support. MazComponentsResolver already resolves all Maz-prefixed
+    components via regex pattern.
+  - test(maz-ui): add unit tests for MazCodeHighlight and MazWindowMockup
+  * MazCodeHighlight: tests for code prop, slot fallback, language prop,
+    theme prop, empty state, and shiki error fallback
+  * MazWindowMockup: tests for all three variants (browser/terminal/editor),
+    url/filename/title props, showPrompt prop, prompt slot, default slot
+  * MazCodeHighlight stubbed in MazWindowMockup tests to avoid async teardown issues
+  - docs(maz-ui): add documentation pages for MazCodeHighlight and MazWindowMockup
+  * Add maz-code-highlight.md with basic usage, slot fallback, language,
+    and custom theme examples
+  * Add maz-window-mockup.md with browser, terminal (with custom prompt),
+    and editor variant examples
+  * Add both to the sidebar under a new 'Display' section in components.mts
+
+- **maz-ui:** Improve MazSidebar ([a71e0543a](https://github.com/LouisMazel/maz-ui/commit/a71e0543a))
+- **maz-ui:** MazSidebar - close/open persistent ([#1581](https://github.com/LouisMazel/maz-ui/pull/1581))
+  - feat(maz-ui): MazSidebar - close/open persistent
+  - test(maz-ui): improve coverage for MazSidebar persistence and MazCheckbox keyboard handler
+
+- **maz-ui:** MazSidebar - close/open persistent on SSR ([6839d8276](https://github.com/LouisMazel/maz-ui/commit/6839d8276))
+- Move cookie utils from themes to utils ([352083972](https://github.com/LouisMazel/maz-ui/commit/352083972))
+- **docs:** Ecosystem documentations ([#1582](https://github.com/LouisMazel/maz-ui/pull/1582))
+- **maz-ui:** MazSidebar - add 'hover' collapsible mode ([#1586](https://github.com/LouisMazel/maz-ui/pull/1586))
+- **@maz-ui/themes:** MazDialog - configurable max/min-width via preset ([#1594](https://github.com/LouisMazel/maz-ui/pull/1594))
+
+  `MazDialog` width is now driven by the active theme preset, while staying
+  overridable per instance through the existing `max-width` / `min-width` props.
+
+  ## What changed
+  - New `components.dialog` knobs on the preset contract (`max-width` /
+    `min-width`), emitted by the CSS generator as `--maz-dialog-max-width` /
+    `--maz-dialog-min-width`.
+  - `MazDialog` now reads those vars with a sensible fallback:
+    `var(--maz-dialog-max-width, 38rem)` / `var(--maz-dialog-min-width, 32rem)`.
+  - All bundled presets ship the defaults. Values are in `rem`, so `ocean`
+    (16px base) uses scaled rem (`33.25rem` / `28rem`) to keep the same rendered
+    pixel width as the 14px presets (≈532px / ≈448px).
+  - `mergePresets` now merges `components.dialog` (and stops dropping
+    `input.top-label-font-weight`), so `definePreset` overrides are preserved.
+
+  ## Usage
+
+  ```ts
+  import { definePreset } from '@maz-ui/themes'
+  // Global default for every dialog, via the preset
+  const theme = definePreset({
+    base: 'maz-ui',
+    overrides: {
+      components: {
+        dialog: { 'max-width': '48rem', 'min-width': '36rem' },
+      },
+    },
+  })
+  ```
+
+  ```vue
+  <!-- Per-instance override still wins over the preset -->
+  <MazDialog v-model="open" max-width="50rem" min-width="40rem" />
+  ```
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([76af016e0](https://github.com/LouisMazel/maz-ui/commit/76af016e0))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([ab834af76](https://github.com/LouisMazel/maz-ui/commit/ab834af76))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+- **maz-ui:** Inputs - top label and assistive text ([9e659112a](https://github.com/LouisMazel/maz-ui/commit/9e659112a))
+- **@maz-ui/themes:** Modernize CSS generator with light-dark, color-scheme, color-mix ([#1572](https://github.com/LouisMazel/maz-ui/pull/1572))
+- **maz-ui:** Add MazSidebar component system ([#1574](https://github.com/LouisMazel/maz-ui/pull/1574))
+  - feat(maz-ui): add MazSidebar component with sub-components and composable
+    Implements a fully accessible, composable sidebar system for dashboard,
+    admin, and SaaS applications. State is shared via provide/inject from
+    the root MazSidebar component.
+    Components added:
+  * MazSidebar: root container (push/overlay modes, offcanvas/icon/none collapsible)
+  * MazSidebarHeader, MazSidebarContent, MazSidebarFooter: layout zones
+  * MazSidebarGroup: grouping with optional label (sr-only in icon mode)
+  * MazSidebarSeparator: visual HR divider
+  * MazSidebarMenu / MazSidebarMenuItem: ul/li with ARIA roles
+  * MazSidebarMenuButton: link/button with icon, label, badge, tooltip auto-show
+  * MazSidebarMenuSub: collapsible sub-menu with ArrowRight/ArrowLeft keyboard support
+  * MazSidebarTrigger: toggle button with aria-expanded and aria-controls
+    Composable added:
+  * useMazSidebar: typed inject for open state, toggle, setOpen, state
+    Closes #1573
+  - refactor(maz-ui): polish MazSidebar to align with project conventions
+  * Rename `useMazSidebar` composable to `useSidebar` (kept Maz-prefixed types)
+  * Drop all scoped CSS in favour of Tailwind utilities and add `m-reset-css` on every sub-component root so theming and tree-shaking work as expected
+  * MazSidebarMenuButton: `icon` accepts `MazIconLike`, `badge` accepts `MazBadgeProps`, tooltip via `v-tooltip` directive
+  * MazSidebarMenuSub: smooth grid-rows expand/collapse via `MazExpandAnimation`, accepts `MazIconLike` icon
+  * MazSidebarTrigger: replace inline SVG with `MazIcon` + `MazBars3`
+  * Overlay mode delegated to `MazBackdrop` (reuses scroll-lock, focus trap, escape, click-outside)
+  * Fix offcanvas-collapsed border leak and the icon-centering jump during collapse via `min(calc((var(--maz-sidebar-icon-width)-1.25rem)/2), calc((100%-1.25rem)/2))` — icons stay centred regardless of any padding applied to `MazSidebarContent`
+  * Split the monolithic spec into one file per component (11 specs, 121 tests)
+  * Doc: replace inline `style` with Tailwind classes and document the new prop shapes
+  * Wire MazSidebar components and `useSidebar` into the Nuxt module auto-imports
+
+- **maz-ui:** Add MazCodeHighlight and MazWindowMockup components ([#1569](https://github.com/LouisMazel/maz-ui/pull/1569))
+  - feat(maz-ui): add MazCodeHighlight component with shiki syntax highlighting
+  * Add MazCodeHighlight component with code/language/theme props
+  * Support default slot text extraction as fallback for code prop
+  * Auto-detect dark/light mode via MutationObserver on html element
+  * Lazy-load shiki via dynamic import to keep bundle lean
+  * Add shiki ^3.0.0 to lib dependencies
+  * Export from components/index.ts
+  - feat(maz-ui): add MazWindowMockup component with browser/terminal/editor variants
+  * Three macOS-style traffic light buttons in all variant title bars
+  * Browser variant: address bar with url prop (default 'localhost')
+  * Editor variant: filename tab with filename prop (default 'index.vue')
+  * Terminal variant: centered title with title prop (default 'zsh'), $ prompt
+  * showPrompt prop and #prompt slot for terminal prompt customization
+  * minHeight prop for CSS-based content area height control
+  * code + language props trigger integrated MazCodeHighlight rendering
+  * Default slot for free content when code prop is not set
+  * Dark/light mode compatible via maz-ui CSS vars
+  * Export from components/index.ts
+  - feat(@maz-ui/nuxt): register MazCodeHighlight and MazWindowMockup in Nuxt module
+    Add MazCodeHighlight and MazWindowMockup to COMPONENT_NAMES in the Nuxt module
+    for auto-import support. MazComponentsResolver already resolves all Maz-prefixed
+    components via regex pattern.
+  - test(maz-ui): add unit tests for MazCodeHighlight and MazWindowMockup
+  * MazCodeHighlight: tests for code prop, slot fallback, language prop,
+    theme prop, empty state, and shiki error fallback
+  * MazWindowMockup: tests for all three variants (browser/terminal/editor),
+    url/filename/title props, showPrompt prop, prompt slot, default slot
+  * MazCodeHighlight stubbed in MazWindowMockup tests to avoid async teardown issues
+  - docs(maz-ui): add documentation pages for MazCodeHighlight and MazWindowMockup
+  * Add maz-code-highlight.md with basic usage, slot fallback, language,
+    and custom theme examples
+  * Add maz-window-mockup.md with browser, terminal (with custom prompt),
+    and editor variant examples
+  * Add both to the sidebar under a new 'Display' section in components.mts
+
+- **maz-ui:** Improve MazSidebar ([da1e2627d](https://github.com/LouisMazel/maz-ui/commit/da1e2627d))
+- **maz-ui:** MazSidebar - close/open persistent ([#1581](https://github.com/LouisMazel/maz-ui/pull/1581))
+  - feat(maz-ui): MazSidebar - close/open persistent
+  - test(maz-ui): improve coverage for MazSidebar persistence and MazCheckbox keyboard handler
+
+- **maz-ui:** MazSidebar - close/open persistent on SSR ([2cdfe37df](https://github.com/LouisMazel/maz-ui/commit/2cdfe37df))
+- Move cookie utils from themes to utils ([4f711709d](https://github.com/LouisMazel/maz-ui/commit/4f711709d))
+- **docs:** Ecosystem documentations ([#1582](https://github.com/LouisMazel/maz-ui/pull/1582))
+- **maz-ui:** MazSidebar - add 'hover' collapsible mode ([#1586](https://github.com/LouisMazel/maz-ui/pull/1586))
+- **@maz-ui/themes:** MazDialog - configurable max/min-width via preset ([#1594](https://github.com/LouisMazel/maz-ui/pull/1594))
+
+  `MazDialog` width is now driven by the active theme preset, while staying
+  overridable per instance through the existing `max-width` / `min-width` props.
+
+  ## What changed
+  - New `components.dialog` knobs on the preset contract (`max-width` /
+    `min-width`), emitted by the CSS generator as `--maz-dialog-max-width` /
+    `--maz-dialog-min-width`.
+  - `MazDialog` now reads those vars with a sensible fallback:
+    `var(--maz-dialog-max-width, 38rem)` / `var(--maz-dialog-min-width, 32rem)`.
+  - All bundled presets ship the defaults. Values are in `rem`, so `ocean`
+    (16px base) uses scaled rem (`33.25rem` / `28rem`) to keep the same rendered
+    pixel width as the 14px presets (≈532px / ≈448px).
+  - `mergePresets` now merges `components.dialog` (and stops dropping
+    `input.top-label-font-weight`), so `definePreset` overrides are preserved.
+
+  ## Usage
+
+  ```ts
+  import { definePreset } from '@maz-ui/themes'
+  // Global default for every dialog, via the preset
+  const theme = definePreset({
+    base: 'maz-ui',
+    overrides: {
+      components: {
+        dialog: { 'max-width': '48rem', 'min-width': '36rem' },
+      },
+    },
+  })
+  ```
+
+  ```vue
+  <!-- Per-instance override still wins over the preset -->
+  <MazDialog v-model="open" max-width="50rem" min-width="40rem" />
+  ```
+
+- **maz-ui:** Global component default props via MazUi plugin & Nuxt module ([#1596](https://github.com/LouisMazel/maz-ui/pull/1596))
+  - refactor(maz-ui): add shared MazRoundedSize type
+  - feat(maz-ui): add useGlobalConfig composable for global component defaults
+  - feat(maz-ui): accept global component defaults in MazUi plugin
+  - feat(maz-ui): MazBtn support global default props (size, roundedSize)
+  - feat(maz-ui): MazContainer & MazCard support global default props
+  - feat(maz-ui): support global default props on display components
+  - feat(maz-ui): support global default props on form components
+  - feat(@maz-ui/nuxt): support global component defaults
+  - docs: document global component defaults
+  - perf(maz-ui): resolve global component defaults once at setup
+  - chore(docs): wire docs app to MazUi plugin with global defaults
+  - test(@maz-ui/nuxt): cover global defaults plugin registration
+  - test(@maz-ui/mcp): account for the global-defaults guide
+
+### 🩹 Fixes
+
+- **maz-ui:** MazBtn - fix loading layout ([b7846572a](https://github.com/LouisMazel/maz-ui/commit/b7846572a))
+- **maz-ui:** MazDatePicker - use dayjs ESM instead of CJS ([299d06662](https://github.com/LouisMazel/maz-ui/commit/299d06662))
+- **maz-ui:** MazDatePicker tests - align dayjs imports with ESM ([e07a7bd15](https://github.com/LouisMazel/maz-ui/commit/e07a7bd15))
+- **maz-ui:** MazTable - scrollable behaviour ([6a45701be](https://github.com/LouisMazel/maz-ui/commit/6a45701be))
+- **maz-ui:** Inputs - auto-fill with SSR ([da00bc2da](https://github.com/LouisMazel/maz-ui/commit/da00bc2da))
+- **maz-ui:** MazBtn - fix loading layout ([79f0b8e9c](https://github.com/LouisMazel/maz-ui/commit/79f0b8e9c))
+- **maz-ui:** MazDatePicker - use dayjs ESM instead of CJS ([62de448c4](https://github.com/LouisMazel/maz-ui/commit/62de448c4))
+- **maz-ui:** MazDatePicker tests - align dayjs imports with ESM ([e1927a9a6](https://github.com/LouisMazel/maz-ui/commit/e1927a9a6))
+- **maz-ui:** MazTable - scrollable behaviour ([5a7f3977b](https://github.com/LouisMazel/maz-ui/commit/5a7f3977b))
+- **maz-ui:** Inputs - auto-fill with SSR ([9da60f52b](https://github.com/LouisMazel/maz-ui/commit/9da60f52b))
+
+### 💅 Refactors
+
+- **maz-ui:** MazSwitch - cursor color to be more visible when not active ([66f0a16fd](https://github.com/LouisMazel/maz-ui/commit/66f0a16fd))
+- **maz-ui:** MazSwitch - cursor color to be more visible when not active ([beb332941](https://github.com/LouisMazel/maz-ui/commit/beb332941))
+
+### 📦 Build
+
+- Upgrade dependencies ([69a1869b6](https://github.com/LouisMazel/maz-ui/commit/69a1869b6))
+- Upgrade dependencies ([#1583](https://github.com/LouisMazel/maz-ui/pull/1583))
+  - build: upgrade dependencies
+  - build: update pnpm-workspace.yaml
+  - chore: add eslint-config dep to root package.json
+  - build: upgrade major dependencies (#1584)
+
+- Upgrade dependencies ([42df1a9f4](https://github.com/LouisMazel/maz-ui/commit/42df1a9f4))
+- Upgrade dependencies ([#1583](https://github.com/LouisMazel/maz-ui/pull/1583))
+  - build: upgrade dependencies
+  - build: update pnpm-workspace.yaml
+  - chore: add eslint-config dep to root package.json
+  - build: upgrade major dependencies (#1584)
+
+#### ⚠️ Breaking Changes
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([61883c03c](https://github.com/LouisMazel/maz-ui/commit/61883c03c))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([78659718a](https://github.com/LouisMazel/maz-ui/commit/78659718a))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([76af016e0](https://github.com/LouisMazel/maz-ui/commit/76af016e0))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([ab834af76](https://github.com/LouisMazel/maz-ui/commit/ab834af76))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+- Mazel (Loïc Mazuel) ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.23 (2026-06-04)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.22...v5.0.0-beta.23)
+
+### 💅 Refactors
+
+- **maz-ui:** MazSwitch - cursor color to be more visible when not active ([66f0a16fd](https://github.com/LouisMazel/maz-ui/commit/66f0a16fd))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.22 (2026-06-04)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.21...v5.0.0-beta.22)
+
+### 🚀 Features
+
+- **@maz-ui/themes:** MazDialog - configurable max/min-width via preset ([#1594](https://github.com/LouisMazel/maz-ui/pull/1594))
+
+  `MazDialog` width is now driven by the active theme preset, while staying
+  overridable per instance through the existing `max-width` / `min-width` props.
+
+  ## What changed
+  - New `components.dialog` knobs on the preset contract (`max-width` /
+    `min-width`), emitted by the CSS generator as `--maz-dialog-max-width` /
+    `--maz-dialog-min-width`.
+  - `MazDialog` now reads those vars with a sensible fallback:
+    `var(--maz-dialog-max-width, 38rem)` / `var(--maz-dialog-min-width, 32rem)`.
+  - All bundled presets ship the defaults. Values are in `rem`, so `ocean`
+    (16px base) uses scaled rem (`33.25rem` / `28rem`) to keep the same rendered
+    pixel width as the 14px presets (≈532px / ≈448px).
+  - `mergePresets` now merges `components.dialog` (and stops dropping
+    `input.top-label-font-weight`), so `definePreset` overrides are preserved.
+
+  ## Usage
+
+  ```ts
+  import { definePreset } from '@maz-ui/themes'
+  // Global default for every dialog, via the preset
+  const theme = definePreset({
+    base: 'maz-ui',
+    overrides: {
+      components: {
+        dialog: { 'max-width': '48rem', 'min-width': '36rem' },
+      },
+    },
+  })
+  ```
+
+  ```vue
+  <!-- Per-instance override still wins over the preset -->
+  <MazDialog v-model="open" max-width="50rem" min-width="40rem" />
+  ```
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.21 (2026-05-20)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.20...v5.0.0-beta.21)
+
+### 🚀 Features
+
+- **maz-ui:** MazSidebar - add 'hover' collapsible mode ([#1586](https://github.com/LouisMazel/maz-ui/pull/1586))
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.20 (2026-05-20)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.19...v5.0.0-beta.20)
+
+No relevant changes since last release
+
+## v5.0.0-beta.19 (2026-05-19)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.18...v5.0.0-beta.19)
+
+### 🩹 Fixes
+
+- **maz-ui:** Inputs - auto-fill with SSR ([da00bc2da](https://github.com/LouisMazel/maz-ui/commit/da00bc2da))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.18 (2026-05-19)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.17...v5.0.0-beta.18)
+
+### 🚀 Features
+
+- **docs:** Ecosystem documentations ([#1582](https://github.com/LouisMazel/maz-ui/pull/1582))
+
+### 📦 Build
+
+- Upgrade dependencies ([#1583](https://github.com/LouisMazel/maz-ui/pull/1583))
+  - build: upgrade dependencies
+  - build: update pnpm-workspace.yaml
+  - chore: add eslint-config dep to root package.json
+  - build: upgrade major dependencies (#1584)
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.17 (2026-05-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.16...v5.0.0-beta.17)
+
+### 🚀 Features
+
+- Move cookie utils from themes to utils ([352083972](https://github.com/LouisMazel/maz-ui/commit/352083972))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.16 (2026-05-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.15...v5.0.0-beta.16)
+
+### 🚀 Features
+
+- **maz-ui:** MazSidebar - close/open persistent on SSR ([6839d8276](https://github.com/LouisMazel/maz-ui/commit/6839d8276))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.15 (2026-05-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.14...v5.0.0-beta.15)
+
+### 🚀 Features
+
+- **maz-ui:** MazSidebar - close/open persistent ([#1581](https://github.com/LouisMazel/maz-ui/pull/1581))
+  - feat(maz-ui): MazSidebar - close/open persistent
+  - test(maz-ui): improve coverage for MazSidebar persistence and MazCheckbox keyboard handler
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.14 (2026-05-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.13...v5.0.0-beta.14)
+
+### 🚀 Features
+
+- **maz-ui:** Improve MazSidebar ([a71e0543a](https://github.com/LouisMazel/maz-ui/commit/a71e0543a))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.13 (2026-05-18)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.12...v5.0.0-beta.13)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDatePicker tests - align dayjs imports with ESM ([e07a7bd15](https://github.com/LouisMazel/maz-ui/commit/e07a7bd15))
+- **maz-ui:** MazTable - scrollable behaviour ([6a45701be](https://github.com/LouisMazel/maz-ui/commit/6a45701be))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.12 (2026-05-16)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.11...v5.0.0-beta.12)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDatePicker - use dayjs ESM instead of CJS ([299d06662](https://github.com/LouisMazel/maz-ui/commit/299d06662))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.11 (2026-05-15)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.10...v5.0.0-beta.11)
+
+No relevant changes since last release
+
+## v5.0.0-beta.10 (2026-05-15)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.9...v5.0.0-beta.10)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazBtn - fix loading layout ([b7846572a](https://github.com/LouisMazel/maz-ui/commit/b7846572a))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.9 (2026-05-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.8...v5.0.0-beta.9)
+
+### 🚀 Features
+
+- **maz-ui:** Add MazSidebar component system ([#1574](https://github.com/LouisMazel/maz-ui/pull/1574))
+  - feat(maz-ui): add MazSidebar component with sub-components and composable
+    Implements a fully accessible, composable sidebar system for dashboard,
+    admin, and SaaS applications. State is shared via provide/inject from
+    the root MazSidebar component.
+    Components added:
+  * MazSidebar: root container (push/overlay modes, offcanvas/icon/none collapsible)
+  * MazSidebarHeader, MazSidebarContent, MazSidebarFooter: layout zones
+  * MazSidebarGroup: grouping with optional label (sr-only in icon mode)
+  * MazSidebarSeparator: visual HR divider
+  * MazSidebarMenu / MazSidebarMenuItem: ul/li with ARIA roles
+  * MazSidebarMenuButton: link/button with icon, label, badge, tooltip auto-show
+  * MazSidebarMenuSub: collapsible sub-menu with ArrowRight/ArrowLeft keyboard support
+  * MazSidebarTrigger: toggle button with aria-expanded and aria-controls
+    Composable added:
+  * useMazSidebar: typed inject for open state, toggle, setOpen, state
+    Closes #1573
+  - refactor(maz-ui): polish MazSidebar to align with project conventions
+  * Rename `useMazSidebar` composable to `useSidebar` (kept Maz-prefixed types)
+  * Drop all scoped CSS in favour of Tailwind utilities and add `m-reset-css` on every sub-component root so theming and tree-shaking work as expected
+  * MazSidebarMenuButton: `icon` accepts `MazIconLike`, `badge` accepts `MazBadgeProps`, tooltip via `v-tooltip` directive
+  * MazSidebarMenuSub: smooth grid-rows expand/collapse via `MazExpandAnimation`, accepts `MazIconLike` icon
+  * MazSidebarTrigger: replace inline SVG with `MazIcon` + `MazBars3`
+  * Overlay mode delegated to `MazBackdrop` (reuses scroll-lock, focus trap, escape, click-outside)
+  * Fix offcanvas-collapsed border leak and the icon-centering jump during collapse via `min(calc((var(--maz-sidebar-icon-width)-1.25rem)/2), calc((100%-1.25rem)/2))` — icons stay centred regardless of any padding applied to `MazSidebarContent`
+  * Split the monolithic spec into one file per component (11 specs, 121 tests)
+  * Doc: replace inline `style` with Tailwind classes and document the new prop shapes
+  * Wire MazSidebar components and `useSidebar` into the Nuxt module auto-imports
+
+- **maz-ui:** Add MazCodeHighlight and MazWindowMockup components ([#1569](https://github.com/LouisMazel/maz-ui/pull/1569))
+  - feat(maz-ui): add MazCodeHighlight component with shiki syntax highlighting
+  * Add MazCodeHighlight component with code/language/theme props
+  * Support default slot text extraction as fallback for code prop
+  * Auto-detect dark/light mode via MutationObserver on html element
+  * Lazy-load shiki via dynamic import to keep bundle lean
+  * Add shiki ^3.0.0 to lib dependencies
+  * Export from components/index.ts
+  - feat(maz-ui): add MazWindowMockup component with browser/terminal/editor variants
+  * Three macOS-style traffic light buttons in all variant title bars
+  * Browser variant: address bar with url prop (default 'localhost')
+  * Editor variant: filename tab with filename prop (default 'index.vue')
+  * Terminal variant: centered title with title prop (default 'zsh'), $ prompt
+  * showPrompt prop and #prompt slot for terminal prompt customization
+  * minHeight prop for CSS-based content area height control
+  * code + language props trigger integrated MazCodeHighlight rendering
+  * Default slot for free content when code prop is not set
+  * Dark/light mode compatible via maz-ui CSS vars
+  * Export from components/index.ts
+  - feat(@maz-ui/nuxt): register MazCodeHighlight and MazWindowMockup in Nuxt module
+    Add MazCodeHighlight and MazWindowMockup to COMPONENT_NAMES in the Nuxt module
+    for auto-import support. MazComponentsResolver already resolves all Maz-prefixed
+    components via regex pattern.
+  - test(maz-ui): add unit tests for MazCodeHighlight and MazWindowMockup
+  * MazCodeHighlight: tests for code prop, slot fallback, language prop,
+    theme prop, empty state, and shiki error fallback
+  * MazWindowMockup: tests for all three variants (browser/terminal/editor),
+    url/filename/title props, showPrompt prop, prompt slot, default slot
+  * MazCodeHighlight stubbed in MazWindowMockup tests to avoid async teardown issues
+  - docs(maz-ui): add documentation pages for MazCodeHighlight and MazWindowMockup
+  * Add maz-code-highlight.md with basic usage, slot fallback, language,
+    and custom theme examples
+  * Add maz-window-mockup.md with browser, terminal (with custom prompt),
+    and editor variant examples
+  * Add both to the sidebar under a new 'Display' section in components.mts
+
+### ❤️ Contributors
+
+- Mazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.8 (2026-05-12)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.7...v5.0.0-beta.8)
+
+No relevant changes since last release
+
+## v5.0.0-beta.7 (2026-05-12)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.6...v5.0.0-beta.7)
+
+### 🚀 Features
+
+- **@maz-ui/themes:** Modernize CSS generator with light-dark, color-scheme, color-mix ([#1572](https://github.com/LouisMazel/maz-ui/pull/1572))
+
+### ❤️ Contributors
+
+- Mazel (Loïc Mazuel) ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.6 (2026-05-11)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.5...v5.0.0-beta.6)
+
+### 📦 Build
+
+- Upgrade dependencies ([69a1869b](https://github.com/LouisMazel/maz-ui/commit/69a1869b))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.5 (2026-05-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.4...v5.0.0-beta.5)
+
+No relevant changes since last release
+
+## v5.0.0-beta.4 (2026-05-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.3...v5.0.0-beta.4)
+
+### 🚀 Features
+
+- **maz-ui:** Inputs - top label and assistive text ([51c9f6f25](https://github.com/LouisMazel/maz-ui/commit/51c9f6f25))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.3 (2026-05-06)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.2...v5.0.0-beta.3)
+
+No relevant changes since last release
+
+## v5.0.0-beta.2 (2026-05-06)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.1...v5.0.0-beta.2)
+
+No relevant changes since last release
+
+## v5.0.0-beta.1 (2026-05-06)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.0...v5.0.0-beta.1)
+
+### 🚀 Features
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([78659718a](https://github.com/LouisMazel/maz-ui/commit/78659718a))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+#### ⚠️ Breaking Changes
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([78659718a](https://github.com/LouisMazel/maz-ui/commit/78659718a))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+### ❤️ Contributors
+
+- Mazel (Loïc Mazuel) ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.0-beta.0 (2026-05-05)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.3...v5.0.0-beta.0)
+
+### 🚀 Features
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([61883c03](https://github.com/LouisMazel/maz-ui/commit/61883c03))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+#### ⚠️ Breaking Changes
+
+- ⚠️ Maz-ui v5 — theming overhaul, RTL-native components, ~8% lighter ([61883c03](https://github.com/LouisMazel/maz-ui/commit/61883c03))
+
+  Maz-UI v5 is a focused major: a theming overhaul on top of Tailwind v4,
+  RTL-correct components, a lighter chart, a simpler icon API, and a one-shot
+  CLI to make the upgrade itself painless.
+  **Highlights**
+  - **Theming, top to bottom** — OKLCh color system for perceptually uniform
+    scales, honest token names (`background` → `surface`, `border` → `divider`),
+    a real radius scale, a `components` block to override per-component tokens,
+    the new `nova` preset, and preset persistence across reloads.
+  - **Logical direction by default** — every `left`/`right` prop, slot and CSS
+    hook is now `start`/`end`. Set `dir="rtl"` and components mirror correctly.
+  - **Lighter chart** — `MazChart` drops `vue-chartjs`, lazy-loads `chart.js`,
+    and only registers the modules the chart `type` actually needs.
+  - **Simpler icons** — one `icon` prop instead of four. New
+    `@maz-ui/icons/raw/*` subpath for raw SVG inlining without a Vue component.
+  - **Standardized sizes** — `MazBadge` joins the rest of the library on the
+    `MazSize` keyword scale.
+  - **~8% lighter library bundle** thanks to the chart, icon and theming
+    refactors.
+  - Modern browsers required (Chromium 111+, Safari 16.4+, Firefox 128+).
+    **Migration**
+  - **Mechanical part:** `npx @maz-ui/upgrade ./` rewrites your code, bumps
+    every `maz-ui` / `@maz-ui/*` entry in `package.json` to `^5.0.0`, and runs
+    the right `pnpm`/`yarn`/`bun`/`npm install` for you.
+  - **Judgment calls** (icon paths, theme preset reshape, chart animation
+    default): connect [`@maz-ui/mcp`](https://maz-ui.com/guide/mcp) to your AI
+    assistant and walk the guide section by section.
+    **Links**
+  - [Announcement](https://maz-ui.com/blog/v5)
+  - [Migration guide](https://maz-ui.com/guide/migration-v5)
+  - [`@maz-ui/upgrade` CLI](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade)
+  - [`@maz-ui/mcp` server](https://maz-ui.com/guide/mcp)
+    > **Solo maintainer note:** v4 will receive no further support after v5
+    > stable — no security fixes, no backports.
+
+### ❤️ Contributors
+
+- Mazel (Loïc Mazuel) ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v4.9.3 (2026-04-23)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.2...v4.9.3)

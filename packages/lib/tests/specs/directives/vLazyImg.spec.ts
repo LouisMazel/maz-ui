@@ -172,7 +172,310 @@ describe('given LazyImg handler', () => {
 
       mockElement.dispatchEvent(new ErrorEvent('error'))
 
+      await vi.runAllTimersAsync()
+      await Promise.resolve()
+
       expect(mockElement.classList.contains(DEFAULT_OPTIONS.errorClass)).toBe(true)
+    })
+  })
+})
+
+class ControllableObserver {
+  static readonly instances: ControllableObserver[] = []
+  observed = new Set<Element>()
+  disconnected = false
+
+  constructor(public callback: IntersectionObserverCallback, public options?: IntersectionObserverInit) {
+    ControllableObserver.instances.push(this)
+  }
+
+  observe(target: Element) {
+    this.observed.add(target)
+  }
+
+  unobserve(target: Element) {
+    this.observed.delete(target)
+  }
+
+  disconnect() {
+    this.disconnected = true
+    this.observed.clear()
+  }
+
+  takeRecords() {
+    return []
+  }
+}
+
+describe('given LazyImg handler with pooled observers', () => {
+  beforeEach(() => {
+    ControllableObserver.instances.length = 0
+    globalThis.IntersectionObserver = ControllableObserver as unknown as typeof IntersectionObserver
+  })
+
+  describe('when several elements share the same observer options', () => {
+    it('then it reuses a single IntersectionObserver', () => {
+      const lazyImg = new LazyImg()
+      const first = document.createElement('img')
+      const second = document.createElement('img')
+
+      lazyImg.add(first, { value: 'https://example.com/a.jpg' } as any)
+      lazyImg.add(second, { value: 'https://example.com/b.jpg' } as any)
+
+      expect(ControllableObserver.instances).toHaveLength(1)
+      expect(ControllableObserver.instances[0].observed.has(first)).toBe(true)
+      expect(ControllableObserver.instances[0].observed.has(second)).toBe(true)
+    })
+  })
+
+  describe('when removing one element among several', () => {
+    it('then it keeps observing the others and disconnects once empty', () => {
+      const lazyImg = new LazyImg()
+      const first = document.createElement('img')
+      const second = document.createElement('img')
+      lazyImg.add(first, { value: 'https://example.com/a.jpg' } as any)
+      lazyImg.add(second, { value: 'https://example.com/b.jpg' } as any)
+      const [observer] = ControllableObserver.instances
+
+      lazyImg.remove(first, { value: 'https://example.com/a.jpg' } as any)
+
+      expect(observer.disconnected).toBe(false)
+      expect(observer.observed.has(second)).toBe(true)
+
+      lazyImg.remove(second, { value: 'https://example.com/b.jpg' } as any)
+
+      expect(observer.disconnected).toBe(true)
+    })
+  })
+
+  describe('when the disabled option is set', () => {
+    it('then it loads the image immediately without an observer', () => {
+      const lazyImg = new LazyImg()
+      const element = document.createElement('img')
+
+      lazyImg.add(element, { value: { disabled: true, src: 'https://example.com/a.jpg' } } as any)
+
+      expect(ControllableObserver.instances).toHaveLength(0)
+      expect(element.getAttribute('src')).toBe('https://example.com/a.jpg')
+    })
+
+    it('then it removes a disabled element without an observer', () => {
+      const lazyImg = new LazyImg()
+      const element = document.createElement('img')
+
+      lazyImg.add(element, { value: { disabled: true, src: 'https://example.com/a.jpg' } } as any)
+
+      expect(() => lazyImg.remove(element, { value: { disabled: true } } as any)).not.toThrow()
+    })
+  })
+
+  describe('when using bg-image mode on a picture element', () => {
+    it('then it throws', () => {
+      const lazyImg = new LazyImg()
+      const picture = document.createElement('picture')
+
+      expect(() => lazyImg.add(picture, { value: 'x', arg: 'bg-image' } as any)).toThrow()
+    })
+  })
+
+  describe('when update is called before add', () => {
+    it('then it adds the element', () => {
+      const lazyImg = new LazyImg()
+      const element = document.createElement('img')
+
+      lazyImg.update(element, { value: 'https://example.com/a.jpg', oldValue: undefined } as any)
+
+      expect(ControllableObserver.instances).toHaveLength(1)
+    })
+  })
+
+  describe('when an intersection entry is not intersecting', () => {
+    it('then it does not load the image', () => {
+      const lazyImg = new LazyImg()
+      const element = document.createElement('img')
+      lazyImg.add(element, { value: 'https://example.com/a.jpg' } as any)
+      const [observer] = ControllableObserver.instances
+
+      observer.callback([{ target: element, isIntersecting: false } as any], observer as any)
+
+      expect(element.classList.contains('m-lazy-loading')).toBe(false)
+    })
+  })
+
+  describe('when an intersection targets an unknown element', () => {
+    it('then it is ignored', () => {
+      const lazyImg = new LazyImg()
+      const element = document.createElement('img')
+      lazyImg.add(element, { value: 'https://example.com/a.jpg' } as any)
+      const [observer] = ControllableObserver.instances
+      const unknown = document.createElement('img')
+
+      expect(() => observer.callback([{ target: unknown, isIntersecting: true } as any], observer as any)).not.toThrow()
+    })
+  })
+
+  describe('when loadOnce is set and the image is already loaded', () => {
+    it('then it does not reload on the next intersection', () => {
+      const lazyImg = new LazyImg()
+      const element = document.createElement('img')
+      lazyImg.add(element, { value: { src: 'https://example.com/a.jpg', loadOnce: true, observerOnce: false } } as any)
+      const [observer] = ControllableObserver.instances
+
+      observer.callback([{ target: element, isIntersecting: true } as any], observer as any)
+      element.dispatchEvent(new Event('load'))
+      const srcAfterFirstLoad = element.src
+
+      observer.callback([{ target: element, isIntersecting: true } as any], observer as any)
+
+      expect(element.classList.contains('m-lazy-loaded')).toBe(true)
+      expect(element.src).toBe(srcAfterFirstLoad)
+    })
+  })
+
+  describe('when observer options define a root element', () => {
+    it('then it pools observers per root', () => {
+      const lazyImg = new LazyImg()
+      const root = document.createElement('div')
+      const first = document.createElement('img')
+      const second = document.createElement('img')
+
+      lazyImg.add(first, { value: { src: 'a', observerOptions: { root, threshold: 0.1 } } } as any)
+      lazyImg.add(second, { value: { src: 'b', observerOptions: { root, threshold: 0.1 } } } as any)
+
+      expect(ControllableObserver.instances).toHaveLength(1)
+      expect(ControllableObserver.instances[0].options?.root).toBe(root)
+    })
+  })
+
+  describe('when the element carries a data-lazy-src attribute', () => {
+    it('then it uses it as the image url', () => {
+      const lazyImg = new LazyImg()
+      const element = document.createElement('img')
+      element.setAttribute('data-lazy-src', 'https://example.com/data.jpg')
+      lazyImg.add(element, { value: undefined } as any)
+      const [observer] = ControllableObserver.instances
+
+      observer.callback([{ target: element, isIntersecting: true } as any], observer as any)
+
+      expect(element.src).toContain('https://example.com/data.jpg')
+    })
+  })
+
+  describe('when a picture has no source', () => {
+    it('then it errors', () => {
+      const lazyImg = new LazyImg()
+      const picture = document.createElement('picture')
+      picture.appendChild(document.createElement('img'))
+      lazyImg.add(picture, { value: { src: 'x', fallbackSrc: false } } as any)
+      const [observer] = ControllableObserver.instances
+
+      observer.callback([{ target: picture, isIntersecting: true } as any], observer as any)
+
+      expect(picture.classList.contains('m-lazy-error')).toBe(true)
+    })
+
+    it('then it applies a string fallbackSrc to the img element', async () => {
+      const lazyImg = new LazyImg()
+      const picture = document.createElement('picture')
+      const img = document.createElement('img')
+      picture.appendChild(img)
+      lazyImg.add(picture, { value: { fallbackSrc: 'https://example.com/fallback.jpg' } } as any)
+      const [observer] = ControllableObserver.instances
+
+      observer.callback([{ target: picture, isIntersecting: true } as any], observer as any)
+      await Promise.resolve()
+
+      expect(img.src).toBe('https://example.com/fallback.jpg')
+      expect(picture.classList.contains('m-lazy-fallback')).toBe(true)
+    })
+
+    it('then it applies the default no-image photo to the img element', async () => {
+      const lazyImg = new LazyImg()
+      const picture = document.createElement('picture')
+      const img = document.createElement('img')
+      picture.appendChild(img)
+      lazyImg.add(picture, { value: {} } as any)
+      const [observer] = ControllableObserver.instances
+
+      observer.callback([{ target: picture, isIntersecting: true } as any], observer as any)
+
+      await vi.waitFor(() => {
+        expect(img.getAttribute('src')).not.toBe('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')
+      })
+      expect(picture.classList.contains('m-lazy-error')).toBe(true)
+    })
+  })
+
+  describe('when a picture source lacks data-lazy-srcset', () => {
+    it('then it errors', () => {
+      const lazyImg = new LazyImg()
+      const picture = document.createElement('picture')
+      picture.appendChild(document.createElement('source'))
+      picture.appendChild(document.createElement('img'))
+      lazyImg.add(picture, { value: { src: 'x', fallbackSrc: false } } as any)
+      const [observer] = ControllableObserver.instances
+
+      observer.callback([{ target: picture, isIntersecting: true } as any], observer as any)
+
+      expect(picture.classList.contains('m-lazy-error')).toBe(true)
+    })
+  })
+
+  describe('when a picture has no img child', () => {
+    it('then it still sets the source srcset', () => {
+      const lazyImg = new LazyImg()
+      const picture = document.createElement('picture')
+      const source = document.createElement('source')
+      source.setAttribute('data-lazy-srcset', 'https://example.com/a.jpg')
+      picture.appendChild(source)
+      lazyImg.add(picture, { value: 'x' } as any)
+      const [observer] = ControllableObserver.instances
+
+      observer.callback([{ target: picture, isIntersecting: true } as any], observer as any)
+
+      expect(source.srcset).toBe('https://example.com/a.jpg')
+    })
+  })
+
+  describe('when a string fallbackSrc is provided on error', () => {
+    it('then it applies it to a plain img', async () => {
+      const lazyImg = new LazyImg()
+      const element = document.createElement('img')
+      lazyImg.add(element, { value: { src: 'https://example.com/a.jpg', fallbackSrc: 'https://example.com/fallback.jpg' } } as any)
+      const [observer] = ControllableObserver.instances
+
+      observer.callback([{ target: element, isIntersecting: true } as any], observer as any)
+      element.dispatchEvent(new Event('error'))
+      await Promise.resolve()
+
+      expect(element.src).toBe('https://example.com/fallback.jpg')
+      expect(element.classList.contains('m-lazy-fallback')).toBe(true)
+    })
+
+    it('then it applies it to picture sources', async () => {
+      const lazyImg = new LazyImg()
+      const picture = document.createElement('picture')
+      picture.appendChild(document.createElement('source'))
+      picture.appendChild(document.createElement('img'))
+      lazyImg.add(picture, { value: { src: 'x', fallbackSrc: 'https://example.com/fallback.jpg' } } as any)
+      const [observer] = ControllableObserver.instances
+
+      observer.callback([{ target: picture, isIntersecting: true } as any], observer as any)
+      await Promise.resolve()
+
+      expect(picture.classList.contains('m-lazy-fallback')).toBe(true)
+      expect(picture.querySelector('source')?.srcset).toBe('https://example.com/fallback.jpg')
+    })
+  })
+
+  describe('when the observer is already gone from the pool', () => {
+    it('then unobserve is a no-op', () => {
+      const lazyImg = new LazyImg()
+      const element = document.createElement('img')
+      lazyImg.add(element, { value: 'https://example.com/a.jpg' } as any)
+      ;(lazyImg as any).pool.clear()
+
+      expect(() => lazyImg.remove(element, { value: 'https://example.com/a.jpg' } as any)).not.toThrow()
     })
   })
 })

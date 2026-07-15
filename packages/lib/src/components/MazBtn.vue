@@ -1,22 +1,21 @@
 <script lang="ts" setup>
-import type { IconComponent } from '@maz-ui/icons'
 import type { CSSProperties } from 'vue'
-import type { MazIconProps } from './MazIcon.vue'
-
-import type { MazColor, MazSize } from './types'
+import type { MazIconLike } from '../composables/useMazIconProps'
+import type { MazColor, MazRoundedSize, MazSize } from './types'
 import { computed, defineAsyncComponent, useAttrs } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
+import { useMazIconProps } from '../composables/useMazIconProps'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import { resolveLinkComponent } from '../utils/resolveLinkComponent'
 import { getColor } from './types'
 
 const {
-  size = 'md',
   color = 'primary',
   type = 'button',
+  fab,
   icon,
-  leftIcon,
-  rightIcon,
-  roundedSize = 'base',
+  startIcon,
+  endIcon,
   justify = 'center',
   pastel,
   outlined,
@@ -25,7 +24,13 @@ const {
   block,
   padding = true,
   active,
+  overflowHidden = true,
 } = defineProps<MazBtnProps>()
+
+const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazBtn', {
+  size: 'md',
+  roundedSize: 'md',
+})
 
 const MazIcon = defineAsyncComponent(() => import('./MazIcon.vue'))
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
@@ -45,9 +50,14 @@ export interface MazBtnProps {
   size?: MazSize
   /**
    * The color of the button
-   * @values `'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'destructive' | 'transparent' | 'contrast' | 'accent' | 'background'`
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'transparent' | 'surface'`
    */
-  color?: MazColor | 'background'
+  color?: MazColor | 'surface'
+  /**
+   * The text color of the button
+   * @values `primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast' | 'transparent' | 'muted'`
+   */
+  textColor?: MazColor | 'muted'
   /**
    * The type of the button
    * @values `'submit' | 'reset' | 'button'`
@@ -55,10 +65,10 @@ export interface MazBtnProps {
   type?: 'submit' | 'reset' | 'button'
   /**
    * Size of the rounded
-   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'`
-   * @default 'base'
+   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+   * @default 'md'
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'
+  roundedSize?: MazRoundedSize
   /**
    * If true, the button have the "border" style
    * @default false
@@ -90,20 +100,22 @@ export interface MazBtnProps {
    */
   fab?: boolean
   /**
-   * The name of the icon to display or component, only with fab
-   * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
+   * The icon to display in the fab variant. Accepts a bare value (Vue
+   * component, raw SVG string, URL or `data:` URI) for the common case,
+   * or a full `MazIconProps` object for fine-grained control (size, title,
+   * svgAttributes, fallback, flipIconForRtl, …).
    */
-  icon?: string | IconComponent
+  icon?: MazIconLike
   /**
-   * The name of the icon or component to display on the left of the button
-   * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
+   * The icon to display on the inline-start edge (left in LTR, right in RTL).
+   * Accepts a bare value or a full `MazIconProps` object.
    */
-  leftIcon?: string | IconComponent
+  startIcon?: MazIconLike
   /**
-   * The name of the icon or component to display on the right of the button
-   * `@type` `{string | FunctionalComponent<SVGAttributes> | ComponentPublicInstance | Component}`
+   * The icon to display on the inline-end edge (right in LTR, left in RTL).
+   * Accepts a bare value or a full `MazIconProps` object.
    */
-  rightIcon?: string | IconComponent
+  endIcon?: MazIconLike
   /**
    * If true, the button will have no padding
    * @default true
@@ -118,6 +130,11 @@ export interface MazBtnProps {
    * @default false
    */
   active?: boolean
+  /**
+   * If true, the button will have an overflow-hidden style
+   * @default false
+   */
+  overflowHidden?: boolean
 }
 
 const component = computed(() => {
@@ -135,8 +152,10 @@ const isDisabled = computed(
 )
 const btnType = computed(() => (component.value === 'button' ? type : undefined))
 
-const iconSize = computed<MazIconProps['size']>(() => {
-  const iconSizeMap: Record<NonNullable<MazBtnProps['size']>, MazIconProps['size']> = {
+type IconSize = NonNullable<import('./MazIcon.vue').MazIconProps['size']>
+
+const iconSize = computed<IconSize>(() => {
+  const iconSizeMap: Record<NonNullable<MazBtnProps['size']>, IconSize> = {
     xl: 'lg',
     lg: 'md',
     md: 'md',
@@ -145,8 +164,12 @@ const iconSize = computed<MazIconProps['size']>(() => {
     mini: '1em',
   }
 
-  return iconSizeMap[size] || 'lg'
+  return iconSizeMap[size.value] || 'lg'
 })
+
+const { iconProps: startIconProps } = useMazIconProps(() => startIcon, () => ({ size: iconSize.value }))
+const { iconProps: endIconProps } = useMazIconProps(() => endIcon, () => ({ size: iconSize.value }))
+const { iconProps: fabIconProps } = useMazIconProps(() => icon, () => ({ size: iconSize.value }))
 
 const btnStyle = computed<CSSProperties>(() => {
   const c = resolvedColor.value
@@ -154,62 +177,110 @@ const btnStyle = computed<CSSProperties>(() => {
   if (c === 'transparent' || c === 'surface')
     return base
 
-  const pastelFg = c === 'contrast' ? 'contrast-foreground' : `${c}-700`
-
   return {
     ...base,
     '--m-btn-bg': `var(--maz-${c})`,
     '--m-btn-fg': `var(--maz-${c}-foreground)`,
-    '--m-btn-bg-hover': `var(--maz-${c}-600)`,
-    '--m-btn-bg-active': `var(--maz-${c}-700)`,
-    '--m-btn-bd-light': `var(--maz-${c}-200)`,
-    '--m-btn-bd-dark': `var(--maz-${c}-700)`,
-    ...(pastel && {
-      '--m-btn-pastel-bg': `var(--maz-${c}-50)`,
-      '--m-btn-pastel-fg': `var(--maz-${pastelFg})`,
+    ...(pastel && c === 'contrast' && {
+      '--m-btn-pastel-fg': `var(--maz-contrast-foreground)`,
     }),
   }
 })
+
+const TEXT_COLOR: Record<NonNullable<MazBtnProps['textColor']>, string> = {
+  primary: 'maz:text-primary!',
+  secondary: 'maz:text-secondary!',
+  accent: 'maz:text-accent!',
+  info: 'maz:text-info!',
+  success: 'maz:text-success!',
+  warning: 'maz:text-warning!',
+  destructive: 'maz:text-destructive!',
+  contrast: 'maz:text-contrast!',
+  transparent: 'maz:text-transparent!',
+  muted: 'maz:text-muted!',
+} as const
+
+const SIZE_CLASS: Record<NonNullable<MazBtnProps['size']>, string> = {
+  xl: 'maz:min-h-16 maz:px-8 maz:text-xl',
+  lg: 'maz:min-h-14 maz:px-6',
+  md: 'maz:min-h-12 maz:px-4',
+  sm: 'maz:min-h-10 maz:px-3',
+  xs: 'maz:min-h-8 maz:px-2 maz:text-sm',
+  mini: 'maz:min-h-6 maz:px-1 maz:text-xs',
+} as const
+
+const ROUNDED_CLASS: Record<NonNullable<MazBtnProps['roundedSize']>, string> = {
+  none: '',
+  sm: 'maz:rounded-xs',
+  md: 'maz:rounded-md',
+  lg: 'maz:rounded-lg',
+  xl: 'maz:rounded-xl',
+  full: 'maz:rounded-full',
+} as const
+
+const FAB_SIZE_CLASS: Record<NonNullable<MazBtnProps['size']>, string> = {
+  xl: 'maz:size-16',
+  lg: 'maz:size-14',
+  md: 'maz:size-12',
+  sm: 'maz:size-10',
+  xs: 'maz:size-8',
+  mini: 'maz:size-6',
+} as const
+
+const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: string, end: string }> = {
+  xl: { start: 'maz:ps-6', end: 'maz:pe-6' },
+  lg: { start: 'maz:ps-4', end: 'maz:pe-4' },
+  md: { start: 'maz:ps-2', end: 'maz:pe-2' },
+  sm: { start: 'maz:ps-2', end: 'maz:pe-2' },
+  xs: { start: '', end: '' },
+  mini: { start: '', end: '' },
+} as const
 </script>
 
 <template>
   <component
     :is="component"
     :disabled="isDisabled"
-    class="m-btn m-reset-css"
+    class="m-btn m-reset-css maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-2 maz:border maz:border-solid maz:border-transparent maz:bg-transparent maz:py-0.5 maz:text-center maz:align-top maz:text-foreground maz:no-underline maz:transition-all maz:duration-200 maz:ease-in-out"
     :class="[
-      `--${size}`,
       `--${resolvedColor}`,
-      !fab && roundedSize && `--rounded-${roundedSize}`,
+      `--${size}`,
+      textColor && `${TEXT_COLOR[textColor]}`,
+      !fab && roundedSize ? `--rounded-${roundedSize}` : '',
+      !fab && SIZE_CLASS[size],
+      fab ? 'maz:flex maz:flex-center maz:rounded-full maz:p-1' : ROUNDED_CLASS[roundedSize],
+      fab ? FAB_SIZE_CLASS[size] : '',
+      (!!startIcon || hasSlotContent($slots['start-icon'])) ? ICON_PADDING_CLASS[size].start : '',
+      (!!endIcon || hasSlotContent($slots['end-icon'])) ? ICON_PADDING_CLASS[size].end : '',
       {
+        'maz:relative': loading,
+        'maz:overflow-hidden': overflowHidden,
         '--outlined': outlined,
         '--pastel': pastel,
-        '--block': block,
+        '--block': block && !fab,
         '--fab': fab,
         '--loading': loading,
         '--active': active,
         '--no-padding': !padding,
-        '--has-left-icon': !!leftIcon || hasSlotContent($slots['left-icon']),
-        '--has-right-icon': !!rightIcon || hasSlotContent($slots['right-icon']),
+        '--has-start-icon': !!startIcon || hasSlotContent($slots['start-icon']),
+        '--has-end-icon': !!endIcon || hasSlotContent($slots['end-icon']),
       },
     ]"
     :style="btnStyle"
     :type="btnType"
   >
     <!--
-      @slot left-icon - The icon to display on the left of the button
+      @slot start-icon - The icon to display on the inline-start edge (left in LTR, right in RTL)
     -->
-    <slot name="left-icon">
-      <MazIcon v-if="typeof leftIcon === 'string'" :name="leftIcon" :size="iconSize" />
-      <MazIcon v-else-if="leftIcon" :icon="leftIcon" :size="iconSize" />
+    <slot name="start-icon">
+      <MazIcon v-if="startIconProps" v-bind="startIconProps" />
     </slot>
 
     <!--
       @slot icon - The icon to display on the fab button
     -->
     <slot name="icon">
-      <MazIcon v-if="typeof icon === 'string'" :name="icon" :size="iconSize" />
-      <MazIcon v-else-if="icon" :icon="icon" :size="iconSize" />
+      <MazIcon v-if="fabIconProps" v-bind="fabIconProps" />
     </slot>
 
     <!--
@@ -220,11 +291,10 @@ const btnStyle = computed<CSSProperties>(() => {
     </slot>
 
     <!--
-      @slot right-icon - The icon to display on the right of the button
+      @slot end-icon - The icon to display on the inline-end edge (right in LTR, left in RTL)
     -->
-    <slot name="right-icon">
-      <MazIcon v-if="typeof rightIcon === 'string'" :name="rightIcon" :size="iconSize" />
-      <MazIcon v-else-if="rightIcon" :icon="rightIcon" :size="iconSize" />
+    <slot name="end-icon">
+      <MazIcon v-if="endIconProps" v-bind="endIconProps" />
     </slot>
 
     <div v-if="loading" class="m-btn-loader-container">
@@ -239,278 +309,173 @@ const btnStyle = computed<CSSProperties>(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-btn {
-  @apply maz-relative maz-cursor-pointer maz-items-center maz-gap-2 maz-border maz-border-solid maz-border-transparent maz-bg-transparent maz-py-0.5 maz-text-center maz-align-top maz-text-foreground maz-no-underline maz-transition-all maz-duration-200 maz-ease-in-out maz-inline-flex maz-overflow-hidden;
+  /* State variants derived from --m-btn-bg via OKLCh lightness offsets
+   * (matches the SCALE_OFFSETS table: -600, -700, -400 steps). */
+  --m-btn-bg-hover: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.05), 1) c h); /* ↔ scale -600 */
+  --m-btn-bg-active: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
+  --m-btn-bd-light: oklch(from var(--m-btn-bg) clamp(0, calc(l + 0.06), 1) c h); /* ↔ scale -400 */
+  --m-btn-bd-dark: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
+  --m-btn-pastel-bg: color-mix(in srgb, var(--m-btn-bg) 20%, transparent);
+  --m-btn-pastel-fg: oklch(from var(--m-btn-bg) clamp(0, calc(l - 0.1), 1) c h); /* ↔ scale -700 */
 
   justify-content: var(--m-btn-justify, center);
-  background-color: hsl(var(--m-btn-bg));
-  color: hsl(var(--m-btn-fg));
-
-  & span {
-    @apply maz-leading-none;
-  }
+  background-color: var(--m-btn-bg);
+  color: var(--m-btn-fg);
+  font-weight: var(--maz-btn-font-weight, 500);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 
   &:not(:disabled):hover {
-    background-color: hsl(var(--m-btn-bg-hover));
+    background-color: var(--m-btn-bg-hover);
   }
 
   &:not(:disabled):active,
   &.--active {
-    background-color: hsl(var(--m-btn-bg-active));
+    background-color: var(--m-btn-bg-active);
+  }
+
+  &:focus-visible {
+    outline-color: var(--m-btn-bg, var(--maz-primary));
   }
 
   &-loader-container {
-    @apply maz-absolute maz-inset-0 maz-flex maz-flex-center;
+    @apply maz:absolute maz:inset-0 maz:flex maz:flex-center;
 
-    background-color: hsl(var(--m-btn-bg));
-    color: hsl(var(--m-btn-fg));
+    background-color: var(--m-btn-bg);
+    color: var(--m-btn-fg);
   }
 
   /* Outlined variant */
   &.--outlined {
-    @apply maz-bg-transparent maz-border-[hsl(var(--m-btn-bd-light))] dark:maz-border-[hsl(var(--m-btn-bd-dark))];
+    @apply maz:bg-transparent maz:border-(--m-btn-bd-light) maz:dark:border-(--m-btn-bd-dark);
 
-    color: hsl(var(--m-btn-bg));
+    color: var(--m-btn-bg);
 
     &:not(:disabled):hover {
-      background-color: hsl(var(--m-btn-bg) / 10%);
+      background-color: color-mix(in srgb, var(--m-btn-bg) 10%, transparent);
     }
 
     &:not(:disabled):active,
     &.--active {
-      background-color: hsl(var(--m-btn-bg) / 20%);
+      background-color: color-mix(in srgb, var(--m-btn-bg) 20%, transparent);
     }
   }
 
   /* Pastel variant */
   &.--pastel {
-    background-color: hsl(var(--m-btn-pastel-bg));
-    color: hsl(var(--m-btn-pastel-fg));
+    background-color: var(--m-btn-pastel-bg);
+    color: var(--m-btn-pastel-fg);
 
     &:not(:disabled):hover {
-      background-color: hsl(var(--m-btn-bg));
-      color: hsl(var(--m-btn-fg));
+      background-color: var(--m-btn-bg);
+      color: var(--m-btn-fg);
     }
 
     &:not(:disabled):active,
     &.--active {
-      background-color: hsl(var(--m-btn-bg-hover));
-      color: hsl(var(--m-btn-fg));
+      background-color: var(--m-btn-bg-hover);
+      color: var(--m-btn-fg);
     }
   }
 
   /* Transparent: no theme color, uses surface for hover/active */
   &.--transparent {
-    @apply maz-bg-transparent maz-text-foreground;
+    @apply maz:bg-transparent maz:text-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-surface-600/50 dark:maz-bg-surface-400;
+      @apply maz:bg-surface-600/50 maz:dark:bg-surface-400;
     }
 
     &.--outlined {
-      @apply maz-border-divider;
+      @apply maz:border-divider;
 
       &:not(:disabled):hover {
-        @apply maz-bg-surface-600/50;
+        @apply maz:bg-surface-600/50;
       }
 
       &:not(:disabled):active,
       &.--active {
-        @apply maz-bg-surface-600;
+        @apply maz:bg-surface-600;
       }
     }
 
     &.--pastel {
       &:not(:disabled):hover {
-        @apply maz-bg-surface-600;
+        @apply maz:bg-surface-600;
       }
 
       &:not(:disabled):active,
       &.--active {
-        @apply maz-bg-surface-700;
+        @apply maz:bg-surface-700;
       }
     }
 
     .m-btn-loader-container {
-      @apply maz-bg-surface maz-text-foreground;
+      @apply maz:bg-surface maz:text-foreground;
     }
   }
 
-  /* Surface (aka color="background") */
+  /* Surface — color="surface" */
   &.--surface {
-    @apply maz-bg-surface maz-text-foreground;
+    @apply maz:bg-surface maz:text-foreground;
 
     &:not(:disabled):hover {
-      @apply maz-bg-surface-600 dark:maz-bg-surface-400;
+      @apply maz:bg-surface-600 maz:dark:bg-surface-400;
     }
 
     &:not(:disabled):active,
     &.--active {
-      @apply maz-bg-surface-700 dark:maz-bg-surface-300;
+      @apply maz:bg-surface-700 maz:dark:bg-surface-300;
     }
 
     &.--outlined {
-      @apply maz-bg-transparent maz-border-divider;
+      @apply maz:bg-transparent maz:border-divider;
 
       &:not(:disabled):hover {
-        @apply maz-bg-surface-600/50;
+        @apply maz:bg-surface-600/50;
       }
 
       &:not(:disabled):active,
       &.--active {
-        @apply maz-bg-surface-600;
+        @apply maz:bg-surface-600;
       }
     }
 
     &.--pastel {
-      @apply maz-bg-surface-600;
+      @apply maz:bg-surface-600;
 
       &:not(:disabled):hover {
-        @apply maz-bg-surface-700;
+        @apply maz:bg-surface-700;
       }
 
       &:not(:disabled):active,
       &.--active {
-        @apply maz-bg-surface-800;
+        @apply maz:bg-surface-800;
       }
     }
 
     .m-btn-loader-container {
-      @apply maz-text-foreground maz-bg-surface-600 dark:maz-bg-surface-400;
-    }
-  }
-
-  /* Rounded */
-  &:not(.--rounded-none) {
-    @apply maz-rounded;
-
-    &.--rounded {
-      &-sm {
-        @apply maz-rounded-sm;
-      }
-
-      &-md {
-        @apply maz-rounded-md;
-      }
-
-      &-base {
-        @apply maz-rounded;
-      }
-
-      &-lg {
-        @apply maz-rounded-lg;
-      }
-
-      &-xl {
-        @apply maz-rounded-xl;
-      }
-
-      &-full {
-        @apply maz-rounded-full;
-      }
-    }
-  }
-
-  /* Sizes */
-  &.--xl {
-    @apply maz-min-h-16 maz-px-8 maz-text-xl;
-
-    &.--has-left-icon {
-      @apply maz-ps-6;
-    }
-
-    &.--has-right-icon {
-      @apply maz-pe-6;
-    }
-  }
-
-  &.--lg {
-    @apply maz-min-h-14 maz-px-6;
-
-    &.--has-left-icon {
-      @apply maz-ps-4;
-    }
-
-    &.--has-right-icon {
-      @apply maz-pe-4;
-    }
-  }
-
-  &.--md {
-    @apply maz-min-h-12 maz-px-4;
-
-    &.--has-left-icon {
-      @apply maz-ps-2;
-    }
-
-    &.--has-right-icon {
-      @apply maz-pe-2;
-    }
-  }
-
-  &.--sm {
-    @apply maz-min-h-10 maz-px-3;
-
-    &.--has-left-icon {
-      @apply maz-ps-2;
-    }
-
-    &.--has-right-icon {
-      @apply maz-pe-2;
-    }
-  }
-
-  &.--xs {
-    @apply maz-min-h-8 maz-px-2 maz-text-sm;
-  }
-
-  &.--mini {
-    @apply maz-min-h-6 maz-px-1 maz-text-xs;
-  }
-
-  /* Fab */
-  &.--fab {
-    @apply maz-flex maz-items-center maz-justify-center maz-rounded-full maz-p-1;
-
-    &.--xl {
-      @apply maz-w-16;
-    }
-
-    &.--lg {
-      @apply maz-w-14;
-    }
-
-    &.--md {
-      @apply maz-w-12;
-    }
-
-    &.--sm {
-      @apply maz-w-10;
-    }
-
-    &.--xs {
-      @apply maz-w-8;
-    }
-
-    &.--mini {
-      @apply maz-w-6;
+      @apply maz:text-foreground maz:bg-surface-600 maz:dark:bg-surface-400;
     }
   }
 
   &.--block {
-    @apply maz-w-full;
+    @apply maz:w-full;
   }
 
   &:disabled:not(.--loading) {
-    @apply maz-cursor-not-allowed maz-bg-surface-600 dark:maz-bg-surface-400 maz-text-muted maz-border-surface-600 dark:maz-border-surface-400;
+    @apply maz:disabled-cursor maz:bg-surface-600 maz:dark:bg-surface-400 maz:text-muted maz:border-surface-600 maz:dark:border-surface-400;
   }
 
   &.--loading {
-    @apply maz-cursor-wait;
+    @apply maz:cursor-wait;
   }
 
   &.--no-padding {
-    @apply maz-p-0;
+    @apply maz:p-0;
   }
 }
 </style>

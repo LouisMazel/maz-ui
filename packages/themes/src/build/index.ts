@@ -1,111 +1,60 @@
 import type { ThemePreset } from '../types'
 import { generateCSS } from '../utils/css-generator'
 
-export interface BuildThemeOptions {
-  preset: ThemePreset
+interface SharedOptions {
   /** Theme mode to generate */
   mode?: 'light' | 'dark' | 'both'
   /** Dark mode selector: 'class' (.dark) | 'media' (@media) */
   darkSelector?: 'class' | 'media'
   /** CSS variables prefix */
   prefix?: string
-  /** Generate only critical CSS */
-  criticalOnly?: boolean
   /** Dark class name */
   darkClass?: string
+  /** Light class name (default 'light') */
+  lightClass?: string
 }
 
-export function buildThemeCSS(options: BuildThemeOptions): string {
-  const {
-    preset,
-    mode = 'both',
-    darkSelector = 'class',
-    prefix = 'maz',
-    darkClass = 'dark',
-    criticalOnly = false,
-  } = options
+export interface BuildThemeOptions extends SharedOptions {
+  preset: ThemePreset
+}
 
-  const cssOptions = {
+export function buildThemeCSS({
+  preset,
+  mode = 'both',
+  darkSelector = 'class',
+  prefix = 'maz',
+  darkClass = 'dark',
+  lightClass = 'light',
+}: BuildThemeOptions): string {
+  return generateCSS(preset, {
     mode,
     darkSelectorStrategy: darkSelector,
     prefix,
     darkClass,
-  }
-
-  const criticalCSS = generateCSS(preset, { ...cssOptions, onlyCritical: true })
-
-  if (criticalOnly) {
-    return criticalCSS
-  }
-
-  const fullCSS = generateCSS(preset, cssOptions)
-
-  return `${criticalCSS}\n${fullCSS}`
+    lightClass,
+  })
 }
 
-export function generateThemeBundle(presets: ThemePreset[], options: {
-  /** Mode de thème à générer */
-  mode?: 'light' | 'dark' | 'both'
-  /** Sélecteur pour le mode sombre */
-  darkSelector?: 'class' | 'media'
-  /** Préfixe des variables CSS */
-  prefix?: string
-  /** Générer seulement le CSS critique */
-  criticalOnly?: boolean
-} = {}): Record<string, string> {
-  const {
-    mode = 'both',
-    darkSelector = 'class',
-    prefix = 'maz',
-    criticalOnly = false,
-  } = options
-
+export function generateThemeBundle(presets: ThemePreset[], options: SharedOptions = {}): Record<string, string> {
   return presets.reduce((bundle, preset) => {
-    bundle[preset.name] = buildThemeCSS({
-      preset,
-      mode,
-      darkSelector,
-      prefix,
-      criticalOnly,
-    })
+    bundle[preset.name] = buildThemeCSS({ preset, ...options })
     return bundle
   }, {} as Record<string, string>)
 }
 
-export function createThemeStylesheet(css: string, options: {
-  id?: string
-  media?: string
-} = {}): string {
+export function createThemeStylesheet(css: string, options: { id?: string, media?: string } = {}): string {
   const { id = 'maz-theme', media } = options
-
-  let styleTag = `<style id="${id}"`
-
-  if (media) {
-    styleTag += ` media="${media}"`
-  }
-
-  styleTag += `>\n${css}\n</style>`
-
-  return styleTag
+  const mediaAttr = media ? ` media="${media}"` : ''
+  return `<style id="${id}"${mediaAttr}>\n${css}\n</style>`
 }
 
-export function buildSeparateThemeFiles(preset: ThemePreset, options: {
-  prefix?: string
-  darkSelector?: 'class' | 'media'
-  darkClass?: string
-} = {}): {
-  critical: string
+export function buildSeparateThemeFiles(preset: ThemePreset, options: Omit<SharedOptions, 'mode'> = {}): {
   full: string
   lightOnly: string
   darkOnly: string
 } {
-  const { prefix = 'maz', darkSelector = 'class', darkClass = 'dark' } = options
-
-  const baseOptions = { prefix, darkSelectorStrategy: darkSelector, darkClass }
-
   return {
-    critical: generateCSS(preset, { ...baseOptions, mode: 'both', onlyCritical: true }),
-    full: generateCSS(preset, { ...baseOptions, mode: 'both' }),
+    full: buildThemeCSS({ preset, mode: 'both', ...options }),
     lightOnly: buildThemeCSS({ preset, mode: 'light', ...options }),
     darkOnly: buildThemeCSS({ preset, mode: 'dark', ...options }),
   }

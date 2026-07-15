@@ -1,18 +1,20 @@
-import { isServer } from '@maz-ui/utils/helpers/isServer'
+import { deleteCookie, getCookie, setCookie } from '@maz-ui/utils/helpers/cookie'
 
-export function getCookie(key: string): string | null {
-  if (isServer())
-    return null
+const PRESET_COOKIE = 'maz-preset'
 
-  const cookies = document.cookie.split(';')
-  const cookie = cookies.find(c => c.trim().startsWith(`${key}=`))
-
-  return cookie ? decodeURIComponent(cookie.split('=')[1]) : null
+/** Persisted preset name from `maz-preset` cookie, or `null`. */
+export function getSavedPresetName(): string | null {
+  return getCookie(PRESET_COOKIE)
 }
 
-export function setCookie(key: string, value: string): void {
-  if (isServer())
+/** Write `name` to the `maz-preset` cookie, no-op if value already matches. */
+export function saveResolvedPresetName(name: string): void {
+  if (!name || getCookie(PRESET_COOKIE) === name)
     return
+  setCookie(PRESET_COOKIE, name)
+}
 
-  document.cookie = `${key}=${encodeURIComponent(value)}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`
+/** Drop the `maz-preset` cookie (saved name no longer resolves). */
+export function clearSavedPresetName(): void {
+  deleteCookie(PRESET_COOKIE)
 }

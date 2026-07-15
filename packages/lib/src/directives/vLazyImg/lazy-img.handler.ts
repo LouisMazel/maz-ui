@@ -1,4 +1,4 @@
-import type { ClassOptions, VLazyImgBinding, VLazyImgOptions } from './types'
+import type { ClassOptions, VLazyImgBinding, VLazyImgBindingValue, VLazyImgOptions } from './types'
 
 export * from './types'
 
@@ -17,280 +17,323 @@ export const DEFAULT_OPTIONS: ClassOptions = {
   },
 }
 
+type ElementOptions = ClassOptions & { disabled?: boolean }
+
+interface ElementState {
+  options: ElementOptions
+  binding: VLazyImgBinding
+  img: HTMLImageElement | null
+  isPicture: boolean
+  isBg: boolean
+  loaded: boolean
+  observerKey?: string
+}
+
+interface PooledObserver {
+  observer: IntersectionObserver
+  targets: Set<Element>
+}
+
+function mergeOptions(
+  base: ClassOptions,
+  override: (VLazyImgOptions & { disabled?: boolean, src?: string }) = {},
+): ElementOptions {
+  return {
+    ...base,
+    ...override,
+    observerOptions: {
+      ...base.observerOptions,
+      ...override.observerOptions,
+    },
+  }
+}
+
+/**
+ * Lazy image loader shared across every element bound to the directive.
+ *
+ * State is kept per element in a `WeakMap` and `IntersectionObserver`s are pooled
+ * by their options signature, so a single instance can drive hundreds of images
+ * with a handful of observers and no per-element leak on unmount.
+ */
 export class LazyImg {
-  private observers: IntersectionObserver[] = []
-  private readonly defaultOptions: ClassOptions = DEFAULT_OPTIONS
   private options: ClassOptions
-  private onImgLoadedCallback: (el: HTMLElement) => void
-  private onImgErrorCallback: (el: HTMLElement, err: ErrorEvent) => void
-  private hasImgLoaded = false
+  private states = new WeakMap<Element, ElementState>()
+  private pool = new Map<string, PooledObserver>()
+  private rootIds = new WeakMap<Element, number>()
+  private rootSeq = 0
 
   constructor(opts: VLazyImgOptions = {}) {
-    this.options = this.buildOptions(opts)
-    this.onImgLoadedCallback = this.imageIsLoaded.bind(this)
-    this.onImgErrorCallback = this.imageHasError.bind(this)
+    this.options = mergeOptions(DEFAULT_OPTIONS, opts)
   }
 
-  private async loadErrorPhoto() {
-    const { default: photo } = await import('@maz-ui/icons/svg/no-image.svg?url')
-    return photo
-  }
+  public add(el: HTMLElement, binding: VLazyImgBinding): void {
+    const isBg = this.isBgMode(binding)
+    const isPicture = el instanceof HTMLPictureElement
 
-  private buildOptions(opts: VLazyImgOptions): ClassOptions {
-    return {
-      ...this.defaultOptions,
-      ...opts,
-      observerOptions: {
-        ...this.defaultOptions.observerOptions,
-        ...opts.observerOptions,
-      },
+    if (isBg && isPicture) {
+      throw new Error(`[MazLazyImg] You can't use the "bg-image" mode with "<picture />" element`)
     }
-  }
 
-  private removeClass(el: HTMLElement, className: string) {
-    el.classList.remove(className)
-  }
-
-  private addClass(el: HTMLElement, className: string) {
-    el.classList.add(className)
-  }
-
-  private removeAllStateClasses(el: HTMLElement) {
-    this.removeClass(el, this.options.loadedClass)
-    this.removeClass(el, this.options.loadingClass)
-    this.removeClass(el, this.options.errorClass)
-    this.removeClass(el, this.options.fallbackClass)
-  }
-
-  private setBaseClass(el: HTMLElement) {
-    this.addClass(el, this.options.baseClass)
-  }
-
-  private imageIsLoading(el: HTMLElement) {
-    this.addClass(el, this.options.loadingClass)
-    this.options.onLoading?.(el)
-  }
-
-  private imageIsLoaded(el: HTMLElement): void {
-    this.hasImgLoaded = true
-    this.removeClass(el, this.options.loadingClass)
-    this.addClass(el, this.options.loadedClass)
-    this.options.onLoaded?.(el)
-  }
-
-  private imageHasError(el: HTMLElement): void {
-    this.removeClass(el, this.options.loadingClass)
-    this.addClass(el, this.options.errorClass)
-
-    this.options.onError?.(el)
-
-    this.setDefaultPhoto(el)
-  }
-
-  private getSrc(binding: VLazyImgBinding) {
-    return typeof binding.value === 'object' ? binding.value.src : binding.value
-  }
-
-  private getImageUrl(el: HTMLElement, binding: VLazyImgBinding): string | null | undefined {
-    const dataSrc = this.getImgElement(el).getAttribute('data-lazy-src')
-    if (dataSrc)
-      return dataSrc
-
-    return this.getSrc(binding)
-  }
-
-  private async setPictureSourceUrls(el: HTMLElement): Promise<void> {
-    const sourceElements = el.querySelectorAll('source')
-
-    if (sourceElements.length > 0) {
-      for await (const source of sourceElements) {
-        const srcSet = source.getAttribute('data-lazy-srcset')
-        if (srcSet) {
-          source.srcset = srcSet
-        }
-        else {
-          return this.imageHasError(el)
-        }
-      }
+    const state: ElementState = {
+      options: this.resolveOptions(binding),
+      binding,
+      img: this.resolveImg(el, isPicture),
+      isPicture,
+      isBg,
+      loaded: false,
     }
-    else {
-      this.imageHasError(el)
+    this.states.set(el, state)
+
+    setTimeout(() => this.addClass(el, state.options.baseClass), 0)
+
+    if (!isBg && !el.getAttribute('src')) {
+      this.setImgSrc(el, EMPTY_PHOTO)
     }
+
+    this.watch(el, state)
   }
 
-  private hasBgImgMode(binding: VLazyImgBinding): boolean {
+  public update(el: HTMLElement, binding: VLazyImgBinding): void {
+    if (binding.value === binding.oldValue)
+      return
+
+    const state = this.states.get(el)
+
+    if (!state) {
+      this.add(el, binding)
+      return
+    }
+
+    state.options = this.resolveOptions(binding)
+    state.binding = binding
+    state.loaded = false
+
+    this.removeAllStateClasses(el, state.options)
+    this.unobserve(el, state)
+    this.watch(el, state)
+  }
+
+  public remove(el: HTMLElement, binding: VLazyImgBinding): void {
+    const state = this.states.get(el)
+
+    if (state)
+      this.unobserve(el, state)
+
+    if (this.isBgMode(binding))
+      el.style.backgroundImage = ''
+
+    this.removeAllStateClasses(el, state?.options ?? this.options)
+    this.states.delete(el)
+  }
+
+  public setImgSrc(el: HTMLElement, src: string): void {
+    const img = this.states.get(el)?.img ?? this.resolveImg(el, el instanceof HTMLPictureElement)
+    if (img)
+      img.src = src
+  }
+
+  private resolveOptions(binding: VLazyImgBinding): ElementOptions {
+    const value: VLazyImgBindingValue = binding.value
+    return value && typeof value === 'object' ? mergeOptions(this.options, value) : { ...this.options }
+  }
+
+  private resolveImg(el: HTMLElement, isPicture: boolean): HTMLImageElement | null {
+    return isPicture ? el.querySelector('img') : (el as HTMLImageElement)
+  }
+
+  private isBgMode(binding: VLazyImgBinding): boolean {
     return binding.arg === 'bg-image'
   }
 
-  private isPictureElement(el: HTMLElement): boolean {
-    return el instanceof HTMLPictureElement
+  private watch(el: HTMLElement, state: ElementState): void {
+    if (state.options.disabled || !globalThis.IntersectionObserver) {
+      this.loadImage(el, state)
+      return
+    }
+
+    const key = this.observerKey(state.options.observerOptions)
+    state.observerKey = key
+
+    let pooled = this.pool.get(key)
+    if (!pooled) {
+      const observer = new IntersectionObserver(entries => this.onIntersect(entries), state.options.observerOptions)
+      pooled = { observer, targets: new Set() }
+      this.pool.set(key, pooled)
+    }
+
+    pooled.targets.add(el)
+    pooled.observer.observe(el)
   }
 
-  private getImgElement(el: HTMLElement): HTMLImageElement {
-    const isPictureElement = this.isPictureElement(el)
-    return (isPictureElement ? el.querySelector('img') : el) as HTMLImageElement
+  private onIntersect(entries: IntersectionObserverEntry[]): void {
+    for (const entry of entries) {
+      if (!entry.isIntersecting)
+        continue
+
+      const el = entry.target as HTMLElement
+      const state = this.states.get(el)
+      if (!state)
+        continue
+
+      state.options.onIntersecting?.(el)
+
+      if (state.options.observerOnce)
+        this.unobserve(el, state)
+
+      if (state.options.loadOnce && state.loaded)
+        continue
+
+      this.loadImage(el, state)
+    }
   }
 
-  private async setDefaultPhoto(el: HTMLElement) {
-    if (this.options.fallbackSrc === false)
+  private unobserve(el: HTMLElement, state: ElementState): void {
+    if (!state.observerKey)
       return
 
-    const fallbackSrc = this.options.fallbackSrc
+    const pooled = this.pool.get(state.observerKey)
+    if (!pooled)
+      return
 
-    if (typeof fallbackSrc === 'string') {
-      this.addClass(el, this.options.fallbackClass)
+    pooled.observer.unobserve(el)
+    pooled.targets.delete(el)
+
+    if (pooled.targets.size === 0) {
+      pooled.observer.disconnect()
+      this.pool.delete(state.observerKey)
     }
+
+    state.observerKey = undefined
+  }
+
+  private observerKey(options: ClassOptions['observerOptions']): string {
+    const root = options.root ? this.rootId(options.root) : 0
+    const threshold = Array.isArray(options.threshold) ? options.threshold.join(',') : options.threshold
+    return `${root}|${options.rootMargin ?? ''}|${threshold}`
+  }
+
+  private rootId(root: Element): number {
+    let id = this.rootIds.get(root)
+    if (id === undefined) {
+      id = ++this.rootSeq
+      this.rootIds.set(root, id)
+    }
+    return id
+  }
+
+  private loadImage(el: HTMLElement, state: ElementState): void {
+    this.addClass(el, state.options.loadingClass)
+    state.options.onLoading?.(el)
+
+    if (state.isPicture) {
+      this.attachListeners(el, state)
+      this.setPictureSourceUrls(el, state)
+      return
+    }
+
+    const url = this.getImageUrl(state)
+
+    if (!url) {
+      this.handleError(el, state)
+      return
+    }
+
+    if (state.isBg) {
+      el.style.backgroundImage = `url('${url}')`
+      this.markLoaded(el, state)
+      return
+    }
+
+    this.attachListeners(el, state)
+    this.setImgSrc(el, url)
+  }
+
+  private getImageUrl(state: ElementState): string | null | undefined {
+    const dataSrc = state.img?.getAttribute('data-lazy-src')
+    if (dataSrc)
+      return dataSrc
+
+    const value = state.binding.value
+    return typeof value === 'object' ? value.src : value
+  }
+
+  private setPictureSourceUrls(el: HTMLElement, state: ElementState): void {
+    const sources = el.querySelectorAll('source')
+
+    if (sources.length === 0) {
+      this.handleError(el, state)
+      return
+    }
+
+    for (const source of sources) {
+      const srcset = source.getAttribute('data-lazy-srcset')
+      if (!srcset) {
+        this.handleError(el, state)
+        return
+      }
+      source.srcset = srcset
+    }
+  }
+
+  private attachListeners(el: HTMLElement, state: ElementState): void {
+    const img = state.img
+    if (!img)
+      return
+
+    img.addEventListener('load', () => this.markLoaded(el, state), { once: true })
+    img.addEventListener('error', () => this.handleError(el, state), { once: true })
+  }
+
+  private markLoaded(el: HTMLElement, state: ElementState): void {
+    state.loaded = true
+    this.removeClass(el, state.options.loadingClass)
+    this.addClass(el, state.options.loadedClass)
+    state.options.onLoaded?.(el)
+  }
+
+  private handleError(el: HTMLElement, state: ElementState): void {
+    this.removeClass(el, state.options.loadingClass)
+    this.addClass(el, state.options.errorClass)
+    state.options.onError?.(el)
+    this.setDefaultPhoto(el, state).catch(() => {})
+  }
+
+  private async setDefaultPhoto(el: HTMLElement, state: ElementState): Promise<void> {
+    const fallbackSrc = state.options.fallbackSrc
+
+    if (fallbackSrc === false)
+      return
+
+    if (typeof fallbackSrc === 'string')
+      this.addClass(el, state.options.fallbackClass)
 
     const errorPhoto = fallbackSrc ?? (await this.loadErrorPhoto())
 
-    const sourceElements = el.querySelectorAll('source')
-    if (sourceElements.length > 0) {
-      for await (const source of sourceElements) {
+    const sources = el.querySelectorAll('source')
+
+    if (sources.length > 0) {
+      for (const source of sources)
         source.srcset = errorPhoto
-      }
     }
     else {
       this.setImgSrc(el, errorPhoto)
     }
   }
 
-  private addEventListenerToImg(el: HTMLElement) {
-    const imgElement = this.getImgElement(el)
-    imgElement.addEventListener('load', () => this.onImgLoadedCallback(el), {
-      once: true,
-    })
-    imgElement.addEventListener('error', err => this.onImgErrorCallback(el, err), { once: true })
+  private async loadErrorPhoto(): Promise<string> {
+    const { default: photo } = await import('@maz-ui/icons/svg/no-image.svg?url')
+    return photo
   }
 
-  private async loadImage(el: HTMLElement, binding: VLazyImgBinding): Promise<void> {
-    this.imageIsLoading(el)
-
-    if (this.isPictureElement(el)) {
-      this.addEventListenerToImg(el)
-
-      await this.setPictureSourceUrls(el)
-    }
-    else {
-      const imageUrl = this.getImageUrl(el, binding)
-
-      if (!imageUrl)
-        return this.imageHasError(el)
-
-      if (this.hasBgImgMode(binding)) {
-        el.style.backgroundImage = `url('${imageUrl}')`
-        this.imageIsLoaded(el)
-      }
-      else {
-        this.addEventListenerToImg(el)
-
-        this.setImgSrc(el, imageUrl)
-      }
-    }
+  private addClass(el: HTMLElement, className: string): void {
+    el.classList.add(className)
   }
 
-  public setImgSrc(el: HTMLElement, src: string) {
-    const imgElement = this.getImgElement(el)
-    imgElement.src = src
+  private removeClass(el: HTMLElement, className: string): void {
+    el.classList.remove(className)
   }
 
-  private handleIntersectionObserver(
-    el: HTMLElement,
-    binding: VLazyImgBinding,
-    entries: IntersectionObserverEntry[],
-    observer: IntersectionObserver,
-  ) {
-    this.observers.push(observer)
-
-    for (const entry of entries) {
-      if (entry.isIntersecting) {
-        this.options.onIntersecting?.(entry.target)
-
-        if (this.options.observerOnce) {
-          observer.unobserve(el)
-        }
-
-        if (this.options.loadOnce && this.hasImgLoaded)
-          return
-        this.loadImage(el, binding)
-      }
-    }
-  }
-
-  private createObserver(el: HTMLElement, binding: VLazyImgBinding) {
-    const observerCallback = (
-      entries: IntersectionObserverEntry[],
-      intersectionObserver: IntersectionObserver,
-    ) => {
-      this.handleIntersectionObserver(el, binding, entries, intersectionObserver)
-    }
-
-    const observerOptions: ClassOptions['observerOptions'] = this.options.observerOptions
-    const observer = new IntersectionObserver(observerCallback, observerOptions)
-
-    observer.observe(el)
-  }
-
-  private async imageHandler(
-    el: HTMLElement,
-    binding: VLazyImgBinding,
-    type: 'bind' | 'update',
-  ): Promise<void> {
-    if (type === 'update') {
-      // Clean all previous observers
-      for await (const observer of this.observers) observer.unobserve(el)
-    }
-
-    if (globalThis.IntersectionObserver) {
-      this.createObserver(el, binding)
-    }
-    else {
-      this.loadImage(el, binding)
-    }
-  }
-
-  private async bindUpdateHandler(
-    el: HTMLElement,
-    binding: VLazyImgBinding,
-    type: 'bind' | 'update',
-  ): Promise<void> {
-    await this.imageHandler(el, binding, type)
-  }
-
-  public async add(el: HTMLElement, binding: VLazyImgBinding): Promise<void> {
-    if (this.hasBgImgMode(binding) && this.isPictureElement(el)) {
-      throw new Error(`[MazLazyImg] You can't use the "bg-image" mode with "<picture />" element`)
-    }
-
-    setTimeout(() => this.setBaseClass(el), 0)
-
-    if (!el.getAttribute('src')) {
-      this.setImgSrc(el, EMPTY_PHOTO)
-    }
-
-    await this.bindUpdateHandler(el, binding, 'bind')
-  }
-
-  public async update(el: HTMLElement, binding: VLazyImgBinding): Promise<void> {
-    if (binding.value !== binding.oldValue) {
-      this.hasImgLoaded = false
-      this.removeAllStateClasses(el)
-
-      await this.bindUpdateHandler(el, binding, 'update')
-    }
-  }
-
-  public remove(el: HTMLElement, binding: VLazyImgBinding) {
-    this.hasImgLoaded = false
-    if (this.hasBgImgMode(binding)) {
-      el.style.backgroundImage = ''
-    }
-
-    this.removeAllStateClasses(el)
-
-    for (const observer of this.observers) {
-      observer.unobserve(el)
-    }
-
-    this.observers = []
+  private removeAllStateClasses(el: HTMLElement, options: ClassOptions): void {
+    el.classList.remove(options.loadedClass, options.loadingClass, options.errorClass, options.fallbackClass)
   }
 }
