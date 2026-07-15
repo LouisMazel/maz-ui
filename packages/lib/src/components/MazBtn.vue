@@ -219,12 +219,12 @@ const ROUNDED_CLASS: Record<NonNullable<MazBtnProps['roundedSize']>, string> = {
 } as const
 
 const FAB_SIZE_CLASS: Record<NonNullable<MazBtnProps['size']>, string> = {
-  xl: 'maz:w-16',
-  lg: 'maz:w-14',
-  md: 'maz:w-12',
-  sm: 'maz:w-10',
-  xs: 'maz:w-8',
-  mini: 'maz:w-6',
+  xl: 'maz:size-16',
+  lg: 'maz:size-14',
+  md: 'maz:size-12',
+  sm: 'maz:size-10',
+  xs: 'maz:size-8',
+  mini: 'maz:size-6',
 } as const
 
 const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: string, end: string }> = {
