@@ -65,7 +65,7 @@
     "husky": "^9.1.7",
     "lint-staged": "16.4.0",
     "nx": "^22.6.5",
-    "postcss": "^8.5.10",
+    "postcss": "^8.5.23",
     "postcss-html": "^1.8.1",
     "postcss-import": "^16.1.1",
     "postcss-nested": "^7.0.2",
