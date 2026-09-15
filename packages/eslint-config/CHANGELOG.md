@@ -1,5 +1,22 @@
 # Change Log
 
+## v5.0.0-beta.43 (2026-09-15)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.42...v5.0.0-beta.43)
+
+### 🩹 Fixes
+
+- **@maz-ui/eslint-config:** Scope unicorn/prefer-global-this to JS/TS files ([aedfd307](https://github.com/LouisMazel/maz-ui/commit/aedfd307))
+
+  Linting a project that contains `.json`/`.jsonc`/`.yaml` files no longer
+  crashes with "unicorn/prefer-global-this does not support the language jsonc".
+  The rule is now applied only to JS/TS/Vue files, and only when the `unicorn`
+  option is enabled, instead of to every language globally.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.39 (2026-06-22)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.38...v5.0.0-beta.39)
