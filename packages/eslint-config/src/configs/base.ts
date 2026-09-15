@@ -33,9 +33,6 @@ export function baseRules(isProduction: boolean): Partial<Rules> {
     'no-useless-assignment': 'error',
     'preserve-caught-error': 'error',
 
-    // Unicorn
-    'unicorn/prefer-global-this': 'error',
-
     // Test
     'test/prefer-lowercase-title': 'off',
 

@@ -136,6 +136,27 @@ describe('defineConfig', () => {
     expect(Array.isArray(config)).toBe(true)
   })
 
+  it('registers unicorn/prefer-global-this scoped to JS/TS files by default', async () => {
+    stubPackageJson({})
+    const defineConfig = await loadDefineConfig()
+    const config = await defineConfig({ logLevel: 'silent' })
+
+    const blocks = config as Array<{ files?: unknown, rules?: Record<string, unknown> }>
+    const block = blocks.find(b => b?.rules?.['unicorn/prefer-global-this'] !== undefined)
+    expect(block).toBeDefined()
+    expect(block?.files).toContain('**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue}')
+  })
+
+  it('does not register the unicorn config when unicorn is false', async () => {
+    stubPackageJson({})
+    const defineConfig = await loadDefineConfig()
+    const config = await defineConfig({ unicorn: false, logLevel: 'silent' })
+
+    const blocks = config as Array<{ rules?: Record<string, unknown> }>
+    const hasRule = blocks.some(block => block?.rules?.['unicorn/prefer-global-this'] !== undefined)
+    expect(hasRule).toBe(false)
+  })
+
   it('enables vueAccessibility', async () => {
     stubPackageJson({})
     const defineConfig = await loadDefineConfig()

@@ -14,6 +14,7 @@ import { markdown } from './configs/markdown'
 import { sonarjsRules, sonarjsTestRules } from './configs/sonarjs'
 import { tailwindcssConfigs } from './configs/tailwindcss'
 import { testRules } from './configs/test'
+import { unicorn } from './configs/unicorn'
 import { vueRules, vueSfcOnlyRules } from './configs/vue'
 
 // `eslint-plugin-better-tailwindcss` resolves Tailwind inside a synckit worker
@@ -206,6 +207,14 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
       rules: sonarjsTestRules,
     })
     log.debug(`${TAG} SonarJS: applied recommended preset + ${Object.keys(sonarjsRules).length} extra rules + test-file relaxations`)
+  }
+
+  if (resolved.unicorn) {
+    // Scoped to JS/TS/Vue files only: applying these rules globally (via
+    // baseRules) makes ESLint crash on the jsonc/yaml languages antfu enables,
+    // e.g. "unicorn/prefer-global-this does not support the language jsonc".
+    additionalConfigs.push(unicorn)
+    log.debug(`${TAG} Unicorn: applied JS/TS-scoped rule overrides`)
   }
 
   if (resolved.vueAccessibility) {
