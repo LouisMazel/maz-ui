@@ -42,7 +42,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "@types/postcss-url": "^10.0.4",
     "@types/react": "^19.3.0",
-    "@vercel/og": "^1.0.3",
+    "@vercel/og": "^0.11.1",
     "postcss-nested": "^8.0.1",
     "postcss-url": "^10.1.3",
     "react": "^19.3.0",
