@@ -54,11 +54,11 @@ For Cursor, Windsurf, VS Code Copilot, Cline and Claude Desktop, see the [MCP gu
 
 3. **Apply the easy ones in batch.** The mechanical renames are safe to automate:
 
-   > Apply the codemod for sections 2, 3, 6 and 14 (CSS subpath, `rounded-size="base"`, `left-icon`/`right-icon`, Nuxt `injectMainCss`). Show me a diff before saving.
+   > Apply the codemod for "Required changes" sections 2, 3, 6 and 14 (CSS subpath, `rounded-size="base"`, `left-icon`/`right-icon`, Nuxt `injectMainCss`). Show me a diff before saving.
 
 4. **Discuss the judgment calls.** For sections that have more than a rename — `MazIcon` API, `MazChart` `update-mode`, theme preset reshape — let the assistant ask before rewriting:
 
-   > For sections 4, 8 and 10–12, do not patch automatically. Tell me which of my call sites are affected and propose options.
+   > For "Required changes" sections 4, 8 and 10–12, do not patch automatically. Tell me which of my call sites are affected and propose options.
 
 5. **Verify.** After patches:
 
@@ -596,6 +596,25 @@ The upgrade tool rewrites static `size="<unit>"` values on `<MazAvatar>` automat
 ```bash
 # Find avatars still passing a size you may want to review
 rg "<MazAvatar[^>]*\bsize=" src/
+```
+
+### 17. `MazPullToRefresh` — `on-click` → `on-refresh`
+
+The callback prop of `MazPullToRefresh` was renamed from `on-click` to `on-refresh` to reflect what it actually does: it runs when the refresh is triggered on release, not on a click.
+
+```vue
+<!-- v4 -->
+<MazPullToRefresh :on-click="fetchData" />
+
+<!-- v5 -->
+<MazPullToRefresh :on-refresh="fetchData" />
+```
+
+The upgrade tool rewrites this automatically on `<MazPullToRefresh>` tags (both `on-click` and `onClick`, bound or static).
+
+```bash
+# Find usages to update
+rg "<MazPullToRefresh[^>]*\bon-?[Cc]lick" src/
 ```
 
 ## Informational changes (probably no action needed)
