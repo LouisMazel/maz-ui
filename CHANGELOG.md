@@ -1,5 +1,45 @@
 # Change Log
 
+## v5.0.0-beta.44 (2026-09-29)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.43...v5.0.0-beta.44)
+
+### 🚀 Features
+
+- **@maz-ui/upgrade:** Add MazPullToRefresh on-click to on-refresh codemod ([6553dbdd](https://github.com/LouisMazel/maz-ui/commit/6553dbdd))
+
+  The upgrade tool now rewrites the `MazPullToRefresh` callback prop, renaming `on-click`/`onClick` (bound or static, kebab-case or camelCase) to `on-refresh`/`onRefresh`. The rewrite is scoped to `<MazPullToRefresh>` tags, so native click handlers and the `onClick` prop of other components are left untouched.
+
+- **maz-ui:** Export global config types from plugins ([8f997dc8](https://github.com/LouisMazel/maz-ui/commit/8f997dc8))
+
+  The types `GlobalizableProps`, `MazComponentName` and `MazUiDefaultsOptions` are now exported from the package entry, so you can type the `MazUi` global config and component defaults directly.
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSidebar - outline style on nav btn ([78aca34c](https://github.com/LouisMazel/maz-ui/commit/78aca34c))
+- **maz-ui:** MazSidebar - outline style on nav btn ([8bcc84f4](https://github.com/LouisMazel/maz-ui/commit/8bcc84f4))
+
+### 📖 Documentation
+
+- **docs:** Document MazPullToRefresh on-refresh migration ([50e1f689](https://github.com/LouisMazel/maz-ui/commit/50e1f689))
+
+  Add section 17 covering the `MazPullToRefresh` `on-click` -> `on-refresh` rename, and clarify the codemod prompts to reference the "Required changes" sections.
+
+- **docs:** Use maz: prefix in MazChecklist example ([0937e3b1](https://github.com/LouisMazel/maz-ui/commit/0937e3b1))
+
+### 📦 Build
+
+- **maz-ui:** Remove legacy tailwind config and redundant package fields ([700cc8db](https://github.com/LouisMazel/maz-ui/commit/700cc8db))
+
+  Drop the legacy `tailwind.config.ts` (Tailwind v4 uses CSS-based config), remove the unused `autoprefixer` dependency and the redundant `main`/`module`/`unpkg`/`types` package fields (resolution is handled by `exports`), and point the VS Code Tailwind config to `src/tailwindcss/tailwind.css`.
+
+- **deps:** Upgrade dependencies ([#1639](https://github.com/LouisMazel/maz-ui/pull/1639))
+
+### ❤️ Contributors
+
+- Mazel <me@loicmazuel.com>
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.43 (2026-09-15)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.42...v5.0.0-beta.43)

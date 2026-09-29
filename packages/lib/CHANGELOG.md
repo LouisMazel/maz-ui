@@ -1,5 +1,33 @@
 # Change Log
 
+## v5.0.0-beta.44 (2026-09-29)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.43...v5.0.0-beta.44)
+
+### 🚀 Features
+
+- **maz-ui:** Export global config types from plugins ([8f997dc8](https://github.com/LouisMazel/maz-ui/commit/8f997dc8))
+
+  The types `GlobalizableProps`, `MazComponentName` and `MazUiDefaultsOptions` are now exported from the package entry, so you can type the `MazUi` global config and component defaults directly.
+
+### 🩹 Fixes
+
+- **maz-ui:** MazSidebar - outline style on nav btn ([78aca34c](https://github.com/LouisMazel/maz-ui/commit/78aca34c))
+- **maz-ui:** MazSidebar - outline style on nav btn ([8bcc84f4](https://github.com/LouisMazel/maz-ui/commit/8bcc84f4))
+
+### 📦 Build
+
+- **maz-ui:** Remove legacy tailwind config and redundant package fields ([700cc8db](https://github.com/LouisMazel/maz-ui/commit/700cc8db))
+
+  Drop the legacy `tailwind.config.ts` (Tailwind v4 uses CSS-based config), remove the unused `autoprefixer` dependency and the redundant `main`/`module`/`unpkg`/`types` package fields (resolution is handled by `exports`), and point the VS Code Tailwind config to `src/tailwindcss/tailwind.css`.
+
+- **deps:** Upgrade dependencies ([#1639](https://github.com/LouisMazel/maz-ui/pull/1639))
+
+### ❤️ Contributors
+
+- Mazel <me@loicmazuel.com>
+- LouisMazel <me@loicmazuel.com>
+
 ## v5.0.0-beta.42 (2026-07-15)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.41...v5.0.0-beta.42)

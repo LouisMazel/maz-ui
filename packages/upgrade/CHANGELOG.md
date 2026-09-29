@@ -1,5 +1,24 @@
 # Changelog
 
+## v5.0.0-beta.44 (2026-09-29)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.43...v5.0.0-beta.44)
+
+### 🚀 Features
+
+- **@maz-ui/upgrade:** Add MazPullToRefresh on-click to on-refresh codemod ([6553dbdd](https://github.com/LouisMazel/maz-ui/commit/6553dbdd))
+
+  The upgrade tool now rewrites the `MazPullToRefresh` callback prop, renaming `on-click`/`onClick` (bound or static, kebab-case or camelCase) to `on-refresh`/`onRefresh`. The rewrite is scoped to `<MazPullToRefresh>` tags, so native click handlers and the `onClick` prop of other components are left untouched.
+
+### 📦 Build
+
+- **deps:** Upgrade dependencies ([#1639](https://github.com/LouisMazel/maz-ui/pull/1639))
+
+### ❤️ Contributors
+
+- Mazel <me@loicmazuel.com>
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.29 (2026-06-14)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.28...v5.0.0-beta.29)

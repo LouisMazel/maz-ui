@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.44 (2026-09-29)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.43...v5.0.0-beta.44)
+
+### 📦 Build
+
+- **deps:** Upgrade dependencies ([#1639](https://github.com/LouisMazel/maz-ui/pull/1639))
+
+### ❤️ Contributors
+
+- Mazel <me@loicmazuel.com>
+
 ## v5.0.0-beta.43 (2026-09-15)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.42...v5.0.0-beta.43)
