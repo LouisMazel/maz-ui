@@ -60,7 +60,7 @@ describe('MazTabsBar branch coverage', () => {
       })
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
-      expect(tabButtons.length).toBe(3)
+      expect(tabButtons).toHaveLength(3)
       expect(tabButtons[0].text()).toBe('Tab A')
       expect(tabButtons[1].text()).toBe('Tab B')
     })
@@ -95,7 +95,7 @@ describe('MazTabsBar branch coverage', () => {
       })
 
       const disabledItems = wrapper.findAll('.m-tabs-bar__item.--disabled')
-      expect(disabledItems.length).toBe(1)
+      expect(disabledItems).toHaveLength(1)
     })
 
     it('defaults disabled to false for string items', () => {
@@ -421,7 +421,7 @@ describe('MazTabsBar branch coverage', () => {
 
       // Elements should be stored; verify by checking that buttons render
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
-      expect(tabButtons.length).toBe(3)
+      expect(tabButtons).toHaveLength(3)
     })
   })
 
@@ -444,7 +444,7 @@ describe('MazTabsBar branch coverage', () => {
       })
 
       const customItems = wrapper.findAll('.custom-item')
-      expect(customItems.length).toBe(2)
+      expect(customItems).toHaveLength(2)
       expect(customItems[0].attributes('data-active')).toBe('true')
       expect(customItems[0].attributes('data-index')).toBe('0')
       expect(customItems[1].attributes('data-active')).toBe('false')
@@ -467,7 +467,7 @@ describe('MazTabsBar branch coverage', () => {
       await flushPromises()
       await nextTick()
 
-      expect(wrapper.findAll('.m-tabs-bar__item').length).toBe(2)
+      expect(wrapper.findAll('.m-tabs-bar__item')).toHaveLength(2)
       expect(wrapper.html()).toContain('5')
     })
 
@@ -476,7 +476,7 @@ describe('MazTabsBar branch coverage', () => {
         items: [{ label: 'No Badge' }],
       })
 
-      expect(wrapper.findAll('.m-tabs-bar__item').length).toBe(1)
+      expect(wrapper.findAll('.m-tabs-bar__item')).toHaveLength(1)
     })
   })
 })

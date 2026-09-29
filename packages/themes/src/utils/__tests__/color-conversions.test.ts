@@ -50,23 +50,13 @@ describe('parseColor', () => {
 
   describe('Given a 6-digit hex color', () => {
     describe('When parsing', () => {
-      it('converts pure red to HSL', () => {
-        const result = parseColor('#ff0000')
-        expect(result.h).toBeCloseTo(0, 1)
-        expect(result.s).toBeCloseTo(100, 1)
-        expect(result.l).toBeCloseTo(50, 1)
-      })
-
-      it('converts pure green to HSL', () => {
-        const result = parseColor('#00ff00')
-        expect(result.h).toBeCloseTo(120, 1)
-        expect(result.s).toBeCloseTo(100, 1)
-        expect(result.l).toBeCloseTo(50, 1)
-      })
-
-      it('converts pure blue to HSL', () => {
-        const result = parseColor('#0000ff')
-        expect(result.h).toBeCloseTo(240, 1)
+      it.each([
+        ['red', '#ff0000', 0],
+        ['green', '#00ff00', 120],
+        ['blue', '#0000ff', 240],
+      ])('converts pure %s to HSL', (_name, hex, h) => {
+        const result = parseColor(hex)
+        expect(result.h).toBeCloseTo(h, 1)
         expect(result.s).toBeCloseTo(100, 1)
         expect(result.l).toBeCloseTo(50, 1)
       })

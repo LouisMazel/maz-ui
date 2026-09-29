@@ -55,7 +55,7 @@ describe('mazInputTags', () => {
     await wrapper.vm.$nextTick()
 
     const tags = wrapper.findAll('.m-input-tags__tag')
-    expect(tags.length).toBe(2)
+    expect(tags).toHaveLength(2)
     expect(tags[0].text()).toContain('tag1')
     expect(tags[1].text()).toContain('tag2')
   })

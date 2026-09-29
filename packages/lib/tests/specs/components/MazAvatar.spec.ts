@@ -250,99 +250,25 @@ describe('MazAvatar extended branch coverage', () => {
       expect(initial.text()).toBe('JD')
     })
 
-    it('takes the first letter of the first two words by default', () => {
+    it.each([
+      ['John Michael Doe', undefined, 'JM'],
+      ['John Michael Doe', 3, 'JMD'],
+      ['admin', 2, 'AD'],
+      ['admin', 3, 'ADM'],
+      ['admin', undefined, 'AD'],
+      ['louis mazel', undefined, 'LM'],
+      ['John', 1, 'J'],
+      ['Alice Bob Charlie', 2, 'AB'],
+      ['  Louis   Mazel  ', undefined, 'LM'],
+    ])('derives initials from caption "%s" with letterCount %s', (caption, letterCount, expected) => {
       const wrapper = mount(MazAvatar, {
         props: {
-          caption: 'John Michael Doe',
+          caption,
+          letterCount,
         },
       })
       const initial = wrapper.find('.m-avatar__initial')
-      expect(initial.text()).toBe('JM')
-    })
-
-    it('takes the first letter of the first letterCount words', () => {
-      const wrapper = mount(MazAvatar, {
-        props: {
-          caption: 'John Michael Doe',
-          letterCount: 3,
-        },
-      })
-      const initial = wrapper.find('.m-avatar__initial')
-      expect(initial.text()).toBe('JMD')
-    })
-
-    it('takes the first letterCount characters of a single-word caption', () => {
-      const wrapper = mount(MazAvatar, {
-        props: {
-          caption: 'admin',
-          letterCount: 2,
-        },
-      })
-      const initial = wrapper.find('.m-avatar__initial')
-      expect(initial.text()).toBe('AD')
-    })
-
-    it('takes more characters of a single-word caption with a larger letterCount', () => {
-      const wrapper = mount(MazAvatar, {
-        props: {
-          caption: 'admin',
-          letterCount: 3,
-        },
-      })
-      const initial = wrapper.find('.m-avatar__initial')
-      expect(initial.text()).toBe('ADM')
-    })
-
-    it('uses the first two characters of a single-word caption by default', () => {
-      const wrapper = mount(MazAvatar, {
-        props: {
-          caption: 'admin',
-        },
-      })
-      const initial = wrapper.find('.m-avatar__initial')
-      expect(initial.text()).toBe('AD')
-    })
-
-    it('uppercases the initials regardless of the caption case', () => {
-      const wrapper = mount(MazAvatar, {
-        props: {
-          caption: 'louis mazel',
-        },
-      })
-      const initial = wrapper.find('.m-avatar__initial')
-      expect(initial.text()).toBe('LM')
-    })
-
-    it('displays single initial for single-word caption with letterCount 1', () => {
-      const wrapper = mount(MazAvatar, {
-        props: {
-          caption: 'John',
-          letterCount: 1,
-        },
-      })
-      const initial = wrapper.find('.m-avatar__initial')
-      expect(initial.text()).toBe('J')
-    })
-
-    it('limits initials to letterCount for multi-word captions', () => {
-      const wrapper = mount(MazAvatar, {
-        props: {
-          caption: 'Alice Bob Charlie',
-          letterCount: 2,
-        },
-      })
-      const initial = wrapper.find('.m-avatar__initial')
-      expect(initial.text()).toBe('AB')
-    })
-
-    it('collapses extra whitespace between words', () => {
-      const wrapper = mount(MazAvatar, {
-        props: {
-          caption: '  Louis   Mazel  ',
-        },
-      })
-      const initial = wrapper.find('.m-avatar__initial')
-      expect(initial.text()).toBe('LM')
+      expect(initial.text()).toBe(expected)
     })
   })
 

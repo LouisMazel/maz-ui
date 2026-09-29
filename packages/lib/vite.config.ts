@@ -15,10 +15,10 @@ import {
 } from './build'
 import { VitePreNestedCss } from './build/VitePreNestedCss'
 
-import pkg from './package.json'
+import pkg from './package.json' with { type: 'json' }
 
 function resolver(path: string) {
-  return resolve(__dirname, path)
+  return resolve(import.meta.dirname, path)
 }
 
 function getEntries(pattern: string) {
@@ -59,7 +59,7 @@ export default defineConfig(({ mode }) => {
       dts({
         tsconfigPath: resolver('./tsconfig.json'),
         entryRoot: resolver('src'),
-        outDir: [resolver('dist')],
+        outDirs: [resolver('dist')],
       }),
       ViteCompileStyles(),
       codecovVitePlugin({

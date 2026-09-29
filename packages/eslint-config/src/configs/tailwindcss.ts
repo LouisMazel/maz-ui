@@ -73,6 +73,7 @@ export function tailwindcssConfigs(
       ...presetConfig.rules,
       'better-tailwindcss/no-unknown-classes': 'off',
       'better-tailwindcss/enforce-consistent-line-wrapping': 'off',
+      'better-tailwindcss/no-concatenated-classes': 'off',
       'maz/tailwind-no-arbitrary-px': [noArbitraryPx.severity, noArbitraryPx.options],
     },
   }]

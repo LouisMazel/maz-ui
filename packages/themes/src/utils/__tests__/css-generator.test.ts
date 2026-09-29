@@ -28,7 +28,7 @@ describe('given generateCSS function', () => {
 
     it('then emits a single :root block', () => {
       const rootMatches = css.match(/:root\s*\{/g) ?? []
-      expect(rootMatches.length).toBe(1)
+      expect(rootMatches).toHaveLength(1)
     })
 
     it('then emits each base color as light-dark()', () => {
@@ -147,7 +147,7 @@ describe('given generateCSS function', () => {
 
     it('then emits a single :root block', () => {
       const rootMatches = css.match(/:root\s*\{/g) ?? []
-      expect(rootMatches.length).toBe(1)
+      expect(rootMatches).toHaveLength(1)
     })
 
     it('then never emits .dark or .light overrides', () => {
@@ -858,7 +858,7 @@ describe('given injectCSS function', () => {
 
       injectCSS(CSS_ID, ':root { --test: 1; }')
 
-      expect(document.head.children.length).toBe(initialChildren)
+      expect(document.head.children).toHaveLength(initialChildren)
     })
   })
 
@@ -896,7 +896,7 @@ describe('given injectCSS function', () => {
       injectCSS(CSS_ID, 'final-css')
 
       const elements = document.querySelectorAll(`#${CSS_ID}`)
-      expect(elements.length).toBe(1)
+      expect(elements).toHaveLength(1)
       expect(elements[0].textContent).toBe('final-css')
     })
   })
@@ -950,7 +950,7 @@ describe('given removeCSS function', () => {
 
       removeCSS(CSS_ID)
 
-      expect(document.querySelectorAll(`#${CSS_ID}`).length).toBe(0)
+      expect(document.querySelectorAll(`#${CSS_ID}`)).toHaveLength(0)
     })
   })
 })

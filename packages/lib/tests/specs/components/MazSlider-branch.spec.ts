@@ -17,7 +17,7 @@ describe('MazSlider branch coverage', () => {
       })
 
       const buttons = wrapper.findAll('.m-slider__btn span')
-      expect(buttons.length).toBe(1)
+      expect(buttons).toHaveLength(1)
       expect(buttons[0].text()).toBe('42')
     })
 
@@ -27,7 +27,7 @@ describe('MazSlider branch coverage', () => {
       })
 
       const buttons = wrapper.findAll('.m-slider__btn span')
-      expect(buttons.length).toBe(3)
+      expect(buttons).toHaveLength(3)
       expect(buttons[0].text()).toBe('10')
       expect(buttons[1].text()).toBe('50')
       expect(buttons[2].text()).toBe('90')
@@ -39,7 +39,7 @@ describe('MazSlider branch coverage', () => {
       })
 
       const buttons = wrapper.findAll('.m-slider__btn span')
-      expect(buttons.length).toBe(1)
+      expect(buttons).toHaveLength(1)
       expect(buttons[0].text()).toBe('0')
     })
 
@@ -49,7 +49,7 @@ describe('MazSlider branch coverage', () => {
       })
 
       const buttons = wrapper.findAll('.m-slider__btn span')
-      expect(buttons.length).toBe(1)
+      expect(buttons).toHaveLength(1)
       expect(buttons[0].text()).toBe('0')
     })
   })
@@ -284,7 +284,7 @@ describe('MazSlider branch coverage', () => {
       })
 
       const dividers = wrapper.findAll('.m-slider__divider')
-      expect(dividers.length).toBe(0)
+      expect(dividers).toHaveLength(0)
     })
   })
 
@@ -313,32 +313,21 @@ describe('MazSlider branch coverage', () => {
   })
 
   describe('cursor keyboard events', () => {
-    it('decreases value on ArrowLeft keydown', async () => {
+    it.each([
+      ['ArrowLeft', 1, 49],
+      ['ArrowRight', 1, 51],
+      ['ArrowLeft', 10, 40],
+    ] as const)('moves value on %s keydown with step %i to %i', async (key, step, expected) => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: 50, min: 0, max: 100, step: 1 },
+        props: { modelValue: 50, min: 0, max: 100, step },
       })
 
       const button = wrapper.find('.m-slider__btn')
-      await button.trigger('keydown', { key: 'ArrowLeft' })
-
-      const emitted = wrapper.emitted('update:model-value')
-      // Should emit value - step
-      if (emitted && emitted.length > 1) {
-        expect(emitted.at(-1)?.[0]).toBe(49)
-      }
-    })
-
-    it('increases value on ArrowRight keydown', async () => {
-      wrapper = mount(MazSlider, {
-        props: { modelValue: 50, min: 0, max: 100, step: 1 },
-      })
-
-      const button = wrapper.find('.m-slider__btn')
-      await button.trigger('keydown', { key: 'ArrowRight' })
+      await button.trigger('keydown', { key })
 
       const emitted = wrapper.emitted('update:model-value')
       if (emitted && emitted.length > 1) {
-        expect(emitted.at(-1)?.[0]).toBe(51)
+        expect(emitted.at(-1)?.[0]).toBe(expected)
       }
     })
 
@@ -417,52 +406,16 @@ describe('MazSlider branch coverage', () => {
       // Should not emit additional events for Enter key
       expect(emittedAfter).toBe(emittedBefore)
     })
-
-    it('respects step value on ArrowLeft', async () => {
-      wrapper = mount(MazSlider, {
-        props: { modelValue: 50, min: 0, max: 100, step: 10 },
-      })
-
-      const button = wrapper.find('.m-slider__btn')
-      await button.trigger('keydown', { key: 'ArrowLeft' })
-
-      const emitted = wrapper.emitted('update:model-value')
-      if (emitted && emitted.length > 1) {
-        expect(emitted.at(-1)?.[0]).toBe(40)
-      }
-    })
   })
 
   describe('cursor mouse/touch events', () => {
-    it('activates cursor on mousedown', async () => {
+    it.each(['mousedown', 'touchstart', 'focus'])('activates cursor on %s', async (event) => {
       wrapper = mount(MazSlider, {
         props: { modelValue: 50 },
       })
 
       const button = wrapper.find('.m-slider__btn')
-      await button.trigger('mousedown')
-
-      expect(button.classes()).toContain('active-cursor')
-    })
-
-    it('activates cursor on touchstart', async () => {
-      wrapper = mount(MazSlider, {
-        props: { modelValue: 50 },
-      })
-
-      const button = wrapper.find('.m-slider__btn')
-      await button.trigger('touchstart')
-
-      expect(button.classes()).toContain('active-cursor')
-    })
-
-    it('activates cursor on focus', async () => {
-      wrapper = mount(MazSlider, {
-        props: { modelValue: 50 },
-      })
-
-      const button = wrapper.find('.m-slider__btn')
-      await button.trigger('focus')
+      await button.trigger(event)
 
       expect(button.classes()).toContain('active-cursor')
     })
@@ -729,37 +682,19 @@ describe('MazSlider branch coverage', () => {
   })
 
   describe('step rounding', () => {
-    it('rounds value to nearest step with step=5', async () => {
+    it.each([
+      [23, 5, 25],
+      [33, 25, 25],
+      [33, 1, 33],
+    ])('rounds %i with step %i to %i', async (modelValue, step, expected) => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: 23, min: 0, max: 100, step: 5 },
+        props: { modelValue, min: 0, max: 100, step },
       })
 
       await nextTick()
       const emitted = wrapper.emitted('update:model-value')
       expect(emitted).toBeTruthy()
-      expect(emitted?.[0][0]).toBe(25)
-    })
-
-    it('rounds value to nearest step with step=25', async () => {
-      wrapper = mount(MazSlider, {
-        props: { modelValue: 33, min: 0, max: 100, step: 25 },
-      })
-
-      await nextTick()
-      const emitted = wrapper.emitted('update:model-value')
-      expect(emitted).toBeTruthy()
-      expect(emitted?.[0][0]).toBe(25)
-    })
-
-    it('handles step=1 without rounding changes', async () => {
-      wrapper = mount(MazSlider, {
-        props: { modelValue: 33, min: 0, max: 100, step: 1 },
-      })
-
-      await nextTick()
-      const emitted = wrapper.emitted('update:model-value')
-      expect(emitted).toBeTruthy()
-      expect(emitted?.[0][0]).toBe(33)
+      expect(emitted?.[0][0]).toBe(expected)
     })
   })
 
@@ -796,7 +731,7 @@ describe('MazSlider branch coverage', () => {
       })
 
       const buttons = wrapper.findAll('.m-slider__btn')
-      expect(buttons.length).toBe(5)
+      expect(buttons).toHaveLength(5)
     })
 
     it('renders single button for number value', () => {
@@ -805,7 +740,7 @@ describe('MazSlider branch coverage', () => {
       })
 
       const buttons = wrapper.findAll('.m-slider__btn')
-      expect(buttons.length).toBe(1)
+      expect(buttons).toHaveLength(1)
     })
   })
 })

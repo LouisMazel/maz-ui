@@ -45,10 +45,9 @@
     "dist"
   ],
   "scripts": {
-    "codegen": "nx dev",
     "prepack": "nuxt-module-build build",
-    "build": "pnpm dev && nuxt-module-build build",
-    "dev": "nuxt-module-build build --stub && nuxt-module-build prepare",
+    "build": "pnpm dev && pnpm prepack",
+    "dev": "pnpm prepack --stub && nuxt-module-build prepare",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest watch",
     "test:unit:coverage": "vitest run --coverage",
@@ -63,18 +62,18 @@
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
     "@maz-ui/utils": "workspace:*",
-    "@nuxt/devtools-kit": "^3.2.3",
-    "@nuxt/kit": "^4.4.8",
+    "@nuxt/devtools-kit": "^4.0.0-beta.2",
+    "@nuxt/kit": "^4.5.2",
     "defu": "^6.1.7",
     "maz-ui": "workspace:*"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
-    "@nuxt/devtools": "^3.2.3",
-    "@nuxt/module-builder": "^1.0.2",
-    "@nuxt/schema": "^4.4.8",
-    "@nuxt/test-utils": "^4.0.3",
-    "nuxt": "^4.4.8"
+    "@nuxt/devtools": "^4.0.0-beta.2",
+    "@nuxt/module-builder": "^1.0.3",
+    "@nuxt/schema": "^4.5.2",
+    "@nuxt/test-utils": "^4.3.2",
+    "nuxt": "^4.5.2"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

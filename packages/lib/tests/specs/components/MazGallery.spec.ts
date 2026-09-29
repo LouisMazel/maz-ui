@@ -23,7 +23,7 @@ describe('given MazGallery component', () => {
 
       const galleryItems = wrapper.findAll('.m-gallery__item')
 
-      expect(galleryItems.length).toBe(images.length)
+      expect(galleryItems).toHaveLength(images.length)
     })
   })
 

@@ -36,7 +36,7 @@ describe('given MazChecklist component', () => {
       })
 
       const items = wrapper.findAll('label.m-checklist-item')
-      expect(items.length).toBe(3)
+      expect(items).toHaveLength(3)
     })
   })
 
@@ -58,7 +58,7 @@ describe('given MazChecklist component', () => {
       await input.setValue('Banana')
 
       const items = wrapper.findAll('label.m-checklist-item')
-      expect(items.length).toBe(1)
+      expect(items).toHaveLength(1)
       expect(items[0].text()).toContain('Banana')
     })
   })

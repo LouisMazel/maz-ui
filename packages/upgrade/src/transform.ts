@@ -95,7 +95,7 @@ export function transformPullToRefresh(content: string): string {
 // the `size` prop of every other component is never touched.
 
 const MAZ_AVATAR_OPEN_TAG = /<(?:MazAvatar|maz-avatar)\b[^>]*>/g
-const AVATAR_SIZE_UNIT = /(?<![:\w-])(size\s*=\s*(["']))(\d*\.?\d+)([a-z%]+)\2/gi
+const AVATAR_SIZE_UNIT = /(?<![:\w-])(size\s*=\s*(["']))(\d+(?:\.\d+)?|\.\d+)([a-z%]+)\2/gi
 
 function tripleLength(value: string): string {
   return String(Number.parseFloat((Number.parseFloat(value) * 3).toFixed(4)))
@@ -151,7 +151,7 @@ export function transformHslVar(content: string): string {
 
 const NUXT_INJECT_MAIN_CSS = /\binjectMainCss\b/g
 const STRATEGY_HYBRID = /(\bstrategy\s*:\s*['"])hybrid(['"])/g
-const DEPRECATED_THEME_OPTIONS = /^[^\S\n]*(?:injectCriticalCSS|injectFullCSS|injectAllCSSOnServer)\s*:[^,\n]*,?[^\S\n]*\n?/gm
+const DEPRECATED_THEME_OPTIONS = /^[ \t]*(?:injectCriticalCSS|injectFullCSS|injectAllCSSOnServer)\s*:[^,\n]*,?[^\S\n]*\n?/gm
 
 export function transformConfig(content: string): string {
   return content

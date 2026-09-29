@@ -29,7 +29,7 @@ describe('no-transition', () => {
 
         expect(fn).toHaveBeenCalledOnce()
         expect(document.documentElement.classList.contains('no-transitions')).toBe(false)
-        expect(document.head.querySelectorAll('style').length).toBe(0)
+        expect(document.head.querySelectorAll('style')).toHaveLength(0)
       })
     })
 
@@ -38,7 +38,7 @@ describe('no-transition', () => {
         noTransition(() => {})
 
         const styles = document.head.querySelectorAll('style')
-        expect(styles.length).toBe(1)
+        expect(styles).toHaveLength(1)
         expect(styles[0].textContent).toContain('no-transitions')
         expect(styles[0].textContent).toContain('transition-property')
       })
@@ -61,14 +61,14 @@ describe('no-transition', () => {
         noTransition(() => {})
 
         expect(document.documentElement.classList.contains('no-transitions')).toBe(true)
-        expect(document.head.querySelectorAll('style').length).toBe(1)
+        expect(document.head.querySelectorAll('style')).toHaveLength(1)
 
         vi.advanceTimersByTime(499)
         expect(document.documentElement.classList.contains('no-transitions')).toBe(true)
 
         vi.advanceTimersByTime(1)
         expect(document.documentElement.classList.contains('no-transitions')).toBe(false)
-        expect(document.head.querySelectorAll('style').length).toBe(0)
+        expect(document.head.querySelectorAll('style')).toHaveLength(0)
       })
 
       it('then the class is still present before 500ms elapses', () => {

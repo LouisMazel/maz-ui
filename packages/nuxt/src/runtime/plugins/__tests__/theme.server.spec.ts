@@ -182,26 +182,12 @@ describe('theme plugin (server)', () => {
     expect(scriptCall![0].meta[0]['http-equiv']).toBe('Accept-CH')
   })
 
-  it('should not inject blocking script when mode is light', async () => {
-    const context = createContext({ colorMode: 'auto', mode: 'light', darkModeStrategy: 'class' })
-    await (themePlugin as (...args: any[]) => any)(context)
-    const scriptCall = mockUseHead.mock.calls.find(
-      ([arg]: any[]) => arg.script,
-    )
-    expect(scriptCall).toBeUndefined()
-  })
-
-  it('should not inject blocking script when darkModeStrategy is media', async () => {
-    const context = createContext({ colorMode: 'auto', mode: 'both', darkModeStrategy: 'media' })
-    await (themePlugin as (...args: any[]) => any)(context)
-    const scriptCall = mockUseHead.mock.calls.find(
-      ([arg]: any[]) => arg.script,
-    )
-    expect(scriptCall).toBeUndefined()
-  })
-
-  it('should not inject blocking script when colorMode is dark', async () => {
-    const context = createContext({ colorMode: 'dark', mode: 'both', darkModeStrategy: 'class' })
+  it.each([
+    ['mode is light', { colorMode: 'auto', mode: 'light', darkModeStrategy: 'class' }],
+    ['darkModeStrategy is media', { colorMode: 'auto', mode: 'both', darkModeStrategy: 'media' }],
+    ['colorMode is dark', { colorMode: 'dark', mode: 'both', darkModeStrategy: 'class' }],
+  ] as const)('does not inject blocking script when %s', async (_label, options) => {
+    const context = createContext(options)
     await (themePlugin as (...args: any[]) => any)(context)
     const scriptCall = mockUseHead.mock.calls.find(
       ([arg]: any[]) => arg.script,

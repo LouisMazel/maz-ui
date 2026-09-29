@@ -62,7 +62,6 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "codegen": "nx build",
     "build": "vite build",
     "build:watch": "vite build --watch --mode development",
     "typecheck": "tsc --noEmit --skipLibCheck",
@@ -82,7 +81,7 @@
   },
   "devDependencies": {
     "@maz-ui/vite-config": "workspace:*",
-    "libphonenumber-js": "^1.13.6"
+    "libphonenumber-js": "^1.13.14"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [

@@ -29,8 +29,8 @@ const DEFAULT_UNIT: 'rem' | 'em' = 'rem'
  * {@link HAS_PX_VALUE} to keep this regex linear (no backtracking — the
  * trailing `\]` is the unambiguous terminator).
  */
-// eslint-disable-next-line sonarjs/slow-regex -- bounded by the literal `]` terminator; no backtracking
-const ARBITRARY_BRACKET = /\[([^\s\]]+)\]/g
+
+const ARBITRARY_BRACKET = /\[(?=([^\s\]]+))\1\]/g
 
 /** Quick presence check: does the bracket body contain a px value? */
 const HAS_PX_VALUE = /\dpx/i
@@ -43,8 +43,8 @@ const HAS_PX_VALUE = /\dpx/i
  * a leading digit, `\.\d+` requires a leading dot — so the regex stays
  * linear (no overlapping backtracking).
  */
-// eslint-disable-next-line sonarjs/slow-regex -- alternatives are disjoint; no backtracking
-const PX_VALUE = /(-?(?:\d+(?:\.\d+)?|\.\d+))px/gi
+
+const PX_VALUE = /(-?(?=(\d+(?:\.\d+)?|\.\d+))\2)px/gi
 
 function convertPx(pxStr: string, base: number, unit: 'rem' | 'em'): string {
   const px = Number.parseFloat(pxStr)
