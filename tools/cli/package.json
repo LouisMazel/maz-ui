@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
-    "tsx": "^4.22.3",
+    "tsx": "^4.23.15",
     "unbuild": "^3.6.1"
   },
   "lint-staged": {

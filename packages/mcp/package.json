@@ -68,7 +68,7 @@
     "@swc/core": "1.15.40",
     "prettier": "^3.8.4",
     "ts-node-maintained": "^10.9.5",
-    "tsx": "^4.22.3",
+    "tsx": "^4.23.15",
     "unbuild": "^3.6.1"
   },
   "lint-staged": {
