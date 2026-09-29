@@ -163,25 +163,25 @@ You can replace the default search function by providing a custom search functio
       :search-function="customEmployeeSearch"
       color="success"
       elevation
-      class="max-h-96"
+      class="maz:max-h-96"
     >
       <template #item="{ item }">
-        <div class="flex w-full items-center gap-4">
-          <div class="flex h-12 w-12 flex-none items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 text-white font-semibold text-lg">
+        <div class="maz:flex maz:w-full maz:items-center maz:gap-4">
+          <div class="maz:flex maz:h-12 maz:w-12 maz:flex-none maz:items-center maz:justify-center maz:rounded-full maz:bg-linear-to-br maz:from-primary-500 maz:to-secondary-500 maz:text-white maz:font-semibold maz:text-lg">
             {{ item.initials }}
           </div>
-          <div class="flex flex-1 flex-col gap-1">
-            <div class="flex items-center gap-2">
-              <span class="font-semibold text-normal">{{ item.label }}</span>
+          <div class="maz:flex maz:flex-1 maz:flex-col maz:gap-1">
+            <div class="maz:flex maz:items-center maz:gap-2">
+              <span class="maz:font-semibold maz:text-normal">{{ item.label }}</span>
               <MazBadge :color="item.departmentColor" size="xs">
                 {{ item.department }}
               </MazBadge>
             </div>
-            <span class="text-muted text-sm">{{ item.email }}</span>
+            <span class="maz:text-muted maz:text-sm">{{ item.email }}</span>
           </div>
-          <div class="flex flex-none items-center gap-1">
-            <MazIcon icon="/star.svg" class="text-warning-500" size="1rem" />
-            <span class="text-sm font-medium">{{ item.rating }}</span>
+          <div class="maz:flex maz:flex-none maz:items-center maz:gap-1">
+            <MazIcon icon="/star.svg" class="maz:text-warning-500" size="1rem" />
+            <span class="maz:text-sm maz:font-medium">{{ item.rating }}</span>
           </div>
         </div>
       </template>
