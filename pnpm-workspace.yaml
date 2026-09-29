@@ -2,7 +2,6 @@ minimumReleaseAgeExcludePrune: true
 minimumReleaseAgeExclude:
   - '@yoloship/*'
   - '@maz-ui/node@5.0.0-beta.26'
-  - '@maz-ui/utils@5.0.0-beta.25'
   - relizy*
 
 # eslint-disable-next-line pnpm/yaml-enforce-settings

@@ -194,7 +194,7 @@
     }
   },
   "dependencies": {
-    "@floating-ui/vue": "^1.1.11",
+    "@floating-ui/vue": "^2.0.1",
     "@maz-ui/cli": "workspace:*",
     "@maz-ui/icons": "workspace:*",
     "@maz-ui/themes": "workspace:*",
