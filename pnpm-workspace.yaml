@@ -7,7 +7,7 @@ minimumReleaseAgeExclude:
 shellEmulator: true
 
 # eslint-disable-next-line pnpm/yaml-enforce-settings
-trustPolicy: warn-downgrade
+trustPolicy: off
 
 packages:
   - apps/*
