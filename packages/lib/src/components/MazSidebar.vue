@@ -247,7 +247,7 @@ defineExpose({ toggle, setOpen })
   <aside
     v-if="mode === 'push'"
     :id="uniqueId"
-    class="m-sidebar --push m-reset-css motion-reduce:maz:transition-none maz:relative maz:flex maz:h-full maz:shrink-0 maz:flex-col maz:overflow-hidden maz:bg-container maz:transition-[width,border-width] maz:duration-250 maz:ease-in-out"
+    class="m-sidebar --push m-reset-css maz:relative maz:flex maz:h-full maz:shrink-0 maz:flex-col maz:overflow-hidden maz:bg-container maz:transition-[width,border-width] maz:duration-250 maz:ease-in-out maz:motion-reduce:transition-none"
     :class="[
       `--side-${side}`,
       `--${state}`,
