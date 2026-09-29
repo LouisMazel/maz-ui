@@ -305,6 +305,34 @@ describe('transformProps', () => {
     })
   })
 
+  describe('Given a MazPullToRefresh with an on-click prop', () => {
+    describe('When transforming', () => {
+      it('renames the bound :on-click to :on-refresh', () => {
+        expect(transformProps(`<MazPullToRefresh :on-click="refresh" />`))
+          .toBe(`<MazPullToRefresh :on-refresh="refresh" />`)
+      })
+
+      it('renames the camelCase :onClick to :onRefresh', () => {
+        expect(transformProps(`<MazPullToRefresh :onClick="refresh" />`))
+          .toBe(`<MazPullToRefresh :onRefresh="refresh" />`)
+      })
+
+      it('renames the kebab-case tag variant', () => {
+        expect(transformProps(`<maz-pull-to-refresh :on-click="refresh" />`))
+          .toBe(`<maz-pull-to-refresh :on-refresh="refresh" />`)
+      })
+    })
+  })
+
+  describe('Given an on-click prop outside a MazPullToRefresh tag', () => {
+    describe('When transforming', () => {
+      it('leaves it untouched', () => {
+        expect(transformProps(`<MyButton :on-click="refresh" />`))
+          .toBe(`<MyButton :on-click="refresh" />`)
+      })
+    })
+  })
+
   describe('Given .--has-left-icon and .--has-right-icon CSS class selectors', () => {
     describe('When transforming', () => {
       it('renames to .--has-start-icon and .--has-end-icon', () => {

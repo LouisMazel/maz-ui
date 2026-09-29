@@ -61,8 +61,25 @@ export function transformProps(content: string): string {
     .replace(COLOR_BG, (_, p, s) => `${p}surface${s}`))
 
   out = transformAvatarSize(out)
+  out = transformPullToRefresh(out)
 
   return out
+}
+
+// --- 2c. MazPullToRefresh onClick → onRefresh ------------------------------
+// v5 renamed the callback prop `on-click` / `onClick` to `on-refresh` /
+// `onRefresh` (BREAKING) to reflect that it runs on release, not on click.
+// Scoped to `<MazPullToRefresh>` open tags so native click handlers and the
+// `onClick` prop of unrelated components are never touched.
+
+const MAZ_PULL_TO_REFRESH_OPEN_TAG = /<(?:MazPullToRefresh|maz-pull-to-refresh)\b[^>]*>/g
+const PULL_TO_REFRESH_ON_CLICK_KEBAB = /(\s:?)on-click\b/g
+const PULL_TO_REFRESH_ON_CLICK_CAMEL = /(\s:?)onClick\b/g
+
+export function transformPullToRefresh(content: string): string {
+  return content.replace(MAZ_PULL_TO_REFRESH_OPEN_TAG, tag => tag
+    .replace(PULL_TO_REFRESH_ON_CLICK_KEBAB, (_, prefix) => `${prefix}on-refresh`)
+    .replace(PULL_TO_REFRESH_ON_CLICK_CAMEL, (_, prefix) => `${prefix}onRefresh`))
 }
 
 // --- 2b. MazAvatar size scale (x3) -----------------------------------------

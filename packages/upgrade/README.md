@@ -157,6 +157,7 @@ ambiguous (`variant=`, `color="background"`) are rewritten **only inside
 | `rounded-size="base"`                                             | `rounded-size="md"`                                         |
 | `.--has-left-icon` / `.--has-right-icon` (CSS selectors)          | `.--has-start-icon` / `.--has-end-icon`                     |
 | `<MazAvatar size="2rem">` (static CSS unit)                       | `<MazAvatar size="6rem">` (value ×3, render preserved)      |
+| `<MazPullToRefresh :on-click="x">`                                | `<MazPullToRefresh :on-refresh="x">`                        |
 
 The `MazAvatar` rewrite targets only `<MazAvatar>` / `<maz-avatar>` opening
 tags. v5 fixed the avatar size scale (a CSS-unit `size` no longer renders 3x
@@ -164,6 +165,11 @@ too large), so the numeric value is multiplied by 3 to keep the exact same
 render. Every CSS unit is supported. `MazSize` keywords (`mini`..`xl`) and
 bound `:size="…"` expressions are left untouched - the latter is reported as
 a warning at the end of the run.
+
+The `MazPullToRefresh` rewrite targets only `<MazPullToRefresh>` /
+`<maz-pull-to-refresh>` opening tags. v5 renamed the callback prop `on-click`
+to `on-refresh` (both kebab-case and camelCase, bound or static), so native
+click handlers and the `onClick` prop of other components are never touched.
 
 ### `css`
 
