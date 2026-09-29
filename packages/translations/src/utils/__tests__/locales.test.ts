@@ -61,32 +61,14 @@ describe('locales', () => {
     })
 
     describe('when loading all available default locales', () => {
-      it('then it returns messages for es', async () => {
-        const messages = await loadDefaultMessages('es')
-        expect(messages).toBeDefined()
-        expect(Object.keys(messages).length).toBeGreaterThan(0)
-      })
-
-      it('then it returns messages for it', async () => {
-        const messages = await loadDefaultMessages('it')
-        expect(messages).toBeDefined()
-        expect(Object.keys(messages).length).toBeGreaterThan(0)
-      })
-
-      it('then it returns messages for ja', async () => {
-        const messages = await loadDefaultMessages('ja')
-        expect(messages).toBeDefined()
-        expect(Object.keys(messages).length).toBeGreaterThan(0)
-      })
-
-      it('then it returns messages for pt', async () => {
-        const messages = await loadDefaultMessages('pt')
-        expect(messages).toBeDefined()
-        expect(Object.keys(messages).length).toBeGreaterThan(0)
-      })
-
-      it('then it returns messages for zh-CN', async () => {
-        const messages = await loadDefaultMessages('zh-CN')
+      it.each([
+        { code: 'es' },
+        { code: 'it' },
+        { code: 'ja' },
+        { code: 'pt' },
+        { code: 'zh-CN' },
+      ])('then it returns messages for $code', async ({ code }) => {
+        const messages = await loadDefaultMessages(code)
         expect(messages).toBeDefined()
         expect(Object.keys(messages).length).toBeGreaterThan(0)
       })
