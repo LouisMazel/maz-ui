@@ -135,7 +135,7 @@ describe('given vTooltip directive', () => {
       binding.value = false
       await wrapper.vm.$nextTick()
 
-      expect(document.querySelectorAll('.m-tooltip-panel').length).toBe(0)
+      expect(document.querySelectorAll('.m-tooltip-panel')).toHaveLength(0)
     })
   })
 

@@ -248,7 +248,7 @@ export interface MazDropzoneFileData {
   type?: string
   lastModified?: number
   sizeInMb?: string
-  thumbnail?: string | undefined
+  thumbnail?: string
   lastModifiedDate?: Date
   uploading?: boolean
   success?: boolean

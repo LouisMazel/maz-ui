@@ -64,7 +64,7 @@ describe('components/MazInput.vue', () => {
 
         await vi.dynamicImportSettled()
 
-        expect(iconWrapper.findAll('.icon-stub').length).toBe(2)
+        expect(iconWrapper.findAll('.icon-stub')).toHaveLength(2)
       })
 
       it('Then it accepts a full MazIconProps object and forwards size/title', async () => {

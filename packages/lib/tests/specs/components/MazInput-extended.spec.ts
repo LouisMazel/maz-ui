@@ -14,14 +14,14 @@ describe('MazInput extended coverage', () => {
   }
 
   describe('when rendered with default props', () => {
-    it('should render the input component', () => {
+    it.each([
+      '.m-input',
+      'input',
+      '.m-input-wrapper.--border',
+      '.m-input-wrapper.--rounded-md',
+    ])('then %s exists by default', (selector) => {
       const wrapper = getWrapper()
-      expect(wrapper.find('.m-input').exists()).toBe(true)
-    })
-
-    it('should render an input element', () => {
-      const wrapper = getWrapper()
-      expect(wrapper.find('input').exists()).toBe(true)
+      expect(wrapper.find(selector).exists()).toBe(true)
     })
 
     it('should have text type by default', () => {
@@ -37,16 +37,6 @@ describe('MazInput extended coverage', () => {
     it('should have primary color by default', () => {
       const wrapper = getWrapper()
       expect(wrapper.find('.m-input').classes()).toContain('--primary')
-    })
-
-    it('should have border by default', () => {
-      const wrapper = getWrapper()
-      expect(wrapper.find('.m-input-wrapper.--border').exists()).toBe(true)
-    })
-
-    it('should have rounded-md by default', () => {
-      const wrapper = getWrapper()
-      expect(wrapper.find('.m-input-wrapper.--rounded-md').exists()).toBe(true)
     })
   })
 
@@ -163,19 +153,13 @@ describe('MazInput extended coverage', () => {
   })
 
   describe('when error prop is true', () => {
-    it('should apply --has-state class', () => {
+    it.each([
+      '.m-input.--has-state',
+      '.m-input.--has-z-2',
+      '.m-input-wrapper.maz\\:border-destructive',
+    ])('then %s exists', (selector) => {
       const wrapper = getWrapper({ error: true })
-      expect(wrapper.find('.m-input.--has-state').exists()).toBe(true)
-    })
-
-    it('should apply --has-z-2 class', () => {
-      const wrapper = getWrapper({ error: true })
-      expect(wrapper.find('.m-input.--has-z-2').exists()).toBe(true)
-    })
-
-    it('should apply destructive border style when not focused', () => {
-      const wrapper = getWrapper({ error: true })
-      expect(wrapper.find('.m-input-wrapper.maz\\:border-destructive').exists()).toBe(true)
+      expect(wrapper.find(selector).exists()).toBe(true)
     })
   })
 
@@ -441,25 +425,11 @@ describe('MazInput extended coverage', () => {
   })
 
   describe('input and change events', () => {
-    it('should emit input event on input', async () => {
+    it.each(['input', 'change', 'click'])('then it emits the %s event', async (event) => {
       const wrapper = getWrapper()
       const input = wrapper.find('input')
-      await input.trigger('input')
-      expect(wrapper.emitted('input')).toBeTruthy()
-    })
-
-    it('should emit change event on change', async () => {
-      const wrapper = getWrapper()
-      const input = wrapper.find('input')
-      await input.trigger('change')
-      expect(wrapper.emitted('change')).toBeTruthy()
-    })
-
-    it('should emit click event on click', async () => {
-      const wrapper = getWrapper()
-      const input = wrapper.find('input')
-      await input.trigger('click')
-      expect(wrapper.emitted('click')).toBeTruthy()
+      await input.trigger(event)
+      expect(wrapper.emitted(event)).toBeTruthy()
     })
   })
 

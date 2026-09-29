@@ -189,3 +189,7 @@ beforeEach(() => {
       document.cookie = `${name}=; path=/; max-age=0; SameSite=Lax`
   })
 })
+
+afterEach(async () => {
+  await vi.dynamicImportSettled()
+})

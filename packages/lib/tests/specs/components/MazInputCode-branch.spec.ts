@@ -7,21 +7,21 @@ describe('MazInputCode branch coverage', () => {
   describe('rendering with default props', () => {
     it('renders 4 input fields by default', () => {
       const wrapper = shallowMount(MazInputCode)
-      expect(wrapper.findAll('input').length).toBe(4)
+      expect(wrapper.findAll('input')).toHaveLength(4)
     })
 
     it('renders the correct number of inputs with custom codeLength', () => {
       const wrapper = shallowMount(MazInputCode, {
         props: { codeLength: 6 },
       })
-      expect(wrapper.findAll('input').length).toBe(6)
+      expect(wrapper.findAll('input')).toHaveLength(6)
     })
 
     it('renders with codeLength of 1', () => {
       const wrapper = shallowMount(MazInputCode, {
         props: { codeLength: 1 },
       })
-      expect(wrapper.findAll('input').length).toBe(1)
+      expect(wrapper.findAll('input')).toHaveLength(1)
     })
   })
 
@@ -67,28 +67,16 @@ describe('MazInputCode branch coverage', () => {
       expect(style).toContain('--input-border-color: var(--maz-primary)')
     })
 
-    it('applies secondary color CSS variable', () => {
+    it.each([
+      ['secondary', 'var(--maz-secondary)'],
+      ['info', 'var(--maz-info)'],
+      ['success', 'var(--maz-success)'],
+    ] as const)('applies %s color CSS variable', (color, cssVar) => {
       const wrapper = shallowMount(MazInputCode, {
-        props: { color: 'secondary' },
+        props: { color },
       })
       const style = wrapper.find('.m-input-code').attributes('style') || ''
-      expect(style).toContain('--input-border-color: var(--maz-secondary)')
-    })
-
-    it('applies info color CSS variable', () => {
-      const wrapper = shallowMount(MazInputCode, {
-        props: { color: 'info' },
-      })
-      const style = wrapper.find('.m-input-code').attributes('style') || ''
-      expect(style).toContain('--input-border-color: var(--maz-info)')
-    })
-
-    it('applies success color CSS variable', () => {
-      const wrapper = shallowMount(MazInputCode, {
-        props: { color: 'success' },
-      })
-      const style = wrapper.find('.m-input-code').attributes('style') || ''
-      expect(style).toContain('--input-border-color: var(--maz-success)')
+      expect(style).toContain(`--input-border-color: ${cssVar}`)
     })
   })
 
@@ -403,7 +391,7 @@ describe('MazInputCode branch coverage', () => {
       await inputs[3].setValue('4')
 
       expect(wrapper.emitted('completed')).toBeTruthy()
-      expect(wrapper.emitted('completed')!.length).toBe(1)
+      expect(wrapper.emitted('completed')!).toHaveLength(1)
     })
 
     it('does not emit completed when not all inputs are filled', async () => {

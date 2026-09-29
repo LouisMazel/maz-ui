@@ -125,36 +125,17 @@ describe('given MazMarkdownEditor component', () => {
       expect(wrapper.find('[data-action="table"]').exists()).toBe(true)
     })
 
-    it('then clicking bold wraps the selection with asterisks', async () => {
+    it.each<[string, string]>([
+      ['bold', '**hello**'],
+      ['italic', '_hello_'],
+      ['strikethrough', '~~hello~~'],
+      ['code', '`hello`'],
+    ])('then clicking %s wraps the selection', async (action, expected) => {
       const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'hello', toolbar: true } })
       selectAll(wrapper, 0, 5)
-      await wrapper.find('[data-action="bold"]').trigger('click')
+      await wrapper.find(`[data-action="${action}"]`).trigger('click')
 
-      expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual(['**hello**'])
-    })
-
-    it('then clicking italic wraps the selection with underscores', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'hello', toolbar: true } })
-      selectAll(wrapper, 0, 5)
-      await wrapper.find('[data-action="italic"]').trigger('click')
-
-      expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual(['_hello_'])
-    })
-
-    it('then clicking strikethrough wraps the selection with tildes', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'hello', toolbar: true } })
-      selectAll(wrapper, 0, 5)
-      await wrapper.find('[data-action="strikethrough"]').trigger('click')
-
-      expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual(['~~hello~~'])
-    })
-
-    it('then clicking inline code wraps the selection with backticks', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'hello', toolbar: true } })
-      selectAll(wrapper, 0, 5)
-      await wrapper.find('[data-action="code"]').trigger('click')
-
-      expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual(['`hello`'])
+      expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual([expected])
     })
 
     it('then clicking code block wraps the selection in a fenced block', async () => {
@@ -165,44 +146,18 @@ describe('given MazMarkdownEditor component', () => {
       expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual(['```\nx\n```'])
     })
 
-    it('then clicking quote prefixes the line', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'quote me', toolbar: true } })
-      selectAll(wrapper, 0, 0)
-      await wrapper.find('[data-action="quote"]').trigger('click')
+    it.each<[string, string, number, number, string]>([
+      ['quote', 'quote me', 0, 0, '> quote me'],
+      ['bulletList', 'item', 0, 0, '- item'],
+      ['orderedList', 'item', 0, 0, '1. item'],
+      ['checkList', 'todo', 0, 0, '- [ ] todo'],
+      ['link', 'site', 0, 4, '[site](url)'],
+    ])('then clicking the %s action updates the value', async (action, modelValue, from, to, expected) => {
+      const wrapper = mount(MazMarkdownEditor, { props: { modelValue, toolbar: true } })
+      selectAll(wrapper, from, to)
+      await wrapper.find(`[data-action="${action}"]`).trigger('click')
 
-      expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual(['> quote me'])
-    })
-
-    it('then clicking the bulleted list prefixes the line', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'item', toolbar: true } })
-      selectAll(wrapper, 0, 0)
-      await wrapper.find('[data-action="bulletList"]').trigger('click')
-
-      expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual(['- item'])
-    })
-
-    it('then clicking the numbered list prefixes the line', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'item', toolbar: true } })
-      selectAll(wrapper, 0, 0)
-      await wrapper.find('[data-action="orderedList"]').trigger('click')
-
-      expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual(['1. item'])
-    })
-
-    it('then clicking the task list prefixes the line', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'todo', toolbar: true } })
-      selectAll(wrapper, 0, 0)
-      await wrapper.find('[data-action="checkList"]').trigger('click')
-
-      expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual(['- [ ] todo'])
-    })
-
-    it('then clicking the link button inserts a markdown link', async () => {
-      const wrapper = mount(MazMarkdownEditor, { props: { modelValue: 'site', toolbar: true } })
-      selectAll(wrapper, 0, 4)
-      await wrapper.find('[data-action="link"]').trigger('click')
-
-      expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual(['[site](url)'])
+      expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual([expected])
     })
 
     it('then clicking the image button inserts a markdown image', async () => {

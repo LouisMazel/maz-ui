@@ -62,7 +62,7 @@ describe('MazDropdown extended coverage', () => {
       const wrapper = await getWrapper({ items: [] })
       await wrapper.find('[role="button"]').trigger('click')
       expect(wrapper.find('.m-dropdown__menu').exists()).toBe(true)
-      expect(wrapper.findAll('.menuitem').length).toBe(0)
+      expect(wrapper.findAll('.menuitem')).toHaveLength(0)
     })
   })
 

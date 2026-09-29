@@ -82,19 +82,13 @@ describe('given MazSidebar component', () => {
   })
 
   describe('when collapsible is "icon" and the sidebar is closed', () => {
-    it('then it applies the icon-width class', () => {
+    it.each([
+      'maz:w-(--maz-sidebar-icon-width)',
+      'maz:border-e',
+      '--collapsible-icon',
+    ])('then it applies the %s class', (className) => {
       const wrapper = mount(MazSidebar, { props: { open: false, collapsible: 'icon' } })
-      expect(wrapper.find('aside').classes()).toContain('maz:w-(--maz-sidebar-icon-width)')
-    })
-
-    it('then it still applies the border class', () => {
-      const wrapper = mount(MazSidebar, { props: { open: false, collapsible: 'icon' } })
-      expect(wrapper.find('aside').classes()).toContain('maz:border-e')
-    })
-
-    it('then it applies --collapsible-icon class', () => {
-      const wrapper = mount(MazSidebar, { props: { open: false, collapsible: 'icon' } })
-      expect(wrapper.find('aside').classes()).toContain('--collapsible-icon')
+      expect(wrapper.find('aside').classes()).toContain(className)
     })
   })
 

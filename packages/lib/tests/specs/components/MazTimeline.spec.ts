@@ -1,4 +1,4 @@
-import type { MazTimelineRoundedSize } from '@components/MazTimeline.vue'
+import type { MazTimelineRoundedSize, MazTimelineStepState } from '@components/MazTimeline.vue'
 import MazTimeline from '@components/MazTimeline.vue'
 import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount } from '@vue/test-utils'
@@ -22,10 +22,15 @@ function mountTimeline(props: Record<string, unknown> = {}, slots: Record<string
 
 describe('given MazTimeline component', () => {
   describe('when rendered with default props', () => {
-    it('then it renders with m-reset-css class', () => {
+    it.each([
+      'm-reset-css',
+      '--md',
+      '--rounded-md',
+      '--animated',
+    ])('then it applies the %s class by default', (className) => {
       const wrapper = mountTimeline()
 
-      expect(wrapper.classes()).toContain('m-reset-css')
+      expect(wrapper.classes()).toContain(className)
     })
 
     it('then it renders the correct number of steps', () => {
@@ -54,24 +59,6 @@ describe('given MazTimeline component', () => {
       expect(numbers[0]!.text()).toBe('1')
       expect(numbers[1]!.text()).toBe('2')
       expect(numbers[2]!.text()).toBe('3')
-    })
-
-    it('then it applies --md size class by default', () => {
-      const wrapper = mountTimeline()
-
-      expect(wrapper.classes()).toContain('--md')
-    })
-
-    it('then it applies --rounded-md class by default', () => {
-      const wrapper = mountTimeline()
-
-      expect(wrapper.classes()).toContain('--rounded-md')
-    })
-
-    it('then it applies --animated class by default', () => {
-      const wrapper = mountTimeline()
-
-      expect(wrapper.classes()).toContain('--animated')
     })
 
     it('then it renders N-1 connectors for N steps', () => {
@@ -440,40 +427,20 @@ describe('given MazTimeline component', () => {
   })
 
   describe('when rendered with state-specific styles', () => {
-    it('then error state step has destructive CSS variables', () => {
+    it.each<[MazTimelineStepState, string]>([
+      ['error', 'var(--maz-destructive)'],
+      ['warning', 'var(--maz-warning)'],
+      ['completed', 'var(--maz-success)'],
+    ])('then %s state step has the matching CSS variables', (state, cssValue) => {
       const wrapper = mountTimeline({
         steps: [
-          { title: 'Step 1', state: 'error' },
+          { title: 'Step 1', state },
           { title: 'Step 2' },
         ],
       })
 
       const style = wrapper.findAll('.m-timeline-step')[0]!.attributes('style')
-      expect(style).toContain('--m-timeline-state-bg: var(--maz-destructive)')
-    })
-
-    it('then warning state step has warning CSS variables', () => {
-      const wrapper = mountTimeline({
-        steps: [
-          { title: 'Step 1', state: 'warning' },
-          { title: 'Step 2' },
-        ],
-      })
-
-      const style = wrapper.findAll('.m-timeline-step')[0]!.attributes('style')
-      expect(style).toContain('--m-timeline-state-bg: var(--maz-warning)')
-    })
-
-    it('then completed state step has success CSS variables', () => {
-      const wrapper = mountTimeline({
-        steps: [
-          { title: 'Step 1', state: 'completed' },
-          { title: 'Step 2' },
-        ],
-      })
-
-      const style = wrapper.findAll('.m-timeline-step')[0]!.attributes('style')
-      expect(style).toContain('--m-timeline-state-bg: var(--maz-success)')
+      expect(style).toContain(`--m-timeline-state-bg: ${cssValue}`)
     })
 
     it('then active state step has no state CSS variables', () => {

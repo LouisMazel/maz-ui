@@ -38,7 +38,7 @@ export interface MazInputProps<T = MazInputValue> {
    * @type {T}
    * @example <MazInput v-model="inputValue" />
    */
-  modelValue?: T | undefined
+  modelValue?: T
   /**
    * Text displayed when the input is empty to guide the user
    * @type {string}

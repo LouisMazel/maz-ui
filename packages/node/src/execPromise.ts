@@ -127,7 +127,6 @@ export async function execPromise(
   const safeCommand = redactSecrets(command)
 
   return await new Promise<{ stdout: string, stderr: string }>((resolve, reject) => {
-    // eslint-disable-next-line sonarjs/os-command
     exec(command, {
       cwd,
       timeout,

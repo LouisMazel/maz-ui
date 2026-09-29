@@ -4,14 +4,14 @@ import { resolve } from 'node:path'
 import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
 
 const resolveAliases = {
-  '@maz-ui/utils/helpers/capitalize': resolve(__dirname, '../utils/src/helpers/capitalize.ts'),
-  '@maz-ui/utils': resolve(__dirname, '../utils/src/index.ts'),
-  '@maz-ui/translations/plugin': resolve(__dirname, '../translations/src/plugin.ts'),
-  '@maz-ui/translations': resolve(__dirname, '../translations/src/index.ts'),
-  '@maz-ui/themes/plugin': resolve(__dirname, '../themes/src/plugin.ts'),
-  '@maz-ui/themes/utils/get-color-mode': resolve(__dirname, '../themes/src/utils/get-color-mode.ts'),
-  '@maz-ui/themes/utils': resolve(__dirname, '../themes/src/utils/index.ts'),
-  '@maz-ui/themes': resolve(__dirname, '../themes/src/index.ts'),
+  '@maz-ui/utils/helpers/capitalize': resolve(import.meta.dirname, '../utils/src/helpers/capitalize.ts'),
+  '@maz-ui/utils': resolve(import.meta.dirname, '../utils/src/index.ts'),
+  '@maz-ui/translations/plugin': resolve(import.meta.dirname, '../translations/src/plugin.ts'),
+  '@maz-ui/translations': resolve(import.meta.dirname, '../translations/src/index.ts'),
+  '@maz-ui/themes/plugin': resolve(import.meta.dirname, '../themes/src/plugin.ts'),
+  '@maz-ui/themes/utils/get-color-mode': resolve(import.meta.dirname, '../themes/src/utils/get-color-mode.ts'),
+  '@maz-ui/themes/utils': resolve(import.meta.dirname, '../themes/src/utils/index.ts'),
+  '@maz-ui/themes': resolve(import.meta.dirname, '../themes/src/index.ts'),
 }
 
 export default defineConfig({

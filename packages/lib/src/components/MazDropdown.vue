@@ -215,7 +215,7 @@ export interface MazDropdownProps extends Omit<MazPopoverProps, 'modelValue' | '
   transition?: MazPopoverProps['transition']
 }
 
-const isOpen = defineModel({
+const isOpen = defineModel<boolean>({
   default: false,
 })
 

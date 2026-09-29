@@ -55,7 +55,7 @@ describe('component: MazAnimatedText', () => {
     wrapper.vm.isClient = true
     await wrapper.vm.$nextTick()
     const words = wrapper.findAll('.m-animated-text__word')
-    expect(words.length).toBe(3)
+    expect(words).toHaveLength(3)
     wrapper.unmount()
   })
 

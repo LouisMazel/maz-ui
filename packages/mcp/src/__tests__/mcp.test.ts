@@ -379,21 +379,15 @@ describe('Given MazUiMcpServer instance', () => {
   })
 
   describe('When calling get_doc tool', () => {
-    it('Then resolves kebab-case name', () => {
+    it.each([
+      { label: 'kebab-case name', name: 'maz-btn' },
+      { label: 'PascalCase name', name: 'MazBtn' },
+      { label: 'known alias', name: 'button' },
+    ])('Then resolves $label', ({ name }) => {
       mockDocumentationService.getComponentDocumentation.mockReturnValue('# MazBtn Component')
 
       const result = callToolHandler({
-        params: { name: 'get_doc', arguments: { name: 'maz-btn' } },
-      })
-
-      expect(result.content[0].text).toBe('# MazBtn Component')
-    })
-
-    it('Then resolves PascalCase name', () => {
-      mockDocumentationService.getComponentDocumentation.mockReturnValue('# MazBtn Component')
-
-      const result = callToolHandler({
-        params: { name: 'get_doc', arguments: { name: 'MazBtn' } },
+        params: { name: 'get_doc', arguments: { name } },
       })
 
       expect(result.content[0].text).toBe('# MazBtn Component')
@@ -407,16 +401,6 @@ describe('Given MazUiMcpServer instance', () => {
       })
 
       expect(result.content[0].text).toContain('MazBtn')
-    })
-
-    it('Then resolves known alias', () => {
-      mockDocumentationService.getComponentDocumentation.mockReturnValue('# MazBtn Component')
-
-      const result = callToolHandler({
-        params: { name: 'get_doc', arguments: { name: 'button' } },
-      })
-
-      expect(result.content[0].text).toBe('# MazBtn Component')
     })
 
     it('Then auto-detects type across all categories', () => {

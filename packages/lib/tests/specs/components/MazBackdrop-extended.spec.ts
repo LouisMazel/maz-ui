@@ -67,31 +67,17 @@ describe('MazBackdrop extended branch coverage', () => {
   })
 
   describe('closeOnEscape prop', () => {
-    it('closes on Escape when closeOnEscape is true', async () => {
+    it.each([
+      [true, 'Escape', false],
+      [false, 'Escape', true],
+      [true, 'Enter', true],
+    ])('with closeOnEscape %s and %s key, present becomes %s', async (closeOnEscape, key, expectedPresent) => {
       const wrapper = mount(MazBackdrop, {
-        props: { modelValue: true, closeOnEscape: true },
+        props: { modelValue: true, closeOnEscape },
       })
-      wrapper.vm.onKeyPress({ key: 'Escape' } as KeyboardEvent)
+      wrapper.vm.onKeyPress({ key } as KeyboardEvent)
       await nextTick()
-      expect(wrapper.vm.present).toBe(false)
-    })
-
-    it('does not close on Escape when closeOnEscape is false', async () => {
-      const wrapper = mount(MazBackdrop, {
-        props: { modelValue: true, closeOnEscape: false },
-      })
-      wrapper.vm.onKeyPress({ key: 'Escape' } as KeyboardEvent)
-      await nextTick()
-      expect(wrapper.vm.present).toBe(true)
-    })
-
-    it('does not close on non-Escape key press', async () => {
-      const wrapper = mount(MazBackdrop, {
-        props: { modelValue: true, closeOnEscape: true },
-      })
-      wrapper.vm.onKeyPress({ key: 'Enter' } as KeyboardEvent)
-      await nextTick()
-      expect(wrapper.vm.present).toBe(true)
+      expect(wrapper.vm.present).toBe(expectedPresent)
     })
   })
 

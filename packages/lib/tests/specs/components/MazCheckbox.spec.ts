@@ -87,22 +87,19 @@ describe('MazCheckbox extended branch coverage', () => {
   })
 
   describe('checkboxSize computed', () => {
-    it('applies xl size', () => {
+    it.each([
+      ['xl', '2rem'],
+      ['lg', '1.75rem'],
+      ['sm', '1.25rem'],
+      ['xs', '1rem'],
+      ['mini', '0.75rem'],
+    ] as const)('applies %s size', (size, dimension) => {
       const wrapper = mount(MazCheckbox, {
-        props: { modelValue: false, size: 'xl' },
+        props: { modelValue: false, size },
       })
       const span = wrapper.find('label > span')
-      expect(span.attributes('style')).toContain('width: 2rem')
-      expect(span.attributes('style')).toContain('height: 2rem')
-    })
-
-    it('applies lg size', () => {
-      const wrapper = mount(MazCheckbox, {
-        props: { modelValue: false, size: 'lg' },
-      })
-      const span = wrapper.find('label > span')
-      expect(span.attributes('style')).toContain('width: 1.75rem')
-      expect(span.attributes('style')).toContain('height: 1.75rem')
+      expect(span.attributes('style')).toContain(`width: ${dimension}`)
+      expect(span.attributes('style')).toContain(`height: ${dimension}`)
     })
 
     it('applies md size (default)', () => {
@@ -113,58 +110,19 @@ describe('MazCheckbox extended branch coverage', () => {
       expect(span.attributes('style')).toContain('width: 1.5rem')
       expect(span.attributes('style')).toContain('height: 1.5rem')
     })
-
-    it('applies sm size', () => {
-      const wrapper = mount(MazCheckbox, {
-        props: { modelValue: false, size: 'sm' },
-      })
-      const span = wrapper.find('label > span')
-      expect(span.attributes('style')).toContain('width: 1.25rem')
-      expect(span.attributes('style')).toContain('height: 1.25rem')
-    })
-
-    it('applies xs size', () => {
-      const wrapper = mount(MazCheckbox, {
-        props: { modelValue: false, size: 'xs' },
-      })
-      const span = wrapper.find('label > span')
-      expect(span.attributes('style')).toContain('width: 1rem')
-      expect(span.attributes('style')).toContain('height: 1rem')
-    })
-
-    it('applies mini size', () => {
-      const wrapper = mount(MazCheckbox, {
-        props: { modelValue: false, size: 'mini' },
-      })
-      const span = wrapper.find('label > span')
-      expect(span.attributes('style')).toContain('width: 0.75rem')
-      expect(span.attributes('style')).toContain('height: 0.75rem')
-    })
   })
 
   describe('checkIconColor computed', () => {
-    it('uses contrast color for icon when color is contrast', () => {
+    it.each([
+      ['contrast', 'var(--maz-surface)'],
+      ['primary', 'var(--maz-primary-foreground)'],
+      ['success', 'var(--maz-success-foreground)'],
+    ] as const)('uses %s icon color', (color, cssVar) => {
       const wrapper = mount(MazCheckbox, {
-        props: { modelValue: true, color: 'contrast' },
+        props: { modelValue: true, color },
       })
       const checkIcon = wrapper.find('.check-icon')
-      expect(checkIcon.attributes('style')).toContain('var(--maz-surface)')
-    })
-
-    it('uses color-foreground for icon when color is primary', () => {
-      const wrapper = mount(MazCheckbox, {
-        props: { modelValue: true, color: 'primary' },
-      })
-      const checkIcon = wrapper.find('.check-icon')
-      expect(checkIcon.attributes('style')).toContain('var(--maz-primary-foreground)')
-    })
-
-    it('uses color-foreground for icon when color is success', () => {
-      const wrapper = mount(MazCheckbox, {
-        props: { modelValue: true, color: 'success' },
-      })
-      const checkIcon = wrapper.find('.check-icon')
-      expect(checkIcon.attributes('style')).toContain('var(--maz-success-foreground)')
+      expect(checkIcon.attributes('style')).toContain(cssVar)
     })
   })
 

@@ -54,6 +54,15 @@ export const tailwindRules: StylelintRules = {
   'at-rule-no-deprecated': [true, { ignoreAtRules: ['apply'] }],
 
   /**
+   * `stylelint-config-recommended@18` enables the core rule
+   * `at-rule-prelude-no-invalid`, which validates the prelude of `@apply`
+   * against css-tree. A list of Tailwind utilities (`@apply maz:flex …`) is
+   * not a valid prelude grammar, so every `@apply` triggers a false positive.
+   * Whitelist Tailwind's at-rules (keeping `media`, ignored by recommended).
+   */
+  'at-rule-prelude-no-invalid': [true, { ignoreAtRules: [...TAILWIND_AT_RULES, 'media'] }],
+
+  /**
    * Tailwind v4 only parses the `prefix(...)` modifier on the bare-string
    * `@import "..."` form; wrapping the URL in `url(...)` swallows the modifier
    * and breaks the build. Force the bare-string syntax.

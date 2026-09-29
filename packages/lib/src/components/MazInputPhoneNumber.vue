@@ -111,8 +111,8 @@ const emits = defineEmits<{
 export interface MazInputPhoneNumberData {
   isValid: boolean
   isPossible?: boolean
-  countryCode?: CountryCode | undefined | null
-  parsedCountryCode?: CountryCode | undefined | null
+  countryCode?: CountryCode | null
+  parsedCountryCode?: CountryCode | null
   countryCallingCode?: CountryCallingCode
   nationalNumber?: NationalNumber
   type?: NumberType
@@ -122,7 +122,7 @@ export interface MazInputPhoneNumberData {
   e164?: string
   rfc3966?: string
   possibleCountries?: CountryCode[]
-  phoneNumber?: string | undefined | null
+  phoneNumber?: string | null
 }
 
 export interface MazInputPhoneNumberProps {
@@ -142,14 +142,14 @@ export interface MazInputPhoneNumberProps {
    * @type {string | undefined | null}
    * @example "+33612345678"
    */
-  modelValue?: string | undefined | null
+  modelValue?: string | null
   /**
    * The selected country code (e.g. "FR")
    * @model
    * @type {CountryCode | undefined | null}
    * @example "FR"
    */
-  countryCode?: CountryCode | undefined | null
+  countryCode?: CountryCode | null
   /**
    * Unique identifier for the component
    * @type {string}
@@ -437,8 +437,8 @@ function updateTheResults({
   countryCode = selectedCountry.value,
   checkCountryCode = false,
 }: {
-  phone?: string | undefined | null
-  countryCode?: CountryCode | undefined | null
+  phone?: string | null
+  countryCode?: CountryCode | null
   checkCountryCode?: boolean
 }) {
   results.value = getPhoneNumberResults({
@@ -475,7 +475,7 @@ const isLetterRegex = /\D/g
 function onPhoneNumberChanged({
   newPhoneNumber,
 }: {
-  newPhoneNumber?: string | undefined | null
+  newPhoneNumber?: string | null
 }) {
   updateTheResults({ phone: newPhoneNumber })
 

@@ -91,34 +91,18 @@ describe('given MazDirectivesResolver', () => {
   })
 
   describe('when resolving various directive patterns', () => {
-    it('then it should handle camelCase directive names', () => {
+    it.each([
+      { label: 'camelCase', input: 'lazyImg', expectedAs: 'vLazyImg', expectedName: 'vlazyImg' },
+      { label: 'kebab-case', input: 'zoom-img', expectedAs: 'vZoom-img', expectedName: 'vzoom-img' },
+      { label: 'single word', input: 'focus', expectedAs: 'vFocus', expectedName: 'vfocus' },
+    ])('then it should handle $label directive names', ({ input, expectedAs, expectedName }) => {
       const resolver = MazDirectivesResolver()
-      const result = resolver.resolve('lazyImg')
+      const result = resolver.resolve(input)
 
       expect(result).toBeDefined()
       expect(result?.from).toBe('maz-ui/directives')
-      expect(result?.as).toBe('vLazyImg')
-      expect(result?.name).toBe('vlazyImg')
-    })
-
-    it('then it should handle kebab-case directive names', () => {
-      const resolver = MazDirectivesResolver()
-      const result = resolver.resolve('zoom-img')
-
-      expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/directives')
-      expect(result?.as).toBe('vZoom-img')
-      expect(result?.name).toBe('vzoom-img')
-    })
-
-    it('then it should handle single word directive names', () => {
-      const resolver = MazDirectivesResolver()
-      const result = resolver.resolve('focus')
-
-      expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/directives')
-      expect(result?.as).toBe('vFocus')
-      expect(result?.name).toBe('vfocus')
+      expect(result?.as).toBe(expectedAs)
+      expect(result?.name).toBe(expectedName)
     })
   })
 

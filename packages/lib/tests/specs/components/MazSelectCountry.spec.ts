@@ -562,7 +562,7 @@ describe('mazSelectCountry', () => {
 
     const mazLazyImg = wrapper.findAll('.maz\\:size-5.maz\\:rounded')
 
-    expect(mazLazyImg.length).toBe(0)
+    expect(mazLazyImg).toHaveLength(0)
   })
 
   it('renders country item with code when showCodeInList is true', async () => {

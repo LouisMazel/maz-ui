@@ -13,28 +13,16 @@ describe('given MazComponentsResolver', () => {
   })
 
   describe('when resolving component with Maz prefix', () => {
-    it('then it should resolve MazBtn component', () => {
+    it.each([
+      { component: 'MazBtn' },
+      { component: 'MazInput' },
+      { component: 'MazSelect' },
+    ])('then it should resolve $component component', ({ component }) => {
       const resolver = MazComponentsResolver()
-      const result = resolver.resolve('MazBtn')
+      const result = resolver.resolve(component)
 
       expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/components/MazBtn')
-    })
-
-    it('then it should resolve MazInput component', () => {
-      const resolver = MazComponentsResolver()
-      const result = resolver.resolve('MazInput')
-
-      expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/components/MazInput')
-    })
-
-    it('then it should resolve MazSelect component', () => {
-      const resolver = MazComponentsResolver()
-      const result = resolver.resolve('MazSelect')
-
-      expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/components/MazSelect')
+      expect(result?.from).toBe(`maz-ui/components/${component}`)
     })
   })
 
@@ -119,23 +107,13 @@ describe('given MazComponentsResolver', () => {
   })
 
   describe('when resolving with edge cases', () => {
-    it('then it should handle empty string', () => {
+    it.each([
+      { label: 'empty string', input: '' },
+      { label: 'invalid patterns', input: 'maz' },
+      { label: 'lowercase maz prefix', input: 'mazBtn' },
+    ])('then it should handle $label', ({ input }) => {
       const resolver = MazComponentsResolver()
-      const result = resolver.resolve('')
-
-      expect(result).toBeUndefined()
-    })
-
-    it('then it should handle invalid patterns', () => {
-      const resolver = MazComponentsResolver()
-      const result = resolver.resolve('maz')
-
-      expect(result).toBeUndefined()
-    })
-
-    it('then it should handle lowercase maz prefix', () => {
-      const resolver = MazComponentsResolver()
-      const result = resolver.resolve('mazBtn')
+      const result = resolver.resolve(input)
 
       expect(result).toBeUndefined()
     })

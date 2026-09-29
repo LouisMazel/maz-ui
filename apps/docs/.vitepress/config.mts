@@ -5,7 +5,7 @@ import { dirname, join } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
-import tailwindcssPostcss from '@tailwindcss/postcss'
+import tailwindcss from '@tailwindcss/vite'
 import postcssNested from 'postcss-nested'
 import postcssUrl from 'postcss-url'
 import svgLoader from 'vite-svg-loader'
@@ -138,6 +138,7 @@ export default defineConfig<DefaultTheme.Config>({
       noExternal: ['dayjs'],
     },
     plugins: [
+      tailwindcss(),
       svgLoader(),
       {
         name: 'redirect-plugin',
@@ -206,7 +207,6 @@ export default defineConfig<DefaultTheme.Config>({
           // condition. Prod consumes the already-flattened dist, so it's
           // a no-op there.
           ...(isDev ? [postcssNested() as Plugin] : []),
-          tailwindcssPostcss() as Plugin,
           postcssIsolateStyles({
             includeFiles: [/vp-doc\.css/],
           }),

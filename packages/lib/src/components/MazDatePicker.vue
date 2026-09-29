@@ -439,8 +439,8 @@ const internalShortcuts = computed(() => {
   })
 })
 
-const localeModel = defineModel<string>('locale', { default: undefined })
-localeModel.value = localeProp ?? locale.value
+const localeModel = defineModel<string>('locale', { default: '' })
+localeModel.value = localeProp || locale.value
 
 const containerUniqueId = computed(() => `MazDatePickerContainer-${instanceId.value}`)
 

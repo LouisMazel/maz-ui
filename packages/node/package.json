@@ -40,7 +40,6 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "codegen": "nx build",
     "build": "unbuild",
     "dev": "unbuild --stub",
     "typecheck": "tsc --noEmit --skipLibCheck",
@@ -54,7 +53,7 @@
   "dependencies": {
     "colorette": "^2.0.20",
     "consola": "^3.4.2",
-    "figlet": "^1.11.0"
+    "figlet": "^1.12.0"
   },
   "devDependencies": {
     "unbuild": "^3.6.1"

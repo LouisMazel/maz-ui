@@ -11,22 +11,14 @@ describe('given MazSkeleton component', () => {
       expect(wrapper.classes()).toContain('m-reset-css')
     })
 
-    it('then it has rectangle shape by default', () => {
+    it.each([
+      'm-skeleton--rectangle',
+      'm-skeleton--animated',
+      'm-skeleton--rounded-md',
+    ])('then it has the %s class by default', (className) => {
       const wrapper = shallowMount(MazSkeleton)
 
-      expect(wrapper.classes()).toContain('m-skeleton--rectangle')
-    })
-
-    it('then it has animated class by default', () => {
-      const wrapper = shallowMount(MazSkeleton)
-
-      expect(wrapper.classes()).toContain('m-skeleton--animated')
-    })
-
-    it('then it has md rounded size by default', () => {
-      const wrapper = shallowMount(MazSkeleton)
-
-      expect(wrapper.classes()).toContain('m-skeleton--rounded-md')
+      expect(wrapper.classes()).toContain(className)
     })
 
     it('then it has the correct accessibility attributes', () => {

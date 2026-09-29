@@ -7,12 +7,12 @@ import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import SvgLoader from 'vite-svg-loader'
 
-import pkg from './package.json'
+import pkg from './package.json' with { type: 'json' }
 
 import { ViteGenerateIconsComponentsEntry } from './utils/ViteGenerateIconsComponentsEntry'
 
 function resolver(path: string) {
-  return resolve(__dirname, path)
+  return resolve(import.meta.dirname, path)
 }
 
 function getEntries(pattern: string) {
@@ -40,7 +40,7 @@ export default defineConfig({
     dts({
       tsconfigPath: resolver('./tsconfig.json'),
       entryRoot: resolver('src'),
-      outDir: resolver('dist'),
+      outDirs: resolver('dist'),
     }),
     ViteGenerateIconsComponentsEntry(),
     codecovVitePlugin({

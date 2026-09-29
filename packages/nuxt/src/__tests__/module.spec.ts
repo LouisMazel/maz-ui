@@ -193,24 +193,14 @@ describe('nuxt module', () => {
     })
 
     describe('plugins', () => {
-      it('should always add theme plugin', () => {
+      it.each([
+        'runtime/plugins/theme',
+        'runtime/plugins/translations',
+        'runtime/plugins/maz-link-component',
+      ])('always adds %s plugin', (pluginPath) => {
         callSetup()
         expect(addPlugin).toHaveBeenCalledWith(
-          expect.stringContaining('runtime/plugins/theme'),
-        )
-      })
-
-      it('should always add translations plugin', () => {
-        callSetup()
-        expect(addPlugin).toHaveBeenCalledWith(
-          expect.stringContaining('runtime/plugins/translations'),
-        )
-      })
-
-      it('should always add maz-link-component plugin', () => {
-        callSetup()
-        expect(addPlugin).toHaveBeenCalledWith(
-          expect.stringContaining('runtime/plugins/maz-link-component'),
+          expect.stringContaining(pluginPath),
         )
       })
 
