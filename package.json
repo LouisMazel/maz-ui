@@ -54,7 +54,7 @@
     "@codecov/vite-plugin": "^2.0.1",
     "@commitlint/cli": "21.0.2",
     "@commitlint/config-conventional": "^21.0.1",
-    "@commitlint/cz-commitlint": "^21.0.1",
+    "@commitlint/cz-commitlint": "^21.2.3",
     "@maz-ui/eslint-config": "workspace:*",
     "@maz-ui/node": "workspace:*",
     "@nx/js": "^22.7.2",
