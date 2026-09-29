@@ -17,7 +17,7 @@ describe('mazAvatar', () => {
         size: '1.5em',
       },
     })
-    expect(wrapper.attributes('style')).toContain('font-size: calc(0.5em);')
+    expect(wrapper.attributes('style')).toContain('font-size: 0.5em;')
   })
 
   it('renders MazLazyImg component', async () => {
@@ -745,7 +745,7 @@ describe('MazAvatar extended branch coverage', () => {
           size: '3em',
         },
       })
-      expect(wrapper.attributes('style')).toContain('font-size: calc(1em)')
+      expect(wrapper.attributes('style')).toContain('font-size: 1em')
     })
 
     it('resolves a MazSize keyword to its mapped dimension', () => {
@@ -754,7 +754,7 @@ describe('MazAvatar extended branch coverage', () => {
           size: 'md',
         },
       })
-      expect(wrapper.attributes('style')).toContain('font-size: calc(1rem)')
+      expect(wrapper.attributes('style')).toContain('font-size: 1rem')
     })
 
     it('does not apply fontSize when size is not provided', () => {

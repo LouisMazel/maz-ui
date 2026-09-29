@@ -176,7 +176,10 @@ const fontSize = computed(() => {
 
   const resolved = (SIZE_MAP as Record<string, string>)[size] ?? size
 
-  return `calc(${resolved} / ${WRAPPER_EM_SCALE})`
+  const scaled = Number.parseFloat((Number.parseFloat(resolved) / WRAPPER_EM_SCALE).toFixed(4))
+  const unit = resolved.replace(/^-?[\d.]+/, '')
+
+  return `${scaled}${unit}`
 })
 </script>
 
