@@ -331,7 +331,7 @@ const { floatingStyles, placement, update, middlewareData } = useFloating(
 
 const computedPosition = computed(() => placement.value ?? floatingPosition.value)
 
-const isOpen = defineModel({ default: false })
+const isOpen = defineModel<boolean>({ default: false })
 
 let openTimeout: NodeJS.Timeout | null = null
 let closeTimeout: NodeJS.Timeout | null = null
