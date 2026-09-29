@@ -92,18 +92,12 @@ describe('Given SearchEngine', () => {
       expect(results[0].score).toBeGreaterThan(0)
     })
 
-    it('Then returns empty array for non-matching query', () => {
-      const results = engine.search('nonexistent')
-      expect(results).toEqual([])
-    })
-
-    it('Then returns empty array for empty query', () => {
-      const results = engine.search('')
-      expect(results).toEqual([])
-    })
-
-    it('Then returns empty array for whitespace-only query', () => {
-      const results = engine.search('   ')
+    it.each([
+      { label: 'non-matching query', query: 'nonexistent' },
+      { label: 'empty query', query: '' },
+      { label: 'whitespace-only query', query: '   ' },
+    ])('Then returns empty array for $label', ({ query }) => {
+      const results = engine.search(query)
       expect(results).toEqual([])
     })
 
