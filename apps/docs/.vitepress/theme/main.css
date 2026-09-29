@@ -5,6 +5,7 @@
 @import 'maz-ui/tailwindcss/utilities.css';
 
 @source "./../../src/**/*.{md,vue,ts,js,css,scss}";
+@source "./../../components/**/*.vue";
 @source "./../components/**/*.vue";
 @source "../../../../packages/lib/src/**/*.{vue,ts,css,scss}";
 
