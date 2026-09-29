@@ -9,7 +9,7 @@ const sidebar = useSidebar()
 <template>
   <button
     type="button"
-    class="m-sidebar-trigger m-reset-css focus-visible:maz:outline-2 focus-visible:maz:outline-offset-2 focus-visible:maz:outline-primary motion-reduce:maz:transition-none maz:inline-flex maz:cursor-pointer maz:flex-center maz:rounded-md maz:bg-transparent maz:p-2 maz:text-foreground maz:transition-colors maz:duration-150 maz:ease-in-out maz:hover:bg-surface-600 maz:dark:hover:bg-surface-800/20"
+    class="m-sidebar-trigger m-reset-css maz:inline-flex maz:cursor-pointer maz:flex-center maz:rounded-md maz:bg-transparent maz:p-2 maz:text-foreground maz:transition-colors maz:duration-150 maz:ease-in-out maz:hover:bg-surface-600 maz:focus-visible:outline-2 maz:focus-visible:outline-offset-1 maz:focus-visible:outline-primary maz:motion-reduce:transition-none maz:dark:hover:bg-surface-800/20"
     :aria-expanded="sidebar.open.value"
     :aria-controls="sidebar.id.value"
     :aria-label="sidebar.open.value ? 'Close sidebar' : 'Open sidebar'"

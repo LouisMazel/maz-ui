@@ -84,7 +84,8 @@ The MCP server is read-only — it ships docs, not code edits — so the assista
 7. Rename **`left-icon` / `right-icon`** to **`start-icon` / `end-icon`** (and the matching slots / `--has-*-icon` classes) on `MazBtn`, `MazInput`, `MazLink`, `MazContainer`, `MazSelect`. Same idea for `MazCard`'s `footer-align` and `MazDrawer`'s `variant` — `'left' | 'right'` becomes `'start' | 'end'`.
 8. **`MazChart`** drops `vue-chartjs` (lighter bundle, no eager registration of unused chart types). The `update-mode` prop now defaults to `'none'` — pass `update-mode="default"` if you want animated data updates.
 9. **`MazAvatar` size scale fixed.** A CSS-unit `size` now renders at its real value (`size="2rem"` is a 32px avatar, it was ~96px before). Multiply your unit values by 3 to keep the same render, or switch to a `MazSize` keyword (`'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`). The upgrade tool does the ×3 rewrite for you on static values.
-10. That's it for most apps. Everything else is opt-in.
+10. Rename **`MazPullToRefresh`**'s `on-click` prop to `on-refresh` (handled by the upgrade tool).
+11. That's it for most apps. Everything else is opt-in.
 
 ## Prerequisites
 

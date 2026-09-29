@@ -58,7 +58,7 @@ function onKeyDown(event: KeyboardEvent) {
   <div class="m-sidebar-menu-sub m-reset-css">
     <button
       type="button"
-      class="m-sidebar-menu-sub__trigger focus-visible:maz:outline-2 focus-visible:maz:outline-offset-2 focus-visible:maz:outline-primary motion-reduce:maz:transition-none maz:relative maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-2 maz:rounded-md maz:bg-transparent maz:px-[min(calc((var(--maz-sidebar-icon-width,3rem)-1.25rem)/2),calc((100%-1.25rem)/2))] maz:py-2 maz:font-medium maz:text-foreground maz:transition-colors maz:duration-150 maz:ease-in-out maz:hover:bg-surface-600 maz:dark:hover:bg-surface-800/20"
+      class="m-sidebar-menu-sub__trigger maz:relative maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-2 maz:rounded-md maz:bg-transparent maz:px-[min(calc((var(--maz-sidebar-icon-width,3rem)-1.25rem)/2),calc((100%-1.25rem)/2))] maz:py-2 maz:font-medium maz:text-foreground maz:transition-colors maz:duration-150 maz:ease-in-out maz:hover:bg-surface-600 maz:focus-visible:outline-2 maz:focus-visible:outline-offset-1 maz:focus-visible:outline-primary maz:motion-reduce:transition-none maz:dark:hover:bg-surface-800/20"
       :aria-expanded="isOpen"
       :aria-controls="subMenuId"
       :aria-label="label"
@@ -72,7 +72,7 @@ function onKeyDown(event: KeyboardEvent) {
       </span>
 
       <span
-        class="m-sidebar-menu-sub__label motion-reduce:maz:transition-none maz:flex-1 maz:truncate maz:text-start maz:transition-opacity maz:duration-150"
+        class="m-sidebar-menu-sub__label maz:flex-1 maz:truncate maz:text-start maz:transition-opacity maz:duration-150 maz:motion-reduce:transition-none"
         :class="isIconCollapsed ? 'maz:opacity-0' : 'maz:opacity-100'"
         :aria-hidden="isIconCollapsed || undefined"
       >
@@ -81,7 +81,7 @@ function onKeyDown(event: KeyboardEvent) {
 
       <span
         v-if="!isIconCollapsed"
-        class="m-sidebar-menu-sub__chevron motion-reduce:maz:transition-none maz:shrink-0 maz:transition-transform maz:duration-200"
+        class="m-sidebar-menu-sub__chevron maz:shrink-0 maz:transition-transform maz:duration-200 maz:motion-reduce:transition-none"
         :class="{ 'maz:rotate-180': isOpen }"
         aria-hidden="true"
       >

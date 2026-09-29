@@ -145,7 +145,7 @@ const isActive = computed(() => active === true)
   <component
     :is="tag"
     v-tooltip="tooltipBinding"
-    class="m-sidebar-menu-btn m-reset-css focus-visible:maz:outline-2 focus-visible:maz:outline-offset-2 focus-visible:maz:outline-primary motion-reduce:maz:transition-none maz:relative maz:flex maz:w-full maz:items-center maz:gap-2 maz:rounded-md maz:px-[min(calc((var(--maz-sidebar-icon-width,3rem)-1.25rem)/2),calc((100%-1.25rem)/2))] maz:no-underline maz:transition-colors maz:duration-150 maz:ease-in-out maz:disabled:cursor-not-allowed maz:disabled:opacity-50"
+    class="m-sidebar-menu-btn m-reset-css maz:relative maz:flex maz:w-full maz:items-center maz:gap-2 maz:rounded-md maz:px-[min(calc((var(--maz-sidebar-icon-width,3rem)-1.25rem)/2),calc((100%-1.25rem)/2))] maz:no-underline maz:transition-colors maz:duration-150 maz:ease-in-out maz:focus-visible:outline-2 maz:focus-visible:outline-offset-1 maz:focus-visible:outline-primary maz:disabled:cursor-not-allowed maz:disabled:opacity-50 maz:motion-reduce:transition-none"
     :class="[
       SIZE_CLASS[size],
       isActive ? 'maz:cursor-auto maz:bg-primary/10 maz:font-semibold maz:text-primary' : 'maz:cursor-pointer maz:bg-transparent maz:font-medium maz:text-foreground maz:hover:not-disabled:bg-surface-600 maz:dark:not-disabled:hover:bg-surface-400',
@@ -170,7 +170,7 @@ const isActive = computed(() => active === true)
     </span>
 
     <span
-      class="m-sidebar-menu-btn__label motion-reduce:maz:transition-none maz:flex-1 maz:truncate maz:text-start maz:transition-opacity maz:duration-150"
+      class="m-sidebar-menu-btn__label maz:flex-1 maz:truncate maz:text-start maz:transition-opacity maz:duration-150 maz:motion-reduce:transition-none"
       :class="isIconCollapsed ? 'maz:opacity-0' : 'maz:opacity-100'"
       :aria-hidden="isIconCollapsed || undefined"
     >
