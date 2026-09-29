@@ -12,7 +12,7 @@ import svgLoader from 'vite-svg-loader'
 import { defineConfig, postcssIsolateStyles } from 'vitepress'
 import { head, nav, sidebar } from './configs/index.mjs'
 
-import { getOgImage } from './og-image'
+import { getOgImage } from './og-image.tsx'
 
 // VitePress sets NODE_ENV=development for `vitepress dev` and =production
 // for `vitepress build`. Use that to toggle the `monorepo:dev` resolve
