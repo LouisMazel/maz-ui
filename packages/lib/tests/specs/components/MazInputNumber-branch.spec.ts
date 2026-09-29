@@ -135,33 +135,13 @@ describe('MazInputNumber branch coverage', () => {
   })
 
   describe('when events are emitted', () => {
-    it('should emit focus event', async () => {
+    it.each(['focus', 'blur', 'click'])('then it emits the %s event', async (event) => {
       const wrapper = mount(MazInputNumber, {
         props: { modelValue: 5 },
       })
-      await wrapper.find('input').trigger('focus')
+      await wrapper.find('input').trigger(event)
       await nextTick()
-      expect(wrapper.emitted('focus')).toBeTruthy()
-      wrapper.unmount()
-    })
-
-    it('should emit blur event', async () => {
-      const wrapper = mount(MazInputNumber, {
-        props: { modelValue: 5 },
-      })
-      await wrapper.find('input').trigger('blur')
-      await nextTick()
-      expect(wrapper.emitted('blur')).toBeTruthy()
-      wrapper.unmount()
-    })
-
-    it('should emit click event', async () => {
-      const wrapper = mount(MazInputNumber, {
-        props: { modelValue: 5 },
-      })
-      await wrapper.find('input').trigger('click')
-      await nextTick()
-      expect(wrapper.emitted('click')).toBeTruthy()
+      expect(wrapper.emitted(event)).toBeTruthy()
       wrapper.unmount()
     })
   })

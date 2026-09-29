@@ -78,43 +78,21 @@ describe('given MazPopover component', () => {
   })
 
   describe('when rendered with different triggers', () => {
-    it('then it should handle click trigger', () => {
+    it.each<[MazPopoverProps['trigger'], string]>([
+      ['click', '<button>Click me</button>'],
+      ['hover', '<button>Hover me</button>'],
+      ['manual', '<button>Manual</button>'],
+    ])('then it handles the %s trigger', (trigger, triggerSlot) => {
       const wrapper = mount(MazPopover, {
-        props: { trigger: 'click' },
+        props: { trigger },
         slots: {
-          trigger: '<button>Click me</button>',
+          trigger: triggerSlot,
           default: '<div>Content</div>',
         },
       })
 
-      const trigger = wrapper.find('.m-popover-trigger')
-      expect(trigger.exists()).toBe(true)
-    })
-
-    it('then it should handle hover trigger', () => {
-      const wrapper = mount(MazPopover, {
-        props: { trigger: 'hover' },
-        slots: {
-          trigger: '<button>Hover me</button>',
-          default: '<div>Content</div>',
-        },
-      })
-
-      const trigger = wrapper.find('.m-popover-trigger')
-      expect(trigger.exists()).toBe(true)
-    })
-
-    it('then it should handle manual trigger', () => {
-      const wrapper = mount(MazPopover, {
-        props: { trigger: 'manual' },
-        slots: {
-          trigger: '<button>Manual</button>',
-          default: '<div>Content</div>',
-        },
-      })
-
-      const trigger = wrapper.find('.m-popover-trigger')
-      expect(trigger.exists()).toBe(true)
+      const triggerElement = wrapper.find('.m-popover-trigger')
+      expect(triggerElement.exists()).toBe(true)
     })
   })
 

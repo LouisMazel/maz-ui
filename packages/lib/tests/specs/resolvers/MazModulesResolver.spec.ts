@@ -30,66 +30,34 @@ describe('given MazModulesResolver', () => {
   })
 
   describe('when resolving utility modules', () => {
-    it('then it should resolve capitalize utility', () => {
+    it.each([
+      { moduleName: 'capitalize', expectedAs: 'Capitalize' },
+      { moduleName: 'debounce', expectedAs: 'Debounce' },
+      { moduleName: 'sleep', expectedAs: 'Sleep' },
+    ])('then it should resolve $moduleName utility', ({ moduleName, expectedAs }) => {
       const resolver = MazModulesResolver()
-      const result = resolver('capitalize') as ResolverResult
+      const result = resolver(moduleName) as ResolverResult
 
       expect(result).toBeDefined()
       expect(result?.from).toBe('@maz-ui/utils')
-      expect(result?.name).toBe('capitalize')
-      expect(result?.as).toBe('Capitalize')
-    })
-
-    it('then it should resolve debounce utility', () => {
-      const resolver = MazModulesResolver()
-      const result = resolver('debounce') as ResolverResult
-
-      expect(result).toBeDefined()
-      expect(result?.from).toBe('@maz-ui/utils')
-      expect(result?.name).toBe('debounce')
-      expect(result?.as).toBe('Debounce')
-    })
-
-    it('then it should resolve sleep utility', () => {
-      const resolver = MazModulesResolver()
-      const result = resolver('sleep') as ResolverResult
-
-      expect(result).toBeDefined()
-      expect(result?.from).toBe('@maz-ui/utils')
-      expect(result?.name).toBe('sleep')
-      expect(result?.as).toBe('Sleep')
+      expect(result?.name).toBe(moduleName)
+      expect(result?.as).toBe(expectedAs)
     })
   })
 
   describe('when resolving composables', () => {
-    it('then it should resolve useBreakpoints', () => {
+    it.each([
+      { composable: 'useBreakpoints' },
+      { composable: 'useTimer' },
+      { composable: 'useToast' },
+    ])('then it should resolve $composable', ({ composable }) => {
       const resolver = MazModulesResolver()
-      const result = resolver('useBreakpoints') as ResolverResult
+      const result = resolver(composable) as ResolverResult
 
       expect(result).toBeDefined()
       expect(result?.from).toBe('maz-ui/composables')
-      expect(result?.name).toBe('useBreakpoints')
-      expect(result?.as).toBe('useBreakpoints')
-    })
-
-    it('then it should resolve useTimer', () => {
-      const resolver = MazModulesResolver()
-      const result = resolver('useTimer') as ResolverResult
-
-      expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/composables')
-      expect(result?.name).toBe('useTimer')
-      expect(result?.as).toBe('useTimer')
-    })
-
-    it('then it should resolve useToast', () => {
-      const resolver = MazModulesResolver()
-      const result = resolver('useToast') as ResolverResult
-
-      expect(result).toBeDefined()
-      expect(result?.from).toBe('maz-ui/composables')
-      expect(result?.name).toBe('useToast')
-      expect(result?.as).toBe('useToast')
+      expect(result?.name).toBe(composable)
+      expect(result?.as).toBe(composable)
     })
   })
 
@@ -150,57 +118,31 @@ describe('given MazModulesResolver', () => {
   })
 
   describe('when resolving non-existent modules', () => {
-    it('then it should return undefined for unknown utilities', () => {
+    it.each([
+      { label: 'unknown utilities', input: 'unknownUtility' },
+      { label: 'unknown composables', input: 'useUnknownComposable' },
+      { label: 'empty string', input: '' },
+    ])('then it should return undefined for $label', ({ input }) => {
       const resolver = MazModulesResolver()
-      const result = resolver('unknownUtility')
-
-      expect(result).toBeUndefined()
-    })
-
-    it('then it should return undefined for unknown composables', () => {
-      const resolver = MazModulesResolver()
-      const result = resolver('useUnknownComposable')
-
-      expect(result).toBeUndefined()
-    })
-
-    it('then it should return undefined for empty string', () => {
-      const resolver = MazModulesResolver()
-      const result = resolver('')
+      const result = resolver(input)
 
       expect(result).toBeUndefined()
     })
   })
 
   describe('when resolving specific module types', () => {
-    it('then it should resolve class modules', () => {
+    it.each([
+      { label: 'class modules', moduleName: 'IdleTimeout', expectedAs: 'IdleTimeout' },
+      { label: 'helper functions', moduleName: 'isClient', expectedAs: 'IsClient' },
+      { label: 'format functions', moduleName: 'formatCurrency', expectedAs: 'FormatCurrency' },
+    ])('then it should resolve $label', ({ moduleName, expectedAs }) => {
       const resolver = MazModulesResolver()
-      const result = resolver('IdleTimeout') as ResolverResult
+      const result = resolver(moduleName) as ResolverResult
 
       expect(result).toBeDefined()
       expect(result?.from).toBe('@maz-ui/utils')
-      expect(result?.name).toBe('IdleTimeout')
-      expect(result?.as).toBe('IdleTimeout')
-    })
-
-    it('then it should resolve helper functions', () => {
-      const resolver = MazModulesResolver()
-      const result = resolver('isClient') as ResolverResult
-
-      expect(result).toBeDefined()
-      expect(result?.from).toBe('@maz-ui/utils')
-      expect(result?.name).toBe('isClient')
-      expect(result?.as).toBe('IsClient')
-    })
-
-    it('then it should resolve format functions', () => {
-      const resolver = MazModulesResolver()
-      const result = resolver('formatCurrency') as ResolverResult
-
-      expect(result).toBeDefined()
-      expect(result?.from).toBe('@maz-ui/utils')
-      expect(result?.name).toBe('formatCurrency')
-      expect(result?.as).toBe('FormatCurrency')
+      expect(result?.name).toBe(moduleName)
+      expect(result?.as).toBe(expectedAs)
     })
   })
 

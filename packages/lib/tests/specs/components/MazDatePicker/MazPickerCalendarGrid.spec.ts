@@ -292,7 +292,7 @@ describe('given MazPickerCalendarGrid component', () => {
   })
 
   describe('when hovering days in range mode', () => {
-    it('then it should emit update:hoverred-day on mouseover when range start is set', async () => {
+    it.each(['mouseover', 'mouseleave', 'focus', 'blur'])('then it emits update:hoverred-day on %s when range start is set', async (event) => {
       const wrapper = mount(MazPickerCalendarGrid, {
         props: {
           ...defaultProps,
@@ -303,58 +303,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const buttons = wrapper.findAllComponents(MazBtn)
-      await buttons[14].trigger('mouseover') // hover over day 15
-
-      const emitted = wrapper.emitted('update:hoverred-day')
-      expect(emitted).toBeTruthy()
-    })
-
-    it('then it should clear hoverred-day on mouseleave in range mode', async () => {
-      const wrapper = mount(MazPickerCalendarGrid, {
-        props: {
-          ...defaultProps,
-          modelValue: { start: '2024-01-10', end: undefined },
-          range: true,
-        },
-      })
-      await vi.dynamicImportSettled()
-
-      const buttons = wrapper.findAllComponents(MazBtn)
-      await buttons[14].trigger('mouseleave')
-
-      const emitted = wrapper.emitted('update:hoverred-day')
-      expect(emitted).toBeTruthy()
-    })
-
-    it('then it should emit hoverred-day on focus in range mode', async () => {
-      const wrapper = mount(MazPickerCalendarGrid, {
-        props: {
-          ...defaultProps,
-          modelValue: { start: '2024-01-10', end: undefined },
-          range: true,
-        },
-      })
-      await vi.dynamicImportSettled()
-
-      const buttons = wrapper.findAllComponents(MazBtn)
-      await buttons[14].trigger('focus')
-
-      const emitted = wrapper.emitted('update:hoverred-day')
-      expect(emitted).toBeTruthy()
-    })
-
-    it('then it should clear hoverred-day on blur in range mode', async () => {
-      const wrapper = mount(MazPickerCalendarGrid, {
-        props: {
-          ...defaultProps,
-          modelValue: { start: '2024-01-10', end: undefined },
-          range: true,
-        },
-      })
-      await vi.dynamicImportSettled()
-
-      const buttons = wrapper.findAllComponents(MazBtn)
-      await buttons[14].trigger('blur')
+      await buttons[14].trigger(event)
 
       const emitted = wrapper.emitted('update:hoverred-day')
       expect(emitted).toBeTruthy()
