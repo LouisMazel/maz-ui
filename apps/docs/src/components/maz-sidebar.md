@@ -22,19 +22,19 @@ The following features are planned for a future release and are **not yet availa
 
 ## Sub-components
 
-| Component | Role |
-|---|---|
-| `MazSidebar` | Root container — provides state context |
-| `MazSidebarHeader` | Fixed top area |
-| `MazSidebarContent` | Scrollable central area |
-| `MazSidebarFooter` | Fixed bottom area |
-| `MazSidebarGroup` | Item grouping with optional label |
-| `MazSidebarSeparator` | Visual divider (`<hr>`) |
-| `MazSidebarMenu` | `<ul>` wrapper with `role="menu"` |
-| `MazSidebarMenuItem` | `<li>` item wrapper |
+| Component              | Role                                                                  |
+| ---------------------- | --------------------------------------------------------------------- |
+| `MazSidebar`           | Root container — provides state context                               |
+| `MazSidebarHeader`     | Fixed top area                                                        |
+| `MazSidebarContent`    | Scrollable central area                                               |
+| `MazSidebarFooter`     | Fixed bottom area                                                     |
+| `MazSidebarGroup`      | Item grouping with optional label                                     |
+| `MazSidebarSeparator`  | Visual divider (`<hr>`)                                               |
+| `MazSidebarMenu`       | `<ul>` wrapper with `role="menu"`                                     |
+| `MazSidebarMenuItem`   | `<li>` item wrapper                                                   |
 | `MazSidebarMenuButton` | Clickable item (link or button), supports icon, label, badge, tooltip |
-| `MazSidebarMenuSub` | Collapsible sub-menu |
-| `MazSidebarTrigger` | Toggle button (must be a descendant of `MazSidebar`) |
+| `MazSidebarMenuSub`    | Collapsible sub-menu                                                  |
+| `MazSidebarTrigger`    | Toggle button (must be a descendant of `MazSidebar`)                  |
 
 ## Basic usage
 
