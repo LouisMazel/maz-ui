@@ -147,6 +147,7 @@ describe('nuxt module', () => {
             },
           },
           css: [],
+          postcss: { plugins: {} as Record<string, any>, order: [] },
         },
         ...overrides,
       }
@@ -189,6 +190,26 @@ describe('nuxt module', () => {
       it('should not inject main CSS when injectCss is false', () => {
         const { nuxt } = callSetup({ css: { injectCss: false } })
         expect(nuxt.options.css).not.toContain('maz-ui/style.css')
+      })
+
+      it('should disable cssnano calc optimization', () => {
+        const { nuxt } = callSetup()
+        expect(nuxt.options.postcss.plugins.cssnano).toEqual({ preset: ['default', { calc: false }] })
+      })
+
+      it('should preserve existing cssnano options when disabling calc', () => {
+        const { nuxt } = callSetup({}, { options: { ...createNuxtMock().options, postcss: { plugins: { cssnano: { comments: false } }, order: [] } } })
+        expect(nuxt.options.postcss.plugins.cssnano).toEqual({ comments: false, preset: ['default', { calc: false }] })
+      })
+
+      it('should not touch cssnano when it is explicitly disabled', () => {
+        const { nuxt } = callSetup({}, { options: { ...createNuxtMock().options, postcss: { plugins: { cssnano: false }, order: [] } } })
+        expect(nuxt.options.postcss.plugins.cssnano).toBe(false)
+      })
+
+      it('should initialize postcss options when absent', () => {
+        const { nuxt } = callSetup({}, { options: { build: { transpile: [] }, runtimeConfig: { public: { mazUi: {} } }, css: [] } })
+        expect(nuxt.options.postcss.plugins.cssnano).toEqual({ preset: ['default', { calc: false }] })
       })
     })
 

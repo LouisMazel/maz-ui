@@ -237,6 +237,21 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       nuxt.options.css.unshift('maz-ui/style.css')
     }
 
+    // cssnano's `postcss-calc` cannot parse the relative OKLCh values maz-ui
+    // emits (`oklch(from X clamp(0, calc(l - .05), 1) c h)`) and floods
+    // production builds with harmless "Lexical error" warnings. Disable only
+    // its `calc` optimization; the rest of the minification is untouched. Left
+    // alone if the user explicitly disabled cssnano.
+    nuxt.options.postcss ??= { plugins: {}, order: [] }
+    nuxt.options.postcss.plugins ??= {}
+    const postcssPlugins = nuxt.options.postcss.plugins
+    if (postcssPlugins.cssnano !== false) {
+      const current = typeof postcssPlugins.cssnano === 'object' && postcssPlugins.cssnano !== null
+        ? postcssPlugins.cssnano
+        : {}
+      postcssPlugins.cssnano = { ...current, preset: ['default', { calc: false }] }
+    }
+
     // Plugins
 
     addPlugin(resolve(_dirname, './runtime/plugins/theme'))
