@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxi dev",
-    "nuxt-app:build": "nuxi build",
+    "build:only": "nuxi build",
     "preview": "nuxi preview",
     "lint": "pnpm lint:js && pnpm lint:style",
     "lint:js": "cross-env NODE_ENV=production eslint --fix .",
