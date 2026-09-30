@@ -2,6 +2,7 @@
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
 import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
+import MazIcon from './MazIcon.vue'
 
 type NonRecursiveClassValue = string | Record<string, any> | (string | false | null | undefined | Record<string, any>)[]
 
@@ -13,6 +14,7 @@ export interface MazTableHeadersEnriched {
   srOnly?: boolean
   width?: string
   maxWidth?: string
+  minWidth?: string
   classes?: NonRecursiveClassValue
   scope?: ThHTMLAttributes['scope']
   align?: ThHTMLAttributes['align']
@@ -230,17 +232,31 @@ export interface MazTableProps<T extends MazTableRow<T>> {
   translations?: DeepPartial<MazUiTranslationsNestedSchema['table']>
   /**
    * Size radius of the component's border
-   * @type {string}
-   * @values none, sm, md, lg, xl, full, base
-   * @default base
+   * @type {MazRoundedSize}
+   * @values none, sm, md, lg, xl, full
+   * @default md
    */
-  roundedSize?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'base'
+  roundedSize?: MazRoundedSize
   /**
    * Enable scrollable on table
    * @type {boolean}
    * @default false
    */
   scrollable?: boolean
+  /**
+   * Field name used as a stable key for each row (e.g. an id). Gives every row a
+   * stable identity so reordering is tracked correctly - required for `animatedRows`
+   * to look right. Falls back to the row index when not provided.
+   * @type {string}
+   */
+  rowKey?: string
+  /**
+   * Animate row reordering with a FLIP transition (rows slide to their new position).
+   * Provide a stable `rowKey` for meaningful results. Respects `prefers-reduced-motion`.
+   * @type {boolean}
+   * @default false
+   */
+  animatedRows?: boolean
 }
 
 export interface MazTableProvide {
@@ -256,7 +272,7 @@ export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz-table')
 <script lang="ts" setup generic="T extends MazTableRow<T>">
 import type { HTMLAttributes, InjectionKey, Ref, ThHTMLAttributes } from 'vue'
 import type { MazSelectOption } from './MazSelect.vue'
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazRoundedSize, MazSize } from './types'
 import { MazArrowUp } from '@maz-ui/icons/lazy/MazArrowUp'
 import { MazChevronDoubleLeft } from '@maz-ui/icons/lazy/MazChevronDoubleLeft'
 import { MazChevronLeft } from '@maz-ui/icons/lazy/MazChevronLeft'
@@ -268,24 +284,51 @@ import {
   onBeforeMount,
   provide,
   ref,
-  toRefs,
+  toRef,
+  TransitionGroup,
   useSlots,
   watch,
 } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { hasSlotContent } from '../utils/hasSlotContent'
 
-const props = withDefaults(defineProps<MazTableProps<T>>(), {
-  size: 'md',
-  headersAlign: 'left',
-  page: 1,
-  pageSize: 20,
-  captionSide: 'bottom',
-  divider: false,
-  color: 'primary',
-  roundedSize: 'lg',
-  scrollable: false,
-  paginateRows: true,
-})
+const {
+  tableClass,
+  tableStyle,
+  modelValue,
+  inputSize,
+  title,
+  headers,
+  sortable,
+  headersAlign = 'left',
+  rows,
+  hoverable,
+  search,
+  hideSearchInRow,
+  hideSearchBy,
+  searchQuery,
+  backgroundOdd,
+  backgroundEven,
+  elevation,
+  divider = false,
+  caption,
+  captionSide = 'bottom',
+  pagination,
+  page = 1,
+  pageSize = 20,
+  totalPages,
+  paginateRows = true,
+  totalItems,
+  loading,
+  selectable,
+  selectedKey,
+  tableLayout,
+  color = 'primary',
+  translations,
+  scrollable = false,
+  rowKey,
+  animatedRows = false,
+} = defineProps<MazTableProps<T>>()
 
 const emits = defineEmits<{
   /**
@@ -310,6 +353,8 @@ const emits = defineEmits<{
   (event: 'update:page-size', pageSize: number): void
 }>()
 
+const { size, roundedSize } = useGlobalConfig<{ size: MazSize, roundedSize: MazRoundedSize }>('MazTable', { size: 'md', roundedSize: 'md' })
+
 const MazBtn = defineAsyncComponent(() => import('./MazBtn.vue'))
 const MazCheckbox = defineAsyncComponent(() => import('./MazCheckbox.vue'))
 const MazInput = defineAsyncComponent(() => import('./MazInput.vue'))
@@ -322,43 +367,41 @@ const MazTableTitle = defineAsyncComponent(() => import('./MazTableTitle.vue'))
 const { t } = useTranslations()
 /* eslint-disable complexity */
 const messages = computed(() => ({
-  noResults: props.translations?.noResults ?? t('table.noResults'),
-  actionColumnTitle: props.translations?.actionColumnTitle ?? t('table.actionColumnTitle'),
+  noResults: translations?.noResults ?? t('table.noResults'),
+  actionColumnTitle: translations?.actionColumnTitle ?? t('table.actionColumnTitle'),
   searchByInput: {
-    all: props.translations?.searchByInput?.all ?? t('table.searchByInput.all'),
-    placeholder: props.translations?.searchByInput?.placeholder ?? t('table.searchByInput.placeholder'),
+    all: translations?.searchByInput?.all ?? t('table.searchByInput.all'),
+    placeholder: translations?.searchByInput?.placeholder ?? t('table.searchByInput.placeholder'),
   },
   searchInput: {
-    placeholder: props.translations?.searchInput?.placeholder ?? t('table.searchInput.placeholder'),
+    placeholder: translations?.searchInput?.placeholder ?? t('table.searchInput.placeholder'),
   },
   pagination: {
-    all: props.translations?.pagination?.all ?? t('table.pagination.all'),
-    rowsPerPage: props.translations?.pagination?.rowsPerPage ?? t('table.pagination.rowsPerPage'),
-    of: props.translations?.pagination?.of ?? t('table.pagination.of'),
+    all: translations?.pagination?.all ?? t('table.pagination.all'),
+    rowsPerPage: translations?.pagination?.rowsPerPage ?? t('table.pagination.rowsPerPage'),
+    of: translations?.pagination?.of ?? t('table.pagination.of'),
   },
 } satisfies MazUiTranslationsNestedSchema['table']))
 /* eslint-enable complexity */
 
 const hasDivider = computed<boolean>(
-  () => props.divider && !props.backgroundEven && !props.backgroundOdd,
+  () => divider && !backgroundEven && !backgroundOdd,
 )
 
-const { size, hoverable, backgroundEven, backgroundOdd } = toRefs(props)
-
 provide(mazTableKey, {
-  size,
-  hoverable,
-  backgroundEven,
-  backgroundOdd,
+  size: toRef(() => size.value),
+  hoverable: toRef(() => hoverable),
+  backgroundEven: toRef(() => backgroundEven),
+  backgroundOdd: toRef(() => backgroundOdd),
 })
 
 const rowsNormalized = ref<T[]>(getNormalizedRows())
 
-const isSelectable = computed<boolean>(() => props.selectable || !!props.selectedKey)
+const isSelectable = computed<boolean>(() => selectable || !!selectedKey)
 
-const currentPage = ref(props.page)
+const currentPage = ref(page)
 watch(
-  () => props.page,
+  () => page,
   (value) => {
     currentPage.value = value
   },
@@ -380,9 +423,9 @@ const pageSizeOptions = computed<MazSelectOption[]>(() => [
   { label: 100, value: 100 },
   { label: 200, value: 200 },
 ])
-const pageSizeModelInternal = ref(props.pageSize)
+const pageSizeModelInternal = ref(pageSize)
 watch(
-  () => props.pageSize,
+  () => pageSize,
   (value) => {
     pageSizeModelInternal.value = value
   },
@@ -396,8 +439,8 @@ const pageSizeModel = computed({
 })
 
 const totalPagesInternal = computed(() => {
-  if (props.totalPages) {
-    return props.totalPages
+  if (totalPages) {
+    return totalPages
   }
 
   return (pageSizeModel.value === Number.POSITIVE_INFINITY || !totalItemsInternal.value)
@@ -405,12 +448,12 @@ const totalPagesInternal = computed(() => {
     : Math.ceil(totalItemsInternal.value / pageSizeModel.value)
 })
 
-const totalItemsInternal = computed(() => props.totalItems ?? props.rows?.length)
+const totalItemsInternal = computed(() => totalItems ?? rows?.length)
 
 const rowsOfPage = computed(() => {
   if (
-    !props.pagination
-    || !props.paginateRows
+    !pagination
+    || !paginateRows
     || pageSizeModel.value === Number.POSITIVE_INFINITY
   ) {
     return rowsNormalized.value
@@ -444,7 +487,7 @@ function nextPage() {
 }
 
 watch(
-  () => [props.rows, props.modelValue],
+  () => [rows, modelValue],
   () => {
     rowsNormalized.value = getNormalizedRows()
   },
@@ -453,7 +496,7 @@ watch(
 const sortedColumnIndex = ref<number>()
 const sortType = ref<'ASC' | 'DESC'>()
 
-const headersNormalized = computed<MazTableHeadersNormalized[]>(() => (getNormalizedHeaders(props.headers)))
+const headersNormalized = computed<MazTableHeadersNormalized[]>(() => (getNormalizedHeaders(headers)))
 
 const searchByKey = ref<string>()
 const searchByOptions = computed<MazSelectOption[]>(() => {
@@ -464,9 +507,9 @@ const searchByOptions = computed<MazSelectOption[]>(() => {
   return [{ label: messages.value.searchByInput.all, value: null }, ...headerOptions]
 })
 
-const searchQueryModelInternal = ref(props.searchQuery)
+const searchQueryModelInternal = ref(searchQuery)
 watch(
-  () => props.searchQuery,
+  () => searchQuery,
   (value) => {
     searchQueryModelInternal.value = value
   },
@@ -500,7 +543,7 @@ function getSortedRows(rows: T[]) {
 }
 
 function getFilteredRows(rows: T[]) {
-  if (props.hideSearchInRow || typeof searchQueryModel.value !== 'string')
+  if (hideSearchInRow || typeof searchQueryModel.value !== 'string')
     return rowsOfPage.value
 
   const query = searchQueryModel.value.toLowerCase()
@@ -528,26 +571,30 @@ const rowsFiltered = computed<T[]>(() => {
 
 const slots = useSlots()
 
-const hasHeader = computed<boolean>((): boolean => props.search || !!props.title || !!slots.title)
-const hasFooter = computed<boolean>(() => props.pagination)
+const hasHeader = computed<boolean>((): boolean => !!(search || title || slots.title))
+const hasFooter = computed<boolean>(() => !!pagination)
 
 function getNormalizedHeaders(headers?: MazTableHeader[]): MazTableHeadersNormalized[] {
   return (
     headers?.map(header =>
       typeof header === 'string'
-        ? { label: header, align: props.headersAlign }
-        : { align: props.headersAlign, thHeaders: header.headers, ...header },
+        ? { label: header, align: headersAlign }
+        : { align: headersAlign, thHeaders: header.headers, ...header },
     ) ?? []
   )
 }
 
 function getNormalizedRows(): T[] {
   return (
-    props.rows?.map(row => ({
-      selected: props.modelValue?.includes(props.selectedKey ? row[props.selectedKey] : row),
+    rows?.map(row => ({
+      selected: modelValue?.includes(selectedKey ? row[selectedKey] : row),
       ...row,
     })) ?? []
   )
+}
+
+function getRowKey(row: T, index: number): string | number {
+  return rowKey && row[rowKey] != null ? row[rowKey] : index
 }
 
 function sortColumn(columnIndex: number) {
@@ -592,7 +639,7 @@ function emitValues(selectedRows?: (T | string | number | boolean)[]) {
 function getSelectedRows(): (T | string | number | boolean)[] {
   return rowsNormalized.value
     .filter(row => row.selected)
-    .map(row => (props.selectedKey ? row[props.selectedKey] : row))
+    .map(row => (selectedKey ? row[selectedKey] : row))
 }
 
 onBeforeMount(() => {
@@ -605,26 +652,26 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="m-table m-reset-css" :class="{ '--has-header': hasHeader }">
-    <div v-if="hasHeader" class="m-table-header">
+  <div class="m-table m-reset-css maz:relative maz:max-w-full" :class="{ '--has-header': hasHeader }">
+    <div v-if="hasHeader" class="m-table-header maz:flex maz:max-w-full maz:flex-col maz:items-start maz:justify-between maz:gap-2 maz:py-2 maz:mob-l:flex-row maz:mob-l:items-center">
       <div v-if="title || hasSlotContent(slots.title)" class="m-table-spacer">
         <!--
           @slot Replace the title of the table
         -->
         <slot name="title">
-          <span class="m-table-header-title">
+          <span class="m-table-header-title maz:font-semibold">
             {{ title }}
           </span>
         </slot>
       </div>
 
-      <div v-if="search" class="m-table-header-search">
+      <div v-if="search" class="m-table-header-search maz:flex maz:items-center maz:gap-2">
         <MazSelect
           v-if="!hideSearchBy"
           v-model="searchByKey"
           :rounded-size
           :color
-          :style="{ width: '8rem' }"
+          :style="{ maxWidth: '12rem' }"
           :placeholder="messages.searchByInput.placeholder"
           :size="inputSize ?? size"
           :options="searchByOptions"
@@ -636,18 +683,20 @@ onBeforeMount(() => {
           :color
           :debounce="300"
           :placeholder="messages.searchInput.placeholder"
-          :left-icon="MazMagnifyingGlass"
+          :start-icon="MazMagnifyingGlass"
         />
       </div>
     </div>
     <div
-      class="m-table-wrapper" :class="[`--rounded-${roundedSize}`, {
-        '--scrollable': scrollable,
+      class="m-table-wrapper maz:border maz:border-solid maz:border-divider" :class="[`--rounded-${roundedSize}`, {
+        '--scrollable maz:overflow-auto': scrollable,
+        'maz:overflow-hidden': !scrollable,
       }]"
     >
       <table
         :class="[{ '--elevation': elevation, '--has-layout': tableLayout }, tableClass]"
         :style="tableStyle"
+        class="maz:table maz:w-full maz:border-collapse maz:bg-container"
       >
         <caption v-if="caption || hasSlotContent(slots.caption)">
           <!--
@@ -680,8 +729,8 @@ onBeforeMount(() => {
                 :rowspan="header.rowspan"
                 :colspan="header.colspan"
                 :headers="header.thHeaders"
-                :style="{ width: header.width, textAlign: header.align }"
-                class="maz-group"
+                :style="{ width: header.width, textAlign: header.align, maxWidth: header.maxWidth, minWidth: header.minWidth }"
+                class="maz:group"
                 :class="[
                   { '--hidden': header.hidden, '--sortable': header.sortable ?? sortable },
                   header.classes,
@@ -689,7 +738,7 @@ onBeforeMount(() => {
                 ]"
                 @click="(header.sortable ?? sortable) && sortColumn(columnIndex)"
               >
-                <span :class="{ 'maz-sr-only': header.srOnly }">
+                <span :class="{ 'maz:sr-only': header.srOnly }">
                   <!--
                   @slot Replace column header
                     @binding {Object} header - Header data
@@ -707,7 +756,7 @@ onBeforeMount(() => {
 
                     <div v-if="header.sortable ?? sortable" class="m-table-sort-icon-wrapper">
                       <MazArrowUp
-                        class="m-table-sort-icon maz-hidden group-hover:maz-block"
+                        class="m-table-sort-icon maz:hidden maz:group-hover:block"
                         :class="{
                           '--sorted': columnIndex === sortedColumnIndex,
                           '--up': sortType === 'DESC',
@@ -730,14 +779,18 @@ onBeforeMount(() => {
           </slot>
         </thead>
 
-        <MazLoadingBar v-if="loading" :color class="!maz-absolute" />
+        <MazLoadingBar v-if="loading" :color class="maz:absolute!" />
 
-        <tbody :class="{ '--divider': hasDivider }">
+        <component
+          :is="animatedRows ? TransitionGroup : 'tbody'"
+          v-bind="animatedRows ? { tag: 'tbody', name: 'm-table-row', moveClass: 'm-table-row-move' } : {}"
+          :class="{ '--divider': hasDivider }"
+        >
           <slot>
             <template v-if="rowsFiltered.length > 0">
               <MazTableRowComponent
                 v-for="(row, rowIndex) in rowsFiltered"
-                :key="rowIndex"
+                :key="getRowKey(row, rowIndex)"
                 :class="row.classes"
                 @click="row.action && row.action(row)"
               >
@@ -797,7 +850,7 @@ onBeforeMount(() => {
                     @slot Replace the no results element
                   -->
                   <slot name="no-results">
-                    <p class="maz-text-center maz-text-muted">
+                    <p class="maz:text-center maz:text-muted">
                       <!--
                         @slot no-results-text - replace no results test only
                       -->
@@ -810,16 +863,14 @@ onBeforeMount(() => {
               </MazTableRowComponent>
             </template>
           </slot>
-        </tbody>
+        </component>
       </table>
     </div>
 
-    <div v-if="hasFooter" class="m-table-footer">
-      <div class="m-table-spacer" />
-
-      <div v-if="pagination" class="m-table-footer-pagination">
-        <div class="m-table-footer-pagination-items-per-page">
-          <span class="maz-hidden maz-text-sm tab-s:maz-block"> {{ messages.pagination.rowsPerPage }} </span>
+    <div v-if="hasFooter" class="m-table-footer maz:flex maz:max-w-full maz:justify-end maz:gap-2 maz:py-2">
+      <div v-if="pagination" class="m-table-footer-pagination maz:flex maz:items-center maz:gap-4">
+        <div class="m-table-footer-pagination-items-per-page maz:flex maz:items-center maz:gap-1">
+          <span class="maz:hidden maz:text-sm maz:tab-s:block"> {{ messages.pagination.rowsPerPage }} </span>
           <MazSelect
             v-model="pageSizeModel"
             :options="pageSizeOptions"
@@ -827,15 +878,15 @@ onBeforeMount(() => {
             :size="inputSize ?? size"
             :color="color"
             list-position="top"
-            :style="{ width: '5rem' }"
+            :style="{ maxWidth: '6rem' }"
           />
         </div>
 
-        <span v-if="totalPagesInternal" class="maz-whitespace-nowrap maz-text-sm">
+        <span v-if="totalPagesInternal" class="maz:text-sm maz:whitespace-nowrap">
           {{ rowsFromTo.from }} - {{ rowsFromTo.to }} {{ messages.pagination.of }} {{ totalItemsInternal }}
         </span>
 
-        <div class="m-table-footer-pagination-buttons">
+        <div class="m-table-footer-pagination-buttons maz:flex maz:items-center maz:gap-1">
           <MazBtn
             :disabled="currentPageModel === 1"
             :size="inputSize ?? size"
@@ -843,7 +894,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="firstPage"
           >
-            <MazChevronDoubleLeft class="maz-text-base" />
+            <MazIcon :icon="MazChevronDoubleLeft" class="maz:text-base" />
           </MazBtn>
 
           <MazBtn
@@ -853,7 +904,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="previousPage"
           >
-            <MazChevronLeft class="maz-text-base" />
+            <MazIcon :icon="MazChevronLeft" class="maz:text-base" />
           </MazBtn>
 
           <MazBtn
@@ -863,7 +914,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="nextPage"
           >
-            <MazChevronLeft class="maz-rotate-180 maz-text-base" />
+            <MazIcon :icon="MazChevronLeft" class="maz:rotate-180 maz:text-base" />
           </MazBtn>
 
           <MazBtn
@@ -873,7 +924,7 @@ onBeforeMount(() => {
             :rounded-size
             @click="lastPage"
           >
-            <MazChevronDoubleLeft class="maz-rotate-180 maz-text-base" />
+            <MazIcon :icon="MazChevronDoubleLeft" class="maz:rotate-180 maz:text-base" />
           </MazBtn>
         </div>
       </div>
@@ -882,203 +933,137 @@ onBeforeMount(() => {
 </template>
 
 <style scoped>
-  .m-table {
-  @apply maz-relative maz-max-w-full;
+@reference "../tailwindcss/tailwind.css";
 
-  &-header {
-    @apply maz-flex maz-max-w-full maz-items-center maz-justify-between maz-gap-2 maz-bg-surface maz-py-2;
-
-    &-search {
-      @apply maz-flex maz-items-center maz-gap-2;
-    }
-
-    &-title {
-      @apply maz-font-semibold;
-    }
-  }
-
-  &-footer {
-    @apply maz-flex maz-max-w-full maz-justify-between maz-gap-2 maz-bg-surface maz-p-2;
-
-    &-pagination {
-      @apply maz-flex maz-items-center maz-gap-4;
-
-      &-buttons {
-        @apply maz-flex maz-items-center maz-gap-1;
-      }
-
-      &-items-per-page {
-        @apply maz-flex maz-items-center maz-gap-1;
-      }
-    }
-  }
-
+.m-table {
   &-wrapper {
-    @apply maz-border maz-border-solid maz-border-divider maz-overflow-hidden;
-
-    &.--scrollable {
-      @apply maz-overflow-auto;
-    }
-
     &:not(.--rounded-none) {
-      @apply maz-rounded-xl;
+      @apply maz:rounded-xl;
     }
 
     &.--rounded-sm {
-      @apply maz-rounded-sm;
+      @apply maz:rounded-xs;
 
       table {
-        @apply maz-rounded-sm;
+        @apply maz:rounded-xs;
 
         thead tr:hover:first-child {
-          @apply maz-rounded-b-sm;
+          @apply maz:rounded-b-sm;
 
           th:first-child {
-            @apply maz-rounded-tl-sm;
+            @apply maz:rounded-tl-sm;
           }
 
           th:last-child {
-            @apply maz-rounded-tr-sm;
+            @apply maz:rounded-tr-sm;
           }
         }
 
         tbody tr:hover:last-child {
-          @apply maz-rounded-b-sm;
+          @apply maz:rounded-b-sm;
 
           td:first-child {
-            @apply maz-rounded-bl-sm;
+            @apply maz:rounded-bl-sm;
           }
 
           td:last-child {
-            @apply maz-rounded-br-sm;
+            @apply maz:rounded-br-sm;
           }
         }
       }
     }
 
     &.--rounded-md {
-      @apply maz-rounded-md;
+      @apply maz:rounded-md;
 
       table {
-        @apply maz-rounded-md;
+        @apply maz:rounded-md;
 
         thead tr:hover:first-child {
-          @apply maz-rounded-b-md;
+          @apply maz:rounded-b-md;
 
           th:first-child {
-            @apply maz-rounded-tl-md;
+            @apply maz:rounded-tl-md;
           }
 
           th:last-child {
-            @apply maz-rounded-tr-md;
+            @apply maz:rounded-tr-md;
           }
         }
 
         tbody tr:hover:last-child {
-          @apply maz-rounded-b-md;
+          @apply maz:rounded-b-md;
 
           td:first-child {
-            @apply maz-rounded-bl-md;
+            @apply maz:rounded-bl-md;
           }
 
           td:last-child {
-            @apply maz-rounded-br-md;
+            @apply maz:rounded-br-md;
           }
         }
       }
     }
 
     &.--rounded-lg {
-      @apply maz-rounded-lg;
+      @apply maz:rounded-lg;
 
       table {
-        @apply maz-rounded-lg;
+        @apply maz:rounded-lg;
 
         thead tr:hover:first-child {
-          @apply maz-rounded-b-lg;
+          @apply maz:rounded-b-lg;
 
           th:first-child {
-            @apply maz-rounded-tl-lg;
+            @apply maz:rounded-tl-lg;
           }
 
           th:last-child {
-            @apply maz-rounded-tr-lg;
+            @apply maz:rounded-tr-lg;
           }
         }
 
         tbody tr:hover:last-child {
-          @apply maz-rounded-b-lg;
+          @apply maz:rounded-b-lg;
 
           td:first-child {
-            @apply maz-rounded-bl-lg;
+            @apply maz:rounded-bl-lg;
           }
 
           td:last-child {
-            @apply maz-rounded-br-lg;
-          }
-        }
-      }
-    }
-
-    &.--rounded-base {
-      @apply maz-rounded;
-
-      table {
-        @apply maz-rounded;
-
-        thead tr:hover:first-child {
-          @apply maz-rounded-b;
-
-          th:first-child {
-            @apply maz-rounded-tl;
-          }
-
-          th:last-child {
-            @apply maz-rounded-tr;
-          }
-        }
-
-        tbody tr:hover:last-child {
-          @apply maz-rounded-b;
-
-          td:first-child {
-            @apply maz-rounded-bl;
-          }
-
-          td:last-child {
-            @apply maz-rounded-br;
+            @apply maz:rounded-br-lg;
           }
         }
       }
     }
 
     &.--rounded-xl {
-      @apply maz-rounded-xl;
+      @apply maz:rounded-xl;
 
       table {
-        @apply maz-rounded-xl;
+        @apply maz:rounded-xl;
 
         thead tr:hover:first-child {
-          @apply maz-rounded-b-xl;
+          @apply maz:rounded-b-xl;
 
           th:first-child {
-            @apply maz-rounded-tl-xl;
+            @apply maz:rounded-tl-xl;
           }
 
           th:last-child {
-            @apply maz-rounded-tr-xl;
+            @apply maz:rounded-tr-xl;
           }
         }
 
         tbody tr:hover:last-child {
-          @apply maz-rounded-b-xl;
+          @apply maz:rounded-b-xl;
 
           td:first-child {
-            @apply maz-rounded-bl-xl;
+            @apply maz:rounded-bl-xl;
           }
 
           td:last-child {
-            @apply maz-rounded-br-xl;
+            @apply maz:rounded-br-xl;
           }
         }
       }
@@ -1086,95 +1071,93 @@ onBeforeMount(() => {
   }
 
   &.--has-header {
-    @apply maz-rounded;
+    @apply maz:rounded-md;
   }
 
   &:not(.--has-header) {
     table {
-      @apply maz-rounded;
+      @apply maz:rounded-md;
     }
   }
 
   table {
-    @apply maz-table maz-w-full maz-border-collapse maz-bg-surface;
-
     table-layout: v-bind('tableLayout');
 
     &.--has-layout {
-      @apply maz-w-full;
+      @apply maz:w-full;
     }
 
     &.--elevation {
-      @apply maz-drop-shadow-md maz-shadow-elevation;
+      @apply maz:drop-shadow-md maz:shadow-elevation;
     }
 
     & .m-table-select-column {
-      @apply maz-w-[2.9rem];
+      @apply maz:w-[2.9rem];
     }
 
     caption {
-      @apply maz-p-3;
+      @apply maz:p-3;
 
       caption-side: v-bind('captionSide');
     }
 
     thead {
-      @apply maz-break-all maz-border-b maz-border-divider;
+      @apply maz:break-all maz:border-b maz:border-divider;
 
       th {
-        @apply maz-gap-2 maz-break-all maz-font-normal maz-text-muted maz-tracking-tight;
+        @apply maz:gap-2 maz:break-all maz:font-normal maz:text-muted maz:tracking-tight;
 
         &.--hidden {
-          @apply maz-hidden;
+          @apply maz:hidden;
         }
 
         &.--sortable {
-          @apply maz-cursor-pointer hover:maz-bg-surface-600/50 dark:hover:maz-bg-surface-400;
+          @apply maz:cursor-pointer maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400;
         }
 
         &.--xl {
-          @apply maz-px-5 maz-py-5 maz-text-lg;
+          @apply maz:px-5 maz:py-5 maz:text-lg;
         }
 
         &.--lg {
-          @apply maz-px-4 maz-py-4 maz-text-base;
+          @apply maz:px-4 maz:py-4 maz:text-base;
         }
 
         &.--md {
-          @apply maz-px-3 maz-py-3 maz-text-sm;
+          @apply maz:px-3 maz:py-3 maz:text-sm;
         }
 
         &.--sm {
-          @apply maz-px-2 maz-py-2 maz-text-xs;
+          @apply maz:px-2 maz:py-2 maz:text-xs;
         }
 
         &.--xs {
-          @apply maz-px-1 maz-py-1 maz-text-xs;
+          @apply maz:px-1 maz:py-1 maz:text-xs;
         }
 
         &.--mini {
-          @apply maz-px-0.5 maz-py-0.5 maz-text-xs;
+          @apply maz:px-0.5 maz:py-0.5 maz:text-xs;
         }
 
         span {
-          @apply maz-inline-flex maz-items-center maz-gap-1;
+          @apply maz:inline-flex maz:items-center maz:gap-1;
 
           .m-table-sort-icon-wrapper {
-            @apply maz-h-4 maz-w-4;
+            @apply maz:h-4 maz:w-4;
           }
 
           .m-table-sort-icon {
-            @apply maz-text-muted maz-transition-transform maz-duration-300 maz-ease-out;
+            @apply maz:text-muted maz:transition-transform maz:duration-300 maz:ease-out;
 
             &.--sorted {
-              @apply maz-block maz-text-foreground;
+              @apply maz:block maz:text-foreground;
 
               &.--up {
-                @apply maz-rotate-0;
+                @apply maz:rotate-0;
               }
 
               &.--down {
-                @apply maz-rotate-180;
+                @apply maz:rotate-180;
               }
             }
           }
@@ -1184,9 +1167,22 @@ onBeforeMount(() => {
 
     tbody {
       &.--divider {
-        @apply maz-divide-y maz-divide-divider;
+        @apply maz:divide-y maz:divide-divider;
       }
     }
+  }
+}
+
+/* Reordering animation (FLIP) when `animatedRows` is enabled. The class is set by
+   TransitionGroup on the child row element, hence `:deep`. Disabled when the user
+   prefers reduced motion. */
+:deep(.m-table-row-move) {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :deep(.m-table-row-move) {
+    transition: none;
   }
 }
 </style>

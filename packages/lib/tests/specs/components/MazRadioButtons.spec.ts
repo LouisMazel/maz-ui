@@ -1,4 +1,5 @@
 import MazRadioButtons from '@components/MazRadioButtons.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount } from '@vue/test-utils'
 
 describe('given MazRadioButtons component', () => {
@@ -97,7 +98,7 @@ describe('given MazRadioButtons component', () => {
 
       const optionElements = wrapper.findAll('.m-radio-buttons__items')
       optionElements.forEach((option) => {
-        expect(option.classes()).toContain('--elevation')
+        expect(option.classes()).toContain('maz:shadow-elevation', 'maz:drop-shadow-md')
       })
     })
   })
@@ -322,6 +323,32 @@ describe('given MazRadioButtons component', () => {
       })
 
       expect(wrapper.find('.m-radio-buttons__items').attributes('style')).toContain('color: red')
+    })
+  })
+})
+
+describe('given a MazUi global default for MazRadioButtons size', () => {
+  const options = [{ label: 'Option 1', value: 'option1' }]
+
+  describe('when no size prop is passed', () => {
+    it('then the configured size class is applied to the options', () => {
+      const wrapper = mount(MazRadioButtons, {
+        props: { options },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazRadioButtons: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.find('.m-radio-buttons__items').classes()).toContain('--size-lg')
+    })
+  })
+
+  describe('when a size prop is passed', () => {
+    it('then the instance prop wins over the configured default', () => {
+      const wrapper = mount(MazRadioButtons, {
+        props: { options, size: 'xs' },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazRadioButtons: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.find('.m-radio-buttons__items').classes()).toContain('--size-xs')
     })
   })
 })

@@ -198,4 +198,26 @@ describe('given MazToast component', () => {
       expect(linkButton.text()).toContain('View Details')
     })
   })
+
+  describe('when the timer progresses', () => {
+    it('then progressBarWidth tracks timer.remainingTime', async () => {
+      wrapper = mount(MazToast, {
+        props: {
+          message: 'Test message',
+          timeout: 1000,
+        },
+      })
+
+      await wrapper.vm.$nextTick()
+
+      // useTimer fires a setInterval every 200ms that decrements
+      // remainingTime. Wait enough to guarantee at least one tick.
+      await new Promise(resolve => setTimeout(resolve, 250))
+      await wrapper.vm.$nextTick()
+
+      const progressBarInner = wrapper.find<HTMLDivElement>('.m-toast__progress-bar-inner')
+      expect(progressBarInner.exists()).toBe(true)
+      expect(progressBarInner.element.style.width).toMatch(/^\d+(\.\d+)?%$/)
+    })
+  })
 })

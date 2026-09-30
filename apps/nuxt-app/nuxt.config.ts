@@ -1,9 +1,17 @@
-import postcss from 'maz-ui/postcss.config.cjs'
+import process from 'node:process'
+import tailwindcss from '@tailwindcss/vite'
+import postcssNested from 'postcss-nested'
 import svgLoader from 'vite-svg-loader'
 import mazUiModule from './../../packages/nuxt/src/module'
 
+const enableLocalMonorepoDev = false
+const isDev = enableLocalMonorepoDev && process.env.NODE_ENV !== 'production'
+
+// eslint-disable-next-line no-console
+console.log({ isDev, enableLocalMonorepoDev })
+
 export default defineNuxtConfig({
-  modules: [mazUiModule, '@nuxtjs/tailwindcss'],
+  modules: [mazUiModule],
 
   devtools: { enabled: true },
 
@@ -31,12 +39,33 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-07-22',
 
   vite: {
-    plugins: [svgLoader()],
+    plugins: [tailwindcss(), svgLoader()],
+    // Resolve `monorepo:dev` first when developing so we consume maz-ui's
+    // raw src/ (with HMR), and fall back to the published dist for prod
+    // builds. Same trick as accor-core-library.
+    resolve: {
+      conditions: isDev
+        ? [
+            'monorepo:dev',
+            'import',
+            'browser',
+            'module',
+            'default',
+          ]
+        : ['import', 'browser', 'module', 'default'],
+    },
+    css: {
+      postcss: {
+        // In dev only: flatten postcss-nested `&-child` syntax that ships
+        // in raw maz-ui SFCs loaded via the `monorepo:dev` resolve
+        // condition. Prod consumes the already-flattened dist.
+        plugins: isDev ? [postcssNested()] : [],
+      },
+    },
   },
 
-  postcss,
-
   mazUi: {
+    css: { injectCss: !isDev },
     theme: {
       preset: 'maz-ui',
       mode: 'both',

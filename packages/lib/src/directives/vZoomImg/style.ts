@@ -1,3 +1,4 @@
+/* eslint-disable better-tailwindcss/no-duplicate-classes */
 export const style = `
 .maz-zoom-img {
   position: fixed;

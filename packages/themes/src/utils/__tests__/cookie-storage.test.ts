@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from '../cookie-storage'
+import { clearSavedPresetName, getSavedPresetName, saveResolvedPresetName } from '../cookie-storage'
 
 function mockDocumentCookie(initialValue: string = '') {
   let cookieValue = initialValue
@@ -44,84 +44,73 @@ describe('cookie-storage', () => {
     vi.unstubAllGlobals()
   })
 
-  describe('given getCookie function', () => {
-    describe('when cookie exists', () => {
-      it('then it returns cookie value', () => {
-        mockDocumentCookie('test-key=test-value; other-key=other-value')
-
-        const result = getCookie('test-key')
-
-        expect(result).toBe('test-value')
-      })
-    })
-
-    describe('when cookie does not exist', () => {
-      it('then it returns null', () => {
-        mockDocumentCookie('other-key=other-value')
-
-        const result = getCookie('test-key')
-
-        expect(result).toBeNull()
-      })
-    })
-
-    describe('when no cookies exist', () => {
-      it('then it returns null', () => {
+  describe('given saveResolvedPresetName function', () => {
+    describe('when called with a falsy name', () => {
+      it('then it is a no-op', () => {
         mockDocumentCookie('')
 
-        const result = getCookie('test-key')
+        saveResolvedPresetName('')
 
-        expect(result).toBeNull()
+        expect(document.cookie).toBe('')
       })
     })
 
-    describe('when document is undefined', () => {
-      it('then it returns null', () => {
-        vi.stubGlobal('document', undefined)
+    describe('when the saved name already matches', () => {
+      it('then it skips the write', () => {
+        mockDocumentCookie('maz-preset=ocean')
+        const setSpy = vi.spyOn(document, 'cookie', 'set')
 
-        const result = getCookie('test-key')
+        saveResolvedPresetName('ocean')
 
-        expect(result).toBeNull()
+        expect(setSpy).not.toHaveBeenCalled()
       })
     })
 
-    describe('when cookie value is encoded', () => {
-      it('then it decodes the value', () => {
-        mockDocumentCookie('test-key=hello%20world')
+    describe('when the saved name differs', () => {
+      it('then it persists the new name', () => {
+        mockDocumentCookie('maz-preset=ocean')
 
-        const result = getCookie('test-key')
+        saveResolvedPresetName('nova')
 
-        expect(result).toBe('hello world')
+        expect(document.cookie).toContain('maz-preset=nova')
       })
     })
   })
 
-  describe('given setCookie function', () => {
-    describe('when setting a cookie', () => {
-      it('then it sets cookie with correct format', () => {
+  describe('given getSavedPresetName function', () => {
+    describe('when no preset cookie exists', () => {
+      it('then it returns null', () => {
         mockDocumentCookie('')
 
-        setCookie('test-key', 'test-value')
-
-        expect(document.cookie).toContain('test-key=test-value')
+        expect(getSavedPresetName()).toBeNull()
       })
     })
 
-    describe('when document is undefined', () => {
-      it('then it handles gracefully', () => {
+    describe('when a preset cookie exists', () => {
+      it('then it returns the persisted name', () => {
+        mockDocumentCookie('maz-preset=nova')
+
+        expect(getSavedPresetName()).toBe('nova')
+      })
+    })
+  })
+
+  describe('given clearSavedPresetName function', () => {
+    describe('when called on the client', () => {
+      it('then it writes the max-age=0 directive', () => {
+        mockDocumentCookie('maz-preset=nova')
+
+        clearSavedPresetName()
+
+        expect(document.cookie).toContain('maz-preset=')
+      })
+    })
+
+    describe('when running on the server', () => {
+      it('then it returns silently', () => {
         vi.stubGlobal('document', undefined)
 
-        expect(() => setCookie('test-key', 'test-value')).not.toThrow()
-      })
-    })
-
-    describe('when setting a cookie with special characters', () => {
-      it('then it encodes the value', () => {
-        mockDocumentCookie('')
-
-        setCookie('test-key', 'hello world')
-
-        expect(document.cookie).toContain('test-key=hello%20world')
+        expect(() => clearSavedPresetName()).not.toThrow()
       })
     })
   })

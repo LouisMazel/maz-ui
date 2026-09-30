@@ -1,9 +1,11 @@
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 
-export function noTransition(fn: () => void) {
+export function noTransition<T extends (...args: any[]) => any>(
+  fn: T,
+  ...args: Parameters<T>
+): ReturnType<T> {
   if (isServer()) {
-    fn()
-    return
+    return fn(...args)
   }
 
   const style = document.createElement('style')
@@ -14,9 +16,11 @@ export function noTransition(fn: () => void) {
   }`
   document.head.appendChild(style)
   document.documentElement.classList.add('no-transitions')
-  fn()
+
   setTimeout(() => {
     document.documentElement.classList.remove('no-transitions')
     style.remove()
   }, 500)
+
+  return fn(...args)
 }

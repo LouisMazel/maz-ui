@@ -1,0 +1,11 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-brand: oklch(0.65 0.2 250);
+}
+
+@layer components {
+  .btn {
+    @apply maz:flex maz:items-center;
+  }
+}

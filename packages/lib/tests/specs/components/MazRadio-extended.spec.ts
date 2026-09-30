@@ -110,42 +110,42 @@ describe('MazRadio extended branch coverage', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-primary))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-primary)')
     })
 
     it('uses success color', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g', color: 'success' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-success))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-success)')
     })
 
     it('uses warning color', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g', color: 'warning' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-warning))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-warning)')
     })
 
     it('uses destructive color', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g', color: 'destructive' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-destructive))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-destructive)')
     })
 
     it('uses info color', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g', color: 'info' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-info))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-info)')
     })
 
     it('uses contrast color', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g', color: 'contrast' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-contrast))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-contrast)')
     })
   })
 
@@ -154,56 +154,56 @@ describe('MazRadio extended branch coverage', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g', error: true },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-destructive))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-destructive)')
     })
 
     it('uses warning color for box shadow when warning is true', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g', warning: true },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-warning))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-warning)')
     })
 
     it('uses success color for box shadow when success is true', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g', success: true },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-success))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-success)')
     })
 
     it('uses muted color for box shadow when color is transparent', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g', color: 'transparent' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-muted))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-muted)')
     })
 
     it('uses muted color for box shadow when color is contrast', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g', color: 'contrast' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-muted))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-muted)')
     })
 
     it('uses color with opacity for regular colors', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g', color: 'info' },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-info) / 60%)')
+      expect(wrapper.attributes('style')).toContain('color-mix(in srgb, var(--maz-info) 60%, transparent)')
     })
 
     it('error takes precedence over warning and success', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g', error: true, warning: true, success: true },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-destructive))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-destructive)')
     })
 
     it('warning takes precedence over success', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g', warning: true, success: true },
       })
-      expect(wrapper.attributes('style')).toContain('hsl(var(--maz-warning))')
+      expect(wrapper.attributes('style')).toContain('var(--maz-warning)')
     })
   })
 

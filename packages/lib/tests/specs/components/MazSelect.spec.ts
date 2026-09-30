@@ -2,6 +2,7 @@ import type { MazSelectProps } from '@components/MazSelect.vue'
 import type { VueWrapper } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import MazSelect from '@components/MazSelect.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 
@@ -225,5 +226,42 @@ describe('components/MazSelect.vue', () => {
     await searchInput.findComponent({ name: 'MazInput' }).setValue('test')
 
     expect(wrapper.vm.optionList).toHaveLength(0)
+  })
+})
+
+describe('given a MazUi global default for size', () => {
+  const options = ['Apple', 'Banana']
+
+  describe('when no size prop is passed', () => {
+    it('then the input receives the global size', () => {
+      const wrapper = mount(MazSelect, {
+        props: { options },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'xl' } } } },
+      })
+
+      expect(wrapper.findComponent({ name: 'MazInput' }).props('size')).toBe('xl')
+    })
+  })
+
+  describe('when a component-scoped default differs from the global default', () => {
+    it('then the input receives the component-scoped size', () => {
+      const wrapper = mount(MazSelect, {
+        props: { options },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazSelect: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.findComponent({ name: 'MazInput' }).props('size')).toBe('lg')
+    })
+  })
+
+  describe('when a size prop is passed', () => {
+    it('then the instance prop wins over every configured default', () => {
+      const wrapper = mount(MazSelect, {
+        props: { options, size: 'sm' },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazSelect: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.findComponent({ name: 'MazInput' }).props('size')).toBe('sm')
+    })
   })
 })

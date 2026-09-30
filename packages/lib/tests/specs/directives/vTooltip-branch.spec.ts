@@ -467,6 +467,26 @@ describe('given vTooltip directive (branch coverage)', () => {
     })
   })
 
+  describe('when popover finishes its close animation', () => {
+    it('then onAfterCloseAnimation destroys the vNode instance', async () => {
+      wrapper = mount({
+        template: `<div v-tooltip="{ text: 'Tooltip text', open: true }">Content</div>`,
+        directives: { tooltip: vTooltip },
+      })
+
+      await nextTick()
+      await nextTick()
+
+      const panel = document.querySelector('.m-tooltip-panel') as HTMLElement | null
+      const parent = (panel as unknown as { __vueParentComponent?: { exposed?: { onTransitionAfterLeave?: () => void } } } | null)
+        ?.__vueParentComponent
+      parent?.exposed?.onTransitionAfterLeave?.()
+      await nextTick()
+
+      expect(wrapper.exists()).toBe(true)
+    })
+  })
+
   describe('when updateProps is called with open: true', () => {
     it('then it should set isOpen to true and recreate tooltip', async () => {
       const options = ref<any>({ text: 'Initial', open: false })

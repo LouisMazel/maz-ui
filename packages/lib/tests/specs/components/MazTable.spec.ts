@@ -3,6 +3,7 @@ import type { ComponentPublicInstance } from 'vue'
 import MazCheckbox from '@components/MazCheckbox.vue'
 import MazLoadingBar from '@components/MazLoadingBar.vue'
 import MazTable from '@components/MazTable.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount } from '@vue/test-utils'
 
 describe('given MazTable component', () => {
@@ -376,6 +377,138 @@ describe('given MazTable component', () => {
         const emittedValuesBackToPage1 = wrapper.emitted('update:model-value')
         expect(emittedValuesBackToPage1?.at(-1)).toStrictEqual([[1, 2, 3]])
       })
+    })
+  })
+
+  describe('Given a global config provides defaults for MazTable', () => {
+    describe('When the component mounts without a roundedSize prop', () => {
+      it('Then it applies the per-component global roundedSize', () => {
+        const config = { MazTable: { roundedSize: 'full' as const } }
+
+        const wrapper = mount(MazTable, {
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(wrapper.find('.m-table-wrapper').classes()).toContain('--rounded-full')
+      })
+    })
+
+    describe('When the roundedSize comes from defaults.global', () => {
+      it('Then it applies the global roundedSize', () => {
+        const config = { global: { roundedSize: 'lg' as const } }
+
+        const wrapper = mount(MazTable, {
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(wrapper.find('.m-table-wrapper').classes()).toContain('--rounded-lg')
+      })
+    })
+
+    describe('When an instance roundedSize is passed alongside the global config', () => {
+      it('Then the instance prop wins over the global default', () => {
+        const config = { MazTable: { roundedSize: 'full' as const } }
+
+        const wrapper = mount(MazTable, {
+          props: { roundedSize: 'sm' as const },
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(wrapper.find('.m-table-wrapper').classes()).toContain('--rounded-sm')
+        expect(wrapper.find('.m-table-wrapper').classes()).not.toContain('--rounded-full')
+      })
+    })
+
+    describe('When the size comes from the global config', () => {
+      it('Then the table titles receive the global size class', async () => {
+        const config = { MazTable: { size: 'xl' as const } }
+
+        const wrapper = mount(MazTable, {
+          props: { headers: [{ label: 'Id', key: 'id' }] },
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        await vi.dynamicImportSettled()
+
+        expect(wrapper.find('.m-table-title').classes()).toContain('--xl')
+      })
+    })
+
+    describe('When an instance size is passed alongside the global config', () => {
+      it('Then the instance size wins on the table titles', async () => {
+        const config = { MazTable: { size: 'xl' as const } }
+
+        const wrapper = mount(MazTable, {
+          props: { headers: [{ label: 'Id', key: 'id' }], size: 'sm' as const },
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        await vi.dynamicImportSettled()
+
+        expect(wrapper.find('.m-table-title').classes()).toContain('--sm')
+        expect(wrapper.find('.m-table-title').classes()).not.toContain('--xl')
+      })
+    })
+  })
+
+  describe('when animatedRows is enabled', () => {
+    const baseProps = {
+      animatedRows: true,
+      rowKey: 'id',
+      divider: true,
+      headers: [
+        { label: 'Id', key: 'id' },
+        { label: 'Firstname', key: 'firstname' },
+      ],
+      rows: [
+        { id: 1, firstname: 'John' },
+        { id: 2, firstname: 'Jane' },
+        { id: 3, firstname: 'Alice' },
+      ],
+    }
+
+    it('renders every row inside a tbody container', async () => {
+      const wrapper = mount(MazTable, { props: baseProps as any })
+
+      await vi.dynamicImportSettled()
+
+      const tbody = wrapper.find('tbody')
+      expect(tbody.exists()).toBe(true)
+      // The dynamic container keeps the divider class binding.
+      expect(tbody.classes()).toContain('--divider')
+      expect(wrapper.findAll('tbody tr')).toHaveLength(3)
+    })
+
+    it('reflects the new order when rows are reordered (stable rowKey path)', async () => {
+      const wrapper = mount(MazTable, {
+        props: {
+          animatedRows: true,
+          rowKey: 'id',
+          headers: [{ label: 'Id', key: 'id' }],
+          rows: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        } as any,
+      })
+
+      await vi.dynamicImportSettled()
+      expect(wrapper.findAll('tbody tr td').map(td => td.text())).toStrictEqual(['1', '2', '3'])
+
+      await wrapper.setProps({ rows: [{ id: 3 }, { id: 1 }, { id: 2 }] })
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.findAll('tbody tr td').map(td => td.text())).toStrictEqual(['3', '1', '2'])
+    })
+
+    it('still renders when no rowKey is provided (falls back to index)', async () => {
+      const wrapper = mount(MazTable, {
+        props: {
+          animatedRows: true,
+          headers: [{ label: 'Id', key: 'id' }],
+          rows: [{ id: 1 }, { id: 2 }],
+        } as any,
+      })
+
+      await vi.dynamicImportSettled()
+      expect(wrapper.findAll('tbody tr')).toHaveLength(2)
     })
   })
 })

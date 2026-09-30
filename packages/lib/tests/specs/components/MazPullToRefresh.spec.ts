@@ -47,7 +47,7 @@ describe('mazPullToRefresh', () => {
   it('renders with default props', async () => {
     const wrapper = mount(MazPullToRefresh, {
       props: {
-        onClick: vi.fn(),
+        onRefresh: vi.fn(),
       },
       slots: {
         default: 'Content Slot',
@@ -61,7 +61,7 @@ describe('mazPullToRefresh', () => {
     expect(wrapper.find('.header-text').text()).toContain('Pull to refresh')
   })
 
-  describe('Given the component is rendered with an onClick handler', () => {
+  describe('Given the component is rendered with an onRefresh handler', () => {
     let wrapper: VueWrapper
     let actionMock: ReturnType<typeof vi.fn>
 
@@ -69,7 +69,7 @@ describe('mazPullToRefresh', () => {
       actionMock = vi.fn().mockResolvedValue('response-data')
       wrapper = mount(MazPullToRefresh, {
         props: {
-          onClick: actionMock as unknown as () => Promise<void>,
+          onRefresh: actionMock as unknown as () => Promise<void>,
           distance: 100,
         },
         slots: {
@@ -84,7 +84,7 @@ describe('mazPullToRefresh', () => {
     })
 
     describe('When a full pull-to-refresh gesture is performed', () => {
-      it('calls the onClick handler and emits start, loaded, response, finish events', async () => {
+      it('calls the onRefresh handler and emits start, loaded, response, finish events', async () => {
         dispatchTouch('touchstart', 50)
         dispatchTouch('touchmove', 200)
         dispatchTouch('touchend')
@@ -101,7 +101,7 @@ describe('mazPullToRefresh', () => {
     })
 
     describe('When the pull distance is not reached', () => {
-      it('does not call onClick', async () => {
+      it('does not call onRefresh', async () => {
         dispatchTouch('touchstart', 50)
         dispatchTouch('touchmove', 80)
         dispatchTouch('touchend')
@@ -156,7 +156,7 @@ describe('mazPullToRefresh', () => {
       it('does not render the loading header', async () => {
         const wrapper = mount(MazPullToRefresh, {
           props: {
-            onClick: vi.fn(),
+            onRefresh: vi.fn(),
             disabled: true,
           },
           slots: {
@@ -171,7 +171,7 @@ describe('mazPullToRefresh', () => {
       })
     })
 
-    describe('When rendered without onClick', () => {
+    describe('When rendered without onRefresh', () => {
       it('does not render the loading header', async () => {
         const wrapper = mount(MazPullToRefresh, {
           slots: {
@@ -192,7 +192,7 @@ describe('mazPullToRefresh', () => {
       it('hides the loading header', async () => {
         const wrapper = mount(MazPullToRefresh, {
           props: {
-            onClick: vi.fn(),
+            onRefresh: vi.fn(),
             disabled: false,
           },
           slots: {
@@ -232,7 +232,7 @@ describe('mazPullToRefresh', () => {
 
         const wrapper = mount(MazPullToRefresh, {
           props: {
-            onClick: vi.fn(),
+            onRefresh: vi.fn(),
             containerSelector: '#test-container',
           },
           slots: {
@@ -258,7 +258,7 @@ describe('mazPullToRefresh', () => {
       it('caps the pull height at the distance value', async () => {
         const wrapper = mount(MazPullToRefresh, {
           props: {
-            onClick: vi.fn().mockResolvedValue(undefined),
+            onRefresh: vi.fn().mockResolvedValue(undefined),
             distance: 50,
           },
           slots: {
@@ -293,7 +293,7 @@ describe('mazPullToRefresh', () => {
 
         const wrapper = mount(MazPullToRefresh, {
           props: {
-            onClick: vi.fn(),
+            onRefresh: vi.fn(),
           },
           slots: {
             default: 'Content',
@@ -317,7 +317,7 @@ describe('mazPullToRefresh', () => {
       it('renders the custom pull-before content', async () => {
         const wrapper = mount(MazPullToRefresh, {
           props: {
-            onClick: vi.fn(),
+            onRefresh: vi.fn(),
           },
           slots: {
             'default': 'Content',
@@ -339,7 +339,7 @@ describe('mazPullToRefresh', () => {
       it('applies the headerClass to the loading-header element', async () => {
         const wrapper = mount(MazPullToRefresh, {
           props: {
-            onClick: vi.fn(),
+            onRefresh: vi.fn(),
             headerClass: 'my-custom-header',
           },
           slots: {
@@ -363,7 +363,7 @@ describe('mazPullToRefresh', () => {
 
         const wrapper = mount(MazPullToRefresh, {
           props: {
-            onClick: actionMock,
+            onRefresh: actionMock,
             distance: 100,
           },
           slots: {
@@ -401,7 +401,7 @@ describe('mazPullToRefresh', () => {
 
         const wrapper = mount(MazPullToRefresh, {
           props: {
-            onClick: vi.fn(),
+            onRefresh: vi.fn(),
             disabled: true,
           },
           slots: {
@@ -431,7 +431,7 @@ describe('mazPullToRefresh', () => {
       it('renders without errors', async () => {
         const wrapper = mount(MazPullToRefresh, {
           props: {
-            onClick: vi.fn(),
+            onRefresh: vi.fn(),
             offset: 50,
           },
           slots: {
@@ -465,7 +465,7 @@ describe('mazPullToRefresh', () => {
 
         const wrapper = mount(MazPullToRefresh, {
           props: {
-            onClick: actionMock,
+            onRefresh: actionMock,
             distance: 100,
           },
           slots: {

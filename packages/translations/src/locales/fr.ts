@@ -93,4 +93,38 @@ export default {
     ariaLabel: 'Contenu en chargement',
     loadingText: 'Chargement...',
   },
+  codeHighlight: {
+    copyToClipboard: 'Copier dans le presse-papiers',
+    copiedToClipboard: 'Copié dans le presse-papiers',
+  },
+  windowMockup: {
+    copyUrlToClipboard: 'Copier l\'URL dans le presse-papiers',
+    urlCopiedToClipboard: 'URL copiée dans le presse-papiers',
+  },
+  markdownEditor: {
+    write: 'Écrire',
+    preview: 'Aperçu',
+    split: 'Côte à côte',
+    emptyPreview: 'Rien à prévisualiser',
+    toolbar: {
+      heading: 'Titre',
+      bold: 'Gras',
+      italic: 'Italique',
+      strikethrough: 'Barré',
+      quote: 'Citation',
+      code: 'Code en ligne',
+      codeBlock: 'Bloc de code',
+      link: 'Lien',
+      image: 'Image',
+      bulletList: 'Liste à puces',
+      orderedList: 'Liste numérotée',
+      checkList: 'Liste de tâches',
+      table: 'Tableau',
+    },
+    headings: {
+      h1: 'Titre 1',
+      h2: 'Titre 2',
+      h3: 'Titre 3',
+    },
+  },
 } satisfies MazUiTranslationsNestedSchema

@@ -1,3 +1,3 @@
 ::: tip
-This component can be translated globally using the [MazUi](./../guide/translations.md) plugin.
+This component can be translated globally using the [MazUi](./../ecosystem/translations.md) plugin.
 :::

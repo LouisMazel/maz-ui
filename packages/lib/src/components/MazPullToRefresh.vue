@@ -1,20 +1,19 @@
 <script lang="ts" setup>
 import type { MazColor } from './types'
-import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { isStandaloneMode } from '@maz-ui/utils/helpers/isStandaloneMode'
 
-import { computed, defineAsyncComponent, onUnmounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue'
 
-const props = withDefaults(defineProps<MazPullToRefreshProps>(), {
-  distance: 100,
-  offset: 0,
-  onClick: undefined,
-  containerSelector: undefined,
-  headerClass: undefined,
-  spinnerColor: 'contrast',
-  disabled: false,
-  standaloneMode: false,
-})
+const {
+  distance: distanceProp = 100,
+  offset = 0,
+  onRefresh,
+  containerSelector,
+  headerClass,
+  spinnerColor = 'contrast',
+  disabled = false,
+  standaloneMode = false,
+} = defineProps<MazPullToRefreshProps>()
 
 const emits = defineEmits(['loaded', 'start', 'error', 'finish', 'response'])
 
@@ -23,7 +22,7 @@ const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 export interface MazPullToRefreshProps {
   distance?: number
   offset?: number
-  onClick?: () => unknown
+  onRefresh?: () => unknown
   containerSelector?: string
   headerClass?: string
   spinnerColor?: MazColor
@@ -31,11 +30,16 @@ export interface MazPullToRefreshProps {
   standaloneMode?: boolean
 }
 
+const mounted = ref(false)
+onMounted(() => {
+  mounted.value = true
+})
+
 const isDisabled = computed(
   () =>
-    props.disabled
-    || props.onClick === undefined
-    || (props.standaloneMode && isClient() && !isStandaloneMode()),
+    disabled
+    || onRefresh === undefined
+    || (standaloneMode && mounted.value && !isStandaloneMode()),
 )
 
 const margin = ref({
@@ -64,8 +68,8 @@ const container = computed<HTMLElement | undefined>(() => {
     return
   }
 
-  const element = props.containerSelector
-    ? (document.querySelector(props.containerSelector) as HTMLElement)
+  const element = containerSelector
+    ? (document.querySelector(containerSelector) as HTMLElement)
     : document.body
 
   if (!element) {
@@ -79,7 +83,7 @@ const pullHeight = computed(() => {
   if ((pull.value.state !== 'move' && pull.value.state !== 'end') || isDisabled.value) {
     return 0
   }
-  return pull.value.distance > props.distance ? props.distance : pull.value.distance
+  return pull.value.distance > distanceProp ? distanceProp : pull.value.distance
 })
 
 function updateView(container: HTMLElement) {
@@ -87,7 +91,7 @@ function updateView(container: HTMLElement) {
 
   margin.value = {
     top,
-    bottom: window.innerHeight - (height + top + props.offset),
+    bottom: window.innerHeight - (height + top + offset),
   }
 }
 
@@ -129,7 +133,7 @@ function handleTouchMove(event: TouchEvent) {
   const distance = pull.value.to - pull.value.from
 
   pull.value.distance = distance > 0 ? distance : 0
-  pull.value.available = pull.value.distance >= props.distance
+  pull.value.available = pull.value.distance >= distanceProp
   pull.value.state = 'move'
 
   // setTimeout(() => {
@@ -142,7 +146,7 @@ function handleTouchEnd() {
     return
   }
 
-  if (pullHeight.value === props.distance && pull.value.state === 'move' && window.scrollY <= 0) {
+  if (pullHeight.value === distanceProp && pull.value.state === 'move' && window.scrollY <= 0) {
     runAction()
   }
   else {
@@ -164,7 +168,7 @@ async function runAction() {
   try {
     setLoading(true)
     emits('start')
-    const response = await props.onClick?.()
+    const response = await onRefresh?.()
     emits('loaded')
     emits('response', response)
   }
@@ -222,23 +226,23 @@ onUnmounted(() => {
   <div class="m-pull-to-refresh m-reset-css" :class="{ '--available': pull.available || pullHeight > 10 }">
     <div
       v-if="!isDisabled"
-      class="loading-header"
+      class="loading-header maz:relative maz:flex maz:w-full maz:flex-center maz:text-center maz:text-[0.8em]"
       :style="{ height: `${pullHeight}px` }"
       :class="headerClass"
     >
-      <div v-if="!pull.available" class="header-text">
+      <div v-if="!pull.available" class="header-text maz:absolute maz:flex maz:w-full maz:flex-center" :class="{ 'maz:bottom-2': !(pull.available || pullHeight > 10) }">
         <slot name="pull-before">
           <span>Pull to refresh</span>
         </slot>
       </div>
-      <div v-else-if="pull.available && !internalLoading" class="header-text">
+      <div v-else-if="pull.available && !internalLoading" class="header-text maz:absolute maz:flex maz:w-full maz:flex-center">
         <slot name="pull-ready">
           <span> Release to refresh </span>
         </slot>
       </div>
-      <div v-if="internalLoading" class="header-text">
+      <div v-if="internalLoading" class="header-text maz:absolute maz:flex maz:w-full maz:flex-center">
         <slot name="pull-loading">
-          <div class="maz-flex maz-flex-col maz-flex-center">
+          <div class="maz:flex maz:flex-col maz:flex-center">
             <MazSpinner :color="spinnerColor" size="2.5em" />
           </div>
         </slot>
@@ -248,22 +252,3 @@ onUnmounted(() => {
     <slot />
   </div>
 </template>
-
-<style scoped>
-  .m-pull-to-refresh {
-  .loading-header,
-  .loading-footer {
-    @apply maz-relative maz-flex maz-w-full maz-text-center maz-text-[0.8em] maz-flex-center;
-
-    .header-text {
-      @apply maz-absolute maz-flex maz-w-full maz-flex-center;
-    }
-  }
-
-  &:not(.--available) {
-    .header-text {
-      @apply maz-bottom-2;
-    }
-  }
-}
-</style>

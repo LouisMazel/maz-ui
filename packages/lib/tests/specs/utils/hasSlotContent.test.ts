@@ -38,18 +38,12 @@ describe('hasSlotContent (unit)', () => {
   })
 
   describe('Text nodes', () => {
-    it('returns false for whitespace-only text', () => {
-      const slot: Slot = () => [{ type: Text, children: '   ' } as any]
-      expect(hasSlotContent(slot)).toBe(false)
-    })
-
-    it('returns false for empty string text', () => {
-      const slot: Slot = () => [{ type: Text, children: '' } as any]
-      expect(hasSlotContent(slot)).toBe(false)
-    })
-
-    it('returns false for newlines/tabs only', () => {
-      const slot: Slot = () => [{ type: Text, children: '\n\t  \n' } as any]
+    it.each([
+      { label: 'whitespace-only text', children: '   ' },
+      { label: 'empty string text', children: '' },
+      { label: 'newlines/tabs only', children: '\n\t  \n' },
+    ])('returns false for $label', ({ children }) => {
+      const slot: Slot = () => [{ type: Text, children } as any]
       expect(hasSlotContent(slot)).toBe(false)
     })
 

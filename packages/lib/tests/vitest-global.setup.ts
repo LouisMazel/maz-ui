@@ -181,3 +181,15 @@ config.global.stubs = {
   Teleport: true,
   RouterLink: true,
 }
+
+beforeEach(() => {
+  document.cookie.split(';').forEach((c) => {
+    const [name] = c.trim().split('=')
+    if (name)
+      document.cookie = `${name}=; path=/; max-age=0; SameSite=Lax`
+  })
+})
+
+afterEach(async () => {
+  await vi.dynamicImportSettled()
+})

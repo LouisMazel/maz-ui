@@ -16,11 +16,11 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
 ## Basic usage
 
 <ComponentDemo expanded>
-  <div class="maz-flex maz-flex-col maz-gap-2 maz-flex-center">
+  <div class="maz:flex maz:flex-col maz:gap-2 maz:flex-center">
     <MazBtn @click="isOpenedTop = !isOpenedTop">
       Open top drawer
     </MazBtn>
-    <div class="maz-flex maz-flex-wrap maz-gap-2">
+    <div class="maz:flex maz:flex-wrap maz:gap-2">
       <MazBtn @click="isOpenedLeft = !isOpenedLeft">
         Open left drawer
       </MazBtn>
@@ -46,7 +46,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   <template #default="{ close }">
     <div style="padding: 16px">
       <p>Content</p>
-      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
         <MazBtn color="destructive" @click="close"> Close </MazBtn>
       </div>
     </div>
@@ -58,31 +58,31 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   <template #default="{ close }">
     <div style="padding: 16px">
       <p>Content</p>
-      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
         <MazBtn color="destructive" @click="close"> Close </MazBtn>
       </div>
     </div>
   </template>
 </MazDrawer>
 
-<MazDrawer variant="left" v-model="isOpenedLeft">
+<MazDrawer variant="start" v-model="isOpenedLeft">
   <template #title> Drawer left </template>
   <template #default="{ close }">
     <div style="padding: 16px">
       <p>Content</p>
-      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
         <MazBtn color="destructive" @click="close"> Close </MazBtn>
       </div>
     </div>
   </template>
 </MazDrawer>
 
-<MazDrawer variant="right" v-model="isOpenedRight">
+<MazDrawer variant="end" v-model="isOpenedRight">
   <template #title> Drawer right </template>
   <template #default="{ close }">
     <div style="padding: 16px">
       <p>Content</p>
-      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
         <MazBtn color="destructive" @click="close"> Close </MazBtn>
       </div>
     </div>
@@ -102,7 +102,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
       <p>
         Content
       </p>
-      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
         <MazBtn color="destructive" @click="close">
           Close
         </MazBtn>
@@ -120,7 +120,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
       <p>
         Content
       </p>
-      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
         <MazBtn color="destructive" @click="close">
           Close
         </MazBtn>
@@ -129,7 +129,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   </template>
 </MazDrawer>
 
-<MazDrawer variant="left" v-model="isOpenedLeft">
+<MazDrawer variant="start" v-model="isOpenedLeft">
   <template #title>
     Drawer left
   </template>
@@ -138,7 +138,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
       <p>
         Content
       </p>
-      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
         <MazBtn color="destructive" @click="close">
           Close
         </MazBtn>
@@ -147,7 +147,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   </template>
 </MazDrawer>
 
-<MazDrawer variant="right" v-model="isOpenedRight">
+<MazDrawer variant="end" v-model="isOpenedRight">
   <template #title>
     Drawer right
   </template>
@@ -156,7 +156,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
       <p>
         Content
       </p>
-      <div class="maz-flex maz-flex-wrap maz-gap-2 maz-mt-4">
+      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
         <MazBtn color="destructive" @click="close">
           Close
         </MazBtn>

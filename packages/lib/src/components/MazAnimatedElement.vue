@@ -38,7 +38,7 @@ let animationFrameId: number | null = null
 function triggerAnimation() {
   animationFrameId = requestAnimationFrame(() => {
     if (element.value) {
-      element.value.classList.remove('--invisible')
+      element.value.classList.remove('maz:invisible')
       element.value.classList.add(animatedClass.value)
       isAnimated.value = true
     }
@@ -47,13 +47,25 @@ function triggerAnimation() {
 
 function resetAnimation() {
   if (element.value) {
-    element.value.classList.add('--invisible')
+    element.value.classList.add('maz:invisible')
     element.value.classList.remove(animatedClass.value)
     isAnimated.value = false
   }
 }
 
+const prefersReducedMotion = typeof globalThis.window !== 'undefined'
+  && typeof globalThis.matchMedia === 'function'
+  && globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 onMounted(() => {
+  // Accessibilité : si l'utilisateur préfère réduire les animations, on affiche
+  // immédiatement le contenu sans jouer l'animation (et sans observer).
+  if (prefersReducedMotion) {
+    element.value?.classList.remove('maz:invisible')
+    isAnimated.value = true
+    return
+  }
+
   observer = new IntersectionObserver(([entry]) => {
     if (entry.isIntersecting && !isAnimated.value) {
       nextTick(() => {
@@ -85,7 +97,8 @@ onBeforeUnmount(() => {
 <template>
   <div
     ref="element"
-    class="m-animated-element m-reset-css --invisible" :style="{
+    class="m-animated-element m-reset-css maz:invisible"
+    :style="{
       animationDuration: `${duration}ms`,
     }"
   >
@@ -94,13 +107,11 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-animated-element {
   will-change: transform, opacity, filter;
   transform: translateZ(0);
-
-  &.--invisible {
-    @apply maz-invisible;
-  }
 }
 
 @keyframes slide-up-blur {

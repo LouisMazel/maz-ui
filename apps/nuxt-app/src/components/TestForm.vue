@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { GenericInstanceType } from '@maz-ui/utils/ts-helpers/GenericInstanceType'
 import type { MazDatePickerPartialRangeValue, MazInput, MazRadioButtons, MazTextarea } from 'maz-ui/components'
-// import { useFormField, useFormValidator } from 'maz-ui/src/composables/index.js'
+// import { useFormField, useFormValidator } from 'maz-ui/composables.js'
 import { array, boolean, literal, maxValue, minLength, minValue, nonEmpty, number as numberAction, object, pipe, string } from 'valibot'
 
 const schema = ref({
@@ -28,10 +28,6 @@ const { isSubmitting, handleSubmit, model, fieldsStates } = useFormValidator({
   schema,
   defaultValues: {
     age: 33,
-    date: {
-      start: '2025-01-01',
-      end: '2025-01-01',
-    },
   },
   model: ref({}),
   options: {
@@ -86,10 +82,10 @@ const onSubmit = handleSubmit((formData) => {
 
 <template>
   <form
-    class="maz-flex maz-flex-col maz-gap-4"
+    class="maz:flex maz:flex-col maz:gap-4"
     @submit="onSubmit"
   >
-    model: <pre class="maz-text-xs">{{ model }}</pre>
+    model: <pre class="maz:text-xs">{{ model }}</pre>
 
     <MazInput
       id="name"
@@ -97,7 +93,7 @@ const onSubmit = handleSubmit((formData) => {
       v-model="name"
       top-label="Enter your name"
       :assistive-text="nameErrorMessage"
-      placeholder="John Doe"
+      label="John Doe"
       :error="!!nameErrorMessage"
       :success="fieldsStates?.name.valid"
       :class="{ 'has-error-form': !!nameErrorMessage }"
@@ -137,8 +133,9 @@ const onSubmit = handleSubmit((formData) => {
       ref="numberRef"
       v-model="number"
       label="Enter a number"
+
       :error="!!numberError"
-      :text-center="false"
+      :text-center="true"
       :hint="numberError"
       :success="isValidNumber"
     />
@@ -235,6 +232,9 @@ const onSubmit = handleSubmit((formData) => {
       v-model="date"
       :hint="dateError"
       color="contrast"
+      label="Date"
+      range
+      double
       :error="!!dateError"
       :success="isValidDate"
       picker-position="top"

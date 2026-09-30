@@ -111,6 +111,8 @@ export type FieldsStates<
 
 export type BaseFormPayload = Record<string, any>
 
+export type FormFieldRef = Ref | TemplateRef | HTMLElement
+
 export interface FormFieldOptions<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<FormSchema<Model>>,
@@ -129,8 +131,10 @@ export interface FormFieldOptions<
   /**
    * Reference to the component or HTML element to associate and trigger validation events
    * Necessary for 'eager', 'progressive' and 'blur' validation modes
+   * Accepts a reactive `Ref`/`TemplateRef` (recommended, supports conditional rendering with `v-if`)
+   * or a raw `HTMLElement`
    */
-  ref?: Ref | TemplateRef
+  ref?: FormFieldRef
   /**
    * Identifier for the form
    * Useful when you have multiple forms on the same component

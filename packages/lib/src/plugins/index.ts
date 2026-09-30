@@ -1,3 +1,4 @@
+export type { GlobalizableProps, MazComponentName, MazUiDefaultsOptions } from '../composables/useGlobalConfig'
 export { AosHandler, type AosOptions, AosPlugin, getAosInstance } from './aos'
 export { type DialogOptions, DialogPlugin } from './dialog'
 export { MazUi, type MazUiOptions } from './maz-ui'

@@ -4,21 +4,23 @@ import { MazChevronLeft } from '@maz-ui/icons/lazy/MazChevronLeft'
 import { MazXMark } from '@maz-ui/icons/lazy/MazXMark'
 import { checkAvailability } from '@maz-ui/utils/helpers/checkAvailability'
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import MazIcon from '../../components/MazIcon.vue'
 
 import MazSpinner from '../../components/MazSpinner.vue'
 
-const props = withDefaults(defineProps<MazFullscreenImgProps>(), {
-  zoom: true,
-  offset: undefined,
-  destroy: undefined,
-  alt: undefined,
-  animation: () => ({
+const {
+  zoom = true,
+  offset,
+  destroy,
+  alt,
+  animation = {
     duration: 300,
     easing: 'ease-in-out',
-  }),
-  clickedElementBounds: undefined,
-  openInstanceClass: 'm-fullscreen-img-instance',
-})
+  },
+  openInstanceClass = 'm-fullscreen-img-instance',
+  clickedElement,
+  src,
+} = defineProps<MazFullscreenImgProps>()
 
 const emits = defineEmits(['close', 'previous', 'next', 'before-close'])
 
@@ -52,12 +54,12 @@ const animationState = reactive({
   ended: false,
 })
 
-const currentClickedElement = ref(props.clickedElement)
-const currentClickedElementBounds = computed(() => props.clickedElement.getBoundingClientRect())
+const currentClickedElement = ref(clickedElement)
+const currentClickedElementBounds = computed(() => clickedElement.getBoundingClientRect())
 const isLandscapeImage = ref()
 
-const currentSrc = ref(props.src)
-const currentAlt = ref<string | null | undefined>(props.alt)
+const currentSrc = ref(src)
+const currentAlt = ref<string | null | undefined>(alt)
 
 const FullscreenImgElement = ref<HTMLDivElement>()
 const ImgElement = ref<HTMLImageElement>()
@@ -131,21 +133,21 @@ function getNewInstanceIndex(allInstances: HTMLElement[], newInstanceIndex: numb
 }
 
 function useNextInstance(currentInstance: HTMLElement, nextInstance: HTMLElement) {
-  currentInstance.classList.remove(props.openInstanceClass)
-  nextInstance.classList.add(props.openInstanceClass)
+  currentInstance.classList.remove(openInstanceClass)
+  nextInstance.classList.add(openInstanceClass)
 
-  const src: string | null = nextInstance.getAttribute('data-src')
-  const alt: string | null = nextInstance.getAttribute('data-alt')
+  const nextSrc: string | null = nextInstance.getAttribute('data-src')
+  const nextAlt: string | null = nextInstance.getAttribute('data-alt')
 
-  currentAlt.value = alt
-  currentSrc.value = src ?? currentSrc.value
+  currentAlt.value = nextAlt
+  currentSrc.value = nextSrc ?? currentSrc.value
 }
 
 function nextPreviousImage(which: 'next' | 'previous'): void {
   hideImage.value = true
 
   const currentInstance: HTMLElement | null = document.querySelector(
-    `.m-fullscreen-img-instance.${props.openInstanceClass}`,
+    `.m-fullscreen-img-instance.${openInstanceClass}`,
   )
 
   if (currentInstance) {
@@ -220,22 +222,22 @@ function runAnimation(frames: Keyframe[] | PropertyIndexedKeyframes) {
   animationState.running = true
   hideImage.value = false
 
-  const animation = ImgElement.value?.animate(frames, {
-    duration: props.animation.duration,
-    easing: props.animation.easing,
+  const result = ImgElement.value?.animate(frames, {
+    duration: animation.duration,
+    easing: animation.easing,
   })
 
-  if (!animation) {
+  if (!result) {
     console.error('[maz-ui](vFullscreenImg) animation is not defined')
     animationState.running = false
     animationState.ended = true
     return
   }
 
-  return animation
+  return result
 }
 
-function getPositionsOfClikedElement(offset = props.offset ?? 0) {
+function getPositionsOfClikedElement(offsetArg = offset ?? 0) {
   const width = currentClickedElement.value.clientWidth || 1
   const height = currentClickedElement.value.clientHeight || 1
 
@@ -243,8 +245,8 @@ function getPositionsOfClikedElement(offset = props.offset ?? 0) {
   const windowHeight = window.innerHeight
 
   const scale = Math.min(
-    (windowWidth - 2 * offset) / width,
-    (windowHeight - 2 * offset) / height,
+    (windowWidth - 2 * offsetArg) / width,
+    (windowHeight - 2 * offsetArg) / height,
   )
 
   const centerX = (windowWidth - width * scale) / 2
@@ -346,7 +348,7 @@ function closeFullscreen() {
   function onFinish() {
     emits('close')
     FullscreenImgElement.value?.remove()
-    props.destroy?.()
+    destroy?.()
     animationState.running = false
     animationState.ended = true
   }
@@ -385,7 +387,7 @@ onBeforeUnmount(() => {
   <div
     ref="FullscreenImgElement"
     role="button"
-    class="m-fullscreen-img m-reset-css"
+    class="m-fullscreen-img m-reset-css maz:fixed maz:inset-0 maz:z-default-backdrop maz:h-screen maz:w-screen maz:items-center maz:bg-overlay/5 maz:outline-hidden maz:backdrop-blur-sm"
     tabindex="0"
     @click.stop="close"
     @keypress.esc.prevent="close"
@@ -393,25 +395,25 @@ onBeforeUnmount(() => {
     <button
       v-if="loadedOnce && hasMultipleInstances"
       type="button"
-      class="m-fullscreen-btn --next"
+      class="m-fullscreen-btn --next maz:absolute maz:inset-e-0 maz:top-1/2 maz:z-15 maz:flex maz:h-screen maz:w-[7%] maz:min-w-[5em] maz:-translate-y-1/2 maz:transform maz:cursor-pointer maz:items-center maz:justify-end maz:bg-transparent maz:p-4 maz:transition-colors maz:duration-200"
       @click.stop="nextPreviousImage('next')"
     >
-      <MazChevronLeft class="maz-rotate-180" />
+      <MazIcon :icon="MazChevronLeft" class="maz:rotate-180" />
     </button>
     <button
       v-if="loadedOnce && hasMultipleInstances"
       type="button"
-      class="m-fullscreen-btn --previous"
+      class="m-fullscreen-btn --previous maz:absolute maz:top-1/2 maz:left-0 maz:z-15 maz:flex maz:h-screen maz:w-[7%] maz:min-w-[5em] maz:-translate-y-1/2 maz:transform maz:cursor-pointer maz:items-center maz:justify-start maz:bg-transparent maz:p-4 maz:transition-colors maz:duration-200"
       @click.stop="nextPreviousImage('previous')"
     >
-      <MazChevronLeft />
+      <MazIcon :icon="MazChevronLeft" />
     </button>
 
-    <button type="button" class="m-fullscreen-btn --close" @click="close">
-      <MazXMark />
+    <button type="button" class="m-fullscreen-btn --close maz:absolute maz:inset-e-0 maz:top-0 maz:z-15 maz:flex maz:h-20 maz:w-[7%] maz:min-w-[5em] maz:cursor-pointer maz:items-start maz:justify-end maz:bg-transparent maz:p-4 maz:transition-colors maz:duration-200" @click="close">
+      <MazIcon :icon="MazXMark" />
     </button>
 
-    <div class="m-fullscreen-img-scroller">
+    <div class="m-fullscreen-img-scroller maz:flex maz:h-screen maz:w-screen maz:flex-center maz:overflow-auto">
       <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions, vuejs-accessibility/click-events-have-key-events -->
       <img
         ref="ImgElement"
@@ -423,68 +425,46 @@ onBeforeUnmount(() => {
         @click.stop="zoom && toggleZoom()"
       >
 
-      <MazSpinner v-show="showLoader" class="m-fullscreen-img-loader" />
+      <MazSpinner v-show="showLoader" class="m-fullscreen-img-loader maz:absolute maz:z-15 maz:text-2xl" />
     </div>
   </div>
 </template>
 
 <style>
-  html.--m-fullscreen-open {
-  @apply maz-h-screen maz-overflow-hidden;
+@reference "../../tailwindcss/tailwind.css";
+
+html.--m-fullscreen-open {
+  @apply maz:h-screen maz:overflow-hidden;
 }
 </style>
 
 <style scoped>
-  .m-fullscreen-img {
-  @apply maz-fixed maz-inset-0 maz-z-default-backdrop maz-h-screen maz-w-screen maz-items-center maz-bg-overlay/5 maz-outline-none maz-backdrop-blur;
+@reference "../../tailwindcss/tailwind.css";
 
-  .m-fullscreen-img-scroller {
-    @apply maz-flex maz-h-screen maz-w-screen maz-overflow-auto maz-flex-center;
-  }
-
+.m-fullscreen-img {
   img {
-    @apply maz-z-2 maz-outline-none maz-cursor-zoom-in maz-object-center maz-object-contain;
+    @apply maz:z-2 maz:outline-hidden maz:cursor-zoom-in maz:object-center maz:object-contain;
 
     &.--is-zoomed {
-      @apply maz-cursor-zoom-out;
+      @apply maz:cursor-zoom-out;
     }
 
     &.--invisible {
-      @apply maz-invisible;
+      @apply maz:invisible;
     }
 
     &.--absolute {
-      @apply maz-absolute;
+      @apply maz:absolute;
     }
-  }
-
-  .m-fullscreen-img-loader {
-    @apply maz-absolute maz-text-2xl maz-z-15;
   }
 
   .m-fullscreen-btn {
-    @apply maz-absolute maz-z-15 maz-flex maz-h-20 maz-w-[7%] maz-min-w-[5em] maz-cursor-pointer maz-p-4 maz-transition-colors maz-duration-200;
-
     svg {
-      @apply maz-text-3xl maz-transition-transform maz-duration-300 maz-ease-in-out;
+      @apply maz:text-3xl maz:transition-transform maz:duration-300 maz:ease-in-out;
     }
 
-    &:hover {
-      svg {
-        @apply maz-scale-150;
-      }
-    }
-
-    &.--close {
-      @apply maz-end-0 maz-top-0 maz-items-start maz-justify-end;
-    }
-
-    &.--previous {
-      @apply maz-left-0 maz-top-1/2 maz-h-screen maz--translate-y-1/2 maz-transform maz-items-center maz-justify-start;
-    }
-
-    &.--next {
-      @apply maz-end-0 maz-top-1/2 maz-h-screen maz--translate-y-1/2 maz-transform maz-items-center maz-justify-end;
+    &:hover svg {
+      @apply maz:scale-150;
     }
   }
 }

@@ -1,4 +1,5 @@
 import { useFormField, useFormValidator } from '@composables/index'
+import { withSetup } from '@tests/helpers/withSetup'
 import { flushPromises, mount } from '@vue/test-utils'
 
 import { minLength, minValue, number, pipe, string } from 'valibot'
@@ -478,6 +479,109 @@ describe('given useFormField with progressive mode', () => {
       expect(nameField.hasError.value).toBe(true)
       expect(nameField.isBlurred.value).toBe(true)
       expect(nameField.errorMessage.value).toBe('Name must be at least 3 characters')
+    })
+  })
+})
+
+describe('given the returned scrollToError', () => {
+  describe('when called with an explicit selector', () => {
+    it('then it scrolls to the matching element', () => {
+      const el = document.createElement('div')
+      el.classList.add('custom-error')
+      el.scrollIntoView = vi.fn()
+      document.body.appendChild(el)
+
+      const [result] = withSetup(() => useFormValidator({
+        schema: { name: pipe(string(), minLength(2)) },
+        defaultValues: { name: '' },
+      }))
+
+      result.scrollToError('.custom-error')
+
+      expect(el.scrollIntoView).toHaveBeenCalled()
+      document.body.removeChild(el)
+    })
+  })
+
+  describe('when called without selector and a string scrollToError is configured', () => {
+    it('then it uses the configured selector', () => {
+      const el = document.createElement('div')
+      el.classList.add('configured-error')
+      el.scrollIntoView = vi.fn()
+      document.body.appendChild(el)
+
+      const [result] = withSetup(() => useFormValidator({
+        schema: { name: pipe(string(), minLength(2)) },
+        defaultValues: { name: '' },
+        options: { scrollToError: '.configured-error' },
+      }))
+
+      result.scrollToError()
+
+      expect(el.scrollIntoView).toHaveBeenCalled()
+      document.body.removeChild(el)
+    })
+  })
+
+  describe('when called without selector and scrollToError is a boolean', () => {
+    it('then it falls back to the default selector without throwing', () => {
+      const [result] = withSetup(() => useFormValidator({
+        schema: { name: pipe(string(), minLength(2)) },
+        defaultValues: { name: '' },
+        options: { scrollToError: true },
+      }))
+
+      expect(() => result.scrollToError()).not.toThrow()
+    })
+  })
+})
+
+function createEagerRevalidationComponent() {
+  return defineComponent({
+    setup() {
+      const schema = {
+        name: pipe(string(), minLength(3, 'Name must be at least 3 characters')),
+      }
+      const identifier = Symbol('eager-revalidation')
+      const form = useFormValidator<typeof schema>({
+        schema,
+        defaultValues: { name: '' },
+        options: { mode: 'eager', identifier },
+      })
+      const nameField = useFormField<string>('name', { formIdentifier: identifier })
+      return { form, nameField }
+    },
+    template: '<div><input /></div>',
+  })
+}
+
+describe('given an eager field that has been blurred and is valid', () => {
+  beforeEach(() => {
+    vi.useRealTimers()
+  })
+
+  describe('when its value changes on input and becomes invalid', () => {
+    it('then it revalidates and invalidates without requiring a new blur', async () => {
+      const wrapper = mount(createEagerRevalidationComponent())
+      // @ts-expect-error - nameField is exposed for testing
+      const nameField = wrapper.vm.nameField as ReturnType<typeof useFormField<string>>
+
+      nameField.value.value = 'John'
+      nameField.validationEvents.value?.onBlur()
+      await flushPromises()
+
+      expect(nameField.isValid.value).toBe(true)
+      expect(nameField.hasError.value).toBe(false)
+      expect(nameField.isBlurred.value).toBe(true)
+
+      nameField.value.value = 'Jo'
+      await flushPromises()
+
+      expect(nameField.isValid.value).toBe(false)
+      expect(nameField.hasError.value).toBe(true)
+      expect(nameField.errorMessage.value).toBe('Name must be at least 3 characters')
+
+      wrapper.unmount()
     })
   })
 })

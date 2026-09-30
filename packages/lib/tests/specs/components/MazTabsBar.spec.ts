@@ -30,7 +30,7 @@ describe('mazTabsBar.vue', () => {
 
     const tabLabels = wrapper.findAll('.m-tabs-bar__item')
 
-    expect(tabLabels.length).toBe(3)
+    expect(tabLabels).toHaveLength(3)
 
     expect(tabLabels[0].text()).toBe('Tab 1')
     expect(tabLabels[1].text()).toBe('Tab 2')
@@ -38,7 +38,7 @@ describe('mazTabsBar.vue', () => {
 
     const disabledTabs = wrapper.findAll('.m-tabs-bar__item.--disabled')
 
-    expect(disabledTabs.length).toBe(1)
+    expect(disabledTabs).toHaveLength(1)
   })
 
   it('correctly initializes the model value', () => {

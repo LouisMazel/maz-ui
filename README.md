@@ -34,7 +34,7 @@
   <span> · </span>
   <a href="https://maz-ui.com/guide/getting-started">Getting Started</a>
   <span> · </span>
-  <a href="https://maz-ui.com/guide/themes">Theming</a>
+  <a href="https://maz-ui.com/gecosystem/themes">Theming</a>
 </h3>
 
 <p align="center">
@@ -73,7 +73,7 @@ import { mazUi } from '@maz-ui/themes/presets'
 import { fr } from '@maz-ui/translations'
 import { MazUi } from 'maz-ui/plugins/maz-ui'
 // main.ts
-import 'maz-ui/styles'
+import 'maz-ui/style.css'
 
 const app = createApp(App)
 
@@ -113,7 +113,7 @@ The Nuxt module automatically:
 - Includes required styles
 - Provides TypeScript support out of the box
 
-[See options and more in the documentation](https://maz-ui.com/guide/nuxt)
+[See options and more in the documentation](https://maz-ui.com/ecosystem/nuxt)
 
 ```ts
 // nuxt.config.ts
@@ -146,17 +146,17 @@ const toast = useToast()
 - [Plugins](https://maz-ui.com/plugins/dialog) - Powerful plugins for common use cases
 - [Composables](https://maz-ui.com/composables/use-form-validator) - Reusable composition functions
 - [Directives](https://maz-ui.com/directives/fullscreen-img) - Useful Vue directives
-- [Helpers](https://maz-ui.com/helpers/currency) - Useful utilities for common tasks
 
 ### Packages
 
-- [Themes](https://maz-ui.com/guide/themes) - Easy to customize with CSS variables
-- [Translations](https://maz-ui.com/guide/translations) - Internationalization
-- [Icons](https://maz-ui.com/guide/icons) - Beautiful icons ready-to-use for Vue applications
-- [Nuxt](https://maz-ui.com/guide/nuxt) - Nuxt module for easy integration of Maz UI
-- [Utils](https://maz-ui.com/helpers/capitalize) - Useful utilities for common tasks
-- [Node](https://www.npmjs.com/package/@maz-ui/node) - Useful utilities for node
-- [MCP](https://maz-ui.com/guide/mcp) - AI assistant for documentation
+- [Themes](https://maz-ui.com/ecosystem/themes) - Easy to customize with CSS variables
+- [Translations](https://maz-ui.com/ecosystem/translations) - Internationalization
+- [Icons](https://maz-ui.com/ecosystem/icons) - Beautiful icons ready-to-use for Vue applications
+- [Nuxt](https://maz-ui.com/ecosystem/nuxt) - Nuxt module for easy integration of Maz UI
+- [Utils](https://maz-ui.com/ecosystem/utils) - Useful utilities for common tasks
+- [Node](https://maz-ui.com/ecosystem/node) - Useful utilities for node
+- [MCP](https://maz-ui.com/ecosystem/mcp) - AI assistant for documentation
+- [Upgrade](./packages/upgrade/README.md) - CLI tools to upgrade from v4 to v5
 - [EslintConfig](./packages/eslint-config/README.md) - ESLint configuration of Maz UI (built on top of [@antfu/eslint-config](https://www.npmjs.com/package/@antfu/eslint-config))
 
 ## Are you looking for a package or release manager?

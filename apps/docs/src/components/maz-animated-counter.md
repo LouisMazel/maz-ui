@@ -71,7 +71,7 @@ You can add a prefix and a suffix to the number with props or slots.
 Be careful, you can't use both at the same time.
 
 <ComponentDemo>
-  <p class="maz-font-semibold">
+  <p class="maz:font-semibold">
     Prefixed
   </p>
 
@@ -86,7 +86,7 @@ Be careful, you can't use both at the same time.
   <br />
   <br />
 
-  <p class="maz-font-semibold">
+  <p class="maz:font-semibold">
     Suffixed
   </p>
 
@@ -101,7 +101,7 @@ Be careful, you can't use both at the same time.
 <template #code>
 
 ```html
-<p class="maz-font-semibold">Prefixed</p>
+<p class="maz:font-semibold">Prefixed</p>
 
 <MazAnimatedCounter :count="20" prefix="$" />
 
@@ -109,7 +109,7 @@ Be careful, you can't use both at the same time.
   <template #prefix>$</template>
 </MazAnimatedCounter>
 
-<p class="maz-font-semibold">Suffixed</p>
+<p class="maz:font-semibold">Suffixed</p>
 
 <MazAnimatedCounter :count="100" suffix="%" />
 

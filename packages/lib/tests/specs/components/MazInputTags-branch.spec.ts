@@ -16,7 +16,7 @@ describe('MazInputTags branch coverage', () => {
       const wrapper = mount(MazInputTags, {
         props: { modelValue: ['tag1', 'tag2'] },
       })
-      expect(wrapper.findAll('.m-input-tags__tag').length).toBe(2)
+      expect(wrapper.findAll('.m-input-tags__tag')).toHaveLength(2)
       wrapper.unmount()
     })
   })
@@ -59,7 +59,7 @@ describe('MazInputTags branch coverage', () => {
       const emitted = wrapper.emitted('update:model-value')
       if (emitted) {
         const lastEmitted = emitted.at(-1)?.[0] as string[]
-        expect(lastEmitted.filter(t => t === 'existing').length).toBe(1)
+        expect(lastEmitted.filter(t => t === 'existing')).toHaveLength(1)
       }
       wrapper.unmount()
     })
@@ -163,7 +163,7 @@ describe('MazInputTags branch coverage', () => {
       const wrapper = mount(MazInputTags, {
         props: { error: true },
       })
-      expect(wrapper.find('.m-input-tags').classes()).toContain('maz-border-destructive')
+      expect(wrapper.find('.m-input-tags').classes()).toContain('maz:border-destructive')
       wrapper.unmount()
     })
   })
@@ -173,7 +173,7 @@ describe('MazInputTags branch coverage', () => {
       const wrapper = mount(MazInputTags, {
         props: { success: true },
       })
-      expect(wrapper.find('.m-input-tags').classes()).toContain('maz-border-success')
+      expect(wrapper.find('.m-input-tags').classes()).toContain('maz:border-success')
       wrapper.unmount()
     })
   })
@@ -183,7 +183,7 @@ describe('MazInputTags branch coverage', () => {
       const wrapper = mount(MazInputTags, {
         props: { warning: true },
       })
-      expect(wrapper.find('.m-input-tags').classes()).toContain('maz-border-warning')
+      expect(wrapper.find('.m-input-tags').classes()).toContain('maz:border-warning')
       wrapper.unmount()
     })
   })
@@ -240,7 +240,7 @@ describe('MazInputTags branch coverage', () => {
   describe('when modelValue is undefined', () => {
     it('should handle no modelValue', () => {
       const wrapper = mount(MazInputTags)
-      expect(wrapper.findAll('.m-input-tags__tag').length).toBe(0)
+      expect(wrapper.findAll('.m-input-tags__tag')).toHaveLength(0)
       wrapper.unmount()
     })
   })

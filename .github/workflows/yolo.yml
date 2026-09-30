@@ -29,6 +29,6 @@ jobs:
         env:
           YOLO_RUN_ID: ${{ github.event.inputs.run_id }}
           YOLO_API_KEY: ${{ secrets.YOLO_API_KEY }}
-          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          YOLO_PROVIDER_API_KEY: ${{ secrets.YOLO_PROVIDER_API_KEY }}
           GIT_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: pnpm yolo run

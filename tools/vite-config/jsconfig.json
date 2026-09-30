@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
+    "allowJs": true,
     "checkJs": true,
     "strict": true
   },

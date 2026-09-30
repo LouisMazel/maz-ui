@@ -1,11 +1,11 @@
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
-import type { ConfigType, OpUnitType } from 'dayjs'
+import type { ConfigType, OpUnitType } from 'dayjs/esm'
 import type { MazDatePickerPartialRangeValue, MazDatePickerValue } from './types'
 
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
-import dayjs from 'dayjs'
-import weekday from 'dayjs/plugin/weekday'
+import dayjs from 'dayjs/esm'
+import weekday from 'dayjs/esm/plugin/weekday'
 
 dayjs.extend(weekday)
 
