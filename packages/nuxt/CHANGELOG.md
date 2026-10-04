@@ -1,5 +1,19 @@
 # Change Log
 
+## v5.0.0-beta.45 (2026-10-04)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.44...v5.0.0-beta.45)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Silence postcss calc warnings on relative oklch colors ([d47cd75c](https://github.com/LouisMazel/maz-ui/commit/d47cd75c))
+
+  Nuxt production builds no longer emit the many harmless postcss `Lexical error` warnings triggered by maz-ui's relative OKLCh color values. Only cssnano's `calc` optimization is disabled; the rest of the minification is untouched, and the behavior is skipped when cssnano is explicitly disabled.
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v5.0.0-beta.44 (2026-09-29)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.43...v5.0.0-beta.44)
