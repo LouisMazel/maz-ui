@@ -70,7 +70,7 @@
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
     "@vitest/coverage-v8": "^5.0.2",
-    "stylelint": "^17.15.0",
+    "stylelint": "^17.16.0",
     "unbuild": "^3.6.1"
   },
   "lint-staged": {
