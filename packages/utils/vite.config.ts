@@ -48,10 +48,6 @@ export default defineConfig(({ mode }) => {
       }),
     ],
 
-    resolve: {
-      conditions: ['node'],
-    },
-
     define: {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
     },
@@ -59,7 +55,7 @@ export default defineConfig(({ mode }) => {
     build: {
       emptyOutDir: true,
       sourcemap: isProduction ? false : 'inline',
-      target: 'node22',
+      target: 'es2022',
       lib: {
         entry: {
           ...entries,
