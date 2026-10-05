@@ -18,6 +18,7 @@ import {
 } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
+import { SIZE_TEXT_CLASS } from './constants.ts'
 import PhoneInput from './MazInputPhoneNumber/PhoneInput.vue'
 import { useLibphonenumber } from './MazInputPhoneNumber/useLibphonenumber'
 import { useMazInputPhoneNumber } from './MazInputPhoneNumber/useMazInputPhoneNumber'
@@ -657,6 +658,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
     class="m-input-phone-number m-reset-css maz:relative maz:inline-flex maz:flex-col"
     :class="[
       className,
+      SIZE_TEXT_CLASS[size],
       { 'maz:w-full': block },
     ]"
     :style

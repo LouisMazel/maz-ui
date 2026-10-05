@@ -1,8 +1,8 @@
-import type { colors } from './constantes'
+import type { colors, sizes } from './constants'
 
 export type MazColor = (typeof colors)[number]
 
-export type MazSize = 'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+export type MazSize = (typeof sizes)[number]
 
 export type MazRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 

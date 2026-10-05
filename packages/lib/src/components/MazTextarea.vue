@@ -1,5 +1,6 @@
 <script lang="ts">
 import type { MazColor, MazRoundedSize, MazSize } from './types'
+import { SIZE_TEXT_CLASS } from './constants'
 
 export interface MazTextareaProps<T extends string | undefined | null> {
   /** Style attribut of the component root element */
@@ -231,15 +232,6 @@ const ROUNDED_CLASS = {
   full: 'maz:rounded-full',
 } as const
 
-const SIZE_TEXT_CLASS = {
-  xl: 'maz:text-xl',
-  lg: 'maz:text-lg',
-  md: '',
-  sm: 'maz:text-sm',
-  xs: 'maz:text-xs',
-  mini: 'maz:text-xs',
-} as const
-
 const SIZE_CONFIG = {
   xl: { height: '4rem', lineHeight: '1.75rem', paddingInline: '1.25rem' },
   lg: { height: '3.5rem', lineHeight: '1.75rem', paddingInline: '1rem' },
@@ -270,7 +262,7 @@ const stateLabelColor = computed(() => [
 </script>
 
 <template>
-  <div class="m-textarea-wrapper m-reset-css maz:flex maz:flex-col maz:gap-2" :class="classProp" :style>
+  <div class="m-textarea-wrapper m-reset-css maz:flex maz:flex-col maz:gap-2" :class="[classProp, SIZE_TEXT_CLASS[size]]" :style>
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
     <label
       v-if="topLabel"

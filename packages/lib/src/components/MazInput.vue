@@ -18,6 +18,7 @@ import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useMazIconProps } from '../composables/useMazIconProps'
 import { onAutofillSync, readInitialAutofillValue } from '../utils/autofillSync'
 import { hasSlotContent } from '../utils/hasSlotContent'
+import { SIZE_TEXT_CLASS } from './constants.ts'
 
 export type MazInputValue = string | number | null | undefined | boolean
 
@@ -434,15 +435,6 @@ const ROUNDED_CLASS = {
   xl: 'maz:rounded-xl',
   full: 'maz:rounded-full',
 } as const
-
-const CHILD_TEXT_SIZE_CLASS = {
-  xl: 'maz:text-xl',
-  lg: 'maz:text-lg',
-  md: '',
-  sm: 'maz:text-sm',
-  xs: 'maz:text-xs',
-  mini: 'maz:text-xs',
-} as const
 </script>
 
 <template>
@@ -461,6 +453,7 @@ const CHILD_TEXT_SIZE_CLASS = {
       },
       classProp,
       `--${color}`,
+      SIZE_TEXT_CLASS[size],
     ]" :style="[styleProp, { '--m-input-tint-bg': `var(--maz-${color})` }]"
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
@@ -519,7 +512,7 @@ const CHILD_TEXT_SIZE_CLASS = {
           :readonly
           :required
           class="m-input-input maz:m-0 maz:size-full maz:appearance-none maz:truncate maz:border-none maz:bg-transparent maz:px-4 maz:py-0 maz:text-foreground maz:shadow-none maz:outline-hidden"
-          :class="[CHILD_TEXT_SIZE_CLASS[size], { 'maz:ps-2!': hasStartPart(), 'maz:pe-2!': hasEndPart() }]"
+          :class="[{ 'maz:ps-2!': hasStartPart(), 'maz:pe-2!': hasEndPart() }]"
           v-on="{
             blur,
             focus,
@@ -530,7 +523,7 @@ const CHILD_TEXT_SIZE_CLASS = {
         >
 
         <span
-          v-if="label || hint" class="m-input-label maz:pointer-events-none maz:absolute maz:inset-s-4 maz:w-full maz:origin-top-left maz:items-center maz:truncate maz:overflow-hidden maz:text-start maz:leading-6 maz:whitespace-nowrap" :class="[stateColor, CHILD_TEXT_SIZE_CLASS[size], { 'maz:inset-s-2!': hasStartPart(), 'maz:pe-3!': hasLabel }]"
+          v-if="label || hint" class="m-input-label maz:pointer-events-none maz:absolute maz:inset-s-4 maz:w-full maz:origin-top-left maz:items-center maz:truncate maz:overflow-hidden maz:text-start maz:leading-6 maz:whitespace-nowrap" :class="[stateColor, { 'maz:inset-s-2!': hasStartPart(), 'maz:pe-3!': hasLabel }]"
         >
           {{ hint || label }}
         </span>
