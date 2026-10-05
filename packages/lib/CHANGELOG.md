@@ -1,5 +1,38 @@
 # Change Log
 
+## v5.0.0-beta.46 (2026-10-05)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.45...v5.0.0-beta.46)
+
+### 🚀 Features
+
+- **maz-ui:** Add topLabel prop to MazSelect ([72d817a9](https://github.com/LouisMazel/maz-ui/commit/72d817a9))
+
+  `MazSelect` now accepts a `topLabel` prop to display a fixed label above the field, like the other input components.
+
+### 🩹 Fixes
+
+- **maz-ui:** Improve component accessibility ([5eda369c](https://github.com/LouisMazel/maz-ui/commit/5eda369c))
+
+  Adds ARIA roles, translated labels and keyboard semantics across interactive components (accordion, checkbox, dropdown, popover, radio, slider, switch, input number, input code, toast) to meet WAI-ARIA standards.
+
+- **@maz-ui/themes:** Make the configured preset authoritative over a stale cookie ([dd8b4767](https://github.com/LouisMazel/maz-ui/commit/dd8b4767))
+
+  The `maz-preset` cookie is now scoped as a `base:active` pair tied to the preset declared in config. A runtime switch is only restored when it belongs to that preset, so a stale cookie - or one written by another app on the same host - can no longer override the preset your app declares. Legacy plain-name cookies are ignored and healed.
+
+- **@maz-ui/nuxt:** Align nuxt compatibility range and pin devtools to v3 ([be87d973](https://github.com/LouisMazel/maz-ui/commit/be87d973))
+
+### 💅 Refactors
+
+- **maz-ui:** Centralize size text class in a shared constants module ([49f70cf1](https://github.com/LouisMazel/maz-ui/commit/49f70cf1))
+- **maz-ui:** Add type-only root entry and drop the bundled CLI ([9957bab6](https://github.com/LouisMazel/maz-ui/commit/9957bab6))
+
+  The `maz-ui` root import now exposes only cross-cutting types and the plugin options. Import components and composables from their dedicated subpaths (`maz-ui/components`, `maz-ui/composables`, ...). The `maz` CLI binary is no longer bundled; use `@maz-ui/cli` instead. `marked` and `dompurify` are now runtime dependencies (required by MazMarkdownEditor).
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.44 (2026-09-29)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.43...v5.0.0-beta.44)

@@ -1,5 +1,25 @@
 # Change Log
 
+## v5.0.0-beta.46 (2026-10-05)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.45...v5.0.0-beta.46)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Rework theme cookie and color-mode resolution ([d13933cd](https://github.com/LouisMazel/maz-ui/commit/d13933cd))
+
+  The `maz-preset` cookie uses the same `base:active` scoping on the server, so a stale or foreign cookie can no longer override the configured preset. In `auto` mode, the color mode now follows the live system preference again on every reload instead of freezing on a previously resolved value.
+
+- **@maz-ui/nuxt:** Align nuxt compatibility range and pin devtools to v3 ([be87d973](https://github.com/LouisMazel/maz-ui/commit/be87d973))
+
+### 🧪 Tests
+
+- **@maz-ui/nuxt:** Cover the empty-base preset cookie branch ([ca2eecab](https://github.com/LouisMazel/maz-ui/commit/ca2eecab))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.45 (2026-10-04)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.44...v5.0.0-beta.45)

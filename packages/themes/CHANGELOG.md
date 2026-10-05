@@ -1,5 +1,23 @@
 # Change Log
 
+## v5.0.0-beta.46 (2026-10-05)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.45...v5.0.0-beta.46)
+
+### 🩹 Fixes
+
+- **@maz-ui/themes:** Make the configured preset authoritative over a stale cookie ([dd8b4767](https://github.com/LouisMazel/maz-ui/commit/dd8b4767))
+
+  The `maz-preset` cookie is now scoped as a `base:active` pair tied to the preset declared in config. A runtime switch is only restored when it belongs to that preset, so a stale cookie - or one written by another app on the same host - can no longer override the preset your app declares. Legacy plain-name cookies are ignored and healed.
+
+### 💅 Refactors
+
+- **@maz-ui/themes:** Simplify the configured preset name helper ([1f358e16](https://github.com/LouisMazel/maz-ui/commit/1f358e16))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.44 (2026-09-29)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.43...v5.0.0-beta.44)

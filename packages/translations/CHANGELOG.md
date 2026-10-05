@@ -1,5 +1,19 @@
 # Change Log
 
+## v5.0.0-beta.46 (2026-10-05)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.45...v5.0.0-beta.46)
+
+### 🚀 Features
+
+- **@maz-ui/translations:** Add aria namespace for accessible labels ([544bfb14](https://github.com/LouisMazel/maz-ui/commit/544bfb14))
+
+  New `aria.*` keys (close, increment, decrement, character, value) used to translate component accessibility labels.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.44 (2026-09-29)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.43...v5.0.0-beta.44)

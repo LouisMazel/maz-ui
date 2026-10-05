@@ -1,5 +1,59 @@
 # Change Log
 
+## v5.0.0-beta.46 (2026-10-05)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.45...v5.0.0-beta.46)
+
+### 🚀 Features
+
+- **@maz-ui/translations:** Add aria namespace for accessible labels ([544bfb14](https://github.com/LouisMazel/maz-ui/commit/544bfb14))
+
+  New `aria.*` keys (close, increment, decrement, character, value) used to translate component accessibility labels.
+
+- **maz-ui:** Add topLabel prop to MazSelect ([72d817a9](https://github.com/LouisMazel/maz-ui/commit/72d817a9))
+
+  `MazSelect` now accepts a `topLabel` prop to display a fixed label above the field, like the other input components.
+
+### 🩹 Fixes
+
+- **maz-ui:** Improve component accessibility ([5eda369c](https://github.com/LouisMazel/maz-ui/commit/5eda369c))
+
+  Adds ARIA roles, translated labels and keyboard semantics across interactive components (accordion, checkbox, dropdown, popover, radio, slider, switch, input number, input code, toast) to meet WAI-ARIA standards.
+
+- **@maz-ui/themes:** Make the configured preset authoritative over a stale cookie ([dd8b4767](https://github.com/LouisMazel/maz-ui/commit/dd8b4767))
+
+  The `maz-preset` cookie is now scoped as a `base:active` pair tied to the preset declared in config. A runtime switch is only restored when it belongs to that preset, so a stale cookie - or one written by another app on the same host - can no longer override the preset your app declares. Legacy plain-name cookies are ignored and healed.
+
+- **@maz-ui/nuxt:** Rework theme cookie and color-mode resolution ([d13933cd](https://github.com/LouisMazel/maz-ui/commit/d13933cd))
+
+  The `maz-preset` cookie uses the same `base:active` scoping on the server, so a stale or foreign cookie can no longer override the configured preset. In `auto` mode, the color mode now follows the live system preference again on every reload instead of freezing on a previously resolved value.
+
+- **@maz-ui/nuxt:** Align nuxt compatibility range and pin devtools to v3 ([be87d973](https://github.com/LouisMazel/maz-ui/commit/be87d973))
+- **@maz-ui/mcp:** Make docs copy resilient to concurrent removal ([7f536dbe](https://github.com/LouisMazel/maz-ui/commit/7f536dbe))
+
+### 💅 Refactors
+
+- **maz-ui:** Centralize size text class in a shared constants module ([49f70cf1](https://github.com/LouisMazel/maz-ui/commit/49f70cf1))
+- **maz-ui:** Add type-only root entry and drop the bundled CLI ([9957bab6](https://github.com/LouisMazel/maz-ui/commit/9957bab6))
+
+  The `maz-ui` root import now exposes only cross-cutting types and the plugin options. Import components and composables from their dedicated subpaths (`maz-ui/components`, `maz-ui/composables`, ...). The `maz` CLI binary is no longer bundled; use `@maz-ui/cli` instead. `marked` and `dompurify` are now runtime dependencies (required by MazMarkdownEditor).
+
+- **@maz-ui/utils:** Target es2022 and drop the node resolve condition ([b14807d6](https://github.com/LouisMazel/maz-ui/commit/b14807d6))
+- **vue-app:** Use the namespaced toast API ([92403204](https://github.com/LouisMazel/maz-ui/commit/92403204))
+- **@maz-ui/themes:** Simplify the configured preset name helper ([1f358e16](https://github.com/LouisMazel/maz-ui/commit/1f358e16))
+
+### 📖 Documentation
+
+- **docs:** Expand the v5 migration guide ([b443538c](https://github.com/LouisMazel/maz-ui/commit/b443538c))
+
+### 🧪 Tests
+
+- **@maz-ui/nuxt:** Cover the empty-base preset cookie branch ([ca2eecab](https://github.com/LouisMazel/maz-ui/commit/ca2eecab))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.45 (2026-10-04)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.44...v5.0.0-beta.45)

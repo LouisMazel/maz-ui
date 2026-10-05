@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.0.0-beta.46 (2026-10-05)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.45...v5.0.0-beta.46)
+
+### 💅 Refactors
+
+- **@maz-ui/utils:** Target es2022 and drop the node resolve condition ([b14807d6](https://github.com/LouisMazel/maz-ui/commit/b14807d6))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.44 (2026-09-29)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.43...v5.0.0-beta.44)
