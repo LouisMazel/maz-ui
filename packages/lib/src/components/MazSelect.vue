@@ -29,6 +29,7 @@ import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useStringMatching } from '../composables/useStringMatching'
 import { hasSlotContent } from '../utils/hasSlotContent'
+import { SIZE_TEXT_CLASS } from './constants.ts'
 import MazIcon from './MazIcon.vue'
 import MazInput from './MazInput.vue'
 import MazPopover from './MazPopover.vue'
@@ -64,6 +65,12 @@ export interface MazSelectProps<Value extends MazInputValue, Option extends MazS
    * The label of the select
    */
   label?: string
+  /**
+   * Static label displayed above the input field. Unlike the floating label, this remains fixed
+   * @type {string}
+   * @example "User Information"
+   */
+  topLabel?: string
   /**
    * The placeholder of the select
    */
@@ -271,15 +278,6 @@ const optionListWrapperRef = useTemplateRef('optionListWrapper')
 
 const selectedTextColor = computed(() => `var(--maz-${color})`)
 const selectedBgColor = computed(() => `color-mix(in srgb, var(--maz-${color}) 10%, transparent)`)
-
-const SIZE_TEXT_CLASS = {
-  mini: 'maz:text-xs',
-  xs: 'maz:text-xs',
-  sm: 'maz:text-sm',
-  md: 'maz:text-base',
-  lg: 'maz:text-lg',
-  xl: 'maz:text-xl',
-} as const
 
 const { t } = useTranslations()
 const messages = computed(() => ({
@@ -697,6 +695,7 @@ defineExpose({
         :block
         :placeholder
         :label
+        :top-label
         :autocomplete
         :disabled
         readonly
