@@ -2,10 +2,10 @@
   "name": "root",
   "version": "5.0.0-beta.45",
   "private": true,
-  "packageManager": "pnpm@12.6.0",
+  "packageManager": "pnpm@12.8.1",
   "description": "A standalone components library for Vue.Js & Nuxt.Js",
   "author": "LouisMazel <me@loicmazuel.com>",
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "https://maz-ui.com/",
   "repository": {
     "type": "git",
