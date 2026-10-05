@@ -85,7 +85,8 @@ The MCP server is read-only — it ships docs, not code edits — so the assista
 8. **`MazChart`** drops `vue-chartjs` (lighter bundle, no eager registration of unused chart types). The `update-mode` prop now defaults to `'none'` — pass `update-mode="default"` if you want animated data updates.
 9. **`MazAvatar` size scale fixed.** A CSS-unit `size` now renders at its real value (`size="2rem"` is a 32px avatar, it was ~96px before). Multiply your unit values by 3 to keep the same render, or switch to a `MazSize` keyword (`'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`). The upgrade tool does the ×3 rewrite for you on static values.
 10. Rename **`MazPullToRefresh`**'s `on-click` prop to `on-refresh` (handled by the upgrade tool).
-11. That's it for most apps. Everything else is opt-in.
+11. Replace bare **`from 'maz-ui'`** utility imports with **`from '@maz-ui/utils'`** (the root re-export of utils was removed; handled by the upgrade tool). Components/composables/directives/plugins stay on their subpaths; types remain importable from `maz-ui`.
+12. That's it for most apps. Everything else is opt-in.
 
 ## Prerequisites
 
@@ -616,6 +617,30 @@ The upgrade tool rewrites this automatically on `<MazPullToRefresh>` tags (both 
 # Find usages to update
 rg "<MazPullToRefresh[^>]*\bon-?[Cc]lick" src/
 ```
+
+### 18. Root `maz-ui` import removed for utilities
+
+In v4, the bare `maz-ui` entry re-exported `@maz-ui/utils`, so you could write `import { sleep } from 'maz-ui'`. In v5 that root re-export is gone — import helpers from their package directly:
+
+```ts
+// v4
+import { sleep, formatDate } from 'maz-ui'
+
+// v5
+import { sleep, formatDate } from '@maz-ui/utils'
+```
+
+Components, composables, directives and plugins were **already** subpath-only in v4 (`maz-ui/components/MazBtn`, `maz-ui/composables/useToast`, …) and are unchanged. The upgrade tool rewrites the utility imports for you.
+
+The `maz-ui` root now exposes **types only** (zero runtime cost), so shared types stay importable from the short path:
+
+```ts
+import type { MazColor, MazSize } from 'maz-ui'
+```
+
+### 19. ESM-only
+
+`maz-ui` and its `@maz-ui/*` packages ship **ESM only** (no CommonJS build). This was already the case in v4, but if you consume the library from a CommonJS context (old Jest without ESM, `require()`), use a bundler/test runner with ESM support (Vitest, Jest ≥ 29 with ESM, or native `import`).
 
 ## Informational changes (probably no action needed)
 
