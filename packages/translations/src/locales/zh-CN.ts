@@ -1,6 +1,13 @@
 import type { MazUiTranslationsNestedSchema } from '../types'
 
 export default {
+  aria: {
+    close: '关闭',
+    increment: '增加',
+    decrement: '减少',
+    character: '字符',
+    value: '值',
+  },
   selectCountry: {
     searchPlaceholder: '搜索国家',
   },

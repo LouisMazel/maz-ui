@@ -1,5 +1,17 @@
 export default {
   /**
+   * Generic accessibility labels reused across components (aria-label,
+   * screen-reader-only text). One namespace to avoid duplicating common
+   * labels like "close" in every component.
+   */
+  aria: {
+    close: 'Close',
+    increment: 'Increment',
+    decrement: 'Decrement',
+    character: 'Character',
+    value: 'Value',
+  },
+  /**
    * This is the translation for the input phone number component.
    * The keys are:
    * - countrySelect: The translation for the country select.

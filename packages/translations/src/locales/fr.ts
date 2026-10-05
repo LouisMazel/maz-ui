@@ -1,6 +1,13 @@
 import type { MazUiTranslationsNestedSchema } from '../types'
 
 export default {
+  aria: {
+    close: 'Fermer',
+    increment: 'Augmenter',
+    decrement: 'Diminuer',
+    character: 'Caractère',
+    value: 'Valeur',
+  },
   selectCountry: {
     searchPlaceholder: 'Rechercher un pays',
   },

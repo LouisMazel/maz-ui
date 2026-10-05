@@ -1,6 +1,13 @@
 import type { MazUiTranslationsNestedSchema } from '../types'
 
 export default {
+  aria: {
+    close: '閉じる',
+    increment: '増やす',
+    decrement: '減らす',
+    character: '文字',
+    value: '値',
+  },
   selectCountry: {
     searchPlaceholder: '国を検索',
   },
