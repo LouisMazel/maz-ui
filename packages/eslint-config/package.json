@@ -61,8 +61,8 @@
     "eslint-plugin-vuejs-accessibility": "^2.6.0"
   },
   "devDependencies": {
-    "@typescript-eslint/rule-tester": "^8.70.1",
-    "eslint": "^10.11.0",
+    "@typescript-eslint/rule-tester": "^8.71.0",
+    "eslint": "^10.12.0",
     "unbuild": "^3.6.1",
     "vue-eslint-parser": "^10.4.0"
   },
