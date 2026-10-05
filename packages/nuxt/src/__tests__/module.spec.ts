@@ -50,7 +50,7 @@ describe('nuxt module', () => {
     })
 
     it('should have correct nuxt compatibility', () => {
-      expect(config.meta.compatibility.nuxt).toBe('>=3.0.0')
+      expect(config.meta.compatibility.nuxt).toBe('>=3.4.0 <5.0.0')
     })
   })
 
