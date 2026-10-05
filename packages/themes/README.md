@@ -47,7 +47,7 @@ app.use(MazUiTheme, {
 
 ### Preset persistence
 
-The active preset name is stored in a `maz-preset` cookie (1-year TTL, `SameSite=Lax`). At boot the cookie takes priority over `options.preset` (string name **or** preset object — both treated as the default the app boots with), so the user's last choice survives across reloads. The cookie is written on every successful resolution and on every `useTheme().updateTheme()` call, and auto-cleared if the saved name no longer resolves. Set `persistPreset: false` to opt out — no cookie is read or written.
+The active preset is stored in a `maz-preset` cookie (1-year TTL, `SameSite=Lax`) as a `base:active` pair, where `base` is the identity of the preset declared in `options.preset` and `active` is the one currently applied. The configured `options.preset` is always authoritative: a runtime switch made via `useTheme().updateTheme()` is only restored on reload when its `base` matches the configured preset, so a stale cookie - or a cookie written by another app on the same host - can never override the preset your app declares. A foreign or legacy (plain-name) cookie is ignored and healed on the next resolution. Set `persistPreset: false` to opt out - no cookie is read or written.
 
 ### 2. Usage in components
 

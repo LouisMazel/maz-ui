@@ -6,7 +6,7 @@ import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, getCurrentInstance, inject, ref, watch } from 'vue'
 
 import { noTransition } from '../utils'
-import { saveResolvedPresetName } from '../utils/cookie-storage'
+import { getSavedPreset, savePreset } from '../utils/cookie-storage'
 import { CSS_ID, generateCSS, injectCSS } from '../utils/css-generator'
 import { getSystemColorMode, saveResolvedColorMode } from '../utils/get-color-mode'
 import { getPreset } from '../utils/get-preset'
@@ -48,7 +48,10 @@ async function updateTheme(preset: ThemePreset | ThemePresetOverrides | ThemePre
 
   themeState.value.preset = newPreset
   if (themeState.value.persistPreset) {
-    saveResolvedPresetName(newPreset.name)
+    // Preserve the configured base identity written at setup so the switch
+    // stays scoped to this app; fall back to the new name on a fresh cookie.
+    const base = getSavedPreset()?.base ?? newPreset.name
+    savePreset(base, newPreset.name)
   }
 
   if (themeState.value.strategy === 'runtime') {

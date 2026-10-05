@@ -17,8 +17,8 @@ vi.mock('../../utils/get-color-mode', () => ({
 }))
 
 vi.mock('../../utils/cookie-storage', () => ({
-  saveResolvedPresetName: vi.fn(),
-  getSavedPresetName: vi.fn(() => null),
+  savePreset: vi.fn(),
+  getSavedPreset: vi.fn(() => null),
   clearSavedPresetName: vi.fn(),
 }))
 

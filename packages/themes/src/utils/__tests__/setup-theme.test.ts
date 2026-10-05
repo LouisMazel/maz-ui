@@ -34,17 +34,14 @@ vi.mock('../use-mutation-observer', () => ({
 }))
 
 vi.mock('../cookie-storage', () => ({
-  setCookie: vi.fn(),
-  getCookie: vi.fn(() => null),
-  deleteCookie: vi.fn(),
-  getSavedPresetName: vi.fn(() => null),
-  saveResolvedPresetName: vi.fn(),
+  getSavedPreset: vi.fn(() => null),
+  savePreset: vi.fn(),
   clearSavedPresetName: vi.fn(),
 }))
 
 const { getColorMode, getSavedColorMode, getSystemColorMode, saveResolvedColorMode } = await import('../get-color-mode')
 const { getPreset } = await import('../get-preset')
-const { getSavedPresetName, saveResolvedPresetName, clearSavedPresetName } = await import('../cookie-storage')
+const { getSavedPreset, savePreset } = await import('../cookie-storage')
 const { injectThemeCSS } = await import('../inject-theme-css')
 const { mergePresets } = await import('../preset-merger')
 const { updateDocumentClass } = await import('../update-document-class')
@@ -763,30 +760,19 @@ describe('setup-theme', () => {
     })
 
     describe('when a preset object is finalized', () => {
-      it('then the resolved name is persisted via saveResolvedPresetName', () => {
+      it('then it persists the base and active scoped to the preset name', () => {
         setupTheme({ preset: mockPreset })
 
-        expect(saveResolvedPresetName).toHaveBeenCalledWith('test')
+        expect(savePreset).toHaveBeenCalledWith('test', 'test')
       })
     })
 
-    describe('when a saved name is in the cookie', () => {
-      it('then it resolves the saved name instead of the default when no preset is provided', async () => {
-        vi.mocked(getSavedPresetName).mockReturnValueOnce('ocean')
-        vi.mocked(getPreset).mockResolvedValueOnce({ ...mockPreset, name: 'ocean' })
-
-        setupTheme({})
-
-        await new Promise(resolve => setTimeout(resolve, 0))
-        await new Promise(resolve => setTimeout(resolve, 0))
-
-        expect(getPreset).toHaveBeenCalledWith('ocean')
-        expect(saveResolvedPresetName).toHaveBeenCalledWith('ocean')
-      })
-
-      it('then it overrides options.preset (treated as the default fallback)', async () => {
-        vi.mocked(getSavedPresetName).mockReturnValueOnce('ocean')
-        vi.mocked(getPreset).mockResolvedValueOnce({ ...mockPreset, name: 'ocean' })
+    describe('when a scoped cookie restores a switch with no preset provided', () => {
+      it('then it resolves the configured base then swaps to the saved active', async () => {
+        vi.mocked(getSavedPreset).mockReturnValueOnce({ base: 'maz-ui', active: 'ocean' })
+        vi.mocked(getPreset)
+          .mockResolvedValueOnce({ ...mockPreset, name: 'maz-ui' })
+          .mockResolvedValueOnce({ ...mockPreset, name: 'ocean' })
 
         setupTheme({ preset: 'maz-ui' as unknown as ThemePreset })
 
@@ -794,34 +780,60 @@ describe('setup-theme', () => {
         await new Promise(resolve => setTimeout(resolve, 0))
 
         expect(getPreset).toHaveBeenCalledWith('ocean')
-        expect(saveResolvedPresetName).toHaveBeenCalledWith('ocean')
+        expect(savePreset).toHaveBeenCalledWith('maz-ui', 'ocean')
       })
     })
 
-    describe('when options.preset is a custom preset object and a saved name differs', () => {
-      it('then the object renders synchronously then the cookie preset swaps in async', async () => {
-        vi.mocked(getSavedPresetName).mockReturnValueOnce('ocean')
+    describe('when a foreign scoped cookie targets another configured base', () => {
+      it('then it ignores the cookie and keeps the configured preset', async () => {
+        vi.mocked(getSavedPreset).mockReturnValueOnce({ base: 'other-app', active: 'ocean' })
+        vi.mocked(getPreset).mockResolvedValueOnce({ ...mockPreset, name: 'maz-ui' })
+
+        setupTheme({ preset: 'maz-ui' as unknown as ThemePreset })
+
+        await new Promise(resolve => setTimeout(resolve, 0))
+        await new Promise(resolve => setTimeout(resolve, 0))
+
+        expect(getPreset).not.toHaveBeenCalledWith('ocean')
+        expect(savePreset).toHaveBeenCalledWith('maz-ui', 'maz-ui')
+      })
+    })
+
+    describe('when options.preset is a custom object and a scoped cookie restores a switch', () => {
+      it('then the object renders synchronously then the saved active swaps in', async () => {
+        vi.mocked(getSavedPreset).mockReturnValueOnce({ base: 'custom-app-theme', active: 'ocean' })
         const oceanPreset = { ...mockPreset, name: 'ocean' }
         vi.mocked(getPreset).mockResolvedValueOnce(oceanPreset)
         const customPreset = { ...mockPreset, name: 'custom-app-theme' }
 
         const result = setupTheme({ preset: customPreset }) as SetupThemeReturn
 
-        // Sync: object rendered immediately (no FOUC).
         expect(result.themeState.value.preset?.name).toBe('custom-app-theme')
 
         await new Promise(resolve => setTimeout(resolve, 0))
         await new Promise(resolve => setTimeout(resolve, 0))
 
-        // Then the cookie preset swaps in.
         expect(getPreset).toHaveBeenCalledWith('ocean')
-        expect(saveResolvedPresetName).toHaveBeenCalledWith('ocean')
+        expect(savePreset).toHaveBeenCalledWith('custom-app-theme', 'ocean')
       })
     })
 
-    describe('when the cookie swaps with overrides set', () => {
+    describe('when options.preset is a custom object and a foreign cookie is present', () => {
+      it('then the object stays and the cookie is ignored without a getPreset round-trip', () => {
+        vi.mocked(getSavedPreset).mockReturnValueOnce({ base: 'maz-ui', active: 'ocean' })
+        const customPreset = { ...mockPreset, name: 'custom-app-theme' }
+
+        const result = setupTheme({ preset: customPreset }) as SetupThemeReturn
+
+        expect(result.themeState.value.preset?.name).toBe('custom-app-theme')
+        expect(getPreset).not.toHaveBeenCalled()
+        expect(savePreset).toHaveBeenCalledWith('custom-app-theme', 'custom-app-theme')
+      })
+    })
+
+    describe('when the restored switch has overrides set', () => {
       it('then mergePresets is applied to the swapped preset', async () => {
-        vi.mocked(getSavedPresetName).mockReturnValueOnce('ocean')
+        vi.mocked(getSavedPreset).mockReturnValueOnce({ base: 'custom-app-theme', active: 'ocean' })
         const oceanPreset = { ...mockPreset, name: 'ocean' }
         vi.mocked(getPreset).mockResolvedValueOnce(oceanPreset)
         vi.mocked(mergePresets).mockReturnValueOnce({ ...oceanPreset, name: 'ocean-merged' })
@@ -836,9 +848,9 @@ describe('setup-theme', () => {
       })
     })
 
-    describe('when options.preset is an object and the saved cookie fails to resolve', () => {
-      it('then the cookie is cleared and the object stays', async () => {
-        vi.mocked(getSavedPresetName).mockReturnValueOnce('disappeared')
+    describe('when a restored switch active fails to resolve on an object preset', () => {
+      it('then the object stays and the cookie is healed to the base', async () => {
+        vi.mocked(getSavedPreset).mockReturnValueOnce({ base: 'custom-app-theme', active: 'disappeared' })
         vi.mocked(getPreset).mockRejectedValueOnce(new Error('not found'))
         const customPreset = { ...mockPreset, name: 'custom-app-theme' }
 
@@ -847,26 +859,14 @@ describe('setup-theme', () => {
         await new Promise(resolve => setTimeout(resolve, 0))
         await new Promise(resolve => setTimeout(resolve, 0))
 
-        expect(clearSavedPresetName).toHaveBeenCalled()
+        expect(savePreset).toHaveBeenCalledWith('custom-app-theme', 'custom-app-theme')
         expect(result.themeState.value.preset?.name).toBe('custom-app-theme')
       })
     })
 
-    describe('when options.preset is a custom preset object whose name matches the cookie', () => {
-      it('then the object is finalized sync without a getPreset round-trip', () => {
-        vi.mocked(getSavedPresetName).mockReturnValueOnce('custom-app-theme')
-        const customPreset = { ...mockPreset, name: 'custom-app-theme' }
-
-        const result = setupTheme({ preset: customPreset }) as SetupThemeReturn
-
-        expect(result.themeState.value.preset?.name).toBe('custom-app-theme')
-        expect(getPreset).not.toHaveBeenCalled()
-      })
-    })
-
-    describe('when options.preset is a custom preset object and no saved cookie exists', () => {
+    describe('when options.preset is a custom object and no saved cookie exists', () => {
       it('then the object is finalized synchronously', () => {
-        vi.mocked(getSavedPresetName).mockReturnValue(null)
+        vi.mocked(getSavedPreset).mockReturnValue(null)
         const customPreset = { ...mockPreset, name: 'custom-app-theme' }
 
         const result = setupTheme({ preset: customPreset }) as SetupThemeReturn
@@ -875,44 +875,25 @@ describe('setup-theme', () => {
       })
     })
 
-    describe('when the saved cookie fails to resolve and options.preset is a custom object', () => {
-      it('then the object stays and the stale cookie is cleared', async () => {
-        vi.mocked(getSavedPresetName).mockReturnValueOnce('disappeared')
-        const customPreset = { ...mockPreset, name: 'custom-app-theme' }
-        vi.mocked(getPreset).mockRejectedValueOnce(new Error('not found'))
-
-        const result = setupTheme({ preset: customPreset }) as SetupThemeReturn
-
-        await new Promise(resolve => setTimeout(resolve, 0))
-        await new Promise(resolve => setTimeout(resolve, 0))
-
-        expect(clearSavedPresetName).toHaveBeenCalledTimes(1)
-        // Object preset stays — no swap happened.
-        expect(result.themeState.value.preset?.name).toBe('custom-app-theme')
-      })
-    })
-
-    describe('when the saved name no longer resolves', () => {
-      it('then it clears the cookie and falls back to the default preset', async () => {
-        vi.mocked(getSavedPresetName).mockReturnValueOnce('disappeared')
+    describe('when a restored switch active fails to resolve with no preset provided', () => {
+      it('then it falls back to the configured base', async () => {
+        vi.mocked(getSavedPreset).mockReturnValueOnce({ base: 'maz-ui', active: 'disappeared' })
         vi.mocked(getPreset)
+          .mockResolvedValueOnce({ ...mockPreset, name: 'maz-ui' })
           .mockRejectedValueOnce(new Error('not found'))
-          .mockResolvedValueOnce(mockPreset)
 
-        setupTheme({})
+        setupTheme({ preset: 'maz-ui' as unknown as ThemePreset })
 
         await new Promise(resolve => setTimeout(resolve, 0))
         await new Promise(resolve => setTimeout(resolve, 0))
 
-        expect(clearSavedPresetName).toHaveBeenCalledTimes(1)
-        expect(getPreset).toHaveBeenCalledTimes(2)
-        expect(saveResolvedPresetName).toHaveBeenCalledWith('test')
+        expect(savePreset).toHaveBeenCalledWith('maz-ui', 'maz-ui')
       })
     })
 
-    describe('when the preset resolution rejects without a saved name to retry', () => {
+    describe('when the configured preset resolution rejects', () => {
       it('then it logs the error and skips finalization', async () => {
-        vi.mocked(getSavedPresetName).mockReturnValueOnce(null)
+        vi.mocked(getSavedPreset).mockReturnValueOnce(null)
         vi.mocked(getPreset).mockRejectedValueOnce(new Error('boom'))
         const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
@@ -925,7 +906,6 @@ describe('setup-theme', () => {
           '[@maz-ui/themes] Failed to resolve preset',
           expect.any(Error),
         )
-        expect(clearSavedPresetName).not.toHaveBeenCalled()
 
         consoleSpy.mockRestore()
       })
@@ -939,14 +919,15 @@ describe('setup-theme', () => {
       })
 
       it('then it reads the saved cookie at boot even when an options.preset string is provided', async () => {
-        vi.mocked(getSavedPresetName).mockReturnValueOnce(null)
+        vi.mocked(getSavedPreset).mockReturnValueOnce(null)
+        vi.mocked(getPreset).mockResolvedValueOnce({ ...mockPreset, name: 'maz-ui' })
 
         setupTheme({ preset: 'maz-ui' as unknown as ThemePreset })
 
         await nextTick()
         await nextTick()
 
-        expect(getSavedPresetName).toHaveBeenCalled()
+        expect(getSavedPreset).toHaveBeenCalled()
       })
     })
 
@@ -967,15 +948,17 @@ describe('setup-theme', () => {
       it('then it does not write the cookie on finalize', () => {
         setupTheme({ preset: mockPreset, persistPreset: false })
 
-        expect(saveResolvedPresetName).not.toHaveBeenCalled()
+        expect(savePreset).not.toHaveBeenCalled()
       })
 
       it('then it does not read the saved cookie at boot', async () => {
+        vi.mocked(getPreset).mockResolvedValueOnce({ ...mockPreset, name: 'maz-ui' })
+
         setupTheme({ persistPreset: false })
 
         await new Promise(resolve => setTimeout(resolve, 0))
 
-        expect(getSavedPresetName).not.toHaveBeenCalled()
+        expect(getSavedPreset).not.toHaveBeenCalled()
       })
 
       it('then themeState.persistPreset reflects the option', () => {

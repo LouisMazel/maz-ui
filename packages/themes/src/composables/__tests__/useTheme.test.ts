@@ -69,8 +69,8 @@ vi.mock('../../utils/preset-merger', () => ({
 }))
 
 vi.mock('../../utils/cookie-storage', () => ({
-  saveResolvedPresetName: vi.fn(),
-  getSavedPresetName: vi.fn(() => null),
+  savePreset: vi.fn(),
+  getSavedPreset: vi.fn(() => null),
   clearSavedPresetName: vi.fn(),
 }))
 
@@ -303,15 +303,15 @@ describe('useTheme', () => {
 
     describe('when persistPreset is false on the state', () => {
       it('then updateTheme does not write the preset cookie', async () => {
-        const { saveResolvedPresetName } = await import('../../utils/cookie-storage')
-        vi.mocked(saveResolvedPresetName).mockClear()
+        const { savePreset } = await import('../../utils/cookie-storage')
+        vi.mocked(savePreset).mockClear()
         vi.mocked(inject).mockReturnValue({ value: { ...mockThemeState, persistPreset: false } })
         vi.mocked(mergePresets).mockReturnValue(mazUi)
 
         const { updateTheme } = useTheme()
         await updateTheme({ foundation: { 'border-width': '2px' } } as ThemePresetOverrides)
 
-        expect(saveResolvedPresetName).not.toHaveBeenCalled()
+        expect(savePreset).not.toHaveBeenCalled()
       })
     })
   })

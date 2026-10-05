@@ -1,4 +1,4 @@
-import { clearSavedPresetName, getSavedPresetName, saveResolvedPresetName } from '../cookie-storage'
+import { clearSavedPresetName, getSavedPreset, savePreset } from '../cookie-storage'
 
 function mockDocumentCookie(initialValue: string = '') {
   let cookieValue = initialValue
@@ -44,53 +44,70 @@ describe('cookie-storage', () => {
     vi.unstubAllGlobals()
   })
 
-  describe('given saveResolvedPresetName function', () => {
-    describe('when called with a falsy name', () => {
+  describe('given savePreset function', () => {
+    describe('when called with a falsy base or active', () => {
       it('then it is a no-op', () => {
         mockDocumentCookie('')
 
-        saveResolvedPresetName('')
+        savePreset('', 'ocean')
+        savePreset('ocean', '')
 
         expect(document.cookie).toBe('')
       })
     })
 
-    describe('when the saved name already matches', () => {
+    describe('when the serialized value already matches', () => {
       it('then it skips the write', () => {
-        mockDocumentCookie('maz-preset=ocean')
+        mockDocumentCookie('maz-preset=ocean:ocean')
         const setSpy = vi.spyOn(document, 'cookie', 'set')
 
-        saveResolvedPresetName('ocean')
+        savePreset('ocean', 'ocean')
 
         expect(setSpy).not.toHaveBeenCalled()
       })
     })
 
-    describe('when the saved name differs', () => {
-      it('then it persists the new name', () => {
-        mockDocumentCookie('maz-preset=ocean')
+    describe('when the serialized value differs', () => {
+      it('then it persists the base and active scoped value', () => {
+        mockDocumentCookie('maz-preset=ocean:ocean')
 
-        saveResolvedPresetName('nova')
+        savePreset('ocean', 'nova')
 
-        expect(document.cookie).toContain('maz-preset=nova')
+        expect(document.cookie).toContain('maz-preset=ocean%3Anova')
       })
     })
   })
 
-  describe('given getSavedPresetName function', () => {
+  describe('given getSavedPreset function', () => {
     describe('when no preset cookie exists', () => {
       it('then it returns null', () => {
         mockDocumentCookie('')
 
-        expect(getSavedPresetName()).toBeNull()
+        expect(getSavedPreset()).toBeNull()
       })
     })
 
-    describe('when a preset cookie exists', () => {
-      it('then it returns the persisted name', () => {
+    describe('when a scoped preset cookie exists', () => {
+      it('then it returns the parsed base and active', () => {
+        mockDocumentCookie('maz-preset=cabaret-vert:nova')
+
+        expect(getSavedPreset()).toEqual({ base: 'cabaret-vert', active: 'nova' })
+      })
+    })
+
+    describe('when a legacy plain-name cookie exists', () => {
+      it('then it returns null so the stale value cannot hijack resolution', () => {
         mockDocumentCookie('maz-preset=nova')
 
-        expect(getSavedPresetName()).toBe('nova')
+        expect(getSavedPreset()).toBeNull()
+      })
+    })
+
+    describe('when the cookie has an empty base or active segment', () => {
+      it('then it returns null', () => {
+        mockDocumentCookie('maz-preset=:nova')
+
+        expect(getSavedPreset()).toBeNull()
       })
     })
   })
@@ -98,7 +115,7 @@ describe('cookie-storage', () => {
   describe('given clearSavedPresetName function', () => {
     describe('when called on the client', () => {
       it('then it writes the max-age=0 directive', () => {
-        mockDocumentCookie('maz-preset=nova')
+        mockDocumentCookie('maz-preset=ocean:nova')
 
         clearSavedPresetName()
 

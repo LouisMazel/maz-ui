@@ -4,7 +4,7 @@ import type { ThemePreset, ThemePresetName, ThemeState } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { ref, watch } from 'vue'
 import { injectColorSchemeMeta, resolveColorSchemeContent } from './color-scheme-meta'
-import { clearSavedPresetName, getSavedPresetName, saveResolvedPresetName } from './cookie-storage'
+import { getSavedPreset, savePreset } from './cookie-storage'
 import { getColorMode, getSavedColorMode, getSystemColorMode, saveResolvedColorMode } from './get-color-mode'
 import { getPreset } from './get-preset'
 import { injectThemeCSS } from './inject-theme-css'
@@ -132,6 +132,7 @@ function finalizeTheme(
   themeState: ThemeStateRef,
   preset: ThemePreset | undefined,
   config: ResolvedConfig,
+  baseName: string,
 ): SetupThemeReturn {
   const finalPreset = preset && Object.keys(config.overrides).length > 0
     ? mergePresets(preset, config.overrides)
@@ -140,7 +141,7 @@ function finalizeTheme(
   if (finalPreset) {
     themeState.value.preset = finalPreset
     if (config.persistPreset)
-      saveResolvedPresetName(finalPreset.name)
+      savePreset(baseName, finalPreset.name)
   }
 
   if (config.strategy === 'buildtime' || !finalPreset) {
@@ -161,14 +162,24 @@ function finalizeTheme(
   }
 }
 
-function swapPreset(themeState: ThemeStateRef, preset: ThemePreset, config: ResolvedConfig): void {
+function swapPreset(themeState: ThemeStateRef, preset: ThemePreset, config: ResolvedConfig, baseName: string): void {
   // Caller guarantees `persistPreset` is on and `strategy !== 'buildtime'`.
   const final = Object.keys(config.overrides).length > 0
     ? mergePresets(preset, config.overrides)
     : preset
   themeState.value.preset = final
-  saveResolvedPresetName(final.name)
+  savePreset(baseName, final.name)
   injectThemeCSS(final, config)
+}
+
+/** Default preset identity used when the app declares no preset. */
+const DEFAULT_PRESET_NAME = 'maz-ui'
+
+/** Configured preset identity (the "base") - its name, string, or the default. */
+function getConfiguredPresetName(preset: MazUiThemeOptions['preset']): string {
+  if (!preset)
+    return DEFAULT_PRESET_NAME
+  return typeof preset === 'string' ? preset : preset.name
 }
 
 /**
@@ -183,36 +194,51 @@ export function setupTheme(options: MazUiThemeOptions): SetupThemeReturn {
   const config = resolveConfig(options)
   const themeState = createThemeState(options, config)
   injectColorSchemeMeta(resolveColorSchemeContent(themeState.value.mode, themeState.value.colorMode))
-  const savedName = config.persistPreset ? getSavedPresetName() : null
+  const saved = config.persistPreset ? getSavedPreset() : null
   const presetObject = config.preset && typeof config.preset !== 'string' ? config.preset : null
 
   // Fast path — no FOUC. Buildtime also flows here (CSS is pre-built).
   if (presetObject || config.strategy === 'buildtime') {
-    const setup = finalizeTheme(themeState, presetObject ?? config.preset, config)
+    const baseName = presetObject ? presetObject.name : getConfiguredPresetName(config.preset)
+    const setup = finalizeTheme(themeState, presetObject ?? config.preset, config, baseName)
 
-    // Cookie asked for a different bundled preset → load and swap post-mount.
-    if (savedName && config.strategy !== 'buildtime' && (!presetObject || savedName !== presetObject.name)) {
-      getPreset(savedName as ThemePresetName)
-        .then(preset => swapPreset(themeState, preset, config))
-        .catch(() => clearSavedPresetName())
+    // Honor a persisted runtime switch only when it belongs to THIS app's
+    // configured preset. A foreign/stale cookie never overrides the config.
+    const activeOverride = saved && saved.base === baseName && saved.active !== baseName
+      ? saved.active
+      : null
+    if (activeOverride && config.strategy !== 'buildtime') {
+      getPreset(activeOverride as ThemePresetName)
+        .then(preset => swapPreset(themeState, preset, config, baseName))
+        .catch(() => savePreset(baseName, baseName))
     }
     return setup
   }
 
-  // No object preset → async resolution (cookie wins, fallback to options).
-  const resolve = savedName
-    ? getPreset(savedName as ThemePresetName).catch(() => {
-        clearSavedPresetName()
-        return getPreset(config.preset)
-      })
-    : getPreset(config.preset)
+  // No object preset → resolve the configured base first (it defines the app
+  // identity), then restore a persisted switch scoped to that base.
+  const resolve = (async (): Promise<{ preset?: ThemePreset, baseName: string }> => {
+    const basePreset = await getPreset(config.preset)
+    const baseName = basePreset.name
+
+    if (saved && saved.base === baseName && saved.active !== baseName) {
+      try {
+        return { preset: await getPreset(saved.active as ThemePresetName), baseName }
+      }
+      catch {
+        // Stale active name → fall back to the configured base (cookie healed on write).
+      }
+    }
+
+    return { preset: basePreset, baseName }
+  })()
 
   resolve
-    .catch((error) => {
+    .catch((error): { preset?: ThemePreset, baseName: string } => {
       console.error('[@maz-ui/themes] Failed to resolve preset', error)
-      return undefined
+      return { preset: undefined, baseName: getConfiguredPresetName(config.preset) }
     })
-    .then(preset => finalizeTheme(themeState, preset, config))
+    .then(({ preset, baseName }) => finalizeTheme(themeState, preset, config, baseName))
 
   return { themeState: themeState as Ref<ThemeState>, cleanup: noop }
 }
