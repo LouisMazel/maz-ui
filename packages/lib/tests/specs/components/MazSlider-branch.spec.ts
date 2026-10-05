@@ -583,23 +583,23 @@ describe('MazSlider branch coverage', () => {
       expect(slider.attributes('aria-valuemax')).toBe('100')
     })
 
-    it('renders aria-valuenow with array value as string', () => {
+    it('renders one slider handle per value with its own aria-valuenow', () => {
       wrapper = mount(MazSlider, {
         props: { modelValue: [25, 75], min: 0, max: 100 },
       })
 
-      const slider = wrapper.find('[role="slider"]')
-      expect(slider.attributes('aria-valuenow')).toBe('25,75')
+      const sliders = wrapper.findAll('[role="slider"]')
+      expect(sliders).toHaveLength(2)
+      expect(sliders[0].attributes('aria-valuenow')).toBe('25')
+      expect(sliders[1].attributes('aria-valuenow')).toBe('75')
     })
 
-    it('renders without aria-valuenow when modelValue is null', () => {
+    it('renders the slider bar when modelValue is null', () => {
       wrapper = mount(MazSlider, {
         props: { modelValue: null },
       })
 
-      const slider = wrapper.find('[role="slider"]')
-      // null?.toString() is undefined
-      expect(slider.exists()).toBe(true)
+      expect(wrapper.find('.m-slider__bar').exists()).toBe(true)
     })
   })
 

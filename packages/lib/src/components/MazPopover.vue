@@ -726,7 +726,7 @@ defineExpose({
       :aria-haspopup="role === 'dialog' ? 'dialog' : undefined"
       :aria-describedby="role === 'tooltip' && isOpen ? panelId : ariaDescribedby"
       :aria-labelledby="ariaLabelledby"
-      :aria-controls="panelId"
+      :aria-controls="isOpen ? panelId : undefined"
       v-bind="triggerEvents"
     >
       <!--

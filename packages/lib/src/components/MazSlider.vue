@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { CSSProperties, StyleValue } from 'vue'
 import type { MazColor, MazSizeUnit } from './types'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { debounce } from '@maz-ui/utils/helpers/debounce'
 
 import {
@@ -50,6 +51,8 @@ const {
 } = defineProps<MazSliderProps>()
 
 const emits = defineEmits(['update:model-value'])
+
+const { t } = useTranslations()
 
 const MazSlider = ref<HTMLDivElement>()
 
@@ -308,12 +311,10 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
 </script>
 
 <template>
-  <!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
+  <!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
   <div
     :style="[wrapperStyle, sliderStyle, { fontSize: size }]"
     class="m-slider m-reset-css"
-    role="button"
-    tabindex="-1"
     :class="[`m-slider--${color}`]"
     @mousemove.passive="handleMousemove"
     @mouseup.passive="handleMouseup"
@@ -323,10 +324,6 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
     <div
       ref="MazSlider"
       class="m-slider__bar maz:relative maz:flex maz:flex-center maz:rounded-full"
-      role="slider"
-      :aria-valuenow="modelValue?.toString()"
-      :aria-valuemin="min"
-      :aria-valuemax="max"
     >
       <div
         v-for="(div, i) in dividers"
@@ -339,6 +336,11 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
         v-for="(_btn, i) in computedValue"
         :key="`cursor-${i}`"
         type="button"
+        role="slider"
+        :aria-label="t('aria.value')"
+        :aria-valuenow="Number(tmpValues?.[i])"
+        :aria-valuemin="min"
+        :aria-valuemax="max"
         :data-label="getLabel(i)"
         class="m-slider__btn maz:flex maz:flex-center maz:rounded-full maz:border maz:border-solid maz:border-divider maz:bg-surface maz:shadow-md maz:hover:bg-surface-200"
         :class="{

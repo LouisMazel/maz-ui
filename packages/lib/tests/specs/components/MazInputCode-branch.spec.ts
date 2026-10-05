@@ -719,12 +719,13 @@ describe('MazInputCode branch coverage', () => {
       })
     })
 
-    it('sets autocomplete to do-not-autofill', () => {
+    it('disables autocomplete on each input', () => {
       const wrapper = shallowMount(MazInputCode)
 
       const inputs = wrapper.findAll('input')
       inputs.forEach((input) => {
-        expect(input.attributes('autocomplete')).toBe('do-not-autofill')
+        expect(input.attributes('autocomplete')).toBe('off')
+        expect(input.attributes('aria-label')).toBeTruthy()
       })
     })
 

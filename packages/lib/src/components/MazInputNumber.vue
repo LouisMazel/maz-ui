@@ -4,10 +4,12 @@ import type { MazInputProps } from './MazInput.vue'
 import type { MazSize } from './types'
 import { MazMinus } from '@maz-ui/icons/raw/MazMinus'
 import { MazPlus } from '@maz-ui/icons/raw/MazPlus'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { throttle } from '@maz-ui/utils/helpers/throttle'
 import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables'
 import { useGlobalConfig } from '../composables/useGlobalConfig'
+import { SIZE_TEXT_CLASS } from './constants.ts'
 import MazIcon from './MazIcon.vue'
 import MazInput from './MazInput.vue'
 
@@ -61,6 +63,7 @@ const emits = defineEmits<{
 }>()
 
 const { size } = useGlobalConfig<{ size: MazSize }>('MazInputNumber', { size: 'md' })
+const { t } = useTranslations()
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazInput',
@@ -238,7 +241,7 @@ const stateColor = computed(() => {
 <template>
   <div
     class="m-input-number m-reset-css maz:inline-flex maz:flex-col maz:gap-2"
-    :class="[`m-input-number--${size}`, className, { '--block': block, 'maz:w-full': block }]"
+    :class="[`m-input-number--${size}`, SIZE_TEXT_CLASS[size], className, { '--block': block, 'maz:w-full': block }]"
     :style="style"
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
@@ -257,6 +260,7 @@ const stateColor = computed(() => {
         v-if="!hideButtons"
         color="transparent"
         :size
+        :aria-label="t('aria.decrement')"
         class="m-input-number__button m-input-number__decrement-button"
         :disabled="decrementDisabled || disabled"
         @click="decrement"
@@ -293,6 +297,7 @@ const stateColor = computed(() => {
         v-if="!hideButtons"
         color="transparent"
         :size
+        :aria-label="t('aria.increment')"
         class="m-input-number__button m-input-number__increment-button"
         :disabled="incrementDisabled || disabled"
         @click="increment"

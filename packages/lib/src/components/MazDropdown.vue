@@ -281,24 +281,25 @@ function arrowHandler(event: KeyboardEvent) {
   event.preventDefault()
   const code = event.key
 
-  const itemLength = items?.length
-  if (!itemLength)
-    return
-
   const currentElement = document.activeElement as HTMLElement
   const itemsElements = Array.from(document.querySelectorAll<HTMLElement>(`#${instanceId.value}-menu .menuitem`)).filter(
     el => el.getAttribute('tabindex') !== '-1',
   )
-  const currentIndex = [...itemsElements].indexOf(currentElement)
+
+  const count = itemsElements.length
+  if (!count)
+    return
+
+  const currentIndex = itemsElements.indexOf(currentElement)
 
   if (currentIndex === -1) {
-    (itemsElements[0] as HTMLElement)?.focus()
+    itemsElements[0]?.focus()
     return
   }
 
   const nextIndex = code === 'ArrowDown'
-    ? (currentIndex + 1) % itemLength
-    : (currentIndex - 1 + itemLength) % itemLength
+    ? (currentIndex + 1) % count
+    : (currentIndex - 1 + count) % count
 
   itemsElements[nextIndex]?.focus()
 }
@@ -436,7 +437,7 @@ watch(
       <div
         :id="`${instanceId}-menu`"
         role="menu"
-        aria-label="Menu"
+        :aria-labelledby="`${instanceId}-labelspan`"
         class="m-dropdown__menu maz:flex maz:min-h-max maz:min-w-max maz:flex-col maz:gap-1 maz:overflow-auto maz:p-2"
         tabindex="-1"
         :class="menuPanelClass"
@@ -472,6 +473,7 @@ watch(
             <slot name="menuitem" :item="item" :open="open" :close="close" :is-open="isOpen" :toggle="toggle">
               <MazBtn
                 v-bind="{ ...item, onClick: undefined, label: undefined }"
+                role="menuitem"
                 :target="isLinkItem(item) ? item.target ?? '_self' : undefined"
                 :to="isLinkItem(item) ? item.to : undefined"
                 :href="isLinkItem(item) ? item.href : undefined"

@@ -78,7 +78,6 @@ const instanceId = useInstanceUniqId({
   providedId: id,
 })
 
-const inputRef = ref<HTMLInputElement>()
 const isFocused = ref(false)
 
 const isSelected = computed(() => modelValue === value)
@@ -123,13 +122,6 @@ const radioBoxShadow = computed(() => {
     : `color-mix(in srgb, var(--maz-${color}) 60%, transparent)`
 })
 
-function keyboardHandler(event: KeyboardEvent) {
-  if (['Space'].includes(event.code)) {
-    event.preventDefault()
-    emitValue()
-  }
-}
-
 function emitValue() {
   emits('update:model-value', value)
   emits('change', value)
@@ -137,12 +129,10 @@ function emitValue() {
 
 function onBlur(event: FocusEvent) {
   isFocused.value = false
-  inputRef.value?.dispatchEvent(new Event('blur'))
   emits('blur', event)
 }
 function onFocus(event: FocusEvent) {
   isFocused.value = true
-  inputRef.value?.dispatchEvent(new Event('focus'))
   emits('focus', event)
 }
 </script>
@@ -152,26 +142,20 @@ function onFocus(event: FocusEvent) {
     :for="instanceId"
     class="m-radio m-reset-css maz:relative maz:inline-flex maz:items-center maz:gap-2 maz:align-top maz:outline-hidden"
     :class="[{ '--selected': isSelected, '--error': error, '--warning': warning, '--success': success, 'maz:disabled-cursor maz:text-muted': disabled, 'maz:cursor-pointer': !disabled }, classProp]"
-    tabindex="0"
-    role="radio"
     :style="[style, { '--radio-size': radioSize, '--radio-selected-color': radioSelectedColor, '--radio-box-shadow': radioBoxShadow }]"
-    :aria-checked="isSelected"
-    @blur="onBlur"
-    @focus="onFocus"
-    @keydown="keyboardHandler"
   >
     <input
       :id="instanceId"
-      ref="inputRef"
       :value
       v-bind="$attrs"
-      tabindex="-1"
       :disabled
       :name
       type="radio"
       :checked="isSelected"
-      class="maz:hidden"
+      class="maz:sr-only"
       @change="emitValue()"
+      @blur="onBlur"
+      @focus="onFocus"
     >
 
     <span>
@@ -249,7 +233,7 @@ function onFocus(event: FocusEvent) {
 
   &:not(:has(input:disabled), .--selected) {
     &:hover > span,
-    &:focus > span {
+    &:focus-within > span {
       box-shadow: 0 0 0 0.125rem var(--radio-box-shadow);
     }
   }

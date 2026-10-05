@@ -7,6 +7,7 @@ import { MazExclamationTriangle } from '@maz-ui/icons/lazy/MazExclamationTriangl
 import { MazInformationCircle } from '@maz-ui/icons/lazy/MazInformationCircle'
 import { MazLinkIcon } from '@maz-ui/icons/lazy/MazLinkIcon'
 import { MazXMark } from '@maz-ui/icons/lazy/MazXMark'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import MazIcon from '../../components/MazIcon.vue'
 import { useTimer } from '../../composables/useTimer'
@@ -50,6 +51,23 @@ const internalButtons = computed<ToastButton[]>(() => {
 
   return buttonArray
 })
+
+// Toasts are mounted detached (outside the app component tree), so a
+// MazUiProvider's component-level `provide` can be out of reach. Resolve
+// translations if available, otherwise fall back to a default label instead
+// of crashing.
+const translations = (() => {
+  try {
+    return useTranslations()
+  }
+  catch {
+    return undefined
+  }
+})()
+
+const closeLabel = computed(() => translations?.t('aria.close') ?? 'Close')
+
+const ariaRole = computed(() => (type === 'destructive' || type === 'warning' ? 'alert' : 'status'))
 
 export interface MazToastProps extends ToastOptions {
   /**
@@ -340,9 +358,10 @@ onMounted(() => {
         { '--persistent': persistent },
       ]"
     >
-      <!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
-      <button
-        role="alert"
+      <!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events, vuejs-accessibility/no-static-element-interactions, vuejs-accessibility/click-events-have-key-events -->
+      <div
+        :role="ariaRole"
+        aria-atomic="true"
         class="m-toast__button maz:relative maz:flex maz:w-full maz:items-center maz:gap-2 maz:self-center maz:overflow-hidden maz:rounded-md maz:border maz:ps-2 maz:pe-2 maz:shadow-md maz:backdrop-blur-xl maz:transition maz:duration-300 maz:ease-in-out"
         :class="[TOAST_BUTTON_COLOR[type], BUTTON_POSITION_X[positionX]]"
         @mouseover="toggleTimer(true)"
@@ -379,9 +398,11 @@ onMounted(() => {
             :class="getProgressBarColor()"
           />
         </div>
-      </button>
-      <!-- eslint-enable vuejs-accessibility/mouse-events-have-key-events -->
+      </div>
+      <!-- eslint-enable vuejs-accessibility/mouse-events-have-key-events, vuejs-accessibility/no-static-element-interactions, vuejs-accessibility/click-events-have-key-events -->
       <button
+        type="button"
+        :aria-label="closeLabel"
         class="m-toast__close maz:absolute maz:-top-2 maz:flex maz:flex-center maz:rounded-full maz:border maz:p-0.5 maz:backdrop-blur-xl"
         :class="[TOAST_CLOSE_COLOR[type], CLOSE_POSITION_X[positionX]]"
         @click.stop="click($event)"

@@ -83,7 +83,7 @@ describe('components/MazDropdown.vue', () => {
         await trigger.trigger('click')
 
         expect(wrapper.vm.isOpen).toBe(true)
-        expect(wrapper.find('[aria-label="Menu"]').exists()).toBe(true)
+        expect(wrapper.find('.m-dropdown__menu[role="menu"]').exists()).toBe(true)
       })
     })
 
@@ -323,7 +323,36 @@ describe('components/MazDropdown.vue', () => {
         await wrapper.find('[role="button"]').trigger('click')
 
         const dropdownMenu = wrapper.find('.m-dropdown__menu')
-        expect(dropdownMenu.attributes('aria-label')).toBe('Menu')
+        expect(dropdownMenu.attributes('role')).toBe('menu')
+        expect(dropdownMenu.attributes('aria-labelledby')).toBeTruthy()
+      })
+
+      it('then each interactive item is a menuitem', async () => {
+        await wrapper.find('[role="button"]').trigger('click')
+
+        const menuitems = wrapper.findAll('.menuitem[role="menuitem"]')
+        expect(menuitems.length).toBeGreaterThan(0)
+      })
+
+      it('then arrow and enter keys drive the menu', async () => {
+        await wrapper.find('[role="button"]').trigger('click')
+        await vi.dynamicImportSettled()
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
+        await vi.dynamicImportSettled()
+
+        expect(wrapper.find('.m-dropdown__menu').exists()).toBe(true)
+      })
+
+      it('then blurring the trigger to the outside closes the menu', async () => {
+        await wrapper.find('[role="button"]').trigger('click')
+        expect(wrapper.vm.isOpen).toBe(true)
+
+        await wrapper.findComponent(MazBtn).trigger('blur')
+
+        expect(wrapper.vm.isOpen).toBe(false)
       })
 
       it('then has screen reader description', () => {

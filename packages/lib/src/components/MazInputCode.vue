@@ -1,7 +1,9 @@
 <script lang="ts" setup generic="T extends string | number">
 import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { computed, ref, watch } from 'vue'
+import { SIZE_TEXT_CLASS } from './constants'
 
 export type MazInputCodeSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 export interface MazInputCodeProps<T = string | number> {
@@ -65,6 +67,8 @@ const emits = defineEmits<{
    */
   'completed': [value: void]
 }>()
+
+const { t } = useTranslations()
 
 const inputList = ref<HTMLInputElement[]>([])
 const localMap = ref<Map<number, string | undefined>>(new Map())
@@ -215,15 +219,6 @@ function selectInputByIndex(index: number) {
   input.select()
 }
 
-const SIZE_CLASS = {
-  mini: 'maz:text-[0.625rem]',
-  xs: 'maz:text-xs',
-  sm: 'maz:text-sm',
-  md: '',
-  lg: 'maz:text-lg',
-  xl: 'maz:text-xl',
-} as const
-
 const borderColorState = computed(() => {
   if (error)
     return 'maz:border-destructive!'
@@ -239,13 +234,12 @@ const borderColorState = computed(() => {
 <template>
   <fieldset
     class="m-input-code m-reset-css maz:inline-flex maz:flex-col maz:gap-[0.5em] maz:align-top"
-    :class="[size ? `--${size}` : undefined, SIZE_CLASS[size as keyof typeof SIZE_CLASS], classProp]"
+    :class="[size ? `--${size}` : undefined, SIZE_TEXT_CLASS[size], classProp]"
     :disabled
     :style="[style, { '--input-border-color': `var(--maz-${color})` }]"
   >
     <div class="m-input-code__wrapper maz:inline-flex maz:gap-[1em]">
       <div v-for="item in codeLength" :key="item" class="input-wrapper maz:relative maz:size-[4em] maz:overflow-hidden maz:rounded-md maz:border maz:border-solid maz:border-divider maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:border-divider-400 maz:dark:bg-input" :class="borderColorState">
-        <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label -->
         <input
           :id="`m-input-code-${item}`"
           :ref="
@@ -255,11 +249,12 @@ const borderColorState = computed(() => {
           "
           type="text"
           :name="`m-input-code-${item}`"
+          :aria-label="`${t('aria.character')} ${item}`"
           minlength="1"
           maxlength="1"
           :inputmode="acceptAlpha ? 'text' : 'numeric'"
           :pattern="acceptAlpha ? '[a-zA-Z0-9]{1}' : '[0-9]{1}'"
-          autocomplete="do-not-autofill"
+          autocomplete="off"
           :required="required"
           v-bind="$attrs"
           :value="inputValues.get(item)"

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import type { MazColor } from './types'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
 import { hasSlotContent } from '../utils/hasSlotContent'
@@ -89,21 +89,10 @@ function emit() {
   emits('change', !modelValue)
 }
 
-const inputRef = ref<HTMLInputElement>()
-
-function keyboardHandler(event: KeyboardEvent) {
-  if (['Space'].includes(event.code)) {
-    event.preventDefault()
-    emit()
-  }
-}
-
 function onBlur(event: FocusEvent) {
-  inputRef.value?.dispatchEvent(new Event('blur'))
   emits('blur', event)
 }
 function onFocus(event: FocusEvent) {
-  inputRef.value?.dispatchEvent(new Event('focus'))
   emits('focus', event)
 }
 </script>
@@ -113,26 +102,21 @@ function onFocus(event: FocusEvent) {
     :for="instanceId"
     class="m-switch m-reset-css maz:relative maz:inline-flex maz:cursor-pointer maz:items-center maz:gap-2 maz:align-top"
     :class="[{ '--is-disabled': disabled, 'maz:disabled-cursor': disabled }, classProp]"
-    role="switch"
     :style="[style, { '--switch-color': bgColorClassVar }]"
-    :aria-checked="modelValue"
-    tabindex="0"
-    @blur="onBlur"
-    @focus="onFocus"
-    @keydown="keyboardHandler"
   >
     <input
       :id="instanceId"
       v-bind="$attrs"
-      ref="inputRef"
       type="checkbox"
+      role="switch"
       :name="name"
-      tabindex="-1"
       :checked="modelValue"
       :aria-label="label"
       :disabled="disabled"
       class="m-switch__input maz:absolute"
       @change="emit"
+      @blur="onBlur"
+      @focus="onFocus"
     >
     <span class="m-switch__toggle maz:relative maz:h-6 maz:w-12" />
 
@@ -196,6 +180,11 @@ function onFocus(event: FocusEvent) {
     &::before {
       background-color: var(--switch-color);
     }
+  }
+
+  &__input:focus-visible + .m-switch__toggle::before {
+    outline: var(--maz-border-width) solid var(--switch-color);
+    outline-offset: 2px;
   }
 
   &__input:disabled + .m-switch__toggle {

@@ -174,40 +174,37 @@ describe('given MazRadioButtons component', () => {
     })
   })
 
-  describe('when option is focused', () => {
+  describe('when the input is focused', () => {
     it('then it should emit focus event', async () => {
       const wrapper = mount(MazRadioButtons, {
         props: { options },
       })
 
-      const firstOption = wrapper.find('.m-radio-buttons__items')
-      await firstOption.trigger('focus')
+      await wrapper.find('input').trigger('focus')
 
       expect(wrapper.emitted('focus')).toBeTruthy()
     })
   })
 
-  describe('when option loses focus', () => {
+  describe('when the input loses focus', () => {
     it('then it should emit blur event', async () => {
       const wrapper = mount(MazRadioButtons, {
         props: { options },
       })
 
-      const firstOption = wrapper.find('.m-radio-buttons__items')
-      await firstOption.trigger('blur')
+      await wrapper.find('input').trigger('blur')
 
       expect(wrapper.emitted('blur')).toBeTruthy()
     })
   })
 
-  describe('when space key is pressed', () => {
+  describe('when the native radio input changes', () => {
     it('then it should select the option', async () => {
       const wrapper = mount(MazRadioButtons, {
         props: { options },
       })
 
-      const firstOption = wrapper.find('.m-radio-buttons__items')
-      await firstOption.trigger('keydown', { code: 'Space' })
+      await wrapper.find('input').trigger('change')
 
       expect(wrapper.emitted('update:model-value')).toBeTruthy()
       expect(wrapper.emitted('update:model-value')?.[0]).toEqual(['option1'])

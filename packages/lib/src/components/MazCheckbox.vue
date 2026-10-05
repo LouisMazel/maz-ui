@@ -88,7 +88,6 @@ const instanceId = useInstanceUniqId({
   providedId: id,
 })
 
-const inputRef = ref<HTMLInputElement>()
 const isFocused = ref(false)
 
 const isChecked = computed(() => {
@@ -180,13 +179,6 @@ const checkboxBoxShadow = computed(() => {
     : `color-mix(in srgb, var(--maz-${color}) 60%, transparent)`
 })
 
-function keyboardHandler(event: KeyboardEvent) {
-  if (['Space'].includes(event.code)) {
-    event.preventDefault()
-    emitValue(value ?? !modelValue)
-  }
-}
-
 function getNewValue(newValue: boolean | string | number) {
   if (
     typeof newValue === 'boolean'
@@ -215,12 +207,10 @@ function emitValue(value: boolean | string | number) {
 
 function onBlur(event: FocusEvent) {
   isFocused.value = false
-  inputRef.value?.dispatchEvent(new Event('blur'))
   emits('blur', event)
 }
 function onFocus(event: FocusEvent) {
   isFocused.value = true
-  inputRef.value?.dispatchEvent(new Event('focus'))
   emits('focus', event)
 }
 </script>
@@ -234,23 +224,17 @@ function onFocus(event: FocusEvent) {
       classProp,
     ]"
     :style="[style, { '--checkbox-selected-color': checkboxSelectedColor, '--checkbox-box-shadow-color': checkboxBoxShadow }]"
-    role="checkbox"
-    :aria-checked="isChecked"
-    tabindex="0"
-    @keydown="keyboardHandler"
-    @blur="onBlur"
-    @focus="onFocus"
   >
     <input
       :id="instanceId"
-      ref="inputRef"
       :checked="isChecked"
       v-bind="$attrs"
-      tabindex="-1"
       :disabled
       :name
       type="checkbox"
       @change="emitValue(value ?? ($event?.target as HTMLInputElement)?.checked)"
+      @blur="onBlur"
+      @focus="onFocus"
     >
     <span :style="{ width: checkboxSize, height: checkboxSize }">
       <MazIcon :icon="MazCheck" class="check-icon maz:transition-transform maz:duration-300 maz:ease-in-out" :class="[isChecked ? 'maz:scale-100' : 'maz:scale-0', checkIconSize]" :style="{ color: checkIconColor }" />
@@ -289,7 +273,7 @@ function onFocus(event: FocusEvent) {
   }
 
   input {
-    @apply maz:hidden;
+    @apply maz:sr-only;
 
     &:not(:checked) ~ span {
       @apply maz:bg-input;
@@ -321,7 +305,7 @@ function onFocus(event: FocusEvent) {
 
   &:not(:has(input:disabled)) {
     &:hover > span,
-    &:focus > span,
+    &:focus-within > span,
     &.--error > span,
     &.--warning > span,
     &.--success > span {

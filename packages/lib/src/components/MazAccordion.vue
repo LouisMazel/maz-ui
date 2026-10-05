@@ -63,9 +63,9 @@ function selectStep(index: number) {
     <template v-for="step in stepCount" :key="step">
       <MazCardSpotlight class="m-accordion__spotlight maz:w-full" :padding="false">
         <button
-          :id="`step-${step}-${instanceId}`"
+          :id="`${instanceId}-header-${step}`"
           class="m-accordion__header maz:inline-flex maz:w-full maz:items-center maz:justify-between maz:gap-4 maz:p-4 maz:text-start maz:transition-colors maz:duration-300 maz:ease-in-out"
-          :aria-controls="`step-${step}-${instanceId}`"
+          :aria-controls="`${instanceId}-panel-${step}`"
           :aria-expanded="isStepOpen(step)"
           @click="selectStep(step)"
         >
@@ -75,9 +75,10 @@ function selectStep(index: number) {
         </button>
 
         <MazExpandAnimation
+          :id="`${instanceId}-panel-${step}`"
           animation-duration="300ms"
           :model-value="isStepOpen(step)"
-          :aria-labelledby="`step-${step}-${instanceId}`"
+          :aria-labelledby="`${instanceId}-header-${step}`"
         >
           <div class="m-accordion__content maz:p-4" :class="contentClass">
             <slot name="content" :is-open="isStepOpen(step)" />

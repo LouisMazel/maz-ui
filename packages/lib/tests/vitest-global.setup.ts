@@ -1,6 +1,9 @@
 import { config } from '@vue/test-utils'
+import * as axeMatchers from 'vitest-axe/matchers'
 
 process.env.TZ = 'Europe/Paris'
+
+expect.extend(axeMatchers)
 
 // Mock Canvas API for Chart.js tests
 const mockContext = {

@@ -2,7 +2,6 @@
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
-import { ref } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig'
 import MazIcon from './MazIcon.vue'
 import { getColor } from './types'
@@ -109,25 +108,14 @@ function isSelected(value: Option['value']) {
   return modelValue === value
 }
 
-function keyboardHandler(event: KeyboardEvent, option: Option) {
-  if (['Space'].includes(event.code)) {
-    event.preventDefault()
-    selectOption(option)
-  }
-}
-
 function getOptionId(option: Option, i: number) {
   return `option-${i}-${option.value.toString()}-${name}`
 }
 
-const inputRef = ref<HTMLInputElement[]>()
-
-function onBlur(index: number, event: FocusEvent) {
-  inputRef.value?.[index]?.dispatchEvent(new Event('blur'))
+function onBlur(event: FocusEvent) {
   emits('blur', event)
 }
-function onFocus(index: number, event: FocusEvent) {
-  inputRef.value?.[index]?.dispatchEvent(new Event('focus'))
+function onFocus(event: FocusEvent) {
   emits('focus', event)
 }
 
@@ -170,7 +158,6 @@ const SIZE_CLASS: Record<MazSize, string> = {
           },
           option.classes,
         ]"
-        tabindex="0"
         :style="[
           isSelected(option.value)
             ? {
@@ -181,21 +168,17 @@ const SIZE_CLASS: Record<MazSize, string> = {
             : {},
           option.style,
         ]"
-        role="radio"
-        :aria-checked="isSelected(option.value)"
-        @keydown="keyboardHandler($event, option)"
-        @blur="onBlur(i, $event)"
-        @focus="onFocus(i, $event)"
       >
         <input
           :id="getOptionId(option, i)"
-          ref="inputRef"
           type="radio"
-          tabindex="-1"
           :name="name"
           :value="option.value"
-          class="maz:hidden"
+          :checked="isSelected(option.value)"
+          class="maz:sr-only"
           @change="selectOption(option)"
+          @blur="onBlur($event)"
+          @focus="onFocus($event)"
         >
         <div v-if="selector" class="m-radio-buttons__items__checkbox maz:flex maz:flex-center">
           <span
@@ -268,6 +251,11 @@ const SIZE_CLASS: Record<MazSize, string> = {
 
     &:not(.--is-selected) {
       @apply maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
+    }
+
+    &:has(input:focus-visible) {
+      outline: var(--maz-border-width) solid var(--maz-primary);
+      outline-offset: 2px;
     }
   }
 }

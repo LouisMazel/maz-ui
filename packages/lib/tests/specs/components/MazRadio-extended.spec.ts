@@ -11,7 +11,7 @@ describe('MazRadio extended branch coverage', () => {
       expect(wrapper.exists()).toBe(true)
       expect(wrapper.classes()).toContain('m-radio')
       expect(wrapper.find('input[type="radio"]').exists()).toBe(true)
-      expect(wrapper.attributes('role')).toBe('radio')
+      expect(wrapper.find('label').attributes('role')).toBeUndefined()
     })
   })
 
@@ -21,7 +21,7 @@ describe('MazRadio extended branch coverage', () => {
         props: { value: 'option1', name: 'group1', modelValue: 'option1' },
       })
       expect(wrapper.classes()).toContain('--selected')
-      expect(wrapper.attributes('aria-checked')).toBe('true')
+      expect(wrapper.find('input').element.checked).toBe(true)
     })
 
     it('does not add --selected class when modelValue does not match value', () => {
@@ -29,7 +29,7 @@ describe('MazRadio extended branch coverage', () => {
         props: { value: 'option1', name: 'group1', modelValue: 'option2' },
       })
       expect(wrapper.classes()).not.toContain('--selected')
-      expect(wrapper.attributes('aria-checked')).toBe('false')
+      expect(wrapper.find('input').element.checked).toBe(false)
     })
 
     it('does not add --selected class when modelValue is undefined', () => {
@@ -244,30 +244,14 @@ describe('MazRadio extended branch coverage', () => {
     })
   })
 
-  describe('keyboard handler', () => {
-    it('emits value on Space keydown', async () => {
+  describe('native selection', () => {
+    it('emits value when the native radio input changes', async () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g' },
       })
-      await wrapper.find('label').trigger('keydown', { code: 'Space' })
+      await wrapper.find('input').trigger('change')
       expect(wrapper.emitted('update:model-value')).toBeTruthy()
       expect(wrapper.emitted('update:model-value')![0]).toEqual(['a'])
-    })
-
-    it('does not emit on Enter keydown', async () => {
-      const wrapper = mount(MazRadio, {
-        props: { value: 'a', name: 'g' },
-      })
-      await wrapper.find('label').trigger('keydown', { code: 'Enter' })
-      expect(wrapper.emitted('update:model-value')).toBeFalsy()
-    })
-
-    it('does not emit on other key presses', async () => {
-      const wrapper = mount(MazRadio, {
-        props: { value: 'a', name: 'g' },
-      })
-      await wrapper.find('label').trigger('keydown', { code: 'KeyA' })
-      expect(wrapper.emitted('update:model-value')).toBeFalsy()
     })
   })
 
@@ -276,7 +260,7 @@ describe('MazRadio extended branch coverage', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g' },
       })
-      await wrapper.find('label').trigger('focus')
+      await wrapper.find('input').trigger('focus')
       expect(wrapper.emitted('focus')).toBeTruthy()
     })
 
@@ -284,7 +268,7 @@ describe('MazRadio extended branch coverage', () => {
       const wrapper = mount(MazRadio, {
         props: { value: 'a', name: 'g' },
       })
-      await wrapper.find('label').trigger('blur')
+      await wrapper.find('input').trigger('blur')
       expect(wrapper.emitted('blur')).toBeTruthy()
     })
   })

@@ -362,10 +362,12 @@ describe('MazDropdown extended coverage', () => {
       expect(wrapper.find('.m-dropdown__menu').attributes('role')).toBe('menu')
     })
 
-    it('should set aria-label on dropdown menu', async () => {
+    it('should label the dropdown menu via aria-labelledby', async () => {
       const wrapper = await getWrapper()
       await wrapper.find('[role="button"]').trigger('click')
-      expect(wrapper.find('.m-dropdown__menu').attributes('aria-label')).toBe('Menu')
+      const menu = wrapper.find('.m-dropdown__menu')
+      expect(menu.attributes('role')).toBe('menu')
+      expect(menu.attributes('aria-labelledby')).toBeTruthy()
     })
 
     it('should generate unique id for menu', async () => {

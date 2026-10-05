@@ -14,25 +14,26 @@ describe('MazSwitch extended branch coverage', () => {
       expect(wrapper.find('.m-switch__toggle').exists()).toBe(true)
     })
 
-    it('sets aria-checked to true when modelValue is true', () => {
+    it('sets checked to true on the input when modelValue is true', () => {
       const wrapper = mount(MazSwitch, {
         props: { modelValue: true },
       })
-      expect(wrapper.attributes('aria-checked')).toBe('true')
+      expect(wrapper.find('input').element.checked).toBe(true)
     })
 
-    it('sets aria-checked to false when modelValue is false', () => {
+    it('sets checked to false on the input when modelValue is false', () => {
       const wrapper = mount(MazSwitch, {
         props: { modelValue: false },
       })
-      expect(wrapper.attributes('aria-checked')).toBe('false')
+      expect(wrapper.find('input').element.checked).toBe(false)
     })
 
-    it('has role=switch on the label', () => {
+    it('has role=switch on the native input', () => {
       const wrapper = mount(MazSwitch, {
         props: { modelValue: false },
       })
-      expect(wrapper.attributes('role')).toBe('switch')
+      expect(wrapper.find('input').attributes('role')).toBe('switch')
+      expect(wrapper.find('label').attributes('role')).toBeUndefined()
     })
   })
 
@@ -139,47 +140,31 @@ describe('MazSwitch extended branch coverage', () => {
     })
   })
 
-  describe('keyboard handler', () => {
-    it('toggles on Space keydown', async () => {
+  describe('native toggle', () => {
+    it('toggles when the native input changes', async () => {
       const wrapper = mount(MazSwitch, {
         props: { modelValue: false },
       })
-      await wrapper.find('label').trigger('keydown', { code: 'Space' })
+      await wrapper.find('input').trigger('change')
       expect(wrapper.emitted('update:model-value')).toBeTruthy()
       expect(wrapper.emitted('update:model-value')![0]).toEqual([true])
-    })
-
-    it('does not toggle on Enter keydown', async () => {
-      const wrapper = mount(MazSwitch, {
-        props: { modelValue: false },
-      })
-      await wrapper.find('label').trigger('keydown', { code: 'Enter' })
-      expect(wrapper.emitted('update:model-value')).toBeFalsy()
-    })
-
-    it('does not toggle on Tab keydown', async () => {
-      const wrapper = mount(MazSwitch, {
-        props: { modelValue: false },
-      })
-      await wrapper.find('label').trigger('keydown', { code: 'Tab' })
-      expect(wrapper.emitted('update:model-value')).toBeFalsy()
     })
   })
 
   describe('focus and blur events', () => {
-    it('emits focus event when label is focused', async () => {
+    it('emits focus event when the input is focused', async () => {
       const wrapper = mount(MazSwitch, {
         props: { modelValue: false },
       })
-      await wrapper.find('label').trigger('focus')
+      await wrapper.find('input').trigger('focus')
       expect(wrapper.emitted('focus')).toBeTruthy()
     })
 
-    it('emits blur event when label loses focus', async () => {
+    it('emits blur event when the input loses focus', async () => {
       const wrapper = mount(MazSwitch, {
         props: { modelValue: false },
       })
-      await wrapper.find('label').trigger('blur')
+      await wrapper.find('input').trigger('blur')
       expect(wrapper.emitted('blur')).toBeTruthy()
     })
   })

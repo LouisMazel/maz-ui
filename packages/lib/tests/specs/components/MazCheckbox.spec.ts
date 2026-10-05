@@ -43,7 +43,6 @@ describe('MazCheckbox extended branch coverage', () => {
         },
       })
       expect(wrapper.find('input').element.checked).toBe(true)
-      expect(wrapper.attributes('aria-checked')).toBe('true')
     })
 
     it('returns false when modelValue is false (boolean)', () => {
@@ -53,7 +52,6 @@ describe('MazCheckbox extended branch coverage', () => {
         },
       })
       expect(wrapper.find('input').element.checked).toBe(false)
-      expect(wrapper.attributes('aria-checked')).toBe('false')
     })
 
     it('returns true when modelValue is array containing the value', () => {
@@ -313,31 +311,32 @@ describe('MazCheckbox extended branch coverage', () => {
     })
   })
 
-  describe('keyboard handler', () => {
-    it('emits value on Space keydown', async () => {
+  describe('native change handling', () => {
+    it('emits value when the native input changes', async () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false },
       })
-      await wrapper.find('label').trigger('keydown', { code: 'Space' })
+      await wrapper.find('input').trigger('change')
       expect(wrapper.emitted('update:model-value')).toBeTruthy()
     })
 
-    it('does not emit value on non-Space keydown', async () => {
-      const wrapper = mount(MazCheckbox, {
-        props: { modelValue: false },
-      })
-      await wrapper.find('label').trigger('keydown', { code: 'Enter' })
-      expect(wrapper.emitted('update:model-value')).toBeFalsy()
-    })
-
-    it('emits the prop value on Space keydown when provided', async () => {
+    it('emits the prop value when the native input changes when provided', async () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: [], value: 'a' },
       })
-      await wrapper.find('label').trigger('keydown', { code: 'Space' })
+      await wrapper.find('input').trigger('change')
       const emitted = wrapper.emitted('update:model-value')
       expect(emitted).toBeTruthy()
       expect(emitted?.[0]).toEqual([['a']])
+    })
+
+    it('exposes the widget role via the native checkbox input', () => {
+      const wrapper = mount(MazCheckbox, {
+        props: { modelValue: false },
+      })
+      const input = wrapper.find('input')
+      expect(input.attributes('type')).toBe('checkbox')
+      expect(wrapper.find('label').attributes('role')).toBeUndefined()
     })
   })
 
@@ -346,7 +345,7 @@ describe('MazCheckbox extended branch coverage', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false },
       })
-      await wrapper.find('label').trigger('blur')
+      await wrapper.find('input').trigger('blur')
       expect(wrapper.emitted('blur')).toBeTruthy()
     })
 
@@ -354,7 +353,7 @@ describe('MazCheckbox extended branch coverage', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false },
       })
-      await wrapper.find('label').trigger('focus')
+      await wrapper.find('input').trigger('focus')
       expect(wrapper.emitted('focus')).toBeTruthy()
     })
   })
