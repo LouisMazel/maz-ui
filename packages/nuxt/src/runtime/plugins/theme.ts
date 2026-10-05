@@ -23,12 +23,14 @@ function getSavedResolvedColorMode(): 'light' | 'dark' | undefined {
 }
 
 function getInitialColorMode() {
-  const resolvedColorMode = getSavedResolvedColorMode()
-  if (resolvedColorMode) {
-    return resolvedColorMode
-  }
-
+  // Server: the resolved cookie is only an SSR seed (written client-side on a
+  // prior visit) to avoid FOUC, then client hints, else neutral.
   if (import.meta.server) {
+    const resolvedColorMode = getSavedResolvedColorMode()
+    if (resolvedColorMode) {
+      return resolvedColorMode
+    }
+
     const headers = useRequestHeaders()
 
     if (headers['sec-ch-prefers-color-scheme'] === 'dark') {
@@ -39,15 +41,13 @@ function getInitialColorMode() {
     if (userAgent?.includes('dark')) {
       return 'dark'
     }
-  }
-  else {
-    const systemColorMode = getSystemColorMode()
-    if (systemColorMode === 'dark') {
-      return 'dark'
-    }
+
+    return 'auto'
   }
 
-  return 'auto'
+  // Client: always read the live system preference so `auto` keeps following
+  // OS changes across reloads instead of freezing on a stale resolved cookie.
+  return getSystemColorMode()
 }
 
 function getColorModeBlockingScript(config: Required<MazUiThemeOptions>): string {
@@ -77,34 +77,63 @@ function injectThemeCSS(config: Required<MazUiThemeOptions>) {
   })
 }
 
-async function resolvePreset(options: { preset?: ThemePreset | ThemePresetName } | undefined, persistPreset: boolean) {
-  const presetCookie = useCookie<string | null>('maz-preset')
-  const savedName = persistPreset ? presetCookie.value : undefined
+/**
+ * Parse a `maz-preset` cookie value. Format is `"<base>:<active>"`; a legacy
+ * plain-name value (no `:`) is treated as unscoped and returns `null` so it
+ * cannot override the configured preset.
+ */
+function parseSavedPreset(raw: string | null | undefined): { base: string, active: string } | null {
+  if (!raw) {
+    return null
+  }
+
+  const separatorIndex = raw.indexOf(':')
+  if (separatorIndex === -1) {
+    return null
+  }
+
+  const base = raw.slice(0, separatorIndex)
+  const active = raw.slice(separatorIndex + 1)
+  return base && active ? { base, active } : null
+}
+
+async function resolvePreset(
+  options: { preset?: ThemePreset | ThemePresetName } | undefined,
+  persistPreset: boolean,
+): Promise<{ preset: ThemePreset, baseName: string }> {
   const presetObject = options?.preset && typeof options.preset !== 'string' ? options.preset : undefined
 
-  // Skip the lookup when the cookie name matches the explicit preset object —
-  // the object IS the resolution, no need to (re)load a bundled module.
-  if (savedName && presetObject && savedName === presetObject.name) {
-    return presetObject
+  // The configured preset IS the app identity (the "base").
+  const basePreset = presetObject ?? await getPreset(options?.preset)
+  const baseName = basePreset.name
+
+  if (!persistPreset) {
+    return { preset: basePreset, baseName }
   }
 
-  if (savedName) {
+  const presetCookie = useCookie<string | null>('maz-preset')
+  const saved = parseSavedPreset(presetCookie.value)
+
+  // Honor a persisted runtime switch only when it belongs to THIS app's
+  // configured preset; a foreign/stale cookie never wins over the config.
+  if (saved && saved.base === baseName && saved.active !== baseName) {
     try {
-      return await getPreset(savedName as ThemePresetName)
+      return { preset: await getPreset(saved.active as ThemePresetName), baseName }
     }
     catch {
-      presetCookie.value = null
+      // Stale active name → fall back to the configured base (cookie healed on write).
     }
   }
 
-  return getPreset(options?.preset)
+  return { preset: basePreset, baseName }
 }
 
 export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const options = $config.public.mazUi.theme
   const persistPreset = options?.persistPreset !== false
 
-  let preset = await resolvePreset(options, persistPreset)
+  const resolved = await resolvePreset(options, persistPreset)
+  let preset = resolved.preset
 
   if (options?.overrides) {
     preset = mergePresets(preset, options.overrides)
@@ -116,8 +145,9 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
       sameSite: 'lax',
       path: '/',
     })
-    if (presetCookie.value !== preset.name) {
-      presetCookie.value = preset.name
+    const value = `${resolved.baseName}:${preset.name}`
+    if (presetCookie.value !== value) {
+      presetCookie.value = value
     }
   }
 

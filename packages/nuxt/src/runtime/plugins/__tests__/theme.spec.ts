@@ -175,13 +175,14 @@ describe('theme plugin', () => {
     )
   })
 
-  it('uses resolved color mode cookie when color mode cookie is auto and forwards isDark to install', async () => {
+  it('ignores a stale resolved color mode cookie on the client and follows the live system dark preference', async () => {
+    mockGetSystemColorMode.mockReturnValue('dark')
     mockUseCookie.mockImplementation(((name: string) => {
       if (name === 'maz-color-mode') {
         return { value: 'auto' }
       }
       if (name === 'maz-resolved-color-mode') {
-        return { value: 'dark' }
+        return { value: 'light' }
       }
       return { value: undefined }
     }) as any)
@@ -193,10 +194,11 @@ describe('theme plugin', () => {
     )
   })
 
-  it('should ignore invalid resolved color mode cookie values', async () => {
+  it('follows the live system light preference on the client even when the resolved cookie is dark', async () => {
+    mockGetSystemColorMode.mockReturnValue('light')
     mockUseCookie.mockImplementation(((name: string) => {
       if (name === 'maz-resolved-color-mode') {
-        return { value: 'invalid' }
+        return { value: 'dark' }
       }
       return { value: undefined }
     }) as any)
@@ -210,99 +212,104 @@ describe('theme plugin', () => {
     )
   })
 
-  it('should use resolved color mode light from cookie', async () => {
-    mockUseCookie.mockImplementation(((name: string) => {
-      if (name === 'maz-resolved-color-mode') {
-        return { value: 'light' }
-      }
-      return { value: undefined }
-    }) as any)
-    const context = createContext({ colorMode: 'auto', mode: 'both' })
-    await (themePlugin as (...args: any[]) => any)(context)
-    expect(mockInstall).toHaveBeenCalledWith(
-      context.vueApp,
-      expect.objectContaining({
-        _isDark: false,
-      }),
-    )
-  })
-
-  it('should resolve the saved preset cookie when no options.preset is provided', async () => {
-    const presetCookie: { value: string | null } = { value: 'nova' }
+  it('should restore a scoped switch when the cookie base matches the resolved default', async () => {
+    const presetCookie: { value: string | null } = { value: 'maz-ui:nova' }
     mockUseCookie.mockImplementation(((name: string) => {
       return name === 'maz-preset' ? presetCookie : { value: undefined }
     }) as any)
+    mockGetPreset
+      .mockResolvedValueOnce({ name: 'maz-ui', colors: {} } as any)
+      .mockResolvedValueOnce({ name: 'nova', colors: {} } as any)
     const context = createContext({ preset: undefined })
     await (themePlugin as (...args: any[]) => any)(context)
-    expect(mockGetPreset).toHaveBeenCalledWith('nova')
+    expect(mockGetPreset).toHaveBeenNthCalledWith(1, undefined)
+    expect(mockGetPreset).toHaveBeenNthCalledWith(2, 'nova')
+    expect(presetCookie.value).toBe('maz-ui:nova')
   })
 
-  it('should let the saved preset cookie override the default options.preset string', async () => {
-    const presetCookie: { value: string | null } = { value: 'nova' }
+  it('should restore a scoped switch for the configured string preset', async () => {
+    const presetCookie: { value: string | null } = { value: 'maz-ui:nova' }
     mockUseCookie.mockImplementation(((name: string) => {
       return name === 'maz-preset' ? presetCookie : { value: undefined }
     }) as any)
+    mockGetPreset
+      .mockResolvedValueOnce({ name: 'maz-ui', colors: {} } as any)
+      .mockResolvedValueOnce({ name: 'nova', colors: {} } as any)
     const context = createContext({ preset: 'maz-ui' })
     await (themePlugin as (...args: any[]) => any)(context)
     expect(mockGetPreset).toHaveBeenCalledWith('nova')
   })
 
-  it('should let the saved preset cookie override even a custom preset object passed via options', async () => {
-    const presetCookie: { value: string | null } = { value: 'nova' }
+  it('should keep the custom preset object when a foreign cookie targets another base', async () => {
+    const presetCookie: { value: string | null } = { value: 'other-app:nova' }
     mockUseCookie.mockImplementation(((name: string) => {
       return name === 'maz-preset' ? presetCookie : { value: undefined }
     }) as any)
     const customPreset = { name: 'custom-app-theme', colors: {} } as any
     const context = createContext({ preset: customPreset })
     await (themePlugin as (...args: any[]) => any)(context)
-    expect(mockGetPreset).toHaveBeenCalledWith('nova')
+    expect(mockGetPreset).not.toHaveBeenCalled()
+    expect(presetCookie.value).toBe('custom-app-theme:custom-app-theme')
   })
 
-  it('should fall back to options.preset (object) when the saved name fails to resolve', async () => {
-    const presetCookie: { value: string | null } = { value: 'unknown' }
+  it('should keep the configured string preset when a foreign cookie targets another base', async () => {
+    const presetCookie: { value: string | null } = { value: 'other-app:nova' }
     mockUseCookie.mockImplementation(((name: string) => {
       return name === 'maz-preset' ? presetCookie : { value: undefined }
     }) as any)
-    mockGetPreset
-      .mockRejectedValueOnce(new Error('not found'))
-      .mockResolvedValueOnce({ name: 'fallback-object', colors: {} } as any)
+    mockGetPreset.mockResolvedValueOnce({ name: 'maz-ui', colors: {} } as any)
+    const context = createContext({ preset: 'maz-ui' })
+    await (themePlugin as (...args: any[]) => any)(context)
+    expect(mockGetPreset).not.toHaveBeenCalledWith('nova')
+    expect(presetCookie.value).toBe('maz-ui:maz-ui')
+  })
+
+  it('should heal the cookie to the object base when the scoped active fails to resolve', async () => {
+    const presetCookie: { value: string | null } = { value: 'custom-app-theme:unknown' }
+    mockUseCookie.mockImplementation(((name: string) => {
+      return name === 'maz-preset' ? presetCookie : { value: undefined }
+    }) as any)
+    mockGetPreset.mockRejectedValueOnce(new Error('not found'))
     const customPreset = { name: 'custom-app-theme', colors: {} } as any
     const context = createContext({ preset: customPreset })
     await (themePlugin as (...args: any[]) => any)(context)
-    expect(mockGetPreset).toHaveBeenNthCalledWith(1, 'unknown')
-    expect(mockGetPreset).toHaveBeenNthCalledWith(2, customPreset)
+    expect(mockGetPreset).toHaveBeenCalledWith('unknown')
+    expect(presetCookie.value).toBe('custom-app-theme:custom-app-theme')
   })
 
-  it('should clear the cookie and fall back to the default when the saved preset cannot be resolved', async () => {
-    const presetCookie: { value: string | null } = { value: 'unknown' }
+  it('should fall back to the resolved default when the scoped active fails to resolve', async () => {
+    const presetCookie: { value: string | null } = { value: 'maz-ui:unknown' }
     mockUseCookie.mockImplementation(((name: string) => {
       return name === 'maz-preset' ? presetCookie : { value: undefined }
     }) as any)
     mockGetPreset
+      .mockResolvedValueOnce({ name: 'maz-ui', colors: {} } as any)
       .mockRejectedValueOnce(new Error('not found'))
-      .mockResolvedValueOnce({ colors: {}, name: 'fallback' } as any)
     const context = createContext({ preset: undefined })
     await (themePlugin as (...args: any[]) => any)(context)
-    expect(mockGetPreset).toHaveBeenNthCalledWith(1, 'unknown')
-    expect(mockGetPreset).toHaveBeenNthCalledWith(2, undefined)
-    // The retry path resaves the resolved fallback name.
-    expect(presetCookie.value).toBe('fallback')
+    expect(mockGetPreset).toHaveBeenNthCalledWith(1, undefined)
+    expect(mockGetPreset).toHaveBeenNthCalledWith(2, 'unknown')
+    expect(presetCookie.value).toBe('maz-ui:maz-ui')
   })
 
-  it('should rethrow the resolution error when there is no saved preset to retry', async () => {
+  it('should rethrow the resolution error when the configured preset cannot be resolved', async () => {
     mockUseCookie.mockReturnValue({ value: undefined })
     mockGetPreset.mockRejectedValueOnce(new Error('boom'))
     const context = createContext({ preset: 'broken' })
     await expect((themePlugin as (...args: any[]) => any)(context)).rejects.toThrow('boom')
   })
 
-  it('should ignore an empty maz-preset cookie value', async () => {
+  it('should ignore a legacy plain-name maz-preset cookie value', async () => {
+    const presetCookie: { value: string | null } = { value: 'nova' }
     mockUseCookie.mockImplementation(((name: string) => {
-      return name === 'maz-preset' ? { value: '' } : { value: undefined }
+      return name === 'maz-preset' ? presetCookie : { value: undefined }
     }) as any)
+    mockGetPreset.mockResolvedValueOnce({ name: 'maz-ui', colors: {} } as any)
     const context = createContext({ preset: undefined })
     await (themePlugin as (...args: any[]) => any)(context)
     expect(mockGetPreset).toHaveBeenCalledWith(undefined)
+    expect(mockGetPreset).not.toHaveBeenCalledWith('nova')
+    expect(presetCookie.value).toBe('maz-ui:maz-ui')
   })
 
   it('should default colorMode to auto when neither cookie nor options provide one', async () => {
@@ -315,15 +322,15 @@ describe('theme plugin', () => {
     )
   })
 
-  it('should skip the lookup when the cookie name matches the options preset object', async () => {
-    const presetCookie: { value: string | null } = { value: 'custom-app-theme' }
+  it('should skip the lookup when the scoped cookie active matches the preset object base', async () => {
+    const presetCookie: { value: string | null } = { value: 'custom-app-theme:custom-app-theme' }
     mockUseCookie.mockImplementation(((name: string) => {
       return name === 'maz-preset' ? presetCookie : { value: undefined }
     }) as any)
     const customPreset = { name: 'custom-app-theme', colors: {} } as any
     const context = createContext({ preset: customPreset })
     await (themePlugin as (...args: any[]) => any)(context)
-    // No getPreset call: object IS the preset.
+    // No getPreset call: object IS the preset and no switch is persisted.
     expect(mockGetPreset).not.toHaveBeenCalled()
   })
 
@@ -344,20 +351,11 @@ describe('theme plugin', () => {
     describe.each([
       { label: 'colorMode dark', themeOptions: { colorMode: 'dark', mode: 'both' } },
       { label: 'colorMode auto with system dark', themeOptions: { colorMode: 'auto', mode: 'both' }, systemColorMode: 'dark' as const },
-      { label: 'colorMode auto with resolved cookie dark', themeOptions: { colorMode: 'auto', mode: 'both' }, resolvedCookie: 'dark' as const },
       { label: 'mode dark', themeOptions: { colorMode: 'light', mode: 'dark' } },
-    ])('When isDark resolves to true via $label', ({ themeOptions, systemColorMode, resolvedCookie }) => {
+    ])('When isDark resolves to true via $label', ({ themeOptions, systemColorMode }) => {
       it('Then no htmlAttrs entry is registered via useHead so navigation cannot re-apply the boot class', async () => {
         if (systemColorMode) {
           mockGetSystemColorMode.mockReturnValue(systemColorMode)
-        }
-        if (resolvedCookie) {
-          mockUseCookie.mockImplementation(((name: string) => {
-            if (name === 'maz-resolved-color-mode') {
-              return { value: resolvedCookie }
-            }
-            return { value: undefined }
-          }) as any)
         }
 
         const context = createContext(themeOptions)
