@@ -175,11 +175,12 @@ function swapPreset(themeState: ThemeStateRef, preset: ThemePreset, config: Reso
 /** Default preset identity used when the app declares no preset. */
 const DEFAULT_PRESET_NAME = 'maz-ui'
 
-/** Configured preset identity (the "base") - its name, string, or the default. */
+/**
+ * Configured preset identity (the "base") used on the non-object paths.
+ * A string preset is its own identity; an absent one falls back to the default.
+ */
 function getConfiguredPresetName(preset: MazUiThemeOptions['preset']): string {
-  if (!preset)
-    return DEFAULT_PRESET_NAME
-  return typeof preset === 'string' ? preset : preset.name
+  return typeof preset === 'string' ? preset : DEFAULT_PRESET_NAME
 }
 
 /**

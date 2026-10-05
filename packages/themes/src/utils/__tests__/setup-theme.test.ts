@@ -338,6 +338,14 @@ describe('setup-theme', () => {
 
         expect(() => result.cleanup()).not.toThrow()
       })
+
+      it('then it does not swap to a scoped cookie active even when the base matches', () => {
+        vi.mocked(getSavedPreset).mockReturnValueOnce({ base: 'ocean', active: 'nova' })
+
+        setupTheme({ preset: 'ocean' as unknown as ThemePreset, strategy: 'buildtime' })
+
+        expect(getPreset).not.toHaveBeenCalled()
+      })
     })
 
     describe('when overrides are non-empty', () => {
