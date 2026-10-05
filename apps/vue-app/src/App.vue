@@ -9,28 +9,28 @@ import { capitalize } from 'vue'
 
 import { routes } from './router/index'
 
-const { message, success, error, info, warning } = useToast()
+const toast = useToast()
 
 function showToast() {
-  message(`Hello, <strong>world</strong>!`, {
+  toast.message(`Hello, <strong>world</strong>!`, {
     position: 'top-right',
     html: true,
     maxToasts: 2,
     queue: true,
   })
-  info('Hello, world!', {
+  toast.info('Hello, world!', {
     position: 'bottom-right',
   })
-  warning('Hello, world!', {
+  toast.warning('Hello, world!', {
     position: 'bottom-left',
   })
-  error('Hello, world!', {
+  toast.error('Hello, world!', {
     position: 'bottom',
   })
-  success('Hello, world!', {
+  toast.success('Hello, world!', {
     position: 'top-left',
   })
-  message('Hello, world!', {
+  toast.message('Hello, world!', {
     position: 'top',
     buttons: [
       {
