@@ -10,10 +10,7 @@ import dts from 'vite-plugin-dts'
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import SvgLoader from 'vite-svg-loader'
 
-import {
-  ViteCompileStyles,
-} from './build'
-import { VitePreNestedCss } from './build/VitePreNestedCss'
+import { ViteCompileStyles, VitePreNestedCss } from './build/index.ts'
 
 import pkg from './package.json' with { type: 'json' }
 
@@ -77,6 +74,7 @@ export default defineConfig(({ mode }) => {
       lib: {
         entry: {
           ...moduleEntries,
+          'index': resolver('src/index.ts'),
           'components/index': resolver('src/components/index.ts'),
           'composables/index': resolver('src/composables/index.ts'),
           'plugins/index': resolver('src/plugins/index.ts'),

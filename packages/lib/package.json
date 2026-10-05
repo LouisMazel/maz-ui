@@ -31,6 +31,13 @@
     "./dist/css/**"
   ],
   "exports": {
+    ".": {
+      "monorepo:dev": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "module": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
     "./components": {
       "monorepo:dev": "./src/components/index.ts",
       "types": "./dist/components/index.d.ts",
@@ -134,14 +141,9 @@
     },
     "./package.json": "./package.json"
   },
-  "bin": {
-    "maz": "./bin/maz.mjs",
-    "maz-ui": "./bin/maz.mjs"
-  },
   "files": [
     "LICENSE",
     "README.md",
-    "bin",
     "dist",
     "src/tailwindcss",
     "svg",
@@ -151,7 +153,6 @@
     "node": ">= 18.0.0"
   },
   "scripts": {
-    "maz": "maz",
     "lint": "pnpm lint:js && pnpm lint:style",
     "lint:fix": "pnpm lint:js:fix && pnpm lint:style:fix",
     "lint:js": "cross-env NODE_ENV=production eslint",
@@ -195,14 +196,15 @@
   },
   "dependencies": {
     "@floating-ui/vue": "^2.0.1",
-    "@maz-ui/cli": "workspace:*",
     "@maz-ui/icons": "workspace:*",
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
     "@maz-ui/utils": "workspace:*",
     "chart.js": "^4.5.1",
     "dayjs": "^1.11.23",
+    "dompurify": "^3.4.16",
     "libphonenumber-js": "^1.13.14",
+    "marked": "^18.0.14",
     "valibot": "^1.5.0"
   },
   "devDependencies": {
@@ -215,10 +217,8 @@
     "@tailwindcss/vite": "^4.3.3",
     "@vue/test-utils": "^2.5.1",
     "autoprefixer": "^10.6.1",
-    "dompurify": "^3.4.16",
     "jsdom": "^30.1.1",
     "lightningcss": "^1.32.0",
-    "marked": "^18.0.14",
     "nuxt": "^4.5.2",
     "postcss-nested": "^8.0.1",
     "sass": "^1.105.0",
@@ -226,6 +226,7 @@
     "tailwindcss": "^4.3.3",
     "unplugin-auto-import": "^21.1.0",
     "unplugin-vue-components": "^32.0.0",
+    "vitest-axe": "^0.1.0",
     "vue-router": "^5.3.1"
   },
   "lint-staged": {
