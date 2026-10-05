@@ -299,6 +299,19 @@ describe('theme plugin', () => {
     await expect((themePlugin as (...args: any[]) => any)(context)).rejects.toThrow('boom')
   })
 
+  it('should ignore a maz-preset cookie with an empty base segment', async () => {
+    const presetCookie: { value: string | null } = { value: ':nova' }
+    mockUseCookie.mockImplementation(((name: string) => {
+      return name === 'maz-preset' ? presetCookie : { value: undefined }
+    }) as any)
+    mockGetPreset.mockResolvedValueOnce({ name: 'maz-ui', colors: {} } as any)
+    const context = createContext({ preset: undefined })
+    await (themePlugin as (...args: any[]) => any)(context)
+    expect(mockGetPreset).toHaveBeenCalledWith(undefined)
+    expect(mockGetPreset).not.toHaveBeenCalledWith('nova')
+    expect(presetCookie.value).toBe('maz-ui:maz-ui')
+  })
+
   it('should ignore a legacy plain-name maz-preset cookie value', async () => {
     const presetCookie: { value: string | null } = { value: 'nova' }
     mockUseCookie.mockImplementation(((name: string) => {
