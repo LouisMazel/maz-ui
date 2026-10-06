@@ -20,6 +20,7 @@ description: MazTable is designed to be a reusable data table with advanced feat
 5. Customizable Page Size: Users can choose the number of items to display per page using a dropdown list.
 6. Loading Indicator (prop `loading`): A loading indicator (MazLoadingBar) is displayed when data is being loaded.
 7. Animated rows (props `animated-rows` + `row-key`): rows slide to their new position when the order changes (FLIP animation). Respects `prefers-reduced-motion`.
+8. Virtualization (prop `virtualized`): render only the rows visible in the viewport (plus an overscan) so the table stays fast with thousands of rows.
 
 ## Available models
 
@@ -431,6 +432,79 @@ Enable `animated-rows` to make rows slide to their new position when the order c
 
 </ComponentDemo>
 
+## Virtualization
+
+Enable `virtualized` to render only the rows inside the viewport (plus an overscan) instead of every row. This keeps the table fast and the DOM light even with tens of thousands of rows. It works in `rows` mode (data-driven), and `@tanstack/vue-virtual` is loaded on demand - pages that never virtualize a table never ship it.
+
+The example below renders **10 000 rows** but only keeps ~20 `<tr>` in the DOM at any time.
+
+<ComponentDemo>
+  <MazTable
+    class="vp-raw"
+    size="sm"
+    virtualized
+    max-height="300px"
+    :estimated-row-height="38"
+    :headers="[
+      { label: '#', key: 'id', width: '5rem' },
+      { label: 'Name', key: 'name', width: '12rem' },
+      { label: 'Email', key: 'email' },
+      { label: 'Score', key: 'score', align: 'center', width: '6rem' },
+    ]"
+    :rows="virtualizedRows"
+  />
+
+  <template #code>
+
+  ```vue
+  <template>
+    <MazTable
+      virtualized
+      max-height="400px"
+      :estimated-row-height="38"
+      :headers="[
+        { label: '#', key: 'id', width: '5rem' },
+        { label: 'Name', key: 'name', width: '12rem' },
+        { label: 'Email', key: 'email' },
+        { label: 'Score', key: 'score', align: 'center', width: '6rem' },
+      ]"
+      :rows="rows"
+    />
+  </template>
+
+  <script lang="ts" setup>
+    import { MazTable } from 'maz-ui/components'
+
+    // 10 000 rows - only the visible window is rendered to the DOM
+    const rows = Array.from({ length: 10_000 }, (_, i) => ({
+      id: i + 1,
+      name: `User ${i + 1}`,
+      email: `user${i + 1}@maz-ui.com`,
+      score: Math.round(Math.random() * 100),
+    }))
+  </script>
+  ```
+
+  </template>
+
+</ComponentDemo>
+
+### Options
+
+| Prop | Default | Description |
+| --- | --- | --- |
+| `virtualized` | `false` | Turns virtualization on. |
+| `max-height` | - | **Required.** Bounds the scroll viewport (any CSS length, e.g. `'400px'`, `'70vh'`). Scrolling is enabled automatically and the header stays sticky. |
+| `estimated-row-height` | `44` | Fixed row height (in px) used to place rows and size the spacers. Set it to your real row height; virtualized rows should be uniform (single line). |
+| `overscan` | `10` | Rows rendered outside the viewport on each side. |
+
+### Good to know
+
+* **Set a `width` (or `minWidth`) on your headers.** Virtualization forces `table-layout: fixed` so columns stay aligned across the rendered window; without widths the browser distributes them equally.
+* **Accessibility:** the table exposes `aria-rowcount` and each rendered row an `aria-rowindex`, so screen readers still announce "row X of N".
+* **Ignored** (with a dev warning) when `animated-rows` is enabled or when you provide a custom default slot - those paths render every row.
+* **Rendered client-side:** the virtualized body is empty during SSR and fills in on hydration.
+
 ## Loading
 
 Enable the loading state with the prop `loading`
@@ -589,6 +663,13 @@ Available sizes: `'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`
   function shuffleRows() {
     players.value = [...players.value].sort(() => Math.random() - 0.5)
   }
+
+  const virtualizedRows = Array.from({ length: 10_000 }, (_, i) => ({
+    id: i + 1,
+    name: `User ${i + 1}`,
+    email: `user${i + 1}@maz-ui.com`,
+    score: Math.round(Math.random() * 100),
+  }))
 </script>
 
 ## Types
