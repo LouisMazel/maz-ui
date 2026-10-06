@@ -291,61 +291,59 @@ function isLastStep(step: number): boolean {
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
 
-.m-stepper {
-  &__header {
-    &.--success {
-      .m-stepper__count__circle {
-        @apply maz:scale-100 maz:bg-success;
-      }
+.m-stepper__count {
+  background-color: var(--round-step-bg-color);
+  color: var(--round-step-text-color);
 
-      .m-stepper__right {
-        @apply maz:text-success;
-      }
-
-      svg {
-        @apply maz:text-success-foreground;
-      }
-    }
-
-    &.--warning {
-      .m-stepper__count__circle {
-        @apply maz:scale-100 maz:bg-warning;
-      }
-
-      .m-stepper__right {
-        @apply maz:text-warning;
-      }
-
-      svg {
-        @apply maz:text-warning-foreground;
-      }
-    }
-
-    &.--error {
-      .m-stepper__count__circle {
-        @apply maz:scale-100 maz:bg-destructive;
-      }
-
-      .m-stepper__right {
-        @apply maz:text-destructive;
-      }
-
-      svg {
-        @apply maz:text-destructive-foreground;
-      }
-    }
+  svg {
+    @apply maz:text-success-foreground;
   }
+}
 
-  &__title {
-    @apply maz:text-lg;
-  }
+.m-stepper__title {
+  @apply maz:text-lg;
+}
 
-  &__count {
-    background-color: var(--round-step-bg-color);
-    color: var(--round-step-text-color);
+.m-stepper__header {
+  &.--success {
+    .m-stepper__count__circle {
+      @apply maz:scale-100 maz:bg-success;
+    }
+
+    .m-stepper__right {
+      @apply maz:text-success;
+    }
 
     svg {
       @apply maz:text-success-foreground;
+    }
+  }
+
+  &.--warning {
+    .m-stepper__count__circle {
+      @apply maz:scale-100 maz:bg-warning;
+    }
+
+    .m-stepper__right {
+      @apply maz:text-warning;
+    }
+
+    svg {
+      @apply maz:text-warning-foreground;
+    }
+  }
+
+  &.--error {
+    .m-stepper__count__circle {
+      @apply maz:scale-100 maz:bg-destructive;
+    }
+
+    .m-stepper__right {
+      @apply maz:text-destructive;
+    }
+
+    svg {
+      @apply maz:text-destructive-foreground;
     }
   }
 }

@@ -75,13 +75,13 @@ onUnmounted(() => {
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows var(--expand-animation-duration) var(--expand-animation-timing-function);
+}
 
-  &__inner.--overflow-hidden {
-    overflow: hidden;
-  }
+.m-expand-animation--expanded {
+  grid-template-rows: 1fr;
+}
 
-  &--expanded {
-    grid-template-rows: 1fr;
-  }
+.m-expand-animation__inner.--overflow-hidden {
+  overflow: hidden;
 }
 </style>

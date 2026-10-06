@@ -229,33 +229,31 @@ const SIZE_CLASS: Record<MazSize, string> = {
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
 
-.m-radio-buttons {
-  &__items {
-    &__checkbox {
-      span {
-        transition: border-color 0s;
+.m-radio-buttons__items {
+  &.--equal-size {
+    @apply maz:flex-1;
+  }
 
-        &.--is-selected {
-          @apply maz:border-transparent;
-        }
+  &:not(.--is-selected) {
+    @apply maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
+  }
 
-        &:not(.--is-selected) {
-          @apply maz:group-hover:bg-surface;
-        }
-      }
-    }
+  &:has(input:focus-visible) {
+    outline: var(--maz-border-width) solid var(--maz-primary);
+    outline-offset: 2px;
+  }
+}
 
-    &.--equal-size {
-      @apply maz:flex-1;
+.m-radio-buttons__items__checkbox {
+  span {
+    transition: border-color 0s;
+
+    &.--is-selected {
+      @apply maz:border-transparent;
     }
 
     &:not(.--is-selected) {
-      @apply maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
-    }
-
-    &:has(input:focus-visible) {
-      outline: var(--maz-border-width) solid var(--maz-primary);
-      outline-offset: 2px;
+      @apply maz:group-hover:bg-surface;
     }
   }
 }

@@ -311,62 +311,60 @@ const stateColor = computed(() => {
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
 
-.m-input-number {
-  &__button {
-    &.m-btn {
-      &::before {
-        content: none !important;
-      }
+.m-input-number__input {
+  &:not(.--no-buttons) :deep(.m-input-wrapper) {
+    @apply maz:z-1 maz:rounded-none!;
+  }
 
-      &:first-child,
-      &:last-child {
-        @apply maz:border maz:border-divider;
-        @apply maz:px-3 maz:py-0;
-      }
+  &.--text-center {
+    &:deep(input) {
+      @apply maz:p-0 maz:text-center;
+    }
 
-      &:first-child {
-        @apply maz:rounded-r-none!;
+    &:deep(.m-input-label) {
+      @apply maz:text-center! maz:w-full! maz:p-0! maz:inset-s-0!;
+    }
 
-        margin-inline-end: calc(-1 * 2px);
-      }
-
-      &:last-child {
-        @apply maz:rounded-l-none!;
-
-        margin-inline-start: calc(-1 * 2px);
-      }
+    &.--should-up:deep(.m-input-label) {
+      @apply maz:w-[calc(125%)]!;
     }
   }
 
-  &__input {
-    &:not(.--no-buttons) :deep(.m-input-wrapper) {
-      @apply maz:z-1 maz:rounded-none!;
+  /* Chrome, Safari, Edge, Opera */
+  &:deep(input::-webkit-outer-spin-button),
+  &:deep(input::-webkit-inner-spin-button) {
+    appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  &:deep(input[type='number']) {
+    appearance: textfield;
+  }
+}
+
+.m-input-number__button {
+  &.m-btn {
+    &::before {
+      content: none !important;
     }
 
-    &.--text-center {
-      &:deep(input) {
-        @apply maz:p-0 maz:text-center;
-      }
-
-      &:deep(.m-input-label) {
-        @apply maz:text-center! maz:w-full! maz:p-0! maz:inset-s-0!;
-      }
-
-      &.--should-up:deep(.m-input-label) {
-        @apply maz:w-[calc(125%)]!;
-      }
+    &:first-child,
+    &:last-child {
+      @apply maz:border maz:border-divider;
+      @apply maz:px-3 maz:py-0;
     }
 
-    /* Chrome, Safari, Edge, Opera */
-    &:deep(input::-webkit-outer-spin-button),
-    &:deep(input::-webkit-inner-spin-button) {
-      appearance: none;
-      margin: 0;
+    &:first-child {
+      @apply maz:rounded-r-none!;
+
+      margin-inline-end: calc(-1 * 2px);
     }
 
-    /* Firefox */
-    &:deep(input[type='number']) {
-      appearance: textfield;
+    &:last-child {
+      @apply maz:rounded-l-none!;
+
+      margin-inline-start: calc(-1 * 2px);
     }
   }
 }

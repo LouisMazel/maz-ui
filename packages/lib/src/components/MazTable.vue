@@ -257,6 +257,34 @@ export interface MazTableProps<T extends MazTableRow<T>> {
    * @default false
    */
   animatedRows?: boolean
+  /**
+   * Only render the rows visible in the viewport (plus an overscan) using
+   * `@tanstack/vue-virtual`. Keeps the table fast on thousands of rows. Requires
+   * `maxHeight` to bound the scroll viewport. Ignored when `animatedRows` is on or
+   * when a custom default slot is provided. Rows render client-side only.
+   * @type {boolean}
+   * @default false
+   */
+  virtualized?: boolean
+  /**
+   * Max height of the scroll viewport (any CSS length, e.g. `'400px'`, `'70vh'`).
+   * Enables scrolling and, when `virtualized`, bounds the virtualized viewport.
+   * @type {string}
+   */
+  maxHeight?: string
+  /**
+   * Fixed row height in pixels used by the virtualizer to place rows and size the
+   * spacers. Set it to your real row height (virtualized rows should be uniform).
+   * @type {number}
+   * @default 44
+   */
+  estimatedRowHeight?: number
+  /**
+   * Number of rows rendered outside the viewport on each side when `virtualized`.
+   * @type {number}
+   * @default 10
+   */
+  overscan?: number
 }
 
 export interface MazTableProvide {
@@ -272,6 +300,7 @@ export const mazTableKey: InjectionKey<MazTableProvide> = Symbol('maz-table')
 <script lang="ts" setup generic="T extends MazTableRow<T>">
 import type { HTMLAttributes, InjectionKey, Ref, ThHTMLAttributes } from 'vue'
 import type { MazSelectOption } from './MazSelect.vue'
+import type { MazTableVirtualWindow } from './MazTableVirtualizer.vue'
 import type { MazColor, MazRoundedSize, MazSize } from './types'
 import { MazArrowUp } from '@maz-ui/icons/lazy/MazArrowUp'
 import { MazChevronDoubleLeft } from '@maz-ui/icons/lazy/MazChevronDoubleLeft'
@@ -282,11 +311,13 @@ import {
   computed,
   defineAsyncComponent,
   onBeforeMount,
+  onMounted,
   provide,
   ref,
   toRef,
   TransitionGroup,
   useSlots,
+  useTemplateRef,
   watch,
 } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig'
@@ -328,6 +359,10 @@ const {
   scrollable = false,
   rowKey,
   animatedRows = false,
+  virtualized = false,
+  maxHeight,
+  estimatedRowHeight = 44,
+  overscan = 10,
 } = defineProps<MazTableProps<T>>()
 
 const emits = defineEmits<{
@@ -574,6 +609,49 @@ const slots = useSlots()
 const hasHeader = computed<boolean>((): boolean => !!(search || title || slots.title))
 const hasFooter = computed<boolean>(() => !!pagination)
 
+const totalColumns = computed<number>(
+  () => headersNormalized.value.length + (isSelectable.value ? 1 : 0) + (hasSlotContent(slots.actions) ? 1 : 0),
+)
+
+const tableWrapper = useTemplateRef<HTMLElement>('tableWrapper')
+
+const isVirtualized = computed<boolean>(() => virtualized && !animatedRows && !hasSlotContent(slots.default))
+
+// Virtualization is lazy-loaded: the provider (and `@tanstack/vue-virtual`) only
+// enters the bundle when a table is actually virtualized. It renders nothing and
+// pushes its visible window here through the `change` event.
+const MazTableVirtualizer = defineAsyncComponent(() => import('./MazTableVirtualizer.vue'))
+const virtualWindow = ref<MazTableVirtualWindow>({ indexes: [], paddingTop: 0, paddingBottom: 0 })
+
+const visibleRows = computed<{ row: T, index: number }[]>(() =>
+  isVirtualized.value
+    ? virtualWindow.value.indexes.map(index => ({ row: rowsFiltered.value[index], index }))
+    : rowsFiltered.value.map((row, index) => ({ row, index })),
+)
+
+onMounted(() => {
+  if (!virtualized)
+    return
+
+  if (animatedRows) {
+    console.warn('[maz-ui][MazTable] `virtualized` is ignored while `animatedRows` is enabled.')
+    return
+  }
+
+  if (hasSlotContent(slots.default)) {
+    console.warn('[maz-ui][MazTable] `virtualized` is ignored while a custom default slot is provided.')
+    return
+  }
+
+  if (!maxHeight) {
+    console.warn('[maz-ui][MazTable] `virtualized` needs `maxHeight` to bound the scroll viewport, otherwise every row renders.')
+  }
+
+  if (!headersNormalized.value.some(header => header.width ?? header.minWidth ?? header.maxWidth)) {
+    console.warn('[maz-ui][MazTable] `virtualized` forces `table-layout: fixed`; set a `width` or `minWidth` on headers for stable columns.')
+  }
+})
+
 function getNormalizedHeaders(headers?: MazTableHeader[]): MazTableHeadersNormalized[] {
   return (
     headers?.map(header =>
@@ -688,14 +766,18 @@ onBeforeMount(() => {
       </div>
     </div>
     <div
+      ref="tableWrapper"
       class="m-table-wrapper maz:border maz:border-solid maz:border-divider" :class="[`--rounded-${roundedSize}`, {
-        '--scrollable maz:overflow-auto': scrollable,
-        'maz:overflow-hidden': !scrollable,
+        '--scrollable maz:overflow-auto': scrollable || isVirtualized,
+        '--virtualized': isVirtualized,
+        'maz:overflow-hidden': !scrollable && !isVirtualized,
       }]"
+      :style="{ maxHeight: (scrollable || isVirtualized) ? maxHeight : undefined }"
     >
       <table
         :class="[{ '--elevation': elevation, '--has-layout': tableLayout }, tableClass]"
         :style="tableStyle"
+        :aria-rowcount="isVirtualized ? rowsFiltered.length : undefined"
         class="maz:table maz:w-full maz:border-collapse maz:bg-container"
       >
         <caption v-if="caption || hasSlotContent(slots.caption)">
@@ -788,9 +870,21 @@ onBeforeMount(() => {
         >
           <slot>
             <template v-if="rowsFiltered.length > 0">
+              <MazTableVirtualizer
+                v-if="isVirtualized"
+                :count="rowsFiltered.length"
+                :scroll-element="tableWrapper"
+                :estimate-size="estimatedRowHeight"
+                :overscan="overscan"
+                @change="virtualWindow = $event"
+              />
+              <tr v-if="isVirtualized && virtualWindow.paddingTop > 0" aria-hidden="true" class="m-table-virtual-spacer">
+                <td :colspan="totalColumns" :style="{ height: `${virtualWindow.paddingTop}px`, padding: 0, border: 0 }" />
+              </tr>
               <MazTableRowComponent
-                v-for="(row, rowIndex) in rowsFiltered"
+                v-for="{ row, index: rowIndex } in visibleRows"
                 :key="getRowKey(row, rowIndex)"
+                :aria-rowindex="isVirtualized ? rowIndex + 1 : undefined"
                 :class="row.classes"
                 @click="row.action && row.action(row)"
               >
@@ -838,13 +932,14 @@ onBeforeMount(() => {
                   <slot name="actions" :row="row" />
                 </MazTableCell>
               </MazTableRowComponent>
+              <tr v-if="isVirtualized && virtualWindow.paddingBottom > 0" aria-hidden="true" class="m-table-virtual-spacer">
+                <td :colspan="totalColumns" :style="{ height: `${virtualWindow.paddingBottom}px`, padding: 0, border: 0 }" />
+              </tr>
             </template>
             <template v-else>
               <MazTableRowComponent>
                 <MazTableCell
-                  :colspan="
-                    headersNormalized.length + (isSelectable ? 1 : 0) + (hasSlotContent(slots.actions) ? 1 : 0)
-                  "
+                  :colspan="totalColumns"
                 >
                   <!--
                     @slot Replace the no results element
@@ -936,140 +1031,6 @@ onBeforeMount(() => {
 @reference "../tailwindcss/tailwind.css";
 
 .m-table {
-  &-wrapper {
-    &:not(.--rounded-none) {
-      @apply maz:rounded-xl;
-    }
-
-    &.--rounded-sm {
-      @apply maz:rounded-xs;
-
-      table {
-        @apply maz:rounded-xs;
-
-        thead tr:hover:first-child {
-          @apply maz:rounded-b-sm;
-
-          th:first-child {
-            @apply maz:rounded-tl-sm;
-          }
-
-          th:last-child {
-            @apply maz:rounded-tr-sm;
-          }
-        }
-
-        tbody tr:hover:last-child {
-          @apply maz:rounded-b-sm;
-
-          td:first-child {
-            @apply maz:rounded-bl-sm;
-          }
-
-          td:last-child {
-            @apply maz:rounded-br-sm;
-          }
-        }
-      }
-    }
-
-    &.--rounded-md {
-      @apply maz:rounded-md;
-
-      table {
-        @apply maz:rounded-md;
-
-        thead tr:hover:first-child {
-          @apply maz:rounded-b-md;
-
-          th:first-child {
-            @apply maz:rounded-tl-md;
-          }
-
-          th:last-child {
-            @apply maz:rounded-tr-md;
-          }
-        }
-
-        tbody tr:hover:last-child {
-          @apply maz:rounded-b-md;
-
-          td:first-child {
-            @apply maz:rounded-bl-md;
-          }
-
-          td:last-child {
-            @apply maz:rounded-br-md;
-          }
-        }
-      }
-    }
-
-    &.--rounded-lg {
-      @apply maz:rounded-lg;
-
-      table {
-        @apply maz:rounded-lg;
-
-        thead tr:hover:first-child {
-          @apply maz:rounded-b-lg;
-
-          th:first-child {
-            @apply maz:rounded-tl-lg;
-          }
-
-          th:last-child {
-            @apply maz:rounded-tr-lg;
-          }
-        }
-
-        tbody tr:hover:last-child {
-          @apply maz:rounded-b-lg;
-
-          td:first-child {
-            @apply maz:rounded-bl-lg;
-          }
-
-          td:last-child {
-            @apply maz:rounded-br-lg;
-          }
-        }
-      }
-    }
-
-    &.--rounded-xl {
-      @apply maz:rounded-xl;
-
-      table {
-        @apply maz:rounded-xl;
-
-        thead tr:hover:first-child {
-          @apply maz:rounded-b-xl;
-
-          th:first-child {
-            @apply maz:rounded-tl-xl;
-          }
-
-          th:last-child {
-            @apply maz:rounded-tr-xl;
-          }
-        }
-
-        tbody tr:hover:last-child {
-          @apply maz:rounded-b-xl;
-
-          td:first-child {
-            @apply maz:rounded-bl-xl;
-          }
-
-          td:last-child {
-            @apply maz:rounded-br-xl;
-          }
-        }
-      }
-    }
-  }
-
   &.--has-header {
     @apply maz:rounded-md;
   }
@@ -1081,7 +1042,7 @@ onBeforeMount(() => {
   }
 
   table {
-    table-layout: v-bind('tableLayout');
+    table-layout: v-bind('isVirtualized ? "fixed" : tableLayout');
 
     &.--has-layout {
       @apply maz:w-full;
@@ -1168,6 +1129,156 @@ onBeforeMount(() => {
     tbody {
       &.--divider {
         @apply maz:divide-y maz:divide-divider;
+      }
+    }
+  }
+}
+
+.m-table-wrapper.--virtualized {
+  /* With `border-collapse: collapse` the thead bottom border belongs to the
+     collapsed grid, not the sticky cells, so it scrolls away. Drop it and redraw
+     the divider as an inset shadow on the sticky th, which follows the header
+     (and avoids a double line at the top). */
+  thead {
+    @apply maz:border-b-0;
+  }
+
+  thead th {
+    @apply maz:sticky maz:top-0 maz:z-1 maz:bg-container;
+
+    box-shadow: inset 0 calc(-1 * var(--maz-border-width, 1px)) 0 var(--maz-color-divider, var(--maz-divider));
+  }
+}
+
+.m-table-wrapper {
+  &:not(.--rounded-none) {
+    @apply maz:rounded-xl;
+  }
+
+  &.--rounded-sm {
+    @apply maz:rounded-xs;
+
+    table {
+      @apply maz:rounded-xs;
+
+      thead tr:hover:first-child {
+        @apply maz:rounded-b-sm;
+
+        th:first-child {
+          @apply maz:rounded-tl-sm;
+        }
+
+        th:last-child {
+          @apply maz:rounded-tr-sm;
+        }
+      }
+
+      tbody tr:hover:last-child {
+        @apply maz:rounded-b-sm;
+
+        td:first-child {
+          @apply maz:rounded-bl-sm;
+        }
+
+        td:last-child {
+          @apply maz:rounded-br-sm;
+        }
+      }
+    }
+  }
+
+  &.--rounded-md {
+    @apply maz:rounded-md;
+
+    table {
+      @apply maz:rounded-md;
+
+      thead tr:hover:first-child {
+        @apply maz:rounded-b-md;
+
+        th:first-child {
+          @apply maz:rounded-tl-md;
+        }
+
+        th:last-child {
+          @apply maz:rounded-tr-md;
+        }
+      }
+
+      tbody tr:hover:last-child {
+        @apply maz:rounded-b-md;
+
+        td:first-child {
+          @apply maz:rounded-bl-md;
+        }
+
+        td:last-child {
+          @apply maz:rounded-br-md;
+        }
+      }
+    }
+  }
+
+  &.--rounded-lg {
+    @apply maz:rounded-lg;
+
+    table {
+      @apply maz:rounded-lg;
+
+      thead tr:hover:first-child {
+        @apply maz:rounded-b-lg;
+
+        th:first-child {
+          @apply maz:rounded-tl-lg;
+        }
+
+        th:last-child {
+          @apply maz:rounded-tr-lg;
+        }
+      }
+
+      tbody tr:hover:last-child {
+        @apply maz:rounded-b-lg;
+
+        td:first-child {
+          @apply maz:rounded-bl-lg;
+        }
+
+        td:last-child {
+          @apply maz:rounded-br-lg;
+        }
+      }
+    }
+  }
+
+  &.--rounded-xl {
+    @apply maz:rounded-xl;
+
+    table {
+      @apply maz:rounded-xl;
+
+      thead tr:hover:first-child {
+        @apply maz:rounded-b-xl;
+
+        th:first-child {
+          @apply maz:rounded-tl-xl;
+        }
+
+        th:last-child {
+          @apply maz:rounded-tr-xl;
+        }
+      }
+
+      tbody tr:hover:last-child {
+        @apply maz:rounded-b-xl;
+
+        td:first-child {
+          @apply maz:rounded-bl-xl;
+        }
+
+        td:last-child {
+          @apply maz:rounded-br-xl;
+        }
       }
     }
   }

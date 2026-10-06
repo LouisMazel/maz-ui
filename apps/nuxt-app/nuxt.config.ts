@@ -1,6 +1,6 @@
 import process from 'node:process'
+import { VitePreNestedCss } from '@maz-ui/vite-config'
 import tailwindcss from '@tailwindcss/vite'
-import postcssNested from 'postcss-nested'
 import svgLoader from 'vite-svg-loader'
 import mazUiModule from './../../packages/nuxt/src/module'
 
@@ -39,7 +39,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-07-22',
 
   vite: {
-    plugins: [tailwindcss(), svgLoader()],
+    plugins: [VitePreNestedCss(), tailwindcss(), svgLoader()],
     // Resolve `monorepo:dev` first when developing so we consume maz-ui's
     // raw src/ (with HMR), and fall back to the published dist for prod
     // builds. Same trick as accor-core-library.
@@ -53,14 +53,6 @@ export default defineNuxtConfig({
             'default',
           ]
         : ['import', 'browser', 'module', 'default'],
-    },
-    css: {
-      postcss: {
-        // In dev only: flatten postcss-nested `&-child` syntax that ships
-        // in raw maz-ui SFCs loaded via the `monorepo:dev` resolve
-        // condition. Prod consumes the already-flattened dist.
-        plugins: isDev ? [postcssNested()] : [],
-      },
     },
   },
 

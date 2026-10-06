@@ -13,6 +13,7 @@
     "../mcp/**/*",
     "../icons/**/*",
     "../eslint-config/**/*",
+    "../../tools/**/*",
     "../stylelint-config/**/*",
     "../maz-cli/**/*",
     "../../apps/**/*"

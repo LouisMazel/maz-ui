@@ -148,55 +148,53 @@ function onFocus(event: FocusEvent) {
 <style>
 @reference "../tailwindcss/tailwind.css";
 
-.m-switch {
-  &__input {
-    inset-inline-start: -9999px;
+.m-switch__input:disabled + .m-switch__toggle {
+  &::before {
+    @apply maz:bg-surface-600 maz:dark:bg-surface-400;
   }
 
-  &__toggle {
-    &::before {
-      content: '';
-      transition: all 200ms ease-in-out;
+  &::after {
+    @apply maz:bg-surface-700 maz:dark:bg-surface-300;
 
-      @apply maz:relative maz:left-0 maz:top-0.5 maz:block maz:h-6 maz:w-12 maz:rounded-full;
-      @apply maz:bg-surface-600 maz:dark:bg-surface-400 maz:border maz:border-solid maz:border-divider;
-    }
+    box-shadow: none;
+  }
+}
 
-    &::after {
-      content: '';
+.m-switch__input:focus-visible + .m-switch__toggle::before {
+  outline: var(--maz-border-width) solid var(--switch-color);
+  outline-offset: 2px;
+}
 
-      @apply maz:absolute maz:left-0.5 maz:top-1 maz:block maz:h-5 maz:w-5 maz:rounded-full maz:bg-input;
-
-      box-shadow: 0 0 4px 0 hsl(0deg 0% 0% / 20%);
-      transition: all 200ms ease-in-out;
-    }
+.m-switch__input:checked + .m-switch__toggle {
+  &::after {
+    @apply maz:translate-x-6;
   }
 
-  &__input:checked + .m-switch__toggle {
-    &::after {
-      @apply maz:translate-x-6;
-    }
+  &::before {
+    background-color: var(--switch-color);
+  }
+}
 
-    &::before {
-      background-color: var(--switch-color);
-    }
+.m-switch__toggle {
+  &::before {
+    content: '';
+    transition: all 200ms ease-in-out;
+
+    @apply maz:relative maz:left-0 maz:top-0.5 maz:block maz:h-6 maz:w-12 maz:rounded-full;
+    @apply maz:bg-surface-600 maz:dark:bg-surface-400 maz:border maz:border-solid maz:border-divider;
   }
 
-  &__input:focus-visible + .m-switch__toggle::before {
-    outline: var(--maz-border-width) solid var(--switch-color);
-    outline-offset: 2px;
+  &::after {
+    content: '';
+
+    @apply maz:absolute maz:left-0.5 maz:top-1 maz:block maz:h-5 maz:w-5 maz:rounded-full maz:bg-input;
+
+    box-shadow: 0 0 4px 0 hsl(0deg 0% 0% / 20%);
+    transition: all 200ms ease-in-out;
   }
+}
 
-  &__input:disabled + .m-switch__toggle {
-    &::before {
-      @apply maz:bg-surface-600 maz:dark:bg-surface-400;
-    }
-
-    &::after {
-      @apply maz:bg-surface-700 maz:dark:bg-surface-300;
-
-      box-shadow: none;
-    }
-  }
+.m-switch__input {
+  inset-inline-start: -9999px;
 }
 </style>

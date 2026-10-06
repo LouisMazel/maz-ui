@@ -1,4 +1,5 @@
-import type { Plugin } from 'vite'
+// @ts-check
+
 import postcss from 'postcss'
 import postcssNested from 'postcss-nested'
 
@@ -14,19 +15,18 @@ import postcssNested from 'postcss-nested'
  * Apply `enforce: 'pre'` so we always run before @tailwindcss/vite's
  * generate hook.
  */
-export function VitePreNestedCss(): Plugin {
+export function VitePreNestedCss() {
   const processor = postcss([postcssNested()])
-
   return {
-    name: 'maz-ui:pre-nested-css',
+    name: 'pre-nested-css',
     enforce: 'pre',
     async transform(code, id) {
-      if (!/\.vue\?.*type=style/.test(id) && !id.endsWith('.css'))
+      if (!/\.vue\?.*type=style/.test(id) && !id.endsWith('.css')) {
         return
-
-      if (!code.includes('&'))
+      }
+      if (!code.includes('&')) {
         return
-
+      }
       const { css } = await processor.process(code, { from: id, to: id })
       return { code: css, map: null }
     },

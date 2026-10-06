@@ -933,127 +933,125 @@ defineExpose({
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
 
-.m-markdown-editor {
-  &__box {
-    transition: border-color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+.m-markdown-editor__preview-content {
+  line-height: 1.6;
+
+  :deep(h1),
+  :deep(h2),
+  :deep(h3),
+  :deep(h4) {
+    @apply maz:font-semibold maz:mt-4 maz:mb-2 maz:first:mt-0;
   }
 
-  &__box.--primary:focus-within {
-    @apply maz:border-primary;
+  :deep(h1) {
+    @apply maz:text-2xl;
   }
 
-  &__box.--secondary:focus-within {
-    @apply maz:border-secondary;
+  :deep(h2) {
+    @apply maz:text-xl;
   }
 
-  &__box.--accent:focus-within {
-    @apply maz:border-accent;
+  :deep(h3) {
+    @apply maz:text-lg;
   }
 
-  &__box.--info:focus-within {
-    @apply maz:border-info;
+  :deep(p) {
+    @apply maz:my-2;
   }
 
-  &__box.--success:focus-within {
-    @apply maz:border-success;
+  :deep(ul),
+  :deep(ol) {
+    @apply maz:my-2 maz:pl-6;
   }
 
-  &__box.--warning:focus-within {
-    @apply maz:border-warning;
+  :deep(ul) {
+    @apply maz:list-disc;
   }
 
-  &__box.--destructive:focus-within {
-    @apply maz:border-destructive;
+  :deep(ol) {
+    @apply maz:list-decimal;
   }
 
-  &__box.--contrast:focus-within {
-    @apply maz:border-contrast;
+  :deep(a) {
+    @apply maz:text-primary maz:underline;
   }
 
-  &__box.--is-disabled * {
-    @apply maz:disabled-cursor maz:text-muted;
+  :deep(blockquote) {
+    @apply maz:border-l-4 maz:border-divider maz:pl-4 maz:text-muted maz:italic;
   }
 
-  &__gutter {
-    line-height: 1.6;
+  :deep(code) {
+    @apply maz:rounded-xs maz:bg-surface-600 maz:px-1 maz:py-0.5 maz:font-mono maz:text-xs maz:dark:bg-surface-400;
   }
 
-  &__textarea {
-    field-sizing: content;
-    line-height: 1.6;
+  :deep(pre) {
+    @apply maz:my-2 maz:overflow-x-auto maz:rounded-md maz:bg-surface-600 maz:p-3 maz:dark:bg-surface-400;
   }
 
-  &__preview-content {
-    line-height: 1.6;
-
-    :deep(h1),
-    :deep(h2),
-    :deep(h3),
-    :deep(h4) {
-      @apply maz:font-semibold maz:mt-4 maz:mb-2 maz:first:mt-0;
-    }
-
-    :deep(h1) {
-      @apply maz:text-2xl;
-    }
-
-    :deep(h2) {
-      @apply maz:text-xl;
-    }
-
-    :deep(h3) {
-      @apply maz:text-lg;
-    }
-
-    :deep(p) {
-      @apply maz:my-2;
-    }
-
-    :deep(ul),
-    :deep(ol) {
-      @apply maz:my-2 maz:pl-6;
-    }
-
-    :deep(ul) {
-      @apply maz:list-disc;
-    }
-
-    :deep(ol) {
-      @apply maz:list-decimal;
-    }
-
-    :deep(a) {
-      @apply maz:text-primary maz:underline;
-    }
-
-    :deep(blockquote) {
-      @apply maz:border-l-4 maz:border-divider maz:pl-4 maz:text-muted maz:italic;
-    }
-
-    :deep(code) {
-      @apply maz:rounded-xs maz:bg-surface-600 maz:px-1 maz:py-0.5 maz:font-mono maz:text-xs maz:dark:bg-surface-400;
-    }
-
-    :deep(pre) {
-      @apply maz:my-2 maz:overflow-x-auto maz:rounded-md maz:bg-surface-600 maz:p-3 maz:dark:bg-surface-400;
-    }
-
-    :deep(pre code) {
-      @apply maz:bg-transparent maz:p-0;
-    }
-
-    :deep(table) {
-      @apply maz:my-2 maz:w-full maz:border-collapse;
-    }
-
-    :deep(th),
-    :deep(td) {
-      @apply maz:border maz:border-divider maz:px-2 maz:py-1 maz:dark:border-divider-400;
-    }
-
-    :deep(img) {
-      @apply maz:max-w-full;
-    }
+  :deep(pre code) {
+    @apply maz:bg-transparent maz:p-0;
   }
+
+  :deep(table) {
+    @apply maz:my-2 maz:w-full maz:border-collapse;
+  }
+
+  :deep(th),
+  :deep(td) {
+    @apply maz:border maz:border-divider maz:px-2 maz:py-1 maz:dark:border-divider-400;
+  }
+
+  :deep(img) {
+    @apply maz:max-w-full;
+  }
+}
+
+.m-markdown-editor__textarea {
+  field-sizing: content;
+  line-height: 1.6;
+}
+
+.m-markdown-editor__gutter {
+  line-height: 1.6;
+}
+
+.m-markdown-editor__box.--is-disabled * {
+  @apply maz:disabled-cursor maz:text-muted;
+}
+
+.m-markdown-editor__box.--contrast:focus-within {
+  @apply maz:border-contrast;
+}
+
+.m-markdown-editor__box.--destructive:focus-within {
+  @apply maz:border-destructive;
+}
+
+.m-markdown-editor__box.--warning:focus-within {
+  @apply maz:border-warning;
+}
+
+.m-markdown-editor__box.--success:focus-within {
+  @apply maz:border-success;
+}
+
+.m-markdown-editor__box.--info:focus-within {
+  @apply maz:border-info;
+}
+
+.m-markdown-editor__box.--accent:focus-within {
+  @apply maz:border-accent;
+}
+
+.m-markdown-editor__box.--secondary:focus-within {
+  @apply maz:border-secondary;
+}
+
+.m-markdown-editor__box.--primary:focus-within {
+  @apply maz:border-primary;
+}
+
+.m-markdown-editor__box {
+  transition: border-color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 }
 </style>

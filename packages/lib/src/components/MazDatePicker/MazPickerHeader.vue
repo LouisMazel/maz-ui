@@ -168,14 +168,6 @@ watch(
 @reference "../../tailwindcss/tailwind.css";
 
 .m-date-picker-header {
-  &__time-transition {
-    min-inline-size: 5rem;
-  }
-
-  &__time:not(.--has-date) .m-date-picker-header__time-transition {
-    @apply maz:w-full maz:flex-center;
-  }
-
   &.--primary {
     @apply maz:bg-primary maz:text-primary-foreground;
   }
@@ -211,5 +203,13 @@ watch(
   &.--transparent {
     @apply maz:border-b maz:border-divider maz:text-foreground;
   }
+}
+
+.m-date-picker-header__time:not(.--has-date) .m-date-picker-header__time-transition {
+  @apply maz:w-full maz:flex-center;
+}
+
+.m-date-picker-header__time-transition {
+  min-inline-size: 5rem;
 }
 </style>

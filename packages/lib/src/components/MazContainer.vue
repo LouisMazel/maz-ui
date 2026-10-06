@@ -119,12 +119,6 @@ const ROUNDED_CLASS = {
       ROUNDED_CLASS[roundedSize],
       roundedSize && `--rounded-${roundedSize}`,
       {
-        '--elevation': elevation,
-        '--padding': padding,
-        '--bordered': bordered,
-        '--transparent': transparent,
-        '--overflow-hidden': overflowHidden,
-        '--block': block,
         'maz:overflow-hidden': overflowHidden,
         'maz:w-full': block,
         'maz:bg-container': !transparent,

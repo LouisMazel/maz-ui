@@ -341,13 +341,6 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
     outline-color: var(--m-btn-bg, var(--maz-primary));
   }
 
-  &-loader-container {
-    @apply maz:absolute maz:inset-0 maz:flex maz:flex-center;
-
-    background-color: var(--m-btn-bg);
-    color: var(--m-btn-fg);
-  }
-
   /* Outlined variant */
   &.--outlined {
     @apply maz:bg-transparent maz:border-(--m-btn-bd-light) maz:dark:border-(--m-btn-bd-dark);
@@ -477,5 +470,12 @@ const ICON_PADDING_CLASS: Record<NonNullable<MazBtnProps['size']>, { start: stri
   &.--no-padding {
     @apply maz:p-0;
   }
+}
+
+.m-btn-loader-container {
+  @apply maz:absolute maz:inset-0 maz:flex maz:flex-center;
+
+  background-color: var(--m-btn-bg);
+  color: var(--m-btn-fg);
 }
 </style>

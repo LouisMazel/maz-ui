@@ -324,6 +324,9 @@ importers:
         specifier: ^1.0.2
         version: 1.0.2
     devDependencies:
+      '@maz-ui/vite-config':
+        specifier: workspace:*
+        version: link:../../tools/vite-config
       '@samkirkland/ftp-deploy':
         specifier: ^1.2.5
         version: 1.2.5
@@ -379,6 +382,9 @@ importers:
       '@maz-ui/stylelint-config':
         specifier: workspace:*
         version: link:../../packages/stylelint-config
+      '@maz-ui/vite-config':
+        specifier: workspace:*
+        version: link:../../tools/vite-config
       '@nuxt/devtools':
         specifier: ^3.2.3
         version: 3.4.2(@vitejs/devtools@0.7.6)(db0@0.3.4)(ioredis@5.11.1(supports-color@10.2.2))(magic-string@1.4.2)(rolldown@1.2.11)(supports-color@10.2.2)(unplugin@3.4.0(esbuild@0.28.0)(rolldown@1.2.11)(rollup@4.61.1)(vite@8.3.2))(vite@8.3.2)(vue@3.5.43(typescript@5.9.3))
@@ -428,6 +434,9 @@ importers:
       '@maz-ui/translations':
         specifier: workspace:*
         version: link:../../packages/translations
+      '@maz-ui/vite-config':
+        specifier: workspace:*
+        version: link:../../tools/vite-config
       '@tailwindcss/vite':
         specifier: ^4.3.3
         version: 4.3.3(vite@8.3.2)
@@ -529,6 +538,9 @@ importers:
       '@maz-ui/utils':
         specifier: workspace:*
         version: link:../utils
+      '@tanstack/vue-virtual':
+        specifier: ^3.13.39
+        version: 3.13.39(vue@3.5.43(typescript@5.9.3))
       chart.js:
         specifier: ^4.5.1
         version: 4.5.1
@@ -1795,13 +1807,6 @@ packages:
       '@csstools/css-parser-algorithms': ^4.0.2
       '@csstools/css-tokenizer': ^4.0.2
 
-  '@csstools/css-color-parser@4.2.4':
-    resolution: {integrity: sha512-DyefytAZ735mX4Dq/WcDAXFtXhaEFvme0ZS9tVEBAc2whxUthXr0R0L2rmEPm59SrMBkGrFzQviBXMs/UtnABQ==}
-    engines: {node: '>=20.19.0'}
-    peerDependencies:
-      '@csstools/css-parser-algorithms': ^4.0.1
-      '@csstools/css-tokenizer': ^4.0.2
-
   '@csstools/css-color-parser@4.2.6':
     resolution: {integrity: sha512-iiPQ3iRWwnJkeEn6RIu6SJPr7hYrLz6XZ9s/QZl+2/LI5KQVjpl2fdmDSZKuD4xP6GMmMPgHFFXg6k1Wkz0Trg==}
     engines: {node: '>=20.19.0'}
@@ -2988,16 +2993,8 @@ packages:
       libphonenumber-js:
         optional: true
 
-  '@modelcontextprotocol/client@2.1.0':
-    resolution: {integrity: sha512-mDVhoy5WjDb0U+4dQPzLcciC2erSex/GRVQqnoZdiuMoE3YiTZdiS7ezNcFwX4XEOWOaj7jZr0kLYnILnL8orA==}
-    engines: {node: '>=20'}
-
   '@modelcontextprotocol/client@2.2.0':
     resolution: {integrity: sha512-LxCou/CSYQ6dwEnjhLZY0KnEuc8V4UJ3IEQCl/uR2yHobSQIEdJKUlKLRYRF5i5FqRGHy1eK7une3aAWDHLtig==}
-    engines: {node: '>=20'}
-
-  '@modelcontextprotocol/core@2.1.0':
-    resolution: {integrity: sha512-YdFj5gMRHr0gYNAhTbQDgjLHiEJdIAUYxomhKseUNye7ZGlISQmUoLh2sveFFCiQ7j2YMffT1kgSND0FSfIFjQ==}
     engines: {node: '>=20'}
 
   '@modelcontextprotocol/core@2.2.0':
@@ -3036,10 +3033,6 @@ packages:
     peerDependenciesMeta:
       '@cfworker/json-schema':
         optional: true
-
-  '@modelcontextprotocol/server@2.1.0':
-    resolution: {integrity: sha512-FdvwZU5N03O77Suh35JqjAqq5R1ZTEPFtwu6N4BgBq28qrQtrCnpbLL5U2pwYCuE194jAw0xnlOVmIqhfoYuUQ==}
-    engines: {node: '>=20'}
 
   '@modelcontextprotocol/server@2.2.0':
     resolution: {integrity: sha512-qFnltjus6Gk8Lx6J1w2RXmr3YPN22MNT6qD6zjAkaiWIlFIFxWClz0rXHNuJF/KSUyn5YGhkSvXkWDbQHVLFEQ==}
@@ -4549,6 +4542,14 @@ packages:
     resolution: {integrity: sha512-yYU8cogLeSh/ms2jh8Fj7jaba/EWa7Ja6GoUqYZaraEuCI5YS6ms6ObZgjjedm+jm6XZjdNRWBpPP6Z86oOxcw==}
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7 || ^8
+
+  '@tanstack/virtual-core@3.17.11':
+    resolution: {integrity: sha512-+ILjvtHup6Y2hzQ6YzwMgX1Q+oQpxEGOXCEsCNaPoIP0VxMbizIBTmYTDtkerkIQS8/CbP1BRuyt8V/8BCsy1g==}
+
+  '@tanstack/vue-virtual@3.13.39':
+    resolution: {integrity: sha512-AG8sI+6nfrDvN6ixuHJL9LaJTf3//0V5VITZYW3UOaIuSVexnEzsbMu4LH/JhMfRTxwhUXPnLqkl1DlzkZbRtg==}
+    peerDependencies:
+      vue: ^2.7.0 || ^3.0.0
 
   '@tsconfig/node10@1.0.12':
     resolution: {integrity: sha512-UCYBaeFvM11aU2y3YPZ//O5Rhj+xKyzy7mvcIoAjASbigy8mHMryP5cK7dgjlz2hWxh1g5pLw084E0a/wlUSFQ==}
@@ -11109,9 +11110,9 @@ snapshots:
   '@asamuzakjp/css-color@5.1.11':
     dependencies:
       '@asamuzakjp/generational-cache': 1.0.1
-      '@csstools/css-calc': 3.4.1(@csstools/css-parser-algorithms@4.0.1(@csstools/css-tokenizer@4.0.2))(@csstools/css-tokenizer@4.0.2)
-      '@csstools/css-color-parser': 4.2.4(@csstools/css-parser-algorithms@4.0.1(@csstools/css-tokenizer@4.0.2))(@csstools/css-tokenizer@4.0.2)
-      '@csstools/css-parser-algorithms': 4.0.1(@csstools/css-tokenizer@4.0.2)
+      '@csstools/css-calc': 3.4.3(@csstools/css-parser-algorithms@4.0.2(@csstools/css-tokenizer@4.0.2))(@csstools/css-tokenizer@4.0.2)
+      '@csstools/css-color-parser': 4.2.6(@csstools/css-parser-algorithms@4.0.2(@csstools/css-tokenizer@4.0.2))(@csstools/css-tokenizer@4.0.2)
+      '@csstools/css-parser-algorithms': 4.0.2(@csstools/css-tokenizer@4.0.2)
       '@csstools/css-tokenizer': 4.0.2
     optional: true
 
@@ -12250,14 +12251,6 @@ snapshots:
       '@csstools/css-parser-algorithms': 4.0.2(@csstools/css-tokenizer@4.0.2)
       '@csstools/css-tokenizer': 4.0.2
 
-  '@csstools/css-color-parser@4.2.4(@csstools/css-parser-algorithms@4.0.1(@csstools/css-tokenizer@4.0.2))(@csstools/css-tokenizer@4.0.2)':
-    dependencies:
-      '@csstools/color-helpers': 6.1.2
-      '@csstools/css-calc': 3.4.1(@csstools/css-parser-algorithms@4.0.1(@csstools/css-tokenizer@4.0.2))(@csstools/css-tokenizer@4.0.2)
-      '@csstools/css-parser-algorithms': 4.0.1(@csstools/css-tokenizer@4.0.2)
-      '@csstools/css-tokenizer': 4.0.2
-    optional: true
-
   '@csstools/css-color-parser@4.2.6(@csstools/css-parser-algorithms@4.0.2(@csstools/css-tokenizer@4.0.2))(@csstools/css-tokenizer@4.0.2)':
     dependencies:
       '@csstools/color-helpers': 6.1.2
@@ -12298,8 +12291,8 @@ snapshots:
 
   '@devframes/agentic@1.1.0(crossws@0.4.12(srvx@0.11.16))(devframe@1.2.0)':
     dependencies:
-      '@modelcontextprotocol/client': 2.1.0
-      '@modelcontextprotocol/server': 2.1.0
+      '@modelcontextprotocol/client': 2.2.0
+      '@modelcontextprotocol/server': 2.2.0
       devframe: 1.2.0(@devframes/agentic@1.1.0)(cac@7.0.0)(srvx@1.0.5)
       h3: 2.0.1-rc.32(crossws@0.4.12(srvx@0.11.16))
       pathe: 2.0.3
@@ -12310,8 +12303,8 @@ snapshots:
 
   '@devframes/agentic@1.1.0(crossws@0.4.12(srvx@0.11.22))(devframe@1.2.0)':
     dependencies:
-      '@modelcontextprotocol/client': 2.1.0
-      '@modelcontextprotocol/server': 2.1.0
+      '@modelcontextprotocol/client': 2.2.0
+      '@modelcontextprotocol/server': 2.2.0
       devframe: 1.2.0(@devframes/agentic@1.1.0)(cac@7.0.0)(srvx@1.0.5)
       h3: 2.0.1-rc.32(crossws@0.4.12(srvx@0.11.22))
       pathe: 2.0.3
@@ -12322,8 +12315,8 @@ snapshots:
 
   '@devframes/agentic@1.1.0(crossws@0.4.12(srvx@1.0.5))(devframe@1.2.0)':
     dependencies:
-      '@modelcontextprotocol/client': 2.1.0
-      '@modelcontextprotocol/server': 2.1.0
+      '@modelcontextprotocol/client': 2.2.0
+      '@modelcontextprotocol/server': 2.2.0
       devframe: 1.2.0(@devframes/agentic@1.1.0)(cac@7.0.0)(srvx@1.0.5)
       h3: 2.0.1-rc.32(crossws@0.4.12(srvx@1.0.5))
       pathe: 2.0.3
@@ -13321,17 +13314,6 @@ snapshots:
     optionalDependencies:
       libphonenumber-js: 1.13.6
 
-  '@modelcontextprotocol/client@2.1.0':
-    dependencies:
-      '@modelcontextprotocol/core': 2.1.0
-      cross-spawn: 7.0.6
-      eventsource: 3.0.7
-      eventsource-parser: 3.1.0
-      jose: 6.2.3
-      pkce-challenge: 5.0.1
-      zod: 4.6.5
-    optional: true
-
   '@modelcontextprotocol/client@2.2.0':
     dependencies:
       '@modelcontextprotocol/core': 2.2.0
@@ -13341,11 +13323,6 @@ snapshots:
       jose: 6.2.3
       pkce-challenge: 5.0.1
       zod: 4.6.5
-
-  '@modelcontextprotocol/core@2.1.0':
-    dependencies:
-      zod: 4.6.5
-    optional: true
 
   '@modelcontextprotocol/core@2.2.0':
     dependencies:
@@ -13426,12 +13403,6 @@ snapshots:
       zod-to-json-schema: 3.25.2(zod@4.6.5)
     transitivePeerDependencies:
       - supports-color
-
-  '@modelcontextprotocol/server@2.1.0':
-    dependencies:
-      '@modelcontextprotocol/core': 2.1.0
-      zod: 4.6.5
-    optional: true
 
   '@modelcontextprotocol/server@2.2.0':
     dependencies:
@@ -15240,6 +15211,13 @@ snapshots:
       '@tailwindcss/oxide': 4.3.3
       tailwindcss: 4.3.3
       vite: 8.3.2(@types/node@26.6.4)(@vitejs/devtools@0.7.6)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.100.0)(terser@5.48.0)(tsx@4.23.15)(yaml@2.9.0)
+
+  '@tanstack/virtual-core@3.17.11': {}
+
+  '@tanstack/vue-virtual@3.13.39(vue@3.5.43(typescript@5.9.3))':
+    dependencies:
+      '@tanstack/virtual-core': 3.17.11
+      vue: 3.5.43(typescript@5.9.3)
 
   '@tsconfig/node10@1.0.12': {}
 
@@ -18452,7 +18430,7 @@ snapshots:
 
   html-encoding-sniffer@6.0.0:
     dependencies:
-      '@exodus/bytes': 1.15.1
+      '@exodus/bytes': 1.16.0
     transitivePeerDependencies:
       - '@noble/hashes'
     optional: true
@@ -18822,8 +18800,8 @@ snapshots:
       '@asamuzakjp/css-color': 5.1.11
       '@asamuzakjp/dom-selector': 7.1.1
       '@bramus/specificity': 2.4.2
-      '@csstools/css-syntax-patches-for-csstree': 1.1.14(css-tree@3.2.1)
-      '@exodus/bytes': 1.15.1
+      '@csstools/css-syntax-patches-for-csstree': 1.1.15(css-tree@3.2.1)
+      '@exodus/bytes': 1.16.0
       css-tree: 3.2.1
       data-urls: 7.0.0
       decimal.js: 10.6.0
@@ -23767,7 +23745,7 @@ snapshots:
 
   whatwg-url@16.0.1:
     dependencies:
-      '@exodus/bytes': 1.15.1
+      '@exodus/bytes': 1.16.0
       tr46: 6.0.0
       webidl-conversions: 8.0.1
     transitivePeerDependencies:

@@ -139,39 +139,39 @@ function setScrollState(event: Event) {
 @reference "../tailwindcss/tailwind.css";
 
 .m-carousel {
-  &__items {
-    @apply maz:scroll-smooth maz:scrollbar-thin maz:scrollbar-thumb-surface-600 maz:scrollbar-track-transparent;
-
-    &::-webkit-scrollbar {
-      inline-size: 0.1875rem;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      @apply maz:bg-surface-600 maz:dark:bg-surface-400;
-
-      border-radius: 1000px;
-    }
-
-    &__spacer {
-      flex: 0 0 1px;
-      inline-size: 1px;
-      block-size: 1px;
-    }
-  }
-
-  &__btn.--muted {
-    @apply maz:text-muted maz:fill-current;
-  }
-
   &.--hide-scrollbar:hover .m-carousel__items,
   &.--hide-scrollbar:focus-within .m-carousel__items,
   &.--hide-scrollbar:active .m-carousel__items,
   &.--hide-scrollbar:focus .m-carousel__items {
     @apply maz:overflow-x-auto;
   }
+}
+
+.m-carousel__btn.--muted {
+  @apply maz:text-muted maz:fill-current;
+}
+
+.m-carousel__items {
+  @apply maz:scroll-smooth maz:scrollbar-thin maz:scrollbar-thumb-surface-600 maz:scrollbar-track-transparent;
+
+  &::-webkit-scrollbar {
+    inline-size: 0.1875rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply maz:bg-surface-600 maz:dark:bg-surface-400;
+
+    border-radius: 1000px;
+  }
+}
+
+.m-carousel__items__spacer {
+  flex: 0 0 1px;
+  inline-size: 1px;
+  block-size: 1px;
 }
 </style>

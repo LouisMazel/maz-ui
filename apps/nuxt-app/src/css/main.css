@@ -1,7 +1,7 @@
 @import 'maz-ui/tailwindcss/tailwind.css';
 
 @source "./../**/*.{vue,ts,css,scss}";
-@source "../../../../packages/lib/src/**/*.{vue,ts,css,scss}  ";
+@source "../../../../packages/lib/src/**/*.{vue,ts,css,scss}";
 
 @layer base {
   *,

@@ -42,39 +42,35 @@ const isCurrentTab = computed(() => currentTab.value - 1 === itemTabNumber.value
 
 /** Tabs Transisiton */
 
-.maz-tab-transition {
-  &-enter-from {
-    transform: translate(100%, 0);
-  }
-
-  &-leave,
-  &-leave-active {
-    position: absolute !important;
-    inset-block-start: 0;
-  }
-
-  &-leave-to {
-    position: absolute !important;
-    transform: translate(-100%, 0);
-  }
+.maz-tab-transition-leave-to {
+  position: absolute !important;
+  transform: translate(-100%, 0);
 }
 
-.maz-tab-reverse-transition {
-  &-enter-from {
-    transform: translate(-100%, 0);
-  }
+.maz-tab-transition-leave,
+.maz-tab-transition-leave-active {
+  position: absolute !important;
+  inset-block-start: 0;
+}
 
-  &-leave,
-  &-leave-active {
-    position: absolute !important;
-    inset-block-start: 0;
-  }
+.maz-tab-transition-enter-from {
+  transform: translate(100%, 0);
+}
 
-  &-leave,
-  &-leave-to {
-    inset-block-start: 0;
-    position: absolute !important;
-    transform: translate(100%, 0);
-  }
+.maz-tab-reverse-transition-leave,
+.maz-tab-reverse-transition-leave-to {
+  inset-block-start: 0;
+  position: absolute !important;
+  transform: translate(100%, 0);
+}
+
+.maz-tab-reverse-transition-leave,
+.maz-tab-reverse-transition-leave-active {
+  position: absolute !important;
+  inset-block-start: 0;
+}
+
+.maz-tab-reverse-transition-enter-from {
+  transform: translate(-100%, 0);
 }
 </style>

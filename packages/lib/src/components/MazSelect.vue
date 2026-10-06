@@ -852,25 +852,8 @@ defineExpose({
     }
   }
 
-  &-input {
-    @apply maz:size-full;
-    @apply maz:cursor-pointer;
-
-    &__toggle-button {
-      @apply maz:flex maz:h-full maz:bg-transparent maz:ps-0 maz:flex-center;
-    }
-
-    &:deep(input) {
-      @apply maz:caret-transparent;
-    }
-  }
-
   &:not(.--disabled):deep(.m-input-input) {
     @apply maz:cursor-pointer;
-  }
-
-  &-chevron {
-    @apply maz:text-[1.2em] maz:text-muted maz:transition-all maz:duration-300 maz:ease-out;
   }
 
   &.--is-open {
@@ -888,69 +871,86 @@ defineExpose({
   }
 }
 
+.m-select-chevron {
+  @apply maz:text-[1.2em] maz:text-muted maz:transition-all maz:duration-300 maz:ease-out;
+}
+
+.m-select-input {
+  @apply maz:size-full;
+  @apply maz:cursor-pointer;
+
+  &:deep(input) {
+    @apply maz:caret-transparent;
+  }
+}
+
+.m-select-input__toggle-button {
+  @apply maz:flex maz:h-full maz:bg-transparent maz:ps-0 maz:flex-center;
+}
+
 .m-select-list {
   @apply maz:z-default-backdrop maz:flex maz:flex-col maz:gap-1 maz:overflow-hidden maz:rounded-md maz:bg-container maz:drop-shadow-md maz:shadow-elevation;
 
-  &-optgroup {
-    @apply maz:flex-none maz:p-0.5 maz:text-start maz:text-[0.875em] maz:text-muted;
-  }
-
   min-inline-size: 3.5rem;
+}
 
-  &__search-wrapper {
-    @apply maz:px-2 maz:pt-2;
+.m-select-list-item {
+  @apply maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-3 maz:truncate maz:rounded-md maz:bg-transparent maz:px-3 maz:py-2 maz:text-start maz:transition-colors maz:duration-300 maz:ease-in-out maz:focus-within:bg-surface-600 maz:dark:focus-within:bg-surface-400 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:outline-hidden maz:border maz:border-solid maz:border-transparent;
+
+  span {
+    @apply maz:truncate;
   }
 
-  &__scroll-wrapper {
-    @apply maz:flex maz:flex-1 maz:flex-col maz:gap-1 maz:overflow-auto maz:p-2;
-
-    /* Custom scrollbar for webkit browsers (Chrome, Safari, Edge) */
-    &::-webkit-scrollbar {
-      inline-size: 0.1875rem;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      @apply maz:bg-surface-600 maz:dark:bg-surface-400;
-
-      border-radius: 1000px;
-    }
-
-    /* Modern CSS for all browsers (fallback) */
-    @apply maz:scrollbar-thin maz:scrollbar-track-transparent maz:scrollbar-thumb-surface-600;
+  &.--is-none-value {
+    @apply maz:text-muted;
   }
 
-  &__no-results {
-    @apply maz:flex maz:p-4 maz:flex-center;
-  }
+  &.--is-selected {
+    color: var(--selected-text-color);
+    background-color: var(--selected-bg-color);
 
-  &-item {
-    @apply maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-3 maz:truncate maz:rounded-md maz:bg-transparent maz:px-3 maz:py-2 maz:text-start maz:transition-colors maz:duration-300 maz:ease-in-out maz:focus-within:bg-surface-600 maz:dark:focus-within:bg-surface-400 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:outline-hidden maz:border maz:border-solid maz:border-transparent;
-
-    span {
-      @apply maz:truncate;
+    &:focus-within {
+      outline: var(--selected-text-color) solid var(--maz-border-width);
+      outline-offset: 2px;
     }
 
-    &.--is-none-value {
-      @apply maz:text-muted;
-    }
-
-    &.--is-selected {
-      color: var(--selected-text-color);
-      background-color: var(--selected-bg-color);
-
-      &:focus-within {
-        outline: var(--selected-text-color) solid var(--maz-border-width);
-        outline-offset: 2px;
-      }
-
-      &.--transparent {
-        @apply maz:bg-surface;
-      }
+    &.--transparent {
+      @apply maz:bg-surface;
     }
   }
+}
+
+.m-select-list__no-results {
+  @apply maz:flex maz:p-4 maz:flex-center;
+}
+
+.m-select-list__scroll-wrapper {
+  @apply maz:flex maz:flex-1 maz:flex-col maz:gap-1 maz:overflow-auto maz:p-2;
+
+  /* Custom scrollbar for webkit browsers (Chrome, Safari, Edge) */
+  &::-webkit-scrollbar {
+    inline-size: 0.1875rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply maz:bg-surface-600 maz:dark:bg-surface-400;
+
+    border-radius: 1000px;
+  }
+
+  /* Modern CSS for all browsers (fallback) */
+  @apply maz:scrollbar-thin maz:scrollbar-track-transparent maz:scrollbar-thumb-surface-600;
+}
+
+.m-select-list__search-wrapper {
+  @apply maz:px-2 maz:pt-2;
+}
+
+.m-select-list-optgroup {
+  @apply maz:flex-none maz:p-0.5 maz:text-start maz:text-[0.875em] maz:text-muted;
 }
 </style>

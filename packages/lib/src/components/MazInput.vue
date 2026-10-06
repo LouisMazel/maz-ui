@@ -583,44 +583,6 @@ const ROUNDED_CLASS = {
    * (mirrors SCALE_OFFSETS step -100). */
   --maz-input-color: oklch(from var(--m-input-tint-bg) clamp(0, calc(l + 0.32), 1) calc(c * 0.35) h); /* ↔ scale -100 */
 
-  &-wrapper-input {
-    &.--xl {
-      block-size: calc(4rem - (var(--maz-border-width) * 2));
-    }
-
-    &.--lg {
-      block-size: calc(3.5rem - (var(--maz-border-width) * 2));
-    }
-
-    &.--md {
-      block-size: calc(3rem - (var(--maz-border-width) * 2));
-    }
-
-    &.--sm {
-      block-size: calc(2.5rem - (var(--maz-border-width) * 2));
-    }
-
-    &.--xs {
-      block-size: calc(2rem - (var(--maz-border-width) * 2));
-    }
-
-    &.--mini {
-      block-size: calc(1.5rem - (var(--maz-border-width) * 2));
-    }
-  }
-
-  &-input {
-    transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-
-    &::placeholder {
-      @apply maz:text-muted;
-    }
-  }
-
-  &-label {
-    transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-  }
-
   &.--always-up .m-input-label,
   &.--has-placeholder .m-input-label,
   & .m-input-input:not(:placeholder-shown) ~ .m-input-label,
@@ -706,6 +668,44 @@ const ROUNDED_CLASS = {
   &.--contrast .m-input-wrapper:focus-within,
   &.--contrast.--border-active .m-input-wrapper {
     @apply maz:border-contrast;
+  }
+}
+
+.m-input-label {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+}
+
+.m-input-input {
+  transition: padding 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+
+  &::placeholder {
+    @apply maz:text-muted;
+  }
+}
+
+.m-input-wrapper-input {
+  &.--xl {
+    block-size: calc(4rem - (var(--maz-border-width) * 2));
+  }
+
+  &.--lg {
+    block-size: calc(3.5rem - (var(--maz-border-width) * 2));
+  }
+
+  &.--md {
+    block-size: calc(3rem - (var(--maz-border-width) * 2));
+  }
+
+  &.--sm {
+    block-size: calc(2.5rem - (var(--maz-border-width) * 2));
+  }
+
+  &.--xs {
+    block-size: calc(2rem - (var(--maz-border-width) * 2));
+  }
+
+  &.--mini {
+    block-size: calc(1.5rem - (var(--maz-border-width) * 2));
   }
 }
 </style>

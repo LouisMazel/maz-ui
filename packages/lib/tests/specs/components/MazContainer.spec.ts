@@ -25,7 +25,6 @@ describe('components/MazContainer.vue', () => {
   it('applies correct styles based on props', () => {
     const wrapper = shallowMount(MazContainer, {
       props: {
-        rounded: true,
         bordered: true,
         elevation: true,
         padding: true,
@@ -33,10 +32,10 @@ describe('components/MazContainer.vue', () => {
       },
     })
 
-    expect(wrapper.classes()).toContain('--elevation')
-    expect(wrapper.classes()).toContain('--padding')
-    expect(wrapper.classes()).toContain('--bordered')
+    expect(wrapper.classes()).toContain('maz:shadow-elevation')
+    expect(wrapper.classes()).toContain('maz:border')
     expect(wrapper.classes()).toContain('--rounded-full')
+    expect(wrapper.find('.m-container__content').classes()).toContain('maz:px-4')
   })
 
   it('forwards a full MazIconProps object on startIcon and endIcon', async () => {

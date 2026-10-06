@@ -329,50 +329,48 @@ watch(
 <style scoped>
 @reference "../../../tailwindcss/tailwind.css";
 
-.maz-picker-calendar-grid {
-  &__container {
-    &.--is-range {
-      button {
-        @apply maz:w-full;
+.maz-picker-calendar-grid__container {
+  &.--is-range {
+    button {
+      @apply maz:w-full;
+    }
+  }
+
+  & button {
+    &:hover:not(.--is-selected, .--is-between, .--is-between-hoverred) {
+      background-color: v-bind('hoverColor');
+    }
+
+    &.--is-first {
+      @apply maz:rounded-r-none!;
+    }
+
+    &.--is-last-hoverred,
+    &.--is-last {
+      @apply maz:rounded-l-none!;
+    }
+
+    &.--is-between-hoverred {
+      @apply maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-none!;
+    }
+
+    &.--is-between {
+      @apply maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-none! maz:text-foreground;
+
+      &:hover {
+        color: v-bind('hoverTextColor');
+      }
+
+      &.--transparent {
+        @apply maz:bg-gray-400!;
       }
     }
 
-    & button {
-      &:hover:not(.--is-selected, .--is-between, .--is-between-hoverred) {
-        background-color: v-bind('hoverColor');
-      }
+    &:disabled {
+      @apply maz:disabled-cursor maz:border-transparent;
 
-      &.--is-first {
-        @apply maz:rounded-r-none!;
-      }
-
-      &.--is-last-hoverred,
-      &.--is-last {
-        @apply maz:rounded-l-none!;
-      }
-
-      &.--is-between-hoverred {
-        @apply maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-none!;
-      }
-
-      &.--is-between {
-        @apply maz:bg-surface-600 maz:dark:bg-surface-400 maz:rounded-none! maz:text-foreground;
-
-        &:hover {
-          color: v-bind('hoverTextColor');
-        }
-
-        &.--transparent {
-          @apply maz:bg-gray-400!;
-        }
-      }
-
-      &:disabled {
-        @apply maz:disabled-cursor maz:border-transparent;
-
-        &.--is-selected {
-          @apply maz:bg-surface-600! maz:dark:bg-surface-400 maz:text-muted!;
-        }
+      &.--is-selected {
+        @apply maz:bg-surface-600! maz:dark:bg-surface-400 maz:text-muted!;
       }
     }
   }
