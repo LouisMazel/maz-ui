@@ -376,10 +376,6 @@ const stateLabelColor = computed(() => [
     padding-block-start: calc(var(--mt-line-height, 1.5rem) * 0.6);
   }
 
-  &__append {
-    justify-content: var(--append-justify);
-  }
-
   textarea {
     @apply maz:w-full maz:outline-hidden maz:bg-transparent;
 
@@ -398,20 +394,6 @@ const stateLabelColor = computed(() => [
 
     & > label {
       @apply maz:text-gray-300 maz:dark:text-gray-600;
-    }
-  }
-
-  &__label {
-    @apply maz:pointer-events-none maz:absolute maz:block maz:w-max maz:origin-top-left maz:truncate;
-    @apply maz:flex maz:flex-center;
-
-    inset-inline-start: var(--mt-padding-inline, 1rem);
-    inset-block-start: var(--mt-padding-block);
-    line-height: var(--mt-line-height, 1.5rem);
-    transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-
-    &:not(.--has-state) {
-      @apply maz:text-muted;
     }
   }
 
@@ -463,5 +445,23 @@ const stateLabelColor = computed(() => [
   &:not(.--autogrow) textarea {
     @apply maz:resize-y;
   }
+}
+
+.m-textarea__label {
+  @apply maz:pointer-events-none maz:absolute maz:block maz:w-max maz:origin-top-left maz:truncate;
+  @apply maz:flex maz:flex-center;
+
+  inset-inline-start: var(--mt-padding-inline, 1rem);
+  inset-block-start: var(--mt-padding-block);
+  line-height: var(--mt-line-height, 1.5rem);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+
+  &:not(.--has-state) {
+    @apply maz:text-muted;
+  }
+}
+
+.m-textarea__append {
+  justify-content: var(--append-justify);
 }
 </style>

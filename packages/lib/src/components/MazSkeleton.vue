@@ -118,10 +118,10 @@ const customStyles = computed(() => {
 <style scoped>
 .m-skeleton {
   background-size: 400% 100%;
+}
 
-  &--animated {
-    animation: m-skeleton-shimmer 5s linear infinite;
-  }
+.m-skeleton--animated {
+  animation: m-skeleton-shimmer 5s linear infinite;
 }
 
 @keyframes m-skeleton-shimmer {

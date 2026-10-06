@@ -228,99 +228,97 @@ function shouldHaveRemainingLayer(index: number): boolean {
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
 
-.m-gallery {
-  &__item {
-    @apply maz:absolute maz:top-0 maz:m-0 maz:h-1/2 maz:w-full maz:overflow-hidden maz:border-s-2 maz:p-0;
+.m-gallery__remaining-layer {
+  position: absolute;
+  inset: 0;
+}
 
-    border-color: var(--gallery-separator-color);
+.m-gallery__item {
+  @apply maz:absolute maz:top-0 maz:m-0 maz:h-1/2 maz:w-full maz:overflow-hidden maz:border-s-2 maz:p-0;
 
-    &--1 {
-      inset-inline-start: 0;
-      block-size: 100%;
+  border-color: var(--gallery-separator-color);
 
-      &:not(:last-child) {
-        inline-size: 50%;
-      }
-    }
+  &:first-child {
+    border-inline-start: 0;
+  }
+}
 
-    &--2 {
-      inset-inline-start: 50%;
-      inline-size: 50%;
-      block-size: 50%;
+.m-gallery__item__image {
+  block-size: 100%;
+  max-inline-size: 100%;
+  inline-size: 100%;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 
-      &:last-child {
-        block-size: 100%;
-      }
+.m-gallery__item--3:last-child,
+.m-gallery__item--3:nth-last-child(2),
+.m-gallery__item--4:last-child,
+.m-gallery__item--5 {
+  @apply maz:border-t-2;
 
-      &:nth-last-child(4) {
-        inline-size: 25%;
-      }
-    }
+  border-color: var(--gallery-separator-color);
+}
 
-    &--3 {
-      inset-block-start: 50%;
-      inset-inline-start: 50%;
-      inline-size: 25%;
+.m-gallery__item--5 {
+  @apply maz:border-t-2;
 
-      &:last-child {
-        inline-size: 50%;
-      }
+  border-color: var(--gallery-separator-color);
+  inset-block-start: 50%;
+  inset-inline-start: 75%;
+  inline-size: 25%;
+}
 
-      &:nth-last-child(3) {
-        inset-block-start: 0;
-        inset-inline-start: 75%;
-      }
-    }
+.m-gallery__item--4 {
+  @apply maz:border-t-2;
 
-    &--4 {
-      @apply maz:border-t-2;
+  border-color: var(--gallery-separator-color);
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  inline-size: 25%;
 
-      border-color: var(--gallery-separator-color);
-      inset-block-start: 50%;
-      inset-inline-start: 50%;
-      inline-size: 25%;
+  &:last-child {
+    inset-inline-start: 75%;
+    inline-size: 25%;
+  }
+}
 
-      &:last-child {
-        inset-inline-start: 75%;
-        inline-size: 25%;
-      }
-    }
+.m-gallery__item--3 {
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  inline-size: 25%;
 
-    &--5 {
-      @apply maz:border-t-2;
-
-      border-color: var(--gallery-separator-color);
-      inset-block-start: 50%;
-      inset-inline-start: 75%;
-      inline-size: 25%;
-    }
-
-    &:first-child {
-      border-inline-start: 0;
-    }
-
-    &--3:last-child,
-    &--3:nth-last-child(2),
-    &--4:last-child,
-    &--5 {
-      @apply maz:border-t-2;
-
-      border-color: var(--gallery-separator-color);
-    }
-
-    &__image {
-      block-size: 100%;
-      max-inline-size: 100%;
-      inline-size: 100%;
-      background-position: center center;
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
+  &:last-child {
+    inline-size: 50%;
   }
 
-  &__remaining-layer {
-    position: absolute;
-    inset: 0;
+  &:nth-last-child(3) {
+    inset-block-start: 0;
+    inset-inline-start: 75%;
+  }
+}
+
+.m-gallery__item--2 {
+  inset-inline-start: 50%;
+  inline-size: 50%;
+  block-size: 50%;
+
+  &:last-child {
+    block-size: 100%;
+  }
+
+  &:nth-last-child(4) {
+    inline-size: 25%;
+  }
+}
+
+.m-gallery__item--1 {
+  inset-inline-start: 0;
+  block-size: 100%;
+
+  &:not(:last-child) {
+    inline-size: 50%;
   }
 }
 </style>

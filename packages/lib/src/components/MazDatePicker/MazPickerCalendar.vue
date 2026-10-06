@@ -119,16 +119,14 @@ const calendarDate = computed({
 <style scoped>
 @reference "../../tailwindcss/tailwind.css";
 
-.maz-picker-calendar {
-  &__main {
-    inline-size: 16rem;
+.maz-picker-calendar__main {
+  inline-size: 16rem;
 
-    &.--has-double {
-      inline-size: 34rem;
+  &.--has-double {
+    inline-size: 34rem;
 
-      & .maz-picker-calendar__months > :first-child {
-        @apply maz:border-e maz:border-divider;
-      }
+    & .maz-picker-calendar__months > :first-child {
+      @apply maz:border-e maz:border-divider;
     }
   }
 }

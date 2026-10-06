@@ -366,52 +366,52 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
 .m-slider {
   padding-block: 1em;
   padding-inline: 1.5rem;
+}
 
-  &__bar {
-    block-size: 0.5em;
-    background-color: var(--m-slider-color);
+.m-slider__btn {
+  position: absolute;
+  outline: none;
+  cursor: pointer;
+  font-size: 0.8em;
+  font-weight: bold;
+  line-height: 1;
+  transition:
+    box-shadow 300ms ease-in-out,
+    inline-size 300ms ease-in-out,
+    transform 300ms ease-in-out,
+    background-color 300ms ease-in-out;
+  z-index: 1;
+  user-select: none;
+  padding-block: 0.25em;
+  padding-inline: 0.5em;
+
+  & span {
+    margin-inline: 0.25em;
   }
 
-  &__divider {
-    position: absolute;
-    border-radius: 2em;
-    block-size: 100%;
+  &.active-cursor {
+    transform: scale(1.3);
+    border-color: var(--m-slider-color);
   }
 
-  &__btn {
+  &::before {
+    content: attr(data-label);
     position: absolute;
-    outline: none;
-    cursor: pointer;
+    inset-block-start: -1.5em;
     font-size: 0.8em;
-    font-weight: bold;
-    line-height: 1;
-    transition:
-      box-shadow 300ms ease-in-out,
-      inline-size 300ms ease-in-out,
-      transform 300ms ease-in-out,
-      background-color 300ms ease-in-out;
-    z-index: 1;
-    user-select: none;
-    padding-block: 0.25em;
-    padding-inline: 0.5em;
-
-    & span {
-      margin-inline: 0.25em;
-    }
-
-    &.active-cursor {
-      transform: scale(1.3);
-      border-color: var(--m-slider-color);
-    }
-
-    &::before {
-      content: attr(data-label);
-      position: absolute;
-      inset-block-start: -1.5em;
-      font-size: 0.8em;
-      font-weight: 500;
-      color: var(--maz-foreground);
-    }
+    font-weight: 500;
+    color: var(--maz-foreground);
   }
+}
+
+.m-slider__divider {
+  position: absolute;
+  border-radius: 2em;
+  block-size: 100%;
+}
+
+.m-slider__bar {
+  block-size: 0.5em;
+  background-color: var(--m-slider-color);
 }
 </style>

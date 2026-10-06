@@ -371,27 +371,25 @@ const flagUrl = computed(() => {
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
 
-.m-select-country {
-  &__country-flag {
-    position: absolute;
-    inset-inline-start: 0.813rem;
-    z-index: 4;
-    outline: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    inset-block-start: 1.25rem;
-    cursor: pointer;
+.m-select-country__select:deep(.m-input-label) {
+  @apply maz:p-0!;
+}
 
-    @apply maz:flex maz:flex-center;
+.m-select-country__country-flag {
+  position: absolute;
+  inset-inline-start: 0.813rem;
+  z-index: 4;
+  outline: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  inset-block-start: 1.25rem;
+  cursor: pointer;
 
-    &.--should-have-bottom-flag {
-      inset-block-end: 2px;
-    }
-  }
+  @apply maz:flex maz:flex-center;
 
-  &__select:deep(.m-input-label) {
-    @apply maz:p-0!;
+  &.--should-have-bottom-flag {
+    inset-block-end: 2px;
   }
 }
 </style>

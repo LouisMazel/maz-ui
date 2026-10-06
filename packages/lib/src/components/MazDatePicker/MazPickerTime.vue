@@ -335,18 +335,18 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
 
     @apply maz:absolute maz:left-0 maz:inset-e-0 maz:top-1/2 maz:mx-auto maz:h-9 maz:border-b maz:border-t maz:border-divider;
   }
+}
 
-  &__column {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+.m-date-picker-time__column {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    &__items > button {
-      @apply maz:z-2 maz:flex-none;
-    }
+  &::-webkit-scrollbar {
+    display: none;
   }
+}
+
+.m-date-picker-time__column__items > button {
+  @apply maz:z-2 maz:flex-none;
 }
 </style>

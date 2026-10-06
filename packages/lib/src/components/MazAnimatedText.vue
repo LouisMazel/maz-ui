@@ -222,28 +222,26 @@ const gradientStyle = computed(() => {
 </template>
 
 <style scoped>
-.m-animated-text {
-  &__word-inner,
-  &__last-word {
-    will-change: transform, opacity, filter;
-    transform: translateZ(0);
-  }
+:where(.dark, [data-theme='dark']) .m-animated-text__last-word-inner::before {
+  opacity: 0.5;
+}
 
-  &__last-word-inner::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    inline-size: 100%;
-    block-size: 100%;
-    z-index: 0;
-    opacity: 0.4;
-    background-image: var(--maz-gradient-style);
-    filter: blur(16px);
-  }
+.m-animated-text__last-word-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  z-index: 0;
+  opacity: 0.4;
+  background-image: var(--maz-gradient-style);
+  filter: blur(16px);
+}
 
-  :where(.dark, [data-theme='dark']) &__last-word-inner::before {
-    opacity: 0.5;
-  }
+.m-animated-text__word-inner,
+.m-animated-text__last-word {
+  will-change: transform, opacity, filter;
+  transform: translateZ(0);
 }
 
 @keyframes slide-up-blur {

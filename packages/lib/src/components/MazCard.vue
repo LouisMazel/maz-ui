@@ -280,30 +280,28 @@ function toggleCollapse() {
 <style scoped>
 @reference "../tailwindcss/tailwind.css";
 
-.m-card {
-  &__collapse-icon.--is-open {
-    transform: rotate(180deg);
+.m-card__actions > *:not(:last-child) {
+  @apply maz:me-2;
+}
+
+.m-card__title > *,
+.m-card__subtitle > * {
+  color: inherit;
+  font-size: inherit;
+}
+
+.m-card--linked {
+  transition: all 300ms ease-in-out;
+  transform: scale(1);
+
+  &:hover:not(.m-card--no-scale) {
+    @apply maz:z-1;
+
+    transform: scale(1.02);
   }
+}
 
-  &--linked {
-    transition: all 300ms ease-in-out;
-    transform: scale(1);
-
-    &:hover:not(.m-card--no-scale) {
-      @apply maz:z-1;
-
-      transform: scale(1.02);
-    }
-  }
-
-  &__title > *,
-  &__subtitle > * {
-    color: inherit;
-    font-size: inherit;
-  }
-
-  &__actions > *:not(:last-child) {
-    @apply maz:me-2;
-  }
+.m-card__collapse-icon.--is-open {
+  transform: rotate(180deg);
 }
 </style>

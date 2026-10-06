@@ -338,10 +338,6 @@ html.--backdrop-present.--has-scrollbar {
 .m-backdrop {
   transition-behavior: allow-discrete;
 
-  &-content > * {
-    @apply maz:cursor-default;
-  }
-
   /*
 * Animations
 */
@@ -455,6 +451,10 @@ html.--backdrop-present.--has-scrollbar {
       transform: translateX(100%);
     }
   }
+}
+
+.m-backdrop-content > * {
+  @apply maz:cursor-default;
 }
 
 [dir='rtl'] .m-backdrop {
