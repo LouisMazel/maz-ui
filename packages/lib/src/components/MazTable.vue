@@ -1135,8 +1135,18 @@ onBeforeMount(() => {
 }
 
 .m-table-wrapper.--virtualized {
+  /* With `border-collapse: collapse` the thead bottom border belongs to the
+     collapsed grid, not the sticky cells, so it scrolls away. Drop it and redraw
+     the divider as an inset shadow on the sticky th, which follows the header
+     (and avoids a double line at the top). */
+  thead {
+    @apply maz:border-b-0;
+  }
+
   thead th {
     @apply maz:sticky maz:top-0 maz:z-1 maz:bg-container;
+
+    box-shadow: inset 0 calc(-1 * var(--maz-border-width, 1px)) 0 var(--maz-color-divider, var(--maz-divider));
   }
 }
 

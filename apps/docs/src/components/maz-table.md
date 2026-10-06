@@ -157,7 +157,7 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
   </template>
   <template #cell-name="{ row, value }">
     <div class="maz:flex maz:items-center maz:gap-2">
-      <MazAvatar :src="row.logoUrl" size="0.5rem"></MazAvatar>
+      <MazAvatar :src="row.logoUrl" size="mini"></MazAvatar>
       <span>{{value}}</span>
     </div>
   </template>
