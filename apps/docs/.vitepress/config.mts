@@ -5,13 +5,12 @@ import { dirname, join } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
+import { VitePreNestedCss } from '@maz-ui/vite-config'
 import tailwindcss from '@tailwindcss/vite'
-import postcssNested from 'postcss-nested'
 import postcssUrl from 'postcss-url'
 import svgLoader from 'vite-svg-loader'
 import { defineConfig, postcssIsolateStyles } from 'vitepress'
 import { head, nav, sidebar } from './configs/index.mjs'
-
 import { getOgImage } from './og-image.tsx'
 
 // VitePress sets NODE_ENV=development for `vitepress dev` and =production
@@ -138,6 +137,7 @@ export default defineConfig<DefaultTheme.Config>({
       noExternal: ['dayjs'],
     },
     plugins: [
+      ...(isDev ? [VitePreNestedCss()] : []),
       tailwindcss(),
       svgLoader(),
       {
@@ -202,11 +202,6 @@ export default defineConfig<DefaultTheme.Config>({
       postcss: {
         plugins: [
           postcssUrl() as Plugin,
-          // Flatten postcss-nested `&-child` syntax in dev only — it ships
-          // in raw maz-ui SFCs loaded via the `monorepo:dev` resolve
-          // condition. Prod consumes the already-flattened dist, so it's
-          // a no-op there.
-          ...(isDev ? [postcssNested() as Plugin] : []),
           postcssIsolateStyles({
             includeFiles: [/vp-doc\.css/],
           }),
