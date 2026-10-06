@@ -1,9 +1,9 @@
 // @ts-check
 
-import { createRequire } from 'node:module';
+import { createRequire } from 'node:module'
 
-const require = createRequire(import.meta.url);
-const rootPkg = require('../../../package.json');
+const require = createRequire(import.meta.url)
+const rootPkg = require('../../../package.json')
 
 /**
  * @param {{
@@ -34,7 +34,7 @@ export function getExternalDependencies(pkg, options) {
     included: [],
     excluded: [],
     ...options,
-  };
+  }
   return (id) => {
     const externals = Object.keys({
       ...(finalOptions.rootDevDependencies && 'devDependencies' in rootPkg ? rootPkg.devDependencies ?? {} : {}),
@@ -43,16 +43,14 @@ export function getExternalDependencies(pkg, options) {
       ...(finalOptions.devDependencies && 'devDependencies' in pkg ? pkg.devDependencies ?? {} : {}),
       ...(finalOptions.peerDependencies && 'peerDependencies' in pkg ? pkg.peerDependencies ?? {} : {}),
       ...(finalOptions.dependencies && 'dependencies' in pkg ? pkg.dependencies ?? {} : {}),
-    });
+    })
 
-    externals.push(...finalOptions.excluded);
-    const finalExternals = externals.filter(ext => !finalOptions.included.includes(ext));
-
-    const isExternal = finalExternals.some((ext) => {
-      return (id === ext || id.startsWith(`${ext}/`)) && !finalOptions.included.includes(id);
-    });
+    externals.push(...finalOptions.excluded)
+    const finalExternals = externals.filter(ext => !finalOptions.included.includes(ext))
 
     // Match exact package name or any sub-import (e.g., @accor/ads-theme/presets/*)
-    return isExternal;
-  };
+    return finalExternals.some((ext) => {
+      return (id === ext || id.startsWith(`${ext}/`)) && !finalOptions.included.includes(id)
+    })
+  }
 }
