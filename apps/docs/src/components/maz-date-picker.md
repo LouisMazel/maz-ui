@@ -16,6 +16,7 @@ description: A powerful and flexible date picker component with support for sing
 - [Basic Usage](#basic-usage)
 - [Date Formats](#date-formats)
 - [Date Selection](#date-selection)
+- [Custom Trigger](#custom-trigger)
 - [Time Selection](#time-selection)
 - [Range Selection](#range-selection)
 - [Internationalization](#internationalization)
@@ -272,6 +273,58 @@ const date = ref()
 
   </template>
 </ComponentDemo>
+
+## Custom Trigger
+
+By default MazDatePicker renders a readonly `MazInput` as the field that opens the calendar. Use the `#trigger` slot to replace it with your own element - a button, a custom input, an icon... Clicking the slotted element opens the calendar automatically (no `@click` needed), and the slot exposes the current open state plus functions for programmatic control.
+
+### Slot bindings
+
+| Binding | Type | Description |
+| --- | --- | --- |
+| `is-open` | `boolean` | Whether the calendar is currently open |
+| `open` | `() => void` | Open the calendar programmatically |
+| `close` | `() => void` | Close the calendar programmatically |
+| `toggle` | `() => void` | Toggle the calendar programmatically |
+
+<ComponentDemo>
+  <MazDatePicker v-model="triggerDate" auto-close hide-header>
+    <template #trigger="{ isOpen }">
+      <MazBtn color="secondary" :class="{ 'maz:ring-2 maz:ring-offset-2 maz:ring-secondary': isOpen }">
+        {{ triggerDate || 'Pick a date' }}
+      </MazBtn>
+    </template>
+  </MazDatePicker>
+
+<template #code>
+
+```vue
+<template>
+  <MazDatePicker v-model="date" auto-close>
+    <!-- Clicking the button opens the picker automatically. -->
+    <template #trigger="{ isOpen }">
+      <MazBtn color="secondary" :class="{ 'maz:ring-2 maz:ring-secondary': isOpen }">
+        {{ date || 'Pick a date' }}
+      </MazBtn>
+    </template>
+  </MazDatePicker>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+
+const date = ref()
+</script>
+```
+
+</template>
+</ComponentDemo>
+
+::: tip
+The model value is not passed through the slot - use your own `v-model` ref (here `date`) to display the selected value in your custom trigger. The exposed `open` / `close` / `toggle` functions are only needed when you want to drive the picker from your own logic.
+:::
+
+> In `inline` mode the calendar is always visible, so the `trigger` slot is not rendered. To open the picker from an element rendered outside the component, use the `custom-element-selector` prop instead.
 
 ## Time Selection
 
@@ -1021,6 +1074,7 @@ const formatExample2 = ref('03/15/2024')
 const formatExample3 = ref('15-03-2024')
 const transformedDate = ref()
 const newDateValue = ref()
+const triggerDate = ref()
 // Date selection
 const dateSelection = ref()
 const inlineDate = ref()
