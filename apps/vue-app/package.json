@@ -22,6 +22,7 @@
     "@maz-ui/stylelint-config": "workspace:*",
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
+    "@maz-ui/vite-config": "workspace:*",
     "@tailwindcss/vite": "^4.3.3",
     "@tsconfig/node22": "^22.0.6",
     "@vue/tsconfig": "^0.9.1",

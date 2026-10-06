@@ -1,11 +1,11 @@
 import { fileURLToPath, URL } from 'node:url'
 import { MazIconsResolver } from '@maz-ui/icons/resolvers'
+import { VitePreNestedCss } from '@maz-ui/vite-config'
 import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import { MazComponentsResolver } from 'maz-ui/resolvers/MazComponentsResolver'
 import { MazDirectivesResolver } from 'maz-ui/resolvers/MazDirectivesResolver'
 import { MazModulesResolver } from 'maz-ui/resolvers/MazModulesResolver'
-import postcssNested from 'postcss-nested'
 import { visualizer } from 'rollup-plugin-visualizer'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => {
       host: true,
     },
     plugins: [
+      VitePreNestedCss(),
       vue(),
       tailwindcss(),
       vueDevTools(),
@@ -33,7 +34,6 @@ export default defineConfig(({ mode }) => {
         include: ['lib/src/**/*.vue', 'lib/src/**/*.ts'],
         exclude: ['node_modules', 'dist'],
         insertTypesEntry: true,
-        logLevel: 'error',
       }),
       Components({
         dts: true,
@@ -60,13 +60,6 @@ export default defineConfig(({ mode }) => {
       conditions: isDev
         ? ['monorepo:dev', 'import', 'browser', 'module', 'default']
         : ['import', 'browser', 'module', 'default'],
-    },
-    css: {
-      postcss: {
-        // In dev only: flatten postcss-nested `&-child` syntax that ships in
-        // raw maz-ui SFCs loaded via the `monorepo:dev` resolve condition.
-        plugins: isDev ? [postcssNested()] : [],
-      },
     },
     build: {
       rolldownOptions: {
