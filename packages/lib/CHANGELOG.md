@@ -1,5 +1,27 @@
 # Change Log
 
+## v5.0.0-beta.48 (2026-10-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.47...v5.0.0-beta.48)
+
+### 🚀 Features
+
+- **maz-ui:** Support any Standard Schema library in useFormValidator ([a5586aaa](https://github.com/LouisMazel/maz-ui/commit/a5586aaa))
+
+  useFormValidator and useFormField now validate fields through the Standard
+  Schema interface instead of Valibot APIs, so Valibot, Zod, ArkType or any
+  custom validator can be used, and mixed in the same schema.
+  - valibot is no longer a runtime dependency of maz-ui
+  - valibot, zod and arktype are declared as optional peer dependencies
+  - input and output type inference keeps the exact Valibot behavior
+    (optional, nullish, exactOptional, defaults and readonly keys)
+  - field schemas are unwrapped with toRaw before validation to support
+    schemas with non-configurable properties like Zod
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.47 (2026-10-06)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.46...v5.0.0-beta.47)
