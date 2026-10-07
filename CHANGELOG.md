@@ -1,5 +1,49 @@
 # Change Log
 
+## v5.0.0-beta.47 (2026-10-06)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.46...v5.0.0-beta.47)
+
+### 🚀 Features
+
+- **@maz-ui/vite-config:** Add VitePreNestedCss plugin ([0c7288da](https://github.com/LouisMazel/maz-ui/commit/0c7288da))
+
+  Flattens postcss-nested `&-child` concatenation in SFC `<style>` blocks before `@tailwindcss/vite` runs, so consumers loading maz-ui raw sources (via the `monorepo:dev` condition) get valid native CSS nesting that lightningcss accepts.
+
+- **maz-ui:** Add row virtualization to MazTable ([3ab13744](https://github.com/LouisMazel/maz-ui/commit/3ab13744))
+
+  Enable `virtualized` to render only the rows inside the viewport (plus an overscan) instead of every row, keeping the table fast with thousands of rows.
+
+  ```vue
+  <MazTable virtualized max-height="400px" :estimated-row-height="38" :headers="headers" :rows="rows" />
+  ```
+
+  `max-height` is required to bound the scroll viewport. It only applies to `rows` mode and is ignored when `animated-rows` is enabled or a custom default slot is provided. `@tanstack/vue-virtual` is loaded on demand, so pages that never virtualize a table never ship it.
+
+### 💅 Refactors
+
+- **maz-ui:** Source VitePreNestedCss from @maz-ui/vite-config ([54bdaf32](https://github.com/LouisMazel/maz-ui/commit/54bdaf32))
+- **maz-ui:** Use standard CSS nesting instead of postcss-nested concatenation ([42528062](https://github.com/LouisMazel/maz-ui/commit/42528062))
+- **maz-ui:** Drop unused marker classes from MazContainer ([e61fb4f1](https://github.com/LouisMazel/maz-ui/commit/e61fb4f1))
+- **maz-ui:** Drop unused marker classes from MazContainer ([bd5b44a8](https://github.com/LouisMazel/maz-ui/commit/bd5b44a8))
+
+### 📖 Documentation
+
+- **docs:** Document MazDatePicker trigger slot ([27105476](https://github.com/LouisMazel/maz-ui/commit/27105476))
+- **docs:** Document MazTable virtualization ([e2dc9cc0](https://github.com/LouisMazel/maz-ui/commit/e2dc9cc0))
+
+### 📦 Build
+
+- **deps:** Upgrade dependencies ([a47a6aeb](https://github.com/LouisMazel/maz-ui/commit/a47a6aeb))
+
+### 🧪 Tests
+
+- **maz-ui:** Update coverage treesholds ([70aa9559](https://github.com/LouisMazel/maz-ui/commit/70aa9559))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.46 (2026-10-05)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.45...v5.0.0-beta.46)
