@@ -465,7 +465,7 @@ description: Build amazing interfaces with Maz-UI - standalone components & tool
       </div>
       <h3 class="maz:text-base maz:font-semibold">useFormValidator</h3>
       <p class="maz:dark:text-gray-300 maz:text-muted maz:text-sm">
-        A Vue composable designed to simplify form validation using Valibot as the validation library. Offers a flexible and typed approach to handle form validation.
+        A Vue composable designed to simplify form validation with any Standard Schema library (Valibot, Zod, ArkType...). Offers a flexible and typed approach to handle form validation.
       </p>
       <div class="maz:flex-1"></div>
       <MazBtn color="surface" outlined size="sm" block href="/composables/use-form-validator">Discover</MazBtn>

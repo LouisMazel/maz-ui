@@ -1,6 +1,6 @@
 ---
 title: useFormValidator
-description: Vue composables for form validation with Valibot - useFormValidator and useFormField provide a flexible and typed approach to handle form validation in your Vue applications.
+description: Vue composables for form validation with any Standard Schema library (Valibot, Zod, ArkType...) - useFormValidator and useFormField provide a flexible and typed approach to handle form validation in your Vue applications.
 ---
 
 # {{ $frontmatter.title }}
@@ -9,7 +9,7 @@ description: Vue composables for form validation with Valibot - useFormValidator
 
 ## Introduction
 
-`useFormValidator` and `useFormField` are two Vue composables that work together to provide powerful form validation using [Valibot](https://valibot.dev/guides/introduction/).
+`useFormValidator` and `useFormField` are two Vue composables that work together to provide powerful form validation. They are **validation library agnostic**: any library implementing [Standard Schema](https://standardschema.dev) works out of the box, like [Valibot](https://valibot.dev), [Zod](https://zod.dev) or [ArkType](https://arktype.io). See [Validation Libraries](#validation-libraries).
 
 - **useFormValidator**: Initializes form validation for your entire form. Use it in your form's parent component.
 - **useFormField**: Manages individual field validation states. Use it when you need fine-grained control over a field or when fields are in child components.
@@ -22,6 +22,24 @@ description: Vue composables for form validation with Valibot - useFormValidator
 | `useFormValidator` + `useFormField` | Fields in child components, or when using `eager`, `blur`, or `progressive` validation modes |
 
 ## Quick Start
+
+Install the validation library of your choice (Valibot is used in most examples of this page):
+
+::: code-group
+
+```bash [valibot]
+pnpm add valibot
+```
+
+```bash [zod]
+pnpm add zod
+```
+
+```bash [arktype]
+pnpm add arktype
+```
+
+:::
 
 Here's the simplest form you can create with `useFormValidator`:
 
@@ -103,6 +121,186 @@ const onSubmit = handleSubmit((data) => {
 
   </template>
 </ComponentDemo>
+
+## Validation Libraries
+
+`useFormValidator` relies on [Standard Schema](https://standardschema.dev), a common interface shared by the main validation libraries. Maz-UI does not ship any validation library: install the one you prefer and pass its schemas. Valibot, Zod and ArkType are declared as optional peer dependencies of `maz-ui`, so your package manager warns you if the installed version is not supported.
+
+| Library | Supported versions |
+|---------|--------------------|
+| [Valibot](https://valibot.dev) | `>=1.0.0 <2.0.0` |
+| [Zod](https://zod.dev) | `>=3.24.0 <5.0.0` (v3 and v4) |
+| [ArkType](https://arktype.io) | `>=2.0.0 <3.0.0` |
+| [Others](https://standardschema.dev/#what-schema-libraries-implement-the-spec) | Any library implementing Standard Schema V1 |
+
+The `schema` option is always a **plain object** where each key is a field name and each value is a schema of your library. Do not wrap it with `object()` / `z.object()`.
+
+### Same form, different libraries
+
+::: code-group
+
+```ts [valibot]
+import { useFormValidator } from 'maz-ui/composables'
+import { email, minLength, nonEmpty, pipe, string } from 'valibot'
+
+const { model, errorMessages, handleSubmit } = useFormValidator({
+  schema: {
+    email: pipe(string(), nonEmpty('Email is required'), email('Invalid email')),
+    password: pipe(string(), minLength(8, 'Min 8 characters')),
+  },
+})
+```
+
+```ts [zod]
+import { useFormValidator } from 'maz-ui/composables'
+import { z } from 'zod'
+
+const { model, errorMessages, handleSubmit } = useFormValidator({
+  schema: {
+    email: z.string().min(1, 'Email is required').pipe(z.email('Invalid email')),
+    password: z.string().min(8, 'Min 8 characters'),
+  },
+})
+```
+
+```ts [arktype]
+import { type } from 'arktype'
+import { useFormValidator } from 'maz-ui/composables'
+
+const { model, errorMessages, handleSubmit } = useFormValidator({
+  schema: {
+    email: type('string.email'),
+    password: type('string >= 8'),
+  },
+})
+```
+
+:::
+
+### Live example with Zod
+
+<ComponentDemo>
+  <form class="maz:flex maz:flex-col maz:gap-4" @submit="onSubmitZod">
+    <MazInput
+      v-model="zodModel.username"
+      label="Username"
+      :hint="zodErrors.username"
+      :error="!!zodErrors.username"
+      :success="zodStates.username.valid"
+    />
+    <MazInput
+      v-model="zodModel.age"
+      label="Age"
+      type="number"
+      :hint="zodErrors.age"
+      :error="!!zodErrors.age"
+      :success="zodStates.age.valid"
+    />
+    <MazBtn type="submit" :loading="zodSubmitting">
+      Submit
+    </MazBtn>
+  </form>
+
+  <template #code>
+
+```vue
+<script lang="ts" setup>
+import { useFormValidator } from 'maz-ui/composables'
+import { z } from 'zod'
+
+const schema = {
+  username: z.string().min(1, 'Username is required').min(3, 'Min 3 characters'),
+  age: z.number({ error: 'Age is required' }).min(18, 'Min 18').max(100, 'Max 100'),
+}
+
+const {
+  model,
+  errorMessages,
+  fieldsStates,
+  isSubmitting,
+  handleSubmit,
+} = useFormValidator({ schema })
+
+const onSubmit = handleSubmit((data) => {
+  // data is typed as { username: string, age: number }
+  console.log('Form submitted:', data)
+})
+</script>
+
+<template>
+  <form @submit="onSubmit">
+    <MazInput
+      v-model="model.username"
+      label="Username"
+      :hint="errorMessages.username"
+      :error="!!errorMessages.username"
+      :success="fieldsStates.username.valid"
+    />
+    <MazInput
+      v-model="model.age"
+      label="Age"
+      type="number"
+      :hint="errorMessages.age"
+      :error="!!errorMessages.age"
+      :success="fieldsStates.age.valid"
+    />
+    <MazBtn type="submit" :loading="isSubmitting">
+      Submit
+    </MazBtn>
+  </form>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+### Mixing libraries
+
+Each field is validated by its own schema, so you can mix libraries in the same form (useful during a progressive migration from one library to another):
+
+```ts
+import { useFormValidator } from 'maz-ui/composables'
+import { email, pipe, string } from 'valibot'
+import { z } from 'zod'
+
+const { model } = useFormValidator({
+  schema: {
+    email: pipe(string(), email('Invalid email')),
+    age: z.number().min(18, 'Min 18'),
+  },
+})
+```
+
+### Custom schema
+
+You can also write your own validator by implementing the `StandardSchemaV1` interface (exported by `maz-ui/composables`). `validate` can be synchronous or return a `Promise`:
+
+```ts
+import type { StandardSchemaV1 } from 'maz-ui/composables'
+import { useFormValidator } from 'maz-ui/composables'
+
+const frenchZipCode: StandardSchemaV1<string, string> = {
+  '~standard': {
+    version: 1,
+    vendor: 'my-app',
+    validate: value =>
+      typeof value === 'string' && /^\d{5}$/.test(value)
+        ? { value }
+        : { issues: [{ message: 'Invalid zip code' }] },
+  },
+}
+
+const { model } = useFormValidator({
+  schema: { zipCode: frenchZipCode },
+})
+```
+
+### Good to know
+
+- **Empty values**: `undefined` and `null` field values are validated as an empty string (`''`). To make a field required, use a length rule (`nonEmpty()` with Valibot, `.min(1)` with Zod). An optional field with a format rule (email, URL...) has to accept the empty string explicitly, for example `z.email().or(z.literal(''))` with Zod or `union([literal(''), pipe(string(), email())])` with Valibot.
+- **Error messages**: `errorMessages` contains the message of the first issue of each field, whatever the library.
+- **Issues type**: `errors` and `fieldsStates[field].errors` are typed as `ValidationIssues`, the Standard Schema issue shape (`message` and `path`). At runtime, they are the native issues of your library, so you can cast them to access library specific properties (for example `BaseIssue<unknown>` from Valibot or `z.core.$ZodIssue` from Zod).
+- **Type inference**: the `model` type (input) and the `handleSubmit` payload type (output, after transformations) are inferred from the schemas whatever the library.
 
 ## Understanding Form State
 
@@ -699,7 +897,7 @@ const { value, errorMessage, hasError, validationEvents } = useFormField<string>
 
 ## TypeScript Type Inference
 
-The form model is automatically typed based on your schema:
+The form model is automatically typed based on your schema, whatever the validation library:
 
 ```ts
 const schema = {
@@ -745,7 +943,23 @@ const { value: email } = useFormField<string>('email', {
 
 ## Async Validation
 
-Use Valibot's `pipeAsync` and `checkAsync` for async validations like checking username availability:
+Async validations (like checking username availability) are supported by every library: Valibot's `pipeAsync` and `checkAsync`, Zod's async `refine`, etc. The example below uses Valibot, here is the Zod equivalent of the schema:
+
+```ts
+import { z } from 'zod'
+
+const schema = {
+  username: z
+    .string()
+    .min(1, 'Username is required')
+    .min(3, 'Min 3 characters')
+    .refine(async (value) => {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      return value !== 'taken'
+    }, 'Username is already taken'),
+}
+```
 
 <ComponentDemo>
   <div class="maz:mb-4">
@@ -1065,7 +1279,7 @@ If your custom component isn't detected for blur events, add `data-interactive`:
 
 ```ts
 useFormValidator<TSchema>({
-  schema: TSchema,                                    // Valibot validation schema (required)
+  schema: TSchema,                                    // Object of Standard Schema field schemas: Valibot, Zod, ArkType... (required)
   model?: Ref<Model>,                                 // External model ref (optional)
   defaultValues?: DeepPartial<Model>,                 // Initial values (optional)
   options?: {
@@ -1140,6 +1354,14 @@ useFormField<FieldType>(
 ### Types
 
 ```ts
+// Standard Schema issue (https://standardschema.dev)
+interface ValidationIssue {
+  readonly message: string
+  readonly path?: ReadonlyArray<PropertyKey | { readonly key: PropertyKey }>
+}
+
+type ValidationIssues = ValidationIssue[]
+
 interface FormValidatorOptions<Model> {
   mode?: 'eager' | 'lazy' | 'aggressive' | 'blur' | 'progressive'
   throttledFields?: Partial<Record<keyof Model, number | true>>
@@ -1252,8 +1474,28 @@ import {
   pipeAsync,
   checkAsync,
 } from 'valibot'
+import { z } from 'zod'
 
 const toast = useToast()
+
+// Zod Demo
+const zodSchema = {
+  username: z.string().min(1, 'Username is required').min(3, 'Min 3 characters'),
+  age: z.number({ error: 'Age is required' }).min(18, 'Min 18').max(100, 'Max 100'),
+}
+
+const {
+  model: zodModel,
+  errorMessages: zodErrors,
+  fieldsStates: zodStates,
+  isSubmitting: zodSubmitting,
+  handleSubmit: handleZod,
+} = useFormValidator({ schema: zodSchema })
+
+const onSubmitZod = handleZod(async (data) => {
+  await sleep(1000)
+  toast.success(`Welcome ${data.username} (${data.age})!`, { position: 'top' })
+})
 
 // Quick Start Demo
 const quickStartSchema = {

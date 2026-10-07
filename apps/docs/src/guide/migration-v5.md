@@ -86,7 +86,8 @@ The MCP server is read-only — it ships docs, not code edits — so the assista
 9. **`MazAvatar` size scale fixed.** A CSS-unit `size` now renders at its real value (`size="2rem"` is a 32px avatar, it was ~96px before). Multiply your unit values by 3 to keep the same render, or switch to a `MazSize` keyword (`'mini' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'`). The upgrade tool does the ×3 rewrite for you on static values.
 10. Rename **`MazPullToRefresh`**'s `on-click` prop to `on-refresh` (handled by the upgrade tool).
 11. Replace bare **`from 'maz-ui'`** utility imports with **`from '@maz-ui/utils'`** (the root re-export of utils was removed; handled by the upgrade tool). Components/composables/directives/plugins stay on their subpaths; types remain importable from `maz-ui`.
-12. That's it for most apps. Everything else is opt-in.
+12. If you use **`useFormValidator` / `useFormField`** with Valibot, add **`valibot`** to your own dependencies (it is no longer installed by `maz-ui`). The composables now accept any [Standard Schema](https://standardschema.dev) library (Valibot, Zod, ArkType...).
+13. That's it for most apps. Everything else is opt-in.
 
 ## Prerequisites
 
@@ -641,6 +642,48 @@ import type { MazColor, MazSize } from 'maz-ui'
 ### 19. ESM-only
 
 `maz-ui` and its `@maz-ui/*` packages ship **ESM only** (no CommonJS build). This was already the case in v4, but if you consume the library from a CommonJS context (old Jest without ESM, `require()`), use a bundler/test runner with ESM support (Vitest, Jest ≥ 29 with ESM, or native `import`).
+
+### 20. `useFormValidator`: validation library agnostic (Standard Schema)
+
+`useFormValidator` and `useFormField` no longer depend on Valibot. They accept any library implementing [Standard Schema](https://standardschema.dev): Valibot (>= 1.0), Zod (>= 3.24), ArkType (>= 2.0), or your own validator. Your existing Valibot schemas keep working as is: same validation, same error messages, same inferred types for `model` and the `handleSubmit` payload.
+
+```ts
+// v4 and v5 - unchanged
+import { pipe, string, minLength } from 'valibot'
+useFormValidator({ schema: { name: pipe(string(), minLength(3)) } })
+
+// v5 - Zod (or mix both in the same schema)
+import { z } from 'zod'
+useFormValidator({ schema: { name: z.string().min(3) } })
+```
+
+What can break:
+
+**`valibot` is no longer a dependency of `maz-ui`.** Valibot, Zod and ArkType are now declared as optional peer dependencies (`valibot >=1.0.0 <2.0.0`, `zod >=3.24.0 <5.0.0`, `arktype >=2.0.0 <3.0.0`). If your app imports `valibot` without declaring it (it was installed transitively), add it:
+
+```bash
+pnpm add valibot
+```
+
+**Issue types are now the Standard Schema ones.** `ValidationIssues` (returned by `errors`, `fieldsStates[field].errors`, `useFormField().errors` and the `onError` payload of `handleSubmit`) is now typed as an array of `{ message: string, path?: ... }` instead of Valibot's `BaseIssue<unknown>`. Only TypeScript is affected: at runtime, the issues are still the native Valibot objects. If you read Valibot specific properties (`kind`, `type`, `input`, `expected`, `received`, `requirement`...), cast the issue:
+
+```ts
+import type { BaseIssue } from 'valibot'
+
+// v4
+const type = errors.value.email[0].type
+
+// v5
+const type = (errors.value.email[0] as BaseIssue<unknown>).type
+```
+
+**`FormSchema` values are typed as `StandardSchemaV1`.** If you typed a schema object with `FormSchema<Model>` and then read Valibot specific properties of its entries (`schema.email.type`, `schema.email.pipe`...), declare the object with `as const satisfies FormSchema<Model>` or without annotation, so TypeScript keeps the Valibot types.
+
+```bash
+# Find usages to check
+rg "useFormValidator|useFormField" src/
+rg "from 'valibot'" src/
+```
 
 ## Informational changes (probably no action needed)
 
