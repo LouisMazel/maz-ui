@@ -34,7 +34,8 @@
     "maz-ui": "workspace:*",
     "shiki": "^4.5.0",
     "valibot": "^1.5.0",
-    "vitepress-plugin-google-analytics": "^1.0.2"
+    "vitepress-plugin-google-analytics": "^1.0.2",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@maz-ui/vite-config": "workspace:*",

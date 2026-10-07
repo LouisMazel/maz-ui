@@ -170,14 +170,20 @@
     "typecheck": "vue-tsc --noEmit --skipLibCheck"
   },
   "peerDependencies": {
+    "arktype": ">=2.0.0 <3.0.0",
     "nuxt": ">=3.4.0 <5.0.0",
     "shiki": ">=4.0.0",
     "unplugin-auto-import": ">=19.0.0 <22.0.0",
     "unplugin-vue-components": ">=28.0.0 <33.0.0",
+    "valibot": ">=1.0.0 <2.0.0",
     "vue": ">=3.5.0 <4.0.0",
-    "vue-router": ">=4.0.0 <6.0.0"
+    "vue-router": ">=4.0.0 <6.0.0",
+    "zod": ">=3.24.0 <5.0.0"
   },
   "peerDependenciesMeta": {
+    "arktype": {
+      "optional": true
+    },
     "nuxt": {
       "optional": true
     },
@@ -190,7 +196,13 @@
     "unplugin-vue-components": {
       "optional": true
     },
+    "valibot": {
+      "optional": true
+    },
     "vue-router": {
+      "optional": true
+    },
+    "zod": {
       "optional": true
     }
   },
@@ -205,8 +217,7 @@
     "dayjs": "^1.11.23",
     "dompurify": "^3.4.16",
     "libphonenumber-js": "^1.13.14",
-    "marked": "^18.0.14",
-    "valibot": "^1.5.0"
+    "marked": "^18.0.14"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
@@ -227,8 +238,10 @@
     "tailwindcss": "^4.3.3",
     "unplugin-auto-import": "^21.1.0",
     "unplugin-vue-components": "^32.0.0",
+    "valibot": "^1.5.0",
     "vitest-axe": "^0.1.0",
-    "vue-router": "^5.3.1"
+    "vue-router": "^5.3.1",
+    "zod": "^4.6.5"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix",

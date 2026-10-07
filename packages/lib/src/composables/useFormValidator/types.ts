@@ -1,4 +1,3 @@
-import type { BaseIssue, BaseSchema, BaseSchemaAsync, InferInput, InferIssue, InferOutput, objectAsync } from 'valibot'
 import type {
   ComponentInternalInstance,
   InjectionKey,
@@ -7,9 +6,57 @@ import type {
 } from 'vue'
 import type { getValidateFunction } from './validation'
 
-export type Validation = BaseSchema<unknown, unknown, BaseIssue<unknown>> | BaseSchemaAsync<unknown, unknown, BaseIssue<unknown>>
+/**
+ * Standard Schema interface (https://standardschema.dev)
+ * Implemented by Valibot, Zod, ArkType, Effect Schema and many others
+ */
+export interface StandardSchemaV1<Input = unknown, Output = Input> {
+  readonly '~standard': StandardSchemaV1Props<Input, Output>
+}
 
-export type ValidationIssues = InferIssue<Validation>[]
+export interface StandardSchemaV1Props<Input = unknown, Output = Input> {
+  readonly version: 1
+  readonly vendor: string
+  readonly validate: (value: unknown) => StandardSchemaV1Result<Output> | Promise<StandardSchemaV1Result<Output>>
+  // eslint-disable-next-line sonarjs/no-redundant-optional
+  readonly types?: StandardSchemaV1Types<Input, Output> | undefined
+}
+
+export type StandardSchemaV1Result<Output> = StandardSchemaV1SuccessResult<Output> | StandardSchemaV1FailureResult
+
+export interface StandardSchemaV1SuccessResult<Output> {
+  readonly value: Output
+  readonly issues?: undefined
+}
+
+export interface StandardSchemaV1FailureResult {
+  readonly issues: ReadonlyArray<StandardSchemaV1Issue>
+}
+
+export interface StandardSchemaV1Issue {
+  readonly message: string
+  // eslint-disable-next-line sonarjs/no-redundant-optional
+  readonly path?: ReadonlyArray<PropertyKey | StandardSchemaV1PathSegment> | undefined
+}
+
+export interface StandardSchemaV1PathSegment {
+  readonly key: PropertyKey
+}
+
+export interface StandardSchemaV1Types<Input = unknown, Output = Input> {
+  readonly input: Input
+  readonly output: Output
+}
+
+export type Validation = StandardSchemaV1
+
+export type ValidationIssue = StandardSchemaV1Issue
+
+export type ValidationIssues = ValidationIssue[]
+
+export type InferValidationInput<T> = T extends StandardSchemaV1 ? NonNullable<T['~standard']['types']>['input'] : never
+
+export type InferValidationOutput<T> = T extends StandardSchemaV1 ? NonNullable<T['~standard']['types']>['output'] : never
 
 export type ExtractModelKey<T> = Extract<keyof T, string>
 
@@ -143,22 +190,58 @@ export interface FormFieldOptions<
   formIdentifier?: string | symbol
 }
 
+type Simplify<T> = { [K in keyof T]: T[K] } & {}
+
+type IsOptionalOutputKey<TSchema> = TSchema extends { readonly kind: 'schema', readonly type: string }
+  ? TSchema extends { readonly type: 'optional' | 'exact_optional' | 'nullish', readonly default: infer TDefault }
+    ? undefined extends TDefault ? true : false
+    : false
+  : unknown extends InferValidationOutput<TSchema>
+    ? false
+    : undefined extends InferValidationOutput<TSchema> ? true : false
+
+type IsReadonlyOutputKey<TSchema> = TSchema extends { readonly pipe: readonly (infer TItem)[] }
+  ? [Extract<TItem, { readonly kind: 'transformation', readonly type: 'readonly' }>] extends [never] ? false : true
+  : false
+
+type OptionalOutputKeys<TSchema> = {
+  [K in keyof TSchema]: IsOptionalOutputKey<TSchema[K]> extends true ? K : never
+}[keyof TSchema]
+
+type ReadonlyOutputKeys<TSchema> = {
+  [K in keyof TSchema]: IsReadonlyOutputKey<TSchema[K]> extends true ? K : never
+}[keyof TSchema]
+
+export type InferFormSchemaInput<TSchema> = Simplify<{
+  -readonly [K in keyof TSchema]?: InferValidationInput<TSchema[K]>
+}>
+
+export type InferFormSchemaOutput<TSchema> = Simplify<{
+  -readonly [K in Exclude<keyof TSchema, OptionalOutputKeys<TSchema> | ReadonlyOutputKeys<TSchema>>]: InferValidationOutput<TSchema[K]>
+} & {
+  -readonly [K in Exclude<OptionalOutputKeys<TSchema>, ReadonlyOutputKeys<TSchema>>]?: InferValidationOutput<TSchema[K]>
+} & {
+  readonly [K in Exclude<ReadonlyOutputKeys<TSchema>, OptionalOutputKeys<TSchema>>]: InferValidationOutput<TSchema[K]>
+} & {
+  readonly [K in Extract<ReadonlyOutputKeys<TSchema>, OptionalOutputKeys<TSchema>>]?: InferValidationOutput<TSchema[K]>
+}>
+
 export type InferSchemaFormValidator<T> = T extends Ref<infer U>
   ? U extends FormSchema<BaseFormPayload>
-    ? Partial<InferInput<ReturnType<typeof objectAsync<U>>>>
+    ? InferFormSchemaInput<U>
     : never
   : T extends (...args: any[]) => FormSchema<BaseFormPayload>
-    ? Partial<InferInput<ReturnType<typeof objectAsync<ReturnType<T>>>>>
+    ? InferFormSchemaInput<ReturnType<T>>
     : T extends FormSchema<BaseFormPayload>
-      ? Partial<InferInput<ReturnType<typeof objectAsync<T>>>>
+      ? InferFormSchemaInput<T>
       : never
 
 export type InferOutputSchemaFormValidator<T> = T extends Ref<infer U>
   ? U extends FormSchema<BaseFormPayload>
-    ? InferOutput<ReturnType<typeof objectAsync<U>>>
+    ? InferFormSchemaOutput<U>
     : never
   : T extends (...args: any[]) => FormSchema<BaseFormPayload>
-    ? InferOutput<ReturnType<typeof objectAsync<ReturnType<T>>>>
+    ? InferFormSchemaOutput<ReturnType<T>>
     : T extends FormSchema<BaseFormPayload>
-      ? InferOutput<ReturnType<typeof objectAsync<T>>>
+      ? InferFormSchemaOutput<T>
       : never
