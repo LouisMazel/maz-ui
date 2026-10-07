@@ -5,49 +5,30 @@ import type {
   FieldState,
   FormSchema,
   StrictOptions,
+  Validation,
   ValidationIssues,
 } from './types'
 
 import { debounceId } from '@maz-ui/utils/helpers/debounceId'
 import { throttleId } from '@maz-ui/utils/helpers/throttleId'
-import { nextTick } from 'vue'
+import { nextTick, toRaw } from 'vue'
 import { CONFIG } from './config'
 
 export function isEmptyValue(value: unknown): value is null | undefined | '' {
   return value === undefined || value === null || value === ''
 }
 
-const storeValidbot: Record<string, any> = {}
-
-export async function getValibotValidationMethod<MethodName extends keyof typeof import('valibot')>(
-  methodName: MethodName,
-): Promise<(typeof import('valibot'))[MethodName]> {
-  if (storeValidbot[methodName]) {
-    return storeValidbot[methodName]
-  }
-
-  const valibot = await import('valibot')
-  storeValidbot[methodName] = valibot[methodName]
-
-  return valibot[methodName]
-}
-
-export async function getValidationSchema<Model extends BaseFormPayload>(formSchema: FormSchema<Model>) {
-  const objectAsync = await getValibotValidationMethod('objectAsync')
-  return objectAsync(formSchema)
-}
-
 export async function getFieldValidationResult<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<FormSchema<Model>>,
 >(name: ModelKey, schema: FormSchema<Model>, value: Model[ModelKey]) {
-  const fieldSchema = await getValidationSchema(schema)
-  const safeParseAsync = await getValibotValidationMethod('safeParseAsync')
-  const result = await safeParseAsync(fieldSchema.entries[name], value ?? '')
+  const fieldSchema = toRaw(schema[name]) as Validation
+  const result = await fieldSchema['~standard'].validate(value ?? '')
+  const isValid = !result.issues
 
   return {
-    result,
-    isValid: result.success,
+    result: { ...result, success: isValid },
+    isValid,
   }
 }
 
@@ -102,7 +83,7 @@ export async function setFieldValidationState<
       fieldState.error = !isValid
     }
 
-    fieldState.errors = result.issues ?? []
+    fieldState.errors = result.issues ? [...result.issues] : []
     fieldState.validated = true
   }
   finally {
