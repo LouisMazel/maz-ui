@@ -177,15 +177,26 @@ Inject extra attributes onto the rendered `<svg>` (or onto the inlined raw SVG) 
 <MazIcon :icon="MazStar" :svg-attributes="{ 'data-testid': 'star', fill: 'currentColor' }" />
 ```
 
-## SSR — base URL for relative URLs
+## SSR
 
-When you render `MazIcon icon="/icons/star.svg"` on the server, `fetch('/icons/star.svg')` cannot resolve without a host. Provide a base URL via Vue's `provide` to fix this:
+Components, raw SVG strings and SVG `data:` URIs (e.g. a small `?url` import inlined by Vite) are always part of the server HTML, without any request.
+
+The server never waits for the network to render a URL icon:
+
+- once the server has the SVG in its cache, it inlines it;
+- otherwise, it renders an empty placeholder reserving the icon box and fetches the SVG in the background for the next renders. The client loads the icon in the placeholder.
+
+A relative URL (`/icons/star.svg`, from your `public/` directory) can only be fetched by the server with an absolute base URL, see below.
+
+## Base URL for relative URLs
+
+Prefix every relative URL icon by providing a base URL via Vue's `provide`. An absolute base also lets the server fetch them:
 
 ```ts
 import { createApp } from 'vue'
 
 const app = createApp(App)
-app.provide('mazIconPath', 'https://your-app.com')
+app.provide('mazIconPath', 'https://cdn.your-app.com')
 ```
 
 In Nuxt, set `mazUi.general.defaultMazIconPath` in `nuxt.config` and `@maz-ui/nuxt` wires the provide for you.
