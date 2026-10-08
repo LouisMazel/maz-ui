@@ -1,6 +1,15 @@
 import MazIcon from '@components/MazIcon.vue'
 import { mount, shallowMount } from '@vue/test-utils'
-import { defineComponent, h, nextTick } from 'vue'
+import { createSSRApp, defineComponent, h, nextTick } from 'vue'
+import { renderToString } from 'vue/server-renderer'
+import { SVG_PREFETCH_FAILURE_TTL_MS, svgTextCache } from '../../../src/utils/svg-utils'
+
+const serverMode = vi.hoisted(() => ({ enabled: false }))
+
+vi.mock('@maz-ui/utils/helpers/isServer', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@maz-ui/utils/helpers/isServer')>()
+  return { isServer: () => serverMode.enabled || actual.isServer() }
+})
 
 const RAW_SVG = '<svg viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="currentColor"/></svg>'
 const SECOND_RAW_SVG = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /></svg>'
@@ -112,6 +121,39 @@ describe('MazIcon', () => {
 
       expect(wrapper.emitted('error')).toBeDefined()
       expect(wrapper.html()).toContain('viewBox="0 0 24 24"')
+    })
+
+    it('reserves the icon box while the URL loads', () => {
+      globalThis.fetch = vi.fn(() => new Promise(() => {})) as unknown as typeof globalThis.fetch
+
+      const wrapper = mount(MazIcon, { props: { icon: 'https://cdn.example.com/loading.svg' } })
+
+      expect(wrapper.find('span.m-icon').exists()).toBe(true)
+      expect(wrapper.find('svg').exists()).toBe(false)
+    })
+
+    it('inlines an SVG data URI synchronously, without fetching it', () => {
+      globalThis.fetch = vi.fn() as unknown as typeof globalThis.fetch
+
+      const wrapper = mount(MazIcon, { props: { icon: `data:image/svg+xml,${encodeURIComponent(RAW_SVG)}` } })
+
+      expect(globalThis.fetch).not.toHaveBeenCalled()
+      expect(wrapper.html()).toContain('viewBox="0 0 24 24"')
+    })
+
+    it('fetches a data URI that is not an SVG', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      globalThis.fetch = vi.fn().mockResolvedValue({ ok: true, text: () => Promise.resolve('not an svg') }) as unknown as typeof globalThis.fetch
+      const icon = 'data:image/png;base64,iVBORw0KGgo='
+
+      const wrapper = mount(MazIcon, { props: { icon, fallback: ComponentIcon as any } })
+      await new Promise(resolve => setTimeout(resolve, 0))
+      await nextTick()
+
+      expect(globalThis.fetch).toHaveBeenCalledWith(icon)
+      expect(wrapper.find('[data-testid="component-icon"]').exists()).toBe(true)
+
+      warnSpy.mockRestore()
     })
   })
 
@@ -243,6 +285,198 @@ describe('MazIcon', () => {
       expect(wrapper.html()).toContain('height="1em"')
       expect(wrapper.html()).not.toContain('width="48"')
       expect(wrapper.html()).not.toContain('height="48"')
+    })
+  })
+
+  describe('SSR', () => {
+    let originalFetch: typeof globalThis.fetch
+    let fetchMock: ReturnType<typeof vi.fn>
+
+    const SVG_DATA_URI = `data:image/svg+xml,${encodeURIComponent(RAW_SVG)}`
+
+    function renderOnServer(render: () => any, provides: Record<string, unknown> = {}) {
+      serverMode.enabled = true
+      const app = createSSRApp({ render })
+      for (const [key, value] of Object.entries(provides))
+        app.provide(key, value)
+      return renderToString(app).finally(() => {
+        serverMode.enabled = false
+      })
+    }
+
+    /** Let the background requests settle. */
+    function flushRequests() {
+      return new Promise(resolve => setTimeout(resolve, 0))
+    }
+
+    beforeEach(() => {
+      originalFetch = globalThis.fetch
+      fetchMock = vi.fn().mockResolvedValue({ ok: true, text: () => Promise.resolve(RAW_SVG) })
+      globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch
+    })
+
+    afterEach(() => {
+      globalThis.fetch = originalFetch
+      serverMode.enabled = false
+      vi.restoreAllMocks()
+    })
+
+    describe('URL icon not cached on the server', () => {
+      it('renders an empty placeholder without waiting for the network', async () => {
+        fetchMock.mockReturnValue(new Promise(() => {}))
+
+        const html = await renderOnServer(() => h(MazIcon, { icon: 'https://cdn.example.com/ssr-hanging.svg' }))
+
+        expect(html).toContain('class="m-icon')
+        expect(html).not.toContain('<svg')
+      })
+
+      it('warms the server cache so that the next renders inline the icon', async () => {
+        const url = 'https://cdn.example.com/ssr-warm-up.svg'
+
+        await renderOnServer(() => h(MazIcon, { icon: url }))
+        await flushRequests()
+        const html = await renderOnServer(() => h(MazIcon, { icon: url }))
+
+        expect(fetchMock).toHaveBeenCalledTimes(1)
+        expect(fetchMock).toHaveBeenCalledWith(url, { signal: expect.any(AbortSignal) })
+        expect(html).toContain('viewBox="0 0 24 24"')
+      })
+
+      it('neither refetches nor logs a failed URL again until the failure expires', async () => {
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+        const dateSpy = vi.spyOn(Date, 'now').mockReturnValue(0)
+        fetchMock.mockResolvedValue({ ok: false, status: 404 })
+        const render = () => h(MazIcon, { icon: 'https://cdn.example.com/ssr-missing.svg' })
+
+        await renderOnServer(render)
+        await flushRequests()
+        await renderOnServer(render)
+        await flushRequests()
+
+        expect(fetchMock).toHaveBeenCalledTimes(1)
+        expect(warnSpy).toHaveBeenCalledTimes(1)
+
+        dateSpy.mockReturnValue(SVG_PREFETCH_FAILURE_TTL_MS)
+        await renderOnServer(render)
+        await flushRequests()
+
+        expect(fetchMock).toHaveBeenCalledTimes(2)
+      })
+
+      it('does not fetch a relative URL without an absolute mazIconPath', async () => {
+        await renderOnServer(() => h(MazIcon, { icon: '/icons/ssr-relative.svg' }))
+        await renderOnServer(() => h(MazIcon, { icon: '/icons/ssr-relative.svg' }), { mazIconPath: '/icons' })
+
+        expect(fetchMock).not.toHaveBeenCalled()
+      })
+
+      it('fetches a relative URL resolved with an absolute mazIconPath', async () => {
+        await renderOnServer(() => h(MazIcon, { icon: '/icons/ssr-public.svg' }), { mazIconPath: 'https://my-app.com' })
+
+        expect(fetchMock).toHaveBeenCalledWith('https://my-app.com/icons/ssr-public.svg', expect.anything())
+      })
+    })
+
+    describe('icon resolved without network', () => {
+      it.each([
+        ['a raw SVG', RAW_SVG],
+        ['a percent-encoded SVG data URI', SVG_DATA_URI],
+        ['a base64 SVG data URI', `data:image/svg+xml;base64,${btoa(RAW_SVG)}`],
+      ])('inlines %s in the server output', async (_, icon) => {
+        const html = await renderOnServer(() => h(MazIcon, { icon }))
+
+        expect(fetchMock).not.toHaveBeenCalled()
+        expect(html).toContain('viewBox="0 0 24 24"')
+      })
+    })
+
+    describe('hydration', () => {
+      async function hydrate(render: () => any) {
+        const html = await renderOnServer(render)
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+        const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+        // The browser starts with an empty cache.
+        svgTextCache.clear()
+        fetchMock.mockClear()
+
+        const container = document.createElement('div')
+        container.innerHTML = html
+        createSSRApp({ render }).mount(container)
+
+        const hasMismatch = () => [...warnSpy.mock.calls, ...errorSpy.mock.calls]
+          .some(([message]) => /hydration/i.test(String(message)))
+        return { html, container, hasMismatch }
+      }
+
+      it('keeps the icon rendered by the server while the client loads it', async () => {
+        const url = 'https://cdn.example.com/hydrate-cached.svg'
+        svgTextCache.set(url, RAW_SVG)
+
+        const { html, container, hasMismatch } = await hydrate(() => h(MazIcon, { icon: url }))
+
+        expect(html).toContain('viewBox="0 0 24 24"')
+        expect(container.innerHTML).toContain('viewBox="0 0 24 24"')
+        expect(hasMismatch()).toBe(false)
+
+        await flushRequests()
+        await nextTick()
+
+        expect(fetchMock).toHaveBeenCalledTimes(1)
+        expect(container.innerHTML).toContain('viewBox="0 0 24 24"')
+      })
+
+      it('renders the same placeholder on both sides when the server has not loaded the icon yet', async () => {
+        const { html, container, hasMismatch } = await hydrate(() => h(MazIcon, { icon: 'https://cdn.example.com/hydrate-cold.svg' }))
+
+        expect(html).not.toContain('<svg')
+        expect(hasMismatch()).toBe(false)
+
+        await flushRequests()
+        await nextTick()
+
+        expect(container.innerHTML).toContain('viewBox="0 0 24 24"')
+      })
+
+      it('hydrates a data URI icon without fetching it', async () => {
+        const { container, hasMismatch } = await hydrate(() => h(MazIcon, { icon: SVG_DATA_URI }))
+
+        expect(container.innerHTML).toContain('viewBox="0 0 24 24"')
+        expect(hasMismatch()).toBe(false)
+
+        await flushRequests()
+
+        expect(fetchMock).not.toHaveBeenCalled()
+      })
+    })
+  })
+
+  describe('mazIconPath', () => {
+    let originalFetch: typeof globalThis.fetch
+
+    beforeEach(() => {
+      originalFetch = globalThis.fetch
+    })
+
+    afterEach(() => {
+      globalThis.fetch = originalFetch
+    })
+
+    it('renders a cached relative URL synchronously on remount, without refetching', async () => {
+      const fetchMock = vi.fn().mockResolvedValue({ ok: true, text: () => Promise.resolve(RAW_SVG) })
+      globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch
+      const options = {
+        props: { icon: '/icons/remount.svg' },
+        global: { provide: { mazIconPath: 'https://cdn.example.com/' } },
+      }
+
+      mount(MazIcon, options)
+      await new Promise(resolve => setTimeout(resolve, 0))
+      const remounted = mount(MazIcon, options)
+
+      expect(fetchMock).toHaveBeenCalledTimes(1)
+      expect(fetchMock).toHaveBeenCalledWith('https://cdn.example.com/icons/remount.svg')
+      expect(remounted.html()).toContain('viewBox="0 0 24 24"')
     })
   })
 })

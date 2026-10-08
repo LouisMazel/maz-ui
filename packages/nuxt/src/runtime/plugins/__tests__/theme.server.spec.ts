@@ -264,4 +264,16 @@ describe('theme plugin (server)', () => {
       })
     })
   })
+
+  describe('Given a preset configured by name', () => {
+    describe('When the preset is persisted', () => {
+      it('Then the maz-preset cookie is read before awaiting the preset, while the Nuxt context is still available', async () => {
+        await (themePlugin as (...args: any[]) => any)(createContext())
+
+        const cookieReadIndex = mockUseCookie.mock.calls.findIndex(([name]: any[]) => name === 'maz-preset')
+
+        expect(mockUseCookie.mock.invocationCallOrder[cookieReadIndex]).toBeLessThan(mockGetPreset.mock.invocationCallOrder[0]!)
+      })
+    })
+  })
 })
