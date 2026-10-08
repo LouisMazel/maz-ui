@@ -1,5 +1,27 @@
 # Change Log
 
+## v5.0.0-beta.48 (2026-10-07)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.47...v5.0.0-beta.48)
+
+No relevant changes since last release
+
+## v5.0.0-beta.47 (2026-10-06)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.46...v5.0.0-beta.47)
+
+### 💅 Refactors
+
+- **maz-ui:** Drop unused marker classes from MazContainer ([bd5b44a8](https://github.com/LouisMazel/maz-ui/commit/bd5b44a8))
+
+### 📦 Build
+
+- **deps:** Upgrade dependencies ([a47a6aeb](https://github.com/LouisMazel/maz-ui/commit/a47a6aeb))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.46 (2026-10-05)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.45...v5.0.0-beta.46)
