@@ -1,5 +1,19 @@
 # Change Log
 
+## v5.0.0-beta.49 (2026-10-08)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.48...v5.0.0-beta.49)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Fix the NUXT_E1001 server error when the theme preset is persisted ([00c6dfca](https://github.com/LouisMazel/maz-ui/commit/00c6dfca))
+
+  Since 5.0.0-beta.46, every SSR request failed with `NUXT_E1001` when the theme preset is set by name and `persistPreset` is enabled (the default).
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.48 (2026-10-07)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.47...v5.0.0-beta.48)

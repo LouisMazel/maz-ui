@@ -1,5 +1,27 @@
 # Change Log
 
+## v5.0.0-beta.49 (2026-10-08)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.48...v5.0.0-beta.49)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Fix the NUXT_E1001 server error when the theme preset is persisted ([00c6dfca](https://github.com/LouisMazel/maz-ui/commit/00c6dfca))
+
+  Since 5.0.0-beta.46, every SSR request failed with `NUXT_E1001` when the theme preset is set by name and `persistPreset` is enabled (the default).
+
+- **maz-ui:** Render URL and data URI icons of MazIcon without hydration mismatch ([d5e38edf](https://github.com/LouisMazel/maz-ui/commit/d5e38edf))
+
+  `data:` URIs are now inlined without any request, on the server too. A URL icon reserves its box while loading and keeps the SVG rendered by the server during hydration. The server never waits for the network: it fetches URL icons in the background for the next renders.
+
+### 📖 Documentation
+
+- **docs:** Document MazIcon SSR behavior for URL and data URI icons ([2eccd8ce](https://github.com/LouisMazel/maz-ui/commit/2eccd8ce))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v5.0.0-beta.48 (2026-10-07)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.47...v5.0.0-beta.48)
