@@ -103,6 +103,10 @@ async function resolvePreset(
 ): Promise<{ preset: ThemePreset, baseName: string }> {
   const presetObject = options?.preset && typeof options.preset !== 'string' ? options.preset : undefined
 
+  // Read the cookie before any `await`: past it, this helper has lost the Nuxt
+  // app context and `useCookie` throws (NUXT_E1001).
+  const saved = persistPreset ? parseSavedPreset(useCookie<string | null>('maz-preset').value) : null
+
   // The configured preset IS the app identity (the "base").
   const basePreset = presetObject ?? await getPreset(options?.preset)
   const baseName = basePreset.name
@@ -110,9 +114,6 @@ async function resolvePreset(
   if (!persistPreset) {
     return { preset: basePreset, baseName }
   }
-
-  const presetCookie = useCookie<string | null>('maz-preset')
-  const saved = parseSavedPreset(presetCookie.value)
 
   // Honor a persisted runtime switch only when it belongs to THIS app's
   // configured preset; a foreign/stale cookie never wins over the config.
