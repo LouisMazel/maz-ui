@@ -14,6 +14,7 @@ const composablesMap: Record<Composables, true> = {
   useInstanceUniqId: true,
   useReadingTime: true,
   useStringMatching: true,
+  usePullToRefresh: true,
   useSwipe: true,
   useTimer: true,
   useToast: true,
