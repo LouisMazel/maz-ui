@@ -182,6 +182,18 @@ export default {
     ariaLabel: 'Expandable content',
   },
   /**
+   * This is the translation for the pull to refresh component.
+   * The keys are:
+   * - pull: Hint shown while the user pulls down.
+   * - release: Hint shown once the pull is long enough to refresh.
+   * - refreshing: Text shown and announced to screen readers while refreshing.
+   */
+  pullToRefresh: {
+    pull: 'Pull to refresh',
+    release: 'Release to refresh',
+    refreshing: 'Refreshing…',
+  },
+  /**
    * This is the translation for the skeleton component.
    * The keys are:
    * - ariaLabel: The translation for the aria label.

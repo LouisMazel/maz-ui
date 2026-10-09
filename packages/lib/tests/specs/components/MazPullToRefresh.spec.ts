@@ -1,490 +1,207 @@
 import type { VueWrapper } from '@vue/test-utils'
 import MazPullToRefresh from '@components/MazPullToRefresh.vue'
 import { mount } from '@vue/test-utils'
+import { defineComponent, h, nextTick } from 'vue'
 
-function createTouchEvent(type: string, pageY: number): TouchEvent {
-  const touch = { pageY, identifier: 0, target: document.body } as unknown as Touch
-
-  return new TouchEvent(type, {
-    touches: type === 'touchend' ? [] as unknown as Touch[] : [touch],
-    bubbles: true,
-    cancelable: true,
-  })
+function fireTouch(target: EventTarget, type: string, points: Array<{ x: number, y: number }>) {
+  const event = new Event(type, { bubbles: true, cancelable: true })
+  Object.defineProperty(event, 'touches', { value: points.map(({ x, y }) => ({ clientX: x, clientY: y })) })
+  target.dispatchEvent(event)
 }
 
-function createTouchEventWithItemSupport(type: string, pageY: number): TouchEvent {
-  const event = createTouchEvent(type, pageY)
-  const touch = { pageY, identifier: 0, target: document.body } as unknown as Touch
-  Object.defineProperty(event, 'touches', {
-    value: {
-      length: type === 'touchend' ? 0 : 1,
-      item: (index: number) => (index === 0 && type !== 'touchend' ? touch : null),
-      0: type === 'touchend' ? undefined : touch,
+function pull(target: EventTarget, deltaY: number) {
+  fireTouch(target, 'touchstart', [{ x: 0, y: 0 }])
+  fireTouch(target, 'touchmove', [{ x: 0, y: deltaY / 2 }])
+  fireTouch(target, 'touchmove', [{ x: 0, y: deltaY }])
+}
+
+const translations = { pull: 'Pull to refresh', release: 'Release to refresh', refreshing: 'Refreshing…' }
+
+function release(target: EventTarget) {
+  fireTouch(target, 'touchend', [])
+}
+
+function mountInScroller(props: Record<string, unknown>) {
+  const Host = defineComponent({
+    setup() {
+      return () => h('div', { class: 'scroller', style: 'overflow-y: auto' }, [
+        h(MazPullToRefresh, props, { default: () => h('p', { class: 'content' }, 'Content') }),
+      ])
     },
   })
-  return event
+  const wrapper = mount(Host, { attachTo: document.body })
+  return { wrapper, scroller: wrapper.find('.scroller').element as HTMLElement, component: wrapper.findComponent(MazPullToRefresh) }
 }
 
-function dispatchTouch(type: string, pageY = 0) {
-  const event = createTouchEventWithItemSupport(type, pageY)
-  document.body.dispatchEvent(event)
-}
+describe('given the MazPullToRefresh component', () => {
+  let wrapper: VueWrapper | undefined
 
-describe('mazPullToRefresh', () => {
   beforeEach(() => {
-    Object.defineProperty(globalThis, 'scrollY', { value: 0, writable: true, configurable: true })
-    document.body.getBoundingClientRect = vi.fn().mockReturnValue({
-      top: 0,
-      height: 800,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      width: 0,
-    })
-    Object.defineProperty(globalThis, 'innerHeight', { value: 800, writable: true, configurable: true })
+    vi.useFakeTimers()
   })
 
-  it('renders with default props', async () => {
-    const wrapper = mount(MazPullToRefresh, {
-      props: {
-        onRefresh: vi.fn(),
-      },
-      slots: {
-        default: 'Content Slot',
-      },
-    })
-
-    await wrapper.vm.$nextTick()
-
-    expect(wrapper.exists()).toBe(true)
-    expect(wrapper.classes()).toContain('m-pull-to-refresh')
-    expect(wrapper.find('.header-text').text()).toContain('Pull to refresh')
+  afterEach(() => {
+    wrapper?.unmount()
+    wrapper = undefined
+    vi.useRealTimers()
   })
 
-  describe('Given the component is rendered with an onRefresh handler', () => {
-    let wrapper: VueWrapper
-    let actionMock: ReturnType<typeof vi.fn>
+  describe('when it is rendered without onRefresh', () => {
+    it('then it only renders its content', () => {
+      wrapper = mount(MazPullToRefresh, { slots: { default: 'Content' } })
 
-    beforeEach(async () => {
-      actionMock = vi.fn().mockResolvedValue('response-data')
+      expect(wrapper.text()).toBe('Content')
+      expect(wrapper.find('.m-pull-to-refresh__header').exists()).toBe(false)
+    })
+  })
+
+  describe('when it sits inside a scrollable ancestor', () => {
+    describe('when the user pulls past the distance and releases', () => {
+      it('then it refreshes and emits the lifecycle events in order', async () => {
+        const onRefresh = vi.fn().mockResolvedValue('data')
+        const mounted = mountInScroller({ onRefresh, translations })
+        wrapper = mounted.wrapper
+        await nextTick()
+
+        pull(mounted.scroller, 200)
+        await nextTick()
+        expect(mounted.component.find('.m-pull-to-refresh').classes()).toContain('--available')
+        expect(mounted.component.text()).toContain('Release to refresh')
+
+        release(mounted.scroller)
+        await nextTick()
+        expect(mounted.component.find('.m-pull-to-refresh').attributes('aria-busy')).toBe('true')
+        expect(mounted.component.find('[role="status"]').text()).toBe('Refreshing…')
+
+        await vi.advanceTimersByTimeAsync(400)
+
+        expect(onRefresh).toHaveBeenCalledOnce()
+        expect(Object.keys(mounted.component.emitted())).toEqual(expect.arrayContaining(['start', 'loaded', 'response', 'finish']))
+        expect(mounted.component.emitted('response')?.[0]).toEqual(['data'])
+        expect(mounted.component.find('[role="status"]').text()).toBe('')
+      })
+    })
+
+    describe('when the ancestor is scrolled down', () => {
+      it('then pulling scrolls instead of refreshing', async () => {
+        const onRefresh = vi.fn()
+        const mounted = mountInScroller({ onRefresh })
+        wrapper = mounted.wrapper
+        await nextTick()
+        mounted.scroller.scrollTop = 120
+
+        pull(mounted.scroller, 300)
+        release(mounted.scroller)
+        await nextTick()
+
+        expect(onRefresh).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('when the pull is short', () => {
+      it('then it shows the pull hint and its progress ring', async () => {
+        const mounted = mountInScroller({ onRefresh: vi.fn(), translations })
+        wrapper = mounted.wrapper
+        await nextTick()
+
+        pull(mounted.scroller, 80)
+        await nextTick()
+
+        expect(mounted.component.text()).toContain('Pull to refresh')
+        expect(mounted.component.find('circle').exists()).toBe(true)
+        expect(mounted.component.find('.m-pull-to-refresh__header').attributes('style')).toContain('height: 40px')
+      })
+    })
+  })
+
+  describe('when a container selector is given', () => {
+    it('then the gesture is read on that container', async () => {
+      const container = document.createElement('div')
+      container.id = 'page-scroller'
+      document.body.append(container)
+      const onRefresh = vi.fn()
+      wrapper = mount(MazPullToRefresh, { props: { onRefresh, containerSelector: '#page-scroller' }, attachTo: document.body })
+      await nextTick()
+
+      pull(container, 200)
+      release(container)
+      await nextTick()
+
+      expect(onRefresh).toHaveBeenCalledOnce()
+      await vi.advanceTimersByTimeAsync(400)
+      container.remove()
+    })
+  })
+
+  describe('when translations are given', () => {
+    it('then they replace the default texts', async () => {
+      const mounted = mountInScroller({ onRefresh: vi.fn(), translations: { pull: 'Tirer' } })
+      wrapper = mounted.wrapper
+      await nextTick()
+
+      pull(mounted.scroller, 60)
+      await nextTick()
+
+      expect(mounted.component.text()).toContain('Tirer')
+    })
+  })
+
+  describe('when standalone mode is required outside an installed app', () => {
+    it('then the pull to refresh is disabled', async () => {
+      Object.defineProperty(globalThis, 'matchMedia', { value: () => ({ matches: false }), configurable: true })
+      const onRefresh = vi.fn()
+      wrapper = mount(MazPullToRefresh, { props: { onRefresh, standaloneMode: true }, attachTo: document.body })
+      await nextTick()
+
+      pull(globalThis, 200)
+      release(globalThis)
+      await nextTick()
+
+      expect(wrapper.find('.m-pull-to-refresh__header').exists()).toBe(false)
+      expect(onRefresh).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('when standalone mode is required inside an installed app', () => {
+    it('then the pull to refresh is enabled', async () => {
+      Object.defineProperty(globalThis, 'matchMedia', { value: () => ({ matches: true }), configurable: true })
+      wrapper = mount(MazPullToRefresh, { props: { onRefresh: vi.fn(), standaloneMode: true }, attachTo: document.body })
+      await nextTick()
+
+      expect(wrapper.find('.m-pull-to-refresh__header').exists()).toBe(true)
+    })
+  })
+
+  describe('when onRefresh rejects', () => {
+    it('then it emits error then finish without throwing', async () => {
+      const failure = new Error('offline')
+      wrapper = mount(MazPullToRefresh, { props: { onRefresh: vi.fn().mockRejectedValue(failure) }, attachTo: document.body })
+      await nextTick()
+
+      const exposed = wrapper.vm as unknown as { refresh: () => Promise<void> }
+      const done = exposed.refresh()
+      await vi.advanceTimersByTimeAsync(400)
+      await done
+
+      expect(wrapper.emitted('error')?.[0]).toEqual([failure])
+      expect(wrapper.emitted('finish')).toHaveLength(1)
+      expect(wrapper.emitted('loaded')).toBeUndefined()
+    })
+  })
+
+  describe('when the loading slot is provided', () => {
+    it('then it replaces the spinner while refreshing', async () => {
       wrapper = mount(MazPullToRefresh, {
-        props: {
-          onRefresh: actionMock as unknown as () => Promise<void>,
-          distance: 100,
-        },
-        slots: {
-          default: 'Content Slot',
-        },
+        props: { onRefresh: () => new Promise(() => {}) },
+        slots: { 'pull-loading': '<span class="custom-loader">Loading</span>' },
+        attachTo: document.body,
       })
-      await wrapper.vm.$nextTick()
-    })
+      await nextTick()
 
-    afterEach(() => {
-      wrapper.unmount()
-    })
+      void (wrapper.vm as unknown as { refresh: () => Promise<void> }).refresh()
+      await nextTick()
 
-    describe('When a full pull-to-refresh gesture is performed', () => {
-      it('calls the onRefresh handler and emits start, loaded, response, finish events', async () => {
-        dispatchTouch('touchstart', 50)
-        dispatchTouch('touchmove', 200)
-        dispatchTouch('touchend')
-
-        await vi.waitFor(() => {
-          expect(actionMock).toHaveBeenCalledOnce()
-        })
-
-        expect(wrapper.emitted('start')).toHaveLength(1)
-        expect(wrapper.emitted('loaded')).toHaveLength(1)
-        expect(wrapper.emitted('response')?.[0]).toEqual(['response-data'])
-        expect(wrapper.emitted('finish')).toHaveLength(1)
-      })
-    })
-
-    describe('When the pull distance is not reached', () => {
-      it('does not call onRefresh', async () => {
-        dispatchTouch('touchstart', 50)
-        dispatchTouch('touchmove', 80)
-        dispatchTouch('touchend')
-
-        await wrapper.vm.$nextTick()
-
-        expect(actionMock).not.toHaveBeenCalled()
-      })
-    })
-
-    describe('When scrollY is greater than 0 during touchmove', () => {
-      it('does not trigger the action', async () => {
-        dispatchTouch('touchstart', 50)
-        Object.defineProperty(globalThis, 'scrollY', { value: 10, writable: true, configurable: true })
-        dispatchTouch('touchmove', 200)
-        dispatchTouch('touchend')
-
-        await wrapper.vm.$nextTick()
-
-        expect(actionMock).not.toHaveBeenCalled()
-      })
-    })
-
-    describe('When the touch moves upward (negative distance)', () => {
-      it('does not trigger the action', async () => {
-        dispatchTouch('touchstart', 200)
-        dispatchTouch('touchmove', 50)
-        dispatchTouch('touchend')
-
-        await wrapper.vm.$nextTick()
-
-        expect(actionMock).not.toHaveBeenCalled()
-      })
-    })
-
-    describe('When scrollY is greater than 0 during touchend', () => {
-      it('does not run the action', async () => {
-        dispatchTouch('touchstart', 50)
-        dispatchTouch('touchmove', 200)
-        Object.defineProperty(globalThis, 'scrollY', { value: 10, writable: true, configurable: true })
-        dispatchTouch('touchend')
-
-        await wrapper.vm.$nextTick()
-
-        expect(actionMock).not.toHaveBeenCalled()
-      })
-    })
-  })
-
-  describe('Given the component is disabled', () => {
-    describe('When rendered with disabled prop set to true', () => {
-      it('does not render the loading header', async () => {
-        const wrapper = mount(MazPullToRefresh, {
-          props: {
-            onRefresh: vi.fn(),
-            disabled: true,
-          },
-          slots: {
-            default: 'Content Slot',
-          },
-        })
-
-        await wrapper.vm.$nextTick()
-
-        expect(wrapper.find('.loading-header').exists()).toBe(false)
-        wrapper.unmount()
-      })
-    })
-
-    describe('When rendered without onRefresh', () => {
-      it('does not render the loading header', async () => {
-        const wrapper = mount(MazPullToRefresh, {
-          slots: {
-            default: 'Content Slot',
-          },
-        })
-
-        await wrapper.vm.$nextTick()
-
-        expect(wrapper.find('.loading-header').exists()).toBe(false)
-        wrapper.unmount()
-      })
-    })
-  })
-
-  describe('Given the component is rendered and then disabled', () => {
-    describe('When the disabled prop changes from false to true', () => {
-      it('hides the loading header', async () => {
-        const wrapper = mount(MazPullToRefresh, {
-          props: {
-            onRefresh: vi.fn(),
-            disabled: false,
-          },
-          slots: {
-            default: 'Content Slot',
-          },
-        })
-
-        await wrapper.vm.$nextTick()
-        expect(wrapper.find('.loading-header').exists()).toBe(true)
-
-        await wrapper.setProps({ disabled: true })
-        await wrapper.vm.$nextTick()
-
-        expect(wrapper.find('.loading-header').exists()).toBe(false)
-
-        wrapper.unmount()
-      })
-    })
-  })
-
-  describe('Given the component uses a containerSelector', () => {
-    describe('When the container element exists', () => {
-      it('attaches events to that container', async () => {
-        const container = document.createElement('div')
-        container.id = 'test-container'
-        container.getBoundingClientRect = vi.fn().mockReturnValue({
-          top: 0,
-          height: 800,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          width: 0,
-        })
-        document.body.appendChild(container)
-
-        const addSpy = vi.spyOn(container, 'addEventListener')
-
-        const wrapper = mount(MazPullToRefresh, {
-          props: {
-            onRefresh: vi.fn(),
-            containerSelector: '#test-container',
-          },
-          slots: {
-            default: 'Content',
-          },
-        })
-
-        await wrapper.vm.$nextTick()
-
-        expect(addSpy).toHaveBeenCalledWith('touchstart', expect.any(Function))
-        expect(addSpy).toHaveBeenCalledWith('touchmove', expect.any(Function))
-        expect(addSpy).toHaveBeenCalledWith('touchend', expect.any(Function))
-
-        addSpy.mockRestore()
-        wrapper.unmount()
-        document.body.removeChild(container)
-      })
-    })
-  })
-
-  describe('Given a pull gesture exceeds the distance threshold', () => {
-    describe('When pullHeight is computed', () => {
-      it('caps the pull height at the distance value', async () => {
-        const wrapper = mount(MazPullToRefresh, {
-          props: {
-            onRefresh: vi.fn().mockResolvedValue(undefined),
-            distance: 50,
-          },
-          slots: {
-            default: 'Content',
-          },
-        })
-
-        await wrapper.vm.$nextTick()
-
-        dispatchTouch('touchstart', 10)
-        dispatchTouch('touchmove', 200)
-
-        await wrapper.vm.$nextTick()
-
-        const header = wrapper.find('.loading-header')
-        expect(header.attributes('style')).toContain('height: 50px')
-
-        dispatchTouch('touchend')
-        await vi.waitFor(() => {
-          expect(wrapper.emitted('finish')).toHaveLength(1)
-        })
-
-        wrapper.unmount()
-      })
-    })
-  })
-
-  describe('Given the component is unmounted', () => {
-    describe('When unmount occurs', () => {
-      it('removes event listeners from the container', async () => {
-        const removeSpy = vi.spyOn(document.body, 'removeEventListener')
-
-        const wrapper = mount(MazPullToRefresh, {
-          props: {
-            onRefresh: vi.fn(),
-          },
-          slots: {
-            default: 'Content',
-          },
-        })
-
-        await wrapper.vm.$nextTick()
-        wrapper.unmount()
-
-        expect(removeSpy).toHaveBeenCalledWith('touchstart', expect.any(Function))
-        expect(removeSpy).toHaveBeenCalledWith('touchmove', expect.any(Function))
-        expect(removeSpy).toHaveBeenCalledWith('touchend', expect.any(Function))
-
-        removeSpy.mockRestore()
-      })
-    })
-  })
-
-  describe('Given the component has custom slots', () => {
-    describe('When pull-before slot is provided', () => {
-      it('renders the custom pull-before content', async () => {
-        const wrapper = mount(MazPullToRefresh, {
-          props: {
-            onRefresh: vi.fn(),
-          },
-          slots: {
-            'default': 'Content',
-            'pull-before': '<span class="custom-before">Custom pull text</span>',
-          },
-        })
-
-        await wrapper.vm.$nextTick()
-
-        expect(wrapper.find('.custom-before').text()).toBe('Custom pull text')
-
-        wrapper.unmount()
-      })
-    })
-  })
-
-  describe('Given headerClass prop is provided', () => {
-    describe('When the component renders', () => {
-      it('applies the headerClass to the loading-header element', async () => {
-        const wrapper = mount(MazPullToRefresh, {
-          props: {
-            onRefresh: vi.fn(),
-            headerClass: 'my-custom-header',
-          },
-          slots: {
-            default: 'Content',
-          },
-        })
-
-        await wrapper.vm.$nextTick()
-
-        expect(wrapper.find('.loading-header').classes()).toContain('my-custom-header')
-
-        wrapper.unmount()
-      })
-    })
-  })
-
-  describe('Given loading is in progress', () => {
-    describe('When a new touch gesture starts', () => {
-      it('ignores the touch events', async () => {
-        const actionMock = vi.fn().mockReturnValue(new Promise(() => {}))
-
-        const wrapper = mount(MazPullToRefresh, {
-          props: {
-            onRefresh: actionMock,
-            distance: 100,
-          },
-          slots: {
-            default: 'Content',
-          },
-        })
-
-        await wrapper.vm.$nextTick()
-
-        dispatchTouch('touchstart', 50)
-        dispatchTouch('touchmove', 200)
-        dispatchTouch('touchend')
-
-        await wrapper.vm.$nextTick()
-
-        expect(actionMock).toHaveBeenCalledOnce()
-
-        dispatchTouch('touchstart', 50)
-        dispatchTouch('touchmove', 200)
-        dispatchTouch('touchend')
-
-        await wrapper.vm.$nextTick()
-
-        expect(actionMock).toHaveBeenCalledOnce()
-
-        wrapper.unmount()
-      })
-    })
-  })
-
-  describe('Given the component becomes enabled after being disabled', () => {
-    describe('When disabled prop changes from true to false', () => {
-      it('attaches event listeners to the container', async () => {
-        const addSpy = vi.spyOn(document.body, 'addEventListener')
-
-        const wrapper = mount(MazPullToRefresh, {
-          props: {
-            onRefresh: vi.fn(),
-            disabled: true,
-          },
-          slots: {
-            default: 'Content',
-          },
-        })
-
-        await wrapper.vm.$nextTick()
-
-        addSpy.mockClear()
-
-        await wrapper.setProps({ disabled: false })
-        await wrapper.vm.$nextTick()
-
-        expect(addSpy).toHaveBeenCalledWith('touchstart', expect.any(Function))
-        expect(addSpy).toHaveBeenCalledWith('touchmove', expect.any(Function))
-        expect(addSpy).toHaveBeenCalledWith('touchend', expect.any(Function))
-
-        addSpy.mockRestore()
-        wrapper.unmount()
-      })
-    })
-  })
-
-  describe('Given the offset prop is provided', () => {
-    describe('When the component initializes', () => {
-      it('renders without errors', async () => {
-        const wrapper = mount(MazPullToRefresh, {
-          props: {
-            onRefresh: vi.fn(),
-            offset: 50,
-          },
-          slots: {
-            default: 'Content',
-          },
-        })
-
-        await wrapper.vm.$nextTick()
-
-        expect(wrapper.exists()).toBe(true)
-
-        wrapper.unmount()
-      })
-    })
-  })
-
-  describe('Given a touchstart occurs with negative margins', () => {
-    describe('When both top and bottom margins are negative', () => {
-      it('ignores the touch event', async () => {
-        document.body.getBoundingClientRect = vi.fn().mockReturnValue({
-          top: -200,
-          height: 1000,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          width: 0,
-        })
-        Object.defineProperty(globalThis, 'innerHeight', { value: 50, writable: true, configurable: true })
-
-        const actionMock = vi.fn().mockResolvedValue(undefined)
-
-        const wrapper = mount(MazPullToRefresh, {
-          props: {
-            onRefresh: actionMock,
-            distance: 100,
-          },
-          slots: {
-            default: 'Content',
-          },
-        })
-
-        await wrapper.vm.$nextTick()
-
-        dispatchTouch('touchstart', 50)
-        dispatchTouch('touchmove', 200)
-        dispatchTouch('touchend')
-
-        await wrapper.vm.$nextTick()
-
-        expect(actionMock).not.toHaveBeenCalled()
-
-        wrapper.unmount()
-      })
+      expect(wrapper.find('.custom-loader').exists()).toBe(true)
     })
   })
 })

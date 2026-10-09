@@ -1,173 +1,170 @@
 <script lang="ts" setup>
+import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
+import type { DeepPartial } from '@maz-ui/utils/ts-helpers/DeepPartial'
+import type { CSSProperties, HTMLAttributes } from 'vue'
+import type { PullToRefreshTarget } from '../composables/usePullToRefresh'
 import type { MazColor } from './types'
+import { MazArrowDown } from '@maz-ui/icons/raw/MazArrowDown'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { isStandaloneMode } from '@maz-ui/utils/helpers/isStandaloneMode'
+import { computed, defineAsyncComponent, onMounted, ref, shallowRef, useTemplateRef, watch } from 'vue'
+import { usePullToRefresh } from '../composables/usePullToRefresh'
+import MazIcon from './MazIcon.vue'
 
-import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue'
+export interface MazPullToRefreshProps {
+  /**
+   * Function called when the user releases after pulling far enough. The spinner stays visible until the returned promise settles.
+   * Without it, the component does nothing.
+   */
+  onRefresh?: () => unknown
+  /**
+   * Pull distance (in px, after resistance) required to trigger a refresh
+   * @default 80
+   */
+  distance?: number
+  /**
+   * Maximum pull distance (in px), reached with a rubber band effect beyond `distance`
+   * @default distance * 1.6
+   */
+  maxDistance?: number
+  /**
+   * Ratio between the finger movement and the pull distance, between 0 and 1. Lower is stiffer.
+   * @default 0.5
+   */
+  resistance?: number
+  /**
+   * Minimum duration (in ms) of the refreshing state, so the feedback stays visible on fast refreshes
+   * @default 400
+   */
+  minDuration?: number
+  /**
+   * CSS selector of the scroll container. By default, the closest scrollable ancestor of the component, or the window.
+   * The pull only starts when this container is scrolled to the top.
+   */
+  containerSelector?: string
+  /**
+   * Class of the header that holds the indicator
+   */
+  headerClass?: HTMLAttributes['class']
+  /**
+   * Color of the progress ring and the spinner
+   * @default 'primary'
+   */
+  spinnerColor?: MazColor
+  /**
+   * Disable the pull to refresh
+   * @default false
+   */
+  disabled?: boolean
+  /**
+   * Only enable the pull to refresh when the app runs as an installed PWA (standalone display mode),
+   * browsers already provide their own pull to refresh
+   * @default false
+   */
+  standaloneMode?: boolean
+  /**
+   * Vibrate briefly when the pull reaches `distance` (devices supporting `navigator.vibrate`)
+   * @default true
+   */
+  haptic?: boolean
+  /**
+   * Translations of the pull to refresh
+   * @type {DeepPartial<MazUiTranslationsNestedSchema['pullToRefresh']>}
+   * @default Translations from @maz-ui/translations
+   */
+  translations?: DeepPartial<MazUiTranslationsNestedSchema['pullToRefresh']>
+  /**
+   * @deprecated No effect since the scroll position of the container is used to know when the pull can start
+   */
+  offset?: number
+}
 
 const {
-  distance: distanceProp = 100,
-  offset = 0,
   onRefresh,
+  distance: threshold = 80,
+  maxDistance,
+  resistance = 0.5,
+  minDuration = 400,
   containerSelector,
   headerClass,
-  spinnerColor = 'contrast',
+  spinnerColor = 'primary',
   disabled = false,
   standaloneMode = false,
+  haptic = true,
+  translations,
 } = defineProps<MazPullToRefreshProps>()
 
-const emits = defineEmits(['loaded', 'start', 'error', 'finish', 'response'])
+const emits = defineEmits<{
+  /** Emitted when the refresh starts */
+  start: []
+  /** Emitted when `onRefresh` resolved */
+  loaded: []
+  /** Emitted with the value resolved by `onRefresh` */
+  response: [response: unknown]
+  /** Emitted when `onRefresh` threw or rejected */
+  error: [error: unknown]
+  /** Emitted when the refresh ends, after `loaded` or `error` */
+  finish: []
+}>()
+
+defineSlots<{
+  /** Content shown while pulling, before the threshold */
+  'pull-before'?: (props: { progress: number, distance: number }) => unknown
+  /** Content shown once releasing triggers a refresh */
+  'pull-ready'?: (props: { progress: number, distance: number }) => unknown
+  /** Content shown while refreshing */
+  'pull-loading'?: (props: { progress: number, distance: number }) => unknown
+  /** Content of the page */
+  'default'?: () => unknown
+}>()
 
 const MazSpinner = defineAsyncComponent(() => import('./MazSpinner.vue'))
 
-export interface MazPullToRefreshProps {
-  distance?: number
-  offset?: number
-  onRefresh?: () => unknown
-  containerSelector?: string
-  headerClass?: string
-  spinnerColor?: MazColor
-  disabled?: boolean
-  standaloneMode?: boolean
+const { t } = useTranslations()
+const messages = computed<MazUiTranslationsNestedSchema['pullToRefresh']>(() => ({
+  pull: translations?.pull ?? t('pullToRefresh.pull'),
+  release: translations?.release ?? t('pullToRefresh.release'),
+  refreshing: translations?.refreshing ?? t('pullToRefresh.refreshing'),
+}))
+
+const root = useTemplateRef<HTMLElement>('root')
+const container = shallowRef<PullToRefreshTarget>()
+const standalone = ref(false)
+
+function isScrollable(element: HTMLElement) {
+  return ['auto', 'scroll', 'overlay'].includes(getComputedStyle(element).overflowY)
 }
 
-const mounted = ref(false)
+function findContainer(): HTMLElement | Window {
+  if (containerSelector) {
+    const element = document.querySelector<HTMLElement>(containerSelector)
+    if (element)
+      return element
+  }
+  let element = root.value?.parentElement
+  while (element && element !== document.body && element !== document.documentElement) {
+    if (isScrollable(element))
+      return element
+    element = element.parentElement
+  }
+  return globalThis.window
+}
+
 onMounted(() => {
-  mounted.value = true
+  standalone.value = standaloneMode && isStandaloneMode()
+  container.value = findContainer()
 })
 
-const isDisabled = computed(
-  () =>
-    disabled
-    || onRefresh === undefined
-    || (standaloneMode && mounted.value && !isStandaloneMode()),
-)
-
-const margin = ref({
-  top: 0,
-  bottom: 0,
+watch(() => containerSelector, () => {
+  if (root.value)
+    container.value = findContainer()
 })
 
-const pull = ref<{
-  from: number
-  to: number
-  distance: number
-  available: boolean
-  state: 'start' | 'move' | 'end'
-}>({
-  from: -1,
-  to: -1,
-  distance: 0,
-  available: false,
-  state: 'end',
-})
+const isDisabled = computed(() => disabled || onRefresh === undefined || (standaloneMode && !standalone.value))
 
-const internalLoading = ref(false)
-
-const container = computed<HTMLElement | undefined>(() => {
-  if (typeof document === 'undefined' || isDisabled.value) {
-    return
-  }
-
-  const element = containerSelector
-    ? (document.querySelector(containerSelector) as HTMLElement)
-    : document.body
-
-  if (!element) {
-    throw new Error('MazPullToRefresh - container not found')
-  }
-
-  return element
-})
-
-const pullHeight = computed(() => {
-  if ((pull.value.state !== 'move' && pull.value.state !== 'end') || isDisabled.value) {
-    return 0
-  }
-  return pull.value.distance > distanceProp ? distanceProp : pull.value.distance
-})
-
-function updateView(container: HTMLElement) {
-  const { top, height } = container.getBoundingClientRect()
-
-  margin.value = {
-    top,
-    bottom: window.innerHeight - (height + top + offset),
-  }
-}
-
-function setLoading(type: boolean) {
-  internalLoading.value = type
-}
-
-function handleTouchStart(event: TouchEvent) {
-  if (
-    internalLoading.value
-    || (margin.value.top < 0 && margin.value.bottom < 0)
-    || isDisabled.value
-  ) {
-    return
-  }
-
-  const item = event.touches.item(0)
-
-  if (!item) {
-    return
-  }
-
-  pull.value.state = 'start'
-  pull.value.from = item.pageY
-}
-
-function handleTouchMove(event: TouchEvent) {
-  if (internalLoading.value || pull.value.from < 0 || window.scrollY > 0 || isDisabled.value) {
-    return
-  }
-
-  const item = event.touches.item(0)
-
-  if (!item) {
-    return
-  }
-
-  pull.value.to = item.pageY
-  const distance = pull.value.to - pull.value.from
-
-  pull.value.distance = distance > 0 ? distance : 0
-  pull.value.available = pull.value.distance >= distanceProp
-  pull.value.state = 'move'
-
-  // setTimeout(() => {
-  //   resetPull()
-  // }, 10_000)
-}
-
-function handleTouchEnd() {
-  if (internalLoading.value || isDisabled.value) {
-    return
-  }
-
-  if (pullHeight.value === distanceProp && pull.value.state === 'move' && window.scrollY <= 0) {
-    runAction()
-  }
-  else {
-    resetPull()
-  }
-}
-
-function resetPull() {
-  pull.value = {
-    from: -1,
-    to: -1,
-    distance: 0,
-    available: false,
-    state: 'end',
-  }
-}
-
-async function runAction() {
+async function runRefresh() {
+  emits('start')
   try {
-    setLoading(true)
-    emits('start')
     const response = await onRefresh?.()
     emits('loaded')
     emits('response', response)
@@ -177,77 +174,83 @@ async function runAction() {
     throw error
   }
   finally {
-    resetPull()
-    setLoading(false)
     emits('finish')
   }
 }
 
-watch(
-  () => isDisabled.value,
-  (disabled) => {
-    if (disabled === true) {
-      removeEvents()
-    }
-    else {
-      initComponentAndEvents()
-    }
-  },
-  { immediate: true },
-)
+const { distance, progress, isPulling, isReady, isRefreshing, refresh } = usePullToRefresh({
+  target: container,
+  onRefresh: runRefresh,
+  threshold: () => threshold,
+  maxDistance: () => maxDistance,
+  resistance: () => resistance,
+  minDuration: () => minDuration,
+  haptic: () => haptic,
+  disabled: isDisabled,
+})
 
-function initComponentAndEvents() {
-  if (!container.value || isDisabled.value || document === undefined) {
-    return
-  }
+const ringLength = 2 * Math.PI * 16
+const indicatorClass = 'maz:relative maz:flex maz:size-9 maz:items-center maz:justify-center maz:rounded-full maz:bg-surface maz:text-base maz:text-foreground maz:shadow-elevation'
+const accentStyle = computed<CSSProperties>(() => {
+  const color = spinnerColor as string
+  if (color === 'theme')
+    return {}
+  if (color === 'normal')
+    return { color: 'var(--maz-foreground)' }
+  return { color: `var(--maz-${color})` }
+})
 
-  container.value.addEventListener('touchstart', handleTouchStart)
-  container.value.addEventListener('touchmove', handleTouchMove)
-  container.value.addEventListener('touchend', handleTouchEnd)
-  updateView(container.value)
-}
-
-function removeEvents() {
-  if (!container.value || document === undefined) {
-    return
-  }
-
-  container.value.removeEventListener('touchstart', handleTouchStart)
-  container.value.removeEventListener('touchmove', handleTouchMove)
-  container.value.removeEventListener('touchend', handleTouchEnd)
-}
-
-onUnmounted(() => {
-  removeEvents()
+defineExpose({
+  /** Run the refresh programmatically (a "refresh" button for keyboard and mouse users) */
+  refresh,
+  /** `onRefresh` is running */
+  isRefreshing,
+  /** Pull progress towards `distance`, from 0 to 1 */
+  progress,
 })
 </script>
 
 <template>
-  <div class="m-pull-to-refresh m-reset-css" :class="{ '--available': pull.available || pullHeight > 10 }">
+  <div
+    ref="root"
+    class="m-pull-to-refresh m-reset-css"
+    :class="{ '--available': isReady, '--pulling': isPulling, '--refreshing': isRefreshing }"
+    :aria-busy="isRefreshing || undefined"
+  >
     <div
       v-if="!isDisabled"
-      class="loading-header maz:relative maz:flex maz:w-full maz:flex-center maz:text-center maz:text-[0.8em]"
-      :style="{ height: `${pullHeight}px` }"
-      :class="headerClass"
+      class="m-pull-to-refresh__header maz:relative maz:flex maz:w-full maz:items-end maz:justify-center maz:overflow-hidden maz:text-center maz:text-[0.8em] maz:text-muted"
+      :class="[headerClass, { 'maz:transition-[height] maz:duration-200 maz:ease-out maz:motion-reduce:transition-none': !isPulling }]"
+      :style="{ height: `${distance}px` }"
+      aria-hidden="true"
     >
-      <div v-if="!pull.available" class="header-text maz:absolute maz:flex maz:w-full maz:flex-center" :class="{ 'maz:bottom-2': !(pull.available || pullHeight > 10) }">
-        <slot name="pull-before">
-          <span>Pull to refresh</span>
+      <div
+        v-if="distance > 0"
+        class="maz:flex maz:flex-col maz:items-center maz:gap-1.5 maz:pb-2"
+        :style="{ opacity: Math.min(1, progress * 1.5) }"
+      >
+        <slot v-if="isRefreshing" name="pull-loading" :progress="progress" :distance="distance">
+          <MazSpinner :color="spinnerColor" size="2.25em" />
         </slot>
-      </div>
-      <div v-else-if="pull.available && !internalLoading" class="header-text maz:absolute maz:flex maz:w-full maz:flex-center">
-        <slot name="pull-ready">
-          <span> Release to refresh </span>
+        <slot v-else-if="isReady" name="pull-ready" :progress="progress" :distance="distance">
+          <span class="m-pull-to-refresh__indicator --ready" :class="indicatorClass" :style="accentStyle">
+            <MazIcon :icon="MazArrowDown" class="maz:rotate-180 maz:transition-transform maz:duration-200 maz:motion-reduce:transition-none" />
+          </span>
+          <span>{{ messages.release }}</span>
         </slot>
-      </div>
-      <div v-if="internalLoading" class="header-text maz:absolute maz:flex maz:w-full maz:flex-center">
-        <slot name="pull-loading">
-          <div class="maz:flex maz:flex-col maz:flex-center">
-            <MazSpinner :color="spinnerColor" size="2.5em" />
-          </div>
+        <slot v-else name="pull-before" :progress="progress" :distance="distance">
+          <span class="m-pull-to-refresh__indicator" :class="indicatorClass">
+            <svg class="maz:absolute maz:inset-0 maz:size-full maz:-rotate-90" viewBox="0 0 36 36" :style="accentStyle">
+              <circle cx="18" cy="18" r="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" :stroke-dasharray="ringLength" :stroke-dashoffset="ringLength * (1 - progress)" />
+            </svg>
+            <MazIcon :icon="MazArrowDown" :style="{ transform: `rotate(${progress * 180}deg)` }" />
+          </span>
+          <span>{{ messages.pull }}</span>
         </slot>
       </div>
     </div>
+
+    <span class="maz:sr-only" role="status" aria-live="polite">{{ isRefreshing ? messages.refreshing : '' }}</span>
 
     <slot />
   </div>

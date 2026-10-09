@@ -12,6 +12,7 @@ export const composables = {
     { text: 'useFormValidator', link: '/composables/use-form-validator' },
     { text: 'useIdleTimeout', link: '/composables/use-idle-timeout' },
     { text: 'useDisplayNames', link: '/composables/use-display-names' },
+    { text: withNewBadge('usePullToRefresh'), link: '/composables/use-pull-to-refresh' },
     { text: 'useReadingTime', link: '/composables/use-reading-time' },
     { text: 'useStringMatching', link: '/composables/use-string-matching' },
     { text: 'useSwipe', link: '/composables/use-swipe' },

@@ -96,6 +96,11 @@ export default {
     collapse: '阅读更少',
     ariaLabel: '可展开内容',
   },
+  pullToRefresh: {
+    pull: '下拉刷新',
+    release: '释放刷新',
+    refreshing: '正在刷新…',
+  },
   skeleton: {
     ariaLabel: '内容加载中',
     loadingText: '加载中...',
