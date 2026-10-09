@@ -1,5 +1,64 @@
 # Change Log
 
+## v5.0.0-beta.50 (2026-10-09)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.49...v5.0.0-beta.50)
+
+### 🚀 Features
+
+- **@maz-ui/translations:** Add pull to refresh texts ([65686577](https://github.com/LouisMazel/maz-ui/commit/65686577))
+
+  New pullToRefresh keys (pull, release, refreshing) in every locale, used by
+  MazPullToRefresh instead of hard coded English texts.
+
+- **maz-ui:** Add usePullToRefresh headless composable ([777076c9](https://github.com/LouisMazel/maz-ui/commit/777076c9))
+
+  Tracks the pull to refresh gesture on the window or any scroll container and
+  exposes its state (distance, progress, isPulling, isReady, isRefreshing,
+  error) to build a custom indicator.
+  - the pull only starts when the target is scrolled to the top
+  - rubber band beyond the threshold, up to maxDistance
+  - horizontal and multi-touch gestures are ignored (direction lock)
+  - native scroll and bounce prevented while pulling
+  - minimum refreshing duration so fast refreshes stay visible
+  - optional haptic feedback when the threshold is reached
+  - refresh() to trigger it programmatically, never throws (error and onError)
+  - listeners follow the target and are removed with the scope
+
+- **@maz-ui/nuxt:** Auto-import usePullToRefresh ([1c60e5fc](https://github.com/LouisMazel/maz-ui/commit/1c60e5fc))
+
+  New composables.usePullToRefresh option, enabled by default like the other
+  composables.
+
+- **maz-ui:** Rework MazPullToRefresh on top of usePullToRefresh ([bbf8a22d](https://github.com/LouisMazel/maz-ui/commit/bbf8a22d))
+
+  - the pull follows the closest scrollable ancestor (or container-selector, or
+    the window) instead of the window scroll only
+  - progress ring and rotating arrow, ready state, spinner while refreshing
+  - rubber band, resistance, max-distance and min-duration props
+  - haptic feedback when the threshold is reached
+  - texts from @maz-ui/translations, translations prop to override them
+  - slots receive { progress, distance }
+  - accessible: aria-busy, live region announcing the refresh, indicator hidden
+    from assistive technologies, reduced motion respected
+  - refresh, isRefreshing and progress exposed for a keyboard usable button
+  - an error of on-refresh is emitted (error, then finish) instead of thrown
+  - offset is deprecated (no effect)
+
+### 📖 Documentation
+
+- **docs:** Document usePullToRefresh and the new MazPullToRefresh ([bbecd17b](https://github.com/LouisMazel/maz-ui/commit/bbecd17b))
+
+  - new usePullToRefresh page, listed in the composables, resolvers and Nuxt docs
+  - MazPullToRefresh page rewritten (demo, scroll container, standalone mode,
+    tuning, slots, translations, accessibility, events)
+  - migration guide: behavior changes of MazPullToRefresh
+  - MCP documentation tests count the new composable
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.49 (2026-10-08)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.48...v5.0.0-beta.49)

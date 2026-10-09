@@ -1,5 +1,20 @@
 # Change Log
 
+## v5.0.0-beta.50 (2026-10-09)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.49...v5.0.0-beta.50)
+
+### 🚀 Features
+
+- **@maz-ui/translations:** Add pull to refresh texts ([65686577](https://github.com/LouisMazel/maz-ui/commit/65686577))
+
+  New pullToRefresh keys (pull, release, refreshing) in every locale, used by
+  MazPullToRefresh instead of hard coded English texts.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.46 (2026-10-05)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.45...v5.0.0-beta.46)

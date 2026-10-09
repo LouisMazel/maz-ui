@@ -1,5 +1,20 @@
 # Change Log
 
+## v5.0.0-beta.50 (2026-10-09)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.49...v5.0.0-beta.50)
+
+### 🚀 Features
+
+- **@maz-ui/nuxt:** Auto-import usePullToRefresh ([1c60e5fc](https://github.com/LouisMazel/maz-ui/commit/1c60e5fc))
+
+  New composables.usePullToRefresh option, enabled by default like the other
+  composables.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.49 (2026-10-08)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.48...v5.0.0-beta.49)

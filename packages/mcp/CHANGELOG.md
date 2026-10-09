@@ -1,5 +1,23 @@
 # Changelog
 
+## v5.0.0-beta.50 (2026-10-09)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.49...v5.0.0-beta.50)
+
+### 📖 Documentation
+
+- **docs:** Document usePullToRefresh and the new MazPullToRefresh ([bbecd17b](https://github.com/LouisMazel/maz-ui/commit/bbecd17b))
+
+  - new usePullToRefresh page, listed in the composables, resolvers and Nuxt docs
+  - MazPullToRefresh page rewritten (demo, scroll container, standalone mode,
+    tuning, slots, translations, accessibility, events)
+  - migration guide: behavior changes of MazPullToRefresh
+  - MCP documentation tests count the new composable
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.49 (2026-10-08)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.48...v5.0.0-beta.49)
