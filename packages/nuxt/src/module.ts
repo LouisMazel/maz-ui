@@ -144,6 +144,7 @@ const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDial
   useInstanceUniqId: true,
   useMountComponent: true,
   useSwipe: true,
+  usePullToRefresh: true,
   useMutationObserver: true,
   useSidebar: true,
 }

@@ -266,6 +266,13 @@ export interface MazUiNuxtOptions {
      * @default true
      */
     useSwipe?: boolean
+
+    /**
+     * Enable auto-import of usePullToRefresh composable
+     * @description Headless pull to refresh gesture on a scroll container
+     * @default true
+     */
+    usePullToRefresh?: boolean
   }
 
   /**

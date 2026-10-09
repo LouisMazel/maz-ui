@@ -132,6 +132,7 @@ describe('nuxt module', () => {
       expect(composables.useInstanceUniqId).toBe(true)
       expect(composables.useMountComponent).toBe(true)
       expect(composables.useSwipe).toBe(true)
+      expect(composables.usePullToRefresh).toBe(true)
       expect(composables.useMutationObserver).toBe(true)
     })
   })
