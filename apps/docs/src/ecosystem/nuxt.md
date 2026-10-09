@@ -365,6 +365,7 @@ const composables = {
   useReadingTime: true, // Reading time calculation
   useDisplayNames: true, // Display localized names
   useSwipe: true, // Swipe gestures
+  usePullToRefresh: true, // Pull to refresh gesture
 
   // 🔧 Advanced
   useFreezeValue: true, // Freeze reactive values

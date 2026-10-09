@@ -110,6 +110,7 @@ describe('Given DocumentationService instance', () => {
         'use-drag',
         'use-form-validator',
         'use-idle-timeout',
+        'use-pull-to-refresh',
         'use-reading-time',
         'use-string-matching',
         'use-swipe',
@@ -273,7 +274,7 @@ describe('Given DocumentationService instance', () => {
 
       expect(result.components.total).toBeGreaterThanOrEqual(56)
       expect(result.guides.total).toBe(18)
-      expect(result.composables.total).toBe(15)
+      expect(result.composables.total).toBe(16)
       expect(result.directives.total).toBe(5)
       expect(result.plugins.total).toBe(4)
       expect(result.utils.total).toBe(41)

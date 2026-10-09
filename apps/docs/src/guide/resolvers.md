@@ -231,7 +231,7 @@ function showSuccess() {
 | -------------------- | --------------------------------------------------- |
 | **UI Management**    | [`useToast`](./../composables/use-toast.md), [`useDialog`](./../composables/use-dialog.md), [`useTheme`](./../ecosystem/themes.md#usetheme-composable-api), [`useWait`](./../composables/use-wait.md)      |
 | **Responsive**       | [`useBreakpoints`](./../composables/use-breakpoints.md), [`useWindowSize`](./../composables/use-window-size.md)                   |
-| **User Interaction** | [`useUserVisibility`](./../composables/use-user-visibility.md), [`useIdleTimeout`](./../composables/use-idle-timeout.md), [`useSwipe`](./../composables/use-swipe.md)   |
+| **User Interaction** | [`useUserVisibility`](./../composables/use-user-visibility.md), [`useIdleTimeout`](./../composables/use-idle-timeout.md), [`useSwipe`](./../composables/use-swipe.md), [`usePullToRefresh`](./../composables/use-pull-to-refresh.md)   |
 | **Form Handling**    | [`useFormValidator`](./../composables/use-form-validator.md)                  |
 | **Advanced**         | [`useTimer`](./../composables/use-timer.md), [`useStringMatching`](./../composables/use-string-matching.md)           |
 

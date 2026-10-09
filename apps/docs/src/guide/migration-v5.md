@@ -619,6 +619,15 @@ The upgrade tool rewrites this automatically on `<MazPullToRefresh>` tags (both 
 rg "<MazPullToRefresh[^>]*\bon-?[Cc]lick" src/
 ```
 
+The component was also rewritten on top of the new [usePullToRefresh](./../composables/use-pull-to-refresh.md) composable. Behavior changes to check:
+
+- **The pull follows the scroll container.** It starts only when the closest scrollable ancestor (or `container-selector`, or the window) is at the top. In v4, only the window scroll was read, so a layout with a scrolling `<main>` refreshed in the middle of a list.
+- **`distance` is now the indicator distance after resistance** (default `80`, was `100` of raw finger movement). With the default `resistance` of `0.5`, the trigger needs about 160px of finger movement. Lower `distance` or raise `resistance` for a shorter gesture.
+- **`spinner-color` defaults to `primary`** (was `contrast`) and also colors the progress ring.
+- **`offset` is deprecated** and has no effect.
+- **Texts are translated** (`pullToRefresh.*` in `@maz-ui/translations`) instead of hard coded in English. The `pull-before`, `pull-ready` and `pull-loading` slots still replace them, and now receive `{ progress, distance }`.
+- **An error thrown by `on-refresh` is emitted (`error`, then `finish`) and no longer thrown again**, so it does not end up as an unhandled rejection.
+
 ### 18. Root `maz-ui` import removed for utilities
 
 In v4, the bare `maz-ui` entry re-exported `@maz-ui/utils`, so you could write `import { sleep } from 'maz-ui'`. In v5 that root re-export is gone — import helpers from their package directly:
