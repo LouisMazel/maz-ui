@@ -167,7 +167,7 @@ export default defineNuxtConfig({
     // Theme System
     theme: {
       preset: 'ocean', // Choose: 'mazUi', 'ocean', 'pristine', 'obsidian'
-      strategy: 'hybrid', // 'runtime' | 'buildtime' | 'hybrid'
+      strategy: 'runtime', // 'runtime' | 'buildtime'
       darkModeStrategy: 'class', // 'class' | 'media' | 'auto'
     },
 
@@ -180,6 +180,13 @@ export default defineNuxtConfig({
     // Components (all enabled by default)
     components: {
       autoImport: true, // Auto-import all components globally
+    },
+
+    // Global component defaults (instance prop > defaults[Component] > defaults.global > library default)
+    defaults: {
+      global: { roundedSize: 'lg' }, // cross-cutting (roundedSize, size)
+      MazBtn: { roundedSize: 'full' }, // per-component, wins over global
+      MazCard: { bordered: false, elevation: true },
     },
 
     // Composables (customize what you need)
@@ -264,7 +271,7 @@ This module is built specifically for Nuxt with perfect SSR and SSG support:
 
 ## Learn More
 
-- **[Full Documentation](https://maz-ui.com/guide/nuxt)**
+- **[Full Documentation](https://maz-ui.com/ecosystem/nuxt)**
 - **[Report Issues](https://github.com/LouisMazel/maz-ui/issues)**
 - **[Discussions](https://github.com/LouisMazel/maz-ui/discussions)**
 

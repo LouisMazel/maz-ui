@@ -64,7 +64,7 @@ function openDialog() {
 </ComponentDemo>
 
 <script lang="ts" setup>
-  import { useDialog, useToast } from 'maz-ui/src/composables/index'
+  import { useDialog, useToast } from 'maz-ui/composables'
 
   const dialog = useDialog()
   const toast = useToast()

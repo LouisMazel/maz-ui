@@ -1,7 +1,7 @@
 import MazBtn from '@components/MazBtn.vue'
 import MazPickerShortcuts from '@components/MazDatePicker/MazPickerShortcuts.vue'
 import { mount } from '@vue/test-utils'
-import dayjs from 'dayjs'
+import dayjs from 'dayjs/esm'
 
 describe('given MazPickerShortcuts component', () => {
   const defaultShortcuts = [
@@ -57,7 +57,7 @@ describe('given MazPickerShortcuts component', () => {
       await vi.dynamicImportSettled()
 
       const buttons = wrapper.findAllComponents(MazBtn)
-      expect(buttons.length).toBe(3)
+      expect(buttons).toHaveLength(3)
     })
 
     it('then each button should display the shortcut label', async () => {
@@ -99,7 +99,7 @@ describe('given MazPickerShortcuts component', () => {
       await vi.dynamicImportSettled()
 
       const selectedButtons = wrapper.findAll('.--is-selected')
-      expect(selectedButtons.length).toBe(0)
+      expect(selectedButtons).toHaveLength(0)
     })
   })
 
@@ -130,7 +130,7 @@ describe('given MazPickerShortcuts component', () => {
       await vi.dynamicImportSettled()
 
       const selectedButtons = wrapper.findAll('.--is-selected')
-      expect(selectedButtons.length).toBe(1)
+      expect(selectedButtons).toHaveLength(1)
     })
 
     it('then it should emit update:model-value with the shortcut value on mount', async () => {
@@ -179,7 +179,7 @@ describe('given MazPickerShortcuts component', () => {
 
       // After click, the selectedShortcut ref should update
       const selectedButtons = wrapper.findAll('.--is-selected')
-      expect(selectedButtons.length).toBe(1)
+      expect(selectedButtons).toHaveLength(1)
     })
 
     it('then clicking a different shortcut should change selection', async () => {
@@ -192,12 +192,12 @@ describe('given MazPickerShortcuts component', () => {
       await buttons[0].trigger('click') // Click "Last 7 days"
 
       let selectedButtons = wrapper.findAll('.--is-selected')
-      expect(selectedButtons.length).toBe(1)
+      expect(selectedButtons).toHaveLength(1)
 
       await buttons[2].trigger('click') // Click "This week"
 
       selectedButtons = wrapper.findAll('.--is-selected')
-      expect(selectedButtons.length).toBe(1)
+      expect(selectedButtons).toHaveLength(1)
     })
   })
 
@@ -247,7 +247,7 @@ describe('given MazPickerShortcuts component', () => {
       await vi.dynamicImportSettled()
 
       // Initially should have selected shortcut
-      expect(wrapper.findAll('.--is-selected').length).toBe(1)
+      expect(wrapper.findAll('.--is-selected')).toHaveLength(1)
 
       // Update modelValue to have no end
       await wrapper.setProps({
@@ -255,7 +255,7 @@ describe('given MazPickerShortcuts component', () => {
       })
 
       // After the watcher triggers, selectedShortcut should be undefined
-      expect(wrapper.findAll('.--is-selected').length).toBe(0)
+      expect(wrapper.findAll('.--is-selected')).toHaveLength(0)
     })
   })
 
@@ -270,7 +270,7 @@ describe('given MazPickerShortcuts component', () => {
       })
       await vi.dynamicImportSettled()
 
-      expect(wrapper.findAll('.--is-selected').length).toBe(1)
+      expect(wrapper.findAll('.--is-selected')).toHaveLength(1)
 
       // Update modelValue but keep end
       await wrapper.setProps({
@@ -278,7 +278,7 @@ describe('given MazPickerShortcuts component', () => {
       })
 
       // Selected shortcut should still be present
-      expect(wrapper.findAll('.--is-selected').length).toBe(1)
+      expect(wrapper.findAll('.--is-selected')).toHaveLength(1)
     })
   })
 
@@ -293,12 +293,12 @@ describe('given MazPickerShortcuts component', () => {
       await vi.dynamicImportSettled()
 
       // Initially no shortcut selected
-      expect(wrapper.findAll('.--is-selected').length).toBe(0)
+      expect(wrapper.findAll('.--is-selected')).toHaveLength(0)
 
       await wrapper.setProps({ shortcut: 'last30Days' })
 
       // Should now have a selected shortcut
-      expect(wrapper.findAll('.--is-selected').length).toBe(1)
+      expect(wrapper.findAll('.--is-selected')).toHaveLength(1)
 
       const emitted = wrapper.emitted('update:model-value')
       expect(emitted).toBeTruthy()
@@ -372,7 +372,7 @@ describe('given MazPickerShortcuts component', () => {
       })
 
       // selectedShortcut should be cleared since end is undefined
-      expect(wrapper.findAll('.--is-selected').length).toBe(0)
+      expect(wrapper.findAll('.--is-selected')).toHaveLength(0)
     })
   })
 })

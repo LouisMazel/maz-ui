@@ -5,7 +5,6 @@ import type {
   BaseFormPayload,
   ExtractModelKey,
   FieldsStates,
-  FieldState,
   FormContext,
   FormSchema,
   FormValidatorOptions,
@@ -33,7 +32,6 @@ import {
 function createValidationProcessor<
   Model extends BaseFormPayload,
   ModelKey extends ExtractModelKey<FormSchema<Model>>,
-  F extends FieldState<Model, ModelKey, Model[ModelKey]>,
 >(
   fieldsToValidate: string[],
   fieldsStates: Ref<FieldsStates<Model, ModelKey>>,
@@ -43,14 +41,14 @@ function createValidationProcessor<
 ) {
   return () => {
     fieldsToValidate.forEach((name) => {
-      const fieldState = fieldsStates.value[name as ModelKey] as F
+      const fieldState = fieldsStates.value[name as ModelKey]
       handleFieldInput<Model, ModelKey>({
         name: name as ModelKey,
         fieldState,
         payload: payload.value,
         schema: internalSchema.value,
         isSubmitted: isSubmitted.value,
-        forceValidation: true,
+        forceValidation: fieldState.mode !== 'eager',
       })
     })
   }
@@ -193,7 +191,7 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
           const fieldState = fieldsStates.value[name as ExtractModelKey<FormSchema<Model>>]
           return fieldState
             && newSnapshot[name] !== oldSnapshot?.[name]
-            && hasModeIncludes(['aggressive', 'lazy', 'progressive'], fieldState.mode)
+            && hasModeIncludes(['aggressive', 'lazy', 'progressive', 'eager'], fieldState.mode)
         })
 
         // Process validations with requestIdleCallback for better performance
@@ -268,7 +266,7 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
 
         if (isValid.value) {
           response = await successCallback(payload.value as SuccessPayload)
-          if (finalOptions.resetOnSuccess || options?.resetOnSuccess) {
+          if (finalOptions.resetOnSuccess) {
             resetForm()
           }
         }
@@ -276,8 +274,6 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
           options?.onError?.({ model: payload.value, errorMessages: errorMessages.value, errors: errors.value })
           scrollToError(scrollToErrorParam)
         }
-
-        isSubmitting.value = false
 
         return response
       }
@@ -310,10 +306,12 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
     isSubmitted,
     isValid,
     errors,
+    hasError: computed(() => Object.values(errorMessages.value).some(Boolean)),
     model: payload,
     fieldsStates,
     validateForm: internalValidateForm,
-    scrollToError,
+    scrollToError: (selector?: string) =>
+      scrollToError(selector ?? (typeof opts.scrollToError === 'string' ? opts.scrollToError : undefined)),
     resetForm,
     handleSubmit,
     errorMessages,

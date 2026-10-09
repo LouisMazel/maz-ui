@@ -1,24 +1,46 @@
 import MazChart from '@components/MazChart.vue'
 import { mount } from '@vue/test-utils'
 
-vi.mock('vue-chartjs', () => {
-  const createMockChart = (name: string) => ({
-    name,
-    props: ['data', 'options', 'plugins', 'datasetIdKey', 'updateMode'],
-    template: `<canvas class="chart-canvas"></canvas>`,
-  })
+const chartInstances: Array<{ data: unknown, options: unknown, update: ReturnType<typeof vi.fn>, destroy: ReturnType<typeof vi.fn> }> = []
+const chartCtorCalls: Array<[unknown, Record<string, unknown>]> = []
 
-  return {
-    Doughnut: createMockChart('Doughnut'),
-    Bar: createMockChart('Bar'),
-    Line: createMockChart('Line'),
-    Pie: createMockChart('Pie'),
-    PolarArea: createMockChart('PolarArea'),
-    Radar: createMockChart('Radar'),
-    Scatter: createMockChart('Scatter'),
-    Bubble: createMockChart('Bubble'),
+class ChartCtor {
+  data: unknown
+  options: unknown
+  update = vi.fn()
+  destroy = vi.fn()
+  static readonly register = vi.fn()
+
+  constructor(canvas: unknown, config: Record<string, unknown>) {
+    this.data = config.data
+    this.options = config.options
+    chartCtorCalls.push([canvas, config])
+    chartInstances.push(this)
   }
-})
+}
+
+vi.mock('chart.js', () => ({
+  Chart: ChartCtor,
+  Title: 'Title',
+  Tooltip: 'Tooltip',
+  Legend: 'Legend',
+  Filler: 'Filler',
+  BarController: 'BarController',
+  BarElement: 'BarElement',
+  LineController: 'LineController',
+  LineElement: 'LineElement',
+  PointElement: 'PointElement',
+  PieController: 'PieController',
+  DoughnutController: 'DoughnutController',
+  ArcElement: 'ArcElement',
+  RadarController: 'RadarController',
+  PolarAreaController: 'PolarAreaController',
+  ScatterController: 'ScatterController',
+  BubbleController: 'BubbleController',
+  CategoryScale: 'CategoryScale',
+  LinearScale: 'LinearScale',
+  RadialLinearScale: 'RadialLinearScale',
+}))
 
 const pieChart = {
   type: 'doughnut',
@@ -34,7 +56,13 @@ const pieChart = {
 }
 
 describe('mazChart', () => {
-  it('should render the chart component with correct props', async () => {
+  beforeEach(() => {
+    chartInstances.length = 0
+    chartCtorCalls.length = 0
+    ChartCtor.register.mockClear()
+  })
+
+  it('renders a canvas with the m-chart class', () => {
     const wrapper = mount(MazChart, {
       props: {
         data: pieChart.data,
@@ -42,13 +70,85 @@ describe('mazChart', () => {
       },
     })
 
-    expect(wrapper.exists()).toBe(true)
-    expect(wrapper.props('data')).toEqual(pieChart.data)
-    expect(wrapper.props('type')).toBe(pieChart.type)
+    const canvas = wrapper.find('canvas')
+    expect(canvas.exists()).toBe(true)
+    expect(canvas.classes()).toContain('m-chart')
+  })
 
-    // Test that the async component starts loading
-    await new Promise(resolve => setTimeout(resolve, 100))
+  it('lazy-loads chart.js, registers only the modules needed for the type, and instantiates the chart on mount', async () => {
+    const wrapper = mount(MazChart, {
+      props: {
+        data: pieChart.data,
+        type: pieChart.type as any,
+      },
+    })
 
-    expect(wrapper.html()).toContain('chart-canvas')
+    await vi.dynamicImportSettled()
+
+    expect(ChartCtor.register).toHaveBeenCalledTimes(1)
+    const registered = ChartCtor.register.mock.calls[0]
+    expect(registered).toContain('DoughnutController')
+    expect(registered).toContain('ArcElement')
+    expect(registered).not.toContain('BarController')
+    expect(registered).not.toContain('CategoryScale')
+
+    expect(chartCtorCalls).toHaveLength(1)
+    const [canvas, config] = chartCtorCalls[0]
+    expect(canvas).toBe(wrapper.find('canvas').element)
+    expect(config.type).toBe('doughnut')
+    expect(config.data).toEqual(pieChart.data)
+  })
+
+  it('updates the chart when data changes and uses the configured updateMode', async () => {
+    const wrapper = mount(MazChart, {
+      props: {
+        data: pieChart.data,
+        type: pieChart.type as any,
+        updateMode: 'reset',
+      },
+    })
+
+    await vi.dynamicImportSettled()
+    const instance = chartInstances[0]
+
+    await wrapper.setProps({
+      data: { ...pieChart.data, datasets: [{ ...pieChart.data.datasets[0], data: [10, 20, 30] }] },
+    })
+
+    expect(instance.update).toHaveBeenCalledWith('reset')
+  })
+
+  it('defaults updateMode to "none" so data changes do not animate', async () => {
+    const wrapper = mount(MazChart, {
+      props: {
+        data: pieChart.data,
+        type: pieChart.type as any,
+      },
+    })
+
+    await vi.dynamicImportSettled()
+    const instance = chartInstances[0]
+
+    await wrapper.setProps({
+      data: { ...pieChart.data, datasets: [{ ...pieChart.data.datasets[0], data: [1, 2, 3] }] },
+    })
+
+    expect(instance.update).toHaveBeenCalledWith('none')
+  })
+
+  it('destroys the chart on unmount', async () => {
+    const wrapper = mount(MazChart, {
+      props: {
+        data: pieChart.data,
+        type: pieChart.type as any,
+      },
+    })
+
+    await vi.dynamicImportSettled()
+    const instance = chartInstances[0]
+
+    wrapper.unmount()
+
+    expect(instance.destroy).toHaveBeenCalledTimes(1)
   })
 })

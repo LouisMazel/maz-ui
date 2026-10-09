@@ -15,15 +15,14 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MazReadingProgressBarProps>(), {
-  height: '4px',
-  color: 'primary',
-  teleportSelector: 'body',
-  contentSelector: 'body',
-  offset: 0,
-  barClass: undefined,
-  distance: undefined,
-})
+const {
+  height = '4px',
+  color = 'primary',
+  teleportSelector = 'body',
+  contentSelector = 'body',
+  offset = 0,
+  distance,
+} = defineProps<MazReadingProgressBarProps>()
 
 const emits = defineEmits<{
   (name: 'begin'): void
@@ -69,14 +68,14 @@ export interface MazReadingProgressBarProps {
 }
 
 const barColor = computed<string>(() => {
-  return `hsl(var(--maz-${props.color}))`
+  return `var(--maz-${color})`
 })
 
 const progressBarWidth = ref<string>()
 const elementHeight = ref<number>(0)
 
 watch(
-  () => props.distance,
+  () => distance,
   (value) => {
     if (value)
       elementHeight.value = value
@@ -108,17 +107,17 @@ const handleScroll = throttle(() => {
 
 async function setupScroll() {
   if (elementHeight.value === 0) {
-    const element = document.querySelector<HTMLElement>(props.contentSelector)
+    const element = document.querySelector<HTMLElement>(contentSelector)
 
     if (!element) {
-      console.error(`HTML Element with selector "${props.contentSelector}" not found.`)
+      console.error(`HTML Element with selector "${contentSelector}" not found.`)
       return
     }
 
     await nextTick()
 
     elementHeight.value
-      = element.offsetHeight + element.offsetTop + props.offset - window.innerHeight
+      = element.offsetHeight + element.offsetTop + offset - window.innerHeight
   }
 
   window.addEventListener('scroll', handleScroll, {
@@ -137,7 +136,7 @@ onBeforeUnmount(() => {
 
 <template>
   <Teleport :to="teleportSelector">
-    <div class="m-reading-progress-bar m-reset-css" v-bind="$attrs">
+    <div class="m-reading-progress-bar m-reset-css maz:fixed maz:top-0 maz:z-default-backdrop maz:w-full" v-bind="$attrs">
       <div
         :class="barClass"
         :style="{
@@ -149,9 +148,3 @@ onBeforeUnmount(() => {
     </div>
   </Teleport>
 </template>
-
-<style scoped>
-.m-reading-progress-bar {
-  @apply maz-fixed maz-top-0 maz-z-default-backdrop maz-w-full;
-}
-</style>

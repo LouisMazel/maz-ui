@@ -1,4 +1,6 @@
-@layer maz-ui-utilities {
+@import '../tailwindcss/theme-breakpoints.css';
+
+@layer theme {
   :root {
     --maz-container-padding-mobile: 1rem;
     --maz-container-padding-tablet: 2rem;
@@ -32,14 +34,12 @@
     }
   }
 
-  @screen mob-l {
-    :root {
+  :root {
+    @variant mob-l {
       --maz-container-padding-value: var(--maz-container-padding-tablet);
     }
-  }
 
-  @screen lap-s {
-    :root {
+    @variant lap-s {
       --maz-container-padding-value: var(--maz-container-padding-desktop);
     }
   }

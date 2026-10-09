@@ -1,6 +1,9 @@
 import { config } from '@vue/test-utils'
+import * as axeMatchers from 'vitest-axe/matchers'
 
 process.env.TZ = 'Europe/Paris'
+
+expect.extend(axeMatchers)
 
 // Mock Canvas API for Chart.js tests
 const mockContext = {
@@ -181,3 +184,15 @@ config.global.stubs = {
   Teleport: true,
   RouterLink: true,
 }
+
+beforeEach(() => {
+  document.cookie.split(';').forEach((c) => {
+    const [name] = c.trim().split('=')
+    if (name)
+      document.cookie = `${name}=; path=/; max-age=0; SameSite=Lax`
+  })
+})
+
+afterEach(async () => {
+  await vi.dynamicImportSettled()
+})

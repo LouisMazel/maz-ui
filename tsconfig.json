@@ -15,5 +15,16 @@
     "forceConsistentCasingInFileNames": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
-  }
+
+  },
+  "include": ["**/*"],
+  "exclude": [
+    "node_modules",
+    "**/node_modules/*",
+    "**/dist/*",
+    "**/coverage/*",
+    "./packages/**",
+    "./apps/**",
+    "./tools/**"
+  ]
 }

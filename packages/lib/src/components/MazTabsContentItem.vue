@@ -28,17 +28,49 @@ const isCurrentTab = computed(() => currentTab.value - 1 === itemTabNumber.value
 
 <template>
   <Transition :name="transitionName">
-    <div v-if="isCurrentTab" class="m-tabs-content-item m-reset-css">
+    <div v-if="isCurrentTab" class="m-tabs-content-item m-reset-css maz:relative maz:top-0 maz:w-full">
       <slot />
     </div>
   </Transition>
 </template>
 
 <style scoped>
-  .m-tabs-content-item {
-  @apply maz-relative maz-top-0 maz-w-full;
-
+.m-tabs-content-item {
   flex: 1 0 auto;
   transition: all 500ms cubic-bezier(0.25, 0.8, 0.5, 1);
+}
+
+/** Tabs Transisiton */
+
+.maz-tab-transition-leave-to {
+  position: absolute !important;
+  transform: translate(-100%, 0);
+}
+
+.maz-tab-transition-leave,
+.maz-tab-transition-leave-active {
+  position: absolute !important;
+  inset-block-start: 0;
+}
+
+.maz-tab-transition-enter-from {
+  transform: translate(100%, 0);
+}
+
+.maz-tab-reverse-transition-leave,
+.maz-tab-reverse-transition-leave-to {
+  inset-block-start: 0;
+  position: absolute !important;
+  transform: translate(100%, 0);
+}
+
+.maz-tab-reverse-transition-leave,
+.maz-tab-reverse-transition-leave-active {
+  position: absolute !important;
+  inset-block-start: 0;
+}
+
+.maz-tab-reverse-transition-enter-from {
+  transform: translate(-100%, 0);
 }
 </style>

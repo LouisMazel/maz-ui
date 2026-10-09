@@ -6,10 +6,10 @@ import vue from '@vitejs/plugin-vue'
 import { glob } from 'glob'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import pkg from './package.json'
+import pkg from './package.json' with { type: 'json' }
 
 function resolver(path: string) {
-  return resolve(__dirname, path)
+  return resolve(import.meta.dirname, path)
 }
 
 function getEntries(pattern: string) {
@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
       dts({
         tsconfigPath: resolver('./tsconfig.json'),
         entryRoot: resolver('src'),
-        outDir: resolver('dist'),
+        outDirs: resolver('dist'),
         include: ['src/**/*.ts'],
         exclude: testPaths,
       }),
@@ -48,10 +48,6 @@ export default defineConfig(({ mode }) => {
       }),
     ],
 
-    resolve: {
-      conditions: ['node'],
-    },
-
     define: {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
     },
@@ -59,7 +55,7 @@ export default defineConfig(({ mode }) => {
     build: {
       emptyOutDir: true,
       sourcemap: isProduction ? false : 'inline',
-      target: 'node22',
+      target: 'es2022',
       lib: {
         entry: {
           ...entries,

@@ -44,7 +44,7 @@ A plugin to know the amount of time a user has spent on your website
   <br />
   <br />
 
-  <p class="maz-text-warning">Wait 5 seconds without any actions to see the dialog popup</p>
+  <p class="maz:text-warning">Wait 5 seconds without any actions to see the dialog popup</p>
 
 <template #code>
 
@@ -139,8 +139,8 @@ onBeforeUnmount(() => {
 <script lang="ts" setup>
   import { onMounted, ref, onBeforeUnmount } from 'vue'
 
-  import { useIdleTimeout } from 'maz-ui/src/composables/useIdleTimeout'
-  import { useDialog } from 'maz-ui/src/composables/useDialog'
+  import { useIdleTimeout } from 'maz-ui/composables/useIdleTimeout'
+  import { useDialog } from 'maz-ui/composables/useDialog'
 
   const dialog = useDialog()
 

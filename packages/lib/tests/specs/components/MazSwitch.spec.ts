@@ -38,16 +38,19 @@ describe('mazSwitch', () => {
     expect(wrapper.classes()).toContain('--is-disabled')
   })
 
-  it('toggles the switch when the checkbox is clicked', async () => {
+  it('reflects the checked state on the native switch input', async () => {
     const wrapper = mount(MazSwitch, {
       props: {
         modelValue: true,
       },
     })
 
-    expect(wrapper.attributes('aria-checked')).toEqual('true')
+    const input = wrapper.find('input')
+    expect(input.attributes('role')).toBe('switch')
+    expect(input.element.checked).toBe(true)
+    expect(wrapper.find('label').attributes('role')).toBeUndefined()
 
     await wrapper.setProps({ modelValue: false })
-    expect(wrapper.attributes('aria-checked')).toBe('false')
+    expect(input.element.checked).toBe(false)
   })
 })

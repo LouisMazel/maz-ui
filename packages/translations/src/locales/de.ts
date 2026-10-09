@@ -1,6 +1,13 @@
 import type { MazUiTranslationsNestedSchema } from '../types'
 
 export default {
+  aria: {
+    close: 'Schließen',
+    increment: 'Erhöhen',
+    decrement: 'Verringern',
+    character: 'Zeichen',
+    value: 'Wert',
+  },
   selectCountry: {
     searchPlaceholder: 'Land suchen',
   },
@@ -89,8 +96,47 @@ export default {
     collapse: 'Weniger lesen',
     ariaLabel: 'Erweiterbarer Inhalt',
   },
+  pullToRefresh: {
+    pull: 'Zum Aktualisieren ziehen',
+    release: 'Zum Aktualisieren loslassen',
+    refreshing: 'Wird aktualisiert…',
+  },
   skeleton: {
     ariaLabel: 'Inhalt wird geladen',
     loadingText: 'Laden...',
+  },
+  codeHighlight: {
+    copyToClipboard: 'In Zwischenablage kopieren',
+    copiedToClipboard: 'In Zwischenablage kopiert',
+  },
+  windowMockup: {
+    copyUrlToClipboard: 'URL in Zwischenablage kopieren',
+    urlCopiedToClipboard: 'URL in Zwischenablage kopiert',
+  },
+  markdownEditor: {
+    write: 'Schreiben',
+    preview: 'Vorschau',
+    split: 'Geteilt',
+    emptyPreview: 'Nichts zur Vorschau',
+    toolbar: {
+      heading: 'Überschrift',
+      bold: 'Fett',
+      italic: 'Kursiv',
+      strikethrough: 'Durchgestrichen',
+      quote: 'Zitat',
+      code: 'Inline-Code',
+      codeBlock: 'Codeblock',
+      link: 'Link',
+      image: 'Bild',
+      bulletList: 'Aufzählung',
+      orderedList: 'Nummerierte Liste',
+      checkList: 'Aufgabenliste',
+      table: 'Tabelle',
+    },
+    headings: {
+      h1: 'Überschrift 1',
+      h2: 'Überschrift 2',
+      h3: 'Überschrift 3',
+    },
   },
 } satisfies MazUiTranslationsNestedSchema

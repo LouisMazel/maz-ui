@@ -13,7 +13,7 @@ description: MazCard is a standalone component to display some texts and images 
 
 <ComponentDemo expanded>
   <MazCard title="Cute Kitten">
-    <p class="maz-text-muted">
+    <p class="maz:text-muted">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
     </p>
   </MazCard>
@@ -23,7 +23,7 @@ description: MazCard is a standalone component to display some texts and images 
 ```vue
 <template>
   <MazCard class="vp-raw" title="Cute Kitten">
-    <p class="maz-text-muted">
+    <p class="maz:text-muted">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry.
       Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an
       unknown printer took a galley of type and scrambled it to make a type specimen book.
@@ -49,7 +49,7 @@ description: MazCard is a standalone component to display some texts and images 
     Cat
   </template>
   <template #content-body>
-    <p class="maz-text-muted" style="margin: 0;">
+    <p class="maz:text-muted" style="margin: 0;">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
     </p>
   </template>
@@ -57,12 +57,12 @@ description: MazCard is a standalone component to display some texts and images 
     <MazBtn
       fab
       color="destructive"
-      class="maz-me-2"
+      class="maz:me-2"
     >
-      <MazIcon name="trash" class="maz-text-xl" />
+      <MazIcon icon="/trash.svg" class="maz:text-xl" />
     </MazBtn>
-    <MazBtn color="background">
-      <MazIcon name="user-plus" class="maz-text-xl" />
+    <MazBtn color="surface">
+      <MazIcon icon="/user-plus.svg" class="maz:text-xl" />
     </MazBtn>
   </template>
 </MazCard>
@@ -85,7 +85,7 @@ description: MazCard is a standalone component to display some texts and images 
       </span>
     </template>
     <template #content-body>
-      <p class="maz-text-muted">
+      <p class="maz:text-muted">
         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
       </p>
     </template>
@@ -94,15 +94,15 @@ description: MazCard is a standalone component to display some texts and images 
         size="md"
         fab
         color="destructive"
-        class="maz-me-2"
+        class="maz:me-2"
       >
-        <MazIcon name="trash" />
+        <MazIcon icon="/trash.svg" />
       </MazBtn>
       <MazBtn
         size="md"
         color="contrast"
       >
-        <MazIcon name="user-plus" />
+        <MazIcon icon="/user-plus.svg" />
       </MazBtn>
     </template>
   </MazCard>
@@ -127,7 +127,7 @@ When you display images, you can change the orientation of the card, available o
     <h3> Cute Kitten </h3>
   </template>
   <template #content-body>
-    <p class="maz-text-muted">
+    <p class="maz:text-muted">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
     </p>
   </template>
@@ -141,7 +141,7 @@ When you display images, you can change the orientation of the card, available o
     <h3> Cute Kitten </h3>
   </template>
   <template #content-body>
-    <p class="maz-text-muted">
+    <p class="maz:text-muted">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
     </p>
   </template>
@@ -159,7 +159,7 @@ When you display images, you can change the orientation of the card, available o
     <h3> Cute Kitten </h3>
   </template>
   <template #content-body>
-    <p class="maz-text-muted">
+    <p class="maz:text-muted">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
     </p>
   </template>
@@ -176,7 +176,7 @@ When you display images, you can change the orientation of the card, available o
     <h3> Cute Kitten </h3>
   </template>
   <template #content-body>
-    <p class="maz-text-muted">
+    <p class="maz:text-muted">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
     </p>
   </template>
@@ -199,7 +199,7 @@ When you display images, you can change the orientation of the card, available o
     <h3> Cute Kitten </h3>
   </template>
   <template #content-body>
-    <p class="maz-text-muted">
+    <p class="maz:text-muted">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
     </p>
   </template>
@@ -216,7 +216,7 @@ When you display images, you can change the orientation of the card, available o
     <h3> Cute Kitten </h3>
   </template>
   <template #content-body>
-    <p class="maz-text-muted">
+    <p class="maz:text-muted">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
     </p>
   </template>
@@ -403,9 +403,9 @@ To access the link, simply click the card.
 
 ### Footer aligned on left
 
-Use the prop option `footer-align="left"`
+Use the prop option `footer-align="start"`
 
-<MazCard footer-align="left" class="vp-raw">
+<MazCard footer-align="start" class="vp-raw">
   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 
   <template #footer>
@@ -418,7 +418,7 @@ Use the prop option `footer-align="left"`
 ::: details View code
 
 ```html
-<MazCard footer-align="left">
+<MazCard footer-align="start">
   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 
   <template #footer>

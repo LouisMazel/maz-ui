@@ -1,5 +1,6 @@
 import MazBtn from '@components/MazBtn.vue'
 import MazBtnGroup from '@components/MazBtnGroup.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount } from '@vue/test-utils'
 
 describe('given MazBtnGroup component', () => {
@@ -525,6 +526,49 @@ describe('given MazBtnGroup component', () => {
         const button = wrapper.findComponent(MazBtn)
         expect(button.exists()).toBe(true)
       })
+    })
+  })
+})
+
+describe('given a MazUi global default for MazBtnGroup', () => {
+  const items = [{ text: 'Button 1' }]
+
+  describe('when no size prop is passed', () => {
+    it('then the buttons receive the configured size', async () => {
+      const wrapper = mount(MazBtnGroup, {
+        props: { items },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazBtnGroup: { size: 'lg' } } } },
+      })
+
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.findComponent(MazBtn).props('size')).toBe('lg')
+    })
+  })
+
+  describe('when a size prop is passed', () => {
+    it('then the instance prop wins over the configured default', async () => {
+      const wrapper = mount(MazBtnGroup, {
+        props: { items, size: 'xs' },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazBtnGroup: { size: 'lg' } } } },
+      })
+
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.findComponent(MazBtn).props('size')).toBe('xs')
+    })
+  })
+
+  describe('when no roundedSize prop is passed', () => {
+    it('then the buttons receive the configured roundedSize', async () => {
+      const wrapper = mount(MazBtnGroup, {
+        props: { items },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazBtnGroup: { roundedSize: 'full' } } } },
+      })
+
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.findComponent(MazBtn).props('roundedSize')).toBe('full')
     })
   })
 })

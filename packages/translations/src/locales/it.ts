@@ -1,6 +1,13 @@
 import type { MazUiTranslationsNestedSchema } from '../types'
 
 export default {
+  aria: {
+    close: 'Chiudi',
+    increment: 'Aumenta',
+    decrement: 'Diminuisci',
+    character: 'Carattere',
+    value: 'Valore',
+  },
   selectCountry: {
     searchPlaceholder: 'Cerca paese',
   },
@@ -89,8 +96,47 @@ export default {
     collapse: 'Leggi di meno',
     ariaLabel: 'Contenuto espandibile',
   },
+  pullToRefresh: {
+    pull: 'Trascina per aggiornare',
+    release: 'Rilascia per aggiornare',
+    refreshing: 'Aggiornamento…',
+  },
   skeleton: {
     ariaLabel: 'Contenuto in caricamento',
     loadingText: 'Caricamento...',
+  },
+  codeHighlight: {
+    copyToClipboard: 'Copia negli appunti',
+    copiedToClipboard: 'Copiato negli appunti',
+  },
+  windowMockup: {
+    copyUrlToClipboard: 'Copia URL negli appunti',
+    urlCopiedToClipboard: 'URL copiato negli appunti',
+  },
+  markdownEditor: {
+    write: 'Scrivi',
+    preview: 'Anteprima',
+    split: 'Diviso',
+    emptyPreview: 'Niente da visualizzare',
+    toolbar: {
+      heading: 'Titolo',
+      bold: 'Grassetto',
+      italic: 'Corsivo',
+      strikethrough: 'Barrato',
+      quote: 'Citazione',
+      code: 'Codice in linea',
+      codeBlock: 'Blocco di codice',
+      link: 'Link',
+      image: 'Immagine',
+      bulletList: 'Elenco puntato',
+      orderedList: 'Elenco numerato',
+      checkList: 'Elenco attività',
+      table: 'Tabella',
+    },
+    headings: {
+      h1: 'Titolo 1',
+      h2: 'Titolo 2',
+      h3: 'Titolo 3',
+    },
   },
 } satisfies MazUiTranslationsNestedSchema

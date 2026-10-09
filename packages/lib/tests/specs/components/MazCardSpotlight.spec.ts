@@ -63,8 +63,8 @@ describe('given mazCardSpotlight component', () => {
 
       await wrapper.vm.$nextTick()
 
-      expect(wrapper.classes()).toContain('maz-shadow-elevation')
-      expect(wrapper.classes()).toContain('maz-drop-shadow-md')
+      expect(wrapper.classes()).toContain('maz:shadow-elevation')
+      expect(wrapper.classes()).toContain('maz:drop-shadow-md')
     })
 
     it('does not apply elevation classes when elevation prop is false', async () => {
@@ -76,8 +76,8 @@ describe('given mazCardSpotlight component', () => {
 
       await wrapper.vm.$nextTick()
 
-      expect(wrapper.classes()).not.toContain('maz-shadow-elevation')
-      expect(wrapper.classes()).not.toContain('maz-drop-shadow-md')
+      expect(wrapper.classes()).not.toContain('maz:shadow-elevation')
+      expect(wrapper.classes()).not.toContain('maz:drop-shadow-md')
     })
 
     it('applies padding class to content when padding prop is true', async () => {
@@ -90,7 +90,7 @@ describe('given mazCardSpotlight component', () => {
       await wrapper.vm.$nextTick()
 
       const content = wrapper.find('.content')
-      expect(content.classes()).toContain('maz-p-4')
+      expect(content.classes()).toContain('maz:p-4')
     })
 
     it('does not apply padding class when padding prop is false', async () => {
@@ -103,7 +103,7 @@ describe('given mazCardSpotlight component', () => {
       await wrapper.vm.$nextTick()
 
       const content = wrapper.find('.content')
-      expect(content.classes()).not.toContain('maz-p-4')
+      expect(content.classes()).not.toContain('maz:p-4')
     })
 
     it('applies custom contentClass', async () => {
@@ -195,7 +195,7 @@ describe('given mazCardSpotlight component', () => {
       expect(getBoundingClientRectSpy).toHaveBeenCalled()
     })
 
-    it('adds mousemove event listener', async () => {
+    it.each(['mousemove', 'scroll', 'resize'])('adds %s event listener', async (eventName) => {
       const addEventListenerSpy = vi.spyOn(globalThis, 'addEventListener')
 
       const wrapper = mount(MazCardSpotlight)
@@ -203,35 +203,7 @@ describe('given mazCardSpotlight component', () => {
       await wrapper.vm.$nextTick()
 
       expect(addEventListenerSpy).toHaveBeenCalledWith(
-        'mousemove',
-        expect.any(Function),
-        { passive: true },
-      )
-    })
-
-    it('adds scroll event listener', async () => {
-      const addEventListenerSpy = vi.spyOn(globalThis, 'addEventListener')
-
-      const wrapper = mount(MazCardSpotlight)
-
-      await wrapper.vm.$nextTick()
-
-      expect(addEventListenerSpy).toHaveBeenCalledWith(
-        'scroll',
-        expect.any(Function),
-        { passive: true },
-      )
-    })
-
-    it('adds resize event listener', async () => {
-      const addEventListenerSpy = vi.spyOn(globalThis, 'addEventListener')
-
-      const wrapper = mount(MazCardSpotlight)
-
-      await wrapper.vm.$nextTick()
-
-      expect(addEventListenerSpy).toHaveBeenCalledWith(
-        'resize',
+        eventName,
         expect.any(Function),
         { passive: true },
       )
@@ -458,7 +430,7 @@ describe('given mazCardSpotlight component', () => {
   })
 
   describe('when component is unmounted', () => {
-    it('removes mousemove event listener', async () => {
+    it.each(['mousemove', 'scroll', 'resize'])('removes %s event listener', async (eventName) => {
       const removeEventListenerSpy = vi.spyOn(globalThis, 'removeEventListener')
 
       const wrapper = mount(MazCardSpotlight)
@@ -466,29 +438,7 @@ describe('given mazCardSpotlight component', () => {
       await wrapper.vm.$nextTick()
       wrapper.unmount()
 
-      expect(removeEventListenerSpy).toHaveBeenCalledWith('mousemove', expect.any(Function))
-    })
-
-    it('removes scroll event listener', async () => {
-      const removeEventListenerSpy = vi.spyOn(globalThis, 'removeEventListener')
-
-      const wrapper = mount(MazCardSpotlight)
-
-      await wrapper.vm.$nextTick()
-      wrapper.unmount()
-
-      expect(removeEventListenerSpy).toHaveBeenCalledWith('scroll', expect.any(Function))
-    })
-
-    it('removes resize event listener', async () => {
-      const removeEventListenerSpy = vi.spyOn(globalThis, 'removeEventListener')
-
-      const wrapper = mount(MazCardSpotlight)
-
-      await wrapper.vm.$nextTick()
-      wrapper.unmount()
-
-      expect(removeEventListenerSpy).toHaveBeenCalledWith('resize', expect.any(Function))
+      expect(removeEventListenerSpy).toHaveBeenCalledWith(eventName, expect.any(Function))
     })
 
     it('disconnects IntersectionObserver', async () => {

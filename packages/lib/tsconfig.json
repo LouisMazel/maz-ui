@@ -1,8 +1,9 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo",
     "lib": ["esnext", "DOM", "DOM.iterable", "scripthost"],
+    "rootDir": ".",
     "types": ["node", "vite-svg-loader", "vite/client", "vue"],
     "esModuleInterop": true,
     "isolatedModules": true,

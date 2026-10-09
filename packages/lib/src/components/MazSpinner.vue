@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import type { MazColor } from './types'
+import type { MazColor, MazSizeUnit } from './types'
 import { computed } from 'vue'
 
 export interface MazSpinnerProps {
@@ -8,7 +8,7 @@ export interface MazSpinnerProps {
    * The size of the spinner
    * @default 2em
    */
-  size?: string
+  size?: MazSizeUnit
   /**
    * The color of the spinner
    * @default theme
@@ -26,10 +26,10 @@ const spinnerStyle = computed<CSSProperties>(() => {
   if (!c || c === 'theme')
     return {}
   if (c === 'normal')
-    return { color: 'hsl(var(--maz-foreground))' }
+    return { color: 'var(--maz-foreground)' }
   if (c === 'transparent')
     return { color: 'white' }
-  return { color: `hsl(var(--maz-${c}))` }
+  return { color: `var(--maz-${c})` }
 })
 </script>
 
@@ -43,7 +43,7 @@ const spinnerStyle = computed<CSSProperties>(() => {
     y="0px"
     viewBox="0 0 50 50"
     xml:space="preserve"
-    class="m-spinner m-reset-css"
+    class="m-spinner m-reset-css maz:m-0! maz:animate-spin maz:fill-current"
     :class="`m-spinner--${color}`"
     :style="spinnerStyle"
   >
@@ -52,10 +52,3 @@ const spinnerStyle = computed<CSSProperties>(() => {
     />
   </svg>
 </template>
-
-<style scoped>
-.m-spinner {
-  @apply maz-animate-spin maz-fill-current;
-  @apply maz-m-0 !important;
-}
-</style>

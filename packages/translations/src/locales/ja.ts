@@ -1,6 +1,13 @@
 import type { MazUiTranslationsNestedSchema } from '../types'
 
 export default {
+  aria: {
+    close: '閉じる',
+    increment: '増やす',
+    decrement: '減らす',
+    character: '文字',
+    value: '値',
+  },
   selectCountry: {
     searchPlaceholder: '国を検索',
   },
@@ -89,8 +96,47 @@ export default {
     collapse: '閉じる',
     ariaLabel: '展開可能なコンテンツ',
   },
+  pullToRefresh: {
+    pull: '引っ張って更新',
+    release: '指を離して更新',
+    refreshing: '更新中…',
+  },
   skeleton: {
     ariaLabel: 'コンテンツの読み込み中',
     loadingText: '読み込み中...',
+  },
+  codeHighlight: {
+    copyToClipboard: 'クリップボードにコピー',
+    copiedToClipboard: 'クリップボードにコピーされました',
+  },
+  windowMockup: {
+    copyUrlToClipboard: 'URLをクリップボードにコピー',
+    urlCopiedToClipboard: 'URLがクリップボードにコピーされました',
+  },
+  markdownEditor: {
+    write: '編集',
+    preview: 'プレビュー',
+    split: '分割',
+    emptyPreview: 'プレビューする内容がありません',
+    toolbar: {
+      heading: '見出し',
+      bold: '太字',
+      italic: '斜体',
+      strikethrough: '取り消し線',
+      quote: '引用',
+      code: 'インラインコード',
+      codeBlock: 'コードブロック',
+      link: 'リンク',
+      image: '画像',
+      bulletList: '箇条書き',
+      orderedList: '番号付きリスト',
+      checkList: 'タスクリスト',
+      table: 'テーブル',
+    },
+    headings: {
+      h1: '見出し1',
+      h2: '見出し2',
+      h3: '見出し3',
+    },
   },
 } satisfies MazUiTranslationsNestedSchema

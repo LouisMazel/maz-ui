@@ -4,7 +4,7 @@ import { truthyFilter } from '@maz-ui/utils/helpers/truthyFilter'
 import { computed, onMounted, ref, toValue, watch } from 'vue'
 
 export interface UseMutationObserverOptions extends MutationObserverInit {
-  internalWindow?: Window | undefined
+  internalWindow?: Window
 }
 
 /**

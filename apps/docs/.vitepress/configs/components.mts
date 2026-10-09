@@ -1,4 +1,5 @@
 import type { DefaultTheme } from 'vitepress'
+import { withNewBadge } from './badges.mjs'
 
 export const components = {
   text: 'Components',
@@ -19,6 +20,7 @@ export const components = {
         { text: 'InputPrice', link: '/components/maz-input-price' },
         { text: 'InputTags', link: '/components/maz-input-tags' },
         { text: 'InputPhoneNumber', link: '/components/maz-input-phone-number' },
+        { text: withNewBadge('MarkdownEditor'), link: '/components/maz-markdown-editor' },
         { text: 'Radio', link: '/components/maz-radio' },
         { text: 'RadioButtons', link: '/components/maz-radio-buttons' },
         { text: 'Select (multiple)', link: '/components/maz-select' },
@@ -45,11 +47,12 @@ export const components = {
       items: [
         { text: 'Tabs', link: '/components/maz-tabs' },
         { text: 'Stepper', link: '/components/maz-stepper' },
-        { text: 'Timeline', link: '/components/maz-timeline' },
+        { text: withNewBadge('Timeline'), link: '/components/maz-timeline' },
         { text: 'Pagination', link: '/components/maz-pagination' },
         { text: 'Link', link: '/components/maz-link' },
         { text: 'PullToRefresh', link: '/components/maz-pull-to-refresh' },
         { text: 'ReadingProgressBar', link: '/components/maz-reading-progress-bar' },
+        { text: withNewBadge('Sidebar'), link: '/components/maz-sidebar' },
       ],
     },
     {
@@ -72,6 +75,14 @@ export const components = {
         { text: 'Chart', link: '/components/maz-chart' },
         { text: 'Table (data-table)', link: '/components/maz-table' },
         { text: 'Dropzone', link: '/components/maz-dropzone' },
+      ],
+    },
+    {
+      text: 'Display',
+      collapsed: false,
+      items: [
+        { text: withNewBadge('CodeHighlight'), link: '/components/maz-code-highlight' },
+        { text: withNewBadge('WindowMockup'), link: '/components/maz-window-mockup' },
       ],
     },
     {
@@ -106,7 +117,7 @@ export const components = {
         { text: 'AnimatedElement', link: '/components/maz-animated-element' },
         { text: 'AnimatedText', link: '/components/maz-animated-text' },
         { text: 'ExpandAnimation', link: '/components/maz-expand-animation' },
-        { text: 'Ticker', link: '/components/maz-ticker' },
+        { text: withNewBadge('Ticker'), link: '/components/maz-ticker' },
       ],
     },
   ],

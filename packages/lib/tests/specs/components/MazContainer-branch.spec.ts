@@ -12,10 +12,10 @@ describe('MazContainer branch coverage', () => {
     it('should have default classes', () => {
       const wrapper = mount(MazContainer)
       const classes = wrapper.find('.m-container').classes()
-      expect(classes).toContain('--padding')
-      expect(classes).toContain('--bordered')
-      expect(classes).toContain('--overflow-hidden')
-      expect(classes).toContain('--rounded-base')
+      expect(classes).toContain('maz:border')
+      expect(classes).toContain('maz:overflow-hidden')
+      expect(classes).toContain('--rounded-md')
+      expect(wrapper.find('.m-container__content').classes()).toContain('maz:px-4')
       wrapper.unmount()
     })
   })
@@ -25,7 +25,7 @@ describe('MazContainer branch coverage', () => {
       const wrapper = mount(MazContainer, {
         props: { elevation: true },
       })
-      expect(wrapper.find('.m-container').classes()).toContain('--elevation')
+      expect(wrapper.find('.m-container').classes()).toContain('maz:shadow-elevation')
       wrapper.unmount()
     })
   })
@@ -35,7 +35,7 @@ describe('MazContainer branch coverage', () => {
       const wrapper = mount(MazContainer, {
         props: { elevation: false },
       })
-      expect(wrapper.find('.m-container').classes()).not.toContain('--elevation')
+      expect(wrapper.find('.m-container').classes()).not.toContain('maz:shadow-elevation')
       wrapper.unmount()
     })
   })
@@ -45,7 +45,7 @@ describe('MazContainer branch coverage', () => {
       const wrapper = mount(MazContainer, {
         props: { padding: false },
       })
-      expect(wrapper.find('.m-container').classes()).not.toContain('--padding')
+      expect(wrapper.find('.m-container__content').classes()).not.toContain('maz:px-4')
       wrapper.unmount()
     })
   })
@@ -55,17 +55,17 @@ describe('MazContainer branch coverage', () => {
       const wrapper = mount(MazContainer, {
         props: { bordered: false },
       })
-      expect(wrapper.find('.m-container').classes()).not.toContain('--bordered')
+      expect(wrapper.find('.m-container').classes()).not.toContain('maz:border')
       wrapper.unmount()
     })
   })
 
   describe('when transparent is true', () => {
-    it('should apply transparent class', () => {
+    it('should remove the background class', () => {
       const wrapper = mount(MazContainer, {
         props: { transparent: true },
       })
-      expect(wrapper.find('.m-container').classes()).toContain('--transparent')
+      expect(wrapper.find('.m-container').classes()).not.toContain('maz:bg-container')
       wrapper.unmount()
     })
   })
@@ -75,17 +75,17 @@ describe('MazContainer branch coverage', () => {
       const wrapper = mount(MazContainer, {
         props: { overflowHidden: false },
       })
-      expect(wrapper.find('.m-container').classes()).not.toContain('--overflow-hidden')
+      expect(wrapper.find('.m-container').classes()).not.toContain('maz:overflow-hidden')
       wrapper.unmount()
     })
   })
 
   describe('when block is true', () => {
-    it('should apply block class', () => {
+    it('should apply the full-width class', () => {
       const wrapper = mount(MazContainer, {
         props: { block: true },
       })
-      expect(wrapper.find('.m-container').classes()).toContain('--block')
+      expect(wrapper.find('.m-container').classes()).toContain('maz:w-full')
       wrapper.unmount()
     })
   })
@@ -136,20 +136,20 @@ describe('MazContainer branch coverage', () => {
     })
   })
 
-  describe('when leftIcon is a string', () => {
+  describe('when startIcon is a string', () => {
     it('should render MazIcon with name', () => {
       const wrapper = mount(MazContainer, {
-        props: { title: 'Test', leftIcon: 'check' },
+        props: { title: 'Test', startIcon: 'check' },
       })
       expect(wrapper.find('.m-container__header').exists()).toBe(true)
       wrapper.unmount()
     })
   })
 
-  describe('when rightIcon is a string', () => {
+  describe('when endIcon is a string', () => {
     it('should render MazIcon with name', () => {
       const wrapper = mount(MazContainer, {
-        props: { title: 'Test', rightIcon: 'arrow-right' },
+        props: { title: 'Test', endIcon: 'arrow-right' },
       })
       expect(wrapper.find('.m-container__header').exists()).toBe(true)
       wrapper.unmount()
@@ -159,7 +159,7 @@ describe('MazContainer branch coverage', () => {
   describe('when iconSize is set', () => {
     it('should pass iconSize to MazIcon', () => {
       const wrapper = mount(MazContainer, {
-        props: { title: 'Test', leftIcon: 'check', iconSize: 'lg' },
+        props: { title: 'Test', startIcon: 'check', iconSize: 'lg' },
       })
       wrapper.unmount()
     })
@@ -206,12 +206,12 @@ describe('MazContainer branch coverage', () => {
         },
       })
       const classes = wrapper.find('.m-container').classes()
-      expect(classes).not.toContain('--elevation')
-      expect(classes).not.toContain('--padding')
-      expect(classes).not.toContain('--bordered')
-      expect(classes).not.toContain('--transparent')
-      expect(classes).not.toContain('--overflow-hidden')
-      expect(classes).not.toContain('--block')
+      expect(classes).not.toContain('maz:shadow-elevation')
+      expect(classes).not.toContain('maz:border')
+      expect(classes).not.toContain('maz:overflow-hidden')
+      expect(classes).not.toContain('maz:w-full')
+      expect(classes).toContain('maz:bg-container')
+      expect(wrapper.find('.m-container__content').classes()).not.toContain('maz:px-4')
       wrapper.unmount()
     })
 
@@ -227,12 +227,12 @@ describe('MazContainer branch coverage', () => {
         },
       })
       const classes = wrapper.find('.m-container').classes()
-      expect(classes).toContain('--elevation')
-      expect(classes).toContain('--padding')
-      expect(classes).toContain('--bordered')
-      expect(classes).toContain('--transparent')
-      expect(classes).toContain('--overflow-hidden')
-      expect(classes).toContain('--block')
+      expect(classes).toContain('maz:shadow-elevation')
+      expect(classes).toContain('maz:border')
+      expect(classes).toContain('maz:overflow-hidden')
+      expect(classes).toContain('maz:w-full')
+      expect(classes).not.toContain('maz:bg-container')
+      expect(wrapper.find('.m-container__content').classes()).toContain('maz:px-4')
       wrapper.unmount()
     })
   })

@@ -68,6 +68,32 @@ You can use the `top-label` attribute to display a top label above the textarea.
   </template>
 </ComponentDemo>
 
+## With assistive text
+
+You can use the `assistive-text` attribute to display a assistive text below the textarea.
+
+<ComponentDemo>
+  <MazTextarea
+    v-model="value"
+    top-label="Your message"
+    placeholder="Type your message..."
+    assistive-text="This is an assistive text"
+  />
+
+<template #code>
+
+```html
+<MazTextarea
+  v-model="value"
+  top-label="Your message"
+  placeholder="Type your message..."
+  assistive-text="This is an assistive text"
+/>
+```
+
+  </template>
+</ComponentDemo>
+
 ## With label and append slots
 
 You can use the `label` and `append` slots to customize the label and the append element.
@@ -78,13 +104,13 @@ You can use the `label` and `append` slots to customize the label and the append
     name="comment"
   >
     <template #label>
-      <MazIcon name="envelope" class="maz-text-xl" />
-      <span class="maz-ms-2">
+      <MazIcon icon="/envelope.svg" class="maz:text-xl" />
+      <span class="maz:ms-2">
         The custom label
       </span>
     </template>
     <template #append>
-      <MazBtn icon="paper-airplane" size="sm" @click="sendMessage" />
+      <MazBtn icon="/paper-airplane.svg" size="sm" @click="sendMessage" />
     </template>
   </MazTextarea>
 
@@ -113,8 +139,8 @@ function sendMessage() {
     name="comment"
   >
     <template #label>
-      <MazIcon name="envelope" class="maz-text-xl" />
-      <span class="maz-ms-2">
+      <MazIcon icon="/envelope.svg" class="maz:text-xl" />
+      <span class="maz:ms-2">
         The custom label
       </span>
     </template>
@@ -133,7 +159,7 @@ function sendMessage() {
 You can use the `hint` attribute to display a hint message. This will replace the label.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazTextarea
       v-model="value"
       name="comment"
@@ -161,7 +187,7 @@ You can use the `hint` attribute to display a hint message. This will replace th
       hint="This is a hint message"
       warning
     />
-    <hr class="maz-my-4">
+    <hr class="maz:my-4">
     <MazTextarea
       v-model="value"
       name="comment"
@@ -222,7 +248,7 @@ You can use the `hint` attribute to display a hint message. This will replace th
     hint="This is a hint message"
     warning
   />
-  <hr class="maz-my-4">
+  <hr class="maz:my-4">
   <MazTextarea
     v-model="value"
     name="comment"
@@ -277,6 +303,64 @@ By default, the textarea automatically expands as the user types. You can disabl
   </template>
 </ComponentDemo>
 
+## Minimum rows (compact / input-like)
+
+Use the `min-rows` prop to control the initial (minimum) height of the textarea. It defaults to `3` lines. Set it to `1` to make the textarea start at the height of a regular input while keeping the autogrow behavior: it grows line by line as the user types.
+
+<ComponentDemo>
+  <MazTextarea
+    v-model="value"
+    name="comment"
+    :min-rows="1"
+    rounded-size="xl"
+    placeholder="Send your message"
+  />
+
+<template #code>
+
+```vue
+<template>
+  <MazTextarea
+    v-model="value"
+    name="comment"
+    :min-rows="1"
+    rounded-size="xl"
+    placeholder="Send your message"
+  />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Sizes
+
+The `size` prop controls the padding (height) and text size of the textarea, mirroring the `MazInput` sizes (`mini`, `xs`, `sm`, `md`, `lg`, `xl`). Combined with `:min-rows="1"`, a given size matches the height of a `MazInput` of the same size, while keeping the autogrow behavior.
+
+<ComponentDemo>
+  <div class="maz:flex maz:flex-col maz:gap-4">
+    <MazTextarea v-model="value" name="comment" size="xs" :min-rows="1" placeholder="Size xs" />
+    <MazTextarea v-model="value" name="comment" size="sm" :min-rows="1" placeholder="Size sm" />
+    <MazTextarea v-model="value" name="comment" size="md" :min-rows="1" placeholder="Size md" />
+    <MazTextarea v-model="value" name="comment" size="lg" :min-rows="1" placeholder="Size lg" />
+    <MazTextarea v-model="value" name="comment" size="xl" :min-rows="1" placeholder="Size xl" />
+  </div>
+
+<template #code>
+
+```vue
+<template>
+  <MazTextarea v-model="value" name="comment" size="xs" :min-rows="1" placeholder="Size xs" />
+  <MazTextarea v-model="value" name="comment" size="sm" :min-rows="1" placeholder="Size sm" />
+  <MazTextarea v-model="value" name="comment" size="md" :min-rows="1" placeholder="Size md" />
+  <MazTextarea v-model="value" name="comment" size="lg" :min-rows="1" placeholder="Size lg" />
+  <MazTextarea v-model="value" name="comment" size="xl" :min-rows="1" placeholder="Size xl" />
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
 ## Disabled
 
 <ComponentDemo>
@@ -300,7 +384,7 @@ By default, the textarea automatically expands as the user types. You can disabl
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { useToast } from 'maz-ui/src/composables/useToast'
+  import { useToast } from 'maz-ui/composables/useToast'
 
   const mainValue = ref()
   const value = ref()

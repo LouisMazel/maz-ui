@@ -11,7 +11,7 @@ import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazColor, MazSize } from './types'
 import { MazMagnifyingGlass } from '@maz-ui/icons/lazy/MazMagnifyingGlass'
 import { MazNoSymbol } from '@maz-ui/icons/lazy/MazNoSymbol'
-import { MazChevronDown } from '@maz-ui/icons/static/MazChevronDown'
+import { MazChevronDown } from '@maz-ui/icons/raw/MazChevronDown'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { debounceCallback } from '@maz-ui/utils/helpers/debounceCallback'
 import { isClient } from '@maz-ui/utils/helpers/isClient'
@@ -20,13 +20,17 @@ import {
   computed,
   defineAsyncComponent,
   nextTick,
+  onBeforeUnmount,
   ref,
   useTemplateRef,
   watch,
 } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useStringMatching } from '../composables/useStringMatching'
 import { hasSlotContent } from '../utils/hasSlotContent'
+import { SIZE_TEXT_CLASS } from './constants.ts'
+import MazIcon from './MazIcon.vue'
 import MazInput from './MazInput.vue'
 import MazPopover from './MazPopover.vue'
 
@@ -61,6 +65,12 @@ export interface MazSelectProps<Value extends MazInputValue, Option extends MazS
    * The label of the select
    */
   label?: string
+  /**
+   * Static label displayed above the input field. Unlike the floating label, this remains fixed
+   * @type {string}
+   * @example "User Information"
+   */
+  topLabel?: string
   /**
    * The placeholder of the select
    */
@@ -201,7 +211,6 @@ const {
   maxListWidth = undefined,
   minListWidth = undefined,
   minListHeight = undefined,
-  size = 'md',
   color = 'primary',
   transition = 'scale-fade',
   searchThreshold = 0.75,
@@ -267,8 +276,8 @@ const searchInputRef = useTemplateRef<GenericInstanceType<typeof MazInput>>('sea
 const optionListElement = useTemplateRef('optionListRef')
 const optionListWrapperRef = useTemplateRef('optionListWrapper')
 
-const selectedTextColor = computed(() => `hsl(var(--maz-${color}))`)
-const selectedBgColor = computed(() => `hsl(var(--maz-${color}-500) / 0.1)`)
+const selectedTextColor = computed(() => `var(--maz-${color})`)
+const selectedBgColor = computed(() => `color-mix(in srgb, var(--maz-${color}) 10%, transparent)`)
 
 const { t } = useTranslations()
 const messages = computed(() => ({
@@ -276,6 +285,8 @@ const messages = computed(() => ({
 } satisfies MazUiTranslationsNestedSchema['select']))
 
 const isOpen = defineModel('open', { default: false })
+
+const { size } = useGlobalConfig<{ size: MazSize }>('MazSelect', { size: 'md' })
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazSelect',
@@ -620,6 +631,10 @@ watch(
   { immediate: true },
 )
 
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', keydownHandler)
+})
+
 defineExpose({
   /**
    * Open the select
@@ -643,7 +658,7 @@ defineExpose({
     :id="`${instanceId}-popover`"
     ref="popover"
     v-model="isOpen"
-    class="m-select m-reset-css"
+    class="m-select m-reset-css maz:relative maz:inline-flex maz:align-top"
     :class="[
       {
         '--is-open': isOpen,
@@ -651,6 +666,7 @@ defineExpose({
       },
       classProp,
       `--${size}`,
+      SIZE_TEXT_CLASS[size],
     ]"
     :style
     trigger="click"
@@ -679,6 +695,7 @@ defineExpose({
         :block
         :placeholder
         :label
+        :top-label
         :autocomplete
         :disabled
         readonly
@@ -688,27 +705,27 @@ defineExpose({
         @blur="emits('blur', $event)"
         @keydown="mainInputKeyboardHandler"
       >
-        <template v-if="hasSlotContent($slots['left-icon'])" #left-icon>
+        <template v-if="hasSlotContent($slots['start-icon'])" #start-icon>
           <!--
-          @slot Add a custom left icon
+          @slot Add a custom inline-start icon (left in LTR, right in RTL)
           @binding {boolean} is-open Current open state of the popover
           @binding {function} close Function to close the popover
           @binding {function} open Function to open the popover
           @binding {function} toggle Function to toggle the popover
         -->
-          <slot name="left-icon" :is-open="isOpen" :close="close" :open="openPicker" :toggle="togglePopover" />
+          <slot name="start-icon" :is-open="isOpen" :close="close" :open="openPicker" :toggle="togglePopover" />
         </template>
 
-        <template #right-icon>
+        <template #end-icon>
           <!--
-            @slot Add and replace a custom right icon
+            @slot Add and replace a custom inline-end icon (right in LTR, left in RTL)
             @binding {boolean} is-open Current open state of the popover
             @binding {function} close Function to close the popover
             @binding {function} open Function to open the popover
             @binding {function} toggle Function to toggle the popover
             @default MazChevronDown
           -->
-          <slot name="right-icon" :is-open="isOpen" :close="close" :open="openPicker" :toggle="togglePopover">
+          <slot name="end-icon" :is-open="isOpen" :close="close" :open="openPicker" :toggle="togglePopover">
             <button
               tabindex="-1"
               :disabled
@@ -716,7 +733,7 @@ defineExpose({
               class="m-select-input__toggle-button maz-custom"
               :aria-label="`${isOpen ? 'collapse' : 'expand'} list of options`"
             >
-              <MazChevronDown class="m-select-chevron" />
+              <MazIcon :icon="MazChevronDown" class="m-select-chevron" />
             </button>
           </slot>
         </template>
@@ -728,7 +745,7 @@ defineExpose({
         :id="`${instanceId}-option-list`"
         ref="optionListRef"
         class="m-select-list"
-        :class="`--${size}`"
+        :class="[`--${size}`, SIZE_TEXT_CLASS[size]]"
         :style="[{
           'maxHeight': `${maxListHeight}px`,
           'maxWidth': `${maxListWidth}px`,
@@ -750,8 +767,8 @@ defineExpose({
             inputmode="search"
             autocomplete="off"
             block
-            class="m-select-list__search-input maz-flex-none"
-            :left-icon="MazMagnifyingGlass"
+            class="m-select-list__search-input maz:flex-none"
+            :start-icon="MazMagnifyingGlass"
             @update:model-value="updateListPosition"
           />
         </div>
@@ -760,7 +777,7 @@ defineExpose({
           -->
         <slot v-if="!optionList || optionList.length <= 0" name="no-results">
           <span class="m-select-list__no-results">
-            <MazNoSymbol class="maz-size-6 maz-text-foreground" />
+            <MazNoSymbol class="maz:size-6 maz:text-foreground" />
           </span>
         </slot>
 
@@ -780,7 +797,7 @@ defineExpose({
               v-else
               type="button"
               :tabindex="multiple ? -1 : 0"
-              class="m-select-list-item maz-custom maz-flex-none"
+              class="m-select-list-item maz-custom maz:flex-none"
               :class="[
                 {
                   '--is-selected': isSelectedOption(option),
@@ -826,58 +843,17 @@ defineExpose({
 </template>
 
 <style scoped>
-.m-select {
-  @apply maz-relative maz-inline-flex maz-align-top;
+@reference "../tailwindcss/tailwind.css";
 
+.m-select {
   &.--disabled {
     .m-select-input {
-      @apply maz-cursor-not-allowed;
+      @apply maz:disabled-cursor;
     }
-  }
-
-  &-input {
-    @apply maz-size-full;
-    @apply maz-cursor-pointer;
-
-    &__toggle-button {
-      @apply maz-flex maz-h-full maz-bg-transparent maz-ps-0 maz-flex-center;
-    }
-
-    &:deep(input) {
-      @apply maz-caret-transparent;
-    }
-  }
-
-  &.--mini {
-    @apply maz-text-xs;
-  }
-
-  &.--xs {
-    @apply maz-text-xs;
-  }
-
-  &.--sm {
-    @apply maz-text-sm;
-  }
-
-  &.--md {
-    @apply maz-text-base;
-  }
-
-  &.--lg {
-    @apply maz-text-lg;
-  }
-
-  &.--xl {
-    @apply maz-text-xl;
   }
 
   &:not(.--disabled):deep(.m-input-input) {
-    @apply maz-cursor-pointer;
-  }
-
-  &-chevron {
-    @apply maz-text-[1.2em] maz-text-muted maz-transition-all maz-duration-300 maz-ease-out;
+    @apply maz:cursor-pointer;
   }
 
   &.--is-open {
@@ -887,103 +863,94 @@ defineExpose({
   }
 
   & button.maz-custom {
-    @apply maz-cursor-pointer maz-appearance-none maz-border-none;
+    @apply maz:cursor-pointer maz:appearance-none maz:border-none;
 
     &:disabled {
-      @apply maz-cursor-not-allowed;
+      @apply maz:disabled-cursor;
     }
   }
 }
 
+.m-select-chevron {
+  @apply maz:text-[1.2em] maz:text-muted maz:transition-all maz:duration-300 maz:ease-out;
+}
+
+.m-select-input {
+  @apply maz:size-full;
+  @apply maz:cursor-pointer;
+
+  &:deep(input) {
+    @apply maz:caret-transparent;
+  }
+}
+
+.m-select-input__toggle-button {
+  @apply maz:flex maz:h-full maz:bg-transparent maz:ps-0 maz:flex-center;
+}
+
 .m-select-list {
-  @apply maz-z-default-backdrop maz-flex maz-flex-col maz-gap-1 maz-overflow-hidden maz-rounded maz-bg-surface maz-drop-shadow-md maz-shadow-elevation;
+  @apply maz:z-default-backdrop maz:flex maz:flex-col maz:gap-1 maz:overflow-hidden maz:rounded-md maz:bg-container maz:drop-shadow-md maz:shadow-elevation;
 
-  &-optgroup {
-    @apply maz-flex-none maz-p-0.5 maz-text-start maz-text-[0.875em] maz-text-muted;
+  min-inline-size: 3.5rem;
+}
+
+.m-select-list-item {
+  @apply maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:gap-3 maz:truncate maz:rounded-md maz:bg-transparent maz:px-3 maz:py-2 maz:text-start maz:transition-colors maz:duration-300 maz:ease-in-out maz:focus-within:bg-surface-600 maz:dark:focus-within:bg-surface-400 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400 maz:outline-hidden maz:border maz:border-solid maz:border-transparent;
+
+  span {
+    @apply maz:truncate;
   }
 
-  &.--mini {
-    @apply maz-text-xs;
+  &.--is-none-value {
+    @apply maz:text-muted;
   }
 
-  &.--xs {
-    @apply maz-text-xs;
-  }
+  &.--is-selected {
+    color: var(--selected-text-color);
+    background-color: var(--selected-bg-color);
 
-  &.--sm {
-    @apply maz-text-sm;
-  }
-
-  &.--md {
-    @apply maz-text-base;
-  }
-
-  &.--lg {
-    @apply maz-text-lg;
-  }
-
-  &.--xl {
-    @apply maz-text-xl;
-  }
-
-  min-width: 3.5rem;
-
-  &__search-wrapper {
-    @apply maz-px-2 maz-pt-2;
-  }
-
-  &__scroll-wrapper {
-    @apply maz-flex maz-flex-1 maz-flex-col maz-gap-1 maz-overflow-auto maz-p-2;
-
-    /* Custom scrollbar for webkit browsers (Chrome, Safari, Edge) */
-    &::-webkit-scrollbar {
-      width: 0.1875rem;
+    &:focus-within {
+      outline: var(--selected-text-color) solid var(--maz-border-width);
+      outline-offset: 2px;
     }
 
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      @apply maz-bg-surface-600 dark:maz-bg-surface-400;
-
-      border-radius: 1000px;
-    }
-
-    /* Modern CSS for all browsers (fallback) */
-    scrollbar-width: thin;
-    scrollbar-color: hsl(var(--maz-background-600)) transparent;
-  }
-
-  &__no-results {
-    @apply maz-flex maz-p-4 maz-flex-center;
-  }
-
-  &-item {
-    @apply maz-flex maz-w-full maz-cursor-pointer maz-items-center maz-gap-3 maz-truncate maz-rounded maz-bg-transparent maz-px-3 maz-py-2 maz-text-start maz-transition-colors maz-duration-300 maz-ease-in-out focus-within:maz-bg-surface-600 dark:focus-within:maz-bg-surface-400 hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400 maz-outline-none maz-border maz-border-solid maz-border-transparent;
-
-    span {
-      @apply maz-truncate;
-    }
-
-    &.--is-none-value {
-      @apply maz-text-muted;
-    }
-
-    &.--is-selected {
-      color: var(--selected-text-color);
-      background-color: var(--selected-bg-color);
-
-      &:focus {
-        @apply maz-outline-[var(--selected-text-color)];
-
-        outline-width: var(--maz-border-width);
-      }
-
-      &.--transparent {
-        @apply maz-bg-surface;
-      }
+    &.--transparent {
+      @apply maz:bg-surface;
     }
   }
+}
+
+.m-select-list__no-results {
+  @apply maz:flex maz:p-4 maz:flex-center;
+}
+
+.m-select-list__scroll-wrapper {
+  @apply maz:flex maz:flex-1 maz:flex-col maz:gap-1 maz:overflow-auto maz:p-2;
+
+  /* Custom scrollbar for webkit browsers (Chrome, Safari, Edge) */
+  &::-webkit-scrollbar {
+    inline-size: 0.1875rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply maz:bg-surface-600 maz:dark:bg-surface-400;
+
+    border-radius: 1000px;
+  }
+
+  /* Modern CSS for all browsers (fallback) */
+  @apply maz:scrollbar-thin maz:scrollbar-track-transparent maz:scrollbar-thumb-surface-600;
+}
+
+.m-select-list__search-wrapper {
+  @apply maz:px-2 maz:pt-2;
+}
+
+.m-select-list-optgroup {
+  @apply maz:flex-none maz:p-0.5 maz:text-start maz:text-[0.875em] maz:text-muted;
 }
 </style>

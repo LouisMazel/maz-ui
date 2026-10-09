@@ -5,7 +5,13 @@ export default defineConfig(
     formatters: true,
     vue: true,
     vueAccessibility: true,
-    tailwindcss: true,
+    typescript: true,
+    sonarjs: true,
+    tailwindcss: {
+      preset: 'recommended',
+      entryPoint: 'src/tailwindcss/tailwind.css',
+    },
+    logLevel: 'default',
   },
   {
     rules: {

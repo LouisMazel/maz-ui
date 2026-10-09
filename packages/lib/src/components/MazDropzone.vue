@@ -187,12 +187,12 @@ export type MazDropzoneProps = {
    */
   color?: MazColor
   /**
-   * MazBtn props [MazBtn props](/components/maz-btn#props)
+   * MazBtn props [MazBtn props](/components/maz:btn#props)
    * @default {}
    */
   removeFileBtnProps?: MazBtnProps
   /**
-   * MazSpinner props [MazSpinner props](/components/maz-spinner#props)
+   * MazSpinner props [MazSpinner props](/components/maz:spinner#props)
    * @default {}
    */
   spinnerProps?: MazSpinnerProps
@@ -248,7 +248,7 @@ export interface MazDropzoneFileData {
   type?: string
   lastModified?: number
   sizeInMb?: string
-  thumbnail?: string | undefined
+  thumbnail?: string
   lastModifiedDate?: Date
   uploading?: boolean
   success?: boolean
@@ -763,14 +763,14 @@ defineExpose({
     role="button"
     tabindex="0"
     :for="`input-file-uploader-${instanceId}`"
-    class="m-dropzone m-reset-css"
+    class="m-dropzone m-reset-css maz:flex maz:w-full maz:cursor-pointer maz:flex-col maz:flex-center maz:gap-2 maz:overflow-hidden maz:rounded-md maz:border maz:border-dashed maz:border-divider maz:bg-input maz:p-6 maz:transition-colors maz:duration-200 maz:ease-in-out maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400/50"
     :class="{
-      'm-dropzone--disabled': disabled,
+      'm-dropzone--disabled maz:disabled-state': disabled,
       'm-dropzone--is-over-drop-zone': isOverDropZone && !isOverError,
       'm-dropzone--is-over-error': isOverError,
     }"
     :style="{
-      '--active-color': `hsl(var(--maz-${color}))`,
+      '--active-color': `var(--maz-${color})`,
     }"
   >
     <!--
@@ -873,111 +873,9 @@ defineExpose({
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-dropzone {
-  @apply maz-flex maz-w-full maz-flex-col maz-gap-2 maz-overflow-hidden maz-rounded maz-border maz-border-dashed maz-border-divider maz-p-6 maz-transition-colors maz-duration-200 maz-ease-in-out maz-flex-center maz-bg-surface hover:maz-bg-surface-600/50 dark:hover:maz-bg-surface-400/50 maz-cursor-pointer;
-
-  &--disabled {
-    @apply maz-cursor-not-allowed maz-opacity-50;
-  }
-
-  &--is-over-drop-zone {
-    @apply maz-bg-primary-400/20 hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400;
-
-    border-color: var(--active-color);
-
-    .maz-dropzone__upload-icon {
-      color: var(--active-color);
-    }
-  }
-
-  &--is-over-error {
-    @apply maz-border-destructive maz-bg-destructive-50 hover:maz-bg-destructive-50;
-
-    .maz-dropzone__upload-icon {
-      @apply maz-text-destructive;
-    }
-  }
-
-  &__divider {
-    @apply maz-text-muted maz-text-sm;
-  }
-
-  &__content {
-    @apply maz-flex maz-flex-col maz-gap-1 maz-flex-center;
-  }
-
-  &__files-container {
-    @apply maz-flex maz-flex-wrap maz-items-center maz-justify-center maz-gap-4;
-
-    position: relative;
-  }
-
-  &__file-item {
-    @apply maz-relative maz-flex maz-size-40 maz-cursor-auto maz-flex-col maz-items-center maz-overflow-hidden maz-rounded maz-bg-surface-600 dark:maz-bg-surface-400;
-
-    transition: all 300ms ease-in-out;
-  }
-
-  &__thumbnail {
-    @apply maz-absolute maz-inset-0;
-  }
-
-  &__overlay {
-    @apply maz-absolute maz-inset-0 maz-backdrop-blur-[0.125rem] maz-bg-surface/40 maz-rounded;
-  }
-
-  &__icon-container {
-    @apply maz-z-2 maz-flex maz-flex-1 maz-p-2 maz-flex-center;
-  }
-
-  &__spinner {
-    @apply maz-text-lg;
-  }
-
-  &__success-icon {
-    @apply maz-text-4xl maz-text-success;
-  }
-
-  &__error-icon {
-    @apply maz-text-4xl maz-text-destructive;
-  }
-
-  &__file-icon-wrapper {
-    @apply maz-p-1 maz-rounded maz-bg-surface maz-text-foreground;
-  }
-
-  &__description {
-    @apply maz-z-2 maz-flex maz-w-full maz-flex-col maz-gap-1 maz-truncate maz-p-2;
-  }
-
-  &__file-info {
-    @apply maz-flex maz-flex-col maz-gap-0.5 maz-text-center maz-text-sm maz-font-semibold;
-  }
-
-  &__file-name {
-    @apply maz-truncate;
-  }
-
-  &__file-size {
-    @apply maz-truncate;
-  }
-
-  &__upload-icon {
-    @apply maz-text-3xl;
-  }
-
-  &__upload-text {
-    @apply maz-text-center;
-  }
-
-  &__info-text {
-    @apply maz-mt-4 maz-text-center maz-text-sm maz-text-muted maz-max-w-full maz-flex maz-flex-col;
-  }
-
-  &__file-input {
-    @apply maz-hidden;
-  }
-
   .icon-scale-enter-active,
   .icon-scale-leave-active {
     transition: transform 300ms ease-in-out;
@@ -1013,6 +911,104 @@ defineExpose({
 
   .file-scale-move {
     transition: transform 300ms ease-in-out;
+  }
+}
+
+.m-dropzone__file-input {
+  @apply maz:hidden;
+}
+
+.m-dropzone__info-text {
+  @apply maz:mt-4 maz:text-center maz:text-sm maz:text-muted maz:max-w-full maz:flex maz:flex-col;
+}
+
+.m-dropzone__upload-text {
+  @apply maz:text-center;
+}
+
+.m-dropzone__upload-icon {
+  @apply maz:text-3xl;
+}
+
+.m-dropzone__file-size {
+  @apply maz:truncate;
+}
+
+.m-dropzone__file-name {
+  @apply maz:truncate;
+}
+
+.m-dropzone__file-info {
+  @apply maz:flex maz:flex-col maz:gap-0.5 maz:text-center maz:text-sm maz:font-semibold;
+}
+
+.m-dropzone__description {
+  @apply maz:z-2 maz:flex maz:w-full maz:flex-col maz:gap-1 maz:truncate maz:p-2;
+}
+
+.m-dropzone__file-icon-wrapper {
+  @apply maz:p-1 maz:rounded-md maz:bg-surface maz:text-foreground;
+}
+
+.m-dropzone__error-icon {
+  @apply maz:text-4xl maz:text-destructive;
+}
+
+.m-dropzone__success-icon {
+  @apply maz:text-4xl maz:text-success;
+}
+
+.m-dropzone__spinner {
+  @apply maz:text-lg;
+}
+
+.m-dropzone__icon-container {
+  @apply maz:z-2 maz:flex maz:flex-1 maz:p-2 maz:flex-center;
+}
+
+.m-dropzone__overlay {
+  @apply maz:absolute maz:inset-0 maz:backdrop-blur-[0.125rem] maz:bg-surface/40 maz:rounded-md;
+}
+
+.m-dropzone__thumbnail {
+  @apply maz:absolute maz:inset-0;
+}
+
+.m-dropzone__file-item {
+  @apply maz:relative maz:flex maz:size-40 maz:cursor-auto maz:flex-col maz:items-center maz:overflow-hidden maz:rounded-md maz:bg-surface-600 maz:dark:bg-surface-400;
+
+  transition: all 300ms ease-in-out;
+}
+
+.m-dropzone__files-container {
+  @apply maz:flex maz:flex-wrap maz:items-center maz:justify-center maz:gap-4;
+
+  position: relative;
+}
+
+.m-dropzone__content {
+  @apply maz:flex maz:flex-col maz:gap-1 maz:flex-center;
+}
+
+.m-dropzone__divider {
+  @apply maz:text-muted maz:text-sm;
+}
+
+.m-dropzone--is-over-error {
+  @apply maz:border-destructive maz:bg-destructive-50 maz:hover:bg-destructive-50;
+
+  .maz-dropzone__upload-icon {
+    @apply maz:text-destructive;
+  }
+}
+
+.m-dropzone--is-over-drop-zone {
+  @apply maz:bg-primary-400/20 maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
+
+  border-color: var(--active-color);
+
+  .maz-dropzone__upload-icon {
+    color: var(--active-color);
   }
 }
 </style>

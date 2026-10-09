@@ -9,8 +9,13 @@
     "../node/**/*",
     "../themes/**/*",
     "../translations/**/*",
+    "../upgrade/**/*",
     "../mcp/**/*",
     "../icons/**/*",
+    "../eslint-config/**/*",
+    "../../tools/**/*",
+    "../stylelint-config/**/*",
+    "../maz-cli/**/*",
     "../../apps/**/*"
   ]
 }

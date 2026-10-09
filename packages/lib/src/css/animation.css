@@ -1,4 +1,4 @@
-@layer maz-ui-animations {
+@layer base {
   .maz-scale-enter-active,
   .maz-scale-leave-active {
     opacity: 1;
@@ -138,53 +138,14 @@
   .maz-expand-enter-active,
   .maz-expand-leave-active {
     transition: all 200ms ease-in-out;
-    transition-property: opacity, height;
+    transition-property: opacity, block-size;
     overflow: hidden;
   }
 
   .maz-expand-enter-from,
   .maz-expand-leave-to {
-    height: 0;
+    block-size: 0;
     opacity: 0;
-  }
-
-  /**
-  * Tabs Transisiton
-  */
-  .maz-tab-transition {
-    &-enter-from {
-      transform: translate(100%, 0);
-    }
-
-    &-leave,
-    &-leave-active {
-      position: absolute !important;
-      top: 0;
-    }
-
-    &-leave-to {
-      position: absolute !important;
-      transform: translate(-100%, 0);
-    }
-  }
-
-  .maz-tab-reverse-transition {
-    &-enter-from {
-      transform: translate(-100%, 0);
-    }
-
-    &-leave,
-    &-leave-active {
-      position: absolute !important;
-      top: 0;
-    }
-
-    &-leave,
-    &-leave-to {
-      top: 0;
-      position: absolute !important;
-      transform: translate(100%, 0);
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {

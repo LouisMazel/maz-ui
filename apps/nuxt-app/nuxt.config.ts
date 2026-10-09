@@ -1,9 +1,17 @@
-import postcss from 'maz-ui/postcss.config.cjs'
+import process from 'node:process'
+import { VitePreNestedCss } from '@maz-ui/vite-config'
+import tailwindcss from '@tailwindcss/vite'
 import svgLoader from 'vite-svg-loader'
 import mazUiModule from './../../packages/nuxt/src/module'
 
+const enableLocalMonorepoDev = false
+const isDev = enableLocalMonorepoDev && process.env.NODE_ENV !== 'production'
+
+// eslint-disable-next-line no-console
+console.log({ isDev, enableLocalMonorepoDev })
+
 export default defineNuxtConfig({
-  modules: [mazUiModule, '@nuxtjs/tailwindcss'],
+  modules: [mazUiModule],
 
   devtools: { enabled: true },
 
@@ -31,12 +39,25 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-07-22',
 
   vite: {
-    plugins: [svgLoader()],
+    plugins: [VitePreNestedCss(), tailwindcss(), svgLoader()],
+    // Resolve `monorepo:dev` first when developing so we consume maz-ui's
+    // raw src/ (with HMR), and fall back to the published dist for prod
+    // builds. Same trick as accor-core-library.
+    resolve: {
+      conditions: isDev
+        ? [
+            'monorepo:dev',
+            'import',
+            'browser',
+            'module',
+            'default',
+          ]
+        : ['import', 'browser', 'module', 'default'],
+    },
   },
 
-  postcss,
-
   mazUi: {
+    css: { injectCss: !isDev },
     theme: {
       preset: 'maz-ui',
       mode: 'both',

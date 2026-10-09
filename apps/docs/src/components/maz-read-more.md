@@ -76,13 +76,13 @@ import MazReadMore from 'maz-ui/components/MazReadMore'
 Control the number of visible lines using the `max-lines` prop.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <div>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">2 lines</p>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">2 lines</p>
       <MazReadMore :text="longText" :max-lines="2" />
     </div>
     <div>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">6 lines</p>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">6 lines</p>
       <MazReadMore :text="longText" :max-lines="6" />
     </div>
   </div>
@@ -116,13 +116,13 @@ Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
 Use the `max-chars` prop to truncate based on character count instead of lines.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <div>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">50 characters</p>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">50 characters</p>
       <MazReadMore :text="longText" :max-chars="50" />
     </div>
     <div>
-      <p class="maz-text-sm maz-text-muted maz-mb-2">150 characters</p>
+      <p class="maz:text-sm maz:text-muted maz:mb-2">150 characters</p>
       <MazReadMore :max-chars="150">
         {{ longText }}
       </MazReadMore>
@@ -196,7 +196,7 @@ import MazReadMore from 'maz-ui/components/MazReadMore'
 Customize the color of the toggle link using the `color` prop.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazReadMore :text="longText" color="primary" :max-lines="2" />
     <MazReadMore :text="longText" color="secondary" :max-lines="2" />
     <MazReadMore :text="longText" color="info" :max-lines="2" />

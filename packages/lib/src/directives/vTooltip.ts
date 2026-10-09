@@ -46,9 +46,13 @@ interface VTooltipOptions extends Partial<Omit<MazPopoverProps, 'modelValue'>> {
   open?: boolean
 }
 
-type VTooltipBindingValue = string | VTooltipOptions
+type VTooltipBindingValue = string | VTooltipOptions | false | null | undefined
 
 export type TooltipBinding = DirectiveBinding<VTooltipBindingValue, NonNullable<MazPopoverProps['position']>>
+
+function isDisabled(value: VTooltipBindingValue): value is false | null | undefined {
+  return value === false || value == null
+}
 
 // Store instances by element
 const tooltipInstances = new WeakMap<HTMLElement, {
@@ -75,19 +79,20 @@ class TooltipHandler {
 
   private getTooltipProps(binding: TooltipBinding): VTooltipOptions {
     const baseOptions = { ...this.defaultProps }
+    const value = binding.value as string | VTooltipOptions
 
-    if (typeof binding.value === 'string') {
+    if (typeof value === 'string') {
       return {
         ...baseOptions,
-        text: binding.value,
+        text: value,
         position: this.getPositionFromModifiers(binding) || baseOptions.position || 'top',
       }
     }
 
     return {
       ...baseOptions,
-      ...binding.value,
-      position: this.getPositionFromModifiers(binding) || binding.value.position || baseOptions.position || 'top',
+      ...value,
+      position: this.getPositionFromModifiers(binding) || value.position || baseOptions.position || 'top',
     }
   }
 
@@ -121,6 +126,10 @@ class TooltipHandler {
   mount(el: HTMLElement, binding: TooltipBinding) {
     // this.unmount(el)
 
+    if (isDisabled(binding.value)) {
+      return
+    }
+
     const tooltipProps = this.getTooltipProps(binding)
 
     if (!tooltipProps.text && !tooltipProps.html) {
@@ -138,11 +147,11 @@ class TooltipHandler {
         ...tooltipProps,
         panelClass: [
           'm-tooltip-panel',
-          'maz-text-sm',
-          'maz-whitespace-pre-wrap',
-          'maz-break-words',
-          'maz-p-2',
-          'maz-max-w-xs',
+          'maz:text-sm',
+          'maz:whitespace-pre-wrap',
+          'maz:break-words',
+          'maz:p-2',
+          'maz:max-w-xs',
           tooltipProps.panelClass,
         ].filter(Boolean).join(' '),
         modelValue: isOpen.value,
@@ -271,6 +280,14 @@ class TooltipHandler {
 
   update(el: HTMLElement, binding: TooltipBinding) {
     const instance = tooltipInstances.get(el)
+
+    if (isDisabled(binding.value)) {
+      if (instance) {
+        instance.destroy()
+        tooltipInstances.delete(el)
+      }
+      return
+    }
 
     if (instance) {
       const newProps = this.getTooltipProps(binding)

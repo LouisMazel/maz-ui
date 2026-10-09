@@ -1,275 +1,145 @@
-import type { DarkModeStrategy, ThemeColors, ThemeFoundation, ThemeMode, ThemePreset } from '../types'
+import type { RoundedScaleKey, ThemeColors, ThemeFoundation, ThemeMode, ThemePreset } from '../types'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
-import { generateColorScale } from './color-utils'
+import { DEFAULT_ROUNDED_RATIOS } from '../presets/_defaults'
+import { normalizeColor } from './color-parser'
 
 export interface CSSOptions {
-  /** Generate only critical CSS variables */
-  onlyCritical?: boolean
-  /** Critical color variables to include (only used when onlyCritical is true) */
-  criticalColors?: (keyof ThemeColors)[]
-  /** Critical foundation variables to include (only used when onlyCritical is true) */
-  criticalFoundation?: (keyof ThemeFoundation)[]
   /** Theme mode to generate */
   mode: ThemeMode
-  /** Dark mode selector: 'class' (.dark) | 'media' (@media) */
-  darkSelectorStrategy: DarkModeStrategy
+  /** Dark mode selector: 'class' (.dark/.light) | 'media' (system pref only) */
+  darkSelectorStrategy: 'class' | 'media'
   /** CSS variables prefix */
   prefix?: string
-  /** Include color scales (50-900) - only used when onlyCritical is false */
-  includeColorScales?: boolean
   /** Dark class name */
   darkClass: string
+  /** Light class name (default 'light') */
+  lightClass?: string
 }
 
-const DEFAULT_CRITICAL_COLORS: (keyof ThemeColors)[] = [
-  'background',
-  'foreground',
-  'primary',
-  'primary-foreground',
-  'secondary',
-  'secondary-foreground',
-  'accent',
-  'accent-foreground',
-  'destructive',
-  'destructive-foreground',
-  'success',
-  'success-foreground',
-  'warning',
-  'warning-foreground',
-  'info',
-  'info-foreground',
-  'contrast',
-  'contrast-foreground',
-  'muted',
-  'shadow',
-  'border',
-] as const
+const ROUNDED_KEYS: readonly RoundedScaleKey[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl']
 
-const DEFAULT_CRITICAL_FOUNDATION: (keyof ThemeFoundation)[] = [
-  'radius',
-  'font-family',
-  'base-font-size',
-  'border-width',
-] as const
+export function generateCSS(preset: ThemePreset, options: CSSOptions): string {
+  const prefix = options.prefix ?? 'maz'
+  const lightClass = options.lightClass ?? 'light'
+  const { mode } = options
 
-const scaleColors = ['primary', 'secondary', 'accent', 'destructive', 'success', 'warning', 'info', 'contrast', 'background', 'foreground', 'border', 'muted', 'overlay', 'shadow'] as const
+  const lines: string[] = ['@layer theme {', '  :root {']
+  // In 'class' strategy the .dark/.light selectors are the source of truth.
+  // Defaulting :root to 'light' makes "no class" resolve to light (matches what
+  // a host like VitePress or Tailwind `darkMode: 'class'` expects), instead of
+  // following the system pref via `light-dark()` and desyncing from the host.
+  const colorScheme = mode !== 'both'
+    ? `only ${mode}`
+    : options.darkSelectorStrategy === 'class' ? 'light' : 'light dark'
+  lines.push(`    color-scheme: ${colorScheme};`)
 
-export function generateCSS(
-  preset: ThemePreset,
-  options: CSSOptions = {
-    onlyCritical: false,
-    mode: 'both',
-    darkSelectorStrategy: 'class',
-    darkClass: 'dark',
-  },
-): string {
-  const {
-    onlyCritical = false,
-    criticalColors = DEFAULT_CRITICAL_COLORS,
-    criticalFoundation = DEFAULT_CRITICAL_FOUNDATION,
-    mode,
-    darkSelectorStrategy,
-    prefix = 'maz',
-    includeColorScales = true,
-    darkClass = 'dark',
-  } = options
+  appendFoundation(lines, preset.foundation, prefix)
+  appendScales(lines, preset.scales, prefix)
+  appendComponents(lines, preset, prefix, mode)
+  appendColorVariables(lines, preset.colors, mode, prefix)
 
-  let css = '@layer maz-ui-theme {\n'
+  lines.push('  }')
 
-  if (mode === 'light' || mode === 'both') {
-    css += generateLightThemeVariables(preset, {
-      onlyCritical,
-      criticalColors,
-      criticalFoundation,
-      prefix,
-      includeColorScales,
-    })
+  if (options.darkSelectorStrategy === 'class' && mode === 'both') {
+    lines.push(`  .${options.darkClass} { color-scheme: only dark; }`)
+    lines.push(`  .${lightClass} { color-scheme: only light; }`)
   }
 
-  if (mode === 'dark' || mode === 'both') {
-    css += generateDarkThemeVariables(preset, {
-      onlyCritical,
-      criticalColors,
-      criticalFoundation,
-      mode,
-      darkSelectorStrategy,
-      prefix,
-      includeColorScales,
-      darkClass,
-    })
-  }
-
-  css += '}\n'
-
-  return css
+  lines.push('}')
+  return lines.join('\n')
 }
 
-function generateLightThemeVariables(
-  preset: ThemePreset,
-  options: {
-    onlyCritical: boolean
-    criticalColors: (keyof ThemeColors)[]
-    criticalFoundation: (keyof ThemeFoundation)[]
-    prefix: string
-    includeColorScales: boolean
-  },
-): string {
-  const { onlyCritical, criticalColors, criticalFoundation, prefix, includeColorScales } = options
-
-  const lightColors = onlyCritical
-    ? extractCriticalVariables(preset.colors.light, criticalColors)
-    : preset.colors.light
-
-  const lightFoundation = onlyCritical
-    ? extractCriticalFoundation(preset.foundation, criticalFoundation)
-    : preset.foundation
-
-  return generateVariablesBlock({
-    selector: ':root',
-    colors: lightColors,
-    foundation: lightFoundation,
-    prefix,
-    includeScales: !onlyCritical && includeColorScales,
-    preset: !onlyCritical ? preset : undefined,
-  })
-}
-
-function generateDarkThemeVariables(
-  preset: ThemePreset,
-  options: {
-    onlyCritical: boolean
-    criticalColors: (keyof ThemeColors)[]
-    criticalFoundation: (keyof ThemeFoundation)[]
-    mode: ThemeMode
-    darkSelectorStrategy: DarkModeStrategy
-    prefix: string
-    includeColorScales: boolean
-    darkClass: string
-  },
-): string {
-  const { onlyCritical, criticalColors, criticalFoundation, mode, darkSelectorStrategy, prefix, includeColorScales, darkClass } = options
-
-  const darkColors = onlyCritical
-    ? extractCriticalVariables(preset.colors.dark, criticalColors)
-    : preset.colors.dark
-
-  const darkFoundation = getDarkFoundation(onlyCritical, mode, preset.foundation, criticalFoundation)
-
-  return generateVariablesBlock({
-    selector: darkSelectorStrategy === 'media' ? ':root' : `.${darkClass}`,
-    mediaQuery: darkSelectorStrategy === 'media' ? '@media (prefers-color-scheme: dark)' : undefined,
-    colors: darkColors,
-    foundation: darkFoundation,
-    prefix,
-    includeScales: !onlyCritical && includeColorScales,
-    preset: !onlyCritical ? preset : undefined,
-    isDark: true,
-  })
-}
-
-function getDarkFoundation(
-  onlyCritical: boolean,
+function appendColorVariables(
+  lines: string[],
+  colors: { light: ThemeColors, dark: ThemeColors },
   mode: ThemeMode,
-  foundation: ThemeFoundation | undefined,
-  criticalFoundation: (keyof ThemeFoundation)[],
-): Partial<ThemeFoundation> | undefined {
-  if (onlyCritical) {
-    return extractCriticalFoundation(foundation, criticalFoundation)
-  }
-  return mode === 'dark' ? foundation : undefined
-}
-
-function extractCriticalVariables(
-  colors: ThemeColors,
-  criticalKeys: (keyof ThemeColors)[],
-): Partial<ThemeColors> {
-  return Object.fromEntries(
-    criticalKeys
-      .filter(key => colors[key])
-      .map(key => [key, colors[key]]),
-  )
-}
-
-function extractCriticalFoundation(
-  foundation: ThemeFoundation | undefined,
-  criticalKeys: (keyof ThemeFoundation)[],
-): Partial<ThemeFoundation> {
-  if (!foundation)
-    return {}
-
-  return Object.fromEntries(
-    criticalKeys
-      .filter(key => foundation[key])
-      .map(key => [key, foundation[key]]),
-  )
-}
-
-function generateVariablesBlock({
-  selector,
-  mediaQuery,
-  colors,
-  foundation,
-  prefix,
-  includeScales = false,
-  preset,
-  isDark = false,
-}: {
-  selector: string
-  mediaQuery?: string
-  colors?: Partial<ThemeColors>
-  foundation?: Partial<ThemeFoundation>
-  prefix: string
-  includeScales?: boolean
-  preset?: ThemePreset
-  isDark?: boolean
-}): string {
-  const variables: string[] = []
-
-  if (colors) {
-    Object.entries(colors).forEach(([key, value]) => {
-      if (value) {
-        variables.push(`  --${prefix}-${key}: ${value};`)
-      }
-    })
-  }
-
-  if (foundation) {
-    Object.entries(foundation).forEach(([key, value]) => {
-      if (value) {
-        variables.push(`  --${prefix}-${key}: ${value};`)
-      }
-    })
-  }
-
-  if (includeScales && preset) {
-    const sourceColors = isDark ? preset.colors.dark : preset.colors.light
-    const colorScales = generateAllColorScales(sourceColors, prefix)
-    variables.push(...colorScales)
-  }
-
-  const content = variables.join('\n')
-
-  if (mediaQuery) {
-    return `\n  ${mediaQuery} {\n    ${selector} {\n${content.replace(/^/gm, '  ')}\n    }\n  }\n`
-  }
-
-  return `\n  ${selector} {\n${content}\n  }\n`
-}
-
-function generateAllColorScales(colors: ThemeColors, prefix: string): string[] {
-  const colorScales: string[] = []
-
-  scaleColors.forEach((colorName) => {
-    const baseColor = colors[colorName]
-    if (baseColor) {
-      const scale = generateColorScale(baseColor)
-      Object.entries(scale).forEach(([scaleKey, scaleValue]) => {
-        colorScales.push(`  --${prefix}-${colorName}-${scaleKey}: ${scaleValue};`)
-      })
+  prefix: string,
+): void {
+  for (const [key, lightValue] of Object.entries(colors.light) as Array<[keyof ThemeColors, string]>) {
+    if (!lightValue)
+      continue
+    if (mode === 'both') {
+      const dark = colors.dark[key] ?? lightValue
+      lines.push(`    --${prefix}-${key}: light-dark(${normalizeColor(lightValue)}, ${normalizeColor(dark)});`)
     }
-  })
+    else {
+      const value = mode === 'dark' ? (colors.dark[key] ?? lightValue) : lightValue
+      lines.push(`    --${prefix}-${key}: ${normalizeColor(value)};`)
+    }
+  }
+}
 
-  return colorScales
+function appendFoundation(lines: string[], foundation: Partial<ThemeFoundation> | undefined, prefix: string): void {
+  if (!foundation)
+    return
+  for (const [key, value] of Object.entries(foundation)) {
+    if (value)
+      lines.push(`    --${prefix}-${key}: ${value};`)
+  }
+}
+
+function appendScales(lines: string[], scales: ThemePreset['scales'] | undefined, prefix: string): void {
+  if (!scales)
+    return
+  for (const key of ROUNDED_KEYS) {
+    const value = scales.rounded?.[key]
+    if (value) {
+      lines.push(`    --${prefix}-rounded-${key}: ${value};`)
+    }
+    else if (key !== 'md') {
+      lines.push(`    --${prefix}-rounded-${key}: calc(var(--${prefix}-rounded-md) * ${DEFAULT_ROUNDED_RATIOS[key]});`)
+    }
+  }
+  for (const [key, value] of Object.entries(scales.shadow ?? {})) {
+    if (value)
+      lines.push(`    --${prefix}-shadow-style-${key}: ${value};`)
+  }
+}
+
+/**
+ * Emit per-component bg vars. In `both` mode, values are wrapped in `light-dark()`
+ * so they switch with `color-scheme`. Otherwise the matching side is emitted.
+ */
+function appendComponents(lines: string[], preset: ThemePreset, prefix: string, mode: ThemeMode): void {
+  const components = preset.components
+  if (!components)
+    return
+
+  if (components.btn?.['font-weight']) {
+    lines.push(`    --${prefix}-btn-font-weight: ${components.btn['font-weight']};`)
+  }
+
+  if (components.dialog?.['max-width']) {
+    lines.push(`    --${prefix}-dialog-max-width: ${components.dialog['max-width']};`)
+  }
+  if (components.dialog?.['min-width']) {
+    lines.push(`    --${prefix}-dialog-min-width: ${components.dialog['min-width']};`)
+  }
+
+  const emitBg = (componentKey: 'container' | 'input', cssKey: string) => {
+    const bg = components[componentKey]?.bg
+    if (!bg)
+      return
+    if (mode === 'both') {
+      const fallback = bg.light ?? bg.dark
+      if (!fallback)
+        return
+      const light = normalizeColor(bg.light ?? fallback)
+      const dark = normalizeColor(bg.dark ?? fallback)
+      const value = light === dark ? light : `light-dark(${light}, ${dark})`
+      lines.push(`    --${prefix}-${cssKey}: ${value};`)
+    }
+    else if (bg[mode]) {
+      lines.push(`    --${prefix}-${cssKey}: ${normalizeColor(bg[mode]!)};`)
+    }
+  }
+  emitBg('container', 'container-bg')
+  emitBg('input', 'input-bg')
+
+  const inputTopLabelFw = components.input?.['top-label-font-weight']
+  if (inputTopLabelFw) {
+    lines.push(`    --${prefix}-input-top-label-font-weight: ${inputTopLabelFw};`)
+  }
 }
 
 export const CSS_ID = 'maz-theme-css'
@@ -278,42 +148,23 @@ export function injectCSS(id = CSS_ID, css: string): void {
   if (isServer())
     return
 
-  const styleElements = [...document.querySelectorAll<HTMLStyleElement>(`#${id}`)]
-
-  if (!styleElements || styleElements.length === 0) {
-    const element = document.createElement('style')
-    element.id = id
-    document.head.appendChild(element)
-
-    element.textContent = css
-    return
+  const styleElements = document.querySelectorAll<HTMLStyleElement>(`#${id}`)
+  // Keep the last element (most recent), drop the rest, then update its content.
+  // If none exist, create a fresh <style>.
+  let target = styleElements[styleElements.length - 1] as HTMLStyleElement | undefined
+  for (let i = 0; i < styleElements.length - 1; i++) {
+    styleElements[i].remove()
   }
-
-  if (styleElements.length === 1) {
-    styleElements[0].textContent = css
-    return
+  if (!target) {
+    target = document.createElement('style')
+    target.id = id
+    document.head.appendChild(target)
   }
-
-  const lastElement = styleElements.at(-1)
-
-  if (styleElements.length > 1) {
-    for (let i = 0; i < styleElements.length - 1; i++) {
-      styleElements[i].remove()
-    }
-
-    if (lastElement) {
-      lastElement.textContent = css
-    }
-  }
+  target.textContent = css
 }
 
 export function removeCSS(id = CSS_ID): void {
   if (isServer())
     return
-
-  const styleElements = document.querySelectorAll<HTMLStyleElement>(`#${id}`)
-
-  for (const styleElement of styleElements) {
-    styleElement && styleElement.remove()
-  }
+  document.querySelectorAll<HTMLStyleElement>(`#${id}`).forEach(el => el.remove())
 }

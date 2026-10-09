@@ -91,7 +91,7 @@ onBeforeUnmount(() => {
 <script lang="ts" setup>
   import { onMounted, ref, onBeforeUnmount } from 'vue'
 
-  import { useUserVisibility } from 'maz-ui/src/composables/useUserVisibility'
+  import { useUserVisibility } from 'maz-ui/composables/useUserVisibility'
 
   const events = ref([])
 

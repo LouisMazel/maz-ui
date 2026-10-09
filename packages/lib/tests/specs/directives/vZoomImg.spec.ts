@@ -162,7 +162,7 @@ describe('given VueZoomImg class', () => {
       instance.remove(mockElement)
 
       expect(mockElement.classList.contains('maz-zoom-img-instance')).toBe(false)
-      expect(mockElement.getAttribute('data-zoom-src')).toBe(null)
+      expect(mockElement.getAttribute('data-zoom-src')).toBeNull()
       expect(mockElement.style.cursor).toBe('')
     })
   })

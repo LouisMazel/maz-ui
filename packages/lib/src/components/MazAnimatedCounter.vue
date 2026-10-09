@@ -130,8 +130,8 @@ watch(
 </script>
 
 <template>
-  <span ref="elementRef" class="m-animated-counter m-reset-css">
-    <span class="maz-sr-only">
+  <span ref="elementRef" class="m-animated-counter m-reset-css maz:whitespace-nowrap maz:tabular-nums">
+    <span class="maz:sr-only">
       <slot name="prefix">{{ prefix }}</slot>{{ count }}<slot name="suffix">{{ suffix }}</slot>
     </span>
 
@@ -139,9 +139,3 @@ watch(
     <slot name="prefix">{{ prefix }}</slot>{{ currentCount }}<slot name="suffix">{{ suffix }}</slot>
   </span>
 </template>
-
-<style scoped>
-.m-animated-counter {
-  @apply maz-whitespace-nowrap maz-tabular-nums;
-}
-</style>
