@@ -96,6 +96,11 @@ export default {
     collapse: 'Ler menos',
     ariaLabel: 'Conteúdo expansível',
   },
+  pullToRefresh: {
+    pull: 'Puxe para atualizar',
+    release: 'Solte para atualizar',
+    refreshing: 'Atualizando…',
+  },
   skeleton: {
     ariaLabel: 'Conteúdo em carregamento',
     loadingText: 'Carregando...',

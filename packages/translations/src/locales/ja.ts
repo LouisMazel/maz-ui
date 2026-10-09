@@ -96,6 +96,11 @@ export default {
     collapse: '閉じる',
     ariaLabel: '展開可能なコンテンツ',
   },
+  pullToRefresh: {
+    pull: '引っ張って更新',
+    release: '指を離して更新',
+    refreshing: '更新中…',
+  },
   skeleton: {
     ariaLabel: 'コンテンツの読み込み中',
     loadingText: '読み込み中...',
