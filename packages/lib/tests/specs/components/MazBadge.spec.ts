@@ -59,7 +59,7 @@ describe('given MazBadge component', () => {
         props: { nowrap: true },
       })
 
-      expect(wrapper.classes()).toContain('--nowrap')
+      expect(wrapper.classes()).toContain('maz:text-nowrap')
     })
   })
 
@@ -108,7 +108,7 @@ describe('given MazBadge component', () => {
       expect(wrapper.classes()).toContain('--lg')
       expect(wrapper.classes()).toContain('--outlined')
       expect(wrapper.classes()).toContain('--pastel')
-      expect(wrapper.classes()).toContain('--nowrap')
+      expect(wrapper.classes()).toContain('maz:text-nowrap')
       expect(wrapper.classes()).toContain('--rounded-full')
     })
   })
