@@ -63,7 +63,7 @@
     "@maz-ui/translations": "workspace:*",
     "@maz-ui/utils": "workspace:*",
     "@nuxt/devtools-kit": "^3.2.3",
-    "@nuxt/kit": "^4.5.2",
+    "@nuxt/kit": "^4.6.1",
     "defu": "^6.1.7",
     "maz-ui": "workspace:*"
   },
