@@ -6,6 +6,13 @@ export type MazSize = (typeof sizes)[number]
 
 export type MazRoundedSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 
+/**
+ * Source of the country flags of `MazSelectCountry` and `MazInputPhoneNumber`:
+ * - a URL template with the code: `{code}` (lowercase) or `{CODE}` (uppercase), e.g. `/flags/{code}.svg`
+ * - a function giving the image source (URL or data URL) of a code, or `undefined` to display the code in a badge
+ */
+export type MazCountryFlagSrc = string | ((code: string) => string | undefined | Promise<string | undefined>)
+
 export type MazSizeUnit = `${number}${'rem' | 'px' | 'em' | 'vw' | 'vh' | 'vmin' | 'vmax' | '%' | 'ch' | 'cm' | 'mm' | 'in' | 'ex' | 'pc' | 'pt'}`
 
 /**
