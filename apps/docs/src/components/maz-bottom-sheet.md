@@ -1,6 +1,6 @@
 ---
 title: MazBottomSheet
-description: MazBottomSheet is a standalone component like a simple dialog but at the bottom of screen. Useful for mobile UX.
+description: MazBottomSheet is a standalone component like a simple dialog but anchored at the bottom of the screen. Full-width on mobile and constrained/centered on desktop, with a header (icon, title, close button), a footer and many replaceable slots. Useful for mobile UX.
 ---
 
 # {{ $frontmatter.title }}
@@ -10,44 +10,280 @@ description: MazBottomSheet is a standalone component like a simple dialog but a
 <!--@include: ./../../.vitepress/mixins/getting-started.md-->
 
 ::: tip
-This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component anywhere and it inherits all its props
+This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md), so you can implement this component anywhere and it inherits all its props (`persistent`, `closeOnEscape`, etc.)
 :::
 
-## Interactive Demo
+## Basic usage
+
+The sheet has a header (with the `title` and a close button) and an optional `footer` slot. It opens full-width on mobile and is constrained/centered on desktop (see [Max width](#max-width)).
 
 <ComponentDemo expanded>
-  <div class="maz-flex maz-flex-col maz-gap-4">
-    <!-- Product Selection Demo -->
+  <MazBtn @click="basicOpened = true">Open Bottom Sheet</MazBtn>
+
+  <MazBottomSheet v-model="basicOpened" title="Bottom Sheet Title">
+    <p>Your content goes here.</p>
+    <template #footer="{ close }">
+      <MazBtn color="transparent" @click="close">Cancel</MazBtn>
+      <MazBtn @click="close">Confirm</MazBtn>
+    </template>
+  </MazBottomSheet>
+
+<template #code>
+
+```vue
+<script setup>
+import MazBottomSheet from 'maz-ui/components/MazBottomSheet'
+import { ref } from 'vue'
+
+const basicOpened = ref(false)
+</script>
+
+<template>
+  <MazBtn @click="basicOpened = true">
+    Open Bottom Sheet
+  </MazBtn>
+
+  <MazBottomSheet v-model="basicOpened" title="Bottom Sheet Title">
+    <p>Your content goes here.</p>
+
+    <template #footer="{ close }">
+      <MazBtn color="transparent" @click="close">
+        Cancel
+      </MazBtn>
+      <MazBtn @click="close">
+        Confirm
+      </MazBtn>
+    </template>
+  </MazBottomSheet>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+## Swipe to close (iOS-like)
+
+By default a drag handle (grab bar) is shown at the top of the sheet, and you can **close the sheet by dragging that handle down** - the sheet follows your pointer and either dismisses (past the threshold) or snaps back. This works with both touch and mouse.
+
+Disable it with `:swipe-to-close="false"` (the handle is then hidden too), or replace the handle with the `#handle` slot. A `persistent` sheet never dismisses on swipe: it snaps back instead.
+
+<ComponentDemo>
+  <MazBtn @click="swipeOpened = true">Open swipeable sheet</MazBtn>
+
+  <MazBottomSheet v-model="swipeOpened" title="Drag me down">
+    <p>Grab the bar at the top and drag down to close, or release before the threshold to snap back.</p>
+  </MazBottomSheet>
+
+<template #code>
+
+```html
+<!-- enabled by default -->
+<MazBottomSheet v-model="swipeOpened" title="Drag me down">
+  <p>Grab the bar at the top and drag down to close.</p>
+</MazBottomSheet>
+
+<!-- disable the handle and the gesture -->
+<MazBottomSheet v-model="swipeOpened" :swipe-to-close="false" title="No swipe" />
+
+<!-- custom handle -->
+<MazBottomSheet v-model="swipeOpened" title="Custom handle">
+  <template #handle>
+    <span class="maz:h-1.5 maz:w-12 maz:rounded-full maz:bg-primary" />
+  </template>
+</MazBottomSheet>
+```
+
+  </template>
+</ComponentDemo>
+
+## Header with an icon
+
+Pass an `icon` (an icon value or a full `MazIconProps` object) to display it on the left of the title.
+
+<ComponentDemo>
+  <MazBtn @click="iconOpened = true">Open with icon</MazBtn>
+
+  <MazBottomSheet v-model="iconOpened" title="Notifications" icon="/bell.svg">
+    <p>You have 3 new notifications.</p>
+    <template #footer="{ close }">
+      <MazBtn @click="close">Mark all as read</MazBtn>
+    </template>
+  </MazBottomSheet>
+
+<template #code>
+
+```html
+<MazBottomSheet v-model="iconOpened" title="Notifications" icon="/bell.svg">
+  <p>You have 3 new notifications.</p>
+
+  <template #footer="{ close }">
+    <MazBtn @click="close">Mark all as read</MazBtn>
+  </template>
+</MazBottomSheet>
+```
+
+  </template>
+</ComponentDemo>
+
+## Replaceable slots
+
+Everything in the header is replaceable: use `#icon` and `#title` to customize parts of the default header, or `#header` to replace the whole header (you get the `close` function as a binding).
+
+<ComponentDemo>
+  <MazBtn @click="slotsOpened = true">Open custom header</MazBtn>
+
+  <MazBottomSheet v-model="slotsOpened">
+    <template #icon>
+      <MazAvatar src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100" size="sm" />
+    </template>
+    <template #title>
+      <span class="maz:text-primary">Custom title</span>
+    </template>
+    <p>The icon and the title slots are fully replaceable.</p>
+  </MazBottomSheet>
+
+<template #code>
+
+```html
+<MazBottomSheet v-model="slotsOpened">
+  <template #icon>
+    <MazAvatar src="/avatar.jpg" size="sm" />
+  </template>
+
+  <template #title>
+    <span class="maz:text-primary">Custom title</span>
+  </template>
+
+  <p>The icon and the title slots are fully replaceable.</p>
+</MazBottomSheet>
+
+<!-- or replace the whole header -->
+<MazBottomSheet v-model="slotsOpened">
+  <template #header="{ close }">
+    <div class="maz:flex maz:items-center maz:justify-between maz:p-4">
+      <strong>My header</strong>
+      <MazBtn size="sm" color="transparent" @click="close">Close</MazBtn>
+    </div>
+  </template>
+</MazBottomSheet>
+```
+
+  </template>
+</ComponentDemo>
+
+## Max width
+
+On mobile the sheet is always **full-width**. From the tablet breakpoint and up, it is **constrained** to `max-width` and centered horizontally. The default `max-width` is `35rem`; pass the `max-width` prop (a [`MazSizeUnit`](#props)) to override it.
+
+<ComponentDemo>
+  <MazBtn @click="wideOpened = true">Open wide sheet</MazBtn>
+
+  <MazBottomSheet v-model="wideOpened" title="Wide sheet" max-width="60rem">
+    <p>This sheet is constrained to 60rem on desktop and full-width on mobile.</p>
+  </MazBottomSheet>
+
+<template #code>
+
+```html
+<MazBottomSheet v-model="wideOpened" title="Wide sheet" max-width="60rem">
+  <p>This sheet is constrained to 60rem on desktop and full-width on mobile.</p>
+</MazBottomSheet>
+```
+
+  </template>
+</ComponentDemo>
+
+## Without header
+
+Hide the whole header with `hide-header`, or only the close button with `hide-close-button`.
+
+<ComponentDemo>
+  <MazBtn @click="noHeaderOpened = true">Open without header</MazBtn>
+
+  <MazBottomSheet v-model="noHeaderOpened" hide-header>
+    <div class="maz:flex maz:flex-col maz:gap-3 maz:text-center">
+      <p>No header here, you control the whole layout.</p>
+      <MazBtn @click="noHeaderOpened = false">Got it</MazBtn>
+    </div>
+  </MazBottomSheet>
+
+<template #code>
+
+```html
+<MazBottomSheet v-model="noHeaderOpened" hide-header>
+  <div class="maz:flex maz:flex-col maz:gap-3 maz:text-center">
+    <p>No header here, you control the whole layout.</p>
+    <MazBtn @click="noHeaderOpened = false">Got it</MazBtn>
+  </div>
+</MazBottomSheet>
+```
+
+  </template>
+</ComponentDemo>
+
+## Persistent
+
+A `persistent` sheet cannot be closed by clicking outside or pressing escape, and the close button is removed. Provide your own action to close it.
+
+<ComponentDemo>
+  <MazBtn @click="persistentOpened = true">Open persistent sheet</MazBtn>
+
+  <MazBottomSheet v-model="persistentOpened" title="Action required" icon="/exclamation-triangle.svg" persistent>
+    <p>You must confirm before closing this sheet.</p>
+    <template #footer>
+      <MazBtn @click="persistentOpened = false">I understand</MazBtn>
+    </template>
+  </MazBottomSheet>
+
+<template #code>
+
+```html
+<MazBottomSheet v-model="persistentOpened" title="Action required" persistent>
+  <p>You must confirm before closing this sheet.</p>
+
+  <template #footer>
+    <MazBtn @click="persistentOpened = false">I understand</MazBtn>
+  </template>
+</MazBottomSheet>
+```
+
+  </template>
+</ComponentDemo>
+
+## Full example
+
+<ComponentDemo expanded>
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazCard>
       <template #title>
-        <div class="maz-flex maz-items-center maz-gap-3">
+        <div class="maz:flex maz:items-center maz:gap-3">
           <MazAvatar src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100" size="lg" />
           <div>
-            <h3 class="maz-text-lg maz-font-semibold">Nike Air Max</h3>
-            <p class="maz-text-muted maz-text-sm">Premium Running Shoes</p>
+            <h3 class="maz:text-lg maz:font-semibold">Nike Air Max</h3>
+            <p class="maz:text-muted maz:text-sm">Premium Running Shoes</p>
           </div>
         </div>
       </template>
-      <div class="maz-space-y-4">
-        <div class="maz-flex maz-items-center maz-justify-between">
-          <span class="maz-font-medium">Price:</span>
-          <span class="maz-text-xl maz-font-bold maz-text-primary">$129.99</span>
+      <div class="maz:space-y-4">
+        <div class="maz:flex maz:items-center maz:justify-between">
+          <span class="maz:font-medium">Price:</span>
+          <span class="maz:text-xl maz:font-bold maz:text-primary">$129.99</span>
         </div>
-        <div class="maz-flex maz-gap-2">
+        <div class="maz:flex maz:gap-2">
           <MazBtn color="primary" @click="openProductOptions">
-            <MazIcon name="cog" class="maz-me-2" />
+            <MazIcon icon="/cog.svg" class="maz:me-2" />
             Customize Options
           </MazBtn>
           <MazBtn color="secondary" @click="openUserSettings">
-            <MazIcon name="user" class="maz-me-2" />
+            <MazIcon icon="/user.svg" class="maz:me-2" />
             Profile Settings
           </MazBtn>
         </div>
       </div>
     </MazCard>
-    <MazCard v-if="selectedOptions.size || selectedOptions.color" class="maz-bg-secondary/10">
+    <MazCard v-if="selectedOptions.size || selectedOptions.color" class="maz:bg-secondary/10">
       <template #title>Selected Options</template>
-      <div class="maz-flex maz-gap-4">
+      <div class="maz:flex maz:gap-4">
         <MazBadge v-if="selectedOptions.size" color="info">
           Size: {{ selectedOptions.size }}
         </MazBadge>
@@ -60,12 +296,11 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
       </div>
     </MazCard>
   </div>
-  <MazBottomSheet v-model="isProductOpen" title="Customize Your Shoes">
-    <div class="maz-space-y-6 maz-p-6">
-      <!-- Size Selection -->
+  <MazBottomSheet v-model="isProductOpen" title="Customize Your Shoes" icon="/cog.svg" :padding="false">
+    <div class="maz:space-y-6 maz:p-6">
       <div>
-        <h4 class="maz-text-lg maz-font-semibold maz-mb-3">Select Size</h4>
-        <div class="maz-grid maz-grid-cols-4 maz-gap-2">
+        <h4 class="maz:text-lg maz:font-semibold maz:mb-3">Select Size</h4>
+        <div class="maz:grid maz:grid-cols-4 maz:gap-2">
           <MazBtn
             v-for="size in sizes"
             :key="size"
@@ -78,20 +313,20 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
         </div>
       </div>
       <div>
-        <h4 class="maz-text-lg maz-font-semibold maz-mb-3">Select Color</h4>
-        <div class="maz-grid maz-grid-cols-3 maz-gap-3">
+        <h4 class="maz:text-lg maz:font-semibold maz:mb-3">Select Color</h4>
+        <div class="maz:grid maz:grid-cols-3 maz:gap-3">
           <div
             v-for="color in colors"
             :key="color.name"
-            class="maz-flex maz-flex-col maz-items-center maz-cursor-pointer maz-p-3 maz-rounded-lg maz-border-2 maz-transition-all"
-            :class="selectedOptions.color === color.name ? 'maz-border-primary maz-bg-primary/10' : 'maz-border-border hover:maz-border-primary/50'"
+            class="maz:flex maz:flex-col maz:items-center maz:cursor-pointer maz:p-3 maz:rounded-lg maz:border-2 maz:transition-all"
+            :class="selectedOptions.color === color.name ? 'maz:border-primary maz:bg-primary/10' : 'maz:border-divider maz:hover:border-primary/50'"
             @click="selectedOptions.color = color.name"
           >
             <div
-              class="maz-w-8 maz-h-8 maz-rounded-full maz-mb-2"
+              class="maz:w-8 maz:h-8 maz:rounded-full maz:mb-2"
               :style="{ backgroundColor: color.value }"
             />
-            <span class="maz-text-sm maz-font-medium">{{ color.name }}</span>
+            <span class="maz:text-sm maz:font-medium">{{ color.name }}</span>
           </div>
         </div>
       </div>
@@ -103,29 +338,27 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
           :max="10"
         />
       </div>
-      <div class="maz-flex maz-gap-3 maz-pt-4">
-        <MazBtn color="primary" class="maz-flex-1" @click="addToCart">
-          <MazIcon name="shopping-cart" class="maz-me-2" />
-          Add to Cart (${{ (129.99 * quantity).toFixed(2) }})
-        </MazBtn>
-        <MazBtn color="secondary" @click="isProductOpen = false">
-          Cancel
-        </MazBtn>
-      </div>
     </div>
+    <template #footer="{ close }">
+      <MazBtn color="transparent" @click="close">Cancel</MazBtn>
+      <MazBtn color="primary" @click="addToCart">
+        <MazIcon icon="/shopping-cart.svg" class="maz:me-2" />
+        Add to Cart (${{ (129.99 * quantity).toFixed(2) }})
+      </MazBtn>
+    </template>
   </MazBottomSheet>
 
-  <MazBottomSheet v-model="isUserOpen" title="Profile Settings">
-    <div class="maz-space-y-6 maz-p-6">
-      <div class="maz-flex maz-items-center maz-gap-4 maz-p-4 maz-bg-secondary/10 maz-rounded-lg">
+  <MazBottomSheet v-model="isUserOpen" title="Profile Settings" icon="/user.svg" max-width="48rem" :padding="false">
+    <div class="maz:space-y-6 maz:p-6">
+      <div class="maz:flex maz:items-center maz:gap-4 maz:p-4 maz:bg-secondary/10 maz:rounded-lg">
         <MazAvatar src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100" size="xl" />
         <div>
-          <h4 class="maz-font-semibold">John Doe</h4>
-          <p class="maz-text-muted maz-text-sm">john.doe@example.com</p>
+          <h4 class="maz:font-semibold">John Doe</h4>
+          <p class="maz:text-muted maz:text-sm">john.doe@example.com</p>
           <MazBadge color="success" size="xs">Premium Member</MazBadge>
         </div>
       </div>
-      <div class="maz-flex maz-gap-4 maz-items-start">
+      <div class="maz:flex maz:gap-4 maz:items-start">
         <MazInput
           v-model="userForm.name"
           label="Full Name"
@@ -144,189 +377,79 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
           placeholder="Select your country"
         />
       </div>
-      <div class="maz-flex maz-gap-4">
-        <div class="maz-flex maz-items-center maz-justify-between maz-p-4 maz-border maz-border-border maz-rounded-lg">
+      <div class="maz:flex maz:gap-4">
+        <div class="maz:flex maz:items-center maz:justify-between maz:p-4 maz:border maz:border-divider maz:rounded-lg">
           <div>
-            <p class="maz-font-medium">Email Notifications</p>
-            <p class="maz-text-sm maz-text-muted">Receive updates about your orders</p>
+            <p class="maz:font-medium">Email Notifications</p>
+            <p class="maz:text-sm maz:text-muted">Receive updates about your orders</p>
           </div>
           <MazSwitch v-model="userForm.notifications" />
         </div>
-        <div class="maz-flex maz-items-center maz-justify-between maz-p-4 maz-border maz-border-border maz-rounded-lg">
+        <div class="maz:flex maz:items-center maz:justify-between maz:p-4 maz:border maz:border-divider maz:rounded-lg">
           <div>
-            <p class="maz-font-medium">Dark Mode</p>
-            <p class="maz-text-sm maz-text-muted">Switch to dark theme</p>
+            <p class="maz:font-medium">Dark Mode</p>
+            <p class="maz:text-sm maz:text-muted">Switch to dark theme</p>
           </div>
           <MazSwitch v-model="userForm.darkMode" />
         </div>
       </div>
-      <div class="maz-flex maz-gap-3 maz-pt-4">
-        <MazBtn color="primary" class="maz-flex-1" @click="saveSettings">
-          <MazIcon name="check" class="maz-me-2" />
-          Save Changes
-        </MazBtn>
-        <MazBtn color="secondary" @click="isUserOpen = false">
-          Cancel
-        </MazBtn>
-      </div>
     </div>
+    <template #footer="{ close }">
+      <MazBtn color="transparent" @click="close">Cancel</MazBtn>
+      <MazBtn color="primary" @click="saveSettings">
+        <MazIcon icon="/check.svg" class="maz:me-2" />
+        Save Changes
+      </MazBtn>
+    </template>
   </MazBottomSheet>
 
 <template #code>
 
 ```vue
+<script setup>
+import MazBottomSheet from 'maz-ui/components/MazBottomSheet'
+import { reactive, ref } from 'vue'
+
+const isProductOpen = ref(false)
+const quantity = ref(1)
+const selectedOptions = reactive({ size: '', color: '' })
+
+function openProductOptions() {
+  isProductOpen.value = true
+}
+</script>
+
 <template>
-  <div class="maz-flex maz-flex-col maz-gap-4">
-    <!-- Product Card -->
-    <MazCard>
-      <template #title>
-        <div class="maz-flex maz-items-center maz-gap-3">
-          <MazAvatar src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100" size="lg" />
-          <div>
-            <h3 class="maz-text-lg maz-font-semibold">
-              Nike Air Max
-            </h3>
-            <p class="maz-text-sm maz-text-muted">
-              Premium Running Shoes
-            </p>
-          </div>
-        </div>
-      </template>
+  <MazBtn color="primary" @click="openProductOptions">
+    Customize Options
+  </MazBtn>
 
-      <div class="maz-space-y-4">
-        <div class="maz-flex maz-items-center maz-justify-between">
-          <span class="maz-font-medium">Price:</span>
-          <span class="maz-text-xl maz-font-bold maz-text-primary">$129.99</span>
-        </div>
-
-        <div class="maz-flex maz-gap-2">
-          <MazBtn color="primary" @click="openProductOptions">
-            Customize Options
-          </MazBtn>
-          <MazBtn color="secondary" @click="openUserSettings">
-            Profile Settings
-          </MazBtn>
-        </div>
-      </div>
-    </MazCard>
-  </div>
-
-  <!-- Product Options Bottom Sheet -->
-  <MazBottomSheet v-model="isProductOpen" title="Customize Your Shoes">
-    <div class="maz-space-y-6 maz-p-6">
-      <!-- Size Selection -->
-      <div>
-        <h4 class="maz-mb-3 maz-text-lg maz-font-semibold">
-          Select Size
-        </h4>
-        <div class="maz-grid maz-grid-cols-4 maz-gap-2">
-          <MazBtn
-            v-for="size in sizes"
-            :key="size"
-            :color="selectedOptions.size === size ? 'primary' : 'secondary'"
-            size="sm"
-            @click="selectedOptions.size = size"
-          >
-            {{ size }}
-          </MazBtn>
-        </div>
-      </div>
-
-      <!-- Color Selection with Visual Swatches -->
-      <div>
-        <h4 class="maz-mb-3 maz-text-lg maz-font-semibold">
-          Select Color
-        </h4>
-        <div class="maz-grid maz-grid-cols-3 maz-gap-3">
-          <div
-            v-for="color in colors"
-            :key="color.name"
-            class="maz-flex maz-cursor-pointer maz-flex-col maz-items-center maz-rounded-lg maz-border-2 maz-p-3"
-            :class="selectedOptions.color === color.name ? 'maz-border-primary' : 'maz-border-border'"
-            @click="selectedOptions.color = color.name"
-          >
-            <div
-              class="maz-mb-2 maz-size-8 maz-rounded-full"
-              :style="{ backgroundColor: color.value }"
-            />
-            <span class="maz-text-sm">{{ color.name }}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quantity Input -->
-      <MazInputNumber
-        v-model="quantity"
-        label="Quantity"
-        :min="1"
-        :max="10"
-      />
-
-      <!-- Actions -->
-      <div class="maz-flex maz-gap-3 maz-pt-4">
-        <MazBtn color="primary" class="maz-flex-1" @click="addToCart">
-          Add to Cart (${{ (129.99 * quantity).toFixed(2) }})
-        </MazBtn>
-        <MazBtn color="secondary" @click="isProductOpen = false">
-          Cancel
+  <MazBottomSheet v-model="isProductOpen" title="Customize Your Shoes" icon="/cog.svg" :padding="false">
+    <div class="maz:space-y-6 maz:p-6">
+      <h4 class="maz:mb-3 maz:text-lg maz:font-semibold">
+        Select Size
+      </h4>
+      <div class="maz:grid maz:grid-cols-4 maz:gap-2">
+        <MazBtn
+          v-for="size in sizes"
+          :key="size"
+          :color="selectedOptions.size === size ? 'primary' : 'secondary'"
+          size="sm"
+          @click="selectedOptions.size = size"
+        >
+          {{ size }}
         </MazBtn>
       </div>
     </div>
-  </MazBottomSheet>
 
-  <MazBottomSheet v-model="isUserOpen" title="Profile Settings">
-    <div class="maz-space-y-6 maz-p-6">
-      <div class="maz-flex maz-items-center maz-gap-4 maz-p-4 maz-bg-secondary/10 maz-rounded-lg">
-        <MazAvatar src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100" size="xl" />
-        <div>
-          <h4 class="maz-font-semibold">John Doe</h4>
-          <p class="maz-text-muted maz-text-sm">john.doe@example.com</p>
-          <MazBadge color="success" size="xs">Premium Member</MazBadge>
-        </div>
-      </div>
-      <div class="maz-space-y-4">
-        <MazInput
-          v-model="userForm.name"
-          label="Full Name"
-          placeholder="Enter your name"
-        />
-        <MazInput
-          v-model="userForm.email"
-          label="Email"
-          type="email"
-          placeholder="Enter your email"
-        />
-        <MazSelect
-          v-model="userForm.country"
-          label="Country"
-          :options="countries"
-          placeholder="Select your country"
-        />
-        <div class="maz-flex maz-items-center maz-justify-between maz-p-4 maz-border maz-border-border maz-rounded-lg">
-          <div>
-            <p class="maz-font-medium">Email Notifications</p>
-            <p class="maz-text-sm maz-text-muted">Receive updates about your orders</p>
-          </div>
-          <MazSwitch v-model="userForm.notifications" />
-        </div>
-        <div class="maz-flex maz-items-center maz-justify-between maz-p-4 maz-border maz-border-border maz-rounded-lg">
-          <div>
-            <p class="maz-font-medium">Dark Mode</p>
-            <p class="maz-text-sm maz-text-muted">Switch to dark theme</p>
-          </div>
-          <MazSwitch v-model="userForm.darkMode" />
-        </div>
-      </div>
-      <div class="maz-flex maz-gap-3 maz-pt-4">
-        <MazBtn color="primary" class="maz-flex-1" @click="saveSettings">
-          <MazIcon name="check" class="maz-me-2" />
-          Save Changes
-        </MazBtn>
-        <MazBtn color="secondary" @click="isUserOpen = false">
-          Cancel
-        </MazBtn>
-      </div>
-    </div>
+    <template #footer="{ close }">
+      <MazBtn color="transparent" @click="close">
+        Cancel
+      </MazBtn>
+      <MazBtn color="primary" @click="addToCart">
+        Add to Cart (${{ (129.99 * quantity).toFixed(2) }})
+      </MazBtn>
+    </template>
   </MazBottomSheet>
 </template>
 ```
@@ -338,6 +461,14 @@ This component uses the `<Teleport to="body">` with [MazBackdrop](./maz-backdrop
 
 <script setup>
   import { ref, reactive } from 'vue'
+
+  const basicOpened = ref(false)
+  const swipeOpened = ref(false)
+  const iconOpened = ref(false)
+  const slotsOpened = ref(false)
+  const wideOpened = ref(false)
+  const noHeaderOpened = ref(false)
+  const persistentOpened = ref(false)
 
   const isProductOpen = ref(false)
   const isUserOpen = ref(false)

@@ -47,7 +47,7 @@ export default defineNuxtConfig({
 ## Basic usage
 
 <ComponentDemo expanded>
-  <div class="maz-flex maz-flex-wrap maz-gap-2">
+  <div class="maz:flex maz:flex-wrap maz:gap-2">
     <MazBtn color="contrast" @click="toast.message('Message text')">
       Message
     </MazBtn>
@@ -109,7 +109,7 @@ export default defineNuxtConfig({
 Toast can have a link or an action
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-wrap maz-gap-2">
+  <div class="maz:flex maz:flex-wrap maz:gap-2">
     <MazBtn color="info" @click="showInfoWithLink">
       Toast with  link
     </MazBtn>
@@ -183,7 +183,7 @@ Toast can have a link or an action
 
 You can close a toast programmatically by using the `close` method returned by the `toast` function
 
-<div class="maz-flex maz-flex-wrap maz-gap-2">
+<div class="maz:flex maz:flex-wrap maz:gap-2">
   <MazBtn color="primary" @click="showToastAutoCLose">
     Show toast
   </MazBtn>

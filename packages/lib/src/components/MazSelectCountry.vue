@@ -5,12 +5,13 @@ import type { HTMLAttributes } from 'vue'
 import type { CodesType, DisplayNameCode, DisplayNamesOptions } from '../composables/useDisplayNames'
 import type { MazPopoverProps } from './MazPopover.vue'
 import type { MazSelectProps } from './MazSelect.vue'
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazCountryFlagSrc, MazSize } from './types'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { getBrowserLocale } from '@maz-ui/utils/helpers/getBrowserLocale'
 import { getCountryFlagUrl } from '@maz-ui/utils/helpers/getCountryFlagUrl'
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, shallowReactive } from 'vue'
 import { useDisplayNames } from '../composables/useDisplayNames'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import MazSelect from './MazSelect.vue'
 
@@ -66,6 +67,16 @@ export interface MazSelectCountryProps<Option extends { name: string, code: Disp
    * Hide flags
    */
   hideFlags?: boolean
+  /**
+   * Source of the flags, instead of the flagcdn.com CDN:
+   * - a URL template with the code, `{code}` (lowercase) or `{CODE}` (uppercase): `/flags/{code}.svg`
+   * - a function giving the image source of a code (URL or data URL), called when the flag becomes visible, or `undefined` to display the code in a badge
+   * Use `loadCountryFlag` from `maz-ui/country-flags` for the flags of `@maz-ui/icons`, without any request to a third party.
+   * Can be set for the whole app with the `defaults.global.flagSrc` option of the MazUi plugin.
+   * @type {MazCountryFlagSrc}
+   * @default undefined (flags from flagcdn.com)
+   */
+  flagSrc?: MazCountryFlagSrc
   /**
    * Display search input in options list
    * @type {boolean}
@@ -156,7 +167,6 @@ const {
   options,
   class: className,
   locale: componentLocale,
-  size = 'md',
   color = 'primary',
   label,
   hint,
@@ -198,6 +208,8 @@ defineEmits<{
   'update:model-value': [value?: Option['code']]
 }>()
 
+const { size, flagSrc } = useGlobalConfig<{ size: MazSize, flagSrc: MazCountryFlagSrc | undefined }>('MazSelectCountry', { size: 'md', flagSrc: undefined })
+
 const instanceId = useInstanceUniqId({
   componentName: 'MazSelectCountry',
   providedId: id,
@@ -207,6 +219,7 @@ const { t, locale: mazLocale } = useTranslations()
 const locale = computed(() => componentLocale ?? mazLocale.value ?? getBrowserLocale())
 
 const MazLazyImg = defineAsyncComponent(() => import('./MazLazyImg.vue'))
+const EMPTY_IMAGE = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
 const { getAllDisplayNames } = useDisplayNames(locale)
 
@@ -249,17 +262,61 @@ function getFlagUrl(code: Option['code'], size: Parameters<typeof getCountryFlag
   return getCountryFlagUrl(code.slice(0, 2), size) || getCountryFlagUrl(code.slice(3, 5), size) || getCountryFlagUrl(code, size)
 }
 
+const flagSources = shallowReactive<Record<string, string | undefined>>({})
+
+/**
+ * With `flagSrc`, a template gives the URL right away (loaded by MazLazyImg when visible, like the CDN).
+ * A function is called when the flag becomes visible (`intersecting` of MazLazyImg): until then, an empty image keeps MazLazyImg waiting.
+ * A source resolved to `undefined`, or an image in error, displays the badge.
+ */
+function getFlagSrc(code: Option['code']) {
+  const source = flagSrc.value
+
+  if (!source) {
+    return getFlagUrl(code)
+  }
+
+  if (code in flagSources) {
+    return flagSources[code]
+  }
+
+  return typeof source === 'string' ? source.replaceAll('{code}', code.toLowerCase()).replaceAll('{CODE}', code.toUpperCase()) : EMPTY_IMAGE
+}
+
+async function resolveFlagSrc(code?: Option['code']) {
+  const source = flagSrc.value
+
+  if (typeof source !== 'function' || !code || code in flagSources) {
+    return
+  }
+
+  flagSources[code] = EMPTY_IMAGE
+
+  try {
+    flagSources[code] = await source(code)
+  }
+  catch {
+    flagSources[code] = undefined
+  }
+}
+
+function onFlagError(code?: Option['code']) {
+  if (flagSrc.value && code && getFlagSrc(code) !== EMPTY_IMAGE) {
+    flagSources[code] = undefined
+  }
+}
+
 const flagUrl = computed(() => {
   if (!modelValue) {
     return undefined
   }
 
-  return getFlagUrl(modelValue)
+  return getFlagSrc(modelValue)
 })
 </script>
 
 <template>
-  <div class="m-select-country m-reset-css" :class="[className, { '--no-flags': hideFlags }]" :style="style">
+  <div class="m-select-country m-reset-css maz:relative maz:inline-flex" :class="[className, { '--no-flags': hideFlags }]" :style="style">
     <MazSelect
       :id="instanceId"
       :model-value="modelValue"
@@ -296,7 +353,7 @@ const flagUrl = computed(() => {
       :open
       @update:model-value="$emit('update:model-value', $event)"
     >
-      <template #left-icon>
+      <template #start-icon>
         <!--
           @slot Country selector flag
             @binding {String} country-code - current selected country code - Ex: `"FR"`
@@ -308,8 +365,10 @@ const flagUrl = computed(() => {
             :alt="modelValue"
             width="20"
             height="20"
-            class="maz-size-5 maz-rounded"
-            img-class="maz-size-5 maz-rounded"
+            class="maz:size-5 maz:rounded-md"
+            img-class="maz:size-5 maz:rounded-md"
+            @intersecting="resolveFlagSrc(modelValue)"
+            @error="onFlagError(modelValue)"
           />
         </slot>
       </template>
@@ -318,12 +377,12 @@ const flagUrl = computed(() => {
       </template>
       <template #default="{ option, isSelected }">
         <div
-          class="m-select-country__select__item"
+          class="m-select-country__select__item maz:flex maz:w-full maz:items-center maz:gap-2 maz:truncate maz:text-sm"
           :class="{
             'm-select-country__select__item--selected': isSelected,
           }"
         >
-          <span v-if="!hideFlags && typeof option.code === 'string'" class="m-select-country__select__item__flag-container">
+          <span v-if="!hideFlags && typeof option.code === 'string'" class="m-select-country__select__item__flag-container maz:flex maz:flex-center">
             <!--
               @slot Country list flag
                 @binding {{ code: string; name: string; }} option - country data
@@ -335,22 +394,24 @@ const flagUrl = computed(() => {
               :is-selected="isSelected"
             >
               <MazLazyImg
-                v-if="option.code && getFlagUrl(option.code)"
-                :src="getFlagUrl(option.code)"
+                v-if="option.code && getFlagSrc(option.code)"
+                :src="getFlagSrc(option.code)"
                 :alt="`${option.name} flag`"
                 width="20"
                 height="20"
-                class="maz-size-5 maz-rounded"
-                img-class="maz-rounded maz-h-5 maz-w-5"
+                class="maz:size-5 maz:rounded-md"
+                img-class="maz:rounded-md maz:h-5 maz:w-5"
+                @intersecting="resolveFlagSrc(option.code)"
+                @error="onFlagError(option.code)"
               />
-              <span v-else class="m-select-country__select__item__list-flag">
+              <span v-else class="m-select-country__select__item__list-flag maz:flex maz:size-5 maz:flex-center maz:rounded-full maz:bg-primary-500 maz:text-xs maz:leading-none maz:text-primary-foreground/80">
                 {{ option.code }}
               </span>
             </slot>
           </span>
-          <div class="maz-flex maz-flex-1 maz-gap-2 maz-truncate" :class="{ 'maz-font-semibold': isSelected }">
+          <div class="maz:flex maz:flex-1 maz:gap-2 maz:truncate" :class="{ 'maz:font-semibold': isSelected }">
             <slot v-if="showCodeInList" name="country-list-code" :option="option" :is-selected="isSelected">
-              <span class="maz-text-muted">
+              <span class="maz:text-muted">
                 {{ option.code }}
               </span>
             </slot>
@@ -367,43 +428,27 @@ const flagUrl = computed(() => {
 </template>
 
 <style scoped>
-.m-select-country {
-  @apply maz-relative maz-inline-flex;
+@reference "../tailwindcss/tailwind.css";
 
-  &__country-flag {
-    position: absolute;
-    left: 0.813rem;
-    z-index: 4;
-    outline: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    top: 1.25rem;
-    cursor: pointer;
+.m-select-country__select:deep(.m-input-label) {
+  @apply maz:p-0!;
+}
 
-    @apply maz-flex maz-flex-center;
+.m-select-country__country-flag {
+  position: absolute;
+  inset-inline-start: 0.813rem;
+  z-index: 4;
+  outline: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  inset-block-start: 1.25rem;
+  cursor: pointer;
 
-    &.--should-have-bottom-flag {
-      bottom: 2px;
-    }
-  }
+  @apply maz:flex maz:flex-center;
 
-  &__select {
-    &:deep(.m-input-label) {
-      @apply !maz-p-0;
-    }
-
-    &__item {
-      @apply maz-w-full maz-text-sm maz-flex maz-items-center maz-gap-2 maz-truncate;
-
-      &__flag-container {
-        @apply maz-flex maz-flex-center;
-      }
-
-      &__list-flag {
-        @apply maz-text-primary-foreground/80 maz-text-xs maz-size-5 maz-flex maz-flex-center maz-rounded-full maz-bg-primary-500 maz-leading-none;
-      }
-    }
+  &.--should-have-bottom-flag {
+    inset-block-end: 2px;
   }
 }
 </style>

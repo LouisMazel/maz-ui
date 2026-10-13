@@ -23,6 +23,21 @@ function ensureStylesInjected() {
 type AutofillableField = HTMLInputElement | HTMLTextAreaElement
 
 /**
+ * Reads the current DOM value of an input/textarea by id. Must be called
+ * synchronously during `setup()` so the SSR-rendered DOM (possibly carrying a
+ * pre-hydration browser autofill) can be captured before Vue's built-in
+ * `vModelText.mounted` hook overwrites `el.value`.
+ */
+export function readInitialAutofillValue(id: string): string | undefined {
+  if (typeof document === 'undefined')
+    return undefined
+  const el = document.getElementById(id)
+  if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement)
+    return el.value || undefined
+  return undefined
+}
+
+/**
  * Detects browser autofill on an input or textarea and syncs the value.
  *
  * Browsers do not fire the `input` event when autofilling, so v-model stays

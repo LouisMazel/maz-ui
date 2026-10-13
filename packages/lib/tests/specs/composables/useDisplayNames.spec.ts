@@ -5,12 +5,16 @@ import { ref } from 'vue'
 describe('useDisplayNames', () => {
   const { getDisplayName, getAllDisplayNames } = useDisplayNames('en-US')
 
-  it('should return the display name for a given ISO code and locale', () => {
-    const code = ref('en-US')
-    const locale = ref('fr-FR')
-    const displayName = getDisplayName(code, { type: 'language', locale })
+  it.each([
+    ['en-US', 'fr-FR', 'anglais américain'],
+    ['invalid-code', 'fr-FR', 'invalid (Code)'],
+    ['en-US', 'invalid-locale', 'American English'],
+  ])('resolves display name for code %s and locale %s', (code, locale, expected) => {
+    const codeRef = ref(code)
+    const localeRef = ref(locale)
+    const displayName = getDisplayName(codeRef, { type: 'language', locale: localeRef })
 
-    expect(displayName.value).toBe('anglais américain')
+    expect(displayName.value).toBe(expected)
   })
 
   it('should return the ISO code if locale is not provided', () => {
@@ -39,22 +43,6 @@ describe('useDisplayNames', () => {
     const languages = getAllDisplayNames({ type: 'language' })
 
     expect(languages.value?.some(language => language.name === 'French' && language.code === 'fr')).toBe(true)
-  })
-
-  it('should handle invalid ISO codes gracefully', () => {
-    const code = ref('invalid-code')
-    const locale = ref('fr-FR')
-    const displayName = getDisplayName(code, { type: 'language', locale })
-
-    expect(displayName.value).toBe('invalid (Code)')
-  })
-
-  it('should handle invalid locales gracefully', () => {
-    const code = ref('en-US')
-    const locale = ref('invalid-locale')
-    const displayName = getDisplayName(code, { type: 'language', locale })
-
-    expect(displayName.value).toBe('American English')
   })
 
   it('should return consistent results for reactive updates to code', () => {

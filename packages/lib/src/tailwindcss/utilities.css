@@ -1,0 +1,49 @@
+/*
+ * Maz-UI custom utilities.
+ *
+ * @utility is the v4 replacement for the v3 JS plugin's addUtilities().
+ * These utilities are internal to the library components (referenced via
+ * maz:flex-center, maz:padded-container, etc.) and are exposed to
+ * consumers via maz-ui/tailwindcss/utilities.css.
+ *
+ * Pseudo-element rules inside @utility rely on CSS nesting, which v4
+ * outputs natively (see cap-f below).
+ */
+
+@utility flex-center {
+  align-items: center;
+  justify-content: center;
+}
+
+@utility z-default-backdrop {
+  z-index: 1050;
+}
+
+@utility padded-container-no-p {
+  inline-size: 100%;
+  padding-inline: calc(50% - var(--maz-container-max-width) / 2);
+}
+
+@utility padded-container {
+  inline-size: 100%;
+  padding-inline: var(--maz-container-padding);
+}
+
+@utility cap-f {
+  &::first-letter {
+    text-transform: capitalize;
+  }
+}
+
+@utility disabled-cursor {
+  cursor: var(--maz-disabled-cursor);
+}
+
+@utility disabled-opacity {
+  opacity: var(--maz-disabled-opacity);
+}
+
+@utility disabled-state {
+  cursor: var(--maz-disabled-cursor);
+  opacity: var(--maz-disabled-opacity);
+}

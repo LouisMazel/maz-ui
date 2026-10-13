@@ -6,8 +6,9 @@ import type {
   FormSchema,
 } from './useFormValidator/types'
 
+import { isClient } from '@maz-ui/utils/helpers/isClient'
 import { isEqual } from '@maz-ui/utils/helpers/isEqual'
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, onUnmounted, unref, watch } from 'vue'
 import {
   addEventToInteractiveElements,
   findInteractiveElements,
@@ -23,6 +24,16 @@ import {
 } from './useFormValidator/state-management'
 import { setFieldValidationState } from './useFormValidator/validation'
 import { useFreezeValue } from './useFreezeValue'
+
+function resolveBindElement(node: unknown): HTMLElement | null {
+  if (node instanceof HTMLElement) {
+    return node
+  }
+  if (node instanceof CharacterData && node.nextElementSibling instanceof HTMLElement) {
+    return node.nextElementSibling
+  }
+  return null
+}
 
 export function useFormField<
   FieldType,
@@ -90,7 +101,7 @@ export function useFormField<
 
   const validationEvents = computed(() =>
     getValidationEvents<Model, ModelKey, FieldState<Model, ModelKey, Model[ModelKey]>>({
-      hasRef: !!finalOpts.ref?.value,
+      hasRef: !!unref(finalOpts.ref),
       onBlur,
       fieldState: fieldState.value,
     }),
@@ -99,14 +110,18 @@ export function useFormField<
   if (finalOpts.ref && fieldMode && hasModeIncludes(['eager', 'blur', 'progressive'], fieldMode)) {
     let interactiveElements: HTMLElement[] = []
 
-    const handleInteractiveElements = (element: HTMLElement) => {
-      // Clean up previous listeners
+    const cleanupInteractiveElements = () => {
       if (interactiveElements.length > 0) {
         removeEventFromInteractiveElements({
           interactiveElements,
           onBlur,
         })
+        interactiveElements = []
       }
+    }
+
+    const handleInteractiveElements = (element: HTMLElement) => {
+      cleanupInteractiveElements()
 
       interactiveElements = findInteractiveElements(element)
 
@@ -117,40 +132,42 @@ export function useFormField<
       })
     }
 
-    onMounted(() => {
-      const element = finalOpts.ref?.value
-      const elementToBind = element instanceof HTMLElement ? element : element?.$el as unknown
+    watch(
+      () => unref(finalOpts.ref),
+      (refValue) => {
+        if (!isClient()) {
+          return
+        }
 
-      if (elementToBind instanceof HTMLElement) {
-        handleInteractiveElements(elementToBind)
-        return
-      }
-      else if (elementToBind instanceof Text && elementToBind.nextElementSibling instanceof HTMLElement) {
-        handleInteractiveElements(elementToBind.nextElementSibling)
-        return
-      }
+        const candidate = refValue instanceof HTMLElement
+          ? refValue
+          : (refValue as { $el?: unknown } | null | undefined)?.$el
 
-      console.warn(`[maz-ui](useFormField) No element found for ref in field '${String(name)}'. Make sure the ref is properly bound to an HTMLElement or Vue component (form identifier: ${String(formOptions.identifier)})`)
-    })
+        const elementToBind = resolveBindElement(candidate)
 
-    onUnmounted(() => {
-      removeEventFromInteractiveElements({
-        interactiveElements,
-        onBlur,
-      })
-    })
+        if (elementToBind) {
+          handleInteractiveElements(elementToBind)
+        }
+        else {
+          cleanupInteractiveElements()
+        }
+      },
+      { immediate: true, flush: 'post' },
+    )
+
+    onUnmounted(cleanupInteractiveElements)
   }
 
   return {
-    hasError: computed(() => fieldState.value.error),
-    errors: computed(() => fieldState.value.errors),
+    hasError: computed(() => fieldState.value?.error ?? false),
+    errors: computed(() => fieldState.value?.errors ?? []),
     errorMessage: computed(() => errorMessages.value[name]),
-    isValid: computed(() => fieldState.value.valid),
-    isDirty: computed(() => fieldState.value.dirty),
-    isBlurred: computed(() => fieldState.value.blurred),
-    isValidated: computed(() => fieldState.value.validated),
-    isValidating: computed(() => fieldState.value.validating),
-    mode: computed(() => fieldState.value.mode),
+    isValid: computed(() => fieldState.value?.valid ?? false),
+    isDirty: computed(() => fieldState.value?.dirty ?? false),
+    isBlurred: computed(() => fieldState.value?.blurred ?? false),
+    isValidated: computed(() => fieldState.value?.validated ?? false),
+    isValidating: computed(() => fieldState.value?.validating ?? false),
+    mode: computed(() => fieldState.value?.mode),
     value: computed({
       get: (): FieldType => payload.value[name] as FieldType,
       set: (value: FieldType) => (payload.value[name] = value as Model[ModelKey]),

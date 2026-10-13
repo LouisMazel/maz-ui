@@ -26,12 +26,12 @@ The standard approach to initialize Maz-UI is the [`MazUi` plugin](./vue.md#inst
 import { MazUi } from 'maz-ui/plugins/maz-ui'
 import { mazUi } from '@maz-ui/themes/presets/mazUi'
 import { fr } from '@maz-ui/translations'
-import 'maz-ui/styles'
+import 'maz-ui/style.css'
 
 app.use(MazUi, {
   theme: {
     preset: mazUi,
-    strategy: 'hybrid',
+    strategy: 'runtime',
   },
   translations: {
     locale: 'fr',
@@ -74,7 +74,7 @@ import { fr } from '@maz-ui/translations'
 
 <template>
   <MazUiProvider
-    :theme="{ preset: mazUi, strategy: 'hybrid' }"
+    :theme="{ preset: mazUi, strategy: 'runtime' }"
     :translations="{ locale: 'fr', messages: { fr } }"
   >
     <!-- All Maz-UI components inside this subtree work as expected -->
@@ -97,12 +97,15 @@ The entire Maz-UI setup is now code-split into the Dashboard chunk.
 
 ```typescript
 interface ThemeOptions {
-  preset: ThemePreset              // Required - Theme preset (mazUi, ocean, pristine, obsidian, or custom)
-  overrides?: ThemePresetOverrides // Partial overrides for colors, foundation, etc.
-  strategy?: 'runtime' | 'buildtime' | 'hybrid' // CSS generation strategy (default: 'hybrid')
+  preset: ThemePreset                            // Required - Theme preset (mazUi, ocean, pristine, obsidian, nova, or custom)
+  overrides?: ThemePresetOverrides               // Partial overrides for colors, foundation, etc.
+  strategy?: 'runtime' | 'buildtime'             // CSS generation strategy (default: 'runtime')
   darkModeStrategy?: 'class' | 'media'           // Dark mode handling (default: 'class')
   colorMode?: 'light' | 'dark' | 'auto'          // Initial color mode (default: 'auto')
   mode?: 'light' | 'dark' | 'both'               // Supported color modes (default: 'both')
+  darkClass?: string                             // Class on <html> when colorMode === 'dark' (default: 'dark')
+  lightClass?: string                            // Class on <html> when colorMode === 'light' (default: 'light')
+  persistPreset?: boolean                        // Persist active preset in cookie (default: true)
 }
 ```
 
@@ -208,7 +211,7 @@ const locale = ref('fr')
   <MazUiProvider
     :theme="{
       preset: mazUi,
-      strategy: 'hybrid',
+      strategy: 'runtime',
       colorMode: 'auto',
     }"
     :translations="{
@@ -217,7 +220,7 @@ const locale = ref('fr')
       messages: { fr },
     }"
   >
-    <div class="maz-bg-background maz-text-foreground maz-p-4">
+    <div class="maz:bg-surface maz:text-foreground maz:p-4">
       <h1>My Dashboard</h1>
       <MazBtn color="primary">Action</MazBtn>
       <MazInput placeholder="Search..." />

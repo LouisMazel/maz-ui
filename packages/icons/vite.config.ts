@@ -7,12 +7,12 @@ import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import SvgLoader from 'vite-svg-loader'
 
-import pkg from './package.json'
+import pkg from './package.json' with { type: 'json' }
 
 import { ViteGenerateIconsComponentsEntry } from './utils/ViteGenerateIconsComponentsEntry'
 
 function resolver(path: string) {
-  return resolve(__dirname, path)
+  return resolve(import.meta.dirname, path)
 }
 
 function getEntries(pattern: string) {
@@ -26,6 +26,7 @@ const moduleEntries = Object.fromEntries(
   glob.sync([
     'src/lazy/*.ts',
     'src/static/*.ts',
+    'src/raw/*.ts',
   ], {
     ignore: ['**/*/index.ts'],
   })
@@ -39,7 +40,7 @@ export default defineConfig({
     dts({
       tsconfigPath: resolver('./tsconfig.json'),
       entryRoot: resolver('src'),
-      outDir: resolver('dist'),
+      outDirs: resolver('dist'),
     }),
     ViteGenerateIconsComponentsEntry(),
     codecovVitePlugin({
@@ -61,6 +62,7 @@ export default defineConfig({
         'icon-list': resolver('./src/icon-list.ts'),
         'static/index': resolver('./src/static/index.ts'),
         'lazy/index': resolver('./src/lazy/index.ts'),
+        'raw/index': resolver('./src/raw/index.ts'),
       },
       formats: ['es'],
       fileName: (_, name) => `${name}.js`,

@@ -29,5 +29,10 @@ export async function getPreset(preset?: ThemePresetName | ThemePreset) {
     return obsidian
   }
 
+  if (preset === 'nova') {
+    const { nova } = await import('../presets/nova')
+    return nova
+  }
+
   throw new TypeError(`[@maz-ui/themes] Preset ${preset} not found`)
 }

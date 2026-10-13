@@ -151,6 +151,16 @@ describe('get-preset', () => {
       })
     })
 
+    describe('when nova string is provided', () => {
+      it('then it returns nova preset', async () => {
+        const result = await getPreset('nova')
+
+        expect(result).toBeDefined()
+        expect(result.name).toBe('nova')
+        expect(result.colors).toBeDefined()
+      })
+    })
+
     describe('when unknown preset string is provided', () => {
       it('then it throws TypeError', async () => {
         await expect(getPreset('unknown' as never)).rejects.toThrow(

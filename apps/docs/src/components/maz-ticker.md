@@ -46,25 +46,25 @@ description: MazTicker is a scrolling ticker component that continuously animate
 A vertical ticker with images, similar to a screenshot showcase. Uses `orientation="vertical"` with `pause-on-hover` for user-friendly browsing.
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-4 maz-overflow-hidden" style="height: 300px">
+  <div class="maz:flex maz:gap-4 maz:overflow-hidden" style="height: 300px">
     <MazTicker orientation="vertical" :overlay="false" :duration="30" pause-on-hover>
       <img
         v-for="i in 4" :key="i" :src="`https://picsum.photos/seed/maz-ticker-${i}/400/225`"
-        :alt="`Screenshot ${i}`" class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover dark:maz-border-gray-700"
+        :alt="`Screenshot ${i}`" class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
         style="width: 400px; height: 225px"
       />
     </MazTicker>
     <MazTicker orientation="vertical" :overlay="false" :duration="30" reverse pause-on-hover>
       <img
         v-for="i in 4" :key="i" :src="`https://picsum.photos/seed/maz-ticker-${i + 4}/400/225`"
-        :alt="`Screenshot ${i + 4}`" class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover dark:maz-border-gray-700"
+        :alt="`Screenshot ${i + 4}`" class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
         style="width: 400px; height: 225px"
       />
     </MazTicker>
-    <MazTicker class="maz-hidden md:maz-flex" orientation="vertical" :overlay="false" :duration="30" pause-on-hover>
+    <MazTicker class="maz:hidden maz:md:flex" orientation="vertical" :overlay="false" :duration="30" pause-on-hover>
       <img
         v-for="i in 4" :key="i" :src="`https://picsum.photos/seed/maz-ticker-${i + 8}/400/225`"
-        :alt="`Screenshot ${i + 8}`" class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover dark:maz-border-gray-700"
+        :alt="`Screenshot ${i + 8}`" class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
         style="width: 400px; height: 225px"
       />
     </MazTicker>
@@ -74,7 +74,7 @@ A vertical ticker with images, similar to a screenshot showcase. Uses `orientati
 
 ```vue
 <template>
-  <div class="maz-flex maz-gap-4 maz-overflow-hidden" style="height: 300px">
+  <div class="maz:flex maz:gap-4 maz:overflow-hidden" style="height: 300px">
     <MazTicker
       orientation="vertical"
       :overlay="false"
@@ -86,7 +86,7 @@ A vertical ticker with images, similar to a screenshot showcase. Uses `orientati
         :key="i"
         :src="`https://picsum.photos/seed/maz-ticker-${i}/400/225`"
         :alt="`Screenshot ${i}`"
-        class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover dark:maz-border-gray-700"
+        class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
         style="width: 400px; height: 225px"
       />
     </MazTicker>
@@ -102,12 +102,12 @@ A vertical ticker with images, similar to a screenshot showcase. Uses `orientati
         :key="i"
         :src="`https://picsum.photos/seed/maz-ticker-${i + 4}/400/225`"
         :alt="`Screenshot ${i + 4}`"
-        class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover dark:maz-border-gray-700"
+        class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
         style="width: 400px; height: 225px"
       />
     </MazTicker>
     <MazTicker
-      class="maz-hidden md:maz-flex"
+      class="maz:hidden maz:md:flex"
       orientation="vertical"
       :overlay="false"
       :duration="30"
@@ -118,7 +118,7 @@ A vertical ticker with images, similar to a screenshot showcase. Uses `orientati
         :key="i"
         :src="`https://picsum.photos/seed/maz-ticker-${i + 8}/400/225`"
         :alt="`Screenshot ${i + 8}`"
-        class="maz-rounded-lg maz-border maz-border-gray-200 maz-object-cover dark:maz-border-gray-700"
+        class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
         style="width: 400px; height: 225px"
       />
     </MazTicker>
@@ -138,8 +138,8 @@ A vertical ticker with images, similar to a screenshot showcase. Uses `orientati
 Create an eye-catching 3D perspective effect with tilted vertical tickers, inspired by the Nuxt UI Marquee screenshots demo.
 
 <ComponentDemo>
-  <div class="maz-overflow-hidden maz-rounded-lg maz-bg-gray-100 dark:maz-bg-gray-800" style="height: 400px; perspective: 1500px">
-    <div class="maz-flex maz-gap-4" style="height: 900px; margin-top: -300px; margin-left: -150px; transform: rotateX(55deg) rotateZ(30deg); transform-origin: center center">
+  <div class="maz:overflow-hidden maz:rounded-lg maz:bg-gray-100 maz:dark:bg-gray-800" style="height: 400px; perspective: 1500px">
+    <div class="maz:flex maz:gap-4" style="height: 900px; margin-top: -300px; margin-left: -150px; transform: rotateX(55deg) rotateZ(30deg); transform-origin: center center">
       <MazTicker reverse orientation="vertical" :overlay="false" :duration="40" style="width: 300px; flex-shrink: 0">
         <img
           v-for="i in 4"
@@ -149,7 +149,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
           width="460"
           height="258"
           loading="lazy"
-          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover dark:maz-border-gray-700"
+          class="maz:rounded-lg maz:border maz:border-gray-200 maz:bg-white maz:object-cover maz:dark:border-gray-700"
           style="width: 300px; height: 168px"
         />
       </MazTicker>
@@ -162,7 +162,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
           width="460"
           height="258"
           loading="lazy"
-          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover dark:maz-border-gray-700"
+          class="maz:rounded-lg maz:border maz:border-gray-200 maz:bg-white maz:object-cover maz:dark:border-gray-700"
           style="width: 300px; height: 168px"
         />
       </MazTicker>
@@ -175,7 +175,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
           width="460"
           height="258"
           loading="lazy"
-          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover dark:maz-border-gray-700"
+          class="maz:rounded-lg maz:border maz:border-gray-200 maz:bg-white maz:object-cover maz:dark:border-gray-700"
           style="width: 300px; height: 168px"
         />
       </MazTicker>
@@ -187,11 +187,11 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
 ```vue
 <template>
   <div
-    class="maz-overflow-hidden maz-rounded-lg maz-bg-gray-100 dark:maz-bg-gray-800"
+    class="maz:overflow-hidden maz:rounded-lg maz:bg-gray-100 maz:dark:bg-gray-800"
     style="height: 400px; perspective: 1500px"
   >
     <div
-      class="maz-flex maz-gap-4"
+      class="maz:flex maz:gap-4"
       style="height: 900px; margin-top: -300px; margin-left: -150px; transform: rotateX(55deg) rotateZ(30deg); transform-origin: center center"
     >
       <MazTicker
@@ -209,7 +209,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
           width="460"
           height="258"
           loading="lazy"
-          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover dark:maz-border-gray-700"
+          class="maz:rounded-lg maz:border maz:border-gray-200 maz:bg-white maz:object-cover maz:dark:border-gray-700"
           style="width: 300px; height: 168px"
         />
       </MazTicker>
@@ -227,7 +227,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
           width="460"
           height="258"
           loading="lazy"
-          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover dark:maz-border-gray-700"
+          class="maz:rounded-lg maz:border maz:border-gray-200 maz:bg-white maz:object-cover maz:dark:border-gray-700"
           style="width: 300px; height: 168px"
         />
       </MazTicker>
@@ -246,7 +246,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
           width="460"
           height="258"
           loading="lazy"
-          class="maz-rounded-lg maz-border maz-border-gray-200 maz-bg-white maz-object-cover dark:maz-border-gray-700"
+          class="maz:rounded-lg maz:border maz:border-gray-200 maz:bg-white maz:object-cover maz:dark:border-gray-700"
           style="width: 300px; height: 168px"
         />
       </MazTicker>
@@ -297,9 +297,9 @@ Otherwise, the ticker will scroll vertically.
 <ComponentDemo>
   <div style="height: 100px">
     <MazTicker orientation="vertical">
-      <div class="maz-py-2">Item 1</div>
-      <div class="maz-py-2">Item 2</div>
-      <div class="maz-py-2">Item 3</div>
+      <div class="maz:py-2">Item 1</div>
+      <div class="maz:py-2">Item 2</div>
+      <div class="maz:py-2">Item 3</div>
     </MazTicker>
   </div>
 
@@ -309,9 +309,9 @@ Otherwise, the ticker will scroll vertically.
 <template>
   <div style="height: 100px">
     <MazTicker orientation="vertical">
-      <div class="maz-py-2">Item 1</div>
-      <div class="maz-py-2">Item 2</div>
-      <div class="maz-py-2">Item 3</div>
+      <div class="maz:py-2">Item 1</div>
+      <div class="maz:py-2">Item 2</div>
+      <div class="maz:py-2">Item 3</div>
     </MazTicker>
   </div>
 </template>
@@ -323,7 +323,7 @@ Otherwise, the ticker will scroll vertically.
 ## Reverse direction
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazTicker>
       <span>Normal direction</span>
     </MazTicker>
@@ -353,7 +353,7 @@ Otherwise, the ticker will scroll vertically.
 Control the animation speed with the `duration` prop (in seconds). Lower values = faster.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazTicker :duration="5" :repeat="20">
       <span>Fast (5s)</span>
     </MazTicker>
@@ -389,7 +389,7 @@ Control the animation speed with the `duration` prop (in seconds). Lower values 
 The `repeat` prop controls how many times the content is duplicated to create a seamless loop. The default value is `4`. Increase it when your content is short to avoid visible gaps during the animation.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazTicker :repeat="2">
       <span>Repeat 2</span>
     </MazTicker>
@@ -417,7 +417,7 @@ The `repeat` prop controls how many times the content is duplicated to create a 
 ## Custom gap
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazTicker gap="0.5rem" :repeat="20">
       <span>Small gap</span>
     </MazTicker>
@@ -471,7 +471,7 @@ You can disable the overlay by setting the `overlay` prop to `false`.
 You can change the size of the overlay by setting the `overlay-size` prop to a CSS value.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazTicker overlay-size="10%" :repeat="10">
       <span>Small overlay (10%)</span>
     </MazTicker>
@@ -551,7 +551,7 @@ When a child element is focused, the animation will pause.
 You can control the animation programmatically with the `paused` prop.
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazBtn size="sm" @click="isPaused = !isPaused">
       {{ isPaused ? 'Resume' : 'Pause' }}
     </MazBtn>
@@ -628,11 +628,11 @@ Replace the default before and after slots with custom content.
 <ComponentDemo>
   <MazTicker>
     <template #before>
-      <div class="maz-flex maz-items-center maz-px-4 maz-font-semibold">Latest:</div>
+      <div class="maz:flex maz:items-center maz:px-4 maz:font-semibold">Latest:</div>
     </template>
     <span>Breaking news item</span>
     <template #after>
-      <div class="maz-flex maz-items-center maz-px-4 maz-font-semibold">End</div>
+      <div class="maz:flex maz:items-center maz:px-4 maz:font-semibold">End</div>
     </template>
   </MazTicker>
 
@@ -642,11 +642,11 @@ Replace the default before and after slots with custom content.
 <template>
   <MazTicker>
     <template #before>
-      <div class="maz-flex maz-items-center maz-px-4 maz-font-semibold">Latest:</div>
+      <div class="maz:flex maz:items-center maz:px-4 maz:font-semibold">Latest:</div>
     </template>
     <span>Breaking news item</span>
     <template #after>
-      <div class="maz-flex maz-items-center maz-px-4 maz-font-semibold">End</div>
+      <div class="maz:flex maz:items-center maz:px-4 maz:font-semibold">End</div>
     </template>
   </MazTicker>
 </template>
@@ -658,7 +658,7 @@ Replace the default before and after slots with custom content.
 ## Timing function
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-4">
+  <div class="maz:flex maz:flex-col maz:gap-4">
     <MazTicker animation-timing-function="linear" :repeat="10">
       <span>Linear (default)</span>
     </MazTicker>

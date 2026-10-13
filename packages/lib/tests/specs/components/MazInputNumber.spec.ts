@@ -1,5 +1,6 @@
 import type { MazSize } from '@/components/types'
 import MazInputNumber from '@components/MazInputNumber.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount, shallowMount } from '@vue/test-utils'
 
 describe('given MazInputNumber component', () => {
@@ -220,6 +221,39 @@ describe('given MazInputNumber component', () => {
       expect(input.props('success')).toBe(true)
       expect(input.props('warning')).toBe(true)
       expect(input.props('hint')).toBe('Test hint')
+    })
+  })
+})
+
+describe('given a MazUi global default for size', () => {
+  describe('when no size prop is passed', () => {
+    it('then the input receives the global size', () => {
+      const wrapper = mount(MazInputNumber, {
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'xl' } } } },
+      })
+
+      expect(wrapper.findComponent({ name: 'MazInput' }).props('size')).toBe('xl')
+    })
+  })
+
+  describe('when a component-scoped default differs from the global default', () => {
+    it('then the input receives the component-scoped size', () => {
+      const wrapper = mount(MazInputNumber, {
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazInputNumber: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.findComponent({ name: 'MazInput' }).props('size')).toBe('lg')
+    })
+  })
+
+  describe('when a size prop is passed', () => {
+    it('then the instance prop wins over every configured default', () => {
+      const wrapper = mount(MazInputNumber, {
+        props: { size: 'sm' },
+        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazInputNumber: { size: 'lg' } } } },
+      })
+
+      expect(wrapper.findComponent({ name: 'MazInput' }).props('size')).toBe('sm')
     })
   })
 })

@@ -1,8 +1,8 @@
 import MazBtn from '@components/MazBtn.vue'
 import MazPickerCalendarGrid from '@components/MazDatePicker/MazPickerCalendarMonth/MazPickerCalendarGrid.vue'
 import { mount } from '@vue/test-utils'
-import dayjs from 'dayjs'
-import isBetween from 'dayjs/plugin/isBetween'
+import dayjs from 'dayjs/esm'
+import isBetween from 'dayjs/esm/plugin/isBetween'
 
 dayjs.extend(isBetween)
 
@@ -36,7 +36,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const buttons = wrapper.findAllComponents(MazBtn)
-      expect(buttons.length).toBe(31)
+      expect(buttons).toHaveLength(31)
     })
 
     it('then it should render empty divs for days before month starts', () => {
@@ -91,7 +91,7 @@ describe('given MazPickerCalendarGrid component', () => {
       // There should be 30 non-selected buttons
       const allButtons = wrapper.findAllComponents(MazBtn)
       const nonSelectedButtons = allButtons.filter(b => !b.classes().includes('--is-selected'))
-      expect(nonSelectedButtons.length).toBe(30)
+      expect(nonSelectedButtons).toHaveLength(30)
     })
   })
 
@@ -122,7 +122,7 @@ describe('given MazPickerCalendarGrid component', () => {
 
       const betweenButtons = wrapper.findAll('.--is-between')
       // Days 11-19 are between, so 9 days
-      expect(betweenButtons.length).toBe(9)
+      expect(betweenButtons).toHaveLength(9)
     })
 
     it('then the first day should have --is-first class', async () => {
@@ -136,7 +136,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const firstButtons = wrapper.findAll('.--is-first')
-      expect(firstButtons.length).toBe(1)
+      expect(firstButtons).toHaveLength(1)
     })
 
     it('then the last day should have --is-last class', async () => {
@@ -150,7 +150,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const lastButtons = wrapper.findAll('.--is-last')
-      expect(lastButtons.length).toBe(1)
+      expect(lastButtons).toHaveLength(1)
     })
 
     it('then the container should have --is-range class', async () => {
@@ -176,8 +176,8 @@ describe('given MazPickerCalendarGrid component', () => {
       })
       await vi.dynamicImportSettled()
 
-      expect(wrapper.findAll('.--is-between').length).toBe(0)
-      expect(wrapper.findAll('.--is-last').length).toBe(0)
+      expect(wrapper.findAll('.--is-between')).toHaveLength(0)
+      expect(wrapper.findAll('.--is-last')).toHaveLength(0)
     })
 
     it('then with only end, --is-first should not appear', async () => {
@@ -190,7 +190,7 @@ describe('given MazPickerCalendarGrid component', () => {
       })
       await vi.dynamicImportSettled()
 
-      expect(wrapper.findAll('.--is-first').length).toBe(0)
+      expect(wrapper.findAll('.--is-first')).toHaveLength(0)
     })
   })
 
@@ -292,7 +292,7 @@ describe('given MazPickerCalendarGrid component', () => {
   })
 
   describe('when hovering days in range mode', () => {
-    it('then it should emit update:hoverred-day on mouseover when range start is set', async () => {
+    it.each(['mouseover', 'mouseleave', 'focus', 'blur'])('then it emits update:hoverred-day on %s when range start is set', async (event) => {
       const wrapper = mount(MazPickerCalendarGrid, {
         props: {
           ...defaultProps,
@@ -303,58 +303,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const buttons = wrapper.findAllComponents(MazBtn)
-      await buttons[14].trigger('mouseover') // hover over day 15
-
-      const emitted = wrapper.emitted('update:hoverred-day')
-      expect(emitted).toBeTruthy()
-    })
-
-    it('then it should clear hoverred-day on mouseleave in range mode', async () => {
-      const wrapper = mount(MazPickerCalendarGrid, {
-        props: {
-          ...defaultProps,
-          modelValue: { start: '2024-01-10', end: undefined },
-          range: true,
-        },
-      })
-      await vi.dynamicImportSettled()
-
-      const buttons = wrapper.findAllComponents(MazBtn)
-      await buttons[14].trigger('mouseleave')
-
-      const emitted = wrapper.emitted('update:hoverred-day')
-      expect(emitted).toBeTruthy()
-    })
-
-    it('then it should emit hoverred-day on focus in range mode', async () => {
-      const wrapper = mount(MazPickerCalendarGrid, {
-        props: {
-          ...defaultProps,
-          modelValue: { start: '2024-01-10', end: undefined },
-          range: true,
-        },
-      })
-      await vi.dynamicImportSettled()
-
-      const buttons = wrapper.findAllComponents(MazBtn)
-      await buttons[14].trigger('focus')
-
-      const emitted = wrapper.emitted('update:hoverred-day')
-      expect(emitted).toBeTruthy()
-    })
-
-    it('then it should clear hoverred-day on blur in range mode', async () => {
-      const wrapper = mount(MazPickerCalendarGrid, {
-        props: {
-          ...defaultProps,
-          modelValue: { start: '2024-01-10', end: undefined },
-          range: true,
-        },
-      })
-      await vi.dynamicImportSettled()
-
-      const buttons = wrapper.findAllComponents(MazBtn)
-      await buttons[14].trigger('blur')
+      await buttons[14].trigger(event)
 
       const emitted = wrapper.emitted('update:hoverred-day')
       expect(emitted).toBeTruthy()
@@ -411,7 +360,7 @@ describe('given MazPickerCalendarGrid component', () => {
 
       const betweenHoverred = wrapper.findAll('.--is-between-hoverred')
       // Days 11-19 are between 10 and 20 (exclusive)
-      expect(betweenHoverred.length).toBe(9)
+      expect(betweenHoverred).toHaveLength(9)
     })
 
     it('then --is-last-hoverred should appear on the hoverred day', async () => {
@@ -426,7 +375,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const lastHoverred = wrapper.findAll('.--is-last-hoverred')
-      expect(lastHoverred.length).toBe(1)
+      expect(lastHoverred).toHaveLength(1)
     })
   })
 
@@ -574,7 +523,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const selectedButtons = wrapper.findAll('.--is-selected')
-      expect(selectedButtons.length).toBe(0)
+      expect(selectedButtons).toHaveLength(0)
     })
 
     it('then isFirstDay should return false', async () => {
@@ -587,7 +536,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const firstButtons = wrapper.findAll('.--is-first')
-      expect(firstButtons.length).toBe(0)
+      expect(firstButtons).toHaveLength(0)
     })
 
     it('then isLastDay should return false', async () => {
@@ -600,7 +549,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const lastButtons = wrapper.findAll('.--is-last')
-      expect(lastButtons.length).toBe(0)
+      expect(lastButtons).toHaveLength(0)
     })
   })
 
@@ -615,7 +564,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const selectedButtons = wrapper.findAll('.--is-selected')
-      expect(selectedButtons.length).toBe(0)
+      expect(selectedButtons).toHaveLength(0)
     })
   })
 
@@ -632,7 +581,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const betweenHoverred = wrapper.findAll('.--is-between-hoverred')
-      expect(betweenHoverred.length).toBe(0)
+      expect(betweenHoverred).toHaveLength(0)
     })
   })
 
@@ -649,7 +598,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const betweenHoverred = wrapper.findAll('.--is-between-hoverred')
-      expect(betweenHoverred.length).toBe(0)
+      expect(betweenHoverred).toHaveLength(0)
     })
   })
 
@@ -666,7 +615,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const betweenHoverred = wrapper.findAll('.--is-between-hoverred')
-      expect(betweenHoverred.length).toBe(0)
+      expect(betweenHoverred).toHaveLength(0)
     })
   })
 
@@ -676,9 +625,9 @@ describe('given MazPickerCalendarGrid component', () => {
         props: defaultProps,
       })
 
-      // Move to next month
       await wrapper.setProps({ calendarDate: '2024-02-15' })
-      // The transition group should update
+      await new Promise(resolve => setTimeout(resolve, 450))
+
       expect(wrapper.find('.maz-picker-calendar-grid').exists()).toBe(true)
     })
 
@@ -691,6 +640,8 @@ describe('given MazPickerCalendarGrid component', () => {
       })
 
       await wrapper.setProps({ calendarDate: '2024-02-15' })
+      await new Promise(resolve => setTimeout(resolve, 450))
+
       expect(wrapper.find('.maz-picker-calendar-grid').exists()).toBe(true)
     })
   })
@@ -740,7 +691,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const betweenButtons = wrapper.findAll('.--is-between')
-      expect(betweenButtons.length).toBe(0)
+      expect(betweenButtons).toHaveLength(0)
     })
   })
 
@@ -785,7 +736,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const buttons = wrapper.findAllComponents(MazBtn)
-      expect(buttons.length).toBe(29)
+      expect(buttons).toHaveLength(29)
     })
 
     it('then it should render 28 day buttons for Feb 2023 (non-leap year)', async () => {
@@ -798,7 +749,7 @@ describe('given MazPickerCalendarGrid component', () => {
       await vi.dynamicImportSettled()
 
       const buttons = wrapper.findAllComponents(MazBtn)
-      expect(buttons.length).toBe(28)
+      expect(buttons).toHaveLength(28)
     })
   })
 })

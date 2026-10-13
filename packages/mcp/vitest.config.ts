@@ -3,8 +3,12 @@
 import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
 
 export default defineConfig({
+  logLevel: process.env.CI ? 'error' : 'info',
   plugins: [],
   test: {
+    silent: !!process.env.CI,
+    hideSkippedTests: !!process.env.CI,
+    reporters: process.env.CI ? ['dot'] : ['tree'],
     environment: 'node',
     env: {
       TZ: 'UTC',
@@ -16,10 +20,10 @@ export default defineConfig({
       include: ['src/**/*.{ts,js}'],
       exclude: coverageConfigDefaults.exclude,
       thresholds: {
-        lines: 95.58,
-        functions: 99.19,
-        branches: 87.24,
-        statements: 95.73,
+        lines: 96.14,
+        functions: 99.21,
+        branches: 88.53,
+        statements: 96.27,
         autoUpdate: !process.env.CI,
       },
     },

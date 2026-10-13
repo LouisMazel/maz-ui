@@ -1,6 +1,6 @@
-import { colors, sizes } from '@components/constantes'
+import { colors, sizes } from '@components/constants'
 
-describe('given constantes', () => {
+describe('given constants', () => {
   describe('when accessing colors', () => {
     it('then it should contain all expected color values', () => {
       expect(colors).toEqual([

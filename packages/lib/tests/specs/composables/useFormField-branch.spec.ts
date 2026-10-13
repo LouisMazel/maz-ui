@@ -470,7 +470,7 @@ describe('given useFormField composable (branch coverage)', () => {
   })
 
   describe('when ref value is neither HTMLElement nor Text with sibling', () => {
-    it('then it should log a warning', async () => {
+    it('then it does not log a warning and does not bind listeners', async () => {
       const schema = {
         name: pipe(string(), minLength(2)),
       }
@@ -478,14 +478,13 @@ describe('given useFormField composable (branch coverage)', () => {
       const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
       const elRef = ref<any>(undefined)
 
-      withSetup(() => {
+      const [result] = withSetup(() => {
         const form = useFormValidator({
           schema,
           defaultValues: { name: '' },
           options: { mode: 'eager' },
         })
 
-        // Set ref to something that is not HTMLElement and not Text
         elRef.value = { $el: 'not-an-element' }
 
         const field = useFormField('name', { ref: elRef })
@@ -494,11 +493,114 @@ describe('given useFormField composable (branch coverage)', () => {
 
       await nextTick()
 
-      expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('[maz-ui](useFormField)'),
-      )
+      expect(warnSpy).not.toHaveBeenCalled()
+      expect(result.field).toBeDefined()
 
       warnSpy.mockRestore()
+    })
+  })
+
+  describe('when ref becomes available after mount (conditional rendering)', () => {
+    it('then it binds listeners once the element appears', async () => {
+      const schema = {
+        name: pipe(string(), minLength(2)),
+      }
+
+      const input = document.createElement('input')
+      const addSpy = vi.spyOn(input, 'addEventListener')
+      const elRef = ref<HTMLElement | undefined>(undefined)
+
+      const [result] = withSetup(() => {
+        const form = useFormValidator({
+          schema,
+          defaultValues: { name: '' },
+          options: { mode: 'eager' },
+        })
+
+        const field = useFormField('name', { ref: elRef })
+        return { form, field }
+      })
+
+      await nextTick()
+
+      expect(addSpy).not.toHaveBeenCalled()
+
+      const wrapper = document.createElement('div')
+      wrapper.appendChild(input)
+      elRef.value = wrapper
+
+      await nextTick()
+
+      expect(addSpy).toHaveBeenCalledWith('blur', expect.any(Function))
+      expect(result.field).toBeDefined()
+
+      addSpy.mockRestore()
+    })
+  })
+
+  describe('when ref becomes unavailable after mount (conditional rendering)', () => {
+    it('then it removes the previously bound listeners', async () => {
+      const schema = {
+        name: pipe(string(), minLength(2)),
+      }
+
+      const input = document.createElement('input')
+      const removeSpy = vi.spyOn(input, 'removeEventListener')
+      const wrapper = document.createElement('div')
+      wrapper.appendChild(input)
+      const elRef = ref<HTMLElement | undefined>(wrapper)
+
+      withSetup(() => {
+        const form = useFormValidator({
+          schema,
+          defaultValues: { name: '' },
+          options: { mode: 'eager' },
+        })
+
+        const field = useFormField('name', { ref: elRef })
+        return { form, field }
+      })
+
+      await nextTick()
+
+      elRef.value = undefined
+
+      await nextTick()
+
+      expect(removeSpy).toHaveBeenCalledWith('blur', expect.any(Function))
+
+      removeSpy.mockRestore()
+    })
+  })
+
+  describe('when ref is a raw HTMLElement', () => {
+    it('then it binds listeners to the element', async () => {
+      const schema = {
+        name: pipe(string(), minLength(2)),
+      }
+
+      const wrapper = document.createElement('div')
+      const input = document.createElement('input')
+      wrapper.appendChild(input)
+      const addSpy = vi.spyOn(input, 'addEventListener')
+
+      const [result] = withSetup(() => {
+        const form = useFormValidator({
+          schema,
+          defaultValues: { name: '' },
+          options: { mode: 'eager' },
+        })
+
+        const field = useFormField('name', { ref: wrapper })
+        return { form, field }
+      })
+
+      await nextTick()
+
+      expect(addSpy).toHaveBeenCalledWith('blur', expect.any(Function))
+      expect(result.field.mode.value).toBe('eager')
+
+      addSpy.mockRestore()
     })
   })
 
@@ -667,6 +769,36 @@ describe('given useFormField composable (branch coverage)', () => {
       expect(result.field.isBlurred.value).toBe(false)
       expect(result.field.isValidated.value).toBe(false)
       expect(result.field.isValidating.value).toBe(false)
+    })
+  })
+
+  describe('when the field state no longer exists in the form', () => {
+    it('then the returned computeds fall back to default values without throwing', () => {
+      const schema = {
+        name: pipe(string(), minLength(2)),
+      }
+
+      const [result] = withSetup(() => {
+        const form = useFormValidator({
+          schema,
+          defaultValues: { name: '' },
+          options: { mode: 'eager' },
+        })
+
+        const field = useFormField('name')
+        return { form, field }
+      })
+
+      Reflect.deleteProperty(result.form.fieldsStates.value, 'name')
+
+      expect(result.field.hasError.value).toBe(false)
+      expect(result.field.errors.value).toEqual([])
+      expect(result.field.isValid.value).toBe(false)
+      expect(result.field.isDirty.value).toBe(false)
+      expect(result.field.isBlurred.value).toBe(false)
+      expect(result.field.isValidated.value).toBe(false)
+      expect(result.field.isValidating.value).toBe(false)
+      expect(result.field.mode.value).toBeUndefined()
     })
   })
 

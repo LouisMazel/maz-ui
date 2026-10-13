@@ -44,7 +44,7 @@ toast.error('error message')
 
 <script lang="ts" setup>
   import { onMounted } from 'vue'
-  import { useToast } from 'maz-ui/src/composables/useToast'
+  import { useToast } from 'maz-ui/composables/useToast'
 
   const toast = useToast()
 

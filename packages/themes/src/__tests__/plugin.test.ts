@@ -33,7 +33,7 @@ describe('plugin', () => {
         } as unknown as App
 
         const options = {
-          strategy: 'hybrid' as const,
+          strategy: 'runtime' as const,
           colorMode: 'auto' as const,
         }
 

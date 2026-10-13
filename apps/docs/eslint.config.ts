@@ -6,7 +6,17 @@ export default defineConfig(
   {
     formatters: true,
     vue: true,
-    tailwindcss: true,
+    tailwindcss: {
+      entryPoint: '.vitepress/theme/main.css',
+      detectComponentClasses: true,
+      tsconfig: './tsconfig.json',
+      preset: 'recommended',
+      noArbitraryPx: {
+        baseFontSize: 14,
+        severity: 'error',
+        unit: 'rem',
+      },
+    },
     sonarjs: false,
     vueAccessibility: false,
     markdown: true,

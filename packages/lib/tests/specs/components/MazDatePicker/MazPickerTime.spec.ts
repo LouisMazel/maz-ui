@@ -37,7 +37,7 @@ describe('given MazPickerTime component', () => {
       await vi.dynamicImportSettled()
 
       const columns = wrapper.findAll('.m-date-picker-time__column')
-      expect(columns.length).toBe(2) // hour and minute
+      expect(columns).toHaveLength(2) // hour and minute
     })
 
     it('then the hour column should have 24 hour buttons', async () => {
@@ -52,7 +52,7 @@ describe('given MazPickerTime component', () => {
 
       const hourColumn = wrapper.find('.m-date-picker-time__column__hour')
       const hourButtons = hourColumn.findAll('.m-date-picker-time__column__items .m-btn')
-      expect(hourButtons.length).toBe(24)
+      expect(hourButtons).toHaveLength(24)
     })
 
     it('then the minute column should have correct number of minute buttons', async () => {
@@ -69,7 +69,7 @@ describe('given MazPickerTime component', () => {
       const minuteColumn = wrapper.find('.m-date-picker-time__column__minute')
       const minuteButtons = minuteColumn.findAll('.m-date-picker-time__column__items .m-btn')
       // 60 / 5 = 12 intervals
-      expect(minuteButtons.length).toBe(12)
+      expect(minuteButtons).toHaveLength(12)
     })
   })
 
@@ -85,7 +85,7 @@ describe('given MazPickerTime component', () => {
       await vi.dynamicImportSettled()
 
       const columns = wrapper.findAll('.m-date-picker-time__column')
-      expect(columns.length).toBe(3) // hour, minute, ampm
+      expect(columns).toHaveLength(3) // hour, minute, ampm
     })
 
     it('then the hour column should have 12 hour buttons', async () => {
@@ -100,7 +100,7 @@ describe('given MazPickerTime component', () => {
 
       const hourColumn = wrapper.find('.m-date-picker-time__column__hour')
       const hourButtons = hourColumn.findAll('.m-date-picker-time__column__items .m-btn')
-      expect(hourButtons.length).toBe(12)
+      expect(hourButtons).toHaveLength(12)
     })
 
     it('then the ampm column should have 2 buttons (AM and PM)', async () => {
@@ -115,7 +115,7 @@ describe('given MazPickerTime component', () => {
 
       const ampmColumn = wrapper.find('.m-date-picker-time__column__ampm')
       const ampmButtons = ampmColumn.findAll('.m-date-picker-time__column__items .m-btn')
-      expect(ampmButtons.length).toBe(2)
+      expect(ampmButtons).toHaveLength(2)
     })
 
     it('then the ampm buttons should display AM and PM', async () => {
@@ -146,7 +146,7 @@ describe('given MazPickerTime component', () => {
 
       const ampmColumn = wrapper.find('.m-date-picker-time__column__ampm')
       const selectedAmpm = ampmColumn.findAll('.--is-selected')
-      expect(selectedAmpm.length).toBe(1)
+      expect(selectedAmpm).toHaveLength(1)
       expect(selectedAmpm[0].text()).toBe('AM')
     })
 
@@ -162,7 +162,7 @@ describe('given MazPickerTime component', () => {
 
       const ampmColumn = wrapper.find('.m-date-picker-time__column__ampm')
       const selectedAmpm = ampmColumn.findAll('.--is-selected')
-      expect(selectedAmpm.length).toBe(1)
+      expect(selectedAmpm).toHaveLength(1)
       expect(selectedAmpm[0].text()).toBe('PM')
     })
   })
@@ -210,7 +210,7 @@ describe('given MazPickerTime component', () => {
 
       const hourColumn = wrapper.find('.m-date-picker-time__column__hour')
       const selectedHours = hourColumn.findAll('.--is-selected')
-      expect(selectedHours.length).toBe(1)
+      expect(selectedHours).toHaveLength(1)
     })
   })
 
@@ -228,7 +228,7 @@ describe('given MazPickerTime component', () => {
 
       const minuteColumn = wrapper.find('.m-date-picker-time__column__minute')
       const selectedMinutes = minuteColumn.findAll('.--is-selected')
-      expect(selectedMinutes.length).toBe(1)
+      expect(selectedMinutes).toHaveLength(1)
     })
   })
 
@@ -420,7 +420,7 @@ describe('given MazPickerTime component', () => {
 
       const minuteColumn = wrapper.find('.m-date-picker-time__column__minute')
       const minuteButtons = minuteColumn.findAll('.m-date-picker-time__column__items .m-btn')
-      expect(minuteButtons.length).toBe(4)
+      expect(minuteButtons).toHaveLength(4)
       expect(minuteButtons[0].text()).toBe('00')
       expect(minuteButtons[1].text()).toBe('15')
       expect(minuteButtons[2].text()).toBe('30')
@@ -441,7 +441,7 @@ describe('given MazPickerTime component', () => {
 
       const minuteColumn = wrapper.find('.m-date-picker-time__column__minute')
       const minuteButtons = minuteColumn.findAll('.m-date-picker-time__column__items .m-btn')
-      expect(minuteButtons.length).toBe(60)
+      expect(minuteButtons).toHaveLength(60)
     })
   })
 
@@ -456,7 +456,7 @@ describe('given MazPickerTime component', () => {
       await vi.dynamicImportSettled()
 
       const selectedButtons = wrapper.findAll('.--is-selected')
-      expect(selectedButtons.length).toBe(0)
+      expect(selectedButtons).toHaveLength(0)
     })
 
     it('then currentHour should be undefined', async () => {
@@ -471,7 +471,7 @@ describe('given MazPickerTime component', () => {
       // No selected hour buttons
       const hourColumn = wrapper.find('.m-date-picker-time__column__hour')
       const selectedHours = hourColumn.findAll('.--is-selected')
-      expect(selectedHours.length).toBe(0)
+      expect(selectedHours).toHaveLength(0)
     })
   })
 
@@ -492,7 +492,7 @@ describe('given MazPickerTime component', () => {
       // The selected hour should now be 14
       const hourColumn = wrapper.find('.m-date-picker-time__column__hour')
       const selectedHours = hourColumn.findAll('.--is-selected')
-      expect(selectedHours.length).toBe(1)
+      expect(selectedHours).toHaveLength(1)
     })
   })
 
@@ -563,7 +563,7 @@ describe('given MazPickerTime component', () => {
 
       const spacers = wrapper.findAll('.m-date-picker-time__column__spacer')
       // 2 columns (hour + minute) * 2 spacers each = 4
-      expect(spacers.length).toBe(4)
+      expect(spacers).toHaveLength(4)
     })
   })
 
@@ -580,7 +580,7 @@ describe('given MazPickerTime component', () => {
 
       const hourColumn = wrapper.find('.m-date-picker-time__column__hour')
       const selectedHours = hourColumn.findAll('.--is-selected')
-      expect(selectedHours.length).toBe(1)
+      expect(selectedHours).toHaveLength(1)
       expect(selectedHours[0].text()).toBe('10')
     })
 
@@ -597,7 +597,7 @@ describe('given MazPickerTime component', () => {
 
       const minuteColumn = wrapper.find('.m-date-picker-time__column__minute')
       const selectedMinutes = minuteColumn.findAll('.--is-selected')
-      expect(selectedMinutes.length).toBe(1)
+      expect(selectedMinutes).toHaveLength(1)
       expect(selectedMinutes[0].text()).toBe('30')
     })
   })
@@ -616,7 +616,7 @@ describe('given MazPickerTime component', () => {
 
       const hourColumn = wrapper.find('.m-date-picker-time__column__hour')
       const selectedHours = hourColumn.findAll('.--is-selected')
-      expect(selectedHours.length).toBe(1)
+      expect(selectedHours).toHaveLength(1)
       expect(selectedHours[0].text()).toBe('10')
     })
   })

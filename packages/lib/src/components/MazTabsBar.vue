@@ -1,35 +1,53 @@
-<script lang="ts" setup>
-import type { ComponentPublicInstance, StyleValue } from 'vue'
+<script lang="ts">
 import type { MazBadgeProps } from './MazBadge.vue'
-import type { MazTabsProvide } from './MazTabs.vue'
-import { sleep } from '@maz-ui/utils/helpers/sleep'
-import {
-  computed,
-  defineAsyncComponent,
-  onBeforeMount,
-  onMounted,
-  ref,
-  watch,
-} from 'vue'
+import type { MazBtnProps } from './MazBtn.vue'
+import type { MazColor, MazRoundedSize, MazSize } from './types'
 
-import { useInjectStrict } from '../composables/useInjectStrict'
+/**
+ * Props of MazBtn that an item is not allowed to forward, because they are
+ * either driven internally by the tabs bar or would break its layout.
+ */
+type ExcludedBtnProps = 'active' | 'block' | 'type' | 'loading' | 'fab'
 
-const {
-  items,
-  persistent = false,
-  queryParam = 'tab',
-  autoScroll = true,
-  block = false,
-  elevation = false,
-  bordered = true,
-} = defineProps<MazTabsBarProps>()
-
-export interface MazTabsBarProps {
+export interface MazTabsBarProps<Item extends MazTabsBarItem = MazTabsBarItem> {
   /**
    * The items to display in the tabs bar
    * @type MazTabsBarItem[]
    */
-  items: MazTabsBarItem[]
+  items: readonly Item[]
+  /**
+   * Selected tab (standalone usage, without MazTabs).
+   * Holds the item `value` when provided, otherwise the 1-based index.
+   * Pass items `as const` (or with literal `value`) to infer a union type.
+   * @model
+   */
+  modelValue?: MazTabsBarItemValue<Item>
+  /**
+   * Size of the tabs (forwarded to each MazBtn)
+   * @values `'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'mini'`
+   * @default 'md'
+   */
+  size?: MazSize
+  /**
+   * Size of the rounded applied to the bar, the indicator and each tab
+   * @values `'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'`
+   * @default 'md'
+   */
+  roundedSize?: MazRoundedSize
+  /**
+   * Color of the active tab indicator. When omitted, the default neutral
+   * indicator is used.
+   * @values `'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'destructive' | 'contrast'`
+   */
+  color?: MazColor
+  /**
+   * Force the standalone mode: the tabs bar ignores any surrounding `MazTabs`
+   * (selection, size, rounded-size and color are no longer inherited) and is
+   * driven only by its own `v-model`. Useful for a nested switcher inside a
+   * page already wrapped by `MazTabs`.
+   * @default false
+   */
+  standalone?: boolean
   /**
    * Will add a query param to the url to keep the selected tab on page refresh
    * @default false
@@ -62,12 +80,17 @@ export interface MazTabsBarProps {
   bordered?: boolean
 }
 
-export type MazTabsBarItem
-  = | {
+export type MazTabsBarObjectItem<Value extends string | number = string | number>
+  = Omit<MazBtnProps, ExcludedBtnProps> & {
     /**
      * Label of the tab
      */
     label: string
+    /**
+     * Value emitted by the model when this tab is selected (standalone usage).
+     * When omitted, the model emits the 1-based index of the tab.
+     */
+    value?: Value
     /**
      * Will disable the tab
      * @default false
@@ -84,21 +107,174 @@ export type MazTabsBarItem
       content: string | number | boolean
     }
   }
-  | string
+
+export type MazTabsBarItem<Value extends string | number = string | number>
+  = | MazTabsBarObjectItem<Value>
+    | string
+
+/**
+ * Resolve the model value type from the items passed to the component.
+ * If items expose a `value`, the model emits that value, otherwise the
+ * 1-based index (number).
+ */
+export type MazTabsBarItemValue<Item>
+  = Item extends { value: infer V extends string | number } ? V : number
+</script>
+
+<script lang="ts" setup generic="Item extends MazTabsBarItem">
+import type { ComponentPublicInstance, StyleValue } from 'vue'
+import type { MazTabsProvide } from './MazTabs.vue'
+import { sleep } from '@maz-ui/utils/helpers/sleep'
+import {
+  computed,
+  defineAsyncComponent,
+  getCurrentInstance,
+  inject,
+  onBeforeMount,
+  onMounted,
+  ref,
+  watch,
+} from 'vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '../composables/useGlobalConfig'
+import MazBtn from './MazBtn.vue'
+
+const {
+  items,
+  modelValue,
+  color,
+  standalone = false,
+  persistent = false,
+  queryParam = 'tab',
+  autoScroll = true,
+  block = false,
+  elevation = false,
+  bordered = true,
+} = defineProps<MazTabsBarProps<Item>>()
+
+const emits = defineEmits<{
+  /**
+   * Emitted when the selected tab changes (standalone usage).
+   * @property {MazTabsBarItemValue} value item value when provided, otherwise the 1-based index
+   */
+  'update:model-value': [value: MazTabsBarItemValue<Item>]
+}>()
 
 const MazBadge = defineAsyncComponent(() => import('./MazBadge.vue'))
 
-const { currentTab, updateCurrentTab } = useInjectStrict<MazTabsProvide>('maz-tabs')
+const injectedTabs = inject<MazTabsProvide | undefined>('maz-tabs', undefined)
+
+const tabsContext = computed(() => (standalone ? undefined : injectedTabs))
+
+const instance = getCurrentInstance()
+const globalConfig = inject(GLOBAL_CONFIG_INJECTION_KEY, undefined)
+
+function wasPropProvided(key: string): boolean {
+  const raw = instance?.vnode.props
+  if (!raw) {
+    return false
+  }
+  return Object.hasOwn(raw, key) || Object.hasOwn(raw, key.replace(/\B([A-Z])/g, '-$1').toLowerCase())
+}
+
+const resolvedSize = computed<MazSize>(() => {
+  if (wasPropProvided('size')) {
+    return (instance!.props as { size?: MazSize }).size as MazSize
+  }
+  return tabsContext.value?.size?.value
+    ?? globalConfig?.MazTabsBar?.size
+    ?? globalConfig?.global?.size
+    ?? 'md'
+})
+
+const resolvedRoundedSize = computed<MazRoundedSize>(() => {
+  if (wasPropProvided('roundedSize')) {
+    return (instance!.props as { roundedSize?: MazRoundedSize }).roundedSize as MazRoundedSize
+  }
+  return tabsContext.value?.roundedSize?.value
+    ?? globalConfig?.MazTabsBar?.roundedSize
+    ?? globalConfig?.global?.roundedSize
+    ?? 'md'
+})
+
+const resolvedColor = computed<MazColor | undefined>(() => color ?? tabsContext.value?.color?.value)
+
+const ROUNDED_CLASS: Record<MazRoundedSize, string> = {
+  none: '',
+  sm: 'maz:rounded-xs',
+  md: 'maz:rounded-md',
+  lg: 'maz:rounded-lg',
+  xl: 'maz:rounded-xl',
+  full: 'maz:rounded-full',
+} as const
+
+const normalizedItems = computed(() =>
+  items.map((item) => {
+    if (typeof item === 'string') {
+      return {
+        label: item,
+        value: undefined as string | number | undefined,
+        disabled: false,
+        size: undefined as MazSize | undefined,
+        roundedSize: undefined as MazRoundedSize | undefined,
+        color: 'transparent' as NonNullable<MazBtnProps['color']>,
+        badge: undefined as MazTabsBarObjectItem['badge'],
+        btnProps: {} as Record<string, unknown>,
+      }
+    }
+
+    const { label, value, disabled, badge, size, roundedSize, color: itemColor, ...btnProps } = item as MazTabsBarObjectItem
+
+    return {
+      label,
+      value,
+      disabled: disabled ?? false,
+      size,
+      roundedSize,
+      color: (itemColor ?? 'transparent') as NonNullable<MazBtnProps['color']>,
+      badge,
+      btnProps,
+    }
+  }),
+)
+
+const currentTab = computed<number>(() => {
+  if (tabsContext.value) {
+    return tabsContext.value.currentTab.value
+  }
+
+  if (modelValue === undefined) {
+    return 1
+  }
+
+  const indexByValue = normalizedItems.value.findIndex(
+    item => item.value !== undefined && item.value === modelValue,
+  )
+  if (indexByValue !== -1) {
+    return indexByValue + 1
+  }
+
+  return typeof modelValue === 'number' ? modelValue : 1
+})
+
+function setActiveTab(oneBasedIndex: number) {
+  if (tabsContext.value) {
+    tabsContext.value.updateCurrentTab(oneBasedIndex)
+    return
+  }
+
+  const item = normalizedItems.value[oneBasedIndex - 1]
+  emits('update:model-value', (item?.value ?? oneBasedIndex) as MazTabsBarItemValue<Item>)
+}
 
 function selectTab(tabIndex: number) {
-  updateCurrentTab(tabIndex + 1)
+  setActiveTab(tabIndex + 1)
   if (persistent) {
     addOrUpdateQueryParamTab(tabIndex + 1)
   }
 }
 
 const tabsBarRef = ref<HTMLDivElement>()
-const itemRefs = ref<HTMLButtonElement[]>([])
+const itemRefs = ref<HTMLElement[]>([])
 
 function isActiveTab(index: number) {
   return currentTab.value === index + 1
@@ -108,19 +284,11 @@ function addElementToItemRefs({
   mazBtn,
   index,
 }: {
-  mazBtn?: ComponentPublicInstance<any>
+  mazBtn?: ComponentPublicInstance<any> | HTMLElement
   index: number
 }) {
   itemRefs.value[index] = mazBtn && '$el' in mazBtn ? mazBtn.$el : mazBtn
 }
-
-const normalizedItems = computed(() =>
-  items.map(item => ({
-    label: typeof item === 'string' ? item : item.label,
-    disabled: typeof item === 'string' ? false : item.disabled ?? false,
-    badge: typeof item === 'string' ? undefined : item.badge,
-  })),
-)
 
 const tabsIndicatorState = ref<StyleValue>()
 const tabsBarHasScrollAnimation = ref(false)
@@ -145,7 +313,7 @@ async function setIndicatorAndScroll() {
     activeTab.offsetLeft - scrollOffset < tabsBar.scrollLeft
     || activeTab.offsetLeft + activeTab.offsetWidth > tabsBar.scrollLeft + tabsBar.clientWidth
   ) {
-    const tabBarPaddingLeft = globalThis.getComputedStyle(tabsBar, 'padding-left').paddingLeft
+    const tabBarPaddingLeft = globalThis.getComputedStyle(tabsBar).paddingLeft
     const tabsBarPaddingOffset = Number(tabBarPaddingLeft.slice(0, -2))
 
     tabsBar.scrollTo({
@@ -175,9 +343,12 @@ function getTabStyle(index: number, disabled: boolean): StyleValue {
   if (disabled) {
     return {}
   }
-  return currentTab.value === index + 1
-    ? `color: hsl(var(--maz-foreground))`
-    : 'color: hsl(var(--maz-muted))'
+
+  if (currentTab.value === index + 1) {
+    return resolvedColor.value ? `color: var(--maz-${resolvedColor.value}-foreground)` : 'color: var(--maz-foreground)'
+  }
+
+  return 'color: var(--maz-muted)'
 }
 
 onBeforeMount(() => {
@@ -214,7 +385,7 @@ function addOrUpdateQueryParamTab(tab: number) {
 
 onMounted(() => {
   if (persistent) {
-    updateCurrentTab(getQueryParamTab() || currentTab.value || 1)
+    setActiveTab(getQueryParamTab() || currentTab.value || 1)
   }
 })
 </script>
@@ -222,24 +393,43 @@ onMounted(() => {
 <template>
   <div
     ref="tabsBarRef"
-    class="m-tabs-bar m-reset-css"
-    :class="{
-      '--block': block,
-      '--elevation': elevation,
-      '--bordered': bordered,
-    }"
+    class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:gap-1 maz:overflow-x-auto maz:bg-container maz:p-2 maz:align-top"
+    :class="[
+      ROUNDED_CLASS[resolvedRoundedSize],
+      {
+        '--block': block,
+        '--elevation': elevation,
+        '--bordered': bordered,
+        'maz:w-full': block,
+        'maz:shadow-elevation maz:drop-shadow-md maz:dark:shadow-none': elevation,
+        'maz:border maz:border-divider': bordered,
+      },
+    ]"
   >
     <div
-      class="m-tabs-bar__indicator"
-      :class="{ '--animated': tabsBarHasScrollAnimation }"
-      :style="[tabsIndicatorState]"
+      class="m-tabs-bar__indicator maz:absolute maz:left-0 maz:text-center"
+      :class="[
+        ROUNDED_CLASS[resolvedRoundedSize],
+        {
+          'maz:transition-all maz:duration-300 maz:ease-in-out': tabsBarHasScrollAnimation,
+          'maz:bg-surface-600 maz:dark:bg-surface-400': !resolvedColor,
+        },
+      ]"
+      :style="[tabsIndicatorState, resolvedColor ? { backgroundColor: `var(--maz-${resolvedColor})` } : {}]"
     />
     <template v-for="(item, index) in normalizedItems" :key="index">
-      <button
-        :ref="(mazBtn) => addElementToItemRefs({ mazBtn, index })"
-        :class="{ '--active': isActiveTab(index), '--disabled': item.disabled }"
-        class="m-tabs-bar__item"
+      <MazBtn
+        :ref="(mazBtn) => addElementToItemRefs({ mazBtn: mazBtn as ComponentPublicInstance<any>, index })"
+        v-bind="item.btnProps"
+        :color="item.color"
+        :size="item.size ?? resolvedSize"
+        :rounded-size="item.roundedSize ?? resolvedRoundedSize"
         :disabled="item.disabled"
+        :class="{
+          '--is-active': isActiveTab(index),
+          '--disabled': item.disabled,
+        }"
+        class="m-tabs-bar__item maz:relative maz:z-1 maz:flex-none maz:font-medium"
         :style="getTabStyle(index, item.disabled)"
         @click="item.disabled ? undefined : selectTab(index)"
       >
@@ -255,7 +445,7 @@ onMounted(() => {
           <MazBadge
             v-if="item.badge"
             v-bind="item.badge"
-            :size="item.badge.size ?? '0.7rem'"
+            :size="item.badge.size ?? item.size ?? resolvedSize ?? 'xs'"
             class="m-tabs-bar__item__badge"
           >
             <!--
@@ -267,47 +457,25 @@ onMounted(() => {
             </slot>
           </MazBadge>
         </slot>
-      </button>
+      </MazBtn>
     </template>
   </div>
 </template>
 
 <style scoped>
-.m-tabs-bar {
-  @apply maz-relative maz-inline-flex maz-max-w-full maz-gap-1 maz-overflow-x-auto maz-rounded maz-p-2 maz-align-top maz-bg-surface;
+@reference "../tailwindcss/tailwind.css";
 
-  &.--elevation {
-    @apply maz-drop-shadow-md maz-shadow-elevation dark:maz-shadow-none;
+/* The tab buttons must never paint a background on hover/active: it would
+ * hide the sliding indicator. Inactive tabs only brighten their text on
+ * hover, the active tab has no hover feedback. */
+.m-tabs-bar__item {
+  &:not(:disabled):hover,
+  &:not(:disabled):active {
+    background-color: transparent !important;
   }
 
-  &.--block {
-    @apply maz-w-full;
-  }
-
-  &.--bordered {
-    @apply maz-border maz-border-divider;
-  }
-
-  &__item {
-    @apply maz-relative maz-flex maz-flex-none
-        maz-items-center maz-gap-2 maz-rounded maz-px-3
-        maz-py-2 maz-text-center maz-font-medium maz-no-underline maz-transition maz-duration-200 maz-ease-in-out;
-
-    &:not(.--disabled) {
-      @apply maz-cursor-pointer hover:!maz-text-foreground;
-    }
-
-    &.--disabled {
-      @apply maz-cursor-not-allowed maz-bg-surface-300 maz-text-gray-400 dark:maz-text-gray-500;
-    }
-  }
-
-  &__indicator {
-    @apply maz-absolute maz-left-0 maz-rounded maz-bg-surface-600 dark:maz-bg-surface-400 maz-text-center;
-
-    &.--animated {
-      @apply maz-transition-all maz-duration-300 maz-ease-in-out;
-    }
+  &:not(.--is-active, :disabled):hover {
+    color: var(--maz-foreground) !important;
   }
 }
 </style>

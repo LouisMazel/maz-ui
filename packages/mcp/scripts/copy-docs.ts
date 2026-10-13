@@ -48,24 +48,29 @@ async function copyDirectory(source: string, destination: string) {
   }
 }
 
+// `force` + `maxRetries` make the removal resilient to the intermittent
+// ENOTEMPTY/EBUSY the filesystem can throw when a directory is being recreated
+// right after a previous build (e.g. NX cache miss re-running the copy).
+const RM_OPTIONS = { recursive: true, force: true, maxRetries: 5, retryDelay: 100 } as const
+
 function cleanLocalDocs() {
   const publicFolder = resolve(LOCAL_DOCS_DIR, 'src/public')
   const assetsFolder = resolve(LOCAL_DOCS_DIR, 'src/assets')
   const competitionsFile = resolve(LOCAL_DOCS_DIR, 'src/components/competitions.ts')
   if (existsSync(publicFolder)) {
-    rmSync(publicFolder, { recursive: true })
+    rmSync(publicFolder, RM_OPTIONS)
   }
   if (existsSync(assetsFolder)) {
-    rmSync(assetsFolder, { recursive: true })
+    rmSync(assetsFolder, RM_OPTIONS)
   }
   if (existsSync(competitionsFile)) {
-    rmSync(competitionsFile)
+    rmSync(competitionsFile, { force: true })
   }
 }
 
 function rimrafDocs() {
   if (existsSync(LOCAL_DOCS_DIR)) {
-    rmSync(LOCAL_DOCS_DIR, { recursive: true })
+    rmSync(LOCAL_DOCS_DIR, RM_OPTIONS)
   }
 }
 

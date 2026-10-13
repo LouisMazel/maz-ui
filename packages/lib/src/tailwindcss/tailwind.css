@@ -1,4 +1,18 @@
-@import '../../src/css/index.css';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/*
+ * Maz-UI Tailwind v4 entry — used by SFC `<style scoped>` blocks via
+ * `@reference "../tailwindcss/tailwind.css"`. Keep the full `@import 'tailwindcss'`
+ * here so the reference resolver receives the complete Tailwind context.
+ *
+ * The dist build (consumed via `maz-ui/style.css` by standalone apps) uses a
+ * separate entry — `./dist-entry.css` — that omits the preflight. See
+ * build/ViteCompileStyles.ts.
+ */
+@import 'tailwindcss' prefix(maz);
+@import '../css/index.css';
+@import './theme.css';
+@import './utilities.css';
+@source "../components/**/*.vue";
+@source "../composables/**/*.ts";
+@source "../directives/**/*.{vue,ts}";
+@source "../plugins/**/*.{vue,ts}";
+@source "../resolvers/**/*.ts";

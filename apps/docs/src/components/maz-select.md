@@ -221,7 +221,7 @@ const optGroup = [
 ## Size
 
 <ComponentDemo>
-  <div class="maz-flex maz-flex-col maz-gap-2">
+  <div class="maz:flex maz:flex-col maz:gap-2">
     <MazSelect
       v-for="size in sizes"
       :key="size"

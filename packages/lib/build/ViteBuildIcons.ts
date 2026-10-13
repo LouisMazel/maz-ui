@@ -21,7 +21,7 @@ export function ViteBuildIcons({ testing } = { testing: false }): Plugin {
   return {
     name: 'vite-build-icons',
     async configResolved() {
-      const distFolderExists = existsSync(resolve(__dirname, '../../icons/dist'))
+      const distFolderExists = existsSync(resolve(import.meta.dirname, '../../icons/dist'))
 
       if (distFolderExists) {
         return

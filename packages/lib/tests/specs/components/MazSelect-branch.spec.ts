@@ -366,7 +366,7 @@ describe('given MazSelect component (branch coverage)', () => {
         },
       })
 
-      expect(wrapper.vm.selectedOptions.length).toBe(2)
+      expect(wrapper.vm.selectedOptions).toHaveLength(2)
     })
 
     it('then it should match for single mode', () => {
@@ -377,7 +377,7 @@ describe('given MazSelect component (branch coverage)', () => {
         },
       })
 
-      expect(wrapper.vm.selectedOptions.length).toBe(1)
+      expect(wrapper.vm.selectedOptions).toHaveLength(1)
       expect(wrapper.vm.selectedOptions[0].label).toBe('Cherry')
     })
   })
@@ -410,7 +410,7 @@ describe('given MazSelect component (branch coverage)', () => {
       wrapper.vm.searchQuery = 'ban'
       await nextTick()
 
-      expect(wrapper.vm.optionList.length).toBe(1)
+      expect(wrapper.vm.optionList).toHaveLength(1)
       expect(wrapper.vm.optionList[0].label).toBe('Banana')
     })
 
@@ -426,7 +426,7 @@ describe('given MazSelect component (branch coverage)', () => {
       wrapper.vm.searchQuery = ''
       await nextTick()
 
-      expect(wrapper.vm.optionList.length).toBe(3)
+      expect(wrapper.vm.optionList).toHaveLength(3)
     })
   })
 
@@ -464,7 +464,7 @@ describe('given MazSelect component (branch coverage)', () => {
       wrapper.vm.searchQuery = 'xyz'
       await nextTick()
 
-      expect(wrapper.vm.optionList.length).toBe(0)
+      expect(wrapper.vm.optionList).toHaveLength(0)
     })
 
     it('then it should not use searchFunction when searchQuery is empty', async () => {
@@ -903,7 +903,7 @@ describe('given MazSelect component (branch coverage)', () => {
       await nextTick()
 
       const items = wrapper.findAll('.m-select-list-item')
-      expect(items.length).toBe(3)
+      expect(items).toHaveLength(3)
     })
   })
 

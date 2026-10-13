@@ -2,7 +2,8 @@
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
-import { ref } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
+import MazIcon from './MazIcon.vue'
 import { getColor } from './types'
 
 export type MazRadioButtonsOption<T = string | number | boolean> = {
@@ -24,7 +25,7 @@ export interface MazRadioButtonsProps<T = string | number | boolean, Option exte
   /** The name of the radio group */
   name?: string
   /** The color of the selected radio buttons */
-  color?: MazColor | 'background'
+  color?: MazColor | 'surface'
   /** Add elevation to the radio buttons */
   elevation?: boolean
   /**
@@ -56,18 +57,22 @@ export interface MazRadioButtonsProps<T = string | number | boolean, Option exte
   size?: MazSize
 }
 
-const props = withDefaults(defineProps<MazRadioButtonsProps<T, Option>>(), {
-  modelValue: undefined,
-  name: 'MazButtonsRadio',
-  color: 'primary',
-  elevation: false,
-  orientation: 'row',
-  wrap: true,
-  equalSize: false,
-  selector: false,
-  block: false,
-  size: 'md',
-})
+const {
+  modelValue,
+  options,
+  name = 'MazButtonsRadio',
+  color = 'primary',
+  elevation = false,
+  orientation = 'row',
+  wrap = true,
+  equalSize = false,
+  selector = false,
+  block = false,
+  error,
+  success,
+  warning,
+  hint,
+} = defineProps<MazRadioButtonsProps<T, Option>>()
 
 const emits = defineEmits<{
   /**
@@ -92,100 +97,106 @@ const emits = defineEmits<{
   'focus': [value: FocusEvent]
 }>()
 
+const { size } = useGlobalConfig<{ size: MazSize }>('MazRadioButtons', { size: 'md' })
+
 function selectOption(option: Option) {
   emits('update:model-value', option.value)
   emits('change', option.value)
 }
 
 function isSelected(value: Option['value']) {
-  return props.modelValue === value
-}
-
-function keyboardHandler(event: KeyboardEvent, option: Option) {
-  if (['Space'].includes(event.code)) {
-    event.preventDefault()
-    selectOption(option)
-  }
+  return modelValue === value
 }
 
 function getOptionId(option: Option, i: number) {
-  return `option-${i}-${option.value.toString()}-${props.name}`
+  return `option-${i}-${option.value.toString()}-${name}`
 }
 
-const inputRef = ref<HTMLInputElement[]>()
-
-function onBlur(index: number, event: FocusEvent) {
-  inputRef.value?.[index]?.dispatchEvent(new Event('blur'))
+function onBlur(event: FocusEvent) {
   emits('blur', event)
 }
-function onFocus(index: number, event: FocusEvent) {
-  inputRef.value?.[index]?.dispatchEvent(new Event('focus'))
+function onFocus(event: FocusEvent) {
   emits('focus', event)
+}
+
+const SIZE_CLASS: Record<MazSize, string> = {
+  mini: 'maz:px-1 maz:min-h-6 maz:text-xs',
+  xs: 'maz:px-2 maz:min-h-8 maz:text-xs',
+  sm: 'maz:px-3 maz:min-h-10 maz:text-sm',
+  md: 'maz:px-4 maz:min-h-12',
+  lg: 'maz:px-5 maz:min-h-14 maz:text-lg',
+  xl: 'maz:px-6 maz:min-h-16 maz:text-xl',
 }
 </script>
 
 <template>
   <div
-    class="m-radio-buttons m-reset-css"
+    class="m-radio-buttons m-reset-css maz:inline-flex maz:flex-col maz:gap-1 maz:align-top"
+    :class="{ 'maz:w-full': block }"
   >
-    <div class="m-radio-buttons__wrapper" :class="[`--${orientation}`, { '--wrap': wrap, '--block': block }]">
+    <div
+      class="m-radio-buttons__wrapper maz:inline-flex maz:gap-2"
+      :class="[
+        `--${orientation}`,
+        orientation === 'row' ? 'maz:flex-row' : 'maz:flex-col',
+        { '--wrap': wrap, 'maz:flex-wrap': wrap, '--block': block },
+      ]"
+    >
       <label
         v-for="(option, i) in options"
         :key="getOptionId(option, i)"
         :for="getOptionId(option, i)"
-        class="m-radio-buttons__items maz-group"
+        class="m-radio-buttons__items maz:group maz:flex maz:cursor-pointer maz:items-center maz:gap-4 maz:rounded-md maz:border
+        maz:border-divider maz:bg-surface maz:px-4 maz:py-2 maz:font-medium maz:transition-colors maz:duration-300"
         :class="[
           `--size-${size}`,
+          SIZE_CLASS[size],
           {
             '--is-selected': isSelected(option.value),
-            '--elevation': elevation,
+            'maz:shadow-elevation maz:drop-shadow-md': elevation,
             '--equal-size': equalSize,
           },
           option.classes,
         ]"
-        tabindex="0"
         :style="[
           isSelected(option.value)
             ? {
-              color: `hsl(var(--maz-${getColor(color)}-foreground))`,
-              backgroundColor: `hsl(var(--maz-${getColor(color)}))`,
-              borderColor: `hsl(var(--maz-${getColor(color)}))`,
+              color: `var(--maz-${getColor(color)}-foreground)`,
+              backgroundColor: `var(--maz-${getColor(color)})`,
+              borderColor: `var(--maz-${getColor(color)})`,
             }
             : {},
           option.style,
         ]"
-        role="radio"
-        :aria-checked="isSelected(option.value)"
-        @keydown="keyboardHandler($event, option)"
-        @blur="onBlur(i, $event)"
-        @focus="onFocus(i, $event)"
       >
         <input
           :id="getOptionId(option, i)"
-          ref="inputRef"
           type="radio"
-          tabindex="-1"
           :name="name"
           :value="option.value"
-          class="maz-hidden"
+          :checked="isSelected(option.value)"
+          class="maz:sr-only"
           @change="selectOption(option)"
+          @blur="onBlur($event)"
+          @focus="onFocus($event)"
         >
-        <div v-if="selector" class="m-radio-buttons__items__checkbox">
+        <div v-if="selector" class="m-radio-buttons__items__checkbox maz:flex maz:flex-center">
           <span
+            class="maz:flex maz:size-6 maz:flex-none maz:flex-center maz:rounded-full maz:border maz:border-divider maz:bg-input maz:p-0.5 maz:text-white maz:transition-colors maz:duration-300"
             :class="{
               '--is-selected': isSelected(option.value),
             }"
             :style="[
               isSelected(option.value)
                 ? {
-                  backgroundColor: `hsl(var(--maz-${getColor(props.color)}-600))`,
-                  color: `hsl(var(--maz-${getColor(props.color)}-foreground))`,
+                  backgroundColor: `oklch(from var(--maz-${getColor(color)}) clamp(0, calc(l - 0.05), 1) c h)`,
+                  color: `var(--maz-${getColor(color)}-foreground)`,
                 }
                 : {},
             ]"
           >
             <Transition name="maz-radio-buttons-scale">
-              <MazCheck v-show="isSelected(option.value)" class="maz-size-full" />
+              <MazIcon v-show="isSelected(option.value)" :icon="MazCheck" class="maz:size-full" />
             </Transition>
           </span>
         </div>
@@ -202,111 +213,47 @@ function onFocus(index: number, event: FocusEvent) {
     </div>
     <span
       v-if="hint"
-      class="m-radio-buttons__hint" :class="{
+      class="m-radio-buttons__hint maz:text-sm" :class="{
         '--error': error,
         '--success': success,
         '--warning': warning,
+        'maz:text-destructive-600': error,
+        'maz:text-success-600': success,
+        'maz:text-warning-600': warning,
+        'maz:text-muted': !error && !success && !warning,
       }"
     >{{ hint }}</span>
   </div>
 </template>
 
 <style scoped>
-  .m-radio-buttons {
-  @apply maz-inline-flex maz-gap-1 maz-align-top maz-flex-col;
+@reference "../tailwindcss/tailwind.css";
 
-  &__wrapper {
-    @apply maz-inline-flex maz-gap-2;
-
-    &.--wrap {
-      @apply maz-flex-wrap;
-    }
-
-    &.--row {
-      @apply maz-flex-row;
-    }
-
-    &.--col {
-      @apply maz-flex-col;
-    }
+.m-radio-buttons__items {
+  &.--equal-size {
+    @apply maz:flex-1;
   }
 
-  &.--block {
-    @apply maz-w-full;
+  &:not(.--is-selected) {
+    @apply maz:hover:bg-surface-600 maz:dark:hover:bg-surface-400;
   }
 
-  &__items {
-    @apply maz-flex maz-cursor-pointer maz-gap-4 maz-rounded maz-border maz-border-divider
-        maz-bg-surface maz-px-4 maz-py-2 maz-font-medium maz-transition-colors maz-duration-300 maz-items-center;
+  &:has(input:focus-visible) {
+    outline: var(--maz-border-width) solid var(--maz-primary);
+    outline-offset: 2px;
+  }
+}
 
-    &.--size-mini {
-      @apply maz-px-1 maz-min-h-6 maz-text-xs;
-    }
+.m-radio-buttons__items__checkbox {
+  span {
+    transition: border-color 0s;
 
-    &.--size-xs {
-      @apply maz-px-2 maz-min-h-8 maz-text-xs;
-    }
-
-    &.--size-sm {
-      @apply maz-px-3 maz-min-h-10 maz-text-sm;
-    }
-
-    &.--size-md {
-      @apply maz-px-4 maz-min-h-12;
-    }
-
-    &.--size-lg {
-      @apply maz-px-5 maz-min-h-14 maz-text-lg;
-    }
-
-    &.--size-xl {
-      @apply maz-px-6 maz-min-h-16 maz-text-xl;
-    }
-
-    &.--elevation {
-      @apply maz-drop-shadow-md maz-shadow-elevation;
-    }
-
-    &__checkbox {
-      @apply maz-flex maz-flex-center;
-
-      span {
-        @apply maz-flex maz-h-6 maz-w-6 maz-flex-none maz-rounded-full maz-border maz-border-divider maz-p-0.5 maz-text-white maz-transition-colors maz-duration-300 maz-flex-center maz-bg-surface dark:maz-bg-surface-400;
-
-        transition: border-color 0s;
-
-        &.--is-selected {
-          @apply maz-border-transparent;
-        }
-
-        &:not(.--is-selected) {
-          @apply group-hover:maz-bg-surface;
-        }
-      }
-    }
-
-    &.--equal-size {
-      @apply maz-flex-1;
+    &.--is-selected {
+      @apply maz:border-transparent;
     }
 
     &:not(.--is-selected) {
-      @apply hover:maz-bg-surface-600 dark:hover:maz-bg-surface-400;
-    }
-  }
-
-  &__hint {
-    @apply maz-text-sm maz-text-muted;
-
-    &.--error {
-      @apply maz-text-destructive-600;
-    }
-
-    &.--success {
-      @apply maz-text-success-600;
-    }
-
-    &.--warning {
-      @apply maz-text-warning-600;
+      @apply maz:group-hover:bg-surface;
     }
   }
 }

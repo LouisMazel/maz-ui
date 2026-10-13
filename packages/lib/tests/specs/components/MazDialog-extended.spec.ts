@@ -100,7 +100,7 @@ describe('MazDialog extended coverage', () => {
       await vi.dynamicImportSettled()
       // In persistent mode, MazBtn close button should not exist
       const mazBtns = wrapper.findAllComponents({ name: 'MazBtn' })
-      expect(mazBtns.length).toBe(0)
+      expect(mazBtns).toHaveLength(0)
     })
 
     it('should pass persistent prop to MazBackdrop', () => {
@@ -115,7 +115,7 @@ describe('MazDialog extended coverage', () => {
       const wrapper = getWrapper({ modelValue: true, hideCloseButton: true })
       await vi.dynamicImportSettled()
       const mazBtns = wrapper.findAllComponents({ name: 'MazBtn' })
-      expect(mazBtns.length).toBe(0)
+      expect(mazBtns).toHaveLength(0)
     })
   })
 
@@ -124,7 +124,7 @@ describe('MazDialog extended coverage', () => {
       const wrapper = getWrapper({ modelValue: true, hideCloseButton: false, persistent: false })
       await vi.dynamicImportSettled()
       const mazBtns = wrapper.findAllComponents({ name: 'MazBtn' })
-      expect(mazBtns.length).toBe(1)
+      expect(mazBtns).toHaveLength(1)
     })
   })
 
@@ -153,12 +153,12 @@ describe('MazDialog extended coverage', () => {
   })
 
   describe('when using default maxWidth and minWidth', () => {
-    it('should set default CSS variables', () => {
+    it('should fall back to the theme preset CSS variables', () => {
       const wrapper = getWrapper({ modelValue: true })
       const dialog = wrapper.find('.m-dialog')
       const style = dialog.attributes('style')
-      expect(style).toContain('--max-width: 100%')
-      expect(style).toContain('--min-width: 32rem')
+      expect(style).toContain('--max-width: var(--maz-dialog-max-width, 38rem)')
+      expect(style).toContain('--min-width: var(--maz-dialog-min-width, 32rem)')
     })
   })
 

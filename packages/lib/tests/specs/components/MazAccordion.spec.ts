@@ -35,6 +35,25 @@ describe('mazAccordion', () => {
     expect(steps[1].text()).toContain('Step 2 Title')
   })
 
+  it('links each header to its own panel via aria-controls', async () => {
+    const wrapper = mount(MazAccordion, {
+      slots: {
+        'title-1': 'Step 1 Title',
+        'content-1': 'Step 1 Content',
+      },
+    })
+
+    await wrapper.vm.$nextTick()
+
+    const button = wrapper.find('button')
+    const controls = button.attributes('aria-controls')
+
+    expect(controls).toBeTruthy()
+    expect(controls).not.toBe(button.attributes('id'))
+    expect(wrapper.find(`#${controls}`).exists()).toBe(true)
+    expect(button.attributes('aria-expanded')).toBe('false')
+  })
+
   it('emits the correct step when a step is selected', async () => {
     const wrapper = mount(MazAccordion, {
       slots: {

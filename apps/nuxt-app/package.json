@@ -4,24 +4,30 @@
   "private": true,
   "scripts": {
     "dev": "nuxi dev",
-    "nuxt-app:build": "nuxi build",
+    "build:only": "nuxi build",
     "preview": "nuxi preview",
-    "postinstall": "nuxi prepare",
     "lint": "pnpm lint:js && pnpm lint:style",
     "lint:js": "cross-env NODE_ENV=production eslint --fix .",
     "lint:style": "stylelint --fix \"**/*.{vue,css,scss,postcss,pcss}\"",
-    "type-check": "nuxi typecheck"
+    "types:check": "nuxi typecheck"
   },
   "dependencies": {
-    "@maz-ui/nuxt": "workspace:*"
+    "@maz-ui/icons": "workspace:*",
+    "@maz-ui/nuxt": "workspace:*",
+    "@maz-ui/utils": "workspace:*",
+    "maz-ui": "workspace:*",
+    "valibot": "^1.5.0"
   },
   "devDependencies": {
+    "@maz-ui/stylelint-config": "workspace:*",
+    "@maz-ui/vite-config": "workspace:*",
     "@nuxt/devtools": "^3.2.3",
-    "@nuxtjs/tailwindcss": "^6.14.0",
-    "autoprefixer": "^10.5.0",
-    "nuxt": "^4.4.2",
-    "tailwindcss": "^3.4.17",
-    "vue-router": "^5.0.4"
+    "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "nuxt": "^4.5.2",
+    "postcss-nested": "^8.0.1",
+    "tailwindcss": "^4.3.3",
+    "vue-router": "^5.3.1"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix",

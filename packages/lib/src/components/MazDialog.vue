@@ -6,7 +6,7 @@ import type {
 } from 'vue'
 import type { MazBackdropProps } from './MazBackdrop.vue'
 
-import { MazXMark } from '@maz-ui/icons/static/MazXMark'
+import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 import {
   computed,
   defineAsyncComponent,
@@ -26,8 +26,8 @@ defineOptions({
 
 const {
   modelValue,
-  maxWidth = '100%',
-  minWidth = '32rem',
+  maxWidth = 'var(--maz-dialog-max-width, 38rem)',
+  minWidth = 'var(--maz-dialog-min-width, 32rem)',
   scrollable,
   closeOnEscape = true,
   ...backdropProps
@@ -51,9 +51,15 @@ export interface DialogProps {
   title?: string
   /** Remove the close button in header */
   hideCloseButton?: boolean
-  /** Modal's max-width */
+  /**
+   * Modal's max-width.
+   * @default Theme preset `components.dialog.max-width` via `var(--maz-dialog-max-width, 38rem)`
+   */
   maxWidth?: string
-  /** Modal's min-width */
+  /**
+   * Modal's min-width.
+   * @default Theme preset `components.dialog.min-width` via `var(--maz-dialog-min-width, 32rem)`
+   */
   minWidth?: string
   /**  Modal's content becomes scrollable - warning: a overflow is applied */
   scrollable?: boolean
@@ -119,11 +125,11 @@ if (scrollable) {
     @update:model-value="$emit('update:model-value', $event)"
   >
     <div
-      class="m-dialog"
+      class="m-dialog maz:flex maz:max-w-full maz:min-w-full maz:origin-center maz:touch-none maz:flex-col maz:rounded-md maz:bg-container maz:text-foreground maz:tab-s:my-8 maz:dark:border maz:dark:border-divider"
       role="dialog"
       aria-modal="true"
       :style="[{ '--max-width': maxWidth, '--min-width': minWidth }]"
-      :class="{ '--scrollable': scrollable }"
+      :class="{ '--scrollable': scrollable, 'maz:my-0 maz:max-h-[95vh]': scrollable }"
       v-bind="wrapperAttrs"
     >
       <!--
@@ -131,11 +137,11 @@ if (scrollable) {
           @binding {Function} close close function
       -->
       <slot name="header" :close>
-        <div class="m-dialog-header" :class="{ '--has-title': hasSlotContent(slots.title) || title }">
+        <div class="m-dialog-header maz:flex maz:items-baseline maz:ps-6 maz:pe-2 maz:pt-2 maz:pb-4" :class="[hasSlotContent(slots.title) || title ? '--has-title' : '', hasSlotContent(slots.title) || title ? 'maz:justify-between' : 'maz:justify-end']">
           <h2
             v-if="hasSlotContent(slots.title) || title"
             id="dialogTitle"
-            class="m-dialog-title"
+            class="m-dialog-title maz:my-0 maz:font-display maz:text-xl maz:font-semibold"
           >
             <!--
                 @slot Title slot in the header
@@ -154,14 +160,24 @@ if (scrollable) {
           />
         </div>
       </slot>
-      <div id="dialogDesc" ref="dialogContent" class="m-dialog-content" :class="{ '--bottom-padding': !hasFooter }">
+      <div
+        id="dialogDesc"
+        ref="dialogContent"
+        class="m-dialog-content maz:flex-1 maz:px-6"
+        :class="{
+          '--bottom-padding': !hasFooter,
+          'maz:pb-4': !hasFooter,
+          'maz:overflow-auto maz:border-t maz:border-divider maz:py-4': scrollable,
+          'maz:border-b': scrollable && hasFooter,
+        }"
+      >
         <!--
             @slot Default content
               @binding {Function} close close function
           -->
         <slot :close />
       </div>
-      <div v-if="hasFooter" class="m-dialog-footer">
+      <div v-if="hasFooter" class="m-dialog-footer maz:flex maz:items-center maz:justify-end maz:px-6 maz:py-4">
         <!--
             @slot Footer slot
               @binding {Function} close close function
@@ -173,52 +189,12 @@ if (scrollable) {
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-dialog {
-  @apply maz-flex maz-origin-center maz-flex-col maz-min-w-full maz-rounded maz-bg-surface maz-text-foreground dark:maz-border dark:maz-border-divider tab-s:maz-my-8 maz-max-w-full maz-touch-none;
-
-  @screen tab-s {
-    max-width: var(--max-width);
-    min-width: var(--min-width);
-  }
-
-  &-header {
-    @apply maz-flex maz-items-baseline maz-justify-end maz-ps-6 maz-pe-2 maz-pt-2 maz-pb-4;
-
-    &.--has-title {
-      @apply maz-justify-between;
-    }
-  }
-
-  &-title {
-    @apply maz-my-0 maz-text-xl maz-font-semibold;
-  }
-
-  &-footer {
-    @apply maz-flex maz-items-center maz-justify-end maz-px-6 maz-py-4;
-  }
-
-  &-content {
-    @apply maz-flex-1 maz-px-6;
-
-    &-icon {
-      flex: 0 0 auto;
-    }
-
-    &.--bottom-padding {
-      @apply maz-pb-4;
-    }
-  }
-
-  &.--scrollable {
-    @apply maz-max-h-[95vh] maz-my-0;
-
-    .m-dialog-content {
-      @apply maz-overflow-auto maz-border-t maz-border-divider maz-py-4;
-
-      &:not(.--bottom-padding) {
-        @apply maz-border-b;
-      }
-    }
+  @variant tab-s {
+    max-inline-size: var(--max-width);
+    min-inline-size: var(--min-width);
   }
 }
 </style>

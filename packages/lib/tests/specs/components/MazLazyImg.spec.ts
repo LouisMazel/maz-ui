@@ -223,4 +223,21 @@ describe('given MazLazyImg component', () => {
       expect(img.attributes('src')).toBe('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')
     })
   })
+
+  describe('when lifecycle handlers fire', () => {
+    it('then they emit the corresponding events with the element', () => {
+      const wrapper = mount(MazLazyImg)
+      const el = wrapper.find('picture').element
+
+      wrapper.vm.onIntersecting(el)
+      wrapper.vm.onLoading(el)
+      wrapper.vm.onLoaded(el)
+      wrapper.vm.onError(el)
+
+      expect(wrapper.emitted('intersecting')).toEqual([[el]])
+      expect(wrapper.emitted('loading')).toEqual([[el]])
+      expect(wrapper.emitted('loaded')).toEqual([[el]])
+      expect(wrapper.emitted('error')).toEqual([[el]])
+    })
+  })
 })

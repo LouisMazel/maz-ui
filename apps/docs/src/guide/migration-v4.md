@@ -13,7 +13,7 @@ Performance has also been significantly improved thanks to optimal tree-shaking,
 
 ::: tip Connected to Maz-UI MCP
 
-Follow the [MCP](/guide/mcp) guide to connect your AI assistant to Maz-UI's documentation for a smooth migration process.
+Follow the [MCP](/ecosystem/mcp) guide to connect your AI assistant to Maz-UI's documentation for a smooth migration process.
 
 :::
 
@@ -40,6 +40,10 @@ v4.0.0 isn't just an update, it's a **complete rebuild** that transforms Maz-UI 
 - **Predefined presets**: `mazUi`, `obsidian`, `ocean`, `pristine`
 - **Dynamic CSS Variables**: Automatic CSS variable generation
 - **Intelligent dark mode**: Configurable strategies for dark mode based on system preferences and user choice stored in cookies
+
+::: tip Theming further evolved in v5
+The theme system has been rewritten on top of native `light-dark()` + `color-scheme` + `color-mix(in oklch)` in v5. If you are upgrading past v4, see the dedicated [v5 migration guide](./migration-v5.md#theming-native-css-rewrite-new-non-breaking-by-default) for the full theming changes (new `lightClass`, `Promise<void>` returns, removed JS helpers).
+:::
 
 #### Complete Internationalization
 
@@ -105,7 +109,7 @@ npm uninstall dropzone
 ```typescript
 // main.ts
 import { createApp } from 'vue'
-import 'maz-ui/css/main.css'
+import 'maz-ui/style.css'
 import App from './App.vue'
 
 createApp(App).mount('#app')
@@ -121,7 +125,7 @@ import { mazUi } from '@maz-ui/themes/presets'
 import { fr } from '@maz-ui/translations'
 
 // Import styles before your CSS
-import 'maz-ui/styles'
+import 'maz-ui/style.css'
 import './style.css'
 
 import App from './App.vue'
@@ -173,7 +177,7 @@ export default defineNuxtConfig({
     // New configuration API
     theme: {
       preset: 'maz-ui',
-      strategy: 'hybrid',
+      strategy: 'runtime',
       darkModeStrategy: 'class',
     },
     translations: {
@@ -688,12 +692,12 @@ app.use(MazUi, {
 <script setup>
 import { useTheme } from 'maz-ui/composables'
 
-const { isDark, toggleDarkMode, setTheme } = useTheme()
+const { isDark, toggleDarkMode, updateTheme } = useTheme()
 
 // Change theme
-setTheme('ocean')
+updateTheme('ocean')
 
-// Toggle dark mode
+// Toggle dark mode (v5: returns Promise<void>, optional { animate } param)
 toggleDarkMode()
 </script>
 
@@ -704,7 +708,7 @@ toggleDarkMode()
 </template>
 ```
 
-**📖 Complete documentation:** [Theme Guide](/guide/themes)
+**📖 Complete documentation:** [Theme Guide](/ecosystem/themes)
 
 ## Translation System
 
@@ -744,7 +748,7 @@ setLocale('fr')
 </template>
 ```
 
-**📖 Complete documentation:** [Translation Guide](/guide/translations)
+**📖 Complete documentation:** [Translation Guide](/ecosystem/translations)
 
 ## Common Errors and Solutions
 
@@ -901,10 +905,10 @@ app.use(MazUi)
 ## Additional Resources
 
 - **[Official v4 Documentation](https://maz-ui.com)** - Complete documentation
-- **[Theme Guide](/guide/themes)** - Advanced theme system
-- **[Translation Guide](/guide/translations)** - Internationalization
+- **[Theme Guide](/ecosystem/themes)** - Advanced theme system
+- **[Translation Guide](/ecosystem/translations)** - Internationalization
 - **[Vue Installation Guide](/guide/vue)** - Vue setup
-- **[Nuxt Installation Guide](/guide/nuxt)** - Nuxt setup
+- **[Nuxt Installation Guide](/ecosystem/nuxt)** - Nuxt setup
 - **[Resolvers Guide](/guide/resolvers)** - Smart auto-imports
 - **[Complete Changelog](https://github.com/LouisMazel/maz-ui/blob/master/CHANGELOG.md)** - All changes
 

@@ -2,11 +2,15 @@
 import type { HTMLAttributes } from 'vue'
 import type { MazInputProps } from './MazInput.vue'
 import type { MazSize } from './types'
-import { MazMinus } from '@maz-ui/icons/static/MazMinus'
-import { MazPlus } from '@maz-ui/icons/static/MazPlus'
+import { MazMinus } from '@maz-ui/icons/raw/MazMinus'
+import { MazPlus } from '@maz-ui/icons/raw/MazPlus'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { throttle } from '@maz-ui/utils/helpers/throttle'
 import { computed, defineAsyncComponent } from 'vue'
 import { useInstanceUniqId } from '../composables'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
+import { SIZE_TEXT_CLASS } from './constants.ts'
+import MazIcon from './MazIcon.vue'
 import MazInput from './MazInput.vue'
 
 defineOptions({
@@ -22,7 +26,6 @@ const {
   max = Number.POSITIVE_INFINITY,
   min = Number.NEGATIVE_INFINITY,
   step = 1,
-  size = 'md',
   textCenter = true,
   inputmode = 'numeric',
   topLabel = undefined,
@@ -58,6 +61,9 @@ const emits = defineEmits<{
    */
   'change': [value: Event]
 }>()
+
+const { size } = useGlobalConfig<{ size: MazSize }>('MazInputNumber', { size: 'md' })
+const { t } = useTranslations()
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazInput',
@@ -223,34 +229,43 @@ function decrement() {
 
 const stateColor = computed(() => {
   if (error)
-    return '!maz-text-destructive-600'
+    return 'maz:text-destructive-600!'
   if (success)
-    return '!maz-text-success-600'
+    return 'maz:text-success-600!'
   if (warning)
-    return '!maz-text-warning-600'
+    return 'maz:text-warning-600!'
   return undefined
 })
 </script>
 
 <template>
   <div
-    class="m-input-number m-reset-css"
-    :class="[`m-input-number--${size}`, className, { '--block': block }]"
+    class="m-input-number m-reset-css maz:inline-flex maz:flex-col maz:gap-2"
+    :class="[`m-input-number--${size}`, SIZE_TEXT_CLASS[size], className, { '--block': block, 'maz:w-full': block }]"
     :style="style"
   >
     <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
-    <label v-if="topLabel" :for="instanceId" class="m-input-number__top-label" :class="stateColor">{{ topLabel }}</label>
+    <label
+      v-if="topLabel"
+      :for="instanceId"
+      class="m-input-number__top-label"
+      :style="{ fontWeight: 'var(--maz-input-top-label-font-weight, 600)' }"
+      :class="stateColor"
+    >
+      {{ topLabel }}
+    </label>
 
-    <div class="m-input-number__wrapper">
+    <div class="m-input-number__wrapper maz:flex maz:items-center maz:align-top">
       <MazBtn
         v-if="!hideButtons"
         color="transparent"
         :size
+        :aria-label="t('aria.decrement')"
         class="m-input-number__button m-input-number__decrement-button"
         :disabled="decrementDisabled || disabled"
         @click="decrement"
       >
-        <MazMinus class="m-input-number__button__icon" />
+        <MazIcon :icon="MazMinus" class="m-input-number__button__icon maz:text-base" />
       </MazBtn>
       <MazInput
         v-bind="{ ...$attrs, ...inputProps }"
@@ -282,87 +297,74 @@ const stateColor = computed(() => {
         v-if="!hideButtons"
         color="transparent"
         :size
+        :aria-label="t('aria.increment')"
         class="m-input-number__button m-input-number__increment-button"
         :disabled="incrementDisabled || disabled"
         @click="increment"
       >
-        <MazPlus class="m-input-number__button__icon" />
+        <MazIcon :icon="MazPlus" class="m-input-number__button__icon maz:text-base" />
       </MazBtn>
     </div>
   </div>
 </template>
 
 <style scoped>
-.m-input-number {
-  @apply maz-inline-flex maz-flex-col maz-gap-2;
+@reference "../tailwindcss/tailwind.css";
 
-  &__wrapper {
-    @apply maz-flex maz-items-center maz-align-top;
+.m-input-number__input {
+  &:not(.--no-buttons) :deep(.m-input-wrapper) {
+    @apply maz:z-1 maz:rounded-none!;
   }
 
-  &.--block {
-    @apply maz-w-full;
-  }
-
-  &__button {
-    &.m-btn {
-      &::before {
-        content: none !important;
-      }
-
-      &:first-child,
-      &:last-child {
-        @apply maz-border maz-border-divider;
-        @apply maz-px-3 maz-py-0;
-      }
-
-      &:first-child {
-        @apply !maz-rounded-r-none;
-
-        margin-right: calc(-1 * 2px);
-      }
-
-      &:last-child {
-        @apply !maz-rounded-l-none;
-
-        margin-left: calc(-1 * 2px);
-      }
+  &.--text-center {
+    &:deep(input) {
+      @apply maz:p-0 maz:text-center;
     }
 
-    &__icon {
-      @apply maz-text-base;
+    &:deep(.m-input-label) {
+      @apply maz:text-center! maz:w-full! maz:p-0! maz:inset-s-0!;
+    }
+
+    &.--should-up:deep(.m-input-label) {
+      @apply maz:w-[calc(125%)]!;
     }
   }
 
-  &__input {
-    &:not(.--no-buttons) :deep(.m-input-wrapper) {
-      @apply maz-z-1 !maz-rounded-none;
+  /* Chrome, Safari, Edge, Opera */
+  &:deep(input::-webkit-outer-spin-button),
+  &:deep(input::-webkit-inner-spin-button) {
+    appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  &:deep(input[type='number']) {
+    appearance: textfield;
+  }
+}
+
+.m-input-number__button {
+  &.m-btn {
+    &::before {
+      content: none !important;
     }
 
-    &.--text-center {
-      &:deep(input) {
-        @apply maz-p-0 maz-text-center;
-      }
-
-      &:deep(.m-input-label) {
-        @apply !maz-text-center !maz-w-full !maz-p-0 !maz-start-0;
-      }
-
-      &.--should-up:deep(.m-input-label) {
-        @apply !maz-w-[calc(125%)];
-      }
+    &:first-child,
+    &:last-child {
+      @apply maz:border maz:border-divider;
+      @apply maz:px-3 maz:py-0;
     }
 
-    /* Chrome, Safari, Edge, Opera */
-    &:deep(input::-webkit-outer-spin-button),
-    &:deep(input::-webkit-inner-spin-button) {
-      appearance: none;
-      margin: 0;
+    &:first-child {
+      @apply maz:rounded-r-none!;
+
+      margin-inline-end: calc(-1 * 2px);
     }
 
-    /* Firefox */
-    &:deep(input[type='number']) {
-      appearance: textfield;
+    &:last-child {
+      @apply maz:rounded-l-none!;
+
+      margin-inline-start: calc(-1 * 2px);
     }
   }
 }

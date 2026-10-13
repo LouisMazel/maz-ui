@@ -11,19 +11,9 @@ const days = computed(() => getDaysOfWeek(props.locale, props.firstDayOfWeek))
 </script>
 
 <template>
-  <div class="maz-picker-calendar-days">
-    <span v-for="label in days" :key="label">
+  <div class="maz-picker-calendar-days maz:grid maz:grid-cols-7 maz:justify-between maz:gap-1 maz:text-center">
+    <span v-for="label in days" :key="label" class="maz:text-xs maz:text-muted">
       {{ label }}
     </span>
   </div>
 </template>
-
-<style scoped>
-  .maz-picker-calendar-days {
-  @apply maz-grid maz-grid-cols-7 maz-justify-between maz-gap-1 maz-text-center;
-
-  & span {
-    @apply maz-text-xs maz-text-muted;
-  }
-}
-</style>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { SVGAttributes } from 'vue'
-import type { MazColor } from './types'
+import type { MazColor, MazSizeUnit } from './types'
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useSlots } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
@@ -14,7 +14,7 @@ export interface MazCircularProgressBarProps {
    * The size of the progress bar
    * @default '10em' (equal 80px for a font-size of 16px)
    */
-  size?: string
+  size?: MazSizeUnit
   /**
    * Duration of the animation in milliseconds
    * @default 1000
@@ -125,6 +125,18 @@ const adjustedPercentage = computed<number>(() => {
 const currentColor = computed<MazColor | undefined>(() =>
   autoColor ? getStatusColor(adjustedPercentage.value) : color,
 )
+
+/* Gradient stops derived via OKLCh offsets (mirrors SCALE_OFFSETS: -400, -700). */
+const gradientStart = computed(() =>
+  currentColor.value
+    ? `oklch(from var(--maz-${currentColor.value}) clamp(0, calc(l + 0.06), 1) c h)`
+    : `var(--maz-primary)`,
+)
+const gradientEnd = computed(() =>
+  currentColor.value
+    ? `oklch(from var(--maz-${currentColor.value}) clamp(0, calc(l - 0.1), 1) c h)`
+    : `var(--maz-secondary)`,
+)
 function getStatusColor(percent: number) {
   if (percent < dangerPercentage || percent > 100)
     return 'destructive'
@@ -172,7 +184,7 @@ onBeforeUnmount(() => observer?.disconnect())
 
 <template>
   <div
-    class="m-circular-progress-bar m-reset-css"
+    class="m-circular-progress-bar m-reset-css maz:relative maz:inline-flex maz:size-[1em] maz:flex-center"
     :style="[
       {
         '--animation-duration': animationDuration,
@@ -184,8 +196,8 @@ onBeforeUnmount(() => observer?.disconnect())
       },
     ]"
   >
-    <div class="outer">
-      <div class="inner">
+    <div class="outer maz:flex maz:size-full maz:flex-center maz:rounded-full">
+      <div class="inner maz:flex maz:size-[0.85em] maz:flex-center maz:rounded-full">
         <span v-if="slots.default">
           <!-- @slot Default slot - Replace the percaentage value -->
           <slot />
@@ -217,6 +229,7 @@ onBeforeUnmount(() => observer?.disconnect())
       xmlns="http://www.w3.org/2000/svg"
       height="1em"
       width="1em"
+      class="maz:absolute maz:-rotate-90"
       :class="{
         animate: isVisible,
       }"
@@ -226,15 +239,11 @@ onBeforeUnmount(() => observer?.disconnect())
         <linearGradient :id="`${id}-gradient`" x1="0" x2="0" y1="1" y2="0">
           <stop
             offset="0%"
-            :stop-color="
-              currentColor ? `hsl(var(--maz-${currentColor}-400))` : `hsl(var(--maz-primary))`
-            "
+            :stop-color="gradientStart"
           />
           <stop
             offset="100%"
-            :stop-color="
-              currentColor ? `hsl(var(--maz-${currentColor}-700))` : `hsl(var(--maz-secondary))`
-            "
+            :stop-color="gradientEnd"
           />
         </linearGradient>
       </defs>
@@ -254,35 +263,23 @@ onBeforeUnmount(() => observer?.disconnect())
 </template>
 
 <style scoped>
+@reference "../tailwindcss/tailwind.css";
+
 .m-circular-progress-bar {
-  @apply maz-relative maz-inline-flex maz-h-[1em] maz-w-[1em] maz-flex-center;
-
-  .outer {
-    @apply maz-flex maz-h-full maz-w-full maz-rounded-full maz-flex-center;
+  .inner :deep(> *) {
+    @apply maz:text-[0.25em];
   }
 
-  .inner {
-    @apply maz-flex maz-h-[0.85em] maz-w-[0.85em] maz-rounded-full maz-flex-center;
-
-    :deep(> *) {
-      @apply maz-text-[0.25em];
-    }
+  svg circle {
+    will-change: stroke-dashoffset;
+    animation: animate linear forwards var(--animation-duration);
+    animation-delay: var(--delay);
   }
+}
 
-  svg {
-    @apply maz-absolute -maz-rotate-90;
-
-    circle {
-      will-change: stroke-dashoffset;
-      animation: animate linear forwards var(--animation-duration);
-      animation-delay: var(--delay);
-    }
-  }
-
-  @keyframes animate {
-    to {
-      stroke-dashoffset: var(--dashoffset);
-    }
+@keyframes animate {
+  to {
+    stroke-dashoffset: var(--dashoffset);
   }
 }
 </style>

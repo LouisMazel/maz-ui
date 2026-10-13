@@ -1,27 +1,23 @@
 import type { Theme } from 'vitepress'
 
-import type { Component } from 'vue'
-
-import { MazUiTheme } from '@maz-ui/themes/plugin'
+import { mazUi } from '@maz-ui/themes/presets/mazUi'
 import en from '@maz-ui/translations/locales/en'
-import { MazUiTranslations } from '@maz-ui/translations/plugin'
-import * as components from 'maz-ui/src/components/index.js'
-import { AosPlugin } from 'maz-ui/src/plugins/aos.js'
-import { DialogPlugin } from 'maz-ui/src/plugins/dialog.js'
-import { ToastPlugin } from 'maz-ui/src/plugins/toast.js'
-import { WaitPlugin } from 'maz-ui/src/plugins/wait.js'
+import * as components from 'maz-ui/components'
+import { MazUi } from 'maz-ui/plugins'
+import { AosPlugin } from 'maz-ui/plugins/aos'
+import { DialogPlugin } from 'maz-ui/plugins/dialog'
+
+import { ToastPlugin } from 'maz-ui/plugins/toast'
+import { WaitPlugin } from 'maz-ui/plugins/wait'
 
 import { inBrowser } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
-
 import { h, watch } from 'vue'
+
 import ComponentDemo from './components/ComponentDemo.vue'
 import Layout from './components/Layout.vue'
-
 import NpmBadge from './components/NpmBadge.vue'
-import 'maz-ui/src/plugins/aos/scss/index.scss'
-
-import 'maz-ui/styles'
+import UtilsCatalogue from './components/UtilsCatalogue.vue'
 import './main.css'
 
 export default {
@@ -32,18 +28,26 @@ export default {
     })
   },
   enhanceApp({ app, router: { route } }) {
-    app.use(MazUiTheme, {
-      darkModeStrategy: 'class',
-      strategy: 'hybrid',
-      injectCriticalCSS: false,
-      injectFullCSS: false,
-    })
-    app.use(MazUiTranslations, {
-      locale: 'en',
-      fallbackLocale: 'fr',
-      preloadFallback: false,
-      messages: {
-        en,
+    app.use(MazUi, {
+      defaults: {
+        global: {
+          // roundedSize: 'xl',
+          // size: 'sm'
+        },
+      },
+      theme: {
+        preset: mazUi,
+        darkModeStrategy: 'class',
+        strategy: 'runtime',
+        persistPreset: true,
+      },
+      translations: {
+        locale: 'en',
+        fallbackLocale: 'fr',
+        preloadFallback: false,
+        messages: {
+          en,
+        },
       },
     })
 
@@ -67,9 +71,10 @@ export default {
 
     app.component('NpmBadge', NpmBadge)
     app.component('ComponentDemo', ComponentDemo)
+    app.component('UtilsCatalogue', UtilsCatalogue)
 
     Object.entries(components).forEach(([componentName, component]) => {
-      app.component(componentName, component as Component)
+      app.component(componentName, component)
     })
 
     watch(

@@ -27,7 +27,7 @@ describe('given MazPickerMonthSwitcher component', () => {
       await vi.dynamicImportSettled()
 
       const monthButtons = wrapper.findAll('.maz-picker-month-switcher__main .m-btn')
-      expect(monthButtons.length).toBe(12)
+      expect(monthButtons).toHaveLength(12)
     })
 
     it('then it should render a close button in the header', async () => {
@@ -142,7 +142,7 @@ describe('given MazPickerMonthSwitcher component', () => {
       await vi.dynamicImportSettled()
 
       const selectedButtons = wrapper.findAll('.--is-selected')
-      expect(selectedButtons.length).toBe(1)
+      expect(selectedButtons).toHaveLength(1)
     })
 
     it('then the selected month button should have the color prop', async () => {
@@ -188,7 +188,7 @@ describe('given MazPickerMonthSwitcher component', () => {
 
       const emitted = wrapper.emitted('update:calendar-date')
       expect(emitted).toBeTruthy()
-      expect(emitted!.length).toBe(1)
+      expect(emitted!).toHaveLength(1)
     })
 
     it('then it should emit close event', async () => {

@@ -21,6 +21,7 @@ const logosDir = resolve(_dirname, '../logos')
 const outputIndex = resolve(_dirname, '../src/index.ts')
 const staticDir = resolve(_dirname, '../src/static')
 const lazyDir = resolve(_dirname, '../src/lazy')
+const rawDir = resolve(_dirname, '../src/raw')
 
 function replaceValuesInSvg(files: { file: string, name: string, path: string, dir: string }[]) {
   try {
@@ -211,6 +212,74 @@ ${exports}
   }
 }
 
+function generateRawIconFiles(files: { file: string, name: string, path: string }[]) {
+  try {
+    if (!existsSync(rawDir)) {
+      mkdirSync(rawDir, { recursive: true })
+    }
+
+    const reservedNames = getReservedNames()
+
+    for (const { file, name, path } of files) {
+      const iconName = toPascalCase(name)
+      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
+      const componentName = `Maz${finalName}`
+
+      const relativePath = path.startsWith('../') ? `../${path}` : `../../${path}`
+
+      const content = `/// <reference types="vite-svg-loader" />
+
+/**
+ * This file is generated automatically, do not manually modify it
+ */
+
+import _raw from '${relativePath}/${file}?raw'
+
+export const ${componentName}: string = _raw
+`
+
+      const outputPath = resolve(rawDir, `${componentName}.ts`)
+      writeFileSync(outputPath, content)
+    }
+
+    logger.success(`[ViteGenerateIconsComponentsEntry](generateRawIconFiles) ✅ ${files.length} raw icon files generated`)
+  }
+  catch (error) {
+    logger.error('[ViteGenerateIconsComponentsEntry](generateRawIconFiles) 🔴 error while generating raw icon files', error)
+
+    throw error
+  }
+}
+
+function generateRawIndex(files: { file: string, name: string, path: string }[]) {
+  try {
+    const reservedNames = getReservedNames()
+    const exports = files.map(({ name }) => {
+      const iconName = toPascalCase(name)
+      const finalName = reservedNames.includes(iconName) || reservedNames.includes(`Maz${iconName}`) || reservedNames.includes(`Maz${iconName}Icon`) ? `${iconName}Icon` : iconName
+      const componentName = `Maz${finalName}`
+      return `export { ${componentName} } from './${componentName}'`
+    }).sort((a, b) => a.localeCompare(b, undefined, { numeric: true })).join('\n')
+
+    const content = `/**
+ * This file is generated automatically, do not manually modify it
+ */
+
+${exports}
+`
+
+    const rawIndexPath = resolve(rawDir, 'index.ts')
+    writeFileSync(rawIndexPath, content)
+
+    logger.success('[ViteGenerateIconsComponentsEntry](generateRawIndex) ✅ raw index generated')
+  }
+  catch (error) {
+    logger.error('[ViteGenerateIconsComponentsEntry](generateRawIndex) 🔴 error while generating raw index', error)
+
+    throw error
+  }
+}
+
 function generateIconsComponentsEntry(files: { file: string, name: string, path: string }[]) {
   try {
     const reservedNames = getReservedNames()
@@ -323,6 +392,8 @@ export function ViteGenerateIconsComponentsEntry(): Plugin {
         generateStaticIndex(files)
         generateLazyIconFiles(files)
         generateLazyIndex(files)
+        generateRawIconFiles(files)
+        generateRawIndex(files)
         generateIconsComponentsEntry(files)
         generateIconList(files)
 

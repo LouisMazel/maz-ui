@@ -6,7 +6,7 @@ describe('MazInputPrice branch coverage', () => {
   describe('when mounted with default props', () => {
     it('should render', () => {
       const wrapper = mount(MazInputPrice)
-      expect(wrapper.find('.maz-input-price').exists()).toBe(true)
+      expect(wrapper.find('.maz\\:input-price').exists()).toBe(true)
       wrapper.unmount()
     })
   })
@@ -113,8 +113,7 @@ describe('MazInputPrice branch coverage', () => {
       const wrapper = mount(MazInputPrice, {
         props: { noIcon: true },
       })
-      // No left-icon should be rendered
-      expect(wrapper.find('.m-input-wrapper-left-icon').exists()).toBe(false)
+      expect(wrapper.find('.m-input-wrapper-start-icon').exists()).toBe(false)
       wrapper.unmount()
     })
   })

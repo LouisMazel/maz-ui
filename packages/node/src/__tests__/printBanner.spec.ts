@@ -50,7 +50,7 @@ describe('given printBanner function', () => {
     it('then only calls brand once for the banner text', () => {
       printBanner({ name: 'Test' })
       const brandCalls = brandSpy.mock.calls
-      expect(brandCalls.length).toBe(1)
+      expect(brandCalls).toHaveLength(1)
     })
   })
 
