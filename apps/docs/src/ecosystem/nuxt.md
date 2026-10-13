@@ -159,6 +159,9 @@ export default defineNuxtConfig({
       MazCard: { bordered: false, elevation: true },
     },
 
+    // Country flags of MazSelectCountry and MazInputPhoneNumber: 'cdn' (default), 'local' (offline) or '/flags/{code}.svg'
+    flags: 'local',
+
     // Plugins (not enabled by default)
     plugins: {
       aos: true,
@@ -288,6 +291,23 @@ const defaults = {
 ```
 
 See the [Global component defaults guide](/guide/global-defaults) for the full list of globalizable props.
+
+### Country Flags
+
+Source of the flags of `MazSelectCountry` and `MazInputPhoneNumber`. A `flag-src` set on a component wins.
+
+```ts
+export default defineNuxtConfig({
+  mazUi: {
+    // 'cdn' (default): flagcdn.com
+    // 'local': flags of @maz-ui/icons, one chunk per flag loaded when visible, no request to a third party
+    // '/flags/{code}.svg': your own files ({CODE} for uppercase codes)
+    flags: 'local',
+  },
+})
+```
+
+Nothing is added to your build unless `flags` is `'local'`. See [MazSelectCountry](/components/maz-select-country#flags-source) for the details (Content Security Policy, PWA precache).
 
 ## Theme Strategies Explained
 

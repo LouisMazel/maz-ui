@@ -63,7 +63,7 @@ export default defineNuxtConfig({
 
 ## `global` vs per-component
 
-- `defaults.global` holds **cross-cutting** props shared by many components: `roundedSize` and `size`. Set them once and every component that exposes them picks the value up.
+- `defaults.global` holds **cross-cutting** props shared by many components: `roundedSize`, `size` and `flagSrc`. Set them once and every component that exposes them picks the value up.
 - `defaults.<ComponentName>` holds **per-component** props (including booleans such as `bordered`, `elevation`, `padding`). A per-component entry always wins over `global`.
 
 ```ts
@@ -88,6 +88,7 @@ defaults: {
 | Prop | Type | Components |
 | --- | --- | --- |
 | `roundedSize` | `MazRoundedSize` (`'none' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'`) | `MazBtn`, `MazBtnGroup`, `MazContainer`, `MazInput`, `MazTextarea`, `MazTable`, `MazBadge`, `MazAlert`, `MazAvatar`, `MazSkeleton`, `MazTimeline` |
+| `flagSrc` | `MazCountryFlagSrc` (URL template or function, e.g. `loadCountryFlag` from `maz-ui/country-flags`) | `MazSelectCountry`, `MazInputPhoneNumber` (see [flags source](../components/maz-select-country.md#flags-source)) |
 | `size` | `MazSize` (`'mini' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`) | `MazBtn`, `MazBtnGroup`, `MazBadge`, `MazInput`, `MazSelect`, `MazSelectCountry`, `MazInputNumber`, `MazInputTags`, `MazInputPhoneNumber`, `MazCheckbox`, `MazRadio`, `MazRadioButtons`, `MazDropdown`, `MazPagination`, `MazTable`, `MazTimeline` |
 | `bordered`, `elevation`, `padding`, `transparent`, `overflowHidden` | `boolean` | `MazContainer` |
 | `bordered`, `elevation`, `padding`, `radius`, `scale`, `overflowHidden` | `boolean` | `MazCard` |
