@@ -48,7 +48,7 @@ export interface MazBadgeProps {
 
 const {
   color = 'primary',
-  nowrap = false,
+  nowrap = true,
   outlined = false,
   pastel = false,
 } = defineProps<MazBadgeProps>()
@@ -92,7 +92,7 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
 
 <template>
   <span
-    class="m-badge m-reset-css maz:inline-flex maz:flex-center maz:border maz:border-transparent maz:align-top maz:font-semibold"
+    class="m-badge m-reset-css maz:inline-flex maz:flex-center maz:border maz:border-transparent maz:text-center maz:align-top maz:font-semibold"
     :class="[
       `--${resolvedColor}`,
       `--${size}`,
@@ -102,7 +102,7 @@ const badgeStyle = computed<CSSProperties | undefined>(() => {
       {
         '--outlined': outlined,
         '--pastel': pastel,
-        '--nowrap': nowrap,
+        'maz:text-nowrap': nowrap,
         'maz:whitespace-nowrap': nowrap,
       },
     ]"
