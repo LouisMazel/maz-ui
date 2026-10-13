@@ -546,6 +546,45 @@ describe('nuxt module', () => {
       })
     })
 
+    describe('given the flags option', () => {
+      describe('when it is not set', () => {
+        it('then no flags plugin is added and no flag source is set', () => {
+          const { nuxt } = callSetup()
+
+          expect(config.defaults.flags).toBe('cdn')
+          expect(addPlugin).not.toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/local-flags'))
+          expect((nuxt.options.runtimeConfig.public.mazUi as any).defaults.global?.flagSrc).toBeUndefined()
+        })
+      })
+
+      describe('when it is local', () => {
+        it('then the local flags plugin replaces the defaults plugin', () => {
+          callSetup({ flags: 'local', defaults: { global: { size: 'lg' } } })
+
+          expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/local-flags'))
+          expect(addPlugin).not.toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/defaults'))
+        })
+      })
+
+      describe('when it is a URL template', () => {
+        it('then the template becomes the global flag source through the defaults plugin', () => {
+          const { nuxt } = callSetup({ flags: '/flags/{code}.svg', defaults: { global: { size: 'lg' } } })
+
+          expect((nuxt.options.runtimeConfig.public.mazUi as any).defaults.global).toEqual({ flagSrc: '/flags/{code}.svg', size: 'lg' })
+          expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/defaults'))
+          expect(addPlugin).not.toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/local-flags'))
+        })
+      })
+
+      describe('when a global flag source is also set in defaults', () => {
+        it('then the defaults value wins over the template', () => {
+          const { nuxt } = callSetup({ flags: '/flags/{code}.svg', defaults: { global: { flagSrc: '/mine/{CODE}.png' } } })
+
+          expect((nuxt.options.runtimeConfig.public.mazUi as any).defaults.global.flagSrc).toBe('/mine/{CODE}.png')
+        })
+      })
+    })
+
     describe('devtools', () => {
       it('should add devtools tab when devtools is true', () => {
         callSetup({ general: { devtools: true } })
