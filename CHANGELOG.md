@@ -1,5 +1,44 @@
 # Change Log
 
+## v5.0.0-beta.51 (2026-10-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.50...v5.0.0-beta.51)
+
+### 🚀 Features
+
+- **maz-ui:** Add flag-src prop to MazSelectCountry and MazInputPhoneNumber ([37c59edb](https://github.com/LouisMazel/maz-ui/commit/37c59edb))
+
+  The flags still come from the flagcdn.com CDN by default. The new `flag-src` prop changes their source:
+  - a URL template of your own files: `/flags/{code}.svg` (`{CODE}` for uppercase codes)
+  - a function giving the image source of a code (URL or data URL), called only when the flag becomes visible (`intersecting` of MazLazyImg)
+    Same path as the CDN (MazLazyImg, lazy), and the existing badge when a source is undefined, throws or fails to load. `flagSrc` is also a global default (`defaults.global.flagSrc` of the MazUi plugin), the prop wins. MazInputPhoneNumber passes it to its country select.
+    Closes #1196
+
+- **maz-ui:** Add loadCountryFlag in the maz-ui/country-flags entry ([ce0f0a94](https://github.com/LouisMazel/maz-ui/commit/ce0f0a94))
+
+  `loadCountryFlag(code)` gives the square flag of `@maz-ui/icons` as a data URL, for the `flag-src` prop: no request to a third party, works offline.
+  Its table is one dynamic import per flag (`@maz-ui/icons/raw/MazFlagSquareXX`), so the app bundler emits one chunk per flag and only the displayed flags are downloaded. Nothing in maz-ui imports this entry: an app that does not import it has no flag in its build. A test keeps the table in sync with the flags of @maz-ui/icons.
+
+- **@maz-ui/nuxt:** Add flags option for the country flags ([9d461e2f](https://github.com/LouisMazel/maz-ui/commit/9d461e2f))
+
+  `mazUi.flags`: 'cdn' (default), 'local' (loadCountryFlag of maz-ui/country-flags, imported on demand by a plugin added only with this value) or a URL template set as `defaults.global.flagSrc`.
+
+### 💅 Refactors
+
+- **maz-ui:** MazBadge - align text center ([337edc3b](https://github.com/LouisMazel/maz-ui/commit/337edc3b))
+
+### 📖 Documentation
+
+- **docs:** Document the flags source of MazSelectCountry and MazInputPhoneNumber ([9428e11b](https://github.com/LouisMazel/maz-ui/commit/9428e11b))
+
+### 🧪 Tests
+
+- **maz-ui:** MazBadge - no wrap class ([5b9c33f0](https://github.com/LouisMazel/maz-ui/commit/5b9c33f0))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.50 (2026-10-09)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.49...v5.0.0-beta.50)

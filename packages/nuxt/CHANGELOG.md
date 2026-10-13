@@ -1,5 +1,19 @@
 # Change Log
 
+## v5.0.0-beta.51 (2026-10-13)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.50...v5.0.0-beta.51)
+
+### 🚀 Features
+
+- **@maz-ui/nuxt:** Add flags option for the country flags ([9d461e2f](https://github.com/LouisMazel/maz-ui/commit/9d461e2f))
+
+  `mazUi.flags`: 'cdn' (default), 'local' (loadCountryFlag of maz-ui/country-flags, imported on demand by a plugin added only with this value) or a URL template set as `defaults.global.flagSrc`.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0-beta.50 (2026-10-09)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0-beta.49...v5.0.0-beta.50)
