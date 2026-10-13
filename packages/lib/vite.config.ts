@@ -81,6 +81,7 @@ export default defineConfig(({ mode }) => {
           'directives/index': resolver('src/directives/index.ts'),
           'resolvers/index': resolver('src/resolvers/index.ts'),
           'tailwindcss/index': resolver('src/tailwindcss/index.ts'),
+          'country-flags': resolver('src/utils/country-flags.ts'),
         },
         formats: ['es'],
         fileName: (_, name) => `${name}.js`,
