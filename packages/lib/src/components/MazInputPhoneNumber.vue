@@ -5,7 +5,7 @@ import type { CountryCallingCode, CountryCode, NationalNumber, NumberType } from
 import type { HTMLAttributes } from 'vue'
 import type { MazPopoverProps } from './MazPopover.vue'
 
-import type { MazColor, MazSize } from './types'
+import type { MazColor, MazCountryFlagSrc, MazSize } from './types'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import {
   computed,
@@ -237,6 +237,14 @@ export interface MazInputPhoneNumberProps {
    */
   hideFlags?: boolean
   /**
+   * Source of the flags, instead of the flagcdn.com CDN: a URL template (`/flags/{code}.svg`, `{CODE}` for uppercase)
+   * or a function giving the image source of a code. Use `loadCountryFlag` from `maz-ui/country-flags` for the flags of `@maz-ui/icons`.
+   * Can be set for the whole app with the `defaults.global.flagSrc` option of the MazUi plugin.
+   * @type {MazCountryFlagSrc}
+   * @default undefined (flags from flagcdn.com)
+   */
+  flagSrc?: MazCountryFlagSrc
+  /**
    * Make the input disabled
    * @default false
    */
@@ -374,7 +382,7 @@ const instanceId = useInstanceUniqId({
   providedId: id,
 })
 
-const { size } = useGlobalConfig<{ size: MazSize }>('MazInputPhoneNumber', { size: 'md' })
+const { size, flagSrc } = useGlobalConfig<{ size: MazSize, flagSrc: MazCountryFlagSrc | undefined }>('MazInputPhoneNumber', { size: 'md', flagSrc: undefined })
 
 /** Models */
 
@@ -694,6 +702,7 @@ provide<MazInputPhoneNumberInjectedData>('mazInputPhoneNumberData', {
         :countries-list="customCountriesList"
         :list-position
         :hide-flags
+        :flag-src="flagSrc"
         :search
         :block
         :error="error || (validationError ? !!phoneNumber && !selectedCountry : false)"

@@ -204,6 +204,11 @@ Customize what information is shown to users.
       assistive-text="Text-only country selection"
       hide-flags
     />
+    <MazInputPhoneNumber
+      top-label="Flags of maz-ui"
+      assistive-text="No request to flagcdn.com, works offline"
+      :flag-src="loadCountryFlag"
+    />
   </div>
 
 <template #code>
@@ -224,11 +229,35 @@ Customize what information is shown to users.
 
   <!-- Hide country flags -->
   <MazInputPhoneNumber hide-flags />
+
+  <!-- Flags of maz-ui, no request to flagcdn.com: import { loadCountryFlag } from 'maz-ui/country-flags' -->
+  <MazInputPhoneNumber :flag-src="loadCountryFlag" />
+
+  <!-- Your own files: public/flags/fr.svg... -->
+  <MazInputPhoneNumber flag-src="/flags/{code}.svg" />
 </template>
 ```
 
 </template>
 </ComponentDemo>
+
+### Flags source
+
+By default, the flags come from the [flagcdn.com](https://flagcdn.com) CDN. The `flag-src` prop, passed to the country selector, takes:
+
+- `loadCountryFlag` from `maz-ui/country-flags`: the flags of `@maz-ui/icons`, without any request to a third party, offline (hybrid apps with Capacitor or Cordova, PWAs);
+- a URL template of your own files: `'/flags/{code}.svg'` (`{CODE}` for uppercase codes);
+- your own function: `(code) => string | undefined | Promise<string | undefined>`.
+
+Each flag is loaded only when visible, and a code without flag displays a badge. Set it once for the whole app with `defaults.global.flagSrc` of the MazUi plugin, or `mazUi.flags` of the Nuxt module (`'local'` or a URL template):
+
+```ts
+import { loadCountryFlag } from 'maz-ui/country-flags'
+
+app.use(MazUi, { theme: { preset: mazUi }, defaults: { global: { flagSrc: loadCountryFlag } } })
+```
+
+See [MazSelectCountry](./maz-select-country.md#flags-source) for the details (bundle, Content Security Policy, PWA precache).
 
 ## Smart Country Detection
 
@@ -886,6 +915,7 @@ interface MazInputPhoneNumberData {
 <!--@include: ./../../.vitepress/generated-docs/maz-input-phone-number.doc.md-->
 
 <script setup lang="ts">
+  import { loadCountryFlag } from 'maz-ui/country-flags'
   import { ref } from 'vue'
 
   // Basic usage

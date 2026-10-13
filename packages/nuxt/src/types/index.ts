@@ -75,6 +75,19 @@ export interface MazUiNuxtOptions {
   defaults?: MazUiDefaultsOptions
 
   /**
+   * Source of the country flags of `MazSelectCountry` and `MazInputPhoneNumber`
+   * @description
+   * - `'cdn'`: images of the flagcdn.com CDN
+   * - `'local'`: square flags of `@maz-ui/icons`, one chunk per flag, loaded only when visible, without any request to a third party (works offline)
+   * - a URL template of your own files, with `{code}` (lowercase) or `{CODE}` (uppercase): `'/flags/{code}.svg'`
+   *
+   * Sets the default of the `flag-src` prop (`defaults.global.flagSrc`): a `flag-src` set on a component wins.
+   * Nothing is added to the build of the app unless this option is `'local'`.
+   * @default 'cdn'
+   */
+  flags?: 'cdn' | 'local' | (string & {})
+
+  /**
    * CSS and styles configuration
    */
   css?: {

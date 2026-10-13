@@ -1,6 +1,6 @@
 import type { MazSelectCountryProps } from '@/components/MazSelectCountry.vue'
 import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
-import { mount, shallowMount } from '@vue/test-utils'
+import { flushPromises, mount, shallowMount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import MazLazyImg from '@/components/MazLazyImg.vue'
 import MazSelectCountry from '@/components/MazSelectCountry.vue'
@@ -714,6 +714,174 @@ describe('given a MazUi global default for size', () => {
       })
 
       expect(wrapper.findComponent({ name: 'MazSelect' }).props('size')).toBe('sm')
+    })
+  })
+})
+
+describe('given the flagSrc prop', () => {
+  const EMPTY_IMAGE = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+  const listOptions = [{ code: 'XX', name: 'Nowhere' }]
+
+  async function mountSelect(props: Partial<MazSelectCountryProps>, provide?: Record<symbol, unknown>) {
+    const wrapper = mount(MazSelectCountry, {
+      props,
+      global: { stubs: { teleport: true }, provide },
+    })
+
+    await vi.dynamicImportSettled()
+
+    return wrapper
+  }
+
+  async function makeFlagVisible(wrapper: Awaited<ReturnType<typeof mountSelect>>) {
+    const image = wrapper.findComponent(MazLazyImg)
+
+    image.vm.$emit('intersecting', image.element)
+    await flushPromises()
+  }
+
+  describe('when it is a URL template with {code}', () => {
+    it('then the selector flag uses the lowercase code, without the CDN', async () => {
+      const wrapper = await mountSelect({ modelValue: 'FR', flagSrc: '/flags/{code}.svg' })
+
+      expect(wrapper.findComponent(MazLazyImg).props('src')).toBe('/flags/fr.svg')
+      expect(wrapper.html()).not.toContain('flagcdn.com')
+    })
+  })
+
+  describe('when it is a URL template with {CODE}', () => {
+    it('then the selector flag uses the uppercase code', async () => {
+      const wrapper = await mountSelect({ modelValue: 'fr', flagSrc: '/flags/{CODE}.png' })
+
+      expect(wrapper.findComponent(MazLazyImg).props('src')).toBe('/flags/FR.png')
+    })
+  })
+
+  describe('when it is a function and the flag is not visible yet', () => {
+    it('then the function is not called and the image waits on an empty source', async () => {
+      const flagSrc = vi.fn(() => '/flags/fr.svg')
+      const wrapper = await mountSelect({ modelValue: 'FR', flagSrc })
+
+      expect(flagSrc).not.toHaveBeenCalled()
+      expect(wrapper.findComponent(MazLazyImg).props('src')).toBe(EMPTY_IMAGE)
+    })
+  })
+
+  describe('when it is a function and the flag becomes visible', () => {
+    it('then the function is called once and its source is used', async () => {
+      const flagSrc = vi.fn((code: string) => Promise.resolve(`data:image/svg+xml,${code}`))
+      const wrapper = await mountSelect({ modelValue: 'FR', flagSrc })
+
+      await makeFlagVisible(wrapper)
+      await makeFlagVisible(wrapper)
+
+      expect(flagSrc).toHaveBeenCalledTimes(1)
+      expect(flagSrc).toHaveBeenCalledWith('FR')
+      expect(wrapper.findComponent(MazLazyImg).props('src')).toBe('data:image/svg+xml,FR')
+    })
+  })
+
+  describe('when the function gives no source for a listed country', () => {
+    it('then the list displays the code in a badge', async () => {
+      const wrapper = await mountSelect({ options: listOptions, open: true, flagSrc: () => Promise.resolve(undefined) })
+
+      await makeFlagVisible(wrapper)
+
+      expect(wrapper.findComponent(MazLazyImg).exists()).toBe(false)
+      expect(wrapper.find('.m-select-country__select__item__list-flag').text()).toBe('XX')
+    })
+  })
+
+  describe('when the function throws', () => {
+    it('then the list displays the code in a badge', async () => {
+      const wrapper = await mountSelect({
+        options: listOptions,
+        open: true,
+        flagSrc: () => {
+          throw new Error('no flag')
+        },
+      })
+
+      await makeFlagVisible(wrapper)
+
+      expect(wrapper.find('.m-select-country__select__item__list-flag').text()).toBe('XX')
+    })
+  })
+
+  describe('when the image of a template is in error', () => {
+    it('then the list displays the code in a badge', async () => {
+      const wrapper = await mountSelect({ options: listOptions, open: true, flagSrc: '/flags/{code}.svg' })
+      const image = wrapper.findComponent(MazLazyImg)
+
+      image.vm.$emit('error', image.element)
+      await flushPromises()
+
+      expect(wrapper.findComponent(MazLazyImg).exists()).toBe(false)
+      expect(wrapper.find('.m-select-country__select__item__list-flag').text()).toBe('XX')
+    })
+  })
+
+  describe('when the image of a function is still waiting', () => {
+    it('then an error of the empty image is ignored', async () => {
+      const wrapper = await mountSelect({ modelValue: 'FR', flagSrc: () => '/flags/fr.svg' })
+      const image = wrapper.findComponent(MazLazyImg)
+
+      image.vm.$emit('error', image.element)
+      await flushPromises()
+
+      expect(wrapper.findComponent(MazLazyImg).props('src')).toBe(EMPTY_IMAGE)
+    })
+  })
+})
+
+describe('given no flagSrc', () => {
+  describe('when the CDN flag becomes visible or is in error', () => {
+    it('then the CDN source is kept as before', async () => {
+      const wrapper = mount(MazSelectCountry, { props: { modelValue: 'FR' }, global: { stubs: { teleport: true } } })
+      await vi.dynamicImportSettled()
+      const image = wrapper.findComponent(MazLazyImg)
+
+      image.vm.$emit('intersecting', image.element)
+      image.vm.$emit('error', image.element)
+      await flushPromises()
+
+      expect(wrapper.findComponent(MazLazyImg).props('src')).toBe('https://flagcdn.com/h20/fr.png')
+    })
+  })
+})
+
+describe('given a global flagSrc in the MazUi defaults', () => {
+  function mountWithDefaults(defaults: unknown, props: Partial<MazSelectCountryProps> = {}) {
+    return mount(MazSelectCountry, {
+      props: { modelValue: 'FR', ...props },
+      global: { stubs: { teleport: true }, provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: defaults } },
+    })
+  }
+
+  describe('when no flagSrc prop is passed', () => {
+    it('then the global source is used', async () => {
+      const wrapper = mountWithDefaults({ global: { flagSrc: '/global/{code}.svg' } })
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.findComponent(MazLazyImg).props('src')).toBe('/global/fr.svg')
+    })
+  })
+
+  describe('when a component-scoped flagSrc is set', () => {
+    it('then it wins over the global one', async () => {
+      const wrapper = mountWithDefaults({ global: { flagSrc: '/global/{code}.svg' }, MazSelectCountry: { flagSrc: '/select/{code}.svg' } })
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.findComponent(MazLazyImg).props('src')).toBe('/select/fr.svg')
+    })
+  })
+
+  describe('when a flagSrc prop is passed', () => {
+    it('then the prop wins over the defaults', async () => {
+      const wrapper = mountWithDefaults({ global: { flagSrc: '/global/{code}.svg' } }, { flagSrc: '/prop/{code}.svg' })
+      await vi.dynamicImportSettled()
+
+      expect(wrapper.findComponent(MazLazyImg).props('src')).toBe('/prop/fr.svg')
     })
   })
 })

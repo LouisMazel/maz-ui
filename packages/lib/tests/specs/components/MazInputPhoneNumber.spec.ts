@@ -293,3 +293,49 @@ describe('given a MazUi global default for size', () => {
     })
   })
 })
+
+describe('given the flagSrc prop', () => {
+  describe('when it is set', () => {
+    it('then the country select receives it', async () => {
+      const wrapper = await getWrapper({ props: { flagSrc: '/flags/{code}.svg' } })
+
+      expect(wrapper.findComponent(MazSelectCountry).props('flagSrc')).toBe('/flags/{code}.svg')
+    })
+  })
+
+  describe('when it is not set', () => {
+    it('then the country select keeps the CDN flags', async () => {
+      const wrapper = await getWrapper({})
+
+      expect(wrapper.findComponent(MazSelectCountry).props('flagSrc')).toBeUndefined()
+    })
+  })
+})
+
+describe('given a global flagSrc in the MazUi defaults', () => {
+  function mountWithDefaults(defaults: unknown, props: Partial<MazInputPhoneNumberProps> = {}) {
+    return mount(MazInputPhoneNumber, {
+      props,
+      global: {
+        stubs: { MazSelectCountry, PhoneInput },
+        provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: defaults },
+      },
+    })
+  }
+
+  describe('when no flagSrc prop is passed', () => {
+    it('then the country select receives the global source', () => {
+      const wrapper = mountWithDefaults({ global: { flagSrc: '/global/{code}.svg' } })
+
+      expect(wrapper.findComponent(MazSelectCountry).props('flagSrc')).toBe('/global/{code}.svg')
+    })
+  })
+
+  describe('when a flagSrc prop is passed', () => {
+    it('then the prop wins over the global source', () => {
+      const wrapper = mountWithDefaults({ global: { flagSrc: '/global/{code}.svg' } }, { flagSrc: '/prop/{code}.svg' })
+
+      expect(wrapper.findComponent(MazSelectCountry).props('flagSrc')).toBe('/prop/{code}.svg')
+    })
+  })
+})

@@ -171,6 +171,7 @@ const defaults = {
     preloadFallback: true,
   },
   defaults: {},
+  flags: 'cdn',
   components: {
     autoImport: true,
   },
@@ -259,7 +260,21 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     addPlugin(resolve(_dirname, './runtime/plugins/translations'))
     addPlugin(resolve(_dirname, './runtime/plugins/maz-link-component'))
 
-    if (Object.keys(moduleOptions.defaults).length > 0) {
+    // Flags: a URL template is a plain default, the local flags need their loader (only imported by this plugin)
+
+    const flags = moduleOptions.flags
+
+    if (flags && flags !== 'cdn' && flags !== 'local') {
+      moduleOptions.defaults = {
+        ...moduleOptions.defaults,
+        global: { flagSrc: flags, ...moduleOptions.defaults.global },
+      }
+    }
+
+    if (flags === 'local') {
+      addPlugin(resolve(_dirname, './runtime/plugins/local-flags'))
+    }
+    else if (Object.keys(moduleOptions.defaults).length > 0) {
       addPlugin(resolve(_dirname, './runtime/plugins/defaults'))
     }
 

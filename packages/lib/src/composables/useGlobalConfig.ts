@@ -23,17 +23,22 @@ import type { MazTableProps } from '../components/MazTable.vue'
 import type { MazTabsBarProps } from '../components/MazTabsBar.vue'
 import type { MazTextareaProps } from '../components/MazTextarea.vue'
 import type { MazTimelineProps } from '../components/MazTimeline.vue'
-import type { MazRoundedSize, MazSize } from '../components/types'
+import type { MazCountryFlagSrc, MazRoundedSize, MazSize } from '../components/types'
 import { computed, getCurrentInstance, inject } from 'vue'
 
 /**
  * Cross-cutting props that can be set once for every globalized component
- * through `defaults.global`. Limited to props whose type is a shared design
- * token (so the same value is valid on every component that exposes them).
+ * through `defaults.global`. Limited to props whose type is shared (so the
+ * same value is valid on every component that exposes them).
  */
 export interface GlobalizableProps {
   roundedSize?: MazRoundedSize
   size?: MazSize
+  /**
+   * Source of the country flags of `MazSelectCountry` and `MazInputPhoneNumber`
+   * (URL template or function, e.g. `loadCountryFlag` from `maz-ui/country-flags`)
+   */
+  flagSrc?: MazCountryFlagSrc
 }
 
 /**

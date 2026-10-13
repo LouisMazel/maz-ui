@@ -291,6 +291,141 @@ Configure how country/language names are displayed using the `displayNamesOption
   </template>
 </ComponentDemo>
 
+## Flags source
+
+By default, the flags are images of the [flagcdn.com](https://flagcdn.com) CDN: each user's browser requests them from this third party. The `flag-src` prop changes where they come from, in four ways:
+
+| Source | `flag-src` | Network |
+| --- | --- | --- |
+| CDN (default) | not set | flagcdn.com |
+| Flags of maz-ui | `loadCountryFlag` from `maz-ui/country-flags` | none (works offline) |
+| Your own files | URL template: `'/flags/{code}.svg'` | your server |
+| Your own function | `(code) => string \| undefined \| Promise<string \| undefined>` | yours |
+
+In every case, a flag is only loaded when it becomes visible (the selected country, then the rows of the open list in view), and a code without flag displays the colored badge.
+
+### For the whole app
+
+Set it once instead of on every component: the `flag-src` of `MazSelectCountry` and `MazInputPhoneNumber` both default to `defaults.global.flagSrc` (see [Global component defaults](../guide/global-defaults.md)). A `flag-src` set on a component always wins.
+
+```ts
+// Vue: main.ts
+import { loadCountryFlag } from 'maz-ui/country-flags'
+import { MazUi } from 'maz-ui/plugins/maz-ui'
+
+app.use(MazUi, {
+  theme: { preset: mazUi },
+  defaults: {
+    global: { flagSrc: loadCountryFlag }, // or a URL template: '/flags/{code}.svg'
+  },
+})
+```
+
+```ts
+// Nuxt: nuxt.config.ts
+export default defineNuxtConfig({
+  modules: ['@maz-ui/nuxt'],
+  mazUi: {
+    flags: 'local', // 'cdn' (default) | 'local' | a URL template: '/flags/{code}.svg'
+  },
+})
+```
+
+### Flags of maz-ui, offline
+
+`loadCountryFlag` gives the square flag of a code from the 256 flags of `@maz-ui/icons`, as a `data:image/svg+xml` URL: no request to a third party (nothing to allow for flagcdn.com in your Content Security Policy, the user's IP is not sent to it), and the component works offline (hybrid apps with Capacitor or Cordova, PWAs, intranets).
+
+<ComponentDemo>
+  <div class="maz:flex maz:gap-4 maz:flex-wrap">
+    <MazSelectCountry
+      v-model="localFlagsExample"
+      label="Country (flags of maz-ui)"
+      :flag-src="loadCountryFlag"
+    />
+  </div>
+
+<template #code>
+
+```vue
+<script lang="ts" setup>
+import { loadCountryFlag } from 'maz-ui/country-flags'
+import { ref } from 'vue'
+
+const selectedCountry = ref('FR')
+</script>
+
+<template>
+  <MazSelectCountry
+    v-model="selectedCountry"
+    label="Country (flags of maz-ui)"
+    :flag-src="loadCountryFlag"
+  />
+</template>
+```
+
+</template>
+</ComponentDemo>
+
+How it stays light:
+
+- Nothing in maz-ui imports `maz-ui/country-flags`: an app that does not import it has **no flag file at all** in its build.
+- Once imported, your bundler emits **one small chunk per flag** (256 files, from a few hundred bytes to a few kilobytes each). None is preloaded: only the flags displayed are downloaded.
+- The loader itself (a table of 256 dynamic imports, about 4 kB gzipped) goes into the chunk that imports it. To keep it out of your entry chunk, import it on demand (the Nuxt option `flags: 'local'` does it for you):
+
+```ts
+const flagSrc = (code: string) => import('maz-ui/country-flags').then(({ loadCountryFlag }) => loadCountryFlag(code))
+```
+
+::: tip Content Security Policy
+The flags are `data:` URLs: a strict CSP must allow `img-src data:` (already needed by the lazy images of maz-ui).
+:::
+
+::: tip PWA precache
+Once you use `loadCountryFlag`, the 256 flag chunks are part of your build, so a service worker that precaches every `**/*.js` downloads all of them at install. Keep them (every flag available offline) or exclude them and let them load on demand. With Vite, the chunks are named after their module, `MazFlagSquareFR-[hash].js`:
+
+```ts
+// vite-plugin-pwa
+VitePWA({ workbox: { globIgnores: ['**/MazFlagSquare*.js'] } })
+```
+
+Nuxt names its chunks `_nuxt/[hash].js` only: name the flag chunks yourself to exclude them, e.g. `vite.build.rollupOptions.output.chunkFileNames: chunk => chunk.name.startsWith('MazFlagSquare') ? '_nuxt/flags/[name].[hash].js' : '_nuxt/[hash].js'`, then ignore `**/_nuxt/flags/**`.
+:::
+
+### Your own files
+
+A URL template, with `{code}` for the lowercase code and `{CODE}` for the uppercase code. The images are lazy loaded like the CDN ones. A missing image displays the badge.
+
+```vue
+<template>
+  <!-- public/flags/fr.svg, public/flags/de.svg... -->
+  <MazSelectCountry v-model="selectedCountry" flag-src="/flags/{code}.svg" />
+
+  <!-- another host, uppercase codes -->
+  <MazSelectCountry v-model="selectedCountry" flag-src="https://assets.example.com/flags/{CODE}.png" />
+</template>
+```
+
+### Your own function
+
+A function receives the country code of each flag when it becomes visible, and returns the image source (URL or data URL), or `undefined` to display the badge. It can be async: only the flags displayed are loaded.
+
+```vue
+<script lang="ts" setup>
+// One file per flag in your project, loaded on demand (Vite turns this import into one chunk per file)
+function flagSrc(code: string) {
+  return import(`./assets/flags/${code.toLowerCase()}.svg?url`)
+    .then(module => module.default)
+    .catch(() => undefined)
+}
+</script>
+
+<template>
+  <MazSelectCountry v-model="selectedCountry" :flag-src="flagSrc" />
+</template>
+```
+
+You can also replace the flags entirely with the `selector-flag` and `country-list-flag` slots.
+
 ## Without flags
 
 Hide country flags using the `hideFlags` prop for a cleaner text-only interface.
@@ -564,7 +699,7 @@ The `MazSelectCountry` component is built on top of `MazSelect` and leverages th
 
 - **Automatic localization**: Country and language names are displayed in the user's locale
 - **Built-in search**: Users can quickly find countries by typing
-- **Flag integration**: Automatic flag display using country codes
+- **Flag integration**: Automatic flag display using country codes, from the flagcdn.com CDN, the flags of maz-ui (offline) or your own files
 - **Flexible filtering**: Support for preferred, ignored, or specific country lists
 - **Custom options**: Override default behavior with custom data
 - **Accessibility**: Full keyboard navigation and screen reader support
@@ -592,6 +727,7 @@ const allCountries = getAllDisplayNames({
 This ensures consistent internationalization across your application while providing maximum flexibility for different use cases.
 
 <script setup>
+import { loadCountryFlag } from 'maz-ui/country-flags'
 import { ref } from 'vue'
 
 // Basic examples
@@ -613,6 +749,7 @@ const excludeExample = ref()
 const shortExample = ref()
 const languageNarrowExample = ref()
 const noFlagsExample = ref()
+const localFlagsExample = ref('FR')
 const frenchExample = ref()
 const spanishExample = ref()
 const successExample = ref()

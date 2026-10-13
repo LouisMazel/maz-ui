@@ -108,6 +108,13 @@
       "module": "./dist/resolvers/*.js",
       "default": "./dist/resolvers/*.js"
     },
+    "./country-flags": {
+      "monorepo:dev": "./src/utils/country-flags.ts",
+      "types": "./dist/utils/country-flags.d.ts",
+      "import": "./dist/country-flags.js",
+      "module": "./dist/country-flags.js",
+      "default": "./dist/country-flags.js"
+    },
     "./tailwindcss": {
       "monorepo:dev": "./src/tailwindcss/index.ts",
       "types": "./dist/tailwindcss/index.d.ts",
