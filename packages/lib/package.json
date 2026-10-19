@@ -224,7 +224,7 @@
     "dayjs": "^1.11.23",
     "dompurify": "^3.4.16",
     "libphonenumber-js": "^1.13.14",
-    "marked": "^18.0.14"
+    "marked": "^18.1.1"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
