@@ -477,8 +477,8 @@ importers:
         specifier: ^3.4.2
         version: 3.4.2
       eslint-plugin-better-tailwindcss:
-        specifier: ^4.7.0
-        version: 4.7.0(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))(tailwindcss@4.3.3)(typescript@5.9.3)
+        specifier: ^4.9.1
+        version: 4.9.1(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))(tailwindcss@4.3.3)(typescript@5.9.3)
       eslint-plugin-format:
         specifier: ^2.0.1
         version: 2.0.1(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))
@@ -2002,6 +2002,9 @@ packages:
   '@dprint/toml@0.7.0':
     resolution: {integrity: sha512-eFaQTcfxKHB+YyTh83x7GEv+gDPuj9q5NFOTaoj5rZmQTbj6OgjjMxUicmS1R8zYcx8YAq5oA9J3YFa5U6x2gA==}
 
+  '@dual-bundle/import-meta-resolve@4.2.1':
+    resolution: {integrity: sha512-id+7YRUgoUX6CgV0DtuhirQWodeeA7Lf4i2x71JS/vtA5pRb/hIGWlw+G6MeXvsM+MXrz0VAydTGElX1rAfgPg==}
+
   '@dxup/nuxt@0.5.10':
     resolution: {integrity: sha512-54Vehb7LmR7qYpC6KFwjDTSm6CB1CayBu+JXdHrPLrIjjr5xAgb43jvgOU+mnB+tsRh414fSsEy0QjBMKILQ8g==}
 
@@ -2423,15 +2426,6 @@ packages:
   '@eslint/plugin-kit@0.7.3':
     resolution: {integrity: sha512-IkO+/KEUvwbVpiURZg+P7zF74z5Jxe0UgJxVni+RtoHQ6IZieXaO02kmadomap/q+l6bc/jdPGGqTjhuZnuz1Q==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
-
-  '@exodus/bytes@1.15.1':
-    resolution: {integrity: sha512-S6mL0yNB/Abt9Ei4tq8gDhcczc4S3+vQ4ra7vxnAf+YHC02srtqxKKZghx2Dq6p0e66THKwR6r8N6P95wEty7Q==}
-    engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
-    peerDependencies:
-      '@noble/hashes': ^1.8.0 || ^2.0.0
-    peerDependenciesMeta:
-      '@noble/hashes':
-        optional: true
 
   '@exodus/bytes@1.16.0':
     resolution: {integrity: sha512-IcpW84uEn3N7ETtNZMlxKhfl6Pec8rUNGOTBtWbK1FKhJxIFAptZyVrvVRVBimAJxJCgc3PxepxkdWWG4DVzfA==}
@@ -6523,8 +6517,8 @@ packages:
     peerDependencies:
       eslint: '*'
 
-  eslint-plugin-better-tailwindcss@4.7.0:
-    resolution: {integrity: sha512-lrdlVW4pzLPj/zX5HRqMhKPesGijDfRhnSRJMlNcsrCyJHsndmHCLKTiRNa1eREUZ6G3D3QjdLc+G4tlfGrmkw==}
+  eslint-plugin-better-tailwindcss@4.9.1:
+    resolution: {integrity: sha512-WOuUOlc27Ib3tcYNt6qhRpvQUie5Y/pNTkwO779QGdfF1tu0k51avWtmvfPv++7/1oVjntoFHcUK4+5a6SPZvA==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=23.0.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
@@ -9854,6 +9848,10 @@ packages:
     resolution: {integrity: sha512-eNRKgb3z66Yp3D2CixVujOUvXLFUTij/zVnV8KRyvFdQwpz7I5DS8UfRkTeLzb64u+dkzDSdelE24izu+zSSUg==}
     engines: {node: ^14.18.0 || >=16.0.0}
 
+  synckit@0.12.3:
+    resolution: {integrity: sha512-U+/AXT6LWsxnj2vz9HeUuPWBNgdWxjyIEjEPdbJARC9txmgPzo2VEdqnFo4hHaNyMPtycyVJrSaQYeQv/PoyyA==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+
   tabbable@6.5.0:
     resolution: {integrity: sha512-wieBHXygIm7OyQOu5hQlkk62/WyCFYGlWg7L6/ZCUZwx0o398Zkn4pVmMyfYhfMG8kGrj/Krt8eIk6UKC6VzwA==}
 
@@ -10833,10 +10831,6 @@ packages:
   whatwg-url@16.0.1:
     resolution: {integrity: sha512-1to4zXBxmXHV3IiSSEInrreIlu02vUOvrhxJJH5vcxYTBDAx51cqZiKdyTxlecdKNSjj8EcxGBxNf6Vg+945gw==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
-
-  whatwg-url@17.1.2:
-    resolution: {integrity: sha512-TEZA+Zqxin7Jjsm2cjRohCmen5awh+hT6Zi3VZdqZlNRk7zvOI/9WpBFg/DWlA56bWnzwm6DuB8NS0EsxQH9uQ==}
-    engines: {node: ^22.14.0 || >=24.0.0}
 
   whatwg-url@17.2.0:
     resolution: {integrity: sha512-IhLIHNcBrzIixC5XXsbr4DxdjajyA5vQ5RwGZMtrUp+GbtE5Nrsge9QKau7jXrC0aTXLYGV0xiW7Tb4YS2aomw==}
@@ -12518,6 +12512,8 @@ snapshots:
 
   '@dprint/toml@0.7.0': {}
 
+  '@dual-bundle/import-meta-resolve@4.2.1': {}
+
   '@dxup/nuxt@0.5.10(esbuild@0.28.0)(magicast@0.5.3)(rolldown@1.2.11)(rollup@4.61.1)(vite@8.3.2)':
     dependencies:
       '@dxup/unimport': 0.1.2
@@ -12842,8 +12838,6 @@ snapshots:
     dependencies:
       '@eslint/core': 1.2.1
       levn: 0.4.1
-
-  '@exodus/bytes@1.15.1': {}
 
   '@exodus/bytes@1.16.0': {}
 
@@ -17234,7 +17228,7 @@ snapshots:
   data-urls@8.0.0:
     dependencies:
       whatwg-mimetype: 5.0.0
-      whatwg-url: 17.1.2
+      whatwg-url: 17.2.0
     transitivePeerDependencies:
       - '@noble/hashes'
 
@@ -17610,13 +17604,13 @@ snapshots:
     dependencies:
       eslint: 10.12.0(jiti@2.7.0)(supports-color@10.2.2)
 
-  eslint-plugin-better-tailwindcss@4.7.0(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))(tailwindcss@4.3.3)(typescript@5.9.3):
+  eslint-plugin-better-tailwindcss@4.9.1(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))(tailwindcss@4.3.3)(typescript@5.9.3):
     dependencies:
       '@eslint/css-tree': 4.1.1
       '@valibot/to-json-schema': 1.8.0(valibot@1.5.0(typescript@5.9.3))
-      enhanced-resolve: 5.25.1
+      enhanced-resolve: 5.26.0
       jiti: 2.7.0
-      synckit: 0.11.13
+      synckit: 0.12.3
       tailwind-csstree: 0.3.3
       tailwindcss: 4.3.3
       tsconfig-paths-webpack-plugin: 4.2.0
@@ -18474,7 +18468,7 @@ snapshots:
 
   html-encoding-sniffer@7.0.0:
     dependencies:
-      '@exodus/bytes': 1.15.1
+      '@exodus/bytes': 1.16.0
     transitivePeerDependencies:
       - '@noble/hashes'
 
@@ -22292,9 +22286,9 @@ snapshots:
 
   stylelint-scss@7.2.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@5.9.3)):
     dependencies:
-      '@csstools/css-calc': 3.4.1(@csstools/css-parser-algorithms@4.0.1(@csstools/css-tokenizer@4.0.2))(@csstools/css-tokenizer@4.0.2)
-      '@csstools/css-parser-algorithms': 4.0.1(@csstools/css-tokenizer@4.0.2)
-      '@csstools/css-syntax-patches-for-csstree': 1.1.14(css-tree@3.2.1)
+      '@csstools/css-calc': 3.4.3(@csstools/css-parser-algorithms@4.0.2(@csstools/css-tokenizer@4.0.2))(@csstools/css-tokenizer@4.0.2)
+      '@csstools/css-parser-algorithms': 4.0.2(@csstools/css-tokenizer@4.0.2)
+      '@csstools/css-syntax-patches-for-csstree': 1.1.15(css-tree@3.2.1)
       '@csstools/css-tokenizer': 4.0.2
       css-tree: 3.2.1
       is-plain-object: 5.0.0
@@ -22443,6 +22437,11 @@ snapshots:
     dependencies:
       '@pkgr/core': 0.3.6
 
+  synckit@0.12.3:
+    dependencies:
+      '@dual-bundle/import-meta-resolve': 4.2.1
+      '@pkgr/core': 0.3.6
+
   tabbable@6.5.0: {}
 
   table@6.9.0:
@@ -22580,6 +22579,7 @@ snapshots:
   tr46@6.0.0:
     dependencies:
       punycode: 2.3.1
+    optional: true
 
   tr46@7.0.0:
     dependencies:
@@ -22620,7 +22620,7 @@ snapshots:
   tsconfig-paths-webpack-plugin@4.2.0:
     dependencies:
       chalk: 4.1.2
-      enhanced-resolve: 5.25.1
+      enhanced-resolve: 5.26.0
       tapable: 2.3.3
       tsconfig-paths: 4.2.0
 
@@ -23788,14 +23788,6 @@ snapshots:
     transitivePeerDependencies:
       - '@noble/hashes'
     optional: true
-
-  whatwg-url@17.1.2:
-    dependencies:
-      '@exodus/bytes': 1.15.1
-      tr46: 6.0.0
-      webidl-conversions: 8.0.1
-    transitivePeerDependencies:
-      - '@noble/hashes'
 
   whatwg-url@17.2.0:
     dependencies:
