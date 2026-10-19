@@ -24,7 +24,7 @@
     "@nuxt/devtools": "^3.2.3",
     "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/vite": "^4.3.3",
-    "nuxt": "^4.5.2",
+    "nuxt": "^4.6.1",
     "postcss-nested": "^8.0.1",
     "tailwindcss": "^4.3.3",
     "vue-router": "^5.3.1"
