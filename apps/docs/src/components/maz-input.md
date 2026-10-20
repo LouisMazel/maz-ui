@@ -343,6 +343,10 @@ const sizes = ['mini', 'xs', 'sm', 'md', 'lg', 'xl']
   </template>
 </ComponentDemo>
 
+::: info Zoom on iOS
+iOS zooms the page when a focused field has a font size below `16px` (most sizes with a `14px` `base-font-size`). This applies to every form field: `MazInput` and the components built on it, `MazTextarea`, `MazInputCode`... To prevent it without changing the design of the fields, enable the `general.preventIosInputZoom` option of [@maz-ui/nuxt](../ecosystem/nuxt.md), or call [preventIosInputZoom](../ecosystem/utils/prevent-ios-input-zoom.md) from `@maz-ui/utils` in a Vue app.
+:::
+
 ## Colors
 
 ::: tip

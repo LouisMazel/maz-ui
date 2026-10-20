@@ -115,6 +115,7 @@ export default defineNuxtConfig({
       autoImportPrefix: 'Maz', // useMazToast instead of useToast
       defaultMazIconPath: '/icons', // Default path for <MazIcon />
       devtools: true, // Enable DevTools integration
+      preventIosInputZoom: true, // No zoom on focused fields on iOS
     },
 
     // CSS & Styling
@@ -207,6 +208,10 @@ const general = {
 
   // Enable Nuxt DevTools integration
   devtools: true,
+
+  // Stop iOS from zooming the page when a form field gets the focus (default: false)
+  // Adds `maximum-scale=1` to the viewport on iOS only, see the preventIosInputZoom helper of @maz-ui/utils
+  preventIosInputZoom: false,
 }
 ```
 
