@@ -60,6 +60,7 @@ describe('nuxt module', () => {
         autoImportPrefix: '',
         defaultMazIconPath: '',
         devtools: true,
+        preventIosInputZoom: false,
       })
     })
 
@@ -543,6 +544,24 @@ describe('nuxt module', () => {
           ([path]) => path.includes('maz-icon-path'),
         )
         expect(iconCalls).toHaveLength(0)
+      })
+    })
+
+    describe('given the preventIosInputZoom option', () => {
+      describe('when it is enabled', () => {
+        it('then the client plugin is added', () => {
+          callSetup({ general: { preventIosInputZoom: true } })
+
+          expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/prevent-ios-input-zoom.client'))
+        })
+      })
+
+      describe('when it is not set', () => {
+        it('then the client plugin is not added', () => {
+          callSetup()
+
+          expect(addPlugin).not.toHaveBeenCalledWith(expect.stringContaining('prevent-ios-input-zoom'))
+        })
       })
     })
 

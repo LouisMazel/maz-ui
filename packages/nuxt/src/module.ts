@@ -154,6 +154,7 @@ const defaults = {
     autoImportPrefix: '',
     defaultMazIconPath: '',
     devtools: true,
+    preventIosInputZoom: false,
   },
   css: {
     injectCss: true,
@@ -393,6 +394,11 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     // Maz Icon Path
     if (moduleOptions.general.defaultMazIconPath) {
       addPlugin(resolve(_dirname, './runtime/plugins/maz-icon-path'))
+    }
+
+    // iOS input zoom
+    if (moduleOptions.general.preventIosInputZoom) {
+      addPlugin(resolve(_dirname, './runtime/plugins/prevent-ios-input-zoom.client'))
     }
 
     // Devtools

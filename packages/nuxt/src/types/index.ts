@@ -31,6 +31,15 @@ export interface MazUiNuxtOptions {
      * @default true
      */
     devtools?: boolean
+
+    /**
+     * Stop iOS from zooming the page when a form field gets the focus
+     * @description iOS zooms on fields with a font size below 16px. Adds `maximum-scale=1` to the viewport
+     * on iOS only: iOS still lets the user pinch to zoom, Android (which does not zoom on focus) is left untouched.
+     * The design of the fields is not changed.
+     * @default false
+     */
+    preventIosInputZoom?: boolean
   }
 
   /**

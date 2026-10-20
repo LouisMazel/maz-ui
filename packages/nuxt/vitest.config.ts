@@ -4,7 +4,7 @@ import { resolve } from 'node:path'
 import { coverageConfigDefaults, defaultExclude, defineConfig } from 'vitest/config'
 
 const resolveAliases = {
-  '@maz-ui/utils/helpers/capitalize': resolve(import.meta.dirname, '../utils/src/helpers/capitalize.ts'),
+  '@maz-ui/utils/helpers': resolve(import.meta.dirname, '../utils/src/helpers'),
   '@maz-ui/utils': resolve(import.meta.dirname, '../utils/src/index.ts'),
   '@maz-ui/translations/plugin': resolve(import.meta.dirname, '../translations/src/plugin.ts'),
   '@maz-ui/translations': resolve(import.meta.dirname, '../translations/src/index.ts'),
