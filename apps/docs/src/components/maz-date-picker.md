@@ -1059,6 +1059,13 @@ interface MazDatePickerShortcut {
 }
 ```
 
+## Accessibility
+
+- The input is a `combobox` opening a `dialog` (`aria-haspopup="dialog"`, `aria-expanded`, `aria-controls`).
+- Each month is a `grid` labelled by the month and the year, the days of the week are its column headers and each day has its full date as label (`aria-current="date"` for today, `aria-selected` on the selected days).
+- **Keyboard** in the calendar: only one day is in the tab sequence, the arrows move by day (<kbd>←</kbd> <kbd>→</kbd>) and by week (<kbd>↑</kbd> <kbd>↓</kbd>), <kbd>Home</kbd> / <kbd>End</kbd> go to the start / end of the week, <kbd>Page Up</kbd> / <kbd>Page Down</kbd> to the previous / next month (with <kbd>Shift</kbd>: year). Disabled days are skipped and the calendar follows the focus to the displayed month.
+- The navigation buttons labels come from `@maz-ui/translations` (`aria` namespace).
+
 <!--@include: ./../../.vitepress/mixins/maz-input-props.md-->
 
 <!--@include: ./../../.vitepress/generated-docs/maz-date-picker.doc.md-->

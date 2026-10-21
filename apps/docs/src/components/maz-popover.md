@@ -1345,6 +1345,7 @@ MazPopover follows WAI-ARIA guidelines:
 - **Keyboard navigation**: Supports Escape key and Tab navigation
 - **ARIA attributes**: Proper `role`, `aria-modal`, `aria-labelledby`, etc.
 - **Screen reader support**: Appropriate roles for different use cases
+- **Trigger ARIA on the real control**: `aria-expanded`, `aria-haspopup` and `aria-controls` are set on the interactive element of the `trigger` slot (your button, link...), never on a wrapper around it. ARIA attributes you set yourself on that element are kept, and a `combobox` keeps managing its own state. When the slot has no interactive element, the wrapper becomes a focusable `button` (<kbd>Enter</kbd> / <kbd>Space</kbd> toggle the popover).
 
 ### Best practices
 

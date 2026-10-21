@@ -663,6 +663,10 @@ type MazDropdownMenuItem = {
 } & Record<string, unknown>
 ```
 
+## Accessibility
+
+The trigger button exposes the menu state (`aria-haspopup="menu"`, `aria-expanded`, `aria-controls`), the panel is a `menu` and each item a `menuitem`. <kbd>↓</kbd> / <kbd>↑</kbd> move between the items, <kbd>Enter</kbd> runs the focused item and <kbd>Esc</kbd> closes the menu.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-dropdown.doc.md-->
 
 <script lang="ts" setup>

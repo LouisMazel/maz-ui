@@ -376,6 +376,12 @@ export type ButtonsRadioOption = {
 } & Record<string, unknown>
 ```
 
+## Accessibility
+
+The root element is a `radiogroup` of native radio inputs: pass an `aria-label` (or `aria-labelledby`) to name it. The `hint` describes the group (`aria-describedby`) and `error` sets `aria-invalid`. The arrows move between the options natively.
+
+When no `name` is provided, each instance gets a unique one, so two groups of the same page never share their radios.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-radio-buttons.doc.md-->
 
 <script lang="ts" setup>

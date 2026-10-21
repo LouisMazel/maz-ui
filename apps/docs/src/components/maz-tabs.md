@@ -319,6 +319,13 @@ type MazTabsBarItem<Value extends string | number = string | number>
   | string
 ```
 
+## Accessibility
+
+The tabs follow the [WAI-ARIA tabs pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/):
+
+- `MazTabsBar` is a `tablist` (pass an `aria-label` to name it), each item is a `tab` with `aria-selected`, linked to its `MazTabsContentItem` (`tabpanel`) through `aria-controls` / `aria-labelledby`.
+- **Keyboard**: only the selected tab is in the tab sequence, <kbd>←</kbd> / <kbd>→</kbd> select the previous / next tab (reversed in RTL), <kbd>Home</kbd> / <kbd>End</kbd> the first / last one. Disabled tabs are skipped.
+
 ## Props & Events emitted
 
 ## MazTabs

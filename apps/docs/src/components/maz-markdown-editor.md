@@ -366,4 +366,8 @@ For app-wide translations, set up the [maz-ui translations plugin](/translations
   }
 </script>
 
+## Accessibility
+
+The write / preview / split switcher follows the [WAI-ARIA tabs pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/): it is a `tablist` named by the `name` prop, the editor and the preview are its `tabpanel`s. Only the selected mode is in the tab sequence, <kbd>←</kbd> / <kbd>→</kbd> (reversed in RTL), <kbd>Home</kbd> and <kbd>End</kbd> switch the mode.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-markdown-editor.doc.md-->
