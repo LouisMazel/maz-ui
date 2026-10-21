@@ -96,7 +96,7 @@ The CLI walks every file matching one of these extensions inside the
 provided paths:
 
 - **Vue:** `.vue`
-- **CSS:** `.css`
+- **Stylesheets:** `.css`, `.scss`, `.sass`, `.less`, `.styl`, `.stylus`, `.pcss`, `.postcss`
 - **TypeScript:** `.ts`, `.tsx`, `.cts`, `.mts`
 - **JavaScript:** `.js`, `.jsx`, `.cjs`, `.mjs`
 - **Manifest:** every `package.json` (root + nested in monorepo workspaces)
@@ -124,40 +124,61 @@ outside both lists, add them to a local `.gitignore` (or to a sibling
 ## Transform groups
 
 By default all five groups run. Use `--only=<a,b,...>` to scope the run.
-Each group is independent and idempotent: re-running the tool on
-already-migrated code is a no-op.
+Each group is independent. Re-running the tool on already-migrated code is a
+no-op, except for the `MazAvatar` size rewrite (a unit value can not be told
+apart from an already multiplied one): run it once, on v4 code.
 
 ### `imports`
 
-CSS subpath rename, applied to imports in `.vue` and JS/TS files:
+CSS subpath renames, applied to imports in `.vue`, JS/TS files and
+stylesheets (`@import`), and the root import move, applied to `.vue` and JS/TS
+files:
 
-| v4                           | v5                          |
-| ---------------------------- | --------------------------- |
-| `import 'maz-ui/styles'`     | `import 'maz-ui/style.css'` |
-| `import 'maz-ui/aos-styles'` | `import 'maz-ui/aos.css'`   |
+| v4                                  | v5                                      |
+| ----------------------------------- | --------------------------------------- |
+| `import 'maz-ui/styles'`            | `import 'maz-ui/style.css'`             |
+| `import 'maz-ui/aos-styles'`        | `import 'maz-ui/aos.css'`               |
+| `import 'maz-ui/dist/css/main.css'` | `import 'maz-ui/style.css'`             |
+| `import 'maz-ui/dist/css/aos.css'`  | `import 'maz-ui/aos.css'`               |
+| `import { sleep } from 'maz-ui'`    | `import { sleep } from '@maz-ui/utils'` |
+
+The `maz-ui` root entry still exists in v5 as a type-only surface: imports made
+only of its types (`MazColor`, `MazSize`, `MazSizeUnit`, `MazRoundedSize`,
+`GlobalizableProps`, `MazComponentName`, `MazUiDefaultsOptions`,
+`MazUiOptions`) are kept on `maz-ui`. Other deep `maz-ui/dist/...` imports (the
+`./*` wildcard export was removed) are reported as a warning at the end of the
+run.
 
 ### `props`
 
-Component prop / slot / class renames, applied to `.vue` files only.
-Patterns specific enough to rewrite globally (e.g. `left-icon` /
-`right-icon`) are handled file-wide. Patterns that would otherwise be
-ambiguous (`variant=`, `color="background"`) are rewritten **only inside
-`<Maz...>` opening tags**, never on your own components.
+Component prop / slot / class renames, applied to `.vue` files only. The
+props (`left-icon`, `variant=`, `color="background"`, icon names…) are
+rewritten **only inside `<Maz...>` / `<maz-...>` opening tags**, never on your
+own components or other libraries (Vant `left-icon`…). The slots,
+`footer-align`, `rounded-size`, `active-color` and the maz-ui class names are
+specific enough to be rewritten file-wide. Kebab-case, camelCase and
+`v-bind:` / `v-slot:` forms are all handled.
 
-| v4                                                                | v5                                                          |
-| ----------------------------------------------------------------- | ----------------------------------------------------------- |
-| `left-icon="x"` / `right-icon="x"`                                | `start-icon="x"` / `end-icon="x"`                           |
-| `:left-icon="x"` / `:right-icon="x"`                              | `:start-icon="x"` / `:end-icon="x"`                         |
-| `<template #left-icon>` / `<template #right-icon>`                | `<template #start-icon>` / `<template #end-icon>`           |
-| `<template #icon-left>` / `<template #icon-right>` (MazContainer) | `<template #icon-start>` / `<template #icon-end>`           |
-| `footer-align="left"` / `footer-align="right"`                    | `footer-align="start"` / `footer-align="end"`               |
-| `<MazDrawer variant="left">` / `<MazDrawer variant="right">`      | `<MazDrawer variant="start">` / `<MazDrawer variant="end">` |
-| `<Maz... color="background">`                                     | `<Maz... color="surface">`                                  |
-| `active-color="background"`                                       | `active-color="surface"`                                    |
-| `rounded-size="base"`                                             | `rounded-size="md"`                                         |
-| `.--has-left-icon` / `.--has-right-icon` (CSS selectors)          | `.--has-start-icon` / `.--has-end-icon`                     |
-| `<MazAvatar size="2rem">` (static CSS unit)                       | `<MazAvatar size="6rem">` (value ×3, render preserved)      |
-| `<MazPullToRefresh :on-click="x">`                                | `<MazPullToRefresh :on-refresh="x">`                        |
+| v4                                                                                                        | v5                                                                |
+| --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `left-icon="x"` / `right-icon="x"`                                                                        | `start-icon="x"` / `end-icon="x"`                                 |
+| `:left-icon="x"` / `:right-icon="x"`                                                                      | `:start-icon="x"` / `:end-icon="x"`                               |
+| `:leftIcon="x"` / `v-bind:right-icon="x"`                                                                 | `:startIcon="x"` / `v-bind:end-icon="x"`                          |
+| `start-icon="user"` (bare icon name, MazBtn / MazInput / MazLink / MazContainer / MazDropdown / MazAlert) | `start-icon="/user.svg"`                                          |
+| `<MazIcon src="/a.svg">` / `<MazIcon :src="url">`                                                         | `<MazIcon icon="/a.svg">` / `<MazIcon :icon="url">`               |
+| `<MazIcon name="home">` / `<MazIcon name="home" path="/icons">`                                           | `<MazIcon icon="/home.svg">` / `<MazIcon icon="/icons/home.svg">` |
+| `<template #left-icon>` / `<template #right-icon>`                                                        | `<template #start-icon>` / `<template #end-icon>`                 |
+| `<template #icon-left>` / `<template #icon-right>` (MazContainer)                                         | `<template #icon-start>` / `<template #icon-end>`                 |
+| `footer-align="left"` / `footer-align="right"`                                                            | `footer-align="start"` / `footer-align="end"`                     |
+| `<MazDrawer variant="left">` / `<MazDrawer variant="right">`                                              | `<MazDrawer variant="start">` / `<MazDrawer variant="end">`       |
+| `<Maz... color="background">`                                                                             | `<Maz... color="surface">`                                        |
+| `active-color="background"`                                                                               | `active-color="surface"`                                          |
+| `rounded-size="base"`                                                                                     | `rounded-size="md"`                                               |
+| `.--has-left-icon` / `.--has-right-icon` (CSS selectors)                                                  | `.--has-start-icon` / `.--has-end-icon`                           |
+| `.m-input-wrapper-left` / `.m-input-wrapper-right`                                                        | `.m-input-wrapper-start` / `.m-input-wrapper-end`                 |
+| `.drawer-anim-left-*` / `.drawer-anim-right-*`                                                            | `.drawer-anim-start-*` / `.drawer-anim-end-*`                     |
+| `<MazAvatar size="2rem">` (static CSS unit)                                                               | `<MazAvatar size="6rem">` (value ×3, render preserved)            |
+| `<MazPullToRefresh :on-click="x">`                                                                        | `<MazPullToRefresh :on-refresh="x">`                              |
 
 The `MazAvatar` rewrite targets only `<MazAvatar>` / `<maz-avatar>` opening
 tags. v5 fixed the avatar size scale (a CSS-unit `size` no longer renders 3x
@@ -166,6 +187,16 @@ render. Every CSS unit is supported. `MazSize` keywords (`mini`..`xl`) and
 bound `:size="…"` expressions are left untouched - the latter is reported as
 a warning at the end of the run.
 
+v4 rendered a string icon prop as `<MazIcon :name>`, resolved to
+`${mazIconPath}/<name>.svg`. v5 only accepts a URL (or a raw SVG) for a string,
+so a bare name renders nothing: it is rewritten to the relative URL of the same
+file (`mazIconPath` is still prepended to relative URLs). A bare name is never
+a valid v5 value, so this rewrite is idempotent. Bound values, a bound
+`:name` / `:path` on `MazIcon` and the removed `@loaded` / `@unloaded` events
+are reported as warnings at the end of the run. If you provide a `mazIconPath`
+(Nuxt `general.defaultMazIconPath`), note that v5 also prepends it to the
+relative URLs of a former `src` or `path`.
+
 The `MazPullToRefresh` rewrite targets only `<MazPullToRefresh>` /
 `<maz-pull-to-refresh>` opening tags. v5 renamed the callback prop `on-click`
 to `on-refresh` (both kebab-case and camelCase, bound or static), so native
@@ -173,15 +204,17 @@ click handlers and the `onClick` prop of other components are never touched.
 
 ### `css`
 
-CSS variable renames + `hsl(var(...))` collapse, applied to `.vue` style
-blocks, `.css` files, and any inline strings in `.ts`/`.js`:
+CSS variable renames + `hsl(var(...))` collapse, applied to `.vue` files,
+stylesheets, and any inline strings in `.ts`/`.js` (the maz-ui class names of
+the `props` table are renamed in stylesheets too):
 
 | v4                                                                                         | v5                                                                                |
 | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
 | `var(--maz-background)` / `var(--maz-background-700)` / `var(--maz-background-foreground)` | `var(--maz-surface)` / `var(--maz-surface-700)` / `var(--maz-surface-foreground)` |
 | `var(--maz-border)` / `var(--maz-border-700)`                                              | `var(--maz-divider)` / `var(--maz-divider-700)`                                   |
 | `hsl(var(--maz-primary))`                                                                  | `var(--maz-primary)`                                                              |
-| `hsl(var(--maz-primary) / 0.5)`                                                            | `color-mix(in srgb, var(--maz-primary) 0.5, transparent)`                         |
+| `hsl(var(--maz-primary) / 0.5)` / `hsl(var(--maz-primary) / 50%)`                          | `color-mix(in srgb, var(--maz-primary) 50%, transparent)`                         |
+| `hsl(var(--maz-primary) / var(--alpha))`                                                   | `color-mix(in srgb, var(--maz-primary) calc(var(--alpha) * 100%), transparent)`   |
 
 Foundation tokens that happen to start with the same prefix (e.g.
 `--maz-border-width`, `--maz-border-radius`) are explicitly **not**
@@ -192,18 +225,23 @@ renamed.
 Plugin / Nuxt module / preset config keys, applied to `.vue` and JS/TS
 files:
 
-| v4                                                                      | v5                                    |
-| ----------------------------------------------------------------------- | ------------------------------------- |
-| Nuxt `mazUi.css.injectMainCss`                                          | `mazUi.css.injectCss`                 |
-| Theme `strategy: 'hybrid'`                                              | `strategy: 'runtime'`                 |
-| `MazUiTheme` plugin options `injectCriticalCSS: …` / `injectFullCSS: …` | line removed (silently ignored in v5) |
-| Nuxt theme `injectAllCSSOnServer: …`                                    | line removed (silently ignored in v5) |
-| Custom preset `colors.{light,dark}.background`                          | `colors.{light,dark}.surface`         |
-| Custom preset `colors.{light,dark}.border`                              | `colors.{light,dark}.divider`         |
+| v4                                                                                                                                       | v5                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| Nuxt `mazUi.css.injectMainCss`                                                                                                           | `mazUi.css.injectCss`                   |
+| Theme `strategy: 'hybrid'`                                                                                                               | `strategy: 'runtime'`                   |
+| `MazUiTheme` plugin options `injectCriticalCSS: …` / `injectFullCSS: …`                                                                  | option removed (silently ignored in v5) |
+| Nuxt theme `injectAllCSSOnServer: …`                                                                                                     | option removed (silently ignored in v5) |
+| `generateCSS` / `buildThemeCSS` / `buildSeparateThemeFiles` `onlyCritical`, `criticalColors`, `criticalFoundation`, `includeColorScales` | option removed                          |
+| Custom preset `colors.{light,dark}.background`                                                                                           | `colors.{light,dark}.surface`           |
+| Custom preset `colors.{light,dark}.border`                                                                                               | `colors.{light,dark}.divider`           |
 
-The preset color rename is scoped to `light: { … }` / `dark: { … }`
-blocks, so unrelated CSS-in-JS / JSX style props elsewhere are left
-alone.
+The removed options are cleaned on their own line or inline
+(`{ preset, onlyCritical: true }`). The preset color rename is scoped to
+`light: { … }` / `dark: { … }` blocks, and it runs with the
+`strategy: 'hybrid'` rewrite only in files referencing maz-ui (a `maz-ui` /
+`@maz-ui/*` import, the Nuxt `mazUi` key, `MazUi*` plugins, `definePreset`,
+`setupTheme`, `useTheme`, `darkModeStrategy`), so generic objects elsewhere are
+left alone.
 
 ### `deps`
 
@@ -218,7 +256,14 @@ preserved; non-maz-ui dependencies are never touched.
 | `maz-ui`, `@maz-ui/*` semver ranges (`^4.x`, `~4.x`, `4.x`, `4.0.0`, …)      | Rewritten to `^5.0.0` |
 | `workspace:*`, `link:…`, `file:…`, `portal:…`, `npm:…`, `http(s):…`, `git+…` | Left untouched        |
 | Dist tags (`latest`, `next`, `beta`, `alpha`, `canary`)                      | Left untouched        |
+| `@maz-ui/cli` (not published in v5)                                          | Left untouched        |
 | Anything else (`vue`, `chart.js`, your own packages, …)                      | Left untouched        |
+
+When the `imports` group runs, two dependencies are added next to `maz-ui`
+if a source needs them and no `package.json` declares them: `@maz-ui/utils`
+(when a `from 'maz-ui'` import is moved to it) and `valibot` (`^1.3.1`, when a
+source imports it: it was a dependency of maz-ui v4, it is an optional peer
+dependency in v5).
 
 `vue-chartjs` is **not** removed automatically, even though `MazChart`
 no longer depends on it — keep it if you use it directly elsewhere,
@@ -288,9 +333,11 @@ Some changes need a human (or your AI assistant via the
 [migration guide](https://maz-ui.com/guide/migration-v5) for the full
 context:
 
-- **`MazIcon` API simplification** — `name`/`path`/`src` props collapsing
-  into a single `icon` prop needs the original asset path to rewrite
-  correctly.
+- **`MazIcon` bound values** - a bound `:name` / `:path` and the removed
+  `@loaded` / `@unloaded` events (reported as warnings). Static `name`,
+  `path` and `src` are rewritten by the `props` group.
+- **Icon values in scripts** - `h(MazBtn, { leftIcon })`, `v-bind` objects,
+  `MazStepper` `steps[].icon`: keys too generic to rewrite safely in JS.
 - **`MazBadge` numeric `size`** — picking the right keyword (`mini`/`xs`/…)
   is a judgment call.
 - **Theme preset radius reshape** — `foundation.radius` →
