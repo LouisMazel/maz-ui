@@ -25,7 +25,7 @@ npx @maz-ui/upgrade ./
 
 It handles the mechanical part of the migration (CSS subpath imports, prop renames, CSS var renames, the `MazAvatar` size scale fix, Nuxt config keys, custom preset color keys, and `package.json` version bumps)
 
-What it can't decide for you: the `MazIcon` API simplification (section 4), `MazBadge` numeric size mapping (section 9), `foundation.radius` → `scales.rounded.md` reshape (section 11) and `MazChart` `update-mode` defaults (section 8). Those are best handled with the MCP server below.
+What it can't decide for you: the bound values of the `MazIcon` API simplification (section 4), the `px` / `em` `MazBadge` sizes (section 9, the `rem` sizes are rewritten), `foundation.radius` → `scales.rounded.md` reshape (section 11) and `MazChart` `update-mode` defaults (section 8). Those are best handled with the MCP server below.
 
 See the full list of transforms in the [`@maz-ui/upgrade` README](https://github.com/LouisMazel/maz-ui/tree/master/packages/upgrade).
 
@@ -382,6 +382,8 @@ Approximate mapping if you want to preserve your previous footprint:
 | 0.85–0.9rem (~14px) | `'md'` (default) |
 | 1rem (16px) | `'lg'` |
 | ≥ 1.125rem (18px) | `'xl'` |
+
+The `@maz-ui/upgrade` codemod rewrites the static `rem` sizes to the closest keyword. `px` and `em` sizes depend on the root or parent font size: they are reported at the end of the run so you pick the keyword.
 
 ```bash
 # Find badges still using a numeric size

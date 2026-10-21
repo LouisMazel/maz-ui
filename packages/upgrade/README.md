@@ -5,8 +5,8 @@ Automated source rewrites for migrating a project from **Maz-UI v4** to **v5**.
 Run it once at the start of your migration to clear the mechanical changes
 from your todo list, then walk through the rest of the
 [migration guide](https://maz-ui.com/guide/migration-v5) for the items that
-need a human eye (theme `foundation.radius` reshape, `MazIcon` API,
-`MazBadge` numeric sizes, `MazChart` `update-mode`).
+need a human eye (theme `foundation.radius` reshape, bound `MazIcon` values,
+`MazBadge` `px` / `em` sizes, `MazChart` `update-mode`).
 
 The companion [`@maz-ui/mcp`](https://maz-ui.com/ecosystem/mcp) server lets your
 AI assistant read the migration guide and apply the manual steps with full
@@ -178,6 +178,7 @@ specific enough to be rewritten file-wide. Kebab-case, camelCase and
 | `.m-input-wrapper-left` / `.m-input-wrapper-right`                                                        | `.m-input-wrapper-start` / `.m-input-wrapper-end`                 |
 | `.drawer-anim-left-*` / `.drawer-anim-right-*`                                                            | `.drawer-anim-start-*` / `.drawer-anim-end-*`                     |
 | `<MazAvatar size="2rem">` (static CSS unit)                                                               | `<MazAvatar size="6rem">` (value ×3, render preserved)            |
+| `<MazBadge size="0.8rem">` (static `rem` size)                                                            | `<MazBadge size="sm">` (closest `MazSize` keyword)                |
 | `<MazPullToRefresh :on-click="x">`                                                                        | `<MazPullToRefresh :on-refresh="x">`                              |
 
 The `MazAvatar` rewrite targets only `<MazAvatar>` / `<maz-avatar>` opening
@@ -196,6 +197,14 @@ a valid v5 value, so this rewrite is idempotent. Bound values, a bound
 are reported as warnings at the end of the run. If you provide a `mazIconPath`
 (Nuxt `general.defaultMazIconPath`), note that v5 also prepends it to the
 relative URLs of a former `src` or `path`.
+
+The `MazBadge` rewrite targets only `<MazBadge>` / `<maz-badge>` opening tags.
+v5 `size` only accepts a `MazSize` keyword (the v4 value was the badge
+font-size). The keywords are `rem` font-sizes (`mini` 0.625, `xs` 0.6875, `sm`
+0.75, `md` 0.875, `lg` 1, `xl` 1.25), so a static `rem` value is mapped to the
+closest one (a tie goes to the larger keyword), which gives the table of the
+migration guide whatever the root font size. `px` / `em` values depend on the
+root or parent font size and are reported as warnings at the end of the run.
 
 The `MazPullToRefresh` rewrite targets only `<MazPullToRefresh>` /
 `<maz-pull-to-refresh>` opening tags. v5 renamed the callback prop `on-click`
@@ -314,7 +323,7 @@ Detected package manager: pnpm. Running `pnpm install`…
 [ … pnpm install output … ]
 
 Next: see https://maz-ui.com/guide/migration-v5 for the manual steps
-(foundation.radius → scales.rounded.md, MazIcon API, MazBadge sizes, MazChart update-mode).
+(foundation.radius → scales.rounded.md, MazIcon API, MazBadge px / em sizes, MazChart update-mode).
 ```
 
 ## Exit codes
@@ -338,8 +347,9 @@ context:
   `path` and `src` are rewritten by the `props` group.
 - **Icon values in scripts** - `h(MazBtn, { leftIcon })`, `v-bind` objects,
   `MazStepper` `steps[].icon`: keys too generic to rewrite safely in JS.
-- **`MazBadge` numeric `size`** — picking the right keyword (`mini`/`xs`/…)
-  is a judgment call.
+- **`MazBadge` `px` / `em` `size`** - the keyword depends on the root or
+  parent font size (reported as warnings). Static `rem` sizes are rewritten by
+  the `props` group.
 - **Theme preset radius reshape** — `foundation.radius` →
   `scales.rounded.md` needs to move the value to a new sibling block,
   which is too structural for a safe regex. The simpler color key renames

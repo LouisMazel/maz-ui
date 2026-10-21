@@ -213,6 +213,7 @@ export function transformProps(content: string): string {
   out = transformBareIconNames(out)
   out = transformMazIcon(out)
   out = transformAvatarSize(out)
+  out = transformBadgeSize(out)
   out = transformPullToRefresh(out)
 
   return out
@@ -256,6 +257,63 @@ function tripleLength(value: string): string {
 export function transformAvatarSize(content: string): string {
   return content.replace(MAZ_AVATAR_OPEN_TAG, tag =>
     tag.replace(AVATAR_SIZE_UNIT, (_, prefix, quote, num, unit) => `${prefix}${tripleLength(num)}${unit}${quote}`))
+}
+
+// --- 2f. MazBadge size: CSS length → MazSize keyword ------------------------
+// v5 `MazBadge` `size` only accepts a `MazSize` keyword, the v4 value was the
+// font-size of the badge. The keywords are rem font-sizes, so a static `rem`
+// value is mapped to the closest one (a tie goes to the larger keyword), which
+// matches the table of the migration guide whatever the root font size. `px` /
+// `em` values depend on the root or the parent font size: they are surfaced as
+// warnings by the CLI.
+
+const MAZ_BADGE_OPEN_TAG = openTags('MazBadge|maz-badge')
+const BADGE_STATIC_SIZE = /(?<![:\w-])(size\s*=\s*(["']))([^"']*)\2/
+const BADGE_SIZE_KEYWORDS = new Set(['mini', 'xs', 'sm', 'md', 'lg', 'xl'])
+const BADGE_KEYWORD_REM: [keyword: string, rem: number][] = [
+  ['mini', 0.625],
+  ['xs', 0.6875],
+  ['sm', 0.75],
+  ['md', 0.875],
+  ['lg', 1],
+  ['xl', 1.25],
+]
+
+function getClosestBadgeSize(rem: number): string {
+  let closest = BADGE_KEYWORD_REM[0]
+
+  for (const candidate of BADGE_KEYWORD_REM) {
+    if (Math.abs(candidate[1] - rem) <= Math.abs(closest[1] - rem) + 1e-9)
+      closest = candidate
+  }
+
+  return closest[0]
+}
+
+function parseRem(value: string): number | undefined {
+  if (!value.endsWith('rem'))
+    return undefined
+
+  const number = value.slice(0, -'rem'.length)
+
+  return /^[\d.]+$/.test(number) && Number.isFinite(Number(number)) ? Number(number) : undefined
+}
+
+export function transformBadgeSize(content: string): string {
+  return content.replace(MAZ_BADGE_OPEN_TAG, tag => tag.replace(BADGE_STATIC_SIZE, (match, prefix, quote, value) => {
+    const rem = parseRem(value.trim())
+    return rem === undefined ? match : `${prefix}${getClosestBadgeSize(rem)}${quote}`
+  }))
+}
+
+export function hasMazBadgeLengthSize(content: string): boolean {
+  for (const match of content.matchAll(MAZ_BADGE_OPEN_TAG)) {
+    const value = match[0].match(BADGE_STATIC_SIZE)?.[3].trim()
+
+    if (value && !BADGE_SIZE_KEYWORDS.has(value) && parseRem(value) === undefined)
+      return true
+  }
+  return false
 }
 
 // Detection-only: a bound `:size` / `v-bind:size` on a MazAvatar tag cannot be

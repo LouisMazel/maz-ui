@@ -2,11 +2,13 @@ import { describe, expect, it } from 'vitest'
 import {
   hasFoundationRadius,
   hasMazAvatarBoundSize,
+  hasMazBadgeLengthSize,
   hasMazIconLegacyApi,
   hasMazUiDistImport,
   hasMazUiRootImport,
   hasValibotImport,
   transformAvatarSize,
+  transformBadgeSize,
   transformBareIconNames,
   transformClassNames,
   transformConfig,
@@ -1401,6 +1403,93 @@ describe('transformFile with stylesheets and scripts', () => {
         const output = JSON.parse(transformFile('package.json', input, { addValibotDep: true }))
 
         expect(output.dependencies).toEqual({ 'maz-ui': '^5.0.0', 'valibot': '^1.3.1' })
+      })
+    })
+  })
+})
+
+describe('transformBadgeSize', () => {
+  describe.each([
+    ['0.6rem', 'mini'],
+    ['0.65rem', 'mini'],
+    ['0.7rem', 'xs'],
+    ['0.75rem', 'sm'],
+    ['0.8rem', 'sm'],
+    ['0.85rem', 'md'],
+    ['0.9rem', 'md'],
+    ['1rem', 'lg'],
+    ['1.1rem', 'lg'],
+    ['1.125rem', 'xl'],
+    ['1.5rem', 'xl'],
+    ['.875rem', 'md'],
+  ])('Given a MazBadge with size="%s"', (value, keyword) => {
+    describe('When transforming', () => {
+      it(`maps it to "${keyword}"`, () => {
+        expect(transformBadgeSize(`<MazBadge size="${value}">New</MazBadge>`))
+          .toBe(`<MazBadge size="${keyword}">New</MazBadge>`)
+      })
+    })
+  })
+
+  describe('Given a kebab-case maz-badge with other attributes', () => {
+    describe('When transforming', () => {
+      it('maps the size only', () => {
+        expect(transformBadgeSize(`<maz-badge color="info" size='0.8rem' :data-size="x">1</maz-badge>`))
+          .toBe(`<maz-badge color="info" size='sm' :data-size="x">1</maz-badge>`)
+      })
+    })
+  })
+
+  describe('Given keyword, bound, px and em sizes', () => {
+    describe('When transforming', () => {
+      it('leaves them unchanged', () => {
+        const input = `<MazBadge size="sm" /><MazBadge :size="badgeSize" /><MazBadge size="12px" /><MazBadge size="0.8em" />`
+        expect(transformBadgeSize(input)).toBe(input)
+      })
+    })
+  })
+
+  describe('Given a rem size on another component', () => {
+    describe('When transforming', () => {
+      it('leaves it unchanged', () => {
+        const input = `<MazIcon size="0.8rem" /><MazBadgeGroup size="0.8rem" />`
+        expect(transformBadgeSize(input)).toBe(input)
+      })
+    })
+  })
+
+  describe('Given an already migrated badge', () => {
+    describe('When transforming again', () => {
+      it('is a no-op', () => {
+        const once = transformBadgeSize(`<MazBadge size="0.8rem" />`)
+        expect(transformBadgeSize(once)).toBe(once)
+      })
+    })
+  })
+
+  describe('Given a Vue SFC', () => {
+    describe('When transforming the props group', () => {
+      it('maps the badge size', () => {
+        expect(transformProps(`<MazBadge size="1rem">x</MazBadge>`)).toBe(`<MazBadge size="lg">x</MazBadge>`)
+      })
+    })
+  })
+})
+
+describe('hasMazBadgeLengthSize', () => {
+  describe('Given px or em sizes on a MazBadge', () => {
+    describe('When checked', () => {
+      it('reports them', () => {
+        expect(hasMazBadgeLengthSize(`<MazBadge size="12px" />`)).toBe(true)
+        expect(hasMazBadgeLengthSize(`<maz-badge size="0.8em" />`)).toBe(true)
+      })
+    })
+  })
+
+  describe('Given keyword, rem and bound sizes', () => {
+    describe('When checked', () => {
+      it('does not report them', () => {
+        expect(hasMazBadgeLengthSize(`<MazBadge size="md" /><MazBadge size="0.8rem" /><MazBadge :size="s" /><MazBadge />`)).toBe(false)
       })
     })
   })

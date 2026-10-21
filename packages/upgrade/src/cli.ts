@@ -6,7 +6,7 @@ import { dirname, resolve } from 'node:path'
 import process from 'node:process'
 import { logger } from '@maz-ui/node'
 import { globby } from 'globby'
-import { ALL_GROUPS, hasFoundationRadius, hasMazAvatarBoundSize, hasMazIconLegacyApi, hasMazUiDistImport, hasMazUiRootImport, hasValibotImport, transformFile } from './transform'
+import { ALL_GROUPS, hasFoundationRadius, hasMazAvatarBoundSize, hasMazBadgeLengthSize, hasMazIconLegacyApi, hasMazUiDistImport, hasMazUiRootImport, hasValibotImport, transformFile } from './transform'
 
 const DEFAULT_IGNORES = [
   '**/node_modules/**',
@@ -126,6 +126,7 @@ Transform groups:
             color="background", active-color, rounded-size="base", internal
             class names (--has-*-icon, m-input-wrapper-*, drawer-anim-*),
             MazAvatar static size unit x3 (scale fix, render preserved),
+            MazBadge rem size → closest MazSize keyword,
             MazPullToRefresh on-click → on-refresh
   css       --maz-background → --maz-surface, --maz-border → --maz-divider,
             hsl(var(--maz-X)) collapse (incl. alpha → color-mix with a
@@ -155,7 +156,8 @@ What it does NOT do (handle by hand or with the @maz-ui/mcp server):
   - Reshape foundation.radius into scales.rounded.md (move + key restructure).
   - Map bound MazIcon :name / :path and the removed @loaded / @unloaded events
     (reported as warnings).
-  - Map numeric MazBadge size to the keyword scale.
+  - Map px / em MazBadge sizes to the keyword scale (reported as warnings,
+    rem values are rewritten).
   - MazChart updateMode default change (judgment call).
 
 Full migration guide: https://maz-ui.com/guide/migration-v5
@@ -218,6 +220,7 @@ interface PassResult {
   needsValibotDep: boolean
   radiusFiles: string[]
   avatarSizeFiles: string[]
+  badgeSizeFiles: string[]
   iconLegacyFiles: string[]
   distImportFiles: string[]
 }
@@ -241,6 +244,7 @@ function detectManualSteps(content: string, importsEnabled: boolean) {
     needsValibotDep: importsEnabled && hasValibotImport(content),
     radius: hasFoundationRadius(content),
     avatarSize: hasMazAvatarBoundSize(content),
+    badgeSize: hasMazBadgeLengthSize(content),
     iconLegacy: hasMazIconLegacyApi(content),
     distImport: hasMazUiDistImport(content),
   }
@@ -254,6 +258,7 @@ async function processSourceFiles(opts: CliOptions, cwd: string, packageJsonFile
   let needsValibotDep = false
   const radiusFiles: string[] = []
   const avatarSizeFiles: string[] = []
+  const badgeSizeFiles: string[] = []
   const iconLegacyFiles: string[] = []
   const distImportFiles: string[] = []
 
@@ -290,6 +295,7 @@ async function processSourceFiles(opts: CliOptions, cwd: string, packageJsonFile
       for (const [warning, files] of [
         [detection.radius, radiusFiles],
         [detection.avatarSize, avatarSizeFiles],
+        [detection.badgeSize, badgeSizeFiles],
         [detection.iconLegacy, iconLegacyFiles],
         [detection.distImport, distImportFiles],
       ] as const) {
@@ -304,7 +310,7 @@ async function processSourceFiles(opts: CliOptions, cwd: string, packageJsonFile
     }
   }
 
-  return { scanned, changed, needsUtilsDep, needsValibotDep, radiusFiles, avatarSizeFiles, iconLegacyFiles, distImportFiles }
+  return { scanned, changed, needsUtilsDep, needsValibotDep, radiusFiles, avatarSizeFiles, badgeSizeFiles, iconLegacyFiles, distImportFiles }
 }
 
 function processPackageJsonFiles(files: string[], opts: CliOptions, cwd: string, deps: { addUtilsDep: boolean, addValibotDep: boolean }): { scanned: number, changed: number, depsChanged: boolean } {
@@ -360,6 +366,14 @@ async function run(): Promise<void> {
     logger.log(`  → The size scale was fixed (no more x3). Multiply the CSS unit value by 3 to keep the same render, or use a MazSize keyword. Static size="<unit>" values were already rewritten.`)
   }
 
+  if (sources.badgeSizeFiles.length > 0) {
+    const cwdPrefix = `${cwd}/`
+    logger.log(`\n⚠ MazBadge px / em size detected in ${sources.badgeSizeFiles.length} file(s) - manual migration required:`)
+    for (const file of sources.badgeSizeFiles)
+      logger.log(`   - ${file.replace(cwdPrefix, '')}`)
+    logger.log(`  → size now only accepts a MazSize keyword (mini, xs, sm, md, lg, xl): pick the closest one (rem values were already rewritten).`)
+  }
+
   if (sources.iconLegacyFiles.length > 0) {
     const cwdPrefix = `${cwd}/`
     logger.log(`\n⚠ MazIcon v4 API detected in ${sources.iconLegacyFiles.length} file(s) - manual migration required:`)
@@ -377,7 +391,7 @@ async function run(): Promise<void> {
   }
 
   logger.log(`\nNext: see https://maz-ui.com/guide/migration-v5 for the manual steps`)
-  logger.log(`(foundation.radius → scales.rounded.md, MazIcon API, MazBadge sizes, MazChart update-mode).`)
+  logger.log(`(foundation.radius → scales.rounded.md, MazIcon API, MazBadge px / em sizes, MazChart update-mode).`)
 }
 
 run().catch((err) => {
