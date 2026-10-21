@@ -210,7 +210,7 @@ function isLastStep(step: number): boolean {
                   <template v-if="getStepIcon(step)">
                     <MazIcon
                       v-if="typeof getStepIcon(step) === 'string'"
-                      :name="getStepIcon(step) as string"
+                      :icon="getStepIcon(step) as string"
                     />
                     <component :is="getStepIcon(step)" v-else-if="getStepIcon(step)" />
                   </template>
