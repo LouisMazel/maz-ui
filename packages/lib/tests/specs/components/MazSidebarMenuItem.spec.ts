@@ -18,9 +18,9 @@ describe('given MazSidebarMenuItem component', () => {
       expect(wrapper.find('li.m-sidebar-menu-item').exists()).toBe(true)
     })
 
-    it('then the li has role="none"', () => {
+    it('then the li keeps its native list item semantics', () => {
       const wrapper = mountInsideSidebar('<MazSidebarMenuItem />')
-      expect(wrapper.find('li').attributes('role')).toBe('none')
+      expect(wrapper.find('li').attributes('role')).toBeUndefined()
     })
 
     it('then it has m-reset-css class on root', () => {

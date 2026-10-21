@@ -1,10 +1,15 @@
 import MazSidebar from '@components/MazSidebar.vue'
 import MazSidebarTrigger from '@components/MazSidebarTrigger.vue'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { mount } from '@vue/test-utils'
 
 vi.mock('@maz-ui/icons/lazy/MazBars3', () => ({
   MazBars3: { template: '<svg class="bars-stub" />' },
 }))
+
+beforeEach(() => {
+  vi.mocked(useTranslations).mockReturnValue({ t: (key: string) => key, locale: { value: 'en' } } as unknown as ReturnType<typeof useTranslations>)
+})
 
 function mountWithSidebar(sidebarProps: Record<string, unknown> = { open: true }) {
   return mount(MazSidebar, {
@@ -22,9 +27,9 @@ describe('given MazSidebarTrigger component', () => {
       expect(wrapper.find('button.m-sidebar-trigger').attributes('aria-expanded')).toBe('true')
     })
 
-    it('then the button has aria-label="Close sidebar"', () => {
+    it('then the button has the translated close label', () => {
       const wrapper = mountWithSidebar({ open: true })
-      expect(wrapper.find('button.m-sidebar-trigger').attributes('aria-label')).toBe('Close sidebar')
+      expect(wrapper.find('button.m-sidebar-trigger').attributes('aria-label')).toBe('aria.closeSidebar')
     })
   })
 
@@ -34,9 +39,9 @@ describe('given MazSidebarTrigger component', () => {
       expect(wrapper.find('button.m-sidebar-trigger').attributes('aria-expanded')).toBe('false')
     })
 
-    it('then the button has aria-label="Open sidebar"', () => {
+    it('then the button has the translated open label', () => {
       const wrapper = mountWithSidebar({ open: false })
-      expect(wrapper.find('button.m-sidebar-trigger').attributes('aria-label')).toBe('Open sidebar')
+      expect(wrapper.find('button.m-sidebar-trigger').attributes('aria-label')).toBe('aria.openSidebar')
     })
   })
 

@@ -1,6 +1,11 @@
 import MazSidebar from '@components/MazSidebar.vue'
 import { useSidebar } from '@composables/useSidebar'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { mount } from '@vue/test-utils'
+
+beforeEach(() => {
+  vi.mocked(useTranslations).mockReturnValue({ t: (key: string) => key, locale: { value: 'en' } } as unknown as ReturnType<typeof useTranslations>)
+})
 
 describe('given MazSidebar component', () => {
   describe('when rendered in push mode (default)', () => {
@@ -19,9 +24,9 @@ describe('given MazSidebar component', () => {
       expect(wrapper.find('aside').classes()).toContain('m-reset-css')
     })
 
-    it('then the aside has aria-label="Sidebar"', () => {
+    it('then the aside has the translated sidebar label', () => {
       const wrapper = mount(MazSidebar, { props: { open: true } })
-      expect(wrapper.find('aside').attributes('aria-label')).toBe('Sidebar')
+      expect(wrapper.find('aside').attributes('aria-label')).toBe('aria.sidebar')
     })
   })
 

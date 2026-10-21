@@ -95,7 +95,6 @@ function onKeyDown(event: KeyboardEvent) {
       <ul
         :id="subMenuId"
         class="m-sidebar-menu-sub__list maz:m-0 maz:flex maz:list-none maz:flex-col maz:gap-1 maz:p-0 maz:ps-3"
-        role="menu"
       >
         <slot />
       </ul>
