@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import type { MazSizeUnit } from './types'
 import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 
 import { computed, defineAsyncComponent, useSlots } from 'vue'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import MazBackdrop from './MazBackdrop.vue'
 import MazIcon from './MazIcon.vue'
 
@@ -75,6 +77,11 @@ const slots = useSlots()
 const hasTitle = computed(() => {
   return !!(title || slots.title)
 })
+
+const { t } = useTranslations()
+
+const instanceId = useInstanceUniqId({ componentName: 'MazDrawer' })
+const titleId = computed(() => `${instanceId.value}-title`)
 </script>
 
 <template>
@@ -83,6 +90,7 @@ const hasTitle = computed(() => {
     :justify
     :align
     variant="drawer"
+    :aria-labelledby="hasTitle ? titleId : undefined"
     :transition-name="`drawer-anim-${variant}`"
     @close="$emit('close')"
     @open="$emit('open')"
@@ -107,14 +115,14 @@ const hasTitle = computed(() => {
             hasTitle ? 'maz:justify-between' : 'maz:justify-end',
           ]"
         >
-          <h4 class="m-drawer-header__title maz:m-0 maz:font-display maz:text-xl maz:font-semibold">
+          <h4 :id="hasTitle ? titleId : undefined" class="m-drawer-header__title maz:m-0 maz:font-display maz:text-xl maz:font-semibold">
             <slot name="title" :close="close">
               {{ title }}
             </slot>
           </h4>
           <div v-if="!hideCloseButton" class="m-drawer-header__close maz:flex maz:justify-end">
-            <MazBtn size="sm" color="transparent" @click="close">
-              <MazIcon :icon="MazXMark" class="icon maz:text-lg" />
+            <MazBtn size="sm" color="transparent" :aria-label="t('aria.close')" @click="close">
+              <MazIcon :icon="MazXMark" class="icon maz:text-lg" aria-hidden="true" />
             </MazBtn>
           </div>
         </header>

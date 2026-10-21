@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { MazChevronLeft } from '@maz-ui/icons/raw/MazChevronLeft'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 import dayjs from 'dayjs/esm'
@@ -21,6 +22,8 @@ const emits = defineEmits([
   'open-year-switcher',
   'update:calendar-date',
 ])
+
+const { t } = useTranslations()
 
 const calendarDate2 = computed(() => dayjs(props.calendarDate))
 
@@ -51,8 +54,8 @@ function nextMonth() {
 
 <template>
   <div class="m-date-picker-calendar-switcher maz:flex maz:space-x-2 maz:border-b maz:border-divider maz:px-2 maz:py-1">
-    <MazBtn size="xs" color="transparent" type="button" @click="previousMonth">
-      <MazIcon :icon="MazChevronLeft" class="maz:text-lg" />
+    <MazBtn size="xs" color="transparent" type="button" :aria-label="t('aria.previousMonth')" @click="previousMonth">
+      <MazIcon :icon="MazChevronLeft" class="maz:text-lg" aria-hidden="true" />
     </MazBtn>
     <MazBtn
       size="sm"
@@ -72,8 +75,8 @@ function nextMonth() {
     >
       {{ yearLabel }}
     </MazBtn>
-    <MazBtn size="xs" color="transparent" type="button" @click="nextMonth">
-      <MazIcon :icon="MazChevronLeft" class="maz:rotate-180 maz:text-lg" />
+    <MazBtn size="xs" color="transparent" type="button" :aria-label="t('aria.nextMonth')" @click="nextMonth">
+      <MazIcon :icon="MazChevronLeft" class="maz:rotate-180 maz:text-lg" aria-hidden="true" />
     </MazBtn>
   </div>
 </template>

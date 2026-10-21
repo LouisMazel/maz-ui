@@ -16,7 +16,7 @@ describe('given MazPopover component', () => {
 
       expect(wrapper.find('.m-popover').exists()).toBe(true)
       expect(wrapper.find('.m-popover-trigger').exists()).toBe(true)
-      expect(wrapper.find('.m-popover-trigger').html()).toContain('<button>Click me</button>')
+      expect(wrapper.find('.m-popover-trigger button').text()).toBe('Click me')
     })
   })
 

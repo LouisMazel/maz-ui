@@ -148,6 +148,12 @@ You can set these defaults globally per preset — see [the theme `components.di
 The default widths are expressed in `rem`, so they scale with the preset's `base-font-size`. Presets with a larger base size (e.g. `ocean` at `16px`) ship rem values adjusted to keep the rendered pixel width consistent across presets.
 :::
 
+## Accessibility
+
+- The dialog is a modal `dialog` (`aria-modal`), labelled by its title and described by its content (override them with the `aria-labelledby` / `aria-describedby` props).
+- The focus moves into the dialog on open, stays trapped inside and goes back to the previous element on close. <kbd>Esc</kbd> closes it (`close-on-escape`).
+- While it is open, the rest of the page is `inert` (no focus, no click, hidden from assistive technologies), except the toasts and the live regions.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-dialog.doc.md-->
 
 <script setup>

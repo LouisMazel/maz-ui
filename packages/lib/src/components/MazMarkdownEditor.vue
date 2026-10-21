@@ -680,9 +680,47 @@ const ROUNDED_CLASS = {
 const writePanelId = computed(() => `${instanceId.value}-write`)
 const previewPanelId = computed(() => `${instanceId.value}-preview`)
 
+const TAB_MODES: MazMarkdownEditorMode[] = ['write', 'preview', 'split']
+
+function getTabId(tabMode: MazMarkdownEditorMode) {
+  return `${instanceId.value}-tab-${tabMode}`
+}
+
+/**
+ * Tabs keyboard pattern: the arrows (and Home / End) move to the next mode and select it
+ */
+function onTabKeydown(event: KeyboardEvent) {
+  const currentIndex = TAB_MODES.indexOf(mode.value)
+  const isRtl = event.currentTarget instanceof HTMLElement && globalThis.getComputedStyle(event.currentTarget).direction === 'rtl'
+  const forwardKey = isRtl ? 'ArrowLeft' : 'ArrowRight'
+  const backwardKey = isRtl ? 'ArrowRight' : 'ArrowLeft'
+
+  let nextIndex: number | undefined
+
+  if (event.key === forwardKey)
+    nextIndex = (currentIndex + 1) % TAB_MODES.length
+  else if (event.key === backwardKey)
+    nextIndex = (currentIndex - 1 + TAB_MODES.length) % TAB_MODES.length
+  else if (event.key === 'Home')
+    nextIndex = 0
+  else if (event.key === 'End')
+    nextIndex = TAB_MODES.length - 1
+
+  if (nextIndex === undefined)
+    return
+
+  event.preventDefault()
+
+  const nextMode = TAB_MODES[nextIndex]
+  setMode(nextMode)
+  nextTick(() => document.getElementById(getTabId(nextMode))?.focus())
+}
+
 const tabItems = computed(() => [
   {
-    'id': `${instanceId.value}-tab-write`,
+    'id': getTabId('write'),
+    'tabindex': mode.value === 'write' ? 0 : -1,
+    'onKeydown': onTabKeydown,
     'color': 'transparent' as const,
     'outlined': true,
     'active': mode.value === 'write',
@@ -696,7 +734,9 @@ const tabItems = computed(() => [
     'onClick': () => setMode('write'),
   },
   {
-    'id': `${instanceId.value}-tab-preview`,
+    'id': getTabId('preview'),
+    'tabindex': mode.value === 'preview' ? 0 : -1,
+    'onKeydown': onTabKeydown,
     'color': 'transparent' as const,
     'outlined': true,
     'active': mode.value === 'preview',
@@ -710,7 +750,9 @@ const tabItems = computed(() => [
     'onClick': () => setMode('preview'),
   },
   {
-    'id': `${instanceId.value}-tab-split`,
+    'id': getTabId('split'),
+    'tabindex': mode.value === 'split' ? 0 : -1,
+    'onKeydown': onTabKeydown,
     'color': 'transparent' as const,
     'outlined': true,
     'active': mode.value === 'split',
@@ -781,12 +823,8 @@ defineExpose({
       <div
         class="m-markdown-editor__header maz:flex maz:items-center maz:justify-between maz:gap-2 maz:border-b maz:bg-container maz:px-2 maz:py-1.5"
       >
-        <div
-          class="m-markdown-editor__tabs maz:flex maz:gap-1"
-          role="tablist"
-          :aria-label="name"
-        >
-          <MazBtnGroup size="sm" :items="tabItems" />
+        <div class="m-markdown-editor__tabs maz:flex maz:gap-1">
+          <MazBtnGroup size="sm" :items="tabItems" role="tablist" :aria-label="name" />
         </div>
 
         <div
@@ -861,7 +899,10 @@ defineExpose({
       >
         <div
           v-show="mode !== 'preview'"
+          :id="writePanelId"
           class="m-markdown-editor__editor maz:flex maz:min-w-0 maz:flex-1"
+          role="tabpanel"
+          :aria-labelledby="getTabId('write')"
         >
           <div
             v-if="lineNumbers"
@@ -883,8 +924,6 @@ defineExpose({
             :disabled
             :readonly
             :required
-            role="tabpanel"
-            :aria-labelledby="`${instanceId}-tab-write`"
             @focus="handleFocus"
             @blur="handleBlur"
             @change="handleChange"
@@ -899,7 +938,7 @@ defineExpose({
           class="m-markdown-editor__preview maz:min-w-0 maz:flex-1 maz:px-4 maz:py-3 maz:text-sm"
           :class="{ '--split maz:border-t maz:border-divider maz:tab-s:border-t-0 maz:tab-s:border-l maz:dark:border-divider-400': mode === 'split' }"
           role="tabpanel"
-          :aria-labelledby="`${instanceId}-tab-preview`"
+          :aria-labelledby="getTabId('preview')"
           :style="{ minHeight: `${rows * 1.5}rem` }"
         >
           <div v-if="previewHtml" class="m-markdown-editor__preview-content" v-html="previewHtml" />

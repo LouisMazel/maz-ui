@@ -709,6 +709,12 @@ export interface MazTableHeadersEnriched {
 }
 ```
 
+## Accessibility
+
+- The column headers have `scope="col"` by default (override it with the `scope` of the header).
+- A sortable column header exposes its state with `aria-sort` (`ascending`, `descending` or `none`), is focusable and sorted with <kbd>Enter</kbd> or <kbd>Space</kbd>.
+- The selection checkboxes are labelled from `@maz-ui/translations` (`aria.selectAll`, `aria.selectRow`).
+
 ## Props & Events emitted
 
 <!--@include: ./../../.vitepress/generated-docs/maz-table.doc.md-->

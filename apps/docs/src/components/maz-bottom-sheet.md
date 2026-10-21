@@ -457,6 +457,10 @@ function openProductOptions() {
   </template>
 </ComponentDemo>
 
+## Accessibility
+
+The bottom sheet is a modal `dialog` labelled by its `title` and described by its content. The focus is trapped inside while it is open, <kbd>Esc</kbd> closes it, and the rest of the page is `inert` (except the toasts and the live regions).
+
 <!--@include: ./../../.vitepress/generated-docs/maz-bottom-sheet.doc.md-->
 
 <script setup>

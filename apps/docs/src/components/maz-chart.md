@@ -318,6 +318,14 @@ const lineChart = {
   }
 </script>
 
+## Accessibility
+
+A chart is drawn in a `<canvas>`, which has no accessible content. Give it a name with `aria-label` (or `aria-labelledby`): the canvas is then exposed as an image (`role="img"`). For complex data, also provide the values in text (a table, a summary) next to the chart.
+
+```vue
+<MazChart type="bar" :data="data" aria-label="Sales by quarter, from 120 to 340 units" />
+```
+
 <!--@include: ./../../.vitepress/generated-docs/maz-chart.doc.md-->
 
 ## Types

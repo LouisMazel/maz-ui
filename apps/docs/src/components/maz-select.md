@@ -435,5 +435,14 @@ const customOptions = [
 type ModelValueSimple = string | number | null | undefined | boolean
 ```
 
+## Accessibility
+
+`MazSelect` follows the [WAI-ARIA combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) with a listbox popup:
+
+- The input is a `combobox` (`aria-haspopup="listbox"`, `aria-expanded`, `aria-controls`).
+- The list is a `listbox` (`aria-multiselectable` in multiple mode) labelled by the `label`, `top-label` or `placeholder`, each option is an `option` with `aria-selected`.
+- **Keyboard**: <kbd>↓</kbd> / <kbd>↑</kbd> / <kbd>Space</kbd> or a letter open the list, the arrows move between options, <kbd>Home</kbd> / <kbd>End</kbd> go to the first / last option, <kbd>Enter</kbd> selects, <kbd>Esc</kbd> closes.
+- The labels read by screen readers (toggle button, empty results) come from `@maz-ui/translations` (`aria` namespace).
+
 <!--@include: ./../../.vitepress/mixins/maz-input-props.md-->
 <!--@include: ./../../.vitepress/generated-docs/maz-select.doc.md-->

@@ -11,6 +11,7 @@ import {
   ref,
   useSlots,
 } from 'vue'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
 const {
   modelValue,
@@ -85,6 +86,20 @@ const currentStep = computed({
     emits('update:model-value', value)
   },
 })
+
+const instanceId = useInstanceUniqId({ componentName: 'MazStepper' })
+
+function getHeaderId(step: number) {
+  return `${instanceId.value}-header-${step}`
+}
+
+function getContentId(step: number) {
+  return `${instanceId.value}-content-${step}`
+}
+
+function isStepOpen(step: number) {
+  return allStepsOpened || currentStep.value === step
+}
 
 function getStepStateData(step: number): { icon?: Component, class: string } {
   if (isStepSuccess(step)) {
@@ -177,8 +192,11 @@ function isLastStep(step: number): boolean {
     <template v-for="step in stepCount" :key="step">
       <button
         v-if="hasDataForStep('title', step)"
-        :id="`header-step-${step}`"
+        :id="getHeaderId(step)"
         type="button"
+        :aria-current="step === currentStep ? 'step' : undefined"
+        :aria-expanded="isStepOpen(step) ? 'true' : 'false'"
+        :aria-controls="getContentId(step)"
         :disabled="isStepDisabled(step)"
         class="m-stepper__header maz:flex maz:w-full maz:cursor-pointer maz:items-center maz:justify-between maz:space-x-4 maz:rounded-md maz:px-4 maz:py-2 maz:text-start maz:transition-colors maz:duration-200 maz:select-text"
         :class="[
@@ -210,7 +228,7 @@ function isLastStep(step: number): boolean {
                   <template v-if="getStepIcon(step)">
                     <MazIcon
                       v-if="typeof getStepIcon(step) === 'string'"
-                      :name="getStepIcon(step) as string"
+                      :icon="getStepIcon(step) as string"
                     />
                     <component :is="getStepIcon(step)" v-else-if="getStepIcon(step)" />
                   </template>
@@ -253,6 +271,7 @@ function isLastStep(step: number): boolean {
       </button>
 
       <div
+        :id="getContentId(step)"
         class="m-stepper__content maz:ms-[1.95rem] maz:border-s maz:py-2 maz:ps-8"
         :class="{
           'maz:border-transparent': isLastStep(step),
@@ -260,8 +279,8 @@ function isLastStep(step: number): boolean {
         }"
       >
         <MazExpandAnimation
-          :model-value="allStepsOpened || currentStep === step"
-          :aria-labelledby="`header-step-${step}`"
+          :model-value="isStepOpen(step)"
+          :aria-labelledby="hasDataForStep('title', step) ? getHeaderId(step) : undefined"
         >
           <div class="m-stepper__content__wrapper maz:py-2">
             <!-- @slot content-${step} - Content of the step

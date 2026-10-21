@@ -4,6 +4,7 @@ import type { PropType } from 'vue'
 import type { MazColor } from '../../types'
 import type { MazDatePickerValue } from '../types'
 import { debounce } from '@maz-ui/utils/helpers/debounce'
+import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 import dayjs from 'dayjs/esm'
 import { computed, ref, watch } from 'vue'
 import MazBtn from '../../MazBtn.vue'
@@ -30,7 +31,7 @@ const props = defineProps({
   range: { type: Boolean, required: true },
 })
 
-const emits = defineEmits(['update:model-value', 'update:hoverred-day'])
+const emits = defineEmits(['update:model-value', 'update:hoverred-day', 'navigate'])
 
 enum DaySelect {
   UNSELECTED,
@@ -63,6 +64,144 @@ const emptyDaysCount = computed(() => {
   const firstDayMonth = getFirstDayOfMonth(props.calendarDate)
   return (firstDayMonth - props.firstDayOfWeek + 7) % 7
 })
+
+const DATE_KEY_FORMAT = 'YYYY-MM-DD'
+
+function getDateKey(date: Dayjs) {
+  return date.format(DATE_KEY_FORMAT)
+}
+
+/**
+ * The days split in weeks (rows of the grid), the leading empty cells are `undefined`
+ */
+const weeks = computed(() => {
+  const cells: ({ label: string | number, date: Dayjs } | undefined)[] = [
+    ...Array.from<undefined>({ length: emptyDaysCount.value }).fill(undefined),
+    ...monthDays.value,
+  ]
+
+  return Array.from({ length: Math.ceil(cells.length / 7) }, (_v, i) => cells.slice(i * 7, i * 7 + 7))
+})
+
+function getDayLabel(date: Dayjs) {
+  return formatDate(date.toDate(), props.locale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+}
+
+function isToday(date: Dayjs) {
+  return date.isSame(dayjs(), 'date')
+}
+
+function isDayDisabled(date: Dayjs) {
+  return props.disabled
+    || isSmallerMinDate(date)
+    || isBiggerMaxDate(date)
+    || isDisabledWeekly(date)
+    || isDisabledDate(date)
+}
+
+const focusedDateKey = ref<string>()
+
+function getSelectedDateKey(): string | undefined {
+  const value = props.modelValue
+
+  if (isRangeValue(value))
+    return value.start ? getDateKey(dayjs(value.start)) : undefined
+
+  return value && isValidDate(value) ? getDateKey(dayjs(value)) : undefined
+}
+
+/**
+ * Roving tabindex: a single day of the month is in the tab sequence, the arrows move between days
+ */
+const tabbableDateKey = computed(() => {
+  const enabledKeys = monthDays.value.filter(({ date }) => !isDayDisabled(date)).map(({ date }) => getDateKey(date))
+  const candidates = [focusedDateKey.value, getSelectedDateKey(), getDateKey(dayjs())]
+
+  return candidates.find(key => key && enabledKeys.includes(key)) ?? enabledKeys[0]
+})
+
+function isBeyondBounds(date: Dayjs, step: number) {
+  if (step < 0)
+    return !!props.minDate && date.isBefore(props.minDate, 'date')
+
+  return !!props.maxDate && date.isAfter(props.maxDate, 'date')
+}
+
+function getEnabledDate(date: Dayjs, step: number): Dayjs | undefined {
+  let candidate = date
+
+  for (let attempt = 0; attempt < 366; attempt++) {
+    if (isBeyondBounds(candidate, step))
+      return undefined
+
+    if (!isDayDisabled(candidate))
+      return candidate
+
+    candidate = candidate.add(step, 'day')
+  }
+
+  return undefined
+}
+
+function getKeyboardTarget(event: KeyboardEvent, date: Dayjs): { date: Dayjs, step: number } | undefined {
+  const isRtl = !!MazDatePickerGrid.value && globalThis.getComputedStyle(MazDatePickerGrid.value).direction === 'rtl'
+  const startOfWeek = date.subtract((date.day() - props.firstDayOfWeek + 7) % 7, 'day')
+
+  switch (event.key) {
+    case 'ArrowRight':
+      return { date: date.add(isRtl ? -1 : 1, 'day'), step: isRtl ? -1 : 1 }
+    case 'ArrowLeft':
+      return { date: date.add(isRtl ? 1 : -1, 'day'), step: isRtl ? 1 : -1 }
+    case 'ArrowDown':
+      return { date: date.add(7, 'day'), step: 1 }
+    case 'ArrowUp':
+      return { date: date.subtract(7, 'day'), step: -1 }
+    case 'Home':
+      return { date: startOfWeek, step: 1 }
+    case 'End':
+      return { date: startOfWeek.add(6, 'day'), step: -1 }
+    case 'PageUp':
+      return { date: date.subtract(1, event.shiftKey ? 'year' : 'month'), step: -1 }
+    case 'PageDown':
+      return { date: date.add(1, event.shiftKey ? 'year' : 'month'), step: 1 }
+    default:
+      return undefined
+  }
+}
+
+function focusDate(date: Dayjs) {
+  const root = MazDatePickerGrid.value?.closest('.maz-picker-calendar__months') ?? MazDatePickerGrid.value
+  const dayButton = root?.querySelector<HTMLElement>(`[data-date="${getDateKey(date)}"]:not(:disabled)`)
+
+  if (dayButton) {
+    dayButton.focus()
+    return
+  }
+
+  // The day is in a month not displayed: the calendar switches month then focuses it
+  emits('navigate', date.format())
+}
+
+function onDayKeydown(event: KeyboardEvent, date: Dayjs) {
+  const target = getKeyboardTarget(event, date)
+
+  if (!target)
+    return
+
+  event.preventDefault()
+
+  const enabledDate = getEnabledDate(target.date, target.step)
+
+  if (enabledDate)
+    focusDate(enabledDate)
+}
+
+function onDayFocus(date: Dayjs) {
+  focusedDateKey.value = getDateKey(date)
+
+  if (props.range)
+    setHoverredDay(date)
+}
 
 function setHoverredDay(day?: Dayjs) {
   const value = props.modelValue
@@ -285,42 +424,50 @@ watch(
         class="maz-picker-calendar-grid__container maz:relative maz:grid maz:grid-cols-7 maz:items-start maz:gap-y-1"
         :class="{ '--is-range': range, 'maz:gap-x-1': !range }"
       >
-        <div v-for="first in emptyDaysCount" :key="first" />
-        <MazBtn
-          v-for="({ label, date }, i) in monthDays"
-          :key="i"
-          size="mini"
-          :color="getDayButtonColor(date)"
-          type="button"
-          :block="inline"
-          :disabled="
-            disabled
-              || isSmallerMinDate(date)
-              || isBiggerMaxDate(date)
-              || isDisabledWeekly(date)
-              || isDisabledDate(date)
-          "
-          class="maz:size-8 maz:cursor-pointer maz:rounded-full"
-          :class="{
-            '--is-first': isFirstDay(date) && isSelectedOrBetween(date) === DaySelect.SELECTED,
-            '--is-last': isLastDay(date) && isSelectedOrBetween(date) === DaySelect.SELECTED,
-            '--is-last-hoverred': isLastDayHoverred(date),
-            '--is-selected': isSelectedOrBetween(date) === DaySelect.SELECTED,
-            '--is-between': isSelectedOrBetween(date) === DaySelect.BETWEEN,
-            '--is-between-hoverred': range
-              ? isBetweenHoverred(date) === DaySelect.BETWEEN_HOVERRED
-              : undefined,
-          }"
-          @click="selectDay(date)"
-          @mouseover="range ? setHoverredDay(date) : undefined"
-          @mouseleave="range ? setHoverredDay() : undefined"
-          @focus="range ? setHoverredDay(date) : undefined"
-          @blur="range ? setHoverredDay() : undefined"
-        >
-          <span class="maz:text-sm">
-            {{ label }}
-          </span>
-        </MazBtn>
+        <div v-for="(week, weekIndex) in weeks" :key="weekIndex" role="row" class="maz:contents">
+          <template v-for="(day, dayIndex) in week" :key="day ? getDateKey(day.date) : `empty-${dayIndex}`">
+            <div v-if="!day" role="gridcell" />
+            <div
+              v-else
+              role="gridcell"
+              class="maz:contents"
+              :aria-selected="isSelectedOrBetween(day.date) !== DaySelect.UNSELECTED ? 'true' : undefined"
+            >
+              <MazBtn
+                size="mini"
+                :color="getDayButtonColor(day.date)"
+                type="button"
+                :block="inline"
+                :disabled="isDayDisabled(day.date)"
+                :data-date="getDateKey(day.date)"
+                :aria-label="getDayLabel(day.date)"
+                :aria-current="isToday(day.date) ? 'date' : undefined"
+                :tabindex="tabbableDateKey === getDateKey(day.date) ? 0 : -1"
+                class="maz:size-8 maz:cursor-pointer maz:rounded-full"
+                :class="{
+                  '--is-first': isFirstDay(day.date) && isSelectedOrBetween(day.date) === DaySelect.SELECTED,
+                  '--is-last': isLastDay(day.date) && isSelectedOrBetween(day.date) === DaySelect.SELECTED,
+                  '--is-last-hoverred': isLastDayHoverred(day.date),
+                  '--is-selected': isSelectedOrBetween(day.date) === DaySelect.SELECTED,
+                  '--is-between': isSelectedOrBetween(day.date) === DaySelect.BETWEEN,
+                  '--is-between-hoverred': range
+                    ? isBetweenHoverred(day.date) === DaySelect.BETWEEN_HOVERRED
+                    : undefined,
+                }"
+                @click="selectDay(day.date)"
+                @keydown="onDayKeydown($event, day.date)"
+                @mouseover="range ? setHoverredDay(day.date) : undefined"
+                @mouseleave="range ? setHoverredDay() : undefined"
+                @focus="onDayFocus(day.date)"
+                @blur="range ? setHoverredDay() : undefined"
+              >
+                <span class="maz:text-sm" aria-hidden="true">
+                  {{ day.label }}
+                </span>
+              </MazBtn>
+            </div>
+          </template>
+        </div>
       </div>
     </TransitionGroup>
   </div>

@@ -3,6 +3,8 @@
 @import 'tailwindcss' prefix(maz);
 @import 'maz-ui/tailwindcss/theme.css';
 @import 'maz-ui/tailwindcss/utilities.css';
+/* Base styles of maz-ui/style.css (reset, container vars, animations): the docs build their own Tailwind, so the full stylesheet is not imported */
+@import '../../../../packages/lib/src/css/index.css';
 
 @source "./../../src/**/*.{md,vue,ts,js,css,scss}";
 @source "./../../components/**/*.vue";

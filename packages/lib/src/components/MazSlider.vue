@@ -137,25 +137,66 @@ function roundToStep(value: number): number {
   return Math.round((value - min) / step) * step + min
 }
 
+const PAGE_STEP_MULTIPLIER = 10
+
+/**
+ * A cursor can not go below the previous cursor nor above the next one
+ */
+function getCursorBounds(i: number) {
+  const values = tmpValues.value ?? []
+
+  return {
+    lower: i > 0 ? values[i - 1] : min,
+    upper: i < values.length - 1 ? values[i + 1] : max,
+  }
+}
+
+function getKeyboardValue(event: KeyboardEvent, i: number): number | undefined {
+  const values = tmpValues.value
+
+  if (!values)
+    return undefined
+
+  const current = values[i]
+  const { lower, upper } = getCursorBounds(i)
+
+  switch (event.key) {
+    case 'ArrowLeft':
+    case 'ArrowDown':
+      return isBetween(current - step, values[i - 1], values[i + 1], 'minus') ? Math.max(min, current - step) : current
+    case 'ArrowRight':
+    case 'ArrowUp':
+      return isBetween(current + step, values[i - 1], values[i + 1], 'plus') ? Math.min(max, current + step) : current
+    case 'PageDown':
+      return Math.max(lower, current - step * PAGE_STEP_MULTIPLIER)
+    case 'PageUp':
+      return Math.min(upper, current + step * PAGE_STEP_MULTIPLIER)
+    case 'Home':
+      return lower
+    case 'End':
+      return upper
+    default:
+      return undefined
+  }
+}
+
+/**
+ * Slider keyboard pattern: arrows move by one step, Page Up / Page Down by ten steps,
+ * Home / End to the lowest / highest value allowed for the cursor
+ */
 function cursorKeyDown(event: KeyboardEvent, i: number) {
-  if (event.key === 'ArrowLeft') {
-    if (
-      tmpValues.value
-      && isBetween(tmpValues.value[i] - step, tmpValues.value[i - 1], tmpValues.value[i + 1], 'minus')
-    ) {
-      tmpValues.value[i] = Math.max(min, tmpValues.value[i] - step)
-      emitValue(tmpValues.value)
-    }
-  }
-  // ArrowRight
-  else if (
-    event.key === 'ArrowRight'
-    && tmpValues.value
-    && isBetween(tmpValues.value[i] + step, tmpValues.value[i - 1], tmpValues.value[i + 1], 'plus')
-  ) {
-    tmpValues.value[i] = Math.min(max, tmpValues.value[i] + step)
-    emitValue(tmpValues.value)
-  }
+  const value = getKeyboardValue(event, i)
+
+  if (value === undefined || !tmpValues.value)
+    return
+
+  event.preventDefault()
+
+  if (value === tmpValues.value[i])
+    return
+
+  tmpValues.value[i] = value
+  emitValue(tmpValues.value)
 }
 function blurCursor(i: number) {
   activeCursor.value = undefined
@@ -341,6 +382,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
         :aria-valuenow="Number(tmpValues?.[i])"
         :aria-valuemin="min"
         :aria-valuemax="max"
+        :aria-valuetext="getLabel(i)"
         :data-label="getLabel(i)"
         class="m-slider__btn maz:flex maz:flex-center maz:rounded-full maz:border maz:border-solid maz:border-divider maz:bg-surface maz:shadow-md maz:hover:bg-surface-200"
         :class="{
@@ -352,7 +394,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
         @focus.passive="handleMousedown($event, i)"
         @blur.passive="blurCursor(i)"
         @touchend.passive="blurCursor(i)"
-        @keydown.passive="cursorKeyDown($event, i)"
+        @keydown="cursorKeyDown($event, i)"
       >
         <span class="maz:flex maz:items-center maz:text-foreground">
           {{ tmpValues?.[i] }}

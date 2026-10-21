@@ -62,7 +62,7 @@ describe('MazDialog extended coverage', () => {
       const wrapper = getWrapper({ modelValue: true, title: 'My Dialog Title' })
       expect(wrapper.find('.m-dialog-title').exists()).toBe(true)
       expect(wrapper.find('.m-dialog-title').text()).toBe('My Dialog Title')
-      expect(wrapper.find('#dialogTitle').exists()).toBe(true)
+      expect(wrapper.find('.m-dialog[role="dialog"]').attributes('aria-labelledby')).toBe(wrapper.find('.m-dialog-title').attributes('id'))
     })
 
     it('should apply --has-title class to header when title is set', () => {

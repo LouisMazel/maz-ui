@@ -152,3 +152,26 @@ describe('mazChart', () => {
     expect(instance.destroy).toHaveBeenCalledTimes(1)
   })
 })
+
+describe('given a MazChart', () => {
+  describe('when it has no accessible name', () => {
+    it('then the canvas has no role', () => {
+      const wrapper = mount(MazChart, { props: { data: pieChart.data, type: pieChart.type as any } })
+
+      expect(wrapper.find('canvas').attributes('role')).toBeUndefined()
+    })
+  })
+
+  describe.each([
+    ['aria-label', 'Sales by quarter'],
+    ['aria-labelledby', 'chart-title'],
+  ])('when it has an %s', (attribute, value) => {
+    it('then the canvas is exposed as a named image', () => {
+      const wrapper = mount(MazChart, { props: { data: pieChart.data, type: pieChart.type as any }, attrs: { [attribute]: value } })
+      const canvas = wrapper.find('canvas')
+
+      expect(canvas.attributes('role')).toBe('img')
+      expect(canvas.attributes(attribute)).toBe(value)
+    })
+  })
+})

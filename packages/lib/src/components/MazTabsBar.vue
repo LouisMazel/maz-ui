@@ -136,6 +136,7 @@ import {
   watch,
 } from 'vue'
 import { GLOBAL_CONFIG_INJECTION_KEY } from '../composables/useGlobalConfig'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import MazBtn from './MazBtn.vue'
 
 const {
@@ -276,6 +277,72 @@ function selectTab(tabIndex: number) {
 const tabsBarRef = ref<HTMLDivElement>()
 const itemRefs = ref<HTMLElement[]>([])
 
+const ownIdPrefix = useInstanceUniqId({ componentName: 'MazTabsBar' })
+const idPrefix = computed(() => tabsContext.value?.idPrefix?.value ?? ownIdPrefix.value)
+
+function getTabId(index: number) {
+  return `${idPrefix.value}-tab-${index + 1}`
+}
+
+/**
+ * The panels only exist inside MazTabs (MazTabsContentItem)
+ */
+function getPanelId(index: number) {
+  return tabsContext.value?.idPrefix ? `${idPrefix.value}-panel-${index + 1}` : undefined
+}
+
+/**
+ * Roving tabindex: only the active tab is in the tab sequence, the arrows move between tabs
+ */
+function getTabIndex(index: number) {
+  const activeIndex = currentTab.value - 1
+  const hasFocusableActiveTab = normalizedItems.value[activeIndex] && !normalizedItems.value[activeIndex].disabled
+
+  if (hasFocusableActiveTab)
+    return index === activeIndex ? 0 : -1
+
+  return index === normalizedItems.value.findIndex(item => !item.disabled) ? 0 : -1
+}
+
+function getNextEnabledIndex(fromIndex: number, step: 1 | -1) {
+  const count = normalizedItems.value.length
+
+  for (let offset = 1; offset <= count; offset++) {
+    const index = (fromIndex + step * offset + count) % count
+
+    if (!normalizedItems.value[index].disabled)
+      return index
+  }
+
+  return fromIndex
+}
+
+function onTabKeydown(event: KeyboardEvent, index: number) {
+  const isRtl = !!tabsBarRef.value && globalThis.getComputedStyle(tabsBarRef.value).direction === 'rtl'
+  const forwardKey = isRtl ? 'ArrowLeft' : 'ArrowRight'
+  const backwardKey = isRtl ? 'ArrowRight' : 'ArrowLeft'
+
+  let targetIndex: number | undefined
+
+  if (event.key === forwardKey)
+    targetIndex = getNextEnabledIndex(index, 1)
+  else if (event.key === backwardKey)
+    targetIndex = getNextEnabledIndex(index, -1)
+  else if (event.key === 'Home')
+    targetIndex = getNextEnabledIndex(-1, 1)
+  else if (event.key === 'End')
+    targetIndex = getNextEnabledIndex(normalizedItems.value.length, -1)
+
+  if (targetIndex === undefined || normalizedItems.value[targetIndex]?.disabled)
+    return
+
+  event.preventDefault()
+  itemRefs.value[targetIndex]?.focus()
+
+  if (targetIndex !== index)
+    selectTab(targetIndex)
+}
+
 function isActiveTab(index: number) {
   return currentTab.value === index + 1
 }
@@ -393,6 +460,7 @@ onMounted(() => {
 <template>
   <div
     ref="tabsBarRef"
+    role="tablist"
     class="m-tabs-bar m-reset-css maz:relative maz:inline-flex maz:max-w-full maz:gap-1 maz:overflow-x-auto maz:bg-container maz:p-2 maz:align-top"
     :class="[
       ROUNDED_CLASS[resolvedRoundedSize],
@@ -407,6 +475,7 @@ onMounted(() => {
     ]"
   >
     <div
+      aria-hidden="true"
       class="m-tabs-bar__indicator maz:absolute maz:left-0 maz:text-center"
       :class="[
         ROUNDED_CLASS[resolvedRoundedSize],
@@ -419,8 +488,9 @@ onMounted(() => {
     />
     <template v-for="(item, index) in normalizedItems" :key="index">
       <MazBtn
-        :ref="(mazBtn) => addElementToItemRefs({ mazBtn: mazBtn as ComponentPublicInstance<any>, index })"
         v-bind="item.btnProps"
+        :id="getTabId(index)"
+        :ref="(mazBtn) => addElementToItemRefs({ mazBtn: mazBtn as ComponentPublicInstance<any>, index })"
         :color="item.color"
         :size="item.size ?? resolvedSize"
         :rounded-size="item.roundedSize ?? resolvedRoundedSize"
@@ -431,7 +501,12 @@ onMounted(() => {
         }"
         class="m-tabs-bar__item maz:relative maz:z-1 maz:flex-none maz:font-medium"
         :style="getTabStyle(index, item.disabled)"
+        role="tab"
+        :aria-selected="isActiveTab(index) ? 'true' : 'false'"
+        :aria-controls="getPanelId(index)"
+        :tabindex="getTabIndex(index)"
         @click="item.disabled ? undefined : selectTab(index)"
+        @keydown="onTabKeydown($event, index)"
       >
         <!--
           @slot item - Content of item to display in the tabs bar

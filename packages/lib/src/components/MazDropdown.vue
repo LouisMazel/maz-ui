@@ -436,8 +436,7 @@ watch(
     <template #default="{ open, close, toggle }">
       <div
         :id="`${instanceId}-menu`"
-        role="menu"
-        :aria-labelledby="`${instanceId}-labelspan`"
+        role="none"
         class="m-dropdown__menu maz:flex maz:min-h-max maz:min-w-max maz:flex-col maz:gap-1 maz:overflow-auto maz:p-2"
         tabindex="-1"
         :class="menuPanelClass"

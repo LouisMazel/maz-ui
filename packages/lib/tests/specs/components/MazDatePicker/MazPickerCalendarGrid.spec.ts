@@ -667,12 +667,8 @@ describe('given MazPickerCalendarGrid component', () => {
       })
       await vi.dynamicImportSettled()
 
-      // Count total children in container (empties + buttons)
-      const sundayContainer = wrapperSunday.find('.maz-picker-calendar-grid__container')
-      const mondayContainer = wrapperMonday.find('.maz-picker-calendar-grid__container')
-
-      const sundayChildCount = sundayContainer.element.children.length
-      const mondayChildCount = mondayContainer.element.children.length
+      const sundayChildCount = wrapperSunday.findAll('.maz-picker-calendar-grid__container [role="gridcell"]').length
+      const mondayChildCount = wrapperMonday.findAll('.maz-picker-calendar-grid__container [role="gridcell"]').length
 
       // Different firstDayOfWeek should lead to different number of empty divs
       expect(sundayChildCount).not.toBe(mondayChildCount)

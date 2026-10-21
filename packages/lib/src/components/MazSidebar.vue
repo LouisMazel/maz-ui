@@ -69,6 +69,7 @@ export interface MazSidebarProps {
 </script>
 
 <script lang="ts" setup>
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { getCookie, setCookie } from '@maz-ui/utils/helpers/cookie'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
 import { computed, defineAsyncComponent, onMounted, provide, ref, useSSRContext, watch } from 'vue'
@@ -188,6 +189,8 @@ watch(internalOpen, (value) => {
     setCookie(persistKey, String(value))
 })
 
+const { t } = useTranslations()
+
 const uniqueId = useInstanceUniqId({
   componentName: 'MazSidebar',
   providedId: id,
@@ -256,7 +259,7 @@ defineExpose({ toggle, setOpen })
       !isOffcanvasCollapsed && borderClass,
     ]"
     :style="sidebarStyle"
-    aria-label="Sidebar"
+    :aria-label="t('aria.sidebar')"
     @mouseenter="onSidebarMouseEnter"
     @mouseleave="onSidebarMouseLeave"
     @focusin="onSidebarFocusIn"
@@ -270,6 +273,7 @@ defineExpose({ toggle, setOpen })
     v-else
     :model-value="internalOpen"
     variant="drawer"
+    :aria-labelledby="uniqueId"
     :justify="side === 'start' ? 'start' : 'end'"
     :transition-name="`drawer-anim-${side}`"
     @update:model-value="setOpen"
@@ -280,7 +284,7 @@ defineExpose({ toggle, setOpen })
         class="m-sidebar --overlay --expanded m-reset-css maz:pointer-events-auto maz:flex maz:min-h-screen maz:w-(--maz-sidebar-width) maz:flex-col maz:overflow-y-auto maz:bg-container"
         :class="[`--side-${side}`, borderClass]"
         :style="sidebarStyle"
-        aria-label="Sidebar"
+        :aria-label="t('aria.sidebar')"
       >
         <slot />
       </aside>

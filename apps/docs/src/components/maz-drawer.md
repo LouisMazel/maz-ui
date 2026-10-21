@@ -174,4 +174,8 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   const isOpenedLeft = ref(false)
 </script>
 
+## Accessibility
+
+The drawer is a modal `dialog` labelled by its `title`. The focus is trapped inside while it is open, <kbd>Esc</kbd> closes it, and the rest of the page is `inert` (except the toasts and the live regions). The close button is labelled from `@maz-ui/translations` (`aria.close`).
+
 <!--@include: ./../../.vitepress/generated-docs/maz-drawer.doc.md-->

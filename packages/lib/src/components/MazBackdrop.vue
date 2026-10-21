@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
+import { holdInertBackground, releaseInertBackground } from '../utils/inertBackground'
 
 defineOptions({
   inheritAttrs: false,
@@ -18,6 +19,7 @@ const {
   align = 'none',
   ariaLabelledby,
   ariaDescribedby,
+  variant,
 } = defineProps<MazBackdropProps>()
 
 const emits = defineEmits<{
@@ -129,13 +131,36 @@ function onKeyPress(event: KeyboardEvent) {
   }
 }
 
+const backdropRef = useTemplateRef<HTMLElement>('backdrop')
+
+let inertElements: HTMLElement[] = []
+
+/**
+ * The rest of the page is made `inert` while the modal is open: no focus, no click and hidden from
+ * assistive technologies
+ */
+function setBackgroundInert() {
+  const backdrop = backdropRef.value
+
+  if (!backdrop || !backdrop.isConnected)
+    return
+
+  releaseBackgroundInert()
+  inertElements = holdInertBackground(backdrop)
+}
+
+function releaseBackgroundInert() {
+  releaseInertBackground(inertElements)
+  inertElements = []
+}
+
 function addClassAndEventToDocument() {
   addClassToDocument()
   document.addEventListener('keyup', onKeyPress, false)
   document.addEventListener('keydown', trapFocus, false)
 }
 
-function removeClassAndEventToDocument() {
+function removeEventsFromDocument() {
   try {
     document.removeEventListener('keyup', onKeyPress)
     document.removeEventListener('keydown', trapFocus)
@@ -143,17 +168,30 @@ function removeClassAndEventToDocument() {
   catch (error) {
     console.warn('Error removing event listeners:', error)
   }
+}
+
+function removeClassAndEventToDocument() {
+  releaseBackgroundInert()
+  removeEventsFromDocument()
   removeClassFromDocument()
 }
 
 onMounted(() => {
   if (modelValue) {
     addClassAndEventToDocument()
+    setBackgroundInert()
   }
   else {
     removeClassAndEventToDocument()
   }
 })
+
+onBeforeUnmount(() => {
+  releaseBackgroundInert()
+  removeEventsFromDocument()
+})
+
+onUnmounted(removeClassFromDocument)
 
 let initialFocusableElement: HTMLElement | null = null
 
@@ -213,6 +251,7 @@ watch(
       initialFocusableElement = document.activeElement as HTMLElement | null
 
       await nextTick()
+      setBackgroundInert()
       const firstFocusableElement = findFirstFocusableElement('.m-backdrop-content')
       firstFocusableElement?.focus()
     }
@@ -224,6 +263,11 @@ watch(
     }
   },
 )
+
+/**
+ * MazDialog and MazBottomSheet render their own `role="dialog"` element
+ */
+const hasOwnDialogRole = computed(() => variant !== 'dialog' && variant !== 'bottom-sheet')
 
 const JUSTIFY_CLASS = {
   'center': 'maz:justify-center',
@@ -281,13 +325,18 @@ defineExpose({
     >
       <div
         v-if="present"
+        ref="backdrop"
         class="m-backdrop --present m-reset-css maz:fixed maz:inset-0 maz:z-default-backdrop maz:bg-overlay/25 maz:backdrop-blur-sm"
         v-bind="$attrs"
         :class="[backdropClass, variant && `--variant-${variant}`, { '--persistent': persistent }]"
-        :aria-labelledby="ariaLabelledby"
-        :aria-describedby="ariaDescribedby"
       >
-        <div role="dialog" class="m-backdrop-container maz:fixed maz:inset-0 maz:z-default-backdrop" aria-modal="true">
+        <div
+          :role="hasOwnDialogRole ? 'dialog' : undefined"
+          class="m-backdrop-container maz:fixed maz:inset-0 maz:z-default-backdrop"
+          :aria-modal="hasOwnDialogRole ? 'true' : undefined"
+          :aria-labelledby="hasOwnDialogRole ? ariaLabelledby : undefined"
+          :aria-describedby="hasOwnDialogRole ? ariaDescribedby : undefined"
+        >
           <div class="m-backdrop-wrapper maz:fixed maz:inset-0 maz:overflow-y-auto">
             <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events -->
             <div
@@ -305,7 +354,6 @@ defineExpose({
                   'maz:fixed maz:inset-0': variant === 'bottom-sheet' || variant === 'drawer',
                 },
               ]"
-              role="button"
               tabindex="-1"
               @pointerdown.self="close"
             >

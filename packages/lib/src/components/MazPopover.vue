@@ -10,6 +10,9 @@ import {
   onBeforeUnmount,
   onMounted,
   onUnmounted,
+  onUpdated,
+  ref,
+  shallowRef,
   useAttrs,
   useTemplateRef,
   watch,
@@ -48,6 +51,9 @@ const {
   block = false,
   announceChanges = false,
   positionReference,
+  ariaLabel,
+  ariaLabelledby,
+  ariaDescribedby,
 } = defineProps<MazPopoverProps>()
 
 const emits = defineEmits<{
@@ -370,6 +376,113 @@ const effectiveTrigger = computed(() => {
   return trigger
 })
 
+const INTERACTIVE_TRIGGER_SELECTOR = 'a[href], button, input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable="true"]'
+
+/**
+ * The ARIA of the trigger goes on the interactive element of the trigger slot (the button,
+ * the input...), so the wrapper stays a plain element: a `role="button"` around an interactive
+ * element is a `nested-interactive` violation. Without interactive element, the wrapper is the trigger.
+ */
+const triggerTarget = shallowRef<HTMLElement | null>(null)
+const ownedTriggerAttributes = new Set<string>()
+let triggerObserver: MutationObserver | undefined
+
+const triggerAria = computed<Record<string, string | undefined>>(() => ({
+  'aria-expanded': role === 'dialog' || role === 'menu' ? String(isOpen.value) : undefined,
+  'aria-haspopup': role === 'dialog' || role === 'menu' ? role : undefined,
+  'aria-describedby': role === 'tooltip' && isOpen.value ? panelId.value : ariaDescribedby,
+  'aria-labelledby': ariaLabelledby,
+  'aria-controls': isOpen.value ? panelId.value : undefined,
+}))
+
+const NON_TEXT_INPUT_TYPES = new Set(['button', 'submit', 'reset', 'checkbox', 'radio', 'image', 'file', 'color', 'range'])
+
+/**
+ * `aria-expanded` is not allowed on a text field (role textbox): a text field opening a popup
+ * has to be a combobox, which owns its ARIA
+ */
+function isTextField(element: HTMLElement) {
+  if (element.hasAttribute('role'))
+    return false
+
+  return element instanceof HTMLTextAreaElement
+    || (element instanceof HTMLInputElement && !NON_TEXT_INPUT_TYPES.has(element.type))
+}
+
+function releaseTriggerTarget() {
+  for (const name of ownedTriggerAttributes)
+    triggerTarget.value?.removeAttribute(name)
+
+  ownedTriggerAttributes.clear()
+}
+
+function syncTriggerAria() {
+  // A combobox (MazSelect, MazDatePicker...) is the trigger even when an icon button comes first
+  const target = triggerRef.value?.querySelector<HTMLElement>('[role="combobox"]')
+    ?? triggerRef.value?.querySelector<HTMLElement>(INTERACTIVE_TRIGGER_SELECTOR)
+    ?? null
+
+  if (target !== triggerTarget.value) {
+    releaseTriggerTarget()
+    triggerTarget.value = target
+  }
+
+  // A combobox owns its popup state (aria-expanded, aria-controls...) by the ARIA pattern
+  if (!target || target.getAttribute('role') === 'combobox')
+    return
+
+  const skippedAttributes = isTextField(target) ? ['aria-expanded'] : []
+
+  for (const [name, value] of Object.entries(triggerAria.value)) {
+    if (skippedAttributes.includes(name))
+      continue
+
+    // Set by the slot content itself: it wins
+    if (!ownedTriggerAttributes.has(name) && target.hasAttribute(name))
+      continue
+
+    if (value === undefined) {
+      target.removeAttribute(name)
+      ownedTriggerAttributes.delete(name)
+    }
+    else {
+      target.setAttribute(name, value)
+      ownedTriggerAttributes.add(name)
+    }
+  }
+}
+
+const isWrapperTrigger = computed(() => !triggerTarget.value)
+
+/**
+ * The panel is hidden when its reference leaves the viewport (`hide` middleware), except while
+ * the focus is inside it: on Android, the virtual keyboard opened to type in a field of the panel
+ * (a select search) covers the reference, hiding the panel would make it lose the focus.
+ */
+const isPanelFocused = ref(false)
+
+function onPanelFocusout(event: FocusEvent) {
+  const nextFocused = event.relatedTarget as Node | null
+
+  if (!nextFocused || !panelRef.value?.contains(nextFocused))
+    isPanelFocused.value = false
+}
+
+const isPanelHidden = computed(() => !!middlewareData.value.hide?.referenceHidden && !isPanelFocused.value)
+
+const wrapperTriggerAttributes = computed(() => {
+  if (!isWrapperTrigger.value)
+    return {}
+
+  const isClickTrigger = effectiveTrigger.value === 'click' && !disabled
+
+  return {
+    ...triggerAria.value,
+    role: effectiveTrigger.value === 'click' ? 'button' : undefined,
+    tabindex: isClickTrigger ? 0 : undefined,
+  }
+})
+
 const triggerEvents = computed(() => {
   if (disabled || effectiveTrigger.value === 'manual')
     return {}
@@ -386,6 +499,16 @@ const triggerEvents = computed(() => {
 
   if (effectiveTrigger.value === 'click') {
     events.onClick = toggle
+
+    if (isWrapperTrigger.value) {
+      events.onKeydown = (event: KeyboardEvent) => {
+        if (event.target !== triggerRef.value || (event.key !== 'Enter' && event.key !== ' '))
+          return
+
+        event.preventDefault()
+        toggle()
+      }
+    }
   }
 
   return events
@@ -488,6 +611,7 @@ function setOpen(value: boolean) {
     })
   }
   else {
+    isPanelFocused.value = false
     emits('toggle', value)
     emits('close')
 
@@ -650,11 +774,27 @@ watch(() => position, () => {
   }
 })
 
+watch(triggerAria, syncTriggerAria, { flush: 'post' })
+
 onMounted(() => {
   document.addEventListener('keydown', onKeydown)
+  syncTriggerAria()
+
+  // The slot content can render later (async components): only the children are watched,
+  // the attributes set here would otherwise trigger the observer again
+  if (triggerRef.value && typeof MutationObserver !== 'undefined') {
+    triggerObserver = new MutationObserver(syncTriggerAria)
+    triggerObserver.observe(triggerRef.value, { childList: true, subtree: true })
+  }
 })
 
-onBeforeUnmount(cleanup)
+onUpdated(syncTriggerAria)
+
+onBeforeUnmount(() => {
+  triggerObserver?.disconnect()
+  releaseTriggerTarget()
+  cleanup()
+})
 
 onUnmounted(cleanup)
 
@@ -720,14 +860,8 @@ defineExpose({
     <div
       :id="triggerId"
       ref="trigger"
-      role="button"
       class="m-popover-trigger maz:inline-block maz:size-full"
-      :aria-expanded="role === 'dialog' || role === 'menu' ? isOpen : undefined"
-      :aria-haspopup="role === 'dialog' ? 'dialog' : undefined"
-      :aria-describedby="role === 'tooltip' && isOpen ? panelId : ariaDescribedby"
-      :aria-labelledby="ariaLabelledby"
-      :aria-controls="isOpen ? panelId : undefined"
-      v-bind="triggerEvents"
+      v-bind="{ ...wrapperTriggerAttributes, ...triggerEvents }"
     >
       <!--
         @slot Trigger element content
@@ -749,7 +883,7 @@ defineExpose({
         ref="panel"
         :role
         :aria-label="ariaLabel"
-        :aria-labelledby="role === 'dialog' ? ariaLabelledby || triggerId : undefined"
+        :aria-labelledby="role === 'dialog' || role === 'menu' ? ariaLabelledby || triggerId : undefined"
         :aria-describedby="role === 'dialog' ? ariaDescribedby : undefined"
         :aria-modal="role === 'dialog' ? 'true' : undefined"
         :tabindex="role === 'dialog' ? '-1' : undefined"
@@ -761,12 +895,12 @@ defineExpose({
           panelStyles,
           {
             transformOrigin: getTransformOrigin(computedPosition),
-            visibility: middlewareData.hide?.referenceHidden
-              ? 'hidden'
-              : 'visible',
+            visibility: isPanelHidden ? 'hidden' : 'visible',
           },
         ]"
         v-bind="panelEvents"
+        @focusin="isPanelFocused = true"
+        @focusout="onPanelFocusout"
       >
         <!--
           @slot Popover content

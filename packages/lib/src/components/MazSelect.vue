@@ -220,6 +220,9 @@ const {
   searchFunction,
   search,
   options,
+  label,
+  topLabel,
+  placeholder,
 } = defineProps<MazSelectProps<Value, Option, Multiple> & {
   multiple?: boolean
 }>()
@@ -446,6 +449,14 @@ const optionList = computed(() => {
   return getFilteredOptionWithQuery(searchQuery.value)
 })
 
+const listboxId = computed(() => `${instanceId.value}-listbox`)
+const hasListbox = computed(() => isOpen.value && !!optionList.value?.length)
+const listboxLabel = computed(() => label || topLabel || placeholder || t('aria.options'))
+
+function getOptionId(index: number) {
+  return `${instanceId.value}-option-${index}`
+}
+
 async function onOpenList() {
   const selectedIndex = optionList.value?.findIndex(
     option => isSelectedOption(option),
@@ -508,7 +519,7 @@ function mainInputKeyboardHandler(event: KeyboardEvent) {
 
   const keyPressed = event.key
 
-  if ((keyPressed === 'ArrowDown' || keyPressed === 'ArrowUp' || isLetterOrNumberRegex.test(keyPressed)) && !isOpen.value) {
+  if ((keyPressed === 'ArrowDown' || keyPressed === 'ArrowUp' || keyPressed === ' ' || isLetterOrNumberRegex.test(keyPressed)) && !isOpen.value) {
     event.preventDefault()
     popoverComponent.value?.open()
   }
@@ -580,10 +591,23 @@ function updateValue(inputOption: MazSelectNormalizedOption, mustCloseList = tru
   focusMainInput()
 }
 
+function focusEdgeOption(event: KeyboardEvent) {
+  const itemsElements = document.querySelectorAll<HTMLElement>(`#${instanceId.value}-option-list .m-select-list-item`)
+
+  if (!itemsElements.length || !(document.activeElement instanceof HTMLElement) || !document.activeElement.classList.contains('m-select-list-item'))
+    return
+
+  event.preventDefault()
+  itemsElements[event.key === 'Home' ? 0 : itemsElements.length - 1]?.focus()
+}
+
 function keydownHandler(event: KeyboardEvent) {
   const keyPressed = event.key
 
-  if (keyPressed === 'ArrowDown' || keyPressed === 'ArrowUp') {
+  if (keyPressed === 'Home' || keyPressed === 'End') {
+    focusEdgeOption(event)
+  }
+  else if (keyPressed === 'ArrowDown' || keyPressed === 'ArrowUp') {
     event.preventDefault()
     const itemLength = optionList.value?.length
     if (!itemLength)
@@ -699,6 +723,10 @@ defineExpose({
         :autocomplete
         :disabled
         readonly
+        role="combobox"
+        aria-haspopup="listbox"
+        :aria-expanded="String(isOpen)"
+        :aria-controls="isOpen ? (hasListbox ? listboxId : `${instanceId}-option-list`) : undefined"
         @change="emits('change', $event)"
         @input="emits('input', $event)"
         @focus="emits('focus', $event)"
@@ -731,7 +759,7 @@ defineExpose({
               :disabled
               type="button"
               class="m-select-input__toggle-button maz-custom"
-              :aria-label="`${isOpen ? 'collapse' : 'expand'} list of options`"
+              :aria-label="isOpen ? t('aria.hideOptions') : t('aria.showOptions')"
             >
               <MazIcon :icon="MazChevronDown" class="m-select-chevron" />
             </button>
@@ -776,26 +804,39 @@ defineExpose({
             @slot No results slot - Displayed when no results corresponding with search query
           -->
         <slot v-if="!optionList || optionList.length <= 0" name="no-results">
-          <span class="m-select-list__no-results">
-            <MazNoSymbol class="maz:size-6 maz:text-foreground" />
+          <span class="m-select-list__no-results" role="status">
+            <MazNoSymbol class="maz:size-6 maz:text-foreground" aria-hidden="true" />
+            <span class="maz:sr-only">{{ t('aria.noResults') }}</span>
           </span>
         </slot>
 
-        <div v-else ref="optionListWrapper" class="m-select-list__scroll-wrapper" tabindex="-1">
+        <div
+          v-else
+          :id="listboxId"
+          ref="optionListWrapper"
+          class="m-select-list__scroll-wrapper"
+          tabindex="-1"
+          role="listbox"
+          :aria-label="listboxLabel"
+          :aria-multiselectable="multiple ? 'true' : undefined"
+        >
           <template v-for="(option, i) in optionList" :key="i">
             <!--
                 @slot Custom optgroup label
                   @binding {String} label - the label of the optgroup
               -->
             <slot v-if="option.label && option.isOptGroup" name="optgroup" :label="option.label">
-              <span class="m-select-list-optgroup">
+              <span class="m-select-list-optgroup" role="presentation">
                 {{ option.label }}
               </span>
             </slot>
 
             <button
               v-else
+              :id="getOptionId(i)"
               type="button"
+              role="option"
+              :aria-selected="isSelectedOption(option) ? 'true' : 'false'"
               :tabindex="multiple ? -1 : 0"
               class="m-select-list-item maz-custom maz:flex-none"
               :class="[
@@ -807,12 +848,15 @@ defineExpose({
               :style="itemHeight ? { height: `${itemHeight}px` } : undefined"
               @click.prevent.stop="updateValue(option, true)"
             >
-              <MazCheckbox
-                v-if="multiple"
-                :model-value="isSelectedOption(option)"
-                size="sm"
-                :color
-              />
+              <!-- Visual only: the state is aria-selected, a control nested in an option is not allowed -->
+              <span v-if="multiple" class="m-select-list-item__checkbox maz:contents" inert>
+                <MazCheckbox
+                  :model-value="isSelectedOption(option)"
+                  size="sm"
+                  :color
+                  tabindex="-1"
+                />
+              </span>
               <!--
                 @slot Custom option
                   @binding {Object} option - the option object

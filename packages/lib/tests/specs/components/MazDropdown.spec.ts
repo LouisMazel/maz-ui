@@ -78,19 +78,19 @@ describe('components/MazDropdown.vue', () => {
   describe('given dropdown is closed', () => {
     describe('when trigger is clicked', () => {
       it('then dropdown opens', async () => {
-        const trigger = wrapper.find('[role="button"]')
+        const trigger = wrapper.find('.m-popover-trigger')
 
         await trigger.trigger('click')
 
         expect(wrapper.vm.isOpen).toBe(true)
-        expect(wrapper.find('.m-dropdown__menu[role="menu"]').exists()).toBe(true)
+        expect(wrapper.find('.m-popover-panel[role="menu"] .m-dropdown__menu').exists()).toBe(true)
       })
     })
 
     describe('when trigger is hovered', () => {
       it('then dropdown opens with hover trigger', async () => {
         await wrapper.setProps({ trigger: 'hover' })
-        const trigger = wrapper.find('[role="button"]')
+        const trigger = wrapper.find('.m-popover-trigger')
 
         await trigger.trigger('mouseenter')
 
@@ -101,12 +101,12 @@ describe('components/MazDropdown.vue', () => {
 
   describe('given dropdown is open', () => {
     beforeEach(async () => {
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
     })
 
     describe('when trigger is clicked', () => {
       it('then dropdown closes', async () => {
-        const trigger = wrapper.find('[role="button"]')
+        const trigger = wrapper.find('.m-popover-trigger')
 
         await trigger.trigger('click')
 
@@ -151,7 +151,7 @@ describe('components/MazDropdown.vue', () => {
     describe('when closeOnClick is true', () => {
       it('then dropdown closes after menu item click', async () => {
         await wrapper.setProps({ closeOnClick: true })
-        await wrapper.find('[role="button"]').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
 
         const menuItems = wrapper.findAll('.menuitem')
         const settingsItem = menuItems.find(item => item.text() === 'Settings')
@@ -165,7 +165,7 @@ describe('components/MazDropdown.vue', () => {
       it('then dropdown cannot be opened', async () => {
         await wrapper.setProps({ disabled: true })
 
-        await wrapper.find('[role="button"]').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
 
         expect(wrapper.vm.isOpen).toBe(false)
       })
@@ -203,7 +203,7 @@ describe('components/MazDropdown.vue', () => {
     describe('when dropdownIconAnimation is false', () => {
       it('then icon does not animate', async () => {
         await wrapper.setProps({ dropdownIconAnimation: false })
-        await wrapper.find('[role="button"]').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
 
         const icon = wrapper.find('.m-dropdown__icon')
         expect(icon.classes()).not.toContain('--open')
@@ -222,7 +222,7 @@ describe('components/MazDropdown.vue', () => {
   describe('given dropdown emits events', () => {
     describe('when dropdown opens', () => {
       it('then update:modelValue event is emitted', async () => {
-        await wrapper.find('[role="button"]').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
 
         expect(wrapper.emitted('update:modelValue')).toBeTruthy()
         expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true])
@@ -231,8 +231,8 @@ describe('components/MazDropdown.vue', () => {
 
     describe('when dropdown closes', () => {
       it('then update:modelValue event is emitted', async () => {
-        await wrapper.find('[role="button"]').trigger('click')
-        await wrapper.find('[role="button"]').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
 
         expect(wrapper.emitted('update:modelValue')?.[1]).toEqual([false])
       })
@@ -240,7 +240,7 @@ describe('components/MazDropdown.vue', () => {
 
     describe('when menu item is clicked', () => {
       it('then menuitem-clicked event is emitted', async () => {
-        await wrapper.find('[role="button"]').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
         const menuItems = wrapper.findAll('.menuitem')
         const settingsItem = menuItems.find(item => item.text() === 'Settings')
 
@@ -257,7 +257,7 @@ describe('components/MazDropdown.vue', () => {
       it('then an anchor is rendered with the href', async () => {
         const wrapper = await getWrapper({ props: { items: [{ label: 'Profile', href: '/profile' }] } })
 
-        await wrapper.find('[role="button"]').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
 
         const profileItem = wrapper.find('.menuitem')
         expect(profileItem.element.tagName).toBe('A')
@@ -269,7 +269,7 @@ describe('components/MazDropdown.vue', () => {
       it('then a router-link is rendered', async () => {
         const wrapper = await getWrapper({ props: { items: [{ label: 'About', to: '/about' }] } })
 
-        await wrapper.find('[role="button"]').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
 
         const aboutItem = wrapper.find('.menuitem')
         expect(aboutItem.attributes('to')).toBe('/about')
@@ -278,7 +278,7 @@ describe('components/MazDropdown.vue', () => {
 
     describe('when item has onClick', () => {
       it('then button is rendered', async () => {
-        await wrapper.find('[role="button"]').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
 
         const settingsItem = wrapper.findAll('.menuitem').find(item => item.text() === 'Settings')
         expect(settingsItem?.element.tagName).toBe('BUTTON')
@@ -289,7 +289,7 @@ describe('components/MazDropdown.vue', () => {
       it('then target attribute is set', async () => {
         const wrapper = await getWrapper({ props: { items: [{ label: 'External', href: 'https://example.com', target: '_blank' }] } })
 
-        await wrapper.find('[role="button"]').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
 
         const externalItem = wrapper.find('.menuitem')
         expect(externalItem.attributes('target')).toBe('_blank')
@@ -320,22 +320,24 @@ describe('components/MazDropdown.vue', () => {
   describe('given dropdown accessibility', () => {
     describe('when rendered', () => {
       it('then has proper ARIA attributes', async () => {
-        await wrapper.find('[role="button"]').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
 
-        const dropdownMenu = wrapper.find('.m-dropdown__menu')
-        expect(dropdownMenu.attributes('role')).toBe('menu')
-        expect(dropdownMenu.attributes('aria-labelledby')).toBeTruthy()
+        const menuPanel = wrapper.find('.m-popover-panel')
+        expect(menuPanel.attributes('role')).toBe('menu')
+        expect(menuPanel.attributes('aria-labelledby')).toBeTruthy()
+        expect(wrapper.find('.m-dropdown__menu').attributes('role')).toBe('none')
+        expect(wrapper.findAll('[role="menu"]')).toHaveLength(1)
       })
 
       it('then each interactive item is a menuitem', async () => {
-        await wrapper.find('[role="button"]').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
 
         const menuitems = wrapper.findAll('.menuitem[role="menuitem"]')
         expect(menuitems.length).toBeGreaterThan(0)
       })
 
       it('then arrow and enter keys drive the menu', async () => {
-        await wrapper.find('[role="button"]').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
         await vi.dynamicImportSettled()
 
         document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }))
@@ -347,7 +349,7 @@ describe('components/MazDropdown.vue', () => {
       })
 
       it('then blurring the trigger to the outside closes the menu', async () => {
-        await wrapper.find('[role="button"]').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
         expect(wrapper.vm.isOpen).toBe(true)
 
         await wrapper.findComponent(MazBtn).trigger('blur')
@@ -363,10 +365,13 @@ describe('components/MazDropdown.vue', () => {
 
     describe('when dropdown is open', () => {
       it('then aria-expanded is true', async () => {
-        await wrapper.find('[role="button"]').trigger('click')
+        await wrapper.find('.m-popover-trigger').trigger('click')
 
-        const dropdownWrapper = wrapper.find('[aria-expanded]')
-        expect(dropdownWrapper.attributes('aria-expanded')).toBe('true')
+        const triggerButton = wrapper.find('.m-popover-trigger button')
+        expect(triggerButton.attributes('aria-expanded')).toBe('true')
+        expect(triggerButton.attributes('aria-haspopup')).toBe('menu')
+        expect(triggerButton.attributes('aria-controls')).toBe(wrapper.find('.m-popover-panel').attributes('id'))
+        expect(wrapper.find('.m-popover-trigger').attributes('role')).toBeUndefined()
       })
     })
   })
