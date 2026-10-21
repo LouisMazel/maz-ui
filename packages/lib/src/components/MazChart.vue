@@ -55,7 +55,7 @@ export interface MazChartProps<T extends ChartType = ChartType, TData = DefaultD
 </script>
 
 <script lang="ts" setup generic="T extends ChartType, TData = DefaultDataPoint<T>, TLabel = unknown">
-import { markRaw, onBeforeUnmount, onMounted, shallowRef, useTemplateRef, watch } from 'vue'
+import { computed, markRaw, onBeforeUnmount, onMounted, shallowRef, useAttrs, useTemplateRef, watch } from 'vue'
 
 const {
   type,
@@ -67,6 +67,11 @@ const {
 } = defineProps<MazChartProps<T, TData, TLabel>>()
 
 const canvasRef = useTemplateRef<HTMLCanvasElement>('canvasRef')
+
+const attrs = useAttrs()
+
+// A canvas has no accessible content: once named (aria-label / aria-labelledby), the chart is exposed as an image
+const canvasRole = computed(() => attrs['aria-label'] || attrs['aria-labelledby'] ? 'img' : undefined)
 const chartInstance = shallowRef<ChartInstance | null>(null) as { value: ChartInstance | null }
 
 async function loadChartCtor() {
@@ -158,5 +163,5 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <canvas ref="canvasRef" class="m-chart m-reset-css" />
+  <canvas ref="canvasRef" class="m-chart m-reset-css" :role="canvasRole" />
 </template>
