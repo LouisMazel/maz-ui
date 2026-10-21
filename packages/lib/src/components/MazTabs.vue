@@ -2,6 +2,7 @@
 import type { Ref } from 'vue'
 import type { MazColor, MazRoundedSize, MazSize } from './types'
 import { computed, provide, ref, toRef } from 'vue'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 
 export interface MazTabsProps {
   /** The the selected tab number */
@@ -55,11 +56,18 @@ export interface MazTabsProvide {
   size: Ref<MazSize | undefined>
   roundedSize: Ref<MazRoundedSize | undefined>
   color: Ref<MazColor | undefined>
+  /**
+   * Prefix of the ids linking each tab to its panel (`aria-controls` / `aria-labelledby`)
+   */
+  idPrefix?: Ref<string>
 }
+
+const idPrefix = useInstanceUniqId({ componentName: 'MazTabs' })
 
 provide<MazTabsProvide>('maz-tabs', {
   currentTab,
   updateCurrentTab,
+  idPrefix,
   size: toRef(() => size),
   roundedSize: toRef(() => roundedSize),
   color: toRef(() => color),

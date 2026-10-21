@@ -8,7 +8,10 @@ const props = defineProps({
 })
 const transitionName = ref<string>('maz-tab-transition')
 
-const { currentTab } = useInjectStrict<MazTabsProvide>('maz-tabs')
+const { currentTab, idPrefix } = useInjectStrict<MazTabsProvide>('maz-tabs')
+
+const panelId = computed(() => idPrefix ? `${idPrefix.value}-panel-${props.tab}` : undefined)
+const tabId = computed(() => idPrefix ? `${idPrefix.value}-tab-${props.tab}` : undefined)
 
 watch(
   () => currentTab.value,
@@ -28,7 +31,14 @@ const isCurrentTab = computed(() => currentTab.value - 1 === itemTabNumber.value
 
 <template>
   <Transition :name="transitionName">
-    <div v-if="isCurrentTab" class="m-tabs-content-item m-reset-css maz:relative maz:top-0 maz:w-full">
+    <div
+      v-if="isCurrentTab"
+      :id="panelId"
+      role="tabpanel"
+      :aria-labelledby="tabId"
+      tabindex="0"
+      class="m-tabs-content-item m-reset-css maz:relative maz:top-0 maz:w-full"
+    >
       <slot />
     </div>
   </Transition>
