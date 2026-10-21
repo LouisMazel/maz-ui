@@ -334,14 +334,15 @@ describe('MazBackdrop extended branch coverage', () => {
       const wrapper = mount(MazBackdrop, {
         props: { modelValue: true, ariaLabelledby: 'dialog-title' },
       })
-      expect(wrapper.find('.m-backdrop').attributes('aria-labelledby')).toBe('dialog-title')
+      expect(wrapper.find('[role="dialog"]').attributes('aria-labelledby')).toBe('dialog-title')
+      expect(wrapper.find('.m-backdrop').attributes('aria-labelledby')).toBeUndefined()
     })
 
     it('sets aria-describedby when provided', () => {
       const wrapper = mount(MazBackdrop, {
         props: { modelValue: true, ariaDescribedby: 'dialog-desc' },
       })
-      expect(wrapper.find('.m-backdrop').attributes('aria-describedby')).toBe('dialog-desc')
+      expect(wrapper.find('[role="dialog"]').attributes('aria-describedby')).toBe('dialog-desc')
     })
 
     it('has aria-modal on dialog container', () => {

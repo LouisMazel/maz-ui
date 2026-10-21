@@ -9,6 +9,7 @@ import type { MazBackdropProps } from './MazBackdrop.vue'
 import type { MazSizeUnit } from './types'
 
 import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import {
   computed,
   defineAsyncComponent,
@@ -17,6 +18,7 @@ import {
   useSlots,
 } from 'vue'
 import { useDrag } from '../composables/useDrag'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { useMazIconProps } from '../composables/useMazIconProps'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import MazBackdrop from './MazBackdrop.vue'
@@ -106,6 +108,12 @@ const wrapperAttrs = computed<{
 }))
 
 const hasTitle = computed(() => hasSlotContent(slots.title) || !!title)
+
+const { t } = useTranslations()
+
+const instanceId = useInstanceUniqId({ componentName: 'MazBottomSheet' })
+const titleId = computed(() => `${instanceId.value}-title`)
+const descriptionId = computed(() => `${instanceId.value}-description`)
 const hasIcon = computed(() => hasSlotContent(slots.icon) || !!iconProps.value)
 const hasFooter = computed(() => hasSlotContent(slots.footer))
 
@@ -153,8 +161,6 @@ function onClose(value: void) {
     align="end"
     justify="center"
     variant="bottom-sheet"
-    aria-labelledby="bottomSheetTitle"
-    aria-describedby="bottomSheetDesc"
     @close="onClose"
     @open="emits('open', $event)"
     @update:model-value="emits('update:model-value', $event)"
@@ -168,6 +174,8 @@ function onClose(value: void) {
         :class="{ '--dragging': isDragging }"
         role="dialog"
         aria-modal="true"
+        :aria-labelledby="backdropProps.ariaLabelledby ?? (hasTitle ? titleId : undefined)"
+        :aria-describedby="backdropProps.ariaDescribedby ?? descriptionId"
         :style="sheetStyle"
         v-bind="wrapperAttrs"
       >
@@ -205,7 +213,7 @@ function onClose(value: void) {
               </span>
               <h2
                 v-if="hasTitle"
-                id="bottomSheetTitle"
+                :id="titleId"
                 class="m-bottom-sheet__title maz:my-0 maz:truncate maz:font-display maz:text-lg maz:font-semibold"
               >
                 <!--
@@ -223,6 +231,7 @@ function onClose(value: void) {
                 size="sm"
                 outlined
                 :icon="MazXMark"
+                :aria-label="t('aria.close')"
                 @click="close"
               />
             </div>
@@ -230,7 +239,7 @@ function onClose(value: void) {
         </slot>
 
         <div
-          id="bottomSheetDesc"
+          :id="descriptionId"
           class="m-bottom-sheet__content maz:flex-1"
           :class="{
             'maz:p-4': padding,

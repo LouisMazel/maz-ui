@@ -7,6 +7,7 @@ import type {
 import type { MazBackdropProps } from './MazBackdrop.vue'
 
 import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import {
   computed,
   defineAsyncComponent,
@@ -16,6 +17,7 @@ import {
   useSlots,
   watch,
 } from 'vue'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import MazBackdrop from './MazBackdrop.vue'
 
@@ -94,6 +96,13 @@ const dialogContent = ref<HTMLElement>()
 const slots = useSlots()
 const hasFooter = computed(() => !!slots.footer)
 
+const { t } = useTranslations()
+
+const instanceId = useInstanceUniqId({ componentName: 'MazDialog' })
+const titleId = computed(() => `${instanceId.value}-title`)
+const descriptionId = computed(() => `${instanceId.value}-description`)
+const hasTitle = computed(() => hasSlotContent(slots.title) || !!backdropProps.title)
+
 if (scrollable) {
   watch(() => modelValue, async (newVal) => {
     await nextTick()
@@ -113,8 +122,6 @@ if (scrollable) {
     v-slot="{ close }"
     :model-value="modelValue"
     transition-name="modal-anim"
-    aria-labelledby="dialogTitle"
-    aria-describedby="dialogDesc"
     :close-on-escape="closeOnEscape"
     content-padding
     :persistent
@@ -128,6 +135,8 @@ if (scrollable) {
       class="m-dialog maz:flex maz:max-w-full maz:min-w-full maz:origin-center maz:touch-none maz:flex-col maz:rounded-md maz:bg-container maz:text-foreground maz:tab-s:my-8 maz:dark:border maz:dark:border-divider"
       role="dialog"
       aria-modal="true"
+      :aria-labelledby="backdropProps.ariaLabelledby ?? (hasTitle ? titleId : undefined)"
+      :aria-describedby="backdropProps.ariaDescribedby ?? descriptionId"
       :style="[{ '--max-width': maxWidth, '--min-width': minWidth }]"
       :class="{ '--scrollable': scrollable, 'maz:my-0 maz:max-h-[95vh]': scrollable }"
       v-bind="wrapperAttrs"
@@ -140,7 +149,7 @@ if (scrollable) {
         <div class="m-dialog-header maz:flex maz:items-baseline maz:ps-6 maz:pe-2 maz:pt-2 maz:pb-4" :class="[hasSlotContent(slots.title) || title ? '--has-title' : '', hasSlotContent(slots.title) || title ? 'maz:justify-between' : 'maz:justify-end']">
           <h2
             v-if="hasSlotContent(slots.title) || title"
-            id="dialogTitle"
+            :id="titleId"
             class="m-dialog-title maz:my-0 maz:font-display maz:text-xl maz:font-semibold"
           >
             <!--
@@ -156,12 +165,13 @@ if (scrollable) {
             color="transparent"
             size="sm"
             :icon="MazXMark"
+            :aria-label="t('aria.close')"
             @click="close"
           />
         </div>
       </slot>
       <div
-        id="dialogDesc"
+        :id="descriptionId"
         ref="dialogContent"
         class="m-dialog-content maz:flex-1 maz:px-6"
         :class="{
