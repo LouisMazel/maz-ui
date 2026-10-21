@@ -60,7 +60,7 @@ describe('MazDropdown extended coverage', () => {
   describe('when items is an empty array', () => {
     it('should render without items', async () => {
       const wrapper = await getWrapper({ items: [] })
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
       expect(wrapper.find('.m-dropdown__menu').exists()).toBe(true)
       expect(wrapper.findAll('.menuitem')).toHaveLength(0)
     })
@@ -69,7 +69,7 @@ describe('MazDropdown extended coverage', () => {
   describe('when disabled prop is true', () => {
     it('should not open on click', async () => {
       const wrapper = await getWrapper({ disabled: true })
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
       // @ts-expect-error - isOpen is private
       expect(wrapper.vm.isOpen).toBe(false)
     })
@@ -83,7 +83,7 @@ describe('MazDropdown extended coverage', () => {
   describe('when trigger is hover', () => {
     it('should open on mouseenter', async () => {
       const wrapper = await getWrapper({ trigger: 'hover' })
-      const trigger = wrapper.find('[role="button"]')
+      const trigger = wrapper.find('.m-popover-trigger')
       await trigger.trigger('mouseenter')
       // @ts-expect-error - isOpen is private
       expect(wrapper.vm.isOpen).toBe(true)
@@ -92,7 +92,7 @@ describe('MazDropdown extended coverage', () => {
     it('should close on mouseleave', async () => {
       vi.useFakeTimers()
       const wrapper = await getWrapper({ trigger: 'hover' })
-      const trigger = wrapper.find('[role="button"]')
+      const trigger = wrapper.find('.m-popover-trigger')
       await trigger.trigger('mouseenter')
       await trigger.trigger('mouseleave')
       vi.advanceTimersByTime(200)
@@ -105,7 +105,7 @@ describe('MazDropdown extended coverage', () => {
   describe('when trigger is click', () => {
     it('should toggle open on click', async () => {
       const wrapper = await getWrapper({ trigger: 'click' })
-      const trigger = wrapper.find('[role="button"]')
+      const trigger = wrapper.find('.m-popover-trigger')
       await trigger.trigger('click')
       // @ts-expect-error - isOpen is private
       expect(wrapper.vm.isOpen).toBe(true)
@@ -113,7 +113,7 @@ describe('MazDropdown extended coverage', () => {
 
     it('should toggle close on second click', async () => {
       const wrapper = await getWrapper({ trigger: 'click' })
-      const trigger = wrapper.find('[role="button"]')
+      const trigger = wrapper.find('.m-popover-trigger')
       await trigger.trigger('click')
       await trigger.trigger('click')
       // @ts-expect-error - isOpen is private
@@ -124,7 +124,7 @@ describe('MazDropdown extended coverage', () => {
   describe('when closeOnClick is true', () => {
     it('should close after clicking an action item', async () => {
       const wrapper = await getWrapper({ closeOnClick: true })
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
 
       const actionItem = wrapper.findAll('.menuitem').find(item => item.text() === 'Action Item')
       await actionItem?.trigger('click')
@@ -135,7 +135,7 @@ describe('MazDropdown extended coverage', () => {
 
     it('should close after clicking a link item', async () => {
       const wrapper = await getWrapper({ closeOnClick: true })
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
 
       const linkItem = wrapper.findAll('.menuitem')[0]
       await linkItem?.trigger('click')
@@ -148,7 +148,7 @@ describe('MazDropdown extended coverage', () => {
   describe('when closeOnClick is false', () => {
     it('should remain open after clicking an action item', async () => {
       const wrapper = await getWrapper({ closeOnClick: false })
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
 
       const actionItem = wrapper.findAll('.menuitem').find(item => item.text() === 'Action Item')
       await actionItem?.trigger('click')
@@ -175,7 +175,7 @@ describe('MazDropdown extended coverage', () => {
   describe('when dropdownIconAnimation is false', () => {
     it('should not apply --open class to icon when open', async () => {
       const wrapper = await getWrapper({ dropdownIconAnimation: false })
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
       const icon = wrapper.find('.m-dropdown__icon')
       expect(icon.classes()).not.toContain('--open')
     })
@@ -184,7 +184,7 @@ describe('MazDropdown extended coverage', () => {
   describe('when dropdownIconAnimation is true', () => {
     it('should apply --open class to icon when open', async () => {
       const wrapper = await getWrapper({ dropdownIconAnimation: true })
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
       const icon = wrapper.find('.m-dropdown__icon')
       expect(icon.classes()).toContain('--open')
     })
@@ -251,7 +251,7 @@ describe('MazDropdown extended coverage', () => {
       const wrapper = await getWrapper({
         items: [{ label: 'Delete', onClick: actionSpy, color: 'destructive' }],
       })
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
 
       const btn = wrapper.find('.menuitem__button')
       expect(btn.classes()).toContain('--destructive')
@@ -263,7 +263,7 @@ describe('MazDropdown extended coverage', () => {
       const wrapper = await getWrapper({
         items: [{ label: 'External', href: 'https://example.com', target: '_blank' }],
       })
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
 
       const link = wrapper.find('.menuitem')
       expect(link.attributes('target')).toBe('_blank')
@@ -275,7 +275,7 @@ describe('MazDropdown extended coverage', () => {
       const wrapper = await getWrapper({
         items: [{ label: 'Internal', href: '/page' }],
       })
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
 
       const link = wrapper.find('.menuitem')
       expect(link.attributes('target')).toBe('_self')
@@ -285,7 +285,7 @@ describe('MazDropdown extended coverage', () => {
   describe('when action item is clicked', () => {
     it('should call the onClick handler', async () => {
       const wrapper = await getWrapper()
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
 
       const actionItem = wrapper.findAll('.menuitem').find(item => item.text() === 'Action Item')
       await actionItem?.trigger('click')
@@ -295,7 +295,7 @@ describe('MazDropdown extended coverage', () => {
 
     it('should emit menuitem-clicked', async () => {
       const wrapper = await getWrapper()
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
 
       const actionItem = wrapper.findAll('.menuitem').find(item => item.text() === 'Action Item')
       await actionItem?.trigger('click')
@@ -307,7 +307,7 @@ describe('MazDropdown extended coverage', () => {
   describe('when action item is activated via keypress enter', () => {
     it('should call the onClick handler', async () => {
       const wrapper = await getWrapper()
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
 
       const actionItem = wrapper.findAll('.menuitem__button').find(item => item.text() === 'Action Item')
       await actionItem?.trigger('keypress.enter')
@@ -341,7 +341,7 @@ describe('MazDropdown extended coverage', () => {
   describe('when menuPanelClass is provided', () => {
     it('should apply class to the menu panel', async () => {
       const wrapper = await getWrapper({ menuPanelClass: 'custom-menu-panel' })
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
       expect(wrapper.find('.m-dropdown__menu').classes()).toContain('custom-menu-panel')
     })
   })
@@ -349,30 +349,31 @@ describe('MazDropdown extended coverage', () => {
   describe('when menuPanelStyle is provided', () => {
     it('should apply style to the menu panel', async () => {
       const wrapper = await getWrapper({ menuPanelStyle: 'max-height: 200px' })
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
       const menu = wrapper.find('.m-dropdown__menu')
       expect(menu.attributes('style')).toContain('max-height: 200px')
     })
   })
 
   describe('accessibility attributes', () => {
-    it('should set role=menu on dropdown menu', async () => {
+    it('should set role=menu on the menu panel only', async () => {
       const wrapper = await getWrapper()
-      await wrapper.find('[role="button"]').trigger('click')
-      expect(wrapper.find('.m-dropdown__menu').attributes('role')).toBe('menu')
+      await wrapper.find('.m-popover-trigger').trigger('click')
+      expect(wrapper.find('.m-popover-panel').attributes('role')).toBe('menu')
+      expect(wrapper.find('.m-dropdown__menu').attributes('role')).toBe('none')
     })
 
     it('should label the dropdown menu via aria-labelledby', async () => {
       const wrapper = await getWrapper()
-      await wrapper.find('[role="button"]').trigger('click')
-      const menu = wrapper.find('.m-dropdown__menu')
+      await wrapper.find('.m-popover-trigger').trigger('click')
+      const menu = wrapper.find('.m-popover-panel')
       expect(menu.attributes('role')).toBe('menu')
       expect(menu.attributes('aria-labelledby')).toBeTruthy()
     })
 
     it('should generate unique id for menu', async () => {
       const wrapper = await getWrapper({ id: 'my-dropdown' })
-      await wrapper.find('[role="button"]').trigger('click')
+      await wrapper.find('.m-popover-trigger').trigger('click')
       expect(wrapper.find('.m-dropdown__menu').attributes('id')).toContain('my-dropdown')
     })
   })
