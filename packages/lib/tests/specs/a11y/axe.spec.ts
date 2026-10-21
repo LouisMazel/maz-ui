@@ -97,6 +97,7 @@ const cases: AxeCase[] = [
 let mountedWrapper: VueWrapper | undefined
 
 beforeAll(() => {
+  Element.prototype.scrollTo ??= vi.fn()
   globalThis.matchMedia ??= ((query: string) => ({
     matches: false,
     media: query,

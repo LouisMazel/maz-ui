@@ -21,13 +21,13 @@
   "devDependencies": {
     "@maz-ui/stylelint-config": "workspace:*",
     "@maz-ui/vite-config": "workspace:*",
-    "@nuxt/devtools": "^3.2.3",
+    "@nuxt/devtools": "^3.4.4",
     "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/vite": "^4.3.3",
-    "nuxt": "^4.5.2",
-    "postcss-nested": "^8.0.1",
+    "nuxt": "^4.6.2",
+    "postcss-nested": "^9.0.0",
     "tailwindcss": "^4.3.3",
-    "vue-router": "^5.3.1"
+    "vue-router": "^5.4.0"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix",

@@ -38,7 +38,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=22.12.0"
   },
   "scripts": {
     "build": "unbuild",
@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "@maz-ui/node": "workspace:*",
-    "globby": "^16.2.0"
+    "globby": "^16.2.4"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",

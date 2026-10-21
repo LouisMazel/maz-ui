@@ -44,6 +44,9 @@
     "README.md",
     "dist"
   ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "prepack": "nuxt-module-build build",
     "build": "pnpm dev && pnpm prepack",
@@ -62,18 +65,18 @@
     "@maz-ui/themes": "workspace:*",
     "@maz-ui/translations": "workspace:*",
     "@maz-ui/utils": "workspace:*",
-    "@nuxt/devtools-kit": "^3.2.3",
-    "@nuxt/kit": "^4.5.2",
+    "@nuxt/devtools-kit": "^3.4.4",
+    "@nuxt/kit": "^4.6.2",
     "defu": "^6.1.7",
     "maz-ui": "workspace:*"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
-    "@nuxt/devtools": "^3.2.3",
+    "@nuxt/devtools": "^3.4.4",
     "@nuxt/module-builder": "^1.0.3",
-    "@nuxt/schema": "^4.5.2",
-    "@nuxt/test-utils": "^4.3.3",
-    "nuxt": "^4.5.2"
+    "@nuxt/schema": "^4.6.2",
+    "@nuxt/test-utils": "^4.3.4",
+    "nuxt": "^4.6.2"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

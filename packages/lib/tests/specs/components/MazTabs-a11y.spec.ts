@@ -6,6 +6,8 @@ import MazTabsContentItem from '@components/MazTabsContentItem.vue'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 
+Element.prototype.scrollTo ??= vi.fn()
+
 const mountedWrappers: VueWrapper[] = []
 
 afterEach(() => {
