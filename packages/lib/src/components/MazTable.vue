@@ -675,6 +675,25 @@ function getRowKey(row: T, index: number): string | number {
   return rowKey && row[rowKey] != null ? row[rowKey] : index
 }
 
+function getAriaSort(columnIndex: number): 'ascending' | 'descending' | 'none' {
+  if (columnIndex !== sortedColumnIndex.value || sortType.value === undefined)
+    return 'none'
+
+  return sortType.value === 'ASC' ? 'ascending' : 'descending'
+}
+
+/**
+ * Sortable column headers are focusable: Enter and Space sort them like a click.
+ * Keys typed in an element of the header (an input of a custom header) are ignored.
+ */
+function onSortableHeaderKeydown(event: KeyboardEvent, columnIndex: number) {
+  if (event.target !== event.currentTarget || (event.key !== 'Enter' && event.key !== ' '))
+    return
+
+  event.preventDefault()
+  sortColumn(columnIndex)
+}
+
 function sortColumn(columnIndex: number) {
   if (columnIndex === sortedColumnIndex.value) {
     const sortTypeValue = sortType.value === 'DESC' ? 'ASC' : undefined
@@ -800,13 +819,16 @@ onBeforeMount(() => {
                 align="left"
                 :class="`--${size}`"
                 class="m-table-select-column"
+                scope="col"
               >
-                <MazCheckbox v-model="allSelected" size="sm" />
+                <MazCheckbox v-model="allSelected" size="sm" :aria-label="t('aria.selectAll')" />
               </MazTableTitle>
               <MazTableTitle
                 v-for="(header, columnIndex) in headersNormalized"
                 :key="columnIndex"
-                :scope="header.scope"
+                :scope="header.scope ?? 'col'"
+                :aria-sort="(header.sortable ?? sortable) ? getAriaSort(columnIndex) : undefined"
+                :tabindex="(header.sortable ?? sortable) ? 0 : undefined"
                 :align="header.align"
                 :rowspan="header.rowspan"
                 :colspan="header.colspan"
@@ -819,6 +841,7 @@ onBeforeMount(() => {
                   `--${size}`,
                 ]"
                 @click="(header.sortable ?? sortable) && sortColumn(columnIndex)"
+                @keydown="(header.sortable ?? sortable) && onSortableHeaderKeydown($event, columnIndex)"
               >
                 <span :class="{ 'maz:sr-only': header.srOnly }">
                   <!--
@@ -838,6 +861,7 @@ onBeforeMount(() => {
 
                     <div v-if="header.sortable ?? sortable" class="m-table-sort-icon-wrapper">
                       <MazArrowUp
+                        aria-hidden="true"
                         class="m-table-sort-icon maz:hidden maz:group-hover:block"
                         :class="{
                           '--sorted': columnIndex === sortedColumnIndex,
@@ -849,7 +873,7 @@ onBeforeMount(() => {
                   </slot>
                 </span>
               </MazTableTitle>
-              <MazTableTitle v-if="hasSlotContent(slots.actions)" align="left" :class="`--${size}`">
+              <MazTableTitle v-if="hasSlotContent(slots.actions)" align="left" scope="col" :class="`--${size}`">
                 <!--
                   @slot Replace text of actions header
                 -->
@@ -898,6 +922,7 @@ onBeforeMount(() => {
                     <MazCheckbox
                       size="sm"
                       :model-value="row.selected"
+                      :aria-label="t('aria.selectRow')"
                       @update:model-value="selectRow($event, rowIndex)"
                     />
                   </slot>
