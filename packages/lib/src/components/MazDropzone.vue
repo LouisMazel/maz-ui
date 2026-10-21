@@ -760,8 +760,6 @@ defineExpose({
 <template>
   <label
     ref="dropZoneRef"
-    role="button"
-    tabindex="0"
     :for="`input-file-uploader-${instanceId}`"
     class="m-dropzone m-reset-css maz:flex maz:w-full maz:cursor-pointer maz:flex-col maz:flex-center maz:gap-2 maz:overflow-hidden maz:rounded-md maz:border maz:border-dashed maz:border-divider maz:bg-input maz:p-6 maz:transition-colors maz:duration-200 maz:ease-in-out maz:hover:bg-surface-600/50 maz:dark:hover:bg-surface-400/50"
     :class="{
@@ -814,6 +812,7 @@ defineExpose({
                 :disabled
                 color="destructive"
                 pastel
+                :aria-label="`${t('aria.removeFile')} ${file.name}`"
                 v-bind="removeFileBtnProps"
                 @click.prevent="handleFileRemove(file)"
               />
@@ -834,7 +833,7 @@ defineExpose({
             @slot upload-icon - Slot to customize the upload icon
           -->
           <slot name="upload-icon">
-            <MazArrowUpOnSquare class="m-dropzone__upload-icon" />
+            <MazArrowUpOnSquare class="m-dropzone__upload-icon" aria-hidden="true" />
           </slot>
 
           <span class="m-dropzone__upload-text">
