@@ -436,4 +436,8 @@ type Steps = Array<{
   const password = ref()
 </script>
 
+## Accessibility
+
+Each step header is a button exposing the current step (`aria-current="step"`) and its open state (`aria-expanded`), and controls its content (`aria-controls`), labelled by the header. The ids are unique per instance.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-stepper.doc.md-->
