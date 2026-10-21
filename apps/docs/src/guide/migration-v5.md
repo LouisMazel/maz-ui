@@ -75,7 +75,7 @@ The MCP server is read-only — it ships docs, not code edits — so the assista
 
 ## Migration checklist
 
-1. Bump **Node to ≥ 20** and confirm your audience has modern browsers (see below).
+1. Bump **Node to ≥ 22.12** and confirm your audience has modern browsers (see below).
 2. If your **custom CSS** uses `hsl(var(--maz-<color>))`, simplify to `var(--maz-<color>)`.
 3. Rename `import 'maz-ui/styles'` to `import 'maz-ui/style.css'` (and `maz-ui/aos-styles` → `maz-ui/aos.css`).
 4. Replace any `rounded-size="base"` with `rounded-size="md"` (or drop the prop — the new default is visually identical).
@@ -94,7 +94,7 @@ The MCP server is read-only — it ships docs, not code edits — so the assista
 ### Node
 
 ```bash
-node -v   # must be >= 20
+node -v   # must be >= 22.12
 ```
 
 ### Browser support

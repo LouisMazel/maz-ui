@@ -40,6 +40,9 @@
     "dist",
     "docs"
   ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "generate:docs": "pnpm generate:components-docs && pnpm copy-docs",
     "copy-docs": "tsx scripts/copy-docs.ts",

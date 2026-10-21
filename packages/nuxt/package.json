@@ -44,6 +44,9 @@
     "README.md",
     "dist"
   ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "prepack": "nuxt-module-build build",
     "build": "pnpm dev && pnpm prepack",

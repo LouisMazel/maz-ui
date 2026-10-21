@@ -104,6 +104,9 @@
     "dist",
     "svg"
   ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "build": "vite build",
     "typecheck": "tsc --noEmit --skipLibCheck",

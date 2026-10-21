@@ -368,7 +368,7 @@ All logger methods automatically handle error objects using `getErrorMessage` ut
 
 ## Requirements
 
-- Node.js >= 18.0.0
+- Node.js >= 22.12.0
 - TypeScript support included
 
 ## Contributing
