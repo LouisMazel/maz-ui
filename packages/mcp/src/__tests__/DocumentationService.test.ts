@@ -277,7 +277,7 @@ describe('Given DocumentationService instance', () => {
       expect(result.composables.total).toBe(16)
       expect(result.directives.total).toBe(5)
       expect(result.plugins.total).toBe(4)
-      expect(result.utils.total).toBe(41)
+      expect(result.utils.total).toBe(43)
       expect(result.node.total).toBe(3)
     })
   })
