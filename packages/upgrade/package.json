@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "@maz-ui/node": "workspace:*",
-    "globby": "^16.2.0"
+    "globby": "^16.2.4"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",

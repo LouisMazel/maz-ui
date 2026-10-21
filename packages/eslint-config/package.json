@@ -55,16 +55,16 @@
   "dependencies": {
     "@antfu/eslint-config": "^9.5.1",
     "consola": "^3.4.2",
-    "eslint-plugin-better-tailwindcss": "^4.7.0",
+    "eslint-plugin-better-tailwindcss": "^4.10.0",
     "eslint-plugin-format": "^2.0.1",
     "eslint-plugin-sonarjs": "^4.2.2",
-    "eslint-plugin-vuejs-accessibility": "^2.6.0"
+    "eslint-plugin-vuejs-accessibility": "^2.6.2"
   },
   "devDependencies": {
-    "@typescript-eslint/rule-tester": "^8.71.0",
-    "eslint": "^10.12.0",
+    "@typescript-eslint/rule-tester": "^8.72.0",
+    "eslint": "^10.13.0",
     "unbuild": "^3.6.1",
-    "vue-eslint-parser": "^10.4.0"
+    "vue-eslint-parser": "^10.4.1"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [

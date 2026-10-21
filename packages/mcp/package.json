@@ -58,16 +58,16 @@
   },
   "dependencies": {
     "@maz-ui/utils": "workspace:*",
-    "@modelcontextprotocol/sdk": "^1.32.0",
+    "@modelcontextprotocol/sdk": "^1.32.1",
     "maz-ui": "workspace:*"
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:*",
     "@maz-ui/node": "workspace:*",
-    "@modelcontextprotocol/inspector": "^2.9.0",
-    "@swc/core": "1.16.13",
-    "prettier": "^3.9.9",
-    "ts-node-maintained": "^10.9.5",
+    "@modelcontextprotocol/inspector": "^2.11.0",
+    "@swc/core": "1.16.18",
+    "prettier": "^3.9.10",
+    "ts-node-maintained": "^10.9.6",
     "tsx": "^4.23.15",
     "unbuild": "^3.6.1"
   },
