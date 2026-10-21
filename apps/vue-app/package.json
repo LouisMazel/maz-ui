@@ -28,7 +28,7 @@
     "@vue/tsconfig": "^0.9.1",
     "maz-ui": "workspace:*",
     "npm-run-all2": "^9.0.3",
-    "postcss-nested": "^8.0.1",
+    "postcss-nested": "^9.0.0",
     "rollup-plugin-visualizer": "^7.1.1",
     "tailwindcss": "^4.3.3",
     "vite-plugin-vue-devtools": "^8.2.1"

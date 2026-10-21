@@ -239,7 +239,7 @@
     "jsdom": "^30.1.3",
     "lightningcss": "^1.33.0",
     "nuxt": "^4.6.2",
-    "postcss-nested": "^8.0.1",
+    "postcss-nested": "^9.0.0",
     "sass": "^1.105.2",
     "shiki": "^4.5.0",
     "tailwindcss": "^4.3.3",
