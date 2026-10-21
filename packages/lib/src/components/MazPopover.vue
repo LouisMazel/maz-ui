@@ -11,6 +11,7 @@ import {
   onMounted,
   onUnmounted,
   onUpdated,
+  ref,
   shallowRef,
   useAttrs,
   useTemplateRef,
@@ -453,6 +454,22 @@ function syncTriggerAria() {
 
 const isWrapperTrigger = computed(() => !triggerTarget.value)
 
+/**
+ * The panel is hidden when its reference leaves the viewport (`hide` middleware), except while
+ * the focus is inside it: on Android, the virtual keyboard opened to type in a field of the panel
+ * (a select search) covers the reference, hiding the panel would make it lose the focus.
+ */
+const isPanelFocused = ref(false)
+
+function onPanelFocusout(event: FocusEvent) {
+  const nextFocused = event.relatedTarget as Node | null
+
+  if (!nextFocused || !panelRef.value?.contains(nextFocused))
+    isPanelFocused.value = false
+}
+
+const isPanelHidden = computed(() => !!middlewareData.value.hide?.referenceHidden && !isPanelFocused.value)
+
 const wrapperTriggerAttributes = computed(() => {
   if (!isWrapperTrigger.value)
     return {}
@@ -594,6 +611,7 @@ function setOpen(value: boolean) {
     })
   }
   else {
+    isPanelFocused.value = false
     emits('toggle', value)
     emits('close')
 
@@ -877,12 +895,12 @@ defineExpose({
           panelStyles,
           {
             transformOrigin: getTransformOrigin(computedPosition),
-            visibility: middlewareData.hide?.referenceHidden
-              ? 'hidden'
-              : 'visible',
+            visibility: isPanelHidden ? 'hidden' : 'visible',
           },
         ]"
         v-bind="panelEvents"
+        @focusin="isPanelFocused = true"
+        @focusout="onPanelFocusout"
       >
         <!--
           @slot Popover content
