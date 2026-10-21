@@ -288,12 +288,16 @@ If you target maz-ui's internal selectors from your own CSS, also rename:
 <MazDrawer variant="right" />
 
 <!-- v5 -->
-<MazBtn start-icon="user" end-icon="arrow-right">Save</MazBtn>
+<MazBtn start-icon="/user.svg" end-icon="/arrow-right.svg">Save</MazBtn>
 <MazInput :start-icon="MazSearch" />
-<MazContainer title="Settings" start-icon="cog-6-tooth" />
+<MazContainer title="Settings" start-icon="/cog-6-tooth.svg" />
 <MazCard footer-align="end" />
 <MazDrawer variant="end" />
 ```
+
+::: warning Icon names
+In v4, a string icon prop (`left-icon="user"`) was an icon **name**, resolved to `${mazIconPath}/user.svg`. In v5, a string is a **URL** or a raw SVG: a bare name renders nothing. Use the URL of the same file (`start-icon="/user.svg"`, `mazIconPath` is still prepended to relative URLs) or an icon component. The `@maz-ui/upgrade` codemod rewrites the static values for you.
+:::
 
 ```bash
 # Quick search to chase down the renames
