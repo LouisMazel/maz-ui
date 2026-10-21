@@ -17,7 +17,7 @@ describe('MazStepper branch coverage', () => {
       const wrapper = mount(MazStepper, {
         props: { steps: defaultSteps, modelValue: 1 },
       })
-      expect(wrapper.findAll('.m-stepper__header').length).toBe(3)
+      expect(wrapper.findAll('.m-stepper__header')).toHaveLength(3)
       wrapper.unmount()
     })
 
@@ -25,7 +25,7 @@ describe('MazStepper branch coverage', () => {
       const wrapper = mount(MazStepper, {
         props: { steps: defaultSteps, modelValue: 1 },
       })
-      expect(wrapper.findAll('.m-stepper__content').length).toBe(3)
+      expect(wrapper.findAll('.m-stepper__content')).toHaveLength(3)
       wrapper.unmount()
     })
   })

@@ -34,7 +34,7 @@ import MazCircularProgressBar from 'maz-ui/components/MazCircularProgressBar'
 The size of the component can be changed by passing the `size` prop. The value could be a string in px, em or rem.
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-3 maz-flex-wrap maz-items-center">
+  <div class="maz:flex maz:gap-3 maz:flex-wrap maz:items-center">
     <MazCircularProgressBar :percentage="75" suffix="%" size="3em" />
     <MazCircularProgressBar :percentage="75" suffix="%" size="100px" />
     <MazCircularProgressBar :percentage="75" suffix="%" size="10rem" />
@@ -75,7 +75,7 @@ The duration of the animation can be changed by passing the `duration` prop. The
 ## Color
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-3 maz-flex-wrap maz-items-center">
+  <div class="maz:flex maz:gap-3 maz:flex-wrap maz:items-center">
     <MazCircularProgressBar :percentage="75" color="primary" />
     <MazCircularProgressBar :percentage="75" color="secondary" />
     <MazCircularProgressBar :percentage="75" color="info" />
@@ -98,7 +98,7 @@ The duration of the animation can be changed by passing the `duration` prop. The
 The color of the component is automatically according to the percentage. The color will be green if the percentage is egal to 100%, orange if below 100%, and red if below 50%.
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-3 maz-flex-wrap maz-items-center">
+  <div class="maz:flex maz:gap-3 maz:flex-wrap maz:items-center">
     <MazCircularProgressBar :percentage="0" auto-color size="9rem" />
     <MazCircularProgressBar :percentage="25" auto-color size="9rem" />
     <MazCircularProgressBar :percentage="50" auto-color size="9rem" />
@@ -127,7 +127,7 @@ Replace the percentage value by a custom slot.
 Obviously, the "counter animation" will not work in this case.
 
 <ComponentDemo>
-  <div class="maz-flex maz-gap-3 maz-flex-wrap maz-items-center">
+  <div class="maz:flex maz:gap-3 maz:flex-wrap maz:items-center">
     <MazCircularProgressBar :percentage="50">
       2/4
     </MazCircularProgressBar>

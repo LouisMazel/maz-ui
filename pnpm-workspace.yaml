@@ -1,6 +1,12 @@
-shellEmulator: true
+minimumReleaseAgeExcludePrune: true
+minimumReleaseAgeExclude:
+  - '@yoloship/*'
+  - '@maz-ui/node@5.0.0-beta.26'
+  - relizy*
+
 # eslint-disable-next-line pnpm/yaml-enforce-settings
-trustPolicy: warn-downgrade
+trustPolicy: off
+shellEmulator: true
 
 packages:
   - apps/*
@@ -8,8 +14,11 @@ packages:
   - tools/*
   - .
 
-onlyBuiltDependencies:
-  - '@swc/core'
-  - nx
-  - unrs-resolver
-  - vue-demi
+allowBuilds:
+  '@modelcontextprotocol/inspector': false
+  '@parcel/watcher': true
+  '@swc/core': true
+  esbuild: true
+  nx: true
+  sharp: false
+  vue-demi: true

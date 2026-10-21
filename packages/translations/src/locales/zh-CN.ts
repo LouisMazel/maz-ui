@@ -1,6 +1,27 @@
 import type { MazUiTranslationsNestedSchema } from '../types'
 
 export default {
+  aria: {
+    close: '关闭',
+    increment: '增加',
+    decrement: '减少',
+    character: '字符',
+    value: '值',
+    options: '选项',
+    noResults: '无结果',
+    showOptions: '显示选项',
+    hideOptions: '隐藏选项',
+    previousMonth: '上个月',
+    nextMonth: '下个月',
+    previousYears: '前几年',
+    nextYears: '后几年',
+    selectAll: '选择所有行',
+    selectRow: '选择行',
+    removeFile: '删除文件',
+    sidebar: '侧边栏',
+    openSidebar: '打开侧边栏',
+    closeSidebar: '关闭侧边栏',
+  },
   selectCountry: {
     searchPlaceholder: '搜索国家',
   },
@@ -89,8 +110,47 @@ export default {
     collapse: '阅读更少',
     ariaLabel: '可展开内容',
   },
+  pullToRefresh: {
+    pull: '下拉刷新',
+    release: '释放刷新',
+    refreshing: '正在刷新…',
+  },
   skeleton: {
     ariaLabel: '内容加载中',
     loadingText: '加载中...',
+  },
+  codeHighlight: {
+    copyToClipboard: '复制到剪贴板',
+    copiedToClipboard: '已复制到剪贴板',
+  },
+  windowMockup: {
+    copyUrlToClipboard: '复制 URL 到剪贴板',
+    urlCopiedToClipboard: 'URL 已复制到剪贴板',
+  },
+  markdownEditor: {
+    write: '编辑',
+    preview: '预览',
+    split: '分屏',
+    emptyPreview: '没有可预览的内容',
+    toolbar: {
+      heading: '标题',
+      bold: '加粗',
+      italic: '斜体',
+      strikethrough: '删除线',
+      quote: '引用',
+      code: '行内代码',
+      codeBlock: '代码块',
+      link: '链接',
+      image: '图片',
+      bulletList: '无序列表',
+      orderedList: '有序列表',
+      checkList: '任务列表',
+      table: '表格',
+    },
+    headings: {
+      h1: '标题 1',
+      h2: '标题 2',
+      h3: '标题 3',
+    },
   },
 } satisfies MazUiTranslationsNestedSchema

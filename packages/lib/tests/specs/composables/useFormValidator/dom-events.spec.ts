@@ -83,20 +83,14 @@ describe('given dom-events module', () => {
       expect(result).toContain(editableEl)
     })
 
-    it('then it should find elements with data-interactive', () => {
+    it.each([
+      { label: 'data-interactive', attribute: 'data-interactive', value: '' },
+      { label: 'data-clickable', attribute: 'data-clickable', value: '' },
+      { label: 'positive tabindex', attribute: 'tabindex', value: '0' },
+    ])('then it should find elements with $label', ({ attribute, value }) => {
       const wrapper = document.createElement('div')
       const el = document.createElement('div')
-      el.setAttribute('data-interactive', '')
-      wrapper.appendChild(el)
-
-      const result = findInteractiveElements(wrapper)
-      expect(result).toContain(el)
-    })
-
-    it('then it should find elements with data-clickable', () => {
-      const wrapper = document.createElement('div')
-      const el = document.createElement('div')
-      el.setAttribute('data-clickable', '')
+      el.setAttribute(attribute, value)
       wrapper.appendChild(el)
 
       const result = findInteractiveElements(wrapper)
@@ -122,16 +116,6 @@ describe('given dom-events module', () => {
 
       const result = findInteractiveElements(wrapper)
       expect(result).not.toContain(el)
-    })
-
-    it('then it should find elements with positive tabindex', () => {
-      const wrapper = document.createElement('div')
-      const el = document.createElement('div')
-      el.setAttribute('tabindex', '0')
-      wrapper.appendChild(el)
-
-      const result = findInteractiveElements(wrapper)
-      expect(result).toContain(el)
     })
 
     it('then it should return button elements', () => {

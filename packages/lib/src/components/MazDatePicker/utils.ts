@@ -1,11 +1,11 @@
 import type { MazUiTranslationsNestedSchema } from '@maz-ui/translations'
-import type { ConfigType, OpUnitType } from 'dayjs'
+import type { ConfigType, OpUnitType } from 'dayjs/esm'
 import type { MazDatePickerPartialRangeValue, MazDatePickerValue } from './types'
 
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
-import dayjs from 'dayjs'
-import weekday from 'dayjs/plugin/weekday'
+import dayjs from 'dayjs/esm'
+import weekday from 'dayjs/esm/plugin/weekday'
 
 dayjs.extend(weekday)
 
@@ -55,13 +55,13 @@ export function getFirstDayOfMonth(value: ConfigType): number {
   return dayjs(value).startOf('month').day()
 }
 
-export function getDaysOfWeek(locale: string, firstDayOfWeek: number) {
+export function getDaysOfWeek(locale: string, firstDayOfWeek: number, weekday: Intl.DateTimeFormatOptions['weekday'] = 'short') {
   const currentDate = dayjs().locale(locale)
   const days: string[] = []
 
   for (let i = 0; i < 7; i++) {
     const day = currentDate.day(i + firstDayOfWeek).toDate()
-    const dayName = formatDate(day, locale, { weekday: 'short' })
+    const dayName = formatDate(day, locale, { weekday })
 
     if (dayName) {
       days.push(dayName)

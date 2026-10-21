@@ -12,12 +12,12 @@ const { colorMode, updateTheme, presetName, isDark } = useTheme()
     transition="scale-fade"
     prefer-position="bottom-end"
   >
-    <span class="maz-capitalize">
+    <span class="maz:capitalize">
       {{ colorMode }} ({{ isDark ? 'dark' : 'light' }})
     </span>
 
     <template #dropdown>
-      <div class="maz-flex maz-max-w-60 maz-flex-col maz-gap-4">
+      <div class="maz:flex maz:max-w-60 maz:flex-col maz:gap-4">
         <MazRadioButtons
           v-model="colorMode"
           :options="[
@@ -38,6 +38,7 @@ const { colorMode, updateTheme, presetName, isDark } = useTheme()
             { label: 'Ocean', value: 'ocean' },
             { label: 'Obsidian', value: 'obsidian' },
             { label: 'Pristine', value: 'pristine' },
+            { label: 'Nova', value: 'nova' },
           ]"
           @update:model-value="updateTheme($event)"
         />

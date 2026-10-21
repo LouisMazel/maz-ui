@@ -1,5 +1,6 @@
-import type { MazTimelineRoundedSize } from '@components/MazTimeline.vue'
+import type { MazTimelineRoundedSize, MazTimelineStepState } from '@components/MazTimeline.vue'
 import MazTimeline from '@components/MazTimeline.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount } from '@vue/test-utils'
 
 const defaultSteps = [
@@ -21,10 +22,15 @@ function mountTimeline(props: Record<string, unknown> = {}, slots: Record<string
 
 describe('given MazTimeline component', () => {
   describe('when rendered with default props', () => {
-    it('then it renders with m-reset-css class', () => {
+    it.each([
+      'm-reset-css',
+      '--md',
+      '--rounded-md',
+      '--animated',
+    ])('then it applies the %s class by default', (className) => {
       const wrapper = mountTimeline()
 
-      expect(wrapper.classes()).toContain('m-reset-css')
+      expect(wrapper.classes()).toContain(className)
     })
 
     it('then it renders the correct number of steps', () => {
@@ -53,24 +59,6 @@ describe('given MazTimeline component', () => {
       expect(numbers[0]!.text()).toBe('1')
       expect(numbers[1]!.text()).toBe('2')
       expect(numbers[2]!.text()).toBe('3')
-    })
-
-    it('then it applies --md size class by default', () => {
-      const wrapper = mountTimeline()
-
-      expect(wrapper.classes()).toContain('--md')
-    })
-
-    it('then it applies --rounded-base class by default', () => {
-      const wrapper = mountTimeline()
-
-      expect(wrapper.classes()).toContain('--rounded-base')
-    })
-
-    it('then it applies --animated class by default', () => {
-      const wrapper = mountTimeline()
-
-      expect(wrapper.classes()).toContain('--animated')
     })
 
     it('then it renders N-1 connectors for N steps', () => {
@@ -176,8 +164,6 @@ describe('given MazTimeline component', () => {
       const wrapper = mountTimeline()
 
       const style = wrapper.attributes('style')
-      expect(style).toContain('--m-timeline-color: var(--maz-primary-700)')
-      expect(style).toContain('--m-timeline-color-dark: var(--maz-primary-400)')
       expect(style).toContain('--m-timeline-bg: var(--maz-primary)')
       expect(style).toContain('--m-timeline-fg: var(--maz-primary-foreground)')
     })
@@ -186,8 +172,6 @@ describe('given MazTimeline component', () => {
       const wrapper = mountTimeline({ color: 'success' })
 
       const style = wrapper.attributes('style')
-      expect(style).toContain('--m-timeline-color: var(--maz-success-700)')
-      expect(style).toContain('--m-timeline-color-dark: var(--maz-success-400)')
       expect(style).toContain('--m-timeline-bg: var(--maz-success)')
       expect(style).toContain('--m-timeline-fg: var(--maz-success-foreground)')
     })
@@ -206,7 +190,6 @@ describe('given MazTimeline component', () => {
       'none',
       'sm',
       'md',
-      'base',
       'lg',
       'xl',
       '2xl',
@@ -231,7 +214,7 @@ describe('given MazTimeline component', () => {
 
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('click')
 
-      expect(wrapper.emitted('update:modelValue')).toEqual([[1]])
+      expect(wrapper.emitted('update:model-value')).toEqual([[1]])
     })
 
     it('then it emits click-step with step data and index on click', async () => {
@@ -249,7 +232,7 @@ describe('given MazTimeline component', () => {
 
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('click')
 
-      expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+      expect(wrapper.emitted('update:model-value')).toBeUndefined()
       expect(wrapper.emitted('click-step')).toBeUndefined()
     })
 
@@ -265,7 +248,7 @@ describe('given MazTimeline component', () => {
 
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('click')
 
-      expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+      expect(wrapper.emitted('update:model-value')).toBeUndefined()
       expect(wrapper.emitted('click-step')).toBeUndefined()
     })
   })
@@ -376,7 +359,7 @@ describe('given MazTimeline component', () => {
 
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('keydown', { key: 'Enter' })
 
-      expect(wrapper.emitted('update:modelValue')).toEqual([[1]])
+      expect(wrapper.emitted('update:model-value')).toEqual([[1]])
       expect(wrapper.emitted('click-step')).toEqual([[{ step: defaultSteps[1], index: 1 }]])
     })
 
@@ -385,7 +368,7 @@ describe('given MazTimeline component', () => {
 
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('keydown', { key: ' ' })
 
-      expect(wrapper.emitted('update:modelValue')).toEqual([[1]])
+      expect(wrapper.emitted('update:model-value')).toEqual([[1]])
       expect(wrapper.emitted('click-step')).toEqual([[{ step: defaultSteps[1], index: 1 }]])
     })
 
@@ -430,7 +413,7 @@ describe('given MazTimeline component', () => {
 
       await stepElements[0]!.trigger('keydown', { key: 'ArrowLeft' })
 
-      expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+      expect(wrapper.emitted('update:model-value')).toBeUndefined()
     })
 
     it('then arrow navigation does nothing for unrelated keys', async () => {
@@ -439,45 +422,25 @@ describe('given MazTimeline component', () => {
 
       await stepElements[0]!.trigger('keydown', { key: 'Tab' })
 
-      expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+      expect(wrapper.emitted('update:model-value')).toBeUndefined()
     })
   })
 
   describe('when rendered with state-specific styles', () => {
-    it('then error state step has destructive CSS variables', () => {
+    it.each<[MazTimelineStepState, string]>([
+      ['error', 'var(--maz-destructive)'],
+      ['warning', 'var(--maz-warning)'],
+      ['completed', 'var(--maz-success)'],
+    ])('then %s state step has the matching CSS variables', (state, cssValue) => {
       const wrapper = mountTimeline({
         steps: [
-          { title: 'Step 1', state: 'error' },
+          { title: 'Step 1', state },
           { title: 'Step 2' },
         ],
       })
 
       const style = wrapper.findAll('.m-timeline-step')[0]!.attributes('style')
-      expect(style).toContain('--m-timeline-state-bg: var(--maz-destructive)')
-    })
-
-    it('then warning state step has warning CSS variables', () => {
-      const wrapper = mountTimeline({
-        steps: [
-          { title: 'Step 1', state: 'warning' },
-          { title: 'Step 2' },
-        ],
-      })
-
-      const style = wrapper.findAll('.m-timeline-step')[0]!.attributes('style')
-      expect(style).toContain('--m-timeline-state-bg: var(--maz-warning)')
-    })
-
-    it('then completed state step has success CSS variables', () => {
-      const wrapper = mountTimeline({
-        steps: [
-          { title: 'Step 1', state: 'completed' },
-          { title: 'Step 2' },
-        ],
-      })
-
-      const style = wrapper.findAll('.m-timeline-step')[0]!.attributes('style')
-      expect(style).toContain('--m-timeline-state-bg: var(--maz-success)')
+      expect(style).toContain(`--m-timeline-state-bg: ${cssValue}`)
     })
 
     it('then active state step has no state CSS variables', () => {
@@ -739,7 +702,7 @@ describe('given MazTimeline component', () => {
 
       await wrapper.findAll('.m-timeline-step')[1]!.trigger('keydown', { key: 'Enter' })
 
-      expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+      expect(wrapper.emitted('update:model-value')).toBeUndefined()
     })
   })
 
@@ -764,6 +727,52 @@ describe('given MazTimeline component', () => {
 
       expect(focusSpy1).not.toHaveBeenCalled()
       expect(focusSpy2).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('given a global config provides defaults for MazTimeline', () => {
+    describe('when the component mounts without size or roundedSize props', () => {
+      it('then it applies the per-component global size and roundedSize', () => {
+        const config = { MazTimeline: { size: 'xl' as const, roundedSize: 'full' as const } }
+
+        const wrapper = mount(MazTimeline, {
+          props: { steps: defaultSteps, direction: 'horizontal' as const },
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(wrapper.classes()).toContain('--xl')
+        expect(wrapper.classes()).toContain('--rounded-full')
+      })
+    })
+
+    describe('when the defaults come from defaults.global', () => {
+      it('then it applies the global size and roundedSize', () => {
+        const config = { global: { size: 'lg' as const, roundedSize: '2xl' as const } }
+
+        const wrapper = mount(MazTimeline, {
+          props: { steps: defaultSteps, direction: 'horizontal' as const },
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(wrapper.classes()).toContain('--lg')
+        expect(wrapper.classes()).toContain('--rounded-2xl')
+      })
+    })
+
+    describe('when instance props are passed alongside the global config', () => {
+      it('then the instance props win over the global defaults', () => {
+        const config = { MazTimeline: { size: 'xl' as const, roundedSize: 'full' as const } }
+
+        const wrapper = mount(MazTimeline, {
+          props: { steps: defaultSteps, direction: 'horizontal' as const, size: 'sm' as const, roundedSize: 'none' as const },
+          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+        })
+
+        expect(wrapper.classes()).toContain('--sm')
+        expect(wrapper.classes()).toContain('--rounded-none')
+        expect(wrapper.classes()).not.toContain('--xl')
+        expect(wrapper.classes()).not.toContain('--rounded-full')
+      })
     })
   })
 })

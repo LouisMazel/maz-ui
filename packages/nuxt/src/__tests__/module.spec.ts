@@ -50,7 +50,7 @@ describe('nuxt module', () => {
     })
 
     it('should have correct nuxt compatibility', () => {
-      expect(config.meta.compatibility.nuxt).toBe('>=3.0.0')
+      expect(config.meta.compatibility.nuxt).toBe('>=3.4.0 <5.0.0')
     })
   })
 
@@ -60,19 +60,20 @@ describe('nuxt module', () => {
         autoImportPrefix: '',
         defaultMazIconPath: '',
         devtools: true,
+        preventIosInputZoom: false,
       })
     })
 
     it('should have correct css defaults', () => {
       expect(config.defaults.css).toEqual({
-        injectMainCss: true,
+        injectCss: true,
       })
     })
 
     it('should have correct theme defaults', () => {
       expect(config.defaults.theme).toEqual({
         preset: 'maz-ui',
-        strategy: 'hybrid',
+        strategy: 'runtime',
         darkModeStrategy: 'class',
         colorMode: 'auto',
         mode: 'both',
@@ -132,6 +133,7 @@ describe('nuxt module', () => {
       expect(composables.useInstanceUniqId).toBe(true)
       expect(composables.useMountComponent).toBe(true)
       expect(composables.useSwipe).toBe(true)
+      expect(composables.usePullToRefresh).toBe(true)
       expect(composables.useMutationObserver).toBe(true)
     })
   })
@@ -147,6 +149,7 @@ describe('nuxt module', () => {
             },
           },
           css: [],
+          postcss: { plugins: {} as Record<string, any>, order: [] },
         },
         ...overrides,
       }
@@ -181,36 +184,60 @@ describe('nuxt module', () => {
     })
 
     describe('css', () => {
-      it('should inject main CSS when injectMainCss is true', () => {
-        const { nuxt } = callSetup({ css: { injectMainCss: true } })
-        expect(nuxt.options.css).toContain('maz-ui/dist/css/main.css')
+      it('should inject main CSS when injectCss is true', () => {
+        const { nuxt } = callSetup({ css: { injectCss: true } })
+        expect(nuxt.options.css).toContain('maz-ui/style.css')
       })
 
-      it('should not inject main CSS when injectMainCss is false', () => {
-        const { nuxt } = callSetup({ css: { injectMainCss: false } })
-        expect(nuxt.options.css).not.toContain('maz-ui/dist/css/main.css')
+      it('should not inject main CSS when injectCss is false', () => {
+        const { nuxt } = callSetup({ css: { injectCss: false } })
+        expect(nuxt.options.css).not.toContain('maz-ui/style.css')
+      })
+
+      it('should disable cssnano calc optimization', () => {
+        const { nuxt } = callSetup()
+        expect(nuxt.options.postcss.plugins.cssnano).toEqual({ preset: ['default', { calc: false }] })
+      })
+
+      it('should preserve existing cssnano options when disabling calc', () => {
+        const { nuxt } = callSetup({}, { options: { ...createNuxtMock().options, postcss: { plugins: { cssnano: { comments: false } }, order: [] } } })
+        expect(nuxt.options.postcss.plugins.cssnano).toEqual({ comments: false, preset: ['default', { calc: false }] })
+      })
+
+      it('should not touch cssnano when it is explicitly disabled', () => {
+        const { nuxt } = callSetup({}, { options: { ...createNuxtMock().options, postcss: { plugins: { cssnano: false }, order: [] } } })
+        expect(nuxt.options.postcss.plugins.cssnano).toBe(false)
+      })
+
+      it('should initialize postcss options when absent', () => {
+        const { nuxt } = callSetup({}, { options: { build: { transpile: [] }, runtimeConfig: { public: { mazUi: {} } }, css: [] } })
+        expect(nuxt.options.postcss.plugins.cssnano).toEqual({ preset: ['default', { calc: false }] })
       })
     })
 
     describe('plugins', () => {
-      it('should always add theme plugin', () => {
+      it.each([
+        'runtime/plugins/theme',
+        'runtime/plugins/translations',
+        'runtime/plugins/maz-link-component',
+      ])('always adds %s plugin', (pluginPath) => {
         callSetup()
         expect(addPlugin).toHaveBeenCalledWith(
-          expect.stringContaining('runtime/plugins/theme'),
+          expect.stringContaining(pluginPath),
         )
       })
 
-      it('should always add translations plugin', () => {
-        callSetup()
+      it('should add defaults plugin when defaults are set', () => {
+        callSetup({ defaults: { global: { roundedSize: 'lg' } } })
         expect(addPlugin).toHaveBeenCalledWith(
-          expect.stringContaining('runtime/plugins/translations'),
+          expect.stringContaining('runtime/plugins/defaults'),
         )
       })
 
-      it('should always add maz-link-component plugin', () => {
-        callSetup()
-        expect(addPlugin).toHaveBeenCalledWith(
-          expect.stringContaining('runtime/plugins/maz-link-component'),
+      it('should not add defaults plugin when defaults are empty', () => {
+        callSetup({ defaults: {} })
+        expect(addPlugin).not.toHaveBeenCalledWith(
+          expect.stringContaining('runtime/plugins/defaults'),
         )
       })
 
@@ -233,17 +260,17 @@ describe('nuxt module', () => {
 
       it('should inject AOS CSS by default when aos is enabled', () => {
         const { nuxt } = callSetup({ plugins: { aos: true } })
-        expect(nuxt.options.css).toContain('maz-ui/aos-styles')
+        expect(nuxt.options.css).toContain('maz-ui/aos.css')
       })
 
       it('should not inject AOS CSS when injectCss is false', () => {
         const { nuxt } = callSetup({ plugins: { aos: { injectCss: false } } })
-        expect(nuxt.options.css).not.toContain('maz-ui/aos-styles')
+        expect(nuxt.options.css).not.toContain('maz-ui/aos.css')
       })
 
       it('should inject AOS CSS when aos is object without injectCss', () => {
         const { nuxt } = callSetup({ plugins: { aos: { delay: 100 } } })
-        expect(nuxt.options.css).toContain('maz-ui/aos-styles')
+        expect(nuxt.options.css).toContain('maz-ui/aos.css')
       })
 
       it('should not add aos plugin when aos is disabled', () => {
@@ -421,6 +448,20 @@ describe('nuxt module', () => {
         )
       })
 
+      it('should not register useTheme when disabled', () => {
+        callSetup({ composables: { useTheme: false } })
+        expect(addImports).not.toHaveBeenCalledWith(
+          expect.objectContaining({ name: 'useTheme', from: '@maz-ui/themes' }),
+        )
+      })
+
+      it('should not register useTranslations when disabled', () => {
+        callSetup({ composables: { useTranslations: false } })
+        expect(addImports).not.toHaveBeenCalledWith(
+          expect.objectContaining({ name: 'useTranslations', from: '@maz-ui/translations' }),
+        )
+      })
+
       it('should apply autoImportPrefix to composable names', () => {
         callSetup({ general: { autoImportPrefix: 'Maz' } })
         expect(addImports).toHaveBeenCalledWith(
@@ -503,6 +544,63 @@ describe('nuxt module', () => {
           ([path]) => path.includes('maz-icon-path'),
         )
         expect(iconCalls).toHaveLength(0)
+      })
+    })
+
+    describe('given the preventIosInputZoom option', () => {
+      describe('when it is enabled', () => {
+        it('then the client plugin is added', () => {
+          callSetup({ general: { preventIosInputZoom: true } })
+
+          expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/prevent-ios-input-zoom.client'))
+        })
+      })
+
+      describe('when it is not set', () => {
+        it('then the client plugin is not added', () => {
+          callSetup()
+
+          expect(addPlugin).not.toHaveBeenCalledWith(expect.stringContaining('prevent-ios-input-zoom'))
+        })
+      })
+    })
+
+    describe('given the flags option', () => {
+      describe('when it is not set', () => {
+        it('then no flags plugin is added and no flag source is set', () => {
+          const { nuxt } = callSetup()
+
+          expect(config.defaults.flags).toBe('cdn')
+          expect(addPlugin).not.toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/local-flags'))
+          expect((nuxt.options.runtimeConfig.public.mazUi as any).defaults.global?.flagSrc).toBeUndefined()
+        })
+      })
+
+      describe('when it is local', () => {
+        it('then the local flags plugin replaces the defaults plugin', () => {
+          callSetup({ flags: 'local', defaults: { global: { size: 'lg' } } })
+
+          expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/local-flags'))
+          expect(addPlugin).not.toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/defaults'))
+        })
+      })
+
+      describe('when it is a URL template', () => {
+        it('then the template becomes the global flag source through the defaults plugin', () => {
+          const { nuxt } = callSetup({ flags: '/flags/{code}.svg', defaults: { global: { size: 'lg' } } })
+
+          expect((nuxt.options.runtimeConfig.public.mazUi as any).defaults.global).toEqual({ flagSrc: '/flags/{code}.svg', size: 'lg' })
+          expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/defaults'))
+          expect(addPlugin).not.toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/local-flags'))
+        })
+      })
+
+      describe('when a global flag source is also set in defaults', () => {
+        it('then the defaults value wins over the template', () => {
+          const { nuxt } = callSetup({ flags: '/flags/{code}.svg', defaults: { global: { flagSrc: '/mine/{CODE}.png' } } })
+
+          expect((nuxt.options.runtimeConfig.public.mazUi as any).defaults.global.flagSrc).toBe('/mine/{CODE}.png')
+        })
       })
     })
 

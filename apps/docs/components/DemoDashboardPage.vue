@@ -66,9 +66,9 @@ const tableHeaders = [
 </script>
 
 <template>
-  <div class="vp-raw maz-p-4">
+  <div class="vp-raw maz:p-4">
     <!-- Filters Section -->
-    <div class="maz-mb-4 maz-flex maz-flex-wrap maz-gap-4">
+    <div class="maz:mb-4 maz:flex maz:flex-wrap maz:gap-4">
       <MazSelect
         v-model="selectedPeriod"
         :options="[
@@ -78,7 +78,7 @@ const tableHeaders = [
           { label: 'Custom Range', value: 'custom' },
         ]"
         label="Time Period"
-        class="maz-w-48"
+        class="maz:w-48"
       />
 
       <MazSelect
@@ -91,14 +91,14 @@ const tableHeaders = [
         ]"
         label="Categories"
         multiple
-        class="maz-w-64"
+        class="maz:w-64"
       />
 
       <MazDatePicker
         v-model="dateRange"
         range
         label="Date Range"
-        class="maz-w-72"
+        class="maz:w-72"
         picker-position="bottom-end"
         double
         locale="en-US"
@@ -106,17 +106,17 @@ const tableHeaders = [
     </div>
 
     <!-- Stats Cards -->
-    <div class="maz-mb-4 maz-grid maz-grid-cols-1 maz-gap-4 sm:maz-grid-cols-2 lg:maz-grid-cols-4">
+    <div class="maz:mb-4 maz:grid maz:grid-cols-1 maz:gap-4 maz:sm:grid-cols-2 maz:lg:grid-cols-4">
       <MazCard bordered :elevation="false" block>
-        <div class="maz-flex maz-items-center maz-gap-4">
+        <div class="maz:flex maz:items-center maz:gap-4">
           <MazCircularProgressBar
             :percentage="85"
             color="success"
             size="3rem"
             :delay
           />
-          <div class="maz-truncate">
-            <div class="maz-text-xl maz-font-bold">
+          <div class="maz:truncate">
+            <div class="maz:text-xl maz:font-bold">
               <MazAnimatedCounter
                 :delay
                 :count="28945"
@@ -124,7 +124,7 @@ const tableHeaders = [
                 separator=","
               />
             </div>
-            <div class="maz-truncate maz-text-sm maz-text-muted">
+            <div class="maz:truncate maz:text-sm maz:text-muted">
               Total Revenue
             </div>
           </div>
@@ -132,22 +132,22 @@ const tableHeaders = [
       </MazCard>
 
       <MazCard bordered :elevation="false" block>
-        <div class="maz-flex maz-items-center maz-gap-4">
+        <div class="maz:flex maz:items-center maz:gap-4">
           <MazCircularProgressBar
             :percentage="65"
             color="info"
             size="3rem"
             :delay
           />
-          <div class="maz-truncate">
-            <div class="maz-text-xl maz-font-bold">
+          <div class="maz:truncate">
+            <div class="maz:text-xl maz:font-bold">
               <MazAnimatedCounter
                 :delay
                 :count="384"
                 separator=","
               />
             </div>
-            <div class="maz-truncate maz-text-sm maz-text-muted">
+            <div class="maz:truncate maz:text-sm maz:text-muted">
               New Orders
             </div>
           </div>
@@ -155,22 +155,22 @@ const tableHeaders = [
       </MazCard>
 
       <MazCard bordered :elevation="false" block>
-        <div class="maz-flex maz-items-center maz-gap-4">
+        <div class="maz:flex maz:items-center maz:gap-4">
           <MazCircularProgressBar
             :percentage="92"
             color="warning"
             size="3rem"
             :delay
           />
-          <div class="maz-truncate">
-            <div class="maz-text-xl maz-font-bold">
+          <div class="maz:truncate">
+            <div class="maz:text-xl maz:font-bold">
               <MazAnimatedCounter
                 :delay
                 :count="1482"
                 separator=","
               />
             </div>
-            <div class="maz-truncate maz-text-sm maz-text-muted">
+            <div class="maz:truncate maz:text-sm maz:text-muted">
               Active Customers
             </div>
           </div>
@@ -178,22 +178,22 @@ const tableHeaders = [
       </MazCard>
 
       <MazCard bordered :elevation="false" block>
-        <div class="maz-flex maz-items-center maz-gap-4">
+        <div class="maz:flex maz:items-center maz:gap-4">
           <MazCircularProgressBar
             :percentage="78"
             color="destructive"
             size="3rem"
             :delay
           />
-          <div class="maz-truncate">
-            <div class="maz-text-xl maz-font-bold">
+          <div class="maz:truncate">
+            <div class="maz:text-xl maz:font-bold">
               <MazAnimatedCounter
                 :delay
                 :count="94"
                 suffix="%"
               />
             </div>
-            <div class="maz-truncate maz-text-sm maz-text-muted">
+            <div class="maz:truncate maz:text-sm maz:text-muted">
               Customer Satisfaction
             </div>
           </div>
@@ -215,7 +215,7 @@ const tableHeaders = [
       scrollable
     >
       <template #cell-amount="{ value }">
-        <span class="maz-font-semibold">
+        <span class="maz:font-semibold">
           ${{ value }}
         </span>
       </template>
@@ -229,10 +229,10 @@ const tableHeaders = [
     </MazTable>
 
     <!-- Charts Section -->
-    <div class="maz-mt-4 maz-grid maz-grid-cols-1 maz-gap-4 lg:maz-grid-cols-2">
+    <div class="maz:mt-4 maz:grid maz:grid-cols-1 maz:gap-4 maz:lg:grid-cols-2">
       <MazCard bordered :elevation="false" block>
         <template #title>
-          <h3 class="maz-text-lg maz-font-semibold">
+          <h3 class="maz:text-lg maz:font-semibold">
             Sales Overview
           </h3>
         </template>
@@ -241,16 +241,16 @@ const tableHeaders = [
 
       <MazCard bordered :elevation="false" block>
         <template #title>
-          <div class="maz-flex maz-w-full maz-items-center maz-justify-between">
-            <h3 class="maz-text-lg maz-font-semibold">
+          <div class="maz:flex maz:w-full maz:items-center maz:justify-between">
+            <h3 class="maz:text-lg maz:font-semibold">
               Sales Target
             </h3>
-            <span class="maz-text-xl maz-font-bold maz-text-success">
+            <span class="maz:text-xl maz:font-bold maz:text-success">
               {{ salesTarget }}%
             </span>
           </div>
         </template>
-        <div class="maz-flex maz-h-full maz-flex-col maz-justify-between maz-gap-4">
+        <div class="maz:flex maz:h-full maz:flex-col maz:justify-between maz:gap-4">
           <div>
             <MazSlider
               v-model="salesTarget"
@@ -258,25 +258,25 @@ const tableHeaders = [
               :max="100"
               color="success"
             />
-            <div class="maz-mt-4 maz-text-center maz-text-sm maz-text-muted">
+            <div class="maz:mt-4 maz:text-center maz:text-sm maz:text-muted">
               Drag the slider to adjust sales target
             </div>
           </div>
 
-          <div class="maz-mt-4 maz-flex maz-items-center maz-justify-between">
+          <div class="maz:mt-4 maz:flex maz:items-center maz:justify-between">
             <div>
-              <p class="maz-font-medium">
+              <p class="maz:font-medium">
                 Monthly Target
               </p>
-              <p class="maz-text-sm maz-text-muted">
+              <p class="maz:text-sm maz:text-muted">
                 ${{ (1000 * salesTarget).toLocaleString() }}
               </p>
             </div>
             <div>
-              <p class="maz-font-medium">
+              <p class="maz:font-medium">
                 Achieved
               </p>
-              <p class="maz-text-sm maz-text-success">
+              <p class="maz:text-sm maz:text-success">
                 $50,000
               </p>
             </div>

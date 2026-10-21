@@ -28,21 +28,18 @@ jobs:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     steps:
-      - uses: szenius/set-timezone@v1.1
+      - uses: szenius/set-timezone@v2.0
         with:
           timezoneLinux: Europe/Paris
           timezoneMacos: Europe/Paris
 
       - name: Checkout (full history)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Setup Node.js, pnpm and Nx cache
         uses: ./.github/actions/setup
-
-      - name: Build packages
-        run: pnpm build:packages:test
 
       - name: Test units
         run: pnpm test:unit:coverage:all
@@ -50,7 +47,7 @@ jobs:
       - name: Upload coverage to Codecov (lib)
         if: always()
         # && github.event.pull_request.user.login != 'dependabot[bot]'
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: packages/lib/coverage/lcov.info
@@ -62,7 +59,7 @@ jobs:
       - name: Upload coverage to Codecov (utils)
         if: always()
         # && github.event.pull_request.user.login != 'dependabot[bot]'
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: packages/utils/coverage/lcov.info
@@ -74,7 +71,7 @@ jobs:
       - name: Upload coverage to Codecov (mcp)
         if: always()
         # && github.event.pull_request.user.login != 'dependabot[bot]'
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: packages/mcp/coverage/lcov.info
@@ -86,7 +83,7 @@ jobs:
       - name: Upload coverage to Codecov (themes)
         if: always()
         # && github.event.pull_request.user.login != 'dependabot[bot]'
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: packages/themes/coverage/lcov.info
@@ -98,7 +95,7 @@ jobs:
       - name: Upload coverage to Codecov (translations)
         if: always()
         # && github.event.pull_request.user.login != 'dependabot[bot]'
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: packages/translations/coverage/lcov.info
@@ -107,22 +104,22 @@ jobs:
           fail_ci_if_error: false
           verbose: false
 
-      - name: Upload coverage to Codecov (forms)
-        if: always()
-        # && github.event.pull_request.user.login != 'dependabot[bot]'
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: packages/forms/coverage/lcov.info
-          flags: forms
-          name: forms-coverage
-          fail_ci_if_error: false
-          verbose: false
+      # - name: Upload coverage to Codecov (forms)
+      #   if: always()
+      #   # && github.event.pull_request.user.login != 'dependabot[bot]'
+      #   uses: codecov/codecov-action@v7
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+      #     files: packages/forms/coverage/lcov.info
+      #     flags: forms
+      #     name: forms-coverage
+      #     fail_ci_if_error: false
+      #     verbose: false
 
       - name: Upload coverage to Codecov (node)
         if: always()
         # && github.event.pull_request.user.login != 'dependabot[bot]'
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: packages/node/coverage/lcov.info
@@ -134,11 +131,35 @@ jobs:
       - name: Upload coverage to Codecov (nuxt)
         if: always()
         # && github.event.pull_request.user.login != 'dependabot[bot]'
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: packages/nuxt/coverage/lcov.info
           flags: nuxt
           name: nuxt-coverage
+          fail_ci_if_error: false
+          verbose: false
+
+      - name: Upload coverage to Codecov (eslint-config)
+        if: always()
+        # && github.event.pull_request.user.login != 'dependabot[bot]'
+        uses: codecov/codecov-action@v7
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/eslint-config/coverage/lcov.info
+          flags: eslint-config
+          name: eslint-config-coverage
+          fail_ci_if_error: false
+          verbose: false
+
+      - name: Upload coverage to Codecov (stylelint-config)
+        if: always()
+        # && github.event.pull_request.user.login != 'dependabot[bot]'
+        uses: codecov/codecov-action@v7
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/stylelint-config/coverage/lcov.info
+          flags: stylelint-config
+          name: stylelint-config-coverage
           fail_ci_if_error: false
           verbose: false

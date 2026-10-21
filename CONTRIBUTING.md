@@ -49,7 +49,7 @@ pnpm -F nuxt-app dev
 
 This will start the development server available at [http://localhost:3333](http://localhost:3333).
 
-This Nuxt application uses the [maz-ui nuxt module](https://maz-ui.com/guide/nuxt), so all components are auto-imported and have `maz-ui` as a dependency, so you can import all modules.
+This Nuxt application uses the [maz-ui nuxt module](https://maz-ui.com/ecosystem/nuxt), so all components are auto-imported and have `maz-ui` as a dependency, so you can import all modules.
 
 ## Documentation
 

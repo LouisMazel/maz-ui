@@ -23,7 +23,9 @@ export interface ClassOptions {
 export type VLazyImgOptions = Partial<ClassOptions>
 
 interface VLazyImgBindingOptions extends VLazyImgOptions {
+  /** The source of the image when the binding value is an options object */
   src?: string
+  /** Load the image immediately, bypassing the IntersectionObserver and lazy loading */
   disabled?: boolean
 }
 

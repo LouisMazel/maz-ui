@@ -1,3 +1,5 @@
+import type { Plugin } from 'vite'
+
 interface PackageJson {
   dependencies?: Record<string, string>
   devDependencies?: Record<string, string>
@@ -48,3 +50,4 @@ interface Options {
 }
 
 export function getExternalDependencies(pkg: PackageJson, options?: Options): (id: string) => boolean
+export function VitePreNestedCss(): Plugin

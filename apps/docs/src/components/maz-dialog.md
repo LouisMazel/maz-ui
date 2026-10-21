@@ -103,10 +103,62 @@ For long content, you can enable scrolling in content part (Header and footer sl
   </template>
 </ComponentDemo>
 
+## Width
+
+On tablet and up, the dialog is sized by two CSS variables coming from the active theme preset (`components.dialog`):
+
+- `--maz-dialog-max-width` (default `38rem`)
+- `--maz-dialog-min-width` (default `32rem`)
+
+You can set these defaults globally per preset — see [the theme `components.dialog` documentation](./../ecosystem/themes.md#dialog-sizing). To change the width of a single dialog, pass the `max-width` / `min-width` props — they always override the preset:
+
+<ComponentDemo>
+  <MazBtn @click="widthOpened = true">Open Wide Dialog</MazBtn>
+
+  <MazDialog v-model="widthOpened" title="Custom width" max-width="50rem" min-width="40rem">
+    <p>
+      This dialog overrides the preset width through props.
+    </p>
+    <template #footer="{ close }">
+      <MazBtn @click="close">
+        Confirm
+      </MazBtn>
+    </template>
+  </MazDialog>
+
+<template #code>
+
+```vue
+<template>
+  <MazDialog
+    v-model="isOpen"
+    title="Custom width"
+    max-width="50rem"
+    min-width="40rem"
+  >
+    <p>This dialog overrides the preset width through props.</p>
+  </MazDialog>
+</template>
+```
+
+  </template>
+</ComponentDemo>
+
+::: tip
+The default widths are expressed in `rem`, so they scale with the preset's `base-font-size`. Presets with a larger base size (e.g. `ocean` at `16px`) ship rem values adjusted to keep the rendered pixel width consistent across presets.
+:::
+
+## Accessibility
+
+- The dialog is a modal `dialog` (`aria-modal`), labelled by its title and described by its content (override them with the `aria-labelledby` / `aria-describedby` props).
+- The focus moves into the dialog on open, stays trapped inside and goes back to the previous element on close. <kbd>Esc</kbd> closes it (`close-on-escape`).
+- While it is open, the rest of the page is `inert` (no focus, no click, hidden from assistive technologies), except the toasts and the live regions.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-dialog.doc.md-->
 
 <script setup>
   import { ref } from 'vue'
   const isOpen = ref(false)
   const scollableOpened = ref(false)
+  const widthOpened = ref(false)
 </script>

@@ -1,0 +1,22 @@
+/*
+ * Dist entry compiled by build/ViteCompileStyles into dist/css/main.css.
+ *
+ * Preflight is intentionally omitted: Tailwind consumers get it from their
+ * own setup, standalone consumers are responsible for their own reset
+ * (`.m-reset-css` is exposed via ../css/reset.css for opt-in scoping).
+ *
+ * `@reference` consumers (SFC `<style scoped>`) use ./tailwind.css instead,
+ * which keeps the full `@import 'tailwindcss'` because the reference resolver
+ * does not tolerate `layer()` modifiers combined with `@custom-variant`.
+ */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme) prefix(maz);
+@import 'tailwindcss/utilities.css' layer(utilities) prefix(maz);
+@import '../css/index.css';
+@import './theme.css';
+@import './utilities.css';
+@source "../components/**/*.vue";
+@source "../composables/**/*.ts";
+@source "../directives/**/*.{vue,ts}";
+@source "../plugins/**/*.{vue,ts}";
+@source "../resolvers/**/*.ts";

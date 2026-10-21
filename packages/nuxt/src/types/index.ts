@@ -1,16 +1,8 @@
 import type { MazUiThemeOptions, ThemePreset, ThemePresetName } from '@maz-ui/themes'
 import type { MazUiTranslationsOptions } from '@maz-ui/translations'
+import type { MazUiDefaultsOptions } from 'maz-ui/composables/useGlobalConfig'
 import type { VFullscreenImgOptions, VLazyImgOptions, VTooltipOptions } from 'maz-ui/directives'
 import type { AosOptions, DialogOptions, ToastOptions } from 'maz-ui/plugins'
-
-export interface MazUiNuxtThemeOptions extends MazUiThemeOptions {
-  /**
-   * Inject full CSS on server-side
-   * @description Inject full CSS on server-side to prevent FOUC on client-side
-   * @default true
-   */
-  injectAllCSSOnServer?: boolean
-}
 
 export interface MazUiNuxtOptions {
   /**
@@ -39,6 +31,15 @@ export interface MazUiNuxtOptions {
      * @default true
      */
     devtools?: boolean
+
+    /**
+     * Stop iOS from zooming the page when a form field gets the focus
+     * @description iOS zooms on fields with a font size below 16px. Adds `maximum-scale=1` to the viewport
+     * on iOS only: iOS still lets the user pinch to zoom, Android (which does not zoom on focus) is left untouched.
+     * The design of the fields is not changed.
+     * @default false
+     */
+    preventIosInputZoom?: boolean
   }
 
   /**
@@ -46,13 +47,13 @@ export interface MazUiNuxtOptions {
    * @description If false, the theme system will be completely disabled
    * @default {
    *   preset: 'maz-ui',
-   *   strategy: 'hybrid',
+   *   strategy: 'runtime',
    *   darkModeStrategy: 'class',
    *   prefix: 'maz',
    *   colorMode: 'auto',
    * }
    */
-  theme?: Omit<MazUiNuxtThemeOptions, 'preset'> & {
+  theme?: Omit<MazUiThemeOptions, 'preset'> & {
     /**
      * @default 'maz-ui'
      */
@@ -69,6 +70,33 @@ export interface MazUiNuxtOptions {
   translations?: MazUiTranslationsOptions
 
   /**
+   * Global default prop values for components
+   * @description Set default prop values once for every component, with the priority:
+   * instance prop > `defaults[Component]` > `defaults.global` > library default.
+   * A global default never wins over a prop set on the component instance.
+   * @default {}
+   * @example {
+   *   global: { roundedSize: 'lg' },
+   *   MazBtn: { roundedSize: 'full' },
+   *   MazCard: { bordered: false, elevation: true },
+   * }
+   */
+  defaults?: MazUiDefaultsOptions
+
+  /**
+   * Source of the country flags of `MazSelectCountry` and `MazInputPhoneNumber`
+   * @description
+   * - `'cdn'`: images of the flagcdn.com CDN
+   * - `'local'`: square flags of `@maz-ui/icons`, one chunk per flag, loaded only when visible, without any request to a third party (works offline)
+   * - a URL template of your own files, with `{code}` (lowercase) or `{CODE}` (uppercase): `'/flags/{code}.svg'`
+   *
+   * Sets the default of the `flag-src` prop (`defaults.global.flagSrc`): a `flag-src` set on a component wins.
+   * Nothing is added to the build of the app unless this option is `'local'`.
+   * @default 'cdn'
+   */
+  flags?: 'cdn' | 'local' | (string & {})
+
+  /**
    * CSS and styles configuration
    */
   css?: {
@@ -77,7 +105,7 @@ export interface MazUiNuxtOptions {
      * @description Automatically injects Maz-UI base styles
      * @default true
      */
-    injectMainCss?: boolean
+    injectCss?: boolean
   }
 
   /**
@@ -260,6 +288,13 @@ export interface MazUiNuxtOptions {
      * @default true
      */
     useSwipe?: boolean
+
+    /**
+     * Enable auto-import of usePullToRefresh composable
+     * @description Headless pull to refresh gesture on a scroll container
+     * @default true
+     */
+    usePullToRefresh?: boolean
   }
 
   /**

@@ -1,33 +1,25 @@
 import type { Plugin } from 'postcss'
 import type { DefaultTheme, HeadConfig, UserConfig } from 'vitepress'
+import { writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
-import {
-  buildSeparateThemeFiles,
-  CSS_ID,
-  mazUi,
-} from '@maz-ui/themes'
-import autoprefixer from 'autoprefixer'
-import postcssImport from 'postcss-import'
-import postcssNested from 'postcss-nested'
+import { VitePreNestedCss } from '@maz-ui/vite-config'
+import tailwindcss from '@tailwindcss/vite'
 import postcssUrl from 'postcss-url'
-import tailwind from 'tailwindcss'
-import tailwindcssNesting from 'tailwindcss/nesting'
 import svgLoader from 'vite-svg-loader'
 import { defineConfig, postcssIsolateStyles } from 'vitepress'
 import { head, nav, sidebar } from './configs/index.mjs'
+import { getOgImage } from './og-image.tsx'
 
-import { getOgImage } from './og-image'
+// VitePress sets NODE_ENV=development for `vitepress dev` and =production
+// for `vitepress build`. Use that to toggle the `monorepo:dev` resolve
+// condition so dev loads maz-ui src/ with HMR and prod consumes the dist.
+const isDev = process.env.NODE_ENV !== 'production'
+const isNextEnv = process.env.DEPLOY_ENV === 'next'
 
 const _dirname = dirname(fileURLToPath(import.meta.url))
-
-// Generate complete CSS
-const {
-  full,
-} = buildSeparateThemeFiles(mazUi, {
-  darkSelector: 'class',
-})
 
 function pascalCaseToKebabCase(value: string): string {
   return value.replaceAll(/([\da-z])([A-Z])/g, '$1-$2').toLowerCase()
@@ -59,30 +51,38 @@ export default defineConfig<DefaultTheme.Config>({
     },
   },
 
-  sitemap: {
-    hostname: 'https://maz-ui.com/',
-    transformItems: (items) => {
-      // add new items or modify/filter existing items
-      const modifyItems: typeof items = []
+  sitemap: isNextEnv
+    ? undefined
+    : {
+        hostname: 'https://maz-ui.com/',
+        transformItems: (items) => {
+          // add new items or modify/filter existing items
+          const modifyItems: typeof items = []
 
-      for (const item of items) {
-        if (item.url.includes('404')) {
-          continue
-        }
-        modifyItems.push({
-          ...item,
-          changefreq: 'daily',
-          priority: 1,
-        })
-      }
+          for (const item of items) {
+            if (item.url.includes('404')) {
+              continue
+            }
+            modifyItems.push({
+              ...item,
+              changefreq: 'daily',
+              priority: 1,
+            })
+          }
 
-      return modifyItems
-    },
+          return modifyItems
+        },
+      },
+
+  async buildEnd(siteConfig) {
+    if (isNextEnv) {
+      await writeFile(join(siteConfig.outDir, 'robots.txt'), 'User-agent: *\nDisallow: /\n')
+    }
   },
 
   head: [
     ...head,
-    ['style', { id: CSS_ID, type: 'text/css' }, full],
+    // ['style', { id: CSS_ID, type: 'text/css' }, full],
   ] satisfies HeadConfig[],
 
   themeConfig: {
@@ -117,6 +117,14 @@ export default defineConfig<DefaultTheme.Config>({
   } satisfies DefaultTheme.Config,
 
   vite: {
+    // Resolve `monorepo:dev` first when developing so we consume maz-ui's
+    // raw src/ (with HMR), and fall back to the published dist for prod
+    // builds. Same trick as accor-core-library.
+    resolve: {
+      conditions: isDev
+        ? ['monorepo:dev', 'import', 'browser', 'module', 'default', 'require']
+        : ['import', 'browser', 'module', 'default', 'require'],
+    },
     build: {
       rollupOptions: {
         external: ['node:child_process', 'colorette'],
@@ -125,7 +133,12 @@ export default defineConfig<DefaultTheme.Config>({
       minify: 'esbuild',
       chunkSizeWarningLimit: 1000,
     },
+    ssr: {
+      noExternal: ['dayjs'],
+    },
     plugins: [
+      ...(isDev ? [VitePreNestedCss()] : []),
+      tailwindcss(),
       svgLoader(),
       {
         name: 'redirect-plugin',
@@ -150,6 +163,38 @@ export default defineConfig<DefaultTheme.Config>({
             res.writeHead(301, { Location: '/components/maz-dialog-confirm' })
             res.end()
           })
+          server.middlewares.use('/helpers', (req, res) => {
+            res.writeHead(301, { Location: `/ecosystem/utils${req.url ?? '/'}` })
+            res.end()
+          })
+          server.middlewares.use('/utils', (req, res) => {
+            res.writeHead(301, { Location: `/ecosystem/utils${req.url ?? '/'}` })
+            res.end()
+          })
+          server.middlewares.use('/guide/icon-set', (_req, res) => {
+            res.writeHead(301, { Location: '/ecosystem/icons/icon-set' })
+            res.end()
+          })
+          server.middlewares.use('/guide/icons', (_req, res) => {
+            res.writeHead(301, { Location: '/ecosystem/icons/' })
+            res.end()
+          })
+          server.middlewares.use('/guide/themes', (_req, res) => {
+            res.writeHead(301, { Location: '/ecosystem/themes' })
+            res.end()
+          })
+          server.middlewares.use('/guide/nuxt', (_req, res) => {
+            res.writeHead(301, { Location: '/ecosystem/nuxt' })
+            res.end()
+          })
+          server.middlewares.use('/guide/translations', (_req, res) => {
+            res.writeHead(301, { Location: '/ecosystem/translations' })
+            res.end()
+          })
+          server.middlewares.use('/guide/mcp', (_req, res) => {
+            res.writeHead(301, { Location: '/ecosystem/mcp' })
+            res.end()
+          })
         },
       },
     ],
@@ -157,11 +202,6 @@ export default defineConfig<DefaultTheme.Config>({
       postcss: {
         plugins: [
           postcssUrl() as Plugin,
-          postcssNested(),
-          tailwindcssNesting() as Plugin,
-          postcssImport(),
-          autoprefixer(),
-          tailwind() as Plugin,
           postcssIsolateStyles({
             includeFiles: [/vp-doc\.css/],
           }),

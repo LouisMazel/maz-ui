@@ -10,12 +10,14 @@ import {
   onBeforeUnmount,
   onMounted,
   onUnmounted,
+  onUpdated,
+  ref,
+  shallowRef,
   useAttrs,
   useTemplateRef,
   watch,
 } from 'vue'
 import { useInstanceUniqId } from '../composables/useInstanceUniqId'
-import { vClickOutside } from '../directives/vClickOutside'
 import { hasSlotContent } from '../utils/hasSlotContent'
 import { getColor } from './types'
 
@@ -39,7 +41,7 @@ const {
   closeOnEscape = true,
   persistent = false,
   panelStyle,
-  color = 'background',
+  color = 'surface',
   overlayClass,
   panelClass,
   preferPosition,
@@ -49,6 +51,9 @@ const {
   block = false,
   announceChanges = false,
   positionReference,
+  ariaLabel,
+  ariaLabelledby,
+  ariaDescribedby,
 } = defineProps<MazPopoverProps>()
 
 const emits = defineEmits<{
@@ -161,12 +166,14 @@ export interface MazPopoverProps {
   hoverDelay?: number
   /**
    * CSS transition name for animations
-   * @default popover
+   * @default 'scale-pop'
+   * @values 'scale-pop' | 'scale-fade' | string
+   * @description 'scale-pop' | 'scale-fade' for default transitions. 'scale-pop' is a pop effect, 'scale-fade' is a fade effect.
    */
   transition?: 'scale-pop' | 'scale-fade' | string
   /**
    * Teleport target selector
-   * @default body
+   * @default 'body'
    */
   teleportTo?: string
   /**
@@ -216,10 +223,10 @@ export interface MazPopoverProps {
   ariaDescribedby?: string
   /**
    * Color variant of the popover
-   * @values primary, secondary, accent, info, success, warning, destructive, contrast, background
-   * @default background
+   * @values primary, secondary, accent, info, success, warning, destructive, contrast, surface
+   * @default surface
    */
-  color?: MazColor | 'background'
+  color?: MazColor | 'surface'
   /**
    * Trap focus inside the popover
    * @default true
@@ -294,6 +301,10 @@ const transitionName = computed(() => {
 
   return transition
 })
+
+function onTransitionAfterLeave() {
+  emits('after-close-animation')
+}
 const positionRef = computed(() => {
   if (!positionReference) {
     return triggerRef.value
@@ -326,12 +337,11 @@ const { floatingStyles, placement, update, middlewareData } = useFloating(
 
 const computedPosition = computed(() => placement.value ?? floatingPosition.value)
 
-const isOpen = defineModel({ default: false })
+const isOpen = defineModel<boolean>({ default: false })
 
 let openTimeout: NodeJS.Timeout | null = null
 let closeTimeout: NodeJS.Timeout | null = null
 let initialFocusElement: HTMLElement | null = null
-let ignoreNextClickOutside = false
 
 const panelId = computed(() => `${triggerId.value}-panel`)
 
@@ -366,6 +376,113 @@ const effectiveTrigger = computed(() => {
   return trigger
 })
 
+const INTERACTIVE_TRIGGER_SELECTOR = 'a[href], button, input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable="true"]'
+
+/**
+ * The ARIA of the trigger goes on the interactive element of the trigger slot (the button,
+ * the input...), so the wrapper stays a plain element: a `role="button"` around an interactive
+ * element is a `nested-interactive` violation. Without interactive element, the wrapper is the trigger.
+ */
+const triggerTarget = shallowRef<HTMLElement | null>(null)
+const ownedTriggerAttributes = new Set<string>()
+let triggerObserver: MutationObserver | undefined
+
+const triggerAria = computed<Record<string, string | undefined>>(() => ({
+  'aria-expanded': role === 'dialog' || role === 'menu' ? String(isOpen.value) : undefined,
+  'aria-haspopup': role === 'dialog' || role === 'menu' ? role : undefined,
+  'aria-describedby': role === 'tooltip' && isOpen.value ? panelId.value : ariaDescribedby,
+  'aria-labelledby': ariaLabelledby,
+  'aria-controls': isOpen.value ? panelId.value : undefined,
+}))
+
+const NON_TEXT_INPUT_TYPES = new Set(['button', 'submit', 'reset', 'checkbox', 'radio', 'image', 'file', 'color', 'range'])
+
+/**
+ * `aria-expanded` is not allowed on a text field (role textbox): a text field opening a popup
+ * has to be a combobox, which owns its ARIA
+ */
+function isTextField(element: HTMLElement) {
+  if (element.hasAttribute('role'))
+    return false
+
+  return element instanceof HTMLTextAreaElement
+    || (element instanceof HTMLInputElement && !NON_TEXT_INPUT_TYPES.has(element.type))
+}
+
+function releaseTriggerTarget() {
+  for (const name of ownedTriggerAttributes)
+    triggerTarget.value?.removeAttribute(name)
+
+  ownedTriggerAttributes.clear()
+}
+
+function syncTriggerAria() {
+  // A combobox (MazSelect, MazDatePicker...) is the trigger even when an icon button comes first
+  const target = triggerRef.value?.querySelector<HTMLElement>('[role="combobox"]')
+    ?? triggerRef.value?.querySelector<HTMLElement>(INTERACTIVE_TRIGGER_SELECTOR)
+    ?? null
+
+  if (target !== triggerTarget.value) {
+    releaseTriggerTarget()
+    triggerTarget.value = target
+  }
+
+  // A combobox owns its popup state (aria-expanded, aria-controls...) by the ARIA pattern
+  if (!target || target.getAttribute('role') === 'combobox')
+    return
+
+  const skippedAttributes = isTextField(target) ? ['aria-expanded'] : []
+
+  for (const [name, value] of Object.entries(triggerAria.value)) {
+    if (skippedAttributes.includes(name))
+      continue
+
+    // Set by the slot content itself: it wins
+    if (!ownedTriggerAttributes.has(name) && target.hasAttribute(name))
+      continue
+
+    if (value === undefined) {
+      target.removeAttribute(name)
+      ownedTriggerAttributes.delete(name)
+    }
+    else {
+      target.setAttribute(name, value)
+      ownedTriggerAttributes.add(name)
+    }
+  }
+}
+
+const isWrapperTrigger = computed(() => !triggerTarget.value)
+
+/**
+ * The panel is hidden when its reference leaves the viewport (`hide` middleware), except while
+ * the focus is inside it: on Android, the virtual keyboard opened to type in a field of the panel
+ * (a select search) covers the reference, hiding the panel would make it lose the focus.
+ */
+const isPanelFocused = ref(false)
+
+function onPanelFocusout(event: FocusEvent) {
+  const nextFocused = event.relatedTarget as Node | null
+
+  if (!nextFocused || !panelRef.value?.contains(nextFocused))
+    isPanelFocused.value = false
+}
+
+const isPanelHidden = computed(() => !!middlewareData.value.hide?.referenceHidden && !isPanelFocused.value)
+
+const wrapperTriggerAttributes = computed(() => {
+  if (!isWrapperTrigger.value)
+    return {}
+
+  const isClickTrigger = effectiveTrigger.value === 'click' && !disabled
+
+  return {
+    ...triggerAria.value,
+    role: effectiveTrigger.value === 'click' ? 'button' : undefined,
+    tabindex: isClickTrigger ? 0 : undefined,
+  }
+})
+
 const triggerEvents = computed(() => {
   if (disabled || effectiveTrigger.value === 'manual')
     return {}
@@ -382,6 +499,16 @@ const triggerEvents = computed(() => {
 
   if (effectiveTrigger.value === 'click') {
     events.onClick = toggle
+
+    if (isWrapperTrigger.value) {
+      events.onKeydown = (event: KeyboardEvent) => {
+        if (event.target !== triggerRef.value || (event.key !== 'Enter' && event.key !== ' '))
+          return
+
+        event.preventDefault()
+        toggle()
+      }
+    }
   }
 
   return events
@@ -418,6 +545,7 @@ function cleanup() {
 
   if (isClient()) {
     document.removeEventListener('keydown', onKeydown)
+    document.removeEventListener('pointerdown', onDocumentPointerDown, true)
   }
 }
 
@@ -426,11 +554,6 @@ function open() {
     return
 
   clearCloseTimeout()
-
-  // Only ignore next click outside for click triggers to prevent immediate close
-  if (effectiveTrigger.value === 'click') {
-    ignoreNextClickOutside = true
-  }
 
   if (delay > 0) {
     openTimeout = setTimeout(() => {
@@ -471,7 +594,6 @@ function toggle() {
 
 function setOpen(value: boolean) {
   isOpen.value = value
-  ignoreNextClickOutside = false
   if (value) {
     emits('open')
     emits('toggle', value)
@@ -479,11 +601,22 @@ function setOpen(value: boolean) {
     nextTick(() => {
       update()
       setupFocusTrap()
+      // Dismiss au clic/tap exterieur gere imperativement (et non via une directive
+      // posee sur le panel teleporte, peu fiable sur mobile). En capture + pointerdown
+      // pour couvrir souris + tactile sur tous les elements. Ajoute APRES l'ouverture
+      // pour ne pas capter l'interaction qui vient d'ouvrir.
+      if (isClient()) {
+        document.addEventListener('pointerdown', onDocumentPointerDown, true)
+      }
     })
   }
   else {
+    isPanelFocused.value = false
     emits('toggle', value)
     emits('close')
+
+    if (isClient())
+      document.removeEventListener('pointerdown', onDocumentPointerDown, true)
 
     if (trapFocus) {
       restoreFocus()
@@ -591,7 +724,7 @@ function handleTrapFocus(event: KeyboardEvent) {
     return
 
   const firstElement = focusableElements[0] as HTMLElement
-  // eslint-disable-next-line e18e/prefer-array-at
+
   const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
 
   if (event.shiftKey) {
@@ -608,21 +741,19 @@ function handleTrapFocus(event: KeyboardEvent) {
   }
 }
 
-function onClickOutside(event: Event) {
-  if (effectiveTrigger.value === 'manual')
+function onDocumentPointerDown(event: PointerEvent) {
+  if (effectiveTrigger.value === 'manual' || !closeOnClickOutside || persistent)
     return
 
-  if (ignoreNextClickOutside) {
-    ignoreNextClickOutside = false
+  const target = event.target as Node | null
+  if (!target)
     return
-  }
 
-  if (closeOnClickOutside && !persistent) {
-    if (triggerRef.value && triggerRef.value.contains(event.target as Node)) {
-      return
-    }
-    close()
-  }
+  // Clic/tap a l'interieur du panel ou du trigger -> on ne ferme pas.
+  if (panelRef.value?.contains(target) || triggerRef.value?.contains(target))
+    return
+
+  close()
 }
 
 watch(isOpen, (value, oldValue) => {
@@ -643,11 +774,27 @@ watch(() => position, () => {
   }
 })
 
+watch(triggerAria, syncTriggerAria, { flush: 'post' })
+
 onMounted(() => {
   document.addEventListener('keydown', onKeydown)
+  syncTriggerAria()
+
+  // The slot content can render later (async components): only the children are watched,
+  // the attributes set here would otherwise trigger the observer again
+  if (triggerRef.value && typeof MutationObserver !== 'undefined') {
+    triggerObserver = new MutationObserver(syncTriggerAria)
+    triggerObserver.observe(triggerRef.value, { childList: true, subtree: true })
+  }
 })
 
-onBeforeUnmount(cleanup)
+onUpdated(syncTriggerAria)
+
+onBeforeUnmount(() => {
+  triggerObserver?.disconnect()
+  releaseTriggerTarget()
+  cleanup()
+})
 
 onUnmounted(cleanup)
 
@@ -690,19 +837,22 @@ defineExpose({
    * @usage `mazPopoverInstance.value?.panelRef`
    */
   panelRef,
+  onTransitionAfterLeave,
 })
 </script>
 
 <template>
   <div
     v-if="hasSlotContent($slots.trigger)"
-    class="m-popover m-reset-css"
+    class="m-popover m-reset-css maz:inline-block"
     :class="[
       attrs.class,
       {
         '--open': isOpen,
         '--disabled': disabled,
         '--block': block,
+        'maz:disabled-cursor': disabled,
+        'maz:w-full': block,
       },
     ]"
     :style="rootStyles"
@@ -710,14 +860,8 @@ defineExpose({
     <div
       :id="triggerId"
       ref="trigger"
-      role="button"
-      class="m-popover-trigger"
-      :aria-expanded="role === 'dialog' || role === 'menu' ? isOpen : undefined"
-      :aria-haspopup="role === 'dialog' ? 'dialog' : undefined"
-      :aria-describedby="role === 'tooltip' && isOpen ? panelId : ariaDescribedby"
-      :aria-labelledby="ariaLabelledby"
-      :aria-controls="panelId"
-      v-bind="triggerEvents"
+      class="m-popover-trigger maz:inline-block maz:size-full"
+      v-bind="{ ...wrapperTriggerAttributes, ...triggerEvents }"
     >
       <!--
         @slot Trigger element content
@@ -732,19 +876,18 @@ defineExpose({
   </div>
 
   <Teleport :to="teleportTo">
-    <Transition :name="transitionName" appear @after-leave="emits('after-close-animation')">
+    <Transition :name="transitionName" appear @after-leave="onTransitionAfterLeave">
       <div
         v-if="isOpen"
         :id="panelId"
         ref="panel"
-        v-click-outside="onClickOutside"
         :role
         :aria-label="ariaLabel"
-        :aria-labelledby="role === 'dialog' ? ariaLabelledby || triggerId : undefined"
+        :aria-labelledby="role === 'dialog' || role === 'menu' ? ariaLabelledby || triggerId : undefined"
         :aria-describedby="role === 'dialog' ? ariaDescribedby : undefined"
         :aria-modal="role === 'dialog' ? 'true' : undefined"
         :tabindex="role === 'dialog' ? '-1' : undefined"
-        class="m-popover-panel"
+        class="m-popover-panel maz:fixed maz:z-default-backdrop maz:rounded-md maz:shadow-elevation maz:outline-hidden maz:drop-shadow-md"
         :aria-live="announceChanges ? 'polite' : undefined"
         :class="panelClasses"
         :style="[
@@ -752,12 +895,12 @@ defineExpose({
           panelStyles,
           {
             transformOrigin: getTransformOrigin(computedPosition),
-            visibility: middlewareData.hide?.referenceHidden
-              ? 'hidden'
-              : 'visible',
+            visibility: isPanelHidden ? 'hidden' : 'visible',
           },
         ]"
         v-bind="panelEvents"
+        @focusin="isPanelFocused = true"
+        @focusout="onPanelFocusout"
       >
         <!--
           @slot Popover content
@@ -773,69 +916,49 @@ defineExpose({
 </template>
 
 <style scoped>
-.m-popover {
-  @apply maz-inline-block;
-
-  &.--disabled {
-    @apply maz-cursor-not-allowed;
-  }
-
-  .m-popover-trigger {
-    @apply maz-inline-block maz-size-full;
-  }
-
-  &.--block {
-    @apply maz-w-full;
-  }
-}
+@reference "../tailwindcss/tailwind.css";
 
 .m-popover-panel {
-  @apply maz-fixed maz-outline-none maz-z-default-backdrop maz-rounded maz-drop-shadow-md maz-shadow-elevation;
-
   will-change: transform, opacity;
   contain: layout style paint;
   backface-visibility: hidden;
 
   /* Background color */
   &.--surface {
-    @apply dark:maz-border dark:maz-border-divider maz-bg-surface;
+    @apply maz:dark:border maz:dark:border-divider maz:bg-container;
   }
 
   /* Color variants */
   &.--primary {
-    @apply maz-border-primary-600 maz-bg-primary maz-text-primary-foreground;
+    @apply maz:border-primary-600 maz:bg-primary maz:text-primary-foreground;
   }
 
   &.--secondary {
-    @apply maz-border-secondary-600 maz-bg-secondary maz-text-secondary-foreground;
+    @apply maz:border-secondary-600 maz:bg-secondary maz:text-secondary-foreground;
   }
 
   &.--success {
-    @apply maz-border-success-600 maz-bg-success maz-text-success-foreground;
+    @apply maz:border-success-600 maz:bg-success maz:text-success-foreground;
   }
 
   &.--warning {
-    @apply maz-border-warning-600 maz-bg-warning maz-text-warning-foreground;
+    @apply maz:border-warning-600 maz:bg-warning maz:text-warning-foreground;
   }
 
   &.--destructive {
-    @apply maz-border-destructive-600 maz-bg-destructive maz-text-destructive-foreground;
+    @apply maz:border-destructive-600 maz:bg-destructive maz:text-destructive-foreground;
   }
 
   &.--info {
-    @apply maz-border-info-600 maz-bg-info maz-text-info-foreground;
+    @apply maz:border-info-600 maz:bg-info maz:text-info-foreground;
   }
 
   &.--accent {
-    @apply maz-border-accent-600 maz-bg-accent maz-text-accent-foreground;
+    @apply maz:border-accent-600 maz:bg-accent maz:text-accent-foreground;
   }
 
   &.--contrast {
-    @apply maz-border-contrast-600 maz-bg-contrast maz-text-contrast-foreground;
-  }
-
-  &.--background {
-    @apply maz-bg-surface maz-text-foreground;
+    @apply maz:border-contrast-600 maz:bg-contrast maz:text-contrast-foreground;
   }
 }
 
@@ -865,7 +988,7 @@ defineExpose({
 .m-popover-panel.--position-bottom-end {
   &.maz-scale-fade-enter-from,
   &.maz-scale-fade-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scaleY(0.5);
     transform-origin: top center;
@@ -873,7 +996,7 @@ defineExpose({
 
   &.maz-scale-pop-enter-from,
   &.maz-scale-pop-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.2) translateY(-4px);
     transform-origin: top center;
@@ -886,7 +1009,7 @@ defineExpose({
 .m-popover-panel.--position-top-end {
   &.maz-scale-fade-enter-from,
   &.maz-scale-fade-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scaleY(0.5);
     transform-origin: bottom center;
@@ -894,7 +1017,7 @@ defineExpose({
 
   &.maz-scale-pop-enter-from,
   &.maz-scale-pop-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.2) translateY(4px);
     transform-origin: bottom center;
@@ -907,7 +1030,7 @@ defineExpose({
 .m-popover-panel.--position-right-end {
   &.maz-scale-fade-enter-from,
   &.maz-scale-fade-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scaleX(0.5);
     transform-origin: left center;
@@ -915,7 +1038,7 @@ defineExpose({
 
   &.maz-scale-pop-enter-from,
   &.maz-scale-pop-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.2) translateX(-4px);
     transform-origin: left center;
@@ -928,7 +1051,7 @@ defineExpose({
 .m-popover-panel.--position-left-end {
   &.maz-scale-fade-enter-from,
   &.maz-scale-fade-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scaleX(0.5);
     transform-origin: right center;
@@ -936,7 +1059,7 @@ defineExpose({
 
   &.maz-scale-pop-enter-from,
   &.maz-scale-pop-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.2) translateX(4px);
     transform-origin: right center;
@@ -947,7 +1070,7 @@ defineExpose({
 .m-popover-panel:not([class*='--position-']) {
   &.maz-scale-pop-enter-from,
   &.maz-scale-pop-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.2);
     transform-origin: center;
@@ -955,7 +1078,7 @@ defineExpose({
 
   &.maz-scale-fade-enter-from,
   &.maz-scale-fade-leave-to {
-    @apply maz-opacity-0;
+    @apply maz:opacity-0;
 
     transform: scale(0.5) translateY(-4px);
     transform-origin: center;

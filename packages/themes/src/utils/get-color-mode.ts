@@ -1,6 +1,6 @@
 import type { ColorMode } from '../types'
+import { getCookie, setCookie } from '@maz-ui/utils/helpers/cookie'
 import { isServer } from '@maz-ui/utils/helpers/isServer'
-import { getCookie, setCookie } from './cookie-storage'
 
 export function getSavedColorMode(): ColorMode | undefined {
   const savedMode = getCookie('maz-color-mode') as ColorMode | null

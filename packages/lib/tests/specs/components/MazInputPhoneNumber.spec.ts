@@ -2,6 +2,7 @@ import type { MazInputPhoneNumberProps } from '@components/MazInputPhoneNumber.v
 import MazInputPhoneNumber from '@components/MazInputPhoneNumber.vue'
 import PhoneInput from '@components/MazInputPhoneNumber/PhoneInput.vue'
 import MazSelectCountry from '@components/MazSelectCountry.vue'
+import { GLOBAL_CONFIG_INJECTION_KEY } from '@composables/useGlobalConfig'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 
@@ -248,5 +249,93 @@ describe('components/MazInputPhoneNumber.vue', () => {
 
     await wrapper.vm.$nextTick()
     expect(wrapper.emitted('country-code')).toBeTruthy()
+  })
+})
+
+describe('given a MazUi global default for size', () => {
+  function mountWithConfig(config: unknown, props: Partial<MazInputPhoneNumberProps> = {}) {
+    return mount(MazInputPhoneNumber, {
+      props,
+      global: {
+        stubs: { MazSelectCountry, PhoneInput },
+        provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+      },
+    })
+  }
+
+  describe('when no size prop is passed', () => {
+    it('then the country select receives the global size', () => {
+      const wrapper = mountWithConfig({ global: { size: 'xl' } })
+
+      expect(wrapper.findComponent(MazSelectCountry).props('size')).toBe('xl')
+    })
+
+    it('then the phone input receives the global size', () => {
+      const wrapper = mountWithConfig({ global: { size: 'xl' } })
+
+      expect(wrapper.findComponent(PhoneInput).props('size')).toBe('xl')
+    })
+  })
+
+  describe('when a component-scoped default differs from the global default', () => {
+    it('then the country select receives the component-scoped size', () => {
+      const wrapper = mountWithConfig({ global: { size: 'mini' }, MazInputPhoneNumber: { size: 'lg' } })
+
+      expect(wrapper.findComponent(MazSelectCountry).props('size')).toBe('lg')
+    })
+  })
+
+  describe('when a size prop is passed', () => {
+    it('then the instance prop wins over every configured default', () => {
+      const wrapper = mountWithConfig({ global: { size: 'mini' }, MazInputPhoneNumber: { size: 'lg' } }, { size: 'sm' })
+
+      expect(wrapper.findComponent(PhoneInput).props('size')).toBe('sm')
+    })
+  })
+})
+
+describe('given the flagSrc prop', () => {
+  describe('when it is set', () => {
+    it('then the country select receives it', async () => {
+      const wrapper = await getWrapper({ props: { flagSrc: '/flags/{code}.svg' } })
+
+      expect(wrapper.findComponent(MazSelectCountry).props('flagSrc')).toBe('/flags/{code}.svg')
+    })
+  })
+
+  describe('when it is not set', () => {
+    it('then the country select keeps the CDN flags', async () => {
+      const wrapper = await getWrapper({})
+
+      expect(wrapper.findComponent(MazSelectCountry).props('flagSrc')).toBeUndefined()
+    })
+  })
+})
+
+describe('given a global flagSrc in the MazUi defaults', () => {
+  function mountWithDefaults(defaults: unknown, props: Partial<MazInputPhoneNumberProps> = {}) {
+    return mount(MazInputPhoneNumber, {
+      props,
+      global: {
+        stubs: { MazSelectCountry, PhoneInput },
+        provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: defaults },
+      },
+    })
+  }
+
+  describe('when no flagSrc prop is passed', () => {
+    it('then the country select receives the global source', () => {
+      const wrapper = mountWithDefaults({ global: { flagSrc: '/global/{code}.svg' } })
+
+      expect(wrapper.findComponent(MazSelectCountry).props('flagSrc')).toBe('/global/{code}.svg')
+    })
+  })
+
+  describe('when a flagSrc prop is passed', () => {
+    it('then the prop wins over the global source', () => {
+      const wrapper = mountWithDefaults({ global: { flagSrc: '/global/{code}.svg' } }, { flagSrc: '/prop/{code}.svg' })
+
+      expect(wrapper.findComponent(MazSelectCountry).props('flagSrc')).toBe('/prop/{code}.svg')
+    })
   })
 })

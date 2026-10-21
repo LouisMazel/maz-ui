@@ -167,15 +167,14 @@ describe('given DialogHandler (branch coverage)', () => {
 
     it('then it should not throw if onAccept is not provided', async () => {
       const handler = new DialogHandler(app)
-      handler.open({})
+      const result = handler.open({})
 
-      // Resolve without onAccept
       resolveFn('some-value')
 
-      // No error should be thrown
       await vi.waitFor(() => {
-        expect(true).toBe(true)
+        expect(mockCloseFn).not.toHaveBeenCalled()
       })
+      expect(typeof result.close).toBe('function')
     })
   })
 
@@ -195,15 +194,14 @@ describe('given DialogHandler (branch coverage)', () => {
 
     it('then it should not throw if onReject is not provided', async () => {
       const handler = new DialogHandler(app)
-      handler.open({})
+      const result = handler.open({})
 
-      // Reject without onReject
       rejectFn('some-error')
 
-      // No error should be thrown
       await vi.waitFor(() => {
-        expect(true).toBe(true)
+        expect(mockCloseFn).not.toHaveBeenCalled()
       })
+      expect(typeof result.close).toBe('function')
     })
   })
 

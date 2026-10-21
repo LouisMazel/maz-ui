@@ -92,18 +92,12 @@ describe('Given SearchEngine', () => {
       expect(results[0].score).toBeGreaterThan(0)
     })
 
-    it('Then returns empty array for non-matching query', () => {
-      const results = engine.search('nonexistent')
-      expect(results).toEqual([])
-    })
-
-    it('Then returns empty array for empty query', () => {
-      const results = engine.search('')
-      expect(results).toEqual([])
-    })
-
-    it('Then returns empty array for whitespace-only query', () => {
-      const results = engine.search('   ')
+    it.each([
+      { label: 'non-matching query', query: 'nonexistent' },
+      { label: 'empty query', query: '' },
+      { label: 'whitespace-only query', query: '   ' },
+    ])('Then returns empty array for $label', ({ query }) => {
+      const results = engine.search(query)
       expect(results).toEqual([])
     })
 
@@ -116,7 +110,7 @@ describe('Given SearchEngine', () => {
 
     it('Then respects maxResults parameter', () => {
       const results = engine.search('vue', 1)
-      expect(results.length).toBe(1)
+      expect(results).toHaveLength(1)
     })
   })
 
@@ -159,7 +153,7 @@ describe('Given SearchEngine', () => {
     it('Then matches exact phrase sequences', () => {
       const results = engine.search('"quick brown fox"')
 
-      expect(results.length).toBe(1)
+      expect(results).toHaveLength(1)
       expect(results[0].id).toBe('doc1')
     })
 
@@ -171,7 +165,7 @@ describe('Given SearchEngine', () => {
     it('Then combines phrase search with single terms', () => {
       const results = engine.search('"brown fox" river')
 
-      expect(results.length).toBe(2)
+      expect(results).toHaveLength(2)
       const ids = results.map(r => r.id)
       expect(ids).toContain('doc1')
       expect(ids).toContain('doc3')
@@ -191,9 +185,9 @@ describe('Given SearchEngine', () => {
       const rareResults = engine.search('rare')
       const commonResults = engine.search('common')
 
-      expect(rareResults.length).toBe(1)
+      expect(rareResults).toHaveLength(1)
       expect(rareResults[0].id).toBe('doc1')
-      expect(commonResults.length).toBe(3)
+      expect(commonResults).toHaveLength(3)
       expect(rareResults[0].score).toBeGreaterThan(commonResults[1].score)
     })
 

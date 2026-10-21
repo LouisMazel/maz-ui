@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "preserve",
     "lib": [
@@ -12,6 +12,7 @@
   "include": [
     ".vitepress/**/*",
     "src/**/*",
+    "components/**/*",
     "types"
   ],
   "exclude": [

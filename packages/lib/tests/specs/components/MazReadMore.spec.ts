@@ -101,7 +101,7 @@ describe('given MazReadMore component', () => {
       await vi.dynamicImportSettled()
 
       expect(wrapper.findComponent({ name: 'MazLink' }).exists()).toBe(true)
-      expect(wrapper.find('.m-read-more__content').text().length).toBe(103)
+      expect(wrapper.find('.m-read-more__content').text()).toHaveLength(103)
     })
 
     it('then it truncates the text to maxChars with ellipsis', async () => {
@@ -117,7 +117,7 @@ describe('given MazReadMore component', () => {
 
       const content = wrapper.find('.m-read-more__content')
       expect(content.text()).toBe(`${'A'.repeat(100)}...`)
-      expect(content.text().length).toBe(103)
+      expect(content.text()).toHaveLength(103)
     })
 
     it('then it shows full text when expanded', async () => {
@@ -131,14 +131,14 @@ describe('given MazReadMore component', () => {
 
       await vi.dynamicImportSettled()
 
-      expect(wrapper.find('.m-read-more__content').text().length).toBe(103)
+      expect(wrapper.find('.m-read-more__content').text()).toHaveLength(103)
 
       const link = wrapper.findComponent({ name: 'MazLink' })
       await link.trigger('click')
 
       const content = wrapper.find('.m-read-more__content')
       expect(content.text()).toBe(longText)
-      expect(content.text().length).toBe(200)
+      expect(content.text()).toHaveLength(200)
     })
   })
 
@@ -189,7 +189,7 @@ describe('given MazReadMore component', () => {
 
       const link = wrapper.findComponent({ name: 'MazLink' })
       expect(link.text()).toBe('Show more')
-      expect(wrapper.find('.m-read-more__content').text().length).toBe(103)
+      expect(wrapper.find('.m-read-more__content').text()).toHaveLength(103)
     })
 
     it('then it displays collapseText on button when expanded', async () => {
@@ -205,13 +205,13 @@ describe('given MazReadMore component', () => {
 
       await vi.dynamicImportSettled()
 
-      expect(wrapper.find('.m-read-more__content').text().length).toBe(103)
+      expect(wrapper.find('.m-read-more__content').text()).toHaveLength(103)
 
       const link = wrapper.findComponent({ name: 'MazLink' })
       await link.trigger('click')
 
       expect(link.text()).toBe('Show less')
-      expect(wrapper.find('.m-read-more__content').text().length).toBe(200)
+      expect(wrapper.find('.m-read-more__content').text()).toHaveLength(200)
     })
   })
 
@@ -227,13 +227,13 @@ describe('given MazReadMore component', () => {
 
       await vi.dynamicImportSettled()
 
-      expect(wrapper.find('.m-read-more__content').text().length).toBe(103)
+      expect(wrapper.find('.m-read-more__content').text()).toHaveLength(103)
 
       const link = wrapper.findComponent({ name: 'MazLink' })
       await link.trigger('click')
 
       expect(wrapper.find('.m-read-more__content').classes()).not.toContain('m-read-more__content--truncated')
-      expect(wrapper.find('.m-read-more__content').text().length).toBe(200)
+      expect(wrapper.find('.m-read-more__content').text()).toHaveLength(200)
     })
   })
 
@@ -248,7 +248,7 @@ describe('given MazReadMore component', () => {
 
       await vi.dynamicImportSettled()
 
-      expect(wrapper.find('.m-read-more__content').text().length).toBe(103)
+      expect(wrapper.find('.m-read-more__content').text()).toHaveLength(103)
 
       const link = wrapper.findComponent({ name: 'MazLink' })
       await link.trigger('click')
@@ -257,7 +257,7 @@ describe('given MazReadMore component', () => {
       const style = content.attributes('style')
 
       expect(style).toBeFalsy()
-      expect(content.text().length).toBe(200)
+      expect(content.text()).toHaveLength(200)
     })
   })
 
@@ -274,7 +274,7 @@ describe('given MazReadMore component', () => {
 
       const link = wrapper.findComponent({ name: 'MazLink' })
       expect(link.attributes('size')).toBe('sm')
-      expect(wrapper.find('.m-read-more__content').text().length).toBe(103)
+      expect(wrapper.find('.m-read-more__content').text()).toHaveLength(103)
     })
   })
 
@@ -291,7 +291,7 @@ describe('given MazReadMore component', () => {
 
       const link = wrapper.findComponent({ name: 'MazLink' })
       expect(link.props('color')).toBe('primary')
-      expect(wrapper.find('.m-read-more__content').text().length).toBe(103)
+      expect(wrapper.find('.m-read-more__content').text()).toHaveLength(103)
     })
   })
 
@@ -335,7 +335,7 @@ describe('given MazReadMore component', () => {
       await vi.dynamicImportSettled()
 
       expect(wrapper.findComponent({ name: 'MazLink' }).exists()).toBe(true)
-      expect(wrapper.find('.m-read-more__content').text().length).toBe(13)
+      expect(wrapper.find('.m-read-more__content').text()).toHaveLength(13)
     })
 
     it('then it truncates slot text content to maxChars with ellipsis', async () => {
@@ -352,7 +352,7 @@ describe('given MazReadMore component', () => {
 
       const content = wrapper.find('.m-read-more__content')
       expect(content.text()).toBe(`${'A'.repeat(10)}...`)
-      expect(content.text().length).toBe(13)
+      expect(content.text()).toHaveLength(13)
     })
 
     it('then it shows full slot content when expanded', async () => {
@@ -368,14 +368,14 @@ describe('given MazReadMore component', () => {
 
       await vi.dynamicImportSettled()
 
-      expect(wrapper.find('.m-read-more__content').text().length).toBe(13)
+      expect(wrapper.find('.m-read-more__content').text()).toHaveLength(13)
 
       const link = wrapper.findComponent({ name: 'MazLink' })
       await link.trigger('click')
 
       const content = wrapper.find('.m-read-more__content')
       expect(content.text()).toBe(slotContent)
-      expect(content.text().length).toBe(200)
+      expect(content.text()).toHaveLength(200)
     })
   })
 
@@ -465,12 +465,12 @@ describe('given MazReadMore component', () => {
 
         const link = wrapper.findComponent({ name: 'MazLink' })
         expect(link.attributes('aria-expanded')).toBe('false')
-        expect(wrapper.find('.m-read-more__content').text().length).toBe(103)
+        expect(wrapper.find('.m-read-more__content').text()).toHaveLength(103)
 
         await link.trigger('click')
 
         expect(link.attributes('aria-expanded')).toBe('true')
-        expect(wrapper.find('.m-read-more__content').text().length).toBe(200)
+        expect(wrapper.find('.m-read-more__content').text()).toHaveLength(200)
       })
 
       it('then it has aria-controls linking to content', async () => {
@@ -516,7 +516,7 @@ describe('given MazReadMore component', () => {
         await vi.dynamicImportSettled()
 
         expect(wrapper.find('.m-read-more__content').attributes('aria-expanded')).toBe('false')
-        expect(wrapper.find('.m-read-more__content').text().length).toBe(103)
+        expect(wrapper.find('.m-read-more__content').text()).toHaveLength(103)
       })
 
       it('then content aria-expanded changes to true after click and text expands', async () => {
@@ -530,13 +530,13 @@ describe('given MazReadMore component', () => {
         await vi.dynamicImportSettled()
 
         expect(wrapper.find('.m-read-more__content').attributes('aria-expanded')).toBe('false')
-        expect(wrapper.find('.m-read-more__content').text().length).toBe(103)
+        expect(wrapper.find('.m-read-more__content').text()).toHaveLength(103)
 
         const link = wrapper.findComponent({ name: 'MazLink' })
         await link.trigger('click')
 
         expect(wrapper.find('.m-read-more__content').attributes('aria-expanded')).toBe('true')
-        expect(wrapper.find('.m-read-more__content').text().length).toBe(200)
+        expect(wrapper.find('.m-read-more__content').text()).toHaveLength(200)
       })
     })
   })

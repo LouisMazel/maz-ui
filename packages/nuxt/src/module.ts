@@ -16,10 +16,10 @@ type MazUiComposables = keyof typeof import('maz-ui/composables')
 
 type Composables = Omit<
   Record<MazUiComposables | 'useTheme' | 'useTranslations', true>,
-  'useAos' | 'useDialog' | 'useToast' | 'useWait'
+  'useAos' | 'useDialog' | 'useToast' | 'useWait' | 'useMazIconProps'
 >
 
-declare module '@nuxt/schema' {
+declare module 'nuxt/schema' {
   interface NuxtConfig {
     mazUi?: MazUiNuxtOptions
   }
@@ -37,7 +37,7 @@ type ComponentNames = keyof typeof import('maz-ui/components')
 
 const COMPONENT_NAMES: Omit<
   Record<ComponentNames, true>,
-  'useMazDialogConfirm'
+  'useMazDialogConfirm' | 'mazSidebarKey'
 > = {
   MazAccordion: true,
   MazAlert: true,
@@ -58,6 +58,7 @@ const COMPONENT_NAMES: Omit<
   MazChecklist: true,
   MazContainer: true,
   MazCircularProgressBar: true,
+  MazCodeHighlight: true,
   MazDialog: true,
   MazDialogConfirm: true,
   MazDrawer: true,
@@ -76,6 +77,7 @@ const COMPONENT_NAMES: Omit<
   MazLazyImg: true,
   MazLink: true,
   MazLoadingBar: true,
+  MazMarkdownEditor: true,
   MazPagination: true,
   MazDatePicker: true,
   MazPullToRefresh: true,
@@ -90,6 +92,17 @@ const COMPONENT_NAMES: Omit<
   MazSpinner: true,
   MazStepper: true,
   MazSwitch: true,
+  MazSidebar: true,
+  MazSidebarMenu: true,
+  MazSidebarMenuItem: true,
+  MazSidebarMenuSub: true,
+  MazSidebarFooter: true,
+  MazSidebarHeader: true,
+  MazSidebarContent: true,
+  MazSidebarGroup: true,
+  MazSidebarMenuButton: true,
+  MazSidebarSeparator: true,
+  MazSidebarTrigger: true,
   MazTable: true,
   MazTableCell: true,
   MazTableRow: true,
@@ -102,6 +115,7 @@ const COMPONENT_NAMES: Omit<
   MazTimeline: true,
   MazTextarea: true,
   MazUiProvider: true,
+  MazWindowMockup: true,
   MazPopover: true,
 }
 
@@ -112,8 +126,9 @@ const pluginComposables: Record<'useTheme' | 'useTranslations', true> = {
   useTranslations: true,
 }
 
-const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDialog' | 'useToast' | 'useWait'> = {
+const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDialog' | 'useToast' | 'useWait' | 'useMazIconProps'> = {
   useIdleTimeout: true,
+  useDrag: true,
   useReadingTime: true,
   useFormField: true,
   useWindowSize: true,
@@ -129,7 +144,9 @@ const mazUiComposables: Omit<Record<MazUiComposables, true>, 'useAos' | 'useDial
   useInstanceUniqId: true,
   useMountComponent: true,
   useSwipe: true,
+  usePullToRefresh: true,
   useMutationObserver: true,
+  useSidebar: true,
 }
 
 const defaults = {
@@ -137,13 +154,14 @@ const defaults = {
     autoImportPrefix: '',
     defaultMazIconPath: '',
     devtools: true,
+    preventIosInputZoom: false,
   },
   css: {
-    injectMainCss: true,
+    injectCss: true,
   },
   theme: {
     preset: 'maz-ui',
-    strategy: 'hybrid',
+    strategy: 'runtime',
     darkModeStrategy: 'class',
     colorMode: 'auto',
     mode: 'both',
@@ -153,6 +171,8 @@ const defaults = {
     fallbackLocale: 'en',
     preloadFallback: true,
   },
+  defaults: {},
+  flags: 'cdn',
   components: {
     autoImport: true,
   },
@@ -196,7 +216,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     name: 'maz-ui',
     configKey: 'mazUi',
     compatibility: {
-      nuxt: '>=3.0.0',
+      nuxt: '>=3.4.0 <5.0.0',
     },
   },
   defaults,
@@ -216,8 +236,23 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     // CSS
 
-    if (moduleOptions.css.injectMainCss) {
-      nuxt.options.css.unshift('maz-ui/dist/css/main.css')
+    if (moduleOptions.css.injectCss) {
+      nuxt.options.css.unshift('maz-ui/style.css')
+    }
+
+    // cssnano's `postcss-calc` cannot parse the relative OKLCh values maz-ui
+    // emits (`oklch(from X clamp(0, calc(l - .05), 1) c h)`) and floods
+    // production builds with harmless "Lexical error" warnings. Disable only
+    // its `calc` optimization; the rest of the minification is untouched. Left
+    // alone if the user explicitly disabled cssnano.
+    nuxt.options.postcss ??= { plugins: {}, order: [] }
+    nuxt.options.postcss.plugins ??= {}
+    const postcssPlugins = nuxt.options.postcss.plugins
+    if (postcssPlugins.cssnano !== false) {
+      const current = typeof postcssPlugins.cssnano === 'object' && postcssPlugins.cssnano !== null
+        ? postcssPlugins.cssnano
+        : {}
+      postcssPlugins.cssnano = { ...current, preset: ['default', { calc: false }] }
     }
 
     // Plugins
@@ -225,6 +260,24 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     addPlugin(resolve(_dirname, './runtime/plugins/theme'))
     addPlugin(resolve(_dirname, './runtime/plugins/translations'))
     addPlugin(resolve(_dirname, './runtime/plugins/maz-link-component'))
+
+    // Flags: a URL template is a plain default, the local flags need their loader (only imported by this plugin)
+
+    const flags = moduleOptions.flags
+
+    if (flags && flags !== 'cdn' && flags !== 'local') {
+      moduleOptions.defaults = {
+        ...moduleOptions.defaults,
+        global: { flagSrc: flags, ...moduleOptions.defaults.global },
+      }
+    }
+
+    if (flags === 'local') {
+      addPlugin(resolve(_dirname, './runtime/plugins/local-flags'))
+    }
+    else if (Object.keys(moduleOptions.defaults).length > 0) {
+      addPlugin(resolve(_dirname, './runtime/plugins/defaults'))
+    }
 
     // Components
 
@@ -257,7 +310,7 @@ export default defineNuxtModule<MazUiNuxtOptions>({
           : true
 
       if (injectAosCSS) {
-        nuxt.options.css = ['maz-ui/aos-styles', ...nuxt.options.css]
+        nuxt.options.css = ['maz-ui/aos.css', ...nuxt.options.css]
       }
     }
 
@@ -341,6 +394,11 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     // Maz Icon Path
     if (moduleOptions.general.defaultMazIconPath) {
       addPlugin(resolve(_dirname, './runtime/plugins/maz-icon-path'))
+    }
+
+    // iOS input zoom
+    if (moduleOptions.general.preventIosInputZoom) {
+      addPlugin(resolve(_dirname, './runtime/plugins/prevent-ios-input-zoom.client'))
     }
 
     // Devtools

@@ -1,6 +1,27 @@
 import type { MazUiTranslationsNestedSchema } from '../types'
 
 export default {
+  aria: {
+    close: 'Cerrar',
+    increment: 'Aumentar',
+    decrement: 'Disminuir',
+    character: 'Carácter',
+    value: 'Valor',
+    options: 'Opciones',
+    noResults: 'Sin resultados',
+    showOptions: 'Mostrar opciones',
+    hideOptions: 'Ocultar opciones',
+    previousMonth: 'Mes anterior',
+    nextMonth: 'Mes siguiente',
+    previousYears: 'Años anteriores',
+    nextYears: 'Años siguientes',
+    selectAll: 'Seleccionar todas las filas',
+    selectRow: 'Seleccionar fila',
+    removeFile: 'Eliminar archivo',
+    sidebar: 'Barra lateral',
+    openSidebar: 'Abrir la barra lateral',
+    closeSidebar: 'Cerrar la barra lateral',
+  },
   selectCountry: {
     searchPlaceholder: 'Buscar país',
   },
@@ -89,8 +110,47 @@ export default {
     collapse: 'Leer menos',
     ariaLabel: 'Contenido expandible',
   },
+  pullToRefresh: {
+    pull: 'Desliza para actualizar',
+    release: 'Suelta para actualizar',
+    refreshing: 'Actualizando…',
+  },
   skeleton: {
     ariaLabel: 'Contenido en carga',
     loadingText: 'Cargando...',
+  },
+  codeHighlight: {
+    copyToClipboard: 'Copiar al portapapeles',
+    copiedToClipboard: 'Copiado al portapapeles',
+  },
+  windowMockup: {
+    copyUrlToClipboard: 'Copiar URL al portapapeles',
+    urlCopiedToClipboard: 'URL copiada al portapapeles',
+  },
+  markdownEditor: {
+    write: 'Escribir',
+    preview: 'Vista previa',
+    split: 'Dividido',
+    emptyPreview: 'Nada que previsualizar',
+    toolbar: {
+      heading: 'Título',
+      bold: 'Negrita',
+      italic: 'Cursiva',
+      strikethrough: 'Tachado',
+      quote: 'Cita',
+      code: 'Código en línea',
+      codeBlock: 'Bloque de código',
+      link: 'Enlace',
+      image: 'Imagen',
+      bulletList: 'Lista con viñetas',
+      orderedList: 'Lista numerada',
+      checkList: 'Lista de tareas',
+      table: 'Tabla',
+    },
+    headings: {
+      h1: 'Título 1',
+      h2: 'Título 2',
+      h3: 'Título 3',
+    },
   },
 } satisfies MazUiTranslationsNestedSchema

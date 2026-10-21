@@ -1,5 +1,5 @@
 import MazTabsBar from '@components/MazTabsBar.vue'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
 
@@ -60,7 +60,7 @@ describe('MazTabsBar branch coverage', () => {
       })
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
-      expect(tabButtons.length).toBe(3)
+      expect(tabButtons).toHaveLength(3)
       expect(tabButtons[0].text()).toBe('Tab A')
       expect(tabButtons[1].text()).toBe('Tab B')
     })
@@ -95,7 +95,7 @@ describe('MazTabsBar branch coverage', () => {
       })
 
       const disabledItems = wrapper.findAll('.m-tabs-bar__item.--disabled')
-      expect(disabledItems.length).toBe(1)
+      expect(disabledItems).toHaveLength(1)
     })
 
     it('defaults disabled to false for string items', () => {
@@ -251,16 +251,16 @@ describe('MazTabsBar branch coverage', () => {
       const wrapper = mountTabsBar({}, createTabsProvide(1))
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
-      expect(tabButtons[0].classes()).toContain('--active')
-      expect(tabButtons[1].classes()).not.toContain('--active')
+      expect(tabButtons[0].classes()).toContain('--is-active')
+      expect(tabButtons[1].classes()).not.toContain('--is-active')
     })
 
     it('returns true for second tab when currentTab is 2', () => {
       const wrapper = mountTabsBar({}, createTabsProvide(2))
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
-      expect(tabButtons[0].classes()).not.toContain('--active')
-      expect(tabButtons[1].classes()).toContain('--active')
+      expect(tabButtons[0].classes()).not.toContain('--is-active')
+      expect(tabButtons[1].classes()).toContain('--is-active')
     })
   })
 
@@ -269,14 +269,14 @@ describe('MazTabsBar branch coverage', () => {
       const wrapper = mountTabsBar({}, createTabsProvide(1))
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
-      expect(tabButtons[0].attributes('style')).toContain('color: hsl(var(--maz-foreground))')
+      expect(tabButtons[0].attributes('style')).toContain('color: var(--maz-foreground)')
     })
 
     it('returns muted color for inactive tab', () => {
       const wrapper = mountTabsBar({}, createTabsProvide(1))
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
-      expect(tabButtons[1].attributes('style')).toContain('color: hsl(var(--maz-muted))')
+      expect(tabButtons[1].attributes('style')).toContain('color: var(--maz-muted)')
     })
 
     it('returns empty style for disabled tab', () => {
@@ -287,8 +287,8 @@ describe('MazTabsBar branch coverage', () => {
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
       // Disabled tab should not have color style set
       const disabledStyle = tabButtons[1].attributes('style') || ''
-      expect(disabledStyle).not.toContain('color: hsl(var(--maz-foreground))')
-      expect(disabledStyle).not.toContain('color: hsl(var(--maz-muted))')
+      expect(disabledStyle).not.toContain('color: var(--maz-foreground)')
+      expect(disabledStyle).not.toContain('color: var(--maz-muted)')
     })
   })
 
@@ -411,7 +411,7 @@ describe('MazTabsBar branch coverage', () => {
       await nextTick()
 
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
-      expect(tabButtons[1].classes()).toContain('--active')
+      expect(tabButtons[1].classes()).toContain('--is-active')
     })
   })
 
@@ -421,7 +421,7 @@ describe('MazTabsBar branch coverage', () => {
 
       // Elements should be stored; verify by checking that buttons render
       const tabButtons = wrapper.findAll('.m-tabs-bar__item')
-      expect(tabButtons.length).toBe(3)
+      expect(tabButtons).toHaveLength(3)
     })
   })
 
@@ -444,7 +444,7 @@ describe('MazTabsBar branch coverage', () => {
       })
 
       const customItems = wrapper.findAll('.custom-item')
-      expect(customItems.length).toBe(2)
+      expect(customItems).toHaveLength(2)
       expect(customItems[0].attributes('data-active')).toBe('true')
       expect(customItems[0].attributes('data-index')).toBe('0')
       expect(customItems[1].attributes('data-active')).toBe('false')
@@ -453,7 +453,7 @@ describe('MazTabsBar branch coverage', () => {
   })
 
   describe('badge rendering', () => {
-    it('renders badge when item has badge property', () => {
+    it('renders badge when item has badge property', async () => {
       const wrapper = mountTabsBar({
         items: [
           { label: 'Tab 1', badge: { content: 5 } },
@@ -461,8 +461,14 @@ describe('MazTabsBar branch coverage', () => {
         ],
       })
 
-      // The badge component is async, but the item should still render
-      expect(wrapper.findAll('.m-tabs-bar__item').length).toBe(2)
+      // MazBadge is a defineAsyncComponent — wait for its module to resolve
+      // so the default slot (showing badge.content) actually renders.
+      await vi.dynamicImportSettled()
+      await flushPromises()
+      await nextTick()
+
+      expect(wrapper.findAll('.m-tabs-bar__item')).toHaveLength(2)
+      expect(wrapper.html()).toContain('5')
     })
 
     it('does not render badge for items without badge', () => {
@@ -470,7 +476,7 @@ describe('MazTabsBar branch coverage', () => {
         items: [{ label: 'No Badge' }],
       })
 
-      expect(wrapper.findAll('.m-tabs-bar__item').length).toBe(1)
+      expect(wrapper.findAll('.m-tabs-bar__item')).toHaveLength(1)
     })
   })
 })

@@ -193,7 +193,7 @@ The server exposes documentation through MCP resources with the following URI pa
 - **`maz-ui://component/{ComponentName}`** - Individual component documentation
   - Examples: `maz-ui://component/MazBtn`, `maz-ui://component/MazInput`
 - **`maz-ui://guide/{guideName}`** - Setup and usage guides
-  - Examples: `maz-ui://guide/getting-started`, `maz-ui://guide/vue`, `maz-ui://guide/nuxt`
+  - Examples: `maz-ui://guide/getting-started`, `maz-ui://guide/vue`, `maz-ui://ecosystem/nuxt`
 - **`maz-ui://composable/{composableName}`** - Vue composable documentation
   - Examples: `maz-ui://composable/use-toast`, `maz-ui://composable/use-dialog`
 - **`maz-ui://directive/{directiveName}`** - Vue directive documentation

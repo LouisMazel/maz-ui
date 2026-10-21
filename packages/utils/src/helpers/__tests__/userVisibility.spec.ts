@@ -47,7 +47,6 @@ describe('user-visibility.ts', () => {
         expect(instance).toBeInstanceOf(UserVisibility)
         await sleep(DEFAULT_TIMEOUT)
         if (instance) {
-          // @ts-expect-error
           const startSpy = vitest.spyOn(instance, 'addEventListener')
           // @ts-expect-error
           instance.addEventListener()

@@ -189,4 +189,10 @@ const multipleSilders = ref([25, 50, 75])
   const logSildersLabels = ['Micro', 'Small', 'Middle', 'Big']
 </script>
 
+## Accessibility
+
+Each cursor is a `slider` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and `aria-valuetext` when `labels` are set.
+
+**Keyboard**: <kbd>←</kbd> / <kbd>↓</kbd> and <kbd>→</kbd> / <kbd>↑</kbd> move by one `step`, <kbd>Page Down</kbd> / <kbd>Page Up</kbd> by ten steps, <kbd>Home</kbd> / <kbd>End</kbd> to the lowest / highest value allowed for the cursor (a cursor never passes its neighbours).
+
 <!--@include: ./../../.vitepress/generated-docs/maz-slider.doc.md-->

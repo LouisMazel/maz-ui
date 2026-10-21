@@ -6,7 +6,7 @@ export interface UseWindowSizeOptions {
    * The window object to use
    * @default window - in browser, undefined in SSR
    */
-  internalWindow?: Window | undefined
+  internalWindow?: Window
   /**
    * Initial width of the window (useful in SSR)
    * @default Number.POSITIVE_INFINITY

@@ -15,7 +15,7 @@ This component uses [vLazyImg](./../directives/lazy-img.md) directive
 
 ## Basic usage
 
-<MazAvatar :lazy="false" src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80" />
+<MazAvatar src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80" />
 
 ```vue
 <script lang="ts" setup>
@@ -47,7 +47,7 @@ See all the options props [here](#props-event-slots)
     clickable
   >
     <template #icon>
-      <MazIcon name="eye" style="color: white;" size="2rem" />
+      <MazIcon icon="/eye.svg" style="color: white;" size="2rem" />
     </template>
   </MazAvatar>
 
@@ -87,10 +87,9 @@ function clicked() { console.log('clicked') }
     target="_blank"
     rounded-size="none"
     clickable
-    no-size
   >
     <template #icon>
-      <MazIcon name="eye" />
+      <MazIcon icon="/eye.svg" />
     </template>
   </MazAvatar>
   <MazAvatar
@@ -108,12 +107,43 @@ function clicked() { console.log('clicked') }
 </template>
 ```
 
+## Initials from caption
+
+When no `src` is provided, `MazAvatar` displays initials generated from the `caption`. The `letter-count` prop (default `2`) controls how many letters are displayed:
+
+- **Single word**: the first `letter-count` characters of the word are used.
+- **Multiple words**: the first letter of each of the first `letter-count` words is used.
+
+Initials are always uppercased.
+
+<div class="flex gap-05 items-center flex-wrap">
+  <MazAvatar caption="admin" size="3rem" />
+  <MazAvatar caption="admin" :letter-count="3" size="3rem" />
+  <MazAvatar caption="Louis Mazel" size="3rem" />
+  <MazAvatar caption="Jean Claude Dus" :letter-count="3" size="3rem" />
+</div>
+
+```vue
+<template>
+  <!-- "AD" -->
+  <MazAvatar caption="admin" />
+  <!-- "ADM" -->
+  <MazAvatar caption="admin" :letter-count="3" />
+  <!-- "LM" -->
+  <MazAvatar caption="Louis Mazel" />
+  <!-- "JCD" -->
+  <MazAvatar caption="Jean Claude Dus" :letter-count="3" />
+</template>
+```
+
 ## On Error
 
-<MazAvatar @error="error" />
+When no `src` (and no `caption`) is provided, or when the image fails to load, `MazAvatar` displays the default `no-image` placeholder.
+
+<MazAvatar @error="error" src="https://broken-link-image-src.example" />
 
 ```html
-<MazAvatar @error="error" />
+<MazAvatar @error="error" src="https://broken-link-image-src.example" />
 ```
 
 ## Fallback image loaded on error
@@ -169,6 +199,24 @@ These modes are native use an `HTMLImageElement` with the `loading` attribute. (
 />
 <MazAvatar loading="lazy" src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123" />
 <MazAvatar loading="eager" src="https://api.dicebear.com/7.x/big-smile/svg?backgroundColor=1d90ff&scale=80&seed=123" />
+```
+
+## Image height full
+
+By default the image fills the avatar **width** (`width: 100%`). Enable `image-height-full` to make the image fill the **height** instead: it keeps its aspect ratio, fills 100% of the height and overflows/crops horizontally. This is ideal for wide images or SVGs (like flags) that must cover the whole avatar.
+
+<div class="flex gap-05 items-center flex-wrap">
+  <MazAvatar class="vp-raw" size="4rem" src="https://placedog.net/300/200?id=7" />
+  <MazAvatar class="vp-raw" size="4rem" image-height-full src="https://placedog.net/300/200?id=7" />
+</div>
+
+```vue
+<template>
+  <!-- default: width 100% -->
+  <MazAvatar src="https://placedog.net/300/200" />
+  <!-- height 100%, cropped on the sides -->
+  <MazAvatar image-height-full src="https://placedog.net/300/200" />
+</template>
 ```
 
 <script lang="ts" setup>

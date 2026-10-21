@@ -12,7 +12,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
 ## Basic usage
 
 <ComponentDemo>
-  <p class="maz-mb-4">
+  <p class="maz:mb-4">
     Select a competition
   </p>
 
@@ -97,7 +97,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
 ## Custom slot template
 
 <ComponentDemo>
-  <p class="maz-mb-4">
+  <p class="maz:mb-4">
     Select a competition
   </p>
 
@@ -118,7 +118,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
         <span>
           {{ option.label }}
         </span>
-        <span :class="{ 'maz-text-muted': !selected }">
+        <span :class="{ 'maz:text-muted': !selected }">
           {{ option.areaName }}
         </span>
       </div>
@@ -145,7 +145,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
           <span>
             {{ option.label }}
           </span>
-          <span :class="{ 'maz-text-muted': !selected }">
+          <span :class="{ 'maz:text-muted': !selected }">
             {{ option.areaName }}
           </span>
         </div>
@@ -161,7 +161,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
 ## Orientation - Column
 
 <ComponentDemo>
-  <p class="maz-mb-4">
+  <p class="maz:mb-4">
     Select a competition
   </p>
 
@@ -182,7 +182,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
         <span>
           {{ option.label }}
         </span>
-        <span :class="{ 'maz-text-muted': !selected }">
+        <span :class="{ 'maz:text-muted': !selected }">
           {{ option.areaName }}
         </span>
       </div>
@@ -210,7 +210,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
           <span>
             {{ option.label }}
           </span>
-          <span :class="{ 'maz-text-muted': !selected }">
+          <span :class="{ 'maz:text-muted': !selected }">
             {{ option.areaName }}
           </span>
         </div>
@@ -296,11 +296,11 @@ This option will display a select icon on the left of the label
     block
     class="vp-raw"
   >
-    <div class="maz-flex maz-flex-col maz-items-start maz-p-2">
-      <h3 class="maz-mb-2 maz-text-xl maz-font-semibold">
+    <div class="maz:flex maz:flex-col maz:items-start maz:p-2">
+      <h3 class="maz:mb-2 maz:text-xl maz:font-semibold">
         {{ option.label }}
       </h3>
-      <span :class="{ 'maz-text-muted': !selected }">
+      <span :class="{ 'maz:text-muted': !selected }">
         {{ option.description }}
       </span>
     </div>
@@ -376,11 +376,17 @@ export type ButtonsRadioOption = {
 } & Record<string, unknown>
 ```
 
+## Accessibility
+
+The root element is a `radiogroup` of native radio inputs: pass an `aria-label` (or `aria-labelledby`) to name it. The `hint` describes the group (`aria-describedby`) and `error` sets `aria-invalid`. The arrows move between the options natively.
+
+When no `name` is provided, each instance gets a unique one, so two groups of the same page never share their radios.
+
 <!--@include: ./../../.vitepress/generated-docs/maz-radio-buttons.doc.md-->
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import MazRadioButtons from 'maz-ui/src/components/MazRadioButtons.vue'
+  import MazRadioButtons from 'maz-ui/components/MazRadioButtons'
 
   const selectedCompetition = ref<string>()
 

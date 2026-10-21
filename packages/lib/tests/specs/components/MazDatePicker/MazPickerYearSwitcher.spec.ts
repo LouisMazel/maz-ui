@@ -26,7 +26,7 @@ describe('given MazPickerYearSwitcher component', () => {
       await vi.dynamicImportSettled()
 
       const yearButtons = wrapper.findAll('.maz-picker-year-switcher__main .m-btn')
-      expect(yearButtons.length).toBe(15)
+      expect(yearButtons).toHaveLength(15)
     })
 
     it('then it should render the header with navigation and close buttons', async () => {
@@ -37,7 +37,7 @@ describe('given MazPickerYearSwitcher component', () => {
 
       const headerBtns = wrapper.findAll('.maz-picker-year-switcher__header .m-btn')
       // Two navigation buttons (prev/next) and one close button
-      expect(headerBtns.length).toBe(3)
+      expect(headerBtns).toHaveLength(3)
     })
 
     it('then the years should be centered around the current calendar date year', async () => {
@@ -64,7 +64,7 @@ describe('given MazPickerYearSwitcher component', () => {
       await vi.dynamicImportSettled()
 
       const selectedButtons = wrapper.findAll('.--is-selected')
-      expect(selectedButtons.length).toBe(1)
+      expect(selectedButtons).toHaveLength(1)
     })
 
     it('then the selected year button should have the color prop value', async () => {
@@ -108,7 +108,7 @@ describe('given MazPickerYearSwitcher component', () => {
 
       const emitted = wrapper.emitted('update:calendar-date')
       expect(emitted).toBeTruthy()
-      expect(emitted!.length).toBe(1)
+      expect(emitted!).toHaveLength(1)
     })
 
     it('then it should emit close event', async () => {

@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import type { Dayjs } from 'dayjs'
+import type { Dayjs } from 'dayjs/esm'
 import type { MazColor } from '../types'
 import type { MazDatePickerShortcut, MazDatePickerValue } from './types'
-import { computed, defineAsyncComponent, ref } from 'vue'
+import dayjs from 'dayjs/esm'
+import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
 
 const props = defineProps<{
   modelValue: MazDatePickerValue | undefined
@@ -50,10 +51,50 @@ const calendarDate = computed({
   get: () => props.calendarDate,
   set: calendarDate => emits('update:calendar-date', calendarDate),
 })
+
+const monthsRef = ref<HTMLDivElement>()
+let pendingFocusDateKey: string | undefined
+
+function focusPendingDate() {
+  const dayButton = monthsRef.value?.querySelector<HTMLElement>(`[data-date="${pendingFocusDateKey}"]:not(:disabled)`)
+
+  if (dayButton) {
+    dayButton.focus()
+    pendingFocusDateKey = undefined
+  }
+}
+
+/**
+ * The keyboard navigation of a month reached a day out of the displayed months:
+ * the calendar shows its month, then the day is focused once rendered
+ */
+function onNavigate(date: string) {
+  const target = dayjs(date)
+  const firstMonth = dayjs(props.calendarDate)
+  const monthDiff = target.startOf('month').diff(firstMonth.startOf('month'), 'month')
+  const shift = monthDiff < 0 ? monthDiff : monthDiff - (months.value.length - 1)
+
+  pendingFocusDateKey = target.format('YYYY-MM-DD')
+
+  if (shift === 0) {
+    nextTick(focusPendingDate)
+    return
+  }
+
+  calendarDate.value = firstMonth.add(shift, 'month').format()
+}
+
+watch(() => props.calendarDate, async () => {
+  if (!pendingFocusDateKey)
+    return
+
+  await nextTick()
+  focusPendingDate()
+})
 </script>
 
 <template>
-  <div class="maz-picker-calendar flex">
+  <div class="maz-picker-calendar maz:relative maz:flex maz:w-full">
     <MazPickerShortcuts
       v-if="hasShortcuts && shortcuts"
       v-model="currentValue"
@@ -64,7 +105,7 @@ const calendarDate = computed({
       :disabled="disabled"
     />
 
-    <div class="maz-picker-calendar__main" :class="{ '--has-double': double }">
+    <div class="maz-picker-calendar__main maz:flex maz:flex-1 maz:flex-col" :class="{ '--has-double': double }">
       <MazPickerCalendarSwitcher
         v-model:calendar-date="calendarDate"
         :locale="locale"
@@ -91,7 +132,7 @@ const calendarDate = computed({
           @close="yearSwitcherOpen = false"
         />
       </Transition>
-      <div class="maz-picker-calendar__months" :class="{ '--is-range': range }">
+      <div ref="monthsRef" class="maz-picker-calendar__months maz:flex maz:w-full maz:flex-1" :class="{ '--is-range maz:px-2': range }">
         <MazPickerCalendarMonth
           v-for="month in months"
           :key="month"
@@ -110,6 +151,7 @@ const calendarDate = computed({
           :disabled-weekly="disabledWeekly"
           :disabled-dates="disabledDates"
           :range
+          @navigate="onNavigate"
         />
       </div>
     </div>
@@ -117,28 +159,16 @@ const calendarDate = computed({
 </template>
 
 <style scoped>
-.maz-picker-calendar {
-  @apply maz-relative maz-flex maz-w-full;
+@reference "../../tailwindcss/tailwind.css";
 
-  &__main {
-    @apply maz-flex maz-flex-1 maz-flex-col;
+.maz-picker-calendar__main {
+  inline-size: 16rem;
 
-    width: 16rem;
+  &.--has-double {
+    inline-size: 34rem;
 
-    &.--has-double {
-      width: 34rem;
-
-      & .maz-picker-calendar__months > :first-child {
-        @apply maz-border-e maz-border-divider;
-      }
-    }
-  }
-
-  &__months {
-    @apply maz-flex maz-w-full maz-flex-1;
-
-    &.--is-range {
-      @apply maz-px-2;
+    & .maz-picker-calendar__months > :first-child {
+      @apply maz:border-e maz:border-divider;
     }
   }
 }

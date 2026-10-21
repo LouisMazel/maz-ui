@@ -29,52 +29,19 @@ describe('given logger module', () => {
 
   describe('given setLevel and getLevel methods', () => {
     describe('when setting various log levels', () => {
-      it('then returns the correct numeric level for "silent"', () => {
+      it.each([
+        { level: 'silent', value: Number.NEGATIVE_INFINITY },
+        { level: 'error', value: 0 },
+        { level: 'warning', value: 1 },
+        { level: 'normal', value: 2 },
+        { level: 'default', value: 3 },
+        { level: 'debug', value: 4 },
+        { level: 'trace', value: 5 },
+        { level: 'verbose', value: Number.POSITIVE_INFINITY },
+      ] as const)('then returns the correct numeric level for "$level"', ({ level, value }) => {
         const log = createLogger()
-        log.setLevel('silent')
-        expect(log.getLevel()).toBe(Number.NEGATIVE_INFINITY)
-      })
-
-      it('then returns the correct numeric level for "error"', () => {
-        const log = createLogger()
-        log.setLevel('error')
-        expect(log.getLevel()).toBe(0)
-      })
-
-      it('then returns the correct numeric level for "warning"', () => {
-        const log = createLogger()
-        log.setLevel('warning')
-        expect(log.getLevel()).toBe(1)
-      })
-
-      it('then returns the correct numeric level for "normal"', () => {
-        const log = createLogger()
-        log.setLevel('normal')
-        expect(log.getLevel()).toBe(2)
-      })
-
-      it('then returns the correct numeric level for "default"', () => {
-        const log = createLogger()
-        log.setLevel('default')
-        expect(log.getLevel()).toBe(3)
-      })
-
-      it('then returns the correct numeric level for "debug"', () => {
-        const log = createLogger()
-        log.setLevel('debug')
-        expect(log.getLevel()).toBe(4)
-      })
-
-      it('then returns the correct numeric level for "trace"', () => {
-        const log = createLogger()
-        log.setLevel('trace')
-        expect(log.getLevel()).toBe(5)
-      })
-
-      it('then returns the correct numeric level for "verbose"', () => {
-        const log = createLogger()
-        log.setLevel('verbose')
-        expect(log.getLevel()).toBe(Number.POSITIVE_INFINITY)
+        log.setLevel(level)
+        expect(log.getLevel()).toBe(value)
       })
     })
   })

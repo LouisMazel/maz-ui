@@ -163,7 +163,7 @@ const phone = formatPhoneNumber('+33123456789', 'international')
 
 ## Requirements
 
-- Node.js >= 18.0.0
+- Node.js >= 22.12.0
 - TypeScript support included
 - Tree-shakeable for optimal bundle size
 

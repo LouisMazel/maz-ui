@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import type { CSSProperties } from 'vue'
-import type { MazColor } from './types'
+import type { CSSProperties, StyleValue } from 'vue'
+import type { MazColor, MazSizeUnit } from './types'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { debounce } from '@maz-ui/utils/helpers/debounce'
 
 import {
@@ -26,7 +27,7 @@ export interface MazSliderProps {
   /** step value for slider increments */
   step?: number
   /** height size of slider bar */
-  size?: string
+  size?: MazSizeUnit
   /** remove div in different colors */
   divider?: boolean
   /** become a logarithmic slider (exponential) */
@@ -50,6 +51,8 @@ const {
 } = defineProps<MazSliderProps>()
 
 const emits = defineEmits(['update:model-value'])
+
+const { t } = useTranslations()
 
 const MazSlider = ref<HTMLDivElement>()
 
@@ -90,10 +93,10 @@ const wrapperStyle = computed(() => {
     paddingTop: labels ? `2.5em` : `1em`,
   }
 })
-const sliderStyle = computed<CSSProperties>(() => {
+const sliderStyle = computed<StyleValue>(() => {
   if (color === 'transparent')
     return {}
-  return { '--m-slider-color': `var(--maz-${color})` } as CSSProperties
+  return { '--m-slider-color': `var(--maz-${color})` }
 })
 const hasMultipleValues = computed(() => Array.isArray(modelValue))
 
@@ -134,25 +137,66 @@ function roundToStep(value: number): number {
   return Math.round((value - min) / step) * step + min
 }
 
+const PAGE_STEP_MULTIPLIER = 10
+
+/**
+ * A cursor can not go below the previous cursor nor above the next one
+ */
+function getCursorBounds(i: number) {
+  const values = tmpValues.value ?? []
+
+  return {
+    lower: i > 0 ? values[i - 1] : min,
+    upper: i < values.length - 1 ? values[i + 1] : max,
+  }
+}
+
+function getKeyboardValue(event: KeyboardEvent, i: number): number | undefined {
+  const values = tmpValues.value
+
+  if (!values)
+    return undefined
+
+  const current = values[i]
+  const { lower, upper } = getCursorBounds(i)
+
+  switch (event.key) {
+    case 'ArrowLeft':
+    case 'ArrowDown':
+      return isBetween(current - step, values[i - 1], values[i + 1], 'minus') ? Math.max(min, current - step) : current
+    case 'ArrowRight':
+    case 'ArrowUp':
+      return isBetween(current + step, values[i - 1], values[i + 1], 'plus') ? Math.min(max, current + step) : current
+    case 'PageDown':
+      return Math.max(lower, current - step * PAGE_STEP_MULTIPLIER)
+    case 'PageUp':
+      return Math.min(upper, current + step * PAGE_STEP_MULTIPLIER)
+    case 'Home':
+      return lower
+    case 'End':
+      return upper
+    default:
+      return undefined
+  }
+}
+
+/**
+ * Slider keyboard pattern: arrows move by one step, Page Up / Page Down by ten steps,
+ * Home / End to the lowest / highest value allowed for the cursor
+ */
 function cursorKeyDown(event: KeyboardEvent, i: number) {
-  if (event.key === 'ArrowLeft') {
-    if (
-      tmpValues.value
-      && isBetween(tmpValues.value[i] - step, tmpValues.value[i - 1], tmpValues.value[i + 1], 'minus')
-    ) {
-      tmpValues.value[i] = Math.max(min, tmpValues.value[i] - step)
-      emitValue(tmpValues.value)
-    }
-  }
-  // ArrowRight
-  else if (
-    event.key === 'ArrowRight'
-    && tmpValues.value
-    && isBetween(tmpValues.value[i] + step, tmpValues.value[i - 1], tmpValues.value[i + 1], 'plus')
-  ) {
-    tmpValues.value[i] = Math.min(max, tmpValues.value[i] + step)
-    emitValue(tmpValues.value)
-  }
+  const value = getKeyboardValue(event, i)
+
+  if (value === undefined || !tmpValues.value)
+    return
+
+  event.preventDefault()
+
+  if (value === tmpValues.value[i])
+    return
+
+  tmpValues.value[i] = value
+  emitValue(tmpValues.value)
 }
 function blurCursor(i: number) {
   activeCursor.value = undefined
@@ -308,12 +352,10 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
 </script>
 
 <template>
-  <!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events -->
+  <!-- eslint-disable vuejs-accessibility/mouse-events-have-key-events, vuejs-accessibility/no-static-element-interactions -->
   <div
     :style="[wrapperStyle, sliderStyle, { fontSize: size }]"
     class="m-slider m-reset-css"
-    role="button"
-    tabindex="-1"
     :class="[`m-slider--${color}`]"
     @mousemove.passive="handleMousemove"
     @mouseup.passive="handleMouseup"
@@ -322,11 +364,7 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
   >
     <div
       ref="MazSlider"
-      class="m-slider__bar"
-      role="slider"
-      :aria-valuenow="modelValue?.toString()"
-      :aria-valuemin="min"
-      :aria-valuemax="max"
+      class="m-slider__bar maz:relative maz:flex maz:flex-center maz:rounded-full"
     >
       <div
         v-for="(div, i) in dividers"
@@ -339,10 +377,16 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
         v-for="(_btn, i) in computedValue"
         :key="`cursor-${i}`"
         type="button"
+        role="slider"
+        :aria-label="t('aria.value')"
+        :aria-valuenow="Number(tmpValues?.[i])"
+        :aria-valuemin="min"
+        :aria-valuemax="max"
+        :aria-valuetext="getLabel(i)"
         :data-label="getLabel(i)"
-        class="m-slider__btn"
+        class="m-slider__btn maz:flex maz:flex-center maz:rounded-full maz:border maz:border-solid maz:border-divider maz:bg-surface maz:shadow-md maz:hover:bg-surface-200"
         :class="{
-          'active-cursor': i === activeCursor && cursorAnim,
+          'active-cursor maz:z-2 maz:border maz:shadow-lg': i === activeCursor && cursorAnim,
         }"
         :style="[buttonStyles[i]]"
         @mousedown.passive="handleMousedown($event, i)"
@@ -350,9 +394,9 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
         @focus.passive="handleMousedown($event, i)"
         @blur.passive="blurCursor(i)"
         @touchend.passive="blurCursor(i)"
-        @keydown.passive="cursorKeyDown($event, i)"
+        @keydown="cursorKeyDown($event, i)"
       >
-        <span>
+        <span class="maz:flex maz:items-center maz:text-foreground">
           {{ tmpValues?.[i] }}
         </span>
       </button>
@@ -361,67 +405,55 @@ async function handleMousemove(event: MouseEvent | TouchEvent) {
 </template>
 
 <style scoped>
-  .m-slider {
-  padding: 1em 1.5rem;
+.m-slider {
+  padding-block: 1em;
+  padding-inline: 1.5rem;
+}
 
-  &__bar {
-    @apply maz-relative maz-flex maz-items-center maz-justify-center maz-rounded-full;
+.m-slider__btn {
+  position: absolute;
+  outline: none;
+  cursor: pointer;
+  font-size: 0.8em;
+  font-weight: bold;
+  line-height: 1;
+  transition:
+    box-shadow 300ms ease-in-out,
+    inline-size 300ms ease-in-out,
+    transform 300ms ease-in-out,
+    background-color 300ms ease-in-out;
+  z-index: 1;
+  user-select: none;
+  padding-block: 0.25em;
+  padding-inline: 0.5em;
 
-    height: 0.5em;
-    background-color: hsl(var(--m-slider-color));
+  & span {
+    margin-inline: 0.25em;
   }
 
-  &__divider {
-    position: absolute;
-    border-radius: 2em;
-    height: 100%;
+  &.active-cursor {
+    transform: scale(1.3);
+    border-color: var(--m-slider-color);
   }
 
-  &__btn {
+  &::before {
+    content: attr(data-label);
     position: absolute;
-    outline: none;
-    cursor: pointer;
+    inset-block-start: -1.5em;
     font-size: 0.8em;
-    font-weight: bold;
-    line-height: 1;
-    transition:
-      box-shadow 300ms ease-in-out,
-      width 300ms ease-in-out,
-      transform 300ms ease-in-out,
-      background-color 300ms ease-in-out;
-    z-index: 1;
-    user-select: none;
-
-    @apply maz-flex maz-items-center maz-justify-center maz-rounded-full maz-border maz-border-solid
-        maz-border-divider maz-bg-surface maz-shadow-md;
-
-    padding: 0.25em 0.5em;
-
-    & span {
-      @apply maz-flex maz-items-center maz-text-foreground;
-
-      margin-left: 0.25em;
-      margin-right: 0.25em;
-    }
-
-    &.active-cursor {
-      @apply maz-border maz-shadow-lg maz-z-2;
-
-      transform: scale(1.3);
-      border-color: hsl(var(--m-slider-color));
-    }
-
-    &::before {
-      content: attr(data-label);
-      font-size: 0.8em;
-      top: -1.5em;
-
-      @apply maz-absolute maz-font-medium maz-text-foreground;
-    }
-
-    &:hover {
-      @apply maz-bg-surface-200;
-    }
+    font-weight: 500;
+    color: var(--maz-foreground);
   }
+}
+
+.m-slider__divider {
+  position: absolute;
+  border-radius: 2em;
+  block-size: 100%;
+}
+
+.m-slider__bar {
+  block-size: 0.5em;
+  background-color: var(--m-slider-color);
 }
 </style>

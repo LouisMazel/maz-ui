@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
-import { MazTrash } from '@maz-ui/icons/lazy/MazTrash'
+import { MazTrash } from '@maz-ui/icons/raw/MazTrash'
 import { truthyFilter } from '@maz-ui/utils/helpers/truthyFilter'
 import { computed, ref } from 'vue'
+import { useGlobalConfig } from '../composables/useGlobalConfig'
 import MazBtn from './MazBtn.vue'
 import MazInput from './MazInput.vue'
 
@@ -11,24 +12,22 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MazInputTagsProps>(), {
-  style: undefined,
-  class: undefined,
-  modelValue: undefined,
-  placeholder: undefined,
-  label: undefined,
-  disabled: false,
-  error: false,
-  success: false,
-  warning: false,
-  size: 'md',
-  color: 'primary',
-  addTagsOnBlur: true,
-})
+const {
+  class: classProp,
+  modelValue,
+  disabled = false,
+  error = false,
+  success = false,
+  warning = false,
+  color = 'primary',
+  addTagsOnBlur = true,
+} = defineProps<MazInputTagsProps>()
 
 const emits = defineEmits<{
   'update:model-value': [value?: (string | number)[]]
 }>()
+
+const { size } = useGlobalConfig<{ size: MazSize }>('MazInputTags', { size: 'md' })
 
 export interface MazInputTagsProps {
   /** Style attribut of the component root element */
@@ -68,7 +67,7 @@ const lastIdToDelete = ref<string>()
 const currentDeleteTimeout = ref<NodeJS.Timeout>()
 
 const tags = computed(() =>
-  props.modelValue?.map((tag: string | number) => {
+  modelValue?.map((tag: string | number) => {
     return {
       tag,
       // eslint-disable-next-line sonarjs/pseudo-random
@@ -88,37 +87,37 @@ function addTags(event: Event) {
       .filter(truthyFilter)
 
     const newValues = values.filter(
-      value => !props.modelValue?.filter(truthyFilter)?.includes(value),
+      value => !modelValue?.filter(truthyFilter)?.includes(value),
     )
     emits(
       'update:model-value',
-      props.modelValue ? [...props.modelValue, ...newValues] : [...newValues],
+      modelValue ? [...modelValue, ...newValues] : [...newValues],
     )
     inputValue.value = undefined
   }
 }
 
 const borderStyle = computed(() => {
-  if (props.error)
-    return 'maz-border-destructive'
-  if (props.success)
-    return 'maz-border-success'
-  if (props.warning)
-    return 'maz-border-warning'
+  if (error)
+    return 'maz:border-destructive'
+  if (success)
+    return 'maz:border-success'
+  if (warning)
+    return 'maz:border-warning'
 
   if (isFocused.value) {
-    if (props.color === 'primary')
-      return 'maz-border-primary'
-    if (props.color === 'secondary')
-      return 'maz-border-secondary'
-    if (props.color === 'info')
-      return 'maz-border-info'
-    if (props.color === 'destructive')
-      return 'maz-border-destructive'
-    if (props.color === 'success')
-      return 'maz-border-success'
-    if (props.color === 'warning')
-      return 'maz-border-warning'
+    if (color === 'primary')
+      return 'maz:border-primary'
+    if (color === 'secondary')
+      return 'maz:border-secondary'
+    if (color === 'info')
+      return 'maz:border-info'
+    if (color === 'destructive')
+      return 'maz:border-destructive'
+    if (color === 'success')
+      return 'maz:border-success'
+    if (color === 'warning')
+      return 'maz:border-warning'
   }
 
   return ''
@@ -148,43 +147,52 @@ function removeTag(id: string) {
   emits('update:model-value', tagsArray)
 }
 
+const SIZE_CLASS = {
+  xl: 'maz:min-h-16',
+  lg: 'maz:min-h-14',
+  md: 'maz:min-h-12',
+  sm: 'maz:min-h-10',
+  xs: 'maz:min-h-8',
+  mini: 'maz:min-h-6',
+} as const
+
 const buttonSize = computed(() => {
-  if (props.size === 'mini')
+  if (size.value === 'mini')
     return 'mini'
-  if (props.size === 'xs')
+  if (size.value === 'xs')
     return 'mini'
-  if (props.size === 'sm')
+  if (size.value === 'sm')
     return 'xs'
-  if (props.size === 'md')
+  if (size.value === 'md')
     return 'sm'
-  if (props.size === 'lg')
+  if (size.value === 'lg')
     return 'md'
-  if (props.size === 'xl')
+  if (size.value === 'xl')
     return 'lg'
 
-  return props.size
+  return size.value
 })
 </script>
 
 <template>
   <div
-    class="m-input-tags m-reset-css"
-    :class="[borderStyle, `--${color}`, `--${size}`, props.class, { '--block': block }]"
+    class="m-input-tags m-reset-css maz:relative maz:inline-flex maz:flex-wrap maz:gap-1 maz:overflow-hidden maz:rounded-md maz:border maz:border-divider maz:bg-input maz:px-[0.5em] maz:py-[0.25em] maz:align-top maz:transition-colors maz:duration-200 maz:ease-in-out maz:dark:border-divider-400"
+    :class="[borderStyle, `--${color}`, `--${size}`, SIZE_CLASS[size], classProp, { '--block': block, 'maz:w-full': block }]"
     :style
     @focus.capture="isFocused = true"
     @blur.capture="isFocused = false"
   >
     <TransitionGroup name="maz-tags">
-      <div v-for="({ tag, id }, i) in tags" :key="`tag-${i}`" class="m-input-tags__wrapper">
+      <div v-for="({ tag, id }, i) in tags" :key="`tag-${i}`" class="m-input-tags__wrapper maz:inline-flex maz:h-auto maz:flex-none! maz:flex-center">
         <MazBtn
           class="m-input-tags__tag"
           :disabled
           :size="buttonSize"
           :color="tagsHoveredId === id || lastIdToDelete === id ? 'destructive' : color"
-          :right-icon="tagsHoveredId === id || lastIdToDelete === id ? MazTrash : undefined"
+          :end-icon="tagsHoveredId === id || lastIdToDelete === id ? MazTrash : undefined"
           @click.stop="removeTag(id)"
-          @mouseenter="tagsHoveredId = id"
-          @focus="tagsHoveredId = id"
+          @mouseenter="tagsHoveredId = disabled ? undefined : id"
+          @focus="tagsHoveredId = disabled ? undefined : id"
           @mouseleave="tagsHoveredId = undefined"
           @blur="tagsHoveredId = undefined"
         >
@@ -210,9 +218,9 @@ const buttonSize = computed(() => {
       :color
       :block
       :size
-      input-classes="maz-w-full"
+      input-classes="maz:w-full"
       :border="false"
-      class="m-input-tags__input"
+      class="m-input-tags__input maz:h-auto! maz:flex-1"
       @keydown.enter="addTags"
       @keydown.delete="removeLastTag"
       @blur="addTagsOnBlur ? addTags($event) : undefined"
@@ -221,55 +229,21 @@ const buttonSize = computed(() => {
 </template>
 
 <style scoped>
-.m-input-tags {
-  @apply maz-relative maz-inline-flex maz-flex-wrap maz-gap-1
-      maz-overflow-hidden maz-rounded maz-border maz-bg-surface maz-px-[0.5em] maz-py-[0.25em] maz-align-top maz-transition-colors maz-duration-200 maz-ease-in-out dark:maz-bg-surface-400 maz-border-divider dark:maz-border-divider-400;
+@reference "../tailwindcss/tailwind.css";
 
-  &.--xl {
-    @apply maz-min-h-16;
+.m-input-tags__input {
+  &:deep(.m-input-wrapper) {
+    @apply maz:border-none maz:bg-transparent!;
+
+    min-inline-size: 7.5em;
   }
 
-  &.--lg {
-    @apply maz-min-h-14;
+  &:deep(.m-input-label) {
+    @apply maz:inset-s-2!;
   }
 
-  &.--md {
-    @apply maz-min-h-12;
-  }
-
-  &.--sm {
-    @apply maz-min-h-10;
-  }
-
-  &.--xs {
-    @apply maz-min-h-8;
-  }
-
-  &.--mini {
-    @apply maz-min-h-6;
-  }
-
-  &.--block {
-    @apply maz-w-full;
-  }
-
-  &__wrapper {
-    @apply maz-inline-flex maz-h-auto !maz-flex-none maz-flex-center;
-  }
-
-  &__input {
-    @apply !maz-h-auto maz-flex-1;
-
-    &:deep(.m-input-wrapper) {
-      @apply maz-border-none !maz-bg-transparent;
-
-      min-width: 7.5em;
-    }
-
-    &:deep(input) {
-      padding-left: 0.4em;
-      padding-right: 0.4em;
-    }
+  &:deep(input) {
+    padding-inline: 0.4em;
   }
 }
 </style>

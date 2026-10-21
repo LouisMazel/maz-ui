@@ -21,7 +21,7 @@ export function ViteBuildThemes({ testing } = { testing: false }): Plugin {
   return {
     name: 'vite-build-themes',
     async configResolved() {
-      const distFolderExists = existsSync(resolve(__dirname, '../../themes/dist'))
+      const distFolderExists = existsSync(resolve(import.meta.dirname, '../../themes/dist'))
 
       if (distFolderExists) {
         return

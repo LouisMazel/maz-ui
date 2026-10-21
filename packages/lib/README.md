@@ -110,7 +110,7 @@ The Nuxt module automatically:
 - Includes required styles
 - Provides TypeScript support out of the box
 
-[See options and more in the documentation](https://maz-ui.com/guide/nuxt)
+[See options and more in the documentation](https://maz-ui.com/ecosystem/nuxt)
 
 ```ts
 // nuxt.config.ts
@@ -153,7 +153,7 @@ The CLI will automatically:
 - Create dark mode variables
 - Output a ready-to-use CSS file
 
-To know how configure the CLI, check [theming options](https://maz-ui.com/guide/themes) in our documentation.
+To know how configure the CLI, check [theming options](https://maz-ui.com/ecosystem/themes) in our documentation.
 
 ## 🧰 What's included?
 
@@ -162,6 +162,7 @@ To know how configure the CLI, check [theming options](https://maz-ui.com/guide/
 - 🎣 [Composables](https://maz-ui.com/composables/use-form-validator) - Reusable composition functions
 - 📏 [Directives](https://maz-ui.com/directives/fullscreen-img) - Useful Vue directives
 - 🛠️ [Helpers](https://maz-ui.com/helpers/currency) - Useful utilities for common tasks
+- ⚙️ [Global component defaults](https://maz-ui.com/guide/global-defaults) - Set default prop values (rounded size, borders, density…) once via the `MazUi` plugin
 
 ## Icons
 
@@ -169,7 +170,7 @@ Maz UI provides a comprehensive set of beautiful icons (300+) ready-to-use for V
 
 ### Documentation
 
-Please refer to [](https://maz-ui.com/guide/icons)
+Please refer to [icons documentation](https://maz-ui.com/ecosystem/icons)
 
 ### Installation
 
@@ -183,9 +184,9 @@ Import the icons you need from the package:
 
 ```vue
 <script setup>
-import { MazArrowTopRightOnSquare } from '@maz-ui/icons/MazArrowTopRightOnSquare'
-import { MazCheckCircle } from '@maz-ui/icons/MazCheckCircle'
-import { MazXMark } from '@maz-ui/icons/MazXMark'
+import { MazArrowTopRightOnSquare } from '@maz-ui/icons/raw/MazArrowTopRightOnSquare'
+import { MazCheckCircle } from '@maz-ui/icons/raw/MazCheckCircle'
+import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
 </script>
 
 <template>

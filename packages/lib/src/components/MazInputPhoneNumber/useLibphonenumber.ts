@@ -36,8 +36,8 @@ function getPhoneNumberResults({
   countryCode,
   checkCountryCode = false,
 }: {
-  phoneNumber?: string | undefined | null
-  countryCode?: CountryCode | undefined | null
+  phoneNumber?: string | null
+  countryCode?: CountryCode | null
   checkCountryCode?: boolean
 }): MazInputPhoneNumberData {
   try {

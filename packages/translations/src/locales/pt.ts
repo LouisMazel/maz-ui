@@ -1,6 +1,27 @@
 import type { MazUiTranslationsNestedSchema } from '../types'
 
 export default {
+  aria: {
+    close: 'Fechar',
+    increment: 'Aumentar',
+    decrement: 'Diminuir',
+    character: 'Caractere',
+    value: 'Valor',
+    options: 'Opções',
+    noResults: 'Nenhum resultado',
+    showOptions: 'Mostrar opções',
+    hideOptions: 'Ocultar opções',
+    previousMonth: 'Mês anterior',
+    nextMonth: 'Próximo mês',
+    previousYears: 'Anos anteriores',
+    nextYears: 'Próximos anos',
+    selectAll: 'Selecionar todas as linhas',
+    selectRow: 'Selecionar linha',
+    removeFile: 'Remover arquivo',
+    sidebar: 'Barra lateral',
+    openSidebar: 'Abrir a barra lateral',
+    closeSidebar: 'Fechar a barra lateral',
+  },
   selectCountry: {
     searchPlaceholder: 'Pesquisar país',
   },
@@ -89,8 +110,47 @@ export default {
     collapse: 'Ler menos',
     ariaLabel: 'Conteúdo expansível',
   },
+  pullToRefresh: {
+    pull: 'Puxe para atualizar',
+    release: 'Solte para atualizar',
+    refreshing: 'Atualizando…',
+  },
   skeleton: {
     ariaLabel: 'Conteúdo em carregamento',
     loadingText: 'Carregando...',
+  },
+  codeHighlight: {
+    copyToClipboard: 'Copiar para a área de transferência',
+    copiedToClipboard: 'Copiado para a área de transferência',
+  },
+  windowMockup: {
+    copyUrlToClipboard: 'Copiar URL para a área de transferência',
+    urlCopiedToClipboard: 'URL copiada para a área de transferência',
+  },
+  markdownEditor: {
+    write: 'Escrever',
+    preview: 'Pré-visualizar',
+    split: 'Dividido',
+    emptyPreview: 'Nada para pré-visualizar',
+    toolbar: {
+      heading: 'Título',
+      bold: 'Negrito',
+      italic: 'Itálico',
+      strikethrough: 'Tachado',
+      quote: 'Citação',
+      code: 'Código em linha',
+      codeBlock: 'Bloco de código',
+      link: 'Link',
+      image: 'Imagem',
+      bulletList: 'Lista com marcadores',
+      orderedList: 'Lista numerada',
+      checkList: 'Lista de tarefas',
+      table: 'Tabela',
+    },
+    headings: {
+      h1: 'Título 1',
+      h2: 'Título 2',
+      h3: 'Título 3',
+    },
   },
 } satisfies MazUiTranslationsNestedSchema
