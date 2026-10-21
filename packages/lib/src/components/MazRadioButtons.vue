@@ -2,7 +2,9 @@
 import type { HTMLAttributes } from 'vue'
 import type { MazColor, MazSize } from './types'
 import { MazCheck } from '@maz-ui/icons/lazy/MazCheck'
+import { computed } from 'vue'
 import { useGlobalConfig } from '../composables/useGlobalConfig'
+import { useInstanceUniqId } from '../composables/useInstanceUniqId'
 import MazIcon from './MazIcon.vue'
 import { getColor } from './types'
 
@@ -22,7 +24,10 @@ export interface MazRadioButtonsProps<T = string | number | boolean, Option exte
   modelValue?: T
   /** The options to display */
   options: Option[]
-  /** The name of the radio group */
+  /**
+   * The name of the radio group
+   * @default a unique name per instance
+   */
   name?: string
   /** The color of the selected radio buttons */
   color?: MazColor | 'surface'
@@ -60,7 +65,7 @@ export interface MazRadioButtonsProps<T = string | number | boolean, Option exte
 const {
   modelValue,
   options,
-  name = 'MazButtonsRadio',
+  name,
   color = 'primary',
   elevation = false,
   orientation = 'row',
@@ -99,6 +104,12 @@ const emits = defineEmits<{
 
 const { size } = useGlobalConfig<{ size: MazSize }>('MazRadioButtons', { size: 'md' })
 
+const instanceId = useInstanceUniqId({ componentName: 'MazRadioButtons' })
+
+// A shared default name would merge the native radios of every instance of the page in one group
+const groupName = computed(() => name ?? instanceId.value)
+const hintId = computed(() => `${instanceId.value}-hint`)
+
 function selectOption(option: Option) {
   emits('update:model-value', option.value)
   emits('change', option.value)
@@ -109,7 +120,7 @@ function isSelected(value: Option['value']) {
 }
 
 function getOptionId(option: Option, i: number) {
-  return `option-${i}-${option.value.toString()}-${name}`
+  return `option-${i}-${option.value.toString()}-${groupName.value}`
 }
 
 function onBlur(event: FocusEvent) {
@@ -133,6 +144,9 @@ const SIZE_CLASS: Record<MazSize, string> = {
   <div
     class="m-radio-buttons m-reset-css maz:inline-flex maz:flex-col maz:gap-1 maz:align-top"
     :class="{ 'maz:w-full': block }"
+    role="radiogroup"
+    :aria-describedby="hint ? hintId : undefined"
+    :aria-invalid="error ? 'true' : undefined"
   >
     <div
       class="m-radio-buttons__wrapper maz:inline-flex maz:gap-2"
@@ -172,7 +186,7 @@ const SIZE_CLASS: Record<MazSize, string> = {
         <input
           :id="getOptionId(option, i)"
           type="radio"
-          :name="name"
+          :name="groupName"
           :value="option.value"
           :checked="isSelected(option.value)"
           class="maz:sr-only"
@@ -213,6 +227,7 @@ const SIZE_CLASS: Record<MazSize, string> = {
     </div>
     <span
       v-if="hint"
+      :id="hintId"
       class="m-radio-buttons__hint maz:text-sm" :class="{
         '--error': error,
         '--success': success,
