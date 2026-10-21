@@ -3,6 +3,7 @@ import type { Dayjs } from 'dayjs/esm'
 import type { PropType } from 'vue'
 import type { MazColor } from '../../types'
 import type { MazDatePickerValue } from '../types'
+import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 import dayjs from 'dayjs/esm'
 import { computed } from 'vue'
 
@@ -30,7 +31,7 @@ const props = defineProps({
   range: { type: Boolean, required: true },
 })
 
-const emits = defineEmits(['update:model-value', 'update:calendar-date', 'update:hoverred-day'])
+const emits = defineEmits(['update:model-value', 'update:calendar-date', 'update:hoverred-day', 'navigate'])
 
 const modelValue = computed({
   get: () => props.modelValue,
@@ -50,10 +51,17 @@ const calendarDateWithOffset = computed({
   get: () => getCalendarDateWithOffset(props.offsetMonth),
   set: calendarDate => emits('update:calendar-date', calendarDate),
 })
+
+const gridLabel = computed(() => formatDate(calendarDateWithOffset.value, props.locale, { month: 'long', year: 'numeric' }))
 </script>
 
 <template>
-  <div class="maz-picker-calendar-month maz:w-full maz:overflow-hidden maz:py-2" :class="{ '--has-padding': !range, 'maz:px-2': !range }">
+  <div
+    role="grid"
+    :aria-label="gridLabel"
+    class="maz-picker-calendar-month maz:w-full maz:overflow-hidden maz:py-2"
+    :class="{ '--has-padding': !range, 'maz:px-2': !range }"
+  >
     <MazPickerCalendarDays
       :locale="locale"
       :first-day-of-week="firstDayOfWeek"
@@ -75,6 +83,7 @@ const calendarDateWithOffset = computed({
       :disabled-dates="disabledDates"
       :disabled="disabled"
       :range
+      @navigate="emits('navigate', $event)"
     />
   </div>
 </template>

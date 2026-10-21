@@ -55,13 +55,13 @@ export function getFirstDayOfMonth(value: ConfigType): number {
   return dayjs(value).startOf('month').day()
 }
 
-export function getDaysOfWeek(locale: string, firstDayOfWeek: number) {
+export function getDaysOfWeek(locale: string, firstDayOfWeek: number, weekday: Intl.DateTimeFormatOptions['weekday'] = 'short') {
   const currentDate = dayjs().locale(locale)
   const days: string[] = []
 
   for (let i = 0; i < 7; i++) {
     const day = currentDate.day(i + firstDayOfWeek).toDate()
-    const dayName = formatDate(day, locale, { weekday: 'short' })
+    const dayName = formatDate(day, locale, { weekday })
 
     if (dayName) {
       days.push(dayName)

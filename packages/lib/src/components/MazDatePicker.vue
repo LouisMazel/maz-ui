@@ -717,6 +717,10 @@ watch(
           :id="instanceId"
           :model-value="inputValue"
           readonly
+          role="combobox"
+          aria-haspopup="dialog"
+          :aria-expanded="String(hasPickerOpen)"
+          :aria-controls="hasPickerOpen ? `${instanceId}-popover-panel` : undefined"
           v-bind="{ ...inputProps, ...$attrs }"
           block
           autocomplete="off"
@@ -727,11 +731,11 @@ watch(
           :color
         >
           <template #start-icon>
-            <MazCalendar v-if="hasDate" class="maz:text-xl" />
-            <MazClock v-else-if="hasTime" class="maz:text-xl" />
+            <MazCalendar v-if="hasDate" class="maz:text-xl" aria-hidden="true" />
+            <MazClock v-else-if="hasTime" class="maz:text-xl" aria-hidden="true" />
           </template>
           <template #end-icon>
-            <MazIcon :icon="MazChevronDown" class="m-date-picker__button__chevron maz:text-lg" />
+            <MazIcon :icon="MazChevronDown" class="m-date-picker__button__chevron maz:text-lg" aria-hidden="true" />
           </template>
         </MazInput>
       </slot>

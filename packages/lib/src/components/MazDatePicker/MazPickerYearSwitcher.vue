@@ -4,6 +4,7 @@ import type { PropType } from 'vue'
 import type { MazColor } from '../types'
 import { MazChevronLeft } from '@maz-ui/icons/raw/MazChevronLeft'
 import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 import dayjs from 'dayjs/esm'
 import { computed, ref } from 'vue'
@@ -20,6 +21,8 @@ const props = defineProps({
 })
 
 const emits = defineEmits(['update:calendar-date', 'close'])
+
+const { t } = useTranslations()
 
 const currentDateTmp = ref(props.calendarDate)
 
@@ -59,15 +62,15 @@ function nextYears() {
   <div class="maz-picker-year-switcher maz:absolute maz:inset-0 maz:z-1 maz:flex maz:flex-col maz:bg-container">
     <div class="maz-picker-year-switcher__header maz:flex maz:justify-between maz:space-x-2 maz:border-b maz:border-divider maz:p-2">
       <div class="maz:flex maz:space-x-2">
-        <MazBtn size="xs" color="transparent" type="button" @click.stop="previousYears">
-          <MazIcon :icon="MazChevronLeft" class="maz:text-lg" />
+        <MazBtn size="xs" color="transparent" type="button" :aria-label="t('aria.previousYears')" @click.stop="previousYears">
+          <MazIcon :icon="MazChevronLeft" class="maz:text-lg" aria-hidden="true" />
         </MazBtn>
-        <MazBtn size="xs" color="transparent" type="button" @click.stop="nextYears">
-          <MazIcon :icon="MazChevronLeft" class="maz:rotate-180 maz:text-lg" />
+        <MazBtn size="xs" color="transparent" type="button" :aria-label="t('aria.nextYears')" @click.stop="nextYears">
+          <MazIcon :icon="MazChevronLeft" class="maz:rotate-180 maz:text-lg" aria-hidden="true" />
         </MazBtn>
       </div>
-      <MazBtn size="xs" color="transparent" type="button" @click.stop="$emit('close', $event)">
-        <MazIcon :icon="MazXMark" class="maz:text-lg" />
+      <MazBtn size="xs" color="transparent" type="button" :aria-label="t('aria.close')" @click.stop="$emit('close', $event)">
+        <MazIcon :icon="MazXMark" class="maz:text-lg" aria-hidden="true" />
       </MazBtn>
     </div>
     <div class="maz-picker-year-switcher__main maz:grid maz:flex-1 maz:grid-cols-3 maz:flex-center maz:gap-2 maz:overflow-y-auto maz:p-2">
@@ -80,6 +83,7 @@ function nextYears() {
           '--is-selected': isSameDate(year.date, calendarDate, 'year'),
         }"
         :color="isSameDate(year.date, calendarDate, 'year') ? color : 'transparent'"
+        :aria-current="isSameDate(year.date, calendarDate, 'year') ? 'true' : undefined"
         @click.stop="selectYear(year.date)"
       >
         {{ year.label }}

@@ -3,6 +3,7 @@ import type { Dayjs } from 'dayjs/esm'
 import type { PropType } from 'vue'
 import type { MazColor } from '../types'
 import { MazXMark } from '@maz-ui/icons/raw/MazXMark'
+import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { formatDate } from '@maz-ui/utils/helpers/formatDate'
 import dayjs from 'dayjs/esm'
@@ -21,6 +22,8 @@ const props = defineProps({
 })
 
 const emits = defineEmits(['update:calendar-date', 'close'])
+
+const { t } = useTranslations()
 
 const months = computed<
   {
@@ -64,8 +67,8 @@ function selectMonth(date: Dayjs) {
 <template>
   <div class="maz-picker-month-switcher maz:absolute maz:inset-0 maz:z-1 maz:flex maz:flex-col maz:bg-container">
     <div class="maz-picker-month-switcher__header maz:flex maz:justify-end maz:border-b maz:border-divider maz:p-2">
-      <MazBtn size="xs" color="transparent" type="button" @click.stop="$emit('close', $event)">
-        <MazIcon :icon="MazXMark" class="maz:text-lg" />
+      <MazBtn size="xs" color="transparent" type="button" :aria-label="t('aria.close')" @click.stop="$emit('close', $event)">
+        <MazIcon :icon="MazXMark" class="maz:text-lg" aria-hidden="true" />
       </MazBtn>
     </div>
     <div class="maz-picker-month-switcher__main maz:grid maz:flex-1 maz:flex-center maz:gap-1 maz:overflow-y-auto maz:p-2" :class="[double ? '--has-double' : '', double ? 'maz:grid-cols-3' : 'maz:grid-cols-2']">
@@ -77,6 +80,7 @@ function selectMonth(date: Dayjs) {
           '--is-selected': isSameDate(month.date, calendarDate, 'month'),
         }"
         :color="isSameDate(month.date, calendarDate, 'month') ? color : 'transparent'"
+        :aria-current="isSameDate(month.date, calendarDate, 'month') ? 'true' : undefined"
         type="button"
         @click.stop="selectMonth(month.date)"
       >
