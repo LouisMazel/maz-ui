@@ -22,3 +22,7 @@ allowBuilds:
   nx: true
   sharp: false
   vue-demi: true
+
+permissions:
+  '@modelcontextprotocol/inspector':
+    skills: false

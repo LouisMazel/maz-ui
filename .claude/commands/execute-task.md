@@ -251,7 +251,7 @@ Avant de marquer le travail comme prêt à commit : invoque **`superpowers:verif
 
 Dans le cadre de cette commande, tu es **explicitement autorisé** à committer, push et créer la PR sans reconfirmation : c'est le contrat de `/execute-task`. Fais **plusieurs commits atomiques** tout au long de l'implémentation (un par tâche / groupe logique du plan), pas un seul commit final monolithique.
 
-Convention CommitLint enforced (`.commitlintrc.ts`) :
+Convention relizy enforced (`relizy.config.ts`) :
 
 - Format : `type(scope): subject`
 - Types valides : `feat`, `fix`, `perf`, `refactor`, `test`, `docs`, `style`, `chore`, `clean`, `ci`, `revert`, `build`
