@@ -55,6 +55,12 @@ export default defineConfig({
     social: true,
   },
 
+  commitlint: {
+    title: false,
+    codeBlocksLinter: 'oxc',
+    scopes: ['clean', 'deps', 'release'],
+  },
+
   social: {
     changelogUrl: 'https://maz-ui.com/changelog',
     twitter: {

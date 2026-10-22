@@ -26,5 +26,8 @@ jobs:
       - name: Build packages
         run: pnpm build:packages
 
+      - name: Typecheck packages
+        run: pnpm typecheck:all
+
       - name: Build docs
         run: pnpm exec nx run docs:build

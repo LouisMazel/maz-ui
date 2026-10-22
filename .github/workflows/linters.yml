@@ -22,3 +22,6 @@ jobs:
 
       - name: Run linters
         run: pnpm lint:all
+
+      - name: Run relizy commitlint
+        run: pnpm relizy commitlint
