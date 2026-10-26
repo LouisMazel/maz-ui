@@ -220,7 +220,7 @@
     "@maz-ui/translations": "workspace:*",
     "@maz-ui/utils": "workspace:*",
     "@tanstack/vue-virtual": "^3.13.47",
-    "chart.js": "^4.5.1",
+    "chart.js": "^4.6.1",
     "dayjs": "^1.11.23",
     "dompurify": "^3.4.17",
     "libphonenumber-js": "^1.13.15",
