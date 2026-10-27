@@ -10,6 +10,7 @@ import {
   DEFAULT_MCP_SERVER,
   detectAgentTargets,
   findInstalledPackage,
+  findProjectPackage,
   MANAGED_MARKER,
   MCP_SERVER_NAME,
   readAgentDocs,
@@ -197,7 +198,8 @@ describe('given setupAgents with the claude target', () => {
 
       expect(rule).toContain(MANAGED_MARKER)
       expect(rule).toContain('5.1.0')
-      expect(rule).toContain(CLAUDE_RULE)
+      expect(rule).toContain('# maz-ui\n\n> maz-ui 5.1.0 is installed')
+      expect(rule).toContain('Use maz-ui components.')
       expect(changeOf(result, '.claude/rules/maz-ui.md')).toEqual({ file: '.claude/rules/maz-ui.md', action: 'create' })
     })
 
@@ -270,7 +272,7 @@ describe('given setupAgents with the claude target', () => {
 
       expect(projectFileExists('.claude/rules/maz-ui.md')).toBe(false)
       expect(changeOf(result, '.claude/rules/maz-ui.md')).toBeUndefined()
-      expect(readProjectFile('AGENTS.md')).toContain(AGENTS_SECTION)
+      expect(readProjectFile('AGENTS.md')).toContain('Use maz-ui components.')
     })
 
     it('then it removes a rule generated before', () => {
@@ -291,8 +293,8 @@ describe('given setupAgents with the claude target', () => {
 
       setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md'] })
 
-      expect(readProjectFile('.claude/rules/maz-ui.md')).toContain(CLAUDE_RULE)
-      expect(readProjectFile('AGENTS.md')).toContain(AGENTS_SECTION)
+      expect(readProjectFile('.claude/rules/maz-ui.md')).toContain('Use maz-ui components.')
+      expect(readProjectFile('AGENTS.md')).toContain('Use maz-ui components.')
     })
   })
 
@@ -317,7 +319,7 @@ describe('given setupAgents with the agents-md target', () => {
       expect(content.startsWith(AGENTS_MD_BEGIN)).toBe(true)
       expect(content.trimEnd().endsWith(AGENTS_MD_END)).toBe(true)
       expect(content).toContain(MANAGED_MARKER)
-      expect(content).toContain(AGENTS_SECTION)
+      expect(content).toContain('Use maz-ui components.')
       expect(changeOf(result, 'AGENTS.md')?.action).toBe('create')
     })
   })
@@ -345,7 +347,7 @@ describe('given setupAgents with the agents-md target', () => {
       expect(content.startsWith(`# Before\n\n${AGENTS_MD_BEGIN}`)).toBe(true)
       expect(content.endsWith(`${AGENTS_MD_END}\n\n# After\n`)).toBe(true)
       expect(content).not.toContain('old section')
-      expect(content).toContain(AGENTS_SECTION)
+      expect(content).toContain('Use maz-ui components.')
     })
 
     it('then a second run changes nothing', () => {
@@ -665,6 +667,38 @@ describe('given setupAgents with the rules option disabled', () => {
 
       expect(projectFileExists('.claude/rules/maz-ui.md')).toBe(false)
       expect(projectFileExists('AGENTS.md')).toBe(false)
+    })
+  })
+})
+
+describe('given findProjectPackage', () => {
+  describe('when the package is installed in a workspace folder of a monorepo', () => {
+    it('then it is found from the monorepo root', () => {
+      writeProjectFile('apps/web/node_modules/maz-ui/package.json', '{ "version": "5.2.0" }')
+
+      expect(findProjectPackage(rootDir, 'maz-ui')).toBe(join(rootDir, 'apps/web/node_modules/maz-ui'))
+    })
+  })
+
+  describe('when the package is installed in the packages folder', () => {
+    it('then it is found from the monorepo root, files of the folder being ignored', () => {
+      writeProjectFile('packages/README.md', '# packages')
+      writeProjectFile('packages/ui/node_modules/maz-ui/package.json', '{ "version": "5.2.0" }')
+
+      expect(findProjectPackage(rootDir, 'maz-ui')).toBe(join(rootDir, 'packages/ui/node_modules/maz-ui'))
+    })
+  })
+})
+
+describe('given readAgentDocs in a monorepo', () => {
+  describe('when maz-ui is installed in an app and its version was bumped after the docs generation', () => {
+    it('then the version of its package.json wins over the manifest', () => {
+      const packageDir = join(rootDir, 'apps/web/node_modules/maz-ui')
+
+      writeProjectFile('apps/web/node_modules/maz-ui/package.json', '{ "version": "5.2.0" }')
+      createDocs(join(packageDir, 'docs'), { version: '5.1.0' })
+
+      expect(readAgentDocs(rootDir).version).toBe('5.2.0')
     })
   })
 })
