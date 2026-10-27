@@ -1,5 +1,23 @@
 # Change Log
 
+## v5.0.1-beta.0 (2026-10-27)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0...v5.0.1-beta.0)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDrawer - keep the header visible on mobile when the content is taller than the screen ([a0a7a3bd7](https://github.com/LouisMazel/maz-ui/commit/a0a7a3bd7))
+
+  On mobile the side drawer is aligned to the bottom of the backdrop and had only a min-height (100vh), so a long content pushed the header and its close button above the top of the screen (and 100vh is taller than the visible area on iOS Safari). The panel is now bounded to the viewport and its body scrolls.
+
+### 🧪 Tests
+
+- **maz-ui:** MazDrawer - expect the canonical size-full class ([6bd77d44a](https://github.com/LouisMazel/maz-ui/commit/6bd77d44a))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0 (2026-10-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.3...v5.0.0)
