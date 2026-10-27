@@ -2,7 +2,7 @@ import type { Finding } from '../index'
 
 import { join } from 'node:path'
 import { cleanTempDirs, createTempDir, getKnowledge, writeFile } from '../../__tests__/helpers'
-import { detectFramework, expandPaths, MAX_REVIEWED_FILES, reviewFiles } from '../files'
+import { detectFramework, displayPath, expandPaths, MAX_REVIEWED_FILES, reviewFiles } from '../files'
 import { countBySeverity, detectKind, filterBySeverity, formatFindings, reviewCode } from '../index'
 
 function review(code: string, filename?: string): Finding[] {
@@ -100,6 +100,16 @@ describe('given ignore comments', () => {
       const code = '<template>\n  <!-- maz-ui-review-ignore theme-colors -->\n  <button class="bg-red-500">b</button>\n</template>'
 
       expect(review(code, 'A.vue').map(finding => finding.rule)).toEqual(['prefer-maz-component'])
+    })
+  })
+
+  describe('when a comment gives the reason after two dashes', () => {
+    it('then the reason is not read as rules', () => {
+      const withRule = '<template>\n  <!-- maz-ui-review-ignore theme-colors -- frame over the video -->\n  <button class="bg-red-500">b</button>\n</template>'
+      const withoutRule = '<template>\n  <!-- maz-ui-review-ignore -- frame over the video -->\n  <button class="bg-red-500">b</button>\n</template>'
+
+      expect(review(withRule, 'A.vue').map(finding => finding.rule)).toEqual(['prefer-maz-component'])
+      expect(review(withoutRule, 'A.vue')).toEqual([])
     })
   })
 
@@ -227,6 +237,21 @@ describe('given the file helpers', () => {
 
       expect(truncated).toBe(true)
       expect(reviews).toHaveLength(MAX_REVIEWED_FILES)
+    })
+  })
+})
+
+describe('given displayPath', () => {
+  describe('when the file is inside the working directory', () => {
+    it('then the path is relative', () => {
+      expect(displayPath('/project', '/project/src/A.vue')).toBe('src/A.vue')
+    })
+  })
+
+  describe('when the file is outside the working directory or is the directory itself', () => {
+    it('then the path is absolute', () => {
+      expect(displayPath('/project/apps/web', '/other/A.vue')).toBe('/other/A.vue')
+      expect(displayPath('/project', '/project')).toBe('/project')
     })
   })
 })

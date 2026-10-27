@@ -74,7 +74,8 @@ function ignoredRules(lines: string[]): { file: IgnoreScope | undefined, byLine:
   let file: IgnoreScope | undefined
 
   const parseRules = (rest: string): IgnoreScope => {
-    const rules = rest.replace(/-->|\*\/|\*\}|\}/g, '').split(/[\s,]+/).filter(rule => /^[a-z][a-z\d-]+$/.test(rule))
+    const [directive] = rest.replace(/-->|\*\/|\*\}|\}/g, '').split(/\s--\s/)
+    const rules = directive.split(/[\s,]+/).filter(rule => /^[a-z][a-z\d-]+$/.test(rule))
 
     return rules.length > 0 ? new Set(rules) : 'all'
   }

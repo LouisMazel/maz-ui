@@ -57,6 +57,13 @@ export async function expandPaths(patterns: string[], cwd: string): Promise<stri
   return [...files].filter(file => REVIEWABLE_EXTENSIONS.includes(file.split('.').pop() ?? '')).sort()
 }
 
+/** Path relative to the working directory, or absolute for a file outside of it */
+export function displayPath(cwd: string, file: string): string {
+  const path = relative(cwd, file)
+
+  return path && !path.startsWith('..') && !isAbsolute(path) ? path : file
+}
+
 export interface ReviewFilesOptions {
   knowledge: Knowledge
   cwd: string
@@ -70,7 +77,7 @@ export async function reviewFiles(patterns: string[], { knowledge, cwd, framewor
   return {
     truncated: files.length > MAX_REVIEWED_FILES,
     reviews: files.slice(0, MAX_REVIEWED_FILES).map(file => ({
-      file: relative(cwd, file) || file,
+      file: displayPath(cwd, file),
       findings: filterBySeverity(
         reviewCode(readFileSync(file, 'utf8'), { knowledge, filename: file, framework: framework ?? detectFramework(dirname(file)) }),
         minSeverity,

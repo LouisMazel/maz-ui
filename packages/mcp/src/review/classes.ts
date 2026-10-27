@@ -96,7 +96,7 @@ function reportBlackWhite(token: string, utility: string, color: string, backgro
     severity: 'warning',
     message: `\`${token}\` is a fixed color that does not follow the theme nor dark mode.`,
     suggestion: color === 'white'
-      ? `Use \`${utility}-surface\` (backgrounds) or the \`-foreground\` of the color behind (\`text-primary-foreground\`). Keep it over a fixed dark background (\`bg-overlay\`, image, video).`
+      ? `Use \`${utility}-surface\` (backgrounds) or the \`-foreground\` of the color behind (\`text-primary-foreground\`). Over media (image, video) or a fixed dark background, keep it with \`<!-- maz-ui-review-ignore theme-colors -- over the video -->\` above the element.`
       : `Use \`${utility}-foreground\` (text) or \`${utility}-contrast\`.`,
   }, position)
 }

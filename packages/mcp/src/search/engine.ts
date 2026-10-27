@@ -60,7 +60,7 @@ const META_DOCS = new Map<string, RegExp>([
   ['ecosystem/stylelint-config', /\b(?:stylelint|lint|linter|linting)\b/i],
   ['guide/migration-v5', /\b(?:migrat\w*|upgrad\w*|v4|v5|breaking)\b/i],
 ])
-const META_DOC_FACTOR = 0.3
+const META_DOC_FACTOR = 0.15
 
 /** Generic verbs and nouns that describe the context of a need more than the feature itself */
 const LOW_VALUE_TERMS = new Set(['add', 'show', 'display', 'delete', 'remove', 'update', 'set', 'open', 'close', 'user', 'users', 'page', 'item', 'data', 'value', 'list', 'text', 'click', 'between', 'before', 'after'].map(term => processTerm(term) ?? term))

@@ -114,7 +114,7 @@ export async function runReview(values: Record<string, unknown>, positionals: st
     if (findings.length === 0)
       return 0
 
-    console.error(`${formatFindings(findings, reviews[0].file)}\n\nFix these maz-ui issues (see the maz-ui MCP tools), or add a \`maz-ui-review-ignore <rule>\` comment above the line when it is intended.`)
+    console.error(`${formatFindings(findings, reviews[0].file)}\n\nFix these maz-ui issues (see the maz-ui MCP tools), or add a \`maz-ui-review-ignore <rule> -- <reason>\` comment above the line when it is intended.`)
     return 2
   }
 
