@@ -1,6 +1,7 @@
 import type { ServerContext } from '../context'
 
 import { z } from 'zod'
+import { readProjectTheme, renderProjectTheme } from '../project/theme'
 import { findSection, sectionContent, stripFrontmatter } from './markdown'
 import { defineTool, ToolInputError } from './types'
 
@@ -24,35 +25,40 @@ export type ThemeTopic = keyof typeof THEME_TOPICS
 
 export interface GetThemeTokensArgs {
   topics?: ThemeTopic[]
+  /** Include the theme of the project (preset, Tailwind `@theme` tokens, variants, utilities) */
+  project?: boolean
 }
 
-export function getThemeTokens(context: ServerContext, { topics }: GetThemeTokensArgs): string {
+export function getThemeTokens(context: ServerContext, { topics, project = true }: GetThemeTokensArgs): string {
   const reference = context.knowledge.docsById.get('reference/tailwind-tokens')
 
   if (!reference)
     throw new ToolInputError('This maz-ui version does not ship the Tailwind reference. Read `get_doc({ id: "guide/tailwind" })`.')
 
   const markdown = stripFrontmatter(context.knowledge.readDoc(reference.id))
-  const footer = '\n\nTo extend the theme (your own colors, fonts, animations, variants, container width): `get_doc({ id: "guide/tailwind" })`. Brand colors and radius belong to a preset: `get_doc({ id: "ecosystem/themes", sections: ["Creating Custom Themes"] })`.'
+  const projectTheme = project ? renderProjectTheme(readProjectTheme(context.cwd), context.knowledge.manifest.tailwind, topics) : undefined
+  const footer = '\n\nHow to extend the theme (project colors, fonts, animations, variants, utilities, container width) and how it combines with the preset: `get_doc({ id: "guide/tailwind" })`. Brand colors, fonts and radius belong to a preset: `get_doc({ id: "ecosystem/themes", sections: ["Creating Custom Themes"] })`.'
 
-  if (!topics?.length)
-    return `${markdown.trim()}${footer}`
+  const mazUiTheme = topics?.length
+    ? `# maz-ui ${context.knowledge.version} Tailwind theme\n\n${topics.map((topic) => {
+      const section = findSection(markdown, THEME_TOPICS[topic])
 
-  const parts = topics.map((topic) => {
-    const section = findSection(markdown, THEME_TOPICS[topic])
+      return section ? sectionContent(markdown, section) : ''
+    }).filter(Boolean).join('\n\n')}`
+    : markdown.trim()
 
-    return section ? sectionContent(markdown, section) : ''
-  })
-
-  return `# maz-ui ${context.knowledge.version} Tailwind theme\n\n${parts.filter(Boolean).join('\n\n')}${footer}`
+  return projectTheme
+    ? `${projectTheme}\n\n---\n\n${mazUiTheme}${footer}`
+    : `${mazUiTheme}${footer}`
 }
 
 export const getThemeTokensTool = defineTool({
   name: 'get_theme_tokens',
   title: 'maz-ui Tailwind theme tokens',
-  description: 'Every Tailwind CSS class and CSS variable of the maz-ui theme (installed version): theme colors (bg-primary, text-muted, border-divider, bg-surface... with -foreground and 50-950 scales), radius, shadows (shadow-elevation), spacing, breakpoints (mob-*, tab-*, lap-*), fonts, durations, z-index, custom utilities (flex-center, padded-container), dark variant and CSS variables. Use it before styling: never the default Tailwind palette, hard-coded colors or the internal `maz:` prefix.',
+  description: 'The Tailwind theme of the project: its own tokens, preset, variants and utilities (read from its Tailwind entry and `definePreset`), then every Tailwind CSS class and CSS variable of the maz-ui theme (installed version): theme colors (bg-primary, text-muted, border-divider, bg-surface... with -foreground and 50-950 scales), radius, shadows (shadow-elevation), spacing, breakpoints (mob-*, tab-*, lap-*), fonts, durations, z-index, custom utilities (flex-center, padded-container), dark variant and CSS variables. Use it before styling: never the default Tailwind palette, hard-coded colors or the internal `maz:` prefix.',
   inputSchema: {
     topics: z.array(z.enum(Object.keys(THEME_TOPICS) as [ThemeTopic, ...ThemeTopic[]])).optional().describe('Only these topics (default: everything)'),
+    project: z.boolean().optional().describe('Include the theme of the project: preset, `@theme` tokens, variants, utilities (default: true)'),
   },
   run: getThemeTokens,
 })

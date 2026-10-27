@@ -25,5 +25,7 @@ export default defineConfig({
   files: ['**/*.spec.ts', '**/*.test.ts'],
   rules: {
     'no-console': [process.env.NODE_ENV === 'production' ? 'error' : 'warn'],
+    // The tests create git repositories in temporary folders
+    'sonarjs/no-os-command-from-path': 'off',
   },
 })

@@ -1,7 +1,7 @@
 import type { ServerContext } from '../../context'
 import type { DocSearch } from '../../search/engine'
 
-import { cleanTempDirs, createTempDir, fakeDoc, fakeManifest, getContext, getKnowledge, writeFakeBundle } from '../../__tests__/helpers'
+import { cleanTempDirs, createContextFor, createTempDir, fakeDoc, fakeManifest, getContext, getKnowledge, writeFakeBundle, writeFile } from '../../__tests__/helpers'
 import { createContext } from '../../context'
 import { Knowledge } from '../../knowledge/load'
 import { findIcons } from '../find-icons'
@@ -271,6 +271,38 @@ describe('given get_theme_tokens', () => {
       expect(output).toContain('`mob-s:`')
       expect(output).toContain('`flex-center`')
       expect(output).not.toContain('## Colors')
+    })
+  })
+
+  describe('when the project extends the theme', () => {
+    function projectContext(): ServerContext {
+      const directory = createTempDir()
+
+      writeFile(directory, 'package.json', '{}')
+      writeFile(directory, 'src/main.css', '@import \'tailwindcss\';\n@import \'maz-ui/tailwindcss/theme.css\';\n@theme {\n  --animate-rise: rise 0.5s ease-out;\n}\n')
+
+      return createContextFor(directory)
+    }
+
+    it('then the project theme comes before the maz-ui theme', () => {
+      const output = getThemeTokens(projectContext(), {})
+
+      expect(output.indexOf('## Your project theme')).toBe(0)
+      expect(output.indexOf('| `animate-rise`')).toBeLessThan(output.indexOf('## Colors'))
+      cleanTempDirs()
+    })
+
+    it('then the project theme follows the topics', () => {
+      const output = getThemeTokens(projectContext(), { topics: ['typography'] })
+
+      expect(output).toContain('| `animate-rise`')
+      expect(output).toContain('Tailwind theme\n')
+      cleanTempDirs()
+    })
+
+    it('then it can be left out', () => {
+      expect(getThemeTokens(projectContext(), { project: false })).not.toContain('## Your project theme')
+      cleanTempDirs()
     })
   })
 

@@ -26,7 +26,7 @@ To use it without writing anything in your projects, register the server once fo
 | `search_docs`       | Find what maz-ui provides for a need in plain words ("confirm before delete", "phone input", "debounce search")                                                       |
 | `get_component_api` | Exact API of up to 10 components: props, accepted values, `v-model`, events, slots, exposed                                                                           |
 | `find_icons`        | Icons of `@maz-ui/icons` by meaning, with imports                                                                                                                     |
-| `get_theme_tokens`  | Every Tailwind class and CSS variable of the maz-ui theme                                                                                                             |
+| `get_theme_tokens`  | The theme of your project (preset, `@theme` tokens, variants, utilities) and every Tailwind class and CSS variable of the maz-ui theme                                |
 | `get_doc`           | Any documentation page, whole or by sections                                                                                                                          |
 | `list_docs`         | Catalog of everything maz-ui provides                                                                                                                                 |
 | `get_setup_guide`   | Install maz-ui in a Vue or Nuxt app, with or without Tailwind                                                                                                         |

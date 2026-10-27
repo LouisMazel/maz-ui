@@ -14,7 +14,7 @@ Workflow:
 1. search_docs("<the need in plain words>") BEFORE creating a component, composable, helper, icon or style ("confirm before delete", "phone input", "debounce search", "dark mode toggle").
 2. get_component_api(["MazBtn", ...]) BEFORE writing a template with Maz* components: use only documented props, values, events and slots.
 3. find_icons("<meaning>") for icons: never inline SVG nor another icon library.
-4. get_theme_tokens() BEFORE styling: theme colors only (bg-surface, text-foreground, text-muted, border-divider, bg-primary text-primary-foreground, bg-container...), radius, shadow-elevation, breakpoints mob-*/tab-*/lap-*.
+4. get_theme_tokens() BEFORE styling: it reads the project theme (preset, @theme tokens, variants, utilities) and lists the maz-ui classes. Theme colors only (bg-surface, text-foreground, text-muted, border-divider, bg-primary text-primary-foreground, bg-container...), radius, shadow-elevation, breakpoints mob-*/tab-*/lap-*.
 5. review_code({ paths: [...] }) on the files you changed, then fix every error and warning.
 Other tools: get_doc (pages and guides: guide/tailwind, ecosystem/themes, ecosystem/translations, ecosystem/nuxt, guide/vue, guide/migration-v5...), list_docs (catalog), get_setup_guide (install in Vue or Nuxt).
 
