@@ -7,12 +7,18 @@ on:
     paths:
       - .github/workflows/test-unit.yml
       - 'packages/**/*'
+      - 'tools/agent-docs/**'
+      - 'apps/docs/src/**'
+      - 'plugins/**'
       - '!packages/*/CHANGELOG.md'
       - '!packages/*/package.json'
   pull_request:
     paths:
       - .github/workflows/test-unit.yml
       - 'packages/**'
+      - 'tools/agent-docs/**'
+      - 'apps/docs/src/**'
+      - 'plugins/**'
       - pnpm-lock.yaml
 
 jobs:
