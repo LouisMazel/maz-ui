@@ -46,6 +46,7 @@ logger.success('Done')
 - [`execPromise`](./exec-promise) — Promise-based `child_process.exec` with structured logging.
 - [`logger` / `createLogger`](./logger) — consola-backed logger with semantic log levels and helpers (`box`, `divider`, `brand`, …).
 - [`printBanner`](./print-banner) — ASCII-art banner printer (figlet) with versioning, dividers and clearing.
+- [`setupAgents`](./setup-agents) - Configure the AI coding agents of a project for maz-ui (rules and MCP server), as `npx @maz-ui/mcp init` does.
 
 ## Requirements
 

@@ -296,7 +296,7 @@ You can provide a template to replace the default dropdown panel
   Customized dropdown panel
 
   <template #dropdown>
-    <div class="maz:grid maz:grid-cols-3 maz:gap-2">
+    <div class="grid grid-cols-3 gap-2">
       <MazBtn color="transparent"> Item </MazBtn>
       <MazBtn color="transparent"> Item </MazBtn>
       <MazBtn color="transparent"> Item </MazBtn>
@@ -356,7 +356,7 @@ You can provide a template to replace menuitem labels to add more elements in ea
   </template>
 
   <template #menuitem-label="{ item }">
-    <div class="maz:flex maz:items-center maz:gap-2">
+    <div class="flex items-center gap-2">
       <MazAvatar :src="item.additionnalData" />
       <span>
         {{ item.label }}
@@ -491,7 +491,7 @@ Add `tabindex="-1"` attribute to your element to avoid a double focus with Tab k
   ]"
 >
   <template #element="{ isOpen }">
-    <button class="maz:border maz:border-solid maz:border-divider-400 maz:p-2 maz:hover:bg-surface-400" tabindex="-1">
+    <button class="border border-solid border-divider-400 p-2 hover:bg-surface-400" tabindex="-1">
       HTMLButtonElement: isOpen {{ isOpen }}
     </button>
   </template>

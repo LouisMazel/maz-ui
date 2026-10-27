@@ -1,8 +1,11 @@
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
-  entries: ['src/mcp.ts'],
+  entries: ['src/index', 'src/cli'],
   declaration: true,
   clean: true,
   failOnWarn: true,
+  rollup: {
+    emitCJS: false,
+  },
 })

@@ -90,8 +90,8 @@ The entire Maz-UI setup is now code-split into the Dashboard chunk.
 
 | Prop | Type | Required | Description |
 |------|------|----------|-------------|
-| `theme` | `object` | Yes | Theme configuration. Must include `preset`. See [Theming](./themes.md) for details. |
-| `translations` | `object` | Yes | Translations configuration. Must include `locale` and `messages` with at least the current locale's messages. See [Translations](./translations.md) for details. |
+| `theme` | `object` | Yes | Theme configuration. Must include `preset`. See [Theming](../ecosystem/themes.md) for details. |
+| `translations` | `object` | Yes | Translations configuration. Must include `locale` and `messages` with at least the current locale's messages. See [Translations](../ecosystem/translations.md) for details. |
 
 ### theme
 
@@ -153,7 +153,7 @@ const translations = { locale: 'fr', messages: { fr } }
 
 - Your app uses Maz-UI components on most or all pages
 - You want a simple, one-time setup
-- You're using Nuxt (the [Nuxt module](./nuxt.md) handles everything automatically)
+- You're using Nuxt (the [Nuxt module](../ecosystem/nuxt.md) handles everything automatically)
 
 ### When to use the provider
 
@@ -220,7 +220,7 @@ const locale = ref('fr')
       messages: { fr },
     }"
   >
-    <div class="maz:bg-surface maz:text-foreground maz:p-4">
+    <div class="bg-surface text-foreground p-4">
       <h1>My Dashboard</h1>
       <MazBtn color="primary">Action</MazBtn>
       <MazInput placeholder="Search..." />

@@ -74,7 +74,7 @@ A vertical ticker with images, similar to a screenshot showcase. Uses `orientati
 
 ```vue
 <template>
-  <div class="maz:flex maz:gap-4 maz:overflow-hidden" style="height: 300px">
+  <div class="flex gap-4 overflow-hidden" style="height: 300px">
     <MazTicker
       orientation="vertical"
       :overlay="false"
@@ -86,7 +86,7 @@ A vertical ticker with images, similar to a screenshot showcase. Uses `orientati
         :key="i"
         :src="`https://picsum.photos/seed/maz-ticker-${i}/400/225`"
         :alt="`Screenshot ${i}`"
-        class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
+        class="rounded-lg border border-gray-200 object-cover dark:border-gray-700"
         style="width: 400px; height: 225px"
       />
     </MazTicker>
@@ -102,12 +102,12 @@ A vertical ticker with images, similar to a screenshot showcase. Uses `orientati
         :key="i"
         :src="`https://picsum.photos/seed/maz-ticker-${i + 4}/400/225`"
         :alt="`Screenshot ${i + 4}`"
-        class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
+        class="rounded-lg border border-gray-200 object-cover dark:border-gray-700"
         style="width: 400px; height: 225px"
       />
     </MazTicker>
     <MazTicker
-      class="maz:hidden maz:md:flex"
+      class="hidden md:flex"
       orientation="vertical"
       :overlay="false"
       :duration="30"
@@ -118,7 +118,7 @@ A vertical ticker with images, similar to a screenshot showcase. Uses `orientati
         :key="i"
         :src="`https://picsum.photos/seed/maz-ticker-${i + 8}/400/225`"
         :alt="`Screenshot ${i + 8}`"
-        class="maz:rounded-lg maz:border maz:border-gray-200 maz:object-cover maz:dark:border-gray-700"
+        class="rounded-lg border border-gray-200 object-cover dark:border-gray-700"
         style="width: 400px; height: 225px"
       />
     </MazTicker>
@@ -187,11 +187,11 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
 ```vue
 <template>
   <div
-    class="maz:overflow-hidden maz:rounded-lg maz:bg-gray-100 maz:dark:bg-gray-800"
+    class="overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800"
     style="height: 400px; perspective: 1500px"
   >
     <div
-      class="maz:flex maz:gap-4"
+      class="flex gap-4"
       style="height: 900px; margin-top: -300px; margin-left: -150px; transform: rotateX(55deg) rotateZ(30deg); transform-origin: center center"
     >
       <MazTicker
@@ -209,7 +209,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
           width="460"
           height="258"
           loading="lazy"
-          class="maz:rounded-lg maz:border maz:border-gray-200 maz:bg-white maz:object-cover maz:dark:border-gray-700"
+          class="rounded-lg border border-gray-200 bg-white object-cover dark:border-gray-700"
           style="width: 300px; height: 168px"
         />
       </MazTicker>
@@ -227,7 +227,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
           width="460"
           height="258"
           loading="lazy"
-          class="maz:rounded-lg maz:border maz:border-gray-200 maz:bg-white maz:object-cover maz:dark:border-gray-700"
+          class="rounded-lg border border-gray-200 bg-white object-cover dark:border-gray-700"
           style="width: 300px; height: 168px"
         />
       </MazTicker>
@@ -246,7 +246,7 @@ Create an eye-catching 3D perspective effect with tilted vertical tickers, inspi
           width="460"
           height="258"
           loading="lazy"
-          class="maz:rounded-lg maz:border maz:border-gray-200 maz:bg-white maz:object-cover maz:dark:border-gray-700"
+          class="rounded-lg border border-gray-200 bg-white object-cover dark:border-gray-700"
           style="width: 300px; height: 168px"
         />
       </MazTicker>
@@ -309,9 +309,9 @@ Otherwise, the ticker will scroll vertically.
 <template>
   <div style="height: 100px">
     <MazTicker orientation="vertical">
-      <div class="maz:py-2">Item 1</div>
-      <div class="maz:py-2">Item 2</div>
-      <div class="maz:py-2">Item 3</div>
+      <div class="py-2">Item 1</div>
+      <div class="py-2">Item 2</div>
+      <div class="py-2">Item 3</div>
     </MazTicker>
   </div>
 </template>
@@ -642,11 +642,11 @@ Replace the default before and after slots with custom content.
 <template>
   <MazTicker>
     <template #before>
-      <div class="maz:flex maz:items-center maz:px-4 maz:font-semibold">Latest:</div>
+      <div class="flex items-center px-4 font-semibold">Latest:</div>
     </template>
     <span>Breaking news item</span>
     <template #after>
-      <div class="maz:flex maz:items-center maz:px-4 maz:font-semibold">End</div>
+      <div class="flex items-center px-4 font-semibold">End</div>
     </template>
   </MazTicker>
 </template>

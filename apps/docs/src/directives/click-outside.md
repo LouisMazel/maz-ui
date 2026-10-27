@@ -42,7 +42,7 @@ function clikedOutside() {
 
 <template>
   <div
-    class="maz:flex maz:flex-center maz:rounded-md maz:p-12 maz:bg-surface-300"
+    class="flex flex-center rounded-md p-12 bg-surface-300"
   >
     <MazCard v-click-outside="clikedOutside">
       Click outside me
@@ -51,7 +51,7 @@ function clikedOutside() {
 
   <div
     v-if="hasClikedOutside"
-    class="maz:flex maz:flex-center maz:rounded-md maz:bg-sucess maz:text-success-foreground maz:p-4 maz:mt-4"
+    class="flex flex-center rounded-md bg-sucess text-success-foreground p-4 mt-4"
   >
     You clicked outside
   </div>

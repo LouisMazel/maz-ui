@@ -1,7 +1,11 @@
+import type { Nuxt } from '@nuxt/schema'
 import type { MazUiNuxtOptions } from './types'
 import { dirname } from 'node:path'
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
+import { detectAgentTargets, setupAgents } from '@maz-ui/node'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
+import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 import { addCustomTab } from '@nuxt/devtools-kit'
 import {
   addComponent,
@@ -9,6 +13,7 @@ import {
   addPlugin,
   createResolver,
   defineNuxtModule,
+  useLogger,
 } from '@nuxt/kit'
 import { defu } from 'defu'
 
@@ -29,7 +34,7 @@ declare module 'nuxt/schema' {
   }
 
   interface PublicRuntimeConfig {
-    mazUi: Required<MazUiNuxtOptions>
+    mazUi: Required<Omit<MazUiNuxtOptions, 'agents'>>
   }
 }
 
@@ -193,7 +198,46 @@ const defaults = {
     vFullscreenImg: false,
     vTooltip: false,
   },
+  agents: {
+    rules: false,
+    mcp: true,
+  },
 } satisfies Required<MazUiNuxtOptions>
+
+function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
+  if (!agents || !(nuxt.options.dev || nuxt.options._prepare) || process.env.CI || nuxt.options.test) {
+    return
+  }
+
+  const logger = useLogger('maz-ui')
+  const isExplicit = (nuxt.options as { mazUi?: MazUiNuxtOptions }).mazUi?.agents !== undefined
+
+  try {
+    const { rootDir } = nuxt.options
+    const { targets: requestedTargets, rules = true, mcp = true } = typeof agents === 'object' ? agents : {}
+    const targets = requestedTargets ?? detectAgentTargets(rootDir)
+
+    if (targets.length === 0 || (!rules && !mcp))
+      return
+
+    const { changes } = setupAgents({ rootDir, targets, rules, mcp })
+    const applied = changes.filter(change => ['create', 'update', 'remove'].includes(change.action))
+
+    if (applied.length > 0) {
+      const files = applied.map(change => [change.file, `(${change.action})`].join(' '))
+
+      logger.info(`AI agents configured for maz-ui: ${files.join(', ')}`)
+    }
+  }
+  catch (error) {
+    const message = `Could not configure the AI agents for maz-ui: ${getErrorMessage(error)}`
+
+    if (isExplicit)
+      logger.warn(message)
+    else
+      logger.debug(message)
+  }
+}
 
 function addMazUiComposableImport({
   name,
@@ -226,13 +270,17 @@ export default defineNuxtModule<MazUiNuxtOptions>({
 
     nuxt.options.build.transpile.push('maz-ui', '@maz-ui/themes', '@maz-ui/translations')
 
-    const moduleOptions = defu(
+    const { agents, ...moduleOptions } = defu(
       nuxt.options.runtimeConfig.public.mazUi,
       options,
       defaults,
     )
 
     nuxt.options.runtimeConfig.public.mazUi = moduleOptions
+
+    // AI agents
+
+    syncAgents(agents, nuxt)
 
     // CSS
 

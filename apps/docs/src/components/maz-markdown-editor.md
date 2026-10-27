@@ -344,7 +344,7 @@ The tab labels, the empty-preview text and the toolbar button labels come from t
   </template>
 </ComponentDemo>
 
-For app-wide translations, set up the [maz-ui translations plugin](/translations) and the component will pick up your locale automatically.
+For app-wide translations, set up the [maz-ui translations plugin](/ecosystem/translations) and the component will pick up your locale automatically.
 
 <script lang="ts" setup>
   import { ref } from 'vue'

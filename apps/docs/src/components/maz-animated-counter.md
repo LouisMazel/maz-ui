@@ -101,7 +101,7 @@ Be careful, you can't use both at the same time.
 <template #code>
 
 ```html
-<p class="maz:font-semibold">Prefixed</p>
+<p class="font-semibold">Prefixed</p>
 
 <MazAnimatedCounter :count="20" prefix="$" />
 
@@ -109,7 +109,7 @@ Be careful, you can't use both at the same time.
   <template #prefix>$</template>
 </MazAnimatedCounter>
 
-<p class="maz:font-semibold">Suffixed</p>
+<p class="font-semibold">Suffixed</p>
 
 <MazAnimatedCounter :count="100" suffix="%" />
 

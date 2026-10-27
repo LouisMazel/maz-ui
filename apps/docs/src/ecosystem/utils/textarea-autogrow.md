@@ -38,4 +38,4 @@ class TextareaAutogrow {
 
 - Listeners are attached on first focus — until then, the textarea is fully styled but the height isn't yet computed.
 - Resize updates are debounced by 200 ms.
-- For a Vue-idiomatic API, see the [`v-fullsize-textarea`](/directives/v-fullsize-textarea) directive.
+- In a Vue app, use [`MazTextarea`](/components/maz-textarea): it grows with its content.

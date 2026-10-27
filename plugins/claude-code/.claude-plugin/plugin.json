@@ -1,0 +1,12 @@
+{
+  "name": "maz-ui",
+  "description": "Build Vue and Nuxt apps with the maz-ui ecosystem instead of re-implementing it: maz-ui skill, MCP server (docs, component APIs, icons, Tailwind theme tokens, code review) and a hook that reviews every edited file",
+  "author": {
+    "name": "Louis Mazel",
+    "url": "https://github.com/LouisMazel"
+  },
+  "homepage": "https://maz-ui.com/guide/ai-agents",
+  "repository": "https://github.com/LouisMazel/maz-ui",
+  "license": "MIT",
+  "keywords": ["maz-ui", "vue", "nuxt", "tailwindcss", "ui", "components", "design-system"]
+}

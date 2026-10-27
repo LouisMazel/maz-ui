@@ -556,7 +556,7 @@ Replace the default flag emojis with your own design.
       </span>
     </template>
     <template #country-list-flag="{ countryCode }">
-      <MazBadge size="sm" class="maz:me-2">
+      <MazBadge size="sm" class="me-2">
         {{ countryCode }}
       </MazBadge>
     </template>
@@ -580,16 +580,16 @@ Replace the default flag emojis with your own design.
 <style scoped>
 @reference "../../.vitepress/theme/main.css";
 .country-badge {
-  @apply maz:bg-primary maz:text-primary-foreground maz:px-2 maz:py-1 maz:rounded-md maz:text-xs maz:font-semibold;
+  @apply bg-primary text-primary-foreground px-2 py-1 rounded-md text-xs font-semibold;
 }
 
 .custom-flag-icon,
 .custom-list-icon {
-  @apply maz:w-6 maz:h-6 maz:bg-linear-to-r maz:from-blue-500 maz:to-green-500 maz:rounded-full maz:flex maz:items-center maz:justify-center maz:text-white maz:text-xs maz:font-bold;
+  @apply w-6 h-6 bg-linear-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold;
 }
 
 .custom-list-icon {
-  @apply maz:me-2;
+  @apply me-2;
 }
 </style>
 ```

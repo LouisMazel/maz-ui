@@ -1,0 +1,17 @@
+{
+  "description": "Review the Vue, TypeScript and CSS files edited by Claude against the installed maz-ui",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/review.mjs\"",
+            "timeout": 90
+          }
+        ]
+      }
+    ]
+  }
+}

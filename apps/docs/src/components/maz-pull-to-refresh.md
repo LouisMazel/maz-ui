@@ -91,9 +91,9 @@ The pull can only start when its scroll container is at the top. By default, the
 
 ```vue
 <template>
-  <div class="app-shell maz:fixed maz:inset-0 maz:flex maz:flex-col">
+  <div class="app-shell fixed inset-0 flex flex-col">
     <header>…</header>
-    <main class="maz:flex-1 maz:overflow-y-auto">
+    <main class="flex-1 overflow-y-auto">
       <MazPullToRefresh :on-refresh="refresh">
         <slot />
       </MazPullToRefresh>
@@ -140,7 +140,7 @@ The three states have their own slot. Each one receives the pull `progress` (0 t
 
 ```vue
 <template>
-  <MazPullToRefresh :on-refresh="refresh" header-class="maz:bg-surface-600">
+  <MazPullToRefresh :on-refresh="refresh" header-class="bg-surface-600">
     <template #pull-before="{ progress }">
       <span>{{ Math.round(progress * 100) }}%</span>
     </template>

@@ -15,7 +15,9 @@
     "utilities",
     "maz-ui",
     "promise",
-    "logger"
+    "logger",
+    "ai",
+    "agents"
   ],
   "sideEffects": false,
   "publishConfig": {
@@ -53,7 +55,8 @@
   "dependencies": {
     "colorette": "^2.0.20",
     "consola": "^3.4.2",
-    "figlet": "^1.12.0"
+    "figlet": "^1.12.0",
+    "jsonc-parser": "^3.3.1"
   },
   "devDependencies": {
     "unbuild": "^3.6.1"

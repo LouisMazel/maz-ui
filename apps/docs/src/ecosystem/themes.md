@@ -80,9 +80,9 @@ const { toggleDarkMode, isDark, updateTheme } = useTheme()
 </script>
 
 <template>
-  <div class="maz:bg-surface maz:text-foreground">
+  <div class="bg-surface text-foreground">
     <button
-      class="maz:rounded-md maz:bg-primary maz:text-primary-foreground"
+      class="rounded-md bg-primary text-primary-foreground"
       @click="toggleDarkMode"
     >
       {{ isDark ? '☀️' : '🌙' }} Toggle theme
@@ -254,16 +254,16 @@ const { presetName, updateTheme, colorMode, setColorMode } = useTheme()
 
 <template>
   <div class="demo-theme-controls">
-    <div class="maz:space-y-4">
-      <div class="maz:grid maz:grid-cols-1 maz:md:grid-cols-2 maz:gap-4">
+    <div class="space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MazBtn color="primary">Primary Button</MazBtn>
         <MazBtn color="secondary">Secondary Button</MazBtn>
         <MazBtn color="success">Success Button</MazBtn>
         <MazBtn color="warning">Warning Button</MazBtn>
       </div>
-      <div class="theme-controls maz:space-y-4">
-        <div class="maz:flex maz:items-center maz:gap-4">
-          <label class="maz:text-sm maz:font-medium">Mode:</label>
+      <div class="theme-controls space-y-4">
+        <div class="flex items-center gap-4">
+          <label class="text-sm font-medium">Mode:</label>
           <MazBtn
             size="sm"
             :color="colorMode === 'light' ? 'primary' : 'secondary'"
@@ -286,9 +286,9 @@ const { presetName, updateTheme, colorMode, setColorMode } = useTheme()
             🔄 Auto
           </MazBtn>
         </div>
-        <div class="maz:space-y-2">
-          <label class="maz:text-sm maz:font-medium">Preset:</label>
-          <div class="maz:flex maz:gap-2">
+        <div class="space-y-2">
+          <label class="text-sm font-medium">Preset:</label>
+          <div class="flex gap-2">
             <MazBtn
               size="sm"
               :color="presetName === 'maz-ui' ? 'primary' : 'secondary'"
@@ -591,7 +591,7 @@ const surfaceTheme = definePreset({
 })
 ```
 
-Components consume these via `maz:bg-container` / `maz:bg-input` Tailwind utilities, so a single override propagates everywhere — no per-component class hunt.
+Components consume these via `bg-container` / `bg-input` Tailwind utilities, so a single override propagates everywhere - no per-component class hunt.
 
 ### Dialog sizing
 
@@ -914,7 +914,7 @@ Single-value design tokens. Set via `foundation.<key>` on the preset.
 | --- | --- | --- | --- |
 | `base-font-size` | `--maz-base-font-size` | `14px` | Anchors `rem` for the whole app. Apply on `html { font-size: var(--maz-base-font-size) }`. |
 | `border-width` | `--maz-border-width` | `1px` | Default border for components and the global `*::before/::after` reset. |
-| `space` | `--maz-space` | `0.25rem` | Base step for every Tailwind spacing utility (`maz:p-1`, `maz:gap-2`, …). |
+| `space` | `--maz-space` | `0.25rem` | Base step for every Tailwind spacing utility (`p-1`, `gap-2`, …). |
 | `font-family` | `--maz-font-family` | preset-specific | Sans / body font stack. Bridged to Tailwind `--font-sans`. |
 | `font-mono-stack` | `--maz-font-mono-stack` | `ui-monospace, …` | Monospace stack — `MazInputCode`, `<code>`, `<kbd>`. Bridged to `--font-mono`. |
 | `font-display-stack` | `--maz-font-display-stack` | same as `font-family` | Display / heading stack. Bridged to `--font-display`. |
@@ -964,8 +964,8 @@ Multi-step scales under `scales.<key>`.
 
 | Preset key | CSS variables | Tailwind utility |
 | --- | --- | --- |
-| `rounded.xs..3xl` | `--maz-rounded-xs..3xl` | `maz:rounded-{key}` (bridged to `--radius-{key}`) |
-| `shadow.{sm, md, lg, xl, elevation}` | `--maz-shadow-style-{key}` | `maz:shadow-{key}` (bridged to `--shadow-{key}`) |
+| `rounded.xs..3xl` | `--maz-rounded-xs..3xl` | `rounded-{key}` (bridged to `--radius-{key}`) |
+| `shadow.{sm, md, lg, xl, elevation}` | `--maz-shadow-style-{key}` | `shadow-{key}` (bridged to `--shadow-{key}`) |
 
 > Same naming-collision avoidance as foundation: `rounded.*` (instead of `radius.*`) and `shadow-style-*` (instead of plain `shadow-*`) keep the bridge cycle-free under `prefix(maz)`.
 

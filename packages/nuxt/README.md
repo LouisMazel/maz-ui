@@ -209,6 +209,11 @@ export default defineNuxtConfig({
       vFullscreenImg: true,
       vZoomImg: true,
     },
+
+    // AI coding agents (default: { rules: false, mcp: true }, false to disable)
+    // In development, registers the maz-ui MCP server in the configs of the detected agents
+    // (.mcp.json, .cursor/mcp.json, .vscode/mcp.json), rules: true also writes .claude/rules/maz-ui.md and an AGENTS.md section
+    agents: { rules: false, mcp: true },
   },
 })
 ```

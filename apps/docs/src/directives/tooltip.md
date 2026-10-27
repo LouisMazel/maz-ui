@@ -267,7 +267,7 @@ You can customize the tooltip by passing a `panelClass` or `panelStyle` option.
 <template #code>
 
 ```html
-<MazBtn v-tooltip="{ text: 'Custom panel class', panelClass: 'maz:text-red-500!' }">
+<MazBtn v-tooltip="{ text: 'Custom panel class', panelClass: 'text-red-500!' }">
   panelClass
 </MazBtn>
 <MazBtn v-tooltip="{ text: 'Custom panel style', panelStyle: 'background-color: red; color: white;' }">

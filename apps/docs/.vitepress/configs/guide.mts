@@ -18,7 +18,9 @@ export const guide = {
       { text: 'Icon Set - 860+ icons', link: '/ecosystem/icons/icon-set' },
     ] },
     { text: 'Migration v4 to v5', link: '/guide/migration-v5' },
-    { text: 'Model Context Protocol (MCP)', link: '/ecosystem/mcp' },
+    { text: withNewBadge('AI agents'), link: '/guide/ai-agents', collapsed: true, items: [
+      { text: 'MCP server', link: '/ecosystem/mcp' },
+    ] },
     { text: 'Browser Support', link: '/guide/browser-support' },
   ],
 } satisfies DefaultTheme.SidebarItem

@@ -217,7 +217,7 @@ The copy button's aria-label and tooltip come from the `@maz-ui/translations` pa
   </template>
 </ComponentDemo>
 
-For app-wide translations, set up the [maz-ui translations plugin](/translations) and the component will pick up your locale automatically.
+For app-wide translations, set up the [maz-ui translations plugin](/ecosystem/translations) and the component will pick up your locale automatically.
 
 <script lang="ts" setup>
   const vueExample = `<script lang="ts" setup>

@@ -454,7 +454,7 @@ Check out how [MazIcon](./maz-icon.md) works, see all available icons and downlo
 
 :::
 
-### Use [@maz-ui/icons](./../ecosystem/icons/.md)
+### Use [@maz-ui/icons](./../ecosystem/icons/index.md)
 
 ::: details View code
 
