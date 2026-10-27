@@ -1,0 +1,35 @@
+{
+  "name": "agent-docs",
+  "type": "module",
+  "version": "5.0.0",
+  "private": true,
+  "description": "Builds the AI-agent knowledge bundle of the maz-ui ecosystem (docs, component APIs, icons, Tailwind tokens, agent rules)",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "generate": "tsx src/cli.ts",
+    "lint": "cross-env NODE_ENV=production eslint .",
+    "lint:fix": "pnpm lint --fix",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest watch",
+    "test:unit:coverage": "vitest run --coverage",
+    "generate:plugin": "tsx src/cli.ts --skill ../../plugins/claude-code",
+    "check:plugin": "tsx src/cli.ts --skill ../../plugins/claude-code --check"
+  },
+  "dependencies": {
+    "@maz-ui/node": "workspace:*",
+    "typescript": "^6.0.3",
+    "vue-component-meta": "3.3.13",
+    "vue-docgen-api": "^4.79.2",
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "@maz-ui/eslint-config": "workspace:*",
+    "tsx": "^4.23.15"
+  },
+  "lint-staged": {
+    "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
+  }
+}
