@@ -6,7 +6,7 @@ import type { AgentDocsManifest, ComponentApi, DocEntry, OutputFile, TailwindMan
 
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join, posix, resolve } from 'node:path'
-import { DOC_ALIASES, ECOSYSTEM_SYMBOLS, RELATED_DOCS } from './aliases'
+import { COMPONENT_DESCRIPTIONS, DOC_ALIASES, ECOSYSTEM_SYMBOLS, RELATED_DOCS } from './aliases'
 import { cleanMarkdown, extractHeadings, normalizeDashes, stripLeadingTitle } from './markdown/clean'
 import { stringifyFrontmatter } from './markdown/frontmatter'
 import { getSourcePaths } from './paths'
@@ -291,7 +291,7 @@ function componentOnlyDraft(context: GenerationContext, api: ComponentApi): Page
     category: 'component',
     slug: pascalToKebab(api.name),
     title: api.name,
-    description: api.description ?? (parentApi ? `${api.name} is a building block of ${parentApi.name}.` : `${api.name} component.`),
+    description: api.description ?? COMPONENT_DESCRIPTIONS[api.name] ?? (parentApi ? `${api.name} is a building block of ${parentApi.name}.` : `${api.name} component.`),
     package: 'maz-ui',
     file: `${api.docId}.md`,
     symbols: [api.name],
@@ -327,11 +327,11 @@ function referenceEntry(id: string, title: string, description: string, packageN
   }
 }
 
-function referenceDrafts(context: GenerationContext, tailwind: TailwindManifest, iconNames: string[]): PageDraft[] {
+function referenceDrafts(tailwind: TailwindManifest, iconNames: string[]): PageDraft[] {
   return [
     {
       entry: referenceEntry('reference/tailwind-tokens', 'Tailwind CSS theme reference', 'Every Tailwind class, variant and CSS variable of the maz-ui theme: colors, radius, shadows, spacing, breakpoints, typography, z-index, custom utilities.', 'maz-ui'),
-      content: renderTailwindReference(tailwind, context.version),
+      content: renderTailwindReference(tailwind),
     },
     {
       entry: referenceEntry('reference/icons', 'Icons reference', `The ${iconNames.length} icon names of @maz-ui/icons (interface icons, logos, country flags) and how to import them.`, '@maz-ui/icons', [`import { MazTrash } from '@maz-ui/icons/static/MazTrash'`]),
@@ -368,10 +368,26 @@ function finalizeDrafts(context: GenerationContext, drafts: PageDraft[]): PageDr
     .sort((a, b) => CATEGORY_ORDER.indexOf(a.entry.category) - CATEGORY_ORDER.indexOf(b.entry.category) || a.entry.id.localeCompare(b.entry.id))
 }
 
+/** Descriptions are what agents read first in search results: they must say what the feature does */
+const MIN_DESCRIPTION_LENGTH = 30
+const VAGUE_DESCRIPTION = /is a (?:standalone )?component\.?$|^\w+ component\.$|is a building block of \w+\.$/i
+
+export function descriptionProblems(entry: DocEntry): string[] {
+  const problems: string[] = []
+
+  if (entry.description.length < MIN_DESCRIPTION_LENGTH || VAGUE_DESCRIPTION.test(entry.description))
+    problems.push(`${entry.id}: vague description "${entry.description}"`)
+
+  if (['composable', 'directive'].includes(entry.category) && entry.symbols[0] && !entry.symbols.includes(entry.title))
+    problems.push(`${entry.id}: the title "${entry.title}" is not the documented symbol (${entry.symbols[0]})`)
+
+  return problems
+}
+
 function validate(context: GenerationContext, drafts: PageDraft[]): void {
-  for (const api of context.components) {
-    if (!drafts.some(draft => draft.entry.id === api.docId))
-      context.warnings.push(`component ${api.name} has no documentation page`)
+  for (const { entry } of drafts) {
+    if (entry.category !== 'guide' && entry.category !== 'reference')
+      context.warnings.push(...descriptionProblems(entry))
   }
 
   for (const id of [...Object.keys(DOC_ALIASES), ...Object.keys(ECOSYSTEM_SYMBOLS), ...RELATED_DOCS.flat()]) {
@@ -398,7 +414,7 @@ export async function generateKnowledge(paths: SourcePaths = getSourcePaths()): 
   const componentDrafts = components
     .filter(api => !pageDrafts.some(draft => draft.entry.id === api.docId))
     .map(api => componentOnlyDraft(context, api))
-  const all = finalizeDrafts(context, [...pageDrafts, ...componentDrafts, ...referenceDrafts(context, tailwind, iconNames)])
+  const all = finalizeDrafts(context, [...pageDrafts, ...componentDrafts, ...referenceDrafts(tailwind, iconNames)])
 
   validate(context, all)
 
@@ -416,20 +432,20 @@ export async function generateKnowledge(paths: SourcePaths = getSourcePaths()): 
     icons: { package: '@maz-ui/icons', names: iconNames },
     tailwind,
   }
-  const rulesDoc = renderRulesDoc(agentContent, version)
+  const rulesDoc = renderRulesDoc(agentContent)
 
   return {
     manifest,
     bundle: [
       ...all.map(item => ({ path: item.entry.file, content: item.content })),
-      { path: 'README.md', content: renderBundleIndex(docs, version) },
+      { path: 'README.md', content: renderBundleIndex(docs) },
       { path: 'rules.md', content: rulesDoc },
-      { path: 'agents/claude-rule.md', content: renderClaudeRule(agentContent, version) },
-      { path: 'agents/agents-md.md', content: renderAgentsMdSection(agentContent, version) },
+      { path: 'agents/claude-rule.md', content: renderClaudeRule(agentContent) },
+      { path: 'agents/agents-md.md', content: renderAgentsMdSection(agentContent) },
       { path: 'manifest.json', content: `${JSON.stringify(manifest)}\n` },
     ],
     site: [
-      { path: 'llms.txt', content: renderLlmsTxt(docs, version, HOMEPAGE) },
+      { path: 'llms.txt', content: renderLlmsTxt(docs, HOMEPAGE) },
       { path: 'llms-full.txt', content: renderLlmsFullTxt(all.map(item => ({ doc: item.entry, content: item.content })), rulesDoc, HOMEPAGE) },
     ],
     skill: [{ path: 'skills/maz-ui/SKILL.md', content: renderSkill(agentContent) }],

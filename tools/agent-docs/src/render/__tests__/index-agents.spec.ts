@@ -41,10 +41,10 @@ describe('given CATEGORY_ORDER', () => {
 
 describe('given renderBundleIndex', () => {
   describe('when rendering the bundle README', () => {
-    const markdown = renderBundleIndex(docs, '5.1.0')
+    const markdown = renderBundleIndex(docs)
 
     it('then links the rules and every doc with relative paths in section order', () => {
-      expect(markdown).toContain('# maz-ui 5.1.0 documentation for AI agents')
+      expect(markdown).toContain('# maz-ui documentation for AI agents')
       expect(markdown).toContain('[rules.md](rules.md)')
       expect(markdown).toContain('- [MazBtn](components/maz-btn.md): A button')
       expect(markdown.indexOf('## Guides')).toBeLessThan(markdown.indexOf('## Components (maz-ui)'))
@@ -61,12 +61,12 @@ describe('given renderBundleIndex', () => {
 describe('given renderLlmsTxt', () => {
   describe('when rendering the site index', () => {
     it('then uses absolute markdown urls', () => {
-      const markdown = renderLlmsTxt(docs, '5.1.0', 'https://maz-ui.com')
+      const markdown = renderLlmsTxt(docs, 'https://maz-ui.com')
 
       expect(markdown.startsWith('# maz-ui\n')).toBe(true)
       expect(markdown).toContain('- [MazBtn](https://maz-ui.com/components/maz-btn.md): A button')
       expect(markdown).toContain('(https://maz-ui.com/rules.md)')
-      expect(markdown).toContain('Documentation of maz-ui 5.1.0')
+      expect(markdown).toContain('Documentation of the latest maz-ui release')
     })
   })
 })
@@ -83,22 +83,22 @@ describe('given renderLlmsFullTxt', () => {
 
 describe('given the agent content renderers', () => {
   const content = { rules: 'Use **maz-ui**.', workflow: '### Workflow\n\n1. Search' }
-  const versionLine = '> maz-ui 5.1.0 is installed: these rules and the docs in `node_modules/maz-ui/docs` match this version.'
+  const versionNote = '> These rules and the docs in `node_modules/maz-ui/docs` match the installed version of maz-ui (`node_modules/maz-ui/package.json`).'
 
   describe('when rendering the rules doc', () => {
-    it('then adds a frontmatter, a title and the version line', () => {
-      const markdown = renderRulesDoc(content, '5.1.0')
+    it('then adds a frontmatter, a title and the version note without version number', () => {
+      const markdown = renderRulesDoc(content)
       const { frontmatter, body } = parseFrontmatter(markdown)
 
       expect(frontmatter.title).toBe('maz-ui rules for AI agents')
-      expect(body).toBe(`\n# maz-ui rules for AI agents\n\n${versionLine}\n\nUse **maz-ui**.\n`)
+      expect(body).toBe(`\n# maz-ui rules for AI agents\n\n${versionNote}\n\nUse **maz-ui**.\n`)
     })
   })
 
   describe('when rendering the Claude rule and the AGENTS.md section', () => {
-    it('then adds the title and the version line', () => {
-      expect(renderClaudeRule(content, '5.1.0')).toBe(`# maz-ui\n\n${versionLine}\n\nUse **maz-ui**.\n`)
-      expect(renderAgentsMdSection(content, '5.1.0')).toBe(`## maz-ui\n\n${versionLine}\n\nUse **maz-ui**.\n`)
+    it('then adds the title without version, setupAgents adds the installed one', () => {
+      expect(renderClaudeRule(content)).toBe('# maz-ui\n\nUse **maz-ui**.\n')
+      expect(renderAgentsMdSection(content)).toBe('## maz-ui\n\nUse **maz-ui**.\n')
     })
   })
 

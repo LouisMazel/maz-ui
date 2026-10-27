@@ -35,8 +35,8 @@ function renderSections(docs: DocEntry[], href: (doc: DocEntry) => string): stri
 const SUMMARY = 'Vue 3 and Nuxt UI library: components, composables, directives and plugins, with an ecosystem of packages for theming (@maz-ui/themes), icons (@maz-ui/icons), helpers (@maz-ui/utils), translations (@maz-ui/translations), Nuxt (@maz-ui/nuxt) and AI agents (@maz-ui/mcp). Styling is powered by Tailwind CSS v4 theme tokens.'
 
 /** `README.md` of the bundle (`node_modules/maz-ui/docs/README.md`) */
-export function renderBundleIndex(docs: DocEntry[], version: string): string {
-  return `# maz-ui ${version} documentation for AI agents
+export function renderBundleIndex(docs: DocEntry[]): string {
+  return `# maz-ui documentation for AI agents
 
 > ${SUMMARY}
 
@@ -50,12 +50,12 @@ ${renderSections(docs, doc => doc.file)}
 }
 
 /** `llms.txt` of maz-ui.com */
-export function renderLlmsTxt(docs: DocEntry[], version: string, homepage: string): string {
+export function renderLlmsTxt(docs: DocEntry[], homepage: string): string {
   return `# maz-ui
 
 > ${SUMMARY}
 
-Documentation of maz-ui ${version}. Each link points to the markdown version of a page. The same files ship in the npm package (\`node_modules/maz-ui/docs/\`), matching the installed version, and through the MCP server \`npx @maz-ui/mcp\`.
+Documentation of the latest maz-ui release. Each link points to the markdown version of a page. The same files ship in the npm package (\`node_modules/maz-ui/docs/\`), matching the installed version, and through the MCP server \`npx @maz-ui/mcp\`.
 
 - [Rules for AI agents](${homepage}/rules.md): how to use maz-ui and its ecosystem instead of re-implementing it.
 

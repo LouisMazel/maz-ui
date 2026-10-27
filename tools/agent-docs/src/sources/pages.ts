@@ -79,6 +79,15 @@ export function classifyPage(sourcePath: string): { category: DocCategory, packa
   return undefined
 }
 
+function parseSourceFile(file: string, sourcePath: string): ReturnType<typeof parseFrontmatter> {
+  try {
+    return parseFrontmatter(readFileSync(file, 'utf8'))
+  }
+  catch (error) {
+    throw new Error(`Invalid frontmatter in ${sourcePath}: ${(error as Error).message}`, { cause: error })
+  }
+}
+
 export function collectSourcePages(docsSrc: string): SourcePage[] {
   return walk(docsSrc)
     .filter(file => file.endsWith('.md'))
@@ -90,7 +99,7 @@ export function collectSourcePages(docsSrc: string): SourcePage[] {
       if (!classification)
         return []
 
-      const { frontmatter, body } = parseFrontmatter(readFileSync(file, 'utf8'))
+      const { frontmatter, body } = parseSourceFile(file, sourcePath)
       const id = sourcePathToId(sourcePath)
 
       return [{

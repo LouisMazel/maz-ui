@@ -1,6 +1,6 @@
 import type { ComponentMeta, EventMeta, PropertyMeta, SlotMeta } from 'vue-component-meta'
 
-import { cleanType, propValues, slotBindings, toComponentApi, toEventApi, toPropApi, toSlotApi, unionMembers } from '../components'
+import { attributeProps, cleanType, dynamicSlots, propValues, slotBindings, toComponentApi, toEventApi, toPropApi, toSlotApi, unionMembers } from '../components'
 
 function prop(overrides: Partial<PropertyMeta> = {}): PropertyMeta {
   return {
@@ -254,10 +254,72 @@ describe('given toComponentApi', () => {
       expect(api.name).toBe('MazInputPhoneNumber')
       expect(api.docId).toBe('components/maz-input-phone-number')
       expect(api.import).toBe('import MazInputPhoneNumber from \'maz-ui/components/MazInputPhoneNumber\'')
-      expect(api.props.map(entry => [entry.name, entry.model])).toEqual([['modelValue', 'modelValue'], ['isOpen', 'isOpen']])
+      expect(api.props.map(entry => [entry.name, entry.model])).toEqual([['modelValue', 'modelValue'], ['isOpen', 'isOpen'], ['unknown', 'unknown']])
       expect(api.events.map(entry => entry.name)).toEqual(['update:model-value', 'update:is-open', 'update:unknown'])
       expect(api.slots).toEqual([{ name: 'default', bindings: [] }])
       expect(api.expose).toEqual([{ name: 'focus', description: 'Focus the input' }, { name: 'blur' }])
+    })
+  })
+})
+
+describe('given a component that emits a model without declaring its prop', () => {
+  describe('when its API is built', () => {
+    it('then the model is documented from the event, forwarded to the inner component', () => {
+      const meta = {
+        props: [],
+        events: [
+          event({ name: 'update:model-value', type: '[value: boolean]' }),
+          event({ name: 'update:open-state', type: '[]' }),
+        ],
+        slots: [],
+        exposed: [],
+      } as unknown as ComponentMeta
+
+      expect(toComponentApi(meta, 'MazDrawer').props).toEqual([
+        { name: 'modelValue', type: 'boolean', description: 'Value of `v-model`, forwarded to the inner component', required: false, strictValues: false, model: 'modelValue' },
+        { name: 'openState', type: 'unknown', description: 'Value of `v-model:open-state`, forwarded to the inner component', required: false, strictValues: false, model: 'openState' },
+      ])
+    })
+  })
+})
+
+describe('given dynamicSlots', () => {
+  describe('when a template has slots with a computed name', () => {
+    const source = `<slot name="cell" :row="row" /><slot :name="\`cell-\${key}\`" :row="row" /><slot :name="\`title-\${step.id}-label\`" />`
+
+    it('then each one gets a pattern name and the bindings of its base slot', () => {
+      expect(dynamicSlots(source, [{ name: 'cell', description: 'Replace the cells', bindings: [{ name: 'row', type: 'T' }] }])).toEqual([
+        { name: 'cell-{key}', description: 'One slot per `key`: `#cell-<key>`. Replace the cells', bindings: [{ name: 'row', type: 'T' }] },
+        { name: 'title-{id}-label', description: 'One slot per `id`: `#title-<id>-label`.', bindings: [] },
+      ])
+    })
+  })
+
+  describe('when a computed name has no identifier', () => {
+    it('then the variable is called name', () => {
+      expect(dynamicSlots(`<slot :name="\`item-\${0}\`" />`, [])[0].name).toBe('item-{name}')
+    })
+  })
+})
+
+describe('given attributeProps', () => {
+  describe('when the component reads attributes with useAttrs', () => {
+    it('then they are documented like props, except the declared ones', () => {
+      const props = attributeProps('const { href, to, target: linkTarget, size } = useAttrs()', [{ name: 'size', type: 'string', required: false, strictValues: false }])
+
+      expect(props.map(prop => [prop.name, prop.type])).toEqual([['href', 'string'], ['to', 'RouteLocationRaw'], ['target', 'string']])
+      expect(props[1].description).toContain('`RouterLink`')
+      expect(props[2].description).toBe('HTML attribute handled by the component')
+    })
+
+    it('then an unknown attribute has an unknown type', () => {
+      expect(attributeProps('const { foo } = useAttrs()', [])[0].type).toBe('unknown')
+    })
+  })
+
+  describe('when the component does not read attributes', () => {
+    it('then there is nothing to document', () => {
+      expect(attributeProps('const attrs = useAttrs()', [])).toEqual([])
     })
   })
 })

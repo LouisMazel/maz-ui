@@ -4,7 +4,7 @@ This project is built with **maz-ui** and its ecosystem (`@maz-ui/themes`, `@maz
 
 Before creating a component, composable, helper, icon or style, check what maz-ui offers:
 
-- **MCP server `maz-ui`** (when available): `search_docs` (describe the need: "confirm before delete", "phone input"), `get_component_api` (exact props, events, slots), `find_icons`, `get_theme_tokens` (Tailwind classes), `get_doc`, `review_code`.
+- **MCP server `maz-ui`** (when available): `search_docs` (describe the need: "confirm before delete", "phone input"), `get_component_api` (exact props, events, slots), `find_icons`, `get_theme_tokens` (Tailwind classes of the project and of maz-ui), `get_doc`, `review_code`.
 - **Version-matched docs** in `node_modules/maz-ui/docs/` (start with `README.md`; in a monorepo, resolve `maz-ui` from the app package). Read the relevant page before using an API.
 
 Never guess an API: only use props, events, slots and imports that are documented.
@@ -26,7 +26,9 @@ Use `@maz-ui/utils` and maz-ui composables instead of lodash, VueUse or hand-wri
 
 ### Styling with Tailwind
 
-The maz-ui theme is exposed to Tailwind (`@import 'maz-ui/tailwindcss/theme.css'`). Only use its tokens:
+The maz-ui theme is exposed to Tailwind (`@import 'maz-ui/tailwindcss/theme.css'`) and the project usually extends it. Only use theme tokens:
+
+- **Project tokens first**: the Tailwind entry of the project (the CSS file that imports `maz-ui/tailwindcss/theme.css`) adds its own `@theme` tokens (fonts, animations, colors...), `@custom-variant` and `@utility`, and the `definePreset` file sets the brand values of the maz-ui tokens. `get_theme_tokens` lists both; without the MCP server, read these files. When a value is missing, add a token to the project `@theme` and use its class instead of an arbitrary value.
 
 - Colors: `primary`, `secondary`, `accent`, `info`, `success`, `warning`, `destructive`, `contrast` (each with `-foreground` and `-50` to `-950`), `surface`, `foreground`, `muted`, `divider`, `overlay`, plus `bg-container` and `bg-input`. Example: `bg-surface text-foreground border-divider`, `bg-primary text-primary-foreground`, `text-muted`.
 - Never use the default Tailwind palette (`bg-blue-500`, `text-gray-600`, `bg-white`, `text-black`) nor hard-coded colors (`#fff`, `rgb()`, `bg-[#...]`). Theme colors already adapt to dark mode: do not add `dark:` color overrides.

@@ -22,13 +22,13 @@ function table(headers: string[], rows: string[][]): string {
   ].join('\n')
 }
 
-export function renderTailwindReference(tokens: TailwindManifest, version: string): string {
+export function renderTailwindReference(tokens: TailwindManifest): string {
   const colors = tokens.colors.filter(color => color.name !== 'elevation')
   const scaleRange = (scale: string[]): string => (scale.length > 0 ? `\`-${scale[0]}\` to \`-${scale.at(-1)}\`` : '-')
 
   return `# Tailwind CSS theme reference
 
-> Every Tailwind utility, variant and CSS variable provided by the maz-ui ${version} theme. Generated from the \`maz-ui/tailwindcss/*.css\` sources: it is always in sync with the installed version.
+> Every Tailwind utility, variant and CSS variable provided by the maz-ui theme. Generated from the \`maz-ui/tailwindcss/*.css\` sources: it is always in sync with the installed version.
 
 ## Setup
 

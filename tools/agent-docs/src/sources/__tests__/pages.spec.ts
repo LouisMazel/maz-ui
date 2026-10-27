@@ -1,3 +1,6 @@
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { getSourcePaths } from '../../paths'
 import { classifyPage, collectSourcePages, sourcePathToId } from '../pages'
 
@@ -56,6 +59,20 @@ describe('given collectSourcePages', () => {
 
       for (const excluded of ['index', 'changelog', 'components', 'guide/cli', 'guide/migration-v4', 'blog/v5'])
         expect(ids.has(excluded)).toBe(false)
+    })
+  })
+})
+
+describe('given a page with an invalid frontmatter', () => {
+  describe('when the pages are collected', () => {
+    it('then the error names the file', () => {
+      const docsSrc = mkdtempSync(join(tmpdir(), 'agent-docs-pages-'))
+
+      mkdirSync(join(docsSrc, 'components'))
+      writeFileSync(join(docsSrc, 'components/maz-btn.md'), '---\ntitle: MazBtn\ndescription: @maz-ui: the button\n---\n')
+
+      expect(() => collectSourcePages(docsSrc)).toThrow('Invalid frontmatter in components/maz-btn.md')
+      rmSync(docsSrc, { recursive: true, force: true })
     })
   })
 })

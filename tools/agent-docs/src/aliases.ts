@@ -229,3 +229,25 @@ export const ECOSYSTEM_SYMBOLS: Record<string, { symbols: string[], imports: str
     imports: [`import { defineConfig } from '@maz-ui/stylelint-config'`],
   },
 }
+
+/** Descriptions of the components that have no page of their own on maz-ui.com */
+export const COMPONENT_DESCRIPTIONS: Record<string, string> = {
+  MazSidebarHeader: 'Top area of MazSidebar, for the logo, the name of the app or a workspace switcher.',
+  MazSidebarContent: 'Scrollable main area of MazSidebar that holds the groups and the menus.',
+  MazSidebarFooter: 'Bottom area of MazSidebar, for the user menu or secondary actions.',
+  MazSidebarGroup: 'Titled and optionally collapsible section of MazSidebar that groups menus.',
+  MazSidebarMenu: 'List of navigation items of MazSidebar.',
+  MazSidebarMenuItem: 'Item of a MazSidebarMenu: wraps a MazSidebarMenuButton and its optional MazSidebarMenuSub.',
+  MazSidebarMenuButton: 'Navigation button or link of a MazSidebar menu item, with icon, label, badge, and a tooltip when the sidebar is collapsed.',
+  MazSidebarMenuSub: 'Nested submenu of a MazSidebar menu item.',
+  MazSidebarSeparator: 'Divider between the sections of MazSidebar.',
+  MazSidebarTrigger: 'Button that opens, closes or collapses MazSidebar.',
+  MazTableRow: 'Row of MazTable, when you write the rows by hand in its default slot.',
+  MazTableCell: 'Cell of a MazTableRow, with the size and padding of MazTable.',
+  MazTableTitle: 'Header cell of MazTable, when you write the header by hand.',
+  MazTableVirtualizer: 'Renderless provider loaded on demand by MazTable to virtualize long lists of rows.',
+  MazTabsBar: 'Bar of tab buttons of MazTabs.',
+  MazTabsContent: 'Container of the tab panels of MazTabs.',
+  MazTabsContentItem: 'Panel of MazTabs displayed when its tab is active.',
+  MazUiProvider: 'Component alternative to the MazUi plugin: provides the theme, the translations and the default props of maz-ui to its subtree (lazy loaded pages, scoped themes).',
+}

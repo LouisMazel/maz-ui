@@ -35,6 +35,8 @@ describe('given a documentation folder with mistakes', () => {
     ].join('\n'))
     page(docsSrc, 'components/maz-not-a-component.md', '---\ntitle: MazNotAComponent\ndescription: Nothing\n---\n\n# Title\n')
     page(docsSrc, 'random/unclassified.md', '# Not part of the bundle\n')
+    page(docsSrc, 'ecosystem/utils/no-frontmatter.md', '# Helper\n\nSome text.\n')
+    page(docsSrc, 'composables/use-thing.md', '---\ntitle: useWrongName\ndescription: Composable that returns the reactive state of the thing.\n---\n\n# useWrongName\n\n```ts\nimport { useThing } from \'maz-ui/composables/useThing\'\n```\n')
 
     knowledge = await generateKnowledge({ ...getSourcePaths(), docsSrc })
   }, 120_000)
@@ -70,6 +72,19 @@ describe('given a documentation folder with mistakes', () => {
 
     it('then unclassified pages are left out of the bundle', () => {
       expect(knowledge.manifest.docs.some(doc => doc.id.startsWith('random/'))).toBe(false)
+    })
+
+    it('then a vague description is reported', () => {
+      expect(knowledge.warnings).toContain('components/maz-not-a-component: vague description "Nothing"')
+    })
+
+    it('then a page without frontmatter gets a title from its file and is reported', () => {
+      expect(knowledge.manifest.docs.find(doc => doc.id === 'ecosystem/utils/no-frontmatter')?.title).toBe('NoFrontmatter')
+      expect(knowledge.warnings).toContain('ecosystem/utils/no-frontmatter: vague description ""')
+    })
+
+    it('then a composable titled with another name than its symbol is reported', () => {
+      expect(knowledge.warnings).toContain('composables/use-thing: the title "useWrongName" is not the documented symbol (useThing)')
     })
 
     it('then components without page still get a generated page', () => {

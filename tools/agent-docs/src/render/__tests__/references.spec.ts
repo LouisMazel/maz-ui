@@ -28,10 +28,10 @@ const tokens: TailwindManifest = {
 
 describe('given renderTailwindReference', () => {
   describe('when rendering the theme tokens', () => {
-    const markdown = renderTailwindReference(tokens, '5.1.0')
+    const markdown = renderTailwindReference(tokens)
 
-    it('then states the version and the setup without prefix', () => {
-      expect(markdown).toContain('maz-ui 5.1.0 theme')
+    it('then states the setup without prefix and no version number', () => {
+      expect(markdown).toContain('provided by the maz-ui theme')
       expect(markdown).toContain('@import \'maz-ui/tailwindcss/theme.css\';')
       expect(markdown).toContain('**without prefix**')
     })
@@ -62,7 +62,7 @@ describe('given renderTailwindReference', () => {
 
   describe('when the spacing token is known', () => {
     it('then renders its value', () => {
-      expect(renderTailwindReference({ ...tokens, spacing: [{ name: 'p-*', value: 'var(--custom-space)' }] }, '5.1.0')).toContain('`--spacing` is `var(--custom-space)`')
+      expect(renderTailwindReference({ ...tokens, spacing: [{ name: 'p-*', value: 'var(--custom-space)' }] })).toContain('`--spacing` is `var(--custom-space)`')
     })
   })
 })

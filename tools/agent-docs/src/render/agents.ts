@@ -16,12 +16,11 @@ export function loadAgentContent(contentDir: string): AgentContent {
   }
 }
 
-function versionLine(version: string): string {
-  return `> maz-ui ${version} is installed: these rules and the docs in \`node_modules/maz-ui/docs\` match this version.`
-}
+/** No version number: the docs are generated before the release bumps the version (see setupAgents for the installed one) */
+const VERSION_NOTE = '> These rules and the docs in `node_modules/maz-ui/docs` match the installed version of maz-ui (`node_modules/maz-ui/package.json`).'
 
 /** `rules.md` at the root of the bundle */
-export function renderRulesDoc(content: AgentContent, version: string): string {
+export function renderRulesDoc(content: AgentContent): string {
   return `${stringifyFrontmatter({
     title: 'maz-ui rules for AI agents',
     description: 'How to use maz-ui and its ecosystem in this project: look-up workflow, components, icons, helpers, Tailwind theme tokens, imports.',
@@ -29,27 +28,23 @@ export function renderRulesDoc(content: AgentContent, version: string): string {
 
 # maz-ui rules for AI agents
 
-${versionLine(version)}
+${VERSION_NOTE}
 
 ${content.rules}
 `
 }
 
 /** Content of `.claude/rules/maz-ui.md`, always loaded by Claude Code */
-export function renderClaudeRule(content: AgentContent, version: string): string {
+export function renderClaudeRule(content: AgentContent): string {
   return `# maz-ui
-
-${versionLine(version)}
 
 ${content.rules}
 `
 }
 
 /** Section inserted between markers in the project `AGENTS.md` */
-export function renderAgentsMdSection(content: AgentContent, version: string): string {
+export function renderAgentsMdSection(content: AgentContent): string {
   return `## maz-ui
-
-${versionLine(version)}
 
 ${content.rules}
 `

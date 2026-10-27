@@ -2,7 +2,7 @@ import type { ComponentMeta, EventMeta, ExposeMeta, PropertyMeta, SlotMeta } fro
 import type { ComponentDoc } from 'vue-docgen-api'
 import type { ComponentApi, EventApi, PropApi, SlotApi } from '../types'
 
-import { readdirSync } from 'node:fs'
+import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { createChecker } from 'vue-component-meta'
 import { parseMulti } from 'vue-docgen-api'
@@ -172,6 +172,58 @@ function toExposeApi(exposed: ExposeMeta): { name: string, description?: string 
   }
 }
 
+/** A model emitted without its prop: the component forwards it to an inner one (`MazDrawer` -> `MazBackdrop`) */
+function forwardedModel(model: string, events: EventApi[]): PropApi {
+  const event = events.find(entry => entry.name === `update:${model}` || entry.name === `update:${pascalToKebab(model)}`)
+
+  return {
+    name: model,
+    type: event?.payload?.replace(/^\w+:\s*/, '') || 'unknown',
+    description: event?.description ?? `Value of \`${model === 'modelValue' ? 'v-model' : `v-model:${pascalToKebab(model)}`}\`, forwarded to the inner component`,
+    required: false,
+    strictValues: false,
+    model,
+  }
+}
+
+const ATTRIBUTE_TYPES: Record<string, string> = {
+  to: 'RouteLocationRaw',
+  href: 'string',
+  target: 'string',
+}
+
+/** Attributes the component reads itself (`const { href, to } = useAttrs()`): documented like props */
+export function attributeProps(source: string, props: PropApi[]): PropApi[] {
+  const names = /const\s*\{([^}]+)\}\s*=\s*useAttrs\(\)/.exec(source)?.[1].split(',').map(name => name.trim().split(/\s*:/)[0]).filter(Boolean) ?? []
+
+  return names
+    .filter(name => !props.some(prop => prop.name === name))
+    .map(name => ({
+      name,
+      type: ATTRIBUTE_TYPES[name] ?? 'unknown',
+      description: `HTML attribute handled by the component${name === 'to' ? ': renders a `RouterLink` (or `NuxtLink`)' : name === 'href' ? ': renders a link (`<a>`)' : ''}`,
+      required: false,
+      strictValues: false,
+    }))
+}
+
+/**
+ * Slots with a computed name (`<slot :name="\`cell-${key}\`">`), which vue-component-meta leaves out.
+ * They are named with their variable part in braces (`cell-{key}`) and take the bindings of the slot named like their prefix.
+ */
+export function dynamicSlots(source: string, slots: SlotApi[]): SlotApi[] {
+  return [...source.matchAll(/<slot\b[^>]*?:name="`([\w-]*)\$\{([^}`]+)\}([\w-]*)`"/g)].map(([, prefix, expression, suffix]) => {
+    const variable = /[a-z_$][\w$]*(?=\W*$)/i.exec(expression.trim())?.[0] ?? 'name'
+    const base = slots.find(slot => slot.name === prefix.replace(/-$/, ''))
+
+    return {
+      name: `${prefix}{${variable}}${suffix}`,
+      description: `One slot per \`${variable}\`: \`#${prefix}<${variable}>${suffix}\`.${base?.description ? ` ${base.description}` : ''}`,
+      bindings: base?.bindings ?? [],
+    }
+  })
+}
+
 export function toComponentApi(meta: ComponentMeta, name: string): ComponentApi {
   const models = new Set(
     meta.events
@@ -181,13 +233,17 @@ export function toComponentApi(meta: ComponentMeta, name: string): ComponentApi 
   )
   const props = meta.props.filter(prop => !prop.global)
   const propNames = new Set(props.map(prop => prop.name))
+  const events = meta.events.map(toEventApi)
 
   return {
     name,
     docId: `components/${pascalToKebab(name)}`,
     import: `import ${name} from 'maz-ui/components/${name}'`,
-    props: props.map(prop => toPropApi(prop, new Set([...models].filter(model => propNames.has(model))))),
-    events: meta.events.map(toEventApi),
+    props: [
+      ...props.map(prop => toPropApi(prop, new Set([...models].filter(model => propNames.has(model))))),
+      ...[...models].filter(model => !propNames.has(model)).map(model => forwardedModel(model, events)),
+    ],
+    events,
     slots: meta.slots.map(toSlotApi),
     expose: meta.exposed.filter(exposed => !exposed.name.startsWith('$') && !propNames.has(exposed.name)).map(toExposeApi),
   }
@@ -261,8 +317,14 @@ export function collectComponentApis(componentsDir: string, tsconfig: string): P
   return Promise.all(files.map(async (file) => {
     const path = join(componentsDir, file)
     const doc = await parseDocgen(path)
-    const api = toComponentApi(checker.getComponentMeta(path), file.replace(/\.vue$/, ''))
+    const api = mergeDescriptions(toComponentApi(checker.getComponentMeta(path), file.replace(/\.vue$/, '')), docgenDescriptions(doc))
 
-    return mergeDescriptions(api, docgenDescriptions(doc))
+    const source = readFileSync(path, 'utf8')
+
+    return {
+      ...api,
+      props: [...api.props, ...attributeProps(source, api.props)],
+      slots: [...api.slots, ...dynamicSlots(source, api.slots)],
+    }
   }))
 }
