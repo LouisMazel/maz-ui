@@ -21,6 +21,8 @@ export interface SetupAgentsOptions {
   rootDir: string
   /** Agents to configure. Default: the agents detected in the project */
   targets?: AgentTarget[]
+  /** Write the maz-ui rules (Claude Code rule, `AGENTS.md` section). Default `true` */
+  rules?: boolean
   /** Register the maz-ui MCP server. Default `true` */
   mcp?: boolean
   /** Compute the changes without writing anything */
@@ -313,20 +315,9 @@ function syncMcpConfig(changes: ChangeSet, config: McpConfigFile, server: { comm
   changes.write(config.file, content.endsWith('\n') ? content : `${content}\n`, current)
 }
 
-/**
- * Configures the AI coding agents of a project to use maz-ui: rules (version
- * matched with the installed maz-ui) and the maz-ui MCP server. Idempotent and
- * conservative: it only writes files it owns, a delimited section of
- * `AGENTS.md` and its own entry of the MCP config files.
- */
-export function setupAgents(options: SetupAgentsOptions): SetupAgentsResult {
-  const { rootDir, mcp = true, dryRun = false, remove = false } = options
-  const targets = options.targets ?? detectAgentTargets(rootDir)
-  const docs = remove ? undefined : readAgentDocs(rootDir, options.docsDir)
+/** Writes (or removes when `docs` is undefined) the Claude Code rule and the `AGENTS.md` section */
+function syncRules(changes: ChangeSet, rootDir: string, targets: AgentTarget[], docs: AgentDocs | undefined): void {
   const version = docs?.version ?? ''
-  const changes = new ChangeSet(rootDir, dryRun)
-  const server = options.mcpServer ?? DEFAULT_MCP_SERVER
-
   const hasClaudeMemory = CLAUDE_MEMORY_FILES.some(file => existsSync(join(rootDir, file)))
   // Claude Code reads AGENTS.md only when the project has no CLAUDE.md: the rule would then duplicate the AGENTS.md section
   const claudeReadsAgentsMd = targets.includes('agents-md') && !hasClaudeMemory
@@ -338,6 +329,24 @@ export function setupAgents(options: SetupAgentsOptions): SetupAgentsResult {
 
   if (targets.includes('agents-md'))
     syncAgentsMd(changes, docs ? `${managedHeader(version)}\n\n${docs.agentsMdSection}` : undefined)
+}
+
+/**
+ * Configures the AI coding agents of a project to use maz-ui: rules (version
+ * matched with the installed maz-ui) and the maz-ui MCP server. Idempotent and
+ * conservative: it only writes files it owns, a delimited section of
+ * `AGENTS.md` and its own entry of the MCP config files.
+ */
+export function setupAgents(options: SetupAgentsOptions): SetupAgentsResult {
+  const { rootDir, rules = true, mcp = true, dryRun = false, remove = false } = options
+  const targets = options.targets ?? detectAgentTargets(rootDir)
+  const docs = remove || !rules ? undefined : readAgentDocs(rootDir, options.docsDir)
+  const version = docs?.version ?? ''
+  const changes = new ChangeSet(rootDir, dryRun)
+  const server = options.mcpServer ?? DEFAULT_MCP_SERVER
+
+  if (rules || remove)
+    syncRules(changes, rootDir, targets, docs)
 
   if (mcp || remove) {
     for (const target of ['claude', 'cursor', 'vscode'] as const) {

@@ -627,3 +627,44 @@ describe('given setupAgents in dry run mode', () => {
     })
   })
 })
+
+describe('given setupAgents with the rules option disabled', () => {
+  describe('when the claude and agents-md targets are configured', () => {
+    let result: SetupAgentsResult
+
+    beforeEach(() => {
+      writeProjectFile('CLAUDE.md', '# my project')
+      result = setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md'], rules: false })
+    })
+
+    it('then it writes no rule file', () => {
+      expect(projectFileExists('.claude/rules/maz-ui.md')).toBe(false)
+      expect(projectFileExists('AGENTS.md')).toBe(false)
+    })
+
+    it('then it only registers the MCP server', () => {
+      expect(result.changes).toEqual([{ file: '.mcp.json', action: 'create' }])
+    })
+  })
+
+  describe('when maz-ui does not ship the agent docs', () => {
+    it('then the MCP server is still registered', () => {
+      const result = setupAgents({ rootDir, targets: ['claude'], rules: false })
+
+      expect(result.changes).toEqual([{ file: '.mcp.json', action: 'create' }])
+      expect(result.version).toBe('')
+    })
+  })
+
+  describe('when the rules were written before and remove is set', () => {
+    it('then the rules are removed', () => {
+      writeProjectFile('CLAUDE.md', '# my project')
+      setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md'] })
+
+      setupAgents({ rootDir, targets: ['claude', 'agents-md'], rules: false, remove: true })
+
+      expect(projectFileExists('.claude/rules/maz-ui.md')).toBe(false)
+      expect(projectFileExists('AGENTS.md')).toBe(false)
+    })
+  })
+})
