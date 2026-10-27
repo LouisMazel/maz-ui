@@ -1,6 +1,6 @@
 ---
 title: Translations (i18n)
-description: Internationalization for Maz-UI components.
+description: "Internationalization of the maz-ui components with @maz-ui/translations: built-in locales, custom messages, lazy loading and runtime locale switching with useTranslations"
 ---
 
 # {{ $frontmatter.title }}

@@ -1,3 +1,8 @@
+---
+title: '@maz-ui/icons'
+description: The @maz-ui/icons package provides 860+ SVG icons (interface icons, brand logos, country flags) as tree-shakable Vue components, lazy components or raw SVG strings
+---
+
 # @maz-ui/icons
 
 A comprehensive collection of **860 beautiful SVG icons** ready for use in your Vue.js applications. Built with performance and flexibility in mind, these icons are optimized for modern web development.

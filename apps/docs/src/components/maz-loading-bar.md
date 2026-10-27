@@ -1,6 +1,6 @@
 ---
 title: MazLoadingBar
-description: MazLoadingBar is a standalone component
+description: MazLoadingBar is an indeterminate progress bar to show that something is loading, typically at the top of a page or a container
 ---
 
 # {{ $frontmatter.title }}

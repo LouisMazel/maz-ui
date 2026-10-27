@@ -1,6 +1,6 @@
 ---
-title: v-fullscreen-img
-description: Displays images fullscreen on click
+title: vFullscreenImg
+description: vFullscreenImg is a Vue directive that opens an image in fullscreen on click, with zoom and navigation between the images of a group
 ---
 
 

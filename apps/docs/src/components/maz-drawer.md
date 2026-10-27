@@ -1,6 +1,6 @@
 ---
 title: MazDrawer
-description: MazDrawer is a standalone component to add a collapsible sidebar at the top and bottom bar
+description: MazDrawer is a panel that slides in from the top, the bottom, the left or the right side of the screen over a backdrop, for side menus, filters or details
 ---
 
 # {{ $frontmatter.title }}

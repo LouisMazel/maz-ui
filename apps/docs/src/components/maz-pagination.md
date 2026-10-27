@@ -1,6 +1,6 @@
 ---
 title: MazPagination
-description: MazPagination is a standalone component
+description: MazPagination lets users navigate between the pages of a list or a table, with first, previous, next and last buttons and the current page in v-model
 ---
 
 # {{ $frontmatter.title }}

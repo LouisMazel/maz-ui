@@ -1,6 +1,6 @@
 ---
 title: MazCircularProgressBar
-description: MazCircularProgressBar is a standalone component
+description: MazCircularProgressBar displays a percentage or a progress in an animated ring, with a configurable size, color, duration and content in the center
 ---
 
 # {{ $frontmatter.title }}

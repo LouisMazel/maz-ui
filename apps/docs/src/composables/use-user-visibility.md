@@ -1,6 +1,6 @@
 ---
-title: user-visibility
-description: Plugin to see and manage the user page visibility
+title: useUserVisibility
+description: Vue composable to know whether the user is looking at the page (Page Visibility API), with an optional delay before considering them away
 ---
 
 # {{ $frontmatter.title }}

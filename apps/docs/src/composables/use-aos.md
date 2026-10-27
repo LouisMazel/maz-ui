@@ -1,6 +1,6 @@
 ---
 title: useAos
-description: Vue composable for handling aos plugin in your components
+description: Vue composable to access the AOS plugin instance (animations on scroll) in your components, to refresh or trigger the animations
 ---
 
 # {{ $frontmatter.title }}

@@ -1,3 +1,8 @@
+---
+title: Icon Set
+description: Search and copy the 860+ icons of @maz-ui/icons, with the naming convention and the static, lazy and raw imports of each icon
+---
+
 # Icon Set (860+ icons)
 
 The library includes **860+ icons**

@@ -1,6 +1,6 @@
 ---
 title: MazRadio
-description: MazRadio is a standalone component
+description: MazRadio is a radio input with a label, colors and sizes to pick one value among several options; see MazRadioButtons for a ready-made group
 ---
 
 # {{ $frontmatter.title }}

@@ -1,5 +1,5 @@
 ---
-title: country-code-to-unicode-flag
+title: countryCodeToUnicodeFlag
 description: Convert country code in unicode flag
 ---
 
