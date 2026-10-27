@@ -154,6 +154,7 @@
     "LICENSE",
     "README.md",
     "dist",
+    "docs",
     "src/tailwindcss",
     "svg",
     "tailwindcss"
@@ -168,7 +169,7 @@
     "lint:js:fix": "pnpm lint:js --fix",
     "lint:style": "stylelint \"./**/*.{vue,css,scss,postcss,pcss,html}\"",
     "lint:style:fix": "pnpm lint:style --fix",
-    "build": "vite build",
+    "build": "vite build && pnpm generate:agent-docs",
     "build:watch": "vite build --watch --mode development",
     "build:analyze": "vite-node build/analyze-bundle.ts",
     "test:unit": "vitest run",
@@ -176,7 +177,8 @@
     "test:unit:coverage": "vitest run --coverage",
     "test:unit:coverage:watch": "vitest watch --coverage",
     "test:unit:coverage:master": "vitest run --coverage --changed master",
-    "typecheck": "vue-tsc --noEmit --skipLibCheck"
+    "typecheck": "vue-tsc --noEmit --skipLibCheck",
+    "generate:agent-docs": "tsx ../../tools/agent-docs/src/cli.ts --out ./docs"
   },
   "peerDependencies": {
     "arktype": ">=2.0.0 <3.0.0",
@@ -255,5 +257,28 @@
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix",
     "*.{vue,css,scss,postcss,pcss}": "stylelint --fix --allow-empty-input"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "inputs": [
+          "production",
+          "^production",
+          "{workspaceRoot}/apps/docs/src/**/*.md",
+          "{workspaceRoot}/apps/docs/.vitepress/mixins/**/*",
+          "{workspaceRoot}/tools/agent-docs/src/**/*",
+          "{workspaceRoot}/tools/agent-docs/content/**/*",
+          "{workspaceRoot}/packages/lib/src/**/*",
+          "{workspaceRoot}/packages/icons/src/icon-list.ts",
+          "{workspaceRoot}/packages/nuxt/src/module.ts",
+          "{workspaceRoot}/packages/utils/src/**/*",
+          "{workspaceRoot}/packages/node/src/**/*"
+        ],
+        "outputs": [
+          "{projectRoot}/dist",
+          "{projectRoot}/docs"
+        ]
+      }
+    }
   }
 }
