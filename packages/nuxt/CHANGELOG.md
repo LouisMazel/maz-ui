@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.1.0-beta.1 (2026-10-27)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.0-beta.0...v5.1.0-beta.1)
+
+### 🩹 Fixes
+
+- **@maz-ui/nuxt:** Write the AI agents files at the root of the workspace ([9f8bda1da](https://github.com/LouisMazel/maz-ui/commit/9f8bda1da))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v5.1.0-beta.0 (2026-10-27)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.1-beta.0...v5.1.0-beta.0)

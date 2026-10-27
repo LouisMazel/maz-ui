@@ -1,5 +1,21 @@
 # Changelog
 
+## v5.1.0-beta.1 (2026-10-27)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.0-beta.0...v5.1.0-beta.1)
+
+### 🚀 Features
+
+- **@maz-ui/mcp:** Read the Tailwind theme and the preset of the project ([010a50d8c](https://github.com/LouisMazel/maz-ui/commit/010a50d8c))
+
+### 🩹 Fixes
+
+- **@maz-ui/mcp:** Reduce the noise of the search and of the code review ([b788b393b](https://github.com/LouisMazel/maz-ui/commit/b788b393b))
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v5.1.0-beta.0 (2026-10-27)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.1-beta.0...v5.1.0-beta.0)

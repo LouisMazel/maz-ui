@@ -1,5 +1,30 @@
 # Change Log
 
+## v5.1.0-beta.1 (2026-10-27)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.0-beta.0...v5.1.0-beta.1)
+
+### 🚀 Features
+
+- **@maz-ui/mcp:** Read the Tailwind theme and the preset of the project ([010a50d8c](https://github.com/LouisMazel/maz-ui/commit/010a50d8c))
+
+### 🩹 Fixes
+
+- **@maz-ui/node:** Find maz-ui and its version in the apps of a monorepo ([c61107e95](https://github.com/LouisMazel/maz-ui/commit/c61107e95))
+- **@maz-ui/nuxt:** Write the AI agents files at the root of the workspace ([9f8bda1da](https://github.com/LouisMazel/maz-ui/commit/9f8bda1da))
+- **agent-docs:** Document forwarded models, dynamic slots and handled attributes ([da009c3a3](https://github.com/LouisMazel/maz-ui/commit/da009c3a3))
+- **@maz-ui/mcp:** Reduce the noise of the search and of the code review ([b788b393b](https://github.com/LouisMazel/maz-ui/commit/b788b393b))
+
+### 📖 Documentation
+
+- **docs:** Give a precise description to every page read by the AI agents ([ec687c803](https://github.com/LouisMazel/maz-ui/commit/ec687c803))
+- **maz-ui:** Fix the description of the padding prop of MazBtn ([9d87dde4d](https://github.com/LouisMazel/maz-ui/commit/9d87dde4d))
+- **docs:** Explain how the project theme combines with the maz-ui theme ([317fafa2d](https://github.com/LouisMazel/maz-ui/commit/317fafa2d))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.1.0-beta.0 (2026-10-27)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.1-beta.0...v5.1.0-beta.0)

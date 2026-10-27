@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.1.0-beta.1 (2026-10-27)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.0-beta.0...v5.1.0-beta.1)
+
+### 📖 Documentation
+
+- **maz-ui:** Fix the description of the padding prop of MazBtn ([9d87dde4d](https://github.com/LouisMazel/maz-ui/commit/9d87dde4d))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.1.0-beta.0 (2026-10-27)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.1-beta.0...v5.1.0-beta.0)
