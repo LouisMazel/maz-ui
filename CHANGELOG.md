@@ -1,5 +1,108 @@
 # Change Log
 
+## v5.1.0 (2026-10-27)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0...v5.1.0)
+
+### 🚀 Features
+
+- **@maz-ui/node:** Add setupAgents to configure the AI coding agents of a project ([4afa9701f](https://github.com/LouisMazel/maz-ui/commit/4afa9701f))
+
+  `setupAgents({ rootDir })` writes the maz-ui rules of the installed version for Claude Code (`.claude/rules/maz-ui.md`) and `AGENTS.md` (a delimited section), and registers the maz-ui MCP server in `.mcp.json`, `.cursor/mcp.json` and `.vscode/mcp.json`.
+
+  It only touches the files and sections it owns, keeps the formatting and comments of the config files, and supports the `targets`, `mcp`, `dryRun` and `remove` options. `detectAgentTargets(rootDir)` lists the agents configured in a project.
+
+- **maz-ui:** Ship the documentation of the installed version for AI agents ([26daaa7e1](https://github.com/LouisMazel/maz-ui/commit/26daaa7e1))
+
+  Each release now contains `node_modules/maz-ui/docs`: the documentation of this version written for AI coding agents (guides, every component with its full API, composables, directives, helpers, Tailwind theme tokens, icon names), indexed in `README.md`, with the maz-ui rules in `rules.md`.
+
+  Agents read the docs of your version instead of their training data. Run `npx @maz-ui/mcp init` to point them to it.
+
+- **@maz-ui/mcp:** Search by need, component APIs, icons, theme tokens and code review for AI agents ([feedfb4e3](https://github.com/LouisMazel/maz-ui/commit/feedfb4e3))
+
+  The server provides the tools `search_docs` (find what maz-ui provides for a need described in plain words), `get_component_api` (props with accepted values, `v-model`, events, slots), `find_icons`, `get_theme_tokens` (every Tailwind class and CSS variable of the theme), `get_doc`, `list_docs`, `get_setup_guide` and `review_code`, and the prompts `build`, `audit` and `setup`.
+
+  It serves the docs of the maz-ui version installed in the project (`node_modules/maz-ui/docs`), and falls back on its bundled docs.
+
+  The package is also a CLI: `npx @maz-ui/mcp init` configures the AI agents of a project, `npx @maz-ui/mcp review "src/**/*.vue"` reviews files against maz-ui (unknown props or values, unknown icons, native elements, duplicated libraries, default Tailwind palette, `maz:` prefix...) and fails on errors in CI.
+
+- **@maz-ui/node:** Add the rules option to setupAgents to only register the MCP server ([9cd7578b6](https://github.com/LouisMazel/maz-ui/commit/9cd7578b6))
+
+  `setupAgents({ rootDir, rules: false })` registers the maz-ui MCP server without writing the Claude Code rule nor the `AGENTS.md` section, and works even when the installed maz-ui does not ship the agent docs.
+
+- **@maz-ui/mcp:** Add the --no-rules option to init to only register the MCP server ([574b3dd60](https://github.com/LouisMazel/maz-ui/commit/574b3dd60))
+
+  `npx @maz-ui/mcp init --no-rules` adds the `maz-ui` server to the MCP config of the agents without writing any rule file: the instructions of the server already give the maz-ui rules to the agents.
+
+- **@maz-ui/nuxt:** Connect the AI coding agents of the project to the maz-ui MCP server ([d64d740e0](https://github.com/LouisMazel/maz-ui/commit/d64d740e0))
+
+  In development, the module registers the maz-ui MCP server in the MCP config of the agents detected in the project (`.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`), so they get the docs and rules of the installed maz-ui. It writes nothing when no agent is detected and never overwrites the files you own.
+
+  Also write the rule files (`.claude/rules/maz-ui.md`, an `AGENTS.md` section) with `mazUi.agents: { rules: true }`, choose the agents with `mazUi.agents: { targets: ['claude', 'cursor'] }`, or disable it with `mazUi.agents: false`.
+
+- Add the maz-ui plugin for Claude Code ([aae5c065c](https://github.com/LouisMazel/maz-ui/commit/aae5c065c))
+
+  Install it with `/plugin marketplace add LouisMazel/maz-ui` then `/plugin install maz-ui@maz-ui`: it adds a `maz-ui` skill, the maz-ui MCP server and a hook that reviews every Vue, TypeScript and CSS file Claude edits against the installed maz-ui, without writing anything in your projects.
+
+- **@maz-ui/mcp:** Read the Tailwind theme and the preset of the project ([010a50d8c](https://github.com/LouisMazel/maz-ui/commit/010a50d8c))
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDrawer - keep the header visible on mobile when the content is taller than the screen ([a0a7a3bd7](https://github.com/LouisMazel/maz-ui/commit/a0a7a3bd7))
+
+  On mobile the side drawer is aligned to the bottom of the backdrop and had only a min-height (100vh), so a long content pushed the header and its close button above the top of the screen (and 100vh is taller than the visible area on iOS Safari). The panel is now bounded to the viewport and its body scrolls.
+
+- **maz-ui:** Expose the theme-spacing.css and theme-components.css Tailwind entries ([975d2632f](https://github.com/LouisMazel/maz-ui/commit/975d2632f))
+
+  Import them individually like the other theme modules: `@import 'maz-ui/tailwindcss/theme-spacing.css'` and `@import 'maz-ui/tailwindcss/theme-components.css'`.
+
+- **@maz-ui/node:** Find maz-ui and its version in the apps of a monorepo ([c61107e95](https://github.com/LouisMazel/maz-ui/commit/c61107e95))
+- **@maz-ui/nuxt:** Write the AI agents files at the root of the workspace ([9f8bda1da](https://github.com/LouisMazel/maz-ui/commit/9f8bda1da))
+- **agent-docs:** Document forwarded models, dynamic slots and handled attributes ([da009c3a3](https://github.com/LouisMazel/maz-ui/commit/da009c3a3))
+- **@maz-ui/mcp:** Reduce the noise of the search and of the code review ([b788b393b](https://github.com/LouisMazel/maz-ui/commit/b788b393b))
+- **@maz-ui/mcp:** Read the reason of an ignore comment and show absolute paths outside the project ([eb83caf52](https://github.com/LouisMazel/maz-ui/commit/eb83caf52))
+
+### 📖 Documentation
+
+- **maz-ui:** Fix the documentation links of MazDropzone and MazInputPrice props ([6cf6d5196](https://github.com/LouisMazel/maz-ui/commit/6cf6d5196))
+- **docs:** Fix broken links and use plain Tailwind classes in the code examples ([4adb6635c](https://github.com/LouisMazel/maz-ui/commit/4adb6635c))
+
+  The code examples use plain Tailwind classes (`bg-surface`, `text-muted`...) instead of the internal `maz:` prefix of the documentation site.
+
+  The links to the moved pages (themes, translations, icons, nuxt, mcp) now work on maz-ui.com, and the resolvers guide imports `useTheme` from `@maz-ui/themes`.
+
+- **docs:** Generate the components API tables from their TypeScript types and publish llms.txt ([37a472b80](https://github.com/LouisMazel/maz-ui/commit/37a472b80))
+
+  The API tables of the component pages list every prop, including the inherited ones that were missing (MazSelect, MazDialog, MazBottomSheet, MazSidebar parts...).
+
+  maz-ui.com also publishes `llms.txt`, `llms-full.txt` and the markdown version of each page (`/components/maz-btn.md`).
+
+- **docs:** Document the Tailwind theme integration and the AI agents setup ([a84f86fdc](https://github.com/LouisMazel/maz-ui/commit/a84f86fdc))
+
+  The Tailwind guide covers every theme token (colors, radius, shadows, spacing, breakpoints, typography, utilities, dark variant) and how to extend the theme with your own colors, fonts, animations, variants and container width.
+
+  The new AI agents guide explains the rules, the version-matched docs, the MCP server, the Claude Code plugin and the code review in CI.
+
+- Describe the AI agents tooling in the readme and the contributor guide ([d37244a97](https://github.com/LouisMazel/maz-ui/commit/d37244a97))
+- **docs:** Give a precise description to every page read by the AI agents ([ec687c803](https://github.com/LouisMazel/maz-ui/commit/ec687c803))
+- **maz-ui:** Fix the description of the padding prop of MazBtn ([9d87dde4d](https://github.com/LouisMazel/maz-ui/commit/9d87dde4d))
+- **docs:** Explain how the project theme combines with the maz-ui theme ([317fafa2d](https://github.com/LouisMazel/maz-ui/commit/317fafa2d))
+- **docs:** Document the review hook and the reason of an ignore comment ([159f7ab4d](https://github.com/LouisMazel/maz-ui/commit/159f7ab4d))
+
+### 📦 Build
+
+- **agent-docs:** Add the generator of the maz-ui documentation for AI agents ([d20aa38e6](https://github.com/LouisMazel/maz-ui/commit/d20aa38e6))
+- **cli:** Generate the components API tables with agent-docs ([eb86900a0](https://github.com/LouisMazel/maz-ui/commit/eb86900a0))
+- **agent-docs:** Set the released version in the bundled docs after the bump ([f98e43e34](https://github.com/LouisMazel/maz-ui/commit/f98e43e34))
+
+### 🧪 Tests
+
+- **maz-ui:** MazDrawer - expect the canonical size-full class ([6bd77d44a](https://github.com/LouisMazel/maz-ui/commit/6bd77d44a))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.1.0-beta.2 (2026-10-27)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.0-beta.1...v5.1.0-beta.2)
