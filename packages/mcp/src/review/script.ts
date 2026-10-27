@@ -249,3 +249,33 @@ export function reviewScript(code: string, offset: number, context: ReviewContex
 
   checkClassStrings(code.replaceAll(/^\s*import\s[^\n]*$/gm, line => ' '.repeat(line.length)), offset, context)
 }
+
+/** Real name of an imported binding when it comes from maz-ui (`maz-ui/components/MazBtn`, `@maz-ui/icons/static/MazTrash`) */
+function mazUiName(imported: string | undefined, source: string): string | undefined {
+  if (!/^(?:maz-ui|@maz-ui\/icons)(?:\/|$)/.test(source))
+    return undefined
+
+  return imported ?? source.split('/').at(-1)
+}
+
+/** PascalCase bindings imported by the scripts of an SFC, with the maz-ui name they stand for */
+export function localComponents(scripts: string): Map<string, string | undefined> {
+  const components = new Map<string, string | undefined>()
+
+  for (const [, clause, source] of scripts.matchAll(/import\s+(?!type\s)([^'";]*?)\s+from\s+["']([^"']+)["']/g)) {
+    const named = /\{([^}]*)\}/.exec(clause)?.[1] ?? ''
+    const defaultName = /^\s*([A-Z]\w*)/.exec(clause.replace(/\{[^}]*\}/, ''))?.[1]
+
+    if (defaultName)
+      components.set(defaultName, mazUiName(undefined, source))
+
+    for (const specifier of named.split(',')) {
+      const [imported, local = imported] = specifier.replace(/^\s*type\s+/, '').split(/\s+as\s+/).map(part => part.trim())
+
+      if (/^[A-Z]/.test(local ?? ''))
+        components.set(local, mazUiName(imported, source))
+    }
+  }
+
+  return components
+}

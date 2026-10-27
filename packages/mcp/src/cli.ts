@@ -6,14 +6,14 @@ import { resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 import { AGENT_TARGETS, detectAgentTargets, setupAgents } from '@maz-ui/node'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
-import { version } from '../package.json' with { type: 'json' }
 import { createContext } from './context'
 import { countBySeverity, formatFindings } from './review'
 import { REVIEWABLE_EXTENSIONS, reviewFiles } from './review/files'
 import { startStdioServer } from './server'
 import { searchDocs } from './tools/search-docs'
+import { readOwnVersion } from './version'
 
-export const HELP = `maz-ui-mcp ${version}: maz-ui knowledge for AI coding agents
+export const HELP = `maz-ui-mcp: maz-ui knowledge for AI coding agents
 
 Usage:
   maz-ui-mcp [serve] [--docs <dir>]   Start the MCP server (stdio)
@@ -176,7 +176,7 @@ export async function runCli(argv: string[] = process.argv.slice(2)): Promise<nu
   }
 
   if (values.version) {
-    console.log(version)
+    console.log(readOwnVersion())
     return 0
   }
 

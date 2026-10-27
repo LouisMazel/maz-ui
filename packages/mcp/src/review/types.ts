@@ -49,4 +49,6 @@ export interface ReviewOptions {
 
 export interface ReviewContext extends ReviewOptions {
   report: (finding: Omit<Finding, 'line' | 'column'>, offset: number) => void
+  /** Components imported by the SFC: local name -> maz-ui name, `undefined` for the components of the project */
+  localComponents?: Map<string, string | undefined>
 }

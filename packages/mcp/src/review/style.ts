@@ -9,8 +9,34 @@ function blankComments(css: string): string {
   return css.replaceAll(/\/\*[\s\S]*?\*\//g, match => match.replaceAll(/[^\n]/g, ' '))
 }
 
+const BLACK_OR_WHITE = /^#(?:f{3}|f{6}|f{8}|0{3}|0{6}|0{8})$/i
+
+/** Ranges of the `@keyframes` blocks, where colors often animate over media */
+function keyframesRanges(css: string): Array<[number, number]> {
+  const ranges: Array<[number, number]> = []
+
+  for (const match of css.matchAll(/@keyframes[^{]*\{/g)) {
+    const start = match.index ?? 0
+    let depth = 0
+
+    for (let index = start + match[0].length - 1; index < css.length; index++) {
+      if (css[index] === '{') {
+        depth++
+      }
+      else if (css[index] === '}' && --depth === 0) {
+        ranges.push([start, index])
+        break
+      }
+    }
+  }
+
+  return ranges
+}
+
 /** Checks `property: value` declarations (style attribute or CSS rules) for hard-coded colors */
 export function checkStyleDeclarations(css: string, offset: number, context: ReviewContext): void {
+  const keyframes = keyframesRanges(css)
+
   for (const match of css.matchAll(/(^|[;{\s])([a-z-]+)\s*:\s*([^;{}]+)/g)) {
     const [, prefix, property, value] = match
 
@@ -19,14 +45,19 @@ export function checkStyleDeclarations(css: string, offset: number, context: Rev
 
     const color = COLOR_LITERAL.exec(value)
 
-    if (color) {
-      context.report({
-        rule: 'hardcoded-color',
-        severity: 'warning',
-        message: `\`${property}\` uses a hard-coded color (\`${color[0].replace('(', '')}\`): it ignores the theme and dark mode.`,
-        suggestion: 'Use a theme variable: `var(--maz-primary)`, `var(--maz-surface)`, `var(--maz-foreground)`, `var(--maz-muted)`, `var(--maz-divider)`... (`color-mix(in oklab, var(--maz-primary) 20%, transparent)` for tints).',
-      }, offset + (match.index ?? 0) + prefix.length)
-    }
+    if (!color)
+      continue
+
+    const index = match.index ?? 0
+    const inKeyframes = keyframes.some(([start, end]) => index > start && index < end)
+    const blackOrWhite = BLACK_OR_WHITE.test(color[0])
+
+    context.report({
+      rule: 'hardcoded-color',
+      severity: inKeyframes || blackOrWhite ? 'info' : 'warning',
+      message: `\`${property}\` uses a hard-coded color (\`${color[0].replace('(', '')}\`): it ignores the theme and dark mode.`,
+      suggestion: `Use a theme variable: \`var(--maz-primary)\`, \`var(--maz-surface)\`, \`var(--maz-foreground)\`, \`var(--maz-muted)\`, \`var(--maz-divider)\`... (\`color-mix(in oklab, var(--maz-primary) 20%, transparent)\` for tints).${blackOrWhite ? ' Keep it if the element is over media (image, video) or a fixed dark background.' : ''}`,
+    }, offset + index + prefix.length)
   }
 }
 

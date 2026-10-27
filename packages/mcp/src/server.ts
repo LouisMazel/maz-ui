@@ -5,7 +5,6 @@ import type { ToolDefinition } from './tools/types'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
-import { version } from '../package.json' with { type: 'json' }
 import { createContext } from './context'
 import { buildInstructions } from './instructions'
 import { registerPrompts } from './prompts'
@@ -18,6 +17,7 @@ import { listDocsTool } from './tools/list-docs'
 import { reviewCodeToolDefinition } from './tools/review-code'
 import { searchDocsTool } from './tools/search-docs'
 import { ToolInputError } from './tools/types'
+import { readOwnVersion } from './version'
 
 /** Tools in a stable order (prompt caching on the client side) */
 export const TOOLS: ToolDefinition[] = [
@@ -47,7 +47,7 @@ export async function runTool(context: ServerContext, tool: ToolDefinition, args
 export function createMazUiMcpServer(options: CreateContextOptions = {}): { server: McpServer, context: ServerContext } {
   const context = createContext(options)
   const server = new McpServer(
-    { name: 'maz-ui', title: 'maz-ui', version },
+    { name: 'maz-ui', title: 'maz-ui', version: readOwnVersion() },
     { instructions: buildInstructions(context) },
   )
 

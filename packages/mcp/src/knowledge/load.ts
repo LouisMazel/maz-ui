@@ -1,9 +1,10 @@
 import type { ComponentApi, DocEntry, Manifest } from './schema'
 
-import { existsSync, readdirSync, readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { findInstalledPackage } from '@maz-ui/node'
+import { findProjectPackage, readPackageVersion } from '@maz-ui/node'
+import { readOwnVersion } from '../version'
 import { manifestSchema } from './schema'
 
 export type KnowledgeSourceKind = 'custom' | 'project' | 'bundled'
@@ -23,6 +24,8 @@ export interface LoadKnowledgeOptions {
   cwd?: string
   /** Bundle shipped with @maz-ui/mcp */
   bundledDir?: string
+  /** Version of the bundled docs, default: the version of @maz-ui/mcp (released together with maz-ui) */
+  bundledVersion?: string
 }
 
 export class Knowledge {
@@ -31,14 +34,20 @@ export class Knowledge {
   readonly iconNames: Set<string>
   private readonly cache = new Map<string, string>()
 
-  constructor(readonly manifest: Manifest, readonly source: KnowledgeSource) {
+  /**
+   * @param manifest manifest of the docs bundle
+   * @param source where the bundle was found
+   * @param documentedVersion version of the documented maz-ui, read from a package.json at runtime when possible: the
+   * docs are generated before the release bumps the version, so `manifest.version` can be the previous one
+   */
+  constructor(readonly manifest: Manifest, readonly source: KnowledgeSource, private readonly documentedVersion = manifest.version) {
     this.docsById = new Map(manifest.docs.map(doc => [doc.id, doc]))
     this.componentsByName = new Map(manifest.components.map(component => [component.name, component]))
     this.iconNames = new Set(manifest.icons.names)
   }
 
   get version(): string {
-    return this.manifest.version
+    return this.documentedVersion
   }
 
   get docs(): DocEntry[] {
@@ -87,36 +96,11 @@ export function readManifest(directory: string): Manifest | undefined {
   return parsed.success ? parsed.data : undefined
 }
 
-/**
- * Finds the maz-ui package installed in the project: in the `node_modules`
- * of the project root and of its direct workspace folders (`apps/*`,
- * `packages/*`, for monorepos without hoisting), then in the parent folders.
- */
+/** Finds the maz-ui package installed in the project, monorepo workspace folders included */
 export function findProjectMazUi(cwd: string): { directory: string, version: string } | undefined {
-  const bases = [cwd]
+  const directory = findProjectPackage(cwd, 'maz-ui')
 
-  for (const folder of ['apps', 'packages']) {
-    const root = join(cwd, folder)
-
-    if (existsSync(root)) {
-      for (const entry of readdirSync(root, { withFileTypes: true })) {
-        if (entry.isDirectory())
-          bases.push(join(root, entry.name))
-      }
-    }
-  }
-
-  const directory = bases
-    .map(base => join(base, 'node_modules', 'maz-ui'))
-    .find(candidate => existsSync(join(candidate, 'package.json')))
-    ?? findInstalledPackage(cwd, 'maz-ui')
-
-  if (!directory)
-    return undefined
-
-  const { version } = JSON.parse(readFileSync(join(directory, 'package.json'), 'utf8')) as { version: string }
-
-  return { directory, version }
+  return directory ? { directory, version: readPackageVersion(directory) ?? '0.0.0' } : undefined
 }
 
 export function loadKnowledge(options: LoadKnowledgeOptions = {}): Knowledge {
@@ -128,7 +112,7 @@ export function loadKnowledge(options: LoadKnowledgeOptions = {}): Knowledge {
     if (!manifest)
       throw new Error(`No valid maz-ui docs bundle (manifest.json) in ${explicit}`)
 
-    return new Knowledge(manifest, { kind: 'custom', directory: explicit })
+    return new Knowledge(manifest, { kind: 'custom', directory: explicit }, readPackageVersion(dirname(explicit)) ?? manifest.version)
   }
 
   const project = findProjectMazUi(options.cwd ?? process.cwd())
@@ -138,7 +122,7 @@ export function loadKnowledge(options: LoadKnowledgeOptions = {}): Knowledge {
     const manifest = readManifest(directory)
 
     if (manifest)
-      return new Knowledge(manifest, { kind: 'project', directory, projectVersion: project.version })
+      return new Knowledge(manifest, { kind: 'project', directory, projectVersion: project.version }, project.version)
   }
 
   const bundledDir = options.bundledDir ?? defaultBundledDir()
@@ -147,5 +131,5 @@ export function loadKnowledge(options: LoadKnowledgeOptions = {}): Knowledge {
   if (!manifest)
     throw new Error(`The docs bundle of @maz-ui/mcp is missing or invalid (${bundledDir}). Reinstall the package.`)
 
-  return new Knowledge(manifest, { kind: 'bundled', directory: bundledDir, projectVersion: project?.version })
+  return new Knowledge(manifest, { kind: 'bundled', directory: bundledDir, projectVersion: project?.version }, options.bundledVersion ?? readOwnVersion())
 }

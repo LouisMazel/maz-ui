@@ -21,6 +21,7 @@ export interface SearchHit {
 interface IndexedDoc {
   id: string
   name: string
+  symbols: string
   aliases: string
   description: string
   headings: string
@@ -30,6 +31,7 @@ interface IndexedDoc {
 
 const FIELD_BOOSTS = {
   name: 8,
+  symbols: 3,
   aliases: 5,
   description: 2.5,
   headings: 1.5,
@@ -50,8 +52,24 @@ const CATEGORY_HINTS: Record<string, DocCategory> = {
   guide: 'guide',
 }
 
+/** Pages about the tooling itself: relevant only when the query is about it */
+const META_DOCS = new Map<string, RegExp>([
+  ['guide/ai-agents', /\b(?:ai|agents?|llms?|claude|cursor|copilot|codex|mcp)\b/i],
+  ['ecosystem/mcp', /\b(?:ai|agents?|llms?|claude|cursor|copilot|codex|mcp)\b/i],
+  ['ecosystem/eslint-config', /\b(?:eslint|lint|linter|linting)\b/i],
+  ['ecosystem/stylelint-config', /\b(?:stylelint|lint|linter|linting)\b/i],
+  ['guide/migration-v5', /\b(?:migrat\w*|upgrad\w*|v4|v5|breaking)\b/i],
+])
+const META_DOC_FACTOR = 0.3
+
+/** Generic verbs and nouns that describe the context of a need more than the feature itself */
+const LOW_VALUE_TERMS = new Set(['add', 'show', 'display', 'delete', 'remove', 'update', 'set', 'open', 'close', 'user', 'users', 'page', 'item', 'data', 'value', 'list', 'text', 'click', 'between', 'before', 'after'].map(term => processTerm(term) ?? term))
+const LOW_VALUE_FACTOR = 0.4
+/** Applied to a doc that only matches the low-value terms of a query that has others */
+const LOW_VALUE_ONLY_FACTOR = 0.25
+
 const EXACT_MATCH_BOOST = 4
-const EXACT_ALIAS_BOOST = 2.5
+const EXACT_ALIAS_BOOST = 4
 const CATEGORY_HINT_BOOST = 1.4
 
 function normalizedSynonyms(): Map<string, string[]> {
@@ -99,7 +117,8 @@ export class DocSearch {
 
     return {
       id: doc.id,
-      name: [doc.title, ...doc.symbols, doc.slug].join(' '),
+      name: [doc.title, doc.slug].join(' '),
+      symbols: doc.symbols.join(' '),
       aliases: doc.aliases.join(' . '),
       description: doc.description,
       headings: doc.headings.join(' . '),
@@ -133,11 +152,12 @@ export class DocSearch {
     const expansion = [...new Set(terms.flatMap(term => this.synonyms.get(term) ?? []))].filter(term => !terms.includes(term))
     const exact = this.exactMatch(query)
     const normalizedQuery = query.trim().toLowerCase()
+    const hasValuableTerm = terms.some(term => !LOW_VALUE_TERMS.has(term))
 
     const results = this.index.search({
       combineWith: 'OR',
       queries: [
-        { queries: [terms.join(' ')], combineWith: 'OR' },
+        { queries: [terms.join(' ')], combineWith: 'OR', boostTerm: (term: string) => (LOW_VALUE_TERMS.has(term) ? LOW_VALUE_FACTOR : 1) },
         ...(expansion.length > 0 ? [{ queries: [expansion.join(' ')], combineWith: 'OR' as const, boostTerm: () => 0.45 }] : []),
       ],
     }, {
@@ -161,6 +181,13 @@ export class DocSearch {
           score *= EXACT_ALIAS_BOOST
         if (hintedCategory && doc.category === hintedCategory)
           score *= CATEGORY_HINT_BOOST
+        if (hasValuableTerm && result.queryTerms.every(term => LOW_VALUE_TERMS.has(term)))
+          score *= LOW_VALUE_ONLY_FACTOR
+
+        const metaTopic = META_DOCS.get(doc.id)
+
+        if (metaTopic && !metaTopic.test(query))
+          score *= META_DOC_FACTOR
 
         return { doc, score, matched }
       })

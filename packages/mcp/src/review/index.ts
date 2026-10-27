@@ -2,7 +2,7 @@ import type { ElementNode, RootNode } from '@vue/compiler-dom'
 import type { Finding, ReviewContext, ReviewOptions, RuleId, Severity } from './types'
 
 import { NodeTypes, parse } from '@vue/compiler-dom'
-import { reviewScript } from './script'
+import { localComponents, reviewScript } from './script'
 import { reviewStyle } from './style'
 import { reviewTemplate } from './template'
 import { SEVERITY_ORDER } from './types'
@@ -152,8 +152,11 @@ export function reviewCode(code: string, options: ReviewOptions): Finding[] {
   }
   else {
     const root = parse(code, { parseMode: 'sfc' })
+    const blocks = blocksOf(root)
 
-    for (const block of blocksOf(root)) {
+    context.localComponents = localComponents(blocks.filter(block => block.tag === 'script').map(block => blockContent(block).content).join('\n'))
+
+    for (const block of blocks) {
       if (block.tag === 'template') {
         reviewTemplate(block, code, context)
       }

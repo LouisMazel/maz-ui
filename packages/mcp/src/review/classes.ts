@@ -57,8 +57,57 @@ function themeSuggestion(utility: string, hue: string, step: string): string {
   return colors.map(color => `\`${utility}-${color}${scale}\``).join(' or ')
 }
 
-/** Checks a list of Tailwind classes. `offset` is the position of the first class in the reviewed source */
-export function checkClassList(value: string, offset: number, context: ReviewContext): void {
+const THEME_BACKGROUND = /^(?:[\w-]+:)*!?bg-(primary|secondary|accent|info|success|warning|destructive|contrast)(?:-\d{2,3})?(?:\/\d+)?!?$/
+/** Backgrounds that keep the same color in light and dark mode (overlay, black, media, gradients...) */
+const FIXED_BACKGROUND = /^(?:[\w-]+:)*!?(?:bg-(?:overlay|black|white|transparent|linear|radial|conic|gradient|none)|bg-\[|bg-\(|from-|via-|to-)/
+
+export interface Background { kind: 'theme' | 'fixed', color?: string }
+
+/** The background set in the same class list, which decides the right text color */
+export function backgroundOf(classList: string): Background | undefined {
+  for (const token of classList.split(/\s+/)) {
+    const theme = THEME_BACKGROUND.exec(token)
+
+    if (theme)
+      return { kind: 'theme', color: theme[1] }
+    if (FIXED_BACKGROUND.test(token))
+      return { kind: 'fixed' }
+  }
+
+  return undefined
+}
+
+function reportBlackWhite(token: string, utility: string, color: string, background: Background | undefined, position: number, context: ReviewContext): void {
+  if (background?.kind === 'fixed' && utility !== 'bg')
+    return
+
+  if (background?.color && color === 'white' && utility !== 'bg') {
+    context.report({
+      rule: 'theme-colors',
+      severity: 'warning',
+      message: `\`${token}\` on \`bg-${background.color}\`: the theme gives the readable color of each background.`,
+      suggestion: `Use \`${utility}-${background.color}-foreground\`.`,
+    }, position)
+    return
+  }
+
+  context.report({
+    rule: 'theme-colors',
+    severity: 'warning',
+    message: `\`${token}\` is a fixed color that does not follow the theme nor dark mode.`,
+    suggestion: color === 'white'
+      ? `Use \`${utility}-surface\` (backgrounds) or the \`-foreground\` of the color behind (\`text-primary-foreground\`). Keep it over a fixed dark background (\`bg-overlay\`, image, video).`
+      : `Use \`${utility}-foreground\` (text) or \`${utility}-contrast\`.`,
+  }, position)
+}
+
+/**
+ * Checks a list of Tailwind classes. `offset` is the position of the first class in the reviewed source,
+ * `inherited` the background set by a parent element
+ */
+export function checkClassList(value: string, offset: number, context: ReviewContext, inherited?: Background): void {
+  const background = backgroundOf(value) ?? inherited
+
   for (const match of value.matchAll(/\S+/g)) {
     const token = match[0]
     const position = offset + (match.index ?? 0)
@@ -90,16 +139,7 @@ export function checkClassList(value: string, offset: number, context: ReviewCon
     const blackWhite = BLACK_WHITE_CLASS.exec(token)
 
     if (blackWhite) {
-      const [, utility, color] = blackWhite
-
-      context.report({
-        rule: 'theme-colors',
-        severity: 'warning',
-        message: `\`${token}\` is a fixed color that does not follow the theme nor dark mode.`,
-        suggestion: color === 'white'
-          ? `Use \`${utility}-surface\` (backgrounds) or the \`-foreground\` of the color behind (\`text-primary-foreground\`).`
-          : `Use \`${utility}-foreground\` (text) or \`${utility}-contrast\`.`,
-      }, position)
+      reportBlackWhite(token, blackWhite[1], blackWhite[2], background, position, context)
       continue
     }
 

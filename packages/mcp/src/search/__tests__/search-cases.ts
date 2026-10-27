@@ -6,6 +6,21 @@ export interface SearchCase {
   rank: 1 | 3
 }
 
+export interface NoiseCase {
+  query: string
+  /** Doc ids that must not appear in the first 5 results */
+  unexpected: string[]
+}
+
+/** Irrelevant docs that used to pollute the results */
+export const NOISE_CASES: NoiseCase[] = [
+  { query: 'confirm before delete', unexpected: ['ecosystem/utils/cookie', 'guide/ai-agents', 'ecosystem/mcp'] },
+  { query: 'dark mode toggle', unexpected: ['guide/ai-agents', 'ecosystem/mcp', 'components/maz-popover'] },
+  { query: 'form validation', unexpected: ['guide/migration-v5', 'ecosystem/mcp'] },
+  { query: 'tailwind breakpoints', unexpected: ['ecosystem/stylelint-config', 'ecosystem/eslint-config'] },
+  { query: 'user profile picture', unexpected: ['composables/use-user-visibility', 'ecosystem/utils/user-visibility'] },
+]
+
 export const SEARCH_CASES: SearchCase[] = [
   { query: 'MazBtn', expected: ['components/maz-btn'], rank: 1 },
   { query: 'btn', expected: ['components/maz-btn'], rank: 1 },

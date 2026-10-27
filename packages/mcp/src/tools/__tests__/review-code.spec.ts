@@ -59,7 +59,7 @@ describe('given the review_code tool', () => {
   describe('when both code and paths are given', () => {
     it('then both are reviewed', async () => {
       const project = createTempDir()
-      writeFile(project, 'a.css', '.a { color: #fff; }')
+      writeFile(project, 'a.css', '.a { color: #1d90ff; }')
 
       const output = await reviewCodeTool(createContextFor(project), { code: 'const a = 1', filename: 'x.ts', paths: ['a.css'] })
 

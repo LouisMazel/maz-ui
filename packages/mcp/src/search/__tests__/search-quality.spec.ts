@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { resolve } from 'node:path'
 import { loadKnowledge } from '../../knowledge/load'
 import { DocSearch } from '../engine'
-import { HELD_OUT_CASES, SEARCH_CASES } from './search-cases'
+import { HELD_OUT_CASES, NOISE_CASES, SEARCH_CASES } from './search-cases'
 
 const knowledge = loadKnowledge({ bundledDir: resolve(__dirname, '../../../docs'), cwd: tmpdir() })
 const search = new DocSearch(knowledge)
@@ -58,6 +58,14 @@ describe('given the search engine over the maz-ui knowledge bundle', () => {
 
     it('then the mean reciprocal rank stays above 0.8', () => {
       expect(metrics(HELD_OUT_CASES).mrr).toBeGreaterThanOrEqual(0.8)
+    })
+  })
+
+  describe.each(NOISE_CASES)('when an agent searches the need "$query"', (noiseCase) => {
+    it('then the unrelated docs stay out of the first 5 results', () => {
+      const ids = search.search(noiseCase.query, { limit: 5 }).map(hit => hit.doc.id)
+
+      expect(ids.filter(id => noiseCase.unexpected.includes(id))).toEqual([])
     })
   })
 })

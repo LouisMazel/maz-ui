@@ -1,7 +1,9 @@
+import type { ComponentApi } from '../../knowledge/schema'
 import type { Finding, Framework } from '../index'
 
 import { getKnowledge } from '../../__tests__/helpers'
 import { reviewCode } from '../index'
+import { propSuggestions } from '../template'
 
 function review(code: string, filename = 'Test.vue', framework?: Framework): Finding[] {
   return reviewCode(code, { knowledge: getKnowledge(), filename, framework })
@@ -36,10 +38,38 @@ describe('given the unknown-component rule', () => {
     })
   })
 
+  describe('when the SFC imports the tag under another name', () => {
+    it('then the tag is checked as the imported maz-ui component or icon', () => {
+      const sfc = (script: string, markup: string): string => `<script setup lang="ts">\n${script}\n</script>\n${template(markup)}`
+
+      expect(rulesOf(sfc('import { MazComputerDesktop as MazScreenIcon } from \'@maz-ui/icons/static/MazComputerDesktop\'', '<MazScreenIcon class="size-5" />'))).toEqual([])
+      expect(rulesOf(sfc('import MazFancy from \'./MazFancy.vue\'\nimport type { Foo } from \'./types\'', '<MazFancy :anything="1" />'))).toEqual([])
+      expect(rulesOf(sfc('import Btn, { type MazBtnProps } from \'maz-ui/components/MazBtn\'', '<Btn colour="primary">x</Btn>'))).toEqual(['unknown-prop'])
+      expect(rulesOf(sfc('import { MazBtn as Action } from \'maz-ui/components\'', '<Action colour="primary">x</Action><button>x</button>'))).toEqual(['unknown-prop', 'prefer-maz-component'])
+    })
+  })
+
   describe('when a script imports an unknown component path', () => {
     it('then it reports it', () => {
       expect(rulesOf('import MazButon from \'maz-ui/components/MazButon\'', 'a.ts')).toEqual(['unknown-component'])
       expect(review('import MazQwxzvQwxzv from \'maz-ui/components/MazQwxzvQwxzv\'', 'a.ts')[0].suggestion).toContain('search_docs')
+    })
+  })
+})
+
+describe('given propSuggestions', () => {
+  const component = { name: 'MazFake', props: [{ name: 'iconPosition' }, { name: 'leftIcon' }, { name: 'modelValue' }] } as ComponentApi
+
+  describe('when several props contain the words of the unknown name', () => {
+    it('then the shortest come first', () => {
+      expect(propSuggestions('icon', component)).toEqual(['leftIcon', 'iconPosition'])
+    })
+  })
+
+  describe('when props containing the words are not wanted', () => {
+    it('then only the synonyms and the typos are suggested', () => {
+      expect(propSuggestions('icon', component, { containing: false })).toEqual([])
+      expect(propSuggestions('value', component, { containing: false })).toEqual(['modelValue'])
     })
   })
 })
@@ -51,6 +81,21 @@ describe('given the unknown-prop rule', () => {
 
       expect(finding.rule).toBe('unknown-prop')
       expect(finding.suggestion).toContain('`color`')
+    })
+  })
+
+  describe('when a prop name comes from another library', () => {
+    it.each([
+      ['<MazSelect items="[]" />', '`options`'],
+      ['<MazBtn rounded>x</MazBtn>', '`rounded-size`'],
+      ['<MazCheckbox checked />', '`v-model`'],
+      ['<MazBtn is-loading>x</MazBtn>', '`loading`'],
+      ['<MazInput left-icon="x" />', '`start-icon`'],
+    ])('then %s suggests %s', (markup, suggestion) => {
+      const [finding] = review(template(markup))
+
+      expect(finding.rule).toBe('unknown-prop')
+      expect(finding.suggestion).toContain(suggestion)
     })
   })
 
@@ -207,6 +252,19 @@ describe('given the unknown-slot rule', () => {
       expect(rulesOf(template('<MazAvatar><template #caption>x</template><template #[slotName]>y</template><div>z</div></MazAvatar>'))).toEqual([])
     })
   })
+
+  describe('when a slot of the component has a computed name', () => {
+    it('then the names that follow its pattern are accepted', () => {
+      expect(rulesOf(template('<MazTable><template #cell-name="{ value }">{{ value }}</template><template #cell-createdAt>x</template></MazTable>'))).toEqual([])
+      expect(rulesOf(template('<MazTable><template #cell->x</template></MazTable>'))).toEqual(['unknown-slot'])
+    })
+  })
+
+  describe('when a component forwards its v-model to an inner component', () => {
+    it('then the v-model is accepted', () => {
+      expect(rulesOf(template('<MazDrawer v-model="open">x</MazDrawer>'))).toEqual([])
+    })
+  })
 })
 
 describe('given the unknown-icon rule', () => {
@@ -276,6 +334,18 @@ describe('given the inline-svg rule', () => {
     })
   })
 
+  describe('when an svg is a drawing, an animation or depends on data', () => {
+    it.each([
+      ['<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" /></svg>'],
+      ['<svg viewBox="0 0 24 24"><line class="animate-pulse" x1="0" y1="0" x2="1" y2="1" /></svg>'],
+      ['<svg viewBox="0 0 24 24"><circle stroke-dasharray="26 80" r="4" /></svg>'],
+      ['<svg viewBox="0 0 24 24"><animate attributeName="r" /><circle r="4" /></svg>'],
+      ['<svg viewBox="0 0 24 24"><line v-if="count > 1" x1="0" y1="0" x2="1" y2="1" /></svg>'],
+    ])('then %s is not reported', (markup) => {
+      expect(rulesOf(template(markup))).toEqual([])
+    })
+  })
+
   describe('when an svg has no drawing child', () => {
     it('then nothing is reported', () => {
       expect(rulesOf(template('<svg><use href="#icon" /></svg>'))).toEqual([])
@@ -326,6 +396,27 @@ describe('given the theme-colors rule', () => {
     })
   })
 
+  describe('when white text is on a theme color background', () => {
+    it('then it suggests the foreground of that color', () => {
+      const [finding] = review(template('<div class="bg-primary text-white"></div>'))
+
+      expect(finding.rule).toBe('theme-colors')
+      expect(finding.suggestion).toContain('`text-primary-foreground`')
+    })
+  })
+
+  describe('when white or black text is on a fixed background', () => {
+    it('then only the fixed background color is reported', () => {
+      expect(rulesOf(template('<div class="bg-overlay/90 text-white"></div><div class="bg-[url(/a.png)] text-white"></div><div class="bg-linear-to-t from-overlay text-white"></div>'))).toEqual([])
+      expect(rulesOf(template('<div class="bg-white text-black"></div>'))).toEqual(['theme-colors'])
+    })
+
+    it('then the background of a parent element is taken into account', () => {
+      expect(rulesOf(template('<div class="bg-overlay"><p><span class="text-white/70">x</span></p></div>'))).toEqual([])
+      expect(review(template('<div class="bg-primary"><span class="text-white">x</span></div>'))[0].suggestion).toContain('`text-primary-foreground`')
+    })
+  })
+
   describe('when the classes come from a class binding or a script string', () => {
     it('then they are checked too', () => {
       expect(rulesOf(template('<div :class="[active ? \'bg-blue-500\' : \'bg-surface\', { \'text-red-500\': error }]"></div>'))).toEqual(['theme-colors', 'theme-colors'])
@@ -359,9 +450,17 @@ describe('given the hardcoded-color rule', () => {
     })
   })
 
+  describe('when the literal color is black or white or is inside @keyframes', () => {
+    it('then it is only an info', () => {
+      const css = '.a { stroke: #fff; }\n@keyframes lock { from { stroke: #1d90ff; } to { opacity: 1; } }\n.b { color: #1d90ff; }'
+
+      expect(review(css, 'a.css').map(finding => finding.severity)).toEqual(['info', 'info', 'warning'])
+    })
+  })
+
   describe('when CSS uses variables, custom properties, theme blocks or comments', () => {
     it('then nothing is reported', () => {
-      const css = '/* color: #fff */\n.a { color: var(--maz-primary); --brand: #ff0; width: 10px; }\n@theme { --color-brand: #ff0000; }\n.b { background: var(--maz-surface, #fff); }'
+      const css = '/* color: #fff */\n.a { color: var(--maz-primary); --brand: #ff0; width: 10px; border-color: inherit; }\n@theme { --color-brand: #ff0000; }\n.b { background: var(--maz-surface, #fff); }'
 
       expect(rulesOf(css, 'a.css')).toEqual([])
     })

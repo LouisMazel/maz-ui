@@ -1,10 +1,11 @@
 import type { AttributeNode, DirectiveNode, ElementNode, RootNode, TemplateChildNode } from '@vue/compiler-dom'
 import type { ComponentApi, PropApi } from '../knowledge/schema'
+import type { Background } from './classes'
 import type { ReviewContext } from './types'
 
 import { NodeTypes } from '@vue/compiler-dom'
 import { closest, toKebab } from '../knowledge/resolve'
-import { checkClassList, checkClassStrings } from './classes'
+import { backgroundOf, checkClassList, checkClassStrings } from './classes'
 import { isPassthroughAttribute, NATIVE_EVENTS, nativeReplacement } from './html'
 import { checkStyleDeclarations } from './style'
 
@@ -79,20 +80,65 @@ function checkPropValue(prop: PropApi, value: string, offset: number, component:
   }
 }
 
-function reportUnknownProp(name: string, offset: number, component: ComponentApi, context: ReviewContext): void {
-  const camel = toCamel(name)
-  const candidates = component.props.map(prop => prop.name)
-  const near = closest(camel, candidates, { max: 2, limit: 2 })
+/** Prop names agents bring from other libraries, mapped to the maz-ui props */
+const PROP_SYNONYMS: Record<string, string[]> = {
+  items: ['options'],
+  choices: ['options'],
+  list: ['options'],
+  data: ['options', 'rows'],
+  columns: ['headers'],
+  value: ['modelValue'],
+  checked: ['modelValue'],
+  selected: ['modelValue'],
+  open: ['modelValue'],
+  isOpen: ['modelValue'],
+  show: ['modelValue'],
+  visible: ['modelValue'],
+  active: ['modelValue'],
+  text: ['label', 'title', 'content'],
+  helperText: ['hint'],
+  helper: ['hint'],
+  message: ['hint'],
+  errorMessage: ['hint', 'error'],
+  variant: ['color', 'fill', 'outlined'],
+  image: ['src'],
+  leftIcon: ['startIcon'],
+  rightIcon: ['endIcon'],
+  prependIcon: ['startIcon'],
+  appendIcon: ['endIcon'],
+}
 
-  if (isPassthroughAttribute(name) && near.length === 0)
+function nameWords(name: string): string[] {
+  return toKebab(name).split('-').filter(Boolean)
+}
+
+/** Props close to an unknown name: synonyms, props containing its words (not for HTML attributes), typos */
+export function propSuggestions(name: string, component: ComponentApi, { containing = true } = {}): string[] {
+  const camel = toCamel(name)
+  const props = component.props.map(prop => prop.name)
+  const synonyms = (PROP_SYNONYMS[camel] ?? []).filter(prop => props.includes(prop))
+  const words = nameWords(camel.replace(/^(?:is|has)(?=[A-Z])/, ''))
+  const withWords = containing
+    ? props.filter(prop => words.every(word => nameWords(prop).includes(word))).sort((a, b) => a.length - b.length)
+    : []
+  const near = closest(camel, props, { max: camel.length <= 3 ? 1 : 2, limit: 2 })
+
+  return [...new Set([...synonyms, ...withWords, ...near])].slice(0, 3)
+}
+
+function reportUnknownProp(name: string, offset: number, component: ComponentApi, context: ReviewContext): void {
+  const passthrough = isPassthroughAttribute(name)
+  const near = propSuggestions(name, component, { containing: !passthrough })
+
+  if (passthrough && near.length === 0)
     return
 
   context.report({
     rule: 'unknown-prop',
     severity: 'warning',
-    message: `${component.name} has no prop \`${name}\`${isPassthroughAttribute(name) ? '' : ': it will only be forwarded as an HTML attribute'}.`,
+    message: `${component.name} has no prop \`${name}\`${passthrough ? '' : ': it will only be forwarded as an HTML attribute'}.`,
     suggestion: near.length > 0
-      ? `Did you mean ${near.map(entry => `\`${toKebab(entry)}\``).join(' or ')}? Check \`get_component_api({ names: ["${component.name}"] })\`.`
+      ? `Did you mean ${near.map(entry => (entry === 'modelValue' ? '`v-model`' : `\`${toKebab(entry)}\``)).join(' or ')}? Check \`get_component_api({ names: ["${component.name}"] })\`.`
       : `Check the real API with \`get_component_api({ names: ["${component.name}"] })\`.`,
   }, offset)
 }
@@ -166,11 +212,21 @@ function usedSlots(element: ElementNode): Array<{ name: string, offset: number }
     .map(prop => ({ name: directiveArg(prop) ?? 'default', offset: prop.loc.start.offset }))
 }
 
+/** Matches a slot name, dynamic slots included (`cell-{key}` matches `cell-name`) */
+function slotMatches(slot: string, name: string): boolean {
+  if (!slot.includes('{'))
+    return slot === name
+
+  const [prefix, suffix] = slot.split(/\{[^}]*\}/)
+
+  return name.length > prefix.length + suffix.length && name.startsWith(prefix) && name.endsWith(suffix)
+}
+
 function checkSlots(element: ElementNode, component: ComponentApi, context: ReviewContext): void {
   const slots = component.slots.map(slot => slot.name)
 
   for (const { name, offset } of usedSlots(element)) {
-    if (slots.includes(name) || (name === 'default' && slots.length === 0))
+    if (slots.some(slot => slotMatches(slot, name)) || (name === 'default' && slots.length === 0))
       continue
 
     const near = closest(name, slots, { max: 3, limit: 2 })
@@ -233,8 +289,41 @@ function checkMazComponent(element: ElementNode, component: ComponentApi, source
   checkSlots(element, component, context)
 }
 
+const SVG_SHAPES = new Set(['path', 'circle', 'rect', 'polyline', 'polygon', 'line', 'ellipse'])
+const ICON_MAX_VIEWBOX = 32
+
+function svgDescendants(element: ElementNode): ElementNode[] {
+  return element.children.filter(isElement).flatMap(child => [child, ...svgDescendants(child)])
+}
+
+function isAnimated(element: ElementNode): boolean {
+  const classes = staticAttribute(element, 'class')?.value?.content ?? ''
+
+  return element.tag.startsWith('animate')
+    || /\banimate-|\[animation/.test(classes)
+    || element.props.some(prop => prop.name.startsWith('stroke-dash'))
+}
+
+/**
+ * An inline SVG that an icon of @maz-ui/icons could replace: static shapes in an icon-sized viewBox.
+ * Drawings (bigger viewBox), animated or data-driven SVGs (directives on their shapes) are left alone.
+ */
+export function isIconLikeSvg(svg: ElementNode): boolean {
+  const descendants = svgDescendants(svg)
+
+  if (!descendants.some(child => SVG_SHAPES.has(child.tag)))
+    return false
+
+  const viewBox = staticAttribute(svg, 'viewBox')?.value?.content.trim().split(/[\s,]+/).map(Number)
+
+  if (viewBox?.length === 4 && (viewBox[2] > ICON_MAX_VIEWBOX || viewBox[3] > ICON_MAX_VIEWBOX))
+    return false
+
+  return ![svg, ...descendants].some(node => isAnimated(node) || (node !== svg && node.props.some(prop => prop.type === NodeTypes.DIRECTIVE)))
+}
+
 function checkNativeElement(element: ElementNode, context: ReviewContext): void {
-  if (element.tag === 'svg' && element.children.some(child => isElement(child) && ['path', 'circle', 'rect', 'polyline', 'line'].includes(child.tag))) {
+  if (element.tag === 'svg' && isIconLikeSvg(element)) {
     context.report({
       rule: 'inline-svg',
       severity: 'warning',
@@ -256,10 +345,10 @@ function checkNativeElement(element: ElementNode, context: ReviewContext): void 
   }
 }
 
-function checkClassBindings(element: ElementNode, source: string, context: ReviewContext): void {
+function checkClassBindings(element: ElementNode, source: string, context: ReviewContext, inherited?: Background): void {
   for (const prop of element.props) {
     if (prop.type === NodeTypes.ATTRIBUTE && prop.name === 'class' && prop.value) {
-      checkClassList(prop.value.content, valueOffset(prop, source), context)
+      checkClassList(prop.value.content, valueOffset(prop, source), context, inherited)
     }
     else if (prop.type === NodeTypes.ATTRIBUTE && prop.name === 'style' && prop.value) {
       checkStyleDeclarations(prop.value.content, valueOffset(prop, source), context)
@@ -294,20 +383,24 @@ function checkMazTag(element: ElementNode, mazName: string, source: string, cont
   }, element.loc.start.offset)
 }
 
-function walk(node: ElementNode | RootNode, source: string, context: ReviewContext): void {
+/** Walks the template; `background` is the closest background set by a parent (for `text-white` on `bg-overlay`) */
+function walk(node: ElementNode | RootNode, source: string, context: ReviewContext, background?: Background): void {
   for (const child of node.children) {
     if (!isElement(child))
       continue
 
-    const mazName = mazTagName(child.tag)
+    const pascal = /[A-Z-]/.test(child.tag) ? toPascal(child.tag) : undefined
+    const mazName = pascal && context.localComponents?.has(pascal)
+      ? mazTagName(context.localComponents.get(pascal) ?? '')
+      : mazTagName(child.tag)
 
     if (mazName)
       checkMazTag(child, mazName, source, context)
     else
       checkNativeElement(child, context)
 
-    checkClassBindings(child, source, context)
-    walk(child, source, context)
+    checkClassBindings(child, source, context, background)
+    walk(child, source, context, backgroundOf(staticAttribute(child, 'class')?.value?.content ?? '') ?? background)
   }
 }
 
