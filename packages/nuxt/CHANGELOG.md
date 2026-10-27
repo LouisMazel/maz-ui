@@ -1,5 +1,21 @@
 # Change Log
 
+## v5.1.0-beta.0 (2026-10-27)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.1-beta.0...v5.1.0-beta.0)
+
+### 🚀 Features
+
+- **@maz-ui/nuxt:** Connect the AI coding agents of the project to the maz-ui MCP server ([d64d740e0](https://github.com/LouisMazel/maz-ui/commit/d64d740e0))
+
+  In development, the module registers the maz-ui MCP server in the MCP config of the agents detected in the project (`.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`), so they get the docs and rules of the installed maz-ui. It writes nothing when no agent is detected and never overwrites the files you own.
+
+  Also write the rule files (`.claude/rules/maz-ui.md`, an `AGENTS.md` section) with `mazUi.agents: { rules: true }`, choose the agents with `mazUi.agents: { targets: ['claude', 'cursor'] }`, or disable it with `mazUi.agents: false`.
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v5.0.1-beta.0 (2026-10-27)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0...v5.0.1-beta.0)

@@ -1,5 +1,31 @@
 # Change Log
 
+## v5.1.0-beta.0 (2026-10-27)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.1-beta.0...v5.1.0-beta.0)
+
+### 🚀 Features
+
+- **maz-ui:** Ship the documentation of the installed version for AI agents ([26daaa7e1](https://github.com/LouisMazel/maz-ui/commit/26daaa7e1))
+
+  Each release now contains `node_modules/maz-ui/docs`: the documentation of this version written for AI coding agents (guides, every component with its full API, composables, directives, helpers, Tailwind theme tokens, icon names), indexed in `README.md`, with the maz-ui rules in `rules.md`.
+
+  Agents read the docs of your version instead of their training data. Run `npx @maz-ui/mcp init` to point them to it.
+
+### 🩹 Fixes
+
+- **maz-ui:** Expose the theme-spacing.css and theme-components.css Tailwind entries ([975d2632f](https://github.com/LouisMazel/maz-ui/commit/975d2632f))
+
+  Import them individually like the other theme modules: `@import 'maz-ui/tailwindcss/theme-spacing.css'` and `@import 'maz-ui/tailwindcss/theme-components.css'`.
+
+### 📖 Documentation
+
+- **maz-ui:** Fix the documentation links of MazDropzone and MazInputPrice props ([6cf6d5196](https://github.com/LouisMazel/maz-ui/commit/6cf6d5196))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.1-beta.0 (2026-10-27)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0...v5.0.1-beta.0)

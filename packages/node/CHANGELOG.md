@@ -1,5 +1,25 @@
 # Changelog
 
+## v5.1.0-beta.0 (2026-10-27)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.1-beta.0...v5.1.0-beta.0)
+
+### 🚀 Features
+
+- **@maz-ui/node:** Add setupAgents to configure the AI coding agents of a project ([4afa9701f](https://github.com/LouisMazel/maz-ui/commit/4afa9701f))
+
+  `setupAgents({ rootDir })` writes the maz-ui rules of the installed version for Claude Code (`.claude/rules/maz-ui.md`) and `AGENTS.md` (a delimited section), and registers the maz-ui MCP server in `.mcp.json`, `.cursor/mcp.json` and `.vscode/mcp.json`.
+
+  It only touches the files and sections it owns, keeps the formatting and comments of the config files, and supports the `targets`, `mcp`, `dryRun` and `remove` options. `detectAgentTargets(rootDir)` lists the agents configured in a project.
+
+- **@maz-ui/node:** Add the rules option to setupAgents to only register the MCP server ([9cd7578b6](https://github.com/LouisMazel/maz-ui/commit/9cd7578b6))
+
+  `setupAgents({ rootDir, rules: false })` registers the maz-ui MCP server without writing the Claude Code rule nor the `AGENTS.md` section, and works even when the installed maz-ui does not ship the agent docs.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0 (2026-10-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.3...v5.0.0)

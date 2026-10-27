@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/mcp",
   "type": "module",
-  "version": "5.0.1-beta.0",
+  "version": "5.1.0-beta.0",
   "description": "MCP server and CLI that give AI coding agents the version-matched knowledge of maz-ui and its ecosystem: search, component APIs, icons, Tailwind theme tokens, setup guides and code review",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
