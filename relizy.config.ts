@@ -1,4 +1,5 @@
 import { defineConfig } from 'relizy'
+import { syncBundleVersions } from './tools/agent-docs/src/sync-version'
 
 export default defineConfig({
   projectName: 'maz-ui',
@@ -53,6 +54,14 @@ export default defineConfig({
 
   release: {
     social: true,
+  },
+
+  hooks: {
+    // The packages are built before the bump: the docs bundled for AI agents get the released version
+    'success:bump': (_config, dryRun) => {
+      if (!dryRun)
+        syncBundleVersions()
+    },
   },
 
   commitlint: {

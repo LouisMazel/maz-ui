@@ -1,5 +1,6 @@
 export { generateKnowledge, HOMEPAGE } from './generate'
 export type { GeneratedKnowledge } from './generate'
 export { getSourcePaths } from './paths'
+export { syncBundleVersions } from './sync-version'
 export * from './types'
 export { findOutdatedFiles, writeOutput } from './write'
