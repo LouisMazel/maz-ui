@@ -15,7 +15,9 @@ It detects your agents and configures them without touching your own instruction
 - Claude Code: `.claude/rules/maz-ui.md` (rules, always loaded) and `.mcp.json`
 - Cursor, Copilot, Codex, Windsurf...: a delimited `maz-ui` section in `AGENTS.md`, and `.cursor/mcp.json` / `.vscode/mcp.json`
 
-Options: `--targets claude,agents-md,cursor,vscode`, `--no-mcp`, `--dry-run`, `--remove`. With Nuxt, the `mazUi.agents` option of `@maz-ui/nuxt` keeps them in sync automatically.
+Options: `--targets claude,agents-md,cursor,vscode`, `--no-rules` (MCP server only), `--no-mcp`, `--dry-run`, `--remove`. With Nuxt, the `mazUi.agents` option of `@maz-ui/nuxt` registers the MCP server of the detected agents automatically in development.
+
+To use it without writing anything in your projects, register the server once for your user: `claude mcp add maz-ui --scope user -- npx -y @maz-ui/mcp@latest` (its instructions carry the maz-ui rules), or install the Claude Code plugin below.
 
 ## Tools
 

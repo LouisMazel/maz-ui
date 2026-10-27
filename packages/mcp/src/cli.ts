@@ -23,6 +23,7 @@ Usage:
 
 init options:
   --targets <list>    Comma separated: ${AGENT_TARGETS.join(', ')} (default: detected, else claude,agents-md)
+  --no-rules          Only register the MCP server (no rule file, no AGENTS.md section)
   --no-mcp            Do not register the MCP server
   --dry-run           Show the changes without writing them
   --remove            Remove what init added
@@ -80,6 +81,7 @@ export function runInit(values: Record<string, unknown>, cwd: string): number {
   const result = setupAgents({
     rootDir: cwd,
     targets,
+    rules: values['no-rules'] !== true,
     mcp: values['no-mcp'] !== true,
     dryRun,
     remove: values.remove === true,
@@ -89,7 +91,7 @@ export function runInit(values: Record<string, unknown>, cwd: string): number {
   console.log(`maz-ui ${result.version ? `${result.version} ` : ''}agents setup (${targets.join(', ')})${dryRun ? ' - dry run' : ''}`)
   printChanges(result.changes, dryRun)
 
-  if (!values.remove && targets.includes('agents-md'))
+  if (!values.remove && values['no-rules'] !== true && targets.includes('agents-md'))
     console.log('\nCodex and Windsurf read AGENTS.md. To give them the MCP server too, add `npx -y @maz-ui/mcp@latest` to their global MCP config.')
 
   return 0
@@ -152,6 +154,7 @@ export async function runCli(argv: string[] = process.argv.slice(2)): Promise<nu
       'docs': { type: 'string' },
       'cwd': { type: 'string' },
       'targets': { type: 'string' },
+      'no-rules': { type: 'boolean' },
       'no-mcp': { type: 'boolean' },
       'dry-run': { type: 'boolean' },
       'remove': { type: 'boolean' },

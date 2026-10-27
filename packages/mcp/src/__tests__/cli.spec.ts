@@ -206,6 +206,17 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(logged()).not.toContain('Codex and Windsurf')
     })
 
+    it('then --no-rules only registers the MCP server', async () => {
+      const cwd = createTempDir()
+
+      await runCli(['init', '--targets', 'claude,agents-md', '--no-rules', '--docs', BUNDLE_DIR, '--cwd', cwd])
+
+      expect(existsSync(join(cwd, '.mcp.json'))).toBe(true)
+      expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(false)
+      expect(existsSync(join(cwd, 'AGENTS.md'))).toBe(false)
+      expect(logged()).not.toContain('Codex and Windsurf')
+    })
+
     it('then an up to date project reports unchanged files', async () => {
       const cwd = createTempDir()
 
