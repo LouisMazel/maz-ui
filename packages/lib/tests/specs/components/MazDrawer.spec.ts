@@ -32,7 +32,7 @@ describe('given MazDrawer component', () => {
       })
 
       const wrap = wrapper.find('.m-drawer-content-wrap').classes()
-      expect(wrap).toContain('maz:h-full')
+      expect(wrap).toContain('maz:size-full')
       expect(wrap).toContain('maz:max-h-full')
       expect(wrap).not.toContain('maz:min-h-screen')
       expect(wrapper.find('.m-drawer-body').classes()).toContain('maz:overflow-auto')
