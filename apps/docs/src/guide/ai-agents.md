@@ -76,7 +76,7 @@ export default defineNuxtConfig({
 })
 ```
 
-It only runs in development (never in CI, in tests or during builds), writes nothing when no agent is detected, keeps the files in sync with the installed maz-ui version and never overwrites files it does not own.
+It only runs in development (never in CI, in tests or during builds), writes nothing when no agent is detected, keeps the files in sync with the installed maz-ui version and never overwrites files it does not own. In a monorepo, it writes at the root of the workspace, where the agents start (`agents.dir` to choose another folder).
 
 ### Without any file in the project
 
@@ -117,7 +117,7 @@ The MCP server gives agents tools that work with the needs they have, and verify
 | `search_docs` | Find what maz-ui provides for a need ("confirm before delete", "phone input", "debounce search") |
 | `get_component_api` | Exact props, values, events, slots of up to 10 components |
 | `find_icons` | Icons by meaning ("delete", "settings", "france flag") with their imports |
-| `get_theme_tokens` | Every Tailwind class and CSS variable of the theme |
+| `get_theme_tokens` | The theme of your project (preset, `@theme` tokens, variants, utilities) and every Tailwind class and CSS variable of maz-ui |
 | `get_doc` | Any page of the docs, or only some sections |
 | `list_docs` | The whole catalog |
 | `get_setup_guide` | Installation in a Vue or Nuxt app, with or without Tailwind |

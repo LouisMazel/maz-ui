@@ -268,6 +268,28 @@ Toggle the mode with `useTheme()` (`toggleDarkMode()`, `setColorMode('dark' | 'l
 
 ## Extending the theme
 
+### How the layers fit together
+
+Your theme is built from three layers, from the most global to the most specific:
+
+1. **The preset** (`definePreset` of `@maz-ui/themes`) gives the **values**: it emits runtime CSS variables (`--maz-primary`, `--maz-font-family`, `--maz-rounded-md`, `--maz-motion-fast`...) for the light and dark modes.
+2. **The maz-ui theme** (`maz-ui/tailwindcss/theme.css`) gives the **class names**: it maps each Tailwind token to a preset variable (`--color-primary: var(--maz-primary)`, `--font-display: var(--maz-font-display-stack)`). `bg-primary` or `font-display` therefore follow the active preset and color mode, without rebuild.
+3. **Your Tailwind entry** gives the **project tokens**: everything you declare after the maz-ui imports (`@theme`, `@custom-variant`, `@utility`) adds classes next to the maz-ui ones.
+
+| You want | Put it in | You get |
+| --- | --- | --- |
+| Brand colors, fonts, radius, shadows, motion, spacing | the preset (`colors`, `foundation`, `scales`) | the same maz-ui classes with your values, components included |
+| Background of cards and inputs, button font weight | the preset (`components`) | `bg-container`, `bg-input`, `MazBtn` |
+| A color outside the maz-ui roles (chart series, category) | `@theme { --color-* }` | `bg-<name>`, `text-<name>`... |
+| An animation | `@theme { --animate-* }` + `@keyframes` | `animate-<name>` |
+| A variant (short screens, a state) | `@custom-variant` | `<name>:` |
+| A reusable group of declarations | `@utility` | `<name>` |
+| The width of `padded-container` | `--maz-container-max-width` in your base layer | [Container width](#container-width) |
+
+::: warning Redefining a maz-ui token
+A token you redefine in your `@theme` (`--color-primary`, `--font-sans`, `--radius-md`...) replaces the maz-ui mapping: the class keeps your literal value and **stops following the preset** (preset switch, light and dark values). Change brand values in the preset instead; redefine a token only when you need it, for example to give a literal font name to `@nuxt/fonts` (see [Fonts](#fonts)).
+:::
+
 ### Brand colors: use a preset
 
 Your brand colors, radius, fonts and spacing belong to a theme preset: every maz-ui component **and** every Tailwind utility (`bg-primary`, `rounded-md`, `font-sans`...) then use them, in light and dark modes.
@@ -316,7 +338,7 @@ For a color outside the maz-ui roles (a chart series, a product category), decla
 
 ### Fonts
 
-The font utilities read the preset (`foundation.font-family`, `font-display-stack`, `font-mono-stack`). You can also override them in your Tailwind entry, after the maz-ui import:
+The font utilities read the preset: `font-sans` uses `foundation.font-family`, `font-display` uses `font-display-stack` and `font-mono` uses `font-mono-stack`. You can also redefine them in your Tailwind entry, after the maz-ui import (keep the same stacks as the preset, the classes no longer follow it):
 
 ```css
 @theme {
@@ -460,6 +482,8 @@ Tailwind v4 processes each SFC `<style>` block in isolation: a block that uses `
 ## AI agents
 
 Every class and variable of this page is available to AI coding agents, generated from the sources of the installed version: the `get_theme_tokens` tool of the [maz-ui MCP server](./../ecosystem/mcp.md), and `node_modules/maz-ui/docs/reference/tailwind-tokens.md`. See [AI agents](./ai-agents.md).
+
+`get_theme_tokens` also reads **your** theme: the Tailwind entries of the project (CSS files with `@theme`, `@custom-variant`, `@utility` or a `tailwindcss` import) and the `definePreset` calls, in every app of a monorepo. Agents get your preset values, your tokens with their comments (`animate-rise`, `font-display`, `short:`...), the tokens that redefine a maz-ui one and the setup problems (missing maz-ui import). A comment above a token in your `@theme` is a good place to say when to use it.
 
 ## Migrating from Tailwind v3
 
