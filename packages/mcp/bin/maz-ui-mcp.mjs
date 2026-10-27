@@ -1,7 +1,4 @@
 #!/usr/bin/env node
-import { MazUiMcpServer } from '../dist/mcp.mjs'
+import { main } from '../dist/cli.mjs'
 
-new MazUiMcpServer().run().catch((error) => {
-  console.error('Failed to start MCP server:', error.message)
-  process.exit(1)
-})
+main()

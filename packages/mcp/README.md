@@ -1,260 +1,91 @@
-# Maz-UI MCP Server
+# @maz-ui/mcp
 
-A Model Context Protocol (MCP) server that provides AI assistants with comprehensive access to the Maz-UI component library documentation. This server enables AI agents to help developers with Vue.js/Nuxt.js component implementation, usage examples, and best practices.
+MCP server and CLI that give AI coding agents (Claude Code, Cursor, GitHub Copilot, Codex, Windsurf...) the **version-matched** knowledge of [maz-ui](https://maz-ui.com) and its ecosystem, so they use its components, composables, icons, helpers and Tailwind theme tokens instead of re-implementing them.
 
-- [Maz-UI MCP Server](#maz-ui-mcp-server)
-  - [Features](#features)
-  - [AI Assistant Configuration](#ai-assistant-configuration)
-    - [Claude Code](#claude-code)
-    - [Claude Desktop](#claude-desktop)
-    - [Cursor IDE](#cursor-ide)
-    - [Windsurf](#windsurf)
-    - [Visual Studio Code (Copilot)](#visual-studio-code-copilot)
-    - [Cline](#cline)
-  - [Available Tools](#available-tools)
-  - [Available Resources](#available-resources)
-    - [Core Resources](#core-resources)
-  - [Development](#development)
-    - [Server Architecture](#server-architecture)
-    - [Running Tests](#running-tests)
-    - [Type Checking](#type-checking)
-    - [Debugging with MCP Inspector](#debugging-with-mcp-inspector)
-  - [License](#license)
-  - [Support](#support)
+## Quick start
 
-## Features
-
-- **50+ Vue Components** - Complete documentation for all Maz-UI components
-- **11 Comprehensive Guides** - Installation, theming, dark mode, and framework-specific guides
-- **14 Vue Composables** - Reusable composition functions with usage examples
-- **5 Vue Directives** - Custom directives for enhanced functionality
-- **4 Vue Plugins** - Toast, dialog, AOS animations, and wait overlay plugins
-- **20+ Utility Helpers** - Date formatting, currency handling, string manipulation, and more
-- **Real-time Search** - Smart search across all documentation types
-- **TypeScript Support** - Full type safety and IntelliSense integration
-
-## AI Assistant Configuration
-
-### Claude Code
-
-1. Run the following command:
-
-   ```bash
-   claude mcp add maz-ui npx @maz-ui/mcp --scope (project | local | user)
-   ```
-
-2. Will add the following to your `~/.mcp.json` (for project scope):
-
-   ```json
-   {
-     "mcpServers": {
-       "maz-ui": {
-         "type": "stdio",
-         "command": "npx",
-         "args": ["@maz-ui/mcp"]
-       }
-     }
-   }
-   ```
-
-3. Restart Claude code to apply the new configuration.
-
-### Claude Desktop
-
-1. Open Claude desktop and navigate to Settings.
-
-2. Under the Developer tab, tap Edit Config to open the configuration file.
-
-3. Add the following configuration:
-
-   ```json
-   {
-     "mcpServers": {
-       "maz-ui": {
-         "type": "stdio",
-         "command": "npx",
-         "args": ["@maz-ui/mcp"]
-       }
-     }
-   }
-   ```
-
-4. Save the configuration file and restart Claude desktop.
-
-5. From the new chat screen, you should see a hammer (MCP) icon appear with the new MCP server available.
-
-### Cursor IDE
-
-1. Open Cursor and create a .cursor directory in your project root if it doesn't exist.
-
-2. Create a .cursor/mcp.json file if it doesn't exist and open it.
-
-3. Add the following configuration:
-
-   ```json
-   {
-     "mcpServers": {
-       "maz-ui": {
-         "command": "npx",
-         "args": ["@maz-ui/mcp"]
-       }
-     }
-   }
-   ```
-
-4. Save the configuration file.
-
-5. Open Cursor and navigate to Settings/MCP. You should see a green active status after the server is successfully connected.
-
-### Windsurf
-
-1. Open Windsurf and navigate to the Cascade assistant.
-
-2. Tap on the hammer (MCP) icon, then Configure to open the configuration file.
-
-3. Add the following configuration:
-
-   ```json
-   {
-     "mcpServers": {
-       "maz-ui": {
-         "command": "npx",
-         "args": ["@maz-ui/mcp"]
-       }
-     }
-   }
-   ```
-
-4. Save the configuration file and reload by tapping Refresh in the Cascade assistant.
-
-5. You should see a green active status after the server is successfully connected.
-
-### Visual Studio Code (Copilot)
-
-1. Open VS Code and create a .vscode directory in your project root if it doesn't exist.
-
-2. Create a .vscode/mcp.json file if it doesn't exist and open it.
-
-3. Add the following configuration:
-
-   ```json
-   {
-     "servers": {
-       "maz-ui": {
-         "command": "npx",
-         "args": ["@maz-ui/mcp"]
-       }
-     }
-   }
-   ```
-
-4. Save the configuration file.
-
-5. Open Copilot chat and switch to "Agent" mode. You should see a tool icon that you can tap to confirm the MCP tools are available. Once you begin using the server, you will be prompted to enter your personal access token. Enter the token that you created earlier.
-
-### Cline
-
-1. Open the Cline extension in VS Code and tap the MCP Servers icon.
-
-2. Tap Configure MCP Servers to open the configuration file.
-
-3. Add the following configuration:
-
-   ```json
-   {
-     "mcpServers": {
-       "maz-ui": {
-         "command": "npx",
-         "args": ["@maz-ui/mcp"]
-       }
-     }
-   }
-   ```
-
-4. Save the configuration file. Cline should automatically reload the configuration.
-
-5. You should see a green active status after the server is successfully connected.
-
-## Available Tools
-
-The MCP server provides the following tools that AI assistants can use:
-
-- **`search`** — Search across ALL Maz-UI documentation using a powerful unified search engine. Returns ranked results with contextual snippets.
-- **`get_doc`** — Get the complete documentation for a specific item.
-- **`list`** — Browse all available Maz-UI documentation grouped by category.
-
-## Available Resources
-
-The server exposes documentation through MCP resources with the following URI patterns:
-
-### Core Resources
-
-- **`maz-ui://overview`** - Complete library overview and introduction
-- **`maz-ui://component/{ComponentName}`** - Individual component documentation
-  - Examples: `maz-ui://component/MazBtn`, `maz-ui://component/MazInput`
-- **`maz-ui://guide/{guideName}`** - Setup and usage guides
-  - Examples: `maz-ui://guide/getting-started`, `maz-ui://guide/vue`, `maz-ui://ecosystem/nuxt`
-- **`maz-ui://composable/{composableName}`** - Vue composable documentation
-  - Examples: `maz-ui://composable/use-toast`, `maz-ui://composable/use-dialog`
-- **`maz-ui://directive/{directiveName}`** - Vue directive documentation
-  - Examples: `maz-ui://directive/tooltip`, `maz-ui://directive/click-outside`
-- **`maz-ui://plugin/{pluginName}`** - Vue plugin documentation
-  - Examples: `maz-ui://plugin/toast`, `maz-ui://plugin/dialog`
-- **`maz-ui://helper/{helperName}`** - Utility helper documentation
-  - Examples: `maz-ui://helper/currency`, `maz-ui://helper/date`
-
-## Development
-
-### Server Architecture
-
-The MCP server is built with:
-
-- **TypeScript** - Full type safety
-- **STDIO Transport** - MCP 2025 specification compliance
-- **Custom DocumentationService** - Combines manual and generated docs
-
-### Running Tests
+At the root of a project that uses maz-ui:
 
 ```bash
-pnpm test:unit
+npx @maz-ui/mcp init
 ```
 
-### Type Checking
+It detects your agents and configures them without touching your own instructions:
+
+- Claude Code: `.claude/rules/maz-ui.md` (rules, always loaded) and `.mcp.json`
+- Cursor, Copilot, Codex, Windsurf...: a delimited `maz-ui` section in `AGENTS.md`, and `.cursor/mcp.json` / `.vscode/mcp.json`
+
+Options: `--targets claude,agents-md,cursor,vscode`, `--no-mcp`, `--dry-run`, `--remove`. With Nuxt, the `mazUi.agents` option of `@maz-ui/nuxt` keeps them in sync automatically.
+
+## Tools
+
+| Tool                | Purpose                                                                                                                                                               |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `search_docs`       | Find what maz-ui provides for a need in plain words ("confirm before delete", "phone input", "debounce search")                                                       |
+| `get_component_api` | Exact API of up to 10 components: props, accepted values, `v-model`, events, slots, exposed                                                                           |
+| `find_icons`        | Icons of `@maz-ui/icons` by meaning, with imports                                                                                                                     |
+| `get_theme_tokens`  | Every Tailwind class and CSS variable of the maz-ui theme                                                                                                             |
+| `get_doc`           | Any documentation page, whole or by sections                                                                                                                          |
+| `list_docs`         | Catalog of everything maz-ui provides                                                                                                                                 |
+| `get_setup_guide`   | Install maz-ui in a Vue or Nuxt app, with or without Tailwind                                                                                                         |
+| `review_code`       | Review files against the installed maz-ui (unknown props or values, unknown icons, native elements, duplicated libraries, default Tailwind palette, `maz:` prefix...) |
+
+Prompts: `build`, `audit`, `setup`. The server serves the docs shipped in the maz-ui package installed in your project (`node_modules/maz-ui/docs`), so agents read the docs of **your** version. Without maz-ui installed, it serves the docs bundled in this package.
+
+## Manual configuration
+
+Start the server with `npx -y @maz-ui/mcp@latest`:
+
+```json
+{
+  "mcpServers": {
+    "maz-ui": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@maz-ui/mcp@latest"]
+    }
+  }
+}
+```
+
+Claude Code: `claude mcp add maz-ui --scope project -- npx -y @maz-ui/mcp@latest`. VS Code uses the `servers` key in `.vscode/mcp.json`, Codex a `[mcp_servers.maz-ui]` table in `~/.codex/config.toml`.
+
+Claude Code users can also install the plugin (skill, MCP server and review hook):
+
+```txt
+/plugin marketplace add LouisMazel/maz-ui
+/plugin install maz-ui@maz-ui
+```
+
+## CLI
 
 ```bash
-pnpm typecheck
+npx @maz-ui/mcp                                   # MCP server (stdio)
+npx @maz-ui/mcp init                              # configure the AI agents of the project
+npx @maz-ui/mcp review "src/**/*.{vue,ts,css}"    # review files, exits 1 on errors
+npx @maz-ui/mcp review app --min-severity warning --max-warnings 0 --format json
+npx @maz-ui/mcp search "date range picker"
 ```
 
-### Debugging with MCP Inspector
+Ignore an intended finding with a `maz-ui-review-ignore [rule]` comment on the line above, or `maz-ui-review-ignore-file`.
 
-1. Install the MCP Inspector:
+Options: `--docs <dir>` (or `MAZ_UI_DOCS_DIR`) to use another docs bundle, `--cwd <dir>` for the project root.
 
-   ```bash
-   npm install -g @modelcontextprotocol/inspector
-   ```
+## Programmatic API
 
-2. Start the server:
+```ts
+import { createMazUiMcpServer, loadKnowledge, reviewCode, setupAgents } from '@maz-ui/mcp'
 
-   ```bash
-   pnpm dev
-   ```
+const knowledge = loadKnowledge({ cwd: process.cwd() })
+const findings = reviewCode(source, { knowledge, filename: 'Card.vue' })
+```
 
-3. Run the inspector:
+## Documentation
 
-   ```bash
-    pnpm dev:inspector
-   ```
-
-4. Configure
-   - Transport Type: `STDIO`
-   - Command: `tsx`
-   - Args: `src/mcp.ts`
+- [AI agents guide](https://maz-ui.com/guide/ai-agents)
+- [MCP server](https://maz-ui.com/ecosystem/mcp)
+- [llms.txt](https://maz-ui.com/llms.txt)
 
 ## License
 
-This project is licensed under the MIT License - see the main Maz-UI repository for details.
-
-## Support
-
-- **Documentation**: [https://maz-ui.com](https://maz-ui.com)
-- **Issues**: [GitHub Issues](https://github.com/LouisMazel/maz-ui/issues)
+MIT
