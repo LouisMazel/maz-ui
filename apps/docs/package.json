@@ -8,8 +8,8 @@
   "license": "ISC",
   "scripts": {
     "dev": "vitepress dev",
-    "build": "pnpm generate:components-docs && vitepress build",
-    "generate:components-docs": "pnpm -F cli cli generate-components-docs",
+    "build": "pnpm generate:docs && vitepress build",
+    "generate:components-docs": "tsx ../../tools/agent-docs/src/cli.ts --vitepress ./.vitepress/generated-docs",
     "build:test": "cross-env TEST_ENV=true pnpm build",
     "build:watch": "pnpm build:test --watch",
     "preview": "vitepress preview",
@@ -18,7 +18,8 @@
     "lint:fix": "pnpm lint --fix",
     "ftp-deploy:dev": "cross-env DEPLOY_ENV=next node ./ftp-deploy.mjs",
     "ftp-deploy": "node ./ftp-deploy.mjs",
-    "types:check": "vue-tsc --noEmit --skipLibCheck"
+    "types:check": "vue-tsc --noEmit --skipLibCheck",
+    "generate:docs": "tsx ../../tools/agent-docs/src/cli.ts --vitepress ./.vitepress/generated-docs --site ./.vitepress/agent-docs"
   },
   "dependencies": {
     "@maz-ui/eslint-config": "workspace:*",
@@ -53,5 +54,28 @@
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "inputs": [
+          "production",
+          "^production",
+          "{workspaceRoot}/apps/docs/src/**/*.md",
+          "{workspaceRoot}/apps/docs/.vitepress/mixins/**/*",
+          "{workspaceRoot}/tools/agent-docs/src/**/*",
+          "{workspaceRoot}/tools/agent-docs/content/**/*",
+          "{workspaceRoot}/packages/lib/src/**/*",
+          "{workspaceRoot}/packages/icons/src/icon-list.ts",
+          "{workspaceRoot}/packages/nuxt/src/module.ts",
+          "{workspaceRoot}/packages/utils/src/**/*",
+          "{workspaceRoot}/packages/node/src/**/*"
+        ],
+        "outputs": [
+          "{projectRoot}/.vitepress/dist",
+          "{projectRoot}/.vitepress/agent-docs"
+        ]
+      }
+    }
   }
 }
