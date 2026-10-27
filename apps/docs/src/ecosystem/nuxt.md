@@ -75,7 +75,7 @@ const { toggleDarkMode, isDark } = useTheme()
 </script>
 
 <template>
-  <div class="maz:bg-surface p-8 maz:text-foreground">
+  <div class="bg-surface p-8 text-foreground">
     <!-- Components are auto-imported -->
     <MazBtn color="primary" @click="start">
       Start timer ({{ remainingTime }}ms)

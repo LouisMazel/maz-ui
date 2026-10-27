@@ -154,7 +154,7 @@ Use slots for more complex content with custom HTML.
     <template #title>
       3 errors found
     </template>
-    <ul class="maz:m-0 maz:list-inside maz:list-disc maz:pl-0">
+    <ul class="m-0 list-inside list-disc pl-0">
       <li>firstname - Invalid length: Expected >=5 but received 0</li>
       <li>lastname - Invalid length: Expected >=2 but received 0</li>
       <li>age - Invalid type: Expected number but received ""</li>
@@ -311,7 +311,7 @@ You can use either title, content, or both.
 ```vue
 <template>
   <MazAlert color="destructive" title="Please fix the following errors:">
-    <ul class="maz:m-0 maz:list-inside maz:list-disc maz:pl-0">
+    <ul class="m-0 list-inside list-disc pl-0">
       <li>Email address is required</li>
       <li>Password must be at least 8 characters</li>
     </ul>

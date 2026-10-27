@@ -145,7 +145,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
           <span>
             {{ option.label }}
           </span>
-          <span :class="{ 'maz:text-muted': !selected }">
+          <span :class="{ 'text-muted': !selected }">
             {{ option.areaName }}
           </span>
         </div>
@@ -210,7 +210,7 @@ description: MazRadioButtons is a standalone component to select a value in a li
           <span>
             {{ option.label }}
           </span>
-          <span :class="{ 'maz:text-muted': !selected }">
+          <span :class="{ 'text-muted': !selected }">
             {{ option.areaName }}
           </span>
         </div>

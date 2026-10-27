@@ -918,7 +918,7 @@ Migration seems complex? We're here to help:
 
 - **[Create Issue](https://github.com/LouisMazel/maz-ui/issues)** - Report bugs
 - **[Discussions](https://github.com/LouisMazel/maz-ui/discussions)**
-- **[MCP](./mcp.md)**
+- **[MCP](../ecosystem/mcp.md)**
 
 ---
 

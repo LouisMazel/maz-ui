@@ -193,15 +193,15 @@ v-model:page-size="{{pageSize ?? 'undefined'}}"
         { label:'Name', key: 'name' },
         { label: 'Code', key: 'code', align: 'center'  },
         { label: 'Type', key: 'type' },
-        { label: 'Area', key: 'areaName', align: 'center', classes: 'maz:font-bold' },
+        { label: 'Area', key: 'areaName', align: 'center', classes: 'font-bold' },
       ]"
       :rows="competitions"
     >
       <template #cell-index="{ value }">
-        <span class="maz:text-base">{{value}}</span>
+        <span class="text-base">{{value}}</span>
       </template>
       <template #cell-name="{ row, value }">
-        <div class="maz:flex maz:items-center maz:gap-2">
+        <div class="flex items-center gap-2">
           <MazAvatar :src="row.logoUrl" size="0.5rem"></MazAvatar>
           <span>{{value}}</span>
         </div>

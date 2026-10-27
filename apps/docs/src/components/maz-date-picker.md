@@ -303,7 +303,7 @@ By default MazDatePicker renders a readonly `MazInput` as the field that opens t
   <MazDatePicker v-model="date" auto-close>
     <!-- Clicking the button opens the picker automatically. -->
     <template #trigger="{ isOpen }">
-      <MazBtn color="secondary" :class="{ 'maz:ring-2 maz:ring-secondary': isOpen }">
+      <MazBtn color="secondary" :class="{ 'ring-2 ring-secondary': isOpen }">
         {{ date || 'Pick a date' }}
       </MazBtn>
     </template>

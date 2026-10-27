@@ -31,7 +31,7 @@ See the full list of transforms in the [`@maz-ui/upgrade` README](https://github
 
 ## Migrate with the Maz-UI MCP server
 
-You don't have to scroll through this page by hand. The official **[`@maz-ui/mcp`](./mcp.md)** server exposes this guide (and every other Maz-UI doc — components, composables, plugins, helpers) to your AI assistant via the Model Context Protocol. Once it's wired up, the assistant can search the migration guide, pull the exact section it needs, and patch your codebase with full context on what changed in v5.
+You don't have to scroll through this page by hand. The official **[`@maz-ui/mcp`](../ecosystem/mcp.md)** server exposes this guide (and every other Maz-UI doc — components, composables, plugins, helpers) to your AI assistant via the Model Context Protocol. Once it's wired up, the assistant can search the migration guide, pull the exact section it needs, and patch your codebase with full context on what changed in v5.
 
 ### One-time setup
 
@@ -40,7 +40,7 @@ You don't have to scroll through this page by hand. The official **[`@maz-ui/mcp
 claude mcp add maz-ui npx @maz-ui/mcp --scope project
 ```
 
-For Cursor, Windsurf, VS Code Copilot, Cline and Claude Desktop, see the [MCP guide](./mcp.md#ai-assistant-configuration). Then restart your assistant.
+For Cursor, Windsurf, VS Code Copilot, Cline and Claude Desktop, see the [MCP guide](../ecosystem/mcp.md#ai-assistant-configuration). Then restart your assistant.
 
 ### A migration flow that works
 
@@ -242,7 +242,7 @@ import { MazStar } from '@maz-ui/icons/raw/MazStar'
 </template>
 ```
 
-The existing `static/` (eager Vue component) and `lazy/` (async Vue component) entries are still available — pick what fits the situation. See the [icons guide](./icons.md#raw-svg-strings-new-in-v5) for the full decision matrix.
+The existing `static/` (eager Vue component) and `lazy/` (async Vue component) entries are still available — pick what fits the situation. See the [icons guide](../ecosystem/icons/index.md#raw-svg-strings-new-in-v5) for the full decision matrix.
 
 ### 6. Logical direction props — `left-icon`/`right-icon` → `start-icon`/`end-icon`
 
@@ -393,7 +393,7 @@ rg "MazBadge[^/]*size=\"[0-9]" src/
 If you really need a custom size, wrap or override via your own class — pass `size="md"` (or omit it) and apply a Tailwind text utility:
 
 ```vue
-<MazBadge size="md" class="maz:text-[0.7rem]" />
+<MazBadge size="md" class="text-[0.7rem]" />
 ```
 
 ### 10. Theme preset rename — `background` → `surface`, `border` → `divider`
@@ -425,7 +425,7 @@ The runtime CSS variables follow:
 | `--maz-background[-N]` | `--maz-surface[-N]` |
 | `--maz-border[-N]` | `--maz-divider[-N]` |
 
-Tailwind utilities `maz:bg-surface`, `maz:text-surface-700`, `maz:border-divider` are stable — they pointed at these renamed vars even in v4 and continue to work.
+Tailwind utilities `bg-surface`, `text-surface-700`, `border-divider` are stable - they pointed at these renamed vars even in v4 and continue to work.
 
 ```bash
 # Find leftovers
@@ -468,7 +468,7 @@ The single foundation radius is replaced by a full radius scale. Move your value
 }
 ```
 
-The bridge maps every `--maz-rounded-{key}` to its matching Tailwind `--radius-{key}`, so `maz:rounded-md`, `maz:rounded-lg`, etc. all move with your preset.
+The bridge maps every `--maz-rounded-{key}` to its matching Tailwind `--radius-{key}`, so `rounded-md`, `rounded-lg`, etc. all move with your preset.
 
 ### 12. New optional preset blocks: `scales` and `components`
 
@@ -491,7 +491,7 @@ The bridge maps every `--maz-rounded-{key}` to its matching Tailwind `--radius-{
 }
 ```
 
-Both blocks are optional; the bundled presets ship with sensible defaults. New `foundation` keys also landed and are all optional: `font-mono`, `font-display`, `disabled-opacity`, `disabled-cursor`. See the [themes guide](./themes.md) for the full surface.
+Both blocks are optional; the bundled presets ship with sensible defaults. New `foundation` keys also landed and are all optional: `font-mono`, `font-display`, `disabled-opacity`, `disabled-cursor`. See the [themes guide](../ecosystem/themes.md) for the full surface.
 
 ### 13. Theme strategy: `'hybrid'` removed, no more critical CSS
 
@@ -860,5 +860,5 @@ This is a niche path — most consumers never wrote maz-prefixed classes in thei
 ## See also
 
 - [Tailwind CSS integration](./tailwind.md) — optional, for consumers who have their own Tailwind setup
-- [Theming](./themes.md) — preset authoring and runtime theme switching
+- [Theming](../ecosystem/themes.md) — preset authoring and runtime theme switching
 - [Browser Support](./browser-support.md) — exact minimum versions and the features they enable
