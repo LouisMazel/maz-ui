@@ -16,12 +16,12 @@ head:
 - 🌱 **Tree-shaking** - Import only what you need
 - 🛠️ **TypeScript-first** - Full type safety out of the box
 - 🚀 **Performance** - Tree-shaking benefits and maximum optimization
-- 🎨 **Theming system** - Customizable themes and dark mode support (5 presets available) - [@maz-ui/themes](./themes.md)
+- 🎨 **Theming system** - Customizable themes and dark mode support (5 presets available) - [@maz-ui/themes](../ecosystem/themes.md)
 - 💨 **Optional Tailwind bridge** - Already have a Tailwind v4 setup? Expose your active maz-ui theme tokens (colors, radius, breakpoints, custom utilities) to your own Tailwind config - [Tailwind integration](./tailwind.md)
-- 🌐 **Internationalization** - Locale management and tree-shakable imports - [@maz-ui/translations](./translations.md)
-- 🎨 **Icon library** - Comprehensive collection of SVG icons designed for performance and flexibility (860+ icons) - [@maz-ui/icons](./icons.md)
-- 🧰 **Nuxt module** - Effortless Maz-UI integration with auto-imports - [@maz-ui/nuxt](./nuxt.md)
-- 🤖 **MCP** - Connect your AI agents to the documentation - [@maz-ui/mcp](./mcp.md)
+- 🌐 **Internationalization** - Locale management and tree-shakable imports - [@maz-ui/translations](../ecosystem/translations.md)
+- 🎨 **Icon library** - Comprehensive collection of SVG icons designed for performance and flexibility (860+ icons) - [@maz-ui/icons](../ecosystem/icons/index.md)
+- 🧰 **Nuxt module** - Effortless Maz-UI integration with auto-imports - [@maz-ui/nuxt](../ecosystem/nuxt.md)
+- 🤖 **AI agents** - Make Claude Code, Cursor, Copilot and Codex use maz-ui instead of re-implementing it - [AI agents](./ai-agents.md), [@maz-ui/mcp](../ecosystem/mcp.md)
 
 :::
 
@@ -100,7 +100,7 @@ npm install @maz-ui/themes
 - 🍪 Active preset persisted across reloads (opt-out)
 - 🛡️ Full TypeScript support
 
-[→ View Theme Documentation](./themes.md)
+[→ View Theme Documentation](../ecosystem/themes.md)
 
 ---
 
@@ -121,7 +121,7 @@ npm install @maz-ui/translations
 - 📦 Tree-shakable imports
 - 🛠️ TypeScript support
 
-[→ View Translations Documentation](./translations.md)
+[→ View Translations Documentation](../ecosystem/translations.md)
 
 ---
 
@@ -143,19 +143,26 @@ npm install @maz-ui/icons
 - Multiple sizes and variants
 - Full TypeScript definitions
 
-[→ Browse Icon Library](./icons.md)
+[→ Browse Icon Library](../ecosystem/icons/index.md)
 
 ---
 
 ### @maz-ui/mcp
 
-**Maz-UI MCP server to connect your IA agents to the documentation**
+**Make your AI coding agents use maz-ui**
+
+```bash
+npx @maz-ui/mcp init
+```
 
 **Features:**
 
-- Connect your IA agents to the documentation
+- Rules for Claude Code, Cursor, GitHub Copilot, Codex... without touching your own instructions
+- MCP server: search by need, component APIs, icons, Tailwind theme tokens, docs of the installed version
+- Code review against the installed maz-ui, in the agent loop and in CI
+- Claude Code plugin and automatic setup with the Nuxt module
 
-[→ View MCP Documentation](./mcp.md)
+[→ View AI agents guide](./ai-agents.md)
 
 ## Performance Optimizations
 
@@ -233,11 +240,11 @@ Browse the [component library](./../components/maz-btn.md) with live examples an
 
 ### Customize Themes
 
-Learn about [theming and customization](./themes.md) to match your brand.
+Learn about [theming and customization](../ecosystem/themes.md) to match your brand.
 
 ### Internationalization
 
-Learn about [internationalization](./translations.md) to support multiple languages.
+Learn about [internationalization](../ecosystem/translations.md) to support multiple languages.
 
 ### Lazy Loading with MazUiProvider
 

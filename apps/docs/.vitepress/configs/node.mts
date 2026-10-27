@@ -7,5 +7,6 @@ export const node = {
     { text: 'execPromise', link: '/ecosystem/node/exec-promise' },
     { text: 'logger / createLogger', link: '/ecosystem/node/logger' },
     { text: 'printBanner', link: '/ecosystem/node/print-banner' },
+    { text: 'setupAgents', link: '/ecosystem/node/setup-agents' },
   ],
 } satisfies DefaultTheme.SidebarItem
