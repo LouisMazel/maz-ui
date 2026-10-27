@@ -136,6 +136,25 @@ The maz-ui plugin bundles the MCP server, a `maz-ui` skill (rules and workflow) 
 
 The plugin works in every project, `init` configures one project for your whole team: use both or either.
 
+### Review hook without the plugin
+
+The review hook of the plugin is the `review --hook` mode of the CLI. To use it alone, add it to `.claude/settings.json` (shared with your team) or `.claude/settings.local.json` (your machine only):
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [{ "type": "command", "command": "npx -y @maz-ui/mcp@latest review --hook", "timeout": 90 }]
+      }
+    ]
+  }
+}
+```
+
+Each file Claude edits is reviewed; the errors and warnings are sent back to Claude, which fixes them.
+
 ## Code review in CI
 
 The checks of `review_code` are also available from the command line:
@@ -168,7 +187,7 @@ The command exits with an error code when it finds errors (or more warnings than
 | `root-import`, `internal-import` | error | Runtime imports from `maz-ui` (types only) or from `src`/`dist` |
 | `nuxt-auto-import` | info | Imports that `@maz-ui/nuxt` already auto-imports |
 
-When something is intended, ignore it with a comment on the line above (`<!-- maz-ui-review-ignore prefer-maz-component -->`, `// maz-ui-review-ignore theme-colors`), or `maz-ui-review-ignore-file` for a whole file.
+When something is intended, ignore it with a comment on the line above (`<!-- maz-ui-review-ignore prefer-maz-component -->`, `// maz-ui-review-ignore theme-colors`), or `maz-ui-review-ignore-file` for a whole file. Give the reason after `--`: `<!-- maz-ui-review-ignore theme-colors -- frame over the video -->`.
 
 ## llms.txt
 
