@@ -117,7 +117,7 @@ export interface MazBtnProps {
    */
   endIcon?: MazIconLike
   /**
-   * If true, the button will have no padding
+   * Apply the padding of the button, set it to `false` to remove it
    * @default true
    */
   padding?: boolean

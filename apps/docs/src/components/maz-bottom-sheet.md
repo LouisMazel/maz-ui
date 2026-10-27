@@ -88,7 +88,7 @@ Disable it with `:swipe-to-close="false"` (the handle is then hidden too), or re
 <!-- custom handle -->
 <MazBottomSheet v-model="swipeOpened" title="Custom handle">
   <template #handle>
-    <span class="maz:h-1.5 maz:w-12 maz:rounded-full maz:bg-primary" />
+    <span class="h-1.5 w-12 rounded-full bg-primary" />
   </template>
 </MazBottomSheet>
 ```
@@ -151,7 +151,7 @@ Everything in the header is replaceable: use `#icon` and `#title` to customize p
   </template>
 
   <template #title>
-    <span class="maz:text-primary">Custom title</span>
+    <span class="text-primary">Custom title</span>
   </template>
 
   <p>The icon and the title slots are fully replaceable.</p>
@@ -160,7 +160,7 @@ Everything in the header is replaceable: use `#icon` and `#title` to customize p
 <!-- or replace the whole header -->
 <MazBottomSheet v-model="slotsOpened">
   <template #header="{ close }">
-    <div class="maz:flex maz:items-center maz:justify-between maz:p-4">
+    <div class="flex items-center justify-between p-4">
       <strong>My header</strong>
       <MazBtn size="sm" color="transparent" @click="close">Close</MazBtn>
     </div>
@@ -211,7 +211,7 @@ Hide the whole header with `hide-header`, or only the close button with `hide-cl
 
 ```html
 <MazBottomSheet v-model="noHeaderOpened" hide-header>
-  <div class="maz:flex maz:flex-col maz:gap-3 maz:text-center">
+  <div class="flex flex-col gap-3 text-center">
     <p>No header here, you control the whole layout.</p>
     <MazBtn @click="noHeaderOpened = false">Got it</MazBtn>
   </div>
@@ -425,11 +425,11 @@ function openProductOptions() {
   </MazBtn>
 
   <MazBottomSheet v-model="isProductOpen" title="Customize Your Shoes" icon="/cog.svg" :padding="false">
-    <div class="maz:space-y-6 maz:p-6">
-      <h4 class="maz:mb-3 maz:text-lg maz:font-semibold">
+    <div class="space-y-6 p-6">
+      <h4 class="mb-3 text-lg font-semibold">
         Select Size
       </h4>
-      <div class="maz:grid maz:grid-cols-4 maz:gap-2">
+      <div class="grid grid-cols-4 gap-2">
         <MazBtn
           v-for="size in sizes"
           :key="size"

@@ -1,5 +1,5 @@
 ---
-title: useWindowSize
+title: useBreakpoints
 description: This composable extends the functionality of the useWindowSize composable to manage responsive breakpoints
 ---
 

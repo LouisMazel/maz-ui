@@ -64,10 +64,10 @@ The following features are planned for a future release and are **not yet availa
 <template #code>
 
 ```html
-<div class="maz:flex maz:h-screen">
+<div class="flex h-screen">
   <MazSidebar v-model:open="isOpen">
     <MazSidebarHeader>
-      <div class="maz:p-4 maz:font-bold">My App</div>
+      <div class="p-4 font-bold">My App</div>
     </MazSidebarHeader>
     <MazSidebarContent>
       <MazSidebarMenu>
@@ -80,10 +80,10 @@ The following features are planned for a future release and are **not yet availa
       </MazSidebarMenu>
     </MazSidebarContent>
     <MazSidebarFooter>
-      <div class="maz:p-4">Footer</div>
+      <div class="p-4">Footer</div>
     </MazSidebarFooter>
   </MazSidebar>
-  <main class="maz:flex-1 maz:p-4">Main content</main>
+  <main class="flex-1 p-4">Main content</main>
 </div>
 
 <script setup>
@@ -435,8 +435,8 @@ In `mode="overlay"`, the sidebar floats over the content with a backdrop, escape
 <template #code>
 
 ```html
-<div class="maz:flex maz:h-screen">
-  <main class="maz:flex-1">Main content</main>
+<div class="flex h-screen">
+  <main class="flex-1">Main content</main>
   <MazSidebar v-model:open="isOpen" side="end">
     <!-- content -->
   </MazSidebar>
@@ -527,11 +527,11 @@ In `mode="overlay"`, the sidebar floats over the content with a backdrop, escape
 <MazSidebar v-model:open="isOpen">
   <MazSidebarContent><!-- ... --></MazSidebarContent>
   <MazSidebarFooter>
-    <div class="maz:flex maz:items-center maz:gap-3 maz:p-3">
+    <div class="flex items-center gap-3 p-3">
       <MazAvatar src="..." size="0.8rem" />
-      <div class="maz:flex-1 maz:min-w-0">
-        <p class="maz:m-0 maz:text-md maz:font-semibold">Jane Doe</p>
-        <p class="maz:m-0 maz:text-xs maz:text-muted">jane@example.com</p>
+      <div class="flex-1 min-w-0">
+        <p class="m-0 text-md font-semibold">Jane Doe</p>
+        <p class="m-0 text-xs text-muted">jane@example.com</p>
       </div>
     </div>
   </MazSidebarFooter>
@@ -561,11 +561,11 @@ watch(isMobile, (mobile) => {
 </script>
 
 <template>
-  <div class="maz:flex maz:h-screen">
+  <div class="flex h-screen">
     <MazSidebar v-model:open="isOpen" :mode="isMobile ? 'overlay' : 'push'">
       <!-- content -->
     </MazSidebar>
-    <main class="maz:flex-1">
+    <main class="flex-1">
       <MazSidebarTrigger />
       <!-- page content -->
     </main>

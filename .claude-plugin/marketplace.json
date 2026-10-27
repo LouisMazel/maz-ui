@@ -1,0 +1,19 @@
+{
+  "name": "maz-ui",
+  "owner": {
+    "name": "Louis Mazel",
+    "url": "https://github.com/LouisMazel"
+  },
+  "metadata": {
+    "description": "Claude Code plugins for the maz-ui ecosystem"
+  },
+  "plugins": [
+    {
+      "name": "maz-ui",
+      "source": "./plugins/claude-code",
+      "description": "Build Vue and Nuxt apps with the maz-ui ecosystem instead of re-implementing it: maz-ui skill, MCP server (docs, component APIs, icons, Tailwind theme tokens, code review) and a hook that reviews every edited file",
+      "category": "development",
+      "homepage": "https://maz-ui.com/guide/ai-agents"
+    }
+  ]
+}

@@ -199,7 +199,6 @@ Auto-imports composables and utility functions:
 const toast = useToast()
 const { width, height } = useWindowSize()
 const { isMobile, isTablet } = useBreakpoints()
-const { toggleDarkMode, isDark } = useTheme()
 
 // Utility functions auto-imported
 const debouncedSearch = debounce((query) => {
@@ -229,11 +228,13 @@ function showSuccess() {
 
 | Category             | Composables                               |
 | -------------------- | --------------------------------------------------- |
-| **UI Management**    | [`useToast`](./../composables/use-toast.md), [`useDialog`](./../composables/use-dialog.md), [`useTheme`](./../ecosystem/themes.md#usetheme-composable-api), [`useWait`](./../composables/use-wait.md)      |
+| **UI Management**    | [`useToast`](./../composables/use-toast.md), [`useDialog`](./../composables/use-dialog.md), [`useWait`](./../composables/use-wait.md)      |
 | **Responsive**       | [`useBreakpoints`](./../composables/use-breakpoints.md), [`useWindowSize`](./../composables/use-window-size.md)                   |
 | **User Interaction** | [`useUserVisibility`](./../composables/use-user-visibility.md), [`useIdleTimeout`](./../composables/use-idle-timeout.md), [`useSwipe`](./../composables/use-swipe.md), [`usePullToRefresh`](./../composables/use-pull-to-refresh.md)   |
 | **Form Handling**    | [`useFormValidator`](./../composables/use-form-validator.md)                  |
 | **Advanced**         | [`useTimer`](./../composables/use-timer.md), [`useStringMatching`](./../composables/use-string-matching.md)           |
+
+`useTheme` and `useTranslations` are not resolved by `MazModulesResolver`: import them from `@maz-ui/themes` and `@maz-ui/translations` (the Nuxt module auto-imports them).
 
 **Most used available formatters and utilities:**
 
@@ -524,9 +525,9 @@ The resolvers automatically generate TypeScript definitions:
 // auto-imports.d.ts (generated)
 declare global {
   const useToast: typeof import('maz-ui/composables')['useToast']
-  const useTheme: typeof import('maz-ui/composables')['useTheme']
-  const debounce: typeof import('maz-ui')['debounce']
-  const currency: typeof import('maz-ui')['currency']
+  const useWindowSize: typeof import('maz-ui/composables')['useWindowSize']
+  const debounce: typeof import('@maz-ui/utils')['debounce']
+  const formatCurrency: typeof import('@maz-ui/utils')['formatCurrency']
   // ... all other auto-imports
 }
 
@@ -628,7 +629,8 @@ MazComponentsResolver({
 <script setup lang="ts">
 import { formatCurrency, debounce } from '@maz-ui/utils'
 import { MazBtn, MazCard, MazInput } from 'maz-ui/components'
-import { useTheme, useToast } from 'maz-ui/composables'
+import { useToast } from 'maz-ui/composables'
+import { useTheme } from '@maz-ui/themes'
 import { vTooltip } from 'maz-ui/directives'
 
 const toast = useToast()

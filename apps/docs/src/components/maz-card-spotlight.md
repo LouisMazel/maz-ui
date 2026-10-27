@@ -1,6 +1,6 @@
 ---
 title: MazCardSpotlight
-description: MazCardSpotlight is a standalone component
+description: MazCardSpotlight is a card with a glowing spotlight that follows the mouse cursor on its border and background, to highlight features, pricing plans or call to actions
 ---
 
 # {{ $frontmatter.title }}

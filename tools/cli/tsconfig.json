@@ -11,8 +11,6 @@
     "bin/**/*",
     "src/**/*",
     "*.config.mts",
-    "config/**/*",
-    "docgen.config.js",
     "*.js"
   ],
   "exclude": [

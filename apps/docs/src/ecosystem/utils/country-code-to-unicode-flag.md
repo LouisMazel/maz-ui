@@ -1,5 +1,5 @@
 ---
-title: country-code-to-unicode-flag
+title: countryCodeToUnicodeFlag
 description: Convert country code in unicode flag
 ---
 
@@ -125,18 +125,18 @@ description: Convert country code in unicode flag
 ```vue
 
 <template>
-  <div class="maz:gap-2 maz:flex maz:flex-wrap maz:items-center">
-    <span class="maz:text-xs">{{ flag }}</span>
-    <span class="maz:text-sm">{{ flag }}</span>
-    <span class="maz:text-base">{{ flag }}</span>
-    <span class="maz:text-lg">{{ flag }}</span>
-    <span class="maz:text-xl">{{ flag }}</span>
-    <span class="maz:text-2xl">{{ flag }}</span>
-    <span class="maz:text-3xl">{{ flag }}</span>
-    <span class="maz:text-4xl">{{ flag }}</span>
-    <span class="maz:text-5xl">{{ flag }}</span>
-    <span class="maz:text-6xl">{{ flag }}</span>
-    <span class="maz:text-7xl">{{ flag }}</span>
+  <div class="gap-2 flex flex-wrap items-center">
+    <span class="text-xs">{{ flag }}</span>
+    <span class="text-sm">{{ flag }}</span>
+    <span class="text-base">{{ flag }}</span>
+    <span class="text-lg">{{ flag }}</span>
+    <span class="text-xl">{{ flag }}</span>
+    <span class="text-2xl">{{ flag }}</span>
+    <span class="text-3xl">{{ flag }}</span>
+    <span class="text-4xl">{{ flag }}</span>
+    <span class="text-5xl">{{ flag }}</span>
+    <span class="text-6xl">{{ flag }}</span>
+    <span class="text-7xl">{{ flag }}</span>
   </div>
 
   <MazSelect
@@ -149,20 +149,20 @@ description: Convert country code in unicode flag
   >
     <template #default="{ option, isSelected }">
       <div
-        class="maz:flex maz:items-center maz:gap-3"
+        class="flex items-center gap-3"
       >
-        <span class="maz:text-lg">
+        <span class="text-lg">
           {{ option.unicodeFlag }}
         </span>
         <MazBadge
           pastel
           size="0.7rem"
-          class="maz:w-9"
-          :class="{ 'maz:text-muted': !isSelected }"
+          class="w-9"
+          :class="{ 'text-muted': !isSelected }"
         >
           {{ option.value }}
         </MazBadge>
-        <span :class="{ 'maz:font-semibold': isSelected }">
+        <span :class="{ 'font-semibold': isSelected }">
           {{ option.label }}
         </span>
       </div>

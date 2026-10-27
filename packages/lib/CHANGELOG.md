@@ -1,5 +1,61 @@
 # Change Log
 
+## v5.1.0-beta.1 (2026-10-27)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.0-beta.0...v5.1.0-beta.1)
+
+### 📖 Documentation
+
+- **maz-ui:** Fix the description of the padding prop of MazBtn ([9d87dde4d](https://github.com/LouisMazel/maz-ui/commit/9d87dde4d))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.1.0-beta.0 (2026-10-27)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.1-beta.0...v5.1.0-beta.0)
+
+### 🚀 Features
+
+- **maz-ui:** Ship the documentation of the installed version for AI agents ([26daaa7e1](https://github.com/LouisMazel/maz-ui/commit/26daaa7e1))
+
+  Each release now contains `node_modules/maz-ui/docs`: the documentation of this version written for AI coding agents (guides, every component with its full API, composables, directives, helpers, Tailwind theme tokens, icon names), indexed in `README.md`, with the maz-ui rules in `rules.md`.
+
+  Agents read the docs of your version instead of their training data. Run `npx @maz-ui/mcp init` to point them to it.
+
+### 🩹 Fixes
+
+- **maz-ui:** Expose the theme-spacing.css and theme-components.css Tailwind entries ([975d2632f](https://github.com/LouisMazel/maz-ui/commit/975d2632f))
+
+  Import them individually like the other theme modules: `@import 'maz-ui/tailwindcss/theme-spacing.css'` and `@import 'maz-ui/tailwindcss/theme-components.css'`.
+
+### 📖 Documentation
+
+- **maz-ui:** Fix the documentation links of MazDropzone and MazInputPrice props ([6cf6d5196](https://github.com/LouisMazel/maz-ui/commit/6cf6d5196))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
+## v5.0.1-beta.0 (2026-10-27)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0...v5.0.1-beta.0)
+
+### 🩹 Fixes
+
+- **maz-ui:** MazDrawer - keep the header visible on mobile when the content is taller than the screen ([a0a7a3bd7](https://github.com/LouisMazel/maz-ui/commit/a0a7a3bd7))
+
+  On mobile the side drawer is aligned to the bottom of the backdrop and had only a min-height (100vh), so a long content pushed the header and its close button above the top of the screen (and 100vh is taller than the visible area on iOS Safari). The panel is now bounded to the viewport and its body scrolls.
+
+### 🧪 Tests
+
+- **maz-ui:** MazDrawer - expect the canonical size-full class ([6bd77d44a](https://github.com/LouisMazel/maz-ui/commit/6bd77d44a))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.0.0 (2026-10-21)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v4.9.3...v5.0.0)

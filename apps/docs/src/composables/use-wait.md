@@ -1,6 +1,6 @@
 ---
 title: useWait
-description: Vue composable for handling wait plugins
+description: Vue composable to manage loading states (start, stop, check) in your components, through the wait plugin and the MazFullscreenLoader
 ---
 
 # {{ $frontmatter.title }}

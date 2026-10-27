@@ -46,7 +46,7 @@ export interface MazInputPriceProps {
   success?: boolean
   /** Will display the input in warning state. */
   warning?: boolean
-  /** Options for the currency helper - [see](https://maz-ui.com/helpers/currency) */
+  /** Options for the currency helper - [see](https://maz-ui.com/ecosystem/utils/currency) */
   currencyOptions?: Omit<FilterCurrencyOptions, 'currency'>
 }
 

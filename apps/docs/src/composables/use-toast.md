@@ -1,6 +1,6 @@
 ---
 title: useToast
-description: Vue composable for handling toast plugin in your components
+description: Vue composable to display toast notifications (info, success, warning, error, with actions and buttons) from your components, through the toast plugin
 ---
 
 # {{ $frontmatter.title }}

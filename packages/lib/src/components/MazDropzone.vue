@@ -187,12 +187,12 @@ export type MazDropzoneProps = {
    */
   color?: MazColor
   /**
-   * MazBtn props [MazBtn props](/components/maz:btn#props)
+   * MazBtn props [MazBtn props](/components/maz-btn#props)
    * @default {}
    */
   removeFileBtnProps?: MazBtnProps
   /**
-   * MazSpinner props [MazSpinner props](/components/maz:spinner#props)
+   * MazSpinner props [MazSpinner props](/components/maz-spinner#props)
    * @default {}
    */
   spinnerProps?: MazSpinnerProps

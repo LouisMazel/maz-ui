@@ -29,8 +29,8 @@ const { distance, progress, isReady, isRefreshing } = usePullToRefresh({
 </script>
 
 <template>
-  <div ref="scroller" class="maz:h-screen maz:overflow-y-auto">
-    <div class="maz:flex maz:items-end maz:justify-center maz:overflow-hidden" :style="{ height: `${distance}px` }">
+  <div ref="scroller" class="h-screen overflow-y-auto">
+    <div class="flex items-end justify-center overflow-hidden" :style="{ height: `${distance}px` }">
       <span v-if="isRefreshing">Refreshing…</span>
       <span v-else-if="isReady">Release to refresh</span>
       <span v-else :style="{ opacity: progress }">Pull to refresh</span>

@@ -1,17 +1,26 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import moduleConfig from '../module'
 
-const { addComponent, addPlugin, addImports, createResolver, defineNuxtModule, addCustomTab } = vi.hoisted(() => ({
-  addComponent: vi.fn(),
-  addPlugin: vi.fn(),
-  addImports: vi.fn(),
-  createResolver: vi.fn(() => ({
-    resolve: (...args: string[]) => args.join('/'),
-  })),
-  defineNuxtModule: vi.fn((config: any) => config),
-  addCustomTab: vi.fn(),
-}))
+const { addComponent, addPlugin, addImports, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, detectAgentTargets, findProjectPackage } = vi.hoisted(() => {
+  const logger = { info: vi.fn(), warn: vi.fn(), debug: vi.fn() }
+
+  return {
+    logger,
+    useLogger: vi.fn(() => logger),
+    setupAgents: vi.fn(() => ({ targets: [] as string[], version: '5.0.0', changes: [] as Array<{ file: string, action: string }> })),
+    detectAgentTargets: vi.fn((): string[] => ['claude']),
+    findProjectPackage: vi.fn((): string | undefined => '/project/node_modules/maz-ui'),
+    addComponent: vi.fn(),
+    addPlugin: vi.fn(),
+    addImports: vi.fn(),
+    createResolver: vi.fn(() => ({
+      resolve: (...args: string[]) => args.join('/'),
+    })),
+    defineNuxtModule: vi.fn((config: any) => config),
+    addCustomTab: vi.fn(),
+  }
+})
 
 vi.mock('@nuxt/kit', () => ({
   addComponent,
@@ -19,6 +28,13 @@ vi.mock('@nuxt/kit', () => ({
   addImports,
   createResolver,
   defineNuxtModule,
+  useLogger,
+}))
+
+vi.mock('@maz-ui/node', () => ({
+  setupAgents,
+  detectAgentTargets,
+  findProjectPackage,
 }))
 
 vi.mock('@nuxt/devtools-kit', () => ({
@@ -139,9 +155,11 @@ describe('nuxt module', () => {
   })
 
   describe('setup', () => {
-    function createNuxtMock(overrides: Record<string, any> = {}) {
+    function createNuxtMock(overrides: Record<string, any> = {}, nuxtOptions: Record<string, any> = {}) {
       return {
         options: {
+          rootDir: '/project',
+          dev: false,
           build: { transpile: [] },
           runtimeConfig: {
             public: {
@@ -150,13 +168,14 @@ describe('nuxt module', () => {
           },
           css: [],
           postcss: { plugins: {} as Record<string, any>, order: [] },
+          ...nuxtOptions,
         },
         ...overrides,
       }
     }
 
-    function callSetup(options: Record<string, any> = {}, nuxtOverrides: Record<string, any> = {}) {
-      const nuxt = createNuxtMock(nuxtOverrides)
+    function callSetup(options: Record<string, any> = {}, nuxtOverrides: Record<string, any> = {}, nuxtOptions: Record<string, any> = {}) {
+      const nuxt = createNuxtMock(nuxtOverrides, nuxtOptions)
       const mergedOptions = {
         ...config.defaults,
         ...options,
@@ -166,6 +185,7 @@ describe('nuxt module', () => {
         plugins: { ...config.defaults.plugins, ...options.plugins },
         composables: { ...config.defaults.composables, ...options.composables },
         directives: { ...config.defaults.directives, ...options.directives },
+        agents: typeof options.agents === 'object' ? { ...config.defaults.agents, ...options.agents } : options.agents ?? config.defaults.agents,
       }
       config.setup(mergedOptions, nuxt)
       return { nuxt }
@@ -600,6 +620,194 @@ describe('nuxt module', () => {
           const { nuxt } = callSetup({ flags: '/flags/{code}.svg', defaults: { global: { flagSrc: '/mine/{CODE}.png' } } })
 
           expect((nuxt.options.runtimeConfig.public.mazUi as any).defaults.global.flagSrc).toBe('/mine/{CODE}.png')
+        })
+      })
+    })
+
+    describe('given the agents option', () => {
+      beforeEach(() => {
+        vi.stubEnv('CI', '')
+      })
+
+      afterEach(() => {
+        vi.unstubAllEnvs()
+      })
+
+      describe('when it is not set', () => {
+        it('then only the MCP server of the detected agents is configured', () => {
+          callSetup({}, {}, { dev: true })
+
+          expect(config.defaults.agents).toEqual({ rules: false, mcp: true })
+          expect(setupAgents).toHaveBeenCalledWith({ rootDir: '/project', targets: ['claude'], rules: false, mcp: true, docsDir: '/project/node_modules/maz-ui/docs' })
+        })
+      })
+
+      describe('when it is disabled', () => {
+        it('then the agents are not configured', () => {
+          callSetup({ agents: false }, {}, { dev: true })
+
+          expect(setupAgents).not.toHaveBeenCalled()
+        })
+      })
+
+      describe('when it is enabled in development', () => {
+        it('then the rules and the MCP server of the detected agents are configured from the root directory', () => {
+          callSetup({ agents: true }, {}, { dev: true })
+
+          expect(detectAgentTargets).toHaveBeenCalledWith('/project')
+          expect(setupAgents).toHaveBeenCalledWith({ rootDir: '/project', targets: ['claude'], rules: true, mcp: true, docsDir: '/project/node_modules/maz-ui/docs' })
+        })
+      })
+
+      describe('when it is enabled during nuxt prepare', () => {
+        it('then the agents are configured', () => {
+          callSetup({ agents: true }, {}, { _prepare: true })
+
+          expect(setupAgents).toHaveBeenCalled()
+        })
+      })
+
+      describe('when targets, rules and mcp are given', () => {
+        it('then they are passed through without detection', () => {
+          callSetup({ agents: { targets: ['cursor', 'agents-md'], rules: true, mcp: false } }, {}, { dev: true })
+
+          expect(detectAgentTargets).not.toHaveBeenCalled()
+          expect(setupAgents).toHaveBeenCalledWith({ rootDir: '/project', targets: ['cursor', 'agents-md'], rules: true, mcp: false, docsDir: '/project/node_modules/maz-ui/docs' })
+        })
+      })
+
+      describe('when the app is part of a monorepo', () => {
+        it('then the files are written at the workspace root with the docs of the maz-ui of the app', () => {
+          callSetup({}, {}, { dev: true, rootDir: '/repo/apps/web', workspaceDir: '/repo' })
+
+          expect(detectAgentTargets).toHaveBeenCalledWith('/repo')
+          expect(findProjectPackage).toHaveBeenCalledWith('/repo/apps/web', 'maz-ui')
+          expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ rootDir: '/repo' }))
+        })
+      })
+
+      describe('when a dir is given', () => {
+        it('then the files are written in this folder, relative to the Nuxt root', () => {
+          callSetup({ agents: { dir: '../..' } }, {}, { dev: true, rootDir: '/repo/apps/web', workspaceDir: '/repo/apps/web' })
+
+          expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ rootDir: '/repo' }))
+        })
+      })
+
+      describe('when maz-ui is not found from the Nuxt root', () => {
+        it('then setupAgents resolves the docs by itself', () => {
+          findProjectPackage.mockReturnValueOnce(undefined)
+
+          callSetup({}, {}, { dev: true })
+
+          expect(setupAgents).toHaveBeenCalledWith({ rootDir: '/project', targets: ['claude'], rules: false, mcp: true })
+        })
+      })
+
+      describe('when both rules and mcp are disabled', () => {
+        it('then the agents are not configured', () => {
+          callSetup({ agents: { rules: false, mcp: false } }, {}, { dev: true })
+
+          expect(setupAgents).not.toHaveBeenCalled()
+        })
+      })
+
+      describe('when no agent is detected', () => {
+        it('then nothing is written', () => {
+          detectAgentTargets.mockReturnValueOnce([])
+
+          callSetup({ agents: true }, {}, { dev: true })
+
+          expect(setupAgents).not.toHaveBeenCalled()
+        })
+      })
+
+      describe('when it is not development', () => {
+        it('then the agents are not configured', () => {
+          callSetup({ agents: true })
+
+          expect(setupAgents).not.toHaveBeenCalled()
+        })
+      })
+
+      describe('when running in CI', () => {
+        it('then the agents are not configured', () => {
+          vi.stubEnv('CI', 'true')
+
+          callSetup({ agents: true }, {}, { dev: true })
+
+          expect(setupAgents).not.toHaveBeenCalled()
+        })
+      })
+
+      describe('when running in test mode', () => {
+        it('then the agents are not configured', () => {
+          callSetup({ agents: true }, {}, { dev: true, test: true })
+
+          expect(setupAgents).not.toHaveBeenCalled()
+        })
+      })
+
+      describe('when files are created, updated or removed', () => {
+        it('then they are logged once', () => {
+          setupAgents.mockReturnValueOnce({
+            targets: ['claude'],
+            version: '5.0.0',
+            changes: [
+              { file: '.claude/rules/maz-ui.md', action: 'create' },
+              { file: '.mcp.json', action: 'update' },
+              { file: 'AGENTS.md', action: 'unchanged' },
+            ],
+          })
+
+          callSetup({ agents: true }, {}, { dev: true })
+
+          expect(logger.info).toHaveBeenCalledTimes(1)
+          expect(logger.info).toHaveBeenCalledWith('AI agents configured for maz-ui: .claude/rules/maz-ui.md (create), .mcp.json (update)')
+        })
+      })
+
+      describe('when everything is up to date', () => {
+        it('then nothing is logged', () => {
+          setupAgents.mockReturnValueOnce({ targets: ['claude'], version: '5.0.0', changes: [{ file: '.mcp.json', action: 'unchanged' }] })
+
+          callSetup({ agents: true }, {}, { dev: true })
+
+          expect(logger.info).not.toHaveBeenCalled()
+        })
+      })
+
+      describe('when the configuration of an explicitly enabled option fails', () => {
+        it('then a warning is logged and the setup continues', () => {
+          setupAgents.mockImplementationOnce(() => {
+            throw new Error('maz-ui is not installed')
+          })
+
+          callSetup({ agents: true }, {}, { dev: true, mazUi: { agents: true } })
+
+          expect(logger.warn).toHaveBeenCalledWith('Could not configure the AI agents for maz-ui: maz-ui is not installed')
+          expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/theme'))
+        })
+      })
+
+      describe('when the configuration enabled by default fails', () => {
+        it('then the error is only logged at debug level', () => {
+          setupAgents.mockImplementationOnce(() => {
+            throw new Error('maz-ui is not installed')
+          })
+
+          callSetup({}, {}, { dev: true })
+
+          expect(logger.warn).not.toHaveBeenCalled()
+          expect(logger.debug).toHaveBeenCalledWith('Could not configure the AI agents for maz-ui: maz-ui is not installed')
+        })
+      })
+
+      describe('when the runtime config is built', () => {
+        it('then it does not expose the agents option', () => {
+          const { nuxt } = callSetup({ agents: true })
+
+          expect(nuxt.options.runtimeConfig.public.mazUi).not.toHaveProperty('agents')
         })
       })
     })

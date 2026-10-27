@@ -139,8 +139,8 @@ function sendMessage() {
     name="comment"
   >
     <template #label>
-      <MazIcon icon="/envelope.svg" class="maz:text-xl" />
-      <span class="maz:ms-2">
+      <MazIcon icon="/envelope.svg" class="text-xl" />
+      <span class="ms-2">
         The custom label
       </span>
     </template>
@@ -248,7 +248,7 @@ You can use the `hint` attribute to display a hint message. This will replace th
     hint="This is a hint message"
     warning
   />
-  <hr class="maz:my-4">
+  <hr class="my-4">
   <MazTextarea
     v-model="value"
     name="comment"

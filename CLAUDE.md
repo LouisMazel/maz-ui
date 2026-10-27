@@ -52,11 +52,14 @@ Within individual packages (e.g., `packages/lib/`):
 - `packages/eslint-config/` - Shared ESLint configuration
 - `packages/maz-cli/` - CLI tool for theme generation
 - `packages/nuxt/` - Nuxt 3 module (@maz-ui/nuxt)
-- `packages/node/` - Node.js utilities
+- `packages/node/` - Node.js utilities (also `setupAgents`, used by `npx @maz-ui/mcp init` and the Nuxt `agents` option)
+- `packages/mcp/` - MCP server and CLI for AI agents (@maz-ui/mcp): search, component APIs, icons, theme tokens, code review
 - `apps/docs/` - Documentation site
 - `apps/vue-app/` - Vue 3 demo application
 - `apps/nuxt-app/` - Nuxt 3 demo application
 - `tools/cli/` - Internal CLI tools
+- `tools/agent-docs/` - Generator of the agent knowledge bundle (see below)
+- `plugins/claude-code/` - Claude Code plugin (skill, MCP server, review hook), exposed by `.claude-plugin/marketplace.json`
 
 ### Main Library Structure (`packages/lib/src/`)
 
@@ -100,6 +103,16 @@ Within individual packages (e.g., `packages/lib/`):
 - CSS is extracted and processed with PostCSS
 - Icons are dynamically generated from SVG files
 - Supports both ESM and CommonJS outputs
+
+### Agent knowledge bundle (`tools/agent-docs`)
+
+- Single source of the docs for AI agents: it reads `apps/docs/src`, the component sources (vue-component-meta + vue-docgen-api), the Tailwind CSS of the lib and the icon list, and writes:
+  - `packages/lib/docs/` (shipped in `maz-ui`, read by agents in `node_modules/maz-ui/docs`) and `packages/mcp/docs/`, both at build time and gitignored
+  - `apps/docs/.vitepress/generated-docs/*.doc.md` (API tables of the component pages) and `llms.txt` / `llms-full.txt` / one `.md` per page on maz-ui.com
+  - `plugins/claude-code/skills/maz-ui/SKILL.md` (committed: run `pnpm -F agent-docs generate:plugin` after changing `tools/agent-docs/content`, a test fails otherwise)
+- The agent rules live in `tools/agent-docs/content/rules.md` (also included in `apps/docs/src/guide/ai-agents.md`).
+- The generator warns about broken internal links and unknown alias ids: keep `pnpm -F agent-docs generate --out /tmp/x --strict` clean.
+- Docs examples (code fences) must use plain Tailwind classes, never the internal `maz:` prefix (only live demos rendered by the docs site use it).
 
 ### Branch Strategy
 

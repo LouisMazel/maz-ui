@@ -9,7 +9,7 @@ description: The ultimate Nuxt module for Maz-UI - zero-config setup with auto-i
 
 ::: tip Model Context Protocol (MCP)
 
-A MCP server is available to connect your IA agents to the documentation and implement Maz-UI easily.
+In development, the module connects the AI coding agents detected in the project (Claude Code, Cursor, Copilot...) to the maz-ui [MCP server](./mcp.md), which gives them the docs and rules of the installed maz-ui. See [AI Agents](#ai-agents).
 
 Check out the documentation of [@maz-ui/mcp](./mcp.md)
 
@@ -75,7 +75,7 @@ const { toggleDarkMode, isDark } = useTheme()
 </script>
 
 <template>
-  <div class="maz:bg-surface p-8 maz:text-foreground">
+  <div class="bg-surface p-8 text-foreground">
     <!-- Components are auto-imported -->
     <MazBtn color="primary" @click="start">
       Start timer ({{ remainingTime }}ms)
@@ -190,6 +190,9 @@ export default defineNuxtConfig({
       vFullscreenImg: true,
       vZoomImg: true,
     },
+
+    // AI coding agents (default: { rules: false, mcp: true }, false to disable)
+    agents: { rules: true, mcp: true },
   }
 })
 ```
@@ -431,6 +434,35 @@ const directives = {
   vClickOutside: true, // Detect outside clicks
 }
 ```
+
+### AI Agents
+
+Connect your AI coding agents (Claude Code, Cursor, GitHub Copilot, Codex, Windsurf...) to maz-ui, version-matched with the installed maz-ui, so they use its components, composables, icons, helpers and theme tokens instead of re-implementing them:
+
+```ts
+const agents = {
+  // Register the maz-ui MCP server in .mcp.json, .cursor/mcp.json, .vscode/mcp.json (default: true)
+  // Its instructions give the maz-ui rules to the agents
+  mcp: true,
+  // Also write the rules in .claude/rules/maz-ui.md and in AGENTS.md, for agents without MCP (default: false)
+  rules: false,
+  // 'claude' | 'agents-md' | 'cursor' | 'vscode' (default: the detected agents)
+  targets: ['claude', 'agents-md'],
+  // Folder where the files are written, relative to the Nuxt app (default: the root of the workspace)
+  dir: '../..',
+}
+// agents: true enables mcp and rules, agents: false disables everything
+```
+
+In a monorepo, the files are written at the **root of the workspace** (`workspaceDir` of Nuxt), where your agents start, not in the Nuxt app: a single `.mcp.json` serves every app. Set `dir` to choose another folder.
+
+The module runs in development only (never in CI nor in tests), only for the agents it detects in the project (`.claude/`, `CLAUDE.md`, `.mcp.json`, `.cursor/`, `.vscode/mcp.json`, `.github/copilot-instructions.md`, `AGENTS.md`, `.codex/`, `.windsurf/`...), and keeps the files up to date when you upgrade maz-ui:
+
+- `.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`: a `maz-ui` server entry, added only when no maz-ui MCP server is already registered
+- with `rules: true`, `.claude/rules/maz-ui.md`: a Claude Code rule (skipped when Claude reads `AGENTS.md`, i.e. without `CLAUDE.md`)
+- with `rules: true`, `AGENTS.md`: a section delimited by `<!-- BEGIN:maz-ui -->` and `<!-- END:maz-ui -->`, read by Codex, Cursor, Copilot, Windsurf...
+
+It never overwrites a file it does not own: your `CLAUDE.md`, your own rules and the other MCP servers are left untouched, and an existing `maz-ui` server entry (for example pinned to a version) is kept as is. Commit the generated files to share them with your team (check that `.claude/` is not in your `.gitignore`). See the [AI agents guide](../guide/ai-agents.md) for details.
 
 ## Advanced Theming
 

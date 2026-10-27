@@ -387,9 +387,9 @@ MazTimeline provides scoped slots for full customization.
 <template>
   <MazTimeline v-model="currentStep" :steps="steps">
     <template #content="{ step, index, state }">
-      <div class="maz:text-center">
+      <div class="text-center">
         <strong>{{ step.title }}</strong>
-        <p class="maz:text-muted maz:text-sm maz:m-0">
+        <p class="text-muted text-sm m-0">
           Step {{ index + 1 }} - {{ state }}
         </p>
       </div>
@@ -416,7 +416,7 @@ MazTimeline provides scoped slots for full customization.
 <template>
   <MazTimeline v-model="currentStep" :steps="steps">
     <template #connector="{ index, state }">
-      <div class="maz:text-center maz:text-xs maz:text-muted">---</div>
+      <div class="text-center text-xs text-muted">---</div>
     </template>
   </MazTimeline>
 </template>

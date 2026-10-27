@@ -1,3 +1,4 @@
+import type { AgentTarget } from '@maz-ui/node'
 import type { MazUiThemeOptions, ThemePreset, ThemePresetName } from '@maz-ui/themes'
 import type { MazUiTranslationsOptions } from '@maz-ui/translations'
 import type { MazUiDefaultsOptions } from 'maz-ui/composables/useGlobalConfig'
@@ -335,5 +336,23 @@ export interface MazUiNuxtOptions {
      * @default false
      */
     vTooltip?: boolean | VTooltipOptions
+  }
+
+  /**
+   * AI coding agents integration
+   * @description Connects the AI coding agents detected in the project (Claude Code, Cursor, GitHub Copilot...) to maz-ui, in development only (never in CI or tests), version-matched with the installed maz-ui, without overwriting files you own.
+   * - `mcp`: registers the maz-ui MCP server in the agent configs (`.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`). Its instructions already give the maz-ui rules to the agents.
+   * - `rules`: also writes the maz-ui rules in `.claude/rules/maz-ui.md` and in a delimited section of `AGENTS.md` (for agents without MCP).
+   * - `targets`: agents to configure (`'claude'`, `'agents-md'`, `'cursor'`, `'vscode'`), default: the detected ones. Nothing is written when no agent is detected.
+   * - `dir`: folder where the agent files are written, relative to the Nuxt root. Default: the workspace root (`workspaceDir`), so that in a monorepo the files land where the agents start
+   * - `true`: `{ mcp: true, rules: true }`, `false`: disabled
+   * @example `agents: { rules: true }` or `agents: false`
+   * @default { rules: false, mcp: true }
+   */
+  agents?: boolean | {
+    targets?: AgentTarget[]
+    rules?: boolean
+    mcp?: boolean
+    dir?: string
   }
 }

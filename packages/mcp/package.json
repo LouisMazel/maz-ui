@@ -1,8 +1,8 @@
 {
   "name": "@maz-ui/mcp",
   "type": "module",
-  "version": "5.0.0",
-  "description": "Maz-UI ModelContextProtocol Client",
+  "version": "5.1.0-beta.2",
+  "description": "MCP server and CLI that give AI coding agents the version-matched knowledge of maz-ui and its ecosystem: search, component APIs, icons, Tailwind theme tokens, setup guides and code review",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
   "repository": {
@@ -12,8 +12,16 @@
   "bugs": "https://github.com/LouisMazel/maz-ui/issues",
   "keywords": [
     "maz-ui",
-    "modelcontextprotocol",
-    "client"
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "agents",
+    "claude",
+    "cursor",
+    "copilot",
+    "vue",
+    "nuxt",
+    "tailwindcss"
   ],
   "sideEffects": false,
   "publishConfig": {
@@ -21,15 +29,14 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/mcp.d.ts",
-      "import": "./dist/mcp.mjs",
-      "module": "./dist/mcp.mjs",
-      "default": "./dist/mcp.mjs"
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
     }
   },
-  "main": "./dist/mcp.mjs",
-  "module": "./dist/mcp.mjs",
-  "types": "./dist/mcp.d.ts",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "bin": {
     "maz-ui-mcp": "./bin/maz-ui-mcp.mjs"
   },
@@ -44,14 +51,12 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "generate:docs": "pnpm generate:components-docs && pnpm copy-docs",
-    "copy-docs": "tsx scripts/copy-docs.ts",
-    "generate:components-docs": "pnpm -F cli cli generate-components-docs",
+    "generate:docs": "tsx ../../tools/agent-docs/src/cli.ts --out ./docs",
     "build": "pnpm generate:docs && unbuild",
     "build:watch": "pnpm generate:docs && unbuild --watch",
-    "dev": "tsx src/mcp.ts",
-    "dev:inspector": "mcp-inspector",
-    "preview": "node dist/mcp.mjs",
+    "dev": "tsx scripts/dev.ts",
+    "dev:inspector": "mcp-inspector tsx scripts/dev.ts",
+    "preview": "node bin/maz-ui-mcp.mjs",
     "lint": "cross-env NODE_ENV=production eslint .",
     "lint:fix": "pnpm lint --fix",
     "typecheck": "tsc --noEmit",
@@ -60,21 +65,80 @@
     "test:unit:coverage": "pnpm generate:docs && vitest run --coverage"
   },
   "dependencies": {
+    "@babel/parser": "^8.0.8",
+    "@maz-ui/node": "workspace:*",
     "@maz-ui/utils": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.32.1",
-    "maz-ui": "workspace:*"
+    "@vue/compiler-dom": "^3.5.44",
+    "minisearch": "^7.2.0",
+    "tinyglobby": "^0.2.17",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@babel/types": "^8.0.8",
     "@maz-ui/eslint-config": "workspace:*",
-    "@maz-ui/node": "workspace:*",
     "@modelcontextprotocol/inspector": "^2.11.0",
-    "@swc/core": "1.16.18",
-    "prettier": "^3.9.10",
-    "ts-node-maintained": "^10.9.6",
+    "agent-docs": "workspace:*",
     "tsx": "^4.23.15",
     "unbuild": "^3.6.1"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "inputs": [
+          "production",
+          "^production",
+          "{workspaceRoot}/apps/docs/src/**/*.md",
+          "{workspaceRoot}/apps/docs/.vitepress/mixins/**/*",
+          "{workspaceRoot}/tools/agent-docs/src/**/*",
+          "{workspaceRoot}/tools/agent-docs/content/**/*",
+          "{workspaceRoot}/packages/lib/src/**/*",
+          "{workspaceRoot}/packages/icons/src/icon-list.ts",
+          "{workspaceRoot}/packages/nuxt/src/module.ts",
+          "{workspaceRoot}/packages/utils/src/**/*",
+          "{workspaceRoot}/packages/node/src/**/*"
+        ],
+        "outputs": [
+          "{projectRoot}/dist",
+          "{projectRoot}/docs"
+        ]
+      },
+      "test:unit": {
+        "inputs": [
+          "default",
+          "^production",
+          "{workspaceRoot}/apps/docs/src/**/*.md",
+          "{workspaceRoot}/apps/docs/.vitepress/mixins/**/*",
+          "{workspaceRoot}/tools/agent-docs/src/**/*",
+          "{workspaceRoot}/tools/agent-docs/content/**/*",
+          "{workspaceRoot}/packages/lib/src/**/*",
+          "{workspaceRoot}/packages/icons/src/icon-list.ts",
+          "{workspaceRoot}/packages/nuxt/src/module.ts",
+          "{workspaceRoot}/packages/utils/src/**/*",
+          "{workspaceRoot}/packages/node/src/**/*"
+        ]
+      },
+      "test:unit:coverage": {
+        "inputs": [
+          "default",
+          "^production",
+          "{workspaceRoot}/apps/docs/src/**/*.md",
+          "{workspaceRoot}/apps/docs/.vitepress/mixins/**/*",
+          "{workspaceRoot}/tools/agent-docs/src/**/*",
+          "{workspaceRoot}/tools/agent-docs/content/**/*",
+          "{workspaceRoot}/packages/lib/src/**/*",
+          "{workspaceRoot}/packages/icons/src/icon-list.ts",
+          "{workspaceRoot}/packages/nuxt/src/module.ts",
+          "{workspaceRoot}/packages/utils/src/**/*",
+          "{workspaceRoot}/packages/node/src/**/*"
+        ],
+        "outputs": [
+          "{projectRoot}/coverage"
+        ]
+      }
+    }
   }
 }

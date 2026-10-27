@@ -1,6 +1,6 @@
 ---
 title: MazFullscreenLoader
-description: MazFullscreenLoader is a standalone component
+description: MazFullscreenLoader covers the whole page with a backdrop and a spinner to block the interface during a global loading
 ---
 
 # {{ $frontmatter.title }}

@@ -1,6 +1,6 @@
 ---
 title: MazSpinner
-description: MazSpinner is a standalone component that replaces the standard html input checkbox. Color options are available.
+description: MazSpinner is an animated loading indicator with the colors and sizes of the theme, to show that a content or an action is loading
 ---
 
 # {{ $frontmatter.title }}

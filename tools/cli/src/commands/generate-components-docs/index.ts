@@ -1,29 +1,35 @@
-import { readdirSync } from 'node:fs'
+import { watch } from 'node:fs'
+import { resolve } from 'node:path'
 import { exit } from 'node:process'
+import { fileURLToPath } from 'node:url'
 import { execPromise, logger } from '@maz-ui/node'
+import { debounce } from '@maz-ui/utils/helpers/debounce'
 import { Command } from 'commander'
+
+const COMPONENTS_DIR = fileURLToPath(new URL('../../../../../packages/lib/src/components', import.meta.url))
+
+async function generate(): Promise<void> {
+  await execPromise('pnpm -F docs generate:components-docs')
+  logger.success('Components API tables generated in apps/docs/.vitepress/generated-docs')
+}
 
 export function generateComponentsDocumentationCommand(): Command {
   const createFiles = new Command('generate-components-docs')
 
   createFiles
-    .description('Generate components documentation in markdown files')
+    .description('Generate the API tables of the components documentation (props, events, slots, expose) from their TypeScript sources')
     .option('-w, --watch', 'Optional: use it to watch changes and generate docs automatically')
     .action(async (options: { watch?: boolean }) => {
       try {
-        if (options.watch) {
-          await execPromise('vue-docgen -w')
+        await generate()
 
-          logger.eot()
-          logger.success('Is watching for components documentation generating')
-          logger.eot()
-        }
-        else {
-          await execPromise('vue-docgen')
-          logger.eot()
-          const files = readdirSync('./../../apps/docs/.vitepress/generated-docs')
-          logger.success(`${files.length} components documentation generated`)
-          logger.eot()
+        if (options.watch) {
+          const regenerate = debounce(() => {
+            generate().catch(error => logger.error(error))
+          }, 500)
+
+          watch(resolve(COMPONENTS_DIR), { recursive: true }, regenerate)
+          logger.success('Watching the components for documentation changes')
         }
       }
       catch {

@@ -11,7 +11,7 @@ description: Maz-UI is a Vue.js UI library that provides a set of pre-built comp
 
 A MCP server is available to connect your IA agents to the documentation and implement Maz-UI easily.
 
-Check out the documentation of [@maz-ui/mcp](./mcp.md)
+Check out the documentation of [@maz-ui/mcp](../ecosystem/mcp.md)
 
 :::
 
@@ -64,8 +64,8 @@ app.use(MazUi, {
 
 You must the MazUi plugin to initialize the theme and translations.
 
-- [Theme documentation](./themes.md)
-- [Translations documentation](./translations.md)
+- [Theme documentation](../ecosystem/themes.md)
+- [Translations documentation](../ecosystem/translations.md)
 
 ```typescript
 import { MazUi } from 'maz-ui/plugins/maz-ui'

@@ -41,13 +41,13 @@ const tabs: MazTabsBarItem[] = [
     <MazTabsBar :items="tabs" />
 
     <MazTabsContent>
-      <MazTabsContentItem :tab="1" class="maz:py-4">
+      <MazTabsContentItem :tab="1" class="py-4">
         Tab 1
       </MazTabsContentItem>
-      <MazTabsContentItem :tab="2" class="maz:py-4">
+      <MazTabsContentItem :tab="2" class="py-4">
         Tab 2
       </MazTabsContentItem>
-      <MazTabsContentItem :tab="3" class="maz:py-4">
+      <MazTabsContentItem :tab="3" class="py-4">
         Tab 3
       </MazTabsContentItem>
     </MazTabsContent>
@@ -95,13 +95,13 @@ const tabs: MazTabsBarItem[] = ['First Tab', 'Second Tab', 'Third Tab']
     <MazTabsBar :items="tabs" />
 
     <MazTabsContent>
-      <MazTabsContentItem :tab="1" class="maz:py-4">
+      <MazTabsContentItem :tab="1" class="py-4">
         Tab 1
       </MazTabsContentItem>
-      <MazTabsContentItem :tab="2" class="maz:py-4">
+      <MazTabsContentItem :tab="2" class="py-4">
         Tab 2
       </MazTabsContentItem>
-      <MazTabsContentItem :tab="3" class="maz:py-4">
+      <MazTabsContentItem :tab="3" class="py-4">
         Tab 3
       </MazTabsContentItem>
     </MazTabsContent>

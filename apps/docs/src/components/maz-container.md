@@ -281,9 +281,9 @@ Use the `header` slot to fully customize the header, or use `title`, `icon-start
 <template>
   <MazContainer>
     <template #header>
-      <div class="maz:flex maz:items-center maz:justify-between maz:w-full maz:px-4 maz:py-3 maz:bg-primary maz:text-primary-foreground">
-        <span class="maz:font-semibold">Custom Header</span>
-        <MazBadge size="sm" color="white" class="maz:text-primary">
+      <div class="flex items-center justify-between w-full px-4 py-3 bg-primary text-primary-foreground">
+        <span class="font-semibold">Custom Header</span>
+        <MazBadge size="sm" color="white" class="text-primary">
           New
         </MazBadge>
       </div>
@@ -335,18 +335,18 @@ Use the `header` slot to fully customize the header, or use `title`, `icon-start
     rounded-size="xl"
     block
   >
-    <div class="maz:flex maz:gap-4 maz:flex-wrap">
-      <MazContainer class="maz:flex-1 maz:min-w-[150px]">
-        <p class="maz:text-muted maz:text-sm">Users</p>
-        <p class="maz:text-2xl maz:font-bold">1,234</p>
+    <div class="flex gap-4 flex-wrap">
+      <MazContainer class="flex-1 min-w-[150px]">
+        <p class="text-muted text-sm">Users</p>
+        <p class="text-2xl font-bold">1,234</p>
       </MazContainer>
-      <MazContainer class="maz:flex-1 maz:min-w-[150px]">
-        <p class="maz:text-muted maz:text-sm">Revenue</p>
-        <p class="maz:text-2xl maz:font-bold">$12.5k</p>
+      <MazContainer class="flex-1 min-w-[150px]">
+        <p class="text-muted text-sm">Revenue</p>
+        <p class="text-2xl font-bold">$12.5k</p>
       </MazContainer>
-      <MazContainer class="maz:flex-1 maz:min-w-[150px]">
-        <p class="maz:text-muted maz:text-sm">Orders</p>
-        <p class="maz:text-2xl maz:font-bold">567</p>
+      <MazContainer class="flex-1 min-w-[150px]">
+        <p class="text-muted text-sm">Orders</p>
+        <p class="text-2xl font-bold">567</p>
       </MazContainer>
     </div>
   </MazContainer>

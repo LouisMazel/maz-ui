@@ -81,7 +81,7 @@ onUnmounted(() => {
   <div ref="swipeContainer" class="swipe-container">
     <p>
       Swipe in any direction<br>
-      <span class="maz:text-sm maz:text-muted">
+      <span class="text-sm text-muted">
         (works with touch, mouse and pen)
       </span>
       <br><br>

@@ -21,9 +21,7 @@
     "build": {
       "cache": true,
       "dependsOn": [
-        "^build",
-        "typecheck",
-        "types:check"
+        "^build"
       ],
       "inputs": [
         "production",

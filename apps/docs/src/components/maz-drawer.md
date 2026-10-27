@@ -1,6 +1,6 @@
 ---
 title: MazDrawer
-description: MazDrawer is a standalone component to add a collapsible sidebar at the top and bottom bar
+description: MazDrawer is a panel that slides in from the top, the bottom, the left or the right side of the screen over a backdrop, for side menus, filters or details
 ---
 
 # {{ $frontmatter.title }}
@@ -46,7 +46,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   <template #default="{ close }">
     <div style="padding: 16px">
       <p>Content</p>
-      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
+      <div class="flex flex-wrap gap-2 mt-4">
         <MazBtn color="destructive" @click="close"> Close </MazBtn>
       </div>
     </div>
@@ -58,7 +58,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   <template #default="{ close }">
     <div style="padding: 16px">
       <p>Content</p>
-      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
+      <div class="flex flex-wrap gap-2 mt-4">
         <MazBtn color="destructive" @click="close"> Close </MazBtn>
       </div>
     </div>
@@ -70,7 +70,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   <template #default="{ close }">
     <div style="padding: 16px">
       <p>Content</p>
-      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
+      <div class="flex flex-wrap gap-2 mt-4">
         <MazBtn color="destructive" @click="close"> Close </MazBtn>
       </div>
     </div>
@@ -82,7 +82,7 @@ This component uses `<Teleport to="body">` with [MazBackdrop](./maz-backdrop.md)
   <template #default="{ close }">
     <div style="padding: 16px">
       <p>Content</p>
-      <div class="maz:flex maz:flex-wrap maz:gap-2 maz:mt-4">
+      <div class="flex flex-wrap gap-2 mt-4">
         <MazBtn color="destructive" @click="close"> Close </MazBtn>
       </div>
     </div>
