@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import moduleConfig from '../module'
 
-const { addComponent, addPlugin, addImports, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, detectAgentTargets } = vi.hoisted(() => {
+const { addComponent, addPlugin, addImports, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, detectAgentTargets, findProjectPackage } = vi.hoisted(() => {
   const logger = { info: vi.fn(), warn: vi.fn(), debug: vi.fn() }
 
   return {
@@ -10,6 +10,7 @@ const { addComponent, addPlugin, addImports, createResolver, defineNuxtModule, a
     useLogger: vi.fn(() => logger),
     setupAgents: vi.fn(() => ({ targets: [] as string[], version: '5.0.0', changes: [] as Array<{ file: string, action: string }> })),
     detectAgentTargets: vi.fn((): string[] => ['claude']),
+    findProjectPackage: vi.fn((): string | undefined => '/project/node_modules/maz-ui'),
     addComponent: vi.fn(),
     addPlugin: vi.fn(),
     addImports: vi.fn(),
@@ -33,6 +34,7 @@ vi.mock('@nuxt/kit', () => ({
 vi.mock('@maz-ui/node', () => ({
   setupAgents,
   detectAgentTargets,
+  findProjectPackage,
 }))
 
 vi.mock('@nuxt/devtools-kit', () => ({
@@ -636,7 +638,7 @@ describe('nuxt module', () => {
           callSetup({}, {}, { dev: true })
 
           expect(config.defaults.agents).toEqual({ rules: false, mcp: true })
-          expect(setupAgents).toHaveBeenCalledWith({ rootDir: '/project', targets: ['claude'], rules: false, mcp: true })
+          expect(setupAgents).toHaveBeenCalledWith({ rootDir: '/project', targets: ['claude'], rules: false, mcp: true, docsDir: '/project/node_modules/maz-ui/docs' })
         })
       })
 
@@ -653,7 +655,7 @@ describe('nuxt module', () => {
           callSetup({ agents: true }, {}, { dev: true })
 
           expect(detectAgentTargets).toHaveBeenCalledWith('/project')
-          expect(setupAgents).toHaveBeenCalledWith({ rootDir: '/project', targets: ['claude'], rules: true, mcp: true })
+          expect(setupAgents).toHaveBeenCalledWith({ rootDir: '/project', targets: ['claude'], rules: true, mcp: true, docsDir: '/project/node_modules/maz-ui/docs' })
         })
       })
 
@@ -670,7 +672,35 @@ describe('nuxt module', () => {
           callSetup({ agents: { targets: ['cursor', 'agents-md'], rules: true, mcp: false } }, {}, { dev: true })
 
           expect(detectAgentTargets).not.toHaveBeenCalled()
-          expect(setupAgents).toHaveBeenCalledWith({ rootDir: '/project', targets: ['cursor', 'agents-md'], rules: true, mcp: false })
+          expect(setupAgents).toHaveBeenCalledWith({ rootDir: '/project', targets: ['cursor', 'agents-md'], rules: true, mcp: false, docsDir: '/project/node_modules/maz-ui/docs' })
+        })
+      })
+
+      describe('when the app is part of a monorepo', () => {
+        it('then the files are written at the workspace root with the docs of the maz-ui of the app', () => {
+          callSetup({}, {}, { dev: true, rootDir: '/repo/apps/web', workspaceDir: '/repo' })
+
+          expect(detectAgentTargets).toHaveBeenCalledWith('/repo')
+          expect(findProjectPackage).toHaveBeenCalledWith('/repo/apps/web', 'maz-ui')
+          expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ rootDir: '/repo' }))
+        })
+      })
+
+      describe('when a dir is given', () => {
+        it('then the files are written in this folder, relative to the Nuxt root', () => {
+          callSetup({ agents: { dir: '../..' } }, {}, { dev: true, rootDir: '/repo/apps/web', workspaceDir: '/repo/apps/web' })
+
+          expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ rootDir: '/repo' }))
+        })
+      })
+
+      describe('when maz-ui is not found from the Nuxt root', () => {
+        it('then setupAgents resolves the docs by itself', () => {
+          findProjectPackage.mockReturnValueOnce(undefined)
+
+          callSetup({}, {}, { dev: true })
+
+          expect(setupAgents).toHaveBeenCalledWith({ rootDir: '/project', targets: ['claude'], rules: false, mcp: true })
         })
       })
 

@@ -1,9 +1,9 @@
 import type { Nuxt } from '@nuxt/schema'
 import type { MazUiNuxtOptions } from './types'
-import { dirname } from 'node:path'
+import { dirname, join, resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { detectAgentTargets, setupAgents } from '@maz-ui/node'
+import { detectAgentTargets, findProjectPackage, setupAgents } from '@maz-ui/node'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 import { addCustomTab } from '@nuxt/devtools-kit'
@@ -213,14 +213,23 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
   const isExplicit = (nuxt.options as { mazUi?: MazUiNuxtOptions }).mazUi?.agents !== undefined
 
   try {
-    const { rootDir } = nuxt.options
-    const { targets: requestedTargets, rules = true, mcp = true } = typeof agents === 'object' ? agents : {}
-    const targets = requestedTargets ?? detectAgentTargets(rootDir)
+    const { rootDir, workspaceDir } = nuxt.options
+    const { targets: requestedTargets, rules = true, mcp = true, dir } = typeof agents === 'object' ? agents : {}
+    // In a monorepo, the agents start at the workspace root, not in the Nuxt app
+    const projectDir = dir ? resolve(rootDir, dir) : (workspaceDir || rootDir)
+    const targets = requestedTargets ?? detectAgentTargets(projectDir)
 
     if (targets.length === 0 || (!rules && !mcp))
       return
 
-    const { changes } = setupAgents({ rootDir, targets, rules, mcp })
+    const mazUiDir = findProjectPackage(rootDir, 'maz-ui')
+    const { changes } = setupAgents({
+      rootDir: projectDir,
+      targets,
+      rules,
+      mcp,
+      ...(mazUiDir ? { docsDir: join(mazUiDir, 'docs') } : {}),
+    })
     const applied = changes.filter(change => ['create', 'update', 'remove'].includes(change.action))
 
     if (applied.length > 0) {

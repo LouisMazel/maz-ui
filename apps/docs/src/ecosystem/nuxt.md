@@ -448,9 +448,13 @@ const agents = {
   rules: false,
   // 'claude' | 'agents-md' | 'cursor' | 'vscode' (default: the detected agents)
   targets: ['claude', 'agents-md'],
+  // Folder where the files are written, relative to the Nuxt app (default: the root of the workspace)
+  dir: '../..',
 }
 // agents: true enables mcp and rules, agents: false disables everything
 ```
+
+In a monorepo, the files are written at the **root of the workspace** (`workspaceDir` of Nuxt), where your agents start, not in the Nuxt app: a single `.mcp.json` serves every app. Set `dir` to choose another folder.
 
 The module runs in development only (never in CI nor in tests), only for the agents it detects in the project (`.claude/`, `CLAUDE.md`, `.mcp.json`, `.cursor/`, `.vscode/mcp.json`, `.github/copilot-instructions.md`, `AGENTS.md`, `.codex/`, `.windsurf/`...), and keeps the files up to date when you upgrade maz-ui:
 
@@ -458,7 +462,7 @@ The module runs in development only (never in CI nor in tests), only for the age
 - with `rules: true`, `.claude/rules/maz-ui.md`: a Claude Code rule (skipped when Claude reads `AGENTS.md`, i.e. without `CLAUDE.md`)
 - with `rules: true`, `AGENTS.md`: a section delimited by `<!-- BEGIN:maz-ui -->` and `<!-- END:maz-ui -->`, read by Codex, Cursor, Copilot, Windsurf...
 
-It never overwrites a file it does not own: your `CLAUDE.md`, your own rules and the other MCP servers are left untouched. Commit the generated files to share them with your team. See the [AI agents guide](../guide/ai-agents.md) for details.
+It never overwrites a file it does not own: your `CLAUDE.md`, your own rules and the other MCP servers are left untouched, and an existing `maz-ui` server entry (for example pinned to a version) is kept as is. Commit the generated files to share them with your team (check that `.claude/` is not in your `.gitignore`). See the [AI agents guide](../guide/ai-agents.md) for details.
 
 ## Advanced Theming
 

@@ -344,6 +344,7 @@ export interface MazUiNuxtOptions {
    * - `mcp`: registers the maz-ui MCP server in the agent configs (`.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`). Its instructions already give the maz-ui rules to the agents.
    * - `rules`: also writes the maz-ui rules in `.claude/rules/maz-ui.md` and in a delimited section of `AGENTS.md` (for agents without MCP).
    * - `targets`: agents to configure (`'claude'`, `'agents-md'`, `'cursor'`, `'vscode'`), default: the detected ones. Nothing is written when no agent is detected.
+   * - `dir`: folder where the agent files are written, relative to the Nuxt root. Default: the workspace root (`workspaceDir`), so that in a monorepo the files land where the agents start
    * - `true`: `{ mcp: true, rules: true }`, `false`: disabled
    * @example `agents: { rules: true }` or `agents: false`
    * @default { rules: false, mcp: true }
@@ -352,5 +353,6 @@ export interface MazUiNuxtOptions {
     targets?: AgentTarget[]
     rules?: boolean
     mcp?: boolean
+    dir?: string
   }
 }
