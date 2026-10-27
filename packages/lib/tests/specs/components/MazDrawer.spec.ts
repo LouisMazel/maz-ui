@@ -25,6 +25,28 @@ describe('given MazDrawer component', () => {
     })
   })
 
+  describe('when the content is taller than the screen', () => {
+    it.each(['start', 'end'] as MazDrawerProps['variant'][])('then the %s drawer is bounded to the viewport and its body scrolls, so the header stays visible', (variant) => {
+      const wrapper = mount(MazDrawer, {
+        props: { variant, modelValue: true },
+      })
+
+      const wrap = wrapper.find('.m-drawer-content-wrap').classes()
+      expect(wrap).toContain('maz:h-full')
+      expect(wrap).toContain('maz:max-h-full')
+      expect(wrap).not.toContain('maz:min-h-screen')
+      expect(wrapper.find('.m-drawer-body').classes()).toContain('maz:overflow-auto')
+    })
+
+    it.each(['top', 'bottom'] as MazDrawerProps['variant'][])('then the %s drawer is bounded to the viewport', (variant) => {
+      const wrapper = mount(MazDrawer, {
+        props: { variant, modelValue: true },
+      })
+
+      expect(wrapper.find('.m-drawer-content-wrap').classes()).toContain('maz:max-h-full')
+    })
+  })
+
   describe('when rendered with custom size', () => {
     it('then it should apply the custom size', () => {
       const wrapper = mount(MazDrawer, {

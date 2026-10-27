@@ -99,10 +99,10 @@ const titleId = computed(() => `${instanceId.value}-title`)
   >
     <template #default="{ close }">
       <div
-        class="m-drawer-content-wrap maz:pointer-events-auto maz:flex maz:flex-col maz:overflow-y-auto maz:bg-container"
+        class="m-drawer-content-wrap maz:pointer-events-auto maz:flex maz:max-h-full maz:flex-col maz:overflow-hidden maz:bg-container"
         :class="[
           `--${variant}`,
-          (variant === 'start' || variant === 'end') ? 'maz:min-h-screen maz:w-full maz:tab-s:w-(--maz-drawer-size)' : 'maz:h-auto maz:w-full',
+          (variant === 'start' || variant === 'end') ? 'maz:size-full maz:tab-s:w-(--maz-drawer-size)' : 'maz:h-auto maz:w-full',
         ]"
         :style="{
           '--maz-drawer-size': size,
@@ -126,7 +126,7 @@ const titleId = computed(() => `${instanceId.value}-title`)
             </MazBtn>
           </div>
         </header>
-        <div class="m-drawer-body maz:z-0 maz:min-h-0 maz:flex-1 maz:overflow-x-auto maz:bg-clip-padding">
+        <div class="m-drawer-body maz:z-0 maz:min-h-0 maz:flex-1 maz:overflow-auto maz:bg-clip-padding">
           <slot :close="close" />
         </div>
       </div>
