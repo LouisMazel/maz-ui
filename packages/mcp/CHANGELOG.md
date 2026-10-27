@@ -1,5 +1,17 @@
 # Changelog
 
+## v5.1.0-beta.2 (2026-10-27)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.0-beta.1...v5.1.0-beta.2)
+
+### 🩹 Fixes
+
+- **@maz-ui/mcp:** Read the reason of an ignore comment and show absolute paths outside the project ([eb83caf52](https://github.com/LouisMazel/maz-ui/commit/eb83caf52))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.1.0-beta.1 (2026-10-27)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.0-beta.0...v5.1.0-beta.1)
