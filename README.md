@@ -155,7 +155,7 @@ const toast = useToast()
 - [Nuxt](https://maz-ui.com/ecosystem/nuxt) - Nuxt module for easy integration of Maz UI
 - [Utils](https://maz-ui.com/ecosystem/utils) - Useful utilities for common tasks
 - [Node](https://maz-ui.com/ecosystem/node) - Useful utilities for node
-- [MCP](https://maz-ui.com/ecosystem/mcp) - AI assistant for documentation
+- [MCP](https://maz-ui.com/ecosystem/mcp) - MCP server and CLI that make AI coding agents use Maz UI (docs, component APIs, icons, theme tokens, code review), see [AI agents](https://maz-ui.com/guide/ai-agents)
 - [Upgrade](./packages/upgrade/README.md) - CLI tools to upgrade from v4 to v5
 - [EslintConfig](./packages/eslint-config/README.md) - ESLint configuration of Maz UI (built on top of [@antfu/eslint-config](https://www.npmjs.com/package/@antfu/eslint-config))
 
