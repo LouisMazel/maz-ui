@@ -91,7 +91,7 @@ export interface MazLinkProps {
    */
   rel?: string
   /**
-   * The aria-label of the link
+   * The aria-label of the link (or of the button)
    * @default undefined
    */
   ariaLabel?: string
@@ -184,7 +184,7 @@ const COLOR_CLASS: Record<NonNullable<MazLinkProps['color']>, string> = {
     :target="!isButton ? target : undefined"
     :rel="!isButton ? rel : undefined"
     :download="!isButton ? download : undefined"
-    :aria-label="!isButton ? ariaLabel : undefined"
+    :aria-label="ariaLabel"
     :type="isButton ? 'button' : undefined"
     :disabled="isButton ? disabled : undefined"
     :style="styleProp"
