@@ -56,6 +56,16 @@ describe('MazLink component', () => {
     expect(wrapper.find('router-link-stub').exists()).toBe(true)
   })
 
+  it('keeps its aria-label when it renders a button', () => {
+    const buttonWrapper = shallowMount(MazLink, {
+      props: { ariaLabel: 'Close the panel' },
+      slots: { default: 'x' },
+    })
+
+    expect(buttonWrapper.element.tagName).toBe('BUTTON')
+    expect(buttonWrapper.attributes('aria-label')).toBe('Close the panel')
+  })
+
   it('does not apply a color class when color is inherit', () => {
     const inheritWrapper = shallowMount(MazLink, {
       props: { color: 'inherit' },

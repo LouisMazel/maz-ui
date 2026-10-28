@@ -47,8 +47,8 @@ export interface MazDialogConfirmInternalProps {
   rejectProps?: Omit<MazBtnProps, 'type'> & MazDialogConfirmButton
 
   /**
-   * Whether to display the reject button
-   * @default true
+   * Hide the reject button (unset: the value of `useMazDialogConfirm().data`, else shown)
+   * @default false
    */
   hideRejectButton?: boolean
 
@@ -66,8 +66,8 @@ export interface MazDialogConfirmInternalProps {
   acceptProps?: Omit<MazBtnProps, 'type'> & MazDialogConfirmButton
 
   /**
-   * Whether to display the accept button
-   * @default true
+   * Hide the accept button (unset: the value of `useMazDialogConfirm().data`, else shown)
+   * @default false
    */
   hideAcceptButton?: boolean
 
@@ -80,7 +80,7 @@ export interface MazDialogConfirmInternalProps {
 
 export type MazDialogConfirmProps = MazDialogConfirmInternalProps & MazDialogConfirmData & MazDialogProps
 
-const { identifier, message, buttons, title, modelValue, closeOnEscape = true, rejectText, acceptText, rejectProps, acceptProps, hideRejectButton, hideAcceptButton, ...dialogProps } = defineProps<MazDialogConfirmProps>()
+const { identifier, message, buttons, title, modelValue, closeOnEscape = true, rejectText, acceptText, rejectProps, acceptProps, hideRejectButton = undefined, hideAcceptButton = undefined, ...dialogProps } = defineProps<MazDialogConfirmProps>()
 
 defineEmits<{
   /**

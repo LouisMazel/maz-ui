@@ -58,7 +58,8 @@ You can display a simple dialog with a title and a message. The dialog will have
 
 ```vue
 <script lang="ts" setup>
-import { useDialog, useToast } from 'maz-ui/composables'
+import { useDialog } from 'maz-ui/composables/useDialog'
+import { useToast } from 'maz-ui/composables/useToast'
 
 const dialog = useDialog()
 const toast = useToast()
@@ -108,7 +109,8 @@ The buttons property allows you to display custom buttons in the dialog and repl
 
 ```vue
 <script lang="ts" setup>
-import { useDialog, useToast } from 'maz-ui/composables'
+import { useDialog } from 'maz-ui/composables/useDialog'
+import { useToast } from 'maz-ui/composables/useToast'
 
 const dialog = useDialog()
 const toast = useToast()
@@ -172,7 +174,8 @@ The buttons property allows you to display custom buttons in the dialog and repl
 
 ```vue
 <script lang="ts" setup>
-import { useDialog, useToast } from 'maz-ui/composables'
+import { useDialog } from 'maz-ui/composables/useDialog'
+import { useToast } from 'maz-ui/composables/useToast'
 
 const dialog = useDialog()
 const toast = useToast()
@@ -190,7 +193,7 @@ async function openDialogResponse() {
       },
       {
         text: 'Accept',
-        type: 'resolve',
+        type: 'accept',
         response: 'Accepted Response',
         color: 'secondary',
       }
@@ -234,7 +237,8 @@ You can close the dialog programmatically by calling the close method returned b
 
 ```vue
 <script lang="ts" setup>
-import { useDialog, useToast } from 'maz-ui/composables'
+import { useDialog } from 'maz-ui/composables/useDialog'
+import { useToast } from 'maz-ui/composables/useToast'
 
 const dialog = useDialog()
 
@@ -313,7 +317,8 @@ type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue'>> & {
 ```
 
 <script lang="ts" setup>
-  import { useDialog, useToast } from 'maz-ui/composables'
+  import { useDialog } from 'maz-ui/composables/useDialog'
+  import { useToast } from 'maz-ui/composables/useToast'
 
   const dialog = useDialog()
   const toast = useToast()
@@ -383,7 +388,7 @@ type DialogOptions = Partial<Omit<MazDialogConfirmProps, 'modelValue'>> & {
         },
         {
           text: 'Accept',
-          type: 'resolve',
+          type: 'accept',
           response: 'Accepted Response',
           color: 'secondary',
         }

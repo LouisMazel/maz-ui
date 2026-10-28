@@ -107,6 +107,22 @@ describe('MazDialogConfirm extended coverage', () => {
     })
   })
 
+  describe('when the shared data hides the buttons and the props are not set', () => {
+    it('then the shared data is used (an unset boolean prop is not false)', () => {
+      const { data } = useMazDialogConfirm()
+      const previous = data.value
+      data.value = { ...previous, hideAcceptButton: true, hideRejectButton: true }
+
+      wrapper = getWrapper({ modelValue: true })
+      // @ts-expect-error - currentData is internal
+      const currentData = wrapper.vm.currentData
+
+      expect(currentData.hideAcceptButton).toBe(true)
+      expect(currentData.hideRejectButton).toBe(true)
+      data.value = previous
+    })
+  })
+
   describe('when both hideAcceptButton and hideRejectButton are true', () => {
     it('should hide both buttons', async () => {
       wrapper = getWrapper({ modelValue: true, hideAcceptButton: true, hideRejectButton: true })

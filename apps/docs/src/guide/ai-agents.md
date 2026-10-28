@@ -175,7 +175,7 @@ The command exits with an error code when it finds errors (or more warnings than
 | `boolean-prop-string` | error | `disabled="false"` (a truthy string) |
 | `unknown-model`, `unknown-event`, `unknown-slot` | error | `v-model:foo`, `@clik`, `<template #captions>` |
 | `unknown-icon` | error | An icon that does not exist in `@maz-ui/icons` |
-| `prefer-maz-component` | warning | `<button>`, `<input>`, `<select>`, `<textarea>`, `<dialog>`... |
+| `prefer-maz-component` | warning | `<button>`, `<input>`, `<select>`, `<textarea>`, `<dialog>`... (a `<button>` that is a clickable card, with a layout, a component or a title and a subtitle, or an empty hit area, is left alone) |
 | `inline-svg` | warning | SVG icons written inline |
 | `prefer-ecosystem`, `prefer-utils` | warning / info | lodash, VueUse, toast, icon, tooltip, date picker... libraries that maz-ui already covers |
 | `theme-colors` | warning | Default Tailwind palette (`bg-blue-500`, `text-gray-600`, `bg-white`) |

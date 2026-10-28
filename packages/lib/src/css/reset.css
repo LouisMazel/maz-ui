@@ -12,10 +12,13 @@
       box-sizing: border-box;
     }
 
+    /* Like Tailwind's preflight: a button never takes the padding or the
+       background of its parent (a MazLink rendered as a button inside a
+       padded card used to grow by the card's padding) */
     &:is(button),
     button {
-      background-color: inherit;
-      padding: inherit;
+      background-color: transparent;
+      padding: 0;
     }
 
     button,

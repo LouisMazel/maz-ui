@@ -133,12 +133,16 @@ function reportUnknownProp(name: string, offset: number, component: ComponentApi
   if (passthrough && near.length === 0)
     return
 
+  const names = near.map(entry => (entry === 'modelValue' ? '`v-model`' : `\`${toKebab(entry)}\``)).join(' or ')
+
   context.report({
     rule: 'unknown-prop',
     severity: 'warning',
-    message: `${component.name} has no prop \`${name}\`${passthrough ? '' : ': it will only be forwarded as an HTML attribute'}.`,
+    message: passthrough
+      ? `\`${name}\` is not a prop of ${component.name}: it is only forwarded as an HTML attribute (the component may not use it).`
+      : `${component.name} has no prop \`${name}\`: it will only be forwarded as an HTML attribute.`,
     suggestion: near.length > 0
-      ? `Did you mean ${near.map(entry => (entry === 'modelValue' ? '`v-model`' : `\`${toKebab(entry)}\``)).join(' or ')}? Check \`get_component_api({ names: ["${component.name}"] })\`.`
+      ? `Did you mean ${names}? Check \`get_component_api({ names: ["${component.name}"] })\`.`
       : `Check the real API with \`get_component_api({ names: ["${component.name}"] })\`.`,
   }, offset)
 }
@@ -292,8 +296,8 @@ function checkMazComponent(element: ElementNode, component: ComponentApi, source
 const SVG_SHAPES = new Set(['path', 'circle', 'rect', 'polyline', 'polygon', 'line', 'ellipse'])
 const ICON_MAX_VIEWBOX = 32
 
-function svgDescendants(element: ElementNode): ElementNode[] {
-  return element.children.filter(isElement).flatMap(child => [child, ...svgDescendants(child)])
+function descendantsOf(element: ElementNode): ElementNode[] {
+  return element.children.filter(isElement).flatMap(child => [child, ...descendantsOf(child)])
 }
 
 function isAnimated(element: ElementNode): boolean {
@@ -309,7 +313,7 @@ function isAnimated(element: ElementNode): boolean {
  * Drawings (bigger viewBox), animated or data-driven SVGs (directives on their shapes) are left alone.
  */
 export function isIconLikeSvg(svg: ElementNode): boolean {
-  const descendants = svgDescendants(svg)
+  const descendants = descendantsOf(svg)
 
   if (!descendants.some(child => SVG_SHAPES.has(child.tag)))
     return false
@@ -322,6 +326,55 @@ export function isIconLikeSvg(svg: ElementNode): boolean {
   return ![svg, ...descendants].some(node => isAnimated(node) || (node !== svg && node.props.some(prop => prop.type === NodeTypes.DIRECTIVE)))
 }
 
+const LAYOUT_TAGS = new Set(['div', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'dl', 'img', 'picture', 'video', 'canvas', 'section', 'article', 'header', 'footer', 'figure', 'table'])
+const NEUTRAL_COMPONENTS = new Set(['Transition', 'TransitionGroup', 'KeepAlive', 'Teleport', 'Suspense', 'ClientOnly', 'NuxtLink', 'RouterLink'])
+
+/** Children that render something: no comment, no whitespace-only text */
+function contentOf(element: ElementNode): TemplateChildNode[] {
+  return element.children.filter(child => child.type !== NodeTypes.COMMENT && !(child.type === NodeTypes.TEXT && child.content.trim() === ''))
+}
+
+/** An icon or a decoration next to a label: an icon of @maz-ui/icons, an `*Icon` component, an SVG, a dynamic `<component>`, an empty `<i>` or `<span>` (a dot, a swatch) */
+function isIconOrDecoration(element: ElementNode, context: ReviewContext): boolean {
+  const pascal = toPascal(element.tag).replace(/^Lazy/, '')
+
+  return element.tag === 'svg'
+    || element.tag === 'component'
+    || context.knowledge.iconNames.has(pascal)
+    || pascal.endsWith('Icon')
+    || (['i', 'span'].includes(element.tag) && contentOf(element).length === 0)
+}
+
+function isComponentTag(element: ElementNode): boolean {
+  return /^[A-Z]/.test(element.tag) || element.tag.includes('-')
+}
+
+/**
+ * A clickable card rather than a button: its content is a layout that MazBtn does not model (a block,
+ * a component such as an avatar or a badge, or several stacked labels: title + subtitle). A text, or an icon
+ * and a text, stays a button.
+ */
+export function isCompositeButton(button: ElementNode, context: ReviewContext): boolean {
+  const descendants = descendantsOf(button)
+
+  if (descendants.some(node => LAYOUT_TAGS.has(node.tag)))
+    return true
+
+  if (descendants.some(node => isComponentTag(node) && !NEUTRAL_COMPONENTS.has(toPascal(node.tag)) && !isIconOrDecoration(node, context)))
+    return true
+
+  return hasStackedLabels(button, context)
+}
+
+/** Two labels or more side by side, at any depth (title + subtitle), unless they are formatting inside a sentence (`Score <b>12</b>`) */
+function hasStackedLabels(element: ElementNode, context: ReviewContext): boolean {
+  const content = contentOf(element)
+  const labels = content.filter((child): child is ElementNode => isElement(child) && !isIconOrDecoration(child, context))
+  const isSentence = content.some(child => !isElement(child))
+
+  return (labels.length >= 2 && !isSentence) || labels.some(label => hasStackedLabels(label, context))
+}
+
 function checkNativeElement(element: ElementNode, context: ReviewContext): void {
   if (element.tag === 'svg' && isIconLikeSvg(element)) {
     context.report({
@@ -332,6 +385,10 @@ function checkNativeElement(element: ElementNode, context: ReviewContext): void 
     }, element.loc.start.offset)
     return
   }
+
+  // An empty button is a hit area or a swatch, a composite one a clickable card: MazBtn fits neither
+  if (element.tag === 'button' && (contentOf(element).length === 0 || isCompositeButton(element, context)))
+    return
 
   const replacement = nativeReplacement(element.tag, staticAttribute(element, 'type')?.value?.content)
 
