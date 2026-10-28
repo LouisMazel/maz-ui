@@ -28,7 +28,8 @@ More info about [dialog plugin](./../plugins/dialog.md) in its documentation
 
 ```vue
 <script lang="ts" setup>
-import { useDialog, useToast } from 'maz-ui/composables'
+import { useDialog } from 'maz-ui/composables/useDialog'
+import { useToast } from 'maz-ui/composables/useToast'
 
 const dialog = useDialog()
 
@@ -64,7 +65,8 @@ function openDialog() {
 </ComponentDemo>
 
 <script lang="ts" setup>
-  import { useDialog, useToast } from 'maz-ui/composables'
+  import { useDialog } from 'maz-ui/composables/useDialog'
+  import { useToast } from 'maz-ui/composables/useToast'
 
   const dialog = useDialog()
   const toast = useToast()
