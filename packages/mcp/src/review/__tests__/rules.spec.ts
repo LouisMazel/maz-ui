@@ -330,6 +330,32 @@ describe('given the prefer-maz-component rule', () => {
     })
   })
 
+  describe('when a button is a clickable card or a hit area', () => {
+    it.each([
+      ['a block inside', '<button><div>Title</div></button>'],
+      ['a title and a subtitle', '<button><span>Title</span><span>Subtitle</span></button>'],
+      ['an icon, a title and a subtitle in a wrapper', '<button><MazTrash /><span class="flex-1"><b>Title</b><span>Subtitle</span></span></button>'],
+      ['a component that is not an icon', '<button><AccountAvatar name="Ana" /> Ana</button>'],
+      ['an image', '<button><img src="/a.png" alt=""></button>'],
+      ['no content', '<button class="absolute inset-0" aria-label="Close" />'],
+    ])('then %s is not reported', (_, markup) => {
+      expect(rulesOf(template(markup))).toEqual([])
+    })
+  })
+
+  describe('when a button holds a label, or an icon and a label', () => {
+    it.each([
+      ['a text', '<button>{{ label }}</button>'],
+      ['an icon and a text', '<button><MazTrash class="size-4" /> Delete</button>'],
+      ['a text and a chevron', '<button><span>More</span><MazChevronDown /></button>'],
+      ['a dot and a text', '<button><i class="size-2 rounded-full" /> Live</button>'],
+      ['a dynamic icon and a text', '<button><component :is="icon" /> Open</button>'],
+      ['a sentence with formatting', '<button><span>Score <b>12</b> <em>pts</em></span></button>'],
+    ])('then %s suggests MazBtn', (_, markup) => {
+      expect(rulesOf(template(markup))).toEqual(['prefer-maz-component'])
+    })
+  })
+
   describe('when native elements have no maz-ui equivalent', () => {
     it('then nothing is reported', () => {
       expect(rulesOf(template('<div><input type="hidden"><input type="submit"><input type="color"><a href="/">x</a></div>'))).toEqual([])
