@@ -111,6 +111,16 @@ describe('given the unknown-prop rule', () => {
     })
   })
 
+  describe('when an HTML attribute has a prop counterpart', () => {
+    it('then it says the attribute is only forwarded and suggests the prop', () => {
+      const [finding] = review(template('<MazInput autofocus />'))
+
+      expect(finding.rule).toBe('unknown-prop')
+      expect(finding.message).toContain('only forwarded as an HTML attribute')
+      expect(finding.suggestion).toContain('`auto-focus`')
+    })
+  })
+
   describe('when the prop exists in kebab-case or camelCase', () => {
     it('then nothing is reported', () => {
       expect(rulesOf(template('<MazBtn text-color="primary" :textColor="color">x</MazBtn>'))).toEqual([])

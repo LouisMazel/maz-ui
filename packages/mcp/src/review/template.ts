@@ -133,12 +133,16 @@ function reportUnknownProp(name: string, offset: number, component: ComponentApi
   if (passthrough && near.length === 0)
     return
 
+  const names = near.map(entry => (entry === 'modelValue' ? '`v-model`' : `\`${toKebab(entry)}\``)).join(' or ')
+
   context.report({
     rule: 'unknown-prop',
     severity: 'warning',
-    message: `${component.name} has no prop \`${name}\`${passthrough ? '' : ': it will only be forwarded as an HTML attribute'}.`,
+    message: passthrough
+      ? `\`${name}\` is not a prop of ${component.name}: it is only forwarded as an HTML attribute (the component may not use it).`
+      : `${component.name} has no prop \`${name}\`: it will only be forwarded as an HTML attribute.`,
     suggestion: near.length > 0
-      ? `Did you mean ${near.map(entry => (entry === 'modelValue' ? '`v-model`' : `\`${toKebab(entry)}\``)).join(' or ')}? Check \`get_component_api({ names: ["${component.name}"] })\`.`
+      ? `Did you mean ${names}? Check \`get_component_api({ names: ["${component.name}"] })\`.`
       : `Check the real API with \`get_component_api({ names: ["${component.name}"] })\`.`,
   }, offset)
 }
