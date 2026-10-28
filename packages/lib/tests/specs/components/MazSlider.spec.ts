@@ -1,5 +1,5 @@
 import MazSlider from '@components/MazSlider.vue'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 
 describe('given MazSlider component', () => {
@@ -183,6 +183,43 @@ describe('given MazSlider component', () => {
     it('then it deactivates the cursor', () => {
       const button = wrapper.find('.m-slider__btn')
       expect(button.classes()).not.toContain('active-cursor')
+    })
+  })
+
+  describe('when the step is decimal', () => {
+    const BAR_WIDTH = 200
+
+    beforeEach(() => {
+      vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(BAR_WIDTH)
+      wrapper = mount(MazSlider, {
+        props: { modelValue: 1, min: 1, max: 3, step: 0.1 },
+      })
+    })
+
+    afterEach(() => {
+      vi.restoreAllMocks()
+    })
+
+    it('then a drag keeps the decimals of the step', async () => {
+      const button = wrapper.find('.m-slider__btn')
+
+      await button.trigger('mousedown')
+      // 23.5 % of the bar: 1 + 0.47 = 1.47, snapped to 1.5 (a drag used to round to the integer first: 1)
+      await wrapper.trigger('mousemove', { clientX: BAR_WIDTH * 0.235 })
+      await flushPromises()
+      await wrapper.trigger('mouseup')
+      await flushPromises()
+
+      expect(wrapper.emitted('update:model-value')?.at(-1)).toEqual([1.5])
+    })
+
+    it('then the arrow keys move by one step without float noise', async () => {
+      const button = wrapper.find('.m-slider__btn')
+
+      for (let press = 0; press < 3; press++)
+        await button.trigger('keydown', { key: 'ArrowRight' })
+
+      expect(wrapper.emitted('update:model-value')?.map(([value]) => value).slice(-3)).toEqual([1.1, 1.2, 1.3])
     })
   })
 })
