@@ -1,5 +1,31 @@
 # Change Log
 
+## v5.1.1 (2026-10-28)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.0...v5.1.1)
+
+### 🩹 Fixes
+
+- **maz-ui:** Buttons inside the components no longer take the padding and background of their parent ([c3305a6f9](https://github.com/LouisMazel/maz-ui/commit/c3305a6f9))
+
+  The reset of the components gave their buttons the padding and the background of their parent (`inherit`): a `MazLink` rendered as a button inside a padded card grew by the padding of the card. Buttons now start with no padding and a transparent background, like the Tailwind preflight.
+
+- **maz-ui:** MazLink - keep the aria-label when it renders a button ([6e9fb017b](https://github.com/LouisMazel/maz-ui/commit/6e9fb017b))
+
+  Without `to` nor `href`, `MazLink` renders a `<button>`: its `aria-label` prop was dropped, it is now set on the button.
+
+- **maz-ui:** MazSlider - keep the decimals of the step when dragging ([f76aa221d](https://github.com/LouisMazel/maz-ui/commit/f76aa221d))
+
+  With a decimal `step` (`:step="0.1"`), a drag rounded the value to an integer before snapping it to the step. The drag and the keyboard now snap to the step, without float noise (`1.3`, not `1.3000000000000003`).
+
+- **maz-ui:** MazDialogConfirm - apply hideAcceptButton and hideRejectButton of the shared data ([548ffa7c4](https://github.com/LouisMazel/maz-ui/commit/548ffa7c4))
+
+  `hideAcceptButton` and `hideRejectButton` set in `useMazDialogConfirm().data` were ignored when the props were not set on the component. The props now override the shared data only when they are set, and their documentation gives the real default (`false`).
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.1.0 (2026-10-27)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0...v5.1.0)

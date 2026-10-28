@@ -1,5 +1,43 @@
 # Change Log
 
+## v5.1.1 (2026-10-28)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.0...v5.1.1)
+
+### 🩹 Fixes
+
+- **@maz-ui/mcp:** Explain that an HTML attribute with a prop counterpart is only forwarded ([e8720bc5e](https://github.com/LouisMazel/maz-ui/commit/e8720bc5e))
+
+  `<MazInput autofocus />` is no longer reported as an unknown prop: the review says that `autofocus` only reaches the HTML element and suggests `auto-focus`, the prop the component handles.
+
+- **@maz-ui/mcp:** Leave clickable cards and empty hit areas out of prefer-maz-component ([66a447ecf](https://github.com/LouisMazel/maz-ui/commit/66a447ecf))
+- **maz-ui:** Buttons inside the components no longer take the padding and background of their parent ([c3305a6f9](https://github.com/LouisMazel/maz-ui/commit/c3305a6f9))
+
+  The reset of the components gave their buttons the padding and the background of their parent (`inherit`): a `MazLink` rendered as a button inside a padded card grew by the padding of the card. Buttons now start with no padding and a transparent background, like the Tailwind preflight.
+
+- **maz-ui:** MazLink - keep the aria-label when it renders a button ([6e9fb017b](https://github.com/LouisMazel/maz-ui/commit/6e9fb017b))
+
+  Without `to` nor `href`, `MazLink` renders a `<button>`: its `aria-label` prop was dropped, it is now set on the button.
+
+- **maz-ui:** MazSlider - keep the decimals of the step when dragging ([f76aa221d](https://github.com/LouisMazel/maz-ui/commit/f76aa221d))
+
+  With a decimal `step` (`:step="0.1"`), a drag rounded the value to an integer before snapping it to the step. The drag and the keyboard now snap to the step, without float noise (`1.3`, not `1.3000000000000003`).
+
+- **maz-ui:** MazDialogConfirm - apply hideAcceptButton and hideRejectButton of the shared data ([548ffa7c4](https://github.com/LouisMazel/maz-ui/commit/548ffa7c4))
+
+  `hideAcceptButton` and `hideRejectButton` set in `useMazDialogConfirm().data` were ignored when the props were not set on the component. The props now override the shared data only when they are set, and their documentation gives the real default (`false`).
+
+### 📖 Documentation
+
+- **docs:** Document the buttons that prefer-maz-component leaves alone ([c47ce5b40](https://github.com/LouisMazel/maz-ui/commit/c47ce5b40))
+- **docs:** Fix the examples of the icons and dialog pages ([36f3fcb8c](https://github.com/LouisMazel/maz-ui/commit/36f3fcb8c))
+
+  The icons examples use theme colors and existing icons, and explain the names of lazy icons; the dialog examples use the `accept` button type and deep imports.
+
+### ❤️ Contributors
+
+- LouisMazel <me@loicmazuel.com>
+
 ## v5.1.0 (2026-10-27)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0...v5.1.0)
