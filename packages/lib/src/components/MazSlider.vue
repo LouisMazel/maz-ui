@@ -133,8 +133,15 @@ async function buildComponent(emitValue?: boolean) {
   }
 }
 
+function decimalsOf(value: number): number {
+  return String(value).split('.')[1]?.length ?? 0
+}
+
+/** Snaps a value to the closest step, without the float noise of a decimal step (0.1 + 0.2) */
 function roundToStep(value: number): number {
-  return Math.round((value - min) / step) * step + min
+  const snapped = Math.round((value - min) / step) * step + min
+
+  return Number(snapped.toFixed(Math.max(decimalsOf(step), decimalsOf(min))))
 }
 
 const PAGE_STEP_MULTIPLIER = 10
@@ -163,14 +170,14 @@ function getKeyboardValue(event: KeyboardEvent, i: number): number | undefined {
   switch (event.key) {
     case 'ArrowLeft':
     case 'ArrowDown':
-      return isBetween(current - step, values[i - 1], values[i + 1], 'minus') ? Math.max(min, current - step) : current
+      return isBetween(current - step, values[i - 1], values[i + 1], 'minus') ? Math.max(min, roundToStep(current - step)) : current
     case 'ArrowRight':
     case 'ArrowUp':
-      return isBetween(current + step, values[i - 1], values[i + 1], 'plus') ? Math.min(max, current + step) : current
+      return isBetween(current + step, values[i - 1], values[i + 1], 'plus') ? Math.min(max, roundToStep(current + step)) : current
     case 'PageDown':
-      return Math.max(lower, current - step * PAGE_STEP_MULTIPLIER)
+      return Math.max(lower, roundToStep(current - step * PAGE_STEP_MULTIPLIER))
     case 'PageUp':
-      return Math.min(upper, current + step * PAGE_STEP_MULTIPLIER)
+      return Math.min(upper, roundToStep(current + step * PAGE_STEP_MULTIPLIER))
     case 'Home':
       return lower
     case 'End':
@@ -288,10 +295,10 @@ async function getCursorsValues() {
       ? buttonPositions.value?.map((pos: number) => {
           const position = pos / (barWidth / max)
           const value = Math.exp((position - min) * scale.value + minLog.value)
-          return roundToStep(Math.round(value))
+          return roundToStep(value)
         })
       : buttonPositions.value?.map(
-          (pos: number) => roundToStep(Math.round(pos / (barWidth / range.value)) + min),
+          (pos: number) => roundToStep(pos / (barWidth / range.value) + min),
         )
   }
   else {

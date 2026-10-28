@@ -929,7 +929,7 @@ defineExpose({
 }
 
 .m-select-input__toggle-button {
-  @apply maz:flex maz:h-full maz:bg-transparent maz:ps-0 maz:flex-center;
+  @apply maz:flex maz:h-full maz:bg-transparent maz:py-1 maz:ps-0 maz:pe-2 maz:flex-center;
 }
 
 .m-select-list {

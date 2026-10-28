@@ -75,16 +75,16 @@ import { MazCheck, MazHeart, MazUser } from '@maz-ui/icons'
 
 <template>
   <div>
-    <MazCheck class="text-green-500" />
-    <MazUser class="w-6 h-6" />
-    <MazHeart class="text-red-500 hover:scale-110 transition-transform" />
+    <MazCheck class="text-success" />
+    <MazUser class="size-6" />
+    <MazHeart class="text-destructive hover:scale-110 transition-transform" />
   </div>
 </template>
 ```
 
 #### Lazy Icons
 
-Lazy icons are prefixed with `Lazy` and use `defineAsyncComponent` under the hood. Use them when you want to reduce your initial bundle size:
+Lazy icons use `defineAsyncComponent` under the hood. Use them when you want to reduce your initial bundle size. From the `lazy/` sub-paths they keep their name; from the `@maz-ui/icons` root (and with the resolver) they are prefixed with `Lazy` (`LazyMazCheck`):
 
 ```vue
 <script setup lang="ts">
@@ -95,9 +95,9 @@ import { MazUser } from '@maz-ui/icons/lazy/MazUser'
 
 <template>
   <div>
-    <LazyMazCheck class="text-green-500" />
-    <LazyMazUser class="w-6 h-6" />
-    <LazyMazHeart class="text-red-500 hover:scale-110 transition-transform" />
+    <MazCheck class="text-success" />
+    <MazUser class="size-6" />
+    <MazHeart class="text-destructive hover:scale-110 transition-transform" />
   </div>
 </template>
 ```
@@ -190,17 +190,17 @@ export default defineConfig({
     <!-- Static icons (eagerly loaded) -->
     <MazHome class="nav-icon" />
     <MazUser class="nav-icon" />
-    <MazSettings class="nav-icon" />
+    <MazCog6Tooth class="nav-icon" />
 
     <!-- Lazy icons (async loaded) — prefix with "Lazy" -->
-    <LazyMazLogout class="nav-icon" />
+    <LazyMazArrowRightStartOnRectangle class="nav-icon" />
   </div>
 </template>
 
 <style scoped>
 @reference "../../.vitepress/theme/main.css";
 .nav-icon {
-  @apply w-6 h-6 text-gray-600 hover:text-blue-500 transition-colors cursor-pointer;
+  @apply size-6 text-muted hover:text-primary transition-colors cursor-pointer;
 }
 </style>
 ```
@@ -249,9 +249,9 @@ import UserIcon from '@maz-ui/icons/svg/user.svg?component'
 
 <template>
   <div class="flex items-center gap-2">
-    <CheckIcon class="w-5 h-5 text-green-600" />
-    <UserIcon class="w-6 h-6 text-blue-500" />
-    <HeartIcon class="w-4 h-4 text-red-500 animate-pulse" />
+    <CheckIcon class="size-5 text-success" />
+    <UserIcon class="size-6 text-primary" />
+    <HeartIcon class="size-4 text-destructive animate-pulse" />
   </div>
 </template>
 ```
@@ -285,7 +285,7 @@ onMounted(async () => {
     <img src="@maz-ui/icons/svg/check.svg" alt="Check" class="w-6 h-6">
 
     <!-- Inline SVG with fetch -->
-    <div class="text-blue-500" v-html="checkSvg" />
+    <div class="text-primary" v-html="checkSvg" />
   </div>
 </template>
 ```
@@ -310,19 +310,19 @@ Icons inherit the current text color and can be styled like any other element:
     <MazStar class="text-2xl" />
 
     <!-- Colors -->
-    <MazHeart class="text-red-500" />
-    <MazLeaf class="text-green-600" />
-    <MazSky class="text-blue-400" />
+    <MazHeart class="text-destructive" />
+    <MazCheckCircle class="text-success" />
+    <MazSun class="text-warning" />
 
     <!-- Interactive states -->
-    <MazBtn class="hover:text-blue-500 transition-colors cursor-pointer" />
+    <MazStar class="hover:text-primary transition-colors cursor-pointer" />
 
     <!-- Animations -->
     <MazSpinner class="animate-spin" />
     <MazHeart class="hover:scale-110 transition-transform" />
 
     <!-- With background -->
-    <MazCheck class="p-2 bg-green-100 text-green-600 rounded-full" />
+    <MazCheck class="p-2 bg-success/15 text-success rounded-full" />
   </div>
 </template>
 ```
@@ -503,9 +503,9 @@ export function iconOptimizer(): Plugin {
 ```vue
 <template>
   <div class="flex items-center space-x-4">
-    <MazHome class="w-5 h-5 text-gray-500 hover:text-blue-500 transition-colors" />
-    <MazUser class="w-6 h-6 text-indigo-600" />
-    <MazSettings class="w-4 h-4 text-gray-400 hover:text-gray-600" />
+    <MazHome class="size-5 text-muted hover:text-primary transition-colors" />
+    <MazUser class="size-6 text-secondary" />
+    <MazCog6Tooth class="size-4 text-muted hover:text-foreground" />
   </div>
 </template>
 ```
