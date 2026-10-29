@@ -44,13 +44,42 @@ In Claude Code, they are available as `/maz-ui:build`, `/maz-ui:audit` and `/maz
 
 ## Version-matched docs
 
-The server serves the documentation of the **maz-ui version installed in your project** (`node_modules/maz-ui/docs`), found from the directory it is started in (monorepos: the root, then `apps/*` and `packages/*`). Without maz-ui installed, it serves the docs bundled with `@maz-ui/mcp` (latest release).
+The server serves the documentation of the **maz-ui version installed in your project** (`node_modules/maz-ui/docs`), found from the directory it is started in (monorepos: the root, then the workspaces of `pnpm-workspace.yaml` or of the `workspaces` field of `package.json`, `apps/*` and `packages/*` by default). Without maz-ui installed, it serves the docs bundled with `@maz-ui/mcp` (latest release).
 
 To force a folder, pass `--docs <dir>` or set `MAZ_UI_DOCS_DIR`.
 
+In a monorepo whose apps install different maz-ui versions, the first maz-ui found wins: an agent working on one app can get the docs of another app. Align the versions, or choose the app whose docs are served:
+
+```json
+{
+  "mcpServers": {
+    "maz-ui": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@maz-ui/mcp@latest", "--docs", "apps/web/node_modules/maz-ui/docs"]
+    }
+  }
+}
+```
+
 ## Configuration
 
-`npx @maz-ui/mcp init` writes the configuration of Claude Code, Cursor and VS Code for you. To configure an agent by hand, start the server with `npx -y @maz-ui/mcp@latest`.
+`npx @maz-ui/mcp init` writes the configuration of Claude Code, Cursor and VS Code for you.
+
+### In a project: install it
+
+Install `@maz-ui/mcp` as a dev dependency of the project root, then run `init`:
+
+```bash
+pnpm add -D @maz-ui/mcp
+pnpm exec maz-ui-mcp init
+```
+
+The MCP configs then start the installed version through your package manager (`pnpm exec maz-ui-mcp`, `yarn run maz-ui-mcp`, `npx --no-install maz-ui-mcp`...): it starts in about a second, needs no download and follows your lockfile. Without it, `init` writes `npx -y @maz-ui/mcp@<version>`, pinned to its own version.
+
+### By hand
+
+The examples below use `npx -y @maz-ui/mcp@latest`, which works without installing anything. In a project, prefer the installed version (`pnpm exec maz-ui-mcp`) or a pinned version (`@maz-ui/mcp@5.1.0`): with a dist-tag, `npx` queries the registry at every start.
 
 ### Claude Code
 
@@ -157,6 +186,22 @@ const findings = reviewCode('<template><MazBtn color="red" /></template>', {
   knowledge,
   filename: 'Example.vue',
 })
+```
+
+## Troubleshooting
+
+### The server does not start: `connection timed out`
+
+Claude Code waits 30 seconds for a MCP server to start. The first `npx -y @maz-ui/mcp@latest` downloads the package, and behind a slow or proxied registry (Nexus, Artifactory...) it can exceed this delay. Then:
+
+- install `@maz-ui/mcp` in the project and run `init` again (see [In a project: install it](#in-a-project-install-it)),
+- or pin a version instead of `@latest`: `npx -y @maz-ui/mcp@5.1.0` only queries the registry on the first start,
+- or raise the timeout of Claude Code: `MCP_TIMEOUT=60000 claude`.
+
+Measure the start time of a command up to the `initialize` response:
+
+```bash
+time (echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"t","version":"1"}}}' | npx -y @maz-ui/mcp@latest | head -1)
 ```
 
 ## Debugging
