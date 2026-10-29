@@ -7,8 +7,6 @@ import { parseArgs } from 'node:util'
 import { AGENT_TARGETS, detectAgentTargets, setupAgents } from '@maz-ui/node'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 import { createContext } from './context'
-import { countBySeverity, formatFindings } from './review'
-import { REVIEWABLE_EXTENSIONS, reviewFiles } from './review/files'
 import { startStdioServer } from './server'
 import { searchDocs } from './tools/search-docs'
 import { readOwnVersion } from './version'
@@ -100,6 +98,7 @@ export function runInit(values: Record<string, unknown>, cwd: string): number {
 export async function runReview(values: Record<string, unknown>, positionals: string[], cwd: string): Promise<number> {
   const context = createContext({ cwd, docsDir: typeof values.docs === 'string' ? resolve(values.docs) : undefined })
   const framework = values.framework as Framework | undefined
+  const [{ countBySeverity, formatFindings }, { REVIEWABLE_EXTENSIONS, reviewFiles }] = await Promise.all([import('./review'), import('./review/files')])
 
   if (values.hook) {
     const input = JSON.parse(await readStdin() || '{}') as { tool_input?: { file_path?: string }, cwd?: string }
