@@ -1,5 +1,34 @@
 # Changelog
 
+## v5.1.0 (2026-10-27)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0...v5.1.0)
+
+### 🚀 Features
+
+- **@maz-ui/mcp:** Search by need, component APIs, icons, theme tokens and code review for AI agents ([feedfb4e3](https://github.com/LouisMazel/maz-ui/commit/feedfb4e3))
+
+  The server provides the tools `search_docs` (find what maz-ui provides for a need described in plain words), `get_component_api` (props with accepted values, `v-model`, events, slots), `find_icons`, `get_theme_tokens` (every Tailwind class and CSS variable of the theme), `get_doc`, `list_docs`, `get_setup_guide` and `review_code`, and the prompts `build`, `audit` and `setup`.
+
+  It serves the docs of the maz-ui version installed in the project (`node_modules/maz-ui/docs`), and falls back on its bundled docs.
+
+  The package is also a CLI: `npx @maz-ui/mcp init` configures the AI agents of a project, `npx @maz-ui/mcp review "src/**/*.vue"` reviews files against maz-ui (unknown props or values, unknown icons, native elements, duplicated libraries, default Tailwind palette, `maz:` prefix...) and fails on errors in CI.
+
+- **@maz-ui/mcp:** Add the --no-rules option to init to only register the MCP server ([574b3dd60](https://github.com/LouisMazel/maz-ui/commit/574b3dd60))
+
+  `npx @maz-ui/mcp init --no-rules` adds the `maz-ui` server to the MCP config of the agents without writing any rule file: the instructions of the server already give the maz-ui rules to the agents.
+
+- **@maz-ui/mcp:** Read the Tailwind theme and the preset of the project ([010a50d8c](https://github.com/LouisMazel/maz-ui/commit/010a50d8c))
+
+### 🩹 Fixes
+
+- **@maz-ui/mcp:** Reduce the noise of the search and of the code review ([b788b393b](https://github.com/LouisMazel/maz-ui/commit/b788b393b))
+- **@maz-ui/mcp:** Read the reason of an ignore comment and show absolute paths outside the project ([eb83caf52](https://github.com/LouisMazel/maz-ui/commit/eb83caf52))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.1.0-beta.2 (2026-10-27)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.0-beta.1...v5.1.0-beta.2)
