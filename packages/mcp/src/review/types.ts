@@ -15,6 +15,7 @@ export type RuleId
     | 'unknown-icon'
     | 'prefer-maz-component'
     | 'inline-svg'
+    | 'icon-button-label'
     | 'internal-prefix'
     | 'theme-colors'
     | 'hardcoded-color'
