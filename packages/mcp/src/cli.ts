@@ -4,7 +4,7 @@ import type { Framework, Severity } from './review'
 import { Buffer } from 'node:buffer'
 import { resolve } from 'node:path'
 import { parseArgs } from 'node:util'
-import { AGENT_TARGETS, detectAgentTargets, setupAgents } from '@maz-ui/node'
+import { AGENT_TARGETS, detectAgentTargets, detectPackageManager, setupAgents } from '@maz-ui/node'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 import { createContext } from './context'
 import { startStdioServer } from './server'
@@ -62,6 +62,8 @@ function printChanges(changes: SetupAgentsChange[], dryRun: boolean): void {
   }
 }
 
+const INSTALL_DEV_COMMANDS = { pnpm: 'pnpm add -D', yarn: 'yarn add -D', bun: 'bun add -d', npm: 'npm install -D' }
+
 export function runInit(values: Record<string, unknown>, cwd: string): number {
   const requested = typeof values.targets === 'string'
     ? values.targets.split(',').map(target => target.trim()).filter(Boolean)
@@ -84,13 +86,18 @@ export function runInit(values: Record<string, unknown>, cwd: string): number {
     dryRun,
     remove: values.remove === true,
     docsDir: typeof values.docs === 'string' ? resolve(values.docs) : undefined,
+    mcpVersion: readOwnVersion(),
   })
+  const serverCommand = [result.mcpServer.command, ...result.mcpServer.args].join(' ')
 
   console.log(`maz-ui ${result.version ? `${result.version} ` : ''}agents setup (${targets.join(', ')})${dryRun ? ' - dry run' : ''}`)
   printChanges(result.changes, dryRun)
 
+  if (!values.remove && values['no-mcp'] !== true && !result.localMcpServer)
+    console.log(`\nThe MCP server runs through \`${serverCommand}\`: install @maz-ui/mcp as a devDependency of the project (\`${INSTALL_DEV_COMMANDS[detectPackageManager(cwd)]} @maz-ui/mcp\`) and run init again to start it in about a second, at the version of your lockfile.`)
+
   if (!values.remove && values['no-rules'] !== true && targets.includes('agents-md'))
-    console.log('\nCodex and Windsurf read AGENTS.md. To give them the MCP server too, add `npx -y @maz-ui/mcp@latest` to their global MCP config.')
+    console.log(`\nCodex and Windsurf read AGENTS.md. To give them the MCP server too, add \`${serverCommand}\` to their global MCP config.`)
 
   return 0
 }
