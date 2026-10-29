@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxi dev",
+    "nuxt:prepare": "nuxi prepare",
     "build:only": "nuxi build",
     "preview": "nuxi preview",
     "lint": "pnpm lint:js && pnpm lint:style",
