@@ -2,8 +2,8 @@
   "mcpServers": {
     "maz-ui": {
       "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@maz-ui/mcp@latest"]
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/start-server.mjs"]
     }
   }
 }
