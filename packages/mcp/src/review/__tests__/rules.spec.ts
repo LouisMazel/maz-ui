@@ -389,6 +389,31 @@ describe('given the inline-svg rule', () => {
   })
 })
 
+describe('given the icon-button-label rule', () => {
+  describe('when a MazBtn only shows an icon', () => {
+    it.each([
+      ['<MazBtn :icon="MazTrash" />'],
+      ['<MazBtn fab icon="/icons/trash.svg" />'],
+      ['<MazBtn :start-icon="MazTrash" color="destructive"></MazBtn>'],
+    ])('then %s is reported', (markup) => {
+      expect(rulesOf(template(markup))).toEqual(['icon-button-label'])
+    })
+  })
+
+  describe('when the button has a label or may receive one', () => {
+    it.each([
+      ['<MazBtn :icon="MazTrash" aria-label="Delete" />'],
+      ['<MazBtn :icon="MazTrash" :aria-label="t(\'delete\')" />'],
+      ['<MazBtn :start-icon="MazTrash" text="Delete" />'],
+      ['<MazBtn :start-icon="MazTrash">Delete</MazBtn>'],
+      ['<MazBtn :icon="MazTrash" v-bind="attrs" />'],
+      ['<MazBtn color="primary" />'],
+    ])('then %s is not reported', (markup) => {
+      expect(rulesOf(template(markup))).toEqual([])
+    })
+  })
+})
+
 describe('given the internal-prefix rule', () => {
   describe('when a class uses the maz: prefix', () => {
     it('then it is an error with the unprefixed class', () => {

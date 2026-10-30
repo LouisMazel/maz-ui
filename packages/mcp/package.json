@@ -64,23 +64,33 @@
     "test:unit:watch": "pnpm generate:docs && vitest watch",
     "test:unit:coverage": "pnpm generate:docs && vitest run --coverage"
   },
-  "dependencies": {
-    "@babel/parser": "^8.0.8",
-    "@maz-ui/node": "workspace:*",
-    "@maz-ui/utils": "workspace:*",
-    "@modelcontextprotocol/sdk": "^1.32.1",
-    "@vue/compiler-dom": "^3.5.44",
-    "minisearch": "^7.2.0",
-    "tinyglobby": "^0.2.17",
-    "zod": "^4.6.7"
+  "peerDependencies": {
+    "@maz-ui/node": "workspace:^",
+    "@maz-ui/utils": "workspace:^"
+  },
+  "peerDependenciesMeta": {
+    "@maz-ui/node": {
+      "optional": true
+    },
+    "@maz-ui/utils": {
+      "optional": true
+    }
   },
   "devDependencies": {
+    "@babel/parser": "^8.0.8",
     "@babel/types": "^8.0.8",
     "@maz-ui/eslint-config": "workspace:*",
+    "@maz-ui/node": "workspace:*",
+    "@maz-ui/utils": "workspace:*",
     "@modelcontextprotocol/inspector": "^2.11.0",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "@vue/compiler-dom": "^3.5.44",
     "agent-docs": "workspace:*",
+    "minisearch": "^7.2.0",
+    "tinyglobby": "^0.2.17",
     "tsx": "^4.23.15",
-    "unbuild": "^3.6.1"
+    "unbuild": "^3.6.1",
+    "zod": "^4.6.7"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

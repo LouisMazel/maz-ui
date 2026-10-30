@@ -35,12 +35,12 @@ export function findIcons(context: ServerContext, { query, limit = 24 }: FindIco
     '## Import',
     '',
     '```ts',
-    `import { ${first} } from '@maz-ui/icons/static/${first}' // tree-shakable component`,
-    `import { ${first} } from '@maz-ui/icons/lazy/${first}' // lazy-loaded async component`,
-    `import { ${first} } from '@maz-ui/icons/raw/${first}' // raw SVG string`,
+    `import { ${first} } from '@maz-ui/icons/raw/${first}' // icon props (<MazBtn :start-icon>, <MazIcon :icon>): SVG string, the lightest`,
+    `import { ${first} } from '@maz-ui/icons/static/${first}' // directly in a template: <${first} class="size-5 text-primary" />`,
+    `import { ${first} } from '@maz-ui/icons/lazy/${first}' // only for icons not visible at first render (v-if, menus, dialogs)`,
     '```',
     '',
-    `Render \`<${first} class="size-5 text-primary" />\` (size and color from CSS, the SVG uses \`currentColor\`), or pass it to an icon prop: \`<MazBtn :start-icon="${first}">\`. Never inline SVG markup nor add another icon library.`,
+    `Size and color come from the text (\`1em\`, \`currentColor\`). For an \`<img>\` (multicolor flags and logos only): \`@maz-ui/icons/svg/<name>.svg\`. Never inline SVG markup nor add another icon library.`,
   ].join('\n')
 }
 

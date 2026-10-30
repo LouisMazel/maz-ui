@@ -7,8 +7,11 @@ MCP server and CLI that give AI coding agents (Claude Code, Cursor, GitHub Copil
 At the root of a project that uses maz-ui:
 
 ```bash
+pnpm add -D @maz-ui/mcp   # optional, for a fast start of the server
 npx @maz-ui/mcp init
 ```
+
+When the project installs `@maz-ui/mcp`, the MCP configs start the installed version through your package manager (`pnpm exec maz-ui-mcp`, `yarn run maz-ui-mcp`, `npx --no-install maz-ui-mcp`...), in about a second and at the version of your lockfile. Otherwise they run `npx -y @maz-ui/mcp@<version>`, pinned.
 
 It detects your agents and configures them without touching your own instructions:
 
@@ -36,7 +39,7 @@ Prompts: `build`, `audit`, `setup`. The server serves the docs shipped in the ma
 
 ## Manual configuration
 
-Start the server with `npx -y @maz-ui/mcp@latest`:
+Start the server with the installed package (`pnpm exec maz-ui-mcp`), or with `npx -y @maz-ui/mcp@latest` without installing anything (prefer a pinned version in a project: with a dist-tag, npx queries the registry at every start):
 
 ```json
 {
@@ -58,6 +61,10 @@ Claude Code users can also install the plugin (skill, MCP server and review hook
 /plugin marketplace add LouisMazel/maz-ui
 /plugin install maz-ui@maz-ui
 ```
+
+## Troubleshooting
+
+`connection timed out after 30000ms` in Claude Code: the first `npx -y` download exceeded the start timeout, usually behind a slow registry. Install `@maz-ui/mcp` in the project and run `init` again, pin a version (`npx -y @maz-ui/mcp@5.1.0`), or raise the timeout: `MCP_TIMEOUT=60000 claude`.
 
 ## CLI
 

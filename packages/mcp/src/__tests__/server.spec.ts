@@ -23,6 +23,28 @@ function textOf(result: unknown): string {
   return (result as { content: Array<{ text: string }> }).content[0].text
 }
 
+describe('given the start of the maz-ui MCP server', () => {
+  describe('when a client connects and lists the tools', () => {
+    it('then no doc page is read and the search index is not built', async () => {
+      const knowledge = getKnowledge()
+      const readDoc = vi.spyOn(knowledge, 'readDoc')
+      const { server, context } = createMazUiMcpServer({ knowledge, cwd: getEmptyCwd() })
+      const search = vi.spyOn(context, 'search', 'get')
+      const [serverTransport, clientTransport] = InMemoryTransport.createLinkedPair()
+      const client = new Client({ name: 'test', version: '1.0.0' })
+
+      await server.connect(serverTransport)
+      await client.connect(clientTransport)
+      await client.listTools()
+
+      expect(readDoc).not.toHaveBeenCalled()
+      expect(search).not.toHaveBeenCalled()
+      await client.close()
+      readDoc.mockRestore()
+    })
+  })
+})
+
 describe('given the maz-ui MCP server', () => {
   let client: Client
 
