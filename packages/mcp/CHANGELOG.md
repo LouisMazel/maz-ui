@@ -1,5 +1,21 @@
 # Changelog
 
+## v5.1.1 (2026-10-28)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.0...v5.1.1)
+
+### 🩹 Fixes
+
+- **@maz-ui/mcp:** Explain that an HTML attribute with a prop counterpart is only forwarded ([e8720bc5e](https://github.com/LouisMazel/maz-ui/commit/e8720bc5e))
+
+  `<MazInput autofocus />` is no longer reported as an unknown prop: the review says that `autofocus` only reaches the HTML element and suggests `auto-focus`, the prop the component handles.
+
+- **@maz-ui/mcp:** Leave clickable cards and empty hit areas out of prefer-maz-component ([66a447ecf](https://github.com/LouisMazel/maz-ui/commit/66a447ecf))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.1.0 (2026-10-27)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0...v5.1.0)
