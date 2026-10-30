@@ -39,11 +39,14 @@ It detects the agents you use and configures them, using the docs of the maz-ui 
 
 When no agent is detected, it configures Claude Code and `AGENTS.md`. Commit the generated files: your whole team and your CI agents get them.
 
+For a fast start of the MCP server, install it in the project first (`pnpm add -D @maz-ui/mcp`): the configs then start the installed version through your package manager, in about a second and at the version of your lockfile, instead of downloading it with `npx`. See [MCP server](./../ecosystem/mcp.md#in-a-project-install-it).
+
 ::: tip It never overwrites your own instructions
 - Your `CLAUDE.md` is never touched: Claude Code loads `.claude/rules/maz-ui.md` on top of it.
 - In `AGENTS.md`, maz-ui only manages the section between `<!-- BEGIN:maz-ui -->` and `<!-- END:maz-ui -->`.
 - In the MCP config files, only the `maz-ui` entry is added, the formatting and comments of the file are preserved. An existing server running `@maz-ui/mcp` under another name is kept as is.
 - A file you created yourself with the same path is never overwritten.
+- If you edit the generated rules, your edits are kept and the rules are no longer updated: delete the file (or the section) to get the rules of a new maz-ui version. To add your own rules, write them in another file or outside the section.
 :::
 
 ### Options
@@ -77,6 +80,19 @@ export default defineNuxtConfig({
 ```
 
 It only runs in development (never in CI, in tests or during builds), writes nothing when no agent is detected, keeps the files in sync with the installed maz-ui version and never overwrites files it does not own. In a monorepo, it writes at the root of the workspace, where the agents start (`agents.dir` to choose another folder).
+
+### Monorepos with several Nuxt apps
+
+Each app syncs the agent files when it starts (`nuxt dev`, `nuxt prepare`), and all of them write at the root of the workspace:
+
+- **Same options in every app**: the first app writes the files, the next ones find them up to date and write nothing.
+- **Different options**: they add up. An app with `rules: false` does not remove the rules written by an app with `rules: true` (only `npx @maz-ui/mcp init --remove` removes them), and the `targets` of each app are added. With `agents.dir`, each app writes in its own folder.
+- **Apps started together** (`nx run-many -t dev`, `turbo dev`): the files are written atomically, an app never reads a file another app is writing.
+- **Different maz-ui versions per app**: the rules of the most recent version are kept, an app with an older maz-ui never downgrades them. Align the versions (a pnpm catalog, for example) to get the same rules everywhere.
+
+::: warning One MCP server for the whole workspace
+Started at the root, the MCP server serves the docs of the first maz-ui it finds: in the root `node_modules`, then in the workspaces of the monorepo (`pnpm-workspace.yaml` or the `workspaces` field of `package.json`), in their order. When the apps install different maz-ui versions, an agent working on one app can get the docs of the version of another app. Align the versions, or point the server to the docs of an app with `--docs` (see [Version-matched docs](./../ecosystem/mcp.md#version-matched-docs)).
+:::
 
 ### Without any file in the project
 
@@ -177,6 +193,7 @@ The command exits with an error code when it finds errors (or more warnings than
 | `unknown-icon` | error | An icon that does not exist in `@maz-ui/icons` |
 | `prefer-maz-component` | warning | `<button>`, `<input>`, `<select>`, `<textarea>`, `<dialog>`... (a `<button>` that is a clickable card, with a layout, a component or a title and a subtitle, or an empty hit area, is left alone) |
 | `inline-svg` | warning | SVG icons written inline |
+| `icon-button-label` | warning | A `MazBtn` that only shows an icon, without `text`, content nor `aria-label` |
 | `prefer-ecosystem`, `prefer-utils` | warning / info | lodash, VueUse, toast, icon, tooltip, date picker... libraries that maz-ui already covers |
 | `theme-colors` | warning | Default Tailwind palette (`bg-blue-500`, `text-gray-600`, `bg-white`) |
 | `hardcoded-color` | warning | `bg-[#1d90ff]`, `color: #fff` |

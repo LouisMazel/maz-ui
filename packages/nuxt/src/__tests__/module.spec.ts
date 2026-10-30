@@ -2,15 +2,16 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import moduleConfig from '../module'
 
-const { addComponent, addPlugin, addImports, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, detectAgentTargets, findProjectPackage } = vi.hoisted(() => {
+const { addComponent, addPlugin, addImports, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, detectAgentTargets, findProjectPackage, readPackageVersion } = vi.hoisted(() => {
   const logger = { info: vi.fn(), warn: vi.fn(), debug: vi.fn() }
 
   return {
     logger,
     useLogger: vi.fn(() => logger),
-    setupAgents: vi.fn(() => ({ targets: [] as string[], version: '5.0.0', changes: [] as Array<{ file: string, action: string }> })),
+    setupAgents: vi.fn(() => ({ targets: [] as string[], version: '5.0.0', changes: [] as Array<{ file: string, action: string }>, localMcpServer: true })),
     detectAgentTargets: vi.fn((): string[] => ['claude']),
-    findProjectPackage: vi.fn((): string | undefined => '/project/node_modules/maz-ui'),
+    findProjectPackage: vi.fn((_rootDir: string, _name: string): string | undefined => '/project/node_modules/maz-ui'),
+    readPackageVersion: vi.fn((): string | undefined => undefined),
     addComponent: vi.fn(),
     addPlugin: vi.fn(),
     addImports: vi.fn(),
@@ -35,6 +36,7 @@ vi.mock('@maz-ui/node', () => ({
   setupAgents,
   detectAgentTargets,
   findProjectPackage,
+  readPackageVersion,
 }))
 
 vi.mock('@nuxt/devtools-kit', () => ({
@@ -758,18 +760,84 @@ describe('nuxt module', () => {
               { file: '.mcp.json', action: 'update' },
               { file: 'AGENTS.md', action: 'unchanged' },
             ],
+            localMcpServer: true,
           })
 
           callSetup({ agents: true }, {}, { dev: true })
 
+          expect(useLogger).toHaveBeenCalledWith('@maz-ui/mcp')
           expect(logger.info).toHaveBeenCalledTimes(1)
-          expect(logger.info).toHaveBeenCalledWith('AI agents configured for maz-ui: .claude/rules/maz-ui.md (create), .mcp.json (update)')
+          expect(logger.info).toHaveBeenCalledWith(expect.stringMatching(/^AI agents configured for maz-ui: \.claude\/rules\/maz-ui\.md \(create\), \.mcp\.json \(update\)\./))
+        })
+      })
+
+      describe('when the rules are written and no agent reading AGENTS.md is detected', () => {
+        it('then the log explains how to also write AGENTS.md', () => {
+          setupAgents.mockReturnValueOnce({ targets: ['claude'], version: '5.0.0', changes: [{ file: '.mcp.json', action: 'create' }], localMcpServer: true })
+
+          callSetup({ agents: true }, {}, { dev: true })
+
+          expect(logger.info).toHaveBeenCalledWith('AI agents configured for maz-ui: .mcp.json (create). AGENTS.md not written: no agent that reads it was detected (Cursor, Copilot, Codex, Windsurf, Gemini CLI, Zed...). If your team uses one, set mazUi.agents.targets: [\'claude\', \'agents-md\'].')
+        })
+      })
+
+      describe('when only the MCP server is configured', () => {
+        it('then the log does not mention AGENTS.md', () => {
+          setupAgents.mockReturnValueOnce({ targets: ['claude'], version: '5.0.0', changes: [{ file: '.mcp.json', action: 'create' }], localMcpServer: true })
+
+          callSetup({}, {}, { dev: true })
+
+          expect(logger.info).toHaveBeenCalledWith('AI agents configured for maz-ui: .mcp.json (create).')
+        })
+      })
+
+      describe('when the MCP server runs through npx', () => {
+        it('then the log suggests installing @maz-ui/mcp', () => {
+          setupAgents.mockReturnValueOnce({ targets: ['claude'], version: '5.0.0', changes: [{ file: '.mcp.json', action: 'create' }], localMcpServer: false })
+
+          callSetup({}, {}, { dev: true })
+
+          expect(logger.info).toHaveBeenCalledWith('AI agents configured for maz-ui: .mcp.json (create). The MCP server runs through npx: add @maz-ui/mcp to the devDependencies of the project root to start it in about a second, at the version of your lockfile.')
+        })
+      })
+
+      describe('when @maz-ui/mcp is installed for the app', () => {
+        it('then its version is pinned in the npx command', () => {
+          findProjectPackage.mockImplementation((_: string, name: string) => `/project/node_modules/${name}`)
+          readPackageVersion.mockReturnValueOnce('5.2.0')
+
+          callSetup({}, {}, { dev: true })
+
+          expect(readPackageVersion).toHaveBeenCalledWith('/project/node_modules/@maz-ui/mcp')
+          expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ mcpVersion: '5.2.0' }))
+          findProjectPackage.mockReset()
+          findProjectPackage.mockReturnValue('/project/node_modules/maz-ui')
+        })
+      })
+
+      describe('when @maz-ui/mcp is not installed', () => {
+        it('then no version is pinned', () => {
+          findProjectPackage.mockReturnValueOnce('/project/node_modules/maz-ui').mockReturnValueOnce(undefined)
+
+          callSetup({}, {}, { dev: true })
+
+          expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ mcpVersion: undefined }))
+        })
+      })
+
+      describe('when the targets are given', () => {
+        it('then the log does not mention AGENTS.md', () => {
+          setupAgents.mockReturnValueOnce({ targets: ['claude'], version: '5.0.0', changes: [{ file: '.mcp.json', action: 'create' }], localMcpServer: true })
+
+          callSetup({ agents: { targets: ['claude'], rules: true } }, {}, { dev: true })
+
+          expect(logger.info).toHaveBeenCalledWith('AI agents configured for maz-ui: .mcp.json (create).')
         })
       })
 
       describe('when everything is up to date', () => {
         it('then nothing is logged', () => {
-          setupAgents.mockReturnValueOnce({ targets: ['claude'], version: '5.0.0', changes: [{ file: '.mcp.json', action: 'unchanged' }] })
+          setupAgents.mockReturnValueOnce({ targets: ['claude'], version: '5.0.0', changes: [{ file: '.mcp.json', action: 'unchanged' }], localMcpServer: true })
 
           callSetup({ agents: true }, {}, { dev: true })
 

@@ -652,50 +652,49 @@ importers:
         version: 3.6.1(sass@1.105.2)(typescript@5.9.3)(vue-tsc@3.3.13(typescript@5.9.3))(vue@3.5.44(typescript@5.9.3))
 
   packages/mcp:
-    dependencies:
+    devDependencies:
       '@babel/parser':
         specifier: ^8.0.8
         version: 8.0.8
-      '@maz-ui/node':
-        specifier: workspace:*
-        version: link:../node
-      '@maz-ui/utils':
-        specifier: workspace:*
-        version: link:../utils
-      '@modelcontextprotocol/sdk':
-        specifier: ^1.32.1
-        version: 1.32.1(supports-color@10.2.2)(zod@4.6.7)
-      '@vue/compiler-dom':
-        specifier: ^3.5.44
-        version: 3.5.44
-      minisearch:
-        specifier: ^7.2.0
-        version: 7.2.0
-      tinyglobby:
-        specifier: ^0.2.17
-        version: 0.2.17
-      zod:
-        specifier: ^4.6.7
-        version: 4.6.7
-    devDependencies:
       '@babel/types':
         specifier: ^8.0.8
         version: 8.0.8
       '@maz-ui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@maz-ui/node':
+        specifier: workspace:*
+        version: link:../node
+      '@maz-ui/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@modelcontextprotocol/inspector':
         specifier: ^2.11.0
         version: 2.11.0(@types/node@22.20.5)(@types/react@19.3.0)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.105.2)(terser@5.51.2)(tsx@4.23.15)
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.32.1
+        version: 1.32.1(supports-color@10.2.2)(zod@4.6.7)
+      '@vue/compiler-dom':
+        specifier: ^3.5.44
+        version: 3.5.44
       agent-docs:
         specifier: workspace:*
         version: link:../../tools/agent-docs
+      minisearch:
+        specifier: ^7.2.0
+        version: 7.2.0
+      tinyglobby:
+        specifier: ^0.2.17
+        version: 0.2.17
       tsx:
         specifier: ^4.23.15
         version: 4.23.15
       unbuild:
         specifier: ^3.6.1
         version: 3.6.1(sass@1.105.2)(typescript@5.9.3)(vue-tsc@3.3.13(typescript@5.9.3))(vue@3.5.44(typescript@5.9.3))
+      zod:
+        specifier: ^4.6.7
+        version: 4.6.7
 
   packages/node:
     dependencies:
