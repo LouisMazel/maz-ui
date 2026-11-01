@@ -129,6 +129,14 @@ Within individual packages (e.g., `packages/lib/`):
 - TailwindCSS for styling utilities
 - Valibot for form validation
 
+### Declaring dependencies
+
+- Every project (package, app, tool) declares the dependencies it imports or runs, in its own `package.json`: `.npmrc` sets `shamefully-hoist=true`, so an undeclared dependency still resolves and the omission goes unnoticed.
+- A dependency shared by several projects has the same version everywhere: bump it in all of them at once with `pnpm update -r <name>`.
+- Internal packages use `workspace:^` (published as `^<version>`).
+- A package with a peer dependency also declares it in its `devDependencies`: `.github/scripts/check-peer-deps.mjs` checks that this version satisfies the peer range.
+- The root `package.json` only lists the tools of the repository (nx, relizy, husky, lint-staged...).
+
 ## Unit Testing Guidelines
 
 ### Test Writing Rules
