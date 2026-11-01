@@ -4,6 +4,7 @@ export default defineConfig(
   {
     formatters: true,
     typescript: true,
+    vue: true,
     sonarjs: true,
     markdown: true,
     tailwindcss: false,
