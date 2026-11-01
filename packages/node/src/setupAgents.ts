@@ -8,7 +8,7 @@ import { applyEdits, modify, parse } from 'jsonc-parser'
 /**
  * AI coding agents supported by `setupAgents`.
  *
- * - `claude`: Claude Code rule (`.claude/rules/maz-ui.md`) and MCP server (`.mcp.json`)
+ * - `claude`: Claude Code rule (`.claude/rules/<tool>.md`) and MCP server (`.mcp.json`)
  * - `agents-md`: section in `AGENTS.md` (Codex, Cursor, Copilot, Windsurf, Zed, Gemini...)
  * - `cursor`: MCP server in `.cursor/mcp.json` (rules come from `AGENTS.md`)
  * - `vscode`: MCP server in `.vscode/mcp.json` for GitHub Copilot (rules come from `AGENTS.md`)
@@ -22,9 +22,9 @@ export interface SetupAgentsOptions {
   rootDir: string
   /** Agents to configure. Default: the agents detected in the project */
   targets?: AgentTarget[]
-  /** Write the maz-ui rules (Claude Code rule, `AGENTS.md` section). Default `true` */
+  /** Write the rules of the tool (Claude Code rule, `AGENTS.md` section). Default `true` */
   rules?: boolean
-  /** Register the maz-ui MCP server. Default `true` */
+  /** Register the MCP server of the tool. Default `true` */
   mcp?: boolean
   /** Compute the changes without writing anything */
   dryRun?: boolean
@@ -32,10 +32,14 @@ export interface SetupAgentsOptions {
   remove?: boolean
   /** Folder of the maz-ui agent docs. Default: `docs/` of the maz-ui package installed in `rootDir` */
   docsDir?: string
-  /** Command used to start the MCP server. Default: `mcpServerCommand(rootDir, mcpVersion)` */
+  /** Command used to start the MCP server. Default: `mcpServerCommand(rootDir, mcpVersion, tool)` */
   mcpServer?: McpServerCommand
-  /** Version of `@maz-ui/mcp` pinned in the `npx -y` command, when the project does not install it. Default `latest` */
+  /** Version of the MCP package pinned in the `npx -y` command, when the project does not install it. Default `latest` */
   mcpVersion?: string
+  /** Tool whose agents are configured. Default: maz-ui (`MAZ_UI_AGENTS_TOOL`) */
+  tool?: AgentsTool
+  /** Rules of the tool, required with another `tool` than maz-ui. Default: the maz-ui agent docs of `docsDir` */
+  agentDocs?: AgentDocs
 }
 
 export interface McpServerCommand {
@@ -58,7 +62,7 @@ export interface SetupAgentsResult {
   changes: SetupAgentsChange[]
   /** Command registered in the MCP config files */
   mcpServer: McpServerCommand
-  /** `false` when the server runs through `npx -y` because the project does not install `@maz-ui/mcp` */
+  /** `false` when the server runs through `npx -y` because the project does not install the MCP package */
   localMcpServer: boolean
 }
 
@@ -68,10 +72,72 @@ export const AGENTS_MD_END = '<!-- END:maz-ui -->'
 export const MCP_SERVER_NAME = 'maz-ui'
 export const DEFAULT_MCP_SERVER: McpServerCommand = { command: 'npx', args: ['-y', '@maz-ui/mcp@latest'] }
 
-const MCP_PACKAGE = '@maz-ui/mcp'
-const MCP_BIN = 'maz-ui-mcp'
+/**
+ * A tool whose AI agents are configured by `setupAgents`: maz-ui by default,
+ * or another package that ships its own MCP server and rules.
+ */
+export interface AgentsTool {
+  /** Name of the tool: key of its MCP server, `.claude/rules/<name>.md` and markers of the generated content */
+  name: string
+  /** Package that ships the MCP server */
+  mcpPackage: string
+  /** Bin of `mcpPackage` that starts the MCP server */
+  mcpBin: string
+  /** Arguments of `mcpBin` that start the MCP server (e.g. `['mcp']`). Default `[]` */
+  mcpArgs?: string[]
+  /** What generates the rules, written in their header (markdown, e.g. `` `npx relizy mcp init` ``) */
+  generatedBy: string
+  /** Line written under the title of the rules. Default: `> <name> <version> is installed: these rules match this version.` */
+  versionNote?: (version: string) => string
+}
 
-type PackageManager = 'pnpm' | 'yarn' | 'bun' | 'npm'
+export const MAZ_UI_AGENTS_TOOL: AgentsTool = {
+  name: 'maz-ui',
+  mcpPackage: '@maz-ui/mcp',
+  mcpBin: 'maz-ui-mcp',
+  generatedBy: '`npx @maz-ui/mcp init` (or the `mazUi.agents` Nuxt option)',
+  versionNote: version => `> maz-ui ${version} is installed: these rules and the docs in \`node_modules/maz-ui/docs\` match this version.`,
+}
+
+export type PackageManager = 'pnpm' | 'yarn' | 'bun' | 'npm'
+
+function escapeRegExp(value: string): string {
+  return value.replaceAll(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+/** Values derived from a tool: markers, files and patterns of its generated content */
+interface ToolSetup {
+  tool: AgentsTool
+  marker: string
+  agentsMdBegin: string
+  agentsMdEnd: string
+  ruleFile: string
+  managedHeader: RegExp
+  managedVersion: RegExp
+}
+
+const toolSetups = new WeakMap<AgentsTool, ToolSetup>()
+
+function resolveTool(tool: AgentsTool): ToolSetup {
+  let setup = toolSetups.get(tool)
+
+  if (!setup) {
+    const marker = `Managed by ${tool.name}`
+
+    setup = {
+      tool,
+      marker,
+      agentsMdBegin: `<!-- BEGIN:${tool.name} -->`,
+      agentsMdEnd: `<!-- END:${tool.name} -->`,
+      ruleFile: `.claude/rules/${tool.name}.md`,
+      managedHeader: new RegExp(`<!-- ${escapeRegExp(marker)}[^\\n]*?-->`),
+      managedVersion: new RegExp(`${escapeRegExp(marker)} (\\d[^\\s:]*)`),
+    }
+    toolSetups.set(tool, setup)
+  }
+
+  return setup
+}
 
 function readPackageJson(rootDir: string): Record<string, unknown> | undefined {
   try {
@@ -82,11 +148,11 @@ function readPackageJson(rootDir: string): Record<string, unknown> | undefined {
   }
 }
 
-/** `true` when the `package.json` of the project declares `@maz-ui/mcp` */
-export function installsMcpPackage(rootDir: string): boolean {
+/** `true` when the `package.json` of the project declares the MCP package of the tool (`@maz-ui/mcp` by default) */
+export function installsMcpPackage(rootDir: string, tool: AgentsTool = MAZ_UI_AGENTS_TOOL): boolean {
   const pkg = readPackageJson(rootDir)
 
-  return ['dependencies', 'devDependencies', 'optionalDependencies'].some(field => (pkg?.[field] as Record<string, string> | undefined)?.[MCP_PACKAGE] !== undefined)
+  return ['dependencies', 'devDependencies', 'optionalDependencies'].some(field => (pkg?.[field] as Record<string, string> | undefined)?.[tool.mcpPackage] !== undefined)
 }
 
 /** Package manager of a project: the `packageManager` field, else its lockfile */
@@ -101,49 +167,58 @@ export function detectPackageManager(rootDir: string): PackageManager {
   return lockfiles.find(([file]) => existsSync(join(rootDir, file)))?.[1] ?? 'npm'
 }
 
-const LOCAL_MCP_COMMANDS: Record<PackageManager, McpServerCommand> = {
-  pnpm: { command: 'pnpm', args: ['exec', MCP_BIN] },
-  yarn: { command: 'yarn', args: ['run', MCP_BIN] },
-  bun: { command: 'bun', args: ['x', '--no-install', MCP_BIN] },
-  npm: { command: 'npx', args: ['--no-install', MCP_BIN] },
+/** Commands starting the MCP server installed in a project, by package manager */
+function localMcpCommands(tool: AgentsTool): Record<PackageManager, McpServerCommand> {
+  const bin = [tool.mcpBin, ...(tool.mcpArgs ?? [])]
+
+  return {
+    pnpm: { command: 'pnpm', args: ['exec', ...bin] },
+    yarn: { command: 'yarn', args: ['run', ...bin] },
+    bun: { command: 'bun', args: ['x', '--no-install', ...bin] },
+    npm: { command: 'npx', args: ['--no-install', ...bin] },
+  }
 }
 
 /**
- * Command of the maz-ui MCP server for a project. When the project installs
- * `@maz-ui/mcp`, its package manager starts the installed version in about a
- * second, at the version of the lockfile. Otherwise `npx -y` downloads it,
- * pinned to `version`: a dist-tag (`latest`) makes npx query the registry at
- * every start, which can exceed the start timeout of the agents behind a slow
- * registry.
+ * Command of the MCP server of a tool (maz-ui by default) for a project. When
+ * the project installs its package, the package manager starts the installed
+ * version in about a second, at the version of the lockfile. Otherwise
+ * `npx -y` downloads it, pinned to `version`: a dist-tag (`latest`) makes npx
+ * query the registry at every start, which can exceed the start timeout of the
+ * agents behind a slow registry.
  */
-export function mcpServerCommand(rootDir: string, version = 'latest'): McpServerCommand {
-  return installsMcpPackage(rootDir)
-    ? LOCAL_MCP_COMMANDS[detectPackageManager(rootDir)]
-    : { command: 'npx', args: ['-y', `${MCP_PACKAGE}@${version}`] }
+export function mcpServerCommand(rootDir: string, version = 'latest', tool: AgentsTool = MAZ_UI_AGENTS_TOOL): McpServerCommand {
+  return installsMcpPackage(rootDir, tool)
+    ? localMcpCommands(tool)[detectPackageManager(rootDir)]
+    : { command: 'npx', args: ['-y', `${tool.mcpPackage}@${version}`, ...(tool.mcpArgs ?? [])] }
 }
 
-/** Version pinned in a `npx -y @maz-ui/mcp@<version>` command */
-function pinnedMcpVersion(server: McpServerCommand): string | undefined {
-  return server.args.map(arg => /^@maz-ui\/mcp@(\d\S*)$/.exec(arg)?.[1]).find(Boolean)
+/** Version pinned in a `npx -y <package>@<version>` command */
+function pinnedMcpVersion(server: McpServerCommand, tool: AgentsTool): string | undefined {
+  const pinned = new RegExp(`^${escapeRegExp(tool.mcpPackage)}@(\\d\\S*)$`)
+
+  return server.args.map(arg => pinned.exec(arg)?.[1]).find(Boolean)
 }
 
 /**
  * A command `setupAgents` generates: it may be replaced by a better one. A
  * command written by hand (`--docs`, another runner...) is kept.
  */
-function isGeneratedMcpCommand(server: Partial<McpServerCommand>): server is McpServerCommand {
+function isGeneratedMcpCommand(server: Partial<McpServerCommand>, tool: AgentsTool): server is McpServerCommand {
   const command = [server.command, ...(Array.isArray(server.args) ? server.args : [])].join(' ')
+  const args = (tool.mcpArgs ?? []).map(arg => ` ${escapeRegExp(arg)}`).join('')
 
-  return /^npx -y @maz-ui\/mcp(?:@\S+)?$/.test(command)
-    || Object.values(LOCAL_MCP_COMMANDS).some(local => command === [local.command, ...local.args].join(' '))
+  return new RegExp(`^npx -y ${escapeRegExp(tool.mcpPackage)}(?:@\\S+)?${args}$`).test(command)
+    || Object.values(localMcpCommands(tool)).some(local => command === [local.command, ...local.args].join(' '))
 }
 
-const CLAUDE_RULE_FILE = '.claude/rules/maz-ui.md'
 const CLAUDE_MEMORY_FILES = ['CLAUDE.md', '.claude/CLAUDE.md', 'CLAUDE.local.md']
 
 /** Adds the installed version under the title of a generated rule */
-function withVersion(content: string, version: string): string {
-  return content.replace(/^(#{1,2} .+)\n/, `$1\n\n> maz-ui ${version} is installed: these rules and the docs in \`node_modules/maz-ui/docs\` match this version.\n`)
+function withVersion(content: string, version: string, tool: AgentsTool): string {
+  const note = tool.versionNote?.(version) ?? `> ${tool.name} ${version} is installed: these rules match this version.`
+
+  return content.replace(/^(#{1,2} .+)\n/, (_, title: string) => `${title}\n\n${note}\n`)
 }
 
 /** Checksum of generated rules, insensitive to the whitespace a formatter changes (table padding, wrapping, blank lines) */
@@ -151,19 +226,17 @@ function checksum(body: string): string {
   return createHash('sha256').update(body.replaceAll(/\s+/g, '')).digest('hex').slice(0, 12)
 }
 
-/** Generated rules: a header with the maz-ui version and the checksum of the body, then the body */
-function managedContent(version: string, body: string): string {
-  return `<!-- ${MANAGED_MARKER} ${version} (sha256:${checksum(body)}): generated by \`npx @maz-ui/mcp init\` (or the \`mazUi.agents\` Nuxt option). Do not edit: edited rules are no longer updated. Write your own rules elsewhere. -->\n\n${body}`
+/** Generated rules: a header with the version of the tool and the checksum of the body, then the body */
+function managedContent(version: string, body: string, setup: ToolSetup): string {
+  return `<!-- ${setup.marker} ${version} (sha256:${checksum(body)}): generated by ${setup.tool.generatedBy}. Do not edit: edited rules are no longer updated. Write your own rules elsewhere. -->\n\n${body}`
 }
-
-const MANAGED_HEADER = new RegExp(`<!-- ${MANAGED_MARKER}[^\\n]*?-->`)
 
 /**
  * `true` when generated rules were edited by hand since they were written:
  * they are kept, a newer version of the rules would overwrite the edits.
  */
-export function isEditedManagedContent(content: string | undefined): boolean {
-  const header = content === undefined ? null : MANAGED_HEADER.exec(content)
+export function isEditedManagedContent(content: string | undefined, tool: AgentsTool = MAZ_UI_AGENTS_TOOL): boolean {
+  const header = content === undefined ? null : resolveTool(tool).managedHeader.exec(content)
   const recorded = header ? /\(sha256:([\da-f]+)\)/.exec(header[0])?.[1] : undefined
 
   return header !== null && recorded !== undefined && checksum((content as string).slice(header.index + header[0].length)) !== recorded
@@ -219,7 +292,6 @@ export function findInstalledPackage(fromDir: string, name: string): string | un
   }
 }
 
-/** Reads the agent files shipped in `maz-ui/docs/agents` */
 /** Version of an installed package, read from its `package.json` */
 export function readPackageVersion(packageDir: string): string | undefined {
   const file = join(packageDir, 'package.json')
@@ -321,6 +393,7 @@ export function findProjectPackage(rootDir: string, name: string): string | unde
     ?? findInstalledPackage(rootDir, name)
 }
 
+/** Reads the agent files shipped in `maz-ui/docs/agents` */
 export function readAgentDocs(rootDir: string, docsDir?: string): AgentDocs {
   let directory = docsDir
 
@@ -416,25 +489,23 @@ export function compareVersions(a: string, b: string): number {
   return left.prerelease.length - right.prerelease.length
 }
 
-const MANAGED_VERSION = new RegExp(`${MANAGED_MARKER} (\\d[^\\s:]*)`)
-
-/** Version of maz-ui that generated a managed content, read from its header */
-export function readManagedVersion(content: string | undefined): string | undefined {
-  return content ? MANAGED_VERSION.exec(content)?.[1] : undefined
+/** Version of the tool (maz-ui by default) that generated a managed content, read from its header */
+export function readManagedVersion(content: string | undefined, tool: AgentsTool = MAZ_UI_AGENTS_TOOL): string | undefined {
+  return content ? resolveTool(tool).managedVersion.exec(content)?.[1] : undefined
 }
 
 /**
- * Rules written by a newer maz-ui are kept: in a monorepo whose apps install
- * different versions, each app would otherwise rewrite them in turn.
+ * Rules written by a newer version of the tool are kept: in a monorepo whose
+ * apps install different versions, each app would otherwise rewrite them in turn.
  */
-function newerManagedVersion(content: string | undefined, version: string): string | undefined {
-  const written = readManagedVersion(content)
+function newerManagedVersion(content: string | undefined, version: string, tool: AgentsTool): string | undefined {
+  const written = readManagedVersion(content, tool)
 
   return written && version && compareVersions(written, version) > 0 ? written : undefined
 }
 
-function newerVersionReason(written: string, version: string): string {
-  return `written by maz-ui ${written}, newer than the installed ${version}: left untouched`
+function newerVersionReason(written: string, version: string, tool: AgentsTool): string {
+  return `written by ${tool.name} ${written}, newer than the installed ${version}: left untouched`
 }
 
 class ChangeSet {
@@ -481,27 +552,28 @@ class ChangeSet {
 }
 
 /** A file we generated (or no file): we may overwrite or delete it */
-function isOwned(content: string | undefined): boolean {
-  return content === undefined || content.includes(MANAGED_MARKER)
+function isOwned(content: string | undefined, setup: ToolSetup): boolean {
+  return content === undefined || content.includes(setup.marker)
 }
 
-function syncOwnedFile(changes: ChangeSet, file: string, content: string | undefined, version: string): void {
+function syncOwnedFile(changes: ChangeSet, file: string, content: string | undefined, version: string, setup: ToolSetup): void {
+  const { tool } = setup
   const current = changes.read(file)
 
-  if (!isOwned(current)) {
-    changes.skip(file, 'file exists and was not generated by maz-ui: left untouched')
+  if (!isOwned(current, setup)) {
+    changes.skip(file, `file exists and was not generated by ${tool.name}: left untouched`)
     return
   }
 
-  const newer = content === undefined ? undefined : newerManagedVersion(current, version)
+  const newer = content === undefined ? undefined : newerManagedVersion(current, version, tool)
 
   if (newer) {
-    changes.skip(file, newerVersionReason(newer, version))
+    changes.skip(file, newerVersionReason(newer, version, tool))
     return
   }
 
-  if (content !== undefined && isEditedManagedContent(current)) {
-    changes.skip(file, `edited since it was generated: left untouched, delete it to get the rules of maz-ui ${version}`)
+  if (content !== undefined && isEditedManagedContent(current, tool)) {
+    changes.skip(file, `edited since it was generated: left untouched, delete it to get the rules of ${tool.name} ${version}`)
     return
   }
 
@@ -514,18 +586,19 @@ function syncOwnedFile(changes: ChangeSet, file: string, content: string | undef
   changes.write(file, content, current)
 }
 
-function syncAgentsMd(changes: ChangeSet, section: string | undefined, version: string): void {
+function syncAgentsMd(changes: ChangeSet, section: string | undefined, version: string, setup: ToolSetup): void {
+  const { tool, agentsMdBegin, agentsMdEnd } = setup
   const file = 'AGENTS.md'
   const current = changes.read(file)
-  const begin = current?.indexOf(AGENTS_MD_BEGIN) ?? -1
-  const end = current?.indexOf(AGENTS_MD_END) ?? -1
+  const begin = current?.indexOf(agentsMdBegin) ?? -1
+  const end = current?.indexOf(agentsMdEnd) ?? -1
   const hasBlock = begin !== -1 && end > begin
 
   if (section === undefined) {
     if (!current || !hasBlock)
       return
 
-    const remaining = `${current.slice(0, begin)}${current.slice(end + AGENTS_MD_END.length)}`.replace(/\n{3,}/g, '\n\n').trim()
+    const remaining = `${current.slice(0, begin)}${current.slice(end + agentsMdEnd.length)}`.replace(/\n{3,}/g, '\n\n').trim()
 
     if (remaining)
       changes.write(file, `${remaining}\n`, current)
@@ -534,26 +607,26 @@ function syncAgentsMd(changes: ChangeSet, section: string | undefined, version: 
     return
   }
 
-  const block = hasBlock ? current?.slice(begin + AGENTS_MD_BEGIN.length, end) : undefined
-  const newer = newerManagedVersion(block, version)
+  const block = hasBlock ? current?.slice(begin + agentsMdBegin.length, end) : undefined
+  const newer = newerManagedVersion(block, version, tool)
 
   if (newer) {
-    changes.skip(file, newerVersionReason(newer, version))
+    changes.skip(file, newerVersionReason(newer, version, tool))
     return
   }
 
-  if (isEditedManagedContent(block)) {
-    changes.skip(file, `the maz-ui section was edited since it was generated: left untouched, delete the section to get the rules of maz-ui ${version}`)
+  if (isEditedManagedContent(block, tool)) {
+    changes.skip(file, `the ${tool.name} section was edited since it was generated: left untouched, delete the section to get the rules of ${tool.name} ${version}`)
     return
   }
 
-  const wrapped = `${AGENTS_MD_BEGIN}\n\n${section}\n\n${AGENTS_MD_END}`
+  const wrapped = `${agentsMdBegin}\n\n${section}\n\n${agentsMdEnd}`
 
   if (!current) {
     changes.write(file, `${wrapped}\n`, current)
   }
   else if (hasBlock) {
-    changes.write(file, `${current.slice(0, begin)}${wrapped}${current.slice(end + AGENTS_MD_END.length)}`, current)
+    changes.write(file, `${current.slice(0, begin)}${wrapped}${current.slice(end + agentsMdEnd.length)}`, current)
   }
   else {
     changes.write(file, `${current.trimEnd()}\n\n${wrapped}\n`, current)
@@ -572,10 +645,13 @@ const MCP_FILES: Record<'claude' | 'cursor' | 'vscode', McpConfigFile> = {
   vscode: { file: '.vscode/mcp.json', rootKey: 'servers', withType: true },
 }
 
-function referencesMazUiMcp(server: unknown): boolean {
+/** An entry that starts the MCP server of the tool, whatever its key and runner */
+function referencesToolMcp(server: unknown, tool: AgentsTool): boolean {
   const serialized = JSON.stringify(server)
+  const args = isJsonObject(server) && Array.isArray(server.args) ? server.args : []
 
-  return serialized.includes('@maz-ui/mcp') || serialized.includes('maz-ui-mcp')
+  return (serialized.includes(tool.mcpPackage) || serialized.includes(tool.mcpBin))
+    && (tool.mcpArgs ?? []).every(arg => args.includes(arg))
 }
 
 function detectFormatting(content: string): FormattingOptions {
@@ -588,28 +664,28 @@ function isJsonObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
-/** Replaces the command of an existing entry of the maz-ui MCP server, its other fields (`env`...) are kept */
-function updateMcpCommand(changes: ChangeSet, config: McpConfigFile, [key, entry]: [string, unknown], server: McpServerCommand): void {
+/** Replaces the command of an existing entry of the MCP server of the tool, its other fields (`env`...) are kept */
+function updateMcpCommand(changes: ChangeSet, config: McpConfigFile, [key, entry]: [string, unknown], server: McpServerCommand, tool: AgentsTool): void {
   const current = entry as Partial<McpServerCommand>
   const label = [server.command, ...server.args].join(' ')
 
   if (current.command === server.command && JSON.stringify(current.args) === JSON.stringify(server.args)) {
-    changes.unchanged(config.file, `maz-ui MCP server already registered as "${key}"`)
+    changes.unchanged(config.file, `${tool.name} MCP server already registered as "${key}"`)
     return
   }
 
-  if (!isGeneratedMcpCommand(current)) {
+  if (!isGeneratedMcpCommand(current, tool)) {
     changes.unchanged(config.file, `"${key}" runs a custom command: left untouched`)
     return
   }
 
-  const pinned = pinnedMcpVersion(current)
-  const wanted = pinnedMcpVersion(server)
+  const pinned = pinnedMcpVersion(current, tool)
+  const wanted = pinnedMcpVersion(server, tool)
   const isLocal = !server.args.includes('-y')
 
   // A pin is only replaced by the installed package or a newer pin: never by `latest`, nor by an older version (monorepos)
   if (pinned && !isLocal && (!wanted || compareVersions(pinned, wanted) >= 0)) {
-    changes.unchanged(config.file, `"${key}" runs @maz-ui/mcp ${pinned}`)
+    changes.unchanged(config.file, `"${key}" runs ${tool.mcpPackage} ${pinned}`)
     return
   }
 
@@ -621,7 +697,7 @@ function updateMcpCommand(changes: ChangeSet, config: McpConfigFile, [key, entry
   changes.write(config.file, content, file, `"${key}" now runs ${label}`)
 }
 
-function syncMcpConfig(changes: ChangeSet, config: McpConfigFile, server: McpServerCommand, remove: boolean): void {
+function syncMcpConfig(changes: ChangeSet, config: McpConfigFile, server: McpServerCommand, remove: boolean, tool: AgentsTool): void {
   const current = changes.read(config.file)
   const errors: ParseError[] = []
   const parsed: unknown = current === undefined ? {} : parse(current, errors, { allowTrailingComma: true })
@@ -632,13 +708,13 @@ function syncMcpConfig(changes: ChangeSet, config: McpConfigFile, server: McpSer
   }
 
   const servers = (parsed[config.rootKey] ?? {}) as Record<string, unknown>
-  const existing = Object.entries(servers).find(([, value]) => referencesMazUiMcp(value))
+  const existing = Object.entries(servers).find(([, value]) => referencesToolMcp(value, tool))
   const base = current ?? '{}\n'
   const formatting = detectFormatting(base)
 
   if (remove) {
-    if (existing?.[0] === MCP_SERVER_NAME) {
-      const content = applyEdits(base, modify(base, [config.rootKey, MCP_SERVER_NAME], undefined, { formattingOptions: formatting }))
+    if (existing?.[0] === tool.name) {
+      const content = applyEdits(base, modify(base, [config.rootKey, tool.name], undefined, { formattingOptions: formatting }))
       const remaining = parse(content) as Record<string, Record<string, unknown>>
       const isEmpty = Object.keys(remaining).length === 1 && Object.keys(remaining[config.rootKey]).length === 0
 
@@ -651,58 +727,70 @@ function syncMcpConfig(changes: ChangeSet, config: McpConfigFile, server: McpSer
   }
 
   if (existing) {
-    updateMcpCommand(changes, config, existing, server)
+    updateMcpCommand(changes, config, existing, server, tool)
     return
   }
 
-  if (servers[MCP_SERVER_NAME] !== undefined) {
-    changes.skip(config.file, `a "${MCP_SERVER_NAME}" server already exists with another command: left untouched`)
+  if (servers[tool.name] !== undefined) {
+    changes.skip(config.file, `a "${tool.name}" server already exists with another command: left untouched`)
     return
   }
 
   const value = config.withType ? { type: 'stdio', ...server } : { ...server }
-  const content = applyEdits(base, modify(base, [config.rootKey, MCP_SERVER_NAME], value, { formattingOptions: formatting }))
+  const content = applyEdits(base, modify(base, [config.rootKey, tool.name], value, { formattingOptions: formatting }))
 
   changes.write(config.file, content.endsWith('\n') ? content : `${content}\n`, current)
 }
 
 /** Writes (or removes when `docs` is undefined) the Claude Code rule and the `AGENTS.md` section */
-function syncRules(changes: ChangeSet, rootDir: string, targets: AgentTarget[], docs: AgentDocs | undefined): void {
+function syncRules(changes: ChangeSet, rootDir: string, targets: AgentTarget[], docs: AgentDocs | undefined, setup: ToolSetup): void {
   const version = docs?.version ?? ''
   const hasClaudeMemory = CLAUDE_MEMORY_FILES.some(file => existsSync(join(rootDir, file)))
   // Claude Code reads AGENTS.md only when the project has no CLAUDE.md: the rule would then duplicate the AGENTS.md section
   const claudeReadsAgentsMd = targets.includes('agents-md') && !hasClaudeMemory
 
   if (targets.includes('claude')) {
-    const rule = docs && !claudeReadsAgentsMd ? `${managedContent(version, withVersion(docs.claudeRule, version))}\n` : undefined
-    syncOwnedFile(changes, CLAUDE_RULE_FILE, rule, version)
+    const rule = docs && !claudeReadsAgentsMd ? `${managedContent(version, withVersion(docs.claudeRule, version, setup.tool), setup)}\n` : undefined
+    syncOwnedFile(changes, setup.ruleFile, rule, version, setup)
   }
 
   if (targets.includes('agents-md'))
-    syncAgentsMd(changes, docs ? managedContent(version, withVersion(docs.agentsMdSection, version)) : undefined, version)
+    syncAgentsMd(changes, docs ? managedContent(version, withVersion(docs.agentsMdSection, version, setup.tool), setup) : undefined, version, setup)
+}
+
+/** Rules of the tool: the given ones, else the maz-ui agent docs */
+function resolveAgentDocs(options: SetupAgentsOptions, tool: AgentsTool): AgentDocs {
+  if (options.agentDocs)
+    return options.agentDocs
+
+  if (tool !== MAZ_UI_AGENTS_TOOL)
+    throw new Error(`setupAgents needs the rules of ${tool.name}: pass them with the agentDocs option.`)
+
+  return readAgentDocs(options.rootDir, options.docsDir)
 }
 
 /**
- * Configures the AI coding agents of a project to use maz-ui: rules (version
- * matched with the installed maz-ui) and the maz-ui MCP server. Idempotent and
- * conservative: it only writes files it owns, a delimited section of
- * `AGENTS.md` and its own entry of the MCP config files.
+ * Configures the AI coding agents of a project to use a tool, maz-ui by
+ * default: rules (version matched with the installed tool) and its MCP server.
+ * Idempotent and conservative: it only writes files it owns, a delimited
+ * section of `AGENTS.md` and its own entry of the MCP config files.
  */
 export function setupAgents(options: SetupAgentsOptions): SetupAgentsResult {
-  const { rootDir, rules = true, mcp = true, dryRun = false, remove = false } = options
+  const { rootDir, rules = true, mcp = true, dryRun = false, remove = false, tool = MAZ_UI_AGENTS_TOOL } = options
+  const setup = resolveTool(tool)
   const targets = options.targets ?? detectAgentTargets(rootDir)
-  const docs = remove || !rules ? undefined : readAgentDocs(rootDir, options.docsDir)
+  const docs = remove || !rules ? undefined : resolveAgentDocs(options, tool)
   const version = docs?.version ?? ''
   const changes = new ChangeSet(rootDir, dryRun)
-  const server = options.mcpServer ?? mcpServerCommand(rootDir, options.mcpVersion)
+  const server = options.mcpServer ?? mcpServerCommand(rootDir, options.mcpVersion, tool)
 
   if (rules || remove)
-    syncRules(changes, rootDir, targets, docs)
+    syncRules(changes, rootDir, targets, docs, setup)
 
   if (mcp || remove) {
     for (const target of ['claude', 'cursor', 'vscode'] as const) {
       if (targets.includes(target))
-        syncMcpConfig(changes, MCP_FILES[target], server, remove)
+        syncMcpConfig(changes, MCP_FILES[target], server, remove, tool)
     }
   }
 
