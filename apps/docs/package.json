@@ -43,14 +43,23 @@
     "@samkirkland/ftp-deploy": "^1.2.5",
     "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^22.20.5",
     "@types/postcss-url": "^10.0.4",
     "@types/react": "^19.3.0",
     "@vercel/og": "^0.11.1",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.13.0",
+    "postcss": "^8.5.31",
     "postcss-nested": "^9.0.0",
     "postcss-url": "^10.1.4",
     "react": "^19.3.1",
     "tailwindcss": "^4.3.3",
-    "vitepress": "2.0.0-alpha.20"
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "vite-svg-loader": "^5.1.3",
+    "vitepress": "2.0.0-alpha.20",
+    "vue": "^3.5.44",
+    "vue-tsc": "3.3.13"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
