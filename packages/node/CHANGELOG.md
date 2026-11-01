@@ -1,5 +1,29 @@
 # Changelog
 
+## v5.2.0-beta.0 (2026-11-01)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.1...v5.2.0-beta.0)
+
+### 🚀 Features
+
+- **@maz-ui/node:** Start the installed @maz-ui/mcp and keep the rules edited by hand ([1e6a38a74](https://github.com/LouisMazel/maz-ui/commit/1e6a38a74))
+
+  When the project installs `@maz-ui/mcp`, `setupAgents` writes MCP configs that start it through the package manager of the project (`pnpm exec maz-ui-mcp`, `yarn run maz-ui-mcp`, `npx --no-install maz-ui-mcp`...): no download, and the version of the lockfile. Otherwise they run `npx -y @maz-ui/mcp@<version>`, pinned with the new `mcpVersion` option. `mcpServerCommand(rootDir, version)` returns this command.
+
+  Generated rules edited by hand are kept and no longer updated: delete the file, or the `AGENTS.md` section, to get the rules of a new version.
+
+  In a monorepo, the files are written atomically, and the rules or the pinned version of a newer maz-ui are never downgraded by an app with an older one. Packages are now found in the workspaces of `pnpm-workspace.yaml` or of the `workspaces` field of `package.json`.
+
+- **@maz-ui/node:** Let setupAgents configure the agents of another tool ([6fa96842b](https://github.com/LouisMazel/maz-ui/commit/6fa96842b))
+
+  `setupAgents` configures maz-ui by default, and now any package that ships an MCP server and rules for AI agents with the new `tool` option (an `AgentsTool`: name, MCP package, bin and arguments) and its rules passed with `agentDocs`. It writes `.claude/rules/<name>.md`, the `<name>` section of `AGENTS.md` and the `<name>` MCP server, with the same guarantees as for maz-ui. Several tools can be set up in the same project: each one only manages its own files, section and server entry.
+
+  `mcpServerCommand`, `installsMcpPackage`, `readManagedVersion` and `isEditedManagedContent` take the tool as last argument, and the `PackageManager` type is exported. Nothing changes for maz-ui.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.1.0 (2026-10-27)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.0.0...v5.1.0)
