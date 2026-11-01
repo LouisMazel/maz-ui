@@ -51,11 +51,11 @@
     "lint:fix": "pnpm lint --fix"
   },
   "dependencies": {
-    "@maz-ui/node": "workspace:*",
+    "@maz-ui/node": "workspace:^",
     "globby": "^16.2.4"
   },
   "devDependencies": {
-    "@maz-ui/eslint-config": "workspace:*",
+    "@maz-ui/eslint-config": "workspace:^",
     "unbuild": "^3.6.1"
   },
   "lint-staged": {

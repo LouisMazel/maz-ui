@@ -80,7 +80,7 @@
     }
   },
   "devDependencies": {
-    "@maz-ui/vite-config": "workspace:*",
+    "@maz-ui/vite-config": "workspace:^",
     "libphonenumber-js": "^1.13.15"
   },
   "lint-staged": {

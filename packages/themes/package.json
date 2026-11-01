@@ -112,10 +112,10 @@
     "vue": ">=3.5.0 <4.0.0"
   },
   "dependencies": {
-    "@maz-ui/utils": "workspace:*"
+    "@maz-ui/utils": "workspace:^"
   },
   "devDependencies": {
-    "@maz-ui/vite-config": "workspace:*"
+    "@maz-ui/vite-config": "workspace:^"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

@@ -170,10 +170,10 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1(vite@8.3.4(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.105.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.0))
       '@maz-ui/eslint-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:packages/eslint-config
       '@maz-ui/node':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:packages/node
       '@nx/js':
         specifier: ^23.3.0
@@ -266,22 +266,22 @@ importers:
   apps/docs:
     dependencies:
       '@maz-ui/eslint-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/eslint-config
       '@maz-ui/icons':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/icons
       '@maz-ui/node':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/node
       '@maz-ui/themes':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/themes
       '@maz-ui/translations':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/translations
       '@maz-ui/utils':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/utils
       chart.js:
         specifier: ^4.5.1
@@ -296,7 +296,7 @@ importers:
         specifier: ^1.13.15
         version: 1.13.15
       maz-ui:
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/lib
       shiki:
         specifier: ^4.5.0
@@ -312,7 +312,7 @@ importers:
         version: 4.6.7
     devDependencies:
       '@maz-ui/vite-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tools/vite-config
       '@samkirkland/ftp-deploy':
         specifier: ^1.2.5
@@ -351,26 +351,26 @@ importers:
   apps/nuxt-app:
     dependencies:
       '@maz-ui/icons':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/icons
       '@maz-ui/nuxt':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/nuxt
       '@maz-ui/utils':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/utils
       maz-ui:
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/lib
       valibot:
         specifier: ^1.5.0
         version: 1.5.0(typescript@6.0.3)
     devDependencies:
       '@maz-ui/stylelint-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/stylelint-config
       '@maz-ui/vite-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tools/vite-config
       '@nuxt/devtools':
         specifier: ^3.4.4
@@ -407,22 +407,22 @@ importers:
         version: 5.4.0(@vue/compiler-sfc@3.5.44)(esbuild@0.28.2)(rolldown@1.2.14)(rollup@4.64.12)(vite@8.3.4(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.105.2)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.0))(vue@3.5.44(typescript@6.0.3))
     devDependencies:
       '@maz-ui/eslint-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/eslint-config
       '@maz-ui/icons':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/icons
       '@maz-ui/stylelint-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/stylelint-config
       '@maz-ui/themes':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/themes
       '@maz-ui/translations':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/translations
       '@maz-ui/vite-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tools/vite-config
       '@tailwindcss/vite':
         specifier: ^4.3.3
@@ -434,7 +434,7 @@ importers:
         specifier: ^0.9.1
         version: 0.9.1(typescript@6.0.3)(vue@3.5.44(typescript@6.0.3))
       maz-ui:
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/lib
       npm-run-all2:
         specifier: ^9.0.3
@@ -493,13 +493,13 @@ importers:
         version: 3.5.44(typescript@6.0.3)
     devDependencies:
       '@maz-ui/node':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../node
       '@maz-ui/utils':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../utils
       '@maz-ui/vite-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tools/vite-config
       unbuild:
         specifier: ^3.6.1
@@ -514,16 +514,16 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1(vue@3.5.44(typescript@6.0.3))
       '@maz-ui/icons':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../icons
       '@maz-ui/themes':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../themes
       '@maz-ui/translations':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../translations
       '@maz-ui/utils':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../utils
       '@tanstack/vue-virtual':
         specifier: ^3.13.47
@@ -551,16 +551,16 @@ importers:
         version: 3.5.44(typescript@6.0.3)
     devDependencies:
       '@maz-ui/eslint-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../eslint-config
       '@maz-ui/node':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../node
       '@maz-ui/stylelint-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../stylelint-config
       '@maz-ui/vite-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tools/vite-config
       '@tailwindcss/cli':
         specifier: ^4.3.3
@@ -623,7 +623,7 @@ importers:
         specifier: ^1.8.1
         version: 1.8.1
       '@maz-ui/node':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../node
       colorette:
         specifier: ^2.0.20
@@ -642,7 +642,7 @@ importers:
         version: 1.6.0
     devDependencies:
       '@maz-ui/eslint-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../eslint-config
       '@types/tinycolor2':
         specifier: ^1.4.6
@@ -660,13 +660,13 @@ importers:
         specifier: ^8.0.8
         version: 8.0.8
       '@maz-ui/eslint-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../eslint-config
       '@maz-ui/node':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../node
       '@maz-ui/utils':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../utils
       '@modelcontextprotocol/inspector':
         specifier: ^2.11.0
@@ -678,7 +678,7 @@ importers:
         specifier: ^3.5.44
         version: 3.5.44
       agent-docs:
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tools/agent-docs
       minisearch:
         specifier: ^7.2.0
@@ -718,16 +718,16 @@ importers:
   packages/nuxt:
     dependencies:
       '@maz-ui/node':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../node
       '@maz-ui/themes':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../themes
       '@maz-ui/translations':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../translations
       '@maz-ui/utils':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../utils
       '@nuxt/devtools-kit':
         specifier: ^3.4.4
@@ -739,11 +739,11 @@ importers:
         specifier: ^6.1.7
         version: 6.1.7
       maz-ui:
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../lib
     devDependencies:
       '@maz-ui/eslint-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../eslint-config
       '@nuxt/devtools':
         specifier: ^3.4.4
@@ -798,7 +798,7 @@ importers:
         version: 5.0.1(stylelint@17.16.0(supports-color@10.2.2)(typescript@5.9.3))
     devDependencies:
       '@maz-ui/eslint-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../eslint-config
       '@vitest/coverage-v8':
         specifier: ^5.0.5
@@ -813,27 +813,27 @@ importers:
   packages/themes:
     dependencies:
       '@maz-ui/utils':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../utils
       vue:
         specifier: '>=3.5.0 <4.0.0'
         version: 3.5.44(typescript@6.0.3)
     devDependencies:
       '@maz-ui/vite-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tools/vite-config
 
   packages/translations:
     dependencies:
       '@maz-ui/utils':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../utils
       vue:
         specifier: '>=3.5.0 <4.0.0'
         version: 3.5.44(typescript@5.9.3)
     devDependencies:
       '@maz-ui/vite-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tools/vite-config
       unbuild:
         specifier: ^3.6.1
@@ -842,14 +842,14 @@ importers:
   packages/upgrade:
     dependencies:
       '@maz-ui/node':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../node
       globby:
         specifier: ^16.2.4
         version: 16.2.4
     devDependencies:
       '@maz-ui/eslint-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../eslint-config
       unbuild:
         specifier: ^3.6.1
@@ -858,7 +858,7 @@ importers:
   packages/utils:
     devDependencies:
       '@maz-ui/vite-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../tools/vite-config
       libphonenumber-js:
         specifier: ^1.13.15
@@ -867,7 +867,7 @@ importers:
   tools/agent-docs:
     dependencies:
       '@maz-ui/node':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/node
       typescript:
         specifier: ^6.0.3
@@ -883,7 +883,7 @@ importers:
         version: 2.9.1
     devDependencies:
       '@maz-ui/eslint-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/eslint-config
       tsx:
         specifier: ^4.23.15
@@ -895,10 +895,10 @@ importers:
         specifier: ^1.8.1
         version: 1.8.1
       '@maz-ui/node':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/node
       '@maz-ui/utils':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/utils
       colorette:
         specifier: ^2.0.20
@@ -911,7 +911,7 @@ importers:
         version: 1.12.0
     devDependencies:
       '@maz-ui/eslint-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/eslint-config
       tsx:
         specifier: ^4.23.15
@@ -923,7 +923,7 @@ importers:
   tools/vite-config:
     devDependencies:
       '@maz-ui/eslint-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/eslint-config
 
 packages:
