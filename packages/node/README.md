@@ -18,7 +18,7 @@ npm install @maz-ui/node
 - 🔧 **Highly configurable** - custom loggers with different levels and reporters
 - 🛡️ **Error handling** - comprehensive error management
 - 🎯 **Multiple log types** - info, debug, trace, start, ready, fail, box
-- 🤖 **AI agents setup** - `setupAgents` configures the AI coding agents of a project for maz-ui (rules and MCP server), as `npx @maz-ui/mcp init` does: [documentation](https://maz-ui.com/ecosystem/node/setup-agents)
+- 🤖 **AI agents setup** - `setupAgents` configures the AI coding agents of a project for maz-ui (rules and MCP server), as `npx @maz-ui/mcp init` does, or for another tool that ships its own MCP server and rules (`tool` option): [documentation](https://maz-ui.com/ecosystem/node/setup-agents)
 
 ## Usage
 
