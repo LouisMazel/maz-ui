@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@clack/prompts": "^1.8.1",
-    "@maz-ui/node": "workspace:*",
+    "@maz-ui/node": "workspace:^",
     "colorette": "^2.0.20",
     "commander": "^15.0.0",
     "cosmiconfig": "^10.0.1",
@@ -51,7 +51,7 @@
     "tinycolor2": "^1.6.0"
   },
   "devDependencies": {
-    "@maz-ui/eslint-config": "workspace:*",
+    "@maz-ui/eslint-config": "workspace:^",
     "@types/tinycolor2": "^1.4.6",
     "unbuild": "^3.6.1"
   },

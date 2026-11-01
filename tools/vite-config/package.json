@@ -15,6 +15,6 @@
     "src/index.js"
   ],
   "devDependencies": {
-    "@maz-ui/eslint-config": "workspace:*"
+    "@maz-ui/eslint-config": "workspace:^"
   }
 }

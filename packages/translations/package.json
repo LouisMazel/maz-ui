@@ -98,10 +98,10 @@
     "vue": ">=3.5.0 <4.0.0"
   },
   "dependencies": {
-    "@maz-ui/utils": "workspace:*"
+    "@maz-ui/utils": "workspace:^"
   },
   "devDependencies": {
-    "@maz-ui/vite-config": "workspace:*",
+    "@maz-ui/vite-config": "workspace:^",
     "unbuild": "^3.6.1"
   },
   "lint-staged": {

@@ -62,17 +62,17 @@
     "nuxt": ">=3.4.0 <5.0.0"
   },
   "dependencies": {
-    "@maz-ui/node": "workspace:*",
-    "@maz-ui/themes": "workspace:*",
-    "@maz-ui/translations": "workspace:*",
-    "@maz-ui/utils": "workspace:*",
+    "@maz-ui/node": "workspace:^",
+    "@maz-ui/themes": "workspace:^",
+    "@maz-ui/translations": "workspace:^",
+    "@maz-ui/utils": "workspace:^",
     "@nuxt/devtools-kit": "^3.4.4",
     "@nuxt/kit": "^4.6.2",
     "defu": "^6.1.7",
-    "maz-ui": "workspace:*"
+    "maz-ui": "workspace:^"
   },
   "devDependencies": {
-    "@maz-ui/eslint-config": "workspace:*",
+    "@maz-ui/eslint-config": "workspace:^",
     "@nuxt/devtools": "^3.4.4",
     "@nuxt/module-builder": "^1.0.3",
     "@nuxt/schema": "^4.6.2",
