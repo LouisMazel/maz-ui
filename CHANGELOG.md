@@ -1,5 +1,71 @@
 # Change Log
 
+## v5.2.0 (2026-11-01)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.1...v5.2.0)
+
+### 🚀 Features
+
+- **@maz-ui/node:** Start the installed @maz-ui/mcp and keep the rules edited by hand ([1e6a38a74](https://github.com/LouisMazel/maz-ui/commit/1e6a38a74))
+
+  When the project installs `@maz-ui/mcp`, `setupAgents` writes MCP configs that start it through the package manager of the project (`pnpm exec maz-ui-mcp`, `yarn run maz-ui-mcp`, `npx --no-install maz-ui-mcp`...): no download, and the version of the lockfile. Otherwise they run `npx -y @maz-ui/mcp@<version>`, pinned with the new `mcpVersion` option. `mcpServerCommand(rootDir, version)` returns this command.
+
+  Generated rules edited by hand are kept and no longer updated: delete the file, or the `AGENTS.md` section, to get the rules of a new version.
+
+  In a monorepo, the files are written atomically, and the rules or the pinned version of a newer maz-ui are never downgraded by an app with an older one. Packages are now found in the workspaces of `pnpm-workspace.yaml` or of the `workspaces` field of `package.json`.
+
+- **@maz-ui/mcp:** Init starts the installed @maz-ui/mcp or pins its version ([1c3b7222f](https://github.com/LouisMazel/maz-ui/commit/1c3b7222f))
+
+  Install it in the project (`pnpm add -D @maz-ui/mcp`), then run `npx @maz-ui/mcp init`: the MCP configs start the installed version through your package manager, in about a second. Otherwise they run `npx -y @maz-ui/mcp@<version>`, pinned to the version of `init`: with `@latest`, npx queries the registry at every start.
+
+  An existing entry that runs `@maz-ui/mcp@latest` gets the new command and keeps its other fields, a command written by hand is left untouched.
+
+- **@maz-ui/mcp:** Tell the agents which icon format to use for each usage ([2d3a5b34f](https://github.com/LouisMazel/maz-ui/commit/2d3a5b34f))
+
+  `find_icons` and the instructions of the server recommend `@maz-ui/icons/raw` for the icon props, `static` directly in a template and `lazy` only for the icons not visible at first render.
+
+- **agent-docs:** Give the AI agents the icon formats, the plugins to enable and the role of each package ([f8a01a36a](https://github.com/LouisMazel/maz-ui/commit/f8a01a36a))
+- **@maz-ui/mcp:** Report the buttons that only show an icon without an accessible name ([f67e9a9ad](https://github.com/LouisMazel/maz-ui/commit/f67e9a9ad))
+
+  The new `icon-button-label` rule of `review_code` warns about a `MazBtn` with only an icon and no `text`, content nor `aria-label`.
+
+- **@maz-ui/nuxt:** Pin the maz-ui MCP server and explain how to start it faster ([f65a0558d](https://github.com/LouisMazel/maz-ui/commit/f65a0558d))
+
+  The `agents` option pins the version of the `@maz-ui/mcp` installed for the app in the MCP configs, and starts it through your package manager when the project root installs it. Its log suggests adding `@maz-ui/mcp` to the dev dependencies of the root, and adding `agents-md` to `agents.targets` when `AGENTS.md` is not written.
+
+- Start the @maz-ui/mcp installed in the project from the Claude Code plugin ([881e24597](https://github.com/LouisMazel/maz-ui/commit/881e24597))
+- **@maz-ui/node:** Let setupAgents configure the agents of another tool ([6fa96842b](https://github.com/LouisMazel/maz-ui/commit/6fa96842b))
+
+  `setupAgents` configures maz-ui by default, and now any package that ships an MCP server and rules for AI agents with the new `tool` option (an `AgentsTool`: name, MCP package, bin and arguments) and its rules passed with `agentDocs`. It writes `.claude/rules/<name>.md`, the `<name>` section of `AGENTS.md` and the `<name>` MCP server, with the same guarantees as for maz-ui. Several tools can be set up in the same project: each one only manages its own files, section and server entry.
+
+  `mcpServerCommand`, `installsMcpPackage`, `readManagedVersion` and `isEditedManagedContent` take the tool as last argument, and the `PackageManager` type is exported. Nothing changes for maz-ui.
+
+- **@maz-ui/mcp:** Only register the MCP server with init in a project without maz-ui ([9d660fa5b](https://github.com/LouisMazel/maz-ui/commit/9d660fa5b))
+
+  The rules document the maz-ui components: in a project that only uses @maz-ui/utils or @maz-ui/node, init no longer fails and registers the MCP server, which serves the docs bundled with @maz-ui/mcp. Pass --docs to write the rules anyway.
+
+  The fallback of the tool errors now points to the docs folder in use.
+
+### 🔥 Performance
+
+- **@maz-ui/mcp:** Install a single package and answer the agents right away ([d624b026f](https://github.com/LouisMazel/maz-ui/commit/d624b026f))
+
+  The runtime dependencies are bundled: `npx @maz-ui/mcp` downloads one package of less than 1 MB instead of a hundred, so the first start stays under the start timeout of the agents behind a slow registry. The server answers on start and loads the search index, the Vue compiler and Babel on first use.
+
+### 📖 Documentation
+
+- **docs:** Document the fast start of the MCP server, the monorepos and the icon formats ([96c929315](https://github.com/LouisMazel/maz-ui/commit/96c929315))
+
+### 📦 Build
+
+- **deps:** Publish the internal dependencies with caret ranges ([aa5baf40a](https://github.com/LouisMazel/maz-ui/commit/aa5baf40a))
+
+  `workspace:*` is published as the exact version: a project that installs another version of an internal package (`@maz-ui/utils`...) gets two copies. `workspace:^` is published as `^<version>`, so the package managers deduplicate them.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.2.0-beta.0 (2026-11-01)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.1...v5.2.0-beta.0)
