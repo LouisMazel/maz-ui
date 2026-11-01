@@ -39,6 +39,8 @@ It detects the agents you use and configures them, using the docs of the maz-ui 
 
 When no agent is detected, it configures Claude Code and `AGENTS.md`. Commit the generated files: your whole team and your CI agents get them.
 
+In a project without maz-ui (only `@maz-ui/utils` or `@maz-ui/node`, for example), it only registers the MCP server, which serves the docs bundled with `@maz-ui/mcp`: the rules are about the maz-ui components and are written once maz-ui is installed. Pass `--docs <dir>` to write them anyway.
+
 For a fast start of the MCP server, install it in the project first (`pnpm add -D @maz-ui/mcp`): the configs then start the installed version through your package manager, in about a second and at the version of your lockfile, instead of downloading it with `npx`. See [MCP server](./../ecosystem/mcp.md#in-a-project-install-it).
 
 ::: tip It never overwrites your own instructions

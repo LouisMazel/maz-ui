@@ -217,6 +217,30 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(logged()).not.toContain('Codex and Windsurf')
     })
 
+    it('then a project without maz-ui only gets the MCP server', async () => {
+      const cwd = createTempDir()
+
+      expect(await runCli(['init', '--targets', 'claude,agents-md', '--cwd', cwd])).toBe(0)
+      expect(existsSync(join(cwd, '.mcp.json'))).toBe(true)
+      expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(false)
+      expect(existsSync(join(cwd, 'AGENTS.md'))).toBe(false)
+      expect(logged()).toContain('maz-ui is not installed in this project: only the MCP server is registered')
+      expect(logged()).not.toContain('Codex and Windsurf')
+    })
+
+    it('then a project without maz-ui gets the rules of an explicit docs bundle', async () => {
+      const cwd = createTempDir()
+
+      await runCli(['init', '--targets', 'claude', '--docs', BUNDLE_DIR, '--cwd', cwd])
+
+      expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(true)
+      expect(logged()).not.toContain('maz-ui is not installed')
+    })
+
+    it('then a project without maz-ui and with --no-mcp fails', async () => {
+      await expect(runCli(['init', '--targets', 'claude', '--no-mcp', '--cwd', createTempDir()])).rejects.toThrow('maz-ui is not installed')
+    })
+
     it('then the MCP server is pinned to this version and the local install is suggested', async () => {
       const cwd = createTempDir()
 

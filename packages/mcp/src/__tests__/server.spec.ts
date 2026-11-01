@@ -149,6 +149,7 @@ describe('given runTool', () => {
 
       expect(result.isError).toBe(true)
       expect(textOf(result)).toContain('Unexpected error in fake: boom')
+      expect(textOf(result)).toContain(`fall back to the docs in ${getContext().knowledge.source.directory}`)
     })
   })
 
