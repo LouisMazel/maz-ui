@@ -1,5 +1,19 @@
 # Changelog
 
+## v5.2.0 (2026-11-01)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.1...v5.2.0)
+
+### 📦 Build
+
+- **deps:** Publish the internal dependencies with caret ranges ([aa5baf40a](https://github.com/LouisMazel/maz-ui/commit/aa5baf40a))
+
+  `workspace:*` is published as the exact version: a project that installs another version of an internal package (`@maz-ui/utils`...) gets two copies. `workspace:^` is published as `^<version>`, so the package managers deduplicate them.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.2.0-beta.0 (2026-11-01)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.1...v5.2.0-beta.0)

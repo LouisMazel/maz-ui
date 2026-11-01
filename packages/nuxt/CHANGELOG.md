@@ -1,5 +1,25 @@
 # Change Log
 
+## v5.2.0 (2026-11-01)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.1...v5.2.0)
+
+### 🚀 Features
+
+- **@maz-ui/nuxt:** Pin the maz-ui MCP server and explain how to start it faster ([f65a0558d](https://github.com/LouisMazel/maz-ui/commit/f65a0558d))
+
+  The `agents` option pins the version of the `@maz-ui/mcp` installed for the app in the MCP configs, and starts it through your package manager when the project root installs it. Its log suggests adding `@maz-ui/mcp` to the dev dependencies of the root, and adding `agents-md` to `agents.targets` when `AGENTS.md` is not written.
+
+### 📦 Build
+
+- **deps:** Publish the internal dependencies with caret ranges ([aa5baf40a](https://github.com/LouisMazel/maz-ui/commit/aa5baf40a))
+
+  `workspace:*` is published as the exact version: a project that installs another version of an internal package (`@maz-ui/utils`...) gets two copies. `workspace:^` is published as `^<version>`, so the package managers deduplicate them.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.2.0-beta.0 (2026-11-01)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.1...v5.2.0-beta.0)
