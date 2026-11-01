@@ -203,8 +203,8 @@ importers:
         specifier: ^23.3.0
         version: 23.3.0(@swc/core@1.16.18)
       relizy:
-        specifier: 1.13.1-beta.0
-        version: 1.13.1-beta.0(@types/node@22.20.5)(@yoloship/claude-sdk@0.2.0-beta.9(libphonenumber-js@1.13.15))(libphonenumber-js@1.13.15)(magicast@0.5.5)(supports-color@7.2.0)(twitter-api-v2@1.29.1)
+        specifier: ^1.13.2
+        version: 1.13.2(@types/node@22.20.5)(@yoloship/claude-sdk@0.2.0-beta.9(libphonenumber-js@1.13.15))(libphonenumber-js@1.13.15)(magicast@0.5.5)(supports-color@7.2.0)(twitter-api-v2@1.29.1)
       semver:
         specifier: ^7.8.5
         version: 7.8.5
@@ -3006,6 +3006,10 @@ packages:
   '@maz-ui/node@5.0.0-beta.26':
     resolution: {integrity: sha512-mXzK6uZMmUA8D97ewELuDte7vr1+Ao8JU3ihGTCr8SDio+7mD+oOlBYAA8zT0fzj0i+mbEbTojSMSxjgEcVyig==}
     engines: {node: '>=18.0.0'}
+
+  '@maz-ui/node@5.2.0':
+    resolution: {integrity: sha512-Zpew36ncqlZwEjyazc8+FQW9qBgQBbuJaxbVKVWNtNEzPlIgT45urYTjBkOv3+GtKu+z5yrvgnUVW2mN8blInA==}
+    engines: {node: '>=22.12.0'}
 
   '@maz-ui/utils@5.0.0-beta.28':
     resolution: {integrity: sha512-O+sDZCKIPbTyQ8GgtJqajTT9SA0AMJ6hog51pTNjsGbvVl/JPJghjj+T63CURv2l7pTxUPW+7Wd8kToORQk6Sw==}
@@ -8615,9 +8619,9 @@ packages:
     resolution: {integrity: sha512-EWV80YgFaVgFrjGCAsV7oybp4GOxbls5RzBg8OB0nKEVXsBJR1JlV8Di1JhCROg3MzTfe1RI8yitIm1eOs68iA==}
     hasBin: true
 
-  relizy@1.13.1-beta.0:
-    resolution: {integrity: sha512-uqJaHuCOiyG84PHHwsABF/MlTBuaMgeTXEwC0r5oYvPMogg3B+b5aVnDdg3auYjs76PYmgrXEruzzBIRhMwKJg==}
-    engines: {node: '>=20.0.0'}
+  relizy@1.13.2:
+    resolution: {integrity: sha512-k3w2LyZsTC5dYrIHUoLHSOk2H3hNYZGlrNq9t8PEoAQdp/+qNJmzadG5XNcEi9XBjVqNbyfJtlPYS5l7xKSx8w==}
+    engines: {node: '>=22.12.0'}
     hasBin: true
     peerDependencies:
       '@slack/web-api': ^7.0.0 || ^8.0.0
@@ -12065,6 +12069,13 @@ snapshots:
       colorette: 2.0.20
       consola: 3.4.2
       figlet: 1.12.0
+
+  '@maz-ui/node@5.2.0':
+    dependencies:
+      colorette: 2.0.20
+      consola: 3.4.2
+      figlet: 1.12.0
+      jsonc-parser: 3.3.1
 
   '@maz-ui/utils@5.0.0-beta.28(libphonenumber-js@1.13.15)':
     optionalDependencies:
@@ -19354,11 +19365,11 @@ snapshots:
     dependencies:
       jsesc: 3.1.0
 
-  relizy@1.13.1-beta.0(@types/node@22.20.5)(@yoloship/claude-sdk@0.2.0-beta.9(libphonenumber-js@1.13.15))(libphonenumber-js@1.13.15)(magicast@0.5.5)(supports-color@7.2.0)(twitter-api-v2@1.29.1):
+  relizy@1.13.2(@types/node@22.20.5)(@yoloship/claude-sdk@0.2.0-beta.9(libphonenumber-js@1.13.15))(libphonenumber-js@1.13.15)(magicast@0.5.5)(supports-color@7.2.0)(twitter-api-v2@1.29.1):
     dependencies:
       '@clack/prompts': 1.8.1
       '@inquirer/prompts': 8.7.4(@types/node@22.20.5)
-      '@maz-ui/node': 5.0.0-beta.26
+      '@maz-ui/node': 5.2.0
       '@maz-ui/utils': 5.0.0-beta.39(libphonenumber-js@1.13.15)
       c12: 3.3.4(magicast@0.5.5)
       changelogen: 0.6.2(magicast@0.5.5)

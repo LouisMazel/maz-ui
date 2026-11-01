@@ -62,7 +62,7 @@
     "husky": "^9.1.7",
     "lint-staged": "17.6.0",
     "nx": "^23.3.0",
-    "relizy": "1.13.1-beta.0",
+    "relizy": "^1.13.2",
     "semver": "^7.8.5",
     "twitter-api-v2": "^1.29.1",
     "typescript": "^6.0.3"
