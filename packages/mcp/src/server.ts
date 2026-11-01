@@ -38,7 +38,7 @@ export async function runTool(context: ServerContext, tool: ToolDefinition, args
   catch (error) {
     const message = error instanceof ToolInputError
       ? error.message
-      : `Unexpected error in ${tool.name}: ${getErrorMessage(error)}. Retry with other arguments or fall back to the docs in node_modules/maz-ui/docs.`
+      : `Unexpected error in ${tool.name}: ${getErrorMessage(error)}. Retry with other arguments or fall back to the docs in ${context.knowledge.source.directory}.`
 
     return { content: [{ type: 'text', text: message }], isError: true }
   }

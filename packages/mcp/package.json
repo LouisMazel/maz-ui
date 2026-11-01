@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/mcp",
   "type": "module",
-  "version": "5.1.1",
+  "version": "5.2.0-beta.0",
   "description": "MCP server and CLI that give AI coding agents the version-matched knowledge of maz-ui and its ecosystem: search, component APIs, icons, Tailwind theme tokens, setup guides and code review",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -64,23 +64,39 @@
     "test:unit:watch": "pnpm generate:docs && vitest watch",
     "test:unit:coverage": "pnpm generate:docs && vitest run --coverage"
   },
-  "dependencies": {
-    "@babel/parser": "^8.0.8",
-    "@maz-ui/node": "workspace:*",
-    "@maz-ui/utils": "workspace:*",
-    "@modelcontextprotocol/sdk": "^1.32.1",
-    "@vue/compiler-dom": "^3.5.44",
-    "minisearch": "^7.2.0",
-    "tinyglobby": "^0.2.17",
-    "zod": "^4.6.7"
+  "peerDependencies": {
+    "@maz-ui/node": "workspace:^",
+    "@maz-ui/utils": "workspace:^"
+  },
+  "peerDependenciesMeta": {
+    "@maz-ui/node": {
+      "optional": true
+    },
+    "@maz-ui/utils": {
+      "optional": true
+    }
   },
   "devDependencies": {
+    "@babel/parser": "^8.0.8",
     "@babel/types": "^8.0.8",
-    "@maz-ui/eslint-config": "workspace:*",
+    "@maz-ui/eslint-config": "workspace:^",
+    "@maz-ui/node": "workspace:^",
+    "@maz-ui/utils": "workspace:^",
     "@modelcontextprotocol/inspector": "^2.11.0",
-    "agent-docs": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "@types/node": "^22.20.5",
+    "@vitest/coverage-v8": "^5.0.5",
+    "@vue/compiler-dom": "^3.5.44",
+    "agent-docs": "workspace:^",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.13.0",
+    "minisearch": "^7.2.0",
+    "tinyglobby": "^0.2.17",
     "tsx": "^4.23.15",
-    "unbuild": "^3.6.1"
+    "typescript": "^6.0.3",
+    "unbuild": "^3.6.1",
+    "vitest": "5.0.5",
+    "zod": "^4.6.7"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

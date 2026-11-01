@@ -1,7 +1,6 @@
 import type { ServerContext } from '../context'
 
 import { z } from 'zod'
-import { readProjectTheme, renderProjectTheme } from '../project/theme'
 import { findSection, sectionContent, stripFrontmatter } from './markdown'
 import { defineTool, ToolInputError } from './types'
 
@@ -29,14 +28,20 @@ export interface GetThemeTokensArgs {
   project?: boolean
 }
 
-export function getThemeTokens(context: ServerContext, { topics, project = true }: GetThemeTokensArgs): string {
+export async function getThemeTokens(context: ServerContext, { topics, project = true }: GetThemeTokensArgs): Promise<string> {
   const reference = context.knowledge.docsById.get('reference/tailwind-tokens')
 
   if (!reference)
     throw new ToolInputError('This maz-ui version does not ship the Tailwind reference. Read `get_doc({ id: "guide/tailwind" })`.')
 
   const markdown = stripFrontmatter(context.knowledge.readDoc(reference.id))
-  const projectTheme = project ? renderProjectTheme(readProjectTheme(context.cwd), context.knowledge.manifest.tailwind, topics) : undefined
+  let projectTheme: string | undefined
+
+  if (project) {
+    // Babel loads on the first read of the project theme, not when the server starts
+    const { readProjectTheme, renderProjectTheme } = await import('../project/theme')
+    projectTheme = renderProjectTheme(readProjectTheme(context.cwd), context.knowledge.manifest.tailwind, topics)
+  }
   const footer = '\n\nHow to extend the theme (project colors, fonts, animations, variants, utilities, container width) and how it combines with the preset: `get_doc({ id: "guide/tailwind" })`. Brand colors, fonts and radius belong to a preset: `get_doc({ id: "ecosystem/themes", sections: ["Creating Custom Themes"] })`.'
 
   const mazUiTheme = topics?.length

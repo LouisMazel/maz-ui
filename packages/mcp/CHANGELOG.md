@@ -1,5 +1,47 @@
 # Changelog
 
+## v5.2.0-beta.0 (2026-11-01)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.1...v5.2.0-beta.0)
+
+### 🚀 Features
+
+- **@maz-ui/mcp:** Init starts the installed @maz-ui/mcp or pins its version ([1c3b7222f](https://github.com/LouisMazel/maz-ui/commit/1c3b7222f))
+
+  Install it in the project (`pnpm add -D @maz-ui/mcp`), then run `npx @maz-ui/mcp init`: the MCP configs start the installed version through your package manager, in about a second. Otherwise they run `npx -y @maz-ui/mcp@<version>`, pinned to the version of `init`: with `@latest`, npx queries the registry at every start.
+
+  An existing entry that runs `@maz-ui/mcp@latest` gets the new command and keeps its other fields, a command written by hand is left untouched.
+
+- **@maz-ui/mcp:** Tell the agents which icon format to use for each usage ([2d3a5b34f](https://github.com/LouisMazel/maz-ui/commit/2d3a5b34f))
+
+  `find_icons` and the instructions of the server recommend `@maz-ui/icons/raw` for the icon props, `static` directly in a template and `lazy` only for the icons not visible at first render.
+
+- **@maz-ui/mcp:** Report the buttons that only show an icon without an accessible name ([f67e9a9ad](https://github.com/LouisMazel/maz-ui/commit/f67e9a9ad))
+
+  The new `icon-button-label` rule of `review_code` warns about a `MazBtn` with only an icon and no `text`, content nor `aria-label`.
+
+- **@maz-ui/mcp:** Only register the MCP server with init in a project without maz-ui ([9d660fa5b](https://github.com/LouisMazel/maz-ui/commit/9d660fa5b))
+
+  The rules document the maz-ui components: in a project that only uses @maz-ui/utils or @maz-ui/node, init no longer fails and registers the MCP server, which serves the docs bundled with @maz-ui/mcp. Pass --docs to write the rules anyway.
+
+  The fallback of the tool errors now points to the docs folder in use.
+
+### 🔥 Performance
+
+- **@maz-ui/mcp:** Install a single package and answer the agents right away ([d624b026f](https://github.com/LouisMazel/maz-ui/commit/d624b026f))
+
+  The runtime dependencies are bundled: `npx @maz-ui/mcp` downloads one package of less than 1 MB instead of a hundred, so the first start stays under the start timeout of the agents behind a slow registry. The server answers on start and loads the search index, the Vue compiler and Babel on first use.
+
+### 📦 Build
+
+- **deps:** Publish the internal dependencies with caret ranges ([4994c255c](https://github.com/LouisMazel/maz-ui/commit/4994c255c))
+
+  `workspace:*` is published as the exact version: a project that installs another version of an internal package (`@maz-ui/utils`...) gets two copies. `workspace:^` is published as `^<version>`, so the package managers deduplicate them.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.1.1 (2026-10-28)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.0...v5.1.1)

@@ -1,9 +1,10 @@
+import type { AgentTarget, SetupAgentsChange, SetupAgentsResult } from '@maz-ui/node'
 import type { Nuxt } from '@nuxt/schema'
 import type { MazUiNuxtOptions } from './types'
 import { dirname, join, resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { detectAgentTargets, findProjectPackage, setupAgents } from '@maz-ui/node'
+import { detectAgentTargets, findProjectPackage, readPackageVersion, setupAgents } from '@maz-ui/node'
 import { capitalize } from '@maz-ui/utils/helpers/capitalize'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 import { addCustomTab } from '@nuxt/devtools-kit'
@@ -204,12 +205,36 @@ const defaults = {
   },
 } satisfies Required<MazUiNuxtOptions>
 
+function formatAgentsLog(applied: SetupAgentsChange[], result: SetupAgentsResult, options: { rules: boolean, mcp: boolean, requestedTargets?: AgentTarget[] }): string {
+  const files = applied.map(change => [change.file, `(${change.action})`].join(' ')).join(', ')
+  const messages = [`AI agents configured for maz-ui: ${files}.`]
+
+  // An explicit target list is a choice: AGENTS.md is only suggested for the detected agents
+  if (options.rules && !options.requestedTargets && !result.targets.includes('agents-md')) {
+    const suggestedTargets = [...result.targets, 'agents-md'].map(target => ['\'', target, '\''].join('')).join(', ')
+
+    messages.push(`AGENTS.md not written: no agent that reads it was detected (Cursor, Copilot, Codex, Windsurf, Gemini CLI, Zed...). If your team uses one, set mazUi.agents.targets: [${suggestedTargets}].`)
+  }
+
+  if (options.mcp && !result.localMcpServer)
+    messages.push('The MCP server runs through npx: add @maz-ui/mcp to the devDependencies of the project root to start it in about a second, at the version of your lockfile.')
+
+  return messages.join(' ')
+}
+
+/** Version of the `@maz-ui/mcp` installed for the app, pinned in the `npx` command when the project root does not install it */
+function installedMcpVersion(rootDir: string): string | undefined {
+  const mcpDir = findProjectPackage(rootDir, '@maz-ui/mcp')
+
+  return mcpDir ? readPackageVersion(mcpDir) : undefined
+}
+
 function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
   if (!agents || !(nuxt.options.dev || nuxt.options._prepare) || process.env.CI || nuxt.options.test) {
     return
   }
 
-  const logger = useLogger('maz-ui')
+  const logger = useLogger('@maz-ui/mcp')
   const isExplicit = (nuxt.options as { mazUi?: MazUiNuxtOptions }).mazUi?.agents !== undefined
 
   try {
@@ -223,19 +248,18 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
       return
 
     const mazUiDir = findProjectPackage(rootDir, 'maz-ui')
-    const { changes } = setupAgents({
+    const result = setupAgents({
       rootDir: projectDir,
       targets,
       rules,
       mcp,
+      mcpVersion: installedMcpVersion(rootDir),
       ...(mazUiDir ? { docsDir: join(mazUiDir, 'docs') } : {}),
     })
-    const applied = changes.filter(change => ['create', 'update', 'remove'].includes(change.action))
+    const applied = result.changes.filter(change => ['create', 'update', 'remove'].includes(change.action))
 
     if (applied.length > 0) {
-      const files = applied.map(change => [change.file, `(${change.action})`].join(' '))
-
-      logger.info(`AI agents configured for maz-ui: ${files.join(', ')}`)
+      logger.info(formatAgentsLog(applied, result, { rules, mcp, requestedTargets }))
     }
   }
   catch (error) {

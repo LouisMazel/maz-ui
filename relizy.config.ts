@@ -41,6 +41,11 @@ export default defineConfig({
     packages: ['packages/*'],
   },
 
+  bump: {
+    // @maz-ui/mcp bundles @maz-ui/node and @maz-ui/utils: they are optional peers (never installed), so a fix in them still releases it
+    dependencyTypes: ['dependencies', 'peerDependencies'],
+  },
+
   changelog: {
     formatCmd: 'git add --all && pnpm pre-commit && git reset',
   },

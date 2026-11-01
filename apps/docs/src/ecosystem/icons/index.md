@@ -135,11 +135,14 @@ import { MazStar } from '@maz-ui/icons/raw/MazStar'
 
 **When to use which variant:**
 
-| Variant | Bundle cost | Use case |
+| Usage | Variant | Import |
 | --- | --- | --- |
-| `static` | Vue component, eager | Default. Few icons per page, simplest path. |
-| `lazy` | Vue component, async chunk | Many icons but most off-screen at first paint. |
-| `raw` | Inline SVG string | Same icon repeated many times in a list/table; or you want zero component overhead. |
+| Icon props of the components (`<MazBtn :start-icon>`, `<MazIcon :icon>`...) | `raw`: SVG string, the lightest, no component nor async chunk | `@maz-ui/icons/raw/MazStar` |
+| Directly in a template (`<MazStar class="size-5" />`) | `static`: Vue component, rendered immediately | `@maz-ui/icons/static/MazStar` |
+| Icons not visible at first render (`v-if`, menus, dialogs, tabs) | `lazy`: async component, loaded when displayed | `@maz-ui/icons/lazy/MazStar` |
+| `<img>` or CSS, for multicolor icons (flags, logos) | SVG file | `@maz-ui/icons/svg/star.svg` |
+
+A `lazy` icon is a separate request: do not use it for icons visible on load. In an `<img>`, an icon does not inherit the color of the text (`currentColor`): keep it for multicolor icons.
 
 **Benefits:**
 

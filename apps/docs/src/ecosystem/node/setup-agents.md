@@ -35,8 +35,11 @@ The content comes from the `docs/agents` folder of the `maz-ui` package installe
 Guarantees:
 
 - A file it did not generate is never overwritten (it is reported as `skip`).
+- Generated rules edited by hand are kept and no longer updated (`skip`): their header records a checksum of the content. A formatter that only changes the whitespace does not count as an edit. Delete the file (or the `AGENTS.md` section) to get the rules of a new version.
 - In `AGENTS.md`, only the delimited section is managed: your content stays as is.
 - MCP config files are edited in place, keeping their formatting and comments. When a server already runs `@maz-ui/mcp` under another name, nothing is added.
+- An existing entry of the maz-ui MCP server only gets a better command (the installed `@maz-ui/mcp`, a newer pinned version) and keeps its other fields (`env`...). A command written by hand (with `--docs`, for example) is never changed.
+- In a monorepo, rules written by a newer maz-ui and a newer pinned `@maz-ui/mcp` are never downgraded by an app with an older version. Files are written atomically: apps started together never read a half-written file.
 - Without `CLAUDE.md` in the project, Claude Code reads `AGENTS.md`: the Claude rule is then skipped to avoid loading the rules twice.
 - Running it again is idempotent: unchanged files are reported as `unchanged`.
 
@@ -59,10 +62,78 @@ setupAgents({
   remove: false,
   // Folder of the maz-ui agent docs, default: node_modules/maz-ui/docs
   docsDir: undefined,
-  // Command of the MCP server, default: npx -y @maz-ui/mcp@latest
-  mcpServer: { command: 'npx', args: ['-y', '@maz-ui/mcp@latest'] },
+  // Version pinned in the npx command when the project does not install @maz-ui/mcp, default: latest
+  mcpVersion: '5.1.0',
+  // Command of the MCP server, default: mcpServerCommand(rootDir, mcpVersion, tool)
+  mcpServer: undefined,
+  // Tool whose agents are configured, default: MAZ_UI_AGENTS_TOOL
+  tool: undefined,
+  // Rules of the tool, required with another tool than maz-ui, default: the agent docs of docsDir
+  agentDocs: undefined,
 })
 ```
+
+## Use it for another tool
+
+`setupAgents` configures maz-ui by default, but any package that ships an MCP server and rules for AI agents can reuse it with the `tool` option, and get the same guarantees. Its rules are passed with `agentDocs`, since they do not come from the maz-ui docs. For example, [relizy](https://relizy.dev) runs it in `relizy mcp init`:
+
+```ts
+import type { AgentsTool } from '@maz-ui/node'
+import { setupAgents } from '@maz-ui/node'
+
+const tool: AgentsTool = {
+  // Key of the MCP server, `.claude/rules/relizy.md` and markers of the generated content
+  name: 'relizy',
+  // Package that ships the MCP server, and the bin and arguments that start it
+  mcpPackage: 'relizy',
+  mcpBin: 'relizy',
+  mcpArgs: ['mcp'],
+  // Written in the header of the generated rules
+  generatedBy: '`relizy mcp init`',
+  // Line under the title of the rules, default: `> relizy <version> is installed: these rules match this version.`
+  versionNote: version => `> relizy ${version} is installed: these rules match this version.`,
+}
+
+setupAgents({
+  rootDir: process.cwd(),
+  tool,
+  agentDocs: {
+    directory: '/path/to/relizy/agent-docs',
+    version: '1.14.0',
+    claudeRule: '# relizy\n\n...',
+    agentsMdSection: '## relizy\n\n...',
+  },
+  mcpVersion: '1.14.0',
+})
+```
+
+| Written for the tool | relizy | maz-ui (`MAZ_UI_AGENTS_TOOL`) |
+| --- | --- | --- |
+| Claude Code rule | `.claude/rules/relizy.md` | `.claude/rules/maz-ui.md` |
+| `AGENTS.md` section | `<!-- BEGIN:relizy -->` ... `<!-- END:relizy -->` | `<!-- BEGIN:maz-ui -->` ... `<!-- END:maz-ui -->` |
+| MCP server entry | `relizy` | `maz-ui` |
+| Command, package installed with pnpm | `pnpm exec relizy mcp` | `pnpm exec maz-ui-mcp` |
+| Command, package not installed | `npx -y relizy@<mcpVersion> mcp` | `npx -y @maz-ui/mcp@<mcpVersion>` |
+
+Each tool only manages its own files, section and server entry: maz-ui and relizy can be set up in the same project, and removing one (`remove: true` with its `tool`) keeps the other. `mcpServerCommand`, `installsMcpPackage`, `readManagedVersion` and `isEditedManagedContent` also take the tool as last argument.
+
+## Command of the MCP server
+
+```ts
+import { mcpServerCommand } from '@maz-ui/node'
+
+mcpServerCommand(process.cwd(), '5.1.0')
+```
+
+| Project | Command |
+| --- | --- |
+| Installs `@maz-ui/mcp` with pnpm | `pnpm exec maz-ui-mcp` |
+| Installs `@maz-ui/mcp` with yarn | `yarn run maz-ui-mcp` |
+| Installs `@maz-ui/mcp` with bun | `bun x --no-install maz-ui-mcp` |
+| Installs `@maz-ui/mcp` with npm | `npx --no-install maz-ui-mcp` |
+| Does not install it | `npx -y @maz-ui/mcp@<mcpVersion>` |
+
+The package manager comes from the `packageManager` field of `package.json`, else from the lockfile. The installed version starts in about a second and follows the lockfile. A pinned version avoids the registry query that `npx` makes at every start with a dist-tag (`@latest`).
 
 ## Result
 
@@ -73,6 +144,8 @@ const result = setupAgents({ rootDir: process.cwd(), dryRun: true })
 
 result.version // version of the installed maz-ui
 result.targets // configured agents
+result.mcpServer // { command, args } registered in the MCP configs
+result.localMcpServer // false when the server runs through npx -y
 result.changes // [{ file: '.mcp.json', action: 'create' | 'update' | 'remove' | 'unchanged' | 'skip', reason?: string }]
 ```
 
@@ -93,4 +166,4 @@ detectAgentTargets(process.cwd()) // ['claude', 'agents-md']
 
 ## Errors
 
-`setupAgents` throws when the rules are requested and `maz-ui` is not installed in `rootDir` (or its parent folders), or when the installed version does not ship the agent docs: upgrade maz-ui to the latest version. With `rules: false`, only the MCP server is registered and the docs are not needed.
+`setupAgents` throws when the rules are requested and `maz-ui` is not installed in `rootDir` (or its parent folders), or when the installed version does not ship the agent docs: upgrade maz-ui to the latest version. With another `tool`, it throws when the rules are requested without `agentDocs`. With `rules: false`, only the MCP server is registered and the docs are not needed.

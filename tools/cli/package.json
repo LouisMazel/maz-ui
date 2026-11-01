@@ -27,15 +27,19 @@
   },
   "dependencies": {
     "@clack/prompts": "^1.8.1",
-    "@maz-ui/node": "workspace:*",
-    "@maz-ui/utils": "workspace:*",
+    "@maz-ui/node": "workspace:^",
+    "@maz-ui/utils": "workspace:^",
     "colorette": "^2.0.20",
     "commander": "^15.0.0",
     "figlet": "^1.12.0"
   },
   "devDependencies": {
-    "@maz-ui/eslint-config": "workspace:*",
+    "@maz-ui/eslint-config": "workspace:^",
+    "@types/node": "^22.20.5",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.13.0",
     "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
     "unbuild": "^3.6.1"
   },
   "lint-staged": {

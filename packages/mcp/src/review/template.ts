@@ -419,11 +419,41 @@ function checkClassBindings(element: ElementNode, source: string, context: Revie
   }
 }
 
+const ICON_PROPS = new Set(['icon', 'start-icon', 'startIcon', 'end-icon', 'endIcon'])
+const LABEL_PROPS = new Set(['text', 'aria-label', 'ariaLabel', 'aria-labelledby', 'ariaLabelledby'])
+
+/** Name of a static attribute or of a bound prop, `undefined` for `v-bind="object"` */
+function propName(prop: ElementNode['props'][number]): string | undefined {
+  if (prop.type === NodeTypes.ATTRIBUTE)
+    return prop.name
+
+  return prop.name === 'bind' ? directiveArg(prop) : prop.name
+}
+
+/** A MazBtn that only shows an icon has no accessible name without a `text` or an `aria-label` */
+function checkIconButtonLabel(element: ElementNode, context: ReviewContext): void {
+  const names = element.props.map(propName)
+
+  // `v-bind="attrs"` may pass the label
+  if (names.includes(undefined) || !names.some(name => name && ICON_PROPS.has(name)) || names.some(name => name && LABEL_PROPS.has(name)) || contentOf(element).length > 0)
+    return
+
+  context.report({
+    rule: 'icon-button-label',
+    severity: 'warning',
+    message: 'Button with only an icon and no accessible name.',
+    suggestion: 'Add an `aria-label` describing the action (`aria-label="Delete"`), screen readers announce it.',
+  }, element.loc.start.offset)
+}
+
 function checkMazTag(element: ElementNode, mazName: string, source: string, context: ReviewContext): void {
   const component = context.knowledge.componentsByName.get(mazName)
 
   if (component) {
     checkMazComponent(element, component, source, context)
+
+    if (mazName === 'MazBtn')
+      checkIconButtonLabel(element, context)
     return
   }
 

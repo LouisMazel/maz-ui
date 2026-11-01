@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/stylelint-config",
   "type": "module",
-  "version": "5.0.0",
+  "version": "5.2.0-beta.0",
   "description": "Stylelint configuration for CSS, SCSS, Vue and Tailwind CSS projects",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -68,10 +68,15 @@
     "stylelint-use-logical-spec": "^5.0.1"
   },
   "devDependencies": {
-    "@maz-ui/eslint-config": "workspace:*",
+    "@maz-ui/eslint-config": "workspace:^",
+    "@types/node": "^22.20.5",
     "@vitest/coverage-v8": "^5.0.5",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.13.0",
     "stylelint": "^17.16.0",
-    "unbuild": "^3.6.1"
+    "typescript": "^6.0.3",
+    "unbuild": "^3.6.1",
+    "vitest": "5.0.5"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [

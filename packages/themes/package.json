@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/themes",
   "type": "module",
-  "version": "5.0.0",
+  "version": "5.2.0-beta.0",
   "description": "Theme system for Maz-UI with TypeScript support and CSS variables",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -112,10 +112,23 @@
     "vue": ">=3.5.0 <4.0.0"
   },
   "dependencies": {
-    "@maz-ui/utils": "workspace:*"
+    "@maz-ui/utils": "workspace:^"
   },
   "devDependencies": {
-    "@maz-ui/vite-config": "workspace:*"
+    "@codecov/vite-plugin": "^2.0.1",
+    "@maz-ui/vite-config": "workspace:^",
+    "@types/node": "^22.20.5",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "@vitest/coverage-v8": "^5.0.5",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.13.0",
+    "glob": "^13.0.6",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.4",
+    "vite-plugin-dts": "^5.1.2",
+    "vitest": "5.0.5",
+    "vue": "^3.5.44",
+    "vue-tsc": "3.3.13"
   },
   "lint-staged": {
     "*.{js,ts,vue,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/nuxt",
   "type": "module",
-  "version": "5.1.1",
+  "version": "5.2.0-beta.0",
   "description": "Nuxt module for Maz-UI",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -62,22 +62,28 @@
     "nuxt": ">=3.4.0 <5.0.0"
   },
   "dependencies": {
-    "@maz-ui/node": "workspace:*",
-    "@maz-ui/themes": "workspace:*",
-    "@maz-ui/translations": "workspace:*",
-    "@maz-ui/utils": "workspace:*",
+    "@maz-ui/node": "workspace:^",
+    "@maz-ui/themes": "workspace:^",
+    "@maz-ui/translations": "workspace:^",
+    "@maz-ui/utils": "workspace:^",
     "@nuxt/devtools-kit": "^3.4.4",
     "@nuxt/kit": "^4.6.2",
     "defu": "^6.1.7",
-    "maz-ui": "workspace:*"
+    "maz-ui": "workspace:^"
   },
   "devDependencies": {
-    "@maz-ui/eslint-config": "workspace:*",
+    "@maz-ui/eslint-config": "workspace:^",
     "@nuxt/devtools": "^3.4.4",
     "@nuxt/module-builder": "^1.0.3",
     "@nuxt/schema": "^4.6.2",
     "@nuxt/test-utils": "^4.3.4",
-    "nuxt": "^4.6.2"
+    "@types/node": "^22.20.5",
+    "@vitest/coverage-v8": "^5.0.5",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.13.0",
+    "nuxt": "^4.6.2",
+    "vitest": "5.0.5",
+    "vue": "^3.5.44"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"

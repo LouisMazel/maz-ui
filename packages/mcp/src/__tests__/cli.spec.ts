@@ -217,6 +217,58 @@ describe('given the maz-ui-mcp CLI', () => {
       expect(logged()).not.toContain('Codex and Windsurf')
     })
 
+    it('then a project without maz-ui only gets the MCP server', async () => {
+      const cwd = createTempDir()
+
+      expect(await runCli(['init', '--targets', 'claude,agents-md', '--cwd', cwd])).toBe(0)
+      expect(existsSync(join(cwd, '.mcp.json'))).toBe(true)
+      expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(false)
+      expect(existsSync(join(cwd, 'AGENTS.md'))).toBe(false)
+      expect(logged()).toContain('maz-ui is not installed in this project: only the MCP server is registered')
+      expect(logged()).not.toContain('Codex and Windsurf')
+    })
+
+    it('then a project without maz-ui gets the rules of an explicit docs bundle', async () => {
+      const cwd = createTempDir()
+
+      await runCli(['init', '--targets', 'claude', '--docs', BUNDLE_DIR, '--cwd', cwd])
+
+      expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(true)
+      expect(logged()).not.toContain('maz-ui is not installed')
+    })
+
+    it('then a project without maz-ui and with --no-mcp fails', async () => {
+      await expect(runCli(['init', '--targets', 'claude', '--no-mcp', '--cwd', createTempDir()])).rejects.toThrow('maz-ui is not installed')
+    })
+
+    it('then the MCP server is pinned to this version and the local install is suggested', async () => {
+      const cwd = createTempDir()
+
+      await runCli(['init', '--targets', 'claude', '--no-rules', '--cwd', cwd])
+
+      expect(JSON.parse(readFileSync(join(cwd, '.mcp.json'), 'utf8')).mcpServers['maz-ui'].args).toEqual(['-y', `@maz-ui/mcp@${version}`])
+      expect(logged()).toContain('install @maz-ui/mcp as a devDependency of the project (`npm install -D @maz-ui/mcp`)')
+    })
+
+    it('then the install command follows the package manager of the project', async () => {
+      const cwd = createTempDir()
+      writeFile(cwd, 'pnpm-lock.yaml', '')
+
+      await runCli(['init', '--targets', 'claude', '--no-rules', '--cwd', cwd])
+
+      expect(logged()).toContain('`pnpm add -D @maz-ui/mcp`')
+    })
+
+    it('then the installed @maz-ui/mcp is started through the package manager of the project', async () => {
+      const cwd = createTempDir()
+      writeFile(cwd, 'package.json', JSON.stringify({ packageManager: 'pnpm@10.0.0', devDependencies: { '@maz-ui/mcp': '^5.0.0' } }))
+
+      await runCli(['init', '--targets', 'claude', '--no-rules', '--cwd', cwd])
+
+      expect(JSON.parse(readFileSync(join(cwd, '.mcp.json'), 'utf8')).mcpServers['maz-ui']).toEqual({ type: 'stdio', command: 'pnpm', args: ['exec', 'maz-ui-mcp'] })
+      expect(logged()).not.toContain('devDependency')
+    })
+
     it('then an up to date project reports unchanged files', async () => {
       const cwd = createTempDir()
 

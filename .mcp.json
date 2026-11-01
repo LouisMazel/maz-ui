@@ -4,7 +4,8 @@
       "type": "stdio",
       "command": "npx",
       "args": [
-        "@maz-ui/mcp"
+        "-y",
+        "@maz-ui/mcp@latest"
       ]
     }
   }

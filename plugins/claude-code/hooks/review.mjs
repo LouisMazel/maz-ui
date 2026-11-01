@@ -38,9 +38,9 @@ if (!file || !REVIEWABLE.test(file) || /[\\/](?:node_modules|dist|\.nuxt|\.outpu
 if (!findUp(dirname(file), 'node_modules/maz-ui/package.json') && !findUp(cwd, 'node_modules/maz-ui/package.json'))
   process.exit(0)
 
-const localBin = findUp(cwd, 'node_modules/.bin/maz-ui-mcp')
-const [command, args] = localBin
-  ? [localBin, ['review', '--hook']]
+const installed = findUp(cwd, 'node_modules/@maz-ui/mcp/bin/maz-ui-mcp.mjs')
+const [command, args] = installed
+  ? [process.execPath, [installed, 'review', '--hook']]
   : ['npx', ['-y', '@maz-ui/mcp@latest', 'review', '--hook']]
 
 const result = spawnSync(command, args, { input, cwd, encoding: 'utf8', shell: process.platform === 'win32' })

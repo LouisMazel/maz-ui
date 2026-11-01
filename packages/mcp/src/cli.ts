@@ -4,11 +4,9 @@ import type { Framework, Severity } from './review'
 import { Buffer } from 'node:buffer'
 import { resolve } from 'node:path'
 import { parseArgs } from 'node:util'
-import { AGENT_TARGETS, detectAgentTargets, setupAgents } from '@maz-ui/node'
+import { AGENT_TARGETS, detectAgentTargets, detectPackageManager, findProjectPackage, setupAgents } from '@maz-ui/node'
 import { getErrorMessage } from '@maz-ui/utils/helpers/getErrorMessage'
 import { createContext } from './context'
-import { countBySeverity, formatFindings } from './review'
-import { REVIEWABLE_EXTENSIONS, reviewFiles } from './review/files'
 import { startStdioServer } from './server'
 import { searchDocs } from './tools/search-docs'
 import { readOwnVersion } from './version'
@@ -64,7 +62,10 @@ function printChanges(changes: SetupAgentsChange[], dryRun: boolean): void {
   }
 }
 
-export function runInit(values: Record<string, unknown>, cwd: string): number {
+const INSTALL_DEV_COMMANDS = { pnpm: 'pnpm add -D', yarn: 'yarn add -D', bun: 'bun add -d', npm: 'npm install -D' }
+
+/** Targets of `init`: the requested ones, else the detected ones, else Claude Code and AGENTS.md. `undefined` when a requested target is unknown */
+function resolveInitTargets(values: Record<string, unknown>, cwd: string): AgentTarget[] | undefined {
   const requested = typeof values.targets === 'string'
     ? values.targets.split(',').map(target => target.trim()).filter(Boolean)
     : undefined
@@ -72,27 +73,50 @@ export function runInit(values: Record<string, unknown>, cwd: string): number {
 
   if (invalid.length > 0) {
     console.error(`Unknown target(s): ${invalid.join(', ')}. Available: ${AGENT_TARGETS.join(', ')}.`)
-    return 1
+    return undefined
   }
 
   const detected = detectAgentTargets(cwd)
-  const targets = (requested as AgentTarget[] | undefined) ?? (detected.length > 0 ? detected : ['claude', 'agents-md'])
+
+  return (requested as AgentTarget[] | undefined) ?? (detected.length > 0 ? detected : ['claude', 'agents-md'])
+}
+
+export function runInit(values: Record<string, unknown>, cwd: string): number {
+  const targets = resolveInitTargets(values, cwd)
+
+  if (!targets)
+    return 1
+
   const dryRun = values['dry-run'] === true
+  const remove = values.remove === true
+  const mcp = values['no-mcp'] !== true
+  const docsDir = typeof values.docs === 'string' ? resolve(values.docs) : undefined
+  // The rules document the maz-ui components: a project without maz-ui (@maz-ui/utils only...) only gets the MCP server
+  const withoutMazUi = !remove && mcp && values['no-rules'] !== true && !docsDir && !findProjectPackage(cwd, 'maz-ui')
+  const rules = values['no-rules'] !== true && !withoutMazUi
   const result = setupAgents({
     rootDir: cwd,
     targets,
-    rules: values['no-rules'] !== true,
-    mcp: values['no-mcp'] !== true,
+    rules,
+    mcp,
     dryRun,
-    remove: values.remove === true,
-    docsDir: typeof values.docs === 'string' ? resolve(values.docs) : undefined,
+    remove,
+    docsDir,
+    mcpVersion: readOwnVersion(),
   })
+  const serverCommand = [result.mcpServer.command, ...result.mcpServer.args].join(' ')
 
   console.log(`maz-ui ${result.version ? `${result.version} ` : ''}agents setup (${targets.join(', ')})${dryRun ? ' - dry run' : ''}`)
   printChanges(result.changes, dryRun)
 
-  if (!values.remove && values['no-rules'] !== true && targets.includes('agents-md'))
-    console.log('\nCodex and Windsurf read AGENTS.md. To give them the MCP server too, add `npx -y @maz-ui/mcp@latest` to their global MCP config.')
+  if (withoutMazUi)
+    console.log(`\nmaz-ui is not installed in this project: only the MCP server is registered, with the docs bundled in @maz-ui/mcp. Install maz-ui and run init again to add the rules.`)
+
+  if (!remove && mcp && !result.localMcpServer)
+    console.log(`\nThe MCP server runs through \`${serverCommand}\`: install @maz-ui/mcp as a devDependency of the project (\`${INSTALL_DEV_COMMANDS[detectPackageManager(cwd)]} @maz-ui/mcp\`) and run init again to start it in about a second, at the version of your lockfile.`)
+
+  if (!remove && rules && targets.includes('agents-md'))
+    console.log(`\nCodex and Windsurf read AGENTS.md. To give them the MCP server too, add \`${serverCommand}\` to their global MCP config.`)
 
   return 0
 }
@@ -100,6 +124,7 @@ export function runInit(values: Record<string, unknown>, cwd: string): number {
 export async function runReview(values: Record<string, unknown>, positionals: string[], cwd: string): Promise<number> {
   const context = createContext({ cwd, docsDir: typeof values.docs === 'string' ? resolve(values.docs) : undefined })
   const framework = values.framework as Framework | undefined
+  const [{ countBySeverity, formatFindings }, { REVIEWABLE_EXTENSIONS, reviewFiles }] = await Promise.all([import('./review'), import('./review/files')])
 
   if (values.hook) {
     const input = JSON.parse(await readStdin() || '{}') as { tool_input?: { file_path?: string }, cwd?: string }

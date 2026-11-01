@@ -255,8 +255,8 @@ describe('given find_icons', () => {
 
 describe('given get_theme_tokens', () => {
   describe('when no topic is given', () => {
-    it('then it returns the whole reference with the extend hint', () => {
-      const output = getThemeTokens(getContext(), {})
+    it('then it returns the whole reference with the extend hint', async () => {
+      const output = await getThemeTokens(getContext(), {})
 
       expect(output).toContain('## Colors')
       expect(output).toContain('## Breakpoints')
@@ -265,8 +265,8 @@ describe('given get_theme_tokens', () => {
   })
 
   describe('when topics are given', () => {
-    it('then only these topics are returned', () => {
-      const output = getThemeTokens(getContext(), { topics: ['breakpoints', 'utilities'] })
+    it('then only these topics are returned', async () => {
+      const output = await getThemeTokens(getContext(), { topics: ['breakpoints', 'utilities'] })
 
       expect(output).toContain('`mob-s:`')
       expect(output).toContain('`flex-center`')
@@ -284,30 +284,30 @@ describe('given get_theme_tokens', () => {
       return createContextFor(directory)
     }
 
-    it('then the project theme comes before the maz-ui theme', () => {
-      const output = getThemeTokens(projectContext(), {})
+    it('then the project theme comes before the maz-ui theme', async () => {
+      const output = await getThemeTokens(projectContext(), {})
 
       expect(output.indexOf('## Your project theme')).toBe(0)
       expect(output.indexOf('| `animate-rise`')).toBeLessThan(output.indexOf('## Colors'))
       cleanTempDirs()
     })
 
-    it('then the project theme follows the topics', () => {
-      const output = getThemeTokens(projectContext(), { topics: ['typography'] })
+    it('then the project theme follows the topics', async () => {
+      const output = await getThemeTokens(projectContext(), { topics: ['typography'] })
 
       expect(output).toContain('| `animate-rise`')
       expect(output).toContain('Tailwind theme\n')
       cleanTempDirs()
     })
 
-    it('then it can be left out', () => {
-      expect(getThemeTokens(projectContext(), { project: false })).not.toContain('## Your project theme')
+    it('then it can be left out', async () => {
+      expect(await getThemeTokens(projectContext(), { project: false })).not.toContain('## Your project theme')
       cleanTempDirs()
     })
   })
 
   describe('when the bundle has no Tailwind reference', () => {
-    it('then it throws', () => {
+    it('then it throws', async () => {
       const directory = createTempDir()
       const manifest = fakeManifest()
 
@@ -315,20 +315,20 @@ describe('given get_theme_tokens', () => {
 
       const context = createContext({ knowledge: new Knowledge(manifest, { kind: 'custom', directory }), cwd: directory })
 
-      expect(() => getThemeTokens(context, {})).toThrow('does not ship the Tailwind reference')
+      await expect(getThemeTokens(context, {})).rejects.toThrow('does not ship the Tailwind reference')
       cleanTempDirs()
     })
   })
 
   describe('when a topic has no section', () => {
-    it('then it is skipped', () => {
+    it('then it is skipped', async () => {
       const directory = createTempDir()
       const manifest = fakeManifest({ docs: [fakeDoc({ id: 'reference/tailwind-tokens', category: 'reference', file: 'reference/tailwind-tokens.md' })] })
 
       writeFakeBundle(directory, manifest, { 'reference/tailwind-tokens.md': '# Tokens\n\n## Colors\n\nred\n' })
 
       const context = createContext({ knowledge: new Knowledge(manifest, { kind: 'custom', directory }), cwd: directory })
-      const output = getThemeTokens(context, { topics: ['colors', 'shadows'] })
+      const output = await getThemeTokens(context, { topics: ['colors', 'shadows'] })
 
       expect(output).toContain('## Colors')
       expect(output).not.toContain('Shadows')

@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/node",
   "type": "module",
-  "version": "5.1.0",
+  "version": "5.2.0-beta.0",
   "description": "Node utilities for Maz-UI library",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",
@@ -59,7 +59,14 @@
     "jsonc-parser": "^3.3.1"
   },
   "devDependencies": {
-    "unbuild": "^3.6.1"
+    "@types/node": "^22.20.5",
+    "@vitest/coverage-v8": "^5.0.5",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.13.0",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "unbuild": "^3.6.1",
+    "vitest": "5.0.5"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [
