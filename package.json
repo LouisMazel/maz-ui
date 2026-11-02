@@ -64,7 +64,7 @@
     "nx": "^23.3.0",
     "relizy": "^1.13.2",
     "semver": "^7.8.5",
-    "twitter-api-v2": "^1.29.1",
+    "twitter-api-v2": "^1.31.0",
     "typescript": "^6.0.3"
   },
   "lint-staged": {

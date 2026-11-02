@@ -204,13 +204,13 @@ importers:
         version: 23.3.0(@swc/core@1.16.18)
       relizy:
         specifier: ^1.13.2
-        version: 1.13.2(@types/node@22.20.5)(@yoloship/claude-sdk@0.2.0-beta.9(libphonenumber-js@1.13.15))(libphonenumber-js@1.13.15)(magicast@0.5.5)(supports-color@7.2.0)(twitter-api-v2@1.29.1)
+        version: 1.13.2(@types/node@22.20.5)(@yoloship/claude-sdk@0.2.0-beta.9(libphonenumber-js@1.13.15))(libphonenumber-js@1.13.15)(magicast@0.5.5)(supports-color@7.2.0)(twitter-api-v2@1.31.0)
       semver:
         specifier: ^7.8.5
         version: 7.8.5
       twitter-api-v2:
-        specifier: ^1.29.1
-        version: 1.29.1
+        specifier: ^1.31.0
+        version: 1.31.0
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -9355,8 +9355,8 @@ packages:
     resolution: {integrity: sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg==}
     engines: {node: '>=0.6.11 <=0.7.0 || >=0.7.3'}
 
-  twitter-api-v2@1.29.1:
-    resolution: {integrity: sha512-l5U8aP6woe+gv0RViz/YA0YEG/NRtqkO1iXWqxNfrn3MSc2V85u6w44oNDBWhy8zVV9r36SJv/uXNmnfni8Uxw==}
+  twitter-api-v2@1.31.0:
+    resolution: {integrity: sha512-slrAXaibHjTQTXxm50+bGdT6YfHYrpwIslmXXr4kOtEGtTN3OTbODj0/O5ZVckILiTioZtbIHdqjsYFjj0vcRg==}
 
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
@@ -19365,7 +19365,7 @@ snapshots:
     dependencies:
       jsesc: 3.1.0
 
-  relizy@1.13.2(@types/node@22.20.5)(@yoloship/claude-sdk@0.2.0-beta.9(libphonenumber-js@1.13.15))(libphonenumber-js@1.13.15)(magicast@0.5.5)(supports-color@7.2.0)(twitter-api-v2@1.29.1):
+  relizy@1.13.2(@types/node@22.20.5)(@yoloship/claude-sdk@0.2.0-beta.9(libphonenumber-js@1.13.15))(libphonenumber-js@1.13.15)(magicast@0.5.5)(supports-color@7.2.0)(twitter-api-v2@1.31.0):
     dependencies:
       '@clack/prompts': 1.8.1
       '@inquirer/prompts': 8.7.4(@types/node@22.20.5)
@@ -19387,7 +19387,7 @@ snapshots:
       semver: 7.8.5
     optionalDependencies:
       '@yoloship/claude-sdk': 0.2.0-beta.9(libphonenumber-js@1.13.15)
-      twitter-api-v2: 1.29.1
+      twitter-api-v2: 1.31.0
     transitivePeerDependencies:
       - '@types/node'
       - libphonenumber-js
@@ -20202,7 +20202,7 @@ snapshots:
 
   tunnel@0.0.6: {}
 
-  twitter-api-v2@1.29.1: {}
+  twitter-api-v2@1.31.0: {}
 
   type-check@0.4.0:
     dependencies:
