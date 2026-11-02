@@ -108,7 +108,7 @@
     "@vitest/coverage-v8": "^5.0.5",
     "cross-env": "^10.1.0",
     "eslint": "^10.13.0",
-    "glob": "^13.0.6",
+    "glob": "^14.0.3",
     "typescript": "^6.0.3",
     "unbuild": "^3.6.1",
     "vite": "^8.3.4",
