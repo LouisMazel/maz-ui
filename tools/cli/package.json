@@ -37,7 +37,7 @@
     "@maz-ui/eslint-config": "workspace:^",
     "@types/node": "^22.20.5",
     "cross-env": "^10.1.0",
-    "eslint": "^10.13.0",
+    "eslint": "^10.14.0",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "unbuild": "^3.6.1"
