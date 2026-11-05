@@ -1,17 +1,11 @@
 name: Unit Tests
 
 on:
+  # Every commit of develop and master gets a report (no `paths`): the base the pull requests are compared with
   push:
     branches:
+      - develop
       - master
-    paths:
-      - .github/workflows/test-unit.yml
-      - 'packages/**/*'
-      - 'tools/agent-docs/**'
-      - 'apps/docs/src/**'
-      - 'plugins/**'
-      - '!packages/*/CHANGELOG.md'
-      - '!packages/*/package.json'
   pull_request:
     paths:
       - .github/workflows/test-unit.yml
