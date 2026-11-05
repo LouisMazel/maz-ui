@@ -1,77 +1,106 @@
 // @ts-check
 
-import { readdirSync, readFileSync, statSync } from 'node:fs'
-import { join } from 'node:path'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
+import { join, relative } from 'node:path'
 import process from 'node:process'
 import { logger } from '@maz-ui/node'
-import { coerce, satisfies } from 'semver'
+import { minVersion, satisfies, validRange } from 'semver'
+import { parse } from 'yaml'
 
 /**
- * @type {Array<{ file: string, dep: string, devVersion: string, peerRange: string }>}
+ * Every peer dependency of a project of the workspace is also declared in its devDependencies,
+ * with a version (or a `catalog:` entry) inside the peer range
  */
-const errors = []
 
-const rootPkg = JSON.parse(readFileSync(join(process.cwd(), 'package.json'), 'utf-8'))
-const rootDevDependencies = rootPkg.devDependencies || {}
+const root = process.cwd()
+
+/**
+ * @type {{ packages: string[], catalog?: Record<string, string>, catalogs?: Record<string, Record<string, string>> }}
+ */
+const workspace = parse(readFileSync(join(root, 'pnpm-workspace.yaml'), 'utf-8'))
+
+/**
+ * Directories of the projects of the workspace, from the `packages` patterns of pnpm-workspace.yaml (`dir` or `dir/*`)
+ * @returns {string[]} directories
+ */
+function getProjectDirs() {
+  return workspace.packages
+    .flatMap((pattern) => {
+      if (!pattern.endsWith('/*')) {
+        return [
+          join(root, pattern),
+        ]
+      }
+
+      const parent = join(root, pattern.slice(0, -2))
+
+      return readdirSync(parent, { withFileTypes: true })
+        .filter(entry => entry.isDirectory())
+        .map(entry => join(parent, entry.name))
+    })
+    .filter(dir => existsSync(join(dir, 'package.json')))
+}
+
+/**
+ * @param {string} dep
+ * @param {string} specifier `^1.2.3`, `catalog:` or `catalog:<name>`
+ * @returns {string | undefined} range
+ */
+function resolveRange(dep, specifier) {
+  if (!specifier.startsWith('catalog:'))
+    return specifier
+
+  const name = specifier.slice('catalog:'.length)
+
+  if (!name || name === 'default')
+    return workspace.catalog?.[dep] ?? workspace.catalogs?.default?.[dep]
+
+  return workspace.catalogs?.[name]?.[dep]
+}
 
 /**
  * @param {string} dir
- * @param {Array<string>} results
- * @returns {Array<string>} results
+ * @returns {string[]} problems
  */
-function findPackageJsons(dir, results = []) {
-  for (const file of readdirSync(dir)) {
-    if (file === 'node_modules' || file.startsWith('.'))
-      continue
+function checkProject(dir) {
+  const file = relative(root, join(dir, 'package.json')) || 'package.json'
+  const { peerDependencies = {}, devDependencies = {} } = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf-8'))
 
-    const fullPath = join(dir, file)
-    if (statSync(fullPath).isDirectory()) {
-      findPackageJsons(fullPath, results)
-    }
-    else if (file === 'package.json') {
-      results.push(fullPath)
-    }
-  }
-  return results
+  return Object.entries(peerDependencies).flatMap(([dep, peerRange]) => {
+    if (peerRange.startsWith('workspace:'))
+      return []
+
+    const specifier = devDependencies[dep]
+
+    if (!specifier)
+      return [`${file}: ${dep} is a peer dependency, declare it in devDependencies too`]
+
+    const devRange = resolveRange(dep, specifier)
+
+    if (!devRange)
+      return [`${file}: ${dep} uses "${specifier}" but this catalog has no ${dep}`]
+
+    const lowest = validRange(devRange)
+      ? minVersion(devRange)
+      : null
+
+    if (!lowest)
+      return [`${file}: ${dep} has an unreadable version in devDependencies ("${devRange}")`]
+
+    if (!satisfies(lowest, peerRange))
+      return [`${file}: ${dep}@${devRange} (devDependencies) is outside the peer range "${peerRange}"`]
+
+    return []
+  })
 }
 
-/**
- * @param {string} pkgPath
- */
-function checkPackage(pkgPath) {
-  const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'))
-  const { peerDependencies = {}, devDependencies = {} } = pkg
+const problems = getProjectDirs().flatMap(checkProject)
 
-  for (const [dep, peerRange] of Object.entries(peerDependencies)) {
-    const devVersion = devDependencies[dep] || rootDevDependencies[dep]
-    if (!devVersion)
-      continue
-
-    const devSemver = coerce(devVersion)
-
-    if (devSemver?.version && !satisfies(devSemver, peerRange)) {
-      errors.push({
-        file: pkgPath,
-        dep,
-        devVersion: devSemver.version,
-        peerRange,
-      })
-    }
-  }
-}
-
-// Scan the entire monorepo
-const packageJsons = findPackageJsons(process.cwd())
-packageJsons.forEach(checkPackage)
-
-if (errors.length > 0) {
-  logger.error('Peer dependencies out of sync')
-  for (const err of errors) {
-    logger.error(`${err.file}`)
-    logger.error(`${err.dep}: devDep=${err.devVersion} does not satisfy peerDep="${err.peerRange}"\n`)
-  }
+if (problems.length > 0) {
+  logger.error('Peer dependencies out of sync with the devDependencies')
+  for (const problem of problems)
+    logger.error(problem)
   process.exit(1)
 }
-else {
-  logger.success('All peer dependencies are synchronized with devDependencies')
-}
+
+logger.success('All peer dependencies are declared in the devDependencies, inside their peer range')
