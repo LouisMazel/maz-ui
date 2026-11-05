@@ -370,7 +370,7 @@ All logger methods automatically handle error objects using `getErrorMessage` ut
 
 ## Requirements
 
-- Node.js >= 22.12.0
+- Node.js 22.23.4+, 24.22.1+ or 26.12.1+ (the releases with the October 2026 security fixes)
 - TypeScript support included
 
 ## Contributing
