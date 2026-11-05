@@ -64,18 +64,6 @@
     "test:unit:watch": "pnpm generate:docs && vitest watch",
     "test:unit:coverage": "pnpm generate:docs && vitest run --coverage"
   },
-  "peerDependencies": {
-    "@maz-ui/node": "workspace:^",
-    "@maz-ui/utils": "workspace:^"
-  },
-  "peerDependenciesMeta": {
-    "@maz-ui/node": {
-      "optional": true
-    },
-    "@maz-ui/utils": {
-      "optional": true
-    }
-  },
   "devDependencies": {
     "@babel/parser": "^8.1.0",
     "@babel/types": "^8.1.0",
