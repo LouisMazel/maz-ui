@@ -29,7 +29,6 @@
     "postinstall": "nx run-many -t build -p @maz-ui/node @maz-ui/utils @maz-ui/icons @maz-ui/themes @maz-ui/cli @maz-ui/eslint-config @maz-ui/stylelint-config && nx run @maz-ui/nuxt:dev",
     "prepare": "npx husky",
     "pre-commit": "lint-staged",
-    "commit": "cz",
     "build:all": "nx run-many -t build",
     "build:apps": "nx run-many -t build -p docs nuxt-app vue-app",
     "build:utils": "nx run-many -t build -p @maz-ui/node @maz-ui/utils",
