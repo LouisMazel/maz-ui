@@ -4,7 +4,6 @@ import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { findProjectPackage, readPackageVersion } from '@maz-ui/node'
-import { readOwnVersion } from '../version'
 import { manifestSchema } from './schema'
 
 export type KnowledgeSourceKind = 'custom' | 'project' | 'bundled'
@@ -24,7 +23,7 @@ export interface LoadKnowledgeOptions {
   cwd?: string
   /** Bundle shipped with @maz-ui/mcp */
   bundledDir?: string
-  /** Version of the bundled docs, default: the version of @maz-ui/mcp (released together with maz-ui) */
+  /** Version of the bundled docs, default: the maz-ui version of their manifest */
   bundledVersion?: string
 }
 
@@ -138,5 +137,5 @@ export function loadKnowledge(options: LoadKnowledgeOptions = {}): Knowledge {
   if (!manifest)
     throw new Error(`The docs bundle of @maz-ui/mcp is missing or invalid (${bundledDir}). Reinstall the package.`)
 
-  return new Knowledge(manifest, { kind: 'bundled', directory: bundledDir, projectVersion: project?.version }, options.bundledVersion ?? readOwnVersion())
+  return new Knowledge(manifest, { kind: 'bundled', directory: bundledDir, projectVersion: project?.version }, options.bundledVersion ?? manifest.version)
 }
