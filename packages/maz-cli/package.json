@@ -55,7 +55,7 @@
     "@types/node": "^22.20.5",
     "@types/tinycolor2": "^1.4.6",
     "cross-env": "^10.1.0",
-    "eslint": "^10.13.0",
+    "eslint": "^10.14.0",
     "typescript": "^6.0.3",
     "unbuild": "^3.6.1"
   },
