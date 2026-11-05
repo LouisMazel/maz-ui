@@ -73,17 +73,17 @@
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:^",
-    "@nuxt/devtools": "^3.4.4",
+    "@nuxt/devtools": "catalog:",
     "@nuxt/module-builder": "^1.0.3",
     "@nuxt/schema": "^4.6.4",
     "@nuxt/test-utils": "^4.3.4",
-    "@types/node": "^26.6.6",
-    "@vitest/coverage-v8": "^5.1.0",
-    "cross-env": "^10.1.0",
-    "eslint": "^10.14.0",
-    "nuxt": "^4.6.4",
-    "vitest": "5.1.0",
-    "vue": "^3.5.44"
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "cross-env": "catalog:",
+    "eslint": "catalog:",
+    "nuxt": "catalog:",
+    "vitest": "catalog:",
+    "vue": "catalog:"
   },
   "lint-staged": {
     "*.{js,ts,mjs,mts,cjs,md,yml,json}": "cross-env NODE_ENV=production eslint --fix"
