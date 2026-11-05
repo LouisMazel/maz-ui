@@ -8,21 +8,6 @@ interface PackageJson {
 
 interface Options {
   /**
-   * Exclude root peerDependencies
-   * @default true
-   */
-  rootDevDependencies?: boolean
-  /**
-   * Exclude root peerDependencies
-   * @default true
-   */
-  rootPeerDependencies?: boolean
-  /**
-   * Exclude root dependencies
-   * @default true
-   */
-  rootDependencies?: boolean
-  /**
    * Exclude peerDependencies
    * @default true
    */
