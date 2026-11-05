@@ -7,6 +7,8 @@ minimumReleaseAgeExclude:
 # eslint-disable-next-line pnpm/yaml-enforce-settings
 trustPolicy: off
 shellEmulator: true
+# Fails the install when the Node.js version is outside the `engines` of a project or of a dependency
+engineStrict: true
 
 packages:
   - apps/*

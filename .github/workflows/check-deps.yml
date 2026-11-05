@@ -1,13 +1,11 @@
-# .github/workflows/check-peer-deps.yml
-name: Check Peer Dependencies
+# .github/workflows/check-deps.yml
+name: Check Dependencies
 
 on:
   pull_request:
-  push:
-    branches: [main]
 
 jobs:
-  check-peers-deps:
+  check-deps:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -18,5 +16,5 @@ jobs:
       - name: Build packages
         run: pnpm exec nx run @maz-ui/node:build
 
-      - name: Check peer vs dev dependencies
-        run: node .github/scripts/check-peer-deps.mjs
+      - name: Check the catalog and the peer dependencies
+        run: node .github/scripts/check-deps.mjs
