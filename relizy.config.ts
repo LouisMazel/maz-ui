@@ -43,9 +43,10 @@ export default defineConfig({
     // Explicit lists: a new published package must be put in a group
     groups: [
       {
-        // The library and its ecosystem: one version line, the `v*` tags and the version of the root package.json
+        // The library and its ecosystem: every package released at once on the same version (a consumer keeps all of
+        // them on one version, so a single copy of maz-ui), the `v*` tags and the version of the root package.json
         name: 'ecosystem',
-        versionMode: 'selective',
+        versionMode: 'unified',
         packages: [
           'packages/icons',
           'packages/lib',
@@ -69,15 +70,6 @@ export default defineConfig({
         changelog: { rootChangelog: false },
       },
     ],
-  },
-
-  bump: {
-    // Only for @maz-ui/mcp, the only package with internal peers: it bundles @maz-ui/node and @maz-ui/utils, declared as
-    // optional peers so that a fix in them releases it. Never installed by mcp, but npm checks them against the versions
-    // of the project: a project whose @maz-ui/utils is out of their range gets it moved out of its root node_modules
-    // (fine unless the project imports it without declaring it). A new internal peer would be bumped on every release
-    // of its dependency too
-    dependencyTypes: ['dependencies', 'peerDependencies'],
   },
 
   changelog: {

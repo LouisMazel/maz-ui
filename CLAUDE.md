@@ -124,7 +124,7 @@ Within individual packages (e.g., `packages/lib/`):
 
 `relizy.config.ts` releases the packages in two groups (`monorepo.groups`), listed explicitly: a new published package must be added to one of them.
 
-- `ecosystem` (`selective`): `maz-ui`, `@maz-ui/icons`, `@maz-ui/mcp`, `@maz-ui/node`, `@maz-ui/nuxt`, `@maz-ui/themes`, `@maz-ui/translations`, `@maz-ui/utils`. One version line, the `v*` tags and the version of the root `package.json`.
+- `ecosystem` (`unified`): `maz-ui`, `@maz-ui/icons`, `@maz-ui/mcp`, `@maz-ui/node`, `@maz-ui/nuxt`, `@maz-ui/themes`, `@maz-ui/translations`, `@maz-ui/utils`. Every package released at once, on the same version (the consumers keep all of them on one version), the `v*` tags and the version of the root `package.json`.
 - `tooling` (`independent`): `@maz-ui/eslint-config`, `@maz-ui/stylelint-config`, `@maz-ui/upgrade`. One version line and one tag per package (`@maz-ui/eslint-config@5.1.0`), kept out of the root `CHANGELOG.md`.
 
 ### Dependencies
