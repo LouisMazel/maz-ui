@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 // `defineConfig` calls `antfu()` which writes a startup banner to stderr.
@@ -26,10 +26,12 @@ vi.mock('node:fs', async (importOriginal) => {
   return {
     ...actual,
     readFileSync: vi.fn(actual.readFileSync),
+    existsSync: vi.fn(actual.existsSync),
   }
 })
 
 const mockedReadFileSync = vi.mocked(readFileSync)
+const mockedExistsSync = vi.mocked(existsSync)
 
 function stubPackageJson(json: object | 'throw'): void {
   mockedReadFileSync.mockImplementation(((path: any, ...rest: any[]) => {
@@ -421,5 +423,57 @@ describe('defineConfig', () => {
     const defineConfig = await loadDefineConfig()
     const config = await defineConfig({ vueAccessibility: true, logLevel: 'silent' })
     expect(Array.isArray(config)).toBe(true)
+  })
+})
+
+async function getRuleNames(config: ReturnType<typeof import('../index').defineConfig>): Promise<string[]> {
+  const blocks = await config
+  return blocks.flatMap(block => Object.keys(block?.rules ?? {}))
+}
+
+describe('pnpm rules', () => {
+  describe('given a pnpm workspace', () => {
+    describe('when the `pnpm` option is not set', () => {
+      it('enables the pnpm rules without enforcing the catalog', async () => {
+        stubPackageJson({})
+        const defineConfig = await loadDefineConfig()
+        const rules = await getRuleNames(defineConfig({ logLevel: 'silent' }))
+        expect(rules).toContain('pnpm/json-valid-catalog')
+        expect(rules).not.toContain('pnpm/json-enforce-catalog')
+      })
+    })
+
+    describe('when the `pnpm` option enforces the catalogs', () => {
+      it('enforces the catalog', async () => {
+        stubPackageJson({})
+        const defineConfig = await loadDefineConfig()
+        const rules = await getRuleNames(defineConfig({
+          pnpm: { catalogs: true },
+          logLevel: 'silent',
+        }))
+        expect(rules).toContain('pnpm/json-enforce-catalog')
+      })
+    })
+
+    describe('when the `pnpm` option is false', () => {
+      it('disables the pnpm rules', async () => {
+        stubPackageJson({})
+        const defineConfig = await loadDefineConfig()
+        const rules = await getRuleNames(defineConfig({ pnpm: false, logLevel: 'silent' }))
+        expect(rules).not.toContain('pnpm/json-valid-catalog')
+      })
+    })
+  })
+
+  describe('given a project outside a pnpm workspace', () => {
+    describe('when the `pnpm` option is not set', () => {
+      it('disables the pnpm rules', async () => {
+        stubPackageJson({})
+        mockedExistsSync.mockImplementation(path => !String(path).endsWith('pnpm-workspace.yaml'))
+        const defineConfig = await loadDefineConfig()
+        const rules = await getRuleNames(defineConfig({ logLevel: 'silent' }))
+        expect(rules).not.toContain('pnpm/json-valid-catalog')
+      })
+    })
   })
 })

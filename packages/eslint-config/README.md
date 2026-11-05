@@ -106,6 +106,23 @@ defineConfig({
 > [!IMPORTANT]
 > The plugin's `no-unknown-classes` rule needs to know about your Tailwind setup (prefix, custom utilities, theme tokens). Without `entryPoint` (v4) or `tailwindConfig` (v3), it falls back to the default Tailwind config and will flood with false positives in projects that customize either. **Pass the path explicitly** if your Tailwind setup is non-standard.
 
+## pnpm workspace
+
+In a pnpm workspace (a `pnpm-workspace.yaml` in the project or one of its parent directories), the pnpm rules of `@antfu/eslint-config` lint the `package.json` files and the `pnpm-workspace.yaml`, without `pnpm/json-enforce-catalog`: a dependency moves to the [catalog](https://pnpm.io/catalogs) only when you decide it.
+
+| Value                   | Behavior                                                                    |
+| ----------------------- | --------------------------------------------------------------------------- |
+| `undefined` _(default)_ | Enabled in a pnpm workspace, without enforcing the catalog.                 |
+| `true`                  | Enabled, and enforces the catalog when `pnpm-workspace.yaml` has a catalog. |
+| `{ catalogs: true }`    | Enabled, and enforces the catalog for every dependency.                     |
+| `false`                 | Disabled.                                                                   |
+
+```js
+defineConfig({
+  pnpm: { catalogs: true },
+})
+```
+
 ## Custom rules
 
 This preset ships its own ESLint plugin under the `maz/*` namespace. Rules are organized by category — `maz/tailwind-*` for Tailwind-specific rules, ready for `maz/js-*` and others as they get added.
