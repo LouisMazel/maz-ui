@@ -59,7 +59,17 @@
     "typecheck": "nuxi typecheck --skipLibCheck"
   },
   "peerDependencies": {
-    "nuxt": ">=3.4.0 <5.0.0"
+    "@nuxt/schema": ">=3.4.0 <5.0.0",
+    "nuxt": ">=3.4.0 <5.0.0",
+    "vue": ">=3.5.0 <4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@nuxt/schema": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@maz-ui/node": "workspace:^",

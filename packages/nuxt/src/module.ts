@@ -1,5 +1,5 @@
 import type { AgentTarget, SetupAgentsChange, SetupAgentsResult } from '@maz-ui/node'
-import type { Nuxt } from '@nuxt/schema'
+import type { Nuxt } from 'nuxt/schema'
 import type { MazUiNuxtOptions } from './types'
 import { dirname, join, resolve } from 'node:path'
 import process from 'node:process'
