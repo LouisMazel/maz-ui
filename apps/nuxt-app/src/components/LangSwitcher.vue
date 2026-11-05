@@ -4,11 +4,26 @@ import type { MazDropdownProps } from 'maz-ui/components'
 const { locale, setLocale } = useTranslations()
 
 const languages: MazDropdownProps['items'] = [
-  { label: '🇺🇸 English', onClick: () => setLocale('en') },
-  { label: '🇫🇷 Français', onClick: () => setLocale('fr') },
-  { label: '🇪🇸 Español', onClick: () => setLocale('es') },
-  { label: '🇩🇪 Deutsch', onClick: () => setLocale('de') },
-  { label: '🇮🇹 Italiano', onClick: () => setLocale('it') },
+  {
+    label: '🇺🇸 English',
+    onClick: () => setLocale('en'),
+  },
+  {
+    label: '🇫🇷 Français',
+    onClick: () => setLocale('fr'),
+  },
+  {
+    label: '🇪🇸 Español',
+    onClick: () => setLocale('es'),
+  },
+  {
+    label: '🇩🇪 Deutsch',
+    onClick: () => setLocale('de'),
+  },
+  {
+    label: '🇮🇹 Italiano',
+    onClick: () => setLocale('it'),
+  },
 ]
 </script>
 
