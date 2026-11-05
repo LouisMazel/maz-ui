@@ -31,14 +31,27 @@ export function renderVitepressApi(api: ComponentApi): string {
 
   if (props.length > 0) {
     sections.push(`## Props\n\n${table(
-      ['Name', 'Description', 'Type', 'Required', 'Default', 'Possible values'],
+      [
+        'Name',
+        'Description',
+        'Type',
+        'Required',
+        'Default',
+        'Possible values',
+      ],
       props.map(prop => [
         `**${pascalToKebab(prop.name)}**`,
-        cell(`${prop.model ? `\`${modelDirective(prop.model)}\` ` : ''}${prop.description ?? ''}`),
+        cell(`${prop.model
+          ? `\`${modelDirective(prop.model)}\` `
+          : ''}${prop.description ?? ''}`),
         code(prop.type),
         prop.required ? 'Yes' : 'No',
-        prop.default === undefined ? '-' : code(prop.default),
-        prop.values?.length ? code(prop.values.map(value => `'${value}'`).join(' | ')) : '-',
+        prop.default === undefined
+          ? '-'
+          : code(prop.default),
+        prop.values?.length
+          ? code(prop.values.map(value => `'${value}'`).join(' | '))
+          : '-',
       ]),
     )}`)
   }
@@ -46,7 +59,13 @@ export function renderVitepressApi(api: ComponentApi): string {
   if (api.events.length > 0) {
     sections.push(`## Events\n\n${table(
       ['Event name', 'Payload', 'Description'],
-      api.events.map(event => [cell(event.name), event.payload ? code(event.payload) : '-', cell(event.description)]),
+      api.events.map(event => [
+        cell(event.name),
+        event.payload
+          ? code(event.payload)
+          : '-',
+        cell(event.description),
+      ]),
     )}`)
   }
 
@@ -56,13 +75,17 @@ export function renderVitepressApi(api: ComponentApi): string {
       api.slots.map(slot => [
         cell(slot.name),
         cell(slot.description),
-        slot.bindings.map(binding => `**${cell(binding.name)}** ${code(binding.type ?? 'unknown')}${binding.description ? ` - ${cell(binding.description)}` : ''}`).join('<br/>') || '-',
+        slot.bindings.map(binding => `**${cell(binding.name)}** ${code(binding.type ?? 'unknown')}${binding.description
+          ? ` - ${cell(binding.description)}`
+          : ''}`).join('<br/>') || '-',
       ]),
     )}`)
   }
 
   if (api.expose.length > 0) {
-    sections.push(`## Expose\n\n${api.expose.map(exposed => `### ${exposed.name}\n\n${exposed.description ? `> ${cell(exposed.description)}` : ''}`.trim()).join('\n\n')}`)
+    sections.push(`## Expose\n\n${api.expose.map(exposed => `### ${exposed.name}\n\n${exposed.description
+      ? `> ${cell(exposed.description)}`
+      : ''}`.trim()).join('\n\n')}`)
   }
 
   return `${sections.join('\n\n')}\n`

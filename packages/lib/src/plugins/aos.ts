@@ -97,7 +97,9 @@ export class AosHandler {
 
       if (hasChildren) {
         const children = Array.from(document.querySelectorAll('[data-maz-aos-anchor]'), child =>
-          child.getAttribute('data-maz-aos-anchor') === `#${entry.target.id}` ? child : undefined)
+          child.getAttribute('data-maz-aos-anchor') === `#${entry.target.id}`
+            ? child
+            : undefined)
 
         for (const child of children) {
           if (child) {
@@ -110,7 +112,9 @@ export class AosHandler {
         const once = element.getAttribute('data-maz-aos-once')
 
         const useOnce: boolean
-          = typeof once === 'string' ? once === 'true' : this.options.animation.once
+          = typeof once === 'string'
+            ? once === 'true'
+            : this.options.animation.once
 
         if (
           typeof this.options.observer.threshold === 'number'
@@ -119,8 +123,12 @@ export class AosHandler {
           const duration = element.getAttribute('data-maz-aos-duration')
           const delay = element.getAttribute('data-maz-aos-delay')
 
-          const animationDuration = duration ? Number.parseInt(duration) : this.options.animation.duration
-          const animationDelay = delay ? Number.parseInt(delay) : this.options.animation.delay
+          const animationDuration = duration
+            ? Number.parseInt(duration)
+            : this.options.animation.duration
+          const animationDelay = delay
+            ? Number.parseInt(delay)
+            : this.options.animation.delay
           const totalAnimationTime = animationDuration + animationDelay
 
           if (!duration) {

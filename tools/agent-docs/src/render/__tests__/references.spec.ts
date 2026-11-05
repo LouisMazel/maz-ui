@@ -3,26 +3,84 @@ import type { TailwindManifest } from '../../types'
 import { renderIconsReference, renderTailwindReference } from '../references'
 
 const tokens: TailwindManifest = {
-  entries: [{ path: 'maz-ui/tailwindcss/theme.css', description: 'Every token' }],
-  colors: [
-    { name: 'primary', variable: '--maz-primary', foreground: true, scale: ['50', '500', '950'], usage: 'Brand' },
-    { name: 'shadow', variable: '--maz-shadow', foreground: false, scale: ['50'], usage: 'Shadow tint' },
-    { name: 'overlay', variable: '--maz-overlay', foreground: false, scale: [], usage: 'Scrims' },
-    { name: 'container', variable: '--maz-container-bg', foreground: false, scale: [], usage: 'Cards' },
-    { name: 'elevation', variable: '--maz-shadow', foreground: false, scale: [], usage: 'Alias' },
-    { name: 'plain', variable: '', foreground: false, scale: [], usage: 'Pipe | inside' },
+  entries: [
+    { path: 'maz-ui/tailwindcss/theme.css', description: 'Every token' },
   ],
-  radius: [{ name: 'rounded-md', value: 'var(--maz-rounded-md)' }],
-  shadows: [{ name: 'shadow-elevation', value: 'var(--maz-shadow-style-elevation)' }],
-  breakpoints: [{ name: 'tab-m:', value: '768px' }],
-  zIndex: [{ name: 'z-15', value: '15' }],
-  fonts: [{ name: 'font-sans', value: 'var(--maz-font-family)' }],
-  durations: [{ name: 'duration-(--duration-fast)', value: 'var(--maz-motion-fast, 100ms)' }],
-  easings: [{ name: 'ease-out', value: 'var(--maz-easing-out)' }],
+  colors: [
+    {
+      name: 'primary',
+      variable: '--maz-primary',
+      foreground: true,
+      scale: ['50', '500', '950'],
+      usage: 'Brand',
+    },
+    {
+      name: 'shadow',
+      variable: '--maz-shadow',
+      foreground: false,
+      scale: ['50'],
+      usage: 'Shadow tint',
+    },
+    {
+      name: 'overlay',
+      variable: '--maz-overlay',
+      foreground: false,
+      scale: [],
+      usage: 'Scrims',
+    },
+    {
+      name: 'container',
+      variable: '--maz-container-bg',
+      foreground: false,
+      scale: [],
+      usage: 'Cards',
+    },
+    {
+      name: 'elevation',
+      variable: '--maz-shadow',
+      foreground: false,
+      scale: [],
+      usage: 'Alias',
+    },
+    {
+      name: 'plain',
+      variable: '',
+      foreground: false,
+      scale: [],
+      usage: 'Pipe | inside',
+    },
+  ],
+  radius: [
+    { name: 'rounded-md', value: 'var(--maz-rounded-md)' },
+  ],
+  shadows: [
+    { name: 'shadow-elevation', value: 'var(--maz-shadow-style-elevation)' },
+  ],
+  breakpoints: [
+    { name: 'tab-m:', value: '768px' },
+  ],
+  zIndex: [
+    { name: 'z-15', value: '15' },
+  ],
+  fonts: [
+    { name: 'font-sans', value: 'var(--maz-font-family)' },
+  ],
+  durations: [
+    { name: 'duration-(--duration-fast)', value: 'var(--maz-motion-fast, 100ms)' },
+  ],
+  easings: [
+    { name: 'ease-out', value: 'var(--maz-easing-out)' },
+  ],
   spacing: [],
-  utilities: [{ name: 'flex-center', css: 'align-items: center;' }],
-  variants: [{ name: 'dark', value: '&:where(.dark, .dark *)' }],
-  containerVariables: [{ name: '--maz-container-max-width', value: '1440px' }],
+  utilities: [
+    { name: 'flex-center', css: 'align-items: center;' },
+  ],
+  variants: [
+    { name: 'dark', value: '&:where(.dark, .dark *)' },
+  ],
+  containerVariables: [
+    { name: '--maz-container-max-width', value: '1440px' },
+  ],
   transitions: ['maz-fade', 'maz-slide'],
 }
 
@@ -62,7 +120,12 @@ describe('given renderTailwindReference', () => {
 
   describe('when the spacing token is known', () => {
     it('then renders its value', () => {
-      expect(renderTailwindReference({ ...tokens, spacing: [{ name: 'p-*', value: 'var(--custom-space)' }] })).toContain('`--spacing` is `var(--custom-space)`')
+      expect(renderTailwindReference({
+        ...tokens,
+        spacing: [
+          { name: 'p-*', value: 'var(--custom-space)' },
+        ],
+      })).toContain('`--spacing` is `var(--custom-space)`')
     })
   })
 })
@@ -71,7 +134,11 @@ describe('given renderIconsReference', () => {
   describe('when rendering icon groups', () => {
     it('then lists non empty groups with their count and the import patterns', () => {
       const markdown = renderIconsReference([
-        { title: 'Interface icons', description: 'Outline icons', names: ['MazTrash', 'MazXMark'] },
+        {
+          title: 'Interface icons',
+          description: 'Outline icons',
+          names: ['MazTrash', 'MazXMark'],
+        },
         { title: 'Logos', description: 'Brands', names: [] },
       ], 2)
 

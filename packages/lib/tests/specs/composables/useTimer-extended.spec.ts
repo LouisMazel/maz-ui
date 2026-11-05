@@ -139,7 +139,12 @@ describe('given useTimer composable - extended', () => {
     it('then it should delay the callback', () => {
       const callback = vi.fn()
       const [{ start }, app] = withSetup(() =>
-        useTimer({ timeout: 500, callback, remainingTimeUpdate: 100, callbackOffsetTime: 200 }),
+        useTimer({
+          timeout: 500,
+          callback,
+          remainingTimeUpdate: 100,
+          callbackOffsetTime: 200,
+        }),
       )
 
       start()

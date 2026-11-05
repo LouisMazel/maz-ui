@@ -8,7 +8,10 @@ import { nextTick } from 'vue'
 const mountedWrappers: VueWrapper[] = []
 
 beforeEach(() => {
-  vi.mocked(useTranslations).mockReturnValue({ t: (key: string) => key, locale: { value: 'en' } } as unknown as ReturnType<typeof useTranslations>)
+  vi.mocked(useTranslations).mockReturnValue({
+    t: (key: string) => key,
+    locale: { value: 'en' },
+  } as unknown as ReturnType<typeof useTranslations>)
 })
 
 afterEach(() => {
@@ -118,7 +121,11 @@ describe('given an open MazSelect', () => {
 
   describe('when it is multiple', () => {
     it('then the listbox is multiselectable and the checkboxes are inert', async () => {
-      const wrapper = await mountSelect({ open: true, multiple: true, modelValue: ['a', 'c'] })
+      const wrapper = await mountSelect({
+        open: true,
+        multiple: true,
+        modelValue: ['a', 'c'],
+      })
       const checkbox = wrapper.find('[role="option"] input[type="checkbox"]')
 
       expect(wrapper.find('[role="listbox"]').attributes('aria-multiselectable')).toBe('true')
@@ -131,7 +138,17 @@ describe('given an open MazSelect', () => {
 
   describe('when there are option groups', () => {
     it('then the group labels are presentational', async () => {
-      const wrapper = await mountSelect({ open: true, options: [{ label: 'Fruits', options: [{ label: 'Apple', value: 'a' }] }] })
+      const wrapper = await mountSelect({
+        open: true,
+        options: [
+          {
+            label: 'Fruits',
+            options: [
+              { label: 'Apple', value: 'a' },
+            ],
+          },
+        ],
+      })
 
       expect(wrapper.find('.m-select-list-optgroup').attributes('role')).toBe('presentation')
       expect(wrapper.findAll('[role="option"]')).toHaveLength(1)

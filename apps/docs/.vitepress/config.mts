@@ -27,7 +27,9 @@ function pascalCaseToKebabCase(value: string): string {
 }
 
 function getAssetBaseUrl(path: string): string {
-  const base = process.env.NODE_ENV === 'production' ? 'https://maz-ui.com' : ''
+  const base = process.env.NODE_ENV === 'production'
+    ? 'https://maz-ui.com'
+    : ''
   return `${base}${path}`
 }
 
@@ -130,8 +132,21 @@ export default defineConfig<DefaultTheme.Config>({
     // builds. Same trick as accor-core-library.
     resolve: {
       conditions: isDev
-        ? ['monorepo:dev', 'import', 'browser', 'module', 'default', 'require']
-        : ['import', 'browser', 'module', 'default', 'require'],
+        ? [
+            'monorepo:dev',
+            'import',
+            'browser',
+            'module',
+            'default',
+            'require',
+          ]
+        : [
+            'import',
+            'browser',
+            'module',
+            'default',
+            'require',
+          ],
     },
     build: {
       rollupOptions: {
@@ -145,7 +160,11 @@ export default defineConfig<DefaultTheme.Config>({
       noExternal: ['dayjs'],
     },
     plugins: [
-      ...(isDev ? [VitePreNestedCss()] : []),
+      ...(isDev
+        ? [
+            VitePreNestedCss(),
+          ]
+        : []),
       tailwindcss(),
       svgLoader(),
       {
@@ -224,7 +243,9 @@ export default defineConfig<DefaultTheme.Config>({
     const currentTitle = title ?? pageData.title ?? pageData.frontmatter.title ?? siteData.title
     const currentDescription = description ?? pageData.frontmatter.description ?? pageData.description ?? siteData.description
 
-    const currentUrl = getAssetBaseUrl(`/${pageData.relativePath.replace('.md', '') === 'index' ? '' : pageData.relativePath.replace('.md', '')}`)
+    const currentUrl = getAssetBaseUrl(`/${pageData.relativePath.replace('.md', '') === 'index'
+      ? ''
+      : pageData.relativePath.replace('.md', '')}`)
 
     const ogImageFilename = pascalCaseToKebabCase(currentTitle.split(' ')[0].replace(' | Maz-UI', '').replaceAll(' ', '').replace('/', '-'))
     const outputDistFolder = '/og-images'
@@ -241,25 +262,87 @@ export default defineConfig<DefaultTheme.Config>({
       })
     }
 
-    const ogImage = image ? getAssetBaseUrl(imagePublicPath) : getAssetBaseUrl('/img/maz-ui-preview.jpg')
+    const ogImage = image
+      ? getAssetBaseUrl(imagePublicPath)
+      : getAssetBaseUrl('/img/maz-ui-preview.jpg')
 
     const pageHead: HeadConfig[] = [
-      ['meta', { name: 'og:title', content: currentTitle }],
-      ['link', { rel: 'canonical', href: currentUrl }],
-      ['meta', { name: 'og:url', content: currentUrl }],
-      ['meta', { name: 'og:type', content: pageData.relativePath === 'index.md' ? 'website' : 'article' }],
-      ['meta', { name: 'description', content: currentDescription }],
-      ['meta', { name: 'og:description', content: currentDescription }],
-      ['meta', { name: 'twitter:title', content: currentTitle }],
-      ['meta', { name: 'twitter:image', content: ogImage }],
-      ['meta', { name: 'twitter:description', content: currentDescription }],
-      ['meta', { name: 'twitter:image:alt', content: currentDescription }],
-      ['meta', { name: 'og:image', content: ogImage }],
-      ['meta', { name: 'og:image:alt', content: currentDescription }],
-      ['meta', { name: 'og:updated_time', content: pageData.lastUpdated ? new Date(pageData.lastUpdated).toISOString() : new Date().toISOString() }],
-      ['meta', { name: 'article:modified_time', content: pageData.lastUpdated ? new Date(pageData.lastUpdated).toISOString() : new Date().toISOString() }],
+      [
+        'meta',
+        { name: 'og:title', content: currentTitle },
+      ],
+      [
+        'link',
+        { rel: 'canonical', href: currentUrl },
+      ],
+      [
+        'meta',
+        { name: 'og:url', content: currentUrl },
+      ],
+      [
+        'meta',
+        {
+          name: 'og:type',
+          content: pageData.relativePath === 'index.md'
+            ? 'website'
+            : 'article',
+        },
+      ],
+      [
+        'meta',
+        { name: 'description', content: currentDescription },
+      ],
+      [
+        'meta',
+        { name: 'og:description', content: currentDescription },
+      ],
+      [
+        'meta',
+        { name: 'twitter:title', content: currentTitle },
+      ],
+      [
+        'meta',
+        { name: 'twitter:image', content: ogImage },
+      ],
+      [
+        'meta',
+        { name: 'twitter:description', content: currentDescription },
+      ],
+      [
+        'meta',
+        { name: 'twitter:image:alt', content: currentDescription },
+      ],
+      [
+        'meta',
+        { name: 'og:image', content: ogImage },
+      ],
+      [
+        'meta',
+        { name: 'og:image:alt', content: currentDescription },
+      ],
+      [
+        'meta',
+        {
+          name: 'og:updated_time',
+          content: pageData.lastUpdated
+            ? new Date(pageData.lastUpdated).toISOString()
+            : new Date().toISOString(),
+        },
+      ],
+      [
+        'meta',
+        {
+          name: 'article:modified_time',
+          content: pageData.lastUpdated
+            ? new Date(pageData.lastUpdated).toISOString()
+            : new Date().toISOString(),
+        },
+      ],
     ]
 
-    return [...head, ...pageHead]
+    return [
+      ...head,
+      ...pageHead,
+    ]
   },
 } as UserConfig)

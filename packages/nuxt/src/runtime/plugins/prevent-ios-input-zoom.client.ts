@@ -15,6 +15,11 @@ export default defineNuxtPlugin(() => {
     return
 
   useHead({
-    meta: [{ name: 'viewport', content: addViewportMaximumScale(content) }],
+    meta: [
+      {
+        name: 'viewport',
+        content: addViewportMaximumScale(content),
+      },
+    ],
   })
 })

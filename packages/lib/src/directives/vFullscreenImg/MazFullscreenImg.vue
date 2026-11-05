@@ -22,7 +22,12 @@ const {
   src,
 } = defineProps<MazFullscreenImgProps>()
 
-const emits = defineEmits(['close', 'previous', 'next', 'before-close'])
+const emits = defineEmits([
+  'close',
+  'previous',
+  'next',
+  'before-close',
+])
 
 export interface MazFullscreenImgProps {
   src: string
@@ -106,7 +111,9 @@ function keydownLister(e: KeyboardEvent) {
 
   if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
     e.preventDefault()
-    nextPreviousImage(e.key === 'ArrowRight' ? 'next' : 'previous')
+    nextPreviousImage(e.key === 'ArrowRight'
+      ? 'next'
+      : 'previous')
   }
 }
 
@@ -119,7 +126,9 @@ function removeClassFromDocument() {
 }
 
 function getAllInstances(): HTMLElement[] {
-  return [...document.querySelectorAll('.m-fullscreen-img-instance')] as HTMLElement[]
+  return [
+    ...document.querySelectorAll('.m-fullscreen-img-instance'),
+  ] as HTMLElement[]
 }
 
 function getNewInstanceIndex(allInstances: HTMLElement[], newInstanceIndex: number): number {
@@ -154,7 +163,9 @@ function nextPreviousImage(which: 'next' | 'previous'): void {
     const allInstances = getAllInstances()
     const currentInstanceIndex = allInstances.indexOf(currentInstance)
     const newInstanceIndex
-      = which === 'next' ? currentInstanceIndex + 1 : currentInstanceIndex - 1
+      = which === 'next'
+        ? currentInstanceIndex + 1
+        : currentInstanceIndex - 1
 
     const nextInstance = allInstances[getNewInstanceIndex(allInstances, newInstanceIndex)]
     currentClickedElement.value = nextInstance
@@ -284,7 +295,9 @@ function getAnimationFrames({ trigger }: { trigger: 'open' | 'close' }) {
   ]
 
   return {
-    frames: trigger === 'open' ? frames : frames.reverse(),
+    frames: trigger === 'open'
+      ? frames
+      : frames.reverse(),
   }
 }
 

@@ -448,7 +448,12 @@ describe('MazBackdrop extended branch coverage', () => {
 
   describe('focus trap', () => {
     function dispatchTab(shiftKey = false) {
-      const event = new KeyboardEvent('keydown', { key: 'Tab', shiftKey, bubbles: true, cancelable: true })
+      const event = new KeyboardEvent('keydown', {
+        key: 'Tab',
+        shiftKey,
+        bubbles: true,
+        cancelable: true,
+      })
       document.dispatchEvent(event)
       return event
     }

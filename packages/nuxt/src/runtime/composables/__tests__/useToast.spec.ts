@@ -2,7 +2,9 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { useToast } from '../useToast'
 
-const mockToastHandler = { show: vi.fn() }
+const mockToastHandler = {
+  show: vi.fn(),
+}
 
 vi.mock('nuxt/app', () => ({
   useNuxtApp: vi.fn(() => ({

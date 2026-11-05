@@ -457,17 +457,41 @@ function insertTable() {
 }
 
 const SIMPLE_ACTIONS: Record<Exclude<MazMarkdownEditorToolbarAction, 'heading'>, { icon: Component, run: () => void }> = {
-  bold: { icon: MazBold, run: () => wrapSelection('**') },
-  italic: { icon: MazItalic, run: () => wrapSelection('_') },
-  strikethrough: { icon: MazStrikethrough, run: () => wrapSelection('~~') },
-  quote: { icon: MazChatBubbleBottomCenterText, run: () => prefixLines('> ') },
-  code: { icon: MazCodeBracket, run: () => wrapSelection('`') },
+  bold: {
+    icon: MazBold,
+    run: () => wrapSelection('**'),
+  },
+  italic: {
+    icon: MazItalic,
+    run: () => wrapSelection('_'),
+  },
+  strikethrough: {
+    icon: MazStrikethrough,
+    run: () => wrapSelection('~~'),
+  },
+  quote: {
+    icon: MazChatBubbleBottomCenterText,
+    run: () => prefixLines('> '),
+  },
+  code: {
+    icon: MazCodeBracket,
+    run: () => wrapSelection('`'),
+  },
   codeBlock: { icon: MazCodeBracketSquare, run: insertCodeBlock },
   link: { icon: MazLinkIcon, run: insertLink },
   image: { icon: MazPhoto, run: insertImage },
-  bulletList: { icon: MazListBullet, run: () => prefixLines('- ') },
-  orderedList: { icon: MazNumberedList, run: () => prefixLines('1. ') },
-  checkList: { icon: MazCheckCircle, run: () => prefixLines('- [ ] ') },
+  bulletList: {
+    icon: MazListBullet,
+    run: () => prefixLines('- '),
+  },
+  orderedList: {
+    icon: MazNumberedList,
+    run: () => prefixLines('1. '),
+  },
+  checkList: {
+    icon: MazCheckCircle,
+    run: () => prefixLines('- [ ] '),
+  },
   table: { icon: MazTableCells, run: insertTable },
 }
 
@@ -482,27 +506,122 @@ interface EditorShortcut {
 }
 
 const SHORTCUT_BINDINGS: EditorShortcut[] = [
-  { action: 'bold', key: 'b', shift: false, alt: false, token: 'B', run: SIMPLE_ACTIONS.bold.run },
-  { action: 'italic', key: 'i', shift: false, alt: false, token: 'I', run: SIMPLE_ACTIONS.italic.run },
-  { action: 'link', key: 'k', shift: false, alt: false, token: 'K', run: SIMPLE_ACTIONS.link.run },
-  { action: 'code', key: 'e', shift: false, alt: false, token: 'E', run: SIMPLE_ACTIONS.code.run },
-  { action: 'codeBlock', key: 'e', shift: true, alt: false, token: 'E', run: SIMPLE_ACTIONS.codeBlock.run },
-  { action: 'strikethrough', key: 'x', shift: true, alt: false, token: 'X', run: SIMPLE_ACTIONS.strikethrough.run },
-  { action: 'quote', code: 'Period', shift: true, alt: false, token: '.', run: SIMPLE_ACTIONS.quote.run },
-  { action: 'bulletList', code: 'Digit8', shift: true, alt: false, token: '8', run: SIMPLE_ACTIONS.bulletList.run },
-  { action: 'orderedList', code: 'Digit7', shift: true, alt: false, token: '7', run: SIMPLE_ACTIONS.orderedList.run },
-  { action: 'checkList', key: 'l', shift: true, alt: false, token: 'L', run: SIMPLE_ACTIONS.checkList.run },
-  { action: 'heading', code: 'Digit1', shift: false, alt: true, token: '1', run: () => applyHeading(1) },
-  { action: 'heading', code: 'Digit2', shift: false, alt: true, token: '2', run: () => applyHeading(2) },
-  { action: 'heading', code: 'Digit3', shift: false, alt: true, token: '3', run: () => applyHeading(3) },
+  {
+    action: 'bold',
+    key: 'b',
+    shift: false,
+    alt: false,
+    token: 'B',
+    run: SIMPLE_ACTIONS.bold.run,
+  },
+  {
+    action: 'italic',
+    key: 'i',
+    shift: false,
+    alt: false,
+    token: 'I',
+    run: SIMPLE_ACTIONS.italic.run,
+  },
+  {
+    action: 'link',
+    key: 'k',
+    shift: false,
+    alt: false,
+    token: 'K',
+    run: SIMPLE_ACTIONS.link.run,
+  },
+  {
+    action: 'code',
+    key: 'e',
+    shift: false,
+    alt: false,
+    token: 'E',
+    run: SIMPLE_ACTIONS.code.run,
+  },
+  {
+    action: 'codeBlock',
+    key: 'e',
+    shift: true,
+    alt: false,
+    token: 'E',
+    run: SIMPLE_ACTIONS.codeBlock.run,
+  },
+  {
+    action: 'strikethrough',
+    key: 'x',
+    shift: true,
+    alt: false,
+    token: 'X',
+    run: SIMPLE_ACTIONS.strikethrough.run,
+  },
+  {
+    action: 'quote',
+    code: 'Period',
+    shift: true,
+    alt: false,
+    token: '.',
+    run: SIMPLE_ACTIONS.quote.run,
+  },
+  {
+    action: 'bulletList',
+    code: 'Digit8',
+    shift: true,
+    alt: false,
+    token: '8',
+    run: SIMPLE_ACTIONS.bulletList.run,
+  },
+  {
+    action: 'orderedList',
+    code: 'Digit7',
+    shift: true,
+    alt: false,
+    token: '7',
+    run: SIMPLE_ACTIONS.orderedList.run,
+  },
+  {
+    action: 'checkList',
+    key: 'l',
+    shift: true,
+    alt: false,
+    token: 'L',
+    run: SIMPLE_ACTIONS.checkList.run,
+  },
+  {
+    action: 'heading',
+    code: 'Digit1',
+    shift: false,
+    alt: true,
+    token: '1',
+    run: () => applyHeading(1),
+  },
+  {
+    action: 'heading',
+    code: 'Digit2',
+    shift: false,
+    alt: true,
+    token: '2',
+    run: () => applyHeading(2),
+  },
+  {
+    action: 'heading',
+    code: 'Digit3',
+    shift: false,
+    alt: true,
+    token: '3',
+    run: () => applyHeading(3),
+  },
 ]
 
 const isApplePlatform = typeof navigator !== 'undefined' && /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent || '')
 
 function formatShortcut(binding: EditorShortcut): string {
   const mod = isApplePlatform ? '⌘' : 'Ctrl+'
-  const alt = binding.alt ? (isApplePlatform ? '⌥' : 'Alt+') : ''
-  const shift = binding.shift ? (isApplePlatform ? '⇧' : 'Shift+') : ''
+  const alt = binding.alt
+    ? (isApplePlatform ? '⌥' : 'Alt+')
+    : ''
+  const shift = binding.shift
+    ? (isApplePlatform ? '⇧' : 'Shift+')
+    : ''
   return `${mod}${alt}${shift}${binding.token}`
 }
 
@@ -524,9 +643,21 @@ interface ListPattern {
 }
 
 const LIST_PATTERNS: ListPattern[] = [
-  { re: /^(\s*)([-*+]) \[[ x]\] (.*)$/i, marker: m => `${m[1]}${m[2]} [ ] `, content: m => m[3] },
-  { re: /^(\s*)([-*+]) (.*)$/, marker: m => `${m[1]}${m[2]} `, content: m => m[3] },
-  { re: /^(\s*)(\d+)([.)]) (.*)$/, marker: m => `${m[1]}${Number(m[2]) + 1}${m[3]} `, content: m => m[4] },
+  {
+    re: /^(\s*)([-*+]) \[[ x]\] (.*)$/i,
+    marker: m => `${m[1]}${m[2]} [ ] `,
+    content: m => m[3],
+  },
+  {
+    re: /^(\s*)([-*+]) (.*)$/,
+    marker: m => `${m[1]}${m[2]} `,
+    content: m => m[3],
+  },
+  {
+    re: /^(\s*)(\d+)([.)]) (.*)$/,
+    marker: m => `${m[1]}${Number(m[2]) + 1}${m[3]} `,
+    content: m => m[4],
+  },
 ]
 
 function handleListContinuation(): boolean {
@@ -538,7 +669,9 @@ function handleListContinuation(): boolean {
   const caret = el.selectionStart ?? 0
   const lineStart = value.lastIndexOf('\n', caret - 1) + 1
   const lineBreak = value.indexOf('\n', caret)
-  const lineEnd = lineBreak === -1 ? value.length : lineBreak
+  const lineEnd = lineBreak === -1
+    ? value.length
+    : lineBreak
   const line = value.slice(lineStart, lineEnd)
 
   for (const pattern of LIST_PATTERNS) {
@@ -575,7 +708,9 @@ function handleKeydown(event: KeyboardEvent) {
   const match = SHORTCUT_BINDINGS.find(binding =>
     binding.shift === event.shiftKey
     && binding.alt === event.altKey
-    && (binding.code ? event.code === binding.code : event.key.toLowerCase() === binding.key),
+    && (binding.code
+      ? event.code === binding.code
+      : event.key.toLowerCase() === binding.key),
   )
 
   if (match) {
@@ -609,8 +744,14 @@ const resolvedToolbarActions = computed<MazMarkdownEditorToolbarAction[]>(() => 
 })
 
 const toolbarButtons = computed(() => resolvedToolbarActions.value.map((key) => {
-  if (key === 'heading')
-    return { key, isHeading: true as const, label: labels.value.toolbar.heading, title: labels.value.toolbar.heading }
+  if (key === 'heading') {
+    return {
+      key,
+      isHeading: true as const,
+      label: labels.value.toolbar.heading,
+      title: labels.value.toolbar.heading,
+    }
+  }
 
   const label = labels.value.toolbar[key]
   const hint = shortcutHints.value[key]
@@ -620,15 +761,26 @@ const toolbarButtons = computed(() => resolvedToolbarActions.value.map((key) => 
     isHeading: false as const,
     icon: SIMPLE_ACTIONS[key].icon,
     label,
-    title: hint ? `${label} (${hint})` : label,
+    title: hint
+      ? `${label} (${hint})`
+      : label,
     run: SIMPLE_ACTIONS[key].run,
   }
 }))
 
 const headingItems = computed<MazDropdownMenuItem[]>(() => [
-  { label: labels.value.headings.h1, onClick: () => applyHeading(1) },
-  { label: labels.value.headings.h2, onClick: () => applyHeading(2) },
-  { label: labels.value.headings.h3, onClick: () => applyHeading(3) },
+  {
+    label: labels.value.headings.h1,
+    onClick: () => applyHeading(1),
+  },
+  {
+    label: labels.value.headings.h2,
+    onClick: () => applyHeading(2),
+  },
+  {
+    label: labels.value.headings.h3,
+    onClick: () => applyHeading(3),
+  },
 ])
 
 const showToolbar = computed(() => resolvedToolbarActions.value.length > 0 && mode.value !== 'preview')
@@ -719,7 +871,9 @@ function onTabKeydown(event: KeyboardEvent) {
 const tabItems = computed(() => [
   {
     'id': getTabId('write'),
-    'tabindex': mode.value === 'write' ? 0 : -1,
+    'tabindex': mode.value === 'write'
+      ? 0
+      : -1,
     'onKeydown': onTabKeydown,
     'color': 'transparent' as const,
     'outlined': true,
@@ -735,7 +889,9 @@ const tabItems = computed(() => [
   },
   {
     'id': getTabId('preview'),
-    'tabindex': mode.value === 'preview' ? 0 : -1,
+    'tabindex': mode.value === 'preview'
+      ? 0
+      : -1,
     'onKeydown': onTabKeydown,
     'color': 'transparent' as const,
     'outlined': true,
@@ -751,7 +907,9 @@ const tabItems = computed(() => [
   },
   {
     'id': getTabId('split'),
-    'tabindex': mode.value === 'split' ? 0 : -1,
+    'tabindex': mode.value === 'split'
+      ? 0
+      : -1,
     'onKeydown': onTabKeydown,
     'color': 'transparent' as const,
     'outlined': true,
@@ -768,7 +926,10 @@ const tabItems = computed(() => [
 ])
 
 watch(
-  [() => modelValue, mode],
+  [
+    () => modelValue,
+    mode,
+  ],
   ([, currentMode]) => {
     if (currentMode !== 'write')
       renderPreview()

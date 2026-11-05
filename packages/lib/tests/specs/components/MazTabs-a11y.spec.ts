@@ -16,7 +16,12 @@ afterEach(() => {
 
 function mountTabs(items: unknown[] = ['First', 'Second', 'Third']) {
   const wrapper = mount({
-    components: { MazTabs, MazTabsBar, MazTabsContent, MazTabsContentItem },
+    components: {
+      MazTabs,
+      MazTabsBar,
+      MazTabsContent,
+      MazTabsContentItem,
+    },
     setup: () => ({ items }),
     template: `
       <MazTabs>
@@ -124,7 +129,11 @@ describe('given MazTabs with a bar and panels', () => {
 
   describe('when the next tab is disabled', () => {
     it('then the arrows skip it', async () => {
-      const wrapper = mountTabs([{ label: 'First' }, { label: 'Second', disabled: true }, { label: 'Third' }])
+      const wrapper = mountTabs([
+        { label: 'First' },
+        { label: 'Second', disabled: true },
+        { label: 'Third' },
+      ])
 
       await getTabs(wrapper)[0].trigger('keydown', { key: 'ArrowRight' })
       await nextTick()
@@ -135,7 +144,11 @@ describe('given MazTabs with a bar and panels', () => {
 
   describe('when the active tab is disabled', () => {
     it('then the first enabled tab is in the tab sequence', () => {
-      const wrapper = mountTabs([{ label: 'First', disabled: true }, { label: 'Second' }, { label: 'Third' }])
+      const wrapper = mountTabs([
+        { label: 'First', disabled: true },
+        { label: 'Second' },
+        { label: 'Third' },
+      ])
 
       expect(getTabs(wrapper).map(tab => tab.attributes('tabindex'))).toEqual(['-1', '0', '-1'])
     })
@@ -143,7 +156,10 @@ describe('given MazTabs with a bar and panels', () => {
 
   describe('when every tab is disabled', () => {
     it('then the arrows do nothing', async () => {
-      const wrapper = mountTabs([{ label: 'First', disabled: true }, { label: 'Second', disabled: true }])
+      const wrapper = mountTabs([
+        { label: 'First', disabled: true },
+        { label: 'Second', disabled: true },
+      ])
 
       await getTabs(wrapper)[0].trigger('keydown', { key: 'ArrowRight' })
       await nextTick()
@@ -168,7 +184,12 @@ describe('given MazTabs with a bar and panels', () => {
 describe('given a standalone MazTabsBar', () => {
   describe('when it is rendered', () => {
     it('then the tabs have unique ids and no aria-controls', () => {
-      const wrapper = mount(MazTabsBar, { props: { items: ['First', 'Second'], modelValue: 1 } })
+      const wrapper = mount(MazTabsBar, {
+        props: {
+          items: ['First', 'Second'],
+          modelValue: 1,
+        },
+      })
       mountedWrappers.push(wrapper)
 
       const tabs = getTabs(wrapper)
@@ -180,7 +201,13 @@ describe('given a standalone MazTabsBar', () => {
 
   describe('when ArrowRight is pressed', () => {
     it('then the model is updated with the next tab', async () => {
-      const wrapper = mount(MazTabsBar, { props: { items: ['First', 'Second'], modelValue: 1 }, attachTo: document.body })
+      const wrapper = mount(MazTabsBar, {
+        props: {
+          items: ['First', 'Second'],
+          modelValue: 1,
+        },
+        attachTo: document.body,
+      })
       mountedWrappers.push(wrapper)
 
       await getTabs(wrapper)[0].trigger('keydown', { key: 'ArrowRight' })

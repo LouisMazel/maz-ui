@@ -27,10 +27,43 @@ const UTILS_NAMES: Record<string, string> = {
 }
 
 const THIRD_PARTY_RULES: ThirdPartyRule[] = [
-  { packages: ['lodash', 'lodash-es', 'lodash/', 'lodash-es/', 'underscore', 'radash', 'es-toolkit'], names: UTILS_NAMES, severity: 'warning', rule: 'prefer-utils' },
-  { packages: ['lodash.debounce', 'just-debounce-it', 'debounce', 'p-debounce'], replacement: UTILS_NAMES.debounce, severity: 'warning', rule: 'prefer-utils' },
-  { packages: ['lodash.throttle', 'just-throttle', 'throttle-debounce'], replacement: '`debounce` / `throttle` from `@maz-ui/utils`', severity: 'warning', rule: 'prefer-utils' },
-  { packages: ['js-cookie', 'universal-cookie', 'vue-cookies'], replacement: '`getCookie`, `setCookie`, `deleteCookie` from `@maz-ui/utils/helpers/cookie`', severity: 'warning', rule: 'prefer-utils' },
+  {
+    packages: [
+      'lodash',
+      'lodash-es',
+      'lodash/',
+      'lodash-es/',
+      'underscore',
+      'radash',
+      'es-toolkit',
+    ],
+    names: UTILS_NAMES,
+    severity: 'warning',
+    rule: 'prefer-utils',
+  },
+  {
+    packages: [
+      'lodash.debounce',
+      'just-debounce-it',
+      'debounce',
+      'p-debounce',
+    ],
+    replacement: UTILS_NAMES.debounce,
+    severity: 'warning',
+    rule: 'prefer-utils',
+  },
+  {
+    packages: ['lodash.throttle', 'just-throttle', 'throttle-debounce'],
+    replacement: '`debounce` / `throttle` from `@maz-ui/utils`',
+    severity: 'warning',
+    rule: 'prefer-utils',
+  },
+  {
+    packages: ['js-cookie', 'universal-cookie', 'vue-cookies'],
+    replacement: '`getCookie`, `setCookie`, `deleteCookie` from `@maz-ui/utils/helpers/cookie`',
+    severity: 'warning',
+    rule: 'prefer-utils',
+  },
   {
     packages: ['@vueuse/core'],
     names: {
@@ -50,23 +83,170 @@ const THIRD_PARTY_RULES: ThirdPartyRule[] = [
     severity: 'info',
     rule: 'prefer-ecosystem',
   },
-  { packages: ['vue-toastification', 'vue-sonner', 'vue3-toastify', 'notivue', '@kyvg/vue3-notification', 'vue-toast-notification'], replacement: '`useToast()` (maz-ui toast plugin)', severity: 'warning', rule: 'prefer-ecosystem' },
-  { packages: ['@heroicons/vue', 'lucide-vue-next', '@lucide/vue', '@iconify/vue', '@phosphor-icons/vue', '@tabler/icons-vue', 'vue-feather-icons', '@fortawesome/', 'unplugin-icons', '~icons/', 'virtual:icons/', '@mdi/js', 'oh-vue-icons'], replacement: '@maz-ui/icons (`find_icons`)', severity: 'warning', rule: 'prefer-ecosystem' },
-  { packages: ['floating-vue', 'v-tooltip', 'tippy.js', 'vue-tippy'], replacement: 'the `vTooltip` directive or MazPopover', severity: 'warning', rule: 'prefer-ecosystem' },
-  { packages: ['@floating-ui/vue', '@floating-ui/dom', '@popperjs/core'], replacement: 'MazPopover (floating panel with positioning, triggers and focus management) or `vTooltip`', severity: 'info', rule: 'prefer-ecosystem' },
-  { packages: ['vue-chartjs', 'vue-chart-3', 'apexcharts', 'vue3-apexcharts', 'echarts', 'vue-echarts'], replacement: 'MazChart (chart.js based)', severity: 'info', rule: 'prefer-ecosystem' },
-  { packages: ['@vuepic/vue-datepicker', 'vue-datepicker-next', 'v-calendar', 'vue-flatpickr-component', 'flatpickr'], replacement: 'MazDatePicker', severity: 'warning', rule: 'prefer-ecosystem' },
-  { packages: ['vue-tel-input', 'vue-phone-number-input', 'vue-country-code'], replacement: 'MazInputPhoneNumber / MazSelectCountry', severity: 'warning', rule: 'prefer-ecosystem' },
-  { packages: ['vue-multiselect', 'vue-select', '@vueform/multiselect', 'vue3-select-component'], replacement: 'MazSelect (search, multiple, groups, custom options)', severity: 'warning', rule: 'prefer-ecosystem' },
-  { packages: ['vue-final-modal', '@kouts/vue-modal', 'vue-js-modal'], replacement: 'MazDialog, MazDialogConfirm or MazBottomSheet', severity: 'warning', rule: 'prefer-ecosystem' },
-  { packages: ['vue3-dropzone', 'vue-dropzone', 'dropzone', 'vue-upload-component', 'filepond', 'vue-filepond'], replacement: 'MazDropzone', severity: 'warning', rule: 'prefer-ecosystem' },
-  { packages: ['vue3-otp-input', 'vue-otp-input'], replacement: 'MazInputCode', severity: 'warning', rule: 'prefer-ecosystem' },
-  { packages: ['vue3-carousel', 'vue-agile', 'swiper/vue'], replacement: 'MazCarousel', severity: 'info', rule: 'prefer-ecosystem' },
-  { packages: ['vue-skeletor', 'vue-content-loader', 'vue-loading-skeleton'], replacement: 'MazSkeleton', severity: 'warning', rule: 'prefer-ecosystem' },
-  { packages: ['vue-loading-overlay', 'vue-spinner', 'vue-spinners', 'epic-spinners'], replacement: 'MazSpinner, MazFullscreenLoader or `useWait`', severity: 'warning', rule: 'prefer-ecosystem' },
-  { packages: ['vue-easy-lightbox', 'vue-image-zoomer', 'medium-zoom', 'viewerjs', 'v-viewer'], replacement: 'the `vZoomImg` / `vFullscreenImg` directives or MazGallery', severity: 'warning', rule: 'prefer-ecosystem' },
-  { packages: ['aos'], replacement: 'the maz-ui AOS plugin (`useAos`)', severity: 'warning', rule: 'prefer-ecosystem' },
-  { packages: ['vee-validate', '@vuelidate/core', 'vuelidate'], replacement: '`useFormValidator` / `useFormField` with your Standard Schema library (Zod, Valibot, ArkType)', severity: 'info', rule: 'prefer-ecosystem' },
+  {
+    packages: [
+      'vue-toastification',
+      'vue-sonner',
+      'vue3-toastify',
+      'notivue',
+      '@kyvg/vue3-notification',
+      'vue-toast-notification',
+    ],
+    replacement: '`useToast()` (maz-ui toast plugin)',
+    severity: 'warning',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: [
+      '@heroicons/vue',
+      'lucide-vue-next',
+      '@lucide/vue',
+      '@iconify/vue',
+      '@phosphor-icons/vue',
+      '@tabler/icons-vue',
+      'vue-feather-icons',
+      '@fortawesome/',
+      'unplugin-icons',
+      '~icons/',
+      'virtual:icons/',
+      '@mdi/js',
+      'oh-vue-icons',
+    ],
+    replacement: '@maz-ui/icons (`find_icons`)',
+    severity: 'warning',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: [
+      'floating-vue',
+      'v-tooltip',
+      'tippy.js',
+      'vue-tippy',
+    ],
+    replacement: 'the `vTooltip` directive or MazPopover',
+    severity: 'warning',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: ['@floating-ui/vue', '@floating-ui/dom', '@popperjs/core'],
+    replacement: 'MazPopover (floating panel with positioning, triggers and focus management) or `vTooltip`',
+    severity: 'info',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: [
+      'vue-chartjs',
+      'vue-chart-3',
+      'apexcharts',
+      'vue3-apexcharts',
+      'echarts',
+      'vue-echarts',
+    ],
+    replacement: 'MazChart (chart.js based)',
+    severity: 'info',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: [
+      '@vuepic/vue-datepicker',
+      'vue-datepicker-next',
+      'v-calendar',
+      'vue-flatpickr-component',
+      'flatpickr',
+    ],
+    replacement: 'MazDatePicker',
+    severity: 'warning',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: ['vue-tel-input', 'vue-phone-number-input', 'vue-country-code'],
+    replacement: 'MazInputPhoneNumber / MazSelectCountry',
+    severity: 'warning',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: [
+      'vue-multiselect',
+      'vue-select',
+      '@vueform/multiselect',
+      'vue3-select-component',
+    ],
+    replacement: 'MazSelect (search, multiple, groups, custom options)',
+    severity: 'warning',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: ['vue-final-modal', '@kouts/vue-modal', 'vue-js-modal'],
+    replacement: 'MazDialog, MazDialogConfirm or MazBottomSheet',
+    severity: 'warning',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: [
+      'vue3-dropzone',
+      'vue-dropzone',
+      'dropzone',
+      'vue-upload-component',
+      'filepond',
+      'vue-filepond',
+    ],
+    replacement: 'MazDropzone',
+    severity: 'warning',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: ['vue3-otp-input', 'vue-otp-input'],
+    replacement: 'MazInputCode',
+    severity: 'warning',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: ['vue3-carousel', 'vue-agile', 'swiper/vue'],
+    replacement: 'MazCarousel',
+    severity: 'info',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: ['vue-skeletor', 'vue-content-loader', 'vue-loading-skeleton'],
+    replacement: 'MazSkeleton',
+    severity: 'warning',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: [
+      'vue-loading-overlay',
+      'vue-spinner',
+      'vue-spinners',
+      'epic-spinners',
+    ],
+    replacement: 'MazSpinner, MazFullscreenLoader or `useWait`',
+    severity: 'warning',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: [
+      'vue-easy-lightbox',
+      'vue-image-zoomer',
+      'medium-zoom',
+      'viewerjs',
+      'v-viewer',
+    ],
+    replacement: 'the `vZoomImg` / `vFullscreenImg` directives or MazGallery',
+    severity: 'warning',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: ['aos'],
+    replacement: 'the maz-ui AOS plugin (`useAos`)',
+    severity: 'warning',
+    rule: 'prefer-ecosystem',
+  },
+  {
+    packages: ['vee-validate', '@vuelidate/core', 'vuelidate'],
+    replacement: '`useFormValidator` / `useFormField` with your Standard Schema library (Zod, Valibot, ArkType)',
+    severity: 'info',
+    rule: 'prefer-ecosystem',
+  },
 ]
 
 interface ParsedImport {
@@ -79,7 +259,9 @@ interface ParsedImport {
 const IMPORT_REGEX = /import\s+(type\s+)?(?:([\w$]+)\s*(?:,\s*)?)?(?:\{([^}]*)\}|\*\s+as\s+[\w$]+)?\s*from\s*['"]([^'"]+)['"]|import\s*['"]([^'"]+)['"]/g
 
 export function parseImports(code: string): ParsedImport[] {
-  return [...code.matchAll(IMPORT_REGEX)].map((match) => {
+  return [
+    ...code.matchAll(IMPORT_REGEX),
+  ].map((match) => {
     const [, typeKeyword, defaultName, named, specifier, sideEffect] = match
     const names = (named ?? '')
       .split(',')
@@ -89,7 +271,9 @@ export function parseImports(code: string): ParsedImport[] {
 
     return {
       specifier: specifier ?? sideEffect,
-      names: defaultName ? [defaultName, ...names] : names,
+      names: defaultName
+        ? [defaultName, ...names]
+        : names,
       typeOnly: !!typeKeyword,
       offset: match.index ?? 0,
     }
@@ -97,7 +281,9 @@ export function parseImports(code: string): ParsedImport[] {
 }
 
 function matchesPackage(specifier: string, packages: string[]): boolean {
-  return packages.some(name => (name.endsWith('/') ? specifier.startsWith(name) : specifier === name || specifier.startsWith(`${name}/`)))
+  return packages.some(name => (name.endsWith('/')
+    ? specifier.startsWith(name)
+    : specifier === name || specifier.startsWith(`${name}/`)))
 }
 
 /** Reports imports of internal files or runtime imports of the types-only root entry, returns `true` when reported */
@@ -137,7 +323,9 @@ function checkComponentImport(entry: ParsedImport, offset: number, context: Revi
     rule: 'unknown-component',
     severity: 'error',
     message: `\`${name}\` is not a maz-ui component.`,
-    suggestion: near.length > 0 ? `Did you mean ${near.map(candidate => `\`${candidate}\``).join(' or ')}?` : 'Find the right one with `search_docs`.',
+    suggestion: near.length > 0
+      ? `Did you mean ${near.map(candidate => `\`${candidate}\``).join(' or ')}?`
+      : 'Find the right one with `search_docs`.',
   }, offset)
 }
 
@@ -146,7 +334,12 @@ function checkIconImport(entry: ParsedImport, offset: number, context: ReviewCon
     return
 
   const fromPath = /^@maz-ui\/icons\/(?:static|lazy|raw)\/(\w+)$/.exec(entry.specifier)?.[1]
-  const icons = [...entry.names, ...(fromPath ? [fromPath] : [])]
+  const icons = [
+    ...entry.names,
+    ...(fromPath
+      ? [fromPath]
+      : []),
+  ]
     .map(name => name.replace(/^Lazy(?=Maz)/, ''))
     .filter(name => name.startsWith('Maz') && !context.knowledge.iconNames.has(name))
 
@@ -157,7 +350,9 @@ function checkIconImport(entry: ParsedImport, offset: number, context: ReviewCon
       rule: 'unknown-icon',
       severity: 'error',
       message: `\`${icon}\` does not exist in @maz-ui/icons.`,
-      suggestion: near.length > 0 ? `Did you mean ${near.map(name => `\`${name}\``).join(' or ')}? Search with \`find_icons\`.` : 'Search with `find_icons({ query: "..." })`.',
+      suggestion: near.length > 0
+        ? `Did you mean ${near.map(name => `\`${name}\``).join(' or ')}? Search with \`find_icons\`.`
+        : 'Search with `find_icons({ query: "..." })`.',
     }, offset)
   }
 }
@@ -197,7 +392,12 @@ function checkThirdPartyImport(entry: ParsedImport, offset: number, context: Rev
 
     if (rule.names) {
       const lodashPath = /^lodash(?:-es)?\/(\w+)$/.exec(entry.specifier)?.[1]
-      const flagged = [...entry.names, ...(lodashPath ? [lodashPath] : [])].filter(name => rule.names?.[name])
+      const flagged = [
+        ...entry.names,
+        ...(lodashPath
+          ? [lodashPath]
+          : []),
+      ].filter(name => rule.names?.[name])
 
       for (const name of flagged) {
         context.report({

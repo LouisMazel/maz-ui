@@ -67,7 +67,9 @@ describe('mazPagination.vue', () => {
     if (allButtons.length > 3) {
       await allButtons[3].trigger('click')
       expect(wrapper.emitted('update:model-value')).toBeTruthy()
-      expect(wrapper.emitted('update:model-value')).toEqual([[2]])
+      expect(wrapper.emitted('update:model-value')).toEqual([
+        [2],
+      ])
     }
     else {
       // Fallback: just verify the component rendered
@@ -121,7 +123,13 @@ describe('given a MazUi global default for size', () => {
     it('then the buttons receive the global size', () => {
       const wrapper = mount(MazPagination, {
         props: { totalPages: 10 },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'xl' } } } },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              global: { size: 'xl' },
+            },
+          },
+        },
       })
 
       expect(wrapper.findComponent(MazBtn).props('size')).toBe('xl')
@@ -132,7 +140,14 @@ describe('given a MazUi global default for size', () => {
     it('then the buttons receive the component-scoped size', () => {
       const wrapper = mount(MazPagination, {
         props: { totalPages: 10 },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazPagination: { size: 'lg' } } } },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              global: { size: 'mini' },
+              MazPagination: { size: 'lg' },
+            },
+          },
+        },
       })
 
       expect(wrapper.findComponent(MazBtn).props('size')).toBe('lg')
@@ -143,7 +158,14 @@ describe('given a MazUi global default for size', () => {
     it('then the instance prop wins over every configured default', () => {
       const wrapper = mount(MazPagination, {
         props: { totalPages: 10, size: 'sm' },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazPagination: { size: 'lg' } } } },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              global: { size: 'mini' },
+              MazPagination: { size: 'lg' },
+            },
+          },
+        },
       })
 
       expect(wrapper.findComponent(MazBtn).props('size')).toBe('sm')

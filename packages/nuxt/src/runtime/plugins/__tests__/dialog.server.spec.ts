@@ -21,7 +21,13 @@ describe('dialog plugin (server)', () => {
   it('should provide server stub on server', async () => {
     const vueApp = {}
     const context = {
-      $config: { public: { mazUi: { plugins: { dialog: true } } } },
+      $config: {
+        public: {
+          mazUi: {
+            plugins: { dialog: true },
+          },
+        },
+      },
       vueApp,
     }
 

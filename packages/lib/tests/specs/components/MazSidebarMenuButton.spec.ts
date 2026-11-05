@@ -14,7 +14,11 @@ function mountWithSidebar(
       default: {
         components: { MazSidebarMenuButton },
         setup() {
-          return () => h(MazSidebarMenuButton, buttonProps, buttonSlot ? { default: () => buttonSlot } : undefined)
+          return () => h(MazSidebarMenuButton, buttonProps, buttonSlot
+            ? {
+                default: () => buttonSlot,
+              }
+            : undefined)
         },
       },
     },
@@ -308,7 +312,9 @@ describe('given MazSidebarMenuButton component', () => {
   describe('when rendered outside MazSidebar', () => {
     it('then it throws an error', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-      expect(() => mount(MazSidebarMenuButton, { props: { label: 'X' } })).toThrow()
+      expect(() => mount(MazSidebarMenuButton, {
+        props: { label: 'X' },
+      })).toThrow()
       consoleSpy.mockRestore()
     })
   })

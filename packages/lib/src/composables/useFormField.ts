@@ -59,7 +59,9 @@ export function useFormField<
 
   const finalOpts = opts as FormFieldOptions<Model, ModelKey, Model[ModelKey]>
 
-  const fieldMode = fieldHasValidation<Model, ModelKey>(name, internalSchema.value) ? options?.mode ?? formOptions.mode : undefined
+  const fieldMode = fieldHasValidation<Model, ModelKey>(name, internalSchema.value)
+    ? options?.mode ?? formOptions.mode
+    : undefined
   finalOpts.mode = fieldMode
 
   const fieldState = computed(() => fieldsStates.value[name])
@@ -69,7 +71,10 @@ export function useFormField<
     fieldState: fieldState.value,
     payload: payload.value,
     schema: internalSchema.value,
-    options: { ...formOptions, ...finalOpts },
+    options: {
+      ...formOptions,
+      ...finalOpts,
+    },
   })
 
   if (finalOpts.defaultValue !== undefined && !isEqual(payload.value[name], finalOpts.defaultValue)) {

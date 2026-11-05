@@ -21,7 +21,13 @@ describe('toast plugin (server)', () => {
   it('should provide server stub on server', async () => {
     const vueApp = {}
     const context = {
-      $config: { public: { mazUi: { plugins: { toast: true } } } },
+      $config: {
+        public: {
+          mazUi: {
+            plugins: { toast: true },
+          },
+        },
+      },
       vueApp,
     }
 

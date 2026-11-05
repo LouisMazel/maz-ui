@@ -25,7 +25,18 @@ describe('given MazSpinner component', () => {
 
   describe('when rendered with different colors', () => {
     it('then it should apply the correct color classes', () => {
-      const colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'destructive', 'contrast', 'normal', 'transparent']
+      const colors = [
+        'primary',
+        'secondary',
+        'accent',
+        'info',
+        'success',
+        'warning',
+        'destructive',
+        'contrast',
+        'normal',
+        'transparent',
+      ]
 
       colors.forEach((color) => {
         const wrapper = mount(MazSpinner, {

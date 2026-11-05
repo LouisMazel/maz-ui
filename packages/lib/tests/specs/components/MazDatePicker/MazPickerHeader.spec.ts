@@ -282,7 +282,17 @@ describe('given MazPickerHeader component', () => {
   })
 
   describe('when different colors are used', () => {
-    const colors = ['primary', 'secondary', 'info', 'success', 'warning', 'destructive', 'accent', 'contrast', 'transparent'] as const
+    const colors = [
+      'primary',
+      'secondary',
+      'info',
+      'success',
+      'warning',
+      'destructive',
+      'accent',
+      'contrast',
+      'transparent',
+    ] as const
     for (const color of colors) {
       it(`then it should apply --${color} class`, () => {
         const wrapper = mount(MazPickerHeader, {
@@ -364,7 +374,9 @@ describe('given MazPickerHeader component', () => {
         },
       })
 
-      await wrapper.setProps({ modelValue: { start: '2024-01-05', end: '2024-01-15' } })
+      await wrapper.setProps({
+        modelValue: { start: '2024-01-05', end: '2024-01-15' },
+      })
       expect(wrapper.find('.m-date-picker-header').exists()).toBe(true)
     })
   })

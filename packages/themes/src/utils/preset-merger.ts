@@ -21,8 +21,14 @@ function mergeScales(base: ThemeScales, overrides?: ThemePresetOverrides['scales
     return base
 
   return {
-    rounded: { ...base.rounded, ...overrides.rounded },
-    shadow: { ...base.shadow, ...overrides.shadow },
+    rounded: {
+      ...base.rounded,
+      ...overrides.rounded,
+    },
+    shadow: {
+      ...base.shadow,
+      ...overrides.shadow,
+    },
   }
 }
 
@@ -31,16 +37,28 @@ function mergeComponents(base?: ThemeComponents, overrides?: ThemeComponents): T
     return undefined
 
   return {
-    btn: { ...base?.btn, ...overrides?.btn },
+    btn: {
+      ...base?.btn,
+      ...overrides?.btn,
+    },
     container: {
-      bg: { ...base?.container?.bg, ...overrides?.container?.bg },
+      bg: {
+        ...base?.container?.bg,
+        ...overrides?.container?.bg,
+      },
     },
     input: {
       ...base?.input,
       ...overrides?.input,
-      bg: { ...base?.input?.bg, ...overrides?.input?.bg },
+      bg: {
+        ...base?.input?.bg,
+        ...overrides?.input?.bg,
+      },
     },
-    dialog: { ...base?.dialog, ...overrides?.dialog },
+    dialog: {
+      ...base?.dialog,
+      ...overrides?.dialog,
+    },
   }
 }
 

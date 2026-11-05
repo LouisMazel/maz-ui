@@ -10,8 +10,12 @@ const transitionName = ref<string>('maz-tab-transition')
 
 const { currentTab, idPrefix } = useInjectStrict<MazTabsProvide>('maz-tabs')
 
-const panelId = computed(() => idPrefix ? `${idPrefix.value}-panel-${props.tab}` : undefined)
-const tabId = computed(() => idPrefix ? `${idPrefix.value}-tab-${props.tab}` : undefined)
+const panelId = computed(() => idPrefix
+  ? `${idPrefix.value}-panel-${props.tab}`
+  : undefined)
+const tabId = computed(() => idPrefix
+  ? `${idPrefix.value}-tab-${props.tab}`
+  : undefined)
 
 watch(
   () => currentTab.value,

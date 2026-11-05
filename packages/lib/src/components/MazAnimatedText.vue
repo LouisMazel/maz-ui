@@ -164,7 +164,9 @@ const gradientStyle = computed(() => {
 
   const colors: string[] = [
     `var(--maz-${gradientFrom})`,
-    ...(gradientVia ? [`var(--maz-${gradientVia})`] : []),
+    ...(gradientVia
+      ? [`var(--maz-${gradientVia})`]
+      : []),
     `var(--maz-${gradientTo})`,
   ]
 

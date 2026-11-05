@@ -10,7 +10,10 @@ export default defineBuildConfig({
     // Published without dependencies: `npx @maz-ui/mcp` downloads a single package instead of a hundred
     inlineDependencies: true,
     // The Node builds of the dependencies: the browser one of @vue/compiler-dom decodes the HTML entities with `document`
-    resolve: { exportConditions: ['node'], preferBuiltins: true },
+    resolve: {
+      exportConditions: ['node'],
+      preferBuiltins: true,
+    },
   },
   hooks: {
     'build:before': (ctx) => {

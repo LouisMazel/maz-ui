@@ -23,7 +23,9 @@ describe('given built bundles generated before the version bump', () => {
 
   describe('when the versions are synced', () => {
     it('then the manifests get the bumped maz-ui version and keep their content', () => {
-      expect(syncBundleVersions(root)).toEqual([join(root, 'packages/lib/docs/manifest.json')])
+      expect(syncBundleVersions(root)).toEqual([
+        join(root, 'packages/lib/docs/manifest.json'),
+      ])
       expect(JSON.parse(readFileSync(join(root, 'packages/lib/docs/manifest.json'), 'utf8'))).toEqual({ schemaVersion: 1, version: '5.1.0-beta.1', docs: [] })
     })
 

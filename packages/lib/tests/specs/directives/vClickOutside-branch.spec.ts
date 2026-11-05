@@ -7,7 +7,9 @@ function flushPromises() {
 }
 
 // In jsdom, document.ontouchstart === null, so the event type used is 'touchstart'
-const EVENT_TYPE = document.ontouchstart === null ? 'touchstart' : 'click'
+const EVENT_TYPE = document.ontouchstart === null
+  ? 'touchstart'
+  : 'click'
 
 describe('given vClickOutside directive (branch coverage)', () => {
   afterEach(() => {

@@ -6,15 +6,21 @@ import { pascalToKebab } from '../utils/strings'
 const HTML_ATTRIBUTE_PROPS = new Set(['class', 'style'])
 
 function code(value: string): string {
-  return value.includes('`') ? `\`\` ${value} \`\`` : `\`${value}\``
+  return value.includes('`')
+    ? `\`\` ${value} \`\``
+    : `\`${value}\``
 }
 
 export function modelDirective(model: string): string {
-  return model === 'modelValue' ? 'v-model' : `v-model:${pascalToKebab(model)}`
+  return model === 'modelValue'
+    ? 'v-model'
+    : `v-model:${pascalToKebab(model)}`
 }
 
 export function renderProp(prop: PropApi): string {
-  const details = [code(prop.type)]
+  const details = [
+    code(prop.type),
+  ]
 
   if (prop.required)
     details.push('required')
@@ -27,7 +33,11 @@ export function renderProp(prop: PropApi): string {
   const values = prop.values?.length && !valuesInType
     ? ` Values: ${prop.values.map(value => code(`'${value}'`)).join(', ')}${prop.strictValues ? '' : ' (non exhaustive)'}.`
     : ''
-  const description = prop.description ? ` ${prop.description}${/[.!?]$/.test(prop.description) ? '' : '.'}` : ''
+  const description = prop.description
+    ? ` ${prop.description}${/[.!?]$/.test(prop.description)
+      ? ''
+      : '.'}`
+    : ''
 
   return `- ${code(pascalToKebab(prop.name))} (${details.join(', ')}):${description}${values}`.replace(/:$/, '')
 }
@@ -39,13 +49,21 @@ function renderEvents(api: ComponentApi, heading: string): string[] {
   return [
     `${heading} Events`,
     '',
-    ...api.events.map(event => `- ${code(`@${event.name}`)}${event.payload ? ` (payload: ${code(event.payload)})` : ''}${event.description ? `: ${event.description}` : ''}`),
+    ...api.events.map(event => `- ${code(`@${event.name}`)}${event.payload
+      ? ` (payload: ${code(event.payload)})`
+      : ''}${event.description
+      ? `: ${event.description}`
+      : ''}`),
     '',
   ]
 }
 
 function renderBinding(binding: ComponentApi['slots'][number]['bindings'][number]): string {
-  return `${code(`${binding.name}${binding.type ? `: ${binding.type}` : ''}`)}${binding.description ? ` (${binding.description})` : ''}`
+  return `${code(`${binding.name}${binding.type
+    ? `: ${binding.type}`
+    : ''}`)}${binding.description
+    ? ` (${binding.description})`
+    : ''}`
 }
 
 function renderSlots(api: ComponentApi, heading: string): string[] {
@@ -56,9 +74,13 @@ function renderSlots(api: ComponentApi, heading: string): string[] {
     `${heading} Slots`,
     '',
     ...api.slots.map((slot) => {
-      const bindings = slot.bindings.length > 0 ? ` Bindings: ${slot.bindings.map(renderBinding).join(', ')}.` : ''
+      const bindings = slot.bindings.length > 0
+        ? ` Bindings: ${slot.bindings.map(renderBinding).join(', ')}.`
+        : ''
 
-      return `- ${code(`#${slot.name}`)}${slot.description ? `: ${slot.description}` : ''}${bindings}`
+      return `- ${code(`#${slot.name}`)}${slot.description
+        ? `: ${slot.description}`
+        : ''}${bindings}`
     }),
     '',
   ]
@@ -71,7 +93,9 @@ function renderExpose(api: ComponentApi, heading: string): string[] {
   return [
     `${heading} Exposed (template ref)`,
     '',
-    ...api.expose.map(exposed => `- ${code(exposed.name)}${exposed.description ? `: ${exposed.description}` : ''}`),
+    ...api.expose.map(exposed => `- ${code(exposed.name)}${exposed.description
+      ? `: ${exposed.description}`
+      : ''}`),
     '',
   ]
 }
@@ -86,10 +110,14 @@ export function renderComponentApi(api: ComponentApi, headingLevel = 2): string 
     '',
     code(api.import),
     '',
-    ...(api.description ? [api.description, ''] : []),
+    ...(api.description
+      ? [api.description, '']
+      : []),
     `${sub} Props`,
     '',
-    ...(props.length > 0 ? props.map(renderProp) : ['No props.']),
+    ...(props.length > 0
+      ? props.map(renderProp)
+      : ['No props.']),
     '',
     ...renderEvents(api, sub),
     ...renderSlots(api, sub),

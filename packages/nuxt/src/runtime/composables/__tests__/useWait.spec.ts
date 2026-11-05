@@ -2,7 +2,10 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { useWait } from '../useWait'
 
-const mockWaitHandler = { start: vi.fn(), stop: vi.fn() }
+const mockWaitHandler = {
+  start: vi.fn(),
+  stop: vi.fn(),
+}
 
 vi.mock('nuxt/app', () => ({
   useNuxtApp: vi.fn(() => ({

@@ -263,7 +263,9 @@ describe('given MazBtnGroup component', () => {
 
   describe('when rendered with orientation prop', () => {
     it('then it applies row orientation class by default', () => {
-      const items = [{ text: 'Button' }]
+      const items = [
+        { text: 'Button' },
+      ]
 
       const wrapper = mount(MazBtnGroup, {
         props: { items },
@@ -273,7 +275,9 @@ describe('given MazBtnGroup component', () => {
     })
 
     it('then it applies col orientation class', () => {
-      const items = [{ text: 'Button' }]
+      const items = [
+        { text: 'Button' },
+      ]
 
       const wrapper = mount(MazBtnGroup, {
         props: { items, orientation: 'col' },
@@ -285,7 +289,9 @@ describe('given MazBtnGroup component', () => {
 
   describe('when rendered with role attribute', () => {
     it('then it has group role for accessibility', () => {
-      const items = [{ text: 'Button' }]
+      const items = [
+        { text: 'Button' },
+      ]
 
       const wrapper = mount(MazBtnGroup, {
         props: { items },
@@ -531,13 +537,21 @@ describe('given MazBtnGroup component', () => {
 })
 
 describe('given a MazUi global default for MazBtnGroup', () => {
-  const items = [{ text: 'Button 1' }]
+  const items = [
+    { text: 'Button 1' },
+  ]
 
   describe('when no size prop is passed', () => {
     it('then the buttons receive the configured size', async () => {
       const wrapper = mount(MazBtnGroup, {
         props: { items },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazBtnGroup: { size: 'lg' } } } },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              MazBtnGroup: { size: 'lg' },
+            },
+          },
+        },
       })
 
       await vi.dynamicImportSettled()
@@ -550,7 +564,13 @@ describe('given a MazUi global default for MazBtnGroup', () => {
     it('then the instance prop wins over the configured default', async () => {
       const wrapper = mount(MazBtnGroup, {
         props: { items, size: 'xs' },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazBtnGroup: { size: 'lg' } } } },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              MazBtnGroup: { size: 'lg' },
+            },
+          },
+        },
       })
 
       await vi.dynamicImportSettled()
@@ -563,7 +583,13 @@ describe('given a MazUi global default for MazBtnGroup', () => {
     it('then the buttons receive the configured roundedSize', async () => {
       const wrapper = mount(MazBtnGroup, {
         props: { items },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazBtnGroup: { roundedSize: 'full' } } } },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              MazBtnGroup: { roundedSize: 'full' },
+            },
+          },
+        },
       })
 
       await vi.dynamicImportSettled()

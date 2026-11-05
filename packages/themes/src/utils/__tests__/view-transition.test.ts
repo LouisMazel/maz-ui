@@ -6,7 +6,9 @@ describe('given runViewTransition', () => {
       vi.stubGlobal('document', {
         startViewTransition: vi.fn((cb: () => void) => {
           cb()
-          return { finished: Promise.resolve() }
+          return {
+            finished: Promise.resolve(),
+          }
         }),
       })
     })
@@ -46,7 +48,9 @@ describe('given runViewTransition', () => {
       vi.stubGlobal('document', {
         startViewTransition: vi.fn((cb: () => void) => {
           cb()
-          return { finished: Promise.reject(new Error('aborted')) }
+          return {
+            finished: Promise.reject(new Error('aborted')),
+          }
         }),
       })
     })

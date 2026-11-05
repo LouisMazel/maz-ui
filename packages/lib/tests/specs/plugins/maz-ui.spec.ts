@@ -86,9 +86,12 @@ describe('given MazUi plugin', () => {
         },
       }
 
-      MazUi.install?.(mockApp, { theme: {
-        preset: {} as any,
-      }, translations: translationsOptions })
+      MazUi.install?.(mockApp, {
+        theme: {
+          preset: {} as any,
+        },
+        translations: translationsOptions,
+      })
 
       expect(mockApp.use).toHaveBeenCalledWith(MazUiTheme, {
         preset: {} as any,

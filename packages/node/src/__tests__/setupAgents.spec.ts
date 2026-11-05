@@ -79,22 +79,70 @@ describe('given detectAgentTargets', () => {
   })
 
   describe.each([
-    ['.claude/settings.json', ['claude']],
-    ['CLAUDE.md', ['claude']],
-    ['.claude/CLAUDE.md', ['claude']],
-    ['CLAUDE.local.md', ['claude']],
-    ['.mcp.json', ['claude']],
-    ['.cursor/mcp.json', ['agents-md', 'cursor']],
-    ['.cursorrules', ['agents-md', 'cursor']],
-    ['.vscode/mcp.json', ['agents-md', 'vscode']],
-    ['.github/copilot-instructions.md', ['agents-md', 'vscode']],
-    ['.github/instructions/vue.instructions.md', ['agents-md', 'vscode']],
-    ['AGENTS.md', ['agents-md']],
-    ['.codex/config.toml', ['agents-md']],
-    ['.windsurf/rules/main.md', ['agents-md']],
-    ['.devin/rules/main.md', ['agents-md']],
-    ['.windsurfrules', ['agents-md']],
-    ['GEMINI.md', ['agents-md']],
+    [
+      '.claude/settings.json',
+      ['claude'],
+    ],
+    [
+      'CLAUDE.md',
+      ['claude'],
+    ],
+    [
+      '.claude/CLAUDE.md',
+      ['claude'],
+    ],
+    [
+      'CLAUDE.local.md',
+      ['claude'],
+    ],
+    [
+      '.mcp.json',
+      ['claude'],
+    ],
+    [
+      '.cursor/mcp.json',
+      ['agents-md', 'cursor'],
+    ],
+    [
+      '.cursorrules',
+      ['agents-md', 'cursor'],
+    ],
+    [
+      '.vscode/mcp.json',
+      ['agents-md', 'vscode'],
+    ],
+    [
+      '.github/copilot-instructions.md',
+      ['agents-md', 'vscode'],
+    ],
+    [
+      '.github/instructions/vue.instructions.md',
+      ['agents-md', 'vscode'],
+    ],
+    [
+      'AGENTS.md',
+      ['agents-md'],
+    ],
+    [
+      '.codex/config.toml',
+      ['agents-md'],
+    ],
+    [
+      '.windsurf/rules/main.md',
+      ['agents-md'],
+    ],
+    [
+      '.devin/rules/main.md',
+      ['agents-md'],
+    ],
+    [
+      '.windsurfrules',
+      ['agents-md'],
+    ],
+    [
+      'GEMINI.md',
+      ['agents-md'],
+    ],
   ])('when the project contains %s', (file, expected) => {
     it(`then it detects ${expected.join(', ')}`, () => {
       writeProjectFile(file, '{}')
@@ -109,13 +157,23 @@ describe('given detectAgentTargets', () => {
       writeProjectFile('.cursor/mcp.json', '{}')
       writeProjectFile('CLAUDE.md', '# project')
 
-      expect(detectAgentTargets(rootDir)).toEqual(['claude', 'agents-md', 'cursor', 'vscode'])
+      expect(detectAgentTargets(rootDir)).toEqual([
+        'claude',
+        'agents-md',
+        'cursor',
+        'vscode',
+      ])
     })
   })
 
   describe('when reading the exported target list', () => {
     it('then it lists every supported agent', () => {
-      expect(AGENT_TARGETS).toEqual(['claude', 'agents-md', 'cursor', 'vscode'])
+      expect(AGENT_TARGETS).toEqual([
+        'claude',
+        'agents-md',
+        'cursor',
+        'vscode',
+      ])
     })
   })
 })
@@ -134,7 +192,11 @@ describe('given readAgentDocs', () => {
 
   describe('when maz-ui is installed in the project', () => {
     it('then it reads the docs of the installed package', () => {
-      writeProjectFile('node_modules/maz-ui/package.json', JSON.stringify({ name: 'maz-ui', version: '5.2.0', exports: { './package.json': './package.json' } }))
+      writeProjectFile('node_modules/maz-ui/package.json', JSON.stringify({
+        name: 'maz-ui',
+        version: '5.2.0',
+        exports: { './package.json': './package.json' },
+      }))
       createDocs(join(rootDir, 'node_modules/maz-ui/docs'), { version: '5.2.0' })
 
       const docs = readAgentDocs(rootDir)
@@ -200,7 +262,11 @@ describe('given setupAgents with the claude target', () => {
 
     beforeEach(() => {
       writeProjectFile('CLAUDE.md', '# my project')
-      result = setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
     })
 
     it('then it writes the rule with the managed header and the version', () => {
@@ -215,7 +281,9 @@ describe('given setupAgents with the claude target', () => {
 
     it('then it registers the MCP server in .mcp.json with the stdio type', () => {
       expect(JSON.parse(readProjectFile('.mcp.json'))).toEqual({
-        mcpServers: { [MCP_SERVER_NAME]: { type: 'stdio', ...DEFAULT_MCP_SERVER } },
+        mcpServers: {
+          [MCP_SERVER_NAME]: { type: 'stdio', ...DEFAULT_MCP_SERVER },
+        },
       })
       expect(changeOf(result, '.mcp.json')?.action).toBe('create')
     })
@@ -233,9 +301,17 @@ describe('given setupAgents with the claude target', () => {
   describe('when it runs twice', () => {
     it('then the second run changes nothing', () => {
       writeProjectFile('CLAUDE.md', '# my project')
-      setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
 
-      const second = setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      const second = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
 
       expect(changeOf(second, '.claude/rules/maz-ui.md')?.action).toBe('unchanged')
       expect(changeOf(second, '.mcp.json')).toEqual({
@@ -249,10 +325,18 @@ describe('given setupAgents with the claude target', () => {
   describe('when maz-ui ships new rules', () => {
     it('then it updates the rule', () => {
       writeProjectFile('CLAUDE.md', '# my project')
-      setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
       createDocs(docsDir, { version: '5.2.0', claudeRule: '# maz-ui\n\nNew rules.' })
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
 
       expect(changeOf(result, '.claude/rules/maz-ui.md')?.action).toBe('update')
       expect(readProjectFile('.claude/rules/maz-ui.md')).toContain('New rules.')
@@ -265,7 +349,11 @@ describe('given setupAgents with the claude target', () => {
       writeProjectFile('CLAUDE.md', '# my project')
       writeProjectFile('.claude/rules/maz-ui.md', '# my own maz-ui rules')
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
 
       expect(readProjectFile('.claude/rules/maz-ui.md')).toBe('# my own maz-ui rules')
       expect(changeOf(result, '.claude/rules/maz-ui.md')).toEqual({
@@ -278,7 +366,11 @@ describe('given setupAgents with the claude target', () => {
 
   describe('when agents-md is also targeted and the project has no CLAUDE.md', () => {
     it('then it does not write the rule because Claude Code reads AGENTS.md', () => {
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'agents-md'],
+      })
 
       expect(projectFileExists('.claude/rules/maz-ui.md')).toBe(false)
       expect(changeOf(result, '.claude/rules/maz-ui.md')).toBeUndefined()
@@ -287,10 +379,18 @@ describe('given setupAgents with the claude target', () => {
 
     it('then it removes a rule generated before', () => {
       writeProjectFile('CLAUDE.md', '# my project')
-      setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'agents-md'],
+      })
       rmSync(join(rootDir, 'CLAUDE.md'))
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'agents-md'],
+      })
 
       expect(projectFileExists('.claude/rules/maz-ui.md')).toBe(false)
       expect(changeOf(result, '.claude/rules/maz-ui.md')?.action).toBe('remove')
@@ -301,7 +401,11 @@ describe('given setupAgents with the claude target', () => {
     it('then it writes both the rule and the AGENTS.md section', () => {
       writeProjectFile('.claude/CLAUDE.md', '# my project')
 
-      setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'agents-md'],
+      })
 
       expect(readProjectFile('.claude/rules/maz-ui.md')).toContain('Use maz-ui components.')
       expect(readProjectFile('AGENTS.md')).toContain('Use maz-ui components.')
@@ -323,7 +427,11 @@ describe('given setupAgents with the claude target', () => {
 describe('given setupAgents with the agents-md target', () => {
   describe('when AGENTS.md does not exist', () => {
     it('then it creates it with the delimited section only', () => {
-      const result = setupAgents({ rootDir, docsDir, targets: ['agents-md'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md'],
+      })
       const content = readProjectFile('AGENTS.md')
 
       expect(content.startsWith(AGENTS_MD_BEGIN)).toBe(true)
@@ -338,7 +446,11 @@ describe('given setupAgents with the agents-md target', () => {
     it('then it appends the section and keeps the user content', () => {
       writeProjectFile('AGENTS.md', '# Project rules\n\nUse pnpm.\n\n\n')
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['agents-md'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md'],
+      })
       const content = readProjectFile('AGENTS.md')
 
       expect(content.startsWith('# Project rules\n\nUse pnpm.\n\n<!-- BEGIN:maz-ui -->')).toBe(true)
@@ -351,7 +463,11 @@ describe('given setupAgents with the agents-md target', () => {
     it('then it replaces the section in place', () => {
       writeProjectFile('AGENTS.md', `# Before\n\n${AGENTS_MD_BEGIN}\nold section\n${AGENTS_MD_END}\n\n# After\n`)
 
-      setupAgents({ rootDir, docsDir, targets: ['agents-md'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md'],
+      })
       const content = readProjectFile('AGENTS.md')
 
       expect(content.startsWith(`# Before\n\n${AGENTS_MD_BEGIN}`)).toBe(true)
@@ -361,9 +477,17 @@ describe('given setupAgents with the agents-md target', () => {
     })
 
     it('then a second run changes nothing', () => {
-      setupAgents({ rootDir, docsDir, targets: ['agents-md'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md'],
+      })
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['agents-md'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md'],
+      })
 
       expect(changeOf(result, 'AGENTS.md')?.action).toBe('unchanged')
     })
@@ -373,7 +497,11 @@ describe('given setupAgents with the agents-md target', () => {
     it('then it appends a complete section', () => {
       writeProjectFile('AGENTS.md', `# Rules\n\n${AGENTS_MD_BEGIN}\n`)
 
-      setupAgents({ rootDir, docsDir, targets: ['agents-md'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md'],
+      })
 
       expect(readProjectFile('AGENTS.md').trimEnd().endsWith(AGENTS_MD_END)).toBe(true)
     })
@@ -383,7 +511,11 @@ describe('given setupAgents with the agents-md target', () => {
 describe('given setupAgents with MCP config targets', () => {
   describe('when the cursor target is configured', () => {
     it('then it writes .cursor/mcp.json without the type field', () => {
-      setupAgents({ rootDir, docsDir, targets: ['cursor'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['cursor'],
+      })
 
       expect(JSON.parse(readProjectFile('.cursor/mcp.json'))).toEqual({
         mcpServers: { [MCP_SERVER_NAME]: DEFAULT_MCP_SERVER },
@@ -393,10 +525,16 @@ describe('given setupAgents with MCP config targets', () => {
 
   describe('when the vscode target is configured', () => {
     it('then it writes .vscode/mcp.json under the servers key', () => {
-      setupAgents({ rootDir, docsDir, targets: ['vscode'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['vscode'],
+      })
 
       expect(JSON.parse(readProjectFile('.vscode/mcp.json'))).toEqual({
-        servers: { [MCP_SERVER_NAME]: { type: 'stdio', ...DEFAULT_MCP_SERVER } },
+        servers: {
+          [MCP_SERVER_NAME]: { type: 'stdio', ...DEFAULT_MCP_SERVER },
+        },
       })
     })
   })
@@ -405,7 +543,11 @@ describe('given setupAgents with MCP config targets', () => {
     it('then it adds the maz-ui server and preserves the rest', () => {
       writeProjectFile('.vscode/mcp.json', '{\n  // my servers\n  "servers": {\n    "github": {\n      "command": "gh-mcp"\n    },\n  }\n}\n')
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['vscode'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['vscode'],
+      })
       const content = readProjectFile('.vscode/mcp.json')
 
       expect(content).toContain('// my servers')
@@ -419,7 +561,12 @@ describe('given setupAgents with MCP config targets', () => {
     it('then it adds one', () => {
       writeProjectFile('.mcp.json', '{"mcpServers":{}}')
 
-      setupAgents({ rootDir, docsDir, targets: ['claude'], dryRun: false })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+        dryRun: false,
+      })
 
       expect(readProjectFile('.mcp.json').endsWith('\n')).toBe(true)
     })
@@ -429,7 +576,11 @@ describe('given setupAgents with MCP config targets', () => {
     it('then it keeps the tab indentation', () => {
       writeProjectFile('.mcp.json', '{\n\t"mcpServers": {}\n}\n')
 
-      setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
 
       expect(readProjectFile('.mcp.json')).toContain(`\n\t\t"${MCP_SERVER_NAME}": {`)
     })
@@ -439,21 +590,40 @@ describe('given setupAgents with MCP config targets', () => {
     it('then it keeps CRLF line endings', () => {
       writeProjectFile('.mcp.json', '{\r\n  "mcpServers": {}\r\n}\r\n')
 
-      setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
 
       expect(readProjectFile('.mcp.json')).toContain(`{\r\n    "${MCP_SERVER_NAME}"`)
     })
   })
 
   describe.each([
-    ['@maz-ui/mcp', { command: 'npx', args: ['@maz-ui/mcp'] }],
-    ['the maz-ui-mcp binary', { command: 'maz-ui-mcp' }],
+    [
+      '@maz-ui/mcp',
+      {
+        command: 'npx',
+        args: ['@maz-ui/mcp'],
+      },
+    ],
+    [
+      'the maz-ui-mcp binary',
+      { command: 'maz-ui-mcp' },
+    ],
   ])('when %s is already registered under another name', (_, server) => {
     it('then it leaves the config unchanged and explains why', () => {
-      const config = `${JSON.stringify({ mcpServers: { 'maz-docs': server } }, null, 2)}\n`
+      const config = `${JSON.stringify({
+        mcpServers: { 'maz-docs': server },
+      }, null, 2)}\n`
       writeProjectFile('.mcp.json', config)
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
 
       expect(readProjectFile('.mcp.json')).toBe(config)
       expect(changeOf(result, '.mcp.json')).toEqual({
@@ -466,10 +636,19 @@ describe('given setupAgents with MCP config targets', () => {
 
   describe('when a maz-ui server with another command exists', () => {
     it('then it skips the file', () => {
-      const config = `${JSON.stringify({ mcpServers: { [MCP_SERVER_NAME]: { command: 'other' }, empty: null } }, null, 2)}\n`
+      const config = `${JSON.stringify({
+        mcpServers: {
+          [MCP_SERVER_NAME]: { command: 'other' },
+          empty: null,
+        },
+      }, null, 2)}\n`
       writeProjectFile('.mcp.json', config)
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
 
       expect(readProjectFile('.mcp.json')).toBe(config)
       expect(changeOf(result, '.mcp.json')).toEqual({
@@ -490,7 +669,11 @@ describe('given setupAgents with MCP config targets', () => {
     it('then it leaves the file untouched', () => {
       writeProjectFile('.mcp.json', content)
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
 
       expect(readProjectFile('.mcp.json')).toBe(content)
       expect(changeOf(result, '.mcp.json')).toEqual({ file: '.mcp.json', action: 'skip', reason: 'invalid JSON: left untouched' })
@@ -499,10 +682,23 @@ describe('given setupAgents with MCP config targets', () => {
 
   describe('when a custom MCP server command is given', () => {
     it('then it registers this command', () => {
-      setupAgents({ rootDir, docsDir, targets: ['cursor'], mcpServer: { command: 'node', args: ['./mcp.mjs'] } })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['cursor'],
+        mcpServer: {
+          command: 'node',
+          args: ['./mcp.mjs'],
+        },
+      })
 
       expect(JSON.parse(readProjectFile('.cursor/mcp.json'))).toEqual({
-        mcpServers: { [MCP_SERVER_NAME]: { command: 'node', args: ['./mcp.mjs'] } },
+        mcpServers: {
+          [MCP_SERVER_NAME]: {
+            command: 'node',
+            args: ['./mcp.mjs'],
+          },
+        },
       })
     })
   })
@@ -511,7 +707,12 @@ describe('given setupAgents with MCP config targets', () => {
     it('then it writes no MCP config', () => {
       writeProjectFile('CLAUDE.md', '# my project')
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude', 'cursor', 'vscode'], mcp: false })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'cursor', 'vscode'],
+        mcp: false,
+      })
 
       expect(projectFileExists('.mcp.json')).toBe(false)
       expect(projectFileExists('.cursor/mcp.json')).toBe(false)
@@ -528,9 +729,31 @@ describe('given setupAgents in remove mode', () => {
     beforeEach(() => {
       writeProjectFile('CLAUDE.md', '# my project')
       writeProjectFile('AGENTS.md', '# Project rules\n')
-      writeProjectFile('.cursor/mcp.json', `${JSON.stringify({ mcpServers: { github: { command: 'gh-mcp' } } }, null, 2)}\n`)
-      setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md', 'cursor', 'vscode'] })
-      result = setupAgents({ rootDir, targets: ['claude', 'agents-md', 'cursor', 'vscode'], remove: true })
+      writeProjectFile('.cursor/mcp.json', `${JSON.stringify({
+        mcpServers: {
+          github: { command: 'gh-mcp' },
+        },
+      }, null, 2)}\n`)
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: [
+          'claude',
+          'agents-md',
+          'cursor',
+          'vscode',
+        ],
+      })
+      result = setupAgents({
+        rootDir,
+        targets: [
+          'claude',
+          'agents-md',
+          'cursor',
+          'vscode',
+        ],
+        remove: true,
+      })
     })
 
     it('then it removes the rule', () => {
@@ -550,7 +773,11 @@ describe('given setupAgents in remove mode', () => {
     })
 
     it('then it keeps the other servers', () => {
-      expect(JSON.parse(readProjectFile('.cursor/mcp.json'))).toEqual({ mcpServers: { github: { command: 'gh-mcp' } } })
+      expect(JSON.parse(readProjectFile('.cursor/mcp.json'))).toEqual({
+        mcpServers: {
+          github: { command: 'gh-mcp' },
+        },
+      })
       expect(changeOf(result, '.cursor/mcp.json')?.action).toBe('update')
     })
 
@@ -565,9 +792,17 @@ describe('given setupAgents in remove mode', () => {
 
   describe('when AGENTS.md only contains the maz-ui section', () => {
     it('then it deletes AGENTS.md', () => {
-      setupAgents({ rootDir, docsDir, targets: ['agents-md'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md'],
+      })
 
-      const result = setupAgents({ rootDir, targets: ['agents-md'], remove: true })
+      const result = setupAgents({
+        rootDir,
+        targets: ['agents-md'],
+        remove: true,
+      })
 
       expect(projectFileExists('AGENTS.md')).toBe(false)
       expect(changeOf(result, 'AGENTS.md')?.action).toBe('remove')
@@ -578,7 +813,11 @@ describe('given setupAgents in remove mode', () => {
     it('then it changes nothing', () => {
       writeProjectFile('AGENTS.md', '# Project rules\n')
 
-      const result = setupAgents({ rootDir, targets: ['claude', 'agents-md', 'cursor'], remove: true })
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude', 'agents-md', 'cursor'],
+        remove: true,
+      })
 
       expect(result.changes).toEqual([])
       expect(readProjectFile('AGENTS.md')).toBe('# Project rules\n')
@@ -587,10 +826,21 @@ describe('given setupAgents in remove mode', () => {
 
   describe('when the maz-ui server is registered under another name', () => {
     it('then it keeps it', () => {
-      const config = `${JSON.stringify({ mcpServers: { 'maz-docs': { command: 'npx', args: ['@maz-ui/mcp'] } } }, null, 2)}\n`
+      const config = `${JSON.stringify({
+        mcpServers: {
+          'maz-docs': {
+            command: 'npx',
+            args: ['@maz-ui/mcp'],
+          },
+        },
+      }, null, 2)}\n`
       writeProjectFile('.mcp.json', config)
 
-      const result = setupAgents({ rootDir, targets: ['claude'], remove: true })
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        remove: true,
+      })
 
       expect(readProjectFile('.mcp.json')).toBe(config)
       expect(changeOf(result, '.mcp.json')).toBeUndefined()
@@ -599,9 +849,18 @@ describe('given setupAgents in remove mode', () => {
 
   describe('when the MCP config has other root keys', () => {
     it('then it keeps the file with the other keys', () => {
-      writeProjectFile('.vscode/mcp.json', `${JSON.stringify({ inputs: [], servers: { [MCP_SERVER_NAME]: { type: 'stdio', ...DEFAULT_MCP_SERVER } } }, null, 2)}\n`)
+      writeProjectFile('.vscode/mcp.json', `${JSON.stringify({
+        inputs: [],
+        servers: {
+          [MCP_SERVER_NAME]: { type: 'stdio', ...DEFAULT_MCP_SERVER },
+        },
+      }, null, 2)}\n`)
 
-      setupAgents({ rootDir, targets: ['vscode'], remove: true })
+      setupAgents({
+        rootDir,
+        targets: ['vscode'],
+        remove: true,
+      })
 
       expect(JSON.parse(readProjectFile('.vscode/mcp.json'))).toEqual({ inputs: [], servers: {} })
     })
@@ -613,7 +872,12 @@ describe('given setupAgents in dry run mode', () => {
     it('then it reports the changes without writing anything', () => {
       writeProjectFile('CLAUDE.md', '# my project')
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md', 'cursor'], dryRun: true })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'agents-md', 'cursor'],
+        dryRun: true,
+      })
 
       expect(result.changes.map(change => [change.file, change.action])).toEqual([
         ['.claude/rules/maz-ui.md', 'create'],
@@ -630,9 +894,18 @@ describe('given setupAgents in dry run mode', () => {
 
   describe('when removing in dry run', () => {
     it('then it reports the removals without deleting files', () => {
-      setupAgents({ rootDir, docsDir, targets: ['agents-md'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md'],
+      })
 
-      const result = setupAgents({ rootDir, targets: ['agents-md'], remove: true, dryRun: true })
+      const result = setupAgents({
+        rootDir,
+        targets: ['agents-md'],
+        remove: true,
+        dryRun: true,
+      })
 
       expect(changeOf(result, 'AGENTS.md')?.action).toBe('remove')
       expect(projectFileExists('AGENTS.md')).toBe(true)
@@ -646,7 +919,12 @@ describe('given setupAgents with the rules option disabled', () => {
 
     beforeEach(() => {
       writeProjectFile('CLAUDE.md', '# my project')
-      result = setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md'], rules: false })
+      result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'agents-md'],
+        rules: false,
+      })
     })
 
     it('then it writes no rule file', () => {
@@ -655,15 +933,23 @@ describe('given setupAgents with the rules option disabled', () => {
     })
 
     it('then it only registers the MCP server', () => {
-      expect(result.changes).toEqual([{ file: '.mcp.json', action: 'create' }])
+      expect(result.changes).toEqual([
+        { file: '.mcp.json', action: 'create' },
+      ])
     })
   })
 
   describe('when maz-ui does not ship the agent docs', () => {
     it('then the MCP server is still registered', () => {
-      const result = setupAgents({ rootDir, targets: ['claude'], rules: false })
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        rules: false,
+      })
 
-      expect(result.changes).toEqual([{ file: '.mcp.json', action: 'create' }])
+      expect(result.changes).toEqual([
+        { file: '.mcp.json', action: 'create' },
+      ])
       expect(result.version).toBe('')
     })
   })
@@ -671,9 +957,18 @@ describe('given setupAgents with the rules option disabled', () => {
   describe('when the rules were written before and remove is set', () => {
     it('then the rules are removed', () => {
       writeProjectFile('CLAUDE.md', '# my project')
-      setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'agents-md'],
+      })
 
-      setupAgents({ rootDir, targets: ['claude', 'agents-md'], rules: false, remove: true })
+      setupAgents({
+        rootDir,
+        targets: ['claude', 'agents-md'],
+        rules: false,
+        remove: true,
+      })
 
       expect(projectFileExists('.claude/rules/maz-ui.md')).toBe(false)
       expect(projectFileExists('AGENTS.md')).toBe(false)
@@ -795,12 +1090,20 @@ describe('given setupAgents in a monorepo whose apps install different maz-ui ve
       writeProjectFile('CLAUDE.md', '# my project')
       writeProjectFile('AGENTS.md', '# Project rules\n')
       createDocs(docsDir, { version: '5.2.0', claudeRule: '# maz-ui\n\nNewer rules.', agentsSection: '## maz-ui\n\nNewer rules.' })
-      setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'agents-md'],
+      })
       ruleBefore = readProjectFile('.claude/rules/maz-ui.md')
       agentsMdBefore = readProjectFile('AGENTS.md')
       createDocs(docsDir, { version: '5.1.0', claudeRule: '# maz-ui\n\nOlder rules.', agentsSection: '## maz-ui\n\nOlder rules.' })
 
-      result = setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md'] })
+      result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'agents-md'],
+      })
     })
 
     it('then it keeps the Claude Code rule of the newer version', () => {
@@ -822,10 +1125,18 @@ describe('given setupAgents in a monorepo whose apps install different maz-ui ve
     it('then it updates them', () => {
       writeProjectFile('CLAUDE.md', '# my project')
       createDocs(docsDir, { version: '5.1.0-beta.1' })
-      setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'agents-md'],
+      })
       createDocs(docsDir, { version: '5.1.0', claudeRule: '# maz-ui\n\nStable rules.', agentsSection: '## maz-ui\n\nStable rules.' })
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'agents-md'],
+      })
 
       expect(changeOf(result, '.claude/rules/maz-ui.md')?.action).toBe('update')
       expect(changeOf(result, 'AGENTS.md')?.action).toBe('update')
@@ -837,9 +1148,18 @@ describe('given setupAgents in a monorepo whose apps install different maz-ui ve
     it('then it removes them', () => {
       writeProjectFile('CLAUDE.md', '# my project')
       createDocs(docsDir, { version: '9.0.0' })
-      setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
 
-      setupAgents({ rootDir, docsDir, targets: ['claude'], remove: true })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+        remove: true,
+      })
 
       expect(projectFileExists('.claude/rules/maz-ui.md')).toBe(false)
     })
@@ -849,9 +1169,14 @@ describe('given setupAgents in a monorepo whose apps install different maz-ui ve
 describe('given mcpServerCommand', () => {
   describe('when the project does not install @maz-ui/mcp', () => {
     it('then npx downloads the pinned version', () => {
-      writeProjectFile('package.json', JSON.stringify({ devDependencies: { 'maz-ui': '^5.0.0' } }))
+      writeProjectFile('package.json', JSON.stringify({
+        devDependencies: { 'maz-ui': '^5.0.0' },
+      }))
 
-      expect(mcpServerCommand(rootDir, '5.2.0')).toEqual({ command: 'npx', args: ['-y', '@maz-ui/mcp@5.2.0'] })
+      expect(mcpServerCommand(rootDir, '5.2.0')).toEqual({
+        command: 'npx',
+        args: ['-y', '@maz-ui/mcp@5.2.0'],
+      })
     })
 
     it('then npx downloads the latest version when no version is given', () => {
@@ -860,17 +1185,84 @@ describe('given mcpServerCommand', () => {
   })
 
   describe.each([
-    ['the packageManager field declares pnpm', { packageManager: 'pnpm@10.0.0' }, undefined, { command: 'pnpm', args: ['exec', 'maz-ui-mcp'] }],
-    ['the packageManager field declares yarn', { packageManager: 'yarn@4.0.0' }, undefined, { command: 'yarn', args: ['run', 'maz-ui-mcp'] }],
-    ['the packageManager field declares an unknown manager', { packageManager: 'deno@2.0.0' }, undefined, { command: 'npx', args: ['--no-install', 'maz-ui-mcp'] }],
-    ['the project has a pnpm lockfile', {}, 'pnpm-lock.yaml', { command: 'pnpm', args: ['exec', 'maz-ui-mcp'] }],
-    ['the project has a yarn lockfile', {}, 'yarn.lock', { command: 'yarn', args: ['run', 'maz-ui-mcp'] }],
-    ['the project has a bun lockfile', {}, 'bun.lock', { command: 'bun', args: ['x', '--no-install', 'maz-ui-mcp'] }],
-    ['the project has a binary bun lockfile', {}, 'bun.lockb', { command: 'bun', args: ['x', '--no-install', 'maz-ui-mcp'] }],
-    ['the project has no lockfile', {}, undefined, { command: 'npx', args: ['--no-install', 'maz-ui-mcp'] }],
+    [
+      'the packageManager field declares pnpm',
+      { packageManager: 'pnpm@10.0.0' },
+      undefined,
+      {
+        command: 'pnpm',
+        args: ['exec', 'maz-ui-mcp'],
+      },
+    ],
+    [
+      'the packageManager field declares yarn',
+      { packageManager: 'yarn@4.0.0' },
+      undefined,
+      {
+        command: 'yarn',
+        args: ['run', 'maz-ui-mcp'],
+      },
+    ],
+    [
+      'the packageManager field declares an unknown manager',
+      { packageManager: 'deno@2.0.0' },
+      undefined,
+      {
+        command: 'npx',
+        args: ['--no-install', 'maz-ui-mcp'],
+      },
+    ],
+    [
+      'the project has a pnpm lockfile',
+      {},
+      'pnpm-lock.yaml',
+      {
+        command: 'pnpm',
+        args: ['exec', 'maz-ui-mcp'],
+      },
+    ],
+    [
+      'the project has a yarn lockfile',
+      {},
+      'yarn.lock',
+      {
+        command: 'yarn',
+        args: ['run', 'maz-ui-mcp'],
+      },
+    ],
+    [
+      'the project has a bun lockfile',
+      {},
+      'bun.lock',
+      {
+        command: 'bun',
+        args: ['x', '--no-install', 'maz-ui-mcp'],
+      },
+    ],
+    [
+      'the project has a binary bun lockfile',
+      {},
+      'bun.lockb',
+      {
+        command: 'bun',
+        args: ['x', '--no-install', 'maz-ui-mcp'],
+      },
+    ],
+    [
+      'the project has no lockfile',
+      {},
+      undefined,
+      {
+        command: 'npx',
+        args: ['--no-install', 'maz-ui-mcp'],
+      },
+    ],
   ])('when the project installs @maz-ui/mcp and %s', (_, fields, lockfile, expected) => {
     it('then its package manager starts the installed version', () => {
-      writeProjectFile('package.json', JSON.stringify({ ...fields, devDependencies: { '@maz-ui/mcp': '^5.1.0' } }))
+      writeProjectFile('package.json', JSON.stringify({
+        ...fields,
+        devDependencies: { '@maz-ui/mcp': '^5.1.0' },
+      }))
 
       if (lockfile)
         writeProjectFile(lockfile, '')
@@ -888,7 +1280,9 @@ describe('given installsMcpPackage', () => {
     ['peerDependencies', false],
   ])('when @maz-ui/mcp is in %s', (field, expected) => {
     it(`then it returns ${expected}`, () => {
-      writeProjectFile('package.json', JSON.stringify({ [field]: { '@maz-ui/mcp': '^5.1.0' } }))
+      writeProjectFile('package.json', JSON.stringify({
+        [field]: { '@maz-ui/mcp': '^5.1.0' },
+      }))
 
       expect(installsMcpPackage(rootDir)).toBe(expected)
     })
@@ -908,7 +1302,16 @@ describe('given installsMcpPackage', () => {
 
 describe('given setupAgents with the command of the MCP server', () => {
   function registered(command: string, args: string[], extra: Record<string, unknown> = {}): void {
-    writeProjectFile('.mcp.json', `${JSON.stringify({ mcpServers: { [MCP_SERVER_NAME]: { type: 'stdio', command, args, ...extra } } }, null, 2)}\n`)
+    writeProjectFile('.mcp.json', `${JSON.stringify({
+      mcpServers: {
+        [MCP_SERVER_NAME]: {
+          type: 'stdio',
+          command,
+          args,
+          ...extra,
+        },
+      },
+    }, null, 2)}\n`)
   }
 
   function server(): Record<string, unknown> {
@@ -917,21 +1320,45 @@ describe('given setupAgents with the command of the MCP server', () => {
 
   describe('when a version is given and the project does not install @maz-ui/mcp', () => {
     it('then the config pins it and the result reports a remote server', () => {
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude'], mcpVersion: '5.2.0' })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+        mcpVersion: '5.2.0',
+      })
 
-      expect(server()).toEqual({ type: 'stdio', command: 'npx', args: ['-y', '@maz-ui/mcp@5.2.0'] })
-      expect(result.mcpServer).toEqual({ command: 'npx', args: ['-y', '@maz-ui/mcp@5.2.0'] })
+      expect(server()).toEqual({
+        type: 'stdio',
+        command: 'npx',
+        args: ['-y', '@maz-ui/mcp@5.2.0'],
+      })
+      expect(result.mcpServer).toEqual({
+        command: 'npx',
+        args: ['-y', '@maz-ui/mcp@5.2.0'],
+      })
       expect(result.localMcpServer).toBe(false)
     })
   })
 
   describe('when the project installs @maz-ui/mcp', () => {
     it('then the config starts the installed version and the result reports a local server', () => {
-      writeProjectFile('package.json', JSON.stringify({ packageManager: 'pnpm@10.0.0', devDependencies: { '@maz-ui/mcp': '^5.1.0' } }))
+      writeProjectFile('package.json', JSON.stringify({
+        packageManager: 'pnpm@10.0.0',
+        devDependencies: { '@maz-ui/mcp': '^5.1.0' },
+      }))
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude'], mcpVersion: '5.2.0' })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+        mcpVersion: '5.2.0',
+      })
 
-      expect(server()).toEqual({ type: 'stdio', command: 'pnpm', args: ['exec', 'maz-ui-mcp'] })
+      expect(server()).toEqual({
+        type: 'stdio',
+        command: 'pnpm',
+        args: ['exec', 'maz-ui-mcp'],
+      })
       expect(result.localMcpServer).toBe(true)
     })
   })
@@ -940,12 +1367,24 @@ describe('given setupAgents with the command of the MCP server', () => {
     let result: SetupAgentsResult
 
     beforeEach(() => {
-      registered('npx', ['-y', '@maz-ui/mcp@latest'], { env: { DEBUG: '1' } })
-      result = setupAgents({ rootDir, docsDir, targets: ['claude'], mcpVersion: '5.2.0' })
+      registered('npx', ['-y', '@maz-ui/mcp@latest'], {
+        env: { DEBUG: '1' },
+      })
+      result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+        mcpVersion: '5.2.0',
+      })
     })
 
     it('then it pins the version and keeps the other fields', () => {
-      expect(server()).toEqual({ type: 'stdio', command: 'npx', args: ['-y', '@maz-ui/mcp@5.2.0'], env: { DEBUG: '1' } })
+      expect(server()).toEqual({
+        type: 'stdio',
+        command: 'npx',
+        args: ['-y', '@maz-ui/mcp@5.2.0'],
+        env: { DEBUG: '1' },
+      })
     })
 
     it('then it explains the change', () => {
@@ -957,7 +1396,12 @@ describe('given setupAgents with the command of the MCP server', () => {
     it('then it keeps it', () => {
       registered('npx', ['-y', '@maz-ui/mcp@5.3.0'])
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude'], mcpVersion: '5.2.0' })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+        mcpVersion: '5.2.0',
+      })
 
       expect(server().args).toEqual(['-y', '@maz-ui/mcp@5.3.0'])
       expect(changeOf(result, '.mcp.json')).toEqual({ file: '.mcp.json', action: 'unchanged', reason: `"${MCP_SERVER_NAME}" runs @maz-ui/mcp 5.3.0` })
@@ -968,7 +1412,12 @@ describe('given setupAgents with the command of the MCP server', () => {
     it('then it pins the newer one', () => {
       registered('npx', ['-y', '@maz-ui/mcp@5.1.0'])
 
-      setupAgents({ rootDir, docsDir, targets: ['claude'], mcpVersion: '5.2.0' })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+        mcpVersion: '5.2.0',
+      })
 
       expect(server().args).toEqual(['-y', '@maz-ui/mcp@5.2.0'])
     })
@@ -978,7 +1427,11 @@ describe('given setupAgents with the command of the MCP server', () => {
     it('then it keeps the pinned version instead of the latest one', () => {
       registered('npx', ['-y', '@maz-ui/mcp@5.1.0'])
 
-      setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
 
       expect(server().args).toEqual(['-y', '@maz-ui/mcp@5.1.0'])
     })
@@ -987,11 +1440,21 @@ describe('given setupAgents with the command of the MCP server', () => {
   describe('when the entry pins a version and the project now installs @maz-ui/mcp', () => {
     it('then it starts the installed version', () => {
       registered('npx', ['-y', '@maz-ui/mcp@5.3.0'])
-      writeProjectFile('package.json', JSON.stringify({ devDependencies: { '@maz-ui/mcp': '^5.1.0' } }))
+      writeProjectFile('package.json', JSON.stringify({
+        devDependencies: { '@maz-ui/mcp': '^5.1.0' },
+      }))
 
-      setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
 
-      expect(server()).toEqual({ type: 'stdio', command: 'npx', args: ['--no-install', 'maz-ui-mcp'] })
+      expect(server()).toEqual({
+        type: 'stdio',
+        command: 'npx',
+        args: ['--no-install', 'maz-ui-mcp'],
+      })
     })
   })
 
@@ -999,18 +1462,37 @@ describe('given setupAgents with the command of the MCP server', () => {
     it('then npx downloads the given version', () => {
       registered('pnpm', ['exec', 'maz-ui-mcp'])
 
-      setupAgents({ rootDir, docsDir, targets: ['claude'], mcpVersion: '5.2.0' })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+        mcpVersion: '5.2.0',
+      })
 
-      expect(server()).toEqual({ type: 'stdio', command: 'npx', args: ['-y', '@maz-ui/mcp@5.2.0'] })
+      expect(server()).toEqual({
+        type: 'stdio',
+        command: 'npx',
+        args: ['-y', '@maz-ui/mcp@5.2.0'],
+      })
     })
   })
 
   describe('when the entry runs a custom command', () => {
     it('then it leaves it untouched', () => {
-      registered('npx', ['-y', '@maz-ui/mcp@latest', '--docs', 'apps/web/node_modules/maz-ui/docs'])
+      registered('npx', [
+        '-y',
+        '@maz-ui/mcp@latest',
+        '--docs',
+        'apps/web/node_modules/maz-ui/docs',
+      ])
       const before = readProjectFile('.mcp.json')
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude'], mcpVersion: '5.2.0' })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+        mcpVersion: '5.2.0',
+      })
 
       expect(readProjectFile('.mcp.json')).toBe(before)
       expect(changeOf(result, '.mcp.json')?.reason).toBe(`"${MCP_SERVER_NAME}" runs a custom command: left untouched`)
@@ -1029,11 +1511,19 @@ describe('given setupAgents with rules edited by hand', () => {
 
     beforeEach(() => {
       writeProjectFile('CLAUDE.md', '# my project')
-      setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
       edited = readProjectFile('.claude/rules/maz-ui.md').replace('Use maz-ui components.', 'Use maz-ui components, and MazBtn for links.')
       writeProjectFile('.claude/rules/maz-ui.md', edited)
       upgradeDocs()
-      result = setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
     })
 
     it('then it keeps the edits', () => {
@@ -1052,11 +1542,19 @@ describe('given setupAgents with rules edited by hand', () => {
   describe('when a formatter only changed the whitespace of the rule', () => {
     it('then it updates the rule', () => {
       writeProjectFile('CLAUDE.md', '# my project')
-      setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
       writeProjectFile('.claude/rules/maz-ui.md', `${readProjectFile('.claude/rules/maz-ui.md').replaceAll('\n\n', '\n\n\n').replace('Use maz-ui', 'Use   maz-ui')}  \n`)
       upgradeDocs()
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
 
       expect(changeOf(result, '.claude/rules/maz-ui.md')?.action).toBe('update')
       expect(readProjectFile('.claude/rules/maz-ui.md')).toContain('New rules.')
@@ -1068,7 +1566,11 @@ describe('given setupAgents with rules edited by hand', () => {
       writeProjectFile('CLAUDE.md', '# my project')
       writeProjectFile('.claude/rules/maz-ui.md', `<!-- ${MANAGED_MARKER} 5.0.0: generated by init -->\n\n# maz-ui\n\nOld rules edited.\n`)
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
 
       expect(changeOf(result, '.claude/rules/maz-ui.md')?.action).toBe('update')
     })
@@ -1077,12 +1579,20 @@ describe('given setupAgents with rules edited by hand', () => {
   describe('when the AGENTS.md section was edited', () => {
     it('then it keeps the section and explains how to get the new rules', () => {
       writeProjectFile('AGENTS.md', '# Project rules\n')
-      setupAgents({ rootDir, docsDir, targets: ['agents-md'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md'],
+      })
       const edited = readProjectFile('AGENTS.md').replace('Use maz-ui components.', 'Use our wrappers of maz-ui.')
       writeProjectFile('AGENTS.md', edited)
       upgradeDocs()
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['agents-md'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md'],
+      })
 
       expect(readProjectFile('AGENTS.md')).toBe(edited)
       expect(changeOf(result, 'AGENTS.md')).toEqual({
@@ -1095,11 +1605,19 @@ describe('given setupAgents with rules edited by hand', () => {
 
   describe('when only the content around the AGENTS.md section was edited', () => {
     it('then it updates the section and keeps the edits', () => {
-      setupAgents({ rootDir, docsDir, targets: ['agents-md'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md'],
+      })
       writeProjectFile('AGENTS.md', `# Team rules\n\nUse pnpm.\n\n${readProjectFile('AGENTS.md')}\n## Testing\n`)
       upgradeDocs()
 
-      const result = setupAgents({ rootDir, docsDir, targets: ['agents-md'] })
+      const result = setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['agents-md'],
+      })
       const content = readProjectFile('AGENTS.md')
 
       expect(changeOf(result, 'AGENTS.md')?.action).toBe('update')
@@ -1112,10 +1630,19 @@ describe('given setupAgents with rules edited by hand', () => {
   describe('when edited rules are removed', () => {
     it('then they are removed', () => {
       writeProjectFile('CLAUDE.md', '# my project')
-      setupAgents({ rootDir, docsDir, targets: ['claude'] })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+      })
       writeProjectFile('.claude/rules/maz-ui.md', `${readProjectFile('.claude/rules/maz-ui.md')}\nMy edit.\n`)
 
-      setupAgents({ rootDir, docsDir, targets: ['claude'], remove: true })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude'],
+        remove: true,
+      })
 
       expect(projectFileExists('.claude/rules/maz-ui.md')).toBe(false)
     })
@@ -1139,13 +1666,26 @@ describe('given readWorkspacePatterns', () => {
     it('then it returns its packages without negations', () => {
       writeProjectFile('pnpm-workspace.yaml', 'catalog:\n  vue: ^3.5.0\n\npackages:\n  - \'projects/*\'\n  # the docs\n  - "sites/**"\n  - ./tools/cli/\n  - \'!projects/legacy\'\n  - .\n\nonlyBuiltDependencies:\n  - esbuild\n')
 
-      expect(readWorkspacePatterns(rootDir)).toEqual(['projects/*', 'sites/**', 'tools/cli', '.'])
+      expect(readWorkspacePatterns(rootDir)).toEqual([
+        'projects/*',
+        'sites/**',
+        'tools/cli',
+        '.',
+      ])
     })
   })
 
   describe.each([
-    ['an array', ['web', 'libs/*']],
-    ['an object', { packages: ['web', 'libs/*'] }],
+    [
+      'an array',
+      ['web', 'libs/*'],
+    ],
+    [
+      'an object',
+      {
+        packages: ['web', 'libs/*'],
+      },
+    ],
   ])('when the workspaces of package.json are %s', (_, workspaces) => {
     it('then it returns them', () => {
       writeProjectFile('package.json', JSON.stringify({ workspaces }))
@@ -1166,11 +1706,37 @@ describe('given readWorkspacePatterns', () => {
 describe('given findWorkspaceDirs', () => {
   describe('when the patterns use single, double stars and exact folders', () => {
     it('then it returns the matching folders in the order of the patterns', () => {
-      writeProjectFile('package.json', JSON.stringify({ workspaces: ['web', 'libs/*', 'sites/**', 'missing/*', '*-app', '.'] }))
-      for (const file of ['blog-app/package.json', 'web/package.json', 'libs/a/package.json', 'libs/b/package.json', 'libs/a/src/index.ts', 'sites/docs/client/package.json', 'libs/node_modules/x/package.json', 'libs/.cache/x'])
+      writeProjectFile('package.json', JSON.stringify({
+        workspaces: [
+          'web',
+          'libs/*',
+          'sites/**',
+          'missing/*',
+          '*-app',
+          '.',
+        ],
+      }))
+      for (const file of [
+        'blog-app/package.json',
+        'web/package.json',
+        'libs/a/package.json',
+        'libs/b/package.json',
+        'libs/a/src/index.ts',
+        'sites/docs/client/package.json',
+        'libs/node_modules/x/package.json',
+        'libs/.cache/x',
+      ])
         writeProjectFile(file, '')
 
-      expect(findWorkspaceDirs(rootDir)).toEqual(['web', 'libs/a', 'libs/b', 'sites', 'sites/docs', 'sites/docs/client', 'blog-app'].map(folder => join(rootDir, folder)))
+      expect(findWorkspaceDirs(rootDir)).toEqual([
+        'web',
+        'libs/a',
+        'libs/b',
+        'sites',
+        'sites/docs',
+        'sites/docs/client',
+        'blog-app',
+      ].map(folder => join(rootDir, folder)))
     })
   })
 })
@@ -1186,10 +1752,21 @@ describe('given findProjectPackage with the workspaces of pnpm-workspace.yaml', 
   })
 })
 
-const RELIZY: AgentsTool = { name: 'relizy', mcpPackage: 'relizy', mcpBin: 'relizy', mcpArgs: ['mcp'], generatedBy: '`relizy mcp init`' }
+const RELIZY: AgentsTool = {
+  name: 'relizy',
+  mcpPackage: 'relizy',
+  mcpBin: 'relizy',
+  mcpArgs: ['mcp'],
+  generatedBy: '`relizy mcp init`',
+}
 
 function relizyDocs(version = '1.14.0'): AgentDocs {
-  return { directory: '/relizy/agent-docs', version, claudeRule: '# relizy\n\nPreview the release first.', agentsMdSection: '## relizy\n\nPreview the release first.' }
+  return {
+    directory: '/relizy/agent-docs',
+    version,
+    claudeRule: '# relizy\n\nPreview the release first.',
+    agentsMdSection: '## relizy\n\nPreview the release first.',
+  }
 }
 
 function relizyServer(): Record<string, unknown> {
@@ -1210,7 +1787,16 @@ describe('given setupAgents with the rules of maz-ui passed with agentDocs', () 
     it('then it writes these rules without reading the docs folder', () => {
       writeProjectFile('CLAUDE.md', '# my project')
 
-      const result = setupAgents({ rootDir, targets: ['claude'], agentDocs: { directory: '/nowhere', version: '5.4.0', claudeRule: '# maz-ui\n\nGiven rules.', agentsMdSection: '## maz-ui' } })
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        agentDocs: {
+          directory: '/nowhere',
+          version: '5.4.0',
+          claudeRule: '# maz-ui\n\nGiven rules.',
+          agentsMdSection: '## maz-ui',
+        },
+      })
 
       expect(readProjectFile('.claude/rules/maz-ui.md')).toContain('# maz-ui\n\n> maz-ui 5.4.0 is installed: these rules and the docs in `node_modules/maz-ui/docs` match this version.\n\nGiven rules.')
       expect(result.version).toBe('5.4.0')
@@ -1224,7 +1810,13 @@ describe('given setupAgents with another tool', () => {
 
     beforeEach(() => {
       writeProjectFile('CLAUDE.md', '# my project')
-      result = setupAgents({ rootDir, targets: ['claude', 'agents-md'], tool: RELIZY, agentDocs: relizyDocs(), mcpVersion: '1.14.0' })
+      result = setupAgents({
+        rootDir,
+        targets: ['claude', 'agents-md'],
+        tool: RELIZY,
+        agentDocs: relizyDocs(),
+        mcpVersion: '1.14.0',
+      })
     })
 
     it('then it writes the rule of the tool with its marker, generator and version', () => {
@@ -1247,13 +1839,26 @@ describe('given setupAgents with another tool', () => {
     })
 
     it('then it registers the MCP server of the tool under its name with its arguments', () => {
-      expect(relizyServer()).toEqual({ type: 'stdio', command: 'npx', args: ['-y', 'relizy@1.14.0', 'mcp'] })
-      expect(result.mcpServer).toEqual({ command: 'npx', args: ['-y', 'relizy@1.14.0', 'mcp'] })
+      expect(relizyServer()).toEqual({
+        type: 'stdio',
+        command: 'npx',
+        args: ['-y', 'relizy@1.14.0', 'mcp'],
+      })
+      expect(result.mcpServer).toEqual({
+        command: 'npx',
+        args: ['-y', 'relizy@1.14.0', 'mcp'],
+      })
       expect(result.localMcpServer).toBe(false)
     })
 
     it('then a second run changes nothing', () => {
-      const second = setupAgents({ rootDir, targets: ['claude', 'agents-md'], tool: RELIZY, agentDocs: relizyDocs(), mcpVersion: '1.14.0' })
+      const second = setupAgents({
+        rootDir,
+        targets: ['claude', 'agents-md'],
+        tool: RELIZY,
+        agentDocs: relizyDocs(),
+        mcpVersion: '1.14.0',
+      })
 
       expect(second.changes.map(change => change.action)).toEqual(['unchanged', 'unchanged', 'unchanged'])
       expect(changeOf(second, '.mcp.json')?.reason).toBe('relizy MCP server already registered as "relizy"')
@@ -1263,8 +1868,17 @@ describe('given setupAgents with another tool', () => {
   describe('when the project is already set up for maz-ui', () => {
     beforeEach(() => {
       writeProjectFile('CLAUDE.md', '# my project')
-      setupAgents({ rootDir, docsDir, targets: ['claude', 'agents-md'] })
-      setupAgents({ rootDir, targets: ['claude', 'agents-md'], tool: RELIZY, agentDocs: relizyDocs() })
+      setupAgents({
+        rootDir,
+        docsDir,
+        targets: ['claude', 'agents-md'],
+      })
+      setupAgents({
+        rootDir,
+        targets: ['claude', 'agents-md'],
+        tool: RELIZY,
+        agentDocs: relizyDocs(),
+      })
     })
 
     it('then both tools keep their own rules, section and server', () => {
@@ -1278,7 +1892,12 @@ describe('given setupAgents with another tool', () => {
     })
 
     it('then removing the tool keeps everything of maz-ui', () => {
-      setupAgents({ rootDir, targets: ['claude', 'agents-md'], tool: RELIZY, remove: true })
+      setupAgents({
+        rootDir,
+        targets: ['claude', 'agents-md'],
+        tool: RELIZY,
+        remove: true,
+      })
 
       const agentsMd = readProjectFile('AGENTS.md')
 
@@ -1295,7 +1914,12 @@ describe('given setupAgents with another tool', () => {
       writeProjectFile('CLAUDE.md', '# my project')
       writeProjectFile('.claude/rules/relizy.md', '# my relizy rules')
 
-      const result = setupAgents({ rootDir, targets: ['claude'], tool: RELIZY, agentDocs: relizyDocs() })
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: RELIZY,
+        agentDocs: relizyDocs(),
+      })
 
       expect(readProjectFile('.claude/rules/relizy.md')).toBe('# my relizy rules')
       expect(changeOf(result, '.claude/rules/relizy.md')?.reason).toBe('file exists and was not generated by relizy: left untouched')
@@ -1305,11 +1929,21 @@ describe('given setupAgents with another tool', () => {
   describe('when its rules were edited by hand', () => {
     it('then it keeps them and names the tool in the reason', () => {
       writeProjectFile('CLAUDE.md', '# my project')
-      setupAgents({ rootDir, targets: ['claude', 'agents-md'], tool: RELIZY, agentDocs: relizyDocs() })
+      setupAgents({
+        rootDir,
+        targets: ['claude', 'agents-md'],
+        tool: RELIZY,
+        agentDocs: relizyDocs(),
+      })
       writeProjectFile('.claude/rules/relizy.md', readProjectFile('.claude/rules/relizy.md').replace('Preview the release first.', 'My own rule.'))
       writeProjectFile('AGENTS.md', readProjectFile('AGENTS.md').replace('Preview the release first.', 'My own rule.'))
 
-      const result = setupAgents({ rootDir, targets: ['claude', 'agents-md'], tool: RELIZY, agentDocs: relizyDocs('1.15.0') })
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude', 'agents-md'],
+        tool: RELIZY,
+        agentDocs: relizyDocs('1.15.0'),
+      })
 
       expect(changeOf(result, '.claude/rules/relizy.md')?.reason).toBe('edited since it was generated: left untouched, delete it to get the rules of relizy 1.15.0')
       expect(changeOf(result, 'AGENTS.md')?.reason).toBe('the relizy section was edited since it was generated: left untouched, delete the section to get the rules of relizy 1.15.0')
@@ -1319,9 +1953,19 @@ describe('given setupAgents with another tool', () => {
   describe('when its rules were written by a newer version', () => {
     it('then it keeps them', () => {
       writeProjectFile('CLAUDE.md', '# my project')
-      setupAgents({ rootDir, targets: ['claude'], tool: RELIZY, agentDocs: relizyDocs('2.0.0') })
+      setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: RELIZY,
+        agentDocs: relizyDocs('2.0.0'),
+      })
 
-      const result = setupAgents({ rootDir, targets: ['claude'], tool: RELIZY, agentDocs: relizyDocs('1.14.0') })
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: RELIZY,
+        agentDocs: relizyDocs('1.14.0'),
+      })
 
       expect(changeOf(result, '.claude/rules/relizy.md')?.reason).toBe('written by relizy 2.0.0, newer than the installed 1.14.0: left untouched')
     })
@@ -1331,7 +1975,15 @@ describe('given setupAgents with another tool', () => {
     it('then the note is written as is', () => {
       writeProjectFile('CLAUDE.md', '# my project')
 
-      setupAgents({ rootDir, targets: ['claude'], tool: { ...RELIZY, versionNote: version => `> $1 $& relizy ${version}` }, agentDocs: relizyDocs() })
+      setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: {
+          ...RELIZY,
+          versionNote: version => `> $1 $& relizy ${version}`,
+        },
+        agentDocs: relizyDocs(),
+      })
 
       expect(readProjectFile('.claude/rules/relizy.md')).toContain('# relizy\n\n> $1 $& relizy 1.14.0\n')
     })
@@ -1339,13 +1991,26 @@ describe('given setupAgents with another tool', () => {
 
   describe('when its rules are not given', () => {
     it('then it throws', () => {
-      expect(() => setupAgents({ rootDir, targets: ['claude'], tool: RELIZY })).toThrow('setupAgents needs the rules of relizy: pass them with the agentDocs option.')
+      expect(() => setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: RELIZY,
+      })).toThrow('setupAgents needs the rules of relizy: pass them with the agentDocs option.')
     })
 
     it('then it still registers the MCP server alone', () => {
-      const result = setupAgents({ rootDir, targets: ['claude'], tool: RELIZY, rules: false })
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: RELIZY,
+        rules: false,
+      })
 
-      expect(relizyServer()).toEqual({ type: 'stdio', command: 'npx', args: ['-y', 'relizy@latest', 'mcp'] })
+      expect(relizyServer()).toEqual({
+        type: 'stdio',
+        command: 'npx',
+        args: ['-y', 'relizy@latest', 'mcp'],
+      })
       expect(result.version).toBe('')
     })
   })
@@ -1358,12 +2023,30 @@ describe('given setupAgents with the command of the MCP server of another tool',
 
   describe('when the entry pins an older version and the project now installs the tool', () => {
     it('then it starts the installed version with the arguments of the tool', () => {
-      registered({ relizy: { type: 'stdio', command: 'npx', args: ['-y', 'relizy@1.13.0', 'mcp'] } })
-      writeProjectFile('package.json', JSON.stringify({ packageManager: 'pnpm@10.0.0', devDependencies: { relizy: '^1.14.0' } }))
+      registered({
+        relizy: {
+          type: 'stdio',
+          command: 'npx',
+          args: ['-y', 'relizy@1.13.0', 'mcp'],
+        },
+      })
+      writeProjectFile('package.json', JSON.stringify({
+        packageManager: 'pnpm@10.0.0',
+        devDependencies: { relizy: '^1.14.0' },
+      }))
 
-      const result = setupAgents({ rootDir, targets: ['claude'], tool: RELIZY, rules: false })
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: RELIZY,
+        rules: false,
+      })
 
-      expect(relizyServer()).toEqual({ type: 'stdio', command: 'pnpm', args: ['exec', 'relizy', 'mcp'] })
+      expect(relizyServer()).toEqual({
+        type: 'stdio',
+        command: 'pnpm',
+        args: ['exec', 'relizy', 'mcp'],
+      })
       expect(changeOf(result, '.mcp.json')?.reason).toBe('"relizy" now runs pnpm exec relizy mcp')
       expect(result.localMcpServer).toBe(true)
     })
@@ -1371,9 +2054,20 @@ describe('given setupAgents with the command of the MCP server of another tool',
 
   describe('when the entry pins a newer version than the given one', () => {
     it('then it keeps it and names the package in the reason', () => {
-      registered({ release: { command: 'npx', args: ['-y', 'relizy@2.0.0', 'mcp'] } })
+      registered({
+        release: {
+          command: 'npx',
+          args: ['-y', 'relizy@2.0.0', 'mcp'],
+        },
+      })
 
-      const result = setupAgents({ rootDir, targets: ['claude'], tool: RELIZY, rules: false, mcpVersion: '1.14.0' })
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: RELIZY,
+        rules: false,
+        mcpVersion: '1.14.0',
+      })
 
       expect(JSON.parse(readProjectFile('.mcp.json')).mcpServers.release.args).toEqual(['-y', 'relizy@2.0.0', 'mcp'])
       expect(changeOf(result, '.mcp.json')?.reason).toBe('"release" runs relizy 2.0.0')
@@ -1382,22 +2076,59 @@ describe('given setupAgents with the command of the MCP server of another tool',
 
   describe('when the entries run the package without the MCP arguments', () => {
     it('then they are not taken for the MCP server of the tool', () => {
-      registered({ release: { command: 'npx', args: ['relizy', 'release'] }, notes: 'relizy', broken: { command: 'relizy', args: 'mcp' } })
+      registered({
+        release: {
+          command: 'npx',
+          args: ['relizy', 'release'],
+        },
+        notes: 'relizy',
+        broken: { command: 'relizy', args: 'mcp' },
+      })
 
-      setupAgents({ rootDir, targets: ['claude'], tool: RELIZY, rules: false, mcpVersion: '1.14.0' })
+      setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: RELIZY,
+        rules: false,
+        mcpVersion: '1.14.0',
+      })
 
       const servers = JSON.parse(readProjectFile('.mcp.json')).mcpServers
 
-      expect(servers.release).toEqual({ command: 'npx', args: ['relizy', 'release'] })
-      expect(servers.relizy).toEqual({ type: 'stdio', command: 'npx', args: ['-y', 'relizy@1.14.0', 'mcp'] })
+      expect(servers.release).toEqual({
+        command: 'npx',
+        args: ['relizy', 'release'],
+      })
+      expect(servers.relizy).toEqual({
+        type: 'stdio',
+        command: 'npx',
+        args: ['-y', 'relizy@1.14.0', 'mcp'],
+      })
     })
   })
 
   describe('when the entry runs a custom command of the tool', () => {
     it('then it leaves it untouched', () => {
-      registered({ relizy: { command: 'npx', args: ['-y', 'relizy@latest', 'mcp', '--cwd', 'apps/web'] } })
+      registered({
+        relizy: {
+          command: 'npx',
+          args: [
+            '-y',
+            'relizy@latest',
+            'mcp',
+            '--cwd',
+            'apps/web',
+          ],
+        },
+      })
 
-      const result = setupAgents({ rootDir, targets: ['claude'], tool: RELIZY, rules: false, mcpVersion: '1.14.0' })
+      const result = setupAgents({
+        rootDir,
+        targets: ['claude'],
+        tool: RELIZY,
+        rules: false,
+        mcpVersion: '1.14.0',
+      })
 
       expect(changeOf(result, '.mcp.json')?.reason).toBe('"relizy" runs a custom command: left untouched')
     })
@@ -1406,13 +2137,40 @@ describe('given setupAgents with the command of the MCP server of another tool',
 
 describe('given mcpServerCommand with another tool', () => {
   describe.each([
-    ['pnpm@10.0.0', { command: 'pnpm', args: ['exec', 'relizy', 'mcp'] }],
-    ['yarn@4.0.0', { command: 'yarn', args: ['run', 'relizy', 'mcp'] }],
-    ['bun@1.2.0', { command: 'bun', args: ['x', '--no-install', 'relizy', 'mcp'] }],
-    ['npm@11.0.0', { command: 'npx', args: ['--no-install', 'relizy', 'mcp'] }],
+    [
+      'pnpm@10.0.0',
+      {
+        command: 'pnpm',
+        args: ['exec', 'relizy', 'mcp'],
+      },
+    ],
+    [
+      'yarn@4.0.0',
+      {
+        command: 'yarn',
+        args: ['run', 'relizy', 'mcp'],
+      },
+    ],
+    [
+      'bun@1.2.0',
+      {
+        command: 'bun',
+        args: ['x', '--no-install', 'relizy', 'mcp'],
+      },
+    ],
+    [
+      'npm@11.0.0',
+      {
+        command: 'npx',
+        args: ['--no-install', 'relizy', 'mcp'],
+      },
+    ],
   ])('when the project installs the tool with %s', (packageManager, expected) => {
     it('then its package manager starts the installed bin with the arguments of the tool', () => {
-      writeProjectFile('package.json', JSON.stringify({ packageManager, devDependencies: { relizy: '^1.14.0' } }))
+      writeProjectFile('package.json', JSON.stringify({
+        packageManager,
+        devDependencies: { relizy: '^1.14.0' },
+      }))
 
       expect(installsMcpPackage(rootDir, RELIZY)).toBe(true)
       expect(installsMcpPackage(rootDir)).toBe(false)
@@ -1422,7 +2180,10 @@ describe('given mcpServerCommand with another tool', () => {
 
   describe('when the tool has no MCP arguments and is not installed', () => {
     it('then npx downloads the pinned package', () => {
-      expect(mcpServerCommand(rootDir, '2.0.0', { ...RELIZY, mcpArgs: undefined })).toEqual({ command: 'npx', args: ['-y', 'relizy@2.0.0'] })
+      expect(mcpServerCommand(rootDir, '2.0.0', { ...RELIZY, mcpArgs: undefined })).toEqual({
+        command: 'npx',
+        args: ['-y', 'relizy@2.0.0'],
+      })
     })
   })
 })

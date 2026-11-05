@@ -11,7 +11,9 @@ import { isServer } from '@maz-ui/utils/helpers/isServer'
 export function resolveColorSchemeContent(mode: ThemeMode, colorMode: ColorMode): string {
   if (mode !== 'both')
     return mode
-  return colorMode === 'auto' ? 'light dark' : colorMode
+  return colorMode === 'auto'
+    ? 'light dark'
+    : colorMode
 }
 
 /**

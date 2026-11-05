@@ -40,10 +40,26 @@ if (!findUp(dirname(file), 'node_modules/maz-ui/package.json') && !findUp(cwd, '
 
 const installed = findUp(cwd, 'node_modules/@maz-ui/mcp/bin/maz-ui-mcp.mjs')
 const [command, args] = installed
-  ? [process.execPath, [installed, 'review', '--hook']]
-  : ['npx', ['-y', '@maz-ui/mcp@latest', 'review', '--hook']]
+  ? [
+      process.execPath,
+      [installed, 'review', '--hook'],
+    ]
+  : [
+      'npx',
+      [
+        '-y',
+        '@maz-ui/mcp@latest',
+        'review',
+        '--hook',
+      ],
+    ]
 
-const result = spawnSync(command, args, { input, cwd, encoding: 'utf8', shell: process.platform === 'win32' })
+const result = spawnSync(command, args, {
+  input,
+  cwd,
+  encoding: 'utf8',
+  shell: process.platform === 'win32',
+})
 
 if (result.status === 2) {
   process.stderr.write(result.stderr)

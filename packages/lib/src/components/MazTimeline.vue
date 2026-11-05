@@ -248,16 +248,22 @@ function getStateStyle(state: MazTimelineStepState): CSSProperties | undefined {
 
 function getStepAriaLabel(step: MazTimelineItem, index: number): string {
   const state = getStepState(step, index)
-  const title = step.title ? `, ${step.title}` : ''
+  const title = step.title
+    ? `, ${step.title}`
+    : ''
   return `Step ${index + 1}${title}: ${state}`
 }
 
 function getStepRole(step: MazTimelineItem): HTMLAttributes['role'] {
-  return clickable && !step.disabled ? 'button' : undefined
+  return clickable && !step.disabled
+    ? 'button'
+    : undefined
 }
 
 function getStepTabindex(step: MazTimelineItem): number | undefined {
-  return clickable && !step.disabled ? 0 : undefined
+  return clickable && !step.disabled
+    ? 0
+    : undefined
 }
 
 function onStepClick(step: MazTimelineItem, index: number) {

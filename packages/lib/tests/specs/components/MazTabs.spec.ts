@@ -34,7 +34,9 @@ describe('mazTabs.vue', () => {
     mount(MazTabs, {
       slots: {
         default: {
-          inject: { tabs: { from: 'maz-tabs' } },
+          inject: {
+            tabs: { from: 'maz-tabs' },
+          },
           created() {
             provided = (this as unknown as { tabs: typeof provided }).tabs
           },
@@ -56,7 +58,9 @@ describe('mazTabs.vue', () => {
       props: { size: 'sm', roundedSize: 'lg', color: 'primary' },
       slots: {
         default: {
-          inject: { tabs: { from: 'maz-tabs' } },
+          inject: {
+            tabs: { from: 'maz-tabs' },
+          },
           created() {
             provided = (this as unknown as { tabs: typeof provided }).tabs
           },

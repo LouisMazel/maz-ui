@@ -27,7 +27,10 @@ export default defineConfig({
       },
     },
     providerRelease: { enabled: true },
-    social: { twitter: { enabled: true }, slack: { enabled: false } },
+    social: {
+      twitter: { enabled: true },
+      slack: { enabled: false },
+    },
   },
 
   templates: {

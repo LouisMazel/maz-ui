@@ -15,7 +15,9 @@ vi.mock('@maz-ui/utils/helpers/swipeHandler', () => ({
 describe('given the useSwipe composable', () => {
   describe('when initializing the swipe handler', () => {
     it('then it should initialize swipe values to undefined', () => {
-      const options = { element: document.createElement('div') }
+      const options = {
+        element: document.createElement('div'),
+      }
       const { xDiff, yDiff, xStart, xEnd, yStart, yEnd } = useSwipe(options)
 
       expect(xDiff.value).toBeUndefined()
@@ -29,7 +31,9 @@ describe('given the useSwipe composable', () => {
 
   describe('when starting and stopping the swipe handler', () => {
     it('then it should call start and stop methods of the swipe handler', () => {
-      const options = { element: document.createElement('div') }
+      const options = {
+        element: document.createElement('div'),
+      }
       const { start, stop } = useSwipe(options)
 
       start()

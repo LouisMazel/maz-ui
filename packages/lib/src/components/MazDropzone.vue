@@ -260,7 +260,9 @@ const dropZoneRef = ref<HTMLLabelElement>()
 
 const isUploading = ref(false)
 
-const hasMultiple = computed(() => multiple || (maxFiles ? maxFiles > 1 : false) || autoUpload === 'multiple')
+const hasMultiple = computed(() => multiple || (maxFiles
+  ? maxFiles > 1
+  : false) || autoUpload === 'multiple')
 
 const instanceId = useInstanceUniqId({
   componentName: 'MazDropzone',
@@ -319,15 +321,37 @@ async function uploadFilesMultiple() {
 
   try {
     isUploading.value = true
-    filesData.value = filesData.value.map(f => ({ ...f, uploading: true, success: false, error: false }))
+    filesData.value = filesData.value.map(f => ({
+      ...f,
+      uploading: true,
+      success: false,
+      error: false,
+    }))
     const formData = getFormDataMultiple()
     const response = await uploadFile(formData)
-    filesData.value = filesData.value.map(f => ({ ...f, uploading: false, success: true, error: false }))
-    emits('upload-success-multiple', { files: filesData.value.map(f => f.file), response })
+    filesData.value = filesData.value.map(f => ({
+      ...f,
+      uploading: false,
+      success: true,
+      error: false,
+    }))
+    emits('upload-success-multiple', {
+      files: filesData.value.map(f => f.file),
+      response,
+    })
   }
   catch (error) {
-    filesData.value = filesData.value.map(f => ({ ...f, uploading: false, success: false, error: true }))
-    emits('upload-error-multiple', { files: filesData.value.map(f => f.file), code: 'FILE_UPLOAD_ERROR_MULTIPLE', error })
+    filesData.value = filesData.value.map(f => ({
+      ...f,
+      uploading: false,
+      success: false,
+      error: true,
+    }))
+    emits('upload-error-multiple', {
+      files: filesData.value.map(f => f.file),
+      code: 'FILE_UPLOAD_ERROR_MULTIPLE',
+      error,
+    })
   }
   finally {
     isUploading.value = false
@@ -550,7 +574,16 @@ function onOver(files: File[] | null, event: DragEvent) {
   emits('over', { files, event })
 }
 
-const { isOverDropZone, isOverError } = useDropzone(dropZoneRef, { dataTypes, onDrop, preventDefaultForUnhandled, multiple: hasMultiple.value, onError, onEnter, onLeave, onOver })
+const { isOverDropZone, isOverError } = useDropzone(dropZoneRef, {
+  dataTypes,
+  onDrop,
+  preventDefaultForUnhandled,
+  multiple: hasMultiple.value,
+  onError,
+  onEnter,
+  onLeave,
+  onOver,
+})
 
 const fileInput = ref<HTMLInputElement>()
 
@@ -568,33 +601,211 @@ function handleFileUpload(event: Event) {
 const extensionIconMap = (() => {
   const map = new Map<string, IconComponent>()
   const groups = [
-    [MazLogoJs, ['js', 'mjs', 'cjs']],
-    [MazLogoTypescript, ['ts', 'tsx', 'mts', 'cts']],
-    [MazLogoVue, ['vue']],
-    [MazLogoReact, ['jsx']],
-    [MazLogoJson, ['json', 'jsonc', 'json5']],
-    [MazLogoXml, ['xml']],
-    [MazLogoHtml, ['html', 'htm']],
-    [MazLogoMarkdown, ['md', 'markdown', 'mdx']],
-    [MazLogoProperties, ['properties']],
-    [MazLogoTxt, ['txt']],
-    [MazLogoCsv, ['csv']],
-    [MazLogoXls, ['xls', 'xlsx']],
-    [MazLogoXliff, ['xliff', 'xlf']],
-    [MazLogoApple, ['strings', 'stringsdict', 'xcstrings']],
-    [MazLogoAndroid, ['apk']],
-    [MazPhoto, ['jpeg', 'jpg', 'png', 'tiff', 'bmp', 'webp', 'svg', 'ico', 'gif', 'heic', 'heif', 'avif']],
-    [MazFilm, ['mp4', 'webm', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'm4v', 'mpeg', 'mpg', '3gp', 'ogv']],
-    [MazSpeakerWave, ['mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg', 'oga', 'opus', 'wma', 'alac', 'aiff']],
-    [MazArchiveBox, ['zip', 'rar', 'tar', 'gz', '7z', 'bz2', 'xz']],
-    [MazCommandLine, ['exe', 'dll', 'so', 'dylib', 'dmg', 'deb', 'rpm', 'app', 'bat', 'cmd']],
-    [MazCodeBracket, ['css', 'scss', 'sass', 'less', 'py', 'java', 'cpp', 'c', 'h', 'hpp', 'go', 'rs', 'rust', 'php', 'rb', 'swift', 'kt', 'kotlin', 'sql', 'sh', 'bash', 'zsh', 'yaml', 'yml', 'toml', 'ini']],
-    [MazCog, ['conf', 'config', 'env', 'cfg']],
-    [MazPresentationChartBar, ['ppt', 'pptx', 'key', 'odp']],
-    [MazDocumentText, ['rtf', 'odt']],
-    [MazPencilSquare, ['ttf', 'otf', 'woff', 'woff2', 'eot']],
-    [MazPaintBrush, ['ai', 'psd', 'sketch', 'fig', 'xd', 'eps']],
-    [MazDocumentIcon, ['pdf', 'doc', 'docx', 'tsv', 'document']],
+    [
+      MazLogoJs,
+      ['js', 'mjs', 'cjs'],
+    ],
+    [
+      MazLogoTypescript,
+      ['ts', 'tsx', 'mts', 'cts'],
+    ],
+    [
+      MazLogoVue,
+      ['vue'],
+    ],
+    [
+      MazLogoReact,
+      ['jsx'],
+    ],
+    [
+      MazLogoJson,
+      ['json', 'jsonc', 'json5'],
+    ],
+    [
+      MazLogoXml,
+      ['xml'],
+    ],
+    [
+      MazLogoHtml,
+      ['html', 'htm'],
+    ],
+    [
+      MazLogoMarkdown,
+      ['md', 'markdown', 'mdx'],
+    ],
+    [
+      MazLogoProperties,
+      ['properties'],
+    ],
+    [
+      MazLogoTxt,
+      ['txt'],
+    ],
+    [
+      MazLogoCsv,
+      ['csv'],
+    ],
+    [
+      MazLogoXls,
+      ['xls', 'xlsx'],
+    ],
+    [
+      MazLogoXliff,
+      ['xliff', 'xlf'],
+    ],
+    [
+      MazLogoApple,
+      ['strings', 'stringsdict', 'xcstrings'],
+    ],
+    [
+      MazLogoAndroid,
+      ['apk'],
+    ],
+    [
+      MazPhoto,
+      [
+        'jpeg',
+        'jpg',
+        'png',
+        'tiff',
+        'bmp',
+        'webp',
+        'svg',
+        'ico',
+        'gif',
+        'heic',
+        'heif',
+        'avif',
+      ],
+    ],
+    [
+      MazFilm,
+      [
+        'mp4',
+        'webm',
+        'avi',
+        'mov',
+        'mkv',
+        'flv',
+        'wmv',
+        'm4v',
+        'mpeg',
+        'mpg',
+        '3gp',
+        'ogv',
+      ],
+    ],
+    [
+      MazSpeakerWave,
+      [
+        'mp3',
+        'wav',
+        'm4a',
+        'aac',
+        'flac',
+        'ogg',
+        'oga',
+        'opus',
+        'wma',
+        'alac',
+        'aiff',
+      ],
+    ],
+    [
+      MazArchiveBox,
+      [
+        'zip',
+        'rar',
+        'tar',
+        'gz',
+        '7z',
+        'bz2',
+        'xz',
+      ],
+    ],
+    [
+      MazCommandLine,
+      [
+        'exe',
+        'dll',
+        'so',
+        'dylib',
+        'dmg',
+        'deb',
+        'rpm',
+        'app',
+        'bat',
+        'cmd',
+      ],
+    ],
+    [
+      MazCodeBracket,
+      [
+        'css',
+        'scss',
+        'sass',
+        'less',
+        'py',
+        'java',
+        'cpp',
+        'c',
+        'h',
+        'hpp',
+        'go',
+        'rs',
+        'rust',
+        'php',
+        'rb',
+        'swift',
+        'kt',
+        'kotlin',
+        'sql',
+        'sh',
+        'bash',
+        'zsh',
+        'yaml',
+        'yml',
+        'toml',
+        'ini',
+      ],
+    ],
+    [
+      MazCog,
+      ['conf', 'config', 'env', 'cfg'],
+    ],
+    [
+      MazPresentationChartBar,
+      ['ppt', 'pptx', 'key', 'odp'],
+    ],
+    [
+      MazDocumentText,
+      ['rtf', 'odt'],
+    ],
+    [
+      MazPencilSquare,
+      ['ttf', 'otf', 'woff', 'woff2', 'eot'],
+    ],
+    [
+      MazPaintBrush,
+      [
+        'ai',
+        'psd',
+        'sketch',
+        'fig',
+        'xd',
+        'eps',
+      ],
+    ],
+    [
+      MazDocumentIcon,
+      [
+        'pdf',
+        'doc',
+        'docx',
+        'tsv',
+        'document',
+      ],
+    ],
   ] as const
 
   for (const [icon, extensions] of groups) {
@@ -639,9 +850,15 @@ const messages = computed(() => {
 
   return {
     dragAndDrop: customTranslations.dragAndDrop ?? t('dropzone.dragAndDrop'),
-    fileMaxCount: maxFiles ? (customTranslations.fileMaxCount ?? t('dropzone.fileMaxCount', { count: maxFiles })) : undefined,
-    fileMaxSize: maxFileSize ? (customTranslations.fileMaxSize ?? t('dropzone.fileMaxSize', { size: maxFileSize })) : undefined,
-    fileTypes: dataTypesString.value ? (customTranslations.fileTypes ?? t('dropzone.fileTypes', { types: dataTypesString.value })) : undefined,
+    fileMaxCount: maxFiles
+      ? (customTranslations.fileMaxCount ?? t('dropzone.fileMaxCount', { count: maxFiles }))
+      : undefined,
+    fileMaxSize: maxFileSize
+      ? (customTranslations.fileMaxSize ?? t('dropzone.fileMaxSize', { size: maxFileSize }))
+      : undefined,
+    fileTypes: dataTypesString.value
+      ? (customTranslations.fileTypes ?? t('dropzone.fileTypes', { types: dataTypesString.value }))
+      : undefined,
     selectFile: customTranslations.selectFile ?? t('dropzone.selectFile'),
     divider: customTranslations.divider ?? t('dropzone.divider'),
   } satisfies MazDropzoneProps['translations']

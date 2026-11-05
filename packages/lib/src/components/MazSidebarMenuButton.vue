@@ -121,7 +121,9 @@ const tooltipBinding = computed(() => {
 
   return {
     text: tooltip,
-    position: (sidebar.side.value === 'start' ? 'right' : 'left') as 'right' | 'left',
+    position: (sidebar.side.value === 'start'
+      ? 'right'
+      : 'left') as 'right' | 'left',
     trigger: (tooltipVisible.value ? 'hover' : 'manual') as 'hover' | 'manual',
   }
 })
@@ -135,7 +137,9 @@ const SIZE_CLASS = {
 const routerActiveClass = computed(() => {
   const instance = getCurrentInstance()
   const hasRouter = !!instance?.appContext.config.globalProperties.$router
-  return hasRouter && to ? 'router-link-active' : ''
+  return hasRouter && to
+    ? 'router-link-active'
+    : ''
 })
 
 const isActive = computed(() => active === true)

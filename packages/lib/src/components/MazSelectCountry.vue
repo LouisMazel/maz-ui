@@ -172,7 +172,12 @@ const {
   hint,
   translations,
   search = true,
-  displayNamesOptions = { type: 'region', languageDisplay: 'standard', fallback: 'code', style: 'long' },
+  displayNamesOptions = {
+    type: 'region',
+    languageDisplay: 'standard',
+    fallback: 'code',
+    style: 'long',
+  },
   block,
   autocomplete,
   disabled,
@@ -280,7 +285,9 @@ function getFlagSrc(code: Option['code']) {
     return flagSources[code]
   }
 
-  return typeof source === 'string' ? source.replaceAll('{code}', code.toLowerCase()).replaceAll('{CODE}', code.toUpperCase()) : EMPTY_IMAGE
+  return typeof source === 'string'
+    ? source.replaceAll('{code}', code.toLowerCase()).replaceAll('{CODE}', code.toUpperCase())
+    : EMPTY_IMAGE
 }
 
 async function resolveFlagSrc(code?: Option['code']) {

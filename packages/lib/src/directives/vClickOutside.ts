@@ -8,7 +8,9 @@ function getEventType() {
   if (isServer())
     return 'click'
 
-  return document.ontouchstart === null ? 'touchstart' : 'click'
+  return document.ontouchstart === null
+    ? 'touchstart'
+    : 'click'
 }
 
 interface VClickOutsideOptions {

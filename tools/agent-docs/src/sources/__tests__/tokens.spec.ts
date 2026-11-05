@@ -43,8 +43,20 @@ describe('given parseColors', () => {
       ].join('\n')
 
       expect(parseColors(css)).toEqual([
-        { name: 'primary', variable: '--maz-primary', foreground: true, scale: ['50', '950'], usage: 'Brand primary: main actions, links, focus' },
-        { name: 'custom', variable: '--maz-custom', foreground: false, scale: ['500'], usage: '' },
+        {
+          name: 'primary',
+          variable: '--maz-primary',
+          foreground: true,
+          scale: ['50', '950'],
+          usage: 'Brand primary: main actions, links, focus',
+        },
+        {
+          name: 'custom',
+          variable: '--maz-custom',
+          foreground: false,
+          scale: ['500'],
+          usage: '',
+        },
       ])
     })
   })
@@ -53,7 +65,10 @@ describe('given parseColors', () => {
     it('then takes the variable of the base color', () => {
       const css = '--color-muted-50: oklch(from var(--maz-other) l c h);\n--color-muted: var(--maz-muted);\n--color-plain: red;'
 
-      expect(parseColors(css).map(color => [color.name, color.variable])).toEqual([['muted', '--maz-muted'], ['plain', '']])
+      expect(parseColors(css).map(color => [color.name, color.variable])).toEqual([
+        ['muted', '--maz-muted'],
+        ['plain', ''],
+      ])
     })
   })
 })

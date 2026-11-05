@@ -92,9 +92,24 @@ describe('given MazDirectivesResolver', () => {
 
   describe('when resolving various directive patterns', () => {
     it.each([
-      { label: 'camelCase', input: 'lazyImg', expectedAs: 'vLazyImg', expectedName: 'vlazyImg' },
-      { label: 'kebab-case', input: 'zoom-img', expectedAs: 'vZoom-img', expectedName: 'vzoom-img' },
-      { label: 'single word', input: 'focus', expectedAs: 'vFocus', expectedName: 'vfocus' },
+      {
+        label: 'camelCase',
+        input: 'lazyImg',
+        expectedAs: 'vLazyImg',
+        expectedName: 'vlazyImg',
+      },
+      {
+        label: 'kebab-case',
+        input: 'zoom-img',
+        expectedAs: 'vZoom-img',
+        expectedName: 'vzoom-img',
+      },
+      {
+        label: 'single word',
+        input: 'focus',
+        expectedAs: 'vFocus',
+        expectedName: 'vfocus',
+      },
     ])('then it should handle $label directive names', ({ input, expectedAs, expectedName }) => {
       const resolver = MazDirectivesResolver()
       const result = resolver.resolve(input)

@@ -75,7 +75,9 @@ export function useMazIconProps(
       inner = markRaw(v)
     }
     else if ('icon' in v && v.icon && (typeof v.icon === 'string' || isComponent(v.icon))) {
-      inner = isComponent(v.icon) ? markRaw(v.icon) : v.icon
+      inner = isComponent(v.icon)
+        ? markRaw(v.icon)
+        : v.icon
       extra = v
     }
     else {
@@ -83,7 +85,11 @@ export function useMazIconProps(
     }
 
     const defaults = toValue(defaultProps)
-    const result = { ...defaults, ...extra, icon: inner } as ResolvedMazIconProps
+    const result = {
+      ...defaults,
+      ...extra,
+      icon: inner,
+    } as ResolvedMazIconProps
     if (decorative && result['aria-hidden'] === undefined)
       result['aria-hidden'] = true
     return result

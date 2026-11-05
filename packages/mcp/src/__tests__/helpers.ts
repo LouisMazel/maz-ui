@@ -36,7 +36,10 @@ export function getEmptyCwd(): string {
 }
 
 export function getKnowledge(): Knowledge {
-  knowledge ??= loadKnowledge({ bundledDir: BUNDLE_DIR, cwd: getEmptyCwd() })
+  knowledge ??= loadKnowledge({
+    bundledDir: BUNDLE_DIR,
+    cwd: getEmptyCwd(),
+  })
 
   return knowledge
 }
@@ -44,13 +47,19 @@ export function getKnowledge(): Knowledge {
 let context: ServerContext | undefined
 
 export function getContext(): ServerContext {
-  context ??= createContext({ knowledge: getKnowledge(), cwd: getEmptyCwd() })
+  context ??= createContext({
+    knowledge: getKnowledge(),
+    cwd: getEmptyCwd(),
+  })
 
   return context
 }
 
 export function createContextFor(cwd: string): ServerContext {
-  return createContext({ knowledge: getKnowledge(), cwd })
+  return createContext({
+    knowledge: getKnowledge(),
+    cwd,
+  })
 }
 
 export function fakeDoc(overrides: Partial<DocEntry> = {}): DocEntry {
@@ -79,9 +88,14 @@ export function fakeManifest(overrides: Partial<Manifest> = {}): Manifest {
     version: '9.9.9',
     homepage: 'https://maz-ui.com',
     packages: [],
-    docs: [fakeDoc()],
+    docs: [
+      fakeDoc(),
+    ],
     components: [],
-    icons: { package: '@maz-ui/icons', names: ['MazTrash'] },
+    icons: {
+      package: '@maz-ui/icons',
+      names: ['MazTrash'],
+    },
     tailwind: {
       entries: [],
       colors: [],

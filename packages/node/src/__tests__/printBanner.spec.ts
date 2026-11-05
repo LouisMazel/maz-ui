@@ -56,7 +56,10 @@ describe('given printBanner function', () => {
 
   describe('when clear option is false', () => {
     it('then does not clear the screen', () => {
-      printBanner({ name: 'Test', options: { clear: false } })
+      printBanner({
+        name: 'Test',
+        options: { clear: false },
+      })
       expect(stdoutWriteSpy).not.toHaveBeenCalledWith('\x1B[2J')
     })
   })
@@ -73,7 +76,10 @@ describe('given printBanner function', () => {
 
   describe('when divider option is true', () => {
     it('then displays a divider', () => {
-      printBanner({ name: 'Test', options: { divider: true } })
+      printBanner({
+        name: 'Test',
+        options: { divider: true },
+      })
       expect(dividerSpy).toHaveBeenCalled()
     })
   })
@@ -89,7 +95,12 @@ describe('given printBanner function', () => {
     it('then merges them with defaults', () => {
       printBanner({
         name: 'Test',
-        options: { clear: false, divider: true, breakBefore: false, breakAfter: false },
+        options: {
+          clear: false,
+          divider: true,
+          breakBefore: false,
+          breakAfter: false,
+        },
       })
       expect(stdoutWriteSpy).not.toHaveBeenCalledWith('\x1B[2J')
       expect(dividerSpy).toHaveBeenCalled()

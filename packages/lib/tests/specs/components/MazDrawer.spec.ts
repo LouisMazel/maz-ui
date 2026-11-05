@@ -196,7 +196,9 @@ describe('given MazDrawer component', () => {
       expect(wrapper.emitted('before-close')).toBeTruthy()
 
       await backdrop.vm.$emit('update:model-value', false)
-      expect(wrapper.emitted('update:model-value')).toEqual([[false]])
+      expect(wrapper.emitted('update:model-value')).toEqual([
+        [false],
+      ])
     })
   })
 })

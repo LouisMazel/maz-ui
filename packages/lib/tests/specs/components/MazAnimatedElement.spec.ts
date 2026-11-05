@@ -32,7 +32,9 @@ describe('mazAnimatedElement', () => {
     expect(element.classList.contains('maz:invisible')).toBe(true)
 
     intersectionCallback(
-      [{ target: element, isIntersecting: true } as IntersectionObserverEntry],
+      [
+        { target: element, isIntersecting: true } as IntersectionObserverEntry,
+      ],
       IntersectionObserverMock as unknown as IntersectionObserver,
     )
 
@@ -61,7 +63,9 @@ describe('mazAnimatedElement', () => {
     expect(element.classList.contains('maz:invisible')).toBe(true)
 
     intersectionCallback(
-      [{ target: element, isIntersecting: true } as IntersectionObserverEntry],
+      [
+        { target: element, isIntersecting: true } as IntersectionObserverEntry,
+      ],
       IntersectionObserverMock as unknown as IntersectionObserver,
     )
 
@@ -73,12 +77,16 @@ describe('mazAnimatedElement', () => {
   })
 
   it('unobserves the element after the first intersection when once is true', async () => {
-    const wrapper = shallowMount(MazAnimatedElement, { props: { once: true } })
+    const wrapper = shallowMount(MazAnimatedElement, {
+      props: { once: true },
+    })
     const element = wrapper.element
     const intersectionCallback = getLastIntersectionCallback()
 
     intersectionCallback(
-      [{ target: element, isIntersecting: true } as IntersectionObserverEntry],
+      [
+        { target: element, isIntersecting: true } as IntersectionObserverEntry,
+      ],
       IntersectionObserverMock as unknown as IntersectionObserver,
     )
     await wrapper.vm.$nextTick()
@@ -87,13 +95,17 @@ describe('mazAnimatedElement', () => {
   })
 
   it('resets the animation when leaving the viewport with once=false', async () => {
-    const wrapper = shallowMount(MazAnimatedElement, { props: { once: false } })
+    const wrapper = shallowMount(MazAnimatedElement, {
+      props: { once: false },
+    })
     const element = wrapper.element
     const intersectionCallback = getLastIntersectionCallback()
 
     // First, animate it in
     intersectionCallback(
-      [{ target: element, isIntersecting: true } as IntersectionObserverEntry],
+      [
+        { target: element, isIntersecting: true } as IntersectionObserverEntry,
+      ],
       IntersectionObserverMock as unknown as IntersectionObserver,
     )
     await wrapper.vm.$nextTick()
@@ -103,7 +115,9 @@ describe('mazAnimatedElement', () => {
 
     // Then, intersect out
     intersectionCallback(
-      [{ target: element, isIntersecting: false } as IntersectionObserverEntry],
+      [
+        { target: element, isIntersecting: false } as IntersectionObserverEntry,
+      ],
       IntersectionObserverMock as unknown as IntersectionObserver,
     )
     await wrapper.vm.$nextTick()
@@ -125,7 +139,9 @@ describe('mazAnimatedElement', () => {
     const intersectionCallback = getLastIntersectionCallback()
 
     intersectionCallback(
-      [{ target: element, isIntersecting: true } as IntersectionObserverEntry],
+      [
+        { target: element, isIntersecting: true } as IntersectionObserverEntry,
+      ],
       IntersectionObserverMock as unknown as IntersectionObserver,
     )
     await wrapper.vm.$nextTick()
@@ -134,7 +150,9 @@ describe('mazAnimatedElement', () => {
 
     // Re-trigger — branch where isAnimated is already true
     intersectionCallback(
-      [{ target: element, isIntersecting: true } as IntersectionObserverEntry],
+      [
+        { target: element, isIntersecting: true } as IntersectionObserverEntry,
+      ],
       IntersectionObserverMock as unknown as IntersectionObserver,
     )
     await wrapper.vm.$nextTick()

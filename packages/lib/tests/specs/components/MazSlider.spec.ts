@@ -192,7 +192,12 @@ describe('given MazSlider component', () => {
     beforeEach(() => {
       vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(BAR_WIDTH)
       wrapper = mount(MazSlider, {
-        props: { modelValue: 1, min: 1, max: 3, step: 0.1 },
+        props: {
+          modelValue: 1,
+          min: 1,
+          max: 3,
+          step: 0.1,
+        },
       })
     })
 

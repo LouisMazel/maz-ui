@@ -23,7 +23,10 @@ function addToBody(html: string) {
 }
 
 beforeEach(() => {
-  vi.mocked(useTranslations).mockReturnValue({ t: (key: string) => key, locale: { value: 'en' } } as unknown as ReturnType<typeof useTranslations>)
+  vi.mocked(useTranslations).mockReturnValue({
+    t: (key: string) => key,
+    locale: { value: 'en' },
+  } as unknown as ReturnType<typeof useTranslations>)
 })
 
 afterEach(() => {
@@ -35,7 +38,10 @@ afterEach(() => {
 describe('given an open MazBackdrop', () => {
   describe('when it is rendered without variant', () => {
     it('then its container is the modal dialog and the click-outside area is not a button', async () => {
-      const wrapper = track(mount(MazBackdrop, { props: { modelValue: true, ariaLabelledby: 'title' }, attachTo: document.body }))
+      const wrapper = track(mount(MazBackdrop, {
+        props: { modelValue: true, ariaLabelledby: 'title' },
+        attachTo: document.body,
+      }))
       await nextTick()
 
       const dialog = wrapper.find('.m-backdrop-container')
@@ -49,7 +55,10 @@ describe('given an open MazBackdrop', () => {
 
   describe.each(['dialog', 'bottom-sheet'] as const)('when its variant is %s', (variant) => {
     it('then its container leaves the dialog role to the component content', async () => {
-      const wrapper = track(mount(MazBackdrop, { props: { modelValue: true, variant, ariaLabelledby: 'title' }, attachTo: document.body }))
+      const wrapper = track(mount(MazBackdrop, {
+        props: { modelValue: true, variant, ariaLabelledby: 'title' },
+        attachTo: document.body,
+      }))
       await nextTick()
 
       const container = wrapper.find('.m-backdrop-container')
@@ -70,7 +79,10 @@ describe('given a page with content behind a MazBackdrop', () => {
       const liveRegion = addToBody('<div aria-live="polite"></div>')
       const script = addToBody('<script type="application/json">{}</script>')
 
-      const wrapper = track(mount(MazBackdrop, { props: { modelValue: false }, attachTo: document.body }))
+      const wrapper = track(mount(MazBackdrop, {
+        props: { modelValue: false },
+        attachTo: document.body,
+      }))
       await wrapper.setProps({ modelValue: true })
       await nextTick()
 
@@ -87,7 +99,10 @@ describe('given a page with content behind a MazBackdrop', () => {
     it('then the content is interactive again', async () => {
       const app = addToBody('<div id="app"></div>')
 
-      const wrapper = track(mount(MazBackdrop, { props: { modelValue: false }, attachTo: document.body }))
+      const wrapper = track(mount(MazBackdrop, {
+        props: { modelValue: false },
+        attachTo: document.body,
+      }))
       await wrapper.setProps({ modelValue: true })
       await nextTick()
       await wrapper.setProps({ modelValue: false })
@@ -101,7 +116,10 @@ describe('given a page with content behind a MazBackdrop', () => {
     it('then it stays inert after the backdrop closes', async () => {
       const app = addToBody('<div id="app" inert></div>')
 
-      const wrapper = track(mount(MazBackdrop, { props: { modelValue: false }, attachTo: document.body }))
+      const wrapper = track(mount(MazBackdrop, {
+        props: { modelValue: false },
+        attachTo: document.body,
+      }))
       await wrapper.setProps({ modelValue: true })
       await nextTick()
       await wrapper.setProps({ modelValue: false })
@@ -115,7 +133,10 @@ describe('given a page with content behind a MazBackdrop', () => {
     it('then the content is inert from the mount', async () => {
       const app = addToBody('<div id="app"></div>')
 
-      track(mount(MazBackdrop, { props: { modelValue: true }, attachTo: document.body }))
+      track(mount(MazBackdrop, {
+        props: { modelValue: true },
+        attachTo: document.body,
+      }))
       await nextTick()
 
       expect(app.hasAttribute('inert')).toBe(true)
@@ -124,14 +145,22 @@ describe('given a page with content behind a MazBackdrop', () => {
 
   describe('when a second backdrop opens over the first one', () => {
     it('then the first one is inert until the second one closes', async () => {
-      const first = track(mount(MazBackdrop, { props: { modelValue: true }, attachTo: document.body }))
+      const first = track(mount(MazBackdrop, {
+        props: { modelValue: true },
+        attachTo: document.body,
+      }))
       await nextTick()
 
-      const second = track(mount(MazBackdrop, { props: { modelValue: false }, attachTo: document.body }))
+      const second = track(mount(MazBackdrop, {
+        props: { modelValue: false },
+        attachTo: document.body,
+      }))
       await second.setProps({ modelValue: true })
       await nextTick()
 
-      const firstRoot = first.element.parentElement === document.body ? first.element : first.find('.m-backdrop').element.closest('body > *')
+      const firstRoot = first.element.parentElement === document.body
+        ? first.element
+        : first.find('.m-backdrop').element.closest('body > *')
 
       expect((firstRoot as HTMLElement).hasAttribute('inert')).toBe(true)
 
@@ -146,10 +175,16 @@ describe('given a page with content behind a MazBackdrop', () => {
     it('then the page stays inert until the second one closes', async () => {
       const app = addToBody('<div id="app"></div>')
 
-      const first = track(mount(MazBackdrop, { props: { modelValue: false }, attachTo: document.body }))
+      const first = track(mount(MazBackdrop, {
+        props: { modelValue: false },
+        attachTo: document.body,
+      }))
       await first.setProps({ modelValue: true })
       await nextTick()
-      const second = track(mount(MazBackdrop, { props: { modelValue: false }, attachTo: document.body }))
+      const second = track(mount(MazBackdrop, {
+        props: { modelValue: false },
+        attachTo: document.body,
+      }))
       await second.setProps({ modelValue: true })
       await nextTick()
 
@@ -167,7 +202,10 @@ describe('given a page with content behind a MazBackdrop', () => {
     it('then the content is released, the page scroll is unlocked and Escape is no longer listened', async () => {
       const app = addToBody('<div id="app"></div>')
 
-      const wrapper = mount(MazBackdrop, { props: { modelValue: true }, attachTo: document.body })
+      const wrapper = mount(MazBackdrop, {
+        props: { modelValue: true },
+        attachTo: document.body,
+      })
       await nextTick()
 
       expect(document.documentElement.classList.contains('--backdrop-present')).toBe(true)
@@ -206,7 +244,10 @@ describe('given two open MazDialog with a title', () => {
 describe('given an open MazDialog', () => {
   describe('when it has no title', () => {
     it('then it is not labelled by a missing title', async () => {
-      const wrapper = track(mount(MazDialog, { props: { modelValue: true }, attachTo: document.body }))
+      const wrapper = track(mount(MazDialog, {
+        props: { modelValue: true },
+        attachTo: document.body,
+      }))
       await vi.dynamicImportSettled()
 
       expect(wrapper.find('.m-dialog').attributes('aria-labelledby')).toBeUndefined()
@@ -215,7 +256,15 @@ describe('given an open MazDialog', () => {
 
   describe('when aria-labelledby and aria-describedby props are set', () => {
     it('then they label and describe the dialog', async () => {
-      const wrapper = track(mount(MazDialog, { props: { modelValue: true, title: 'Title', ariaLabelledby: 'custom-title', ariaDescribedby: 'custom-description' }, attachTo: document.body }))
+      const wrapper = track(mount(MazDialog, {
+        props: {
+          modelValue: true,
+          title: 'Title',
+          ariaLabelledby: 'custom-title',
+          ariaDescribedby: 'custom-description',
+        },
+        attachTo: document.body,
+      }))
       await vi.dynamicImportSettled()
 
       expect(wrapper.find('.m-dialog').attributes('aria-labelledby')).toBe('custom-title')
@@ -225,7 +274,10 @@ describe('given an open MazDialog', () => {
 
   describe('when the close button is rendered', () => {
     it('then it has a translated label', async () => {
-      const wrapper = track(mount(MazDialog, { props: { modelValue: true, title: 'Title' }, attachTo: document.body }))
+      const wrapper = track(mount(MazDialog, {
+        props: { modelValue: true, title: 'Title' },
+        attachTo: document.body,
+      }))
       await vi.dynamicImportSettled()
 
       expect(wrapper.find('.m-dialog-header button').attributes('aria-label')).toBe('aria.close')
@@ -236,7 +288,10 @@ describe('given an open MazDialog', () => {
 describe('given an open MazBottomSheet', () => {
   describe('when it has a title', () => {
     it('then its dialog is labelled by its own title and described by its content', async () => {
-      const wrapper = track(mount(MazBottomSheet, { props: { modelValue: true, title: 'Sheet' }, attachTo: document.body }))
+      const wrapper = track(mount(MazBottomSheet, {
+        props: { modelValue: true, title: 'Sheet' },
+        attachTo: document.body,
+      }))
       await vi.dynamicImportSettled()
 
       const dialog = wrapper.find('.m-bottom-sheet[role="dialog"]')
@@ -249,7 +304,10 @@ describe('given an open MazBottomSheet', () => {
 
   describe('when it has no title', () => {
     it('then it is not labelled by a missing title', async () => {
-      const wrapper = track(mount(MazBottomSheet, { props: { modelValue: true }, attachTo: document.body }))
+      const wrapper = track(mount(MazBottomSheet, {
+        props: { modelValue: true },
+        attachTo: document.body,
+      }))
       await vi.dynamicImportSettled()
 
       expect(wrapper.find('.m-bottom-sheet').attributes('aria-labelledby')).toBeUndefined()
@@ -260,7 +318,11 @@ describe('given an open MazBottomSheet', () => {
 describe('given an open MazDrawer', () => {
   describe('when it has a title', () => {
     it('then the modal dialog is labelled by the title and the close button is labelled', async () => {
-      const wrapper = track(mount(MazDrawer, { props: { title: 'Menu' }, attrs: { modelValue: true }, attachTo: document.body }))
+      const wrapper = track(mount(MazDrawer, {
+        props: { title: 'Menu' },
+        attrs: { modelValue: true },
+        attachTo: document.body,
+      }))
       await vi.dynamicImportSettled()
 
       const dialog = wrapper.find('.m-backdrop-container')
@@ -274,7 +336,10 @@ describe('given an open MazDrawer', () => {
 
   describe('when it has no title', () => {
     it('then the dialog is not labelled by a missing title', async () => {
-      const wrapper = track(mount(MazDrawer, { attrs: { modelValue: true }, attachTo: document.body }))
+      const wrapper = track(mount(MazDrawer, {
+        attrs: { modelValue: true },
+        attachTo: document.body,
+      }))
       await vi.dynamicImportSettled()
 
       expect(wrapper.find('.m-backdrop-container').attributes('aria-labelledby')).toBeUndefined()

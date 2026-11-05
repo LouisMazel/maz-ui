@@ -23,8 +23,12 @@ export function getFormattedDate({
   locale: string
   options?: Intl.DateTimeFormatOptions
 }): string | undefined {
-  const formattedDate = value ? formatDate(value, locale, options) : undefined
-  return formattedDate ? capitalize(formattedDate) : undefined
+  const formattedDate = value
+    ? formatDate(value, locale, options)
+    : undefined
+  return formattedDate
+    ? capitalize(formattedDate)
+    : undefined
 }
 
 export function getRangeFormattedDate({
@@ -48,7 +52,9 @@ export function getRangeFormattedDate({
     options,
   })
 
-  return startValue || endValue ? `${startValue || '...'} - ${endValue || '...'}` : undefined
+  return startValue || endValue
+    ? `${startValue || '...'} - ${endValue || '...'}`
+    : undefined
 }
 
 export function getFirstDayOfMonth(value: ConfigType): number {
@@ -183,7 +189,9 @@ export function scrollToTarget(scrollContainer: HTMLElement, target: HTMLElement
 
 export function findNearestNumberInList(list: number[], number: number): number {
   return list.reduce((prev, curr) => {
-    return Math.abs(curr - number) < Math.abs(prev - number) ? curr : prev
+    return Math.abs(curr - number) < Math.abs(prev - number)
+      ? curr
+      : prev
   })
 }
 

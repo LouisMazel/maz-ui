@@ -90,7 +90,9 @@ const range = computed(() => {
 })
 const wrapperStyle = computed(() => {
   return {
-    paddingTop: labels ? `2.5em` : `1em`,
+    paddingTop: labels
+      ? `2.5em`
+      : `1em`,
   }
 })
 const sliderStyle = computed<StyleValue>(() => {
@@ -153,8 +155,12 @@ function getCursorBounds(i: number) {
   const values = tmpValues.value ?? []
 
   return {
-    lower: i > 0 ? values[i - 1] : min,
-    upper: i < values.length - 1 ? values[i + 1] : max,
+    lower: i > 0
+      ? values[i - 1]
+      : min,
+    upper: i < values.length - 1
+      ? values[i + 1]
+      : max,
   }
 }
 
@@ -170,10 +176,14 @@ function getKeyboardValue(event: KeyboardEvent, i: number): number | undefined {
   switch (event.key) {
     case 'ArrowLeft':
     case 'ArrowDown':
-      return isBetween(current - step, values[i - 1], values[i + 1], 'minus') ? Math.max(min, roundToStep(current - step)) : current
+      return isBetween(current - step, values[i - 1], values[i + 1], 'minus')
+        ? Math.max(min, roundToStep(current - step))
+        : current
     case 'ArrowRight':
     case 'ArrowUp':
-      return isBetween(current + step, values[i - 1], values[i + 1], 'plus') ? Math.min(max, roundToStep(current + step)) : current
+      return isBetween(current + step, values[i - 1], values[i + 1], 'plus')
+        ? Math.min(max, roundToStep(current + step))
+        : current
     case 'PageDown':
       return Math.max(lower, roundToStep(current - step * PAGE_STEP_MULTIPLIER))
     case 'PageUp':
@@ -212,14 +222,20 @@ function blurCursor(i: number) {
 function checkValues() {
   // check if values are not below the min or above the max
   const valuesChecked = computedValue.value.map((v: number) => {
-    const checkedValue = v < min ? min : v > max ? max : v
+    const checkedValue = v < min
+      ? min
+      : v > max
+        ? max
+        : v
     return roundToStep(checkedValue)
   })
   emitValue(valuesChecked)
   tmpValues.value = valuesChecked
 }
 function emitValue(values: number[]) {
-  const valueToEmit = hasMultipleValues.value ? [...values] : values[0]
+  const valueToEmit = hasMultipleValues.value
+    ? [...values]
+    : values[0]
   emits('update:model-value', valueToEmit)
 }
 function getLabel(i: number) {
@@ -261,8 +277,12 @@ function setDividers() {
     const middle = Math.round(baseLength / 2)
     // generate dividers items with style
     dividers.value = base.map((pos, i) => ({
-      left: i === 0 ? 0 : `${base[i - 1]}px`, // ATTENTION: buttonPositions.value[i - 1]
-      right: i + 1 === baseLength ? 0 : `calc( 100% - ${pos}px )`,
+      left: i === 0
+        ? 0
+        : `${base[i - 1]}px`, // ATTENTION: buttonPositions.value[i - 1]
+      right: i + 1 === baseLength
+        ? 0
+        : `calc( 100% - ${pos}px )`,
       backgroundColor:
         middle === i + 1
           ? undefined

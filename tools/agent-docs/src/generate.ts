@@ -53,7 +53,9 @@ function readVersion(paths: SourcePaths): string {
 function relativeLink(fromFile: string, toFile: string, anchor: string): string {
   const relativePath = posix.relative(posix.dirname(fromFile), toFile)
 
-  return `${relativePath.startsWith('.') ? relativePath : `./${relativePath}`}${anchor}`
+  return `${relativePath.startsWith('.')
+    ? relativePath
+    : `./${relativePath}`}${anchor}`
 }
 
 /** Maps a docs href (relative, absolute site path, with or without `.md`) to a known doc id */
@@ -62,19 +64,25 @@ export function resolveHrefToId(href: string, fromSourcePath: string, knownIds: 
     return undefined
 
   const [rawPath, rawAnchor] = href.split('#')
-  const anchor = rawAnchor ? `#${rawAnchor}` : ''
+  const anchor = rawAnchor
+    ? `#${rawAnchor}`
+    : ''
   const target = rawPath.startsWith('/')
     ? rawPath.slice(1)
     : posix.join(posix.dirname(fromSourcePath), rawPath)
   const id = sourcePathToId(target.replace(/\.html$/, '').replace(/\/$/, '/index').replace(/(?<!\.md)$/, '.md'))
 
-  return knownIds.has(id) ? { id, anchor } : undefined
+  return knownIds.has(id)
+    ? { id, anchor }
+    : undefined
 }
 
 /** Links to pages deliberately left out of the bundle (blog, changelog, home...) are not broken */
 function isExcludedTarget(href: string, fromSourcePath: string): boolean {
   const [path] = href.split('#')
-  const target = path.startsWith('/') ? path.slice(1) : posix.join(posix.dirname(fromSourcePath), path)
+  const target = path.startsWith('/')
+    ? path.slice(1)
+    : posix.join(posix.dirname(fromSourcePath), path)
 
   return /^(?:blog\/|changelog|made-with-maz-ui|theme-editor|index|guide\/cli|guide\/migration-v4|$)/.test(target.replace(/\.md$/, '')) || /\.(?:png|jpe?g|svg|gif|webp|zip)$/.test(path)
 }
@@ -98,7 +106,12 @@ function nuxtNote(symbols: string[], category: DocEntry['category'], autoImports
 
 function renderPageHeader(entry: DocEntry, nuxt: string | undefined): string {
   const lines = [
-    stringifyFrontmatter({ title: entry.title, description: entry.description, package: entry.package, url: entry.url }),
+    stringifyFrontmatter({
+      title: entry.title,
+      description: entry.description,
+      package: entry.package,
+      url: entry.url,
+    }),
     '',
     `# ${entry.title}`,
     '',
@@ -166,21 +179,32 @@ async function createGenerationContext(paths: SourcePaths): Promise<GenerationCo
     version: readVersion(paths),
     warnings: [],
     components,
-    componentsByKebab: new Map(components.map(api => [pascalToKebab(api.name), api])),
+    componentsByKebab: new Map(components.map(api => [
+      pascalToKebab(api.name),
+      api,
+    ])),
     pages,
     autoImports: collectNuxtAutoImports(join(paths.root, 'packages/nuxt/src/module.ts')),
-    knownIds: new Set([...pages.map(page => page.id), ...components.map(api => api.docId), ...REFERENCE_IDS]),
+    knownIds: new Set([
+      ...pages.map(page => page.id),
+      ...components.map(api => api.docId),
+      ...REFERENCE_IDS,
+    ]),
     titles: new Map([
       ...pages.map(page => [page.id, page.frontmatter.title ?? kebabToPascal(page.slug)] as [string, string]),
       ...components.map(api => [api.docId, api.name] as [string, string]),
     ]),
     parentOf: new Map(),
-    fileOf: id => (indexPages.has(id) ? `${id}/index.md` : `${id}.md`),
+    fileOf: id => (indexPages.has(id)
+      ? `${id}/index.md`
+      : `${id}.md`),
   }
 }
 
 function toSitePath(href: string): string {
-  return href.startsWith(`${HOMEPAGE}/`) ? href.slice(HOMEPAGE.length) : href
+  return href.startsWith(`${HOMEPAGE}/`)
+    ? href.slice(HOMEPAGE.length)
+    : href
 }
 
 function createCleanContext(context: GenerationContext, page: SourcePage, title: string, description: string, includedApis: ComponentApi[]): CleanMarkdownContext {
@@ -234,7 +258,9 @@ function createCleanContext(context: GenerationContext, page: SourcePage, title:
     linkTitle: (href) => {
       const target = resolveHrefToId(toSitePath(href), page.sourcePath, context.knownIds)
 
-      return target ? context.titles.get(target.id) : undefined
+      return target
+        ? context.titles.get(target.id)
+        : undefined
     },
   }
 }
@@ -245,7 +271,9 @@ function pageDraft(context: GenerationContext, page: SourcePage): PageDraft {
   const description = normalizeDashes(page.frontmatter.description ?? '')
   const body = cleanMarkdown(page.body, createCleanContext(context, page, title, description, includedApis))
   const isComponent = page.category === 'component'
-  const mainComponent = isComponent ? context.componentsByKebab.get(page.slug) : undefined
+  const mainComponent = isComponent
+    ? context.componentsByKebab.get(page.slug)
+    : undefined
 
   if (isComponent && !mainComponent)
     context.warnings.push(`${page.sourcePath}: no component named ${kebabToPascal(page.slug)}`)
@@ -257,7 +285,10 @@ function pageDraft(context: GenerationContext, page: SourcePage): PageDraft {
 
   const componentApis = unique([mainComponent, ...includedApis].filter((api): api is ComponentApi => !!api))
   const { symbols, imports } = isComponent
-    ? { symbols: componentApis.map(api => api.name), imports: componentApis.map(api => api.import) }
+    ? {
+        symbols: componentApis.map(api => api.name),
+        imports: componentApis.map(api => api.import),
+      }
     : resolvePageSymbols(page, context.paths)
 
   const entry: DocEntry = {
@@ -268,7 +299,9 @@ function pageDraft(context: GenerationContext, page: SourcePage): PageDraft {
     description,
     package: page.package,
     file: context.fileOf(page.id),
-    url: `${HOMEPAGE}/${page.id}${page.sourcePath.endsWith('/index.md') ? '/' : ''}`,
+    url: `${HOMEPAGE}/${page.id}${page.sourcePath.endsWith('/index.md')
+      ? '/'
+      : ''}`,
     symbols,
     imports,
     aliases: buildAliases(page.id, title, symbols),
@@ -285,23 +318,31 @@ function pageDraft(context: GenerationContext, page: SourcePage): PageDraft {
 
 /** Page of a component that has no page on maz-ui.com (building blocks like MazSidebarGroup) */
 function componentOnlyDraft(context: GenerationContext, api: ComponentApi): PageDraft {
-  const parentApi = api.parent ? context.components.find(candidate => candidate.name === api.parent) : undefined
+  const parentApi = api.parent
+    ? context.components.find(candidate => candidate.name === api.parent)
+    : undefined
   const entry: DocEntry = {
     id: api.docId,
     category: 'component',
     slug: pascalToKebab(api.name),
     title: api.name,
-    description: api.description ?? COMPONENT_DESCRIPTIONS[api.name] ?? (parentApi ? `${api.name} is a building block of ${parentApi.name}.` : `${api.name} component.`),
+    description: api.description ?? COMPONENT_DESCRIPTIONS[api.name] ?? (parentApi
+      ? `${api.name} is a building block of ${parentApi.name}.`
+      : `${api.name} component.`),
     package: 'maz-ui',
     file: `${api.docId}.md`,
     symbols: [api.name],
     imports: [api.import],
     aliases: buildAliases(api.docId, api.name, [api.name]),
     headings: [],
-    related: parentApi ? [parentApi.docId] : [],
+    related: parentApi
+      ? [parentApi.docId]
+      : [],
     chars: 0,
   }
-  const parentLine = parentApi ? `\nUsed inside [${parentApi.name}](./${pascalToKebab(parentApi.name)}.md): read its page for complete examples.\n` : ''
+  const parentLine = parentApi
+    ? `\nUsed inside [${parentApi.name}](./${pascalToKebab(parentApi.name)}.md): read its page for complete examples.\n`
+    : ''
 
   return {
     entry,
@@ -347,9 +388,16 @@ function componentRelations(context: GenerationContext, entry: DocEntry): string
 
   const parent = context.components.find(api => api.name === entry.title)?.parent
   const children = context.components.filter(api => api.parent === entry.title).map(api => api.docId)
-  const parentDocId = parent ? context.components.find(api => api.name === parent)?.docId : undefined
+  const parentDocId = parent
+    ? context.components.find(api => api.name === parent)?.docId
+    : undefined
 
-  return [...(parentDocId ? [parentDocId] : []), ...children].filter(id => id !== entry.id)
+  return [
+    ...(parentDocId
+      ? [parentDocId]
+      : []),
+    ...children,
+  ].filter(id => id !== entry.id)
 }
 
 function finalizeDrafts(context: GenerationContext, drafts: PageDraft[]): PageDraft[] {
@@ -360,10 +408,22 @@ function finalizeDrafts(context: GenerationContext, drafts: PageDraft[]): PageDr
       const headings = extractHeadings(content)
         .filter(heading => heading.level === 2 || heading.level === 3)
         .map(heading => heading.title)
-      const relatedIds = unique([...entry.related, ...(related.get(entry.id) ?? []), ...componentRelations(context, entry)])
+      const relatedIds = unique([
+        ...entry.related,
+        ...(related.get(entry.id) ?? []),
+        ...componentRelations(context, entry),
+      ])
         .filter(id => context.knownIds.has(id) && id !== entry.id)
 
-      return { entry: { ...entry, headings, related: relatedIds, chars: content.length }, content }
+      return {
+        entry: {
+          ...entry,
+          headings,
+          related: relatedIds,
+          chars: content.length,
+        },
+        content,
+      }
     })
     .sort((a, b) => CATEGORY_ORDER.indexOf(a.entry.category) - CATEGORY_ORDER.indexOf(b.entry.category) || a.entry.id.localeCompare(b.entry.id))
 }
@@ -390,7 +450,11 @@ function validate(context: GenerationContext, drafts: PageDraft[]): void {
       context.warnings.push(...descriptionProblems(entry))
   }
 
-  for (const id of [...Object.keys(DOC_ALIASES), ...Object.keys(ECOSYSTEM_SYMBOLS), ...RELATED_DOCS.flat()]) {
+  for (const id of [
+    ...Object.keys(DOC_ALIASES),
+    ...Object.keys(ECOSYSTEM_SYMBOLS),
+    ...RELATED_DOCS.flat(),
+  ]) {
     if (!context.knownIds.has(id))
       context.warnings.push(`aliases.ts references the unknown doc "${id}"`)
   }
@@ -414,7 +478,11 @@ export async function generateKnowledge(paths: SourcePaths = getSourcePaths()): 
   const componentDrafts = components
     .filter(api => !pageDrafts.some(draft => draft.entry.id === api.docId))
     .map(api => componentOnlyDraft(context, api))
-  const all = finalizeDrafts(context, [...pageDrafts, ...componentDrafts, ...referenceDrafts(tailwind, iconNames)])
+  const all = finalizeDrafts(context, [
+    ...pageDrafts,
+    ...componentDrafts,
+    ...referenceDrafts(tailwind, iconNames),
+  ])
 
   validate(context, all)
 
@@ -438,17 +506,37 @@ export async function generateKnowledge(paths: SourcePaths = getSourcePaths()): 
     manifest,
     bundle: [
       ...all.map(item => ({ path: item.entry.file, content: item.content })),
-      { path: 'README.md', content: renderBundleIndex(docs) },
+      {
+        path: 'README.md',
+        content: renderBundleIndex(docs),
+      },
       { path: 'rules.md', content: rulesDoc },
-      { path: 'agents/claude-rule.md', content: renderClaudeRule(agentContent) },
-      { path: 'agents/agents-md.md', content: renderAgentsMdSection(agentContent) },
+      {
+        path: 'agents/claude-rule.md',
+        content: renderClaudeRule(agentContent),
+      },
+      {
+        path: 'agents/agents-md.md',
+        content: renderAgentsMdSection(agentContent),
+      },
       { path: 'manifest.json', content: `${JSON.stringify(manifest)}\n` },
     ],
     site: [
-      { path: 'llms.txt', content: renderLlmsTxt(docs, HOMEPAGE) },
-      { path: 'llms-full.txt', content: renderLlmsFullTxt(all.map(item => ({ doc: item.entry, content: item.content })), rulesDoc, HOMEPAGE) },
+      {
+        path: 'llms.txt',
+        content: renderLlmsTxt(docs, HOMEPAGE),
+      },
+      {
+        path: 'llms-full.txt',
+        content: renderLlmsFullTxt(all.map(item => ({ doc: item.entry, content: item.content })), rulesDoc, HOMEPAGE),
+      },
     ],
-    skill: [{ path: 'skills/maz-ui/SKILL.md', content: renderSkill(agentContent) }],
+    skill: [
+      {
+        path: 'skills/maz-ui/SKILL.md',
+        content: renderSkill(agentContent),
+      },
+    ],
     vitepress: renderVitepressApis(components),
     warnings: context.warnings,
   }

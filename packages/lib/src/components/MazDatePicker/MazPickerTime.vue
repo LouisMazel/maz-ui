@@ -42,7 +42,9 @@ const currentDate = computed({
 })
 
 const hours = computed(() => {
-  return Array.from({ length: props.isHour12 ? 12 : 24 }, (_v, i) => i).map((hour) => {
+  return Array.from({
+    length: props.isHour12 ? 12 : 24,
+  }, (_v, i) => i).map((hour) => {
     const hourBase = hour + (props.isHour12 ? 1 : 0)
     const hour12or24 = getHour12or24(hourBase)
     const hourValue = dayjs(currentDate.value).set('hour', hour12or24)
@@ -57,7 +59,9 @@ const hours = computed(() => {
           : false)
 
     return {
-      label: `${hourBase < 10 ? '0' : ''}${hourBase}`,
+      label: `${hourBase < 10
+        ? '0'
+        : ''}${hourBase}`,
       value: dayjs(currentDate.value).set('hour', hour12or24),
       isDisabled,
     }
@@ -79,7 +83,9 @@ const minutes = computed(() => {
         : false)
 
     return {
-      label: `${minute < 10 ? '0' : ''}${minute}`,
+      label: `${minute < 10
+        ? '0'
+        : ''}${minute}`,
       value: minuteValue,
       isDisabled,
     }
@@ -173,8 +179,14 @@ const spacerHeight = ref<number>()
 function getHour12or24(hourValue: number) {
   if (props.isHour12) {
     const isPm = currentAmpm.value === 'pm'
-    const newValue = isPm ? hourValue + 12 : hourValue
-    return newValue === 12 ? 0 : newValue === 24 ? 12 : newValue
+    const newValue = isPm
+      ? hourValue + 12
+      : hourValue
+    return newValue === 12
+      ? 0
+      : newValue === 24
+        ? 12
+        : newValue
   }
   else {
     return hourValue
@@ -279,7 +291,11 @@ async function selectTime(identifier: ColumnIdentifier, value: TimeValue) {
       const baseHour = newDate.get('hour')
 
       const newHour
-        = baseHour + 12 > 12 && baseHour + 12 < 24 ? baseHour + 12 : baseHour === 0 ? 12 : baseHour
+        = baseHour + 12 > 12 && baseHour + 12 < 24
+          ? baseHour + 12
+          : baseHour === 0
+            ? 12
+            : baseHour
 
       currentDate.value = newDate.set('hour', newHour).format()
     }

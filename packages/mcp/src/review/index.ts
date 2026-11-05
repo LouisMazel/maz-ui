@@ -16,10 +16,28 @@ export function detectKind(code: string, filename?: string): FileKind {
 
   if (extension === 'vue')
     return 'vue'
-  if (['ts', 'tsx', 'js', 'jsx', 'mjs', 'mts', 'cjs', 'cts'].includes(extension ?? ''))
+  if ([
+    'ts',
+    'tsx',
+    'js',
+    'jsx',
+    'mjs',
+    'mts',
+    'cjs',
+    'cts',
+  ].includes(extension ?? '')) {
     return 'script'
-  if (['css', 'scss', 'pcss', 'postcss', 'sass', 'less'].includes(extension ?? ''))
+  }
+  if ([
+    'css',
+    'scss',
+    'pcss',
+    'postcss',
+    'sass',
+    'less',
+  ].includes(extension ?? '')) {
     return 'style'
+  }
   if (extension === 'html')
     return 'template'
 
@@ -77,7 +95,9 @@ function ignoredRules(lines: string[]): { file: IgnoreScope | undefined, byLine:
     const [directive] = rest.replace(/-->|\*\/|\*\}|\}/g, '').split(/\s--\s/)
     const rules = directive.split(/[\s,]+/).filter(rule => /^[a-z][a-z\d-]+$/.test(rule))
 
-    return rules.length > 0 ? new Set(rules) : 'all'
+    return rules.length > 0
+      ? new Set(rules)
+      : 'all'
   }
 
   for (const [index, line] of lines.entries()) {
@@ -95,7 +115,9 @@ function ignoredRules(lines: string[]): { file: IgnoreScope | undefined, byLine:
 
     const isAlone = /^\s*(?:<!--|\/\/|\/\*|\{\/\*)\s*maz-ui-review-ignore/.test(line)
 
-    byLine.set(isAlone ? index + 2 : index + 1, parseRules(match[1]))
+    byLine.set(isAlone
+      ? index + 2
+      : index + 1, parseRules(match[1]))
   }
 
   return { file, byLine }
@@ -119,7 +141,10 @@ function blockContent(block: ElementNode): { content: string, offset: number } {
   const start = first.loc.start.offset
   const end = last.loc.end.offset
 
-  return { content: block.loc.source.slice(start - block.loc.start.offset, end - block.loc.start.offset), offset: start }
+  return {
+    content: block.loc.source.slice(start - block.loc.start.offset, end - block.loc.start.offset),
+    offset: start,
+  }
 }
 
 export function reviewCode(code: string, options: ReviewOptions): Finding[] {
@@ -136,7 +161,10 @@ export function reviewCode(code: string, options: ReviewOptions): Finding[] {
         return
 
       seen.add(key)
-      findings.push({ ...finding, ...position })
+      findings.push({
+        ...finding,
+        ...position,
+      })
     },
   }
 
@@ -199,11 +227,15 @@ export function formatFindings(findings: Finding[], label: string): string {
 
   const summary = (['error', 'warning', 'info'] as const)
     .filter(severity => counts[severity] > 0)
-    .map(severity => `${counts[severity]} ${severity}${counts[severity] > 1 ? 's' : ''}`)
+    .map(severity => `${counts[severity]} ${severity}${counts[severity] > 1
+      ? 's'
+      : ''}`)
     .join(', ')
 
   return [
     `${label}: ${summary}`,
-    ...findings.map(finding => `- L${finding.line}:${finding.column} ${finding.severity} [${finding.rule}] ${finding.message}${finding.suggestion ? `\n  -> ${finding.suggestion}` : ''}`),
+    ...findings.map(finding => `- L${finding.line}:${finding.column} ${finding.severity} [${finding.rule}] ${finding.message}${finding.suggestion
+      ? `\n  -> ${finding.suggestion}`
+      : ''}`),
   ].join('\n')
 }

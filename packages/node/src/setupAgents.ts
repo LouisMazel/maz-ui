@@ -15,7 +15,12 @@ import { applyEdits, modify, parse } from 'jsonc-parser'
  */
 export type AgentTarget = 'claude' | 'agents-md' | 'cursor' | 'vscode'
 
-export const AGENT_TARGETS: AgentTarget[] = ['claude', 'agents-md', 'cursor', 'vscode']
+export const AGENT_TARGETS: AgentTarget[] = [
+  'claude',
+  'agents-md',
+  'cursor',
+  'vscode',
+]
 
 export interface SetupAgentsOptions {
   /** Root of the project (where `AGENTS.md`, `.claude/`, `.mcp.json` live) */
@@ -70,7 +75,10 @@ export const MANAGED_MARKER = 'Managed by maz-ui'
 export const AGENTS_MD_BEGIN = '<!-- BEGIN:maz-ui -->'
 export const AGENTS_MD_END = '<!-- END:maz-ui -->'
 export const MCP_SERVER_NAME = 'maz-ui'
-export const DEFAULT_MCP_SERVER: McpServerCommand = { command: 'npx', args: ['-y', '@maz-ui/mcp@latest'] }
+export const DEFAULT_MCP_SERVER: McpServerCommand = {
+  command: 'npx',
+  args: ['-y', '@maz-ui/mcp@latest'],
+}
 
 /**
  * A tool whose AI agents are configured by `setupAgents`: maz-ui by default,
@@ -162,20 +170,40 @@ export function detectPackageManager(rootDir: string): PackageManager {
   if (['pnpm', 'yarn', 'bun', 'npm'].includes(declared))
     return declared as PackageManager
 
-  const lockfiles: [string, PackageManager][] = [['pnpm-lock.yaml', 'pnpm'], ['yarn.lock', 'yarn'], ['bun.lock', 'bun'], ['bun.lockb', 'bun']]
+  const lockfiles: [string, PackageManager][] = [
+    ['pnpm-lock.yaml', 'pnpm'],
+    ['yarn.lock', 'yarn'],
+    ['bun.lock', 'bun'],
+    ['bun.lockb', 'bun'],
+  ]
 
   return lockfiles.find(([file]) => existsSync(join(rootDir, file)))?.[1] ?? 'npm'
 }
 
 /** Commands starting the MCP server installed in a project, by package manager */
 function localMcpCommands(tool: AgentsTool): Record<PackageManager, McpServerCommand> {
-  const bin = [tool.mcpBin, ...(tool.mcpArgs ?? [])]
+  const bin = [
+    tool.mcpBin,
+    ...(tool.mcpArgs ?? []),
+  ]
 
   return {
-    pnpm: { command: 'pnpm', args: ['exec', ...bin] },
-    yarn: { command: 'yarn', args: ['run', ...bin] },
-    bun: { command: 'bun', args: ['x', '--no-install', ...bin] },
-    npm: { command: 'npx', args: ['--no-install', ...bin] },
+    pnpm: {
+      command: 'pnpm',
+      args: ['exec', ...bin],
+    },
+    yarn: {
+      command: 'yarn',
+      args: ['run', ...bin],
+    },
+    bun: {
+      command: 'bun',
+      args: ['x', '--no-install', ...bin],
+    },
+    npm: {
+      command: 'npx',
+      args: ['--no-install', ...bin],
+    },
   }
 }
 
@@ -190,7 +218,14 @@ function localMcpCommands(tool: AgentsTool): Record<PackageManager, McpServerCom
 export function mcpServerCommand(rootDir: string, version = 'latest', tool: AgentsTool = MAZ_UI_AGENTS_TOOL): McpServerCommand {
   return installsMcpPackage(rootDir, tool)
     ? localMcpCommands(tool)[detectPackageManager(rootDir)]
-    : { command: 'npx', args: ['-y', `${tool.mcpPackage}@${version}`, ...(tool.mcpArgs ?? [])] }
+    : {
+        command: 'npx',
+        args: [
+          '-y',
+          `${tool.mcpPackage}@${version}`,
+          ...(tool.mcpArgs ?? []),
+        ],
+      }
 }
 
 /** Version pinned in a `npx -y <package>@<version>` command */
@@ -205,7 +240,12 @@ function pinnedMcpVersion(server: McpServerCommand, tool: AgentsTool): string | 
  * command written by hand (`--docs`, another runner...) is kept.
  */
 function isGeneratedMcpCommand(server: Partial<McpServerCommand>, tool: AgentsTool): server is McpServerCommand {
-  const command = [server.command, ...(Array.isArray(server.args) ? server.args : [])].join(' ')
+  const command = [
+    server.command,
+    ...(Array.isArray(server.args)
+      ? server.args
+      : []),
+  ].join(' ')
   const args = (tool.mcpArgs ?? []).map(arg => ` ${escapeRegExp(arg)}`).join('')
 
   return new RegExp(`^npx -y ${escapeRegExp(tool.mcpPackage)}(?:@\\S+)?${args}$`).test(command)
@@ -236,8 +276,12 @@ function managedContent(version: string, body: string, setup: ToolSetup): string
  * they are kept, a newer version of the rules would overwrite the edits.
  */
 export function isEditedManagedContent(content: string | undefined, tool: AgentsTool = MAZ_UI_AGENTS_TOOL): boolean {
-  const header = content === undefined ? null : resolveTool(tool).managedHeader.exec(content)
-  const recorded = header ? /\(sha256:([\da-f]+)\)/.exec(header[0])?.[1] : undefined
+  const header = content === undefined
+    ? null
+    : resolveTool(tool).managedHeader.exec(content)
+  const recorded = header
+    ? /\(sha256:([\da-f]+)\)/.exec(header[0])?.[1]
+    : undefined
 
   return header !== null && recorded !== undefined && checksum((content as string).slice(header.index + header[0].length)) !== recorded
 }
@@ -296,7 +340,9 @@ export function findInstalledPackage(fromDir: string, name: string): string | un
 export function readPackageVersion(packageDir: string): string | undefined {
   const file = join(packageDir, 'package.json')
 
-  return existsSync(file) ? (JSON.parse(readFileSync(file, 'utf8')) as { version?: string }).version : undefined
+  return existsSync(file)
+    ? (JSON.parse(readFileSync(file, 'utf8')) as { version?: string }).version
+    : undefined
 }
 
 const DEFAULT_WORKSPACES = ['apps/*', 'packages/*']
@@ -313,10 +359,14 @@ export function readWorkspacePatterns(rootDir: string): string[] {
   const workspaces = readPackageJson(rootDir)?.workspaces as string[] | { packages?: string[] } | undefined
   const declared = existsSync(pnpmWorkspace)
     ? readPnpmWorkspacePackages(readFileSync(pnpmWorkspace, 'utf8'))
-    : (Array.isArray(workspaces) ? workspaces : workspaces?.packages) ?? []
+    : (Array.isArray(workspaces)
+        ? workspaces
+        : workspaces?.packages) ?? []
   const patterns = declared.filter(pattern => !pattern.startsWith('!')).map(pattern => pattern.replace(/^\.\//, '').replace(/\/$/, ''))
 
-  return patterns.length > 0 ? patterns : DEFAULT_WORKSPACES
+  return patterns.length > 0
+    ? patterns
+    : DEFAULT_WORKSPACES
 }
 
 /** Items of the `packages` list of a `pnpm-workspace.yaml` */
@@ -342,7 +392,9 @@ function readPnpmWorkspacePackages(content: string): string[] {
 function globToRegExp(pattern: string): RegExp {
   const source = pattern
     .split('/')
-    .map(segment => segment === '**' ? '.*' : segment.replaceAll(/[.+^${}()|[\]\\]/g, '\\$&').replaceAll('*', '[^/]*').replaceAll('?', '[^/]'))
+    .map(segment => segment === '**'
+      ? '.*'
+      : segment.replaceAll(/[.+^${}()|[\]\\]/g, '\\$&').replaceAll('*', '[^/]*').replaceAll('?', '[^/]'))
     .join('/')
 
   return new RegExp(`^${source.replaceAll('/.*', '(?:/.*)?')}$`)
@@ -355,8 +407,14 @@ export function findWorkspaceDirs(rootDir: string): string[] {
   for (const pattern of readWorkspacePatterns(rootDir)) {
     const segments = pattern.split('/')
     const firstGlob = segments.findIndex(segment => /[*?[{]/.test(segment))
-    const base = (firstGlob === -1 ? segments : segments.slice(0, firstGlob)).join('/')
-    const depth = firstGlob === -1 ? 0 : segments.includes('**') ? MAX_GLOBSTAR_DEPTH : segments.length - firstGlob
+    const base = (firstGlob === -1
+      ? segments
+      : segments.slice(0, firstGlob)).join('/')
+    const depth = firstGlob === -1
+      ? 0
+      : segments.includes('**')
+        ? MAX_GLOBSTAR_DEPTH
+        : segments.length - firstGlob
     const matcher = globToRegExp(pattern)
 
     const visit = (folder: string, remaining: number): void => {
@@ -370,8 +428,11 @@ export function findWorkspaceDirs(rootDir: string): string[] {
         return
 
       for (const entry of readdirSync(join(rootDir, folder), { withFileTypes: true })) {
-        if (entry.isDirectory() && entry.name !== 'node_modules' && !entry.name.startsWith('.'))
-          visit(folder ? `${folder}/${entry.name}` : entry.name, remaining - 1)
+        if (entry.isDirectory() && entry.name !== 'node_modules' && !entry.name.startsWith('.')) {
+          visit(folder
+            ? `${folder}/${entry.name}`
+            : entry.name, remaining - 1)
+        }
       }
     }
 
@@ -387,7 +448,10 @@ export function findWorkspaceDirs(rootDir: string): string[] {
  * the parent folders.
  */
 export function findProjectPackage(rootDir: string, name: string): string | undefined {
-  return [rootDir, ...findWorkspaceDirs(rootDir)]
+  return [
+    rootDir,
+    ...findWorkspaceDirs(rootDir),
+  ]
     .map(base => join(base, 'node_modules', name))
     .find(candidate => existsSync(join(candidate, 'package.json')))
     ?? findInstalledPackage(rootDir, name)
@@ -458,10 +522,15 @@ function parseVersion(version: string): { core: number[], prerelease: string[] }
 function comparePrereleaseIdentifiers(a: string, b: string): number {
   const isNumeric = (value: string): boolean => /^\d+$/.test(value)
 
-  if (isNumeric(a) !== isNumeric(b))
-    return isNumeric(a) ? -1 : 1
+  if (isNumeric(a) !== isNumeric(b)) {
+    return isNumeric(a)
+      ? -1
+      : 1
+  }
 
-  return isNumeric(a) ? Number(a) - Number(b) : a.localeCompare(b)
+  return isNumeric(a)
+    ? Number(a) - Number(b)
+    : a.localeCompare(b)
 }
 
 /** Compares two semver versions: negative when `a < b`, positive when `a > b`, `0` when equal */
@@ -491,7 +560,9 @@ export function compareVersions(a: string, b: string): number {
 
 /** Version of the tool (maz-ui by default) that generated a managed content, read from its header */
 export function readManagedVersion(content: string | undefined, tool: AgentsTool = MAZ_UI_AGENTS_TOOL): string | undefined {
-  return content ? resolveTool(tool).managedVersion.exec(content)?.[1] : undefined
+  return content
+    ? resolveTool(tool).managedVersion.exec(content)?.[1]
+    : undefined
 }
 
 /**
@@ -501,7 +572,9 @@ export function readManagedVersion(content: string | undefined, tool: AgentsTool
 function newerManagedVersion(content: string | undefined, version: string, tool: AgentsTool): string | undefined {
   const written = readManagedVersion(content, tool)
 
-  return written && version && compareVersions(written, version) > 0 ? written : undefined
+  return written && version && compareVersions(written, version) > 0
+    ? written
+    : undefined
 }
 
 function newerVersionReason(written: string, version: string, tool: AgentsTool): string {
@@ -520,7 +593,9 @@ class ChangeSet {
   read(file: string): string | undefined {
     const path = this.absolute(file)
 
-    return existsSync(path) ? readFileSync(path, 'utf8') : undefined
+    return existsSync(path)
+      ? readFileSync(path, 'utf8')
+      : undefined
   }
 
   write(file: string, content: string, current: string | undefined, reason?: string): void {
@@ -529,7 +604,15 @@ class ChangeSet {
       return
     }
 
-    this.changes.push({ file, action: current === undefined ? 'create' : 'update', ...(reason ? { reason } : {}) })
+    this.changes.push({
+      file,
+      action: current === undefined
+        ? 'create'
+        : 'update',
+      ...(reason
+        ? { reason }
+        : {}),
+    })
 
     if (!this.dryRun)
       writeFileAtomic(this.absolute(file), content)
@@ -565,7 +648,9 @@ function syncOwnedFile(changes: ChangeSet, file: string, content: string | undef
     return
   }
 
-  const newer = content === undefined ? undefined : newerManagedVersion(current, version, tool)
+  const newer = content === undefined
+    ? undefined
+    : newerManagedVersion(current, version, tool)
 
   if (newer) {
     changes.skip(file, newerVersionReason(newer, version, tool))
@@ -607,7 +692,9 @@ function syncAgentsMd(changes: ChangeSet, section: string | undefined, version: 
     return
   }
 
-  const block = hasBlock ? current?.slice(begin + agentsMdBegin.length, end) : undefined
+  const block = hasBlock
+    ? current?.slice(begin + agentsMdBegin.length, end)
+    : undefined
   const newer = newerManagedVersion(block, version, tool)
 
   if (newer) {
@@ -648,7 +735,9 @@ const MCP_FILES: Record<'claude' | 'cursor' | 'vscode', McpConfigFile> = {
 /** An entry that starts the MCP server of the tool, whatever its key and runner */
 function referencesToolMcp(server: unknown, tool: AgentsTool): boolean {
   const serialized = JSON.stringify(server)
-  const args = isJsonObject(server) && Array.isArray(server.args) ? server.args : []
+  const args = isJsonObject(server) && Array.isArray(server.args)
+    ? server.args
+    : []
 
   return (serialized.includes(tool.mcpPackage) || serialized.includes(tool.mcpBin))
     && (tool.mcpArgs ?? []).every(arg => args.includes(arg))
@@ -657,7 +746,15 @@ function referencesToolMcp(server: unknown, tool: AgentsTool): boolean {
 function detectFormatting(content: string): FormattingOptions {
   const indent = /^( +|\t)"/m.exec(content)?.[1] ?? '  '
 
-  return { insertSpaces: !indent.includes('\t'), tabSize: indent.includes('\t') ? 1 : indent.length, eol: content.includes('\r\n') ? '\r\n' : '\n' }
+  return {
+    insertSpaces: !indent.includes('\t'),
+    tabSize: indent.includes('\t')
+      ? 1
+      : indent.length,
+    eol: content.includes('\r\n')
+      ? '\r\n'
+      : '\n',
+  }
 }
 
 function isJsonObject(value: unknown): value is Record<string, unknown> {
@@ -700,7 +797,9 @@ function updateMcpCommand(changes: ChangeSet, config: McpConfigFile, [key, entry
 function syncMcpConfig(changes: ChangeSet, config: McpConfigFile, server: McpServerCommand, remove: boolean, tool: AgentsTool): void {
   const current = changes.read(config.file)
   const errors: ParseError[] = []
-  const parsed: unknown = current === undefined ? {} : parse(current, errors, { allowTrailingComma: true })
+  const parsed: unknown = current === undefined
+    ? {}
+    : parse(current, errors, { allowTrailingComma: true })
 
   if (errors.length > 0 || !isJsonObject(parsed) || (parsed[config.rootKey] !== undefined && !isJsonObject(parsed[config.rootKey]))) {
     changes.skip(config.file, 'invalid JSON: left untouched')
@@ -736,10 +835,14 @@ function syncMcpConfig(changes: ChangeSet, config: McpConfigFile, server: McpSer
     return
   }
 
-  const value = config.withType ? { type: 'stdio', ...server } : { ...server }
+  const value = config.withType
+    ? { type: 'stdio', ...server }
+    : { ...server }
   const content = applyEdits(base, modify(base, [config.rootKey, tool.name], value, { formattingOptions: formatting }))
 
-  changes.write(config.file, content.endsWith('\n') ? content : `${content}\n`, current)
+  changes.write(config.file, content.endsWith('\n')
+    ? content
+    : `${content}\n`, current)
 }
 
 /** Writes (or removes when `docs` is undefined) the Claude Code rule and the `AGENTS.md` section */
@@ -750,12 +853,17 @@ function syncRules(changes: ChangeSet, rootDir: string, targets: AgentTarget[], 
   const claudeReadsAgentsMd = targets.includes('agents-md') && !hasClaudeMemory
 
   if (targets.includes('claude')) {
-    const rule = docs && !claudeReadsAgentsMd ? `${managedContent(version, withVersion(docs.claudeRule, version, setup.tool), setup)}\n` : undefined
+    const rule = docs && !claudeReadsAgentsMd
+      ? `${managedContent(version, withVersion(docs.claudeRule, version, setup.tool), setup)}\n`
+      : undefined
     syncOwnedFile(changes, setup.ruleFile, rule, version, setup)
   }
 
-  if (targets.includes('agents-md'))
-    syncAgentsMd(changes, docs ? managedContent(version, withVersion(docs.agentsMdSection, version, setup.tool), setup) : undefined, version, setup)
+  if (targets.includes('agents-md')) {
+    syncAgentsMd(changes, docs
+      ? managedContent(version, withVersion(docs.agentsMdSection, version, setup.tool), setup)
+      : undefined, version, setup)
+  }
 }
 
 /** Rules of the tool: the given ones, else the maz-ui agent docs */
@@ -779,7 +887,9 @@ export function setupAgents(options: SetupAgentsOptions): SetupAgentsResult {
   const { rootDir, rules = true, mcp = true, dryRun = false, remove = false, tool = MAZ_UI_AGENTS_TOOL } = options
   const setup = resolveTool(tool)
   const targets = options.targets ?? detectAgentTargets(rootDir)
-  const docs = remove || !rules ? undefined : resolveAgentDocs(options, tool)
+  const docs = remove || !rules
+    ? undefined
+    : resolveAgentDocs(options, tool)
   const version = docs?.version ?? ''
   const changes = new ChangeSet(rootDir, dryRun)
   const server = options.mcpServer ?? mcpServerCommand(rootDir, options.mcpVersion, tool)
@@ -794,5 +904,11 @@ export function setupAgents(options: SetupAgentsOptions): SetupAgentsResult {
     }
   }
 
-  return { targets, version, changes: changes.changes, mcpServer: server, localMcpServer: !server.args.includes('-y') }
+  return {
+    targets,
+    version,
+    changes: changes.changes,
+    mcpServer: server,
+    localMcpServer: !server.args.includes('-y'),
+  }
 }

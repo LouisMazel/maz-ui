@@ -113,7 +113,9 @@ describe('given checkAvailability helper', () => {
     let callCount = 0
     const mockGetRef = vi.fn(() => {
       callCount++
-      return callCount === 3 ? 'expectedValue' : 'unexpectedValue'
+      return callCount === 3
+        ? 'expectedValue'
+        : 'unexpectedValue'
     })
     const mockCallback = vi.fn()
 

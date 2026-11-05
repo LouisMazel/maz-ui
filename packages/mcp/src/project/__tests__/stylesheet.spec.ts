@@ -101,7 +101,9 @@ describe('given readStylesheet', () => {
         { name: 'short', definition: '(@media (max-height: 50rem))' },
         { name: 'hocus', definition: '{ &:hover, &:focus { @slot; } }' },
       ])
-      expect(stylesheet.utilities).toEqual([{ name: 'scrollbar-none', css: 'scrollbar-width: none;' }])
+      expect(stylesheet.utilities).toEqual([
+        { name: 'scrollbar-none', css: 'scrollbar-width: none;' },
+      ])
       expect(stylesheet.keyframes).toEqual(['rise'])
     })
 

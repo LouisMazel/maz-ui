@@ -9,7 +9,10 @@ import { ToolInputError } from '../tools/types'
 import { getContext, getEmptyCwd, getKnowledge } from './helpers'
 
 async function connect(): Promise<Client> {
-  const { server } = createMazUiMcpServer({ knowledge: getKnowledge(), cwd: getEmptyCwd() })
+  const { server } = createMazUiMcpServer({
+    knowledge: getKnowledge(),
+    cwd: getEmptyCwd(),
+  })
   const [serverTransport, clientTransport] = InMemoryTransport.createLinkedPair()
   const client = new Client({ name: 'test', version: '1.0.0' })
 
@@ -28,7 +31,10 @@ describe('given the start of the maz-ui MCP server', () => {
     it('then no doc page is read and the search index is not built', async () => {
       const knowledge = getKnowledge()
       const readDoc = vi.spyOn(knowledge, 'readDoc')
-      const { server, context } = createMazUiMcpServer({ knowledge, cwd: getEmptyCwd() })
+      const { server, context } = createMazUiMcpServer({
+        knowledge,
+        cwd: getEmptyCwd(),
+      })
       const search = vi.spyOn(context, 'search', 'get')
       const [serverTransport, clientTransport] = InMemoryTransport.createLinkedPair()
       const client = new Client({ name: 'test', version: '1.0.0' })
@@ -70,7 +76,12 @@ describe('given the maz-ui MCP server', () => {
 
       expect(tools.map(tool => tool.name)).toEqual(TOOLS.map(tool => tool.name))
       for (const tool of tools) {
-        expect(tool.annotations).toEqual(expect.objectContaining({ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }))
+        expect(tool.annotations).toEqual(expect.objectContaining({
+          readOnlyHint: true,
+          destructiveHint: false,
+          idempotentHint: true,
+          openWorldHint: false,
+        }))
         expect(tool.description!.length).toBeGreaterThan(50)
       }
     })
@@ -78,14 +89,53 @@ describe('given the maz-ui MCP server', () => {
 
   describe('when each tool is called with valid arguments', () => {
     it.each([
-      ['search_docs', { query: 'phone number input' }, 'MazInputPhoneNumber'],
-      ['get_component_api', { names: ['MazBtn'] }, '## MazBtn API'],
-      ['find_icons', { query: 'delete' }, 'MazTrash'],
-      ['get_theme_tokens', { topics: ['colors'] }, '## Colors'],
-      ['get_doc', { id: 'useToast', sections: ['Usage'] }, '## Usage'],
-      ['list_docs', { category: 'plugin' }, '## Plugins'],
-      ['get_setup_guide', { framework: 'vue', tailwind: false }, 'Vue app'],
-      ['review_code', { code: '<MazBtn color="red" />' }, 'invalid-prop-value'],
+      [
+        'search_docs',
+        { query: 'phone number input' },
+        'MazInputPhoneNumber',
+      ],
+      [
+        'get_component_api',
+        {
+          names: ['MazBtn'],
+        },
+        '## MazBtn API',
+      ],
+      [
+        'find_icons',
+        { query: 'delete' },
+        'MazTrash',
+      ],
+      [
+        'get_theme_tokens',
+        {
+          topics: ['colors'],
+        },
+        '## Colors',
+      ],
+      [
+        'get_doc',
+        {
+          id: 'useToast',
+          sections: ['Usage'],
+        },
+        '## Usage',
+      ],
+      [
+        'list_docs',
+        { category: 'plugin' },
+        '## Plugins',
+      ],
+      [
+        'get_setup_guide',
+        { framework: 'vue', tailwind: false },
+        'Vue app',
+      ],
+      [
+        'review_code',
+        { code: '<MazBtn color="red" />' },
+        'invalid-prop-value',
+      ],
     ])('then %s answers', async (name, args, expected) => {
       const result = await client.callTool({ name, arguments: args })
 
@@ -96,7 +146,10 @@ describe('given the maz-ui MCP server', () => {
 
   describe('when a tool receives arguments the agent can fix', () => {
     it('then it returns an error result with an actionable message', async () => {
-      const result = await client.callTool({ name: 'get_doc', arguments: { id: 'qwxzv-qwxzv' } })
+      const result = await client.callTool({
+        name: 'get_doc',
+        arguments: { id: 'qwxzv-qwxzv' },
+      })
 
       expect(result.isError).toBe(true)
       expect(textOf(result)).toContain('No maz-ui doc matches')
@@ -113,10 +166,26 @@ describe('given the maz-ui MCP server', () => {
 
   describe('when a prompt is requested', () => {
     it.each([
-      ['build', { task: 'a login form' }, 'a login form'],
-      ['audit', { paths: 'src/components' }, 'src/components'],
-      ['setup', { framework: 'nuxt' }, 'nuxt project'],
-      ['setup', { framework: 'vue' }, 'main.ts'],
+      [
+        'build',
+        { task: 'a login form' },
+        'a login form',
+      ],
+      [
+        'audit',
+        { paths: 'src/components' },
+        'src/components',
+      ],
+      [
+        'setup',
+        { framework: 'nuxt' },
+        'nuxt project',
+      ],
+      [
+        'setup',
+        { framework: 'vue' },
+        'main.ts',
+      ],
     ])('then %s returns a user message with the argument', async (name, args, expected) => {
       const { messages } = await client.getPrompt({ name, arguments: args })
 
@@ -128,7 +197,13 @@ describe('given the maz-ui MCP server', () => {
 
 describe('given runTool', () => {
   function tool(run: ToolDefinition['run']): ToolDefinition {
-    return { name: 'fake', title: 'Fake', description: 'Fake tool', inputSchema: {}, run }
+    return {
+      name: 'fake',
+      title: 'Fake',
+      description: 'Fake tool',
+      inputSchema: {},
+      run,
+    }
   }
 
   describe('when the tool throws an input error', () => {
@@ -137,7 +212,12 @@ describe('given runTool', () => {
         throw new ToolInputError('Fix the args')
       }), {})
 
-      expect(result).toEqual({ content: [{ type: 'text', text: 'Fix the args' }], isError: true })
+      expect(result).toEqual({
+        content: [
+          { type: 'text', text: 'Fix the args' },
+        ],
+        isError: true,
+      })
     })
   })
 
@@ -155,7 +235,11 @@ describe('given runTool', () => {
 
   describe('when the tool succeeds asynchronously', () => {
     it('then its text is returned', async () => {
-      expect(await runTool(getContext(), tool(() => Promise.resolve('ok')), {})).toEqual({ content: [{ type: 'text', text: 'ok' }] })
+      expect(await runTool(getContext(), tool(() => Promise.resolve('ok')), {})).toEqual({
+        content: [
+          { type: 'text', text: 'ok' },
+        ],
+      })
     })
   })
 })

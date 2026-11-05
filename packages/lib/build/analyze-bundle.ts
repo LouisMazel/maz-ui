@@ -129,12 +129,30 @@ function categorizeChunk(filename: string): string {
   const name = filename.toLowerCase()
 
   const patterns = [
-    { type: 'components', test: () => name.includes('maz') && !name.includes('icon') && !name.includes('directive') },
-    { type: 'directives', test: () => name.includes('directive') },
-    { type: 'composables', test: () => name.includes('use') || name.includes('composable') },
-    { type: 'utils', test: () => name.includes('utils') || name.includes('util') },
-    { type: 'styles', test: () => name.includes('style') || name.includes('lang') },
-    { type: 'icons', test: () => isIconFile(name) },
+    {
+      type: 'components',
+      test: () => name.includes('maz') && !name.includes('icon') && !name.includes('directive'),
+    },
+    {
+      type: 'directives',
+      test: () => name.includes('directive'),
+    },
+    {
+      type: 'composables',
+      test: () => name.includes('use') || name.includes('composable'),
+    },
+    {
+      type: 'utils',
+      test: () => name.includes('utils') || name.includes('util'),
+    },
+    {
+      type: 'styles',
+      test: () => name.includes('style') || name.includes('lang'),
+    },
+    {
+      type: 'icons',
+      test: () => isIconFile(name),
+    },
   ]
 
   for (const pattern of patterns) {
@@ -363,24 +381,36 @@ function compareWithPrevious() {
     logger.log('\n📊 Comparaison avec l\'analyse précédente:')
 
     const sizeDiff = current.summary.totalSize - previous.summary.totalSize
-    const sizeChange = sizeDiff > 0 ? '+' : ''
-    const changeIcon = sizeDiff > 0 ? '📈' : '📉'
+    const sizeChange = sizeDiff > 0
+      ? '+'
+      : ''
+    const changeIcon = sizeDiff > 0
+      ? '📈'
+      : '📉'
 
     logger.log(`${changeIcon} Taille totale: ${sizeChange}${formatSize(Math.abs(sizeDiff))}`)
 
     const mainDiff = current.summary.mainEntry - previous.summary.mainEntry
-    const mainChange = mainDiff > 0 ? '+' : ''
+    const mainChange = mainDiff > 0
+      ? '+'
+      : ''
     logger.log(`📦 Entry principal: ${mainChange}${formatSize(Math.abs(mainDiff))}`)
 
     if (current.chunks && previous.chunks) {
       const chunksDiff = current.chunks.totalSize - previous.chunks.totalSize
-      const chunksChange = chunksDiff > 0 ? '+' : ''
-      const chunksIcon = chunksDiff > 0 ? '📈' : '📉'
+      const chunksChange = chunksDiff > 0
+        ? '+'
+        : ''
+      const chunksIcon = chunksDiff > 0
+        ? '📈'
+        : '📉'
       logger.log(`${chunksIcon} Chunks: ${chunksChange}${formatSize(Math.abs(chunksDiff))}`)
 
       const chunkFilesDiff = current.chunks.totalFiles - previous.chunks.totalFiles
       if (chunkFilesDiff !== 0) {
-        const filesChange = chunkFilesDiff > 0 ? '+' : ''
+        const filesChange = chunkFilesDiff > 0
+          ? '+'
+          : ''
         logger.log(`🧩 Nombre de chunks: ${filesChange}${chunkFilesDiff}`)
       }
     }
@@ -401,6 +431,8 @@ try {
   process.exit(0)
 }
 catch (error) {
-  logger.error('❌ Erreur lors de l\'analyse:', error instanceof Error ? error.message : String(error))
+  logger.error('❌ Erreur lors de l\'analyse:', error instanceof Error
+    ? error.message
+    : String(error))
   process.exit(1)
 }

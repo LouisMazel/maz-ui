@@ -3,7 +3,13 @@ import type { ComponentApi, PropApi } from '../../types'
 import { modelDirective, renderComponentApi, renderProp } from '../api'
 
 function prop(overrides: Partial<PropApi> = {}): PropApi {
-  return { name: 'size', type: 'string', required: false, strictValues: false, ...overrides }
+  return {
+    name: 'size',
+    type: 'string',
+    required: false,
+    strictValues: false,
+    ...overrides,
+  }
 }
 
 describe('given modelDirective', () => {
@@ -29,7 +35,13 @@ describe('given renderProp', () => {
 
   describe('when the prop is required, has a default, a model and a description', () => {
     it('then renders every detail and closes the sentence', () => {
-      expect(renderProp(prop({ name: 'modelValue', required: true, default: '\'a\'', model: 'modelValue', description: 'The value' })))
+      expect(renderProp(prop({
+        name: 'modelValue',
+        required: true,
+        default: '\'a\'',
+        model: 'modelValue',
+        description: 'The value',
+      })))
         .toBe('- `model-value` (`string`, required, default: `\'a\'`, `v-model`): The value.')
     })
   })
@@ -42,14 +54,26 @@ describe('given renderProp', () => {
 
   describe('when the values are not listed in the type', () => {
     it('then renders them and flags non exhaustive lists', () => {
-      expect(renderProp(prop({ type: 'MazSize', values: ['sm', 'md'], strictValues: true }))).toBe('- `size` (`MazSize`): Values: `\'sm\'`, `\'md\'`.')
-      expect(renderProp(prop({ type: 'MazSize | string', values: ['sm'], strictValues: false }))).toBe('- `size` (`MazSize | string`): Values: `\'sm\'` (non exhaustive).')
+      expect(renderProp(prop({
+        type: 'MazSize',
+        values: ['sm', 'md'],
+        strictValues: true,
+      }))).toBe('- `size` (`MazSize`): Values: `\'sm\'`, `\'md\'`.')
+      expect(renderProp(prop({
+        type: 'MazSize | string',
+        values: ['sm'],
+        strictValues: false,
+      }))).toBe('- `size` (`MazSize | string`): Values: `\'sm\'` (non exhaustive).')
     })
   })
 
   describe('when the values are already in the type', () => {
     it('then does not repeat them', () => {
-      expect(renderProp(prop({ type: '"sm" | \'md\'', values: ['sm', 'md'], strictValues: true }))).toBe('- `size` (`"sm" | \'md\'`)')
+      expect(renderProp(prop({
+        type: '"sm" | \'md\'',
+        values: ['sm', 'md'],
+        strictValues: true,
+      }))).toBe('- `size` (`"sm" | \'md\'`)')
     })
   })
 
@@ -77,9 +101,19 @@ describe('given renderComponentApi', () => {
     ],
     slots: [
       { name: 'default', bindings: [] },
-      { name: 'item', description: 'An option', bindings: [{ name: 'option', type: 'Option', description: 'the option' }, { name: 'index' }] },
+      {
+        name: 'item',
+        description: 'An option',
+        bindings: [
+          { name: 'option', type: 'Option', description: 'the option' },
+          { name: 'index' },
+        ],
+      },
     ],
-    expose: [{ name: 'open', description: 'Open the list' }, { name: 'close' }],
+    expose: [
+      { name: 'open', description: 'Open the list' },
+      { name: 'close' },
+    ],
   }
 
   describe('when the component has every section', () => {
@@ -115,7 +149,14 @@ describe('given renderComponentApi', () => {
 
   describe('when the component has no props, events, slots nor exposed members', () => {
     it('then renders the empty props section only', () => {
-      expect(renderComponentApi({ ...api, description: undefined, props: [], events: [], slots: [], expose: [] })).toBe([
+      expect(renderComponentApi({
+        ...api,
+        description: undefined,
+        props: [],
+        events: [],
+        slots: [],
+        expose: [],
+      })).toBe([
         '## MazSelect API',
         '',
         '`import MazSelect from \'maz-ui/components/MazSelect\'`',

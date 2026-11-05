@@ -13,7 +13,9 @@ const { updateTheme, isDark, toggleDarkMode, presetName, colorMode, preset: curr
 const toast = useToast()
 
 const currentTab = ref(1)
-const editingMode = computed<'light' | 'dark'>(() => colorMode.value === 'dark' ? 'dark' : 'light')
+const editingMode = computed<'light' | 'dark'>(() => colorMode.value === 'dark'
+  ? 'dark'
+  : 'light')
 const exportedCode = ref('')
 const highlightedCode = ref('')
 const showExportModal = ref(false)
@@ -32,12 +34,18 @@ function clonePreset(source: ThemePreset): ThemePreset {
     },
     components: source.components
       ? {
-          btn: source.components.btn ? { ...source.components.btn } : undefined,
+          btn: source.components.btn
+            ? { ...source.components.btn }
+            : undefined,
           container: source.components.container?.bg
-            ? { bg: { ...source.components.container.bg } }
+            ? {
+                bg: { ...source.components.container.bg },
+              }
             : undefined,
           input: source.components.input?.bg
-            ? { bg: { ...source.components.input.bg } }
+            ? {
+                bg: { ...source.components.input.bg },
+              }
             : undefined,
         }
       : undefined,
@@ -55,11 +63,35 @@ const originalTheme = preset.value
 const colorCategories = [
   {
     name: 'Base Colors',
-    colors: ['surface', 'foreground', 'divider', 'muted', 'overlay', 'shadow'] as const,
+    colors: [
+      'surface',
+      'foreground',
+      'divider',
+      'muted',
+      'overlay',
+      'shadow',
+    ] as const,
   },
   {
     name: 'Colors',
-    colors: ['primary', 'primary-foreground', 'secondary', 'secondary-foreground', 'accent', 'accent-foreground', 'success', 'success-foreground', 'warning', 'warning-foreground', 'destructive', 'destructive-foreground', 'info', 'info-foreground', 'contrast', 'contrast-foreground'] as const,
+    colors: [
+      'primary',
+      'primary-foreground',
+      'secondary',
+      'secondary-foreground',
+      'accent',
+      'accent-foreground',
+      'success',
+      'success-foreground',
+      'warning',
+      'warning-foreground',
+      'destructive',
+      'destructive-foreground',
+      'info',
+      'info-foreground',
+      'contrast',
+      'contrast-foreground',
+    ] as const,
   },
 ]
 
@@ -150,7 +182,15 @@ const foundationInputs: readonly FoundationInput[] = [
   { key: 'disabled-cursor', label: 'Disabled cursor', placeholder: 'not-allowed' },
 ] as const
 
-const roundedKeys = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'] as const
+const roundedKeys = [
+  'xs',
+  'sm',
+  'md',
+  'lg',
+  'xl',
+  '2xl',
+  '3xl',
+] as const
 const shadowKeys = ['sm', 'md', 'lg', 'xl', 'elevation'] as const
 
 const shadowPlaceholders: Record<typeof shadowKeys[number], string> = {
@@ -172,7 +212,10 @@ const btnFontWeight = computed({
   get: () => themeData.components?.btn?.['font-weight'] ?? '',
   set: (value: string) => {
     const components = ensureComponents()
-    components.btn = { ...(components.btn ?? {}), 'font-weight': value }
+    components.btn = {
+      ...(components.btn ?? {}),
+      'font-weight': value,
+    }
   },
 })
 
@@ -182,7 +225,10 @@ function componentBgGetter(scope: 'container' | 'input', mode: 'light' | 'dark')
     set: (value: string) => {
       const components = ensureComponents()
       const slot = components[scope] ?? {}
-      slot.bg = { ...(slot.bg ?? {}), [mode]: value }
+      slot.bg = {
+        ...(slot.bg ?? {}),
+        [mode]: value,
+      }
       components[scope] = slot
     },
   })

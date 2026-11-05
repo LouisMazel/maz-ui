@@ -5,7 +5,9 @@ import { ref } from 'vue'
 Element.prototype.scrollTo = vi.fn()
 
 beforeEach(() => {
-  vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
+  vi.useFakeTimers({
+    toFake: ['setTimeout', 'clearTimeout'],
+  })
 })
 
 afterEach(async () => {
@@ -15,7 +17,11 @@ afterEach(async () => {
 
 describe('mazTabsBar.vue', () => {
   it('correctly displays tabs', () => {
-    const items = [{ label: 'Tab 1' }, { label: 'Tab 2', disabled: true }, { label: 'Tab 3' }]
+    const items = [
+      { label: 'Tab 1' },
+      { label: 'Tab 2', disabled: true },
+      { label: 'Tab 3' },
+    ]
     const wrapper = mount(MazTabsBar, {
       props: { items },
       global: {
@@ -42,7 +48,11 @@ describe('mazTabsBar.vue', () => {
   })
 
   it('correctly initializes the model value', () => {
-    const items = [{ label: 'Tab 1' }, { label: 'Tab 2', disabled: true }, { label: 'Tab 3' }]
+    const items = [
+      { label: 'Tab 1' },
+      { label: 'Tab 2', disabled: true },
+      { label: 'Tab 3' },
+    ]
     const wrapper = mount(MazTabsBar, {
       props: { items },
       global: {
@@ -60,7 +70,11 @@ describe('mazTabsBar.vue', () => {
   })
 
   it('updates the model value when a tab is clicked', async () => {
-    const items = [{ label: 'Tab 1' }, { label: 'Tab 2', disabled: true }, { label: 'Tab 3' }]
+    const items = [
+      { label: 'Tab 1' },
+      { label: 'Tab 2', disabled: true },
+      { label: 'Tab 3' },
+    ]
     const currentTab = ref(1)
     const wrapper = mount(MazTabsBar, {
       props: { items },

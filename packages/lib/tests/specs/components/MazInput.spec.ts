@@ -200,10 +200,14 @@ describe('components/MazInput.vue', () => {
   describe('Given a global config provides defaults for MazInput', () => {
     describe('When the component mounts without size or roundedSize props', () => {
       it('Then it applies the global roundedSize and size', () => {
-        const config = { MazInput: { roundedSize: 'full' as const, size: 'xl' as const } }
+        const config = {
+          MazInput: { roundedSize: 'full' as const, size: 'xl' as const },
+        }
 
         const wrapper = mount(MazInput, {
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         expect(wrapper.find('.m-input-wrapper').classes()).toContain('maz:rounded-full')
@@ -213,10 +217,14 @@ describe('components/MazInput.vue', () => {
 
     describe('When the global default applies via defaults.global', () => {
       it('Then it applies the global roundedSize', () => {
-        const config = { global: { roundedSize: 'lg' as const } }
+        const config = {
+          global: { roundedSize: 'lg' as const },
+        }
 
         const wrapper = mount(MazInput, {
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         expect(wrapper.find('.m-input-wrapper').classes()).toContain('maz:rounded-lg')
@@ -225,11 +233,15 @@ describe('components/MazInput.vue', () => {
 
     describe('When an instance prop is passed alongside the global config', () => {
       it('Then the instance prop wins over the global default', () => {
-        const config = { MazInput: { roundedSize: 'full' as const } }
+        const config = {
+          MazInput: { roundedSize: 'full' as const },
+        }
 
         const wrapper = mount(MazInput, {
           props: { roundedSize: 'none' as const },
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         expect(wrapper.find('.m-input-wrapper').classes()).not.toContain('maz:rounded-full')

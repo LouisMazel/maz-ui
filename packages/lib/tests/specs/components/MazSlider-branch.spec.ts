@@ -23,7 +23,9 @@ describe('MazSlider branch coverage', () => {
 
     it('uses array directly when modelValue is array', () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: [10, 50, 90] },
+        props: {
+          modelValue: [10, 50, 90],
+        },
       })
 
       const buttons = wrapper.findAll('.m-slider__btn span')
@@ -57,7 +59,9 @@ describe('MazSlider branch coverage', () => {
   describe('hasMultipleValues computed', () => {
     it('returns true when modelValue is an array', async () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: [25, 75] },
+        props: {
+          modelValue: [25, 75],
+        },
       })
 
       await nextTick()
@@ -85,7 +89,10 @@ describe('MazSlider branch coverage', () => {
   describe('wrapperStyle computed', () => {
     it('includes label padding when labels are provided', () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: 50, labels: ['Low'] },
+        props: {
+          modelValue: 50,
+          labels: ['Low'],
+        },
       })
 
       const slider = wrapper.find('.m-slider')
@@ -223,7 +230,12 @@ describe('MazSlider branch coverage', () => {
 
     it('rounds value to step', async () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: 33, min: 0, max: 100, step: 10 },
+        props: {
+          modelValue: 33,
+          min: 0,
+          max: 100,
+          step: 10,
+        },
       })
 
       await nextTick()
@@ -234,7 +246,12 @@ describe('MazSlider branch coverage', () => {
 
     it('clamps and rounds array values', async () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: [-5, 55, 120], min: 0, max: 100, step: 10 },
+        props: {
+          modelValue: [-5, 55, 120],
+          min: 0,
+          max: 100,
+          step: 10,
+        },
       })
 
       await nextTick()
@@ -272,7 +289,11 @@ describe('MazSlider branch coverage', () => {
   describe('divider prop', () => {
     it('renders with default divider prop', async () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: [25, 75], min: 0, max: 100 },
+        props: {
+          modelValue: [25, 75],
+          min: 0,
+          max: 100,
+        },
       })
       await nextTick()
       expect(wrapper.find('.m-slider').exists()).toBe(true)
@@ -280,7 +301,10 @@ describe('MazSlider branch coverage', () => {
 
     it('does not render dividers when divider is false', () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: [25, 75], divider: false },
+        props: {
+          modelValue: [25, 75],
+          divider: false,
+        },
       })
 
       const dividers = wrapper.findAll('.m-slider__divider')
@@ -319,7 +343,12 @@ describe('MazSlider branch coverage', () => {
       ['ArrowLeft', 10, 40],
     ] as const)('moves value on %s keydown with step %i to %i', async (key, step, expected) => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: 50, min: 0, max: 100, step },
+        props: {
+          modelValue: 50,
+          min: 0,
+          max: 100,
+          step,
+        },
       })
 
       const button = wrapper.find('.m-slider__btn')
@@ -333,7 +362,12 @@ describe('MazSlider branch coverage', () => {
 
     it('does not go below min on ArrowLeft', async () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: 0, min: 0, max: 100, step: 1 },
+        props: {
+          modelValue: 0,
+          min: 0,
+          max: 100,
+          step: 1,
+        },
       })
 
       const button = wrapper.find('.m-slider__btn')
@@ -348,7 +382,12 @@ describe('MazSlider branch coverage', () => {
 
     it('does not go above max on ArrowRight', async () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: 100, min: 0, max: 100, step: 1 },
+        props: {
+          modelValue: 100,
+          min: 0,
+          max: 100,
+          step: 1,
+        },
       })
 
       const button = wrapper.find('.m-slider__btn')
@@ -363,7 +402,12 @@ describe('MazSlider branch coverage', () => {
 
     it('handles ArrowLeft with multiple cursors respecting boundaries', async () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: [20, 50, 80], min: 0, max: 100, step: 5 },
+        props: {
+          modelValue: [20, 50, 80],
+          min: 0,
+          max: 100,
+          step: 5,
+        },
       })
 
       // Try moving the middle cursor left
@@ -379,7 +423,12 @@ describe('MazSlider branch coverage', () => {
 
     it('handles ArrowRight with multiple cursors respecting boundaries', async () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: [20, 50, 80], min: 0, max: 100, step: 5 },
+        props: {
+          modelValue: [20, 50, 80],
+          min: 0,
+          max: 100,
+          step: 5,
+        },
       })
 
       const buttons = wrapper.findAll('.m-slider__btn')
@@ -394,7 +443,12 @@ describe('MazSlider branch coverage', () => {
 
     it('ignores non-arrow key events', async () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: 50, min: 0, max: 100, step: 1 },
+        props: {
+          modelValue: 50,
+          min: 0,
+          max: 100,
+          step: 1,
+        },
       })
 
       const emittedBefore = wrapper.emitted('update:model-value')?.length || 0
@@ -448,7 +502,9 @@ describe('MazSlider branch coverage', () => {
 
     it('does not activate cursor if another is already active', async () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: [25, 75] },
+        props: {
+          modelValue: [25, 75],
+        },
       })
 
       const buttons = wrapper.findAll('.m-slider__btn')
@@ -585,7 +641,11 @@ describe('MazSlider branch coverage', () => {
 
     it('renders one slider handle per value with its own aria-valuenow', () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: [25, 75], min: 0, max: 100 },
+        props: {
+          modelValue: [25, 75],
+          min: 0,
+          max: 100,
+        },
       })
 
       const sliders = wrapper.findAll('[role="slider"]')
@@ -640,7 +700,12 @@ describe('MazSlider branch coverage', () => {
 
     it('rebuilds component when log changes', async () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: 50, min: 1, max: 100, log: false },
+        props: {
+          modelValue: 50,
+          min: 1,
+          max: 100,
+          log: false,
+        },
       })
 
       await wrapper.setProps({ log: true })
@@ -701,7 +766,9 @@ describe('MazSlider branch coverage', () => {
   describe('emitValue', () => {
     it('emits array when input is array', async () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: [10, 90] },
+        props: {
+          modelValue: [10, 90],
+        },
       })
 
       await nextTick()
@@ -727,7 +794,9 @@ describe('MazSlider branch coverage', () => {
   describe('multiple cursors rendering', () => {
     it('renders correct number of buttons for array values', () => {
       wrapper = mount(MazSlider, {
-        props: { modelValue: [10, 30, 50, 70, 90] },
+        props: {
+          modelValue: [10, 30, 50, 70, 90],
+        },
       })
 
       const buttons = wrapper.findAll('.m-slider__btn')

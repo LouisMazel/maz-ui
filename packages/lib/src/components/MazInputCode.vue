@@ -103,7 +103,9 @@ function getMapValues(value = modelValue) {
       map.set(item + 1, undefined)
     }
     else {
-      const values = [...value.toString()]
+      const values = [
+        ...value.toString(),
+      ]
 
       map.set(item + 1, values[item])
     }
@@ -123,7 +125,9 @@ function handleNewValue(event: Event, item: number) {
 }
 
 function getEmittedValue(map: ReturnType<typeof getMapValues>) {
-  const stringValue = [...map.values()].join('')
+  const stringValue = [
+    ...map.values(),
+  ].join('')
 
   if (type === 'text') {
     return stringValue
@@ -138,7 +142,9 @@ const isLetterOrNumberRegex = /^[\w.]$/
 const isNumberRegex = /\d+/g
 
 function getValueSanitized(value: string) {
-  return (acceptAlpha ? value.match(isLetterOrNumberRegex) : value.match(isNumberRegex))?.toString()
+  return (acceptAlpha
+    ? value.match(isLetterOrNumberRegex)
+    : value.match(isNumberRegex))?.toString()
 }
 
 function handleKeydown(event: KeyboardEvent, inputIndex: number) {
@@ -153,7 +159,9 @@ function handleKeydown(event: KeyboardEvent, inputIndex: number) {
   }
 
   if (event.key === 'Backspace' && !currentInputValue) {
-    const previousInputIndexToFocus = inputIndex - 1 < 0 ? 0 : inputIndex - 1
+    const previousInputIndexToFocus = inputIndex - 1 < 0
+      ? 0
+      : inputIndex - 1
 
     inputValues.value = localMap.value.set(previousInputIndexToFocus, undefined)
 
@@ -170,11 +178,15 @@ function setValueOnPaste(event: ClipboardEvent) {
 
   const indexInputsFromPastePlace = Array.from({ length: codeLength }, (_, i) => ({
     index: i + 1,
-    value: ([...pasteData.toString()][i] ?? undefined) as string | undefined,
+    value: ([
+      ...pasteData.toString(),
+    ][i] ?? undefined) as string | undefined,
   }))
 
   for (const { index, value } of indexInputsFromPastePlace) {
-    const sanitizedValue = value ? getValueSanitized(value) : undefined
+    const sanitizedValue = value
+      ? getValueSanitized(value)
+      : undefined
     if (sanitizedValue) {
       localMap.value.set(index, sanitizedValue)
     }
@@ -191,7 +203,9 @@ function setValueOnPaste(event: ClipboardEvent) {
 }
 
 function getLastInputWithoutValueIndex() {
-  return [...localMap.value.values()].filter(Boolean).length
+  return [
+    ...localMap.value.values(),
+  ].filter(Boolean).length
 }
 
 function focusAndSelectInputByIndex(index: number, selectValue = true) {

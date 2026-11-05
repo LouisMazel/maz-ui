@@ -116,14 +116,20 @@ const haveSomeContent = computed(() => {
     || hasSlotContent(slots['content-subtitle'])
     || hasSlotContent(slots['content-body'])
 })
-const galleryHeightComputed = computed(() => (haveSomeContent.value ? gallery?.height ?? DEFAULT_GALLERY_OPTIONS.height : '100%'))
-const galleryWidthComputed = computed(() => (haveSomeContent.value ? gallery?.width ?? DEFAULT_GALLERY_OPTIONS.width : '100%'))
+const galleryHeightComputed = computed(() => (haveSomeContent.value
+  ? gallery?.height ?? DEFAULT_GALLERY_OPTIONS.height
+  : '100%'))
+const galleryWidthComputed = computed(() => (haveSomeContent.value
+  ? gallery?.width ?? DEFAULT_GALLERY_OPTIONS.width
+  : '100%'))
 const galleryOptions = computed(() => {
   return {
     ...DEFAULT_GALLERY_OPTIONS,
     radius: radius.value,
     width: isColumnVariant.value ? false : galleryWidthComputed.value,
-    height: !isColumnVariant.value && haveSomeContent.value ? false : galleryHeightComputed.value,
+    height: !isColumnVariant.value && haveSomeContent.value
+      ? false
+      : galleryHeightComputed.value,
     ...gallery,
   }
 })
@@ -145,7 +151,9 @@ const wrapperData = computed(() => {
   }
 })
 const footerAlignClass = computed(() =>
-  footerAlign === 'end' ? 'maz:text-end' : 'maz:text-start',
+  footerAlign === 'end'
+    ? 'maz:text-end'
+    : 'maz:text-start',
 )
 
 function toggleCollapse() {

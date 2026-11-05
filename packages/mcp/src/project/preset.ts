@@ -26,7 +26,9 @@ function keyOf(node: ObjectExpression['properties'][number]): string | undefined
   if (node.key.type === 'Identifier')
     return node.key.name
 
-  return node.key.type === 'StringLiteral' || node.key.type === 'NumericLiteral' ? String(node.key.value) : undefined
+  return node.key.type === 'StringLiteral' || node.key.type === 'NumericLiteral'
+    ? String(node.key.value)
+    : undefined
 }
 
 function unwrap(node: Expression): Expression {
@@ -51,12 +53,21 @@ export function literalValue(node: Expression, source: string): PresetValue {
         ? expression.quasis.map(quasi => quasi.value.cooked ?? quasi.value.raw).join('')
         : `<expr: ${sourceOf(expression, source)}>`
     case 'ArrayExpression':
-      return expression.elements.map(element => (element && element.type !== 'SpreadElement' ? literalValue(element, source) : null))
+      return expression.elements.map(element => (element && element.type !== 'SpreadElement'
+        ? literalValue(element, source)
+        : null))
     case 'ObjectExpression':
       return Object.fromEntries(expression.properties.flatMap((property) => {
         const key = keyOf(property)
 
-        return key && property.type === 'ObjectProperty' ? [[key, literalValue(property.value as Expression, source)]] : []
+        return key && property.type === 'ObjectProperty'
+          ? [
+              [
+                key,
+                literalValue(property.value as Expression, source),
+              ],
+            ]
+          : []
       }))
     default:
       return `<expr: ${sourceOf(expression, source)}>`
@@ -74,13 +85,17 @@ function findPresetCalls(node: Node, found: Array<{ call: CallExpression, name?:
     return
   }
 
-  const variableName = node.type === 'VariableDeclarator' && node.id.type === 'Identifier' ? node.id.name : name
+  const variableName = node.type === 'VariableDeclarator' && node.id.type === 'Identifier'
+    ? node.id.name
+    : name
 
   for (const [key, value] of Object.entries(node)) {
     if (key === 'loc' || key === 'leadingComments' || key === 'trailingComments' || key === 'innerComments')
       continue
 
-    for (const child of Array.isArray(value) ? value : [value]) {
+    for (const child of Array.isArray(value)
+      ? value
+      : [value]) {
       if (child && typeof child === 'object' && typeof (child as Node).type === 'string')
         findPresetCalls(child as Node, found, variableName)
     }
@@ -92,7 +107,11 @@ export function readPresets(file: string, source: string): ProjectPreset[] {
   let program: Node
 
   try {
-    program = parse(source, { sourceType: 'module', plugins: ['typescript'], errorRecovery: true }).program
+    program = parse(source, {
+      sourceType: 'module',
+      plugins: ['typescript'],
+      errorRecovery: true,
+    }).program
   }
   catch {
     return []
@@ -111,11 +130,17 @@ export function readPresets(file: string, source: string): ProjectPreset[] {
     const base = options.base
     const overrides = options.overrides
 
-    return [{
-      file,
-      exportName: name,
-      base: typeof base === 'string' ? base.replace(/^<expr: (.*)>$/, '$1') : undefined,
-      overrides: overrides && typeof overrides === 'object' && !Array.isArray(overrides) ? overrides : {},
-    }]
+    return [
+      {
+        file,
+        exportName: name,
+        base: typeof base === 'string'
+          ? base.replace(/^<expr: (.*)>$/, '$1')
+          : undefined,
+        overrides: overrides && typeof overrides === 'object' && !Array.isArray(overrides)
+          ? overrides
+          : {},
+      },
+    ]
   })
 }

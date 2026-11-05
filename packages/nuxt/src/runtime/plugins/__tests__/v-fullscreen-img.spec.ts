@@ -3,7 +3,9 @@ import { describe, expect, it, vi } from 'vitest'
 import vFullscreenImgPlugin from '../v-fullscreen-img'
 
 const { mockInstall } = vi.hoisted(() => ({
-  mockInstall: { install: vi.fn() },
+  mockInstall: {
+    install: vi.fn(),
+  },
 }))
 
 vi.mock('maz-ui/directives/vFullscreenImg', () => ({

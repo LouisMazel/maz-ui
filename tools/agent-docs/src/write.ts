@@ -5,7 +5,12 @@ import { dirname, join } from 'node:path'
 
 export function writeOutput(directory: string, files: OutputFile[], { clean = false } = {}): void {
   if (clean && existsSync(directory)) {
-    rmSync(directory, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 })
+    rmSync(directory, {
+      recursive: true,
+      force: true,
+      maxRetries: 5,
+      retryDelay: 100,
+    })
   }
 
   for (const file of files) {

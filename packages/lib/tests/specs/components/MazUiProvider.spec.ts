@@ -109,7 +109,10 @@ const TranslationsConsumer = defineComponent({
   },
 })
 
-const defaultTranslations = { locale: 'en', messages: { en: {} } }
+const defaultTranslations = {
+  locale: 'en',
+  messages: { en: {} },
+}
 
 function createDefaultThemeState(): ThemeState {
   return {
@@ -177,7 +180,10 @@ describe('given MazUiProvider component', () => {
       const wrapper = mount(MazUiProvider, {
         props: {
           theme: { colorMode: 'auto', preset: mockPreset },
-          translations: { locale: 'en', messages: { en: {} } },
+          translations: {
+            locale: 'en',
+            messages: { en: {} },
+          },
         },
         slots: {
           default: () => h(TranslationsConsumer),
@@ -193,21 +199,28 @@ describe('given MazUiProvider component', () => {
 
       mount(MazUiProvider, {
         props: { theme: themeOptions, translations: defaultTranslations },
-        slots: { default: () => h('div') },
+        slots: {
+          default: () => h('div'),
+        },
       })
 
       expect(mockSetupTheme).toHaveBeenCalledWith(themeOptions)
     })
 
     it('calls createMazUiTranslations with the translations prop', () => {
-      const translationsOptions = { locale: 'fr', messages: { fr: {} } }
+      const translationsOptions = {
+        locale: 'fr',
+        messages: { fr: {} },
+      }
 
       mount(MazUiProvider, {
         props: {
           theme: { colorMode: 'auto', preset: mockPreset },
           translations: translationsOptions,
         },
-        slots: { default: () => h('div') },
+        slots: {
+          default: () => h('div'),
+        },
       })
 
       expect(mockCreateMazUiTranslations).toHaveBeenCalledWith(translationsOptions)
@@ -242,7 +255,10 @@ describe('given MazUiProvider component', () => {
       })
 
       const wrapper = mount(MazUiProvider, {
-        props: { theme: { colorMode: 'auto', preset: mockPreset }, translations: defaultTranslations },
+        props: {
+          theme: { colorMode: 'auto', preset: mockPreset },
+          translations: defaultTranslations,
+        },
         slots: {
           default: () => h(ThemeConsumer),
         },
@@ -257,7 +273,10 @@ describe('given MazUiProvider component', () => {
   describe('when rendered with slot content', () => {
     it('renders only the slot content without a DOM wrapper', () => {
       const wrapper = mount(MazUiProvider, {
-        props: { theme: { colorMode: 'auto', preset: mockPreset }, translations: defaultTranslations },
+        props: {
+          theme: { colorMode: 'auto', preset: mockPreset },
+          translations: defaultTranslations,
+        },
         slots: {
           default: '<span class="child">Hello</span>',
         },
@@ -270,8 +289,13 @@ describe('given MazUiProvider component', () => {
   describe('when theme prop changes', () => {
     it('re-initializes the theme with the new options', async () => {
       const wrapper = mount(MazUiProvider, {
-        props: { theme: { colorMode: 'auto', preset: mockPreset }, translations: defaultTranslations },
-        slots: { default: () => h('div') },
+        props: {
+          theme: { colorMode: 'auto', preset: mockPreset },
+          translations: defaultTranslations,
+        },
+        slots: {
+          default: () => h('div'),
+        },
       })
 
       expect(mockSetupTheme).toHaveBeenCalledTimes(1)
@@ -285,7 +309,9 @@ describe('given MazUiProvider component', () => {
         cleanup: vi.fn(),
       })
 
-      await wrapper.setProps({ theme: { colorMode: 'dark', preset: mockPreset } })
+      await wrapper.setProps({
+        theme: { colorMode: 'dark', preset: mockPreset },
+      })
 
       expect(mockSetupTheme).toHaveBeenCalledTimes(2)
       expect(mockSetupTheme).toHaveBeenLastCalledWith({ colorMode: 'dark', preset: mockPreset })
@@ -293,8 +319,13 @@ describe('given MazUiProvider component', () => {
 
     it('calls cleanup from the previous theme initialization', async () => {
       const wrapper = mount(MazUiProvider, {
-        props: { theme: { colorMode: 'auto', preset: mockPreset }, translations: defaultTranslations },
-        slots: { default: () => h('div') },
+        props: {
+          theme: { colorMode: 'auto', preset: mockPreset },
+          translations: defaultTranslations,
+        },
+        slots: {
+          default: () => h('div'),
+        },
       })
 
       const previousCleanup = mockCleanupFn
@@ -304,7 +335,9 @@ describe('given MazUiProvider component', () => {
         cleanup: vi.fn(),
       })
 
-      await wrapper.setProps({ theme: { colorMode: 'dark', preset: mockPreset } })
+      await wrapper.setProps({
+        theme: { colorMode: 'dark', preset: mockPreset },
+      })
 
       expect(previousCleanup).toHaveBeenCalled()
     })
@@ -315,12 +348,22 @@ describe('given MazUiProvider component', () => {
       const wrapper = mount(MazUiProvider, {
         props: {
           theme: { colorMode: 'auto', preset: mockPreset },
-          translations: { locale: 'en', messages: { en: {} } },
+          translations: {
+            locale: 'en',
+            messages: { en: {} },
+          },
         },
-        slots: { default: () => h('div') },
+        slots: {
+          default: () => h('div'),
+        },
       })
 
-      await wrapper.setProps({ translations: { locale: 'fr', messages: { fr: {} } } })
+      await wrapper.setProps({
+        translations: {
+          locale: 'fr',
+          messages: { fr: {} },
+        },
+      })
 
       expect(mockSetLocale).toHaveBeenCalledWith('fr')
     })
@@ -329,8 +372,13 @@ describe('given MazUiProvider component', () => {
   describe('when unmounted', () => {
     it('calls the theme cleanup function', () => {
       const wrapper = mount(MazUiProvider, {
-        props: { theme: { colorMode: 'auto', preset: mockPreset }, translations: defaultTranslations },
-        slots: { default: () => h('div') },
+        props: {
+          theme: { colorMode: 'auto', preset: mockPreset },
+          translations: defaultTranslations,
+        },
+        slots: {
+          default: () => h('div'),
+        },
       })
 
       wrapper.unmount()
@@ -358,7 +406,10 @@ describe('given MazUiProvider component', () => {
             mazThemeState: pluginThemeState,
           },
         },
-        props: { theme: { colorMode: 'auto', preset: mockPreset }, translations: defaultTranslations },
+        props: {
+          theme: { colorMode: 'auto', preset: mockPreset },
+          translations: defaultTranslations,
+        },
         slots: {
           default: () => h(ThemeConsumer),
         },

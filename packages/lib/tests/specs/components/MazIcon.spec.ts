@@ -8,7 +8,9 @@ const serverMode = vi.hoisted(() => ({ enabled: false }))
 
 vi.mock('@maz-ui/utils/helpers/isServer', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@maz-ui/utils/helpers/isServer')>()
-  return { isServer: () => serverMode.enabled || actual.isServer() }
+  return {
+    isServer: () => serverMode.enabled || actual.isServer(),
+  }
 })
 
 const RAW_SVG = '<svg viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="currentColor"/></svg>'
@@ -24,14 +26,18 @@ const ComponentIcon = defineComponent({
 describe('MazIcon', () => {
   describe('icon: raw SVG string', () => {
     it('renders the raw SVG inline', async () => {
-      const wrapper = mount(MazIcon, { props: { icon: RAW_SVG } })
+      const wrapper = mount(MazIcon, {
+        props: { icon: RAW_SVG },
+      })
       await nextTick()
       expect(wrapper.html()).toContain('viewBox="0 0 24 24"')
       expect(wrapper.html()).toContain('<svg width="1em" height="1em"')
     })
 
     it('reacts to a new raw SVG when the icon prop changes', async () => {
-      const wrapper = mount(MazIcon, { props: { icon: RAW_SVG } })
+      const wrapper = mount(MazIcon, {
+        props: { icon: RAW_SVG },
+      })
       await nextTick()
       expect(wrapper.html()).toContain('M0 0h24v24H0z')
 
@@ -43,7 +49,9 @@ describe('MazIcon', () => {
 
   describe('icon: Vue component', () => {
     it('renders the component via <component :is>', async () => {
-      const wrapper = mount(MazIcon, { props: { icon: ComponentIcon as any } })
+      const wrapper = mount(MazIcon, {
+        props: { icon: ComponentIcon as any },
+      })
       await nextTick()
       expect(wrapper.find('[data-testid="component-icon"]').exists()).toBe(true)
     })
@@ -66,7 +74,9 @@ describe('MazIcon', () => {
         text: vi.fn().mockResolvedValue(RAW_SVG),
       } as unknown as Response)
 
-      const wrapper = mount(MazIcon, { props: { icon: '/icons/star.svg' } })
+      const wrapper = mount(MazIcon, {
+        props: { icon: '/icons/star.svg' },
+      })
       await nextTick()
       await new Promise(resolve => setTimeout(resolve, 0))
       await nextTick()
@@ -126,7 +136,9 @@ describe('MazIcon', () => {
     it('reserves the icon box while the URL loads', () => {
       globalThis.fetch = vi.fn(() => new Promise(() => {})) as unknown as typeof globalThis.fetch
 
-      const wrapper = mount(MazIcon, { props: { icon: 'https://cdn.example.com/loading.svg' } })
+      const wrapper = mount(MazIcon, {
+        props: { icon: 'https://cdn.example.com/loading.svg' },
+      })
 
       expect(wrapper.find('span.m-icon').exists()).toBe(true)
       expect(wrapper.find('svg').exists()).toBe(false)
@@ -135,7 +147,9 @@ describe('MazIcon', () => {
     it('inlines an SVG data URI synchronously, without fetching it', () => {
       globalThis.fetch = vi.fn() as unknown as typeof globalThis.fetch
 
-      const wrapper = mount(MazIcon, { props: { icon: `data:image/svg+xml,${encodeURIComponent(RAW_SVG)}` } })
+      const wrapper = mount(MazIcon, {
+        props: { icon: `data:image/svg+xml,${encodeURIComponent(RAW_SVG)}` },
+      })
 
       expect(globalThis.fetch).not.toHaveBeenCalled()
       expect(wrapper.html()).toContain('viewBox="0 0 24 24"')
@@ -143,10 +157,15 @@ describe('MazIcon', () => {
 
     it('fetches a data URI that is not an SVG', async () => {
       const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
-      globalThis.fetch = vi.fn().mockResolvedValue({ ok: true, text: () => Promise.resolve('not an svg') }) as unknown as typeof globalThis.fetch
+      globalThis.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        text: () => Promise.resolve('not an svg'),
+      }) as unknown as typeof globalThis.fetch
       const icon = 'data:image/png;base64,iVBORw0KGgo='
 
-      const wrapper = mount(MazIcon, { props: { icon, fallback: ComponentIcon as any } })
+      const wrapper = mount(MazIcon, {
+        props: { icon, fallback: ComponentIcon as any },
+      })
       await new Promise(resolve => setTimeout(resolve, 0))
       await nextTick()
 
@@ -159,7 +178,9 @@ describe('MazIcon', () => {
 
   describe('fallback', () => {
     it('renders the fallback component when no icon prop is provided', async () => {
-      const wrapper = mount(MazIcon, { props: { fallback: ComponentIcon as any } })
+      const wrapper = mount(MazIcon, {
+        props: { fallback: ComponentIcon as any },
+      })
       await nextTick()
       expect(wrapper.find('[data-testid="component-icon"]').exists()).toBe(true)
     })
@@ -173,14 +194,18 @@ describe('MazIcon', () => {
 
   describe('size prop', () => {
     it('omits inline style for predefined keyword sizes', async () => {
-      const wrapper = mount(MazIcon, { props: { icon: RAW_SVG, size: 'lg' } })
+      const wrapper = mount(MazIcon, {
+        props: { icon: RAW_SVG, size: 'lg' },
+      })
       await nextTick()
       expect(wrapper.attributes('style') ?? '').not.toContain('font-size')
       expect(wrapper.classes()).toContain('m-icon--lg')
     })
 
     it('applies fontSize style for custom CSS lengths', async () => {
-      const wrapper = mount(MazIcon, { props: { icon: RAW_SVG, size: '2rem' } })
+      const wrapper = mount(MazIcon, {
+        props: { icon: RAW_SVG, size: '2rem' },
+      })
       await nextTick()
       expect(wrapper.attributes('style')).toContain('font-size: 2rem')
     })
@@ -192,7 +217,9 @@ describe('MazIcon', () => {
       ['lg', 'maz:text-4xl'],
       ['xl', 'maz:text-5xl'],
     ] as const)('maps size %s to the matching tailwind text class', async (size, expected) => {
-      const wrapper = mount(MazIcon, { props: { icon: RAW_SVG, size } })
+      const wrapper = mount(MazIcon, {
+        props: { icon: RAW_SVG, size },
+      })
       await nextTick()
       expect(wrapper.classes()).toContain(expected)
     })
@@ -200,13 +227,17 @@ describe('MazIcon', () => {
 
   describe('title prop', () => {
     it('injects a <title> element inside the inlined SVG', async () => {
-      const wrapper = mount(MazIcon, { props: { icon: RAW_SVG, title: 'Star icon' } })
+      const wrapper = mount(MazIcon, {
+        props: { icon: RAW_SVG, title: 'Star icon' },
+      })
       await nextTick()
       expect(wrapper.html()).toContain('<title>Star icon</title>')
     })
 
     it('escapes HTML special characters in the title', async () => {
-      const wrapper = mount(MazIcon, { props: { icon: RAW_SVG, title: '<bad> & "co"' } })
+      const wrapper = mount(MazIcon, {
+        props: { icon: RAW_SVG, title: '<bad> & "co"' },
+      })
       await nextTick()
       expect(wrapper.html()).toContain('&lt;bad&gt; &amp; "co"')
     })
@@ -228,7 +259,9 @@ describe('MazIcon', () => {
 
   describe('a11y', () => {
     it('marks the icon as decorative (aria-hidden) by default', async () => {
-      const wrapper = mount(MazIcon, { props: { icon: RAW_SVG } })
+      const wrapper = mount(MazIcon, {
+        props: { icon: RAW_SVG },
+      })
       await nextTick()
       expect(wrapper.attributes('aria-hidden')).toBe('true')
       expect(wrapper.attributes('role')).toBeUndefined()
@@ -246,7 +279,10 @@ describe('MazIcon', () => {
 
     it('exposes role="img" when aria-label is set via svgAttributes', async () => {
       const wrapper = mount(MazIcon, {
-        props: { icon: RAW_SVG, svgAttributes: { 'aria-label': 'star' } },
+        props: {
+          icon: RAW_SVG,
+          svgAttributes: { 'aria-label': 'star' },
+        },
       })
       await nextTick()
       expect(wrapper.attributes('role')).toBe('img')
@@ -264,7 +300,9 @@ describe('MazIcon', () => {
 
   describe('flipIconForRtl', () => {
     it('does not add the flip class by default', () => {
-      const wrapper = shallowMount(MazIcon, { props: { icon: ComponentIcon as any } })
+      const wrapper = shallowMount(MazIcon, {
+        props: { icon: ComponentIcon as any },
+      })
       expect(wrapper.classes()).not.toContain('m-icon--flip-for-rtl')
     })
 
@@ -279,7 +317,9 @@ describe('MazIcon', () => {
   describe('SVG normalization', () => {
     it('strips existing width/height from the root <svg> and pins them to 1em', async () => {
       const big = '<svg width="48" height="48" viewBox="0 0 48 48"><path d="M0 0h24v24H0z"/></svg>'
-      const wrapper = mount(MazIcon, { props: { icon: big } })
+      const wrapper = mount(MazIcon, {
+        props: { icon: big },
+      })
       await nextTick()
       expect(wrapper.html()).toContain('width="1em"')
       expect(wrapper.html()).toContain('height="1em"')
@@ -311,7 +351,10 @@ describe('MazIcon', () => {
 
     beforeEach(() => {
       originalFetch = globalThis.fetch
-      fetchMock = vi.fn().mockResolvedValue({ ok: true, text: () => Promise.resolve(RAW_SVG) })
+      fetchMock = vi.fn().mockResolvedValue({
+        ok: true,
+        text: () => Promise.resolve(RAW_SVG),
+      })
       globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch
     })
 
@@ -339,7 +382,9 @@ describe('MazIcon', () => {
         const html = await renderOnServer(() => h(MazIcon, { icon: url }))
 
         expect(fetchMock).toHaveBeenCalledTimes(1)
-        expect(fetchMock).toHaveBeenCalledWith(url, { signal: expect.any(AbortSignal) })
+        expect(fetchMock).toHaveBeenCalledWith(url, {
+          signal: expect.any(AbortSignal),
+        })
         expect(html).toContain('viewBox="0 0 24 24"')
       })
 
@@ -404,7 +449,10 @@ describe('MazIcon', () => {
         container.innerHTML = html
         createSSRApp({ render }).mount(container)
 
-        const hasMismatch = () => [...warnSpy.mock.calls, ...errorSpy.mock.calls]
+        const hasMismatch = () => [
+          ...warnSpy.mock.calls,
+          ...errorSpy.mock.calls,
+        ]
           .some(([message]) => /hydration/i.test(String(message)))
         return { html, container, hasMismatch }
       }
@@ -463,11 +511,16 @@ describe('MazIcon', () => {
     })
 
     it('renders a cached relative URL synchronously on remount, without refetching', async () => {
-      const fetchMock = vi.fn().mockResolvedValue({ ok: true, text: () => Promise.resolve(RAW_SVG) })
+      const fetchMock = vi.fn().mockResolvedValue({
+        ok: true,
+        text: () => Promise.resolve(RAW_SVG),
+      })
       globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch
       const options = {
         props: { icon: '/icons/remount.svg' },
-        global: { provide: { mazIconPath: 'https://cdn.example.com/' } },
+        global: {
+          provide: { mazIconPath: 'https://cdn.example.com/' },
+        },
       }
 
       mount(MazIcon, options)

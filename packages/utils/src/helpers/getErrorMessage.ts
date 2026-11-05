@@ -11,5 +11,7 @@ export function getErrorMessage(error: unknown): string {
     return String(error.message)
   }
 
-  return error ? String(error) : 'An unexpected error occurred'
+  return error
+    ? String(error)
+    : 'An unexpected error occurred'
 }

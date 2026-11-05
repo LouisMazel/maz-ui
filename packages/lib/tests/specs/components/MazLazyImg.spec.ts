@@ -125,7 +125,9 @@ describe('given MazLazyImg component', () => {
   describe('when rendered with custom style', () => {
     it('then it should apply the custom style', () => {
       const wrapper = mount(MazLazyImg, {
-        props: { style: { width: '200px' } },
+        props: {
+          style: { width: '200px' },
+        },
       })
 
       expect(wrapper.attributes('style')).toContain('width: 200px')
@@ -234,10 +236,18 @@ describe('given MazLazyImg component', () => {
       wrapper.vm.onLoaded(el)
       wrapper.vm.onError(el)
 
-      expect(wrapper.emitted('intersecting')).toEqual([[el]])
-      expect(wrapper.emitted('loading')).toEqual([[el]])
-      expect(wrapper.emitted('loaded')).toEqual([[el]])
-      expect(wrapper.emitted('error')).toEqual([[el]])
+      expect(wrapper.emitted('intersecting')).toEqual([
+        [el],
+      ])
+      expect(wrapper.emitted('loading')).toEqual([
+        [el],
+      ])
+      expect(wrapper.emitted('loaded')).toEqual([
+        [el],
+      ])
+      expect(wrapper.emitted('error')).toEqual([
+        [el],
+      ])
     })
   })
 })

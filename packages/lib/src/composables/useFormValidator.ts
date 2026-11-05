@@ -77,7 +77,10 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
   } satisfies StrictOptions<Model, ExtractModelKey<FormSchema<Model>>>
 
   const internalDefaultValues = ref(toValue(defaultValues)) as Ref<DeepPartial<Model>>
-  const payload = ref({ ...internalDefaultValues.value, ...model?.value }) as Ref<Model>
+  const payload = ref({
+    ...internalDefaultValues.value,
+    ...model?.value,
+  }) as Ref<Model>
   const internalSchema = ref(toValue(schema)) as Ref<FormSchema<Model>>
   const fieldsStates = ref(
     getFieldsStates<Model, ExtractModelKey<FormSchema<Model>>>({
@@ -114,7 +117,10 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
     watch(
       payload,
       (newPayload) => {
-        model.value = { ...internalDefaultValues.value, ...newPayload }
+        model.value = {
+          ...internalDefaultValues.value,
+          ...newPayload,
+        }
       },
       { deep: true },
     )
@@ -134,7 +140,10 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
   watch(
     internalDefaultValues,
     (newDefaultValues) => {
-      payload.value = { ...newDefaultValues, ...payload.value }
+      payload.value = {
+        ...newDefaultValues,
+        ...payload.value,
+      }
     },
     { deep: true },
   )
@@ -191,7 +200,12 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
           const fieldState = fieldsStates.value[name as ExtractModelKey<FormSchema<Model>>]
           return fieldState
             && newSnapshot[name] !== oldSnapshot?.[name]
-            && hasModeIncludes(['aggressive', 'lazy', 'progressive', 'eager'], fieldState.mode)
+            && hasModeIncludes([
+              'aggressive',
+              'lazy',
+              'progressive',
+              'eager',
+            ], fieldState.mode)
         })
 
         // Process validations with requestIdleCallback for better performance
@@ -260,7 +274,9 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
         await internalValidateForm(true)
 
         const scrollToErrorParam
-          = typeof enableScrollOrSelector === 'string' ? enableScrollOrSelector : opts.scrollToError
+          = typeof enableScrollOrSelector === 'string'
+            ? enableScrollOrSelector
+            : opts.scrollToError
 
         let response: Awaited<ReturnType<Func>> | ReturnType<Func> | undefined
 
@@ -311,7 +327,9 @@ export function useFormValidator<TSchema extends MaybeRefOrGetter<FormSchema<Bas
     fieldsStates,
     validateForm: internalValidateForm,
     scrollToError: (selector?: string) =>
-      scrollToError(selector ?? (typeof opts.scrollToError === 'string' ? opts.scrollToError : undefined)),
+      scrollToError(selector ?? (typeof opts.scrollToError === 'string'
+        ? opts.scrollToError
+        : undefined)),
     resetForm,
     handleSubmit,
     errorMessages,

@@ -264,7 +264,9 @@ describe('MazDialog extended coverage', () => {
         props: { modelValue: true, teleportSelector: '#my-target' },
         slots: { default: 'Content' },
         global: {
-          stubs: { Teleport: { template: '<div><slot /></div>' } },
+          stubs: {
+            Teleport: { template: '<div><slot /></div>' },
+          },
         },
       })
       const backdrop = wrapper.findComponent({ name: 'MazBackdrop' })

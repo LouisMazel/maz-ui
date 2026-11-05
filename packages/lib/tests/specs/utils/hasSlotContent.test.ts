@@ -23,7 +23,9 @@ describe('hasSlotContent (unit)', () => {
 
   describe('Comment nodes (v-if="false" placeholders)', () => {
     it('returns false for a single comment', () => {
-      const slot: Slot = () => [{ type: Comment, children: 'v-if' } as any]
+      const slot: Slot = () => [
+        { type: Comment, children: 'v-if' } as any,
+      ]
       expect(hasSlotContent(slot)).toBe(false)
     })
 
@@ -43,135 +45,183 @@ describe('hasSlotContent (unit)', () => {
       { label: 'empty string text', children: '' },
       { label: 'newlines/tabs only', children: '\n\t  \n' },
     ])('returns false for $label', ({ children }) => {
-      const slot: Slot = () => [{ type: Text, children } as any]
+      const slot: Slot = () => [
+        { type: Text, children } as any,
+      ]
       expect(hasSlotContent(slot)).toBe(false)
     })
 
     it('returns true for non-empty text', () => {
-      const slot: Slot = () => [{ type: Text, children: 'hello' } as any]
+      const slot: Slot = () => [
+        { type: Text, children: 'hello' } as any,
+      ]
       expect(hasSlotContent(slot)).toBe(true)
     })
 
     it('returns true for text with leading/trailing spaces but real content', () => {
-      const slot: Slot = () => [{ type: Text, children: '  ok  ' } as any]
+      const slot: Slot = () => [
+        { type: Text, children: '  ok  ' } as any,
+      ]
       expect(hasSlotContent(slot)).toBe(true)
     })
 
     it('returns false when children is null', () => {
-      const slot: Slot = () => [{ type: Text, children: null } as any]
+      const slot: Slot = () => [
+        { type: Text, children: null } as any,
+      ]
       expect(hasSlotContent(slot)).toBe(false)
     })
 
     it('returns false when children is undefined', () => {
-      const slot: Slot = () => [{ type: Text, children: undefined } as any]
+      const slot: Slot = () => [
+        { type: Text, children: undefined } as any,
+      ]
       expect(hasSlotContent(slot)).toBe(false)
     })
   })
 
   describe('Element and Component nodes', () => {
     it('returns true for a plain HTML element', () => {
-      const slot: Slot = () => [h('div')]
+      const slot: Slot = () => [
+        h('div'),
+      ]
       expect(hasSlotContent(slot)).toBe(true)
     })
 
     it('returns true for an element with text content', () => {
-      const slot: Slot = () => [h('span', 'hello')]
+      const slot: Slot = () => [
+        h('span', 'hello'),
+      ]
       expect(hasSlotContent(slot)).toBe(true)
     })
 
     it('returns true for a component VNode', () => {
-      const MyComp = defineComponent({ setup: () => () => h('span') })
-      const slot: Slot = () => [h(MyComp)]
+      const MyComp = defineComponent({
+        setup: () => () => h('span'),
+      })
+      const slot: Slot = () => [
+        h(MyComp),
+      ]
       expect(hasSlotContent(slot)).toBe(true)
     })
 
     it('returns true for a functional component', () => {
       const Fn = () => h('b', 'bold')
-      const slot: Slot = () => [h(Fn)]
+      const slot: Slot = () => [
+        h(Fn),
+      ]
       expect(hasSlotContent(slot)).toBe(true)
     })
   })
 
   describe('Fragment nodes', () => {
     it('returns false for empty fragment', () => {
-      const slot: Slot = () => [{ type: Fragment, children: [] } as any]
+      const slot: Slot = () => [
+        { type: Fragment, children: [] } as any,
+      ]
       expect(hasSlotContent(slot)).toBe(false)
     })
 
     it('returns false for fragment with only comments', () => {
-      const slot: Slot = () => [{
-        type: Fragment,
-        children: [
-          { type: Comment, children: 'v-if' },
-          { type: Comment, children: '' },
-        ],
-      } as any]
+      const slot: Slot = () => [
+        {
+          type: Fragment,
+          children: [
+            { type: Comment, children: 'v-if' },
+            { type: Comment, children: '' },
+          ],
+        } as any,
+      ]
       expect(hasSlotContent(slot)).toBe(false)
     })
 
     it('returns true for fragment with an element among comments', () => {
-      const slot: Slot = () => [{
-        type: Fragment,
-        children: [
-          { type: Comment, children: 'v-if' },
-          h('span', 'content'),
-        ],
-      } as any]
+      const slot: Slot = () => [
+        {
+          type: Fragment,
+          children: [
+            { type: Comment, children: 'v-if' },
+            h('span', 'content'),
+          ],
+        } as any,
+      ]
       expect(hasSlotContent(slot)).toBe(true)
     })
 
     it('returns true for fragment with non-empty text among comments', () => {
-      const slot: Slot = () => [{
-        type: Fragment,
-        children: [
-          { type: Comment, children: '' },
-          { type: Text, children: 'visible' },
-        ],
-      } as any]
+      const slot: Slot = () => [
+        {
+          type: Fragment,
+          children: [
+            { type: Comment, children: '' },
+            { type: Text, children: 'visible' },
+          ],
+        } as any,
+      ]
       expect(hasSlotContent(slot)).toBe(true)
     })
 
     it('returns false for fragment with only whitespace text and comments', () => {
-      const slot: Slot = () => [{
-        type: Fragment,
-        children: [
-          { type: Text, children: '  ' },
-          { type: Comment, children: '' },
-        ],
-      } as any]
+      const slot: Slot = () => [
+        {
+          type: Fragment,
+          children: [
+            { type: Text, children: '  ' },
+            { type: Comment, children: '' },
+          ],
+        } as any,
+      ]
       expect(hasSlotContent(slot)).toBe(false)
     })
 
     it('returns false for fragment with null children', () => {
-      const slot: Slot = () => [{ type: Fragment, children: null } as any]
+      const slot: Slot = () => [
+        { type: Fragment, children: null } as any,
+      ]
       expect(hasSlotContent(slot)).toBe(false)
     })
 
     it('handles deeply nested fragments', () => {
-      const slot: Slot = () => [{
-        type: Fragment,
-        children: [{
+      const slot: Slot = () => [
+        {
           type: Fragment,
-          children: [{
-            type: Fragment,
-            children: [{ type: Comment, children: '' }],
-          }],
-        }],
-      } as any]
+          children: [
+            {
+              type: Fragment,
+              children: [
+                {
+                  type: Fragment,
+                  children: [
+                    { type: Comment, children: '' },
+                  ],
+                },
+              ],
+            },
+          ],
+        } as any,
+      ]
       expect(hasSlotContent(slot)).toBe(false)
     })
 
     it('finds content in deeply nested fragment', () => {
-      const slot: Slot = () => [{
-        type: Fragment,
-        children: [{
+      const slot: Slot = () => [
+        {
           type: Fragment,
-          children: [{
-            type: Fragment,
-            children: [h('div', 'deep')],
-          }],
-        }],
-      } as any]
+          children: [
+            {
+              type: Fragment,
+              children: [
+                {
+                  type: Fragment,
+                  children: [
+                    h('div', 'deep'),
+                  ],
+                },
+              ],
+            },
+          ],
+        } as any,
+      ]
       expect(hasSlotContent(slot)).toBe(true)
     })
   })
@@ -230,7 +280,9 @@ describe('hasSlotContent (unit)', () => {
 
   describe('Edge cases', () => {
     it('returns true for slot returning a single string via h()', () => {
-      const slot: Slot = () => [h('template', 'text')]
+      const slot: Slot = () => [
+        h('template', 'text'),
+      ]
       expect(hasSlotContent(slot)).toBe(true)
     })
 
@@ -347,7 +399,9 @@ describe('hasSlotContent (integration with real components)', () => {
       const Parent = defineComponent({
         components: { MazCard },
         setup() {
-          return { show: ref(false) }
+          return {
+            show: ref(false),
+          }
         },
         template: `
           <MazCard>
@@ -362,7 +416,9 @@ describe('hasSlotContent (integration with real components)', () => {
     })
 
     it('shows header when title prop is set even without slot', () => {
-      const wrapper = mount(MazCard, { props: { title: 'Hello' } })
+      const wrapper = mount(MazCard, {
+        props: { title: 'Hello' },
+      })
       expect(wrapper.find('.m-card__header').exists()).toBe(true)
       expect(wrapper.find('.m-card__header').text()).toContain('Hello')
     })
@@ -370,7 +426,9 @@ describe('hasSlotContent (integration with real components)', () => {
     it('hides content-title wrapper when slot has v-if=false', () => {
       const Parent = defineComponent({
         components: { MazCard },
-        setup: () => ({ show: ref(false) }),
+        setup: () => ({
+          show: ref(false),
+        }),
         template: `
           <MazCard>
             <template #content-title>
@@ -395,7 +453,9 @@ describe('hasSlotContent (integration with real components)', () => {
     it('hides label area when default slot is empty (v-if=false)', () => {
       const Parent = defineComponent({
         components: { MazSwitch },
-        setup: () => ({ show: ref(false) }),
+        setup: () => ({
+          show: ref(false),
+        }),
         template: `
           <MazSwitch>
             <span v-if="show">Label</span>
@@ -425,7 +485,9 @@ describe('hasSlotContent (integration with real components)', () => {
     it('hides text wrapper when default slot content is hidden', () => {
       const Parent = defineComponent({
         components: { MazCheckbox },
-        setup: () => ({ show: ref(false) }),
+        setup: () => ({
+          show: ref(false),
+        }),
         template: `
           <MazCheckbox>
             <span v-if="show">Label</span>
@@ -450,7 +512,9 @@ describe('hasSlotContent (integration with real components)', () => {
     it('hides text span when default slot is conditionally empty', () => {
       const Parent = defineComponent({
         components: { MazFullscreenLoader },
-        setup: () => ({ show: ref(false) }),
+        setup: () => ({
+          show: ref(false),
+        }),
         template: `
           <MazFullscreenLoader teleport-selector="body">
             <span v-if="show">Loading</span>
@@ -461,7 +525,9 @@ describe('hasSlotContent (integration with real components)', () => {
       const loader = document.querySelector('.m-fullscreen-loader')
       const spans = loader?.querySelectorAll('span')
       // Should not have an extra span wrapper for empty content
-      const hasTextSpan = [...spans ?? []].some(s => s.textContent?.includes('Loading'))
+      const hasTextSpan = [
+        ...spans ?? [],
+      ].some(s => s.textContent?.includes('Loading'))
       expect(hasTextSpan).toBe(false)
     })
   })
@@ -470,7 +536,9 @@ describe('hasSlotContent (integration with real components)', () => {
     it('renders footer when v-for produces items', () => {
       const Parent = defineComponent({
         components: { MazCard },
-        setup: () => ({ items: ref(['a', 'b']) }),
+        setup: () => ({
+          items: ref(['a', 'b']),
+        }),
         template: `
           <MazCard>
             <template #footer>
@@ -487,7 +555,9 @@ describe('hasSlotContent (integration with real components)', () => {
     it('hides footer when v-for produces zero items', () => {
       const Parent = defineComponent({
         components: { MazCard },
-        setup: () => ({ items: ref([]) }),
+        setup: () => ({
+          items: ref([]),
+        }),
         template: `
           <MazCard>
             <template #footer>
@@ -503,7 +573,9 @@ describe('hasSlotContent (integration with real components)', () => {
     it('reacts when v-for items change from empty to filled', async () => {
       const Parent = defineComponent({
         components: { MazCard },
-        setup: () => ({ items: ref<string[]>([]) }),
+        setup: () => ({
+          items: ref<string[]>([]),
+        }),
         template: `
           <MazCard>
             <template #footer>
@@ -525,7 +597,9 @@ describe('hasSlotContent (integration with real components)', () => {
     it('shows footer but hides header when only footer has content', () => {
       const Parent = defineComponent({
         components: { MazCard },
-        setup: () => ({ showTitle: ref(false) }),
+        setup: () => ({
+          showTitle: ref(false),
+        }),
         template: `
           <MazCard>
             <template #title>

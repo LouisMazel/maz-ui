@@ -8,7 +8,12 @@ export default defineNuxtPlugin(async ({ $config, vueApp }) => {
 
   const options: AosOptions
     = typeof aosOptions === 'object'
-      ? { ...aosOptions, router: aosOptions.router ? useRouter() : undefined }
+      ? {
+          ...aosOptions,
+          router: aosOptions.router
+            ? useRouter()
+            : undefined,
+        }
       : {}
 
   vueApp.use(AosPlugin, options)

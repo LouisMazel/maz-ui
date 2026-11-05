@@ -185,7 +185,9 @@ class TooltipHandler {
     // Get effective trigger based on adaptive mode
     function getEffectiveTrigger() {
       if (tooltipProps.trigger === 'adaptive') {
-        return isTouchDevice() ? 'click' : 'hover'
+        return isTouchDevice()
+          ? 'click'
+          : 'hover'
       }
       return tooltipProps.trigger || 'hover'
     }

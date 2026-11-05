@@ -21,7 +21,9 @@ describe('plugin', () => {
   describe('given MazUiTheme plugin', () => {
     describe('when install is called with an app and options', () => {
       it('then it calls setupTheme with the provided options', () => {
-        const mockThemeState = { value: { isDark: false } } as Ref<ThemeState>
+        const mockThemeState = {
+          value: { isDark: false },
+        } as Ref<ThemeState>
         vi.mocked(setupTheme).mockReturnValue({
           themeState: mockThemeState,
           cleanup: vi.fn(),
@@ -43,7 +45,9 @@ describe('plugin', () => {
       })
 
       it('then it calls injectThemeState with the app and the returned themeState', () => {
-        const mockThemeState = { value: { isDark: false } } as Ref<ThemeState>
+        const mockThemeState = {
+          value: { isDark: false },
+        } as Ref<ThemeState>
         vi.mocked(setupTheme).mockReturnValue({
           themeState: mockThemeState,
           cleanup: vi.fn(),
@@ -69,7 +73,9 @@ describe('plugin', () => {
 
     describe('when install is called with minimal options', () => {
       it('then it passes those options through to setupTheme', () => {
-        const mockThemeState = { value: { isDark: true } } as Ref<ThemeState>
+        const mockThemeState = {
+          value: { isDark: true },
+        } as Ref<ThemeState>
         vi.mocked(setupTheme).mockReturnValue({
           themeState: mockThemeState,
           cleanup: vi.fn(),

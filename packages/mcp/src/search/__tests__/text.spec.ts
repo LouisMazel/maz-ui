@@ -22,7 +22,13 @@ describe('given stem', () => {
   })
 
   describe('when a word ends with a protected suffix', () => {
-    it.each(['class', 'status', 'basis', 'string', 'speed'])('then "%s" is kept', (word) => {
+    it.each([
+      'class',
+      'status',
+      'basis',
+      'string',
+      'speed',
+    ])('then "%s" is kept', (word) => {
       expect(stem(word)).toBe(word)
     })
   })
@@ -31,8 +37,19 @@ describe('given stem', () => {
 describe('given tokenize', () => {
   describe('when an identifier is compound', () => {
     it('then it returns the joined form and the parts', () => {
-      expect(tokenize('MazInputPhoneNumber')).toEqual(['MazInputPhoneNumber', 'Maz', 'Input', 'Phone', 'Number'])
-      expect(tokenize('use-form-validator')).toEqual(['useformvalidator', 'use', 'form', 'validator'])
+      expect(tokenize('MazInputPhoneNumber')).toEqual([
+        'MazInputPhoneNumber',
+        'Maz',
+        'Input',
+        'Phone',
+        'Number',
+      ])
+      expect(tokenize('use-form-validator')).toEqual([
+        'useformvalidator',
+        'use',
+        'form',
+        'validator',
+      ])
     })
   })
 

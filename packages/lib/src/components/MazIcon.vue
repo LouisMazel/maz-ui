@@ -94,7 +94,11 @@ const componentIcon = computed<IconComponent | undefined>(() => {
 const isPendingUrl = computed(() => {
   if (hasFetchError.value)
     return false
-  const value = isStringIcon(icon) ? icon : !icon && isStringIcon(fallback) ? fallback : undefined
+  const value = isStringIcon(icon)
+    ? icon
+    : !icon && isStringIcon(fallback)
+        ? fallback
+        : undefined
   return isUrlLike(value) && !decodeSvgDataUri(value)
 })
 
@@ -115,7 +119,9 @@ const SIZE_CLASS = {
 
 const sizeClass = computed<string | undefined>(() => {
   const isPredefined = size && predefinedSizes.includes(size as PredefinedSize)
-  return isPredefined ? `m-icon--${size} ${SIZE_CLASS[size as PredefinedSize]}` : undefined
+  return isPredefined
+    ? `m-icon--${size} ${SIZE_CLASS[size as PredefinedSize]}`
+    : undefined
 })
 
 const hasAriaLabel = computed(() =>
@@ -124,8 +130,11 @@ const hasAriaLabel = computed(() =>
 
 const ariaHidden = computed<'true' | 'false' | undefined>(() => {
   const fromAttrs = attrs['aria-hidden']
-  if (fromAttrs !== undefined && fromAttrs !== null)
-    return String(fromAttrs) === 'false' ? 'false' : 'true'
+  if (fromAttrs !== undefined && fromAttrs !== null) {
+    return String(fromAttrs) === 'false'
+      ? 'false'
+      : 'true'
+  }
   return hasAriaLabel.value ? undefined : 'true'
 })
 
@@ -147,8 +156,12 @@ function isRelativeUrl(value: string): boolean {
 function resolveUrl(value: string): string {
   // Prefix relative URLs with the injected base path.
   if (mazIconPath && isRelativeUrl(value)) {
-    const base = mazIconPath.endsWith('/') ? mazIconPath.slice(0, -1) : mazIconPath
-    const path = value.startsWith('/') ? value.slice(1) : value
+    const base = mazIconPath.endsWith('/')
+      ? mazIconPath.slice(0, -1)
+      : mazIconPath
+    const path = value.startsWith('/')
+      ? value.slice(1)
+      : value
     return `${base}/${path}`
   }
   return value
@@ -156,7 +169,9 @@ function resolveUrl(value: string): string {
 
 async function resolveStringIcon(value: string): Promise<void> {
   // Raw SVGs and SVG data URIs are rendered synchronously, on the server too.
-  const inlineSvg = isRawSvg(value) ? value : decodeSvgDataUri(value)
+  const inlineSvg = isRawSvg(value)
+    ? value
+    : decodeSvgDataUri(value)
   if (inlineSvg) {
     renderRaw(inlineSvg)
     return
@@ -187,7 +202,9 @@ async function resolveStringIcon(value: string): Promise<void> {
       renderRaw(text)
     }
     catch (error) {
-      const err = error instanceof Error ? error : new Error(String(error))
+      const err = error instanceof Error
+        ? error
+        : new Error(String(error))
       // Surface the failure by default — consumers can still wire `@error`
       // for telemetry, but the warning makes the issue visible without it.
       console.warn(err)

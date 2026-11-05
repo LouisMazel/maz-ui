@@ -24,7 +24,9 @@ export function nextCall(doc: DocEntry): string {
 }
 
 export function formatDocLine(doc: DocEntry, index?: number): string {
-  const prefix = index === undefined ? '-' : `${index + 1}.`
+  const prefix = index === undefined
+    ? '-'
+    : `${index + 1}.`
   const lines = [
     `${prefix} **${doc.title}** (${doc.category}, \`${doc.id}\`): ${truncateText(doc.description, 220)}`,
   ]
@@ -45,7 +47,9 @@ export interface SearchDocsArgs {
 
 export function searchDocs(context: ServerContext, { query, category, limit = 8 }: SearchDocsArgs): string {
   const hits = context.search.search(query, { category, limit })
-  const header = `# maz-ui ${context.knowledge.version} results for "${query}"${category ? ` (category: ${category})` : ''}`
+  const header = `# maz-ui ${context.knowledge.version} results for "${query}"${category
+    ? ` (category: ${category})`
+    : ''}`
 
   if (hits.length === 0) {
     return [
@@ -56,7 +60,11 @@ export function searchDocs(context: ServerContext, { query, category, limit = 8 
     ].join('\n')
   }
 
-  const lines = [header, '', ...hits.map((hit, index) => formatDocLine(hit.doc, index))]
+  const lines = [
+    header,
+    '',
+    ...hits.map((hit, index) => formatDocLine(hit.doc, index)),
+  ]
 
   if (hits[0].score < WEAK_MATCH_SCORE) {
     lines.push('', 'These results are weak matches: maz-ui probably has no dedicated feature for this need. Compose it from maz-ui components (MazCard, MazBtn, MazIcon...) and theme tokens (`get_theme_tokens`) rather than adding another library.')

@@ -99,7 +99,9 @@ describe('given MazChecklist component', () => {
       const checkbox = wrapper.find('input[type="checkbox"]')
       await checkbox.setValue()
       expect(wrapper.emitted('update:model-value')).toBeTruthy()
-      expect(wrapper.emitted('update:model-value')?.[0]).toEqual([['1']])
+      expect(wrapper.emitted('update:model-value')?.[0]).toEqual([
+        ['1'],
+      ])
     })
   })
 

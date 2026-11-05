@@ -7,10 +7,14 @@ import { HELP, main, runCli } from '../cli'
 import { startStdioServer } from '../server'
 import { BUNDLE_DIR, cleanTempDirs, createTempDir, writeFakeMazUi, writeFile } from './helpers'
 
-vi.mock('../server', () => ({ startStdioServer: vi.fn() }))
+vi.mock('../server', () => ({
+  startStdioServer: vi.fn(),
+}))
 
 function mockStdin(content: string): void {
-  vi.spyOn(process, 'stdin', 'get').mockReturnValue(Readable.from([Buffer.from(content)]) as unknown as typeof process.stdin)
+  vi.spyOn(process, 'stdin', 'get').mockReturnValue(Readable.from([
+    Buffer.from(content),
+  ]) as unknown as typeof process.stdin)
 }
 
 describe('given the maz-ui-mcp CLI', () => {
@@ -76,12 +80,24 @@ describe('given the maz-ui-mcp CLI', () => {
 
   describe('when search is used', () => {
     it('then it prints the results', async () => {
-      expect(await runCli(['search', 'phone', 'number', '--cwd', createTempDir()])).toBe(0)
+      expect(await runCli([
+        'search',
+        'phone',
+        'number',
+        '--cwd',
+        createTempDir(),
+      ])).toBe(0)
       expect(logged()).toContain('MazInputPhoneNumber')
     })
 
     it('then it searches a default query without words', async () => {
-      await runCli(['search', '--cwd', createTempDir(), '--docs', BUNDLE_DIR])
+      await runCli([
+        'search',
+        '--cwd',
+        createTempDir(),
+        '--docs',
+        BUNDLE_DIR,
+      ])
 
       expect(logged()).toContain('results for "button"')
     })
@@ -89,7 +105,11 @@ describe('given the maz-ui-mcp CLI', () => {
 
   describe('when review is used', () => {
     it('then it requires paths', async () => {
-      expect(await runCli(['review', '--cwd', createTempDir()])).toBe(1)
+      expect(await runCli([
+        'review',
+        '--cwd',
+        createTempDir(),
+      ])).toBe(1)
       expect(errored()).toContain('Pass the files')
     })
 
@@ -97,7 +117,14 @@ describe('given the maz-ui-mcp CLI', () => {
       const cwd = createTempDir()
       writeFile(cwd, 'A.vue', '<template><MazBtn color="red">x</MazBtn></template>')
 
-      expect(await runCli(['review', 'A.vue', '--cwd', cwd, '--docs', BUNDLE_DIR])).toBe(1)
+      expect(await runCli([
+        'review',
+        'A.vue',
+        '--cwd',
+        cwd,
+        '--docs',
+        BUNDLE_DIR,
+      ])).toBe(1)
       expect(logged()).toContain('A.vue: 1 error')
       expect(logged()).toContain('1 file(s) reviewed')
     })
@@ -107,15 +134,38 @@ describe('given the maz-ui-mcp CLI', () => {
       writeFile(cwd, 'A.vue', '<template><button>b</button></template>')
 
       expect(await runCli(['review', 'A.vue', '--cwd', cwd])).toBe(0)
-      expect(await runCli(['review', 'A.vue', '--cwd', cwd, '--max-warnings', '0'])).toBe(1)
-      expect(await runCli(['review', 'A.vue', '--cwd', cwd, '--min-severity', 'error'])).toBe(0)
+      expect(await runCli([
+        'review',
+        'A.vue',
+        '--cwd',
+        cwd,
+        '--max-warnings',
+        '0',
+      ])).toBe(1)
+      expect(await runCli([
+        'review',
+        'A.vue',
+        '--cwd',
+        cwd,
+        '--min-severity',
+        'error',
+      ])).toBe(0)
     })
 
     it('then it prints JSON', async () => {
       const cwd = createTempDir()
       writeFile(cwd, 'a.ts', 'import { MazBtn } from \'maz-ui\'')
 
-      await runCli(['review', 'a.ts', '--cwd', cwd, '--format', 'json', '--framework', 'vue'])
+      await runCli([
+        'review',
+        'a.ts',
+        '--cwd',
+        cwd,
+        '--format',
+        'json',
+        '--framework',
+        'vue',
+      ])
 
       const output = JSON.parse(logged()) as { totals: { error: number }, files: Array<{ file: string }>, truncated: boolean }
 
@@ -129,7 +179,10 @@ describe('given the maz-ui-mcp CLI', () => {
     it('then a file with findings exits with 2 and explains them on stderr', async () => {
       const cwd = createTempDir()
       const file = writeFile(cwd, 'A.vue', '<template><button>b</button></template>')
-      mockStdin(JSON.stringify({ tool_input: { file_path: file }, cwd }))
+      mockStdin(JSON.stringify({
+        tool_input: { file_path: file },
+        cwd,
+      }))
 
       expect(await runCli(['review', '--hook', '--cwd', cwd])).toBe(2)
       expect(errored()).toContain('[prefer-maz-component]')
@@ -139,38 +192,73 @@ describe('given the maz-ui-mcp CLI', () => {
     it('then a clean file exits with 0', async () => {
       const cwd = createTempDir()
       const file = writeFile(cwd, 'a.ts', 'export const a = 1')
-      mockStdin(JSON.stringify({ tool_input: { file_path: file } }))
+      mockStdin(JSON.stringify({
+        tool_input: { file_path: file },
+      }))
 
       expect(await runCli(['review', '--hook', '--cwd', cwd])).toBe(0)
     })
 
     it.each([
-      ['a non reviewable file', { tool_input: { file_path: '/project/README.md' } }],
-      ['a dependency file', { tool_input: { file_path: '/project/node_modules/x/a.vue' } }],
+      [
+        'a non reviewable file',
+        {
+          tool_input: { file_path: '/project/README.md' },
+        },
+      ],
+      [
+        'a dependency file',
+        {
+          tool_input: { file_path: '/project/node_modules/x/a.vue' },
+        },
+      ],
       ['no file', {}],
     ])('then %s exits with 0', async (_, input) => {
       mockStdin(JSON.stringify(input))
 
-      expect(await runCli(['review', '--hook', '--cwd', createTempDir()])).toBe(0)
+      expect(await runCli([
+        'review',
+        '--hook',
+        '--cwd',
+        createTempDir(),
+      ])).toBe(0)
     })
 
     it('then an empty stdin exits with 0', async () => {
       mockStdin('')
 
-      expect(await runCli(['review', '--hook', '--cwd', createTempDir()])).toBe(0)
+      expect(await runCli([
+        'review',
+        '--hook',
+        '--cwd',
+        createTempDir(),
+      ])).toBe(0)
     })
   })
 
   describe('when init is used', () => {
     it('then it rejects unknown targets', async () => {
-      expect(await runCli(['init', '--targets', 'claude,emacs', '--cwd', createTempDir()])).toBe(1)
+      expect(await runCli([
+        'init',
+        '--targets',
+        'claude,emacs',
+        '--cwd',
+        createTempDir(),
+      ])).toBe(1)
       expect(errored()).toContain('Unknown target(s): emacs')
     })
 
     it('then a dry run lists the changes without writing', async () => {
       const cwd = createTempDir()
 
-      expect(await runCli(['init', '--dry-run', '--docs', BUNDLE_DIR, '--cwd', cwd])).toBe(0)
+      expect(await runCli([
+        'init',
+        '--dry-run',
+        '--docs',
+        BUNDLE_DIR,
+        '--cwd',
+        cwd,
+      ])).toBe(0)
       expect(logged()).toContain('(claude, agents-md) - dry run')
       expect(logged()).toContain('would create')
       expect(existsSync(join(cwd, 'AGENTS.md'))).toBe(false)
@@ -193,13 +281,29 @@ describe('given the maz-ui-mcp CLI', () => {
     it('then explicit targets, --no-mcp and --remove are applied', async () => {
       const cwd = createTempDir()
 
-      await runCli(['init', '--targets', 'claude', '--no-mcp', '--docs', BUNDLE_DIR, '--cwd', cwd])
+      await runCli([
+        'init',
+        '--targets',
+        'claude',
+        '--no-mcp',
+        '--docs',
+        BUNDLE_DIR,
+        '--cwd',
+        cwd,
+      ])
 
       expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(true)
       expect(existsSync(join(cwd, '.mcp.json'))).toBe(false)
 
       log.mockClear()
-      await runCli(['init', '--targets', 'claude', '--remove', '--cwd', cwd])
+      await runCli([
+        'init',
+        '--targets',
+        'claude',
+        '--remove',
+        '--cwd',
+        cwd,
+      ])
 
       expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(false)
       expect(logged()).toContain('removed')
@@ -209,7 +313,16 @@ describe('given the maz-ui-mcp CLI', () => {
     it('then --no-rules only registers the MCP server', async () => {
       const cwd = createTempDir()
 
-      await runCli(['init', '--targets', 'claude,agents-md', '--no-rules', '--docs', BUNDLE_DIR, '--cwd', cwd])
+      await runCli([
+        'init',
+        '--targets',
+        'claude,agents-md',
+        '--no-rules',
+        '--docs',
+        BUNDLE_DIR,
+        '--cwd',
+        cwd,
+      ])
 
       expect(existsSync(join(cwd, '.mcp.json'))).toBe(true)
       expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(false)
@@ -220,7 +333,13 @@ describe('given the maz-ui-mcp CLI', () => {
     it('then a project without maz-ui only gets the MCP server', async () => {
       const cwd = createTempDir()
 
-      expect(await runCli(['init', '--targets', 'claude,agents-md', '--cwd', cwd])).toBe(0)
+      expect(await runCli([
+        'init',
+        '--targets',
+        'claude,agents-md',
+        '--cwd',
+        cwd,
+      ])).toBe(0)
       expect(existsSync(join(cwd, '.mcp.json'))).toBe(true)
       expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(false)
       expect(existsSync(join(cwd, 'AGENTS.md'))).toBe(false)
@@ -231,20 +350,42 @@ describe('given the maz-ui-mcp CLI', () => {
     it('then a project without maz-ui gets the rules of an explicit docs bundle', async () => {
       const cwd = createTempDir()
 
-      await runCli(['init', '--targets', 'claude', '--docs', BUNDLE_DIR, '--cwd', cwd])
+      await runCli([
+        'init',
+        '--targets',
+        'claude',
+        '--docs',
+        BUNDLE_DIR,
+        '--cwd',
+        cwd,
+      ])
 
       expect(existsSync(join(cwd, '.claude/rules/maz-ui.md'))).toBe(true)
       expect(logged()).not.toContain('maz-ui is not installed')
     })
 
     it('then a project without maz-ui and with --no-mcp fails', async () => {
-      await expect(runCli(['init', '--targets', 'claude', '--no-mcp', '--cwd', createTempDir()])).rejects.toThrow('maz-ui is not installed')
+      await expect(runCli([
+        'init',
+        '--targets',
+        'claude',
+        '--no-mcp',
+        '--cwd',
+        createTempDir(),
+      ])).rejects.toThrow('maz-ui is not installed')
     })
 
     it('then the MCP server is pinned to this version and the local install is suggested', async () => {
       const cwd = createTempDir()
 
-      await runCli(['init', '--targets', 'claude', '--no-rules', '--cwd', cwd])
+      await runCli([
+        'init',
+        '--targets',
+        'claude',
+        '--no-rules',
+        '--cwd',
+        cwd,
+      ])
 
       expect(JSON.parse(readFileSync(join(cwd, '.mcp.json'), 'utf8')).mcpServers['maz-ui'].args).toEqual(['-y', `@maz-ui/mcp@${version}`])
       expect(logged()).toContain('install @maz-ui/mcp as a devDependency of the project (`npm install -D @maz-ui/mcp`)')
@@ -254,27 +395,64 @@ describe('given the maz-ui-mcp CLI', () => {
       const cwd = createTempDir()
       writeFile(cwd, 'pnpm-lock.yaml', '')
 
-      await runCli(['init', '--targets', 'claude', '--no-rules', '--cwd', cwd])
+      await runCli([
+        'init',
+        '--targets',
+        'claude',
+        '--no-rules',
+        '--cwd',
+        cwd,
+      ])
 
       expect(logged()).toContain('`pnpm add -D @maz-ui/mcp`')
     })
 
     it('then the installed @maz-ui/mcp is started through the package manager of the project', async () => {
       const cwd = createTempDir()
-      writeFile(cwd, 'package.json', JSON.stringify({ packageManager: 'pnpm@10.0.0', devDependencies: { '@maz-ui/mcp': '^5.0.0' } }))
+      writeFile(cwd, 'package.json', JSON.stringify({
+        packageManager: 'pnpm@10.0.0',
+        devDependencies: { '@maz-ui/mcp': '^5.0.0' },
+      }))
 
-      await runCli(['init', '--targets', 'claude', '--no-rules', '--cwd', cwd])
+      await runCli([
+        'init',
+        '--targets',
+        'claude',
+        '--no-rules',
+        '--cwd',
+        cwd,
+      ])
 
-      expect(JSON.parse(readFileSync(join(cwd, '.mcp.json'), 'utf8')).mcpServers['maz-ui']).toEqual({ type: 'stdio', command: 'pnpm', args: ['exec', 'maz-ui-mcp'] })
+      expect(JSON.parse(readFileSync(join(cwd, '.mcp.json'), 'utf8')).mcpServers['maz-ui']).toEqual({
+        type: 'stdio',
+        command: 'pnpm',
+        args: ['exec', 'maz-ui-mcp'],
+      })
       expect(logged()).not.toContain('devDependency')
     })
 
     it('then an up to date project reports unchanged files', async () => {
       const cwd = createTempDir()
 
-      await runCli(['init', '--targets', 'claude', '--docs', BUNDLE_DIR, '--cwd', cwd])
+      await runCli([
+        'init',
+        '--targets',
+        'claude',
+        '--docs',
+        BUNDLE_DIR,
+        '--cwd',
+        cwd,
+      ])
       log.mockClear()
-      await runCli(['init', '--targets', 'claude', '--docs', BUNDLE_DIR, '--cwd', cwd])
+      await runCli([
+        'init',
+        '--targets',
+        'claude',
+        '--docs',
+        BUNDLE_DIR,
+        '--cwd',
+        cwd,
+      ])
 
       expect(logged()).toContain('up to date')
     })
@@ -282,13 +460,29 @@ describe('given the maz-ui-mcp CLI', () => {
     it('then a dry run removal and skipped files are reported', async () => {
       const cwd = createTempDir()
       writeFile(cwd, '.claude/rules/maz-ui.md', 'my own rule')
-      await runCli(['init', '--targets', 'claude', '--docs', BUNDLE_DIR, '--cwd', cwd])
+      await runCli([
+        'init',
+        '--targets',
+        'claude',
+        '--docs',
+        BUNDLE_DIR,
+        '--cwd',
+        cwd,
+      ])
 
       expect(logged()).toContain('skipped')
 
       log.mockClear()
       writeFile(cwd, '.claude/rules/maz-ui.md', '<!-- Managed by maz-ui -->')
-      await runCli(['init', '--targets', 'claude', '--remove', '--dry-run', '--cwd', cwd])
+      await runCli([
+        'init',
+        '--targets',
+        'claude',
+        '--remove',
+        '--dry-run',
+        '--cwd',
+        cwd,
+      ])
 
       expect(logged()).toContain('would remove')
     })
@@ -307,7 +501,12 @@ describe('given the maz-ui-mcp CLI', () => {
 
     it('then it keeps the exit code for the server', async () => {
       const argv = process.argv
-      process.argv = ['node', 'maz-ui-mcp', '--cwd', createTempDir()]
+      process.argv = [
+        'node',
+        'maz-ui-mcp',
+        '--cwd',
+        createTempDir(),
+      ]
 
       await main()
 

@@ -20,7 +20,9 @@ class MockDataTransfer {
 
         this.files = fileArray as unknown as FileList
         this.items.length = fileArray.length
-        this.items[fileArray.length - 1] = { getAsFile: () => file }
+        this.items[fileArray.length - 1] = {
+          getAsFile: () => file,
+        }
       },
       length: 0,
     }

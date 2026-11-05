@@ -226,7 +226,9 @@ function formatAgentsLog(applied: SetupAgentsChange[], result: SetupAgentsResult
 function installedMcpVersion(rootDir: string): string | undefined {
   const mcpDir = findProjectPackage(rootDir, '@maz-ui/mcp')
 
-  return mcpDir ? readPackageVersion(mcpDir) : undefined
+  return mcpDir
+    ? readPackageVersion(mcpDir)
+    : undefined
 }
 
 function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
@@ -239,9 +241,13 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
 
   try {
     const { rootDir, workspaceDir } = nuxt.options
-    const { targets: requestedTargets, rules = true, mcp = true, dir } = typeof agents === 'object' ? agents : {}
+    const { targets: requestedTargets, rules = true, mcp = true, dir } = typeof agents === 'object'
+      ? agents
+      : {}
     // In a monorepo, the agents start at the workspace root, not in the Nuxt app
-    const projectDir = dir ? resolve(rootDir, dir) : (workspaceDir || rootDir)
+    const projectDir = dir
+      ? resolve(rootDir, dir)
+      : (workspaceDir || rootDir)
     const targets = requestedTargets ?? detectAgentTargets(projectDir)
 
     if (targets.length === 0 || (!rules && !mcp))
@@ -254,7 +260,11 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
       rules,
       mcp,
       mcpVersion: installedMcpVersion(rootDir),
-      ...(mazUiDir ? { docsDir: join(mazUiDir, 'docs') } : {}),
+      ...(mazUiDir
+        ? {
+            docsDir: join(mazUiDir, 'docs'),
+          }
+        : {}),
     })
     const applied = result.changes.filter(change => ['create', 'update', 'remove'].includes(change.action))
 
@@ -333,7 +343,13 @@ export default defineNuxtModule<MazUiNuxtOptions>({
       const current = typeof postcssPlugins.cssnano === 'object' && postcssPlugins.cssnano !== null
         ? postcssPlugins.cssnano
         : {}
-      postcssPlugins.cssnano = { ...current, preset: ['default', { calc: false }] }
+      postcssPlugins.cssnano = {
+        ...current,
+        preset: [
+          'default',
+          { calc: false },
+        ],
+      }
     }
 
     // Plugins

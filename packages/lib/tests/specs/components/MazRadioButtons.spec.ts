@@ -312,7 +312,11 @@ describe('given MazRadioButtons component', () => {
   describe('when options have custom styles', () => {
     it('then it should apply custom styles to options', () => {
       const customOptions = [
-        { label: 'Option 1', value: 'option1', style: { color: 'red' } },
+        {
+          label: 'Option 1',
+          value: 'option1',
+          style: { color: 'red' },
+        },
       ]
 
       const wrapper = mount(MazRadioButtons, {
@@ -325,13 +329,21 @@ describe('given MazRadioButtons component', () => {
 })
 
 describe('given a MazUi global default for MazRadioButtons size', () => {
-  const options = [{ label: 'Option 1', value: 'option1' }]
+  const options = [
+    { label: 'Option 1', value: 'option1' },
+  ]
 
   describe('when no size prop is passed', () => {
     it('then the configured size class is applied to the options', () => {
       const wrapper = mount(MazRadioButtons, {
         props: { options },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazRadioButtons: { size: 'lg' } } } },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              MazRadioButtons: { size: 'lg' },
+            },
+          },
+        },
       })
 
       expect(wrapper.find('.m-radio-buttons__items').classes()).toContain('--size-lg')
@@ -342,7 +354,13 @@ describe('given a MazUi global default for MazRadioButtons size', () => {
     it('then the instance prop wins over the configured default', () => {
       const wrapper = mount(MazRadioButtons, {
         props: { options, size: 'xs' },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazRadioButtons: { size: 'lg' } } } },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              MazRadioButtons: { size: 'lg' },
+            },
+          },
+        },
       })
 
       expect(wrapper.find('.m-radio-buttons__items').classes()).toContain('--size-xs')

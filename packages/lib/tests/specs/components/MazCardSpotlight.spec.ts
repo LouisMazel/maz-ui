@@ -219,7 +219,9 @@ describe('given mazCardSpotlight component', () => {
       await flushPromises()
 
       intersectionObserverCallback(
-        [{ isIntersecting: true } as IntersectionObserverEntry],
+        [
+          { isIntersecting: true } as IntersectionObserverEntry,
+        ],
         {} as IntersectionObserver,
       )
 
@@ -246,7 +248,9 @@ describe('given mazCardSpotlight component', () => {
       await wrapper.vm.$nextTick()
 
       intersectionObserverCallback(
-        [{ isIntersecting: true } as IntersectionObserverEntry],
+        [
+          { isIntersecting: true } as IntersectionObserverEntry,
+        ],
         {} as IntersectionObserver,
       )
 
@@ -269,7 +273,9 @@ describe('given mazCardSpotlight component', () => {
       await wrapper.vm.$nextTick()
 
       intersectionObserverCallback(
-        [{ isIntersecting: true } as IntersectionObserverEntry],
+        [
+          { isIntersecting: true } as IntersectionObserverEntry,
+        ],
         {} as IntersectionObserver,
       )
 
@@ -297,7 +303,9 @@ describe('given mazCardSpotlight component', () => {
       await wrapper.vm.$nextTick()
 
       intersectionObserverCallback(
-        [{ isIntersecting: false } as IntersectionObserverEntry],
+        [
+          { isIntersecting: false } as IntersectionObserverEntry,
+        ],
         {} as IntersectionObserver,
       )
 
@@ -324,7 +332,9 @@ describe('given mazCardSpotlight component', () => {
       await flushPromises()
 
       intersectionObserverCallback(
-        [{ isIntersecting: true } as IntersectionObserverEntry],
+        [
+          { isIntersecting: true } as IntersectionObserverEntry,
+        ],
         {} as IntersectionObserver,
       )
 
@@ -342,7 +352,9 @@ describe('given mazCardSpotlight component', () => {
       expect(blob.attributes('style')).not.toContain('display: none')
 
       intersectionObserverCallback(
-        [{ isIntersecting: false } as IntersectionObserverEntry],
+        [
+          { isIntersecting: false } as IntersectionObserverEntry,
+        ],
         {} as IntersectionObserver,
       )
 
@@ -359,7 +371,9 @@ describe('given mazCardSpotlight component', () => {
       await wrapper.vm.$nextTick()
 
       intersectionObserverCallback(
-        [{ isIntersecting: true } as IntersectionObserverEntry],
+        [
+          { isIntersecting: true } as IntersectionObserverEntry,
+        ],
         {} as IntersectionObserver,
       )
 
@@ -462,7 +476,9 @@ describe('given mazCardSpotlight component', () => {
       await wrapper.vm.$nextTick()
 
       intersectionObserverCallback(
-        [{ isIntersecting: true } as IntersectionObserverEntry],
+        [
+          { isIntersecting: true } as IntersectionObserverEntry,
+        ],
         {} as IntersectionObserver,
       )
 

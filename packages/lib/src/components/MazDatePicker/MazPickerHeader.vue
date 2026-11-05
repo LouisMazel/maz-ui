@@ -28,7 +28,9 @@ const {
 }>()
 
 const refDate = computed(() =>
-  typeof modelValue === 'string' ? modelValue : modelValue?.start,
+  typeof modelValue === 'string'
+    ? modelValue
+    : modelValue?.start,
 )
 
 const transitionName = ref<'maz-slidevnext' | 'maz-slidevprev'>('maz-slidevnext')
@@ -61,7 +63,9 @@ const year = computed(() => {
   return '-'
 })
 
-const yearArray = computed(() => (hasDate ? [year.value] : undefined))
+const yearArray = computed(() => (hasDate
+  ? [year.value]
+  : undefined))
 
 const dateString = computed(() => {
   if (
@@ -69,7 +73,9 @@ const dateString = computed(() => {
     && typeof modelValue === 'object'
     && (modelValue.start || modelValue.end)
   ) {
-    const dateOption = hideShortcuts && !double ? 'short' : 'long'
+    const dateOption = hideShortcuts && !double
+      ? 'short'
+      : 'long'
     return `${
       modelValue.start
         ? capitalize(
@@ -101,13 +107,17 @@ const dateString = computed(() => {
       day: 'numeric',
       timeZone: formatterOptions.timeZone,
     })
-    return formattedDate ? capitalize(formattedDate) : undefined
+    return formattedDate
+      ? capitalize(formattedDate)
+      : undefined
   }
 
   return '-'
 })
 
-const dateStringArray = computed(() => (hasDate ? [dateString.value] : undefined))
+const dateStringArray = computed(() => (hasDate
+  ? [dateString.value]
+  : undefined))
 
 const timeValue = computed(() => {
   return refDate.value
@@ -119,13 +129,19 @@ const timeValue = computed(() => {
     : undefined
 })
 
-const timeArray = computed(() => (hasTime ? [timeValue.value] : undefined))
+const timeArray = computed(() => (hasTime
+  ? [timeValue.value]
+  : undefined))
 
 watch(
   () => modelValue,
   (modelValue, oldModelValue) => {
-    const currentValue = typeof modelValue === 'object' ? modelValue.start : modelValue
-    const oldValue = typeof oldModelValue === 'object' ? oldModelValue.start : oldModelValue
+    const currentValue = typeof modelValue === 'object'
+      ? modelValue.start
+      : modelValue
+    const oldValue = typeof oldModelValue === 'object'
+      ? oldModelValue.start
+      : oldModelValue
 
     transitionName.value
       = dayjs(currentValue).isAfter(oldValue, 'date')

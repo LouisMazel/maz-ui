@@ -34,7 +34,9 @@ describe('given useBreakpoints', () => {
 
   describe('when called with default options', () => {
     it('then should return correct breakpoint states for small screen', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(500) } as any)
+      vi.mocked(useWindowSize).mockReturnValue({
+        width: ref(500),
+      } as any)
 
       const result = useBreakpoints({ breakpoints: mockBreakpoints })
 
@@ -44,7 +46,9 @@ describe('given useBreakpoints', () => {
     })
 
     it('then should return correct breakpoint states for medium screen', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(800) } as any)
+      vi.mocked(useWindowSize).mockReturnValue({
+        width: ref(800),
+      } as any)
 
       const result = useBreakpoints({ breakpoints: mockBreakpoints })
 
@@ -54,7 +58,9 @@ describe('given useBreakpoints', () => {
     })
 
     it('then should return correct breakpoint states for large screen', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(1100) } as any)
+      vi.mocked(useWindowSize).mockReturnValue({
+        width: ref(1100),
+      } as any)
 
       const result = useBreakpoints({ breakpoints: mockBreakpoints })
 
@@ -66,7 +72,9 @@ describe('given useBreakpoints', () => {
 
   describe('when called with custom medium and large breakpoints', () => {
     it('then should use the custom breakpoints for calculations', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(900) } as any)
+      vi.mocked(useWindowSize).mockReturnValue({
+        width: ref(900),
+      } as any)
 
       const result = useBreakpoints({
         breakpoints: mockBreakpoints,

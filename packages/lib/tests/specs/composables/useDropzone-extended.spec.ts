@@ -20,7 +20,10 @@ class MockDataTransfer {
         fileArray.push(file)
         this.files = fileArray as unknown as FileList
         this.items.length = fileArray.length
-        this.items[fileArray.length - 1] = { getAsFile: () => file, type: file.type }
+        this.items[fileArray.length - 1] = {
+          getAsFile: () => file,
+          type: file.type,
+        }
       },
       length: 0,
     }
@@ -114,7 +117,10 @@ describe('given useDropzone composable - extended', () => {
     it('then it should accept matching types', async () => {
       const onDrop = vi.fn()
       const [{ files }, app] = withSetup(() =>
-        useDropzone(mockElement, { onDrop, dataTypes: ['text/plain'] }),
+        useDropzone(mockElement, {
+          onDrop,
+          dataTypes: ['text/plain'],
+        }),
       )
 
       const file = new File(['test'], 'test.txt', { type: 'text/plain' })

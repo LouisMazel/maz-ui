@@ -90,7 +90,9 @@ describe('MazDropzone', () => {
       },
     })
 
-    const file = new File(['test'.repeat(1024 * 1024)], 'test.txt', { type: 'text/plain' })
+    const file = new File([
+      'test'.repeat(1024 * 1024),
+    ], 'test.txt', { type: 'text/plain' })
     const input = wrapper.find('input[type="file"]')
 
     Object.defineProperty(input.element, 'files', {
@@ -273,7 +275,9 @@ describe('MazDropzone', () => {
     describe('When a file with matching extension is added', () => {
       it('accepts the file', async () => {
         const wrapper = shallowMount(MazDropzone, {
-          props: { dataTypes: ['.txt'] },
+          props: {
+            dataTypes: ['.txt'],
+          },
         })
 
         const file = new File(['data'], 'file.txt', { type: 'text/plain' })
@@ -292,7 +296,9 @@ describe('MazDropzone', () => {
     describe('When a file with non-matching extension is added', () => {
       it('emits FILE_TYPE_NOT_ALLOWED error', async () => {
         const wrapper = shallowMount(MazDropzone, {
-          props: { dataTypes: ['.pdf'] },
+          props: {
+            dataTypes: ['.pdf'],
+          },
         })
 
         const file = new File(['data'], 'file.txt', { type: 'text/plain' })
@@ -314,7 +320,9 @@ describe('MazDropzone', () => {
     describe('When a file with matching MIME category is added', () => {
       it('accepts the file', async () => {
         const wrapper = shallowMount(MazDropzone, {
-          props: { dataTypes: ['text/*'] },
+          props: {
+            dataTypes: ['text/*'],
+          },
         })
 
         const file = new File(['data'], 'doc.txt', { type: 'text/plain' })
@@ -847,7 +855,12 @@ describe('MazDropzone', () => {
       it('renders the custom type labels', () => {
         const wrapper = shallowMount(MazDropzone, {
           props: {
-            dataTypes: ['image/*', 'video/*', 'audio/*', 'text/*'],
+            dataTypes: [
+              'image/*',
+              'video/*',
+              'audio/*',
+              'text/*',
+            ],
             translations: {
               types: {
                 image: 'Photos',
@@ -970,7 +983,9 @@ describe('MazDropzone', () => {
 
         const wrapper = shallowMount(MazDropzone, {
           props: {
-            'modelValue': [{ file, name: 'existing.txt' }],
+            'modelValue': [
+              { file, name: 'existing.txt' },
+            ],
             'onUpdate:modelValue': (val: any) => wrapper.setProps({ modelValue: val }),
           },
         })

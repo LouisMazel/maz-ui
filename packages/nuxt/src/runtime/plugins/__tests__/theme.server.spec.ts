@@ -119,7 +119,11 @@ describe('theme plugin (server)', () => {
 
   it('should use saved color mode from cookie on server', async () => {
     mockUseCookie.mockImplementation(((name: string) => {
-      return { value: name === 'maz-color-mode' ? 'dark' : undefined }
+      return {
+        value: name === 'maz-color-mode'
+          ? 'dark'
+          : undefined,
+      }
     }) as any)
     const context = createContext({ colorMode: 'auto', mode: 'both' })
     await (themePlugin as (...args: any[]) => any)(context)
@@ -183,9 +187,18 @@ describe('theme plugin (server)', () => {
   })
 
   it.each([
-    ['mode is light', { colorMode: 'auto', mode: 'light', darkModeStrategy: 'class' }],
-    ['darkModeStrategy is media', { colorMode: 'auto', mode: 'both', darkModeStrategy: 'media' }],
-    ['colorMode is dark', { colorMode: 'dark', mode: 'both', darkModeStrategy: 'class' }],
+    [
+      'mode is light',
+      { colorMode: 'auto', mode: 'light', darkModeStrategy: 'class' },
+    ],
+    [
+      'darkModeStrategy is media',
+      { colorMode: 'auto', mode: 'both', darkModeStrategy: 'media' },
+    ],
+    [
+      'colorMode is dark',
+      { colorMode: 'dark', mode: 'both', darkModeStrategy: 'class' },
+    ],
   ] as const)('does not inject blocking script when %s', async (_label, options) => {
     const context = createContext(options)
     await (themePlugin as (...args: any[]) => any)(context)
@@ -196,7 +209,12 @@ describe('theme plugin (server)', () => {
   })
 
   it('should use configured darkClass in blocking script', async () => {
-    const context = createContext({ colorMode: 'auto', mode: 'both', darkModeStrategy: 'class', darkClass: 'my-dark' })
+    const context = createContext({
+      colorMode: 'auto',
+      mode: 'both',
+      darkModeStrategy: 'class',
+      darkClass: 'my-dark',
+    })
     await (themePlugin as (...args: any[]) => any)(context)
     const scriptCall = mockUseHead.mock.calls.find(
       ([arg]: any[]) => arg.script,

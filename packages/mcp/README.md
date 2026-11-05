@@ -85,7 +85,9 @@ Options: `--docs <dir>` (or `MAZ_UI_DOCS_DIR`) to use another docs bundle, `--cw
 ```ts
 import { createMazUiMcpServer, loadKnowledge, reviewCode, setupAgents } from '@maz-ui/mcp'
 
-const knowledge = loadKnowledge({ cwd: process.cwd() })
+const knowledge = loadKnowledge({
+  cwd: process.cwd()
+})
 const findings = reviewCode(source, { knowledge, filename: 'Card.vue' })
 ```
 

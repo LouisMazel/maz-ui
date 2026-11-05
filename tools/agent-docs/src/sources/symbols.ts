@@ -23,7 +23,9 @@ const IMPORT_REGEX = /import\s+(type\s+)?([\w$]+)?\s*(?:,\s*)?(?:\{([^}]*)\})?\s
 const ECOSYSTEM_SPECIFIER = /^(?:maz-ui|@maz-ui\/[\w-]+)(?:\/|$)/
 
 export function extractImports(code: string): ImportStatement[] {
-  return [...code.matchAll(IMPORT_REGEX)].map((match) => {
+  return [
+    ...code.matchAll(IMPORT_REGEX),
+  ].map((match) => {
     const [, typeKeyword, defaultName, named, specifier] = match
     const names = (named ?? '')
       .split(',')
@@ -33,7 +35,9 @@ export function extractImports(code: string): ImportStatement[] {
     return {
       specifier,
       names,
-      ...(defaultName ? { defaultName } : {}),
+      ...(defaultName
+        ? { defaultName }
+        : {}),
       typeOnly: !!typeKeyword,
     }
   })
@@ -54,7 +58,9 @@ export function parseExportedNames(source: string, { runtimeOnly = false } = {})
   const declarationRegex = runtimeOnly
     ? /export\s+(?:declare\s+)?(?:async\s+)?(?:function\*?|const|let|class)\s+([\w$]+)/g
     : /export\s+(?:declare\s+)?(?:async\s+)?(?:function\*?|const|let|class|type|interface|enum)\s+([\w$]+)/g
-  const names = [...source.matchAll(declarationRegex)].map(match => match[1])
+  const names = [
+    ...source.matchAll(declarationRegex),
+  ].map(match => match[1])
 
   for (const match of source.matchAll(/export\s*\{([^}]+)\}/g)) {
     for (const entry of match[1].split(',')) {
@@ -69,7 +75,9 @@ export function parseExportedNames(source: string, { runtimeOnly = false } = {})
 }
 
 function readExports(file: string, runtimeOnly = true): string[] {
-  return existsSync(file) ? parseExportedNames(readFileSync(file, 'utf8'), { runtimeOnly }) : []
+  return existsSync(file)
+    ? parseExportedNames(readFileSync(file, 'utf8'), { runtimeOnly })
+    : []
 }
 
 function pageImports(page: SourcePage): ImportStatement[] {
@@ -87,7 +95,9 @@ function resolveUtilHelper(page: SourcePage, paths: SourcePaths): string | undef
       counts.set(match[1], (counts.get(match[1]) ?? 0) + 1)
   }
 
-  const fromSpecifier = [...counts.entries()].sort((a, b) => b[1] - a[1])[0]?.[0]
+  const fromSpecifier = [
+    ...counts.entries(),
+  ].sort((a, b) => b[1] - a[1])[0]?.[0]
 
   if (fromSpecifier && existsSync(join(paths.utilsHelpers, `${fromSpecifier}.ts`)))
     return fromSpecifier
@@ -101,7 +111,10 @@ function resolveUtilHelper(page: SourcePage, paths: SourcePaths): string | undef
       return name
   }
 
-  return [kebabToCamel(page.slug), kebabToPascal(page.slug)].find(candidate => existsSync(join(paths.utilsHelpers, `${candidate}.ts`)))
+  return [
+    kebabToCamel(page.slug),
+    kebabToPascal(page.slug),
+  ].find(candidate => existsSync(join(paths.utilsHelpers, `${candidate}.ts`)))
 }
 
 function genericImports(page: SourcePage): PageSymbols {
@@ -125,7 +138,10 @@ export function resolvePageSymbols(page: SourcePage, paths: SourcePaths): PageSy
       const name = kebabToCamel(page.slug)
 
       return existsSync(join(paths.libComposables, `${name}.ts`))
-        ? { symbols: [name], imports: [`import { ${name} } from 'maz-ui/composables/${name}'`] }
+        ? {
+            symbols: [name],
+            imports: [`import { ${name} } from 'maz-ui/composables/${name}'`],
+          }
         : genericImports(page)
     }
     case 'directive': {
@@ -133,7 +149,10 @@ export function resolvePageSymbols(page: SourcePage, paths: SourcePaths): PageSy
       const exists = existsSync(join(paths.libDirectives, `${name}.ts`)) || existsSync(join(paths.libDirectives, name))
 
       return exists
-        ? { symbols: [name], imports: [`import { ${name} } from 'maz-ui/directives/${name}'`] }
+        ? {
+            symbols: [name],
+            imports: [`import { ${name} } from 'maz-ui/directives/${name}'`],
+          }
         : genericImports(page)
     }
     case 'plugin': {
@@ -141,7 +160,10 @@ export function resolvePageSymbols(page: SourcePage, paths: SourcePaths): PageSy
       const plugin = exports.find(name => name.endsWith('Plugin'))
 
       return plugin
-        ? { symbols: [plugin], imports: [`import { ${plugin} } from 'maz-ui/plugins/${page.slug}'`] }
+        ? {
+            symbols: [plugin],
+            imports: [`import { ${plugin} } from 'maz-ui/plugins/${page.slug}'`],
+          }
         : genericImports(page)
     }
     case 'util': {
@@ -149,7 +171,10 @@ export function resolvePageSymbols(page: SourcePage, paths: SourcePaths): PageSy
         const name = kebabToPascal(page.slug)
 
         return existsSync(join(paths.utilsTsHelpers, `${name}.ts`))
-          ? { symbols: [name], imports: [`import type { ${name} } from '@maz-ui/utils/ts-helpers/${name}'`] }
+          ? {
+              symbols: [name],
+              imports: [`import type { ${name} } from '@maz-ui/utils/ts-helpers/${name}'`],
+            }
           : genericImports(page)
       }
 
@@ -169,10 +194,15 @@ export function resolvePageSymbols(page: SourcePage, paths: SourcePaths): PageSy
       const name = kebabToCamel(page.slug)
       const symbols = readExports(join(paths.root, 'packages/node/src', `${name}.ts`))
 
-      const main = symbols.includes(name) ? [name] : symbols
+      const main = symbols.includes(name)
+        ? [name]
+        : symbols
 
       return symbols.length > 0
-        ? { symbols, imports: [`import { ${main.join(', ')} } from '@maz-ui/node'`] }
+        ? {
+            symbols,
+            imports: [`import { ${main.join(', ')} } from '@maz-ui/node'`],
+          }
         : genericImports(page)
     }
     case 'guide':

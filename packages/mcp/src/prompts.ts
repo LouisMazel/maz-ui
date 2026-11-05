@@ -3,7 +3,14 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { z } from 'zod'
 
 function userMessage(text: string) {
-  return { messages: [{ role: 'user' as const, content: { type: 'text' as const, text } }] }
+  return {
+    messages: [
+      {
+        role: 'user' as const,
+        content: { type: 'text' as const, text },
+      },
+    ],
+  }
 }
 
 export function registerPrompts(server: McpServer): void {
@@ -42,8 +49,12 @@ export function registerPrompts(server: McpServer): void {
     },
   }, ({ framework }) => userMessage(`Set up maz-ui in this ${framework} project.
 
-1. Read the project (package.json, ${framework === 'nuxt' ? 'nuxt.config' : 'main.ts'}, CSS entry, Tailwind setup) to know what is already there.
-2. Call \`get_setup_guide({ framework: "${framework}" })\` and apply it: dependencies, ${framework === 'nuxt' ? 'the @maz-ui/nuxt module options' : 'the MazUi plugin with a theme preset and translations'}, CSS imports and Tailwind theme tokens.
+1. Read the project (package.json, ${framework === 'nuxt'
+  ? 'nuxt.config'
+  : 'main.ts'}, CSS entry, Tailwind setup) to know what is already there.
+2. Call \`get_setup_guide({ framework: "${framework}" })\` and apply it: dependencies, ${framework === 'nuxt'
+  ? 'the @maz-ui/nuxt module options'
+  : 'the MazUi plugin with a theme preset and translations'}, CSS imports and Tailwind theme tokens.
 3. Run \`npx @maz-ui/mcp init\` so every AI agent of the project gets the maz-ui rules and this MCP server.
 4. Verify that the app builds and that a MazBtn renders with the theme.`))
 }

@@ -11,13 +11,19 @@ import { z } from 'zod'
 function createCustomSchema(isAsync = false) {
   const validate = vi.fn((value: unknown): StandardSchemaV1.Result<string> => typeof value === 'string' && value.length >= 3
     ? { value }
-    : { issues: [{ message: 'Custom: min 3 characters' }] })
+    : {
+        issues: [
+          { message: 'Custom: min 3 characters' },
+        ],
+      })
 
   const schema: StandardSchemaV1<string, string> = {
     '~standard': {
       version: 1,
       vendor: 'custom',
-      validate: isAsync ? value => Promise.resolve(validate(value)) : validate,
+      validate: isAsync
+        ? value => Promise.resolve(validate(value))
+        : validate,
     },
   }
 
@@ -27,7 +33,9 @@ function createCustomSchema(isAsync = false) {
 describe('given getFieldValidationResult function with a Standard Schema', () => {
   describe('when the schema is a Zod schema and the value is valid', () => {
     it('then it returns a successful result', async () => {
-      const result = await getFieldValidationResult('name', { name: z.string().min(3) }, 'John')
+      const result = await getFieldValidationResult('name', {
+        name: z.string().min(3),
+      }, 'John')
 
       expect(result.isValid).toBe(true)
       expect(result.result.success).toBe(true)
@@ -37,7 +45,9 @@ describe('given getFieldValidationResult function with a Standard Schema', () =>
 
   describe('when the schema is a Zod schema and the value is invalid', () => {
     it('then it returns the Zod issues', async () => {
-      const result = await getFieldValidationResult('name', { name: z.string().min(3, 'Too short') }, 'Jo')
+      const result = await getFieldValidationResult('name', {
+        name: z.string().min(3, 'Too short'),
+      }, 'Jo')
 
       expect(result.isValid).toBe(false)
       expect(result.result.success).toBe(false)
@@ -47,7 +57,9 @@ describe('given getFieldValidationResult function with a Standard Schema', () =>
 
   describe('when the schema is a Zod schema with an async refinement', () => {
     it('then it resolves the async validation', async () => {
-      const schema = { name: z.string().refine(value => Promise.resolve(value !== 'taken'), 'Already taken') }
+      const schema = {
+        name: z.string().refine(value => Promise.resolve(value !== 'taken'), 'Already taken'),
+      }
 
       const invalid = await getFieldValidationResult('name', schema, 'taken')
       const valid = await getFieldValidationResult('name', schema, 'free')
@@ -95,7 +107,9 @@ describe('given getFieldValidationResult function with a Standard Schema', () =>
 
   describe('when the schema is a Valibot schema and the value is invalid', () => {
     it('then it keeps the native Valibot issues', async () => {
-      const result = await getFieldValidationResult('name', { name: pipe(string(), minLength(3, 'Too short')) }, 'Jo')
+      const result = await getFieldValidationResult('name', {
+        name: pipe(string(), minLength(3, 'Too short')),
+      }, 'Jo')
 
       expect(result.isValid).toBe(false)
       expect(result.result.issues?.[0]).toMatchObject({
@@ -113,12 +127,21 @@ describe('given getFieldValidationResult function with a Standard Schema', () =>
 describe('given setFieldValidationState function with a Zod schema', () => {
   describe('when the field value is invalid', () => {
     it('then it stores the Zod issues on the field state', async () => {
-      const fieldState = { validating: false, valid: false, error: false, errors: [], validated: false, blurred: false } as never as Parameters<typeof setFieldValidationState>[0]['fieldState']
+      const fieldState = {
+        validating: false,
+        valid: false,
+        error: false,
+        errors: [],
+        validated: false,
+        blurred: false,
+      } as never as Parameters<typeof setFieldValidationState>[0]['fieldState']
 
       await setFieldValidationState({
         name: 'name',
         fieldState,
-        schema: { name: z.string().min(3, 'Too short') },
+        schema: {
+          name: z.string().min(3, 'Too short'),
+        },
         payload: { name: 'Jo' },
       })
 
@@ -276,7 +299,9 @@ describe('given useFormField composable with a Zod schema', () => {
     it('then the field state follows the Zod validation', async () => {
       const [{ field }] = withSetup(() => {
         const form = useFormValidator({
-          schema: { email: z.email('Invalid email') },
+          schema: {
+            email: z.email('Invalid email'),
+          },
           defaultValues: { email: 'invalid' },
           options: { mode: 'aggressive' },
         })

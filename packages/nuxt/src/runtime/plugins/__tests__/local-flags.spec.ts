@@ -12,7 +12,11 @@ function runPlugin(defaults?: Record<string, unknown>) {
 
   ;(localFlagsPlugin as unknown as (nuxtApp: unknown) => void)({
     vueApp: { provide },
-    $config: { public: { mazUi: { defaults } } },
+    $config: {
+      public: {
+        mazUi: { defaults },
+      },
+    },
   })
 
   return provide.mock.calls[0] ?? []
@@ -31,9 +35,15 @@ describe('given the local flags plugin', () => {
 
   describe('when other defaults are set', () => {
     it('then it keeps them and a global flag source set in defaults wins', () => {
-      const [, value] = runPlugin({ MazBtn: { size: 'lg' }, global: { roundedSize: 'full', flagSrc: '/mine/{code}.svg' } })
+      const [, value] = runPlugin({
+        MazBtn: { size: 'lg' },
+        global: { roundedSize: 'full', flagSrc: '/mine/{code}.svg' },
+      })
 
-      expect(value).toEqual({ MazBtn: { size: 'lg' }, global: { roundedSize: 'full', flagSrc: '/mine/{code}.svg' } })
+      expect(value).toEqual({
+        MazBtn: { size: 'lg' },
+        global: { roundedSize: 'full', flagSrc: '/mine/{code}.svg' },
+      })
     })
   })
 })

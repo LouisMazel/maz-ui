@@ -197,11 +197,15 @@ describe('components/MazTextarea.vue', () => {
   describe('Given a global config provides a default size for MazTextarea', () => {
     describe('When the component mounts without a size prop', () => {
       it('Then it applies the per-component global size', () => {
-        const config = { MazTextarea: { size: 'sm' as const } }
+        const config = {
+          MazTextarea: { size: 'sm' as const },
+        }
 
         const globalWrapper = shallowMount(MazTextarea, {
           props: { modelValue: 'text' },
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         expect(globalWrapper.find('.m-textarea').classes()).toContain('maz:text-sm')
@@ -210,11 +214,15 @@ describe('components/MazTextarea.vue', () => {
 
     describe('When an instance size is passed alongside the global config', () => {
       it('Then the instance prop wins over the global default', () => {
-        const config = { MazTextarea: { size: 'sm' as const } }
+        const config = {
+          MazTextarea: { size: 'sm' as const },
+        }
 
         const globalWrapper = shallowMount(MazTextarea, {
           props: { modelValue: 'text', size: 'xl' as const },
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         expect(globalWrapper.find('.m-textarea').classes()).toContain('maz:text-xl')
@@ -451,11 +459,15 @@ describe('components/MazTextarea.vue', () => {
   describe('Given a global config provides defaults for MazTextarea', () => {
     describe('When the component mounts without a roundedSize prop', () => {
       it('Then it applies the per-component global roundedSize', () => {
-        const config = { MazTextarea: { roundedSize: 'full' as const } }
+        const config = {
+          MazTextarea: { roundedSize: 'full' as const },
+        }
 
         const globalWrapper = shallowMount(MazTextarea, {
           props: { modelValue: 'text' },
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         expect(globalWrapper.find('.m-textarea').classes()).toContain('maz:rounded-full')
@@ -464,11 +476,15 @@ describe('components/MazTextarea.vue', () => {
 
     describe('When the roundedSize comes from defaults.global', () => {
       it('Then it applies the global roundedSize', () => {
-        const config = { global: { roundedSize: 'lg' as const } }
+        const config = {
+          global: { roundedSize: 'lg' as const },
+        }
 
         const globalWrapper = shallowMount(MazTextarea, {
           props: { modelValue: 'text' },
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         expect(globalWrapper.find('.m-textarea').classes()).toContain('maz:rounded-lg')
@@ -477,11 +493,15 @@ describe('components/MazTextarea.vue', () => {
 
     describe('When an instance roundedSize is passed alongside the global config', () => {
       it('Then the instance prop wins over the global default', () => {
-        const config = { MazTextarea: { roundedSize: 'full' as const } }
+        const config = {
+          MazTextarea: { roundedSize: 'full' as const },
+        }
 
         const globalWrapper = shallowMount(MazTextarea, {
           props: { modelValue: 'text', roundedSize: 'sm' as const },
-          global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config } },
+          global: {
+            provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: config },
+          },
         })
 
         expect(globalWrapper.find('.m-textarea').classes()).toContain('maz:rounded-xs')

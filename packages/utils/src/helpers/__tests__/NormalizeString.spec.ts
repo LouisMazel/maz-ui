@@ -41,7 +41,9 @@ describe('normalizeString', () => {
   })
 
   it('should normalize the string with custom normalization forms based on options', () => {
-    const options = { customNormalizationForms: ['NFKC'] }
+    const options = {
+      customNormalizationForms: ['NFKC'],
+    }
     expect(normalizeString('ﬃ', options)).toBe('ffi')
   })
 

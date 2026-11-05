@@ -33,7 +33,10 @@ describe('prefetchSvgText', () => {
 
   beforeEach(() => {
     originalFetch = globalThis.fetch
-    globalThis.fetch = vi.fn().mockResolvedValue({ ok: true, text: () => Promise.resolve(SVG) }) as unknown as typeof globalThis.fetch
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      text: () => Promise.resolve(SVG),
+    }) as unknown as typeof globalThis.fetch
   })
 
   afterEach(() => {

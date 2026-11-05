@@ -70,10 +70,12 @@ function injectThemeCSS(config: Required<MazUiThemeOptions>) {
   } satisfies CSSOptions)
 
   useHead({
-    style: [{
-      innerHTML: css,
-      id: CSS_ID,
-    }],
+    style: [
+      {
+        innerHTML: css,
+        id: CSS_ID,
+      },
+    ],
   })
 }
 
@@ -94,18 +96,24 @@ function parseSavedPreset(raw: string | null | undefined): { base: string, activ
 
   const base = raw.slice(0, separatorIndex)
   const active = raw.slice(separatorIndex + 1)
-  return base && active ? { base, active } : null
+  return base && active
+    ? { base, active }
+    : null
 }
 
 async function resolvePreset(
   options: { preset?: ThemePreset | ThemePresetName } | undefined,
   persistPreset: boolean,
 ): Promise<{ preset: ThemePreset, baseName: string }> {
-  const presetObject = options?.preset && typeof options.preset !== 'string' ? options.preset : undefined
+  const presetObject = options?.preset && typeof options.preset !== 'string'
+    ? options.preset
+    : undefined
 
   // Read the cookie before any `await`: past it, this helper has lost the Nuxt
   // app context and `useCookie` throws (NUXT_E1001).
-  const saved = persistPreset ? parseSavedPreset(useCookie<string | null>('maz-preset').value) : null
+  const saved = persistPreset
+    ? parseSavedPreset(useCookie<string | null>('maz-preset').value)
+    : null
 
   // The configured preset IS the app identity (the "base").
   const basePreset = presetObject ?? await getPreset(options?.preset)
@@ -181,17 +189,27 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
     injectThemeCSS(config)
 
     useHead({
-      meta: [{
-        name: 'color-scheme',
-        content: resolveColorSchemeContent(config.mode, config.colorMode),
-        id: 'maz-color-scheme',
-      }],
+      meta: [
+        {
+          name: 'color-scheme',
+          content: resolveColorSchemeContent(config.mode, config.colorMode),
+          id: 'maz-color-scheme',
+        },
+      ],
     })
 
     if (config.colorMode === 'auto' && config.mode === 'both' && config.darkModeStrategy === 'class') {
       useHead({
-        script: [{ innerHTML: getColorModeBlockingScript(config), tagPosition: 'head', id: 'maz-color-mode-blocking' }],
-        meta: [{ 'http-equiv': 'Accept-CH', 'content': 'Sec-CH-Prefers-Color-Scheme', 'id': 'maz-color-http-accept-ch' }],
+        script: [
+          {
+            innerHTML: getColorModeBlockingScript(config),
+            tagPosition: 'head',
+            id: 'maz-color-mode-blocking',
+          },
+        ],
+        meta: [
+          { 'http-equiv': 'Accept-CH', 'content': 'Sec-CH-Prefers-Color-Scheme', 'id': 'maz-color-http-accept-ch' },
+        ],
       })
     }
   }

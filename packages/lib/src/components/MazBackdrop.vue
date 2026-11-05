@@ -199,11 +199,15 @@ function getAllFocusableElements(selector: string) {
   const modal = document.querySelector(selector)
   const focusableElements = 'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], input[type="email"], input[type="password"], input[type="url"], input[type="tel"], input[type="number"], input[type="search"], input[type="date"], input[type="time"], select, [tabindex]:not([tabindex="-1"]), [contenteditable="true"]'
 
-  const focusableElementsArray = modal && [...modal.querySelectorAll<HTMLElement>(focusableElements)]
+  const focusableElementsArray = modal && [
+    ...modal.querySelectorAll<HTMLElement>(focusableElements),
+  ]
 
   const visibleFocusableElements = focusableElementsArray?.filter((el) => {
     const style = globalThis.getComputedStyle(el)
-    const isDisabled = 'disabled' in el ? (el as HTMLInputElement | HTMLButtonElement | HTMLSelectElement | HTMLTextAreaElement).disabled : false
+    const isDisabled = 'disabled' in el
+      ? (el as HTMLInputElement | HTMLButtonElement | HTMLSelectElement | HTMLTextAreaElement).disabled
+      : false
     return style.display !== 'none' && style.visibility !== 'hidden' && !isDisabled && el.tabIndex !== -1
   })
 
@@ -212,7 +216,9 @@ function getAllFocusableElements(selector: string) {
 
 function findFirstFocusableElement(selector: string) {
   const focusableElements = getAllFocusableElements(selector)
-  return focusableElements.length > 0 ? focusableElements[0] : null
+  return focusableElements.length > 0
+    ? focusableElements[0]
+    : null
 }
 
 function trapFocus(event: KeyboardEvent) {

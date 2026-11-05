@@ -79,7 +79,9 @@ import Components from 'unplugin-vue-components/vite'
 export default defineConfig({
   plugins: [
     Components({
-      resolvers: [MazIconsResolver()],
+      resolvers: [
+        MazIconsResolver()
+      ],
     }),
   ],
 })

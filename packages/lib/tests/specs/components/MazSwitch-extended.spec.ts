@@ -279,7 +279,10 @@ describe('MazSwitch extended branch coverage', () => {
 
     it('applies custom style to root element', () => {
       const wrapper = mount(MazSwitch, {
-        props: { modelValue: false, style: { margin: '8px' } },
+        props: {
+          modelValue: false,
+          style: { margin: '8px' },
+        },
       })
       expect(wrapper.attributes('style')).toContain('margin: 8px')
     })

@@ -74,7 +74,9 @@ export function loadLocale(targetLocale: string): Promise<void> {
         if (typeof userLoader === 'function') {
           try {
             const userMessages = await userLoader()
-            localeUserMessages = 'default' in userMessages ? userMessages.default : userMessages
+            localeUserMessages = 'default' in userMessages
+              ? userMessages.default
+              : userMessages
           }
           catch (error) {
             console.error(`Failed to load user translations for locale "${targetLocale}":`, error)

@@ -61,7 +61,11 @@ describe('given stripInternalPrefix', () => {
 describe('given resolveIncludes', () => {
   describe('when a line is an include directive', () => {
     it('then replaces it with the included content', () => {
-      const context = createContext({ resolveInclude: path => (path === './a.md' ? 'Included A' : undefined) })
+      const context = createContext({
+        resolveInclude: path => (path === './a.md'
+          ? 'Included A'
+          : undefined),
+      })
 
       expect(resolveIncludes('Before\n<!--@include: ./a.md-->\nAfter', context)).toBe('Before\nIncluded A\nAfter')
     })
@@ -73,7 +77,9 @@ describe('given resolveIncludes', () => {
         'a.md': 'A\n<!--@include: b.md-->',
         'b.md': 'B',
       }
-      const context = createContext({ resolveInclude: path => files[path] })
+      const context = createContext({
+        resolveInclude: path => files[path],
+      })
 
       expect(resolveIncludes('<!-- @include: a.md -->', context)).toBe('A\nB')
     })
@@ -270,7 +276,15 @@ describe('given cleanMarkdown', () => {
 
   describe('when the page uses a code group', () => {
     it('then keeps the fences without the container markers', () => {
-      const source = ['::: code-group', '', '```bash [pnpm]', 'pnpm add maz-ui', '```', '', ':::'].join('\n')
+      const source = [
+        '::: code-group',
+        '',
+        '```bash [pnpm]',
+        'pnpm add maz-ui',
+        '```',
+        '',
+        ':::',
+      ].join('\n')
 
       expect(cleanMarkdown(source, createContext())).toBe('```bash [pnpm]\npnpm add maz-ui\n```\n')
     })
@@ -278,7 +292,11 @@ describe('given cleanMarkdown', () => {
 
   describe('when the page contains links', () => {
     it('then rewrites resolved links and keeps the label of the others', () => {
-      const context = createContext({ resolveLink: href => (href === './maz-icon.md' ? '../components/maz-icon.md' : undefined) })
+      const context = createContext({
+        resolveLink: href => (href === './maz-icon.md'
+          ? '../components/maz-icon.md'
+          : undefined),
+      })
       const result = cleanMarkdown('See [MazIcon](./maz-icon.md "title") and [Removed](./removed.md).', context)
 
       expect(result).toBe('See [MazIcon](../components/maz-icon.md) and Removed.\n')
@@ -287,7 +305,11 @@ describe('given cleanMarkdown', () => {
 
   describe('when a link label contains inline code', () => {
     it('then rewrites the link and keeps the code label', () => {
-      const context = createContext({ resolveLink: href => (href === '../ecosystem/icons/' ? '../ecosystem/icons/index.md' : undefined) })
+      const context = createContext({
+        resolveLink: href => (href === '../ecosystem/icons/'
+          ? '../ecosystem/icons/index.md'
+          : undefined),
+      })
       const result = cleanMarkdown('Use [`@maz-ui/icons`](../ecosystem/icons/) or [`gone`](./gone.md)', context)
 
       expect(result).toBe('Use [`@maz-ui/icons`](../ecosystem/icons/index.md) or `gone`\n')
@@ -333,7 +355,9 @@ describe('given cleanMarkdown', () => {
       ].join('\n')
       const titles: Record<string, string> = { '/guide/vue': 'Vue guide', '/ecosystem/nuxt': 'Nuxt module' }
       const context = createContext({
-        resolveLink: href => (href === '/unknown' ? undefined : `.${href}.md`),
+        resolveLink: href => (href === '/unknown'
+          ? undefined
+          : `.${href}.md`),
         linkTitle: href => titles[href],
       })
 
@@ -349,7 +373,9 @@ describe('given cleanMarkdown', () => {
 
   describe('when a dropped html block has links but no title resolver', () => {
     it('then drops the links', () => {
-      const context = createContext({ resolveLink: href => href })
+      const context = createContext({
+        resolveLink: href => href,
+      })
 
       expect(cleanMarkdown('<div><a href="/guide/vue">Vue</a></div>\n\nText', context)).toBe('Text\n')
     })

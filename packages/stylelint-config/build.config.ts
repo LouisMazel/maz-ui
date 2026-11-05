@@ -12,5 +12,11 @@ export default defineBuildConfig({
   rollup: {
     emitCJS: false,
   },
-  externals: [...Object.keys(dependencies), ...Object.keys(devDependencies), 'node:fs', 'node:path', 'node:module'],
+  externals: [
+    ...Object.keys(dependencies),
+    ...Object.keys(devDependencies),
+    'node:fs',
+    'node:path',
+    'node:module',
+  ],
 })

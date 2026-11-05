@@ -123,7 +123,9 @@ function readPersistedOpen(): boolean | null {
   }
 
   const raw = getCookie(persistKey, cookieHeader)
-  return raw === null ? null : raw === 'true'
+  return raw === null
+    ? null
+    : raw === 'true'
 }
 
 const persistedInitial = readPersistedOpen()

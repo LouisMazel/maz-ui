@@ -62,7 +62,9 @@ export function interpolate(message: string, variables?: Record<string, unknown>
     return message
 
   return message.replace(/\{(\w+)\}/g, (match, key) => {
-    return variables[key] !== undefined ? String(variables[key]) : match
+    return variables[key] !== undefined
+      ? String(variables[key])
+      : match
   })
 }
 

@@ -81,7 +81,10 @@ function resolveVue(option: MazESLintOptions['vue']): { value: boolean, source: 
     return { value: true, source: 'explicit' }
   if (option === false)
     return { value: false, source: 'explicit' }
-  return { value: hasDependency(getPackageJson(), 'vue', 'nuxt'), source: 'auto-detected' }
+  return {
+    value: hasDependency(getPackageJson(), 'vue', 'nuxt'),
+    source: 'auto-detected',
+  }
 }
 
 function resolveTailwindcss(
@@ -91,11 +94,22 @@ function resolveTailwindcss(
     return { value: false, source: 'default' }
   if (option === false)
     return { value: false, source: 'explicit' }
-  if (option === true)
-    return { value: { preset: 'recommended', settings: {} }, source: 'explicit' }
-  if (typeof option === 'string')
-    return { value: { preset: option, settings: {} }, source: 'explicit' }
-  return { value: { preset: option.preset ?? 'recommended', settings: option }, source: 'explicit' }
+  if (option === true) {
+    return {
+      value: { preset: 'recommended', settings: {} },
+      source: 'explicit',
+    }
+  }
+  if (typeof option === 'string') {
+    return {
+      value: { preset: option, settings: {} },
+      source: 'explicit',
+    }
+  }
+  return {
+    value: { preset: option.preset ?? 'recommended', settings: option },
+    source: 'explicit',
+  }
 }
 
 function resolveOptions(opts: MazESLintOptions, env: 'development' | 'production'): Resolution {
@@ -124,15 +138,32 @@ function formatSourceTag(source: Source): string {
 }
 
 function formatResolutionBox(r: Resolution): string {
-  const tailwindLabel = r.tailwindcss === false ? 'off' : r.tailwindcss.preset
+  const tailwindLabel = r.tailwindcss === false
+    ? 'off'
+    : r.tailwindcss.preset
   const rows: Array<[string, string]> = [
-    ['typescript', String(r.typescript)],
+    [
+      'typescript',
+      String(r.typescript),
+    ],
     ['vue', `${r.vue}${formatSourceTag(r.vueSource)}`],
-    ['vueAccessibility', String(r.vueAccessibility)],
-    ['sonarjs', String(r.sonarjs)],
+    [
+      'vueAccessibility',
+      String(r.vueAccessibility),
+    ],
+    [
+      'sonarjs',
+      String(r.sonarjs),
+    ],
     ['tailwindcss', `${tailwindLabel}${formatSourceTag(r.tailwindcssSource)}`],
-    ['formatters', String(r.formatters)],
-    ['unicorn', String(r.unicorn)],
+    [
+      'formatters',
+      String(r.formatters),
+    ],
+    [
+      'unicorn',
+      String(r.unicorn),
+    ],
     ['env', r.env],
   ]
   const labelWidth = Math.max(...rows.map(([k]) => k.length))
@@ -165,7 +196,14 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
   const defaultLogLevel = process.stdout.isTTY ? 'default' : 'silent'
   log.setLevel(options.logLevel ?? defaultLogLevel)
 
-  const opts = { ...defaultOptions, ...options, ignores: [...GLOBAL_IGNORES, ...(options.ignores || [])] }
+  const opts = {
+    ...defaultOptions,
+    ...options,
+    ignores: [
+      ...GLOBAL_IGNORES,
+      ...(options.ignores || []),
+    ],
+  }
   const env = (opts.env || process.env.NODE_ENV || 'production') as 'development' | 'production'
   const resolved = resolveOptions(opts, env)
 
@@ -203,7 +241,12 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
 
     // Special rules for test files
     additionalConfigs.push({
-      files: ['**/*.spec.ts', '**/*.test.ts', '**/*.spec.js', '**/*.test.js'],
+      files: [
+        '**/*.spec.ts',
+        '**/*.test.ts',
+        '**/*.spec.js',
+        '**/*.test.js',
+      ],
       rules: sonarjsTestRules,
     })
     log.debug(`${TAG} SonarJS: applied recommended preset + ${Object.keys(sonarjsRules).length} extra rules + test-file relaxations`)
@@ -219,7 +262,9 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
 
   if (resolved.vueAccessibility) {
     const vueA11yConfigs = vueA11y.configs['flat/recommended']
-    const configsArray = Array.isArray(vueA11yConfigs) ? vueA11yConfigs : [vueA11yConfigs]
+    const configsArray = Array.isArray(vueA11yConfigs)
+      ? vueA11yConfigs
+      : [vueA11yConfigs]
 
     /**
      * Should fix the issue with the globals.
@@ -252,12 +297,19 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
     const blocks = tailwindcssConfigs(resolved.tailwindcss.preset, resolved.tailwindcss.settings) as MazESLintUserConfig[]
     additionalConfigs.push(...blocks)
     const settingKeys = Object.keys(resolved.tailwindcss.settings).filter(k => k !== 'preset')
-    const settingsHint = settingKeys.length > 0 ? ` with settings (${settingKeys.join(', ')})` : ''
+    const settingsHint = settingKeys.length > 0
+      ? ` with settings (${settingKeys.join(', ')})`
+      : ''
     log.debug(`${TAG} Tailwind: loaded "${resolved.tailwindcss.preset}" preset${settingsHint}`)
   }
 
   additionalConfigs.push({
-    files: ['**/*.spec.ts', '**/*.test.ts', '**/*.spec.js', '**/*.test.js'],
+    files: [
+      '**/*.spec.ts',
+      '**/*.test.ts',
+      '**/*.spec.js',
+      '**/*.test.js',
+    ],
     rules: testRules,
   })
   log.debug(`${TAG} Tests: relaxed rules applied to *.spec.{ts,js} / *.test.{ts,js}`)
@@ -286,7 +338,9 @@ export function defineConfig(options: MazESLintOptions = {}, ...userConfigs: Maz
     ignores: (() => {
       return opts.ignores
     }) as any,
-  }, ...additionalConfigs, ...userConfigs, ...(userRulesBlock ? [userRulesBlock] : []), markdown) as MazESLintConfig
+  }, ...additionalConfigs, ...userConfigs, ...(userRulesBlock
+    ? [userRulesBlock]
+    : []), markdown) as MazESLintConfig
 }
 
 // Export individual configs for advanced usage

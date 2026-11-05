@@ -30,7 +30,9 @@ function watchColorSchemeFromMedia(themeState: Ref<ThemeState>): () => void {
   mediaQuery.addEventListener('change', onChange)
 
   const stopWatch = watch(() => themeState.value.colorMode, (colorMode) => {
-    const isDark = colorMode === 'auto' ? getSystemColorMode() === 'dark' : colorMode === 'dark'
+    const isDark = colorMode === 'auto'
+      ? getSystemColorMode() === 'dark'
+      : colorMode === 'dark'
     updateDocumentClass(colorMode, themeState.value)
     injectColorSchemeMeta(resolveColorSchemeContent(themeState.value.mode, colorMode))
     if (colorMode === 'auto')
@@ -52,7 +54,9 @@ function watchMutationClassOnHtmlElement(themeState: Ref<ThemeState>): () => voi
     () => {
       if (isServer() || !themeState.value)
         return
-      const active = document.documentElement.classList.contains(themeState.value.darkClass) ? 'dark' : 'light'
+      const active = document.documentElement.classList.contains(themeState.value.darkClass)
+        ? 'dark'
+        : 'light'
       themeState.value.isDark = active === 'dark'
       if (themeState.value.colorMode !== active && themeState.value.colorMode !== 'auto') {
         themeState.value.colorMode = active
@@ -86,7 +90,9 @@ function resolveConfig(options: MazUiThemeOptions): ResolvedConfig {
   return {
     ...defaultOptions,
     ...options,
-    colorMode: getSavedColorMode() ?? options.colorMode ?? (options.mode === 'dark' ? 'dark' : 'auto'),
+    colorMode: getSavedColorMode() ?? options.colorMode ?? (options.mode === 'dark'
+      ? 'dark'
+      : 'auto'),
   } satisfies ResolvedConfig
 }
 
@@ -180,7 +186,9 @@ const DEFAULT_PRESET_NAME = 'maz-ui'
  * A string preset is its own identity; an absent one falls back to the default.
  */
 function getConfiguredPresetName(preset: MazUiThemeOptions['preset']): string {
-  return typeof preset === 'string' ? preset : DEFAULT_PRESET_NAME
+  return typeof preset === 'string'
+    ? preset
+    : DEFAULT_PRESET_NAME
 }
 
 /**
@@ -195,12 +203,18 @@ export function setupTheme(options: MazUiThemeOptions): SetupThemeReturn {
   const config = resolveConfig(options)
   const themeState = createThemeState(options, config)
   injectColorSchemeMeta(resolveColorSchemeContent(themeState.value.mode, themeState.value.colorMode))
-  const saved = config.persistPreset ? getSavedPreset() : null
-  const presetObject = config.preset && typeof config.preset !== 'string' ? config.preset : null
+  const saved = config.persistPreset
+    ? getSavedPreset()
+    : null
+  const presetObject = config.preset && typeof config.preset !== 'string'
+    ? config.preset
+    : null
 
   // Fast path — no FOUC. Buildtime also flows here (CSS is pre-built).
   if (presetObject || config.strategy === 'buildtime') {
-    const baseName = presetObject ? presetObject.name : getConfiguredPresetName(config.preset)
+    const baseName = presetObject
+      ? presetObject.name
+      : getConfiguredPresetName(config.preset)
     const setup = finalizeTheme(themeState, presetObject ?? config.preset, config, baseName)
 
     // Honor a persisted runtime switch only when it belongs to THIS app's
@@ -237,7 +251,10 @@ export function setupTheme(options: MazUiThemeOptions): SetupThemeReturn {
   resolve
     .catch((error): { preset?: ThemePreset, baseName: string } => {
       console.error('[@maz-ui/themes] Failed to resolve preset', error)
-      return { preset: undefined, baseName: getConfiguredPresetName(config.preset) }
+      return {
+        preset: undefined,
+        baseName: getConfiguredPresetName(config.preset),
+      }
     })
     .then(({ preset, baseName }) => finalizeTheme(themeState, preset, config, baseName))
 

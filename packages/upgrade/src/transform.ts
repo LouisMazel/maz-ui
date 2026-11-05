@@ -47,7 +47,9 @@ function isRootTypesOnly(specifiers: string): boolean {
 
 function maskRootTypeImports(content: string): string {
   return content.replace(ROOT_NAMED_STATEMENT, (statement, _kind, _type, specifiers, quote) =>
-    isRootTypesOnly(specifiers) ? statement.replace(`${quote}maz-ui${quote}`, `${quote}${ROOT_TYPES_PLACEHOLDER}${quote}`) : statement)
+    isRootTypesOnly(specifiers)
+      ? statement.replace(`${quote}maz-ui${quote}`, `${quote}${ROOT_TYPES_PLACEHOLDER}${quote}`)
+      : statement)
 }
 
 export function transformImports(content: string): string {
@@ -113,7 +115,9 @@ const VARIANT_LR = /(\svariant\s*=\s*['"])(left|right)(['"])/g
 const COLOR_BG = /(\scolor\s*=\s*['"])background(['"])/g
 
 function flipDirection(value: string): string {
-  return value === 'left' ? 'start' : 'end'
+  return value === 'left'
+    ? 'start'
+    : 'end'
 }
 
 // --- 2a. Internal class names -----------------------------------------------
@@ -206,7 +210,9 @@ export function transformProps(content: string): string {
 
   out = out.replace(MAZ_OPEN_TAG, tag => tag
     .replace(ICON_ATTR, (_, prefix, dir) => `${prefix}${flipDirection(dir)}-icon`)
-    .replace(ICON_ATTR_CAMEL, (_, prefix, dir) => `${prefix}${dir === 'left' ? 'start' : 'end'}Icon`)
+    .replace(ICON_ATTR_CAMEL, (_, prefix, dir) => `${prefix}${dir === 'left'
+      ? 'start'
+      : 'end'}Icon`)
     .replace(VARIANT_LR, (_, p, dir, s) => `${p}${flipDirection(dir)}${s}`)
     .replace(COLOR_BG, (_, p, s) => `${p}surface${s}`))
 
@@ -296,13 +302,17 @@ function parseRem(value: string): number | undefined {
 
   const number = value.slice(0, -'rem'.length)
 
-  return /^[\d.]+$/.test(number) && Number.isFinite(Number(number)) ? Number(number) : undefined
+  return /^[\d.]+$/.test(number) && Number.isFinite(Number(number))
+    ? Number(number)
+    : undefined
 }
 
 export function transformBadgeSize(content: string): string {
   return content.replace(MAZ_BADGE_OPEN_TAG, tag => tag.replace(BADGE_STATIC_SIZE, (match, prefix, quote, value) => {
     const rem = parseRem(value.trim())
-    return rem === undefined ? match : `${prefix}${getClosestBadgeSize(rem)}${quote}`
+    return rem === undefined
+      ? match
+      : `${prefix}${getClosestBadgeSize(rem)}${quote}`
   }))
 }
 
@@ -387,7 +397,9 @@ function toPercentage(alpha: string): string {
 
 function collapseHsl(inner: string): string | undefined {
   const slashIndex = inner.indexOf('/')
-  const color = (slashIndex === -1 ? inner : inner.slice(0, slashIndex)).trim()
+  const color = (slashIndex === -1
+    ? inner
+    : inner.slice(0, slashIndex)).trim()
 
   if (!MAZ_VAR.test(color))
     return undefined
@@ -409,7 +421,9 @@ export function transformHslVar(content: string): string {
 
     const innerStart = start + match[0].length
     const end = findClosingParen(content, innerStart)
-    const collapsed = end === -1 ? undefined : collapseHsl(content.slice(innerStart, end))
+    const collapsed = end === -1
+      ? undefined
+      : collapseHsl(content.slice(innerStart, end))
 
     if (collapsed === undefined)
       continue
@@ -452,7 +466,9 @@ export function referencesMazUi(content: string): boolean {
 export function transformConfig(content: string): string {
   const out = content.replace(NUXT_INJECT_MAIN_CSS, 'injectCss')
 
-  return (referencesMazUi(out) ? out.replace(STRATEGY_HYBRID, (_, p, s) => `${p}runtime${s}`) : out)
+  return (referencesMazUi(out)
+    ? out.replace(STRATEGY_HYBRID, (_, p, s) => `${p}runtime${s}`)
+    : out)
     .replace(DEPRECATED_OPTION_LINE, '')
     .replace(DEPRECATED_OPTION_INLINE_AFTER, '')
     .replace(DEPRECATED_OPTION_INLINE_FIRST, (_, open) => open)
@@ -520,8 +536,16 @@ function shouldBump(name: string, range: string): boolean {
     return false
   if (PROTECTED_PREFIX.test(range))
     return false
-  if (['latest', 'next', 'beta', 'alpha', 'canary', '*'].includes(range))
+  if ([
+    'latest',
+    'next',
+    'beta',
+    'alpha',
+    'canary',
+    '*',
+  ].includes(range)) {
     return false
+  }
   return range !== TARGET_VERSION
 }
 
@@ -627,7 +651,9 @@ export function transformDeps(content: string, options: TransformDepsOptions = {
     return content
 
   const indent = detectIndent(content)
-  const trailingNewline = content.endsWith('\n') ? '\n' : ''
+  const trailingNewline = content.endsWith('\n')
+    ? '\n'
+    : ''
   return JSON.stringify(pkg, null, indent) + trailingNewline
 }
 
@@ -635,7 +661,13 @@ export function transformDeps(content: string, options: TransformDepsOptions = {
 
 export type TransformGroup = 'imports' | 'props' | 'css' | 'config' | 'deps'
 
-export const ALL_GROUPS: readonly TransformGroup[] = ['imports', 'props', 'css', 'config', 'deps']
+export const ALL_GROUPS: readonly TransformGroup[] = [
+  'imports',
+  'props',
+  'css',
+  'config',
+  'deps',
+]
 
 export interface TransformOptions {
   groups?: readonly TransformGroup[]
@@ -665,14 +697,46 @@ type Transform = (content: string, options: TransformOptions) => string
  * Transforms applied to each kind of file, by group, in order
  */
 const PIPELINE: { group: TransformGroup, kinds: readonly FileKind[], transform: Transform }[] = [
-  { group: 'imports', kinds: ['vue', 'script'], transform: transformImports },
-  { group: 'imports', kinds: ['stylesheet'], transform: transformStyleImports },
-  { group: 'props', kinds: ['vue'], transform: transformProps },
-  { group: 'css', kinds: ['stylesheet'], transform: transformClassNames },
-  { group: 'css', kinds: ['vue', 'stylesheet', 'script'], transform: transformCssVars },
-  { group: 'css', kinds: ['vue', 'stylesheet', 'script'], transform: transformHslVar },
-  { group: 'config', kinds: ['vue', 'script'], transform: transformConfig },
-  { group: 'config', kinds: ['vue', 'script'], transform: transformPresetColors },
+  {
+    group: 'imports',
+    kinds: ['vue', 'script'],
+    transform: transformImports,
+  },
+  {
+    group: 'imports',
+    kinds: ['stylesheet'],
+    transform: transformStyleImports,
+  },
+  {
+    group: 'props',
+    kinds: ['vue'],
+    transform: transformProps,
+  },
+  {
+    group: 'css',
+    kinds: ['stylesheet'],
+    transform: transformClassNames,
+  },
+  {
+    group: 'css',
+    kinds: ['vue', 'stylesheet', 'script'],
+    transform: transformCssVars,
+  },
+  {
+    group: 'css',
+    kinds: ['vue', 'stylesheet', 'script'],
+    transform: transformHslVar,
+  },
+  {
+    group: 'config',
+    kinds: ['vue', 'script'],
+    transform: transformConfig,
+  },
+  {
+    group: 'config',
+    kinds: ['vue', 'script'],
+    transform: transformPresetColors,
+  },
   {
     group: 'deps',
     kinds: ['packageJson'],

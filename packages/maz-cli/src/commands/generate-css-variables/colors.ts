@@ -38,7 +38,9 @@ export function getContrastColor(color: tinycolor.Instance) {
 
   const threshold = 0.52
 
-  const contrast = luma < threshold ? 'white' : 'black'
+  const contrast = luma < threshold
+    ? 'white'
+    : 'black'
 
   return tinycolor(contrast).toHslString()
 }

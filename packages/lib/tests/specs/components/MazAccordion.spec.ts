@@ -67,10 +67,15 @@ describe('mazAccordion', () => {
     const steps = wrapper.findAllComponents(MazCardSpotlight)
 
     await steps[0].find('button').trigger('click')
-    expect(wrapper.emitted('update:model-value')).toEqual([[1]])
+    expect(wrapper.emitted('update:model-value')).toEqual([
+      [1],
+    ])
 
     await steps[1].find('button').trigger('click')
-    expect(wrapper.emitted('update:model-value')).toEqual([[1], [2]])
+    expect(wrapper.emitted('update:model-value')).toEqual([
+      [1],
+      [2],
+    ])
   })
 
   it('closes the step when the same step is selected again', async () => {
@@ -85,10 +90,15 @@ describe('mazAccordion', () => {
     const step = wrapper.findComponent(MazCardSpotlight)
 
     await step.find('button').trigger('click')
-    expect(wrapper.emitted('update:model-value')).toEqual([[1]])
+    expect(wrapper.emitted('update:model-value')).toEqual([
+      [1],
+    ])
 
     await step.find('button').trigger('click')
-    expect(wrapper.emitted('update:model-value')).toEqual([[1], [0]])
+    expect(wrapper.emitted('update:model-value')).toEqual([
+      [1],
+      [0],
+    ])
   })
 
   it('updates the icon rotation class when a step is selected', async () => {

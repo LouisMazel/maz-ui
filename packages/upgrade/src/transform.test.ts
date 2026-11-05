@@ -915,20 +915,28 @@ export default {
   describe('Given a package.json file', () => {
     describe('When transforming with the deps group', () => {
       it('bumps the maz-ui deps to ^5.0.0', () => {
-        const input = JSON.stringify({ dependencies: { 'maz-ui': '^4.9.3' } }, null, 2)
+        const input = JSON.stringify({
+          dependencies: { 'maz-ui': '^4.9.3' },
+        }, null, 2)
         const out = JSON.parse(transformFile('package.json', input))
         expect(out.dependencies['maz-ui']).toBe('^5.0.0')
       })
 
       it('targets nested package.json paths too', () => {
-        const input = JSON.stringify({ dependencies: { 'maz-ui': '^4.9.3' } }, null, 2)
+        const input = JSON.stringify({
+          dependencies: { 'maz-ui': '^4.9.3' },
+        }, null, 2)
         const out = JSON.parse(transformFile('apps/web/package.json', input))
         expect(out.dependencies['maz-ui']).toBe('^5.0.0')
       })
 
       it('skips the deps transform when filtered out', () => {
-        const input = JSON.stringify({ dependencies: { 'maz-ui': '^4.9.3' } }, null, 2)
-        expect(transformFile('package.json', input, { groups: ['imports'] })).toBe(input)
+        const input = JSON.stringify({
+          dependencies: { 'maz-ui': '^4.9.3' },
+        }, null, 2)
+        expect(transformFile('package.json', input, {
+          groups: ['imports'],
+        })).toBe(input)
       })
     })
   })
@@ -936,7 +944,9 @@ export default {
   describe('Given a package.json with addUtilsDep=true', () => {
     describe('When transforming', () => {
       it('bumps maz-ui and adds @maz-ui/utils', () => {
-        const input = JSON.stringify({ dependencies: { 'maz-ui': '^4.9.3' } }, null, 2)
+        const input = JSON.stringify({
+          dependencies: { 'maz-ui': '^4.9.3' },
+        }, null, 2)
         const out = JSON.parse(transformFile('package.json', input, { addUtilsDep: true }))
         expect(out.dependencies).toStrictEqual({
           'maz-ui': '^5.0.0',
@@ -963,7 +973,9 @@ import 'maz-ui/style.css'
 <template>
   <MazBtn left-icon="x" />
 </template>`
-        expect(transformFile('foo.vue', input, { groups: ['imports'] })).toBe(expected)
+        expect(transformFile('foo.vue', input, {
+          groups: ['imports'],
+        })).toBe(expected)
       })
     })
   })
@@ -1348,7 +1360,9 @@ describe('transformDeps with the v5 package changes', () => {
   describe('Given @maz-ui/cli, unpublished in v5', () => {
     describe('When transforming', () => {
       it('keeps its range', () => {
-        const input = `${JSON.stringify({ devDependencies: { '@maz-ui/cli': '^4.7.3', 'maz-ui': '^4.9.0' } }, null, 2)}\n`
+        const input = `${JSON.stringify({
+          devDependencies: { '@maz-ui/cli': '^4.7.3', 'maz-ui': '^4.9.0' },
+        }, null, 2)}\n`
         const output = JSON.parse(transformDeps(input))
 
         expect(output.devDependencies).toEqual({ '@maz-ui/cli': '^4.7.3', 'maz-ui': '^5.0.0' })
@@ -1359,7 +1373,9 @@ describe('transformDeps with the v5 package changes', () => {
   describe('Given addValibot and a package without valibot', () => {
     describe('When transforming', () => {
       it('adds valibot next to maz-ui', () => {
-        const input = `${JSON.stringify({ dependencies: { 'maz-ui': '^5.0.0' } }, null, 2)}\n`
+        const input = `${JSON.stringify({
+          dependencies: { 'maz-ui': '^5.0.0' },
+        }, null, 2)}\n`
         const output = JSON.parse(transformDeps(input, { addValibot: true }))
 
         expect(output.dependencies).toEqual({ 'maz-ui': '^5.0.0', 'valibot': '^1.3.1' })
@@ -1370,7 +1386,10 @@ describe('transformDeps with the v5 package changes', () => {
   describe('Given addValibot and a package already declaring valibot', () => {
     describe('When transforming', () => {
       it('keeps its range', () => {
-        const input = `${JSON.stringify({ dependencies: { 'maz-ui': '^5.0.0' }, devDependencies: { valibot: '^1.0.0' } }, null, 2)}\n`
+        const input = `${JSON.stringify({
+          dependencies: { 'maz-ui': '^5.0.0' },
+          devDependencies: { valibot: '^1.0.0' },
+        }, null, 2)}\n`
         expect(transformDeps(input, { addValibot: true })).toBe(input)
       })
     })
@@ -1399,7 +1418,9 @@ describe('transformFile with stylesheets and scripts', () => {
   describe('Given addValibotDep on a package.json', () => {
     describe('When transforming', () => {
       it('adds valibot', () => {
-        const input = `${JSON.stringify({ dependencies: { 'maz-ui': '^4.0.0' } }, null, 2)}\n`
+        const input = `${JSON.stringify({
+          dependencies: { 'maz-ui': '^4.0.0' },
+        }, null, 2)}\n`
         const output = JSON.parse(transformFile('package.json', input, { addValibotDep: true }))
 
         expect(output.dependencies).toEqual({ 'maz-ui': '^5.0.0', 'valibot': '^1.3.1' })

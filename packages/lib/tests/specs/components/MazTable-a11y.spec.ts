@@ -2,10 +2,16 @@ import MazTable from '@components/MazTable.vue'
 import { useTranslations } from '@maz-ui/translations/composables/useTranslations'
 import { mount } from '@vue/test-utils'
 
-const rows = [{ name: 'Bob', age: 30 }, { name: 'Alice', age: 25 }]
+const rows = [
+  { name: 'Bob', age: 30 },
+  { name: 'Alice', age: 25 },
+]
 
 beforeEach(() => {
-  vi.mocked(useTranslations).mockReturnValue({ t: (key: string) => key, locale: { value: 'en' } } as unknown as ReturnType<typeof useTranslations>)
+  vi.mocked(useTranslations).mockReturnValue({
+    t: (key: string) => key,
+    locale: { value: 'en' },
+  } as unknown as ReturnType<typeof useTranslations>)
 })
 
 function getHeaders(wrapper: ReturnType<typeof mount>) {
@@ -15,14 +21,27 @@ function getHeaders(wrapper: ReturnType<typeof mount>) {
 describe('given a MazTable', () => {
   describe('when it is rendered', () => {
     it('then the column headers have a col scope by default and keep a provided scope', async () => {
-      const wrapper = mount(MazTable, { props: { headers: [{ label: 'Name', key: 'name' }, { label: 'Age', key: 'age', scope: 'colgroup' }], rows } })
+      const wrapper = mount(MazTable, {
+        props: {
+          headers: [
+            { label: 'Name', key: 'name' },
+            { label: 'Age', key: 'age', scope: 'colgroup' },
+          ],
+          rows,
+        },
+      })
       await vi.dynamicImportSettled()
 
       expect(getHeaders(wrapper).map(header => header.attributes('scope'))).toEqual(['col', 'colgroup'])
     })
 
     it('then the not sortable headers are not focusable and have no sort state', async () => {
-      const wrapper = mount(MazTable, { props: { headers: ['name'], rows } })
+      const wrapper = mount(MazTable, {
+        props: {
+          headers: ['name'],
+          rows,
+        },
+      })
       await vi.dynamicImportSettled()
 
       expect(getHeaders(wrapper)[0].attributes('tabindex')).toBeUndefined()
@@ -32,7 +51,13 @@ describe('given a MazTable', () => {
 
   describe('when the columns are sortable', () => {
     it('then the headers are focusable and not sorted', async () => {
-      const wrapper = mount(MazTable, { props: { sortable: true, headers: ['name', 'age'], rows } })
+      const wrapper = mount(MazTable, {
+        props: {
+          sortable: true,
+          headers: ['name', 'age'],
+          rows,
+        },
+      })
       await vi.dynamicImportSettled()
 
       expect(getHeaders(wrapper).map(header => header.attributes('tabindex'))).toEqual(['0', '0'])
@@ -42,7 +67,13 @@ describe('given a MazTable', () => {
 
   describe('when a sortable header is clicked three times', () => {
     it('then its sort state goes descending, ascending then none', async () => {
-      const wrapper = mount(MazTable, { props: { sortable: true, headers: ['name', 'age'], rows } })
+      const wrapper = mount(MazTable, {
+        props: {
+          sortable: true,
+          headers: ['name', 'age'],
+          rows,
+        },
+      })
       await vi.dynamicImportSettled()
       const header = getHeaders(wrapper)[0]
       const states: (string | undefined)[] = []
@@ -59,7 +90,16 @@ describe('given a MazTable', () => {
 
   describe('when Enter then Space are pressed on a sortable header', () => {
     it('then the column is sorted like with clicks', async () => {
-      const wrapper = mount(MazTable, { props: { sortable: true, headers: [{ label: 'Name', key: 'name' }, { label: 'Age', key: 'age' }], rows } })
+      const wrapper = mount(MazTable, {
+        props: {
+          sortable: true,
+          headers: [
+            { label: 'Name', key: 'name' },
+            { label: 'Age', key: 'age' },
+          ],
+          rows,
+        },
+      })
       await vi.dynamicImportSettled()
       const header = getHeaders(wrapper)[0]
 
@@ -75,7 +115,13 @@ describe('given a MazTable', () => {
 
   describe('when another key is pressed on a sortable header', () => {
     it('then the column is not sorted', async () => {
-      const wrapper = mount(MazTable, { props: { sortable: true, headers: ['name'], rows } })
+      const wrapper = mount(MazTable, {
+        props: {
+          sortable: true,
+          headers: ['name'],
+          rows,
+        },
+      })
       await vi.dynamicImportSettled()
 
       await getHeaders(wrapper)[0].trigger('keydown', { key: 'a' })
@@ -87,7 +133,11 @@ describe('given a MazTable', () => {
   describe('when Enter is pressed in an element of a sortable header', () => {
     it('then the column is not sorted', async () => {
       const wrapper = mount(MazTable, {
-        props: { sortable: true, headers: ['name'], rows },
+        props: {
+          sortable: true,
+          headers: ['name'],
+          rows,
+        },
         slots: { header: '<input class="header-input">' },
       })
       await vi.dynamicImportSettled()
@@ -100,7 +150,13 @@ describe('given a MazTable', () => {
 
   describe('when the rows are selectable', () => {
     it('then the selection checkboxes have translated labels and their header has a col scope', async () => {
-      const wrapper = mount(MazTable, { props: { selectable: true, headers: ['name'], rows } })
+      const wrapper = mount(MazTable, {
+        props: {
+          selectable: true,
+          headers: ['name'],
+          rows,
+        },
+      })
       await vi.dynamicImportSettled()
 
       expect(wrapper.find('thead input[type="checkbox"]').attributes('aria-label')).toBe('aria.selectAll')

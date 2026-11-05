@@ -60,7 +60,9 @@ const {
 
 const { t } = useTranslations()
 
-const maxLinesValue = computed(() => maxChars ? undefined : maxLines || 4)
+const maxLinesValue = computed(() => maxChars
+  ? undefined
+  : maxLines || 4)
 
 const instanceId = useInstanceUniqId({ componentName: 'MazReadMore', providedId: id })
 const contentId = computed(() => `${instanceId.value}-content`)

@@ -109,12 +109,19 @@ describe('mazAnimatedCounter', () => {
   it('triggers the animation when the element scrolls into view (once=false)', async () => {
     vi.useFakeTimers()
     const wrapper = shallowMount(MazAnimatedCounter, {
-      props: { count: 50, once: false, duration: 100, delay: 0 },
+      props: {
+        count: 50,
+        once: false,
+        duration: 100,
+        delay: 0,
+      },
     })
     const intersectionCallback = getLastIntersectionCallback()
 
     intersectionCallback(
-      [{ target: wrapper.element, isIntersecting: true } as IntersectionObserverEntry],
+      [
+        { target: wrapper.element, isIntersecting: true } as IntersectionObserverEntry,
+      ],
       IntersectionObserverMock as unknown as IntersectionObserver,
     )
     await vi.advanceTimersByTimeAsync(0)

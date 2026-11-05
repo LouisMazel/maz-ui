@@ -254,7 +254,9 @@ const currentTab = computed<number>(() => {
     return indexByValue + 1
   }
 
-  return typeof modelValue === 'number' ? modelValue : 1
+  return typeof modelValue === 'number'
+    ? modelValue
+    : 1
 })
 
 function setActiveTab(oneBasedIndex: number) {
@@ -288,7 +290,9 @@ function getTabId(index: number) {
  * The panels only exist inside MazTabs (MazTabsContentItem)
  */
 function getPanelId(index: number) {
-  return tabsContext.value?.idPrefix ? `${idPrefix.value}-panel-${index + 1}` : undefined
+  return tabsContext.value?.idPrefix
+    ? `${idPrefix.value}-panel-${index + 1}`
+    : undefined
 }
 
 /**
@@ -298,10 +302,15 @@ function getTabIndex(index: number) {
   const activeIndex = currentTab.value - 1
   const hasFocusableActiveTab = normalizedItems.value[activeIndex] && !normalizedItems.value[activeIndex].disabled
 
-  if (hasFocusableActiveTab)
-    return index === activeIndex ? 0 : -1
+  if (hasFocusableActiveTab) {
+    return index === activeIndex
+      ? 0
+      : -1
+  }
 
-  return index === normalizedItems.value.findIndex(item => !item.disabled) ? 0 : -1
+  return index === normalizedItems.value.findIndex(item => !item.disabled)
+    ? 0
+    : -1
 }
 
 function getNextEnabledIndex(fromIndex: number, step: 1 | -1) {
@@ -354,7 +363,9 @@ function addElementToItemRefs({
   mazBtn?: ComponentPublicInstance<any> | HTMLElement
   index: number
 }) {
-  itemRefs.value[index] = mazBtn && '$el' in mazBtn ? mazBtn.$el : mazBtn
+  itemRefs.value[index] = mazBtn && '$el' in mazBtn
+    ? mazBtn.$el
+    : mazBtn
 }
 
 const tabsIndicatorState = ref<StyleValue>()
@@ -412,7 +423,9 @@ function getTabStyle(index: number, disabled: boolean): StyleValue {
   }
 
   if (currentTab.value === index + 1) {
-    return resolvedColor.value ? `color: var(--maz-${resolvedColor.value}-foreground)` : 'color: var(--maz-foreground)'
+    return resolvedColor.value
+      ? `color: var(--maz-${resolvedColor.value}-foreground)`
+      : 'color: var(--maz-foreground)'
   }
 
   return 'color: var(--maz-muted)'

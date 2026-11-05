@@ -134,11 +134,15 @@ export class LazyImg {
 
   private resolveOptions(binding: VLazyImgBinding): ElementOptions {
     const value: VLazyImgBindingValue = binding.value
-    return value && typeof value === 'object' ? mergeOptions(this.options, value) : { ...this.options }
+    return value && typeof value === 'object'
+      ? mergeOptions(this.options, value)
+      : { ...this.options }
   }
 
   private resolveImg(el: HTMLElement, isPicture: boolean): HTMLImageElement | null {
-    return isPicture ? el.querySelector('img') : (el as HTMLImageElement)
+    return isPicture
+      ? el.querySelector('img')
+      : (el as HTMLImageElement)
   }
 
   private isBgMode(binding: VLazyImgBinding): boolean {
@@ -157,7 +161,10 @@ export class LazyImg {
     let pooled = this.pool.get(key)
     if (!pooled) {
       const observer = new IntersectionObserver(entries => this.onIntersect(entries), state.options.observerOptions)
-      pooled = { observer, targets: new Set() }
+      pooled = {
+        observer,
+        targets: new Set(),
+      }
       this.pool.set(key, pooled)
     }
 
@@ -207,8 +214,12 @@ export class LazyImg {
   }
 
   private observerKey(options: ClassOptions['observerOptions']): string {
-    const root = options.root ? this.rootId(options.root) : 0
-    const threshold = Array.isArray(options.threshold) ? options.threshold.join(',') : options.threshold
+    const root = options.root
+      ? this.rootId(options.root)
+      : 0
+    const threshold = Array.isArray(options.threshold)
+      ? options.threshold.join(',')
+      : options.threshold
     return `${root}|${options.rootMargin ?? ''}|${threshold}`
   }
 
@@ -254,7 +265,9 @@ export class LazyImg {
       return dataSrc
 
     const value = state.binding.value
-    return typeof value === 'object' ? value.src : value
+    return typeof value === 'object'
+      ? value.src
+      : value
   }
 
   private setPictureSourceUrls(el: HTMLElement, state: ElementState): void {

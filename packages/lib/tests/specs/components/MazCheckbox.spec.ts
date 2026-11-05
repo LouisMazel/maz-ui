@@ -285,7 +285,9 @@ describe('MazCheckbox extended branch coverage', () => {
         },
       })
       await wrapper.find('input').trigger('change')
-      expect(wrapper.emitted('update:model-value')![0]).toEqual([['apple', 'banana']])
+      expect(wrapper.emitted('update:model-value')![0]).toEqual([
+        ['apple', 'banana'],
+      ])
     })
 
     it('removes value from array when already present', async () => {
@@ -296,7 +298,9 @@ describe('MazCheckbox extended branch coverage', () => {
         },
       })
       await wrapper.find('input').trigger('change')
-      expect(wrapper.emitted('update:model-value')![0]).toEqual([['apple']])
+      expect(wrapper.emitted('update:model-value')![0]).toEqual([
+        ['apple'],
+      ])
     })
 
     it('creates new array with value when modelValue is not an array and value is not boolean', async () => {
@@ -307,7 +311,9 @@ describe('MazCheckbox extended branch coverage', () => {
         },
       })
       await wrapper.find('input').trigger('change')
-      expect(wrapper.emitted('update:model-value')![0]).toEqual([['apple']])
+      expect(wrapper.emitted('update:model-value')![0]).toEqual([
+        ['apple'],
+      ])
     })
   })
 
@@ -327,7 +333,9 @@ describe('MazCheckbox extended branch coverage', () => {
       await wrapper.find('input').trigger('change')
       const emitted = wrapper.emitted('update:model-value')
       expect(emitted).toBeTruthy()
-      expect(emitted?.[0]).toEqual([['a']])
+      expect(emitted?.[0]).toEqual([
+        ['a'],
+      ])
     })
 
     it('exposes the widget role via the native checkbox input', () => {
@@ -461,7 +469,10 @@ describe('MazCheckbox extended branch coverage', () => {
 
     it('applies custom style', () => {
       const wrapper = mount(MazCheckbox, {
-        props: { modelValue: false, style: { marginTop: '10px' } },
+        props: {
+          modelValue: false,
+          style: { marginTop: '10px' },
+        },
       })
       expect(wrapper.attributes('style')).toContain('margin-top: 10px')
     })
@@ -473,7 +484,13 @@ describe('given a MazUi global default for MazCheckbox size', () => {
     it('then the configured size drives the checkbox dimensions', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazCheckbox: { size: 'lg' } } } },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              MazCheckbox: { size: 'lg' },
+            },
+          },
+        },
       })
 
       expect(wrapper.find('label > span').attributes('style')).toContain('width: 1.75rem')
@@ -484,7 +501,13 @@ describe('given a MazUi global default for MazCheckbox size', () => {
     it('then the instance prop wins over the configured default', () => {
       const wrapper = mount(MazCheckbox, {
         props: { modelValue: false, size: 'mini' },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazCheckbox: { size: 'lg' } } } },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              MazCheckbox: { size: 'lg' },
+            },
+          },
+        },
       })
 
       expect(wrapper.find('label > span').attributes('style')).toContain('width: 0.75rem')

@@ -67,7 +67,9 @@ const translations = (() => {
 
 const closeLabel = computed(() => translations?.t('aria.close') ?? 'Close')
 
-const ariaRole = computed(() => (type === 'destructive' || type === 'warning' ? 'alert' : 'status'))
+const ariaRole = computed(() => (type === 'destructive' || type === 'warning'
+  ? 'alert'
+  : 'status'))
 
 export interface MazToastProps extends ToastOptions {
   /**
@@ -107,7 +109,9 @@ const iconComponent = computed(() => {
   }
 })
 
-const positionY = computed(() => (position.includes('top') ? 'top' : 'bottom'))
+const positionY = computed(() => (position.includes('top')
+  ? 'top'
+  : 'bottom'))
 const positionX = computed(() => {
   if (position.includes('left'))
     return 'left'
@@ -118,9 +122,13 @@ const positionX = computed(() => {
 
 const transitionName = computed(() => {
   if (positionX.value !== 'center') {
-    return positionX.value === 'right' ? 'm-slide-right' : 'm-slide-left'
+    return positionX.value === 'right'
+      ? 'm-slide-right'
+      : 'm-slide-left'
   }
-  return positionY.value === 'top' ? 'm-slide-top' : 'm-slide-bottom'
+  return positionY.value === 'top'
+    ? 'm-slide-top'
+    : 'm-slide-bottom'
 })
 
 const isActive = ref(false)
@@ -172,7 +180,9 @@ const selectorContainerClass = `.m-toast-container.--${positionY.value}.--${posi
 
 const timer = useTimer({
   callback: closeToast,
-  timeout: typeof timeout === 'number' ? timeout : 0,
+  timeout: typeof timeout === 'number'
+    ? timeout
+    : 0,
   callbackOffsetTime: 200,
 })
 

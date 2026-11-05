@@ -30,7 +30,9 @@ vi.mock('vue', async (importOriginal) => {
     ref: vi.fn(value => ({ value })),
     computed: vi.fn((getter) => {
       if (typeof getter === 'function') {
-        return { value: getter() }
+        return {
+          value: getter(),
+        }
       }
       return {
         get value() {
@@ -93,8 +95,13 @@ describe('useTheme', () => {
           remove: vi.fn(),
         },
       },
-      head: { appendChild: vi.fn() },
-      createElement: vi.fn(() => ({ remove: vi.fn(), textContent: '' })),
+      head: {
+        appendChild: vi.fn(),
+      },
+      createElement: vi.fn(() => ({
+        remove: vi.fn(),
+        textContent: '',
+      })),
       cookie: '',
     })
 
@@ -195,7 +202,10 @@ describe('useTheme', () => {
 
         useTheme()
 
-        expect(() => watchCallback?.({ ...mockRefThemeState.value, preset: { ...mazUi, name: 'rotated' } })).not.toThrow()
+        expect(() => watchCallback?.({
+          ...mockRefThemeState.value,
+          preset: { ...mazUi, name: 'rotated' },
+        })).not.toThrow()
       })
 
       it('then the watch callback ignores a falsy newState', async () => {
@@ -223,7 +233,9 @@ describe('useTheme', () => {
         vi.mocked(mergePresets).mockReturnValue(mergedPreset)
 
         const { updateTheme } = useTheme()
-        const partialPreset = { foundation: { 'border-width': '2px' } } as ThemePresetOverrides
+        const partialPreset = {
+          foundation: { 'border-width': '2px' },
+        } as ThemePresetOverrides
 
         await updateTheme(partialPreset)
 
@@ -264,7 +276,9 @@ describe('useTheme', () => {
         vi.mocked(inject).mockReturnValue({ value: undefined })
 
         const { updateTheme } = useTheme()
-        const partialPreset = { foundation: { 'border-width': '2px' } } as ThemePresetOverrides
+        const partialPreset = {
+          foundation: { 'border-width': '2px' },
+        } as ThemePresetOverrides
 
         await expect(updateTheme(partialPreset)).resolves.toBeUndefined()
       })
@@ -280,7 +294,9 @@ describe('useTheme', () => {
         vi.mocked(mergePresets).mockReturnValue({ ...mazUi, name: 'merged' })
 
         const { updateTheme } = useTheme()
-        await updateTheme({ foundation: { space: '0.25rem' } } as ThemePresetOverrides)
+        await updateTheme({
+          foundation: { space: '0.25rem' },
+        } as ThemePresetOverrides)
 
         expect(injectCSS).not.toHaveBeenCalled()
       })
@@ -305,11 +321,15 @@ describe('useTheme', () => {
       it('then updateTheme does not write the preset cookie', async () => {
         const { savePreset } = await import('../../utils/cookie-storage')
         vi.mocked(savePreset).mockClear()
-        vi.mocked(inject).mockReturnValue({ value: { ...mockThemeState, persistPreset: false } })
+        vi.mocked(inject).mockReturnValue({
+          value: { ...mockThemeState, persistPreset: false },
+        })
         vi.mocked(mergePresets).mockReturnValue(mazUi)
 
         const { updateTheme } = useTheme()
-        await updateTheme({ foundation: { 'border-width': '2px' } } as ThemePresetOverrides)
+        await updateTheme({
+          foundation: { 'border-width': '2px' },
+        } as ThemePresetOverrides)
 
         expect(savePreset).not.toHaveBeenCalled()
       })
@@ -392,14 +412,26 @@ describe('useTheme', () => {
       it('then it wraps the toggle in a View Transition', async () => {
         const startViewTransition = vi.fn((cb: () => void) => {
           cb()
-          return { finished: Promise.resolve() }
+          return {
+            finished: Promise.resolve(),
+          }
         })
 
         vi.stubGlobal('document', {
           startViewTransition,
-          documentElement: { classList: { add: vi.fn(), remove: vi.fn() } },
-          head: { appendChild: vi.fn() },
-          createElement: vi.fn(() => ({ remove: vi.fn(), textContent: '' })),
+          documentElement: {
+            classList: {
+              add: vi.fn(),
+              remove: vi.fn(),
+            },
+          },
+          head: {
+            appendChild: vi.fn(),
+          },
+          createElement: vi.fn(() => ({
+            remove: vi.fn(),
+            textContent: '',
+          })),
           cookie: '',
         })
 
@@ -420,14 +452,26 @@ describe('useTheme', () => {
       it('then it lazy-loads view-transition and wraps the apply in a View Transition', async () => {
         const startViewTransition = vi.fn((cb: () => void) => {
           cb()
-          return { finished: Promise.resolve() }
+          return {
+            finished: Promise.resolve(),
+          }
         })
 
         vi.stubGlobal('document', {
           startViewTransition,
-          documentElement: { classList: { add: vi.fn(), remove: vi.fn() } },
-          head: { appendChild: vi.fn() },
-          createElement: vi.fn(() => ({ remove: vi.fn(), textContent: '' })),
+          documentElement: {
+            classList: {
+              add: vi.fn(),
+              remove: vi.fn(),
+            },
+          },
+          head: {
+            appendChild: vi.fn(),
+          },
+          createElement: vi.fn(() => ({
+            remove: vi.fn(),
+            textContent: '',
+          })),
           cookie: '',
         })
 
@@ -445,9 +489,19 @@ describe('useTheme', () => {
     describe('when animate is true and startViewTransition is unsupported', () => {
       it('then it falls back to applying the change synchronously', async () => {
         vi.stubGlobal('document', {
-          documentElement: { classList: { add: vi.fn(), remove: vi.fn() } },
-          head: { appendChild: vi.fn() },
-          createElement: vi.fn(() => ({ remove: vi.fn(), textContent: '' })),
+          documentElement: {
+            classList: {
+              add: vi.fn(),
+              remove: vi.fn(),
+            },
+          },
+          head: {
+            appendChild: vi.fn(),
+          },
+          createElement: vi.fn(() => ({
+            remove: vi.fn(),
+            textContent: '',
+          })),
           cookie: '',
         })
 
@@ -593,7 +647,9 @@ describe('useTheme', () => {
 
         vi.mocked(isServer).mockReturnValue(false)
 
-        await expect(updateTheme({ foundation: { space: '0.25rem' } } as ThemePresetOverrides)).resolves.toBeUndefined()
+        await expect(updateTheme({
+          foundation: { space: '0.25rem' },
+        } as ThemePresetOverrides)).resolves.toBeUndefined()
         expect(mergePresets).not.toHaveBeenCalled()
       })
     })

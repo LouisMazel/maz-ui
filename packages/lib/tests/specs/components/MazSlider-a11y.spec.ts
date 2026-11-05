@@ -27,7 +27,9 @@ describe('given a MazSlider with one cursor', () => {
     ['End', 100],
   ])('when %s is pressed', (key, expectedValue) => {
     it(`then the value becomes ${expectedValue} and the page does not scroll`, () => {
-      const wrapper = mount(MazSlider, { props: { modelValue: 50, min: 0, max: 100 } })
+      const wrapper = mount(MazSlider, {
+        props: { modelValue: 50, min: 0, max: 100 },
+      })
 
       const event = pressKey(getCursors(wrapper)[0].element, key)
 
@@ -38,7 +40,9 @@ describe('given a MazSlider with one cursor', () => {
 
   describe('when PageUp is pressed near the max', () => {
     it('then the value stops at the max', () => {
-      const wrapper = mount(MazSlider, { props: { modelValue: 95, min: 0, max: 100 } })
+      const wrapper = mount(MazSlider, {
+        props: { modelValue: 95, min: 0, max: 100 },
+      })
 
       pressKey(getCursors(wrapper)[0].element, 'PageUp')
 
@@ -48,7 +52,9 @@ describe('given a MazSlider with one cursor', () => {
 
   describe('when Home is pressed on the min value', () => {
     it('then no value is emitted', () => {
-      const wrapper = mount(MazSlider, { props: { modelValue: 0, min: 0, max: 100 } })
+      const wrapper = mount(MazSlider, {
+        props: { modelValue: 0, min: 0, max: 100 },
+      })
       const emittedBefore = wrapper.emitted('update:model-value')?.length ?? 0
 
       const event = pressKey(getCursors(wrapper)[0].element, 'Home')
@@ -60,7 +66,9 @@ describe('given a MazSlider with one cursor', () => {
 
   describe('when another key is pressed', () => {
     it('then the value does not change and the default action is kept', () => {
-      const wrapper = mount(MazSlider, { props: { modelValue: 50, min: 0, max: 100 } })
+      const wrapper = mount(MazSlider, {
+        props: { modelValue: 50, min: 0, max: 100 },
+      })
       const emittedBefore = wrapper.emitted('update:model-value')?.length ?? 0
 
       const event = pressKey(getCursors(wrapper)[0].element, 'Tab')
@@ -74,7 +82,13 @@ describe('given a MazSlider with one cursor', () => {
 describe('given a MazSlider with two cursors', () => {
   describe('when End is pressed on the first cursor', () => {
     it('then it stops at the second cursor', () => {
-      const wrapper = mount(MazSlider, { props: { modelValue: [20, 70], min: 0, max: 100 } })
+      const wrapper = mount(MazSlider, {
+        props: {
+          modelValue: [20, 70],
+          min: 0,
+          max: 100,
+        },
+      })
 
       pressKey(getCursors(wrapper)[0].element, 'End')
 
@@ -84,7 +98,13 @@ describe('given a MazSlider with two cursors', () => {
 
   describe('when Home is pressed on the second cursor', () => {
     it('then it stops at the first cursor', () => {
-      const wrapper = mount(MazSlider, { props: { modelValue: [20, 70], min: 0, max: 100 } })
+      const wrapper = mount(MazSlider, {
+        props: {
+          modelValue: [20, 70],
+          min: 0,
+          max: 100,
+        },
+      })
 
       pressKey(getCursors(wrapper)[1].element, 'Home')
 
@@ -94,7 +114,13 @@ describe('given a MazSlider with two cursors', () => {
 
   describe('when PageDown is pressed on the second cursor close to the first one', () => {
     it('then it stops at the first cursor', () => {
-      const wrapper = mount(MazSlider, { props: { modelValue: [20, 25], min: 0, max: 100 } })
+      const wrapper = mount(MazSlider, {
+        props: {
+          modelValue: [20, 25],
+          min: 0,
+          max: 100,
+        },
+      })
 
       pressKey(getCursors(wrapper)[1].element, 'PageDown')
 
@@ -104,7 +130,13 @@ describe('given a MazSlider with two cursors', () => {
 
   describe('when ArrowUp is pressed on the first cursor touching the second one', () => {
     it('then the cursor does not pass the second one', () => {
-      const wrapper = mount(MazSlider, { props: { modelValue: [70, 70], min: 0, max: 100 } })
+      const wrapper = mount(MazSlider, {
+        props: {
+          modelValue: [70, 70],
+          min: 0,
+          max: 100,
+        },
+      })
       const emittedBefore = wrapper.emitted('update:model-value')?.length ?? 0
 
       pressKey(getCursors(wrapper)[0].element, 'ArrowUp')
@@ -115,7 +147,12 @@ describe('given a MazSlider with two cursors', () => {
 
   describe('when labels are set', () => {
     it('then each cursor exposes its label as value text', () => {
-      const wrapper = mount(MazSlider, { props: { modelValue: [20, 70], labels: ['Min price', 'Max price'] } })
+      const wrapper = mount(MazSlider, {
+        props: {
+          modelValue: [20, 70],
+          labels: ['Min price', 'Max price'],
+        },
+      })
 
       expect(getCursors(wrapper).map(cursor => cursor.attributes('aria-valuetext'))).toEqual(['Min price', 'Max price'])
     })

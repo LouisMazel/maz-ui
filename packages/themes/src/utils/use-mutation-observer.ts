@@ -6,7 +6,9 @@ export function useMutationObserver(
   options: MutationObserverInit = {},
 ) {
   if (isServer() || !('MutationObserver' in globalThis)) {
-    return { stop: () => {} }
+    return {
+      stop: () => {},
+    }
   }
 
   const observer = new MutationObserver(callback)

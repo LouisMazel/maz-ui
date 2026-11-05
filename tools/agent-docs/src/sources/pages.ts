@@ -44,7 +44,9 @@ function walk(directory: string): string[] {
   return readdirSync(directory).flatMap((entry) => {
     const path = join(directory, entry)
 
-    return statSync(path).isDirectory() ? walk(path) : [path]
+    return statSync(path).isDirectory()
+      ? walk(path)
+      : [path]
   })
 }
 
@@ -67,10 +69,22 @@ export function classifyPage(sourcePath: string): { category: DocCategory, packa
   if (section === 'guide')
     return { category: 'guide', package: 'maz-ui' }
 
-  if (id.startsWith('ecosystem/utils'))
-    return { category: id === 'ecosystem/utils' ? 'ecosystem' : 'util', package: '@maz-ui/utils' }
-  if (id.startsWith('ecosystem/node'))
-    return { category: id === 'ecosystem/node' ? 'ecosystem' : 'node', package: '@maz-ui/node' }
+  if (id.startsWith('ecosystem/utils')) {
+    return {
+      category: id === 'ecosystem/utils'
+        ? 'ecosystem'
+        : 'util',
+      package: '@maz-ui/utils',
+    }
+  }
+  if (id.startsWith('ecosystem/node')) {
+    return {
+      category: id === 'ecosystem/node'
+        ? 'ecosystem'
+        : 'node',
+      package: '@maz-ui/node',
+    }
+  }
   if (id.startsWith('ecosystem/icons'))
     return { category: 'ecosystem', package: '@maz-ui/icons' }
   if (ECOSYSTEM_PACKAGES[id])
@@ -91,7 +105,10 @@ function parseSourceFile(file: string, sourcePath: string): ReturnType<typeof pa
 export function collectSourcePages(docsSrc: string): SourcePage[] {
   return walk(docsSrc)
     .filter(file => file.endsWith('.md'))
-    .map(file => ({ file, sourcePath: relative(docsSrc, file).split(sep).join('/') }))
+    .map(file => ({
+      file,
+      sourcePath: relative(docsSrc, file).split(sep).join('/'),
+    }))
     .filter(({ sourcePath }) => !EXCLUDED_PAGES.has(sourcePath) && !EXCLUDED_DIRECTORIES.some(directory => sourcePath.startsWith(directory)))
     .flatMap(({ file, sourcePath }) => {
       const classification = classifyPage(sourcePath)
@@ -102,16 +119,18 @@ export function collectSourcePages(docsSrc: string): SourcePage[] {
       const { frontmatter, body } = parseSourceFile(file, sourcePath)
       const id = sourcePathToId(sourcePath)
 
-      return [{
-        file,
-        sourcePath,
-        id,
-        category: classification.category,
-        slug: id.split('/').at(-1) as string,
-        package: classification.package,
-        frontmatter,
-        body,
-      }]
+      return [
+        {
+          file,
+          sourcePath,
+          id,
+          category: classification.category,
+          slug: id.split('/').at(-1) as string,
+          package: classification.package,
+          frontmatter,
+          body,
+        },
+      ]
     })
     .sort((a, b) => a.id.localeCompare(b.id))
 }

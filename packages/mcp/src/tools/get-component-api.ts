@@ -13,7 +13,9 @@ export function getComponentApi(context: ServerContext, { names }: GetComponentA
   const blocks: string[] = []
   const unknown: string[] = []
 
-  for (const name of [...new Set(names)]) {
+  for (const name of [
+    ...new Set(names),
+  ]) {
     const component = resolveComponent(context.knowledge, name)
 
     if (!component) {
@@ -22,10 +24,16 @@ export function getComponentApi(context: ServerContext, { names }: GetComponentA
     }
 
     const doc = context.knowledge.docsById.get(component.docId)
-    const markdown = doc ? linksToDocIds(stripFrontmatter(context.knowledge.readDoc(doc.id)), doc) : ''
+    const markdown = doc
+      ? linksToDocIds(stripFrontmatter(context.knowledge.readDoc(doc.id)), doc)
+      : ''
     const section = findSection(markdown, `${component.name} API`)
-    const api = section ? sectionContent(markdown, section) : `## ${component.name} API\n\n\`${component.import}\``
-    const parent = component.parent ? `\n\nBuilding block of \`${component.parent}\`: see \`get_doc({ id: "${context.knowledge.componentsByName.get(component.parent)?.docId}" })\` for complete examples.` : ''
+    const api = section
+      ? sectionContent(markdown, section)
+      : `## ${component.name} API\n\n\`${component.import}\``
+    const parent = component.parent
+      ? `\n\nBuilding block of \`${component.parent}\`: see \`get_doc({ id: "${context.knowledge.componentsByName.get(component.parent)?.docId}" })\` for complete examples.`
+      : ''
 
     blocks.push(`${api}${parent}\n\nExamples: \`get_doc({ id: "${component.docId}" })\``)
   }
@@ -34,8 +42,14 @@ export function getComponentApi(context: ServerContext, { names }: GetComponentA
     const suggestions = unknown.flatMap(name => closest(name, context.knowledge.componentsByName.keys(), { max: 4 }))
 
     throw new ToolInputError([
-      `Unknown maz-ui component${unknown.length > 1 ? 's' : ''}: ${unknown.join(', ')}.`,
-      suggestions.length > 0 ? `Did you mean: ${[...new Set(suggestions)].join(', ')}?` : '',
+      `Unknown maz-ui component${unknown.length > 1
+        ? 's'
+        : ''}: ${unknown.join(', ')}.`,
+      suggestions.length > 0
+        ? `Did you mean: ${[
+          ...new Set(suggestions),
+        ].join(', ')}?`
+        : '',
       'Use `search_docs` to find a component from a need, or `list_docs({ category: "component" })`.',
     ].filter(Boolean).join('\n'))
   }
@@ -43,7 +57,11 @@ export function getComponentApi(context: ServerContext, { names }: GetComponentA
   if (unknown.length > 0) {
     const suggestions = unknown.flatMap(name => closest(name, context.knowledge.componentsByName.keys(), { max: 4 }))
 
-    blocks.push(`Unknown: ${unknown.join(', ')}.${suggestions.length > 0 ? ` Did you mean ${[...new Set(suggestions)].join(', ')}?` : ''}`)
+    blocks.push(`Unknown: ${unknown.join(', ')}.${suggestions.length > 0
+      ? ` Did you mean ${[
+        ...new Set(suggestions),
+      ].join(', ')}?`
+      : ''}`)
   }
 
   return [

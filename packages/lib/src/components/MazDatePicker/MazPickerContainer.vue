@@ -50,7 +50,9 @@ const MazPickerCalendar = defineAsyncComponent(() => import('./MazPickerCalendar
 const MazPickerHeader = defineAsyncComponent(() => import('./MazPickerHeader.vue'))
 const MazPickerTime = defineAsyncComponent(() => import('./MazPickerTime.vue'))
 
-const lastTimeValue = ref<string>(typeof modelValue === 'string' && hasTime ? dayjs(modelValue).format('HH:mm') : '00:00')
+const lastTimeValue = ref<string>(typeof modelValue === 'string' && hasTime
+  ? dayjs(modelValue).format('HH:mm')
+  : '00:00')
 
 function saveLastTimeValue(value: string) {
   lastTimeValue.value = dayjs(value).format('HH:mm')

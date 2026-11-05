@@ -6,7 +6,10 @@ import { loadKnowledge } from '../../knowledge/load'
 import { DocSearch } from '../engine'
 import { HELD_OUT_CASES, NOISE_CASES, SEARCH_CASES } from './search-cases'
 
-const knowledge = loadKnowledge({ bundledDir: resolve(__dirname, '../../../docs'), cwd: tmpdir() })
+const knowledge = loadKnowledge({
+  bundledDir: resolve(__dirname, '../../../docs'),
+  cwd: tmpdir(),
+})
 const search = new DocSearch(knowledge)
 
 function rankOf(searchCase: SearchCase): number {
@@ -21,14 +24,19 @@ function metrics(cases: SearchCase[]): { top1: number, top3: number, mrr: number
   return {
     top1: ranks.filter(rank => rank === 1).length / cases.length,
     top3: ranks.filter(rank => rank >= 1 && rank <= 3).length / cases.length,
-    mrr: ranks.reduce((sum, rank) => sum + (rank > 0 ? 1 / rank : 0), 0) / cases.length,
+    mrr: ranks.reduce((sum, rank) => sum + (rank > 0
+      ? 1 / rank
+      : 0), 0) / cases.length,
   }
 }
 
 describe('given the search engine over the maz-ui knowledge bundle', () => {
   describe('when every expected document of the reference cases exists', () => {
     it('then the cases only reference known docs', () => {
-      const unknown = [...SEARCH_CASES, ...HELD_OUT_CASES]
+      const unknown = [
+        ...SEARCH_CASES,
+        ...HELD_OUT_CASES,
+      ]
         .flatMap(searchCase => searchCase.expected)
         .filter(id => !knowledge.docsById.has(id))
 

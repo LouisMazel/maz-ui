@@ -85,7 +85,9 @@ describe('given readProjectTheme', () => {
       const theme = readProjectTheme(directory)
 
       expect(theme.stylesheets.map(stylesheet => stylesheet.file)).toEqual(['apps/web/src/main.css'])
-      expect(theme.presets.map(preset => [preset.file, preset.exportName])).toEqual([['apps/web/config/brand-preset.ts', 'brandPreset']])
+      expect(theme.presets.map(preset => [preset.file, preset.exportName])).toEqual([
+        ['apps/web/config/brand-preset.ts', 'brandPreset'],
+      ])
     })
   })
 
@@ -190,7 +192,17 @@ describe('given renderProjectTheme', () => {
     })
 
     it('then a preset without colors only shows what it sets', () => {
-      const output = renderProjectTheme({ stylesheets: [], presets: [{ file: 'preset.ts', overrides: { foundation: { space: '0.3rem' } } }] }, tailwind) as string
+      const output = renderProjectTheme({
+        stylesheets: [],
+        presets: [
+          {
+            file: 'preset.ts',
+            overrides: {
+              foundation: { space: '0.3rem' },
+            },
+          },
+        ],
+      }, tailwind) as string
 
       expect(output).toContain('### Preset - `preset.ts`\n')
       expect(output).toContain('| `space` | `--maz-space` | every spacing utility')
@@ -241,7 +253,12 @@ describe('given stylesheetProblems', () => {
 
   describe('when the problems are rendered', () => {
     it('then they are quoted under the stylesheet', () => {
-      const output = renderProjectTheme({ stylesheets: [readStylesheet('a.css', '@import \'tailwindcss\';')], presets: [] }, getKnowledge().manifest.tailwind)
+      const output = renderProjectTheme({
+        stylesheets: [
+          readStylesheet('a.css', '@import \'tailwindcss\';'),
+        ],
+        presets: [],
+      }, getKnowledge().manifest.tailwind)
 
       expect(output).toContain('> The maz-ui theme is not imported')
     })

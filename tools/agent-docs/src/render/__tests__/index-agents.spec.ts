@@ -26,8 +26,21 @@ function doc(overrides: Partial<DocEntry>): DocEntry {
 
 const docs = [
   doc({}),
-  doc({ id: 'guide/tailwind', category: 'guide', slug: 'tailwind', title: 'Tailwind', file: 'guide/tailwind.md', description: 'x'.repeat(300) }),
-  doc({ id: 'ecosystem/utils/debounce', category: 'util', slug: 'debounce', title: 'debounce', file: 'ecosystem/utils/debounce.md' }),
+  doc({
+    id: 'guide/tailwind',
+    category: 'guide',
+    slug: 'tailwind',
+    title: 'Tailwind',
+    file: 'guide/tailwind.md',
+    description: 'x'.repeat(300),
+  }),
+  doc({
+    id: 'ecosystem/utils/debounce',
+    category: 'util',
+    slug: 'debounce',
+    title: 'debounce',
+    file: 'ecosystem/utils/debounce.md',
+  }),
 ]
 
 describe('given CATEGORY_ORDER', () => {
@@ -74,7 +87,9 @@ describe('given renderLlmsTxt', () => {
 describe('given renderLlmsFullTxt', () => {
   describe('when rendering the full site content', () => {
     it('then puts the rules first and the source of each page', () => {
-      const text = renderLlmsFullTxt([{ doc: docs[0], content: '# MazBtn' }], 'RULES', 'https://maz-ui.com')
+      const text = renderLlmsFullTxt([
+        { doc: docs[0], content: '# MazBtn' },
+      ], 'RULES', 'https://maz-ui.com')
 
       expect(text).toBe('<SYSTEM>Full documentation of maz-ui (https://maz-ui.com). Rules first, then every page.</SYSTEM>\n\nRULES\n\n---\nsource: https://maz-ui.com/components/maz-btn.md\n---\n\n# MazBtn')
     })

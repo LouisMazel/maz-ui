@@ -57,7 +57,9 @@ describe('given MazCodeHighlight component', () => {
 
     it('then it handles a slot with no children gracefully', async () => {
       const wrapper = mount(MazCodeHighlight, {
-        slots: { default: () => [] },
+        slots: {
+          default: () => [],
+        },
       })
       await flushPromises()
 
@@ -217,7 +219,9 @@ describe('given MazCodeHighlight component', () => {
   describe('when the copy button is clicked', () => {
     it('then it writes the resolved code to the clipboard', async () => {
       const writeText = vi.fn().mockResolvedValue(undefined)
-      Object.assign(navigator, { clipboard: { writeText } })
+      Object.assign(navigator, {
+        clipboard: { writeText },
+      })
 
       const wrapper = mount(MazCodeHighlight, {
         props: { code: 'npm install' },
@@ -231,7 +235,9 @@ describe('given MazCodeHighlight component', () => {
 
     it('then it writes copyValue to the clipboard when provided', async () => {
       const writeText = vi.fn().mockResolvedValue(undefined)
-      Object.assign(navigator, { clipboard: { writeText } })
+      Object.assign(navigator, {
+        clipboard: { writeText },
+      })
 
       const wrapper = mount(MazCodeHighlight, {
         props: { code: '$ npm install', copyValue: 'npm install' },
@@ -270,7 +276,9 @@ describe('given MazCodeHighlight component', () => {
 
     it('then it overrides the copied aria label after a successful copy', async () => {
       const writeText = vi.fn().mockResolvedValue(undefined)
-      Object.assign(navigator, { clipboard: { writeText } })
+      Object.assign(navigator, {
+        clipboard: { writeText },
+      })
 
       const wrapper = mount(MazCodeHighlight, {
         props: {
@@ -291,7 +299,9 @@ describe('given MazCodeHighlight component', () => {
     it('then it reverts to the default copy label after the timeout', async () => {
       vi.useFakeTimers({ shouldAdvanceTime: true })
       const writeText = vi.fn().mockResolvedValue(undefined)
-      Object.assign(navigator, { clipboard: { writeText } })
+      Object.assign(navigator, {
+        clipboard: { writeText },
+      })
 
       const wrapper = mount(MazCodeHighlight, {
         props: {
@@ -316,7 +326,9 @@ describe('given MazCodeHighlight component', () => {
   describe('when the component is unmounted', () => {
     it('then it disconnects the observer and clears the copy timer', async () => {
       const writeText = vi.fn().mockResolvedValue(undefined)
-      Object.assign(navigator, { clipboard: { writeText } })
+      Object.assign(navigator, {
+        clipboard: { writeText },
+      })
 
       const wrapper = mount(MazCodeHighlight, {
         props: { code: 'const x = 1' },

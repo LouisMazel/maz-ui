@@ -39,31 +39,41 @@ ruleTester.run('tailwind-no-arbitrary-px', rule as never, {
     {
       code: 'const a = "w-[16px]"',
       output: 'const a = "w-[1rem]"',
-      errors: [{ messageId: 'preferRelativeUnit' }],
+      errors: [
+        { messageId: 'preferRelativeUnit' },
+      ],
     },
     // Negative value (the user-reported `m-[-16px]` shape).
     {
       code: 'const a = "m-[-16px]"',
       output: 'const a = "m-[-1rem]"',
-      errors: [{ messageId: 'preferRelativeUnit' }],
+      errors: [
+        { messageId: 'preferRelativeUnit' },
+      ],
     },
     // Decimal value.
     {
       code: 'const a = "tracking-[1.5px]"',
       output: 'const a = "tracking-[0.09375rem]"',
-      errors: [{ messageId: 'preferRelativeUnit' }],
+      errors: [
+        { messageId: 'preferRelativeUnit' },
+      ],
     },
     // Bare decimal (.5px).
     {
       code: 'const a = "tracking-[.5px]"',
       output: 'const a = "tracking-[0.03125rem]"',
-      errors: [{ messageId: 'preferRelativeUnit' }],
+      errors: [
+        { messageId: 'preferRelativeUnit' },
+      ],
     },
     // Multiple px values inside the same bracket (Tailwind uses `_` for spaces).
     {
       code: 'const a = "p-[16px_8px]"',
       output: 'const a = "p-[1rem_0.5rem]"',
-      errors: [{ messageId: 'preferRelativeUnit' }],
+      errors: [
+        { messageId: 'preferRelativeUnit' },
+      ],
     },
     // Multiple Tailwind classes in one string, each with px.
     {
@@ -78,51 +88,71 @@ ruleTester.run('tailwind-no-arbitrary-px', rule as never, {
     {
       code: 'const a = "md:hover:w-[16px]"',
       output: 'const a = "md:hover:w-[1rem]"',
-      errors: [{ messageId: 'preferRelativeUnit' }],
+      errors: [
+        { messageId: 'preferRelativeUnit' },
+      ],
     },
     // Arbitrary property syntax.
     {
       code: 'const a = "[gap:16px]"',
       output: 'const a = "[gap:1rem]"',
-      errors: [{ messageId: 'preferRelativeUnit' }],
+      errors: [
+        { messageId: 'preferRelativeUnit' },
+      ],
     },
     // calc() with px.
     {
       code: 'const a = "w-[calc(100%-16px)]"',
       output: 'const a = "w-[calc(100%-1rem)]"',
-      errors: [{ messageId: 'preferRelativeUnit' }],
+      errors: [
+        { messageId: 'preferRelativeUnit' },
+      ],
     },
     // Template literal.
     {
       code: 'const a = `w-[16px]`',
       output: 'const a = `w-[1rem]`',
-      errors: [{ messageId: 'preferRelativeUnit' }],
+      errors: [
+        { messageId: 'preferRelativeUnit' },
+      ],
     },
     // Custom baseFontSize option.
     {
       code: 'const a = "w-[10px]"',
-      options: [{ baseFontSize: 10 }],
+      options: [
+        { baseFontSize: 10 },
+      ],
       output: 'const a = "w-[1rem]"',
-      errors: [{ messageId: 'preferRelativeUnit' }],
+      errors: [
+        { messageId: 'preferRelativeUnit' },
+      ],
     },
     // Custom unit option.
     {
       code: 'const a = "w-[16px]"',
-      options: [{ unit: 'em' }],
+      options: [
+        { unit: 'em' },
+      ],
       output: 'const a = "w-[1em]"',
-      errors: [{ messageId: 'preferRelativeUnit' }],
+      errors: [
+        { messageId: 'preferRelativeUnit' },
+      ],
     },
     // Uppercase PX still flagged.
     {
       code: 'const a = "w-[16PX]"',
       output: 'const a = "w-[1rem]"',
-      errors: [{ messageId: 'preferRelativeUnit' }],
+      errors: [
+        { messageId: 'preferRelativeUnit' },
+      ],
     },
     // Non-divisible value preserves precision (15/16 = 0.9375).
     {
       code: 'const a = "w-[15px]"',
       output: 'const a = "w-[0.9375rem]"',
-      errors: [{ messageId: 'preferRelativeUnit' }],
+      errors: [
+        { messageId: 'preferRelativeUnit' },
+      ],
     },
     // Vue SFC static class attribute (parsed via vue-eslint-parser).
     {
@@ -130,7 +160,9 @@ ruleTester.run('tailwind-no-arbitrary-px', rule as never, {
       filename: 'static-px.vue',
       languageOptions: { parser: vueParser },
       output: '<template><div class="w-[1rem]"></div></template>',
-      errors: [{ messageId: 'preferRelativeUnit' }],
+      errors: [
+        { messageId: 'preferRelativeUnit' },
+      ],
     },
   ],
 })

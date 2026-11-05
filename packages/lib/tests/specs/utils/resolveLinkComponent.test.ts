@@ -14,8 +14,14 @@ function callInsideSetup(fn: () => unknown): unknown {
   return result
 }
 
-const NuxtLinkStub = defineComponent({ name: 'NuxtLink', render: () => h('a') })
-const RouterLinkStub = defineComponent({ name: 'RouterLink', render: () => h('a') })
+const NuxtLinkStub = defineComponent({
+  name: 'NuxtLink',
+  render: () => h('a'),
+})
+const RouterLinkStub = defineComponent({
+  name: 'RouterLink',
+  render: () => h('a'),
+})
 
 describe('Given resolveLinkComponent helper', () => {
   describe('When a link component is provided via inject', () => {

@@ -292,7 +292,12 @@ describe('given MazPickerCalendarGrid component', () => {
   })
 
   describe('when hovering days in range mode', () => {
-    it.each(['mouseover', 'mouseleave', 'focus', 'blur'])('then it emits update:hoverred-day on %s when range start is set', async (event) => {
+    it.each([
+      'mouseover',
+      'mouseleave',
+      'focus',
+      'blur',
+    ])('then it emits update:hoverred-day on %s when range start is set', async (event) => {
       const wrapper = mount(MazPickerCalendarGrid, {
         props: {
           ...defaultProps,

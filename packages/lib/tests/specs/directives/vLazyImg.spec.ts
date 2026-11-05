@@ -10,7 +10,9 @@ class IntersectionObserverMock {
   }
 
   observe(target: Element) {
-    this.callback([{ target, isIntersecting: true } as IntersectionObserverEntry], this as unknown as IntersectionObserver)
+    this.callback([
+      { target, isIntersecting: true } as IntersectionObserverEntry,
+    ], this as unknown as IntersectionObserver)
   }
 
   unobserve() {
@@ -42,9 +44,15 @@ describe('given LazyImg handler', () => {
       return {
         // eslint-disable-next-line prefer-arrow-callback
         observe: vi.fn(function (target: Element) {
-          callback([{ target, isIntersecting: true } as IntersectionObserverEntry], {
+          callback([
+            { target, isIntersecting: true } as IntersectionObserverEntry,
+          ], {
 
-            observe: vi.fn(function (target: Element) { callback([{ target, isIntersecting: true } as IntersectionObserverEntry], this as unknown as IntersectionObserver) }),
+            observe: vi.fn(function (target: Element) {
+              callback([
+                { target, isIntersecting: true } as IntersectionObserverEntry,
+              ], this as unknown as IntersectionObserver)
+            }),
             unobserve: vi.fn(),
             disconnect: vi.fn(),
           } as unknown as IntersectionObserver)
@@ -253,7 +261,9 @@ describe('given LazyImg handler with pooled observers', () => {
       const lazyImg = new LazyImg()
       const element = document.createElement('img')
 
-      lazyImg.add(element, { value: { disabled: true, src: 'https://example.com/a.jpg' } } as any)
+      lazyImg.add(element, {
+        value: { disabled: true, src: 'https://example.com/a.jpg' },
+      } as any)
 
       expect(ControllableObserver.instances).toHaveLength(0)
       expect(element.getAttribute('src')).toBe('https://example.com/a.jpg')
@@ -263,9 +273,13 @@ describe('given LazyImg handler with pooled observers', () => {
       const lazyImg = new LazyImg()
       const element = document.createElement('img')
 
-      lazyImg.add(element, { value: { disabled: true, src: 'https://example.com/a.jpg' } } as any)
+      lazyImg.add(element, {
+        value: { disabled: true, src: 'https://example.com/a.jpg' },
+      } as any)
 
-      expect(() => lazyImg.remove(element, { value: { disabled: true } } as any)).not.toThrow()
+      expect(() => lazyImg.remove(element, {
+        value: { disabled: true },
+      } as any)).not.toThrow()
     })
   })
 
@@ -296,7 +310,9 @@ describe('given LazyImg handler with pooled observers', () => {
       lazyImg.add(element, { value: 'https://example.com/a.jpg' } as any)
       const [observer] = ControllableObserver.instances
 
-      observer.callback([{ target: element, isIntersecting: false } as any], observer as any)
+      observer.callback([
+        { target: element, isIntersecting: false } as any,
+      ], observer as any)
 
       expect(element.classList.contains('m-lazy-loading')).toBe(false)
     })
@@ -310,7 +326,9 @@ describe('given LazyImg handler with pooled observers', () => {
       const [observer] = ControllableObserver.instances
       const unknown = document.createElement('img')
 
-      expect(() => observer.callback([{ target: unknown, isIntersecting: true } as any], observer as any)).not.toThrow()
+      expect(() => observer.callback([
+        { target: unknown, isIntersecting: true } as any,
+      ], observer as any)).not.toThrow()
     })
   })
 
@@ -318,14 +336,20 @@ describe('given LazyImg handler with pooled observers', () => {
     it('then it does not reload on the next intersection', () => {
       const lazyImg = new LazyImg()
       const element = document.createElement('img')
-      lazyImg.add(element, { value: { src: 'https://example.com/a.jpg', loadOnce: true, observerOnce: false } } as any)
+      lazyImg.add(element, {
+        value: { src: 'https://example.com/a.jpg', loadOnce: true, observerOnce: false },
+      } as any)
       const [observer] = ControllableObserver.instances
 
-      observer.callback([{ target: element, isIntersecting: true } as any], observer as any)
+      observer.callback([
+        { target: element, isIntersecting: true } as any,
+      ], observer as any)
       element.dispatchEvent(new Event('load'))
       const srcAfterFirstLoad = element.src
 
-      observer.callback([{ target: element, isIntersecting: true } as any], observer as any)
+      observer.callback([
+        { target: element, isIntersecting: true } as any,
+      ], observer as any)
 
       expect(element.classList.contains('m-lazy-loaded')).toBe(true)
       expect(element.src).toBe(srcAfterFirstLoad)
@@ -339,8 +363,18 @@ describe('given LazyImg handler with pooled observers', () => {
       const first = document.createElement('img')
       const second = document.createElement('img')
 
-      lazyImg.add(first, { value: { src: 'a', observerOptions: { root, threshold: 0.1 } } } as any)
-      lazyImg.add(second, { value: { src: 'b', observerOptions: { root, threshold: 0.1 } } } as any)
+      lazyImg.add(first, {
+        value: {
+          src: 'a',
+          observerOptions: { root, threshold: 0.1 },
+        },
+      } as any)
+      lazyImg.add(second, {
+        value: {
+          src: 'b',
+          observerOptions: { root, threshold: 0.1 },
+        },
+      } as any)
 
       expect(ControllableObserver.instances).toHaveLength(1)
       expect(ControllableObserver.instances[0].options?.root).toBe(root)
@@ -355,7 +389,9 @@ describe('given LazyImg handler with pooled observers', () => {
       lazyImg.add(element, { value: undefined } as any)
       const [observer] = ControllableObserver.instances
 
-      observer.callback([{ target: element, isIntersecting: true } as any], observer as any)
+      observer.callback([
+        { target: element, isIntersecting: true } as any,
+      ], observer as any)
 
       expect(element.src).toContain('https://example.com/data.jpg')
     })
@@ -366,10 +402,14 @@ describe('given LazyImg handler with pooled observers', () => {
       const lazyImg = new LazyImg()
       const picture = document.createElement('picture')
       picture.appendChild(document.createElement('img'))
-      lazyImg.add(picture, { value: { src: 'x', fallbackSrc: false } } as any)
+      lazyImg.add(picture, {
+        value: { src: 'x', fallbackSrc: false },
+      } as any)
       const [observer] = ControllableObserver.instances
 
-      observer.callback([{ target: picture, isIntersecting: true } as any], observer as any)
+      observer.callback([
+        { target: picture, isIntersecting: true } as any,
+      ], observer as any)
 
       expect(picture.classList.contains('m-lazy-error')).toBe(true)
     })
@@ -379,10 +419,14 @@ describe('given LazyImg handler with pooled observers', () => {
       const picture = document.createElement('picture')
       const img = document.createElement('img')
       picture.appendChild(img)
-      lazyImg.add(picture, { value: { fallbackSrc: 'https://example.com/fallback.jpg' } } as any)
+      lazyImg.add(picture, {
+        value: { fallbackSrc: 'https://example.com/fallback.jpg' },
+      } as any)
       const [observer] = ControllableObserver.instances
 
-      observer.callback([{ target: picture, isIntersecting: true } as any], observer as any)
+      observer.callback([
+        { target: picture, isIntersecting: true } as any,
+      ], observer as any)
       await Promise.resolve()
 
       expect(img.src).toBe('https://example.com/fallback.jpg')
@@ -397,7 +441,9 @@ describe('given LazyImg handler with pooled observers', () => {
       lazyImg.add(picture, { value: {} } as any)
       const [observer] = ControllableObserver.instances
 
-      observer.callback([{ target: picture, isIntersecting: true } as any], observer as any)
+      observer.callback([
+        { target: picture, isIntersecting: true } as any,
+      ], observer as any)
 
       await vi.waitFor(() => {
         expect(img.getAttribute('src')).not.toBe('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')
@@ -412,10 +458,14 @@ describe('given LazyImg handler with pooled observers', () => {
       const picture = document.createElement('picture')
       picture.appendChild(document.createElement('source'))
       picture.appendChild(document.createElement('img'))
-      lazyImg.add(picture, { value: { src: 'x', fallbackSrc: false } } as any)
+      lazyImg.add(picture, {
+        value: { src: 'x', fallbackSrc: false },
+      } as any)
       const [observer] = ControllableObserver.instances
 
-      observer.callback([{ target: picture, isIntersecting: true } as any], observer as any)
+      observer.callback([
+        { target: picture, isIntersecting: true } as any,
+      ], observer as any)
 
       expect(picture.classList.contains('m-lazy-error')).toBe(true)
     })
@@ -431,7 +481,9 @@ describe('given LazyImg handler with pooled observers', () => {
       lazyImg.add(picture, { value: 'x' } as any)
       const [observer] = ControllableObserver.instances
 
-      observer.callback([{ target: picture, isIntersecting: true } as any], observer as any)
+      observer.callback([
+        { target: picture, isIntersecting: true } as any,
+      ], observer as any)
 
       expect(source.srcset).toBe('https://example.com/a.jpg')
     })
@@ -441,10 +493,14 @@ describe('given LazyImg handler with pooled observers', () => {
     it('then it applies it to a plain img', async () => {
       const lazyImg = new LazyImg()
       const element = document.createElement('img')
-      lazyImg.add(element, { value: { src: 'https://example.com/a.jpg', fallbackSrc: 'https://example.com/fallback.jpg' } } as any)
+      lazyImg.add(element, {
+        value: { src: 'https://example.com/a.jpg', fallbackSrc: 'https://example.com/fallback.jpg' },
+      } as any)
       const [observer] = ControllableObserver.instances
 
-      observer.callback([{ target: element, isIntersecting: true } as any], observer as any)
+      observer.callback([
+        { target: element, isIntersecting: true } as any,
+      ], observer as any)
       element.dispatchEvent(new Event('error'))
       await Promise.resolve()
 
@@ -457,10 +513,14 @@ describe('given LazyImg handler with pooled observers', () => {
       const picture = document.createElement('picture')
       picture.appendChild(document.createElement('source'))
       picture.appendChild(document.createElement('img'))
-      lazyImg.add(picture, { value: { src: 'x', fallbackSrc: 'https://example.com/fallback.jpg' } } as any)
+      lazyImg.add(picture, {
+        value: { src: 'x', fallbackSrc: 'https://example.com/fallback.jpg' },
+      } as any)
       const [observer] = ControllableObserver.instances
 
-      observer.callback([{ target: picture, isIntersecting: true } as any], observer as any)
+      observer.callback([
+        { target: picture, isIntersecting: true } as any,
+      ], observer as any)
       await Promise.resolve()
 
       expect(picture.classList.contains('m-lazy-fallback')).toBe(true)

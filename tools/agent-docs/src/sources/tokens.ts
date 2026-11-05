@@ -28,7 +28,9 @@ export function stripCssComments(css: string): string {
 }
 
 export function parseDeclarations(css: string): NamedToken[] {
-  return [...stripCssComments(css).matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)].map(match => ({
+  return [
+    ...stripCssComments(css).matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g),
+  ].map(match => ({
     name: match[1],
     value: match[2].replaceAll(/\s+/g, ' ').trim(),
   }))
@@ -63,31 +65,44 @@ export function parseColors(css: string): ThemeColorToken[] {
     colors.set(color, token)
   }
 
-  return [...colors.values()]
+  return [
+    ...colors.values(),
+  ]
 }
 
 export function parseUtilities(css: string): TailwindUtility[] {
-  return [...stripCssComments(css).matchAll(/@utility\s+([\w-]+)\s*\{([\s\S]*?)\n\}/g)].map(match => ({
+  return [
+    ...stripCssComments(css).matchAll(/@utility\s+([\w-]+)\s*\{([\s\S]*?)\n\}/g),
+  ].map(match => ({
     name: match[1],
     css: match[2].replaceAll(/\s+/g, ' ').trim(),
   }))
 }
 
 export function parseCustomVariants(css: string): NamedToken[] {
-  return [...stripCssComments(css).matchAll(/@custom-variant\s+([\w-]+)\s+\(([^;]+)\);/g)].map(match => ({
+  return [
+    ...stripCssComments(css).matchAll(/@custom-variant\s+([\w-]+)\s+\(([^;]+)\);/g),
+  ].map(match => ({
     name: match[1],
     value: match[2].trim(),
   }))
 }
 
 export function parseTransitions(css: string): string[] {
-  return [...new Set([...css.matchAll(/\.(maz-[\w-]+?)-enter-active/g)].map(match => match[1]))].sort()
+  return [
+    ...new Set([
+      ...css.matchAll(/\.(maz-[\w-]+?)-enter-active/g),
+    ].map(match => match[1])),
+  ].sort()
 }
 
 function prefixed(tokens: NamedToken[], from: RegExp, to: (name: string) => string): NamedToken[] {
   return tokens
     .filter(token => from.test(token.name))
-    .map(token => ({ name: to(token.name.replace(from, '')), value: token.value }))
+    .map(token => ({
+      name: to(token.name.replace(from, '')),
+      value: token.value,
+    }))
 }
 
 export function collectTailwindTokens(tailwindDir: string, cssDir: string): TailwindManifest {
@@ -125,7 +140,9 @@ export function collectTailwindTokens(tailwindDir: string, cssDir: string): Tail
       { path: 'maz-ui/tailwindcss/theme-variants.css', description: '`dark:` variant wired to the `.dark` class only' },
     ],
     colors,
-    radius: prefixed(parseDeclarations(read('theme-radius.css')), /^--radius-?/, name => (name ? `rounded-${name}` : 'rounded')),
+    radius: prefixed(parseDeclarations(read('theme-radius.css')), /^--radius-?/, name => (name
+      ? `rounded-${name}`
+      : 'rounded')),
     shadows: prefixed(parseDeclarations(read('theme-shadows.css')), /^--shadow-/, name => `shadow-${name}`),
     breakpoints: prefixed(parseDeclarations(read('theme-breakpoints.css')), /^--breakpoint-/, name => `${name}:`),
     zIndex: prefixed(parseDeclarations(read('theme-z-index.css')), /^--z-/, name => `z-${name}`),

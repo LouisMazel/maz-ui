@@ -22,7 +22,9 @@ export default defineNuxtPlugin(async ({ vueApp, $config }) => {
   const { ToastHandler } = await import('maz-ui/plugins/toast')
 
   const toastOptions = $config.public.mazUi?.plugins?.toast
-  const options = typeof toastOptions === 'object' ? toastOptions : undefined
+  const options = typeof toastOptions === 'object'
+    ? toastOptions
+    : undefined
 
   return {
     provide: {

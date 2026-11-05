@@ -31,7 +31,10 @@ const BLOCK_AT_RULES = /^@(?:utility|keyframes|custom-variant)\s/
 
 function blankComments(css: string, comments: CssComment[]): string {
   return css.replaceAll(/\/\*([\s\S]*?)\*\//g, (match, text: string, index: number) => {
-    comments.push({ end: index + match.length, text: text.replaceAll(/\s*\n\s*\*?\s*/g, ' ').trim() })
+    comments.push({
+      end: index + match.length,
+      text: text.replaceAll(/\s*\n\s*\*?\s*/g, ' ').trim(),
+    })
 
     return match.replaceAll(/[^\n]/g, ' ')
   })
@@ -40,7 +43,9 @@ function blankComments(css: string, comments: CssComment[]): string {
 function commentBefore(css: string, comments: CssComment[], start: number): string | undefined {
   const comment = comments.findLast(entry => entry.end <= start)
 
-  return comment && css.slice(comment.end, start).trim() === '' ? comment.text : undefined
+  return comment && css.slice(comment.end, start).trim() === ''
+    ? comment.text
+    : undefined
 }
 
 /** Minimal CSS reader: declarations with their block context, at-rule statements and blocks */
@@ -101,7 +106,10 @@ export function parseCss(source: string): ParsedCss {
       start = index + 1
     }
     else if (char === '{') {
-      stack.push({ prelude: css.slice(start, index).trim().replaceAll(/\s+/g, ' '), open: index })
+      stack.push({
+        prelude: css.slice(start, index).trim().replaceAll(/\s+/g, ' '),
+        open: index,
+      })
       start = index + 1
     }
     else if (char === '}') {
@@ -110,8 +118,12 @@ export function parseCss(source: string): ParsedCss {
 
       const block = stack.pop()
 
-      if (block && BLOCK_AT_RULES.test(block.prelude))
-        result.blocks.push({ prelude: block.prelude, body: css.slice(block.open + 1, index).trim().replaceAll(/\s+/g, ' ') })
+      if (block && BLOCK_AT_RULES.test(block.prelude)) {
+        result.blocks.push({
+          prelude: block.prelude,
+          body: css.slice(block.open + 1, index).trim().replaceAll(/\s+/g, ' '),
+        })
+      }
     }
   }
 
@@ -136,36 +148,134 @@ interface Namespace {
 }
 
 const NAMESPACES: Namespace[] = [
-  { prefix: '--color-', topic: 'colors', usage: name => `bg-${name} text-${name} border-${name}...` },
-  { prefix: '--font-weight-', topic: 'typography', usage: name => `font-${name}` },
-  { prefix: '--font-', topic: 'typography', usage: name => `font-${name}` },
-  { prefix: '--text-shadow-', topic: 'shadows', usage: name => `text-shadow-${name}` },
-  { prefix: '--text-', topic: 'typography', usage: name => `text-${name}` },
-  { prefix: '--tracking-', topic: 'typography', usage: name => `tracking-${name}` },
-  { prefix: '--leading-', topic: 'typography', usage: name => `leading-${name}` },
-  { prefix: '--animate-', topic: 'typography', usage: name => `animate-${name}` },
-  { prefix: '--ease-', topic: 'typography', usage: name => `ease-${name}` },
-  { prefix: '--duration-', topic: 'typography', usage: name => `duration-(--duration-${name})` },
-  { prefix: '--radius-', topic: 'radius', usage: name => `rounded-${name}` },
-  { prefix: '--inset-shadow-', topic: 'shadows', usage: name => `inset-shadow-${name}` },
-  { prefix: '--drop-shadow-', topic: 'shadows', usage: name => `drop-shadow-${name}` },
-  { prefix: '--shadow-', topic: 'shadows', usage: name => `shadow-${name}` },
-  { prefix: '--spacing-', topic: 'spacing', usage: name => `p-${name} gap-${name} w-${name}...` },
-  { prefix: '--breakpoint-', topic: 'breakpoints', usage: name => `${name}:` },
-  { prefix: '--container-', topic: 'layout', usage: name => `max-w-${name} @${name}:` },
-  { prefix: '--aspect-', topic: 'layout', usage: name => `aspect-${name}` },
-  { prefix: '--z-', topic: 'z-index', usage: name => `z-${name}` },
+  {
+    prefix: '--color-',
+    topic: 'colors',
+    usage: name => `bg-${name} text-${name} border-${name}...`,
+  },
+  {
+    prefix: '--font-weight-',
+    topic: 'typography',
+    usage: name => `font-${name}`,
+  },
+  {
+    prefix: '--font-',
+    topic: 'typography',
+    usage: name => `font-${name}`,
+  },
+  {
+    prefix: '--text-shadow-',
+    topic: 'shadows',
+    usage: name => `text-shadow-${name}`,
+  },
+  {
+    prefix: '--text-',
+    topic: 'typography',
+    usage: name => `text-${name}`,
+  },
+  {
+    prefix: '--tracking-',
+    topic: 'typography',
+    usage: name => `tracking-${name}`,
+  },
+  {
+    prefix: '--leading-',
+    topic: 'typography',
+    usage: name => `leading-${name}`,
+  },
+  {
+    prefix: '--animate-',
+    topic: 'typography',
+    usage: name => `animate-${name}`,
+  },
+  {
+    prefix: '--ease-',
+    topic: 'typography',
+    usage: name => `ease-${name}`,
+  },
+  {
+    prefix: '--duration-',
+    topic: 'typography',
+    usage: name => `duration-(--duration-${name})`,
+  },
+  {
+    prefix: '--radius-',
+    topic: 'radius',
+    usage: name => `rounded-${name}`,
+  },
+  {
+    prefix: '--inset-shadow-',
+    topic: 'shadows',
+    usage: name => `inset-shadow-${name}`,
+  },
+  {
+    prefix: '--drop-shadow-',
+    topic: 'shadows',
+    usage: name => `drop-shadow-${name}`,
+  },
+  {
+    prefix: '--shadow-',
+    topic: 'shadows',
+    usage: name => `shadow-${name}`,
+  },
+  {
+    prefix: '--spacing-',
+    topic: 'spacing',
+    usage: name => `p-${name} gap-${name} w-${name}...`,
+  },
+  {
+    prefix: '--breakpoint-',
+    topic: 'breakpoints',
+    usage: name => `${name}:`,
+  },
+  {
+    prefix: '--container-',
+    topic: 'layout',
+    usage: name => `max-w-${name} @${name}:`,
+  },
+  {
+    prefix: '--aspect-',
+    topic: 'layout',
+    usage: name => `aspect-${name}`,
+  },
+  {
+    prefix: '--z-',
+    topic: 'z-index',
+    usage: name => `z-${name}`,
+  },
 ]
 
 export function tokenOf(variable: string, value: string, { inline = false, comment }: { inline?: boolean, comment?: string } = {}): ProjectToken {
-  if (variable === '--spacing')
-    return { variable, value, topic: 'spacing', usage: 'p-4 gap-2 w-8... (base step)', inline, comment }
+  if (variable === '--spacing') {
+    return {
+      variable,
+      value,
+      topic: 'spacing',
+      usage: 'p-4 gap-2 w-8... (base step)',
+      inline,
+      comment,
+    }
+  }
 
   const namespace = NAMESPACES.find(entry => variable.startsWith(entry.prefix))
 
   return namespace
-    ? { variable, value, topic: namespace.topic, usage: namespace.usage(variable.slice(namespace.prefix.length)), inline, comment }
-    : { variable, value, topic: 'css-variables', usage: `var(${variable})`, inline, comment }
+    ? {
+        variable,
+        value,
+        topic: namespace.topic,
+        usage: namespace.usage(variable.slice(namespace.prefix.length)),
+        inline,
+        comment,
+      }
+    : {
+        variable,
+        value,
+        topic: 'css-variables',
+        usage: `var(${variable})`,
+        inline,
+        comment,
+      }
 }
 
 export interface ProjectStylesheet {
@@ -192,7 +302,16 @@ function themeContext(context: string[]): string | undefined {
 
 export function readStylesheet(file: string, source: string): ProjectStylesheet {
   const { declarations, statements, blocks } = parseCss(source)
-  const stylesheet: ProjectStylesheet = { file, imports: [], tokens: [], resets: [], variants: [], utilities: [], keyframes: [], mazVariables: [] }
+  const stylesheet: ProjectStylesheet = {
+    file,
+    imports: [],
+    tokens: [],
+    resets: [],
+    variants: [],
+    utilities: [],
+    keyframes: [],
+    mazVariables: [],
+  }
 
   for (const statement of statements) {
     const path = importPath(statement)
@@ -219,13 +338,22 @@ export function readStylesheet(file: string, source: string): ProjectStylesheet 
     const theme = themeContext(context)
 
     if (theme && property.startsWith('--')) {
-      if (value === 'initial')
+      if (value === 'initial') {
         stylesheet.resets.push(property)
-      else if (!/^--[\w-]+--/.test(property))
-        stylesheet.tokens.push(tokenOf(property, value, { inline: /\binline\b/.test(theme), comment }))
+      }
+      else if (!/^--[\w-]+--/.test(property)) {
+        stylesheet.tokens.push(tokenOf(property, value, {
+          inline: /\binline\b/.test(theme),
+          comment,
+        }))
+      }
     }
     else if (!theme && property.startsWith('--maz-')) {
-      stylesheet.mazVariables.push({ variable: property, value, selector: context.filter(prelude => !prelude.startsWith('@layer')).join(' ') })
+      stylesheet.mazVariables.push({
+        variable: property,
+        value,
+        selector: context.filter(prelude => !prelude.startsWith('@layer')).join(' '),
+      })
     }
   }
 

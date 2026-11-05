@@ -3,18 +3,55 @@ import type { DocCategory, DocEntry } from '../types'
 import { truncate } from '../utils/strings'
 
 const SECTIONS: Array<{ title: string, filter: (doc: DocEntry) => boolean }> = [
-  { title: 'Guides', filter: doc => doc.category === 'guide' },
-  { title: 'Components (maz-ui)', filter: doc => doc.category === 'component' },
-  { title: 'Composables (maz-ui)', filter: doc => doc.category === 'composable' },
-  { title: 'Directives (maz-ui)', filter: doc => doc.category === 'directive' },
-  { title: 'Plugins (maz-ui)', filter: doc => doc.category === 'plugin' },
-  { title: 'Ecosystem packages', filter: doc => doc.category === 'ecosystem' },
-  { title: 'Helpers (@maz-ui/utils)', filter: doc => doc.category === 'util' },
-  { title: 'Node utilities (@maz-ui/node)', filter: doc => doc.category === 'node' },
-  { title: 'References', filter: doc => doc.category === 'reference' },
+  {
+    title: 'Guides',
+    filter: doc => doc.category === 'guide',
+  },
+  {
+    title: 'Components (maz-ui)',
+    filter: doc => doc.category === 'component',
+  },
+  {
+    title: 'Composables (maz-ui)',
+    filter: doc => doc.category === 'composable',
+  },
+  {
+    title: 'Directives (maz-ui)',
+    filter: doc => doc.category === 'directive',
+  },
+  {
+    title: 'Plugins (maz-ui)',
+    filter: doc => doc.category === 'plugin',
+  },
+  {
+    title: 'Ecosystem packages',
+    filter: doc => doc.category === 'ecosystem',
+  },
+  {
+    title: 'Helpers (@maz-ui/utils)',
+    filter: doc => doc.category === 'util',
+  },
+  {
+    title: 'Node utilities (@maz-ui/node)',
+    filter: doc => doc.category === 'node',
+  },
+  {
+    title: 'References',
+    filter: doc => doc.category === 'reference',
+  },
 ]
 
-export const CATEGORY_ORDER: DocCategory[] = ['guide', 'component', 'composable', 'directive', 'plugin', 'ecosystem', 'util', 'node', 'reference']
+export const CATEGORY_ORDER: DocCategory[] = [
+  'guide',
+  'component',
+  'composable',
+  'directive',
+  'plugin',
+  'ecosystem',
+  'util',
+  'node',
+  'reference',
+]
 
 function renderSections(docs: DocEntry[], href: (doc: DocEntry) => string): string {
   return SECTIONS

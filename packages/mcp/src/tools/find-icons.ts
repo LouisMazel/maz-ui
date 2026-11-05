@@ -13,14 +13,23 @@ export interface FindIconsArgs {
 export function findIcons(context: ServerContext, { query, limit = 24 }: FindIconsArgs): string {
   const { iconNames } = context.knowledge
   const exact = [...iconNames].find(name => name.toLowerCase() === query.trim().toLowerCase())
-  const names = exact ? [exact, ...searchIcons(iconNames, query, limit).filter(name => name !== exact)].slice(0, limit) : searchIcons(iconNames, query, limit)
+  const names = exact
+    ? [
+        exact,
+        ...searchIcons(iconNames, query, limit).filter(name => name !== exact),
+      ].slice(0, limit)
+    : searchIcons(iconNames, query, limit)
 
   if (names.length === 0) {
-    const near = closest(query.startsWith('Maz') ? query : `Maz${query}`, iconNames, { max: 4, limit: 8 })
+    const near = closest(query.startsWith('Maz')
+      ? query
+      : `Maz${query}`, iconNames, { max: 4, limit: 8 })
 
     return [
       `No icon matches "${query}" in @maz-ui/icons (${iconNames.size} icons).`,
-      near.length > 0 ? `Close names: ${near.join(', ')}.` : '',
+      near.length > 0
+        ? `Close names: ${near.join(', ')}.`
+        : '',
       'Try another English word (icons follow the heroicons naming: trash, x-mark, magnifying-glass, cog, bars-3, chevron-down...). Full list: `get_doc({ id: "reference/icons" })`.',
     ].filter(Boolean).join('\n')
   }

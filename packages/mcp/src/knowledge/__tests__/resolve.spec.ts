@@ -60,7 +60,14 @@ describe('given resolveDoc on the real bundle', () => {
 
 describe('given resolveComponent', () => {
   describe('when the name has various forms', () => {
-    it.each(['MazBtn', 'maz-btn', 'btn', '<MazBtn>', 'components/MazBtn', '<MazBtn />'])('then "%s" resolves to MazBtn', (query) => {
+    it.each([
+      'MazBtn',
+      'maz-btn',
+      'btn',
+      '<MazBtn>',
+      'components/MazBtn',
+      '<MazBtn />',
+    ])('then "%s" resolves to MazBtn', (query) => {
       expect(resolveComponent(getKnowledge(), query)?.name).toBe('MazBtn')
     })
   })

@@ -689,7 +689,13 @@ describe('given a MazUi global default for size', () => {
   describe('when no size prop is passed', () => {
     it('then the select receives the global size', () => {
       const wrapper = shallowMount(MazSelectCountry, {
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'xl' } } } },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              global: { size: 'xl' },
+            },
+          },
+        },
       })
 
       expect(wrapper.findComponent({ name: 'MazSelect' }).props('size')).toBe('xl')
@@ -699,7 +705,14 @@ describe('given a MazUi global default for size', () => {
   describe('when a component-scoped default differs from the global default', () => {
     it('then the select receives the component-scoped size', () => {
       const wrapper = shallowMount(MazSelectCountry, {
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazSelectCountry: { size: 'lg' } } } },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              global: { size: 'mini' },
+              MazSelectCountry: { size: 'lg' },
+            },
+          },
+        },
       })
 
       expect(wrapper.findComponent({ name: 'MazSelect' }).props('size')).toBe('lg')
@@ -710,7 +723,14 @@ describe('given a MazUi global default for size', () => {
     it('then the instance prop wins over every configured default', () => {
       const wrapper = shallowMount(MazSelectCountry, {
         props: { size: 'sm' },
-        global: { provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { global: { size: 'mini' }, MazSelectCountry: { size: 'lg' } } } },
+        global: {
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              global: { size: 'mini' },
+              MazSelectCountry: { size: 'lg' },
+            },
+          },
+        },
       })
 
       expect(wrapper.findComponent({ name: 'MazSelect' }).props('size')).toBe('sm')
@@ -720,12 +740,17 @@ describe('given a MazUi global default for size', () => {
 
 describe('given the flagSrc prop', () => {
   const EMPTY_IMAGE = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
-  const listOptions = [{ code: 'XX', name: 'Nowhere' }]
+  const listOptions = [
+    { code: 'XX', name: 'Nowhere' },
+  ]
 
   async function mountSelect(props: Partial<MazSelectCountryProps>, provide?: Record<symbol, unknown>) {
     const wrapper = mount(MazSelectCountry, {
       props,
-      global: { stubs: { teleport: true }, provide },
+      global: {
+        stubs: { teleport: true },
+        provide,
+      },
     })
 
     await vi.dynamicImportSettled()
@@ -783,7 +808,11 @@ describe('given the flagSrc prop', () => {
 
   describe('when the function gives no source for a listed country', () => {
     it('then the list displays the code in a badge', async () => {
-      const wrapper = await mountSelect({ options: listOptions, open: true, flagSrc: () => Promise.resolve(undefined) })
+      const wrapper = await mountSelect({
+        options: listOptions,
+        open: true,
+        flagSrc: () => Promise.resolve(undefined),
+      })
 
       await makeFlagVisible(wrapper)
 
@@ -823,7 +852,10 @@ describe('given the flagSrc prop', () => {
 
   describe('when the image of a function is still waiting', () => {
     it('then an error of the empty image is ignored', async () => {
-      const wrapper = await mountSelect({ modelValue: 'FR', flagSrc: () => '/flags/fr.svg' })
+      const wrapper = await mountSelect({
+        modelValue: 'FR',
+        flagSrc: () => '/flags/fr.svg',
+      })
       const image = wrapper.findComponent(MazLazyImg)
 
       image.vm.$emit('error', image.element)
@@ -837,7 +869,12 @@ describe('given the flagSrc prop', () => {
 describe('given no flagSrc', () => {
   describe('when the CDN flag becomes visible or is in error', () => {
     it('then the CDN source is kept as before', async () => {
-      const wrapper = mount(MazSelectCountry, { props: { modelValue: 'FR' }, global: { stubs: { teleport: true } } })
+      const wrapper = mount(MazSelectCountry, {
+        props: { modelValue: 'FR' },
+        global: {
+          stubs: { teleport: true },
+        },
+      })
       await vi.dynamicImportSettled()
       const image = wrapper.findComponent(MazLazyImg)
 
@@ -854,13 +891,18 @@ describe('given a global flagSrc in the MazUi defaults', () => {
   function mountWithDefaults(defaults: unknown, props: Partial<MazSelectCountryProps> = {}) {
     return mount(MazSelectCountry, {
       props: { modelValue: 'FR', ...props },
-      global: { stubs: { teleport: true }, provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: defaults } },
+      global: {
+        stubs: { teleport: true },
+        provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: defaults },
+      },
     })
   }
 
   describe('when no flagSrc prop is passed', () => {
     it('then the global source is used', async () => {
-      const wrapper = mountWithDefaults({ global: { flagSrc: '/global/{code}.svg' } })
+      const wrapper = mountWithDefaults({
+        global: { flagSrc: '/global/{code}.svg' },
+      })
       await vi.dynamicImportSettled()
 
       expect(wrapper.findComponent(MazLazyImg).props('src')).toBe('/global/fr.svg')
@@ -869,7 +911,10 @@ describe('given a global flagSrc in the MazUi defaults', () => {
 
   describe('when a component-scoped flagSrc is set', () => {
     it('then it wins over the global one', async () => {
-      const wrapper = mountWithDefaults({ global: { flagSrc: '/global/{code}.svg' }, MazSelectCountry: { flagSrc: '/select/{code}.svg' } })
+      const wrapper = mountWithDefaults({
+        global: { flagSrc: '/global/{code}.svg' },
+        MazSelectCountry: { flagSrc: '/select/{code}.svg' },
+      })
       await vi.dynamicImportSettled()
 
       expect(wrapper.findComponent(MazLazyImg).props('src')).toBe('/select/fr.svg')
@@ -878,7 +923,9 @@ describe('given a global flagSrc in the MazUi defaults', () => {
 
   describe('when a flagSrc prop is passed', () => {
     it('then the prop wins over the defaults', async () => {
-      const wrapper = mountWithDefaults({ global: { flagSrc: '/global/{code}.svg' } }, { flagSrc: '/prop/{code}.svg' })
+      const wrapper = mountWithDefaults({
+        global: { flagSrc: '/global/{code}.svg' },
+      }, { flagSrc: '/prop/{code}.svg' })
       await vi.dynamicImportSettled()
 
       expect(wrapper.findComponent(MazLazyImg).props('src')).toBe('/prop/fr.svg')

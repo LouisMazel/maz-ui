@@ -125,7 +125,10 @@ When `tailwindcss` is on, the rule is enabled with defaults. You can tune it eit
 defineConfig({
   tailwindcss: 'recommended',
   rules: {
-    'maz/tailwind-no-arbitrary-px': ['error', { baseFontSize: 10, unit: 'em' }],
+    'maz/tailwind-no-arbitrary-px': [
+      'error',
+      { baseFontSize: 10, unit: 'em' }
+    ],
   },
 })
 ```
@@ -173,13 +176,18 @@ If you don't want the full Tailwind preset (or just prefer wiring rules yourself
 ```js
 import { mazPlugin } from '@maz-ui/eslint-config'
 
-export default [{
-  files: ['**/*.{ts,tsx,vue}'],
-  plugins: { maz: mazPlugin },
-  rules: {
-    'maz/tailwind-no-arbitrary-px': ['error', { baseFontSize: 16 }],
-  },
-}]
+export default [
+  {
+    files: ['**/*.{ts,tsx,vue}'],
+    plugins: { maz: mazPlugin },
+    rules: {
+      'maz/tailwind-no-arbitrary-px': [
+        'error',
+        { baseFontSize: 16 }
+      ],
+    },
+  }
+]
 ```
 
 ## Advanced

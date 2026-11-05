@@ -181,7 +181,9 @@ describe('components/MazDropdown.vue', () => {
 
     describe('when custom dropdownIcon is provided', () => {
       it('then custom icon is rendered', async () => {
-        await wrapper.setProps({ dropdownIcon: markRaw(MazStar) })
+        await wrapper.setProps({
+          dropdownIcon: markRaw(MazStar),
+        })
 
         // The custom icon is forwarded to <MazIcon> as the icon prop.
         const mazIcon = wrapper.findComponent({ name: 'MazIcon' })
@@ -190,7 +192,9 @@ describe('components/MazDropdown.vue', () => {
       })
 
       it('then a full MazIconProps object is honored', async () => {
-        await wrapper.setProps({ dropdownIcon: { icon: '/star.svg', size: 'xl', title: 'Star' } })
+        await wrapper.setProps({
+          dropdownIcon: { icon: '/star.svg', size: 'xl', title: 'Star' },
+        })
 
         const mazIcon = wrapper.findComponent({ name: 'MazIcon' })
         expect(mazIcon.exists()).toBe(true)
@@ -255,7 +259,13 @@ describe('components/MazDropdown.vue', () => {
   describe('given dropdown with different item types', () => {
     describe('when item has href', () => {
       it('then an anchor is rendered with the href', async () => {
-        const wrapper = await getWrapper({ props: { items: [{ label: 'Profile', href: '/profile' }] } })
+        const wrapper = await getWrapper({
+          props: {
+            items: [
+              { label: 'Profile', href: '/profile' },
+            ],
+          },
+        })
 
         await wrapper.find('.m-popover-trigger').trigger('click')
 
@@ -267,7 +277,13 @@ describe('components/MazDropdown.vue', () => {
 
     describe('when item has to property', () => {
       it('then a router-link is rendered', async () => {
-        const wrapper = await getWrapper({ props: { items: [{ label: 'About', to: '/about' }] } })
+        const wrapper = await getWrapper({
+          props: {
+            items: [
+              { label: 'About', to: '/about' },
+            ],
+          },
+        })
 
         await wrapper.find('.m-popover-trigger').trigger('click')
 
@@ -287,7 +303,13 @@ describe('components/MazDropdown.vue', () => {
 
     describe('when item has target', () => {
       it('then target attribute is set', async () => {
-        const wrapper = await getWrapper({ props: { items: [{ label: 'External', href: 'https://example.com', target: '_blank' }] } })
+        const wrapper = await getWrapper({
+          props: {
+            items: [
+              { label: 'External', href: 'https://example.com', target: '_blank' },
+            ],
+          },
+        })
 
         await wrapper.find('.m-popover-trigger').trigger('click')
 
@@ -300,7 +322,9 @@ describe('components/MazDropdown.vue', () => {
   describe('given dropdown with different sizes', () => {
     describe('when size is xl', () => {
       it('then icon has large text class', async () => {
-        const localWrapper = await getWrapper({ props: { size: 'xl' } })
+        const localWrapper = await getWrapper({
+          props: { size: 'xl' },
+        })
 
         const icon = localWrapper.find('.m-dropdown__icon')
         expect(icon.classes()).toContain('maz:text-lg')
@@ -309,7 +333,9 @@ describe('components/MazDropdown.vue', () => {
 
     describe('when size is mini', () => {
       it('then icon has small text class', async () => {
-        const localWrapper = await getWrapper({ props: { size: 'mini' } })
+        const localWrapper = await getWrapper({
+          props: { size: 'mini' },
+        })
 
         const icon = localWrapper.find('.m-dropdown__icon')
         expect(icon.classes()).toContain('maz:text-sm')
@@ -385,7 +411,11 @@ describe('given a MazUi global default for MazDropdown size', () => {
         slots: { default: 'Menu' },
         global: {
           stubs: { teleport: true, MazLink: true },
-          provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazDropdown: { size: 'lg' } } },
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              MazDropdown: { size: 'lg' },
+            },
+          },
         },
       })
 
@@ -402,7 +432,11 @@ describe('given a MazUi global default for MazDropdown size', () => {
         slots: { default: 'Menu' },
         global: {
           stubs: { teleport: true, MazLink: true },
-          provide: { [GLOBAL_CONFIG_INJECTION_KEY as symbol]: { MazDropdown: { size: 'lg' } } },
+          provide: {
+            [GLOBAL_CONFIG_INJECTION_KEY as symbol]: {
+              MazDropdown: { size: 'lg' },
+            },
+          },
         },
       })
 

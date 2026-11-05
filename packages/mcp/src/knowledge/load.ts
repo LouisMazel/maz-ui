@@ -74,13 +74,18 @@ export class Knowledge {
   readFile(relativePath: string): string | undefined {
     const file = join(this.source.directory, relativePath)
 
-    return existsSync(file) ? readFileSync(file, 'utf8') : undefined
+    return existsSync(file)
+      ? readFileSync(file, 'utf8')
+      : undefined
   }
 }
 
 export function defaultBundledDir(): string {
   const here = dirname(fileURLToPath(import.meta.url))
-  const candidates = [resolve(here, '../docs'), resolve(here, '../../docs')]
+  const candidates = [
+    resolve(here, '../docs'),
+    resolve(here, '../../docs'),
+  ]
 
   return candidates.find(candidate => existsSync(join(candidate, 'manifest.json'))) ?? candidates[0]
 }
@@ -100,7 +105,9 @@ export function readManifest(directory: string): Manifest | undefined {
 export function findProjectMazUi(cwd: string): { directory: string, version: string } | undefined {
   const directory = findProjectPackage(cwd, 'maz-ui')
 
-  return directory ? { directory, version: readPackageVersion(directory) ?? '0.0.0' } : undefined
+  return directory
+    ? { directory, version: readPackageVersion(directory) ?? '0.0.0' }
+    : undefined
 }
 
 export function loadKnowledge(options: LoadKnowledgeOptions = {}): Knowledge {

@@ -3,7 +3,9 @@ import { describe, expect, it, vi } from 'vitest'
 import vLazyImgPlugin from '../v-lazy-img'
 
 const { mockInstall } = vi.hoisted(() => ({
-  mockInstall: { install: vi.fn() },
+  mockInstall: {
+    install: vi.fn(),
+  },
 }))
 
 vi.mock('maz-ui/directives/vLazyImg', () => ({
@@ -20,7 +22,13 @@ describe('v-lazy-img plugin', () => {
     const vueApp = { use: mockUse }
     const context = {
       vueApp,
-      $config: { public: { mazUi: { directives: { vLazyImg: true } } } },
+      $config: {
+        public: {
+          mazUi: {
+            directives: { vLazyImg: true },
+          },
+        },
+      },
     }
 
     ;(vLazyImgPlugin as (...args: any[]) => any)(context)
@@ -34,7 +42,13 @@ describe('v-lazy-img plugin', () => {
     const lazyImgOptions = { baseClass: 'lazy' }
     const context = {
       vueApp,
-      $config: { public: { mazUi: { directives: { vLazyImg: lazyImgOptions } } } },
+      $config: {
+        public: {
+          mazUi: {
+            directives: { vLazyImg: lazyImgOptions },
+          },
+        },
+      },
     }
 
     ;(vLazyImgPlugin as (...args: any[]) => any)(context)

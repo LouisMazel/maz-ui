@@ -258,11 +258,17 @@ describe('given MazDatePicker utils', () => {
   describe('isValueDisabledWeekly', () => {
     it('then it should return true when day is disabled', () => {
       // 2024-01-15 is Monday (day 1)
-      expect(isValueDisabledWeekly({ value: '2024-01-15', disabledWeekly: [1] })).toBe(true)
+      expect(isValueDisabledWeekly({
+        value: '2024-01-15',
+        disabledWeekly: [1],
+      })).toBe(true)
     })
 
     it('then it should return false when day is not disabled', () => {
-      expect(isValueDisabledWeekly({ value: '2024-01-15', disabledWeekly: [0, 6] })).toBe(false)
+      expect(isValueDisabledWeekly({
+        value: '2024-01-15',
+        disabledWeekly: [0, 6],
+      })).toBe(false)
     })
   })
 

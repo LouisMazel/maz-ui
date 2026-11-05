@@ -69,12 +69,16 @@ export class ZoomImgHandler {
   private buildOptions(binding: VZoomImgBinding): VZoomImgBindingOptions {
     return {
       ...this.defaultOptions,
-      ...(typeof binding.value === 'object' ? binding.value : { src: binding.value }),
+      ...(typeof binding.value === 'object'
+        ? binding.value
+        : { src: binding.value }),
     }
   }
 
   get allInstances(): HTMLElement[] {
-    return [...document.querySelectorAll('.maz-zoom-img-instance')] as HTMLElement[]
+    return [
+      ...document.querySelectorAll('.maz-zoom-img-instance'),
+    ] as HTMLElement[]
   }
 
   public create(el: HTMLElement): void {

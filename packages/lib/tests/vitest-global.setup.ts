@@ -9,7 +9,9 @@ expect.extend(axeMatchers)
 const mockContext = {
   fillRect: vi.fn(),
   clearRect: vi.fn(),
-  getImageData: vi.fn(() => ({ data: Array.from({ length: 4 }) })),
+  getImageData: vi.fn(() => ({
+    data: Array.from({ length: 4 }),
+  })),
   putImageData: vi.fn(),
   createImageData: vi.fn(() => []),
   setTransform: vi.fn(),

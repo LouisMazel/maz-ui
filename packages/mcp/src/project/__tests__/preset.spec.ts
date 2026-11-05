@@ -39,8 +39,12 @@ describe('given readPresets', () => {
       expect(preset.overrides).toMatchObject({
         name: 'throw',
         foundation: { 'font-family': '\'Archivo\', sans-serif', 'border-width': '2px' },
-        scales: { rounded: { md: '4px', 2: '8px' } },
-        colors: { dark: { primary: '#FF5A36' } },
+        scales: {
+          rounded: { md: '4px', 2: '8px' },
+        },
+        colors: {
+          dark: { primary: '#FF5A36' },
+        },
         weight: 700,
         enabled: true,
         empty: null,
@@ -48,7 +52,9 @@ describe('given readPresets', () => {
     })
 
     it('then it keeps the source of the expressions it cannot evaluate', () => {
-      expect(preset.overrides.colors).toMatchObject({ light: { primary: '#C7330F', secondary: '<expr: palette.ink>' } })
+      expect(preset.overrides.colors).toMatchObject({
+        light: { primary: '#C7330F', secondary: '<expr: palette.ink>' },
+      })
       expect(preset.overrides.tags).toEqual(['a', '<expr: palette.tag>', null])
       expect(preset.overrides.accent).toMatch(/^<expr: `#\$\{palette\.accent\}`>$/)
     })
@@ -58,14 +64,24 @@ describe('given readPresets', () => {
     it('then it has no export name', () => {
       const [preset] = readPresets('preset.js', 'export default definePreset({ base: \'ocean\', overrides: { name: \'sea\' } })')
 
-      expect(preset).toEqual({ file: 'preset.js', exportName: undefined, base: 'ocean', overrides: { name: 'sea' } })
+      expect(preset).toEqual({
+        file: 'preset.js',
+        exportName: undefined,
+        base: 'ocean',
+        overrides: { name: 'sea' },
+      })
     })
   })
 
   describe('when definePreset has no object argument or no overrides', () => {
     it('then only the calls with an object are kept', () => {
       expect(readPresets('a.ts', 'const a = definePreset(options)\nconst b = definePreset({ base: mazUi })')).toEqual([
-        { file: 'a.ts', exportName: 'b', base: 'mazUi', overrides: {} },
+        {
+          file: 'a.ts',
+          exportName: 'b',
+          base: 'mazUi',
+          overrides: {},
+        },
       ])
     })
   })

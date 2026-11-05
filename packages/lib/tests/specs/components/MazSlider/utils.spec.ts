@@ -62,7 +62,9 @@ describe('utils', () => {
       document.body.appendChild(elem)
 
       const touchEvent = {
-        targetTouches: [{ pageX: 100, pageY: 50 }],
+        targetTouches: [
+          { pageX: 100, pageY: 50 },
+        ],
       } as unknown as TouchEvent
 
       const pos = getPos(touchEvent, elem)

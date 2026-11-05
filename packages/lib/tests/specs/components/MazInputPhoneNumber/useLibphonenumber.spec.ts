@@ -18,7 +18,9 @@ describe('unit Tests for useLibphonenumber.ts', () => {
       // Mock de la fonction getExampleNumber
       await loadExamples()
       // @ts-expect-error - test case - test case
-      getExampleNumber.mockReturnValue({ formatNational: () => '+1 123-456-7890' })
+      getExampleNumber.mockReturnValue({
+        formatNational: () => '+1 123-456-7890',
+      })
 
       const result = getPhoneNumberExample('US')
       expect(result).toBe('+1 123-456-7890')
@@ -62,7 +64,9 @@ describe('unit Tests for useLibphonenumber.ts', () => {
       // @ts-expect-error - test case
       // eslint-disable-next-line prefer-arrow-callback
       AsYouType.mockImplementation(function () {
-        return { input: (phoneNumber: string) => `Formatted: ${phoneNumber}` }
+        return {
+          input: (phoneNumber: string) => `Formatted: ${phoneNumber}`,
+        }
       })
 
       const result = getAsYouTypeFormat('US', '123-456-7890')

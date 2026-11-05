@@ -3,7 +3,13 @@
  * (a select inside a dialog) and the live regions
  */
 const INERT_EXCLUDED_SELECTOR = '.m-toast-container, .m-popover-panel, [aria-live], [role="status"], [role="alert"]'
-const INERT_SKIPPED_TAGS = new Set(['SCRIPT', 'STYLE', 'TEMPLATE', 'LINK', 'NOSCRIPT'])
+const INERT_SKIPPED_TAGS = new Set([
+  'SCRIPT',
+  'STYLE',
+  'TEMPLATE',
+  'LINK',
+  'NOSCRIPT',
+])
 
 /**
  * Number of open modals holding each element inert. An element is only released when no modal

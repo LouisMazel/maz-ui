@@ -16,7 +16,13 @@ export function notFoundMessage(context: ServerContext, query: string): string {
 
   return [
     `No maz-ui doc matches "${query}".`,
-    ...(suggestions.length > 0 ? ['', 'Closest docs:', ...suggestions.map(hit => formatDocLine(hit.doc))] : []),
+    ...(suggestions.length > 0
+      ? [
+          '',
+          'Closest docs:',
+          ...suggestions.map(hit => formatDocLine(hit.doc)),
+        ]
+      : []),
     '',
     'Pass an id from `search_docs` or `list_docs` (e.g. "components/maz-btn", "composables/use-toast", "guide/tailwind").',
   ].join('\n')
@@ -27,7 +33,9 @@ function related(context: ServerContext, doc: DocEntry): string {
     .map(id => context.knowledge.docsById.get(id))
     .filter((entry): entry is DocEntry => !!entry)
 
-  return docs.length > 0 ? `\n\nRelated: ${docs.map(entry => `\`${entry.id}\` (${entry.title})`).join(', ')}` : ''
+  return docs.length > 0
+    ? `\n\nRelated: ${docs.map(entry => `\`${entry.id}\` (${entry.title})`).join(', ')}`
+    : ''
 }
 
 export interface GetDocArgs {
@@ -45,7 +53,10 @@ export function getDoc(context: ServerContext, { id, sections, full = false }: G
   const markdown = linksToDocIds(stripFrontmatter(context.knowledge.readDoc(doc.id)), doc)
 
   if (sections?.length) {
-    const found = sections.map(title => ({ title, section: findSection(markdown, title) }))
+    const found = sections.map(title => ({
+      title,
+      section: findSection(markdown, title),
+    }))
     const missing = found.filter(entry => !entry.section).map(entry => entry.title)
 
     if (missing.length === found.length) {
@@ -55,7 +66,9 @@ export function getDoc(context: ServerContext, { id, sections, full = false }: G
     return [
       `# ${doc.title} (\`${doc.id}\`)`,
       ...found.filter(entry => entry.section).map(entry => sectionContent(markdown, entry.section as NonNullable<typeof entry.section>)),
-      ...(missing.length > 0 ? [`Sections not found: ${missing.join(', ')}.`] : []),
+      ...(missing.length > 0
+        ? [`Sections not found: ${missing.join(', ')}.`]
+        : []),
     ].join('\n\n')
   }
 
@@ -63,8 +76,12 @@ export function getDoc(context: ServerContext, { id, sections, full = false }: G
     return `${markdown.trim()}${related(context, doc)}`
 
   const firstSection = listSections(markdown)[0]
-  const intro = markdown.slice(0, Math.min(firstSection ? markdown.split('\n').slice(0, firstSection.start).join('\n').length : PREVIEW_CHARS, PREVIEW_CHARS))
-  const apiHint = doc.category === 'component' ? `\n\nFor the props, events and slots: \`get_component_api({ names: ${JSON.stringify(doc.symbols)} })\`.` : ''
+  const intro = markdown.slice(0, Math.min(firstSection
+    ? markdown.split('\n').slice(0, firstSection.start).join('\n').length
+    : PREVIEW_CHARS, PREVIEW_CHARS))
+  const apiHint = doc.category === 'component'
+    ? `\n\nFor the props, events and slots: \`get_component_api({ names: ${JSON.stringify(doc.symbols)} })\`.`
+    : ''
 
   return [
     intro.trim(),

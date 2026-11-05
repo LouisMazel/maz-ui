@@ -18,9 +18,18 @@ const keepPrefix: Replacer = (_match, prefix, value) => `${prefix}${keepEnds(val
 
 const REDACTION_RULES: [RegExp, Replacer][] = [
   [/(:?_authToken=)([^\s&]+)/gi, keepPrefix],
-  [new RegExp(`(--(?:${SECRET_FLAG_NAMES})=)(\\S+)`, 'gi'), keepPrefix],
-  [new RegExp(`(--(?:${SECRET_FLAG_NAMES})\\s+)(?!-)(\\S+)`, 'gi'), keepPrefix],
-  [/(\/\/[^/:@\s]+:)([^/@\s]+)@/g, (_match, prefix, value) => `${prefix}${keepEnds(value)}@`],
+  [
+    new RegExp(`(--(?:${SECRET_FLAG_NAMES})=)(\\S+)`, 'gi'),
+    keepPrefix,
+  ],
+  [
+    new RegExp(`(--(?:${SECRET_FLAG_NAMES})\\s+)(?!-)(\\S+)`, 'gi'),
+    keepPrefix,
+  ],
+  [
+    /(\/\/[^/:@\s]+:)([^/@\s]+)@/g,
+    (_match, prefix, value) => `${prefix}${keepEnds(value)}@`,
+  ],
   [/npm_[A-Za-z0-9]{10,}/g, keepEnds],
   [/gh[posru]_[A-Za-z0-9]{20,}/g, keepEnds],
   [/github_pat_\w{20,}/g, keepEnds],
