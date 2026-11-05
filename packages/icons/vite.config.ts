@@ -41,6 +41,8 @@ export default defineConfig({
       tsconfigPath: resolver('./tsconfig.json'),
       entryRoot: resolver('src'),
       outDirs: resolver('dist'),
+      // The build utilities of utils/ are typechecked, not published
+      include: ['src'],
     }),
     ViteGenerateIconsComponentsEntry(),
     codecovVitePlugin({
