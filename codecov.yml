@@ -1,263 +1,91 @@
-# Codecov configuration
-# Documentation: https://docs.codecov.com/docs/codecov-yaml
+# Codecov configuration: https://docs.codecov.com/docs/codecov-yaml
+# Validate it with `curl --data-binary @codecov.yml https://codecov.io/validate`
+#
+# test-unit.yml uploads the coverage of every tested package at once. What a package counts as covered is set by
+# its Vitest config (`coverage.include` / `coverage.exclude`), not here.
 
 codecov:
   max_report_age: off
 
-# Coverage configuration
 coverage:
-  # Precision for coverage percentages (2 decimals)
   precision: 2
-
-  # Round coverage to nearest value
   round: down
-
-  # Coverage range (red to green)
   range: 80..100
 
-  # Status checks configuration
   status:
-    # Project-level coverage
+    # The whole repository: no drop of more than 0.5% compared to the base of the pull request
     project:
       default:
-        # Require coverage for project
-        target: 80%
-        # Allow 0.5% drop in coverage
+        target: auto
         threshold: 0.5%
-        # Base branch for comparison
-        base: auto
-        # Only check changed files
-        only_pulls: false
-        # Informational mode (won't block PR)
-        informational: false
-        # Coverage must increase or stay same
-        if_ci_failed: error
 
-      # Per-package coverage targets
-      lib:
-        target: 80%
-        threshold: 0.5%
-        flags:
-          - lib
-        paths:
-          - packages/lib/
-
-      utils:
-        target: 90%
-        threshold: 0.5%
-        flags:
-          - utils
-        paths:
-          - packages/utils/
-
-      mcp:
-        target: 90%
-        threshold: 0.5%
-        flags:
-          - mcp
-        paths:
-          - packages/mcp/
-
-      # icons:
-      #   target: 70%
-      #   threshold: 1%
-      #   flags:
-      #     - icons
-      #   paths:
-      #     - packages/icons/
-
-      translations:
-        target: 90%
-        threshold: 1%
-        flags:
-          - translations
-        paths:
-          - packages/translations/
-
-      node:
-        target: 90%
-        threshold: 0.5%
-        flags:
-          - node
-        paths:
-          - packages/node/
-
-      nuxt:
-        target: 90%
-        threshold: 1%
-        flags:
-          - nuxt
-        paths:
-          - packages/nuxt/
-
-      themes:
-        target: 90%
-        threshold: 1%
-        flags:
-          - themes
-        paths:
-          - packages/themes/
-
-      eslint-config:
-        target: 70%
-        threshold: 1%
-        flags:
-          - eslint-config
-        paths:
-          - packages/eslint-config/
-
-      stylelint-config:
-        target: 70%
-        threshold: 1%
-        flags:
-          - stylelint-config
-        paths:
-          - packages/stylelint-config/
-
-    # Patch-level coverage (new code in PR)
+    # The lines added or changed by a pull request
     patch:
       default:
-        # New code should have at least 70% coverage
         target: 80%
-        # Allow 5% variance for new code
-        threshold: 1%
-        # Only check on pull requests
         only_pulls: true
-        # Make it informational for now
-        informational: false
 
-# Comment configuration
 comment:
-  # Behavior for PR comments
-  layout: 'header, diff, flags, components, footer'
+  layout: 'header, diff, components, files, footer'
   behavior: default
-  require_changes: false
-  require_base: false
-  require_head: true
 
-  # Show coverage for these sections
-  after_n_builds: 1
-
-# GitHub integration
-github_checks:
-  annotations: true
-
-# Flags for different packages
-flags:
-  lib:
-    paths:
-      - packages/lib/
-    carryforward: false
-
-  utils:
-    paths:
-      - packages/utils/
-    carryforward: false
-
-  mcp:
-    paths:
-      - packages/mcp/
-    carryforward: false
-
-  icons:
-    paths:
-      - packages/icons/
-    carryforward: false
-
-  translations:
-    paths:
-      - packages/translations/
-    carryforward: false
-
-  node:
-    paths:
-      - packages/node/
-    carryforward: false
-
-  nuxt:
-    paths:
-      - packages/nuxt/
-    carryforward: false
-
-  themes:
-    paths:
-      - packages/themes/
-    carryforward: false
-
-  maz-cli:
-    paths:
-      - packages/maz-cli/
-    carryforward: false
-
-  eslint-config:
-    paths:
-      - packages/eslint-config/
-    carryforward: false
-
-  stylelint-config:
-    paths:
-      - packages/stylelint-config/
-    carryforward: false
-
-# Ignore paths
-ignore:
-  - '**/*.test.ts'
-  - '**/*.test.js'
-  - '**/*.spec.ts'
-  - '**/*.spec.js'
-  - '**/tests/**'
-  - '**/test/**'
-  - '**/__tests__/**'
-  - '**/node_modules/**'
-  - '**/dist/**'
-  - '**/build/**'
-  - '**/.next/**'
-  - '**/coverage/**'
-  - '**/*.d.ts'
-  - '**/types/**'
-  - '**/index.ts'
-  - 'packages/lib/src/tailwindcss/**'
-  - 'packages/upgrade/**'
-
-# Component management (for monorepo)
+# One component per tested package: its coverage in the pull request comment, and its own status.
+# A new tested package is uploaded automatically: add it here to see it apart.
 component_management:
+  default_rules:
+    statuses:
+      - type: project
+        target: auto
+        threshold: 1%
+
+  # `component_id` keeps the history of a component: never change it
   individual_components:
     - component_id: lib
-      name: maz-ui Library
+      name: maz-ui
       paths:
         - packages/lib/**
 
-    - component_id: utils
-      name: Utils Package
+    - component_id: eslint-config
+      name: '@maz-ui/eslint-config'
       paths:
-        - packages/utils/**
+        - packages/eslint-config/**
 
     - component_id: mcp
-      name: MCP Package
+      name: '@maz-ui/mcp'
       paths:
         - packages/mcp/**
 
-    - component_id: icons
-      name: Icons Package
-      paths:
-        - packages/icons/**
-
-    - component_id: translations
-      name: Translations Package
-      paths:
-        - packages/translations/**
-
     - component_id: node
-      name: Node Package
+      name: '@maz-ui/node'
       paths:
         - packages/node/**
 
     - component_id: nuxt
-      name: Nuxt Package
+      name: '@maz-ui/nuxt'
       paths:
         - packages/nuxt/**
 
+    - component_id: stylelint-config
+      name: '@maz-ui/stylelint-config'
+      paths:
+        - packages/stylelint-config/**
+
     - component_id: themes
-      name: Themes Package
+      name: '@maz-ui/themes'
       paths:
         - packages/themes/**
+
+    - component_id: translations
+      name: '@maz-ui/translations'
+      paths:
+        - packages/translations/**
+
+    - component_id: upgrade
+      name: '@maz-ui/upgrade'
+      paths:
+        - packages/upgrade/**
+
+    - component_id: utils
+      name: '@maz-ui/utils'
+      paths:
+        - packages/utils/**
