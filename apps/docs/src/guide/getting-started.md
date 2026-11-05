@@ -164,6 +164,41 @@ npx @maz-ui/mcp init
 
 [→ View AI agents guide](./ai-agents.md)
 
+---
+
+### Keep the packages on the same version
+
+`maz-ui` and the packages of its ecosystem (`@maz-ui/themes`, `@maz-ui/translations`, `@maz-ui/icons`, `@maz-ui/utils`, `@maz-ui/nuxt`, `@maz-ui/node`, `@maz-ui/mcp`) are released together, always on the same version. When you install several of them, keep them on this version: two versions of a package install two copies of it, which make your bundle heavier, and two copies of `maz-ui` do not share the global configuration (`@maz-ui/nuxt` warns about it when it starts).
+
+Group their updates in a single pull request. With Dependabot (`.github/dependabot.yml`):
+
+```yaml
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      maz-ui:
+        patterns:
+          - maz-ui
+          - '@maz-ui/*'
+```
+
+With Renovate (`renovate.json`):
+
+```json
+{
+  "packageRules": [
+    {
+      "groupName": "maz-ui",
+      "matchPackageNames": ["maz-ui", "@maz-ui/*"]
+    }
+  ]
+}
+```
+
 ## Performance Optimizations
 
 ### Tree-Shaking Benefits
