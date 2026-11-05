@@ -40,12 +40,43 @@ export default defineConfig({
   },
 
   monorepo: {
-    versionMode: 'selective',
-    packages: ['packages/*'],
+    // Explicit lists: a new published package must be put in a group
+    groups: [
+      {
+        // The library and its ecosystem: one version line, the `v*` tags and the version of the root package.json
+        name: 'ecosystem',
+        versionMode: 'selective',
+        packages: [
+          'packages/icons',
+          'packages/lib',
+          'packages/mcp',
+          'packages/node',
+          'packages/nuxt',
+          'packages/themes',
+          'packages/translations',
+          'packages/utils',
+        ],
+      },
+      {
+        // Tooling with its own version line and tags (`@maz-ui/eslint-config@5.1.0`)
+        name: 'tooling',
+        versionMode: 'independent',
+        packages: [
+          'packages/eslint-config',
+          'packages/stylelint-config',
+          'packages/upgrade',
+        ],
+        changelog: { rootChangelog: false },
+      },
+    ],
   },
 
   bump: {
-    // @maz-ui/mcp bundles @maz-ui/node and @maz-ui/utils: they are optional peers (never installed), so a fix in them still releases it
+    // Only for @maz-ui/mcp, the only package with internal peers: it bundles @maz-ui/node and @maz-ui/utils, declared as
+    // optional peers so that a fix in them releases it. Never installed by mcp, but npm checks them against the versions
+    // of the project: a project whose @maz-ui/utils is out of their range gets it moved out of its root node_modules
+    // (fine unless the project imports it without declaring it). A new internal peer would be bumped on every release
+    // of its dependency too
     dependencyTypes: ['dependencies', 'peerDependencies'],
   },
 
