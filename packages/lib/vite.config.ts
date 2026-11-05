@@ -39,6 +39,8 @@ const moduleEntries = Object.fromEntries(
     .map(getEntries),
 )
 
+const isExternal = getExternalDependencies(pkg)
+
 export default defineConfig(({ mode }) => {
   const isProduction = mode === 'production'
   return {
@@ -59,6 +61,12 @@ export default defineConfig(({ mode }) => {
         outDirs: [
           resolver('dist'),
         ],
+        // vue-tsc expands the instance types of the template refs, whose `$watch` uses `OnCleanup`: `vue` does not
+        // re-export it, the declaration would import `@vue/reactivity`, which the consumers do not declare
+        beforeWriteFile: (filePath, content) => ({
+          filePath,
+          content: content.replaceAll('import(\'@vue/reactivity\').OnCleanup', '((cleanupFn: () => void) => void)'),
+        }),
       }),
       ViteCompileStyles(),
       codecovVitePlugin({
@@ -102,7 +110,7 @@ export default defineConfig(({ mode }) => {
           // Bundle dayjs plugins to avoid CJS interop issues
           if (id.startsWith('dayjs/plugin/'))
             return false
-          return getExternalDependencies(pkg)(id)
+          return isExternal(id)
         },
         output: {
           format: 'es',
