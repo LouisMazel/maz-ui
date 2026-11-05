@@ -80,20 +80,21 @@
     }
   },
   "devDependencies": {
-    "@codecov/vite-plugin": "^2.0.1",
+    "@codecov/vite-plugin": "catalog:",
+    "@maz-ui/eslint-config": "workspace:^",
     "@maz-ui/vite-config": "workspace:^",
-    "@types/node": "^26.6.6",
-    "@vitejs/plugin-vue": "^6.0.10",
-    "@vitest/coverage-v8": "^5.1.0",
-    "cross-env": "^10.1.0",
-    "eslint": "^10.14.0",
-    "glob": "^14.0.3",
-    "libphonenumber-js": "^1.13.15",
-    "typescript": "^6.0.3",
-    "vite": "^8.3.5",
-    "vite-plugin-dts": "^5.1.2",
-    "vitest": "5.1.0",
-    "vue": "^3.5.44"
+    "@types/node": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "cross-env": "catalog:",
+    "eslint": "catalog:",
+    "glob": "catalog:",
+    "libphonenumber-js": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-dts": "catalog:",
+    "vitest": "catalog:",
+    "vue": "catalog:"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [

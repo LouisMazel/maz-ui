@@ -52,20 +52,19 @@
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:^",
     "@maz-ui/node": "workspace:^",
-    "@nx/js": "^24.0.4",
-    "@types/node": "^26.6.6",
-    "@vitest/ui": "^5.1.0",
+    "@types/node": "catalog:",
     "@yoloship/action": "0.2.0-beta.15",
     "@yoloship/claude-sdk": "0.2.0-beta.9",
-    "cross-env": "^10.1.0",
-    "eslint": "^10.14.0",
+    "cross-env": "catalog:",
+    "eslint": "catalog:",
     "husky": "^9.1.7",
     "lint-staged": "17.6.0",
     "nx": "^24.0.4",
     "relizy": "^1.14.4",
     "semver": "^7.8.6",
     "twitter-api-v2": "^1.31.0",
-    "typescript": "^6.0.3"
+    "typescript": "catalog:",
+    "yaml": "catalog:"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs,mts,md,yml,json}": [

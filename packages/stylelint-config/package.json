@@ -55,7 +55,7 @@
     "stylelint": ">=16.0.0 <18.0.0"
   },
   "dependencies": {
-    "consola": "^3.4.2",
+    "consola": "catalog:",
     "postcss-html": "^2.0.0",
     "postcss-scss": "^4.0.9",
     "stylelint-config-html": "^2.0.0",
@@ -69,14 +69,14 @@
   },
   "devDependencies": {
     "@maz-ui/eslint-config": "workspace:^",
-    "@types/node": "^26.6.6",
-    "@vitest/coverage-v8": "^5.1.0",
-    "cross-env": "^10.1.0",
-    "eslint": "^10.14.0",
-    "stylelint": "^17.16.0",
-    "typescript": "^6.0.3",
-    "unbuild": "^3.6.1",
-    "vitest": "5.1.0"
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "cross-env": "catalog:",
+    "eslint": "catalog:",
+    "stylelint": "catalog:",
+    "typescript": "catalog:",
+    "unbuild": "catalog:",
+    "vitest": "catalog:"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [

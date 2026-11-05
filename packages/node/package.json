@@ -53,20 +53,21 @@
     "test:unit:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "colorette": "^2.0.20",
-    "consola": "^3.4.2",
-    "figlet": "^1.12.0",
+    "colorette": "catalog:",
+    "consola": "catalog:",
+    "figlet": "catalog:",
     "jsonc-parser": "^3.3.1"
   },
   "devDependencies": {
-    "@types/node": "^26.6.6",
-    "@vitest/coverage-v8": "^5.1.0",
-    "cross-env": "^10.1.0",
-    "eslint": "^10.14.0",
-    "tsx": "^4.23.15",
-    "typescript": "^6.0.3",
-    "unbuild": "^3.6.1",
-    "vitest": "5.1.0"
+    "@maz-ui/eslint-config": "workspace:^",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "cross-env": "catalog:",
+    "eslint": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "unbuild": "catalog:",
+    "vitest": "catalog:"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,mts,cjs,md,yml,json}": [
