@@ -1,20 +1,16 @@
 // @ts-check
 
-import { createRequire } from 'node:module'
-
-const require = createRequire(import.meta.url)
-const rootPkg = require('../../../package.json')
-
 /**
+ * Packages left out of the bundle: the consumers install them (`dependencies`, `peerDependencies`), so they get a
+ * single copy, deduplicated and tree-shaken by their bundler. The `devDependencies` are external too, so that a package
+ * imported by mistake is never bundled: `.github/scripts/check-dist-imports.mjs` fails when a `dist` imports a package
+ * that is not declared in `dependencies` or `peerDependencies`.
  * @param {{
  *   devDependencies?: Record<string, string>;
  *   peerDependencies?: Record<string, string>;
  *   dependencies?: Record<string, string>;
  * }} pkg
  * @param {{
- *   rootDevDependencies?: boolean;
- *   rootPeerDependencies?: boolean;
- *   rootDependencies?: boolean;
  *   peerDependencies?: boolean;
  *   devDependencies?: boolean;
  *   dependencies?: boolean;
@@ -23,11 +19,8 @@ const rootPkg = require('../../../package.json')
  * }} options
  * @returns {(id: string) => boolean} External function of vite config
  */
-export function getExternalDependencies(pkg, options) {
+export function getExternalDependencies(pkg, options = {}) {
   const finalOptions = {
-    rootDevDependencies: true,
-    rootPeerDependencies: true,
-    rootDependencies: true,
     peerDependencies: true,
     devDependencies: true,
     dependencies: true,
@@ -35,22 +28,22 @@ export function getExternalDependencies(pkg, options) {
     excluded: [],
     ...options,
   }
-  return (id) => {
-    const externals = Object.keys({
-      ...(finalOptions.rootDevDependencies && 'devDependencies' in rootPkg ? rootPkg.devDependencies ?? {} : {}),
-      ...(finalOptions.rootPeerDependencies && 'peerDependencies' in rootPkg ? rootPkg.peerDependencies ?? {} : {}),
-      ...(finalOptions.rootDependencies && 'dependencies' in rootPkg ? rootPkg.dependencies ?? {} : {}),
-      ...(finalOptions.devDependencies && 'devDependencies' in pkg ? pkg.devDependencies ?? {} : {}),
-      ...(finalOptions.peerDependencies && 'peerDependencies' in pkg ? pkg.peerDependencies ?? {} : {}),
-      ...(finalOptions.dependencies && 'dependencies' in pkg ? pkg.dependencies ?? {} : {}),
-    })
 
-    externals.push(...finalOptions.excluded)
-    const finalExternals = externals.filter(ext => !finalOptions.included.includes(ext))
+  const externals = [
+    ...Object.keys({
+      ...(finalOptions.devDependencies
+        ? pkg.devDependencies ?? {}
+        : {}),
+      ...(finalOptions.peerDependencies
+        ? pkg.peerDependencies ?? {}
+        : {}),
+      ...(finalOptions.dependencies
+        ? pkg.dependencies ?? {}
+        : {}),
+    }),
+    ...finalOptions.excluded,
+  ].filter(ext => !finalOptions.included.includes(ext))
 
-    // Match exact package name or any sub-import (e.g., @accor/ads-theme/presets/*)
-    return finalExternals.some((ext) => {
-      return (id === ext || id.startsWith(`${ext}/`)) && !finalOptions.included.includes(id)
-    })
-  }
+  // Match exact package name or any sub-import (e.g., @maz-ui/themes/presets/*)
+  return id => !finalOptions.included.includes(id) && externals.some(ext => id === ext || id.startsWith(`${ext}/`))
 }
