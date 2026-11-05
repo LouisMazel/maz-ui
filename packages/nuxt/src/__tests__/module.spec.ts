@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import moduleConfig from '../module'
 
-const { addComponent, addPlugin, addImports, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, detectAgentTargets, findProjectPackage, readPackageVersion } = vi.hoisted(() => {
+const { addComponent, addPlugin, addImports, createResolver, defineNuxtModule, addCustomTab, useLogger, logger, setupAgents, detectAgentTargets, findProjectPackage, readPackageVersion, createRequire } = vi.hoisted(() => {
   const logger = {
     info: vi.fn(),
     warn: vi.fn(),
@@ -29,8 +29,18 @@ const { addComponent, addPlugin, addImports, createResolver, defineNuxtModule, a
     })),
     defineNuxtModule: vi.fn((config: any) => config),
     addCustomTab: vi.fn(),
+    createRequire: vi.fn((_from: string) => ({
+      resolve: (id: string): string => {
+        throw new Error(`Cannot find module '${id}'`)
+      },
+    })),
   }
 })
+
+vi.mock('node:module', async importOriginal => ({
+  ...await importOriginal<typeof import('node:module')>(),
+  createRequire,
+}))
 
 vi.mock('@nuxt/kit', () => ({
   addComponent,
@@ -1114,6 +1124,54 @@ describe('nuxt module', () => {
           const { nuxt } = callSetup({ agents: true })
 
           expect(nuxt.options.runtimeConfig.public.mazUi).not.toHaveProperty('agents')
+        })
+      })
+    })
+
+    describe('given the maz-ui of the app and the maz-ui of the module', () => {
+      function resolveMazUi({ app, module }: { app?: string, module?: string }) {
+        createRequire.mockImplementation((from: string) => ({
+          resolve: () => {
+            const version = from === '/project/package.json'
+              ? app
+              : module
+
+            if (!version)
+              throw new Error('Cannot find module \'maz-ui/package.json\'')
+
+            return `/${version}/node_modules/maz-ui/package.json`
+          },
+        }))
+        readPackageVersion.mockImplementation((dir?: string) => dir?.split('/')[1])
+      }
+
+      describe('when they have the same version', () => {
+        it('then it does not warn', () => {
+          resolveMazUi({ app: '5.2.0', module: '5.2.0' })
+
+          callSetup()
+
+          expect(logger.warn).not.toHaveBeenCalledWith(expect.stringContaining('two copies of maz-ui'))
+        })
+      })
+
+      describe('when they have different versions', () => {
+        it('then it warns that two copies of maz-ui are loaded', () => {
+          resolveMazUi({ app: '5.1.0', module: '5.2.0' })
+
+          callSetup()
+
+          expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('The app installs maz-ui 5.1.0 and @maz-ui/nuxt uses maz-ui 5.2.0'))
+        })
+      })
+
+      describe('when the app does not resolve maz-ui', () => {
+        it('then it does not warn', () => {
+          resolveMazUi({ module: '5.2.0' })
+
+          callSetup()
+
+          expect(logger.warn).not.toHaveBeenCalledWith(expect.stringContaining('two copies of maz-ui'))
         })
       })
     })

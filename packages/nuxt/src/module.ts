@@ -1,6 +1,7 @@
 import type { AgentTarget, SetupAgentsChange, SetupAgentsResult } from '@maz-ui/node'
 import type { Nuxt } from 'nuxt/schema'
 import type { MazUiNuxtOptions } from './types'
+import { createRequire } from 'node:module'
 import { dirname, join, resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
@@ -231,6 +232,32 @@ function installedMcpVersion(rootDir: string): string | undefined {
     : undefined
 }
 
+/** Version of the maz-ui that Node.js resolves from a file, `undefined` when it does not resolve */
+function resolveMazUiVersion(from: string): string | undefined {
+  try {
+    return readPackageVersion(dirname(createRequire(from).resolve('maz-ui/package.json')))
+  }
+  catch {
+    return undefined
+  }
+}
+
+/**
+ * The plugins of the module import the maz-ui of the module, the auto-imported components and composables the maz-ui
+ * of the app: two versions are two copies, and the components of one do not see the defaults provided by the other
+ */
+function checkMazUiVersion(rootDir: string | undefined) {
+  if (!rootDir)
+    return
+
+  const appVersion = resolveMazUiVersion(join(rootDir, 'package.json'))
+  const moduleVersion = resolveMazUiVersion(import.meta.url)
+
+  if (appVersion && moduleVersion && appVersion !== moduleVersion) {
+    useLogger('maz-ui').warn(`The app installs maz-ui ${appVersion} and @maz-ui/nuxt uses maz-ui ${moduleVersion}: two copies of maz-ui are loaded, and the options of the module (\`mazUi.general\`, \`mazUi.plugins\`...) may not apply to the components. Install the same version of maz-ui and @maz-ui/nuxt.`)
+  }
+}
+
 function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
   if (!agents || !(nuxt.options.dev || nuxt.options._prepare) || process.env.CI || nuxt.options.test) {
     return
@@ -312,6 +339,8 @@ export default defineNuxtModule<MazUiNuxtOptions>({
     const { resolve } = createResolver(import.meta.url)
 
     nuxt.options.build.transpile.push('maz-ui', '@maz-ui/themes', '@maz-ui/translations')
+
+    checkMazUiVersion(nuxt.options.rootDir)
 
     const { agents, ...moduleOptions } = defu(
       nuxt.options.runtimeConfig.public.mazUi,
