@@ -201,7 +201,7 @@ const defaults = {
   },
   agents: {
     rules: false,
-    mcp: true,
+    mcp: false,
   },
 } satisfies Required<MazUiNuxtOptions>
 

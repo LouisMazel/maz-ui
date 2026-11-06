@@ -63,20 +63,21 @@ npx @maz-ui/mcp init --remove                                  # remove everythi
 
 Run it again after upgrading maz-ui: the rules follow the installed version.
 
-### Nuxt: connected by default
+### Nuxt: opt-in
 
-With [`@maz-ui/nuxt`](./../ecosystem/nuxt.md), the agents detected in the project are connected to the maz-ui MCP server when you start the dev server: the module only adds the `maz-ui` entry to their MCP config (`.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`). The instructions of the MCP server already give the maz-ui rules to the agents, so no rule file is written by default.
+With [`@maz-ui/nuxt`](./../ecosystem/nuxt.md), set `agents.mcp: true` to connect the agents detected in the project to the maz-ui MCP server when you start the dev server: the module adds the `maz-ui` entry to their MCP config (`.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`). The instructions of the MCP server already give the maz-ui rules to the agents. Nothing is written by default.
 
 ```ts
 export default defineNuxtConfig({
   modules: ['@maz-ui/nuxt'],
   mazUi: {
-    // default: { rules: false, mcp: true }
+    // default: { rules: false, mcp: false }
     agents: {
+      mcp: true, // register the maz-ui MCP server
       rules: true, // also write .claude/rules/maz-ui.md and the AGENTS.md section
       targets: ['claude', 'agents-md'], // default: the detected agents
     },
-    // or disable it: agents: false
+    // or enable everything: agents: true
   },
 })
 ```

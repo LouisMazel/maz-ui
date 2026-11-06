@@ -210,7 +210,7 @@ export default defineNuxtConfig({
       vZoomImg: true,
     },
 
-    // AI coding agents (default: { rules: false, mcp: true }, false to disable)
+    // AI coding agents (default: { rules: false, mcp: false }, true to enable everything)
     // In development, registers the maz-ui MCP server in the configs of the detected agents
     // (.mcp.json, .cursor/mcp.json, .vscode/mcp.json), rules: true also writes .claude/rules/maz-ui.md and an AGENTS.md section
     // In a monorepo, the files go to the root of the workspace (dir: '<folder>' to change it)

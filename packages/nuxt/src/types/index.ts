@@ -348,7 +348,7 @@ export interface MazUiNuxtOptions {
    * - `paths`: globs (relative to `dir`) the Claude Code rule is scoped to, so that it is only loaded when Claude reads or edits a matching file. Default `'auto'`: the workspaces that depend on maz-ui. `'all'`: always loaded
    * - `true`: `{ mcp: true, rules: true }`, `false`: disabled
    * @example `agents: { rules: true }` or `agents: false`
-   * @default { rules: false, mcp: true }
+   * @default { rules: false, mcp: false }
    */
   agents?: boolean | {
     targets?: AgentTarget[]
