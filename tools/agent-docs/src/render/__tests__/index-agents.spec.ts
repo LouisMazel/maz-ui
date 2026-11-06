@@ -97,7 +97,7 @@ describe('given renderLlmsFullTxt', () => {
 })
 
 describe('given the agent content renderers', () => {
-  const content = { rules: 'Use **maz-ui**.', workflow: '### Workflow\n\n1. Search' }
+  const content = { rules: 'Use **maz-ui**.', rulesCore: 'Core **maz-ui**.', workflow: '### Workflow\n\n1. Search' }
   const versionNote = '> These rules and the docs in `node_modules/maz-ui/docs` match the installed version of maz-ui (`node_modules/maz-ui/package.json`).'
 
   describe('when rendering the rules doc', () => {
@@ -111,8 +111,8 @@ describe('given the agent content renderers', () => {
   })
 
   describe('when rendering the Claude rule and the AGENTS.md section', () => {
-    it('then adds the title without version, setupAgents adds the installed one', () => {
-      expect(renderClaudeRule(content)).toBe('# maz-ui\n\nUse **maz-ui**.\n')
+    it('then adds the title without version, setupAgents adds the installed one, and the Claude rule only holds the core', () => {
+      expect(renderClaudeRule(content)).toBe('# maz-ui\n\nCore **maz-ui**.\n')
       expect(renderAgentsMdSection(content)).toBe('## maz-ui\n\nUse **maz-ui**.\n')
     })
   })
@@ -134,6 +134,17 @@ describe('given the agent content renderers', () => {
       expect(loaded.rules.startsWith('This project is built with **maz-ui**')).toBe(true)
       expect(loaded.rules).not.toContain('{{')
       expect(loaded.workflow.startsWith('### Workflow')).toBe(true)
+    })
+
+    it('then the core of the rules is short and keeps the prohibitions', () => {
+      const { rulesCore } = loadAgentContent(getSourcePaths().content)
+
+      expect(rulesCore.length).toBeLessThan(2600)
+      expect(rulesCore).toContain('default Tailwind palette')
+      expect(rulesCore).toContain('`maz:` prefix')
+      expect(rulesCore).toContain('Deep imports')
+      expect(rulesCore).toContain('never inline SVG')
+      expect(rulesCore).toContain('`review_code`')
     })
   })
 })

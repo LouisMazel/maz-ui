@@ -21,6 +21,7 @@ Usage:
 
 init options:
   --targets <list>    Comma separated: ${AGENT_TARGETS.join(', ')} (default: detected, else claude,agents-md)
+  --paths <globs>     Comma separated globs the Claude Code rule is scoped to, or all (default: the workspaces that use maz-ui)
   --no-rules          Only register the MCP server (no rule file, no AGENTS.md section)
   --no-mcp            Do not register the MCP server
   --dry-run           Show the changes without writing them
@@ -90,6 +91,17 @@ function resolveInitTargets(values: Record<string, unknown>, cwd: string): Agent
     : ['claude', 'agents-md'])
 }
 
+/** Scope of the Claude Code rule: the `--paths` globs, `all`, or `undefined` for the automatic scope */
+function resolveInitPaths(values: Record<string, unknown>): 'all' | string[] | undefined {
+  const globs = typeof values.paths === 'string'
+    ? values.paths.split(',').map(glob => glob.trim()).filter(Boolean)
+    : undefined
+
+  return globs?.length === 1 && globs[0] === 'all'
+    ? 'all'
+    : globs
+}
+
 export function runInit(values: Record<string, unknown>, cwd: string): number {
   const targets = resolveInitTargets(values, cwd)
 
@@ -113,6 +125,7 @@ export function runInit(values: Record<string, unknown>, cwd: string): number {
     dryRun,
     remove,
     docsDir,
+    paths: resolveInitPaths(values),
     mcpVersion: readOwnVersion(),
   })
   const serverCommand = [result.mcpServer.command, ...result.mcpServer.args].join(' ')
@@ -121,6 +134,9 @@ export function runInit(values: Record<string, unknown>, cwd: string): number {
     ? `${result.version} `
     : ''}agents setup (${targets.join(', ')})${dryRun ? ' - dry run' : ''}`)
   printChanges(result.changes, dryRun)
+
+  if (!remove && rules && result.claudeRulePaths)
+    console.log(`\nThe Claude Code rule is only loaded for: ${result.claudeRulePaths.join(', ')} (change it with --paths, or --paths all to always load it).`)
 
   if (withoutMazUi)
     console.log(`\nmaz-ui is not installed in this project: only the MCP server is registered, with the docs bundled in @maz-ui/mcp. Install maz-ui and run init again to add the rules.`)
@@ -211,6 +227,7 @@ export async function runCli(argv: string[] = process.argv.slice(2)): Promise<nu
       'docs': { type: 'string' },
       'cwd': { type: 'string' },
       'targets': { type: 'string' },
+      'paths': { type: 'string' },
       'no-rules': { type: 'boolean' },
       'no-mcp': { type: 'boolean' },
       'dry-run': { type: 'boolean' },

@@ -40,6 +40,7 @@ Guarantees:
 - MCP config files are edited in place, keeping their formatting and comments. When a server already runs `@maz-ui/mcp` under another name, nothing is added.
 - An existing entry of the maz-ui MCP server only gets a better command (the installed `@maz-ui/mcp`, a newer pinned version) and keeps its other fields (`env`...). A command written by hand (with `--docs`, for example) is never changed.
 - In a monorepo, rules written by a newer maz-ui and a newer pinned `@maz-ui/mcp` are never downgraded by an app with an older version. Files are written atomically: apps started together never read a half-written file.
+- The Claude rule is scoped with a `paths:` frontmatter, so that Claude Code only loads it when it reads or edits a file of the workspaces that depend on maz-ui (see [Scope of the Claude rule](#scope-of-the-claude-rule)), instead of at every session.
 - Without `CLAUDE.md` in the project, Claude Code reads `AGENTS.md`: the Claude rule is then skipped to avoid loading the rules twice.
 - Running it again is idempotent: unchanged files are reported as `unchanged`.
 
@@ -66,12 +67,24 @@ setupAgents({
   mcpVersion: '5.1.0',
   // Command of the MCP server, default: mcpServerCommand(rootDir, mcpVersion, tool)
   mcpServer: undefined,
+  // Scope of the Claude rule: 'auto' (default), 'all' (always loaded) or globs relative to rootDir
+  paths: 'auto',
   // Tool whose agents are configured, default: MAZ_UI_AGENTS_TOOL
   tool: undefined,
   // Rules of the tool, required with another tool than maz-ui, default: the agent docs of docsDir
   agentDocs: undefined,
 })
 ```
+
+## Scope of the Claude rule
+
+Without a `paths:` frontmatter, Claude Code loads a rule at every session, in every folder. `setupAgents` writes the frontmatter before the managed header (it must be the first thing of the file) and lists the globs in `result.claudeRulePaths`:
+
+- `paths: 'auto'` (default): the workspaces of the monorepo (`pnpm-workspace.yaml`, or `workspaces` of `package.json`) whose `package.json` depends on one of the `packages` of the tool (`dependencies`, `devDependencies`, `peerDependencies`, `optionalDependencies`), with the `ruleGlobs` of the tool inside each: `apps/pwa/**/*.{vue,ts,tsx,css,scss}`. A single package project, or a project where no dependency is found, gets the `ruleGlobs` of the tool for the whole project. A tool without `packages` is never scoped.
+- `paths: 'all'`: no frontmatter, the rule is always loaded.
+- `paths: ['apps/web/**', 'packages/ui/**']`: your globs, used as is.
+
+The frontmatter is rewritten at every run from the project and the options, and is not part of the checksum: an edit of the rules themselves is still detected and kept, a rule written before the frontmatter existed is updated. To scope the rule differently, use the `paths` option rather than editing the file.
 
 ## Use it for another tool
 
@@ -92,6 +105,9 @@ const tool: AgentsTool = {
   generatedBy: '`relizy mcp init`',
   // Line under the title of the rules, default: `> relizy <version> is installed: these rules match this version.`
   versionNote: version => `> relizy ${version} is installed: these rules match this version.`,
+  // Scope of the Claude rule: the workspaces that depend on these packages, and the files of the rule inside them
+  packages: ['relizy'],
+  ruleGlobs: ['relizy.config.*', '**/CHANGELOG.md'],
 }
 
 setupAgents({

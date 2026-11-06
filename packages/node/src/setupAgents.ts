@@ -2,7 +2,7 @@ import type { FormattingOptions, ParseError } from 'jsonc-parser'
 
 import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs'
-import { basename, dirname, join } from 'node:path'
+import { basename, dirname, join, relative, sep } from 'node:path'
 import { applyEdits, modify, parse } from 'jsonc-parser'
 
 /**
@@ -45,6 +45,15 @@ export interface SetupAgentsOptions {
   tool?: AgentsTool
   /** Rules of the tool, required with another `tool` than maz-ui. Default: the maz-ui agent docs of `docsDir` */
   agentDocs?: AgentDocs
+  /**
+   * Scope of the Claude Code rule, written as a `paths:` frontmatter so that Claude Code only loads it
+   * when it reads or edits a matching file, instead of at every session:
+   * - `'auto'` (default): the files of the workspaces whose `package.json` depends on one of `tool.packages`
+   *   (e.g. `apps/pwa/**\/*.vue`), else the files of the project. No scope when the tool declares no `packages`
+   * - `'all'`: no scope, the rule is always loaded
+   * - globs, relative to `rootDir`: used as is
+   */
+  paths?: 'auto' | 'all' | string[]
 }
 
 export interface McpServerCommand {
@@ -69,6 +78,8 @@ export interface SetupAgentsResult {
   mcpServer: McpServerCommand
   /** `false` when the server runs through `npx -y` because the project does not install the MCP package */
   localMcpServer: boolean
+  /** Globs the Claude Code rule is scoped to (`paths:` frontmatter). `undefined`: the rule is always loaded, or not written */
+  claudeRulePaths?: string[]
 }
 
 export const MANAGED_MARKER = 'Managed by maz-ui'
@@ -97,6 +108,17 @@ export interface AgentsTool {
   generatedBy: string
   /** Line written under the title of the rules. Default: `> <name> <version> is installed: these rules match this version.` */
   versionNote?: (version: string) => string
+  /**
+   * Packages whose presence in the `dependencies`, `devDependencies`, `peerDependencies` or `optionalDependencies`
+   * of a `package.json` ties the files of its project to the tool (e.g. `['maz-ui', '@maz-ui/themes']`). Used by
+   * the `'auto'` scope of the Claude Code rule. Default: none, the rule is always loaded
+   */
+  packages?: string[]
+  /**
+   * Files of a project the rule applies to, relative to its folder. Default `['**\/*']` (the whole project).
+   * With `packages`, applied to each workspace that depends on one of them
+   */
+  ruleGlobs?: string[]
 }
 
 export const MAZ_UI_AGENTS_TOOL: AgentsTool = {
@@ -105,6 +127,15 @@ export const MAZ_UI_AGENTS_TOOL: AgentsTool = {
   mcpBin: 'maz-ui-mcp',
   generatedBy: '`npx @maz-ui/mcp init` (or the `mazUi.agents` Nuxt option)',
   versionNote: version => `> maz-ui ${version} is installed: these rules and the docs in \`node_modules/maz-ui/docs\` match this version.`,
+  packages: [
+    'maz-ui',
+    '@maz-ui/nuxt',
+    '@maz-ui/themes',
+    '@maz-ui/icons',
+    '@maz-ui/utils',
+    '@maz-ui/translations',
+  ],
+  ruleGlobs: ['**/*.{vue,ts,tsx,css,scss}'],
 }
 
 export type PackageManager = 'pnpm' | 'yarn' | 'bun' | 'npm'
@@ -274,6 +305,10 @@ function managedContent(version: string, body: string, setup: ToolSetup): string
 /**
  * `true` when generated rules were edited by hand since they were written:
  * they are kept, a newer version of the rules would overwrite the edits.
+ * Only what follows the managed header is checked: the `paths:` frontmatter
+ * before it is derived from the project and rewritten at every run, and a rule
+ * written before the frontmatter existed (header on the first line) is checked
+ * the same way.
  */
 export function isEditedManagedContent(content: string | undefined, tool: AgentsTool = MAZ_UI_AGENTS_TOOL): boolean {
   const header = content === undefined
@@ -845,8 +880,88 @@ function syncMcpConfig(changes: ChangeSet, config: McpConfigFile, server: McpSer
     : `${content}\n`, current)
 }
 
+const DEPENDENCY_FIELDS = [
+  'dependencies',
+  'devDependencies',
+  'peerDependencies',
+  'optionalDependencies',
+]
+
+/** `true` when the `package.json` of a folder depends on one of the packages */
+function dependsOnAny(folder: string, packages: string[]): boolean {
+  const pkg = readPackageJson(folder)
+
+  return DEPENDENCY_FIELDS.some(field => packages.some(name => (pkg?.[field] as Record<string, string> | undefined)?.[name] !== undefined))
+}
+
+/**
+ * Folders (relative to `rootDir`, `''` for the root) whose `package.json` depends on one of the packages: the
+ * workspaces of a monorepo, or the root of a single package project
+ */
+export function findWorkspacesUsing(rootDir: string, packages: string[]): string[] {
+  const folders = [
+    rootDir,
+    ...findWorkspaceDirs(rootDir),
+  ].filter(folder => dependsOnAny(folder, packages))
+
+  return folders.map(folder => relative(rootDir, folder).split(sep).join('/'))
+}
+
+function isUnscopedGlob(glob: string): boolean {
+  return ['**', '**/*', '*', '/**', '/**/*'].includes(glob.trim())
+}
+
+/**
+ * Globs the Claude Code rule is scoped to, `undefined` when it must always be loaded. The root of the project
+ * depending on the tool (single package project), or no dependency found (the tool is used from elsewhere), apply
+ * the files of the tool to the whole project, since no folder is more relevant than another.
+ */
+export function resolveRulePaths(rootDir: string, tool: AgentsTool, option: SetupAgentsOptions['paths'] = 'auto'): string[] | undefined {
+  if (option === 'all')
+    return undefined
+
+  const explicit = Array.isArray(option)
+    ? option.map(glob => glob.trim()).filter(Boolean)
+    : []
+  const globs = Array.isArray(option)
+    ? explicit
+    : autoRulePaths(rootDir, tool)
+
+  return globs.length === 0 || globs.some(isUnscopedGlob)
+    ? undefined
+    : [
+        ...new Set(globs),
+      ]
+}
+
+function autoRulePaths(rootDir: string, tool: AgentsTool): string[] {
+  if (!tool.packages || tool.packages.length === 0)
+    return []
+
+  const files = tool.ruleGlobs ?? ['**/*']
+  const folders = findWorkspacesUsing(rootDir, tool.packages)
+  const scopedFolders = folders.includes('') || folders.length === 0
+    ? ['']
+    : folders
+
+  return scopedFolders.flatMap(folder => files.map(glob => join(folder, glob).split(sep).join('/')))
+}
+
+/** `paths:` frontmatter of a Claude Code rule. It must be the first thing of the file, before the managed header */
+function claudeFrontmatter(globs: string[] | undefined): string {
+  if (!globs || globs.length === 0)
+    return ''
+
+  const items = globs.map(glob => [
+    '  -',
+    JSON.stringify(glob),
+  ].join(' ')).join('\n')
+
+  return `---\npaths:\n${items}\n---\n\n`
+}
+
 /** Writes (or removes when `docs` is undefined) the Claude Code rule and the `AGENTS.md` section */
-function syncRules(changes: ChangeSet, rootDir: string, targets: AgentTarget[], docs: AgentDocs | undefined, setup: ToolSetup): void {
+function syncRules(changes: ChangeSet, rootDir: string, targets: AgentTarget[], docs: AgentDocs | undefined, setup: ToolSetup, paths: string[] | undefined): void {
   const version = docs?.version ?? ''
   const hasClaudeMemory = CLAUDE_MEMORY_FILES.some(file => existsSync(join(rootDir, file)))
   // Claude Code reads AGENTS.md only when the project has no CLAUDE.md: the rule would then duplicate the AGENTS.md section
@@ -854,7 +969,7 @@ function syncRules(changes: ChangeSet, rootDir: string, targets: AgentTarget[], 
 
   if (targets.includes('claude')) {
     const rule = docs && !claudeReadsAgentsMd
-      ? `${managedContent(version, withVersion(docs.claudeRule, version, setup.tool), setup)}\n`
+      ? `${claudeFrontmatter(paths)}${managedContent(version, withVersion(docs.claudeRule, version, setup.tool), setup)}\n`
       : undefined
     syncOwnedFile(changes, setup.ruleFile, rule, version, setup)
   }
@@ -894,8 +1009,12 @@ export function setupAgents(options: SetupAgentsOptions): SetupAgentsResult {
   const changes = new ChangeSet(rootDir, dryRun)
   const server = options.mcpServer ?? mcpServerCommand(rootDir, options.mcpVersion, tool)
 
+  const claudeRulePaths = docs && targets.includes('claude')
+    ? resolveRulePaths(rootDir, tool, options.paths)
+    : undefined
+
   if (rules || remove)
-    syncRules(changes, rootDir, targets, docs, setup)
+    syncRules(changes, rootDir, targets, docs, setup, claudeRulePaths)
 
   if (mcp || remove) {
     for (const target of ['claude', 'cursor', 'vscode'] as const) {
@@ -910,5 +1029,6 @@ export function setupAgents(options: SetupAgentsOptions): SetupAgentsResult {
     changes: changes.changes,
     mcpServer: server,
     localMcpServer: !server.args.includes('-y'),
+    claudeRulePaths,
   }
 }
