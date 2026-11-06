@@ -1,7 +1,7 @@
 {
   "name": "@maz-ui/utils",
   "type": "module",
-  "version": "5.3.0",
+  "version": "5.3.1-beta.0",
   "description": "Utils of maz-ui for JavaScript/TypeScript users",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "license": "MIT",

@@ -1,5 +1,37 @@
 # Change Log
 
+## v5.3.1-beta.0 (2026-11-06)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.3.1-beta.0)
+
+### 🩹 Fixes
+
+- **@maz-ui/mcp:** Label the bundled docs with the maz-ui version they document ([3df0ec36c](https://github.com/LouisMazel/maz-ui/commit/3df0ec36c))
+- **maz-ui:** Declarations no longer import @vue/reactivity ([fd6e42c61](https://github.com/LouisMazel/maz-ui/commit/fd6e42c61))
+- **@maz-ui/utils:** Declare vue as an optional peer dependency for the types of its helpers ([494987166](https://github.com/LouisMazel/maz-ui/commit/494987166))
+- **@maz-ui/icons:** Stop publishing the declarations of the build utilities ([1c56e33d8](https://github.com/LouisMazel/maz-ui/commit/1c56e33d8))
+- **@maz-ui/nuxt:** Declare the packages imported by its declarations ([51f1d144e](https://github.com/LouisMazel/maz-ui/commit/51f1d144e))
+- **@maz-ui/nuxt:** Warn when the app and the module load two versions of maz-ui ([5d7841682](https://github.com/LouisMazel/maz-ui/commit/5d7841682))
+
+### 📖 Documentation
+
+- **docs:** Document the pnpm option of @maz-ui/eslint-config ([7766bbfa7](https://github.com/LouisMazel/maz-ui/commit/7766bbfa7))
+- **docs:** Explain how to keep the maz-ui packages on the same version ([77c79ecdd](https://github.com/LouisMazel/maz-ui/commit/77c79ecdd))
+
+### 📦 Build
+
+- **@maz-ui/vite-config:** Only externalize the dependencies of the built package ([7200c437e](https://github.com/LouisMazel/maz-ui/commit/7200c437e))
+- **@maz-ui/mcp:** Bundle @maz-ui/node and @maz-ui/utils without declaring them as optional peers ([2443858ef](https://github.com/LouisMazel/maz-ui/commit/2443858ef))
+- Load the Node.js types in the root typecheck ([b4bfb923f](https://github.com/LouisMazel/maz-ui/commit/b4bfb923f))
+
+### 💄 Styles
+
+- **nuxt-app:** Format with @antfu/eslint-config v10 ([bab04ccdd](https://github.com/LouisMazel/maz-ui/commit/bab04ccdd))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.3.0 (2026-11-06)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.2.0...v5.3.0)

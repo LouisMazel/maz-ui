@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.3.1-beta.0 (2026-11-06)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.3.0...v5.3.1-beta.0)
+
+### 🩹 Fixes
+
+- **@maz-ui/utils:** Declare vue as an optional peer dependency for the types of its helpers ([494987166](https://github.com/LouisMazel/maz-ui/commit/494987166))
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.3.0 (2026-11-06)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.2.0...v5.3.0)
