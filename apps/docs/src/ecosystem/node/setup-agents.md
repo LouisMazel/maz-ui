@@ -35,7 +35,7 @@ The content comes from the `docs/agents` folder of the `maz-ui` package installe
 Guarantees:
 
 - A file it did not generate is never overwritten (it is reported as `skip`).
-- Generated rules edited by hand are kept and no longer updated (`skip`): their header records a checksum of the content. A formatter that only changes the whitespace does not count as an edit. Delete the file (or the `AGENTS.md` section) to get the rules of a new version.
+- Generated rules edited by hand are kept and no longer updated (`skip`): their header records a checksum of the content, `paths:` frontmatter included. A formatter that only changes the whitespace does not count as an edit. Delete the file (or the `AGENTS.md` section) to get the rules of a new version.
 - In `AGENTS.md`, only the delimited section is managed: your content stays as is.
 - MCP config files are edited in place, keeping their formatting and comments. When a server already runs `@maz-ui/mcp` under another name, nothing is added.
 - An existing entry of the maz-ui MCP server only gets a better command (the installed `@maz-ui/mcp`, a newer pinned version) and keeps its other fields (`env`...). A command written by hand (with `--docs`, for example) is never changed.
@@ -84,7 +84,13 @@ Without a `paths:` frontmatter, Claude Code loads a rule at every session, in ev
 - `paths: 'all'`: no frontmatter, the rule is always loaded.
 - `paths: ['apps/web/**', 'packages/ui/**']`: your globs, used as is.
 
-The frontmatter is rewritten at every run from the project and the options, and is not part of the checksum: an edit of the rules themselves is still detected and kept, a rule written before the frontmatter existed is updated. To scope the rule differently, use the `paths` option rather than editing the file.
+The frontmatter is rewritten at every run from the project and the options, as long as the file was not edited: the checksum of the header covers the frontmatter and the rules, so an edit of either (your own `paths:`, an added rule) is detected and the file is kept. A rule written before the frontmatter existed, or with a checksum of the rules alone, is updated.
+
+In `'auto'` mode:
+
+- Workspaces excluded by a negated pattern (`!apps/legacy` in `pnpm-workspace.yaml` or `workspaces`) are left out, with the folders below them.
+- The characters `[ ] { } ( ) * ? !` of a folder name are escaped in the globs.
+- When the globs would expand to more than 1000 patterns (the budget of Claude Code for braces), the rule falls back to the `ruleGlobs` of the tool for the whole project.
 
 ## Use it for another tool
 
@@ -103,8 +109,13 @@ const tool: AgentsTool = {
   mcpArgs: ['mcp'],
   // Written in the header of the generated rules
   generatedBy: '`relizy mcp init`',
+  // Marker written in the header of the generated content, default: `Managed by relizy` (`Managed by <name>`)
+  marker: 'Managed by relizy',
   // Line under the title of the rules, default: `> relizy <version> is installed: these rules match this version.`
+  // Use `false` to write no note
   versionNote: version => `> relizy ${version} is installed: these rules match this version.`,
+  // Packages (or bins) of former MCP servers: an entry that references one of them is replaced by the entry of the tool, default: none
+  legacyMcpPackages: ['relizy-legacy-mcp'],
   // Scope of the Claude rule: the workspaces that depend on these packages, and the files of the rule inside them
   packages: ['relizy'],
   ruleGlobs: ['relizy.config.*', '**/CHANGELOG.md'],
@@ -132,6 +143,16 @@ setupAgents({
 | Command, package not installed | `npx -y relizy@<mcpVersion> mcp` | `npx -y @maz-ui/mcp@<mcpVersion>` |
 
 Each tool only manages its own files, section and server entry: maz-ui and relizy can be set up in the same project, and removing one (`remove: true` with its `tool`) keeps the other. `mcpServerCommand`, `installsMcpPackage`, `readManagedVersion` and `isEditedManagedContent` also take the tool as last argument.
+
+Set `marker` to keep recognizing files generated under a different marker than the name of the tool (e.g. `'Managed by @acme/mcp'` for a tool named `acme`): the header, the owned files and the version are all read from it. With `legacyMcpPackages`, an entry of the MCP config files (`.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`) that references a former package is replaced in place by the entry of the tool, only when the tool has no entry yet. `remove` never touches it.
+
+## Lightweight entry
+
+`@maz-ui/node/agents` exports `setupAgents` and its helpers without the rest of the package: it does not load `consola` nor `figlet` (logger and banner), and its types do not reference them. Use it in tools that only configure agents.
+
+```ts
+import { setupAgents } from '@maz-ui/node/agents'
+```
 
 ## Command of the MCP server
 

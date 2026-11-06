@@ -26,6 +26,7 @@ export default defineConfig({
       exclude: [
         ...coverageConfigDefaults.exclude,
         'src/index.ts',
+        'src/agents.ts',
       ],
       thresholds: {
         lines: 100,

@@ -29,6 +29,12 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "default": "./dist/index.mjs"
+    },
+    "./agents": {
+      "monorepo:dev": "./src/agents.ts",
+      "types": "./dist/agents.d.ts",
+      "import": "./dist/agents.mjs",
+      "default": "./dist/agents.mjs"
     }
   },
   "main": "./dist/index.mjs",
