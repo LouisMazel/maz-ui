@@ -798,10 +798,20 @@ describe('nuxt module', () => {
       })
 
       describe('when it is not set', () => {
-        it('then only the MCP server of the detected agents is configured', () => {
+        it('then the agents are not configured', () => {
           callSetup({}, {}, { dev: true })
 
           expect(config.defaults.agents).toEqual({ rules: false, mcp: false })
+          expect(setupAgents).not.toHaveBeenCalled()
+        })
+      })
+
+      describe('when only the MCP server is enabled', () => {
+        it('then only the MCP server of the detected agents is configured', () => {
+          callSetup({
+            agents: { mcp: true },
+          }, {}, { dev: true })
+
           expect(setupAgents).toHaveBeenCalledWith({
             rootDir: '/project',
             targets: ['claude'],
@@ -866,7 +876,9 @@ describe('nuxt module', () => {
 
       describe('when the app is part of a monorepo', () => {
         it('then the files are written at the workspace root with the docs of the maz-ui of the app', () => {
-          callSetup({}, {}, { dev: true, rootDir: '/repo/apps/web', workspaceDir: '/repo' })
+          callSetup({
+            agents: { rules: false, mcp: true },
+          }, {}, { dev: true, rootDir: '/repo/apps/web', workspaceDir: '/repo' })
 
           expect(detectAgentTargets).toHaveBeenCalledWith('/repo')
           expect(findProjectPackage).toHaveBeenCalledWith('/repo/apps/web', 'maz-ui')
@@ -877,7 +889,7 @@ describe('nuxt module', () => {
       describe('when a dir is given', () => {
         it('then the files are written in this folder, relative to the Nuxt root', () => {
           callSetup({
-            agents: { dir: '../..' },
+            agents: { mcp: true, dir: '../..' },
           }, {}, { dev: true, rootDir: '/repo/apps/web', workspaceDir: '/repo/apps/web' })
 
           expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ rootDir: '/repo' }))
@@ -888,7 +900,9 @@ describe('nuxt module', () => {
         it('then setupAgents resolves the docs by itself', () => {
           findProjectPackage.mockReturnValueOnce(undefined)
 
-          callSetup({}, {}, { dev: true })
+          callSetup({
+            agents: { rules: false, mcp: true },
+          }, {}, { dev: true })
 
           expect(setupAgents).toHaveBeenCalledWith({
             rootDir: '/project',
@@ -994,7 +1008,9 @@ describe('nuxt module', () => {
             localMcpServer: true,
           })
 
-          callSetup({}, {}, { dev: true })
+          callSetup({
+            agents: { rules: false, mcp: true },
+          }, {}, { dev: true })
 
           expect(logger.info).toHaveBeenCalledWith('AI agents configured for maz-ui: .mcp.json (create).')
         })
@@ -1011,7 +1027,9 @@ describe('nuxt module', () => {
             localMcpServer: false,
           })
 
-          callSetup({}, {}, { dev: true })
+          callSetup({
+            agents: { rules: false, mcp: true },
+          }, {}, { dev: true })
 
           expect(logger.info).toHaveBeenCalledWith('AI agents configured for maz-ui: .mcp.json (create). The MCP server runs through npx: add @maz-ui/mcp to the devDependencies of the project root to start it in about a second, at the version of your lockfile.')
         })
@@ -1022,7 +1040,9 @@ describe('nuxt module', () => {
           findProjectPackage.mockImplementation((_: string, name: string) => `/project/node_modules/${name}`)
           readPackageVersion.mockReturnValueOnce('5.2.0')
 
-          callSetup({}, {}, { dev: true })
+          callSetup({
+            agents: { rules: false, mcp: true },
+          }, {}, { dev: true })
 
           expect(readPackageVersion).toHaveBeenCalledWith('/project/node_modules/@maz-ui/mcp')
           expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ mcpVersion: '5.2.0' }))
@@ -1035,7 +1055,9 @@ describe('nuxt module', () => {
         it('then no version is pinned', () => {
           findProjectPackage.mockReturnValueOnce('/project/node_modules/maz-ui').mockReturnValueOnce(undefined)
 
-          callSetup({}, {}, { dev: true })
+          callSetup({
+            agents: { rules: false, mcp: true },
+          }, {}, { dev: true })
 
           expect(setupAgents).toHaveBeenCalledWith(expect.objectContaining({ mcpVersion: undefined }))
         })
@@ -1080,32 +1102,16 @@ describe('nuxt module', () => {
         })
       })
 
-      describe('when the configuration of an explicitly enabled option fails', () => {
+      describe('when the configuration fails', () => {
         it('then a warning is logged and the setup continues', () => {
           setupAgents.mockImplementationOnce(() => {
             throw new Error('maz-ui is not installed')
           })
 
-          callSetup({ agents: true }, {}, {
-            dev: true,
-            mazUi: { agents: true },
-          })
+          callSetup({ agents: true }, {}, { dev: true })
 
           expect(logger.warn).toHaveBeenCalledWith('Could not configure the AI agents for maz-ui: maz-ui is not installed')
           expect(addPlugin).toHaveBeenCalledWith(expect.stringContaining('runtime/plugins/theme'))
-        })
-      })
-
-      describe('when the configuration enabled by default fails', () => {
-        it('then the error is only logged at debug level', () => {
-          setupAgents.mockImplementationOnce(() => {
-            throw new Error('maz-ui is not installed')
-          })
-
-          callSetup({}, {}, { dev: true })
-
-          expect(logger.warn).not.toHaveBeenCalled()
-          expect(logger.debug).toHaveBeenCalledWith('Could not configure the AI agents for maz-ui: maz-ui is not installed')
         })
       })
 
