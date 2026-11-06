@@ -237,7 +237,6 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
   }
 
   const logger = useLogger('@maz-ui/mcp')
-  const isExplicit = (nuxt.options as { mazUi?: MazUiNuxtOptions }).mazUi?.agents !== undefined
 
   try {
     const { rootDir, workspaceDir } = nuxt.options
@@ -274,12 +273,7 @@ function syncAgents(agents: MazUiNuxtOptions['agents'], nuxt: Nuxt) {
     }
   }
   catch (error) {
-    const message = `Could not configure the AI agents for maz-ui: ${getErrorMessage(error)}`
-
-    if (isExplicit)
-      logger.warn(message)
-    else
-      logger.debug(message)
+    logger.warn(`Could not configure the AI agents for maz-ui: ${getErrorMessage(error)}`)
   }
 }
 
