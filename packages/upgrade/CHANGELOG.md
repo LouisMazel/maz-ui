@@ -1,5 +1,33 @@
 # Changelog
 
+## v5.3.0 (2026-11-06)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.2.0...v5.3.0)
+
+### 📦 Build
+
+- **deps:** Upgrade minor and patch dependencies ([ac04f8577](https://github.com/LouisMazel/maz-ui/commit/ac04f8577))
+
+  - `marked` from 18.1.1 to 18.1.3 (hardening against quadratic emphasis scans and ReDoS-class backtracking)
+  - `@tanstack/vue-virtual` from 3.13.47 to 3.13.52
+  - `chart.js` from 4.5.1 to 4.6.1
+  - `@nuxt/kit` from 4.6.2 to 4.6.4
+  - `eslint-plugin-vuejs-accessibility` from 2.6.2 to 2.6.3
+  - `stylelint-config-recess-order` from 7.8.2 to 7.10.0
+  - `stylelint-order` from 8.1.2 to 8.1.3
+
+- Require Node.js releases with the October 2026 security fixes ([9db85d136](https://github.com/LouisMazel/maz-ui/commit/9db85d136))
+
+  All the published packages now declare `engines.node` as `^22.23.4 || ^24.22.1 || >=26.12.1`: the Node.js releases of October 21, 2026 fix 10 vulnerabilities, including a remote code execution in the Brotli decoder (CVE-2026-111497) and TLS hostname verification bypasses. Upgrade to Node.js 22.23.4, 24.22.1 or 26.12.1 or later. Node.js 23 and 25 are end-of-life and no longer accepted.
+
+- **deps:** Upgrade @antfu/eslint-config to v10, nx to v24, glob to v14 and @types/node to v26 ([2364673d9](https://github.com/LouisMazel/maz-ui/commit/2364673d9))
+
+  `@maz-ui/eslint-config` now uses `@antfu/eslint-config` v10, which adds new formatting rules: multiline ternaries, arrays and objects. Your lint may report new errors on existing code, run `eslint --fix` to apply them.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.2.0 (2026-11-01)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.1...v5.2.0)

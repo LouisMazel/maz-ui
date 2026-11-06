@@ -1,5 +1,60 @@
 # Change Log
 
+## v5.3.0 (2026-11-06)
+
+[compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.2.0...v5.3.0)
+
+### 🚀 Features
+
+- **@maz-ui/node:** Load the Claude Code rule only for the files that use maz-ui ([fbca64ec3](https://github.com/LouisMazel/maz-ui/commit/fbca64ec3))
+
+  The generated `.claude/rules/maz-ui.md` now starts with a `paths:` frontmatter listing the workspaces that depend on maz-ui (e.g. `apps/pwa/**/*.{vue,ts,tsx,css,scss}`), so Claude Code loads it when it reads or edits one of these files instead of at every turn. The rule is also cut to its core (about 2.9 KB instead of 6.3 KB); the rest is served on demand by the MCP tools.
+
+  Set `paths: 'all'` or a list of globs in `setupAgents`, `--paths` in `npx @maz-ui/mcp init`, or `mazUi.agents.paths` in Nuxt. Rules generated before are updated, unless you edited them. See [setupAgents](https://maz-ui.com/ecosystem/node/setup-agents).
+
+- **node:** Add marker, versionNote false, legacyMcpPackages and an agents entry to setupAgents ([515233ac0](https://github.com/LouisMazel/maz-ui/commit/515233ac0))
+
+  AgentsTool gets three optional fields, all defaulting to the current behavior: `marker` (header marker, default `Managed by <name>`), `versionNote: false` (no note under the title) and `legacyMcpPackages` (entries of former MCP servers replaced by the entry of the tool).
+
+  The checksum of the generated rules now covers the `paths:` frontmatter, so a hand-edited frontmatter is kept. A checksum of the body alone is still accepted, so rules from published versions and from the previous commit stay recognized.
+
+  In the `auto` scope, workspaces excluded by negated patterns are left out, glob characters of folder names are escaped, and the rule falls back to the globs of the whole project beyond 1000 expanded patterns.
+
+  `@maz-ui/node/agents` exposes setupAgents without consola and figlet.
+
+- **@maz-ui/nuxt:** Stop registering the maz-ui MCP server by default ([eba8f1b24](https://github.com/LouisMazel/maz-ui/commit/eba8f1b24))
+
+  The `agents` option now defaults to `{ rules: false, mcp: false }`: the module writes nothing unless you enable it. Set `agents: { mcp: true }` to register the maz-ui MCP server, or `agents: true` to also write the rules.
+
+### 🩹 Fixes
+
+- **node:** Ignore the quotes of the rule frontmatter in its checksum ([b4f9b43fb](https://github.com/LouisMazel/maz-ui/commit/b4f9b43fb))
+- **@maz-ui/nuxt:** Warn when the configuration of the AI agents fails ([cdad28aaa](https://github.com/LouisMazel/maz-ui/commit/cdad28aaa))
+
+### 📦 Build
+
+- **deps:** Upgrade minor and patch dependencies ([ac04f8577](https://github.com/LouisMazel/maz-ui/commit/ac04f8577))
+
+  - `marked` from 18.1.1 to 18.1.3 (hardening against quadratic emphasis scans and ReDoS-class backtracking)
+  - `@tanstack/vue-virtual` from 3.13.47 to 3.13.52
+  - `chart.js` from 4.5.1 to 4.6.1
+  - `@nuxt/kit` from 4.6.2 to 4.6.4
+  - `eslint-plugin-vuejs-accessibility` from 2.6.2 to 2.6.3
+  - `stylelint-config-recess-order` from 7.8.2 to 7.10.0
+  - `stylelint-order` from 8.1.2 to 8.1.3
+
+- Require Node.js releases with the October 2026 security fixes ([9db85d136](https://github.com/LouisMazel/maz-ui/commit/9db85d136))
+
+  All the published packages now declare `engines.node` as `^22.23.4 || ^24.22.1 || >=26.12.1`: the Node.js releases of October 21, 2026 fix 10 vulnerabilities, including a remote code execution in the Brotli decoder (CVE-2026-111497) and TLS hostname verification bypasses. Upgrade to Node.js 22.23.4, 24.22.1 or 26.12.1 or later. Node.js 23 and 25 are end-of-life and no longer accepted.
+
+- **deps:** Upgrade @antfu/eslint-config to v10, nx to v24, glob to v14 and @types/node to v26 ([2364673d9](https://github.com/LouisMazel/maz-ui/commit/2364673d9))
+
+  `@maz-ui/eslint-config` now uses `@antfu/eslint-config` v10, which adds new formatting rules: multiline ternaries, arrays and objects. Your lint may report new errors on existing code, run `eslint --fix` to apply them.
+
+### ❤️ Contributors
+
+- LouisMazel ([@LouisMazel](https://github.com/LouisMazel))
+
 ## v5.2.0 (2026-11-01)
 
 [compare changes](https://github.com/LouisMazel/maz-ui/compare/v5.1.1...v5.2.0)
